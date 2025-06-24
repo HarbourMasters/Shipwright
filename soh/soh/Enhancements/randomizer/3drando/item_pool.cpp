@@ -753,26 +753,20 @@ void GenerateItemPool() {
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS)) {
-        AddItemToMainPool(RG_GOHMA_SOUL);
-        AddItemToMainPool(RG_KING_DODONGO_SOUL);
-        AddItemToMainPool(RG_BARINADE_SOUL);
-        AddItemToMainPool(RG_PHANTOM_GANON_SOUL);
-        AddItemToMainPool(RG_VOLVAGIA_SOUL);
-        AddItemToMainPool(RG_MORPHA_SOUL);
-        AddItemToMainPool(RG_BONGO_BONGO_SOUL);
-        AddItemToMainPool(RG_TWINROVA_SOUL);
+        for (int rg = RG_GOHMA_SOUL; rg <= RG_TWINROVA_SOUL; rg++) {
+            AddItemToMainPool((RandomizerGet)rg);
+            ctx->possibleIceTrapModels.push_back((RandomizerGet)rg);
+        }
 
-        ctx->possibleIceTrapModels.push_back(RG_GOHMA_SOUL);
-        ctx->possibleIceTrapModels.push_back(RG_KING_DODONGO_SOUL);
-        ctx->possibleIceTrapModels.push_back(RG_BARINADE_SOUL);
-        ctx->possibleIceTrapModels.push_back(RG_PHANTOM_GANON_SOUL);
-        ctx->possibleIceTrapModels.push_back(RG_VOLVAGIA_SOUL);
-        ctx->possibleIceTrapModels.push_back(RG_MORPHA_SOUL);
-        ctx->possibleIceTrapModels.push_back(RG_BONGO_BONGO_SOUL);
-        ctx->possibleIceTrapModels.push_back(RG_TWINROVA_SOUL);
         if (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON)) {
             AddItemToMainPool(RG_GANON_SOUL);
             ctx->possibleIceTrapModels.push_back(RG_GANON_SOUL);
+        }
+    }
+
+    if (ctx->GetOption(RSK_SHUFFLE_NPC_SOULS)) {
+        for (int rg = RG_ANJU_SOUL; rg <= RG_ZELDA_SOUL; rg++) {
+            AddItemToMainPool((RandomizerGet)rg);
         }
     }
 

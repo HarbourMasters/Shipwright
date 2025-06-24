@@ -48,7 +48,7 @@ void RegionTable_Init_JabuJabusBelly() {
     //contains B1 of hole room (aside from the ledge leading to big octo), 2 octorock room and north water switch room
     areaTable[RR_JABU_JABUS_BELLY_B1_NORTH] = Region("Jabu Jabus Belly B1 North", SCENE_JABU_JABU, {
         //Events
-        EventAccess(&logic->JabuRutoIn1F, []{return logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE);}),
+        EventAccess(&logic->JabuRutoIn1F, []{return logic->HasSoul(RG_RUTO_SOUL) && (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE));}),
         EventAccess(&logic->FairyPot,     []{return logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_OCTOROK));}),
     }, {
         //Locations
@@ -365,7 +365,8 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_BOSS_ROOM] = Region("Jabu Jabus Belly Boss Room", SCENE_JABU_JABU_BOSS, {
         // Events //todo: add pot kill trick
-        EventAccess(&logic->JabuJabusBellyClear, []{return logic->CanKillEnemy(RE_BARINADE);}),
+        EventAccess(&logic->JabuJabusBellyWin, []{return logic->CanKillEnemy(RE_BARINADE);}),
+        EventAccess(&logic->JabuJabusBellyClear, []{return logic->JabuJabusBellyWin && logic->HasSage(RG_RUTO_SOUL);}),
     }, {
         // Locations
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_1, logic->CanBreakPots()),
@@ -374,12 +375,12 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_4, logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_5, logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_6, logic->CanBreakPots()),
-        LOCATION(RC_JABU_JABUS_BELLY_BARINADE_HEART, logic->JabuJabusBellyClear),
+        LOCATION(RC_JABU_JABUS_BELLY_BARINADE_HEART, logic->JabuJabusBellyWin),
         LOCATION(RC_BARINADE,                        logic->JabuJabusBellyClear),
     }, {
         // Exits
         Entrance(RR_JABU_JABUS_BELLY_BOSS_EXIT, []{return false;}),
-        Entrance(RR_ZORAS_FOUNTAIN,             []{return logic->JabuJabusBellyClear;}, false),
+        Entrance(RR_ZORAS_FOUNTAIN,             []{return logic->JabuJabusBellyWin;}, false),
     });
 
     // clang-format on

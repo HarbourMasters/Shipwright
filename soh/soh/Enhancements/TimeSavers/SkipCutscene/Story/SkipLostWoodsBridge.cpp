@@ -1,6 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
+#include "soh/Enhancements/randomizer/context.h"
 
 extern "C" {
 #include "z64save.h"
@@ -17,9 +18,12 @@ void RegisterSkipLostWoodsBridge() {
     COND_VB_SHOULD(VB_PLAY_TRANSITION_CS, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO), {
         if ((gSaveContext.entranceIndex == ENTR_LOST_WOODS_BRIDGE_EAST_EXIT) &&
             !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)) {
-            Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
-            if (GameInteractor_Should(VB_GIVE_ITEM_FAIRY_OCARINA, true)) {
-                Item_Give(gPlayState, ITEM_OCARINA_FAIRY);
+            if (!IS_RANDO || !Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_NPC_SOULS).Get() ||
+                Flags_GetRandomizerInf(RAND_INF_SARIA_SOUL)) {
+                Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
+                if (GameInteractor_Should(VB_GIVE_ITEM_FAIRY_OCARINA, true)) {
+                    Item_Give(gPlayState, ITEM_OCARINA_FAIRY);
+                }
             }
             *should = false;
         }

@@ -758,5 +758,8 @@ void Settings::CreateOptionDescriptions() {
         "Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its "
         "respective soul."
         "\n\"On + Ganon\" will also hide Ganon and Ganondorf behind a boss soul.";
+    mOptionDescriptions[RSK_SHUFFLE_NPC_SOULS] =
+        "Shuffles souls of NPCs. An NPC will not appear until you collect its respective soul."
+        "\n\"On + Sages\" requires sage souls to receive blue warp reward. Zelda is required to defeat Ganon.";
 }
 } // namespace Rando

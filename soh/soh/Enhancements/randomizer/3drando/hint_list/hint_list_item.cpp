@@ -2028,6 +2028,55 @@ void StaticData::HintTable_Init_Item() {
                                              CustomMessage("an evil soul", /*german*/"eine böse Seele", /*french*/"une âme maléfique"),
                                              CustomMessage("some powerful essence", /*german*/"etwas mächtige Essenz", /*french*/"une essence incroyablement puissante")});
 
+    hintTextTable[RHT_ANJU_SOUL] = HintText(CustomMessage("Anju's Soul"));
+    hintTextTable[RHT_TALON_SOUL] = HintText(CustomMessage("Talon's Soul"));
+    hintTextTable[RHT_GROG_SOUL] = HintText(CustomMessage("Grog's Soul"));
+    hintTextTable[RHT_GRANNY_SOUL] = HintText(CustomMessage("Granny's Soul"));
+    hintTextTable[RHT_FADO_SOUL] = HintText(CustomMessage("Fado's Soul"));
+    hintTextTable[RHT_LINK_SOUL] = HintText(CustomMessage("Darunia's Son's Soul"));
+    hintTextTable[RHT_BIGGORON_SOUL] = HintText(CustomMessage("Biggoron's Soul"));
+    hintTextTable[RHT_HOT_RODDER_SOUL] = HintText(CustomMessage("Hot Rodder's Soul"));
+    hintTextTable[RHT_MEDIGORON_SOUL] = HintText(CustomMessage("Medigoron's Soul"));
+    hintTextTable[RHT_CARPENTER_BOSS_SOUL] = HintText(CustomMessage("Carpenter Boss's Soul"));
+    hintTextTable[RHT_ICHIRO_SOUL] = HintText(CustomMessage("Ichiro's Soul"));
+    hintTextTable[RHT_SABOORO_SOUL] = HintText(CustomMessage("Sabooro's Soul"));
+    hintTextTable[RHT_JIRO_SOUL] = HintText(CustomMessage("Jiro's Soul"));
+    hintTextTable[RHT_SHIRO_SOUL] = HintText(CustomMessage("Shiro's Soul"));
+    hintTextTable[RHT_HW_GATEKEEPER_SOUL] = HintText(CustomMessage("Haunted Wasteland Gate Operator's Soul"));
+    hintTextTable[RHT_GTG_GATEKEEPER_SOUL] = HintText(CustomMessage("Training Ground Gate Operator's Soul"));
+    hintTextTable[RHT_ARCHER_SOUL] = HintText(CustomMessage("Horseback Archer's Soul"));
+    hintTextTable[RHT_GREAT_FAIRY_SOUL] = HintText(CustomMessage("Great Fairy's Soul"));
+    hintTextTable[RHT_POE_COLLECTOR_SOUL] = HintText(CustomMessage("Poe Collector's Soul"));
+    hintTextTable[RHT_DAMPE_SOUL] = HintText(CustomMessage("Dampe's Soul"));
+    hintTextTable[RHT_WINDMILL_MAN_SOUL] = HintText(CustomMessage("Windmill Man's Soul"));
+    hintTextTable[RHT_MAN_ON_ROOF_SOUL] = HintText(CustomMessage("Man on Roof's Soul"));
+    hintTextTable[RHT_KAKARIKO_GATEKEEPER_SOUL] = HintText(CustomMessage("Kakariko Gatekeeper's Soul"));
+    hintTextTable[RHT_MALON_SOUL] = HintText(CustomMessage("Malon's Soul"));
+    hintTextTable[RHT_BEGGAR_SOUL] = HintText(CustomMessage("Beggar's Soul"));
+    hintTextTable[RHT_DOG_LADY_SOUL] = HintText(CustomMessage("Dog Lady's Soul"));
+    hintTextTable[RHT_ARMS_DEALER_SOUL] = HintText(CustomMessage("Arms Dealer's Soul"));
+    hintTextTable[RHT_BEAN_SALESMAN_SOUL] = HintText(CustomMessage("Bean Salesman's Soul"));
+    hintTextTable[RHT_SHOOTING_SOUL] = HintText(CustomMessage("Shooter's Soul"));
+    hintTextTable[RHT_KOKIRI_SHOPKEEPER_SOUL] = HintText(CustomMessage("Kokiri Shopkeeper's Soul"));
+    hintTextTable[RHT_POTION_SHOPKEEPER_SOUL] = HintText(CustomMessage("Potion Shopkeeper's Soul"));
+    hintTextTable[RHT_BAZAAR_SHOPKEEPER_SOUL] = HintText(CustomMessage("Bazaar Shopkeeper's Soul"));
+    hintTextTable[RHT_GORON_SHOPKEEPER_SOUL] = HintText(CustomMessage("Goron Shopkeeper's Soul"));
+    hintTextTable[RHT_ZORA_SHOPKEEPER_SOUL] = HintText(CustomMessage("Zora Shopkeeper's Soul"));
+    hintTextTable[RHT_BOMBCHU_SHOPKEEPER_SOUL] = HintText(CustomMessage("Bombchu Shopkeeper's Soul"));
+    hintTextTable[RHT_MASK_SALESMAN_SOUL] = HintText(CustomMessage("Mask Salesman's Soul"));
+    hintTextTable[RHT_TREASURE_MAN_SOUL] = HintText(CustomMessage("Treasure Man's Soul"));
+    hintTextTable[RHT_BOMBCHU_LADY_SOUL] = HintText(CustomMessage("Bombchu Lady's Soul"));
+    hintTextTable[RHT_DIVING_SOUL] = HintText(CustomMessage("Diver's Soul"));
+    hintTextTable[RHT_SCIENTIST_SOUL] = HintText(CustomMessage("Scientist's Soul"));
+    hintTextTable[RHT_KAEPORA_SOUL] = HintText(CustomMessage("Kaepora's Soul"));
+    hintTextTable[RHT_RAURU_SOUL] = HintText(CustomMessage("Rauru's Soul"));
+    hintTextTable[RHT_SARIA_SOUL] = HintText(CustomMessage("Saria's Soul"));
+    hintTextTable[RHT_DARUNIA_SOUL] = HintText(CustomMessage("Darunia's Soul"));
+    hintTextTable[RHT_RUTO_SOUL] = HintText(CustomMessage("Ruto's Soul"));
+    hintTextTable[RHT_NABOORU_SOUL] = HintText(CustomMessage("Nabooru's Soul"));
+    hintTextTable[RHT_IMPA_SOUL] = HintText(CustomMessage("Impa's Soul"));
+    hintTextTable[RHT_ZELDA_SOUL] = HintText(CustomMessage("Zelda's Soul"));
+
     hintTextTable[RHT_OCARINA_A_BUTTON] = HintText(CustomMessage("an Ocarina A Button", /*german*/"die A-Taste der Okarina", /*french*/"la Touche A de l'Ocarina"),
                                                    // /*spanish*/un botón A de Ocarina
                                                    {

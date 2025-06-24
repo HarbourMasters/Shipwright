@@ -409,15 +409,16 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_BOSS_ROOM] = Region("Shadow Temple Boss Room", SCENE_SHADOW_TEMPLE_BOSS, {
         // Events
-        EventAccess(&logic->ShadowTempleClear, []{return logic->CanKillEnemy(RE_BONGO_BONGO);}),
+        EventAccess(&logic->ShadowTempleWin, []{return logic->CanKillEnemy(RE_BONGO_BONGO);}),
+        EventAccess(&logic->ShadowTempleClear, []{ return logic->ShadowTempleWin && logic->HasSage(RG_IMPA_SOUL); }),
     }, {
         // Locations
-        LOCATION(RC_SHADOW_TEMPLE_BONGO_BONGO_HEART, logic->ShadowTempleClear),
+        LOCATION(RC_SHADOW_TEMPLE_BONGO_BONGO_HEART, logic->ShadowTempleWin),
         LOCATION(RC_BONGO_BONGO,                     logic->ShadowTempleClear),
     }, {
         // Exits
         Entrance(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY, []{return false;}),
-        Entrance(RR_GRAVEYARD_WARP_PAD_REGION,   []{return logic->ShadowTempleClear;}, false),
+        Entrance(RR_GRAVEYARD_WARP_PAD_REGION,   []{return logic->ShadowTempleWin;}, false),
     });
 
     // clang-format on

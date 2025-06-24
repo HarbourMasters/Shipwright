@@ -9,13 +9,13 @@ void RegionTable_Init_Kakariko() {
         //Events
         EventAccess(&logic->BugRock,                 []{return true;}),
         //Open Gate setting is applied in RR_ROOT
-        EventAccess(&logic->KakarikoVillageGateOpen, []{return logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER);}),
+        EventAccess(&logic->KakarikoVillageGateOpen, []{return logic->IsChild && logic->HasSoul(RG_KAKARIKO_GATEKEEPER_SOUL) && logic->HasItem(RG_ZELDAS_LETTER);}),
     }, {
         //Locations
-        LOCATION(RC_SHEIK_IN_KAKARIKO,                     logic->IsAdult && logic->HasItem(RG_FOREST_MEDALLION) && logic->HasItem(RG_FIRE_MEDALLION) && logic->HasItem(RG_WATER_MEDALLION)),
-        LOCATION(RC_KAK_ANJU_AS_CHILD,                     logic->IsChild && logic->AtDay),
-        LOCATION(RC_KAK_ANJU_AS_ADULT,                     logic->IsAdult && logic->AtDay),
-        LOCATION(RC_KAK_TRADE_POCKET_CUCCO,                logic->IsAdult && logic->AtDay && (logic->CanUse(RG_POCKET_EGG) && logic->WakeUpAdultTalon)),
+        LOCATION(RC_SHEIK_IN_KAKARIKO,                          logic->IsAdult && logic->HasItem(RG_FOREST_MEDALLION) && logic->HasItem(RG_FIRE_MEDALLION) && logic->HasItem(RG_WATER_MEDALLION) && logic->HasSoul(RG_ZELDA_SOUL)),
+        LOCATION(RC_KAK_ANJU_AS_CHILD,                          logic->IsChild && logic->AtDay && logic->HasSoul(RG_ANJU_SOUL)),
+        LOCATION(RC_KAK_ANJU_AS_ADULT,                          logic->IsAdult && logic->AtDay && logic->HasSoul(RG_ANJU_SOUL)),
+        LOCATION(RC_KAK_TRADE_POCKET_CUCCO,                     logic->IsAdult && logic->AtDay && logic->HasSoul(RG_ANJU_SOUL) && (logic->CanUse(RG_POCKET_EGG) && logic->WakeUpAdultTalon)),
         //Can kill lower kak skulls with pots
         LOCATION(RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION,       logic->IsChild && logic->CanGetNightTimeGS()),
         LOCATION(RC_KAK_GS_SKULLTULA_HOUSE,                logic->IsChild && logic->CanGetNightTimeGS()),
@@ -71,7 +71,7 @@ void RegionTable_Init_Kakariko() {
         Entrance(RR_KAK_REDEAD_GROTTO,        []{return logic->CanOpenBombGrotto();}),
         Entrance(RR_KAK_IMPAS_LEDGE,          []{return (logic->IsChild && logic->AtDay) || (logic->IsAdult && ctx->GetTrickOption(RT_VISIBLE_COLLISION));}),
         Entrance(RR_KAK_WATCHTOWER,           []{return logic->IsAdult || logic->AtDay || logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer());}),
-        Entrance(RR_KAK_ROOFTOP,              []{return logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_KAK_MAN_ON_ROOF) && logic->IsAdult);}),
+        Entrance(RR_KAK_ROOFTOP,              []{return logic->HasSoul(RG_MAN_ON_ROOF_SOUL) && (logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_KAK_MAN_ON_ROOF) && logic->IsAdult));}),
         Entrance(RR_KAK_IMPAS_ROOFTOP,        []{return logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_KAK_ROOFTOP_GS) && logic->CanUse(RG_HOVER_BOOTS));}),
         Entrance(RR_THE_GRAVEYARD,            []{return true;}),
         Entrance(RR_KAK_BEHIND_GATE,          []{return logic->IsAdult || logic->KakarikoVillageGateOpen;}),
@@ -128,7 +128,7 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_CARPENTER_BOSS_HOUSE] = Region("Kak Carpenter Boss House", SCENE_KAKARIKO_CENTER_GUEST_HOUSE, {
         //Events
-        EventAccess(&logic->WakeUpAdultTalon, []{return logic->IsAdult && logic->CanUse(RG_POCKET_EGG);}),
+        EventAccess(&logic->WakeUpAdultTalon, []{return logic->IsAdult && logic->CanUse(RG_POCKET_EGG) && logic->HasSoul(RG_TALON_SOUL);}),
     }, {}, {
         //Exits
         Entrance(RR_KAKARIKO_VILLAGE, []{return true;}),
@@ -170,7 +170,7 @@ void RegionTable_Init_Kakariko() {
     }, {
         //Locations
         LOCATION(RC_KAK_WINDMILL_FREESTANDING_POH, logic->CanUse(RG_BOOMERANG) || logic->DampesWindmillAccess || (logic->IsAdult && ctx->GetTrickOption(RT_KAK_ADULT_WINDMILL_POH)) || (logic->IsChild && logic->CanJumpslashExceptHammer() && ctx->GetTrickOption(RT_KAK_CHILD_WINDMILL_POH))),
-        LOCATION(RC_SONG_FROM_WINDMILL,            logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA)),
+        LOCATION(RC_SONG_FROM_WINDMILL,            logic->IsAdult && logic->HasSoul(RG_WINDMILL_MAN_SOUL) && logic->HasItem(RG_FAIRY_OCARINA)),
     }, {
         //Exits
         Entrance(RR_KAKARIKO_VILLAGE, []{return true;}),
@@ -178,14 +178,14 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_BAZAAR] = Region("Kak Bazaar", SCENE_BAZAAR, {}, {
         //Locations
-        LOCATION(RC_KAK_BAZAAR_ITEM_1, true),
-        LOCATION(RC_KAK_BAZAAR_ITEM_2, true),
-        LOCATION(RC_KAK_BAZAAR_ITEM_3, true),
-        LOCATION(RC_KAK_BAZAAR_ITEM_4, true),
-        LOCATION(RC_KAK_BAZAAR_ITEM_5, true),
-        LOCATION(RC_KAK_BAZAAR_ITEM_6, true),
-        LOCATION(RC_KAK_BAZAAR_ITEM_7, true),
-        LOCATION(RC_KAK_BAZAAR_ITEM_8, true),
+        LOCATION(RC_KAK_BAZAAR_ITEM_1, logic->HasSoul(RG_BAZAAR_SHOPKEEPER_SOUL)),
+        LOCATION(RC_KAK_BAZAAR_ITEM_2, logic->HasSoul(RG_BAZAAR_SHOPKEEPER_SOUL)),
+        LOCATION(RC_KAK_BAZAAR_ITEM_3, logic->HasSoul(RG_BAZAAR_SHOPKEEPER_SOUL)),
+        LOCATION(RC_KAK_BAZAAR_ITEM_4, logic->HasSoul(RG_BAZAAR_SHOPKEEPER_SOUL)),
+        LOCATION(RC_KAK_BAZAAR_ITEM_5, logic->HasSoul(RG_BAZAAR_SHOPKEEPER_SOUL)),
+        LOCATION(RC_KAK_BAZAAR_ITEM_6, logic->HasSoul(RG_BAZAAR_SHOPKEEPER_SOUL)),
+        LOCATION(RC_KAK_BAZAAR_ITEM_7, logic->HasSoul(RG_BAZAAR_SHOPKEEPER_SOUL)),
+        LOCATION(RC_KAK_BAZAAR_ITEM_8, logic->HasSoul(RG_BAZAAR_SHOPKEEPER_SOUL)),
     }, {
         //Exits
         Entrance(RR_KAKARIKO_VILLAGE, []{return true;}),
@@ -193,7 +193,7 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_SHOOTING_GALLERY] = Region("Kak Shooting Gallery", SCENE_SHOOTING_GALLERY, {}, {
         //Locations
-        LOCATION(RC_KAK_SHOOTING_GALLERY_REWARD, logic->HasItem(RG_CHILD_WALLET) && logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_KAK_SHOOTING_GALLERY_REWARD, logic->HasItem(RG_CHILD_WALLET) && logic->IsAdult && logic->HasSoul(RG_SHOOTING_SOUL) && logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
         Entrance(RR_KAKARIKO_VILLAGE, []{return true;}),
@@ -201,14 +201,14 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_POTION_SHOP_FRONT] = Region("Kak Potion Shop Front", SCENE_POTION_SHOP_KAKARIKO, {}, {
         //Locations
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_1, logic->IsAdult),
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_2, logic->IsAdult),
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_3, logic->IsAdult),
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_4, logic->IsAdult),
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_5, logic->IsAdult),
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_6, logic->IsAdult),
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_7, logic->IsAdult),
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_8, logic->IsAdult),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_1, logic->IsAdult && logic->HasSoul(RG_POTION_SHOPKEEPER_SOUL)),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_2, logic->IsAdult && logic->HasSoul(RG_POTION_SHOPKEEPER_SOUL)),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_3, logic->IsAdult && logic->HasSoul(RG_POTION_SHOPKEEPER_SOUL)),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_4, logic->IsAdult && logic->HasSoul(RG_POTION_SHOPKEEPER_SOUL)),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_5, logic->IsAdult && logic->HasSoul(RG_POTION_SHOPKEEPER_SOUL)),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_6, logic->IsAdult && logic->HasSoul(RG_POTION_SHOPKEEPER_SOUL)),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_7, logic->IsAdult && logic->HasSoul(RG_POTION_SHOPKEEPER_SOUL)),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_8, logic->IsAdult && logic->HasSoul(RG_POTION_SHOPKEEPER_SOUL)),
     }, {
         //Exits
         Entrance(RR_KAKARIKO_VILLAGE,     []{return true;}),
@@ -226,8 +226,8 @@ void RegionTable_Init_Kakariko() {
         // RANDOTODO blue pot access
     }, {
         //Locations
-        LOCATION(RC_KAK_TRADE_ODD_MUSHROOM, logic->IsAdult && logic->CanUse(RG_ODD_MUSHROOM)),
-        LOCATION(RC_KAK_GRANNYS_SHOP,       logic->IsAdult && (logic->CanUse(RG_ODD_MUSHROOM) || logic->TradeQuestStep(RG_ODD_MUSHROOM))),
+        LOCATION(RC_KAK_TRADE_ODD_MUSHROOM, logic->IsAdult && logic->HasSoul(RG_GRANNY_SOUL) && logic->CanUse(RG_ODD_MUSHROOM)),
+        LOCATION(RC_KAK_GRANNYS_SHOP,       logic->IsAdult && logic->HasSoul(RG_GRANNY_SOUL) && (logic->CanUse(RG_ODD_MUSHROOM) || logic->TradeQuestStep(RG_ODD_MUSHROOM))),
     }, {
         // Exits
         Entrance(RR_KAK_BACKYARD, []{return true;}),

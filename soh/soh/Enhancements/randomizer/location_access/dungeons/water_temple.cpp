@@ -773,7 +773,7 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_4, logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16 && logic->CanBreakCrates()),
         LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_5, logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16 && logic->CanBreakCrates()),
         LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_6, logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16 && logic->CanBreakCrates()),
-
+    
     }, 
     {
         //Exits
@@ -848,15 +848,16 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_BOSS_ROOM] = Region("Water Temple Boss Room", SCENE_WATER_TEMPLE_BOSS, {
         // Events
-        EventAccess(&logic->WaterTempleClear, []{return logic->CanKillEnemy(RE_MORPHA);}),
+        EventAccess(&logic->WaterTempleWin, []{return logic->CanKillEnemy(RE_MORPHA);}),
+        EventAccess(&logic->WaterTempleClear, []{return logic->WaterTempleWin && logic->HasSage(RG_RUTO_SOUL);}),
     }, {
         // Locations
-        LOCATION(RC_WATER_TEMPLE_MORPHA_HEART, logic->WaterTempleClear),
+        LOCATION(RC_WATER_TEMPLE_MORPHA_HEART, logic->WaterTempleWin),
         LOCATION(RC_MORPHA,                    logic->WaterTempleClear),
     }, {
         // Exits
         Entrance(RR_WATER_TEMPLE_BOSS_ENTRYWAY, []{return false;}),
-        Entrance(RR_LAKE_HYLIA,                 []{return logic->WaterTempleClear;}, false),
+        Entrance(RR_LAKE_HYLIA,                 []{return logic->WaterTempleWin;}, false),
     });
 
     // clang-format on

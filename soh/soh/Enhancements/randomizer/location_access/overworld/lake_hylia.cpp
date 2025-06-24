@@ -85,7 +85,7 @@ void RegionTable_Init_LakeHylia() {
         //Exits
         Entrance(RR_HYRULE_FIELD,          []{return true;}),
         Entrance(RR_LH_FROM_SHORTCUT,      []{return true;}),
-        Entrance(RR_LH_OWL_FLIGHT,         []{return logic->IsChild;}),
+        Entrance(RR_LH_OWL_FLIGHT,         []{return logic->IsChild && logic->HasSoul(RG_KAEPORA_SOUL);}),
         Entrance(RR_LH_FISHING_ISLAND,     []{return ((logic->IsChild || logic->WaterTempleClear) && logic->HasItem(RG_BRONZE_SCALE)) || (logic->IsAdult && (logic->CanUse(RG_SCARECROW) || CanPlantBean(RR_LAKE_HYLIA)));}),
         Entrance(RR_LH_LAB,                []{return logic->CanOpenOverworldDoor(RG_HYLIA_LAB_KEY);}),
         Entrance(RR_LH_FROM_WATER_TEMPLE,  []{return true;}),
@@ -117,8 +117,8 @@ void RegionTable_Init_LakeHylia() {
 
     areaTable[RR_LH_LAB] = Region("LH Lab", SCENE_LAKESIDE_LABORATORY, {}, {
         //Locations
-        LOCATION(RC_LH_LAB_DIVE,        logic->HasItem(RG_GOLDEN_SCALE) || (ctx->GetTrickOption(RT_LH_LAB_DIVING) && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_BRONZE_SCALE))),
-        LOCATION(RC_LH_TRADE_FROG,      logic->IsAdult && logic->CanUse(RG_EYEBALL_FROG)),
+        LOCATION(RC_LH_LAB_DIVE,        logic->HasSoul(RG_SCIENTIST_SOUL) && (logic->HasItem(RG_GOLDEN_SCALE) || (ctx->GetTrickOption(RT_LH_LAB_DIVING) && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_BRONZE_SCALE)))),
+        LOCATION(RC_LH_TRADE_FROG,      logic->IsAdult && logic->HasSoul(RG_SCIENTIST_SOUL) && logic->CanUse(RG_EYEBALL_FROG)),
         LOCATION(RC_LH_GS_LAB_CRATE,    logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->CanBreakCrates()),
         LOCATION(RC_LH_LAB_FRONT_RUPEE, logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
         LOCATION(RC_LH_LAB_LEFT_RUPEE,  logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),

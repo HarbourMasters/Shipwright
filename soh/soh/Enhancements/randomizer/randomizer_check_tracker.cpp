@@ -619,16 +619,46 @@ void CheckTrackerTransition(uint32_t sceneNum) {
     doAreaScroll = true;
     previousArea = currentArea;
     currentArea = GetCheckArea();
-    switch (sceneNum) {
-        case SCENE_KOKIRI_SHOP:
-        case SCENE_BAZAAR:
-        case SCENE_POTION_SHOP_MARKET:
-        case SCENE_BOMBCHU_SHOP:
-        case SCENE_POTION_SHOP_KAKARIKO:
-        case SCENE_GORON_SHOP:
-        case SCENE_ZORA_SHOP:
-            SetShopSeen(sceneNum, false);
-            break;
+    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_NPC_SOULS) == RO_NPC_SOULS_OFF) {
+        SetShopSeen(sceneNum, false);
+    } else {
+        switch (sceneNum) {
+            case SCENE_KOKIRI_SHOP:
+                if (Flags_GetRandomizerInf(RAND_INF_KOKIRI_SHOPKEEPER_SOUL)) {
+                    SetShopSeen(sceneNum, false);
+                }
+                break;
+            case SCENE_BAZAAR:
+                if (Flags_GetRandomizerInf(RAND_INF_BAZAAR_SHOPKEEPER_SOUL)) {
+                    SetShopSeen(sceneNum, false);
+                }
+                break;
+            case SCENE_POTION_SHOP_MARKET:
+                if (Flags_GetRandomizerInf(RAND_INF_POTION_SHOPKEEPER_SOUL)) {
+                    SetShopSeen(sceneNum, false);
+                }
+                break;
+            case SCENE_BOMBCHU_SHOP:
+                if (Flags_GetRandomizerInf(RAND_INF_BOMBCHU_SHOPKEEPER_SOUL)) {
+                    SetShopSeen(sceneNum, false);
+                }
+                break;
+            case SCENE_POTION_SHOP_KAKARIKO:
+                if (Flags_GetRandomizerInf(RAND_INF_POTION_SHOPKEEPER_SOUL)) {
+                    SetShopSeen(sceneNum, false);
+                }
+                break;
+            case SCENE_GORON_SHOP:
+                if (Flags_GetRandomizerInf(RAND_INF_GORON_SHOPKEEPER_SOUL)) {
+                    SetShopSeen(sceneNum, false);
+                }
+                break;
+            case SCENE_ZORA_SHOP:
+                if (Flags_GetRandomizerInf(RAND_INF_ZORA_SHOPKEEPER_SOUL)) {
+                    SetShopSeen(sceneNum, false);
+                }
+                break;
+        }
     }
     if (!IsAreaSpoiled(currentArea) && (RandomizerCheckObjects::AreaIsOverworld(currentArea) ||
                                         std::find(spoilingEntrances.begin(), spoilingEntrances.end(),
@@ -1526,9 +1556,6 @@ void LoadSettings() {
 
 bool IsCheckShuffled(RandomizerCheck rc) {
     Rando::Location* loc = Rando::StaticData::GetLocation(rc);
-    if (loc->GetRCType() == RCTYPE_SHOP) {
-        auto identity = OTRGlobals::Instance->gRandomizer->IdentifyShopItem(loc->GetScene(), loc->GetActorParams() + 1);
-    }
     if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) != RO_LOGIC_VANILLA) {
         return (loc->GetArea() != RCAREA_INVALID) &&        // don't show Invalid locations
                (loc->GetRCType() != RCTYPE_GOSSIP_STONE) && // TODO: Don't show hints until tracker supports them

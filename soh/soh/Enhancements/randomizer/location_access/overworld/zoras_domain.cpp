@@ -15,7 +15,7 @@ void RegionTable_Init_ZorasDomain() {
         EventAccess(&logic->DeliverLetter,    []{return logic->CanUse(RG_RUTOS_LETTER) && logic->IsChild && ctx->GetOption(RSK_ZORAS_FOUNTAIN).IsNot(RO_ZF_OPEN);}),
     }, {
         //Locations
-        LOCATION(RC_ZD_DIVING_MINIGAME,                     logic->HasItem(RG_BRONZE_SCALE) && logic->HasItem(RG_CHILD_WALLET) && logic->IsChild),
+        LOCATION(RC_ZD_DIVING_MINIGAME,                     logic->IsChild && logic->HasSoul(RG_DIVING_SOUL) && logic->HasItem(RG_BRONZE_SCALE) && logic->HasItem(RG_CHILD_WALLET)),
         LOCATION(RC_ZD_CHEST,                               logic->IsChild && logic->CanUse(RG_STICKS)),
         LOCATION(RC_ZD_KING_ZORA_THAWED,                    logic->IsAdult && logic->KingZoraThawed),
         LOCATION(RC_ZD_TRADE_PRESCRIPTION,                  logic->IsAdult && logic->KingZoraThawed && logic->CanUse(RG_PRESCRIPTION)),
@@ -64,14 +64,14 @@ void RegionTable_Init_ZorasDomain() {
 
     areaTable[RR_ZD_SHOP] = Region("ZD Shop", SCENE_ZORA_SHOP, {}, {
         //Locations
-        LOCATION(RC_ZD_SHOP_ITEM_1, true),
-        LOCATION(RC_ZD_SHOP_ITEM_2, true),
-        LOCATION(RC_ZD_SHOP_ITEM_3, true),
-        LOCATION(RC_ZD_SHOP_ITEM_4, true),
-        LOCATION(RC_ZD_SHOP_ITEM_5, true),
-        LOCATION(RC_ZD_SHOP_ITEM_6, true),
-        LOCATION(RC_ZD_SHOP_ITEM_7, true),
-        LOCATION(RC_ZD_SHOP_ITEM_8, true),
+        LOCATION(RC_ZD_SHOP_ITEM_1, logic->HasSoul(RG_ZORA_SHOPKEEPER_SOUL)),
+        LOCATION(RC_ZD_SHOP_ITEM_2, logic->HasSoul(RG_ZORA_SHOPKEEPER_SOUL)),
+        LOCATION(RC_ZD_SHOP_ITEM_3, logic->HasSoul(RG_ZORA_SHOPKEEPER_SOUL)),
+        LOCATION(RC_ZD_SHOP_ITEM_4, logic->HasSoul(RG_ZORA_SHOPKEEPER_SOUL)),
+        LOCATION(RC_ZD_SHOP_ITEM_5, logic->HasSoul(RG_ZORA_SHOPKEEPER_SOUL)),
+        LOCATION(RC_ZD_SHOP_ITEM_6, logic->HasSoul(RG_ZORA_SHOPKEEPER_SOUL)),
+        LOCATION(RC_ZD_SHOP_ITEM_7, logic->HasSoul(RG_ZORA_SHOPKEEPER_SOUL)),
+        LOCATION(RC_ZD_SHOP_ITEM_8, logic->HasSoul(RG_ZORA_SHOPKEEPER_SOUL)),
     }, {
         //Exits
         Entrance(RR_ZORAS_DOMAIN, []{return true;}),

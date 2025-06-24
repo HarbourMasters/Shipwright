@@ -573,19 +573,20 @@ void RegionTable_Init_DodongosCavern() {
     areaTable[RR_DODONGOS_CAVERN_BOSS_ROOM] = Region("Dodongos Cavern Boss Room", SCENE_DODONGOS_CAVERN_BOSS, {
         // Events
         // Blue Fire Arrows need similar accuracy as hammer trick, only put in logic when both hammer & blue fire tricks enabled
-        EventAccess(&logic->DodongosCavernClear, []{return Here(RR_DODONGOS_CAVERN_BOSS_ROOM, []{return logic->HasExplosives() ||
+        EventAccess(&logic->DodongosCavernWin, []{return Here(RR_DODONGOS_CAVERN_BOSS_ROOM, []{return logic->HasExplosives() ||
                                                                                                          (ctx->GetTrickOption(RT_DC_HAMMER_FLOOR) ? logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->BlueFire()) :
                                                                                                                                                     ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE));})
                                                                                                          && logic->CanKillEnemy(RE_KING_DODONGO);}),
+        EventAccess(&logic->DodongosCavernClear, []{return logic->DodongosCavernWin && logic->HasSage(RG_DARUNIA_SOUL);}),
     }, {
         // Locations
         LOCATION(RC_DODONGOS_CAVERN_BOSS_ROOM_CHEST,    true),
-        LOCATION(RC_DODONGOS_CAVERN_KING_DODONGO_HEART, logic->DodongosCavernClear),
+        LOCATION(RC_DODONGOS_CAVERN_KING_DODONGO_HEART, logic->DodongosCavernWin),
         LOCATION(RC_KING_DODONGO,                       logic->DodongosCavernClear),
     }, {
         // Exits
         Entrance(RR_DODONGOS_CAVERN_BOSS_EXIT, []{return true;}),
-        Entrance(RR_DEATH_MOUNTAIN_TRAIL,      []{return logic->DodongosCavernClear;}, false),
+        Entrance(RR_DEATH_MOUNTAIN_TRAIL,      []{return logic->DodongosCavernWin;}, false),
     });
 
     // clang-format on

@@ -23,6 +23,7 @@ extern "C" {
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
 #include "src/overlays/actors/ovl_En_Si/z_en_si.h"
+#include "src/overlays/actors/ovl_En_Ossan/z_en_ossan.h"
 #include "src/overlays/actors/ovl_En_Shopnuts/z_en_shopnuts.h"
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
 #include "src/overlays/actors/ovl_En_Gb/z_en_gb.h"
@@ -820,17 +821,20 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = false;
             break;
         case VB_SHIEK_PREPARE_TO_GIVE_SERENADE_OF_WATER: {
-            *should =
-                !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER) && !Flags_GetTreasure(gPlayState, 0x2);
+            *should = !(RAND_GET_OPTION(RSK_SHUFFLE_NPC_SOULS) && !Flags_GetRandomizerInf(RAND_INF_ZELDA_SOUL)) &&
+                      !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER) &&
+                      !Flags_GetTreasure(gPlayState, 0x2);
             break;
         }
         case VB_BE_ELIGIBLE_FOR_SERENADE_OF_WATER:
-            *should =
-                !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER) && Flags_GetTreasure(gPlayState, 0x2);
+            *should = !(RAND_GET_OPTION(RSK_SHUFFLE_NPC_SOULS) && !Flags_GetRandomizerInf(RAND_INF_ZELDA_SOUL)) &&
+                      !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER) &&
+                      Flags_GetTreasure(gPlayState, 0x2);
             break;
         case VB_BE_ELIGIBLE_FOR_PRELUDE_OF_LIGHT:
-            *should =
-                !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST);
+            *should = !(RAND_GET_OPTION(RSK_SHUFFLE_NPC_SOULS) && !Flags_GetRandomizerInf(RAND_INF_ZELDA_SOUL)) &&
+                      !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) &&
+                      CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST);
             break;
         case VB_MIDO_SPAWN:
             if (RAND_GET_OPTION(RSK_FOREST) != RO_CLOSED_FOREST_OFF &&
@@ -853,16 +857,25 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_BE_ELIGIBLE_FOR_DARUNIAS_JOY_REWARD:
             *should = !Flags_GetRandomizerInf(RAND_INF_DARUNIAS_JOY);
             break;
+        case VB_BE_ELIGIBLE_FOR_OCARINA_OF_TIME:
+            if (RAND_GET_OPTION(RSK_SHUFFLE_NPC_SOULS) &&
+                (!Flags_GetRandomizerInf(RAND_INF_ZELDA_SOUL) || !Flags_GetRandomizerInf(RAND_INF_IMPA_SOUL))) {
+                *should = false;
+            }
+            break;
         case VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS:
             *should = LINK_IS_ADULT && (gEntranceTable[gSaveContext.entranceIndex].scene == SCENE_TEMPLE_OF_TIME) &&
                       !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
+                      (RAND_GET_OPTION(RSK_SHUFFLE_NPC_SOULS) != RO_NPC_SOULS_ON_PLUS_SAGES ||
+                       Flags_GetRandomizerInf(RAND_INF_ZELDA_SOUL)) &&
                       MeetsLACSRequirements();
             break;
         case VB_BE_ELIGIBLE_FOR_NOCTURNE_OF_SHADOW:
             *should = !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL) && LINK_IS_ADULT &&
                       gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_KAKARIKO_VILLAGE &&
                       CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) &&
-                      CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER);
+                      CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) &&
+                      (!RAND_GET_OPTION(RSK_SHUFFLE_NPC_SOULS) || Flags_GetRandomizerInf(RAND_INF_ZELDA_SOUL));
             break;
         case VB_BE_ELIGIBLE_FOR_CHILD_ROLLING_GORON_REWARD: {
             // Don't require a bomb bag to get prize in rando
@@ -1461,6 +1474,32 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_PLAY_BLUE_WARP_CS: {
+            if (RAND_GET_OPTION(RSK_SHUFFLE_NPC_SOULS) == RO_NPC_SOULS_ON_PLUS_SAGES) {
+                bool hasSoul = true;
+                switch (gPlayState->sceneNum) {
+                    case SCENE_FOREST_TEMPLE_BOSS:
+                        hasSoul = Flags_GetRandomizerInf(RAND_INF_SARIA_SOUL);
+                        break;
+                    case SCENE_DODONGOS_CAVERN_BOSS:
+                    case SCENE_FIRE_TEMPLE_BOSS:
+                        hasSoul = Flags_GetRandomizerInf(RAND_INF_DARUNIA_SOUL);
+                        break;
+                    case SCENE_JABU_JABU_BOSS:
+                    case SCENE_WATER_TEMPLE_BOSS:
+                        hasSoul = Flags_GetRandomizerInf(RAND_INF_RUTO_SOUL);
+                        break;
+                    case SCENE_SPIRIT_TEMPLE_BOSS:
+                        hasSoul = Flags_GetRandomizerInf(RAND_INF_NABOORU_SOUL);
+                        break;
+                    case SCENE_SHADOW_TEMPLE_BOSS:
+                        hasSoul = Flags_GetRandomizerInf(RAND_INF_IMPA_SOUL);
+                        break;
+                }
+                if (!hasSoul) {
+                    *should = false;
+                    break;
+                }
+            }
             // We need to override just these two temples because they check medallions instead of flags
             if (gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE_BOSS) {
                 *should = !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
@@ -1800,7 +1839,9 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
 
     updateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
         if (!Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && LINK_IS_ADULT &&
-            CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && gPlayState->roomCtx.curRoom.num == 0) {
+            CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
+            (!RAND_GET_OPTION(RSK_SHUFFLE_NPC_SOULS) || Flags_GetRandomizerInf(RAND_INF_ZELDA_SOUL)) &&
+            gPlayState->roomCtx.curRoom.num == 0) {
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT);
         }
 
@@ -2060,6 +2101,195 @@ void RandomizerOnActorInitHandler(void* actorRef) {
             if (!Flags_GetRandomizerInf(RAND_INF_PHANTOM_GANON_SOUL) && actor->id == ACTOR_EN_FHG) {
                 Actor_Delete(&gPlayState->actorCtx, actor, gPlayState);
             }
+        }
+    }
+
+    if (RAND_GET_OPTION(RSK_SHUFFLE_NPC_SOULS)) {
+        auto inf = RAND_INF_MAX;
+        switch (actor->id) {
+            case ACTOR_EN_NIW_LADY:
+                inf = RAND_INF_ANJU_SOUL;
+                break;
+            case ACTOR_BG_SPOT15_RRBOX:
+                // milk crates, prevent reaching Zelda without Talon's Soul
+                if (gPlayState->sceneNum == SCENE_HYRULE_CASTLE) {
+                    inf = RAND_INF_TALON_SOUL;
+                }
+                break;
+            case ACTOR_EN_TA:
+                inf = RAND_INF_TALON_SOUL;
+                break;
+            case ACTOR_EN_HS:
+            case ACTOR_EN_HS2:
+                inf = RAND_INF_GROG_SOUL;
+                break;
+            case ACTOR_EN_DS:
+                inf = RAND_INF_GRANNY_SOUL;
+                break;
+            case ACTOR_EN_KO:
+                if ((actor->params & 0xFF) == ENKO_TYPE_CHILD_FADO) {
+                    inf = RAND_INF_FADO_SOUL;
+                }
+                break;
+            case ACTOR_EN_GO2:
+                switch (actor->params & 0x1F) {
+                    case GORON_CITY_LINK:
+                        inf = RAND_INF_LINK_SOUL;
+                        break;
+                    case GORON_DMT_BIGGORON:
+                        inf = RAND_INF_BIGGORON_SOUL;
+                        break;
+                    case GORON_CITY_ROLLING_BIG:
+                        inf = RAND_INF_HOT_RODDER_SOUL;
+                        break;
+                }
+                break;
+            case ACTOR_EN_GM:
+                inf = RAND_INF_MEDIGORON_SOUL;
+                break;
+            case ACTOR_EN_TORYO:
+                inf = RAND_INF_CARPENTER_BOSS_SOUL;
+                break;
+            case ACTOR_EN_DAIKU:
+            case ACTOR_EN_DAIKU_KAKARIKO:
+                inf = (RandomizerInf)(RAND_INF_ICHIRO_SOUL + (actor->params & 3));
+                break;
+            case ACTOR_EN_GE1:
+                switch (actor->params & 0xFF) {
+                    case GE1_TYPE_HORSEBACK_ARCHERY:
+                        inf = RAND_INF_ARCHER_SOUL;
+                        break;
+                    case GE1_TYPE_TRAINING_GROUND_GUARD:
+                        inf = RAND_INF_GTG_GATEKEEPER_SOUL;
+                        break;
+                    case GE1_TYPE_GATE_OPERATOR:
+                        inf = RAND_INF_HW_GATEKEEPER_SOUL;
+                        break;
+                }
+                break;
+            case ACTOR_EN_OKARINA_TAG:
+                if (gPlayState->sceneNum == SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC ||
+                    gPlayState->sceneNum == SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS) {
+                    inf = RAND_INF_GREAT_FAIRY_SOUL;
+                }
+                break;
+            case ACTOR_EN_GB:
+                inf = RAND_INF_POE_COLLECTOR_SOUL;
+                break;
+            case ACTOR_EN_TK:
+            case ACTOR_EN_PO_RELAY:
+                inf = RAND_INF_DAMPE_SOUL;
+                break;
+            case ACTOR_EN_FU:
+                inf = RAND_INF_WINDMILL_MAN_SOUL;
+                break;
+            case ACTOR_EN_ANI:
+                inf = RAND_INF_MAN_ON_ROOF_SOUL;
+                break;
+            case ACTOR_EN_HEISHI2:
+                if ((actor->params & 0xFF) == 5) {
+                    inf = RAND_INF_KAKARIKO_GATEKEEPER_SOUL;
+                }
+                break;
+            case ACTOR_EN_MA1:
+            case ACTOR_EN_MA2:
+            case ACTOR_EN_MA3:
+                inf = RAND_INF_MALON_SOUL;
+                break;
+            case ACTOR_EN_SA:
+                inf = RAND_INF_SARIA_SOUL;
+                break;
+            case ACTOR_EN_DU:
+                inf = RAND_INF_DARUNIA_SOUL;
+                break;
+            case ACTOR_EN_RU1:
+            case ACTOR_EN_RU2:
+                inf = RAND_INF_RUTO_SOUL;
+                break;
+            case ACTOR_EN_NB:
+                inf = RAND_INF_NABOORU_SOUL;
+                break;
+            case ACTOR_EN_XC:
+            case ACTOR_EN_ZL1:
+            case ACTOR_EN_ZL4:
+                inf = RAND_INF_ZELDA_SOUL;
+                break;
+            case ACTOR_EN_ZL2:
+            case ACTOR_EN_ZL3:
+            case ACTOR_BOSS_GANON:
+            case ACTOR_BOSS_GANON2:
+                if (RAND_GET_OPTION(RSK_SHUFFLE_NPC_SOULS) == RO_NPC_SOULS_ON_PLUS_SAGES) {
+                    inf = RAND_INF_ZELDA_SOUL;
+                }
+                break;
+            case ACTOR_EN_HY:
+                switch (actor->params & 0x7F) {
+                    case ENHY_TYPE_BOJ_5:
+                        inf = RAND_INF_BEGGAR_SOUL;
+                        break;
+                    case ENHY_TYPE_AOB:
+                        inf = RAND_INF_DOG_LADY_SOUL;
+                        break;
+                }
+                break;
+            case ACTOR_EN_JS:
+                inf = RAND_INF_ARMS_DEALER_SOUL;
+                break;
+            case ACTOR_EN_MS:
+                inf = RAND_INF_BEAN_SALESMAN_SOUL;
+                break;
+            case ACTOR_EN_SYATEKI_MAN:
+                inf = RAND_INF_SHOOTING_SOUL;
+                break;
+            case ACTOR_EN_OSSAN:
+                switch (actor->params) {
+                    case OSSAN_TYPE_KOKIRI:
+                        inf = RAND_INF_KOKIRI_SHOPKEEPER_SOUL;
+                        break;
+                    case OSSAN_TYPE_KAKARIKO_POTION:
+                    case OSSAN_TYPE_MARKET_POTION:
+                        inf = RAND_INF_POTION_SHOPKEEPER_SOUL;
+                        break;
+                    case OSSAN_TYPE_BAZAAR:
+                    case OSSAN_TYPE_ADULT:
+                        inf = RAND_INF_BAZAAR_SHOPKEEPER_SOUL;
+                        break;
+                    case OSSAN_TYPE_GORON:
+                        inf = RAND_INF_GORON_SHOPKEEPER_SOUL;
+                        break;
+                    case OSSAN_TYPE_ZORA:
+                        inf = RAND_INF_ZORA_SHOPKEEPER_SOUL;
+                        break;
+                    case OSSAN_TYPE_BOMBCHUS:
+                        inf = RAND_INF_BOMBCHU_SHOPKEEPER_SOUL;
+                        break;
+                    case OSSAN_TYPE_MASK:
+                        inf = RAND_INF_MASK_SALESMAN_SOUL;
+                        break;
+                }
+                break;
+            case ACTOR_EN_TAKARA_MAN:
+                inf = RAND_INF_TREASURE_MAN_SOUL;
+                break;
+            case ACTOR_EN_BOM_BOWL_MAN:
+            case ACTOR_EN_WALL_TUBO: // crashes when bombchu lady missing
+                inf = RAND_INF_BOMBCHU_LADY_SOUL;
+                break;
+            case ACTOR_EN_DIVING_GAME:
+                inf = RAND_INF_DIVING_SOUL;
+                break;
+            case ACTOR_EN_MK:
+                inf = RAND_INF_SCIENTIST_SOUL;
+                break;
+            case ACTOR_EN_OWL:
+                inf = RAND_INF_KAEPORA_SOUL;
+                break;
+        }
+        if (inf != RAND_INF_MAX && !Flags_GetRandomizerInf(inf)) {
+            if (inf == RAND_INF_KAEPORA_SOUL) {
+                Flags_SetSwitch(gPlayState, 0x23); // allow child link to pull Lake Hylia grave
+            }
+            Actor_Kill(actor);
         }
     }
 

@@ -463,9 +463,12 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
                     Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
                     Flags_SetEventChkInf(EVENTCHKINF_SHEIK_SPAWNED_AT_MASTER_SWORD_PEDESTAL);
-                    Flags_SetEventChkInf(EVENTCHKINF_TIME_TRAVELED_TO_ADULT);
-                    if (GameInteractor_Should(VB_GIVE_ITEM_LIGHT_MEDALLION, true)) {
-                        Item_Give(gPlayState, ITEM_MEDALLION_LIGHT);
+                    if (!IS_RANDO || !RAND_GET_OPTION(RSK_SHUFFLE_NPC_SOULS) ||
+                        Flags_GetRandomizerInf(RAND_INF_RAURU_SOUL)) {
+                        Flags_SetEventChkInf(EVENTCHKINF_TIME_TRAVELED_TO_ADULT);
+                        if (GameInteractor_Should(VB_GIVE_ITEM_LIGHT_MEDALLION, true)) {
+                            Item_Give(gPlayState, ITEM_MEDALLION_LIGHT);
+                        }
                     }
                 }
                 *should = false;

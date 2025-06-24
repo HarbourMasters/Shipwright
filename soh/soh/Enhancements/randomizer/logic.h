@@ -41,6 +41,13 @@ class Logic {
     bool WakeUpAdultTalon = false;
 
     // Dungeon Clears
+    bool DodongosCavernWin = false;
+    bool JabuJabusBellyWin = false;
+    bool ForestTempleWin = false;
+    bool FireTempleWin = false;
+    bool WaterTempleWin = false;
+    bool SpiritTempleWin = false;
+    bool ShadowTempleWin = false;
     bool DekuTreeClear = false;
     bool DodongosCavernClear = false;
     bool JabuJabusBellyClear = false;
@@ -185,7 +192,8 @@ class Logic {
     bool CanUse(RandomizerGet itemName);
     bool HasProjectile(HasProjectileAge age);
     bool HasItem(RandomizerGet itemName);
-    bool HasBossSoul(RandomizerGet itemName);
+    bool HasSoul(RandomizerGet itemName);
+    bool HasSage(RandomizerGet itemName);
     bool CanOpenOverworldDoor(RandomizerGet itemName);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);

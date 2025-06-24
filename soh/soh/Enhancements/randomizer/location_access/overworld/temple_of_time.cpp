@@ -33,7 +33,7 @@ void RegionTable_Init_TempleOfTime() {
         LOCATION(RC_TOT_LIGHT_ARROWS_CUTSCENE, logic->IsAdult && logic->CanTriggerLACS()),
         LOCATION(RC_ALTAR_HINT_CHILD,          logic->IsChild),
         LOCATION(RC_ALTAR_HINT_ADULT,          logic->IsAdult),
-        LOCATION(RC_TOT_SHEIK_HINT,            logic->IsAdult),
+        LOCATION(RC_TOT_SHEIK_HINT,            logic->IsAdult && logic->HasSoul(RG_ZELDA_SOUL)),
     }, {
         //Exits
         Entrance(RR_TOT_ENTRANCE,            []{return true;}),
@@ -46,8 +46,8 @@ void RegionTable_Init_TempleOfTime() {
     }, {
         //Locations
         LOCATION(RC_TOT_MASTER_SWORD, logic->IsAdult),
-        LOCATION(RC_GIFT_FROM_RAURU,  logic->IsAdult),
-        LOCATION(RC_SHEIK_AT_TEMPLE,  logic->HasItem(RG_FOREST_MEDALLION) && logic->IsAdult),
+        LOCATION(RC_GIFT_FROM_RAURU,  logic->IsAdult && logic->HasSoul(RG_RAURU_SOUL)),
+        LOCATION(RC_SHEIK_AT_TEMPLE,  logic->HasItem(RG_FOREST_MEDALLION) && logic->IsAdult && logic->HasSoul(RG_ZELDA_SOUL)),
     }, {
         //Exits
         Entrance(RR_TEMPLE_OF_TIME, []{return true;}),

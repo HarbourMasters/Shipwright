@@ -963,11 +963,16 @@ extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEn
     Matrix_ReplaceRotation(&play->billboardMtxF);
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
-    gDPSetGrayscaleColor(POLY_XLU_DISP++, flameColors[slot][0], flameColors[slot][1], flameColors[slot][2], 255);
+    if (slot >= 0 && slot < 9) {
+        gDPSetGrayscaleColor(POLY_XLU_DISP++, flameColors[slot][0], flameColors[slot][1], flameColors[slot][2], 255);
+    } else {
+        gDPSetGrayscaleColor(POLY_XLU_DISP++, 255, 255, 255, 255);
+    }
     gSPGrayscale(POLY_XLU_DISP++, true);
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBlueFireFlameDL);
     gSPGrayscale(POLY_XLU_DISP++, false);
     Matrix_Pop();
+
     CLOSE_DISPS(play->state.gfxCtx);
 
     // Draw the generic boss soul model

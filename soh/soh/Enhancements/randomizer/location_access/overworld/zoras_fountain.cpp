@@ -112,7 +112,7 @@ void RegionTable_Init_ZorasFountain() {
 
     areaTable[RR_ZF_GREAT_FAIRY_FOUNTAIN] = Region("ZF Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, {}, {
         //Locations
-        LOCATION(RC_ZF_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
+        LOCATION(RC_ZF_GREAT_FAIRY_REWARD, logic->HasSoul(RG_GREAT_FAIRY_SOUL) && logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
         Entrance(RR_ZORAS_FOUNTAIN, []{return true;}),

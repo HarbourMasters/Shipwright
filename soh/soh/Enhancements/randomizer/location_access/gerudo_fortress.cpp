@@ -13,17 +13,17 @@ void RegionTable_Init_GerudoFortress() {
     areaTable[RR_GERUDO_FORTRESS] = Region("Gerudo Fortress", SCENE_GERUDOS_FORTRESS, {
         //Events
         EventAccess(&logic->CarpenterRescue, []{return logic->CanFinishGerudoFortress();}),
-        EventAccess(&logic->GF_GateOpen,     []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
-        EventAccess(&logic->GtG_GateOpen,    []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET);}),
+        EventAccess(&logic->GF_GateOpen,     []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasSoul(RG_HW_GATEKEEPER_SOUL);}),
+        EventAccess(&logic->GtG_GateOpen,    []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET) && logic->HasSoul(RG_GTG_GATEKEEPER_SOUL);}),
     }, {
         //Locations
         LOCATION(RC_GF_CHEST,                         logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->CanUse(RG_SCARECROW)) || logic->CanUse(RG_LONGSHOT)),
-        LOCATION(RC_GF_HBA_1000_POINTS,               logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_EPONA) && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
-        LOCATION(RC_GF_HBA_1500_POINTS,               logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_EPONA) && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
-        LOCATION(RC_GF_NORTH_F1_CARPENTER,            logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
-        LOCATION(RC_GF_NORTH_F2_CARPENTER,            (logic->CanKillEnemy(RE_GERUDO_WARRIOR)) && (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))),
-        LOCATION(RC_GF_SOUTH_F1_CARPENTER,            logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
-        LOCATION(RC_GF_SOUTH_F2_CARPENTER,            logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
+        LOCATION(RC_GF_HBA_1000_POINTS,               logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_EPONA) && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay && logic->HasSoul(RG_ARCHER_SOUL)),
+        LOCATION(RC_GF_HBA_1500_POINTS,               logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_EPONA) && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay && logic->HasSoul(RG_ARCHER_SOUL)),
+        LOCATION(RC_GF_NORTH_F1_CARPENTER,            logic->HasSoul(RG_ICHIRO_SOUL) && logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
+        LOCATION(RC_GF_NORTH_F2_CARPENTER,            logic->HasSoul(RG_SABOORO_SOUL) && (logic->CanKillEnemy(RE_GERUDO_WARRIOR)) && (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))),
+        LOCATION(RC_GF_SOUTH_F1_CARPENTER,            logic->HasSoul(RG_JIRO_SOUL) && logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
+        LOCATION(RC_GF_SOUTH_F2_CARPENTER,            logic->HasSoul(RG_SHIRO_SOUL) && logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
         LOCATION(RC_GF_GERUDO_MEMBERSHIP_CARD,        logic->CanFinishGerudoFortress()),
         LOCATION(RC_GF_GS_ARCHERY_RANGE,              logic->IsAdult && logic->HookshotOrBoomerang() && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanGetNightTimeGS()),
         LOCATION(RC_GF_GS_TOP_FLOOR,                  logic->IsAdult && (logic->CanJumpslashExceptHammer() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG) || logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_DINS_FIRE)) && (logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN) || ctx->GetTrickOption(RT_GF_JUMP)) && logic->CanGetNightTimeGS()),

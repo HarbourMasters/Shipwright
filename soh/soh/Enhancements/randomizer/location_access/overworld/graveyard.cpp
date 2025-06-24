@@ -13,7 +13,7 @@ void RegionTable_Init_Graveyard() {
     }, {
         //Locations
         LOCATION(RC_GRAVEYARD_FREESTANDING_POH,        (((logic->IsAdult && CanPlantBean(RR_THE_GRAVEYARD)) || logic->CanUse(RG_LONGSHOT)) && logic->CanBreakCrates()) || (ctx->GetTrickOption(RT_GY_POH) && logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, logic->HasItem(RG_CHILD_WALLET) && logic->IsChild && logic->AtNight), //TODO: This needs to change
+        LOCATION(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, logic->HasSoul(RG_DAMPE_SOUL) && logic->HasItem(RG_CHILD_WALLET) && logic->IsChild && logic->AtNight), //TODO: This needs to change
         LOCATION(RC_GRAVEYARD_GS_WALL,                 logic->IsChild && logic->HookshotOrBoomerang() && logic->AtNight && logic->CanGetNightTimeGS()),
         LOCATION(RC_GRAVEYARD_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull() && logic->CanAttack()),
         LOCATION(RC_GRAVEYARD_BEAN_SPROUT_FAIRY_1,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
@@ -88,11 +88,11 @@ void RegionTable_Init_Graveyard() {
     areaTable[RR_GRAVEYARD_DAMPES_GRAVE] = Region("Graveyard Dampes Grave", SCENE_WINDMILL_AND_DAMPES_GRAVE, {
         //Events
         EventAccess(&logic->NutPot,               []{return true;}),
-        EventAccess(&logic->DampesWindmillAccess, []{return logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME);}),
+        EventAccess(&logic->DampesWindmillAccess, []{return logic->IsAdult && logic->HasSoul(RG_DAMPE_SOUL) && logic->CanUse(RG_SONG_OF_TIME);}),
     }, {
         //Locations
-        LOCATION(RC_GRAVEYARD_HOOKSHOT_CHEST,              true),
-        LOCATION(RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH, logic->IsAdult || ctx->GetTrickOption(RT_GY_CHILD_DAMPE_RACE_POH)),
+        LOCATION(RC_GRAVEYARD_HOOKSHOT_CHEST,              logic->HasSoul(RG_DAMPE_SOUL)),
+        LOCATION(RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH, logic->HasSoul(RG_DAMPE_SOUL) && (logic->IsAdult || ctx->GetTrickOption(RT_GY_CHILD_DAMPE_RACE_POH))),
         LOCATION(RC_GY_DAMPES_GRAVE_POT_1,                 logic->CanBreakPots()),
         LOCATION(RC_GY_DAMPES_GRAVE_POT_2,                 logic->CanBreakPots()),
         LOCATION(RC_GY_DAMPES_GRAVE_POT_3,                 logic->CanBreakPots()),
@@ -102,15 +102,15 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_1,          true),
         LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_2,          true),
         LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_3,          true),
-        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_4,          true),
-        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_5,          true),
-        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_6,          true),
-        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_7,          true),
-        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_8,          true),
+        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_4,          logic->HasSoul(RG_DAMPE_SOUL)),
+        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_5,          logic->HasSoul(RG_DAMPE_SOUL)),
+        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_6,          logic->HasSoul(RG_DAMPE_SOUL)),
+        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_7,          logic->HasSoul(RG_DAMPE_SOUL)),
+        LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_8,          logic->HasSoul(RG_DAMPE_SOUL)),
     }, {
         //Exits
         Entrance(RR_THE_GRAVEYARD, []{return true;}),
-        Entrance(RR_KAK_WINDMILL,  []{return logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME);}, false),
+        Entrance(RR_KAK_WINDMILL,  []{return logic->DampesWindmillAccess;}, false),
     });
 
     areaTable[RR_GRAVEYARD_DAMPES_HOUSE] = Region("Graveyard Dampes House", SCENE_GRAVEKEEPERS_HUT, {}, {

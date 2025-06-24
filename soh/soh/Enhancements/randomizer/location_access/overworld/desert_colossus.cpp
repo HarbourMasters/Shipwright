@@ -52,7 +52,7 @@ void RegionTable_Init_DesertColossus() {
 
     areaTable[RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE] = Region("Desert Colossus From Spirit Entryway", SCENE_DESERT_COLOSSUS, {}, {
         //Locations
-        LOCATION(RC_SHEIK_AT_COLOSSUS, true),
+        LOCATION(RC_SHEIK_AT_COLOSSUS, logic->HasSoul(RG_ZELDA_SOUL)),
     }, {
         //Exist
         Entrance(RR_DESERT_COLOSSUS, []{return true;}),
@@ -60,7 +60,7 @@ void RegionTable_Init_DesertColossus() {
 
     areaTable[RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN] = Region("Colossus Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, {}, {
         //Locations
-        LOCATION(RC_COLOSSUS_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
+        LOCATION(RC_COLOSSUS_GREAT_FAIRY_REWARD, logic->HasSoul(RG_GREAT_FAIRY_SOUL) && logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
         Entrance(RR_DESERT_COLOSSUS, []{return true;}),

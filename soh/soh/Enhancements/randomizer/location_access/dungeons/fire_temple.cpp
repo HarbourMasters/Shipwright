@@ -744,15 +744,16 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_BOSS_ROOM] = Region("Fire Temple Boss Room", SCENE_FIRE_TEMPLE_BOSS, {
         // Events
-        EventAccess(&logic->FireTempleClear, []{return logic->FireTimer() >= 64 && logic->CanKillEnemy(RE_VOLVAGIA);}),
+        EventAccess(&logic->FireTempleWin, []{return logic->FireTimer() >= 64 && logic->CanKillEnemy(RE_VOLVAGIA);}),
+        EventAccess(&logic->FireTempleClear, []{return logic->FireTempleWin && logic->HasSage(RG_DARUNIA_SOUL);}),
     }, {
         // Locations
-        LOCATION(RC_FIRE_TEMPLE_VOLVAGIA_HEART, logic->FireTempleClear),
+        LOCATION(RC_FIRE_TEMPLE_VOLVAGIA_HEART, logic->FireTempleWin),
         LOCATION(RC_VOLVAGIA,                   logic->FireTempleClear),
     }, {
         // Exits
         Entrance(RR_FIRE_TEMPLE_BOSS_ENTRYWAY, []{return false;}),
-        Entrance(RR_DMC_CENTRAL_LOCAL,         []{return logic->FireTempleClear;}, false),
+        Entrance(RR_DMC_CENTRAL_LOCAL,         []{return logic->FireTempleWin;}, false),
     });
 
     // clang-format on

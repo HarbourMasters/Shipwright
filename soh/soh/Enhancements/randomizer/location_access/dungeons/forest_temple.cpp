@@ -606,15 +606,16 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_BOSS_ROOM] = Region("Forest Temple Boss Room", SCENE_FOREST_TEMPLE_BOSS, {
         // Events
-        EventAccess(&logic->ForestTempleClear, []{return logic->CanKillEnemy(RE_PHANTOM_GANON);}),
+        EventAccess(&logic->ForestTempleWin, []{return logic->CanKillEnemy(RE_PHANTOM_GANON);}),
+        EventAccess(&logic->ForestTempleClear, []{return logic->ForestTempleWin && logic->HasSage(RG_SARIA_SOUL);}),
     }, {
         // Locations
-        LOCATION(RC_FOREST_TEMPLE_PHANTOM_GANON_HEART, logic->ForestTempleClear),
+        LOCATION(RC_FOREST_TEMPLE_PHANTOM_GANON_HEART, logic->ForestTempleWin),
         LOCATION(RC_PHANTOM_GANON,                     logic->ForestTempleClear),
     }, {
         // Exits
         Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY, []{return false;}),
-        Entrance(RR_SACRED_FOREST_MEADOW,        []{return logic->ForestTempleClear;}, false),
+        Entrance(RR_SACRED_FOREST_MEADOW,        []{return logic->ForestTempleWin;}, false),
     });
 
     // clang-format on
