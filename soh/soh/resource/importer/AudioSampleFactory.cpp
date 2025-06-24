@@ -6,6 +6,7 @@
 #include "z64audio.h"
 #include "Context.h"
 #include "resource/archive/Archive.h"
+#include "resource/ResourceManager.h"
 #define DR_WAV_IMPLEMENTATION
 #include <dr_wav.h>
 
@@ -18,6 +19,7 @@
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>
 #include "vorbis/vorbisfile.h"
+#include <tinyxml2.h>
 
 struct OggFileData {
     void* data;

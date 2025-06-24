@@ -1,9 +1,11 @@
 #include "soh/resource/importer/AudioSoundFontFactory.h"
 #include "soh/resource/type/AudioSoundFont.h"
-#include "z64.h"
+#include <tinyxml2.h>
+#include <z64.h>
 #include "z64audio.h"
 #include "Context.h"
 #include "resource/archive/Archive.h"
+#include "resource/ResourceManager.h"
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>
