@@ -187,6 +187,9 @@ class Logic {
     bool Spirit4FSwitch = false;
     bool SpiritPushed4FMirrors = false;
     bool ReverseSpiritChild = false;
+    bool ReverseSpiritAdult = false;
+    bool ForwardsSpiritChild = false;
+    bool ForwardsSpiritAdult = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
@@ -300,7 +303,7 @@ class Logic {
     static std::map<RandomizerGet, uint32_t> RandoGetToEquipFlag;
     static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
     bool IsReverseAccessPossible();
-    bool SpiritBrokenWallToStatue();
+    bool SpiritSunOnFloorToStatue();
     bool SpiritEastToSwitch();
     bool SpiritWestToSkull();
     bool SpiritSunBlockSouthLedge();

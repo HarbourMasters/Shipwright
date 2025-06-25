@@ -16,7 +16,12 @@ void RegionTable_Init_SpiritTemple() {
 
 #pragma region Vanilla
 
-    areaTable[RR_SPIRIT_TEMPLE_LOBBY] = Region("Spirit Temple Lobby", SCENE_SPIRIT_TEMPLE, {}, {
+    areaTable[RR_SPIRIT_TEMPLE_LOBBY] = Region("Spirit Temple Lobby", SCENE_SPIRIT_TEMPLE, {
+        // Events
+        //WARNING these events assume you need less or equal keys for forwards entry and reverse
+        EventAccess(&logic->ForwardsSpiritChild, []{return logic->IsChild;}),
+        EventAccess(&logic->ForwardsSpiritAdult, []{return logic->IsAdult;}),
+    }, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_LOBBY_POT_1, logic->CanBreakPots()),
         LOCATION(RC_SPIRIT_TEMPLE_LOBBY_POT_2, logic->CanBreakPots()),
@@ -105,7 +110,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_1F_WEST,     []{return logic->IsChild/*CanUse(RG_CRAWL)*/;}),
-        Entrance(RR_SPIRIT_TEMPLE_BROKEN_WALL, []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 1);}),
+        Entrance(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR, []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 1);}),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_WEST_CLIMB_BASE] = Region("Spirit Temple Child Climb Base", SCENE_SPIRIT_TEMPLE, {}, {
@@ -115,19 +120,19 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_1F_BOXES,    []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 5);}),
-        Entrance(RR_SPIRIT_TEMPLE_BROKEN_WALL, []{return true/*CanClimbHigh()*/;}),
+        Entrance(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR, []{return true/*CanClimbHigh()*/;}),
     });
 
-    areaTable[RR_SPIRIT_TEMPLE_BROKEN_WALL] = Region("Spirit Temple Broken Wall", SCENE_SPIRIT_TEMPLE, {}, {
+    areaTable[RR_SPIRIT_TEMPLE_SUN_ON_FLOOR] = Region("Spirit Temple Broken Wall", SCENE_SPIRIT_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_SPIRIT_TEMPLE_CHILD_CLIMB_NORTH_CHEST, SpiritShared(RR_SPIRIT_TEMPLE_BROKEN_WALL, []{return logic->CanHitSwitch(ED_BOMB_THROW);})),
-        LOCATION(RC_SPIRIT_TEMPLE_CHILD_CLIMB_EAST_CHEST,  SpiritShared(RR_SPIRIT_TEMPLE_BROKEN_WALL, []{return logic->CanHitSwitch(ED_BOMB_THROW);})),
-        LOCATION(RC_SPIRIT_TEMPLE_GS_SUN_ON_FLOOR_ROOM,    SpiritShared(RR_SPIRIT_TEMPLE_BROKEN_WALL, []{return logic->CanKillEnemy(RE_GOLD_SKULLTULA, logic->TakeDamage() ? ED_SHORT_JUMPSLASH : ED_BOMB_THROW);})),
+        LOCATION(RC_SPIRIT_TEMPLE_CHILD_CLIMB_NORTH_CHEST, SpiritShared(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR, []{return logic->CanHitSwitch(ED_BOMB_THROW);})),
+        LOCATION(RC_SPIRIT_TEMPLE_CHILD_CLIMB_EAST_CHEST,  SpiritShared(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR, []{return logic->CanHitSwitch(ED_BOMB_THROW);})),
+        LOCATION(RC_SPIRIT_TEMPLE_GS_SUN_ON_FLOOR_ROOM,    SpiritShared(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR, []{return logic->CanKillEnemy(RE_GOLD_SKULLTULA, logic->TakeDamage() ? ED_SHORT_JUMPSLASH : ED_BOMB_THROW);})),
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_WEST_CLIMB_BASE, []{return true;}),
         ///*CanClimbHigh() &&*/ (HasExplosives() || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && CanUse(RG_LIGHT_ARROWS)))
-        Entrance(RR_SPIRIT_TEMPLE_STATUE_ROOM,     []{return logic->SpiritBrokenWallToStatue();}),
+        Entrance(RR_SPIRIT_TEMPLE_STATUE_ROOM,     []{return logic->SpiritSunOnFloorToStatue();}),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_1F_EAST] = Region("Spirit Temple 1F East", SCENE_SPIRIT_TEMPLE, {}, {}, {
@@ -202,7 +207,7 @@ void RegionTable_Init_SpiritTemple() {
                                                           RR_SPIRIT_TEMPLE_GS_LEDGE,         []{return logic->CanKillEnemy(RE_GOLD_SKULLTULA);})),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_BROKEN_WALL,     []{return true;}),
+        Entrance(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR,    []{return true;}),
         Entrance(RR_SPIRIT_TEMPLE_INNER_WEST_HAND, []{return true;}),
         Entrance(RR_SPIRIT_TEMPLE_GS_LEDGE,        []{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SCARECROW);}),
         // RT_SPIRIT_PLATFORM_HOOKSHOT is currently disabled
@@ -214,7 +219,7 @@ void RegionTable_Init_SpiritTemple() {
         //Child cannot lock themselves out of desert colossus access as if they save the west hand lock for last
         //they will be able to exit the dungeon through the intended entrance and vice versa
         //for needing to open the west hand lock to block the intended child route
-        Entrance(RR_DESERT_COLOSSUS,               []{return ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) && logic->ReverseSpiritChild && /*str0 &&*/
+        Entrance(RR_DESERT_COLOSSUS,               []{return ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) && /*str0 &&*/
                                                              logic->IsChild/*CanUse(RG_CRAWL)*/ && logic->SmallKeys(RR_SPIRIT_TEMPLE, 4) && logic->CanKillEnemy(RE_IRON_KNUCKLE);}),
     });
 
@@ -258,7 +263,17 @@ void RegionTable_Init_SpiritTemple() {
         //explicit adult check here is a precaution against possible child logic leaking, child with a hookshot can do this
         Entrance(RR_SPIRIT_TEMPLE_STATUE_ROOM_EAST, []{return logic->IsAdult && logic->CanUse(RG_HOOKSHOT);}),
         Entrance(RR_SPIRIT_TEMPLE_SHORTCUT,         []{return logic->SpiritStatueRoomSouthDoor;}),
-    });
+        //!QUANTUM LOGIC!
+        //If dungeon entrance randomiser is off, Adult entered spirit in reverse, and they have str 2 to get there from the front and Explosives,
+        //it is always possible for them to reach 1F_EAST with only 2 keys. This is because you can only waste 1 key (on the first child side lock)
+        //before you either allow you to climb down through 2F mirror room, or give yourself access to a hand to jump down from.
+        //If for whatever reason you can reach east hand but not west hand, this becomes possible with 3 keys instead.
+        //If you do not have explosives to kill Beamos, but do have a way to defeat Iron Knuckles, this becomes possible with 4 keys instead.
+        Entrance(RR_SPIRIT_TEMPLE_1F_EAST,         []{return ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) &&
+                                                             logic->CanUse(RG_SILVER_GAUNTLETS) && logic->IsAdult &&
+                                                             ((logic->CanKillEnemy(RE_BEAMOS) && logic->SmallKeys(RR_SPIRIT_TEMPLE, /*CanClimb() && str0 ?*/ 2 /*: 3*/)) ||
+                                                              (/*CanClimb() && str0 && */logic->CanKillEnemy(RE_IRON_KNUCKLE) && logic->SmallKeys(RR_SPIRIT_TEMPLE, 4)));}),
+     });
 
     areaTable[RR_SPIRIT_TEMPLE_EMPTY_STAIRS] = Region("Spirit Temple Empty Stairs", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
@@ -315,7 +330,7 @@ void RegionTable_Init_SpiritTemple() {
         Entrance(RR_SPIRIT_TEMPLE_OUTER_WEST_HAND, []{return true;}),
     });
 
-    areaTable[RR_SPIRIT_TEMPLE_OUTER_WEST_HAND] = Region("Spirit Temple West Hand", SCENE_SPIRIT_TEMPLE, {}, {
+    areaTable[RR_SPIRIT_TEMPLE_OUTER_WEST_HAND] = Region("Spirit Temple Outer West Hand", SCENE_SPIRIT_TEMPLE, {}, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST, SpiritShared(RR_SPIRIT_TEMPLE_OUTER_WEST_HAND, []{return true;})),
     }, {
@@ -332,27 +347,6 @@ void RegionTable_Init_SpiritTemple() {
         //(IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || CanUse(RG_HOVER_BOOTS) || (CanUse(RG_ZELDAS_LULLABY) && CanUse(RG_HOOKSHOT));
         Entrance(RR_SPIRIT_TEMPLE_SHORTCUT_SWITCH, []{return logic->SpiritEastToSwitch();}),
         Entrance(RR_SPIRIT_TEMPLE_POT_STAIRS,      []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 4);}),
-        //!QUANTUM LOGIC!
-        //With 3 keys, you cannot lock adult out of leaving spirit onto the hands and jumping down, as you would have to 
-        //open the west hand door and then adult could climb through sun block room to jump down from there
-        //This requires that adult can complete both routes
-        //Implies CanKillEnemy(RE_IRON_KNUCKLE)
-        Entrance(RR_DESERT_COLOSSUS,               []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) && logic->CanKillEnemy(RE_BEAMOS)/* && CanClimb() && str0*/;}),
-        //!QUANTUM LOGIC!
-        //Continuing from above, if we have the longshot, we can guarantee access to the outer west hand as you can longshot from the east hand to the west
-        //Implies CanKillEnemy(RE_IRON_KNUCKLE)
-        Entrance(RR_SPIRIT_TEMPLE_OUTER_WEST_HAND, []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 3) && logic->CanKillEnemy(RE_BEAMOS) && /*CanClimb() && str0 &&*/
-                                                             logic->CanUse(RG_LONGSHOT);}),
-        //!QUANTUM LOGIC!
-        //A variant of the above, if dungeon entrance randomiser is off, Adult entered spirit in reverse, and they have str 2 to get there from the front,
-        //it is always possible for them to reach 1F_EAST with only 2 keys. This is because you can only waste 1 key (on the first child side lock)
-        //before you either allow you to climb down through 2F mirror room, or give yourself access to a hand to jump down from.
-        //If for whatever reason you can reach east hand but not west hand, this becomes possible with 3 keys instead.
-        //If for whatever reason you can reach west hand but not east hand, this becomes possible with 4 keys instead.
-        Entrance(RR_SPIRIT_TEMPLE_1F_EAST,         []{return ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) &&
-                                                             logic->CanUse(RG_SILVER_GAUNTLETS) && 
-                                                             ((logic->CanKillEnemy(RE_BEAMOS) && logic->SmallKeys(RR_SPIRIT_TEMPLE, /*CanClimb() && str0 ?*/ 2 /*: 3*/)) ||
-                                                              (/*CanClimb() && str0 && */logic->CanKillEnemy(RE_IRON_KNUCKLE) && logic->SmallKeys(RR_SPIRIT_TEMPLE, 4)));}),
         //RT_SPIRIT_PLATFORM_HOOKSHOT is currently disabled
         Entrance(RR_SPIRIT_TEMPLE_PLATFORM,        []{return logic->SpiritPlatformLowered && 
                                                              (logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_SPIRIT_PLATFORM_HOOKSHOT) && logic->CanUse(RG_HOOKSHOT)));}),
@@ -534,6 +528,7 @@ void RegionTable_Init_SpiritTemple() {
         //Events
         //WARNING these events are not glitchproofed and assume you need all keys to reach from the front
         EventAccess(&logic->ReverseSpiritChild, []{return logic->IsChild;}),
+        EventAccess(&logic->ReverseSpiritAdult, []{return logic->IsAdult;}),
     }, {}, {
         // Exits
         Entrance(RR_SPIRIT_TEMPLE_STATUE_ROOM,      []{return true;}),
@@ -549,7 +544,12 @@ void RegionTable_Init_SpiritTemple() {
 
 #pragma region MQ
 
-    areaTable[RR_SPIRIT_TEMPLE_MQ_LOBBY] = Region("Spirit Temple MQ Lobby", SCENE_SPIRIT_TEMPLE, {}, {
+    areaTable[RR_SPIRIT_TEMPLE_MQ_LOBBY] = Region("Spirit Temple MQ Lobby", SCENE_SPIRIT_TEMPLE, {
+        // Events
+        //WARNING these events assume you need less or equal keys for forwards entry and reverse
+        EventAccess(&logic->ForwardsSpiritChild, []{return logic->IsChild;}),
+        EventAccess(&logic->ForwardsSpiritAdult, []{return logic->IsAdult;}),
+    }, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_LEFT_CHEST,  true),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST,   Here(RR_SPIRIT_TEMPLE_MQ_LOBBY, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()),
@@ -671,15 +671,15 @@ void RegionTable_Init_SpiritTemple() {
         //Exits
         //This covers adult and reverse access only, as child going forwards arrives here from the other side of this door
         Entrance(RR_SPIRIT_TEMPLE_MQ_WEST_1F_RUSTED_SWITCH, []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 7);}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_BROKEN_WALL_ROOM,      []{return logic->CanHitSwitch()/* && CanClimbHigh()*/;}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR,      []{return logic->CanHitSwitch()/* && CanClimbHigh()*/;}),
     });
 
-    areaTable[RR_SPIRIT_TEMPLE_MQ_BROKEN_WALL_ROOM] = Region("Spirit Temple MQ Broken Wall Room", SCENE_SPIRIT_TEMPLE, {}, {
+    areaTable[RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR] = Region("Spirit Temple MQ Broken Wall Room", SCENE_SPIRIT_TEMPLE, {}, {
         //Locations
         //Implies CanKillEnemy(RE_LIKE_LIKE)
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST, SpiritShared(RR_SPIRIT_TEMPLE_MQ_BROKEN_WALL_ROOM, []{return logic->CanKillEnemy(RE_BEAMOS);})),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST, SpiritShared(RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR, []{return logic->CanKillEnemy(RE_BEAMOS);})),
         //Sunlights only temp spawn this chest, which is unintuitive/a bug.
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_SOUTH_CHEST, SpiritShared(RR_SPIRIT_TEMPLE_MQ_BROKEN_WALL_ROOM, []{return (logic->HasExplosives() || logic->SunlightArrows()) && logic->CanUse(RG_HOOKSHOT);})),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_SOUTH_CHEST, SpiritShared(RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR, []{return (logic->HasExplosives() || logic->SunlightArrows()) && logic->CanUse(RG_HOOKSHOT);})),
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE, []{return logic->CanHitSwitch();}),
@@ -693,19 +693,20 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         //!QUANTUM LOGIC!
-        //If we entered in reverse and dungeon entrances are off, we only need 6 keys, access to Gauntlets Hand and the ability to crawl to reach colossus
+        //If we entered in reverse and dungeon entrances are off, we only need 6 keys, access to Gauntlets Hand, and the ability to
+        // crawl through the boulder filled tunnel to reach colossus.
         //This is because with 6 keys it becomes impossible to avoid opening either the west hand lock or the first child side lock
         //and either direction lets child reach colossus. CanHitSwitch and CanKillEnemy(RE_IRON_KNUCKLE) is implied.
         //Logic can then allow child back into spirit, putting 1F west in logic with only 6 keys without forwards entry
         Entrance(RR_DESERT_COLOSSUS,                      []{return logic->IsChild/*CanUse(RG_CRAWL)*/ && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) &&
-                                                                    logic->ReverseSpiritChild && logic->SmallKeys(RR_SPIRIT_TEMPLE, 6) && logic->MQSpiritStatueToSunBlock() &&
+                                                                    logic->SmallKeys(RR_SPIRIT_TEMPLE, 6) && logic->MQSpiritStatueToSunBlock() &&
                                                                     (logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_RUSTED_SWITCHES) && Here(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_WEST, []{return logic->CanUse(RG_MEGATON_HAMMER);})));}),
         //!QUANTUM LOGIC!
-        //If we have 6 keys and Child reverse spirit entry, we can gurantee broken wall room access for Child
+        //If we have 6 keys and Child reverse spirit entry, we can guarantee broken wall room access for Child
         //as long as we can hit a switch and climb because Adult cannot reach the initial child lock without 
         //first opening the Statue Room to Broken Wall Room lock. The details of this are handled in SpiritShared.
         //if adult can ever cross crawlspaces this becomes more complicated.
-        Entrance(RR_SPIRIT_TEMPLE_MQ_BROKEN_WALL_ROOM,    []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 6);}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR,        []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 6);}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_POT_LEDGE,           []{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME);}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_INNER_WEST_HAND,     []{return logic->IsAdult || logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)/* || CanBunnyJump()*/;}),
         //(IsAdult || ctx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) || CanUse(RG_SONG_OF_TIME) || CanBunnyJump()) && str0
@@ -720,10 +721,10 @@ void RegionTable_Init_SpiritTemple() {
         EventAccess(&logic->SpiritStatueRoomSouthDoor, []{return ctx->GetTrickOption(RT_SPIRIT_MQ_FROZEN_EYE) && logic->CanUse(RG_FAIRY_BOW) && logic->CanUse(RG_SONG_OF_TIME);}),
     }, {
         //Locations
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_STATUE_3F_EAST_POT, SpiritShared(RR_SPIRIT_TEMPLE_MQ_POT_LEDGE       , []{return logic->CanBreakPots();}, false,
-                                                                      RR_SPIRIT_TEMPLE_MQ_INNER_WEST_HAND , []{return logic->CanUse(RG_BOOMERANG);})),
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_STATUE_3F_WEST_POT, SpiritShared(RR_SPIRIT_TEMPLE_MQ_POT_LEDGE       , []{return logic->CanBreakPots();}, false,
-                                                                      RR_SPIRIT_TEMPLE_MQ_INNER_WEST_HAND , []{return ctx->GetTrickOption(RT_SPIRIT_WEST_LEDGE) && logic->CanUse(RG_BOOMERANG);})),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_STATUE_3F_EAST_POT, SpiritShared(RR_SPIRIT_TEMPLE_MQ_POT_LEDGE,       []{return logic->CanBreakPots();}, false,
+                                                                      RR_SPIRIT_TEMPLE_MQ_INNER_WEST_HAND, []{return logic->CanUse(RG_BOOMERANG);})),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_STATUE_3F_WEST_POT, SpiritShared(RR_SPIRIT_TEMPLE_MQ_POT_LEDGE,       []{return logic->CanBreakPots();}, false,
+                                                                      RR_SPIRIT_TEMPLE_MQ_INNER_WEST_HAND, []{return ctx->GetTrickOption(RT_SPIRIT_WEST_LEDGE) && logic->CanUse(RG_BOOMERANG);})),
     }, {
         //Exits
         //This is pretty tight to reach the SoT block, but you can just go via the hand...
@@ -1125,6 +1126,7 @@ void RegionTable_Init_SpiritTemple() {
         //Events
         //WARNING these events are not glitchproofed and assume you need all keys to reach from the front
         EventAccess(&logic->ReverseSpiritChild, []{return logic->IsChild;}),
+        EventAccess(&logic->ReverseSpiritAdult, []{return logic->IsAdult;}),
     }, {}, {
         // Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,     []{return true;}),

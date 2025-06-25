@@ -2365,12 +2365,12 @@ void Logic::SetInLogic(LogicVal logicVal, bool value) {
 
 bool Logic::IsReverseAccessPossible() {
     //If we ever allow dungeon entrances to connect to boss rooms directly in dungeon chains, or for 1 boss door to lead to another dungeons boss door, add RSK_MIX_DUNGEON_ENTRANCES to the final condition
-    return ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES) &&
+    return !ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) &&
            (ctx->GetOption(RSK_DECOUPLED_ENTRANCES) || 
             (ctx->GetOption(RSK_MIX_BOSS_ENTRANCES) && (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES))));
 }
 
-bool Logic::SpiritBrokenWallToStatue() {
+bool Logic::SpiritSunOnFloorToStatue() {
     return /*CanClimbHigh() &&*/ (HasExplosives() || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && CanUse(RG_LIGHT_ARROWS)));
 }
 
@@ -2630,6 +2630,7 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
     Spirit4FSwitch = false;
     SpiritPushed4FMirrors = false;
     ReverseSpiritChild = false;
+    ReverseSpiritAdult = false;
 
     CalculatingAvailableChecks = false;
 
