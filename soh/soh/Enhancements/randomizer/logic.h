@@ -189,6 +189,7 @@ class Logic {
     bool CanOpenOverworldDoor(RandomizerGet itemName);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
+    bool CanOpenUnderwaterChest();
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
     bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true,

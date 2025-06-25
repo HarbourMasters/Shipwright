@@ -4137,7 +4137,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 { Rando::Tricks::Tag::NOVICE, true },   { Rando::Tricks::Tag::INTERMEDIATE, true },
                 { Rando::Tricks::Tag::ADVANCED, true }, { Rando::Tricks::Tag::EXPERT, true },
                 { Rando::Tricks::Tag::EXTREME, true },  { Rando::Tricks::Tag::EXPERIMENTAL, true },
-                //{ Rando::Tricks::Tag::GLITCH, false },
+                { Rando::Tricks::Tag::GLITCH, false },
             };
             static ImGuiTextFilter trickSearch;
             UIWidgets::PushStyleInput(THEME_COLOR);

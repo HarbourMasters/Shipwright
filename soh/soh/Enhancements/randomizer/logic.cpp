@@ -441,6 +441,10 @@ bool Logic::CanOpenOverworldDoor(RandomizerGet key) {
     return HasItem(key);
 }
 
+bool Logic::CanOpenUnderwaterChest() {
+    return ctx->GetTrickOption(RT_OPEN_UNDERWATER_CHEST) && CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT);
+}
+
 uint8_t GetDifficultyValueFromString(Rando::Option& glitchOption) {
     return 0;
 }
@@ -732,7 +736,8 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
                    (CanUse(RG_NUTS) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || HookshotOrBoomerang());
         case RE_KING_DODONGO:
             return HasBossSoul(RG_KING_DODONGO_SOUL) && CanJumpslash() &&
-                   (CanUse(RG_BOMB_BAG) || HasItem(RG_GORONS_BRACELET));
+                   (CanUse(RG_BOMB_BAG) || HasItem(RG_GORONS_BRACELET) ||
+                    (ctx->GetTrickOption(RT_DC_DODONGO_CHU) && IsAdult && CanUse(RG_BOMBCHU_5)));
         case RE_BARINADE:
             return HasBossSoul(RG_BARINADE_SOUL) && CanUse(RG_BOOMERANG) && CanJumpslashExceptHammer();
         case RE_PHANTOM_GANON:
@@ -741,7 +746,10 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
         case RE_VOLVAGIA:
             return HasBossSoul(RG_VOLVAGIA_SOUL) && CanUse(RG_MEGATON_HAMMER);
         case RE_MORPHA:
-            return HasBossSoul(RG_MORPHA_SOUL) && CanUse(RG_HOOKSHOT) && (CanUseSword() || CanUse(RG_MEGATON_HAMMER));
+            return HasBossSoul(RG_MORPHA_SOUL) &&
+                   (CanUse(RG_HOOKSHOT) ||
+                    (ctx->GetTrickOption(RT_WATER_MORPHA_WITHOUT_HOOKSHOT) && HasItem(RG_BRONZE_SCALE))) &&
+                   (CanUseSword() || CanUse(RG_MEGATON_HAMMER));
         case RE_BONGO_BONGO:
             return HasBossSoul(RG_BONGO_BONGO_SOUL) &&
                    (CanUse(RG_LENS_OF_TRUTH) || ctx->GetTrickOption(RT_LENS_BONGO)) && CanUseSword() &&

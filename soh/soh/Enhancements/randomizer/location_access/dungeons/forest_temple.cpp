@@ -147,7 +147,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_SEWER] = Region("Forest Temple Sewer", SCENE_FOREST_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_WELL_CHEST,      HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER)),
+        LOCATION(RC_FOREST_TEMPLE_WELL_CHEST,      HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER) || (logic->CanOpenUnderwaterChest() && logic->WaterTimer() >= 8)),
         LOCATION(RC_FOREST_TEMPLE_WELL_WEST_HEART, HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER) || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8)),
         LOCATION(RC_FOREST_TEMPLE_WELL_EAST_HEART, HasAccessTo(RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER) || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8)),
     }, {
@@ -444,7 +444,7 @@ void RegionTable_Init_ForestTemple() {
         EventAccess(&logic->DekuBabaNuts,   []{return logic->CanGetDekuBabaNuts();}),
     }, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_MQ_WELL_CHEST,                 logic->CanHitEyeTargets()),
+        LOCATION(RC_FOREST_TEMPLE_MQ_WELL_CHEST,                 logic->CanHitEyeTargets() || (logic->CanOpenUnderwaterChest() && logic->WaterTimer() >= 8)),
         LOCATION(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
         //implies logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)
         LOCATION(RC_FOREST_TEMPLE_MQ_GS_WELL,                    logic->CanHitEyeTargets() || (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))),

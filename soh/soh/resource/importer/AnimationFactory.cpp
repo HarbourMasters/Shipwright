@@ -1,6 +1,8 @@
 #include "soh/resource/importer/AnimationFactory.h"
 #include "soh/resource/type/Animation.h"
+#include "ResourceManager.h"
 #include "spdlog/spdlog.h"
+#include "Context.h"
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>
@@ -80,7 +82,11 @@ ResourceFactoryBinaryAnimationV0::ReadResource(std::shared_ptr<Ship::File> file,
         animation->animationData.linkAnimationHeader.common.frameCount = reader->ReadInt16();
 
         // Read the segment pointer (always 32 bit, doesn't adjust for system pointer size)
-        animation->animationData.linkAnimationHeader.segment = (void*)reader->ReadUInt32();
+        std::string path = reader->ReadString();
+        const auto animData = std::static_pointer_cast<Animation>(
+            Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(path.c_str()));
+
+        animation->animationData.linkAnimationHeader.segment = animData->GetPointer();
     } else if (animType == AnimationType::Legacy) {
         SPDLOG_DEBUG("BEYTAH ANIMATION?!");
     }
