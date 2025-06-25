@@ -173,7 +173,7 @@ void RegionTable_Init_GerudoTrainingGround() {
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_LEFT_SIDE] = Region("Gerudo Training Ground MQ Left Side", SCENE_GERUDO_TRAINING_GROUND, {}, {}, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_SAND_ROOM,    []{return true;}),
-        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM, []{return Here(RR_GERUDO_TRAINING_GROUND_MQ_LEFT_SIDE, []{return logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_GTG_MQ_WIHTOUT_HOOKSHOT) || (ctx->GetTrickOption(RT_GTG_MQ_WITH_HOOKSHOT) && logic->IsAdult && logic->CanJumpslash() && logic->CanUse(RG_HOOKSHOT));});}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM, []{return Here(RR_GERUDO_TRAINING_GROUND_MQ_LEFT_SIDE, []{return logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_GTG_MQ_WITHOUT_HOOKSHOT) || (ctx->GetTrickOption(RT_GTG_MQ_WITH_HOOKSHOT) && logic->IsAdult && logic->CanJumpslash() && logic->CanUse(RG_HOOKSHOT));});}),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM] = Region("Gerudo Training Ground MQ Stalfos Room", SCENE_GERUDO_TRAINING_GROUND, {
@@ -287,7 +287,7 @@ void RegionTable_Init_GerudoTrainingGround() {
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_UNDERWATER] = Region("Gerudo Training Ground MQ Underwater", SCENE_GERUDO_TRAINING_GROUND, {}, {
         //Locations
         //it is possible to snipe the stingers with bow or sling before dropping in, or just get really lucky, and avoid needing to take damage, but that might be trick worthy
-        LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST, logic->HasFireSource() && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 24 && logic->TakeDamage()),
+        LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST, logic->HasFireSource() && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 24 && logic->HasItem(RG_BRONZE_SCALE) && logic->TakeDamage()),
     }, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_PLATFORMS_UNLIT_TORCH, []{return true;}),

@@ -403,6 +403,9 @@ void Settings::CreateOptions() {
               "apply to MQ Dead Hand bomb flowers.\nUsing blue fire on bombflower to stop rolling goron also requires "
               "\"Stop Link the Goron with Din's Fire\".\nUsing blue fire arrows to break floor in King Dodongo's "
               "chamber also requires \"Dodongo\'s Cavern Smash the Boss Lobby Floor\".");
+    OPT_TRICK(RT_OPEN_UNDERWATER_CHEST, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
+              "Open Underwater Chests",
+              "Underwater chests can be opened by wearing iron boots and hookshotting the chest.");
     OPT_TRICK(RT_KF_ADULT_GS, RCQUEST_BOTH, RA_KOKIRI_FOREST, { Tricks::Tag::NOVICE },
               "Adult Kokiri Forest GS with Hover Boots",
               "Can be obtained without Hookshot by using the Hover Boots off of one of the roots.");
@@ -412,7 +415,8 @@ void Settings::CreateOptions() {
               "Hover Boots, or Bean.");
     OPT_TRICK(RT_LW_MIDO_BACKFLIP, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE },
               "Backflip over Mido as Adult", "With a specific position and angle, you can backflip over Mido.");
-    OPT_TRICK(RT_LOST_WOOD_NAVI_DIVE, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE }, "Lost Woods Navi dive",
+    OPT_TRICK(RT_LOST_WOOD_NAVI_DIVE, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
+              "Lost Woods Navi dive",
               "You need Deku Sticks or Kokiri Sword to dive with Navi for entering Zora's River.");
     OPT_TRICK(RT_LW_GS_BEAN, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::INTERMEDIATE },
               "Lost Woods Adult GS without Bean",
@@ -422,6 +426,9 @@ void Settings::CreateOptions() {
               "Hyrule Castle Storms Grotto GS with Just Boomerang",
               "With precise throws, the Boomerang alone can kill the Skulltula and collect the token, without first "
               "needing to blow up the wall.");
+    OPT_TRICK(RT_HF_BIG_POE_WITHOUT_EPONA, RCQUEST_BOTH, RA_HYRULE_FIELD, { Tricks::Tag::NOVICE },
+              "Big Poe without Epona",
+              "Big Poes have a chance of appearing without Epona, you can shoot them quickly with only bow.");
     OPT_TRICK(RT_KAK_MAN_ON_ROOF, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::NOVICE },
               "Man on Roof without Hookshot",
               "Can be reached by side-hopping off the watchtower as either age, or by jumping onto the potion shop's "
@@ -554,7 +561,7 @@ void Settings::CreateOptions() {
               "A precise jump slash can kill the Skulltula and recoil back onto the top of the frozen waterfall. To "
               "kill it, the logic normally guarantees one of Hookshot, Bow, or Magic.");
     OPT_TRICK(RT_ZF_GREAT_FAIRY_WITHOUT_EXPLOSIVES, RCQUEST_BOTH, RA_ZORAS_FOUNTAIN, { Tricks::Tag::NOVICE },
-              "Zora\'s Fountain Great Fairy Without Explosives",
+              "Zora\'s Fountain Great Fairy without Explosives",
               "It's possible to use silver gauntlets to pick up the silver rock and hammer to break the rock below it, "
               "allowing you to ledge grab the edge of the hole and get past the breakable wall (hammer can't break the "
               "wall itself).");
@@ -639,8 +646,8 @@ void Settings::CreateOptions() {
               "Dodongo\'s Cavern Vines GS from Below with Longshot",
               "The vines upon which this Skulltula rests are one-sided collision. You can use the Longshot to get it "
               "from below, by shooting it through the vines, bypassing the need to lower the staircase.");
-    OPT_TRICK(RT_DC_STAIRCASE, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE },
-              "Dodongo\'s Cavern Staircase with Bow",
+    OPT_TRICK(RT_DC_STAIRS_WITH_BOW, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE },
+              "Dodongo\'s Cavern Stairs with Bow",
               "The Bow can be used to knock down the stairs with two well-timed shots.");
     OPT_TRICK(RT_DC_SLINGSHOT_SKIP, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::EXPERT },
               "Dodongo\'s Cavern Child Slingshot Skips",
@@ -659,6 +666,12 @@ void Settings::CreateOptions() {
               "The bombable floor before King Dodongo can be destroyed with Hammer if hit in the very center. This is "
               "only relevant with Shuffle Boss Entrances or if Dodongo's Cavern is MQ and either variant of "
               "\"Dodongo's Cavern MQ Light the Eyes with Strength\" is on.");
+    OPT_TRICK(RT_DC_DODONGO_CHU, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED },
+              "Dodongo\'s Cavern Dodongo without Bombchus",
+              "With precise timing you can feed King Dodongo a bombchu during a backflip");
+    OPT_TRICK(RT_DC_MQ_STAIRS_WITH_ONLY_STRENGTH, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE },
+              "Dodongo\'s Cavern MQ Stairs With Only Strength",
+              "Taking a bomb from the back can be used to lower stairs without using stick to drop bomb from wall.");
     OPT_TRICK(RT_DC_MQ_CHILD_BOMBS, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED },
               "Dodongo\'s Cavern MQ Early Bomb Bag Area as Child",
               "With a precise jump slash from above, you can reach the Bomb Bag area as only child without needing a "
@@ -709,8 +722,8 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_LENS_BOTW, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
               "Bottom of the Well without Lens of Truth",
               "Removes the requirements for the Lens of Truth in Bottom of the Well.");
-    OPT_TRICK(RT_BOTTOM_OF_THE_WELL_NAVI_DIVE, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
-              "Bottom of the Well Navi dive",
+    OPT_TRICK(RT_BOTTOM_OF_THE_WELL_NAVI_DIVE, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL,
+              { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "Bottom of the Well Navi dive",
               "You need Deku Sticks or Kokiri Sword to dive with Navi for entering Bottom of the Well.");
     OPT_TRICK(RT_BOTW_CHILD_DEADHAND, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
               "Child Dead Hand without Kokiri Sword", "Requires 9 sticks or 5 jump slashes.");
@@ -937,6 +950,8 @@ void Settings::CreateOptions() {
         "Water Temple MQ North Basement GS without Small Key",
         "There is an invisible Hookshot target that can be used to get over the gate that blocks you from going to "
         "this Skulltula early, skipping a small key as well as needing Hovers or Scarecrow to reach the locked door.");
+    OPT_TRICK(RT_WATER_MORPHA_WITHOUT_HOOKSHOT, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::EXTREME },
+              "Water Temple Morpha without Hookshot", "It is possible to slash at Morpha without hookshot.");
     OPT_TRICK(RT_LENS_SHADOW, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },
               "Shadow Temple Stationary Objects without Lens of Truth",
               "Removes the requirements for the Lens of Truth in Shadow Temple for most areas in the dungeon except "
@@ -1099,7 +1114,7 @@ void Settings::CreateOptions() {
               "Gerudo Training Ground MQ Left Side Silver Rupees with Hookshot",
               "The highest Silver Rupee can be obtained by hookshooting the target and then immediately jump slashing "
               "toward the Rupee.");
-    OPT_TRICK(RT_GTG_MQ_WIHTOUT_HOOKSHOT, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::INTERMEDIATE },
+    OPT_TRICK(RT_GTG_MQ_WITHOUT_HOOKSHOT, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::INTERMEDIATE },
               "Gerudo Training Ground MQ Left Side Silver Rupees without Hookshot",
               "After collecting the rest of the Silver Rupees in the room, you can reach the final Silver Rupee on the "
               "ceiling by being pulled up into it after getting grabbed by the Wallmaster. The Wallmaster will not "
