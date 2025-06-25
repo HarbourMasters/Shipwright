@@ -7,7 +7,7 @@ extern PlayState* gPlayState;
 extern void func_808237B4(PlayState* play, Input* input);
 }
 
-#define CVAR_FASTER_KALEIDO_NAME CVAR_ENHANCEMENT("FasterKaleido")
+#define CVAR_FASTER_KALEIDO_NAME CVAR_ENHANCEMENT("FasterPauseMenu")
 #define CVAR_FASTER_KALEIDO_VALUE CVarGetInteger(CVAR_FASTER_KALEIDO_NAME, 0)
 
 void OnKaleidoUpdateFaster() {
