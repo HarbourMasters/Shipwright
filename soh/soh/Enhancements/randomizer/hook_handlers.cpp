@@ -2122,7 +2122,7 @@ void RandomizerOnGameFrameUpdateHandler() {
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MONEY)) {
-        gSaveContext.rupees = static_cast<int8_t>(CUR_CAPACITY(UPG_WALLET));
+        gSaveContext.rupees = static_cast<s16>(CUR_CAPACITY(UPG_WALLET));
     }
 
     if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
