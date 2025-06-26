@@ -7,8 +7,8 @@ extern PlayState* gPlayState;
 extern void func_808237B4(PlayState* play, Input* input);
 }
 
-#define CVAR_FASTER_KALEIDO_NAME CVAR_ENHANCEMENT("FasterPauseMenu")
-#define CVAR_FASTER_KALEIDO_VALUE CVarGetInteger(CVAR_FASTER_KALEIDO_NAME, 0)
+#define CVAR_FASTER_PAUSE_MENU_NAME CVAR_ENHANCEMENT("FasterPauseMenu")
+#define CVAR_FASTER_PAUSE_MENU_VALUE CVarGetInteger(CVAR_FASTER_PAUSE_MENU_NAME, 0)
 
 void OnKaleidoUpdateFaster() {
     ZREG(46) = 2; // pauseCtx->eye and pauseCtx->unk_1EA multiply by this for animation. Double the default value.
@@ -21,15 +21,15 @@ void OnKaleidoUpdateFaster() {
     }
 }
 
-void RegisterFasterKaleido() {
-    COND_HOOK(GameInteractor::OnKaleidoUpdate, CVAR_FASTER_KALEIDO_VALUE, OnKaleidoUpdateFaster);
+void RegisterFasterPauseMenu() {
+    COND_HOOK(GameInteractor::OnKaleidoUpdate, CVAR_FASTER_PAUSE_MENU_VALUE, OnKaleidoUpdateFaster);
 
     // Reset register values on close. These values are only used by z_kaleido_scope_PAL.c
-    COND_VB_SHOULD(VB_KALEIDO_UNPAUSE_CLOSE, CVAR_FASTER_KALEIDO_VALUE, {
+    COND_VB_SHOULD(VB_KALEIDO_UNPAUSE_CLOSE, CVAR_FASTER_PAUSE_MENU_VALUE, {
         // Default values, as defined in Regs_InitDataImpl
         ZREG(46) = 1;
         WREG(6) = 8;
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterFasterKaleido, { CVAR_FASTER_KALEIDO_NAME });
+static RegisterShipInitFunc initFunc(RegisterFasterPauseMenu, { CVAR_FASTER_PAUSE_MENU_NAME });
