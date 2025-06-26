@@ -21,7 +21,7 @@ void OnKaleidoUpdateFaster() {
     }
 }
 
-void RegisterFasterPauseMenu() {
+void InitFasterPauseMenu() {
     COND_HOOK(GameInteractor::OnKaleidoUpdate, CVAR_FASTER_PAUSE_MENU_VALUE, OnKaleidoUpdateFaster);
 
     // Reset register values on close. These values are only used by z_kaleido_scope_PAL.c
@@ -32,4 +32,4 @@ void RegisterFasterPauseMenu() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterFasterPauseMenu, { CVAR_FASTER_PAUSE_MENU_NAME });
+static RegisterShipInitFunc initFunc(InitFasterPauseMenu, { CVAR_FASTER_PAUSE_MENU_NAME });
