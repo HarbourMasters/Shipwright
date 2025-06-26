@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 #include <vector>
 #include "Resource.h"
 #include "soh/resource/type/AudioSample.h"
@@ -69,16 +70,21 @@ class AudioSoundFont : public Ship::Resource<SoundFont> {
     uint16_t data3;
 
     std::vector<Drum> drums;
+    std::vector<std::string> drumFileNames;
     std::vector<Drum*> drumAddresses;
     std::vector<uint32_t> drumEnvelopeCounts;
     std::vector<std::vector<AdsrEnvelope>> drumEnvelopeArrays;
 
     std::vector<Instrument> instruments;
+    std::vector<std::string> lowInstrumentFileNames;
+    std::vector<std::string> normalInstrumentFileNames;
+    std::vector<std::string> highInstrumentFileNames;
     std::vector<Instrument*> instrumentAddresses;
     std::vector<uint32_t> instrumentEnvelopeCounts;
     std::vector<std::vector<AdsrEnvelope>> instrumentEnvelopeArrays;
 
     std::vector<SoundFontSound> soundEffects;
+    std::vector<std::string> soundEffectFileNames;
 
     SoundFont soundFont;
 };
