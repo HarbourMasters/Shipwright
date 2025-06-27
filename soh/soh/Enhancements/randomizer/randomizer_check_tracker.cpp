@@ -495,6 +495,9 @@ void SetShopSeen(uint32_t sceneNum, bool prices) {
 }
 
 void CheckTrackerLoadGame(int32_t fileNum) {
+    if (!IS_RANDO) {
+        return;
+    }
     LoadSettings();
     TrySetAreas();
     for (auto& entry : Rando::StaticData::GetLocationTable()) {
