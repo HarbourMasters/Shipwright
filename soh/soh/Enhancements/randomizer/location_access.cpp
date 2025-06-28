@@ -671,7 +671,12 @@ void RegionTable_Init() {
     // clang-format off
     areaTable[RR_ROOT] = Region("Root", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {
         //Events
-        EventAccess(&logic->KakarikoVillageGateOpen, []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
+        EventAccess(&logic->KakarikoVillageGateOpen,        []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
+        EventAccess(&logic->THCouldFree1TorchCarpenter,     []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);}),
+        EventAccess(&logic->THCouldFreeDoubleCellCarpenter, []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
+        EventAccess(&logic->TH_CouldFreeDeadEndCarpenter,   []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
+        EventAccess(&logic->THCouldRescueSlopeCarpenter,    []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
+        EventAccess(&logic->THRescuedAllCarpenters,         []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);}),
     }, {
         //Locations
         LOCATION(RC_LINKS_POCKET,       true),
@@ -756,6 +761,7 @@ void RegionTable_Init() {
     RegionTable_Init_ZorasFountain();
     RegionTable_Init_GerudoValley();
     RegionTable_Init_GerudoFortress();
+    RegionTable_Init_ThievesHideout();
     RegionTable_Init_HauntedWasteland();
     RegionTable_Init_DesertColossus();
     // Dungeons

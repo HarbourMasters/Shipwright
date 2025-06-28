@@ -580,13 +580,13 @@ void Settings::CreateOptions() {
               "Gerudo Valley Crate PoH as Adult with Hover Boots",
               "From the far side of Gerudo Valley, a precise Hover Boots movement and jump-slash recoil can allow "
               "adult to reach the ledge with the crate PoH without needing Longshot. You will take fall damage.");
-    OPT_TRICK(RT_GF_KITCHEN, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
-              "Thieves\' Hideout \"Kitchen\" with No Additional Items",
-              "Allows passing through the kitchen by avoiding being seen by the guards. The logic normally guarantees "
-              "Bow or Hookshot to stun them from a distance, or Hover Boots to cross the room without needing to deal "
-              "with the guards.");
+    OPT_TRICK(RT_PASS_GUARDS_WITH_NOTHING, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
+              "Sneak Past Moving Gerudo Guards with No Items",
+              "The logic normally guarantees Bow or Hookshot to stun them from a distance,"
+              "but every moving guard can be passed with basic movement and AI manipulation");
     OPT_TRICK(RT_GF_JUMP, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE }, "Gerudo\'s Fortress Ledge Jumps",
-              "Adult can jump onto the top roof of the fortress without going through the interior of the hideout.");
+              "It is possible to navigate the rooves of Fortress with unintuative jumps to reach additional areas "
+              "without going inside.");
     OPT_TRICK(RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
               "Gerudo\'s Fortress Warriors with Difficult Weapons",
               "Warriors can be defeated with Slingshot or Bombchus.");

@@ -110,7 +110,11 @@ class Logic {
 
     // Events
     bool ShowedMidoSwordAndShield = false;
-    bool CarpenterRescue = false;
+    bool THCouldFree1TorchCarpenter = false;
+    bool THCouldFreeDoubleCellCarpenter = false;
+    bool TH_CouldFreeDeadEndCarpenter = false;
+    bool THCouldRescueSlopeCarpenter = false;
+    bool THRescuedAllCarpenters = false;
     bool GF_GateOpen = false;
     bool GtG_GateOpen = false;
     bool DampesWindmillAccess = false;
@@ -246,7 +250,6 @@ class Logic {
     bool HasFireSource();
     bool HasFireSourceWithTorch();
     bool TradeQuestStep(RandomizerGet rg);
-    bool CanFinishGerudoFortress();
     bool CanStandingShield();
     bool CanShield();
     bool CanUseProjectile();

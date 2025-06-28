@@ -283,8 +283,17 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
 endif()
 ################################################################################
-# Compile definitions
+# Find/download Dr Libs (For custom audio)
 ################################################################################
+include(FetchContent)
+
+FetchContent_Declare(
+        dr_libs
+        GIT_REPOSITORY https://github.com/mackron/dr_libs.git
+        GIT_TAG da35f9d6c7374a95353fd1df1d394d44ab66cf01
+)
+FetchContent_MakeAvailable(dr_libs)
+
 find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
@@ -302,6 +311,10 @@ endif()
 if (ESPEAK)
     add_compile_definitions(ESPEAK=1)
 endif()
+
+################################################################################
+# Compile definitions
+################################################################################
 
 target_include_directories(${PROJECT_NAME} PRIVATE assets
 	${CMAKE_CURRENT_SOURCE_DIR}/include/
@@ -335,6 +348,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
 	${SDL2-INCLUDE}
     ${SDL2-NET-INCLUDE}
 	${CMAKE_CURRENT_SOURCE_DIR}/assets/
+	${dr_libs_SOURCE_DIR}
 	.
 )
 
@@ -586,6 +600,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
 
         target_link_options(${PROJECT_NAME} PRIVATE
             -pthread
+				#-fsanitize=address
             -Wl,-export-dynamic
         )
     endif()
@@ -626,6 +641,15 @@ endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     find_package(glfw3 REQUIRED)
+	find_package(Ogg CONFIG REQUIRED)
+	link_libraries(Ogg::ogg)
+
+	find_package(Vorbis CONFIG REQUIRED)
+	link_libraries(Vorbis::vorbisfile)
+	find_package(Opus CONFIG REQUIRED)
+	link_libraries(Opus::opus)
+	find_package(OpusFile CONFIG REQUIRED)
+	link_libraries(OpusFile::opusfile CONFIG REQUIRED)
 	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
@@ -639,6 +663,12 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"imm32;"
 			"version;"
 			"setupapi"
+			"Ogg::ogg"
+			"Opus::opus"
+			"Vorbis::vorbis"
+			"Vorbis::vorbisenc"
+			"Vorbis::vorbisfile"
+			"OpusFile::opusfile"
 		)
 	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
@@ -679,10 +709,21 @@ else()
     find_package(SDL2)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
+	find_package(Threads REQUIRED)
+	find_package(Ogg REQUIRED)
+	find_package(Vorbis REQUIRED)
+	find_package(Opus REQUIRED)
+	find_package(OpusFile REQUIRED)
  	set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
 		"ZAPDLib;"
 		SDL2::SDL2
+		"Ogg::ogg"
+		"Vorbis::vorbis"
+		"Vorbis::vorbisenc"
+		"Vorbis::vorbisfile"
+		"Opus::opus"
+		"Opusfile::Opusfile"
         "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net>"
 		${CMAKE_DL_LIBS}
 		Threads::Threads

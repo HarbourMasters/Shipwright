@@ -487,6 +487,9 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
                          bool inWater) {
     bool killed = false;
     switch (enemy) {
+        case RE_GERUDO_GUARD:
+        case RE_BREAK_ROOM_GUARD:
+            return false;
         case RE_GOLD_SKULLTULA:
             switch (distance) {
                 case ED_CLOSE:
@@ -835,6 +838,11 @@ bool Logic::CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
         case RE_PURPLE_LEEVER:
         case RE_OCTOROK:
             return true;
+        case RE_GERUDO_GUARD:
+            return ctx->GetTrickOption(RT_PASS_GUARDS_WITH_NOTHING) || HasItem(RG_GERUDO_MEMBERSHIP_CARD) ||
+                   CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT);
+        case RE_BREAK_ROOM_GUARD:
+            return HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT);
         case RE_BIG_SKULLTULA:
             // hammer jumpslash can pass, but only on flat land where you can kill with hammer swing
             return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
@@ -843,6 +851,7 @@ bool Logic::CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
         case RE_GIBDO:
         case RE_REDEAD:
             // we need a way to check if suns won't force a reload
+            // RANDOTODO: check if stealthing past these guys works everywhere
             return CanUse(RG_HOOKSHOT) || CanUse(RG_SUNS_SONG);
         case RE_IRON_KNUCKLE:
         case RE_BIG_OCTO:
@@ -1308,16 +1317,6 @@ bool Logic::TradeQuestStep(RandomizerGet rg) {
     return hasState;
 }
 
-bool Logic::CanFinishGerudoFortress() {
-    return (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && SmallKeys(RR_GERUDO_FORTRESS, 4) &&
-            CanKillEnemy(RE_GERUDO_WARRIOR) &&
-            (HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT) ||
-             CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_KITCHEN))) ||
-           (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST) && SmallKeys(RR_GERUDO_FORTRESS, 1) &&
-            CanKillEnemy(RE_GERUDO_WARRIOR)) ||
-           ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);
-}
-
 bool Logic::CanStandingShield() {
     return CanUse(RG_MIRROR_SHIELD) || (IsAdult && HasItem(RG_HYLIAN_SHIELD)) || CanUse(RG_DEKU_SHIELD);
 }
@@ -1440,7 +1439,7 @@ bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless
             }*/
             return GetSmallKeyCount(SCENE_TREASURE_BOX_SHOP) >= requiredAmountGlitchless;
 
-        case RR_GERUDO_FORTRESS:
+        case RR_GF_OUTSKIRTS:
             return GetSmallKeyCount(SCENE_THIEVES_HIDEOUT) >= requiredAmountGlitchless;
 
         default:
@@ -2470,7 +2469,10 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
 
     // Events
     ShowedMidoSwordAndShield = false;
-    CarpenterRescue = false;
+    THCouldFree1TorchCarpenter = false;
+    THCouldFreeDoubleCellCarpenter = false;
+    TH_CouldFreeDeadEndCarpenter = false;
+    THCouldRescueSlopeCarpenter = false;
     GF_GateOpen = false;
     GtG_GateOpen = false;
     DampesWindmillAccess = false;
@@ -2523,7 +2525,7 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
     MQWaterStalfosPit = false;
     MQWaterDragonTorches = false;
     MQWaterB1Switch = false;
-    // MQWaterPillarSoTBlock     = false;
+    // MQWaterPillarSoTBlock          = false;
     MQWaterOpenedPillarB1 = false;
     MQSpiritCrawlBoulder = false;
     MQSpiritMapRoomEnemies = false;
