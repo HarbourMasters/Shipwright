@@ -123,7 +123,7 @@ struct SpiritLogicData {
     uint8_t childRevKeys;
     // the number of keys that guarantees Adult can reach this region
     // if it is 9, that means the bombchu edge case is to be checked.
-    uint8_t adultKeys; 
+    uint8_t adultKeys;
     // the number of keys that guarantees Adult can reach this region with reverse entry
     uint8_t adultRevKeys;
     // The area access condition to reach this region as Child, from the first lock,

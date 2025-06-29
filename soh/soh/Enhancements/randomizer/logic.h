@@ -302,7 +302,7 @@ class Logic {
     static std::map<uint32_t, uint32_t> RandoGetToDungeonScene;
     static std::map<RandomizerGet, uint32_t> RandoGetToEquipFlag;
     static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
-    bool IsReverseAccessPossible();
+    bool IsAdultReverseAccessPossible();
     bool SpiritSunOnFloorToStatue();
     bool SpiritEastToSwitch();
     bool SpiritWestToSkull();
@@ -310,8 +310,13 @@ class Logic {
     bool MQSpiritWestToPots();
     bool MQSpiritStatueToSunBlock();
     bool MQSpiritStatueSouthDoor();
+    bool MQSpirit4KeyColossus();
     bool MQSpirit4KeyWestHand();
     bool CouldMQSpirit4KeyWestHand();
+    bool OuterWestHandLogic();
+    bool OuterWestHandMQLogic();
+    bool SpiritExplosiveKeyLogic();
+    bool StatueRoomMQKeyLogic();
 
   private:
     std::shared_ptr<Context> ctx;

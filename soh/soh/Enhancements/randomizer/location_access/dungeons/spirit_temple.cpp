@@ -153,7 +153,7 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_ABOVE_BOULDERS] = Region("Spirit Temple Above Boulders", SCENE_SPIRIT_TEMPLE, {
         //Events
-        //Jump slash is possible as child, but pretty tight. Jumpslash as late as you can
+        //Jumpslash is possible as child, but pretty tight. Jumpslash as late as you can
         //A damage boost off the boulder is also possible, but you need to land on the middle of the boulder
         //to get enough distance to reach the rupee
         EventAccess(&logic->SpiritBouldersSilvers, []{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanJumpslash() || logic->CanUse(RG_LONGSHOT)/* || CanBunnyHop()*/;}),
@@ -394,7 +394,6 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_BEAMOS_PITS] = Region("Spirit Temple Beamos Pits", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
-        //Implies killing the anubis with the fire ring, doing so itemless requires voiding out, which can lock hardcore + OHKO seeds
         Entrance(RR_SPIRIT_TEMPLE_POT_STAIRS,    []{return logic->CanKillEnemy(RE_BEAMOS);}),
         Entrance(RR_SPIRIT_TEMPLE_FOUR_ARMOS,    []{return logic->CanKillEnemy(RE_BEAMOS);}),
         Entrance(RR_SPIRIT_TEMPLE_BIG_WALL_BASE, []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 5);}),
@@ -674,7 +673,7 @@ void RegionTable_Init_SpiritTemple() {
         Entrance(RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR,      []{return logic->CanHitSwitch()/* && CanClimbHigh()*/;}),
     });
 
-    areaTable[RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR] = Region("Spirit Temple MQ Broken Wall Room", SCENE_SPIRIT_TEMPLE, {}, {
+    areaTable[RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR] = Region("Spirit Temple MQ Sun on Floor Room", SCENE_SPIRIT_TEMPLE, {}, {
         //Locations
         //Implies CanKillEnemy(RE_LIKE_LIKE)
         LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST, SpiritShared(RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR, []{return logic->CanKillEnemy(RE_BEAMOS);})),
@@ -694,18 +693,13 @@ void RegionTable_Init_SpiritTemple() {
         //Exits
         //!QUANTUM LOGIC!
         //If we entered in reverse and dungeon entrances are off, we only need 6 keys, access to Gauntlets Hand, and the ability to
-        // crawl through the boulder filled tunnel to reach colossus.
+        //crawl through the boulder filled tunnel to reach colossus.
         //This is because with 6 keys it becomes impossible to avoid opening either the west hand lock or the first child side lock
         //and either direction lets child reach colossus. CanHitSwitch and CanKillEnemy(RE_IRON_KNUCKLE) is implied.
         //Logic can then allow child back into spirit, putting 1F west in logic with only 6 keys without forwards entry
         Entrance(RR_DESERT_COLOSSUS,                      []{return logic->IsChild/*CanUse(RG_CRAWL)*/ && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) &&
                                                                     logic->SmallKeys(RR_SPIRIT_TEMPLE, 6) && logic->MQSpiritStatueToSunBlock() &&
                                                                     (logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_RUSTED_SWITCHES) && Here(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_WEST, []{return logic->CanUse(RG_MEGATON_HAMMER);})));}),
-        //!QUANTUM LOGIC!
-        //If we have 6 keys and Child reverse spirit entry, we can guarantee broken wall room access for Child
-        //as long as we can hit a switch and climb because Adult cannot reach the initial child lock without 
-        //first opening the Statue Room to Broken Wall Room lock. The details of this are handled in SpiritShared.
-        //if adult can ever cross crawlspaces this becomes more complicated.
         Entrance(RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR,        []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 6);}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_POT_LEDGE,           []{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME);}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_INNER_WEST_HAND,     []{return logic->IsAdult || logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)/* || CanBunnyJump()*/;}),
@@ -784,7 +778,6 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM] = Region("Spirit Temple MQ Sun Block Room", SCENE_SPIRIT_TEMPLE, {}, {
         //Locations
-        //We don't need Shared here because If we are checking as child, universe 2 adult access needs nothing so it always passes, and if we are checking as adult, it is Certain Access
         LOCATION(RC_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST, SpiritShared(RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM, []{return true/*str0*/;})),
         //RT_SPIRIT_MQ_SUN_BLOCK_GS should probably be expanded to cover all ground based methods when str0 is added, as it can be hit with longshot because the skull hitbox is larger than the model
         LOCATION(RC_SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM,    SpiritShared(RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM, []{return (logic->CanUse(RG_HOOKSHOT)/* && (str0 || SunlightArrows())*/) || 
@@ -851,25 +844,17 @@ void RegionTable_Init_SpiritTemple() {
         Entrance(RR_SPIRIT_TEMPLE_MQ_CHEST_LEDGE,           []{return logic->CanUse(RG_HOVER_BOOTS) || 
                                                                       ((ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->CanUse(RG_LONGSHOT));}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_2F,    []{return logic->MQSpiritStatueRoomTorches;}),
-        //!QUANTUM LOGIC!
-        //We only need 4 keys and the ability to reach both hands for adult to logically be able to drop down onto Desert Colossus
-        //This is because there are only 3 keys that can be wasted without opening up either this lock to East hand, or the West Hand lock through Sun Block Room
-        //and both directions allow you to drop onto colossus
-        //logic->CanKillEnemy(RE_FLOORMASTER) is implied
-        Entrance(RR_DESERT_COLOSSUS,                        []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 4) &&
-                                                                      logic->CanAvoidEnemy(RE_BEAMOS, true, 4) && logic->CanUse(RG_SONG_OF_TIME) &&
-                                                                      logic->CanJumpslash() && /*(str0 || SunlightArrows) &&*/
+        /*                                                            logic->CanAvoidEnemy(RE_BEAMOS, true, 4) && logic->CanUse(RG_SONG_OF_TIME) &&
+                                                                      logic->CanJumpslash() && (str0 || SunlightArrows) &&
                                                                       (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
                                                                       logic->CanKillEnemy(RE_IRON_KNUCKLE) &&
-                                                                      logic->CanUse(RG_HOOKSHOT);}),
-        //!QUANTUM LOGIC!
-        //Continuing from above, if we also have a longshot, we can go from the East hand to the West hand, meaning we always have access to East Hand
-        /* 
-                                                                       logic->CanAvoidEnemy(RE_BEAMOS, true, 4) && logic->CanUse(RG_SONG_OF_TIME) &&
-                                                                       logic->CanJumpslash() && (str0 || SunlightArrows) &&
-                                                                       (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
-                                                                       logic->CanKillEnemy(RE_IRON_KNUCKLE) &&
-                                                                       logic->CanUse(RG_LONGSHOT) */
+                                                                      logic->CanUse(RG_HOOKSHOT)*/
+        Entrance(RR_DESERT_COLOSSUS,                        []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 4) && logic->MQSpirit4KeyColossus();}),
+        /*                                                            logic->CanAvoidEnemy(RE_BEAMOS, true, 4) && logic->CanUse(RG_SONG_OF_TIME) &&
+                                                                      logic->CanJumpslash() && (str0 || SunlightArrows) &&
+                                                                      (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
+                                                                      logic->CanKillEnemy(RE_IRON_KNUCKLE) &&
+                                                                      logic->CanUse(RG_LONGSHOT) */
         Entrance(RR_SPIRIT_TEMPLE_MQ_OUTER_WEST_HAND,        []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 4) && logic->MQSpirit4KeyWestHand();}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_FIRE_WALL_STAIRS_LOWER, []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 5);}),
         // RT_SPIRIT_PLATFORM_HOOKSHOT is currently disabled
@@ -998,7 +983,7 @@ void RegionTable_Init_SpiritTemple() {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_BEAMOS_PITS,        []{return true;}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_FLOORMASTER_STAIRS, []{return logic->CanJumpslash();}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_3F_GIBDO_ROOM,      []{return Here(RR_SPIRIT_TEMPLE_MQ_SOT_SUN_ROOM, []{return (logic->IsAdult || logic->CanUse(RG_SONG_OF_TIME)) && logic->CanUse(RG_MIRROR_SHIELD);});}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_3F_GIBDO_ROOM,      []{return Here(RR_SPIRIT_TEMPLE_MQ_SOT_SUN_ROOM, []{return ((logic->IsAdult || logic->CanUse(RG_SONG_OF_TIME)) && logic->CanUse(RG_MIRROR_SHIELD)) || logic->SunlightArrows();});}),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_FLOORMASTER_STAIRS] = Region("Spirit Temple MQ Floormaster Stairs", SCENE_SPIRIT_TEMPLE, {}, {}, {
@@ -1049,7 +1034,7 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_WALL_UPPER] = Region("Spirit Temple MQ Big Wall Upper", SCENE_SPIRIT_TEMPLE, {
         //Events
-        //Getting some of these with just climbing downwards is theoretically possible but definitly a trick
+        //Getting some of these with just climbing downwards is theoretically possible but definitely a trick
         EventAccess(&logic->MQSpiritBigWallSilvers, []{return /*(*/logic->CanKillEnemy(RE_KEESE)/*|| CanUse(RG_SKULL_MASK)) && CanClimbHigh()*/;}),
     }, {}, {
         //Exits

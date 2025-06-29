@@ -2363,20 +2363,25 @@ void Logic::SetInLogic(LogicVal logicVal, bool value) {
     inLogic[logicVal] = value;
 }
 
-bool Logic::IsReverseAccessPossible() {
-    //If we ever allow dungeon entrances to connect to boss rooms directly in dungeon chains, or for 1 boss door to lead to another dungeons boss door, add RSK_MIX_DUNGEON_ENTRANCES to the final condition
+bool Logic::IsAdultReverseAccessPossible() {
+    // If we ever allow dungeon entrances to connect to boss rooms directly in dungeon chains, or for 1 boss door to
+    // lead to another dungeons boss door, add RSK_MIX_DUNGEON_ENTRANCES to the final condition
+    // RANDOTODO Check for Age-Locked Boss entrances + Ganon's tower when it is shuffled
     return !ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) &&
-           (ctx->GetOption(RSK_DECOUPLED_ENTRANCES) || 
-            (ctx->GetOption(RSK_MIX_BOSS_ENTRANCES) && (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES))));
+           ((ctx->GetOption(RSK_DECOUPLED_ENTRANCES) &&
+             ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL)) ||
+            (ctx->GetOption(RSK_MIX_BOSS_ENTRANCES) &&
+             (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES))));
 }
 
 bool Logic::SpiritSunOnFloorToStatue() {
     return /*CanClimbHigh() &&*/ (HasExplosives() || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && CanUse(RG_LIGHT_ARROWS)));
 }
 
-bool Logic::SpiritEastToSwitch() {
-    return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || CanUse(RG_HOVER_BOOTS) ||
-           (CanUse(RG_ZELDAS_LULLABY) && CanUse(RG_HOOKSHOT));
+bool Logic::SpiritExplosiveKeyLogic() {
+    return SmallKeys(RR_SPIRIT_TEMPLE, HasExplosives()                                      ? 1
+                                       : ctx->GetOption(RSK_BOMBCHU_BAG) && BombchuRefill() ? 2
+                                                                                            : 3);
 }
 
 bool Logic::SpiritWestToSkull() {
@@ -2393,6 +2398,12 @@ bool Logic::SpiritSunBlockSouthLedge() {
         ;
 }
 
+bool Logic::SpiritEastToSwitch() {
+    return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || CanUse(RG_HOVER_BOOTS) ||
+           (CanUse(RG_ZELDAS_LULLABY) && CanUse(RG_HOOKSHOT));
+}
+
+
 // Combines crossing the ledge directly and the jump from the hand
 bool Logic::MQSpiritWestToPots() {
     return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || CanUse(RG_HOVER_BOOTS) || CanUse(RG_SONG_OF_TIME);
@@ -2408,20 +2419,52 @@ bool Logic::MQSpiritStatueSouthDoor() {
                                CanUse(RG_SONG_OF_TIME) /* && CanClimb()*/);
 }
 
-bool Logic::MQSpirit4KeyWestHand() {
+bool Logic::MQSpirit4KeyColossus() {
+    // !QUANTUM LOGIC!
+    // We only need 4 keys and the ability to reach both hands for adult to logically be able to drop down onto Desert Colossus
+    // This is because there are only 3 keys that can be wasted without opening up either this lock to East hand, or the West Hand lock through Sun Block Room
+    // and both directions allow you to drop onto colossus
+    // logic->CanKillEnemy(RE_FLOORMASTER) is implied
     return CanAvoidEnemy(RE_BEAMOS, true, 4) && CanUse(RG_SONG_OF_TIME) &&
            CanJumpslash() && /*(str0 || SunlightArrows) &&*/
            (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || CanUse(RG_LENS_OF_TRUTH)) && CanKillEnemy(RE_IRON_KNUCKLE) &&
-           CanUse(RG_LONGSHOT);
+           CanUse(RG_HOOKSHOT);
 }
-// This version of the function handles reaching there as child, based on what adult could do if they existed
+
+bool Logic::MQSpirit4KeyWestHand() {
+    // !QUANTUM LOGIC!
+    // Continuing from MQSpirit4KeyColossus, if we also have a longshot, we can go from the East hand to the West hand, meaning we always have access to East Hand
+    return CanUse(RG_LONGSHOT) && MQSpirit4KeyColossus();
+}
+// This version of the function handles Shared Access for child, based on what adult could do if they existed
 bool Logic::CouldMQSpirit4KeyWestHand() {
-    return CanAvoidEnemy(RE_BEAMOS, true, 4) && CanUse(RG_SONG_OF_TIME) && HasItem(RG_MASTER_SWORD) ||
-           HasItem(RG_BIGGORON_SWORD) ||
-           HasItem(RG_MEGATON_HAMMER) &&
-               /*(str0 || SunlightArrows) &&*/
-               (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || CanUse(RG_LENS_OF_TRUTH)) && CanKillEnemy(RE_IRON_KNUCKLE) &&
-               HasItem(RG_LONGSHOT);
+    return CanAvoidEnemy(RE_BEAMOS, true, 4) && CanUse(RG_SONG_OF_TIME) &&
+           (HasItem(RG_MASTER_SWORD) || HasItem(RG_BIGGORON_SWORD) || HasItem(RG_MEGATON_HAMMER)) &&
+           /*(str0 || SunlightArrows) &&*/
+           (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || CanUse(RG_LENS_OF_TRUTH)) && HasItem(RG_LONGSHOT);
+}
+
+// !QUANTUM LOGIC!
+// With 3 keys, you cannot lock adult out of leaving spirit onto the hands and jumping down, as you would have to
+// open the west hand door and then adult could climb through sun block room to jump down from there
+// This requires that adult can complete both routes
+// If we have the longshot, we can also guarantee access to the outer west hand as you can longshot from the east hand
+// to the west Implies CanKillEnemy(RE_IRON_KNUCKLE)
+bool Logic::OuterWestHandLogic() {
+    return HasExplosives() /* && CanClimbHigh() && str0*/ && SmallKeys(RR_SPIRIT_TEMPLE, HasItem(RG_LONGSHOT) ? 3 : 5);
+}
+
+bool Logic::OuterWestHandMQLogic() {
+    return MQSpiritStatueToSunBlock() && SmallKeys(RR_SPIRIT_TEMPLE, CouldMQSpirit4KeyWestHand() ? 4 : 7);
+}
+
+bool Logic::StatueRoomMQKeyLogic() {
+    // !QUANTUM LOGIC!
+    // If child enters in reverse, then they have access to Certain Access to Broken Wall room in 6 keys,
+    // the ability to hit switches and the ability to climb because only child can reach the initial child lock
+    // without opening the Statue room to Broken Wall Room lock first
+    // if adult can ever cross crawlspaces this becomes more complicated.
+    return SmallKeys(RR_SPIRIT_TEMPLE, IsChild && ReverseSpiritChild && CanHitSwitch() /* && CanClimbHigh()*/ ? 6 : 7);
 }
 
 void Logic::Reset(bool resetSaveContext /*= true*/) {

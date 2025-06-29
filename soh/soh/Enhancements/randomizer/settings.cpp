@@ -379,12 +379,14 @@ void Settings::CreateOptions() {
               "Allows the following possible without Tunics:\n- Enter Water Temple. The area below the center pillar "
               "still requires Zora Tunic. Applies to MQ also.\n- Enter Fire Temple. Volvagia still requires Goron "
               "Tunic. Applies to MQ also, and includes child access to first floor with dungeon shuffle.");
-    OPT_TRICK(RT_RUSTED_SWITCHES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE },"Hammer Through Collision",
+    OPT_TRICK(RT_RUSTED_SWITCHES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Hammer Through Collision",
               "Applies to:\n"
               "- Hitting Fire Temple Highest Goron Chest's Rusted Switch in the SoT Block without Song of Time.\n"
               "- Hitting MQ Fire Temple Lizalfos Maze's Rusted Switch in the wall.\n"
-              "- Having Adult hammer the rock in the west side crawlspace of MQ Spirit so child can get through without bombchus."
-              "- MQ Spirit Trial's Rusted Switch between the thrones without hitting the eye target to drop an Iron Knuckle.\n");
+              "- Having Adult hammer the rock in the west side crawlspace of MQ Spirit so child can get through "
+              "without bombchus."
+              "- MQ Spirit Trial's Rusted Switch between the thrones without hitting the eye target to drop an Iron "
+              "Knuckle.\n");
     OPT_TRICK(RT_FLAMING_CHESTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "Flaming Chests",
               "The chests encircled in flames in Gerudo Training Ground and in Spirit Temple can be opened by running "
               "into the flames while Link is invincible after taking damage.");
