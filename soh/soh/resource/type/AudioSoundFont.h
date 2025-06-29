@@ -58,6 +58,7 @@ class AudioSoundFont : public Ship::Resource<SoundFont> {
 
     AudioSoundFont() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {
     }
+    ~AudioSoundFont();
 
     SoundFont* GetPointer();
     size_t GetPointerSize();
@@ -68,15 +69,10 @@ class AudioSoundFont : public Ship::Resource<SoundFont> {
     uint16_t data2;
     uint16_t data3;
 
-    std::vector<Drum> drums;
     std::vector<Drum*> drumAddresses;
-    std::vector<uint32_t> drumEnvelopeCounts;
     std::vector<std::vector<AdsrEnvelope>> drumEnvelopeArrays;
 
-    std::vector<Instrument> instruments;
     std::vector<Instrument*> instrumentAddresses;
-    std::vector<uint32_t> instrumentEnvelopeCounts;
-    std::vector<std::vector<AdsrEnvelope>> instrumentEnvelopeArrays;
 
     std::vector<SoundFontSound> soundEffects;
 

@@ -894,33 +894,15 @@ void AnimationContext_SetLoadFrame(PlayState* play, LinkAnimationHeader* animati
         if (ResourceMgr_OTRSigCheck(animation) != 0)
             animation = ResourceMgr_LoadAnimByName(animation);
 
-        LinkAnimationHeader* linkAnimHeader = SEGMENTED_TO_VIRTUAL(animation);
         Vec3s* ram = frameTable;
 
-        osCreateMesgQueue(&entry->data.load.msgQueue, &entry->data.load.msg, 1);
-
-        char animPath[2048];
-
-        snprintf(animPath, sizeof(animPath), "misc/link_animetion/gPlayerAnimData_%06X",
-                 (((uintptr_t)linkAnimHeader->segment - 0x07000000)));
-
-        // printf("Streaming %s, seg = %08X\n", animPath, linkAnimHeader->segment);
-
-        s16* animData = ResourceMgr_LoadPlayerAnimByName(animPath);
-
+        s16* animData = animation->segment;
+        // SOH [Port] sometimes a HESS can set a negative frame value from a negative playback speed. When converted to
+        // a signed value this will cause a crash due to copying way much data.
+        if (frame < 0) {
+            frame = 0;
+        }
         memcpy(ram, (uintptr_t)animData + (((sizeof(Vec3s) * limbCount + 2) * frame)), sizeof(Vec3s) * limbCount + 2);
-
-        /*u32* ramPtr = (u32*)ram;
-
-        for (int i = 0; i < 1024; i++)
-        {
-            ramPtr[i] = i * 7;
-        }*/
-
-        // DmaMgr_SendRequest2(&entry->data.load.req, ram,
-        // LINK_ANIMATION_OFFSET(linkAnimHeader->segment, ((sizeof(Vec3s) * limbCount + 2) * frame)),
-        // sizeof(Vec3s) * limbCount + 2, 0, &entry->data.load.msgQueue, NULL, __FILE__,
-        //__LINE__);
     }
 }
 

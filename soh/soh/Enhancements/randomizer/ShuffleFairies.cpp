@@ -1,19 +1,28 @@
+#include "soh/OTRGlobals.h"
 #include "randomizer_grotto.h"
 #include "draw.h"
+#include "soh/cvar_prefixes.h"
+#include "static_data.h"
+#include "soh/Enhancements/item-tables/ItemTableTypes.h"
+#include "soh/ObjectExtension/ObjectExtension.h"
+
+extern "C" {
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
 #include "src/overlays/actors/ovl_En_Gs/z_en_gs.h"
 #include "src/overlays/actors/ovl_Shot_Sun/z_shot_sun.h"
-#include "soh/OTRGlobals.h"
-#include "soh/cvar_prefixes.h"
-#include "soh/Enhancements/item-tables/ItemTableTypes.h"
-#include "static_data.h"
+}
 
 #define FAIRY_FLAG_TIMED (1 << 8)
 
 void ShuffleFairies_DrawRandomizedItem(EnElf* enElf, PlayState* play) {
+    const auto fairyIdentity = ObjectExtension::GetInstance().Get<FairyIdentity>(&enElf->actor);
+    if (fairyIdentity == nullptr) {
+        return;
+    }
+
     GetItemEntry randoGetItem =
-        Rando::Context::GetInstance()->GetFinalGIEntry(enElf->sohFairyIdentity.randomizerCheck, true, GI_FAIRY);
+        Rando::Context::GetInstance()->GetFinalGIEntry(fairyIdentity->randomizerCheck, true, GI_FAIRY);
     if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
         randoGetItem = GET_ITEM_MYSTERY;
     }
@@ -33,8 +42,8 @@ bool ShuffleFairies_FairyExists(FairyIdentity fairyIdentity) {
         if (actor->id != ACTOR_EN_ELF) {
             actor = actor->next;
         } else {
-            EnElf* enElf = (EnElf*)(actor);
-            if (fairyIdentity.randomizerInf == enElf->sohFairyIdentity.randomizerInf) {
+            const auto actorFairyIdentity = ObjectExtension::GetInstance().Get<FairyIdentity>(&actor);
+            if (actorFairyIdentity != nullptr && fairyIdentity.randomizerInf == actorFairyIdentity->randomizerInf) {
                 return true;
             }
             actor = actor->next;
@@ -70,10 +79,10 @@ FairyIdentity ShuffleFairies_GetFairyIdentity(int32_t params) {
 static bool SpawnFairy(f32 posX, f32 posY, f32 posZ, int32_t params, FairyType fairyType) {
     FairyIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params);
     if (!Flags_GetRandomizerInf(fairyIdentity.randomizerInf)) {
-        EnElf* fairy = (EnElf*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_ELF, posX, posY - 30.0f, posZ, 0,
-                                           0, 0, fairyType, true);
-        fairy->sohFairyIdentity = fairyIdentity;
-        fairy->actor.draw = (ActorFunc)ShuffleFairies_DrawRandomizedItem;
+        Actor* fairy = Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_ELF, posX, posY - 30.0f, posZ, 0, 0, 0,
+                                   fairyType, true);
+        ObjectExtension::GetInstance().Set<FairyIdentity>(fairy, std::move(fairyIdentity));
+        fairy->draw = (ActorFunc)ShuffleFairies_DrawRandomizedItem;
         return true;
     }
     return false;
@@ -85,8 +94,14 @@ void RegisterShuffleFairies() {
     // Grant item when picking up fairy.
     COND_VB_SHOULD(VB_FAIRY_HEAL, shouldRegister, {
         EnElf* enElf = va_arg(args, EnElf*);
-        if (enElf->sohFairyIdentity.randomizerInf && enElf->sohFairyIdentity.randomizerInf != RAND_INF_MAX) {
-            Flags_SetRandomizerInf(enElf->sohFairyIdentity.randomizerInf);
+
+        const auto fairyIdentity = ObjectExtension::GetInstance().Get<FairyIdentity>(&enElf->actor);
+        if (fairyIdentity == nullptr) {
+            return;
+        }
+
+        if (fairyIdentity != nullptr && fairyIdentity->randomizerInf && fairyIdentity->randomizerInf != RAND_INF_MAX) {
+            Flags_SetRandomizerInf(fairyIdentity->randomizerInf);
         }
     });
 
@@ -375,7 +390,7 @@ void Rando::StaticData::RegisterFairyLocations() {
     locationTable[RC_DMT_FLAG_SUN_FAIRY] =                              Location::Fairy(RC_DMT_FLAG_SUN_FAIRY,                              RCQUEST_BOTH,   RCAREA_DEATH_MOUNTAIN_TRAIL,  SCENE_DEATH_MOUNTAIN_TRAIL,         TWO_ACTOR_PARAMS(0x1000, 464),   "Flag Sun's Song Fairy",                              RHT_DMT_FLAG_SUN_FAIRY,                              SpoilerCollectionCheck::RandomizerInf(RAND_INF_DMT_FLAG_SUN_FAIRY));
     locationTable[RC_DMT_COW_GROTTO_STORMS_FAIRY] =                     Location::Fairy(RC_DMT_COW_GROTTO_STORMS_FAIRY,                     RCQUEST_BOTH,   RCAREA_DEATH_MOUNTAIN_TRAIL,  SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(0x1000, -311),  "Cow Grotto Song of Storms Fairy",                    RHT_DMT_COW_GROTTO_STORMS_FAIRY,                     SpoilerCollectionCheck::RandomizerInf(RAND_INF_DMT_COW_GROTTO_STORMS_FAIRY));
     locationTable[RC_LW_SHORTCUT_STORMS_FAIRY] =                        Location::Fairy(RC_LW_SHORTCUT_STORMS_FAIRY,                        RCQUEST_BOTH,   RCAREA_LOST_WOODS,            SCENE_LOST_WOODS,                   TWO_ACTOR_PARAMS(0x1000, -795),  "Shortcuts Song of Storms Fairy",                     RHT_LW_SHORTCUT_STORMS_FAIRY,                        SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_SHORTCUT_STORMS_FAIRY));
-    locationTable[RC_GF_KITCHEN_SUN_FAIRY] =                            Location::Fairy(RC_GF_KITCHEN_SUN_FAIRY,                            RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_THIEVES_HIDEOUT,              TWO_ACTOR_PARAMS(0x1000, -621),  "Kitchen Sun's Song Fairy",                           RHT_GF_KITCHEN_SUN_FAIRY,                            SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_KITCHEN_SUN_FAIRY));
+    locationTable[RC_TH_KITCHEN_SUN_FAIRY] =                            Location::Fairy(RC_TH_KITCHEN_SUN_FAIRY,                            RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_THIEVES_HIDEOUT,              TWO_ACTOR_PARAMS(0x1000, -621),  "Kitchen Sun's Song Fairy",                           RHT_TH_KITCHEN_SUN_FAIRY,                            SpoilerCollectionCheck::RandomizerInf(RAND_INF_TH_KITCHEN_SUN_FAIRY));
     locationTable[RC_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY] =                  Location::Fairy(RC_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY,                  RCQUEST_BOTH,   RCAREA_LOST_WOODS,            SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(0x1000, 741),   "Scrub Grotto Sun's Song Fairy",                      RHT_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY,                  SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY));
     locationTable[RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY] =          Location::Fairy(RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY,          RCQUEST_BOTH,   RCAREA_GRAVEYARD,             SCENE_ROYAL_FAMILYS_TOMB,           TWO_ACTOR_PARAMS(0x1000, 1476),  "Royal Family's Tomb Sun's Song Fairy",               RHT_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY));
 
@@ -404,5 +419,6 @@ void Rando::StaticData::RegisterFairyLocations() {
     // clang-format on
 }
 
+static ObjectExtension::Register<FairyIdentity> RegisterFairyIdentity;
 static RegisterShipInitFunc registerShuffleFairies(RegisterShuffleFairies, { "IS_RANDO" });
 static RegisterShipInitFunc registerShuffleFairiesLocations(Rando::StaticData::RegisterFairyLocations);

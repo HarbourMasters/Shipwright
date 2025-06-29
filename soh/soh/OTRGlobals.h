@@ -71,7 +71,7 @@ class OTRGlobals {
     ~OTRGlobals();
 
     void ScaleImGui();
-
+    void Initialize();
     bool HasMasterQuest();
     bool HasOriginal();
     uint32_t GetInterpolationFPS();
@@ -171,6 +171,7 @@ void CheckTracker_RecalculateAvailableChecks();
 
 GetItemID RetrieveGetItemIDFromItemID(ItemID itemID);
 RandomizerGet RetrieveRandomizerGetFromItemID(ItemID itemID);
+void Messagebox_ShowErrorBox(char* title, char* body);
 #endif
 
 #ifdef __cplusplus

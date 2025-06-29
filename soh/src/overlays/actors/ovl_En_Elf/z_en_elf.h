@@ -42,9 +42,6 @@ typedef struct EnElf {
     /* 0x02C7 */ u8 unk_2C7;
     /* 0x02C8 */ EnElfUnkFunc func_2C8;
     /* 0x02CC */ EnElfActionFunc actionFunc;
-    // #region SOH [Randomizer]
-    /*        */ FairyIdentity sohFairyIdentity;
-    // #endregion
 } EnElf; // size = 0x02D0
 
 typedef enum {

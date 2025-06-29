@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Name=SOH
-Exec=soh.sh
+Exec=soh.elf
 Terminal=false
 Icon=sohIcon
 Type=Application

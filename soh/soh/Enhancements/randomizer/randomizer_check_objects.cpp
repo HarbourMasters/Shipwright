@@ -233,20 +233,20 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (location.GetRandomizerCheck() != RC_KAK_100_GOLD_SKULLTULA_REWARD ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) !=
                  RO_GANON_BOSS_KEY_KAK_TOKENS) && // 100 skull reward ganon boss key
-            (location.GetRCType() != RCTYPE_GF_KEY && location.GetRandomizerCheck() != RC_GF_GERUDO_MEMBERSHIP_CARD ||
+            (location.GetRCType() != RCTYPE_GF_KEY && location.GetRandomizerCheck() != RC_TH_FREED_CARPENTERS ||
              (CVarGetInteger(CVAR_RANDOMIZER_SETTING("FortressCarpenters"), RO_GF_CARPENTERS_NORMAL) ==
                   RO_GF_CARPENTERS_FREE &&
-              location.GetRCType() != RCTYPE_GF_KEY && location.GetRandomizerCheck() != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
+              location.GetRCType() != RCTYPE_GF_KEY && location.GetRandomizerCheck() != RC_TH_FREED_CARPENTERS) ||
              (CVarGetInteger(CVAR_RANDOMIZER_SETTING("FortressCarpenters"), RO_GF_CARPENTERS_NORMAL) ==
                   RO_GF_CARPENTERS_FAST &&
-              ((location.GetRandomizerCheck() == RC_GF_GERUDO_MEMBERSHIP_CARD &&
+              ((location.GetRandomizerCheck() == RC_TH_FREED_CARPENTERS &&
                 CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGerudoToken"), RO_GENERIC_NO) == RO_GENERIC_YES) ||
-               (location.GetRandomizerCheck() == RC_GF_NORTH_F1_CARPENTER &&
+               (location.GetRandomizerCheck() == RC_TH_1_TORCH_CARPENTER &&
                 CVarGetInteger(CVAR_RANDOMIZER_SETTING("GerudoKeys"), RO_GERUDO_KEYS_VANILLA) !=
                     RO_GERUDO_KEYS_VANILLA))) ||
              (CVarGetInteger(CVAR_RANDOMIZER_SETTING("FortressCarpenters"), RO_GF_CARPENTERS_NORMAL) ==
                   RO_GF_CARPENTERS_NORMAL &&
-              ((location.GetRandomizerCheck() == RC_GF_GERUDO_MEMBERSHIP_CARD &&
+              ((location.GetRandomizerCheck() == RC_TH_FREED_CARPENTERS &&
                 CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGerudoToken"), RO_GENERIC_NO) == RO_GENERIC_YES) ||
                (location.GetRCType() == RCTYPE_GF_KEY &&
                 CVarGetInteger(CVAR_RANDOMIZER_SETTING("GerudoKeys"), RO_GERUDO_KEYS_VANILLA) !=
