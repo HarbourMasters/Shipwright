@@ -344,7 +344,7 @@ void func_80AE2C1C(EnRd* this, PlayState* play) {
             !(player->stateFlags2 & PLAYER_STATE2_GRABBED_BY_ENEMY)) {
             if (this->unk_306 == 0) {
                 if (!(this->unk_312 & PLAYER_STATE2_GRABBED_BY_ENEMY) &&
-                    !CVarGetInteger(CVAR_CHEAT("NoRedeadFreeze"), 0)) {
+                    GameInteractor_Should(VB_REDEAD_GIBDO_FREEZE_LINK, true, this)) {
                     player->actor.freezeTimer = 40;
                     Player_SetAutoLockOnActor(play, &this->actor);
                     GET_PLAYER(play)->autoLockOnActor = &this->actor;
@@ -575,7 +575,7 @@ void func_80AE3834(EnRd* this, PlayState* play) {
     s16 temp_v0 = this->actor.yawTowardsPlayer - this->actor.shape.rot.y - this->unk_30E - this->unk_310;
 
     if (ABS(temp_v0) < 0x2008) {
-        if (!(this->unk_312 & 0x80) && !CVarGetInteger(CVAR_CHEAT("NoRedeadFreeze"), 0)) {
+        if (!(this->unk_312 & 0x80) && GameInteractor_Should(VB_REDEAD_GIBDO_FREEZE_LINK, true, this)) {
             player->actor.freezeTimer = 60;
             func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
             Player_SetAutoLockOnActor(play, &this->actor);

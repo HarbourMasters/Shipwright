@@ -13,7 +13,6 @@ typedef struct ObjKibako2 {
     /* 0x0164 */ ColliderCylinder collider;
     /* 0x01B0 */ ObjKibako2ActionFunc actionFunc;
     /* 0x01B4 */ s16 collectibleFlag;
-    /*        */ CrateIdentity crateIdentity;
 } ObjKibako2; // size = 0x01B8
 
 #endif

@@ -13,7 +13,6 @@
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/timesaver_hook_handlers.h"
-#include "soh/Enhancements/TimeSavers/TimeSavers.h"
 #include "soh/Enhancements/randomizer/hook_handlers.h"
 
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
@@ -98,6 +97,13 @@ void SwitchAge() {
     gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK_FAST;
     gPlayState->linkAgeOnLoad ^= 1;
 
+    // Discover adult/child spawns
+    if (gPlayState->linkAgeOnLoad == LINK_AGE_ADULT) {
+        Entrance_SetEntranceDiscovered(ENTR_HYRULE_FIELD_10, false);
+    } else {
+        Entrance_SetEntranceDiscovered(ENTR_LINKS_HOUSE_CHILD_SPAWN, false);
+    }
+
     static HOOK_ID hookId = 0;
     hookId = REGISTER_VB_SHOULD(VB_INFLICT_VOID_DAMAGE, {
         *should = false;
@@ -130,31 +136,6 @@ void RegisterOcarinaTimeTravel() {
         // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
         if (justPlayedSoT && notNearAnySource && (hasOcarinaOfTime || doesntNeedOcarinaOfTime) && hasMasterSword) {
             SwitchAge();
-        }
-    });
-}
-
-void RegisterRupeeDash() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("RupeeDash"), 0)) {
-            return;
-        }
-
-        // Initialize Timer
-        static uint16_t rupeeDashTimer = 0;
-        uint16_t rdmTime = CVarGetInteger(CVAR_ENHANCEMENT("RupeeDashInterval"), 5) * 20;
-
-        // Did time change by DashInterval?
-        if (rupeeDashTimer >= rdmTime) {
-            rupeeDashTimer = 0;
-            if (gSaveContext.rupees > 0) {
-                uint16_t walletSize = (CUR_UPG_VALUE(UPG_WALLET) + 1) * -1;
-                Rupees_ChangeBy(walletSize);
-            } else {
-                Health_ChangeBy(gPlayState, -16);
-            }
-        } else {
-            rupeeDashTimer++;
         }
     });
 }
@@ -979,10 +960,8 @@ void InitMods() {
     BossRush_RegisterHooks();
     RandomizerRegisterHooks();
     TimeSaverRegisterHooks();
-    TimeSavers_Register();
     RegisterTTS();
     RegisterOcarinaTimeTravel();
-    RegisterRupeeDash();
     RegisterPermanentHeartLoss();
     RegisterDeleteFileOnDeath();
     RegisterHyperBosses();

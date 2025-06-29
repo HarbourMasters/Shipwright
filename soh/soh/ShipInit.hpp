@@ -3,6 +3,7 @@
 
 #ifdef __cplusplus
 
+#include <string>
 #include <vector>
 #include <set>
 #include <unordered_map>

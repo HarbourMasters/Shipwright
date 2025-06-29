@@ -7,7 +7,7 @@ using namespace Rando;
 void RegionTable_Init_IceCavern() {
     // clang-format off
     // Vanilla/MQ Decider
-    areaTable[RR_ICE_CAVERN_ENTRYWAY] = Region("Ice Cavern Entryway", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_ICE_CAVERN_ENTRYWAY] = Region("Ice Cavern Entryway", SCENE_ICE_CAVERN, {}, {}, {
         //Exits
         Entrance(RR_ICE_CAVERN_BEGINNING,    []{return ctx->GetDungeon(ICE_CAVERN)->IsVanilla();}),
         Entrance(RR_ICE_CAVERN_MQ_BEGINNING, []{return ctx->GetDungeon(ICE_CAVERN)->IsMQ() && logic->CanUseProjectile();}),
@@ -16,7 +16,7 @@ void RegionTable_Init_IceCavern() {
 
 #pragma region Vanilla
 
-    areaTable[RR_ICE_CAVERN_BEGINNING] = Region("Ice Cavern Beginning", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_ICE_CAVERN_BEGINNING] = Region("Ice Cavern Beginning", SCENE_ICE_CAVERN, {}, {
         //Locations
         LOCATION(RC_ICE_CAVERN_ENTRANCE_STORMS_FAIRY, logic->CanUse(RG_SONG_OF_STORMS)),
     }, {
@@ -25,7 +25,7 @@ void RegionTable_Init_IceCavern() {
         Entrance(RR_ICE_CAVERN_MAIN,     []{return Here(RR_ICE_CAVERN_BEGINNING, []{return logic->CanKillEnemy(RE_FREEZARD, ED_CLOSE, true, 4);});}),
     });
 
-    areaTable[RR_ICE_CAVERN_MAIN] = Region("Ice Cavern", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_ICE_CAVERN_MAIN] = Region("Ice Cavern", SCENE_ICE_CAVERN, {
         //Events
         EventAccess(&logic->BlueFireAccess, []{return logic->IsAdult;}),
     }, {
@@ -59,7 +59,7 @@ void RegionTable_Init_IceCavern() {
 
 #pragma region MQ
 
-    areaTable[RR_ICE_CAVERN_MQ_BEGINNING] = Region("Ice Cavern MQ Beginning", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_ICE_CAVERN_MQ_BEGINNING] = Region("Ice Cavern MQ Beginning", SCENE_ICE_CAVERN, {}, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MQ_ENTRANCE_POT, logic->CanBreakPots()),
     }, {
@@ -69,7 +69,7 @@ void RegionTable_Init_IceCavern() {
         Entrance(RR_ICE_CAVERN_MQ_HUB,   []{return true;}),
     });
 
-    areaTable[RR_ICE_CAVERN_MQ_HUB] = Region("Ice Cavern MQ Hub", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_ICE_CAVERN_MQ_HUB] = Region("Ice Cavern MQ Hub", SCENE_ICE_CAVERN, {
         //Events
         EventAccess(&logic->FairyPot, []{return true;}),
     }, {
@@ -84,13 +84,13 @@ void RegionTable_Init_IceCavern() {
         //Exits
         //the switch for the glass blocking the entrance is linked to the switch that controls the glass around the skulltulla in RR_ICE_CAVERN_MQ_SCARECROW_ROOM
         //if you clear the ice, you can hit it with a pot from here.
-        Entrance(RR_ICE_CAVERN_BEGINNING,         []{return logic->BlueFire();}),
+        Entrance(RR_ICE_CAVERN_MQ_BEGINNING,      []{return logic->BlueFire();}),
         Entrance(RR_ICE_CAVERN_MQ_MAP_ROOM,       []{return Here(RR_ICE_CAVERN_MQ_BEGINNING, []{return logic->CanKillEnemy(RE_WHITE_WOLFOS) && logic->CanKillEnemy(RE_FREEZARD);});}),
         Entrance(RR_ICE_CAVERN_MQ_COMPASS_ROOM,   []{return logic->IsAdult && logic->BlueFire();}),
         Entrance(RR_ICE_CAVERN_MQ_SCARECROW_ROOM, []{return logic->BlueFire();}),
     });
 
-    areaTable[RR_ICE_CAVERN_MQ_MAP_ROOM] = Region("Ice Cavern MQ Map Room", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_ICE_CAVERN_MQ_MAP_ROOM] = Region("Ice Cavern MQ Map Room", SCENE_ICE_CAVERN, {
         //Events
         //Child can fit between the stalagmites on the left hand side
         EventAccess(&logic->BlueFireAccess,  []{return logic->IsChild || logic->CanJumpslash() || logic->HasExplosives();}),
@@ -99,7 +99,7 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST, logic->BlueFire() && Here(RR_ICE_CAVERN_MQ_MAP_ROOM, []{return logic->CanHitSwitch();})),
     }, {});
 
-    areaTable[RR_ICE_CAVERN_MQ_SCARECROW_ROOM] = Region("Ice Cavern MQ Scarecrow Room", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_ICE_CAVERN_MQ_SCARECROW_ROOM] = Region("Ice Cavern MQ Scarecrow Room", SCENE_ICE_CAVERN, {}, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MQ_GS_ICE_BLOCK,     (logic->BlueFire() && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)) || (logic->IsAdult && logic->CanHitSwitch(ED_LONG_JUMPSLASH))),
         LOCATION(RC_ICE_CAVERN_MQ_GS_SCARECROW,     logic->CanUse(RG_SCARECROW) || (logic->IsAdult && (logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_ICE_MQ_SCARECROW)))),
@@ -110,7 +110,7 @@ void RegionTable_Init_IceCavern() {
         Entrance(RR_ICE_CAVERN_MQ_WEST_CORRIDOR, []{return logic->IsAdult && logic->BlueFire();}),
     });
 
-    areaTable[RR_ICE_CAVERN_MQ_WEST_CORRIDOR] = Region("Ice Cavern MQ West Corridor", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_ICE_CAVERN_MQ_WEST_CORRIDOR] = Region("Ice Cavern MQ West Corridor", SCENE_ICE_CAVERN, {}, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MQ_PUSH_BLOCK_POT_1, logic->CanBreakPots()),
         LOCATION(RC_ICE_CAVERN_MQ_PUSH_BLOCK_POT_2, logic->CanBreakPots()),
@@ -120,7 +120,7 @@ void RegionTable_Init_IceCavern() {
         Entrance(RR_ICE_CAVERN_MQ_STALFOS_ROOM,   []{return true;}),
     });
 
-    areaTable[RR_ICE_CAVERN_MQ_STALFOS_ROOM] = Region("Ice Cavern MQ Stalfos Room", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_ICE_CAVERN_MQ_STALFOS_ROOM] = Region("Ice Cavern MQ Stalfos Room", SCENE_ICE_CAVERN, {}, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, logic->CanKillEnemy(RE_STALFOS)),
         LOCATION(RC_SHEIK_IN_ICE_CAVERN,            logic->CanKillEnemy(RE_STALFOS)),
@@ -130,7 +130,7 @@ void RegionTable_Init_IceCavern() {
         Entrance(RR_ICE_CAVERN_MQ_BEGINNING,     []{return logic->CanUse(RG_IRON_BOOTS) && Here(RR_ICE_CAVERN_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);});}),
     });
 
-    areaTable[RR_ICE_CAVERN_MQ_COMPASS_ROOM] = Region("Ice Cavern MQ Compass Room", "Ice Cavern", {RA_ICE_CAVERN}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_ICE_CAVERN_MQ_COMPASS_ROOM] = Region("Ice Cavern MQ Compass Room", SCENE_ICE_CAVERN, {
         //Events
         EventAccess(&logic->BlueFireAccess, []{return true;}),
     }, {

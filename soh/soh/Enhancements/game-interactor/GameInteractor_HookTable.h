@@ -27,6 +27,7 @@ DEFINE_HOOK(OnOcarinaSongAction, ());
 DEFINE_HOOK(OnCuccoOrChickenHatch, ());
 DEFINE_HOOK(OnShopSlotChange, (uint8_t cursorIndex, int16_t price));
 DEFINE_HOOK(OnActorInit, (void* actor));
+DEFINE_HOOK(OnActorSpawn, (void* actor));
 DEFINE_HOOK(OnActorUpdate, (void* actor));
 DEFINE_HOOK(OnActorKill, (void* actor));
 DEFINE_HOOK(OnActorDestroy, (void* actor));
@@ -64,7 +65,9 @@ DEFINE_HOOK(OnUpdateFileTargetSelection, (uint8_t optionIndex));
 DEFINE_HOOK(OnUpdateFileLanguageSelection, (uint8_t optionIndex));
 DEFINE_HOOK(OnUpdateFileQuestSelection, (uint8_t questIndex));
 DEFINE_HOOK(OnUpdateFileBossRushOptionSelection, (uint8_t optionIndex, uint8_t optionValue));
+DEFINE_HOOK(OnUpdateFileRandomizerOptionSelection, (uint8_t optionIndex));
 DEFINE_HOOK(OnUpdateFileNameSelection, (int16_t charCode));
+DEFINE_HOOK(OnFileChooseMain, (void* gameState));
 
 DEFINE_HOOK(OnSetGameLanguage, ());
 DEFINE_HOOK(OnFileDropped, (std::string filePath));

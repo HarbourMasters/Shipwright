@@ -1339,9 +1339,9 @@ typedef struct {
     /*      */ char* frenchAge;
 } BetterSceneSelectAgeLabels;
 
-// NTSC TODO: japanese bettersceneselect
+
 typedef struct {
-//   /*      */ char* japaneseName;
+  /*      */ char* japaneseName;
   /*      */ char* englishName;
   /*      */ char* germanName;
   /*      */ char* frenchName;
@@ -1350,7 +1350,7 @@ typedef struct {
 } BetterSceneSelectEntrancePair;
 
 typedef struct {
-    // /*      */ char* japaneseName;
+    /*      */ char* japaneseName;
     /*      */ char* englishName;
     /*      */ char* germanName;
     /*      */ char* frenchName;

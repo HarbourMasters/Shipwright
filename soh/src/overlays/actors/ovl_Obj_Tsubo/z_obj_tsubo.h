@@ -13,7 +13,6 @@ typedef struct ObjTsubo {
     /* 0x014C */ ObjTsuboActionFunc actionFunc;
     /* 0x0150 */ ColliderCylinder collider;
     /* 0x019C */ s8 objTsuboBankIndex;
-    /*        */ PotIdentity potIdentity;
 } ObjTsubo; // size = 0x01A0
 
 #endif

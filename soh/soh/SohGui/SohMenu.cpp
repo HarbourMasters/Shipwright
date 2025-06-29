@@ -155,6 +155,12 @@ void SohMenu::InitElement() {
                return !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0);
            },
             "Vertical Resolution Toggle is Off" } },
+        { DISABLE_FOR_BOOT_TO_DEBUG_WARP_SCREEN_ON,
+          { [](disabledInfo& info) -> bool {
+               return CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) &&
+                      CVarGetInteger(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"), 0);
+           },
+            "\"Boot To Debug Warp Screen\" Enabled (see Dev Tools -> General)" } },
     };
 }
 

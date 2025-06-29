@@ -8,14 +8,11 @@
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/fishsanity.h"
 #include "soh/Enhancements/randomizer/static_data.h"
-#include "soh/Enhancements/randomizer/ShufflePots.h"
-#include "soh/Enhancements/randomizer/ShuffleFreestanding.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/Notification/Notification.h"
 #include "soh/SaveManager.h"
-#include "soh/Enhancements/randomizer/ShuffleFairies.h"
 
 extern "C" {
 #include "macros.h"
@@ -46,6 +43,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Hy/z_en_hy.h"
 #include "src/overlays/actors/ovl_En_Bom_Bowl_Pit/z_en_bom_bowl_pit.h"
 #include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
+#include "src/overlays/actors/ovl_En_Ge2/z_en_ge2.h"
 #include "src/overlays/actors/ovl_En_Ds/z_en_ds.h"
 #include "src/overlays/actors/ovl_En_Gm/z_en_gm.h"
 #include "src/overlays/actors/ovl_En_Js/z_en_js.h"
@@ -55,7 +53,6 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_En_Mk/z_en_mk.h"
-#include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
 #include "draw.h"
 
 extern SaveContext gSaveContext;
@@ -69,9 +66,9 @@ extern void EnMk_Wait(EnMk* enMk, PlayState* play);
 extern void func_80ABA778(EnNiwLady* enNiwLady, PlayState* play);
 extern void EnGe1_Wait_Archery(EnGe1* enGe1, PlayState* play);
 extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
+extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
+extern void EnGe2_SetupCapturePlayer(EnGe2* enGe2, PlayState* play);
 }
-
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
 
 bool LocMatchesQuest(Rando::Location loc) {
     if (loc.GetQuest() == RCQUEST_BOTH) {
@@ -927,13 +924,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = Flags_GetRandomizerInf(RAND_INF_LEARNED_EPONA_SONG);
             break;
         }
-        case VB_SET_CUCCO_COUNT: {
-            EnNiwLady* enNiwLady = va_arg(args, EnNiwLady*);
-            // Override starting Cucco count using setting value
-            enNiwLady->cuccosInPen = 7 - RAND_GET_OPTION(RSK_CUCCO_COUNT);
-            *should = false;
-            break;
-        }
         case VB_KING_ZORA_THANK_CHILD: {
             // Allow turning in Ruto's letter even if you have already rescued her
             if (!Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
@@ -978,7 +968,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_BIGGORON_CONSIDER_TRADE_COMPLETE: {
-            // This being true will prevent other biggoron trades, there are already safegaurds in place to prevent
+            // This being true will prevent other biggoron trades, there are already safeguards in place to prevent
             // claim check from being traded multiple times, so we don't really need the quest to ever be considered
             // "complete"
             *should = false;
@@ -1444,6 +1434,13 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_GERUDO_GUARD_SET_ACTION_AFTER_TALK:
+            if (gPlayState->msgCtx.choiceIndex == 0) {
+                EnGe2* enGe2 = va_arg(args, EnGe2*);
+                EnGe2_SetupCapturePlayer(enGe2, gPlayState);
+                *should = false;
+            }
+            break;
         case VB_GERUDOS_BE_FRIENDLY: {
             *should = CHECK_QUEST_ITEM(QUEST_GERUDO_CARD);
             break;
@@ -1455,7 +1452,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_GIVE_ITEM_GERUDO_MEMBERSHIP_CARD: {
-            Flags_SetRandomizerInf(RAND_INF_GF_ITEM_FROM_LEADER_OF_FORTRESS);
+            Flags_SetRandomizerInf(RAND_INF_TH_ITEM_FROM_LEADER_OF_FORTRESS);
             *should = false;
             break;
         }
@@ -1982,6 +1979,10 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         if (ge1Type == GE1_TYPE_TRAINING_GROUND_GUARD &&
             Flags_GetRandomizerInf(RAND_INF_GF_GTG_GATE_PERMANENTLY_OPEN)) {
             enGe1->actionFunc = (EnGe1ActionFunc)EnGe1_SetNormalText;
+        } else if (ge1Type == GE1_TYPE_GATE_OPERATOR && enGe1->actor.world.pos.x != -1358.0f) {
+            // When spawning the gate operator, also spawn an extra gate operator on the wasteland side
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0, 0x95B0, 0,
+                        0x0300 | GE1_TYPE_GATE_OPERATOR, true);
         }
     }
 
@@ -2121,7 +2122,7 @@ void RandomizerOnGameFrameUpdateHandler() {
     }
 
     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MONEY)) {
-        gSaveContext.rupees = static_cast<int8_t>(CUR_CAPACITY(UPG_WALLET));
+        gSaveContext.rupees = static_cast<s16>(CUR_CAPACITY(UPG_WALLET));
     }
 
     if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
@@ -2144,7 +2145,7 @@ void RandomizerOnActorUpdateHandler(void* refActor) {
                 shutterDoor->unk_16E = 0;
             }
         } else if (actor->id == ACTOR_DOOR_GERUDO) {
-            DoorGerudo* gerudoDoor = (DoorGerudo*)actor;
+            DoorGerudo* gerudoDoor = reinterpret_cast<DoorGerudo*>(actor);
             gerudoDoor->actionFunc = func_8099485C;
             gerudoDoor->dyna.actor.world.pos.y = gerudoDoor->dyna.actor.home.pos.y + 200.0f;
         }
@@ -2328,11 +2329,6 @@ void RandomizerRegisterHooks() {
     static uint32_t fishsanityOnVanillaBehaviorHook = 0;
     static uint32_t fishsanityOnItemReceiveHook = 0;
 
-    static uint32_t shufflePotsOnActorInitHook = 0;
-    static uint32_t shufflePotsOnVanillaBehaviorHook = 0;
-
-    static uint32_t shuffleFreestandingOnVanillaBehaviorHook = 0;
-
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         ShipInit::Init("IS_RANDO");
 
@@ -2366,13 +2362,6 @@ void RandomizerRegisterHooks() {
             fishsanityOnVanillaBehaviorHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(fishsanityOnItemReceiveHook);
 
-        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnActorInit>(shufflePotsOnActorInitHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(
-            shufflePotsOnVanillaBehaviorHook);
-
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(
-            shuffleFreestandingOnVanillaBehaviorHook);
-
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;
         onPlayerUpdateForRCQueueHook = 0;
@@ -2397,13 +2386,6 @@ void RandomizerRegisterHooks() {
         fishsanityOnSceneInitHook = 0;
         fishsanityOnVanillaBehaviorHook = 0;
         fishsanityOnItemReceiveHook = 0;
-
-        shufflePotsOnActorInitHook = 0;
-        shufflePotsOnVanillaBehaviorHook = 0;
-
-        shuffleFreestandingOnVanillaBehaviorHook = 0;
-
-        ShuffleFairies_UnregisterHooks();
 
         if (!IS_RANDO)
             return;
@@ -2468,24 +2450,6 @@ void RandomizerRegisterHooks() {
                     Rando::Fishsanity::OnVanillaBehaviorHandler);
             fishsanityOnItemReceiveHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(
                 Rando::Fishsanity::OnItemReceiveHandler);
-        }
-
-        if (RAND_GET_OPTION(RSK_SHUFFLE_POTS) != RO_SHUFFLE_POTS_OFF) {
-            shufflePotsOnActorInitHook = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorInit>(
-                ACTOR_OBJ_TSUBO, ObjTsubo_RandomizerInit);
-            shufflePotsOnVanillaBehaviorHook =
-                GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(
-                    ShufflePots_OnVanillaBehaviorHandler);
-        }
-
-        if (RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING) != RO_SHUFFLE_FREESTANDING_OFF) {
-            shuffleFreestandingOnVanillaBehaviorHook =
-                GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(
-                    ShuffleFreestanding_OnVanillaBehaviorHandler);
-        }
-
-        if (RAND_GET_OPTION(RSK_SHUFFLE_FAIRIES)) {
-            ShuffleFairies_RegisterHooks();
         }
     });
 }

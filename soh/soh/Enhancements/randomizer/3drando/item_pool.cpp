@@ -800,16 +800,16 @@ void GenerateItemPool() {
 
     // Gerudo Fortress
     if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE)) {
-        ctx->PlaceItemInLocation(RC_GF_NORTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
-        ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
-        ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
-        ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
+        ctx->PlaceItemInLocation(RC_TH_1_TORCH_CARPENTER, RG_RECOVERY_HEART, false, true);
+        ctx->PlaceItemInLocation(RC_TH_DEAD_END_CARPENTER, RG_RECOVERY_HEART, false, true);
+        ctx->PlaceItemInLocation(RC_TH_DOUBLE_CELL_CARPENTER, RG_RECOVERY_HEART, false, true);
+        ctx->PlaceItemInLocation(RC_TH_STEEP_SLOPE_CARPENTER, RG_RECOVERY_HEART, false, true);
     } else if (ctx->GetOption(RSK_GERUDO_KEYS).IsNot(RO_GERUDO_KEYS_VANILLA)) {
         if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
             AddItemToMainPool(RG_HIDEOUT_SMALL_KEY);
-            ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
-            ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
-            ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
+            ctx->PlaceItemInLocation(RC_TH_DEAD_END_CARPENTER, RG_RECOVERY_HEART, false, true);
+            ctx->PlaceItemInLocation(RC_TH_DOUBLE_CELL_CARPENTER, RG_RECOVERY_HEART, false, true);
+            ctx->PlaceItemInLocation(RC_TH_STEEP_SLOPE_CARPENTER, RG_RECOVERY_HEART, false, true);
         } else {
             // Only add key ring if 4 Fortress keys necessary
             if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS) && ctx->GetOption(RSK_KEYRINGS)) {
@@ -832,15 +832,15 @@ void GenerateItemPool() {
         }
     } else {
         if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
-            ctx->PlaceItemInLocation(RC_GF_NORTH_F1_CARPENTER, RG_HIDEOUT_SMALL_KEY, false, true);
-            ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
-            ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_RECOVERY_HEART, false, true);
-            ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_RECOVERY_HEART, false, true);
+            ctx->PlaceItemInLocation(RC_TH_1_TORCH_CARPENTER, RG_HIDEOUT_SMALL_KEY, false, true);
+            ctx->PlaceItemInLocation(RC_TH_DEAD_END_CARPENTER, RG_RECOVERY_HEART, false, true);
+            ctx->PlaceItemInLocation(RC_TH_DOUBLE_CELL_CARPENTER, RG_RECOVERY_HEART, false, true);
+            ctx->PlaceItemInLocation(RC_TH_STEEP_SLOPE_CARPENTER, RG_RECOVERY_HEART, false, true);
         } else {
-            ctx->PlaceItemInLocation(RC_GF_NORTH_F1_CARPENTER, RG_HIDEOUT_SMALL_KEY, false, true);
-            ctx->PlaceItemInLocation(RC_GF_NORTH_F2_CARPENTER, RG_HIDEOUT_SMALL_KEY, false, true);
-            ctx->PlaceItemInLocation(RC_GF_SOUTH_F1_CARPENTER, RG_HIDEOUT_SMALL_KEY, false, true);
-            ctx->PlaceItemInLocation(RC_GF_SOUTH_F2_CARPENTER, RG_HIDEOUT_SMALL_KEY, false, true);
+            ctx->PlaceItemInLocation(RC_TH_1_TORCH_CARPENTER, RG_HIDEOUT_SMALL_KEY, false, true);
+            ctx->PlaceItemInLocation(RC_TH_DEAD_END_CARPENTER, RG_HIDEOUT_SMALL_KEY, false, true);
+            ctx->PlaceItemInLocation(RC_TH_DOUBLE_CELL_CARPENTER, RG_HIDEOUT_SMALL_KEY, false, true);
+            ctx->PlaceItemInLocation(RC_TH_STEEP_SLOPE_CARPENTER, RG_HIDEOUT_SMALL_KEY, false, true);
         }
     }
 
@@ -851,9 +851,9 @@ void GenerateItemPool() {
         ctx->possibleIceTrapModels.push_back(RG_GERUDO_MEMBERSHIP_CARD);
     } else if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
         AddItemToPool(PendingJunkPool, RG_GERUDO_MEMBERSHIP_CARD);
-        ctx->PlaceItemInLocation(RC_GF_GERUDO_MEMBERSHIP_CARD, RG_ICE_TRAP, false, true);
+        ctx->PlaceItemInLocation(RC_TH_FREED_CARPENTERS, RG_ICE_TRAP, false, true);
     } else {
-        ctx->PlaceItemInLocation(RC_GF_GERUDO_MEMBERSHIP_CARD, RG_GERUDO_MEMBERSHIP_CARD, false, true);
+        ctx->PlaceItemInLocation(RC_TH_FREED_CARPENTERS, RG_GERUDO_MEMBERSHIP_CARD, false, true);
     }
 
     // Keys
@@ -1122,11 +1122,26 @@ void GenerateItemPool() {
         }
     }
 
-    // add extra songs only if song shuffle is anywhere
-    AddItemsToPool(ItemPool, songList);
-    if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_ANYWHERE) &&
-        ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
-        AddItemsToPool(PendingJunkPool, songList);
+    if (ctx->GetOption(RSK_SHUFFLE_SONGS).IsNot(RO_SONG_SHUFFLE_OFF)) {
+        AddItemsToPool(ItemPool, songList);
+        // add extra songs only if song shuffle is anywhere
+        if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_ANYWHERE) &&
+            ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
+            AddItemsToPool(PendingJunkPool, songList);
+        }
+    } else {
+        ctx->PlaceItemInLocation(RC_SHEIK_IN_FOREST, RG_MINUET_OF_FOREST, false, true);
+        ctx->PlaceItemInLocation(RC_SHEIK_IN_CRATER, RG_BOLERO_OF_FIRE, false, true);
+        ctx->PlaceItemInLocation(RC_SHEIK_IN_ICE_CAVERN, RG_SERENADE_OF_WATER, false, true);
+        ctx->PlaceItemInLocation(RC_SHEIK_AT_COLOSSUS, RG_REQUIEM_OF_SPIRIT, false, true);
+        ctx->PlaceItemInLocation(RC_SHEIK_IN_KAKARIKO, RG_NOCTURNE_OF_SHADOW, false, true);
+        ctx->PlaceItemInLocation(RC_SHEIK_AT_TEMPLE, RG_PRELUDE_OF_LIGHT, false, true);
+        ctx->PlaceItemInLocation(RC_SONG_FROM_IMPA, RG_ZELDAS_LULLABY, false, true);
+        ctx->PlaceItemInLocation(RC_SONG_FROM_MALON, RG_EPONAS_SONG, false, true);
+        ctx->PlaceItemInLocation(RC_SONG_FROM_SARIA, RG_SARIAS_SONG, false, true);
+        ctx->PlaceItemInLocation(RC_SONG_FROM_ROYAL_FAMILYS_TOMB, RG_SUNS_SONG, false, true);
+        ctx->PlaceItemInLocation(RC_SONG_FROM_OCARINA_OF_TIME, RG_SONG_OF_TIME, false, true);
+        ctx->PlaceItemInLocation(RC_SONG_FROM_WINDMILL, RG_SONG_OF_STORMS, false, true);
     }
 
     /*For item pool generation, dungeon items are either placed in their vanilla

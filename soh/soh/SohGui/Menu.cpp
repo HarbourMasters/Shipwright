@@ -185,33 +185,35 @@ bool ModernMenuHeaderEntry(std::string label) {
 }
 
 uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
-    ImGui::BeginChild("Search Results");
     int searchCount = 0;
-    for (auto& menuLabel : menuOrder) {
-        auto& menuEntry = menuEntries.at(menuLabel);
-        for (auto& sidebarLabel : menuEntry.sidebarOrder) {
-            auto& sidebar = menuEntry.sidebars[sidebarLabel];
-            for (int i = 0; i < sidebar.columnWidgets.size(); i++) {
-                auto& column = sidebar.columnWidgets.at(i);
-                for (auto& info : column) {
-                    if (info.type == WIDGET_SEARCH || info.type == WIDGET_SEPARATOR ||
-                        info.type == WIDGET_SEPARATOR_TEXT || info.isHidden) {
-                        continue;
-                    }
-                    const char* tooltip = info.options->tooltip;
-                    std::string widgetStr = std::string(info.name) + std::string(tooltip != NULL ? tooltip : "");
-                    std::transform(menuSearchText.begin(), menuSearchText.end(), menuSearchText.begin(), ::tolower);
-                    menuSearchText.erase(std::remove(menuSearchText.begin(), menuSearchText.end(), ' '),
-                                         menuSearchText.end());
-                    std::transform(widgetStr.begin(), widgetStr.end(), widgetStr.begin(), ::tolower);
-                    widgetStr.erase(std::remove(widgetStr.begin(), widgetStr.end(), ' '), widgetStr.end());
-                    if (widgetStr.find(menuSearchText) != std::string::npos) {
-                        MenuDrawItem(info, 90 / sidebar.columnCount, menuThemeIndex);
-                        ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Gray));
-                        std::string origin = fmt::format("  ({} -> {}, Col {})", menuEntry.label, sidebarLabel, i + 1);
-                        ImGui::Text("%s", origin.c_str());
-                        ImGui::PopStyleColor();
-                        searchCount++;
+    if (ImGui::BeginChild("Search Results")) {
+        for (auto& menuLabel : menuOrder) {
+            auto& menuEntry = menuEntries.at(menuLabel);
+            for (auto& sidebarLabel : menuEntry.sidebarOrder) {
+                auto& sidebar = menuEntry.sidebars[sidebarLabel];
+                for (int i = 0; i < sidebar.columnWidgets.size(); i++) {
+                    auto& column = sidebar.columnWidgets.at(i);
+                    for (auto& info : column) {
+                        if (info.type == WIDGET_SEARCH || info.type == WIDGET_SEPARATOR ||
+                            info.type == WIDGET_SEPARATOR_TEXT || info.isHidden) {
+                            continue;
+                        }
+                        const char* tooltip = info.options->tooltip;
+                        std::string widgetStr = std::string(info.name) + std::string(tooltip != NULL ? tooltip : "");
+                        std::transform(menuSearchText.begin(), menuSearchText.end(), menuSearchText.begin(), ::tolower);
+                        menuSearchText.erase(std::remove(menuSearchText.begin(), menuSearchText.end(), ' '),
+                                             menuSearchText.end());
+                        std::transform(widgetStr.begin(), widgetStr.end(), widgetStr.begin(), ::tolower);
+                        widgetStr.erase(std::remove(widgetStr.begin(), widgetStr.end(), ' '), widgetStr.end());
+                        if (widgetStr.find(menuSearchText) != std::string::npos) {
+                            MenuDrawItem(info, 90 / sidebar.columnCount, menuThemeIndex);
+                            ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Gray));
+                            std::string origin =
+                                fmt::format("  ({} -> {}, Col {})", menuEntry.label, sidebarLabel, i + 1);
+                            ImGui::Text("%s", origin.c_str());
+                            ImGui::PopStyleColor();
+                            searchCount++;
+                        }
                     }
                 }
             }

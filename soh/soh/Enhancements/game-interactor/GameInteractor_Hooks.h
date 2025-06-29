@@ -29,6 +29,7 @@ void GameInteractor_ExecuteOnSetDoAction(uint16_t action);
 void GameInteractor_ExecuteOnOcarinaSongAction();
 void GameInteractor_ExecuteOnCuccoOrChickenHatch();
 void GameInteractor_ExecuteOnActorInit(void* actor);
+void GameInteractor_ExecuteOnActorSpawn(void* actor);
 void GameInteractor_ExecuteOnActorUpdate(void* actor);
 void GameInteractor_ExecuteOnActorKill(void* actor);
 void GameInteractor_ExecuteOnActorDestroy(void* actor);
@@ -71,7 +72,9 @@ void GameInteractor_ExecuteOnUpdateFileTargetSelection(uint8_t optionIndex);
 void GameInteractor_ExecuteOnUpdateFileLanguageSelection(uint8_t optionIndex);
 void GameInteractor_ExecuteOnUpdateFileQuestSelection(uint8_t questIndex);
 void GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(uint8_t optionIndex, uint8_t optionValue);
+void GameInteractor_ExecuteOnUpdateFileRandomizerOptionSelection(uint8_t optionIndex);
 void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode);
+void GameInteractor_ExecuteOnFileChooseMain(void* gameState);
 
 // MARK: - Game
 void GameInteractor_ExecuteOnSetGameLanguage();

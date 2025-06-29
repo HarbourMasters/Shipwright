@@ -28,6 +28,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Daiku/z_en_daiku.h"
 #include "src/overlays/actors/ovl_Bg_Spot02_Objects/z_bg_spot02_objects.h"
 #include "src/overlays/actors/ovl_Bg_Spot03_Taki/z_bg_spot03_taki.h"
+#include "src/overlays/actors/ovl_Bg_Spot06_Objects/z_bg_spot06_objects.h"
 #include "src/overlays/actors/ovl_Bg_Hidan_Kousi/z_bg_hidan_kousi.h"
 #include "src/overlays/actors/ovl_Bg_Dy_Yoseizo/z_bg_dy_yoseizo.h"
 #include "src/overlays/actors/ovl_En_Dnt_Demo/z_en_dnt_demo.h"
@@ -48,8 +49,6 @@ extern void EnRu2_SetEncounterSwitchFlag(EnRu2* enRu2, PlayState* play);
 
 extern void EnDaiku_EscapeSuccess(EnDaiku* enDaiku, PlayState* play);
 }
-
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
 
 void EnMa1_EndTeachSong(EnMa1* enMa1, PlayState* play) {
     if (Message_GetState(&gPlayState->msgCtx) == TEXT_STATE_CLOSING) {
@@ -1386,3 +1385,15 @@ void TimeSaverRegisterHooks() {
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(TimeSaverOnItemReceiveHandler);
     });
 }
+
+void RegisterSkipWaterTempleGateDelay() {
+    COND_ID_HOOK(OnActorUpdate, ACTOR_BG_SPOT06_OBJECTS,
+                 CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO), [](void* actor) {
+                     BgSpot06Objects* spot06 = static_cast<BgSpot06Objects*>(actor);
+                     if (spot06->dyna.actor.params == 0) {
+                         spot06->timer = 0;
+                     }
+                 })
+}
+
+static RegisterShipInitFunc skipWaterTempleGateDelay(RegisterSkipWaterTempleGateDelay);

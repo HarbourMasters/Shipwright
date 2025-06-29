@@ -9,6 +9,9 @@
 #include "soh/Enhancements/randomizer/context.h"
 #include "soh/Enhancements/randomizer/logic.h"
 
+#define TIME_PASSES true
+#define TIME_DOESNT_PASS false
+
 typedef bool (*ConditionFn)();
 
 // I hate this but every alternative I can think of right now is worse
@@ -114,14 +117,16 @@ enum class EntranceType;
 class Region {
   public:
     Region();
-    Region(std::string regionName_, std::string scene_, std::set<RandomizerArea> areas, bool timePass_,
+    Region(std::string regionName_, SceneID scene_, bool timePass, std::set<RandomizerArea> areas,
            std::vector<EventAccess> events_, std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_);
+    Region(std::string regionName_, SceneID scene_, std::vector<EventAccess> events_,
+           std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_);
     ~Region();
 
     std::string regionName;
-    std::string scene;
-    std::set<RandomizerArea> areas;
+    SceneID scene;
     bool timePass;
+    std::set<RandomizerArea> areas;
     std::vector<EventAccess> events;
     std::vector<LocationAccess> locations;
     std::list<Rando::Entrance> exits;
@@ -137,7 +142,8 @@ class Region {
     bool adultDay = false;
     bool adultNight = false;
     bool addedToPool = false;
-    ;
+
+    bool TimePass();
 
     void ApplyTimePass();
 
@@ -338,9 +344,6 @@ bool ChildCanAccess(const RandomizerRegion region);
 bool AdultCanAccess(const RandomizerRegion region);
 bool HasAccessTo(const RandomizerRegion region);
 
-#define DAY_NIGHT_CYCLE true
-#define NO_DAY_NIGHT_CYCLE false
-
 namespace Regions {
 extern void AccessReset();
 extern void ResetAllLocations();
@@ -386,5 +389,6 @@ void RegionTable_Init_SpiritTemple();
 void RegionTable_Init_ShadowTemple();
 void RegionTable_Init_BottomOfTheWell();
 void RegionTable_Init_IceCavern();
+void RegionTable_Init_ThievesHideout();
 void RegionTable_Init_GerudoTrainingGround();
 void RegionTable_Init_GanonsCastle();

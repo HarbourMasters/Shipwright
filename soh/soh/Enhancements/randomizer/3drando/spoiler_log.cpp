@@ -121,6 +121,7 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
 
     switch (gSaveContext.language) {
         case LANGUAGE_ENG:
+        case LANGUAGE_GER:
         case LANGUAGE_FRA:
         default:
             jsonData["entrancesMap"][sphereString][name] = text;
@@ -286,6 +287,10 @@ static void WriteAllLocations() {
                 default:
                     jsonData["locations"][locName]["trickName"] =
                         ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetEnglish();
+                    break;
+                case 1:
+                    jsonData["locations"][locName]["trickName"] =
+                        ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetGerman();
                     break;
                 case 2:
                     jsonData["locations"][locName]["trickName"] =

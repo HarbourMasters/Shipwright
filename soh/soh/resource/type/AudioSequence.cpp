@@ -9,4 +9,10 @@ Sequence* AudioSequence::GetPointer() {
 size_t AudioSequence::GetPointerSize() {
     return sizeof(Sequence);
 }
+
+AudioSequence::~AudioSequence() {
+    delete[] sequence.seqData;
+    sequence.seqData = nullptr;
+}
+
 } // namespace SOH

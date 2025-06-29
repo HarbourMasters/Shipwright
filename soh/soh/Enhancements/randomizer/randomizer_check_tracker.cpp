@@ -51,6 +51,7 @@ bool showBeans;
 bool showScrubs;
 bool showMajorScrubs;
 bool showMerchants;
+bool showSongs;
 bool showBeehives;
 bool showCows;
 bool showOverworldFreestanding;
@@ -584,6 +585,13 @@ void CheckTrackerLoadGame(int32_t fileNum) {
     UpdateAllOrdering();
     UpdateInventoryChecks();
     UpdateFilters();
+
+    RegionTable_Init();
+
+    if (Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_ENTRANCES).Get()) {
+        Rando::Context::GetInstance()->GetEntranceShuffler()->ApplyEntranceOverrides();
+    }
+
     RecalculateAvailableChecks();
 }
 
@@ -751,7 +759,7 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
             if ((flag == EVENTCHKINF_CARPENTERS_FREE(0) || flag == EVENTCHKINF_CARPENTERS_FREE(1) ||
                  flag == EVENTCHKINF_CARPENTERS_FREE(2) || flag == EVENTCHKINF_CARPENTERS_FREE(3)) &&
                 GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
-                SetCheckCollected(RC_GF_GERUDO_MEMBERSHIP_CARD);
+                SetCheckCollected(RC_TH_FREED_CARPENTERS);
                 return;
             }
             checkMatchType = SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF;
@@ -902,7 +910,6 @@ void LoadFile() {
     SaveManager::Instance->LoadData("areasSpoiled", areasSpoiled, (uint32_t)0);
     UpdateAllOrdering();
     UpdateAllAreas();
-    RegionTable_Init();
 }
 
 void Teardown() {
@@ -1306,6 +1313,9 @@ void LoadSettings() {
                                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) ==
                                        RO_SHUFFLE_MERCHANTS_ALL
                              : true;
+    showSongs = IS_RANDO
+                    ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SONGS) != RO_SONG_SHUFFLE_OFF
+                    : false;
     showBeehives = IS_RANDO
                        ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BEEHIVES) == RO_GENERIC_YES
                        : false;
@@ -1491,6 +1501,27 @@ void LoadSettings() {
         showOverworldFreestanding = false;
         showDungeonFreestanding = true;
     }
+
+    switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY)) {
+        case RO_GANON_BOSS_KEY_LACS_STONES:
+            Rando::Context::GetInstance()->LACSCondition(RO_LACS_STONES);
+            break;
+        case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
+            Rando::Context::GetInstance()->LACSCondition(RO_LACS_MEDALLIONS);
+            break;
+        case RO_GANON_BOSS_KEY_LACS_REWARDS:
+            Rando::Context::GetInstance()->LACSCondition(RO_LACS_REWARDS);
+            break;
+        case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
+            Rando::Context::GetInstance()->LACSCondition(RO_LACS_DUNGEONS);
+            break;
+        case RO_GANON_BOSS_KEY_LACS_TOKENS:
+            Rando::Context::GetInstance()->LACSCondition(RO_LACS_TOKENS);
+            break;
+        default:
+            Rando::Context::GetInstance()->LACSCondition(RO_LACS_VANILLA);
+            break;
+    }
 }
 
 bool IsCheckShuffled(RandomizerCheck rc) {
@@ -1516,6 +1547,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 (showMajorScrubs && (rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
                                      rc == RC_HF_DEKU_SCRUB_GROTTO || rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT))) &&
                (loc->GetRCType() != RCTYPE_MERCHANT || showMerchants) &&
+               (loc->GetRCType() != RCTYPE_SONG_LOCATION || showSongs) &&
                (loc->GetRCType() != RCTYPE_BEEHIVE || showBeehives) &&
                (loc->GetRCType() != RCTYPE_OCARINA || showOcarinas) &&
                (loc->GetRCType() != RCTYPE_SKULL_TOKEN || alwaysShowGS ||
@@ -1557,10 +1589,10 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_BOSS_KEY || showBossKeysanity) &&
                (loc->GetRCType() != RCTYPE_GANON_BOSS_KEY || showGanonBossKey) &&
                (rc != RC_KAK_100_GOLD_SKULLTULA_REWARD || show100SkullReward) &&
-               (loc->GetRCType() != RCTYPE_GF_KEY && rc != RC_GF_GERUDO_MEMBERSHIP_CARD ||
-                (showGerudoCard && rc == RC_GF_GERUDO_MEMBERSHIP_CARD) ||
+               (loc->GetRCType() != RCTYPE_GF_KEY && rc != RC_TH_FREED_CARPENTERS ||
+                (showGerudoCard && rc == RC_TH_FREED_CARPENTERS) ||
                 (fortressNormal && showGerudoFortressKeys && loc->GetRCType() == RCTYPE_GF_KEY) ||
-                (fortressFast && showGerudoFortressKeys && rc == RC_GF_NORTH_F1_CARPENTER));
+                (fortressFast && showGerudoFortressKeys && rc == RC_TH_1_TORCH_CARPENTER));
     } else if (loc->IsVanillaCompletion()) {
         return (OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc) || rc == RC_GIFT_FROM_RAURU) &&
                rc != RC_LINKS_POCKET;
@@ -1827,7 +1859,7 @@ void DrawLocation(RandomizerCheck rc) {
             case RCSHOW_IDENTIFIED:
             case RCSHOW_SEEN:
                 if (IS_RANDO) {
-                    if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP && !mystery && !itemLoc->IsAddedToPool()) {
+                    if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP && !mystery) {
                         if (status == RCSHOW_IDENTIFIED) {
                             txt = OTRGlobals::Instance->gRandoContext->overrides[rc].GetTrickName().GetForLanguage(
                                 gSaveContext.language);
@@ -1837,11 +1869,10 @@ void DrawLocation(RandomizerCheck rc) {
                                       .GetName()
                                       .GetForCurrentLanguage(MF_RAW);
                         }
-                    } else if (!mystery && !itemLoc->IsAddedToPool()) {
+                    } else if (!mystery) {
                         txt = itemLoc->GetPlacedItem().GetName().GetForCurrentLanguage(MF_RAW);
                     }
-                    if (IsVisibleInCheckTracker(rc) && status == RCSHOW_IDENTIFIED && !mystery &&
-                        !itemLoc->IsAddedToPool()) {
+                    if (IsVisibleInCheckTracker(rc) && status == RCSHOW_IDENTIFIED && !mystery) {
                         auto price = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetPrice();
                         if (price) {
                             txt += fmt::format(" - {}", price);
@@ -1962,7 +1993,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
     UIWidgets::PopStyleCombobox();
 }
 
-void RecalculateAvailableChecks() {
+void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */) {
     if (!enableAvailableChecks) {
         return;
     }
@@ -1970,20 +2001,22 @@ void RecalculateAvailableChecks() {
     ResetPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
     StartPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
 
+    const auto& ctx = Rando::Context::GetInstance();
+
     std::vector<RandomizerCheck> targetLocations;
     targetLocations.reserve(RC_MAX);
     for (auto& location : Rando::StaticData::GetLocationTable()) {
         RandomizerCheck rc = location.GetRandomizerCheck();
-        Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+        Rando::ItemLocation* itemLocation = ctx->GetItemLocation(rc);
         itemLocation->SetAvailable(false);
         if (!itemLocation->HasObtained()) {
             targetLocations.emplace_back(rc);
         }
     }
 
-    std::vector<RandomizerCheck> availableChecks = ReachabilitySearch(targetLocations, RG_NONE, true);
+    std::vector<RandomizerCheck> availableChecks = ReachabilitySearch(targetLocations, RG_NONE, true, startingRegion);
     for (auto& rc : availableChecks) {
-        const auto& itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+        const auto& itemLocation = ctx->GetItemLocation(rc);
         itemLocation->SetAvailable(true);
     }
 
@@ -1991,7 +2024,7 @@ void RecalculateAvailableChecks() {
     for (auto& [rcArea, vec] : checksByArea) {
         areaChecksAvailable[rcArea] = 0;
         for (auto& rc : vec) {
-            Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+            Rando::ItemLocation* itemLocation = ctx->GetItemLocation(rc);
             if (itemLocation->IsAvailable() && IsVisibleInCheckTracker(rc) && !IsCheckHidden(rc)) {
                 areaChecksAvailable[rcArea]++;
             }

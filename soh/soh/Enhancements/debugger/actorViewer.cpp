@@ -7,6 +7,7 @@
 #include "soh/Enhancements/nametag.h"
 #include "soh/ShipInit.hpp"
 
+#include <algorithm>
 #include <array>
 #include <bit>
 #include <map>
@@ -44,13 +45,6 @@ typedef struct {
     Vec3f pos;
     Vec3s rot;
 } ActorInfo;
-
-typedef enum {
-    LIST,
-    TARGET,
-    HELD,
-    INTERACT,
-} RetrievalMethod;
 
 std::array<const char*, 12> acMapping = {
     "Switch",      "Background (Prop type 1)",
@@ -873,37 +867,14 @@ void ActorViewer_AddTagForAllActors() {
 
 void ActorViewerWindow::DrawElement() {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-    static Actor* display;
-    static Actor empty{};
-    static Actor* fetch = NULL;
     static ActorInfo newActor = { 0, 0, { 0, 0, 0 }, { 0, 0, 0 } };
-    static bool needs_reset = false;
     static ImU16 one = 1;
-    static int actor;
-    static int category = 0;
-    static RetrievalMethod rm;
     static std::string filler = "Please select";
-    static std::vector<Actor*> list;
-    static u16 lastSceneId = 0;
     static std::string searchString = "";
-    static s16 currentSelectedInDropdown;
-    static std::vector<u16> actors;
+    static s16 currentSelectedInDropdown = -1;
+    static std::vector<u16> actorSearchResults;
 
     if (gPlayState != nullptr) {
-        needs_reset = lastSceneId != gPlayState->sceneNum;
-        if (needs_reset) {
-            display = &empty;
-            fetch = nullptr;
-            actor = category = 0;
-            filler = "Please Select";
-            list.clear();
-            needs_reset = false;
-            searchString = "";
-            currentSelectedInDropdown = -1;
-            actors.clear();
-        }
-        lastSceneId = gPlayState->sceneNum;
-
         if (ImGui::BeginChild("options", ImVec2(0, 0), ImGuiChildFlags_Border | ImGuiChildFlags_AutoResizeY)) {
             bool toggled = false;
             bool optionChange = false;
@@ -967,21 +938,19 @@ void ActorViewerWindow::DrawElement() {
             ImGui::EndCombo();
         }
 
+        if (display == nullptr) {
+            filler = "Please select";
+        }
+
         if (ImGui::BeginCombo("Actor", filler.c_str())) {
-            if (gPlayState != nullptr && lastSceneId != gPlayState->sceneNum) {
-                PopulateActorDropdown(category, list);
-                lastSceneId = gPlayState->sceneNum;
-            }
             for (int i = 0; i < list.size(); i++) {
                 std::string label = std::to_string(i) + ": " + ActorDB::Instance->RetrieveEntry(list[i]->id).name;
                 std::string description = GetActorDescription(list[i]->id);
                 if (description != "")
                     label += " (" + description + ")";
 
-                if (ImGui::Selectable(label.c_str())) {
-                    rm = LIST;
+                if (ImGui::Selectable(label.c_str(), list[i] == display)) {
                     display = list[i];
-                    actor = i;
                     filler = label;
                     break;
                 }
@@ -992,88 +961,76 @@ void ActorViewerWindow::DrawElement() {
 
         PushStyleHeader(THEME_COLOR);
         if (ImGui::TreeNode("Selected Actor")) {
-            DrawGroupWithBorder(
-                [&]() {
-                    ImGui::Text("Name: %s", ActorDB::Instance->RetrieveEntry(display->id).name.c_str());
-                    ImGui::Text("Description: %s", GetActorDescription(display->id).c_str());
-                    ImGui::Text("Category: %s", acMapping[display->category]);
-                    ImGui::Text("ID: %d", display->id);
-                    ImGui::Text("Parameters: %d", display->params);
-                    ImGui::Text("Actor List Index: %d", GetActorListIndex(display));
-                },
-                "Selected Actor");
-            ImGui::SameLine();
-            ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
+            if (display != nullptr) {
+                DrawGroupWithBorder(
+                    [&]() {
+                        ImGui::Text("Name: %s", ActorDB::Instance->RetrieveEntry(display->id).name.c_str());
+                        ImGui::Text("Description: %s", GetActorDescription(display->id).c_str());
+                        ImGui::Text("Category: %s", acMapping[display->category]);
+                        ImGui::Text("ID: %d", display->id);
+                        ImGui::Text("Parameters: %d", display->params);
+                        ImGui::Text("Actor List Index: %d", GetActorListIndex(display));
+                    },
+                    "Selected Actor");
+                ImGui::SameLine();
+                ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
 
-            DrawGroupWithBorder(
-                [&]() {
-                    ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
+                DrawGroupWithBorder(
+                    [&]() {
+                        ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
+                        PushStyleInput(THEME_COLOR);
+                        ImGui::Text("Actor Position");
+                        ImGui::InputScalar("X##CurPos", ImGuiDataType_Float, &display->world.pos.x);
+                        ImGui::InputScalar("Y##CurPos", ImGuiDataType_Float, &display->world.pos.y);
+                        ImGui::InputScalar("Z##CurPos", ImGuiDataType_Float, &display->world.pos.z);
+                        ImGui::PopItemWidth();
+                        PopStyleInput();
+                    },
+                    "Actor Position");
+                ImGui::SameLine();
+                DrawGroupWithBorder(
+                    [&]() {
+                        PushStyleInput(THEME_COLOR);
+                        ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
+                        ImGui::Text("Actor Rotation");
+                        ImGui::InputScalar("X##CurRot", ImGuiDataType_S16, &display->world.rot.x);
+                        ImGui::InputScalar("Y##CurRot", ImGuiDataType_S16, &display->world.rot.y);
+                        ImGui::InputScalar("Z##CurRot", ImGuiDataType_S16, &display->world.rot.z);
+                        ImGui::PopItemWidth();
+                        PopStyleInput();
+                    },
+                    "Actor Rotation");
+
+                if (display->category == ACTORCAT_BOSS || display->category == ACTORCAT_ENEMY) {
                     PushStyleInput(THEME_COLOR);
-                    ImGui::Text("Actor Position");
-                    ImGui::InputScalar("X##CurPos", ImGuiDataType_Float, &display->world.pos.x);
-                    ImGui::InputScalar("Y##CurPos", ImGuiDataType_Float, &display->world.pos.y);
-                    ImGui::InputScalar("Z##CurPos", ImGuiDataType_Float, &display->world.pos.z);
-                    ImGui::PopItemWidth();
+                    ImGui::InputScalar("Enemy Health", ImGuiDataType_U8, &display->colChkInfo.health);
                     PopStyleInput();
-                },
-                "Actor Position");
-            ImGui::SameLine();
-            DrawGroupWithBorder(
-                [&]() {
-                    PushStyleInput(THEME_COLOR);
-                    ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
-                    ImGui::Text("Actor Rotation");
-                    ImGui::InputScalar("X##CurRot", ImGuiDataType_S16, &display->world.rot.x);
-                    ImGui::InputScalar("Y##CurRot", ImGuiDataType_S16, &display->world.rot.y);
-                    ImGui::InputScalar("Z##CurRot", ImGuiDataType_S16, &display->world.rot.z);
-                    ImGui::PopItemWidth();
-                    PopStyleInput();
-                },
-                "Actor Rotation");
-
-            if (display->category == ACTORCAT_BOSS || display->category == ACTORCAT_ENEMY) {
-                PushStyleInput(THEME_COLOR);
-                ImGui::InputScalar("Enemy Health", ImGuiDataType_U8, &display->colChkInfo.health);
-                PopStyleInput();
-                UIWidgets::InsertHelpHoverText("Some actors might not use this!");
-            }
-
-            DrawGroupWithBorder(
-                [&]() {
-                    ImGui::Text("flags");
-                    UIWidgets::DrawFlagArray32("flags", display->flags);
-                },
-                "flags");
-
-            ImGui::SameLine();
-
-            DrawGroupWithBorder(
-                [&]() {
-                    ImGui::Text("bgCheckFlags");
-                    UIWidgets::DrawFlagArray16("bgCheckFlags", display->bgCheckFlags);
-                },
-                "bgCheckFlags");
-
-            if (Button("Refresh", ButtonOptions().Color(THEME_COLOR))) {
-                PopulateActorDropdown(category, list);
-                switch (rm) {
-                    case INTERACT:
-                    case HELD:
-                    case TARGET:
-                        display = fetch;
-                        break;
-                    case LIST:
-                        display = list[actor];
-                        break;
-                    default:
-                        break;
+                    UIWidgets::InsertHelpHoverText("Some actors might not use this!");
                 }
-            }
 
-            if (Button("Go to Actor", ButtonOptions().Color(THEME_COLOR))) {
-                Player* player = GET_PLAYER(gPlayState);
-                Math_Vec3f_Copy(&player->actor.world.pos, &display->world.pos);
-                Math_Vec3f_Copy(&player->actor.home.pos, &player->actor.world.pos);
+                DrawGroupWithBorder(
+                    [&]() {
+                        ImGui::Text("flags");
+                        UIWidgets::DrawFlagArray32("flags", display->flags);
+                    },
+                    "flags");
+
+                ImGui::SameLine();
+
+                DrawGroupWithBorder(
+                    [&]() {
+                        ImGui::Text("bgCheckFlags");
+                        UIWidgets::DrawFlagArray16("bgCheckFlags", display->bgCheckFlags);
+                    },
+                    "bgCheckFlags");
+
+                if (Button("Go to Actor", ButtonOptions().Color(THEME_COLOR))) {
+                    Player* player = GET_PLAYER(gPlayState);
+                    Math_Vec3f_Copy(&player->actor.world.pos, &display->world.pos);
+                    Math_Vec3f_Copy(&player->actor.home.pos, &player->actor.world.pos);
+                }
+            } else {
+                ImGui::Text("Select an actor to display information.");
             }
 
             if (Button("Fetch from Target",
@@ -1081,34 +1038,28 @@ void ActorViewerWindow::DrawElement() {
                            .Color(THEME_COLOR)
                            .Tooltip("Grabs actor with target arrow above it. You might need C-Up for enemies"))) {
                 Player* player = GET_PLAYER(gPlayState);
-                fetch = player->talkActor;
-                if (fetch != NULL) {
-                    display = fetch;
-                    category = fetch->category;
+                if (player->talkActor != NULL) {
+                    display = player->talkActor;
+                    category = display->category;
                     PopulateActorDropdown(category, list);
-                    rm = TARGET;
                 }
             }
             if (Button("Fetch from Held",
                        ButtonOptions().Color(THEME_COLOR).Tooltip("Grabs actor that Link is holding"))) {
                 Player* player = GET_PLAYER(gPlayState);
-                fetch = player->heldActor;
-                if (fetch != NULL) {
-                    display = fetch;
-                    category = fetch->category;
+                if (player->heldActor != NULL) {
+                    display = player->heldActor;
+                    category = display->category;
                     PopulateActorDropdown(category, list);
-                    rm = HELD;
                 }
             }
             if (Button("Fetch from Interaction",
                        ButtonOptions().Color(THEME_COLOR).Tooltip("Grabs actor from \"interaction range\""))) {
                 Player* player = GET_PLAYER(gPlayState);
-                fetch = player->interactRangeActor;
-                if (fetch != NULL) {
-                    display = fetch;
-                    category = fetch->category;
+                if (player->interactRangeActor != NULL) {
+                    display = player->interactRangeActor;
+                    category = display->category;
                     PopulateActorDropdown(category, list);
-                    rm = INTERACT;
                 }
             }
 
@@ -1119,21 +1070,22 @@ void ActorViewerWindow::DrawElement() {
             // ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
 
             if (InputString("Search Actor", &searchString, InputOptions().Color(THEME_COLOR))) {
-                actors = GetActorsWithDescriptionContainingString(searchString);
+                actorSearchResults = GetActorsWithDescriptionContainingString(searchString);
                 currentSelectedInDropdown = -1;
             }
 
-            if (!SohUtils::IsStringEmpty(searchString) && !actors.empty()) {
-                std::string preview = currentSelectedInDropdown == -1
-                                          ? "Please Select"
-                                          : ActorDB::Instance->RetrieveEntry(actors[currentSelectedInDropdown]).desc;
+            if (!SohUtils::IsStringEmpty(searchString) && !actorSearchResults.empty()) {
+                std::string preview =
+                    currentSelectedInDropdown == -1
+                        ? "Please Select"
+                        : ActorDB::Instance->RetrieveEntry(actorSearchResults[currentSelectedInDropdown]).desc;
                 PushStyleCombobox(THEME_COLOR);
                 if (ImGui::BeginCombo("Results", preview.c_str())) {
-                    for (u8 i = 0; i < actors.size(); i++) {
-                        if (ImGui::Selectable(ActorDB::Instance->RetrieveEntry(actors[i]).desc.c_str(),
+                    for (u8 i = 0; i < actorSearchResults.size(); i++) {
+                        if (ImGui::Selectable(ActorDB::Instance->RetrieveEntry(actorSearchResults[i]).desc.c_str(),
                                               i == currentSelectedInDropdown)) {
                             currentSelectedInDropdown = i;
-                            newActor.id = actors[i];
+                            newActor.id = actorSearchResults[i];
                         }
                     }
                     ImGui::EndCombo();
@@ -1237,18 +1189,38 @@ void ActorViewerWindow::DrawElement() {
         PopStyleHeader();
     } else {
         ImGui::Text("Global Context needed for actor info!");
-        if (needs_reset) {
-            fetch = nullptr;
-            actor = category = 0;
-            filler = "Please Select";
-            list.clear();
-            needs_reset = false;
-            searchString = "";
-            currentSelectedInDropdown = -1;
-            actors.clear();
-        }
     }
     ImGui::EndDisabled();
+}
+
+void ActorViewerWindow::InitElement() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorSpawn>([this](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        // Reload actor list if the new actor belongs to the selected category
+        if (category == actor->category) {
+            PopulateActorDropdown(actor->category, list);
+        }
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorDestroy>([this](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        // If the actor belongs to the selected category, we need to manually remove it, as it has not been removed from
+        // the global actor array yet
+        if (category == actor->category) {
+            list.erase(std::remove(list.begin(), list.end(), actor), list.end());
+        }
+        if (display == actor) {
+            display = nullptr;
+        }
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([this](int16_t sceneNum) {
+        display = nullptr;
+        category = ACTORCAT_SWITCH;
+        list.clear();
+    });
 }
 
 void ActorViewer_RegisterNameTagHooks() {

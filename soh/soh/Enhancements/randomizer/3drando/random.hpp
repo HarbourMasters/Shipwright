@@ -7,7 +7,7 @@
 #include <vector>
 #include <set>
 
-void Random_Init(uint32_t seed);
+void Random_Init(uint64_t seed);
 uint32_t Random(uint32_t min, uint32_t max);
 double RandomDouble();
 

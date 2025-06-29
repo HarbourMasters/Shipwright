@@ -623,6 +623,29 @@ void CustomMessage::InsertNumber(uint8_t num) {
     Replace("[[d]]", std::to_string(num));
 }
 
+void CustomMessage::SetSingularPlural() {
+    for (std::string& str : messages) {
+        size_t firstBar = str.find('|');
+        if (firstBar != std::string::npos) {
+            size_t euroSign = str.find("€");
+            size_t secondBar = str.find('|', firstBar + 1);
+            if (secondBar != std::string::npos) {
+                size_t thirdBar = str.find('|', secondBar + 1);
+                if (thirdBar != std::string::npos) {
+                    if (euroSign == std::string::npos) {
+                        str.erase(secondBar, thirdBar - secondBar);
+                    } else {
+                        str.erase(firstBar, secondBar - firstBar);
+                    }
+                }
+            }
+        }
+    }
+    // remove the remaining bar
+    this->Replace("|", "");
+    this->Replace("€", "");
+}
+
 void CustomMessage::Capitalize() {
     for (std::string str : messages) {
         (str)[0] = std::toupper((str)[0]);

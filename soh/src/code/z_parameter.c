@@ -24,6 +24,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/gameplaystats.h"
+#include "soh/ObjectExtension/ActorMaximumHealth.h"
 
 #include "message_data_static.h"
 extern MessageTableEntry* sNesMessageEntryTablePtr;
@@ -3643,7 +3644,7 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
         f32 scaleY = -0.75f;
         f32 scaledHeight = -texHeight * scaleY;
         f32 halfBarWidth = endTexWidth + ((f32)healthbar_fillWidth / 2);
-        s16 healthBarFill = ((f32)actor->colChkInfo.health / actor->maximumHealth) * healthbar_fillWidth;
+        s16 healthBarFill = ((f32)actor->colChkInfo.health / GetActorMaximumHealth(actor)) * healthbar_fillWidth;
 
         if (anchorType == ENEMYHEALTH_ANCHOR_ACTOR) {
             // Get actor projected position

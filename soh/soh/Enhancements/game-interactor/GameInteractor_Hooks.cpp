@@ -108,6 +108,13 @@ void GameInteractor_ExecuteOnActorInit(void* actor) {
     GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnActorInit>(actor);
 }
 
+void GameInteractor_ExecuteOnActorSpawn(void* actor) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorSpawn>(actor);
+    GameInteractor::Instance->ExecuteHooksForID<GameInteractor::OnActorSpawn>(((Actor*)actor)->id, actor);
+    GameInteractor::Instance->ExecuteHooksForPtr<GameInteractor::OnActorSpawn>((uintptr_t)actor, actor);
+    GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnActorSpawn>(actor);
+}
+
 void GameInteractor_ExecuteOnActorUpdate(void* actor) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorUpdate>(actor);
     GameInteractor::Instance->ExecuteHooksForID<GameInteractor::OnActorUpdate>(((Actor*)actor)->id, actor);
@@ -287,8 +294,16 @@ void GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(uint8_t optionInd
                                                                                                 optionValue);
 }
 
+void GameInteractor_ExecuteOnUpdateFileRandomizerOptionSelection(uint8_t optionIndex) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileRandomizerOptionSelection>(optionIndex);
+}
+
 void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileNameSelection>(charCode);
+}
+
+void GameInteractor_ExecuteOnFileChooseMain(void* gameState) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnFileChooseMain>(gameState);
 }
 
 // MARK: - Game
