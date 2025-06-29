@@ -80,14 +80,24 @@ SohMenu::SohMenu(const std::string& consoleVariable, const std::string& name)
     : Menu(consoleVariable, name, 0, UIWidgets::Colors::LightBlue) {
 }
 
+#ifndef ENABLE_REMOTE_CONTROL
+void SohMenu::AddMenuNetwork() {
+    // Add Network Menu
+    AddMenuEntry("Network", CVAR_SETTING("Menu.NetworkSidebarSection"));
+
+    WidgetPath path = { "Network", "Info", SECTION_COLUMN_1 };
+    AddSidebarEntry("Network", path.sidebarName, 2);
+
+    AddWidget(path, ICON_FA_EXCLAMATION_TRIANGLE " The Network features are unavailable because SoH was compiled without network support (\"ENABLE_REMOTE_CONTROL\" build flag).", WIDGET_TEXT).Options(TextOptions().Color(Colors::Orange));
+}
+#endif
+
 void SohMenu::InitElement() {
     Ship::Menu::InitElement();
     AddMenuSettings();
     AddMenuEnhancements();
     AddMenuRandomizer();
-#ifdef ENABLE_REMOTE_CONTROL
     AddMenuNetwork();
-#endif
     AddMenuDevTools();
 
     if (CVarGetInteger(CVAR_SETTING("Menu.SidebarSearch"), 0)) {
