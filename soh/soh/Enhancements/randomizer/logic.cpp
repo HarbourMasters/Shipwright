@@ -2386,9 +2386,7 @@ bool Logic::SpiritSunOnFloorToStatue() {
 }
 
 bool Logic::SpiritExplosiveKeyLogic() {
-    return SmallKeys(RR_SPIRIT_TEMPLE, HasExplosives()                                      ? 1
-                                       : ctx->GetOption(RSK_BOMBCHU_BAG) && BombchuRefill() ? 2
-                                                                                            : 3);
+    return SmallKeys(RR_SPIRIT_TEMPLE, HasExplosives() ? 1 : 2);
 }
 
 bool Logic::SpiritWestToSkull() {
@@ -2410,7 +2408,6 @@ bool Logic::SpiritEastToSwitch() {
            (CanUse(RG_ZELDAS_LULLABY) && CanUse(RG_HOOKSHOT));
 }
 
-
 // Combines crossing the ledge directly and the jump from the hand
 bool Logic::MQSpiritWestToPots() {
     return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || CanUse(RG_HOVER_BOOTS) || CanUse(RG_SONG_OF_TIME);
@@ -2428,9 +2425,9 @@ bool Logic::MQSpiritStatueSouthDoor() {
 
 bool Logic::MQSpirit4KeyColossus() {
     // !QUANTUM LOGIC!
-    // We only need 4 keys and the ability to reach both hands for adult to logically be able to drop down onto Desert Colossus
-    // This is because there are only 3 keys that can be wasted without opening up either this lock to East hand, or the West Hand lock through Sun Block Room
-    // and both directions allow you to drop onto colossus
+    // We only need 4 keys and the ability to reach both hands for adult to logically be able to drop down onto Desert
+    // Colossus This is because there are only 3 keys that can be wasted without opening up either this lock to East
+    // hand, or the West Hand lock through Sun Block Room and both directions allow you to drop onto colossus
     // logic->CanKillEnemy(RE_FLOORMASTER) is implied
     return CanAvoidEnemy(RE_BEAMOS, true, 4) && CanUse(RG_SONG_OF_TIME) &&
            CanJumpslash() && /*(str0 || SunlightArrows) &&*/
@@ -2440,7 +2437,8 @@ bool Logic::MQSpirit4KeyColossus() {
 
 bool Logic::MQSpirit4KeyWestHand() {
     // !QUANTUM LOGIC!
-    // Continuing from MQSpirit4KeyColossus, if we also have a longshot, we can go from the East hand to the West hand, meaning we always have access to East Hand
+    // Continuing from MQSpirit4KeyColossus, if we also have a longshot, we can go from the East hand to the West hand,
+    // meaning we always have access to East Hand
     return CanUse(RG_LONGSHOT) && MQSpirit4KeyColossus();
 }
 // This version of the function handles Shared Access for child, based on what adult could do if they existed

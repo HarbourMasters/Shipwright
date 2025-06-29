@@ -116,15 +116,13 @@ enum class EntranceType;
 } // namespace Rando
 
 struct SpiritLogicData {
-    uint8_t childKeys; // the number of keys that guarantees Child can reach this region
-    // The number of keys that guarantees Child can reach this region if they have reverse access
-    // 9 means MQ broken wall room, as the first child lock can only be opened by Child
-    // without opening the lock to Statue room, guaranteeing access with 6 keys if you can hit a switch
+    // the minimum number of keys that guarantees Child can reach this region
+    uint8_t childKeys;
+    // The minimum number of keys that guarantees Child can reach this region if they have reverse access
     uint8_t childRevKeys;
-    // the number of keys that guarantees Adult can reach this region
-    // if it is 9, that means the bombchu edge case is to be checked.
+    // the minimum number of keys that guarantees Adult can reach this region
     uint8_t adultKeys;
-    // the number of keys that guarantees Adult can reach this region with reverse entry
+    // the minimum number of keys that guarantees Adult can reach this region with reverse entry
     uint8_t adultRevKeys;
     // The area access condition to reach this region as Child, from the first lock,
     // including the minimum number of keys for ambiguous access
