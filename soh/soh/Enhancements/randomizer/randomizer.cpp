@@ -3753,7 +3753,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
 
     generated = 1;
 
-    GameInteractor_ExecuteOnGenerationCompletion();
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGenerationCompletion>();
 }
 
 bool GenerateRandomizer(std::string seed /*= ""*/) {

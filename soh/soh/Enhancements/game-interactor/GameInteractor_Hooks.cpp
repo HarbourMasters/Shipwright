@@ -306,10 +306,6 @@ void GameInteractor_ExecuteOnFileChooseMain(void* gameState) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnFileChooseMain>(gameState);
 }
 
-void GameInteractor_ExecuteOnGenerationCompletion() {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGenerationCompletion>();
-}
-
 // MARK: - Game
 
 void GameInteractor_ExecuteOnSetGameLanguage() {

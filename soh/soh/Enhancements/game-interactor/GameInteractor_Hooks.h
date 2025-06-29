@@ -75,7 +75,6 @@ void GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(uint8_t optionInd
 void GameInteractor_ExecuteOnUpdateFileRandomizerOptionSelection(uint8_t optionIndex);
 void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode);
 void GameInteractor_ExecuteOnFileChooseMain(void* gameState);
-void GameInteractor_ExecuteOnGenerationCompletion();
 
 // MARK: - Game
 void GameInteractor_ExecuteOnSetGameLanguage();
