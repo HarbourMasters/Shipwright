@@ -5,9 +5,9 @@ class TimeDisplayWindow final : public Ship::GuiWindow {
     using GuiWindow::GuiWindow;
 
     void InitElement() override;
-    void DrawElement() override {};
+    void DrawElement() override{};
     void Draw() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };
 
 void TimeDisplayUpdateDisplayOptions();

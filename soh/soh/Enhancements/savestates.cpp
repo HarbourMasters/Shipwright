@@ -852,8 +852,8 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
                     SPDLOG_ERROR("Invalid SaveState slot: {}", request.slot);
                 }
                 break;
-            [[unlikely]] default:
-                SPDLOG_ERROR("Invalid SaveState request type: Unknown ({})", static_cast<int>(request.type));
+                [[unlikely]] default
+                    : SPDLOG_ERROR("Invalid SaveState request type: Unknown ({})", static_cast<int>(request.type));
                 break;
         }
         this->requests.pop();
@@ -882,8 +882,8 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
                     1.0f, true, "state slot %u empty", request.slot);
                 return SaveStateReturn::FAIL_INVALID_SLOT;
             }
-        [[unlikely]] default:
-            SPDLOG_ERROR("Invalid SaveState request type: Unknown ({})", static_cast<int>(request.type));
+            [[unlikely]] default
+                : SPDLOG_ERROR("Invalid SaveState request type: Unknown ({})", static_cast<int>(request.type));
             return SaveStateReturn::FAIL_BAD_REQUEST;
     }
 }

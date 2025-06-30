@@ -45,5 +45,5 @@ for ($i = 0; $i -lt $files.Length; $i++) {
     $file = $files[$i]
     $relativePath = $file.FullName.Substring($basePath.Length + 1)
     Write-Host "Formatting [$($i+1)/$($files.Length)] $relativePath"
-    clang-format -i $file.FullName
+    .\clang-format.exe -i $file.FullName
 }

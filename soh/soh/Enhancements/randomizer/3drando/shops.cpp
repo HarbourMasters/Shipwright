@@ -588,7 +588,7 @@ void InitTrickNames() {
     };
     trickNameTable[RG_PROGRESSIVE_GORONSWORD] = {
         Text{ "Progressive Titan Blade", "Lame des Titans (prog.)",
-              "Titanenklinge (prog.)" },                                                  // "Hoja del Titán progresiva"
+              "Titanenklinge (prog.)" }, // "Hoja del Titán progresiva"
         Text{ "Progressive Goron Knife", "Lame Goron (prog.)", "Goronenmesser (prog.)" }, // "Daga Goron progresiva"
         Text{ "Progressive Giant Sword", "Épée géante (prog.)",
               "Riesenschwert (prog.)" }, // "Espada gigante progresiva"

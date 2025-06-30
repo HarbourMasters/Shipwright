@@ -11,19 +11,19 @@ namespace CheckTracker {
 class CheckTrackerSettingsWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
-    ~CheckTrackerSettingsWindow() {};
+    ~CheckTrackerSettingsWindow(){};
 
   protected:
-    void InitElement() override {};
+    void InitElement() override{};
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };
 
 class CheckTrackerWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
     void Draw() override;
-    ~CheckTrackerWindow() {};
+    ~CheckTrackerWindow(){};
 
   protected:
     void InitElement() override;

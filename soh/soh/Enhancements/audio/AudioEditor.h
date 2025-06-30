@@ -13,8 +13,8 @@ class AudioEditor final : public Ship::GuiWindow {
 
     void DrawElement() override;
     void InitElement() override;
-    void UpdateElement() override {};
-    ~AudioEditor() {};
+    void UpdateElement() override{};
+    ~AudioEditor(){};
 };
 
 void AudioEditor_RandomizeAll();

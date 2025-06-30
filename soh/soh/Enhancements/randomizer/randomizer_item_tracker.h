@@ -19,9 +19,11 @@ bool HasSong(ItemTrackerItem);
 bool HasQuestItem(ItemTrackerItem);
 bool HasEquipment(ItemTrackerItem);
 
-#define ITEM_TRACKER_ITEM(id, data, drawFunc) { id, #id, #id "_Faded", data, drawFunc }
+#define ITEM_TRACKER_ITEM(id, data, drawFunc) \
+    { id, #id, #id "_Faded", data, drawFunc }
 
-#define ITEM_TRACKER_ITEM_CUSTOM(id, name, nameFaded, data, drawFunc) { id, #name, #nameFaded "_Faded", data, drawFunc }
+#define ITEM_TRACKER_ITEM_CUSTOM(id, name, nameFaded, data, drawFunc) \
+    { id, #name, #nameFaded "_Faded", data, drawFunc }
 
 static std::vector<const char*> itemTrackerWindowIDs = { "Item Tracker",
                                                          "Inventory Items Tracker",
@@ -50,9 +52,9 @@ class ItemTrackerSettingsWindow final : public Ship::GuiWindow {
     using GuiWindow::GuiWindow;
 
   protected:
-    void InitElement() override {};
+    void InitElement() override{};
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };
 
 class ItemTrackerWindow final : public Ship::GuiWindow {
@@ -63,5 +65,5 @@ class ItemTrackerWindow final : public Ship::GuiWindow {
   protected:
     void InitElement() override;
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };

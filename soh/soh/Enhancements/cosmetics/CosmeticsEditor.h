@@ -67,6 +67,6 @@ class CosmeticsEditorWindow final : public Ship::GuiWindow {
     void InitElement() override;
     void DrawElement() override;
     void ApplyDungeonKeyColors();
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };
 #endif //__cplusplus
