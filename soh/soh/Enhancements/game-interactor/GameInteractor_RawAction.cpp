@@ -537,10 +537,10 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
             if (actor == NULL) {
                 return GameInteractionEffectQueryResult::TemporarilyNotPossible;
             }
-            if (nameTag != "" && CVarGetInteger(CVAR_ENHANCEMENT("CrowdControl.EnemyNameTags"), 0)) {
+            if (nameTag != "" && CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("EnemyNameTags"), 0)) {
                 NameTag_RegisterForActor(actor, nameTag.c_str());
             }
-            if (CVarGetInteger(CVAR_ENHANCEMENT("CrowdControl.SpawnedEnemiesIgnoredIngame"), 0)) {
+            if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("SpawnedEnemiesIgnoredIngame"), 0)) {
                 Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, actor, ACTORCAT_NPC);
             }
         }
@@ -549,10 +549,10 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
         Actor* actor =
             Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams, 0);
         if (actor != NULL) {
-            if (nameTag != "" && CVarGetInteger(CVAR_ENHANCEMENT("CrowdControl.EnemyNameTags"), 0)) {
+            if (nameTag != "" && CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("EnemyNameTags"), 0)) {
                 NameTag_RegisterForActor(actor, nameTag.c_str());
             }
-            if (CVarGetInteger(CVAR_ENHANCEMENT("CrowdControl.SpawnedEnemiesIgnoredIngame"), 0)) {
+            if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("SpawnedEnemiesIgnoredIngame"), 0)) {
                 Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, actor, ACTORCAT_NPC);
             }
             return GameInteractionEffectQueryResult::Possible;
@@ -580,7 +580,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t 
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         }
 
-        if (nameTag != "" && CVarGetInteger(CVAR_ENHANCEMENT("CrowdControl.EnemyNameTags"), 0)) {
+        if (nameTag != "" && CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("EnemyNameTags"), 0)) {
             NameTag_RegisterForActor((Actor*)cucco, nameTag.c_str());
         }
         cucco->actionFunc = func_80AB70A0_nocutscene;
@@ -605,10 +605,10 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t 
         Actor* actor = Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, player->actor.world.pos.x,
                                    player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, actorParams, 0);
         if (actor != NULL) {
-            if (nameTag != "" && CVarGetInteger(CVAR_ENHANCEMENT("CrowdControl.EnemyNameTags"), 0)) {
+            if (nameTag != "" && CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("EnemyNameTags"), 0)) {
                 NameTag_RegisterForActor((Actor*)actor, nameTag.c_str());
             }
-            if (CVarGetInteger(CVAR_ENHANCEMENT("CrowdControl.SpawnedEnemiesIgnoredIngame"), 0)) {
+            if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("SpawnedEnemiesIgnoredIngame"), 0)) {
                 Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, actor, ACTORCAT_NPC);
             }
             return GameInteractionEffectQueryResult::Possible;

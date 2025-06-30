@@ -60,7 +60,7 @@ void EnAttackNiw_Init(Actor* thisx, PlayState* play) {
     this->actionFunc = func_809B5670;
 
     if (CVarGetInteger("gCrowdControl", 0) &&
-        CVarGetInteger(CVAR_ENHANCEMENT("CrowdControl.SpawnedEnemiesIgnoredIngame"), 0)) {
+        CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("SpawnedEnemiesIgnoredIngame"), 0)) {
         Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, this, ACTORCAT_NPC);
     }
 }
