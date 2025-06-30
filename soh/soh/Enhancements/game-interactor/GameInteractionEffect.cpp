@@ -382,10 +382,10 @@ GameInteractionEffectQueryResult ModifyMovementSpeedMultiplier::CanBeApplied() {
 }
 void ModifyMovementSpeedMultiplier::_Apply() {
     if (parameters[0] == -2) {
-            GameInteractor::State::MovementSpeedMultiplier = 0.5f;
-        } else if (parameters[0] == 2) {
-            GameInteractor::State::MovementSpeedMultiplier = 2.0f;
-        }
+        GameInteractor::State::MovementSpeedMultiplier = 0.5f;
+    } else if (parameters[0] == 2) {
+        GameInteractor::State::MovementSpeedMultiplier = 2.0f;
+    }
 }
 void ModifyMovementSpeedMultiplier::_Remove() {
     GameInteractor::State::MovementSpeedMultiplier = 1.0f;
