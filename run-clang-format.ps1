@@ -25,7 +25,7 @@ if (-not (Test-Path $clangFormatFilePath) -or ($currentVersion -ne $requiredVers
     }
 
     $wc = New-Object net.webclient
-    $wc.Downloadfile($url, $PSScriptRoot + "\LLVM-14.0.6-win64.exe")
+    $wc.Downloadfile($url, $PSScriptRoot + $llvmInstallerPath)
 
     $sevenZipPath = "C:\Program Files\7-Zip\7z.exe"
     $specificFileInArchive = "bin\clang-format.exe"
