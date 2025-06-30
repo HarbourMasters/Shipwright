@@ -93,7 +93,6 @@ s32 DmaMgr_DmaRomToRam(uintptr_t rom, uintptr_t ram, size_t size) {
         ram += buffSize;
     }
 
-
     ioMsg.hdr.pri = OS_MESG_PRI_NORMAL;
     ioMsg.hdr.retQueue = &queue;
     ioMsg.devAddr = rom;
@@ -331,7 +330,8 @@ void DmaMgr_ThreadEntry(void* arg0) {
     osSyncPrintf("ＤＭＡマネージャスレッド実行終了\n");
 }
 
-s32 DmaMgr_SendRequestImpl(DmaRequest* req, uintptr_t ram, uintptr_t vrom, size_t size, u32 unk, OSMesgQueue* queue, OSMesg msg) {
+s32 DmaMgr_SendRequestImpl(DmaRequest* req, uintptr_t ram, uintptr_t vrom, size_t size, u32 unk, OSMesgQueue* queue,
+                           OSMesg msg) {
     static s32 sDmaMgrQueueFullLogged = 0;
 
     if ((1 && (ram == 0)) || (osMemSize < ram + size + 0x80000000) || (vrom & 1) || (vrom > 0x4000000) || (size == 0) ||
@@ -383,8 +383,8 @@ void DmaMgr_Init(void) {
     s32 idx;
     DmaEntry* iter;
 
-    //DmaMgr_DmaRomToRam((uintptr_t)_dmadataSegmentRomStart, (uintptr_t)_dmadataSegmentStart,
-                       //(uintptr_t)(_dmadataSegmentRomEnd - _dmadataSegmentRomStart));
+    // DmaMgr_DmaRomToRam((uintptr_t)_dmadataSegmentRomStart, (uintptr_t)_dmadataSegmentStart,
+    //(uintptr_t)(_dmadataSegmentRomEnd - _dmadataSegmentRomStart));
     osSyncPrintf("dma_rom_ad[]\n");
 
     sDmaMgrIsRomCompressed = false;
@@ -425,8 +425,8 @@ void DmaMgr_Init(void) {
     osStartThread(&sDmaMgrThread);
 }
 
-s32 DmaMgr_SendRequest2(DmaRequest* req, uintptr_t ram, uintptr_t vrom, size_t size, u32 unk5, OSMesgQueue* queue, OSMesg msg,
-                        const char* file, s32 line) {
+s32 DmaMgr_SendRequest2(DmaRequest* req, uintptr_t ram, uintptr_t vrom, size_t size, u32 unk5, OSMesgQueue* queue,
+                        OSMesg msg, const char* file, s32 line) {
 #if 0
     req->filename = file;
     req->line = line;
@@ -435,7 +435,7 @@ s32 DmaMgr_SendRequest2(DmaRequest* req, uintptr_t ram, uintptr_t vrom, size_t s
 }
 
 s32 DmaMgr_SendRequest1(void* ram0, uintptr_t vrom, size_t size, const char* file, s32 line) {
-    //printf("DmaMgr_SendRequest1 called...\n");
+    // printf("DmaMgr_SendRequest1 called...\n");
     return 0;
 
 #if 0

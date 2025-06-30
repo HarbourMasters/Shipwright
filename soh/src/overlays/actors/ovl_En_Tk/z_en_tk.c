@@ -115,8 +115,7 @@ void EnTkEff_Draw(EnTk* this, PlayState* play) {
             Matrix_Translate(eff->pos.x, eff->pos.y, eff->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(eff->size, eff->size, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             imageIdx = eff->timeLeft * ((f32)ARRAY_COUNT(dustTextures) / eff->timeTotal);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(dustTextures[imageIdx]));
@@ -496,7 +495,10 @@ void EnTk_Init(Actor* thisx, PlayState* play) {
 
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
 
-    if (GameInteractor_Should(VB_DAMPE_IN_GRAVEYARD_DESPAWN, gSaveContext.dayTime <= 0xC000 || gSaveContext.dayTime >= 0xE000 || LINK_IS_ADULT || play->sceneNum != SCENE_GRAVEYARD, this)) {
+    if (GameInteractor_Should(VB_DAMPE_IN_GRAVEYARD_DESPAWN,
+                              gSaveContext.dayTime <= 0xC000 || gSaveContext.dayTime >= 0xE000 || LINK_IS_ADULT ||
+                                  play->sceneNum != SCENE_GRAVEYARD,
+                              this)) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -588,8 +590,9 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
     Vec3f rewardPos;
     s32 rewardParams[] = {
         ITEM00_RUPEE_GREEN, ITEM00_RUPEE_BLUE, ITEM00_RUPEE_RED, ITEM00_RUPEE_PURPLE,
-        // #region SOH [General] Typically this heart piece would have no collectible flag set when it's picked up, but for both randomizer
-        // and gGravediggingTourFix we want to set one, and rely on it instead of the ItemGetInf flag that is set when the heart is spawned
+        // #region SOH [General] Typically this heart piece would have no collectible flag set when it's picked up, but
+        // for both randomizer and gGravediggingTourFix we want to set one, and rely on it instead of the ItemGetInf
+        // flag that is set when the heart is spawned
         ((COLLECTFLAG_GRAVEDIGGING_HEART_PIECE & 0x3F) << 8) | ITEM00_HEART_PIECE,
         // #endregion
     };
@@ -621,7 +624,8 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
                  * Upgrade the purple rupee reward to the heart piece if this
                  * is the first grand prize dig.
                  */
-                if (GameInteractor_Should(VB_DAMPE_GRAVEDIGGING_GRAND_PRIZE_BE_HEART_PIECE, !Flags_GetItemGetInf(ITEMGETINF_1C), this)) {
+                if (GameInteractor_Should(VB_DAMPE_GRAVEDIGGING_GRAND_PRIZE_BE_HEART_PIECE,
+                                          !Flags_GetItemGetInf(ITEMGETINF_1C), this)) {
                     Flags_SetItemGetInf(ITEMGETINF_1C);
                     this->currentReward = 4;
                 }
@@ -638,7 +642,8 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
             Audio_PlayActorSound2(&this->actor, NA_SE_SY_ERROR);
         } else if (this->currentReward == 4) {
             /* Heart piece */
-            Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         } else {
             /* Rupee */
             Audio_PlayActorSound2(&this->actor, NA_SE_SY_TRE_BOX_APPEAR);

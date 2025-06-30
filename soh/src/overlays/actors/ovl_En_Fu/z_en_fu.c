@@ -10,7 +10,9 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
+#define FLAGS                                                                                  \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
 #define FU_RESET_LOOK_ANGLE (1 << 0)
 #define FU_WAIT (1 << 1)
@@ -149,17 +151,6 @@ void EnFu_WaitChild(EnFu* this, PlayState* play) {
             Animation_Change(&this->skelanime, &gWindmillManPlayAndMoveHeadAnim, 1.0f, 0.0f,
                              Animation_GetLastFrame(&gWindmillManPlayAndMoveHeadAnim), ANIMMODE_ONCE, -4.0f);
         }
-    }
-}
-
-void GivePlayerRandoRewardSongOfStorms(EnFu* windmillGuy, PlayState* play, RandomizerCheck check) {
-    if (windmillGuy->actor.parent != NULL && windmillGuy->actor.parent->id == GET_PLAYER(play)->actor.id &&
-        !Flags_GetTreasure(play, 0x1F)) {
-        Flags_SetTreasure(play, 0x1F);
-        windmillGuy->actionFunc = func_80A1DBD4;
-    } else if (!Flags_GetTreasure(play, 0x1F)) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_STORMS);
-        GiveItemEntryFromActor(&windmillGuy->actor, play, getItemEntry, 10000.0f, 100.0f);
     }
 }
 

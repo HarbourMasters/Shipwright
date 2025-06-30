@@ -59,15 +59,13 @@ class Logic {
     bool LightTrialClear = false;
 
     // Logical keysanity
-    bool IsKeysanity = false;
+    bool IsFireLoopLocked = false;
 
     // Bottle Count
     uint8_t Bottles = 0;
     uint8_t NumBottles = 0;
-    //this event covers if the player can currently empty big poes in logic
+    // this event covers if the player can currently empty big poes in logic
     bool CanEmptyBigPoes = false;
-    //this check covers if the generation has confirmed that it's possible to empty big poes if needed as adult
-    bool CouldEmptyBigPoes = true;
 
     // Drops and Bottle Contents Access
     bool NutPot = false;
@@ -87,7 +85,7 @@ class Logic {
     bool FairyPot = false;
     bool FreeFairies = false;
     bool FairyPond = false;
-    bool AmmoCanDrop = false;
+    bool AmmoCanDrop = true;
 
     uint8_t PieceOfHeart = 0;
     uint8_t HeartContainer = 0;
@@ -112,7 +110,11 @@ class Logic {
 
     // Events
     bool ShowedMidoSwordAndShield = false;
-    bool CarpenterRescue = false;
+    bool THCouldFree1TorchCarpenter = false;
+    bool THCouldFreeDoubleCellCarpenter = false;
+    bool TH_CouldFreeDeadEndCarpenter = false;
+    bool THCouldRescueSlopeCarpenter = false;
+    bool THRescuedAllCarpenters = false;
     bool GF_GateOpen = false;
     bool GtG_GateOpen = false;
     bool DampesWindmillAccess = false;
@@ -151,7 +153,7 @@ class Logic {
     bool OpenedFireMQFireMazeDoor = false;
     bool MQForestBlockRoomTargets = false;
     bool ForestCanTwistHallway = false;
-    bool ForestClearBelowBowChest = false; //a better name that covers both versions would be nice
+    bool ForestClearBelowBowChest = false; // a better name that covers both versions would be nice
     bool ForestOpenBossCorridor = false;
     bool ShadowTrialFirstChest = false;
     bool MQGTGMazeSwitch = false;
@@ -168,17 +170,19 @@ class Logic {
     bool MQWaterStalfosPit = false;
     bool MQWaterDragonTorches = false;
     bool MQWaterB1Switch = false;
-    //bool MQWaterPillarSoTBlock = false; should be irrelevant. SHOULD.
+    // bool MQWaterPillarSoTBlock = false; should be irrelevant. SHOULD.
     bool MQWaterOpenedPillarB1 = false;
     bool MQSpiritCrawlBoulder = false;
     bool MQSpiritMapRoomEnemies = false;
     bool MQSpiritTimeTravelChest = false;
     bool MQSpirit3SunsEnemies = false;
     bool Spirit1FSilverRupees = false;
-    bool JabuRutoInB1 = false;
     bool JabuRutoIn1F = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
+
+    bool CalculatingAvailableChecks = false;
+    bool ACProcessUndiscoveredExits = false;
 
     SaveContext* mSaveContext = nullptr;
     Logic();
@@ -189,9 +193,11 @@ class Logic {
     bool CanOpenOverworldDoor(RandomizerGet itemName);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
+    bool CanOpenUnderwaterChest();
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
-    bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true, uint8_t quantity = 1, bool timer = false, bool inWater = false);
+    bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true,
+                      uint8_t quantity = 1, bool timer = false, bool inWater = false);
     bool CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true);
     bool CanAvoidEnemy(RandomizerEnemy enemy, bool grounded = false, uint8_t quantity = 1);
     bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
@@ -205,6 +211,7 @@ class Logic {
     uint8_t BottleCount();
     uint8_t OcarinaButtons();
     bool HasBottle();
+    bool CanUseSword();
     bool CanJumpslashExceptHammer();
     bool CanJumpslash();
     bool CanHitSwitch(EnemyDistance distance = ED_CLOSE, bool inWater = false);
@@ -238,16 +245,17 @@ class Logic {
     bool CanBreakUpperBeehives();
     bool CanBreakLowerBeehives();
     bool CanBreakPots();
+    bool CanBreakCrates();
+    bool CanBreakSmallCrates();
     bool HasFireSource();
     bool HasFireSourceWithTorch();
     bool TradeQuestStep(RandomizerGet rg);
-    bool CanFinishGerudoFortress();
     bool CanStandingShield();
     bool CanShield();
     bool CanUseProjectile();
     bool CanBuildRainbowBridge();
     bool CanTriggerLACS();
-    void Reset();
+    void Reset(bool resetSaveContext = true);
     void SetContext(std::shared_ptr<Context> _ctx);
     bool GetInLogic(LogicVal logicVal);
     void SetInLogic(LogicVal logicVal, bool remove);
@@ -261,6 +269,7 @@ class Logic {
     bool CheckEquipment(uint32_t item);
     bool CheckQuestItem(uint32_t item);
     void SetQuestItem(uint32_t item, bool state);
+    int8_t GetUsedSmallKeyCount(SceneID sceneId);
     uint8_t GetSmallKeyCount(uint32_t dungeonIndex);
     void SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count);
     bool CheckDungeonItem(uint32_t item, uint32_t dungeonIndex);

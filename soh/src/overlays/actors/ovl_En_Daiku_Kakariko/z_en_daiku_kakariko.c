@@ -159,8 +159,7 @@ void EnDaikuKakariko_Init(Actor* thisx, PlayState* play) {
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 40.0f);
 
-    SkelAnime_InitFlex(play, &this->skelAnime, &object_daiku_Skel_007958, NULL, this->jointTable, this->morphTable,
-                       17);
+    SkelAnime_InitFlex(play, &this->skelAnime, &object_daiku_Skel_007958, NULL, this->jointTable, this->morphTable, 17);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
 
@@ -496,8 +495,7 @@ void EnDaikuKakariko_Update(Actor* thisx, PlayState* play) {
     Math_SmoothStepToS(&this->neckAngle.x, this->neckAngleTarget.x, 1, 1820, 0);
 }
 
-s32 EnDaikuKakariko_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                     void* thisx) {
+s32 EnDaikuKakariko_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnDaikuKakariko* this = (EnDaikuKakariko*)thisx;
     Vec3s angle;
 
@@ -560,7 +558,8 @@ void EnDaikuKakariko_Draw(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_OPA_DISP++, 200, 0, 150, 255);
     }
 
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnDaikuKakariko_OverrideLimbDraw, EnDaikuKakariko_PostLimbDraw, thisx);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnDaikuKakariko_OverrideLimbDraw, EnDaikuKakariko_PostLimbDraw,
+                              thisx);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

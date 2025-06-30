@@ -6,6 +6,6 @@ uint16_t* SetExitList::GetPointer() {
 }
 
 size_t SetExitList::GetPointerSize() {
-	return exits.size() * sizeof(int16_t);
+    return exits.size() * sizeof(int16_t);
 }
 } // namespace SOH

@@ -12,4 +12,7 @@ static const ALIGN_ASSET(2) char gTwinrovaTitleCardGERTex[] = dgTwinrovaTitleCar
 #define dgTwinrovaTitleCardFRATex "__OTR__textures/object_tw/gTwinrovaTitleCardFRATex"
 static const ALIGN_ASSET(2) char gTwinrovaTitleCardFRATex[] = dgTwinrovaTitleCardFRATex;
 
+#define dgTwinrovaTitleCardJPNTex "__OTR__textures/object_tw/gTwinrovaTitleCardJPNTex"
+static const ALIGN_ASSET(2) char gTwinrovaTitleCardJPNTex[] = dgTwinrovaTitleCardJPNTex;
+
 #endif // TEXTURES_OBJECT_TW_H

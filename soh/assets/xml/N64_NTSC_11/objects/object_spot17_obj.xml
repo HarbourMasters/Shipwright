@@ -1,0 +1,12 @@
+<Root>
+    <File Name="object_spot17_obj" Segment="6">
+        <Texture Name="gCraterRockTLUT" OutName="crater_rock_tlut" Format="rgba16" Width="4" Height="4" Offset="0x00"/>
+        <Texture Name="gCraterRockTex" OutName="crater_rock" Format="ci4" Width="64" Height="64" Offset="0x20" TlutOffset="0x00"/>
+        <DList Name="gCraterBombableWallDL" Offset="0x8A0"/>
+        <DList Name="gCraterBombableWallCracksDL" Offset="0x960"/>
+        <Collision Name="gCraterBombableWallCol" Offset="0xA38"/>
+        <DList Name="gCraterSmokeConeDL" Offset="0xB40"/>
+        <Texture Name="gCraterSmokeConeTex" OutName="crater_smoke_cone" Format="ia8" Width="32" Height="32" Offset="0xC30"/>
+        <Texture Name="gCraterBombableWallCracksTex" OutName="crater_bombable_wall_cracks" Format="ia8" Width="32" Height="64" Offset="0x1030"/>
+    </File>
+</Root>

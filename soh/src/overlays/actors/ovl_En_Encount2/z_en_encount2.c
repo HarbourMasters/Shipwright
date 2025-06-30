@@ -48,7 +48,9 @@ void EnEncount2_Init(Actor* thisx, PlayState* play) {
         // "☆☆☆☆☆ Death Mountain Encount2 set ☆☆☆☆☆"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ デスマウンテンエンカウント２セットされました ☆☆☆☆☆ %d\n" VT_RST,
                      this->actor.params);
-        if (LINK_IS_ADULT && (Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP))) { // flag for having used fire temple blue warp
+        if (LINK_IS_ADULT &&
+            (Flags_GetEventChkInf(
+                EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP))) { // flag for having used fire temple blue warp
             Actor_Kill(thisx);
         }
     } else {
@@ -77,8 +79,8 @@ void EnEncount2_Wait(EnEncount2* this, PlayState* play) {
     } else if ((this->actor.xzDistToPlayer < 700.0f) && (Flags_GetSwitch(play, 0x37))) {
         s16 scene = play->sceneNum;
 
-        if (((scene == SCENE_GANON_BOSS) || (scene == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) || (scene == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) ||
-             (scene == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE)) &&
+        if (((scene == SCENE_GANON_BOSS) || (scene == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
+             (scene == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (scene == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE)) &&
             (!this->collapseSpawnerInactive)) {
             spawnerState = ENCOUNT2_ACTIVE_GANONS_TOWER;
         }
@@ -157,8 +159,8 @@ void EnEncount2_SpawnRocks(EnEncount2* this, PlayState* play) {
     } else if ((this->actor.xzDistToPlayer < 700.0f) && (Flags_GetSwitch(play, 0x37) != 0)) {
         s16 scene = play->sceneNum;
 
-        if (((scene == SCENE_GANON_BOSS) || (scene == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) || (scene == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) ||
-             (scene == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE)) &&
+        if (((scene == SCENE_GANON_BOSS) || (scene == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
+             (scene == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (scene == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE)) &&
             (!this->collapseSpawnerInactive)) {
             maxRocks = 1;
             spawnerState = ENCOUNT2_ACTIVE_GANONS_TOWER;
@@ -229,9 +231,8 @@ void EnEncount2_SpawnRocks(EnEncount2* this, PlayState* play) {
                     tempVec2Z = Rand_CenteredFloat(70.0f) + player->actor.world.pos.z;
                 }
             }
-            spawnedRock =
-                (EnFireRock*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FIRE_ROCK,
-                                                tempVec2X, tempVec1Y, tempVec2Z, 0, 0, 0, spawnedRockType);
+            spawnedRock = (EnFireRock*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FIRE_ROCK,
+                                                          tempVec2X, tempVec1Y, tempVec2Z, 0, 0, 0, spawnedRockType);
             if (spawnedRock != NULL) {
                 spawnedRock->spawner = this;
                 this->numSpawnedRocks++;

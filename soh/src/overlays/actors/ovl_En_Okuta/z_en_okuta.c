@@ -128,8 +128,8 @@ void EnOkuta_Init(Actor* thisx, PlayState* play) {
     this->numShots = (thisx->params >> 8) & 0xFF;
     thisx->params &= 0xFF;
     if (thisx->params == 0) {
-        SkelAnime_Init(play, &this->skelAnime, &gOctorokSkel, &gOctorokAppearAnim, this->jointTable,
-                       this->morphTable, 38);
+        SkelAnime_Init(play, &this->skelAnime, &gOctorokSkel, &gOctorokAppearAnim, this->jointTable, this->morphTable,
+                       38);
         Collider_InitCylinder(play, &this->collider);
         Collider_SetCylinder(play, &this->collider, thisx, &sOctorockColliderInit);
         CollisionCheck_SetInfo(&thisx->colChkInfo, &sDamageTable, &sColChkInfoInit);
@@ -545,7 +545,8 @@ void EnOkuta_ProjectileFly(EnOkuta* this, PlayState* play) {
                         gravity = -320;
                     }
                     EffectSsKakera_Spawn(play, &pos, &velocity, &this->actor.world.pos, gravity, phi_v0, 30, 5, 0,
-                                        sEffectScales[i]/5, 3, 0, 70, 1, OBJECT_GAMEPLAY_FIELD_KEEP, gSilverRockFragmentsDL);
+                                         sEffectScales[i] / 5, 3, 0, 70, 1, OBJECT_GAMEPLAY_FIELD_KEEP,
+                                         gSilverRockFragmentsDL);
                 }
             } else {
                 EffectSsHahen_SpawnBurst(play, &pos, 6.0f, 0, 1, 2, 15, 7, 10, gOctorokProjectileDL);
@@ -630,11 +631,12 @@ void EnOkuta_Update(Actor* thisx, PlayState* play2) {
     Vec3f sp38;
     s32 sp34;
 
-    if (!(player->stateFlags1 & (PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE))) {
+    if (!(player->stateFlags1 &
+          (PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE))) {
         if (this->actor.params == 0) {
             EnOkuta_ColliderCheck(this, play);
-            if (!WaterBox_GetSurfaceImpl(play, &play->colCtx, this->actor.world.pos.x,
-                                         this->actor.world.pos.z, &ySurface, &outWaterBox) ||
+            if (!WaterBox_GetSurfaceImpl(play, &play->colCtx, this->actor.world.pos.x, this->actor.world.pos.z,
+                                         &ySurface, &outWaterBox) ||
                 (ySurface < this->actor.floorHeight)) {
                 if (this->actor.colChkInfo.health != 0) {
                     Actor_Kill(&this->actor);
@@ -728,8 +730,7 @@ s32 EnOkuta_GetSnoutScale(EnOkuta* this, f32 curFrame, Vec3f* scale) {
     return true;
 }
 
-s32 EnOkuta_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                             void* thisx) {
+s32 EnOkuta_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnOkuta* this = (EnOkuta*)thisx;
     f32 curFrame = this->skelAnime.curFrame;
     Vec3f scale;
@@ -759,27 +760,24 @@ void EnOkuta_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (this->actor.params == 0) {
-        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnOkuta_OverrideLimbDraw,
-                          NULL, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnOkuta_OverrideLimbDraw, NULL, this);
     } else {
         OPEN_DISPS(play->state.gfxCtx);
 
         if (CVarGetInteger(CVAR_ENHANCEMENT("NewDrops"), 0) != 0) {
             Gfx_SetupDL_25Opa(play->state.gfxCtx);
             gSPSegment(POLY_OPA_DISP++, 0x08,
-                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 6),
+                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 6),
                                         1 * (play->state.frames * 6), 32, 32, 1, 1 * (play->state.frames * 6),
                                         1 * (play->state.frames * 6), 32, 32));
-            Matrix_Scale(7.0f,7.0f,7.0f,MTXMODE_APPLY);
+            Matrix_Scale(7.0f, 7.0f, 7.0f, MTXMODE_APPLY);
             Matrix_RotateX(thisx->home.rot.z * (M_PI / 0x8000), MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                    G_MTX_MODELVIEW | G_MTX_LOAD);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
             gSPDisplayList(POLY_OPA_DISP++, gSilverRockDL);
         } else {
             Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
             Matrix_RotateZ(this->actor.home.rot.z * (M_PI / 0x8000), MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                    G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gOctorokProjectileDL);
         }
 

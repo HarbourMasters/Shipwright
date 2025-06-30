@@ -21,11 +21,11 @@ class ItemLocation {
     RandomizerGet& RefPlacedItem();
     void SetDelayedItem(RandomizerGet item);
     RandomizerRegion GetParentRegionKey() const;
-    void SetParentRegion (RandomizerRegion region);
+    void SetParentRegion(RandomizerRegion region);
     std::set<RandomizerArea> GetAreas() const;
     RandomizerArea GetFirstArea() const;
     RandomizerArea GetRandomArea() const;
-    void MergeAreas (std::set<RandomizerArea> newAreas);
+    void MergeAreas(std::set<RandomizerArea> newAreas);
     void PlaceVanillaItem();
     void ApplyPlacedItemEffect() const;
     void SaveDelayedItem();
@@ -56,6 +56,8 @@ class ItemLocation {
     bool IsFoolishCandidate() const;
     void SetBarrenCandidate();
     void ResetVariables();
+    bool IsAvailable() const;
+    void SetAvailable(bool isAvailable_);
 
   private:
     RandomizerCheck rc;
@@ -76,5 +78,6 @@ class ItemLocation {
     bool barrenCandidate = false;
     RandomizerCheckStatus status = RCSHOW_UNCHECKED;
     bool isSkipped = false;
+    bool isAvailable = false;
 };
 } // namespace Rando

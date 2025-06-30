@@ -1,9 +1,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/OTRGlobals.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
-    #include "src/overlays/actors/ovl_En_Zl4/z_en_zl4.h"
+#include "src/overlays/actors/ovl_En_Zl4/z_en_zl4.h"
 }
 
 /**
@@ -21,7 +20,8 @@ void EnZl4_SkipToGivingZeldasLetter(EnZl4* enZl4, PlayState* play) {
         Audio_PlayFanfare(NA_BGM_APPEAR);
         enZl4->csState = 8; // ZL4_CS_PLAN
     } else {
-        Npc_UpdateTalking(play, &enZl4->actor, &enZl4->interactInfo.talkState, enZl4->collider.dim.radius + 60.0f, EnZl4_GiveItemTextId, func_80B5B9B0);
+        Npc_UpdateTalking(play, &enZl4->actor, &enZl4->interactInfo.talkState, enZl4->collider.dim.radius + 60.0f,
+                          EnZl4_GiveItemTextId, func_80B5B9B0);
         func_80B5BB78(enZl4, play);
 
         if (enZl4->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
@@ -32,14 +32,17 @@ void EnZl4_SkipToGivingZeldasLetter(EnZl4* enZl4, PlayState* play) {
 }
 
 void SkipToGivingZeldasLetter_OnActorInit(void* actorPtr) {
-    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-        EnZl4* enZl4 = static_cast<EnZl4*>(actorPtr);
-        if (enZl4->actionFunc != EnZl4_Cutscene || enZl4->csState != 0) return;
+    EnZl4* enZl4 = static_cast<EnZl4*>(actorPtr);
+    if (enZl4->actionFunc != EnZl4_Cutscene || enZl4->csState != 0)
+        return;
 
-        enZl4->actionFunc = EnZl4_SkipToGivingZeldasLetter;
-    }
+    enZl4->actionFunc = EnZl4_SkipToGivingZeldasLetter;
 }
 
-void SkipToGivingZeldasLetter_Register() {
-    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorInit>(ACTOR_EN_ZL4, SkipToGivingZeldasLetter_OnActorInit);
+void RegisterSkipToGivingZeldasLetter() {
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_ZL4, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO),
+                 SkipToGivingZeldasLetter_OnActorInit);
 }
+
+static RegisterShipInitFunc initFunc(RegisterSkipToGivingZeldasLetter,
+                                     { CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), "IS_RANDO" });

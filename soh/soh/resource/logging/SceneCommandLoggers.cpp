@@ -24,6 +24,7 @@
 #include "soh/resource/type/scenecommand/SetTransitionActorList.h"
 #include "soh/resource/type/scenecommand/SetWindSettings.h"
 #include "spdlog/spdlog.h"
+#include <tinyxml2.h>
 #include <string.h>
 
 namespace SOH {
@@ -259,7 +260,7 @@ void LogLightListAsXML(std::shared_ptr<Ship::IResource> resource) {
     for (size_t i = 0; i < setLightList->numLights; i++) {
         tinyxml2::XMLElement* light = doc.NewElement("LightInfo");
         light->SetAttribute("Type", setLightList->lightList[i].type);
-        if (false/*setLightList->lightList[i].type == LIGHT_DIRECTIONAL*/) {
+        if (false /*setLightList->lightList[i].type == LIGHT_DIRECTIONAL*/) {
             light->SetAttribute("X", setLightList->lightList[i].params.dir.x);
             light->SetAttribute("Y", setLightList->lightList[i].params.dir.y);
             light->SetAttribute("Z", setLightList->lightList[i].params.dir.z);
@@ -529,7 +530,8 @@ void LogSpecialObjectsAsXML(std::shared_ptr<Ship::IResource> resource) {
 }
 
 void LogStartPositionListAsXML(std::shared_ptr<Ship::IResource> resource) {
-    std::shared_ptr<SetStartPositionList> setStartPositionList = std::static_pointer_cast<SetStartPositionList>(resource);
+    std::shared_ptr<SetStartPositionList> setStartPositionList =
+        std::static_pointer_cast<SetStartPositionList>(resource);
 
     tinyxml2::XMLDocument doc;
     tinyxml2::XMLElement* root = doc.NewElement("SetStartPositionList");
@@ -572,7 +574,8 @@ void LogTimeSettingsAsXML(std::shared_ptr<Ship::IResource> resource) {
 }
 
 void LogTransitionActorListAsXML(std::shared_ptr<Ship::IResource> resource) {
-    std::shared_ptr<SetTransitionActorList> setTransitionActorList = std::static_pointer_cast<SetTransitionActorList>(resource);
+    std::shared_ptr<SetTransitionActorList> setTransitionActorList =
+        std::static_pointer_cast<SetTransitionActorList>(resource);
 
     tinyxml2::XMLDocument doc;
     tinyxml2::XMLElement* root = doc.NewElement("SetTransitionActorList");
@@ -617,4 +620,4 @@ void LogWindSettingsAsXML(std::shared_ptr<Ship::IResource> resource) {
     SPDLOG_INFO("{}: {}", resource->GetInitData()->Path, printer.CStr());
 }
 
-} //namespace SOH
+} // namespace SOH

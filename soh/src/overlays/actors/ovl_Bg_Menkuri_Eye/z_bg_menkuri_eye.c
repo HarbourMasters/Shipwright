@@ -6,6 +6,7 @@
 
 #include "z_bg_menkuri_eye.h"
 #include "objects/object_menkuri_objects/object_menkuri_objects.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_DRAW_CULLING_DISABLED
 
@@ -90,7 +91,8 @@ void BgMenkuriEye_Update(Actor* thisx, PlayState* play) {
 
     if (!Flags_GetSwitch(play, this->actor.params)) {
         if (this->framesUntilDisable != -1) {
-            if (this->framesUntilDisable != 0) {
+            if (GameInteractor_Should(VB_SWITCH_TIMER_TICK, this->framesUntilDisable != 0, this,
+                                      &this->framesUntilDisable)) {
                 this->framesUntilDisable -= 1;
             }
             if (this->framesUntilDisable == 0) {
@@ -135,8 +137,7 @@ void BgMenkuriEye_Draw(Actor* thisx, PlayState* play) {
     Matrix_Translate(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, MTXMODE_NEW);
     Matrix_RotateZYX(this->actor.world.rot.x, this->actor.world.rot.y, this->actor.world.rot.z, MTXMODE_APPLY);
     Matrix_Scale(this->actor.scale.x, this->actor.scale.y, this->actor.scale.z, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_XLU_DISP++, gGTGEyeStatueEyeDL);
     CLOSE_DISPS(play->state.gfxCtx);

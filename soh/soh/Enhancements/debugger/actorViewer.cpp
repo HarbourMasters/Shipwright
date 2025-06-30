@@ -1,10 +1,13 @@
 #include "actorViewer.h"
 #include "../../util.h"
 #include "soh/SohGui/UIWidgets.hpp"
+#include "soh/SohGui/SohGui.hpp"
 #include "soh/ActorDB.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/nametag.h"
+#include "soh/ShipInit.hpp"
 
+#include <algorithm>
 #include <array>
 #include <bit>
 #include <map>
@@ -12,8 +15,10 @@
 #include <string>
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
+#include <spdlog/fmt/fmt.h>
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
+#include "soh/ObjectExtension/ActorListIndex.h"
 
 extern "C" {
 #include <z64.h>
@@ -30,6 +35,10 @@ extern PlayState* gPlayState;
 #define DEKUNUTS_FLOWER 10
 #define DEBUG_ACTOR_NAMETAG_TAG "debug_actor_viewer"
 
+#define CVAR_ACTOR_NAME_TAGS(val) CVAR_DEVELOPER_TOOLS("ActorViewer.NameTags." val)
+#define CVAR_ACTOR_NAME_TAGS_ENABLED_NAME CVAR_ACTOR_NAME_TAGS("Enabled")
+#define CVAR_ACTOR_NAME_TAGS_ENABLED CVarGetInteger(CVAR_ACTOR_NAME_TAGS("Enabled"), 0)
+
 typedef struct {
     u16 id;
     u16 params;
@@ -37,27 +46,16 @@ typedef struct {
     Vec3s rot;
 } ActorInfo;
 
-typedef enum {
-    LIST,
-    TARGET,
-    HELD,
-    INTERACT
-} RetrievalMethod;
-
-std::array<const char*, 12> acMapping = { 
-    "Switch",
-    "Background (Prop type 1)",
-    "Player",
-    "Bomb",
-    "NPC",
-    "Enemy",
-    "Prop type 2",
-    "Item/Action",
-    "Misc.",
-    "Boss",
-    "Door",
-    "Chest"
+std::array<const char*, 12> acMapping = {
+    "Switch",      "Background (Prop type 1)",
+    "Player",      "Bomb",
+    "NPC",         "Enemy",
+    "Prop type 2", "Item/Action",
+    "Misc.",       "Boss",
+    "Door",        "Chest",
 };
+
+using namespace UIWidgets;
 
 typedef enum {
     ACTORVIEWER_NAMETAGS_NONE,
@@ -70,29 +68,23 @@ const std::string GetActorDescription(u16 id) {
     return ActorDB::Instance->RetrieveEntry(id).entry.valid ? ActorDB::Instance->RetrieveEntry(id).entry.desc : "???";
 }
 
-template <typename T> void DrawGroupWithBorder(T&& drawFunc) {
-    // First group encapsulates the inner portion and border
-    ImGui::BeginGroup();
+const std::string GetActorDebugName(u16 id) {
+    return ActorDB::Instance->RetrieveEntry(id).entry.valid ? ActorDB::Instance->RetrieveEntry(id).entry.name : "???";
+}
 
-    ImVec2 padding = ImGui::GetStyle().FramePadding;
-    ImVec2 p0 = ImGui::GetCursorScreenPos();
-    ImGui::SetCursorScreenPos(ImVec2(p0.x + padding.x, p0.y + padding.y));
+template <typename T> void DrawGroupWithBorder(T&& drawFunc, std::string section) {
+    // First group encapsulates the inner portion and border
+    ImGui::BeginChild(std::string("##" + section).c_str(), ImVec2(0, 0),
+                      ImGuiChildFlags_AlwaysAutoResize | ImGuiChildFlags_Borders | ImGuiChildFlags_AutoResizeX |
+                          ImGuiChildFlags_AutoResizeY);
 
     // Second group encapsulates just the inner portion
     ImGui::BeginGroup();
-
+    ImGui::AlignTextToFramePadding();
     drawFunc();
-
-    ImGui::Dummy(padding);
     ImGui::EndGroup();
 
-    ImVec2 p1 = ImGui::GetItemRectMax();
-    p1.x += padding.x;
-    ImVec4 borderCol = ImGui::GetStyle().Colors[ImGuiCol_Border];
-    ImGui::GetWindowDrawList()->AddRect(
-        p0, p1, IM_COL32(borderCol.x * 255, borderCol.y * 255, borderCol.z * 255, borderCol.w * 255));
-
-    ImGui::EndGroup();
+    ImGui::EndChild();
 }
 
 void PopulateActorDropdown(int i, std::vector<Actor*>& data) {
@@ -111,7 +103,7 @@ void PopulateActorDropdown(int i, std::vector<Actor*>& data) {
     }
 }
 
-//actors that don't use params at all
+// actors that don't use params at all
 static std::vector<u16> noParamsActors = {
     ACTOR_ARMS_HOOK,
     ACTOR_ARROW_FIRE,
@@ -238,7 +230,7 @@ static std::vector<u16> noParamsActors = {
     ACTOR_UNSET_15D,
     ACTOR_UNSET_161,
     ACTOR_UNSET_180,
-    ACTOR_UNSET_1AA
+    ACTOR_UNSET_1AA,
 };
 
 static std::unordered_map<u16, std::function<s16(s16)>> actorSpecificData;
@@ -258,7 +250,7 @@ void CreateActorSpecificData() {
         if (!isFlower) {
             ImGui::InputScalar("Shots Per Round", ImGuiDataType_S16, &shotsPerRound);
         }
-        
+
         return isFlower ? DEKUNUTS_FLOWER : (shotsPerRound << 8);
     };
 
@@ -267,12 +259,12 @@ void CreateActorSpecificData() {
         if (params == 0) {
             params = -2;
         }
-        //the + 2 is because the params are -2 & -1 instead of 0 & 1
+        // the + 2 is because the params are -2 & -1 instead of 0 & 1
         int selectedItem = params + 2;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem - 2;
         }
-        
+
         return params;
     };
 
@@ -282,7 +274,7 @@ void CreateActorSpecificData() {
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem;
         }
-        
+
         return params;
     };
 
@@ -292,7 +284,7 @@ void CreateActorSpecificData() {
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem;
         }
-        
+
         return params;
     };
 
@@ -302,7 +294,7 @@ void CreateActorSpecificData() {
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem;
         }
-        
+
         return params;
     };
 
@@ -312,7 +304,7 @@ void CreateActorSpecificData() {
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem;
         }
-        
+
         return params;
     };
 
@@ -322,7 +314,7 @@ void CreateActorSpecificData() {
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem;
         }
-        
+
         return params;
     };
 
@@ -332,7 +324,7 @@ void CreateActorSpecificData() {
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem;
         }
-        
+
         return params;
     };
 
@@ -341,12 +333,12 @@ void CreateActorSpecificData() {
         if (params == 0) {
             params = 0x40;
         }
-        //the - 0x40 is because the params are 0x40 & 0x41 instead of 0 & 1
+        // the - 0x40 is because the params are 0x40 & 0x41 instead of 0 & 1
         int selectedItem = params - 0x40;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem + 0x40;
         }
-        
+
         return params;
     };
 
@@ -356,21 +348,21 @@ void CreateActorSpecificData() {
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem;
         }
-        
+
         return params;
     };
 
     actorSpecificData[ACTOR_EN_REEBA] = [](s16 params) -> s16 {
         bool isBig = params != 0;
         ImGui::Checkbox("Big", &isBig);
-        
+
         return isBig;
     };
 
     actorSpecificData[ACTOR_EN_TK] = [](s16 params) -> s16 {
         bool canTurn = params >= 0;
         ImGui::Checkbox("Can Turn", &canTurn);
-        
+
         return canTurn ? 0 : -1;
     };
 
@@ -382,35 +374,13 @@ void CreateActorSpecificData() {
         if (collectibleFlag > 0x3F) {
             collectibleFlag = 0x3F;
         }
-        
+
         static const char* items[] = {
-            "Green Rupee",
-            "Blue Rupee",
-            "Red Rupee",
-            "Recovery Heart",
-            "Bombs (A)",
-            "Arrow",
-            "Heart Piece",
-            "Heart Container",
-            "Arrows (5)",
-            "Arrows (10)",
-            "Arrows (30)",
-            "Bombs (B)",
-            "Deku Nuts (5)",
-            "Deku Stick",
-            "Magic (Large)",
-            "Magic (Small)",
-            "Deku Seeds (5)",
-            "Small Key",
-            "Flexible",
-            "Gold Rupee",
-            "Purple Rupee",
-            "Deku Shield",
-            "Hylian Shield",
-            "Zora Tunic",
-            "Goron Tunic",
-            "Bombs (Special)",
-            "Bombchus"
+            "Green Rupee",   "Blue Rupee",      "Red Rupee",     "Recovery Heart", "Bombs (A)",      "Arrow",
+            "Heart Piece",   "Heart Container", "Arrows (5)",    "Arrows (10)",    "Arrows (30)",    "Bombs (B)",
+            "Deku Nuts (5)", "Deku Stick",      "Magic (Large)", "Magic (Small)",  "Deku Seeds (5)", "Small Key",
+            "Flexible",      "Gold Rupee",      "Purple Rupee",  "Deku Shield",    "Hylian Shield",  "Zora Tunic",
+            "Goron Tunic",   "Bombs (Special)", "Bombchus",
         };
 
         int selectedItem = params & 0xFF;
@@ -421,33 +391,11 @@ void CreateActorSpecificData() {
 
     actorSpecificData[ACTOR_OBJ_COMB] = [](s16 params) -> s16 {
         static const char* items[] = {
-            "Green Rupee",
-            "Blue Rupee",
-            "Red Rupee",
-            "Recovery Heart",
-            "Bombs (A)",
-            "Arrow",
-            "Heart Piece",
-            "Heart Container",
-            "Arrows (5)",
-            "Arrows (10)",
-            "Arrows (30)",
-            "Bombs (B)",
-            "Deku Nuts (5)",
-            "Deku Stick",
-            "Magic (Large)",
-            "Magic (Small)",
-            "Deku Seeds (5)",
-            "Small Key",
-            "Flexible",
-            "Gold Rupee",
-            "Purple Rupee",
-            "Deku Shield",
-            "Hylian Shield",
-            "Zora Tunic",
-            "Goron Tunic",
-            "Bombs (Special)",
-            "Bombchus"
+            "Green Rupee",   "Blue Rupee",      "Red Rupee",     "Recovery Heart", "Bombs (A)",      "Arrow",
+            "Heart Piece",   "Heart Container", "Arrows (5)",    "Arrows (10)",    "Arrows (30)",    "Bombs (B)",
+            "Deku Nuts (5)", "Deku Stick",      "Magic (Large)", "Magic (Small)",  "Deku Seeds (5)", "Small Key",
+            "Flexible",      "Gold Rupee",      "Purple Rupee",  "Deku Shield",    "Hylian Shield",  "Zora Tunic",
+            "Goron Tunic",   "Bombs (Special)", "Bombchus",
         };
 
         int selectedItem = params & 0xFF;
@@ -460,18 +408,18 @@ void CreateActorSpecificData() {
                 collectibleFlag = 0x3F;
             }
         }
-        
+
         return (collectibleFlag << 8) + selectedItem;
     };
 
     actorSpecificData[ACTOR_EN_GM] = [](s16 params) -> s16 {
         u8 switchFlag = (params & 0x3F00) >> 8;
-        
+
         ImGui::InputScalar("Switch Flag", ImGuiDataType_U8, &switchFlag);
         if (switchFlag > 0x3F) {
             switchFlag = 0x3F;
         }
-        
+
         return switchFlag << 8;
     };
 
@@ -527,13 +475,13 @@ void CreateActorSpecificData() {
             "Bombs (5) (35 Rupees)",
             "Red Potion (40 Rupees)",
             "Red Potion (50 Rupees)",
-            "Randomizer Item"
+            "Randomizer Item",
         };
         int selectedItem = params;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem;
         }
-        
+
         return params;
     };
 
@@ -545,13 +493,13 @@ void CreateActorSpecificData() {
             "Spawned Falling (2)",
             //"INVALID",
             "Ceiling Spot Spawner",
-            "On Floor"
+            "On Floor",
         };
         int selectedItem = params > 3 ? params - 1 : params;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem > 3 ? selectedItem + 1 : selectedItem;
         }
-        
+
         return params;
     };
 
@@ -576,119 +524,108 @@ void CreateActorSpecificData() {
             "Magic Fire",
             "Magic Wind",
             "Magic Dark",
-            "Bullet Bag"
+            "Bullet Bag",
         };
         int selectedItem = params;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem;
         }
-        
+
         return params;
     };
 
     actorSpecificData[ACTOR_EN_ELF] = [](s16 params) -> s16 {
         static const char* items[] = {
-            "Navi",
-            "Revive Bottle",
-            "Heal Timed",
-            "Kokiri",
-            "Spawner",
-            "Revive Death",
-            "Heal",
-            "Heal Big"
+            "Navi", "Revive Bottle", "Heal Timed", "Kokiri", "Spawner", "Revive Death", "Heal", "Heal Big",
         };
         int selectedItem = params;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem;
         }
-        
+
         return params;
     };
 
     actorSpecificData[ACTOR_EN_CLEAR_TAG] = [](s16 params) -> s16 {
         static const char* items[] = {
-            "Cutscene", //0
-            "Normal",   //1
-            "Laser"     //100
+            "Cutscene", // 0
+            "Normal",   // 1
+            "Laser",    // 100
         };
         int selectedItem = params == 100 ? 2 : params;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem == 2 ? 100 : selectedItem;
         }
-        
+
         return params;
     };
 
     actorSpecificData[ACTOR_EN_BOMBF] = [](s16 params) -> s16 {
         static const char* items[] = { "Flower", "Body", "Explosion" };
-        //the + 1 is because the params are -1, 0 & 1 instead of 0, 1 & 2
+        // the + 1 is because the params are -1, 0 & 1 instead of 0, 1 & 2
         int selectedItem = params + 1;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem - 1;
         }
-        
+
         return params;
     };
 
     actorSpecificData[ACTOR_EN_BOM] = [](s16 params) -> s16 {
         static const char* items[] = { "Body", "Explosion" };
-        
+
         int selectedItem = params;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem;
         }
-        
+
         return params;
     };
 
     actorSpecificData[ACTOR_DOOR_WARP1] = [](s16 params) -> s16 {
         static const char* items[] = {
-            "Blue Crystal",   // -2
-            "Dungeon Adult",
-            "Dungeon Child",
-            "Clear Flag",     // Activate on temp clear flag
-            "Sages",          // Used by sages warping into chamber of sages during their cutscene
+            "Blue Crystal", // -2
+            "Dungeon Adult",  "Dungeon Child",
+            "Clear Flag", // Activate on temp clear flag
+            "Sages",      // Used by sages warping into chamber of sages during their cutscene
             "Purple Crystal",
-            "Yellow",         // The colored variants don't warp, they are cutscene setpieces
+            "Yellow", // The colored variants don't warp, they are cutscene setpieces
             "Blue Ruto",
-            "Destination",    // Spawning in after having taken a warp
-            "UNK 7",
-            "Orange",
-            "Green",
-            "Red"
+            "Destination", // Spawning in after having taken a warp
+            "UNK 7",          "Orange",        "Green", "Red",
         };
         int selectedItem = params + 2;
         if (ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem - 2;
         }
-        
+
         return params;
     };
 
     actorSpecificData[ACTOR_EN_DY_EXTRA] = [](s16 params) -> s16 {
         static const char* items[] = { "Orange", "Green" };
-        
+
         int selectedItem = params;
         if (ImGui::Combo("Color", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem;
         }
-        
+
         return params;
     };
 
     actorSpecificData[ACTOR_EN_SKB] = [](s16 params) -> s16 {
         u8 size = params;
         ImGui::InputScalar("Size", ImGuiDataType_U8, &size);
-        
+
         return size;
     };
 
     actorSpecificData[ACTOR_EN_WF] = [](s16 params) -> s16 {
         static const char* items[] = { "Normal", "White" };
-        
+
         int selectedItem = params;
         ImGui::Combo("Type", &selectedItem, items, IM_ARRAYSIZE(items));
-        
+
         u8 switchFlag = (params & 0x3F00) >> 8;
         ImGui::InputScalar("Switch Flag", ImGuiDataType_U8, &switchFlag);
         return (switchFlag << 8) + selectedItem;
@@ -711,7 +648,7 @@ void CreateActorSpecificData() {
         if (itemId > 0x7F) {
             itemId = 0x7F;
         }
-        
+
         static const char* items[] = {
             "Big (Default)",
             "Room Clear Big",
@@ -724,7 +661,7 @@ void CreateActorSpecificData() {
             "Switch Flag Fall Small",
             "9",
             "10",
-            "Switch Flag Big"
+            "Switch Flag Big",
         };
 
         int type = (params >> 12) & 0xF;
@@ -759,7 +696,7 @@ void CreateActorSpecificData() {
         if (transitionIndex > 0x3F) {
             transitionIndex = 0x3F;
         }
-        
+
         static const char* items[] = {
             "Room Load",     // loads rooms
             "Locked",        // small key locked door
@@ -800,9 +737,9 @@ void CreateActorSpecificData() {
 
     actorSpecificData[ACTOR_EN_PO_DESERT] = [](s16 params) -> s16 {
         u8 switchFlag = params >> 8;
-        
+
         ImGui::InputScalar("Path", ImGuiDataType_U8, &switchFlag);
-        
+
         return switchFlag << 8;
     };
 
@@ -815,30 +752,26 @@ void CreateActorSpecificData() {
         if (ImGui::Checkbox("Fishing Sign", &fishingSign)) {
             piece = false;
         }
-        
+
         u8 textId = params;
         if (!piece && !fishingSign) {
             if (ImGui::InputScalar("Text ID", ImGuiDataType_U8, &textId)) {
                 textId |= 0x300;
             }
         }
-        
+
         return piece ? (s16)0xFFDD : (fishingSign ? 0x300 : textId);
     };
 
     actorSpecificData[ACTOR_EN_KUSA] = [](s16 params) -> s16 {
-        static const char* items[] = {
-            "0",
-            "1",
-            "2"
-        };
+        static const char* items[] = { "0", "1", "2" };
 
         int type = params & 3;
         ImGui::Combo("Type", &type, items, IM_ARRAYSIZE(items));
 
         bool bugs = ((params >> 4) & 1) != 0;
         ImGui::Checkbox("Bugs", &bugs);
-        
+
         u8 drop = (params >> 8) & 0xF;
         if (type == 2) {
             ImGui::InputScalar("Random Drop Params", ImGuiDataType_U8, &drop);
@@ -853,17 +786,12 @@ void CreateActorSpecificData() {
     };
 
     actorSpecificData[ActorDB::Instance->RetrieveId("En_Partner")] = [](s16 params) -> s16 {
-        static const char* items[] = {
-            "Port 1",
-            "Port 2",
-            "Port 3",
-            "Port 4"
-        };
+        static const char* items[] = { "Port 1", "Port 2", "Port 3", "Port 4" };
         int selectedItem = params;
         if (ImGui::Combo("Controller Port", &selectedItem, items, IM_ARRAYSIZE(items))) {
             return selectedItem;
         }
-        
+
         return params;
     };
 }
@@ -889,25 +817,37 @@ std::vector<u16> GetActorsWithDescriptionContainingString(std::string s) {
 }
 
 void ActorViewer_AddTagForActor(Actor* actor) {
-    int val = CVarGetInteger(CVAR_DEVELOPER_TOOLS("ActorViewer.NameTags"), ACTORVIEWER_NAMETAGS_NONE);
-    auto entry = ActorDB::Instance->RetrieveEntry(actor->id);
-    std::string tag;
-
-    if (val > 0 && entry.entry.valid) {
-        switch (val) {
-            case ACTORVIEWER_NAMETAGS_DESC:
-                tag = entry.desc;
-                break;
-            case ACTORVIEWER_NAMETAGS_NAME:
-                tag = entry.name;
-                break;
-            case ACTORVIEWER_NAMETAGS_BOTH:
-                tag = entry.name + '\n' + entry.desc;
-                break;
-        }
-
-        NameTag_RegisterForActorWithOptions(actor, tag.c_str(), { .tag = DEBUG_ACTOR_NAMETAG_TAG });
+    if (!CVarGetInteger(CVAR_ACTOR_NAME_TAGS("Enabled"), 0)) {
+        return;
     }
+
+    std::vector<std::string> parts;
+
+    if (CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayID"), 0)) {
+        parts.push_back(GetActorDebugName(actor->id));
+    }
+    if (CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayDescription"), 0)) {
+        parts.push_back(GetActorDescription(actor->id));
+    }
+    if (CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayCategory"), 0)) {
+        parts.push_back(acMapping[actor->category]);
+    }
+    if (CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayParams"), 0)) {
+        parts.push_back(fmt::format("0x{:04X} ({})", (u16)actor->params, actor->params));
+    }
+
+    std::string tag = "";
+    for (size_t i = 0; i < parts.size(); i++) {
+        if (i != 0) {
+            tag += "\n";
+        }
+        tag += parts.at(i);
+    }
+
+    bool withZBuffer = CVarGetInteger(CVAR_ACTOR_NAME_TAGS("WithZBuffer"), 0);
+
+    NameTag_RegisterForActorWithOptions(actor, tag.c_str(),
+                                        { .tag = DEBUG_ACTOR_NAMETAG_TAG, .noZBuffer = !withZBuffer });
 }
 
 void ActorViewer_AddTagForAllActors() {
@@ -926,38 +866,67 @@ void ActorViewer_AddTagForAllActors() {
 }
 
 void ActorViewerWindow::DrawElement() {
-    static Actor* display;
-    static Actor empty{};
-    static Actor* fetch = NULL;
-    static ActorInfo newActor = {0,0, {0, 0, 0}, {0, 0, 0}};
-    static bool needs_reset = false;
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
+    static ActorInfo newActor = { 0, 0, { 0, 0, 0 }, { 0, 0, 0 } };
     static ImU16 one = 1;
-    static int actor;
-    static int category = 0;
-    static RetrievalMethod rm;
     static std::string filler = "Please select";
-    static std::vector<Actor*> list;
-    static u16 lastSceneId = 0;
-    static char searchString[64] = "";
-    static s16 currentSelectedInDropdown;
-    static std::vector<u16> actors;
+    static std::string searchString = "";
+    static s16 currentSelectedInDropdown = -1;
+    static std::vector<u16> actorSearchResults;
 
     if (gPlayState != nullptr) {
-        needs_reset = lastSceneId != gPlayState->sceneNum;
-        if (needs_reset) {
-            display = &empty;
-            fetch = nullptr;
-            actor = category = 0;
-            filler = "Please Select";
-            list.clear();
-            needs_reset = false;
-            for (size_t i = 0; i < ARRAY_COUNT(searchString); i += 1) {
-                searchString[i] = 0;
+        if (ImGui::BeginChild("options", ImVec2(0, 0), ImGuiChildFlags_Border | ImGuiChildFlags_AutoResizeY)) {
+            bool toggled = false;
+            bool optionChange = false;
+
+            ImGui::SeparatorText("Options");
+
+            toggled = UIWidgets::CVarCheckbox("Actor Name Tags", CVAR_ACTOR_NAME_TAGS("Enabled"),
+                                              { { .tooltip = "Adds \"name tags\" above actors for identification" } });
+
+            ImGui::SameLine();
+
+            UIWidgets::Button("Display Items", { { .tooltip = "Click to add display items on the name tags" } });
+
+            if (ImGui::BeginPopupContextItem(nullptr, ImGuiPopupFlags_MouseButtonLeft | ImGuiPopupFlags_NoReopen)) {
+                optionChange |= UIWidgets::CVarCheckbox("ID", CVAR_ACTOR_NAME_TAGS("DisplayID"));
+                optionChange |= UIWidgets::CVarCheckbox("Description", CVAR_ACTOR_NAME_TAGS("DisplayDescription"));
+                optionChange |= UIWidgets::CVarCheckbox("Category", CVAR_ACTOR_NAME_TAGS("DisplayCategory"));
+                optionChange |= UIWidgets::CVarCheckbox("Params", CVAR_ACTOR_NAME_TAGS("DisplayParams"));
+
+                ImGui::EndPopup();
             }
-            currentSelectedInDropdown = -1;
-            actors.clear();
+
+            optionChange |= UIWidgets::CVarCheckbox(
+                "Name tags with Z-Buffer", CVAR_ACTOR_NAME_TAGS("WithZBuffer"),
+                { { .tooltip = "Allow name tags to be obstructed when behind geometry and actors" } });
+
+            if (toggled || optionChange) {
+                bool tagsEnabled = CVarGetInteger(CVAR_ACTOR_NAME_TAGS("Enabled"), 0);
+                bool noOptionsEnabled = !CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayID"), 0) &&
+                                        !CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayDescription"), 0) &&
+                                        !CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayCategory"), 0) &&
+                                        !CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayParams"), 0);
+
+                // Save the user an extra click and prevent adding "empty" tags by enabling,
+                // disabling, or setting an option based on what changed
+                if (tagsEnabled && noOptionsEnabled) {
+                    if (toggled) {
+                        CVarSetInteger(CVAR_ACTOR_NAME_TAGS("DisplayID"), 1);
+                    } else {
+                        CVarSetInteger(CVAR_ACTOR_NAME_TAGS("Enabled"), 0);
+                    }
+                } else if (optionChange && !tagsEnabled && !noOptionsEnabled) {
+                    CVarSetInteger(CVAR_ACTOR_NAME_TAGS("Enabled"), 1);
+                }
+
+                NameTag_RemoveAllByTag(DEBUG_ACTOR_NAMETAG_TAG);
+                ActorViewer_AddTagForAllActors();
+            }
         }
-        lastSceneId = gPlayState->sceneNum;
+        ImGui::EndChild();
+
+        PushStyleCombobox(THEME_COLOR);
         if (ImGui::BeginCombo("Actor Type", acMapping[category])) {
             for (int i = 0; i < acMapping.size(); i++) {
                 if (ImGui::Selectable(acMapping[i])) {
@@ -969,155 +938,159 @@ void ActorViewerWindow::DrawElement() {
             ImGui::EndCombo();
         }
 
+        if (display == nullptr) {
+            filler = "Please select";
+        }
+
         if (ImGui::BeginCombo("Actor", filler.c_str())) {
-            if (gPlayState != nullptr && lastSceneId != gPlayState->sceneNum) {
-                PopulateActorDropdown(category, list);
-                lastSceneId = gPlayState->sceneNum;
-            }
             for (int i = 0; i < list.size(); i++) {
                 std::string label = std::to_string(i) + ": " + ActorDB::Instance->RetrieveEntry(list[i]->id).name;
                 std::string description = GetActorDescription(list[i]->id);
                 if (description != "")
                     label += " (" + description + ")";
 
-                if (ImGui::Selectable(label.c_str())) {
-                    rm = LIST;
+                if (ImGui::Selectable(label.c_str(), list[i] == display)) {
                     display = list[i];
-                    actor = i;
                     filler = label;
                     break;
                 }
             }
             ImGui::EndCombo();
         }
+        PopStyleCombobox();
 
+        PushStyleHeader(THEME_COLOR);
         if (ImGui::TreeNode("Selected Actor")) {
-            DrawGroupWithBorder([&]() {
-                ImGui::Text("Name: %s", ActorDB::Instance->RetrieveEntry(display->id).name.c_str());
-                ImGui::Text("Description: %s", GetActorDescription(display->id).c_str());
-                ImGui::Text("Category: %s", acMapping[display->category]);
-                ImGui::Text("ID: %d", display->id);
-                ImGui::Text("Parameters: %d", display->params);
-            });
-
-            ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
-
-            DrawGroupWithBorder([&]() {
-                ImGui::Text("Actor Position");
-                ImGui::InputScalar("x pos", ImGuiDataType_Float, &display->world.pos.x);
+            if (display != nullptr) {
+                DrawGroupWithBorder(
+                    [&]() {
+                        ImGui::Text("Name: %s", ActorDB::Instance->RetrieveEntry(display->id).name.c_str());
+                        ImGui::Text("Description: %s", GetActorDescription(display->id).c_str());
+                        ImGui::Text("Category: %s", acMapping[display->category]);
+                        ImGui::Text("ID: %d", display->id);
+                        ImGui::Text("Parameters: %d", display->params);
+                        ImGui::Text("Actor List Index: %d", GetActorListIndex(display));
+                    },
+                    "Selected Actor");
                 ImGui::SameLine();
-                ImGui::InputScalar("y pos", ImGuiDataType_Float, &display->world.pos.y);
+                ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
+
+                DrawGroupWithBorder(
+                    [&]() {
+                        ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
+                        PushStyleInput(THEME_COLOR);
+                        ImGui::Text("Actor Position");
+                        ImGui::InputScalar("X##CurPos", ImGuiDataType_Float, &display->world.pos.x);
+                        ImGui::InputScalar("Y##CurPos", ImGuiDataType_Float, &display->world.pos.y);
+                        ImGui::InputScalar("Z##CurPos", ImGuiDataType_Float, &display->world.pos.z);
+                        ImGui::PopItemWidth();
+                        PopStyleInput();
+                    },
+                    "Actor Position");
                 ImGui::SameLine();
-                ImGui::InputScalar("z pos", ImGuiDataType_Float, &display->world.pos.z);
-            });
+                DrawGroupWithBorder(
+                    [&]() {
+                        PushStyleInput(THEME_COLOR);
+                        ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
+                        ImGui::Text("Actor Rotation");
+                        ImGui::InputScalar("X##CurRot", ImGuiDataType_S16, &display->world.rot.x);
+                        ImGui::InputScalar("Y##CurRot", ImGuiDataType_S16, &display->world.rot.y);
+                        ImGui::InputScalar("Z##CurRot", ImGuiDataType_S16, &display->world.rot.z);
+                        ImGui::PopItemWidth();
+                        PopStyleInput();
+                    },
+                    "Actor Rotation");
 
-            DrawGroupWithBorder([&]() {
-                ImGui::Text("Actor Rotation");
-                ImGui::InputScalar("x rot", ImGuiDataType_S16, &display->world.rot.x);
-                ImGui::SameLine();
-                ImGui::InputScalar("y rot", ImGuiDataType_S16, &display->world.rot.y);
-                ImGui::SameLine();
-                ImGui::InputScalar("z rot", ImGuiDataType_S16, &display->world.rot.z);
-            });
-
-            if (display->category == ACTORCAT_BOSS || display->category == ACTORCAT_ENEMY) {
-                ImGui::InputScalar("Enemy Health", ImGuiDataType_U8, &display->colChkInfo.health);
-                UIWidgets::InsertHelpHoverText("Some actors might not use this!");
-            }
-
-            DrawGroupWithBorder([&]() {
-                ImGui::Text("flags");
-                UIWidgets::DrawFlagArray32("flags", display->flags);
-            });
-
-            ImGui::SameLine();
-
-            DrawGroupWithBorder([&]() {
-                ImGui::Text("bgCheckFlags");
-                UIWidgets::DrawFlagArray16("bgCheckFlags", display->bgCheckFlags);
-            });
-
-            if (ImGui::Button("Refresh")) {
-                PopulateActorDropdown(category, list);
-                switch (rm) {
-                    case INTERACT:
-                    case HELD:
-                    case TARGET:
-                        display = fetch;
-                        break;
-                    case LIST:
-                        display = list[actor];
-                        break;
-                    default:
-                        break;
+                if (display->category == ACTORCAT_BOSS || display->category == ACTORCAT_ENEMY) {
+                    PushStyleInput(THEME_COLOR);
+                    ImGui::InputScalar("Enemy Health", ImGuiDataType_U8, &display->colChkInfo.health);
+                    PopStyleInput();
+                    UIWidgets::InsertHelpHoverText("Some actors might not use this!");
                 }
+
+                DrawGroupWithBorder(
+                    [&]() {
+                        ImGui::Text("flags");
+                        UIWidgets::DrawFlagArray32("flags", display->flags);
+                    },
+                    "flags");
+
+                ImGui::SameLine();
+
+                DrawGroupWithBorder(
+                    [&]() {
+                        ImGui::Text("bgCheckFlags");
+                        UIWidgets::DrawFlagArray16("bgCheckFlags", display->bgCheckFlags);
+                    },
+                    "bgCheckFlags");
+
+                if (Button("Go to Actor", ButtonOptions().Color(THEME_COLOR))) {
+                    Player* player = GET_PLAYER(gPlayState);
+                    Math_Vec3f_Copy(&player->actor.world.pos, &display->world.pos);
+                    Math_Vec3f_Copy(&player->actor.home.pos, &player->actor.world.pos);
+                }
+            } else {
+                ImGui::Text("Select an actor to display information.");
             }
 
-            if (ImGui::Button("Go to Actor")) {
+            if (Button("Fetch from Target",
+                       ButtonOptions()
+                           .Color(THEME_COLOR)
+                           .Tooltip("Grabs actor with target arrow above it. You might need C-Up for enemies"))) {
                 Player* player = GET_PLAYER(gPlayState);
-                Math_Vec3f_Copy(&player->actor.world.pos, &display->world.pos);
-                Math_Vec3f_Copy(&player->actor.home.pos, &player->actor.world.pos);
-            }
-
-            if (ImGui::Button("Fetch from Target")) {
-                Player* player = GET_PLAYER(gPlayState);
-                fetch = player->talkActor;
-                if (fetch != NULL) {
-                    display = fetch;
-                    category = fetch->category;
+                if (player->talkActor != NULL) {
+                    display = player->talkActor;
+                    category = display->category;
                     PopulateActorDropdown(category, list);
-                    rm = TARGET;
                 }
             }
-            UIWidgets::InsertHelpHoverText("Grabs actor with target arrow above it. You might need C-Up for enemies");
-            if (ImGui::Button("Fetch from Held")) {
+            if (Button("Fetch from Held",
+                       ButtonOptions().Color(THEME_COLOR).Tooltip("Grabs actor that Link is holding"))) {
                 Player* player = GET_PLAYER(gPlayState);
-                fetch = player->heldActor;
-                if (fetch != NULL) {
-                    display = fetch;
-                    category = fetch->category;
+                if (player->heldActor != NULL) {
+                    display = player->heldActor;
+                    category = display->category;
                     PopulateActorDropdown(category, list);
-                    rm = HELD;
                 }
             }
-            UIWidgets::InsertHelpHoverText("Grabs actor that Link is holding");
-            if (ImGui::Button("Fetch from Interaction")) {
+            if (Button("Fetch from Interaction",
+                       ButtonOptions().Color(THEME_COLOR).Tooltip("Grabs actor from \"interaction range\""))) {
                 Player* player = GET_PLAYER(gPlayState);
-                fetch = player->interactRangeActor;
-                if (fetch != NULL) {
-                    display = fetch;
-                    category = fetch->category;
+                if (player->interactRangeActor != NULL) {
+                    display = player->interactRangeActor;
+                    category = display->category;
                     PopulateActorDropdown(category, list);
-                    rm = INTERACT;
                 }
             }
-            UIWidgets::InsertHelpHoverText("Grabs actor from \"interaction range\"");
 
             ImGui::TreePop();
         }
 
         if (ImGui::TreeNode("New...")) {
-            ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
+            // ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
 
-            if (ImGui::InputText("Search Actor", searchString, ARRAY_COUNT(searchString))) {
-                actors = GetActorsWithDescriptionContainingString(std::string(searchString));
+            if (InputString("Search Actor", &searchString, InputOptions().Color(THEME_COLOR))) {
+                actorSearchResults = GetActorsWithDescriptionContainingString(searchString);
                 currentSelectedInDropdown = -1;
             }
 
-            if (searchString[0] != 0 && !actors.empty()) {
-                std::string preview = currentSelectedInDropdown == -1 ? "Please Select" : ActorDB::Instance->RetrieveEntry(actors[currentSelectedInDropdown]).desc;
+            if (!SohUtils::IsStringEmpty(searchString) && !actorSearchResults.empty()) {
+                std::string preview =
+                    currentSelectedInDropdown == -1
+                        ? "Please Select"
+                        : ActorDB::Instance->RetrieveEntry(actorSearchResults[currentSelectedInDropdown]).desc;
+                PushStyleCombobox(THEME_COLOR);
                 if (ImGui::BeginCombo("Results", preview.c_str())) {
-                    for (u8 i = 0; i < actors.size(); i++) {
-                        if (ImGui::Selectable(
-                            ActorDB::Instance->RetrieveEntry(actors[i]).desc.c_str(),
-                            i == currentSelectedInDropdown
-                        )) {
+                    for (u8 i = 0; i < actorSearchResults.size(); i++) {
+                        if (ImGui::Selectable(ActorDB::Instance->RetrieveEntry(actorSearchResults[i]).desc.c_str(),
+                                              i == currentSelectedInDropdown)) {
                             currentSelectedInDropdown = i;
-                            newActor.id = actors[i];
+                            newActor.id = actorSearchResults[i];
                         }
                     }
                     ImGui::EndCombo();
                 }
+                PopStyleCombobox();
             }
 
             ImGui::Text("%s", GetActorDescription(newActor.id).c_str());
@@ -1125,44 +1098,58 @@ void ActorViewerWindow::DrawElement() {
                 newActor.params = 0;
             }
 
-            UIWidgets::EnhancementCheckbox("Advanced mode", CVAR_DEVELOPER_TOOLS("ActorViewer.AdvancedParams"));
-            UIWidgets::InsertHelpHoverText("Changes the actor specific param menus with a direct input");
+            CVarCheckbox("Advanced mode", CVAR_DEVELOPER_TOOLS("ActorViewer.AdvancedParams"),
+                         CheckboxOptions().Tooltip("Changes the actor specific param menus with a direct input"));
 
             if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ActorViewer.AdvancedParams"), 0)) {
+                PushStyleInput(THEME_COLOR);
                 ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
+                PopStyleInput();
             } else if (std::find(noParamsActors.begin(), noParamsActors.end(), newActor.id) == noParamsActors.end()) {
                 CreateActorSpecificData();
                 if (actorSpecificData.find(newActor.id) == actorSpecificData.end()) {
+                    PushStyleInput(THEME_COLOR);
                     ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
+                    PopStyleInput();
                 } else {
-                    DrawGroupWithBorder([&]() {
-                        ImGui::Text("Actor Specific Data");
-                        newActor.params = actorSpecificData[newActor.id](newActor.params);
-                    });
+                    DrawGroupWithBorder(
+                        [&]() {
+                            ImGui::Text("Actor Specific Data");
+                            newActor.params = actorSpecificData[newActor.id](newActor.params);
+                        },
+                        "Actor Specific Data");
                 }
             }
 
             ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
 
-            DrawGroupWithBorder([&]() {
-                ImGui::Text("New Actor Position");
-                ImGui::InputScalar("posX", ImGuiDataType_Float, &newActor.pos.x);
-                ImGui::SameLine();
-                ImGui::InputScalar("posY", ImGuiDataType_Float, &newActor.pos.y);
-                ImGui::SameLine();
-                ImGui::InputScalar("posZ", ImGuiDataType_Float, &newActor.pos.z);
-            });
+            DrawGroupWithBorder(
+                [&]() {
+                    PushStyleInput(THEME_COLOR);
+                    ImGui::Text("New Actor Position");
+                    ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
+                    ImGui::InputScalar("X##NewPos", ImGuiDataType_Float, &newActor.pos.x);
+                    ImGui::InputScalar("Y##NewPos", ImGuiDataType_Float, &newActor.pos.y);
+                    ImGui::InputScalar("Z##NewPos", ImGuiDataType_Float, &newActor.pos.z);
+                    ImGui::PopItemWidth();
+                    PopStyleInput();
+                },
+                "New Actor Position");
+            ImGui::SameLine();
+            DrawGroupWithBorder(
+                [&]() {
+                    PushStyleInput(THEME_COLOR);
+                    ImGui::Text("New Actor Rotation");
+                    ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
+                    ImGui::InputScalar("X##NewRot", ImGuiDataType_S16, &newActor.rot.x);
+                    ImGui::InputScalar("Y##NewRot", ImGuiDataType_S16, &newActor.rot.y);
+                    ImGui::InputScalar("Z##NewRot", ImGuiDataType_S16, &newActor.rot.z);
+                    ImGui::PopItemWidth();
+                    PopStyleInput();
+                },
+                "New Actor Rotation");
 
-            DrawGroupWithBorder([&]() {
-                ImGui::Text("New Actor Rotation");
-                ImGui::InputScalar("rotX", ImGuiDataType_S16, &newActor.rot.x);
-                ImGui::SameLine();
-                ImGui::InputScalar("rotY", ImGuiDataType_S16, &newActor.rot.y);
-                ImGui::SameLine();
-                ImGui::InputScalar("rotZ", ImGuiDataType_S16, &newActor.rot.z);
-            });
-
-            if (ImGui::Button("Fetch from Link")) {
+            if (Button("Fetch from Link", ButtonOptions().Color(THEME_COLOR))) {
                 Player* player = GET_PLAYER(gPlayState);
                 Vec3f newPos = player->actor.world.pos;
                 Vec3s newRot = player->actor.world.rot;
@@ -1170,7 +1157,7 @@ void ActorViewerWindow::DrawElement() {
                 newActor.rot = newRot;
             }
 
-            if (ImGui::Button("Spawn")) {
+            if (Button("Spawn", ButtonOptions().Color(THEME_COLOR))) {
                 if (ActorDB::Instance->RetrieveEntry(newActor.id).entry.valid) {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, newActor.id, newActor.pos.x, newActor.pos.y,
                                 newActor.pos.z, newActor.rot.x, newActor.rot.y, newActor.rot.z, newActor.params, 0);
@@ -1179,7 +1166,7 @@ void ActorViewerWindow::DrawElement() {
                 }
             }
 
-            if (ImGui::Button("Spawn as Child")) {
+            if (Button("Spawn as Child", ButtonOptions().Color(THEME_COLOR))) {
                 Actor* parent = display;
                 if (parent != NULL) {
                     if (newActor.id >= 0 && newActor.id < ACTOR_ID_MAX &&
@@ -1193,48 +1180,52 @@ void ActorViewerWindow::DrawElement() {
                 }
             }
 
-            if (ImGui::Button("Reset")) {
+            if (Button("Reset", ButtonOptions().Color(THEME_COLOR))) {
                 newActor = { 0, 0, { 0, 0, 0 }, { 0, 0, 0 } };
             }
 
             ImGui::TreePop();
         }
-
-        static const char* nameTagOptions[] = {
-            "None",
-            "Short Description",
-            "Actor ID",
-            "Both"
-        };
-
-        UIWidgets::Spacer(0);
-
-        ImGui::Text("Actor Name Tags");
-        if (UIWidgets::EnhancementCombobox(CVAR_DEVELOPER_TOOLS("ActorViewer.NameTags"), nameTagOptions, ACTORVIEWER_NAMETAGS_NONE)) {
-            NameTag_RemoveAllByTag(DEBUG_ACTOR_NAMETAG_TAG);
-            ActorViewer_AddTagForAllActors();
-        }
-        UIWidgets::Tooltip("Adds \"name tags\" above actors for identification");
+        PopStyleHeader();
     } else {
         ImGui::Text("Global Context needed for actor info!");
-        if (needs_reset) {
-            fetch = nullptr;
-            actor = category = 0;
-            filler = "Please Select";
-            list.clear();
-            needs_reset = false;
-            for (size_t i = 0; i < ARRAY_COUNT(searchString); i += 1) {
-                searchString[i] = 0;
-            }
-            currentSelectedInDropdown = -1;
-            actors.clear();
-        }
     }
+    ImGui::EndDisabled();
 }
 
 void ActorViewerWindow::InitElement() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorSpawn>([this](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
-        ActorViewer_AddTagForActor(actor);
+
+        // Reload actor list if the new actor belongs to the selected category
+        if (category == actor->category) {
+            PopulateActorDropdown(actor->category, list);
+        }
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorDestroy>([this](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        // If the actor belongs to the selected category, we need to manually remove it, as it has not been removed from
+        // the global actor array yet
+        if (category == actor->category) {
+            list.erase(std::remove(list.begin(), list.end(), actor), list.end());
+        }
+        if (display == actor) {
+            display = nullptr;
+        }
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([this](int16_t sceneNum) {
+        display = nullptr;
+        category = ACTORCAT_SWITCH;
+        list.clear();
     });
 }
+
+void ActorViewer_RegisterNameTagHooks() {
+    COND_HOOK(OnActorInit, CVAR_ACTOR_NAME_TAGS_ENABLED,
+              [](void* actor) { ActorViewer_AddTagForActor(static_cast<Actor*>(actor)); });
+}
+
+RegisterShipInitFunc nametagInit(ActorViewer_RegisterNameTagHooks, { CVAR_ACTOR_NAME_TAGS_ENABLED_NAME });

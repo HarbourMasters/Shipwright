@@ -87,11 +87,9 @@ u8 CheckPlayerPosition(Player* player, PlayState* play) {
 void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    u8 vanillaBridgeCondition = 
-        CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) &&
-        CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
-        (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) &&
-        CheckPlayerPosition(player, play);
+    u8 vanillaBridgeCondition = CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
+                                (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) &&
+                                CheckPlayerPosition(player, play);
 
     if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_RAINBOW_BRIDGE, vanillaBridgeCondition)) {
         LaunchBridgeCutscene(this, play);
@@ -99,10 +97,8 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play) {
 }
 
 void BgGjyoBridge_SpawnBridge(BgGjyoBridge* this, PlayState* play) {
-    u8 vanillaBridgeCondition = 
-        (play->csCtx.state != CS_STATE_IDLE) && 
-        (play->csCtx.npcActions[2] != NULL) &&
-        (play->csCtx.npcActions[2]->action == 2);
+    u8 vanillaBridgeCondition = (play->csCtx.state != CS_STATE_IDLE) && (play->csCtx.npcActions[2] != NULL) &&
+                                (play->csCtx.npcActions[2]->action == 2);
 
     if (!GameInteractor_Should(VB_PLAY_RAINBOW_BRIDGE_CS, true) || vanillaBridgeCondition) {
         this->dyna.actor.draw = BgGjyoBridge_Draw;
@@ -125,15 +121,13 @@ void BgGjyoBridge_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 8,
-               Gfx_TexScroll(play->state.gfxCtx, play->gameplayFrames & 127,
-                             play->gameplayFrames * -3 & 127, 32, 32));
+               Gfx_TexScroll(play->state.gfxCtx, play->gameplayFrames & 127, play->gameplayFrames * -3 & 127, 32, 32));
 
     gSPSegment(POLY_XLU_DISP++, 9,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, -play->gameplayFrames & 127, 32, 32, 1, 0,
                                 play->gameplayFrames & 127, 32, 32));
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_XLU_DISP++, gRainbowBridgeDL);
 

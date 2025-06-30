@@ -15,10 +15,7 @@ extern s32 Flags_GetRandomizerInf(RandomizerInf flag);
 #define CVAR_INFINITE_MONEY_VALUE CVarGetInteger(CVAR_INFINITE_MONEY_NAME, CVAR_INFINITE_MONEY_DEFAULT)
 
 void OnGameFrameUpdateInfiniteMoney() {
-    if (
-        !GameInteractor::IsSaveLoaded(true) ||
-        (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET))
-    ) {
+    if (!GameInteractor::IsSaveLoaded(true) || (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET))) {
         return;
     }
 

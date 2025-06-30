@@ -5,7 +5,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/custom-message/CustomMessageInterfaceAddon.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/OTRGlobals.h"
+#include "soh/ShipUtils.h"
 
 extern "C" {
 #include "z64.h"
@@ -19,19 +19,23 @@ extern PlayState* gPlayState;
 
 typedef struct {
     Actor* actor;
-    std::string text; // Original text
+    std::string text;          // Original text
     std::string processedText; // Text filtered for supported font textures
-    const char* tag; // Tag identifier
-    Color_RGBA8 textColor; // Text color override. Global color is used if alpha is 0
-    int16_t height; // Textbox height
-    int16_t width; // Textbox width
-    int16_t yOffset; // Addition Y offset
-    Mtx* mtx; // Allocated Mtx for rendering
-    Vtx* vtx; // Allocated Vtx for rendering
+    const char* tag;           // Tag identifier
+    Color_RGBA8 textColor;     // Text color override. Global color is used if alpha is 0
+    int16_t height;            // Textbox height
+    int16_t width;             // Textbox width
+    int16_t yOffset;           // Addition Y offset
+    uint8_t noZBuffer;         // Allow rendering over geometry
+    Mtx* mtx;                  // Allocated Mtx for rendering
+    Vtx* vtx;                  // Allocated Vtx for rendering
 } NameTag;
 
 static std::vector<NameTag> nameTags;
 static std::vector<Gfx> nameTagDl;
+static bool sMirrorWorldActive = false;
+
+void NameTag_RegisterHooks();
 
 void FreeNameTag(NameTag* nameTag) {
     if (nameTag->vtx != nullptr) {
@@ -51,14 +55,14 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
     }
 
     // Name tag is too far away to meaningfully read, don't bother rendering it
-    if (nameTag->actor->xyzDistToPlayerSq > 200000.0f) {
+    if (nameTag->actor->xyzDistToPlayerSq > 440000.0f) {
         return;
     }
 
     // Fade out name tags that are far away
     float alpha = 1.0f;
-    if (nameTag->actor->xyzDistToPlayerSq > 160000.0f) {
-        alpha = (200000.0f - nameTag->actor->xyzDistToPlayerSq) / 40000.0f;
+    if (nameTag->actor->xyzDistToPlayerSq > 360000.0f) {
+        alpha = (440000.0f - nameTag->actor->xyzDistToPlayerSq) / 80000.0f;
     }
 
     float scale = 75.0f / 100.f;
@@ -69,7 +73,7 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
         return;
     }
 
-    Color_RGBA8 textboxColor = { 0, 0, 0, 80};
+    Color_RGBA8 textboxColor = { 0, 0, 0, 80 };
     Color_RGBA8 textColor = { 255, 255, 255, 255 };
 
     if (CVarGetInteger(CVAR_COSMETIC("HUD.NameTagActorBackground.Changed"), 0)) {
@@ -79,7 +83,7 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
         textColor = CVarGetColor(CVAR_COSMETIC("HUD.NameTagActorText.Value"), textColor);
     }
 
-    FrameInterpolation_RecordOpenChild(nameTag->actor, 10);
+    FrameInterpolation_RecordOpenChild(nameTag->actor, 0);
 
     // Prefer the highest between world position and focus position if targetable
     float posY = nameTag->actor->world.pos.y;
@@ -92,7 +96,7 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
     // Set position, billboard effect, scale (with mirror mode), then center nametag
     Matrix_Translate(nameTag->actor->world.pos.x, posY, nameTag->actor->world.pos.z, MTXMODE_NEW);
     Matrix_ReplaceRotation(&play->billboardMtxF);
-    Matrix_Scale(scale * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1), -scale, 1.0f, MTXMODE_APPLY);
+    Matrix_Scale(scale * (sMirrorWorldActive ? -1.0f : 1.0f), -scale, 1.0f, MTXMODE_APPLY);
     Matrix_Translate(-(float)nameTag->width / 2, -nameTag->height, 0, MTXMODE_APPLY);
     Matrix_ToMtx(nameTag->mtx, (char*)__FILE__, __LINE__);
 
@@ -118,8 +122,6 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
     }
 
     for (size_t i = 0, vtxGroup = 0; i < numChar; i++) {
-        uint16_t texIndex = nameTag->processedText[i] - 32;
-
         // A maximum of 64 Vtx can be loaded at once by gSPVertex, or basically 16 characters
         // handle loading groups of 16 chars at a time until there are no more left to load
         if (i % 16 == 0) {
@@ -128,18 +130,16 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
             vtxGroup++;
         }
 
-        if (texIndex != 0 && nameTag->processedText[i] != '\n') {
-            uintptr_t texture = (uintptr_t)Font_FetchCharTexture(texIndex);
-            int16_t vertexStart = 4 * (i % 16);
+        uintptr_t texture = (uintptr_t)Ship_GetCharFontTexture(nameTag->processedText[i]);
+        int16_t vertexStart = 4 * (i % 16);
 
-            // Multi-instruction macro, need to insert all to the dl buffer
-            Gfx charTexture[] = { gsDPLoadTextureBlock_4b(
-                texture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_CLAMP,
-                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD) };
-            nameTagDl.insert(nameTagDl.end(), std::begin(charTexture), std::end(charTexture));
+        // Multi-instruction macro, need to insert all to the dl buffer
+        Gfx charTexture[] = { gsDPLoadTextureBlock_4b(texture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0,
+                                                      G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
+                                                      G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD) };
+        nameTagDl.insert(nameTagDl.end(), std::begin(charTexture), std::end(charTexture));
 
-            nameTagDl.push_back(gsSP1Quadrangle(vertexStart, vertexStart + 2, vertexStart + 3, vertexStart + 1, 0));
-        }
+        nameTagDl.push_back(gsSP1Quadrangle(vertexStart, vertexStart + 2, vertexStart + 3, vertexStart + 1, 0));
     }
 
     nameTagDl.push_back(gsSPPopMatrix(G_MTX_MODELVIEW));
@@ -158,15 +158,27 @@ void DrawNameTags() {
     OPEN_DISPS(gPlayState->state.gfxCtx);
 
     // Setup before rendering name tags
-    Gfx_SetupDL_38Xlu(gPlayState->state.gfxCtx);
-    nameTagDl.push_back(gsDPSetAlphaDither(G_AD_DISABLE));
-    nameTagDl.push_back(gsSPClearGeometryMode(G_SHADE));
+    POLY_XLU_DISP = Gfx_SetupDL_39(POLY_XLU_DISP);
 
+    nameTagDl.push_back(gsDPSetAlphaCompare(G_AC_NONE));
     nameTagDl.push_back(
         gsDPSetCombineLERP(0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0));
 
+    bool zbufferEnabled = false;
+
     // Add all the name tags
     for (const auto& nameTag : nameTags) {
+        // Toggle ZBuffer mode based on last state and next tag
+        if (zbufferEnabled == nameTag.noZBuffer) {
+            if (nameTag.noZBuffer) {
+                nameTagDl.push_back(gsSPClearGeometryMode(G_ZBUFFER));
+                zbufferEnabled = false;
+            } else {
+                nameTagDl.push_back(gsSPSetGeometryMode(G_ZBUFFER));
+                zbufferEnabled = true;
+            }
+        }
+
         DrawNameTag(gPlayState, &nameTag);
     }
 
@@ -193,19 +205,22 @@ void UpdateNameTags() {
 
         return aDistToCamera > bDistToCamera;
     });
+
+    sMirrorWorldActive = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0);
 }
 
 extern "C" void NameTag_RegisterForActorWithOptions(Actor* actor, const char* text, NameTagOptions options) {
     std::string processedText = std::string(Interface_ReplaceSpecialCharacters((char*)text));
 
     // Strip out unsupported characters
-    processedText.erase(std::remove_if(processedText.begin(), processedText.end(), [](const char& c) {
-        // 172 is max supported texture for the in-game font system,
-        // and filter anything less than a space but not the newline or nul characters
-        return (unsigned char)c > 172 || (c < ' ' && c != '\n' && c != '\0');
-    }), processedText.end());
+    // 172 is max supported texture for the in-game font system,
+    // and filter anything less than a space but not the newline or nul characters
+    processedText.erase(
+        std::remove_if(processedText.begin(), processedText.end(),
+                       [](const char& c) { return (uint8_t)c > 172 || (c < ' ' && c != '\n' && c != '\0'); }),
+        processedText.end());
 
-    int16_t numChar = processedText.length();
+    size_t numChar = processedText.length();
     int16_t numLines = 1;
     int16_t offsetX = 0;
     int16_t maxOffsetX = 0;
@@ -214,20 +229,15 @@ extern "C" void NameTag_RegisterForActorWithOptions(Actor* actor, const char* te
     Vtx* vertices = (Vtx*)calloc(sizeof(Vtx[4]), numChar + 1);
 
     // Set all the char vtx first to get the total size for the textbox
-    for (int16_t i = 0; i < numChar; i++) {
+    for (size_t i = 0; i < numChar; i++) {
         if (processedText[i] == '\n') {
             offsetX = 0;
             numLines++;
         }
 
-        int16_t charIndex = processedText[i] - 32;
-        int16_t charWidth = 0;
-        // Don't add width for newline chars
-        if (charIndex >= 0) {
-            charWidth = (int16_t)(Message_GetCharacterWidth(charIndex) * (100.0f / R_TEXT_CHAR_SCALE));
-        }
+        int16_t charWidth = (int16_t)(Ship_GetCharFontWidth(processedText[i]));
 
-        Interface_CreateQuadVertexGroup(&(vertices)[(i + 1) * 4], offsetX, (numLines - 1) * 16, charWidth, 16, 0);
+        Ship_CreateQuadVertexGroup(&(vertices)[(i + 1) * 4], offsetX, (numLines - 1) * 16, charWidth, 16, 0);
         offsetX += charWidth;
 
         if (offsetX > maxOffsetX) {
@@ -238,7 +248,7 @@ extern "C" void NameTag_RegisterForActorWithOptions(Actor* actor, const char* te
     // Vtx for textbox, add +/- 4 in all directions
     int16_t height = (numLines * 16) + 8;
     int16_t width = maxOffsetX + 8;
-    Interface_CreateQuadVertexGroup(vertices, -4, -4, width, height, 0);
+    Ship_CreateQuadVertexGroup(vertices, -4, -4, width, height, 0);
 
     // Update the texture coordinates to consume the full textbox texture size (including mirror region)
     vertices[1].v.tc[0] = 256 << 5;
@@ -255,10 +265,13 @@ extern "C" void NameTag_RegisterForActorWithOptions(Actor* actor, const char* te
     nameTag.height = height;
     nameTag.width = width;
     nameTag.yOffset = options.yOffset;
+    nameTag.noZBuffer = options.noZBuffer;
     nameTag.mtx = new Mtx();
     nameTag.vtx = vertices;
 
     nameTags.push_back(nameTag);
+
+    NameTag_RegisterHooks();
 }
 
 extern "C" void NameTag_RegisterForActor(Actor* actor, const char* text) {
@@ -274,6 +287,8 @@ extern "C" void NameTag_RemoveAllForActor(Actor* actor) {
             it++;
         }
     }
+
+    NameTag_RegisterHooks();
 }
 
 extern "C" void NameTag_RemoveAllByTag(const char* tag) {
@@ -285,6 +300,8 @@ extern "C" void NameTag_RemoveAllByTag(const char* tag) {
             it++;
         }
     }
+
+    NameTag_RegisterHooks();
 }
 
 void RemoveAllNameTags() {
@@ -293,23 +310,49 @@ void RemoveAllNameTags() {
     }
 
     nameTags.clear();
+
+    NameTag_RegisterHooks();
 }
 
-static bool sRegisteredHooks = false;
-
 void NameTag_RegisterHooks() {
-    if (sRegisteredHooks) {
+    static HOOK_ID gameStatUpdateHookID = 0;
+    static HOOK_ID drawHookID = 0;
+    static HOOK_ID playDestroyHookID = 0;
+    static HOOK_ID actorDestroyHookID = 0;
+    static bool sRegisteredHooks = false;
+
+    // Hooks already (un)registered based on nametags
+    if ((nameTags.size() > 0) == sRegisteredHooks) {
+        return;
+    }
+
+    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(gameStatUpdateHookID);
+    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayDrawEnd>(drawHookID);
+    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayDestroy>(playDestroyHookID);
+    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorDestroy>(actorDestroyHookID);
+    gameStatUpdateHookID = 0;
+    drawHookID = 0;
+    playDestroyHookID = 0;
+    actorDestroyHookID = 0;
+    sRegisteredHooks = false;
+
+    if (nameTags.size() == 0) {
         return;
     }
 
     sRegisteredHooks = true;
 
     // Reorder tags every frame to mimic depth rendering
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() { UpdateNameTags(); });
+    gameStatUpdateHookID =
+        GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(UpdateNameTags);
 
-    // Render name tags at the end of player draw to avoid overflowing the display buffers
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayDrawEnd>([]() { DrawNameTags(); });
+    // Render name tags at the end of the Play World drawing
+    drawHookID = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayDrawEnd>(DrawNameTags);
 
     // Remove all name tags on play state destroy as all actors are removed anyways
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayDestroy>([]() { RemoveAllNameTags(); });
+    playDestroyHookID = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayDestroy>(RemoveAllNameTags);
+
+    // Remove all name tags for actor on destroy
+    actorDestroyHookID = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorDestroy>(
+        [](void* actor) { NameTag_RemoveAllForActor((Actor*)actor); });
 }

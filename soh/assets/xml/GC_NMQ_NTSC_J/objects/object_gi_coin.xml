@@ -1,0 +1,10 @@
+<Root>
+    <File Name="object_gi_coin" Segment="6">
+        <DList Name="gGiYellowCoinColorDL" Offset="0x0560"/>
+        <DList Name="gGiRedCoinColorDL" Offset="0x0580"/>
+        <DList Name="gGiGreenCoinColorDL" Offset="0x05A0"/>
+        <DList Name="gGiBlueCoinColorDL" Offset="0x05C0"/>
+        <DList Name="gGiCoinDL" Offset="0x05E0"/>
+        <DList Name="gGiNDL" Offset="0x0768"/>
+    </File>
+</Root>

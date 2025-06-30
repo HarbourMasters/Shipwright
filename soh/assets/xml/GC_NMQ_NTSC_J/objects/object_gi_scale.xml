@@ -1,0 +1,10 @@
+<Root>
+    <File Name="object_gi_scale" Segment="6">
+        <DList Name="gGiSilverScaleWaterColorDL" Offset="0x0A20"/>
+        <DList Name="gGiGoldenScaleWaterColorDL" Offset="0x0A40"/>
+        <DList Name="gGiSilverScaleColorDL" Offset="0x0A60"/>
+        <DList Name="gGiGoldenScaleColorDL" Offset="0x0A80"/>
+        <DList Name="gGiScaleWaterDL" Offset="0x0AA0"/>
+        <DList Name="gGiScaleDL" Offset="0x0CC8"/>
+    </File>
+</Root>

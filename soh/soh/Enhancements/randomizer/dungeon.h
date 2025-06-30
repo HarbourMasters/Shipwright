@@ -11,7 +11,7 @@ namespace Rando {
 class DungeonInfo {
   public:
     DungeonInfo(std::string name_, RandomizerHintTextKey hintKey_, RandomizerGet map_, RandomizerGet compass_,
-                RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_, RandomizerArea area_, 
+                RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_, RandomizerArea area_,
                 uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, RandomizerSettingKey mqSetting_);
     DungeonInfo();
     ~DungeonInfo();
@@ -86,11 +86,12 @@ class Dungeons {
     /// this new array can be shuffled for the purposes of randomizing MQ dungeons.
     /// If you want an individual DungeonInfo entry you should use the GetDungeon
     /// function from either here or the Context class.
-    /// @return 
+    /// @return
     std::array<DungeonInfo*, 12> GetDungeonList();
     size_t GetDungeonListSize() const;
     void ParseJson(nlohmann::json spoilerFileJson);
+
   private:
     std::array<DungeonInfo, 12> dungeonList;
 };
-}
+} // namespace Rando

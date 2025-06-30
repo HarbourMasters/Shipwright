@@ -7,7 +7,7 @@
 typedef struct {
     u8 valid;
     u16 deaths;
-    char playerName[8];
+    u8 playerName[8];
     u16 healthCapacity;
     u32 questItems;
     s8 defense;
@@ -29,9 +29,16 @@ typedef struct {
     s16 rupees;
     s16 gsTokens;
     u8 isDoubleDefenseAcquired;
+    s32 filenameLanguage;
     s32 gregFound;
     s32 hasWallet;
 } SaveFileMetaInfo;
+
+typedef enum {
+    /* 0 */ NAME_LANGUAGE_PAL,
+    /* 1 */ NAME_LANGUAGE_NTSC_JPN,
+    /* 2 */ NAME_LANGUAGE_NTSC_ENG,
+} FilenameLanguage;
 
 #ifdef __cplusplus
 
@@ -159,11 +166,7 @@ class SaveManager {
     static void InitFileDebug();
     static void InitFileMaxed();
 
-    static void LoadRandomizerVersion1();
-    static void LoadRandomizerVersion2();
-    static void LoadRandomizerVersion3();
-    static void LoadTrackerData();
-    static void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave);
+    static void LoadRandomizer();
     static void SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave);
 
     static void LoadBaseVersion1();

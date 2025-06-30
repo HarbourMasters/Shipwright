@@ -249,7 +249,8 @@ void func_80064824(PlayState* play, CutsceneContext* csCtx, CsCmdBase* cmd) {
         case 3:
             if (sp3F != 0) {
                 Flags_SetEnv(play, 0);
-                if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE || (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
+                if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE ||
+                    (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
                     Flags_SetEnv(play, 2);
                 }
             }
@@ -314,8 +315,7 @@ void func_80064824(PlayState* play, CutsceneContext* csCtx, CsCmdBase* cmd) {
             break;
         case 15:
             if (sp3F != 0) {
-                TitleCard_InitPlaceName(play, &play->actorCtx.titleCtx, player->giObjectSegment, 160, 120,
-                                        144, 24, 20);
+                TitleCard_InitPlaceName(play, &play->actorCtx.titleCtx, player->giObjectSegment, 160, 120, 144, 24, 20);
             }
             break;
         case 16:
@@ -516,16 +516,18 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
          CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B) ||
          CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START)) &&
         (gSaveContext.fileNum != 0xFEDC) && (play->transitionTrigger == TRANS_TRIGGER_OFF)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         temp = 1;
     }
 
     bool playCutscene = false;
-    if (!CVarGetInteger(CVAR_ENHANCEMENT("CreditsFix"), 1) && (cmd->startFrame == csCtx->frames)) {
+    if ((!CVarGetInteger(CVAR_ENHANCEMENT("CreditsFix"), 1) || ResourceMgr_GetGameRegion(0) == GAME_REGION_NTSC) &&
+        (cmd->startFrame == csCtx->frames)) {
         playCutscene = true;
     } else if (CVarGetInteger(CVAR_ENHANCEMENT("CreditsFix"), 1)) {
         u16 delay = 0;
-        
+
         // HACK:  Align visual timing with audio during credits sequence
         switch (cmd->base) {
             case 55: // Gerudo fortress (second scene of credits roll)
@@ -576,7 +578,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
         osSyncPrintf("\n分岐先指定！！=[%d]番", cmd->base); // "Future fork designation=No. [%d]"
 
         if ((gSaveContext.gameMode != GAMEMODE_NORMAL) && (csCtx->frames != cmd->startFrame)) {
-            gSaveContext.unk_13E7 = 1;
+            gSaveContext.forceRisingButtonAlphas = 1;
         }
 
         gSaveContext.cutsceneIndex = 0;
@@ -633,7 +635,8 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     gSaveContext.fw.set = 0;
                     gSaveContext.respawn[RESPAWN_MODE_TOP].data = 0;
                 }
-                if (GameInteractor_Should(VB_PLAY_PULL_MASTER_SWORD_CS, !Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL))) {
+                if (GameInteractor_Should(VB_PLAY_PULL_MASTER_SWORD_CS,
+                                          !Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL))) {
                     Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
                     play->nextEntranceIndex = ENTR_CUTSCENE_MAP_0;
                     play->transitionTrigger = TRANS_TRIGGER_START;
@@ -1096,7 +1099,8 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 95:
-                if ((Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) && (Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) &&
+                if ((Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) &&
+                    (Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) &&
                     (Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP))) {
                     play->nextEntranceIndex = ENTR_TEMPLE_OF_TIME_ENTRANCE;
                     play->transitionTrigger = TRANS_TRIGGER_START;
@@ -1252,8 +1256,12 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->transitionType = TRANS_TYPE_FADE_BLACK;
                 break;
             case 113:
-                if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FOREST_TRIAL) && Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_WATER_TRIAL) && Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SHADOW_TRIAL) &&
-                    Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FIRE_TRIAL) && Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_LIGHT_TRIAL) && Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SPIRIT_TRIAL)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FOREST_TRIAL) &&
+                    Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_WATER_TRIAL) &&
+                    Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SHADOW_TRIAL) &&
+                    Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FIRE_TRIAL) &&
+                    Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_LIGHT_TRIAL) &&
+                    Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SPIRIT_TRIAL)) {
                     play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gTowerBarrierCs);
                     play->csCtx.frames = 0;
                     gSaveContext.cutsceneTrigger = 1;
@@ -1330,13 +1338,14 @@ void Cutscene_Command_TransitionFX(PlayState* play, CutsceneContext* csCtx, CsCm
                 if (cmd->base == 1) {
                     play->envCtx.screenFillColor[3] = 255.0f * temp;
                     if ((temp == 0.0f) && (gSaveContext.entranceIndex == ENTR_CHAMBER_OF_THE_SAGES_0)) {
-                        Audio_PlaySoundGeneral(NA_SE_SY_WHITE_OUT_S, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultReverb);
+                        Audio_PlaySoundGeneral(NA_SE_SY_WHITE_OUT_S, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     } else if ((temp == 0.0f) &&
-                               ((gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE) || (gSaveContext.entranceIndex == ENTR_CASTLE_GROUNDS_SOUTH_EXIT) ||
+                               ((gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE) ||
+                                (gSaveContext.entranceIndex == ENTR_CASTLE_GROUNDS_SOUTH_EXIT) ||
                                 (gSaveContext.entranceIndex == ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_FARORES_ZF))) {
-                        Audio_PlaySoundGeneral(NA_SE_EV_WHITE_OUT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultReverb);
+                        Audio_PlaySoundGeneral(NA_SE_EV_WHITE_OUT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     } else if ((temp == 0.0f) && (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE)) {
                         Sfx_PlaySfxCentered2(NA_SE_EV_WHITE_OUT);
                     }
@@ -1410,8 +1419,8 @@ size_t Cutscene_Command_CameraPositions(PlayState* play, CutsceneContext* csCtx,
     CsCmdBase* cmdBase = (CsCmdBase*)cmd;
     size_t size;
 
-    cmd += sizeof(CutsceneData)*2;
-    size = sizeof(CutsceneData)*2;
+    cmd += sizeof(CutsceneData) * 2;
+    size = sizeof(CutsceneData) * 2;
 
     if ((cmdBase->startFrame < csCtx->frames) && (csCtx->frames < cmdBase->endFrame) &&
         ((csCtx->unk_18 < cmdBase->startFrame) || (csCtx->unk_18 >= 0xF000))) {
@@ -1424,8 +1433,8 @@ size_t Cutscene_Command_CameraPositions(PlayState* play, CutsceneContext* csCtx,
                 Play_ChangeCameraStatus(play, D_8015FCC6, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, csCtx->unk_14, CAM_STAT_ACTIVE);
                 Camera_ResetAnim(Play_GetCamera(play, csCtx->unk_14));
-                Camera_SetCSParams(Play_GetCamera(play, csCtx->unk_14), csCtx->cameraFocus,
-                                   csCtx->cameraPosition, GET_PLAYER(play), relativeToLink);
+                Camera_SetCSParams(Play_GetCamera(play, csCtx->unk_14), csCtx->cameraFocus, csCtx->cameraPosition,
+                                   GET_PLAYER(play), relativeToLink);
             }
         }
     }
@@ -1461,8 +1470,8 @@ size_t Cutscene_Command_CameraFocus(PlayState* play, CutsceneContext* csCtx, u8*
                 Play_ChangeCameraStatus(play, D_8015FCC6, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, csCtx->unk_14, CAM_STAT_ACTIVE);
                 Camera_ResetAnim(Play_GetCamera(play, csCtx->unk_14));
-                Camera_SetCSParams(Play_GetCamera(play, csCtx->unk_14), csCtx->cameraFocus,
-                                   csCtx->cameraPosition, GET_PLAYER(play), relativeToLink);
+                Camera_SetCSParams(Play_GetCamera(play, csCtx->unk_14), csCtx->cameraFocus, csCtx->cameraPosition,
+                                   GET_PLAYER(play), relativeToLink);
             }
         }
     }
@@ -1607,7 +1616,8 @@ void Cutscene_Command_Textbox(PlayState* play, CutsceneContext* csCtx, CsCmdText
                                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GIFT_FROM_RAURU, RG_LIGHT_MEDALLION);
                                 break;
                             case 0x72:
-                                getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_LIGHT_ARROWS);
+                                getItemEntry =
+                                    Randomizer_GetItemFromKnownCheck(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_LIGHT_ARROWS);
                                 break;
                         }
                         if (getItemEntry.getItemId != GI_NONE) {
@@ -1641,14 +1651,16 @@ void Cutscene_Command_Textbox(PlayState* play, CutsceneContext* csCtx, CsCmdText
                 if ((dialogState == TEXT_STATE_CHOICE) && Message_ShouldAdvance(play)) {
                     if (play->msgCtx.choiceIndex == 0) {
                         if (cmd->textId1 != 0xFFFF) {
-                            // LUSLOG_INFO("Cutscene_Command_Textbox D: base:0x%x textId1:0x%x textId2:0x%x", cmd->base, cmd->textId1, cmd->textId2);
+                            // LUSLOG_INFO("Cutscene_Command_Textbox D: base:0x%x textId1:0x%x textId2:0x%x", cmd->base,
+                            // cmd->textId1, cmd->textId2);
                             Message_ContinueTextbox(play, cmd->textId1);
                         } else {
                             csCtx->frames++;
                         }
                     } else {
                         if (cmd->textId2 != 0xFFFF) {
-                            // LUSLOG_INFO("Cutscene_Command_Textbox E: base:0x%x textId1:0x%x textId2:0x%x", cmd->base, cmd->textId1, cmd->textId2);
+                            // LUSLOG_INFO("Cutscene_Command_Textbox E: base:0x%x textId1:0x%x textId2:0x%x", cmd->base,
+                            // cmd->textId1, cmd->textId2);
                             Message_ContinueTextbox(play, cmd->textId2);
                         } else {
                             csCtx->frames++;
@@ -1658,7 +1670,8 @@ void Cutscene_Command_Textbox(PlayState* play, CutsceneContext* csCtx, CsCmdText
 
                 if (dialogState == TEXT_STATE_9) {
                     if (cmd->textId1 != 0xFFFF) {
-                        // LUSLOG_INFO("Cutscene_Command_Textbox F: base:0x%x textId1:0x%x textId2:0x%x", cmd->base, cmd->textId1, cmd->textId2);
+                        // LUSLOG_INFO("Cutscene_Command_Textbox F: base:0x%x textId1:0x%x textId2:0x%x", cmd->base,
+                        // cmd->textId1, cmd->textId2);
                         Message_ContinueTextbox(play, cmd->textId1);
                     } else {
                         csCtx->frames++;
@@ -1703,7 +1716,8 @@ void Cutscene_ProcessCommands(PlayState* play, CutsceneContext* csCtx, u8* cutsc
         return;
     }
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) && CHECK_BTN_ALL(play->state.input[0].press.button, BTN_DRIGHT)) {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) &&
+        CHECK_BTN_ALL(play->state.input[0].press.button, BTN_DRIGHT)) {
         csCtx->state = CS_STATE_UNSKIPPABLE_INIT;
         return;
     }
@@ -1716,7 +1730,7 @@ void Cutscene_ProcessCommands(PlayState* play, CutsceneContext* csCtx, u8* cutsc
             return;
         }
 
-        //printf("CmdType: %04X\n", cmdType);
+        // printf("CmdType: %04X\n", cmdType);
 
         switch (cmdType) {
             case CS_CMD_MISC:
@@ -2197,41 +2211,43 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
 
 void Cutscene_HandleConditionalTriggers(PlayState* play) {
     osSyncPrintf("\ngame_info.mode=[%d] restart_flag", ((void)0, gSaveContext.respawnFlag));
-    LUSLOG_INFO("Cutscene_HandleConditionalTriggers - entranceIndex: %#x cutsceneIndex: %#x", gSaveContext.entranceIndex, gSaveContext.cutsceneIndex);
+    LUSLOG_INFO("Cutscene_HandleConditionalTriggers - entranceIndex: %#x cutsceneIndex: %#x",
+                gSaveContext.entranceIndex, gSaveContext.cutsceneIndex);
 
     if (!GameInteractor_Should(VB_PLAY_TRANSITION_CS, true)) {
         return;
     }
 
-    if ((gSaveContext.gameMode == GAMEMODE_NORMAL) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
-        if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
+    if ((gSaveContext.gameMode == GAMEMODE_NORMAL) && (gSaveContext.respawnFlag <= 0) &&
+        (gSaveContext.cutsceneIndex < 0xFFF0)) {
+        if ((gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE) &&
+            !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
             gSaveContext.entranceIndex = ENTR_DESERT_COLOSSUS_EAST_EXIT;
             gSaveContext.cutsceneIndex = 0xFFF0;
-        } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_NOCTURNE_OF_SHADOW, (
-            (gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_FRONT_GATE) && 
-            LINK_IS_ADULT &&
-            Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) && 
-            Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) &&
-            Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP) && 
-            !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)
-        ))) {
+        } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_NOCTURNE_OF_SHADOW,
+                                         ((gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_FRONT_GATE) &&
+                                          LINK_IS_ADULT &&
+                                          Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) &&
+                                          Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) &&
+                                          Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP) &&
+                                          !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)))) {
             Flags_SetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL);
             gSaveContext.cutsceneIndex = 0xFFF0;
-        } else if ((gSaveContext.entranceIndex == ENTR_LOST_WOODS_BRIDGE_EAST_EXIT) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)) {
+        } else if ((gSaveContext.entranceIndex == ENTR_LOST_WOODS_BRIDGE_EAST_EXIT) &&
+                   !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)) {
             Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
             if (GameInteractor_Should(VB_GIVE_ITEM_FAIRY_OCARINA, true)) {
                 Item_Give(play, ITEM_OCARINA_FAIRY);
             }
             gSaveContext.entranceIndex = ENTR_LOST_WOODS_SOUTH_EXIT;
             gSaveContext.cutsceneIndex = 0xFFF0;
-        } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS, (
-            CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && 
-            CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
-            LINK_IS_ADULT &&
-            !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
-            (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TEMPLE_OF_TIME)
-        ))) {
+        } else if (GameInteractor_Should(
+                       VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS,
+                       (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
+                        LINK_IS_ADULT &&
+                        !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
+                        (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TEMPLE_OF_TIME)))) {
             Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
             gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_ENTRANCE;
             gSaveContext.cutsceneIndex = 0xFFF8;
@@ -2245,8 +2261,7 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
 }
 
 void Cutscene_SetSegment(PlayState* play, void* segment) {
-    if (SEGMENT_NUMBER(segment) != 0)
-    {
+    if (SEGMENT_NUMBER(segment) != 0) {
         play->csCtx.segment = SEGMENTED_TO_VIRTUAL(segment);
     } else {
         play->csCtx.segment = segment;
