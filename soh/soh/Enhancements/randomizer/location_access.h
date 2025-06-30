@@ -35,17 +35,7 @@ class EventAccess {
         return true;
     }
 
-    bool CheckConditionAtAgeTime(bool& age, bool& time) {
-        logic->IsChild = false;
-        logic->IsAdult = false;
-        logic->AtDay = false;
-        logic->AtNight = false;
-
-        time = true;
-        age = true;
-
-        return ConditionsMet();
-    }
+    bool CheckConditionAtAgeTime(bool& age, bool& time);
 
     void EventOccurred() {
         *event = true;
@@ -232,7 +222,7 @@ class Region {
         logic->IsChild = Child();
         logic->IsAdult = Adult();
 
-        // heck condition as well as having at least child or adult access
+        // check condition as well as having at least child or adult access
         bool hereVal = condition() && (logic->IsAdult || logic->IsChild);
 
         // set back age variables
@@ -244,23 +234,11 @@ class Region {
 
     bool CanPlantBeanCheck() const;
     bool AllAccountedFor() const;
+    bool MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAge = false);
 
     void ResetVariables();
 
-    void printAgeTimeAccess() const {
-        auto message = "Child Day:   " + std::to_string(childDay) +
-                       "\t"
-                       "Child Night: " +
-                       std::to_string(childNight) +
-                       "\t"
-                       "Adult Day:   " +
-                       std::to_string(adultDay) +
-                       "\t"
-                       "Adult Night: " +
-                       std::to_string(adultNight);
-    }
-
-    static std::map<RandomizerRegion, SpiritLogicData> spiritLogicData;
+    void printAgeTimeAccess();
 };
 
 extern std::array<Region, RR_MAX> areaTable;

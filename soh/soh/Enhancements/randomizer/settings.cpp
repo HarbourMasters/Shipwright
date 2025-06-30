@@ -595,6 +595,9 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
               "Gerudo\'s Fortress Warriors with Difficult Weapons",
               "Warriors can be defeated with Slingshot or Bombchus.");
+    OPT_TRICK(RT_GF_LEDGE_CLIP_INTO_GTG, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
+              "Ledge Clip into Training Ground",
+              "Adult Link can use a ledge clip to enter Gerudo Training Ground without Gerudo Card.");
     // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely
     // decoupled from rando OPT_TRICK(RT_HW_BUNNY_CROSSING, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, {Tricks::Tag::NOVICE},
     // "Wasteland Crossing with Bunny Hood", "You can beat the quicksand by using the increased speed of the Bunny Hood.

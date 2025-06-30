@@ -1,11 +1,12 @@
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
+
+extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
-
-extern "C" PlayState* gPlayState;
+extern PlayState* gPlayState;
+}
 
 static constexpr int32_t CVAR_RUPEE_DASH_DEFAULT = 0;
 #define CVAR_RUPEE_DASH_NAME CVAR_ENHANCEMENT("RupeeDash")
