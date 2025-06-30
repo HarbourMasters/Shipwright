@@ -23,7 +23,7 @@ class RemovableGameInteractionEffect : public GameInteractionEffectBase {
     GameInteractionEffectQueryResult Remove();
 
   protected:
-    virtual void _Remove(){};
+    virtual void _Remove() {};
 };
 
 class ParameterizedGameInteractionEffect {
@@ -156,7 +156,7 @@ class ForceEquipBoots : public RemovableGameInteractionEffect, public Parameteri
     void _Remove() override;
 };
 
-class ModifyMovementSpeedMultiplier: public RemovableGameInteractionEffect, public ParameterizedGameInteractionEffect {
+class ModifyMovementSpeedMultiplier : public RemovableGameInteractionEffect, public ParameterizedGameInteractionEffect {
     GameInteractionEffectQueryResult CanBeApplied() override;
     void _Apply() override;
     void _Remove() override;
@@ -200,7 +200,7 @@ class SetCollisionViewer : public RemovableGameInteractionEffect {
     void _Remove() override;
 };
 
-class RandomizeCosmetics: public GameInteractionEffectBase {
+class RandomizeCosmetics : public GameInteractionEffectBase {
     GameInteractionEffectQueryResult CanBeApplied() override;
     void _Apply() override;
 };

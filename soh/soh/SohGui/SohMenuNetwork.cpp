@@ -166,8 +166,8 @@ void SohMenu::AddMenuNetwork() {
     AddWidget(path, "Spawned Enemies Ignored Ingame", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_REMOTE_CROWD_CONTROL("SpawnedEnemiesIgnoredIngame"))
         .RaceDisable(true)
-        .Options(CheckboxOptions().Tooltip(
-            "Enemies spawned by CrowdControl won't be considered for \"clear enemy rooms\", so they don't need to be killed to complete these rooms."));
+        .Options(CheckboxOptions().Tooltip("Enemies spawned by CrowdControl won't be considered for \"clear enemy "
+                                           "rooms\", so they don't need to be killed to complete these rooms."));
 }
 
 } // namespace SohGui
