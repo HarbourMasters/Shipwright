@@ -2008,6 +2008,7 @@ void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */)
     StartPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
 
     const auto& ctx = Rando::Context::GetInstance();
+    logic = ctx->GetLogic();
 
     std::vector<RandomizerCheck> targetLocations;
     targetLocations.reserve(RC_MAX);
