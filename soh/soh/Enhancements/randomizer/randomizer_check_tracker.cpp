@@ -495,7 +495,7 @@ void SetShopSeen(uint32_t sceneNum, bool prices) {
 }
 
 void CheckTrackerLoadGame(int32_t fileNum) {
-    if (!IS_RANDO) {
+    if (IS_BOSS_RUSH) {
         return;
     }
     LoadSettings();
