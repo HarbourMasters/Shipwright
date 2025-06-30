@@ -239,6 +239,7 @@ class Region {
     void ResetVariables();
 
     void printAgeTimeAccess();
+    static std::map<RandomizerRegion, SpiritLogicData> spiritLogicData;
 };
 
 extern std::array<Region, RR_MAX> areaTable;
