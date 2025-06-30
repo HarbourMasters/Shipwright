@@ -157,7 +157,7 @@ void CalcTriNorm(const Vec3f& v1, const Vec3f& v2, const Vec3f& v3, Vec3f& norm)
 // Various macros used for creating verticies and rendering that aren't in gbi.h
 #define G_CC_MODULATERGB_PRIM_ENVA PRIMITIVE, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT
 #define G_CC_PRIMITIVE_ENVA 0, 0, 0, PRIMITIVE, 0, 0, 0, ENVIRONMENT
-#define qs105(n) ((int16_t)((n)*0x0020))
+#define qs105(n) ((int16_t)((n) * 0x0020))
 #define gdSPDefVtxN(x, y, z, s, t, nx, ny, nz, ca)                                            \
     {                                                                                         \
         .n = {.ob = { x, y, z }, .tc = { qs105(s), qs105(t) }, .n = { nx, ny, nz }, .a = ca } \

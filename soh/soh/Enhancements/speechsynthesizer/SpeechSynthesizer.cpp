@@ -7,7 +7,7 @@
 
 #include "SpeechSynthesizer.h"
 
-SpeechSynthesizer::SpeechSynthesizer() : mInitialized(false){};
+SpeechSynthesizer::SpeechSynthesizer() : mInitialized(false) {};
 
 bool SpeechSynthesizer::Init(void) {
     if (mInitialized) {

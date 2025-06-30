@@ -23,7 +23,7 @@ class RemovableGameInteractionEffect : public GameInteractionEffectBase {
     GameInteractionEffectQueryResult Remove();
 
   protected:
-    virtual void _Remove(){};
+    virtual void _Remove() {};
 };
 
 class ParameterizedGameInteractionEffect {

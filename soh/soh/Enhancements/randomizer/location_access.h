@@ -52,8 +52,7 @@ class EventAccess {
 std::string CleanCheckConditionString(std::string condition);
 
 #define LOCATION(check, condition) \
-    LocationAccess(                \
-        check, [] { return condition; }, CleanCheckConditionString(#condition))
+    LocationAccess(check, [] { return condition; }, CleanCheckConditionString(#condition))
 
 // this class is meant to hold an item location with a boolean function to determine its accessibility from a specific
 // area

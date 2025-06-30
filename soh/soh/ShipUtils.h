@@ -2,7 +2,7 @@
 #define SHIP_UTILS_H
 
 #include <libultraship/libultraship.h>
-//#include "PR/ultratypes.h"
+// #include "PR/ultratypes.h"
 
 #ifdef __cplusplus
 

@@ -892,11 +892,11 @@ inline std::vector<std::string> internal::dialog::desktop_helper() const {
 #if __APPLE__
     return { "osascript" };
 #else
-    return { flags(flag::has_zenity) ? "zenity"
+    return { flags(flag::has_zenity)       ? "zenity"
              : flags(flag::has_matedialog) ? "matedialog"
-             : flags(flag::has_qarma) ? "qarma"
-             : flags(flag::has_kdialog) ? "kdialog"
-                                        : "echo" };
+             : flags(flag::has_qarma)      ? "qarma"
+             : flags(flag::has_kdialog)    ? "kdialog"
+                                           : "echo" };
 #endif
 }
 
