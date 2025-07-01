@@ -5,6 +5,18 @@ namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
 using namespace UIWidgets;
 
+static const std::unordered_map<int32_t, const char*> logLevels = {
+    { DEBUG_LOG_TRACE, "Trace" }, { DEBUG_LOG_DEBUG, "Debug" }, { DEBUG_LOG_INFO, "Info" },
+    { DEBUG_LOG_WARN, "Warn" },   { DEBUG_LOG_ERROR, "Error" }, { DEBUG_LOG_CRITICAL, "Critical" },
+    { DEBUG_LOG_OFF, "Off" },
+};
+
+static const std::unordered_map<int32_t, const char*> debugSaveFileModes = {
+    { 0, "Off" },
+    { 1, "Vanilla" },
+    { 2, "Maxed" },
+};
+
 void SohMenu::AddMenuDevTools() {
     // Add Dev Tools Menu
     AddMenuEntry("Dev Tools", CVAR_SETTING("Menu.DevToolsSidebarSection"));
