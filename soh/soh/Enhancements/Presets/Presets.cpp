@@ -395,7 +395,7 @@ void PresetsCustomWidget(WidgetInfo& info) {
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
             ImGui::AlignTextToFramePadding();
-            ImGui::Text(name.c_str());
+            ImGui::Text("%s", name.c_str());
             for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
                 ImGui::TableNextColumn();
                 DrawSectionCheck(name, !info.presetValues["blocks"].contains(blockInfo[i].names[1]), &info.apply[i],
