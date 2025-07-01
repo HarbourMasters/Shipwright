@@ -258,30 +258,6 @@ void SohMenu::AddMenuSettings() {
                      .ComponentAlignment(ComponentAlignments::Right)
                      .LabelPosition(LabelPositions::Far))
         .Callback([](WidgetInfo& info) { OTRGlobals::Instance->ScaleImGui(); });
-    AddWidget(path, "Overlay Text Size", WIDGET_CVAR_COMBOBOX)
-        .CVar(CVAR_SETTING("OverlayTextScale"))
-        .RaceDisable(false)
-        .Options(ComboboxOptions()
-                     .ComboMap(overlayTextScaleOptions)
-                     .Tooltip("Changes the font size of Overlay Text.")
-                     .DefaultIndex(0)
-                     .ComponentAlignment(ComponentAlignments::Right)
-                     .LabelPosition(LabelPositions::Far))
-        .Callback([](WidgetInfo& info) { OTRGlobals::Instance->LoadOverlayTextFont(); });
-    AddWidget(path, "Overlay Text Font", WIDGET_CVAR_COMBOBOX)
-        .CVar(CVAR_SETTING("OverlayTextFont"))
-        .RaceDisable(false)
-        .Options(ComboboxOptions()
-                     .ComboMap(overlayTextFontOptions)
-                     .Tooltip("Changes the font of Overlay Text.")
-                     .DefaultIndex(0)
-                     .ComponentAlignment(ComponentAlignments::Right)
-                     .LabelPosition(LabelPositions::Far))
-        .Callback([](WidgetInfo& info) { OTRGlobals::Instance->LoadOverlayTextFont(); });
-    AddWidget(path, "Test Overlay Text", WIDGET_BUTTON)
-        .RaceDisable(false)
-        .Callback([](WidgetInfo& info) { Overlay_DisplayText_Seconds(5, "Overlay Text Test"); })
-        .Options(ButtonOptions().Tooltip("Displays a test Overlay Text."));
 
     // General - About
     path.column = SECTION_COLUMN_2;
@@ -477,6 +453,7 @@ void SohMenu::AddMenuSettings() {
     path.sidebarName = "Notifications";
     path.column = SECTION_COLUMN_1;
     AddSidebarEntry("Settings", path.sidebarName, 3);
+    AddWidget(path, "Notifications Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Position", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("Notifications.Position"))
         .RaceDisable(false)
@@ -522,6 +499,32 @@ void SohMenu::AddMenuSettings() {
             });
         })
         .Options(ButtonOptions().Tooltip("Displays a test notification."));
+
+    AddWidget(path, "Overlay Text Settings", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Overlay Text Size:", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_SETTING("OverlayTextScale"))
+        .RaceDisable(false)
+        .Options(ComboboxOptions()
+                     .ComboMap(overlayTextScaleOptions)
+                     .Tooltip("Changes the font size of Overlay Text.")
+                     .DefaultIndex(0)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far))
+        .Callback([](WidgetInfo& info) { OTRGlobals::Instance->LoadOverlayTextFont(); });
+    AddWidget(path, "Overlay Text Font:", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_SETTING("OverlayTextFont"))
+        .RaceDisable(false)
+        .Options(ComboboxOptions()
+                     .ComboMap(overlayTextFontOptions)
+                     .Tooltip("Changes the font type of Overlay Text.")
+                     .DefaultIndex(0)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far))
+        .Callback([](WidgetInfo& info) { OTRGlobals::Instance->LoadOverlayTextFont(); });
+    AddWidget(path, "Test Overlay Text", WIDGET_BUTTON)
+        .RaceDisable(false)
+        .Callback([](WidgetInfo& info) { Overlay_DisplayText_Seconds(5, "Overlay Text Test"); })
+        .Options(ButtonOptions().Tooltip("Displays a test Overlay Text."));
 }
 
 } // namespace SohGui
