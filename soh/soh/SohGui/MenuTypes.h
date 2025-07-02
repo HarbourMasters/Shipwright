@@ -111,11 +111,13 @@ struct WidgetInfo {
     bool isHidden = false;
     bool sameLine = false;
     bool raceDisable = true;
+    bool hideInSearch = false;
 
     WidgetInfo& CVar(const char* cVar_) {
         cVar = cVar_;
         return *this;
     }
+
     WidgetInfo& Options(OptionsVariant options_) {
         switch (type) {
             case WIDGET_AUDIO_BACKEND:
@@ -155,47 +157,62 @@ struct WidgetInfo {
         }
         return *this;
     }
+
+    WidgetInfo& Options(std::shared_ptr<UIWidgets::WidgetOptions> options_) {
+        options = options_;
+        return *this;
+    }
+
+    WidgetInfo& Callback(WidgetFunc callback_) {
+        callback = callback_;
+        return *this;
+    }
+
+    WidgetInfo& PreFunc(WidgetFunc preFunc_) {
+        preFunc = preFunc_;
+        return *this;
+    }
+
+    WidgetInfo& PostFunc(WidgetFunc postFunc_) {
+        postFunc = postFunc_;
+        return *this;
+    }
+
+    WidgetInfo& WindowName(const char* windowName_) {
+        windowName = windowName_;
+        return *this;
+    }
+
+    WidgetInfo& ValuePointer(std::variant<bool*, int32_t*, float*> valuePointer_) {
+        valuePointer = valuePointer_;
+        return *this;
+    }
+
+    WidgetInfo& SameLine(bool sameLine_) {
+        sameLine = sameLine_;
+        return *this;
+    }
+
+    WidgetInfo& CustomFunction(WidgetFunc customFunction_) {
+        customFunction = customFunction_;
+        return *this;
+    }
+
+    WidgetInfo& RaceDisable(bool disable) {
+        raceDisable = disable;
+        return *this;
+    }
+
+    WidgetInfo& HideInSearch(bool hide) {
+        hideInSearch = hide;
+        return *this;
+    }
+
     void ResetDisables() {
         isHidden = false;
         options->disabled = false;
         options->disabledTooltip = "";
         activeDisables.clear();
-    }
-    WidgetInfo& Options(std::shared_ptr<UIWidgets::WidgetOptions> options_) {
-        options = options_;
-        return *this;
-    }
-    WidgetInfo& Callback(WidgetFunc callback_) {
-        callback = callback_;
-        return *this;
-    }
-    WidgetInfo& PreFunc(WidgetFunc preFunc_) {
-        preFunc = preFunc_;
-        return *this;
-    }
-    WidgetInfo& PostFunc(WidgetFunc postFunc_) {
-        postFunc = postFunc_;
-        return *this;
-    }
-    WidgetInfo& WindowName(const char* windowName_) {
-        windowName = windowName_;
-        return *this;
-    }
-    WidgetInfo& ValuePointer(std::variant<bool*, int32_t*, float*> valuePointer_) {
-        valuePointer = valuePointer_;
-        return *this;
-    }
-    WidgetInfo& SameLine(bool sameLine_) {
-        sameLine = sameLine_;
-        return *this;
-    }
-    WidgetInfo& CustomFunction(WidgetFunc customFunction_) {
-        customFunction = customFunction_;
-        return *this;
-    }
-    WidgetInfo& RaceDisable(bool disable) {
-        raceDisable = disable;
-        return *this;
     }
 };
 

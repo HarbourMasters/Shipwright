@@ -195,7 +195,8 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                     auto& column = sidebar.columnWidgets.at(i);
                     for (auto& info : column) {
                         if (info.type == WIDGET_SEARCH || info.type == WIDGET_SEPARATOR ||
-                            info.type == WIDGET_SEPARATOR_TEXT || info.isHidden) {
+                            info.type == WIDGET_SEPARATOR_TEXT || info.isHidden || 
+                            info.hideInSearch) {
                             continue;
                         }
                         const char* tooltip = info.options->tooltip;

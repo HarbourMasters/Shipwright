@@ -1826,6 +1826,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_WINDOW("CosmeticsEditor"))
         .RaceDisable(false)
         .WindowName("Cosmetics Editor")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Cosmetics Editor Window."));
 
     // Audio Editor
@@ -1835,6 +1836,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_WINDOW("AudioEditor"))
         .RaceDisable(false)
         .WindowName("Audio Editor")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Audio Editor Window."));
 
     // Gameplay Stats
@@ -1844,6 +1846,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_WINDOW("GameplayStats"))
         .RaceDisable(false)
         .WindowName("Gameplay Stats")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Gameplay Stats Window."));
 
     // Time Splits
@@ -1853,6 +1856,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_WINDOW("TimeSplits"))
         .RaceDisable(false)
         .WindowName("Time Splits")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Time Splits Window."));
 
     // Timers
