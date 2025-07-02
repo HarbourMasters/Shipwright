@@ -224,7 +224,7 @@ void Horse_SetCutsceneMount(PlayState* play, Player* player) {
                     Actor_MountHorse(play, player, player->rideActor);
                     func_8002DE74(play, player);
                 } else if ((horseCutsceneRecipes[i].type == 5) || (horseCutsceneRecipes[i].type == 6) || (horseCutsceneRecipes[i].type == 8)) {
-                    Vec3f sp54;
+                    Vec3f eye;
                     s32 temp = 0;
 
                     if (((gSaveContext.eventInf[0] & 0x10) >> 4) && horseCutsceneRecipes[i].type == 6) {
@@ -245,11 +245,11 @@ void Horse_SetCutsceneMount(PlayState* play, Player* player) {
                     Actor_MountHorse(play, player, player->rideActor);
                     func_8002DE74(play, player);
 
-                    sp54.x = player->actor.world.pos.x - 200.0f;
-                    sp54.y = player->actor.world.pos.y + 100.0f;
-                    sp54.z = player->actor.world.pos.z;
+                    eye.x = player->actor.world.pos.x - 200.0f;
+                    eye.y = player->actor.world.pos.y + 100.0f;
+                    eye.z = player->actor.world.pos.z;
 
-                    Play_CameraSetAtEye(play, play->activeCamera, &player->actor.world.pos, &sp54);
+                    Play_CameraSetAtEye(play, play->activeCamera, &player->actor.world.pos, &eye);
                 } else {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, horseCutsceneRecipes[i].pos.x, horseCutsceneRecipes[i].pos.y,
                                 horseCutsceneRecipes[i].pos.z, 0, horseCutsceneRecipes[i].angle, 0, horseCutsceneRecipes[i].type, true);
