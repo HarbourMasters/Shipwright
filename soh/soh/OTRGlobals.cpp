@@ -345,15 +345,16 @@ void OTRGlobals::Initialize() {
     context->InitWindow(sohFast3dWindow);
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
-    // Currently, differently sized fonts require preloading (reloading font at runtime crashes the game)
+    // Currently, differently sized fonts require preloading
+    // (loading a font at any point after here crashes the game with "INVALID ACCESS TO STORAGE")
     overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
     overlay->LoadFont("Press Start 2P Normal", 24.0f, "fonts/PressStart2P-Regular.ttf");
     overlay->LoadFont("Press Start 2P Large", 32.0f, "fonts/PressStart2P-Regular.ttf");
     overlay->LoadFont("Press Start 2P X-Large", 40.0f, "fonts/PressStart2P-Regular.ttf");
-    overlay->LoadFont("Fipps", 24.0f, "fonts/Fipps-Regular.otf");
-    overlay->LoadFont("Fipps Normal", 32.0f, "fonts/Fipps-Regular.otf");
-    overlay->LoadFont("Fipps Large", 40.0f, "fonts/Fipps-Regular.otf");
-    overlay->LoadFont("Fipps X-Large", 48.0f, "fonts/Fipps-Regular.otf");
+    overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
+    overlay->LoadFont("Fipps Normal", 40.0f, "fonts/Fipps-Regular.otf");
+    overlay->LoadFont("Fipps Large", 48.0f, "fonts/Fipps-Regular.otf");
+    overlay->LoadFont("Fipps X-Large", 52.0f, "fonts/Fipps-Regular.otf");
     LoadOverlayTextFont();
 
     context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
