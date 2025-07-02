@@ -889,13 +889,13 @@ void SkelCurve_SetAnim(SkelAnimeCurve* skelCurve, TransformUpdateIndex* transUpd
 s32 SkelCurve_Update(PlayState* play, SkelAnimeCurve* skelCurve);
 void SkelCurve_Draw(Actor* actor, PlayState* play, SkelAnimeCurve* skelCurve,
                     OverrideCurveLimbDraw overrideLimbDraw, PostCurveLimbDraw postLimbDraw, s32 lod, void* data);
-s32 func_8006CFC0(s32 scene);
-void func_8006D074(PlayState* play);
-void func_8006D0AC(PlayState* play);
-void func_8006D0EC(PlayState* play, Player* player);
-void func_8006D684(PlayState* play, Player* player);
-void func_8006DC68(PlayState* play, Player* player);
-void func_8006DD9C(Actor* actor, Vec3f* arg1, s16 arg2);
+s32 Horse_IsValidScene(s32 scene);
+void Horse_SetDefaultSpawn(PlayState* play);
+void Horse_PatchLakeHyliaSpawn(PlayState* play);
+void Horse_SetNormal(PlayState* play, Player* player);
+void Horse_SetCutsceneMount(PlayState* play, Player* player);
+void Horse_InitForScene(PlayState* play, Player* player);
+void Actor_RotateToPoint(Actor* actor, Vec3f* target, s16 speed);
 s32 Jpeg_Decode(void* data, void* zbuffer, void* workBuff, u32 workSize);
 void KaleidoSetup_Update(PlayState* play);
 void KaleidoSetup_Init(PlayState* play);

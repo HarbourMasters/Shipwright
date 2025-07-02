@@ -244,7 +244,7 @@ void EnGe2_CaptureClose(EnGe2* this, PlayState* play) {
     if (this->timer > 0) {
         this->timer--;
     } else {
-        func_8006D074(play);
+        Horse_SetDefaultSpawn(play);
 
         if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
             play->nextEntranceIndex = ENTR_GERUDO_VALLEY_1;
@@ -274,7 +274,7 @@ void EnGe2_CaptureCharge(EnGe2* this, PlayState* play) {
     if (this->timer > 0) {
         this->timer--;
     } else {
-        func_8006D074(play);
+        Horse_SetDefaultSpawn(play);
 
         if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
             play->nextEntranceIndex = ENTR_GERUDO_VALLEY_1;

@@ -1913,7 +1913,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         osSyncPrintf(VT_RST);
 
         if (item == ITEM_MEDALLION_WATER) {
-            func_8006D0AC(play);
+            Horse_PatchLakeHyliaSpawn(play);
         }
 
         return Return_Item(item, MOD_NONE, ITEM_NONE);
