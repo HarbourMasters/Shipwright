@@ -6470,4 +6470,20 @@ s32 func_80038290(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f
     func_80037FC8(actor, &sp24, arg2, arg3);
 
     return true;
+
+}
+
+// Generic helper: smoothly yaw an actor toward a target point, clamping the turn speed.
+void Actor_RotateToPoint(Actor* actor, Vec3f* arg1, s16 arg2) {
+    s16 x = Math_Vec3f_Yaw(&actor->world.pos, arg1) - actor->world.rot.y;
+
+    if (x > arg2) {
+        actor->world.rot.y += arg2;
+    } else if (x < -arg2) {
+        actor->world.rot.y -= arg2;
+    } else {
+        actor->world.rot.y += x;
+    }
+
+    actor->shape.rot.y = actor->world.rot.y;
 }

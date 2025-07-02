@@ -288,19 +288,3 @@ void Horse_InitForScene(PlayState* play, Player* player) {
         }
     }
 }
-
-// Generic helper: smoothly yaw an actor toward a target point, clamping the
-// turn speed. It’s used by horse AI but isn’t horse-specific.
-void Actor_RotateToPoint(Actor* actor, Vec3f* arg1, s16 arg2) {
-    s16 x = Math_Vec3f_Yaw(&actor->world.pos, arg1) - actor->world.rot.y;
-
-    if (x > arg2) {
-        actor->world.rot.y += arg2;
-    } else if (x < -arg2) {
-        actor->world.rot.y -= arg2;
-    } else {
-        actor->world.rot.y += x;
-    }
-
-    actor->shape.rot.y = actor->world.rot.y;
-}
