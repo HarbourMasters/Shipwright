@@ -852,7 +852,7 @@ bool Logic::CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
         case RE_REDEAD:
             // we need a way to check if suns won't force a reload
             // RANDOTODO: check if stealthing past these guys works everywhere
-            return true;//CanUse(RG_HOOKSHOT) || CanUse(RG_SUNS_SONG);
+            return true; // CanUse(RG_HOOKSHOT) || CanUse(RG_SUNS_SONG);
         case RE_IRON_KNUCKLE:
         case RE_BIG_OCTO:
             return false;
