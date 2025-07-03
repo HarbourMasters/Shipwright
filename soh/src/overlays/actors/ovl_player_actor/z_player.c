@@ -7353,7 +7353,7 @@ s32 Player_ActionHandler_2(Player* this, PlayState* play) {
                 // Skip cutscenes from picking up consumables with "Fast Pickup Text" enabled, even when the player
                 // never picked it up before. But only for bushes/rocks/enemies because otherwise it can lead to
                 // softlocks in deku mask theatre and potentially other places.
-                uint8_t skipItemCutscene = CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0) && isDropToSkip;
+                uint8_t skipItemCutscene = CVarGetInteger(CVAR_ENHANCEMENT("FastConsumables"), 0) && isDropToSkip;
 
                 // Same as above but for rando. Rando is different because we want to enable cutscenes for items that
                 // the player already has because those items could be a randomized item coming from scrubs,
