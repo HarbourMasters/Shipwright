@@ -186,7 +186,9 @@ bool ModernMenuHeaderEntry(std::string label) {
 
 uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
     int searchCount = 0;
-    if (ImGui::BeginChild("Search Results")) {
+    ImGui::SetNextWindowSizeConstraints({ ImGui::GetContentRegionAvail().x / 2, 0}, {ImGui::GetContentRegionAvail().x / 2, ImGui::GetContentRegionAvail().y});
+    if (ImGui::BeginChild("Search Results Col 1", { ImGui::GetContentRegionAvail().x / 2, windowHeight * 4 }, ImGuiChildFlags_AutoResizeY,
+            ImGuiWindowFlags_NoTitleBar)) {
         for (auto& menuLabel : menuOrder) {
             auto& menuEntry = menuEntries.at(menuLabel);
             for (auto& sidebarLabel : menuEntry.sidebarOrder) {
@@ -195,7 +197,7 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                     auto& column = sidebar.columnWidgets.at(i);
                     for (auto& info : column) {
                         if (info.type == WIDGET_SEARCH || info.type == WIDGET_SEPARATOR ||
-                            info.type == WIDGET_SEPARATOR_TEXT || info.isHidden || 
+                            info.type == WIDGET_SEPARATOR_TEXT || info.isHidden ||
                             info.hideInSearch) {
                             continue;
                         }
@@ -219,6 +221,7 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                 }
             }
         }
+        ImGui::EndChild();
     }
     return searchCount;
 }
@@ -474,7 +477,6 @@ void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors me
                     return;
                 }
                 DrawSearchResults(menuSearchText);
-                ImGui::EndChild();
             } break;
             default:
                 break;
@@ -798,12 +800,6 @@ void Menu::DrawElement() {
                           ImGuiWindowFlags_NoTitleBar);
     }
     if (headerSearch && menuSearchText.length() > 0) {
-        uint32_t searchCount = DrawSearchResults(menuSearchText);
-        if (searchCount == 0) {
-            ImGui::SetCursorPosX((ImGui::GetWindowWidth() - ImGui::CalcTextSize("No results found").x) / 2);
-            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 10.0f);
-            ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "No results found");
-        }
         ImGui::SetCursorPosX((ImGui::GetWindowWidth() - ImGui::CalcTextSize("Clear Search").x) / 2 - 10.0f);
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 10.0f);
         UIWidgets::ButtonOptions clearBtnOpts = {};
@@ -811,8 +807,12 @@ void Menu::DrawElement() {
         if (UIWidgets::Button("Clear Search", clearBtnOpts)) {
             menuSearch.Clear();
         }
-
-        ImGui::EndChild();
+        uint32_t searchCount = DrawSearchResults(menuSearchText);
+        if (searchCount == 0) {
+            ImGui::SetCursorPosX((ImGui::GetWindowWidth() - ImGui::CalcTextSize("No results found").x) / 2);
+            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 10.0f);
+            ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "No results found");
+        }
     } else {
         std::string menuLabel = menuEntries.at(headerIndex).label;
         if (MenuInit::GetUpdateFuncs().contains(menuLabel)) {
