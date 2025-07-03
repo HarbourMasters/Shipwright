@@ -144,6 +144,7 @@ class Logic {
     bool DeliverLetter = false;
     bool ClearMQDCUpperLobbyRocks = false;
     bool LoweredWaterInsideBotw = false;
+    bool OpenedMQBotwGates = false;
     bool OpenedWestRoomMQBotw = false;
     bool OpenedMiddleHoleMQBotw = false;
     bool BrokeDeku1FWeb = false;

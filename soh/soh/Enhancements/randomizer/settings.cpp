@@ -735,7 +735,8 @@ void Settings::CreateOptions() {
               "Bottom of the Well Map Chest with Strength & Sticks",
               "The chest in the basement can be reached with strength by doing a jump slash with a lit stick to access "
               "the Bomb Flowers.");
-    OPT_TRICK(RT_BOTW_MQ_PITS, RCQUEST_MQ, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
+    // RANDOTODO with doorsanity, this can be relevant in Vanilla
+    OPT_TRICK(RT_BOTW_PITS, RCQUEST_MQ, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
               "Bottom of the Well MQ Jump Over the Pits",
               "While the pits in Bottom of the Well don't allow you to jump just by running straight at them, you can "
               "still get over them by side-hopping or backflipping across. With explosives, this allows you to access "
