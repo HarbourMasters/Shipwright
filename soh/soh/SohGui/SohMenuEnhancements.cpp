@@ -354,10 +354,10 @@ void SohMenu::AddMenuEnhancements() {
 
     AddWidget(path, "Text", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Skip Bottle Pickup Messages", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("FastDrops"))
+        .CVar(CVAR_ENHANCEMENT("FastBottles"))
         .Options(CheckboxOptions().Tooltip("Skip Pickup Messages for Bottle Swipes."));
     AddWidget(path, "Skip Consumable Item Pickup Messages", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("FastConsumables"))
+        .CVar(CVAR_ENHANCEMENT("FastDrops"))
         .Options(CheckboxOptions().Tooltip("Skip Pickup Messages for new Consumable Items."));
     AddWidget(path, "Skip Forced Dialog", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"))
