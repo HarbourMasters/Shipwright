@@ -1177,11 +1177,6 @@ bool Logic::CanStunDeku() {
     return CanAttack() || CanUse(RG_NUTS) || CanReflectNuts();
 }
 
-bool Logic::CanLeaveForest() {
-    return ctx->GetOption(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON) || IsAdult || DekuTreeClear ||
-           ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES);
-}
-
 bool Logic::CallGossipFairyExceptSuns() {
     return CanUse(RG_ZELDAS_LULLABY) || CanUse(RG_EPONAS_SONG) || CanUse(RG_SONG_OF_TIME);
 }
@@ -2350,9 +2345,12 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
 
     // AmmoCanDrop = /*AmmoDrops.IsNot(AMMODROPS_NONE)*/ false; TODO: AmmoDrop setting
 
-    // Child item logic
-    SkullMask = false;
-    MaskOfTruth = false;
+    // Mask quest
+    CanBorrowMasks = false;
+    BorrowSkullMask = false;
+    BorrowSpookyMask = false;
+    BorrowBunnyHood = false;
+    BorrowRightMasks = false;
 
     // Adult logic
     FreedEpona = false;

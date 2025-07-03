@@ -358,17 +358,6 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x15);
     }
 
-    // Now handled on the fly.
-    // int openForest = Randomizer_GetSettingValue(RSK_FOREST);
-    // switch (openForest) {
-    //     case RO_CLOSED_FOREST_OFF:
-    //         Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
-    //         // Fallthrough
-    //     case RO_CLOSED_FOREST_DEKU_ONLY:
-    //         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
-    //         break;
-    // }
-
     int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
     switch (doorOfTime) {
         case RO_DOOROFTIME_OPEN:

@@ -1,9 +1,10 @@
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
-#include "z64save.h"
 
-extern "C" SaveContext gSaveContext;
+extern "C" {
+#include "z64save.h"
+extern SaveContext gSaveContext;
+}
 
 #define CVAR_INFINITE_MAGIC_NAME CVAR_CHEAT("InfiniteMagic")
 #define CVAR_INFINITE_MAGIC_DEFAULT 0

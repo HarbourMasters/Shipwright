@@ -115,10 +115,12 @@ struct WidgetOptions {
         tooltip = tooltip_;
         return *this;
     }
+
     WidgetOptions& Disabled(bool disabled_) {
         disabled = disabled_;
         return *this;
     }
+
     WidgetOptions& DisabledTooltip(const char* disabledTooltip_) {
         disabledTooltip = disabledTooltip_;
         return *this;
@@ -143,14 +145,17 @@ struct ButtonOptions : WidgetOptions {
         size = size_;
         return *this;
     }
+
     ButtonOptions& Padding(ImVec2 padding_) {
         padding = padding_;
         return *this;
     }
+
     ButtonOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     ButtonOptions& Color(Colors color_) {
         color = color_;
         return *this;
@@ -168,22 +173,27 @@ struct WindowButtonOptions : WidgetOptions {
         size = size_;
         return *this;
     }
+
     WindowButtonOptions& Padding(ImVec2 padding_) {
         padding = padding_;
         return *this;
     }
+
     WindowButtonOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     WindowButtonOptions& Color(Colors color_) {
         color = color_;
         return *this;
     }
+
     WindowButtonOptions& ShowButton(bool showButton_) {
         showButton = showButton_;
         return *this;
     }
+
     WindowButtonOptions& EmbedWindow(bool embedWindow_) {
         embedWindow = embedWindow_;
         return *this;
@@ -201,26 +211,32 @@ struct CheckboxOptions : WidgetOptions {
         defaultValue = defaultValue_;
         return *this;
     }
+
     CheckboxOptions& ComponentAlignment(ComponentAlignments alignment_) {
         alignment = alignment_;
         return *this;
     }
+
     CheckboxOptions& LabelPosition(LabelPositions labelPosition_) {
         labelPosition = labelPosition_;
         return *this;
     }
+
     CheckboxOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     CheckboxOptions& Color(Colors color_) {
         color = color_;
         return *this;
     }
+
     CheckboxOptions& DisabledTooltip(const char* disabledTooltip_) {
         WidgetOptions::disabledTooltip = disabledTooltip_;
         return *this;
     }
+
     CheckboxOptions& Padding(ImVec2 padding_) {
         padding = padding_;
         return *this;
@@ -239,22 +255,27 @@ struct ComboboxOptions : WidgetOptions {
         comboMap = comboMap_;
         return *this;
     }
+
     ComboboxOptions& DefaultIndex(uint32_t defaultIndex_) {
         defaultIndex = defaultIndex_;
         return *this;
     }
+
     ComboboxOptions& ComponentAlignment(ComponentAlignments alignment_) {
         alignment = alignment_;
         return *this;
     }
+
     ComboboxOptions& LabelPosition(LabelPositions labelPosition_) {
         labelPosition = labelPosition_;
         return *this;
     }
+
     ComboboxOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     ComboboxOptions& Color(Colors color_) {
         color = color_;
         return *this;
@@ -279,46 +300,57 @@ struct IntSliderOptions : WidgetOptions {
         showButtons = showButtons_;
         return *this;
     }
+
     IntSliderOptions& Format(const char* format_) {
         format = format_;
         return *this;
     }
+
     IntSliderOptions& Step(int32_t step_) {
         step = step_;
         return *this;
     }
+
     IntSliderOptions& Min(int32_t min_) {
         min = min_;
         return *this;
     }
+
     IntSliderOptions& Max(int32_t max_) {
         max = max_;
         return *this;
     }
+
     IntSliderOptions& DefaultValue(int32_t defaultValue_) {
         defaultValue = defaultValue_;
         return *this;
     }
+
     IntSliderOptions& ComponentAlignment(ComponentAlignments alignment_) {
         alignment = alignment_;
         return *this;
     }
+
     IntSliderOptions& LabelPosition(LabelPositions labelPosition_) {
         labelPosition = labelPosition_;
         return *this;
     }
+
     IntSliderOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     IntSliderOptions& Color(Colors color_) {
         color = color_;
         return *this;
     }
+
     IntSliderOptions& Size(ImVec2 size_) {
         size = size_;
         return *this;
     }
+
     IntSliderOptions& Clamp(bool clamp_) {
         clamp = clamp_;
         return *this;
@@ -344,34 +376,42 @@ struct FloatSliderOptions : WidgetOptions {
         showButtons = showButtons_;
         return *this;
     }
+
     FloatSliderOptions& Format(const char* format_) {
         format = format_;
         return *this;
     }
+
     FloatSliderOptions& Step(float step_) {
         step = step_;
         return *this;
     }
+
     FloatSliderOptions& Min(float min_) {
         min = min_;
         return *this;
     }
+
     FloatSliderOptions& Max(float max_) {
         max = max_;
         return *this;
     }
+
     FloatSliderOptions& DefaultValue(float defaultValue_) {
         defaultValue = defaultValue_;
         return *this;
     }
+
     FloatSliderOptions& ComponentAlignment(ComponentAlignments alignment_) {
         alignment = alignment_;
         return *this;
     }
+
     FloatSliderOptions& LabelPosition(LabelPositions labelPosition_) {
         labelPosition = labelPosition_;
         return *this;
     }
+
     FloatSliderOptions& IsPercentage(bool isPercentage_ = true) {
         isPercentage = isPercentage_;
         format = "%.0f%%";
@@ -379,18 +419,22 @@ struct FloatSliderOptions : WidgetOptions {
         max = 1.0f;
         return *this;
     }
+
     FloatSliderOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     FloatSliderOptions& Color(Colors color_) {
         color = color_;
         return *this;
     }
+
     FloatSliderOptions& Size(ImVec2 size_) {
         size = size_;
         return *this;
     }
+
     FloatSliderOptions& Clamp(bool clamp_) {
         clamp = clamp_;
         return *this;
@@ -406,14 +450,17 @@ struct RadioButtonsOptions : WidgetOptions {
         buttonMap = buttonMap_;
         return *this;
     }
+
     RadioButtonsOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     RadioButtonsOptions& Color(Colors color_) {
         color = color_;
         return *this;
     }
+
     RadioButtonsOptions& DefaultIndex(int32_t defaultIndex_) {
         defaultIndex = defaultIndex_;
         return *this;
@@ -437,10 +484,12 @@ struct InputOptions : WidgetOptions {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     InputOptions& Color(Colors color_) {
         color = color_;
         return *this;
     }
+
     InputOptions& Size(ImVec2 size_) {
         size = size_;
         return *this;

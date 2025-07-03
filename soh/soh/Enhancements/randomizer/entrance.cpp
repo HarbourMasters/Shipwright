@@ -45,8 +45,6 @@ std::string Entrance::GetName() const {
 }
 
 void Entrance::printAgeTimeAccess() {
-    // CitraPrint("Name: ");
-    // CitraPrint(name);
     auto message = "Child Day:   " + std::to_string(CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) +
                    "\t"
                    "Child Night: " +
@@ -57,7 +55,6 @@ void Entrance::printAgeTimeAccess() {
                    "\t"
                    "Adult Night: " +
                    std::to_string(CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight));
-    // CitraPrint(message);
 }
 
 bool Entrance::ConditionsMet(bool allAgeTimes) const {
@@ -276,8 +273,8 @@ void SetAllEntrancesData() {
           { EntranceType::Dungeon,      RR_BOTTOM_OF_THE_WELL_ENTRYWAY,      RR_KAK_WELL,                          ENTR_KAKARIKO_VILLAGE_OUTSIDE_BOTTOM_OF_THE_WELL } },
         { { EntranceType::Dungeon,      RR_ZF_LEDGE,                         RR_ICE_CAVERN_ENTRYWAY,               ENTR_ICE_CAVERN_ENTRANCE },
           { EntranceType::Dungeon,      RR_ICE_CAVERN_ENTRYWAY,              RR_ZF_LEDGE,                          ENTR_ZORAS_FOUNTAIN_OUTSIDE_ICE_CAVERN } },
-        { { EntranceType::Dungeon,      RR_GF_OUTSIDE_GTG,                   RR_GERUDO_TRAINING_GROUND_ENTRYWAY,   ENTR_GERUDO_TRAINING_GROUND_ENTRANCE },
-          { EntranceType::Dungeon,      RR_GERUDO_TRAINING_GROUND_ENTRYWAY,  RR_GF_OUTSIDE_GTG,                    ENTR_GERUDOS_FORTRESS_OUTSIDE_GERUDO_TRAINING_GROUND } },
+        { { EntranceType::Dungeon,      RR_GF_TO_GTG,                        RR_GERUDO_TRAINING_GROUND_ENTRYWAY,   ENTR_GERUDO_TRAINING_GROUND_ENTRANCE },
+          { EntranceType::Dungeon,      RR_GERUDO_TRAINING_GROUND_ENTRYWAY,  RR_GF_EXITING_GTG,                    ENTR_GERUDOS_FORTRESS_OUTSIDE_GERUDO_TRAINING_GROUND } },
         { { EntranceType::GanonDungeon, RR_GANONS_CASTLE_LEDGE,              RR_GANONS_CASTLE_ENTRYWAY,            ENTR_INSIDE_GANONS_CASTLE_ENTRANCE },
           { EntranceType::GanonDungeon, RR_GANONS_CASTLE_ENTRYWAY,           RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE, ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT } },
         
@@ -1214,15 +1211,6 @@ int EntranceShuffler::ShuffleAllEntrances() {
         if (ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL)) {
             entrancePools[EntranceType::Boss] = GetShuffleableEntrances(EntranceType::ChildBoss);
             AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::AdultBoss));
-            // If forest is closed, ensure Ghoma is inside the Deku tree
-            // Deku tree being in its vanilla location is handled below
-            if (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_ON) &&
-                !(ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES))) {
-                FilterAndEraseFromPool(entrancePools[EntranceType::Boss], [](const Entrance* entrance) {
-                    return entrance->GetParentRegionKey() == RR_DEKU_TREE_BOSS_ENTRYWAY &&
-                           entrance->GetConnectedRegionKey() == RR_DEKU_TREE_BOSS_ROOM;
-                });
-            }
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 for (Entrance* entrance : entrancePools[EntranceType::Boss]) {
                     entrancePools[EntranceType::BossReverse].push_back(entrance->GetReverse());
@@ -1231,14 +1219,6 @@ int EntranceShuffler::ShuffleAllEntrances() {
         } else {
             entrancePools[EntranceType::ChildBoss] = GetShuffleableEntrances(EntranceType::ChildBoss);
             entrancePools[EntranceType::AdultBoss] = GetShuffleableEntrances(EntranceType::AdultBoss);
-            // If forest is closed, ensure Ghoma is inside the Deku tree
-            if (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_ON) &&
-                !(ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES))) {
-                FilterAndEraseFromPool(entrancePools[EntranceType::ChildBoss], [](const Entrance* entrance) {
-                    return entrance->GetParentRegionKey() == RR_DEKU_TREE_BOSS_ENTRYWAY &&
-                           entrance->GetConnectedRegionKey() == RR_DEKU_TREE_BOSS_ROOM;
-                });
-            }
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 for (Entrance* entrance : entrancePools[EntranceType::ChildBoss]) {
                     entrancePools[EntranceType::ChildBossReverse].push_back(entrance->GetReverse());
@@ -1257,14 +1237,6 @@ int EntranceShuffler::ShuffleAllEntrances() {
         if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON)) {
             AddElementsToPool(entrancePools[EntranceType::Dungeon],
                               GetShuffleableEntrances(EntranceType::GanonDungeon));
-        }
-        // If forest is closed don't allow a forest escape via spirit temple hands
-        if (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_ON) &&
-            !(ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES))) {
-            FilterAndEraseFromPool(entrancePools[EntranceType::Dungeon], [](const Entrance* entrance) {
-                return entrance->GetParentRegionKey() == RR_KF_OUTSIDE_DEKU_TREE &&
-                       entrance->GetConnectedRegionKey() == RR_DEKU_TREE_ENTRYWAY;
-            });
         }
         if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
             for (Entrance* entrance : entrancePools[EntranceType::Dungeon]) {
