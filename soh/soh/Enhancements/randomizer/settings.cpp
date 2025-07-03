@@ -120,6 +120,7 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_DOOR_OF_TIME, "Door of Time", {"Closed", "Song only", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("DoorOfTime"), mOptionDescriptions[RSK_DOOR_OF_TIME], WidgetType::Combobox);
     OPT_U8(RSK_ZORAS_FOUNTAIN, "Zora's Fountain", {"Closed", "Closed as child", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ZorasFountain"), mOptionDescriptions[RSK_ZORAS_FOUNTAIN]);
     OPT_U8(RSK_SLEEPING_WATERFALL, "Sleeping Waterfall", {"Closed", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SleepingWaterfall"), mOptionDescriptions[RSK_SLEEPING_WATERFALL]);
+    OPT_U8(RSK_JABU_OPEN, "Jabu-Jabu", {"Closed", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("JabuJabu"), mOptionDescriptions[RSK_JABU_OPEN]);
     OPT_BOOL(RSK_LOCK_OVERWORLD_DOORS, "Lock Overworld Doors", CVAR_RANDOMIZER_SETTING("LockOverworldDoors"), mOptionDescriptions[RSK_LOCK_OVERWORLD_DOORS]);
     OPT_U8(RSK_GERUDO_FORTRESS, "Fortress Carpenters", {"Normal", "Fast", "Free"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("FortressCarpenters"), mOptionDescriptions[RSK_GERUDO_FORTRESS]);
     OPT_U8(RSK_RAINBOW_BRIDGE, "Rainbow Bridge", {"Vanilla", "Always open", "Stones", "Medallions", "Dungeon rewards", "Dungeons", "Tokens", "Greg"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("RainbowBridge"), mOptionDescriptions[RSK_RAINBOW_BRIDGE], WidgetType::Combobox, RO_BRIDGE_VANILLA, false, IMFLAG_NONE);
@@ -1181,6 +1182,7 @@ void Settings::CreateOptions() {
                                                                      &mOptions[RSK_DOOR_OF_TIME],
                                                                      &mOptions[RSK_ZORAS_FOUNTAIN],
                                                                      &mOptions[RSK_SLEEPING_WATERFALL],
+                                                                     &mOptions[RSK_JABU_OPEN],
                                                                      &mOptions[RSK_LOCK_OVERWORLD_DOORS],
                                                                  },
                                                                  WidgetContainerType::COLUMN);
@@ -1435,6 +1437,7 @@ void Settings::CreateOptions() {
                                                                &mOptions[RSK_DOOR_OF_TIME],
                                                                &mOptions[RSK_ZORAS_FOUNTAIN],
                                                                &mOptions[RSK_SLEEPING_WATERFALL],
+                                                               &mOptions[RSK_JABU_OPEN],
                                                                &mOptions[RSK_LOCK_OVERWORLD_DOORS],
                                                                &mOptions[RSK_GERUDO_FORTRESS],
                                                                &mOptions[RSK_RAINBOW_BRIDGE],
@@ -1834,10 +1837,9 @@ void Settings::UpdateOptionProperties() {
     } else {
         mOptionGroups[RSG_AREA_ACCESS_IMGUI].Enable();
         // Starting Age - Disabled when Forest is set to Closed or under very specific conditions
-        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ClosedForest"), RO_CLOSED_FOREST_ON) == RO_CLOSED_FOREST_ON ||
-            (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
-             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_OFF) ==
-                 RO_GENERIC_OFF)) /* closed door of time with ocarina shuffle off */ {
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
+            CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_OFF) ==
+                RO_GENERIC_OFF) /* closed door of time with ocarina shuffle off */ {
             mOptions[RSK_STARTING_AGE].Disable(
                 "This option is disabled due to other options making the game unbeatable.");
         } else {
@@ -2534,8 +2536,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     }
 
     // With certain access settings, the seed is only beatable if Starting Age is set to Child.
-    if (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) ||
-        (mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) && !mOptions[RSK_SHUFFLE_OCARINA])) {
+    if (mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) && !mOptions[RSK_SHUFFLE_OCARINA]) {
         mOptions[RSK_STARTING_AGE].Set(RO_AGE_CHILD);
     }
 
@@ -2847,13 +2848,6 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
 
     if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !grottoShuffle) {
         mOptions[RSK_MIX_GROTTO_ENTRANCES].Set(RO_GENERIC_OFF);
-    }
-
-    if (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) &&
-        (mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL) ||
-         mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES] || mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS] ||
-         mOptions[RSK_DECOUPLED_ENTRANCES] || mOptions[RSK_MIXED_ENTRANCE_POOLS])) {
-        mOptions[RSK_FOREST].Set(RO_CLOSED_FOREST_DEKU_ONLY);
     }
 
     if (mOptions[RSK_STARTING_AGE].Is(RO_AGE_RANDOM)) {

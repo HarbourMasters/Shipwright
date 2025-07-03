@@ -42,6 +42,8 @@ void Settings::CreateOptionDescriptions() {
                                                   "\n"
                                                   "Open - Sleeping Waterfall is always open. "
                                                   "Link may always enter Zora's Domain.";
+    mOptionDescriptions[RSK_JABU_OPEN] = "Closed - A fish is required to open Jabu-Jabu's mouth.\n\n"
+                                         "Open - Jabu-Jabu's mouth opens without the need for a fish.";
     mOptionDescriptions[RSK_LOCK_OVERWORLD_DOORS] =
         "Add locks to all wooden overworld doors, requiring specific small keys to open them";
     mOptionDescriptions[RSK_STARTING_AGE] =

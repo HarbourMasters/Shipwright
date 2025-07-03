@@ -10,7 +10,7 @@ bool GameInteractor::State::PacifistModeActive = 0;
 bool GameInteractor::State::DisableZTargetingActive = 0;
 bool GameInteractor::State::ReverseControlsActive = 0;
 int32_t GameInteractor::State::DefenseModifier = 0;
-int32_t GameInteractor::State::RunSpeedModifier = 0;
+float GameInteractor::State::MovementSpeedMultiplier = 1.0f;
 GIGravityLevel GameInteractor::State::GravityLevel = GI_GRAVITY_LEVEL_NORMAL;
 uint32_t GameInteractor::State::EmulatedButtons = 0;
 uint8_t GameInteractor::State::RandomBombFuseTimerActive = 0;
@@ -81,8 +81,8 @@ int32_t GameInteractor_DefenseModifier() {
 }
 
 // MARK: - GameInteractor::State::DisableCameraRotationActive
-int32_t GameInteractor_RunSpeedModifier() {
-    return GameInteractor::State::RunSpeedModifier;
+float GameInteractor_MovementSpeedMultiplier() {
+    return GameInteractor::State::MovementSpeedMultiplier;
 }
 
 // MARK: - GameInteractor::State::DisableCameraRotationActive

@@ -63,7 +63,7 @@ void RegionTable_Init_GoronCity() {
         EventAccess(&logic->GCWoodsWarpOpen, []{return logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE);}),
     }, {}, {
         //Exits
-        Entrance(RR_GORON_CITY,     []{return logic->CanLeaveForest() && logic->GCWoodsWarpOpen;}),
+        Entrance(RR_GORON_CITY,     []{return logic->GCWoodsWarpOpen;}),
         Entrance(RR_THE_LOST_WOODS, []{return true;}),
     });
 

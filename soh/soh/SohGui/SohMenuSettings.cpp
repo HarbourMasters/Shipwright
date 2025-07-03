@@ -23,6 +23,39 @@ static std::unordered_map<int32_t, const char*> imguiScaleOptions = {
     { 3, "X-Large" },
 };
 
+static const std::unordered_map<int32_t, const char*> menuThemeOptions = {
+    { UIWidgets::Colors::Red, "Red" },
+    { UIWidgets::Colors::DarkRed, "Dark Red" },
+    { UIWidgets::Colors::Orange, "Orange" },
+    { UIWidgets::Colors::Green, "Green" },
+    { UIWidgets::Colors::DarkGreen, "Dark Green" },
+    { UIWidgets::Colors::LightBlue, "Light Blue" },
+    { UIWidgets::Colors::Blue, "Blue" },
+    { UIWidgets::Colors::DarkBlue, "Dark Blue" },
+    { UIWidgets::Colors::Indigo, "Indigo" },
+    { UIWidgets::Colors::Violet, "Violet" },
+    { UIWidgets::Colors::Purple, "Purple" },
+    { UIWidgets::Colors::Brown, "Brown" },
+    { UIWidgets::Colors::Gray, "Gray" },
+    { UIWidgets::Colors::DarkGray, "Dark Gray" },
+};
+
+static const std::unordered_map<int32_t, const char*> textureFilteringMap = {
+    { Fast::FILTER_THREE_POINT, "Three-Point" },
+    { Fast::FILTER_LINEAR, "Linear" },
+    { Fast::FILTER_NONE, "None" },
+};
+
+static const std::unordered_map<int32_t, const char*> notificationPosition = {
+    { 0, "Top Left" }, { 1, "Top Right" }, { 2, "Bottom Left" }, { 3, "Bottom Right" }, { 4, "Hidden" },
+};
+
+static const std::unordered_map<int32_t, const char*> bootSequenceLabels = {
+    { BOOTSEQUENCE_DEFAULT, "Default" },
+    { BOOTSEQUENCE_AUTHENTIC, "Authentic" },
+    { BOOTSEQUENCE_FILESELECT, "File Select" },
+};
+
 const char* GetGameVersionString(uint32_t index) {
     uint32_t gameVersion = ResourceMgr_GetGameVersion(index);
     switch (gameVersion) {

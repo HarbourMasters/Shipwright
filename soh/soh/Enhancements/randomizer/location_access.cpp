@@ -1003,11 +1003,11 @@ void RegionTable_Init() {
         Entrance(RR_CHILD_SPAWN,             []{return logic->IsChild;}),
         Entrance(RR_ADULT_SPAWN,             []{return logic->IsAdult;}),
         Entrance(RR_MINUET_OF_FOREST_WARP,   []{return logic->CanUse(RG_MINUET_OF_FOREST);}),
-        Entrance(RR_BOLERO_OF_FIRE_WARP,     []{return logic->CanUse(RG_BOLERO_OF_FIRE)     && logic->CanLeaveForest();}),
-        Entrance(RR_SERENADE_OF_WATER_WARP,  []{return logic->CanUse(RG_SERENADE_OF_WATER)  && logic->CanLeaveForest();}),
-        Entrance(RR_NOCTURNE_OF_SHADOW_WARP, []{return logic->CanUse(RG_NOCTURNE_OF_SHADOW) && logic->CanLeaveForest();}),
-        Entrance(RR_REQUIEM_OF_SPIRIT_WARP,  []{return logic->CanUse(RG_REQUIEM_OF_SPIRIT)  && logic->CanLeaveForest();}),
-        Entrance(RR_PRELUDE_OF_LIGHT_WARP,   []{return logic->CanUse(RG_PRELUDE_OF_LIGHT)   && logic->CanLeaveForest();}),
+        Entrance(RR_BOLERO_OF_FIRE_WARP,     []{return logic->CanUse(RG_BOLERO_OF_FIRE);}),
+        Entrance(RR_SERENADE_OF_WATER_WARP,  []{return logic->CanUse(RG_SERENADE_OF_WATER);}),
+        Entrance(RR_NOCTURNE_OF_SHADOW_WARP, []{return logic->CanUse(RG_NOCTURNE_OF_SHADOW);}),
+        Entrance(RR_REQUIEM_OF_SPIRIT_WARP,  []{return logic->CanUse(RG_REQUIEM_OF_SPIRIT);}),
+        Entrance(RR_PRELUDE_OF_LIGHT_WARP,   []{return logic->CanUse(RG_PRELUDE_OF_LIGHT);}),
     });
 
     areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
