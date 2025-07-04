@@ -3,17 +3,6 @@
 #define TIMESPLITS_H
 
 #include <stdint.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif // TIMESPLITS_H
-
 #include <libultraship/libultraship.h>
 
 #ifdef __cplusplus
@@ -66,3 +55,5 @@ typedef struct {
 } SplitObject;
 
 #endif
+
+#endif // TIMESPLITS_H

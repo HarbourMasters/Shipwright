@@ -39,7 +39,7 @@ class Item {
          int16_t chestAnimation_, GetItemCategory category_, uint16_t modIndex_, uint16_t price_ = 0,
          CustomDrawFunc drawfunc_ = NULL);
     Item(RandomizerGet randomizerGet_, ItemType type_, int16_t getItemId_, LogicVal logicVal_,
-         RandomizerHintTextKey hintKey_, uint16_t price_ = 0);
+         RandomizerHintTextKey hintKey_, GetItemCategory category_, uint16_t price_ = 0);
     ~Item();
 
     void ApplyEffect() const;
@@ -60,6 +60,7 @@ class Item {
     bool IsMajorItem() const;
     RandomizerHintTextKey GetHintKey() const;
     const HintText& GetHint() const;
+    GetItemCategory GetCategory();
     bool operator==(const Item& right) const;
     bool operator!=(const Item& right) const;
 
@@ -71,6 +72,7 @@ class Item {
     bool advancement;
     LogicVal logicVal;
     RandomizerHintTextKey hintKey;
+    GetItemCategory category;
     uint16_t price;
     std::shared_ptr<GetItemEntry> giEntry;
 };

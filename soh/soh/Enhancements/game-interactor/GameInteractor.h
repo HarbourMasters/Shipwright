@@ -76,7 +76,7 @@ uint8_t GameInteractor_PacifistModeActive();
 uint8_t GameInteractor_DisableZTargetingActive();
 uint8_t GameInteractor_ReverseControlsActive();
 int32_t GameInteractor_DefenseModifier();
-int32_t GameInteractor_RunSpeedModifier();
+float GameInteractor_MovementSpeedMultiplier();
 GIGravityLevel GameInteractor_GravityLevel();
 uint32_t GameInteractor_GetEmulatedButtons();
 void GameInteractor_SetEmulatedButtons(uint32_t buttons);
@@ -204,7 +204,7 @@ class GameInteractor {
         static bool DisableZTargetingActive;
         static bool ReverseControlsActive;
         static int32_t DefenseModifier;
-        static int32_t RunSpeedModifier;
+        static float MovementSpeedMultiplier;
         static GIGravityLevel GravityLevel;
         static uint32_t EmulatedButtons;
         static uint8_t RandomBombFuseTimerActive;
@@ -566,8 +566,6 @@ class GameInteractor {
         static void ClearAssignedButtons(uint8_t buttonSet);
         static void SetTimeOfDay(uint32_t time);
         static void SetCollisionViewer(bool active);
-        static void SetCosmeticsColor(uint8_t cosmeticCategory, uint8_t colorValue);
-        static void RandomizeCosmeticsColors(bool excludeBiddingWarColors);
         static void EmulateButtonPress(int32_t button);
         static void AddOrTakeAmmo(int16_t amount, int16_t item);
         static void EmulateRandomButtonPress(uint32_t chancePercentage = 100);
@@ -575,8 +573,10 @@ class GameInteractor {
         static void SetPlayerInvincibility(bool active);
         static void ClearCutscenePointer();
 
-        static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
-        static GameInteractionEffectQueryResult SpawnActor(uint32_t actorId, int32_t actorParams);
+        static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams,
+                                                                     std::string nameTag = "");
+        static GameInteractionEffectQueryResult SpawnActor(uint32_t actorId, int32_t actorParams,
+                                                           std::string nameTag = "");
     };
 };
 

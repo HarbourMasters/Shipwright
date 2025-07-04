@@ -28,33 +28,66 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy);
 EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play);
 
 const char* enemyCVarList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Anubis"),       CVAR_ENHANCEMENT("RandomizedEnemyList.Armos"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Arwing"),       CVAR_ENHANCEMENT("RandomizedEnemyList.BabyDodongo"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Bari"),         CVAR_ENHANCEMENT("RandomizedEnemyList.Beamos"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.BigSkulltula"), CVAR_ENHANCEMENT("RandomizedEnemyList.BigStalchild"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Biri"),         CVAR_ENHANCEMENT("RandomizedEnemyList.BlackKnuckle"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.BlueTektite"),  CVAR_ENHANCEMENT("RandomizedEnemyList.Bubble"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.ClubMoblin"),   CVAR_ENHANCEMENT("RandomizedEnemyList.DarkLink"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Dinolfos"),     CVAR_ENHANCEMENT("RandomizedEnemyList.Dodongo"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.FireKeese"), /*CVAR_ENHANCEMENT("RandomizedEnemyList.FlareDancer"),*/
-    CVAR_ENHANCEMENT("RandomizedEnemyList.FloorTile"),    CVAR_ENHANCEMENT("RandomizedEnemyList.Floormaster"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPeahat"), CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPot"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Freezard"),     CVAR_ENHANCEMENT("RandomizedEnemyList.Gibdo"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.GohmaLarva"),   CVAR_ENHANCEMENT("RandomizedEnemyList.Guay"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.IceKeese"),     CVAR_ENHANCEMENT("RandomizedEnemyList.InvisSkulltula"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Keese"),        CVAR_ENHANCEMENT("RandomizedEnemyList.LargeBaba"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.LikeLike"),     CVAR_ENHANCEMENT("RandomizedEnemyList.Lizalfos"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.MadScrub"),     CVAR_ENHANCEMENT("RandomizedEnemyList.NormalWolfos"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.PeahatLarva"), /*CVAR_ENHANCEMENT("RandomizedEnemyList.Poe"),*/
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Redead"),       CVAR_ENHANCEMENT("RandomizedEnemyList.RedTektite"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Shabom"),       CVAR_ENHANCEMENT("RandomizedEnemyList.ShellBlade"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Skulltula"),    CVAR_ENHANCEMENT("RandomizedEnemyList.SkullKid"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.SmallBaba"),    CVAR_ENHANCEMENT("RandomizedEnemyList.SmallStalchild"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.SpearMoblin"),  CVAR_ENHANCEMENT("RandomizedEnemyList.Spike"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Stalfos"),      CVAR_ENHANCEMENT("RandomizedEnemyList.Stinger"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Tailparasan"),  CVAR_ENHANCEMENT("RandomizedEnemyList.TorchSlug"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Wallmaster"),   CVAR_ENHANCEMENT("RandomizedEnemyList.WhiteKnuckle"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.WhiteWolfos"),  CVAR_ENHANCEMENT("RandomizedEnemyList.WitheredBaba"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Anubis"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Armos"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Arwing"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.BabyDodongo"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Bari"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Beamos"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.BigSkulltula"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.BigStalchild"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Biri"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.BlackKnuckle"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.BlueTektite"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Bubble"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.ClubMoblin"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.DarkLink"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Dinolfos"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Dodongo"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.FireKeese"),
+    // CVAR_ENHANCEMENT("RandomizedEnemyList.FlareDancer"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.FloorTile"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Floormaster"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPeahat"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPot"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Freezard"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Gibdo"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.GohmaLarva"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Guay"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.IceKeese"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.InvisFireKeese"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.InvisFloormaster"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.InvisIceKeese"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.InvisKeese"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.InvisRedead"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.InvisSkulltula"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.InvisStalfos"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Keese"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.LargeBaba"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.LikeLike"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Lizalfos"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.MadScrub"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.NormalWolfos"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.PeahatLarva"),
+    // CVAR_ENHANCEMENT("RandomizedEnemyList.Poe"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Redead"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.RedTektite"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Shabom"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.ShellBlade"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Skulltula"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.SkullKid"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.SmallBaba"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.SmallStalchild"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.SpearMoblin"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Spike"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Stalfos"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Stinger"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Tailparasan"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.TorchSlug"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Wallmaster"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.WhiteKnuckle"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.WhiteWolfos"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.WitheredBaba"),
 };
 
 const char* enemyNameList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
@@ -85,7 +118,13 @@ const char* enemyNameList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     "Gohma Larva",
     "Guay",
     "Ice Keese",
+    "Invisible Fire Keese",
+    "Invisible Floormaster",
+    "Invisible Ice Keese",
+    "Invisible Keese",
+    "Invisible Redead",
     "Invisible Skulltula",
+    "Invisible Stalfos",
     "Keese",
     "Large Deku Baba",
     "Like-Like",
@@ -134,20 +173,26 @@ static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_FIREFLY, 1 },     // Fire Keese
     // { ACTOR_EN_FD, 0 },          // Flare Dancer (possible cause of crashes because of spawning flame actors on
     // sloped ground)
-    { ACTOR_EN_YUKABYUN, 0 },  // Flying Floor Tile
-    { ACTOR_EN_FLOORMAS, 0 },  // Floormaster
-    { ACTOR_EN_PEEHAT, -1 },   // Flying Peahat (big grounded, doesn't spawn larva)
-    { ACTOR_EN_TUBO_TRAP, 0 }, // Flying pot
-    { ACTOR_EN_FZ, 0 },        // Freezard
-    { ACTOR_EN_RD, 32766 },    // Gibdo (standing)
-    { ACTOR_EN_GOMA, 7 },      // Gohma Larva (Non-Gohma rooms)
-    { ACTOR_EN_CROW, 0 },      // Guay
-    { ACTOR_EN_FIREFLY, 4 },   // Ice Keese
-    { ACTOR_EN_ST, 2 },        // Skulltula (invisible)
-    { ACTOR_EN_FIREFLY, 2 },   // Regular Keese
-    { ACTOR_EN_DEKUBABA, 1 },  // Deku Baba (large)
-    // Doesn't work (reliant on surface and also normally used in tandem with a leever spawner, kills itself too quickly
-    // otherwise) { ACTOR_EN_REEBA, 0 },       // Leever
+    { ACTOR_EN_YUKABYUN, 0 },      // Flying Floor Tile
+    { ACTOR_EN_FLOORMAS, 0 },      // Floormaster
+    { ACTOR_EN_PEEHAT, -1 },       // Flying Peahat (big grounded, doesn't spawn larva)
+    { ACTOR_EN_TUBO_TRAP, 0 },     // Flying pot
+    { ACTOR_EN_FZ, 0 },            // Freezard
+    { ACTOR_EN_RD, 32766 },        // Gibdo (standing)
+    { ACTOR_EN_GOMA, 7 },          // Gohma Larva (Non-Gohma rooms)
+    { ACTOR_EN_CROW, 0 },          // Guay
+    { ACTOR_EN_FIREFLY, 4 },       // Ice Keese
+    { ACTOR_EN_FIREFLY, 0x8001 },  // Fire Keese (invisible)
+    { ACTOR_EN_FLOORMAS, 0x8000 }, // Floormaster (invisible)
+    { ACTOR_EN_FIREFLY, 0x8004 },  // Ice Keese (invisible)
+    { ACTOR_EN_FIREFLY, 0x8002 },  // Keese (invisible)
+    { ACTOR_EN_RD, 3 },            // Redead (invisible)
+    { ACTOR_EN_ST, 2 },            // Skulltula (invisible)
+    { ACTOR_EN_TEST, 0 },          // Stalfos (invisible)
+    { ACTOR_EN_FIREFLY, 2 },       // Regular Keese
+    { ACTOR_EN_DEKUBABA, 1 },      // Deku Baba (large)
+    // Doesn't work (reliant on surface, without a spawner it kills itself too quickly)
+    // { ACTOR_EN_REEBA, 0 },       // Leever
     { ACTOR_EN_RR, 0 },         // Like-Like
     { ACTOR_EN_ZF, -1 },        // Lizalfos
     { ACTOR_EN_DEKUNUTS, 768 }, // Mad Scrub (triple attack) (projectiles don't work)

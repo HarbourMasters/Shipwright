@@ -20,6 +20,8 @@ Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16
            const GetItemCategory category_, const uint16_t modIndex_, const uint16_t price_,
            const CustomDrawFunc drawfunc_)
     : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_), logicVal(logicVal_), hintKey(hintKey_),
+      category(category_),
+
       price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
         giEntry = std::make_shared<GetItemEntry>(GetItemEntry{
@@ -39,7 +41,7 @@ Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16
            const uint16_t field_, const int16_t chestAnimation_, const GetItemCategory category_,
            const uint16_t modIndex_, const uint16_t price_, const CustomDrawFunc drawfunc_)
     : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_), logicVal(logicVal_), hintKey(hintKey_),
-      price(price_) {
+      category(category_), price(price_) {
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
         giEntry = std::make_shared<GetItemEntry>(
             GetItemEntry{ static_cast<uint16_t>(randomizerGet_), field_,
@@ -56,7 +58,7 @@ Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16
 }
 
 Item::Item(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_, LogicVal logicVal_,
-           const RandomizerHintTextKey hintKey_, const uint16_t price_)
+           const RandomizerHintTextKey hintKey_, const GetItemCategory category_, const uint16_t price_)
     : randomizerGet(randomizerGet_), type(type_), getItemId(getItemId_), logicVal(logicVal_), hintKey(hintKey_),
       price(price_) {
 }
@@ -465,6 +467,10 @@ RandomizerHintTextKey Item::GetHintKey() const {
 
 const HintText& Item::GetHint() const {
     return StaticData::hintTextTable[hintKey];
+}
+
+GetItemCategory Item::GetCategory() {
+    return category;
 }
 
 bool Item::operator==(const Item& right) const {

@@ -44,6 +44,9 @@
                 "SkipText": 1,
                 "TextSpeed": 5,
                 "TimeFlowFileSelect": 1,
+                "TimeSavers": {
+                    "SkipJabuJabuFish": 1
+                },
                 "TwoHandedIdle": 1,
                 "VisualAgony": 1,
                 "WidescreenActorCulling": 1

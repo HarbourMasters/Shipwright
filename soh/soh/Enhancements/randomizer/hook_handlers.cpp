@@ -22,6 +22,7 @@ extern "C" {
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
+#include "src/overlays/actors/ovl_Bg_Jya_Bigmirror/z_bg_jya_bigmirror.h"
 #include "src/overlays/actors/ovl_En_Si/z_en_si.h"
 #include "src/overlays/actors/ovl_En_Shopnuts/z_en_shopnuts.h"
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
@@ -261,6 +262,14 @@ void RandomizerOnSceneFlagSetHandler(int16_t sceneNum, int16_t flagType, int16_t
     if (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
         sceneNum == SCENE_GERUDOS_FORTRESS && flagType == FLAG_SCENE_SWITCH && flag == 0x3A) {
         Flags_SetRandomizerInf(RAND_INF_GF_GTG_GATE_PERMANENTLY_OPEN);
+    }
+
+    if (sceneNum == SCENE_SPIRIT_TEMPLE && flagType == FLAG_SCENE_SWITCH) {
+        bool isVanilla =
+            Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(SCENE_SPIRIT_TEMPLE)->IsVanilla();
+        if (isVanilla && flag == 0x23) {
+            Flags_SetRandomizerInf(RAND_INF_SPIRIT_SUN_ON_FLOOR_ON);
+        }
     }
 
     RandomizerCheck rc = GetRandomizerCheckFromSceneFlag(sceneNum, flagType, flag);
@@ -1783,7 +1792,7 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
         Entrance_OverrideSpawnScene(sceneNum, gPlayState->curSpawn);
     }
 
-    // LACs & Prelude checks
+    // LACS & Prelude checks
     static uint32_t updateHook = 0;
 
     if (updateHook) {
@@ -1854,6 +1863,16 @@ void EnDns_RandomizerPurchase(EnDns* enDns) {
 
 void RandomizerOnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
+
+    if (actor->id == ACTOR_PLAYER) {
+        if (gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE) {
+            bool isVanilla =
+                Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(SCENE_SPIRIT_TEMPLE)->IsVanilla();
+            if (isVanilla && Flags_GetRandomizerInf(RAND_INF_SPIRIT_SUN_ON_FLOOR_ON)) {
+                Flags_SetSwitch(gPlayState, 0x23);
+            }
+        }
+    }
 
     if (actor->id == ACTOR_EN_SI) {
         RandomizerCheck rc =
@@ -1984,6 +2003,15 @@ void RandomizerOnActorInitHandler(void* actorRef) {
             Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0, 0x95B0, 0,
                         0x0300 | GE1_TYPE_GATE_OPERATOR, true);
         }
+    }
+
+    if (actor->id == ACTOR_BG_JYA_BIGMIRROR && Flags_GetRandomizerInf(RAND_INF_SPIRIT_BIG_MIRROR_STATUE_TURNED)) {
+        Flags_SetSwitch(gPlayState, 0x29); // destroy wall
+        auto jyaBigMirror = static_cast<BgJyaBigmirror*>(actorRef);
+        jyaBigMirror->puzzleFlags |=
+            BIGMIR_PUZZLE_COBRA1_SOLVED | BIGMIR_PUZZLE_COBRA2_SOLVED | BIGMIR_PUZZLE_BOMBIWA_DESTROYED;
+        jyaBigMirror->cobraInfo[0].rotY = 0x4000;
+        jyaBigMirror->cobraInfo[1].rotY = 0x8000;
     }
 
     if (actor->id == ACTOR_DEMO_KEKKAI && actor->params == 0) { // 0 == KEKKAI_TOWER
@@ -2148,6 +2176,16 @@ void RandomizerOnActorUpdateHandler(void* refActor) {
             DoorGerudo* gerudoDoor = reinterpret_cast<DoorGerudo*>(actor);
             gerudoDoor->actionFunc = func_8099485C;
             gerudoDoor->dyna.actor.world.pos.y = gerudoDoor->dyna.actor.home.pos.y + 200.0f;
+        }
+    }
+
+    if (actor->id == ACTOR_BG_JYA_BIGMIRROR) {
+        auto jyaBigMirror = reinterpret_cast<BgJyaBigmirror*>(actor);
+        if ((jyaBigMirror->puzzleFlags & (BIGMIR_PUZZLE_COBRA1_SOLVED | BIGMIR_PUZZLE_COBRA2_SOLVED)) ==
+            (BIGMIR_PUZZLE_COBRA1_SOLVED | BIGMIR_PUZZLE_COBRA2_SOLVED)) {
+            Flags_SetRandomizerInf(RAND_INF_SPIRIT_BIG_MIRROR_STATUE_TURNED);
+        } else {
+            Flags_UnsetRandomizerInf(RAND_INF_SPIRIT_BIG_MIRROR_STATUE_TURNED);
         }
     }
 

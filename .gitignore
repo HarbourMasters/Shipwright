@@ -457,3 +457,4 @@ soh/properties.h
 # Tools
 /clang-format
 /clang-format.exe
+*.o2r

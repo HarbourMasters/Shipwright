@@ -2,6 +2,7 @@
     "health": "Vie - $0 Coeurs",
     "magic": "Magie - $0",
     "rupees": "Rubis - $0",
+    "keys": "Clés - $0",
     "floor": "Étage $0",
     "basement": "Sous-sol $0",
     "item_menu": "Inventaire",

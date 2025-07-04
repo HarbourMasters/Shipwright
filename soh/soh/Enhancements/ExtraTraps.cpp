@@ -82,7 +82,7 @@ static void RollRandomTrap(uint32_t seed) {
         case ADD_SPEED_TRAP:
             Audio_PlaySoundGeneral(NA_SE_VO_KZ_MOVE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-            GameInteractor::State::RunSpeedModifier = -2;
+            GameInteractor::State::MovementSpeedMultiplier = 0.5f;
             statusTimer = 200;
             Notification::Emit({ .message = "Speed Decreased!" });
             break;
@@ -112,7 +112,7 @@ static void RollRandomTrap(uint32_t seed) {
 static void OnPlayerUpdate() {
     Player* player = GET_PLAYER(gPlayState);
     if (statusTimer == 0) {
-        GameInteractor::State::RunSpeedModifier = 0;
+        GameInteractor::State::MovementSpeedMultiplier = 1.0f;
     }
     if (eventTimer == 0) {
         switch (roll) {

@@ -49,15 +49,26 @@ void RegionTable_Init_GerudoFortress() {
         EventAccess(&logic->GtG_GateOpen, []{return (logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET));}),
     }, {}, {
         //Exits
-        Entrance(RR_GERUDO_TRAINING_GROUND_ENTRYWAY, []{return logic->GtG_GateOpen && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES));}),
+        Entrance(RR_GF_TO_GTG,             []{return logic->GtG_GateOpen && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES));}),
         //Jail
+        Entrance(RR_GF_JAIL_WINDOW,        []{return logic->CanUse(RG_HOOKSHOT);}),
+        Entrance(RR_GF_OUTSKIRTS,          []{return true;}),
+        Entrance(RR_GF_NEAR_GROTTO,        []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        // RANDTODO: Add tricks for getting past the gerudo guarding the hba range
+        Entrance(RR_GF_ABOVE_GTG,          []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        Entrance(RR_GF_TOP_OF_UPPER_VINES, []{return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_GF_HBA_RANGE,          []{return logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
+    });
+
+    areaTable[RR_GF_TO_GTG] = Region("GF to GTG", SCENE_GERUDOS_FORTRESS, {}, {}, {
+        Entrance(RR_GERUDO_TRAINING_GROUND_ENTRYWAY, []{return true;}),
+    });
+
+    // Split out to handle adult being immediately captured without card
+    areaTable[RR_GF_EXITING_GTG] = Region("GF Exiting GTG", SCENE_GERUDOS_FORTRESS, {}, {}, {
+        Entrance(RR_GF_OUTSIDE_GTG,                  []{return logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
         Entrance(RR_GF_JAIL_WINDOW,                  []{return logic->CanUse(RG_HOOKSHOT);}),
         Entrance(RR_GF_OUTSKIRTS,                    []{return true;}),
-        Entrance(RR_GF_NEAR_GROTTO,                  []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
-        // RANDTODO: Add tricks for getting past the gerudo guarding the hba range
-        Entrance(RR_GF_ABOVE_GTG,                    []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
-        Entrance(RR_GF_TOP_OF_UPPER_VINES,           []{return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_LONGSHOT);}),
-        Entrance(RR_GF_HBA_RANGE,                    []{return logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
     });
 
 #pragma endregion
@@ -123,6 +134,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_TOP_OF_LOWER_VINES, []{return true;}),
         Entrance(RR_GF_SLOPED_ROOF,        []{return logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS);}),
         Entrance(RR_GF_TOP_OF_UPPER_VINES, []{return true /* logic->CanClimb() */;}),
+        Entrance(RR_GF_TO_GTG,             []{return logic->IsAdult && ctx->GetTrickOption(RT_GF_LEDGE_CLIP_INTO_GTG).Get();}),
     });
 
     areaTable[RR_GF_TOP_OF_UPPER_VINES] = Region("GF Top of Upper Vines", SCENE_GERUDOS_FORTRESS, {}, {

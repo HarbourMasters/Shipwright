@@ -116,6 +116,7 @@
                         "Story": 1
                     },
                     "SkipForcedDialog": 3,
+                    "SkipJabuJabuFish": 1,
                     "SkipMiscInteractions": 1,
                     "SkipOwlInteractions": 1,
                     "SkipTowerEscape": 1,

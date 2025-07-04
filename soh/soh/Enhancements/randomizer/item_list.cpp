@@ -28,8 +28,9 @@ void Rando::StaticData::AddItem(const RandomizerGet randomizerGet_, const ItemTy
 }
 
 void Rando::StaticData::AddItem(const RandomizerGet randomizerGet_, const ItemType type_, const int16_t getItemId_,
-                                const LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t price_) {
-    itemTable[randomizerGet_] = Item(randomizerGet_, type_, getItemId_, logicVal_, hintKey_, price_);
+                                const LogicVal logicVal_, const RandomizerHintTextKey hintKey_,
+                                const GetItemCategory category_, const uint16_t price_) {
+    itemTable[randomizerGet_] = Item(randomizerGet_, type_, getItemId_, logicVal_, hintKey_, category_, price_);
 }
 
 void Rando::StaticData::InitItemTable() {
@@ -77,19 +78,19 @@ void Rando::StaticData::InitItemTable() {
     // Skulltula Token
     AddItem(RG_GOLD_SKULLTULA_TOKEN,     ITEMTYPE_TOKEN,         GI_SKULL_TOKEN,       LOGIC_GOLD_SKULLTULA_TOKENS,  RHT_GOLD_SKULLTULA_TOKEN,   ITEM_SKULL_TOKEN,      OBJECT_GI_SUTARU,        GID_SKULL_TOKEN,     0xB4,                        0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SKULL_TOKEN, MOD_NONE);
     // Progressive Items
-    AddItem(RG_PROGRESSIVE_HOOKSHOT,     ITEMTYPE_ITEM,          0x80,                 LOGIC_PROGRESSIVE_HOOKSHOT,   RHT_PROGRESSIVE_HOOKSHOT);
-    AddItem(RG_PROGRESSIVE_STRENGTH,     ITEMTYPE_ITEM,          0x81,                 LOGIC_PROGRESSIVE_STRENGTH,   RHT_PROGRESSIVE_STRENGTH);
-    AddItem(RG_PROGRESSIVE_BOMB_BAG,     ITEMTYPE_ITEM,          0x82,                 LOGIC_PROGRESSIVE_BOMB_BAG,   RHT_PROGRESSIVE_BOMB_BAG);
-    AddItem(RG_PROGRESSIVE_BOW,          ITEMTYPE_ITEM,          0x83,                 LOGIC_PROGRESSIVE_BOW,        RHT_PROGRESSIVE_BOW);
-    AddItem(RG_PROGRESSIVE_SLINGSHOT,    ITEMTYPE_ITEM,          0x84,                 LOGIC_PROGRESSIVE_BULLET_BAG, RHT_PROGRESSIVE_SLINGSHOT);
-    AddItem(RG_PROGRESSIVE_WALLET,       ITEMTYPE_ITEM,          0x85,                 LOGIC_PROGRESSIVE_WALLET,     RHT_PROGRESSIVE_WALLET);
-    AddItem(RG_PROGRESSIVE_SCALE,        ITEMTYPE_ITEM,          0x86,                 LOGIC_PROGRESSIVE_SCALE,      RHT_PROGRESSIVE_SCALE);
-    AddItem(RG_PROGRESSIVE_NUT_BAG,      ITEMTYPE_ITEM,          0x87,                 LOGIC_PROGRESSIVE_NUT_BAG,    RHT_PROGRESSIVE_NUT_UPGRADE);
-    AddItem(RG_PROGRESSIVE_STICK_BAG,    ITEMTYPE_ITEM,          0x88,                 LOGIC_PROGRESSIVE_STICK_BAG,  RHT_PROGRESSIVE_STICK_UPGRADE);
-    AddItem(RG_PROGRESSIVE_BOMBCHUS,     ITEMTYPE_ITEM,          0x89,                 LOGIC_BOMBCHUS,               RHT_PROGRESSIVE_BOMBCHUS);
-    AddItem(RG_PROGRESSIVE_MAGIC,        ITEMTYPE_ITEM,          0x8A,                 LOGIC_PROGRESSIVE_MAGIC,      RHT_PROGRESSIVE_MAGIC_METER);
-    AddItem(RG_PROGRESSIVE_OCARINA,      ITEMTYPE_ITEM,          0x8B,                 LOGIC_PROGRESSIVE_OCARINA,    RHT_PROGRESSIVE_OCARINA);
-    AddItem(RG_PROGRESSIVE_GORONSWORD,   ITEMTYPE_ITEM,          0xD4,                 LOGIC_PROGRESSIVE_GORONSWORD, RHT_PROGRESSIVE_GORONSWORD);
+    AddItem(RG_PROGRESSIVE_HOOKSHOT,     ITEMTYPE_ITEM,          0x80,                 LOGIC_PROGRESSIVE_HOOKSHOT,   RHT_PROGRESSIVE_HOOKSHOT, ITEM_CATEGORY_MAJOR); //
+    AddItem(RG_PROGRESSIVE_STRENGTH,     ITEMTYPE_ITEM,          0x81,                 LOGIC_PROGRESSIVE_STRENGTH,   RHT_PROGRESSIVE_STRENGTH, ITEM_CATEGORY_MAJOR);
+    AddItem(RG_PROGRESSIVE_BOMB_BAG,     ITEMTYPE_ITEM,          0x82,                 LOGIC_PROGRESSIVE_BOMB_BAG,   RHT_PROGRESSIVE_BOMB_BAG, ITEM_CATEGORY_MAJOR);
+    AddItem(RG_PROGRESSIVE_BOW,          ITEMTYPE_ITEM,          0x83,                 LOGIC_PROGRESSIVE_BOW,        RHT_PROGRESSIVE_BOW, ITEM_CATEGORY_MAJOR);
+    AddItem(RG_PROGRESSIVE_SLINGSHOT,    ITEMTYPE_ITEM,          0x84,                 LOGIC_PROGRESSIVE_BULLET_BAG, RHT_PROGRESSIVE_SLINGSHOT, ITEM_CATEGORY_MAJOR);
+    AddItem(RG_PROGRESSIVE_WALLET,       ITEMTYPE_ITEM,          0x85,                 LOGIC_PROGRESSIVE_WALLET,     RHT_PROGRESSIVE_WALLET, ITEM_CATEGORY_MAJOR);
+    AddItem(RG_PROGRESSIVE_SCALE,        ITEMTYPE_ITEM,          0x86,                 LOGIC_PROGRESSIVE_SCALE,      RHT_PROGRESSIVE_SCALE, ITEM_CATEGORY_MAJOR);
+    AddItem(RG_PROGRESSIVE_NUT_BAG,      ITEMTYPE_ITEM,          0x87,                 LOGIC_PROGRESSIVE_NUT_BAG,    RHT_PROGRESSIVE_NUT_UPGRADE, ITEM_CATEGORY_MAJOR);
+    AddItem(RG_PROGRESSIVE_STICK_BAG,    ITEMTYPE_ITEM,          0x88,                 LOGIC_PROGRESSIVE_STICK_BAG,  RHT_PROGRESSIVE_STICK_UPGRADE, ITEM_CATEGORY_MAJOR);
+    AddItem(RG_PROGRESSIVE_BOMBCHUS,     ITEMTYPE_ITEM,          0x89,                 LOGIC_BOMBCHUS,               RHT_PROGRESSIVE_BOMBCHUS, ITEM_CATEGORY_MAJOR);
+    AddItem(RG_PROGRESSIVE_MAGIC,        ITEMTYPE_ITEM,          0x8A,                 LOGIC_PROGRESSIVE_MAGIC,      RHT_PROGRESSIVE_MAGIC_METER, ITEM_CATEGORY_MAJOR);
+    AddItem(RG_PROGRESSIVE_OCARINA,      ITEMTYPE_ITEM,          0x8B,                 LOGIC_PROGRESSIVE_OCARINA,    RHT_PROGRESSIVE_OCARINA, ITEM_CATEGORY_MAJOR);
+    AddItem(RG_PROGRESSIVE_GORONSWORD,   ITEMTYPE_ITEM,          0xD4,                 LOGIC_PROGRESSIVE_GORONSWORD, RHT_PROGRESSIVE_GORONSWORD, ITEM_CATEGORY_MAJOR);
     // Bottles
     AddItem(RG_EMPTY_BOTTLE,             ITEMTYPE_ITEM,          GI_BOTTLE,            LOGIC_BOTTLES,                RHT_EMPTY_BOTTLE,           ITEM_BOTTLE,           OBJECT_GI_BOTTLE,        GID_BOTTLE,          0x42,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,       MOD_NONE);
     AddItem(RG_BOTTLE_WITH_MILK,         ITEMTYPE_ITEM,          GI_MILK_BOTTLE,       LOGIC_BOTTLES,                RHT_BOTTLE_WITH_MILK,       ITEM_MILK_BOTTLE,      OBJECT_GI_MILK,          GID_MILK,            0x98,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,       MOD_NONE);
@@ -255,7 +256,7 @@ void Rando::StaticData::InitItemTable() {
     AddItem(RG_BUY_BOMBCHUS_10,          ITEMTYPE_SHOP,          GI_BOMBCHUS_10,       LOGIC_BUY_BOMBCHUS,           RHT_BUY_BOMBCHUS_10,        ITEM_BOMBCHU,          OBJECT_GI_BOMB_2,        GID_BOMBCHU,          0x33,                        0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,       MOD_NONE,        99);
     AddItem(RG_BUY_BOMBCHUS_20,          ITEMTYPE_SHOP,          GI_BOMBCHUS_20,       LOGIC_BUY_BOMBCHUS,           RHT_BUY_BOMBCHUS_20,        ITEM_BOMBCHUS_20,      OBJECT_GI_BOMB_2,        GID_BOMBCHU,          0x33,                        0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,       MOD_NONE,       180);
     AddItem(RG_BUY_DEKU_SEEDS_30,        ITEMTYPE_SHOP,          GI_SEEDS_30,          LOGIC_BUY_SEED,               RHT_BUY_DEKU_SEEDS_30,      ITEM_SEEDS_30,         OBJECT_GI_SEED,          GID_SEEDS,            0xDC,                        0x50, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,       MOD_NONE,        30);
-    AddItem(RG_SOLD_OUT,                 ITEMTYPE_SHOP,          RG_SOLD_OUT,          LOGIC_NONE,                   RHT_SOLD_OUT, 0);
+    AddItem(RG_SOLD_OUT,                 ITEMTYPE_SHOP,          RG_SOLD_OUT,          LOGIC_NONE,                   RHT_SOLD_OUT, ITEM_CATEGORY_JUNK, 0);
     AddItem(RG_BUY_BLUE_FIRE,            ITEMTYPE_SHOP,          GI_BLUE_FIRE,         LOGIC_BLUE_FIRE_ACCESS,       RHT_BUY_BLUE_FIRE,          ITEM_BLUE_FIRE,        OBJECT_GI_FIRE,          GID_BLUE_FIRE,        0x5D,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,       MOD_NONE,       300);
     AddItem(RG_BUY_BOTTLE_BUG,           ITEMTYPE_SHOP,          GI_BUGS,              LOGIC_BUGS_ACCESS,            RHT_BUY_BOTTLE_BUG,         ITEM_BUG,              OBJECT_GI_INSECT,        GID_BUG,              0x7A,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,       MOD_NONE,        50);
     AddItem(RG_BUY_POE,                  ITEMTYPE_SHOP,          RG_BUY_POE,           LOGIC_NONE,                   RHT_BUY_POE,                ITEM_POE,              OBJECT_GI_GHOST,         GID_POE,              0x97,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,       MOD_NONE,        30);
@@ -298,8 +299,8 @@ void Rando::StaticData::InitItemTable() {
 
     AddItem(RG_SKELETON_KEY,             ITEMTYPE_ITEM,          GI_STONE_OF_AGONY,    LOGIC_SKELETON_KEY,           RHT_SKELETON_KEY,                                  OBJECT_GI_MAP,           GID_STONE_OF_AGONY,   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,      MOD_RANDOMIZER,   0, Randomizer_DrawSkeletonKey);
                     
-    AddItem(RG_TRIFORCE,                 ITEMTYPE_EVENT,         RG_TRIFORCE,          LOGIC_NONE,                   RHT_TRIFORCE);
-    AddItem(RG_HINT,                     ITEMTYPE_EVENT,         RG_HINT,              LOGIC_NONE,                   RHT_HINT);
+    AddItem(RG_TRIFORCE,                 ITEMTYPE_EVENT,         RG_TRIFORCE,          LOGIC_NONE,                   RHT_TRIFORCE, ITEM_CATEGORY_MAJOR);
+    AddItem(RG_HINT,                     ITEMTYPE_EVENT,         RG_HINT,              LOGIC_NONE,                   RHT_HINT, ITEM_CATEGORY_LESSER);
     // Individual stages of progressive items (only here for GetItemEntry purposes, not for use in seed gen)
     AddItem(RG_HOOKSHOT,                 ITEMTYPE_ITEM,          GI_HOOKSHOT,          LOGIC_PROGRESSIVE_HOOKSHOT,   RHT_HOOKSHOT,               ITEM_HOOKSHOT,         OBJECT_GI_HOOKSHOT,      GID_HOOKSHOT,         0x36,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,      MOD_NONE);
     AddItem(RG_LONGSHOT,                 ITEMTYPE_ITEM,          GI_LONGSHOT,          LOGIC_PROGRESSIVE_HOOKSHOT,   RHT_LONGSHOT,               ITEM_LONGSHOT,         OBJECT_GI_HOOKSHOT,      GID_LONGSHOT,         0x4F,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,      MOD_NONE);

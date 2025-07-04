@@ -10,6 +10,8 @@ void RegionTable_Init_Kakariko() {
         EventAccess(&logic->BugRock,                 []{return true;}),
         //Open Gate setting is applied in RR_ROOT
         EventAccess(&logic->KakarikoVillageGateOpen, []{return logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER);}),
+        //Needs wallet to be able to get another mask after selling Keaton
+        EventAccess(&logic->BorrowSkullMask,         []{return logic->IsChild && logic->CanBorrowMasks && logic->HasItem(RG_CHILD_WALLET);}),
     }, {
         //Locations
         LOCATION(RC_SHEIK_IN_KAKARIKO,                     logic->IsAdult && logic->HasItem(RG_FOREST_MEDALLION) && logic->HasItem(RG_FIRE_MEDALLION) && logic->HasItem(RG_WATER_MEDALLION)),

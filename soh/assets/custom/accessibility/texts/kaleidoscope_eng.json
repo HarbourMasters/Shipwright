@@ -2,6 +2,7 @@
     "health": "Health - $0 Hearts",
     "magic": "Magic - $0",
     "rupees": "Rupees - $0",
+    "keys": "Keys - $0",
     "floor": "Floor $0",
     "basement": "Basement $0",
     "item_menu": "Select Item",

@@ -1,10 +1,9 @@
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
-#include "functions.h"
-#include "macros.h"
 
 extern "C" {
+#include "functions.h"
+#include "macros.h"
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
