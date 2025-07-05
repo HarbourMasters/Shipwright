@@ -6,7 +6,6 @@
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/resource/type/Skeleton.h"
-#include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
@@ -957,7 +956,6 @@ void RegisterCustomSkeletons() {
 }
 
 void InitMods() {
-    BossRush_RegisterHooks();
     RandomizerRegisterHooks();
     TimeSaverRegisterHooks();
     RegisterTTS();

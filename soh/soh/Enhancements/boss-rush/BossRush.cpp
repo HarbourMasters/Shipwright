@@ -22,6 +22,73 @@ Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height,
 #include "textures/icon_item_fra_static/icon_item_fra_static.h"
 }
 
+typedef enum {
+    BR_CHOICE_BOSSES_ALL,
+    BR_CHOICE_BOSSES_CHILD,
+    BR_CHOICE_BOSSES_ADULT,
+    BR_CHOICE_BOSSES_GANONDORF_GANON
+} BossRushBossesChoices;
+
+typedef enum {
+    BR_CHOICE_HEARTS_10,
+    BR_CHOICE_HEARTS_15,
+    BR_CHOICE_HEARTS_20,
+    BR_CHOICE_HEARTS_3,
+    BR_CHOICE_HEARTS_5,
+    BR_CHOICE_HEARTS_7
+} BossRushHeartsChoices;
+
+typedef enum {
+    BR_CHOICE_AMMO_LIMITED,
+    BR_CHOICE_AMMO_FULL,
+    BR_CHOICE_AMMO_MAXED,
+} BossRushAmmoChoices;
+
+typedef enum {
+    BR_CHOICE_HEAL_GANONDORF,
+    BR_CHOICE_HEAL_EVERYBOSS,
+    BR_CHOICE_HEAL_NEVER,
+} BossRushHealChoices;
+
+typedef enum {
+    BR_CHOICE_MAGIC_SINGLE,
+    BR_CHOICE_MAGIC_DOUBLE,
+} BossRushMagicChoices;
+
+typedef enum {
+    BR_CHOICE_BGS_NO,
+    BR_CHOICE_BGS_YES,
+} BossRushBgsChoices;
+
+typedef enum {
+    BR_CHOICE_BOTTLE_NO,
+    BR_CHOICE_BOTTLE_EMPTY,
+    BR_CHOICE_BOTTLE_FAIRY,
+    BR_CHOICE_BOTTLE_REDPOTION,
+    BR_CHOICE_BOTTLE_GREENPOTION,
+    BR_CHOICE_BOTTLE_BLUEPOTION
+} BossRushBottleChoices;
+
+typedef enum {
+    BR_CHOICE_LONGSHOT_NO,
+    BR_CHOICE_LONGSHOT_YES,
+} BossRushLongshotChoices;
+
+typedef enum {
+    BR_CHOICE_HOVERBOOTS_NO,
+    BR_CHOICE_HOVERBOOTS_YES,
+} BossRushHoverBootsChoices;
+
+typedef enum {
+    BR_CHOICE_BUNNYHOOD_NO,
+    BR_CHOICE_BUNNYHOOD_YES,
+} BossRushBunnyHoodChoices;
+
+typedef enum {
+    BR_CHOICE_TIMER_YES,
+    BR_CHOICE_TIMER_NO,
+} BossRushTimerChoices;
+
 typedef struct BossRushSetting {
     std::array<std::string, LANGUAGE_MAX> name;
     std::vector<std::array<std::string, LANGUAGE_MAX>> choices;
@@ -609,6 +676,17 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             *should = false;
             break;
         }
+        // Handle the heal on blue warp
+        case VB_BLUE_WARP_CONSIDER_ADULT_IN_RANGE: {
+            if (*should) {
+                BossRush_HandleBlueWarpHeal(gPlayState);
+            }
+            break;
+        }
+        case VB_SHOW_GAMEPLAY_TIMER: {
+            *should |= gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES;
+            break;
+        }
         // Prevent saving
         case VB_BE_ABLE_TO_SAVE:
         // Disable doors so the player can't leave the boss rooms backwards.
@@ -627,25 +705,6 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
     }
 
     va_end(args);
-}
-
-void BossRush_OnActorInitHandler(void* actorRef) {
-    Actor* actor = static_cast<Actor*>(actorRef);
-
-    if (actor->id == ACTOR_DEMO_SA && gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES) {
-        BossRush_SpawnBlueWarps(gPlayState);
-        Actor_Kill(actor);
-        GET_PLAYER(gPlayState)->actor.world.rot.y = GET_PLAYER(gPlayState)->actor.shape.rot.y = 27306;
-        return;
-    }
-
-    // Remove chests, mainly for the chest in King Dodongo's boss room.
-    // Remove bushes, used in Gohma's arena.
-    // Remove pots, used in Barinade's and Ganondorf's arenas.
-    if (actor->id == ACTOR_EN_KUSA || actor->id == ACTOR_OBJ_TSUBO || actor->id == ACTOR_EN_BOX) {
-        Actor_Kill(actor);
-        return;
-    }
 }
 
 void BossRush_OnSceneInitHandler(s16 sceneNum) {
@@ -667,38 +726,43 @@ void BossRush_OnBlueWarpUpdate(void* actor) {
     }
 }
 
-void BossRush_RegisterHooks() {
-    static u32 onVanillaBehaviorHook = 0;
-    static u32 onSceneInitHook = 0;
-    static u32 onActorInitHook = 0;
-    static u32 onBossDefeatHook = 0;
-    static u32 onActorUpdate = 0;
+void RegisterBossRush() {
+    static bool registered = false;
+    if (registered)
+        return;
+    registered = true;
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnBossDefeat>(onBossDefeatHook);
-        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnActorUpdate>(onActorUpdate);
+    COND_HOOK(OnLoadGame, true, [](int32_t fileNum) {
+        COND_ID_HOOK(OnActorInit, ACTOR_DEMO_SA, IS_BOSS_RUSH, [](void* actorPtr) {
+            BossRush_SpawnBlueWarps(gPlayState);
+            Actor_Kill((Actor*)actorPtr);
+            GET_PLAYER(gPlayState)->actor.world.rot.y = 27306;
+            GET_PLAYER(gPlayState)->actor.shape.rot.y = 27306;
+        });
 
-        onVanillaBehaviorHook = 0;
-        onSceneInitHook = 0;
-        onActorInitHook = 0;
-        onBossDefeatHook = 0;
-        onActorUpdate = 0;
+        // Remove bushes, used in Gohma's arena
+        COND_ID_HOOK(OnActorInit, ACTOR_EN_KUSA, IS_BOSS_RUSH, [](void* actorPtr) {
+            Actor_Kill((Actor*)actorPtr);
+        });
 
-        if (!IS_BOSS_RUSH)
-            return;
+        // Remove pots, used in Barinade's and Ganondorf's arenas
+        COND_ID_HOOK(OnActorInit, ACTOR_OBJ_TSUBO, IS_BOSS_RUSH, [](void* actorPtr) {
+            Actor_Kill((Actor*)actorPtr);
+        });
 
-        onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(
-            BossRush_OnVanillaBehaviorHandler);
-        onSceneInitHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(BossRush_OnSceneInitHandler);
-        onActorInitHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(BossRush_OnActorInitHandler);
-        onBossDefeatHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>(BossRush_OnBossDefeatHandler);
-        onActorUpdate = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorUpdate>(
-            ACTOR_DOOR_WARP1, BossRush_OnBlueWarpUpdate);
+        // Remove chests, mainly for the chest in King Dodongo's boss room
+        COND_ID_HOOK(OnActorInit, ACTOR_EN_BOX, IS_BOSS_RUSH, [](void* actorPtr) {
+            Actor_Kill((Actor*)actorPtr);
+        });
+
+        COND_HOOK(OnVanillaBehavior, IS_BOSS_RUSH, BossRush_OnVanillaBehaviorHandler);
+
+        COND_HOOK(OnSceneInit, IS_BOSS_RUSH, BossRush_OnSceneInitHandler);
+
+        COND_HOOK(OnBossDefeat, IS_BOSS_RUSH, BossRush_OnBossDefeatHandler);
+
+        COND_ID_HOOK(OnActorUpdate, ACTOR_DOOR_WARP1, IS_BOSS_RUSH, BossRush_OnBlueWarpUpdate);
     });
 }
+
+static RegisterShipInitFunc initFunc(RegisterBossRush);

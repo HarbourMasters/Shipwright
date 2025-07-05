@@ -2222,6 +2222,22 @@ typedef enum {
     // - `s32` limbCount
     // - `*Vec3s` frameTable
     VB_LOAD_PLAYER_ANIMATION_FRAME,
+
+    // #### `result`
+    // ```c
+    // DoorWarp1_PlayerInRange(this, play)
+    // ```
+    // #### `args`
+    // - `*DoorWarp1`
+    VB_BLUE_WARP_CONSIDER_ADULT_IN_RANGE,
+
+    // #### `result`
+    // ```c
+    // (CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowIngameTimer"), 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2)
+    // ```
+    // #### `args`
+    // - `*PlayState`
+    VB_SHOW_GAMEPLAY_TIMER,
 } GIVanillaBehavior;
 
 #endif
