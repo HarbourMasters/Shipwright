@@ -5,6 +5,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+struct GameState;
+struct FileChooseContext;
+
+void FileChoose_UpdateBossRushMenu(struct GameState* gameState);
+void FileChoose_DrawBossRushMenuWindowContents(struct FileChooseContext* fileChooseContext);
 const char* BossRush_GetSettingName(u8 optionIndex, u8 language);
 const char* BossRush_GetSettingChoiceName(u8 optionIndex, u8 choiceIndex, u8 language);
 u8 BossRush_GetSettingOptionsAmount(u8 optionIndex);
