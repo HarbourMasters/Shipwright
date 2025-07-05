@@ -26,7 +26,8 @@ extern PlayState* gPlayState;
 
 Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, u16 point);
 void FileChoose_UpdateStickDirectionPromptAnim(GameState* thisx);
-void FileChoose_DrawTextRec(GraphicsContext* gfxCtx, s32 r, s32 g, s32 b, s32 a, f32 x, f32 y, f32 z, s32 s, s32 t, f32 dx, f32 dy);
+void FileChoose_DrawTextRec(GraphicsContext* gfxCtx, s32 r, s32 g, s32 b, s32 a, f32 x, f32 y, f32 z, s32 s, s32 t,
+                            f32 dx, f32 dy);
 }
 
 typedef enum {
@@ -220,7 +221,8 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
             } else {
                 fileChooseContext->bossRushIndex++;
                 // When last visible option is selected when moving down, offset the list down by one.
-                if (fileChooseContext->bossRushIndex - fileChooseContext->bossRushOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN - 1) {
+                if (fileChooseContext->bossRushIndex - fileChooseContext->bossRushOffset >
+                    BOSSRUSH_MAX_OPTIONS_ON_SCREEN - 1) {
                     fileChooseContext->bossRushOffset++;
                 }
             }
@@ -229,7 +231,8 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
             // properly.
             if ((fileChooseContext->bossRushIndex - 1) < 0) {
                 fileChooseContext->bossRushIndex = BR_OPTIONS_MAX - 1;
-                fileChooseContext->bossRushOffset = fileChooseContext->bossRushIndex - BOSSRUSH_MAX_OPTIONS_ON_SCREEN + 1;
+                fileChooseContext->bossRushOffset =
+                    fileChooseContext->bossRushIndex - BOSSRUSH_MAX_OPTIONS_ON_SCREEN + 1;
             } else {
                 // When first visible option is selected when moving up, offset the list up by one.
                 if (fileChooseContext->bossRushIndex - fileChooseContext->bossRushOffset == 0) {
@@ -244,7 +247,8 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
     }
 
     // Cycle through choices for currently selected option.
-    if (ABS(fileChooseContext->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
+    if (ABS(fileChooseContext->stickRelX) > 30 ||
+        (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
         if (fileChooseContext->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
             // If exceeding the amount of choices for the selected option, cycle back to the first.
             if ((gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex] + 1) ==
@@ -270,7 +274,8 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
     if (sLastBossRushOptionIndex != fileChooseContext->bossRushIndex ||
         sLastBossRushOptionValue != gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]) {
         GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(
-            fileChooseContext->bossRushIndex, gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]);
+            fileChooseContext->bossRushIndex,
+            gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]);
         sLastBossRushOptionIndex = fileChooseContext->bossRushIndex;
         sLastBossRushOptionValue = gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex];
     }
@@ -305,18 +310,18 @@ void FileChoose_DrawBossRushMenuWindowContents(FileChooseContext* fileChooseCont
         uint16_t arrowUpX = 140;
         uint16_t arrowUpY = 76 - (fileChooseContext->bossRushArrowOffset / 10);
         gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowUpTex, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 16, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                            G_TX_NOLOD, G_TX_NOLOD);
-        gSPWideTextureRectangle(POLY_OPA_DISP++, arrowUpX << 2, arrowUpY << 2, (arrowUpX + 8) << 2,
-                                (arrowUpY + 8) << 2, G_TX_RENDERTILE, 0, 0, (1 << 11), (1 << 11));
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
+        gSPWideTextureRectangle(POLY_OPA_DISP++, arrowUpX << 2, arrowUpY << 2, (arrowUpX + 8) << 2, (arrowUpY + 8) << 2,
+                                G_TX_RENDERTILE, 0, 0, (1 << 11), (1 << 11));
     }
     // Arrow down
     if (BR_OPTIONS_MAX - listOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN) {
         uint16_t arrowDownX = 140;
         uint16_t arrowDownY = 181 + (fileChooseContext->bossRushArrowOffset / 10);
         gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowDownTex, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 16, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                            G_TX_NOLOD, G_TX_NOLOD);
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
         gSPWideTextureRectangle(POLY_OPA_DISP++, arrowDownX << 2, arrowDownY << 2, (arrowDownX + 8) << 2,
                                 (arrowDownY + 8) << 2, G_TX_RENDERTILE, 0, 0, (1 << 11), (1 << 11));
     }
@@ -328,8 +333,8 @@ void FileChoose_DrawBossRushMenuWindowContents(FileChooseContext* fileChooseCont
         uint16_t textYOffset = (i - listOffset) * 16;
 
         // Option name.
-        Interface_DrawTextLine(fileChooseContext->state.gfxCtx, (char*)BossRush_GetSettingName(i, language), 65, (87 + textYOffset),
-                               255, 255, 80, textAlpha, 0.8f, true);
+        Interface_DrawTextLine(fileChooseContext->state.gfxCtx, (char*)BossRush_GetSettingName(i, language), 65,
+                               (87 + textYOffset), 255, 255, 80, textAlpha, 0.8f, true);
 
         // Selected choice for option.
         uint16_t finalKerning = Interface_DrawTextLine(
@@ -345,11 +350,13 @@ void FileChoose_DrawBossRushMenuWindowContents(FileChooseContext* fileChooseCont
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
                                 G_TX_NOLOD);
             FileChoose_DrawTextRec(fileChooseContext->state.gfxCtx, fileChooseContext->stickLeftPrompt.arrowColorR,
-                                   fileChooseContext->stickLeftPrompt.arrowColorG, fileChooseContext->stickLeftPrompt.arrowColorB, textAlpha,
-                                   160, (92 + textYOffset), 0.42f, 0, 0, -1.0f, 1.0f);
+                                   fileChooseContext->stickLeftPrompt.arrowColorG,
+                                   fileChooseContext->stickLeftPrompt.arrowColorB, textAlpha, 160, (92 + textYOffset),
+                                   0.42f, 0, 0, -1.0f, 1.0f);
             FileChoose_DrawTextRec(fileChooseContext->state.gfxCtx, fileChooseContext->stickRightPrompt.arrowColorR,
-                                   fileChooseContext->stickRightPrompt.arrowColorG, fileChooseContext->stickRightPrompt.arrowColorB,
-                                   textAlpha, (171 + finalKerning), (92 + textYOffset), 0.42f, 0, 0, 1.0f, 1.0f);
+                                   fileChooseContext->stickRightPrompt.arrowColorG,
+                                   fileChooseContext->stickRightPrompt.arrowColorB, textAlpha, (171 + finalKerning),
+                                   (92 + textYOffset), 0.42f, 0, 0, 1.0f, 1.0f);
         }
     }
 
@@ -916,19 +923,13 @@ void RegisterBossRush() {
         });
 
         // Remove bushes, used in Gohma's arena
-        COND_ID_HOOK(OnActorInit, ACTOR_EN_KUSA, IS_BOSS_RUSH, [](void* actorPtr) {
-            Actor_Kill((Actor*)actorPtr);
-        });
+        COND_ID_HOOK(OnActorInit, ACTOR_EN_KUSA, IS_BOSS_RUSH, [](void* actorPtr) { Actor_Kill((Actor*)actorPtr); });
 
         // Remove pots, used in Barinade's and Ganondorf's arenas
-        COND_ID_HOOK(OnActorInit, ACTOR_OBJ_TSUBO, IS_BOSS_RUSH, [](void* actorPtr) {
-            Actor_Kill((Actor*)actorPtr);
-        });
+        COND_ID_HOOK(OnActorInit, ACTOR_OBJ_TSUBO, IS_BOSS_RUSH, [](void* actorPtr) { Actor_Kill((Actor*)actorPtr); });
 
         // Remove chests, mainly for the chest in King Dodongo's boss room
-        COND_ID_HOOK(OnActorInit, ACTOR_EN_BOX, IS_BOSS_RUSH, [](void* actorPtr) {
-            Actor_Kill((Actor*)actorPtr);
-        });
+        COND_ID_HOOK(OnActorInit, ACTOR_EN_BOX, IS_BOSS_RUSH, [](void* actorPtr) { Actor_Kill((Actor*)actorPtr); });
 
         COND_HOOK(OnVanillaBehavior, IS_BOSS_RUSH, BossRush_OnVanillaBehaviorHandler);
 
