@@ -2089,7 +2089,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-        UIWidgets::CVarColorPicker("BG Color", CVAR_TRACKER_CHECK("BgColor"), Color_Bg_Default, true,
+        UIWidgets::CVarColorPicker("Background Color", CVAR_TRACKER_CHECK("BgColor"), Color_Bg_Default, true,
                                    UIWidgets::ColorPickerResetButton | UIWidgets::ColorPickerRandomButton, THEME_COLOR);
         ImGui::PopItemWidth();
 
@@ -2103,7 +2103,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
         if (CVarGetInteger(CVAR_TRACKER_CHECK("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
             UIWidgets::CVarCheckbox("Enable Dragging", CVAR_TRACKER_CHECK("Draggable"),
                                     UIWidgets::CheckboxOptions().Color(THEME_COLOR));
-            UIWidgets::CVarCheckbox("Only enable while paused", CVAR_TRACKER_CHECK("ShowOnlyPaused"),
+            UIWidgets::CVarCheckbox("Only Enable While Paused", CVAR_TRACKER_CHECK("ShowOnlyPaused"),
                                     UIWidgets::CheckboxOptions().Color(THEME_COLOR));
             UIWidgets::CVarCombobox("Display Mode", CVAR_TRACKER_CHECK("DisplayType"), displayType,
                                     UIWidgets::ComboboxOptions()
@@ -2135,7 +2135,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
                                     .Color(THEME_COLOR));
         ImGui::EndDisabled();
         if (UIWidgets::CVarCheckbox(
-                "Hide unshuffled shop item checks", CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"),
+                "Hide Unshuffled Shop Item Checks", CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"),
                 UIWidgets::CheckboxOptions()
                     .Tooltip("If enabled, will prevent the tracker from displaying slots with non-shop-item shuffles.")
                     .Color(THEME_COLOR))) {
@@ -2143,7 +2143,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
             UpdateFilters();
         }
         if (UIWidgets::CVarCheckbox(
-                "Always show gold skulltulas", CVAR_TRACKER_CHECK("AlwaysShowGSLocs"),
+                "Always Show Gold Skulltulas", CVAR_TRACKER_CHECK("AlwaysShowGSLocs"),
                 UIWidgets::CheckboxOptions()
                     .Tooltip("If enabled, will show GS locations in the tracker regardless of tokensanity settings.")
                     .Color(THEME_COLOR))) {

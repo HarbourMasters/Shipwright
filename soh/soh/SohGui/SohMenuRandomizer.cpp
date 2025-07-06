@@ -167,6 +167,45 @@ void SohMenu::AddMenuRandomizer() {
         .WindowName("Check Tracker Settings")
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Check Tracker Settings Window."));
+
+    AddSearchEntry({ "Background Color", "Randomizer", "Item Tracker", "General Settings" });
+    AddSearchEntry({ "Window Type", "Randomizer", "Item Tracker", "General Settings" });
+    AddSearchEntry({ "Enable Dragging", "Randomizer", "Item Tracker", "General Settings" });
+    AddSearchEntry({ "Only Enable While Paused", "Randomizer", "Item Tracker", "General Settings" });
+    AddSearchEntry({ "Ammo/Capacity Tracking", "Randomizer", "Item Tracker", "General Settings" });
+    AddSearchEntry({ "Key Count Tracking", "Randomizer", "Item Tracker", "General Settings" });
+    AddSearchEntry({ "Triforce Piece Count Tracking", "Randomizer", "Item Tracker", "General Settings" });
+    AddSearchEntry({ "Dungeon Items", "Randomizer", "Item Tracker", "General Settings", "keys maps compasses icon" });
+    AddSearchEntry({ "Greg", "Randomizer", "Item Tracker", "General Settings", "icon" });
+    AddSearchEntry({ "Triforce Pieces", "Randomizer", "Item Tracker", "General Settings", "icon" });
+    AddSearchEntry({ "Boss Souls", "Randomizer", "Item Tracker", "General Settings", "icon" });
+    AddSearchEntry({ "Ocarina Buttons", "Randomizer", "Item Tracker", "General Settings", "icon" });
+    AddSearchEntry({ "Overworld Keys", "Randomizer", "Item Tracker", "General Settings", "icon" });
+    AddSearchEntry({ "Fishing Pole", "Randomizer", "Item Tracker", "General Settings", "icon" });
+    AddSearchEntry({ "Personal Notes", "Randomizer", "Item Tracker", "General Settings", "icon" });
+    AddSearchEntry({ "Show Hookshot Identifiers", "Randomizer", "Item Tracker", "General Settings", "longshot icon" });
+
+    AddSearchEntry({ "Sort By", "Randomizer", "Entrance Tracker", "(Col 1)" });
+    AddSearchEntry({ "Auto Scroll", "Randomizer", "Entrance Tracker", "(Col 1)" });
+    AddSearchEntry({ "Highlight Previous", "Randomizer", "Entrance Tracker", "(Col 1)" });
+    AddSearchEntry({ "Highlight Available", "Randomizer", "Entrance Tracker", "(Col 1)" });
+    AddSearchEntry({ "Hide Undiscovered", "Randomizer", "Entrance Tracker", "(Col 1)" });
+    AddSearchEntry({ "Hide Reverse", "Randomizer", "Entrance Tracker", "(Col 1)" });
+    AddSearchEntry({ "Group By", "Randomizer", "Entrance Tracker", "(Col 2)" });
+    AddSearchEntry({ "Show Source", "Randomizer", "Entrance Tracker", "(Col 2)", "spoil" });
+    AddSearchEntry({ "Show Destination", "Randomizer", "Entrance Tracker", "(Col 2)", "spoil" });
+
+    AddSearchEntry({ "Background Color", "Randomizer", "Check Tracker", "General Settings" });
+    AddSearchEntry({ "Window Type", "Randomizer", "Check Tracker", "General Settings" });
+    AddSearchEntry({ "Vanilla/MQ Dungeon Spoilers", "Randomizer", "Check Tracker", "General Settings" });
+    AddSearchEntry({ "Hide Unshuffled Shop Item Checks", "Randomizer", "Check Tracker", "General Settings" });
+    AddSearchEntry({ "Always Show Gold Skulltulas", "Randomizer", "Check Tracker", "General Settings" });
+    AddSearchEntry({ "Show Logic", "Randomizer", "Check Tracker", "General Settings" });
+    AddSearchEntry({ "Display Check Availability", "Randomizer", "Check Tracker", "General Settings" });
+    AddSearchEntry({ "Area Complete", "Randomizer", "Check Tracker", "Section Settings", "hide" });
+    AddSearchEntry({ "Skipped", "Randomizer", "Check Tracker", "Section Settings", "hide" });
+    AddSearchEntry({ "Scummed", "Randomizer", "Check Tracker", "Section Settings", "hide" });
+    AddSearchEntry({ "Saved", "Randomizer", "Check Tracker", "Section Settings", "hide" });
 }
 
 } // namespace SohGui

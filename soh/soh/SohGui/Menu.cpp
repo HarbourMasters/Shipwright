@@ -24,10 +24,18 @@ namespace SohGui {
 extern std::shared_ptr<SohModalWindow> mModalWindow;
 }
 
+std::vector<SearchEntry> extraSearches = {};
+
 namespace Ship {
 std::string disabledTempTooltip;
 const char* disabledTooltip;
 bool disabledValue = false;
+
+bool navigateToWidget = false;
+const char* navigateMainEntry = "";
+const char* navigateSidebar = "";
+std::string navigateWidgetName = "";
+bool highlightWidget = false;
 
 bool operator==(Color_RGB8 const& l, Color_RGB8 const& r) noexcept {
     return l.r == r.r && l.g == r.g && l.b == r.b;
@@ -186,9 +194,12 @@ bool ModernMenuHeaderEntry(std::string label) {
 
 uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
     int searchCount = 0;
-    ImGui::SetNextWindowSizeConstraints({ ImGui::GetContentRegionAvail().x / 2, 0}, {ImGui::GetContentRegionAvail().x / 2, ImGui::GetContentRegionAvail().y});
-    if (ImGui::BeginChild("Search Results Col 1", { ImGui::GetContentRegionAvail().x / 2, windowHeight * 4 }, ImGuiChildFlags_AutoResizeY,
-            ImGuiWindowFlags_NoTitleBar)) {
+    std::transform(menuSearchText.begin(), menuSearchText.end(), menuSearchText.begin(), ::tolower);
+    menuSearchText.erase(std::remove(menuSearchText.begin(), menuSearchText.end(), ' '), menuSearchText.end());
+    ImGui::SetNextWindowSizeConstraints({ ImGui::GetContentRegionAvail().x / 2, 0 },
+                                        { ImGui::GetContentRegionAvail().x / 2, ImGui::GetContentRegionAvail().y });
+    if (ImGui::BeginChild("Search Results Col 1", { ImGui::GetContentRegionAvail().x / 2, 0 },
+                          ImGuiChildFlags_AutoResizeY, ImGuiWindowFlags_NoTitleBar)) {
         for (auto& menuLabel : menuOrder) {
             auto& menuEntry = menuEntries.at(menuLabel);
             for (auto& sidebarLabel : menuEntry.sidebarOrder) {
@@ -197,19 +208,15 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                     auto& column = sidebar.columnWidgets.at(i);
                     for (auto& info : column) {
                         if (info.type == WIDGET_SEARCH || info.type == WIDGET_SEPARATOR ||
-                            info.type == WIDGET_SEPARATOR_TEXT || info.isHidden ||
-                            info.hideInSearch) {
+                            info.type == WIDGET_SEPARATOR_TEXT || info.isHidden || info.hideInSearch) {
                             continue;
                         }
                         const char* tooltip = info.options->tooltip;
                         std::string widgetStr = std::string(info.name) + std::string(tooltip != NULL ? tooltip : "");
-                        std::transform(menuSearchText.begin(), menuSearchText.end(), menuSearchText.begin(), ::tolower);
-                        menuSearchText.erase(std::remove(menuSearchText.begin(), menuSearchText.end(), ' '),
-                                             menuSearchText.end());
                         std::transform(widgetStr.begin(), widgetStr.end(), widgetStr.begin(), ::tolower);
                         widgetStr.erase(std::remove(widgetStr.begin(), widgetStr.end(), ' '), widgetStr.end());
                         if (widgetStr.find(menuSearchText) != std::string::npos) {
-                            MenuDrawItem(info, 90 / sidebar.columnCount, menuThemeIndex);
+                            MenuDrawItem(info, 400, menuThemeIndex);
                             ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Gray));
                             std::string origin =
                                 fmt::format("  ({} -> {}, Col {})", menuEntry.label, sidebarLabel, i + 1);
@@ -223,12 +230,51 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
         }
         ImGui::EndChild();
     }
+    ImGui::SameLine();
+    ImGui::SetNextWindowSizeConstraints({ ImGui::GetContentRegionAvail().x, 0 },
+                                        { ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y });
+    if (ImGui::BeginChild("Search Results Col 2", { ImGui::GetContentRegionAvail().x, 0 }, ImGuiChildFlags_AutoResizeY,
+                          ImGuiWindowFlags_NoTitleBar)) {
+        for (auto& entry : extraSearches) {
+            std::string widgetStr = entry.widgetName + entry.extraTerms + entry.sidebarName;
+            std::transform(widgetStr.begin(), widgetStr.end(), widgetStr.begin(), ::tolower);
+            widgetStr.erase(std::remove(widgetStr.begin(), widgetStr.end(), ' '), widgetStr.end());
+            if (widgetStr.find(menuSearchText) != std::string::npos) {
+                std::string origin = fmt::format("  ({} -> {}, {})", entry.menuName, entry.sidebarName, entry.location);
+                ImVec2 textSize = ImGui::CalcTextSize(origin.c_str());
+                ImVec2 pos = ImGui::GetCurrentWindow()->DC.CursorPos;
+                ImRect bb = { pos, { pos.x + textSize.x, pos.y + (textSize.y * 2) + ImGui::GetStyle().ItemSpacing.y } };
+                const ImGuiID igid =
+                    ImGui::GetCurrentWindow()->GetID(std::string(entry.widgetName + "##" + entry.sidebarName).c_str());
+                ImGui::ItemSize(bb, ImGui::GetStyle().FramePadding.y);
+                ImGui::ItemAdd(bb, igid);
+                if (ImGui::ButtonBehavior(bb, igid, NULL, NULL)) {
+                    navigateToWidget = true;
+                    navigateMainEntry = entry.menuName.c_str();
+                    navigateSidebar = entry.sidebarName.c_str();
+                    navigateWidgetName = entry.widgetName;
+                    break;
+                }
+                ImGui::GetCurrentWindow()->DC.CursorPos = pos;
+                ImGui::Text("%s", entry.widgetName.c_str());
+                ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Gray));
+                ImGui::Text("%s", origin.c_str());
+                ImGui::PopStyleColor();
+                searchCount++;
+            }
+        }
+        ImGui::EndChild();
+    }
     return searchCount;
 }
 
 void Menu::AddMenuEntry(std::string entryName, const char* entryCvar) {
     menuEntries.emplace(entryName, MainMenuEntry{ entryName, entryCvar });
     menuOrder.push_back(entryName);
+}
+
+void Menu::AddSearchEntry(SearchEntry entry) {
+    extraSearches.push_back(entry);
 }
 
 std::unordered_map<uint32_t, disabledInfo>& Menu::GetDisabledMap() {
@@ -503,6 +549,19 @@ void Menu::DrawElement() {
     for (auto& [reason, info] : disabledMap) {
         info.active = info.evaluation(info);
     }
+    const char* headerCvar = CVAR_SETTING("Menu.ActiveHeader");
+
+    if (navigateToWidget) {
+        if (menuEntries.contains(navigateMainEntry) &&
+            menuEntries.at(navigateMainEntry).sidebars.contains(navigateSidebar)) {
+            menuSearch.Clear();
+            CVarSetString(headerCvar, navigateMainEntry);
+            const char* sidebarCvar = menuEntries.at(navigateMainEntry).sidebarCvar;
+            CVarSetString(sidebarCvar, navigateSidebar);
+            highlightWidget = true;
+        }
+        navigateToWidget = false;
+    }
 
     raceDisableActive = CVarGetInteger(CVAR_SETTING("DisableChanges"), 0);
 
@@ -570,7 +629,6 @@ void Menu::DrawElement() {
 
     ImGui::PushFont(OTRGlobals::Instance->fontStandardLargest);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 8.0f));
-    const char* headerCvar = CVAR_SETTING("Menu.ActiveHeader");
     std::string headerIndex = CVarGetString(headerCvar, "Settings");
     ImVec2 pos = window->DC.CursorPos;
     float centerX = pos.x + windowWidth / 2 - (style.ItemSpacing.x * (menuEntries.size() + 1));

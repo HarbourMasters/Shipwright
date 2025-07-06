@@ -550,7 +550,7 @@ void AudioEditor::DrawElement() {
                                              .DefaultValue(5)
                                              .Size(ImVec2(300.0f, 0.0f))
                                              .Color(THEME_COLOR));
-                UIWidgets::CVarSliderFloat("Link's voice pitch multiplier", CVAR_AUDIO("LinkVoiceFreqMultiplier"),
+                UIWidgets::CVarSliderFloat("Link's Voice Pitch Multiplier", CVAR_AUDIO("LinkVoiceFreqMultiplier"),
                                            UIWidgets::FloatSliderOptions()
                                                .IsPercentage()
                                                .Min(0.4f)

@@ -1759,7 +1759,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
         if (CVarCheckbox("Enable Dragging", CVAR_TRACKER_ITEM("Draggable"), CheckboxOptions().Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
-        if (CVarCheckbox("Only enable while paused", CVAR_TRACKER_ITEM("ShowOnlyPaused"),
+        if (CVarCheckbox("Only Enable While Paused", CVAR_TRACKER_ITEM("ShowOnlyPaused"),
                          CheckboxOptions().Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
