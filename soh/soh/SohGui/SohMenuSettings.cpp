@@ -487,13 +487,6 @@ void SohMenu::AddMenuSettings() {
             });
         })
         .Options(ButtonOptions().Tooltip("Displays a test notification."));
-
-    AddSearchEntry({ "Free Look", "Settings", "Controls", "Camera Controls" });
-    AddSearchEntry({ "Enable Mouse Controls", "Settings", "Controls", "Camera Controls" });
-    AddSearchEntry({ "Right Stick Ocarina Playback", "Settings", "Controls", "Ocarina Controls" });
-    AddSearchEntry({ "Dpad Ocarina Playback", "Settings", "Controls", "Ocarina Controls" });
-    AddSearchEntry({ "Dpad Support on Pause Menu", "Settings", "Controls", "Dpad Controls" });
-    AddSearchEntry({ "Dpad Support in Text Boxes", "Settings", "Controls", "Dpad Controls" });
 }
 
 } // namespace SohGui

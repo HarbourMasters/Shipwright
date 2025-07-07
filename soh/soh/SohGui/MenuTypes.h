@@ -295,6 +295,15 @@ struct SearchEntry {
     std::string extraTerms = "";
 };
 
+struct SearchWidget {
+    // First four required
+    WidgetInfo& info;
+    std::string menuName;
+    std::string sidebarName;
+    std::string location;
+    std::string extraTerms = "";
+};
+
 struct RegisterMenuInitFunc {
     RegisterMenuInitFunc(std::function<void()> initFunc) {
         auto& menuInitFuncs = MenuInit::GetInitFuncs();

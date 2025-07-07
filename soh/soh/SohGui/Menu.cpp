@@ -25,6 +25,7 @@ extern std::shared_ptr<SohModalWindow> mModalWindow;
 }
 
 std::vector<SearchEntry> extraSearches = {};
+std::vector<SearchWidget> extraSearchWidgets = {};
 
 namespace Ship {
 std::string disabledTempTooltip;
@@ -235,6 +236,24 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                                         { ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y });
     if (ImGui::BeginChild("Search Results Col 2", { ImGui::GetContentRegionAvail().x, 0 }, ImGuiChildFlags_AutoResizeY,
                           ImGuiWindowFlags_NoTitleBar)) {
+        for (auto& entry : extraSearchWidgets) {
+            if (entry.info.type == WIDGET_SEARCH || entry.info.type == WIDGET_SEPARATOR ||
+                entry.info.type == WIDGET_SEPARATOR_TEXT || entry.info.isHidden || entry.info.hideInSearch) {
+                continue;
+            }
+            std::string widgetStr =
+                entry.info.name + entry.info.options->tooltip + entry.extraTerms + entry.sidebarName;
+            std::transform(widgetStr.begin(), widgetStr.end(), widgetStr.begin(), ::tolower);
+            widgetStr.erase(std::remove(widgetStr.begin(), widgetStr.end(), ' '), widgetStr.end());
+            if (widgetStr.find(menuSearchText) != std::string::npos) {
+                MenuDrawItem(entry.info, 400, menuThemeIndex);
+                ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Gray));
+                std::string origin = fmt::format("  ({} -> {}, {})", entry.menuName, entry.sidebarName, entry.location);
+                ImGui::Text("%s", origin.c_str());
+                ImGui::PopStyleColor();
+                searchCount++;
+            }
+        }
         for (auto& entry : extraSearches) {
             std::string widgetStr = entry.widgetName + entry.extraTerms + entry.sidebarName;
             std::transform(widgetStr.begin(), widgetStr.end(), widgetStr.begin(), ::tolower);
@@ -275,6 +294,10 @@ void Menu::AddMenuEntry(std::string entryName, const char* entryCvar) {
 
 void Menu::AddSearchEntry(SearchEntry entry) {
     extraSearches.push_back(entry);
+}
+
+void Menu::AddSearchWidget(SearchWidget widget) {
+    extraSearchWidgets.push_back(widget);
 }
 
 std::unordered_map<uint32_t, disabledInfo>& Menu::GetDisabledMap() {
