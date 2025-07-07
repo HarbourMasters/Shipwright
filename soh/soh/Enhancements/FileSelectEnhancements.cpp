@@ -4,7 +4,6 @@
 
 #include <array>
 #include <string>
-#include <vector>
 
 std::array<std::string, LANGUAGE_MAX> RandomizerSettingsMenuText[RSM_MAX] = {
     {

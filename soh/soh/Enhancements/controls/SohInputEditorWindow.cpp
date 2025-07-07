@@ -1366,10 +1366,10 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
                      .Color(THEME_COLOR)
                      .Tooltip("Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming"));
     if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
-        CVarCheckbox("Allow moving while in first person mode", CVAR_SETTING("MoveInFirstPerson"),
+        CVarCheckbox("Allow moving while in first-person mode", CVAR_SETTING("MoveInFirstPerson"),
                      CheckboxOptions()
                          .Color(THEME_COLOR)
-                         .Tooltip("Changes the left stick to move the player while in first person mode"));
+                         .Tooltip("Changes the left stick to move the player while in first-person mode"));
     }
     CVarCheckbox("Invert Aiming X Axis", CVAR_SETTING("Controls.InvertAimingXAxis"),
                  CheckboxOptions()
@@ -1432,7 +1432,9 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
         CheckboxOptions()
             .Color(THEME_COLOR)
             .Tooltip("Enables free look camera control\nNote: You must remap C buttons off of the right stick in the "
-                     "controller config menu, and map the camera stick to the right stick."));
+                     "controller config menu, and map the camera stick to the right stick.\n"
+                     "Doesn't work in areas were the game locks the camera.\n"
+                     "Scene reload may be necessary to enable."));
     CVarCheckbox("Invert Camera X Axis", CVAR_SETTING("FreeLook.InvertXAxis"),
                  CheckboxOptions().Color(THEME_COLOR).Tooltip("Inverts the Camera X Axis in:\n-Free look"));
     CVarCheckbox(

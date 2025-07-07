@@ -6,8 +6,6 @@
 #include <vector>
 #include <string>
 #include <cmath>
-#include <libultraship/bridge.h>
-#include <libultraship/libultraship.h>
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 

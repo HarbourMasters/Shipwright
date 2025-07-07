@@ -696,9 +696,9 @@ void DrawQuest(ItemTrackerItem item) {
     bool hasQuestItem = HasQuestItem(item);
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::BeginGroup();
-    ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                     hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
-                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::ImageWithBg(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                           hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
+                       ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     if (item.id == QUEST_SKULL_TOKEN) {
         DrawItemCount(item, false);
@@ -1231,7 +1231,7 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
     float radius = (iconSize + iconSpacing) * 2.0f;
 
     for (int i = 0; i < items.size(); i++) {
-        float angle = static_cast<float>(i / items.size() * 2.0f * M_PI);
+        float angle = static_cast<float>(i) / items.size() * 2.0f * M_PIf;
         float x = (radius / 2.0f) * cos(angle) + max.x / 2.0f;
         float y = (radius / 2.0f) * sin(angle) + max.y / 2.0f;
         ImGui::SetCursorPos(ImVec2(x - (CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36) - 8) / 2.0f, y + 4));

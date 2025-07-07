@@ -1,13 +1,17 @@
-#include <libultraship/bridge.h>
 #include "draw.h"
-#include "z64.h"
-#include "macros.h"
-#include "functions.h"
-#include "variables.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "randomizerTypes.h"
 #include <array>
+#include "soh_assets.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+
+extern "C" {
+#include "z64.h"
+#include "macros.h"
+#include "functions.h"
+#include "variables.h"
+#include "dungeon.h"
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
 #include "objects/object_gi_compass/object_gi_compass.h"
@@ -30,11 +34,6 @@
 #include "overlays/ovl_Boss_Sst/ovl_Boss_Sst.h"
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
-#include "soh_assets.h"
-#include "dungeon.h"
-#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
-
-extern "C" {
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }

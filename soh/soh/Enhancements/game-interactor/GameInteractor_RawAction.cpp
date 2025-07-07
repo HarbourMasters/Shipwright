@@ -1,9 +1,9 @@
 #include "GameInteractor.h"
 #include <libultraship/bridge.h>
-#include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include <math.h>
 #include "soh/Enhancements/debugger/colViewer.h"
+#include "soh/Enhancements/nametag.h"
 
 extern "C" {
 #include "variables.h"
@@ -405,125 +405,6 @@ void GameInteractor::RawAction::SetCollisionViewer(bool active) {
     }
 }
 
-void GameInteractor::RawAction::SetCosmeticsColor(uint8_t cosmeticCategory, uint8_t colorValue) {
-    Color_RGBA8 newColor;
-    newColor.r = 255;
-    newColor.g = 255;
-    newColor.b = 255;
-    newColor.a = 255;
-
-    switch (colorValue) {
-        case GI_COLOR_RED:
-            newColor.r = 200;
-            newColor.g = 30;
-            newColor.b = 30;
-            break;
-        case GI_COLOR_GREEN:
-            newColor.r = 50;
-            newColor.g = 200;
-            newColor.b = 50;
-            break;
-        case GI_COLOR_BLUE:
-            newColor.r = 50;
-            newColor.g = 50;
-            newColor.b = 200;
-            break;
-        case GI_COLOR_ORANGE:
-            newColor.r = 200;
-            newColor.g = 120;
-            newColor.b = 0;
-            break;
-        case GI_COLOR_YELLOW:
-            newColor.r = 234;
-            newColor.g = 240;
-            newColor.b = 33;
-            break;
-        case GI_COLOR_PURPLE:
-            newColor.r = 144;
-            newColor.g = 13;
-            newColor.b = 178;
-            break;
-        case GI_COLOR_PINK:
-            newColor.r = 215;
-            newColor.g = 93;
-            newColor.b = 246;
-            break;
-        case GI_COLOR_BROWN:
-            newColor.r = 108;
-            newColor.g = 72;
-            newColor.b = 15;
-            break;
-        case GI_COLOR_BLACK:
-            newColor.r = 0;
-            newColor.g = 0;
-            newColor.b = 0;
-            break;
-        default:
-            break;
-    }
-
-    switch (cosmeticCategory) {
-        case GI_COSMETICS_TUNICS:
-            CVarSetColor(CVAR_COSMETIC("Link.KokiriTunic.Value"), newColor);
-            CVarSetInteger(CVAR_COSMETIC("Link.KokiriTunic.Changed"), 1);
-            CVarSetColor(CVAR_COSMETIC("Link.GoronTunic.Value"), newColor);
-            CVarSetInteger(CVAR_COSMETIC("Link.GoronTunic.Changed"), 1);
-            CVarSetColor(CVAR_COSMETIC("Link.ZoraTunic.Value"), newColor);
-            CVarSetInteger(CVAR_COSMETIC("Link.ZoraTunic.Changed"), 1);
-            break;
-        case GI_COSMETICS_NAVI:
-            CVarSetColor(CVAR_COSMETIC("Navi.EnemyPrimary.Value"), newColor);
-            CVarSetInteger(CVAR_COSMETIC("Navi.EnemyPrimary.Changed"), 1);
-            CVarSetColor(CVAR_COSMETIC("Navi.EnemySecondary.Value"), newColor);
-            CVarSetInteger(CVAR_COSMETIC("Navi.EnemySecondary.Changed"), 1);
-            CVarSetColor(CVAR_COSMETIC("Navi.IdlePrimary.Value"), newColor);
-            CVarSetInteger(CVAR_COSMETIC("Navi.IdlePrimary.Changed"), 1);
-            CVarSetColor(CVAR_COSMETIC("Navi.IdleSecondary.Value"), newColor);
-            CVarSetInteger(CVAR_COSMETIC("Navi.IdleSecondary.Changed"), 1);
-            CVarSetColor(CVAR_COSMETIC("Navi.NPCPrimary.Value"), newColor);
-            CVarSetInteger(CVAR_COSMETIC("Navi.NPCPrimary.Changed"), 1);
-            CVarSetColor(CVAR_COSMETIC("Navi.NPCSecondary.Value"), newColor);
-            CVarSetInteger(CVAR_COSMETIC("Navi.NPCSecondary.Changed"), 1);
-            CVarSetColor(CVAR_COSMETIC("Navi.PropsPrimary.Value"), newColor);
-            CVarSetInteger(CVAR_COSMETIC("Navi.PropsPrimary.Changed"), 1);
-            CVarSetColor(CVAR_COSMETIC("Navi.PropsSecondary.Value"), newColor);
-            CVarSetInteger(CVAR_COSMETIC("Navi.PropsSecondary.Changed"), 1);
-            break;
-        case GI_COSMETICS_HAIR:
-            CVarSetColor(CVAR_COSMETIC("Link.Hair.Value"), newColor);
-            CVarSetInteger(CVAR_COSMETIC("Link.Hair.Changed"), 1);
-            break;
-    }
-
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    ApplyOrResetCustomGfxPatches();
-}
-
-void GameInteractor::RawAction::RandomizeCosmeticsColors(bool excludeBiddingWarColors) {
-    const char* cvarsToLock[12] = {
-        CVAR_COSMETIC("Link.KokiriTunic.Locked"),    CVAR_COSMETIC("Link.GoronTunic.Locked"),
-        CVAR_COSMETIC("Link.ZoraTunic.Locked"),      CVAR_COSMETIC("Navi.EnemyPrimary.Locked"),
-        CVAR_COSMETIC("Navi.EnemySecondary.Locked"), CVAR_COSMETIC("Navi.IdlePrimary.Locked"),
-        CVAR_COSMETIC("Navi.IdleSecondary.Locked"),  CVAR_COSMETIC("Navi.NPCPrimary.Locked"),
-        CVAR_COSMETIC("Navi.NPCSecondary.Locked"),   CVAR_COSMETIC("Navi.PropsPrimary.Locked"),
-        CVAR_COSMETIC("Navi.PropsSecondary.Locked"), CVAR_COSMETIC("Link.Hair.Locked")
-    };
-
-    if (excludeBiddingWarColors) {
-        for (uint8_t i = 0; i < 12; i++) {
-            CVarSetInteger(cvarsToLock[i], 1);
-        }
-    }
-
-    CosmeticsEditor_RandomizeAll();
-
-    if (excludeBiddingWarColors) {
-        for (uint8_t i = 0; i < 12; i++) {
-            CVarSetInteger(cvarsToLock[i], 0);
-        }
-    }
-}
-
 void GameInteractor::RawAction::EmulateButtonPress(int32_t button) {
     GameInteractor::State::EmulatedButtons |= button;
 }
@@ -580,8 +461,8 @@ void GameInteractor::RawAction::ClearCutscenePointer() {
     gPlayState->csCtx.segment = &null_cs;
 }
 
-GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId,
-                                                                                 int32_t enemyParams) {
+GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams,
+                                                                                 std::string nameTag) {
 
     if (!GameInteractor::CanSpawnActor()) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
@@ -651,15 +532,29 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
             pos.x += 10;
             pos.y += 10;
             pos.z += 10;
-            if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams, 0) ==
-                NULL) {
+            Actor* actor =
+                Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams, 0);
+            if (actor == NULL) {
                 return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+            }
+            if (nameTag != "" && CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("EnemyNameTags"), 0)) {
+                NameTag_RegisterForActor(actor, nameTag.c_str());
+            }
+            if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("SpawnedEnemiesIgnoredIngame"), 0)) {
+                Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, actor, ACTORCAT_NPC);
             }
         }
         return GameInteractionEffectQueryResult::Possible;
     } else {
-        if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams, 0) !=
-            NULL) {
+        Actor* actor =
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams, 0);
+        if (actor != NULL) {
+            if (nameTag != "" && CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("EnemyNameTags"), 0)) {
+                NameTag_RegisterForActor(actor, nameTag.c_str());
+            }
+            if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("SpawnedEnemiesIgnoredIngame"), 0)) {
+                Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, actor, ACTORCAT_NPC);
+            }
             return GameInteractionEffectQueryResult::Possible;
         }
     }
@@ -667,7 +562,8 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
     return GameInteractionEffectQueryResult::TemporarilyNotPossible;
 }
 
-GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t actorId, int32_t actorParams) {
+GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t actorId, int32_t actorParams,
+                                                                       std::string nameTag) {
 
     if (!GameInteractor::CanSpawnActor()) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
@@ -684,6 +580,9 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t 
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         }
 
+        if (nameTag != "" && CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("EnemyNameTags"), 0)) {
+            NameTag_RegisterForActor((Actor*)cucco, nameTag.c_str());
+        }
         cucco->actionFunc = func_80AB70A0_nocutscene;
         return GameInteractionEffectQueryResult::Possible;
     } else if (actorId == ACTOR_EN_BOM) {
@@ -703,8 +602,15 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t 
         return GameInteractionEffectQueryResult::Possible;
     } else {
         // Generic spawn an actor at Link's position
-        if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, player->actor.world.pos.x,
-                        player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, actorParams, 0) != NULL) {
+        Actor* actor = Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, player->actor.world.pos.x,
+                                   player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, actorParams, 0);
+        if (actor != NULL) {
+            if (nameTag != "" && CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("EnemyNameTags"), 0)) {
+                NameTag_RegisterForActor((Actor*)actor, nameTag.c_str());
+            }
+            if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("SpawnedEnemiesIgnoredIngame"), 0)) {
+                Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, actor, ACTORCAT_NPC);
+            }
             return GameInteractionEffectQueryResult::Possible;
         }
     }

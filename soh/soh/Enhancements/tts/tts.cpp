@@ -370,9 +370,16 @@ void RegisterOnKaleidoscopeUpdateHook() {
                 auto translation = GetParameritizedText("magic", TEXT_BANK_KALEIDO, arg);
                 SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
             } else if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
-                snprintf(arg, sizeof(arg), "%d", gSaveContext.rupees);
-                auto translation = GetParameritizedText("rupees", TEXT_BANK_KALEIDO, arg);
-                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                if (gPlayState->sceneNum >= SCENE_FOREST_TEMPLE && gPlayState->sceneNum <= SCENE_INSIDE_GANONS_CASTLE) {
+                    snprintf(arg, sizeof(arg), "%d",
+                             std::max(gSaveContext.inventory.dungeonKeys[gPlayState->sceneNum], (s8)0));
+                    auto translation = GetParameritizedText("keys", TEXT_BANK_KALEIDO, arg);
+                    SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                } else {
+                    snprintf(arg, sizeof(arg), "%d", gSaveContext.rupees);
+                    auto translation = GetParameritizedText("rupees", TEXT_BANK_KALEIDO, arg);
+                    SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                }
             } else if (CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
                 // TODO: announce timer?
             }

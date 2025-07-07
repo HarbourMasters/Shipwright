@@ -7124,15 +7124,6 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
     if (this->meleeWeaponState == 0) {
         float maxSpeed = R_RUN_SPEED_LIMIT / 100.0f;
 
-        int32_t giSpeedModifier = GameInteractor_RunSpeedModifier();
-        if (giSpeedModifier != 0) {
-            if (giSpeedModifier > 0) {
-                maxSpeed *= giSpeedModifier;
-            } else {
-                maxSpeed /= abs(giSpeedModifier);
-            }
-        }
-
         if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) == BUNNY_HOOD_FAST_AND_JUMP &&
             this->currentMask == PLAYER_MASK_BUNNY) {
             maxSpeed *= 1.5f;
@@ -8873,14 +8864,6 @@ void Player_Action_80842180(Player* this, PlayState* play) {
         Player_GetMovementSpeedAndYaw(this, &sp2C, &sp2A, SPEED_MODE_CURVED, play);
 
         if (!func_8083C484(this, &sp2C, &sp2A)) {
-            int32_t giSpeedModifier = GameInteractor_RunSpeedModifier();
-            if (giSpeedModifier != 0) {
-                if (giSpeedModifier > 0) {
-                    sp2C *= giSpeedModifier;
-                } else {
-                    sp2C /= abs(giSpeedModifier);
-                }
-            }
 
             if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA &&
                 this->currentMask == PLAYER_MASK_BUNNY) {

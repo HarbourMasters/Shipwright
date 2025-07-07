@@ -11,6 +11,7 @@ have functions to both enable and disable said effect.
 #include "GameInteractionEffect.h"
 #include "GameInteractor.h"
 #include <libultraship/bridge.h>
+#include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 
 extern "C" {
 #include <z64.h>
@@ -371,19 +372,23 @@ void ForceEquipBoots::_Remove() {
     GameInteractor::RawAction::ForceEquipBoots(EQUIP_VALUE_BOOTS_KOKIRI);
 }
 
-// MARK: - ModifyRunSpeedModifier
-GameInteractionEffectQueryResult ModifyRunSpeedModifier::CanBeApplied() {
+// MARK: - ModifyMovementSpeedMultiplier
+GameInteractionEffectQueryResult ModifyMovementSpeedMultiplier::CanBeApplied() {
     if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
     } else {
         return GameInteractionEffectQueryResult::Possible;
     }
 }
-void ModifyRunSpeedModifier::_Apply() {
-    GameInteractor::State::RunSpeedModifier = parameters[0];
+void ModifyMovementSpeedMultiplier::_Apply() {
+    if (parameters[0] == -2) {
+        GameInteractor::State::MovementSpeedMultiplier = 0.5f;
+    } else if (parameters[0] == 2) {
+        GameInteractor::State::MovementSpeedMultiplier = 2.0f;
+    }
 }
-void ModifyRunSpeedModifier::_Remove() {
-    GameInteractor::State::RunSpeedModifier = 0;
+void ModifyMovementSpeedMultiplier::_Remove() {
+    GameInteractor::State::MovementSpeedMultiplier = 1.0f;
 }
 
 // MARK: - OneHitKO
@@ -485,18 +490,6 @@ void SetCollisionViewer::_Remove() {
     GameInteractor::RawAction::SetCollisionViewer(false);
 }
 
-// MARK: - SetCosmeticsColor
-GameInteractionEffectQueryResult SetCosmeticsColor::CanBeApplied() {
-    if (!GameInteractor::IsSaveLoaded()) {
-        return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-    } else {
-        return GameInteractionEffectQueryResult::Possible;
-    }
-}
-void SetCosmeticsColor::_Apply() {
-    GameInteractor::RawAction::SetCosmeticsColor(parameters[0], parameters[1]);
-}
-
 // MARK: - RandomizeCosmetics
 GameInteractionEffectQueryResult RandomizeCosmetics::CanBeApplied() {
     if (!GameInteractor::IsSaveLoaded()) {
@@ -506,7 +499,7 @@ GameInteractionEffectQueryResult RandomizeCosmetics::CanBeApplied() {
     }
 }
 void RandomizeCosmetics::_Apply() {
-    GameInteractor::RawAction::RandomizeCosmeticsColors(true);
+    CosmeticsEditor_RandomizeAll();
 }
 
 // MARK: - PressButton
