@@ -1882,16 +1882,6 @@ void SohMenu::AddMenuEnhancements() {
             .CVar(timer.timeEnable)
             .Callback([](WidgetInfo& info) { TimeDisplayUpdateDisplayOptions(); });
     }
-
-    AddSearchEntry({ "Mute Low HP Alarm", "Enhancements", "Audio Editor", "Audio Options" });
-    AddSearchEntry({ "Disable Navi Audio Call", "Enhancements", "Audio Editor", "Audio Options", "mute" });
-    AddSearchEntry({ "Disable Enemy Proximity Music", "Enhancements", "Audio Editor", "Audio Options", "mute" });
-    AddSearchEntry({ "Disable Leading Music in Lost Woods", "Enhancements", "Audio Editor", "Audio Options", "mute" });
-    AddSearchEntry({ "Overlay Duration", "Enhancements", "Audio Editor", "Audio Options", "sequencetracktitle" });
-    AddSearchEntry({ "Link's Voice Pitch Multiplier", "Enhancements", "Audio Editor", "Audio Options" });
-    AddSearchEntry(
-        { "Randomize All Music and Sound Effects on New Scene", "Enhancements", "Audio Editor", "Audio Options" });
-    AddSearchEntry({ "Lower Octaves of Unplayable High Notes", "Enhancements", "Audio Editor", "Audio Options" });
 }
 
 } // namespace SohGui

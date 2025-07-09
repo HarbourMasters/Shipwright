@@ -1942,4 +1942,4 @@ void RegisterInputWidgets() {
     SohGui::mSohMenu->AddSearchWidget({ dpadText, "Settings", "Controls", "Dpad Controls" });
 }
 
-static RegisterMenuInitFunc initFunc(RegisterInputWidgets);
+static RegisterMenuInitFunc initInputWidgets(RegisterInputWidgets);
