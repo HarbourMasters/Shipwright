@@ -2345,9 +2345,12 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
 
     // AmmoCanDrop = /*AmmoDrops.IsNot(AMMODROPS_NONE)*/ false; TODO: AmmoDrop setting
 
-    // Child item logic
-    SkullMask = false;
-    MaskOfTruth = false;
+    // Mask quest
+    CanBorrowMasks = false;
+    BorrowSkullMask = false;
+    BorrowSpookyMask = false;
+    BorrowBunnyHood = false;
+    BorrowRightMasks = false;
 
     // Adult logic
     FreedEpona = false;

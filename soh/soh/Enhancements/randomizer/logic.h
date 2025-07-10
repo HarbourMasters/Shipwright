@@ -30,9 +30,12 @@ class Logic {
   public:
     bool noVariable = false;
 
-    // Child item logic
-    bool SkullMask = false;
-    bool MaskOfTruth = false;
+    // Mask Quest
+    bool CanBorrowMasks = false;
+    bool BorrowSkullMask = false;
+    bool BorrowSpookyMask = false;
+    bool BorrowBunnyHood = false;
+    bool BorrowRightMasks = false;
 
     // Adult logic
     bool FreedEpona = false;

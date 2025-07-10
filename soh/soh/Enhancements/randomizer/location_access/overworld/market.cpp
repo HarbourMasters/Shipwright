@@ -138,8 +138,14 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_MASK_SHOP] = Region("Market Mask Shop", "Market Mask Shop", {}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->SkullMask,   []{return logic->SkullMask   || (logic->HasItem(RG_ZELDAS_LETTER) && (ctx->GetOption(RSK_COMPLETE_MASK_QUEST) ||  ChildCanAccess(RR_KAKARIKO_VILLAGE)));}), //RANDOTODO Complete mask quest does not need this location, so should be tied to link's pocket
-        EventAccess(&logic->MaskOfTruth, []{return logic->MaskOfTruth || (logic->SkullMask && (ctx->GetOption(RSK_COMPLETE_MASK_QUEST) || (ChildCanAccess(RR_THE_LOST_WOODS) && logic->CanUse(RG_SARIAS_SONG) && RegionTable(RR_THE_GRAVEYARD)->childDay && ChildCanAccess(RR_HYRULE_FIELD) && logic->StoneCount() == 3)));}),
+        //Currently, mask swap in menu doesn't need access to the mask shop
+        //If it is forced on/a setting, a copy of these events should be added to root
+        //it also doesn't need you to open kak gate, but that might be best treated as a bug
+        EventAccess(&logic->CanBorrowMasks,   []{return logic->HasItem(RG_ZELDAS_LETTER) && logic->KakarikoVillageGateOpen;}),
+        EventAccess(&logic->BorrowSkullMask,  []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->CanBorrowMasks;}),
+        EventAccess(&logic->BorrowSpookyMask, []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->CanBorrowMasks;}),
+        EventAccess(&logic->BorrowBunnyHood,  []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->CanBorrowMasks;}),
+        EventAccess(&logic->BorrowRightMasks, []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->CanBorrowMasks;}),
     }, {
         //Locations
         LOCATION(RC_MASK_SHOP_HINT, true),

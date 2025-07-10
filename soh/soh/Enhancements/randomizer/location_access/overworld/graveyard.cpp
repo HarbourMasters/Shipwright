@@ -7,9 +7,10 @@ void RegionTable_Init_Graveyard() {
     // clang-format off
     areaTable[RR_THE_GRAVEYARD] = Region("The Graveyard", "The Graveyard", {RA_THE_GRAVEYARD}, NO_DAY_NIGHT_CYCLE, {
         //Events
-        EventAccess(&logic->ButterflyFairy, []{return logic->ButterflyFairy || (logic->CanUse(RG_STICKS) && logic->AtDay);}),
-        EventAccess(&logic->BeanPlantFairy, []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
-        EventAccess(&logic->BugRock,        []{return true;}),
+        EventAccess(&logic->ButterflyFairy,  []{return logic->ButterflyFairy || (logic->CanUse(RG_STICKS) && logic->AtDay);}),
+        EventAccess(&logic->BeanPlantFairy,  []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
+        EventAccess(&logic->BugRock,         []{return true;}),
+        EventAccess(&logic->BorrowBunnyHood, []{return logic->IsChild && logic->AtDay && logic->BorrowSpookyMask && logic->HasItem(RG_CHILD_WALLET);}),
     }, {
         //Locations
         LOCATION(RC_GRAVEYARD_FREESTANDING_POH,        (((logic->IsAdult && CanPlantBean(RR_THE_GRAVEYARD)) || logic->CanUse(RG_LONGSHOT)) && logic->CanBreakCrates()) || (ctx->GetTrickOption(RT_GY_POH) && logic->CanUse(RG_BOOMERANG))),
