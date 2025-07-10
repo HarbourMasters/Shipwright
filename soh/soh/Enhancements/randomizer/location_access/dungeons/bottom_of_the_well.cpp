@@ -47,7 +47,8 @@ void RegionTable_Init_BottomOfTheWell() {
         Entrance(RR_BOTW_SOUTHWEST_ROOM,       []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
         Entrance(RR_BOTW_NORTHEAST_CRAWLSPACE, []{return logic->IsChild/*CanCrawl*/;}),
         //Climb always needed in case water is lowered out of logic
-        Entrance(RR_BOTW_WEST_LEDGE,           []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE))/*CanClimb*/;}),
+        Entrance(RR_BOTW_WEST_LEDGE,           []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE) || 
+                                                          (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))/*CanClimb*/);}),
         Entrance(RR_BOTW_SE_CRAWLSPACE_LOWER,  []{return logic->LoweredWaterInsideBotw && logic->IsChild/*CanCrawl*/;}),
         //Falling down into basement requires nothing, but falling down somewhere specific requires lens or lens trick
         //kinda questionable given several drops are blocked by rocks, but that's how it was handled before and on N64
@@ -145,7 +146,8 @@ void RegionTable_Init_BottomOfTheWell() {
     }, {
         //Exits
         //Climb always needed in case water is lowered out of logic
-        Entrance(RR_BOTW_PERIMETER,   []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE))/*CanClimb()*/;}),
+        Entrance(RR_BOTW_PERIMETER,   []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE) || 
+                                                 (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))/* && CanClimb()*/);}),
         Entrance(RR_BOTW_COFFIN_ROOM, []{return true;}),
     });
 
@@ -156,7 +158,6 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_COFFIN_ROOM_MIDDLE_RIGHT_HEART, logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
-        //Climb always needed in case water is lowered out of logic
         Entrance(RR_BOTW_WEST_LEDGE, []{return true;}),
     });
 
@@ -277,7 +278,8 @@ void RegionTable_Init_BottomOfTheWell() {
         Entrance(RR_BOTW_MQ_MIDDLE,               []{return logic->OpenedMQBotwGates;}),
         Entrance(RR_BOTW_MQ_WEST_CAGE,            []{return Here(RR_BOTW_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanPassEnemy(RE_BIG_SKULLTULA);}),
         //Climb always needed in case water is lowered out of logic
-        Entrance(RR_BOTW_MQ_WEST_LEDGE,           []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE)) /*&& CanClimb()*/;}),
+        Entrance(RR_BOTW_MQ_WEST_LEDGE,           []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE) || 
+                                                             (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))/*&& CanClimb()*/);}),
         Entrance(RR_BOTW_MQ_NORTHEAST_CRAWLSPACE, []{return logic->IsChild/*CanCrawl()*/;}),
         Entrance(RR_BOTW_MQ_SE_CRAWLSPACE_LOWER,  []{return logic->IsChild/*CanCrawl()*/ && logic->LoweredWaterInsideBotw;}),
         Entrance(RR_BOTW_MQ_B3,                   []{return true;}),
@@ -340,7 +342,9 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_MQ_WEST_LEDGE] = Region("Bottom of the Well MQ West Ledge", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
         //Exits
-        Entrance(RR_BOTW_MQ_PERIMETER,   []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE))/* && CanClimb*/;}),
+        //Climb always needed in case water is lowered out of logic
+        Entrance(RR_BOTW_MQ_PERIMETER,   []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE) || 
+                                                    (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))/* && CanClimb*/);}),
         Entrance(RR_BOTW_MQ_COFFIN_ROOM, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}),
     });
 
@@ -351,7 +355,6 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_COFFIN_ROOM_MIDDLE_LEFT_HEART,  logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
-        //Climb always needed in case water is lowered out of logic
         Entrance(RR_BOTW_MQ_WEST_LEDGE, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}),
     });
 
