@@ -382,6 +382,7 @@ void RegionTable_Init() {
         //The big poes bottle softlock safety check does not account for the guard house lock if the guard house is not shuffled, so the key is needed before we can safely allow bottle use in logic
         //RANDOTODO a setting that lets you drink/dump big poes so we don't need this logic
         EventAccess(&logic->CouldEmptyBigPoes,       []{return !ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) || logic->CanOpenOverworldDoor(RG_GUARD_HOUSE_KEY);}),
+        EventAccess(&logic->FreedEpona,              []{return (bool)ctx->GetOption(RSK_SKIP_EPONA_RACE);}),
     }, {
         //Locations
         LOCATION(RC_LINKS_POCKET,       true),
