@@ -65,7 +65,7 @@
 #define IS_DAY (gSaveContext.nightFlag == 0)
 #define IS_NIGHT (gSaveContext.nightFlag == 1)
 
-#define SLOT(item) gItemSlots[item]
+#define SLOT(item) (item > ARRAY_COUNT(gItemSlots)-1 ? SLOT_BOTTLE_1 : gItemSlots[item])
 #define INV_CONTENT(item) gSaveContext.inventory.items[SLOT(item)]
 #define AMMO(item) gSaveContext.inventory.ammo[SLOT(item)]
 #define BEANS_BOUGHT AMMO(ITEM_BEAN + 1)
