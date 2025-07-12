@@ -909,11 +909,6 @@ void BossRush_OnBlueWarpUpdate(void* actor) {
 }
 
 void RegisterBossRush() {
-    static bool registered = false;
-    if (registered)
-        return;
-    registered = true;
-
     COND_HOOK(OnLoadGame, true, [](int32_t fileNum) {
         COND_ID_HOOK(OnActorInit, ACTOR_DEMO_SA, IS_BOSS_RUSH, [](void* actorPtr) {
             BossRush_SpawnBlueWarps(gPlayState);
