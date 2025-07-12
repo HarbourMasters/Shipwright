@@ -2253,7 +2253,7 @@ s8 Player_ItemToItemAction(s32 item) {
     } else if (item == ITEM_FISHING_POLE) {
         return PLAYER_IA_FISHING_POLE;
     } else {
-        return sItemActions[item];
+        return Item_GetAction(item);
     }
 }
 
@@ -10657,9 +10657,18 @@ void Player_StartMode_BlueWarp(PlayState* play, Player* this) {
 
 static u8 D_808546F0[] = { ITEM_SWORD_MASTER, ITEM_SWORD_KOKIRI };
 
+// Helper so that we don't buffer overrun item actions with custom items
+s32 Item_GetAction(s16 item) {
+    if (item > ARRAY_COUNT(sItemActions)-1) {
+        return PLAYER_IA_POCKET_EGG;
+    }
+
+    return sItemActions[item];
+}
+
 void func_80846720(PlayState* play, Player* this, s32 arg2) {
     s32 item = D_808546F0[(void)0, gSaveContext.linkAge];
-    s32 itemAction = sItemActions[item];
+    s32 itemAction = Item_GetAction(item);
 
     Player_DestroyHookshot(this);
     Player_DetachHeldActor(play, this);

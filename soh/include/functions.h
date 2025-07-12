@@ -1239,6 +1239,7 @@ void Sample_Destroy(GameState* thisx);
 void Sample_Init(GameState* thisx);
 void Inventory_ChangeEquipment(s16 equipment, u16 value);
 void *Item_GetIcon(s16 item);
+s32 Item_GetAction(s16 item);
 u8 Inventory_DeleteEquipment(PlayState* play, s16 equipment);
 void Inventory_ChangeUpgrade(s16 upgrade, s16 value);
 void Object_InitBank(PlayState* play, ObjectContext* objectCtx);
