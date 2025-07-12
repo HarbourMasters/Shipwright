@@ -169,6 +169,18 @@ void* gItemIcons[] = {
     gOcarinaBtnIconATex,
 };
 
+
+// Safe wrapper around gItemIcons, so we don't crash with bad data when we try
+// to do weird things like assign non-button items to buttons
+void *Item_GetIcon(s16 itemId)
+{
+	if (itemId > ARRAY_COUNT(gItemIcons)-1)  {
+		return gItemIconSoldOutTex;
+	}
+
+	return gItemIcons[itemId];
+}
+
 // Used to map item IDs to inventory slots
 u8 gItemSlots[] = {
     SLOT_STICK,       SLOT_NUT,          SLOT_BOMB,        SLOT_BOW,         SLOT_ARROW_FIRE,  SLOT_DINS_FIRE,
