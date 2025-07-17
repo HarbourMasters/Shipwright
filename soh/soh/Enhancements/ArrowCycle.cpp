@@ -10,6 +10,7 @@ extern "C" {
 #include "overlays/actors/ovl_En_Arrow/z_en_arrow.h"
 s32 func_808351D4(Player* thisx, PlayState* play); // Arrow nocked
 s32 func_808353D8(Player* thisx, PlayState* play); // Aiming in first person
+void Player_InitItemAction(PlayState* play, Player* thisx, PlayerItemAction itemAction);
 }
 
 #define CVAR_NAME "gEnhancements.BowArrowCycle"
@@ -97,11 +98,11 @@ static bool CanCycleArrows() {
             INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT);
 }
 
-// Arrow Cycling Logic - Fixed to use PlayerItemAction directly
-static PlayerItemAction GetNextArrowType(s8 currentItemAction) {
+// Arrow Cycling Logic
+static s8 GetNextArrowType(s8 currentArrowType) {
     int currentIndex = 0;
     for (int i = 0; i < (int)ARRAY_COUNT(sArrowCycleOrder); i++) {
-        if (sArrowCycleOrder[i] == (PlayerItemAction)currentItemAction) {
+        if (sArrowCycleOrder[i] == currentArrowType) {
             currentIndex = i;
             break;
         }
@@ -114,7 +115,7 @@ static PlayerItemAction GetNextArrowType(s8 currentItemAction) {
         }
     }
 
-    return PLAYER_IA_BOW; // Fallback to normal arrows
+    return PLAYER_IA_BOW;
 }
 
 // UI Update Functions
@@ -187,8 +188,8 @@ static void UpdateFlashEffect(PlayState* play) {
     }
 }
 
-static void UpdateEquippedBow(PlayState* play, PlayerItemAction itemAction) {
-    s32 bowItem = GetBowItemForArrow(itemAction);
+static void UpdateEquippedBow(PlayState* play, s8 arrowType) {
+    s32 bowItem = GetBowItemForArrow(static_cast<PlayerItemAction>(arrowType));
 
     // Update C-buttons
     for (s32 i = 1; i <= 3; i++) {
@@ -223,18 +224,10 @@ static void UpdateEquippedBow(PlayState* play, PlayerItemAction itemAction) {
     UpdateFlashEffect(play);
 }
 
-// Core Arrow Cycling Function - Fixed to use PlayerItemAction directly
+// Core Arrow Cycling Function
 static void CycleToNextArrow(PlayState* play, Player* player) {
-    PlayerItemAction nextItemAction = GetNextArrowType(player->heldItemAction);
+    s8 nextArrow = GetNextArrowType(player->heldItemAction);
 
-    // Store current aiming state
-    bool wasAiming = IsAimingBow(player);
-    UpperActionFunc currentUpperAction = player->upperActionFunc;
-    s32 currentUnk834 = player->unk_834;
-    s32 currentUnk836 = player->unk_836;
-    s32 currentUnk860 = player->unk_860;
-
-    // Kill the current arrow actor if it exists
     if (player->heldActor != NULL && player->heldActor->id == ACTOR_EN_ARROW) {
         EnArrow* arrow = (EnArrow*)player->heldActor;
 
@@ -243,83 +236,10 @@ static void CycleToNextArrow(PlayState* play, Player* player) {
         }
 
         Actor_Kill(&arrow->actor);
-        player->heldActor = NULL;
     }
 
-    // Update the heldItemAction directly without calling Player_InitItemAction
-    player->heldItemAction = nextItemAction;
-    player->itemAction = nextItemAction;
-
-    // Restore aiming state if we were aiming
-    if (wasAiming) {
-        player->upperActionFunc = currentUpperAction;
-        player->unk_834 = currentUnk834;
-        player->unk_836 = currentUnk836;
-        player->unk_860 = currentUnk860;
-        player->stateFlags1 |= PLAYER_STATE1_READY_TO_FIRE;
-    }
-
-    // Create new arrow actor if we were aiming
-    if (wasAiming && player->unk_860 >= 0) {
-        s32 arrowType;
-        s32 magicArrowType;
-
-        // Determine arrow type based on new heldItemAction using the correct formula
-        if (play->shootingGalleryStatus != 0) {
-            arrowType = play->shootingGalleryStatus;
-        } else {
-            // Convert PlayerItemAction to ArrowType for OoT
-            switch (nextItemAction) {
-                case PLAYER_IA_BOW:
-                    arrowType = ARROW_NORMAL;
-                    break;
-                case PLAYER_IA_BOW_FIRE:
-                    arrowType = ARROW_FIRE;
-                    break;
-                case PLAYER_IA_BOW_ICE:
-                    arrowType = ARROW_ICE;
-                    break;
-                case PLAYER_IA_BOW_LIGHT:
-                    arrowType = ARROW_LIGHT;
-                    break;
-                default:
-                    arrowType = ARROW_NORMAL;
-                    break;
-            }
-        }
-
-        // Calculate magic arrow type for cost array (Fire=0, Ice=1, Light=2)
-        magicArrowType = arrowType - ARROW_FIRE;
-
-        if (arrowType >= ARROW_FIRE && arrowType <= ARROW_LIGHT) { // Fire, Ice, Light arrows
-            if (!Magic_RequestChange(play, sMagicArrowCosts[magicArrowType], MAGIC_CONSUME_NOW)) {
-                arrowType = ARROW_NORMAL; // Fall back to normal arrows
-            }
-        }
-
-        // Create the arrow actor with the correct type
-        Actor* newArrow = Actor_SpawnAsChild(&play->actorCtx, &player->actor, play, ACTOR_EN_ARROW,
-                                             player->actor.world.pos.x, player->actor.world.pos.y,
-                                             player->actor.world.pos.z, 0, player->actor.shape.rot.y, 0, arrowType);
-
-        if (newArrow != NULL) {
-            player->heldActor = newArrow;
-
-            // Force the arrow to spawn its child actor immediately for visual effects
-            EnArrow* arrow = (EnArrow*)newArrow;
-
-            // Spawn the appropriate child actor based on arrow type for immediate visual effects
-            if (arrowType >= ARROW_FIRE && arrowType <= ARROW_LIGHT) {
-                s16 elementalActorIds[] = { ACTOR_ARROW_FIRE, ACTOR_ARROW_ICE, ACTOR_ARROW_LIGHT };
-                s16 childActorId = elementalActorIds[arrowType - ARROW_FIRE];
-
-                Actor_SpawnAsChild(&play->actorCtx, &arrow->actor, play, childActorId, arrow->actor.world.pos.x,
-                                   arrow->actor.world.pos.y, arrow->actor.world.pos.z, 0, 0, 0, 0);
-            }
-        }
-    }
-
-    UpdateEquippedBow(play, nextItemAction);
+    Player_InitItemAction(play, player, static_cast<PlayerItemAction>(nextArrow));
+    UpdateEquippedBow(play, nextArrow);
     Audio_PlaySoundGeneral(NA_SE_PL_CHANGE_ARMS, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                            &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 }
@@ -344,6 +264,11 @@ void ArrowCycleMain() {
     }
 
     if (IsAimingBow(player) && CHECK_BTN_ANY(input->press.button, BTN_R)) {
+        if (IsHoldingMagicBow(player) && gSaveContext.magicState != MAGIC_STATE_IDLE && player->heldActor == NULL) {
+            Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            return;
+        }
 
         if (player->heldActor != NULL && player->heldActor->id == ACTOR_EN_ARROW) {
             EnArrow* heldArrow = (EnArrow*)player->heldActor;
@@ -369,9 +294,20 @@ void ArrowCycleMain() {
 
 // Registration and Hooks
 void RegisterArrowCycle() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* actor) {
-        if (((Actor*)actor)->id == ACTOR_PLAYER) {
-            ArrowCycleMain();
+    COND_ID_HOOK(OnActorUpdate, ACTOR_PLAYER, CVAR, [](void* actor) { ArrowCycleMain(); });
+
+    // Suppress shield input when aiming the bow and R is pressed
+    COND_VB_SHOULD(VB_EXECUTE_PLAYER_ACTION_FUNC, CVAR, {
+        Player* player = (Player*)va_arg(args, void*);
+        Input* input = (Input*)va_arg(args, void*);
+        if (IsAimingBow(player) && CHECK_BTN_ANY(input->press.button, BTN_R)) {
+            // In first person mode: always block shield input to allow arrow cycling
+            // In Z-target mode: only block during brief window after cycling to prevent shield action when arrow
+            // respawns
+            if ((player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON) ||
+                (sJustCycledFrames > 0 && (player->stateFlags1 & PLAYER_STATE1_Z_TARGETING))) {
+                *should = false;
+            }
         }
     });
 }
