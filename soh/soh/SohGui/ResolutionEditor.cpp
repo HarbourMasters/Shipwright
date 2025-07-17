@@ -79,7 +79,7 @@ static float aspectRatioX;
 static float aspectRatioY;
 static int32_t verticalPixelCount;
 // Additional settings
-static bool showHorizontalResField;
+static bool showHorizontalResField = false;
 static int32_t horizontalPixelCount;
 // Disabling flags
 static bool disabled_everything;
@@ -582,7 +582,6 @@ void UpdateResolutionVars() {
     verticalPixelCount =
         CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalPixelCount", pixelCountPresets[item_pixelCount]);
     // Additional settings
-    showHorizontalResField = false;
     horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
     // Disabling flags
     disabled_everything = !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 0);
