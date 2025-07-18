@@ -79,7 +79,7 @@ static float aspectRatioX;
 static float aspectRatioY;
 static int32_t verticalPixelCount;
 // Additional settings
-static bool showHorizontalResField = false;
+static bool showHorizontalResField;
 static int32_t horizontalPixelCount;
 // Disabling flags
 static bool disabled_everything;
