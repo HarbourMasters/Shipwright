@@ -117,7 +117,7 @@ void UpdateModFiles(bool init = false) {
 void AfterModChange() {
     SaveEnabledModsCVarValue();
     gfx_texture_cache_clear();
-    SOH::SkeletonPatcher::UpdateSkeletons();
+    SOH::SkeletonPatcher::ClearSkeletons();
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
 
@@ -160,11 +160,16 @@ void DrawDisabledMods() {
     }
 }
 
+const std::string updateButtonTooltip = "Re-check the mods folder for new files";
+
 void ModMenuWindow::DrawElement() {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
 
     if (UIWidgets::Button("Update", UIWidgets::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
+        UIWidgets::Tooltip(updateButtonTooltip.c_str());
         UpdateModFiles();
+    } else {
+        UIWidgets::Tooltip(updateButtonTooltip.c_str());
     }
 
     if (ImGui::BeginTable("tableMods", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
