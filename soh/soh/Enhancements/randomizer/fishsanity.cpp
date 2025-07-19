@@ -15,10 +15,6 @@ extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
 
-#define FSi OTRGlobals::Instance->gRandoContext->GetFishsanity()
-
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
-
 /**
  * @brief Parallel list of pond fish checks for both ages
  */
@@ -136,8 +132,9 @@ Fishsanity::GetFishingPondLocations(FishsanityOptionsSource optionsSource) {
     }
     // NOTE: This only works because we can assume activeFish is already sorted; changes that break this assumption will
     // also break this
-    FilterAndEraseFromPool(remainingFish,
-                           [&](uint32_t loc) { return std::binary_search(activeFish.begin(), activeFish.end(), loc); });
+    FilterAndEraseFromPool(remainingFish, [&](RandomizerCheck loc) {
+        return std::binary_search(activeFish.begin(), activeFish.end(), loc);
+    });
 
     return std::make_pair(activeFish, remainingFish);
 }
@@ -487,15 +484,15 @@ void Fishsanity::OnItemReceiveHandler(GetItemEntry itemEntry) {
 // C interface
 extern "C" {
 bool Randomizer_GetPondFishShuffled() {
-    return FSi->GetPondFishShuffled();
+    return Rando::Context::GetInstance()->GetFishsanity()->GetPondFishShuffled();
 }
 
 bool Randomizer_GetOverworldFishShuffled() {
-    return FSi->GetOverworldFishShuffled();
+    return Rando::Context::GetInstance()->GetFishsanity()->GetOverworldFishShuffled();
 }
 
 bool Randomizer_IsAdultPond() {
-    return FSi->IsAdultPond();
+    return Rando::Context::GetInstance()->GetFishsanity()->IsAdultPond();
 }
 
 void Fishsanity_DrawEffShadow(Actor* actor, Lights* lights, PlayState* play) {

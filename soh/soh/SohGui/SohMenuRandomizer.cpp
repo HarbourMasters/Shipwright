@@ -1,10 +1,16 @@
 #include "SohMenu.h"
-#include <macros.h>
+#include "soh/OTRGlobals.h"
 
 namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;
 using namespace UIWidgets;
+
+static const std::unordered_map<int32_t, const char*> skipGetItemAnimationOptions = {
+    { SGIA_DISABLED, "Disabled" },
+    { SGIA_JUNK, "Junk Items" },
+    { SGIA_ALL, "All Items" },
+};
 
 void SohMenu::AddMenuRandomizer() {
     // Add Randomizer Menu

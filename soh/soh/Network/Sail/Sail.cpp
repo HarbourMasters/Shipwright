@@ -242,8 +242,8 @@ GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
-    } else if (name == "ModifyRunSpeedModifier") {
-        auto effect = new GameInteractionEffect::ModifyRunSpeedModifier();
+    } else if (name == "ModifyMovementSpeedMultiplier") {
+        auto effect = new GameInteractionEffect::ModifyMovementSpeedMultiplier();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
@@ -282,13 +282,6 @@ GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
         return effect;
     } else if (name == "SetCollisionViewer") {
         return new GameInteractionEffect::SetCollisionViewer();
-    } else if (name == "SetCosmeticsColor") {
-        auto effect = new GameInteractionEffect::SetCosmeticsColor();
-        if (payload.contains("parameters")) {
-            effect->parameters[0] = payload["parameters"][0].get<int32_t>();
-            effect->parameters[1] = payload["parameters"][1].get<int32_t>();
-        }
-        return effect;
     } else if (name == "RandomizeCosmetics") {
         return new GameInteractionEffect::RandomizeCosmetics();
     } else if (name == "PressButton") {

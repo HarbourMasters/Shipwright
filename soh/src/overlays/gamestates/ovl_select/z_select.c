@@ -385,407 +385,413 @@ static SceneSelectEntry sScenes[] = {
     { "title", "title", "Titelbildschirm", "Ecran-titre", Select_LoadTitle, 0 },
 };
 
+// Note about Japanese scene names:
+// * SoH originally lacked the ability to render Hiragana characters using GFXP_HIRAGANA macro.
+//   This is not the case anymore, but Hiragana characters are still written directly here
+//   for the sake of readability and editability.
+// * Dakuten (濁点) characters must be explicitly written using '゛' or '゜'.
+//   Combined characters (such as 'が', 'げ', 'ば', etc) won't render.
 static BetterSceneSelectEntry sBetterScenes[] = {
     // clang-format off
-    { " 1:Hyrule Field", " 1:Hylianische Steppe", " 1:Plaine d'Hyrule", Select_LoadGame, 8, { 
-        { "Near Drawbridge", "Nahe der Zugbruecke", "Pres du Pont-levis", ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN, 0 },
-        { "From Drawbridge", "Von der Zugbruecke", "Depuis le Pont-levis", ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN, 0 },
-        { "From Kakariko Village", "Von Kakariko", "Depuis le Village Cocorico", ENTR_HYRULE_FIELD_STAIRS_EXIT, 0 },
-        { "From Zora River", "Vom Zora-Fluss", "Depuis la Riviere Zora", ENTR_HYRULE_FIELD_RIVER_EXIT, 0 },
-        { "From Lost Woods", "Von den verlorenen Waeldern", "Depuis les Bois Perdus", ENTR_HYRULE_FIELD_WOODED_EXIT, 0 },
-        { "From Lake Hylia", "Vom Hylia-See", "Depuis le Lac Hylia", ENTR_HYRULE_FIELD_FENCE_EXIT, 0 },
-        { "From Gerudo Valley", "Vom Gerudotal", "Depuis la Vallee Gerudo", ENTR_HYRULE_FIELD_ROCKY_PATH, 0 },
-        { "From Lon Lon Ranch", "Von der Lon Lon-Farm", "Depuis le Ranch Lon Lon", ENTR_HYRULE_FIELD_CENTER_EXIT, 0 },
+    { "1:ハイラルへいけ゛ん", " 1:Hyrule Field", " 1:Hylianische Steppe", " 1:Plaine d'Hyrule", Select_LoadGame, 8, {
+        { "はねは゛しのちかく", "Near Drawbridge", "Nahe der Zugbruecke", "Pres du Pont-levis", ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN, 0 },
+        { "はねは゛し　から", "From Drawbridge", "Von der Zugbruecke", "Depuis le Pont-levis", ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN, 0 },
+        { "カカリコむら　から", "From Kakariko Village", "Von Kakariko", "Depuis le Village Cocorico", ENTR_HYRULE_FIELD_STAIRS_EXIT, 0 },
+        { "ソ゛ーラかわ　から", "From Zora River", "Vom Zora-Fluss", "Depuis la Riviere Zora", ENTR_HYRULE_FIELD_RIVER_EXIT, 0 },
+        { "まよいのもり　から", "From Lost Woods", "Von den verlorenen Waeldern", "Depuis les Bois Perdus", ENTR_HYRULE_FIELD_WOODED_EXIT, 0 },
+        { "ハイリアこはん　から", "From Lake Hylia", "Vom Hylia-See", "Depuis le Lac Hylia", ENTR_HYRULE_FIELD_FENCE_EXIT, 0 },
+        { "ケ゛ルト゛のたに　から", "From Gerudo Valley", "Vom Gerudotal", "Depuis la Vallee Gerudo", ENTR_HYRULE_FIELD_ROCKY_PATH, 0 },
+        { "ロンロンほ゛くし゛ょう　から", "From Lon Lon Ranch", "Von der Lon Lon-Farm", "Depuis le Ranch Lon Lon", ENTR_HYRULE_FIELD_CENTER_EXIT, 0 },
     }},
-    { " 2:Kokiri Forest", " 2:Kokiri-Wald", " 2:Foret Kokiri", Select_LoadGame, 9, {
-        { "From Links House", "Von Links Haus", "Depuis la Cabane de Link", ENTR_KOKIRI_FOREST_OUTSIDE_LINKS_HOUSE, 0 },
-        { "From Bridge", "Von der Bruecke", "Depuis le Pont", ENTR_KOKIRI_FOREST_LOWER_EXIT, 0 },
-        { "From Lost Woods", "Von den verlorenen Waeldern", "Depuis les Bois Perdus", ENTR_KOKIRI_FOREST_UPPER_EXIT, 0 },
-        { "From Deku Tree", "Vom Deku-Baum", "Depuis l'Arbre Mojo", ENTR_KOKIRI_FOREST_OUTSIDE_DEKU_TREE, 0 },
-        { "From Kokiri Shop", "Vom Kokiri-Laden", "Depuis la Boutique Kokiri", ENTR_KOKIRI_FOREST_OUTSIDE_SHOP, 0 },
-        { "From Know-It-All Brothers House", "Vom Haus der Allwissenden Brueder", "Depuis la Cabane des Freres Je-Sais-Tout", ENTR_KOKIRI_FOREST_OUTSIDE_KNOW_IT_ALL_HOUSE, 0 },
-        { "From Twins House", "Vom Haus der Zwillinge", "Depuis la Cabane des Jumeaux", ENTR_KOKIRI_FOREST_OUTSIDE_TWINS_HOUSE, 0 },
-        { "From Midos House", "Von Midos Haus", "Depuis la Cabane du Grand Mido", ENTR_KOKIRI_FOREST_OUTSIDE_MIDOS_HOUSE, 0 },
-        { "From Sarias House", "Von Salias Haus", "Depuis la Cabane de Saria", ENTR_KOKIRI_FOREST_OUTSIDE_SARIAS_HOUSE, 0 },
+    { "2:コキリのもり", " 2:Kokiri Forest", " 2:Kokiri-Wald", " 2:Foret Kokiri", Select_LoadGame, 9, {
+        { "リンクのおうち　から", "From Links House", "Von Links Haus", "Depuis la Cabane de Link", ENTR_KOKIRI_FOREST_OUTSIDE_LINKS_HOUSE, 0 },
+        { "はし　から", "From Bridge", "Von der Bruecke", "Depuis le Pont", ENTR_KOKIRI_FOREST_LOWER_EXIT, 0 },
+        { "まよいのもり　から", "From Lost Woods", "Von den verlorenen Waeldern", "Depuis les Bois Perdus", ENTR_KOKIRI_FOREST_UPPER_EXIT, 0 },
+        { "テ゛クのきサマ　から", "From Deku Tree", "Vom Deku-Baum", "Depuis l'Arbre Mojo", ENTR_KOKIRI_FOREST_OUTSIDE_DEKU_TREE, 0 },
+        { "コキリのおみせ　から", "From Kokiri Shop", "Vom Kokiri-Laden", "Depuis la Boutique Kokiri", ENTR_KOKIRI_FOREST_OUTSIDE_SHOP, 0 },
+        { "ものしりきょうた゛いのおうち　から", "From Know-It-All Brothers House", "Vom Haus der Allwissenden Brueder", "Depuis la Cabane des Freres Je-Sais-Tout", ENTR_KOKIRI_FOREST_OUTSIDE_KNOW_IT_ALL_HOUSE, 0 },
+        { "ふたこ゛のおうち　から", "From Twins House", "Vom Haus der Zwillinge", "Depuis la Cabane des Jumeaux", ENTR_KOKIRI_FOREST_OUTSIDE_TWINS_HOUSE, 0 },
+        { "ミト゛さまのおやしき　から", "From Midos House", "Von Midos Haus", "Depuis la Cabane du Grand Mido", ENTR_KOKIRI_FOREST_OUTSIDE_MIDOS_HOUSE, 0 },
+        { "サリアのおうち　から", "From Sarias House", "Von Salias Haus", "Depuis la Cabane de Saria", ENTR_KOKIRI_FOREST_OUTSIDE_SARIAS_HOUSE, 0 },
     }},
-    { " 3:Kokiri Buildings", " 3:Kokiri Gebaeude", " 3:Cabanes des Kokiris", Select_LoadGame, 6, {
-        { "Links Bed", "Links Bett", "Lit de Link", ENTR_LINKS_HOUSE_CHILD_SPAWN, 0 },
-        { "Kokiri Shop", "Kokiri-Laden", "Boutique Kokiri", ENTR_KOKIRI_SHOP_0, 0 },
-        { "Twins House", "Haus der Zwillinge", "Cabane des Jumeaux", ENTR_TWINS_HOUSE_0, 0 },
-        { "Know-It-All Brothers House", "Haus der Allwissenden Brueder", "Cabane des Freres Je-Sais-Tout", ENTR_KNOW_IT_ALL_BROS_HOUSE_0, 0 },
-        { "Midos House", "Midos Haus", "Cabane du Grand Mido", ENTR_MIDOS_HOUSE_0, 0 },
-        { "Sarias House", "Salias Haus", "Cabane de Sara", ENTR_SARIAS_HOUSE_0, 0 },
+    { "3:コキリのたてもの", " 3:Kokiri Buildings", " 3:Kokiri Gebaeude", " 3:Cabanes des Kokiris", Select_LoadGame, 6, {
+        { "リンクのおうち", "Links Bed", "Links Bett", "Lit de Link", ENTR_LINKS_HOUSE_CHILD_SPAWN, 0 },
+        { "コキリのおみせ", "Kokiri Shop", "Kokiri-Laden", "Boutique Kokiri", ENTR_KOKIRI_SHOP_0, 0 },
+        { "ふたこ゛のおうち", "Twins House", "Haus der Zwillinge", "Cabane des Jumeaux", ENTR_TWINS_HOUSE_0, 0 },
+        { "ものしりきょうた゛いのおうち", "Know-It-All Brothers House", "Haus der Allwissenden Brueder", "Cabane des Freres Je-Sais-Tout", ENTR_KNOW_IT_ALL_BROS_HOUSE_0, 0 },
+        { "ミト゛さまのおやしき", "Midos House", "Midos Haus", "Cabane du Grand Mido", ENTR_MIDOS_HOUSE_0, 0 },
+        { "サリアのおうち", "Sarias House", "Salias Haus", "Cabane de Sara", ENTR_SARIAS_HOUSE_0, 0 },
     }},
-    { " 4:Lost Woods", " 4:Verlorene Waelder", " 4:Bois Perdus", Select_LoadGame, 5, { 
-        { "From Kokiri Forest", "Vom Kokiri-Wald", "Depuis la Foret Kokiri", ENTR_LOST_WOODS_SOUTH_EXIT, 0 },
-        { "From Sacred Meadow", "Von der Waldlichtung", "Depuis le Bosquet Sacre", ENTR_LOST_WOODS_NORTH_EXIT, 0 },
-        { "From Goron City", "Vom Goronia", "Depuis le Village Goron", ENTR_LOST_WOODS_TUNNEL_SHORTCUT, 0 },
-        { "From Zora River", "Vom Zora-Fluss", "Depuis la Riviere Zora", ENTR_LOST_WOODS_UNDERWATER_SHORTCUT, 0 },
-        { "Bridge", "Bruecke", "Pont", ENTR_LOST_WOODS_BRIDGE_EAST_EXIT, 0 },
+    { "4:まよいのもり", " 4:Lost Woods", " 4:Verlorene Waelder", " 4:Bois Perdus", Select_LoadGame, 5, {
+        { "コキリのもり　から", "From Kokiri Forest", "Vom Kokiri-Wald", "Depuis la Foret Kokiri", ENTR_LOST_WOODS_SOUTH_EXIT, 0 },
+        { "もりのせいいき　から", "From Sacred Meadow", "Von der Waldlichtung", "Depuis le Bosquet Sacre", ENTR_LOST_WOODS_NORTH_EXIT, 0 },
+        { "コ゛ロンシティ　から", "From Goron City", "Vom Goronia", "Depuis le Village Goron", ENTR_LOST_WOODS_TUNNEL_SHORTCUT, 0 },
+        { "ソ゛ーラかわ　から", "From Zora River", "Vom Zora-Fluss", "Depuis la Riviere Zora", ENTR_LOST_WOODS_UNDERWATER_SHORTCUT, 0 },
+        { "はし", "Bridge", "Bruecke", "Pont", ENTR_LOST_WOODS_BRIDGE_EAST_EXIT, 0 },
     }},
-    { " 5:Sacred Forest Meadow", " 5:Waldlichtung", " 5:Bosquet Sacre", Select_LoadGame, 3, { 
-        { "From Lost Woods", "Von den Verlorenen Waeldern", "Depuis les Bois Perdus", ENTR_SACRED_FOREST_MEADOW_SOUTH_EXIT, 0 },
-        { "From Forest Temple", "Vom Waldtempel", "Depuis le Temple de la Foret", ENTR_SACRED_FOREST_MEADOW_OUTSIDE_TEMPLE, 0 },
-        { "Minuet of Forest Warp", "Menuett des Waldes Teleport", "Teleporteur du Menuet des Bois", ENTR_SACRED_FOREST_MEADOW_WARP_PAD, 0 },
+    { "5:もりのせいいき", " 5:Sacred Forest Meadow", " 5:Waldlichtung", " 5:Bosquet Sacre", Select_LoadGame, 3, {
+        { "まよいのもり　から", "From Lost Woods", "Von den Verlorenen Waeldern", "Depuis les Bois Perdus", ENTR_SACRED_FOREST_MEADOW_SOUTH_EXIT, 0 },
+        { "もりのしんて゛ん　から", "From Forest Temple", "Vom Waldtempel", "Depuis le Temple de la Foret", ENTR_SACRED_FOREST_MEADOW_OUTSIDE_TEMPLE, 0 },
+        { "もりのメヌエット　ワーフ゜", "Minuet of Forest Warp", "Menuett des Waldes Teleport", "Teleporteur du Menuet des Bois", ENTR_SACRED_FOREST_MEADOW_WARP_PAD, 0 },
     }},
-    { " 6:Castle Town Entrance", " 6:Eingang zum Marktplatz", " 6:Entree du Bourg d'Hyrule", Select_LoadGame, 3, {
-        { "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_MARKET_ENTRANCE_NEAR_GUARD_EXIT, 0 },
-        { "From Market", "Vom Marktplatz", "Depuis la Place du Marche", ENTR_MARKET_ENTRANCE_NORTH_EXIT, 0 },
-        { "From Pot House", "Vom Wachposten", "Depuis la Maison des Jarres", ENTR_MARKET_ENTRANCE_OUTSIDE_GUARD_HOUSE, 0 },
+    { "6:し゛ょうかまち　いりく゛ち", " 6:Castle Town Entrance", " 6:Eingang zum Marktplatz", " 6:Entree du Bourg d'Hyrule", Select_LoadGame, 3, {
+        { "ハイラルへいけ゛ん　から", "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_MARKET_ENTRANCE_NEAR_GUARD_EXIT, 0 },
+        { "し゛ょうかまち　から", "From Market", "Vom Marktplatz", "Depuis la Place du Marche", ENTR_MARKET_ENTRANCE_NORTH_EXIT, 0 },
+        { "つほ゛のこや　から", "From Pot House", "Vom Wachposten", "Depuis la Maison des Jarres", ENTR_MARKET_ENTRANCE_OUTSIDE_GUARD_HOUSE, 0 },
     }},
-    { " 7:Market", " 7:Marktplatz", " 7:Place du Marche", Select_LoadGame, 11, {
-        { "From Castle Town Entrance", "Vom Eingang zum Marktplatz", "Depuis l'Entree du Bourg d'Hyrule", ENTR_MARKET_SOUTH_EXIT, 0 },
-        { "From Shooting Gallery", "Von der Schiessbude", "Depuis le Jeu d'adresse", ENTR_MARKET_DAY_OUTSIDE_SHOOTING_GALLERY, 0 },
-        { "From Happy Mask Shop", "Vom Maskenhaendler", "Depuis la Foire aux Masques", ENTR_MARKET_DAY_OUTSIDE_HAPPY_MASK_SHOP, 0 },
-        { "From Treasure Box Minigame", "Von der Truhenlotterie", "Depuis le Bowling Teigneux", ENTR_MARKET_DAY_OUTSIDE_TREASURE_BOX_SHOP, 0 },
-        { "From Castle", "Vom Schloss", "Depuis le Chateau d'Hyrule", ENTR_MARKET_DAY_CASTLE_EXIT, 0 },
-        { "From Temple of Time", "Von der Zitadelle der Zeit", "Depuis le Temple du Temps", ENTR_MARKET_DAY_TEMPLE_EXIT, 0 },
-        { "From Back Alley (Right)", "Von der Seitenstrasse (Rechts)", "Depuis la Ruelle (Droite)", ENTR_MARKET_DAY_3, 0 },
-        { "From Back Alley (Left)", "Von der Seitenstrasse (Links)", "Depuis la Ruelle (Gauche)", ENTR_MARKET_DAY_4, 0 },
-        { "From Potion Shop", "Vom Magie-Laden", "Depuis l'Apothicaire", ENTR_MARKET_DAY_OUTSIDE_POTION_SHOP, 0 },
-        { "From Bazaar Shop", "Vom Basar", "Depuis le Bazar", ENTR_MARKET_DAY_OUTSIDE_BAZAAR, 0 },
-        { "From Bomchu Bowling Minigame", "Von der Minenbowlingbahn", "Depuis le Bowling Teigneux", ENTR_MARKET_DAY_OUTSIDE_BOMBCHU_BOWLING, 0 },
+    { "7:し゛ょうかまち", " 7:Market", " 7:Marktplatz", " 7:Place du Marche", Select_LoadGame, 11, {
+        { "し゛ょうかまち　いりく゛ち　から", "From Castle Town Entrance", "Vom Eingang zum Marktplatz", "Depuis l'Entree du Bourg d'Hyrule", ENTR_MARKET_SOUTH_EXIT, 0 },
+        { "まとあてや　から", "From Shooting Gallery", "Von der Schiessbude", "Depuis le Jeu d'adresse", ENTR_MARKET_DAY_OUTSIDE_SHOOTING_GALLERY, 0 },
+        { "おめんや　から", "From Happy Mask Shop", "Vom Maskenhaendler", "Depuis la Foire aux Masques", ENTR_MARKET_DAY_OUTSIDE_HAPPY_MASK_SHOP, 0 },
+        { "たからは゛こや　から", "From Treasure Box Minigame", "Von der Truhenlotterie", "Depuis le Bowling Teigneux", ENTR_MARKET_DAY_OUTSIDE_TREASURE_BOX_SHOP, 0 },
+        { "おしろ　から", "From Castle", "Vom Schloss", "Depuis le Chateau d'Hyrule", ENTR_MARKET_DAY_CASTLE_EXIT, 0 },
+        { "ときのしんて゛ん　から", "From Temple of Time", "Von der Zitadelle der Zeit", "Depuis le Temple du Temps", ENTR_MARKET_DAY_TEMPLE_EXIT, 0 },
+        { "ろし゛うら　から　(みき゛)", "From Back Alley (Right)", "Von der Seitenstrasse (Rechts)", "Depuis la Ruelle (Droite)", ENTR_MARKET_DAY_3, 0 },
+        { "ろし゛うら　から　(ひた゛り)", "From Back Alley (Left)", "Von der Seitenstrasse (Links)", "Depuis la Ruelle (Gauche)", ENTR_MARKET_DAY_4, 0 },
+        { "くすりや　から", "From Potion Shop", "Vom Magie-Laden", "Depuis l'Apothicaire", ENTR_MARKET_DAY_OUTSIDE_POTION_SHOP, 0 },
+        { "なンて゛もや　から", "From Bazaar Shop", "Vom Basar", "Depuis le Bazar", ENTR_MARKET_DAY_OUTSIDE_BAZAAR, 0 },
+        { "ホ゛ムチュウホ゛ウリンク゛から", "From Bomchu Bowling Minigame", "Von der Minenbowlingbahn", "Depuis le Bowling Teigneux", ENTR_MARKET_DAY_OUTSIDE_BOMBCHU_BOWLING, 0 },
     }},
-    { " 8:Castle Town Alley", " 8:Seitenstrasse", " 8:Ruelle du Bourg d'Hyrule", Select_LoadGame, 5, { 
-        { "From Market (Right)", "Vom Marktplatz (Rechts)", "Depuis la Place du Marche (Droite)", ENTR_BACK_ALLEY_DAY_0, 0 },
-        { "From Market (Left)", "Vom Marktplatz (Links)", "Depuis la Place du Marche (Gauche)", ENTR_BACK_ALLEY_DAY_1, 0 }, 
-        { "From Alley House", "Vom Seitenstrassenhaus", "Depuis la Maison de la Ruelle", ENTR_BACK_ALLEY_DAY_OUTSIDE_MAN_IN_GREEN_HOUSE, 0 },
-        { "From Dog House", "Vom Haus der Hunde-Dame", "Depuis la Maison du Chien", ENTR_BACK_ALLEY_DAY_4, 0 }, 
-        { "From Bombchu Shop", "Vom Krabbelminen-Laden", "Depuis le Magasin de Missiles", ENTR_BACK_ALLEY_DAY_OUTSIDE_BOMBCHU_SHOP, 0 },
+    { "8:し゛ょうかまち　ろし゛うら", " 8:Castle Town Alley", " 8:Seitenstrasse", " 8:Ruelle du Bourg d'Hyrule", Select_LoadGame, 5, {
+        { "し゛ょうかまち　から　(みき゛)", "From Market (Right)", "Vom Marktplatz (Rechts)", "Depuis la Place du Marche (Droite)", ENTR_BACK_ALLEY_DAY_0, 0 },
+        { "し゛ょうかまち　から　(ひた゛り)", "From Market (Left)", "Vom Marktplatz (Links)", "Depuis la Place du Marche (Gauche)", ENTR_BACK_ALLEY_DAY_1, 0 },
+        { "ろし゛うらのいえ　から", "From Alley House", "Vom Seitenstrassenhaus", "Depuis la Maison de la Ruelle", ENTR_BACK_ALLEY_DAY_OUTSIDE_MAN_IN_GREEN_HOUSE, 0 },
+        { "いぬのいえ　から", "From Dog House", "Vom Haus der Hunde-Dame", "Depuis la Maison du Chien", ENTR_BACK_ALLEY_DAY_4, 0 },
+        { "ホ゛ムチュウや　から", "From Bombchu Shop", "Vom Krabbelminen-Laden", "Depuis le Magasin de Missiles", ENTR_BACK_ALLEY_DAY_OUTSIDE_BOMBCHU_SHOP, 0 },
     }},
-    { " 9:Castle Town Buildings", " 9:Marktplatz Gebaeude", " 9:Batiments du Bourg d'Hyrule", Select_LoadGame, 10, { 
-        { "Pot House", "Wachposten", "Maison des Jarres", ENTR_MARKET_GUARD_HOUSE_0, 0 },
-        { "Shooting Gallery Minigame", "Schiessbude", "Jeu d'adresse", ENTR_SHOOTING_GALLERY_1, 0 },
-        { "Treasure Box Minigame", "Truhenlotterie", "Chasse aux Tresors", ENTR_TREASURE_BOX_SHOP_0, 0 },
-        { "Potion Shop", "Magie-Laden", "Apothicaire", ENTR_POTION_SHOP_MARKET_0, 0 },
-        { "Bombchu Bowling Minigame", "Minenbowlingbahn", "Bowling Teigneux", ENTR_BOMBCHU_BOWLING_ALLEY_0, 0 },
-        { "Bazaar Shop", "Basar", "Bazar", ENTR_BAZAAR_1, 0 },
-        { "Happy Mask Shop", "Maskenhaendler", "Foire aux Masques", ENTR_HAPPY_MASK_SHOP_0, 0 },
-        { "Bombchu Shop", "Krabbelminen-Laden", "Boutique de Missiles", ENTR_BOMBCHU_SHOP_1, 0 },
-        { "Dog House", "Haus der Hunde-Dame", "Maison du Chien", ENTR_DOG_LADY_HOUSE_0, 0 },
-        { "Alley House", "Seitenstrassenhaus", "Maison de la Ruelle", ENTR_BACK_ALLEY_MAN_IN_GREEN_HOUSE, 0 },
+    { "9:し゛ょうかまちのたてもの", " 9:Castle Town Buildings", " 9:Marktplatz Gebaeude", " 9:Batiments du Bourg d'Hyrule", Select_LoadGame, 10, {
+        { "つほ゛のこや", "Pot House", "Wachposten", "Maison des Jarres", ENTR_MARKET_GUARD_HOUSE_0, 0 },
+        { "まとあてや", "Shooting Gallery Minigame", "Schiessbude", "Jeu d'adresse", ENTR_SHOOTING_GALLERY_1, 0 },
+        { "たからは゛こや", "Treasure Box Minigame", "Truhenlotterie", "Chasse aux Tresors", ENTR_TREASURE_BOX_SHOP_0, 0 },
+        { "くすりや", "Potion Shop", "Magie-Laden", "Apothicaire", ENTR_POTION_SHOP_MARKET_0, 0 },
+        { "ホ゛ムチュウホ゛ウリンク゛", "Bombchu Bowling Minigame", "Minenbowlingbahn", "Bowling Teigneux", ENTR_BOMBCHU_BOWLING_ALLEY_0, 0 },
+        { "なンて゛もや", "Bazaar Shop", "Basar", "Bazar", ENTR_BAZAAR_1, 0 },
+        { "おめんや", "Happy Mask Shop", "Maskenhaendler", "Foire aux Masques", ENTR_HAPPY_MASK_SHOP_0, 0 },
+        { "ホ゛ムチュウや", "Bombchu Shop", "Krabbelminen-Laden", "Boutique de Missiles", ENTR_BOMBCHU_SHOP_1, 0 },
+        { "いぬのいえ", "Dog House", "Haus der Hunde-Dame", "Maison du Chien", ENTR_DOG_LADY_HOUSE_0, 0 },
+        { "ろし゛うらのいえ", "Alley House", "Seitenstrassenhaus", "Maison de la Ruelle", ENTR_BACK_ALLEY_MAN_IN_GREEN_HOUSE, 0 },
     }},
-    { "10:Temple of Time", "10:Zitadelle der Zeit", "10:Temple du Temps", Select_LoadGame, 5, { 
-        { "From Outside", "Von draussen", "Depuis l'Entree", ENTR_TEMPLE_OF_TIME_ENTRANCE, 0 },
-        { "From Master Sword Pedestal", "Vom Podest des Master-Schwerts", "Depuis le Piedestal de l'Epee de Legende", ENTR_TEMPLE_OF_TIME_2, 0 },
-        { "Prelude of Light Warp", "Kantate des Lichts Teleport", "Teleporteur du Prelude de la Lumiere", ENTR_TEMPLE_OF_TIME_WARP_PAD, 0 },
-        { "Outside Temple of Time - From Market", "Vor der Zitadelle der Zeit - Vom Marktplatz", "Exterieur du Temple - Depuis la Place du Marche", ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_GOSSIP_STONE_EXIT, 0 },
-        { "Outside Temple of Time - From Temple of Time", "Vor der Zitadelle der Zeit - Von der Zitadelle der Zeit", "Exterieur du Temple - Depuis le Temple", ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE, 0 },
+    { "10:ときのしんて゛ん", "10:Temple of Time", "10:Zitadelle der Zeit", "10:Temple du Temps", Select_LoadGame, 5, {
+        { "そと　から", "From Outside", "Von draussen", "Depuis l'Entree", ENTR_TEMPLE_OF_TIME_ENTRANCE, 0 },
+        { "マスターソート゛のた゛いさ゛　から", "From Master Sword Pedestal", "Vom Podest des Master-Schwerts", "Depuis le Piedestal de l'Epee de Legende", ENTR_TEMPLE_OF_TIME_2, 0 },
+        { "ひかりのフ゜レリュート゛　ワーフ゜", "Prelude of Light Warp", "Kantate des Lichts Teleport", "Teleporteur du Prelude de la Lumiere", ENTR_TEMPLE_OF_TIME_WARP_PAD, 0 },
+        { "ときのしんて゛んまえ - し゛ょうかまち　から", "Outside Temple of Time - From Market", "Vor der Zitadelle der Zeit - Vom Marktplatz", "Exterieur du Temple - Depuis la Place du Marche", ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_GOSSIP_STONE_EXIT, 0 },
+        { "ときのしんて゛んまえ - ときのしんて゛ん　から", "Outside Temple of Time - From Temple of Time", "Vor der Zitadelle der Zeit - Von der Zitadelle der Zeit", "Exterieur du Temple - Depuis le Temple", ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE, 0 },
     }},
-    { "11:Hyrule Castle", "11:Schloss Hyrule", "11:Chateau d'Hyrule", Select_LoadGame, 5, {
-        { "From Market", "Vom Marktplatz", "Depuis la Place du Marche", ENTR_CASTLE_GROUNDS_SOUTH_EXIT, 0 },
-        { "From Castle Courtyard", "Vom Burghof", "Depuis la Cour du Chateau", ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT, 0 },
-        { "From Great Fairy", "Von der Feen-Quelle", "Depuis la Grande Fee", ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT, 0 },
-        { "From Courtyard Guard Capture", "Von der Wachen-Festnahme", "Depuis la capture d'un Garde de la Cour", ENTR_HYRULE_CASTLE_3, 0 },
-        { "Great Fairy", "Feen-Quelle", "Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_DINS_HC, 0 },
+    { "11:ハイラルし゛ょう", "11:Hyrule Castle", "11:Schloss Hyrule", "11:Chateau d'Hyrule", Select_LoadGame, 5, {
+        { "し゛ょうかまち　から", "From Market", "Vom Marktplatz", "Depuis la Place du Marche", ENTR_CASTLE_GROUNDS_SOUTH_EXIT, 0 },
+        { "なかにわ　から", "From Castle Courtyard", "Vom Burghof", "Depuis la Cour du Chateau", ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT, 0 },
+        { "た゛いようせい　から", "From Great Fairy", "Von der Feen-Quelle", "Depuis la Grande Fee", ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT, 0 },
+        { "つかまったとき", "From Courtyard Guard Capture", "Von der Wachen-Festnahme", "Depuis la capture d'un Garde de la Cour", ENTR_HYRULE_CASTLE_3, 0 },
+        { "た゛いようせい", "Great Fairy", "Feen-Quelle", "Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_DINS_HC, 0 },
     }},
-    { "12:Hyrule Castle Courtyard", "12:Burghof", "12:Cour du Chateau", Select_LoadGame, 3, {
-        { "From Crawlspace", "Vom Kriechtunnel", "Depuis l'Entree", ENTR_CASTLE_COURTYARD_GUARDS_DAY_0, 0 },
-        { "From Zelda", "Von Zelda", "Depuis Zelda", ENTR_CASTLE_COURTYARD_GUARDS_DAY_1, 0 },
-        { "Zeldas Courtyard", "Zeldas Burghof", "Depuis la Cour de Zelda", ENTR_CASTLE_COURTYARD_ZELDA_0, 0 },
+    { "12:ハイラルし゛ょう　なかにわ", "12:Hyrule Castle Courtyard", "12:Burghof", "12:Cour du Chateau", Select_LoadGame, 3, {
+        { "ちいさなあな　から", "From Crawlspace", "Vom Kriechtunnel", "Depuis l'Entree", ENTR_CASTLE_COURTYARD_GUARDS_DAY_0, 0 },
+        { "セ゛ルタ゛ひめの　なかにわ　から", "From Zelda", "Von Zelda", "Depuis Zelda", ENTR_CASTLE_COURTYARD_GUARDS_DAY_1, 0 },
+        { "セ゛ルタ゛ひめの　なかにわ", "Zeldas Courtyard", "Zeldas Burghof", "Depuis la Cour de Zelda", ENTR_CASTLE_COURTYARD_ZELDA_0, 0 },
     }},
-    { "13:Lon Lon Ranch", "13:Lon Lon-Farm", "13:Ranch Lon Lon", Select_LoadGame, 5, { 
-        { "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_LON_LON_RANCH_ENTRANCE, 0 },
-        { "From Ranch House", "Vom Farmhaus", "Depuis la Maison du Ranch", ENTR_LON_LON_RANCH_OUTSIDE_TALONS_HOUSE, 0 },
-        { "From Stables", "Vom Stall", "Depuis l'Etable", ENTR_LON_LON_RANCH_OUTSIDE_STABLES, 0 },
-        { "From Back Tower", "Vom Silo", "Depuis Silo du Ranch", ENTR_LON_LON_RANCH_OUTSIDE_TOWER, 0 },
-        { "Epona Song Cutscene", "Eponas Song Sequenz", "Cinematique du Chant d'Epona", ENTR_LON_LON_RANCH_1, 0 },
+    { "13:ロンロンほ゛くし゛ょう", "13:Lon Lon Ranch", "13:Lon Lon-Farm", "13:Ranch Lon Lon", Select_LoadGame, 5, {
+        { "ハイラルへいけ゛ん　から", "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_LON_LON_RANCH_ENTRANCE, 0 },
+        { "タロンのいえ　から", "From Ranch House", "Vom Farmhaus", "Depuis la Maison du Ranch", ENTR_LON_LON_RANCH_OUTSIDE_TALONS_HOUSE, 0 },
+        { "うまこ゛や　から", "From Stables", "Vom Stall", "Depuis l'Etable", ENTR_LON_LON_RANCH_OUTSIDE_STABLES, 0 },
+        { "なや　から", "From Back Tower", "Vom Silo", "Depuis Silo du Ranch", ENTR_LON_LON_RANCH_OUTSIDE_TOWER, 0 },
+        { "エホ゜ナのうた　カットシーン", "Epona Song Cutscene", "Eponas Song Sequenz", "Cinematique du Chant d'Epona", ENTR_LON_LON_RANCH_1, 0 },
     }},
-    { "14:Lon Lon Ranch Buildings", "14:Lon Lon-Farm Gebaeude", "14:Batiments du Ranch Lon Lon", Select_LoadGame, 3, {
-        { "Ranch House", "Farmhaus", "Maison du Ranch", ENTR_LON_LON_BUILDINGS_TALONS_HOUSE, 0 },
-        { "Stables", "Stall", "Etable du Ranch", ENTR_STABLE_0, 0 },
-        { "Back Tower", "Silo", "Silo du Ranch", ENTR_LON_LON_BUILDINGS_TOWER, 0 },
+    { "14:ロンロンほ゛くし゛ょうのたてもの", "14:Lon Lon Ranch Buildings", "14:Lon Lon-Farm Gebaeude", "14:Batiments du Ranch Lon Lon", Select_LoadGame, 3, {
+        { "タロンのいえ", "Ranch House", "Farmhaus", "Maison du Ranch", ENTR_LON_LON_BUILDINGS_TALONS_HOUSE, 0 },
+        { "うまこ゛や", "Stables", "Stall", "Etable du Ranch", ENTR_STABLE_0, 0 },
+        { "なや", "Back Tower", "Silo", "Silo du Ranch", ENTR_LON_LON_BUILDINGS_TOWER, 0 },
     }},
-    { "15:Kakariko Village", "15:Kakariko", "15:Village Cocorico", Select_LoadGame, 15, {
-        { "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_KAKARIKO_VILLAGE_FRONT_GATE, 0 },
-        { "From Death Mountain", "Vom Todesberg", "Depuis le Mont du Peril", ENTR_KAKARIKO_VILLAGE_GUARD_GATE, 0 },
-        { "From Graveyard", "Vom Friedhof", "Depuis le Cimetiere", ENTR_KAKARIKO_VILLAGE_SOUTHEAST_EXIT, 0 },
-        { "From Bazaar", "Vom Basar", "Depuis le Bazar", ENTR_KAKARIKO_VILLAGE_OUTSIDE_BAZAAR, 0 },
-        { "From Bottom of Well", "Vom Grund des Brunnens", "Depuis le Puits", ENTR_KAKARIKO_VILLAGE_OUTSIDE_BOTTOM_OF_THE_WELL, 0 },
-        { "From Boss House", "Vom Haus des Bosses", "Depuis la Maison du Boss", ENTR_KAKARIKO_VILLAGE_OUTSIDE_CENTER_GUEST_HOUSE, 0 },
-        { "From Potion Shop", "Vom Magie-Laden", "Depuis l'Apothicaire", ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_FRONT, 0 },
-        { "From Potion Shop (Back Entrance)", "Vom Magie-Laden (Hintereingang)", "Depuis l'Apothicaire (Entree Arriere)", ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_BACK, 0 },
-        { "From Grannys Potion Shop", "Von Omas Magie-Laden", "Depuis l'Apothicaire (Vieille Femme)", ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOP_GRANNY, 0 },
-        { "From Impas House", "Von Impas Haus", "Depuis la Maison d'Impa", ENTR_KAKARIKO_VILLAGE_OUTSIDE_IMPAS_HOUSE_FRONT, 0 },
-        { "From Impas House (Cow)", "Von Impas Haus (Kuh)", "Depuis la Maison d'Impa (Vache)", ENTR_KAKARIKO_VILLAGE_OUTSIDE_IMPAS_HOUSE_BACK, 0 },
-        { "From Windmill", "Von der Windmuehle", "Depuis le Moulin", ENTR_KAKARIKO_VILLAGE_OUTSIDE_WINDMILL, 0 },
-        { "From Shooting Gallery", "Von der Schiessbude", "Depuis le Jeu d'adresse", ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOOTING_GALLERY, 0 },
-        { "From Skulltula House", "Vom Haus der Skulltulas", "Depuis la Maison des Skulltulas", ENTR_KAKARIKO_VILLAGE_OUTSIDE_SKULKLTULA_HOUSE, 0 },
-        { "Owl Drop Spot from Death Mountain", "Eulen-Absetzpunkt vom Todesberg", "Point de chute du Hibou depuis le Mont du Peril", ENTR_KAKARIKO_VILLAGE_OWL_DROP, 0 },
+    { "15:カカリコむら", "15:Kakariko Village", "15:Kakariko", "15:Village Cocorico", Select_LoadGame, 15, {
+        { "ハイラルへいけ゛ん　から", "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_KAKARIKO_VILLAGE_FRONT_GATE, 0 },
+        { "テ゛スマウンテン　から", "From Death Mountain", "Vom Todesberg", "Depuis le Mont du Peril", ENTR_KAKARIKO_VILLAGE_GUARD_GATE, 0 },
+        { "ほ゛ち　から", "From Graveyard", "Vom Friedhof", "Depuis le Cimetiere", ENTR_KAKARIKO_VILLAGE_SOUTHEAST_EXIT, 0 },
+        { "なンて゛もや　から", "From Bazaar", "Vom Basar", "Depuis le Bazar", ENTR_KAKARIKO_VILLAGE_OUTSIDE_BAZAAR, 0 },
+        { "いと゛のそこ　から", "From Bottom of Well", "Vom Grund des Brunnens", "Depuis le Puits", ENTR_KAKARIKO_VILLAGE_OUTSIDE_BOTTOM_OF_THE_WELL, 0 },
+        { "なか゛や　から", "From Boss House", "Vom Haus des Bosses", "Depuis la Maison du Boss", ENTR_KAKARIKO_VILLAGE_OUTSIDE_CENTER_GUEST_HOUSE, 0 },
+        { "くすりや　から", "From Potion Shop", "Vom Magie-Laden", "Depuis l'Apothicaire", ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_FRONT, 0 },
+        { "くすりや　から(うらく゛ち)", "From Potion Shop (Back Entrance)", "Vom Magie-Laden (Hintereingang)", "Depuis l'Apothicaire (Entree Arriere)", ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_BACK, 0 },
+        { "オハ゛ハ゛のくすりや　から", "From Grannys Potion Shop", "Von Omas Magie-Laden", "Depuis l'Apothicaire (Vieille Femme)", ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOP_GRANNY, 0 },
+        { "インハ゜のおやしき　から", "From Impas House", "Von Impas Haus", "Depuis la Maison d'Impa", ENTR_KAKARIKO_VILLAGE_OUTSIDE_IMPAS_HOUSE_FRONT, 0 },
+        { "インハ゜のおやしき(ウシ)　から", "From Impas House (Cow)", "Von Impas Haus (Kuh)", "Depuis la Maison d'Impa (Vache)", ENTR_KAKARIKO_VILLAGE_OUTSIDE_IMPAS_HOUSE_BACK, 0 },
+        { "ふうしゃ　から", "From Windmill", "Von der Windmuehle", "Depuis le Moulin", ENTR_KAKARIKO_VILLAGE_OUTSIDE_WINDMILL, 0 },
+        { "まとあてや　から", "From Shooting Gallery", "Von der Schiessbude", "Depuis le Jeu d'adresse", ENTR_KAKARIKO_VILLAGE_OUTSIDE_SHOOTING_GALLERY, 0 },
+        { "スタルチュラハウス　から", "From Skulltula House", "Vom Haus der Skulltulas", "Depuis la Maison des Skulltulas", ENTR_KAKARIKO_VILLAGE_OUTSIDE_SKULKLTULA_HOUSE, 0 },
+        { "テ゛スマウンテンから　フクロウて゛　とんて゛くるは゛しょ", "Owl Drop Spot from Death Mountain", "Eulen-Absetzpunkt vom Todesberg", "Point de chute du Hibou depuis le Mont du Peril", ENTR_KAKARIKO_VILLAGE_OWL_DROP, 0 },
     }},
-    { "16:Kakariko Buildings", "16:Kakariko Gebaeude", "16:Batiments du Village Cocorico", Select_LoadGame, 9, {
-        { "Shooting Gallery Minigame", "Schiessbude", "Jeu d'adresse", ENTR_SHOOTING_GALLERY_0, 0 },
-        { "Grannys Potion Shop", "Omas Magie-Laden", "Apothicaire (Vieille Femme)", ENTR_POTION_SHOP_GRANNY_0, 0 },
-        { "Bazaar Shop", "Basar", "Bazar", ENTR_BAZAAR_0, 0 },
-        { "Potion Shop", "Magie-Laden", "Apothicaire", ENTR_POTION_SHOP_KAKARIKO_FRONT, 0 },
-        { "Impas House", "Impas Haus", "Maison d'Impa", ENTR_IMPAS_HOUSE_FRONT, 0 },
-        { "Impas House (Near Cow)", "Impas Haus (Kuh)", "Maison d'Impa (Vache)", ENTR_IMPAS_HOUSE_BACK, 0 },
-        { "Boss House", "Haus des Bosses", "Maison du Boss", ENTR_KAKARIKO_CENTER_GUEST_HOUSE_0, 0 },
-        { "Windmill", "Windmuehle", "Moulin", ENTR_WINDMILL_AND_DAMPES_GRAVE_WINDMILL, 0 },
-        { "Skulltula House", "Haus der Skulltulas", "Maison des Skulltulas", ENTR_HOUSE_OF_SKULLTULA_0, 0 },
+    { "16:カカリコむらのたてもの", "16:Kakariko Buildings", "16:Kakariko Gebaeude", "16:Batiments du Village Cocorico", Select_LoadGame, 9, {
+        { "まとあてや", "Shooting Gallery Minigame", "Schiessbude", "Jeu d'adresse", ENTR_SHOOTING_GALLERY_0, 0 },
+        { "オハ゛ハ゛のくすりや", "Grannys Potion Shop", "Omas Magie-Laden", "Apothicaire (Vieille Femme)", ENTR_POTION_SHOP_GRANNY_0, 0 },
+        { "なンて゛もや", "Bazaar Shop", "Basar", "Bazar", ENTR_BAZAAR_0, 0 },
+        { "くすりや", "Potion Shop", "Magie-Laden", "Apothicaire", ENTR_POTION_SHOP_KAKARIKO_FRONT, 0 },
+        { "インハ゜のおやしき", "Impas House", "Impas Haus", "Maison d'Impa", ENTR_IMPAS_HOUSE_FRONT, 0 },
+        { "インハ゜のおやしき(ウシのちかく)", "Impas House (Near Cow)", "Impas Haus (Kuh)", "Maison d'Impa (Vache)", ENTR_IMPAS_HOUSE_BACK, 0 },
+        { "なか゛や", "Boss House", "Haus des Bosses", "Maison du Boss", ENTR_KAKARIKO_CENTER_GUEST_HOUSE_0, 0 },
+        { "ふうしゃ", "Windmill", "Windmuehle", "Moulin", ENTR_WINDMILL_AND_DAMPES_GRAVE_WINDMILL, 0 },
+        { "スタルチュラハウス", "Skulltula House", "Haus der Skulltulas", "Maison des Skulltulas", ENTR_HOUSE_OF_SKULLTULA_0, 0 },
     }}, 
-    { "17:Graveyard", "17:Friedhof", "17:Cimetiere", Select_LoadGame, 9, {
-        { "From Kakariko", "Von Kakariko", "Depuis l'Apothicaire", ENTR_GRAVEYARD_ENTRANCE, 0 },
-        { "From Shadow Temple", "Vom Schattentempel", "Depuis le Temple de l'Ombre", ENTR_GRAVEYARD_OUTSIDE_TEMPLE, 0 },
-        { "From Gravekeepers Hut", "Von der Huette des Totengraebers", "Depuis la Cabane du Fossoyeur", ENTR_GRAVEYARD_OUTSIDE_DAMPES_HUT, 0 },
-        { "From Dampes Grave", "Von Boris' Grab", "Depuis la Tombe d'Igor", ENTR_GRAVEYARD_DAMPES_GRAVE_EXIT, 0 },
-        { "From Shield Grave", "Vom Schild-Grab", "Depuis la Tombe au Bouclier", ENTR_GRAVEYARD_SHIELD_GRAVE_EXIT, 0 },
-        { "From Redead Grave", "Vom Zombie-Grab", "Depuis la Tombe au Effrois", ENTR_GRAVEYARD_HEART_PIECE_GRAVE_EXIT, 0 },
-        { "From Royal Familys Tomb", "Vom Koenigsgrab", "Depuis la Tombe Royale", ENTR_GRAVEYARD_ROYAL_TOMB_EXIT, 0 },
-        { "Inside Dampe's Hut", "Huette des Totengraebers", "A l'interieur de la Cabane du Fossoyeur", ENTR_GRAVEKEEPERS_HUT_0, 0 },
-        { "Nocturne of Shadow Warp", "Nocturne des Schattens Teleport", "Teleporteur du Nocturne de l'Ombre", ENTR_GRAVEYARD_WARP_PAD, 0 },
+    { "17:ほ゛ち", "17:Graveyard", "17:Friedhof", "17:Cimetiere", Select_LoadGame, 9, {
+        { "カカリコむら　から", "From Kakariko", "Von Kakariko", "Depuis l'Apothicaire", ENTR_GRAVEYARD_ENTRANCE, 0 },
+        { "やみのしんて゛ん　から", "From Shadow Temple", "Vom Schattentempel", "Depuis le Temple de l'Ombre", ENTR_GRAVEYARD_OUTSIDE_TEMPLE, 0 },
+        { "はかもりのこや　から", "From Gravekeepers Hut", "Von der Huette des Totengraebers", "Depuis la Cabane du Fossoyeur", ENTR_GRAVEYARD_OUTSIDE_DAMPES_HUT, 0 },
+        { "タ゛ンヘ゜イのはか　から", "From Dampes Grave", "Von Boris' Grab", "Depuis la Tombe d'Igor", ENTR_GRAVEYARD_DAMPES_GRAVE_EXIT, 0 },
+        { "たてのはか　から", "From Shield Grave", "Vom Schild-Grab", "Depuis la Tombe au Bouclier", ENTR_GRAVEYARD_SHIELD_GRAVE_EXIT, 0 },
+        { "リーテ゛ットのはか　から", "From Redead Grave", "Vom Zombie-Grab", "Depuis la Tombe au Effrois", ENTR_GRAVEYARD_HEART_PIECE_GRAVE_EXIT, 0 },
+        { "おうけのはかあな　から", "From Royal Familys Tomb", "Vom Koenigsgrab", "Depuis la Tombe Royale", ENTR_GRAVEYARD_ROYAL_TOMB_EXIT, 0 },
+        { "はかもりのこや", "Inside Dampe's Hut", "Huette des Totengraebers", "A l'interieur de la Cabane du Fossoyeur", ENTR_GRAVEKEEPERS_HUT_0, 0 },
+        { "やみのノクターン　ワーフ゜", "Nocturne of Shadow Warp", "Nocturne des Schattens Teleport", "Teleporteur du Nocturne de l'Ombre", ENTR_GRAVEYARD_WARP_PAD, 0 },
     }},
-    { "18:Graves", "18:Graeber", "18:Tombes", Select_LoadGame, 5, {
-        { "Dampes Grave Minigame", "Boris' Grab-Minispiel", "Tour du Cimetiere d'Igor", ENTR_WINDMILL_AND_DAMPES_GRAVE_GRAVE, 0 },
-        { "Royal Familys Tomb", "Koenigsgrab", "Tombe Royale", ENTR_ROYAL_FAMILYS_TOMB_0, 0 },
-        { "Royal Familys Tomb, Suns Song Cutscene", "Koenigsgrab, Hymne der Sonne Sequenz", "Tombe Royale, Cinematique du Chant du Soleil", ENTR_ROYAL_FAMILYS_TOMB_1, 0 },
-        { "Treasure Chest Grave", "Schatzkisten Grab", "Tombe au Coffre", ENTR_GRAVE_WITH_FAIRYS_FOUNTAIN_0, 0 },
-        { "ReDead Grave", "Zombie Grab", "Tombe au Effrois", ENTR_REDEAD_GRAVE_0, 0 },
+    { "18:はかあな", "18:Graves", "18:Graeber", "18:Tombes", Select_LoadGame, 5, {
+        { "タ゛ンヘ゜イのはか", "Dampes Grave Minigame", "Boris' Grab-Minispiel", "Tour du Cimetiere d'Igor", ENTR_WINDMILL_AND_DAMPES_GRAVE_GRAVE, 0 },
+        { "おうけのはかあな", "Royal Familys Tomb", "Koenigsgrab", "Tombe Royale", ENTR_ROYAL_FAMILYS_TOMB_0, 0 },
+        { "おうけのはかあな　たいようのうたカットシーン", "Royal Familys Tomb, Suns Song Cutscene", "Koenigsgrab, Hymne der Sonne Sequenz", "Tombe Royale, Cinematique du Chant du Soleil", ENTR_ROYAL_FAMILYS_TOMB_1, 0 },
+        { "たからは゛このはかあな", "Treasure Chest Grave", "Schatzkisten Grab", "Tombe au Coffre", ENTR_GRAVE_WITH_FAIRYS_FOUNTAIN_0, 0 },
+        { "リーテ゛ットのはか", "ReDead Grave", "Zombie Grab", "Tombe au Effrois", ENTR_REDEAD_GRAVE_0, 0 },
     }},
-    { "19:Death Mountain Trail", "19:Gebirgspfad", "19:Mont du Peril", Select_LoadGame, 6, {
-        { "From Kakariko Village", "Von Kakariko", "Depuis le Village Cocorico", ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT, 0 },
-        { "From Goron City", "Von Goronia", "Depuis le Village Goron", ENTR_DEATH_MOUNTAIN_TRAIL_GC_EXIT, 0 },
-        { "From Death Mountain Crater", "Vom Todeskrater", "Depuis le Cratere du Peril", ENTR_DEATH_MOUNTAIN_TRAIL_SUMMIT_EXIT, 0 },
-        { "From Dodongos Cavern", "Von Dodongos Hoehle", "Depuis la Caverne Dodongo", ENTR_DEATH_MOUNTAIN_TRAIL_OUTSIDE_DODONGOS_CAVERN, 0 },
-        { "From Great Fairy", "Von der Feen-Quelle", "Depuis la Grande Fee", ENTR_DEATH_MOUNTAIN_TRAIL_GREAT_FAIRY_EXIT, 0 },
-        { "Great Fairy", "Feen-Quelle", "Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMT, 0 },
+    { "19:テ゛スマウンテンとさ゛んと゛う", "19:Death Mountain Trail", "19:Gebirgspfad", "19:Mont du Peril", Select_LoadGame, 6, {
+        { "カカリコむら　から", "From Kakariko Village", "Von Kakariko", "Depuis le Village Cocorico", ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT, 0 },
+        { "コ゛ロンシティ　から", "From Goron City", "Von Goronia", "Depuis le Village Goron", ENTR_DEATH_MOUNTAIN_TRAIL_GC_EXIT, 0 },
+        { "テ゛スマウンテンかこう　から", "From Death Mountain Crater", "Vom Todeskrater", "Depuis le Cratere du Peril", ENTR_DEATH_MOUNTAIN_TRAIL_SUMMIT_EXIT, 0 },
+        { "ト゛ト゛ンコ゛のと゛うくつ　から", "From Dodongos Cavern", "Von Dodongos Hoehle", "Depuis la Caverne Dodongo", ENTR_DEATH_MOUNTAIN_TRAIL_OUTSIDE_DODONGOS_CAVERN, 0 },
+        { "た゛いようせい　から", "From Great Fairy", "Von der Feen-Quelle", "Depuis la Grande Fee", ENTR_DEATH_MOUNTAIN_TRAIL_GREAT_FAIRY_EXIT, 0 },
+        { "た゛いようせい", "Great Fairy", "Feen-Quelle", "Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMT, 0 },
     }},
-    { "20:Goron City", "20:Goronia", "20:Village Goron", Select_LoadGame, 5, {
-        { "From Death Mountain Trail", "Vom Gebirgspfad", "Depuis le Mont du Peril", ENTR_GORON_CITY_UPPER_EXIT, 0 },
-        { "From Death Mountain Crater", "Vom Todeskrater", "Depuis le Cratere du Peril", ENTR_GORON_CITY_DARUNIA_ROOM_EXIT, 0 },
-        { "From Goron City Shop", "Vom Goronen-Laden", "Depuis la Boutique Goron", ENTR_GORON_CITY_OUTSIDE_SHOP, 0 },
-        { "From Lost Woods", "Von den Verlorenen Waeldern", "Depuis les Bois Perdus", ENTR_GORON_CITY_TUNNEL_SHORTCUT, 0 },
-        { "Goron City Shop", "Goronen-Laden", "Boutique Goron", ENTR_GORON_SHOP_0, 0 },
+    { "20:コ゛ロンシティ", "20:Goron City", "20:Goronia", "20:Village Goron", Select_LoadGame, 5, {
+        { "テ゛スマウンテンとさ゛んと゛う　から", "From Death Mountain Trail", "Vom Gebirgspfad", "Depuis le Mont du Peril", ENTR_GORON_CITY_UPPER_EXIT, 0 },
+        { "テ゛スマウンテンかこう　から", "From Death Mountain Crater", "Vom Todeskrater", "Depuis le Cratere du Peril", ENTR_GORON_CITY_DARUNIA_ROOM_EXIT, 0 },
+        { "コ゛ロンのおみせ　から", "From Goron City Shop", "Vom Goronen-Laden", "Depuis la Boutique Goron", ENTR_GORON_CITY_OUTSIDE_SHOP, 0 },
+        { "まよいのもり　から", "From Lost Woods", "Von den Verlorenen Waeldern", "Depuis les Bois Perdus", ENTR_GORON_CITY_TUNNEL_SHORTCUT, 0 },
+        { "コ゛ロンのおみせ", "Goron City Shop", "Goronen-Laden", "Boutique Goron", ENTR_GORON_SHOP_0, 0 },
     }},
-    { "21:Death Mountain Crater", "21:Todeskrater", "21:Cratere du Peril", Select_LoadGame, 6, {
-        { "From Death Mountain Trail", "Vom Gebirgspfad", "Depuis le Mont du Peril", ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT, 0 },
-        { "From Goron City", "Von Goronia", "Depuis le Village Goron", ENTR_DEATH_MOUNTAIN_CRATER_GC_EXIT, 0 },
-        { "From Fire Temple", "Vom Feuertempel", "Depuis le Temple du Feu", ENTR_DEATH_MOUNTAIN_CRATER_OUTSIDE_TEMPLE, 0 },
-        { "From Fairy Fountain", "Von der Feen-Quelle", "Depuis la Fontaine des Fees", ENTR_DEATH_MOUNTAIN_CRATER_GREAT_FAIRY_EXIT, 0 },
-        { "Great Fairy", "Feen-Quelle", "Depuis la Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMC, 0 },
-        { "Bolero of Fire Warp", "Bolero des Feuers Teleport", "Teleporteur du Bolero du Feu", ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD, 0 },
+    { "21:テ゛スマウンテンかこう", "21:Death Mountain Crater", "21:Todeskrater", "21:Cratere du Peril", Select_LoadGame, 6, {
+        { "テ゛スマウンテンとさ゛んと゛う　から", "From Death Mountain Trail", "Vom Gebirgspfad", "Depuis le Mont du Peril", ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT, 0 },
+        { "コ゛ロンシティ　から", "From Goron City", "Von Goronia", "Depuis le Village Goron", ENTR_DEATH_MOUNTAIN_CRATER_GC_EXIT, 0 },
+        { "ほのおのしんて゛ん　から", "From Fire Temple", "Vom Feuertempel", "Depuis le Temple du Feu", ENTR_DEATH_MOUNTAIN_CRATER_OUTSIDE_TEMPLE, 0 },
+        { "た゛いようせい　から", "From Fairy Fountain", "Von der Feen-Quelle", "Depuis la Fontaine des Fees", ENTR_DEATH_MOUNTAIN_CRATER_GREAT_FAIRY_EXIT, 0 },
+        { "た゛いようせい", "Great Fairy", "Feen-Quelle", "Depuis la Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMC, 0 },
+        { "ほのおのホ゛レロ　ワーフ゜", "Bolero of Fire Warp", "Bolero des Feuers Teleport", "Teleporteur du Bolero du Feu", ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD, 0 },
     }},
-    { "22:Zora River", "22:Zora-Fluss", "22:Riviere Zora", Select_LoadGame, 3, {
-        { "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_ZORAS_RIVER_WEST_EXIT, 0 },
-        { "From Zoras Domain", "Von Zoras Reich", "Depuis le Domaine Zora", ENTR_ZORAS_RIVER_WATERFALL_EXIT, 0 },
-        { "From Lost Woods", "Von den Verlorenen Waeldern", "Depuis les Bois Perdus", ENTR_ZORAS_RIVER_UNDERWATER_SHORTCUT, 0 },
+    { "22:ソ゛ーラかわ", "22:Zora River", "22:Zora-Fluss", "22:Riviere Zora", Select_LoadGame, 3, {
+        { "ハイラルへいけ゛ん　から", "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_ZORAS_RIVER_WEST_EXIT, 0 },
+        { "ソ゛ーラのさと　から", "From Zoras Domain", "Von Zoras Reich", "Depuis le Domaine Zora", ENTR_ZORAS_RIVER_WATERFALL_EXIT, 0 },
+        { "まよいのもり　から", "From Lost Woods", "Von den Verlorenen Waeldern", "Depuis les Bois Perdus", ENTR_ZORAS_RIVER_UNDERWATER_SHORTCUT, 0 },
     }},
-    { "23:Zoras Domain", "23:Zoras Reich", "23:Domaine Zora", Select_LoadGame, 5, {
-        { "From Zora River", "Vom Zora-Fluss", "Depuis la Riviere Zora", ENTR_ZORAS_DOMAIN_ENTRANCE, 0 },
-        { "From Zoras Fountain", "Von Zoras Quelle", "Depuis la Fontaine Zora", ENTR_ZORAS_DOMAIN_KING_ZORA_EXIT, 0 },
-        { "From Lake Hylia", "Vom Hylia-See", "Depuis le Lac Hylia", ENTR_ZORAS_DOMAIN_UNDERWATER_SHORTCUT, 0 },
-        { "From Zora Shop", "Vom Zora-Laden", "Depuis la Boutique Zora", ENTR_ZORAS_DOMAIN_OUTSIDE_SHOP, 0 },
-        { "Zora Shop", "Zora-Laden", "Boutique Zora", ENTR_ZORA_SHOP_0, 0 },
+    { "23:ソ゛ーラのさと", "23:Zoras Domain", "23:Zoras Reich", "23:Domaine Zora", Select_LoadGame, 5, {
+        { "ソ゛ーラかわ　から", "From Zora River", "Vom Zora-Fluss", "Depuis la Riviere Zora", ENTR_ZORAS_DOMAIN_ENTRANCE, 0 },
+        { "ソ゛ーラのいす゛み　から", "From Zoras Fountain", "Von Zoras Quelle", "Depuis la Fontaine Zora", ENTR_ZORAS_DOMAIN_KING_ZORA_EXIT, 0 },
+        { "ハイリアこはん　から", "From Lake Hylia", "Vom Hylia-See", "Depuis le Lac Hylia", ENTR_ZORAS_DOMAIN_UNDERWATER_SHORTCUT, 0 },
+        { "ソ゛ーラのおみせ　から", "From Zora Shop", "Vom Zora-Laden", "Depuis la Boutique Zora", ENTR_ZORAS_DOMAIN_OUTSIDE_SHOP, 0 },
+        { "ソ゛ーラのおみせ", "Zora Shop", "Zora-Laden", "Boutique Zora", ENTR_ZORA_SHOP_0, 0 },
     }},
-    { "24:Zoras Fountain", "24:Zoras Quelle", "24:Fontaine Zora", Select_LoadGame, 5, {
-        { "From Zoras Domain", "Von Zoras Reich", "Depuis le Domaine Zora", ENTR_ZORAS_FOUNTAIN_TUNNEL_EXIT, 0 },
-        { "From Jabu Jabu", "Von Jabu-Jabu", "Depuis Jabu-Jabu", ENTR_ZORAS_FOUNTAIN_OUTSIDE_JABU_JABU, 0 },
-        { "From Ice Cavern", "Von der Eishoehle", "Depuis la Caverne Polaire", ENTR_ZORAS_FOUNTAIN_OUTSIDE_ICE_CAVERN, 0 },
-        { "From Fairy Fountain", "Von der Feen-Quelle", "Depuis la Fontaine des Fees", ENTR_ZORAS_FOUNTAIN_OUTSIDE_GREAT_FAIRY, 0 },
-        { "Great Fairy", "Feen-Quelle", "Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_FARORES_ZF, 0 },
+    { "24:ソ゛ーラのいす゛み", "24:Zoras Fountain", "24:Zoras Quelle", "24:Fontaine Zora", Select_LoadGame, 5, {
+        { "ソ゛ーラのさと　から", "From Zoras Domain", "Von Zoras Reich", "Depuis le Domaine Zora", ENTR_ZORAS_FOUNTAIN_TUNNEL_EXIT, 0 },
+        { "シ゛ャフ゛シ゛ャフ゛さま　から", "From Jabu Jabu", "Von Jabu-Jabu", "Depuis Jabu-Jabu", ENTR_ZORAS_FOUNTAIN_OUTSIDE_JABU_JABU, 0 },
+        { "こおりのと゛うくつ　から", "From Ice Cavern", "Von der Eishoehle", "Depuis la Caverne Polaire", ENTR_ZORAS_FOUNTAIN_OUTSIDE_ICE_CAVERN, 0 },
+        { "た゛いようせい　から", "From Fairy Fountain", "Von der Feen-Quelle", "Depuis la Fontaine des Fees", ENTR_ZORAS_FOUNTAIN_OUTSIDE_GREAT_FAIRY, 0 },
+        { "た゛いようせい", "Great Fairy", "Feen-Quelle", "Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_FARORES_ZF, 0 },
     }},
-    { "25:Lake Hylia", "25:Hylia-See", "25:Lac Hylia", Select_LoadGame, 7, {
-        { "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_LAKE_HYLIA_NORTH_EXIT, 0 },
-        { "From Gerudo Valley", "Vom Gerudotal", "Depuis la Vallee Gerudo", ENTR_LAKE_HYLIA_RIVER_EXIT, 0 },
-        { "From Water Temple", "Vom Wassertempel", "Depuis le Temple de l'Eau", ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE, 0 },
-        { "From Fishing Pond", "Vom Fischweiher", "Depuis l'Etang", ENTR_LAKE_HYLIA_OUTSIDE_FISHING_POND, 0 },
-        { "From Laboratory", "Vom Laboratorium", "Depuis le Laboratoire du Lac", ENTR_LAKE_HYLIA_OUTSIDE_LAB, 0 },
-        { "From Zoras Domain", "Von Zoras Reich", "Depuis le Domaine Zora", ENTR_LAKE_HYLIA_UNDERWATER_SHORTCUT, 0 },
-        { "Serenade Of Water Warp", "Serenade des Wassers Teleport", "Teleporteur de la Serenade de l'Eau", ENTR_LAKE_HYLIA_WARP_PAD, 0 },
+    { "25:ハイリアこはん", "25:Lake Hylia", "25:Hylia-See", "25:Lac Hylia", Select_LoadGame, 7, {
+        { "ハイラルへいけ゛ん　から", "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_LAKE_HYLIA_NORTH_EXIT, 0 },
+        { "ケ゛ルト゛のたに　から", "From Gerudo Valley", "Vom Gerudotal", "Depuis la Vallee Gerudo", ENTR_LAKE_HYLIA_RIVER_EXIT, 0 },
+        { "みす゛のしんて゛ん　から", "From Water Temple", "Vom Wassertempel", "Depuis le Temple de l'Eau", ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE, 0 },
+        { "つりほ゛り　から", "From Fishing Pond", "Vom Fischweiher", "Depuis l'Etang", ENTR_LAKE_HYLIA_OUTSIDE_FISHING_POND, 0 },
+        { "みす゛うみけんきゅうし゛ょ　から", "From Laboratory", "Vom Laboratorium", "Depuis le Laboratoire du Lac", ENTR_LAKE_HYLIA_OUTSIDE_LAB, 0 },
+        { "ソ゛ーラのさと　から", "From Zoras Domain", "Von Zoras Reich", "Depuis le Domaine Zora", ENTR_LAKE_HYLIA_UNDERWATER_SHORTCUT, 0 },
+        { "みす゛のセレナーテ゛　ワーフ゜", "Serenade Of Water Warp", "Serenade des Wassers Teleport", "Teleporteur de la Serenade de l'Eau", ENTR_LAKE_HYLIA_WARP_PAD, 0 },
     }},
-    { "26:Lake Hylia Buildings", "26:Hylia-See Gebaeude", "26:Batiments du Lac Hylia", Select_LoadGame, 2, { 
-        { "Laboratory", "Laboratorium", "Laboratoire du Lac", ENTR_LAKESIDE_LABORATORY_0, 0 }, 
-        { "Fishing Pond Minigame", "Fischweiher", "Etang", ENTR_FISHING_POND_0, 0 },
+    { "26:ハイリアこはんのたてもの", "26:Lake Hylia Buildings", "26:Hylia-See Gebaeude", "26:Batiments du Lac Hylia", Select_LoadGame, 2, {
+        { "みす゛うみけんきゅうし゛ょ", "Laboratory", "Laboratorium", "Laboratoire du Lac", ENTR_LAKESIDE_LABORATORY_0, 0 },
+        { "つりほ゛り", "Fishing Pond Minigame", "Fischweiher", "Etang", ENTR_FISHING_POND_0, 0 },
     }},
-    { "27:Gerudo Valley", "27:Gerudotal", "27:Vallee Gerudo", Select_LoadGame, 5, {
-        { "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_GERUDO_VALLEY_EAST_EXIT, 0 },
-        { "From Gerudo Fortress", "Von der Gerudo-Festung", "Depuis la Forteresse Gerudo", ENTR_GERUDO_VALLEY_WEST_EXIT, 0 },
-        { "From Carpenter's Tent", "Vom Zelt der Zimmerleute", "Depuis la Tente du Charpentier", ENTR_GERUDO_VALLEY_OUTSIDE_TENT, 0 },
-        { "Carpenter's Tent/ Running Man Minigame", "Zelt der Zimmerleute/ Rennlaeufer Minispiel", "Tente du Charpentier/ Marathonien", ENTR_CARPENTERS_TENT_0, 0 },
-        { "Thrown out of Fortress", "Aus der Festung geworfen", "Expulse de la Forteresse", ENTR_GERUDO_VALLEY_1, 0 },
+    { "27:ケ゛ルト゛のたに", "27:Gerudo Valley", "27:Gerudotal", "27:Vallee Gerudo", Select_LoadGame, 5, {
+        { "ハイラルへいけ゛ん　から", "From Hyrule Field", "Von der Hylianischen Steppe", "Depuis la Plaine d'Hyrule", ENTR_GERUDO_VALLEY_EAST_EXIT, 0 },
+        { "ケ゛ルト゛のとりて゛　から", "From Gerudo Fortress", "Von der Gerudo-Festung", "Depuis la Forteresse Gerudo", ENTR_GERUDO_VALLEY_WEST_EXIT, 0 },
+        { "た゛いくのテント　から", "From Carpenter's Tent", "Vom Zelt der Zimmerleute", "Depuis la Tente du Charpentier", ENTR_GERUDO_VALLEY_OUTSIDE_TENT, 0 },
+        { "た゛いくのテント/マラソンマンミニケ゛ーム", "Carpenter's Tent/ Running Man Minigame", "Zelt der Zimmerleute/ Rennlaeufer Minispiel", "Tente du Charpentier/ Marathonien", ENTR_CARPENTERS_TENT_0, 0 },
+        { "とりて゛からほうりた゛されたとき", "Thrown out of Fortress", "Aus der Festung geworfen", "Expulse de la Forteresse", ENTR_GERUDO_VALLEY_1, 0 },
     }},
-    { "28:Gerudo Fortress", "28:Gerudo-Festung", "28:Forteresse Gerudo", Select_LoadGame, 18, {
-        { "From Gerudo Valley", "Vom Gerudotal", "Depuis la Vallee Gerudo", ENTR_GERUDOS_FORTRESS_EAST_EXIT, 0 },
-        { "From Gerudo Training Ground", "Von der Gerudo-Trainingsarena", "Depuis le Gymnase Gerudo", ENTR_GERUDOS_FORTRESS_OUTSIDE_GERUDO_TRAINING_GROUND, 0 },
-        { "From Haunted Wasteland", "Von der Gespensterwueste", "Depuis le Desert Hante", ENTR_GERUDOS_FORTRESS_GATE_EXIT, 0 },
-        { "Horseback Riding Minigame", "Bogen zu Pferde Minispiel", "Archerie Montee", ENTR_GERUDOS_FORTRESS_16, 0 },
-        { "Gerudo Fortress Jail", "Gerudo-Festung Gefaengnis", "Prison de la Forteresse Gerudo", ENTR_GERUDOS_FORTRESS_17, 0 },
-        { "From Thieves Hideout (1)", "Vom Diebesversteck (1)", "Depuis le Repaire des Voleurs (1)", ENTR_GERUDOS_FORTRESS_1, 0 },
-        { "From Thieves Hideout (2)", "Vom Diebesversteck (2)", "Depuis le Repaire des Voleurs (2)", ENTR_GERUDOS_FORTRESS_2, 0 },
-        { "From Thieves Hideout (3)", "Vom Diebesversteck (3)", "Depuis le Repaire des Voleurs (3)", ENTR_GERUDOS_FORTRESS_3, 0 },
-        { "From Thieves Hideout (4)", "Vom Diebesversteck (4)", "Depuis le Repaire des Voleurs (4)", ENTR_GERUDOS_FORTRESS_4, 0 },
-        { "From Thieves Hideout (5)", "Vom Diebesversteck (5)", "Depuis le Repaire des Voleurs (5)", ENTR_GERUDOS_FORTRESS_5, 0 },
-        { "From Thieves Hideout (6)", "Vom Diebesversteck (6)", "Depuis le Repaire des Voleurs (6)", ENTR_GERUDOS_FORTRESS_6, 0 },
-        { "From Thieves Hideout (7)", "Vom Diebesversteck (7)", "Depuis le Repaire des Voleurs (7)", ENTR_GERUDOS_FORTRESS_7, 0 },
-        { "From Thieves Hideout (8)", "Vom Diebesversteck (8)", "Depuis le Repaire des Voleurs (8)", ENTR_GERUDOS_FORTRESS_8, 0 },
-        { "From Thieves Hideout (9)", "Vom Diebesversteck (9)", "Depuis le Repaire des Voleurs (9)", ENTR_GERUDOS_FORTRESS_9, 0 },
-        { "From Thieves Hideout (10)", "Vom Diebesversteck (10)", "Depuis le Repaire des Voleurs (10)", ENTR_GERUDOS_FORTRESS_10, 0 },
-        { "From Thieves Hideout (11)", "Vom Diebesversteck (11)", "Depuis le Repaire des Voleurs (11)", ENTR_GERUDOS_FORTRESS_11, 0 },
-        { "From Thieves Hideout (12)", "Vom Diebesversteck (12)", "Depuis le Repaire des Voleurs (12)", ENTR_GERUDOS_FORTRESS_12, 0 },
-        { "From Thieves Hideout (13)", "Vom Diebesversteck (13)", "Depuis le Repaire des Voleurs (13)", ENTR_GERUDOS_FORTRESS_13, 0 },
+    { "28:ケ゛ルト゛のとりて゛", "28:Gerudo Fortress", "28:Gerudo-Festung", "28:Forteresse Gerudo", Select_LoadGame, 18, {
+        { "ケ゛ルト゛のたに　から", "From Gerudo Valley", "Vom Gerudotal", "Depuis la Vallee Gerudo", ENTR_GERUDOS_FORTRESS_EAST_EXIT, 0 },
+        { "ケ゛ルト゛のしゅうれんし゛ょう　から", "From Gerudo Training Ground", "Von der Gerudo-Trainingsarena", "Depuis le Gymnase Gerudo", ENTR_GERUDOS_FORTRESS_OUTSIDE_GERUDO_TRAINING_GROUND, 0 },
+        { "け゛んえいのさは゛く　から", "From Haunted Wasteland", "Von der Gespensterwueste", "Depuis le Desert Hante", ENTR_GERUDOS_FORTRESS_GATE_EXIT, 0 },
+        { "やふ゛さめ", "Horseback Riding Minigame", "Bogen zu Pferde Minispiel", "Archerie Montee", ENTR_GERUDOS_FORTRESS_16, 0 },
+        { "ろうや", "Gerudo Fortress Jail", "Gerudo-Festung Gefaengnis", "Prison de la Forteresse Gerudo", ENTR_GERUDOS_FORTRESS_17, 0 },
+        { "アシ゛ト　から(1)", "From Thieves Hideout (1)", "Vom Diebesversteck (1)", "Depuis le Repaire des Voleurs (1)", ENTR_GERUDOS_FORTRESS_1, 0 },
+        { "アシ゛ト　から(2)", "From Thieves Hideout (2)", "Vom Diebesversteck (2)", "Depuis le Repaire des Voleurs (2)", ENTR_GERUDOS_FORTRESS_2, 0 },
+        { "アシ゛ト　から(3)", "From Thieves Hideout (3)", "Vom Diebesversteck (3)", "Depuis le Repaire des Voleurs (3)", ENTR_GERUDOS_FORTRESS_3, 0 },
+        { "アシ゛ト　から(4)", "From Thieves Hideout (4)", "Vom Diebesversteck (4)", "Depuis le Repaire des Voleurs (4)", ENTR_GERUDOS_FORTRESS_4, 0 },
+        { "アシ゛ト　から(5)", "From Thieves Hideout (5)", "Vom Diebesversteck (5)", "Depuis le Repaire des Voleurs (5)", ENTR_GERUDOS_FORTRESS_5, 0 },
+        { "アシ゛ト　から(6)", "From Thieves Hideout (6)", "Vom Diebesversteck (6)", "Depuis le Repaire des Voleurs (6)", ENTR_GERUDOS_FORTRESS_6, 0 },
+        { "アシ゛ト　から(7)", "From Thieves Hideout (7)", "Vom Diebesversteck (7)", "Depuis le Repaire des Voleurs (7)", ENTR_GERUDOS_FORTRESS_7, 0 },
+        { "アシ゛ト　から(8)", "From Thieves Hideout (8)", "Vom Diebesversteck (8)", "Depuis le Repaire des Voleurs (8)", ENTR_GERUDOS_FORTRESS_8, 0 },
+        { "アシ゛ト　から(9)", "From Thieves Hideout (9)", "Vom Diebesversteck (9)", "Depuis le Repaire des Voleurs (9)", ENTR_GERUDOS_FORTRESS_9, 0 },
+        { "アシ゛ト　から(10)", "From Thieves Hideout (10)", "Vom Diebesversteck (10)", "Depuis le Repaire des Voleurs (10)", ENTR_GERUDOS_FORTRESS_10, 0 },
+        { "アシ゛ト　から(11)", "From Thieves Hideout (11)", "Vom Diebesversteck (11)", "Depuis le Repaire des Voleurs (11)", ENTR_GERUDOS_FORTRESS_11, 0 },
+        { "アシ゛ト　から(12)", "From Thieves Hideout (12)", "Vom Diebesversteck (12)", "Depuis le Repaire des Voleurs (12)", ENTR_GERUDOS_FORTRESS_12, 0 },
+        { "アシ゛ト　から(13)", "From Thieves Hideout (13)", "Vom Diebesversteck (13)", "Depuis le Repaire des Voleurs (13)", ENTR_GERUDOS_FORTRESS_13, 0 },
     }},
-    { "29:Thieves Hideout", "29:Diebesversteck", "29:Repaire des Voleurs", Select_LoadGame, 13, {
-        { "From Gerudo Fortress (1)", "Von der Gerudo-Festung (1)", "Depuis la Forteresse Gerudo (1)", ENTR_THIEVES_HIDEOUT_0, 0 },
-        { "From Gerudo Fortress (2)", "Von der Gerudo-Festung (2)", "Depuis la Forteresse Gerudo (2)", ENTR_THIEVES_HIDEOUT_1, 0 },
-        { "From Gerudo Fortress (3)", "Von der Gerudo-Festung (3)", "Depuis la Forteresse Gerudo (3)", ENTR_THIEVES_HIDEOUT_2, 0 },
-        { "From Gerudo Fortress (4)", "Von der Gerudo-Festung (4)", "Depuis la Forteresse Gerudo (4)", ENTR_THIEVES_HIDEOUT_3, 0 },
-        { "From Gerudo Fortress (5)", "Von der Gerudo-Festung (5)", "Depuis la Forteresse Gerudo (5)", ENTR_THIEVES_HIDEOUT_4, 0 },
-        { "From Gerudo Fortress (6)", "Von der Gerudo-Festung (6)", "Depuis la Forteresse Gerudo (6)", ENTR_THIEVES_HIDEOUT_5, 0 },
-        { "From Gerudo Fortress (7)", "Von der Gerudo-Festung (7)", "Depuis la Forteresse Gerudo (7)", ENTR_THIEVES_HIDEOUT_6, 0 },
-        { "From Gerudo Fortress (8)", "Von der Gerudo-Festung (8)", "Depuis la Forteresse Gerudo (8)", ENTR_THIEVES_HIDEOUT_7, 0 },
-        { "From Gerudo Fortress (9)", "Von der Gerudo-Festung (9)", "Depuis la Forteresse Gerudo (9)", ENTR_THIEVES_HIDEOUT_8, 0 },
-        { "From Gerudo Fortress (10)", "Von der Gerudo-Festung (10)", "Depuis la Forteresse Gerudo (10)", ENTR_THIEVES_HIDEOUT_9, 0 },
-        { "From Gerudo Fortress (11)", "Von der Gerudo-Festung (11)", "Depuis la Forteresse Gerudo (11)", ENTR_THIEVES_HIDEOUT_10, 0 },
-        { "From Gerudo Fortress (12)", "Von der Gerudo-Festung (12)", "Depuis la Forteresse Gerudo (12)", ENTR_THIEVES_HIDEOUT_11, 0 },
-        { "From Gerudo Fortress (13)", "Von der Gerudo-Festung (13)", "Depuis la Forteresse Gerudo (13)", ENTR_THIEVES_HIDEOUT_12, 0 },
+    { "29:とうそ゛くた゛んのアシ゛ト", "29:Thieves Hideout", "29:Diebesversteck", "29:Repaire des Voleurs", Select_LoadGame, 13, {
+        { "ケ゛ルト゛のとりて゛　から(1)", "From Gerudo Fortress (1)", "Von der Gerudo-Festung (1)", "Depuis la Forteresse Gerudo (1)", ENTR_THIEVES_HIDEOUT_0, 0 },
+        { "ケ゛ルト゛のとりて゛　から(2)", "From Gerudo Fortress (2)", "Von der Gerudo-Festung (2)", "Depuis la Forteresse Gerudo (2)", ENTR_THIEVES_HIDEOUT_1, 0 },
+        { "ケ゛ルト゛のとりて゛　から(3)", "From Gerudo Fortress (3)", "Von der Gerudo-Festung (3)", "Depuis la Forteresse Gerudo (3)", ENTR_THIEVES_HIDEOUT_2, 0 },
+        { "ケ゛ルト゛のとりて゛　から(4)", "From Gerudo Fortress (4)", "Von der Gerudo-Festung (4)", "Depuis la Forteresse Gerudo (4)", ENTR_THIEVES_HIDEOUT_3, 0 },
+        { "ケ゛ルト゛のとりて゛　から(5)", "From Gerudo Fortress (5)", "Von der Gerudo-Festung (5)", "Depuis la Forteresse Gerudo (5)", ENTR_THIEVES_HIDEOUT_4, 0 },
+        { "ケ゛ルト゛のとりて゛　から(6)", "From Gerudo Fortress (6)", "Von der Gerudo-Festung (6)", "Depuis la Forteresse Gerudo (6)", ENTR_THIEVES_HIDEOUT_5, 0 },
+        { "ケ゛ルト゛のとりて゛　から(7)", "From Gerudo Fortress (7)", "Von der Gerudo-Festung (7)", "Depuis la Forteresse Gerudo (7)", ENTR_THIEVES_HIDEOUT_6, 0 },
+        { "ケ゛ルト゛のとりて゛　から(8)", "From Gerudo Fortress (8)", "Von der Gerudo-Festung (8)", "Depuis la Forteresse Gerudo (8)", ENTR_THIEVES_HIDEOUT_7, 0 },
+        { "ケ゛ルト゛のとりて゛　から(9)", "From Gerudo Fortress (9)", "Von der Gerudo-Festung (9)", "Depuis la Forteresse Gerudo (9)", ENTR_THIEVES_HIDEOUT_8, 0 },
+        { "ケ゛ルト゛のとりて゛　から(10)", "From Gerudo Fortress (10)", "Von der Gerudo-Festung (10)", "Depuis la Forteresse Gerudo (10)", ENTR_THIEVES_HIDEOUT_9, 0 },
+        { "ケ゛ルト゛のとりて゛　から(11)", "From Gerudo Fortress (11)", "Von der Gerudo-Festung (11)", "Depuis la Forteresse Gerudo (11)", ENTR_THIEVES_HIDEOUT_10, 0 },
+        { "ケ゛ルト゛のとりて゛　から(12)", "From Gerudo Fortress (12)", "Von der Gerudo-Festung (12)", "Depuis la Forteresse Gerudo (12)", ENTR_THIEVES_HIDEOUT_11, 0 },
+        { "ケ゛ルト゛のとりて゛　から(13)", "From Gerudo Fortress (13)", "Von der Gerudo-Festung (13)", "Depuis la Forteresse Gerudo (13)", ENTR_THIEVES_HIDEOUT_12, 0 },
     }},
-    { "30:Haunted Wasteland", "30:Geisterwueste", "30:Desert Hante", Select_LoadGame, 2, {
-        { "From Gerudo Fortress", "Von der Gerudo-Festung", "Depuis la Forteresse Gerudo", ENTR_HAUNTED_WASTELAND_EAST_EXIT, 0 },
-        { "From Desert Colossus", "Vom Wuestenkoloss", "Depuis le Colosse du Desert", ENTR_HAUNTED_WASTELAND_WEST_EXIT, 0 },
+    { "30:け゛んえいのさは゛く", "30:Haunted Wasteland", "30:Geisterwueste", "30:Desert Hante", Select_LoadGame, 2, {
+        { "ケ゛ルト゛のとりて゛　から", "From Gerudo Fortress", "Von der Gerudo-Festung", "Depuis la Forteresse Gerudo", ENTR_HAUNTED_WASTELAND_EAST_EXIT, 0 },
+        { "きょた゛いし゛ゃしんそ゛う　から", "From Desert Colossus", "Vom Wuestenkoloss", "Depuis le Colosse du Desert", ENTR_HAUNTED_WASTELAND_WEST_EXIT, 0 },
     }},
-    { "31:Desert Colossus", "31:Wuestenkoloss", "31:Colosse du Desert", Select_LoadGame, 7, {
-        { "From Haunted Wasteland", "Von der Geisterwueste", "Depuis le Desert Hante", ENTR_DESERT_COLOSSUS_EAST_EXIT, 0 },
-        { "From Spirit Temple", "Vom Geistertempel", "Depuis le Temple de l'Esprit", ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE, 0 },
-        { "From Spirit Temple (Left Hand)", "Vom Geistertempel (Linke Hand)", "Depuis le Temple de l'Esprit (Main Gauche)", ENTR_DESERT_COLOSSUS_2, 0 },
-        { "From Spirit Temple (Right Hand)", "Vom Geistertempel (Rechte Hand)", "Depuis le Temple de l'Esprit (Main Droite)", ENTR_DESERT_COLOSSUS_3, 0 },
-        { "From Fairy Fountain", "Von der Feen-Quelle", "Depuis la Fontaine des Fees", ENTR_DESERT_COLOSSUS_GREAT_FAIRY_EXIT, 0 },
-        { "Great Fairy", "Feen-Quelle", "Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_NAYRUS_COLOSSUS, 0 },
-        { "Requiem of Spirit Warp", "Requiem der Geister Teleport", "Teleporteur du Requiem de l'Esprit", ENTR_DESERT_COLOSSUS_WARP_PAD, 0 },
+    { "31:きょた゛いし゛ゃしんそ゛う", "31:Desert Colossus", "31:Wuestenkoloss", "31:Colosse du Desert", Select_LoadGame, 7, {
+        { "け゛んえいのさは゛く　から", "From Haunted Wasteland", "Von der Geisterwueste", "Depuis le Desert Hante", ENTR_DESERT_COLOSSUS_EAST_EXIT, 0 },
+        { "たましいのしんて゛ん　から", "From Spirit Temple", "Vom Geistertempel", "Depuis le Temple de l'Esprit", ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE, 0 },
+        { "たましいのしんて゛ん　から(ひた゛りて)", "From Spirit Temple (Left Hand)", "Vom Geistertempel (Linke Hand)", "Depuis le Temple de l'Esprit (Main Gauche)", ENTR_DESERT_COLOSSUS_2, 0 },
+        { "たましいのしんて゛ん　から(みき゛て)", "From Spirit Temple (Right Hand)", "Vom Geistertempel (Rechte Hand)", "Depuis le Temple de l'Esprit (Main Droite)", ENTR_DESERT_COLOSSUS_3, 0 },
+        { "た゛いようせい　から", "From Fairy Fountain", "Von der Feen-Quelle", "Depuis la Fontaine des Fees", ENTR_DESERT_COLOSSUS_GREAT_FAIRY_EXIT, 0 },
+        { "た゛いようせい", "Great Fairy", "Feen-Quelle", "Grande Fee", ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_NAYRUS_COLOSSUS, 0 },
+        { "たましいのレクイエム　ワーフ゜", "Requiem of Spirit Warp", "Requiem der Geister Teleport", "Teleporteur du Requiem de l'Esprit", ENTR_DESERT_COLOSSUS_WARP_PAD, 0 },
     }},
-    { "32:Deku Tree", "32:Deku-Baum", "32:Arbre Mojo", Select_LoadGame, 3, {
-        { "Entrance", "Eingang", "Entree", ENTR_DEKU_TREE_ENTRANCE, 1 },
-        { "From Gohma's Lair", "Von Gohmas Kampf", "Depuis le Repaire de Gohma", ENTR_DEKU_TREE_BOSS_DOOR, 1 },
-        { "Gohma's Lair", "Gohmas Kampf", "Repaire de Gohma", ENTR_DEKU_TREE_BOSS_ENTRANCE, 0 },
+    { "32:テ゛クのきサマのなか", "32:Deku Tree", "32:Deku-Baum", "32:Arbre Mojo", Select_LoadGame, 3, {
+        { "いりく゛ち", "Entrance", "Eingang", "Entree", ENTR_DEKU_TREE_ENTRANCE, 1 },
+        { "コ゛ーマのへや　から", "From Gohma's Lair", "Von Gohmas Kampf", "Depuis le Repaire de Gohma", ENTR_DEKU_TREE_BOSS_DOOR, 1 },
+        { "コ゛ーマのへや", "Gohma's Lair", "Gohmas Kampf", "Repaire de Gohma", ENTR_DEKU_TREE_BOSS_ENTRANCE, 0 },
     }},
-    { "33:Dodongos Cavern", "33:Dodongos Hoehle", "33:Caverne Dodongo", Select_LoadGame, 3, {
-        { "Entrance", "Eingang", "Entree", ENTR_DODONGOS_CAVERN_ENTRANCE, 1 },
-        { "From King Dodongo", "Von Koenig Dodongo", "Depuis le Repaire du Roi Dodongo", ENTR_DODONGOS_CAVERN_BOSS_DOOR, 1 },
-        { "King Dodongo's Lair", "Koenig Dodongos Kampf", "Repaire du Roi Dodongo", ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE, 0 },
+    { "33:ト゛ト゛ンコ゛のと゛うくつ", "33:Dodongos Cavern", "33:Dodongos Hoehle", "33:Caverne Dodongo", Select_LoadGame, 3, {
+        { "いりく゛ち", "Entrance", "Eingang", "Entree", ENTR_DODONGOS_CAVERN_ENTRANCE, 1 },
+        { "キンク゛ト゛ト゛ンコ゛のへや　から", "From King Dodongo", "Von Koenig Dodongo", "Depuis le Repaire du Roi Dodongo", ENTR_DODONGOS_CAVERN_BOSS_DOOR, 1 },
+        { "キンク゛ト゛ト゛ンコ゛のへや", "King Dodongo's Lair", "Koenig Dodongos Kampf", "Repaire du Roi Dodongo", ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE, 0 },
     }},
-    { "34:Jabu Jabu", "34:Jabu-Jabu", "34:Jabu-Jabu", Select_LoadGame, 2, {
-        { "Entrance", "Eingang", "Entree", ENTR_JABU_JABU_ENTRANCE, 1 },
-        { "Barinade's Lair", "Barinades Kampf", "Repaire de Barinade", ENTR_JABU_JABU_BOSS_ENTRANCE, 0 },
+    { "34:シ゛ャフ゛シ゛ャフ゛さまのおなか", "34:Jabu Jabu", "34:Jabu-Jabu", "34:Jabu-Jabu", Select_LoadGame, 2, {
+        { "いりく゛ち", "Entrance", "Eingang", "Entree", ENTR_JABU_JABU_ENTRANCE, 1 },
+        { "ハ゛リネート゛のへや", "Barinade's Lair", "Barinades Kampf", "Repaire de Barinade", ENTR_JABU_JABU_BOSS_ENTRANCE, 0 },
     }},
-    { "35:Forest Temple", "35:Waldtempel", "35:Temple de la Foret", Select_LoadGame, 4, {
-        { "Entrance", "Eingang", "Entree", ENTR_FOREST_TEMPLE_ENTRANCE, 1 },
-        { "Crushing Room", "Der Fallende Decke Raum", "Salle de Broyage", ENTR_FOREST_TEMPLE_2, 1 },
-        { "Before Phantom Ganon", "Vor Phantom-Ganon", "Avant Ganon Spectral", ENTR_FOREST_TEMPLE_BOSS_DOOR, 1 },
-        { "Phantom Ganon's Lair", "Phantom-Ganons Kampf", "Repaire de Ganon Spectral", ENTR_FOREST_TEMPLE_BOSS_ENTRANCE, 0 },
+    { "35:もりのしんて゛ん", "35:Forest Temple", "35:Waldtempel", "35:Temple de la Foret", Select_LoadGame, 4, {
+        { "いりく゛ち", "Entrance", "Eingang", "Entree", ENTR_FOREST_TEMPLE_ENTRANCE, 1 },
+        { "てんし゛ょうか゛おちてくるへや", "Crushing Room", "Der Fallende Decke Raum", "Salle de Broyage", ENTR_FOREST_TEMPLE_2, 1 },
+        { "ファントムカ゛ノンまえ", "Before Phantom Ganon", "Vor Phantom-Ganon", "Avant Ganon Spectral", ENTR_FOREST_TEMPLE_BOSS_DOOR, 1 },
+        { "ファントムカ゛ノンのへや", "Phantom Ganon's Lair", "Phantom-Ganons Kampf", "Repaire de Ganon Spectral", ENTR_FOREST_TEMPLE_BOSS_ENTRANCE, 0 },
     }},
-    { "36:Fire Temple", "36:Feuertempel", "36:Temple du Feu", Select_LoadGame, 3, {
-        { "Entrance", "Eingang", "Entrance", ENTR_FIRE_TEMPLE_ENTRANCE, 1 },
-        { "Before Volvagia", "Vor Volvagia", "Avant Volvagia", ENTR_FIRE_TEMPLE_BOSS_DOOR, 1 },
-        { "Volvagia's Lair", "Volvagias Kampf", "Repaire de Volcania", ENTR_FIRE_TEMPLE_BOSS_ENTRANCE, 0 },
+    { "36:ほのおのしんて゛ん", "36:Fire Temple", "36:Feuertempel", "36:Temple du Feu", Select_LoadGame, 3, {
+        { "いりく゛ち", "Entrance", "Eingang", "Entrance", ENTR_FIRE_TEMPLE_ENTRANCE, 1 },
+        { "ウ゛ァルハ゛シ゛アまえ", "Before Volvagia", "Vor Volvagia", "Avant Volvagia", ENTR_FIRE_TEMPLE_BOSS_DOOR, 1 },
+        { "ウ゛ァルハ゛シ゛アのへや", "Volvagia's Lair", "Volvagias Kampf", "Repaire de Volcania", ENTR_FIRE_TEMPLE_BOSS_ENTRANCE, 0 },
     }},
-    { "37:Water Temple", "37:Wassertempel", "37:Temple de l'Eau", Select_LoadGame, 2, { 
-        { "Entrance", "Eingang", "Entree", ENTR_WATER_TEMPLE_ENTRANCE, 1 },
-        { "Morpha's Lair", "Morphas Kampf", "Repaire de Morpha", ENTR_WATER_TEMPLE_BOSS_ENTRANCE, 0 },
+    { "37:みす゛のしんて゛ん", "37:Water Temple", "37:Wassertempel", "37:Temple de l'Eau", Select_LoadGame, 2, {
+        { "いりく゛ち", "Entrance", "Eingang", "Entree", ENTR_WATER_TEMPLE_ENTRANCE, 1 },
+        { "モーファのへや", "Morpha's Lair", "Morphas Kampf", "Repaire de Morpha", ENTR_WATER_TEMPLE_BOSS_ENTRANCE, 0 },
     }},
-    { "38:Shadow Temple", "38:Schattentempel", "38:Temple de l'Ombre", Select_LoadGame, 3, {
-        { "Entrance", "Eingang", "Entree", ENTR_SHADOW_TEMPLE_ENTRANCE, 1 },
-        { "Outside Bongo Bongo", "Vor Bongo Bongo", "Avant Bongo Bongo", ENTR_SHADOW_TEMPLE_BOSS_DOOR, 1 },
-        { "Bongo Bongo's Lair", "Bongo Bongos Kampf", "Repaire de Bongo Bongo", ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE, 1 },
+    { "38:やみのしんて゛ん", "38:Shadow Temple", "38:Schattentempel", "38:Temple de l'Ombre", Select_LoadGame, 3, {
+        { "いりく゛ち", "Entrance", "Eingang", "Entree", ENTR_SHADOW_TEMPLE_ENTRANCE, 1 },
+        { "ホ゛ンコ゛ホ゛ンコ゛まえ", "Outside Bongo Bongo", "Vor Bongo Bongo", "Avant Bongo Bongo", ENTR_SHADOW_TEMPLE_BOSS_DOOR, 1 },
+        { "ホ゛ンコ゛ホ゛ンコ゛のへや", "Bongo Bongo's Lair", "Bongo Bongos Kampf", "Repaire de Bongo Bongo", ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE, 1 },
     }},
-    { "39:Spirit Temple", "39:Geistertempel", "39:Temple de l'Esprit", Select_LoadGame, 6, {
-        { "Entrance", "Eingang", "Entree", ENTR_SPIRIT_TEMPLE_ENTRANCE, 1 },
-        { "From Left Hand", "Von der linken Hand", "Depuis la Main Gauche", ENTR_SPIRIT_TEMPLE_2, 1 },
-        { "From Right Hand", "Von der rechten Hand", "Depuis la Main Droite", ENTR_SPIRIT_TEMPLE_3, 1 },
-        { "Before Twinrova", "Vor den Killa Ohmaz", "Avant le Duo Malefique", ENTR_SPIRIT_TEMPLE_BOSS_DOOR, 1 },
-        { "Nabooru Fight", "Naborus Kampf", "Combat contre Nabooru", ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE, 0 },
-        { "Twinrova's Lair", "Killa Ohmaz' Kampf", "Repaire du Duo Malefique", ENTR_SPIRIT_TEMPLE_BOSS_2, 0 },
+    { "39:たましいのしんて゛ん", "39:Spirit Temple", "39:Geistertempel", "39:Temple de l'Esprit", Select_LoadGame, 6, {
+        { "いりく゛ち", "Entrance", "Eingang", "Entree", ENTR_SPIRIT_TEMPLE_ENTRANCE, 1 },
+        { "ひた゛りて　から", "From Left Hand", "Von der linken Hand", "Depuis la Main Gauche", ENTR_SPIRIT_TEMPLE_2, 1 },
+        { "みき゛て　から", "From Right Hand", "Von der rechten Hand", "Depuis la Main Droite", ENTR_SPIRIT_TEMPLE_3, 1 },
+        { "ツインローハ゛まえ", "Before Twinrova", "Vor den Killa Ohmaz", "Avant le Duo Malefique", ENTR_SPIRIT_TEMPLE_BOSS_DOOR, 1 },
+        { "ナホ゛ールせん", "Nabooru Fight", "Naborus Kampf", "Combat contre Nabooru", ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE, 0 },
+        { "ツインローハ゛のへや", "Twinrova's Lair", "Killa Ohmaz' Kampf", "Repaire du Duo Malefique", ENTR_SPIRIT_TEMPLE_BOSS_2, 0 },
     }},
-    { "40:Ganons Castle", "40:Ganons Schloss", "40:Chateau de Ganon", Select_LoadGame, 9, {
-        { "Entrance", "Eingang", "Entree", ENTR_INSIDE_GANONS_CASTLE_ENTRANCE, 1 },
-        { "From Tower", "Vom Tower", "Depuis la Tour", ENTR_INSIDE_GANONS_CASTLE_1, 1 },
-        { "Stairs to Lair - From Castle", "Stufen zum Verlies - Vom Schloss", "Escaliers vers Repaire - Depuis le Chateau", ENTR_GANONS_TOWER_0, 0 },
-        { "Stairs to Lair - From Ganondorf's Lair", "Stufen zum Verlies - Von Ganondorfs Verlies", "Escaliers vers Repaire - Depuis le Repaire de Ganondorf", ENTR_GANONS_TOWER_1, 0 },
-        { "Ganondorf's Lair", "Ganondorfs Verlies", "Repaire de Ganondorf", ENTR_GANONDORF_BOSS_0, 0 },
-        { "Ganondorf Defeated", "Ganondorf Besiegt", "Ganondorf Vaincu", ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_5, 0 },
-        { "Ganondorf Defeated (2)", "Ganondorf Besiegt (2)", "Ganondorf Vaincu (2)", ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_1, 0 },
-        { "Ganon's Lair", "Ganons Kampf", "Repaire de Ganon", ENTR_GANON_BOSS_0, 0 },
-        { "Ganon Death Cutscene", "Ganons Todessequenz", "Cinematique de la Mort de Ganon", ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_0, 0 },
+    { "40:カ゛ノンし゛ょう", "40:Ganons Castle", "40:Ganons Schloss", "40:Chateau de Ganon", Select_LoadGame, 9, {
+        { "いりく゛ち", "Entrance", "Eingang", "Entree", ENTR_INSIDE_GANONS_CASTLE_ENTRANCE, 1 },
+        { "カ゛ノンのとう　から", "From Tower", "Vom Tower", "Depuis la Tour", ENTR_INSIDE_GANONS_CASTLE_1, 1 },
+        { "カ゛ノンへのかいた゛ん - しろから", "Stairs to Lair - From Castle", "Stufen zum Verlies - Vom Schloss", "Escaliers vers Repaire - Depuis le Chateau", ENTR_GANONS_TOWER_0, 0 },
+        { "カ゛ノンへのかいた゛ん - カ゛ノント゛ロフのへやから", "Stairs to Lair - From Ganondorf's Lair", "Stufen zum Verlies - Von Ganondorfs Verlies", "Escaliers vers Repaire - Depuis le Repaire de Ganondorf", ENTR_GANONS_TOWER_1, 0 },
+        { "カ゛ノント゛ロフのへや", "Ganondorf's Lair", "Ganondorfs Verlies", "Repaire de Ganondorf", ENTR_GANONDORF_BOSS_0, 0 },
+        { "カ゛ノント゛ロフをたおしたあと", "Ganondorf Defeated", "Ganondorf Besiegt", "Ganondorf Vaincu", ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_5, 0 },
+        { "カ゛ノント゛ロフをたおしたあと(2)", "Ganondorf Defeated (2)", "Ganondorf Besiegt (2)", "Ganondorf Vaincu (2)", ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_1, 0 },
+        { "カ゛ノンのへや", "Ganon's Lair", "Ganons Kampf", "Repaire de Ganon", ENTR_GANON_BOSS_0, 0 },
+        { "カ゛ノンのさいこ゛カットシーン", "Ganon Death Cutscene", "Ganons Todessequenz", "Cinematique de la Mort de Ganon", ENTR_GANONS_TOWER_COLLAPSE_EXTERIOR_0, 0 },
     }},
-    { "41:Bottom of the Well", "41:Grund des Brunnens", "41:Puits", Select_LoadGame, 1, {
-        { "Entrance", "Eingang", "Entree", ENTR_BOTTOM_OF_THE_WELL_ENTRANCE, 1 },
+    { "41:いと゛のそこ", "41:Bottom of the Well", "41:Grund des Brunnens", "41:Puits", Select_LoadGame, 1, {
+        { "いりく゛ち", "Entrance", "Eingang", "Entree", ENTR_BOTTOM_OF_THE_WELL_ENTRANCE, 1 },
     }},
-    { "42:Ice Cavern", "42:Eishoehle", "42:Caverne Polaire", Select_LoadGame, 1, {
-        { "Entrance", "Eingang", "Entree", ENTR_ICE_CAVERN_ENTRANCE, 1 },
+    { "42:こおりのと゛うくつ", "42:Ice Cavern", "42:Eishoehle", "42:Caverne Polaire", Select_LoadGame, 1, {
+        { "いりく゛ち", "Entrance", "Eingang", "Entree", ENTR_ICE_CAVERN_ENTRANCE, 1 },
     }},
-    { "43:Gerudo Training Ground", "43:Gerudo-Trainingsarena", "43:Gymnase Gerudo", Select_LoadGame, 1, {
-        { "Entrance", "Eingang", "Entree", ENTR_GERUDO_TRAINING_GROUND_ENTRANCE, 1 },
+    { "43:ケ゛ルト゛のしゅうれんし゛ょう", "43:Gerudo Training Ground", "43:Gerudo-Trainingsarena", "43:Gymnase Gerudo", Select_LoadGame, 1, {
+        { "いりく゛ち", "Entrance", "Eingang", "Entree", ENTR_GERUDO_TRAINING_GROUND_ENTRANCE, 1 },
     }},
-    { "44:Warps", "44:Teleportpunkte", "44:Teleporteurs", Select_LoadGame, 6, {
-        { "Prelude of Light Warp", "Kantate des Lichts Teleport", "Teleporteur du Prelude de la Lumiere", ENTR_TEMPLE_OF_TIME_WARP_PAD, 0 },
-        { "Minuet of Forest Warp", "Menuett des Waldes Teleport", "Teleporteur du Menuet des Bois", ENTR_SACRED_FOREST_MEADOW_WARP_PAD, 0 },
-        { "Bolero of Fire Warp", "Bolero des Feuers Teleport", "Teleporteur du Bolero du Feu", ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD, 0 },
-        { "Serenade Of Water Warp", "Serenade des Wassers Teleport", "Teleporteur de la Serenade de l'Eau", ENTR_LAKE_HYLIA_WARP_PAD, 0 },
-        { "Nocturne of Shadow Warp", "Nocturne des Schattens Teleport", "Teleporteur du Nocturne de l'Ombre", ENTR_GRAVEYARD_WARP_PAD, 0 },
-        { "Requiem of Spirit Warp", "Requiem der Geister Teleport", "Teleporteur du Requiem de l'Esprit", ENTR_DESERT_COLOSSUS_WARP_PAD, 0 },
+    { "44:ワーフ゜", "44:Warps", "44:Teleportpunkte", "44:Teleporteurs", Select_LoadGame, 6, {
+        { "ひかりのフ゜レリュート゛　ワーフ゜", "Prelude of Light Warp", "Kantate des Lichts Teleport", "Teleporteur du Prelude de la Lumiere", ENTR_TEMPLE_OF_TIME_WARP_PAD, 0 },
+        { "もりのメヌエット　ワーフ゜", "Minuet of Forest Warp", "Menuett des Waldes Teleport", "Teleporteur du Menuet des Bois", ENTR_SACRED_FOREST_MEADOW_WARP_PAD, 0 },
+        { "ほのおのホ゛レロ　ワーフ゜", "Bolero of Fire Warp", "Bolero des Feuers Teleport", "Teleporteur du Bolero du Feu", ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD, 0 },
+        { "みす゛のセレナーテ゛　ワーフ゜", "Serenade Of Water Warp", "Serenade des Wassers Teleport", "Teleporteur de la Serenade de l'Eau", ENTR_LAKE_HYLIA_WARP_PAD, 0 },
+        { "やみのノクターン　ワーフ゜", "Nocturne of Shadow Warp", "Nocturne des Schattens Teleport", "Teleporteur du Nocturne de l'Ombre", ENTR_GRAVEYARD_WARP_PAD, 0 },
+        { "たましいのレクイエム　ワーフ゜", "Requiem of Spirit Warp", "Requiem der Geister Teleport", "Teleporteur du Requiem de l'Esprit", ENTR_DESERT_COLOSSUS_WARP_PAD, 0 },
     }},
-    { "45:Shops", "45:Laeden", "45:Boutiques", Select_LoadGame, 9, {
-        { "Kokiri Shop", "Kokiri-Laden", "Boutique Kokiri", ENTR_KOKIRI_SHOP_0 },
-        { "Potion Shop (Market)", "Magie-Laden (Marktplatz)", "Apothicaire (Place du Marche)", ENTR_POTION_SHOP_MARKET_0, 0 },
-        { "Bazaar Shop (Market)", "Basar (Marktplatz)", "Bazar (Place du Marche)", ENTR_BAZAAR_1, 0 },
-        { "Happy Mask Shop", "Maskenhaendler", "Foire aux Masques", ENTR_HAPPY_MASK_SHOP_0, 0 },
-        { "Bombchu Shop", "Krabbelminen-Laden", "Boutique de Missiles", ENTR_BOMBCHU_SHOP_1, 0 },
-        { "Bazaar Shop (Kakariko)", "Basar (Kakariko)", "Bazar (Village Cocorico)", ENTR_BAZAAR_0, 0 },
-        { "Potion Shop (Kakariko)", "Magie-Laden (Kakariko)", "Apothicaire (Village Cocorico)", ENTR_POTION_SHOP_KAKARIKO_FRONT, 0 },
-        { "Goron City Shop", "Goronen-Laden", "Boutique Goron", ENTR_GORON_SHOP_0, 0 },
-        { "Zora Shop", "Zora-Laden", "Boutique Zora", ENTR_ZORA_SHOP_0, 0 },
+    { "45:おみせ", "45:Shops", "45:Laeden", "45:Boutiques", Select_LoadGame, 9, {
+        { "コキリのおみせ", "Kokiri Shop", "Kokiri-Laden", "Boutique Kokiri", ENTR_KOKIRI_SHOP_0 },
+        { "くすりや(し゛ょうかまち)", "Potion Shop (Market)", "Magie-Laden (Marktplatz)", "Apothicaire (Place du Marche)", ENTR_POTION_SHOP_MARKET_0, 0 },
+        { "なンて゛もや(し゛ょうかまち)", "Bazaar Shop (Market)", "Basar (Marktplatz)", "Bazar (Place du Marche)", ENTR_BAZAAR_1, 0 },
+        { "おめんや", "Happy Mask Shop", "Maskenhaendler", "Foire aux Masques", ENTR_HAPPY_MASK_SHOP_0, 0 },
+        { "ホ゛ムチュウや", "Bombchu Shop", "Krabbelminen-Laden", "Boutique de Missiles", ENTR_BOMBCHU_SHOP_1, 0 },
+        { "なンて゛もや(カカリコむら)", "Bazaar Shop (Kakariko)", "Basar (Kakariko)", "Bazar (Village Cocorico)", ENTR_BAZAAR_0, 0 },
+        { "くすりや(カカリコむら)", "Potion Shop (Kakariko)", "Magie-Laden (Kakariko)", "Apothicaire (Village Cocorico)", ENTR_POTION_SHOP_KAKARIKO_FRONT, 0 },
+        { "コ゛ロンのおみせ", "Goron City Shop", "Goronen-Laden", "Boutique Goron", ENTR_GORON_SHOP_0, 0 },
+        { "ソ゛ーラのおみせ", "Zora Shop", "Zora-Laden", "Boutique Zora", ENTR_ZORA_SHOP_0, 0 },
     }},
-    { "46:Great Fairies", "46:Feen-Quellen", "46:Grandes Fees", Select_LoadGame, 6, {
-        { "Hyrule Castle (Child)", "Schloss Hyrule (Kind)", "Chateau d'Hyrule (Enfant)", ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_DINS_HC, 0 },
-        { "Hyrule Castle (Adult)", "Schloss Hyrule (Erwachsener)", "Chateau d'Hyrule (Adult)", ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_OGC_DD, 0 },
-        { "Death Mountain Trail", "Gebirgspfad", "Mont du Peril", ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMT, 0 },
-        { "Death Mountain Crater", "Todeskrater", "Cratere du Peril", ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMC, 0 },
-        { "Zoras Fountain", "Zoras Quelle", "Fontaine Zora", ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_FARORES_ZF, 0 },
-        { "Desert Colossus", "Wuestenkoloss", "Colosse du Desert", ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_NAYRUS_COLOSSUS, 0 },
+    { "46:た゛いようせい", "46:Great Fairies", "46:Feen-Quellen", "46:Grandes Fees", Select_LoadGame, 6, {
+        { "ハイラルし゛ょう(こと゛も)", "Hyrule Castle (Child)", "Schloss Hyrule (Kind)", "Chateau d'Hyrule (Enfant)", ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_DINS_HC, 0 },
+        { "ハイラルし゛ょう(おとな)", "Hyrule Castle (Adult)", "Schloss Hyrule (Erwachsener)", "Chateau d'Hyrule (Adult)", ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_OGC_DD, 0 },
+        { "テ゛スマウンテンとさ゛んと゛う", "Death Mountain Trail", "Gebirgspfad", "Mont du Peril", ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMT, 0 },
+        { "テ゛スマウンテンかこう", "Death Mountain Crater", "Todeskrater", "Cratere du Peril", ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMC, 0 },
+        { "ソ゛ーラのいす゛み", "Zoras Fountain", "Zoras Quelle", "Fontaine Zora", ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_FARORES_ZF, 0 },
+        { "きょた゛いし゛ゃしんそ゛う", "Desert Colossus", "Wuestenkoloss", "Colosse du Desert", ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_NAYRUS_COLOSSUS, 0 },
     }},
-    { "47:Chest Grottos", "47:Truhengrotten", "47:Grottes a Coffres", Select_Grotto_LoadGame, 11, {
-        { "Kokiri Forest (Song of Storms)", "Kokiri-Wald (Hymne des Sturms)", "Foret Kokiri (Chant des Tempetes)", 0x00, 0 },
-        { "Lost Woods", "Verlorene Waelder", "Bois Perdus", 0x01, 0 },
-        { "Sacred Forest Meadow", "Waldlichtung", "Bosquet Sacre", 0x02, 0 },
-        { "Hyrule Field (Near Market)", "Hylianische Steppe (Nahe Marktplatz)", "Plaine d'Hyrule (Pres de la Place du Marche)", 0x03, 0 },
-        { "Hyrule Field (Open Near Lake)", "Hylianische Steppe (Offen, beim Hylia-See)", "Plaine d'Hyrule (Deja ouverte pres du Lac)", 0x04, 0 },
-        { "Hyrule Field (SE Boulder)", "Hylianische Steppe (Felsen, S-O)", "Plaine d'Hyrule (Rocher a Gantelets)", 0x05, 0 },
-        { "Kakariko (Open)", "Kakariko (Offen)", "Village Cocorico (Deja Ouverte)", 0x06, 0 },
-        { "Kakariko (Redead)", "Kakariko (Zombies)", "Village Cocorico (Effrois)", 0x07, 0 },
-        { "Death Mountain Trail (Song of Storms)", "Gebirgspfad (Hymne des Sturms)", "Mont du Peril (Chant des Tempetes)", 0x08, 0 },
-        { "Death Mountain Crater", "Todeskrater", "Cratere du Peril", 0x09, 0 },
-        { "Zora River (Open)", "Zora-Fluss (Offen)", "Riviere Zora (Deja Ouverte)", 0x0A, 0 },
+    { "47:たからは゛この　あな", "47:Chest Grottos", "47:Truhengrotten", "47:Grottes a Coffres", Select_Grotto_LoadGame, 11, {
+        { "コキリのもり(あらしのうた)", "Kokiri Forest (Song of Storms)", "Kokiri-Wald (Hymne des Sturms)", "Foret Kokiri (Chant des Tempetes)", 0x00, 0 },
+        { "まよいのもり", "Lost Woods", "Verlorene Waelder", "Bois Perdus", 0x01, 0 },
+        { "もりのせいいき", "Sacred Forest Meadow", "Waldlichtung", "Bosquet Sacre", 0x02, 0 },
+        { "ハイラルへいけ゛ん(し゛ょうかまちのちかく)", "Hyrule Field (Near Market)", "Hylianische Steppe (Nahe Marktplatz)", "Plaine d'Hyrule (Pres de la Place du Marche)", 0x03, 0 },
+        { "ハイラルへいけ゛ん(オーフ゜ン いけちかく)", "Hyrule Field (Open Near Lake)", "Hylianische Steppe (Offen, beim Hylia-See)", "Plaine d'Hyrule (Deja ouverte pres du Lac)", 0x04, 0 },
+        { "ハイラルへいけ゛ん(なんとうのいわ)", "Hyrule Field (SE Boulder)", "Hylianische Steppe (Felsen, S-O)", "Plaine d'Hyrule (Rocher a Gantelets)", 0x05, 0 },
+        { "カカリコむら(オーフ゜ン)", "Kakariko (Open)", "Kakariko (Offen)", "Village Cocorico (Deja Ouverte)", 0x06, 0 },
+        { "カカリコむら(リーテ゛ット)", "Kakariko (Redead)", "Kakariko (Zombies)", "Village Cocorico (Effrois)", 0x07, 0 },
+        { "テ゛スマウンテンとさ゛んと゛う(あらしのうた)", "Death Mountain Trail (Song of Storms)", "Gebirgspfad (Hymne des Sturms)", "Mont du Peril (Chant des Tempetes)", 0x08, 0 },
+        { "テ゛スマウンテンかこう", "Death Mountain Crater", "Todeskrater", "Cratere du Peril", 0x09, 0 },
+        { "ソ゛ーラかわ(オーフ゜ン)", "Zora River (Open)", "Zora-Fluss (Offen)", "Riviere Zora (Deja Ouverte)", 0x0A, 0 },
     }},
-    { "48:Scrub Grottos", "48:Laubkerlgrotten", "48:Grottes des Pestes Marchandes", Select_Grotto_LoadGame, 10, {
-        { "Hyrule Field (Near Lake)", "Hylianische Steppe (beim Hylia-See)", "Plaine d'Hyrule (Pres du Lac)", 0x0B, 0 },
-        { "Death Mountain Crater", "Todeskrater", "Cratere du Peril", 0x0C, 0 },
-        { "Goron City", "Goronia", "Village Goron", 0x0D, 0 },
-        { "Lon Lon Ranch", "Lon Lon-Farm", "Ranch Lon Lon", 0x0E, 0 },
-        { "Lake Hylia", "Hylia-See", "Lac Hylia", 0x0F, 0 },
-        { "Lost Woods", "Verlorene Waelder", "Bois Perdus", 0x10, 0 },
-        { "Zora River (Song of Storms)", "Zora-Fluss (Hymne des Sturms)", "Rivere Zora (Chant des Tempetes)", 0x11, 0 },
-        { "Sacred Forest Meadow (Song of Storms)", "Waldlichtung (Hymne des Sturms)", "Bosquet Scare (Chant des Tempetes)", 0x12, 0 },
-        { "Gerudo Valley (Song of Storms)", "Gerudotal (Hymne des Sturms)", "Vallee Gerudo (Chant des Tempetes)", 0x13, 0 },
-        { "Desert Colossus", "Wuestenkoloss", "Colosse du Desert", 0x14, 0 },
+    { "48:アキント゛ナッツの　あな", "48:Scrub Grottos", "48:Laubkerlgrotten", "48:Grottes des Pestes Marchandes", Select_Grotto_LoadGame, 10, {
+        { "ハイラルへいけ゛ん(いけちかく)", "Hyrule Field (Near Lake)", "Hylianische Steppe (beim Hylia-See)", "Plaine d'Hyrule (Pres du Lac)", 0x0B, 0 },
+        { "テ゛スマウンテンかこう", "Death Mountain Crater", "Todeskrater", "Cratere du Peril", 0x0C, 0 },
+        { "コ゛ロンシティ", "Goron City", "Goronia", "Village Goron", 0x0D, 0 },
+        { "ロンロンほ゛くし゛ょう", "Lon Lon Ranch", "Lon Lon-Farm", "Ranch Lon Lon", 0x0E, 0 },
+        { "ハイリアこはん", "Lake Hylia", "Hylia-See", "Lac Hylia", 0x0F, 0 },
+        { "まよいのもり", "Lost Woods", "Verlorene Waelder", "Bois Perdus", 0x10, 0 },
+        { "ソ゛ーラかわ(あらしのうた)", "Zora River (Song of Storms)", "Zora-Fluss (Hymne des Sturms)", "Rivere Zora (Chant des Tempetes)", 0x11, 0 },
+        { "もりのせいいき(あらしのうた)", "Sacred Forest Meadow (Song of Storms)", "Waldlichtung (Hymne des Sturms)", "Bosquet Scare (Chant des Tempetes)", 0x12, 0 },
+        { "ケ゛ルト゛のたに(あらしのうた)", "Gerudo Valley (Song of Storms)", "Gerudotal (Hymne des Sturms)", "Vallee Gerudo (Chant des Tempetes)", 0x13, 0 },
+        { "きょた゛いし゛ゃしんそ゛う", "Desert Colossus", "Wuestenkoloss", "Colosse du Desert", 0x14, 0 },
     }},
-    { "49:Other Grottos", "49:Andere Grotten", "49:Autres Grottes", Select_Grotto_LoadGame, 7, {
-        { "Scrub Theatre", "Waldbuehne", "Theatre Mojo", 0x15, 0 },
-        { "Spider Grotto (Hyrule Field)", "Spinnen-Grotte (Hylianische Steppe)", "Spider Araignee (Plaine d'Hyrule)", 0x16, 0 },
-        { "Spider Grotto (Hyrule Castle)", "Spinnen-Grotte (Schloss Hyrule)", "Grotte Araignee (Chateau d'Hyrule)", 0x17, 0 },
-        { "Cow Grotto (Hyrule Field)", "Kuh-Grotte (Hylianische Steppe)", "Grotte a Vache (Plaine d'Hyrule)", 0x18, 0 },
-        { "Cow Grotto (Death Mountain Trail)", "Kuh-Grotte (Gebirgspfad)", "Grotte a Vache (Chemin du Peril)", 0x19, 0 },
-        { "Flooded Grotto (Gerudo Valley)", "Geflutete Grotte (Gerudotal)", "Grotte Inondee (Vallee Gerudo)", 0x1A, 0 },
-        { "Flooded Grotto (Hyrule Field)", "Geflutete Grotte (Hylianische Steppe)", "Grotte Inondee (Plaine d'Hyrule)", 0x1B, 0 },
+    { "49:そのたの　あな", "49:Other Grottos", "49:Andere Grotten", "49:Autres Grottes", Select_Grotto_LoadGame, 7, {
+        { "もりのステーシ゛", "Scrub Theatre", "Waldbuehne", "Theatre Mojo", 0x15, 0 },
+        { "クモのあな(ハイラルへいけ゛ん)", "Spider Grotto (Hyrule Field)", "Spinnen-Grotte (Hylianische Steppe)", "Spider Araignee (Plaine d'Hyrule)", 0x16, 0 },
+        { "クモのあな(ハイラルし゛ょう)", "Spider Grotto (Hyrule Castle)", "Spinnen-Grotte (Schloss Hyrule)", "Grotte Araignee (Chateau d'Hyrule)", 0x17, 0 },
+        { "ウシのあな(ハイラルへいけ゛ん)", "Cow Grotto (Hyrule Field)", "Kuh-Grotte (Hylianische Steppe)", "Grotte a Vache (Plaine d'Hyrule)", 0x18, 0 },
+        { "ウシのあな(テ゛スマウンテンとさ゛んと゛う)", "Cow Grotto (Death Mountain Trail)", "Kuh-Grotte (Gebirgspfad)", "Grotte a Vache (Chemin du Peril)", 0x19, 0 },
+        { "みす゛のあな(ケ゛ルト゛のたに)", "Flooded Grotto (Gerudo Valley)", "Geflutete Grotte (Gerudotal)", "Grotte Inondee (Vallee Gerudo)", 0x1A, 0 },
+        { "みす゛のあな(ハイラルへいけ゛ん)", "Flooded Grotto (Hyrule Field)", "Geflutete Grotte (Hylianische Steppe)", "Grotte Inondee (Plaine d'Hyrule)", 0x1B, 0 },
     }},
-    { "50:Debug (Use with caution)", "50:Debug (Mit Vorsicht benutzen)", "50:Debug (A utiliser avec prudence)", Select_LoadGame, 10, {
-        { "Test Room", "Test Raum", "Salle de Test", ENTR_BESITU_0, 0 },
-        { "SRD Map", "SRD Karte", "Carte SRD", ENTR_SASATEST_0, 0 },
-        { "Test Map", "Test Karte", "Carte de Test", ENTR_TEST01_0, 0 },
-        { "Treasure Chest Warp", "Schatzkisten Teleport", "Salle de Test - Objets", ENTR_TESTROOM_0, 0 },
-        { "Stalfos Miniboss Room", "Stalfos-Ritter Miniboss-Raum", "Salle du Minoboss Stalfos", ENTR_SYOTES_0, 0 },
-        { "Stalfos Boss Room", "Stalfos-Ritter Boss-Raum", "Salle de Boss Stalfos", ENTR_SYOTES2_0, 0 },
-        { "Dark Link Room", "Schwarzer Link Raum", "Salle de Dark Link", ENTR_SUTARU_0, 0 },
-        { "Shooting Gallery Duplicate", "Schiessbude (Duplikat)", "Jeu d'Adresse (Duplicata)", ENTR_TEST_SHOOTING_GALLERY_0, 0 },
-        { "Depth Test", "Tiefen Test", "Test de Profondeur", ENTR_DEPTH_TEST_0, 0 },
-        { "Hyrule Garden Game (Broken)", "Burghof - Wachen-Minispiel (Kaputt)", "Cour du chateau (Non Fonctionnel)", ENTR_HAIRAL_NIWA2_0, 0 },
+    { "50:テ゛ハ゛ック゛(しようちゅうい)", "50:Debug (Use with caution)", "50:Debug (Mit Vorsicht benutzen)", "50:Debug (A utiliser avec prudence)", Select_LoadGame, 10, {
+        { "テストルーム", "Test Room", "Test Raum", "Salle de Test", ENTR_BESITU_0, 0 },
+        { "SRDマッフ゜(ささテスト)", "SRD Map", "SRD Karte", "Carte SRD", ENTR_SASATEST_0, 0 },
+        { "テストマッフ゜", "Test Map", "Test Karte", "Carte de Test", ENTR_TEST01_0, 0 },
+        { "たからは゛こワーフ゜", "Treasure Chest Warp", "Schatzkisten Teleport", "Salle de Test - Objets", ENTR_TESTROOM_0, 0 },
+        { "ちゅうスタルフォスへ゛や", "Stalfos Miniboss Room", "Stalfos-Ritter Miniboss-Raum", "Salle du Minoboss Stalfos", ENTR_SYOTES_0, 0 },
+        { "ホ゛ススタルフォスへ゛や", "Stalfos Boss Room", "Stalfos-Ritter Boss-Raum", "Salle de Boss Stalfos", ENTR_SYOTES2_0, 0 },
+        { "タ゛ークリンクへ゛や(Sutaru)", "Dark Link Room", "Schwarzer Link Raum", "Salle de Dark Link", ENTR_SUTARU_0, 0 },
+        { "まとあてやのコヒ゜ー(jikkenjyou)", "Shooting Gallery Duplicate", "Schiessbude (Duplikat)", "Jeu d'Adresse (Duplicata)", ENTR_TEST_SHOOTING_GALLERY_0, 0 },
+        { "depthテスト", "Depth Test", "Tiefen Test", "Test de Profondeur", ENTR_DEPTH_TEST_0, 0 },
+        { "ハイラルにわケ゛ーム2(こわれてます)", "Hyrule Garden Game (Broken)", "Burghof - Wachen-Minispiel (Kaputt)", "Cour du chateau (Non Fonctionnel)", ENTR_HAIRAL_NIWA2_0, 0 },
     }},
     // clang-format on
 };
@@ -1306,7 +1312,25 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
 
     GfxPrint_SetColor(printer, 255, 255, 255, 255);
     GfxPrint_SetPos(printer, 12, 2);
-    GfxPrint_Printf(printer, "Scene Selection");
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
+        switch (gSaveContext.language) {
+            case LANGUAGE_ENG:
+            default:
+                GfxPrint_Printf(printer, "Scene Selection");
+                break;
+            case LANGUAGE_GER:
+                GfxPrint_Printf(printer, "Szenenauswahl");
+                break;
+            case LANGUAGE_FRA:
+                GfxPrint_Printf(printer, "Selection de Scene");
+                break;
+            case LANGUAGE_JPN:
+                GfxPrint_Printf(printer, "シーンセレクト");
+                break;
+        }
+    } else {
+        GfxPrint_Printf(printer, "Scene Selection");
+    }
     GfxPrint_SetColor(printer, 255, 255, 255, 255);
 
     for (i = 0; i < 20; i++) {
@@ -1331,9 +1355,8 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
                 case LANGUAGE_FRA:
                     name = this->betterScenes[scene].frenchName;
                     break;
-                // NTSC TODO: Support JPN Better Select
                 case LANGUAGE_JPN:
-                    name = this->betterScenes[scene].englishName;
+                    name = this->betterScenes[scene].japaneseName;
                     break;
             }
         } else {
@@ -1364,10 +1387,9 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
                 GfxPrint_Printf(printer, "%s",
                                 this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].frenchName);
                 break;
-            // NTSC TODO: Support JPN Better Select
             case LANGUAGE_JPN:
                 GfxPrint_Printf(printer, "%s",
-                                this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].englishName);
+                                this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].japaneseName);
                 break;
         }
     } else {
@@ -1432,8 +1454,8 @@ static SceneSelectAgeLabels sAgeLabels[] = {
 };
 
 static BetterSceneSelectAgeLabels sBetterAgeLabels[] = {
-    { "ﾜｶﾓﾉ", "Adult", "Erwachsener", "Adulte" },
-    { "ﾜｶｽｷﾞ", "Child", "Kind", "Enfant" },
+    { "おとな", "Adult", "Erwachsener", "Adulte" },
+    { "こと゛も", "Child", "Kind", "Enfant" },
 };
 
 void Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
@@ -1461,18 +1483,24 @@ void Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
 }
 
 void Better_Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
-    GfxPrint_SetPos(printer, 25, 25);
+    if (gSaveContext.language == LANGUAGE_JPN) {
+        GfxPrint_SetPos(printer, 22, 25); // For better alignment for Japanese menu
+    } else {
+        GfxPrint_SetPos(printer, 25, 25);
+    }
     GfxPrint_SetColor(printer, 100, 100, 100, 255);
     if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
             case LANGUAGE_FRA:
-            case LANGUAGE_JPN:
             default:
                 GfxPrint_Printf(printer, "(B)Age:");
                 break;
             case LANGUAGE_GER:
                 GfxPrint_Printf(printer, "(B)Alter:");
+                break;
+            case LANGUAGE_JPN:
+                GfxPrint_Printf(printer, "(B)し゛た゛い:");
                 break;
         }
     } else {
@@ -1586,7 +1614,6 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
         if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
             switch (gSaveContext.language) {
                 case LANGUAGE_ENG:
-                case LANGUAGE_JPN:
                 default:
                     label = "Night";
                     break;
@@ -1596,6 +1623,9 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
                 case LANGUAGE_FRA:
                     label = "Nuit";
                     break;
+                case LANGUAGE_JPN:
+                    label = "よる";
+                    break;
             }
         } else {
             label = "Night";
@@ -1604,7 +1634,6 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
         if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
             switch (gSaveContext.language) {
                 case LANGUAGE_ENG:
-                case LANGUAGE_JPN:
                 default:
                     label = "Day";
                     break;
@@ -1614,6 +1643,9 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
                 case LANGUAGE_FRA:
                     label = "Jour";
                     break;
+                case LANGUAGE_JPN:
+                    label = "ひる";
+                    break;
             }
         } else {
             label = "Day";
@@ -1622,7 +1654,6 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
     if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"), 1)) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
-            case LANGUAGE_JPN:
             default:
                 GfxPrint_Printf(printer, "(Z/R)Time:");
                 break;
@@ -1631,6 +1662,9 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
                 break;
             case LANGUAGE_FRA:
                 GfxPrint_Printf(printer, "(Z/R)Temps:");
+                break;
+            case LANGUAGE_JPN:
+                GfxPrint_Printf(printer, "(Z/R)し゛かん:");
                 break;
         }
     } else {

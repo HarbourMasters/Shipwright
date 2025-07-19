@@ -11,10 +11,9 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 #include <libultraship/libultraship.h>
-#include <Fast3D/gfx_pc.h>
 
 #ifdef __APPLE__
-#include "graphic/Fast3D/gfx_metal.h"
+#include "graphic/Fast3D/backends/gfx_metal.h"
 #endif
 
 #ifdef __SWITCH__

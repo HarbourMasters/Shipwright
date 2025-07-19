@@ -1,6 +1,6 @@
 #include <libultraship/libultraship.h>
 
-class HookDebuggerWindow : public Ship::GuiWindow {
+class HookDebuggerWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 

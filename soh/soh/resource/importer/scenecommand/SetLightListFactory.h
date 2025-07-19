@@ -3,13 +3,13 @@
 #include "soh/resource/importer/scenecommand/SceneCommandFactory.h"
 
 namespace SOH {
-class SetLightListFactory : public SceneCommandFactoryBinaryV0 {
+class SetLightListFactory final : public SceneCommandFactoryBinaryV0 {
   public:
     std::shared_ptr<Ship::IResource> ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                   std::shared_ptr<Ship::BinaryReader> reader) override;
 };
 
-class SetLightListFactoryXML : public SceneCommandFactoryXMLV0 {
+class SetLightListFactoryXML final : public SceneCommandFactoryXMLV0 {
   public:
     std::shared_ptr<Ship::IResource> ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
                                                   tinyxml2::XMLElement* reader) override;

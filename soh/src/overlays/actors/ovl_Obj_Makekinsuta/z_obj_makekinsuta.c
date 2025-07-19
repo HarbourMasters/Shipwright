@@ -7,6 +7,8 @@
 #include "z_obj_makekinsuta.h"
 #include "vt.h"
 
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void ObjMakekinsuta_Init(Actor* thisx, PlayState* play);
@@ -47,7 +49,7 @@ void ObjMakekinsuta_Init(Actor* thisx, PlayState* play) {
 
 void func_80B98320(ObjMakekinsuta* this, PlayState* play) {
     if (this->unk_152 != 0) {
-        if (this->timer >= 60 && !func_8002DEEC(GET_PLAYER(play))) {
+        if (GameInteractor_Should(VB_SPAWN_BEAN_SKULLTULA, this->timer >= 60) && !func_8002DEEC(GET_PLAYER(play))) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, this->actor.world.pos.x, this->actor.world.pos.y,
                         this->actor.world.pos.z, 0, this->actor.shape.rot.y, 0, (this->actor.params | 0x8000), true);
             this->actionFunc = ObjMakekinsuta_DoNothing;

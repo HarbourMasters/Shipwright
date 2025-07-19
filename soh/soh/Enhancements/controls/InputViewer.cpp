@@ -49,14 +49,14 @@ void InputViewer::RenderButton(std::string btnTexture, std::string btnOutlineTex
     if (outlineMode == BUTTON_OUTLINE_ALWAYS_SHOWN || (outlineMode == BUTTON_OUTLINE_NOT_PRESSED && !state) ||
         (outlineMode == BUTTON_OUTLINE_PRESSED && state)) {
         ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(btnOutlineTexture), size,
-                     ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                     ImVec2(0, 0), ImVec2(1.0f, 1.0f));
     }
     // Render button if pressed
     if (state) {
         ImGui::SetCursorPos(pos);
         ImGui::SetNextItemAllowOverlap();
         ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(btnTexture), size,
-                     ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                     ImVec2(0, 0), ImVec2(1.0f, 1.0f));
     }
 }
 
@@ -201,7 +201,7 @@ void InputViewer::DrawElement() {
                 // Background
                 ImGui::Image(
                     Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Input-Viewer-Background"),
-                    scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                    scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f));
             }
 
             // A/B
@@ -345,14 +345,14 @@ void InputViewer::DrawElement() {
             // Analog Stick
             const int analogOutlineMode =
                 CVarGetInteger(CVAR_INPUT_VIEWER("AnalogStick.OutlineMode"), STICK_MODE_ALWAYS_SHOWN);
-            const float maxStickDistance = CVarGetInteger(CVAR_INPUT_VIEWER("AnalogStick.Movement"), 12);
+            const int32_t maxStickDistance = CVarGetInteger(CVAR_INPUT_VIEWER("AnalogStick.Movement"), 12);
             if (analogOutlineMode == STICK_MODE_ALWAYS_SHOWN ||
                 (analogOutlineMode == STICK_MODE_HIDDEN_IN_DEADZONE && !analogStickIsInDeadzone)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(aPos);
                 ImGui::Image(
                     Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Analog-Stick Outline"),
-                    scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                    scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f));
             }
             const int analogStickMode =
                 CVarGetInteger(CVAR_INPUT_VIEWER("AnalogStick.VisibilityMode"), STICK_MODE_ALWAYS_SHOWN);
@@ -363,11 +363,11 @@ void InputViewer::DrawElement() {
                     ImVec2(aPos.x + maxStickDistance * ((float)(pads[0].stick_x) / MAX_AXIS_RANGE) * scale,
                            aPos.y - maxStickDistance * ((float)(pads[0].stick_y) / MAX_AXIS_RANGE) * scale));
                 ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Analog-Stick"),
-                             scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                             scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f));
             }
 
             // Right Stick
-            const float maxRightStickDistance = CVarGetInteger(CVAR_INPUT_VIEWER("RightStick.Movement"), 7);
+            const int32_t maxRightStickDistance = CVarGetInteger(CVAR_INPUT_VIEWER("RightStick.Movement"), 7);
             const int rightOutlineMode =
                 CVarGetInteger(CVAR_INPUT_VIEWER("RightStick.OutlineMode"), STICK_MODE_ALWAYS_HIDDEN);
             if (rightOutlineMode == STICK_MODE_ALWAYS_SHOWN ||
@@ -376,7 +376,7 @@ void InputViewer::DrawElement() {
                 ImGui::SetCursorPos(aPos);
                 ImGui::Image(
                     Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Right-Stick Outline"),
-                    scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                    scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f));
             }
             const int rightStickMode =
                 CVarGetInteger(CVAR_INPUT_VIEWER("RightStick.VisibilityMode"), STICK_MODE_ALWAYS_HIDDEN);
@@ -387,7 +387,7 @@ void InputViewer::DrawElement() {
                     ImVec2(aPos.x + maxRightStickDistance * ((float)(pads[0].right_stick_x) / MAX_AXIS_RANGE) * scale,
                            aPos.y - maxRightStickDistance * ((float)(pads[0].right_stick_y) / MAX_AXIS_RANGE) * scale));
                 ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Right-Stick"),
-                             scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, 255));
+                             scaledBGSize, ImVec2(0, 0), ImVec2(1.0f, 1.0f));
             }
 
             // Analog stick angle text
@@ -401,7 +401,7 @@ void InputViewer::DrawElement() {
                 ImGui::PushFont(ImGui::GetFont());
 
                 // Calculate polar R coordinate from X and Y angles, squared to avoid sqrt
-                const float rSquared = pads[0].stick_x * pads[0].stick_x + pads[0].stick_y * pads[0].stick_y;
+                const int32_t rSquared = pads[0].stick_x * pads[0].stick_x + pads[0].stick_y * pads[0].stick_y;
 
                 // ESS range
                 const int range1Min = CVarGetInteger(CVAR_INPUT_VIEWER("AnalogAngles.Range1.Min"), 8);

@@ -84,7 +84,7 @@ void func_800AA15C(void) {
     D_80160FD0.unk_104 = 2;
 }
 
-void func_800AA16C(void) {
+void Rumble_ClearRequests(void) {
     D_80160FD0.unk_104 = 0;
 }
 

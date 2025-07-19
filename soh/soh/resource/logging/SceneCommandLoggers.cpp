@@ -24,6 +24,7 @@
 #include "soh/resource/type/scenecommand/SetTransitionActorList.h"
 #include "soh/resource/type/scenecommand/SetWindSettings.h"
 #include "spdlog/spdlog.h"
+#include <tinyxml2.h>
 #include <string.h>
 
 namespace SOH {

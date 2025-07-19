@@ -23,10 +23,10 @@ class Hint {
     void FillGapsInData();
     void SetLocationsAsHinted() const;
     void NamesChosen();
-    uint8_t GetNumberOfMessages() const;
+    size_t GetNumberOfMessages() const;
     const std::vector<std::string> GetAllMessageStrings(MessageFormat format = MF_AUTO_FORMAT) const;
-    const CustomMessage GetHintMessage(MessageFormat format = MF_AUTO_FORMAT, uint8_t id = 0) const;
-    const HintText GetHintText(uint8_t id = 0) const;
+    const CustomMessage GetHintMessage(MessageFormat format = MF_AUTO_FORMAT, size_t id = 0) const;
+    const HintText GetHintText(size_t id = 0) const;
     oJson toJSON();
     void logHint(oJson& jsonData);
     const HintText GetItemHintText(uint8_t slot, bool mysterious = false) const;

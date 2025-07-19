@@ -2,6 +2,7 @@
 #include "soh/resource/type/scenecommand/SetExitList.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
+#include <tinyxml2.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource> SetExitListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,

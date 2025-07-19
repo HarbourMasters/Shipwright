@@ -10,14 +10,27 @@
 #include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <fstream>
+#include <soh/OTRGlobals.h>
 
+#include "3drando/shops.hpp"
 extern "C" {
-extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
 
 // generic grotto event list
 std::vector<EventAccess> grottoEvents;
+
+bool EventAccess::CheckConditionAtAgeTime(bool& age, bool& time) {
+    logic->IsChild = false;
+    logic->IsAdult = false;
+    logic->AtDay = false;
+    logic->AtNight = false;
+
+    time = true;
+    age = true;
+
+    return ConditionsMet();
+}
 
 // set the logic to be a specific age and time of day and see if the condition still holds
 bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
@@ -45,17 +58,71 @@ bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailab
         conditionsMet = true;
     }
 
-    return conditionsMet &&
-           (calculatingAvailableChecks || CanBuy()); // TODO: run CanBuy when price is known due to settings
+    return conditionsMet && CanBuy(calculatingAvailableChecks);
 }
 
-bool LocationAccess::CanBuy() const {
-    return CanBuyAnother(location);
+static uint16_t GetMinimumPrice(const Rando::Location* loc) {
+    extern PriceSettingsStruct shopsanityPrices;
+    extern PriceSettingsStruct scrubPrices;
+    extern PriceSettingsStruct merchantPrices;
+    PriceSettingsStruct priceSettings = loc->GetRCType() == RCTYPE_SHOP    ? shopsanityPrices
+                                        : loc->GetRCType() == RCTYPE_SCRUB ? scrubPrices
+                                                                           : merchantPrices;
+
+    auto ctx = Rando::Context::GetInstance();
+    switch (ctx->GetOption(priceSettings.main).Get()) {
+        case RO_PRICE_VANILLA:
+            return loc->GetVanillaPrice();
+        case RO_PRICE_CHEAP_BALANCED:
+            return 0;
+        case RO_PRICE_BALANCED:
+            return 0;
+        case RO_PRICE_FIXED:
+            return ctx->GetOption(priceSettings.fixedPrice).Get() * 5;
+        case RO_PRICE_RANGE: {
+            uint16_t range1 = ctx->GetOption(priceSettings.range1).Get() * 5;
+            uint16_t range2 = ctx->GetOption(priceSettings.range1).Get() * 5;
+            return range1 < range2 ? range1 : range2;
+        }
+        case RO_PRICE_SET_BY_WALLET: {
+            if (ctx->GetOption(priceSettings.noWallet).Get()) {
+                return 0;
+            } else if (ctx->GetOption(priceSettings.childWallet).Get()) {
+                return 1;
+            } else if (ctx->GetOption(priceSettings.adultWallet).Get()) {
+                return 100;
+            } else if (ctx->GetOption(priceSettings.giantWallet).Get()) {
+                return 201;
+            } else {
+                return 501;
+            }
+        }
+        default:
+            return 0;
+    }
+}
+
+bool LocationAccess::CanBuy(bool calculatingAvailableChecks) const {
+    const auto& loc = Rando::StaticData::GetLocation(location);
+    const auto& itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(location);
+
+    if (loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT) {
+        // Checks should only be identified while playing
+        if (calculatingAvailableChecks && itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
+            return CanBuyAnother(GetMinimumPrice(loc));
+        } else {
+            return CanBuyAnother(itemLoc->GetPrice());
+        }
+    }
+
+    return true;
 }
 
 bool CanBuyAnother(RandomizerCheck rc) {
-    uint16_t price = ctx->GetItemLocation(rc)->GetPrice();
+    return CanBuyAnother(ctx->GetItemLocation(rc)->GetPrice());
+}
 
+bool CanBuyAnother(uint16_t price) {
     if (price > 500) {
         return logic->HasItem(RG_TYCOON_WALLET);
     } else if (price > 200) {
@@ -68,18 +135,310 @@ bool CanBuyAnother(RandomizerCheck rc) {
     return true;
 }
 
+std::set<RandomizerArea> CalculateAreas(SceneID scene) {
+    switch (scene) {
+        case SCENE_DEKU_TREE:
+            return { RA_DEKU_TREE };
+        case SCENE_DODONGOS_CAVERN:
+            return { RA_DODONGOS_CAVERN };
+        case SCENE_JABU_JABU:
+            return { RA_JABU_JABUS_BELLY };
+        case SCENE_FOREST_TEMPLE:
+            return { RA_FOREST_TEMPLE };
+        case SCENE_FIRE_TEMPLE:
+            return { RA_FIRE_TEMPLE };
+        case SCENE_WATER_TEMPLE:
+            return { RA_WATER_TEMPLE };
+        case SCENE_SPIRIT_TEMPLE:
+            return { RA_SPIRIT_TEMPLE };
+        case SCENE_SHADOW_TEMPLE:
+            return { RA_SHADOW_TEMPLE };
+        case SCENE_BOTTOM_OF_THE_WELL:
+            return { RA_BOTTOM_OF_THE_WELL };
+        case SCENE_ICE_CAVERN:
+            return { RA_ICE_CAVERN };
+        case SCENE_INSIDE_GANONS_CASTLE:
+            return { RA_GANONS_CASTLE };
+        case SCENE_GERUDO_TRAINING_GROUND:
+            return { RA_GERUDO_TRAINING_GROUND };
+        case SCENE_THIEVES_HIDEOUT:
+        case SCENE_GERUDOS_FORTRESS:
+            return { RA_GERUDO_FORTRESS };
+        case SCENE_MARKET_ENTRANCE_DAY:
+        case SCENE_MARKET_ENTRANCE_NIGHT:
+        case SCENE_MARKET_ENTRANCE_RUINS:
+        case SCENE_BACK_ALLEY_DAY:
+        case SCENE_BACK_ALLEY_NIGHT:
+        case SCENE_MARKET_DAY:
+        case SCENE_MARKET_NIGHT:
+        case SCENE_MARKET_RUINS:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS:
+            return { RA_THE_MARKET };
+        case SCENE_TEMPLE_OF_TIME:
+            return { RA_TEMPLE_OF_TIME };
+        case SCENE_HYRULE_FIELD:
+            return { RA_HYRULE_FIELD };
+        case SCENE_KAKARIKO_VILLAGE:
+            return { RA_KAKARIKO_VILLAGE };
+        case SCENE_GRAVEYARD:
+            return { RA_THE_GRAVEYARD };
+        case SCENE_ZORAS_RIVER:
+            return { RA_ZORAS_RIVER };
+        case SCENE_KOKIRI_FOREST:
+            return { RA_KOKIRI_FOREST };
+        case SCENE_SACRED_FOREST_MEADOW:
+            return { RA_SACRED_FOREST_MEADOW };
+        case SCENE_LAKE_HYLIA:
+            return { RA_LAKE_HYLIA };
+        case SCENE_ZORAS_DOMAIN:
+            return { RA_ZORAS_DOMAIN };
+        case SCENE_ZORAS_FOUNTAIN:
+            return { RA_ZORAS_FOUNTAIN };
+        case SCENE_GERUDO_VALLEY:
+            return { RA_GERUDO_VALLEY };
+        case SCENE_LOST_WOODS:
+            return { RA_THE_LOST_WOODS };
+        case SCENE_DESERT_COLOSSUS:
+            return { RA_DESERT_COLOSSUS };
+        case SCENE_HAUNTED_WASTELAND:
+            return { RA_HAUNTED_WASTELAND };
+        case SCENE_HYRULE_CASTLE:
+            return { RA_HYRULE_CASTLE };
+        case SCENE_DEATH_MOUNTAIN_TRAIL:
+            return { RA_DEATH_MOUNTAIN_TRAIL };
+        case SCENE_DEATH_MOUNTAIN_CRATER:
+            return { RA_DEATH_MOUNTAIN_CRATER };
+        case SCENE_GORON_CITY:
+            return { RA_GORON_CITY };
+        case SCENE_LON_LON_RANCH:
+            return { RA_LON_LON_RANCH };
+        case SCENE_OUTSIDE_GANONS_CASTLE:
+            return { RA_OUTSIDE_GANONS_CASTLE };
+        case SCENE_TREASURE_BOX_SHOP:
+        case SCENE_DEKU_TREE_BOSS:
+        case SCENE_DODONGOS_CAVERN_BOSS:
+        case SCENE_JABU_JABU_BOSS:
+        case SCENE_FOREST_TEMPLE_BOSS:
+        case SCENE_FIRE_TEMPLE_BOSS:
+        case SCENE_WATER_TEMPLE_BOSS:
+        case SCENE_SPIRIT_TEMPLE_BOSS:
+        case SCENE_SHADOW_TEMPLE_BOSS:
+        case SCENE_GANONS_TOWER:
+        case SCENE_GANONDORF_BOSS:
+        case SCENE_KNOW_IT_ALL_BROS_HOUSE:
+        case SCENE_TWINS_HOUSE:
+        case SCENE_MIDOS_HOUSE:
+        case SCENE_SARIAS_HOUSE:
+        case SCENE_KAKARIKO_CENTER_GUEST_HOUSE:
+        case SCENE_BACK_ALLEY_HOUSE:
+        case SCENE_BAZAAR:
+        case SCENE_KOKIRI_SHOP:
+        case SCENE_GORON_SHOP:
+        case SCENE_ZORA_SHOP:
+        case SCENE_POTION_SHOP_KAKARIKO:
+        case SCENE_POTION_SHOP_MARKET:
+        case SCENE_BOMBCHU_SHOP:
+        case SCENE_HAPPY_MASK_SHOP:
+        case SCENE_LINKS_HOUSE:
+        case SCENE_DOG_LADY_HOUSE:
+        case SCENE_STABLE:
+        case SCENE_IMPAS_HOUSE:
+        case SCENE_LAKESIDE_LABORATORY:
+        case SCENE_CARPENTERS_TENT:
+        case SCENE_GRAVEKEEPERS_HUT:
+        case SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC:
+        case SCENE_FAIRYS_FOUNTAIN:
+        case SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS:
+        case SCENE_GROTTOS:
+        case SCENE_REDEAD_GRAVE:
+        case SCENE_GRAVE_WITH_FAIRYS_FOUNTAIN:
+        case SCENE_ROYAL_FAMILYS_TOMB:
+        case SCENE_SHOOTING_GALLERY:
+        case SCENE_CASTLE_COURTYARD_GUARDS_DAY:
+        case SCENE_CASTLE_COURTYARD_GUARDS_NIGHT:
+        case SCENE_WINDMILL_AND_DAMPES_GRAVE:
+        case SCENE_FISHING_POND:
+        case SCENE_CASTLE_COURTYARD_ZELDA:
+        case SCENE_BOMBCHU_BOWLING_ALLEY:
+        case SCENE_LON_LON_BUILDINGS:
+        case SCENE_MARKET_GUARD_HOUSE:
+        case SCENE_POTION_SHOP_GRANNY:
+        case SCENE_HOUSE_OF_SKULLTULA:
+        case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
+        case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
+        case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
+        case SCENE_GANON_BOSS:
+        case SCENE_ID_MAX:
+            return {};
+        case SCENE_CHAMBER_OF_THE_SAGES:
+        case SCENE_CUTSCENE_MAP:
+        case SCENE_TEST01:
+        case SCENE_BESITU:
+        case SCENE_DEPTH_TEST:
+        case SCENE_SYOTES:
+        case SCENE_SYOTES2:
+        case SCENE_SUTARU:
+        case SCENE_HAIRAL_NIWA2:
+        case SCENE_SASATEST:
+        case SCENE_TESTROOM:
+        default:
+            assert(false);
+            return {};
+    }
+}
+
+bool GetTimePassFromScene(SceneID scene) {
+    switch (scene) {
+        case SCENE_DEKU_TREE:
+        case SCENE_DODONGOS_CAVERN:
+        case SCENE_JABU_JABU:
+        case SCENE_FOREST_TEMPLE:
+        case SCENE_FIRE_TEMPLE:
+        case SCENE_WATER_TEMPLE:
+        case SCENE_SPIRIT_TEMPLE:
+        case SCENE_SHADOW_TEMPLE:
+        case SCENE_BOTTOM_OF_THE_WELL:
+        case SCENE_ICE_CAVERN:
+        case SCENE_GANONS_TOWER:
+        case SCENE_GERUDO_TRAINING_GROUND:
+        case SCENE_THIEVES_HIDEOUT:
+        case SCENE_INSIDE_GANONS_CASTLE:
+        case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
+        case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
+        case SCENE_TREASURE_BOX_SHOP:
+        case SCENE_DEKU_TREE_BOSS:
+        case SCENE_DODONGOS_CAVERN_BOSS:
+        case SCENE_JABU_JABU_BOSS:
+        case SCENE_FOREST_TEMPLE_BOSS:
+        case SCENE_FIRE_TEMPLE_BOSS:
+        case SCENE_WATER_TEMPLE_BOSS:
+        case SCENE_SPIRIT_TEMPLE_BOSS:
+        case SCENE_SHADOW_TEMPLE_BOSS:
+        case SCENE_GANONDORF_BOSS:
+        case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
+        case SCENE_MARKET_ENTRANCE_DAY:
+        case SCENE_MARKET_ENTRANCE_NIGHT:
+        case SCENE_MARKET_ENTRANCE_RUINS:
+        case SCENE_BACK_ALLEY_DAY:
+        case SCENE_BACK_ALLEY_NIGHT:
+        case SCENE_MARKET_DAY:
+        case SCENE_MARKET_NIGHT:
+        case SCENE_MARKET_RUINS:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS:
+        case SCENE_KNOW_IT_ALL_BROS_HOUSE:
+        case SCENE_TWINS_HOUSE:
+        case SCENE_MIDOS_HOUSE:
+        case SCENE_SARIAS_HOUSE:
+        case SCENE_KAKARIKO_CENTER_GUEST_HOUSE:
+        case SCENE_BACK_ALLEY_HOUSE:
+        case SCENE_BAZAAR:
+        case SCENE_KOKIRI_SHOP:
+        case SCENE_GORON_SHOP:
+        case SCENE_ZORA_SHOP:
+        case SCENE_POTION_SHOP_KAKARIKO:
+        case SCENE_POTION_SHOP_MARKET:
+        case SCENE_BOMBCHU_SHOP:
+        case SCENE_HAPPY_MASK_SHOP:
+        case SCENE_LINKS_HOUSE:
+        case SCENE_DOG_LADY_HOUSE:
+        case SCENE_STABLE:
+        case SCENE_IMPAS_HOUSE:
+        case SCENE_LAKESIDE_LABORATORY:
+        case SCENE_CARPENTERS_TENT:
+        case SCENE_GRAVEKEEPERS_HUT:
+        case SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC:
+        case SCENE_FAIRYS_FOUNTAIN:
+        case SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS:
+        case SCENE_GROTTOS:
+        case SCENE_REDEAD_GRAVE:
+        case SCENE_GRAVE_WITH_FAIRYS_FOUNTAIN:
+        case SCENE_ROYAL_FAMILYS_TOMB:
+        case SCENE_SHOOTING_GALLERY:
+        case SCENE_TEMPLE_OF_TIME:
+        case SCENE_CHAMBER_OF_THE_SAGES:
+        case SCENE_CASTLE_COURTYARD_GUARDS_DAY:
+        case SCENE_CASTLE_COURTYARD_GUARDS_NIGHT:
+        case SCENE_CUTSCENE_MAP:
+        case SCENE_WINDMILL_AND_DAMPES_GRAVE:
+        case SCENE_CASTLE_COURTYARD_ZELDA:
+        case SCENE_BOMBCHU_BOWLING_ALLEY:
+        case SCENE_LON_LON_BUILDINGS:
+        case SCENE_MARKET_GUARD_HOUSE:
+        case SCENE_POTION_SHOP_GRANNY:
+        case SCENE_GANON_BOSS:
+        case SCENE_HOUSE_OF_SKULLTULA:
+        case SCENE_KOKIRI_FOREST:
+        case SCENE_SACRED_FOREST_MEADOW:
+        case SCENE_LOST_WOODS:
+        case SCENE_GORON_CITY:
+        case SCENE_OUTSIDE_GANONS_CASTLE:
+        case SCENE_GRAVEYARD:
+        case SCENE_ZORAS_DOMAIN:
+        case SCENE_ZORAS_FOUNTAIN:
+        case SCENE_GERUDOS_FORTRESS:
+        case SCENE_HAUNTED_WASTELAND:
+        case SCENE_DEATH_MOUNTAIN_CRATER:
+        case SCENE_ID_MAX:
+            return false;
+
+        // Time does pass in the fishing pond but it's
+        // extremely slow (more than 2 IRL seconds per in-game minute)
+        // maybe in the future there could be a trick to count it
+        case SCENE_FISHING_POND:
+            return false;
+
+        case SCENE_HYRULE_FIELD:
+        case SCENE_KAKARIKO_VILLAGE:
+        case SCENE_ZORAS_RIVER:
+        case SCENE_LAKE_HYLIA:
+        case SCENE_GERUDO_VALLEY:
+        case SCENE_DESERT_COLOSSUS:
+        case SCENE_HYRULE_CASTLE:
+        case SCENE_DEATH_MOUNTAIN_TRAIL:
+        case SCENE_LON_LON_RANCH:
+            return true;
+
+        case SCENE_TEST01:
+        case SCENE_BESITU:
+        case SCENE_DEPTH_TEST:
+        case SCENE_SYOTES:
+        case SCENE_SYOTES2:
+        case SCENE_SUTARU:
+        case SCENE_HAIRAL_NIWA2:
+        case SCENE_SASATEST:
+        case SCENE_TESTROOM:
+        default:
+            assert(false);
+            return false;
+    }
+}
+
 Region::Region() = default;
-Region::Region(std::string regionName_, std::string scene_, std::set<RandomizerArea> areas, bool timePass_,
+Region::Region(std::string regionName_, SceneID scene_, bool timePass_, std::set<RandomizerArea> areas,
                std::vector<EventAccess> events_, std::vector<LocationAccess> locations_,
                std::list<Rando::Entrance> exits_)
-    : regionName(std::move(regionName_)), scene(std::move(scene_)), areas(areas), timePass(timePass_),
-      events(std::move(events_)), locations(std::move(locations_)), exits(std::move(exits_)) {
+    : regionName(std::move(regionName_)), scene(scene_), timePass(timePass_), areas(areas), events(std::move(events_)),
+      locations(std::move(locations_)), exits(std::move(exits_)) {
+}
+Region::Region(std::string regionName_, SceneID scene_, std::vector<EventAccess> events_,
+               std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_)
+    : regionName(std::move(regionName_)), scene(scene_), timePass(GetTimePassFromScene(scene_)),
+      areas(CalculateAreas(scene_)), events(std::move(events_)), locations(std::move(locations_)),
+      exits(std::move(exits_)) {
 }
 
 Region::~Region() = default;
 
+bool Region::TimePass() {
+    return timePass;
+}
+
 void Region::ApplyTimePass() {
-    if (timePass) {
+    if (TimePass()) {
         StartPerformanceTimer(PT_TOD_ACCESS);
         if (Child()) {
             childDay = true;
@@ -119,7 +478,7 @@ bool Region::UpdateEvents() {
 }
 
 void Region::AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition) {
-    Rando::Entrance newExit = Rando::Entrance(newExitKey, { condition });
+    Rando::Entrance newExit = Rando::Entrance(newExitKey, condition);
     newExit.SetParentRegion(parentKey);
     exits.push_front(newExit);
 }
@@ -204,6 +563,110 @@ void Region::ResetVariables() {
     }
 }
 
+/*
+ * This logic covers checks that exist in the shared areas of MQ spirit from a glitchless standpoint.
+ * This room has Quantum logic that I am currently handling with this function, however this is NOT suitable for
+ glitch logic as it relies on specific ages
+ * In this chunk there are 3 possibilities for passing a check, but first I have to talk about parallel universes.
+
+ * In MQ Spirit key logic, we mostly care about 2 possibilities for how the player can spend keys, creating 2
+ Parralel universes
+ * In the first universe, the player did not enter spirit as adult until after climbing as child, thus child spends
+ keys linearly, only needing 2 to reach statue room.
+ * In the second universe, the player went in as adult, possibly out of logic, and started wasting the keys to lock
+ child out.
+ * These Universes converge when the player has 7 keys (meaning adult can no longer lock child out) and adult is
+ known to be able to reach Statue room. This creates "Certain Access", which is tracked seperatly for each age.
+ * Child Certain Access is simple, if we have 7 keys and child access, it's Certain Access.
+ * Adult Certain Access is also simple, adult is not key locked, so if they make it to a location, it's Certain
+ Access.
+ * Things get complicated when we handle the overlap of the 2 universes,
+ * though an important detail is that if we have Certain Access as either age, we don't need to checked the overlap
+ because overlap logic is strictly stricter than either Certain Access.
+
+ * In order to track the first universe, the logic allows technical child access with the minimum number of keys,
+ and then checks in this function for if we have 7 keys to determine if that is Certain or not.
+ * This is for technical reasons, as areas with no access at all will simply not be checked.
+ * Normally we would need to do similar shenanigans to track the second universe, however adult must have go through
+ statue room to waste keys,
+ * so can go back there and get new keys for Child to use if they do, and the navigation logic for shared MQ spirit
+ from Statue Room is very simple for Adult.
+ * Additionally, we don't need to know if adult can actually reach spirit temple or climb to statue room, because if
+ the player can't do that, then universe 2 can't happen anyway,
+ * and if the player does so out of logic, they can do it again, as the only consumable used sets a permanent flag.
+
+ * The Adult Navigation logic is as such:
+ * - Broken Wall room is 6 key locked, because if the player tries to spend 6 keys in a way that would block adults
+ access, they would have to give child access instead.
+ * - The child side hammer switch for the time travelling chest is 7 key locked for adult
+ * - Reaching gauntlets hand is 7 key locked
+ * - Going back into big block room is complex, but the only check there is child only so not a concern
+ * - Everything else is possible with basic adult movement, or is impossible for child to reach glitchlessly
+ * Anything 7 key locked does not need to be checked as shared, as all child access is Certain and because of this
+ workaround we don't need to fake Adult access, meaning that is also Certain.
+ * All of this combined means that when checking if adult can reach a location in universe 2, we only have to ask if
+ it is a 6 key locked location or not.
+
+ * Knowing all of this this, we can confirm things are logical in 3 different ways:
+ * - If we have Adult Access, we know it is Certain Access, so they can get checks alone.
+ * - If we have 7 keys, child has Certain Access as we know they cannot be locked out, so can get checks alone,
+ otherwise we check the logical overlap
+ * - If Child and Adult can get the check (ignoring actual adult access to the location), and the location is either
+ not 6 key locked or we have 6 keys, we can get the check with the overlap
+ */
+bool Region::MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAge) {
+    // if we have Certain Access as child, we can check anyAge and if true, resolve a condition with Here as if
+    // adult is here it's also Certain Access
+    if (logic->SmallKeys(RR_SPIRIT_TEMPLE, 7)) {
+        if (anyAge) {
+            return Here(condition);
+        }
+        return condition();
+        // else, if we are here as adult, we have Certain Access from that and don't need special handling for
+        // checking adult
+    } else if (Adult() && logic->IsAdult) {
+        return condition();
+        // if we do not have Certain Access, we need to check the overlap by seeing if we are both here as child and
+        // meet the adult universe's access condition We only need to do it as child, as only child access matters
+        // for this check, as adult access is assumed based on keys
+    } else if (Child() && logic->IsChild && (!IsBrokenWall || logic->SmallKeys(RR_SPIRIT_TEMPLE, 6))) {
+        bool result = false;
+        // store current age variables
+        bool pastAdult = logic->IsAdult;
+        bool pastChild = logic->IsChild;
+
+        // First check if the check is possible as child
+        logic->IsChild = true;
+        logic->IsAdult = false;
+        result = condition();
+        // If so, check again as adult. both have to be true for result to be true
+        if (result) {
+            logic->IsChild = false;
+            logic->IsAdult = true;
+            result = condition();
+        }
+
+        // set back age variables
+        logic->IsChild = pastChild;
+        logic->IsAdult = pastAdult;
+        return result;
+    }
+    return false;
+}
+
+void Region::printAgeTimeAccess() {
+    auto message = "Child Day:   " + std::to_string(childDay) +
+                   "\t"
+                   "Child Night: " +
+                   std::to_string(childNight) +
+                   "\t"
+                   "Adult Day:   " +
+                   std::to_string(adultDay) +
+                   "\t"
+                   "Adult Night: " +
+                   std::to_string(adultNight);
+}
+
 std::array<Region, RR_MAX> areaTable;
 
 bool Here(const RandomizerRegion region, ConditionFn condition) {
@@ -267,6 +730,7 @@ bool BeanPlanted(const RandomizerRegion region) {
         default:
             sceneID = SCENE_ID_MAX;
             swchFlag = 0;
+            assert(false);
             break;
     }
 
@@ -275,7 +739,7 @@ bool BeanPlanted(const RandomizerRegion region) {
     if (gPlayState != nullptr && gPlayState->sceneNum == sceneID) {
         swch = gPlayState->actorCtx.flags.swch;
     } else if (sceneID != SCENE_ID_MAX) {
-        swch = gSaveContext.sceneFlags[sceneID].swch;
+        swch = Rando::Context::GetInstance()->GetLogic()->GetSaveContext()->sceneFlags[sceneID].swch;
     } else {
         swch = 0;
     }
@@ -312,21 +776,23 @@ void RegionTable_Init() {
     logic = ctx->GetLogic(); // RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
     grottoEvents = {
         EventAccess(&logic->GossipStoneFairy, [] { return logic->CallGossipFairy(); }),
-        EventAccess(&logic->ButterflyFairy, [] { return logic->ButterflyFairy || (logic->CanUse(RG_STICKS)); }),
+        EventAccess(&logic->ButterflyFairy, [] { return logic->CanUse(RG_STICKS); }),
         EventAccess(&logic->BugShrub, [] { return logic->CanCutShrubs(); }),
         EventAccess(&logic->LoneFish, [] { return true; }),
     };
     // Clear the array from any previous playthrough attempts. This is important so that
     // locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
-    areaTable.fill(Region("Invalid Region", "Invalid Region", {}, NO_DAY_NIGHT_CYCLE, {}, {}, {}));
+    areaTable.fill(Region("Invalid Region", SCENE_ID_MAX, {}, {}, {}));
 
     // clang-format off
-    areaTable[RR_ROOT] = Region("Root", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_ROOT] = Region("Root", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {
         //Events
-        EventAccess(&logic->KakarikoVillageGateOpen, []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
-        //The big poes bottle softlock safety check does not account for the guard house lock if the guard house is not shuffled, so the key is needed before we can safely allow bottle use in logic
-        //RANDOTODO a setting that lets you drink/dump big poes so we don't need this logic
-        EventAccess(&logic->CouldEmptyBigPoes,       []{return !ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) || logic->CanOpenOverworldDoor(RG_GUARD_HOUSE_KEY);}),
+        EventAccess(&logic->KakarikoVillageGateOpen,        []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
+        EventAccess(&logic->THCouldFree1TorchCarpenter,     []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);}),
+        EventAccess(&logic->THCouldFreeDoubleCellCarpenter, []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
+        EventAccess(&logic->TH_CouldFreeDeadEndCarpenter,   []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
+        EventAccess(&logic->THCouldRescueSlopeCarpenter,    []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
+        EventAccess(&logic->THRescuedAllCarpenters,         []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);}),
     }, {
         //Locations
         LOCATION(RC_LINKS_POCKET,       true),
@@ -337,54 +803,54 @@ void RegionTable_Init() {
         Entrance(RR_ROOT_EXITS, []{return true;}),
     });
 
-    areaTable[RR_ROOT_EXITS] = Region("Root Exits", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_ROOT_EXITS] = Region("Root Exits", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_CHILD_SPAWN,             []{return logic->IsChild;}),
         Entrance(RR_ADULT_SPAWN,             []{return logic->IsAdult;}),
         Entrance(RR_MINUET_OF_FOREST_WARP,   []{return logic->CanUse(RG_MINUET_OF_FOREST);}),
-        Entrance(RR_BOLERO_OF_FIRE_WARP,     []{return logic->CanUse(RG_BOLERO_OF_FIRE)     && logic->CanLeaveForest();}),
-        Entrance(RR_SERENADE_OF_WATER_WARP,  []{return logic->CanUse(RG_SERENADE_OF_WATER)  && logic->CanLeaveForest();}),
-        Entrance(RR_NOCTURNE_OF_SHADOW_WARP, []{return logic->CanUse(RG_NOCTURNE_OF_SHADOW) && logic->CanLeaveForest();}),
-        Entrance(RR_REQUIEM_OF_SPIRIT_WARP,  []{return logic->CanUse(RG_REQUIEM_OF_SPIRIT)  && logic->CanLeaveForest();}),
-        Entrance(RR_PRELUDE_OF_LIGHT_WARP,   []{return logic->CanUse(RG_PRELUDE_OF_LIGHT)   && logic->CanLeaveForest();}),
+        Entrance(RR_BOLERO_OF_FIRE_WARP,     []{return logic->CanUse(RG_BOLERO_OF_FIRE);}),
+        Entrance(RR_SERENADE_OF_WATER_WARP,  []{return logic->CanUse(RG_SERENADE_OF_WATER);}),
+        Entrance(RR_NOCTURNE_OF_SHADOW_WARP, []{return logic->CanUse(RG_NOCTURNE_OF_SHADOW);}),
+        Entrance(RR_REQUIEM_OF_SPIRIT_WARP,  []{return logic->CanUse(RG_REQUIEM_OF_SPIRIT);}),
+        Entrance(RR_PRELUDE_OF_LIGHT_WARP,   []{return logic->CanUse(RG_PRELUDE_OF_LIGHT);}),
     });
 
-    areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_KF_LINKS_HOUSE, []{return true;}),
     });
 
-    areaTable[RR_ADULT_SPAWN] = Region("Adult Spawn", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_ADULT_SPAWN] = Region("Adult Spawn", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
     });
 
-    areaTable[RR_MINUET_OF_FOREST_WARP] = Region("Minuet of Forest Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_MINUET_OF_FOREST_WARP] = Region("Minuet of Forest Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_SACRED_FOREST_MEADOW, []{return true;}),
     });
 
-    areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_DMC_CENTRAL_LOCAL, []{return true;}),
     });
 
-    areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_LAKE_HYLIA, []{return true;}),
     });
 
-    areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Region("Requiem of Spirit Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Region("Requiem of Spirit Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_DESERT_COLOSSUS, []{return true;}),
     });
 
-    areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Region("Nocturne of Shadow Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Region("Nocturne of Shadow Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_GRAVEYARD_WARP_PAD_REGION, []{return true;}),
     });
 
-    areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Region("Prelude of Light Warp", "", {RA_LINKS_POCKET}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Region("Prelude of Light Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
         Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
     });
@@ -411,6 +877,7 @@ void RegionTable_Init() {
     RegionTable_Init_ZorasFountain();
     RegionTable_Init_GerudoValley();
     RegionTable_Init_GerudoFortress();
+    RegionTable_Init_ThievesHideout();
     RegionTable_Init_HauntedWasteland();
     RegionTable_Init_DesertColossus();
     // Dungeons
@@ -480,17 +947,17 @@ std::string CleanCheckConditionString(std::string condition) {
 }
 
 namespace Regions {
-const auto GetAllRegions() {
+auto GetAllRegions() {
     static const size_t regionCount = RR_MAX - (RR_NONE + 1);
 
     static std::array<RandomizerRegion, regionCount> allRegions = {};
 
-    static bool intialized = false;
-    if (!intialized) {
+    static bool initialized = false;
+    if (!initialized) {
         for (size_t i = 0; i < regionCount; i++) {
             allRegions[i] = (RandomizerRegion)((RR_NONE + 1) + i);
         }
-        intialized = true;
+        initialized = true;
     }
 
     return allRegions;
@@ -547,7 +1014,7 @@ void ResetAllLocations() {
 bool HasTimePassAccess(uint8_t age) {
     for (const RandomizerRegion regionKey : GetAllRegions()) {
         auto region = RegionTable(regionKey);
-        if (region->timePass &&
+        if (region->TimePass() &&
             ((age == RO_AGE_CHILD && region->Child()) || (age == RO_AGE_ADULT && region->Adult()))) {
             return true;
         }
@@ -627,13 +1094,10 @@ std::vector<Rando::Entrance*> GetShuffleableEntrances(Rando::EntranceType type, 
     return entrancesToShuffle;
 }
 
-// Get the specific entrance by name
-Rando::Entrance* GetEntrance(const std::string name) {
-    for (RandomizerRegion region : Regions::GetAllRegions()) {
-        for (auto& exit : RegionTable(region)->exits) {
-            if (exit.GetName() == name) {
-                return &exit;
-            }
+Rando::Entrance* GetEntrance(RandomizerRegion source, RandomizerRegion destination) {
+    for (auto& exit : RegionTable(source)->exits) {
+        if (exit.GetOriginalConnectedRegionKey() == destination) {
+            return &exit;
         }
     }
 

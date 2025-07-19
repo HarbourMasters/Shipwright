@@ -1595,7 +1595,7 @@ void func_8086318C(EnTest* this, PlayState* play) {
 
 void EnTest_SetupRecoil(EnTest* this) {
     this->meleeWeaponState = 0;
-    this->skelAnime.moveFlags = 2;
+    this->skelAnime.movementFlags = 2;
     this->unk_7C8 = 0x13;
     this->skelAnime.playSpeed = -1.0f;
     this->skelAnime.startFrame = this->skelAnime.curFrame;
