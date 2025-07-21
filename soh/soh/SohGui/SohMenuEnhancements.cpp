@@ -463,7 +463,7 @@ void SohMenu::AddMenuEnhancements() {
         .Options(IntSliderOptions().Min(0).Max(5).DefaultValue(0).Format("+%d"));
     AddWidget(path, "Crawl Speed %dx", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("CrawlSpeed"))
-        .Options(IntSliderOptions().Min(1).Max(4).DefaultValue(1).Format("%dx"));
+        .Options(IntSliderOptions().Min(1).Max(5).DefaultValue(1).Format("%dx"));
     AddWidget(path, "Exclude Glitch-Aiding Crawlspaces", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("GlitchAidingCrawlspaces"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 0) == 1; })
