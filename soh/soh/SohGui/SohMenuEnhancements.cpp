@@ -272,7 +272,7 @@ void SohMenu::AddMenuEnhancements() {
             info.options->disabled =
                 IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_JABU_OPEN).Is(RO_JABU_OPEN);
             info.options->disabledTooltip =
-                "This setting is disabled because a randomizer savefile with \"Jabu-Jaby: Open\" is loaded.";
+                "This setting is disabled because a randomizer savefile with \"Jabu-Jabu: Open\" is loaded.";
         })
         .Options(CheckboxOptions().Tooltip("Allow Link to enter Jabu-Jabu without feeding him a fish."));
 
