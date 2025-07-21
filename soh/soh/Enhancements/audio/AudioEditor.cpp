@@ -298,9 +298,12 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
 
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        ImGui::TextColored(
-            UIWidgets::ColorValues.at(isCurrentlyPlaying ? UIWidgets::Colors::Yellow : UIWidgets::Colors::White), "%s",
-            seqData.label.c_str());
+        if (isCurrentlyPlaying) {
+            ImGui::TextColored(UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow), "%s %s", ICON_FA_PLAY,
+                               seqData.label.c_str());
+        } else {
+            ImGui::Text("%s", seqData.label.c_str());
+        }
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(-FLT_MIN);
         const int initialValue = map.contains(currentValue) ? currentValue : defaultValue;
