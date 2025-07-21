@@ -1,0 +1,62 @@
+def RR_LON_LON_RANCH SCENE_LON_LON_RANCH true RA_LON_LON_RANCH
+Lon Lon Ranch
+//Events
+FreedEpona (and (or (HasItem RG_CHILD_WALLET) RSK_SKIP_EPONA_RACE) (and (CanUse RG_EPONAS_SONG) (and IsAdult AtDay)))
+LinksCow (and (HasItem RG_CHILD_WALLET) (and (CanUse RG_EPONAS_SONG) (and IsAdult AtDay)))
+//Checks
+RC_SONG_FROM_MALON (and IsChild (and (HasItem RG_ZELDAS_LETTER) (and (HasItem RG_FAIRY_OCARINA) AtDay)))
+RC_LLR_GS_TREE IsChild
+RC_LLR_GS_RAIN_SHED (and IsChild CanGetNightTimeGS)
+RC_LLR_GS_HOUSE_WINDOW (and IsChild (and HookshotOrBoomerang CanGetNightTimeGS))
+RC_LLR_GS_BACK_WALL (and IsChild (and HookshotOrBoomerang CanGetNightTimeGS))
+RC_LLR_FRONT_POT_1 (and IsChild CanBreakPots)
+RC_LLR_FRONT_POT_2 (and IsChild CanBreakPots)
+RC_LLR_FRONT_POT_3 (and IsChild CanBreakPots)
+RC_LLR_FRONT_POT_4 (and IsChild CanBreakPots)
+RC_LLR_RAIN_SHED_POT_1 (and IsChild CanBreakPots)
+RC_LLR_RAIN_SHED_POT_2 (and IsChild CanBreakPots)
+RC_LLR_RAIN_SHED_POT_3 (and IsChild CanBreakPots)
+RC_LLR_NEAR_TREE_CRATE (and IsChild CanBreakCrates)
+//Exits
+RR_HYRULE_FIELD true
+RR_LLR_TALONS_HOUSE (CanOpenOverworldDoor RG_TALONS_HOUSE_KEY)
+RR_LLR_STABLES (CanOpenOverworldDoor RG_STABLES_KEY)
+RR_LLR_TOWER (CanOpenOverworldDoor RG_BACK_TOWER_KEY)
+RR_LLR_GROTTO IsChild
+
+def RR_LLR_TALONS_HOUSE SCENE_LON_LON_BUILDINGS false
+LLR Talons House
+//Checks
+RC_LLR_TALONS_CHICKENS (and (HasItem RG_CHILD_WALLET) (and IsChild (and AtDay (HasItem RG_ZELDAS_LETTER))))
+RC_LLR_TALONS_HOUSE_POT_1 CanBreakPots
+RC_LLR_TALONS_HOUSE_POT_2 CanBreakPots
+RC_LLR_TALONS_HOUSE_POT_3 CanBreakPots
+//Exits
+RR_LON_LON_RANCH true
+
+def RR_LLR_STABLES SCENE_STABLE false
+LLR Stables
+//Checks
+RC_LLR_STABLES_LEFT_COW (CanUse RG_EPONAS_SONG)
+RC_LLR_STABLES_RIGHT_COW (CanUse RG_EPONAS_SONG)
+//Exits
+RR_LON_LON_RANCH true
+
+def RR_LLR_TOWER SCENE_LON_LON_BUILDINGS false
+LLR Tower
+//Checks
+RC_LLR_FREESTANDING_POH IsChild
+RC_LLR_TOWER_LEFT_COW (CanUse RG_EPONAS_SONG)
+RC_LLR_TOWER_RIGHT_COW (CanUse RG_EPONAS_SONG)
+//Exits
+RR_LON_LON_RANCH true
+
+def RR_LLR_GROTTO SCENE_GROTTOS false
+LLR Grotto
+//Checks
+RC_LLR_DEKU_SCRUB_GROTTO_LEFT CanStunDeku
+RC_LLR_DEKU_SCRUB_GROTTO_RIGHT CanStunDeku
+RC_LLR_DEKU_SCRUB_GROTTO_CENTER CanStunDeku
+RC_LLR_GROTTO_BEEHIVE CanBreakUpperBeehives
+//Exits
+RR_LON_LON_RANCH true

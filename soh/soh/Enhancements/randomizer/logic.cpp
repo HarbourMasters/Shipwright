@@ -1366,80 +1366,17 @@ bool Logic::CanTriggerLACS() {
            (ctx->LACSCondition() == RO_LACS_TOKENS && GetGSCount() >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get());
 }
 
-bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount) {
-    return SmallKeys(dungeon, requiredAmount, requiredAmount);
-}
-
-bool Logic::SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched) {
+bool Logic::SmallKeys(s16 scene, uint8_t requiredAmount) {
     if (HasItem(RG_SKELETON_KEY)) {
         return true;
     }
-    switch (dungeon) {
-        case RR_FOREST_TEMPLE:
-            /*if (IsGlitched && (GetDifficultyValueFromString(GlitchHookshotJump_Boots) >=
-            static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHoverBoost) >=
-            static_cast<uint8_t>(GlitchDifficulty::NOVICE) || (GetDifficultyValueFromString(GlitchHover) >=
-            static_cast<uint8_t>(GlitchDifficulty::NOVICE) && GetDifficultyValueFromString(GlitchISG) >=
-            static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE)))) { return ForestTempleKeys >= requiredAmountGlitched;
-            }*/
-            return GetSmallKeyCount(SCENE_FOREST_TEMPLE) >= requiredAmountGlitchless;
+    return GetSmallKeyCount(scene) >= requiredAmount;
+}
 
-        case RR_FIRE_TEMPLE:
-            /*if (IsGlitched && (GetDifficultyValueFromString(GlitchLedgeClip) >=
-            static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHover) >=
-            static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE))) { return FireTempleKeys >= requiredAmountGlitched;
-            }*/
-            // If the Fire Temple loop lock is removed, Small key Count is set to 1 before starting
-            return GetSmallKeyCount(SCENE_FIRE_TEMPLE) >= requiredAmountGlitchless;
-
-        case RR_WATER_TEMPLE:
-            /*if (IsGlitched && (false)) {
-                return WaterTempleKeys >= requiredAmountGlitched;
-            }*/
-            return GetSmallKeyCount(SCENE_WATER_TEMPLE) >= requiredAmountGlitchless;
-
-        case RR_SPIRIT_TEMPLE:
-            /*if (IsGlitched && (false)) {
-                return SpiritTempleKeys >= requiredAmountGlitched;
-            }*/
-            return GetSmallKeyCount(SCENE_SPIRIT_TEMPLE) >= requiredAmountGlitchless;
-
-        case RR_SHADOW_TEMPLE:
-            /*if (IsGlitched && (GetDifficultyValueFromString(GlitchHookshotClip) >=
-            static_cast<uint8_t>(GlitchDifficulty::NOVICE))) { return ShadowTempleKeys >= requiredAmountGlitched;
-            }*/
-            return GetSmallKeyCount(SCENE_SHADOW_TEMPLE) >= requiredAmountGlitchless;
-
-        case RR_BOTTOM_OF_THE_WELL:
-            /*if (IsGlitched && (false)) {
-                return BottomOfTheWellKeys >= requiredAmountGlitched;
-            }*/
-            return GetSmallKeyCount(SCENE_BOTTOM_OF_THE_WELL) >= requiredAmountGlitchless;
-
-        case RR_GERUDO_TRAINING_GROUND:
-            /*if (IsGlitched && (false)) {
-                return GerudoTrainingGroundsKeys >= requiredAmountGlitched;
-            }*/
-            return GetSmallKeyCount(SCENE_GERUDO_TRAINING_GROUND) >= requiredAmountGlitchless;
-
-        case RR_GANONS_CASTLE:
-            /*if (IsGlitched && (false)) {
-                return GanonsCastleKeys >= requiredAmountGlitched;
-            }*/
-            return GetSmallKeyCount(SCENE_INSIDE_GANONS_CASTLE) >= requiredAmountGlitchless;
-
-        case RR_MARKET_TREASURE_CHEST_GAME:
-            /*if (IsGlitched && (false)) {
-                return TreasureGameKeys >= requiredAmountGlitched;
-            }*/
-            return GetSmallKeyCount(SCENE_TREASURE_BOX_SHOP) >= requiredAmountGlitchless;
-
-        case RR_GF_OUTSKIRTS:
-            return GetSmallKeyCount(SCENE_THIEVES_HIDEOUT) >= requiredAmountGlitchless;
-
-        default:
-            return false;
-    }
+bool Logic::IsFireLoopLocked() {
+    return ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
+           ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) ||
+           ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON);
 }
 
 std::map<RandomizerGet, uint32_t> Logic::RandoGetToEquipFlag = {
@@ -2338,10 +2275,6 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
     }
     StartPerformanceTimer(PT_LOGIC_RESET);
     memset(inLogic, false, sizeof(inLogic));
-    // Settings-dependent variables
-    IsFireLoopLocked = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
-                       ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) ||
-                       ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON);
 
     // AmmoCanDrop = /*AmmoDrops.IsNot(AMMODROPS_NONE)*/ false; TODO: AmmoDrop setting
 
@@ -2354,7 +2287,6 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
 
     // Adult logic
     FreedEpona = false;
-    // BigPoe        = false;
 
     // Trade Quest Events
     WakeUpAdultTalon = false;
@@ -2407,7 +2339,7 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
 
         // If not keysanity, start with 1 logical key to account for automatically unlocking the basement door in
         // vanilla FiT
-        if (!IsFireLoopLocked && ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
+        if (!IsFireLoopLocked() && ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
             SetSmallKeyCount(SCENE_FIRE_TEMPLE, 1);
         }
     }

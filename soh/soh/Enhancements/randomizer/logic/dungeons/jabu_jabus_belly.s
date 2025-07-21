@@ -1,0 +1,329 @@
+def RR_JABU_JABUS_BELLY_ENTRYWAY SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly Entryway
+//Exits
+RR_JABU_JABUS_BELLY_BEGINNING (IsDungeonVanilla JABU_JABUS_BELLY)
+RR_JABU_JABUS_BELLY_MQ_BEGINNING (IsDungeonMQ JABU_JABUS_BELLY)
+RR_ZORAS_FOUNTAIN true
+
+def RR_JABU_JABUS_BELLY_BEGINNING SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly Beginning
+//Exits
+RR_JABU_JABUS_BELLY_ENTRYWAY true
+RR_JABU_JABUS_BELLY_MAIN CanUseProjectile
+
+//Combines Lift room middle and lower, 1F holes room, the forked corridor, and it's side rooms
+def RR_JABU_JABUS_BELLY_MAIN SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly Main
+//Events
+JabuWestTentacle (and JabuRutoIn1F (CanKillEnemy RE_TENTACLE ED_BOOMERANG))
+//Checks
+RC_JABU_JABUS_BELLY_DEKU_SCRUB (and (HasItem RG_BRONZE_SCALE) (and (or IsChild (or (HasItem RG_SILVER_SCALE) (or RT_JABU_ALCOVE_JUMP_DIVE (CanUse RG_IRON_BOOTS)))) CanStunDeku))
+//We can kill the Stingers with ruto
+RC_JABU_JABUS_BELLY_BOOMERANG_CHEST JabuRutoIn1F
+RC_JABU_JABUS_BELLY_MAP_CHEST JabuWestTentacle
+RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_1 CanBreakSmallCrates
+RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_2 CanBreakSmallCrates
+//Exits
+RR_JABU_JABUS_BELLY_BEGINNING true
+//contains B1 of hole room (aside from the ledge leading to big octo), 2 octorock room and north water switch room
+RR_JABU_JABUS_BELLY_B1_NORTH true
+RR_JABU_JABUS_BELLY_COMPASS_ROOM JabuWestTentacle
+RR_JABU_JABUS_BELLY_BLUE_TENTACLE JabuWestTentacle
+RR_JABU_JABUS_BELLY_GREEN_TENTACLE JabuEastTentacle
+RR_JABU_JABUS_BELLY_BIGOCTO_LEDGE JabuNorthTentacle
+RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM (or LoweredJabuPath (and RT_JABU_BOSS_HOVER (CanUse RG_HOVER_BOOTS)))
+
+def RR_JABU_JABUS_BELLY_B1_NORTH SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly B1 North
+//Events
+JabuRutoIn1F (or IsAdult (HasItem RG_BRONZE_SCALE))
+FairyPot (or (CanUse RG_BOOMERANG) (and (CanUse RG_HOVER_BOOTS) (CanKillEnemy RE_OCTOROK)))
+//Checks
+RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER HookshotOrBoomerang
+RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER HookshotOrBoomerang
+RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM HookshotOrBoomerang
+RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_1 (and CanBreakPots (or (CanUse RG_BOOMERANG) (and (CanUse RG_HOVER_BOOTS) (CanKillEnemy RE_OCTOROK ED_BOOMERANG false))))
+RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_2 (and CanBreakPots (or (CanUse RG_BOOMERANG) (and (CanUse RG_HOVER_BOOTS) (CanKillEnemy RE_OCTOROK ED_BOOMERANG false))))
+RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_3 (and CanBreakPots (or (CanUse RG_BOOMERANG) (and (CanUse RG_HOVER_BOOTS) (CanKillEnemy RE_OCTOROK ED_BOOMERANG false))))
+RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_4 (and CanBreakPots (or (CanUse RG_BOOMERANG) (and (CanUse RG_HOVER_BOOTS) (CanKillEnemy RE_OCTOROK ED_BOOMERANG false))))
+RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_5 (and CanBreakPots (or (CanUse RG_BOOMERANG) (and (CanUse RG_HOVER_BOOTS) (CanKillEnemy RE_OCTOROK ED_BOOMERANG false))))
+//Exits
+RR_JABU_JABUS_BELLY_MAIN true
+//there's tricks for getting here with bunny-jumps or just side-hops
+RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_LEDGE (or (HasItem RG_BRONZE_SCALE) (CanUse RG_HOVER_BOOTS))
+RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_SOUTH (or IsAdult (HasItem RG_BRONZE_SCALE))
+
+def RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_SOUTH SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly Water Switch Room South
+//Checks
+RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM HookshotOrBoomerang
+//Exits
+RR_JABU_JABUS_BELLY_B1_NORTH (or IsAdult (HasItem RG_BRONZE_SCALE))
+RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_LEDGE (or (HasItem RG_BRONZE_SCALE) (CanUse RG_HOVER_BOOTS))
+RR_JABU_JABUS_BELLY_MAIN CanUseProjectile
+
+def RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_LEDGE SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly Water Switch Room Ledge
+//Events
+FairyPot true
+//this is the logic for climbing back and forth to use the pots to kill the skull...                             or killing the skull before climbing to grab the token
+//Checks
+RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM (or (HasItem RG_BRONZE_SCALE) (or (and IsAdult (CanUse RG_HOVER_BOOTS)) (CanKillEnemy RE_GOLD_SKULLTULA ED_BOMB_THROW)))
+RC_JABU_JABUS_BELLY_BASEMENT_POT_1 CanBreakPots
+RC_JABU_JABUS_BELLY_BASEMENT_POT_2 CanBreakPots
+RC_JABU_JABUS_BELLY_BASEMENT_POT_3 CanBreakPots
+//Exits
+RR_JABU_JABUS_BELLY_B1_NORTH true
+RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_SOUTH true
+
+def RR_JABU_JABUS_BELLY_COMPASS_ROOM SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly Compass Room
+//ruto could theoretically clear this room, but it's hard because of the timer and she doesn't appear with you when you respawn after failing, which would force a savewarp
+//Checks
+RC_JABU_JABUS_BELLY_COMPASS_CHEST (CanKillEnemy RE_SHABOM)
+//Exits
+RR_JABU_JABUS_BELLY_MAIN (Here (CanKillEnemy RE_SHABOM))
+
+def RR_JABU_JABUS_BELLY_BLUE_TENTACLE SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly Blue Tentacle
+//Events
+JabuEastTentacle (CanKillEnemy RE_TENTACLE ED_BOOMERANG)
+//Exits
+RR_JABU_JABUS_BELLY_MAIN JabuEastTentacle
+
+def RR_JABU_JABUS_BELLY_GREEN_TENTACLE SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly Green Tentacle
+//Events
+JabuNorthTentacle (CanKillEnemy RE_TENTACLE ED_BOOMERANG)
+//implied logic->CanKillEnemy(RE_BARI)
+//Exits
+RR_JABU_JABUS_BELLY_MAIN JabuNorthTentacle
+
+def RR_JABU_JABUS_BELLY_BIGOCTO_LEDGE SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly Bigocto Room
+//Checks
+RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER (and IsAdult (CanGetEnemyDrop RE_GOLD_SKULLTULA ED_SHORT_JUMPSLASH))
+//Exits
+RR_JABU_JABUS_BELLY_B1_NORTH true
+RR_JABU_JABUS_BELLY_ABOVE_BIGOCTO (and JabuRutoIn1F (Here (CanKillEnemy RE_BIG_OCTO)))
+
+def RR_JABU_JABUS_BELLY_ABOVE_BIGOCTO SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly Above Bigocto
+//Events
+FairyPot true
+NutPot true
+//Checks
+RC_JABU_JABUS_BELLY_ABOVE_BIG_OCTO_POT_1 CanBreakPots
+RC_JABU_JABUS_BELLY_ABOVE_BIG_OCTO_POT_2 CanBreakPots
+RC_JABU_JABUS_BELLY_ABOVE_BIG_OCTO_POT_3 CanBreakPots
+//Exits
+RR_JABU_JABUS_BELLY_LIFT_UPPER (CanUse RG_BOOMERANG)
+
+def RR_JABU_JABUS_BELLY_LIFT_UPPER SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly Lift Upper
+//Events
+LoweredJabuPath true
+//Exits
+RR_JABU_JABUS_BELLY_MAIN true
+
+def RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly Near Boss Room
+//Checks
+RC_JABU_JABUS_BELLY_GS_NEAR_BOSS (CanKillEnemy RE_GOLD_SKULLTULA ED_BOMB_THROW)
+//Exits
+RR_JABU_JABUS_BELLY_MAIN true
+RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY (or (CanUse RG_BOOMERANG) (or (and RT_JABU_NEAR_BOSS_RANGED (or (CanUse RG_HOOKSHOT) (or (CanUse RG_FAIRY_BOW) (CanUse RG_FAIRY_SLINGSHOT)))) (and RT_JABU_NEAR_BOSS_EXPLOSIVES (or (CanUse RG_BOMBCHU_5) (and (CanUse RG_HOVER_BOOTS) (CanUse RG_BOMB_BAG))))))
+
+def RR_JABU_JABUS_BELLY_MQ_BEGINNING SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly MQ Beginning
+//Events
+NutPot true
+//Checks
+RC_JABU_JABUS_BELLY_MQ_MAP_CHEST BlastOrSmash
+RC_JABU_JABUS_BELLY_MQ_FIRST_ROOM_SIDE_CHEST (CanUse RG_FAIRY_SLINGSHOT)
+RC_JABU_JABUS_BELLY_MQ_ENTRANCE_POT_1 CanBreakPots
+RC_JABU_JABUS_BELLY_MQ_ENTRANCE_POT_2 CanBreakPots
+RC_JABU_JABUS_BELLY_MQ_FIRST_GRASS_1 CanCutShrubs
+RC_JABU_JABUS_BELLY_MQ_FIRST_GRASS_2 CanCutShrubs
+//Exits
+RR_JABU_JABUS_BELLY_ENTRYWAY true
+RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM (Here (CanUse RG_FAIRY_SLINGSHOT))
+
+def RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly MQ Lift Room
+//Events
+MQJabuLiftRoomCow (CanUse RG_FAIRY_SLINGSHOT)
+//Checks
+RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_LOWER_CHEST true
+RC_JABU_JABUS_BELLY_MQ_LIFT_HEART_1 true
+RC_JABU_JABUS_BELLY_MQ_LIFT_HEART_2 true
+RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_1 (CanUse RG_IRON_BOOTS)
+RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_2 (CanUse RG_IRON_BOOTS)
+RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_3 (CanUse RG_IRON_BOOTS)
+//Exits
+RR_JABU_JABUS_BELLY_MQ_BEGINNING true
+RR_JABU_JABUS_BELLY_MQ_UNDERWATER_ALCOVE (or (HasItem RG_SILVER_SCALE) (and (HasItem RG_BRONZE_SCALE) (or IsChild (or (CanUse RG_IRON_BOOTS) RT_JABU_ALCOVE_JUMP_DIVE))))
+RR_JABU_JABUS_BELLY_MQ_HOLES_ROOM MQJabuHolesRoomDoor
+RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM_EAST_LEDGE (or LoweredJabuPath (or (CanUse RG_HOVER_BOOTS) (and (CanUse RG_HOOKSHOT) MQJabuLiftRoomCow)))
+//If opening RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM by lowering the geyser as 1 age is to let the other through is relevant, it needs an eventAccess
+
+def RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM_EAST_LEDGE SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly MQ Lift Room East Ledge
+//Checks
+RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_UPPER_CHEST MQJabuLiftRoomCow
+//Exits
+RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM true
+RR_JABU_JABUS_BELLY_MQ_EAST_ROOM JabuNorthTentacle
+
+def RR_JABU_JABUS_BELLY_MQ_UNDERWATER_ALCOVE SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly MQ Underwater Alcove
+//Events
+MQJabuHolesRoomDoor true
+//Checks
+RC_JABU_JABUS_BELLY_MQ_COMPASS_CHEST (or (CanHitSwitch ED_HOOKSHOT true) (and RT_JABU_MQ_RANG_JUMP (and (CanUse RG_BOOMERANG) (HasItem RG_BRONZE_SCALE))))
+RC_JABU_JABUS_BELLY_MQ_GEYSER_POT_1 CanBreakPots
+RC_JABU_JABUS_BELLY_MQ_GEYSER_POT_2 CanBreakPots
+//Getting the ones closest to the ledge with rang may be a trick due to the awkward angle without blind shooting through the flesh
+RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_1 (or (HasItem RG_GOLDEN_SCALE) (CanUse RG_BOOMERANG))
+RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_2 (or (HasItem RG_SILVER_SCALE) (CanUse RG_BOOMERANG))
+RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_3 (or (HasItem RG_BRONZE_SCALE) (CanUse RG_BOOMERANG))
+//Exits
+RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM (HasItem RG_BRONZE_SCALE)
+
+def RR_JABU_JABUS_BELLY_MQ_HOLES_ROOM SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly MQ Holes Room
+//Checks
+RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_VINES_CHEST (CanUse RG_FAIRY_SLINGSHOT)
+RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST (CanUse RG_FAIRY_SLINGSHOT)
+RC_JABU_JABUS_BELLY_MQ_PIT_GRASS_1 (and CanCutShrubs HasExplosives)
+RC_JABU_JABUS_BELLY_MQ_PIT_GRASS_2 (and CanCutShrubs HasExplosives)
+RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_1 CanCutShrubs
+RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_2 CanCutShrubs
+RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_3 CanCutShrubs
+//Exits
+RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM true
+RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM true
+RR_JABU_JABUS_BELLY_MQ_FORKED_CORRIDOR (and (CanUse RG_BOOMERANG) (and HasExplosives (Here (CanUse RG_FAIRY_SLINGSHOT))))
+RR_JABU_JABUS_BELLY_MQ_INVISIBLE_KEESE_ROOM JabuNorthTentacle
+RR_JABU_JABUS_BELLY_MQ_PAST_OCTO (and JabuWestTentacle (and (Here (CanKillEnemy RE_BIG_OCTO)) (CanUse RG_FAIRY_SLINGSHOT)))
+
+def RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly MQ Water Switch Room
+//Checks
+RC_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST true
+//Implies logic->CanKillEnemy(RE_LIKE_LIKE) && logic->CanKillEnemy(RE_STINGER). Without swim, jump from the song of time block to the vines.
+RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST (CanKillEnemy RE_LIZALFOS)
+RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM (or (and (CanUse RG_SONG_OF_TIME) (CanGetEnemyDrop RE_GOLD_SKULLTULA)) (and RT_JABU_MQ_SOT_GS (CanUse RG_BOOMERANG)))
+RC_JABU_JABUS_BELLY_MQ_TIME_BLOCK_POT_1 CanBreakPots
+RC_JABU_JABUS_BELLY_MQ_TIME_BLOCK_POT_2 CanBreakPots
+RC_JABU_JABUS_BELLY_MQ_BASEMENT_BOOMERANG_GRASS CanCutShrubs
+//without swim, jump from rang chest to the other side
+//Exits
+RR_JABU_JABUS_BELLY_MQ_BEGINNING (Here (CanKillEnemy RE_LIZALFOS))
+RR_JABU_JABUS_BELLY_MQ_HOLES_ROOM (and (or IsAdult (HasItem RG_BRONZE_SCALE)) (Here (CanKillEnemy RE_LIZALFOS)))
+
+//Includes Like Like room
+def RR_JABU_JABUS_BELLY_MQ_FORKED_CORRIDOR SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly MQ Forked Corridor
+//Events
+JabuNorthTentacle (and (Here BlastOrSmash) (CanUse RG_BOOMERANG))
+//Implies CanKillEnemy(RE_LIKE_LIKE)
+//Checks
+RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_ROOM_CHEST (CanUse RG_FAIRY_SLINGSHOT)
+RC_JABU_JABUS_BELLY_MQ_LIKE_LIKES_POT_1 CanBreakPots
+RC_JABU_JABUS_BELLY_MQ_LIKE_LIKES_POT_2 CanBreakPots
+RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_GRASS CanCutShrubs
+RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_1 CanBreakSmallCrates
+RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_2 CanBreakSmallCrates
+//Exits
+RR_JABU_JABUS_BELLY_MQ_HOLES_ROOM (CanUse RG_BOOMERANG)
+//If some mode lets an age use sticks and not sling, and other use sling and not sticks, this needs changing
+RR_JABU_JABUS_BELLY_MQ_WEST_FORKED_ROOMS (and (Here (CanUse RG_BOOMERANG)) (or (Here (and (CanUse RG_FAIRY_SLINGSHOT) (CanUse RG_STICKS))) (Here HasFireSource)))
+
+def RR_JABU_JABUS_BELLY_MQ_WEST_FORKED_ROOMS SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly MQ West Forked Rooms
+//Events
+JabuWestTentacle (CanKillEnemy RE_TENTACLE ED_BOOMERANG)
+//Checks
+RC_JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM (and (Here HasExplosives) (CanGetEnemyDrop RE_GOLD_SKULLTULA ED_BOOMERANG))
+//Exits
+RR_JABU_JABUS_BELLY_MQ_FORKED_CORRIDOR true
+
+def RR_JABU_JABUS_BELLY_MQ_INVISIBLE_KEESE_ROOM SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly MQ Invisible Keese Room
+RC_JABU_JABUS_BELLY_MQ_GS_INVISIBLE_ENEMIES_ROOM (or
+	//firstly, we can just use FAs to clear the web and then longshot the skull
+	(and (CanUse RG_FIRE_ARROWS) (CanGetEnemyDrop RE_GOLD_SKULLTULA ED_LONGSHOT))
+	//Otherwise, we we have to cross the gap and kill the skull.
+	//We can cheese the gap with hovers
+	//Otherwise we have to kill the enemies to raise the platform. This persists so we can do it as the other age.
+	(and (CanGetEnemyDrop RE_GOLD_SKULLTULA ED_BOOMERANG) (and
+		//we can hit the keese farthest from the water with irons and hookshot, but we won't be able to see it while doing so
+		(or (CanUse RG_HOVER_BOOTS) (Here (and (or RT_LENS_JABU_MQ (CanUse RG_LENS_OF_TRUTH)) (and (CanKillEnemy RE_STINGER ED_BOOMERANG false 2 false true) (or (CanKillEnemy RE_KEESE ED_LONGSHOT false) (and RT_LENS_JABU_MQ (and (CanUse RG_HOOKSHOT) (CanUse RG_IRON_BOOTS))))))))
+		//If we kill the enemies, we then need to cross the water using the platform. Note that adult cannot do so while swimming because MQ jank.
+		(or (and IsChild (HasItem RG_BRONZE_SCALE)) (and IsAdult (CanUse RG_IRON_BOOTS))))
+	)
+//Checks
+)
+//Exits
+RR_JABU_JABUS_BELLY_MQ_HOLES_ROOM (and (or JabuNorthTentacle TakeDamage) (HasItem RG_BRONZE_SCALE))
+
+def RR_JABU_JABUS_BELLY_MQ_PAST_OCTO SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly MQ Past Octo
+//if a hover up to the path is added, this will want it's own room
+//Events
+LoweredJabuPath (and (CanUse RG_BOOMERANG) (CanUse RG_FAIRY_SLINGSHOT))
+//Checks
+RC_JABU_JABUS_BELLY_MQ_COW (and (CanUse RG_EPONAS_SONG) (CanUse RG_FAIRY_SLINGSHOT))
+RC_JABU_JABUS_BELLY_MQ_JIGGLIES_GRASS CanCutShrubs
+RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_1 CanCutShrubs
+RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_2 CanCutShrubs
+RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_1 (and (CanUse RG_FAIRY_SLINGSHOT) CanBreakSmallCrates)
+RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_2 (and (CanUse RG_FAIRY_SLINGSHOT) CanBreakSmallCrates)
+//Exits
+RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM (and (CanUse RG_BOOMERANG) (CanUse RG_FAIRY_SLINGSHOT))
+//you take both fall damage and tentacle damage, unless the tentacle is down. need better damage logic
+RR_JABU_JABUS_BELLY_MQ_HOLES_ROOM (and TakeDamage (Here (CanKillEnemy RE_BIG_OCTO)))
+
+def RR_JABU_JABUS_BELLY_MQ_EAST_ROOM SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly MQ Boss Region
+//Events
+FairyPot true
+//Checks
+RC_JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST (CanUse RG_FAIRY_SLINGSHOT)
+RC_JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS (or (CanUse RG_BOOMERANG) (and RT_JABU_NEAR_BOSS_RANGED (CanUse RG_HOOKSHOT)))
+RC_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_POT_1 CanBreakPots
+RC_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_GRASS_1 CanCutShrubs
+RC_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_GRASS_2 CanCutShrubs
+//Exits
+RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM_EAST_LEDGE true
+RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY (Here (CanUse RG_FAIRY_SLINGSHOT))
+
+def RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly Boss Entryway
+//Exits
+RR_JABU_JABUS_BELLY_BOSS_ROOM true
+
+def RR_JABU_JABUS_BELLY_BOSS_EXIT SCENE_JABU_JABU false RA_JABU_JABUS_BELLY
+Jabu Jabus Belly Boss Exit
+//Exits
+RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM (IsDungeonVanilla JABU_JABUS_BELLY)
+RR_JABU_JABUS_BELLY_MQ_EAST_ROOM (IsDungeonMQ JABU_JABUS_BELLY)
+
+def RR_JABU_JABUS_BELLY_BOSS_ROOM SCENE_JABU_JABU_BOSS false
+Jabu Jabus Belly Boss Room
+//todo: add pot kill trick
+//Events
+JabuJabusBellyClear (CanKillEnemy RE_BARINADE)
+//Checks
+RC_JABU_JABUS_BELLY_BARINADE_POT_1 CanBreakPots
+RC_JABU_JABUS_BELLY_BARINADE_POT_2 CanBreakPots
+RC_JABU_JABUS_BELLY_BARINADE_POT_3 CanBreakPots
+RC_JABU_JABUS_BELLY_BARINADE_POT_4 CanBreakPots
+RC_JABU_JABUS_BELLY_BARINADE_POT_5 CanBreakPots
+RC_JABU_JABUS_BELLY_BARINADE_POT_6 CanBreakPots
+RC_JABU_JABUS_BELLY_BARINADE_HEART JabuJabusBellyClear
+RC_BARINADE JabuJabusBellyClear
+//Exits
+RR_JABU_JABUS_BELLY_BOSS_EXIT false
+RR_ZORAS_FOUNTAIN @deprioritize JabuJabusBellyClear

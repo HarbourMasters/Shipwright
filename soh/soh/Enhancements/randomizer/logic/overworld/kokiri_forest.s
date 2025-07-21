@@ -1,0 +1,179 @@
+def RR_KOKIRI_FOREST SCENE_KOKIRI_FOREST false RA_KOKIRI_FOREST
+Kokiri Forest
+//Events
+BeanPlantFairy (and IsChild (and (CanUse RG_MAGIC_BEAN) (CanUse RG_SONG_OF_STORMS)))
+GossipStoneFairy CallGossipFairyExceptSuns
+ShowedMidoSwordAndShield (and IsChild (and (CanUse RG_KOKIRI_SWORD) (CanUse RG_DEKU_SHIELD)))
+//Checks
+RC_KF_KOKIRI_SWORD_CHEST IsChild
+RC_KF_GS_KNOW_IT_ALL_HOUSE (and IsChild (and CanAttack CanGetNightTimeGS))
+RC_KF_GS_BEAN_PATCH (and CanSpawnSoilSkull CanAttack)
+RC_KF_GS_HOUSE_OF_TWINS (and IsAdult (and (or HookshotOrBoomerang (and RT_KF_ADULT_GS (CanUse RG_HOVER_BOOTS))) CanGetNightTimeGS))
+RC_KF_BEAN_SPROUT_FAIRY_1 (and IsChild (and (CanUse RG_MAGIC_BEAN) (CanUse RG_SONG_OF_STORMS)))
+RC_KF_BEAN_SPROUT_FAIRY_2 (and IsChild (and (CanUse RG_MAGIC_BEAN) (CanUse RG_SONG_OF_STORMS)))
+RC_KF_BEAN_SPROUT_FAIRY_3 (and IsChild (and (CanUse RG_MAGIC_BEAN) (CanUse RG_SONG_OF_STORMS)))
+RC_KF_GOSSIP_STONE_FAIRY CallGossipFairyExceptSuns
+RC_KF_GOSSIP_STONE_FAIRY_BIG (CanUse RG_SONG_OF_STORMS)
+RC_KF_BRIDGE_RUPEE IsChild
+RC_KF_BEHIND_MIDOS_RUPEE IsChild
+RC_KF_SOUTH_GRASS_WEST_RUPEE IsChild
+RC_KF_SOUTH_GRASS_EAST_RUPEE IsChild
+RC_KF_NORTH_GRASS_WEST_RUPEE IsChild
+RC_KF_NORTH_GRASS_EAST_RUPEE IsChild
+RC_KF_BOULDER_RUPEE_1 IsChild
+RC_KF_BOULDER_RUPEE_2 IsChild
+RC_KF_BEAN_RUPEE_1 (and IsAdult (or (CanPlantBean RR_KOKIRI_FOREST) (or (CanUse RG_HOVER_BOOTS) (CanUse RG_BOOMERANG))))
+RC_KF_BEAN_RUPEE_2 (and IsAdult (or (CanPlantBean RR_KOKIRI_FOREST) (or (CanUse RG_HOVER_BOOTS) (CanUse RG_BOOMERANG))))
+RC_KF_BEAN_RUPEE_3 (and IsAdult (or (CanPlantBean RR_KOKIRI_FOREST) (or (CanUse RG_HOVER_BOOTS) (CanUse RG_BOOMERANG))))
+RC_KF_BEAN_RUPEE_4 (and IsAdult (or (CanPlantBean RR_KOKIRI_FOREST) (or (CanUse RG_HOVER_BOOTS) (CanUse RG_BOOMERANG))))
+RC_KF_BEAN_RUPEE_5 (and IsAdult (or (CanPlantBean RR_KOKIRI_FOREST) (or (CanUse RG_HOVER_BOOTS) (CanUse RG_BOOMERANG))))
+RC_KF_BEAN_RUPEE_6 (and IsAdult (or (CanPlantBean RR_KOKIRI_FOREST) (or (CanUse RG_HOVER_BOOTS) (CanUse RG_BOOMERANG))))
+RC_KF_BEAN_RED_RUPEE (and IsAdult (or (CanPlantBean RR_KOKIRI_FOREST) (or (CanUse RG_HOVER_BOOTS) (CanUse RG_BOOMERANG))))
+RC_KF_SARIAS_ROOF_WEST_HEART IsChild
+RC_KF_SARIAS_ROOF_EAST_HEART IsChild
+RC_KF_SARIAS_ROOF_NORTH_HEART IsChild
+RC_KF_GOSSIP_STONE true
+RC_KF_CHILD_GRASS_1 (and IsChild CanCutShrubs)
+RC_KF_CHILD_GRASS_2 (and IsChild CanCutShrubs)
+RC_KF_CHILD_GRASS_3 (and IsChild CanCutShrubs)
+RC_KF_CHILD_GRASS_4 (and IsChild CanCutShrubs)
+RC_KF_CHILD_GRASS_5 (and IsChild CanCutShrubs)
+RC_KF_CHILD_GRASS_6 (and IsChild CanCutShrubs)
+RC_KF_CHILD_GRASS_7 (and IsChild CanCutShrubs)
+RC_KF_CHILD_GRASS_8 (and IsChild CanCutShrubs)
+RC_KF_CHILD_GRASS_9 (and IsChild CanCutShrubs)
+RC_KF_CHILD_GRASS_10 (and IsChild CanCutShrubs)
+RC_KF_CHILD_GRASS_11 (and IsChild CanCutShrubs)
+RC_KF_CHILD_GRASS_12 (and IsChild CanCutShrubs)
+RC_KF_CHILD_GRASS_MAZE_1 (and IsChild CanCutShrubs)
+RC_KF_CHILD_GRASS_MAZE_2 (and IsChild CanCutShrubs)
+RC_KF_CHILD_GRASS_MAZE_3 (and IsChild CanCutShrubs)
+RC_KF_ADULT_GRASS_1 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_2 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_3 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_4 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_5 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_6 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_7 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_8 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_9 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_10 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_11 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_12 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_13 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_14 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_15 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_16 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_17 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_18 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_19 (and IsAdult CanCutShrubs)
+RC_KF_ADULT_GRASS_20 (and IsAdult CanCutShrubs)
+//Exits
+RR_KF_LINKS_HOUSE true
+RR_KF_MIDOS_HOUSE true
+RR_KF_SARIAS_HOUSE true
+RR_KF_HOUSE_OF_TWINS true
+RR_KF_KNOW_IT_ALL_HOUSE true
+RR_KF_KOKIRI_SHOP true
+RR_KF_OUTSIDE_DEKU_TREE (or (and IsAdult (or (CanPassEnemy RE_BIG_SKULLTULA) ForestTempleClear)) (or (== RSK_FOREST RO_CLOSED_FOREST_OFF) ShowedMidoSwordAndShield))
+RR_THE_LOST_WOODS true
+RR_LW_BRIDGE_FROM_FOREST (or IsAdult (or (!= RSK_FOREST RO_CLOSED_FOREST_ON) DekuTreeClear))
+RR_KF_STORMS_GROTTO CanOpenStormsGrotto
+
+def RR_KF_LINKS_HOUSE SCENE_LINKS_HOUSE false
+KF Link's House
+//Checks
+RC_KF_LINKS_HOUSE_COW (and IsAdult (and (CanUse RG_EPONAS_SONG) LinksCow))
+RC_KF_LINKS_HOUSE_POT CanBreakPots
+//Exits
+RR_KOKIRI_FOREST true
+
+def RR_KF_MIDOS_HOUSE SCENE_MIDOS_HOUSE false
+KF Mido's House
+//Checks
+RC_KF_MIDOS_TOP_LEFT_CHEST true
+RC_KF_MIDOS_TOP_RIGHT_CHEST true
+RC_KF_MIDOS_BOTTOM_LEFT_CHEST true
+RC_KF_MIDOS_BOTTOM_RIGHT_CHEST true
+//Exits
+RR_KOKIRI_FOREST true
+
+def RR_KF_SARIAS_HOUSE SCENE_SARIAS_HOUSE false
+KF Saria's House
+//Checks
+RC_KF_SARIAS_TOP_LEFT_HEART true
+RC_KF_SARIAS_TOP_RIGHT_HEART true
+RC_KF_SARIAS_BOTTOM_LEFT_HEART true
+RC_KF_SARIAS_BOTTOM_RIGHT_HEART true
+//Exits
+RR_KOKIRI_FOREST true
+
+def RR_KF_HOUSE_OF_TWINS SCENE_TWINS_HOUSE false
+KF House of Twins
+//Checks
+RC_KF_TWINS_HOUSE_POT_1 CanBreakPots
+RC_KF_TWINS_HOUSE_POT_2 CanBreakPots
+//Exits
+RR_KOKIRI_FOREST true
+
+def RR_KF_KNOW_IT_ALL_HOUSE SCENE_KNOW_IT_ALL_BROS_HOUSE false
+KF Know It All House
+//Checks
+RC_KF_BROTHERS_HOUSE_POT_1 CanBreakPots
+RC_KF_BROTHERS_HOUSE_POT_2 CanBreakPots
+//Exits
+RR_KOKIRI_FOREST true
+
+def RR_KF_KOKIRI_SHOP SCENE_KOKIRI_SHOP false
+KF Kokiri Shop
+//Checks
+RC_KF_SHOP_ITEM_1 true
+RC_KF_SHOP_ITEM_2 true
+RC_KF_SHOP_ITEM_3 true
+RC_KF_SHOP_ITEM_4 true
+RC_KF_SHOP_ITEM_5 true
+RC_KF_SHOP_ITEM_6 true
+RC_KF_SHOP_ITEM_7 true
+RC_KF_SHOP_ITEM_8 true
+//Exits
+RR_KOKIRI_FOREST true
+
+def RR_KF_OUTSIDE_DEKU_TREE SCENE_KOKIRI_FOREST false RA_KOKIRI_FOREST
+KF Outside Deku Tree
+//Events
+DekuBabaSticks CanGetDekuBabaSticks
+DekuBabaNuts CanGetDekuBabaNuts
+ShowedMidoSwordAndShield (and IsChild (and (CanUse RG_KOKIRI_SWORD) (CanUse RG_DEKU_SHIELD)))
+//Checks
+RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE_FAIRY CallGossipFairyExceptSuns
+RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE_FAIRY_BIG (CanUse RG_SONG_OF_STORMS)
+RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE_FAIRY CallGossipFairyExceptSuns
+RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE_FAIRY_BIG (CanUse RG_SONG_OF_STORMS)
+RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE true
+RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE true
+//Exits
+RR_DEKU_TREE_ENTRYWAY (or IsChild (and (!= RSK_SHUFFLE_DUNGEON_ENTRANCES RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) (or (== RSK_FOREST RO_CLOSED_FOREST_OFF) ShowedMidoSwordAndShield)))
+RR_KOKIRI_FOREST (or (and IsAdult (or (CanPassEnemy RE_BIG_SKULLTULA) ForestTempleClear)) (or (== RSK_FOREST RO_CLOSED_FOREST_OFF) ShowedMidoSwordAndShield))
+
+def RR_KF_STORMS_GROTTO SCENE_GROTTOS false
+KF Storms Grotto
+//Events
+GossipStoneFairy CallGossipFairy
+ButterflyFairy (CanUse RG_STICKS)
+BugShrub CanCutShrubs
+LoneFish true
+//Checks
+RC_KF_STORMS_GROTTO_CHEST true
+RC_KF_STORMS_GROTTO_FISH HasBottle
+RC_KF_STORMS_GROTTO_GOSSIP_STONE_FAIRY CallGossipFairy
+RC_KF_STORMS_GROTTO_GOSSIP_STONE_FAIRY_BIG (CanUse RG_SONG_OF_STORMS)
+RC_KF_STORMS_GROTTO_GOSSIP_STONE true
+RC_KF_STORMS_GROTTO_BEEHIVE_LEFT CanBreakLowerBeehives
+RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT CanBreakLowerBeehives
+RC_KF_STORMS_GROTTO_GRASS_1 CanCutShrubs
+RC_KF_STORMS_GROTTO_GRASS_2 CanCutShrubs
+RC_KF_STORMS_GROTTO_GRASS_3 CanCutShrubs
+RC_KF_STORMS_GROTTO_GRASS_4 CanCutShrubs
+//Exits
+RR_KOKIRI_FOREST true
+

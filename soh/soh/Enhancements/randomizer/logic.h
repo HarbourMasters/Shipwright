@@ -18,18 +18,8 @@ enum class GlitchType {
     EquipSwap,
 };
 
-enum class GlitchDifficulty {
-    NOVICE = 1,
-    INTERMEDIATE,
-    ADVANCED,
-    EXPERT,
-    HERO,
-};
-
 class Logic {
   public:
-    bool noVariable = false;
-
     // Mask Quest
     bool CanBorrowMasks = false;
     bool BorrowSkullMask = false;
@@ -60,9 +50,6 @@ class Logic {
     bool SpiritTrialClear = false;
     bool ShadowTrialClear = false;
     bool LightTrialClear = false;
-
-    // Logical keysanity
-    bool IsFireLoopLocked = false;
 
     // Bottle Count
     uint8_t Bottles = 0;
@@ -194,8 +181,8 @@ class Logic {
     bool HasItem(RandomizerGet itemName);
     bool HasBossSoul(RandomizerGet itemName);
     bool CanOpenOverworldDoor(RandomizerGet itemName);
-    bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
-    bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
+    bool SmallKeys(s16 scene, uint8_t requiredAmount);
+    bool IsFireLoopLocked();
     bool CanOpenUnderwaterChest();
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);

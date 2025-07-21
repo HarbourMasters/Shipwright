@@ -1,0 +1,251 @@
+def RR_KAKARIKO_VILLAGE SCENE_KAKARIKO_VILLAGE true RA_KAKARIKO_VILLAGE
+Kakariko Village
+//Events
+BugRock true
+//Open Gate setting is applied in RR_ROOT
+KakarikoVillageGateOpen (and IsChild (HasItem RG_ZELDAS_LETTER))
+//Needs wallet to be able to get another mask after selling Keaton
+BorrowSkullMask (and IsChild (and CanBorrowMasks (HasItem RG_CHILD_WALLET)))
+//Checks
+RC_SHEIK_IN_KAKARIKO (and IsAdult (and (HasItem RG_FOREST_MEDALLION) (and (HasItem RG_FIRE_MEDALLION) (HasItem RG_WATER_MEDALLION))))
+RC_KAK_ANJU_AS_CHILD (and IsChild AtDay)
+RC_KAK_ANJU_AS_ADULT (and IsAdult AtDay)
+RC_KAK_TRADE_POCKET_CUCCO (and IsAdult (and AtDay (and (CanUse RG_POCKET_EGG) WakeUpAdultTalon)))
+//Can kill lower kak skulls with pots
+RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION (and IsChild CanGetNightTimeGS)
+RC_KAK_GS_SKULLTULA_HOUSE (and IsChild CanGetNightTimeGS)
+RC_KAK_GS_GUARDS_HOUSE (and IsChild CanGetNightTimeGS)
+RC_KAK_GS_TREE (and IsChild CanGetNightTimeGS)
+RC_KAK_GS_WATCHTOWER (and IsChild (and (or (CanKillEnemy RE_GOLD_SKULLTULA ED_LONGSHOT) (and RT_KAK_TOWER_GS CanJumpslashExceptHammer)) CanGetNightTimeGS))
+RC_KAK_NEAR_POTION_SHOP_POT_1 (and IsChild CanBreakPots)
+RC_KAK_NEAR_POTION_SHOP_POT_2 (and IsChild CanBreakPots)
+RC_KAK_NEAR_POTION_SHOP_POT_3 (and IsChild CanBreakPots)
+RC_KAK_NEAR_IMPAS_HOUSE_POT_1 (and IsChild CanBreakPots)
+RC_KAK_NEAR_IMPAS_HOUSE_POT_2 (and IsChild CanBreakPots)
+RC_KAK_NEAR_IMPAS_HOUSE_POT_3 (and IsChild CanBreakPots)
+RC_KAK_NEAR_GUARDS_HOUSE_POT_1 (and IsChild CanBreakPots)
+RC_KAK_NEAR_GUARDS_HOUSE_POT_2 (and IsChild CanBreakPots)
+RC_KAK_NEAR_GUARDS_HOUSE_POT_3 (and IsChild CanBreakPots)
+RC_KAK_GRASS_1 CanCutShrubs
+RC_KAK_GRASS_2 CanCutShrubs
+RC_KAK_GRASS_3 CanCutShrubs
+RC_KAK_GRASS_4 CanCutShrubs
+RC_KAK_GRASS_5 CanCutShrubs
+RC_KAK_GRASS_6 CanCutShrubs
+RC_KAK_GRASS_7 CanCutShrubs
+RC_KAK_GRASS_8 CanCutShrubs
+RC_KAK_NEAR_OPEN_GROTTO_ADULT_CRATE_1 (and IsAdult CanBreakCrates)
+RC_KAK_NEAR_OPEN_GROTTO_ADULT_CRATE_2 (and IsAdult CanBreakCrates)
+RC_KAK_NEAR_OPEN_GROTTO_ADULT_CRATE_3 (and IsAdult CanBreakCrates)
+RC_KAK_NEAR_OPEN_GROTTO_ADULT_CRATE_4 (and IsAdult CanBreakCrates)
+RC_KAK_NEAR_POTION_SHOP_ADULT_CRATE (and IsAdult CanBreakCrates)
+RC_KAK_NEAR_SHOOTING_GALLERY_ADULT_CRATE (and IsAdult CanBreakCrates)
+RC_KAK_NEAR_BOARDING_HOUSE_ADULT_CRATE_1 (and IsAdult CanBreakCrates)
+RC_KAK_NEAR_BOARDING_HOUSE_ADULT_CRATE_2 (and IsAdult CanBreakCrates)
+RC_KAK_NEAR_IMPAS_HOUSE_ADULT_CRATE_1 (and IsAdult CanBreakCrates)
+RC_KAK_NEAR_IMPAS_HOUSE_ADULT_CRATE_2 (and IsAdult CanBreakCrates)
+RC_KAK_NEAR_BAZAAR_ADULT_CRATE_1 (and IsAdult CanBreakCrates)
+RC_KAK_NEAR_BAZAAR_ADULT_CRATE_2 (and IsAdult CanBreakCrates)
+RC_KAK_BEHIND_GS_HOUSE_ADULT_CRATE (and IsAdult CanBreakCrates)
+RC_KAK_NEAR_GY_CHILD_CRATE (and IsChild CanBreakCrates)
+RC_KAK_NEAR_WINDMILL_CHILD_CRATE (and IsChild CanBreakCrates)
+RC_KAK_NEAR_FENCE_CHILD_CRATE (and IsChild CanBreakCrates)
+RC_KAK_NEAR_BOARDING_HOUSE_CHILD_CRATE (and IsChild CanBreakCrates)
+RC_KAK_NEAR_BAZAAR_CHILD_CRATE (and IsChild CanBreakCrates)
+//Exits
+RR_HYRULE_FIELD true
+RR_KAK_CARPENTER_BOSS_HOUSE (CanOpenOverworldDoor RG_BOSS_HOUSE_KEY)
+RR_KAK_HOUSE_OF_SKULLTULA (CanOpenOverworldDoor RG_SKULLTULA_HOUSE_KEY)
+RR_KAK_IMPAS_HOUSE (CanOpenOverworldDoor RG_IMPAS_HOUSE_KEY)
+RR_KAK_WINDMILL (CanOpenOverworldDoor RG_WINDMILL_KEY)
+RR_KAK_BAZAAR (and IsAdult (and AtDay (CanOpenOverworldDoor RG_KAK_BAZAAR_KEY)))
+RR_KAK_SHOOTING_GALLERY (and IsAdult (and AtDay (CanOpenOverworldDoor RG_KAK_SHOOTING_GALLERY_KEY)))
+RR_KAK_WELL (or IsAdult (or DrainWell (or (CanUse RG_IRON_BOOTS) (and RT_BOTTOM_OF_THE_WELL_NAVI_DIVE (and IsChild (and (HasItem RG_BRONZE_SCALE) CanJumpslash))))))
+RR_KAK_POTION_SHOP_FRONT (and (or AtDay IsChild) (CanOpenOverworldDoor RG_KAK_POTION_SHOP_KEY))
+RR_KAK_REDEAD_GROTTO CanOpenBombGrotto
+RR_KAK_IMPAS_LEDGE (or (and IsChild AtDay) (and IsAdult RT_VISIBLE_COLLISION))
+RR_KAK_WATCHTOWER (or IsAdult (or AtDay (or (CanKillEnemy RE_GOLD_SKULLTULA ED_LONGSHOT) (and RT_KAK_TOWER_GS CanJumpslashExceptHammer))))
+RR_KAK_ROOFTOP (or (CanUse RG_HOOKSHOT) (and RT_KAK_MAN_ON_ROOF IsAdult))
+RR_KAK_IMPAS_ROOFTOP (or (CanUse RG_HOOKSHOT) (and RT_KAK_ROOFTOP_GS (CanUse RG_HOVER_BOOTS)))
+RR_THE_GRAVEYARD true
+RR_KAK_BEHIND_GATE (or IsAdult KakarikoVillageGateOpen)
+//adult can jump from the fence near the windmill to ledgegrab the fence near granny's shop. is in logic on N64
+RR_KAK_BACKYARD (or IsAdult AtDay)
+
+def RR_KAK_CARPENTER_BOSS_HOUSE SCENE_KAKARIKO_CENTER_GUEST_HOUSE false
+Kak Carpenter Boss House
+//Events
+WakeUpAdultTalon (and IsAdult (CanUse RG_POCKET_EGG))
+//Exits
+RR_KAKARIKO_VILLAGE true
+
+def RR_KAK_HOUSE_OF_SKULLTULA SCENE_HOUSE_OF_SKULLTULA false
+Kak House of Skulltula
+//Checks
+RC_KAK_10_GOLD_SKULLTULA_REWARD (>= GetGSCount 10)
+RC_KAK_20_GOLD_SKULLTULA_REWARD (>= GetGSCount 20)
+RC_KAK_30_GOLD_SKULLTULA_REWARD (>= GetGSCount 30)
+RC_KAK_40_GOLD_SKULLTULA_REWARD (>= GetGSCount 40)
+RC_KAK_50_GOLD_SKULLTULA_REWARD (>= GetGSCount 50)
+RC_KAK_100_GOLD_SKULLTULA_REWARD (>= GetGSCount 100)
+//Exits
+RR_KAKARIKO_VILLAGE true
+
+def RR_KAK_IMPAS_HOUSE SCENE_IMPAS_HOUSE false
+Kak Impas House
+//Checks
+RC_KAK_IMPAS_HOUSE_COW (CanUse RG_EPONAS_SONG)
+//Exits
+RR_KAKARIKO_VILLAGE true
+
+def RR_KAK_IMPAS_LEDGE SCENE_KAKARIKO_VILLAGE true RA_KAKARIKO_VILLAGE
+Kak Impas Ledge
+//Exits
+RR_KAK_IMPAS_HOUSE_BACK true
+RR_KAKARIKO_VILLAGE true
+
+def RR_KAK_IMPAS_HOUSE_BACK SCENE_IMPAS_HOUSE false
+Kak Impas House Back
+//Checks
+RC_KAK_IMPAS_HOUSE_FREESTANDING_POH true
+RC_KAK_IMPAS_HOUSE_COW (CanUse RG_EPONAS_SONG)
+//Exits
+RR_KAK_IMPAS_LEDGE true
+
+def RR_KAK_WINDMILL SCENE_WINDMILL_AND_DAMPES_GRAVE false
+Kak Windmill
+//Events
+DrainWell (and IsChild (CanUse RG_SONG_OF_STORMS))
+//Checks
+RC_KAK_WINDMILL_FREESTANDING_POH (or (CanUse RG_BOOMERANG) (or DampesWindmillAccess (or (and IsAdult RT_KAK_ADULT_WINDMILL_POH) (and IsChild (and CanJumpslashExceptHammer RT_KAK_CHILD_WINDMILL_POH)))))
+RC_SONG_FROM_WINDMILL (and IsAdult (HasItem RG_FAIRY_OCARINA))
+//Exits
+RR_KAKARIKO_VILLAGE true
+
+def RR_KAK_BAZAAR SCENE_BAZAAR false
+Kak Bazaar
+//Checks
+RC_KAK_BAZAAR_ITEM_1 true
+RC_KAK_BAZAAR_ITEM_2 true
+RC_KAK_BAZAAR_ITEM_3 true
+RC_KAK_BAZAAR_ITEM_4 true
+RC_KAK_BAZAAR_ITEM_5 true
+RC_KAK_BAZAAR_ITEM_6 true
+RC_KAK_BAZAAR_ITEM_7 true
+RC_KAK_BAZAAR_ITEM_8 true
+//Exits
+RR_KAKARIKO_VILLAGE true
+
+def RR_KAK_SHOOTING_GALLERY SCENE_SHOOTING_GALLERY false
+Kak Shooting Gallery
+//Checks
+RC_KAK_SHOOTING_GALLERY_REWARD (and (HasItem RG_CHILD_WALLET) (and IsAdult (CanUse RG_FAIRY_BOW)))
+//Exits
+RR_KAKARIKO_VILLAGE true
+
+def RR_KAK_POTION_SHOP_FRONT SCENE_POTION_SHOP_KAKARIKO false
+Kak Potion Shop Front
+//Checks
+RC_KAK_POTION_SHOP_ITEM_1 IsAdult
+RC_KAK_POTION_SHOP_ITEM_2 IsAdult
+RC_KAK_POTION_SHOP_ITEM_3 IsAdult
+RC_KAK_POTION_SHOP_ITEM_4 IsAdult
+RC_KAK_POTION_SHOP_ITEM_5 IsAdult
+RC_KAK_POTION_SHOP_ITEM_6 IsAdult
+RC_KAK_POTION_SHOP_ITEM_7 IsAdult
+RC_KAK_POTION_SHOP_ITEM_8 IsAdult
+//Exits
+RR_KAKARIKO_VILLAGE true
+RR_KAK_POTION_SHOP_BACK IsAdult
+
+def RR_KAK_POTION_SHOP_BACK SCENE_POTION_SHOP_KAKARIKO false
+Kak Potion Shop Back
+//Exits
+RR_KAK_BACKYARD IsAdult
+RR_KAK_POTION_SHOP_FRONT true
+
+def RR_KAK_WATCHTOWER SCENE_KAKARIKO_VILLAGE true RA_KAKARIKO_VILLAGE
+Kak Watchtower
+//exists for when age change is in logic.
+//Checks
+RC_KAK_GS_WATCHTOWER (and IsChild (and (CanUse RG_DINS_FIRE) CanGetNightTimeGS))
+//Exits
+RR_KAKARIKO_VILLAGE true
+RR_KAK_ROOFTOP (and RT_KAK_MAN_ON_ROOF IsChild)
+
+def RR_KAK_ROOFTOP SCENE_KAKARIKO_VILLAGE true RA_KAKARIKO_VILLAGE
+Kak Rooftop
+//Checks
+RC_KAK_MAN_ON_ROOF true
+//Exits
+RR_KAK_BACKYARD true
+RR_KAKARIKO_VILLAGE true
+
+def RR_KAK_IMPAS_ROOFTOP SCENE_KAKARIKO_VILLAGE true RA_KAKARIKO_VILLAGE
+Kak Impas Rooftop
+//Checks
+RC_KAK_GS_ABOVE_IMPAS_HOUSE (and IsAdult (and CanGetNightTimeGS (CanKillEnemy RE_GOLD_SKULLTULA)))
+//Exits
+RR_KAK_IMPAS_LEDGE true
+RR_KAKARIKO_VILLAGE true
+
+def RR_KAK_BEHIND_GATE SCENE_KAKARIKO_VILLAGE true RA_KAKARIKO_VILLAGE
+Kak Behind Gate
+//Exits
+RR_KAKARIKO_VILLAGE (or IsAdult (or RT_VISIBLE_COLLISION KakarikoVillageGateOpen))
+RR_DEATH_MOUNTAIN_TRAIL true
+
+def RR_KAK_BACKYARD SCENE_KAKARIKO_VILLAGE true RA_KAKARIKO_VILLAGE
+Kak Backyard
+//There's probably a trick to get these with rang from the main region
+//Checks
+RC_KAK_NEAR_MEDICINE_SHOP_POT_1 (and IsChild CanBreakPots)
+RC_KAK_NEAR_MEDICINE_SHOP_POT_2 (and IsChild CanBreakPots)
+//Exits
+RR_KAKARIKO_VILLAGE true
+RR_KAK_OPEN_GROTTO true
+RR_KAK_ODD_POTION_BUILDING (and IsAdult (CanOpenOverworldDoor RG_GRANNYS_POTION_SHOP_KEY))
+RR_KAK_POTION_SHOP_BACK (and IsAdult (and AtDay (CanOpenOverworldDoor RG_KAK_POTION_SHOP_KEY)))
+
+def RR_KAK_WELL SCENE_KAKARIKO_VILLAGE true RA_KAKARIKO_VILLAGE
+Kak Well
+//Exits
+RR_KAKARIKO_VILLAGE (or IsAdult (or (HasItem RG_BRONZE_SCALE) DrainWell))
+RR_BOTTOM_OF_THE_WELL_ENTRYWAY (or IsChild (and DrainWell (!= RSK_SHUFFLE_DUNGEON_ENTRANCES RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)))
+
+def RR_KAK_ODD_POTION_BUILDING SCENE_POTION_SHOP_GRANNY false
+Kak Granny's Potion Shop
+//Checks
+RC_KAK_TRADE_ODD_MUSHROOM (and IsAdult (CanUse RG_ODD_MUSHROOM))
+RC_KAK_GRANNYS_SHOP (and IsAdult (or (CanUse RG_ODD_MUSHROOM) (TradeQuestStep RG_ODD_MUSHROOM)))
+//Exits
+RR_KAK_BACKYARD true
+
+def RR_KAK_REDEAD_GROTTO SCENE_GROTTOS false
+Kak Redead Grotto
+//Checks
+RC_KAK_REDEAD_GROTTO_CHEST (CanKillEnemy RE_REDEAD ED_CLOSE true 2)
+//Exits
+RR_KAKARIKO_VILLAGE true
+
+def RR_KAK_OPEN_GROTTO SCENE_GROTTOS false
+Kak Open Grotto
+//Events
+GossipStoneFairy CallGossipFairy
+ButterflyFairy (CanUse RG_STICKS)
+BugShrub CanCutShrubs
+LoneFish true
+//Checks
+RC_KAK_OPEN_GROTTO_CHEST true
+RC_KAK_OPEN_GROTTO_FISH HasBottle
+RC_KAK_OPEN_GROTTO_GOSSIP_STONE_FAIRY CallGossipFairy
+RC_KAK_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG (CanUse RG_SONG_OF_STORMS)
+RC_KAK_OPEN_GROTTO_GOSSIP_STONE true
+RC_KAK_OPEN_GROTTO_BEEHIVE_LEFT CanBreakLowerBeehives
+RC_KAK_OPEN_GROTTO_BEEHIVE_RIGHT CanBreakLowerBeehives
+RC_KAK_OPEN_GROTTO_GRASS_1 CanCutShrubs
+RC_KAK_OPEN_GROTTO_GRASS_2 CanCutShrubs
+RC_KAK_OPEN_GROTTO_GRASS_3 CanCutShrubs
+RC_KAK_OPEN_GROTTO_GRASS_4 CanCutShrubs
+//Exits
+RR_KAK_BACKYARD true

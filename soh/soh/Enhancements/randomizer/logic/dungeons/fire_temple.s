@@ -1,0 +1,680 @@
+def RR_FIRE_TEMPLE_ENTRYWAY SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Entryway
+//Exits
+RR_FIRE_TEMPLE_FIRST_ROOM (IsDungeonVanilla FIRE_TEMPLE)
+RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER (IsDungeonMQ FIRE_TEMPLE)
+RR_DMC_CENTRAL_LOCAL true
+
+def RR_FIRE_TEMPLE_FIRST_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple First Room
+//Exits
+RR_FIRE_TEMPLE_ENTRYWAY true
+RR_FIRE_TEMPLE_NEAR_BOSS_ROOM (>= FireTimer 24)
+RR_FIRE_TEMPLE_LOOP_ENEMIES (and (Here (CanUse RG_MEGATON_HAMMER)) (or (SmallKeys SCENE_FIRE_TEMPLE 8) (not IsFireLoopLocked)))
+RR_FIRE_TEMPLE_LOOP_EXIT true
+RR_FIRE_TEMPLE_BIG_LAVA_ROOM (and (SmallKeys SCENE_FIRE_TEMPLE 2) (>= FireTimer 24))
+
+def RR_FIRE_TEMPLE_NEAR_BOSS_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Near Boss Room
+//Events
+FairyPot (or (CanUse RG_HOVER_BOOTS) (CanUse RG_HOOKSHOT))
+//Checks
+RC_FIRE_TEMPLE_NEAR_BOSS_CHEST true
+RC_FIRE_TEMPLE_NEAR_BOSS_POT_1 (and CanBreakPots (or (CanUse RG_HOVER_BOOTS) (CanUse RG_HOOKSHOT)))
+RC_FIRE_TEMPLE_NEAR_BOSS_POT_2 (and CanBreakPots (or (CanUse RG_HOVER_BOOTS) (CanUse RG_HOOKSHOT)))
+RC_FIRE_TEMPLE_NEAR_BOSS_POT_3 (and CanBreakPots (or (CanUse RG_HOVER_BOOTS) (CanUse RG_HOOKSHOT)))
+RC_FIRE_TEMPLE_NEAR_BOSS_POT_4 (and CanBreakPots (or (CanUse RG_HOVER_BOOTS) (CanUse RG_HOOKSHOT)))
+//Exits
+RR_FIRE_TEMPLE_FIRST_ROOM true
+RR_FIRE_TEMPLE_BOSS_ENTRYWAY (and IsAdult (or RT_FIRE_BOSS_DOOR_JUMP (or (Here (CanUse RG_MEGATON_HAMMER)) (CanUse RG_HOVER_BOOTS))))
+
+def RR_FIRE_TEMPLE_LOOP_ENEMIES SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Loop Enemies
+//Exits
+RR_FIRE_TEMPLE_FIRST_ROOM (or (SmallKeys SCENE_FIRE_TEMPLE 8) (not IsFireLoopLocked))
+RR_FIRE_TEMPLE_LOOP_TILES (Here (and (CanKillEnemy RE_TORCH_SLUG) (CanKillEnemy RE_FIRE_KEESE)))
+
+def RR_FIRE_TEMPLE_LOOP_TILES SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Loop Tiles
+//Checks
+RC_FIRE_TEMPLE_GS_BOSS_KEY_LOOP CanAttack
+//Exits
+RR_FIRE_TEMPLE_LOOP_ENEMIES true
+RR_FIRE_TEMPLE_LOOP_FLARE_DANCER true
+
+def RR_FIRE_TEMPLE_LOOP_FLARE_DANCER SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Loop Flare Dancer
+//Checks
+RC_FIRE_TEMPLE_FLARE_DANCER_CHEST (and (or HasExplosives (CanUse RG_MEGATON_HAMMER)) IsAdult)
+//Exits
+RR_FIRE_TEMPLE_LOOP_TILES true
+RR_FIRE_TEMPLE_LOOP_HAMMER_SWITCH (Here (CanKillEnemy RE_FLARE_DANCER))
+
+def RR_FIRE_TEMPLE_LOOP_HAMMER_SWITCH SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Loop Hammer Switch
+//Events
+FireLoopSwitch (CanUse RG_MEGATON_HAMMER)
+//Exits
+RR_FIRE_TEMPLE_LOOP_FLARE_DANCER true
+RR_FIRE_TEMPLE_LOOP_GORON_ROOM FireLoopSwitch
+
+def RR_FIRE_TEMPLE_LOOP_GORON_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Loop Goron Room
+//Checks
+RC_FIRE_TEMPLE_BOSS_KEY_CHEST true
+//Exits
+RR_FIRE_TEMPLE_LOOP_HAMMER_SWITCH FireLoopSwitch
+RR_FIRE_TEMPLE_LOOP_EXIT FireLoopSwitch
+
+def RR_FIRE_TEMPLE_LOOP_EXIT SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Loop Exit
+//Exits
+RR_FIRE_TEMPLE_FIRST_ROOM true
+RR_FIRE_TEMPLE_LOOP_GORON_ROOM FireLoopSwitch
+
+def RR_FIRE_TEMPLE_BIG_LAVA_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Big Lava Room
+//Checks
+RC_FIRE_TEMPLE_BIG_LAVA_POT_1 CanBreakPots
+RC_FIRE_TEMPLE_BIG_LAVA_POT_2 CanBreakPots
+RC_FIRE_TEMPLE_BIG_LAVA_POT_3 CanBreakPots
+//Exits
+RR_FIRE_TEMPLE_FIRST_ROOM (SmallKeys SCENE_FIRE_TEMPLE 2)
+RR_FIRE_TEMPLE_BIG_LAVA_ROOM_NORTH_GORON true
+RR_FIRE_TEMPLE_BIG_LAVA_ROOM_NORTH_TILES (and IsAdult (or (CanUse RG_SONG_OF_TIME) RT_FIRE_SOT))
+RR_FIRE_TEMPLE_BIG_LAVA_ROOM_SOUTH_GORON (and IsAdult HasExplosives)
+RR_FIRE_TEMPLE_FIRE_PILLAR_ROOM (SmallKeys SCENE_FIRE_TEMPLE 3)
+
+def RR_FIRE_TEMPLE_BIG_LAVA_ROOM_NORTH_GORON SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Big Lava Room North Goron
+//Checks
+RC_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST true
+//Exits
+RR_FIRE_TEMPLE_BIG_LAVA_ROOM true
+
+def RR_FIRE_TEMPLE_BIG_LAVA_ROOM_NORTH_TILES SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Big Lava Room North Tiles
+//RANDOTODO check if child can reach
+//Checks
+RC_FIRE_TEMPLE_GS_SONG_OF_TIME_ROOM (or (and IsAdult CanAttack) HookshotOrBoomerang)
+//Exits
+RR_FIRE_TEMPLE_BIG_LAVA_ROOM true
+
+def RR_FIRE_TEMPLE_BIG_LAVA_ROOM_SOUTH_GORON SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Big Lava Room South Goron
+//Checks
+RC_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST true
+//Exits
+RR_FIRE_TEMPLE_BIG_LAVA_ROOM true
+
+def RR_FIRE_TEMPLE_FIRE_PILLAR_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Fire Pillar Room
+//Checks
+RC_FIRE_TEMPLE_FIRE_PILLAR_LEFT_HEART (>= FireTimer 56)
+RC_FIRE_TEMPLE_FIRE_PILLAR_RIGHT_HEART (>= FireTimer 56)
+RC_FIRE_TEMPLE_FIRE_PILLAR_BACK_HEART (>= FireTimer 56)
+//Exits
+RR_FIRE_TEMPLE_BIG_LAVA_ROOM (SmallKeys SCENE_FIRE_TEMPLE 3)
+RR_FIRE_TEMPLE_SHORTCUT_ROOM (and (>= FireTimer 56) (SmallKeys SCENE_FIRE_TEMPLE 4))
+
+def RR_FIRE_TEMPLE_SHORTCUT_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Shortcut Room
+//Checks
+RC_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST (Here true)
+//Exits
+RR_FIRE_TEMPLE_FIRE_PILLAR_ROOM (SmallKeys SCENE_FIRE_TEMPLE 4)
+RR_FIRE_TEMPLE_SHORTCUT_CLIMB (Here true)
+RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER (and IsAdult (and (or (HasItem RG_GORONS_BRACELET) RT_FIRE_STRENGTH) (or HasExplosives (or (CanUse RG_FAIRY_BOW) (or (CanUse RG_HOOKSHOT) (CanUse RG_FAIRY_SLINGSHOT))))))
+
+def RR_FIRE_TEMPLE_SHORTCUT_CLIMB SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Shortcut Climb
+//Exits
+RR_FIRE_TEMPLE_SHORTCUT_ROOM true
+RR_FIRE_TEMPLE_BOULDER_MAZE_UPPER true
+
+def RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Boulder Maze Lower
+//Checks
+RC_FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST true
+RC_FIRE_TEMPLE_GS_BOULDER_MAZE (and HasExplosives (or IsAdult HookshotOrBoomerang))
+//Exits
+RR_FIRE_TEMPLE_SHORTCUT_ROOM true
+RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER_SIDE_ROOM true
+RR_FIRE_TEMPLE_EAST_CENTRAL_ROOM (SmallKeys SCENE_FIRE_TEMPLE 5)
+RR_FIRE_TEMPLE_BOULDER_MAZE_UPPER false
+
+def RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER_SIDE_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Boulder Maze Lower Side Room
+//Checks
+RC_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST true
+//Exits
+RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER true
+
+def RR_FIRE_TEMPLE_EAST_CENTRAL_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple East Central Room
+//Checks
+RC_FIRE_TEMPLE_EAST_CENTRAL_LEFT_HEART true
+RC_FIRE_TEMPLE_EAST_CENTRAL_RIGHT_HEART true
+RC_FIRE_TEMPLE_EAST_CENTRAL_MIDDLE_HEART true
+//Exits
+RR_FIRE_TEMPLE_BIG_LAVA_ROOM TakeDamage
+RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER (SmallKeys SCENE_FIRE_TEMPLE 5)
+RR_FIRE_TEMPLE_FIRE_WALL_CHASE (SmallKeys SCENE_FIRE_TEMPLE 6)
+RR_FIRE_TEMPLE_MAP_AREA (or (CanUse RG_FAIRY_SLINGSHOT) (CanUse RG_FAIRY_BOW))
+
+def RR_FIRE_TEMPLE_FIRE_WALL_CHASE SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Fire Wall Chase
+//Checks
+RC_FIRE_TEMPLE_FIRE_WALL_EAST_HEART (and (>= FireTimer 24) (or IsAdult (CanUse RG_BOOMERANG)))
+RC_FIRE_TEMPLE_FIRE_WALL_WEST_HEART (and (>= FireTimer 24) (or IsAdult (CanUse RG_BOOMERANG)))
+RC_FIRE_TEMPLE_FIRE_WALL_EXIT_HEART (>= FireTimer 24)
+//Exits
+RR_FIRE_TEMPLE_EAST_CENTRAL_ROOM (and (>= FireTimer 24) (SmallKeys SCENE_FIRE_TEMPLE 6))
+RR_FIRE_TEMPLE_MAP_AREA IsAdult
+RR_FIRE_TEMPLE_BOULDER_MAZE_UPPER (and (>= FireTimer 24) IsAdult)
+RR_FIRE_TEMPLE_CORRIDOR (and (>= FireTimer 24) (and IsAdult (SmallKeys SCENE_FIRE_TEMPLE 7)))
+
+def RR_FIRE_TEMPLE_MAP_AREA SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Map Region
+//Checks
+RC_FIRE_TEMPLE_MAP_CHEST true
+//Exits
+RR_FIRE_TEMPLE_EAST_CENTRAL_ROOM true
+
+def RR_FIRE_TEMPLE_BOULDER_MAZE_UPPER SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Boulder Maze Upper
+//Checks
+RC_FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST true
+//Exits
+RR_FIRE_TEMPLE_SHORTCUT_CLIMB HasExplosives
+RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER true
+RR_FIRE_TEMPLE_FIRE_WALL_CHASE true
+RR_FIRE_TEMPLE_SCARECROW_ROOM (or (CanUse RG_SCARECROW) (and RT_FIRE_SCARECROW (and IsAdult (CanUse RG_LONGSHOT))))
+
+def RR_FIRE_TEMPLE_SCARECROW_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Scarecrow Room
+//Checks
+RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB (or CanJumpslashExceptHammer (or (CanUse RG_FAIRY_SLINGSHOT) (or (CanUse RG_BOOMERANG) (or HasExplosives (or (CanUse RG_FAIRY_BOW) (or (CanUse RG_HOOKSHOT) (CanUse RG_DINS_FIRE)))))))
+//Exits
+RR_FIRE_TEMPLE_BOULDER_MAZE_UPPER true
+RR_FIRE_TEMPLE_EAST_PEAK true
+
+def RR_FIRE_TEMPLE_EAST_PEAK SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple East Peak
+//Checks
+RC_FIRE_TEMPLE_SCARECROW_CHEST true
+RC_FIRE_TEMPLE_GS_SCARECROW_TOP CanUseProjectile
+//Exits
+RR_FIRE_TEMPLE_SCARECROW_ROOM true
+RR_FIRE_TEMPLE_EAST_CENTRAL_ROOM TakeDamage
+
+def RR_FIRE_TEMPLE_CORRIDOR SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Corridor
+//Exits
+RR_FIRE_TEMPLE_FIRE_WALL_CHASE (SmallKeys SCENE_FIRE_TEMPLE 7)
+RR_FIRE_TEMPLE_FIRE_MAZE_ROOM true
+
+def RR_FIRE_TEMPLE_FIRE_MAZE_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Fire Maze Room
+//Checks
+RC_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_1 CanBreakPots
+RC_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_2 CanBreakPots
+RC_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_3 CanBreakPots
+RC_FIRE_TEMPLE_FLAME_MAZE_LEFT_POT_4 CanBreakPots
+//Exits
+RR_FIRE_TEMPLE_CORRIDOR true
+RR_FIRE_TEMPLE_FIRE_MAZE_UPPER (CanUse RG_HOVER_BOOTS)
+RR_FIRE_TEMPLE_FIRE_MAZE_SIDE_ROOM true
+RR_FIRE_TEMPLE_WEST_CENTRAL_LOWER (SmallKeys SCENE_FIRE_TEMPLE 8)
+RR_FIRE_TEMPLE_LATE_FIRE_MAZE (or RT_FIRE_FLAME_MAZE false)
+
+def RR_FIRE_TEMPLE_FIRE_MAZE_UPPER SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Fire Maze Upper
+//Exits
+RR_FIRE_TEMPLE_NEAR_BOSS_ROOM (CanUse RG_MEGATON_HAMMER)
+RR_FIRE_TEMPLE_FIRE_MAZE_ROOM true
+RR_FIRE_TEMPLE_WEST_CENTRAL_UPPER (CanUse RG_MEGATON_HAMMER)
+
+def RR_FIRE_TEMPLE_FIRE_MAZE_SIDE_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Fire Maze Side Room
+//Checks
+RC_FIRE_TEMPLE_COMPASS_CHEST true
+//Exits
+RR_FIRE_TEMPLE_FIRE_MAZE_ROOM true
+
+def RR_FIRE_TEMPLE_WEST_CENTRAL_LOWER SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple West Central Lower
+//Checks
+RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST (Here (and (or (CanUse RG_SONG_OF_TIME) RT_RUSTED_SWITCHES) (CanUse RG_MEGATON_HAMMER)))
+//Exits
+RR_FIRE_TEMPLE_FIRE_MAZE_ROOM (SmallKeys SCENE_FIRE_TEMPLE 8)
+RR_FIRE_TEMPLE_WEST_CENTRAL_UPPER (and IsAdult (CanUse RG_SONG_OF_TIME))
+RR_FIRE_TEMPLE_LATE_FIRE_MAZE true
+
+def RR_FIRE_TEMPLE_WEST_CENTRAL_UPPER SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple West Central Upper
+//Exits
+RR_FIRE_TEMPLE_BOSS_ENTRYWAY false
+RR_FIRE_TEMPLE_FIRE_MAZE_UPPER true
+RR_FIRE_TEMPLE_WEST_CENTRAL_LOWER true
+
+def RR_FIRE_TEMPLE_LATE_FIRE_MAZE SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Late Fire Maze
+//Checks
+RC_FIRE_TEMPLE_FLAME_MAZE_RIGHT_POT_1 CanBreakPots
+RC_FIRE_TEMPLE_FLAME_MAZE_RIGHT_POT_2 CanBreakPots
+RC_FIRE_TEMPLE_FLAME_MAZE_RIGHT_POT_3 CanBreakPots
+RC_FIRE_TEMPLE_FLAME_MAZE_RIGHT_POT_4 CanBreakPots
+//Exits
+RR_FIRE_TEMPLE_FIRE_MAZE_ROOM false
+RR_FIRE_TEMPLE_WEST_CENTRAL_LOWER true
+RR_FIRE_TEMPLE_UPPER_FLARE_DANCER HasExplosives
+
+def RR_FIRE_TEMPLE_UPPER_FLARE_DANCER SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Upper Flare Dancer
+//Exits
+RR_FIRE_TEMPLE_LATE_FIRE_MAZE (Here (CanKillEnemy RE_FLARE_DANCER))
+RR_FIRE_TEMPLE_WEST_CLIMB (Here (CanKillEnemy RE_FLARE_DANCER))
+
+def RR_FIRE_TEMPLE_WEST_CLIMB SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple West Climb
+//Exits
+RR_FIRE_TEMPLE_UPPER_FLARE_DANCER true
+RR_FIRE_TEMPLE_WEST_PEAK CanUseProjectile
+
+def RR_FIRE_TEMPLE_WEST_PEAK SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple West Peak
+//Checks
+RC_FIRE_TEMPLE_MEGATON_HAMMER_CHEST true
+//Exits
+RR_FIRE_TEMPLE_WEST_CENTRAL_UPPER TakeDamage
+RR_FIRE_TEMPLE_WEST_CLIMB true
+RR_FIRE_TEMPLE_HAMMER_RETURN_PATH (CanUse RG_MEGATON_HAMMER)
+
+def RR_FIRE_TEMPLE_HAMMER_RETURN_PATH SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Hammer Return Path
+//Checks
+RC_FIRE_TEMPLE_AFTER_HAMMER_SMALL_CRATE_1 CanBreakSmallCrates
+RC_FIRE_TEMPLE_AFTER_HAMMER_SMALL_CRATE_2 CanBreakSmallCrates
+//Exits
+RR_FIRE_TEMPLE_ABOVE_FIRE_MAZE (CanUse RG_MEGATON_HAMMER)
+
+def RR_FIRE_TEMPLE_ABOVE_FIRE_MAZE SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Above Fire Maze
+//Exits
+RR_FIRE_TEMPLE_HAMMER_RETURN_PATH true
+RR_FIRE_TEMPLE_FIRE_MAZE_UPPER (CanUse RG_MEGATON_HAMMER)
+
+//potentially dangerous temp flag on the first room's torches, should be made permanent if possible
+def RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ First Room Lower
+//Checks
+RC_FIRE_TEMPLE_MQ_ENTRANCE_POT_1 CanBreakPots
+RC_FIRE_TEMPLE_MQ_ENTRANCE_POT_2 CanBreakPots
+//Exits
+RR_FIRE_TEMPLE_ENTRYWAY true
+RR_FIRE_TEMPLE_MQ_MAP_ROOM_SOUTH true
+RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER (or IsAdult (CanUse RG_HOOKSHOT))
+RR_FIRE_TEMPLE_MQ_STALFOS_ROOM (SmallKeys SCENE_FIRE_TEMPLE 5)
+
+def RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ First Room Upper
+//Exits
+RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER true
+RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM HasFireSource
+RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM (Here (CanUse RG_MEGATON_HAMMER))
+
+def RR_FIRE_TEMPLE_MQ_MAP_ROOM_SOUTH SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Map Room South
+//Checks
+RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST (CanKillEnemy RE_LIKE_LIKE)
+//Exits
+RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER (Here (CanKillEnemy RE_LIKE_LIKE))
+RR_FIRE_TEMPLE_MQ_MAP_ROOM_CAGE OpenedLowestGoronCage
+
+def RR_FIRE_TEMPLE_MQ_STALFOS_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Stalfos Room
+//Checks
+RC_FIRE_TEMPLE_MQ_LOOP_STALFOS_SUN_FAIRY (CanUse RG_SUNS_SONG)
+//Exits
+RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER true
+RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM (Here (CanKillEnemy RE_STALFOS ED_CLOSE true 2))
+
+def RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Iron Knuckle Room
+//Events
+FairyPot true
+//Checks
+RC_FIRE_TEMPLE_MQ_LOOP_KNUCKLE_SUN_FAIRY (CanUse RG_SUNS_SONG)
+RC_FIRE_TEMPLE_MQ_BEFORE_MINI_BOSS_POT_1 CanBreakPots
+RC_FIRE_TEMPLE_MQ_BEFORE_MINI_BOSS_POT_2 CanBreakPots
+RC_FIRE_TEMPLE_MQ_BEFORE_MINI_BOSS_POT_3 CanBreakPots
+RC_FIRE_TEMPLE_MQ_BEFORE_MINI_BOSS_POT_4 CanBreakPots
+RC_FIRE_TEMPLE_MQ_BEFORE_MINI_BOSS_POT_5 CanBreakPots
+RC_FIRE_TEMPLE_MQ_BEFORE_MINI_BOSS_POT_6 CanBreakPots
+RC_FIRE_TEMPLE_MQ_BEFORE_MINI_BOSS_POT_7 CanBreakPots
+RC_FIRE_TEMPLE_MQ_BEFORE_MINI_BOSS_POT_8 CanBreakPots
+//Exits
+RR_FIRE_TEMPLE_MQ_STALFOS_ROOM true
+RR_FIRE_TEMPLE_MQ_LOWER_FLARE_DANCER (Here (CanKillEnemy RE_IRON_KNUCKLE))
+
+def RR_FIRE_TEMPLE_MQ_LOWER_FLARE_DANCER SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Lower Flare Dancer
+//Checks
+RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST (and (or IsAdult (CanUse RG_HOOKSHOT)) (Here (CanKillEnemy RE_FLARE_DANCER)))
+//Exits
+RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM true
+RR_FIRE_TEMPLE_MQ_MAP_ROOM_NORTH (Here (CanKillEnemy RE_FLARE_DANCER))
+
+def RR_FIRE_TEMPLE_MQ_MAP_ROOM_NORTH SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Map Room North
+//Events
+OpenedLowestGoronCage (CanUse RG_MEGATON_HAMMER)
+//Exits
+RR_FIRE_TEMPLE_MQ_LOWER_FLARE_DANCER true
+RR_FIRE_TEMPLE_MQ_MAP_ROOM_CAGE OpenedLowestGoronCage
+
+def RR_FIRE_TEMPLE_MQ_MAP_ROOM_CAGE SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Map Room Cage
+//Checks
+RC_FIRE_TEMPLE_MQ_MAP_CHEST true
+//Exits
+RR_FIRE_TEMPLE_MQ_MAP_ROOM_NORTH OpenedLowestGoronCage
+RR_FIRE_TEMPLE_MQ_MAP_ROOM_SOUTH OpenedLowestGoronCage
+
+def RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Near Boss Room
+//If we're using the south torch as the initial torch, or using FAs, we either have to cross to the north to remove the crate, or use a trick to ignore it
+//Checks
+RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST (and (> FireTimer 25) (and RT_FIRE_MQ_NEAR_BOSS (or (CanUse RG_FIRE_ARROWS) (and IsAdult (and (CanUse RG_DINS_FIRE) (CanUse RG_FAIRY_BOW))))))
+RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_1 (and (> FireTimer 25) CanBreakCrates)
+RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_2 (and (> FireTimer 25) CanBreakCrates)
+//Exits
+RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER true
+//Child cannot make it to the north side torches without a hook without specifically bunny hood speed + hover boots
+RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM_NORTH (and (> FireTimer 32) (or (CanUse RG_HOOKSHOT) (and IsAdult (CanUse RG_HOVER_BOOTS))))
+RR_FIRE_TEMPLE_BOSS_ENTRYWAY (and (>= FireTimer 15) (or (and IsAdult (or RT_FIRE_BOSS_DOOR_JUMP (CanUse RG_HOVER_BOOTS))) (or (and IsAdult HitFireTemplePlatform) (and HitFireTemplePlatform (CanUse RG_HOVER_BOOTS)))))
+
+//This room assumes tunic logic is handled on entry.
+//Covers the upper section too, as all methods to reach this can climb up somehow
+def RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM_NORTH SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Near Boss Room North
+//If we have FAs, we can just remove the crate and use those to light the torches.
+//otherwise, with Dins, we first light them with dins and then either use a bow shot or to cross back over to light the other torch
+//Valid ways across are adult+hovers, bunny+hovers, longshot or running through the lava and then climbing back up as adult (child can't reach the ledge).
+//The Damage logic here is for jumping down and running across the lava to get in dins range of the south torch
+//Fairies cannot be used for this as it is time sensetive, and NL is only useful with sticks as it disables other magic while in use, so it's tunic or raw damage taking ability.
+//testing tells me you take 3 ticks of lava damage, which is 12 internal damage or 3/4 of a heart at x1 damage multiplier, performing this run
+//logic->EffectiveHealth() works in half hearts for whatever reason, meaning this needs a deeper refactor to be perfect, but it should be good enough for now
+//Checks
+RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST (or (CanUse RG_FIRE_ARROWS) (and (CanUse RG_DINS_FIRE) (or (CanUse RG_FAIRY_BOW) (or (CanUse RG_LONGSHOT) (and IsAdult (or (CanUse RG_HOVER_BOOTS) (or (CanUse RG_GORON_TUNIC) (or (>= EffectiveHealth 2) (and (CanUse RG_NAYRUS_LOVE) (CanUse RG_STICKS))))))))))
+RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_POT_1 CanBreakPots
+RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_POT_2 CanBreakPots
+RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_1 (and (> FireTimer 25) CanBreakCrates)
+RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_2 (and (> FireTimer 25) CanBreakCrates)
+RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_3 CanBreakCrates
+RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_4 CanBreakCrates
+RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_5 CanBreakCrates
+RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_6 CanBreakCrates
+//Exits
+RR_FIRE_TEMPLE_NEAR_BOSS_ROOM true
+
+def RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Big Lava Room
+//I'm currently assuming the oversight version of RT_FIRE_MQ_BK_CHEST for the fire timer logic
+//Checks
+RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST (and (>= FireTimer 40) (and HasFireSource (and HasExplosives (or (CanUse RG_HOOKSHOT) (and IsAdult RT_FIRE_MQ_BLOCKED_CHEST)))))
+//implies CanGetEnemyDrop(RE_GOLD_SKULLTULA)
+RC_FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR (and (>= FireTimer 20) (CanUse RG_MEGATON_HAMMER))
+RC_FIRE_TEMPLE_MQ_LAVA_ROOM_NORTH_POT CanBreakPots
+RC_FIRE_TEMPLE_MQ_LAVA_ROOM_HIGH_POT CanBreakPots
+RC_FIRE_TEMPLE_MQ_LAVA_ROOM_SOUTH_POT (and (>= FireTimer 40) (or (CanUse RG_HOOKSHOT) (and RT_FIRE_MQ_BLOCKED_CHEST (or (and IsAdult CanBreakPots) (CanUse RG_BOOMERANG)))))
+//Exits
+RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER (>= FireTimer 20)
+//This room assumes Goron Tunic until looser tunic requirements tricks are made
+RR_FIRE_TEMPLE_MQ_ELEVATOR_ROOM (and (CanUse RG_GORON_TUNIC) (SmallKeys SCENE_FIRE_TEMPLE 2))
+RR_FIRE_TEMPLE_MQ_TORCH_FIREWALL_ROOM (and HasFireSource (and (or (and (CanUse RG_FAIRY_BOW) (>= FireTimer 25)) (and RT_FIRE_MQ_BK_CHEST (>= FireTimer 50))) (or (CanUse RG_HOOKSHOT) (and IsAdult RT_FIRE_SOT))))
+
+def RR_FIRE_TEMPLE_MQ_TORCH_FIREWALL_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Torch Firewall Room
+//Events
+FairyPot (CanUse RG_HOOKSHOT)
+//Checks
+RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST (CanUse RG_HOOKSHOT)
+RC_FIRE_TEMPLE_MQ_LAVA_TORCH_POT_1 HookshotOrBoomerang
+RC_FIRE_TEMPLE_MQ_LAVA_TORCH_POT_2 HookshotOrBoomerang
+//Exits
+RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM true
+
+def RR_FIRE_TEMPLE_MQ_ELEVATOR_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Elevator Room
+//Checks
+RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_LEFT_HEART true
+RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_RIGHT_HEART true
+RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_LOWER_HEART true
+//Exits
+RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM true
+RR_FIRE_TEMPLE_MQ_BIG_TORCH_ROOM true
+
+def RR_FIRE_TEMPLE_MQ_BIG_TORCH_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Big Torch Room
+//Exits
+RR_FIRE_TEMPLE_MQ_LOWER_MAZE (or (and HasFireSource (CanUse RG_HOOKSHOT)) (and RT_FIRE_MQ_CLIMB (CanUse RG_HOVER_BOOTS)))
+RR_FIRE_TEMPLE_MQ_ELEVATOR_ROOM (CanUse RG_GORON_TUNIC)
+RR_FIRE_TEMPLE_MQ_MAZE_SHORTCUT_CAGE OpenedUpperFireShortcut
+
+def RR_FIRE_TEMPLE_MQ_LOWER_MAZE SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Lower Maze
+//Check handled on both floors
+//Checks
+RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST (and HasExplosives RT_FIRE_MQ_MAZE_SIDE_ROOM)
+//Exits
+RR_FIRE_TEMPLE_MQ_BIG_TORCH_ROOM true
+//Explosives can also reach this room. Chus is relatively simple, they need to detonate on the first horizontal bar up from the floor while horizontally near the switch, but bombs are much harder
+RR_FIRE_TEMPLE_MQ_LOWER_MAZE_CRATE_CAGE (Here CanJumpslash)
+//it's possible to make the RT_FIRE_MQ_MAZE_HOVERS as child using bunny hood jumps, but not adult as adult bonks
+RR_FIRE_TEMPLE_MQ_UPPER_MAZE (and HasExplosives (and (CanUse RG_MEGATON_HAMMER) (CanUse RG_HOOKSHOT)))
+
+def RR_FIRE_TEMPLE_MQ_LOWER_MAZE_CRATE_CAGE SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Lower Maze Crate Cage
+//Checks
+RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST true
+RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CRATE_1 CanBreakCrates
+RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CRATE_2 CanBreakCrates
+RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CRATE_3 CanBreakCrates
+//Exits
+RR_FIRE_TEMPLE_MQ_LOWER_MAZE true
+//it's possible to make the RT_FIRE_MQ_MAZE_HOVERS as child using bunny hood jumps, but not adult as adult bonks
+RR_FIRE_TEMPLE_MQ_UPPER_MAZE (and IsAdult (or (and RT_FIRE_MQ_MAZE_HOVERS (CanUse RG_HOVER_BOOTS)) RT_FIRE_MQ_MAZE_JUMP))
+
+def RR_FIRE_TEMPLE_MQ_UPPER_MAZE SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Upper Maze
+//Exits
+RR_FIRE_TEMPLE_MQ_LOWER_MAZE true
+//this cage is much more lenient than the lower cage as the switch is close to the front. sling, rang and bow all hit the switch easily, though might be too unintuitive for default logic
+//This shouldn't come up in most cases anyway as most methods to get here need either a melee weapon or explosives
+RR_FIRE_TEMPLE_MQ_UPPER_MAZE_BOX_CAGE (Here (or CanJumpslash HasExplosives))
+RR_FIRE_TEMPLE_MQ_MAZE_SHORTCUT HasExplosives
+//Implies RR_FIRE_TEMPLE_MQ_LOWER_MAZE access
+RR_FIRE_TEMPLE_MQ_BURNING_BLOCK_CLIMB (and HasExplosives (and (CanUse RG_MEGATON_HAMMER) (or (CanUse RG_LONGSHOT) (and (CanUse RG_HOOKSHOT) (CanUse RG_SONG_OF_TIME)))))
+RR_FIRE_TEMPLE_MQ_HIGH_TORCH_ROOM (and (SmallKeys SCENE_FIRE_TEMPLE 3) (CanUse RG_GORON_TUNIC))
+
+def RR_FIRE_TEMPLE_MQ_UPPER_MAZE_BOX_CAGE SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Upper Maze Box Cage
+//Checks
+RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CHEST true
+RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CRATE_1 CanBreakCrates
+RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CRATE_2 CanBreakCrates
+RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CRATE_3 CanBreakCrates
+RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_SMALL_CRATE_1 CanBreakSmallCrates
+RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_SMALL_CRATE_2 CanBreakSmallCrates
+//Assumes maze access
+RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST HasExplosives
+//Exits
+RR_FIRE_TEMPLE_MQ_UPPER_MAZE true
+
+def RR_FIRE_TEMPLE_MQ_MAZE_SHORTCUT SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Maze Shortcut
+//Events
+OpenedUpperFireShortcut (CanUse RG_MEGATON_HAMMER)
+//Exits
+RR_FIRE_TEMPLE_MQ_UPPER_MAZE true
+RR_FIRE_TEMPLE_MQ_MAZE_SHORTCUT_CAGE OpenedUpperFireShortcut
+
+def RR_FIRE_TEMPLE_MQ_MAZE_SHORTCUT_CAGE SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Maze Shortcut Cage
+//Checks
+RC_FIRE_TEMPLE_MQ_COMPASS_CHEST OpenedUpperFireShortcut
+RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_1 (and OpenedUpperFireShortcut CanBreakCrates)
+RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_2 (and OpenedUpperFireShortcut CanBreakCrates)
+RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_3 (and OpenedUpperFireShortcut CanBreakCrates)
+RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_4 (and OpenedUpperFireShortcut CanBreakCrates)
+RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_5 (and OpenedUpperFireShortcut CanBreakCrates)
+RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_6 (and OpenedUpperFireShortcut CanBreakCrates)
+//Exits
+RR_FIRE_TEMPLE_MQ_MAZE_SHORTCUT OpenedUpperFireShortcut
+RR_FIRE_TEMPLE_MQ_BIG_TORCH_ROOM OpenedUpperFireShortcut
+
+def RR_FIRE_TEMPLE_MQ_BURNING_BLOCK_CLIMB SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Burning Block Climb
+//WallFairy (CanUse RG_HOOKSHOT)
+//There's definitely ways to do this hammerless, but with one points on it's a trick
+//Checks
+RC_FIRE_TEMPLE_MQ_GS_SKULL_ON_FIRE (and (CanUse RG_HOOKSHOT) (CanUse RG_MEGATON_HAMMER))
+//Exits
+RR_FIRE_TEMPLE_MQ_UPPER_MAZE true
+RR_FIRE_TEMPLE_MQ_NARROW_PATH_ROOM TakeDamage
+
+def RR_FIRE_TEMPLE_MQ_NARROW_PATH_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Narrow Path Room
+//Events
+FairyPot true
+//Checks
+RC_FIRE_TEMPLE_MQ_ABOVE_LAVA_POT_1 CanBreakPots
+RC_FIRE_TEMPLE_MQ_ABOVE_LAVA_POT_2 CanBreakPots
+RC_FIRE_TEMPLE_MQ_ABOVE_LAVA_POT_3 CanBreakPots
+//Exits
+RR_FIRE_TEMPLE_MQ_LOWER_MAZE true
+RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM TakeDamage
+
+def RR_FIRE_TEMPLE_MQ_HIGH_TORCH_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ High Torch Room
+//Checks
+RC_FIRE_TEMPLE_MQ_FLAME_WALL_POT_1 CanBreakPots
+RC_FIRE_TEMPLE_MQ_FLAME_WALL_POT_2 CanBreakPots
+RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_1 CanBreakCrates
+RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_2 CanBreakCrates
+RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_3 CanBreakCrates
+RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_4 CanBreakCrates
+RC_FIRE_TEMPLE_MQ_LAVA_TORCH_CRATE_5 CanBreakCrates
+RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_1 CanBreakSmallCrates
+RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_2 CanBreakSmallCrates
+RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_3 CanBreakSmallCrates
+RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_4 CanBreakSmallCrates
+RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_5 CanBreakSmallCrates
+//Exits
+RR_FIRE_TEMPLE_MQ_UPPER_MAZE (SmallKeys SCENE_FIRE_TEMPLE 3)
+RR_FIRE_TEMPLE_MQ_NARROW_PATH_ROOM true
+//Child has issues navigating the higher points of this room without an equip swapped hookshot
+RR_FIRE_TEMPLE_MQ_SOUTH_FIRE_MAZE (and (Here (or (CanUse RG_FIRE_ARROWS) (and (CanUse RG_FAIRY_BOW) (CanUse RG_HOOKSHOT)))) (or IsAdult (CanUse RG_HOOKSHOT)))
+
+def RR_FIRE_TEMPLE_MQ_SOUTH_FIRE_MAZE SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ South Fire Maze
+//Checks
+RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER HasExplosives
+RC_FIRE_TEMPLE_MQ_SOUTH_FIRE_MAZE_WEST_POT CanBreakPots
+RC_FIRE_TEMPLE_MQ_SOUTH_FIRE_MAZE_EAST_POT CanBreakPots
+//Exits
+RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM HitFireTemplePlatform
+RR_FIRE_TEMPLE_MQ_HIGH_TORCH_ROOM true
+RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PLATFORMS (or IsAdult (or (CanUse RG_SONG_OF_TIME) (CanUse RG_HOVER_BOOTS)))
+//Hover boots get there via the platforms
+RR_FIRE_TEMPLE_MQ_NORTH_FIRE_MAZE RT_FIRE_MQ_FLAME_MAZE
+RR_FIRE_TEMPLE_MQ_WEST_FIRE_MAZE OpenedFireMQFireMazeDoor
+
+def RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PLATFORMS SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Fire Maze Platforms
+//Events
+HitFireTemplePlatform (CanUse RG_MEGATON_HAMMER)
+OpenedFireMQFireMazeDoor (and (CanUse RG_MEGATON_HAMMER) (CanUse RG_HOOKSHOT))
+//Exits
+RR_FIRE_TEMPLE_MQ_SOUTH_FIRE_MAZE true
+RR_FIRE_TEMPLE_MQ_NORTH_FIRE_MAZE (or (CanUse RG_SONG_OF_TIME) (CanUse RG_HOVER_BOOTS))
+//trick to get to RR_FIRE_TEMPLE_MQ_WEST_FIRE_MAZE with hovers + taking damage is plausible
+
+def RR_FIRE_TEMPLE_MQ_NORTH_FIRE_MAZE SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ North Fire Maze
+//Checks
+RC_FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM (CanGetEnemyDrop RE_GOLD_SKULLTULA)
+RC_FIRE_TEMPLE_MQ_PAST_FIRE_MAZE_SOUTH_POT (CanUse RG_BOOMERANG)
+RC_FIRE_TEMPLE_MQ_FIRE_MAZE_NORTHMOST_POT CanBreakPots
+RC_FIRE_TEMPLE_MQ_FIRE_MAZE_NORTHWEST_POT CanBreakPots
+//Exits
+RR_FIRE_TEMPLE_MQ_SOUTH_FIRE_MAZE (or IsAdult RT_FIRE_MQ_FLAME_MAZE)
+RR_FIRE_TEMPLE_MQ_WEST_FIRE_MAZE RT_FIRE_MQ_FLAME_MAZE
+
+def RR_FIRE_TEMPLE_MQ_WEST_FIRE_MAZE SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ West Fire Maze
+//Exits
+RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PAST_WALL true
+RR_FIRE_TEMPLE_MQ_NORTH_FIRE_MAZE RT_FIRE_MQ_FLAME_MAZE
+
+//this area exists for the pots in case we void warp to the top of fire somehow, because there's no way to get back the way we came
+def RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PAST_WALL SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Fire Maze Past Wall
+//Checks
+RC_FIRE_TEMPLE_MQ_PAST_FIRE_MAZE_SOUTH_POT CanBreakPots
+RC_FIRE_TEMPLE_MQ_PAST_FIRE_MAZE_NORTH_POT CanBreakPots
+RC_FIRE_TEMPLE_MQ_FIRE_MAZE_NORTHWEST_POT (CanUse RG_BOOMERANG)
+//Exits
+RR_FIRE_TEMPLE_MQ_UPPER_FLARE_DANCER true
+
+def RR_FIRE_TEMPLE_MQ_UPPER_FLARE_DANCER SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ North Fire Maze
+//Checks
+RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY (CanKillEnemy RE_FLARE_DANCER)
+//Exits
+RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PAST_WALL (CanKillEnemy RE_FLARE_DANCER)
+RR_FIRE_TEMPLE_MQ_SCARECROW_ROOM (and (CanKillEnemy RE_FLARE_DANCER) (SmallKeys SCENE_FIRE_TEMPLE 4))
+
+def RR_FIRE_TEMPLE_MQ_SCARECROW_ROOM SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Scarecrow Room
+//This requires nothing in N64 logic, but is tight enough to need rollspam with the one-point on which is stricter than I would normally consider in logic
+//Child basically needs the scarecrow or a bunny hood though due to a worse ledge grab.
+//Checks
+RC_FIRE_TEMPLE_MQ_CHEST_ON_FIRE (or IsAdult (CanUse RG_SCARECROW))
+//The dropdown here is unusual in that it hits 1 of 3 locations: RR_FIRE_TEMPLE_MQ_SOUTH_FIRE_MAZE, RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PLATFORMS and the section of RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PLATFORMS with the hammer switch
+//Using this dropdown is in N64 logic elsewhere, but not here, probably because it requires good foreknowlege to determine where to land
+//This would be a logical method to reach the hammer switch without hookshot, but it practically requires access to the area that switch unlocks already. It could also be first child access to PLATFORMS if tricks ever enable that
+//If a practical use for this drop is found, it should be made a trick
+//Exits
+RR_FIRE_TEMPLE_MQ_UPPER_FLARE_DANCER (SmallKeys SCENE_FIRE_TEMPLE 4)
+RR_FIRE_TEMPLE_MQ_COLLAPSED_STAIRS (and (Here (CanUse RG_MEGATON_HAMMER)) (SmallKeys SCENE_FIRE_TEMPLE 5))
+
+//The peg knocked down from here could have logical implications for child in the fire maze if tricks to gain height like bomb jumps exist
+def RR_FIRE_TEMPLE_MQ_COLLAPSED_STAIRS SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple MQ Collapsed Stairs
+//If someone manages to make a trick to get here from fire maze, this needs to be in a separate room as the door back is barred
+//Checks
+RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_MAZE (CanUse RG_HOOKSHOT)
+//Exits
+RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PLATFORMS (and (CanUse RG_HOOKSHOT) (Here (CanUse RG_MEGATON_HAMMER)))
+RR_FIRE_TEMPLE_MQ_SCARECROW_ROOM (and IsAdult (CanUse RG_HOOKSHOT))
+
+def RR_FIRE_TEMPLE_BOSS_ENTRYWAY SCENE_FIRE_TEMPLE false RA_FIRE_TEMPLE
+Fire Temple Boss Entryway
+//Exits
+RR_FIRE_TEMPLE_NEAR_BOSS_ROOM (and (IsDungeonVanilla FIRE_TEMPLE) false)
+RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM (and (IsDungeonMQ FIRE_TEMPLE) false)
+RR_FIRE_TEMPLE_BOSS_ROOM (HasItem RG_FIRE_TEMPLE_BOSS_KEY)
+
+def RR_FIRE_TEMPLE_BOSS_ROOM SCENE_FIRE_TEMPLE_BOSS false
+Fire Temple Boss Room
+//Events
+FireTempleClear (and (>= FireTimer 64) (CanKillEnemy RE_VOLVAGIA))
+//Checks
+RC_FIRE_TEMPLE_VOLVAGIA_HEART FireTempleClear
+RC_VOLVAGIA FireTempleClear
+//Exits
+RR_FIRE_TEMPLE_BOSS_ENTRYWAY false
+RR_DMC_CENTRAL_LOCAL @deprioritize FireTempleClear

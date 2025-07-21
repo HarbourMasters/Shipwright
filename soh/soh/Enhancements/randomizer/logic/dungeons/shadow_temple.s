@@ -1,0 +1,368 @@
+def RR_SHADOW_TEMPLE_ENTRYWAY SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple Entryway
+//Exits
+RR_SHADOW_TEMPLE_BEGINNING (and (IsDungeonVanilla SHADOW_TEMPLE) (and (or RT_LENS_SHADOW (CanUse RG_LENS_OF_TRUTH)) (or (CanUse RG_HOVER_BOOTS) (CanUse RG_HOOKSHOT))))
+RR_SHADOW_TEMPLE_MQ_BEGINNING (IsDungeonMQ SHADOW_TEMPLE)
+RR_GRAVEYARD_WARP_PAD_REGION true
+
+def RR_SHADOW_TEMPLE_BEGINNING SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple Beginning
+//Events
+NutPot true
+//Checks
+RC_SHADOW_TEMPLE_MAP_CHEST CanJumpslashExceptHammer
+RC_SHADOW_TEMPLE_HOVER_BOOTS_CHEST (CanKillEnemy RE_DEAD_HAND)
+RC_SHADOW_TEMPLE_NEAR_DEAD_HAND_POT_1 CanBreakPots
+RC_SHADOW_TEMPLE_WHISPERING_WALLS_POT_1 CanBreakPots
+RC_SHADOW_TEMPLE_WHISPERING_WALLS_POT_2 CanBreakPots
+RC_SHADOW_TEMPLE_WHISPERING_WALLS_POT_3 CanBreakPots
+RC_SHADOW_TEMPLE_WHISPERING_WALLS_POT_4 CanBreakPots
+RC_SHADOW_TEMPLE_WHISPERING_WALLS_POT_5 CanBreakPots
+RC_SHADOW_TEMPLE_MAP_CHEST_POT_1 CanBreakPots
+RC_SHADOW_TEMPLE_MAP_CHEST_POT_2 CanBreakPots
+//Exits
+RR_SHADOW_TEMPLE_ENTRYWAY true
+RR_SHADOW_TEMPLE_FIRST_BEAMOS (CanUse RG_HOVER_BOOTS)
+
+def RR_SHADOW_TEMPLE_FIRST_BEAMOS SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple First Beamos
+//Checks
+RC_SHADOW_TEMPLE_COMPASS_CHEST CanJumpslashExceptHammer
+RC_SHADOW_TEMPLE_EARLY_SILVER_RUPEE_CHEST (or (CanUse RG_HOVER_BOOTS) (CanUse RG_HOOKSHOT))
+RC_SHADOW_TEMPLE_GS_NEAR_SHIP false
+RC_SHADOW_TEMPLE_BEAMOS_STORM_FAIRY (CanUse RG_SONG_OF_STORMS)
+//Exits
+RR_SHADOW_TEMPLE_HUGE_PIT (and HasExplosives (and IsAdult (SmallKeys SCENE_SHADOW_TEMPLE 1)))
+RR_SHADOW_TEMPLE_BEYOND_BOAT false
+
+def RR_SHADOW_TEMPLE_HUGE_PIT SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple Huge Pit
+//Checks
+RC_SHADOW_TEMPLE_INVISIBLE_BLADES_VISIBLE_CHEST CanJumpslashExceptHammer
+RC_SHADOW_TEMPLE_INVISIBLE_BLADES_INVISIBLE_CHEST CanJumpslashExceptHammer
+RC_SHADOW_TEMPLE_FALLING_SPIKES_LOWER_CHEST true
+RC_SHADOW_TEMPLE_FALLING_SPIKES_UPPER_CHEST (or (and RT_SHADOW_UMBRELLA (CanUse RG_HOVER_BOOTS)) (HasItem RG_GORONS_BRACELET))
+RC_SHADOW_TEMPLE_FALLING_SPIKES_SWITCH_CHEST (or (and RT_SHADOW_UMBRELLA (CanUse RG_HOVER_BOOTS)) (HasItem RG_GORONS_BRACELET))
+RC_SHADOW_TEMPLE_INVISIBLE_SPIKES_CHEST (and (SmallKeys SCENE_SHADOW_TEMPLE 2) (or (and RT_LENS_SHADOW_PLATFORM RT_LENS_SHADOW) (CanUse RG_LENS_OF_TRUTH)))
+RC_SHADOW_TEMPLE_FREESTANDING_KEY (and (SmallKeys SCENE_SHADOW_TEMPLE 2) (and (or (and RT_LENS_SHADOW_PLATFORM RT_LENS_SHADOW) (CanUse RG_LENS_OF_TRUTH)) (and (CanUse RG_HOOKSHOT) (or (CanUse RG_BOMB_BAG) (or (HasItem RG_GORONS_BRACELET) (and RT_SHADOW_FREESTANDING_KEY (CanUse RG_BOMBCHU_5)))))))
+RC_SHADOW_TEMPLE_GS_LIKE_LIKE_ROOM CanJumpslashExceptHammer
+RC_SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM (or (CanUse RG_HOOKSHOT) (and RT_SHADOW_UMBRELLA_GS (CanUse RG_HOVER_BOOTS)))
+RC_SHADOW_TEMPLE_GS_SINGLE_GIANT_POT (and (SmallKeys SCENE_SHADOW_TEMPLE 2) (and (or (and RT_LENS_SHADOW_PLATFORM RT_LENS_SHADOW) (CanUse RG_LENS_OF_TRUTH)) (CanUse RG_HOOKSHOT)))
+RC_SHADOW_TEMPLE_FALLING_SPIKES_POT_1 CanBreakPots
+RC_SHADOW_TEMPLE_FALLING_SPIKES_POT_2 CanBreakPots
+RC_SHADOW_TEMPLE_FALLING_SPIKES_POT_3 (or (and CanBreakPots (and RT_SHADOW_UMBRELLA (CanUse RG_HOVER_BOOTS))) (HasItem RG_GORONS_BRACELET))
+RC_SHADOW_TEMPLE_FALLING_SPIKES_POT_4 (or (and CanBreakPots (and RT_SHADOW_UMBRELLA (CanUse RG_HOVER_BOOTS))) (HasItem RG_GORONS_BRACELET))
+//We cannot repeat the MQ invisible blades trick for these hearts as the like-like does not respawn if the room is cleared
+RC_SHADOW_TEMPLE_INVISIBLE_BLADES_LEFT_HEART (or (and (CanUse RG_SONG_OF_TIME) IsAdult) (CanUse RG_BOOMERANG))
+RC_SHADOW_TEMPLE_INVISIBLE_BLADES_RIGHT_HEART (or (and (CanUse RG_SONG_OF_TIME) IsAdult) (CanUse RG_BOOMERANG))
+RC_SHADOW_TEMPLE_PIT_STORM_FAIRY (CanUse RG_SONG_OF_STORMS)
+//Exits
+RR_SHADOW_TEMPLE_WIND_TUNNEL (and (or (and RT_LENS_SHADOW_PLATFORM RT_LENS_SHADOW) (CanUse RG_LENS_OF_TRUTH)) (and (CanUse RG_HOOKSHOT) (SmallKeys SCENE_SHADOW_TEMPLE 3)))
+
+def RR_SHADOW_TEMPLE_WIND_TUNNEL SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple Wind Tunnel
+//Checks
+RC_SHADOW_TEMPLE_WIND_HINT_CHEST true
+RC_SHADOW_TEMPLE_AFTER_WIND_ENEMY_CHEST (CanKillEnemy RE_GIBDO ED_CLOSE true 2)
+RC_SHADOW_TEMPLE_AFTER_WIND_HIDDEN_CHEST HasExplosives
+RC_SHADOW_TEMPLE_GS_NEAR_SHIP (and (CanUse RG_LONGSHOT) (SmallKeys SCENE_SHADOW_TEMPLE 4))
+RC_SHADOW_TEMPLE_WIND_HINT_SUN_FAIRY (CanUse RG_SUNS_SONG)
+RC_SHADOW_TEMPLE_AFTER_WIND_POT_1 CanBreakPots
+RC_SHADOW_TEMPLE_AFTER_WIND_POT_2 CanBreakPots
+RC_SHADOW_TEMPLE_SCARECROW_NORTH_HEART (and (CanUse RG_DISTANT_SCARECROW) (SmallKeys SCENE_SHADOW_TEMPLE 4))
+RC_SHADOW_TEMPLE_SCARECROW_SOUTH_HEART (and (CanUse RG_DISTANT_SCARECROW) (SmallKeys SCENE_SHADOW_TEMPLE 4))
+//Exits
+RR_SHADOW_TEMPLE_BEYOND_BOAT (and CanJumpslashExceptHammer (and (CanUse RG_ZELDAS_LULLABY) (SmallKeys SCENE_SHADOW_TEMPLE 4)))
+
+def RR_SHADOW_TEMPLE_BEYOND_BOAT SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple Beyond Boat
+//Checks
+RC_SHADOW_TEMPLE_SPIKE_WALLS_LEFT_CHEST (CanUse RG_DINS_FIRE)
+RC_SHADOW_TEMPLE_BOSS_KEY_CHEST (CanUse RG_DINS_FIRE)
+RC_SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST (CanKillEnemy RE_FLOORMASTER)
+//RANDOTODO check if child can reach the token
+RC_SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT (and IsAdult CanAttack)
+RC_SHADOW_TEMPLE_AFTER_BOAT_POT_1 CanBreakPots
+RC_SHADOW_TEMPLE_AFTER_BOAT_POT_2 CanBreakPots
+RC_SHADOW_TEMPLE_AFTER_BOAT_POT_3 (and CanBreakPots (or (CanUse RG_FAIRY_BOW) (or (CanUse RG_DISTANT_SCARECROW) (and RT_SHADOW_STATUE (CanUse RG_BOMBCHU_5)))))
+RC_SHADOW_TEMPLE_AFTER_BOAT_POT_4 (and CanBreakPots (or (CanUse RG_FAIRY_BOW) (or (CanUse RG_DISTANT_SCARECROW) (and RT_SHADOW_STATUE (CanUse RG_BOMBCHU_5)))))
+RC_SHADOW_TEMPLE_SPIKE_WALLS_POT_1 CanBreakPots
+RC_SHADOW_TEMPLE_FLOORMASTER_POT_1 CanBreakPots
+RC_SHADOW_TEMPLE_FLOORMASTER_POT_2 CanBreakPots
+RC_SHADOW_TEMPLE_AFTER_SHIP_UPPER_LEFT_HEART (CanUse RG_DISTANT_SCARECROW)
+RC_SHADOW_TEMPLE_AFTER_SHIP_UPPER_RIGHT_HEART (CanUse RG_DISTANT_SCARECROW)
+RC_SHADOW_TEMPLE_AFTER_SHIP_LOWER_HEART (or (and (or (CanUse RG_FAIRY_BOW) (or (CanUse RG_DISTANT_SCARECROW) (and RT_SHADOW_STATUE (CanUse RG_BOMBCHU_5)))) (CanUse RG_SONG_OF_TIME)) (and (CanUse RG_DISTANT_SCARECROW) (CanUse RG_HOVER_BOOTS)))
+//Exits
+RR_SHADOW_TEMPLE_BOSS_ENTRYWAY (and (or (CanUse RG_FAIRY_BOW) (or (CanUse RG_DISTANT_SCARECROW) (and RT_SHADOW_STATUE (CanUse RG_BOMBCHU_5)))) (and (SmallKeys SCENE_SHADOW_TEMPLE 5) (CanUse RG_HOVER_BOOTS)))
+
+def RR_SHADOW_TEMPLE_MQ_ENTRYWAY SCENE_ID_MAX false
+Invalid Region
+
+//RANDOTODO doublecheck CanAttack when rewriting, as I assumed it only checked adult due to the entrance
+def RR_SHADOW_TEMPLE_MQ_BEGINNING SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Beginning
+//Exits
+RR_SHADOW_TEMPLE_ENTRYWAY true
+RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM (or (CanUse RG_HOVER_BOOTS) (CanUse RG_HOOKSHOT))
+
+def RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Spinner Room
+//Checks
+RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_1 CanBreakSmallCrates
+RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_2 CanBreakSmallCrates
+RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_3 CanBreakSmallCrates
+RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_4 CanBreakSmallCrates
+//Exits
+RR_SHADOW_TEMPLE_ENTRYWAY true
+RR_SHADOW_TEMPLE_MQ_FIRST_BEAMOS (and (Here (or (CanUse RG_HOVER_BOOTS) (or RT_LENS_SHADOW_MQ (CanUse RG_LENS_OF_TRUTH)))) (or (CanUse RG_HOVER_BOOTS) (or (Here (CanUse RG_FIRE_ARROWS)) (and RT_SHADOW_MQ_GAP (and (CanUse RG_LONGSHOT) CanJumpslashExceptHammer)))))
+RR_SHADOW_TEMPLE_MQ_DEAD_HAND_AREA (and (Here HasExplosives) (and (SmallKeys SCENE_SHADOW_TEMPLE 6) (or RT_LENS_SHADOW_MQ (CanUse RG_LENS_OF_TRUTH))))
+
+//Assumes we're in the "main" area and needed lens to enter. logic will need changes if a void warp puts us somewhere weird
+def RR_SHADOW_TEMPLE_MQ_DEAD_HAND_AREA SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Dead Hand Region
+//Checks
+RC_SHADOW_TEMPLE_MQ_COMPASS_CHEST (CanKillEnemy RE_REDEAD)
+//There's a shared flag tied to some glass here. eye target here and killing an enemy group later in the dungeon toggles. I'm building the logic as "intended", assuming the switch needs flipping
+RC_SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST (and (CanKillEnemy RE_DEAD_HAND) (and (or IsChild (CanUse RG_SONG_OF_TIME)) CanHitEyeTargets))
+RC_SHADOW_TEMPLE_MQ_WHISPERING_WALLS_POT_1 CanBreakPots
+RC_SHADOW_TEMPLE_MQ_WHISPERING_WALLS_POT_2 CanBreakPots
+RC_SHADOW_TEMPLE_MQ_ENTRANCE_REDEAD_POT_1 CanBreakPots
+RC_SHADOW_TEMPLE_MQ_ENTRANCE_REDEAD_POT_2 CanBreakPots
+//Exits
+RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM true
+
+//also includes the B2 gibdo room
+def RR_SHADOW_TEMPLE_MQ_FIRST_BEAMOS SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ First Beamos
+//Doing this sets the shared flag for the glass in RR_SHADOW_TEMPLE_MQ_DEAD_HAND_AREA, but doesn't seem to affect the chest
+//Checks
+RC_SHADOW_TEMPLE_MQ_EARLY_GIBDOS_CHEST (and (CanKillEnemy RE_GIBDO) (or RT_LENS_SHADOW_MQ (CanUse RG_LENS_OF_TRUTH)))
+RC_SHADOW_TEMPLE_MQ_BEAMOS_STORM_FAIRY (CanUse RG_SONG_OF_STORMS)
+//Exits
+RR_SHADOW_TEMPLE_MQ_UPPER_HUGE_PIT (and HasExplosives (SmallKeys SCENE_SHADOW_TEMPLE 2))
+RR_SHADOW_TEMPLE_MQ_B2_SPINNING_BLADE_ROOM (or RT_LENS_SHADOW_MQ (CanUse RG_LENS_OF_TRUTH))
+
+def RR_SHADOW_TEMPLE_MQ_B2_SPINNING_BLADE_ROOM SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ B2 Spinning Blade Room
+//Checks
+RC_SHADOW_TEMPLE_MQ_MAP_CHEST (and (CanPassEnemy RE_BIG_SKULLTULA) (or (CanUse RG_HOOKSHOT) (and IsAdult (CanUse RG_HOVER_BOOTS))))
+//Exits
+RR_SHADOW_TEMPLE_MQ_FIRST_BEAMOS (Here (and (CanKillEnemy RE_BIG_SKULLTULA) (or (CanUse RG_HOOKSHOT) (and IsAdult (CanUse RG_HOVER_BOOTS)))))
+RR_SHADOW_TEMPLE_MQ_SHORTCUT_PATH (CanPassEnemy RE_BIG_SKULLTULA)
+
+def RR_SHADOW_TEMPLE_MQ_SHORTCUT_PATH SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Shortcut Path
+//Checks
+RC_SHADOW_TEMPLE_MQ_NEAR_SHIP_INVISIBLE_CHEST (or RT_LENS_SHADOW_MQ (CanUse RG_LENS_OF_TRUTH))
+//Exits
+RR_SHADOW_TEMPLE_MQ_B2_SPINNING_BLADE_ROOM (CanPassEnemy RE_BIG_SKULLTULA)
+RR_SHADOW_TEMPLE_MQ_DOCK ShadowShortcutBlock
+//WARNING if there's any way past here to ship without already reaching the other side the key logic in this dungeon becomes Quantum
+
+//Room exists for if it's ever possible to go backwards or void warp into the middle of shadow
+def RR_SHADOW_TEMPLE_MQ_B2_TO_B3_CORRIDOR SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ B2 to B3 Corridor
+//Exits
+RR_SHADOW_TEMPLE_MQ_FIRST_BEAMOS (SmallKeys SCENE_SHADOW_TEMPLE 2)
+RR_SHADOW_TEMPLE_MQ_UPPER_HUGE_PIT true
+//bunnyhovers + lens lets you go from the very top of upper pit to the stationary invisible platform below quite easily
+
+def RR_SHADOW_TEMPLE_MQ_UPPER_HUGE_PIT SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Upper Huge Pit
+//Checks
+RC_SHADOW_TEMPLE_MQ_PIT_STORM_FAIRY (CanUse RG_SONG_OF_STORMS)
+//Exits
+RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT (or (and HasFireSource (or RT_LENS_SHADOW_MQ (CanUse RG_LENS_OF_TRUTH))) RT_SHADOW_MQ_HUGE_PIT)
+RR_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_ROOM (or RT_LENS_SHADOW_MQ (CanUse RG_LENS_OF_TRUTH))
+
+def RR_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_ROOM SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Invisible Blades Room
+ //RT_SHADOW_MQ_INVISIBLE_BLADES does not work with NL as like-likes will not swallow you, likewise like-likes will not spit you with a fairy revive
+//you take half a heart base from a spit out, double check EffectiveHealth when damage logic gets reworked
+//Child is too small to get hit by the blades doesn't need the trick or lens for dodging them
+//Checks
+RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_VISIBLE_CHEST (and (or (CanUse RG_SONG_OF_TIME) (and RT_SHADOW_MQ_INVISIBLE_BLADES (> EffectiveHealth 1))) (or RT_LENS_SHADOW_MQ_INVISIBLE_BLADES (or IsChild (or (CanUse RG_NAYRUS_LOVE) (CanUse RG_LENS_OF_TRUTH)))))
+RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_INVISIBLE_CHEST (and (or (CanUse RG_SONG_OF_TIME) (and RT_SHADOW_MQ_INVISIBLE_BLADES (> EffectiveHealth 1))) (or (and RT_LENS_SHADOW_MQ (or RT_LENS_SHADOW_MQ_INVISIBLE_BLADES (or IsChild (CanUse RG_NAYRUS_LOVE)))) (CanUse RG_LENS_OF_TRUTH)))
+RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_LEFT_HEART (or (and (CanUse RG_SONG_OF_TIME) IsAdult) (or (and RT_SHADOW_MQ_INVISIBLE_BLADES (> EffectiveHealth 1)) (CanUse RG_BOOMERANG)))
+RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_RIGHT_HEART (or (and (CanUse RG_SONG_OF_TIME) IsAdult) (or (and RT_SHADOW_MQ_INVISIBLE_BLADES (> EffectiveHealth 1)) (CanUse RG_BOOMERANG)))
+//Exits
+RR_SHADOW_TEMPLE_MQ_UPPER_HUGE_PIT true
+
+def RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Lower Huge Pit
+//Checks
+RC_SHADOW_TEMPLE_MQ_BEAMOS_SILVER_RUPEES_CHEST (CanUse RG_LONGSHOT)
+//Exits
+RR_SHADOW_TEMPLE_MQ_STONE_UMBRELLA_ROOM (Here (or CanJumpslash HasExplosives))
+RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM (and (CanUse RG_HOVER_BOOTS) (and (or RT_LENS_SHADOW_MQ_PLATFORM (CanUse RG_LENS_OF_TRUTH)) (SmallKeys SCENE_SHADOW_TEMPLE 3)))
+
+def RR_SHADOW_TEMPLE_MQ_STONE_UMBRELLA_ROOM SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Stone Umbrella Room
+//Checks
+RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_LOWER_CHEST true
+//Assuming the known setup for RT_SHADOW_UMBRELLA and RT_SHADOW_UMBRELLA_GS, probably possible without sword + shield.
+//Handling the trick here instead of upper as using the block to climb is not a valid method for getting this skull without other tricks to use the block before it is intended
+RC_SHADOW_TEMPLE_MQ_GS_FALLING_SPIKES_ROOM (or (CanGetEnemyDrop RE_GOLD_SKULLTULA ED_BOOMERANG) (and RT_SHADOW_UMBRELLA_GS (and RT_SHADOW_UMBRELLA (and (CanUse RG_HOVER_BOOTS) (and CanStandingShield (CanUse RG_MASTER_SWORD))))))
+RC_SHADOW_TEMPLE_MQ_LOWER_UMBRELLA_WEST_POT CanBreakPots
+RC_SHADOW_TEMPLE_MQ_LOWER_UMBRELLA_EAST_POT CanBreakPots
+RC_SHADOW_TEMPLE_MQ_UPPER_UMBRELLA_SOUTH_POT (CanUse RG_BOOMERANG)
+//Exits
+RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT (Here (or RT_VISIBLE_COLLISION CanHitSwitch))
+//Assuming the known setup for RT_SHADOW_UMBRELLA, probably possible without sword + shield
+RR_SHADOW_TEMPLE_MQ_UPPER_STONE_UMBRELLA (and IsAdult (or (HasItem RG_GORONS_BRACELET) (and RT_SHADOW_UMBRELLA (and (CanUse RG_HOVER_BOOTS) (and CanStandingShield (CanUse RG_MASTER_SWORD))))))
+
+def RR_SHADOW_TEMPLE_MQ_UPPER_STONE_UMBRELLA SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Upper Stone Umbrella
+//Checks
+RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_UPPER_CHEST true
+RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_SWITCH_CHEST true
+RC_SHADOW_TEMPLE_MQ_UPPER_UMBRELLA_NORTH_POT CanBreakPots
+RC_SHADOW_TEMPLE_MQ_UPPER_UMBRELLA_SOUTH_POT CanBreakPots
+//Exits
+RR_SHADOW_TEMPLE_MQ_STONE_UMBRELLA_ROOM true
+
+//while the spikes here are annoying, they don't really stop you doing anything, so I'll assume either lens trick, lens to see them, or taking damage from them. Not hovers though as a new player won't see the threat without lens to react properly
+def RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Floor Spikes Room
+//lens or trick is always required for hookshot targets. We handle it here to not complicate the RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_UPPER_DOOR logic
+MQShadowFloorSpikeRupees (and (or RT_LENS_SHADOW_MQ (CanUse RG_LENS_OF_TRUTH))
+	//Upper door side high rupee needs (hookshot and redead kill(as either age) for chest and adult) or longshot. hovers can cross from the left side with a backflip but that would be a trick
+	//East midair rupee needs (hookshot and(hover boots or jumpslash from the upper door platform)) or longshot.
+	//Combined these are longshot or (IsAdult && hookshot && (CanJumpslash || (Hover Boots && Here(CanKillRedeads))))
+	(and (or (CanUse RG_LONGSHOT) (and IsAdult (and (CanUse RG_HOOKSHOT) (or CanJumpslash (and (CanUse RG_HOVER_BOOTS) (Here (CanKillEnemy RE_REDEAD)))))))
+	//1 rupee is in spikes, needs hovers or damage
+//Events
+	(or TakeDamage (CanUse RG_HOVER_BOOTS))))
+//Checks
+RC_SHADOW_TEMPLE_MQ_INVISIBLE_SPIKES_CHEST (and (CanKillEnemy RE_REDEAD) (or RT_LENS_SHADOW_MQ (or TakeDamage (CanUse RG_LENS_OF_TRUTH))))
+//Exits
+RR_SHADOW_TEMPLE_MQ_STALFOS_ROOM MQShadowFloorSpikeRupees
+//We need to assume we can get here with or without the glass platforms
+RR_SHADOW_TEMPLE_MQ_WIND_TUNNEL (and (SmallKeys SCENE_SHADOW_TEMPLE 4) (and (or (CanUse RG_LONGSHOT) (and IsAdult (and (CanUse RG_HOOKSHOT) (or MQShadowFloorSpikeRupees (Here (CanKillEnemy RE_REDEAD)))))) (or CanJumpslash (CanUse RG_HOVER_BOOTS))))
+
+def RR_SHADOW_TEMPLE_MQ_STALFOS_ROOM SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Stalfos Room
+//Checks
+RC_SHADOW_TEMPLE_MQ_STALFOS_ROOM_CHEST (CanKillEnemy RE_STALFOS ED_CLOSE true 2)
+//Exits
+RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM (Here (CanKillEnemy RE_STALFOS ED_CLOSE true 2))
+
+def RR_SHADOW_TEMPLE_MQ_WIND_TUNNEL SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Wind Tunnel
+//Exits
+RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM (and (SmallKeys SCENE_SHADOW_TEMPLE 4) (and (CanPassEnemy RE_BIG_SKULLTULA) (CanUse RG_HOOKSHOT)))
+RR_SHADOW_TEMPLE_MQ_WIND_HINT_ROOM (and (CanPassEnemy RE_BIG_SKULLTULA) (or (CanUse RG_HOOKSHOT) (CanUse RG_HOVER_BOOTS)))
+RR_SHADOW_TEMPLE_MQ_B4_GIBDO_ROOM (and (CanPassEnemy RE_BIG_SKULLTULA) (or (CanUse RG_HOOKSHOT) (CanUse RG_HOVER_BOOTS)))
+
+def RR_SHADOW_TEMPLE_MQ_WIND_HINT_ROOM SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Wind Hint Room
+//Checks
+RC_SHADOW_TEMPLE_MQ_WIND_HINT_CHEST (and (or RT_LENS_SHADOW_MQ (CanUse RG_LENS_OF_TRUTH)) (CanPassEnemy RE_REDEAD))
+RC_SHADOW_TEMPLE_MQ_GS_WIND_HINT_ROOM (CanGetEnemyDrop RE_GOLD_SKULLTULA ED_BOOMERANG)
+RC_SHADOW_TEMPLE_MQ_WIND_HINT_SUN_FAIRY (CanUse RG_SUNS_SONG)
+//Exits
+RR_SHADOW_TEMPLE_MQ_WIND_TUNNEL true
+
+def RR_SHADOW_TEMPLE_MQ_B4_GIBDO_ROOM SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ B4 Gibdo Room
+//Events
+NutPot true
+//Checks
+RC_SHADOW_TEMPLE_MQ_AFTER_WIND_ENEMY_CHEST (CanKillEnemy RE_GIBDO)
+RC_SHADOW_TEMPLE_MQ_AFTER_WIND_HIDDEN_CHEST (and HasExplosives (or RT_LENS_SHADOW_MQ (CanUse RG_LENS_OF_TRUTH)))
+RC_SHADOW_TEMPLE_MQ_GS_AFTER_WIND HasExplosives
+RC_SHADOW_TEMPLE_MQ_BEFORE_BOAT_POT_1 CanBreakPots
+RC_SHADOW_TEMPLE_MQ_BEFORE_BOAT_POT_2 CanBreakPots
+//child can make it using the wind strat
+//Exits
+RR_SHADOW_TEMPLE_MQ_WIND_TUNNEL (or RT_SHADOW_MQ_WINDY_WALKWAY (CanUse RG_HOVER_BOOTS))
+RR_SHADOW_TEMPLE_MQ_DOCK (SmallKeys SCENE_SHADOW_TEMPLE 5)
+
+def RR_SHADOW_TEMPLE_MQ_DOCK SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Dock
+//Events
+ShadowShortcutBlock (HasItem RG_GORONS_BRACELET)
+//Checks
+RC_SHADOW_TEMPLE_MQ_SCARECROW_NORTH_HEART (CanUse RG_DISTANT_SCARECROW)
+RC_SHADOW_TEMPLE_MQ_SCARECROW_SOUTH_HEART (CanUse RG_DISTANT_SCARECROW)
+//Exits
+RR_SHADOW_TEMPLE_MQ_SHORTCUT_PATH ShadowShortcutBlock
+RR_SHADOW_TEMPLE_MQ_B4_GIBDO_ROOM (SmallKeys SCENE_SHADOW_TEMPLE 5)
+//funnily enough, the wheel jump seems to be in logic as there's no strength requirement in N64
+RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT (and (or IsAdult (CanUse RG_HOOKSHOT)) (CanUse RG_ZELDAS_LULLABY))
+
+def RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Beyond Boat
+//It's a trick on N64 to kill this and drop down to collect this with normal weapons, as doing so without the statue being dropped voids you to before the boat
+//hilariously, you can also hit this with a pot before you bring down the statue, but there's no great way to reset it without crossing. the statues collision is very inconvenient afterwards
+//Checks
+RC_SHADOW_TEMPLE_MQ_GS_AFTER_SHIP (CanGetEnemyDrop RE_GOLD_SKULLTULA ED_BOOMERANG)
+RC_SHADOW_TEMPLE_MQ_BEFORE_CHASM_WEST_POT CanBreakPots
+RC_SHADOW_TEMPLE_MQ_BEFORE_CHASM_EAST_POT CanBreakPots
+//Exits
+RR_SHADOW_TEMPLE_MQ_ACROSS_CHASM (Here (or (CanUse RG_FAIRY_BOW) (and RT_SHADOW_STATUE (CanUse RG_BOMBCHU_5))))
+
+def RR_SHADOW_TEMPLE_MQ_ACROSS_CHASM SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Across Chasm
+//Checks
+RC_SHADOW_TEMPLE_MQ_AFTER_CHASM_WEST_POT CanBreakPots
+RC_SHADOW_TEMPLE_MQ_AFTER_CHASM_EAST_POT CanBreakPots
+RC_SHADOW_TEMPLE_MQ_AFTER_SHIP_UPPER_LEFT_HEART (and (CanUse RG_SONG_OF_TIME) (and CanHitEyeTargets (CanUse RG_LONGSHOT)))
+RC_SHADOW_TEMPLE_MQ_AFTER_SHIP_UPPER_RIGHT_HEART (and (CanUse RG_SONG_OF_TIME) (and CanHitEyeTargets (CanUse RG_LONGSHOT)))
+//There's invisible floor collision that makes aiming for the heart with rang harder than it should be, so it's a trick.
+RC_SHADOW_TEMPLE_MQ_AFTER_SHIP_LOWER_HEART IsAdult
+//Exits
+RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT (and (Here CanDetonateUprightBombFlower) IsAdult)
+//assumes RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT by previous access. If backwards shadow ever exists remember that child cannot jump onto the statue from this side and make an event for the switch
+//Lens isn't needed to reach it but is needed to navigate the next room
+RR_SHADOW_TEMPLE_MQ_INVISIBLE_MAZE (Here (and CanHitEyeTargets (and (CanUse RG_SONG_OF_TIME) (CanUse RG_LONGSHOT))))
+RR_SHADOW_TEMPLE_MQ_BOSS_DOOR (and (CanUse RG_HOVER_BOOTS) (or RT_LENS_SHADOW_MQ (CanUse RG_LENS_OF_TRUTH)))
+
+def RR_SHADOW_TEMPLE_MQ_BOSS_DOOR SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Boss Door
+//you can drop onto this and the respawn is reasonable
+//Checks
+RC_SHADOW_TEMPLE_MQ_GS_NEAR_BOSS (and (or (CanKillEnemy RE_GOLD_SKULLTULA ED_BOMB_THROW) (CanUse RG_MEGATON_HAMMER)) (or RT_LENS_SHADOW_MQ (CanUse RG_LENS_OF_TRUTH)))
+//Exits
+RR_SHADOW_TEMPLE_MQ_ACROSS_CHASM (and (CanUse RG_HOVER_BOOTS) (or RT_LENS_SHADOW_MQ (CanUse RG_LENS_OF_TRUTH)))
+RR_SHADOW_TEMPLE_BOSS_ENTRYWAY true
+
+//Assumes lens is checked on entry
+def RR_SHADOW_TEMPLE_MQ_INVISIBLE_MAZE SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Invisible Maze
+//don't use CanDetonateUprightBombFlower as blue fire logic would need to account for player having multiple bottles & taking damage multiple times
+//Checks
+RC_SHADOW_TEMPLE_MQ_BOMB_FLOWER_CHEST (and (or (CanUse RG_LENS_OF_TRUTH) RT_LENS_SHADOW_MQ_DEADHAND) (and (CanKillEnemy RE_DEAD_HAND) (or CanDetonateBombFlowers (HasItem RG_GORONS_BRACELET))))
+RC_SHADOW_TEMPLE_MQ_FREESTANDING_KEY true
+RC_SHADOW_TEMPLE_MQ_DEAD_HAND_POT_1 CanBreakPots
+RC_SHADOW_TEMPLE_MQ_DEAD_HAND_POT_2 CanBreakPots
+//Exits
+RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT true
+RR_SHADOW_TEMPLE_MQ_SPIKE_WALLS_ROOM (SmallKeys SCENE_SHADOW_TEMPLE 6)
+
+def RR_SHADOW_TEMPLE_MQ_SPIKE_WALLS_ROOM SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple MQ Spike Walls Room
+//Checks
+RC_SHADOW_TEMPLE_MQ_SPIKE_WALLS_LEFT_CHEST (CanUse RG_DINS_FIRE)
+RC_SHADOW_TEMPLE_MQ_BOSS_KEY_CHEST (CanUse RG_DINS_FIRE)
+RC_SHADOW_TEMPLE_MQ_SPIKE_BARICADE_POT CanBreakPots
+//Exits
+RR_SHADOW_TEMPLE_MQ_INVISIBLE_MAZE (and (SmallKeys SCENE_SHADOW_TEMPLE 6) (or RT_LENS_SHADOW_MQ (CanUse RG_LENS_OF_TRUTH)))
+
+def RR_SHADOW_TEMPLE_BOSS_ENTRYWAY SCENE_SHADOW_TEMPLE false RA_SHADOW_TEMPLE
+Shadow Temple Boss Entryway
+//Exits
+RR_SHADOW_TEMPLE_BEYOND_BOAT (and (IsDungeonVanilla SHADOW_TEMPLE) false)
+RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT (and (IsDungeonMQ SHADOW_TEMPLE) false)
+RR_SHADOW_TEMPLE_BOSS_ROOM (HasItem RG_SHADOW_TEMPLE_BOSS_KEY)
+
+def RR_SHADOW_TEMPLE_BOSS_ROOM SCENE_SHADOW_TEMPLE_BOSS false
+Shadow Temple Boss Room
+//Events
+ShadowTempleClear (CanKillEnemy RE_BONGO_BONGO)
+//Checks
+RC_SHADOW_TEMPLE_BONGO_BONGO_HEART ShadowTempleClear
+RC_BONGO_BONGO ShadowTempleClear
+//Exits
+RR_SHADOW_TEMPLE_BOSS_ENTRYWAY false
+RR_GRAVEYARD_WARP_PAD_REGION ShadowTempleClear

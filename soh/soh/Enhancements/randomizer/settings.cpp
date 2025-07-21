@@ -2593,7 +2593,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     }
     if (!mOptions[RSK_SHUFFLE_MASTER_SWORD]) {
         if (mOptions[RSK_STARTING_MASTER_SWORD]) {
-            this->GetItemLocation(RC_MASTER_SWORD_PEDESTAL)->SetExcludedOption(1);
+            this->GetItemLocation(RC_TOT_MASTER_SWORD)->SetExcludedOption(1);
         }
     }
     if (!mOptions[RSK_SHUFFLE_OCARINA]) {

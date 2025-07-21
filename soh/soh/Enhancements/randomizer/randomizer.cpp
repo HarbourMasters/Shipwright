@@ -2330,7 +2330,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
         RAND_INF_GF_MID_NORTH_CENTER_CRATE,
     },
     {
-        RR_GF_NORTHMOST_CENTER_CRATE,
+        RC_GF_NORTHMOST_CENTER_CRATE,
         RAND_INF_GF_NORTHMOST_CENTER_CRATE,
     },
     {

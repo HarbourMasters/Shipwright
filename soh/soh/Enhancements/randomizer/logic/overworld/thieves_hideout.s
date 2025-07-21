@@ -1,0 +1,115 @@
+def RR_TH_1_TORCH_CELL SCENE_THIEVES_HIDEOUT false RA_GERUDO_FORTRESS
+Thieves Hideout 1 Torch Cell
+//Events
+THCouldFree1TorchCarpenter (CanKillEnemy RE_GERUDO_WARRIOR)
+THRescuedAllCarpenters (and (SmallKeys SCENE_THIEVES_HIDEOUT (if (== RSK_GERUDO_FORTRESS RO_GF_CARPENTERS_NORMAL) 4 1)) (and THCouldFree1TorchCarpenter (and THCouldFreeDoubleCellCarpenter (and TH_CouldFreeDeadEndCarpenter THCouldRescueSlopeCarpenter))))
+//Checks
+RC_TH_1_TORCH_CARPENTER (CanKillEnemy RE_GERUDO_WARRIOR)
+RC_TH_1_TORCH_CELL_RIGHT_POT CanBreakPots
+RC_TH_1_TORCH_CELL_MID_POT CanBreakPots
+RC_TH_1_TORCH_CELL_LEFT_POT CanBreakPots
+RC_TH_1_TORCH_CELL_CRATE CanBreakCrates
+RC_TH_FREED_CARPENTERS THRescuedAllCarpenters
+//Exits
+RR_GF_OUTSKIRTS true
+RR_GF_NEAR_GROTTO true
+
+def RR_TH_DOUBLE_CELL SCENE_THIEVES_HIDEOUT false RA_GERUDO_FORTRESS
+Thieves Hideout Double Cell
+//Events
+THCouldFreeDoubleCellCarpenter (CanKillEnemy RE_GERUDO_WARRIOR)
+THRescuedAllCarpenters (and (== RSK_GERUDO_FORTRESS RO_GF_CARPENTERS_NORMAL) (and (SmallKeys SCENE_THIEVES_HIDEOUT 4) (and THCouldFree1TorchCarpenter (and THCouldFreeDoubleCellCarpenter (and TH_CouldFreeDeadEndCarpenter THCouldRescueSlopeCarpenter)))))
+//Checks
+RC_TH_DOUBLE_CELL_CARPENTER (CanKillEnemy RE_GERUDO_WARRIOR)
+RC_TH_NEAR_DOUBLE_CELL_RIGHT_POT CanBreakPots
+RC_TH_NEAR_DOUBLE_CELL_MID_POT CanBreakPots
+RC_TH_NEAR_DOUBLE_CELL_LEFT_POT CanBreakPots
+RC_TH_RIGHTMOST_JAILED_POT CanBreakPots
+RC_TH_RIGHT_MIDDLE_JAILED_POT CanBreakPots
+RC_TH_LEFT_MIDDLE_JAILED_POT CanBreakPots
+RC_TH_LEFTMOST_JAILED_POT CanBreakPots
+RC_TH_DOUBLE_CELL_LEFT_CRATE CanBreakCrates
+RC_TH_DOUBLE_CELL_RIGHT_CRATE CanBreakCrates
+RC_TH_FREED_CARPENTERS THRescuedAllCarpenters
+//Exits
+RR_GF_OUTSKIRTS true
+RR_GF_NEAR_GROTTO true
+
+def RR_TH_DEAD_END_CELL SCENE_THIEVES_HIDEOUT false RA_GERUDO_FORTRESS
+Thieves Hideout Dead End Cell
+//Events
+TH_CouldFreeDeadEndCarpenter (CanKillEnemy RE_GERUDO_WARRIOR)
+THRescuedAllCarpenters (and (== RSK_GERUDO_FORTRESS RO_GF_CARPENTERS_NORMAL) (and (SmallKeys SCENE_THIEVES_HIDEOUT 4) (and THCouldFree1TorchCarpenter (and THCouldFreeDoubleCellCarpenter (and TH_CouldFreeDeadEndCarpenter THCouldRescueSlopeCarpenter)))))
+//Checks
+RC_TH_DEAD_END_CARPENTER (CanKillEnemy RE_GERUDO_WARRIOR)
+RC_TH_DEAD_END_CELL_CRATE CanBreakCrates
+RC_TH_FREED_CARPENTERS THRescuedAllCarpenters
+//Exits
+RR_GF_BELOW_GS true
+
+def RR_TH_STEEP_SLOPE_CELL SCENE_THIEVES_HIDEOUT false RA_GERUDO_FORTRESS
+Thieves Hideout Steep Slope Cell
+//Events
+THCouldRescueSlopeCarpenter (CanKillEnemy RE_GERUDO_WARRIOR)
+THRescuedAllCarpenters (and (== RSK_GERUDO_FORTRESS RO_GF_CARPENTERS_NORMAL) (and (SmallKeys SCENE_THIEVES_HIDEOUT 4) (and THCouldFree1TorchCarpenter (and THCouldFreeDoubleCellCarpenter (and TH_CouldFreeDeadEndCarpenter THCouldRescueSlopeCarpenter)))))
+//Checks
+RC_TH_STEEP_SLOPE_CARPENTER (CanKillEnemy RE_GERUDO_WARRIOR)
+RC_TH_STEEP_SLOPE_RIGHT_POT CanBreakPots
+RC_TH_STEEP_SLOPE_LEFT_POT CanBreakPots
+RC_TH_FREED_CARPENTERS THRescuedAllCarpenters
+//Exits
+RR_GF_ABOVE_GTG true
+RR_GF_TOP_OF_LOWER_VINES true
+
+def RR_TH_KITCHEN_CORRIDOR SCENE_THIEVES_HIDEOUT false RA_GERUDO_FORTRESS
+Thieves Hideout Kitchen Corridor
+//Checks
+RC_TH_NEAR_KITCHEN_LEFTMOST_CRATE CanBreakCrates
+RC_TH_NEAR_KITCHEN_MID_LEFT_CRATE CanBreakCrates
+RC_TH_NEAR_KITCHEN_MID_RIGHT_CRATE CanBreakCrates
+RC_TH_NEAR_KITCHEN_RIGHTMOST_CRATE CanBreakCrates
+//Exits
+RR_GF_NEAR_GROTTO true
+RR_GF_ABOVE_GTG true
+RR_TH_KITCHEN_MAIN (CanPassEnemy RE_GERUDO_GUARD)
+
+def RR_TH_KITCHEN_MAIN SCENE_THIEVES_HIDEOUT false RA_GERUDO_FORTRESS
+Thieves Hideout Kitchen Bottom
+//Checks
+RC_TH_KITCHEN_POT_1 (and CanBreakPots (CanPassEnemy RE_GERUDO_GUARD))
+RC_TH_KITCHEN_POT_2 (and CanBreakPots (CanPassEnemy RE_GERUDO_GUARD))
+RC_TH_KITCHEN_CRATE (and CanBreakCrates (CanPassEnemy RE_GERUDO_GUARD))
+RC_TH_KITCHEN_SUN_FAIRY (and (CanPassEnemy RE_GERUDO_GUARD) (CanUse RG_SUNS_SONG))
+//Exits
+RR_TH_KITCHEN_CORRIDOR (CanPassEnemy RE_GERUDO_GUARD)
+RR_TH_KITCHEN_TOP (CanPassEnemy RE_GERUDO_GUARD)
+
+def RR_TH_KITCHEN_TOP SCENE_THIEVES_HIDEOUT false RA_GERUDO_FORTRESS
+Thieves Hideout Kitchen Top
+//Checks
+RC_TH_KITCHEN_POT_1 (CanUse RG_BOOMERANG)
+RC_TH_KITCHEN_POT_2 (CanUse RG_BOOMERANG)
+//Exits
+RR_TH_KITCHEN_MAIN true
+RR_GF_NEAR_GS (or (CanPassEnemy RE_GERUDO_GUARD) (CanUse RG_HOVER_BOOTS))
+RR_GF_TOP_OF_LOWER_VINES (or (CanPassEnemy RE_GERUDO_GUARD) (CanUse RG_HOVER_BOOTS))
+
+def RR_TH_BREAK_ROOM SCENE_THIEVES_HIDEOUT false RA_GERUDO_FORTRESS
+Thieves Hideout Break Room
+//Checks
+RC_TH_BREAK_ROOM_FRONT_POT (or (and (CanPassEnemy RE_BREAK_ROOM_GUARD) CanBreakPots) (and (CanPassEnemy RE_GERUDO_GUARD) (CanUse RG_BOOMERANG)))
+RC_TH_BREAK_ROOM_BACK_POT (or (and (CanPassEnemy RE_BREAK_ROOM_GUARD) CanBreakPots) (and (CanPassEnemy RE_GERUDO_GUARD) (CanUse RG_BOOMERANG)))
+RC_TH_BREAK_HALLWAY_OUTER_CRATE CanBreakCrates
+RC_TH_BREAK_HALLWAY_INNER_CRATE CanBreakCrates
+RC_TH_BREAK_ROOM_RIGHT_CRATE (or (and (CanPassEnemy RE_BREAK_ROOM_GUARD) CanBreakCrates) (and (CanPassEnemy RE_GERUDO_GUARD) (and HasExplosives (CanUse RG_BOOMERANG))))
+RC_TH_BREAK_ROOM_LEFT_CRATE (or (and (CanPassEnemy RE_BREAK_ROOM_GUARD) CanBreakCrates) (and (CanPassEnemy RE_GERUDO_GUARD) (and HasExplosives (CanUse RG_BOOMERANG))))
+//Exits
+RR_GF_BELOW_CHEST (CanPassEnemy RE_GERUDO_GUARD)
+//Implies logic->CanPassEnemy(RE_GERUDO_GUARD)
+RR_TH_BREAK_ROOM_CORRIDOR (CanUse RG_HOOKSHOT)
+
+def RR_TH_BREAK_ROOM_CORRIDOR SCENE_THIEVES_HIDEOUT false RA_GERUDO_FORTRESS
+Thieves Hideout Break Room
+//Exits
+RR_TH_BREAK_ROOM (CanUse RG_HOOKSHOT)
+RR_GF_ABOVE_JAIL true

@@ -617,7 +617,7 @@ void Region::ResetVariables() {
 bool Region::MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAge) {
     // if we have Certain Access as child, we can check anyAge and if true, resolve a condition with Here as if
     // adult is here it's also Certain Access
-    if (logic->SmallKeys(RR_SPIRIT_TEMPLE, 7)) {
+    if (logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7)) {
         if (anyAge) {
             return Here(condition);
         }
@@ -627,10 +627,9 @@ bool Region::MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAg
     } else if (Adult() && logic->IsAdult) {
         return condition();
         // if we do not have Certain Access, we need to check the overlap by seeing if we are both here as child and
-        // meet the adult universe's access condition We only need to do it as child, as only child access matters
+        // meet the adult universe's access condition. We only need to do it as child, as only child access matters
         // for this check, as adult access is assumed based on keys
-    } else if (Child() && logic->IsChild && (!IsBrokenWall || logic->SmallKeys(RR_SPIRIT_TEMPLE, 6))) {
-        bool result = false;
+    } else if (Child() && logic->IsChild && (!IsBrokenWall || logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 6))) {
         // store current age variables
         bool pastAdult = logic->IsAdult;
         bool pastChild = logic->IsChild;
@@ -638,7 +637,7 @@ bool Region::MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAg
         // First check if the check is possible as child
         logic->IsChild = true;
         logic->IsAdult = false;
-        result = condition();
+        bool result = condition();
         // If so, check again as adult. both have to be true for result to be true
         if (result) {
             logic->IsChild = false;
@@ -784,118 +783,10 @@ void RegionTable_Init() {
     // locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
     areaTable.fill(Region("Invalid Region", SCENE_ID_MAX, {}, {}, {}));
 
-    // clang-format off
-    areaTable[RR_ROOT] = Region("Root", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {
-        //Events
-        EventAccess(&logic->KakarikoVillageGateOpen,        []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
-        EventAccess(&logic->THCouldFree1TorchCarpenter,     []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);}),
-        EventAccess(&logic->THCouldFreeDoubleCellCarpenter, []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
-        EventAccess(&logic->TH_CouldFreeDeadEndCarpenter,   []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
-        EventAccess(&logic->THCouldRescueSlopeCarpenter,    []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
-        EventAccess(&logic->THRescuedAllCarpenters,         []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);}),
-    }, {
-        //Locations
-        LOCATION(RC_LINKS_POCKET,       true),
-        LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->ship.quest.data.randomizer.triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1;),
-        LOCATION(RC_SARIA_SONG_HINT,    logic->CanUse(RG_SARIAS_SONG)),
-    }, {
-        //Exits
-        Entrance(RR_ROOT_EXITS, []{return true;}),
-    });
-
-    areaTable[RR_ROOT_EXITS] = Region("Root Exits", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_CHILD_SPAWN,             []{return logic->IsChild;}),
-        Entrance(RR_ADULT_SPAWN,             []{return logic->IsAdult;}),
-        Entrance(RR_MINUET_OF_FOREST_WARP,   []{return logic->CanUse(RG_MINUET_OF_FOREST);}),
-        Entrance(RR_BOLERO_OF_FIRE_WARP,     []{return logic->CanUse(RG_BOLERO_OF_FIRE);}),
-        Entrance(RR_SERENADE_OF_WATER_WARP,  []{return logic->CanUse(RG_SERENADE_OF_WATER);}),
-        Entrance(RR_NOCTURNE_OF_SHADOW_WARP, []{return logic->CanUse(RG_NOCTURNE_OF_SHADOW);}),
-        Entrance(RR_REQUIEM_OF_SPIRIT_WARP,  []{return logic->CanUse(RG_REQUIEM_OF_SPIRIT);}),
-        Entrance(RR_PRELUDE_OF_LIGHT_WARP,   []{return logic->CanUse(RG_PRELUDE_OF_LIGHT);}),
-    });
-
-    areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_KF_LINKS_HOUSE, []{return true;}),
-    });
-
-    areaTable[RR_ADULT_SPAWN] = Region("Adult Spawn", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
-    });
-
-    areaTable[RR_MINUET_OF_FOREST_WARP] = Region("Minuet of Forest Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_SACRED_FOREST_MEADOW, []{return true;}),
-    });
-
-    areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_DMC_CENTRAL_LOCAL, []{return true;}),
-    });
-
-    areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_LAKE_HYLIA, []{return true;}),
-    });
-
-    areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Region("Requiem of Spirit Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_DESERT_COLOSSUS, []{return true;}),
-    });
-
-    areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Region("Nocturne of Shadow Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_GRAVEYARD_WARP_PAD_REGION, []{return true;}),
-    });
-
-    areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Region("Prelude of Light Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
-    });
-
-    // clang-format on
-
-    // Overworld
-    RegionTable_Init_KokiriForest();
-    RegionTable_Init_LostWoods();
-    RegionTable_Init_SacredForestMeadow();
-    RegionTable_Init_HyruleField();
-    RegionTable_Init_LakeHylia();
-    RegionTable_Init_LonLonRanch();
-    RegionTable_Init_Market();
-    RegionTable_Init_TempleOfTime();
-    RegionTable_Init_CastleGrounds();
-    RegionTable_Init_Kakariko();
-    RegionTable_Init_Graveyard();
-    RegionTable_Init_DeathMountainTrail();
-    RegionTable_Init_GoronCity();
-    RegionTable_Init_DeathMountainCrater();
-    RegionTable_Init_ZoraRiver();
-    RegionTable_Init_ZorasDomain();
-    RegionTable_Init_ZorasFountain();
-    RegionTable_Init_GerudoValley();
-    RegionTable_Init_GerudoFortress();
-    RegionTable_Init_ThievesHideout();
-    RegionTable_Init_HauntedWasteland();
-    RegionTable_Init_DesertColossus();
-    // Dungeons
-    RegionTable_Init_DekuTree();
-    RegionTable_Init_DodongosCavern();
-    RegionTable_Init_JabuJabusBelly();
-    RegionTable_Init_ForestTemple();
-    RegionTable_Init_FireTemple();
-    RegionTable_Init_WaterTemple();
-    RegionTable_Init_SpiritTemple();
-    RegionTable_Init_ShadowTemple();
-    RegionTable_Init_BottomOfTheWell();
-    RegionTable_Init_IceCavern();
-    RegionTable_Init_GerudoTrainingGround();
-    RegionTable_Init_GanonsCastle();
+    RegionTable_Init_Generated();
 
     // Set parent regions
-    for (uint32_t i = RR_ROOT; i <= RR_GANONS_CASTLE; i++) {
+    for (uint32_t i = RR_ROOT; i < RR_MAX; i++) {
         for (LocationAccess& locPair : areaTable[i].locations) {
             RandomizerCheck location = locPair.GetLocation();
             Rando::Context::GetInstance()->GetItemLocation(location)->SetParentRegion((RandomizerRegion)i);

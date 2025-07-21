@@ -166,7 +166,7 @@ void Context::GenerateLocationPool() {
         // TODO: Exclude checks for some of the older shuffles from the pool too i.e. Frog Songs, Scrubs, etc.)
         if (location.GetRandomizerCheck() == RC_UNKNOWN_CHECK ||
             location.GetRandomizerCheck() == RC_TRIFORCE_COMPLETED || // already in pool
-            (location.GetRandomizerCheck() == RC_MASTER_SWORD_PEDESTAL &&
+            (location.GetRandomizerCheck() == RC_TOT_MASTER_SWORD &&
              mOptions[RSK_SHUFFLE_MASTER_SWORD].Is(RO_GENERIC_OFF)) ||
             (location.GetRandomizerCheck() == RC_KAK_100_GOLD_SKULLTULA_REWARD &&
              mOptions[RSK_SHUFFLE_100_GS_REWARD].Is(RO_GENERIC_OFF)) ||

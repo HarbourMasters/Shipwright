@@ -124,6 +124,8 @@ source_group("include" FILES ${Header_Files__include})
 file(GLOB_RECURSE soh__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/*.c" "soh/*.cpp" "soh/*.h" "soh/*.hpp")
 
 # Add specific files that don't match the pattern
+list(APPEND soh__ ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/generated/regions.cpp)
+list(APPEND soh__ ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/generated/regions.h)
 list(APPEND soh__ ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/savestates_extern.inc)
 list(APPEND soh__ ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/speechsynthesizer/DarwinSpeechSynthesizer.mm)
 
@@ -211,6 +213,50 @@ source_group("src\\overlays\\effects" REGULAR_EXPRESSION "src/overlays/effects/*
 source_group("src\\overlays\\gamestates" REGULAR_EXPRESSION  "src/overlays/gamestates/*")
 source_group("src\\overlays\\misc" REGULAR_EXPRESSION  "src/overlays/misc/*")
 # }}}
+
+find_package(Python3 COMPONENTS Interpreter)
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/generated/regions.cpp
+    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/generated/regions.h
+    DEPENDS
+	${CMAKE_CURRENT_SOURCE_DIR}/compile_logic.py
+	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/dungeons/bottom_of_the_well.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/dungeons/deku_tree.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/dungeons/dodongos_cavern.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/dungeons/fire_temple.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/dungeons/forest_temple.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/dungeons/ganons_castle.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/dungeons/gerudo_training_ground.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/dungeons/ice_cavern.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/dungeons/jabu_jabus_belly.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/dungeons/shadow_temple.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/dungeons/spirit_temple.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/dungeons/water_temple.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/castle_grounds.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/death_mountain_crater.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/death_mountain_trail.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/desert_colossus.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/gerudo_fortress.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/gerudo_valley.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/goron_city.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/graveyard.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/haunted_wasteland.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/hyrule_field.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/kakariko.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/kokiri_forest.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/lake_hylia.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/lon_lon_ranch.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/lost_woods.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/market.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/sacred_forest_meadow.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/thieves_hideout.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/zoras_domain.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/zoras_fountain.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/overworld/zoras_river.s
+    	${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic/root.s
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/compile_logic.py cpp ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/logic ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer/generated
+    VERBATIM
+)
 
 set(ALL_FILES
     ${Header_Files}
