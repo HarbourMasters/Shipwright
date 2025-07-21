@@ -78,7 +78,7 @@ AudioCollection::AudioCollection() {
         SEQUENCE_MAP_ENTRY(NA_BGM_MEDALLION_GET,                "Obtain Medallion",                         "NA_BGM_MEDALLION_GET",           SEQ_FANFARE,      true,     true),
         SEQUENCE_MAP_ENTRY(NA_BGM_APPEAR,                       "Enter Zelda",                              "NA_BGM_APPEAR",                  SEQ_FANFARE,      true,     true),
         SEQUENCE_MAP_ENTRY(NA_BGM_MASTER_SWORD,                 "Master Sword",                             "NA_BGM_MASTER_SWORD",            SEQ_FANFARE,      true,     true),
-        SEQUENCE_MAP_ENTRY(NA_BGM_OCARINA_OF_TIME,              "Ocarina of Time",                          "NA_BGM_OCARINA_OF_TIME",         SEQ_FANFARE,      true,     true),
+        SEQUENCE_MAP_ENTRY(NA_BGM_SEAL_OF_SAGES,                "Seal of Six Sages",                        "NA_BGM_SEAL_OF_SAGES",           SEQ_FANFARE,      true,     true),
 
         // SEQ_OCARINA
         SEQUENCE_MAP_ENTRY(NA_BGM_OCA_LIGHT,                    "Prelude of Light",                         "NA_BGM_OCA_LIGHT",               SEQ_OCARINA,      true,     true),
@@ -292,7 +292,7 @@ AudioCollection::AudioCollection() {
         SEQUENCE_MAP_ENTRY(NA_SE_VO_LI_DRINK - SFX_FLAG,        "Adult Link - Drinking",                    "NA_SE_VO_LI_DRINK",              SEQ_VOICE,        true,     false),
 
         // SEQ_ENDING
-        SEQUENCE_MAP_ENTRY(NA_BGM_END_DEMO,                     "Ocarina of Time",                          "NA_BGM_END_DEMO",                SEQ_ENDING,       true,     true),
+        SEQUENCE_MAP_ENTRY(NA_BGM_OCARINA_OF_TIME,              "Ocarina of Time",                          "NA_BGM_OCARINA_OF_TIME",         SEQ_ENDING,       true,     true),
         SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_1,                      "End Credits I",                            "NA_BGM_STAFF_1",                 SEQ_ENDING,       true,     true),
         SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_2,                      "End Credits II",                           "NA_BGM_STAFF_2",                 SEQ_ENDING,       true,     true),
         SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_3,                      "End Credits III",                          "NA_BGM_STAFF_3",                 SEQ_ENDING,       true,     true),
