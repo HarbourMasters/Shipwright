@@ -1163,7 +1163,6 @@ void SaveManager::LoadFile(int fileNum) {
                                     "    " + newFileName + "\n" +
                                     "If this was not in error, the file should be deleted.");
                             saveMtx.unlock();
-                            SaveFile(fileNum);
                             return;
                         }
                     }
