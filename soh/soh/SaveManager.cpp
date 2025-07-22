@@ -1111,6 +1111,7 @@ void SaveManager::LoadFile(int fileNum) {
     std::ifstream input(fileName);
 
     try {
+        bool deleteRando = false;
         saveBlock = nlohmann::json::object();
         input >> saveBlock;
         if (!saveBlock.contains("version")) {
@@ -1122,6 +1123,10 @@ void SaveManager::LoadFile(int fileNum) {
                 for (auto& block : saveBlock["sections"].items()) {
                     std::string sectionName = block.key();
                     if (sectionName == "randomizer") {
+                        if (block.value()["data"].empty()) {
+                            deleteRando = true;
+                            continue;
+                        }
                         bool hasStats = saveBlock["sections"].contains("sohStats");
                         if (block.value()["data"].contains("aat0") || !hasStats) { // Rachael rando data
                             SohGui::RegisterPopup(
@@ -1200,6 +1205,11 @@ void SaveManager::LoadFile(int fileNum) {
                              GetFileName(fileNum).string());
                 assert(false);
                 break;
+        }
+        if (deleteRando) {
+            saveBlock["sections"].erase(saveBlock["sections"].find("randomizer"));
+            SaveFile(fileNum);
+            deleteRando = false;
         }
         InitMeta(fileNum);
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
