@@ -1122,7 +1122,8 @@ void SaveManager::LoadFile(int fileNum) {
             case 1:
                 for (auto& block : saveBlock["sections"].items()) {
                     bool oldVanilla = block.value()["data"].empty() || block.value()["data"].contains("aat0") ||
-                                      block.value()["data"]["entrances"].empty();
+                                      block.value()["data"]["entrances"].empty() || 
+                                      SohUtils::IsStringEmpty(saveBlock["sections"]["sohStats"]["data"]["buildVersion"]);
                     std::string sectionName = block.key();
                     if (sectionName == "randomizer") {
                         bool hasStats = saveBlock["sections"].contains("sohStats");
