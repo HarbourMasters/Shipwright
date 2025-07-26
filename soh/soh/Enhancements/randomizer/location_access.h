@@ -231,7 +231,6 @@ bool CanPlantBean(const RandomizerRegion region);
 bool BothAges(const RandomizerRegion region);
 bool ChildCanAccess(const RandomizerRegion region);
 bool AdultCanAccess(const RandomizerRegion region);
-bool HasAccessTo(const RandomizerRegion region);
 
 namespace Regions {
 extern void AccessReset();

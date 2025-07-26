@@ -763,10 +763,6 @@ bool AdultCanAccess(const RandomizerRegion region) {
     return areaTable[region].Adult();
 }
 
-bool HasAccessTo(const RandomizerRegion region) {
-    return areaTable[region].HasAccess();
-}
-
 Rando::Context* ctx;
 std::shared_ptr<Rando::Logic> logic;
 

@@ -2530,6 +2530,11 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
     MQSpirit3SunsEnemies = false;
     Spirit1FSilverRupees = false;
     JabuRutoIn1F = false;
+    DCEyesLit = false;
+    DCLiftPlatform = false;
+    DCStairsRoomDoor = false;
+    DCKilledLowerLizalfos = false;
+    MQDCBehindFireSwitch = false;
 
     CalculatingAvailableChecks = false;
 

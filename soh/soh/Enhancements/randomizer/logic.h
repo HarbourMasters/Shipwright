@@ -143,6 +143,7 @@ class Logic {
     bool LinksCow = false;
     bool DeliverLetter = false;
     bool ClearMQDCUpperLobbyRocks = false;
+    bool MQDCBehindFireSwitch = false;
     bool LoweredWaterInsideBotw = false;
     bool OpenedWestRoomMQBotw = false;
     bool OpenedMiddleHoleMQBotw = false;
@@ -181,6 +182,10 @@ class Logic {
     bool MQSpirit3SunsEnemies = false;
     bool Spirit1FSilverRupees = false;
     bool JabuRutoIn1F = false;
+    bool DCEyesLit = false;
+    bool DCLiftPlatform = false;
+    bool DCStairsRoomDoor = false;
+    bool DCKilledLowerLizalfos = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
