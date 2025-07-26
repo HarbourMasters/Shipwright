@@ -124,6 +124,9 @@ SaveManager::SaveManager() {
 
     AddInitFunction(InitFileImpl);
 
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteAllFiles>(
+        [this]() { this->DeleteAllZeldaFiles(); });
+
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>(
         [this](uint32_t fileNum) { ThreadPoolWait(); });
 
@@ -2369,6 +2372,12 @@ void SaveManager::DeleteZeldaFile(int fileNum) {
     fileMetaInfo[fileNum].requiresMasterQuest = false;
     fileMetaInfo[fileNum].requiresOriginal = false;
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnDeleteFile>(fileNum);
+}
+
+void SaveManager::DeleteAllZeldaFiles() {
+    for (int fileNum = 0; fileNum < MaxFiles; fileNum++) {
+        DeleteZeldaFile(fileNum);
+    }
 }
 
 bool SaveManager::IsRandoFile() {

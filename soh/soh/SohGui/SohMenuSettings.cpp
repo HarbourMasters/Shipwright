@@ -187,6 +187,28 @@ void SohMenu::AddMenuSettings() {
             SDL_OpenURL(std::string("file:///" + std::filesystem::absolute(filesPath).string()).c_str());
         })
         .Options(ButtonOptions().Tooltip("Opens the folder that contains the save and mods folders, etc."));
+    AddWidget(path, "Enable Delete All Saves", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("EnableDeleteAllSaveFilesButton"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions()
+                     .Tooltip("Turn on to enable the \"Delete All Saves\" button.Turns off automatically "
+                              "when \"Delete All Saves\" is pressed")
+                     .DefaultValue(false));
+    AddWidget(path, "Delete All Saves", WIDGET_BUTTON)
+        .RaceDisable(false)
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = !CVarGetInteger(CVAR_SETTING("EnableDeleteAllSaveFilesButton"), 0);
+            info.options->disabledTooltip =
+                "This button is disabled because \"Enable Delete All Saves\" is turned off.";
+        })
+        .Callback([](WidgetInfo& info) {
+            GameInteractor::Instance->ExecuteHooks<GameInteractor::OnDeleteAllFiles>();
+            CVarSetInteger(CVAR_SETTING("EnableDeleteAllSaveFilesButton"), 0);
+            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+                ->Dispatch("reset");
+        })
+        .Options(ButtonOptions().Tooltip("Warning deletes all save files"));
 
     AddWidget(path, "Boot", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Boot Sequence", WIDGET_CVAR_COMBOBOX)
