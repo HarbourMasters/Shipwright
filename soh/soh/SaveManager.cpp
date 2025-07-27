@@ -127,6 +127,11 @@ SaveManager::SaveManager() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteAllFiles>(
         [this]() { this->DeleteAllZeldaFiles(); });
 
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteSelectedFile>([this]() {
+        int selectedFileNum = CVarGetInteger(CVAR_SETTING("DeleteSelectedSaveFileNum"), 0); 
+        this->DeleteZeldaFile(selectedFileNum - 1 );
+    });
+
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>(
         [this](uint32_t fileNum) { ThreadPoolWait(); });
 
