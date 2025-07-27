@@ -3,6 +3,7 @@
 #include "soh/OTRGlobals.h"
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/SaveManager.h"
 #include "UIWidgets.hpp"
 #include <spdlog/fmt/fmt.h>
 
@@ -187,7 +188,7 @@ void SohMenu::AddMenuSettings() {
             SDL_OpenURL(std::string("file:///" + std::filesystem::absolute(filesPath).string()).c_str());
         })
         .Options(ButtonOptions().Tooltip("Opens the folder that contains the save and mods folders, etc."));
-    
+
     AddWidget(path, "Saves", WIDGET_SEPARATOR_TEXT);
     auto deleteSaveFilesDisabledFunc = [](WidgetInfo& info) {
         info.options->disabled = !CVarGetInteger(CVAR_SETTING("EnableDeleteAllSelectedSaveFiles"), 0);
@@ -205,13 +206,16 @@ void SohMenu::AddMenuSettings() {
         .RaceDisable(false)
         .PreFunc(deleteSaveFilesDisabledFunc)
         .Callback([](WidgetInfo& info) {
-            GameInteractor::Instance->ExecuteHooks<GameInteractor::OnDeleteAllFiles>();
+            for (int fileNum = 0; fileNum < SaveManager::MaxFiles; fileNum++) {
+                SaveManager::Instance->DeleteZeldaFile(fileNum);
+            }
+
             CVarSetInteger(CVAR_SETTING("EnableDeleteAllSelectedSaveFiles"), 0);
             std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
                 ->Dispatch("reset");
         })
-        .Options(ButtonOptions().Tooltip("Warning deletes all save files")); 
+        .Options(ButtonOptions().Tooltip("Warning deletes all save files"));
     AddWidget(path, "Select Save File To Delete: ", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("DeleteSelectedSaveFileNum"))
         .PreFunc(deleteSaveFilesDisabledFunc)
@@ -225,7 +229,9 @@ void SohMenu::AddMenuSettings() {
         .RaceDisable(false)
         .PreFunc(deleteSaveFilesDisabledFunc)
         .Callback([](WidgetInfo& info) {
-            GameInteractor::Instance->ExecuteHooks<GameInteractor::OnDeleteSelectedFile>();
+            int selectedFileNum = CVarGetInteger(CVAR_SETTING("DeleteSelectedSaveFileNum"), 0);
+            SaveManager::Instance->DeleteZeldaFile(selectedFileNum - 1);
+
             CVarSetInteger(CVAR_SETTING("EnableDeleteAllSelectedSaveFiles"), 0);
             std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
