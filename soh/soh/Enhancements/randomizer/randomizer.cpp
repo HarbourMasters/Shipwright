@@ -5783,6 +5783,53 @@ void RandomizerSettingsWindow::InitElement() {
     mSettings->UpdateOptionProperties();
 }
 
+static std::unordered_map<RandomizerGet, GameplayStatTimestamp> randomizerGetToStatsTimeStamp = {
+    { RG_GOHMA_SOUL, TIMESTAMP_FOUND_GOHMA_SOUL },
+    { RG_KING_DODONGO_SOUL, TIMESTAMP_FOUND_KING_DODONGO_SOUL },
+    { RG_BARINADE_SOUL, TIMESTAMP_FOUND_BARINADE_SOUL },
+    { RG_PHANTOM_GANON_SOUL, TIMESTAMP_FOUND_PHANTOM_GANON_SOUL },
+    { RG_VOLVAGIA_SOUL, TIMESTAMP_FOUND_VOLVAGIA_SOUL },
+    { RG_MORPHA_SOUL, TIMESTAMP_FOUND_MORPHA_SOUL },
+    { RG_BONGO_BONGO_SOUL, TIMESTAMP_FOUND_BONGO_BONGO_SOUL },
+    { RG_TWINROVA_SOUL, TIMESTAMP_FOUND_TWINROVA_SOUL },
+    { RG_GANON_SOUL, TIMESTAMP_FOUND_GANON_SOUL },
+
+    { RG_BRONZE_SCALE, TIMESTAMP_FOUND_BRONZE_SCALE },
+
+    { RG_OCARINA_A_BUTTON, TIMESTAMP_FOUND_OCARINA_A_BUTTON },
+    { RG_OCARINA_C_UP_BUTTON, TIMESTAMP_FOUND_OCARINA_C_UP_BUTTON },
+    { RG_OCARINA_C_DOWN_BUTTON, TIMESTAMP_FOUND_OCARINA_C_DOWN_BUTTON },
+    { RG_OCARINA_C_LEFT_BUTTON, TIMESTAMP_FOUND_OCARINA_C_LEFT_BUTTON },
+    { RG_OCARINA_C_RIGHT_BUTTON, TIMESTAMP_FOUND_OCARINA_C_RIGHT_BUTTON },
+
+    { RG_FISHING_POLE, TIMESTAMP_FOUND_FISHING_POLE },
+
+    { RG_GUARD_HOUSE_KEY, TIMESTAMP_FOUND_GUARD_HOUSE_KEY },
+    { RG_MARKET_BAZAAR_KEY, TIMESTAMP_FOUND_MARKET_BAZAAR_KEY },
+    { RG_MARKET_POTION_SHOP_KEY, TIMESTAMP_FOUND_MARKET_POTION_SHOP_KEY },
+    { RG_MASK_SHOP_KEY, TIMESTAMP_FOUND_MASK_SHOP_KEY },
+    { RG_MARKET_SHOOTING_GALLERY_KEY, TIMESTAMP_FOUND_MARKET_SHOOTING_GALLERY_KEY },
+    { RG_BOMBCHU_BOWLING_KEY, TIMESTAMP_FOUND_BOMBCHU_BOWLING_KEY },
+    { RG_TREASURE_CHEST_GAME_BUILDING_KEY, TIMESTAMP_FOUND_TREASURE_CHEST_GAME_BUILDING_KEY },
+    { RG_BOMBCHU_SHOP_KEY, TIMESTAMP_FOUND_BOMBCHU_SHOP_KEY },
+    { RG_RICHARDS_HOUSE_KEY, TIMESTAMP_FOUND_RICHARDS_HOUSE_KEY },
+    { RG_ALLEY_HOUSE_KEY, TIMESTAMP_FOUND_ALLEY_HOUSE_KEY },
+    { RG_KAK_BAZAAR_KEY, TIMESTAMP_FOUND_KAK_BAZAAR_KEY },
+    { RG_KAK_POTION_SHOP_KEY, TIMESTAMP_FOUND_KAK_POTION_SHOP_KEY },
+    { RG_BOSS_HOUSE_KEY, TIMESTAMP_FOUND_BOSS_HOUSE_KEY },
+    { RG_GRANNYS_POTION_SHOP_KEY, TIMESTAMP_FOUND_GRANNYS_POTION_SHOP_KEY },
+    { RG_SKULLTULA_HOUSE_KEY, TIMESTAMP_FOUND_SKULLTULA_HOUSE_KEY },
+    { RG_IMPAS_HOUSE_KEY, TIMESTAMP_FOUND_IMPAS_HOUSE_KEY },
+    { RG_WINDMILL_KEY, TIMESTAMP_FOUND_WINDMILL_KEY },
+    { RG_KAK_SHOOTING_GALLERY_KEY, TIMESTAMP_FOUND_KAK_SHOOTING_GALLERY_KEY },
+    { RG_DAMPES_HUT_KEY, TIMESTAMP_FOUND_DAMPES_HUT_KEY },
+    { RG_TALONS_HOUSE_KEY, TIMESTAMP_FOUND_TALONS_HOUSE_KEY },
+    { RG_STABLES_KEY, TIMESTAMP_FOUND_STABLES_KEY },
+    { RG_BACK_TOWER_KEY, TIMESTAMP_FOUND_BACK_TOWER_KEY },
+    { RG_HYLIA_LAB_KEY, TIMESTAMP_FOUND_HYLIA_LAB_KEY },
+    { RG_FISHING_HOLE_KEY, TIMESTAMP_FOUND_FISHING_HOLE_KEY },
+};
+
 // Gameplay stat tracking: Update time the item was acquired
 // (special cases for rando items)
 void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
@@ -5797,6 +5844,12 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
     // Use ITEM_KEY_BOSS to timestamp Ganon's boss key
     if (item == RG_GANONS_CASTLE_BOSS_KEY) {
         gSaveContext.ship.stats.itemTimestamp[ITEM_KEY_BOSS] = time;
+        return;
+    }
+
+    if (randomizerGetToStatsTimeStamp.contains((RandomizerGet)item)) {
+        gSaveContext.ship.stats.itemTimestamp[randomizerGetToStatsTimeStamp[(RandomizerGet)item]] = time;
+        return;
     }
 
     // Count any bottled item as a bottle
@@ -5806,6 +5859,7 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
         }
         return;
     }
+
     // Count any bombchu pack as bombchus
     if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS) {
         if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = 0) {
@@ -5813,11 +5867,15 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
         }
         return;
     }
+
     if (item == RG_MAGIC_SINGLE) {
         gSaveContext.ship.stats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
+        return;
     }
+
     if (item == RG_DOUBLE_DEFENSE) {
         gSaveContext.ship.stats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
+        return;
     }
 }
 
