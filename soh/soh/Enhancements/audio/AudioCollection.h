@@ -73,4 +73,5 @@ void AudioCollection_AddToCollection(char* otrPath, uint16_t seqNum);
 const char* AudioCollection_GetSequenceName(uint16_t seqId);
 bool AudioCollection_HasSequenceNum(uint16_t seqId);
 size_t AudioCollection_SequenceMapSize();
+void AudioCollection_EmitSongNameNotification(s32 seqId);
 #endif

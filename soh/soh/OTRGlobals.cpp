@@ -2580,15 +2580,6 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     return false;
 }
 
-extern "C" void Overlay_DisplayText(float duration, const char* text) {
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(duration, true, text);
-}
-
-extern "C" void Overlay_DisplayText_Seconds(int seconds, const char* text) {
-    float duration = seconds * OTRGlobals::Instance->GetInterpolationFPS() * 0.05;
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(duration, true, text);
-}
-
 extern "C" void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex) {
     SetCurrentGrottoIDForTracker(entranceIndex);
 }

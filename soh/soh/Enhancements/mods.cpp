@@ -49,7 +49,6 @@ extern "C" {
 
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
-extern void Overlay_DisplayText(float duration, const char* text);
 }
 
 // GreyScaleEndDlist
