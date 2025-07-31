@@ -6,14 +6,10 @@
 #include "soh/resource/type/Skeleton.h"
 #include <map>
 #include <ranges>
+#include <vector>
 
-extern "C" void gfx_texture_cache_clear();
-
-std::shared_ptr<Ship::ArchiveManager> GetArchiveManager() {
-    return Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager();
-}
-
-std::map<std::string, bool> modFiles;
+std::vector<std::string> enabledModFiles;
+std::vector<std::string> disabledModFiles;
 
 #define CVAR_ENABLED_MODS_NAME CVAR_GENERAL("EnabledMods")
 #define CVAR_ENABLED_MODS_DEFAULT ""
@@ -22,15 +18,20 @@ std::map<std::string, bool> modFiles;
 // "|" was chosen as the separator due to
 // it being an invalid character in NTFS
 // and being rarely used in ext4
+// it is also an ASCII character
+// improving portability
+
+// if being an ASCII character is not a requirement,
+// other possible candidates include:
+// - U+FFFF: non-character
+// - any private use character
 #define SEPARATOR "|"
 
-void SaveEnabledModsCVarValue() {
+void SetEnabledModsCVarValue() {
     std::string s = "";
 
-    for (auto& [modPath, enabled] : modFiles) {
-        if (enabled) {
-            s += modPath + SEPARATOR;
-        }
+    for (auto& modPath : enabledModFiles) {
+        s += modPath + SEPARATOR;
     }
 
     //remove trailing separator if present
@@ -46,38 +47,19 @@ std::vector<std::string> GetEnabledModsFromCVar() {
     return StringHelper::Split(enabledModsCVarValue, SEPARATOR);
 }
 
-bool is_enabled(const std::pair<std::string, bool>& p) {
-    return p.second;
+std::vector<std::string>& GetModFiles(bool enabled) {
+    return enabled ? enabledModFiles : disabledModFiles;
 }
 
-std::vector<std::string> GetEnabledModFiles() {
-    std::map<std::string, bool> enabledMods;
-
-    std::copy_if(modFiles.begin(), modFiles.end(), std::inserter(enabledMods, enabledMods.begin()), is_enabled);
-
-    auto ks = std::views::keys(enabledMods);
-    std::vector<std::string> keys{ ks.begin(), ks.end() };
-
-    return keys;
-}
-
-bool is_disabled(const std::pair<std::string, bool>& p) {
-    return !p.second;
-}
-
-std::vector<std::string> GetDisabledModFiles() {
-    std::map<std::string, bool> disabledMods;
-
-    std::copy_if(modFiles.begin(), modFiles.end(), std::inserter(disabledMods, disabledMods.begin()), is_disabled);
-
-    auto ks = std::views::keys(disabledMods);
-    std::vector<std::string> keys{ ks.begin(), ks.end() };
-
-    return keys;
+std::shared_ptr<Ship::ArchiveManager> GetArchiveManager() {
+    return Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager();
 }
 
 void UpdateModFiles(bool init = false) {
-    modFiles.clear();
+    if (init) {
+        enabledModFiles.clear();
+    }
+    disabledModFiles.clear();
     std::vector<std::string> enabledMods = GetEnabledModsFromCVar();
     std::string modsPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
     if (modsPath.length() > 0 && std::filesystem::exists(modsPath)) {
@@ -85,24 +67,43 @@ void UpdateModFiles(bool init = false) {
             for (const std::filesystem::directory_entry& p : std::filesystem::recursive_directory_iterator(modsPath, std::filesystem::directory_options::follow_directory_symlink)) {
                 std::string extension = p.path().extension().string();
                 if (
+#ifndef EXCLUDE_MPQ_SUPPORT
                     StringHelper::IEquals(extension, ".otr") ||
                     StringHelper::IEquals(extension, ".mpq") ||
+#endif
                     StringHelper::IEquals(extension, ".o2r") ||
                     StringHelper::IEquals(extension, ".zip")
                 ) {
                     std::string path = p.path().generic_string();
                     bool shouldBeEnabled = std::find(enabledMods.begin(), enabledMods.end(), path) != enabledMods.end();
-                    if (init && shouldBeEnabled) {
-                        GetArchiveManager()->AddArchive(path);
+
+                    if (shouldBeEnabled) {
+                        if (init) {
+                            enabledModFiles.push_back(path);
+                            GetArchiveManager()->AddArchive(path);
+                        }
+                    } else {
+                        disabledModFiles.push_back(path);
                     }
-                    modFiles.emplace(path, shouldBeEnabled);
                 }
             }
         }
     }
+}
 
+extern "C" void gfx_texture_cache_clear();
+
+void AfterModChange() {
+    SetEnabledModsCVarValue();
+    //TODO: runtime changes
     /*
-    std::sort(modFiles.begin(), modFiles.end(), [](const std::string& a, const std::string& b) {
+    gfx_texture_cache_clear();
+    SOH::SkeletonPatcher::ClearSkeletons();
+    */
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+
+    //disabled mods are always sorted
+    std::sort(disabledModFiles.begin(), disabledModFiles.end(), [](const std::string& a, const std::string& b) {
         return std::lexicographical_compare(
             a.begin(), a.end(),
             b.begin(), b.end(),
@@ -111,14 +112,24 @@ void UpdateModFiles(bool init = false) {
             }
         );
     });
-    */
 }
 
-void AfterModChange() {
-    SaveEnabledModsCVarValue();
-    gfx_texture_cache_clear();
-    SOH::SkeletonPatcher::ClearSkeletons();
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+void EnableMod(std::string file) {
+    disabledModFiles.erase(std::find(disabledModFiles.begin(), disabledModFiles.end(), file));
+    enabledModFiles.insert(enabledModFiles.begin(), file);
+
+    //TODO: runtime changes
+    //GetArchiveManager()->AddArchive(file);
+    AfterModChange();
+}
+
+void DisableMod(std::string file) {
+    enabledModFiles.erase(std::find(enabledModFiles.begin(), enabledModFiles.end(), file));
+    disabledModFiles.insert(disabledModFiles.begin(), file);
+
+    //TODO: runtime changes
+    //GetArchiveManager()->RemoveArchive(file);
+    AfterModChange();
 }
 
 void DrawModInfo(std::string file) {
@@ -126,44 +137,72 @@ void DrawModInfo(std::string file) {
     ImGui::Text(file.c_str());
 }
 
-void DrawEnabledMods() {
-    std::vector<std::string> enabledMods = GetEnabledModFiles();
-    if (enabledMods.empty()) {
-        ImGui::Text("<None>");
+void DrawMods(bool enabled) {
+    std::vector<std::string>& selectedModFiles = GetModFiles(enabled);
+    if (selectedModFiles.empty()) {
         return;
     }
 
-    for (std::string file : enabledMods) {
-        if (UIWidgets::StateButton(file.c_str(), ICON_FA_ARROW_LEFT, ImVec2(25, 25), UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
-            modFiles[file] = false;
-            GetArchiveManager()->RemoveArchive(file);
-            AfterModChange();
+    bool madeAnyChange = false;
+    int switchFromIndex = -1;
+    int switchToIndex = -1;
+
+    for (int i = 0; i < selectedModFiles.size(); i += 1) {
+        std::string file = selectedModFiles[i];
+        if (UIWidgets::StateButton((file + "_left_right").c_str(), enabled ? ICON_FA_ARROW_LEFT : ICON_FA_ARROW_RIGHT, ImVec2(25, 25), UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
+            if (enabled) {
+                DisableMod(file);
+            } else {
+                EnableMod(file);
+            }
         }
+
+        //it's not relevant to reorder disabled mods
+        if (enabled) {
+            ImGui::SameLine();
+            if (i == 0) {
+                ImGui::BeginDisabled();
+            }
+            if (UIWidgets::StateButton((file + "_up").c_str(), ICON_FA_ARROW_UP, ImVec2(25, 25), UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
+                madeAnyChange = true;
+                switchFromIndex = i;
+                switchToIndex = i - 1;
+            }
+            if (i == 0) {
+                ImGui::EndDisabled();
+            }
+
+            ImGui::SameLine();
+            if (i == selectedModFiles.size() - 1) {
+                ImGui::BeginDisabled();
+            }
+            if (UIWidgets::StateButton((file + "_down").c_str(), ICON_FA_ARROW_DOWN, ImVec2(25, 25), UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
+                madeAnyChange = true;
+                switchFromIndex = i;
+                switchToIndex = i + 1;
+            }
+            if (i == selectedModFiles.size() - 1) {
+                ImGui::EndDisabled();
+            }
+        }
+
         DrawModInfo(file);
     }
-}
 
-void DrawDisabledMods() {
-    std::vector<std::string> disabledMods = GetDisabledModFiles();
-    if (disabledMods.empty()) {
-        ImGui::Text("<None>");
-        return;
-    }
-
-    for (std::string file : disabledMods) {
-        if (UIWidgets::StateButton(file.c_str(), ICON_FA_ARROW_RIGHT, ImVec2(25, 25), UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
-            modFiles[file] = true;
-            GetArchiveManager()->AddArchive(file);
-            AfterModChange();
-        }
-        DrawModInfo(file);
+    if (madeAnyChange) {
+        std::iter_swap(selectedModFiles.begin() + switchFromIndex, selectedModFiles.begin() + switchToIndex);
+        AfterModChange();
     }
 }
-
-const std::string updateButtonTooltip = "Re-check the mods folder for new files";
 
 void ModMenuWindow::DrawElement() {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
+
+    const ImVec4 yellow = ImVec4(1, 1, 0, 1);
+
+    ImGui::TextColored(yellow, "Mods are currently not reloaded at runtime.\nClose and re-open Ship for the changes to take effect.");
+
+    const std::string updateButtonTooltip = "Re-check the mods folder for new files";
 
     if (UIWidgets::Button("Update", UIWidgets::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
         UIWidgets::Tooltip(updateButtonTooltip.c_str());
@@ -183,7 +222,7 @@ void ModMenuWindow::DrawElement() {
         ImGui::TableNextColumn();
 
         if (ImGui::BeginChild("Disabled Mods", ImVec2(0, -8))) {
-            DrawDisabledMods();
+            DrawMods(false);
 
             ImGui::EndChild();
         }
@@ -191,7 +230,7 @@ void ModMenuWindow::DrawElement() {
         ImGui::TableNextColumn();
 
         if (ImGui::BeginChild("Enabled Mods", ImVec2(0, -8))) {
-            DrawEnabledMods();
+            DrawMods(true);
 
             ImGui::EndChild();
         }
