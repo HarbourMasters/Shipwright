@@ -167,7 +167,7 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_INSIDE_FENCE_GROTTO] = Region("HF Inside Fence Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_HF_DEKU_SCRUB_GROTTO,           logic->CanStunDeku()),
+        LOCATION(RC_HF_DEKU_SCRUB_GROTTO,           logic->CanStunDeku() && CanBuyAnother(GetCheckPrice())),
         LOCATION(RC_HF_INSIDE_FENCE_GROTTO_BEEHIVE, logic->CanBreakLowerBeehives()),
         LOCATION(RC_HF_FENCE_GROTTO_STORMS_FAIRY,   logic->CanUse(RG_SONG_OF_STORMS)),
     }, {

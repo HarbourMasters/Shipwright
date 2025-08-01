@@ -38,10 +38,10 @@ void RegionTable_Init_GanonsCastle() {
         EventAccess(LOGIC_FREE_FAIRIES, []{return true;}),
     }, {
         //Locations
-        LOCATION(RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT,  logic->CanStunDeku()),
-        LOCATION(RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT, logic->CanStunDeku()),
-        LOCATION(RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT,        logic->CanStunDeku()),
-        LOCATION(RC_GANONS_CASTLE_DEKU_SCRUB_LEFT,         logic->CanStunDeku()),
+        LOCATION(RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT,  logic->CanStunDeku() && CanBuyAnother(GetCheckPrice())),
+        LOCATION(RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT, logic->CanStunDeku() && CanBuyAnother(GetCheckPrice())),
+        LOCATION(RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT,        logic->CanStunDeku() && CanBuyAnother(GetCheckPrice())),
+        LOCATION(RC_GANONS_CASTLE_DEKU_SCRUB_LEFT,         logic->CanStunDeku() && CanBuyAnother(GetCheckPrice())),
         LOCATION(RC_GANONS_CASTLE_SCRUBS_FAIRY_1,          true),
         LOCATION(RC_GANONS_CASTLE_SCRUBS_FAIRY_2,          true),
         LOCATION(RC_GANONS_CASTLE_SCRUBS_FAIRY_3,          true),
@@ -166,11 +166,11 @@ void RegionTable_Init_GanonsCastle() {
         EventAccess(LOGIC_FREE_FAIRIES, []{return true;}),
     }, {
         //Locations
-        LOCATION(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_LEFT,  logic->CanStunDeku()),
-        LOCATION(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER,       logic->CanStunDeku()),
-        LOCATION(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_RIGHT, logic->CanStunDeku()),
-        LOCATION(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT,         logic->CanStunDeku()),
-        LOCATION(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT,        logic->CanStunDeku()),
+        LOCATION(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_LEFT,  logic->CanStunDeku() && CanBuyAnother(GetCheckPrice())),
+        LOCATION(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER,       logic->CanStunDeku() && CanBuyAnother(GetCheckPrice())),
+        LOCATION(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_RIGHT, logic->CanStunDeku() && CanBuyAnother(GetCheckPrice())),
+        LOCATION(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT,         logic->CanStunDeku() && CanBuyAnother(GetCheckPrice())),
+        LOCATION(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT,        logic->CanStunDeku() && CanBuyAnother(GetCheckPrice())),
         LOCATION(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_1,          true),
         LOCATION(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_2,          true),
         LOCATION(RC_GANONS_CASTLE_MQ_SCRUBS_FAIRY_3,          true),

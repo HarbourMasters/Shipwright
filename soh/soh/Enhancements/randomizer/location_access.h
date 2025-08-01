@@ -91,13 +91,10 @@ class LocationAccess {
     RandomizerCheck location;
     ConditionFn condition_function;
     std::string condition_str;
-
-    // Makes sure shop locations are buyable
-    bool CanBuy(bool calculatingAvailableChecks) const;
 };
 
+uint16_t GetCheckPrice(RandomizerCheck check = RC_UNKNOWN_CHECK);
 bool CanBuyAnother(uint16_t price);
-bool CanBuyAnother(RandomizerCheck rc);
 
 namespace Rando {
 class Entrance;
