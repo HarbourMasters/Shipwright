@@ -131,10 +131,11 @@ void RegisterOcarinaTimeTravel() {
         bool notNearAnySource = !nearbyTimeBlockEmpty && !nearbyTimeBlock && !nearbyOcarinaSpot && !nearbyDoorOfTime &&
                                 !nearbyFrogs && !nearbyGossipStone;
         bool hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
-        bool doesntNeedOcarinaOfTime = CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0) == 2;
-        bool hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
-        // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
-        if (justPlayedSoT && notNearAnySource && (hasOcarinaOfTime || doesntNeedOcarinaOfTime) && hasMasterSword) {
+        int timeTravelSetting = CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0);
+        bool doesntNeedOcarinaOfTime = timeTravelSetting == TIME_TRAVEL_ANY || timeTravelSetting == TIME_TRAVEL_ANY_MS;
+        bool needMasterSwordAndOcarina = timeTravelSetting == TIME_TRAVEL_ANY_MS || timeTravelSetting == TIME_TRAVEL_OOT_MS;
+
+        if (justPlayedSoT && notNearAnySource && (hasOcarinaOfTime || doesntNeedOcarinaOfTime || needMasterSwordAndOcarina)) {
             SwitchAge();
         }
     });

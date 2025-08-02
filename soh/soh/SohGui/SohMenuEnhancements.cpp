@@ -56,7 +56,9 @@ static const std::unordered_map<int32_t, const char*> chestStyleMatchesContentsO
 static const std::unordered_map<int32_t, const char*> timeTravelOptions = {
     { TIME_TRAVEL_DISABLED, "Disabled" },
     { TIME_TRAVEL_OOT, "Ocarina of Time" },
+    { TIME_TRAVEL_OOT_MS, "Ocarina of Time + Master Sword" },
     { TIME_TRAVEL_ANY, "Any Ocarina" },
+    { TIME_TRAVEL_ANY_MS, "Any Ocarina + Master Sword" },
 };
 
 static const std::unordered_map<int32_t, const char*> sleepingWaterfallOptions = {
@@ -783,9 +785,9 @@ void SohMenu::AddMenuEnhancements() {
                      .Tooltip("Allows Link to freely change age by playing the Song of Time.\n"
                               "Time Blocks can still be used properly.\n\n"
                               "Requirements:\n"
-                              " - Obtained the Ocarina of Time (depends on selection)\n"
                               " - Obtained the Song of Time\n"
-                              " - Obtained the Master Sword\n"
+                              " - Obtained the Ocarina of Time (depends on selection)\n"
+                              " - Obtained the Master Sword (depends on selection)\n"
                               " - Not within range of a Time Block\n"
                               " - Not within range of Ocarina Playing spots"));
 
