@@ -145,10 +145,11 @@ void RegisterOcarinaTimeTravel() {
             case TIME_TRAVEL_OOT_MS:
                 meetsTimeTravelRequirements = hasMasterSword && hasOcarinaOfTime;
                 break;
+            case TIME_TRAVEL_OOT:
             default:
                 meetsTimeTravelRequirements = hasOcarinaOfTime;
                 break;
-        }
+        }        
 
         if (justPlayedSoT && notNearAnySource && meetsTimeTravelRequirements) {
             SwitchAge();
