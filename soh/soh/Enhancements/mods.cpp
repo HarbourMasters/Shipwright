@@ -131,13 +131,29 @@ void RegisterOcarinaTimeTravel() {
         bool notNearAnySource = !nearbyTimeBlockEmpty && !nearbyTimeBlock && !nearbyOcarinaSpot && !nearbyDoorOfTime &&
                                 !nearbyFrogs && !nearbyGossipStone;
         bool hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
+        bool hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
         int timeTravelSetting = CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0);
-        bool doesntNeedOcarinaOfTime = timeTravelSetting == TIME_TRAVEL_ANY || timeTravelSetting == TIME_TRAVEL_ANY_MS;
-        bool needMasterSwordAndOcarina = timeTravelSetting == TIME_TRAVEL_ANY_MS || timeTravelSetting == TIME_TRAVEL_OOT_MS;
+        bool meetsTimeTravelRequirements = false;
 
-        if (justPlayedSoT && notNearAnySource && (hasOcarinaOfTime || doesntNeedOcarinaOfTime || needMasterSwordAndOcarina)) {
+        switch (timeTravelSetting) {
+            case TIME_TRAVEL_ANY:
+                meetsTimeTravelRequirements = true;
+                break;
+            case TIME_TRAVEL_ANY_MS:
+                meetsTimeTravelRequirements = hasMasterSword;
+                break;
+            case TIME_TRAVEL_OOT_MS:
+                meetsTimeTravelRequirements = hasMasterSword && hasOcarinaOfTime;
+                break;
+            default:
+                meetsTimeTravelRequirements = hasOcarinaOfTime;
+                break;
+        }
+
+        if (justPlayedSoT && notNearAnySource && meetsTimeTravelRequirements) {
             SwitchAge();
         }
+
     });
 }
 
