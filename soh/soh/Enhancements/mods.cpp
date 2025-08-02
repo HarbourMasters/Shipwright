@@ -149,7 +149,7 @@ void RegisterOcarinaTimeTravel() {
             default:
                 meetsTimeTravelRequirements = hasOcarinaOfTime;
                 break;
-        }        
+        }
 
         if (justPlayedSoT && notNearAnySource && meetsTimeTravelRequirements) {
             SwitchAge();
