@@ -154,7 +154,6 @@ void RegisterOcarinaTimeTravel() {
         if (justPlayedSoT && notNearAnySource && meetsTimeTravelRequirements) {
             SwitchAge();
         }
-
     });
 }
 
