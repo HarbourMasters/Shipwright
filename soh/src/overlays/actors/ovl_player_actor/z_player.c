@@ -34,6 +34,8 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include "rumble.h"
+
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -1740,7 +1742,7 @@ void func_80832630(PlayState* play) {
 
 void Player_RequestRumble(Player* this, s32 sourceStrength, s32 duration, s32 decreaseRate, s32 distSq) {
     if (this->actor.category == ACTORCAT_PLAYER) {
-        func_800AA000(distSq, sourceStrength, duration, decreaseRate);
+        Rumble_Request(distSq, sourceStrength, duration, decreaseRate);
     }
 }
 

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "vt.h"
+#include "rumble.h"
 
 #include <string.h>
 
@@ -1164,7 +1165,7 @@ void Play_Update(PlayState* play) {
                 PLAY_LOG(3580);
 
                 play->gameplayFrames++;
-                func_800AA178(true);
+                Rumble_SetUpdateEnabled(true);
 
                 // Gameplay stat tracking
                 if (!gSaveContext.ship.stats.gameComplete &&
@@ -1227,7 +1228,7 @@ void Play_Update(PlayState* play) {
                     PLAY_LOG(3662);
                 }
             } else {
-                func_800AA178(false);
+                Rumble_SetUpdateEnabled(false);
             }
 
             PLAY_LOG(3672);

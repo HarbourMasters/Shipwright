@@ -5,6 +5,9 @@
  */
 
 #include "z_bg_ddan_kd.h"
+
+#include "rumble.h"
+
 #include "objects/object_ddan_objects/object_ddan_objects.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
@@ -130,7 +133,7 @@ void BgDdanKd_LowerStairs(BgDdanKd* this, PlayState* play) {
     f32 effectStrength;
 
     Math_SmoothStepToF(&this->dyna.actor.speedXZ, 4.0f, 0.5f, 0.025f, 0.0f);
-    func_800AA000(500.0f, 0x78, 0x14, 0xA);
+    Rumble_Request(500.0f, 120, 20, 10);
 
     if (Math_SmoothStepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y - 200.0f - 20.0f, 0.075f,
                            this->dyna.actor.speedXZ, 0.0075f) == 0.0f) {

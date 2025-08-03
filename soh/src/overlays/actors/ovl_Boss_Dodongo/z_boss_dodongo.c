@@ -1,4 +1,7 @@
 #include "z_boss_dodongo.h"
+
+#include "rumble.h"
+
 #include "textures/boss_title_cards/object_kingdodongo.h"
 #include "objects/object_kingdodongo/object_kingdodongo.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
@@ -860,7 +863,7 @@ void BossDodongo_Walk(BossDodongo* this, PlayState* play) {
                 func_80033E88(&this->actor, play, 4, 10);
             } else {
                 this->unk_1B6 = 10;
-                func_800A9F6C(0.0f, 180, 20, 100);
+                Rumble_Override(0.0f, 180, 20, 100);
             }
         }
     }

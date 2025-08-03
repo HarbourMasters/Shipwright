@@ -5,6 +5,9 @@
  */
 
 #include "z_bg_bdan_objects.h"
+
+#include "rumble.h"
+
 #include "objects/object_bdan_objects/object_bdan_objects.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
@@ -183,7 +186,7 @@ void func_8086C054(BgBdanObjects* this, PlayState* play) {
             player->actor.world.pos.x = -1130.0f;
             player->actor.world.pos.y = -1025.0f;
             player->actor.world.pos.z = -3300.0f;
-            func_800AA000(0.0f, 0xFF, 0x14, 0x96);
+            Rumble_Request(0.0f, 255, 20, 150);
         }
     } else if (this->timer != 0) {
         if (this->timer != 0) {
@@ -208,13 +211,13 @@ void func_8086C1A0(BgBdanObjects* this, PlayState* play) {
         this->actionFunc = func_8086C29C;
         this->timer = 30;
         BgBdanObjects_SetContactRu1(this, 2);
-        func_800AA000(0.0f, 0xFF, 0x14, 0x96);
+        Rumble_Request(0.0f, 255, 20, 150);
     } else {
         if (this->timer != 0) {
             this->timer--;
         }
         if (this->timer == 0) {
-            func_800AA000(0.0f, 0x78, 0x14, 0xA);
+            Rumble_Request(0.0f, 120, 20, 10);
             this->timer = 11;
         }
         func_8002F974(&this->dyna.actor, NA_SE_EV_BUYOSTAND_RISING - SFX_FLAG);
@@ -262,14 +265,14 @@ void func_8086C3D8(BgBdanObjects* this, PlayState* play) {
         player->actor.world.pos.z = -3500.0f;
         player->actor.shape.rot.y = 0x7530;
         player->actor.world.rot.y = player->actor.shape.rot.y;
-        func_800AA000(0.0f, 0xFF, 0x1E, 0x96);
+        Rumble_Request(0.0f, 255, 30, 150);
     } else {
         func_8002F974(&this->dyna.actor, NA_SE_EV_BUYOSTAND_FALL - SFX_FLAG);
         if (this->timer != 0) {
             this->timer--;
         }
         if (this->timer == 0) {
-            func_800AA000(0.0f, 0x78, 0x14, 0xA);
+            Rumble_Request(0.0f, 120, 20, 10);
             this->timer = 11;
         }
         if (this->dyna.actor.child != NULL) {

@@ -1,6 +1,7 @@
 #include <string.h>
 #include "global.h"
 #include "vt.h"
+#include "rumble.h"
 #include "libultraship/bridge.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -450,7 +451,7 @@ void GameState_Init(GameState* gameState, GameStateFunc init, GraphicsContext* g
         ViMode_Init(&sViMode);
     }
     SpeedMeter_Init(&D_801664D0);
-    func_800AA0B4();
+    Rumble_Init();
     osSendMesgPtr(&gameState->gfxCtx->queue, NULL, OS_MESG_BLOCK);
 
     endTime = osGetTime();
@@ -471,7 +472,7 @@ void GameState_Destroy(GameState* gameState) {
     if (gameState->destroy != NULL) {
         gameState->destroy(gameState);
     }
-    func_800AA0F0();
+    Rumble_Destroy();
     SpeedMeter_Destroy(&D_801664D0);
     VisCvg_Destroy(&sVisCvg);
     VisZBuf_Destroy(&sVisZBuf);

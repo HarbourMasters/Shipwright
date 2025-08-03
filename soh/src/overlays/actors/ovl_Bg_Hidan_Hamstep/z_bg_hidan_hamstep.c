@@ -5,6 +5,9 @@
  */
 
 #include "z_bg_hidan_hamstep.h"
+
+#include "rumble.h"
+
 #include "objects/object_hidan_objects/object_hidan_objects.h"
 
 #define FLAGS 0
@@ -312,7 +315,7 @@ void func_80888860(BgHidanHamstep* this, PlayState* play) {
                 Quake_SetQuakeValues(quakeIndex, 0, 0, 500, 0);
                 Quake_SetCountdown(quakeIndex, 20);
                 Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCK_BOUND);
-                func_800AA000(this->dyna.actor.xyzDistToPlayerSq, 255, 20, 150);
+                Rumble_Request(this->dyna.actor.xyzDistToPlayerSq, 255, 20, 150);
                 func_80888638(this, play);
                 osSyncPrintf("A(%d)\n", this->dyna.actor.params);
             }
@@ -370,7 +373,7 @@ void func_80888A58(BgHidanHamstep* this, PlayState* play) {
                 Quake_SetCountdown(quakeIndex, 7);
 
                 Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCK_BOUND);
-                func_800AA000(10000.0f, 255, 20, 150);
+                Rumble_Request(SQ(100.0f), 255, 20, 150);
                 func_808884C8(this, play);
 
                 if ((this->dyna.actor.params & 0xFF) == 5) {

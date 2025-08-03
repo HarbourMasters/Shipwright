@@ -9,6 +9,7 @@
 #include "overlays/actors/ovl_En_Kanban/z_en_kanban.h"
 #include "objects/object_fish/object_fish.h"
 #include "vt.h"
+#include "rumble.h"
 
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
@@ -3568,7 +3569,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                     }
                     sLureBitTimer = timer;
                     sRumbleDelay = timer;
-                    func_800A9F6C(0.0f, 60, timer * 3, 10);
+                    Rumble_Override(0.0f, 60, timer * 3, 10);
                 } else {
                     if (this->fishLength > 70.0f) {
                         timer = (s16)Rand_ZeroFloat(5.0f) + 10;
@@ -3581,7 +3582,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                     }
                     sLureBitTimer = timer;
                     sRumbleDelay = timer;
-                    func_800A9F6C(0.0f, 180, timer * 3, 10);
+                    Rumble_Override(0.0f, 180, timer * 3, 10);
                 }
 
                 sLineHooked = 0;
@@ -3623,11 +3624,11 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 if (sLureEquipped == FS_LURE_SINKING) {
                     sLureBitTimer = 30;
                     sRumbleDelay = 100;
-                    func_800A9F6C(0.0f, 60, 90, 10);
+                    Rumble_Override(0.0f, 60, 90, 10);
                 } else {
                     sLureBitTimer = 30;
                     sRumbleDelay = 40;
-                    func_800A9F6C(0.0f, 180, 90, 10);
+                    Rumble_Override(0.0f, 180, 90, 10);
                 }
 
                 sLineHooked = false;
@@ -3680,7 +3681,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                         rumbleStrength = 255.0f;
                     }
 
-                    func_800A9F6C(0.0f, rumbleStrength, 120, 5);
+                    Rumble_Override(0.0f, rumbleStrength, 120, 5);
                     sRumbleDelay = 40;
                     sRodHitTimer = 10;
                     Sfx_PlaySfxCentered(NA_SE_IT_FISHING_HIT);
@@ -3711,7 +3712,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                         rumbleStrength *= 3.0f / 4.0f;
                     }
 
-                    func_800A9F6C(0.0f, rumbleStrength, (s16)Rand_ZeroFloat(5.0f) + 10, 5);
+                    Rumble_Override(0.0f, rumbleStrength, (s16)Rand_ZeroFloat(5.0f) + 10, 5);
                 }
 
                 if (this->timerArray[1] > 30) {
@@ -3742,7 +3743,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                             } else {
                                 rumbleStrength8 = 180;
                             }
-                            func_800A9F6C(0.0f, rumbleStrength8, 90, 2);
+                            Rumble_Override(0.0f, rumbleStrength8, 90, 2);
                             this->timerArray[0] = 20;
                             this->timerArray[1] = 100;
                             this->timerArray[2] = 20;
@@ -3873,7 +3874,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                     }
                 } else {
                     sFishingCaughtTextId = 0x4082;
-                    func_800A9F6C(0.0f, 1, 3, 1);
+                    Rumble_Override(0.0f, 1, 3, 1);
                     Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x0A00FF);
                 }
 
@@ -3896,7 +3897,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 this->fishState = 6;
                 this->timerArray[0] = 100;
                 player->unk_860 = 3;
-                func_800A9F6C(0.0f, 1, 3, 1);
+                Rumble_Override(0.0f, 1, 3, 1);
                 sFishesCaught++;
                 func_80064520(play, &play->csCtx);
                 sFishingPlayerCinematicState = 100;
@@ -4852,7 +4853,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                     case 0:
                         if (gSaveContext.rupees >= 20) {
                             Rupees_ChangeBy(-20);
-                            if (func_800AA148() == 0) {
+                            if (!Rumble_Controller1HasRumblePak()) {
                                 this->actor.textId = 0x407C;
                             } else {
                                 this->actor.textId = 0x407D;
@@ -5365,7 +5366,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
         (fabsf(player->actor.world.pos.z - sSinkingLureLocationPos[sSinkingLureLocation - 1].z) < 25.0f)) {
         sSinkingLureLocation = 0;
         sFishingPlayerCinematicState = 20;
-        func_800A9F6C(0.0f, 150, 10, 10);
+        Rumble_Override(0.0f, 150, 10, 10);
         Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
         Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x1400FF);
     }
@@ -5374,7 +5375,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
         KREG(0) = 0;
         sLureEquipped = FS_LURE_STOCK;
         sFishingPlayerCinematicState = 20;
-        func_800A9F6C(0.0f, 150, 10, 10);
+        Rumble_Override(0.0f, 150, 10, 10);
         Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
         Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x1400FF);
     }
@@ -5534,7 +5535,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             sCameraAt.z = mainCam->at.z;
             Message_StartTextbox(play, 0x409E, NULL);
             sFishingPlayerCinematicState = 11;
-            func_800A9F6C(0.0f, 150, 10, 10);
+            Rumble_Override(0.0f, 150, 10, 10);
             // fallthrough
         }
 

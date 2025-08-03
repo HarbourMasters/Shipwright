@@ -1,6 +1,11 @@
 #ifndef REGS_H
 #define REGS_H
 
+#include "ultra64.h"
+#include "versions.h"
+
+struct PlayState;
+
 #define REG_GROUPS 29 // number of REG groups, i.e. REG, SREG, OREG, etc.
 #define REG_PAGES 6
 #define REG_PER_PAGE 16
@@ -121,6 +126,10 @@
 #define R_ITEM_AMMO_Y(i)            VREG(68 + i)
 #define R_ITEM_ICON_WIDTH(i)        VREG(76 + i)
 #define R_ITEM_BTN_WIDTH(i)         VREG(80 + i)
+#define R_GAME_OVER_RUMBLE_STRENGTH              VREG(90)
+#define R_GAME_OVER_RUMBLE_DURATION              VREG(91)
+#define R_GAME_OVER_RUMBLE_DECREASE_RATE         VREG(92)
+#define R_ENABLE_ACTOR_DEBUG_PRINTF              HREG(20)
 #define R_DISABLE_INPUT_DISPLAY     HREG(47)
 #define R_EN_GOROIWA_SPEED          mREG(12)
 #define R_NAVI_MSG_REGION_ALPHA     nREG(87)

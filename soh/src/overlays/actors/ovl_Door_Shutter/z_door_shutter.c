@@ -7,6 +7,8 @@
 #include "z_door_shutter.h"
 #include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
 
+#include "rumble.h"
+
 #include "objects/object_gnd/object_gnd.h"
 #include "objects/object_goma/object_goma.h"
 #include "objects/object_ydan_objects/object_ydan_objects.h"
@@ -594,7 +596,7 @@ void func_809973E8(DoorShutter* this, PlayState* play) {
         Quake_SetSpeed(quakeId, -32536);
         Quake_SetQuakeValues(quakeId, 2, 0, 0, 0);
         Quake_SetCountdown(quakeId, 10);
-        func_800AA000(this->dyna.actor.xyzDistToPlayerSq, 0xB4, 0x14, 0x64);
+        Rumble_Request(this->dyna.actor.xyzDistToPlayerSq, 180, 20, 100);
         func_80997220(this, play);
     }
 }
@@ -785,7 +787,7 @@ void DoorShutter_Draw(Actor* thisx, PlayState* play) {
 void func_8099803C(PlayState* play, s16 y, s16 countdown, s16 camId) {
     s16 quakeId = Quake_Add(Play_GetCamera(play, camId), 3);
 
-    func_800A9F6C(0.0f, 180, 20, 100);
+    Rumble_Override(0.0f, 180, 20, 100);
     Quake_SetSpeed(quakeId, 20000);
     Quake_SetQuakeValues(quakeId, y, 0, 0, 0);
     Quake_SetCountdown(quakeId, countdown);

@@ -4,6 +4,9 @@
 #include "overlays/actors/ovl_En_Goma/z_en_goma.h"
 #include "overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
+
+#include "rumble.h"
+
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -897,7 +900,7 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
                 this->currentAnimFrameCount = Animation_GetLastFrame(&gGohmaInitialLandingAnim);
                 BossGoma_PlayEffectsAndSfx(this, play, 0, 5);
                 this->framesUntilNextAction = 15;
-                func_800A9F6C(0.0f, 0xC8, 0x14, 0x14);
+                Rumble_Override(0.0f, 200, 20, 20);
             }
             break;
 
@@ -1007,7 +1010,7 @@ void BossGoma_Defeated(BossGoma* this, PlayState* play) {
 
     if (Animation_OnFrame(&this->skelanime, 107.0f)) {
         BossGoma_PlayEffectsAndSfx(this, play, 0, 8);
-        func_800A9F6C(0.0f, 0x96, 0x14, 0x14);
+        Rumble_Override(0.0f, 150, 20, 20);
     }
 
     this->visualState = VISUALSTATE_DEFEATED;

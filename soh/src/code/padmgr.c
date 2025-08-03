@@ -1,38 +1,106 @@
-#include "global.h"
-#include "vt.h"
-#include <string.h>
+/**
+ * @file padmgr.c
+ *
+ * This file implements communicating with joybus devices at a high level and serving the results to other threads.
+ *
+ * Any device that can be plugged into one of the four controller ports such as a standard N64 controller is a joybus
+ * device. Some joybus devices are also located inside the cartridge such as EEPROM for save data or the Real-Time
+ * Clock, however neither of these are used in Zelda64 and so this type of communication is unimplemented. Of the
+ * possible devices that can be plugged into the controller ports, the only device that padmgr will recognize and
+ * attempt to communicate with is the standard N64 controller.
+ *
+ * Communicating with these devices is broken down into various layers:
+ *
+ * Other threads                    : The rest of the program that will use the polled data
+ *  |
+ * PadMgr                           : Manages devices, submits polling commands at vertical retrace
+ *  |
+ * Libultra osCont* routines        : Interface for building commands and safely using the Serial Interface
+ *  |
+ * Serial Interface                 : Hardware unit for sending joybus commands and receiving data via DMA
+ *  |
+ * PIF                              : Forwards joybus commands and receives response data from the devices
+ *  |---¬---¬---¬-------¬
+ *  1   2   3   4       5           : The joybus devices plugged into the four controller ports or on the cartridge
+ *
+ * Joybus communication is handled on another thread as polling and receiving controller data is a slow process; the
+ * N64 programming manual section 26.2.4.1 quotes 2 milliseconds as the expected delay from calling
+ * `osContStartReadData` to receiving the data. By running this on a separate thread to the game state, work can be
+ * done while waiting for this operation to complete.
+ */
+#include "libu64/debug.h"
+#include "libu64/padsetup.h"
+#include "array_count.h"
+#include "padmgr.h"
+#include "printf.h"
+#include "fault.h"
+#include "terminal.h"
+#include "translation.h"
+#include "line_numbers.h"
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/controls/Mouse.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
-s32 D_8012D280 = 1;
+#define PADMGR_LOG(controllerNum, msg) (void)0
 
+
+#define LOG_SEVERITY_NOLOG 0
+#define LOG_SEVERITY_CRITICAL 1
+#define LOG_SEVERITY_ERROR 2
+#define LOG_SEVERITY_VERBOSE 3
+
+s32 gPadMgrLogSeverity = LOG_SEVERITY_CRITICAL;
 void OTRControllerCallback(uint8_t rumble);
 
-OSMesgQueue* PadMgr_LockSerialMesgQueue(PadMgr* padMgr) {
-    OSMesgQueue* ctrlrQ = NULL;
+/**
+ * Acquires exclusive access to the serial event queue.
+ *
+ * When a DMA to/from PIF RAM completes, an SI interrupt is generated to notify the process that the DMA has completed
+ * and a message is posted to the serial event queue. If multiple processes are trying to use the SI at the same time
+ * it becomes ambiguous as to which DMA has completed, so a locking system is required to arbitrate access to the SI.
+ *
+ * Once the task requiring the serial event queue is complete, it should be released with a call to
+ * `PadMgr_ReleaseSerialEventQueue()`.
+ *
+ * If another process tries to acquire the event queue, the current thread will be blocked until the event queue is
+ * released. Note the possibility for a deadlock, if the thread that already holds the serial event queue attempts to
+ * acquire it again it will block forever.
+ *
+ * @return The message queue to which SI interrupt events are posted.
+ *
+ * @see PadMgr_ReleaseSerialEventQueue
+ */
+OSMesgQueue* PadMgr_AcquireSerialEventQueue(PadMgr* padMgr) {
+    OSMesgQueue* serialEventQueue = NULL;
 
-    if (D_8012D280 > 2) {
+    if (gPadMgrLogSeverity >= LOG_SEVERITY_VERBOSE) {
         // "serialMsgQ Waiting for lock"
         osSyncPrintf("%2d %d serialMsgQロック待ち         %08x %08x          %08x\n", osGetThreadId(NULL),
                      padMgr->serialMsgQ.validCount, padMgr, &padMgr->serialMsgQ, &ctrlrQ);
     }
 
-    osRecvMesg(&padMgr->serialMsgQ, (OSMesg*)&ctrlrQ, OS_MESG_BLOCK);
+    osRecvMesg(&padMgr->serialLockQueue, (OSMesg*)&serialEventQueue, OS_MESG_BLOCK);
 
-    if (D_8012D280 > 2) {
+    if (gPadMgrLogSeverity >= LOG_SEVERITY_VERBOSE) {
         // "serialMsgQ Locked"
         osSyncPrintf("%2d %d serialMsgQをロックしました                     %08x\n", osGetThreadId(NULL),
                      padMgr->serialMsgQ.validCount, ctrlrQ);
     }
 
-    return ctrlrQ;
+    return serialEventQueue;
 }
 
-void PadMgr_UnlockSerialMesgQueue(PadMgr* padMgr, OSMesgQueue* ctrlrQ) {
-    if (D_8012D280 > 2) {
+/**
+ * Relinquishes access to the serial message queue, allowing another process to acquire and use it.
+ *
+ * @param serialEventQueue The serial message queue acquired by `PadMgr_AcquireSerialEventQueue`
+ *
+ * @see PadMgr_AcquireSerialEventQueue
+ */
+void PadMgr_ReleaseSerialEventQueue(PadMgr* padMgr, OSMesgQueue* serialEventQueue) {
+    if (gPadMgrLogSeverity >= LOG_SEVERITY_VERBOSE) {
         // "serialMsgQ Unlock"
         osSyncPrintf("%2d %d serialMsgQロック解除します   %08x %08x %08x\n", osGetThreadId(NULL),
                      padMgr->serialMsgQ.validCount, padMgr, &padMgr->serialMsgQ, ctrlrQ);
@@ -40,7 +108,7 @@ void PadMgr_UnlockSerialMesgQueue(PadMgr* padMgr, OSMesgQueue* ctrlrQ) {
 
     osSendMesgPtr(&padMgr->serialMsgQ, ctrlrQ, OS_MESG_BLOCK);
 
-    if (D_8012D280 > 2) {
+    if (gPadMgrLogSeverity >= LOG_SEVERITY_VERBOSE) {
         // "serialMsgQ Unlocked"
         osSyncPrintf("%2d %d serialMsgQロック解除しました %08x %08x %08x\n", osGetThreadId(NULL),
                      padMgr->serialMsgQ.validCount, padMgr, &padMgr->serialMsgQ, ctrlrQ);

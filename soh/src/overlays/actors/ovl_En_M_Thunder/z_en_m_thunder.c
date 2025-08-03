@@ -1,4 +1,7 @@
 #include "z_en_m_thunder.h"
+
+#include "rumble.h"
+
 #include "objects/gameplay_keep/gameplay_keep.h"
 
 #define FLAGS 0
@@ -174,7 +177,7 @@ void func_80A9F408(EnMThunder* this, PlayState* play) {
     }
 
     if (player->unk_858 >= 0.1f) {
-        func_800AA000(0.0f, (s32)(player->unk_858 * 150.0f) & 0xFF, 2, (s32)(player->unk_858 * 150.0f) & 0xFF);
+        Rumble_Request(0.0f, (s32)(player->unk_858 * 150.0f) & 0xFF, 2, (s32)(player->unk_858 * 150.0f) & 0xFF);
     }
 
     if (player->stateFlags2 & PLAYER_STATE2_SPIN_ATTACKING) {

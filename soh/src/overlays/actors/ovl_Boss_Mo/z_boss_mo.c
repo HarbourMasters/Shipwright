@@ -11,6 +11,8 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "vt.h"
 
+#include "rumble.h"
+
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -530,7 +532,7 @@ void BossMo_Tentacle(BossMo* this, PlayState* play) {
                 if ((this->sfxTimer % 32) == 0) {
                     Audio_PlaySoundIncreasinglyTransposed(&this->tentTipPos, NA_SE_EN_MOFER_WAVE,
                                                           gMorphaTransposeTable);
-                    func_800AA000(0, 100, 5, 2);
+                    Rumble_Request(0, 100, 5, 2);
                     Player_PlaySfx(&player->actor, NA_SE_VO_LI_FREEZE + player->ageProperties->unk_92);
                 }
             } else {
@@ -545,7 +547,7 @@ void BossMo_Tentacle(BossMo* this, PlayState* play) {
                 if ((this->sfxTimer % 16) == 0) {
                     Audio_PlaySoundIncreasinglyTransposed(&this->tentTipPos, NA_SE_EN_MOFER_WAVE,
                                                           gMorphaTransposeTable);
-                    func_800AA000(0, 160, 5, 4);
+                    Rumble_Request(0, 160, 5, 4);
                     Player_PlaySfx(&player->actor, NA_SE_VO_LI_FREEZE + player->ageProperties->unk_92);
                 }
             }

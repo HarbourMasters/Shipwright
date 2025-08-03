@@ -1,4 +1,5 @@
 #include "global.h"
+#include "rumble.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 typedef struct {
@@ -202,7 +203,7 @@ void func_8006390C(Input* input) {
                 }
                 if (iREG(0)) {
                     iREG(0) = 0;
-                    func_800AA000(0, iREG(1), iREG(2), iREG(3));
+                    Rumble_Request(0.0f, iREG(1), iREG(2), iREG(3));
                 }
         }
     }

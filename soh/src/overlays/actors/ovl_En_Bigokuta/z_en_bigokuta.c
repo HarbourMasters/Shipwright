@@ -1,4 +1,7 @@
 #include "z_en_bigokuta.h"
+
+#include "rumble.h"
+
 #include "objects/object_bigokuta/object_bigokuta.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -442,7 +445,7 @@ void func_809BD8DC(EnBigokuta* this, PlayState* play) {
             EffectSsGSplash_Spawn(play, &effectPos, NULL, NULL, 1, 2000);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_DAIOCTA_LAND_WATER);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOLON_LAND_BIG);
-            func_800AA000(0.0f, 0xFF, 0x14, 0x96);
+            Rumble_Request(0.0f, 255, 20, 150);
         }
     } else if (this->unk_196 < -1) {
         this->actor.world.pos.y = this->actor.home.pos.y - (sinf((this->unk_196 + 1) * (M_PI / 10)) * 20.0f);

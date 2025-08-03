@@ -6,6 +6,9 @@
 
 #include "z_en_horse.h"
 #include "overlays/actors/ovl_En_In/z_en_in.h"
+
+#include "rumble.h"
+
 #include "objects/object_horse/object_horse.h"
 #include "objects/object_hni/object_hni.h"
 #include "scenes/overworld/spot09/spot09_scene.h"
@@ -1315,7 +1318,7 @@ void EnHorse_MountedTrot(EnHorse* this, PlayState* play) {
     this->skin.skelAnime.playSpeed = this->actor.speedXZ * 0.375f;
     if (SkelAnime_Update(&this->skin.skelAnime)) {
         EnHorse_PlayTrottingSound(this);
-        func_800AA000(0.0f, 60, 8, 255);
+        Rumble_Request(0.0f, 60, 8, 255);
         if (this->actor.speedXZ >= 6.0f) {
             EnHorse_StartGallopingInterruptable(this);
         } else if (this->actor.speedXZ < 3.0f) {
@@ -1383,7 +1386,7 @@ void EnHorse_MountedGallop(EnHorse* this, PlayState* play) {
     this->skin.skelAnime.playSpeed = this->actor.speedXZ * 0.3f;
     if (SkelAnime_Update(&this->skin.skelAnime)) {
         EnHorse_PlayGallopingSound(this);
-        func_800AA000(0, 120, 8, 255);
+        Rumble_Request(0, 120, 8, 255);
         if (EnHorse_PlayerCanMove(this, play) == true) {
             if (stickMag >= 10.0f && Math_CosS(stickAngle) <= -0.5f) {
                 EnHorse_StartBraking(this, play);
@@ -1407,7 +1410,7 @@ void EnHorse_StartRearing(EnHorse* this) {
         Audio_PlaySoundGeneral(NA_SE_EV_HORSE_NEIGH, &this->unk_21C, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
-    func_800AA000(0.0f, 180, 20, 100);
+    Rumble_Request(0.0f, 180, 20, 100);
     Animation_Change(&this->skin.skelAnime, sAnimationHeaders[this->type][this->animationIdx], 1.0f, 0.0f,
                      Animation_GetLastFrame(sAnimationHeaders[this->type][this->animationIdx]), ANIMMODE_ONCE, -3.0f);
 }
@@ -1422,7 +1425,7 @@ void EnHorse_MountedRearing(EnHorse* this, PlayState* play) {
             this->stateFlags |= ENHORSE_LAND2_SOUND;
             Audio_PlaySoundGeneral(NA_SE_EV_HORSE_LAND2, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-            func_800AA000(0, 180, 20, 100);
+            Rumble_Request(0.0f, 180, 20, 100);
         }
     }
 

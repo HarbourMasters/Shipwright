@@ -1,4 +1,7 @@
 #include "z_en_rd.h"
+
+#include "rumble.h"
+
 #include "objects/object_rd/object_rd.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -348,7 +351,8 @@ void func_80AE2C1C(EnRd* this, PlayState* play) {
                     player->actor.freezeTimer = 40;
                     Player_SetAutoLockOnActor(play, &this->actor);
                     GET_PLAYER(play)->autoLockOnActor = &this->actor;
-                    func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
+
+                    Rumble_Request(this->actor.xzDistToPlayer, 255, 20, 150);
                 }
                 this->unk_306 = 0x3C;
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_REDEAD_AIM);
@@ -503,7 +507,7 @@ void func_80AE3454(EnRd* this, PlayState* play) {
             Animation_PlayLoop(&this->skelAnime, &gGibdoRedeadGrabAttackAnim);
             this->unk_304++;
             play->damagePlayer(play, -8);
-            func_800AA000(this->actor.xzDistToPlayer, 0xFF, 1, 0xC);
+            Rumble_Request(this->actor.xzDistToPlayer, 255, 1, 12);
             this->unk_319 = 20;
         case 0:
             Math_SmoothStepToS(&this->unk_30E, 0, 1, 0x5DC, 0);
@@ -537,7 +541,7 @@ void func_80AE3454(EnRd* this, PlayState* play) {
 
             if (this->unk_319 == 0) {
                 play->damagePlayer(play, -8);
-                func_800AA000(this->actor.xzDistToPlayer, 0xF0, 1, 0xC);
+                Rumble_Request(this->actor.xzDistToPlayer, 240, 1, 12);
                 this->unk_319 = 20;
                 Player_PlaySfx(&player->actor, NA_SE_VO_LI_DAMAGE_S + player->ageProperties->unk_92);
             }
@@ -577,7 +581,7 @@ void func_80AE3834(EnRd* this, PlayState* play) {
     if (ABS(temp_v0) < 0x2008) {
         if (!(this->unk_312 & 0x80) && GameInteractor_Should(VB_REDEAD_GIBDO_FREEZE_LINK, true, this)) {
             player->actor.freezeTimer = 60;
-            func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
+            Rumble_Request(this->actor.xzDistToPlayer, 255, 20, 150);
             Player_SetAutoLockOnActor(play, &this->actor);
         }
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_REDEAD_AIM);

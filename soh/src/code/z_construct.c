@@ -573,9 +573,11 @@ void Regs_InitDataImpl(void) {
     VREG(87) = 64;
     VREG(88) = 66;
     VREG(89) = 0;
-    VREG(90) = 126;
-    VREG(91) = 124;
-    VREG(92) = -63;
+    R_GAME_OVER_RUMBLE_STRENGTH = 126;
+    R_GAME_OVER_RUMBLE_DURATION = 124;
+    //! @bug This is eventually cast to a u8 after some scaling in `GameOver_Update`, negative numbers typically
+    //! become large (fast) decrease rates
+    R_GAME_OVER_RUMBLE_DECREASE_RATE = -63;
 }
 
 void Regs_InitData(PlayState* play) {

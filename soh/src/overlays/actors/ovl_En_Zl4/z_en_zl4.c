@@ -5,6 +5,9 @@
  */
 
 #include "z_en_zl4.h"
+
+#include "rumble.h"
+
 #include "objects/object_zl4/object_zl4.h"
 #include "scenes/indoors/nakaniwa/nakaniwa_scene.h"
 #include "soh/OTRGlobals.h"
@@ -922,7 +925,7 @@ s32 EnZl4_CsLookWindow(EnZl4* this, PlayState* play) {
                     play->csCtx.state = CS_STATE_UNSKIPPABLE_INIT;
                 }
             } else {
-                func_800AA000(0.0f, 0xA0, 0xA, 0x28);
+                Rumble_Request(0.0f, 160, 10, 40);
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
                 Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_30);
                 EnZl4_SetCsCameraAngle(play, 11);
