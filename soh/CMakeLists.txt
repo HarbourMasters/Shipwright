@@ -282,6 +282,12 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	endif()
 	set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
 endif()
+
+################################################################################
+# Find/download curl Libs (For fetching twitch messages)
+################################################################################
+find_package(CURL REQUIRED)
+
 ################################################################################
 # Find/download Dr Libs (For custom audio)
 ################################################################################
@@ -630,6 +636,7 @@ endif()
 ################################################################################
 # Dependencies
 ################################################################################
+target_link_libraries(${PROJECT_NAME} PRIVATE CURL::libcurl)
 add_dependencies(${PROJECT_NAME}
     libultraship
 )

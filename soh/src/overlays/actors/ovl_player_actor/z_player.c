@@ -38,6 +38,74 @@
 #include <stdlib.h>
 #include <assert.h>
 
+// region - New for checking twitch queue
+#include <curl/curl.h>
+
+struct QueueCheckResponse {
+    char* data;
+    size_t size;
+};
+
+static s32 sQueueCheckTimer = 0;
+static bool sQueueWasEmpty = true;
+static const s32 QUEUE_CHECK_INTERVAL = 120; // frames
+
+// write HTTP queue response
+static size_t WriteQueueCheckCallback(void *contents, size_t size, size_t nmemb, void *userp) {
+    size_t realsize = size * nmemb;
+    struct QueueCheckResponse *response = (struct QueueCheckResponse *)userp;
+
+    char *ptr = realloc(response->data, response->size + realsize + 1);
+    if (!ptr) {
+        return 0;
+    }
+
+    response->data = ptr;
+    memcpy(&(response->data[response->size]), contents, realsize);
+    response->size += realsize;
+    response->data[response->size] = 0;
+
+    return realsize;
+}
+
+// check message queue is not empty
+static bool CheckQueueNotEmpty() {
+    CURL *curl;
+    CURLcode res;
+    struct QueueCheckResponse response = {0};
+    bool queueNotEmpty = false;
+
+    curl = curl_easy_init();
+    if (curl) {
+        response.data = malloc(1);
+        response.size = 0;
+
+        curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:5001/queueStatus");
+        curl_easy_setopt(curl, CURLOPT_POST, 1L);
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "");
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, 0L); // zero length, just need the response
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteQueueCheckCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&response);
+        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 1L); // 1 second timeout
+        
+        res = curl_easy_perform(curl);
+
+        if (res == CURLE_OK && response.data) {
+            if (strncmp(response.data, "true", 4) == 0) {
+                queueNotEmpty = true;
+            }
+        }
+
+        curl_easy_cleanup(curl);
+        if (response.data) {
+            free(response.data);
+        }
+    }
+
+    return queueNotEmpty;
+}
+// endregion
+
 // Some player animations are played at this reduced speed, for reasons yet unclear.
 // This is called "adjusted" for now.
 #define PLAYER_ANIM_ADJUSTED_SPEED (2.0f / 3.0f)
@@ -343,6 +411,53 @@ void Player_Action_80850AEC(Player* this, PlayState* play);
 void Player_Action_80850C68(Player* this, PlayState* play);
 void Player_Action_80850E84(Player* this, PlayState* play);
 void Player_Action_CsAction(Player* this, PlayState* play);
+
+void Player_CheckQueueAndSetNavi(Player* this, PlayState* play) {
+    // if we're in normal gameplay
+    if (play->csCtx.state != CS_STATE_IDLE || 
+        this->csAction != 0 ||
+        play->transitionTrigger != TRANS_TRIGGER_OFF ||
+        gSaveContext.health == 0) {
+        return;
+    }
+    if (this->naviActor == NULL) {
+        return; // Navi actor doesn't exist
+    }
+    // Check if Navi is already busy talking
+    if (this->naviActor->flags & ACTOR_FLAG_TALK) {
+        return;
+    }
+
+    // make sure the player is in a state where they can talk to Navi
+    if (this->stateFlags1 & (PLAYER_STATE1_IN_WATER | 
+                            PLAYER_STATE1_HANGING_OFF_LEDGE |
+                            PLAYER_STATE1_INPUT_DISABLED |
+                            PLAYER_STATE1_CLIMBING_LEDGE |
+                            PLAYER_STATE1_GETTING_ITEM |
+                            PLAYER_STATE1_TALKING |
+                            PLAYER_STATE1_IN_CUTSCENE |
+                            PLAYER_STATE1_CLIMBING_LADDER)) {
+        return; // player is in a state where they can't talk
+    }
+
+
+    sQueueCheckTimer--;
+    
+    if (sQueueCheckTimer <= 0) {
+        sQueueCheckTimer = QUEUE_CHECK_INTERVAL;
+        
+        bool queueNotEmpty = CheckQueueNotEmpty();
+        
+        // queue has messages -> trigger Navi
+        if (queueNotEmpty) {
+            // check if Navi already has a textID ready to go
+            if (this->naviTextId == 0){
+                this->naviTextId = -0x110; // appears to be an unused Navi textID we can hijack
+                // negative ID to force chatting with Navi
+            }
+        }
+    }
+}
 
 #pragma region[SoH]
 u8 gWalkSpeedToggle1;
@@ -11933,6 +12048,9 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     s32 pad;
 
     sControlInput = input;
+
+    // for twitch chat checking, regular checks during player main loop
+    Player_CheckQueueAndSetNavi(this, play);
 
     if (this->unk_A86 < 0) {
         this->unk_A86++;
