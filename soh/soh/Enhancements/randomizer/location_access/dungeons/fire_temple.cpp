@@ -386,7 +386,7 @@ void RegionTable_Init_FireTemple() {
     }, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER,  []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM, []{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);});}),
+        Entrance(RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM, []{return Here(RR_FIRE_TEMPLE_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);});}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM] = Region("Fire Temple MQ Iron Knuckle Room", SCENE_FIRE_TEMPLE, {
@@ -406,7 +406,7 @@ void RegionTable_Init_FireTemple() {
     }, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_STALFOS_ROOM,       []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_LOWER_FLARE_DANCER, []{return Here(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_LOWER, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE);});}),
+        Entrance(RR_FIRE_TEMPLE_MQ_LOWER_FLARE_DANCER, []{return Here(RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE);});}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_LOWER_FLARE_DANCER] = Region("Fire Temple MQ Lower Flare Dancer", SCENE_FIRE_TEMPLE, {}, {
