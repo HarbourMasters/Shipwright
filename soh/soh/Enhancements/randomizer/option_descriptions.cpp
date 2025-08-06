@@ -476,7 +476,8 @@ void Settings::CreateOptionDescriptions() {
         "Overworld - Only freestanding rupees & hearts that are outside of dungeons.\n"
         "\n"
         "All Items - Shuffle all freestanding rupees & hearts.";
-    mOptionDescriptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES] = "Shuffle fairies in fountain locations.";
+    mOptionDescriptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES] = "Shuffle fairies in fountain locations. "
+        "This includes the sets of fairies found in Ganon's Castle and the Desert Oasis.";
     mOptionDescriptions[RSK_SHUFFLE_STONE_FAIRIES] = "Shuffle fairies from gossip stone locations.";
     mOptionDescriptions[RSK_SHUFFLE_BEAN_FAIRIES] = "Shuffle fairies from magic bean locations.";
     mOptionDescriptions[RSK_SHUFFLE_SONG_FAIRIES] =

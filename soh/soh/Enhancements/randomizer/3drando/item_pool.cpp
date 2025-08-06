@@ -1023,7 +1023,7 @@ void GenerateItemPool() {
 
     // Shuffle Song Fairies
     if (ctx->GetOption(RSK_SHUFFLE_SONG_FAIRIES)) {
-        for (auto rc : Rando::StaticData::GetBeanFairyLocations()) {
+        for (auto rc : Rando::StaticData::GetSongFairyLocations()) {
             AddItemToMainPool(GetJunkItem());
         }
         // 3 Shadow Temple
