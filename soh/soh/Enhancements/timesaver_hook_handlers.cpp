@@ -301,8 +301,8 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 }
                 switch (actor->id) {
                     case ACTOR_OBJ_SWITCH: {
-                        if ((actor->params == 8224 && gPlayState->sceneNum == SCENE_DODONGOS_CAVERN) ||
-                            (actor->params == 6979 && gPlayState->sceneNum == SCENE_WATER_TEMPLE) &&
+                        if (((actor->params == 8224 && gPlayState->sceneNum == SCENE_DODONGOS_CAVERN) ||
+                            (actor->params == 6979 && gPlayState->sceneNum == SCENE_WATER_TEMPLE)) &&
                                 CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
                             break;
                         }
