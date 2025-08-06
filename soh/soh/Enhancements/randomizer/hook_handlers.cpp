@@ -327,7 +327,10 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
                     getItemEntry.modIndex == MOD_RANDOMIZER) &&
                   (getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
                    getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
-                   getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER))))) {
+                   getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER ||
+                   // Treat small keys as junk if Skeleton Key is obtained.
+                   (getItemEntry.getItemCategory == ITEM_CATEGORY_SMALL_KEY &&
+                    Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY))))))) {
             Item_DropCollectible(gPlayState, &spawnPos, ITEM00_SOH_GIVE_ITEM_ENTRY | 0x8000);
         }
     }
