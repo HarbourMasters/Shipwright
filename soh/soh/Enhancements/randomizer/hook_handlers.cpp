@@ -1713,6 +1713,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_GIVE_ITEM_WATER_MEDALLION:
         case VB_GIVE_ITEM_SPIRIT_MEDALLION:
         case VB_GIVE_ITEM_SHADOW_MEDALLION:
+        case VB_CHEST_USE_ICE_EFFECT:
             *should = false;
             break;
         case VB_GIVE_ITEM_SKULL_TOKEN:

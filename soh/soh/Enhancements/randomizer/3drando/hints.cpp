@@ -648,6 +648,9 @@ void CreateStoneHints() {
     if (ctx->GetOption(RSK_SKIP_CHILD_ZELDA)) {
         ctx->GetItemLocation(RC_SONG_FROM_IMPA)->SetHintAccesible();
     }
+    if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT)) {
+        ctx->GetItemLocation(RC_TOT_MASTER_SWORD)->SetHintAccesible();
+    }
 
     // Add 'always' location hints
     std::vector<RandomizerCheck> alwaysHintLocations = {};

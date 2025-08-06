@@ -1125,6 +1125,7 @@ void SaveManager::LoadFile(int fileNum) {
     std::ifstream input(fileName);
 
     try {
+        bool deleteRando = false;
         saveBlock = nlohmann::json::object();
         input >> saveBlock;
         if (!saveBlock.contains("version")) {
@@ -1134,21 +1135,24 @@ void SaveManager::LoadFile(int fileNum) {
         switch (saveBlock["version"].get<int>()) {
             case 1:
                 for (auto& block : saveBlock["sections"].items()) {
+                    bool oldVanilla =
+                        block.value()["data"].empty() || block.value()["data"].contains("aat0") ||
+                        block.value()["data"]["entrances"].empty() ||
+                        SohUtils::IsStringEmpty(saveBlock["sections"]["sohStats"]["data"]["buildVersion"]);
                     std::string sectionName = block.key();
                     if (sectionName == "randomizer") {
                         bool hasStats = saveBlock["sections"].contains("sohStats");
-                        if (block.value()["data"].contains("aat0") || !hasStats) { // Rachael rando data
+                        if (oldVanilla || !hasStats) { // Vanilla "rando" data
                             SohGui::RegisterPopup(
                                 "Loading old file",
                                 "The file in slot " + std::to_string(fileNum + 1) +
-                                    " appears to contain randomizer data, but is a very old format.\n" +
+                                    " appears to contain randomizer data, but is a very old format or is empty.\n" +
                                     "The randomizer data has been removed, and this file will be treated as a vanilla "
-                                    "file.\n" +
+                                    "file.\nIf this was a vanilla file, it still is, and you shouldn't see this "
+                                    "message again.\n" +
                                     "If this was a randomizer file, the file will not work, and should be deleted.");
-                            input.close();
-                            saveMtx.unlock();
-                            SaveFile(fileNum);
-                            return;
+                            deleteRando = true;
+                            continue;
                         }
                         s16 major = saveBlock["sections"]["sohStats"]["data"]["buildVersionMajor"];
                         s16 minor = saveBlock["sections"]["sohStats"]["data"]["buildVersionMinor"];
@@ -1177,7 +1181,6 @@ void SaveManager::LoadFile(int fileNum) {
                                     "    " + newFileName + "\n" +
                                     "If this was not in error, the file should be deleted.");
                             saveMtx.unlock();
-                            SaveFile(fileNum);
                             return;
                         }
                     }
@@ -1215,6 +1218,12 @@ void SaveManager::LoadFile(int fileNum) {
                              GetFileName(fileNum).string());
                 assert(false);
                 break;
+        }
+        input.close();
+        if (deleteRando) {
+            saveBlock["sections"].erase(saveBlock["sections"].find("randomizer"));
+            SaveFile(fileNum);
+            deleteRando = false;
         }
         InitMeta(fileNum);
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
