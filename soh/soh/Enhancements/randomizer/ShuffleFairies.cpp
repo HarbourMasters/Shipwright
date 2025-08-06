@@ -92,6 +92,10 @@ void RegisterShuffleFairies() {
     bool shouldRegister =
         IS_RANDO && (RAND_GET_OPTION(RSK_SHUFFLE_FOUNTAIN_FAIRIES) || RAND_GET_OPTION(RSK_SHUFFLE_STONE_FAIRIES) ||
                      RAND_GET_OPTION(RSK_SHUFFLE_BEAN_FAIRIES) || RAND_GET_OPTION(RSK_SHUFFLE_SONG_FAIRIES));
+    bool shouldRegisterFountain = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_FOUNTAIN_FAIRIES);
+    bool shouldRegisterStone = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_STONE_FAIRIES);
+    bool shouldRegisterBean = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_BEAN_FAIRIES);
+    bool shouldRegisterSong = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SONG_FAIRIES);
 
     // Grant item when picking up fairy.
     COND_VB_SHOULD(VB_FAIRY_HEAL, shouldRegister, {
@@ -108,7 +112,7 @@ void RegisterShuffleFairies() {
     });
 
     // Spawn fairies in fairy fountains
-    COND_VB_SHOULD(VB_SPAWN_FOUNTAIN_FAIRIES, shouldRegister, {
+    COND_VB_SHOULD(VB_SPAWN_FOUNTAIN_FAIRIES, shouldRegisterFountain, {
         Actor* actor = va_arg(args, Actor*);
         bool fairySpawned = false;
         s16 grottoId = (gPlayState->sceneNum == SCENE_FAIRYS_FOUNTAIN) ? Grotto_CurrentGrotto() : 0;
@@ -124,7 +128,7 @@ void RegisterShuffleFairies() {
     });
 
     // Spawn 3 fairies when playing Song of Storms next to a planted bean
-    COND_VB_SHOULD(VB_SPAWN_BEAN_STALK_FAIRIES, shouldRegister, {
+    COND_VB_SHOULD(VB_SPAWN_BEAN_STALK_FAIRIES, shouldRegisterBean, {
         ObjBean* objBean = va_arg(args, ObjBean*);
         bool fairySpawned = false;
         for (s16 index = 0; index < 3; index++) {
@@ -140,7 +144,7 @@ void RegisterShuffleFairies() {
     });
 
     // Spawn a fairy from a ShotSun when playing the right song near it
-    COND_VB_SHOULD(VB_SPAWN_SONG_FAIRY, shouldRegister, {
+    COND_VB_SHOULD(VB_SPAWN_SONG_FAIRY, shouldRegisterSong, {
         ShotSun* shotSun = va_arg(args, ShotSun*);
         if (SpawnFairy(shotSun->actor.world.pos.x, shotSun->actor.world.pos.y, shotSun->actor.world.pos.z,
                        TWO_ACTOR_PARAMS(0x1000, (int32_t)shotSun->actor.world.pos.z), FAIRY_HEAL_BIG)) {
@@ -149,7 +153,7 @@ void RegisterShuffleFairies() {
     });
 
     // Handle playing both misc songs and song of storms in front of a gossip stone.
-    COND_VB_SHOULD(VB_SPAWN_GOSSIP_STONE_FAIRY, shouldRegister, {
+    COND_VB_SHOULD(VB_SPAWN_GOSSIP_STONE_FAIRY, shouldRegisterStone, {
         EnGs* gossipStone = va_arg(args, EnGs*);
         FairyType fairyType = FAIRY_HEAL;
 
