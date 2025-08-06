@@ -941,7 +941,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
             });
     }
 
-    if (actor->id == ACTOR_EN_JJ && !IS_RANDO) {
+    if (actor->id == ACTOR_EN_JJ) {
         enJjUpdateHook =
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
                 Actor* innerActor = static_cast<Actor*>(innerActorRef);
