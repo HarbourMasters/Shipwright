@@ -2222,6 +2222,15 @@ typedef enum {
     // - `s32` limbCount
     // - `*Vec3s` frameTable
     VB_LOAD_PLAYER_ANIMATION_FRAME,
+
+    // #### `result`
+    // ```c
+    // (this->dyna.actor.params >> 5 & 0x7F) == GI_ICE_TRAP && this->actionFunc == EnBox_Open &&
+    // this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100
+    // ```
+    // #### `args`
+    // - `*EnBox`
+    VB_CHEST_USE_ICE_EFFECT,
 } GIVanillaBehavior;
 
 #endif

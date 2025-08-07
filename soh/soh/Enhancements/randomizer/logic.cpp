@@ -2606,6 +2606,7 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
     THCouldFreeDoubleCellCarpenter = false;
     TH_CouldFreeDeadEndCarpenter = false;
     THCouldRescueSlopeCarpenter = false;
+    THRescuedAllCarpenters = false;
     GF_GateOpen = false;
     GtG_GateOpen = false;
     DampesWindmillAccess = false;

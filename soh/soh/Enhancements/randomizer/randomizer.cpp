@@ -519,6 +519,8 @@ bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
                     "The spoiler file located at\n" + std::string(spoilerFileName) +
                         "\nwas made by a version that doesn't match the currently running version.\n" +
                         "Loading for this file has been cancelled.");
+                CVarClear(CVAR_GENERAL("SpoilerLog"));
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
 
             // Update cache

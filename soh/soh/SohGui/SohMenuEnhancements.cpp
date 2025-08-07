@@ -335,7 +335,7 @@ void SohMenu::AddMenuEnhancements() {
             info.options->disabled =
                 IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_JABU_OPEN).Is(RO_JABU_OPEN);
             info.options->disabledTooltip =
-                "This setting is disabled because a randomizer savefile with \"Jabu-Jaby: Open\" is loaded.";
+                "This setting is disabled because a randomizer savefile with \"Jabu-Jabu: Open\" is loaded.";
         })
         .Options(CheckboxOptions().Tooltip("Allow Link to enter Jabu-Jabu without feeding him a fish."));
 
@@ -416,9 +416,12 @@ void SohMenu::AddMenuEnhancements() {
             "Door Switch CS, Water Temple Dragon Switch CS, and the Box Skip One Point in Jabu."));
 
     AddWidget(path, "Text", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Skip Pickup Messages", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Skip Bottle Pickup Messages", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FastBottles"))
+        .Options(CheckboxOptions().Tooltip("Skip Pickup Messages for Bottle Swipes."));
+    AddWidget(path, "Skip Consumable Item Pickup Messages", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FastDrops"))
-        .Options(CheckboxOptions().Tooltip("Skip Pickup Messages for new Consumable Items and Bottle Swipes."));
+        .Options(CheckboxOptions().Tooltip("Skip Pickup Messages for new Consumable Items."));
     AddWidget(path, "Skip Forced Dialog", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"))
         .Options(ComboboxOptions()
