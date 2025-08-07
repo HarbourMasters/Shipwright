@@ -481,7 +481,9 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHUFFLE_STONE_FAIRIES] = "Shuffle fairies from gossip stone locations.";
     mOptionDescriptions[RSK_SHUFFLE_BEAN_FAIRIES] = "Shuffle fairies from magic bean locations.";
     mOptionDescriptions[RSK_SHUFFLE_SONG_FAIRIES] =
-        "Shuffle fairies revealed by songs, excluding stone and bean locations.";
+        "Shuffle fairy spots. These are spots where a big fairy is revealed by a song."
+        "\n"
+        "This excludes gossip stones and magic bean locations.";
     mOptionDescriptions[RSK_SHUFFLE_GRASS] =
         "Grass/Bushes will drop a randomized item the first time they're cut and collected. "
         "Grass/Bushes will have a different appearance when they hold a randomized item.\n"
