@@ -942,7 +942,8 @@ void SohMenu::AddMenuEnhancements() {
             "Fixes a bug where the Gravedigging Tour Heart Piece disappears if the area reloads."));
     AddWidget(path, "Fix Dampé Going Backwards", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixDampeGoingBackwards"))
-        .Options(CheckboxOptions().Tooltip("Fixes Dampé going backwards in certain circumstances when the player is going backwards."));
+        .Options(CheckboxOptions().Tooltip(
+            "Fixes Dampé going backwards in certain circumstances when the player is going backwards."));
     AddWidget(path, "Fix Raised Floor Switches", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixFloorSwitches"))
         .Options(CheckboxOptions().Tooltip(
