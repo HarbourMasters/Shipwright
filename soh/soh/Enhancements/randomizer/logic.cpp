@@ -2365,10 +2365,10 @@ void Logic::SetInLogic(LogicVal logicVal, bool value) {
     inLogic[logicVal] = value;
 }
 
-bool Logic::IsAdultReverseAccessPossible() {
+bool Logic::IsReverseAccessPossible() {
     // If we ever allow dungeon entrances to connect to boss rooms directly in dungeon chains, or for 1 boss door to
     // lead to another dungeons boss door, add RSK_MIX_DUNGEON_ENTRANCES to the final condition
-    // RANDOTODO Check for Age-Locked Boss entrances + Ganon's tower when it is shuffled
+    // RANDOTODO Check for Age-Locked Boss entrances + decoupled + Ganon's tower when it is shuffled
     return !ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) &&
            ((ctx->GetOption(RSK_DECOUPLED_ENTRANCES) &&
              ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL)) ||

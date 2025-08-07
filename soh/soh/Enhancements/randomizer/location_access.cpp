@@ -563,96 +563,6 @@ void Region::ResetVariables() {
     }
 }
 
-/*
- * This logic covers checks that exist in the shared areas of MQ spirit from a glitchless standpoint.
- * This room has Quantum logic that I am currently handling with this function, however this is NOT suitable for
- glitch logic as it relies on specific ages
- * In this chunk there are 3 possibilities for passing a check, but first I have to talk about parallel universes.
-
- * In MQ Spirit key logic, we mostly care about 2 possibilities for how the player can spend keys, creating 2
- Parralel universes
- * In the first universe, the player did not enter spirit as adult until after climbing as child, thus child spends
- keys linearly, only needing 2 to reach statue room.
- * In the second universe, the player went in as adult, possibly out of logic, and started wasting the keys to lock
- child out.
- * These Universes converge when the player has 7 keys (meaning adult can no longer lock child out) and adult is
- known to be able to reach Statue room. This creates "Certain Access", which is tracked seperatly for each age.
- * Child Certain Access is simple, if we have 7 keys and child access, it's Certain Access.
- * Adult Certain Access is also simple, adult is not key locked, so if they make it to a location, it's Certain
- Access.
- * Things get complicated when we handle the overlap of the 2 universes,
- * though an important detail is that if we have Certain Access as either age, we don't need to checked the overlap
- because overlap logic is strictly stricter than either Certain Access.
-
- * In order to track the first universe, the logic allows technical child access with the minimum number of keys,
- and then checks in this function for if we have 7 keys to determine if that is Certain or not.
- * This is for technical reasons, as areas with no access at all will simply not be checked.
- * Normally we would need to do similar shenanigans to track the second universe, however adult must have go through
- statue room to waste keys,
- * so can go back there and get new keys for Child to use if they do, and the navigation logic for shared MQ spirit
- from Statue Room is very simple for Adult.
- * Additionally, we don't need to know if adult can actually reach spirit temple or climb to statue room, because if
- the player can't do that, then universe 2 can't happen anyway,
- * and if the player does so out of logic, they can do it again, as the only consumable used sets a permanent flag.
-
- * The Adult Navigation logic is as such:
- * - Broken Wall room is 6 key locked, because if the player tries to spend 6 keys in a way that would block adults
- access, they would have to give child access instead.
- * - The child side hammer switch for the time travelling chest is 7 key locked for adult
- * - Reaching gauntlets hand is 7 key locked
- * - Going back into big block room is complex, but the only check there is child only so not a concern
- * - Everything else is possible with basic adult movement, or is impossible for child to reach glitchlessly
- * Anything 7 key locked does not need to be checked as shared, as all child access is Certain and because of this
- workaround we don't need to fake Adult access, meaning that is also Certain.
- * All of this combined means that when checking if adult can reach a location in universe 2, we only have to ask if
- it is a 6 key locked location or not.
-
- * Knowing all of this this, we can confirm things are logical in 3 different ways:
- * - If we have Adult Access, we know it is Certain Access, so they can get checks alone.
- * - If we have 7 keys, child has Certain Access as we know they cannot be locked out, so can get checks alone,
- otherwise we check the logical overlap
- * - If Child and Adult can get the check (ignoring actual adult access to the location), and the location is either
- not 6 key locked or we have 6 keys, we can get the check with the overlap
- */
-bool Region::MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAge) {
-    // if we have Certain Access as child, we can check anyAge and if true, resolve a condition with Here as if
-    // adult is here it's also Certain Access
-    if (logic->SmallKeys(RR_SPIRIT_TEMPLE, 7)) {
-        if (anyAge) {
-            return Here(condition);
-        }
-        return condition();
-        // else, if we are here as adult, we have Certain Access from that and don't need special handling for
-        // checking adult
-    } else if (Adult() && logic->IsAdult) {
-        return condition();
-        // if we do not have Certain Access, we need to check the overlap by seeing if we are both here as child and
-        // meet the adult universe's access condition We only need to do it as child, as only child access matters
-        // for this check, as adult access is assumed based on keys
-    } else if (Child() && logic->IsChild && (!IsBrokenWall || logic->SmallKeys(RR_SPIRIT_TEMPLE, 6))) {
-        bool result = false;
-        // store current age variables
-        bool pastAdult = logic->IsAdult;
-        bool pastChild = logic->IsChild;
-
-        // First check if the check is possible as child
-        logic->IsChild = true;
-        logic->IsAdult = false;
-        result = condition();
-        // If so, check again as adult. both have to be true for result to be true
-        if (result) {
-            logic->IsChild = false;
-            logic->IsAdult = true;
-            result = condition();
-        }
-
-        // set back age variables
-        logic->IsChild = pastChild;
-        logic->IsAdult = pastAdult;
-        return result;
-    }
-    return false;
-}
 
 void Region::printAgeTimeAccess() {
     auto message = "Child Day:   " + std::to_string(childDay) +
@@ -699,14 +609,14 @@ bool Here(const RandomizerRegion region, ConditionFn condition) {
     * As we do not know which universe we are in until the player chooses one in-game,
     we must be able to collect the check in all universes
 
-    * When an Age can no longer be kept out by conflicting universes, that age is said to have Certain Access to a
+    * When an Age can no longer be kept out in any universe, that age is said to have Certain Access to a
    region
-    * If both ages have access to a region with a certain number of keys, but there is no Certain Access,
+    * If both ages have potential access to a region with a certain number of keys, but there is no Certain Access,
     * then a check is only in logic if all possible universes can collect the check independently
 
     * The universes converge when the player has all the keys, giving both ages Certain Access everywhere.
 
-    * We must check for these universes manually as we allow technical access with minimum keys for
+    * We must check for these universes manually as we set access vairables to true with minimum keys for
     * technical reasons as otherwise the logic code will never run
 
     * The 1st and 3rd column list how many keys are needed for each age to have Certain Access from the front
@@ -757,7 +667,7 @@ bool SpiritCertainAccess(RandomizerRegion region) {
     if (logic->IsChild) {
         uint8_t keys = curRegionData.childKeys;
         uint8_t revKeys = curRegionData.childRevKeys;
-        bool knownFrontAccess = logic->ForwardsSpiritChild || !logic->IsAdultReverseAccessPossible();
+        bool knownFrontAccess = logic->ForwardsSpiritChild || !logic->IsReverseAccessPossible();
         // If we have enough keys that an age cannot be kept out, we have Certain Access
         // otherwise if we have entered in reverse and can reach from the face, we have Certain Access
         return ((knownFrontAccess && curRegionData.childAccess()) && logic->SmallKeys(RR_SPIRIT_TEMPLE, keys)) ||
@@ -768,7 +678,7 @@ bool SpiritCertainAccess(RandomizerRegion region) {
     } else {
         uint8_t keys = curRegionData.adultKeys;
         uint8_t revKeys = curRegionData.adultRevKeys;
-        bool knownFrontAccess = logic->ForwardsSpiritAdult || !logic->IsAdultReverseAccessPossible();
+        bool knownFrontAccess = logic->ForwardsSpiritAdult || !logic->IsReverseAccessPossible();
         // If we have enough keys that an age cannot be kept out, we have Certain Access
         // otherwise if we have entered in reverse and can reach from the face, we have Certain Access
         return ((knownFrontAccess && curRegionData.adultAccess()) && logic->SmallKeys(RR_SPIRIT_TEMPLE, keys)) ||
@@ -834,14 +744,14 @@ bool SpiritShared(RandomizerRegion region, ConditionFn condition, bool anyAge, R
             // If reverse spirit is also possible, we need to make sure Adult can get it via reverse entry too
             result =
                 (curRegionData.adultAccess() &&
-                 (!logic->IsAdultReverseAccessPossible() || curRegionData.reverseAccess) && condition()) ||
+                 (!logic->IsReverseAccessPossible() || curRegionData.reverseAccess) && condition()) ||
                 (otherRegion != RR_NONE &&
                  (Region::spiritLogicData[otherRegion].adultAccess() &&
-                  (!logic->IsAdultReverseAccessPossible() || Region::spiritLogicData[otherRegion].reverseAccess()) &&
+                  (!logic->IsReverseAccessPossible() || Region::spiritLogicData[otherRegion].reverseAccess()) &&
                   otherCondition())) ||
                 (thirdRegion != RR_NONE &&
                  (Region::spiritLogicData[thirdRegion].adultAccess() &&
-                  (!logic->IsAdultReverseAccessPossible() || Region::spiritLogicData[thirdRegion].reverseAccess()) &&
+                  (!logic->IsReverseAccessPossible() || Region::spiritLogicData[thirdRegion].reverseAccess()) &&
                   thirdCondition()));
         }
     } else if (areaTable[region].Adult() && pastAdult) {
@@ -859,14 +769,14 @@ bool SpiritShared(RandomizerRegion region, ConditionFn condition, bool anyAge, R
             // If reverse spirit is also possible, we need to make sure Child can get it via reverse entry too
             result =
                 (curRegionData.childAccess() &&
-                 (!logic->IsAdultReverseAccessPossible() || curRegionData.reverseAccess()) && condition()) ||
+                 (!logic->IsReverseAccessPossible() || curRegionData.reverseAccess()) && condition()) ||
                 (otherRegion != RR_NONE &&
                  (Region::spiritLogicData[otherRegion].childAccess() &&
-                  (!logic->IsAdultReverseAccessPossible() || Region::spiritLogicData[otherRegion].reverseAccess()) &&
+                  (!logic->IsReverseAccessPossible() || Region::spiritLogicData[otherRegion].reverseAccess()) &&
                   otherCondition())) ||
                 (thirdRegion != RR_NONE &&
                  (Region::spiritLogicData[thirdRegion].childAccess() &&
-                  (!logic->IsAdultReverseAccessPossible() || Region::spiritLogicData[thirdRegion].reverseAccess()) &&
+                  (!logic->IsReverseAccessPossible() || Region::spiritLogicData[thirdRegion].reverseAccess()) &&
                   thirdCondition()));
         }
     }

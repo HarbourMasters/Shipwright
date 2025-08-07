@@ -308,7 +308,7 @@ class Logic {
     static std::map<uint32_t, uint32_t> RandoGetToDungeonScene;
     static std::map<RandomizerGet, uint32_t> RandoGetToEquipFlag;
     static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
-    bool IsAdultReverseAccessPossible();
+    bool IsReverseAccessPossible();
     bool SpiritSunOnFloorToStatue();
     bool SpiritEastToSwitch();
     bool SpiritWestToSkull();

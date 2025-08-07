@@ -234,7 +234,6 @@ class Region {
 
     bool CanPlantBeanCheck() const;
     bool AllAccountedFor() const;
-    bool MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAge = false);
 
     void ResetVariables();
 
