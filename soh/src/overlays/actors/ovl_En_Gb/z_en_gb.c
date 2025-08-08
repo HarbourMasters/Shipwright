@@ -293,15 +293,16 @@ void func_80A2F83C(EnGb* this, PlayState* play) {
                 if (GameInteractor_Should(VB_TALK_TO_POE_COLLECTOR, true, this)) {
                     func_80A2F180(this);
                     this->actionFunc = func_80A2F94C;
-                    break;
-                case EXCH_ITEM_POE:
-                    player->actor.textId = 0x70F6;
-                    this->actionFunc = func_80A2F9C0;
-                    break;
-                case EXCH_ITEM_BIG_POE:
-                    player->actor.textId = 0x70F7;
-                    this->actionFunc = func_80A2FA50;
-                    break;
+                }
+                break;
+            case EXCH_ITEM_POE:
+                player->actor.textId = 0x70F6;
+                this->actionFunc = func_80A2F9C0;
+                break;
+            case EXCH_ITEM_BIG_POE:
+                player->actor.textId = 0x70F7;
+                this->actionFunc = func_80A2FA50;
+                break;
             }
         }
         return;
