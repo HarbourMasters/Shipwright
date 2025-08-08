@@ -1090,12 +1090,33 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = false;
             break;
         }
-        case VB_SELL_POES_TO_POE_COLLECTOR: {
+        case VB_TALK_TO_POE_COLLECTOR: {
             if (!Flags_GetRandomizerInf(RAND_INF_10_BIG_POES) && HIGH_SCORE(HS_POE_POINTS) >= 1000) {
                 EnGb* enGb = va_arg(args, EnGb*);
                 enGb->textId = 0x70F8;
                 Message_ContinueTextbox(gPlayState, enGb->textId);
                 enGb->actionFunc = func_80A2FB40;
+                *should = false;
+            }
+            break;
+        }
+        case VB_CALCULATE_POE_COLLECTOR_SCORE: {
+            if(HIGH_SCORE(HS_POE_POINTS) >= 1000) {
+                if (HIGH_SCORE(HS_POE_POINTS) > 1100) {
+                    HIGH_SCORE(HS_POE_POINTS) = 1100;
+                }
+                EnGb* enGb = va_arg(args, EnGb*);
+                Player* player = GET_PLAYER(gPlayState);
+                if(Flags_GetRandomizerInf(RAND_INF_10_BIG_POES)){
+                    Actor_ProcessTalkRequest(&enGb->dyna.actor, gPlayState);
+                    enGb->actionFunc = func_80A2F83C;
+                }
+                else {
+                    player->exchangeItemId = EXCH_ITEM_NONE;
+                    enGb->textId = 0x70F8;
+                    Message_ContinueTextbox(gPlayState, enGb->textId);
+                    enGb->actionFunc = func_80A2FB40;
+                }
                 *should = false;
             }
             break;

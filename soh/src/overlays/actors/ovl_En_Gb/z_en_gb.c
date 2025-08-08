@@ -288,9 +288,9 @@ void func_80A2F83C(EnGb* this, PlayState* play) {
         }
     }
     if (Actor_ProcessTalkRequest(&this->dyna.actor, play)) {
-        if (GameInteractor_Should(VB_SELL_POES_TO_POE_COLLECTOR, true, this)) {
-            switch (func_8002F368(play)) {
-                case EXCH_ITEM_NONE:
+        switch (func_8002F368(play)) {
+            case EXCH_ITEM_NONE:
+                if (GameInteractor_Should(VB_TALK_TO_POE_COLLECTOR, true, this)) {
                     func_80A2F180(this);
                     this->actionFunc = func_80A2F94C;
                     break;
@@ -342,18 +342,19 @@ void func_80A2FA50(EnGb* this, PlayState* play) {
         Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
         Rupees_ChangeBy(50);
         HIGH_SCORE(HS_POE_POINTS) += 100;
-        if (HIGH_SCORE(HS_POE_POINTS) != 1000) {
-            if (HIGH_SCORE(HS_POE_POINTS) > 1100) {
-                HIGH_SCORE(HS_POE_POINTS) = 1100;
+        if(GameInteractor_Should(VB_CALCULATE_POE_COLLECTOR_SCORE, true, this)) {
+            if (HIGH_SCORE(HS_POE_POINTS) != 1000) {
+                if (HIGH_SCORE(HS_POE_POINTS) > 1100) {
+                    HIGH_SCORE(HS_POE_POINTS) = 1100;
+                }
+                this->actionFunc = func_80A2F83C;
+            } else {
+                Player* player = GET_PLAYER(play);
+                player->exchangeItemId = EXCH_ITEM_NONE;
+                this->textId = 0x70F8;
+                Message_ContinueTextbox(play, this->textId);
+                this->actionFunc = func_80A2FB40;
             }
-            this->actionFunc = func_80A2F83C;
-        } else {
-            Player* player = GET_PLAYER(play);
-
-            player->exchangeItemId = EXCH_ITEM_NONE;
-            this->textId = 0x70F8;
-            Message_ContinueTextbox(play, this->textId);
-            this->actionFunc = func_80A2FB40;
         }
     }
 }

@@ -1820,7 +1820,15 @@ typedef enum {
     // ```
     // #### `args`
     // - `*EnGb`
-    VB_SELL_POES_TO_POE_COLLECTOR,
+    VB_TALK_TO_POE_COLLECTOR,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnGb`
+    VB_CALCULATE_POE_COLLECTOR_SCORE,
 
     // #### `result`
     // ```c
