@@ -305,11 +305,11 @@ void func_80A2F83C(EnGb* this, PlayState* play) {
                 break;
             }
         }
-        return;
-    }
+    
     if (this->dyna.actor.xzDistToPlayer < 100.0f) {
         func_8002F298(&this->dyna.actor, play, 100.0f, EXCH_ITEM_POE);
     }
+    return;
 }
 
 void func_80A2F94C(EnGb* this, PlayState* play) {
