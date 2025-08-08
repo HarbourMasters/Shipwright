@@ -303,9 +303,9 @@ void func_80A2F83C(EnGb* this, PlayState* play) {
                 player->actor.textId = 0x70F7;
                 this->actionFunc = func_80A2FA50;
                 break;
-            }
         }
-    
+    }
+
     if (this->dyna.actor.xzDistToPlayer < 100.0f) {
         func_8002F298(&this->dyna.actor, play, 100.0f, EXCH_ITEM_POE);
     }
@@ -343,7 +343,7 @@ void func_80A2FA50(EnGb* this, PlayState* play) {
         Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
         Rupees_ChangeBy(50);
         HIGH_SCORE(HS_POE_POINTS) += 100;
-        if(GameInteractor_Should(VB_CALCULATE_POE_COLLECTOR_SCORE, true, this)) {
+        if (GameInteractor_Should(VB_CALCULATE_POE_COLLECTOR_SCORE, true, this)) {
             if (HIGH_SCORE(HS_POE_POINTS) != 1000) {
                 if (HIGH_SCORE(HS_POE_POINTS) > 1100) {
                     HIGH_SCORE(HS_POE_POINTS) = 1100;
