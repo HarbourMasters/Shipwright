@@ -7,6 +7,7 @@ set(CMAKE_C_STANDARD 23 CACHE STRING "The C standard to use")
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
 project(Ship VERSION 9.0.5 LANGUAGES C CXX)
+link_directories(/opt/homebrew/lib)
 include(CMake/soh-cvars.cmake)
 include(CMake/lus-cvars.cmake)
 
