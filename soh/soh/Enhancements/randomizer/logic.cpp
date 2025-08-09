@@ -2228,7 +2228,7 @@ const std::vector<uint8_t>& GetDungeonSmallKeyDoors(SceneID sceneId) {
             }
         } else if (transitionActor.id == ACTOR_DOOR_SHUTTER) {
             uint8_t doorType = (transitionActor.params >> 7) & 15;
-            if (doorType == SHUTTER_BACK_LOCKED || doorType == SHUTTER_BOSS || doorType == SHUTTER_KEY_LOCKED) {
+            if (doorType == SHUTTER_KEY_LOCKED) {
                 dungeonSmallKeyDoors[key].emplace_back(transitionActor.params & 0x3F);
             }
         }
