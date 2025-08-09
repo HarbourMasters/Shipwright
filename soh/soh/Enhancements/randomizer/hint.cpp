@@ -590,7 +590,7 @@ CustomMessage Hint::GetGanonBossKeyText() {
     auto ctx = Rando::Context::GetInstance();
     CustomMessage ganonBossKeyMessage;
 
-    if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
+    if (ctx->GetOption(RSK_TRIFORCE_HUNT).IsNot(RO_TRIFORCE_HUNT_OFF)) {
         return StaticData::hintTextTable[RHT_GANON_BK_TRIFORCE_HINT].GetHintMessage();
     }
 

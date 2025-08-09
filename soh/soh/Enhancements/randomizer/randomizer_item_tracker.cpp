@@ -714,7 +714,8 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
     } else if (item.id == RG_TRIFORCE_PIECE && IS_RANDO &&
-               OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) && IsValidSaveFile()) {
+               (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) != RO_TRIFORCE_HUNT_OFF) &&
+               IsValidSaveFile()) {
         std::string currentString = "";
         std::string requiredString = "";
         std::string maxString = "";
@@ -833,7 +834,8 @@ void DrawItem(ItemTrackerItem item) {
             break;
         case RG_TRIFORCE_PIECE:
             actualItemId = item.id;
-            hasItem = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT);
+            hasItem = IS_RANDO && (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) !=
+                                   RO_TRIFORCE_HUNT_OFF);
             itemName = "Triforce Piece";
             break;
         case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:

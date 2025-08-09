@@ -404,10 +404,10 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_BOMBCHU_BAG, "Bombchu Bag", {"None", "Single Bag", "Progressive Bags"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("BombchuBag"), mOptionDescriptions[RSK_BOMBCHU_BAG], WIDGET_CVAR_COMBOBOX, RO_BOMBCHU_BAG_NONE);
     OPT_U8(RSK_ENABLE_BOMBCHU_DROPS, "Bombchu Drops", {"No", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("EnableBombchuDrops"), mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS], WIDGET_CVAR_COMBOBOX, RO_AMMO_DROPS_ON);
     // TODO: AmmoDrops and/or HeartDropRefill, combine with/separate Ammo Drops from Bombchu Drops?
-    OPT_BOOL(RSK_TRIFORCE_HUNT, "Triforce Hunt", CVAR_RANDOMIZER_SETTING("TriforceHunt"), mOptionDescriptions[RSK_TRIFORCE_HUNT], IMFLAG_NONE);
+    OPT_U8(RSK_TRIFORCE_HUNT, "Triforce Hunt", {"Off", "Win", "Ganon's Boss Key"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("TriforceHunt"), mOptionDescriptions[RSK_TRIFORCE_HUNT]);
     OPT_CALLBACK(RSK_TRIFORCE_HUNT, {
-        // Remove the pieces required/total sliders and add a separator after Tirforce Hunt if Triforce Hunt is off
-        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("TriforceHunt"), RO_GENERIC_OFF) == RO_GENERIC_OFF) {
+        // Remove the pieces required/total sliders and add a separator after Triforce Hunt if Triforce Hunt is off
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("TriforceHunt"), RO_TRIFORCE_HUNT_OFF) == RO_TRIFORCE_HUNT_OFF) {
             mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED].Hide();
             mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL].Hide();
             mOptions[RSK_GANONS_BOSS_KEY].Enable();

@@ -124,10 +124,11 @@ void Settings::CreateOptionDescriptions() {
         "set to either MQ or Random here, you will have fewer MQ Dungeons than the number you "
         "set.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT] =
-        "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n\n"
-        "When the required amount of pieces have been found, the game is saved and Ganon's Boss key is given "
-        "to you when you load back into the game if you desire to beat Ganon afterwards.\n\n"
-        "Keep in mind Ganon might not be logically beatable when \"All Locations Reachable\" is turned off.";
+        "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n"
+        "\n"
+        "If set to Win: the game is saved and the credits roll, though you can load back in to receive Ganon's "
+        "Castle Boss Key. Keep in mind that Ganon might not be logically reachable when \"All Locations Reachable\" "
+        "is disabled.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL] =
         "The amount of Triforce pieces that will be placed in the world. "
         "Keep in mind seed generation can fail if more pieces are placed than there are junk items in the item pool.";

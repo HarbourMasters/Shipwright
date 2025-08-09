@@ -5728,18 +5728,22 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected++;
             GameInteractor_SetTriforceHuntPieceGiven(true);
 
-            // Teleport to credits when goal is reached.
+            // Give Ganon's Boss Key and teleport to credits if set to Win when goal is reached.
             if (gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected ==
                 (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
-                    static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
-                gSaveContext.ship.stats.gameComplete = 1;
                 Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
-                Play_PerformSave(play);
-                Notification::Emit({
-                    .message = "Game autosaved",
-                });
-                GameInteractor_SetTriforceHuntCreditsWarpActive(true);
+
+                if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) ==
+                    RO_TRIFORCE_HUNT_WIN) {
+                    gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
+                        static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+                    gSaveContext.ship.stats.gameComplete = 1;
+                    Play_PerformSave(play);
+                    Notification::Emit({
+                        .message = "Game autosaved",
+                    });
+                    GameInteractor_SetTriforceHuntCreditsWarpActive(true);
+                }
             }
 
             break;

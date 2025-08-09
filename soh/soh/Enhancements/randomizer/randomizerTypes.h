@@ -6821,6 +6821,13 @@ typedef enum {
     RO_MQ_DUNGEONS_SELECTION,
 } RandoOptionMQDungeons;
 
+// Triforce Hunt settings (off, win, Ganon's Boss Key)
+typedef enum {
+    RO_TRIFORCE_HUNT_OFF,
+    RO_TRIFORCE_HUNT_WIN,
+    RO_TRIFORCE_HUNT_GBK,
+} RandoOptionTriforceHunt;
+
 typedef enum {
     RO_LOCATION_INCLUDE,
     RO_LOCATION_EXCLUDE,
