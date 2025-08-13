@@ -2239,6 +2239,12 @@ typedef enum {
     // #### `args`
     // - `*PlayState`
     VB_SHOW_GAMEPLAY_TIMER,
+    // (this->dyna.actor.params >> 5 & 0x7F) == GI_ICE_TRAP && this->actionFunc == EnBox_Open &&
+    // this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100
+    // ```
+    // #### `args`
+    // - `*EnBox`
+    VB_CHEST_USE_ICE_EFFECT,
 } GIVanillaBehavior;
 
 #endif
