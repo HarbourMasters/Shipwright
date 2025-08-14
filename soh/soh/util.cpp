@@ -434,10 +434,10 @@ std::vector<std::string> itemNamesFra = {
     "Graines Mojo (30)",
     "Missile Teigneux (5)",
     "Missile Teigneux (20)",
-    "Amélioration Bâtons Mojo (20)",
-    "Amélioration Bâtons Mojo (30)",
-    "Amélioration Noix Mojo (30)",
-    "Amélioration Noix Mojo (40)",
+    "Amélioration des Bâtons Mojo (20)",
+    "Amélioration des Bâtons Mojo (30)",
+    "Amélioration des Noix Mojo (30)",
+    "Amélioration des Noix Mojo (40)",
 };
 
 std::vector<std::string> itemNamesGer = {
