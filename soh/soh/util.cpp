@@ -599,8 +599,6 @@ std::vector<std::string> itemNamesGer = {
     "Deku-Nuss-Erweiterung (40)",
 };
 
-
-
 std::vector<std::string> questItemNamesEng = {
     "Forest Medallion",   "Fire Medallion",   "Water Medallion", "Spirit Medallion",     "Shadow Medallion",
     "Light Medallion",    "Minuet of Forest", "Bolero of Fire",  "Serenade of Water",    "Requiem of Spirit",
@@ -626,7 +624,6 @@ std::vector<std::string> questItemNamesGer = {
     "Hymne der Zeit",       "Sturm-Lied",          "Kokiri-Smaragd",        "Goronen-Rubin",
     "Zora-Saphir",          "Stein des Wissens",   "Gerudo-Pass",           "Goldene Skulltula-Marke",
 };
-
 
 std::array<std::string, RA_MAX> rcareaPrefixes = {
     "KF",
