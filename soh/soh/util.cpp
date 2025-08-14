@@ -618,6 +618,15 @@ std::vector<std::string> questItemNamesFra = {
     "Saphir Zora",           "Pierre de Souffrance",    "Carte Gerudo",        "Symbole de Skulltula d'Or",
 };
 
+std::vector<std::string> questItemNamesGer = {
+    "Amulett des Waldes",   "Amulett des Feuers",  "Amulett des Wassers",   "Amulett der Geister",
+    "Amulett der Schatten", "Amulett des Lichts",  "Menuett des Waldes",    "Bolero des Feuers",
+    "Serenade des Wassers", "Requiem der Geister", "Nocturne der Schatten", "Präludium des Lichts",
+    "Zeldas Wiegenlied",    "Eponas Lied",         "Sarias Lied",           "Sonnenlied",
+    "Hymne der Zeit",       "Sturm-Lied",          "Kokiri-Smaragd",        "Goronen-Rubin",
+    "Zora-Saphir",          "Stein des Wissens",   "Gerudo-Pass",           "Goldene Skulltula-Marke",
+};
+
 
 std::array<std::string, RA_MAX> rcareaPrefixes = {
     "KF",
@@ -685,17 +694,32 @@ const std::string& SohUtils::GetItemName(int32_t item) {
         assert(false);
         return "";
     }
+
     return (*currentItemNames)[item];
 }
 
 const std::string& SohUtils::GetQuestItemName(int32_t item) {
+    const std::vector<std::string>* currentQuestItemNames = nullptr;
+
+    switch (gSaveContext.language) {
+        case LANGUAGE_FRA:
+            currentQuestItemNames = &questItemNamesFra;
+            break;
+        case LANGUAGE_GER:
+            currentQuestItemNames = &questItemNamesGer;
+            break;
+        case LANGUAGE_ENG:
+        default:
+            currentQuestItemNames = &questItemNamesEng;
+            break;
+    }
     if (item > questItemNamesEng.size()) {
         SPDLOG_WARN("Passed invalid quest item id to SohUtils::GetQuestItemName: ({})", item);
         assert(false);
         return "";
     }
 
-    return questItemNamesEng[item];
+    return (*currentQuestItemNames)[item];
 }
 
 const std::string& SohUtils::GetRandomizerCheckAreaPrefix(int32_t rcarea) {
