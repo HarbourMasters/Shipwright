@@ -418,7 +418,7 @@ std::vector<std::string> itemNamesFra = {
     "Rubis Bleu",
     "Rubis Rouge",
     "Rubis Pourpre",
-    "Rubis Argenté",
+    "Énorme Rubis",
     "[Retiré]",
     "Bâtons Mojo (5)",
     "Bâtons Mojo (10)",
