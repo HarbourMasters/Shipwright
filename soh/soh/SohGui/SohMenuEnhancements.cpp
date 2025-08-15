@@ -56,7 +56,9 @@ static const std::unordered_map<int32_t, const char*> chestStyleMatchesContentsO
 static const std::unordered_map<int32_t, const char*> timeTravelOptions = {
     { TIME_TRAVEL_DISABLED, "Disabled" },
     { TIME_TRAVEL_OOT, "Ocarina of Time" },
+    { TIME_TRAVEL_OOT_MS, "Ocarina of Time + Master Sword" },
     { TIME_TRAVEL_ANY, "Any Ocarina" },
+    { TIME_TRAVEL_ANY_MS, "Any Ocarina + Master Sword" },
 };
 
 static const std::unordered_map<int32_t, const char*> sleepingWaterfallOptions = {
@@ -335,7 +337,7 @@ void SohMenu::AddMenuEnhancements() {
             info.options->disabled =
                 IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_JABU_OPEN).Is(RO_JABU_OPEN);
             info.options->disabledTooltip =
-                "This setting is disabled because a randomizer savefile with \"Jabu-Jaby: Open\" is loaded.";
+                "This setting is disabled because a randomizer savefile with \"Jabu-Jabu: Open\" is loaded.";
         })
         .Options(CheckboxOptions().Tooltip("Allow Link to enter Jabu-Jabu without feeding him a fish."));
 
@@ -416,9 +418,12 @@ void SohMenu::AddMenuEnhancements() {
             "Door Switch CS, Water Temple Dragon Switch CS, and the Box Skip One Point in Jabu."));
 
     AddWidget(path, "Text", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Skip Pickup Messages", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Skip Bottle Pickup Messages", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FastBottles"))
+        .Options(CheckboxOptions().Tooltip("Skip Pickup Messages for Bottle Swipes."));
+    AddWidget(path, "Skip Consumable Item Pickup Messages", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FastDrops"))
-        .Options(CheckboxOptions().Tooltip("Skip Pickup Messages for new Consumable Items and Bottle Swipes."));
+        .Options(CheckboxOptions().Tooltip("Skip Pickup Messages for new Consumable Items."));
     AddWidget(path, "Skip Forced Dialog", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"))
         .Options(ComboboxOptions()
@@ -780,9 +785,9 @@ void SohMenu::AddMenuEnhancements() {
                      .Tooltip("Allows Link to freely change age by playing the Song of Time.\n"
                               "Time Blocks can still be used properly.\n\n"
                               "Requirements:\n"
-                              " - Obtained the Ocarina of Time (depends on selection)\n"
                               " - Obtained the Song of Time\n"
-                              " - Obtained the Master Sword\n"
+                              " - Obtained the Ocarina of Time (depends on selection)\n"
+                              " - Obtained the Master Sword (depends on selection)\n"
                               " - Not within range of a Time Block\n"
                               " - Not within range of Ocarina Playing spots"));
 

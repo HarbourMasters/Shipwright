@@ -449,7 +449,8 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             result.currentCapacity =
                 IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) ? 0 : CUR_CAPACITY(UPG_WALLET);
             result.maxCapacity =
-                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET) ? 999 : 500;
+                IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET) ? 999
+                                                                                                               : 500;
             result.currentAmmo = gSaveContext.rupees;
             break;
         case ITEM_BOMBCHU:
@@ -502,7 +503,28 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                     result.maxCapacity = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
                     break;
                 case SCENE_THIEVES_HIDEOUT:
-                    result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
+                    if (IS_RANDO) {
+                        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS)) {
+                            case RO_GF_CARPENTERS_NORMAL:
+                                result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
+                                break;
+                            case RO_GF_CARPENTERS_FAST:
+                                result.maxCapacity = 1;
+                                break;
+                            case RO_GF_CARPENTERS_FREE:
+                                result.maxCapacity = 0;
+                                break;
+                            default:
+                                result.maxCapacity = 0;
+                                SPDLOG_ERROR(
+                                    "Invalid value for RSK_GERUDO_FORTRESS: " +
+                                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS));
+                                assert(false);
+                                break;
+                        }
+                    } else {
+                        result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
+                    }
                     break;
                 case SCENE_INSIDE_GANONS_CASTLE:
                     result.maxCapacity = GANONS_CASTLE_SMALL_KEY_MAX;
