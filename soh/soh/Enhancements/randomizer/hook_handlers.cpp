@@ -1,4 +1,4 @@
-#include <libultraship/bridge.h>
+﻿#include <libultraship/bridge.h>
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -1033,7 +1033,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                             message = "Vous obtenez: ";
                             break;
                         case LANGUAGE_GER:
-                            message = "Du hast: ";
+                            message = "Du erhältst: ";
                             break;
                         case LANGUAGE_ENG:
                         default:
@@ -1058,7 +1058,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                                            .french;
                             break;
                         case LANGUAGE_GER:
-                            message = "Du hast: ";
+                            message = "Du erhältst: ";
                             itemName = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
                                            .GetName()
                                            .german;
