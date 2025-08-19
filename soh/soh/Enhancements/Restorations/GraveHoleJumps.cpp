@@ -13,7 +13,7 @@
 #define GRAVEYARD_SCENE_FILEPATH "scenes/shared/spot02_scene/spot02_scene"
 #define CUSTOM_SURFACE_TYPE 32
 
-const static std::vector<std::pair<std::pair<u16, u16>, std::pair<u16, u16>>> graveyardGeometryPatches = {
+const static std::array<std::pair<std::pair<u16, u16>, std::pair<u16, u16>>, 6> graveyardGeometryPatches = { {
     // { { startPolygon, endPolygon }, { originalSurfaceType, patchedSurfaceType } }
     { { 487, 509 }, { 20, CUSTOM_SURFACE_TYPE } }, // Floor around graves
     { { 651, 658 }, { 20, CUSTOM_SURFACE_TYPE } }, // Floor around Royal Family Tomb
@@ -21,7 +21,7 @@ const static std::vector<std::pair<std::pair<u16, u16>, std::pair<u16, u16>>> gr
     { { 623, 630 }, { 0, 15 } },                   // Grave ledges (Redead)
     { { 633, 640 }, { 0, 15 } },                   // Grave ledges (Dampe)
     { { 643, 650 }, { 0, 15 } },                   // Grave ledges (Royal Family)
-};
+} };
 
 CollisionHeader* getGraveyardCollisionHeader() {
     /*
@@ -46,9 +46,8 @@ CollisionHeader* getGraveyardCollisionHeader() {
      * into graves. NTSC 1.0's graveyard has 31 surface types, while later versions have 32. The contents of the lists
      * are shifted somewhat between versions, so to be safe we just create an extra slot that is not in any version.
      */
-    size_t surfaceTypeListSize = sizeof(SurfaceType) * 33;
-    SurfaceType* newSurfaceTypes = (SurfaceType*)malloc(surfaceTypeListSize);
-    memcpy(newSurfaceTypes, graveyardColHeader->surfaceTypeList, surfaceTypeListSize);
+    SurfaceType newSurfaceTypes[33];
+    memcpy(newSurfaceTypes, graveyardColHeader->surfaceTypeList, sizeof(SurfaceType) * 33);
     newSurfaceTypes[CUSTOM_SURFACE_TYPE].data[0] = 0x24000004;
     newSurfaceTypes[CUSTOM_SURFACE_TYPE].data[1] = 0xFC8;
     graveyardColHeader->surfaceTypeList = newSurfaceTypes;
