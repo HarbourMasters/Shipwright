@@ -1161,6 +1161,10 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("NGCKaleidoSwitcher"))
         .Options(CheckboxOptions().Tooltip(
             "Makes L and R switch pages like on the GameCube. Z opens the Debug Menu instead."));
+    AddWidget(path, "Wide Door Ranges", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("WideShutterDoorRange"))
+        .Options(CheckboxOptions().Tooltip("Restores the wider range of certain shutter doors from NTSC 1.0.\n"
+                                           "Notably affects Jabu-Jabu and boss doors."));
 
     // Difficulty Options
     path.sidebarName = "Difficulty";
