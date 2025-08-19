@@ -46,7 +46,7 @@ CollisionHeader* getGraveyardCollisionHeader() {
      * into graves. NTSC 1.0's graveyard has 31 surface types, while later versions have 32. The contents of the lists
      * are shifted somewhat between versions, so to be safe we just create an extra slot that is not in any version.
      */
-    SurfaceType newSurfaceTypes[33];
+    static SurfaceType newSurfaceTypes[33];
     memcpy(newSurfaceTypes, graveyardColHeader->surfaceTypeList, sizeof(SurfaceType) * 33);
     newSurfaceTypes[CUSTOM_SURFACE_TYPE].data[0] = 0x24000004;
     newSurfaceTypes[CUSTOM_SURFACE_TYPE].data[1] = 0xFC8;
