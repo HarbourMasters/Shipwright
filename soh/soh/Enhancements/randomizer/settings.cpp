@@ -2515,10 +2515,10 @@ void Settings::UpdateOptionProperties() {
             "setting where you present the loach to the fishing pond owner.");
     }
 
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 7) == 0) {
-        mOptions[RSK_CHICKENS_HINT].Disable("Anju will just give you the item instead with 0 chickens.");
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 10) == 0) {
+        mOptions[RSK_BIG_POES_HINT].Disable("Poe Collector will just give you the item instead with 0 big poes.");
     } else {
-        mOptions[RSK_CHICKENS_HINT].Enable();
+        mOptions[RSK_BIG_POES_HINT].Enable();
     }
 }
 

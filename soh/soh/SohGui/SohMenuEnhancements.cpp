@@ -468,7 +468,7 @@ void SohMenu::AddMenuEnhancements() {
         .Options(IntSliderOptions().Min(0).Max(5).DefaultValue(0).Format("+%d"));
     AddWidget(path, "Crawl Speed %dx", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("CrawlSpeed"))
-        .Options(IntSliderOptions().Min(1).Max(4).DefaultValue(1).Format("%dx"));
+        .Options(IntSliderOptions().Min(1).Max(5).DefaultValue(1).Format("%dx"));
     AddWidget(path, "Exclude Glitch-Aiding Crawlspaces", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("GlitchAidingCrawlspaces"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 0) == 1; })
@@ -942,6 +942,10 @@ void SohMenu::AddMenuEnhancements() {
         })
         .Options(CheckboxOptions().Tooltip(
             "Fixes a bug where the Gravedigging Tour Heart Piece disappears if the area reloads."));
+    AddWidget(path, "Fix Dampé Going Backwards", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FixDampeGoingBackwards"))
+        .Options(CheckboxOptions().Tooltip(
+            "Fixes Dampé going backwards in certain circumstances when the player is going backwards."));
     AddWidget(path, "Fix Raised Floor Switches", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixFloorSwitches"))
         .Options(CheckboxOptions().Tooltip(
@@ -1165,6 +1169,10 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("WideShutterDoorRange"))
         .Options(CheckboxOptions().Tooltip("Restores the wider range of certain shutter doors from NTSC 1.0.\n"
                                            "Notably affects Jabu-Jabu and boss doors."));
+    AddWidget(path, "Grave Hole Jumps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("GraveHoles"))
+        .Options(CheckboxOptions().Tooltip(
+            "Restores NTSC 1.0 behavior where Link jumps over grave holes and grabs the ledges."));
 
     // Difficulty Options
     path.sidebarName = "Difficulty";

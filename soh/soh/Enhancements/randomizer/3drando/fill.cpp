@@ -685,9 +685,9 @@ void LookForExternalArea(Region* currentRegion, std::set<Region*>& alreadyChecke
 
 void SetAreas() {
     auto ctx = Rando::Context::GetInstance();
-    // RANDOTODO give entrances an enum like RandomizerCheck, the give them all areas here,
-    // then use those areas to not need to recursivly find ItemLocation areas when an identifying entrance's area
-    for (int regionType = 0; regionType < RR_MARKER_AREAS_END; regionType++) {
+    // RANDOTODO give entrances an enum like RandomizerCheck, then give them all areas here,
+    // then use those areas to not need to recursively find ItemLocation areas when identifying entrance's area
+    for (int regionType = 0; regionType < RR_MAX; regionType++) {
         Region* region = &areaTable[regionType];
         std::set<RandomizerArea> areas = region->GetAllAreas();
         std::set<Region*> regionsToSet = { region };

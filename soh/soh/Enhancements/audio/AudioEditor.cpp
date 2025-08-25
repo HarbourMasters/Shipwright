@@ -468,8 +468,17 @@ void AudioEditorRegisterOnSceneInitHook() {
     });
 }
 
+void AudioEditorRegisterOnGenerationCompletionHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGenerationCompletion>([]() {
+        if (CVarGetInteger(CVAR_AUDIO("RandomizeAllOnRandoGen"), 0)) {
+            AudioEditor_RandomizeAll();
+        }
+    });
+}
+
 void AudioEditor::InitElement() {
     AudioEditorRegisterOnSceneInitHook();
+    AudioEditorRegisterOnGenerationCompletionHook();
 }
 
 void AudioEditor::DrawElement() {
@@ -573,6 +582,12 @@ void AudioEditor::DrawElement() {
                         .Color(THEME_COLOR)
                         .Tooltip(
                             "Enables randomizing all unlocked music and sound effects when you enter a new scene."));
+                UIWidgets::CVarCheckbox("Randomize All Music and Sound Effects on Randomizer Generation",
+                                        CVAR_AUDIO("RandomizeAllOnRandoGen"),
+                                        UIWidgets::CheckboxOptions()
+                                            .Color(THEME_COLOR)
+                                            .Tooltip("Enables randomizing all unlocked music and sound effects when "
+                                                     "you generate a new randomizer."));
                 UIWidgets::CVarCheckbox(
                     "Lower Octaves of Unplayable High Notes", CVAR_AUDIO("ExperimentalOctaveDrop"),
                     UIWidgets::CheckboxOptions()

@@ -35,14 +35,14 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_CENTRAL_MAZE] = Region("Gerudo Training Ground Central Maze", SCENE_GERUDO_TRAINING_GROUND, {}, {
         //Locations
-        LOCATION(RC_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST,   logic->SmallKeys(RR_GERUDO_TRAINING_GROUND, 3) && (ctx->GetTrickOption(RT_LENS_GTG) || logic->CanUse(RG_LENS_OF_TRUTH))),
-        LOCATION(RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FIRST_CHEST,  logic->SmallKeys(RR_GERUDO_TRAINING_GROUND, 4)),
-        LOCATION(RC_GERUDO_TRAINING_GROUND_MAZE_PATH_SECOND_CHEST, logic->SmallKeys(RR_GERUDO_TRAINING_GROUND, 6)),
-        LOCATION(RC_GERUDO_TRAINING_GROUND_MAZE_PATH_THIRD_CHEST,  logic->SmallKeys(RR_GERUDO_TRAINING_GROUND, 7)),
-        LOCATION(RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FINAL_CHEST,  logic->SmallKeys(RR_GERUDO_TRAINING_GROUND, 9)),
+        LOCATION(RC_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST,   logic->SmallKeys(SCENE_GERUDO_TRAINING_GROUND, 3) && (ctx->GetTrickOption(RT_LENS_GTG) || logic->CanUse(RG_LENS_OF_TRUTH))),
+        LOCATION(RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FIRST_CHEST,  logic->SmallKeys(SCENE_GERUDO_TRAINING_GROUND, 4)),
+        LOCATION(RC_GERUDO_TRAINING_GROUND_MAZE_PATH_SECOND_CHEST, logic->SmallKeys(SCENE_GERUDO_TRAINING_GROUND, 6)),
+        LOCATION(RC_GERUDO_TRAINING_GROUND_MAZE_PATH_THIRD_CHEST,  logic->SmallKeys(SCENE_GERUDO_TRAINING_GROUND, 7)),
+        LOCATION(RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FINAL_CHEST,  logic->SmallKeys(SCENE_GERUDO_TRAINING_GROUND, 9)),
     }, {
         //Exits
-        Entrance(RR_GERUDO_TRAINING_GROUND_CENTRAL_MAZE_RIGHT, []{return logic->SmallKeys(RR_GERUDO_TRAINING_GROUND, 9);}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_CENTRAL_MAZE_RIGHT, []{return logic->SmallKeys(SCENE_GERUDO_TRAINING_GROUND, 9);}),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_CENTRAL_MAZE_RIGHT] = Region("Gerudo Training Ground Central Maze Right", SCENE_GERUDO_TRAINING_GROUND, {}, {
@@ -126,7 +126,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_ENTRYWAY,            []{return true;}),
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_HIDDEN_ROOM, []{return ctx->GetTrickOption(RT_LENS_GTG_MQ) || logic->CanUse(RG_LENS_OF_TRUTH);}),
-        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_FIRST_LOCK,  []{return logic->SmallKeys(RR_GERUDO_TRAINING_GROUND, 1);}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_FIRST_LOCK,  []{return logic->SmallKeys(SCENE_GERUDO_TRAINING_GROUND, 1);}),
         //It's possible to use the torch in RR_GERUDO_TRAINING_GROUND_MQ_MAZE_HIDDEN_ROOM with flame storage to light these
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_SAND_ROOM,        []{return Here(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY, []{return logic->HasFireSource();});}),
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_ROOM,    []{return Here(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY, []{return (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT));});}),
@@ -145,8 +145,8 @@ void RegionTable_Init_GerudoTrainingGround() {
         LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_THIRD_CHEST, true),
     }, {
         //Exits
-        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY,       []{return logic->SmallKeys(RR_GERUDO_TRAINING_GROUND, 1);}),
-        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_CENTER, []{return logic->SmallKeys(RR_GERUDO_TRAINING_GROUND, 3);}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY,       []{return logic->SmallKeys(SCENE_GERUDO_TRAINING_GROUND, 1);}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_CENTER, []{return logic->SmallKeys(SCENE_GERUDO_TRAINING_GROUND, 3);}),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_MAZE_CENTER] = Region("Gerudo Training Ground MQ Center", SCENE_GERUDO_TRAINING_GROUND, {
@@ -158,7 +158,7 @@ void RegionTable_Init_GerudoTrainingGround() {
     },
     {
         //Exits
-        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_FIRST_LOCK, []{return logic->SmallKeys(RR_GERUDO_TRAINING_GROUND, 3);}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_FIRST_LOCK, []{return logic->SmallKeys(SCENE_GERUDO_TRAINING_GROUND, 3);}),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_SAND_ROOM] = Region("Gerudo Training Ground MQ Sand Room", SCENE_GERUDO_TRAINING_GROUND, {}, {

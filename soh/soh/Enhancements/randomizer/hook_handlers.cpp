@@ -1091,7 +1091,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_SELL_POES_TO_POE_COLLECTOR: {
-            if (!Flags_GetRandomizerInf(RAND_INF_10_BIG_POES) && HIGH_SCORE(HS_POE_POINTS) >= 1000) {
+            if (!Flags_GetRandomizerInf(RAND_INF_10_BIG_POES) && HIGH_SCORE(HS_POE_POINTS) >= 1000 &&
+                !(GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS)) {
                 EnGb* enGb = va_arg(args, EnGb*);
                 enGb->textId = 0x70F8;
                 Message_ContinueTextbox(gPlayState, enGb->textId);
