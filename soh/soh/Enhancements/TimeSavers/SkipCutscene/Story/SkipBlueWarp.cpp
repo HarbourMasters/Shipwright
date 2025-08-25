@@ -1,6 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/timesaver_hook_handlers.h"
 
 extern "C" {
 #include "macros.h"
@@ -12,6 +13,7 @@ extern "C" {
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
 
+extern "C" PlayState* gPlayState;
 static bool sEnteredBlueWarp = false;
 
 /**
@@ -124,6 +126,13 @@ void SkipBlueWarp_ShouldPlayBlueWarpCS(GIVanillaBehavior _, bool* should, va_lis
  */
 void SkipBlueWarp_ShouldGiveItem(GIVanillaBehavior _, bool* should, va_list originalArgs) {
     if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
+        if (IS_VANILLA) {
+            if (gPlayState->sceneNum == SCENE_SHADOW_TEMPLE_BOSS) {
+                TimeSaverQueueItem(RG_SHADOW_MEDALLION);
+            } else if (gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE_BOSS) {
+                TimeSaverQueueItem(RG_SPIRIT_MEDALLION);
+            }
+        }
         *should = false;
     }
 }

@@ -1,6 +1,5 @@
 #include <libultraship/bridge.h>
 #include "soh/OTRGlobals.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -1198,6 +1197,10 @@ void TimeSaverOnSceneInitHandler(int16_t sceneNum) {
 }
 
 static GetItemEntry vanillaQueuedItemEntry = GET_ITEM_NONE;
+
+void TimeSaverQueueItem(RandomizerGet randoGet) {
+    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(randoGet).GetGIEntry_Copy();
+}
 
 void TimeSaverOnFlagSetHandler(int16_t flagType, int16_t flag) {
     // Do nothing when in a boss rush

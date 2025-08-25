@@ -501,6 +501,10 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
+        case VB_PLAY_BLUE_WARP_CS: {
+            *should = false;
+            break;
+        }
         // Spawn clean blue warps (no ruto, adult animation, etc)
         case VB_SPAWN_BLUE_WARP: {
             switch (gPlayState->sceneNum) {
