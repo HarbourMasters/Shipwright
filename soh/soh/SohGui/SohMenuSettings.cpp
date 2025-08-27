@@ -143,7 +143,8 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("Menu.SearchAutofocus"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
-            "Search input box gets autofocus when visible. Does not affect using other widgets."));
+            "Search input box gets autofocus when visible. Does not affect using other widgets.\n"
+            "Note: Comboboxes will be unusable with this enabled."));
     AddWidget(path, "Alt Assets Tab hotkey", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("Mods.AlternateAssetsHotkey"))
         .RaceDisable(false)
