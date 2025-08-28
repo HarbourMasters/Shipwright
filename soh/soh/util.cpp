@@ -467,7 +467,7 @@ std::vector<std::string> itemNamesGer = {
     "Blaues Elixier",
     "Flasche (Fee)",
     "Fisch",
-    "Flasche (Lon Lon-Milch)",
+    "Flasche (Milch)",
     "Rutos Brief",
     "Blaue Feuer",
     "Käfer",
