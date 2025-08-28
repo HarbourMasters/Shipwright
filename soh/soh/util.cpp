@@ -617,12 +617,30 @@ std::vector<std::string> questItemNamesFra = {
 };
 
 std::vector<std::string> questItemNamesGer = {
-    "Amulett des Waldes",    "Amulett des Feuers",  "Amulett des Wassers",    "Amulett der Geister",
-    "Amulett des Schattens", "Amulett des Lichts",  "Menuett des Waldes",     "Bolero des Feuers",
-    "Serenade des Wassers",  "Requiem der Geister", "Nocturne des Schattens", "Kantate des Lichts",
-    "Zeldas Wiegenlied",     "Eponas Lied",         "Salias Lied",            "Hymne der Sonne",
-    "Hymne der Zeit",        "Hymne des Sturms",    "Kokiri-Smaragd",         "Goronen-Rubin",
-    "Zora-Saphir",           "Stein des Wissens",   "Gerudo-Paß",             "Goldenes Skulltula-Symbol",
+    "Amulett des Waldes",
+    "Amulett des Feuers",
+    "Amulett des Wassers",
+    "Amulett der Geister",
+    "Amulett des Schattens",
+    "Amulett des Lichts",
+    "Menuett des Waldes",
+    "Bolero des Feuers",
+    "Serenade des Wassers",
+    "Requiem der Geister",
+    "Nocturne des Schattens",
+    "Kantate des Lichts",
+    "Zeldas Wiegenlied",
+    "Eponas Lied",
+    "Salias Lied",
+    "Hymne der Sonne",
+    "Hymne der Zeit",
+    "Hymne des Sturms",
+    "Kokiri-Smaragd",
+    "Goronen-Rubin",
+    "Zora-Saphir",
+    "Stein des Wissens",
+    "Gerudo-Paß",
+    "Goldenes Skulltula-Symbol",
 };
 
 std::array<std::string, RA_MAX> rcareaPrefixes = {
