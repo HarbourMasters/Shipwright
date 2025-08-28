@@ -5718,6 +5718,11 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_BRONZE_SCALE, ITEM_SCALE_SILVER, "You got the %rBronze Scale%w!&The power of buoyancy is yours!",
                   "Du hast die %rBronzene Schuppe%w&erhalten! Die Fähigkeit zu&Schwimmen ist nun dein!",
                   "Vous obtenez l'%rÉcaille de Bronze%w!&Le pouvoir de la flottabilité est&à vous!"),
+
+        GIMESSAGE(RG_ABILITY_ISG, ITEM_SINGLE_MAGIC, "You got %rISG%w!",
+                  "Du hast %rISG%w&erhalten!",
+                  "Vous obtenez %rISG%w!"),
+                  
         GIMESSAGE(RG_FISHING_POLE, ITEM_FISHING_POLE, "You found a lost %rFishing Pole%w!&Time to hit the pond!",
                   "Du hast eine verlorene %rAngelrute%w&gefunden!&Zeit, im Teich&zu angeln!",
                   "Vous obtenez une %rCanne à pêche%w&perdue!&Il est temps d'aller à %gl'étang%w!"),
@@ -5911,6 +5916,7 @@ std::map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
     { RG_BONGO_BONGO_SOUL, RAND_INF_BONGO_BONGO_SOUL },
     { RG_TWINROVA_SOUL, RAND_INF_TWINROVA_SOUL },
     { RG_GANON_SOUL, RAND_INF_GANON_SOUL },
+    { RG_ABILITY_ISG, RAND_INF_CAN_ISG },
 };
 
 extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {

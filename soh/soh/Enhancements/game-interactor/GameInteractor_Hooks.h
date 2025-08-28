@@ -28,6 +28,7 @@ void GameInteractor_ExecuteOnPlayerUpdate();
 void GameInteractor_ExecuteOnSetDoAction(uint16_t action);
 void GameInteractor_ExecuteOnOcarinaSongAction();
 void GameInteractor_ExecuteOnCuccoOrChickenHatch();
+void GameInteractor_ExecuteOnLinkAnimEnd(SkelAnime* skelAnime);
 void GameInteractor_ExecuteOnActorInit(void* actor);
 void GameInteractor_ExecuteOnActorSpawn(void* actor);
 void GameInteractor_ExecuteOnActorUpdate(void* actor);

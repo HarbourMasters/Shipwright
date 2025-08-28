@@ -97,6 +97,10 @@ void GameInteractor_ExecuteOnCuccoOrChickenHatch() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnCuccoOrChickenHatch>();
 }
 
+void GameInteractor_ExecuteOnLinkAnimEnd(SkelAnime* skelAnime) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLinkAnimEnd>(skelAnime);
+}
+
 void GameInteractor_ExecuteOnShopSlotChangeHooks(uint8_t cursorIndex, int16_t price) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShopSlotChange>(cursorIndex, price);
 }

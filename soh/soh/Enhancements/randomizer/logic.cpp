@@ -1803,6 +1803,9 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_BOMBCHU_20:
                     SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
                     break;
+                case RG_ABILITY_ISG:
+                    SetRandoInf(RAND_INF_CAN_ISG, state);
+                    break;
                 default:
                     break;
             }
@@ -2324,6 +2327,11 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         // If we're not shuffling swim, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_SWIM).Is(false)) {
             SetRandoInf(RAND_INF_CAN_SWIM, true);
+        }
+
+        // If we're not shuffling glitch abilites, we start with them
+        if (ctx->GetOption(RSK_SHUFFLE_ISG).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_ISG, true);
         }
 
         // If we're not shuffling child's wallet, we start with it

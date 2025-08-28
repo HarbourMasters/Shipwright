@@ -352,6 +352,9 @@ void Rando::StaticData::InitItemTable() {
     itemTable[RG_BRONZE_SCALE] =                        Item(RG_BRONZE_SCALE,                     Text{ "Bronze Scale", "Écaille de Bronze", "Bronzene Schuppe" },                                                                     ITEMTYPE_ITEM,              GI_SCALE_SILVER,      true,  LOGIC_PROGRESSIVE_WALLET,           RHT_BRONZE_SCALE,                      RG_BRONZE_SCALE,                      OBJECT_GI_SCALE,        GID_SCALE_SILVER,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
     itemTable[RG_BRONZE_SCALE].SetCustomDrawFunc(Randomizer_DrawBronzeScale);
 
+    itemTable[RG_ABILITY_ISG] =                         Item(RG_ABILITY_ISG,                      Text{ "ISG", "ISG", "ISG" },                                                                                                         ITEMTYPE_ITEM,              GI_NONE,              true,  LOGIC_NONE,                         RHT_ABILITY_ISG,                       RG_ABILITY_ISG,                       OBJECT_GI_COIN,          GID_NCOIN_YELLOW,    TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,  MOD_RANDOMIZER);
+    itemTable[RG_ABILITY_ISG].SetCustomDrawFunc(Randomizer_DrawMysteryItem);
+
     itemTable[RG_BOMBCHU_BAG] =                         Item(RG_BOMBCHU_BAG,                      Text{ "Bombchu Bag", "Sac de Missiles Teigneux", "Krabbelminentasche" },                                                             ITEMTYPE_ITEM,              RG_BOMBCHU_BAG,       true,  LOGIC_BOMBCHUS,                     RHT_BOMBCHU_BAG,                       RG_BOMBCHU_BAG,                       OBJECT_GI_BOMB_2,       GID_BOMBCHU,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
     itemTable[RG_BOMBCHU_BAG].SetCustomDrawFunc(Randomizer_DrawBombchuBag);
 

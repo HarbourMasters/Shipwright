@@ -69,6 +69,7 @@ extern void EnGe1_Wait_Archery(EnGe1* enGe1, PlayState* play);
 extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
 extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
 extern void EnGe2_SetupCapturePlayer(EnGe2* enGe2, PlayState* play);
+extern void func_80832318(Player* player);
 }
 
 bool LocMatchesQuest(Rando::Location loc) {
@@ -2343,6 +2344,17 @@ void RandomizerOnCuccoOrChickenHatch() {
     }
 }
 
+void RandomizerOnLinkAnimEnd(SkelAnime* skelAnime) {
+    if (!Flags_GetRandomizerInf(RAND_INF_CAN_ISG)) {
+        Player* player = GET_PLAYER(gPlayState);
+
+        // Make sure we are only checking for the end of link's animation
+        if (skelAnime == &player->skelAnime) {
+            func_80832318(player);
+        }
+    }
+}
+
 void RandomizerRegisterHooks() {
     static uint32_t onFlagSetHook = 0;
     static uint32_t onSceneFlagSetHook = 0;
@@ -2362,6 +2374,7 @@ void RandomizerRegisterHooks() {
     static uint32_t onExitGameHook = 0;
     static uint32_t onKaleidoUpdateHook = 0;
     static uint32_t onCuccoOrChickenHatchHook = 0;
+    static uint32_t onLinkAnimEndHook = 0;
 
     static uint32_t fishsanityOnActorInitHook = 0;
     static uint32_t fishsanityOnActorUpdateHook = 0;
@@ -2394,6 +2407,7 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnExitGame>(onExitGameHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(onKaleidoUpdateHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnCuccoOrChickenHatch>(onCuccoOrChickenHatchHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnLinkAnimEnd>(onLinkAnimEndHook);
 
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(fishsanityOnActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(fishsanityOnActorUpdateHook);
@@ -2420,6 +2434,7 @@ void RandomizerRegisterHooks() {
         onExitGameHook = 0;
         onKaleidoUpdateHook = 0;
         onCuccoOrChickenHatchHook = 0;
+        onLinkAnimEndHook = 0;
 
         fishsanityOnActorInitHook = 0;
         fishsanityOnActorUpdateHook = 0;
@@ -2475,6 +2490,8 @@ void RandomizerRegisterHooks() {
             RandomizerOnKaleidoscopeUpdateHandler);
         onCuccoOrChickenHatchHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnCuccoOrChickenHatch>(
             RandomizerOnCuccoOrChickenHatch);
+        onLinkAnimEndHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLinkAnimEnd>(
+            [](SkelAnime* skelAnime) { RandomizerOnLinkAnimEnd(skelAnime); });
 
         if (RAND_GET_OPTION(RSK_FISHSANITY) != RO_FISHSANITY_OFF) {
             OTRGlobals::Instance->gRandoContext->GetFishsanity()->InitializeFromSave();

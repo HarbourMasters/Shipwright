@@ -258,6 +258,10 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetRandomizerInf(RAND_INF_CAN_SWIM);
     }
 
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_ISG) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_ISG);
+    }
+
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_WALLET) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
     }

@@ -4054,6 +4054,10 @@ typedef enum {
     RG_BACK_TOWER_KEY,
     RG_HYLIA_LAB_KEY,
     RG_FISHING_HOLE_KEY,
+
+    // Glitch abilities
+    RG_ABILITY_ISG,
+
     // Logic Only
     RG_DISTANT_SCARECROW,
     RG_STICKS,
@@ -5649,6 +5653,8 @@ typedef enum {
     RHT_DODONGOS_CAVERN_GRASS,
     RHT_BOTTOM_OF_THE_WELL_GRASS,
     RHT_JABU_JABUS_BELLY_GRASS,
+    // Glitch Abilities
+    RHT_ABILITY_ISG,
     // MAX
     RHT_MAX,
 } RandomizerHintTextKey;
@@ -5942,6 +5948,8 @@ typedef enum {
     RSK_SHUFFLE_FAIRIES,
     RSK_LOCK_OVERWORLD_DOORS,
     RSK_SHUFFLE_GRASS,
+
+    RSK_SHUFFLE_ISG,
     RSK_MAX
 } RandomizerSettingKey;
 

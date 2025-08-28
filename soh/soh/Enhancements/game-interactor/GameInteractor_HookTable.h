@@ -47,6 +47,7 @@ DEFINE_HOOK(OnVanillaBehavior, (GIVanillaBehavior flag, bool* result, va_list or
 DEFINE_HOOK(OnSaveFile, (int32_t fileNum));
 DEFINE_HOOK(OnLoadFile, (int32_t fileNum));
 DEFINE_HOOK(OnDeleteFile, (int32_t fileNum));
+DEFINE_HOOK(OnLinkAnimEnd, (SkelAnime* skelAnime));
 
 DEFINE_HOOK(OnDialogMessage, ());
 DEFINE_HOOK(OnPresentTitleCard, ());

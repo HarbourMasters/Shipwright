@@ -1225,6 +1225,7 @@ s32 LinkAnimation_Once(PlayState* play, SkelAnime* skelAnime) {
 
     if (skelAnime->curFrame == skelAnime->endFrame) {
         LinkAnimation_AnimateFrame(play, skelAnime);
+        GameInteractor_ExecuteOnLinkAnimEnd(skelAnime);
         return 1;
     }
     skelAnime->curFrame += skelAnime->playSpeed * updateRate;
