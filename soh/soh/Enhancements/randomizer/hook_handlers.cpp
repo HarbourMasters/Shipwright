@@ -70,6 +70,8 @@ extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
 extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
 extern void EnGe2_SetupCapturePlayer(EnGe2* enGe2, PlayState* play);
 extern void func_80832318(Player* player);
+extern void Player_SetupActionPreserveItemAction(PlayState* play, Player* player, PlayerActionFunc actionFunc, s32 flags);
+extern void Player_Action_Idle(Player* player, PlayState* play);
 }
 
 bool LocMatchesQuest(Rando::Location loc) {
@@ -2235,6 +2237,21 @@ std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
 
 f32 triforcePieceScale;
 
+void RandomizerShouldSkipForcePlayOcarina(bool* should) {
+    
+    if (!Flags_GetRandomizerInf(RAND_INF_CAN_OI)) {
+        Player* player = GET_PLAYER(gPlayState);
+
+        if (player->itemAction != PLAYER_IA_OCARINA_FAIRY && player->itemAction != PLAYER_IA_OCARINA_OF_TIME) {
+            player->unk_6AD = 0;
+            Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
+            Player_SetupActionPreserveItemAction(gPlayState, player, Player_Action_Idle, 0);
+            player->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
+            *should = true;
+        }
+    }
+}
+
 void RandomizerOnPlayerUpdateHandler() {
     if ((GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_IN_WATER) && !Flags_GetRandomizerInf(RAND_INF_CAN_SWIM) &&
         CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) != EQUIP_VALUE_BOOTS_IRON) {
@@ -2492,6 +2509,8 @@ void RandomizerRegisterHooks() {
             RandomizerOnCuccoOrChickenHatch);
         onLinkAnimEndHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLinkAnimEnd>(
             [](SkelAnime* skelAnime) { RandomizerOnLinkAnimEnd(skelAnime); });
+
+        COND_VB_SHOULD(VB_SKIP_FORCE_PLAY_OCARINA, true, { RandomizerShouldSkipForcePlayOcarina(should); });
 
         if (RAND_GET_OPTION(RSK_FISHSANITY) != RO_FISHSANITY_OFF) {
             OTRGlobals::Instance->gRandoContext->GetFishsanity()->InitializeFromSave();

@@ -6100,6 +6100,9 @@ s32 Player_ActionHandler_13(Player* this, PlayState* play) {
                         func_80835EA4(play, 2);
                     }
                 } else {
+                    if (GameInteractor_Should(VB_SKIP_FORCE_PLAY_OCARINA, false, NULL)) {
+                        return 0;
+                    }
                     Player_SetupActionPreserveItemAction(play, this, Player_Action_8084E3C4, 0);
                     Player_AnimPlayOnceAdjusted(play, this, &gPlayerAnim_link_normal_okarina_start);
                     this->stateFlags2 |= PLAYER_STATE2_OCARINA_PLAYING;

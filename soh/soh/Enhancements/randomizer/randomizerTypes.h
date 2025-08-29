@@ -4057,6 +4057,7 @@ typedef enum {
 
     // Glitch abilities
     RG_ABILITY_ISG,
+    RG_ABILITY_OI,
 
     // Logic Only
     RG_DISTANT_SCARECROW,
@@ -5655,6 +5656,7 @@ typedef enum {
     RHT_JABU_JABUS_BELLY_GRASS,
     // Glitch Abilities
     RHT_ABILITY_ISG,
+    RHT_ABILITY_OI,
     // MAX
     RHT_MAX,
 } RandomizerHintTextKey;
@@ -5948,8 +5950,9 @@ typedef enum {
     RSK_SHUFFLE_FAIRIES,
     RSK_LOCK_OVERWORLD_DOORS,
     RSK_SHUFFLE_GRASS,
-
+    // Glitch shuffles
     RSK_SHUFFLE_ISG,
+    RSK_SHUFFLE_OI,
     RSK_MAX
 } RandomizerSettingKey;
 

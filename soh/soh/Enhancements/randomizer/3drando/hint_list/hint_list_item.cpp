@@ -2132,6 +2132,24 @@ void StaticData::HintTable_Init_Item() {
                                     CustomMessage("a four legged friend", /*german*/"ein vierbeiniger Freund", /*french*/"un puissant animal")});
                                          // /*spanish*/una amiga cuadrúpeda
 
+    hintTextTable[RHT_ABILITY_ISG] = HintText(CustomMessage("ISG", /*german*/"ISG", /*french*/"ISG"),
+                                               // /*spanish*/ISG
+                                               {
+                                               CustomMessage("a flashy weapon", /*german*/"ISG", /*french*/"ISG")
+                                                // /*spanish*/ISG
+                                               }, {
+                                               CustomMessage("a permanent hitbox", /*german*/"ISG", /*french*/"ISG")});
+                                                // /*spanish*/ISG
+
+    hintTextTable[RHT_ABILITY_OI] = HintText(CustomMessage("OI", /*german*/"OI", /*french*/"OI"),
+                                               // /*spanish*/OI
+                                               {
+                                               CustomMessage("a musical bottle", /*german*/"OI", /*french*/"OI")
+                                                // /*spanish*/OI
+                                               }, {
+                                               CustomMessage("a potato of any color", /*german*/"OI", /*french*/"OI")});
+                                                // /*spanish*/OI
+
     //What is this used for?
     hintTextTable[RHT_HINT_MYSTERIOUS] = HintText(CustomMessage("something mysterious", /*german*/"etwas Mysteriöses", /*french*/"un sacré mystère"));
                                                   // /*spanish*/algo misterioso

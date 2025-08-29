@@ -1806,6 +1806,9 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_ABILITY_ISG:
                     SetRandoInf(RAND_INF_CAN_ISG, state);
                     break;
+                case RG_ABILITY_OI:
+                    SetRandoInf(RAND_INF_CAN_OI, state);
+                    break;
                 default:
                     break;
             }
@@ -2332,6 +2335,9 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         // If we're not shuffling glitch abilites, we start with them
         if (ctx->GetOption(RSK_SHUFFLE_ISG).Is(false)) {
             SetRandoInf(RAND_INF_CAN_ISG, true);
+        }
+        if (ctx->GetOption(RSK_SHUFFLE_OI).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_OI, true);
         }
 
         // If we're not shuffling child's wallet, we start with it

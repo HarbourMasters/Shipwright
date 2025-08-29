@@ -5394,7 +5394,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 112> getItemMessages = { {
+    const std::array<GetItemMessage, 114> getItemMessages = { {
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, "You found %gGreg%w!", "%gGreg%w! Du hast ihn&wirklich gefunden!",
                   "Félicitation! Vous avez trouvé %gGreg%w!"),
         GIMESSAGE(RG_MASTER_SWORD, ITEM_SWORD_MASTER, "You found the %gMaster Sword%w!",
@@ -5722,6 +5722,9 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_ABILITY_ISG, ITEM_SINGLE_MAGIC, "You got %rISG%w!",
                   "Du hast %rISG%w&erhalten!",
                   "Vous obtenez %rISG%w!"),
+        GIMESSAGE(RG_ABILITY_OI, ITEM_OCARINA_TIME, "You got %rOI%w!",
+                  "Du hast %rOI%w&erhalten!",
+                  "Vous obtenez %rOI%w!"),
                   
         GIMESSAGE(RG_FISHING_POLE, ITEM_FISHING_POLE, "You found a lost %rFishing Pole%w!&Time to hit the pond!",
                   "Du hast eine verlorene %rAngelrute%w&gefunden!&Zeit, im Teich&zu angeln!",
@@ -5917,6 +5920,7 @@ std::map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
     { RG_TWINROVA_SOUL, RAND_INF_TWINROVA_SOUL },
     { RG_GANON_SOUL, RAND_INF_GANON_SOUL },
     { RG_ABILITY_ISG, RAND_INF_CAN_ISG },
+    { RG_ABILITY_OI, RAND_INF_CAN_OI },
 };
 
 extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {

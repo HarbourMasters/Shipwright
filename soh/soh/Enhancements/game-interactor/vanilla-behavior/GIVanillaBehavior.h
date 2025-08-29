@@ -2253,6 +2253,14 @@ typedef enum {
     // #### `args`
     // - `*DoorShutter`
     VB_BE_NEAR_DOOR_SHUTTER,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_SKIP_FORCE_PLAY_OCARINA,
 } GIVanillaBehavior;
 
 #endif
