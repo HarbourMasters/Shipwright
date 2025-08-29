@@ -554,7 +554,7 @@ std::vector<std::string> itemNamesGer = {
     "Zora-Saphir",
     "Stein des Wissens",
     "Gerudo-Paß",
-    "Goldenes Skulltula-Symbol",
+    "Skulltula-Symbol",
     "Herzcontainer",
     "Herzteil",
     "Master-Schlüssel",
