@@ -496,6 +496,7 @@ void Menu::Draw() {
     SyncVisibilityConsoleVariable();
 }
 
+static bool freshOpen = true;
 void Menu::DrawElement() {
     for (auto& [reason, info] : disabledMap) {
         info.active = info.evaluation(info);
@@ -538,6 +539,7 @@ void Menu::DrawElement() {
         if (!popout) {
             ImGui::PopStyleVar();
         }
+        freshOpen = true;
         ImGui::PopStyleColor();
         ImGui::End();
         return;
@@ -654,13 +656,13 @@ void Menu::DrawElement() {
     std::string menuSearchText = "";
     if (headerSearch) {
         ImGui::SameLine();
-        if (autoFocus && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) && !ImGui::IsAnyItemActive() &&
-            !ImGui::IsMouseClicked(0)) {
-            ImGui::SetKeyboardFocusHere(0);
+        if (autoFocus && freshOpen) {
+            ImGui::SetKeyboardFocusHere();
         }
         auto color = UIWidgets::ColorValues.at(menuThemeIndex);
-        color.w = 0.2f;
+        color.w = 0.6f;
         ImGui::PushStyleColor(ImGuiCol_FrameBg, color);
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
         menuSearch.Draw("##search", 200.0f);
         menuSearchText = menuSearch.InputBuf;
         menuSearchText.erase(std::remove(menuSearchText.begin(), menuSearchText.end(), ' '), menuSearchText.end());
@@ -668,6 +670,7 @@ void Menu::DrawElement() {
             ImGui::SameLine(headerWidth - 200.0f + style.ItemSpacing.x);
             ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Search...");
         }
+        ImGui::PopStyleVar();
         ImGui::PopStyleColor();
     }
     ImGui::EndChild();
@@ -852,6 +855,9 @@ void Menu::DrawElement() {
     if (popout) {
         poppedSize = ImGui::GetWindowSize();
         poppedPos = ImGui::GetWindowPos();
+    }
+    if (freshOpen) {
+        freshOpen = false;
     }
     ImGui::End();
 }
