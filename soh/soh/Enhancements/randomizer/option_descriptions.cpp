@@ -771,5 +771,7 @@ void Settings::CreateOptionDescriptions() {
         "Shuffles the ability to HESS into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_SUPERSLIDE] =
         "Shuffles the ability to superslide into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_HOVER] =
+        "Shuffles the ability to hover into the item pool.";
 }
 } // namespace Rando

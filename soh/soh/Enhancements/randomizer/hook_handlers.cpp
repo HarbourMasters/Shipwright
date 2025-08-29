@@ -2392,6 +2392,12 @@ void RandomizerOnWaitForPutaway() {
     }
 }
 
+void RandomizerShouldHover(bool* should) {
+    if (!Flags_GetRandomizerInf(RAND_INF_CAN_HOVER)) {
+        *should = false;
+    }
+}
+
 void RandomizerRegisterHooks() {
     static uint32_t onFlagSetHook = 0;
     static uint32_t onSceneFlagSetHook = 0;
@@ -2541,6 +2547,8 @@ void RandomizerRegisterHooks() {
         onWaitForPutawayHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnWaitForPutaway>(RandomizerOnWaitForPutaway);
 
         COND_VB_SHOULD(VB_SKIP_FORCE_PLAY_OCARINA, true, { RandomizerShouldSkipForcePlayOcarina(should); });
+
+        COND_VB_SHOULD(VB_HOVER_WITH_ISG, true, { RandomizerShouldHover(should); });
 
         if (RAND_GET_OPTION(RSK_FISHSANITY) != RO_FISHSANITY_OFF) {
             OTRGlobals::Instance->gRandoContext->GetFishsanity()->InitializeFromSave();

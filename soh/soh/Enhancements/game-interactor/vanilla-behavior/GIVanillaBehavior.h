@@ -2256,11 +2256,19 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // true
+    // false
     // ```
     // #### `args`
     // - None
     VB_SKIP_FORCE_PLAY_OCARINA,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_HOVER_WITH_ISG,
 } GIVanillaBehavior;
 
 #endif

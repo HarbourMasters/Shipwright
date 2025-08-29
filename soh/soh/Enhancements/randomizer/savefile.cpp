@@ -273,6 +273,9 @@ extern "C" void Randomizer_InitSaveFile() {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_SUPERSLIDE) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_CAN_SUPERSLIDE);
     }
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_HOVER) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_HOVER);
+    }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_WALLET) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);

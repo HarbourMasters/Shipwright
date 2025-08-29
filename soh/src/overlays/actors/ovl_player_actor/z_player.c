@@ -5789,7 +5789,7 @@ void func_8083AA10(Player* this, PlayState* play) {
             if (!(this->stateFlags3 & PLAYER_STATE3_MIDAIR) && !(this->skelAnime.movementFlags & 0x80) &&
                 (Player_Action_8084411C != this->actionFunc) && (Player_Action_80844A44 != this->actionFunc)) {
 
-                if ((sPrevFloorProperty == 7) || (this->meleeWeaponState != 0)) {
+                if ((sPrevFloorProperty == 7) || (GameInteractor_Should(VB_HOVER_WITH_ISG, true) && (this->meleeWeaponState != 0))) {
                     Math_Vec3f_Copy(&this->actor.world.pos, &this->actor.prevPos);
                     Player_ZeroSpeedXZ(this);
                     return;

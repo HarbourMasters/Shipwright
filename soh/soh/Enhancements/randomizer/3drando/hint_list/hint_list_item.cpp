@@ -2173,6 +2173,14 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("some shield power", /*german*/"Superslide", /*french*/"Superslide")});
                                                 // /*spanish*/Superslide
+    hintTextTable[RHT_ABILITY_HOVER] = HintText(CustomMessage("Hover", /*german*/"Hover", /*french*/"Hover"),
+                                               // /*spanish*/Hover
+                                               {
+                                               CustomMessage("a weightless trick", /*german*/"Hover", /*french*/"Hover")
+                                                // /*spanish*/Hover
+                                               }, {
+                                               CustomMessage("gravityn't", /*german*/"Hover", /*french*/"Hover")});
+                                                // /*spanish*/Hover
 
     //What is this used for?
     hintTextTable[RHT_HINT_MYSTERIOUS] = HintText(CustomMessage("something mysterious", /*german*/"etwas Mysteriöses", /*french*/"un sacré mystère"));
