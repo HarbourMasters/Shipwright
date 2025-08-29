@@ -469,7 +469,7 @@ std::vector<std::string> itemNamesGer = {
     "Fisch",
     "Flasche (Milch)",
     "Rutos Brief",
-    "Blaue Feuer",
+    "Blaues Feuer",
     "Käfer",
     "Nachtschwärmer",
     "Lon Lon-Milch (Halbe Füllung)",
