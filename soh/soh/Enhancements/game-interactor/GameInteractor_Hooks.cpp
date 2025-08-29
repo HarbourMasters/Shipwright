@@ -339,3 +339,7 @@ void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void)) {
 void GameInteractor_ExecuteOnKaleidoUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnKaleidoUpdate>();
 }
+
+void GameInteractor_ExecuteOnKaleidoMoveCursorFromSpecialPos(PauseContext* pauseCtx, uint16_t* cursorItem) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnKaleidoMoveCursorFromSpecialPos>(pauseCtx, cursorItem);
+}

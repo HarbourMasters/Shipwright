@@ -2181,6 +2181,14 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("gravityn't", /*german*/"Hover", /*french*/"Hover")});
                                                 // /*spanish*/Hover
+    hintTextTable[RHT_ABILITY_EQUIP_SWAP] = HintText(CustomMessage("Equip Swap", /*german*/"Equip Swap", /*french*/"Equip Swap"),
+                                               // /*spanish*/Equip Swap
+                                               {
+                                               CustomMessage("an unbufferable ability", /*german*/"Equip Swap", /*french*/"Equip Swap")
+                                                // /*spanish*/Equip Swap
+                                               }, {
+                                               CustomMessage("a timeless talent", /*german*/"Equip Swap", /*french*/"Equip Swap")});
+                                                // /*spanish*/Equip Swap
 
     //What is this used for?
     hintTextTable[RHT_HINT_MYSTERIOUS] = HintText(CustomMessage("something mysterious", /*german*/"etwas Mysteriöses", /*french*/"un sacré mystère"));

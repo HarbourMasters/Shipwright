@@ -78,3 +78,4 @@ DEFINE_HOOK(OnSetGameLanguage, ());
 DEFINE_HOOK(OnFileDropped, (std::string filePath));
 DEFINE_HOOK(OnAssetAltChange, ());
 DEFINE_HOOK(OnKaleidoUpdate, ());
+DEFINE_HOOK(OnKaleidoMoveCursorFromSpecialPos, (PauseContext* pauseCtx, uint16_t* cursorItem));

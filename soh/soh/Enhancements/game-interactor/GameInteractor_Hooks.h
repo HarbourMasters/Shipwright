@@ -88,6 +88,7 @@ void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void));
 
 // Mark: - Pause Menu
 void GameInteractor_ExecuteOnKaleidoUpdate();
+void GameInteractor_ExecuteOnKaleidoMoveCursorFromSpecialPos(PauseContext* pauseCtx, uint16_t* cursorItem);
 
 #ifdef __cplusplus
 }
