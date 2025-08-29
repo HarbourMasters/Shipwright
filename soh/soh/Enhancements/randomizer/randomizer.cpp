@@ -5394,7 +5394,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 114> getItemMessages = { {
+    const std::array<GetItemMessage, 116> getItemMessages = { {
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, "You found %gGreg%w!", "%gGreg%w! Du hast ihn&wirklich gefunden!",
                   "Félicitation! Vous avez trouvé %gGreg%w!"),
         GIMESSAGE(RG_MASTER_SWORD, ITEM_SWORD_MASTER, "You found the %gMaster Sword%w!",
@@ -5728,6 +5728,12 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_ABILITY_QPA, ITEM_BLUE_FIRE, "You got %rQPA%w!",
                   "Du hast %rQPA%w&erhalten!",
                   "Vous obtenez %rQPA%w!"),
+        GIMESSAGE(RG_ABILITY_HESS, ITEM_BOOTS_HOVER, "You got %rHESS%w!",
+                  "Du hast %rHESS%w&erhalten!",
+                  "Vous obtenez %rHESS%w!"),
+        GIMESSAGE(RG_ABILITY_SUPERSLIDE, ITEM_BOOTS_HOVER, "You got %rSuperslide%w!",
+                  "Du hast %rSuperslide%w&erhalten!",
+                  "Vous obtenez %rSuperslide%w!"),
                   
         GIMESSAGE(RG_FISHING_POLE, ITEM_FISHING_POLE, "You found a lost %rFishing Pole%w!&Time to hit the pond!",
                   "Du hast eine verlorene %rAngelrute%w&gefunden!&Zeit, im Teich&zu angeln!",
@@ -5925,6 +5931,8 @@ std::map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
     { RG_ABILITY_ISG, RAND_INF_CAN_ISG },
     { RG_ABILITY_OI, RAND_INF_CAN_OI },
     { RG_ABILITY_QPA, RAND_INF_CAN_QPA },
+    { RG_ABILITY_HESS, RAND_INF_CAN_HESS },
+    { RG_ABILITY_SUPERSLIDE, RAND_INF_CAN_SUPERSLIDE },
 };
 
 extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {

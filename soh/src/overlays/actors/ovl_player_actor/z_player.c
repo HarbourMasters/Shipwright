@@ -8733,6 +8733,8 @@ void Player_Action_TurnInPlace(Player* this, PlayState* play) {
                                      this->skelAnime.morphTable, sUpperBodyLimbCopyMap);
     }
 
+    GameInteractor_ExecuteOnESS();
+
     Player_GetMovementSpeedAndYaw(this, &speedTarget, &yawTarget, SPEED_MODE_CURVED, play);
 
     //! @bug This action does not handle xzSpeed in any capacity.
@@ -10225,6 +10227,8 @@ void Player_Action_80845668(Player* this, PlayState* play) {
 void Player_Action_WaitForPutAway(Player* this, PlayState* play) {
     this->stateFlags2 |= PLAYER_STATE2_DISABLE_ROTATION_Z_TARGET | PLAYER_STATE2_DISABLE_ROTATION_ALWAYS;
     LinkAnimation_Update(play, &this->skelAnime);
+
+    GameInteractor_ExecuteOnWaitForPutaway();
 
     // Wait for the held item put away process to complete.
     // Determining if the put away process is complete is a bit complicated:

@@ -2157,6 +2157,22 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("some fast hands", /*german*/"QPA", /*french*/"QPA")});
                                                 // /*spanish*/QPA
+    hintTextTable[RHT_ABILITY_HESS] = HintText(CustomMessage("HESS", /*german*/"HESS", /*french*/"HESS"),
+                                               // /*spanish*/HESS
+                                               {
+                                               CustomMessage("some explosive speed", /*german*/"HESS", /*french*/"HESS")
+                                                // /*spanish*/HESS
+                                               }, {
+                                               CustomMessage("some slick feet", /*german*/"HESS", /*french*/"HESS")});
+                                                // /*spanish*/HESS
+    hintTextTable[RHT_ABILITY_SUPERSLIDE] = HintText(CustomMessage("Superslide", /*german*/"Superslide", /*french*/"Superslide"),
+                                               // /*spanish*/Superslide
+                                               {
+                                               CustomMessage("some straight line speed", /*german*/"Superslide", /*french*/"Superslide")
+                                                // /*spanish*/Superslide
+                                               }, {
+                                               CustomMessage("some shield power", /*german*/"Superslide", /*french*/"Superslide")});
+                                                // /*spanish*/Superslide
 
     //What is this used for?
     hintTextTable[RHT_HINT_MYSTERIOUS] = HintText(CustomMessage("something mysterious", /*german*/"etwas Mysteriöses", /*french*/"un sacré mystère"));

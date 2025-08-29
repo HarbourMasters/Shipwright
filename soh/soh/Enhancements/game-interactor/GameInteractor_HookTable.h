@@ -49,6 +49,8 @@ DEFINE_HOOK(OnLoadFile, (int32_t fileNum));
 DEFINE_HOOK(OnDeleteFile, (int32_t fileNum));
 DEFINE_HOOK(OnLinkAnimEnd, (SkelAnime* skelAnime));
 DEFINE_HOOK(OnQPADamage, (uint32_t* dmgFlags));
+DEFINE_HOOK(OnESS, ());
+DEFINE_HOOK(OnWaitForPutaway, ());
 
 DEFINE_HOOK(OnDialogMessage, ());
 DEFINE_HOOK(OnPresentTitleCard, ());

@@ -4059,6 +4059,8 @@ typedef enum {
     RG_ABILITY_ISG,
     RG_ABILITY_OI,
     RG_ABILITY_QPA,
+    RG_ABILITY_HESS,
+    RG_ABILITY_SUPERSLIDE,
 
     // Logic Only
     RG_DISTANT_SCARECROW,
@@ -5659,6 +5661,8 @@ typedef enum {
     RHT_ABILITY_ISG,
     RHT_ABILITY_OI,
     RHT_ABILITY_QPA,
+    RHT_ABILITY_HESS,
+    RHT_ABILITY_SUPERSLIDE,
     // MAX
     RHT_MAX,
 } RandomizerHintTextKey;
@@ -5956,6 +5960,8 @@ typedef enum {
     RSK_SHUFFLE_ISG,
     RSK_SHUFFLE_OI,
     RSK_SHUFFLE_QPA,
+    RSK_SHUFFLE_HESS,
+    RSK_SHUFFLE_SUPERSLIDE,
     RSK_MAX
 } RandomizerSettingKey;
 

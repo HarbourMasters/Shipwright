@@ -105,6 +105,14 @@ void GameInteractor_ExecuteOnQPADamage(uint32_t* dmgFlags) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnQPADamage>(dmgFlags);
 }
 
+void GameInteractor_ExecuteOnESS() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnESS>();
+}
+
+void GameInteractor_ExecuteOnWaitForPutaway() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnWaitForPutaway>();
+}
+
 void GameInteractor_ExecuteOnShopSlotChangeHooks(uint8_t cursorIndex, int16_t price) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShopSlotChange>(cursorIndex, price);
 }

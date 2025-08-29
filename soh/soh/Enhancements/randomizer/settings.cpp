@@ -217,6 +217,8 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SHUFFLE_ISG, "Shuffle ISG", CVAR_RANDOMIZER_SETTING("ShuffleISG"), mOptionDescriptions[RSK_SHUFFLE_ISG]);
     OPT_BOOL(RSK_SHUFFLE_OI, "Shuffle OI", CVAR_RANDOMIZER_SETTING("ShuffleOI"), mOptionDescriptions[RSK_SHUFFLE_OI]);
     OPT_BOOL(RSK_SHUFFLE_QPA, "Shuffle QPA", CVAR_RANDOMIZER_SETTING("ShuffleQPA"), mOptionDescriptions[RSK_SHUFFLE_QPA]);
+    OPT_BOOL(RSK_SHUFFLE_HESS, "Shuffle HESS", CVAR_RANDOMIZER_SETTING("ShuffleHESS"), mOptionDescriptions[RSK_SHUFFLE_HESS]);
+    OPT_BOOL(RSK_SHUFFLE_SUPERSLIDE, "Shuffle Superslide", CVAR_RANDOMIZER_SETTING("ShuffleSUPERSLIDE"), mOptionDescriptions[RSK_SHUFFLE_SUPERSLIDE]);
     OPT_U8(RSK_SHUFFLE_POTS, "Shuffle Pots", {"Off", "Dungeons", "Overworld", "All Pots"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShufflePots"), mOptionDescriptions[RSK_SHUFFLE_POTS], WidgetType::Combobox, RO_SHUFFLE_POTS_OFF);
     OPT_U8(RSK_SHUFFLE_GRASS, "Shuffle Grass", {"Off", "Dungeons", "Overworld", "All Grass/Bushes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleGrass"), mOptionDescriptions[RSK_SHUFFLE_GRASS], WidgetType::Combobox, RO_SHUFFLE_GRASS_OFF);
     OPT_U8(RSK_SHUFFLE_CRATES, "Shuffle Crates", {"Off", "Dungeons", "Overworld", "All Crates"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleCrates"), mOptionDescriptions[RSK_SHUFFLE_CRATES], WidgetType::Combobox, RO_SHUFFLE_CRATES_OFF);
@@ -1253,6 +1255,8 @@ void Settings::CreateOptions() {
                                                                        &mOptions[RSK_SHUFFLE_ISG],
                                                                        &mOptions[RSK_SHUFFLE_OI],
                                                                        &mOptions[RSK_SHUFFLE_QPA],
+                                                                       &mOptions[RSK_SHUFFLE_HESS],
+                                                                       &mOptions[RSK_SHUFFLE_SUPERSLIDE],
                                                                    },
                                                                    WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_NPCS_IMGUI] =
@@ -1550,6 +1554,8 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_ISG],
                                             &mOptions[RSK_SHUFFLE_OI],
                                             &mOptions[RSK_SHUFFLE_QPA],
+                                            &mOptions[RSK_SHUFFLE_HESS],
+                                            &mOptions[RSK_SHUFFLE_SUPERSLIDE],
                                         });
     mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS] =
         OptionGroup("Shuffle Dungeon Items", {

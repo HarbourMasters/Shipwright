@@ -767,5 +767,9 @@ void Settings::CreateOptionDescriptions() {
         "Shuffles the ability to use the glitch Ocarina Items into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_QPA] =
         "Shuffles the ability to use Quick Putaway Glitched Damage into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_HESS] =
+        "Shuffles the ability to HESS into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_SUPERSLIDE] =
+        "Shuffles the ability to superslide into the item pool.";
 }
 } // namespace Rando
