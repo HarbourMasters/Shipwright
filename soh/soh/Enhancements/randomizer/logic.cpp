@@ -1809,6 +1809,9 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_ABILITY_OI:
                     SetRandoInf(RAND_INF_CAN_OI, state);
                     break;
+                case RG_ABILITY_QPA:
+                    SetRandoInf(RAND_INF_CAN_QPA, state);
+                    break;
                 default:
                     break;
             }
@@ -2338,6 +2341,9 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         }
         if (ctx->GetOption(RSK_SHUFFLE_OI).Is(false)) {
             SetRandoInf(RAND_INF_CAN_OI, true);
+        }
+        if (ctx->GetOption(RSK_SHUFFLE_QPA).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_QPA, true);
         }
 
         // If we're not shuffling child's wallet, we start with it

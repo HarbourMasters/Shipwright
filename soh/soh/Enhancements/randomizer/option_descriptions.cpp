@@ -765,5 +765,7 @@ void Settings::CreateOptionDescriptions() {
         "Shuffles the ability to use the glitch ISG into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_OI] =
         "Shuffles the ability to use the glitch Ocarina Items into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_QPA] =
+        "Shuffles the ability to use Quick Putaway Glitched Damage into the item pool.";
 }
 } // namespace Rando

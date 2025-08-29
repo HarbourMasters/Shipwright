@@ -2149,6 +2149,14 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("a potato of any color", /*german*/"OI", /*french*/"OI")});
                                                 // /*spanish*/OI
+    hintTextTable[RHT_ABILITY_QPA] = HintText(CustomMessage("QPA", /*german*/"QPA", /*french*/"QPA"),
+                                               // /*spanish*/QPA
+                                               {
+                                               CustomMessage("some funky damage", /*german*/"QPA", /*french*/"QPA")
+                                                // /*spanish*/QPA
+                                               }, {
+                                               CustomMessage("some fast hands", /*german*/"QPA", /*french*/"QPA")});
+                                                // /*spanish*/QPA
 
     //What is this used for?
     hintTextTable[RHT_HINT_MYSTERIOUS] = HintText(CustomMessage("something mysterious", /*german*/"etwas Mysteriöses", /*french*/"un sacré mystère"));

@@ -2237,21 +2237,6 @@ std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
 
 f32 triforcePieceScale;
 
-void RandomizerShouldSkipForcePlayOcarina(bool* should) {
-    
-    if (!Flags_GetRandomizerInf(RAND_INF_CAN_OI)) {
-        Player* player = GET_PLAYER(gPlayState);
-
-        if (player->itemAction != PLAYER_IA_OCARINA_FAIRY && player->itemAction != PLAYER_IA_OCARINA_OF_TIME) {
-            player->unk_6AD = 0;
-            Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
-            Player_SetupActionPreserveItemAction(gPlayState, player, Player_Action_Idle, 0);
-            player->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
-            *should = true;
-        }
-    }
-}
-
 void RandomizerOnPlayerUpdateHandler() {
     if ((GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_IN_WATER) && !Flags_GetRandomizerInf(RAND_INF_CAN_SWIM) &&
         CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) != EQUIP_VALUE_BOOTS_IRON) {
@@ -2366,9 +2351,31 @@ void RandomizerOnLinkAnimEnd(SkelAnime* skelAnime) {
         Player* player = GET_PLAYER(gPlayState);
 
         // Make sure we are only checking for the end of link's animation
-        if (skelAnime == &player->skelAnime) {
+        // TODO: Use gPlayerAnim_link_normal_defense_kiru?
+        if (skelAnime == &player->skelAnime && player->meleeWeaponAnimation == PLAYER_MWA_STAB_1H) {
             func_80832318(player);
         }
+    }
+}
+
+void RandomizerShouldSkipForcePlayOcarina(bool* should) {
+    
+    if (!Flags_GetRandomizerInf(RAND_INF_CAN_OI)) {
+        Player* player = GET_PLAYER(gPlayState);
+
+        if (player->itemAction != PLAYER_IA_OCARINA_FAIRY && player->itemAction != PLAYER_IA_OCARINA_OF_TIME) {
+            player->unk_6AD = 0;
+            Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
+            Player_SetupActionPreserveItemAction(gPlayState, player, Player_Action_Idle, 0);
+            player->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
+            *should = true;
+        }
+    }
+}
+
+void RandomizerOnQPADamage(uint32_t* dmgFlags) {
+    if (!Flags_GetRandomizerInf(RAND_INF_CAN_QPA)) {
+        *dmgFlags = 0;
     }
 }
 
@@ -2392,6 +2399,7 @@ void RandomizerRegisterHooks() {
     static uint32_t onKaleidoUpdateHook = 0;
     static uint32_t onCuccoOrChickenHatchHook = 0;
     static uint32_t onLinkAnimEndHook = 0;
+    static uint32_t onQPADamageHook = 0;
 
     static uint32_t fishsanityOnActorInitHook = 0;
     static uint32_t fishsanityOnActorUpdateHook = 0;
@@ -2425,6 +2433,7 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(onKaleidoUpdateHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnCuccoOrChickenHatch>(onCuccoOrChickenHatchHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnLinkAnimEnd>(onLinkAnimEndHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnQPADamage>(onQPADamageHook);
 
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(fishsanityOnActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(fishsanityOnActorUpdateHook);
@@ -2509,6 +2518,8 @@ void RandomizerRegisterHooks() {
             RandomizerOnCuccoOrChickenHatch);
         onLinkAnimEndHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLinkAnimEnd>(
             [](SkelAnime* skelAnime) { RandomizerOnLinkAnimEnd(skelAnime); });
+        onQPADamageHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnQPADamage>(
+            [](uint32_t* dmgFlags) { RandomizerOnQPADamage(dmgFlags); });
 
         COND_VB_SHOULD(VB_SKIP_FORCE_PLAY_OCARINA, true, { RandomizerShouldSkipForcePlayOcarina(should); });
 

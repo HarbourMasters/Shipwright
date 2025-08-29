@@ -4450,6 +4450,7 @@ void func_80837948(PlayState* play, Player* this, s32 arg2) {
     if ((arg2 >= PLAYER_MWA_FLIPSLASH_START) && (arg2 <= PLAYER_MWA_JUMPSLASH_FINISH)) {
         if (CVarGetInteger(CVAR_GENERAL("RestoreQPA"), 1) && temp == -1) {
             dmgFlags = 0x16171617;
+            GameInteractor_ExecuteOnQPADamage(&dmgFlags);
         } else {
             dmgFlags = D_80854488[temp][1];
         }
@@ -6100,7 +6101,7 @@ s32 Player_ActionHandler_13(Player* this, PlayState* play) {
                         func_80835EA4(play, 2);
                     }
                 } else {
-                    if (GameInteractor_Should(VB_SKIP_FORCE_PLAY_OCARINA, false, NULL)) {
+                    if (GameInteractor_Should(VB_SKIP_FORCE_PLAY_OCARINA, false)) {
                         return 0;
                     }
                     Player_SetupActionPreserveItemAction(play, this, Player_Action_8084E3C4, 0);

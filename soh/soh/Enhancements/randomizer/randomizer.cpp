@@ -5719,12 +5719,15 @@ void Randomizer::CreateCustomMessages() {
                   "Du hast die %rBronzene Schuppe%w&erhalten! Die Fähigkeit zu&Schwimmen ist nun dein!",
                   "Vous obtenez l'%rÉcaille de Bronze%w!&Le pouvoir de la flottabilité est&à vous!"),
 
-        GIMESSAGE(RG_ABILITY_ISG, ITEM_SINGLE_MAGIC, "You got %rISG%w!",
+        GIMESSAGE(RG_ABILITY_ISG, ITEM_SWORD_MASTER, "You got %rISG%w!",
                   "Du hast %rISG%w&erhalten!",
                   "Vous obtenez %rISG%w!"),
         GIMESSAGE(RG_ABILITY_OI, ITEM_OCARINA_TIME, "You got %rOI%w!",
                   "Du hast %rOI%w&erhalten!",
                   "Vous obtenez %rOI%w!"),
+        GIMESSAGE(RG_ABILITY_QPA, ITEM_BLUE_FIRE, "You got %rQPA%w!",
+                  "Du hast %rQPA%w&erhalten!",
+                  "Vous obtenez %rQPA%w!"),
                   
         GIMESSAGE(RG_FISHING_POLE, ITEM_FISHING_POLE, "You found a lost %rFishing Pole%w!&Time to hit the pond!",
                   "Du hast eine verlorene %rAngelrute%w&gefunden!&Zeit, im Teich&zu angeln!",
@@ -5921,6 +5924,7 @@ std::map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
     { RG_GANON_SOUL, RAND_INF_GANON_SOUL },
     { RG_ABILITY_ISG, RAND_INF_CAN_ISG },
     { RG_ABILITY_OI, RAND_INF_CAN_OI },
+    { RG_ABILITY_QPA, RAND_INF_CAN_QPA },
 };
 
 extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {

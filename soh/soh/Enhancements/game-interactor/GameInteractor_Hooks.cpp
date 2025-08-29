@@ -101,6 +101,10 @@ void GameInteractor_ExecuteOnLinkAnimEnd(SkelAnime* skelAnime) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLinkAnimEnd>(skelAnime);
 }
 
+void GameInteractor_ExecuteOnQPADamage(uint32_t* dmgFlags) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnQPADamage>(dmgFlags);
+}
+
 void GameInteractor_ExecuteOnShopSlotChangeHooks(uint8_t cursorIndex, int16_t price) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShopSlotChange>(cursorIndex, price);
 }

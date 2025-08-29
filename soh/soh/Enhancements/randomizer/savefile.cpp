@@ -264,6 +264,9 @@ extern "C" void Randomizer_InitSaveFile() {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_OI) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_CAN_OI);
     }
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_QPA) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_QPA);
+    }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_WALLET) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
