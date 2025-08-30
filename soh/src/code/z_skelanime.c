@@ -890,7 +890,7 @@ void AnimationContext_SetLoadFrame(PlayState* play, LinkAnimationHeader* animati
     AnimationEntry* entry = AnimationContext_AddEntry(&play->animationCtx, ANIMENTRY_LOADFRAME);
 
     GameInteractor_ExecuteOnAnimationSetLoadFrame(animation, &frame);
-    
+
     if (GameInteractor_Should(VB_LOAD_PLAYER_ANIMATION_FRAME, entry != NULL, entry, animation, frame, limbCount,
                               frameTable)) {
         if (ResourceMgr_OTRSigCheck(animation) != 0)
