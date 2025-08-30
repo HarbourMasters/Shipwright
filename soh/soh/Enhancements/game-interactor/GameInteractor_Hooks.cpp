@@ -113,6 +113,10 @@ void GameInteractor_ExecuteOnWaitForPutaway() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnWaitForPutaway>();
 }
 
+void GameInteractor_ExecuteOnAnimationSetLoadFrame(LinkAnimationHeader* animation, int32_t* frame) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAnimationSetLoadFrame>(animation, frame);
+}
+
 void GameInteractor_ExecuteOnShopSlotChangeHooks(uint8_t cursorIndex, int16_t price) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShopSlotChange>(cursorIndex, price);
 }

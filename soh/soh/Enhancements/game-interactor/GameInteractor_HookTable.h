@@ -51,6 +51,7 @@ DEFINE_HOOK(OnLinkAnimEnd, (SkelAnime* skelAnime));
 DEFINE_HOOK(OnQPADamage, (uint32_t* dmgFlags));
 DEFINE_HOOK(OnESS, ());
 DEFINE_HOOK(OnWaitForPutaway, ());
+DEFINE_HOOK(OnAnimationSetLoadFrame, (LinkAnimationHeader* animation, int32_t* frame));
 
 DEFINE_HOOK(OnDialogMessage, ());
 DEFINE_HOOK(OnPresentTitleCard, ());

@@ -2197,6 +2197,14 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("a beginner's trick", /*german*/"Ground Jump", /*french*/"Ground Jump")});
                                                 // /*spanish*/Ground Jump
+    hintTextTable[RHT_ABILITY_WEIRDSHOT] = HintText(CustomMessage("Weirdshot", /*german*/"Weirdshot", /*french*/"Weirdshot"),
+                                               // /*spanish*/Weirdshot
+                                               {
+                                               CustomMessage("a weird shot", /*german*/"Weirdshot", /*french*/"Weirdshot")
+                                                // /*spanish*/Weirdshot
+                                               }, {
+                                               CustomMessage("a mangled animation", /*german*/"Weirdshot", /*french*/"Weirdshot")});
+                                                // /*spanish*/Weirdshot
 
     //What is this used for?
     hintTextTable[RHT_HINT_MYSTERIOUS] = HintText(CustomMessage("something mysterious", /*german*/"etwas Mysteriöses", /*french*/"un sacré mystère"));

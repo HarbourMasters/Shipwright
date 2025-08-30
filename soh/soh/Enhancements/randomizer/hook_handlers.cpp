@@ -2415,6 +2415,24 @@ void RandomizerOnKaleidoMoveCursorFromSpecialPos(PauseContext* pauseCtx, uint16_
     }
 }
 
+void RandomizerOnAnimationSetLoadFrame(LinkAnimationHeader* animation, int32_t* frame) {
+    if (!Flags_GetRandomizerInf(RAND_INF_CAN_WEIRDSHOT)) {
+        std::optional<const char*> animationName;
+
+        if (ResourceMgr_OTRSigCheck(reinterpret_cast<char*>(animation)) != 0) {
+            animationName = reinterpret_cast<const char*>(animation);
+            animation = reinterpret_cast<LinkAnimationHeader*>(ResourceMgr_LoadAnimByName(*animationName));
+        }
+
+        const auto playerAnimHeader =
+            static_cast<LinkAnimationHeader*>(SEGMENTED_TO_VIRTUAL(static_cast<void*>(animation)));
+
+        if (*frame < 0 || *frame >= playerAnimHeader->common.frameCount) {
+            *frame = 0;
+        }
+    }
+}
+
 void RandomizerRegisterHooks() {
     static uint32_t onFlagSetHook = 0;
     static uint32_t onSceneFlagSetHook = 0;
@@ -2439,6 +2457,7 @@ void RandomizerRegisterHooks() {
     static uint32_t onESSHook = 0;
     static uint32_t onWaitForPutawayHook = 0;
     static uint32_t onKaleidoMoveCursorFromSpecialPosHook = 0;
+    static uint32_t onAnimationSetLoadFrameHook = 0;
 
     static uint32_t fishsanityOnActorInitHook = 0;
     static uint32_t fishsanityOnActorUpdateHook = 0;
@@ -2476,6 +2495,7 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnESS>(onESSHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnWaitForPutaway>(onWaitForPutawayHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnKaleidoMoveCursorFromSpecialPos>(onKaleidoMoveCursorFromSpecialPosHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnAnimationSetLoadFrame>(onAnimationSetLoadFrameHook);
 
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(fishsanityOnActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(fishsanityOnActorUpdateHook);
@@ -2566,6 +2586,8 @@ void RandomizerRegisterHooks() {
             onWaitForPutawayHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnWaitForPutaway>(RandomizerOnWaitForPutaway);
         onKaleidoMoveCursorFromSpecialPosHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoMoveCursorFromSpecialPos>(
             [](PauseContext* pauseCtx, uint16_t* cursorItem) { RandomizerOnKaleidoMoveCursorFromSpecialPos(pauseCtx, cursorItem); });
+        onAnimationSetLoadFrameHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAnimationSetLoadFrame>(
+            [](LinkAnimationHeader* animation, int32_t* frame) { RandomizerOnAnimationSetLoadFrame(animation, frame); });
 
         COND_VB_SHOULD(VB_SKIP_FORCE_PLAY_OCARINA, true, { RandomizerShouldSkipForcePlayOcarina(should); });
 

@@ -615,6 +615,9 @@ void GenerateItemPool() {
     if (ctx->GetOption(RSK_SHUFFLE_GROUND_JUMP)) {
         AddItemToMainPool(RG_ABILITY_GROUND_JUMP);
     }
+    if (ctx->GetOption(RSK_SHUFFLE_WEIRDSHOT)) {
+        AddItemToMainPool(RG_ABILITY_WEIRDSHOT);
+    }
 
     if (ctx->GetOption(RSK_SHUFFLE_BEEHIVES)) {
         // 32 total beehive locations

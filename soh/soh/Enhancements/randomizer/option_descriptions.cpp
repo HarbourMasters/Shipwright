@@ -777,5 +777,7 @@ void Settings::CreateOptionDescriptions() {
         "Shuffles the ability to equip swap into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_GROUND_JUMP] =
         "Shuffles the ability to ground jump into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_WEIRDSHOT] =
+        "Shuffles the ability to weirdshot into the item pool.";
 }
 } // namespace Rando
