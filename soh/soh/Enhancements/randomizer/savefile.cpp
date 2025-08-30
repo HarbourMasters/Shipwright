@@ -279,6 +279,9 @@ extern "C" void Randomizer_InitSaveFile() {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_EQUIP_SWAP) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_CAN_EQUIP_SWAP);
     }
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_GROUND_JUMP) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_GROUND_JUMP);
+    }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_WALLET) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);

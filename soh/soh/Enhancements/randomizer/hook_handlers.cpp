@@ -73,6 +73,7 @@ extern void func_80832318(Player* player);
 extern void Player_SetupActionPreserveItemAction(PlayState* play, Player* player, PlayerActionFunc actionFunc, s32 flags);
 extern void Player_Action_Idle(Player* player, PlayState* play);
 extern s32 Player_DecelerateToZero(Player* player);
+extern s32 func_80834BD4(Player* player, PlayState* play);
 }
 
 bool LocMatchesQuest(Rando::Location loc) {
@@ -2284,6 +2285,14 @@ void RandomizerOnPlayerUpdateHandler() {
         if (GameInteractor::State::TriforceHuntPieceGiven) {
             triforcePieceScale = 0.0f;
             GameInteractor::State::TriforceHuntPieceGiven = 0;
+        }
+    }
+
+    if (!Flags_GetRandomizerInf(RAND_INF_CAN_GROUND_JUMP)) {
+        if (GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR && GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_SHIELDING) {
+            if (GET_PLAYER(gPlayState)->upperActionFunc == func_80834BD4 && GET_PLAYER(gPlayState)->heldActor == NULL) {
+                GET_PLAYER(gPlayState)->stateFlags1 &= ~PLAYER_STATE1_CARRYING_ACTOR;
+            }
         }
     }
 }

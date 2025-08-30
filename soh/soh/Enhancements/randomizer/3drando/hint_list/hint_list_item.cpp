@@ -2189,6 +2189,14 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("a timeless talent", /*german*/"Equip Swap", /*french*/"Equip Swap")});
                                                 // /*spanish*/Equip Swap
+    hintTextTable[RHT_ABILITY_GROUND_JUMP] = HintText(CustomMessage("Ground Jump", /*german*/"Ground Jump", /*french*/"Ground Jump"),
+                                               // /*spanish*/Ground Jump
+                                               {
+                                               CustomMessage("a little leap", /*german*/"Ground Jump", /*french*/"Ground Jump")
+                                                // /*spanish*/Ground Jump
+                                               }, {
+                                               CustomMessage("a beginner's trick", /*german*/"Ground Jump", /*french*/"Ground Jump")});
+                                                // /*spanish*/Ground Jump
 
     //What is this used for?
     hintTextTable[RHT_HINT_MYSTERIOUS] = HintText(CustomMessage("something mysterious", /*german*/"etwas Mysteriöses", /*french*/"un sacré mystère"));

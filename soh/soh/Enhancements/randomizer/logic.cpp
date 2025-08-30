@@ -1824,6 +1824,9 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_ABILITY_EQUIP_SWAP:
                     SetRandoInf(RAND_INF_CAN_EQUIP_SWAP, state);
                     break;
+                case RG_ABILITY_GROUND_JUMP:
+                    SetRandoInf(RAND_INF_CAN_GROUND_JUMP, state);
+                    break;
                 default:
                     break;
             }
@@ -2368,6 +2371,9 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         }
         if (ctx->GetOption(RSK_SHUFFLE_EQUIP_SWAP).Is(false)) {
             SetRandoInf(RAND_INF_CAN_EQUIP_SWAP, true);
+        }
+        if (ctx->GetOption(RSK_SHUFFLE_GROUND_JUMP).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_GROUND_JUMP, true);
         }
 
         // If we're not shuffling child's wallet, we start with it

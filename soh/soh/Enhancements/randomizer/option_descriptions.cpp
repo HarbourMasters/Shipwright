@@ -775,5 +775,7 @@ void Settings::CreateOptionDescriptions() {
         "Shuffles the ability to hover into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_EQUIP_SWAP] =
         "Shuffles the ability to equip swap into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_GROUND_JUMP] =
+        "Shuffles the ability to ground jump into the item pool.";
 }
 } // namespace Rando
