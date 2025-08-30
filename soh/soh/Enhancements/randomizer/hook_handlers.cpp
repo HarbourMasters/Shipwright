@@ -70,7 +70,8 @@ extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
 extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
 extern void EnGe2_SetupCapturePlayer(EnGe2* enGe2, PlayState* play);
 extern void func_80832318(Player* player);
-extern void Player_SetupActionPreserveItemAction(PlayState* play, Player* player, PlayerActionFunc actionFunc, s32 flags);
+extern void Player_SetupActionPreserveItemAction(PlayState* play, Player* player, PlayerActionFunc actionFunc,
+                                                 s32 flags);
 extern void Player_Action_Idle(Player* player, PlayState* play);
 extern s32 Player_DecelerateToZero(Player* player);
 extern s32 func_80834BD4(Player* player, PlayState* play);
@@ -2289,7 +2290,8 @@ void RandomizerOnPlayerUpdateHandler() {
     }
 
     if (!Flags_GetRandomizerInf(RAND_INF_CAN_GROUND_JUMP)) {
-        if (GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR && GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_SHIELDING) {
+        if (GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR &&
+            GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_SHIELDING) {
             if (GET_PLAYER(gPlayState)->upperActionFunc == func_80834BD4 && GET_PLAYER(gPlayState)->heldActor == NULL) {
                 GET_PLAYER(gPlayState)->stateFlags1 &= ~PLAYER_STATE1_CARRYING_ACTOR;
             }
@@ -2369,7 +2371,7 @@ void RandomizerOnLinkAnimEnd(SkelAnime* skelAnime) {
 }
 
 void RandomizerShouldSkipForcePlayOcarina(bool* should) {
-    
+
     if (!Flags_GetRandomizerInf(RAND_INF_CAN_OI)) {
         Player* player = GET_PLAYER(gPlayState);
 
@@ -2494,8 +2496,10 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnQPADamage>(onQPADamageHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnESS>(onESSHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnWaitForPutaway>(onWaitForPutawayHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnKaleidoMoveCursorFromSpecialPos>(onKaleidoMoveCursorFromSpecialPosHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnAnimationSetLoadFrame>(onAnimationSetLoadFrameHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnKaleidoMoveCursorFromSpecialPos>(
+            onKaleidoMoveCursorFromSpecialPosHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnAnimationSetLoadFrame>(
+            onAnimationSetLoadFrameHook);
 
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(fishsanityOnActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(fishsanityOnActorUpdateHook);
@@ -2582,12 +2586,19 @@ void RandomizerRegisterHooks() {
             [](SkelAnime* skelAnime) { RandomizerOnLinkAnimEnd(skelAnime); });
         onQPADamageHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnQPADamage>(
             [](uint32_t* dmgFlags) { RandomizerOnQPADamage(dmgFlags); });
-            onESSHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnESS>(RandomizerOnESS);
-            onWaitForPutawayHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnWaitForPutaway>(RandomizerOnWaitForPutaway);
-        onKaleidoMoveCursorFromSpecialPosHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoMoveCursorFromSpecialPos>(
-            [](PauseContext* pauseCtx, uint16_t* cursorItem) { RandomizerOnKaleidoMoveCursorFromSpecialPos(pauseCtx, cursorItem); });
-        onAnimationSetLoadFrameHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAnimationSetLoadFrame>(
-            [](LinkAnimationHeader* animation, int32_t* frame) { RandomizerOnAnimationSetLoadFrame(animation, frame); });
+        onESSHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnESS>(RandomizerOnESS);
+        onWaitForPutawayHook =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnWaitForPutaway>(RandomizerOnWaitForPutaway);
+        onKaleidoMoveCursorFromSpecialPosHook =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoMoveCursorFromSpecialPos>(
+                [](PauseContext* pauseCtx, uint16_t* cursorItem) {
+                    RandomizerOnKaleidoMoveCursorFromSpecialPos(pauseCtx, cursorItem);
+                });
+        onAnimationSetLoadFrameHook =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAnimationSetLoadFrame>(
+                [](LinkAnimationHeader* animation, int32_t* frame) {
+                    RandomizerOnAnimationSetLoadFrame(animation, frame);
+                });
 
         COND_VB_SHOULD(VB_SKIP_FORCE_PLAY_OCARINA, true, { RandomizerShouldSkipForcePlayOcarina(should); });
 

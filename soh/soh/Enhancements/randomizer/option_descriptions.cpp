@@ -761,23 +761,15 @@ void Settings::CreateOptionDescriptions() {
         "respective soul."
         "\n\"On + Ganon\" will also hide Ganon and Ganondorf behind a boss soul.";
 
-    mOptionDescriptions[RSK_SHUFFLE_ISG] =
-        "Shuffles the ability to use the glitch ISG into the item pool.";
-    mOptionDescriptions[RSK_SHUFFLE_OI] =
-        "Shuffles the ability to use the glitch Ocarina Items into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_ISG] = "Shuffles the ability to use the glitch ISG into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_OI] = "Shuffles the ability to use the glitch Ocarina Items into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_QPA] =
         "Shuffles the ability to use Quick Putaway Glitched Damage into the item pool.";
-    mOptionDescriptions[RSK_SHUFFLE_HESS] =
-        "Shuffles the ability to HESS into the item pool.";
-    mOptionDescriptions[RSK_SHUFFLE_SUPERSLIDE] =
-        "Shuffles the ability to superslide into the item pool.";
-    mOptionDescriptions[RSK_SHUFFLE_HOVER] =
-        "Shuffles the ability to hover into the item pool.";
-    mOptionDescriptions[RSK_SHUFFLE_EQUIP_SWAP] =
-        "Shuffles the ability to equip swap into the item pool.";
-    mOptionDescriptions[RSK_SHUFFLE_GROUND_JUMP] =
-        "Shuffles the ability to ground jump into the item pool.";
-    mOptionDescriptions[RSK_SHUFFLE_WEIRDSHOT] =
-        "Shuffles the ability to weirdshot into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_HESS] = "Shuffles the ability to HESS into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_SUPERSLIDE] = "Shuffles the ability to superslide into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_HOVER] = "Shuffles the ability to hover into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_EQUIP_SWAP] = "Shuffles the ability to equip swap into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_GROUND_JUMP] = "Shuffles the ability to ground jump into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_WEIRDSHOT] = "Shuffles the ability to weirdshot into the item pool.";
 }
 } // namespace Rando
