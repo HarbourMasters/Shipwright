@@ -25,9 +25,11 @@ void GameInteractor_ExecuteOnFlagSet(int16_t flagType, int16_t flag);
 void GameInteractor_ExecuteOnFlagUnset(int16_t flagType, int16_t flag);
 void GameInteractor_ExecuteOnSceneSpawnActors();
 void GameInteractor_ExecuteOnPlayerUpdate();
+void GameInteractor_ExecuteOnPlayerSfx(u16 sfxId);
 void GameInteractor_ExecuteOnSetDoAction(uint16_t action);
 void GameInteractor_ExecuteOnOcarinaSongAction();
 void GameInteractor_ExecuteOnCuccoOrChickenHatch();
+bool GameInteractor_ShouldActorInit(void* actor);
 void GameInteractor_ExecuteOnActorInit(void* actor);
 void GameInteractor_ExecuteOnActorSpawn(void* actor);
 void GameInteractor_ExecuteOnActorUpdate(void* actor);
@@ -44,12 +46,13 @@ void GameInteractor_ExecuteOnPlayerFirstPersonControl(Player* player);
 void GameInteractor_ExecuteOnPlayerShieldControl(float_t* sp50, float_t* sp54);
 void GameInteractor_ExecuteOnPlayerProcessStick();
 void GameInteractor_ExecuteOnShopSlotChangeHooks(uint8_t cursorIndex, int16_t price);
+void GameInteractor_ExecuteOnDungeonKeyUsedHooks(uint16_t mapIndex);
 void GameInteractor_ExecuteOnPlayDestroy();
 void GameInteractor_ExecuteOnPlayDrawEnd();
 bool GameInteractor_Should(GIVanillaBehavior flag, uint32_t result, ...);
 
 // MARK: -  Save Files
-void GameInteractor_ExecuteOnSaveFile(int32_t fileNum);
+void GameInteractor_ExecuteOnSaveFile(int32_t fileNum, int32_t sectionID);
 void GameInteractor_ExecuteOnLoadFile(int32_t fileNum);
 void GameInteractor_ExecuteOnDeleteFile(int32_t fileNum);
 
@@ -84,6 +87,9 @@ void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void));
 
 // Mark: - Pause Menu
 void GameInteractor_ExecuteOnKaleidoUpdate();
+
+//Mark: - Rando
+void GameInteractor_ExecuteOnRandoEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance);
 
 #ifdef __cplusplus
 }

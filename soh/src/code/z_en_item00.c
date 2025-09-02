@@ -348,6 +348,7 @@ void EnItem00_SetObjectDependency(EnItem00* this, PlayState* play, s16 objectInd
 void EnItem00_Init(Actor* thisx, PlayState* play) {
     EnItem00* this = (EnItem00*)thisx;
     s32 pad;
+
     f32 yOffset = 980.0f;
     f32 shadowScale = 6.0f;
     s32 getItemId = GI_NONE;
@@ -766,6 +767,14 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
     u32* temp;
     EnItem00* this = (EnItem00*)thisx;
     s32 pad;
+
+    // added4anchor
+    // #region SOH [Co-op]
+    if (Flags_GetCollectible(play, this->collectibleFlag)) {
+        Actor_Kill(&this->actor);
+        return;
+    }
+    // #endregion
 
     // Rotate some drops when 3D drops are on, otherwise reset rotation back to 0 for billboard effect
     if ((this->actor.params == ITEM00_HEART && this->unk_15A >= 0) ||
