@@ -64,7 +64,8 @@ RandomizerArea Context::GetAreaFromString(std::string str) {
 int Context::CountEmptyLocations(const bool countShops) {
     auto ctx = Rando::Context::GetInstance();
     return count_if(allLocations.begin(), allLocations.end(), [ctx, countShops](const auto loc) {
-        return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_NONE && (countShops || !(Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SHOP));
+        return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_NONE &&
+               (countShops || !(Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SHOP));
     });
 }
 
@@ -322,10 +323,10 @@ void Context::CreateItemOverrides() {
         const auto itemLoc = GetItemLocation(locKey);
         if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
             RandomizerGet trickModel = RandomElementFromSet(possibleIceTrapModels);
-            if (trickModel == RG_EMPTY_BOTTLE){
+            if (trickModel == RG_EMPTY_BOTTLE) {
                 trickModel = RandomElement(StaticData::normalBottles);
             }
-            if (trickModel == RG_GUARD_HOUSE_KEY){
+            if (trickModel == RG_GUARD_HOUSE_KEY) {
                 trickModel = RandomElement(StaticData::overworldKeys);
             }
             ItemOverride val(locKey, trickModel);

@@ -6247,12 +6247,7 @@ typedef enum {
 } RandoOptionItemPool;
 
 // Ice Trap Settings
-typedef enum {
-    RO_ICE_TRAPS_OFF,
-    RO_ICE_TRAPS_NORMAL,
-    RO_ICE_TRAPS_COUNT,
-    RO_ICE_TRAPS_PERCENT
-} RandoOptionIceTraps;
+typedef enum { RO_ICE_TRAPS_OFF, RO_ICE_TRAPS_NORMAL, RO_ICE_TRAPS_COUNT, RO_ICE_TRAPS_PERCENT } RandoOptionIceTraps;
 
 // Gossip Stone Hint Settings (no hints, needs nothing,
 // needs mask of truth, needs stone of agony)

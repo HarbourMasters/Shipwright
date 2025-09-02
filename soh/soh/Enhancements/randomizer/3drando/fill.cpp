@@ -61,7 +61,6 @@ PriceSettingsStruct merchantPrices = {
     RSK_MERCHANT_PRICES_AFFORDABLE,
 };
 
-
 static void PropagateTimeTravel(GetAccessibleLocationsStruct& gals, RandomizerGet ignore = RG_NONE,
                                 bool stopOnBeatable = false, bool addToPlaythrough = false) {
     // special check for temple of time

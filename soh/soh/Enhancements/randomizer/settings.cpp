@@ -1648,8 +1648,9 @@ void Settings::CreateOptions() {
                                               &mOptions[RSK_INFINITE_UPGRADES],
                                               &mOptions[RSK_SKELETON_KEY],
                                           });
-    mOptionGroups[RSG_ITEM_POOL] = OptionGroup(
-        "Item Pool Settings", std::initializer_list<Option*>({ &mOptions[RSK_ITEM_POOL], &mOptions[RSK_BASE_ICE_TRAPS] }));
+    mOptionGroups[RSG_ITEM_POOL] =
+        OptionGroup("Item Pool Settings",
+                    std::initializer_list<Option*>({ &mOptions[RSK_ITEM_POOL], &mOptions[RSK_BASE_ICE_TRAPS] }));
     // TODO: Progressive Goron Sword, Remove Double Defense
     mOptionGroups[RSG_EXCLUDES_KOKIRI_FOREST] =
         OptionGroup::SubGroup("Kokiri Forest", mExcludeLocationsOptionsAreas[RCAREA_KOKIRI_FOREST]);

@@ -68,7 +68,6 @@ class Context {
     void SetSeedGenerated(bool seedGenerated = true);
     bool IsSpoilerLoaded() const;
     void SetSpoilerLoaded(bool spoilerLoaded = true);
-    
 
     /**
      * @brief Reset all RandomizerTrick keys.
