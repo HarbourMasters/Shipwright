@@ -12,4 +12,4 @@ RandomizerGet GetJunkItem();
 void PlaceJunkInExcludedLocation(const RandomizerCheck il);
 void GenerateItemPool();
 
-extern std::vector<RandomizerGet> ItemPool;
+extern std::vector<RandomizerGet> itemPool;

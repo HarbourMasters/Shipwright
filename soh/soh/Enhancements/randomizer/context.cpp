@@ -61,6 +61,13 @@ RandomizerArea Context::GetAreaFromString(std::string str) {
     return (RandomizerArea)StaticData::areaNameToEnum[str];
 }
 
+int Context::CountEmptyLocations(const bool countShops) {
+    auto ctx = Rando::Context::GetInstance();
+    return count_if(allLocations.begin(), allLocations.end(), [ctx, countShops](const auto loc) {
+        return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_NONE && (countShops || !(Rando::StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SHOP));
+    });
+}
+
 void Context::InitStaticData() {
     StaticData::HintTable_Init();
     StaticData::trialNameToEnum = StaticData::PopulateTranslationMap(StaticData::trialData);
@@ -314,7 +321,14 @@ void Context::CreateItemOverrides() {
         // If this is an ice trap, store the disguise model in iceTrapModels
         const auto itemLoc = GetItemLocation(locKey);
         if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
-            ItemOverride val(locKey, RandomElement(possibleIceTrapModels));
+            RandomizerGet trickModel = RandomElementFromSet(possibleIceTrapModels);
+            if (trickModel == RG_EMPTY_BOTTLE){
+                trickModel = RandomElement(StaticData::normalBottles);
+            }
+            if (trickModel == RG_GUARD_HOUSE_KEY){
+                trickModel = RandomElement(StaticData::overworldKeys);
+            }
+            ItemOverride val(locKey, trickModel);
             iceTrapModels[locKey] = val.LooksLike();
             val.SetTrickName(GetIceTrapName(val.LooksLike()));
             // If this is ice trap is in a shop, change the name based on what the model will look like

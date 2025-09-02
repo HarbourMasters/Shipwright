@@ -5826,7 +5826,9 @@ typedef enum {
     RSK_SHUFFLE_CRATES,
     RSK_SHUFFLE_FROG_SONG_RUPEES,
     RSK_ITEM_POOL,
-    RSK_ICE_TRAPS,
+    RSK_BASE_ICE_TRAPS,
+    RSK_ICE_TRAP_COUNT,
+    RSK_ICE_TRAP_PERCENT,
     RSK_GOSSIP_STONE_HINTS,
     RSK_TOT_ALTAR_HINT,
     RSK_GANONDORF_HINT,
@@ -6248,9 +6250,8 @@ typedef enum {
 typedef enum {
     RO_ICE_TRAPS_OFF,
     RO_ICE_TRAPS_NORMAL,
-    RO_ICE_TRAPS_EXTRA,
-    RO_ICE_TRAPS_MAYHEM,
-    RO_ICE_TRAPS_ONSLAUGHT,
+    RO_ICE_TRAPS_COUNT,
+    RO_ICE_TRAPS_PERCENT
 } RandoOptionIceTraps;
 
 // Gossip Stone Hint Settings (no hints, needs nothing,

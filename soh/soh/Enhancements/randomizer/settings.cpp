@@ -305,7 +305,9 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_INFINITE_UPGRADES, "Infinite Upgrades", {"Off", "Progressive", "Condensed Progressive"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("InfiniteUpgrades"), mOptionDescriptions[RSK_INFINITE_UPGRADES]);
     OPT_BOOL(RSK_SKELETON_KEY, "Skeleton Key", CVAR_RANDOMIZER_SETTING("SkeletonKey"), mOptionDescriptions[RSK_SKELETON_KEY]);
     OPT_U8(RSK_ITEM_POOL, "Item Pool", {"Plentiful", "Balanced", "Scarce", "Minimal"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ItemPool"), mOptionDescriptions[RSK_ITEM_POOL], WidgetType::Combobox, RO_ITEM_POOL_BALANCED);
-    OPT_U8(RSK_ICE_TRAPS, "Ice Traps", {"Off", "Normal", "Extra", "Mayhem", "Onslaught"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("IceTraps"), mOptionDescriptions[RSK_ICE_TRAPS], WidgetType::Combobox, RO_ICE_TRAPS_NORMAL);
+    OPT_BOOL(RSK_BASE_ICE_TRAPS, "Base Ice Traps", CVAR_RANDOMIZER_SETTING("BaseIceTraps"), mOptionDescriptions[RSK_BASE_ICE_TRAPS], IMFLAG_NONE, WidgetType::Checkbox, RO_GENERIC_ON);
+    OPT_U8(RSK_ICE_TRAP_COUNT, "Ice Trap Count", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("IceTrapCount"), mOptionDescriptions[RSK_ICE_TRAP_COUNT], WidgetType::Slider, 0);
+    OPT_U8(RSK_ICE_TRAP_PERCENT, "Ice Trap Percent", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("IceTrapPercent"), mOptionDescriptions[RSK_ICE_TRAP_PERCENT], WidgetType::Slider, 0);
     // TODO: Remove Double Defense, Progressive Goron Sword
     OPT_U8(RSK_STARTING_OCARINA, "Start with Ocarina", {"Off", "Fairy Ocarina", "Ocarina of Time"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingOcarina"), "", WidgetType::Combobox, RO_STARTING_OCARINA_OFF);
     OPT_BOOL(RSK_STARTING_DEKU_SHIELD, "Start with Deku Shield", CVAR_RANDOMIZER_SETTING("StartingDekuShield"));
@@ -1344,7 +1346,9 @@ void Settings::CreateOptions() {
     mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI] = OptionGroup::SubGroup("",
                                                                      {
                                                                          &mOptions[RSK_ITEM_POOL],
-                                                                         &mOptions[RSK_ICE_TRAPS],
+                                                                         &mOptions[RSK_BASE_ICE_TRAPS],
+                                                                         &mOptions[RSK_ICE_TRAP_COUNT],
+                                                                         &mOptions[RSK_ICE_TRAP_PERCENT],
                                                                          &mOptions[RSK_GOSSIP_STONE_HINTS],
                                                                          &mOptions[RSK_HINT_CLARITY],
                                                                          &mOptions[RSK_HINT_DISTRIBUTION],
@@ -1645,7 +1649,7 @@ void Settings::CreateOptions() {
                                               &mOptions[RSK_SKELETON_KEY],
                                           });
     mOptionGroups[RSG_ITEM_POOL] = OptionGroup(
-        "Item Pool Settings", std::initializer_list<Option*>({ &mOptions[RSK_ITEM_POOL], &mOptions[RSK_ICE_TRAPS] }));
+        "Item Pool Settings", std::initializer_list<Option*>({ &mOptions[RSK_ITEM_POOL], &mOptions[RSK_BASE_ICE_TRAPS] }));
     // TODO: Progressive Goron Sword, Remove Double Defense
     mOptionGroups[RSG_EXCLUDES_KOKIRI_FOREST] =
         OptionGroup::SubGroup("Kokiri Forest", mExcludeLocationsOptionsAreas[RCAREA_KOKIRI_FOREST]);
