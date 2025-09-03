@@ -1262,7 +1262,7 @@ void Actor_Init(Actor* actor, PlayState* play) {
         //GameInteractor_ExecuteOnActorInit(actor);
 
         if (GameInteractor_ShouldActorInit(actor)) {
-            actor->init();
+            actor->init(actor, play);
             actor->init = NULL;
 
             GameInteractor_ExecuteOnActorInit(actor);

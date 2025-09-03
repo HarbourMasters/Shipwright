@@ -807,8 +807,7 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance) {
         return;
     }
 
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnRandoSetCheckStatus>(rc, status);
-
+    GameInteractor_ExecuteOnRandoEntranceDiscovered(entranceIndex, isReversedEntrance);
 
     u16 bitsPerIndex = sizeof(u32) * 8;
     u32 idx = entranceIndex / bitsPerIndex;
