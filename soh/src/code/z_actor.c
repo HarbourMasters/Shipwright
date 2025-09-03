@@ -1256,10 +1256,25 @@ void Actor_Init(Actor* actor, PlayState* play) {
     ActorShape_Init(&actor->shape, 0.0f, NULL, 0.0f);
     if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
         Actor_SetObjectDependency(play, actor);
-        actor->init(actor, play);
-        actor->init = NULL;
+        //actor->init(actor, play);
+        //actor->init = NULL;
 
-        GameInteractor_ExecuteOnActorInit(actor);
+        //GameInteractor_ExecuteOnActorInit(actor);
+
+        if (GameInteractor_ShouldActorInit(actor)) {
+            actor->init();
+            actor->init = NULL;
+
+            GameInteractor_ExecuteOnActorInit(actor);
+
+            if (actor->category == ACTORCAT_ENEMY) {
+                actor->maximumHealth = actor->colChkInfo.health;
+            }
+        }
+        else {
+            actor->init = NULL;
+            Actor_Kill(actor);
+        }
     }
 }
 
@@ -2244,6 +2259,10 @@ void Player_PlaySfx(Actor* actor, u16 sfxId) {
         Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &freqMultiplier, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultReverb);
     }
+
+    if (actor->id == ACTOR_PLAYER) {
+        GameInteractor_ExecuteOnPlayerSfx(sfxId);
+    }
 }
 
 void Audio_PlayActorSound2(Actor* actor, u16 sfxId) {
@@ -2624,10 +2643,25 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
             if (actor->init != NULL) {
                 if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
                     Actor_SetObjectDependency(play, actor);
-                    actor->init(actor, play);
+                    /*actor->init(actor, play);
                     actor->init = NULL;
 
-                    GameInteractor_ExecuteOnActorInit(actor);
+                    GameInteractor_ExecuteOnActorInit(actor);*/
+
+                    if (GameInteractor_ShouldActorInit(actor)) {
+                        actor->init(actor, play);
+                        actor->init = NULL;
+
+                        GameInteractor_ExecuteOnActorInit(actor);
+
+                        if (actor->category == ACTORCAT_ENEMY) {
+                            actor->maximumHealth = actor->colChkInfo.health;
+                        }
+                    }
+                    else {
+                        actor->init = NULL;
+                        Actor_Kill(actor);
+                    }
                 }
                 actor = actor->next;
             } else if (!Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {

@@ -282,6 +282,12 @@ void BgYdanSp_FloorWebIdle(BgYdanSp* this, PlayState* play) {
     webPos.x = this->dyna.actor.world.pos.x;
     webPos.y = this->dyna.actor.world.pos.y - 50.0f;
     webPos.z = this->dyna.actor.world.pos.z;
+
+    if (Flags_GetSwitch(play, this->isDestroyedSwitchFlag)) {
+        BgYdanSp_BurnWeb(this, play);
+        return;
+    }
+
     if (Player_IsBurningStickInRange(play, &webPos, 70.0f, 50.0f) != 0) {
         this->dyna.actor.home.pos.x = player->meleeWeaponInfo[0].tip.x;
         this->dyna.actor.home.pos.z = player->meleeWeaponInfo[0].tip.z;

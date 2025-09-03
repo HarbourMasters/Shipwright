@@ -6,6 +6,7 @@
 #include "soh/OTRGlobals.h"
 #include <soh/Network/Sail/Sail.h>
 #include <soh/Network/CrowdControl/CrowdControl.h>
+#include <soh/Network/Anchor/Anchor.h>
 
 namespace SohGui {
 
@@ -168,6 +169,86 @@ void SohMenu::AddMenuNetwork() {
         .RaceDisable(true)
         .Options(CheckboxOptions().Tooltip("Enemies spawned by CrowdControl won't be considered for \"clear enemy "
                                            "rooms\", so they don't need to be killed to complete these rooms."));
+
+
+    // Anchor
+    path.sidebarName = "Online Multiplayer (Anchor)";
+    AddSidebarEntry("Network", path.sidebarName, 3);
+    path.column = SECTION_COLUMN_1;
+
+    AddWidget(path, "About Online Multiplayer (formerly known as Anchor)", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path,
+              "Anchor is an option for Ship of Harkinian that allows "
+              "multiple players to play within the same world to "
+              "complete Ocarina of Time. This is supported for randomizers "
+              "as well as vanilla playthroughs. Some bugs may occur, as this "
+              "is still being developed.\n",
+              WIDGET_TEXT);
+
+    AddWidget(path, "Connect to a server", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Host & Port", WIDGET_CUSTOM).CustomFunction([](WidgetInfo& info) {
+        ImGui::BeginDisabled(Anchor::Instance->isEnabled || CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
+        ImGui::Text("%s", info.name.c_str());
+        CVarInputString("##HostAnchor", CVAR_REMOTE_CROWD_CONTROL("Host"),
+                        InputOptions()
+                            .Color(THEME_COLOR)
+                            .PlaceholderText("anchor.proxysaw.dev")
+                            .DefaultValue("anchor.proxysaw.dev")
+                            .Size(ImVec2(ImGui::GetFontSize() * 15, 0))
+                            .LabelPosition(LabelPositions::None));
+        ImGui::SameLine();
+        ImGui::Text(":");
+        ImGui::SameLine();
+        CVarInputInt("##PortAnchor", CVAR_REMOTE_CROWD_CONTROL("Port"),
+                     InputOptions()
+                         .Color(THEME_COLOR)
+                         .PlaceholderText("43385")
+                         .DefaultValue("43385")
+                         .Size(ImVec2(ImGui::GetFontSize() * 5, 0))
+                         .LabelPosition(LabelPositions::None));
+        ImGui::EndDisabled();
+    });
+    AddWidget(path, "Enable##Anchor", WIDGET_BUTTON)
+        .PreFunc([](WidgetInfo& info) {
+            std::string host = CVarGetString(CVAR_REMOTE_CROWD_CONTROL("Host"), "anchor.proxysaw.dev");
+            uint16_t port = CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Port"), 43385);
+            info.options->disabled = !(!SohUtils::IsStringEmpty(host) && port > 1024 && port < 65535);
+            if (Anchor::Instance->isEnabled) {
+                info.name = "Disable##Anchor";
+            } else {
+                info.name = "Enable##Anchor";
+            }
+        })
+        .Callback([](WidgetInfo& info) {
+            if (Anchor::Instance->isEnabled) {
+                CVarClear(CVAR_REMOTE_CROWD_CONTROL("Enabled"));
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                Anchor::Instance->Disable();
+            } else {
+                CVarSetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 1);
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                Anchor::Instance->Enable();
+            }
+        });
+    AddWidget(path, "Connecting...", WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
+        info.isHidden = !Anchor::Instance->isEnabled;
+        if (Anchor::Instance->isConnected) {
+            info.name = "Connected";
+        } else {
+            info.name = "Connecting...";
+        }
+    });
+    /*AddWidget(path, "Additional Settings", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Enemy Name Tags", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_REMOTE_CROWD_CONTROL("EnemyNameTags"))
+        .RaceDisable(true)
+        .Options(CheckboxOptions().Tooltip(
+            "When viewers spawn enemies, the enemy will have a name tag above them with the viewer's name."));
+    AddWidget(path, "Spawned Enemies Ignored Ingame", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_REMOTE_CROWD_CONTROL("SpawnedEnemiesIgnoredIngame"))
+        .RaceDisable(true)
+        .Options(CheckboxOptions().Tooltip("Enemies spawned by CrowdControl won't be considered for \"clear enemy "
+                                           "rooms\", so they don't need to be killed to complete these rooms."));*/
 }
 
 } // namespace SohGui

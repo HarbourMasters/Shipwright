@@ -21,6 +21,7 @@
 #ifdef ENABLE_REMOTE_CONTROL
 #include "soh/Network/CrowdControl/CrowdControl.h"
 #include "soh/Network/Sail/Sail.h"
+#include "soh/Network/Anchor/Anchor.h"
 #endif
 
 #include "soh/Enhancements/audio/AudioEditor.h"

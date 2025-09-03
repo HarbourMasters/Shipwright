@@ -146,7 +146,7 @@ void func_808BEFF4(BgYdanMaruta* this, PlayState* play) {
 }
 
 void func_808BF078(BgYdanMaruta* this, PlayState* play) {
-    if (this->collider.base.acFlags & AC_HIT) {
+    if ((this->collider.base.acFlags & AC_HIT) || Flags_GetSwitch(play, this->switchFlag)) {
         this->unk_16A = 20;
         Flags_SetSwitch(play, this->switchFlag);
         Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);

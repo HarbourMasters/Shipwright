@@ -142,7 +142,7 @@ void BgJyaBombchuiwa_SetupWaitForExplosion(BgJyaBombchuiwa* this, PlayState* pla
 }
 
 void BgJyaBombchuiwa_WaitForExplosion(BgJyaBombchuiwa* this, PlayState* play) {
-    if ((this->collider.base.acFlags & AC_HIT) || (this->timer > 0)) {
+    if ((this->collider.base.acFlags & AC_HIT) || (this->timer > 0) || Flags_GetSwitch(play, this->actor.params & 0x3F)) {
         if (this->timer == 0) {
             OnePointCutscene_Init(play, 3410, -99, &this->actor, MAIN_CAM);
         }
