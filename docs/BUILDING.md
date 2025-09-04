@@ -39,6 +39,7 @@ cd Shipwright
 
 # Compile project
 # Add `--config Release` if you're packaging
+# Add -j + number of CPUs to probably work faster
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64
 
 # Now you can run the executable in .\build\x64 or run in Visual Studio
