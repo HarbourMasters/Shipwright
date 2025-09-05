@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.26.0 FATAL_ERROR)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 
+option(BUILD_REMOTE_CONTROL "Enable remote control support" OFF)
+
+
 project(soh LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
 set(CMAKE_C_STANDARD 23 CACHE STRING "The C standard to use")
@@ -299,6 +302,8 @@ set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
 if (BUILD_REMOTE_CONTROL)
     find_package(SDL2_net)
+
+    message(STATUS "Final BUILD_REMOTE_CONTROL = ${BUILD_REMOTE_CONTROL}")
 
     if(NOT SDL2_net_FOUND)
         message(STATUS "SDL2_net not found (it's possible the version installed is too old). Disabling BUILD_REMOTE_CONTROL.")
@@ -792,3 +797,7 @@ wut_create_wuhb(${PROJECT_NAME}
 INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/soh.rpx ${CMAKE_CURRENT_BINARY_DIR}/soh.wuhb DESTINATION . COMPONENT ship)
 
 endif()
+
+
+get_target_property(DEFS ${PROJECT_NAME} COMPILE_DEFINITIONS)
+message(STATUS "Compile definitions for ${PROJECT_NAME}: ${DEFS}")

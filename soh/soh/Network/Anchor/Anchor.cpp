@@ -6,6 +6,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/nametag.h"
+#include "soh/SohGui/UIWidgets.hpp"
 
 extern "C" {
 #include "variables.h"
@@ -334,7 +335,7 @@ void Anchor::DrawMenu() {
     }
     ImGui::Text("Room ID");
     ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-    if (UIWidgets::InputString("##RoomId", &anchorRoomId, isEnabled ? ImGuiInputTextFlags_Password : 0)) {
+    if (UIWidgets::InputString("##RoomId", &anchorRoomId/*, isEnabled ? ImGuiInputTextFlags_Password : 0*/)) {
         CVarSetString(CVAR_REMOTE_ANCHOR("RoomId"), anchorRoomId.c_str());
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
@@ -370,21 +371,59 @@ void Anchor::DrawMenu() {
 
             if (roomState.ownerClientId == ownClientId) {
                 if (ImGui::BeginMenu("Room Settings")) {
+
+                    //PvP
                     ImGui::Text("PvP Mode:");
-                    static const char* pvpModes[3] = { "Off", "On", "On + Friendly Fire" };
-                    if (UIWidgets::EnhancementCombobox(CVAR_REMOTE_ANCHOR("RoomSettings.PvpMode"), pvpModes, 1)) {
+                    static const std::unordered_map<int32_t, const char*> pvpModes =
+                    { 
+                        { 0, "Off" },
+                        { 1, "On" },
+                        { 2, "On + Friendly Fire" }
+                    };
+
+                    UIWidgets::ComboboxOptions options;
+
+                    options.DefaultIndex(0)
+                        .Color(UIWidgets::Colors::LightBlue)
+                        .Tooltip("Do you want to be able to fight your friends?");
+
+                    if (UIWidgets::CVarCombobox("PVP Settings", CVAR_REMOTE_ANCHOR("RoomSettings.PvpMode"), pvpModes, options)) {
                         SendPacket_UpdateRoomState();
                     }
+
+
+                    //Locations
                     ImGui::Text("Show Locations For:");
-                    static const char* showLocationsModes[3] = { "None", "Team Only", "All" };
-                    if (UIWidgets::EnhancementCombobox(CVAR_REMOTE_ANCHOR("RoomSettings.ShowLocationsMode"),
-                                                       showLocationsModes, 1)) {
+                    static const std::unordered_map<int32_t, const char*> showLocationsMap =
+                    { 
+                        { 0, "None" },
+                        { 1, "Team Only" },
+                        { 2, "All" }
+                    };
+
+                    options.DefaultIndex(1) //"Team Only"
+                        .Color(UIWidgets::Colors::LightBlue)
+                        .Tooltip("Who can see your locations on the map?");
+                        
+
+                    if (UIWidgets::CVarCombobox("Show Locations", CVAR_REMOTE_ANCHOR("RoomSettings.ShowLocationsMode"), showLocationsMap, options)) {
                         SendPacket_UpdateRoomState();
                     }
+
+                    //Teleporting
                     ImGui::Text("Allow Teleporting To:");
-                    static const char* teleportModes[3] = { "None", "Team Only", "All" };
-                    if (UIWidgets::EnhancementCombobox(CVAR_REMOTE_ANCHOR("RoomSettings.TeleportMode"), teleportModes,
-                                                       1)) {
+                    static const std::unordered_map<int32_t, const char*> teleportModes =
+                    { 
+                        {0, "None" },
+                        {1, "Team Only" },
+                        {2, "All" }
+                    };
+
+                    options.DefaultIndex(1) //team only
+                        .Color(UIWidgets::Colors::LightBlue)
+                        .Tooltip("Do you want to be able to warp to your friends?");
+
+                    if (UIWidgets::CVarCombobox("Teleport Modes", CVAR_REMOTE_ANCHOR("RoomSettings.TeleportMode"), teleportModes, options)) {
                         SendPacket_UpdateRoomState();
                     }
                     ImGui::EndMenu();
