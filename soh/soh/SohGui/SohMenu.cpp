@@ -61,8 +61,9 @@ WidgetInfo& SohMenu::AddWidget(WidgetPath& pathInfo, std::string widgetName, Wid
         case WIDGET_WINDOW_BUTTON:
             widget.options = std::make_shared<WindowButtonOptions>();
             break;
-        case WIDGET_COLOR_24:
-        case WIDGET_COLOR_32:
+        case WIDGET_CVAR_COLOR_PICKER:
+        case WIDGET_COLOR_PICKER:
+            widget.options = std::make_shared<ColorPickerOptions>();
             break;
         case WIDGET_SEPARATOR_TEXT:
         case WIDGET_TEXT:

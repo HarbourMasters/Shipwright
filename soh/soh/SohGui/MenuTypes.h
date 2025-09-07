@@ -24,10 +24,10 @@ typedef enum {
 
 struct WidgetInfo;
 struct disabledInfo;
-using VoidFunc = void (*)();
-using DisableInfoFunc = bool (*)(disabledInfo&);
+using VoidFunc = std::function<void()>;
+using DisableInfoFunc = std::function<bool(disabledInfo&)>;
 using DisableVec = std::vector<DisableOption>;
-using WidgetFunc = void (*)(WidgetInfo&);
+using WidgetFunc = std::function<void(WidgetInfo&)>;
 
 typedef enum {
     WIDGET_CHECKBOX,
@@ -41,8 +41,8 @@ typedef enum {
     WIDGET_BUTTON,
     WIDGET_INPUT,
     WIDGET_CVAR_INPUT,
-    WIDGET_COLOR_24, // color picker without alpha
-    WIDGET_COLOR_32, // color picker with alpha
+    WIDGET_CVAR_COLOR_PICKER, // color picker without alpha
+    WIDGET_COLOR_PICKER,      // color picker with alpha
     WIDGET_SEARCH,
     WIDGET_SEPARATOR,
     WIDGET_SEPARATOR_TEXT,
@@ -72,9 +72,10 @@ typedef enum {
 // holds the widget values for a widget, contains all CVar types available from LUS. int32_t is used for boolean
 // evaluation
 using CVarVariant = std::variant<int32_t, const char*, float, Color_RGBA8, Color_RGB8>;
-using OptionsVariant = std::variant<UIWidgets::ButtonOptions, UIWidgets::CheckboxOptions, UIWidgets::ComboboxOptions,
-                                    UIWidgets::FloatSliderOptions, UIWidgets::IntSliderOptions, UIWidgets::TextOptions,
-                                    UIWidgets::WidgetOptions, UIWidgets::WindowButtonOptions>;
+using OptionsVariant =
+    std::variant<UIWidgets::ButtonOptions, UIWidgets::CheckboxOptions, UIWidgets::ComboboxOptions,
+                 UIWidgets::FloatSliderOptions, UIWidgets::IntSliderOptions, UIWidgets::TextOptions,
+                 UIWidgets::WidgetOptions, UIWidgets::WindowButtonOptions, UIWidgets::ColorPickerOptions>;
 
 // All the info needed for display and search of all widgets in the menu.
 // `name` is the label displayed,
@@ -139,6 +140,11 @@ struct WidgetInfo {
             case WIDGET_CVAR_SLIDER_INT:
                 options =
                     std::make_shared<UIWidgets::IntSliderOptions>(std::get<UIWidgets::IntSliderOptions>(options_));
+                break;
+            case WIDGET_COLOR_PICKER:
+            case WIDGET_CVAR_COLOR_PICKER:
+                options =
+                    std::make_shared<UIWidgets::ColorPickerOptions>(std::get<UIWidgets::ColorPickerOptions>(options_));
                 break;
             case WIDGET_BUTTON:
                 options = std::make_shared<UIWidgets::ButtonOptions>(std::get<UIWidgets::ButtonOptions>(options_));

@@ -23,8 +23,6 @@ extern void Warp();
 namespace SohGui {
 extern std::shared_ptr<SohModalWindow> mModalWindow;
 }
-
-std::vector<SearchEntry> extraSearches = {};
 std::vector<SearchWidget> extraSearchWidgets = {};
 
 namespace Ship {
@@ -137,6 +135,7 @@ void Menu::InitElement() {
     poppedSize.y = CVarGetInteger(CVAR_SETTING("Menu.PoppedHeight"), 800);
     poppedPos.x = CVarGetInteger(CVAR_SETTING("Menu.PoppedPos.x"), 0);
     poppedPos.y = CVarGetInteger(CVAR_SETTING("Menu.PoppedPos.y"), 0);
+    menuThemeIndex = static_cast<UIWidgets::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), defaultThemeIndex));
 
     UpdateWindowBackendObjects();
 }
@@ -254,34 +253,6 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                 searchCount++;
             }
         }
-        for (auto& entry : extraSearches) {
-            std::string widgetStr = entry.widgetName + entry.extraTerms + entry.sidebarName;
-            std::transform(widgetStr.begin(), widgetStr.end(), widgetStr.begin(), ::tolower);
-            widgetStr.erase(std::remove(widgetStr.begin(), widgetStr.end(), ' '), widgetStr.end());
-            if (widgetStr.find(menuSearchText) != std::string::npos) {
-                std::string origin = fmt::format("  ({} -> {}, {})", entry.menuName, entry.sidebarName, entry.location);
-                ImVec2 textSize = ImGui::CalcTextSize(origin.c_str());
-                ImVec2 pos = ImGui::GetCurrentWindow()->DC.CursorPos;
-                ImRect bb = { pos, { pos.x + textSize.x, pos.y + (textSize.y * 2) + ImGui::GetStyle().ItemSpacing.y } };
-                const ImGuiID igid =
-                    ImGui::GetCurrentWindow()->GetID(std::string(entry.widgetName + "##" + entry.sidebarName).c_str());
-                ImGui::ItemSize(bb, ImGui::GetStyle().FramePadding.y);
-                ImGui::ItemAdd(bb, igid);
-                if (ImGui::ButtonBehavior(bb, igid, NULL, NULL)) {
-                    navigateToWidget = true;
-                    navigateMainEntry = entry.menuName.c_str();
-                    navigateSidebar = entry.sidebarName.c_str();
-                    navigateWidgetName = entry.widgetName;
-                    break;
-                }
-                ImGui::GetCurrentWindow()->DC.CursorPos = pos;
-                ImGui::Text("%s", entry.widgetName.c_str());
-                ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Gray));
-                ImGui::Text("%s", origin.c_str());
-                ImGui::PopStyleColor();
-                searchCount++;
-            }
-        }
         ImGui::EndChild();
     }
     return searchCount;
@@ -290,10 +261,6 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
 void Menu::AddMenuEntry(std::string entryName, const char* entryCvar) {
     menuEntries.emplace(entryName, MainMenuEntry{ entryName, entryCvar });
     menuOrder.push_back(entryName);
-}
-
-void Menu::AddSearchEntry(SearchEntry entry) {
-    extraSearches.push_back(entry);
 }
 
 void Menu::AddSearchWidget(SearchWidget widget) {
@@ -521,6 +488,20 @@ void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors me
                 if (!window->IsVisible() && options->embedWindow) {
                     window->DrawElement();
                 }
+            } break;
+            case WIDGET_CVAR_COLOR_PICKER: {
+                auto options = std::static_pointer_cast<UIWidgets::ColorPickerOptions>(widget.options);
+                uint32_t modifiers = 0;
+                if (options->showLock)
+                    modifiers |= UIWidgets::ColorPickerLockCheck;
+                if (options->showRandom)
+                    modifiers |= UIWidgets::ColorPickerRandomButton;
+                if (options->showReset)
+                    modifiers |= UIWidgets::ColorPickerResetButton;
+                if (options->showRainbow)
+                    modifiers |= UIWidgets::ColorPickerRainbowCheck;
+                UIWidgets::CVarColorPicker(widget.name.c_str(), widget.cVar, options->defaultValue, options->useAlpha,
+                                           modifiers, options->color);
             } break;
             case WIDGET_SEARCH: {
                 UIWidgets::PushStyleButton(menuThemeIndex);

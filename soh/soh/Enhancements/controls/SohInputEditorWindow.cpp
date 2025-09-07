@@ -1895,7 +1895,7 @@ void SohInputEditorWindow::DrawElement() {
     ImGui::PopFont();
 }
 
-void RegisterInputWidgets() {
+void RegisterInputEditorWidgets() {
     dpadOcarina = { .name = "Dpad Ocarina Playback", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     dpadOcarina.CVar(CVAR_SETTING("CustomOcarina.Dpad")).Options(CheckboxOptions().Color(THEME_COLOR));
     SohGui::mSohMenu->AddSearchWidget({ dpadOcarina, "Settings", "Controls", "Ocarina Controls", "" });
@@ -1942,4 +1942,4 @@ void RegisterInputWidgets() {
     SohGui::mSohMenu->AddSearchWidget({ dpadText, "Settings", "Controls", "Dpad Controls" });
 }
 
-static RegisterMenuInitFunc initInputWidgets(RegisterInputWidgets);
+static RegisterMenuInitFunc initInputWidgets(RegisterInputEditorWidgets);
