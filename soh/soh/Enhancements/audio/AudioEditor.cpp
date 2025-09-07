@@ -35,6 +35,7 @@ static WidgetInfo displaySeqName;
 static WidgetInfo ovlDuration;
 static WidgetInfo voicePitch;
 static WidgetInfo randoMusicOnSceneChange;
+static WidgetInfo randomAudioOnSeedGen;
 static WidgetInfo lowerOctaves;
 
 namespace SohGui {
@@ -557,12 +558,7 @@ void AudioEditor::DrawElement() {
                     CVarSetFloat(CVAR_AUDIO("LinkVoiceFreqMultiplier"), 1.0f);
                 }
                 SohGui::mSohMenu->MenuDrawItem(randoMusicOnSceneChange, ImGui::GetContentRegionAvail().x, THEME_COLOR);
-                UIWidgets::CVarCheckbox("Randomize All Music and Sound Effects on Randomizer Generation",
-                                        CVAR_AUDIO("RandomizeAllOnRandoGen"),
-                                        UIWidgets::CheckboxOptions()
-                                            .Color(THEME_COLOR)
-                                            .Tooltip("Enables randomizing all unlocked music and sound effects when "
-                                                     "you generate a new randomizer."));
+                SohGui::mSohMenu->MenuDrawItem(randomAudioOnSeedGen, ImGui::GetContentRegionAvail().x, THEME_COLOR);
                 SohGui::mSohMenu->MenuDrawItem(lowerOctaves, ImGui::GetContentRegionAvail().x, THEME_COLOR);
             }
             ImGui::EndChild();
@@ -878,6 +874,15 @@ void RegisterAudioWidgets() {
                      .Color(THEME_COLOR)
                      .Tooltip("Enables randomizing all unlocked music and sound effects when you enter a new scene."));
     SohGui::mSohMenu->AddSearchWidget({ randoMusicOnSceneChange, "Enhancements", "Audio Editor", "Audio Options" });
+
+    randomAudioOnSeedGen = { .name = "Randomize All Music and Sound Effects on Randomizer Generation",
+                             .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    randomAudioOnSeedGen.CVar(CVAR_AUDIO("RandomizeAllOnRandoGen"))
+        .Options(CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("Enables randomizing all unlocked music and sound effects when you generate a new "
+                              "randomizer. Respects locks already in place."));
+    SohGui::mSohMenu->AddSearchWidget({ randomAudioOnSeedGen, "Enhancements", "Audio Editor", "Audio Options" });
 
     lowerOctaves = { .name = "Lower Octaves of Unplayable High Notes", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     lowerOctaves.CVar(CVAR_AUDIO("ExperimentalOctaveDrop"))
