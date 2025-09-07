@@ -2,6 +2,8 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh_assets.h"
+#include "soh/frame_interpolation.h"
 
 #include <array>
 #include <string>
@@ -14,13 +16,86 @@ extern "C" {
 #include "src/overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
 #include "src/overlays/actors/ovl_Boss_Mo/z_boss_mo.h"
 #include "src/overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
-extern PlayState* gPlayState;
-
-Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, u16 point);
+#include "src/overlays/gamestates/ovl_file_choose/file_choose.h"
+#include "objects/gameplay_keep/gameplay_keep.h"
 #include "textures/icon_item_nes_static/icon_item_nes_static.h"
 #include "textures/icon_item_ger_static/icon_item_ger_static.h"
 #include "textures/icon_item_fra_static/icon_item_fra_static.h"
+
+extern PlayState* gPlayState;
+
+Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, u16 point);
+void FileChoose_UpdateStickDirectionPromptAnim(GameState* thisx);
+void FileChoose_DrawTextRec(GraphicsContext* gfxCtx, s32 r, s32 g, s32 b, s32 a, f32 x, f32 y, f32 z, s32 s, s32 t,
+                            f32 dx, f32 dy);
 }
+
+typedef enum {
+    BR_CHOICE_BOSSES_ALL,
+    BR_CHOICE_BOSSES_CHILD,
+    BR_CHOICE_BOSSES_ADULT,
+    BR_CHOICE_BOSSES_GANONDORF_GANON
+} BossRushBossesChoices;
+
+typedef enum {
+    BR_CHOICE_HEARTS_10,
+    BR_CHOICE_HEARTS_15,
+    BR_CHOICE_HEARTS_20,
+    BR_CHOICE_HEARTS_3,
+    BR_CHOICE_HEARTS_5,
+    BR_CHOICE_HEARTS_7
+} BossRushHeartsChoices;
+
+typedef enum {
+    BR_CHOICE_AMMO_LIMITED,
+    BR_CHOICE_AMMO_FULL,
+    BR_CHOICE_AMMO_MAXED,
+} BossRushAmmoChoices;
+
+typedef enum {
+    BR_CHOICE_HEAL_GANONDORF,
+    BR_CHOICE_HEAL_EVERYBOSS,
+    BR_CHOICE_HEAL_NEVER,
+} BossRushHealChoices;
+
+typedef enum {
+    BR_CHOICE_MAGIC_SINGLE,
+    BR_CHOICE_MAGIC_DOUBLE,
+} BossRushMagicChoices;
+
+typedef enum {
+    BR_CHOICE_BGS_NO,
+    BR_CHOICE_BGS_YES,
+} BossRushBgsChoices;
+
+typedef enum {
+    BR_CHOICE_BOTTLE_NO,
+    BR_CHOICE_BOTTLE_EMPTY,
+    BR_CHOICE_BOTTLE_FAIRY,
+    BR_CHOICE_BOTTLE_REDPOTION,
+    BR_CHOICE_BOTTLE_GREENPOTION,
+    BR_CHOICE_BOTTLE_BLUEPOTION
+} BossRushBottleChoices;
+
+typedef enum {
+    BR_CHOICE_LONGSHOT_NO,
+    BR_CHOICE_LONGSHOT_YES,
+} BossRushLongshotChoices;
+
+typedef enum {
+    BR_CHOICE_HOVERBOOTS_NO,
+    BR_CHOICE_HOVERBOOTS_YES,
+} BossRushHoverBootsChoices;
+
+typedef enum {
+    BR_CHOICE_BUNNYHOOD_NO,
+    BR_CHOICE_BUNNYHOOD_YES,
+} BossRushBunnyHoodChoices;
+
+typedef enum {
+    BR_CHOICE_TIMER_YES,
+    BR_CHOICE_TIMER_NO,
+} BossRushTimerChoices;
 
 typedef struct BossRushSetting {
     std::array<std::string, LANGUAGE_MAX> name;
@@ -112,6 +187,180 @@ const char* BossRush_GetSettingChoiceName(u8 optionIndex, u8 choiceIndex, u8 lan
 
 u8 BossRush_GetSettingOptionsAmount(u8 optionIndex) {
     return static_cast<u8>(BossRushOptions[optionIndex].choices.size());
+}
+
+void FileChoose_UpdateBossRushMenu(GameState* gameState) {
+    static s8 sLastBossRushOptionIndex = -1;
+    static s8 sLastBossRushOptionValue = -1;
+
+    FileChoose_UpdateStickDirectionPromptAnim(gameState);
+    FileChooseContext* fileChooseContext = (FileChooseContext*)gameState;
+    Input* input = &fileChooseContext->state.input[0];
+    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
+
+    // Fade in elements after opening Boss Rush options menu
+    fileChooseContext->bossRushUIAlpha += 25;
+    if (fileChooseContext->bossRushUIAlpha > 255) {
+        fileChooseContext->bossRushUIAlpha = 255;
+    }
+
+    // Animate up/down arrows.
+    fileChooseContext->bossRushArrowOffset += 1;
+    if (fileChooseContext->bossRushArrowOffset >= 30) {
+        fileChooseContext->bossRushArrowOffset = 0;
+    }
+
+    // Move menu selection up or down.
+    if (ABS(fileChooseContext->stickRelY) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
+        // Move down
+        if (fileChooseContext->stickRelY < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN))) {
+            // When selecting past the last option, cycle back to the first option.
+            if ((fileChooseContext->bossRushIndex + 1) > BR_OPTIONS_MAX - 1) {
+                fileChooseContext->bossRushIndex = 0;
+                fileChooseContext->bossRushOffset = 0;
+            } else {
+                fileChooseContext->bossRushIndex++;
+                // When last visible option is selected when moving down, offset the list down by one.
+                if (fileChooseContext->bossRushIndex - fileChooseContext->bossRushOffset >
+                    BOSSRUSH_MAX_OPTIONS_ON_SCREEN - 1) {
+                    fileChooseContext->bossRushOffset++;
+                }
+            }
+        } else if (fileChooseContext->stickRelY > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP))) {
+            // When selecting past the first option, cycle back to the last option and offset the list to view it
+            // properly.
+            if ((fileChooseContext->bossRushIndex - 1) < 0) {
+                fileChooseContext->bossRushIndex = BR_OPTIONS_MAX - 1;
+                fileChooseContext->bossRushOffset =
+                    fileChooseContext->bossRushIndex - BOSSRUSH_MAX_OPTIONS_ON_SCREEN + 1;
+            } else {
+                // When first visible option is selected when moving up, offset the list up by one.
+                if (fileChooseContext->bossRushIndex - fileChooseContext->bossRushOffset == 0) {
+                    fileChooseContext->bossRushOffset--;
+                }
+                fileChooseContext->bossRushIndex--;
+            }
+        }
+
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    }
+
+    // Cycle through choices for currently selected option.
+    if (ABS(fileChooseContext->stickRelX) > 30 ||
+        (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
+        if (fileChooseContext->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
+            // If exceeding the amount of choices for the selected option, cycle back to the first.
+            if ((gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex] + 1) ==
+                BossRush_GetSettingOptionsAmount(fileChooseContext->bossRushIndex)) {
+                gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex] = 0;
+            } else {
+                gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]++;
+            }
+        } else if (fileChooseContext->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
+            // If cycling back when already at the first choice for the selected option, cycle back to the last choice.
+            if ((gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex] - 1) < 0) {
+                gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex] =
+                    BossRush_GetSettingOptionsAmount(fileChooseContext->bossRushIndex) - 1;
+            } else {
+                gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]--;
+            }
+        }
+
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    }
+
+    if (sLastBossRushOptionIndex != fileChooseContext->bossRushIndex ||
+        sLastBossRushOptionValue != gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]) {
+        GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(
+            fileChooseContext->bossRushIndex,
+            gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]);
+        sLastBossRushOptionIndex = fileChooseContext->bossRushIndex;
+        sLastBossRushOptionValue = gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex];
+    }
+
+    if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
+        fileChooseContext->configMode = CM_BOSS_RUSH_TO_QUEST;
+        return;
+    }
+
+    // Load into the game.
+    if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        fileChooseContext->buttonIndex = 0xFE;
+        fileChooseContext->menuMode = FS_MENU_MODE_SELECT;
+        fileChooseContext->selectMode = SM_FADE_OUT;
+        fileChooseContext->prevConfigMode = fileChooseContext->configMode;
+        return;
+    }
+}
+
+void FileChoose_DrawBossRushMenuWindowContents(FileChooseContext* fileChooseContext) {
+    OPEN_DISPS(fileChooseContext->state.gfxCtx);
+
+    uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
+    uint8_t listOffset = fileChooseContext->bossRushOffset;
+    uint8_t textAlpha = fileChooseContext->bossRushUIAlpha;
+
+    // Draw arrows to indicate that the list can scroll up or down.
+    // Arrow up
+    if (listOffset > 0) {
+        uint16_t arrowUpX = 140;
+        uint16_t arrowUpY = 76 - (fileChooseContext->bossRushArrowOffset / 10);
+        gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowUpTex, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 16, 0,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
+        gSPWideTextureRectangle(POLY_OPA_DISP++, arrowUpX << 2, arrowUpY << 2, (arrowUpX + 8) << 2, (arrowUpY + 8) << 2,
+                                G_TX_RENDERTILE, 0, 0, (1 << 11), (1 << 11));
+    }
+    // Arrow down
+    if (BR_OPTIONS_MAX - listOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN) {
+        uint16_t arrowDownX = 140;
+        uint16_t arrowDownY = 181 + (fileChooseContext->bossRushArrowOffset / 10);
+        gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowDownTex, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 16, 0,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
+        gSPWideTextureRectangle(POLY_OPA_DISP++, arrowDownX << 2, arrowDownY << 2, (arrowDownX + 8) << 2,
+                                (arrowDownY + 8) << 2, G_TX_RENDERTILE, 0, 0, (1 << 11), (1 << 11));
+    }
+
+    // Draw options. There's more options than what fits on the screen, so the visible options
+    // depend on the current offset of the list. Currently selected option pulses in
+    // color and has arrows surrounding the option.
+    for (uint8_t i = listOffset; i - listOffset < BOSSRUSH_MAX_OPTIONS_ON_SCREEN; i++) {
+        uint16_t textYOffset = (i - listOffset) * 16;
+
+        // Option name.
+        Interface_DrawTextLine(fileChooseContext->state.gfxCtx, (char*)BossRush_GetSettingName(i, language), 65,
+                               (87 + textYOffset), 255, 255, 80, textAlpha, 0.8f, true);
+
+        // Selected choice for option.
+        uint16_t finalKerning = Interface_DrawTextLine(
+            fileChooseContext->state.gfxCtx,
+            (char*)BossRush_GetSettingChoiceName(i, gSaveContext.ship.quest.data.bossRush.options[i], language), 165,
+            (87 + textYOffset), 255, 255, 255, textAlpha, 0.8f, true);
+
+        // Draw arrows around selected option.
+        if (fileChooseContext->bossRushIndex == i) {
+            Gfx_SetupDL_39Opa(fileChooseContext->state.gfxCtx);
+            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+            FileChoose_DrawTextRec(fileChooseContext->state.gfxCtx, fileChooseContext->stickLeftPrompt.arrowColorR,
+                                   fileChooseContext->stickLeftPrompt.arrowColorG,
+                                   fileChooseContext->stickLeftPrompt.arrowColorB, textAlpha, 160, (92 + textYOffset),
+                                   0.42f, 0, 0, -1.0f, 1.0f);
+            FileChoose_DrawTextRec(fileChooseContext->state.gfxCtx, fileChooseContext->stickRightPrompt.arrowColorR,
+                                   fileChooseContext->stickRightPrompt.arrowColorG,
+                                   fileChooseContext->stickRightPrompt.arrowColorB, textAlpha, (171 + finalKerning),
+                                   (92 + textYOffset), 0.42f, 0, 0, 1.0f, 1.0f);
+        }
+    }
+
+    CLOSE_DISPS(fileChooseContext->state.gfxCtx);
 }
 
 void BossRush_SpawnBlueWarps(PlayState* play) {
@@ -316,7 +565,7 @@ void BossRush_HandleCompleteBoss(PlayState* play) {
     }
 }
 
-void BossRush_InitSave() {
+extern "C" void BossRush_InitSave() {
 
     // Set player name to Lonk for the few textboxes that show up during Boss Rush. Player can't input their own name.
     std::array<char, 8> brPlayerName = { 21, 50, 49, 46, 62, 62, 62, 62 };
@@ -609,6 +858,17 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             *should = false;
             break;
         }
+        // Handle the heal on blue warp
+        case VB_BLUE_WARP_CONSIDER_ADULT_IN_RANGE: {
+            if (*should) {
+                BossRush_HandleBlueWarpHeal(gPlayState);
+            }
+            break;
+        }
+        case VB_SHOW_GAMEPLAY_TIMER: {
+            *should |= gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES;
+            break;
+        }
         // Prevent saving
         case VB_BE_ABLE_TO_SAVE:
         // Disable doors so the player can't leave the boss rooms backwards.
@@ -627,25 +887,6 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
     }
 
     va_end(args);
-}
-
-void BossRush_OnActorInitHandler(void* actorRef) {
-    Actor* actor = static_cast<Actor*>(actorRef);
-
-    if (actor->id == ACTOR_DEMO_SA && gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES) {
-        BossRush_SpawnBlueWarps(gPlayState);
-        Actor_Kill(actor);
-        GET_PLAYER(gPlayState)->actor.world.rot.y = GET_PLAYER(gPlayState)->actor.shape.rot.y = 27306;
-        return;
-    }
-
-    // Remove chests, mainly for the chest in King Dodongo's boss room.
-    // Remove bushes, used in Gohma's arena.
-    // Remove pots, used in Barinade's and Ganondorf's arenas.
-    if (actor->id == ACTOR_EN_KUSA || actor->id == ACTOR_OBJ_TSUBO || actor->id == ACTOR_EN_BOX) {
-        Actor_Kill(actor);
-        return;
-    }
 }
 
 void BossRush_OnSceneInitHandler(s16 sceneNum) {
@@ -667,38 +908,32 @@ void BossRush_OnBlueWarpUpdate(void* actor) {
     }
 }
 
-void BossRush_RegisterHooks() {
-    static u32 onVanillaBehaviorHook = 0;
-    static u32 onSceneInitHook = 0;
-    static u32 onActorInitHook = 0;
-    static u32 onBossDefeatHook = 0;
-    static u32 onActorUpdate = 0;
+void RegisterBossRush() {
+    COND_HOOK(OnLoadGame, true, [](int32_t fileNum) {
+        COND_ID_HOOK(OnActorInit, ACTOR_DEMO_SA, IS_BOSS_RUSH, [](void* actorPtr) {
+            BossRush_SpawnBlueWarps(gPlayState);
+            Actor_Kill((Actor*)actorPtr);
+            GET_PLAYER(gPlayState)->actor.world.rot.y = 27306;
+            GET_PLAYER(gPlayState)->actor.shape.rot.y = 27306;
+        });
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnBossDefeat>(onBossDefeatHook);
-        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnActorUpdate>(onActorUpdate);
+        // Remove bushes, used in Gohma's arena
+        COND_ID_HOOK(OnActorInit, ACTOR_EN_KUSA, IS_BOSS_RUSH, [](void* actorPtr) { Actor_Kill((Actor*)actorPtr); });
 
-        onVanillaBehaviorHook = 0;
-        onSceneInitHook = 0;
-        onActorInitHook = 0;
-        onBossDefeatHook = 0;
-        onActorUpdate = 0;
+        // Remove pots, used in Barinade's and Ganondorf's arenas
+        COND_ID_HOOK(OnActorInit, ACTOR_OBJ_TSUBO, IS_BOSS_RUSH, [](void* actorPtr) { Actor_Kill((Actor*)actorPtr); });
 
-        if (!IS_BOSS_RUSH)
-            return;
+        // Remove chests, mainly for the chest in King Dodongo's boss room
+        COND_ID_HOOK(OnActorInit, ACTOR_EN_BOX, IS_BOSS_RUSH, [](void* actorPtr) { Actor_Kill((Actor*)actorPtr); });
 
-        onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(
-            BossRush_OnVanillaBehaviorHandler);
-        onSceneInitHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(BossRush_OnSceneInitHandler);
-        onActorInitHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(BossRush_OnActorInitHandler);
-        onBossDefeatHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>(BossRush_OnBossDefeatHandler);
-        onActorUpdate = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorUpdate>(
-            ACTOR_DOOR_WARP1, BossRush_OnBlueWarpUpdate);
+        COND_HOOK(OnVanillaBehavior, IS_BOSS_RUSH, BossRush_OnVanillaBehaviorHandler);
+
+        COND_HOOK(OnSceneInit, IS_BOSS_RUSH, BossRush_OnSceneInitHandler);
+
+        COND_HOOK(OnBossDefeat, IS_BOSS_RUSH, BossRush_OnBossDefeatHandler);
+
+        COND_ID_HOOK(OnActorUpdate, ACTOR_DOOR_WARP1, IS_BOSS_RUSH, BossRush_OnBlueWarpUpdate);
     });
 }
+
+static RegisterShipInitFunc initFunc(RegisterBossRush);

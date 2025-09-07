@@ -8,7 +8,6 @@
 
 #include "libultraship/bridge.h"
 #include "soh/Enhancements/gameplaystats.h"
-#include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageInterfaceAddon.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -6374,11 +6373,10 @@ void Interface_Draw(PlayState* play) {
 
 void Interface_DrawTotalGameplayTimer(PlayState* play) {
     // Draw timer based on the Gameplay Stats total time.
-
-    if ((IS_BOSS_RUSH && gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
-        (CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowIngameTimer"), 0) && gSaveContext.fileNum >= 0 &&
-         gSaveContext.fileNum <= 2)) {
-
+    if (GameInteractor_Should(VB_SHOW_GAMEPLAY_TIMER,
+                              CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowIngameTimer"), 0) && gSaveContext.fileNum >= 0 &&
+                                  gSaveContext.fileNum <= 2,
+                              play)) {
         s32 X_Margins_Timer = 0;
         if (CVarGetInteger(CVAR_COSMETIC("HUD.IGT.UseMargins"), 0) != 0) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.IGT.PosType"), 0) == ORIGINAL_LOCATION) {

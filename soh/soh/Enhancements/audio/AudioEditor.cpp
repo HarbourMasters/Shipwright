@@ -314,9 +314,12 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
 
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        ImGui::TextColored(
-            UIWidgets::ColorValues.at(isCurrentlyPlaying ? UIWidgets::Colors::Yellow : UIWidgets::Colors::White), "%s",
-            seqData.label.c_str());
+        if (isCurrentlyPlaying) {
+            ImGui::TextColored(UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow), "%s %s", ICON_FA_PLAY,
+                               seqData.label.c_str());
+        } else {
+            ImGui::Text("%s", seqData.label.c_str());
+        }
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(-FLT_MIN);
         const int initialValue = map.contains(currentValue) ? currentValue : defaultValue;
@@ -481,8 +484,17 @@ void AudioEditorRegisterOnSceneInitHook() {
     });
 }
 
+void AudioEditorRegisterOnGenerationCompletionHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGenerationCompletion>([]() {
+        if (CVarGetInteger(CVAR_AUDIO("RandomizeAllOnRandoGen"), 0)) {
+            AudioEditor_RandomizeAll();
+        }
+    });
+}
+
 void AudioEditor::InitElement() {
     AudioEditorRegisterOnSceneInitHook();
+    AudioEditorRegisterOnGenerationCompletionHook();
 }
 
 void AudioEditor::DrawElement() {
@@ -545,6 +557,12 @@ void AudioEditor::DrawElement() {
                     CVarSetFloat(CVAR_AUDIO("LinkVoiceFreqMultiplier"), 1.0f);
                 }
                 SohGui::mSohMenu->MenuDrawItem(randoMusicOnSceneChange, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+                UIWidgets::CVarCheckbox("Randomize All Music and Sound Effects on Randomizer Generation",
+                                        CVAR_AUDIO("RandomizeAllOnRandoGen"),
+                                        UIWidgets::CheckboxOptions()
+                                            .Color(THEME_COLOR)
+                                            .Tooltip("Enables randomizing all unlocked music and sound effects when "
+                                                     "you generate a new randomizer."));
                 SohGui::mSohMenu->MenuDrawItem(lowerOctaves, ImGui::GetContentRegionAvail().x, THEME_COLOR);
             }
             ImGui::EndChild();

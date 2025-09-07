@@ -1,7 +1,7 @@
 /*
  * File: z_bg_mizu_movebg.c
  * Overlay: ovl_Bg_Mizu_Movebg
- * Description: Kakariko Village Well Water
+ * Description: Water Temple Moving Objects
  */
 
 #include "z_bg_mizu_movebg.h"
