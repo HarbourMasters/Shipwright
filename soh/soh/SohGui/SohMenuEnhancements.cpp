@@ -1280,7 +1280,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("DampeWin"))
         .Options(CheckboxOptions().Tooltip(
             "Always win the Heart Piece/Purple Rupee on the first dig in Dampe's Grave Digging game. "
-            "In a Randomizer file, this is always enabled."));
+            "In a Randomizer file, this defaults to on if this enhancement has never been changed."));
     AddWidget(path, "All Dogs are Richard", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("AllDogsRichard"))
         .Options(CheckboxOptions().Tooltip("All dogs can be traded in and will count as Richard."));
