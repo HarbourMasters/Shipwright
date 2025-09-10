@@ -560,6 +560,8 @@ void SetAllEntrancesData() {
           NO_RETURN_ENTRANCE },
         { { EntranceType::BlueWarp, RR_SHADOW_TEMPLE_BOSS_ROOM,    RR_GRAVEYARD_WARP_PAD_REGION, ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP },
           NO_RETURN_ENTRANCE },
+        { { EntranceType::BlueWarp, RR_GANONS_TOWER_GANONDORF_LAIR, RR_GANONS_TOWER_FLOOR_1,     ENTR_GANONS_TOWER_0 },
+          NO_RETURN_ENTRANCE },
         // clang-format on
     };
 
