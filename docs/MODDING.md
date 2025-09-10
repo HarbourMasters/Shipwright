@@ -41,15 +41,28 @@ You can name your branch whatever you want, but it's recommended to name it some
 
 The limit is your imagination. You can add new features, fix bugs, add new mods, or even change the way the game works. We will demonstrate this by creating a mod that changes the speed of the day/night cycle.
 
-Let's being by finding where the time is updated. Thankfully in the save editor we have a slider already hooked up to the time of day so we can check there for reference. The save editor file is at `soh/soh/Enhancements/debugger/debugSaveEditor.cpp`, if we do a quick search within that file for time we will find the following at line 400:
+Let's begin by finding where the time is updated. Thankfully in the save editor we have a slider already hooked up to the time of day so we can check there for reference. The save editor file is at `soh/soh/Enhancements/debugger/debugSaveEditor.cpp`, if we do a quick search within that file for time we will find the following at around line 217:
 
 ```cpp
-const uint16_t dayTimeMin = 0;
-const uint16_t dayTimeMax = 0xFFFF;
-ImGui::SliderScalar("Time", ImGuiDataType_U16, &gSaveContext.dayTime, &dayTimeMin, &dayTimeMax);
+    SliderInt("Time", (int32_t*)&gSaveContext.dayTime, intSliderOptionsBase.Min(0).Max(0xFFFF).Tooltip("Time of day"));
+    if (Button("Dawn", buttonOptionsBase)) {
+        gSaveContext.dayTime = 0x4000;
+    }
+    ImGui::SameLine();
+    if (Button("Noon", buttonOptionsBase)) {
+        gSaveContext.dayTime = 0x8000;
+    }
+    ImGui::SameLine();
+    if (Button("Sunset", buttonOptionsBase)) {
+        gSaveContext.dayTime = 0xC001;
+    }
+    ImGui::SameLine();
+    if (Button("Midnight", buttonOptionsBase)) {
+        gSaveContext.dayTime = 0;
+    }
 ```
 
-So this tells us that `gSaveContext.dayTime` is what we're looking for. Let's now do a global search for this to see if we can find where it is updated. We find the following in `soh/src/code/z_kankyo.c` line 925:
+So this tells us that `gSaveContext.dayTime` is what we're looking for. Let's now do a global search for this to see if we can find where it is updated. We find the following in `soh/src/code/z_kankyo.c` around line 925:
 
 ```cpp
 if (IS_DAY || gTimeIncrement >= 0x190) {
@@ -71,16 +84,19 @@ if (IS_DAY || gTimeIncrement >= 0x190) {
 }
 ```
 
-Rebuild the game and launch it, then load a save file. You should see that the time of day is now moving much faster. Terrific! While we could wrap this up and call it a day, we could make this user configurable by making a few more changes. I think a slider would be good for this, there's a slider in the cheat menu that we can use as a reference. Let's find it in `soh/soh/SohMenuBar.cpp` around line 1120:
+Rebuild the game and launch it, then load a save file. You should see that the time of day is now moving much faster. Terrific! While we could wrap this up and call it a day, we could make this user configurable by making a few more changes. I think a slider would be good for this, there's a slider in the cheat menu that we can use as a reference. Let's find it in `soh/soh/SohGui/SohMenuEnhancements.cpp` around line 1565:
 
 ```cpp
-UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.1fx", "##gCheatHookshotReachMultiplier", "gCheatHookshotReachMultiplier", 1.0f, 5.0f, "", 1.0f, false);
+    AddWidget(path, "Hookshot Reach Multiplier: %.2fx", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_CHEAT("HookshotReachMultiplier"))
+        .Options(FloatSliderOptions().Format("%.2f").Min(1.0f).Max(5.0f));
 ```
-
-The float values being passed in here are `minimum`, `maximum`, and `default` respectively. We'll make our minimum 0.2 to allow it to move slower, and our maximum 5.0 to allow it to move up to 5x faster. We'll also set the default to 1.0 so that it doesn't change the behavior by default. Copy this line and paste it below, then make the relevant changes:
+This adds a `Widget` which sets a CVar, which then sets the options of the slider. We'll make our minimum 0.2 to allow it to move slower, and our maximum 5.0 to allow it to move up to 5x faster. We'll also set the default to 1.0 so that it doesn't change the behavior by default. Copy this line and paste it below, then make the relevant changes:
 
 ```cpp
-UIWidgets::EnhancementSliderFloat("Time Multiplier: %.1fx", "##gCheatTimeMultiplier", "gCheatTimeMultiplier", 0.2f, 5.0f, "", 1.0f, false);
+    AddWidget(path, "Time Multiplier: %.2fx", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_CHEAT("TimeOfDayMultiplier"))
+        .Options(FloatSliderOptions().Format("%.2f").Min(0.2f).Max(5.0f).DefaultValue(1.0f));
 ```
 
 Now we need to replace our hard coded values with the new variable. We can do this by replacing the `10` with a cvar call
@@ -88,10 +104,10 @@ Now we need to replace our hard coded values with the new variable. We can do th
 ```diff
 if (IS_DAY || gTimeIncrement >= 0x190) {
 -    gSaveContext.dayTime += gTimeIncrement * 10;
-+    gSaveContext.dayTime += gTimeIncrement * CVarGetFloat("gCheatTimeMultiplier", 1.0f);
++    gSaveContext.dayTime += gTimeIncrement * CVarGetFloat(CVAR_CHEAT("TimeOfDayMultiplier"),1.0f);
 } else {
 -    gSaveContext.dayTime += gTimeIncrement * 2 * 10;
-+    gSaveContext.dayTime += gTimeIncrement * 2 * CVarGetFloat("gCheatTimeMultiplier", 1.0f);
++   gSaveContext.dayTime += gTimeIncrement * 2 * CVarGetFloat(CVAR_CHEAT("TimeOfDayMultiplier"),1.0f);
 }
 ```
 

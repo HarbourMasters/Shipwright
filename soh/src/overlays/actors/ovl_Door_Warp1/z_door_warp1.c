@@ -1,7 +1,6 @@
 #include "z_door_warp1.h"
 #include "objects/object_warp1/object_warp1.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -693,12 +692,7 @@ void DoorWarp1_AdultWarpIdle(DoorWarp1* this, PlayState* play) {
 
     Audio_PlayActorSound2(&this->actor, NA_SE_EV_WARP_HOLE - SFX_FLAG);
 
-    if (DoorWarp1_PlayerInRange(this, play)) {
-        // Heal player in Boss Rush
-        if (IS_BOSS_RUSH) {
-            BossRush_HandleBlueWarpHeal(play);
-        }
-
+    if (GameInteractor_Should(VB_BLUE_WARP_CONSIDER_ADULT_IN_RANGE, DoorWarp1_PlayerInRange(this, play), this)) {
         player = GET_PLAYER(play);
 
         OnePointCutscene_Init(play, 0x25E8, 999, &this->actor, MAIN_CAM);

@@ -1,5 +1,8 @@
 #include "SohMenu.h"
 #include "soh/Notification/Notification.h"
+#include "soh/Enhancements/controls/SohInputEditorWindow.h"
+#include "SohModals.h"
+#include "soh/OTRGlobals.h"
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
 #include "UIWidgets.hpp"
@@ -13,6 +16,7 @@ extern "C" {
 namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;
+extern std::shared_ptr<SohModalWindow> mModalWindow;
 using namespace UIWidgets;
 
 static std::unordered_map<int32_t, const char*> imguiScaleOptions = {
@@ -20,6 +24,39 @@ static std::unordered_map<int32_t, const char*> imguiScaleOptions = {
     { 1, "Normal" },
     { 2, "Large" },
     { 3, "X-Large" },
+};
+
+static const std::unordered_map<int32_t, const char*> menuThemeOptions = {
+    { UIWidgets::Colors::Red, "Red" },
+    { UIWidgets::Colors::DarkRed, "Dark Red" },
+    { UIWidgets::Colors::Orange, "Orange" },
+    { UIWidgets::Colors::Green, "Green" },
+    { UIWidgets::Colors::DarkGreen, "Dark Green" },
+    { UIWidgets::Colors::LightBlue, "Light Blue" },
+    { UIWidgets::Colors::Blue, "Blue" },
+    { UIWidgets::Colors::DarkBlue, "Dark Blue" },
+    { UIWidgets::Colors::Indigo, "Indigo" },
+    { UIWidgets::Colors::Violet, "Violet" },
+    { UIWidgets::Colors::Purple, "Purple" },
+    { UIWidgets::Colors::Brown, "Brown" },
+    { UIWidgets::Colors::Gray, "Gray" },
+    { UIWidgets::Colors::DarkGray, "Dark Gray" },
+};
+
+static const std::unordered_map<int32_t, const char*> textureFilteringMap = {
+    { Fast::FILTER_THREE_POINT, "Three-Point" },
+    { Fast::FILTER_LINEAR, "Linear" },
+    { Fast::FILTER_NONE, "None" },
+};
+
+static const std::unordered_map<int32_t, const char*> notificationPosition = {
+    { 0, "Top Left" }, { 1, "Top Right" }, { 2, "Bottom Left" }, { 3, "Bottom Right" }, { 4, "Hidden" },
+};
+
+static const std::unordered_map<int32_t, const char*> bootSequenceLabels = {
+    { BOOTSEQUENCE_DEFAULT, "Default" },
+    { BOOTSEQUENCE_AUTHENTIC, "Authentic" },
+    { BOOTSEQUENCE_FILESELECT, "File Select" },
 };
 
 const char* GetGameVersionString(uint32_t index) {
@@ -158,6 +195,10 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Boot Sequence", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("BootSequence"))
         .RaceDisable(false)
+        .PreFunc([](WidgetInfo& info) {
+            if (mSohMenu->disabledMap.at(DISABLE_FOR_BOOT_TO_DEBUG_WARP_SCREEN_ON).active)
+                info.activeDisables.push_back(DISABLE_FOR_BOOT_TO_DEBUG_WARP_SCREEN_ON);
+        })
         .Options(ComboboxOptions()
                      .DefaultIndex(BOOTSEQUENCE_DEFAULT)
                      .LabelPosition(LabelPositions::Far)
@@ -185,7 +226,7 @@ void SohMenu::AddMenuSettings() {
                      .ComboMap(languages)
                      .DefaultIndex(LANGUAGE_ENG));
     AddWidget(path, "Accessibility", WIDGET_SEPARATOR_TEXT);
-#if defined(_WIN32) || defined(__APPLE__)
+#if defined(_WIN32) || defined(__APPLE__) || defined(ESPEAK)
     AddWidget(path, "Text to Speech", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("A11yTTS"))
         .RaceDisable(false)
@@ -373,6 +414,20 @@ void SohMenu::AddMenuSettings() {
     path.sidebarName = "Controls";
     path.column = SECTION_COLUMN_1;
     AddSidebarEntry("Settings", "Controls", 2);
+    AddWidget(path, "Clear Devices", WIDGET_BUTTON)
+        .Callback([](WidgetInfo& info) {
+            SohGui::mModalWindow->RegisterPopup(
+                "Clear Config",
+                "This will completely erase the controls config, including registered devices.\nContinue?", "Clear",
+                "Cancel",
+                []() {
+                    Ship::Context::GetInstance()->GetConsoleVariables()->ClearBlock(CVAR_PREFIX_SETTING ".Controllers");
+                    uint8_t bits = 0;
+                    Ship::Context::GetInstance()->GetControlDeck()->Init(&bits);
+                },
+                nullptr);
+        })
+        .Options(ButtonOptions().Size(Sizes::Inline));
     AddWidget(path, "Controller Bindings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Bindings Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("ControllerConfiguration"))

@@ -554,6 +554,10 @@ void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& fl
         uint32_t bitMask = 1 << flagIndex;
         ImVec4 themeColor = ColorValues.at(THEME_COLOR);
         ImVec4 colorDark = { themeColor.x * 0.4f, themeColor.y * 0.4f, themeColor.z * 0.4f, themeColor.z };
+        ImVec4& color = themeColor;
+        if (!hasDescription) {
+            color = colorDark;
+        }
         PushStyleCheckbox(hasDescription ? themeColor : colorDark);
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
         bool flag = (flags & bitMask) != 0;
@@ -1301,6 +1305,15 @@ void DrawQuestStatusTab() {
             ImGui::Text("Dungeon Items");
 
             static int32_t dungeonItemsScene = SCENE_DEKU_TREE;
+            static int32_t lastDungeonScene = -1;
+            if (gPlayState != nullptr) {
+                int32_t sceneNum = gPlayState->sceneNum;
+                if (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_JABU_JABU_BOSS && lastDungeonScene != sceneNum) {
+                    dungeonItemsScene = sceneNum;
+                    lastDungeonScene = sceneNum;
+                }
+            }
+
             PushStyleCombobox(THEME_COLOR);
             if (ImGui::BeginCombo("##DungeonSelect", SohUtils::GetSceneName(dungeonItemsScene).c_str())) {
                 for (int32_t dungeonIndex = SCENE_DEKU_TREE; dungeonIndex < SCENE_JABU_JABU_BOSS + 1; dungeonIndex++) {

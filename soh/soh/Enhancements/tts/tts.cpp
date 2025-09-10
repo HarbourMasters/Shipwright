@@ -12,6 +12,7 @@
 #include "message_data_static.h"
 #include "overlays/gamestates/ovl_file_choose/file_choose.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
+#include "soh/Enhancements/FileSelectEnhancements.h"
 #include "soh/resource/type/SohResourceType.h"
 
 extern "C" {
@@ -147,28 +148,25 @@ void RegisterOnInterfaceUpdateHook() {
             timer = gSaveContext.subTimerSeconds;
         }
 
-        if (timer > 0) {
-            if (timer > prevTimer || (timer % 30 == 0 && prevTimer != timer)) {
-                uint32_t minutes = timer / 60;
-                uint32_t seconds = timer % 60;
-                char* announceBuf = ttsAnnounceBuf;
-                char arg[8]; // at least big enough where no s8 string will overflow
-                if (minutes > 0) {
-                    snprintf(arg, sizeof(arg), "%d", minutes);
-                    auto translation = GetParameritizedText((minutes > 1) ? "minutes_plural" : "minutes_singular",
-                                                            TEXT_BANK_MISC, arg);
-                    announceBuf += snprintf(announceBuf, sizeof(ttsAnnounceBuf), "%s ", translation.c_str());
-                }
-                if (seconds > 0) {
-                    snprintf(arg, sizeof(arg), "%d", seconds);
-                    auto translation = GetParameritizedText((seconds > 1) ? "seconds_plural" : "seconds_singular",
-                                                            TEXT_BANK_MISC, arg);
-                    announceBuf += snprintf(announceBuf, sizeof(ttsAnnounceBuf), "%s", translation.c_str());
-                }
-                assert(announceBuf < ttsAnnounceBuf + sizeof(ttsAnnounceBuf));
-                SpeechSynthesizer::Instance->Speak(ttsAnnounceBuf, GetLanguageCode());
-                prevTimer = timer;
+        if (timer > 0 && timer % (timer < 60 ? 10 : 30) == 0 && timer != prevTimer) {
+            uint32_t minutes = timer / 60;
+            uint32_t seconds = timer % 60;
+            char* announceBuf = ttsAnnounceBuf;
+            char arg[8]; // at least big enough where no s8 string will overflow
+            if (minutes > 0) {
+                snprintf(arg, sizeof(arg), "%d", minutes);
+                auto translation =
+                    GetParameritizedText((minutes > 1) ? "minutes_plural" : "minutes_singular", TEXT_BANK_MISC, arg);
+                announceBuf += snprintf(announceBuf, sizeof(ttsAnnounceBuf), "%s ", translation.c_str());
             }
+            if (seconds > 0) {
+                snprintf(arg, sizeof(arg), "%d", seconds);
+                auto translation =
+                    GetParameritizedText((seconds > 1) ? "seconds_plural" : "seconds_singular", TEXT_BANK_MISC, arg);
+                announceBuf += snprintf(announceBuf, sizeof(ttsAnnounceBuf), "%s", translation.c_str());
+            }
+            assert(announceBuf < ttsAnnounceBuf + sizeof(ttsAnnounceBuf));
+            SpeechSynthesizer::Instance->Speak(ttsAnnounceBuf, GetLanguageCode());
         }
 
         prevTimer = timer;
@@ -372,9 +370,16 @@ void RegisterOnKaleidoscopeUpdateHook() {
                 auto translation = GetParameritizedText("magic", TEXT_BANK_KALEIDO, arg);
                 SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
             } else if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
-                snprintf(arg, sizeof(arg), "%d", gSaveContext.rupees);
-                auto translation = GetParameritizedText("rupees", TEXT_BANK_KALEIDO, arg);
-                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                if (gPlayState->sceneNum >= SCENE_FOREST_TEMPLE && gPlayState->sceneNum <= SCENE_INSIDE_GANONS_CASTLE) {
+                    snprintf(arg, sizeof(arg), "%d",
+                             std::max(gSaveContext.inventory.dungeonKeys[gPlayState->sceneNum], (s8)0));
+                    auto translation = GetParameritizedText("keys", TEXT_BANK_KALEIDO, arg);
+                    SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                } else {
+                    snprintf(arg, sizeof(arg), "%d", gSaveContext.rupees);
+                    auto translation = GetParameritizedText("rupees", TEXT_BANK_KALEIDO, arg);
+                    SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                }
             } else if (CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
                 // TODO: announce timer?
             }
@@ -840,6 +845,16 @@ void RegisterOnUpdateMainMenuSelection() {
             auto optionValueName = BossRush_GetSettingChoiceName(optionIndex, optionValue, language);
             auto translation = optionName + std::string(" - ") + optionValueName;
             SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+        });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileRandomizerOptionSelection>(
+        [](uint8_t optionIndex) {
+            if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0))
+                return;
+            uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
+
+            auto optionName = SohFileSelect_GetSettingText(optionIndex, language);
+            SpeechSynthesizer::Instance->Speak(optionName, GetLanguageCode());
         });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileNameSelection>([](int16_t charCode) {

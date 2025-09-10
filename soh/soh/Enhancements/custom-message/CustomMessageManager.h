@@ -47,6 +47,7 @@ class CustomMessage {
                   TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
     CustomMessage(std::string english_, TextBoxType type_ = TEXTBOX_TYPE_BLACK,
                   TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
+    // RANDOTODO trying to declare this with capital and type causes ambiguity with the first signature
     CustomMessage(std::string english_, std::vector<std::string> colors_, std::vector<bool> capital_ = {},
                   TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
     CustomMessage(Text text, TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
@@ -152,6 +153,13 @@ class CustomMessage {
      * @param num the number to insert.
      */
     void InsertNumber(uint8_t num);
+
+    /**
+     * @brief A € sign at the end of an item name signals that it is plural.
+     * If a hint text has |singular|plural| forms specified, the unused one get's deleted.
+     * If no € sign is present, the singular form is used.
+     */
+    void SetSingularPlural();
 
     /**
      * @brief Replaces various symbols with the control codes necessary to

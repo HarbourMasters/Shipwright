@@ -11,10 +11,9 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 #include <libultraship/libultraship.h>
-#include <Fast3D/gfx_pc.h>
 
 #ifdef __APPLE__
-#include "graphic/Fast3D/gfx_metal.h"
+#include "graphic/Fast3D/backends/gfx_metal.h"
 #endif
 
 #ifdef __SWITCH__
@@ -71,7 +70,6 @@ std::shared_ptr<SohMenuBar> mSohMenuBar;
 std::shared_ptr<Ship::GuiWindow> mConsoleWindow;
 std::shared_ptr<SohStatsWindow> mStatsWindow;
 std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
-std::shared_ptr<Ship::GuiWindow> mInputEditorWindow;
 
 std::shared_ptr<SohMenu> mSohMenu;
 std::shared_ptr<AudioEditor> mAudioEditorWindow;
@@ -131,10 +129,10 @@ void SetupGuiElements() {
     mStatsWindow = std::make_shared<SohStatsWindow>(CVAR_WINDOW("SohStats"), "Stats##Soh", ImVec2(400, 100));
     gui->AddGuiWindow(mStatsWindow);
 
-    mInputEditorWindow = gui->GetGuiWindow("Controller Configuration");
+    /*mInputEditorWindow = gui->GetGuiWindow("Controller Configuration");
     if (mInputEditorWindow == nullptr) {
         SPDLOG_ERROR("Could not find input editor window");
-    }
+    }*/
 
     mAudioEditorWindow = std::make_shared<AudioEditor>(CVAR_WINDOW("AudioEditor"), "Audio Editor", ImVec2(820, 630));
     gui->AddGuiWindow(mAudioEditorWindow);
@@ -228,7 +226,6 @@ void Destroy() {
     mActorViewerWindow = nullptr;
     mCosmeticsEditorWindow = nullptr;
     mAudioEditorWindow = nullptr;
-    mInputEditorWindow = nullptr;
     mStatsWindow = nullptr;
     mConsoleWindow = nullptr;
     mGfxDebuggerWindow = nullptr;

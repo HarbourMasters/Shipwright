@@ -42,6 +42,8 @@ void Settings::CreateOptionDescriptions() {
                                                   "\n"
                                                   "Open - Sleeping Waterfall is always open. "
                                                   "Link may always enter Zora's Domain.";
+    mOptionDescriptions[RSK_JABU_OPEN] = "Closed - A fish is required to open Jabu-Jabu's mouth.\n\n"
+                                         "Open - Jabu-Jabu's mouth opens without the need for a fish.";
     mOptionDescriptions[RSK_LOCK_OVERWORLD_DOORS] =
         "Add locks to all wooden overworld doors, requiring specific small keys to open them";
     mOptionDescriptions[RSK_STARTING_AGE] =
@@ -198,6 +200,8 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_MIX_INTERIOR_ENTRANCES] = "Interior entrances will be part of the mixed pool.";
     mOptionDescriptions[RSK_MIX_GROTTO_ENTRANCES] = "Grotto entrances will be part of the mixed pool.";
     mOptionDescriptions[RSK_SHUFFLE_SONGS] =
+        "Off - Songs will appear at their vanilla locations.\n"
+        "\n"
         "Song locations - Songs will only appear at locations that normally teach songs.\n"
         "\n"
         "Dungeon rewards - Songs appear after beating a major dungeon boss.\n"
@@ -595,7 +599,6 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
         "rewards on slider does not change.";
-    mOptionDescriptions[RSK_CUCCO_COUNT] = "The amount of cuccos needed to claim the reward from Anju the Cucco Lady.";
     mOptionDescriptions[RSK_BIG_POE_COUNT] = "The Poe collector will give a reward for turning in this many Big Poes.";
     mOptionDescriptions[RSK_SKIP_CHILD_STEALTH] =
         "The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.";

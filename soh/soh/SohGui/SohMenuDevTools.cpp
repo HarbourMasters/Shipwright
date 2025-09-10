@@ -5,6 +5,18 @@ namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
 using namespace UIWidgets;
 
+static const std::unordered_map<int32_t, const char*> logLevels = {
+    { DEBUG_LOG_TRACE, "Trace" }, { DEBUG_LOG_DEBUG, "Debug" }, { DEBUG_LOG_INFO, "Info" },
+    { DEBUG_LOG_WARN, "Warn" },   { DEBUG_LOG_ERROR, "Error" }, { DEBUG_LOG_CRITICAL, "Critical" },
+    { DEBUG_LOG_OFF, "Off" },
+};
+
+static const std::unordered_map<int32_t, const char*> debugSaveFileModes = {
+    { 0, "Off" },
+    { 1, "Vanilla" },
+    { 2, "Maxed" },
+};
+
 void SohMenu::AddMenuDevTools() {
     // Add Dev Tools Menu
     AddMenuEntry("Dev Tools", CVAR_SETTING("Menu.DevToolsSidebarSection"));
@@ -21,6 +33,12 @@ void SohMenu::AddMenuDevTools() {
         .Options(
             CheckboxOptions().Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip "
                                       "with L + D-pad Right, and open the debug menu with L on the pause screen."));
+    AddWidget(path, "Boot To Debug Warp Screen", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"))
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
+        .Options(
+            CheckboxOptions().Tooltip("Automatically shows Debug Warp Screen when starting or resetting the game.\n"
+                                      "This option takes precedence over \"Boot Sequence\" option."));
     AddWidget(path, "OoT Registry Editor", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("RegEditEnabled"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
@@ -87,6 +105,17 @@ void SohMenu::AddMenuDevTools() {
             }
         })
         .SameLine(true);
+    AddWidget(path, "Log Level", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_DEVELOPER_TOOLS("LogLevel"))
+        .Options(ComboboxOptions()
+                     .Tooltip("The log level determines which messages are printed to the console."
+                              " This does not affect the log file output")
+                     .ComboMap(logLevels))
+        .Callback([](WidgetInfo& info) {
+            Ship::Context::GetInstance()->GetLogger()->set_level(
+                (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), DEBUG_LOG_DEBUG));
+        })
+        .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_DEBUG_MODE_OFF).active; });
 
     // Stats
     path.sidebarName = "Stats";

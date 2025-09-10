@@ -5,10 +5,9 @@
 #include "z64math.h"
 #include "z64audio.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include "soh/Enhancements/randomizer/randomizer_inf.h"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#include "soh/Enhancements/boss-rush/BossRushTypes.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
 
 typedef enum {
     /* 0x0 */ MAGIC_STATE_IDLE, // Regular gameplay
