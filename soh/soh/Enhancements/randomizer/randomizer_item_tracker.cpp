@@ -1780,161 +1780,162 @@ static std::unordered_map<int32_t, const char*> minimalDisplayTypes = {
 
 void ItemTrackerSettingsWindow::DrawElement() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
-    ImGui::BeginTable("itemTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
-    ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-    ImGui::TableSetupColumn("Section settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-    ImGui::TableHeadersRow();
-    ImGui::TableNextRow();
-    ImGui::TableNextColumn();
-    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-    SohGui::mSohMenu->MenuDrawItem(backgroundColor, 250, THEME_COLOR);
-    ImGui::PopItemWidth();
-    SohGui::mSohMenu->MenuDrawItem(windowTypeWidget, 250, THEME_COLOR);
+    if (ImGui::BeginTable("itemTrackerSettingsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+        ImGui::TableSetupColumn("General settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+        ImGui::TableSetupColumn("Section settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+        ImGui::TableHeadersRow();
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
+        SohGui::mSohMenu->MenuDrawItem(backgroundColor, 250, THEME_COLOR);
+        ImGui::PopItemWidth();
+        SohGui::mSohMenu->MenuDrawItem(windowTypeWidget, 250, THEME_COLOR);
 
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
-        if (CVarCheckbox("Enable Dragging", CVAR_TRACKER_ITEM("Draggable"), CheckboxOptions().Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
+        if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
+            if (CVarCheckbox("Enable Dragging", CVAR_TRACKER_ITEM("Draggable"), CheckboxOptions().Color(THEME_COLOR))) {
+                shouldUpdateVectors = true;
+            }
+            if (CVarCheckbox("Only Enable While Paused", CVAR_TRACKER_ITEM("ShowOnlyPaused"),
+                             CheckboxOptions().Color(THEME_COLOR))) {
+                shouldUpdateVectors = true;
+            }
+            if (CVarCombobox("Display Mode", CVAR_TRACKER_ITEM("DisplayType.Main"), displayModes,
+                             ComboboxOptions()
+                                 .DefaultIndex(TRACKER_DISPLAY_ALWAYS)
+                                 .ComponentAlignment(ComponentAlignments::Right)
+                                 .LabelPosition(LabelPositions::Far)
+                                 .Color(THEME_COLOR))) {
+                shouldUpdateVectors = true;
+            }
+            if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
+                TRACKER_DISPLAY_COMBO_BUTTON) {
+                if (CVarCombobox("Combo Button 1", CVAR_TRACKER_ITEM("ComboButton1"), buttons,
+                                 ComboboxOptions()
+                                     .DefaultIndex(TRACKER_COMBO_BUTTON_L)
+                                     .ComponentAlignment(ComponentAlignments::Right)
+                                     .LabelPosition(LabelPositions::Far)
+                                     .Color(THEME_COLOR))) {
+                    shouldUpdateVectors = true;
+                }
+                if (CVarCombobox("Combo Button 2", CVAR_TRACKER_ITEM("ComboButton2"), buttons,
+                                 ComboboxOptions()
+                                     .DefaultIndex(TRACKER_COMBO_BUTTON_R)
+                                     .ComponentAlignment(ComponentAlignments::Right)
+                                     .LabelPosition(LabelPositions::Far)
+                                     .Color(THEME_COLOR))) {
+                    shouldUpdateVectors = true;
+                }
+            }
         }
-        if (CVarCheckbox("Only Enable While Paused", CVAR_TRACKER_ITEM("ShowOnlyPaused"),
-                         CheckboxOptions().Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
+        ImGui::Separator();
+        CVarSliderInt("Icon size : %dpx", CVAR_TRACKER_ITEM("IconSize"),
+                      IntSliderOptions().Min(25).Max(128).DefaultValue(36).Color(THEME_COLOR));
+        CVarSliderInt("Icon margins : %dpx", CVAR_TRACKER_ITEM("IconSpacing"),
+                      IntSliderOptions().Min(-5).Max(50).DefaultValue(12).Color(THEME_COLOR));
+        CVarSliderInt("Text size : %dpx", CVAR_TRACKER_ITEM("TextSize"),
+                      IntSliderOptions().Min(1).Max(30).DefaultValue(13).Color(THEME_COLOR));
+
+        ImGui::NewLine();
+        SohGui::mSohMenu->MenuDrawItem(ammoTracking, 250, THEME_COLOR);
+        if (CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) ==
+                ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY ||
+            CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) ==
+                ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
+            if (CVarCheckbox("Align count to left side", CVAR_TRACKER_ITEM("ItemCountAlignLeft"),
+                             CheckboxOptions().Color(THEME_COLOR))) {
+                shouldUpdateVectors = true;
+            }
         }
-        if (CVarCombobox("Display Mode", CVAR_TRACKER_ITEM("DisplayType.Main"), displayModes,
+
+        SohGui::mSohMenu->MenuDrawItem(keyTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(triforcePieceCount, 250, THEME_COLOR);
+
+        ImGui::TableNextColumn();
+
+        if (CVarCombobox("Inventory", CVAR_TRACKER_ITEM("DisplayType.Inventory"), displayTypes,
                          ComboboxOptions()
-                             .DefaultIndex(TRACKER_DISPLAY_ALWAYS)
+                             .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
                              .ComponentAlignment(ComponentAlignments::Right)
                              .LabelPosition(LabelPositions::Far)
                              .Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
-        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
-            TRACKER_DISPLAY_COMBO_BUTTON) {
-            if (CVarCombobox("Combo Button 1", CVAR_TRACKER_ITEM("ComboButton1"), buttons,
-                             ComboboxOptions()
-                                 .DefaultIndex(TRACKER_COMBO_BUTTON_L)
-                                 .ComponentAlignment(ComponentAlignments::Right)
-                                 .LabelPosition(LabelPositions::Far)
-                                 .Color(THEME_COLOR))) {
-                shouldUpdateVectors = true;
-            }
-            if (CVarCombobox("Combo Button 2", CVAR_TRACKER_ITEM("ComboButton2"), buttons,
-                             ComboboxOptions()
-                                 .DefaultIndex(TRACKER_COMBO_BUTTON_R)
-                                 .ComponentAlignment(ComponentAlignments::Right)
-                                 .LabelPosition(LabelPositions::Far)
-                                 .Color(THEME_COLOR))) {
-                shouldUpdateVectors = true;
-            }
-        }
-    }
-    ImGui::Separator();
-    CVarSliderInt("Icon size : %dpx", CVAR_TRACKER_ITEM("IconSize"),
-                  IntSliderOptions().Min(25).Max(128).DefaultValue(36).Color(THEME_COLOR));
-    CVarSliderInt("Icon margins : %dpx", CVAR_TRACKER_ITEM("IconSpacing"),
-                  IntSliderOptions().Min(-5).Max(50).DefaultValue(12).Color(THEME_COLOR));
-    CVarSliderInt("Text size : %dpx", CVAR_TRACKER_ITEM("TextSize"),
-                  IntSliderOptions().Min(1).Max(30).DefaultValue(13).Color(THEME_COLOR));
-
-    ImGui::NewLine();
-    SohGui::mSohMenu->MenuDrawItem(ammoTracking, 250, THEME_COLOR);
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) ==
-            ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY ||
-        CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) ==
-            ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
-        if (CVarCheckbox("Align count to left side", CVAR_TRACKER_ITEM("ItemCountAlignLeft"),
-                         CheckboxOptions().Color(THEME_COLOR))) {
+        if (CVarCombobox("Equipment", CVAR_TRACKER_ITEM("DisplayType.Equipment"), displayTypes,
+                         ComboboxOptions()
+                             .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
+                             .ComponentAlignment(ComponentAlignments::Right)
+                             .LabelPosition(LabelPositions::Far)
+                             .Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
-    }
-
-    SohGui::mSohMenu->MenuDrawItem(keyTracking, 250, THEME_COLOR);
-    SohGui::mSohMenu->MenuDrawItem(triforcePieceCount, 250, THEME_COLOR);
-
-    ImGui::TableNextColumn();
-
-    if (CVarCombobox("Inventory", CVAR_TRACKER_ITEM("DisplayType.Inventory"), displayTypes,
-                     ComboboxOptions()
-                         .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
-                         .ComponentAlignment(ComponentAlignments::Right)
-                         .LabelPosition(LabelPositions::Far)
-                         .Color(THEME_COLOR))) {
-        shouldUpdateVectors = true;
-    }
-    if (CVarCombobox("Equipment", CVAR_TRACKER_ITEM("DisplayType.Equipment"), displayTypes,
-                     ComboboxOptions()
-                         .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
-                         .ComponentAlignment(ComponentAlignments::Right)
-                         .LabelPosition(LabelPositions::Far)
-                         .Color(THEME_COLOR))) {
-        shouldUpdateVectors = true;
-    }
-    if (CVarCombobox("Misc", CVAR_TRACKER_ITEM("DisplayType.Misc"), displayTypes,
-                     ComboboxOptions()
-                         .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
-                         .ComponentAlignment(ComponentAlignments::Right)
-                         .LabelPosition(LabelPositions::Far)
-                         .Color(THEME_COLOR))) {
-        shouldUpdateVectors = true;
-    }
-    if (CVarCombobox("Dungeon Rewards", CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), displayTypes,
-                     ComboboxOptions()
-                         .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
-                         .ComponentAlignment(ComponentAlignments::Right)
-                         .LabelPosition(LabelPositions::Far)
-                         .Color(THEME_COLOR))) {
-        shouldUpdateVectors = true;
-    }
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), SECTION_DISPLAY_MAIN_WINDOW) ==
-        SECTION_DISPLAY_SEPARATE) {
-        if (CVarCheckbox("Circle display", CVAR_TRACKER_ITEM("DungeonRewardsLayout"),
-                         CheckboxOptions().DefaultValue(false).Color(THEME_COLOR))) {
+        if (CVarCombobox("Misc", CVAR_TRACKER_ITEM("DisplayType.Misc"), displayTypes,
+                         ComboboxOptions()
+                             .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
+                             .ComponentAlignment(ComponentAlignments::Right)
+                             .LabelPosition(LabelPositions::Far)
+                             .Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
-    }
-    if (CVarCombobox("Songs", CVAR_TRACKER_ITEM("DisplayType.Songs"), displayTypes,
-                     ComboboxOptions()
-                         .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
-                         .ComponentAlignment(ComponentAlignments::Right)
-                         .LabelPosition(LabelPositions::Far)
-                         .Color(THEME_COLOR))) {
-        shouldUpdateVectors = true;
-    }
-    SohGui::mSohMenu->MenuDrawItem(dungeonItemTracking, 250, THEME_COLOR);
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) !=
-        SECTION_DISPLAY_HIDDEN) {
-        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) ==
+        if (CVarCombobox("Dungeon Rewards", CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), displayTypes,
+                         ComboboxOptions()
+                             .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
+                             .ComponentAlignment(ComponentAlignments::Right)
+                             .LabelPosition(LabelPositions::Far)
+                             .Color(THEME_COLOR))) {
+            shouldUpdateVectors = true;
+        }
+        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), SECTION_DISPLAY_MAIN_WINDOW) ==
             SECTION_DISPLAY_SEPARATE) {
-            if (CVarCheckbox("Horizontal display", CVAR_TRACKER_ITEM("DungeonItems.Layout"),
+            if (CVarCheckbox("Circle display", CVAR_TRACKER_ITEM("DungeonRewardsLayout"),
+                             CheckboxOptions().DefaultValue(false).Color(THEME_COLOR))) {
+                shouldUpdateVectors = true;
+            }
+        }
+        if (CVarCombobox("Songs", CVAR_TRACKER_ITEM("DisplayType.Songs"), displayTypes,
+                         ComboboxOptions()
+                             .DefaultIndex(SECTION_DISPLAY_MAIN_WINDOW)
+                             .ComponentAlignment(ComponentAlignments::Right)
+                             .LabelPosition(LabelPositions::Far)
+                             .Color(THEME_COLOR))) {
+            shouldUpdateVectors = true;
+        }
+        SohGui::mSohMenu->MenuDrawItem(dungeonItemTracking, 250, THEME_COLOR);
+        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) !=
+            SECTION_DISPLAY_HIDDEN) {
+            if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) ==
+                SECTION_DISPLAY_SEPARATE) {
+                if (CVarCheckbox("Horizontal display", CVAR_TRACKER_ITEM("DungeonItems.Layout"),
+                                 CheckboxOptions().DefaultValue(true).Color(THEME_COLOR))) {
+                    shouldUpdateVectors = true;
+                }
+            }
+            if (CVarCheckbox("Maps and compasses", CVAR_TRACKER_ITEM("DungeonItems.DisplayMaps"),
                              CheckboxOptions().DefaultValue(true).Color(THEME_COLOR))) {
                 shouldUpdateVectors = true;
             }
         }
-        if (CVarCheckbox("Maps and compasses", CVAR_TRACKER_ITEM("DungeonItems.DisplayMaps"),
-                         CheckboxOptions().DefaultValue(true).Color(THEME_COLOR))) {
+        SohGui::mSohMenu->MenuDrawItem(gregTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(triforcePieceTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(bossSoulsTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(ocarinaButtonTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(overworldKeysTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(fishingPoleTracking, 250, THEME_COLOR);
+
+        if (CVarCombobox("Total Checks", CVAR_TRACKER_ITEM("TotalChecks.DisplayType"), minimalDisplayTypes,
+                         ComboboxOptions()
+                             .DefaultIndex(SECTION_DISPLAY_MINIMAL_HIDDEN)
+                             .ComponentAlignment(ComponentAlignments::Right)
+                             .LabelPosition(LabelPositions::Far)
+                             .Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
+
+        SohGui::mSohMenu->MenuDrawItem(personalNotesWiget, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(hookshotIdentWidget, 250, THEME_COLOR);
+
+        ImGui::PopStyleVar(1);
+        ImGui::EndTable();
     }
-    SohGui::mSohMenu->MenuDrawItem(gregTracking, 250, THEME_COLOR);
-    SohGui::mSohMenu->MenuDrawItem(triforcePieceTracking, 250, THEME_COLOR);
-    SohGui::mSohMenu->MenuDrawItem(bossSoulsTracking, 250, THEME_COLOR);
-    SohGui::mSohMenu->MenuDrawItem(ocarinaButtonTracking, 250, THEME_COLOR);
-    SohGui::mSohMenu->MenuDrawItem(overworldKeysTracking, 250, THEME_COLOR);
-    SohGui::mSohMenu->MenuDrawItem(fishingPoleTracking, 250, THEME_COLOR);
-
-    if (CVarCombobox("Total Checks", CVAR_TRACKER_ITEM("TotalChecks.DisplayType"), minimalDisplayTypes,
-                     ComboboxOptions()
-                         .DefaultIndex(SECTION_DISPLAY_MINIMAL_HIDDEN)
-                         .ComponentAlignment(ComponentAlignments::Right)
-                         .LabelPosition(LabelPositions::Far)
-                         .Color(THEME_COLOR))) {
-        shouldUpdateVectors = true;
-    }
-
-    SohGui::mSohMenu->MenuDrawItem(personalNotesWiget, 250, THEME_COLOR);
-    SohGui::mSohMenu->MenuDrawItem(hookshotIdentWidget, 250, THEME_COLOR);
-
-    ImGui::PopStyleVar(1);
-    ImGui::EndTable();
 }
 
 void ItemTrackerWindow::InitElement() {

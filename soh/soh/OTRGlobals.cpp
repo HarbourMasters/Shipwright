@@ -1465,7 +1465,9 @@ extern "C" void Graph_StartFrame() {
         }
 #endif
         case KbScancode::LUS_KB_TAB: {
-            CVarSetInteger(CVAR_SETTING("AltAssets"), !CVarGetInteger(CVAR_SETTING("AltAssets"), 0));
+            if (CVarGetInteger(CVAR_SETTING("Mods.AlternateAssetsHotkey"), 1)) {
+                CVarSetInteger(CVAR_SETTING("AltAssets"), !CVarGetInteger(CVAR_SETTING("AltAssets"), 0));
+            }
             break;
         }
     }
@@ -2510,7 +2512,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (textId == TEXT_BIG_POE_COLLECTED_RANDO) {
             messageEntry =
                 CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_AUTO_FORMAT);
-        } else if (textId == TEXT_GERUDO_GUARD_FRIENDLY && player->talkActor->id == ACTOR_EN_GE2) {
+        } else if (textId == TEXT_GERUDO_GUARD_FRIENDLY && player->talkActor->id == ACTOR_EN_GE2 &&
+                   gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS) {
             // TODO_TRANSLATE Translate into french and german
             messageEntry = CustomMessage("Want me to throw you in jail?&\x1B#Yes please&No thanks#", { QM_GREEN });
             messageEntry.AutoFormat();

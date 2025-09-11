@@ -1,6 +1,5 @@
 #include <libultraship/bridge.h>
 #include "soh/OTRGlobals.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -166,7 +165,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     *should = false;
                 }
 
-                u8 meetsBurningKakRequirements = LINK_IS_ADULT &&
+                u8 meetsBurningKakRequirements = LINK_IS_ADULT && gSaveContext.cutsceneIndex < 0xFFF0 &&
                                                  gSaveContext.entranceIndex == ENTR_KAKARIKO_VILLAGE_FRONT_GATE &&
                                                  Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) &&
                                                  Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) &&
@@ -302,9 +301,10 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 }
                 switch (actor->id) {
                     case ACTOR_OBJ_SWITCH: {
-                        if ((actor->params == 8224 && gPlayState->sceneNum == SCENE_DODONGOS_CAVERN) ||
-                            (actor->params == 6979 && gPlayState->sceneNum == SCENE_WATER_TEMPLE) &&
-                                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
+                        if (((actor->params == 8224 && gPlayState->sceneNum == SCENE_DODONGOS_CAVERN) ||
+                             (actor->params == 6979 && gPlayState->sceneNum == SCENE_WATER_TEMPLE) ||
+                             (actor->params == 8961 && gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE)) &&
+                            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
                             break;
                         }
                         ObjSwitch* switchActor = (ObjSwitch*)actor;
@@ -342,6 +342,16 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         *should = false;
                         break;
                     }
+                    case ACTOR_EN_BOX: {
+                        if (actor->params == -30457 && gPlayState->sceneNum == SCENE_JABU_JABU &&
+                            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
+                            break;
+                        }
+                        EnBox* boxActor = (EnBox*)actor;
+                        *should = false;
+                        RateLimitedSuccessChime();
+                        break;
+                    }
                     case ACTOR_BG_HIDAN_FWBIG:
                     case ACTOR_EN_EX_ITEM:
                     case ACTOR_EN_DNT_NOMAL:
@@ -354,7 +364,6 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     case ACTOR_DOOR_SHUTTER:
                     case ACTOR_BG_ICE_SHUTTER:
                     case ACTOR_OBJ_LIGHTSWITCH:
-                    case ACTOR_EN_BOX:
                     case ACTOR_OBJ_SYOKUDAI:
                     case ACTOR_OBJ_TIMEBLOCK:
                     case ACTOR_EN_PO_SISTERS:
@@ -942,7 +951,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
             });
     }
 
-    if (actor->id == ACTOR_EN_JJ && !IS_RANDO) {
+    if (actor->id == ACTOR_EN_JJ) {
         enJjUpdateHook =
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
                 Actor* innerActor = static_cast<Actor*>(innerActorRef);
@@ -1199,6 +1208,10 @@ void TimeSaverOnSceneInitHandler(int16_t sceneNum) {
 }
 
 static GetItemEntry vanillaQueuedItemEntry = GET_ITEM_NONE;
+
+void TimeSaverQueueItem(RandomizerGet randoGet) {
+    vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(randoGet).GetGIEntry_Copy();
+}
 
 void TimeSaverOnFlagSetHandler(int16_t flagType, int16_t flag) {
     // Do nothing when in a boss rush
