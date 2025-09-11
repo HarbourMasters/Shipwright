@@ -41,8 +41,8 @@ typedef enum {
     WIDGET_BUTTON,
     WIDGET_INPUT,
     WIDGET_CVAR_INPUT,
-    WIDGET_CVAR_COLOR_PICKER, // color picker without alpha
-    WIDGET_COLOR_PICKER,      // color picker with alpha
+    WIDGET_CVAR_COLOR_PICKER,
+    WIDGET_COLOR_PICKER,
     WIDGET_SEARCH,
     WIDGET_SEPARATOR,
     WIDGET_SEPARATOR_TEXT,
