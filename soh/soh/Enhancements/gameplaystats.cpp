@@ -15,6 +15,18 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/OTRGlobals.h"
 
+// New
+#include <fstream>
+#include <filesystem>
+#include "TimeDisplay/TimeDisplay.h"
+
+using json = nlohmann::json;
+
+#define CVAR_NAME "gSettings.Gameplaystats.Enable"
+#define CVAR CVarGetInteger(CVAR_NAME, 0)
+
+// End
+
 extern "C" {
 #include <z64.h>
 #include "variables.h"
@@ -257,15 +269,6 @@ TimestampInfo itemTimestampDisplay[TIMESTAMP_MAX];
 TimestampInfo sceneTimestampDisplay[8191];
 // std::vector<TimestampInfo> sceneTimestampDisplay;
 
-std::string formatTimestampGameplayStat(uint32_t value) {
-    uint32_t sec = value / 10;
-    uint32_t hh = sec / 3600;
-    uint32_t mm = (sec - hh * 3600) / 60;
-    uint32_t ss = sec - hh * 3600 - mm * 60;
-    uint32_t ds = value % 10;
-    return fmt::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
-}
-
 std::string formatIntGameplayStat(uint32_t value) {
     return fmt::format("{}", value);
 }
@@ -279,7 +282,7 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
 }
 
 extern "C" char* GameplayStats_GetCurrentTime() {
-    std::string timeString = formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME).c_str();
+    std::string timeString = formatTimeDisplay(GAMEPLAYSTAT_TOTAL_TIME).c_str();
     const size_t stringLength = timeString.length();
     char* timeChar = (char*)malloc(stringLength + 1); // We need to use malloc so we can free this from a C file.
     strcpy(timeChar, timeString.c_str());
@@ -451,20 +454,20 @@ void DrawGameplayStatsHeader() {
         GameplayStatsRow("Build Version:", (char*)gBuildVersion);
     }
     if (gSaveContext.ship.stats.rtaTiming) {
-        GameplayStatsRow("Total Time (RTA):", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME),
+        GameplayStatsRow("Total Time (RTA):", formatTimeDisplay(GAMEPLAYSTAT_TOTAL_TIME),
                          gSaveContext.ship.stats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     } else {
-        GameplayStatsRow("Total Game Time:", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME),
+        GameplayStatsRow("Total Game Time:", formatTimeDisplay(GAMEPLAYSTAT_TOTAL_TIME),
                          gSaveContext.ship.stats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     }
     if (CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowAdditionalTimers"), 0)) { // !Only display total game time
-        GameplayStatsRow("Gameplay Time:", formatTimestampGameplayStat(gSaveContext.ship.stats.playTimer / 2),
+        GameplayStatsRow("Gameplay Time:", formatTimeDisplay(gSaveContext.ship.stats.playTimer / 2),
                          COLOR_GREY);
-        GameplayStatsRow("Pause Menu Time:", formatTimestampGameplayStat(gSaveContext.ship.stats.pauseTimer / 3),
+        GameplayStatsRow("Pause Menu Time:", formatTimeDisplay(gSaveContext.ship.stats.pauseTimer / 3),
                          COLOR_GREY);
-        GameplayStatsRow("Time in scene:", formatTimestampGameplayStat(gSaveContext.ship.stats.sceneTimer / 2),
+        GameplayStatsRow("Time in scene:", formatTimeDisplay(gSaveContext.ship.stats.sceneTimer / 2),
                          COLOR_LIGHT_BLUE);
-        GameplayStatsRow("Time in room:", formatTimestampGameplayStat(gSaveContext.ship.stats.roomTimer / 2),
+        GameplayStatsRow("Time in room:", formatTimeDisplay(gSaveContext.ship.stats.roomTimer / 2),
                          COLOR_LIGHT_BLUE);
     }
     if (gPlayState != NULL && CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowDebugInfo"), 0)) { // && display debug info
@@ -496,7 +499,7 @@ void DrawGameplayStatsTimestampsTab() {
     for (int i = 0; i < TIMESTAMP_MAX; i++) {
         // To be shown, the entry must have a non-zero time and a string for its display name
         if (itemTimestampDisplay[i].time > 0 && strnlen(itemTimestampDisplay[i].name, 21) > 1) {
-            GameplayStatsRow(itemTimestampDisplay[i].name, formatTimestampGameplayStat(itemTimestampDisplay[i].time),
+            GameplayStatsRow(itemTimestampDisplay[i].name, formatTimeDisplay(itemTimestampDisplay[i].time),
                              itemTimestampDisplay[i].color);
         }
     }
@@ -565,7 +568,7 @@ void DrawGameplayStatsCountsTab() {
     if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA ||
         gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
         GameplayStatsRow("Bunny Hood Time:",
-                         formatTimestampGameplayStat(gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] / 2));
+                         formatTimeDisplay(gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] / 2));
     }
     GameplayStatsRow("Rolls:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_ROLLS]));
     GameplayStatsRow("Bonks:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_BONKS]));
@@ -615,7 +618,7 @@ void DrawGameplayStatsBreakdownTab() {
         TimestampInfo tsInfo = sceneTimestampDisplay[i];
         bool canShow = !tsInfo.isRoom || CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0);
         if (tsInfo.time > 0 && strnlen(tsInfo.name, 40) > 1 && canShow) {
-            GameplayStatsRow(tsInfo.name, formatTimestampGameplayStat(tsInfo.time), tsInfo.color);
+            GameplayStatsRow(tsInfo.name, formatTimeDisplay(tsInfo.time), tsInfo.color);
         }
     }
     std::string toPass;
@@ -626,12 +629,14 @@ void DrawGameplayStatsBreakdownTab() {
     } else {
         toPass = ResolveSceneID(gSaveContext.ship.stats.sceneNum, gSaveContext.ship.stats.roomNum);
     }
-    GameplayStatsRow(toPass.c_str(), formatTimestampGameplayStat(CURRENT_MODE_TIMER / 2));
+    GameplayStatsRow(toPass.c_str(), formatTimeDisplay(CURRENT_MODE_TIMER / 2));
     ImGui::EndTable();
     ImGui::PopStyleVar(1);
 }
 
 void DrawGameplayStatsOptionsTab() {
+    UIWidgets::CVarCheckbox("Enable Gameplay Stats Tracking", CVAR_SETTING("Gameplaystats.Enable"),
+                            UIWidgets::CheckboxOptions().Color(THEME_COLOR));
     UIWidgets::CVarCheckbox("Show latest timestamps on top", CVAR_GAMEPLAY_STATS("ReverseTimestamps"),
                             UIWidgets::CheckboxOptions().Color(THEME_COLOR));
     UIWidgets::CVarCheckbox("Room Breakdown", CVAR_GAMEPLAY_STATS("RoomBreakdown"),
@@ -885,7 +890,7 @@ void SetupDisplayColors() {
 void GameplayStatsWindow::InitElement() {
     SetupDisplayNames();
     SetupDisplayColors();
-
+    
     SaveManager::Instance->AddLoadFunction("sohStats", 1, LoadStatsVersion1);
     // Add main section save, no parent.
     SaveManager::Instance->AddSaveFunction("sohStats", 1, SaveStats, true, SECTION_PARENT_NONE);
@@ -894,3 +899,16 @@ void GameplayStatsWindow::InitElement() {
     SaveManager::Instance->AddSaveFunction("scenes", 1, SaveStats, false, SECTION_ID_STATS);
     SaveManager::Instance->AddInitFunction(InitStats);
 }
+
+void RegisterGameplayStats() {
+    if (!std::filesystem::exists(Ship::Context::GetPathRelativeToAppDirectory("SoHGameplayStats.json"))) {
+        json initFile;
+        std::ofstream file(Ship::Context::GetPathRelativeToAppDirectory("SoHGameplayStats.json"));
+        file << initFile.dump(4);
+        file.close();
+    }
+
+    COND_HOOK(OnItemReceive, CVAR, [](GetItemEntry itemEntry) {});
+}
+
+static RegisterShipInitFunc initFunc(RegisterGameplayStats, { CVAR_NAME });
