@@ -632,11 +632,6 @@ void DrawGameplayStatsBreakdownTab() {
 }
 
 void DrawGameplayStatsOptionsTab() {
-    UIWidgets::CVarCheckbox("Show in-game total timer", CVAR_GAMEPLAY_STATS("ShowIngameTimer"),
-                            UIWidgets::CheckboxOptions()
-                                .Tooltip("Keep track of the timer as an in-game HUD element. The position of the "
-                                         "timer can be changed in the Cosmetics Editor.")
-                                .Color(THEME_COLOR));
     UIWidgets::CVarCheckbox("Show latest timestamps on top", CVAR_GAMEPLAY_STATS("ReverseTimestamps"),
                             UIWidgets::CheckboxOptions().Color(THEME_COLOR));
     UIWidgets::CVarCheckbox("Room Breakdown", CVAR_GAMEPLAY_STATS("RoomBreakdown"),
