@@ -1857,7 +1857,7 @@ void SohMenu::AddMenuEnhancements() {
 
     // Gameplay Stats
     path.sidebarName = "Gameplay Stats";
-    AddSidebarEntry("Enhancements", path.sidebarName, 2);
+    AddSidebarEntry("Enhancements", path.sidebarName, 1);
     AddWidget(path, "Popout Gameplay Stats Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("GameplayStats"))
         .RaceDisable(false)

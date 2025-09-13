@@ -640,35 +640,6 @@ void Play_Init(GameState* thisx) {
     AnimationContext_Update(play, &play->animationCtx);
     gSaveContext.respawnFlag = 0;
 
-    // #region SOH [Stats]
-    if (gSaveContext.ship.stats.sceneNum != gPlayState->sceneNum) {
-        u16 idx = gSaveContext.ship.stats.tsIdx;
-        gSaveContext.ship.stats.sceneTimestamps[idx].sceneTime = gSaveContext.ship.stats.sceneTimer / 2;
-        gSaveContext.ship.stats.sceneTimestamps[idx].roomTime = gSaveContext.ship.stats.roomTimer / 2;
-        gSaveContext.ship.stats.sceneTimestamps[idx].scene = gSaveContext.ship.stats.sceneNum;
-        gSaveContext.ship.stats.sceneTimestamps[idx].room = gSaveContext.ship.stats.roomNum;
-        gSaveContext.ship.stats.sceneTimestamps[idx].isRoom =
-            gPlayState->sceneNum == gSaveContext.ship.stats.sceneTimestamps[idx].scene &&
-            gPlayState->roomCtx.curRoom.num != gSaveContext.ship.stats.sceneTimestamps[idx].room;
-        gSaveContext.ship.stats.tsIdx++;
-        gSaveContext.ship.stats.sceneTimer = 0;
-        gSaveContext.ship.stats.roomTimer = 0;
-    } else if (gSaveContext.ship.stats.roomNum != gPlayState->roomCtx.curRoom.num) {
-        u16 idx = gSaveContext.ship.stats.tsIdx;
-        gSaveContext.ship.stats.sceneTimestamps[idx].roomTime = gSaveContext.ship.stats.roomTimer / 2;
-        gSaveContext.ship.stats.sceneTimestamps[idx].scene = gSaveContext.ship.stats.sceneNum;
-        gSaveContext.ship.stats.sceneTimestamps[idx].room = gSaveContext.ship.stats.roomNum;
-        gSaveContext.ship.stats.sceneTimestamps[idx].isRoom =
-            gPlayState->sceneNum == gSaveContext.ship.stats.sceneTimestamps[idx].scene &&
-            gPlayState->roomCtx.curRoom.num != gSaveContext.ship.stats.sceneTimestamps[idx].room;
-        gSaveContext.ship.stats.tsIdx++;
-        gSaveContext.ship.stats.roomTimer = 0;
-    }
-
-    gSaveContext.ship.stats.sceneNum = gPlayState->sceneNum;
-    gSaveContext.ship.stats.roomNum = gPlayState->roomCtx.curRoom.num;
-    // #endregion
-
 #if 0
     if (R_USE_DEBUG_CUTSCENE) {
         static u64 sDebugCutsceneScriptBuf[0xA00];

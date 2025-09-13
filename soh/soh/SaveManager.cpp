@@ -1568,9 +1568,6 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
         SaveManager::Instance->LoadData("playTimer", gSaveContext.ship.stats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.ship.stats.pauseTimer);
-        SaveManager::Instance->LoadArray(
-            "timestamps", ARRAY_COUNT(gSaveContext.ship.stats.itemTimestamp),
-            [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.ship.stats.itemTimestamp[i]); });
         SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.ship.stats.count), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.ship.stats.count[i]);
         });
@@ -1790,19 +1787,6 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
         SaveManager::Instance->LoadData("playTimer", gSaveContext.ship.stats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.ship.stats.pauseTimer);
-        SaveManager::Instance->LoadArray(
-            "itemTimestamps", ARRAY_COUNT(gSaveContext.ship.stats.itemTimestamp),
-            [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.ship.stats.itemTimestamp[i]); });
-        SaveManager::Instance->LoadArray(
-            "sceneTimestamps", ARRAY_COUNT(gSaveContext.ship.stats.sceneTimestamps), [](size_t i) {
-                SaveManager::Instance->LoadStruct("", [&i]() {
-                    SaveManager::Instance->LoadData("scene", gSaveContext.ship.stats.sceneTimestamps[i].scene);
-                    SaveManager::Instance->LoadData("room", gSaveContext.ship.stats.sceneTimestamps[i].room);
-                    SaveManager::Instance->LoadData("sceneTime", gSaveContext.ship.stats.sceneTimestamps[i].sceneTime);
-                    SaveManager::Instance->LoadData("roomTime", gSaveContext.ship.stats.sceneTimestamps[i].roomTime);
-                    SaveManager::Instance->LoadData("isRoom", gSaveContext.ship.stats.sceneTimestamps[i].isRoom);
-                });
-            });
         SaveManager::Instance->LoadData("tsIdx", gSaveContext.ship.stats.tsIdx);
         SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.ship.stats.count), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.ship.stats.count[i]);

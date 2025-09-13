@@ -1787,48 +1787,6 @@ void func_80084BF4(PlayState* play, u16 flag) {
     }
 }
 
-// Gameplay stat tracking: Update time the item was acquired
-// (special cases for some duplicate items)
-void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
-
-    // If we already have a timestamp for this item, do nothing
-    if (gSaveContext.ship.stats.itemTimestamp[item] != 0) {
-        return;
-    }
-    // Use ITEM_KEY_BOSS only for Ganon's boss key - not any other boss keys
-    if (play != NULL) {
-        if (item == ITEM_KEY_BOSS && play->sceneNum != SCENE_INSIDE_GANONS_CASTLE &&
-            play->sceneNum != SCENE_GANONS_TOWER) {
-            return;
-        }
-    }
-
-    u32 time = GAMEPLAYSTAT_TOTAL_TIME;
-
-    // Have items in Link's pocket shown as being obtained at 0.1 seconds
-    if (time == 0) {
-        time = 1;
-    }
-
-    // Count any bottled item as a bottle
-    if (item >= ITEM_BOTTLE && item <= ITEM_POE) {
-        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] = time;
-        }
-        return;
-    }
-    // Count any bombchu pack as bombchus
-    if (item == ITEM_BOMBCHU || (item >= ITEM_BOMBCHUS_5 && item <= ITEM_BOMBCHUS_20)) {
-        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] == 0) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
-        }
-        return;
-    }
-
-    gSaveContext.ship.stats.itemTimestamp[item] = time;
-    GameInteractor_ExecuteOnTimestamp(item);
-}
-
 u8 Return_Item_Entry(GetItemEntry itemEntry, u8 returnItem) {
     GameInteractor_ExecuteOnItemReceiveHooks(itemEntry);
     return returnItem;
@@ -1891,9 +1849,6 @@ u8 Item_Give(PlayState* play, u8 item) {
     s16 temp;
 
     GetItemID returnItem = ITEM_NONE;
-
-    // Gameplay stats: Update the time the item was obtained
-    GameplayStats_SetTimestamp(play, item);
 
     slot = SLOT(item);
     if (item >= ITEM_STICKS_5) {

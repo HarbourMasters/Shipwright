@@ -40,6 +40,7 @@
 #include "fishsanity.h"
 #include "randomizerTypes.h"
 #include "soh/Notification/Notification.h"
+#include "soh/Enhancements/GameplayStats/gameplaystats2.h"
 
 extern std::map<RandomizerCheckArea, std::string> rcAreaNames;
 
@@ -5833,55 +5834,6 @@ static std::unordered_map<RandomizerGet, GameplayStatTimestamp> randomizerGetToS
     { RG_FISHING_HOLE_KEY, TIMESTAMP_FOUND_FISHING_HOLE_KEY },
 };
 
-// Gameplay stat tracking: Update time the item was acquired
-// (special cases for rando items)
-void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
-
-    u32 time = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
-
-    // Have items in Link's pocket shown as being obtained at 0.1 seconds
-    if (time == 0) {
-        time = 1;
-    }
-
-    // Use ITEM_KEY_BOSS to timestamp Ganon's boss key
-    if (item == RG_GANONS_CASTLE_BOSS_KEY) {
-        gSaveContext.ship.stats.itemTimestamp[ITEM_KEY_BOSS] = time;
-        return;
-    }
-
-    if (randomizerGetToStatsTimeStamp.contains((RandomizerGet)item)) {
-        gSaveContext.ship.stats.itemTimestamp[randomizerGetToStatsTimeStamp[(RandomizerGet)item]] = time;
-        return;
-    }
-
-    // Count any bottled item as a bottle
-    if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
-        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] = time;
-        }
-        return;
-    }
-
-    // Count any bombchu pack as bombchus
-    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS) {
-        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = 0) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
-        }
-        return;
-    }
-
-    if (item == RG_MAGIC_SINGLE) {
-        gSaveContext.ship.stats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
-        return;
-    }
-
-    if (item == RG_DOUBLE_DEFENSE) {
-        gSaveContext.ship.stats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
-        return;
-    }
-}
-
 extern "C" u8 Return_Item_Entry(GetItemEntry itemEntry, u8 returnItem);
 
 // used for items that only set a rand inf when obtained
@@ -5923,9 +5875,6 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     }
 
     RandomizerGet item = (RandomizerGet)giEntry.getItemId;
-
-    // Gameplay stats: Update the time the item was obtained
-    Randomizer_GameplayStats_SetTimestamp(item);
 
     // if it's an item that just sets a randomizerInf, set it
     if (randomizerGetToRandInf.find(item) != randomizerGetToRandInf.end()) {
@@ -6144,7 +6093,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         case RG_GREG_RUPEE:
             Rupees_ChangeBy(1);
             Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
-            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+            GameplayStats_AddTimestamp(TIMESTAMP_FOUND_GREG, STAT_TYPE_EVENT);
             break;
         case RG_TRIFORCE_PIECE:
             gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected++;
@@ -6153,8 +6102,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             // Teleport to credits when goal is reached.
             if (gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected ==
                 (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
-                    static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+                GameplayStats_AddTimestamp(TIMESTAMP_TRIFORCE_COMPLETED, STAT_TYPE_EVENT);
                 gSaveContext.ship.stats.gameComplete = 1;
                 Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
                 Play_PerformSave(play);
