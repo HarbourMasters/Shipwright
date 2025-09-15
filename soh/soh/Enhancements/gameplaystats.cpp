@@ -387,7 +387,17 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
             { COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE,         { STAT_TYPE_ENEMY, "Wolfos (White)", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
         }
     },
-
+    { STAT_TYPE_PLAYER,
+        {
+            { ITEM_STICK,	    { STAT_TYPE_PLAYER, "Consumed - Deku Stick",    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_NUT,		    { STAT_TYPE_PLAYER, "Consumed - Deku Nut", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOMB,		{ STAT_TYPE_PLAYER, "Consumed - Bomb", 		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOW,         { STAT_TYPE_PLAYER, "Consumed - Arrow", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SLINGSHOT,	{ STAT_TYPE_PLAYER, "Consumed - Seed", 		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOMBCHU,	    { STAT_TYPE_PLAYER, "Consumed - Bombchu", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BEAN,		{ STAT_TYPE_PLAYER, "Consumed - Magic Bean",    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+        }
+    },
 };
 
 static std::unordered_map<u16, u16> enemyIdToStatCount = {
@@ -778,10 +788,12 @@ GameplayStatObject GameplayStats_GetCountObjectById(uint32_t countId, uint32_t c
         return {};
     }
 
-    uint32_t countEnum = enemyIdToStatCount.at(countId);
+    if (countType == STAT_TYPE_ENEMY) {
+        countId = enemyIdToStatCount.at(countId);
+    }
 
     auto& innerMap = outerIt->second;
-    auto innerIt = innerMap.find(countEnum);
+    auto innerIt = innerMap.find(countId);
     if (innerIt == innerMap.end()) {
         return {};
     }
@@ -1132,6 +1144,18 @@ void RegisterGameplayStats() {
         }
 
         GameplayStats_AddTimestamp(statObject);
+    });
+    COND_HOOK(OnAmmoUsed, CVAR, [](s16 item, s16 ammoUsed) {
+        if (item == ITEM_SEEDS) {
+            item == ITEM_SLINGSHOT;
+        }
+
+        auto countObject = GameplayStats_GetCountObjectById(item, STAT_TYPE_PLAYER);
+        if (countObject.entryName == "") {
+            return;
+        }
+
+        GameplayStats_AddCount(countObject);
     });
     COND_HOOK(OnDeleteFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_DELETE, fileNum); });
     COND_HOOK(OnLoadFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_LOAD, fileNum); });

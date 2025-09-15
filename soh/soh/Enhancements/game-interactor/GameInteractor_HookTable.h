@@ -34,6 +34,7 @@ DEFINE_HOOK(OnActorDestroy, (void* actor));
 DEFINE_HOOK(OnEnemyDefeat, (void* actor));
 DEFINE_HOOK(OnBossDefeat, (void* actor));
 DEFINE_HOOK(OnTimestamp, (u8 item));
+DEFINE_HOOK(OnAmmoUsed, (s16 item, s16 ammoUsed));
 DEFINE_HOOK(OnPlayerBonk, ());
 DEFINE_HOOK(OnPlayerHealthChange, (int16_t amount));
 DEFINE_HOOK(OnPlayerBottleUpdate, (int16_t contents));

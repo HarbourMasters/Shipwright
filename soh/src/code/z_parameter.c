@@ -2900,37 +2900,7 @@ void Rupees_ChangeBy(s16 rupeeChange) {
         gSaveContext.ship.stats.count[COUNT_RUPEES_SPENT] += -rupeeChange;
     }
 }
-
-void GameplayStats_UpdateAmmoUsed(s16 item, s16 ammoUsed) {
-
-    switch (item) {
-        case ITEM_STICK:
-            gSaveContext.ship.stats.count[COUNT_AMMO_USED_STICK] += ammoUsed;
-            break;
-        case ITEM_NUT:
-            gSaveContext.ship.stats.count[COUNT_AMMO_USED_NUT] += ammoUsed;
-            break;
-        case ITEM_BOMB:
-            gSaveContext.ship.stats.count[COUNT_AMMO_USED_BOMB] += ammoUsed;
-            break;
-        case ITEM_BOW:
-            gSaveContext.ship.stats.count[COUNT_AMMO_USED_ARROW] += ammoUsed;
-            break;
-        case ITEM_SLINGSHOT:
-            gSaveContext.ship.stats.count[COUNT_AMMO_USED_SEED] += ammoUsed;
-            break;
-        case ITEM_BOMBCHU:
-            gSaveContext.ship.stats.count[COUNT_AMMO_USED_BOMBCHU] += ammoUsed;
-            break;
-        case ITEM_BEAN:
-            gSaveContext.ship.stats.count[COUNT_AMMO_USED_BEAN] += ammoUsed;
-            break;
-        default:
-            break;
-    }
-    return;
-}
-
+//
 void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {
     // "Item = (%d)    Amount = (%d + %d)"
     osSyncPrintf("アイテム = (%d)    数 = (%d + %d)  ", item, AMMO(item), ammoChange);
@@ -2990,7 +2960,7 @@ void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {
     osSyncPrintf("合計 = (%d)\n", AMMO(item)); // "Total = (%d)"
 
     if (ammoChange < 0) {
-        GameplayStats_UpdateAmmoUsed(item, -ammoChange);
+        GameInteractor_ExecuteOnAmmoUsed(item, -ammoChange);
     }
 }
 

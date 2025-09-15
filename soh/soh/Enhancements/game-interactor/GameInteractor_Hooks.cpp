@@ -154,6 +154,10 @@ void GameInteractor_ExecuteOnTimestamp(u8 item) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnTimestamp>(item);
 }
 
+void GameInteractor_ExecuteOnAmmoUsed(s16 item, s16 ammoUsed) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAmmoUsed>(item, ammoUsed);
+}
+
 void GameInteractor_ExecuteOnPlayerBonk() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBonk>();
 }
