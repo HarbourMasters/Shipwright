@@ -6054,7 +6054,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             // Teleport to credits when goal is reached.
             if (gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected ==
                 (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
-                GameplayStats_AddTimestamp(TIMESTAMP_TRIFORCE_COMPLETED, STAT_TYPE_EVENT);
+                GameplayStats_AddTimestamp(GameplayStats_GetObject(TIMESTAMP_TRIFORCE_COMPLETED, STAT_TYPE_EVENT));
                 gSaveContext.ship.stats.gameComplete = 1;
                 Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
                 Play_PerformSave(play);

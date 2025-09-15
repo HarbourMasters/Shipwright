@@ -37,6 +37,7 @@ std::vector<GameplayStatObject> currentTimestamps;
 std::vector<GameplayStatObject> currentCounts;
 uint32_t typeIndex = STAT_TYPE_ALL;
 ImVec4 emptyColor = { 0, 0, 0, 0 };
+bool isRandoItem = false;
 
 static std::unordered_map<uint32_t, const char*> statTypeNameMap = {
     { STAT_TYPE_SCENE,  "Scenes" },
@@ -311,79 +312,127 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplaySta
     },
 };
 
+std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCountList = {
+    { STAT_TYPE_ENEMY,
+        {
+            { COUNT_ENEMIES_DEFEATED_ANUBIS,               { STAT_TYPE_ENEMY, "Anubis", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_ARMOS,                { STAT_TYPE_ENEMY, "Armos", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_ARWING,               { STAT_TYPE_ENEMY, "Arwing", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_BARI,                 { STAT_TYPE_ENEMY, "Bari", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_BEAMOS,               { STAT_TYPE_ENEMY, "Biri", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_BIG_OCTO,             { STAT_TYPE_ENEMY, "Beamos", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_BIRI,                 { STAT_TYPE_ENEMY, "Big Octo", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN,         { STAT_TYPE_ENEMY, "Bubble (Blue)", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE,          { STAT_TYPE_ENEMY, "Bubble (Green)", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE,         { STAT_TYPE_ENEMY, "Bubble (Red)", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_BUBBLE_RED,           { STAT_TYPE_ENEMY, "Bubble (White)", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_BUSINESS_SCRUB,       { STAT_TYPE_ENEMY, "Business Scrub", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_DARK_LINK,            { STAT_TYPE_ENEMY, "Dark Link", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_DEAD_HAND,            { STAT_TYPE_ENEMY, "Dead Hand", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_DEKU_BABA,            { STAT_TYPE_ENEMY, "Deku Baba", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG,        { STAT_TYPE_ENEMY, "Deku Baba (Big)", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_DEKU_SCRUB,           { STAT_TYPE_ENEMY, "Deku Scrub", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_DINOLFOS,             { STAT_TYPE_ENEMY, "Dinolfos", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_DODONGO,              { STAT_TYPE_ENEMY, "Dodongo", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_DODONGO_BABY,         { STAT_TYPE_ENEMY, "Dodongo (Baby)", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_DOOR_TRAP,            { STAT_TYPE_ENEMY, "Door Mimic", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_FLARE_DANCER,         { STAT_TYPE_ENEMY, "Flare Dancer", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_FLOORMASTER,          { STAT_TYPE_ENEMY, "Floormaster", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_FLYING_POT,           { STAT_TYPE_ENEMY, "Flying Floor Tile", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_FLOOR_TILE,           { STAT_TYPE_ENEMY, "Flying Pot", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_FREEZARD,             { STAT_TYPE_ENEMY, "Freezard", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_GERUDO_THIEF,         { STAT_TYPE_ENEMY, "Gerudo Thief", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_GIBDO,                { STAT_TYPE_ENEMY, "Gibdo", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_GOHMA_LARVA,          { STAT_TYPE_ENEMY, "Gohma Larva", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_GUAY,                 { STAT_TYPE_ENEMY, "Guay", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE,         { STAT_TYPE_ENEMY, "Iron Knuckle", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU, { STAT_TYPE_ENEMY, "Iron Knuckle (Nab)", UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_KEESE,                { STAT_TYPE_ENEMY, "Keese", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_KEESE_FIRE,           { STAT_TYPE_ENEMY, "Keese (Fire)", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_KEESE_ICE,            { STAT_TYPE_ENEMY, "Keese (Ice)", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_LEEVER,               { STAT_TYPE_ENEMY, "Leever", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_LEEVER_BIG,           { STAT_TYPE_ENEMY, "Leever (Big)", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_LIKE_LIKE,            { STAT_TYPE_ENEMY, "Like-Like", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_LIZALFOS,             { STAT_TYPE_ENEMY, "Lizalfos", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_MAD_SCRUB,            { STAT_TYPE_ENEMY, "Mad Scrub", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_MOBLIN,               { STAT_TYPE_ENEMY, "Moblin", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_MOBLIN_CLUB,          { STAT_TYPE_ENEMY, "Moblin (Club)", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_OCTOROK,              { STAT_TYPE_ENEMY, "Octorok", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_PARASITIC_TENTACLE,   { STAT_TYPE_ENEMY, "Parasitic Tentacle", UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_PEAHAT,               { STAT_TYPE_ENEMY, "Peahat", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA,         { STAT_TYPE_ENEMY, "Peahat Larva", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_POE,                  { STAT_TYPE_ENEMY, "Poe", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_POE_BIG,              { STAT_TYPE_ENEMY, "Poe (Big)", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_POE_COMPOSER,         { STAT_TYPE_ENEMY, "Poe (Composer)", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_POE_SISTERS,          { STAT_TYPE_ENEMY, "Poe Sisters", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_REDEAD,               { STAT_TYPE_ENEMY, "Redead", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_SHABOM,               { STAT_TYPE_ENEMY, "Shabom", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_SHELLBLADE,           { STAT_TYPE_ENEMY, "Shell Blade", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_SKULLTULA,            { STAT_TYPE_ENEMY, "Skull Kid", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_SKULLTULA_BIG,        { STAT_TYPE_ENEMY, "Skulltula", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD,       { STAT_TYPE_ENEMY, "Skulltula (Big)", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_SKULLWALLTULA,        { STAT_TYPE_ENEMY, "Skulltula (Gold)", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_SKULL_KID,            { STAT_TYPE_ENEMY, "Skullwalltula", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_SPIKE,                { STAT_TYPE_ENEMY, "Spike", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_STALCHILD,            { STAT_TYPE_ENEMY, "Stalchild", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_STALFOS,              { STAT_TYPE_ENEMY, "Stalfos", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_STINGER,              { STAT_TYPE_ENEMY, "Stinger", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_TAILPASARAN,          { STAT_TYPE_ENEMY, "Tailpasaran", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE,         { STAT_TYPE_ENEMY, "Tektite (Blue)", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_TEKTITE_RED,          { STAT_TYPE_ENEMY, "Tektite (Red)", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_TORCH_SLUG,           { STAT_TYPE_ENEMY, "Torch Slug", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_WALLMASTER,           { STAT_TYPE_ENEMY, "Wallmaster", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA,   { STAT_TYPE_ENEMY, "Withered Deku Baba", UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_WOLFOS,               { STAT_TYPE_ENEMY, "Wolfos", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE,         { STAT_TYPE_ENEMY, "Wolfos (White)", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+        }
+    },
+
+};
+
+static std::unordered_map<u16, u16> enemyIdToStatCount = {
+    { ACTOR_EN_ANUBICE,     COUNT_ENEMIES_DEFEATED_ANUBIS },
+    { ACTOR_EN_AM,          COUNT_ENEMIES_DEFEATED_ARMOS },
+    { ACTOR_EN_CLEAR_TAG,   COUNT_ENEMIES_DEFEATED_ARWING },
+    { ACTOR_EN_VALI,        COUNT_ENEMIES_DEFEATED_BARI },
+    { ACTOR_EN_VM,          COUNT_ENEMIES_DEFEATED_BEAMOS },
+    { ACTOR_EN_BIGOKUTA,    COUNT_ENEMIES_DEFEATED_BIG_OCTO },
+    { ACTOR_EN_BILI,        COUNT_ENEMIES_DEFEATED_BIRI },
+    { ACTOR_EN_DNS,         COUNT_ENEMIES_DEFEATED_BUSINESS_SCRUB },
+    { ACTOR_EN_TORCH,       COUNT_ENEMIES_DEFEATED_DARK_LINK },
+    { ACTOR_EN_DH,          COUNT_ENEMIES_DEFEATED_DEAD_HAND },
+    { ACTOR_EN_HINTNUTS,    COUNT_ENEMIES_DEFEATED_DEKU_SCRUB },
+    { ACTOR_EN_DODONGO,     COUNT_ENEMIES_DEFEATED_DODONGO },
+    { ACTOR_EN_DODOJR,      COUNT_ENEMIES_DEFEATED_DODONGO_BABY },
+    { ACTOR_DOOR_KILLER,    COUNT_ENEMIES_DEFEATED_DOOR_TRAP },
+    { ACTOR_EN_FD,          COUNT_ENEMIES_DEFEATED_FLARE_DANCER },
+    { ACTOR_EN_FLOORMAS,    COUNT_ENEMIES_DEFEATED_FLOORMASTER },
+    { ACTOR_EN_TUBO_TRAP,   COUNT_ENEMIES_DEFEATED_FLYING_POT },
+    { ACTOR_EN_YUKABYUN,    COUNT_ENEMIES_DEFEATED_FLOOR_TILE },
+    { ACTOR_EN_FZ,          COUNT_ENEMIES_DEFEATED_FREEZARD },
+    { ACTOR_EN_GELDB,       COUNT_ENEMIES_DEFEATED_GERUDO_THIEF },
+    { ACTOR_EN_GOMA,        COUNT_ENEMIES_DEFEATED_GOHMA_LARVA },
+    { ACTOR_EN_CROW,        COUNT_ENEMIES_DEFEATED_GUAY },
+    { ACTOR_EN_RR,          COUNT_ENEMIES_DEFEATED_LIKE_LIKE },
+    { ACTOR_EN_DEKUNUTS,    COUNT_ENEMIES_DEFEATED_MAD_SCRUB },
+    { ACTOR_EN_OKUTA,       COUNT_ENEMIES_DEFEATED_OCTOROK },
+    { ACTOR_EN_BA,          COUNT_ENEMIES_DEFEATED_PARASITIC_TENTACLE },
+    { ACTOR_EN_PO_SISTERS,  COUNT_ENEMIES_DEFEATED_POE_SISTERS },
+    { ACTOR_EN_BUBBLE,      COUNT_ENEMIES_DEFEATED_SHABOM },
+    { ACTOR_EN_SB,          COUNT_ENEMIES_DEFEATED_SHELLBLADE },
+    { ACTOR_EN_SKJ,         COUNT_ENEMIES_DEFEATED_SKULL_KID },
+    { ACTOR_EN_NY,          COUNT_ENEMIES_DEFEATED_SPIKE },
+    { ACTOR_EN_SKB,         COUNT_ENEMIES_DEFEATED_STALCHILD },
+    { ACTOR_EN_TEST,        COUNT_ENEMIES_DEFEATED_STALFOS },
+    { ACTOR_EN_WEIYER,      COUNT_ENEMIES_DEFEATED_STINGER },
+    { ACTOR_EN_BW,          COUNT_ENEMIES_DEFEATED_TORCH_SLUG },
+    { ACTOR_EN_WALLMAS,     COUNT_ENEMIES_DEFEATED_WALLMASTER },
+    { ACTOR_EN_KAREBABA,    COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA },
+};
+
 // End
 
 const char* const countMappings[] = {
-    "Anubis:",
-    "Armos:",
-    "Arwing:",
-    "Bari:",
-    "Biri:",
-    "Beamos:",
-    "Big Octo:",
-    "Bubble (Blue):",
-    "Bubble (Green):",
-    "Bubble (Red):",
-    "Bubble (White):",
-    "Business Scrub:",
-    "Dark Link:",
-    "Dead Hand:",
-    "Deku Baba:",
-    "Deku Baba (Big):",
-    "Deku Scrub:",
-    "Dinolfos:",
-    "Dodongo:",
-    "Dodongo (Baby):",
-    "Door Mimic:",
-    "Flare Dancer:",
-    "Floormaster:",
-    "Flying Floor Tile:",
-    "Flying Pot:",
-    "Freezard:",
-    "Gerudo Thief:",
-    "Gibdo:",
-    "Gohma Larva:",
-    "Guay:",
-    "Iron Knuckle:",
-    "Iron Knuckle (Nab):",
-    "Keese:",
-    "Keese (Fire):",
-    "Keese (Ice):",
-    "Leever:",
-    "Leever (Big):",
-    "Like-Like:",
-    "Lizalfos:",
-    "Mad Scrub:",
-    "Moblin:",
-    "Moblin (Club):",
-    "Octorok:",
-    "Parasitic Tentacle:",
-    "Peahat:",
-    "Peahat Larva:",
-    "Poe:",
-    "Poe (Big):",
-    "Poe (Composer):",
-    "Poe Sisters:",
-    "Redead:",
-    "Shabom:",
-    "Shell Blade:",
-    "Skull Kid:",
-    "Skulltula:",
-    "Skulltula (Big):",
-    "Skulltula (Gold):",
-    "Skullwalltula:",
-    "Spike:",
-    "Stalchild:",
-    "Stalfos:",
-    "Stinger:",
-    "Tailpasaran:",
-    "Tektite (Blue):",
-    "Tektite (Red):",
-    "Torch Slug:",
-    "Wallmaster:",
-    "Withered Deku Baba:",
-    "Wolfos:",
-    "Wolfos (White):",
     "Deku Sticks:",
     "Deku Nuts:",
     "Bombs:",
@@ -467,64 +516,8 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
         [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.entrancesDiscovered[i]); });
 }
 
-//void GameplayStatsRow(const char* label, const std::string& value, ImVec4 color = COLOR_WHITE,
-//                      const char* tooltip = "") {
-//    ImGui::PushStyleColor(ImGuiCol_Text, color);
-//    ImGui::TableNextRow();
-//    ImGui::TableNextColumn();
-//    ImGui::Text("%s", label);
-//    ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(value.c_str()).x));
-//    ImGui::Text("%s", value.c_str());
-//    ImGui::PopStyleColor();
-//    if (tooltip != "" && ImGui::IsItemHovered()) {
-//        ImGui::SetTooltip("%s", tooltip);
-//    }
-//}
-
 //bool compareTimestampInfoByTime(const TimestampInfo& a, const TimestampInfo& b) {
 //    return CVarGetInteger(CVAR_GAMEPLAY_STATS("ReverseTimestamps"), 0) ? a.time > b.time : a.time < b.time;
-//}
-
-//const char* ResolveSceneID(int sceneID, int roomID) {
-//    if (sceneID == SCENE_GROTTOS) {
-//        switch (roomID) {
-//            case 0:
-//                return "Generic Grotto";
-//            case 1:
-//                return "Lake Hylia Scrub Grotto";
-//            case 2:
-//                return "Redead Grotto";
-//            case 3:
-//                return "Cow Grotto";
-//            case 4:
-//                return "Scrub Trio";
-//            case 5:
-//                return "Flooded Grotto";
-//            case 6:
-//                return "Scrub Duo (Upgrade)";
-//            case 7:
-//                return "Wolfos Grotto";
-//            case 8:
-//                return "Hyrule Castle Storms Grotto";
-//            case 9:
-//                return "Scrub Duo";
-//            case 10:
-//                return "Tektite Grotto";
-//            case 11:
-//                return "Forest Stage";
-//            case 12:
-//                return "Webbed Grotto";
-//            case 13:
-//                return "Big Skulltula Grotto";
-//        };
-//    } else if (sceneID == SCENE_WINDMILL_AND_DAMPES_GRAVE) {
-//        // Only the last room of Dampe's Grave (rm 6) is considered the windmill.
-//        return roomID == 6 ? "Windmill" : "Dampe's Grave";
-//    } else if (sceneID < SCENE_ID_MAX) {
-//        return sceneMappings[sceneID];
-//    }
-//
-//    return "???";
 //}
 
 void DrawGameplayStatsHeader() {
@@ -687,6 +680,45 @@ nlohmann::json GameplayStats_ObjectToJson(const GameplayStatObject& entry) {
     };
 }
 
+std::string GameplayStats_ResolveSceneByName(std::string sceneName) {
+    if (sceneName == "Grotto") {
+        switch (gPlayState->roomCtx.curRoom.num) {
+            case 0:
+                return "Generic Grotto";
+            case 1:
+                return "Lake Hylia Scrub Grotto";
+            case 2:
+                return "Redead Grotto";
+            case 3:
+                return "Cow Grotto";
+            case 4:
+                return "Scrub Trio";
+            case 5:
+                return "Flooded Grotto";
+            case 6:
+                return "Scrub Duo (Upgrade)";
+            case 7:
+                return "Wolfos Grotto";
+            case 8:
+                return "Hyrule Castle Storms Grotto";
+            case 9:
+                return "Scrub Duo";
+            case 10:
+                return "Tektite Grotto";
+            case 11:
+                return "Forest Stage";
+            case 12:
+                return "Webbed Grotto";
+            case 13:
+                return "Big Skulltula Grotto";
+        };
+    } else if (sceneName == "Dampe's Grave") {
+        // Only the last room of Dampe's Grave (rm 6) is considered the windmill.
+        return gPlayState->roomCtx.curRoom.num == 6 ? "Windmill" : "Dampe's Grave";
+    }
+    return sceneName;
+}
+
 GameplayStatObject GameplayStats_JsonToObject(const nlohmann::json& jsonEntry) {
     GameplayStatObject entry;
 
@@ -694,11 +726,21 @@ GameplayStatObject GameplayStats_JsonToObject(const nlohmann::json& jsonEntry) {
     entry.entryName = jsonEntry["entryName"];
     entry.entryTimestamp = jsonEntry["entryTimestamp"];
 
-    for (auto& list : gameplayStatList.at(entry.entryType)) {
-        auto check = list;
-        if (list.second.entryName == entry.entryName) {
-            entry.entryColor = list.second.entryColor;
-            break;
+    if (entry.entryType < STAT_TYPE_ENEMY) {
+        for (auto& list : gameplayStatList.at(entry.entryType)) {
+            auto check = list;
+            if (list.second.entryName == entry.entryName) {
+                entry.entryColor = list.second.entryColor;
+                break;
+            }
+        }
+    } else {
+        for (auto& list : gameplayCountList.at(entry.entryType)) {
+            auto check = list;
+            if (list.second.entryName == entry.entryName) {
+                entry.entryColor = list.second.entryColor;
+                break;
+            }
         }
     }
 
@@ -706,10 +748,9 @@ GameplayStatObject GameplayStats_JsonToObject(const nlohmann::json& jsonEntry) {
 }
 
 GameplayStatObject GameplayStats_GetObject(uint32_t entryType, uint32_t entryId) {
-    if (IS_RANDO && entryType == STAT_TYPE_ITEM) {
+    if (isRandoItem && entryType == STAT_TYPE_ITEM) {
         GameplayStatObject randoObject;
 
-        std::string randoItemName = Rando::StaticData::GetItemTable().at(entryId).GetName().GetEnglish();
         randoObject.entryType = STAT_TYPE_ITEM;
         randoObject.entryName = Rando::StaticData::GetItemTable().at(entryId).GetName().GetEnglish();
         randoObject.entryColor = UIWidgets::ColorValues.at(UIWidgets::Colors::White);
@@ -731,6 +772,23 @@ GameplayStatObject GameplayStats_GetObject(uint32_t entryType, uint32_t entryId)
     return innerIt->second;
 }
 
+GameplayStatObject GameplayStats_GetCountObjectById(uint32_t countId, uint32_t countType) {
+    auto outerIt = gameplayCountList.find(countType);
+    if (outerIt == gameplayCountList.end()) {
+        return {};
+    }
+
+    uint32_t countEnum = enemyIdToStatCount.at(countId);
+
+    auto& innerMap = outerIt->second;
+    auto innerIt = innerMap.find(countEnum);
+    if (innerIt == innerMap.end()) {
+        return {};
+    }
+
+    return innerIt->second;
+}
+
 void GameplayStats_SaveFileActions(uint32_t action, int32_t fileNum) {
     std::string filename = Ship::Context::GetPathRelativeToAppDirectory("SoHGameplayStats.json");
     json saveFile;
@@ -743,23 +801,34 @@ void GameplayStats_SaveFileActions(uint32_t action, int32_t fileNum) {
     }
 
     if (action == STAT_ACTION_SAVE) {
-        for (auto& save : currentTimestamps) {
-            listArray.push_back(GameplayStats_ObjectToJson(save));
+        for (auto& timestamp : currentTimestamps) {
+            listArray.push_back(GameplayStats_ObjectToJson(timestamp));
         }
         saveFile[std::to_string(gSaveContext.fileNum + 1)]["Timestamps"] = listArray;
+        listArray.clear();
+
+        for (auto& counts : currentCounts) {
+            listArray.push_back(GameplayStats_ObjectToJson(counts));
+        }
+        saveFile[std::to_string(gSaveContext.fileNum + 1)]["Counts"] = listArray;
     }
 
     if (action == STAT_ACTION_LOAD) {
         currentTimestamps.clear();
+        currentCounts.clear();
         if (saveFile.contains(std::to_string(fileNum + 1))) {
             for (auto& load : saveFile[std::to_string(fileNum + 1)]["Timestamps"]) {
                 currentTimestamps.push_back(GameplayStats_JsonToObject(load));
+            }
+            for (auto& load : saveFile[std::to_string(fileNum + 1)]["Counts"]) {
+                currentCounts.push_back(GameplayStats_JsonToObject(load));
             }
         }
     }
 
     if (action == STAT_ACTION_DELETE) {
         currentTimestamps.clear();
+        currentCounts.clear();
         if (saveFile.contains(std::to_string(fileNum + 1))) {
             saveFile.erase(std::to_string(fileNum + 1));
         }
@@ -772,8 +841,20 @@ void GameplayStats_SaveFileActions(uint32_t action, int32_t fileNum) {
     }
 }
 
-void GameplayStats_GetTimestampByEvent() {
+void GameplayStats_AddCount(GameplayStatObject countObject) {
+    if (countObject.entryName == "") {
+        return;
+    }
 
+    for (auto& count : currentCounts) {
+        if (count.entryName == countObject.entryName) {
+            count.entryTimestamp++;
+            return;
+        }
+    }
+
+    countObject.entryTimestamp = 1;
+    currentCounts.push_back(countObject);
 }
 
 void GameplayStats_GetTimestampByActorId(uint32_t actorId) {
@@ -812,20 +893,19 @@ void GameplayStats_GetTimestampByActorId(uint32_t actorId) {
     }
 
     if (timestampId != -1) {
-        GameplayStats_AddTimestamp(timestampId, STAT_TYPE_EVENT);
+        GameplayStats_AddTimestamp(GameplayStats_GetObject(timestampId, STAT_TYPE_EVENT));
     }
 }
 
-void GameplayStats_AddTimestamp(uint32_t entryId, uint32_t entryType) {
+void GameplayStats_AddTimestamp(GameplayStatObject statObject) {
     bool fileInit = false;
 
     if (currentTimestamps.size() == 0 && IS_RANDO && !gPlayState) {
         fileInit = true;
     }
 
-    auto statObject = GameplayStats_GetObject(entryType, entryId);
-    if (statObject.entryName == "") {
-        return;
+    if (statObject.entryType == STAT_TYPE_SCENE) {
+        statObject.entryName = GameplayStats_ResolveSceneByName(statObject.entryName);
     }
 
     auto it = std::find_if(currentTimestamps.begin(), currentTimestamps.end(), [&](const GameplayStatObject& obj) {
@@ -835,7 +915,7 @@ void GameplayStats_AddTimestamp(uint32_t entryId, uint32_t entryType) {
     if (it != currentTimestamps.end()) {
         return;
     }
-
+    
     statObject.entryTimestamp = (gSaveContext.ship.stats.playTimer / 2 + gSaveContext.ship.stats.pauseTimer / 3);
     currentTimestamps.push_back(statObject);
 
@@ -852,7 +932,7 @@ void DrawGameplayStatsOptionsTab() {
                                 UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 
         ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("Show latest timestamps on top", CVAR_GAMEPLAY_STATS("ReverseTimestamps"),
+        UIWidgets::CVarCheckbox("Latest timestamps on top", CVAR_GAMEPLAY_STATS("ReverseTimestamps"),
                                 UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 
         ImGui::TableNextColumn();
@@ -882,78 +962,68 @@ void DrawGameplayStatsOptionsTab() {
     }
 }
 
-void GameplayStats_DrawCounts() {
-    if (ImGui::BeginChild("Counts Window")) {
-        if (ImGui::BeginTable("Counts", 2)) {
-            ImGui::TableSetupColumn("Enemy Kills");
-            ImGui::TableSetupColumn("Button Presses");
-            ImGui::TableHeadersRow();
-            
-            ImGui::TableNextColumn();
-
-            for (auto& entry : currentTimestamps) {
-                if (typeIndex != STAT_TYPE_ALL) {
-                    if (entry.entryType != typeIndex) {
-                        continue;
-                    }
-                }
-
-                if (entry.entryColor == emptyColor) {
-                    entry.entryColor = UIWidgets::ColorValues.at(UIWidgets::Colors::White);
-                }
-
-                ImGui::TableNextColumn();
-                ImGui::TextColored(entry.entryColor, entry.entryName.c_str());
-
-                ImGui::TableNextColumn();
-                ImGui::TextColored(entry.entryColor, formatTimeDisplay(entry.entryTimestamp).c_str());
+void GameplayStats_DrawCounts(uint32_t typeIndex) {
+    if (ImGui::BeginTable("Counts", 2)) {
+        ImGui::TableSetupColumn("Name");
+        ImGui::TableSetupColumn("Count", ImGuiTableColumnFlags_WidthFixed, 100.0f);
+        ImGui::TableHeadersRow();
+        
+        for (auto& entry : currentCounts) {
+            if (entry.entryType != typeIndex) {
+                continue;
             }
 
-            ImGui::EndTable();
+            if (entry.entryColor == emptyColor) {
+                entry.entryColor = UIWidgets::ColorValues.at(UIWidgets::Colors::White);
+            }
+
+            ImGui::TableNextColumn();
+            ImGui::TextColored(entry.entryColor, entry.entryName.c_str());
+
+            ImGui::TableNextColumn();
+            ImGui::TextColored(entry.entryColor, std::to_string(entry.entryTimestamp).c_str());
         }
-        ImGui::EndChild();
+
+        ImGui::EndTable();
     }
 }
 
 void GameplayStats_DrawTimeStamps() {
-    if (ImGui::BeginChild("Timestamps Window")) {
-        float cursorY = ImGui::GetCursorPosY();
-        ImGui::SetCursorPosY(ImGui::GetCursorPosY() + ImGui::GetTextLineHeight() * 0.5f);
-        ImGui::Text("Filter by Type: ");
-        ImGui::SameLine();
-        ImGui::SetCursorPosY(cursorY);
-        UIWidgets::Combobox("##TypeFilter", &typeIndex, statTypeNameMap,
-                            UIWidgets::ComboboxOptions()
-                                .Color(THEME_COLOR)
-                                .LabelPosition(UIWidgets::LabelPositions::None)
-                                .ComponentAlignment(UIWidgets::ComponentAlignments::Right));
-        
-        if (ImGui::BeginTable("Timestamps", 2)) {
-            ImGui::TableSetupColumn("Name");
-            ImGui::TableSetupColumn("Timestamp");
-            ImGui::TableHeadersRow();
+    float cursorY = ImGui::GetCursorPosY();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + ImGui::GetTextLineHeight() * 0.5f);
+    ImGui::Text("Filter by Type: ");
+    ImGui::SameLine();
+    ImGui::SetCursorPosY(cursorY);
+    UIWidgets::Combobox("##TypeFilter", &typeIndex, statTypeNameMap,
+                        UIWidgets::ComboboxOptions()
+                            .Color(THEME_COLOR)
+                            .LabelPosition(UIWidgets::LabelPositions::None)
+                            .ComponentAlignment(UIWidgets::ComponentAlignments::Right));
+    
+    if (ImGui::BeginTable("Timestamps", 2)) {
+        ImGui::TableSetupColumn("Name");
+        ImGui::TableSetupColumn("Timestamp");
+        ImGui::TableHeadersRow();
 
-            for (auto& entry : currentTimestamps) {
-                if (typeIndex != STAT_TYPE_ALL) {
-                    if (entry.entryType != typeIndex) {
-                        continue;
-                    }
+        for (auto& entry : currentTimestamps) {
+            if (typeIndex != STAT_TYPE_ALL) {
+                if (entry.entryType != typeIndex) {
+                    continue;
                 }
-
-                if (entry.entryColor == emptyColor) {
-                    entry.entryColor = UIWidgets::ColorValues.at(UIWidgets::Colors::White);
-                }
-
-                ImGui::TableNextColumn();
-                ImGui::TextColored(entry.entryColor, entry.entryName.c_str());
-
-                ImGui::TableNextColumn();
-                ImGui::TextColored(entry.entryColor, formatTimeDisplay(entry.entryTimestamp).c_str());
             }
 
-            ImGui::EndTable();
+            if (entry.entryColor == emptyColor) {
+                entry.entryColor = UIWidgets::ColorValues.at(UIWidgets::Colors::White);
+            }
+
+            ImGui::TableNextColumn();
+            ImGui::TextColored(entry.entryColor, entry.entryName.c_str());
+
+            ImGui::TableNextColumn();
+            ImGui::TextColored(entry.entryColor, formatTimeDisplay(entry.entryTimestamp).c_str());
         }
-        ImGui::EndChild();
+
+        ImGui::EndTable();
     }
 }
 
@@ -969,14 +1039,37 @@ void GameplayStatsWindow::DrawElement() {
     DrawGameplayStatsOptionsTab();
     UIWidgets::PaddedSeparator();
 
-    if (ImGui::BeginTabBar("Gameplay Stats")) {
-        if (ImGui::BeginTabItem("Timestamps")) {
-            if (!gPlayState) {
-                ImGui::Text("Load into a File first");
-            } else {
-                GameplayStats_DrawTimeStamps();
+    if (!gPlayState) {
+        ImGui::Text("Load into a File first");
+    } else {
+        if (ImGui::BeginTabBar("Gameplay Stats")) {
+            if (ImGui::BeginTabItem("Timestamps")) {
+                if (ImGui::BeginChild("Timestamps Window")) {
+                    GameplayStats_DrawTimeStamps();
+                    ImGui::EndChild();
+                }
+                ImGui::EndTabItem();
             }
-            ImGui::EndTabItem();
+            if (ImGui::BeginTabItem("Counts")) {
+                if (ImGui::BeginChild("Counts Window")) {
+                    if (ImGui::BeginTable("Counts Table", 2)) {
+                        ImGui::TableSetupColumn("Enemy Kills");
+                        ImGui::TableSetupColumn("Action Counts");
+
+                        ImGui::TableNextColumn();
+                        ImGui::SeparatorText("Enemy Kills");
+                        GameplayStats_DrawCounts(STAT_TYPE_ENEMY);
+
+                        ImGui::TableNextColumn();
+                        ImGui::SeparatorText("Action Counts");
+                        GameplayStats_DrawCounts(STAT_TYPE_PLAYER);
+
+                        ImGui::EndTable();
+                    }
+                    ImGui::EndChild();
+                }
+                ImGui::EndTabItem();
+            }
         }
         ImGui::EndTabBar();
     }
@@ -1000,19 +1093,53 @@ void RegisterGameplayStats() {
         file.close();
     }
 
-    COND_HOOK(OnPlayerUpdate, CVAR, []() { GameplayStats_GetTimestampByEvent(); });
+    COND_HOOK(OnEnemyDefeat, CVAR, [](void* refActor) { 
+        Actor* actor = static_cast<Actor*>(refActor);
 
-    COND_HOOK(OnItemReceive, CVAR,
-              [](GetItemEntry itemEntry) { GameplayStats_AddTimestamp(itemEntry.itemId, STAT_TYPE_ITEM); });
+        auto countObject = GameplayStats_GetCountObjectById(actor->id, STAT_TYPE_ENEMY);
+        if (countObject.entryName == "") {
+            return;
+        }
+
+        GameplayStats_AddCount(countObject);
+    });
+    COND_HOOK(OnItemReceive, CVAR, [](GetItemEntry itemEntry) {
+        if (itemEntry.modIndex == MOD_RANDOMIZER) {
+            isRandoItem = true;
+        } else {
+            isRandoItem = false;
+        }
+
+        auto statObject = GameplayStats_GetObject(itemEntry.itemId, STAT_TYPE_ITEM);
+        if (statObject.entryName == "") {
+            return;
+        }
+
+        if (statObject.entryName == "Piece of Heart") {
+            GameplayStats_AddCount(statObject);
+        } else {
+            GameplayStats_AddTimestamp(statObject);
+        }
+    });
     COND_HOOK(OnBossDefeat, CVAR, [](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
         GameplayStats_GetTimestampByActorId(actor->id);
     });
-    COND_HOOK(OnSceneInit, CVAR, [](int16_t sceneNum) { GameplayStats_AddTimestamp((uint32_t)sceneNum, STAT_TYPE_SCENE); });
+    COND_HOOK(OnSceneInit, CVAR, [](int16_t sceneNum) {
+        auto statObject = GameplayStats_GetObject((uint32_t)sceneNum, STAT_TYPE_SCENE);
+        if (statObject.entryName == "") {
+            return;
+        }
+
+        GameplayStats_AddTimestamp(statObject);
+    });
     COND_HOOK(OnDeleteFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_DELETE, fileNum); });
     COND_HOOK(OnLoadFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_LOAD, fileNum); });
     COND_HOOK(OnSaveFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_SAVE, fileNum); });
-    COND_HOOK(OnPresentFileSelect, true, []() { currentTimestamps.clear(); });
+    COND_HOOK(OnPresentFileSelect, true, []() { 
+        currentTimestamps.clear();
+        currentCounts.clear();
+    });
 }
 
 static RegisterShipInitFunc initFunc(RegisterGameplayStats, { CVAR_NAME });

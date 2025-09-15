@@ -561,7 +561,7 @@ void BossRush_HandleCompleteBoss(PlayState* play) {
         play->sceneNum == SCENE_GANON_BOSS) {
         gSaveContext.ship.stats.playTimer += 2;
         gSaveContext.ship.stats.gameComplete = 1;
-        GameplayStats_AddTimestamp(TIMESTAMP_BOSSRUSH_FINISH, STAT_TYPE_EVENT);
+        GameplayStats_AddTimestamp(GameplayStats_GetObject(TIMESTAMP_BOSSRUSH_FINISH, STAT_TYPE_EVENT));
     }
 }
 

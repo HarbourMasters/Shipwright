@@ -351,7 +351,7 @@ void HandleDragAndDrop(std::vector<SplitObject>& objectList, int targetIndex, co
 }
 
 void TimeSplitCompleteSplits() {
-    GameplayStats_AddTimestamp(TIMESTAMP_DEFEAT_GANON, STAT_TYPE_EVENT);
+    GameplayStats_AddTimestamp(GameplayStats_GetObject(TIMESTAMP_DEFEAT_GANON, STAT_TYPE_EVENT));
     gSaveContext.ship.stats.gameComplete = true;
 }
 

@@ -34,6 +34,11 @@ typedef enum {
 } GameplayStatEntryTypes;
 
 typedef enum {
+    STAT_TYPE_ENEMY = 0x4,
+    STAT_TYPE_PLAYER,
+} GameplaystatCountTypes;
+
+typedef enum {
     STAT_ACTION_SAVE,
     STAT_ACTION_LOAD,
     STAT_ACTION_DELETE,
@@ -46,6 +51,7 @@ typedef struct {
     uint32_t entryTimestamp;
 } GameplayStatObject;
 
-extern void GameplayStats_AddTimestamp(uint32_t entryId, uint32_t entryType);
+extern void GameplayStats_AddTimestamp(GameplayStatObject statObject);
+extern GameplayStatObject GameplayStats_GetObject(uint32_t entryType, uint32_t entryId);
 
 // End
