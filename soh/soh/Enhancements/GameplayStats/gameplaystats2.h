@@ -52,6 +52,6 @@ typedef struct {
 } GameplayStatObject;
 
 extern void GameplayStats_AddTimestamp(GameplayStatObject statObject);
-extern GameplayStatObject GameplayStats_GetObject(uint32_t entryType, uint32_t entryId);
+extern GameplayStatObject GameplayStats_GetObject(uint32_t entryId, uint32_t entryType);
 
 // End

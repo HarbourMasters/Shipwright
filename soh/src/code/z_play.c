@@ -706,52 +706,8 @@ void Play_Update(PlayState* play) {
             play->transitionMode = TRANS_MODE_SETUP;
         }
 
-        // #region SOH [Stats] Gameplay stats: Count button presses
+        // #region SOH Start RTA timing on first non-c-up input after intro cutscene
         if (!gSaveContext.ship.stats.gameComplete) {
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_A)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_A]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_B)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_B]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CUP)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CUP]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CRIGHT)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CRIGHT]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CLEFT)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CLEFT]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CDOWN)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CDOWN]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DUP)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DUP]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DRIGHT)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DRIGHT]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DDOWN)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DDOWN]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DLEFT)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DLEFT]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_L)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_L]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_R)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_R]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_Z)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_Z]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_START)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_START]++;
-            }
-
-            // Start RTA timing on first non-c-up input after intro cutscene
             if (!gSaveContext.ship.stats.fileCreatedAt && !Player_InCsMode(play) &&
                 ((input[0].press.button && input[0].press.button != 0x8) || input[0].rel.stick_x != 0 ||
                  input[0].rel.stick_y != 0)) {

@@ -402,13 +402,27 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
     },
     { STAT_TYPE_PLAYER,
         {
-            { ITEM_STICK,	    { STAT_TYPE_PLAYER, "Consumed - Deku Stick",    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { ITEM_NUT,		    { STAT_TYPE_PLAYER, "Consumed - Deku Nut", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { ITEM_BOMB,		{ STAT_TYPE_PLAYER, "Consumed - Bomb", 		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { ITEM_BOW,         { STAT_TYPE_PLAYER, "Consumed - Arrow", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { ITEM_SLINGSHOT,	{ STAT_TYPE_PLAYER, "Consumed - Seed", 		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { ITEM_BOMBCHU,	    { STAT_TYPE_PLAYER, "Consumed - Bombchu", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { ITEM_BEAN,		{ STAT_TYPE_PLAYER, "Consumed - Magic Bean",    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_STICK,	                { STAT_TYPE_PLAYER, "Consumed - Deku Stick",    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_NUT,		                { STAT_TYPE_PLAYER, "Consumed - Deku Nut", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOMB,		            { STAT_TYPE_PLAYER, "Consumed - Bomb", 		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOW,                     { STAT_TYPE_PLAYER, "Consumed - Arrow", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SLINGSHOT,	            { STAT_TYPE_PLAYER, "Consumed - Seed", 		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOMBCHU,	                { STAT_TYPE_PLAYER, "Consumed - Bombchu", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BEAN,		            { STAT_TYPE_PLAYER, "Consumed - Magic Bean",    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_A,	    { STAT_TYPE_PLAYER, "Pressed - A",				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_B,		{ STAT_TYPE_PLAYER, "Pressed - B", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_L,		{ STAT_TYPE_PLAYER, "Pressed - L", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_R,       { STAT_TYPE_PLAYER, "Pressed - R", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_Z,		{ STAT_TYPE_PLAYER, "Pressed - Z", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_CUP,	    { STAT_TYPE_PLAYER, "Pressed - C Up", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_CRIGHT,	{ STAT_TYPE_PLAYER, "Pressed - C Right",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_CDOWN,	{ STAT_TYPE_PLAYER, "Pressed - C Down",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_CLEFT,	{ STAT_TYPE_PLAYER, "Pressed - C Left", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_DUP,		{ STAT_TYPE_PLAYER, "Pressed - D-Pad Up", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_DRIGHT, 	{ STAT_TYPE_PLAYER, "Pressed - D-Pad Right", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_DDOWN,	{ STAT_TYPE_PLAYER, "Pressed - D-Pad Down", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_DLEFT,	{ STAT_TYPE_PLAYER, "Pressed - D-Pad Left", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_START,	{ STAT_TYPE_PLAYER, "Pressed - Start",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
         }
     },
 };
@@ -770,7 +784,7 @@ GameplayStatObject GameplayStats_JsonToObject(const nlohmann::json& jsonEntry) {
     return entry;
 }
 
-GameplayStatObject GameplayStats_GetObject(uint32_t entryType, uint32_t entryId) {
+GameplayStatObject GameplayStats_GetObject(uint32_t entryId, uint32_t entryType) {
     if (isRandoItem && entryType == STAT_TYPE_ITEM) {
         GameplayStatObject randoObject;
 
@@ -1326,6 +1340,55 @@ void RegisterGameplayStats() {
         }
 
         GameplayStats_AddCount(countObject);
+    });
+    COND_HOOK(OnPlayerUpdate, CVAR, []() { 
+        if (!gSaveContext.ship.stats.gameComplete) {
+            Input* input = &gPlayState->state.input[0];
+
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_A)) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_A, STAT_TYPE_PLAYER));
+            }
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_B)) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_B, STAT_TYPE_PLAYER));
+            }
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CUP)) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_CUP, STAT_TYPE_PLAYER));
+            }
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CRIGHT)) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_CRIGHT, STAT_TYPE_PLAYER));
+            }
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CLEFT)) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_CLEFT, STAT_TYPE_PLAYER));
+            }
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CDOWN)) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_CDOWN, STAT_TYPE_PLAYER));
+            }
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DUP)) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_DUP, STAT_TYPE_PLAYER));
+            }
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DRIGHT)) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_DRIGHT, STAT_TYPE_PLAYER));
+            }
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DDOWN)) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_DDOWN, STAT_TYPE_PLAYER));
+            }
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DLEFT)) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_DLEFT, STAT_TYPE_PLAYER));
+            }
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_L)) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_L, STAT_TYPE_PLAYER));
+            }
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_R)) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_R, STAT_TYPE_PLAYER));
+            }
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_Z)) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_Z, STAT_TYPE_PLAYER));
+            }
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_START)) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_START, STAT_TYPE_PLAYER));
+            }
+        }
+        
     });
     COND_HOOK(OnDeleteFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_DELETE, fileNum); });
     COND_HOOK(OnLoadFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_LOAD, fileNum); });

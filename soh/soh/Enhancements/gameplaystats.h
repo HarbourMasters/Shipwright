@@ -102,7 +102,7 @@ typedef enum {
     COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA,   // EN_KAREBABA
     COUNT_ENEMIES_DEFEATED_WOLFOS,               // EN_WF
     COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE,         // EN_WF
-    // Buttons pressed (z_play.c)
+    // Buttons pressed
     COUNT_BUTTON_PRESSES_A,
     COUNT_BUTTON_PRESSES_B,
     COUNT_BUTTON_PRESSES_L,
