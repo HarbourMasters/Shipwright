@@ -948,8 +948,11 @@ void GameplayStats_GetTimestampByActorId(uint32_t actorId) {
 void GameplayStats_AddTimestamp(GameplayStatObject statObject) {
     bool fileInit = false;
 
-    if (currentTimestamps.size() == 0 && IS_RANDO && !gPlayState) {
+    if (IS_RANDO && !gPlayState) {
         fileInit = true;
+        statObject.entryTimestamp = 0;
+    } else {
+        statObject.entryTimestamp = GAMEPLAYSTAT_TOTAL_TIME;
     }
 
     if (statObject.entryType == STAT_TYPE_SCENE) {
@@ -964,7 +967,6 @@ void GameplayStats_AddTimestamp(GameplayStatObject statObject) {
         return;
     }
     
-    statObject.entryTimestamp = (gSaveContext.ship.stats.playTimer / 2 + gSaveContext.ship.stats.pauseTimer / 3);
     currentTimestamps.push_back(statObject);
 
     if (fileInit) {
@@ -1081,6 +1083,11 @@ void InitStats(bool isDebug) {
     gSaveContext.ship.stats.buildVersionMajor = gBuildVersionMajor;
     gSaveContext.ship.stats.buildVersionMinor = gBuildVersionMinor;
     gSaveContext.ship.stats.buildVersionPatch = gBuildVersionPatch;
+
+    gSaveContext.ship.stats.rtaTiming = CVarGetInteger(CVAR_GAMEPLAY_STATS("RTATiming"), 0);
+    gSaveContext.ship.stats.fileCreatedAt = 0;
+    gSaveContext.ship.stats.playTimer = 0;
+    gSaveContext.ship.stats.pauseTimer = 0;
 }
 
 void GameplayStatsWindow::DrawElement() {
@@ -1123,7 +1130,31 @@ void GameplayStatsWindow::DrawElement() {
     }
 }
 
+void GameplayStats_InitSave() {
+    SaveManager::Instance->SaveData("buildVersion", gSaveContext.ship.stats.buildVersion);
+    SaveManager::Instance->SaveData("buildVersionMajor", gSaveContext.ship.stats.buildVersionMajor);
+    SaveManager::Instance->SaveData("buildVersionMinor", gSaveContext.ship.stats.buildVersionMinor);
+    SaveManager::Instance->SaveData("buildVersionPatch", gSaveContext.ship.stats.buildVersionPatch);
+
+    SaveManager::Instance->SaveData("rtaTiming", gSaveContext.ship.stats.rtaTiming);
+    SaveManager::Instance->SaveData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
+    SaveManager::Instance->SaveData("playTimer", gSaveContext.ship.stats.playTimer);
+    SaveManager::Instance->SaveData("pauseTimer", gSaveContext.ship.stats.pauseTimer);
+
+    SaveManager::Instance->LoadCharArray("buildVersion", gSaveContext.ship.stats.buildVersion,
+                                         ARRAY_COUNT(gSaveContext.ship.stats.buildVersion));
+    SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.ship.stats.buildVersionMajor);
+    SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.ship.stats.buildVersionMinor);
+    SaveManager::Instance->LoadData("buildVersionPatch", gSaveContext.ship.stats.buildVersionPatch);
+
+    SaveManager::Instance->LoadData("rtaTiming", gSaveContext.ship.stats.rtaTiming);
+    SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
+    SaveManager::Instance->LoadData("playTimer", gSaveContext.ship.stats.playTimer);
+    SaveManager::Instance->LoadData("pauseTimer", gSaveContext.ship.stats.pauseTimer);
+}
+
 void GameplayStatsWindow::InitElement() {
+    SaveManager::Instance->AddLoadFunction("sohStats", 1, GameplayStats_InitSave);
     // Add main section save, no parent.
     SaveManager::Instance->AddSaveFunction("sohStats", 1, SaveStats, true, SECTION_PARENT_NONE);
     // Add subsections, parent of "sohStats". Not sure how to do this without the redundant references to "SaveStats".

@@ -86,7 +86,7 @@ static void TimeDisplayGetTimer(uint32_t timeID) {
     switch (timeID) {
         case DISPLAY_IN_GAME_TIMER:
             textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("GAMEPLAY_TIMER");
-            timeDisplayTime = formatTimeDisplay((GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100).c_str();
+            timeDisplayTime = formatTimeDisplay(GAMEPLAYSTAT_TOTAL_TIME).c_str();
             break;
         case DISPLAY_TIME_OF_DAY:
             if (gSaveContext.dayTime >= DAY_BEGINS && gSaveContext.dayTime < NIGHT_BEGINS) {
