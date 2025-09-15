@@ -33,385 +33,285 @@ using json = nlohmann::json;
 #define CVAR_NAME "gSettings.Gameplaystats.Enable"
 #define CVAR CVarGetInteger(CVAR_NAME, 0)
 
-std::vector<GameplayStatObject> currentStatList;
+std::vector<GameplayStatObject> currentTimestamps;
+std::vector<GameplayStatObject> currentCounts;
+uint32_t typeIndex = STAT_TYPE_ALL;
+ImVec4 emptyColor = { 0, 0, 0, 0 };
 
-std::unordered_map<uint32_t, GameplayStatEntry> sceneList = {
-    { SCENE_DEKU_TREE,                          { "Inside the Deku Tree",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_DODONGOS_CAVERN,                    { "Dodongo's Cavern",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_JABU_JABU,                          { "Inside Jabu-Jabu's Belly",       UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_FOREST_TEMPLE,                      { "Forest Temple",                  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_FIRE_TEMPLE,                        { "Fire Temple",                    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_WATER_TEMPLE,                       { "Water Temple",                   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_SPIRIT_TEMPLE,                      { "Spirit Temple",                  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_SHADOW_TEMPLE,                      { "Shadow Temple",                  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_BOTTOM_OF_THE_WELL,                 { "Bottom of the Well",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_ICE_CAVERN,                         { "Ice Cavern",                     UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GANONS_TOWER,                       { "Ganon's Tower",                  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GERUDO_TRAINING_GROUND,             { "Gerudo Training Ground",         UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_THIEVES_HIDEOUT,                    { "Thieves' Hideout",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_INSIDE_GANONS_CASTLE,               { "Inside Ganon's Castle",          UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GANONS_TOWER_COLLAPSE_INTERIOR,     { "Tower Collapse",                 UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_INSIDE_GANONS_CASTLE_COLLAPSE,      { "Castle Collapse",                UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_TREASURE_BOX_SHOP,                  { "Treasure Box Shop",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_DEKU_TREE_BOSS,                     { "Gohma's Lair",                   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_DODONGOS_CAVERN_BOSS,               { "King Dodongo's Lair",            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_JABU_JABU_BOSS,                     { "Barinade's Lair",                UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_FOREST_TEMPLE_BOSS,                 { "Phantom Ganon's Lair",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_FIRE_TEMPLE_BOSS,                   { "Volvagia's Lair",                UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_WATER_TEMPLE_BOSS,                  { "Morpha's Lair",                  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_SPIRIT_TEMPLE_BOSS,                 { "Twinrova's Lair",                UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_SHADOW_TEMPLE_BOSS,                 { "Bongo Bongo's Lair",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GANONDORF_BOSS,                     { "Ganondorf's Lair",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR,     { "Ganon's Lair",                   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_MARKET_ENTRANCE_DAY,                { "Market Entrance (Day)",          UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_MARKET_ENTRANCE_NIGHT,              { "Market Entrance (Night)",        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_MARKET_ENTRANCE_RUINS,              { "Market Entrance (Adult)",        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_BACK_ALLEY_DAY,                     { "Back Alley (Day)",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_BACK_ALLEY_NIGHT,                   { "Back Alley (Night)",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_MARKET_DAY,                         { "Market (Day)",                   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_MARKET_NIGHT,                       { "Market (Night)",                 UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_MARKET_RUINS,                       { "Market (Adult)",                 UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY,        { "Outside ToT (Day)",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT,      { "Outside ToT (Night)",            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS,      { "Outside ToT (Adult)",            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_KNOW_IT_ALL_BROS_HOUSE,             { "Know-It-All Bros' House",        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_TWINS_HOUSE,                        { "Twins' House",                   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_MIDOS_HOUSE,                        { "Mido's House",                   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_SARIAS_HOUSE,                       { "Saria's House",                  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_KAKARIKO_CENTER_GUEST_HOUSE,        { "Carpenter Boss's House",         UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_BACK_ALLEY_HOUSE,                   { "Man in Green's House",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_BAZAAR,                             { "Bazaar",                         UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_KOKIRI_SHOP,                        { "Kokiri Shop",                    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GORON_SHOP,                         { "Goron Shop",                     UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_ZORA_SHOP,                          { "Zora Shop",                      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_POTION_SHOP_KAKARIKO,               { "Kakariko Potion Shop",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_POTION_SHOP_MARKET,                 { "Market Potion Shop",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_BOMBCHU_SHOP,                       { "Bombchu Shop",                   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_HAPPY_MASK_SHOP,                    { "Happy Mask Shop",                UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_LINKS_HOUSE,                        { "Link's House",                   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_DOG_LADY_HOUSE,                     { "Richard's House",                UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_STABLE,                             { "Stable",                         UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_IMPAS_HOUSE,                        { "Impa's House",                   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_LAKESIDE_LABORATORY,                { "Lakeside Lab",                   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_CARPENTERS_TENT,                    { "Carpenters' Tent",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GRAVEKEEPERS_HUT,                   { "Gravekeeper's Hut",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC,        { "Great Fairy",                    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_FAIRYS_FOUNTAIN,                    { "Fairy Fountain",                 UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS,       { "Great Fairy",                    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GROTTOS,                            { "Grotto",                         UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_REDEAD_GRAVE,                       { "Redead Grave",                   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GRAVE_WITH_FAIRYS_FOUNTAIN,         { "Fairy Fountain Grave",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_ROYAL_FAMILYS_TOMB,                 { "Royal Family's Tomb",            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_SHOOTING_GALLERY,                   { "Shooting Gallery",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_TEMPLE_OF_TIME,                     { "Temple of Time",                 UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_CHAMBER_OF_THE_SAGES,               { "Chamber of Sages",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_CASTLE_COURTYARD_GUARDS_DAY,        { "Castle Maze (Day)",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_CASTLE_COURTYARD_GUARDS_NIGHT,      { "Castle Maze (Night)",            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_CUTSCENE_MAP,                       { "Cutscene Map",                   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_WINDMILL_AND_DAMPES_GRAVE,          { "Dampe's Grave",                  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_FISHING_POND,                       { "Fishing Pond",                   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_CASTLE_COURTYARD_ZELDA,             { "Castle Courtyard",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_BOMBCHU_BOWLING_ALLEY,              { "Bombchu Bowling Alley",          UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_LON_LON_BUILDINGS,                  { "Ranch House",                    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_MARKET_GUARD_HOUSE,                 { "Guard House",                    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_POTION_SHOP_GRANNY,                 { "Granny's Potion Shop",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GANON_BOSS,                         { "Ganon Fight",                    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_HOUSE_OF_SKULLTULA,                 { "House of Skulltula",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_HYRULE_FIELD,                       { "Hyrule Field",                   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_KAKARIKO_VILLAGE,                   { "Kakariko Village",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GRAVEYARD,                          { "Graveyard",                      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_ZORAS_RIVER,                        { "Zora's River",                   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_KOKIRI_FOREST,                      { "Kokiri Forest",                  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_SACRED_FOREST_MEADOW,               { "Sacred Forest Meadow",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_LAKE_HYLIA,                         { "Lake Hylia",                     UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_ZORAS_DOMAIN,                       { "Zora's Domain",                  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_ZORAS_FOUNTAIN,                     { "Zora's Fountain",                UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GERUDO_VALLEY,                      { "Gerudo Valley",                  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_LOST_WOODS,                         { "Lost Woods",                     UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_DESERT_COLOSSUS,                    { "Desert Colossus",                UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GERUDOS_FORTRESS,                   { "Gerudo's Fortress",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_HAUNTED_WASTELAND,                  { "Haunted Wasteland",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_HYRULE_CASTLE,                      { "Hyrule Castle",                  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_DEATH_MOUNTAIN_TRAIL,               { "Death Mountain Trail",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_DEATH_MOUNTAIN_CRATER,              { "Death Mountain Crater",          UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_GORON_CITY,                         { "Goron City",                     UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_LON_LON_RANCH,                      { "Lon Lon Ranch",                  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_OUTSIDE_GANONS_CASTLE,              { "Outside Ganon's Castle",         UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    // Debug Only Scenes
-    { SCENE_TEST01, 		                    { "Test Map", 				        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_BESITU, 		                    { "Test Room", 				        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_DEPTH_TEST, 	                    { "Depth Test", 				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_SYOTES, 		                    { "Stalfos Mini-Boss", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_SYOTES2, 		                    { "Stalfos Boss", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_SUTARU, 		                    { "Dark Link", 				        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_HAIRAL_NIWA2, 	                    { "Castle Maze (Broken)", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_SASATEST, 		                    { "SRD Room", 				        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { SCENE_TESTROOM, 		                    { "Chest Room", 				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+static std::unordered_map<uint32_t, const char*> statTypeNameMap = {
+    { STAT_TYPE_SCENE,  "Scenes" },
+    { STAT_TYPE_ITEM,   "Items" },
+    { STAT_TYPE_EVENT,  "Events" },
+    { STAT_TYPE_ALL,    "All" },
 };
 
-std::unordered_map<uint32_t, GameplayStatEntry> itemList = {
-    { ITEM_STICK,            { "Deku Stick", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_NUT,              { "Deku Nut", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BOMB,             { "Bombs", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BOW,              { "Fairy Bow", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_ARROW_FIRE,       { "Fire Arrows", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_DINS_FIRE,        { "Din's Fire", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SLINGSHOT,        { "Slingshot", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_OCARINA_FAIRY,    { "Fairy Ocarina", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_OCARINA_TIME,     { "Ocarina of Time", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BOMBCHU,          { "Bombchus", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_HOOKSHOT,         { "Hookshot", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_LONGSHOT,         { "Longshot", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_ARROW_ICE,        { "Ice Arrows", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_FARORES_WIND,     { "Farore's Wind", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BOOMERANG,        { "Boomerang", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_LENS,             { "Lens of Truth", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BEAN,             { "Magic Beans", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_HAMMER,           { "Megaton Hammer", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_ARROW_LIGHT,      { "Light Arrows", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_NAYRUS_LOVE,      { "Nayru's Love", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BOTTLE,           { "Bottle", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_POTION_RED,       { "Red Potion", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_POTION_GREEN,     { "Green Potion", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_POTION_BLUE,      { "Blue Potion", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_FAIRY,            { "Fairy", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_FISH,             { "Fish", 				        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_MILK_BOTTLE,      { "Milk (Full)", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_LETTER_RUTO,      { "Ruto's Letter", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BLUE_FIRE,        { "Blue Fire", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BUG,              { "Bugs", 				        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BIG_POE,          { "Big Poe", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_MILK_HALF,        { "Milk (Half)", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_POE,              { "Poe", 				        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_WEIRD_EGG,        { "Weird Egg", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_CHICKEN,          { "Chicken", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_LETTER_ZELDA,     { "Zelda's Letter", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_MASK_KEATON,      { "Keaton Mask", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_MASK_SKULL,       { "Skull Mask", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_MASK_SPOOKY,      { "Spooky Mask", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_MASK_BUNNY,       { "Bunny Hood", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_MASK_GORON,       { "Goron Mask", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_MASK_ZORA,        { "Zora Mask", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_MASK_GERUDO,      { "Gerudo Mask", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_MASK_TRUTH,       { "Mask of Truth", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SOLD_OUT,         { "Sold Out", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_POCKET_EGG,       { "Pocket Egg", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_POCKET_CUCCO,     { "Pocket Cucco", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_COJIRO,           { "Cojiro", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_ODD_MUSHROOM,     { "Odd Mushroom", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_ODD_POTION,       { "Odd Potion", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SAW,              { "Poacher's Saw", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SWORD_BROKEN,     { "Broken Goron Sword",        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_PRESCRIPTION,     { "Prescription", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_FROG,             { "Eyeball Frog", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_EYEDROPS,         { "Eye Drops", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_CLAIM_CHECK,      { "Claim Check", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SWORD_KOKIRI,     { "Kokiri Sword", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SWORD_MASTER,     { "Master Sword", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SWORD_BGS,        { "Biggoron's Sword", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SHIELD_DEKU,      { "Deku Shield", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SHIELD_HYLIAN,    { "Hylian Shield", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SHIELD_MIRROR,    { "Mirror Shield", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_TUNIC_GORON,      { "Goron Tunic", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_TUNIC_ZORA,       { "Zora Tunic", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BOOTS_IRON,       { "Iron Boots", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BOOTS_HOVER,      { "Hover Boots", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BULLET_BAG_30,    { "Bullet Bag", 			    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BULLET_BAG_40,    { "Bigger Bullet Bag", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BULLET_BAG_50,    { "Biggest Bullet Bag", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_QUIVER_30,        { "Quiver", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_QUIVER_40,        { "Big Quiver", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_QUIVER_50,        { "Biggest Quiver", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BOMB_BAG_20,      { "Bomb Bag", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BOMB_BAG_30,      { "Big Bomb Bag", 			    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BOMB_BAG_40,      { "Biggest Bomb Bag", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BRACELET,         { "Goron's Bracelet", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_GAUNTLETS_SILVER, { "Silver Gauntlets", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_GAUNTLETS_GOLD,   { "Gold Gauntlets", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SCALE_SILVER,     { "Silver Scale", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SCALE_GOLDEN,     { "Gold Scale", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SWORD_KNIFE,      { "Giant's Knife", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_WALLET_ADULT,     { "Adult's Wallet", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_WALLET_GIANT,     { "Giant's Wallet", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_FISHING_POLE,     { "Fishing Pole", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SONG_MINUET,      { "Minuet of Forest", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Green) } },
-    { ITEM_SONG_BOLERO,      { "Bolero of Fire", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Red) } },
-    { ITEM_SONG_SERENADE,    { "Serenade of Water",         UIWidgets::ColorValues.at(UIWidgets::Colors::Blue) } },
-    { ITEM_SONG_REQUIEM,     { "Requiem of Spirit",         UIWidgets::ColorValues.at(UIWidgets::Colors::Orange) } },
-    { ITEM_SONG_NOCTURNE,    { "Nocturne of Shadow",        UIWidgets::ColorValues.at(UIWidgets::Colors::Purple) } },
-    { ITEM_SONG_PRELUDE,     { "Prelude of Light", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow) } },
-    { ITEM_SONG_LULLABY,     { "Zelda's Lullaby", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Purple) } },
-    { ITEM_SONG_EPONA,       { "Epona's Song", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::Orange) } },
-    { ITEM_SONG_SARIA,       { "Saria's Song", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::Green) } },
-    { ITEM_SONG_SUN,         { "Sun's Song", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow) } },
-    { ITEM_SONG_TIME,        { "Song of Time", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::LightBlue) } },
-    { ITEM_SONG_STORMS,      { "Song of Storms", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Gray) } },
-    { ITEM_MEDALLION_FOREST, { "Forest Medallion", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Green) } },
-    { ITEM_MEDALLION_FIRE,   { "Fire Medallion", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Red) } },
-    { ITEM_MEDALLION_WATER,  { "Water Medallion", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Blue) } },
-    { ITEM_MEDALLION_SPIRIT, { "Spirit Medallion", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Orange) } },
-    { ITEM_MEDALLION_SHADOW, { "Shadow Medallion", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Purple) } },
-    { ITEM_MEDALLION_LIGHT,  { "Light Medallion", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow) } },
-    { ITEM_KOKIRI_EMERALD,   { "Kokiri's Emerald", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Green) } },
-    { ITEM_GORON_RUBY,       { "Goron's Ruby", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::Red) } },
-    { ITEM_ZORA_SAPPHIRE,    { "Zora's Sapphire", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Blue) } },
-    { ITEM_STONE_OF_AGONY,   { "Stone of Agony", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_GERUDO_CARD,      { "Gerudo's Card", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SKULL_TOKEN,      { "", 					        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_HEART_CONTAINER,  { "", 					        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_HEART_PIECE,      { "Piece of Heart", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_KEY_BOSS,         { "Ganon's Boss Key", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_COMPASS,          { "Compass", 					UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_DUNGEON_MAP,      { "Dungeon Map", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_KEY_SMALL,        { "Small Key", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_HEART_PIECE_2,    { "", 					        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_SINGLE_MAGIC,     { "Magic", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_DOUBLE_MAGIC,     { "Double Magic", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_DOUBLE_DEFENSE,   { "Double Defense", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { RG_GREG_RUPEE,         { "Greg", 					    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_STICKS_5,         { "Deku Stick", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_STICKS_10,        { "Deku Stick", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_NUTS_5,           { "Deku Nut", 				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_NUTS_10,          { "Deku Nut", 				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BOMBCHUS_5,       { "Bombchus", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_BOMBCHUS_20,      { "Bombchus", 				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_STICK_UPGRADE_20, { "Deku Stick Upgrade (20)",   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_STICK_UPGRADE_30, { "Deku Stick Upgrade (30)", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_NUT_UPGRADE_30,   { "Deku Nut Upgrade (30)", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { ITEM_NUT_UPGRADE_40,   { "Deku Nut Upgrade (30)", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-};
-
-std::unordered_map<uint32_t, GameplayStatEntry> eventList = {
-    { TIMESTAMP_DEFEAT_GOHMA,           { "Queen Gohma Defeated",   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { TIMESTAMP_DEFEAT_KING_DODONGO,    { "King Dodongo Defeated",  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { TIMESTAMP_DEFEAT_BARINADE,        { "Barinade Defeated",      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { TIMESTAMP_DEFEAT_PHANTOM_GANON,   { "Phantom Ganon Defeated", UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { TIMESTAMP_DEFEAT_VOLVAGIA,        { "Volvagia Defeated",      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { TIMESTAMP_DEFEAT_MORPHA,          { "Morpha Defeated",        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { TIMESTAMP_DEFEAT_BONGO_BONGO,     { "Bongo Bongo Defeated",   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { TIMESTAMP_DEFEAT_TWINROVA,        { "Twinrova Defeated",      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { TIMESTAMP_DEFEAT_GANONDORF,       { "Ganondorf Defeated",     UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { TIMESTAMP_DEFEAT_GANON,           { "Ganon Defeated",         UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { TIMESTAMP_BOSSRUSH_FINISH,        { "Boss Rush Complete",     UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { TIMESTAMP_FOUND_GREG,             { "Greg Found",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-    { TIMESTAMP_TRIFORCE_COMPLETED,     { "Triforce Complete",      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayStatList = {
+    { STAT_TYPE_SCENE, 
+        {
+            { SCENE_DEKU_TREE, 							{ STAT_TYPE_SCENE, "Inside the Deku Tree", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_DODONGOS_CAVERN,                    { STAT_TYPE_SCENE, "Dodongo's Cavern",          UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_JABU_JABU,                          { STAT_TYPE_SCENE, "Inside Jabu-Jabu's Belly",  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_FOREST_TEMPLE,                      { STAT_TYPE_SCENE, "Forest Temple",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_FIRE_TEMPLE,                        { STAT_TYPE_SCENE, "Fire Temple",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_WATER_TEMPLE,                       { STAT_TYPE_SCENE, "Water Temple",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_SPIRIT_TEMPLE,                      { STAT_TYPE_SCENE, "Spirit Temple",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_SHADOW_TEMPLE,                      { STAT_TYPE_SCENE, "Shadow Temple",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_BOTTOM_OF_THE_WELL,                 { STAT_TYPE_SCENE, "Bottom of the Well",        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_ICE_CAVERN,                         { STAT_TYPE_SCENE, "Ice Cavern",                UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GANONS_TOWER,                       { STAT_TYPE_SCENE, "Ganon's Tower",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GERUDO_TRAINING_GROUND,             { STAT_TYPE_SCENE, "Gerudo Training Ground",    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_THIEVES_HIDEOUT,                    { STAT_TYPE_SCENE, "Thieves' Hideout",          UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_INSIDE_GANONS_CASTLE,               { STAT_TYPE_SCENE, "Inside Ganon's Castle",     UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GANONS_TOWER_COLLAPSE_INTERIOR,     { STAT_TYPE_SCENE, "Tower Collapse",            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_INSIDE_GANONS_CASTLE_COLLAPSE,      { STAT_TYPE_SCENE, "Castle Collapse",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_TREASURE_BOX_SHOP,                  { STAT_TYPE_SCENE, "Treasure Box Shop",         UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_DEKU_TREE_BOSS,                     { STAT_TYPE_SCENE, "Gohma's Lair",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_DODONGOS_CAVERN_BOSS,               { STAT_TYPE_SCENE, "King Dodongo's Lair",       UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_JABU_JABU_BOSS,                     { STAT_TYPE_SCENE, "Barinade's Lair",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_FOREST_TEMPLE_BOSS,                 { STAT_TYPE_SCENE, "Phantom Ganon's Lair",      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_FIRE_TEMPLE_BOSS,                   { STAT_TYPE_SCENE, "Volvagia's Lair",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_WATER_TEMPLE_BOSS,                  { STAT_TYPE_SCENE, "Morpha's Lair",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_SPIRIT_TEMPLE_BOSS,                 { STAT_TYPE_SCENE, "Twinrova's Lair",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_SHADOW_TEMPLE_BOSS,                 { STAT_TYPE_SCENE, "Bongo Bongo's Lair",        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GANONDORF_BOSS,                     { STAT_TYPE_SCENE, "Ganondorf's Lair",          UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR,     { STAT_TYPE_SCENE, "Ganon's Lair",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_MARKET_ENTRANCE_DAY,                { STAT_TYPE_SCENE, "Market Entrance (Day)",     UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_MARKET_ENTRANCE_NIGHT,              { STAT_TYPE_SCENE, "Market Entrance (Night)",   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_MARKET_ENTRANCE_RUINS,              { STAT_TYPE_SCENE, "Market Entrance (Adult)",   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_BACK_ALLEY_DAY,                     { STAT_TYPE_SCENE, "Back Alley (Day)",          UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_BACK_ALLEY_NIGHT,                   { STAT_TYPE_SCENE, "Back Alley (Night)",        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_MARKET_DAY,                         { STAT_TYPE_SCENE, "Market (Day)",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_MARKET_NIGHT,                       { STAT_TYPE_SCENE, "Market (Night)",            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_MARKET_RUINS,                       { STAT_TYPE_SCENE, "Market (Adult)",            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY,        { STAT_TYPE_SCENE, "Outside ToT (Day)",         UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT,      { STAT_TYPE_SCENE, "Outside ToT (Night)",       UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS,      { STAT_TYPE_SCENE, "Outside ToT (Adult)",       UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_KNOW_IT_ALL_BROS_HOUSE,             { STAT_TYPE_SCENE, "Know-It-All Bros' House",   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_TWINS_HOUSE,                        { STAT_TYPE_SCENE, "Twins' House",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_MIDOS_HOUSE,                        { STAT_TYPE_SCENE, "Mido's House",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_SARIAS_HOUSE,                       { STAT_TYPE_SCENE, "Saria's House",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_KAKARIKO_CENTER_GUEST_HOUSE,        { STAT_TYPE_SCENE, "Carpenter Boss's House",    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_BACK_ALLEY_HOUSE,                   { STAT_TYPE_SCENE, "Man in Green's House",      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_BAZAAR,                             { STAT_TYPE_SCENE, "Bazaar",                    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_KOKIRI_SHOP,                        { STAT_TYPE_SCENE, "Kokiri Shop",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GORON_SHOP,                         { STAT_TYPE_SCENE, "Goron Shop",                UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_ZORA_SHOP,                          { STAT_TYPE_SCENE, "Zora Shop",                 UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_POTION_SHOP_KAKARIKO,               { STAT_TYPE_SCENE, "Kakariko Potion Shop",      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_POTION_SHOP_MARKET,                 { STAT_TYPE_SCENE, "Market Potion Shop",        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_BOMBCHU_SHOP,                       { STAT_TYPE_SCENE, "Bombchu Shop",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_HAPPY_MASK_SHOP,                    { STAT_TYPE_SCENE, "Happy Mask Shop",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_LINKS_HOUSE,                        { STAT_TYPE_SCENE, "Link's House",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_DOG_LADY_HOUSE,                     { STAT_TYPE_SCENE, "Richard's House",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_STABLE,                             { STAT_TYPE_SCENE, "Stable",                    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_IMPAS_HOUSE,                        { STAT_TYPE_SCENE, "Impa's House",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_LAKESIDE_LABORATORY,                { STAT_TYPE_SCENE, "Lakeside Lab",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_CARPENTERS_TENT,                    { STAT_TYPE_SCENE, "Carpenters' Tent",          UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GRAVEKEEPERS_HUT,                   { STAT_TYPE_SCENE, "Gravekeeper's Hut",         UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC,        { STAT_TYPE_SCENE, "Great Fairy",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_FAIRYS_FOUNTAIN,                    { STAT_TYPE_SCENE, "Fairy Fountain",            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS,       { STAT_TYPE_SCENE, "Great Fairy",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GROTTOS,                            { STAT_TYPE_SCENE, "Grotto",                    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_REDEAD_GRAVE,                       { STAT_TYPE_SCENE, "Redead Grave",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GRAVE_WITH_FAIRYS_FOUNTAIN,         { STAT_TYPE_SCENE, "Fairy Fountain Grave",      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_ROYAL_FAMILYS_TOMB,                 { STAT_TYPE_SCENE, "Royal Family's Tomb",       UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_SHOOTING_GALLERY,                   { STAT_TYPE_SCENE, "Shooting Gallery",          UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_TEMPLE_OF_TIME,                     { STAT_TYPE_SCENE, "Temple of Time",            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_CHAMBER_OF_THE_SAGES,               { STAT_TYPE_SCENE, "Chamber of Sages",          UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_CASTLE_COURTYARD_GUARDS_DAY,        { STAT_TYPE_SCENE, "Castle Maze (Day)",         UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_CASTLE_COURTYARD_GUARDS_NIGHT,      { STAT_TYPE_SCENE, "Castle Maze (Night)",       UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_CUTSCENE_MAP,                       { STAT_TYPE_SCENE, "Cutscene Map",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_WINDMILL_AND_DAMPES_GRAVE,          { STAT_TYPE_SCENE, "Dampe's Grave",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_FISHING_POND,                       { STAT_TYPE_SCENE, "Fishing Pond",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_CASTLE_COURTYARD_ZELDA,             { STAT_TYPE_SCENE, "Castle Courtyard",          UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_BOMBCHU_BOWLING_ALLEY,              { STAT_TYPE_SCENE, "Bombchu Bowling Alley",     UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_LON_LON_BUILDINGS,                  { STAT_TYPE_SCENE, "Ranch House",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_MARKET_GUARD_HOUSE,                 { STAT_TYPE_SCENE, "Guard House",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_POTION_SHOP_GRANNY,                 { STAT_TYPE_SCENE, "Granny's Potion Shop",      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GANON_BOSS,                         { STAT_TYPE_SCENE, "Ganon Fight",               UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_HOUSE_OF_SKULLTULA,                 { STAT_TYPE_SCENE, "House of Skulltula",        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_HYRULE_FIELD,                       { STAT_TYPE_SCENE, "Hyrule Field",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_KAKARIKO_VILLAGE,                   { STAT_TYPE_SCENE, "Kakariko Village",          UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GRAVEYARD,                          { STAT_TYPE_SCENE, "Graveyard",                 UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_ZORAS_RIVER,                        { STAT_TYPE_SCENE, "Zora's River",              UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_KOKIRI_FOREST,                      { STAT_TYPE_SCENE, "Kokiri Forest",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_SACRED_FOREST_MEADOW,               { STAT_TYPE_SCENE, "Sacred Forest Meadow",      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_LAKE_HYLIA,                         { STAT_TYPE_SCENE, "Lake Hylia",                UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_ZORAS_DOMAIN,                       { STAT_TYPE_SCENE, "Zora's Domain",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_ZORAS_FOUNTAIN,                     { STAT_TYPE_SCENE, "Zora's Fountain",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GERUDO_VALLEY,                      { STAT_TYPE_SCENE, "Gerudo Valley",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_LOST_WOODS,                         { STAT_TYPE_SCENE, "Lost Woods",                UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_DESERT_COLOSSUS,                    { STAT_TYPE_SCENE, "Desert Colossus",           UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GERUDOS_FORTRESS,                   { STAT_TYPE_SCENE, "Gerudo's Fortress",         UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_HAUNTED_WASTELAND,                  { STAT_TYPE_SCENE, "Haunted Wasteland",         UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_HYRULE_CASTLE,                      { STAT_TYPE_SCENE, "Hyrule Castle",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_DEATH_MOUNTAIN_TRAIL,               { STAT_TYPE_SCENE, "Death Mountain Trail",      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_DEATH_MOUNTAIN_CRATER,              { STAT_TYPE_SCENE, "Death Mountain Crater",     UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_GORON_CITY,                         { STAT_TYPE_SCENE, "Goron City",                UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_LON_LON_RANCH,                      { STAT_TYPE_SCENE, "Lon Lon Ranch",             UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_OUTSIDE_GANONS_CASTLE,              { STAT_TYPE_SCENE, "Outside Ganon's Castle",    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            // Debug Only Scenes
+            { SCENE_TEST01, 		                    { STAT_TYPE_SCENE, "Test Map", 				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_BESITU, 		                    { STAT_TYPE_SCENE, "Test Room", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_DEPTH_TEST, 	                    { STAT_TYPE_SCENE, "Depth Test", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_SYOTES, 		                    { STAT_TYPE_SCENE, "Stalfos Mini-Boss", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_SYOTES2, 		                    { STAT_TYPE_SCENE, "Stalfos Boss", 			    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_SUTARU, 		                    { STAT_TYPE_SCENE, "Dark Link", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_HAIRAL_NIWA2, 	                    { STAT_TYPE_SCENE, "Castle Maze (Broken)", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_SASATEST, 		                    { STAT_TYPE_SCENE, "SRD Room", 				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { SCENE_TESTROOM, 		                    { STAT_TYPE_SCENE, "Chest Room", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+        }
+    },
+    { STAT_TYPE_ITEM, 
+        {
+            { ITEM_STICK,                           { STAT_TYPE_ITEM, "Deku Stick", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_NUT,                             { STAT_TYPE_ITEM, "Deku Nut", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOMB,                            { STAT_TYPE_ITEM, "Bombs", 			            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOW,                             { STAT_TYPE_ITEM, "Fairy Bow", 		            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_ARROW_FIRE,                      { STAT_TYPE_ITEM, "Fire Arrows", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_DINS_FIRE,                       { STAT_TYPE_ITEM, "Din's Fire", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SLINGSHOT,                       { STAT_TYPE_ITEM, "Slingshot", 		            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_OCARINA_FAIRY,                   { STAT_TYPE_ITEM, "Fairy Ocarina", 	            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_OCARINA_TIME,                    { STAT_TYPE_ITEM, "Ocarina of Time", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOMBCHU,                         { STAT_TYPE_ITEM, "Bombchus", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_HOOKSHOT,                        { STAT_TYPE_ITEM, "Hookshot", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_LONGSHOT,                        { STAT_TYPE_ITEM, "Longshot", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_ARROW_ICE,                       { STAT_TYPE_ITEM, "Ice Arrows", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_FARORES_WIND,                    { STAT_TYPE_ITEM, "Farore's Wind", 	            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOOMERANG,                       { STAT_TYPE_ITEM, "Boomerang", 		            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_LENS,                            { STAT_TYPE_ITEM, "Lens of Truth", 	            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BEAN,                            { STAT_TYPE_ITEM, "Magic Beans", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_HAMMER,                          { STAT_TYPE_ITEM, "Megaton Hammer", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_ARROW_LIGHT,                     { STAT_TYPE_ITEM, "Light Arrows", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_NAYRUS_LOVE,                     { STAT_TYPE_ITEM, "Nayru's Love", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOTTLE,                          { STAT_TYPE_ITEM, "Bottle", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_POTION_RED,                      { STAT_TYPE_ITEM, "Red Potion", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_POTION_GREEN,                    { STAT_TYPE_ITEM, "Green Potion", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_POTION_BLUE,                     { STAT_TYPE_ITEM, "Blue Potion", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_FAIRY,                           { STAT_TYPE_ITEM, "Fairy", 			            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_FISH,                            { STAT_TYPE_ITEM, "Fish", 				        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_MILK_BOTTLE,                     { STAT_TYPE_ITEM, "Milk (Full)", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_LETTER_RUTO,                     { STAT_TYPE_ITEM, "Ruto's Letter", 	            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BLUE_FIRE,                       { STAT_TYPE_ITEM, "Blue Fire", 		            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BUG,                             { STAT_TYPE_ITEM, "Bugs", 				        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BIG_POE,                         { STAT_TYPE_ITEM, "Big Poe", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_MILK_HALF,                       { STAT_TYPE_ITEM, "Milk (Half)", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_POE,                             { STAT_TYPE_ITEM, "Poe", 				        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_WEIRD_EGG,                       { STAT_TYPE_ITEM, "Weird Egg", 		            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_CHICKEN,                         { STAT_TYPE_ITEM, "Chicken", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_LETTER_ZELDA,                    { STAT_TYPE_ITEM, "Zelda's Letter", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_MASK_KEATON,                     { STAT_TYPE_ITEM, "Keaton Mask", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_MASK_SKULL,                      { STAT_TYPE_ITEM, "Skull Mask", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_MASK_SPOOKY,                     { STAT_TYPE_ITEM, "Spooky Mask", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_MASK_BUNNY,                      { STAT_TYPE_ITEM, "Bunny Hood", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_MASK_GORON,                      { STAT_TYPE_ITEM, "Goron Mask", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_MASK_ZORA,                       { STAT_TYPE_ITEM, "Zora Mask", 		            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_MASK_GERUDO,                     { STAT_TYPE_ITEM, "Gerudo Mask", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_MASK_TRUTH,                      { STAT_TYPE_ITEM, "Mask of Truth", 	            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SOLD_OUT,                        { STAT_TYPE_ITEM, "Sold Out", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_POCKET_EGG,                      { STAT_TYPE_ITEM, "Pocket Egg", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_POCKET_CUCCO,                    { STAT_TYPE_ITEM, "Pocket Cucco", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_COJIRO,                          { STAT_TYPE_ITEM, "Cojiro", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_ODD_MUSHROOM,                    { STAT_TYPE_ITEM, "Odd Mushroom", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_ODD_POTION,                      { STAT_TYPE_ITEM, "Odd Potion", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SAW,                             { STAT_TYPE_ITEM, "Poacher's Saw", 	            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SWORD_BROKEN,                    { STAT_TYPE_ITEM, "Broken Goron Sword",        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_PRESCRIPTION,                    { STAT_TYPE_ITEM, "Prescription", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_FROG,                            { STAT_TYPE_ITEM, "Eyeball Frog", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_EYEDROPS,                        { STAT_TYPE_ITEM, "Eye Drops", 		            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_CLAIM_CHECK,                     { STAT_TYPE_ITEM, "Claim Check", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SWORD_KOKIRI,                    { STAT_TYPE_ITEM, "Kokiri Sword", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SWORD_MASTER,                    { STAT_TYPE_ITEM, "Master Sword", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SWORD_BGS,                       { STAT_TYPE_ITEM, "Biggoron's Sword", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SHIELD_DEKU,                     { STAT_TYPE_ITEM, "Deku Shield", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SHIELD_HYLIAN,                   { STAT_TYPE_ITEM, "Hylian Shield", 	            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SHIELD_MIRROR,                   { STAT_TYPE_ITEM, "Mirror Shield", 	            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_TUNIC_GORON,                     { STAT_TYPE_ITEM, "Goron Tunic", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_TUNIC_ZORA,                      { STAT_TYPE_ITEM, "Zora Tunic", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOOTS_IRON,                      { STAT_TYPE_ITEM, "Iron Boots", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOOTS_HOVER,                     { STAT_TYPE_ITEM, "Hover Boots", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BULLET_BAG_30,                   { STAT_TYPE_ITEM, "Bullet Bag", 			    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BULLET_BAG_40,                   { STAT_TYPE_ITEM, "Bigger Bullet Bag", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BULLET_BAG_50,                   { STAT_TYPE_ITEM, "Biggest Bullet Bag", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_QUIVER_30,                       { STAT_TYPE_ITEM, "Quiver", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_QUIVER_40,                       { STAT_TYPE_ITEM, "Big Quiver", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_QUIVER_50,                       { STAT_TYPE_ITEM, "Biggest Quiver", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOMB_BAG_20,                     { STAT_TYPE_ITEM, "Bomb Bag", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOMB_BAG_30,                     { STAT_TYPE_ITEM, "Big Bomb Bag", 			    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOMB_BAG_40,                     { STAT_TYPE_ITEM, "Biggest Bomb Bag", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BRACELET,                        { STAT_TYPE_ITEM, "Goron's Bracelet", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_GAUNTLETS_SILVER,                { STAT_TYPE_ITEM, "Silver Gauntlets", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_GAUNTLETS_GOLD,                  { STAT_TYPE_ITEM, "Gold Gauntlets", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SCALE_SILVER,                    { STAT_TYPE_ITEM, "Silver Scale", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SCALE_GOLDEN,                    { STAT_TYPE_ITEM, "Gold Scale", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SWORD_KNIFE,                     { STAT_TYPE_ITEM, "Giant's Knife", 			    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_WALLET_ADULT,                    { STAT_TYPE_ITEM, "Adult's Wallet", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_WALLET_GIANT,                    { STAT_TYPE_ITEM, "Giant's Wallet", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_FISHING_POLE,                    { STAT_TYPE_ITEM, "Fishing Pole", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SONG_MINUET,                     { STAT_TYPE_ITEM, "Minuet of Forest", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Green) } },
+            { ITEM_SONG_BOLERO,                     { STAT_TYPE_ITEM, "Bolero of Fire", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Red) } },
+            { ITEM_SONG_SERENADE,                   { STAT_TYPE_ITEM, "Serenade of Water",          UIWidgets::ColorValues.at(UIWidgets::Colors::Blue) } },
+            { ITEM_SONG_REQUIEM,                    { STAT_TYPE_ITEM, "Requiem of Spirit",          UIWidgets::ColorValues.at(UIWidgets::Colors::Orange) } },
+            { ITEM_SONG_NOCTURNE,                   { STAT_TYPE_ITEM, "Nocturne of Shadow",         UIWidgets::ColorValues.at(UIWidgets::Colors::Purple) } },
+            { ITEM_SONG_PRELUDE,                    { STAT_TYPE_ITEM, "Prelude of Light", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow) } },
+            { ITEM_SONG_LULLABY,                    { STAT_TYPE_ITEM, "Zelda's Lullaby", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Purple) } },
+            { ITEM_SONG_EPONA,                      { STAT_TYPE_ITEM, "Epona's Song", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::Orange) } },
+            { ITEM_SONG_SARIA,                      { STAT_TYPE_ITEM, "Saria's Song", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::Green) } },
+            { ITEM_SONG_SUN,                        { STAT_TYPE_ITEM, "Sun's Song", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow) } },
+            { ITEM_SONG_TIME,                       { STAT_TYPE_ITEM, "Song of Time", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::LightBlue) } },
+            { ITEM_SONG_STORMS,                     { STAT_TYPE_ITEM, "Song of Storms", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Gray) } },
+            { ITEM_MEDALLION_FOREST,                { STAT_TYPE_ITEM, "Forest Medallion", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Green) } },
+            { ITEM_MEDALLION_FIRE,                  { STAT_TYPE_ITEM, "Fire Medallion", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Red) } },
+            { ITEM_MEDALLION_WATER,                 { STAT_TYPE_ITEM, "Water Medallion", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Blue) } },
+            { ITEM_MEDALLION_SPIRIT,                { STAT_TYPE_ITEM, "Spirit Medallion", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Orange) } },
+            { ITEM_MEDALLION_SHADOW,                { STAT_TYPE_ITEM, "Shadow Medallion", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Purple) } },
+            { ITEM_MEDALLION_LIGHT,                 { STAT_TYPE_ITEM, "Light Medallion", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow) } },
+            { ITEM_KOKIRI_EMERALD,                  { STAT_TYPE_ITEM, "Kokiri's Emerald", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Green) } },
+            { ITEM_GORON_RUBY,                      { STAT_TYPE_ITEM, "Goron's Ruby", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::Red) } },
+            { ITEM_ZORA_SAPPHIRE,                   { STAT_TYPE_ITEM, "Zora's Sapphire", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::Blue) } },
+            { ITEM_STONE_OF_AGONY,                  { STAT_TYPE_ITEM, "Stone of Agony", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_GERUDO_CARD,                     { STAT_TYPE_ITEM, "Gerudo's Card", 	            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SKULL_TOKEN,                     { STAT_TYPE_ITEM, "Gold Skulltula Token", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_HEART_CONTAINER,                 { STAT_TYPE_ITEM, "Heart Container", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_HEART_PIECE,                     { STAT_TYPE_ITEM, "Piece of Heart", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_KEY_BOSS,                        { STAT_TYPE_ITEM, "Ganon's Boss Key", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_COMPASS,                         { STAT_TYPE_ITEM, "Compass", 					UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_DUNGEON_MAP,                     { STAT_TYPE_ITEM, "Dungeon Map", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_KEY_SMALL,                       { STAT_TYPE_ITEM, "Small Key", 				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_HEART_PIECE_2,                   { STAT_TYPE_ITEM, "Piece of Heart", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SINGLE_MAGIC,                    { STAT_TYPE_ITEM, "Magic", 			            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_DOUBLE_MAGIC,                    { STAT_TYPE_ITEM, "Double Magic", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_DOUBLE_DEFENSE,                  { STAT_TYPE_ITEM, "Double Defense", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_STICKS_5,                        { STAT_TYPE_ITEM, "Deku Stick", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_STICKS_10,                       { STAT_TYPE_ITEM, "Deku Stick", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_NUTS_5,                          { STAT_TYPE_ITEM, "Deku Nut", 				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_NUTS_10,                         { STAT_TYPE_ITEM, "Deku Nut", 				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOMBCHUS_5,                      { STAT_TYPE_ITEM, "Bombchus", 			        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOMBCHUS_20,                     { STAT_TYPE_ITEM, "Bombchus", 				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_STICK_UPGRADE_20,                { STAT_TYPE_ITEM, "Deku Stick Upgrade (20)",    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_STICK_UPGRADE_30,                { STAT_TYPE_ITEM, "Deku Stick Upgrade (30)", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_NUT_UPGRADE_30,                  { STAT_TYPE_ITEM, "Deku Nut Upgrade (30)", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_NUT_UPGRADE_40,                  { STAT_TYPE_ITEM, "Deku Nut Upgrade (30)", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+        }
+    },
+    { STAT_TYPE_EVENT, 
+        {
+            { TIMESTAMP_DEFEAT_GOHMA,               { STAT_TYPE_EVENT, "Queen Gohma Defeated",   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { TIMESTAMP_DEFEAT_KING_DODONGO,        { STAT_TYPE_EVENT, "King Dodongo Defeated",  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { TIMESTAMP_DEFEAT_BARINADE,            { STAT_TYPE_EVENT, "Barinade Defeated",      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { TIMESTAMP_DEFEAT_PHANTOM_GANON,       { STAT_TYPE_EVENT, "Phantom Ganon Defeated", UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { TIMESTAMP_DEFEAT_VOLVAGIA,            { STAT_TYPE_EVENT, "Volvagia Defeated",      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { TIMESTAMP_DEFEAT_MORPHA,              { STAT_TYPE_EVENT, "Morpha Defeated",        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { TIMESTAMP_DEFEAT_BONGO_BONGO,         { STAT_TYPE_EVENT, "Bongo Bongo Defeated",   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { TIMESTAMP_DEFEAT_TWINROVA,            { STAT_TYPE_EVENT, "Twinrova Defeated",      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { TIMESTAMP_DEFEAT_GANONDORF,           { STAT_TYPE_EVENT, "Ganondorf Defeated",     UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { TIMESTAMP_DEFEAT_GANON,               { STAT_TYPE_EVENT, "Ganon Defeated",         UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { TIMESTAMP_BOSSRUSH_FINISH,            { STAT_TYPE_EVENT, "Boss Rush Complete",     UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { TIMESTAMP_TRIFORCE_COMPLETED,         { STAT_TYPE_EVENT, "Triforce Complete",      UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+        }
+    },
 };
 
 // End
-
-const char* const sceneMappings[] = {
-    "Inside the Deku Tree",
-    "Dodongo's Cavern",
-    "Inside Jabu-Jabu's Belly",
-    "Forest Temple",
-    "Fire Temple",
-    "Water Temple",
-    "Spirit Temple",
-    "Shadow Temple",
-    "Bottom of the Well",
-    "Ice Cavern",
-    "Ganon's Tower",
-    "Gerudo Training Ground",
-    "Thieves' Hideout",
-    "Inside Ganon's Castle",
-    "Tower Collapse",
-    "Castle Collapse",
-    "Treasure Box Shop",
-    "Gohma's Lair",
-    "King Dodongo's Lair",
-    "Barinade's Lair",
-    "Phantom Ganon's Lair",
-    "Volvagia's Lair",
-    "Morpha's Lair",
-    "Twinrova's Lair",
-    "Bongo Bongo's Lair",
-    "Ganondorf's Lair",
-    "Ganon's Lair",
-    "Market Entrance (Day)",
-    "Market Entrance (Night)",
-    "Market Entrance (Adult)",
-    "Back Alley (Day)",
-    "Back Alley (Night)",
-    "Market (Day)",
-    "Market (Night)",
-    "Market (Adult)",
-    "Outside ToT (Day)",
-    "Outside ToT (Night)",
-    "Outside ToT (Adult)",
-    "Know-It-All Bros' House",
-    "Twins' House",
-    "Mido's House",
-    "Saria's House",
-    "Carpenter Boss's House",
-    "Man in Green's House",
-    "Bazaar",
-    "Kokiri Shop",
-    "Goron Shop",
-    "Zora Shop",
-    "Kakariko Potion Shop",
-    "Market Potion Shop",
-    "Bombchu Shop",
-    "Happy Mask Shop",
-    "Link's House",
-    "Richard's House",
-    "Stable",
-    "Impa's House",
-    "Lakeside Lab",
-    "Carpenters' Tent",
-    "Gravekeeper's Hut",
-    "Great Fairy",
-    "Fairy Fountain",
-    "Great Fairy",
-    "Grotto",
-    "Redead Grave",
-    "Fairy Fountain Grave",
-    "Royal Family's Tomb",
-    "Shooting Gallery",
-    "Temple of Time",
-    "Chamber of Sages",
-    "Castle Maze (Day)",
-    "Castle Maze (Night)",
-    "Cutscene Map",
-    "Dampe's Grave",
-    "Fishing Pond",
-    "Castle Courtyard",
-    "Bombchu Bowling Alley",
-    "Ranch House",
-    "Guard House",
-    "Granny's Potion Shop",
-    "Ganon Fight",
-    "House of Skulltula",
-    "Hyrule Field",
-    "Kakariko Village",
-    "Graveyard",
-    "Zora's River",
-    "Kokiri Forest",
-    "Sacred Forest Meadow",
-    "Lake Hylia",
-    "Zora's Domain",
-    "Zora's Fountain",
-    "Gerudo Valley",
-    "Lost Woods",
-    "Desert Colossus",
-    "Gerudo's Fortress",
-    "Haunted Wasteland",
-    "Hyrule Castle",
-    "Death Mountain Trail",
-    "Death Mountain Crater",
-    "Goron City",
-    "Lon Lon Ranch",
-    "Outside Ganon's Castle",
-    // Debug Rooms
-    "Test Map",
-    "Test Room",
-    "Depth Test",
-    "Stalfos Mini-Boss",
-    "Stalfos Boss",
-    "Dark Link",
-    "Castle Maze (Broken)",
-    "SRD Room",
-    "Chest Room",
-};
 
 const char* const countMappings[] = {
     "Anubis:",
@@ -507,16 +407,6 @@ const char* const countMappings[] = {
     "Start:",
 };
 
-#define COLOR_WHITE ImVec4(1.00f, 1.00f, 1.00f, 1.00f)
-#define COLOR_RED ImVec4(1.00f, 0.00f, 0.00f, 1.00f)
-#define COLOR_GREEN ImVec4(0.10f, 1.00f, 0.10f, 1.00f)
-#define COLOR_BLUE ImVec4(0.00f, 0.33f, 1.00f, 1.00f)
-#define COLOR_PURPLE ImVec4(0.54f, 0.19f, 0.89f, 1.00f)
-#define COLOR_YELLOW ImVec4(1.00f, 1.00f, 0.00f, 1.00f)
-#define COLOR_ORANGE ImVec4(1.00f, 0.67f, 0.11f, 1.00f)
-#define COLOR_LIGHT_BLUE ImVec4(0.00f, 0.88f, 1.00f, 1.00f)
-#define COLOR_GREY ImVec4(0.78f, 0.78f, 0.78f, 1.00f)
-
 std::string formatIntGameplayStat(uint32_t value) {
     return fmt::format("{}", value);
 }
@@ -534,7 +424,12 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveManager::Instance->SaveData("buildVersionMajor", saveContext->ship.stats.buildVersionMajor);
     SaveManager::Instance->SaveData("buildVersionMinor", saveContext->ship.stats.buildVersionMinor);
     SaveManager::Instance->SaveData("buildVersionPatch", saveContext->ship.stats.buildVersionPatch);
-    //
+    
+    SaveManager::Instance->SaveData("rtaTiming", saveContext->ship.stats.rtaTiming);
+    SaveManager::Instance->SaveData("fileCreatedAt", saveContext->ship.stats.fileCreatedAt);
+    SaveManager::Instance->SaveData("playTimer", saveContext->ship.stats.playTimer);
+    SaveManager::Instance->SaveData("pauseTimer", saveContext->ship.stats.pauseTimer);
+
     //SaveManager::Instance->SaveData("heartPieces", saveContext->ship.stats.heartPieces);
     //SaveManager::Instance->SaveData("heartContainers", saveContext->ship.stats.heartContainers);
     //SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext->ship.stats.dungeonKeys), [&](size_t i) {
@@ -560,16 +455,16 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
     //            });
     //        }
     //    });
-    //SaveManager::Instance->SaveData("tsIdx", saveContext->ship.stats.tsIdx);
-    //SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->ship.stats.count), [&](size_t i) {
-    //    SaveManager::Instance->SaveData("", saveContext->ship.stats.count[i]);
-    //});
-    //SaveManager::Instance->SaveArray(
-    //    "scenesDiscovered", ARRAY_COUNT(saveContext->ship.stats.scenesDiscovered),
-    //    [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.scenesDiscovered[i]); });
-    //SaveManager::Instance->SaveArray(
-    //    "entrancesDiscovered", ARRAY_COUNT(saveContext->ship.stats.entrancesDiscovered),
-    //    [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.entrancesDiscovered[i]); });
+    SaveManager::Instance->SaveData("tsIdx", saveContext->ship.stats.tsIdx);
+    SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->ship.stats.count), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->ship.stats.count[i]);
+    });
+    SaveManager::Instance->SaveArray(
+        "scenesDiscovered", ARRAY_COUNT(saveContext->ship.stats.scenesDiscovered),
+        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.scenesDiscovered[i]); });
+    SaveManager::Instance->SaveArray(
+        "entrancesDiscovered", ARRAY_COUNT(saveContext->ship.stats.entrancesDiscovered),
+        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.entrancesDiscovered[i]); });
 }
 
 //void GameplayStatsRow(const char* label, const std::string& value, ImVec4 color = COLOR_WHITE,
@@ -784,6 +679,172 @@ void DrawGameplayStatsCountsTab() {
 
 // NEW REGION
 
+nlohmann::json GameplayStats_ObjectToJson(const GameplayStatObject& entry) {
+    return nlohmann::json {
+        { "entryType", entry.entryType },
+        { "entryName", entry.entryName },
+        { "entryTimestamp", entry.entryTimestamp },
+    };
+}
+
+GameplayStatObject GameplayStats_JsonToObject(const nlohmann::json& jsonEntry) {
+    GameplayStatObject entry;
+
+    entry.entryType = jsonEntry["entryType"];
+    entry.entryName = jsonEntry["entryName"];
+    entry.entryTimestamp = jsonEntry["entryTimestamp"];
+
+    for (auto& list : gameplayStatList.at(entry.entryType)) {
+        auto check = list;
+        if (list.second.entryName == entry.entryName) {
+            entry.entryColor = list.second.entryColor;
+            break;
+        }
+    }
+
+    return entry;
+}
+
+GameplayStatObject GameplayStats_GetObject(uint32_t entryType, uint32_t entryId) {
+    if (IS_RANDO && entryType == STAT_TYPE_ITEM) {
+        GameplayStatObject randoObject;
+
+        std::string randoItemName = Rando::StaticData::GetItemTable().at(entryId).GetName().GetEnglish();
+        randoObject.entryType = STAT_TYPE_ITEM;
+        randoObject.entryName = Rando::StaticData::GetItemTable().at(entryId).GetName().GetEnglish();
+        randoObject.entryColor = UIWidgets::ColorValues.at(UIWidgets::Colors::White);
+        
+        return randoObject;
+    }
+
+    auto outerIt = gameplayStatList.find(entryType);
+    if (outerIt == gameplayStatList.end()) {
+        return {};
+    }
+
+    auto& innerMap = outerIt->second;
+    auto innerIt = innerMap.find(entryId);
+    if (innerIt == innerMap.end()) {
+        return {};
+    }
+
+    return innerIt->second;
+}
+
+void GameplayStats_SaveFileActions(uint32_t action, int32_t fileNum) {
+    std::string filename = Ship::Context::GetPathRelativeToAppDirectory("SoHGameplayStats.json");
+    json saveFile;
+    json listArray = nlohmann::json::array();
+
+    std::ifstream inputFile(filename);
+    if (inputFile.is_open()) {
+        inputFile >> saveFile;
+        inputFile.close();
+    }
+
+    if (action == STAT_ACTION_SAVE) {
+        for (auto& save : currentTimestamps) {
+            listArray.push_back(GameplayStats_ObjectToJson(save));
+        }
+        saveFile[std::to_string(gSaveContext.fileNum + 1)]["Timestamps"] = listArray;
+    }
+
+    if (action == STAT_ACTION_LOAD) {
+        currentTimestamps.clear();
+        if (saveFile.contains(std::to_string(fileNum + 1))) {
+            for (auto& load : saveFile[std::to_string(fileNum + 1)]["Timestamps"]) {
+                currentTimestamps.push_back(GameplayStats_JsonToObject(load));
+            }
+        }
+    }
+
+    if (action == STAT_ACTION_DELETE) {
+        currentTimestamps.clear();
+        if (saveFile.contains(std::to_string(fileNum + 1))) {
+            saveFile.erase(std::to_string(fileNum + 1));
+        }
+    }
+
+    std::ofstream outputFile(filename);
+    if (outputFile.is_open()) {
+        outputFile << saveFile.dump(4);
+        outputFile.close();
+    }
+}
+
+void GameplayStats_GetTimestampByEvent() {
+
+}
+
+void GameplayStats_GetTimestampByActorId(uint32_t actorId) {
+    uint32_t timestampId = -1;
+    switch (actorId) {
+        case ACTOR_BOSS_DODONGO:
+            timestampId = TIMESTAMP_DEFEAT_KING_DODONGO;
+            break;
+        case ACTOR_BOSS_FD2:
+            timestampId = TIMESTAMP_DEFEAT_VOLVAGIA;
+            break;
+        case ACTOR_BOSS_GANON:
+            timestampId = TIMESTAMP_DEFEAT_GANONDORF;
+            break;
+        case ACTOR_BOSS_GANON2:
+            timestampId = TIMESTAMP_DEFEAT_GANON;
+            break;
+        case ACTOR_BOSS_GANONDROF:
+            timestampId = TIMESTAMP_DEFEAT_PHANTOM_GANON;
+            break;
+        case ACTOR_BOSS_GOMA:
+            timestampId = TIMESTAMP_DEFEAT_GOHMA;
+            break;
+        case ACTOR_BOSS_MO:
+            timestampId = TIMESTAMP_DEFEAT_MORPHA;
+            break;
+        case ACTOR_BOSS_SST:
+            timestampId = TIMESTAMP_DEFEAT_BONGO_BONGO;
+            break;
+        case ACTOR_BOSS_TW:
+            timestampId = TIMESTAMP_DEFEAT_TWINROVA;
+            break;
+        case ACTOR_BOSS_VA:
+            timestampId = TIMESTAMP_DEFEAT_BARINADE;
+            break;
+    }
+
+    if (timestampId != -1) {
+        GameplayStats_AddTimestamp(timestampId, STAT_TYPE_EVENT);
+    }
+}
+
+void GameplayStats_AddTimestamp(uint32_t entryId, uint32_t entryType) {
+    bool fileInit = false;
+
+    if (currentTimestamps.size() == 0 && IS_RANDO && !gPlayState) {
+        fileInit = true;
+    }
+
+    auto statObject = GameplayStats_GetObject(entryType, entryId);
+    if (statObject.entryName == "") {
+        return;
+    }
+
+    auto it = std::find_if(currentTimestamps.begin(), currentTimestamps.end(), [&](const GameplayStatObject& obj) {
+        return std::strcmp(obj.entryName.c_str(), statObject.entryName.c_str()) == 0;
+    });
+
+    if (it != currentTimestamps.end()) {
+        return;
+    }
+
+    statObject.entryTimestamp = (gSaveContext.ship.stats.playTimer / 2 + gSaveContext.ship.stats.pauseTimer / 3);
+    currentTimestamps.push_back(statObject);
+
+    if (fileInit) {
+        GameplayStats_SaveFileActions(STAT_ACTION_SAVE, gSaveContext.fileNum + 1);
+        fileInit = false;
+    }
+}
+
 void DrawGameplayStatsOptionsTab() {
     if (ImGui::BeginTable("Options", 3)) {
         ImGui::TableNextColumn();
@@ -821,202 +882,78 @@ void DrawGameplayStatsOptionsTab() {
     }
 }
 
-void GameplayStats_DrawTimeStamps() {
-    if (ImGui::BeginTable("Timestamps", 2)) {
-        ImGui::TableSetupColumn("Name");
-        ImGui::TableSetupColumn("Timestamp");
-        ImGui::TableHeadersRow();
-
-        for (auto& entry : currentStatList) {
+void GameplayStats_DrawCounts() {
+    if (ImGui::BeginChild("Counts Window")) {
+        if (ImGui::BeginTable("Counts", 2)) {
+            ImGui::TableSetupColumn("Enemy Kills");
+            ImGui::TableSetupColumn("Button Presses");
+            ImGui::TableHeadersRow();
+            
             ImGui::TableNextColumn();
-            ImGui::TextColored(entry.entryColor, entry.entryName.c_str());
 
-            ImGui::TableNextColumn();
-            ImGui::TextColored(entry.entryColor, formatTimeDisplay(entry.entryTimestamp).c_str());
-        }
+            for (auto& entry : currentTimestamps) {
+                if (typeIndex != STAT_TYPE_ALL) {
+                    if (entry.entryType != typeIndex) {
+                        continue;
+                    }
+                }
 
-        ImGui::EndTable();
-    }
-}
+                if (entry.entryColor == emptyColor) {
+                    entry.entryColor = UIWidgets::ColorValues.at(UIWidgets::Colors::White);
+                }
 
-void GameplayStatsWindow::DrawElement() {
-    DrawGameplayStatsOptionsTab();
-    UIWidgets::PaddedSeparator();
+                ImGui::TableNextColumn();
+                ImGui::TextColored(entry.entryColor, entry.entryName.c_str());
 
-    GameplayStats_DrawTimeStamps();
-}
-
-nlohmann::json GameplayStats_ObjectToJson(const GameplayStatObject& entry) {
-    return nlohmann::json {
-        { "entryType", entry.entryType },
-        { "entryName", entry.entryName },
-        { "entryTimestamp", entry.entryTimestamp },
-    };
-}
-
-GameplayStatObject GameplayStats_JsonToObject(const nlohmann::json& jsonEntry) {
-    GameplayStatObject entry;
-    std::unordered_map<uint32_t, GameplayStatEntry> entryList;
-
-    entry.entryType = jsonEntry["entryType"];
-    entry.entryName = jsonEntry["entryName"];
-    entry.entryTimestamp = jsonEntry["entryTimestamp"];
-
-    if (entry.entryType == STAT_TYPE_SCENE) {
-        entryList = sceneList;
-    } else if (entry.entryType == STAT_TYPE_ITEM) {
-        entryList = itemList;
-    } else {
-        entryList = eventList;
-    }
-
-    for (auto& list : entryList) {
-        auto check = list;
-        if (list.second.entryName == entry.entryName) {
-            entry.entryColor = list.second.entryColor;
-            break;
-        }
-    }
-
-    return entry;
-}
-
-uint32_t GameplayStats_ConvertRandoItem(uint32_t item) {
-    switch (item) {
-        case RG_MAGIC_SINGLE:
-            return ITEM_SINGLE_MAGIC;
-        case RG_DOUBLE_DEFENSE:
-            return ITEM_DOUBLE_DEFENSE;
-        default:
-            break;
-    }
-}
-
-void GameplayStats_SaveFileActions(uint32_t action, int32_t fileNum) {
-    std::string filename = Ship::Context::GetPathRelativeToAppDirectory("SoHGameplayStats.json");
-    json saveFile;
-    json listArray = nlohmann::json::array();
-
-    std::ifstream inputFile(filename);
-    if (inputFile.is_open()) {
-        inputFile >> saveFile;
-        inputFile.close();
-    }
-
-    if (action == STAT_ACTION_SAVE) {
-        for (auto& save : currentStatList) {
-            listArray.push_back(GameplayStats_ObjectToJson(save));
-        }
-        saveFile[std::to_string(gSaveContext.fileNum + 1)]["Timestamps"] = listArray;
-    }
-
-    if (action == STAT_ACTION_LOAD) {
-        currentStatList.clear();
-        if (saveFile.contains(std::to_string(fileNum + 1))) {
-            for (auto& load : saveFile[std::to_string(fileNum + 1)]["Timestamps"]) {
-                currentStatList.push_back(GameplayStats_JsonToObject(load));
+                ImGui::TableNextColumn();
+                ImGui::TextColored(entry.entryColor, formatTimeDisplay(entry.entryTimestamp).c_str());
             }
-        }
-    }
 
-    if (action == STAT_ACTION_DELETE) {
-        if (saveFile.contains(std::to_string(fileNum + 1))) {
-            saveFile.erase(std::to_string(fileNum + 1));
+            ImGui::EndTable();
         }
-    }
-
-    std::ofstream outputFile(filename);
-    if (outputFile.is_open()) {
-        outputFile << saveFile.dump(4);
-        outputFile.close();
+        ImGui::EndChild();
     }
 }
 
-void GameplayStats_GetTimestampByActorId(uint32_t actorId) {
-    uint32_t timestampId = -1;
-    switch (actorId) {
-        case ACTOR_BOSS_DODONGO:
-            timestampId = TIMESTAMP_DEFEAT_KING_DODONGO;
-            break;
-        case ACTOR_BOSS_FD2:
-            timestampId = TIMESTAMP_DEFEAT_VOLVAGIA;
-            break;
-        case ACTOR_BOSS_GANON:
-            timestampId = TIMESTAMP_DEFEAT_GANONDORF;
-            break;
-        case ACTOR_BOSS_GANON2:
-            timestampId =  TIMESTAMP_DEFEAT_GANON;
-            break;
-        case ACTOR_BOSS_GANONDROF:
-            timestampId = TIMESTAMP_DEFEAT_PHANTOM_GANON;
-            break;
-        case ACTOR_BOSS_GOMA:
-            timestampId = TIMESTAMP_DEFEAT_GOHMA;
-            break;
-        case ACTOR_BOSS_MO:
-            timestampId = TIMESTAMP_DEFEAT_MORPHA;
-            break;
-        case ACTOR_BOSS_SST:
-            timestampId = TIMESTAMP_DEFEAT_BONGO_BONGO;
-            break;
-        case ACTOR_BOSS_TW:
-            timestampId = TIMESTAMP_DEFEAT_TWINROVA;
-            break;
-        case ACTOR_BOSS_VA:
-            timestampId = TIMESTAMP_DEFEAT_BARINADE;
-            break;
-    }
+void GameplayStats_DrawTimeStamps() {
+    if (ImGui::BeginChild("Timestamps Window")) {
+        float cursorY = ImGui::GetCursorPosY();
+        ImGui::SetCursorPosY(ImGui::GetCursorPosY() + ImGui::GetTextLineHeight() * 0.5f);
+        ImGui::Text("Filter by Type: ");
+        ImGui::SameLine();
+        ImGui::SetCursorPosY(cursorY);
+        UIWidgets::Combobox("##TypeFilter", &typeIndex, statTypeNameMap,
+                            UIWidgets::ComboboxOptions()
+                                .Color(THEME_COLOR)
+                                .LabelPosition(UIWidgets::LabelPositions::None)
+                                .ComponentAlignment(UIWidgets::ComponentAlignments::Right));
+        
+        if (ImGui::BeginTable("Timestamps", 2)) {
+            ImGui::TableSetupColumn("Name");
+            ImGui::TableSetupColumn("Timestamp");
+            ImGui::TableHeadersRow();
 
-    if (timestampId != -1) {
-        GameplayStats_AddTimestamp(timestampId, STAT_TYPE_EVENT);
-    }
-}
+            for (auto& entry : currentTimestamps) {
+                if (typeIndex != STAT_TYPE_ALL) {
+                    if (entry.entryType != typeIndex) {
+                        continue;
+                    }
+                }
 
-void GameplayStats_AddTimestamp(uint32_t entryId, uint32_t entryType) {
-    bool fileInit = false;
-    uint32_t itemId = entryId;
+                if (entry.entryColor == emptyColor) {
+                    entry.entryColor = UIWidgets::ColorValues.at(UIWidgets::Colors::White);
+                }
 
-    if (IS_RANDO && entryType == STAT_TYPE_ITEM) {
-        itemId = GameplayStats_ConvertRandoItem(entryId);
-    }
+                ImGui::TableNextColumn();
+                ImGui::TextColored(entry.entryColor, entry.entryName.c_str());
 
-    std::unordered_map<uint32_t, GameplayStatEntry> entryList;
-    if (entryType == STAT_TYPE_SCENE) {
-        entryList = sceneList;
-    } else if (entryType == STAT_TYPE_ITEM) {
-        entryList = itemList;
-    } else {
-        entryList = eventList;
-    }
+                ImGui::TableNextColumn();
+                ImGui::TextColored(entry.entryColor, formatTimeDisplay(entry.entryTimestamp).c_str());
+            }
 
-    auto entryIt = entryList.find(itemId);
-    if (entryIt == entryList.end()) {
-        return;
-    }
-
-    const GameplayStatEntry& entry = entryIt->second;
-    auto it = std::find_if(currentStatList.begin(), currentStatList.end(), [&](const GameplayStatObject& obj) {
-        return std::strcmp(obj.entryName.c_str(), entry.entryName.c_str()) == 0;
-    });
-
-    if (it != currentStatList.end()) {
-        return;
-    }
-
-    if (currentStatList.size() == 0 && IS_RANDO && !gPlayState) {
-        fileInit = true;
-    }
-
-    GameplayStatObject statObject;
-    statObject.entryType = entryType;
-    statObject.entryName = entry.entryName;
-    statObject.entryTimestamp = (gSaveContext.ship.stats.playTimer / 2 + gSaveContext.ship.stats.pauseTimer / 3);
-    statObject.entryColor = entry.entryColor;
-    currentStatList.push_back(statObject);
-
-    if (fileInit) {
-        GameplayStats_SaveFileActions(STAT_ACTION_SAVE, gSaveContext.fileNum + 1);
-        fileInit = false;
+            ImGui::EndTable();
+        }
+        ImGui::EndChild();
     }
 }
 
@@ -1028,11 +965,31 @@ void InitStats(bool isDebug) {
     gSaveContext.ship.stats.buildVersionPatch = gBuildVersionPatch;
 }
 
+void GameplayStatsWindow::DrawElement() {
+    DrawGameplayStatsOptionsTab();
+    UIWidgets::PaddedSeparator();
+
+    if (ImGui::BeginTabBar("Gameplay Stats")) {
+        if (ImGui::BeginTabItem("Timestamps")) {
+            if (!gPlayState) {
+                ImGui::Text("Load into a File first");
+            } else {
+                GameplayStats_DrawTimeStamps();
+            }
+            ImGui::EndTabItem();
+        }
+        ImGui::EndTabBar();
+    }
+}
+
 void GameplayStatsWindow::InitElement() {
     // Add main section save, no parent.
     SaveManager::Instance->AddSaveFunction("sohStats", 1, SaveStats, true, SECTION_PARENT_NONE);
     // Add subsections, parent of "sohStats". Not sure how to do this without the redundant references to "SaveStats".
     SaveManager::Instance->AddInitFunction(InitStats);
+
+    SaveManager::Instance->AddSaveFunction("entrances", 1, SaveStats, false, SECTION_ID_STATS);
+    SaveManager::Instance->AddSaveFunction("scenes", 1, SaveStats, false, SECTION_ID_STATS);
 }
 
 void RegisterGameplayStats() {
@@ -1043,15 +1000,19 @@ void RegisterGameplayStats() {
         file.close();
     }
 
+    COND_HOOK(OnPlayerUpdate, CVAR, []() { GameplayStats_GetTimestampByEvent(); });
+
     COND_HOOK(OnItemReceive, CVAR,
               [](GetItemEntry itemEntry) { GameplayStats_AddTimestamp(itemEntry.itemId, STAT_TYPE_ITEM); });
     COND_HOOK(OnBossDefeat, CVAR, [](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
         GameplayStats_GetTimestampByActorId(actor->id);
-    })
+    });
+    COND_HOOK(OnSceneInit, CVAR, [](int16_t sceneNum) { GameplayStats_AddTimestamp((uint32_t)sceneNum, STAT_TYPE_SCENE); });
     COND_HOOK(OnDeleteFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_DELETE, fileNum); });
     COND_HOOK(OnLoadFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_LOAD, fileNum); });
     COND_HOOK(OnSaveFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_SAVE, fileNum); });
+    COND_HOOK(OnPresentFileSelect, true, []() { currentTimestamps.clear(); });
 }
 
 static RegisterShipInitFunc initFunc(RegisterGameplayStats, { CVAR_NAME });
