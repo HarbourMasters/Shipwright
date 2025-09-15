@@ -16,6 +16,19 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/OTRGlobals.h"
 
+// Enemy Includes for actor->param Ids
+#include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
+#include "src/overlays/actors/ovl_En_Dekubaba/z_en_dekubaba.h"
+#include "src/overlays/actors/ovl_En_Zf/z_en_zf.h"
+#include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
+#include "src/overlays/actors/ovl_En_Reeba/z_en_reeba.h"
+#include "src/overlays/actors/ovl_En_Peehat/z_en_peehat.h"
+#include "src/overlays/actors/ovl_En_Po_Field/z_en_po_field.h"
+#include "src/overlays/actors/ovl_En_Poh/z_en_poh.h"
+#include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
+#include "src/overlays/actors/ovl_En_Tite/z_en_tite.h"
+#include "src/overlays/actors/ovl_En_Wf/z_en_wf.h"
+
 extern "C" {
 #include <z64.h>
 #include "variables.h"
@@ -789,7 +802,16 @@ GameplayStatObject GameplayStats_GetCountObjectById(uint32_t countId, uint32_t c
     }
 
     if (countType == STAT_TYPE_ENEMY) {
-        countId = enemyIdToStatCount.at(countId);
+        if (enemyIdToStatCount.contains(countId)) {
+            countId = enemyIdToStatCount.at(countId);
+        } else {
+            switch (countId) {
+
+                default:
+                    break;
+            }
+        }
+        
     }
 
     auto& innerMap = outerIt->second;
@@ -1110,7 +1132,155 @@ void RegisterGameplayStats() {
 
         auto countObject = GameplayStats_GetCountObjectById(actor->id, STAT_TYPE_ENEMY);
         if (countObject.entryName == "") {
-            return;
+            switch (actor->id) {
+                case ACTOR_EN_BB:
+                    if (actor->params == ENBB_GREEN || actor->params == ENBB_GREEN_BIG) {
+                        countObject = 
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN, STAT_TYPE_ENEMY);
+                    } else if (actor->params == ENBB_BLUE) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE, STAT_TYPE_ENEMY);
+                    } else if (actor->params == ENBB_WHITE) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE, STAT_TYPE_ENEMY);
+                    } else if (actor->params == ENBB_RED) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_BUBBLE_RED, STAT_TYPE_ENEMY);
+                    }
+                    break;
+                case ACTOR_EN_DEKUBABA:
+                    if (actor->params == DEKUBABA_BIG) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG, STAT_TYPE_ENEMY);
+                    } else {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_DEKU_BABA, STAT_TYPE_ENEMY);
+                    }
+                    break;
+                case ACTOR_EN_ZF:
+                    if (actor->params == ENZF_TYPE_DINOLFOS) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_DINOLFOS, STAT_TYPE_ENEMY);
+                    } else {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_LIZALFOS, STAT_TYPE_ENEMY);
+                    }
+                    break;
+                case ACTOR_EN_RD:
+                    if (actor->params >= -1) {
+                        countObject = GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_REDEAD, STAT_TYPE_ENEMY);
+                    } else {
+                        countObject = GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_GIBDO, STAT_TYPE_ENEMY);
+                    }
+                    break;
+                case ACTOR_EN_IK:
+                    if (actor->params == 0) {
+                        countObject = GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU,
+                                                                       STAT_TYPE_ENEMY);
+                    } else {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE, STAT_TYPE_ENEMY);
+                    }
+                    break;
+                case ACTOR_EN_FIREFLY:
+                    if (actor->params == KEESE_NORMAL_FLY || actor->params == KEESE_NORMAL_PERCH)
+                    {
+                        countObject = GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_KEESE, STAT_TYPE_ENEMY);
+                    } else if (actor->params == KEESE_FIRE_FLY || actor->params ==
+                    KEESE_FIRE_PERCH) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_KEESE_FIRE, STAT_TYPE_ENEMY);
+                    } else if (actor->params == KEESE_ICE_FLY) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_KEESE_ICE, STAT_TYPE_ENEMY);
+                    }
+                    break;
+                case ACTOR_EN_REEBA: {
+                    EnReeba* reeba = (EnReeba*)actor;
+                    if (reeba->isBig) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_LEEVER_BIG, STAT_TYPE_ENEMY);
+                    } else {
+                        countObject = GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_LEEVER, STAT_TYPE_ENEMY);
+                    }
+                    } break;
+                case ACTOR_EN_MB:
+                    if (actor->params == 0) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_MOBLIN_CLUB, STAT_TYPE_ENEMY);
+                    } else {
+                        countObject = GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_MOBLIN, STAT_TYPE_ENEMY);
+                    }
+                    break;
+                case ACTOR_EN_PEEHAT:
+                    if (actor->params == PEAHAT_TYPE_LARVA) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA, STAT_TYPE_ENEMY);
+                    } else {
+                        countObject = GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_PEAHAT, STAT_TYPE_ENEMY);
+                    }
+                    break;
+                case ACTOR_EN_POH:
+                    if (actor->params == EN_POH_FLAT || actor->params == EN_POH_SHARP) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_POE_COMPOSER, STAT_TYPE_ENEMY);
+                    } else {
+                        countObject = GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_POE, STAT_TYPE_ENEMY);
+                    }
+                    break;
+                case ACTOR_EN_PO_FIELD:
+                    if (actor->params == EN_PO_FIELD_BIG) {
+                        countObject = 
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_POE_BIG, STAT_TYPE_ENEMY);
+                    } else {
+                        countObject = GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_POE, STAT_TYPE_ENEMY);
+                    }
+                    break;
+                case ACTOR_EN_ST:
+                    if (actor->params == 1) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_SKULLTULA_BIG, STAT_TYPE_ENEMY);
+                    } else {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_SKULLTULA, STAT_TYPE_ENEMY);
+                    }
+                    break;
+                case ACTOR_EN_SW:
+                    if (((actor->params & 0xE000) >> 0xD) != 0) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD, STAT_TYPE_ENEMY);
+                    } else {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_SKULLWALLTULA, STAT_TYPE_ENEMY);
+                    }
+                    break;
+                case ACTOR_EN_TP:
+                    // Only count the head, otherwise each body segment will increment
+                    if (actor->params == TAILPASARAN_HEAD) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_TAILPASARAN, STAT_TYPE_ENEMY);
+                    }
+                    break;
+                case ACTOR_EN_TITE:
+                    if (actor->params == TEKTITE_BLUE) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE, STAT_TYPE_ENEMY);
+                    } else {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_TEKTITE_RED, STAT_TYPE_ENEMY);
+                    }
+                    break;
+                case ACTOR_EN_WF:
+                    if (actor->params == WOLFOS_WHITE) {
+                        countObject =
+                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE, STAT_TYPE_ENEMY);
+                    } else {
+                        countObject = GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_WOLFOS, STAT_TYPE_ENEMY);
+                    }
+                    break;
+                default:
+                    return;
+            }
         }
 
         GameplayStats_AddCount(countObject);
