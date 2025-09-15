@@ -1131,7 +1131,7 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
 
     if (((CVarGetInteger(CVAR_ENHANCEMENT("FirstPersonGauntlets"), 0) && LINK_IS_ADULT) || (overrideLimbDraw != Player_OverrideLimbDrawGameplayFirstPerson)) &&
         (overrideLimbDraw != Player_OverrideLimbDrawGameplayCrawling) &&
-        (gSaveContext.gameMode != 3)) {
+        (gSaveContext.gameMode != GAMEMODE_END_CREDITS)) {
         if (LINK_IS_ADULT) {
             s32 strengthUpgrade = CUR_UPG_VALUE(UPG_STRENGTH);
 
@@ -1748,7 +1748,7 @@ f32 sMeleeWeaponLengths[] = {
 };
 
 f32 sSwordTypes[] = {
-    0, 5, 4, 6, 0, 8,
+    TRAIL_TYPE_REST, TRAIL_TYPE_MASTER_SWORD, TRAIL_TYPE_KOKIRI_SWORD, TRAIL_TYPE_BIGGORON_SWORD, TRAIL_TYPE_REST, TRAIL_TYPE_HAMMER,
 };
 
 Gfx* sBottleDLists[] = { gLinkAdultBottleDL, gLinkChildBottleDL };
@@ -1821,7 +1821,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 D_80126080.x = this->unk_85C * 5000.0f;
                 func_80090A28(this, sp124);
                 if (this->meleeWeaponState != 0) {
-                    EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex), 7); // stick sword type
+                    EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex), TRAIL_TYPE_STICK);
                     func_800906D4(play, this, sp124);
                 } else {
                     Math_Vec3f_Copy(&this->meleeWeaponInfo[0].tip, &sp124[0]);

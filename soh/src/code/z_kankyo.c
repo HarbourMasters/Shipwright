@@ -6,6 +6,8 @@
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 typedef enum {
     /* 0 */ LENS_FLARE_CIRCLE0,
@@ -895,7 +897,7 @@ void Environment_Update(PlayState* play, EnvironmentContext* envCtx, LightContex
     EnvLightSettings* lightSettingsList = play->envCtx.lightSettingsList;
     s32 adjustment;
 
-    if ((((void)0, gSaveContext.gameMode) != 0) && (((void)0, gSaveContext.gameMode) != 3)) {
+    if ((((void)0, gSaveContext.gameMode) != GAMEMODE_NORMAL) && (((void)0, gSaveContext.gameMode) != GAMEMODE_END_CREDITS)) {
         func_800AA16C(play);
     }
 
@@ -925,9 +927,9 @@ void Environment_Update(PlayState* play, EnvironmentContext* envCtx, LightContex
         }
 
         if ((pauseCtx->state == 0) && (gameOverCtx->state == GAMEOVER_INACTIVE)) {
-            if (((msgCtx->msgLength == 0) && (msgCtx->msgMode == 0)) || (((void)0, gSaveContext.gameMode) == 3)) {
+            if (((msgCtx->msgLength == 0) && (msgCtx->msgMode == 0)) || (((void)0, gSaveContext.gameMode) == GAMEMODE_END_CREDITS)) {
                 if ((envCtx->unk_1A == 0) && !FrameAdvance_IsEnabled(play) &&
-                    (play->transitionMode == TRANS_MODE_OFF || ((void)0, gSaveContext.gameMode) != 0)) {
+                    (play->transitionMode == TRANS_MODE_OFF || ((void)0, gSaveContext.gameMode) != GAMEMODE_NORMAL)) {
 
                     if (IS_DAY || gTimeIncrement >= 0x190) {
                         gSaveContext.dayTime += gTimeIncrement;
@@ -2111,6 +2113,7 @@ void func_80075B44(PlayState* play) {
                 if ((Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN) ||
                      Inventory_HatchPocketCucco(play)) &&
                     play->csCtx.state == 0 && !Player_InCsMode(play)) {
+                    GameInteractor_ExecuteOnCuccoOrChickenHatch();
                     Message_StartTextbox(play, 0x3066, NULL);
                 }
                 play->envCtx.unk_E0++;

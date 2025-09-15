@@ -145,7 +145,6 @@ namespace SOH {
         { MigrationAction::Rename, "gAskToEquip", "gEnhancements.AskToEquip" },
         { MigrationAction::Rename, "gAssignableTunicsAndBoots", "gEnhancements.AssignableTunicsAndBoots" },
         { MigrationAction::Rename, "gAuthenticLogo", "gEnhancements.AuthenticLogo" },
-        { MigrationAction::Rename, "gAutosave", "gEnhancements.Autosave" },
         { MigrationAction::Rename, "gBetterFW", "gEnhancements.BetterFarore" },
         { MigrationAction::Rename, "gBetterOwl", "gEnhancements.BetterOwl" },
         { MigrationAction::Rename, "gBlueFireArrows", "gEnhancements.BlueFireArrows" },

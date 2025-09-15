@@ -260,11 +260,6 @@ extern "C" void Randomizer_InitSaveFile() {
     // Give Link's pocket item
     GiveLinksPocketItem();
 
-    // shuffle adult trade quest
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
-        gSaveContext.ship.quest.data.randomizer.adultTradeItems = 0;
-    }
-
     // remove One Time scrubs with scrubsanity off
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_OFF) {
         Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_BRIDGE);
@@ -316,6 +311,7 @@ extern "C" void Randomizer_InitSaveFile() {
 
         // Set "Got Zelda's Letter" flag. Also ensures Saria is back at SFM.
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
+        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
 
         // Got item from impa
         Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
@@ -325,6 +321,7 @@ extern "C" void Randomizer_InitSaveFile() {
         // set this at the end to ensure we always start with the letter
         // this is for the off chance we got the weird egg from impa (which should never happen)
         INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_LETTER_ZELDA;
+        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
     }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && startingAge == RO_AGE_ADULT) {
@@ -375,6 +372,7 @@ extern "C" void Randomizer_InitSaveFile() {
 
     if (Randomizer_GetSettingValue(RSK_KAK_GATE) == RO_KAK_GATE_OPEN) {
         Flags_SetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD);
+        Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
     }
 
     if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_CARPENTERS_FAST ||
@@ -412,6 +410,16 @@ extern "C" void Randomizer_InitSaveFile() {
     if (Randomizer_GetSettingValue(RSK_COMPLETE_MASK_QUEST)) {
         Flags_SetInfTable(INFTABLE_GATE_GUARD_PUT_ON_KEATON_MASK);
         Flags_SetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE);
+
+        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_KEATON);
+        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_SKULL);
+        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_SPOOKY);
+        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_BUNNY);
+        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_GORON);
+        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_ZORA);
+        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_GERUDO);
+        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH);
+
         gSaveContext.itemGetInf[3] |= 0x100;  // Sold Keaton Mask
         gSaveContext.itemGetInf[3] |= 0x200;  // Sold Skull Mask
         gSaveContext.itemGetInf[3] |= 0x400;  // Sold Spooky Mask

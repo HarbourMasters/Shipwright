@@ -24,7 +24,6 @@
 #include "overlays/actors/ovl_Bg_Dodoago/z_bg_dodoago.h"
 
 #include "soh/mq_asset_hacks.h"
-#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
@@ -1300,7 +1299,7 @@ void func_8009EE44(PlayState* play) {
 
 	bool playerHasCojiro = INV_CONTENT(ITEM_COJIRO) == ITEM_COJIRO;
     if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
-        playerHasCojiro = PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_COJIRO);
+        playerHasCojiro = Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_COJIRO);
     }
     if ((play->roomCtx.unk_74[0] == 0) && playerHasCojiro) {
         if (play->roomCtx.unk_74[1] == 50) {

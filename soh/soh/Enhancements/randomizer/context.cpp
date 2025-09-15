@@ -209,12 +209,14 @@ void Context::GenerateLocationPool() {
             (location.GetRCType() == RCTYPE_COW && mOptions[RSK_SHUFFLE_COWS].Is(RO_GENERIC_OFF)) ||
             (location.GetRandomizerCheck() == RC_LH_HYRULE_LOACH && mOptions[RSK_FISHSANITY].IsNot(RO_FISHSANITY_HYRULE_LOACH)) ||
             (location.GetRCType() == RCTYPE_FISH && (
-                mOptions[RSK_FISHSANITY].Is(RO_FISHSANITY_OFF) ||
+                mOptions[RSK_FISHSANITY].Is(RO_FISHSANITY_OFF) || mOptions[RSK_FISHSANITY].Is(RO_FISHSANITY_HYRULE_LOACH) ||
                 (mOptions[RSK_FISHSANITY].Is(RO_FISHSANITY_OVERWORLD) && location.GetScene() == SCENE_FISHING_POND) ||
-                (mOptions[RSK_FISHSANITY].Is(RO_FISHSANITY_POND) && (location.GetScene() != SCENE_FISHING_POND ||
-                (mOptions[RSK_FISHSANITY_AGE_SPLIT].Is(RO_GENERIC_OFF) && (
-                    location.GetRandomizerCheck() >= RC_LH_ADULT_FISH_1 && location.GetRandomizerCheck() <= RC_LH_ADULT_LOACH))
-                ))
+                (mOptions[RSK_FISHSANITY].Is(RO_FISHSANITY_POND) && location.GetScene() != SCENE_FISHING_POND) ||
+                ((mOptions[RSK_FISHSANITY].Is(RO_FISHSANITY_POND) || mOptions[RSK_FISHSANITY].Is(RO_FISHSANITY_BOTH)) &&
+                    (mOptions[RSK_FISHSANITY_AGE_SPLIT].Is(RO_GENERIC_OFF) && (
+                        location.GetRandomizerCheck() >= RC_LH_ADULT_FISH_1 && location.GetRandomizerCheck() <= RC_LH_ADULT_LOACH)
+                    )
+                )
             )) ||
             (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OFF)) ||
             (location.GetRCType() == RCTYPE_FAIRY && !mOptions[RSK_SHUFFLE_FAIRIES]) ||
@@ -232,6 +234,7 @@ void Context::GenerateLocationPool() {
             }
             // If we've gotten past all the conditions where an overworld location should not be
             // shuffled, add it to the pool.
+            AddLocation(location.GetRandomizerCheck(), &overworldLocations);
             AddLocation(location.GetRandomizerCheck());
         } else { // is a dungeon check
             auto* dungeon = GetDungeon(location.GetArea() - RCAREA_DEKU_TREE);

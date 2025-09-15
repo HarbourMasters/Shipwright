@@ -695,15 +695,13 @@ std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> i
 
 void CreateChildAltarHint() {
   auto ctx = Rando::Context::GetInstance();
-  if (!ctx->GetHint(RH_ALTAR_CHILD)->IsEnabled()){
+  if (!ctx->GetHint(RH_ALTAR_CHILD)->IsEnabled() && ctx->GetOption(RSK_TOT_ALTAR_HINT)){
     std::vector<RandomizerCheck> stoneLocs = {};
-    if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
-      //force marking the rewards as hinted if they are at the end of dungeons as they can be inferred
-      if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) || ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
-        stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {});
-      } else {
-        stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {RC_ALTAR_HINT_CHILD});
-      }
+    //force marking the rewards as hinted if they are at the end of dungeons as they can be inferred
+    if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) || ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
+      stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {});
+    } else {
+      stoneLocs = FindItemsAndMarkHinted({RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE}, {RC_ALTAR_HINT_CHILD});
     }
     std::vector<RandomizerArea> stoneAreas = {};
     for (auto loc : stoneLocs){

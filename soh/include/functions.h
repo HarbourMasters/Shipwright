@@ -1073,7 +1073,6 @@ uint16_t Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, in
 u8 Item_Give(PlayState* play, u8 item);
 u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry);
 u8 Item_CheckObtainability(u8 item);
-void PerformAutosave(PlayState* play, u8 item);
 void Inventory_DeleteItem(u16 item, u16 invSlot);
 s32 Inventory_ReplaceItem(PlayState* play, u16 oldItem, u16 newItem);
 s32 Inventory_HasEmptyBottle(void);

@@ -2256,7 +2256,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
         }
         else if (textId == TEXT_FROGS_UNDERWATER && ctx->GetOption(RSK_FROGS_HINT)) {
-           messageEntry = ctx->GetHint(RH_FROGS_HINT)->GetHintMessage(MF_AUTO_FORMAT), TEXTBOX_TYPE_BLUE;
+           messageEntry = ctx->GetHint(RH_FROGS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
         }
         else if (
             Randomizer_GetSettingValue(RSK_LOACH_HINT) &&
@@ -2439,9 +2439,11 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
             return;
         }
 
-        clearCvars(enhancementsCvars);
-        clearCvars(cheatCvars);
-        clearCvars(randomizerCvars);
+        CVarClearBlock(CVAR_PREFIX_ENHANCEMENT);
+        CVarClearBlock(CVAR_PREFIX_CHEAT);
+        CVarClearBlock(CVAR_PREFIX_RANDOMIZER_SETTING);
+        CVarClearBlock(CVAR_PREFIX_RANDOMIZER_ENHANCEMENT);
+        CVarClearBlock(CVAR_PREFIX_DEVELOPER_TOOLS);
 
         // Flatten everything under CVars into a single array
         auto cvars = configJson["CVars"].flatten();

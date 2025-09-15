@@ -479,7 +479,7 @@ void Regs_InitDataImpl(void) {
     WREG(94) = 3;
     WREG(95) = 6;
 
-    if (gSaveContext.gameMode == 0) {
+    if (gSaveContext.gameMode == GAMEMODE_NORMAL) {
         R_TEXTBOX_X = 52;
         R_TEXTBOX_Y = 36;
         VREG(2) = 214;

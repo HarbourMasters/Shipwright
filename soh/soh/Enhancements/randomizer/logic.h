@@ -36,7 +36,6 @@ class Logic {
 
     // Adult logic
     bool FreedEpona = false;
-    //bool BigPoe = false; //unused
 
     // Trade Quest Events
     bool WakeUpAdultTalon = false;
@@ -101,6 +100,7 @@ class Logic {
     bool IsChild = false;
     bool IsAdult = false;
     bool BigPoeKill = false;
+    uint8_t BigPoes = 0;
     uint8_t BaseHearts = 0;
 
     // Bridge and LACS Requirements
@@ -261,8 +261,6 @@ class Logic {
     bool CheckEquipment(uint32_t item);
     bool CheckQuestItem(uint32_t item);
     void SetQuestItem(uint32_t item, bool state);
-    bool HasAdultTrade(uint32_t item);
-    void SetAdultTrade(uint32_t item, bool state);
     uint8_t GetSmallKeyCount(uint32_t dungeonIndex);
     void SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count);
     bool CheckDungeonItem(uint32_t item, uint32_t dungeonIndex);

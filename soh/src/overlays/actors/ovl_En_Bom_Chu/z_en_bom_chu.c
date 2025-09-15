@@ -85,7 +85,7 @@ void EnBomChu_Init(Actor* thisx, PlayState* play) {
     blureInit.elemDuration = 16;
     blureInit.unkFlag = 0;
     blureInit.calcMode = 0;
-    blureInit.trailType = 3;
+    blureInit.trailType = TRAIL_TYPE_BOMBCHU;
 
     Effect_Add(play, &this->blure1Index, EFFECT_BLURE1, 0, 0, &blureInit);
     Effect_Add(play, &this->blure2Index, EFFECT_BLURE1, 0, 0, &blureInit);
