@@ -216,6 +216,14 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                         std::transform(widgetStr.begin(), widgetStr.end(), widgetStr.begin(), ::tolower);
                         widgetStr.erase(std::remove(widgetStr.begin(), widgetStr.end(), ' '), widgetStr.end());
                         if (widgetStr.find(menuSearchText) != std::string::npos) {
+                            UIWidgets::ComponentAlignments backupAlignment;
+                            UIWidgets::LabelPositions backupLabelPos;
+                            if (info.type == WIDGET_COMBOBOX || info.type == WIDGET_CVAR_COMBOBOX) {
+                                backupAlignment = std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->alignment;
+                                backupLabelPos = std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->labelPosition;
+                                std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->alignment = UIWidgets::ComponentAlignments::Left;
+                                std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->labelPosition = UIWidgets::LabelPositions::Above;
+                            }
                             MenuDrawItem(info, 400, menuThemeIndex);
                             ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Gray));
                             std::string origin =
@@ -223,18 +231,15 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                             ImGui::Text("%s", origin.c_str());
                             ImGui::PopStyleColor();
                             searchCount++;
+                            if (info.type == WIDGET_COMBOBOX || info.type == WIDGET_CVAR_COMBOBOX) {
+                                std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->alignment = backupAlignment;
+                                std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->labelPosition = backupLabelPos;
+                            }
                         }
                     }
                 }
             }
         }
-        ImGui::EndChild();
-    }
-    ImGui::SameLine();
-    ImGui::SetNextWindowSizeConstraints({ ImGui::GetContentRegionAvail().x, 0 },
-                                        { ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y });
-    if (ImGui::BeginChild("Search Results Col 2", { ImGui::GetContentRegionAvail().x, 0 }, ImGuiChildFlags_AutoResizeY,
-                          ImGuiWindowFlags_NoTitleBar)) {
         for (auto& entry : extraSearchWidgets) {
             if (entry.info.type == WIDGET_SEARCH || entry.info.type == WIDGET_SEPARATOR ||
                 entry.info.type == WIDGET_SEPARATOR_TEXT || entry.info.isHidden || entry.info.hideInSearch) {
@@ -865,13 +870,19 @@ void Menu::DrawElement() {
                           ImGuiWindowFlags_NoTitleBar);
     }
     if (headerSearch && menuSearchText.length() > 0) {
-        ImGui::SetCursorPosX((ImGui::GetWindowWidth() - ImGui::CalcTextSize("Clear Search").x) / 2 - 10.0f);
-        ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 10.0f);
+        ImGui::AlignTextToFramePadding();
+        ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
+        ImGui::Text("Search Results");
+        ImGui::PopFont();
+        ImGui::SameLine();
         UIWidgets::ButtonOptions clearBtnOpts = {};
         clearBtnOpts.size = UIWidgets::Sizes::Inline;
         if (UIWidgets::Button("Clear Search", clearBtnOpts)) {
             menuSearch.Clear();
         }
+        ImGui::BeginChild("searchSeparator", ImVec2(ImGui::GetContentRegionAvail().x / 2, 20), ImGuiChildFlags_AlwaysAutoResize | ImGuiChildFlags_AutoResizeY);
+        UIWidgets::Separator(true, true, 0, 10);
+        ImGui::EndChild();
         uint32_t searchCount = DrawSearchResults(menuSearchText);
         if (searchCount == 0) {
             ImGui::SetCursorPosX((ImGui::GetWindowWidth() - ImGui::CalcTextSize("No results found").x) / 2);
