@@ -425,6 +425,7 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
             { COUNT_BUTTON_PRESSES_START,	{ STAT_TYPE_PLAYER, "Pressed - Start",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_RUPEES_COLLECTED,	    { STAT_TYPE_PLAYER, "Collected - Rupees", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_RUPEES_SPENT,	        { STAT_TYPE_PLAYER, "Consumed - Rupees",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_DAMAGE_TAKEN,	        { STAT_TYPE_PLAYER, "Damage Taken",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
         }
     },
 };
@@ -1428,6 +1429,12 @@ void RegisterGameplayStats() {
         }
         
     });
+    COND_HOOK(OnPlayerHealthChange, CVAR, [](int16_t amount) {
+        auto countObject = GameplayStats_GetCountObjectById(COUNT_DAMAGE_TAKEN, STAT_TYPE_PLAYER);
+        countObject.entryTimestamp = amount;
+
+        GameplayStats_AddCount(countObject);
+    })
     COND_HOOK(OnDeleteFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_DELETE, fileNum); });
     COND_HOOK(OnLoadFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_LOAD, fileNum); });
     COND_HOOK(OnSaveFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_SAVE, fileNum); });

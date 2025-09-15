@@ -2824,7 +2824,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
                  gSaveContext.healthCapacity);
 
     if (healthChange < 0) {
-        gSaveContext.ship.stats.count[COUNT_DAMAGE_TAKEN] += -healthChange;
+        GameInteractor_ExecuteOnPlayerHealthChange(-healthChange);
     }
 
     // If one-hit ko mode is on, any damage kills you and you cannot gain health.
