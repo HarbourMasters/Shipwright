@@ -2894,10 +2894,10 @@ void Rupees_ChangeBy(s16 rupeeChange) {
     }
 
     if (rupeeChange > 0) {
-        gSaveContext.ship.stats.count[COUNT_RUPEES_COLLECTED] += rupeeChange;
+        GameInteractor_ExecuteOnAmmoUsed(COUNT_RUPEES_COLLECTED, rupeeChange);
     }
     if (rupeeChange < 0) {
-        gSaveContext.ship.stats.count[COUNT_RUPEES_SPENT] += -rupeeChange;
+        GameInteractor_ExecuteOnAmmoUsed(COUNT_RUPEES_SPENT, -rupeeChange);
     }
 }
 //

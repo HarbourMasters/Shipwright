@@ -423,6 +423,8 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
             { COUNT_BUTTON_PRESSES_DDOWN,	{ STAT_TYPE_PLAYER, "Pressed - D-Pad Down", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_BUTTON_PRESSES_DLEFT,	{ STAT_TYPE_PLAYER, "Pressed - D-Pad Left", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_BUTTON_PRESSES_START,	{ STAT_TYPE_PLAYER, "Pressed - Start",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_RUPEES_COLLECTED,	    { STAT_TYPE_PLAYER, "Collected - Rupees", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_RUPEES_SPENT,	        { STAT_TYPE_PLAYER, "Consumed - Rupees",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
         }
     },
 };
@@ -896,12 +898,11 @@ void GameplayStats_AddCount(GameplayStatObject countObject) {
 
     for (auto& count : currentCounts) {
         if (count.entryName == countObject.entryName) {
-            count.entryTimestamp++;
+            count.entryTimestamp += countObject.entryTimestamp;
             return;
         }
     }
 
-    countObject.entryTimestamp = 1;
     currentCounts.push_back(countObject);
 }
 
@@ -1368,6 +1369,12 @@ void RegisterGameplayStats() {
         auto countObject = GameplayStats_GetCountObjectById(item, STAT_TYPE_PLAYER);
         if (countObject.entryName == "") {
             return;
+        }
+
+        if (countObject.entryName == "Consumed - Rupees" || countObject.entryName == "Collected - Rupees") {
+            countObject.entryTimestamp = ammoUsed;
+        } else {
+            countObject.entryTimestamp = 1;
         }
 
         GameplayStats_AddCount(countObject);
