@@ -158,6 +158,10 @@ void GameInteractor_ExecuteOnAmmoUsed(s16 item, s16 ammoUsed) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAmmoUsed>(item, ammoUsed);
 }
 
+void GameInteractor_ExecuteOnIceTrapReceived(s16 item, s16 trapType) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnIceTrapReceived>(item, trapType);
+}
+
 void GameInteractor_ExecuteOnPlayerBonk() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBonk>();
 }

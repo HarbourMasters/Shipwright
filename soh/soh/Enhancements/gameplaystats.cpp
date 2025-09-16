@@ -433,7 +433,6 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
             { COUNT_RUPEES_COLLECTED,	    { STAT_TYPE_PLAYER, "Collected - Rupees", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_RUPEES_SPENT,	        { STAT_TYPE_PLAYER, "Consumed - Rupees",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_DAMAGE_TAKEN,	        { STAT_TYPE_PLAYER, "Damage Taken",   		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_ICE_TRAPS,	            { STAT_TYPE_PLAYER, "Ice Traps",   		            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_ROLLS,	                { STAT_TYPE_PLAYER, "Action - Rolls",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_BONKS,	                { STAT_TYPE_PLAYER, "Action - Bonks",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_PAUSES,	                { STAT_TYPE_PLAYER, "Action - Pauses",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
@@ -444,6 +443,16 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
             { COUNT_TIME_BUNNY_HOOD,	    { STAT_TYPE_PLAYER, "Bunny Hood Time",   	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_PIECE_OF_HEART,	        { STAT_TYPE_PLAYER, "Collected - Piece of Heart",   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_HEART_CONTAINER,	    { STAT_TYPE_PLAYER, "Collected - Heart Container",  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ICE_TRAPS,	            { STAT_TYPE_PLAYER, "Ice Traps",   		            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BURN_TRAPS,	            { STAT_TYPE_PLAYER, "Burn Traps",   		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_SHOCK_TRAPS,	        { STAT_TYPE_PLAYER, "Shock Traps",   		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_KNOCK_TRAPS,	        { STAT_TYPE_PLAYER, "Knockback Traps",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_SPEED_TRAPS,	        { STAT_TYPE_PLAYER, "Speed Traps",   		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BOMB_TRAPS,	            { STAT_TYPE_PLAYER, "Bomb Traps",   		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_VOID_TRAPS,	            { STAT_TYPE_PLAYER, "Void Traps",   		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_AMMO_TRAPS,	            { STAT_TYPE_PLAYER, "Ammo Traps",   		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_KILL_TRAPS,	            { STAT_TYPE_PLAYER, "Kill Traps",   		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_TELEPORT_TRAPS,	        { STAT_TYPE_PLAYER, "Teleport Traps",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
         }
     },
 };
@@ -520,15 +529,9 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveManager::Instance->SaveData("playTimer", saveContext->ship.stats.playTimer);
     SaveManager::Instance->SaveData("pauseTimer", saveContext->ship.stats.pauseTimer);
 
-    // SaveManager::Instance->SaveData("heartPieces", saveContext->ship.stats.heartPieces);
-    // SaveManager::Instance->SaveData("heartContainers", saveContext->ship.stats.heartContainers);
     // SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext->ship.stats.dungeonKeys), [&](size_t i) {
     //     SaveManager::Instance->SaveData("", saveContext->ship.stats.dungeonKeys[i]);
     // });
-    // SaveManager::Instance->SaveData("rtaTiming", saveContext->ship.stats.rtaTiming);
-    // SaveManager::Instance->SaveData("fileCreatedAt", saveContext->ship.stats.fileCreatedAt);
-    // SaveManager::Instance->SaveData("playTimer", saveContext->ship.stats.playTimer);
-    // SaveManager::Instance->SaveData("pauseTimer", saveContext->ship.stats.pauseTimer);
     // SaveManager::Instance->SaveArray(
     //     "itemTimestamps", ARRAY_COUNT(saveContext->ship.stats.itemTimestamp),
     //     [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.itemTimestamp[i]); });
@@ -1344,7 +1347,6 @@ void RegisterGameplayStats() {
     COND_HOOK(OnItemReceive, CVAR, [](GetItemEntry itemEntry) {
         if (itemEntry.modIndex == MOD_RANDOMIZER) {
             if (itemEntry.itemId == RG_ICE_TRAP) {
-                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_ICE_TRAPS, STAT_TYPE_PLAYER));
                 return;
             }
             isRandoItem = true;
@@ -1483,6 +1485,9 @@ void RegisterGameplayStats() {
                 GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_TIME_BUNNY_HOOD, STAT_TYPE_PLAYER));
             }
         }
+    });
+    COND_HOOK(OnIceTrapReceived, CVAR, [](s16 item, s16 trapType) {
+        GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_ICE_TRAPS + trapType, STAT_TYPE_PLAYER));
     });
     COND_HOOK(OnPlayerHealthChange, CVAR, [](int16_t amount) {
         auto countObject = GameplayStats_GetCountObjectById(COUNT_DAMAGE_TAKEN, STAT_TYPE_PLAYER);

@@ -194,6 +194,7 @@ void RegisterExtraTraps() {
         } else {
             GameInteractor::RawAction::FreezePlayer();
         }
+        GameInteractor_ExecuteOnIceTrapReceived(RG_ICE_TRAP, CVAR_EXTRA_TRAPS_VALUE ? roll : 0);
     });
 }
 

@@ -2,6 +2,8 @@
 
 #include "soh/cvar_prefixes.h"
 #include <stdint.h>
+#include <string>
+#include "imgui.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -120,7 +122,6 @@ typedef enum {
     COUNT_RUPEES_SPENT,
     COUNT_CHESTS_OPENED, // z_en_box.c
     COUNT_DAMAGE_TAKEN,
-    COUNT_ICE_TRAPS,
     COUNT_ROLLS,
     COUNT_BONKS,
     COUNT_PAUSES,
@@ -133,6 +134,17 @@ typedef enum {
     COUNT_TIME_BUNNY_HOOD,
     COUNT_PIECE_OF_HEART,
     COUNT_HEART_CONTAINER,
+    // Ice Trap Counts
+    COUNT_ICE_TRAPS,
+    COUNT_BURN_TRAPS,
+    COUNT_SHOCK_TRAPS,
+    COUNT_KNOCK_TRAPS,
+    COUNT_SPEED_TRAPS,
+    COUNT_BOMB_TRAPS,
+    COUNT_VOID_TRAPS,
+    COUNT_AMMO_TRAPS,
+    COUNT_KILL_TRAPS,
+    COUNT_TELEPORT_TRAPS,
 
     COUNT_MAX
 
