@@ -1591,7 +1591,6 @@ Play_Draw_skip:
     Camera_Finish(GET_ACTIVE_CAM(play));
 
     CLOSE_DISPS(gfxCtx);
-
 }
 
 time_t Play_GetRealTime() {

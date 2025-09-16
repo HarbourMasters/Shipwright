@@ -59,10 +59,10 @@ bool isRolling = false;
 bool isHopping = false;
 
 static std::unordered_map<uint32_t, const char*> statTypeNameMap = {
-    { STAT_TYPE_SCENE,  "Scenes" },
-    { STAT_TYPE_ITEM,   "Items" },
-    { STAT_TYPE_EVENT,  "Events" },
-    { STAT_TYPE_ALL,    "All" },
+    { STAT_TYPE_SCENE, "Scenes" },
+    { STAT_TYPE_ITEM, "Items" },
+    { STAT_TYPE_EVENT, "Events" },
+    { STAT_TYPE_ALL, "All" },
 };
 
 // clang-format off
@@ -492,27 +492,9 @@ static std::unordered_map<u16, u16> enemyIdToStatCount = {
 // End
 
 const char* const countMappings[] = {
-    "Deku Sticks:",
-    "Deku Nuts:",
-    "Bombs:",
-    "Arrows:",
-    "Deku Seeds:",
-    "Bombchus:",
-    "Beans:",
-    "A:",
-    "B:",
-    "L:",
-    "R:",
-    "Z:",
-    "C-Up:",
-    "C-Right:",
-    "C-Down:",
-    "C-Left:",
-    "D-Up:",
-    "D-Right:",
-    "D-Down:",
-    "D-Left:",
-    "Start:",
+    "Deku Sticks:", "Deku Nuts:", "Bombs:", "Arrows:",  "Deku Seeds:", "Bombchus:", "Beans:",
+    "A:",           "B:",         "L:",     "R:",       "Z:",          "C-Up:",     "C-Right:",
+    "C-Down:",      "C-Left:",    "D-Up:",  "D-Right:", "D-Down:",     "D-Left:",   "Start:",
 };
 
 std::string formatIntGameplayStat(uint32_t value) {
@@ -532,37 +514,38 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveManager::Instance->SaveData("buildVersionMajor", saveContext->ship.stats.buildVersionMajor);
     SaveManager::Instance->SaveData("buildVersionMinor", saveContext->ship.stats.buildVersionMinor);
     SaveManager::Instance->SaveData("buildVersionPatch", saveContext->ship.stats.buildVersionPatch);
-    
+
     SaveManager::Instance->SaveData("rtaTiming", saveContext->ship.stats.rtaTiming);
     SaveManager::Instance->SaveData("fileCreatedAt", saveContext->ship.stats.fileCreatedAt);
     SaveManager::Instance->SaveData("playTimer", saveContext->ship.stats.playTimer);
     SaveManager::Instance->SaveData("pauseTimer", saveContext->ship.stats.pauseTimer);
 
-    //SaveManager::Instance->SaveData("heartPieces", saveContext->ship.stats.heartPieces);
-    //SaveManager::Instance->SaveData("heartContainers", saveContext->ship.stats.heartContainers);
-    //SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext->ship.stats.dungeonKeys), [&](size_t i) {
-    //    SaveManager::Instance->SaveData("", saveContext->ship.stats.dungeonKeys[i]);
-    //});
-    //SaveManager::Instance->SaveData("rtaTiming", saveContext->ship.stats.rtaTiming);
-    //SaveManager::Instance->SaveData("fileCreatedAt", saveContext->ship.stats.fileCreatedAt);
-    //SaveManager::Instance->SaveData("playTimer", saveContext->ship.stats.playTimer);
-    //SaveManager::Instance->SaveData("pauseTimer", saveContext->ship.stats.pauseTimer);
-    //SaveManager::Instance->SaveArray(
-    //    "itemTimestamps", ARRAY_COUNT(saveContext->ship.stats.itemTimestamp),
-    //    [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.itemTimestamp[i]); });
-    //SaveManager::Instance->SaveArray(
-    //    "sceneTimestamps", ARRAY_COUNT(saveContext->ship.stats.sceneTimestamps), [&](size_t i) {
-    //        if (saveContext->ship.stats.sceneTimestamps[i].scene != 254 &&
-    //            saveContext->ship.stats.sceneTimestamps[i].room != 254) {
-    //            SaveManager::Instance->SaveStruct("", [&]() {
-    //                SaveManager::Instance->SaveData("scene", saveContext->ship.stats.sceneTimestamps[i].scene);
-    //                SaveManager::Instance->SaveData("room", saveContext->ship.stats.sceneTimestamps[i].room);
-    //                SaveManager::Instance->SaveData("sceneTime", saveContext->ship.stats.sceneTimestamps[i].sceneTime);
-    //                SaveManager::Instance->SaveData("roomTime", saveContext->ship.stats.sceneTimestamps[i].roomTime);
-    //                SaveManager::Instance->SaveData("isRoom", saveContext->ship.stats.sceneTimestamps[i].isRoom);
-    //            });
-    //        }
-    //    });
+    // SaveManager::Instance->SaveData("heartPieces", saveContext->ship.stats.heartPieces);
+    // SaveManager::Instance->SaveData("heartContainers", saveContext->ship.stats.heartContainers);
+    // SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext->ship.stats.dungeonKeys), [&](size_t i) {
+    //     SaveManager::Instance->SaveData("", saveContext->ship.stats.dungeonKeys[i]);
+    // });
+    // SaveManager::Instance->SaveData("rtaTiming", saveContext->ship.stats.rtaTiming);
+    // SaveManager::Instance->SaveData("fileCreatedAt", saveContext->ship.stats.fileCreatedAt);
+    // SaveManager::Instance->SaveData("playTimer", saveContext->ship.stats.playTimer);
+    // SaveManager::Instance->SaveData("pauseTimer", saveContext->ship.stats.pauseTimer);
+    // SaveManager::Instance->SaveArray(
+    //     "itemTimestamps", ARRAY_COUNT(saveContext->ship.stats.itemTimestamp),
+    //     [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.itemTimestamp[i]); });
+    // SaveManager::Instance->SaveArray(
+    //     "sceneTimestamps", ARRAY_COUNT(saveContext->ship.stats.sceneTimestamps), [&](size_t i) {
+    //         if (saveContext->ship.stats.sceneTimestamps[i].scene != 254 &&
+    //             saveContext->ship.stats.sceneTimestamps[i].room != 254) {
+    //             SaveManager::Instance->SaveStruct("", [&]() {
+    //                 SaveManager::Instance->SaveData("scene", saveContext->ship.stats.sceneTimestamps[i].scene);
+    //                 SaveManager::Instance->SaveData("room", saveContext->ship.stats.sceneTimestamps[i].room);
+    //                 SaveManager::Instance->SaveData("sceneTime",
+    //                 saveContext->ship.stats.sceneTimestamps[i].sceneTime);
+    //                 SaveManager::Instance->SaveData("roomTime", saveContext->ship.stats.sceneTimestamps[i].roomTime);
+    //                 SaveManager::Instance->SaveData("isRoom", saveContext->ship.stats.sceneTimestamps[i].isRoom);
+    //             });
+    //         }
+    //     });
     SaveManager::Instance->SaveData("tsIdx", saveContext->ship.stats.tsIdx);
     SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->ship.stats.count), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->ship.stats.count[i]);
@@ -575,164 +558,166 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
         [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.entrancesDiscovered[i]); });
 }
 
-//bool compareTimestampInfoByTime(const TimestampInfo& a, const TimestampInfo& b) {
-//    return CVarGetInteger(CVAR_GAMEPLAY_STATS("ReverseTimestamps"), 0) ? a.time > b.time : a.time < b.time;
-//}
+// bool compareTimestampInfoByTime(const TimestampInfo& a, const TimestampInfo& b) {
+//     return CVarGetInteger(CVAR_GAMEPLAY_STATS("ReverseTimestamps"), 0) ? a.time > b.time : a.time < b.time;
+// }
 
 void DrawGameplayStatsHeader() {
-    //ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
-    //ImGui::BeginTable("gameplayStatsHeader", 1, ImGuiTableFlags_BordersOuter);
-    //ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
+    // ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
+    // ImGui::BeginTable("gameplayStatsHeader", 1, ImGuiTableFlags_BordersOuter);
+    // ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
     //// if tag is empty (not a release build)
-    //if (gGitCommitTag[0] == 0) {
-    //    GameplayStatsRow("Git Branch:", (char*)gGitBranch);
-    //    GameplayStatsRow("Git Commit Hash:", (char*)gGitCommitHash);
-    //} else {
-    //    GameplayStatsRow("Build Version:", (char*)gBuildVersion);
-    //}
-    //if (gSaveContext.ship.stats.rtaTiming) {
-    //    GameplayStatsRow("Total Time (RTA):", formatTimeDisplay(GAMEPLAYSTAT_TOTAL_TIME),
-    //                     gSaveContext.ship.stats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
-    //} else {
-    //    GameplayStatsRow("Total Game Time:", formatTimeDisplay(GAMEPLAYSTAT_TOTAL_TIME),
-    //                     gSaveContext.ship.stats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
-    //}
-    //if (CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowAdditionalTimers"), 0)) { // !Only display total game time
-    //    GameplayStatsRow("Gameplay Time:", formatTimeDisplay(gSaveContext.ship.stats.playTimer / 2),
-    //                     COLOR_GREY);
-    //    GameplayStatsRow("Pause Menu Time:", formatTimeDisplay(gSaveContext.ship.stats.pauseTimer / 3),
-    //                     COLOR_GREY);
-    //    GameplayStatsRow("Time in scene:", formatTimeDisplay(gSaveContext.ship.stats.sceneTimer / 2),
-    //                     COLOR_LIGHT_BLUE);
-    //    GameplayStatsRow("Time in room:", formatTimeDisplay(gSaveContext.ship.stats.roomTimer / 2),
-    //                     COLOR_LIGHT_BLUE);
-    //}
-    //if (gPlayState != NULL && CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowDebugInfo"), 0)) { // && display debug info
-    //    GameplayStatsRow("play->sceneNum:", formatHexGameplayStat(gPlayState->sceneNum), COLOR_YELLOW);
-    //    GameplayStatsRow("gSaveContext.entranceIndex:", formatHexGameplayStat(gSaveContext.entranceIndex),
-    //                     COLOR_YELLOW);
-    //    GameplayStatsRow("gSaveContext.cutsceneIndex:", formatHexOnlyGameplayStat(gSaveContext.cutsceneIndex),
-    //                     COLOR_YELLOW);
-    //    GameplayStatsRow("play->roomCtx.curRoom.num:", formatIntGameplayStat(gPlayState->roomCtx.curRoom.num),
-    //                     COLOR_YELLOW);
-    //}
-    //ImGui::EndTable();
-    //ImGui::PopStyleVar(1);
+    // if (gGitCommitTag[0] == 0) {
+    //     GameplayStatsRow("Git Branch:", (char*)gGitBranch);
+    //     GameplayStatsRow("Git Commit Hash:", (char*)gGitCommitHash);
+    // } else {
+    //     GameplayStatsRow("Build Version:", (char*)gBuildVersion);
+    // }
+    // if (gSaveContext.ship.stats.rtaTiming) {
+    //     GameplayStatsRow("Total Time (RTA):", formatTimeDisplay(GAMEPLAYSTAT_TOTAL_TIME),
+    //                      gSaveContext.ship.stats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
+    // } else {
+    //     GameplayStatsRow("Total Game Time:", formatTimeDisplay(GAMEPLAYSTAT_TOTAL_TIME),
+    //                      gSaveContext.ship.stats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
+    // }
+    // if (CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowAdditionalTimers"), 0)) { // !Only display total game time
+    //     GameplayStatsRow("Gameplay Time:", formatTimeDisplay(gSaveContext.ship.stats.playTimer / 2),
+    //                      COLOR_GREY);
+    //     GameplayStatsRow("Pause Menu Time:", formatTimeDisplay(gSaveContext.ship.stats.pauseTimer / 3),
+    //                      COLOR_GREY);
+    //     GameplayStatsRow("Time in scene:", formatTimeDisplay(gSaveContext.ship.stats.sceneTimer / 2),
+    //                      COLOR_LIGHT_BLUE);
+    //     GameplayStatsRow("Time in room:", formatTimeDisplay(gSaveContext.ship.stats.roomTimer / 2),
+    //                      COLOR_LIGHT_BLUE);
+    // }
+    // if (gPlayState != NULL && CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowDebugInfo"), 0)) { // && display debug info
+    //     GameplayStatsRow("play->sceneNum:", formatHexGameplayStat(gPlayState->sceneNum), COLOR_YELLOW);
+    //     GameplayStatsRow("gSaveContext.entranceIndex:", formatHexGameplayStat(gSaveContext.entranceIndex),
+    //                      COLOR_YELLOW);
+    //     GameplayStatsRow("gSaveContext.cutsceneIndex:", formatHexOnlyGameplayStat(gSaveContext.cutsceneIndex),
+    //                      COLOR_YELLOW);
+    //     GameplayStatsRow("play->roomCtx.curRoom.num:", formatIntGameplayStat(gPlayState->roomCtx.curRoom.num),
+    //                      COLOR_YELLOW);
+    // }
+    // ImGui::EndTable();
+    // ImGui::PopStyleVar(1);
 }
 
 void DrawGameplayStatsTimestampsTab() {
     //// Set up the array of item timestamps and then sort it chronologically
-    //for (int i = 0; i < TIMESTAMP_MAX; i++) {
-    //    strcpy(itemTimestampDisplay[i].name, itemTimestampDisplayName[i]);
-    //    itemTimestampDisplay[i].time = gSaveContext.ship.stats.itemTimestamp[i];
-    //    itemTimestampDisplay[i].color = itemTimestampDisplayColor[i];
-    //}
+    // for (int i = 0; i < TIMESTAMP_MAX; i++) {
+    //     strcpy(itemTimestampDisplay[i].name, itemTimestampDisplayName[i]);
+    //     itemTimestampDisplay[i].time = gSaveContext.ship.stats.itemTimestamp[i];
+    //     itemTimestampDisplay[i].color = itemTimestampDisplayColor[i];
+    // }
     //
-    //std::sort(itemTimestampDisplay, itemTimestampDisplay + TIMESTAMP_MAX, compareTimestampInfoByTime);
+    // std::sort(itemTimestampDisplay, itemTimestampDisplay + TIMESTAMP_MAX, compareTimestampInfoByTime);
     //
-    //ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
-    //ImGui::BeginTable("gameplayStatsTimestamps", 1, ImGuiTableFlags_BordersOuter);
-    //ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
-    //for (int i = 0; i < TIMESTAMP_MAX; i++) {
-    //    // To be shown, the entry must have a non-zero time and a string for its display name
-    //    if (itemTimestampDisplay[i].time > 0 && strnlen(itemTimestampDisplay[i].name, 21) > 1) {
-    //        GameplayStatsRow(itemTimestampDisplay[i].name, formatTimeDisplay(itemTimestampDisplay[i].time),
-    //                         itemTimestampDisplay[i].color);
-    //    }
-    //}
-    //ImGui::EndTable();
-    //ImGui::PopStyleVar(1);
+    // ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
+    // ImGui::BeginTable("gameplayStatsTimestamps", 1, ImGuiTableFlags_BordersOuter);
+    // ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
+    // for (int i = 0; i < TIMESTAMP_MAX; i++) {
+    //     // To be shown, the entry must have a non-zero time and a string for its display name
+    //     if (itemTimestampDisplay[i].time > 0 && strnlen(itemTimestampDisplay[i].name, 21) > 1) {
+    //         GameplayStatsRow(itemTimestampDisplay[i].name, formatTimeDisplay(itemTimestampDisplay[i].time),
+    //                          itemTimestampDisplay[i].color);
+    //     }
+    // }
+    // ImGui::EndTable();
+    // ImGui::PopStyleVar(1);
 }
 
 void DrawGameplayStatsCountsTab() {
-//    u32 enemiesDefeated = 0;
-//    u32 ammoUsed = 0;
-//    u32 buttonPresses = 0;
-//
-//    // Sum of all enemies defeated
-//    for (int i = COUNT_ENEMIES_DEFEATED_ANUBIS; i <= COUNT_ENEMIES_DEFEATED_WOLFOS; i++) {
-//        if (i == COUNT_ENEMIES_DEFEATED_FLOORMASTER) {
-//            // Special case: You must kill 3 mini Floormasters for it count as one defeated Floormaster
-//            enemiesDefeated += gSaveContext.ship.stats.count[i] / 3;
-//        } else {
-//            enemiesDefeated += gSaveContext.ship.stats.count[i];
-//        }
-//    }
-//    // Sum of all ammo used
-//    for (int i = COUNT_AMMO_USED_STICK; i <= COUNT_AMMO_USED_BEAN; i++) {
-//        ammoUsed += gSaveContext.ship.stats.count[i];
-//    }
-//    // Sum of all button presses
-//    for (int i = COUNT_BUTTON_PRESSES_A; i <= COUNT_BUTTON_PRESSES_START; i++) {
-//        buttonPresses += gSaveContext.ship.stats.count[i];
-//    }
-//
-//    ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
-//    ImGui::BeginTable("gameplayStatsCounts", 1, ImGuiTableFlags_BordersOuter);
-//    ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
-//    GameplayStatsRow("Enemies Defeated:", formatIntGameplayStat(enemiesDefeated));
-//    if (enemiesDefeated > 0) {
-//        ImGui::TableNextRow();
-//        ImGui::TableNextColumn();
-//        if (ImGui::TreeNodeEx("Enemy Details...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
-//            for (int i = COUNT_ENEMIES_DEFEATED_ANUBIS; i <= COUNT_ENEMIES_DEFEATED_WOLFOS; i++) {
-//                if (i == COUNT_ENEMIES_DEFEATED_FLOORMASTER) {
-//                    GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.ship.stats.count[i] / 3));
-//                } else {
-//                    GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.ship.stats.count[i]));
-//                }
-//            }
-//        }
-//    }
-//    GameplayStatsRow("Rupees Collected:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_RUPEES_COLLECTED]),
-//                     COLOR_WHITE, "Includes rupees collected with a full wallet.");
-//    GameplayStatsRow("Rupees Spent:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_RUPEES_SPENT]));
-//    GameplayStatsRow("Chests Opened:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_CHESTS_OPENED]));
-//    GameplayStatsRow("Ammo Used:", formatIntGameplayStat(ammoUsed));
-//    if (ammoUsed > 0) {
-//        ImGui::TableNextRow();
-//        ImGui::TableNextColumn();
-//        if (ImGui::TreeNodeEx("Ammo Details...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
-//            for (int i = COUNT_AMMO_USED_STICK; i <= COUNT_AMMO_USED_BEAN; i++) {
-//                GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.ship.stats.count[i]));
-//            }
-//        }
-//    }
-//    GameplayStatsRow("Damage Taken:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_DAMAGE_TAKEN]));
-//    GameplayStatsRow("Sword Swings:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_SWORD_SWINGS]));
-//    GameplayStatsRow("Steps Taken:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_STEPS]));
-//    // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
-//    if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA ||
-//        gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
-//        GameplayStatsRow("Bunny Hood Time:",
-//                         formatTimeDisplay(gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] / 2));
-//    }
-//    GameplayStatsRow("Rolls:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_ROLLS]));
-//    GameplayStatsRow("Bonks:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_BONKS]));
-//    GameplayStatsRow("Sidehops:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_SIDEHOPS]));
-//    GameplayStatsRow("Backflips:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_BACKFLIPS]));
-//    GameplayStatsRow("Ice Traps:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_ICE_TRAPS]));
-//    GameplayStatsRow("Pauses:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_PAUSES]));
-//    GameplayStatsRow("Pots Smashed:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_POTS_BROKEN]));
-//    GameplayStatsRow("Bushes Cut:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_BUSHES_CUT]));
-//    GameplayStatsRow("Buttons Pressed:", formatIntGameplayStat(buttonPresses));
-//    if (buttonPresses > 0) {
-//        ImGui::TableNextRow();
-//        ImGui::TableNextColumn();
-//        if (ImGui::TreeNodeEx("Buttons...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
-//            for (int i = COUNT_BUTTON_PRESSES_A; i <= COUNT_BUTTON_PRESSES_START; i++) {
-//                GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.ship.stats.count[i]));
-//            }
-//        }
-//    }
-//    ImGui::EndTable();
-//    ImGui::PopStyleVar(1);
+    //    u32 enemiesDefeated = 0;
+    //    u32 ammoUsed = 0;
+    //    u32 buttonPresses = 0;
+    //
+    //    // Sum of all enemies defeated
+    //    for (int i = COUNT_ENEMIES_DEFEATED_ANUBIS; i <= COUNT_ENEMIES_DEFEATED_WOLFOS; i++) {
+    //        if (i == COUNT_ENEMIES_DEFEATED_FLOORMASTER) {
+    //            // Special case: You must kill 3 mini Floormasters for it count as one defeated Floormaster
+    //            enemiesDefeated += gSaveContext.ship.stats.count[i] / 3;
+    //        } else {
+    //            enemiesDefeated += gSaveContext.ship.stats.count[i];
+    //        }
+    //    }
+    //    // Sum of all ammo used
+    //    for (int i = COUNT_AMMO_USED_STICK; i <= COUNT_AMMO_USED_BEAN; i++) {
+    //        ammoUsed += gSaveContext.ship.stats.count[i];
+    //    }
+    //    // Sum of all button presses
+    //    for (int i = COUNT_BUTTON_PRESSES_A; i <= COUNT_BUTTON_PRESSES_START; i++) {
+    //        buttonPresses += gSaveContext.ship.stats.count[i];
+    //    }
+    //
+    //    ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
+    //    ImGui::BeginTable("gameplayStatsCounts", 1, ImGuiTableFlags_BordersOuter);
+    //    ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
+    //    GameplayStatsRow("Enemies Defeated:", formatIntGameplayStat(enemiesDefeated));
+    //    if (enemiesDefeated > 0) {
+    //        ImGui::TableNextRow();
+    //        ImGui::TableNextColumn();
+    //        if (ImGui::TreeNodeEx("Enemy Details...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
+    //            for (int i = COUNT_ENEMIES_DEFEATED_ANUBIS; i <= COUNT_ENEMIES_DEFEATED_WOLFOS; i++) {
+    //                if (i == COUNT_ENEMIES_DEFEATED_FLOORMASTER) {
+    //                    GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.ship.stats.count[i] /
+    //                    3));
+    //                } else {
+    //                    GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.ship.stats.count[i]));
+    //                }
+    //            }
+    //        }
+    //    }
+    //    GameplayStatsRow("Rupees Collected:",
+    //    formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_RUPEES_COLLECTED]),
+    //                     COLOR_WHITE, "Includes rupees collected with a full wallet.");
+    //    GameplayStatsRow("Rupees Spent:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_RUPEES_SPENT]));
+    //    GameplayStatsRow("Chests Opened:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_CHESTS_OPENED]));
+    //    GameplayStatsRow("Ammo Used:", formatIntGameplayStat(ammoUsed));
+    //    if (ammoUsed > 0) {
+    //        ImGui::TableNextRow();
+    //        ImGui::TableNextColumn();
+    //        if (ImGui::TreeNodeEx("Ammo Details...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
+    //            for (int i = COUNT_AMMO_USED_STICK; i <= COUNT_AMMO_USED_BEAN; i++) {
+    //                GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.ship.stats.count[i]));
+    //            }
+    //        }
+    //    }
+    //    GameplayStatsRow("Damage Taken:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_DAMAGE_TAKEN]));
+    //    GameplayStatsRow("Sword Swings:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_SWORD_SWINGS]));
+    //    GameplayStatsRow("Steps Taken:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_STEPS]));
+    //    // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
+    //    if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA ||
+    //        gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
+    //        GameplayStatsRow("Bunny Hood Time:",
+    //                         formatTimeDisplay(gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] / 2));
+    //    }
+    //    GameplayStatsRow("Rolls:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_ROLLS]));
+    //    GameplayStatsRow("Bonks:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_BONKS]));
+    //    GameplayStatsRow("Sidehops:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_SIDEHOPS]));
+    //    GameplayStatsRow("Backflips:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_BACKFLIPS]));
+    //    GameplayStatsRow("Ice Traps:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_ICE_TRAPS]));
+    //    GameplayStatsRow("Pauses:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_PAUSES]));
+    //    GameplayStatsRow("Pots Smashed:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_POTS_BROKEN]));
+    //    GameplayStatsRow("Bushes Cut:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_BUSHES_CUT]));
+    //    GameplayStatsRow("Buttons Pressed:", formatIntGameplayStat(buttonPresses));
+    //    if (buttonPresses > 0) {
+    //        ImGui::TableNextRow();
+    //        ImGui::TableNextColumn();
+    //        if (ImGui::TreeNodeEx("Buttons...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
+    //            for (int i = COUNT_BUTTON_PRESSES_A; i <= COUNT_BUTTON_PRESSES_START; i++) {
+    //                GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.ship.stats.count[i]));
+    //            }
+    //        }
+    //    }
+    //    ImGui::EndTable();
+    //    ImGui::PopStyleVar(1);
 }
 
 // NEW REGION
 
 nlohmann::json GameplayStats_ObjectToJson(const GameplayStatObject& entry) {
-    return nlohmann::json {
+    return nlohmann::json{
         { "entryType", entry.entryType },
         { "entryName", entry.entryName },
         { "entryTimestamp", entry.entryTimestamp },
@@ -813,7 +798,7 @@ GameplayStatObject GameplayStats_GetObject(uint32_t entryId, uint32_t entryType)
         randoObject.entryType = STAT_TYPE_ITEM;
         randoObject.entryName = Rando::StaticData::GetItemTable().at(entryId).GetName().GetEnglish();
         randoObject.entryColor = UIWidgets::ColorValues.at(UIWidgets::Colors::White);
-        
+
         return randoObject;
     }
 
@@ -847,7 +832,6 @@ GameplayStatObject GameplayStats_GetCountObjectById(uint32_t countId, uint32_t c
                     break;
             }
         }
-        
     }
 
     auto& innerMap = outerIt->second;
@@ -994,7 +978,7 @@ void GameplayStats_AddTimestamp(GameplayStatObject statObject) {
     if (it != currentTimestamps.end()) {
         return;
     }
-    
+
     currentTimestamps.push_back(statObject);
 
     if (fileInit) {
@@ -1045,7 +1029,7 @@ void GameplayStats_DrawCounts(uint32_t typeIndex) {
         ImGui::TableSetupColumn("Name");
         ImGui::TableSetupColumn("Count", ImGuiTableColumnFlags_WidthFixed, 100.0f);
         ImGui::TableHeadersRow();
-        
+
         for (auto& entry : currentCounts) {
             if (entry.entryType != typeIndex) {
                 continue;
@@ -1059,7 +1043,9 @@ void GameplayStats_DrawCounts(uint32_t typeIndex) {
             ImGui::TextColored(entry.entryColor, entry.entryName.c_str());
 
             ImGui::TableNextColumn();
-            ImGui::TextColored(entry.entryColor, entry.entryName == "Bunny Hood Time" ? formatTimeDisplay(entry.entryTimestamp / 2).c_str() : std::to_string(entry.entryTimestamp).c_str());
+            ImGui::TextColored(entry.entryColor, entry.entryName == "Bunny Hood Time"
+                                                     ? formatTimeDisplay(entry.entryTimestamp / 2).c_str()
+                                                     : std::to_string(entry.entryTimestamp).c_str());
         }
 
         ImGui::EndTable();
@@ -1077,7 +1063,7 @@ void GameplayStats_DrawTimeStamps() {
                             .Color(THEME_COLOR)
                             .LabelPosition(UIWidgets::LabelPositions::None)
                             .ComponentAlignment(UIWidgets::ComponentAlignments::Right));
-    
+
     if (ImGui::BeginTable("Timestamps", 2)) {
         ImGui::TableSetupColumn("Name");
         ImGui::TableSetupColumn("Timestamp");
@@ -1200,7 +1186,7 @@ void RegisterGameplayStats() {
         file.close();
     }
 
-    COND_HOOK(OnEnemyDefeat, CVAR, [](void* refActor) { 
+    COND_HOOK(OnEnemyDefeat, CVAR, [](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
 
         auto countObject = GameplayStats_GetCountObjectById(actor->id, STAT_TYPE_ENEMY);
@@ -1208,7 +1194,7 @@ void RegisterGameplayStats() {
             switch (actor->id) {
                 case ACTOR_EN_BB:
                     if (actor->params == ENBB_GREEN || actor->params == ENBB_GREEN_BIG) {
-                        countObject = 
+                        countObject =
                             GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN, STAT_TYPE_ENEMY);
                     } else if (actor->params == ENBB_BLUE) {
                         countObject =
@@ -1256,11 +1242,9 @@ void RegisterGameplayStats() {
                     }
                     break;
                 case ACTOR_EN_FIREFLY:
-                    if (actor->params == KEESE_NORMAL_FLY || actor->params == KEESE_NORMAL_PERCH)
-                    {
+                    if (actor->params == KEESE_NORMAL_FLY || actor->params == KEESE_NORMAL_PERCH) {
                         countObject = GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_KEESE, STAT_TYPE_ENEMY);
-                    } else if (actor->params == KEESE_FIRE_FLY || actor->params ==
-                    KEESE_FIRE_PERCH) {
+                    } else if (actor->params == KEESE_FIRE_FLY || actor->params == KEESE_FIRE_PERCH) {
                         countObject =
                             GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_KEESE_FIRE, STAT_TYPE_ENEMY);
                     } else if (actor->params == KEESE_ICE_FLY) {
@@ -1276,7 +1260,7 @@ void RegisterGameplayStats() {
                     } else {
                         countObject = GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_LEEVER, STAT_TYPE_ENEMY);
                     }
-                    } break;
+                } break;
                 case ACTOR_EN_MB:
                     if (actor->params == 0) {
                         countObject =
@@ -1303,8 +1287,7 @@ void RegisterGameplayStats() {
                     break;
                 case ACTOR_EN_PO_FIELD:
                     if (actor->params == EN_PO_FIELD_BIG) {
-                        countObject = 
-                            GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_POE_BIG, STAT_TYPE_ENEMY);
+                        countObject = GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_POE_BIG, STAT_TYPE_ENEMY);
                     } else {
                         countObject = GameplayStats_GetCountObjectById(COUNT_ENEMIES_DEFEATED_POE, STAT_TYPE_ENEMY);
                     }
@@ -1411,7 +1394,7 @@ void RegisterGameplayStats() {
 
         GameplayStats_AddCount(countObject);
     });
-    COND_HOOK(OnPlayerUpdate, CVAR, []() { 
+    COND_HOOK(OnPlayerUpdate, CVAR, []() {
         if (!gSaveContext.ship.stats.gameComplete) {
             Player* player = GET_PLAYER(gPlayState);
             Input* input = &gPlayState->state.input[0];
@@ -1499,9 +1482,7 @@ void RegisterGameplayStats() {
             if (player->currentMask == PLAYER_MASK_BUNNY) {
                 GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_TIME_BUNNY_HOOD, STAT_TYPE_PLAYER));
             }
-
         }
-        
     });
     COND_HOOK(OnPlayerHealthChange, CVAR, [](int16_t amount) {
         auto countObject = GameplayStats_GetCountObjectById(COUNT_DAMAGE_TAKEN, STAT_TYPE_PLAYER);
@@ -1522,7 +1503,7 @@ void RegisterGameplayStats() {
     COND_HOOK(OnDeleteFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_DELETE, fileNum); });
     COND_HOOK(OnLoadFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_LOAD, fileNum); });
     COND_HOOK(OnSaveFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_SAVE, fileNum); });
-    COND_HOOK(OnPresentFileSelect, true, []() { 
+    COND_HOOK(OnPresentFileSelect, true, []() {
         currentTimestamps.clear();
         currentCounts.clear();
     });

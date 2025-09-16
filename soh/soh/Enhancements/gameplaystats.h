@@ -18,12 +18,12 @@ uint64_t GetUnixTimestamp(void);
 // Total gameplay time is tracked in tenths of seconds
 // I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
 // Frame counts in z_play.c and z_kaleido_scope_call.c
-#define GAMEPLAYSTAT_TOTAL_TIME                                                             \
-    (gSaveContext.ship.stats.rtaTiming                                                      \
-        ? (!gSaveContext.ship.stats.fileCreatedAt                                           \
-               ? 0                                                                          \
-               : ((GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100))      \
-        : (gSaveContext.ship.stats.playTimer / 2 + gSaveContext.ship.stats.pauseTimer / 3))
+#define GAMEPLAYSTAT_TOTAL_TIME                                                         \
+    (gSaveContext.ship.stats.rtaTiming                                                  \
+         ? (!gSaveContext.ship.stats.fileCreatedAt                                      \
+                ? 0                                                                     \
+                : ((GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100)) \
+         : (gSaveContext.ship.stats.playTimer / 2 + gSaveContext.ship.stats.pauseTimer / 3))
 #define CURRENT_MODE_TIMER                                                                       \
     (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) ? gSaveContext.ship.stats.roomTimer \
                                                              : gSaveContext.ship.stats.sceneTimer)
@@ -118,15 +118,15 @@ typedef enum {
     // Other counts
     COUNT_RUPEES_COLLECTED,
     COUNT_RUPEES_SPENT,
-    COUNT_CHESTS_OPENED,    // z_en_box.c
+    COUNT_CHESTS_OPENED, // z_en_box.c
     COUNT_DAMAGE_TAKEN,
     COUNT_ICE_TRAPS,
     COUNT_ROLLS,
     COUNT_BONKS,
     COUNT_PAUSES,
     COUNT_STEPS,
-    COUNT_POTS_BROKEN,      // z_obj_tsubo.c
-    COUNT_BUSHES_CUT,       // z_en_kusa.c
+    COUNT_POTS_BROKEN, // z_obj_tsubo.c
+    COUNT_BUSHES_CUT,  // z_en_kusa.c
     COUNT_SWORD_SWINGS,
     COUNT_SIDEHOPS,
     COUNT_BACKFLIPS,
