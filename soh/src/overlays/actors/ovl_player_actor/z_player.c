@@ -6302,7 +6302,6 @@ void Player_SetupRoll(Player* this, PlayState* play) {
     LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime,
                                    GET_PLAYER_ANIM(PLAYER_ANIMGROUP_landing_roll, this->modelAnimType),
                                    1.25f * sWaterSpeedFactor);
-    gSaveContext.ship.stats.count[COUNT_ROLLS]++;
 }
 
 s32 Player_TryRoll(Player* this, PlayState* play) {
@@ -9831,7 +9830,6 @@ void Player_Action_Roll(Player* this, PlayState* play) {
                     Player_PlayVoiceSfx(this, NA_SE_VO_LI_CLIMB_END);
                     this->av2.bonked = 1;
 
-                    gSaveContext.ship.stats.count[COUNT_BONKS]++;
                     GameInteractor_ExecuteOnPlayerBonk();
 
                     return;

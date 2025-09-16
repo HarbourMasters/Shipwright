@@ -29,11 +29,15 @@
 #include "src/overlays/actors/ovl_En_Tite/z_en_tite.h"
 #include "src/overlays/actors/ovl_En_Wf/z_en_wf.h"
 
+#include "assets/objects/gameplay_keep/gameplay_keep.h"
+
 extern "C" {
 #include <z64.h>
 #include "variables.h"
 extern PlayState* gPlayState;
 uint64_t GetUnixTimestamp();
+
+void Player_Action_Roll(Player* thisx, PlayState* play);
 }
 
 // New
@@ -51,6 +55,7 @@ std::vector<GameplayStatObject> currentCounts;
 uint32_t typeIndex = STAT_TYPE_ALL;
 ImVec4 emptyColor = { 0, 0, 0, 0 };
 bool isRandoItem = false;
+bool stopCounting = false;
 
 static std::unordered_map<uint32_t, const char*> statTypeNameMap = {
     { STAT_TYPE_SCENE,  "Scenes" },
@@ -59,6 +64,7 @@ static std::unordered_map<uint32_t, const char*> statTypeNameMap = {
     { STAT_TYPE_ALL,    "All" },
 };
 
+// clang-format off
 std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayStatList = {
     { STAT_TYPE_SCENE, 
         {
@@ -426,6 +432,8 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
             { COUNT_RUPEES_COLLECTED,	    { STAT_TYPE_PLAYER, "Collected - Rupees", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_RUPEES_SPENT,	        { STAT_TYPE_PLAYER, "Consumed - Rupees",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_DAMAGE_TAKEN,	        { STAT_TYPE_PLAYER, "Damage Taken",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ROLLS,	                { STAT_TYPE_PLAYER, "Action - Roll",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BONKS,	                { STAT_TYPE_PLAYER, "Action - Bonk",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
         }
     },
 };
@@ -469,6 +477,7 @@ static std::unordered_map<u16, u16> enemyIdToStatCount = {
     { ACTOR_EN_WALLMAS,     COUNT_ENEMIES_DEFEATED_WALLMASTER },
     { ACTOR_EN_KAREBABA,    COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA },
 };
+// clang-format on
 
 // End
 
@@ -895,6 +904,10 @@ void GameplayStats_SaveFileActions(uint32_t action, int32_t fileNum) {
 void GameplayStats_AddCount(GameplayStatObject countObject) {
     if (countObject.entryName == "") {
         return;
+    }
+
+    if (countObject.entryTimestamp == 0) {
+        countObject.entryTimestamp = 1;
     }
 
     for (auto& count : currentCounts) {
@@ -1374,14 +1387,13 @@ void RegisterGameplayStats() {
 
         if (countObject.entryName == "Consumed - Rupees" || countObject.entryName == "Collected - Rupees") {
             countObject.entryTimestamp = ammoUsed;
-        } else {
-            countObject.entryTimestamp = 1;
         }
 
         GameplayStats_AddCount(countObject);
     });
     COND_HOOK(OnPlayerUpdate, CVAR, []() { 
         if (!gSaveContext.ship.stats.gameComplete) {
+            Player* player = GET_PLAYER(gPlayState);
             Input* input = &gPlayState->state.input[0];
 
             if (CHECK_BTN_ALL(input[0].press.button, BTN_A)) {
@@ -1426,6 +1438,14 @@ void RegisterGameplayStats() {
             if (CHECK_BTN_ALL(input[0].press.button, BTN_START)) {
                 GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_START, STAT_TYPE_PLAYER));
             }
+
+            if (player->actionFunc == Player_Action_Roll && !stopCounting) {
+                stopCounting = true;
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_ROLLS, STAT_TYPE_PLAYER));
+            } else if ((player->actionFunc != Player_Action_Roll) && stopCounting) {
+                stopCounting = false;
+            }
+
         }
         
     });
@@ -1434,7 +1454,9 @@ void RegisterGameplayStats() {
         countObject.entryTimestamp = amount;
 
         GameplayStats_AddCount(countObject);
-    })
+    });
+    COND_HOOK(OnPlayerBonk, CVAR,
+              []() { GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BONKS, STAT_TYPE_PLAYER)); });
     COND_HOOK(OnDeleteFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_DELETE, fileNum); });
     COND_HOOK(OnLoadFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_LOAD, fileNum); });
     COND_HOOK(OnSaveFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_SAVE, fileNum); });
