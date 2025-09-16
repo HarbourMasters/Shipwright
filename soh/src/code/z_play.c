@@ -1099,11 +1099,6 @@ void Play_Update(PlayState* play) {
                     gSaveContext.ship.stats.playTimer++;
                     gSaveContext.ship.stats.sceneTimer++;
                     gSaveContext.ship.stats.roomTimer++;
-
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA &&
-                        Player_GetMask(play) == PLAYER_MASK_BUNNY) {
-                        gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD]++;
-                    }
                 }
 
                 if (play->actorCtx.freezeFlashTimer && (play->actorCtx.freezeFlashTimer-- < 5)) {

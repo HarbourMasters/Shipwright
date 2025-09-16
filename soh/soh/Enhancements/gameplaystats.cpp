@@ -440,6 +440,7 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
             { COUNT_SWORD_SWINGS,	        { STAT_TYPE_PLAYER, "Action - Sword Swings",   	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_SIDEHOPS,	            { STAT_TYPE_PLAYER, "Action - Sidehops",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_BACKFLIPS,	            { STAT_TYPE_PLAYER, "Action - Backflips",   	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_TIME_BUNNY_HOOD,	    { STAT_TYPE_PLAYER, "Bunny Hood Time",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
         }
     },
 };
@@ -1052,7 +1053,7 @@ void GameplayStats_DrawCounts(uint32_t typeIndex) {
             ImGui::TextColored(entry.entryColor, entry.entryName.c_str());
 
             ImGui::TableNextColumn();
-            ImGui::TextColored(entry.entryColor, std::to_string(entry.entryTimestamp).c_str());
+            ImGui::TextColored(entry.entryColor, entry.entryName == "Bunny Hood Time" ? formatTimeDisplay(entry.entryTimestamp / 2).c_str() : std::to_string(entry.entryTimestamp).c_str());
         }
 
         ImGui::EndTable();
@@ -1480,6 +1481,10 @@ void RegisterGameplayStats() {
                 }
             } else if (!(player->stateFlags2 & PLAYER_STATE2_HOPPING) && isHopping) {
                 isHopping = false;
+            }
+
+            if (player->currentMask == PLAYER_MASK_BUNNY) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_TIME_BUNNY_HOOD, STAT_TYPE_PLAYER));
             }
 
         }
