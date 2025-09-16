@@ -2,8 +2,6 @@
 
 #include "soh/cvar_prefixes.h"
 #include <stdint.h>
-#include <string>
-#include "imgui.h"
 
 #ifdef __cplusplus
 extern "C" {
