@@ -1263,11 +1263,11 @@ void RegisterGameplayStats() {
             GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUSHES_CUT, STAT_TYPE_PLAYER));
         }
     });
-    COND_HOOK(OnActorUpdate, CVAR, [](void* refActor) { 
+    COND_HOOK(OnActorUpdate, CVAR, [](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
         if (actor->id == ACTOR_EN_BOX) {
             EnBox* actor = static_cast<EnBox*>(refActor);
-            
+
             if (actor->actionFunc != EnBox_Open) {
                 return;
             }
@@ -1278,9 +1278,8 @@ void RegisterGameplayStats() {
         }
         if (actor->id == ACTOR_EN_KUSA) {
             EnKusa* actor = static_cast<EnKusa*>(refActor);
-            //GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUSHES_CUT, STAT_TYPE_PLAYER));
+            // GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUSHES_CUT, STAT_TYPE_PLAYER));
         }
-        
     });
     COND_HOOK(OnSceneInit, CVAR, [](int16_t sceneNum) {
         auto statObject = GameplayStats_GetObject((uint32_t)sceneNum, STAT_TYPE_SCENE);
