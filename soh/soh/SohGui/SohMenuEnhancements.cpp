@@ -888,11 +888,6 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("BowReticle"))
         .Options(CheckboxOptions().Tooltip("Aiming with a Bow or Slingshot will display a reticle as with the Hookshot "
                                            "when the projectile is ready to fire."));
-    AddWidget(path, "Slingshot/Bow can destroy beehives", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("SlingBowBeehives"))
-        .Options(CheckboxOptions().Tooltip(
-            "Allows the Slingshot and Bow to break beehives whenever beehives are randomized."));
-
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Hookshot", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Targetable Hookshot Reticle", WIDGET_CVAR_CHECKBOX)

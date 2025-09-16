@@ -1253,7 +1253,8 @@ bool Logic::CanGetNightTimeGS() {
 }
 
 bool Logic::CanBreakUpperBeehives() {
-    return HookshotOrBoomerang() || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && CanUse(RG_BOMBCHU_5));
+    return HookshotOrBoomerang() || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && CanUse(RG_BOMBCHU_5)) ||
+           (ctx->GetOption(RSK_SLINGBOW_BREAK_BEEHIVES) && (CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT)));
 }
 
 bool Logic::CanBreakLowerBeehives() {

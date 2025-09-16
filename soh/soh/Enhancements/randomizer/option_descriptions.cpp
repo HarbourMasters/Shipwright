@@ -742,6 +742,8 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SUNLIGHT_ARROWS] =
         "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
+    mOptionDescriptions[RSK_SLINGBOW_BREAK_BEEHIVES] =
+        "Allows Slingshot and Bow to break beehives when Beehive Shuffle is turned on.";
     mOptionDescriptions[RSK_LOGIC_RULES] =
         "Glitchless - No glitches are required, but may require some minor tricks. Additional tricks may be enabled "
         "and disabled below.\n"
