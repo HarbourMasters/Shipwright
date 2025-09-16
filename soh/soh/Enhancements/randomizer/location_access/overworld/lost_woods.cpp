@@ -4,16 +4,18 @@
 using namespace Rando;
 
 void RegionTable_Init_LostWoods() {
-    areaTable[RR_LW_FOREST_EXIT] = Region("LW Forest Exit", "Lost Woods", {RA_THE_LOST_WOODS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    // clang-format off
+    areaTable[RR_LW_FOREST_EXIT] = Region("LW Forest Exit", SCENE_LOST_WOODS, {}, {}, {
         //Exits
         Entrance(RR_KOKIRI_FOREST, []{return true;})
     });
 
-    areaTable[RR_THE_LOST_WOODS] = Region("Lost Woods", "Lost Woods", {RA_THE_LOST_WOODS}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_THE_LOST_WOODS] = Region("Lost Woods", SCENE_LOST_WOODS, {
         //Events
-        EventAccess(&logic->GossipStoneFairy,  []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(&logic->BeanPlantFairy,    []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
-        EventAccess(&logic->BugShrub,          []{return logic->IsChild && logic->CanCutShrubs();}),
+        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
+        EventAccess(&logic->BeanPlantFairy,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
+        EventAccess(&logic->BugShrub,         []{return logic->IsChild && logic->CanCutShrubs();}),
+        EventAccess(&logic->BorrowSpookyMask, []{return logic->IsChild && logic->BorrowSkullMask && logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_CHILD_WALLET);}),
     }, {
         //Locations
         LOCATION(RC_LW_SKULL_KID,                       logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
@@ -48,19 +50,22 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_GOSSIP_STONE_FAIRY_BIG,          logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_LW_SHORTCUT_STORMS_FAIRY,           logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_LW_GOSSIP_STONE,                    true),
+        LOCATION(RC_LW_GRASS_1,                         logic->CanCutShrubs()),
+        LOCATION(RC_LW_GRASS_2,                         logic->CanCutShrubs()),
+        LOCATION(RC_LW_GRASS_3,                         logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_LW_FOREST_EXIT,           []{return true;}),
         Entrance(RR_GC_WOODS_WARP,            []{return true;}),
-        Entrance(RR_LW_BRIDGE,                []{return logic->CanLeaveForest() && ((logic->IsAdult && (CanPlantBean(RR_THE_LOST_WOODS) || ctx->GetTrickOption(RT_LW_BRIDGE))) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT));}),
-        Entrance(RR_ZORAS_RIVER,              []{return logic->CanLeaveForest() && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS));}),
+        Entrance(RR_LW_BRIDGE,                []{return (logic->IsAdult && (CanPlantBean(RR_THE_LOST_WOODS) || ctx->GetTrickOption(RT_LW_BRIDGE))) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_ZR_FROM_SHORTCUT,         []{return logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_LOST_WOOD_NAVI_DIVE) && logic->IsChild && logic->HasItem(RG_BRONZE_SCALE) && logic->CanJumpslash());}),
         Entrance(RR_LW_BEYOND_MIDO,           []{return logic->IsChild || logic->CanUse(RG_SARIAS_SONG) || ctx->GetTrickOption(RT_LW_MIDO_BACKFLIP);}),
         Entrance(RR_LW_NEAR_SHORTCUTS_GROTTO, []{return Here(RR_THE_LOST_WOODS, []{return logic->BlastOrSmash();});}),
     });
 
-    areaTable[RR_LW_BEYOND_MIDO] = Region("LW Beyond Mido", "Lost Woods", {RA_THE_LOST_WOODS}, NO_DAY_NIGHT_CYCLE, {
+    areaTable[RR_LW_BEYOND_MIDO] = Region("LW Beyond Mido", SCENE_LOST_WOODS, {
         //Events
-        EventAccess(&logic->ButterflyFairy, []{return logic->ButterflyFairy || logic->CanUse(RG_STICKS);}),
+        EventAccess(&logic->ButterflyFairy, []{return logic->CanUse(RG_STICKS);}),
     }, {
         //Locations
         LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, logic->IsChild && logic->CanStunDeku()),
@@ -71,6 +76,12 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY_1,   logic->IsChild && logic->HasItem(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY_2,   logic->IsChild && logic->HasItem(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY_3,   logic->IsChild && logic->HasItem(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_LW_GRASS_4,                            logic->CanCutShrubs()),
+        LOCATION(RC_LW_GRASS_5,                            logic->CanCutShrubs()),
+        LOCATION(RC_LW_GRASS_6,                            logic->CanCutShrubs()),
+        LOCATION(RC_LW_GRASS_7,                            logic->CanCutShrubs()),
+        LOCATION(RC_LW_GRASS_8,                            logic->CanCutShrubs()),
+        LOCATION(RC_LW_GRASS_9,                            logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_LW_FOREST_EXIT,   []{return true;}),
@@ -80,7 +91,7 @@ void RegionTable_Init_LostWoods() {
         Entrance(RR_LW_SCRUBS_GROTTO, []{return Here(RR_LW_BEYOND_MIDO, []{return logic->BlastOrSmash();});}),
     });
 
-    areaTable[RR_LW_NEAR_SHORTCUTS_GROTTO] = Region("LW Near Shortcuts Grotto", "LW Near Shortcuts Grotto", {}, NO_DAY_NIGHT_CYCLE, grottoEvents, {
+    areaTable[RR_LW_NEAR_SHORTCUTS_GROTTO] = Region("LW Near Shortcuts Grotto", SCENE_GROTTOS, grottoEvents, {
         //Locations
         LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST,                  true),
         LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,                   logic->HasBottle()),
@@ -89,21 +100,25 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,           true),
         LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,           logic->CanBreakLowerBeehives()),
         LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT,          logic->CanBreakLowerBeehives()),
+        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_1,                logic->CanCutShrubs()),
+        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_2,                logic->CanCutShrubs()),
+        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_3,                logic->CanCutShrubs()),
+        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_4,                logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_THE_LOST_WOODS, []{return true;}),
     });
 
-    areaTable[RR_DEKU_THEATER] = Region("Deku Theater", "Deku Theater", {}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_DEKU_THEATER] = Region("Deku Theater", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_DEKU_THEATER_SKULL_MASK,    logic->IsChild && logic->SkullMask),
-        LOCATION(RC_DEKU_THEATER_MASK_OF_TRUTH, logic->IsChild && logic->MaskOfTruth),
+        LOCATION(RC_DEKU_THEATER_SKULL_MASK,    logic->IsChild && logic->BorrowSkullMask),
+        LOCATION(RC_DEKU_THEATER_MASK_OF_TRUTH, logic->IsChild && logic->BorrowRightMasks),
     }, {
         //Exits
         Entrance(RR_LW_BEYOND_MIDO, []{return true;}),
     });
 
-    areaTable[RR_LW_SCRUBS_GROTTO] = Region("LW Scrubs Grotto", "LW Scrubs Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_LW_SCRUBS_GROTTO] = Region("LW Scrubs Grotto", SCENE_GROTTOS, {}, {
         //Locations
         LOCATION(RC_LW_DEKU_SCRUB_GROTTO_REAR,      logic->CanStunDeku()),
         LOCATION(RC_LW_DEKU_SCRUB_GROTTO_FRONT,     logic->CanStunDeku()),
@@ -114,7 +129,7 @@ void RegionTable_Init_LostWoods() {
         Entrance(RR_LW_BEYOND_MIDO, []{return true;}),
     });
 
-    areaTable[RR_LW_BRIDGE_FROM_FOREST] = Region("LW Bridge From Forest", "Lost Woods", {RA_THE_LOST_WOODS}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_LW_BRIDGE_FROM_FOREST] = Region("LW Bridge From Forest", SCENE_LOST_WOODS, {}, {
         //Locations
         LOCATION(RC_LW_GIFT_FROM_SARIA, true),
     }, {
@@ -122,10 +137,12 @@ void RegionTable_Init_LostWoods() {
         Entrance(RR_LW_BRIDGE, []{return true;}),
     });
 
-    areaTable[RR_LW_BRIDGE] = Region("LW Bridge", "Lost Woods", {RA_THE_LOST_WOODS}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_LW_BRIDGE] = Region("LW Bridge", SCENE_LOST_WOODS, {}, {}, {
         //Exits
         Entrance(RR_KOKIRI_FOREST,  []{return true;}),
         Entrance(RR_HYRULE_FIELD,   []{return true;}),
         Entrance(RR_THE_LOST_WOODS, []{return logic->CanUse(RG_LONGSHOT);}),
     });
+
+    // clang-format on
 }

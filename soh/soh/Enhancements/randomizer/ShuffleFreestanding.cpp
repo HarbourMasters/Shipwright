@@ -1,17 +1,17 @@
-#include "ShuffleFreestanding.h"
+#include <soh/OTRGlobals.h>
 
 extern "C" {
+#include "variables.h"
 #include "functions.h"
 extern PlayState* gPlayState;
 }
 
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
-void ShuffleFreestanding_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
-    va_list args;
-    va_copy(args, originalArgs);
+void RegisterShuffleFreestanding() {
+    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING);
 
-    if (id == VB_ITEM00_DESPAWN) {
+    COND_VB_SHOULD(VB_ITEM00_DESPAWN, shouldRegister, {
         EnItem00* item00 = va_arg(args, EnItem00*);
 
         // Heart pieces and small keys are handled by default non-freestanding shuffles.
@@ -20,17 +20,19 @@ void ShuffleFreestanding_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* sh
         }
 
         uint32_t params = TWO_ACTOR_PARAMS((int32_t)item00->actor.world.pos.x, (int32_t)item00->actor.world.pos.z);
-        Rando::Location* loc = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(item00->actor.id, gPlayState->sceneNum, params);
-        uint8_t isDungeon = loc->IsDungeon();
-        uint8_t freestandingSetting =
-            Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_FREESTANDING).Get();
+        Rando::Location* loc =
+            OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(item00->actor.id, gPlayState->sceneNum, params);
         RandomizerCheck randomizerCheck = loc->GetRandomizerCheck();
-        bool checkObtained = Rando::Context::GetInstance()->GetItemLocation(randomizerCheck)->HasObtained();
-        
+        if (Rando::Context::GetInstance()->GetItemLocation(randomizerCheck)->HasObtained()) {
+            return;
+        }
+        uint8_t isDungeon = loc->IsDungeon();
+        uint8_t freestandingSetting = RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING);
+
         // Don't change to randomized item if current freestanding item isn't shuffled or already obtained.
         if ((freestandingSetting == RO_SHUFFLE_FREESTANDING_OVERWORLD && isDungeon) ||
-            (freestandingSetting == RO_SHUFFLE_FREESTANDING_DUNGEONS && !isDungeon) || 
-            checkObtained || randomizerCheck == RC_UNKNOWN_CHECK) {
+            (freestandingSetting == RO_SHUFFLE_FREESTANDING_DUNGEONS && !isDungeon) ||
+            randomizerCheck == RC_UNKNOWN_CHECK) {
             return;
         }
 
@@ -41,10 +43,15 @@ void ShuffleFreestanding_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* sh
         item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
 
         *should = false;
-    }
+    });
 }
 
 void Rando::StaticData::RegisterFreestandingLocations() {
+    static bool registered = false;
+    if (registered)
+        return;
+    registered = true;
+    // clang-format off
     locationTable[RC_KF_BOULDER_RUPEE_2] =                                    Location::Collectable(RC_KF_BOULDER_RUPEE_2,                                    RCQUEST_BOTH,    RCTYPE_FREESTANDING,                                                     ACTOR_EN_ITEM00,      SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(-712, 1857),        "Boulder Maze Second Rupee",                   RHT_KOKIRI_FOREST_RUPEE,                                         RG_BLUE_RUPEE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_BOULDER_RUPEE_2));
     locationTable[RC_KF_BOULDER_RUPEE_1] =                                    Location::Collectable(RC_KF_BOULDER_RUPEE_1,                                    RCQUEST_BOTH,    RCTYPE_FREESTANDING,                                                     ACTOR_EN_ITEM00,      SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(-1009, 1556),       "Boulder Maze First Rupee",                    RHT_KOKIRI_FOREST_RUPEE,                                         RG_BLUE_RUPEE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_BOULDER_RUPEE_1));
     locationTable[RC_KF_BRIDGE_RUPEE] =                                       Location::Collectable(RC_KF_BRIDGE_RUPEE,                                       RCQUEST_BOTH,    RCTYPE_FREESTANDING,                                                     ACTOR_EN_ITEM00,      SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(2, -45),            "Bridge Rupee",                                RHT_KOKIRI_FOREST_RUPEE,                                         RG_BLUE_RUPEE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_BRIDGE_RUPEE));
@@ -275,6 +282,9 @@ void Rando::StaticData::RegisterFreestandingLocations() {
     locationTable[RC_GANONS_CASTLE_MQ_WATER_TRIAL_HEART] =                    Location::Collectable(RC_GANONS_CASTLE_MQ_WATER_TRIAL_HEART,                    RCQUEST_MQ,      RCTYPE_FREESTANDING,                                                     ACTOR_EN_ITEM00,      SCENE_INSIDE_GANONS_CASTLE,         TWO_ACTOR_PARAMS(1743, -528),        "MQ Water Trial Heart",                        RHT_GANONS_CASTLE_HEART,                                         RG_RECOVERY_HEART,    SpoilerCollectionCheck::RandomizerInf(RAND_INF_GANONS_CASTLE_MQ_WATER_TRIAL_HEART));
     locationTable[RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_RIGHT_HEART] =              Location::Collectable(RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_RIGHT_HEART,              RCQUEST_MQ,      RCTYPE_FREESTANDING,                                                     ACTOR_EN_ITEM00,      SCENE_INSIDE_GANONS_CASTLE,         TWO_ACTOR_PARAMS(-2506, -1096),      "MQ Light Trial Right Heart",                  RHT_GANONS_CASTLE_HEART,                                         RG_RECOVERY_HEART,    SpoilerCollectionCheck::RandomizerInf(RAND_INF_GANONS_CASTLE_MQ_LIGHT_TRIAL_RIGHT_HEART));
     locationTable[RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_LEFT_HEART] =               Location::Collectable(RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_LEFT_HEART,               RCQUEST_MQ,      RCTYPE_FREESTANDING,                                                     ACTOR_EN_ITEM00,      SCENE_INSIDE_GANONS_CASTLE,         TWO_ACTOR_PARAMS(-2655, -549),       "MQ Light Trial Left Heart",                   RHT_GANONS_CASTLE_HEART,                                         RG_RECOVERY_HEART,    SpoilerCollectionCheck::RandomizerInf(RAND_INF_GANONS_CASTLE_MQ_LIGHT_TRIAL_LEFT_HEART));
+
+    // clang-format on
 }
 
-static RegisterShipInitFunc initFunc(Rando::StaticData::RegisterFreestandingLocations);
+static RegisterShipInitFunc registerShuffleFreestanding(RegisterShuffleFreestanding, { "IS_RANDO" });
+static RegisterShipInitFunc registerShuffleFreestandingLocations(Rando::StaticData::RegisterFreestandingLocations);

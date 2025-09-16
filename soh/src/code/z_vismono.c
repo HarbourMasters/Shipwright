@@ -16,7 +16,7 @@
 
 // Upstream TODO: Replace these ones they are served from other headers
 #define ASSERT(cond, msg, file, line) assert(cond)
-#define GPACK_IA16(i, a)    (((i) << 8) | (a))
+#define GPACK_IA16(i, a) (((i) << 8) | (a))
 
 // Height of the fragments the color frame buffer (CFB) is split into.
 // It is the maximum amount of lines such that all rgba16 SCREEN_WIDTH-long lines fit into

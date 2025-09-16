@@ -139,7 +139,7 @@ static char* sShopItemDescriptions[] = {
     "爆弾×5       ",  // "Bomb x5"
     "赤クスリ      ", // "Red medicine"
     "赤クスリ      ", // "Red medicine"
-    "Random Item  "  // "Random Item"
+    "Random Item  "   // "Random Item"
 };
 
 static s16 sMaskShopItems[8] = {
@@ -328,7 +328,7 @@ void EnGirlA_SetupAction(EnGirlA* this, EnGirlAActionFunc func) {
 
 // #region SOH [Enhancement] [Randomizer]
 s32 EnGirlA_TryChangeShopItemShip(EnGirlA* this, PlayState* play) {
-    if (!(IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0))){
+    if (!(IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0))) {
         switch (this->actor.params) {
             case SI_BOMBCHU_10_2:
                 if (Flags_GetItemGetInf(ITEMGETINF_06)) {
@@ -380,7 +380,7 @@ s32 EnGirlA_TryChangeShopItemShip(EnGirlA* this, PlayState* play) {
                 break;
         }
     }
-    if (this->actor.params == SI_MILK_BOTTLE){
+    if (this->actor.params == SI_MILK_BOTTLE) {
         if (Flags_GetItemGetInf(ITEMGETINF_TALON_BOTTLE)) {
             this->actor.params = SI_RECOVERY_HEART;
             return true;
@@ -389,7 +389,8 @@ s32 EnGirlA_TryChangeShopItemShip(EnGirlA* this, PlayState* play) {
         ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
         if (Flags_GetRandomizerInf(shopItemIdentity.randomizerInf)) {
             this->actor.params = SI_SOLD_OUT;
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(
+                shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
             // Undo the rotation for spiritual stones
             if (getItemEntry.getItemId >= RG_KOKIRI_EMERALD && getItemEntry.getItemId <= RG_ZORA_SAPPHIRE) {
@@ -473,7 +474,7 @@ void EnGirlA_InitItem(EnGirlA* this, PlayState* play) {
         osSyncPrintf("引数がおかしいよ(arg_data=%d)！！\n", this->actor.params);
         osSyncPrintf(VT_RST);
         assert((params >= SI_MAX) && (params < 0));
-        //ASSERT(0, "0", "../z_en_girlA.c", 1421); zret assert, currently errors due to missing macro
+        // ASSERT(0, "0", "../z_en_girlA.c", 1421); zret assert, currently errors due to missing macro
         return;
     }
 
@@ -483,7 +484,8 @@ void EnGirlA_InitItem(EnGirlA* this, PlayState* play) {
 
         if (params == SI_RANDOMIZED_ITEM) {
             ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(
+                shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
             objectId = getItemEntry.objectId;
         }
@@ -505,7 +507,7 @@ void EnGirlA_InitItem(EnGirlA* this, PlayState* play) {
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("バンクが無いよ！！(%s)\n", sShopItemDescriptions[params]);
         osSyncPrintf(VT_RST);
-        //ASSERT(0, "0", "../z_en_girlA.c", 1434); zret assert, currently errors due to missing macro
+        // ASSERT(0, "0", "../z_en_girlA.c", 1434); zret assert, currently errors due to missing macro
         return;
     }
 
@@ -515,7 +517,7 @@ void EnGirlA_InitItem(EnGirlA* this, PlayState* play) {
 
 void EnGirlA_Init(Actor* thisx, PlayState* play) {
     // #region [Randomizer] [Enhancment]
-    if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0)){
+    if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0)) {
         EnGirlA* this = (EnGirlA*)thisx;
 
         EnGirlA_TryChangeShopItemShip(this, play);
@@ -688,7 +690,7 @@ s32 EnGirlA_CanBuy_DekuShield(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_GoronTunic(PlayState* play, EnGirlA* this) {
-    if (LINK_AGE_IN_YEARS == YEARS_CHILD && 
+    if (LINK_AGE_IN_YEARS == YEARS_CHILD &&
         (!IS_RANDO || Randomizer_GetSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -852,22 +854,21 @@ s32 EnGirlA_CanBuy_Fairy(PlayState* play, EnGirlA* this) {
 
 s32 EnGirlA_CanBuy_Randomizer(PlayState* play, EnGirlA* this) {
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
-    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
-    ItemObtainability itemObtainability = Randomizer_GetItemObtainabilityFromRandomizerCheck(shopItemIdentity.randomizerCheck);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(
+        shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+    ItemObtainability itemObtainability =
+        Randomizer_GetItemObtainabilityFromRandomizerCheck(shopItemIdentity.randomizerCheck);
 
     if (itemObtainability == CANT_OBTAIN_NEED_EMPTY_BOTTLE) {
         return CANBUY_RESULT_NEED_BOTTLE;
     }
-    
+
     if (itemObtainability == CANT_OBTAIN_NEED_UPGRADE) {
         return CANBUY_RESULT_CANT_GET_NOW_5;
     }
 
-    if (
-        Flags_GetRandomizerInf(shopItemIdentity.randomizerInf) || 
-        itemObtainability == CANT_OBTAIN_ALREADY_HAVE || 
-        itemObtainability == CANT_OBTAIN_MISC
-    ) {
+    if (Flags_GetRandomizerInf(shopItemIdentity.randomizerInf) || itemObtainability == CANT_OBTAIN_ALREADY_HAVE ||
+        itemObtainability == CANT_OBTAIN_MISC) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
 
@@ -1058,7 +1059,8 @@ void EnGirlA_ItemGive_BottledItem(PlayState* play, EnGirlA* this) {
 void EnGirlA_ItemGive_Randomizer(PlayState* play, EnGirlA* this) {
     Player* player = GET_PLAYER(play);
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
-    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(
+        shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
     Rupees_ChangeBy(-this->basePrice);
@@ -1097,7 +1099,7 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(PlayState* play, EnGirlA* this) {
     gSaveContext.ship.pendingSaleMod = entry.modIndex;
     Rupees_ChangeBy(-this->basePrice);
 
-	// Normally, buying a bombchu pack sets a flag indicating the pack is now sold out
+    // Normally, buying a bombchu pack sets a flag indicating the pack is now sold out
     // If they're in logic for rando, skip setting that flag so they can be purchased repeatedly
     // #region [Enhancment]
     if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0)) {
@@ -1193,14 +1195,15 @@ void EnGirlA_SetItemDescription(PlayState* play, EnGirlA* this) {
 void EnGirlA_SetItemOutOfStock(PlayState* play, EnGirlA* this) {
     this->isInvisible = true;
     this->actor.draw = NULL;
-    if (((this->actor.params >= SI_KEATON_MASK) && (this->actor.params <= SI_GERUDO_MASK)) || this->actor.params == SI_RANDOMIZED_ITEM) {
+    if (((this->actor.params >= SI_KEATON_MASK) && (this->actor.params <= SI_GERUDO_MASK)) ||
+        this->actor.params == SI_RANDOMIZED_ITEM) {
         this->actor.textId = 0xBD;
     }
 }
 
 void EnGirlA_UpdateStockedItem(PlayState* play, EnGirlA* this) {
     // #region [Randomizer] [Enhancment]
-    if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0)){
+    if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0)) {
         ShopItemEntry* itemEntry;
         if (EnGirlA_TryChangeShopItemShip(this, play)) {
             EnGirlA_InitItem(this, play);
@@ -1316,7 +1319,7 @@ void EnGirlA_WaitForObject(EnGirlA* this, PlayState* play) {
             EnGirlA_SetItemDescription(play, this);
         }
         // #region [Enhancment] [Randomizer]
-        if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0)) { 
+        if (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0)) {
             this->setOutOfStockFunc = EnGirlA_SetItemOutOfStock;
             this->updateStockedItemFunc = EnGirlA_UpdateStockedItem;
             this->getItemId = itemEntry->getItemId;
@@ -1326,8 +1329,7 @@ void EnGirlA_WaitForObject(EnGirlA* this, PlayState* play) {
             // If Better Bombchu Shopping is on, make the 10 pack affordable without a wallet upgrade
             if (this->getItemId == GI_BOMBCHUS_10) {
                 this->basePrice = 99;
-            } 
-            else {
+            } else {
                 this->basePrice = itemEntry->price;
             }
             this->itemCount = itemEntry->count;
@@ -1349,15 +1351,19 @@ void EnGirlA_WaitForObject(EnGirlA* this, PlayState* play) {
 
             if (params == SI_RANDOMIZED_ITEM) {
                 ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
-                GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+                GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(
+                    shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
                 this->actor.textId = 0x9100 + (shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
-                this->itemBuyPromptTextId = 0x9100 + ((shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS);
+                this->itemBuyPromptTextId =
+                    0x9100 + ((shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS);
                 this->getItemId = getItemEntry.getItemId;
                 this->basePrice = shopItemIdentity.itemPrice;
                 this->giDrawId = getItemEntry.gid;
 
-                // Correct the rotation for spiritual stones, but only if mysterious shuffle isn't on, else it's obvious what's there in shops
-                if (!CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && (getItemEntry.getItemId >= RG_KOKIRI_EMERALD && getItemEntry.getItemId <= RG_ZORA_SAPPHIRE)) {
+                // Correct the rotation for spiritual stones, but only if mysterious shuffle isn't on, else it's obvious
+                // what's there in shops
+                if (!CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) &&
+                    (getItemEntry.getItemId >= RG_KOKIRI_EMERALD && getItemEntry.getItemId <= RG_ZORA_SAPPHIRE)) {
                     this->actor.shape.rot.y = this->actor.shape.rot.y + 20000;
                 }
             }
@@ -1432,8 +1438,11 @@ void EnGirlA_Draw(Actor* thisx, PlayState* play) {
         func_80A3C498(&this->actor, play, 0);
 
         ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
-        GetItemEntry getItemEntry = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) && this->actor.params == SI_RANDOMIZED_ITEM) ? GetItemMystery() : 
-                                    Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+        GetItemEntry getItemEntry = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) &&
+                                     this->actor.params == SI_RANDOMIZED_ITEM)
+                                        ? GetItemMystery()
+                                        : Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(
+                                              shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
         EnItem00_CustomItemsParticles(&this->actor, play, getItemEntry);
         GetItemEntry_Draw(play, getItemEntry);

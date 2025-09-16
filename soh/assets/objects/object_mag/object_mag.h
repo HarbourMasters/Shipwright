@@ -9,11 +9,20 @@ static const ALIGN_ASSET(2) char gTitleZeldaShieldLogoMQTex[] = dgTitleZeldaShie
 #define dgTitleZeldaShieldLogoTex "__OTR__objects/object_mag/gTitleZeldaShieldLogoTex"
 static const ALIGN_ASSET(2) char gTitleZeldaShieldLogoTex[] = dgTitleZeldaShieldLogoTex;
 
+#define dgTitleCopyright1998Tex "__OTR__objects/object_mag/gTitleCopyright1998Tex"
+static const ALIGN_ASSET(2) char gTitleCopyright1998Tex[] = dgTitleCopyright1998Tex;
+
 #define dgTitleCopyright19982002Tex "__OTR__objects/object_mag/gTitleCopyright19982002Tex"
 static const ALIGN_ASSET(2) char gTitleCopyright19982002Tex[] = dgTitleCopyright19982002Tex;
 
 #define dgTitleCopyright19982003Tex "__OTR__objects/object_mag/gTitleCopyright19982003Tex"
 static const ALIGN_ASSET(2) char gTitleCopyright19982003Tex[] = dgTitleCopyright19982003Tex;
+
+#define dgTitleCopyright19982004EngTex "__OTR__objects/object_mag/gTitleCopyright19982004EngTex"
+static const ALIGN_ASSET(2) char gTitleCopyright19982004EngTex[] = dgTitleCopyright19982004EngTex;
+
+#define dgTitleCopyright19982004JpnTex "__OTR__objects/object_mag/gTitleCopyright19982004JpnTex"
+static const ALIGN_ASSET(2) char gTitleCopyright19982004JpnTex[] = dgTitleCopyright19982004JpnTex;
 
 #define dgTitleMasterQuestSubtitleTex "__OTR__objects/object_mag/gTitleMasterQuestSubtitleTex"
 static const ALIGN_ASSET(2) char gTitleMasterQuestSubtitleTex[] = dgTitleMasterQuestSubtitleTex;

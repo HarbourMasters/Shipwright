@@ -1,8 +1,6 @@
 #include "playthrough.hpp"
 
 #include <libultraship/libultraship.h>
-#include <boost_custom/container_hash/hash_32.hpp>
-#include "custom_messages.hpp"
 #include "fill.hpp"
 #include "../location_access.h"
 #include "random.hpp"
@@ -16,14 +14,14 @@
 
 namespace Playthrough {
 
-int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks) {
+int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
+                     std::set<RandomizerTrick> enabledTricks) {
     // initialize the RNG with just the seed incase any settings need to be
     // resolved to something random
     Random_Init(seed);
 
     auto ctx = Rando::Context::GetInstance();
     ctx->overrides.clear();
-    CustomMessages::ClearMessages();
     ctx->ItemReset();
     ctx->HintReset();
     ctx->GetLogic()->Reset();
@@ -63,10 +61,9 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
         settingsStr += (char*)gBuildVersion;
     }
 
-    uint32_t finalHash = boost::hash_32<std::string>{}(std::to_string(ctx->GetSeed()) + settingsStr);
+    uint32_t finalHash = SohUtils::Hash(std::to_string(ctx->GetSeed()) + settingsStr);
     Random_Init(finalHash);
     ctx->SetHash(std::to_string(finalHash));
-
 
     if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
         VanillaFill(); // Just place items in their vanilla locations
@@ -80,8 +77,9 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     GenerateHash();
 
     if (true) {
-        //TODO: Handle different types of file output (i.e. Spoiler Log, Plando Template, Patch Files, Race Files, etc.)
-        // write logs
+        // TODO: Handle different types of file output (i.e. Spoiler Log, Plando Template, Patch Files, Race Files,
+        // etc.)
+        //  write logs
         SPDLOG_INFO("Writing Spoiler Log...");
         StartPerformanceTimer(PT_SPOILER_LOG);
         if (SpoilerLog_Write()) {
@@ -99,14 +97,15 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
 }
 
 // used for generating a lot of seeds at once
-int Playthrough_Repeat(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks, int count /*= 1*/) {
+int Playthrough_Repeat(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
+                       int count /*= 1*/) {
     SPDLOG_INFO("GENERATING {} SEEDS", count);
     auto ctx = Rando::Context::GetInstance();
     uint32_t repeatedSeed = 0;
     for (int i = 0; i < count; i++) {
-        ctx->SetSeedString(std::to_string(rand() % 0xFFFFFFFF));
-        repeatedSeed = boost::hash_32<std::string>{}(ctx->GetSeedString());
-        ctx->SetSeed(repeatedSeed % 0xFFFFFFFF);
+        ctx->SetSeedString(std::to_string(rand()));
+        repeatedSeed = SohUtils::Hash(ctx->GetSeedString());
+        ctx->SetSeed(repeatedSeed);
         SPDLOG_DEBUG("testing seed: %d", repeatedSeed);
         ClearProgress();
         Playthrough_Init(ctx->GetSeed(), excludedLocations, enabledTricks);

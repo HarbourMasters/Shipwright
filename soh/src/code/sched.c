@@ -480,7 +480,7 @@ void Sched_ThreadEntry(void* arg) {
 }
 
 void Sched_Init(SchedContext* sc, void* stack, OSPri priority, UNK_TYPE arg3, UNK_TYPE arg4, IrqMgr* irqMgr) {
-    memset(sc,0, sizeof(SchedContext));
+    memset(sc, 0, sizeof(SchedContext));
     sc->unk_24C = 1;
     osCreateMesgQueue(&sc->interruptQ, sc->intBuf, 8);
     osCreateMesgQueue(&sc->cmdQ, sc->cmdMsgBuf, 8);

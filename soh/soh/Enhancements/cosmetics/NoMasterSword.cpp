@@ -19,10 +19,10 @@ void UpdateNoMSPatch() {
     bool shouldPatch = (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER &&
                         gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS &&
                         gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE &&
-                        (gSaveContext.equips.buttonItems[0] != ITEM_FISHING_POLE || 
-                        (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) &&
-                            !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON) &&
-                            !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE))));
+                        (gSaveContext.equips.buttonItems[0] != ITEM_FISHING_POLE ||
+                         (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) &&
+                          !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON) &&
+                          !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE))));
 
     if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MASTER_SWORD) && shouldPatch) {
         // Patching if conditions are met
@@ -38,9 +38,12 @@ void UpdateNoMSPatch() {
             std::string patchName = "adultNoMS." + std::to_string(3) + "." + std::to_string(i);
             ResourceMgr_PatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathFarDL, patchName.c_str(), i, gsDPNoOp());
         }
-        ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "adultNoMSHylianShield1", 75, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, "adultNoMSHylianShield2", 71, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "adultNoMasterSword1", 2, gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "adultNoMSHylianShield1", 75,
+                                   gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultHylianShieldSwordAndSheathFarDL, "adultNoMSHylianShield2", 71,
+                                   gsSPEndDisplayList());
+        ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "adultNoMasterSword1", 2,
+                                   gsSPEndDisplayList());
         ResourceMgr_PatchGfxByName(gLinkAdultMasterSwordAndSheathFarDL, "adultNoMasterSword2", 2, gsSPEndDisplayList());
     } else {
         // Unpatching if conditions are not met
@@ -80,26 +83,27 @@ void RegisterNoMasterSword() {
             *should = false;
         }
     });
-    
+
     // skip post pedestal animation when we don't have a master sword
     COND_VB_SHOULD(VB_EXECUTE_PLAYER_STARTMODE_FUNC, IS_RANDO && MASTER_SWORD_SHUFFLED, {
         int32_t startMode = va_arg(args, int32_t);
         Player* player = GET_PLAYER(gPlayState);
 
-        if (startMode == PLAYER_START_MODE_TIME_TRAVEL && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+        if (startMode == PLAYER_START_MODE_TIME_TRAVEL &&
+            !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
             // don't run the vanilla startMode func
             *should = false;
-            
+
             // position link correctly
             Math_Vec3f_Copy(&player->actor.world.pos, &D_808546F4);
             player->yaw = player->actor.shape.rot.y = -0x8000;
-            
+
             // execute the idle startMode func
             Player_StartMode_Idle(gPlayState, player);
         }
     });
 
-    COND_HOOK(OnPlayerUpdate, IS_RANDO, []{
+    COND_HOOK(OnPlayerUpdate, IS_RANDO, [] {
         static uint16_t lastItemOnB = gSaveContext.equips.buttonItems[0];
         if (lastItemOnB != gSaveContext.equips.buttonItems[0]) {
             UpdateNoMSPatch();

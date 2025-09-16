@@ -10,6 +10,7 @@
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "objects/object_kusa/object_kusa.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_THROW_ONLY)
 
@@ -126,6 +127,10 @@ s32 EnKusa_SnapToFloor(EnKusa* this, PlayState* play, f32 yOffset) {
 void EnKusa_DropCollectible(EnKusa* this, PlayState* play) {
     s16 dropParams;
 
+    if (!GameInteractor_Should(VB_GRASS_DROP_ITEM, true, this)) {
+        return;
+    }
+
     switch (this->actor.params & 3) {
         case ENKUSA_TYPE_0:
         case ENKUSA_TYPE_2:
@@ -138,11 +143,9 @@ void EnKusa_DropCollectible(EnKusa* this, PlayState* play) {
             break;
         case ENKUSA_TYPE_1:
             if (CVarGetInteger(CVAR_ENHANCEMENT("NoRandomDrops"), 0)) {
-            }
-            else if (CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0)) {
+            } else if (CVarGetInteger(CVAR_ENHANCEMENT("NoHeartDrops"), 0)) {
                 Item_DropCollectible(play, &this->actor.world.pos, ITEM00_SEEDS);
-            }
-            else if (Rand_ZeroOne() < 0.5f) {
+            } else if (Rand_ZeroOne() < 0.5f) {
                 Item_DropCollectible(play, &this->actor.world.pos, ITEM00_SEEDS);
             } else {
                 Item_DropCollectible(play, &this->actor.world.pos, ITEM00_HEART);
@@ -193,8 +196,8 @@ void EnKusa_SpawnFragments(EnKusa* this, PlayState* play) {
 
         scaleIndex = (s32)(Rand_ZeroOne() * 111.1f) & 7;
 
-        EffectSsKakera_Spawn(play, &pos, &velocity, &pos, -100, 64, 40, 3, 0, sFragmentScales[scaleIndex], 0, 0,
-                             80, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_KEEP, gCuttableShrubStalkDL);
+        EffectSsKakera_Spawn(play, &pos, &velocity, &pos, -100, 64, 40, 3, 0, sFragmentScales[scaleIndex], 0, 0, 80,
+                             KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_KEEP, gCuttableShrubStalkDL);
 
         pos.x = this->actor.world.pos.x + (dir->x * this->actor.scale.x * 40.0f);
         pos.y = this->actor.world.pos.y + (dir->y * this->actor.scale.y * 40.0f) + 10.0f;
@@ -206,8 +209,8 @@ void EnKusa_SpawnFragments(EnKusa* this, PlayState* play) {
 
         scaleIndex = (s32)(Rand_ZeroOne() * 111.1f) % 7;
 
-        EffectSsKakera_Spawn(play, &pos, &velocity, &pos, -100, 64, 40, 3, 0, sFragmentScales[scaleIndex], 0, 0,
-                             80, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_KEEP, gCuttableShrubTipDL);
+        EffectSsKakera_Spawn(play, &pos, &velocity, &pos, -100, 64, 40, 3, 0, sFragmentScales[scaleIndex], 0, 0, 80,
+                             KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_KEEP, gCuttableShrubTipDL);
     }
 }
 
@@ -215,8 +218,9 @@ void EnKusa_SpawnBugs(EnKusa* this, PlayState* play) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        Actor* bug = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_INSECT, this->actor.world.pos.x,
-                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, Rand_ZeroOne() * 0xFFFF, 0, 1, true);
+        Actor* bug =
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_INSECT, this->actor.world.pos.x, this->actor.world.pos.y,
+                        this->actor.world.pos.z, 0, Rand_ZeroOne() * 0xFFFF, 0, 1, true);
 
         if (bug == NULL) {
             break;
@@ -286,6 +290,10 @@ void EnKusa_WaitObject(EnKusa* this, PlayState* play) {
             EnKusa_SetupCut(this);
         } else {
             EnKusa_SetupMain(this);
+        }
+
+        if (!GameInteractor_Should(VB_GRASS_SETUP_DRAW, true, this)) {
+            return;
         }
 
         this->actor.draw = EnKusa_Draw;

@@ -142,8 +142,7 @@ void ObjMure_SpawnActors0(ObjMure* this, PlayState* play) {
     for (i = 0; i < maxChildren; i++) {
         if (this->children[i] != NULL) {
             // "Error: I already have a child(%s %d)(arg_data 0x%04x)"
-            osSyncPrintf("Error : 既に子供がいる(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
-                         this->actor.params);
+            osSyncPrintf("Error : 既に子供がいる(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, this->actor.params);
         }
         switch (this->childrenStates[i]) {
             case OBJMURE_CHILD_STATE_1:

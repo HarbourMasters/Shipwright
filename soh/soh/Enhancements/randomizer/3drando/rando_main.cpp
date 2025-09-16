@@ -11,7 +11,7 @@
 #include "soh/cvar_prefixes.h"
 
 void RandoMain::GenerateRando(std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
-    std::string seedString) {
+                              std::string seedString) {
 
     Rando::Context::GetInstance()->SetSeedGenerated(GenerateRandomizer(excludedLocations, enabledTricks, seedString));
 

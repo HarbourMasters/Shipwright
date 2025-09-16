@@ -3,7 +3,6 @@
 
 #include <libultraship/libultra.h>
 #include "global.h"
-#include <soh/Enhancements/randomizer/ShuffleSilverRupees.h>
 
 struct EnGSwitch;
 
@@ -57,7 +56,6 @@ typedef struct EnGSwitch {
     /* 0x0178 */ s8 objIndex;
     /* 0x017C */ ColliderCylinder collider;
     /* 0x01C8 */ EnGSwitchEffect effects[100];
-    /*        */ SilverRupeeIdentity srIdentity;
 } EnGSwitch; // size = 0x12F8
 
 #endif

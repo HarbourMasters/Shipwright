@@ -1,0 +1,42 @@
+<Root>
+	<File Name="object_bv" Segment="6">
+		<Texture Name="gBarinadeTitleCardJPNTex" OutName="barinade_jpn_title_card" Format="i8" Width="128" Height="40" Offset="0x1230" />
+		<Texture Name="gBarinadeTitleCardENGTex" OutName="barinade_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x2630" />
+	</File>
+	<File Name="object_fd" Segment="6">
+		<Texture Name="gVolvagiaBossTitleCardJPNTex" OutName="volvagia_boss_jpn_title_card" Format="i8" Width="128" Height="40" Offset="0xd700" />
+		<Texture Name="gVolvagiaBossTitleCardENGTex" OutName="volvagia_boss_eng_title_card" Format="i8" Width="128" Height="40" Offset="0xeb00" />
+	</File>
+	<File Name="object_fhg" Segment="6">
+		<Texture Name="gPhantomGanonTitleCardJPNTex" OutName="phantom_ganon_jpn_title_card" Format="i8" Width="128" Height="40" Offset="0x59a0" />
+		<Texture Name="gPhantomGanonTitleCardENGTex" OutName="phantom_ganon_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x6da0" />
+	</File>
+	<File Name="object_ganon" Segment="6">
+		<Texture Name="gGanondorfTitleCardJPNTex" OutName="ganondorf_jpn_title_card" Format="i8" Width="128" Height="40" Offset="0xcf00" />
+		<Texture Name="gGanondorfTitleCardENGTex" OutName="ganondorf_eng_title_card" Format="i8" Width="128" Height="40" Offset="0xe300" />
+	</File>
+	<File Name="object_ganon2" Segment="6">
+		<Texture Name="gGanonTitleCardJPNTex" OutName="ganon_jpn_title_card" Format="i8" Width="128" Height="40" Offset="0x21a90" />
+		<Texture Name="gGanonTitleCardENGTex" OutName="ganon_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x22e90" />
+	</File>
+	<File Name="object_goma" Segment="6">
+		<Texture Name="gGohmaTitleCardJPNTex" OutName="gohma_jpn_title_card" Format="i8" Width="128" Height="40" Offset="0x19ba8" />
+		<Texture Name="gGohmaTitleCardENGTex" OutName="gohma_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x1afa8" />
+	</File>
+	<File Name="object_kingdodongo" Segment="6">
+		<Texture Name="gKingDodongoTitleCardJPNTex" OutName="king_dodongo_jpn_title_card" Format="i8" Width="128" Height="40" Offset="0x17410" />
+		<Texture Name="gKingDodongoTitleCardENGTex" OutName="king_dodongo_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x18810" />
+	</File>
+	<File Name="object_mo" Segment="6">
+		<Texture Name="gMorphaTitleCardJPNTex" OutName="morpha_jpn_title_card" Format="i8" Width="128" Height="40" Offset="0x1010" />
+		<Texture Name="gMorphaTitleCardENGTex" OutName="morpha_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x2410" />
+	</File>
+	<File Name="object_sst" Segment="6">
+		<Texture Name="gBongoTitleCardJPNTex" OutName="bongo_jpn_title_card" Format="i8" Width="128" Height="40" Offset="0x13d80" />
+		<Texture Name="gBongoTitleCardENGTex" OutName="bongo_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x15180" />
+	</File>
+	<File Name="object_tw" Segment="6">
+		<Texture Name="gTwinrovaTitleCardJPNTex" OutName="twinrova_jpn_title_card" Format="i8" Width="128" Height="40" Offset="0x2e170" />
+		<Texture Name="gTwinrovaTitleCardENGTex" OutName="twinrova_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x2f570" />
+	</File>
+</Root>

@@ -1,16 +1,7 @@
 #ifndef SHUFFLESILVERRUPEES_H
 #define SHUFFLESILVERRUPEES_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-void EnGSwitch_RandomizerInit(void* actorRef);
-#ifdef __cplusplus
-};
-#endif
-
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
-#include "randomizer_inf.h"
 #include "randomizerTypes.h"
 
 typedef struct SilverRupeeIdentity {
@@ -21,9 +12,6 @@ typedef struct SilverRupeeIdentity {
     } index;
     GetItemEntry itemEntry;
 } SilverRupeeIdentity;
-
-void ShuffleSilverRupees_RegisterHooks();
-void ShuffleSilverRupees_UnregisterHooks();
 
 #ifdef __cplusplus
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>

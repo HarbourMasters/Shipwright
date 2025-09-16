@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_glasses" Segment="6">
+        <DList Name="gGiLensDL" Offset="0x0D80"/>
+        <DList Name="gGiLensGlassDL" Offset="0x1010"/>
+    </File>
+</Root>

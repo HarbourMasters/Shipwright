@@ -1,0 +1,7 @@
+<Root>
+    <File Name="object_gi_map" Segment="6">
+        <Texture Name="object_gi_mapTex_000D60" OutName="object_gi_mapTex_000D60" Format="i8" Width="32" Height="32" Offset="0xD60" AddedByScript="true"/>
+        <DList Name="gGiDungeonMapDL" Offset="0x03C0"/>
+        <DList Name="gGiStoneOfAgonyDL" Offset="0x0B70"/>
+    </File>
+</Root>

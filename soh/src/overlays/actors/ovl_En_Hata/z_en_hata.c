@@ -141,7 +141,5 @@ void EnHata_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
     Matrix_Scale(1.0f, 1.1f, 1.0f, MTXMODE_APPLY);
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime,
-                                               EnHata_OverrideLimbDraw,
-                      EnHata_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHata_OverrideLimbDraw, EnHata_PostLimbDraw, this);
 }

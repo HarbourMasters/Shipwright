@@ -2,6 +2,7 @@
 #include "static_data.h"
 #include <soh/OTRGlobals.h>
 #include "draw.h"
+#include <soh/ObjectExtension/ObjectExtension.h>
 
 extern "C" {
 #include "variables.h"
@@ -38,8 +39,9 @@ extern "C" void EnGSwitch_RandomizerDraw(Actor* thisx, PlayState* play) {
             EnItem00_CustomItemsParticles(thisx, play, GET_ITEM_MYSTERY);
             GetItemEntry_Draw(play, GET_ITEM_MYSTERY);
         } else {
-            EnItem00_CustomItemsParticles(thisx, play, srActor->srIdentity.itemEntry);
-            GetItemEntry_Draw(play, srActor->srIdentity.itemEntry);
+            SilverRupeeIdentity* srIdentity = ObjectExtension::GetInstance().Get<SilverRupeeIdentity>(srActor);
+            EnItem00_CustomItemsParticles(thisx, play, srIdentity->itemEntry);
+            GetItemEntry_Draw(play, srIdentity->itemEntry);
         }
         Matrix_Pop();
     }
@@ -100,69 +102,61 @@ std::unordered_map<Rando::Identifier, RandomizerGet> Rando::StaticData::silverTr
     { { SCENE_INSIDE_GANONS_CASTLE, RCQUEST_MQ, 321 }, RG_FIRE_TRIAL_MQ_SILVER_RUPEE },
 };
 
-void EnGSwitch_RandomizerInit(void* actorRef) {
-    Actor* actor = static_cast<Actor*>(actorRef);
-    if (actor->id != ACTOR_EN_G_SWITCH) return;
-
-    EnGSwitch* srActor = static_cast<EnGSwitch*>(actorRef);
+void EnGSwitch_RandomizerInit(void* actor) {
+    EnGSwitch* srActor = static_cast<EnGSwitch*>(actor);
+    SilverRupeeIdentity srIdentity;
     if (srActor->type == ENGSWITCH_SILVER_RUPEE) {
-        srActor->srIdentity = IdentifySilverRupee(actor->world.pos);
-        if (Flags_GetRandomizerInf(srActor->srIdentity.randomizerInf)) {
-            Actor_Kill(actor);
+        srIdentity = IdentifySilverRupee(srActor->actor.world.pos);
+        if (Flags_GetRandomizerInf(srIdentity.randomizerInf)) {
+            Actor_Kill(&srActor->actor);
         }
+        ObjectExtension::GetInstance().Set<SilverRupeeIdentity>(actor, std::move(srIdentity));
+    } else if (srActor->type == ENGSWITCH_SILVER_TRACKER) {
+        Rando::Identifier identifier = {static_cast<SceneID>(gPlayState->sceneNum), ResourceMgr_IsSceneMasterQuest(gPlayState->sceneNum) ? RCQUEST_MQ : RCQUEST_VANILLA, srActor->actor.params};
+        srIdentity.index.randomizerGet = Rando::StaticData::silverTrackerMap.at(identifier);
+        ObjectExtension::GetInstance().Set<SilverRupeeIdentity>(actor, std::move(srIdentity));
     } else {
-        Rando::Identifier identifier = {static_cast<SceneID>(gPlayState->sceneNum), ResourceMgr_IsSceneMasterQuest(gPlayState->sceneNum) ? RCQUEST_MQ : RCQUEST_VANILLA, actor->params};
-        srActor->srIdentity.index.randomizerGet = Rando::StaticData::silverTrackerMap.at(identifier);
+        LUSLOG_INFO("ENGSWITCH_TARGET_RUPEE or ENGSWITCH_ARCHERY_POT, no Randomizer logic required");
     }
 }
 
-void ShuffleSilverRupees_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
-    va_list args;
-    va_copy(args, originalArgs);
-    Actor* actor = va_arg(args, Actor*);
-    va_end(args);
+void RegisterShuffleSilverRupees() {
+    bool shouldRegister = IS_RANDO && true; //RAND_GET_OPTION(RSK_SHUFFLE_SILVER_RUPEES);
 
-    EnGSwitch* srActor = reinterpret_cast<EnGSwitch*>(actor);
-
-    if (id == VB_SILVER_RUPEE_COLLECT) {
-        Flags_SetRandomizerInf(srActor->srIdentity.randomizerInf);
-        Actor_Kill(actor);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_G_SWITCH, shouldRegister, EnGSwitch_RandomizerInit);
+    COND_VB_SHOULD(VB_SILVER_RUPEE_COLLECT, shouldRegister, {
+        EnGSwitch* srActor = va_arg(args, EnGSwitch*);
+        SilverRupeeIdentity* srIdentity = ObjectExtension::GetInstance().Get<SilverRupeeIdentity>(srActor);
+        Flags_SetRandomizerInf(srIdentity->randomizerInf);
+        Actor_Kill(&srActor->actor);
         *should = false;
-    } else if (id == VB_SILVER_RUPEE_COUNT_CHECK) {
+    });
+    COND_VB_SHOULD(VB_SILVER_RUPEE_COUNT_CHECK, shouldRegister, {
+        EnGSwitch* srActor = va_arg(args, EnGSwitch*);
+        SilverRupeeIdentity* srIdentity = ObjectExtension::GetInstance().Get<SilverRupeeIdentity>(srActor);
         // check if all silver rupees for that room have been collected
         // we run this every frame in case one of the rupees for a room
         // is randomized into the same room. Without this we'd need to
         // reload the scene after collecting it to unlock the door.
-        if (OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(srActor->srIdentity.index.randomizerGet).AllCollected()) {
+        if (OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(srIdentity->index.randomizerGet).AllCollected()) {
             if ((gPlayState->sceneNum == SCENE_GERUDO_TRAINING_GROUND) && (srActor->actor.room == 2)) {
                 Flags_SetTempClear(gPlayState, srActor->actor.room);
             } else {
                 Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
                 Flags_SetSwitch(gPlayState, srActor->switchFlag);
             }
-            Actor_Kill(actor);
+            Actor_Kill(&srActor->actor);
         }
         *should = false;
-    } else if (id == VB_SILVER_RUPEE_SETUP_DRAW) {
+    });
+    COND_VB_SHOULD(VB_SILVER_RUPEE_SETUP_DRAW, shouldRegister, {
+        EnGSwitch* srActor = va_arg(args, EnGSwitch*);
         srActor->actor.draw = (ActorFunc)EnGSwitch_RandomizerDraw;
         *should = false;
-    }
+    })
 }
 
-uint32_t onSRVanillaBehaviorHook = 0;
-uint32_t onSRActorInitHook = 0;
-
-void ShuffleSilverRupees_RegisterHooks() {
-    onSRActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(EnGSwitch_RandomizerInit);
-    onSRVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShuffleSilverRupees_OnVanillaBehaviorHandler);
-}
-
-void ShuffleSilverRupees_UnregisterHooks() {
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onSRActorInitHook);
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onSRVanillaBehaviorHook);
-    onSRVanillaBehaviorHook = 0;
-    onSRActorInitHook = 0;
-}
+static RegisterShipInitFunc initFunc(RegisterShuffleSilverRupees, { "IS_RANDO" });
 
 void Rando::StaticData::RegisterSilverRupeeLocations() {
     locationTable[RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_1] = Location::Base(RC_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_1, RCQUEST_VANILLA, RCTYPE_SILVER_RUPEE, RCAREA_ICE_CAVERN, ACTOR_EN_G_SWITCH, SCENE_ICE_CAVERN, TWO_ACTOR_PARAMS(389, -382), "Spinning Blades Silver Rupee 1", "Ice Cavern Spinning Blades Silver Rupee 1", RHT_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE, RG_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE, SpoilerCollectionCheck::RandomizerInf(RAND_INF_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE_1));
@@ -345,7 +339,8 @@ void Rando::StaticData::RegisterSilverRupeeLocations() {
     locationTable[RC_SHADOW_TRIAL_MQ_SILVER_RUPEE_5] = Location::Base(RC_SHADOW_TRIAL_MQ_SILVER_RUPEE_5, RCQUEST_MQ, RCTYPE_SILVER_RUPEE, RCAREA_GANONS_CASTLE, ACTOR_EN_G_SWITCH, SCENE_INSIDE_GANONS_CASTLE, TWO_ACTOR_PARAMS(1322, -2262), "Shadow Trial MQ Silver Rupee 5", "Ganon's Castle Shadow Trial MQ Silver Rupee 5", RHT_GANONS_CASTLE_SILVER_RUPEE, RG_SHADOW_TRIAL_MQ_SILVER_RUPEE, SpoilerCollectionCheck::RandomizerInf(RAND_INF_SHADOW_TRIAL_MQ_SILVER_RUPEE_5));
 }
 
-static RegisterShipInitFunc initFunc(Rando::StaticData::RegisterSilverRupeeLocations);
+static ObjectExtension::Register<SilverRupeeIdentity> RegisterSilverRupeeIdentity;
+static RegisterShipInitFunc registerFunc(Rando::StaticData::RegisterSilverRupeeLocations);
 
 Rando::SilverRupeeCounter::SilverRupeeCounter() : mCollected(0), mTotal(0), mRandoGet(RG_NONE) {
 }
