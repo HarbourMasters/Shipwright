@@ -409,39 +409,41 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
     },
     { STAT_TYPE_PLAYER,
         {
-            { ITEM_STICK,	                { STAT_TYPE_PLAYER, "Consumed - Deku Stick",    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { ITEM_NUT,		                { STAT_TYPE_PLAYER, "Consumed - Deku Nut", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { ITEM_BOMB,		            { STAT_TYPE_PLAYER, "Consumed - Bomb", 		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { ITEM_BOW,                     { STAT_TYPE_PLAYER, "Consumed - Arrow", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { ITEM_SLINGSHOT,	            { STAT_TYPE_PLAYER, "Consumed - Seed", 		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { ITEM_BOMBCHU,	                { STAT_TYPE_PLAYER, "Consumed - Bombchu", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { ITEM_BEAN,		            { STAT_TYPE_PLAYER, "Consumed - Magic Bean",    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BUTTON_PRESSES_A,	    { STAT_TYPE_PLAYER, "Pressed - A",				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BUTTON_PRESSES_B,		{ STAT_TYPE_PLAYER, "Pressed - B", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BUTTON_PRESSES_L,		{ STAT_TYPE_PLAYER, "Pressed - L", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BUTTON_PRESSES_R,       { STAT_TYPE_PLAYER, "Pressed - R", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BUTTON_PRESSES_Z,		{ STAT_TYPE_PLAYER, "Pressed - Z", 				UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BUTTON_PRESSES_CUP,	    { STAT_TYPE_PLAYER, "Pressed - C Up", 			UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BUTTON_PRESSES_CRIGHT,	{ STAT_TYPE_PLAYER, "Pressed - C Right",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BUTTON_PRESSES_CDOWN,	{ STAT_TYPE_PLAYER, "Pressed - C Down",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BUTTON_PRESSES_CLEFT,	{ STAT_TYPE_PLAYER, "Pressed - C Left", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BUTTON_PRESSES_DUP,		{ STAT_TYPE_PLAYER, "Pressed - D-Pad Up", 		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BUTTON_PRESSES_DRIGHT, 	{ STAT_TYPE_PLAYER, "Pressed - D-Pad Right", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BUTTON_PRESSES_DDOWN,	{ STAT_TYPE_PLAYER, "Pressed - D-Pad Down", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BUTTON_PRESSES_DLEFT,	{ STAT_TYPE_PLAYER, "Pressed - D-Pad Left", 	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BUTTON_PRESSES_START,	{ STAT_TYPE_PLAYER, "Pressed - Start",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_RUPEES_COLLECTED,	    { STAT_TYPE_PLAYER, "Collected - Rupees", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_RUPEES_SPENT,	        { STAT_TYPE_PLAYER, "Consumed - Rupees",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_DAMAGE_TAKEN,	        { STAT_TYPE_PLAYER, "Damage Taken",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_ICE_TRAPS,	            { STAT_TYPE_PLAYER, "Ice Traps",   		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_ROLLS,	                { STAT_TYPE_PLAYER, "Action - Rolls",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BONKS,	                { STAT_TYPE_PLAYER, "Action - Bonks",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_PAUSES,	                { STAT_TYPE_PLAYER, "Action - Pauses",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_STEPS,	                { STAT_TYPE_PLAYER, "Action - Steps Taken",   	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_SWORD_SWINGS,	        { STAT_TYPE_PLAYER, "Action - Sword Swings",   	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_SIDEHOPS,	            { STAT_TYPE_PLAYER, "Action - Sidehops",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BACKFLIPS,	            { STAT_TYPE_PLAYER, "Action - Backflips",   	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_TIME_BUNNY_HOOD,	    { STAT_TYPE_PLAYER, "Bunny Hood Time",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_STICK,	                { STAT_TYPE_PLAYER, "Consumed - Deku Stick",        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_NUT,		                { STAT_TYPE_PLAYER, "Consumed - Deku Nut", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOMB,		            { STAT_TYPE_PLAYER, "Consumed - Bomb", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOW,                     { STAT_TYPE_PLAYER, "Consumed - Arrow", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_SLINGSHOT,	            { STAT_TYPE_PLAYER, "Consumed - Seed", 		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BOMBCHU,	                { STAT_TYPE_PLAYER, "Consumed - Bombchu", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { ITEM_BEAN,		            { STAT_TYPE_PLAYER, "Consumed - Magic Bean",        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_A,	    { STAT_TYPE_PLAYER, "Pressed - A",				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_B,		{ STAT_TYPE_PLAYER, "Pressed - B", 				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_L,		{ STAT_TYPE_PLAYER, "Pressed - L", 				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_R,       { STAT_TYPE_PLAYER, "Pressed - R", 				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_Z,		{ STAT_TYPE_PLAYER, "Pressed - Z", 				    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_CUP,	    { STAT_TYPE_PLAYER, "Pressed - C Up", 			    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_CRIGHT,	{ STAT_TYPE_PLAYER, "Pressed - C Right",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_CDOWN,	{ STAT_TYPE_PLAYER, "Pressed - C Down",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_CLEFT,	{ STAT_TYPE_PLAYER, "Pressed - C Left", 		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_DUP,		{ STAT_TYPE_PLAYER, "Pressed - D-Pad Up", 		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_DRIGHT, 	{ STAT_TYPE_PLAYER, "Pressed - D-Pad Right", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_DDOWN,	{ STAT_TYPE_PLAYER, "Pressed - D-Pad Down", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_DLEFT,	{ STAT_TYPE_PLAYER, "Pressed - D-Pad Left", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUTTON_PRESSES_START,	{ STAT_TYPE_PLAYER, "Pressed - Start",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_RUPEES_COLLECTED,	    { STAT_TYPE_PLAYER, "Collected - Rupees", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_RUPEES_SPENT,	        { STAT_TYPE_PLAYER, "Consumed - Rupees",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_DAMAGE_TAKEN,	        { STAT_TYPE_PLAYER, "Damage Taken",   		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ICE_TRAPS,	            { STAT_TYPE_PLAYER, "Ice Traps",   		            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ROLLS,	                { STAT_TYPE_PLAYER, "Action - Rolls",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BONKS,	                { STAT_TYPE_PLAYER, "Action - Bonks",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_PAUSES,	                { STAT_TYPE_PLAYER, "Action - Pauses",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_STEPS,	                { STAT_TYPE_PLAYER, "Action - Steps Taken",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_SWORD_SWINGS,	        { STAT_TYPE_PLAYER, "Action - Sword Swings",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_SIDEHOPS,	            { STAT_TYPE_PLAYER, "Action - Sidehops",   	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BACKFLIPS,	            { STAT_TYPE_PLAYER, "Action - Backflips",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_TIME_BUNNY_HOOD,	    { STAT_TYPE_PLAYER, "Bunny Hood Time",   	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_PIECE_OF_HEART,	        { STAT_TYPE_PLAYER, "Collected - Piece of Heart",   UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_HEART_CONTAINER,	    { STAT_TYPE_PLAYER, "Collected - Heart Container",  UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
         }
     },
 };
@@ -926,6 +928,9 @@ void GameplayStats_AddCount(GameplayStatObject countObject) {
     }
 
     currentCounts.push_back(countObject);
+
+    std::sort(currentCounts.begin(), currentCounts.end(),
+              [](const GameplayStatObject& a, const GameplayStatObject& b) { return a.entryName < b.entryName; });
 }
 
 void GameplayStats_GetTimestampByActorId(uint32_t actorId) {
@@ -1370,7 +1375,10 @@ void RegisterGameplayStats() {
         }
 
         if (statObject.entryName == "Piece of Heart") {
+            GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_PIECE_OF_HEART, STAT_TYPE_PLAYER));
             GameplayStats_AddCount(statObject);
+        } else if (statObject.entryName == "Heart Container") {
+            GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_HEART_CONTAINER, STAT_TYPE_PLAYER));
         } else {
             GameplayStats_AddTimestamp(statObject);
         }

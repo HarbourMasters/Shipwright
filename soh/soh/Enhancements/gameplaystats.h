@@ -116,21 +116,23 @@ typedef enum {
     COUNT_BUTTON_PRESSES_DLEFT,
     COUNT_BUTTON_PRESSES_START,
     // Other counts
-    COUNT_RUPEES_COLLECTED, // z_parameter.cx
-    COUNT_RUPEES_SPENT,     // z_parameter.cx
+    COUNT_RUPEES_COLLECTED,
+    COUNT_RUPEES_SPENT,
     COUNT_CHESTS_OPENED,    // z_en_box.c
-    COUNT_DAMAGE_TAKEN,     // z_parameter.cx
-    COUNT_ICE_TRAPS,        // z_player.cx
-    COUNT_ROLLS,            // z_player.cx
-    COUNT_BONKS,            // z_player.cx
-    COUNT_PAUSES,           // z_kaleido_scope_call.cx
-    COUNT_STEPS,            // z_player.cx
+    COUNT_DAMAGE_TAKEN,
+    COUNT_ICE_TRAPS,
+    COUNT_ROLLS,
+    COUNT_BONKS,
+    COUNT_PAUSES,
+    COUNT_STEPS,
     COUNT_POTS_BROKEN,      // z_obj_tsubo.c
     COUNT_BUSHES_CUT,       // z_en_kusa.c
-    COUNT_SWORD_SWINGS,     // z_player.cx
-    COUNT_SIDEHOPS,         // z_player.cx
-    COUNT_BACKFLIPS,        // z_player.cx
-    COUNT_TIME_BUNNY_HOOD,  // z_play.cx
+    COUNT_SWORD_SWINGS,
+    COUNT_SIDEHOPS,
+    COUNT_BACKFLIPS,
+    COUNT_TIME_BUNNY_HOOD,
+    COUNT_PIECE_OF_HEART,
+    COUNT_HEART_CONTAINER,
 
     COUNT_MAX
 
