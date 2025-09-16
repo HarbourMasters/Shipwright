@@ -188,7 +188,6 @@ void RegisterExtraTraps() {
 
         *should = true;
         gSaveContext.ship.pendingIceTrapCount--;
-        gSaveContext.ship.stats.count[COUNT_ICE_TRAPS]++;
         GameInteractor_ExecuteOnItemReceiveHooks(ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ICE_TRAP));
         if (CVAR_EXTRA_TRAPS_VALUE) {
             RollRandomTrap(gPlayState->sceneNum + player->getItemEntry.drawItemId);

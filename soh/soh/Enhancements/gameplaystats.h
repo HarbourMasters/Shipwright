@@ -120,7 +120,7 @@ typedef enum {
     COUNT_RUPEES_SPENT,     // z_parameter.cx
     COUNT_CHESTS_OPENED,    // z_en_box.c
     COUNT_DAMAGE_TAKEN,     // z_parameter.cx
-    COUNT_ICE_TRAPS,        // z_player.c
+    COUNT_ICE_TRAPS,        // z_player.cx
     COUNT_ROLLS,            // z_player.cx
     COUNT_BONKS,            // z_player.cx
     COUNT_PAUSES,           // z_kaleido_scope_call.cx
@@ -130,7 +130,7 @@ typedef enum {
     COUNT_SWORD_SWINGS,     // z_player.cx
     COUNT_SIDEHOPS,         // z_player.cx
     COUNT_BACKFLIPS,        // z_player.cx
-    COUNT_TIME_BUNNY_HOOD,  // z_play.c
+    COUNT_TIME_BUNNY_HOOD,  // z_play.cx
 
     COUNT_MAX
 

@@ -433,6 +433,7 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
             { COUNT_RUPEES_COLLECTED,	    { STAT_TYPE_PLAYER, "Collected - Rupees", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_RUPEES_SPENT,	        { STAT_TYPE_PLAYER, "Consumed - Rupees",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_DAMAGE_TAKEN,	        { STAT_TYPE_PLAYER, "Damage Taken",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ICE_TRAPS,	            { STAT_TYPE_PLAYER, "Ice Traps",   		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_ROLLS,	                { STAT_TYPE_PLAYER, "Action - Rolls",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_BONKS,	                { STAT_TYPE_PLAYER, "Action - Bonks",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_PAUSES,	                { STAT_TYPE_PLAYER, "Action - Pauses",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
@@ -1354,6 +1355,10 @@ void RegisterGameplayStats() {
     });
     COND_HOOK(OnItemReceive, CVAR, [](GetItemEntry itemEntry) {
         if (itemEntry.modIndex == MOD_RANDOMIZER) {
+            if (itemEntry.itemId == RG_ICE_TRAP) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_ICE_TRAPS, STAT_TYPE_PLAYER));
+                return;
+            }
             isRandoItem = true;
         } else {
             isRandoItem = false;
