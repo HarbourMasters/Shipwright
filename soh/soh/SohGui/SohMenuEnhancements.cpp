@@ -888,6 +888,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("BowReticle"))
         .Options(CheckboxOptions().Tooltip("Aiming with a Bow or Slingshot will display a reticle as with the Hookshot "
                                            "when the projectile is ready to fire."));
+
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Hookshot", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Targetable Hookshot Reticle", WIDGET_CVAR_CHECKBOX)
