@@ -436,6 +436,7 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
             { COUNT_BONKS,	                { STAT_TYPE_PLAYER, "Action - Bonk",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_PAUSES,	                { STAT_TYPE_PLAYER, "Action - Pause",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_STEPS,	                { STAT_TYPE_PLAYER, "Action - Steps Taken",   	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_SWORD_SWINGS,	        { STAT_TYPE_PLAYER, "Action - Sword Swings",   	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
         }
     },
 };
@@ -1453,6 +1454,11 @@ void RegisterGameplayStats() {
                 if (player->stateFlags2 & PLAYER_STATE2_FOOTSTEP) {
                     GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_STEPS, STAT_TYPE_PLAYER));
                 }
+            }
+
+            if (player->heldItemAction >= PLAYER_IA_SWORD_MASTER &&
+                player->heldItemAction <= PLAYER_IA_SWORD_BIGGORON && player->meleeWeaponState == -1) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_SWORD_SWINGS, STAT_TYPE_PLAYER));
             }
 
         }

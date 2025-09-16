@@ -2368,10 +2368,6 @@ void func_80833A20(Player* this, s32 newMeleeWeaponState) {
               (this->meleeWeaponAnimation <= PLAYER_MWA_JUMPSLASH_FINISH))) {
             Player_PlayVoiceSfx(this, voiceSfx);
         }
-
-        if (this->heldItemAction >= PLAYER_IA_SWORD_MASTER && this->heldItemAction <= PLAYER_IA_SWORD_BIGGORON) {
-            gSaveContext.ship.stats.count[COUNT_SWORD_SWINGS]++;
-        }
     }
 
     this->meleeWeaponState = newMeleeWeaponState;

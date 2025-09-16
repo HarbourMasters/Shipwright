@@ -124,7 +124,7 @@ typedef enum {
     COUNT_ROLLS,            // z_player.cx
     COUNT_BONKS,            // z_player.cx
     COUNT_PAUSES,           // z_kaleido_scope_call.cx
-    COUNT_STEPS,            // z_player.c
+    COUNT_STEPS,            // z_player.cx
     COUNT_POTS_BROKEN,      // z_obj_tsubo.c
     COUNT_BUSHES_CUT,       // z_en_kusa.c
     COUNT_SWORD_SWINGS,     // z_player.c
