@@ -31,6 +31,7 @@
 
 #include "assets/objects/gameplay_keep/gameplay_keep.h"
 #include "overlays/actors/ovl_En_Box/z_en_box.h"
+#include "overlays/actors/ovl_En_Kusa/z_en_kusa.h"
 
 extern "C" {
 #include <z64.h>
@@ -53,6 +54,7 @@ using json = nlohmann::json;
 
 std::vector<GameplayStatObject> currentTimestamps;
 std::vector<GameplayStatObject> currentCounts;
+std::vector<GameplayStatObject> currentSceneTimers;
 uint32_t typeIndex = STAT_TYPE_ALL;
 ImVec4 emptyColor = { 0, 0, 0, 0 };
 bool isRandoItem = false;
@@ -440,6 +442,7 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
             { COUNT_PAUSES,	                { STAT_TYPE_PLAYER, "Action - Pauses",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_STEPS,	                { STAT_TYPE_PLAYER, "Action - Steps Taken",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_POTS_BROKEN,	        { STAT_TYPE_PLAYER, "Pots Shattered",   	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BUSHES_CUT,	            { STAT_TYPE_PLAYER, "Lawns Mowed",   	            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_SWORD_SWINGS,	        { STAT_TYPE_PLAYER, "Action - Sword Swings",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_SIDEHOPS,	            { STAT_TYPE_PLAYER, "Action - Sidehops",   	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_BACKFLIPS,	            { STAT_TYPE_PLAYER, "Action - Backflips",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
@@ -689,11 +692,18 @@ void GameplayStats_SaveFileActions(uint32_t action, int32_t fileNum) {
             listArray.push_back(GameplayStats_ObjectToJson(counts));
         }
         saveFile[std::to_string(gSaveContext.fileNum + 1)]["Counts"] = listArray;
+        listArray.clear();
+
+        for (auto& scenes : currentSceneTimers) {
+            listArray.push_back(GameplayStats_ObjectToJson(scenes));
+        }
+        saveFile[std::to_string(gSaveContext.fileNum + 1)]["Scenes"] = listArray;
     }
 
     if (action == STAT_ACTION_LOAD) {
         currentTimestamps.clear();
         currentCounts.clear();
+        currentSceneTimers.clear();
         if (saveFile.contains(std::to_string(fileNum + 1))) {
             for (auto& load : saveFile[std::to_string(fileNum + 1)]["Timestamps"]) {
                 currentTimestamps.push_back(GameplayStats_JsonToObject(load));
@@ -701,12 +711,16 @@ void GameplayStats_SaveFileActions(uint32_t action, int32_t fileNum) {
             for (auto& load : saveFile[std::to_string(fileNum + 1)]["Counts"]) {
                 currentCounts.push_back(GameplayStats_JsonToObject(load));
             }
+            for (auto& load : saveFile[std::to_string(fileNum + 1)]["Scenes"]) {
+                currentSceneTimers.push_back(GameplayStats_JsonToObject(load));
+            }
         }
     }
 
     if (action == STAT_ACTION_DELETE) {
         currentTimestamps.clear();
         currentCounts.clear();
+        currentSceneTimers.clear();
         if (saveFile.contains(std::to_string(fileNum + 1))) {
             saveFile.erase(std::to_string(fileNum + 1));
         }
@@ -717,6 +731,22 @@ void GameplayStats_SaveFileActions(uint32_t action, int32_t fileNum) {
         outputFile << saveFile.dump(4);
         outputFile.close();
     }
+}
+
+void GameplayStats_UpdateSceneTimer(GameplayStatObject sceneObject) {
+    if (sceneObject.entryName == "") {
+        return;
+    }
+
+    for (auto& scene : currentSceneTimers) {
+        if (scene.entryName == sceneObject.entryName) {
+            scene.entryTimestamp++;
+            return;
+        }
+    }
+
+    sceneObject.entryTimestamp = 1;
+    currentSceneTimers.push_back(sceneObject);
 }
 
 void GameplayStats_AddCount(GameplayStatObject countObject) {
@@ -848,6 +878,28 @@ void DrawGameplayStatsOptionsTab() {
     }
 }
 
+void GameplayStats_DrawSceneTimers() {
+    if (ImGui::BeginTable("Scenes", 2)) {
+        ImGui::TableSetupColumn("Scene Name");
+        ImGui::TableSetupColumn("Time Spent");
+        ImGui::TableHeadersRow();
+
+        for (auto& entry : currentSceneTimers) {
+            if (entry.entryColor == emptyColor) {
+                entry.entryColor = UIWidgets::ColorValues.at(UIWidgets::Colors::White);
+            }
+
+            ImGui::TableNextColumn();
+            ImGui::TextColored(entry.entryColor, entry.entryName.c_str());
+
+            ImGui::TableNextColumn();
+            ImGui::TextColored(entry.entryColor, formatTimeDisplay(entry.entryTimestamp / 2).c_str());
+        }
+
+        ImGui::EndTable();
+    }
+}
+
 void GameplayStats_DrawCounts(uint32_t typeIndex) {
     if (ImGui::BeginTable("Counts", 2)) {
         ImGui::TableSetupColumn("Name");
@@ -935,6 +987,7 @@ void GameplayStatsWindow::DrawElement() {
     if (!gPlayState) {
         ImGui::Text("Load into a File first");
     } else {
+        UIWidgets::PushStyleTabs(THEME_COLOR);
         if (ImGui::BeginTabBar("Gameplay Stats")) {
             if (ImGui::BeginTabItem("Timestamps")) {
                 if (ImGui::BeginChild("Timestamps Window")) {
@@ -963,8 +1016,16 @@ void GameplayStatsWindow::DrawElement() {
                 }
                 ImGui::EndTabItem();
             }
+            if (ImGui::BeginTabItem("SceneTimers")) {
+                if (ImGui::BeginChild("Scene Timers Window")) {
+                    GameplayStats_DrawSceneTimers();
+                    ImGui::EndChild();
+                }
+                ImGui::EndTabItem();
+            }
         }
         ImGui::EndTabBar();
+        UIWidgets::PopStyleTabs();
     }
 }
 
@@ -1198,15 +1259,28 @@ void RegisterGameplayStats() {
         if (actor->id == ACTOR_OBJ_TSUBO) {
             GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_POTS_BROKEN, STAT_TYPE_PLAYER));
         }
+        if (actor->id == ACTOR_EN_KUSA) {
+            GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUSHES_CUT, STAT_TYPE_PLAYER));
+        }
     });
-    COND_ID_HOOK(OnActorUpdate, ACTOR_EN_BOX, CVAR, [](void* refActor) { 
-        EnBox* actor = static_cast<EnBox*>(refActor);
-        if (actor->actionFunc != EnBox_Open) {
-            return;
+    COND_HOOK(OnActorUpdate, CVAR, [](void* refActor) { 
+        Actor* actor = static_cast<Actor*>(refActor);
+        if (actor->id == ACTOR_EN_BOX) {
+            EnBox* actor = static_cast<EnBox*>(refActor);
+            
+            if (actor->actionFunc != EnBox_Open) {
+                return;
+            }
+            if (actor->skelanime.curFrame == 30.0f) {
+                GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_CHESTS_OPENED, STAT_TYPE_PLAYER));
+                return;
+            }
         }
-        if (actor->skelanime.curFrame == 30.0f) {
-            GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_CHESTS_OPENED, STAT_TYPE_PLAYER));
+        if (actor->id == ACTOR_EN_KUSA) {
+            EnKusa* actor = static_cast<EnKusa*>(refActor);
+            //GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUSHES_CUT, STAT_TYPE_PLAYER));
         }
+        
     });
     COND_HOOK(OnSceneInit, CVAR, [](int16_t sceneNum) {
         auto statObject = GameplayStats_GetObject((uint32_t)sceneNum, STAT_TYPE_SCENE);
@@ -1215,6 +1289,7 @@ void RegisterGameplayStats() {
         }
 
         GameplayStats_AddTimestamp(statObject);
+        GameplayStats_UpdateSceneTimer(statObject);
     });
     COND_HOOK(OnAmmoUsed, CVAR, [](s16 item, s16 ammoUsed) {
         if (item == ITEM_SEEDS) {
@@ -1320,6 +1395,8 @@ void RegisterGameplayStats() {
             if (player->currentMask == PLAYER_MASK_BUNNY) {
                 GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_TIME_BUNNY_HOOD, STAT_TYPE_PLAYER));
             }
+
+            GameplayStats_UpdateSceneTimer(GameplayStats_GetObject(gPlayState->sceneNum, STAT_TYPE_SCENE));
         }
     });
     COND_HOOK(OnIceTrapReceived, CVAR, [](s16 item, s16 trapType) {
@@ -1347,6 +1424,7 @@ void RegisterGameplayStats() {
     COND_HOOK(OnPresentFileSelect, true, []() {
         currentTimestamps.clear();
         currentCounts.clear();
+        currentSceneTimers.clear();
     });
 }
 

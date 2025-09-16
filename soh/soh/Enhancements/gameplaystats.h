@@ -118,7 +118,7 @@ typedef enum {
     // Other counts
     COUNT_RUPEES_COLLECTED,
     COUNT_RUPEES_SPENT,
-    COUNT_CHESTS_OPENED, // z_en_box.c
+    COUNT_CHESTS_OPENED,
     COUNT_DAMAGE_TAKEN,
     COUNT_ROLLS,
     COUNT_BONKS,

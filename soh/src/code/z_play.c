@@ -1097,8 +1097,6 @@ void Play_Update(PlayState* play) {
                 if (!gSaveContext.ship.stats.gameComplete &&
                     (!IS_BOSS_RUSH || !gSaveContext.ship.quest.data.bossRush.isPaused)) {
                     gSaveContext.ship.stats.playTimer++;
-                    gSaveContext.ship.stats.sceneTimer++;
-                    gSaveContext.ship.stats.roomTimer++;
                 }
 
                 if (play->actorCtx.freezeFlashTimer && (play->actorCtx.freezeFlashTimer-- < 5)) {
