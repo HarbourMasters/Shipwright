@@ -1788,12 +1788,6 @@ void Player_PlaySteppingSfx(Player* this, f32 pitchAdjustment) {
     }
 
     func_800F4010(&this->actor.projectedPos, sfxId, pitchAdjustment);
-    // Gameplay stats: Count footsteps
-    // Only count while game isn't complete and don't count Link's idle animations or crawling in crawlspaces
-    if (!gSaveContext.ship.stats.gameComplete && !(this->stateFlags2 & PLAYER_STATE2_IDLE_FIDGET) &&
-        !(this->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
-        gSaveContext.ship.stats.count[COUNT_STEPS]++;
-    }
 }
 
 void Player_PlayJumpingSfx(Player* this) {

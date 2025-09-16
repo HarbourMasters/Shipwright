@@ -434,6 +434,8 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
             { COUNT_DAMAGE_TAKEN,	        { STAT_TYPE_PLAYER, "Damage Taken",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_ROLLS,	                { STAT_TYPE_PLAYER, "Action - Roll",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_BONKS,	                { STAT_TYPE_PLAYER, "Action - Bonk",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_PAUSES,	                { STAT_TYPE_PLAYER, "Action - Pause",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_STEPS,	                { STAT_TYPE_PLAYER, "Action - Steps Taken",   	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
         }
     },
 };
@@ -1446,6 +1448,13 @@ void RegisterGameplayStats() {
                 stopCounting = false;
             }
 
+            if (!gSaveContext.ship.stats.gameComplete && !(player->stateFlags2 & PLAYER_STATE2_IDLE_FIDGET) &&
+                !(player->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
+                if (player->stateFlags2 & PLAYER_STATE2_FOOTSTEP) {
+                    GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_STEPS, STAT_TYPE_PLAYER));
+                }
+            }
+
         }
         
     });
@@ -1457,6 +1466,14 @@ void RegisterGameplayStats() {
     });
     COND_HOOK(OnPlayerBonk, CVAR,
               []() { GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BONKS, STAT_TYPE_PLAYER)); });
+    COND_HOOK(OnKaleidoUpdate, CVAR, []() {
+        if (!gPlayState) {
+            return;
+        }
+        if (gPlayState->pauseCtx.state == 1) {
+            GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_PAUSES, STAT_TYPE_PLAYER));
+        }
+    });
     COND_HOOK(OnDeleteFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_DELETE, fileNum); });
     COND_HOOK(OnLoadFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_LOAD, fileNum); });
     COND_HOOK(OnSaveFile, true, [](int32_t fileNum) { GameplayStats_SaveFileActions(STAT_ACTION_SAVE, fileNum); });
