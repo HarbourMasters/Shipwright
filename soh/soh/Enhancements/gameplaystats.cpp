@@ -436,6 +436,7 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
             { COUNT_BONKS,	                { STAT_TYPE_PLAYER, "Action - Bonks",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_PAUSES,	                { STAT_TYPE_PLAYER, "Action - Pauses",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_STEPS,	                { STAT_TYPE_PLAYER, "Action - Steps Taken",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_POTS_BROKEN,	        { STAT_TYPE_PLAYER, "Pots Shattered",   	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_SWORD_SWINGS,	        { STAT_TYPE_PLAYER, "Action - Sword Swings",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_SIDEHOPS,	            { STAT_TYPE_PLAYER, "Action - Sidehops",   	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_BACKFLIPS,	            { STAT_TYPE_PLAYER, "Action - Backflips",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
@@ -1189,6 +1190,12 @@ void RegisterGameplayStats() {
         Actor* actor = static_cast<Actor*>(refActor);
         GameplayStats_GetTimestampByActorId(actor->id);
     });
+    COND_HOOK(OnActorKill, CVAR, [](void* refActor) {
+        Actor* actor = static_cast<Actor*>(refActor);
+        if (actor->id == ACTOR_OBJ_TSUBO) {
+            GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_POTS_BROKEN, STAT_TYPE_PLAYER));
+        }
+        })
     COND_HOOK(OnSceneInit, CVAR, [](int16_t sceneNum) {
         auto statObject = GameplayStats_GetObject((uint32_t)sceneNum, STAT_TYPE_SCENE);
         if (statObject.entryName == "") {

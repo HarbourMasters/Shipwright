@@ -189,7 +189,6 @@ void ObjTsubo_AirBreak(ObjTsubo* this, PlayState* play) {
                              sObjectIds[(this->actor.params >> 8) & 1], D_80BA1B8C[(this->actor.params >> 8) & 1]);
     }
     func_80033480(play, &this->actor.world.pos, 30.0f, 4, 20, 50, 1);
-    gSaveContext.ship.stats.count[COUNT_POTS_BROKEN]++;
 }
 
 void ObjTsubo_WaterBreak(ObjTsubo* this, PlayState* play) {
@@ -218,7 +217,6 @@ void ObjTsubo_WaterBreak(ObjTsubo* this, PlayState* play) {
                              (Rand_ZeroOne() * 95.0f) + 15.0f, 0, 32, 70, KAKERA_COLOR_NONE,
                              sObjectIds[(this->actor.params >> 8) & 1], D_80BA1B8C[(this->actor.params >> 8) & 1]);
     }
-    gSaveContext.ship.stats.count[COUNT_POTS_BROKEN]++;
 }
 
 void ObjTsubo_SetupWaitForObject(ObjTsubo* this) {
