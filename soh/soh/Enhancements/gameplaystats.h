@@ -124,7 +124,7 @@ typedef enum {
     COUNT_BONKS,
     COUNT_PAUSES,
     COUNT_STEPS,
-    COUNT_POTS_BROKEN, // z_obj_tsubo.c
+    COUNT_POTS_BROKEN,
     COUNT_BUSHES_CUT,  // z_en_kusa.c
     COUNT_SWORD_SWINGS,
     COUNT_SIDEHOPS,

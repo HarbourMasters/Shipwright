@@ -30,6 +30,7 @@
 #include "src/overlays/actors/ovl_En_Wf/z_en_wf.h"
 
 #include "assets/objects/gameplay_keep/gameplay_keep.h"
+#include "overlays/actors/ovl_En_Box/z_en_box.h"
 
 extern "C" {
 #include <z64.h>
@@ -38,6 +39,7 @@ extern PlayState* gPlayState;
 uint64_t GetUnixTimestamp();
 
 void Player_Action_Roll(Player* thisx, PlayState* play);
+void EnBox_Open(EnBox* thisx, PlayState* play);
 }
 
 #include <fstream>
@@ -431,6 +433,7 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
             { COUNT_BUTTON_PRESSES_START,	{ STAT_TYPE_PLAYER, "Pressed - Start",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_RUPEES_COLLECTED,	    { STAT_TYPE_PLAYER, "Collected - Rupees", 	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_RUPEES_SPENT,	        { STAT_TYPE_PLAYER, "Consumed - Rupees",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_CHESTS_OPENED,	        { STAT_TYPE_PLAYER, "Chests Opened",   		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_DAMAGE_TAKEN,	        { STAT_TYPE_PLAYER, "Damage Taken",   		        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_ROLLS,	                { STAT_TYPE_PLAYER, "Action - Rolls",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_BONKS,	                { STAT_TYPE_PLAYER, "Action - Bonks",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
@@ -1195,7 +1198,16 @@ void RegisterGameplayStats() {
         if (actor->id == ACTOR_OBJ_TSUBO) {
             GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_POTS_BROKEN, STAT_TYPE_PLAYER));
         }
-        })
+    });
+    COND_ID_HOOK(OnActorUpdate, ACTOR_EN_BOX, CVAR, [](void* refActor) { 
+        EnBox* actor = static_cast<EnBox*>(refActor);
+        if (actor->actionFunc != EnBox_Open) {
+            return;
+        }
+        if (actor->skelanime.curFrame == 30.0f) {
+            GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_CHESTS_OPENED, STAT_TYPE_PLAYER));
+        }
+    });
     COND_HOOK(OnSceneInit, CVAR, [](int16_t sceneNum) {
         auto statObject = GameplayStats_GetObject((uint32_t)sceneNum, STAT_TYPE_SCENE);
         if (statObject.entryName == "") {
