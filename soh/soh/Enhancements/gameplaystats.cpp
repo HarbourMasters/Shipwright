@@ -55,7 +55,8 @@ std::vector<GameplayStatObject> currentCounts;
 uint32_t typeIndex = STAT_TYPE_ALL;
 ImVec4 emptyColor = { 0, 0, 0, 0 };
 bool isRandoItem = false;
-bool stopCounting = false;
+bool isRolling = false;
+bool isHopping = false;
 
 static std::unordered_map<uint32_t, const char*> statTypeNameMap = {
     { STAT_TYPE_SCENE,  "Scenes" },
@@ -432,11 +433,13 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
             { COUNT_RUPEES_COLLECTED,	    { STAT_TYPE_PLAYER, "Collected - Rupees", 	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_RUPEES_SPENT,	        { STAT_TYPE_PLAYER, "Consumed - Rupees",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_DAMAGE_TAKEN,	        { STAT_TYPE_PLAYER, "Damage Taken",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_ROLLS,	                { STAT_TYPE_PLAYER, "Action - Roll",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_BONKS,	                { STAT_TYPE_PLAYER, "Action - Bonk",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
-            { COUNT_PAUSES,	                { STAT_TYPE_PLAYER, "Action - Pause",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_ROLLS,	                { STAT_TYPE_PLAYER, "Action - Rolls",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BONKS,	                { STAT_TYPE_PLAYER, "Action - Bonks",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_PAUSES,	                { STAT_TYPE_PLAYER, "Action - Pauses",   		UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_STEPS,	                { STAT_TYPE_PLAYER, "Action - Steps Taken",   	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_SWORD_SWINGS,	        { STAT_TYPE_PLAYER, "Action - Sword Swings",   	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_SIDEHOPS,	            { STAT_TYPE_PLAYER, "Action - Sidehops",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_BACKFLIPS,	            { STAT_TYPE_PLAYER, "Action - Backflips",   	UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
         }
     },
 };
@@ -1442,11 +1445,11 @@ void RegisterGameplayStats() {
                 GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BUTTON_PRESSES_START, STAT_TYPE_PLAYER));
             }
 
-            if (player->actionFunc == Player_Action_Roll && !stopCounting) {
-                stopCounting = true;
+            if (player->actionFunc == Player_Action_Roll && !isRolling) {
+                isRolling = true;
                 GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_ROLLS, STAT_TYPE_PLAYER));
-            } else if ((player->actionFunc != Player_Action_Roll) && stopCounting) {
-                stopCounting = false;
+            } else if ((player->actionFunc != Player_Action_Roll) && isRolling) {
+                isRolling = false;
             }
 
             if (!gSaveContext.ship.stats.gameComplete && !(player->stateFlags2 & PLAYER_STATE2_IDLE_FIDGET) &&
@@ -1459,6 +1462,24 @@ void RegisterGameplayStats() {
             if (player->heldItemAction >= PLAYER_IA_SWORD_MASTER &&
                 player->heldItemAction <= PLAYER_IA_SWORD_BIGGORON && player->meleeWeaponState == -1) {
                 GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_SWORD_SWINGS, STAT_TYPE_PLAYER));
+            }
+
+            if (player->stateFlags2 & PLAYER_STATE2_HOPPING && !isHopping) {
+                switch (player->controlStickDirections[player->controlStickDataIndex]) {
+                    case 1:
+                    case 3:
+                        isHopping = true;
+                        GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_SIDEHOPS, STAT_TYPE_PLAYER));
+                        break;
+                    case 2:
+                        isHopping = true;
+                        GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_BACKFLIPS, STAT_TYPE_PLAYER));
+                        break;
+                    default:
+                        break;
+                }
+            } else if (!(player->stateFlags2 & PLAYER_STATE2_HOPPING) && isHopping) {
+                isHopping = false;
             }
 
         }

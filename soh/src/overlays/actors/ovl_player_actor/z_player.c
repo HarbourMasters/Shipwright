@@ -6350,13 +6350,6 @@ s32 Player_ActionHandler_10(Player* this, PlayState* play) {
         } else {
             func_8083BCD0(this, play, controlStickDirection);
 
-            if (controlStickDirection == 1 || controlStickDirection == 3) {
-                gSaveContext.ship.stats.count[COUNT_SIDEHOPS]++;
-            }
-            if (controlStickDirection == 2) {
-                gSaveContext.ship.stats.count[COUNT_BACKFLIPS]++;
-            }
-
             return 1;
         }
     }
