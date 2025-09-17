@@ -219,10 +219,14 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                             UIWidgets::ComponentAlignments backupAlignment;
                             UIWidgets::LabelPositions backupLabelPos;
                             if (info.type == WIDGET_COMBOBOX || info.type == WIDGET_CVAR_COMBOBOX) {
-                                backupAlignment = std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->alignment;
-                                backupLabelPos = std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->labelPosition;
-                                std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->alignment = UIWidgets::ComponentAlignments::Left;
-                                std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->labelPosition = UIWidgets::LabelPositions::Above;
+                                backupAlignment =
+                                    std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->alignment;
+                                backupLabelPos =
+                                    std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->labelPosition;
+                                std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->alignment =
+                                    UIWidgets::ComponentAlignments::Left;
+                                std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->labelPosition =
+                                    UIWidgets::LabelPositions::Above;
                             }
                             MenuDrawItem(info, 400, menuThemeIndex);
                             ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Gray));
@@ -232,8 +236,10 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                             ImGui::PopStyleColor();
                             searchCount++;
                             if (info.type == WIDGET_COMBOBOX || info.type == WIDGET_CVAR_COMBOBOX) {
-                                std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->alignment = backupAlignment;
-                                std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->labelPosition = backupLabelPos;
+                                std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->alignment =
+                                    backupAlignment;
+                                std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->labelPosition =
+                                    backupLabelPos;
                             }
                         }
                     }
@@ -880,7 +886,8 @@ void Menu::DrawElement() {
         if (UIWidgets::Button("Clear Search", clearBtnOpts)) {
             menuSearch.Clear();
         }
-        ImGui::BeginChild("searchSeparator", ImVec2(ImGui::GetContentRegionAvail().x / 2, 20), ImGuiChildFlags_AlwaysAutoResize | ImGuiChildFlags_AutoResizeY);
+        ImGui::BeginChild("searchSeparator", ImVec2(ImGui::GetContentRegionAvail().x / 2, 20),
+                          ImGuiChildFlags_AlwaysAutoResize | ImGuiChildFlags_AutoResizeY);
         UIWidgets::Separator(true, true, 0, 10);
         ImGui::EndChild();
         uint32_t searchCount = DrawSearchResults(menuSearchText);
