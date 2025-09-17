@@ -1296,7 +1296,8 @@ void RegisterGameplayStats() {
         }
 
         if (isRandoItem) {
-            if ((itemEntry.itemId >= RG_FOREST_TEMPLE_SMALL_KEY && itemEntry.itemId <= RG_TREASURE_GAME_SMALL_KEY) || itemEntry.itemId == RG_TRIFORCE_PIECE) {
+            if ((itemEntry.itemId >= RG_FOREST_TEMPLE_SMALL_KEY && itemEntry.itemId <= RG_TREASURE_GAME_SMALL_KEY) ||
+                itemEntry.itemId == RG_TRIFORCE_PIECE) {
                 GameplayStatObject countObject = statObject;
                 countObject.entryTimestamp = 1;
                 countObject.entryType = STAT_TYPE_COLLECT;
