@@ -9,7 +9,6 @@
 #include "hints.hpp"
 #include "shops.hpp"
 #include "pool_functions.hpp"
-//#include "debug.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/debugger/performanceTimer.h"
 

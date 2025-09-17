@@ -26,6 +26,8 @@
 #include "Enhancements/audio/AudioCollection.h"
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/debugconsole.h"
+#include "Enhancements/randomizer/entrance.h"
+#include "Enhancements/randomizer/location_access.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
@@ -1465,7 +1467,9 @@ extern "C" void Graph_StartFrame() {
         }
 #endif
         case KbScancode::LUS_KB_TAB: {
-            CVarSetInteger(CVAR_SETTING("AltAssets"), !CVarGetInteger(CVAR_SETTING("AltAssets"), 0));
+            if (CVarGetInteger(CVAR_SETTING("Mods.AlternateAssetsHotkey"), 1)) {
+                CVarSetInteger(CVAR_SETTING("AltAssets"), !CVarGetInteger(CVAR_SETTING("AltAssets"), 0));
+            }
             break;
         }
     }
@@ -2255,6 +2259,149 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     s16 actorParams = 0;
     if (IS_RANDO) {
         auto ctx = Rando::Context::GetInstance();
+        if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
+            s16 entrance = -1;
+            switch (textId) {
+                case TEXT_WATERFALL:
+                    entrance = ENTR_ZORAS_DOMAIN_ENTRANCE;
+                    break;
+                case TEXT_OUTSIDE_FISHING_POND:
+                    entrance = ENTR_FISHING_POND_0;
+                    break;
+                case TEXT_HF_SIGN:
+                    if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE) {
+                        entrance = ENTR_HYRULE_FIELD_STAIRS_EXIT;
+                    } else if (gPlayState->sceneNum == SCENE_GERUDO_VALLEY) {
+                        entrance = ENTR_HYRULE_FIELD_ROCKY_PATH;
+                    } else if (gPlayState->sceneNum == SCENE_LAKE_HYLIA) {
+                        entrance = ENTR_HYRULE_FIELD_FENCE_EXIT;
+                    }
+                    break;
+                case TEXT_HC_GREAT_FAIRY_SIGN:
+                    entrance = ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_DINS_HC;
+                    break;
+                case TEXT_DMT_KAK_SIGN:
+                    if (gPlayState->sceneNum == SCENE_HYRULE_FIELD) {
+                        entrance = ENTR_KAKARIKO_VILLAGE_FRONT_GATE;
+                    } else {
+                        entrance = ENTR_KAKARIKO_VILLAGE_GUARD_GATE;
+                    }
+                    break;
+                case TEXT_KAK_TO_GY_SIGN:
+                    entrance = ENTR_GRAVEYARD_ENTRANCE;
+                    break;
+                case TEXT_KAK_WELL_SIGN:
+                    entrance = ENTR_BOTTOM_OF_THE_WELL_ENTRANCE;
+                    break;
+                case TEXT_KAK_DMT_SIGN:
+                    entrance = ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT;
+                    break;
+                case TEXT_DMT_SIGN:
+                    entrance = ENTR_GROTTOS_13;
+                    break;
+                case TEXT_DMT_DC_SIGN:
+                    entrance = ENTR_DEATH_MOUNTAIN_TRAIL_OUTSIDE_DODONGOS_CAVERN;
+                    break;
+                case TEXT_DMT_GC_SIGN:
+                    entrance = ENTR_GORON_CITY_UPPER_EXIT;
+                    break;
+                case TEXT_GC_SIGN:
+                    if (gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL) {
+                        entrance = ENTR_GORON_CITY_UPPER_EXIT;
+                    } else {
+                        entrance = ENTR_GORON_CITY_DARUNIA_ROOM_EXIT;
+                    }
+                    break;
+                case TEXT_DMT_DMC_SIGN:
+                    entrance = ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT;
+                    break;
+                case TEXT_DMT_SUMMIT_SIGN:
+                    entrance = ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMT;
+                    break;
+                case TEXT_HF_ZR_SIGN:
+                    entrance = ENTR_ZORAS_RIVER_WEST_EXIT;
+                    break;
+                case TEXT_KF_SHOP_SIGN:
+                    entrance = ENTR_KOKIRI_SHOP_0;
+                    break;
+                case TEXT_LINKS_HOUSE_SIGN:
+                    entrance = ENTR_LINKS_HOUSE_1;
+                    break;
+                case TEXT_KOKIRI_EXIT_SIGN:
+                    entrance = ENTR_LOST_WOODS_BRIDGE_EAST_EXIT;
+                    break;
+                case TEXT_ZD_SIGN:
+                    if (gPlayState->sceneNum == SCENE_ZORAS_DOMAIN) {
+                        entrance = ENTR_ZORAS_RIVER_WATERFALL_EXIT;
+                    } else {
+                        entrance = ENTR_ZORAS_DOMAIN_KING_ZORA_EXIT;
+                    }
+                    break;
+                case TEXT_ZF_JABU_SIGN:
+                    entrance = ENTR_JABU_JABU_ENTRANCE;
+                    break;
+                case TEXT_KF_LW_SIGN:
+                    entrance = ENTR_LOST_WOODS_SOUTH_EXIT;
+                    break;
+                case TEXT_HF_LON_LON_SIGN:
+                    entrance = ENTR_LON_LON_RANCH_ENTRANCE;
+                    break;
+                case TEXT_LA_SIGN:
+                    entrance = ENTR_LAKE_HYLIA_NORTH_EXIT;
+                    break;
+                case TEXT_LA_LAB_SIGN:
+                    entrance = ENTR_LAKESIDE_LABORATORY_0;
+                    break;
+                case TEXT_GV_SIGN:
+                    if (gPlayState->sceneNum == SCENE_HYRULE_FIELD) {
+                        entrance = ENTR_GERUDO_VALLEY_EAST_EXIT;
+                    } else {
+                        entrance = ENTR_GERUDO_VALLEY_WEST_EXIT;
+                    }
+                    break;
+                case TEXT_ZD_SHOP_SIGN:
+                    entrance = ENTR_ZORA_SHOP_0;
+                    break;
+                case TEXT_OUTSIDE_KOKIRI_SIGN:
+                    entrance = ENTR_MARKET_ENTRANCE_NEAR_GUARD_EXIT;
+                    break;
+                case TEXT_OUTSIDE_MARKET_SIGN:
+                    entrance = ENTR_LON_LON_RANCH_ENTRANCE;
+                    break;
+                case TEXT_MIDO_HOUSE_SIGN:
+                    entrance = ENTR_MIDOS_HOUSE_0;
+                    break;
+                case TEXT_KNOW_IT_ALL_HOUSE_SIGN:
+                    entrance = ENTR_KNOW_IT_ALL_BROS_HOUSE_0;
+                    break;
+                case TEXT_TWINS_HOUSE_SIGN:
+                    entrance = ENTR_TWINS_HOUSE_0;
+                    break;
+                case TEXT_SARIAS_HOUSE_SIGN:
+                    entrance = ENTR_SARIAS_HOUSE_0;
+                    break;
+                case TEXT_NO_DIVING_SIGN:
+                    entrance = ENTR_LAKE_HYLIA_RIVER_EXIT;
+                    break;
+            }
+            if (entrance != -1) {
+                auto entranceCtx = ctx->GetEntranceShuffler();
+                for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
+                    if (Entrance_EntranceIsNull(&entranceCtx->entranceOverrides[i])) {
+                        break;
+                    }
+                    if (entranceCtx->entranceOverrides[i].index == entrance) {
+                        s16 overrideIndex = entranceCtx->entranceOverrides[i].override;
+                        Entrance_SetEntranceDiscovered(entrance, false);
+                        auto data = GetEntranceData(overrideIndex);
+                        font->charTexBuf[0] = (TEXTBOX_TYPE_WOODEN << 4) | TEXTBOX_POS_BOTTOM;
+                        return msgCtx->msgLength = font->msgLength = SohUtils::CopyStringToCharBuffer(
+                                   buffer, data->source + CustomMessage::MESSAGE_END(), maxBufferSize);
+                    }
+                }
+            }
+        }
+
         bool nonBeanMerchants = ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) ||
                                 ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL);
         Player* player = GET_PLAYER(play);
@@ -2330,7 +2477,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             } else {
                 messageEntry = ctx->GetHint(stoneHint)->GetHintMessage(MF_AUTO_FORMAT);
             }
-        } else if ((textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT)) {
+        } else if (textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) {
             // rando hints at altar
             messageEntry = (LINK_IS_ADULT) ? ctx->GetHint(RH_ALTAR_ADULT)->GetHintMessage(MF_AUTO_FORMAT)
                                            : ctx->GetHint(RH_ALTAR_CHILD)->GetHintMessage(MF_AUTO_FORMAT);
@@ -2510,7 +2657,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (textId == TEXT_BIG_POE_COLLECTED_RANDO) {
             messageEntry =
                 CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_AUTO_FORMAT);
-        } else if (textId == TEXT_GERUDO_GUARD_FRIENDLY && player->talkActor->id == ACTOR_EN_GE2) {
+        } else if (textId == TEXT_GERUDO_GUARD_FRIENDLY && player->talkActor->id == ACTOR_EN_GE2 &&
+                   gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS) {
             // TODO_TRANSLATE Translate into french and german
             messageEntry = CustomMessage("Want me to throw you in jail?&\x1B#Yes please&No thanks#", { QM_GREEN });
             messageEntry.AutoFormat();
