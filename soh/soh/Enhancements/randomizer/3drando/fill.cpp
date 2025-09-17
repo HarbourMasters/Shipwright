@@ -1078,6 +1078,8 @@ static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
         });
         AssumedFill(dungeonMapAndCompass, dungeonLocations);
     }
+
+    // randomize Silver Rupees
 }
 
 /*Randomize items restricted to a certain set of locations.

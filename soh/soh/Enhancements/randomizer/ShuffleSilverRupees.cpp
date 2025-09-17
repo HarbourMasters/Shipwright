@@ -121,7 +121,7 @@ void EnGSwitch_RandomizerInit(void* actor) {
 }
 
 void RegisterShuffleSilverRupees() {
-    bool shouldRegister = IS_RANDO && true; //RAND_GET_OPTION(RSK_SHUFFLE_SILVER_RUPEES);
+    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SILVER_RUPEES);
 
     COND_ID_HOOK(OnActorInit, ACTOR_EN_G_SWITCH, shouldRegister, EnGSwitch_RandomizerInit);
     COND_VB_SHOULD(VB_SILVER_RUPEE_COLLECT, shouldRegister, {

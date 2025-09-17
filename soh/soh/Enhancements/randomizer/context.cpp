@@ -229,7 +229,8 @@ void Context::GenerateLocationPool() {
             (location.GetRCType() == RCTYPE_FAIRY && !mOptions[RSK_SHUFFLE_FAIRIES]) ||
             (location.GetRCType() == RCTYPE_FREESTANDING &&
              mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_OFF)) ||
-            (location.GetRCType() == RCTYPE_BEEHIVE && !mOptions[RSK_SHUFFLE_BEEHIVES])) {
+            (location.GetRCType() == RCTYPE_BEEHIVE && !mOptions[RSK_SHUFFLE_BEEHIVES]) ||
+            (location.GetRCType() == RCTYPE_SILVER_RUPEE && !mOptions[RSK_SHUFFLE_SILVER_RUPEES])) {
             continue;
         }
         if (location.IsOverworld()) {
