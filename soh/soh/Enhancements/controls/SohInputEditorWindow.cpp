@@ -1920,7 +1920,8 @@ void RegisterInputEditorWidgets() {
     mouseControl = { .name = "Enable Mouse Controls", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     mouseControl.CVar(CVAR_SETTING("EnableMouse"))
         .Callback([](WidgetInfo& info) {
-            bool enabled = CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) && CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1);
+            bool enabled =
+                CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) && CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1);
             auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
             wnd->SetAutoCaptureMouse(enabled);
         })
@@ -1935,15 +1936,16 @@ void RegisterInputEditorWidgets() {
     mouseAutoCapture = { .name = "Auto Capture Mouse Input", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     mouseAutoCapture.CVar(CVAR_SETTING("AutoCaptureMouse"))
         .Callback([](WidgetInfo& info) {
-            bool enabled = CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) && CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1);
+            bool enabled =
+                CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) && CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1);
             auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
             wnd->SetAutoCaptureMouse(enabled);
         })
-        .Options(
-            CheckboxOptions()
-                .Color(THEME_COLOR)
-                .Tooltip("When Mouse Controls are enabled, this toggles whether the program will automatically hide the cursor "
-                         "and capture mouse input when closing the menu."));
+        .Options(CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("When Mouse Controls are enabled, this toggles whether the program will automatically "
+                              "hide the cursor "
+                              "and capture mouse input when closing the menu."));
     SohGui::mSohMenu->AddSearchWidget({ mouseAutoCapture, "Settings", "Controls", "Camera Controls" });
 
     rightStickOcarina = { .name = "Right Stick Ocarina Playback", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
