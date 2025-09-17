@@ -1232,8 +1232,8 @@ void GenerateItemPool() {
         ctx->possibleIceTrapModels.push_back(RG_BIGGORON_SWORD);
     }
 
-    // RANDOTODO lock these additions behind settings
-    if (ctx->GetOption(RSK_SHUFFLE_SILVER_RUPEES)) {
+    // Add Silver Rupees to the pool if the setting is not on Start With or Vanilla
+    if (ctx->GetOption(RSK_SHUFFLE_SILVER_RUPEES).Get() > RO_DUNGEON_ITEM_LOC_VANILLA) {
         std::vector<RandomizerGet> silversToAdd;
         if (ctx->GetDungeon(Rando::ICE_CAVERN)->IsVanilla()) {
             silversToAdd.push_back(RG_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE);

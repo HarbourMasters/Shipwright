@@ -145,6 +145,23 @@ std::vector<RandomizerCheck> DungeonInfo::GetDungeonLocations() const {
     return locations;
 }
 
+bool DungeonInfo::ContainsSilverRupee(RandomizerGet silverRupee) const {
+    auto dungeonLocations = GetDungeonLocations();
+    const auto silverRupeeLocations = FilterFromPool(dungeonLocations, [](const RandomizerCheck loc) {
+        return StaticData::GetLocation(loc)->GetRCType() == RCTYPE_SILVER_RUPEE;
+    });
+    if (silverRupeeLocations.empty()) {
+        return false;
+    }
+    for (auto silverRupeeLocation : silverRupeeLocations) {
+        if (StaticData::GetLocation(silverRupeeLocation)->GetVanillaItem() == silverRupee) {
+            return true;
+        }
+    }
+    return false;
+
+}
+
 Dungeons::Dungeons() {
     dungeonList[DEKU_TREE] = DungeonInfo("Deku Tree", RHT_DEKU_TREE, RG_DEKU_TREE_MAP, RG_DEKU_TREE_COMPASS, RG_NONE,
                                          RG_NONE, RG_NONE, RA_DEKU_TREE, 0, 0, RSK_MQ_DEKU_TREE);

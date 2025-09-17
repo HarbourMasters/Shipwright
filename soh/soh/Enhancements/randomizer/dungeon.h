@@ -38,6 +38,7 @@ class DungeonInfo {
     void PlaceVanillaCompass() const;
     void PlaceVanillaBossKey() const;
     void PlaceVanillaSmallKeys() const;
+    bool ContainsSilverRupee(RandomizerGet silverRupee) const;
     std::vector<RandomizerCheck> GetDungeonLocations() const;
     std::vector<RandomizerCheck> locations;
 

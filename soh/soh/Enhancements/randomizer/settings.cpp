@@ -263,7 +263,7 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_KEYRINGS_BOTTOM_OF_THE_WELL, "Bottom of the Well Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsBottomOfTheWell"), "", WidgetType::Combobox, 0);
     OPT_U8(RSK_KEYRINGS_GTG, "Gerudo Training Ground Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsGTG"), "", WidgetType::Combobox, 0);
     OPT_U8(RSK_KEYRINGS_GANONS_CASTLE, "Ganon's Castle Keyring", {"No", "Random", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRingsGanonsCastle"), "", WidgetType::Combobox, 0);
-    OPT_BOOL(RSK_SHUFFLE_SILVER_RUPEES, "Shuffle Silver Rupees", CVAR_RANDOMIZER_SETTING("ShuffleSilverRupees"), mOptionDescriptions[RSK_SHUFFLE_SILVER_RUPEES]);
+    OPT_U8(RSK_SHUFFLE_SILVER_RUPEES, "Shuffle Silver Rupees", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleSilverRupees"), mOptionDescriptions[RSK_SHUFFLE_SILVER_RUPEES], WidgetType::Combobox, RO_DUNGEON_ITEM_LOC_VANILLA);
     OPT_BOOL(RSK_BOTTOMLESS_SILVER_RUPEE_POUCH, "Add Bottomless Silver Rupee Pouch", CVAR_RANDOMIZER_SETTING("BottomlessSilverRupeePouch"), mOptionDescriptions[RSK_BOTTOMLESS_SILVER_RUPEE_POUCH]);
     //Dummied out due to redundancy with TimeSavers.SkipChildStealth until such a time that logic needs to consider child stealth e.g. because it's freestanding checks are added to freestanding shuffle.
     //To undo this dummying, readd this setting to an OptionGroup so it appears in the UI, then edit the timesaver check hooks to look at this, and the timesaver setting to lock itself as needed.
@@ -2532,8 +2532,10 @@ void Settings::UpdateOptionProperties() {
         mOptions[RSK_BIG_POES_HINT].Enable();
     }
 
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSilverRupees"), 0)) {
-        mOptions[RSK_BOTTOMLESS_SILVER_RUPEE_POUCH].Disable("This option is not available unless Shuffle Silver Rupees is turned on");
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSilverRupees"), RO_DUNGEON_ITEM_LOC_VANILLA) <= RO_DUNGEON_ITEM_LOC_VANILLA) {
+        mOptions[RSK_BOTTOMLESS_SILVER_RUPEE_POUCH].Disable("This option is not available unless Silver Rupees are shuffled.");
+    } else {
+        mOptions[RSK_BOTTOMLESS_SILVER_RUPEE_POUCH].Enable();
     }
 }
 
@@ -2542,7 +2544,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     // If you have settings that will only work for No Logic, put them in this if statement.
     if (mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC)) {
         // RANDOTODO: Remove when Logic is implemented for Silver Rupees.
-        mOptions[RSK_SHUFFLE_SILVER_RUPEES].Set(RO_GENERIC_OFF);
+        mOptions[RSK_SHUFFLE_SILVER_RUPEES].Set(RO_DUNGEON_ITEM_LOC_VANILLA);
     }
     // if we skip child zelda, we start with zelda's letter, and malon starts
     // at the ranch, so we should *not* shuffle the weird egg
@@ -2818,7 +2820,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
             (mOptions[RSK_KEYRINGS_GANONS_CASTLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             this->GetDungeon(GANONS_CASTLE)->SetKeyRing();
         }
-        if(!mOptions[RSK_SHUFFLE_SILVER_RUPEES]) {
+        if(mOptions[RSK_SHUFFLE_SILVER_RUPEES].Get() > RO_DUNGEON_ITEM_LOC_VANILLA) {
             mOptions[RSK_BOTTOMLESS_SILVER_RUPEE_POUCH].Set(RO_GENERIC_OFF);
         }
     }
