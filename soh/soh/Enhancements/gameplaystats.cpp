@@ -516,6 +516,33 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
     return fmt::format("{:#x}", value, value);
 }
 
+void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
+    SaveManager::Instance->SaveData("buildVersion", saveContext->ship.stats.buildVersion);
+    SaveManager::Instance->SaveData("buildVersionMajor", saveContext->ship.stats.buildVersionMajor);
+    SaveManager::Instance->SaveData("buildVersionMinor", saveContext->ship.stats.buildVersionMinor);
+    SaveManager::Instance->SaveData("buildVersionPatch", saveContext->ship.stats.buildVersionPatch);
+
+    SaveManager::Instance->SaveData("rtaTiming", saveContext->ship.stats.rtaTiming);
+    SaveManager::Instance->SaveData("fileCreatedAt", saveContext->ship.stats.fileCreatedAt);
+    SaveManager::Instance->SaveData("playTimer", saveContext->ship.stats.playTimer);
+    SaveManager::Instance->SaveData("pauseTimer", saveContext->ship.stats.pauseTimer);
+
+    SaveManager::Instance->SaveData("tsIdx", saveContext->ship.stats.tsIdx);
+    SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->ship.stats.count), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->ship.stats.count[i]);
+    });
+    SaveManager::Instance->SaveArray(
+        "scenesDiscovered", ARRAY_COUNT(saveContext->ship.stats.scenesDiscovered),
+        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.scenesDiscovered[i]); });
+    SaveManager::Instance->SaveArray(
+        "entrancesDiscovered", ARRAY_COUNT(saveContext->ship.stats.entrancesDiscovered),
+        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.entrancesDiscovered[i]); });
+}
+
+// bool compareTimestampInfoByTime(const TimestampInfo& a, const TimestampInfo& b) {
+//     return CVarGetInteger(CVAR_GAMEPLAY_STATS("ReverseTimestamps"), 0) ? a.time > b.time : a.time < b.time;
+// }
+
 nlohmann::json GameplayStats_ObjectToJson(const GameplayStatObject& entry) {
     return nlohmann::json{
         { "entryType", entry.entryType },
@@ -815,13 +842,23 @@ void GameplayStats_AddTimestamp(GameplayStatObject statObject) {
 }
 
 void DrawGameplayStatsOptionsTab() {
-    if (ImGui::BeginTable("Options", 2)) {
+    if (ImGui::BeginTable("Options", 3)) {
         ImGui::TableNextColumn();
         UIWidgets::CVarCheckbox("Enable Gameplay Stats Tracking", CVAR_SETTING("Gameplaystats.Enable"),
                                 UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 
         ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("RTA Timing on New Files", CVAR_GAMEPLAY_STATS("RTATiming"),
+        UIWidgets::CVarCheckbox("Latest timestamps on top", CVAR_GAMEPLAY_STATS("ReverseTimestamps"),
+                                UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+
+        ImGui::TableNextColumn();
+        UIWidgets::CVarCheckbox("Room Breakdown", CVAR_GAMEPLAY_STATS("RoomBreakdown"),
+                                UIWidgets::CheckboxOptions()
+                                    .Tooltip("Allows a more in-depth perspective of time spent in a certain map.")
+                                    .Color(THEME_COLOR));
+
+        ImGui::TableNextColumn();
+        UIWidgets::CVarCheckbox("RTA Timing on new files", CVAR_GAMEPLAY_STATS("RTATiming"),
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("Timestamps are relative to starting timestamp rather than in game time, "
                                              "usually necessary for races/speedruns.\n\n"
@@ -830,7 +867,11 @@ void DrawGameplayStatsOptionsTab() {
                                     .Color(THEME_COLOR));
 
         ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("Latest Timestamps on Top", CVAR_GAMEPLAY_STATS("ReverseTimestamps"),
+        UIWidgets::CVarCheckbox("Show additional detail timers", CVAR_GAMEPLAY_STATS("ShowAdditionalTimers"),
+                                UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+
+        ImGui::TableNextColumn();
+        UIWidgets::CVarCheckbox("Show Debug Info", CVAR_GAMEPLAY_STATS("ShowDebugInfo"),
                                 UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 
         ImGui::EndTable();
@@ -958,12 +999,12 @@ void GameplayStatsWindow::DrawElement() {
             if (ImGui::BeginTabItem("Counts")) {
                 if (ImGui::BeginChild("Counts Window")) {
                     if (ImGui::BeginTable("Counts Table", 2)) {
-                        ImGui::TableSetupColumn("Item Counts");
+                        ImGui::TableSetupColumn("Enemy Kills");
                         ImGui::TableSetupColumn("Action Counts");
 
                         ImGui::TableNextColumn();
-                        ImGui::SeparatorText("Item Counts");
-                        GameplayStats_DrawCounts(STAT_TYPE_COLLECT);
+                        ImGui::SeparatorText("Enemy Kills");
+                        GameplayStats_DrawCounts(STAT_TYPE_ENEMY);
 
                         ImGui::TableNextColumn();
                         ImGui::SeparatorText("Action Counts");
@@ -971,13 +1012,6 @@ void GameplayStatsWindow::DrawElement() {
 
                         ImGui::EndTable();
                     }
-                    ImGui::EndChild();
-                }
-                ImGui::EndTabItem();
-            }
-            if (ImGui::BeginTabItem("Enemy Kills")) {
-                if (ImGui::BeginChild("Enemy Kills Window")) {
-                    GameplayStats_DrawCounts(STAT_TYPE_ENEMY);
                     ImGui::EndChild();
                 }
                 ImGui::EndTabItem();
@@ -995,39 +1029,16 @@ void GameplayStatsWindow::DrawElement() {
     }
 }
 
-void GameplayStats_SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
-    SaveManager::Instance->SaveData("buildVersion", saveContext->ship.stats.buildVersion);
-    SaveManager::Instance->SaveData("buildVersionMajor", saveContext->ship.stats.buildVersionMajor);
-    SaveManager::Instance->SaveData("buildVersionMinor", saveContext->ship.stats.buildVersionMinor);
-    SaveManager::Instance->SaveData("buildVersionPatch", saveContext->ship.stats.buildVersionPatch);
-
-    SaveManager::Instance->SaveData("rtaTiming", saveContext->ship.stats.rtaTiming);
-    SaveManager::Instance->SaveData("fileCreatedAt", saveContext->ship.stats.fileCreatedAt);
-    SaveManager::Instance->SaveData("playTimer", saveContext->ship.stats.playTimer);
-    SaveManager::Instance->SaveData("pauseTimer", saveContext->ship.stats.pauseTimer);
-
-    SaveManager::Instance->SaveData("tsIdx", saveContext->ship.stats.tsIdx);
-    SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->ship.stats.count), [&](size_t i) {
-        SaveManager::Instance->SaveData("", saveContext->ship.stats.count[i]);
-    });
-    SaveManager::Instance->SaveArray(
-        "scenesDiscovered", ARRAY_COUNT(saveContext->ship.stats.scenesDiscovered),
-        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.scenesDiscovered[i]); });
-    SaveManager::Instance->SaveArray(
-        "entrancesDiscovered", ARRAY_COUNT(saveContext->ship.stats.entrancesDiscovered),
-        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.entrancesDiscovered[i]); });
-}
-
 void GameplayStats_InitSave() {
-    //SaveManager::Instance->SaveData("buildVersion", gSaveContext.ship.stats.buildVersion);
-    //SaveManager::Instance->SaveData("buildVersionMajor", gSaveContext.ship.stats.buildVersionMajor);
-    //SaveManager::Instance->SaveData("buildVersionMinor", gSaveContext.ship.stats.buildVersionMinor);
-    //SaveManager::Instance->SaveData("buildVersionPatch", gSaveContext.ship.stats.buildVersionPatch);
-    //
-    //SaveManager::Instance->SaveData("rtaTiming", gSaveContext.ship.stats.rtaTiming);
-    //SaveManager::Instance->SaveData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
-    //SaveManager::Instance->SaveData("playTimer", gSaveContext.ship.stats.playTimer);
-    //SaveManager::Instance->SaveData("pauseTimer", gSaveContext.ship.stats.pauseTimer);
+    SaveManager::Instance->SaveData("buildVersion", gSaveContext.ship.stats.buildVersion);
+    SaveManager::Instance->SaveData("buildVersionMajor", gSaveContext.ship.stats.buildVersionMajor);
+    SaveManager::Instance->SaveData("buildVersionMinor", gSaveContext.ship.stats.buildVersionMinor);
+    SaveManager::Instance->SaveData("buildVersionPatch", gSaveContext.ship.stats.buildVersionPatch);
+
+    SaveManager::Instance->SaveData("rtaTiming", gSaveContext.ship.stats.rtaTiming);
+    SaveManager::Instance->SaveData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
+    SaveManager::Instance->SaveData("playTimer", gSaveContext.ship.stats.playTimer);
+    SaveManager::Instance->SaveData("pauseTimer", gSaveContext.ship.stats.pauseTimer);
 
     SaveManager::Instance->LoadCharArray("buildVersion", gSaveContext.ship.stats.buildVersion,
                                          ARRAY_COUNT(gSaveContext.ship.stats.buildVersion));
@@ -1039,25 +1050,17 @@ void GameplayStats_InitSave() {
     SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
     SaveManager::Instance->LoadData("playTimer", gSaveContext.ship.stats.playTimer);
     SaveManager::Instance->LoadData("pauseTimer", gSaveContext.ship.stats.pauseTimer);
-
-    //SaveManager::Instance->SaveData("tsIdx", gSaveContext.ship.stats.tsIdx);
-    //SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(gSaveContext.ship.stats.count), [&](size_t i) {
-    //    SaveManager::Instance->SaveData("", gSaveContext.ship.stats.count[i]);
-    //});
-    //SaveManager::Instance->SaveArray(
-    //    "scenesDiscovered", ARRAY_COUNT(gSaveContext.ship.stats.scenesDiscovered),
-    //    [&](size_t i) { SaveManager::Instance->SaveData("", gSaveContext.ship.stats.scenesDiscovered[i]); });
-    //SaveManager::Instance->SaveArray(
-    //    "entrancesDiscovered", ARRAY_COUNT(gSaveContext.ship.stats.entrancesDiscovered),
-    //    [&](size_t i) { SaveManager::Instance->SaveData("", gSaveContext.ship.stats.entrancesDiscovered[i]); });
 }
 
 void GameplayStatsWindow::InitElement() {
     SaveManager::Instance->AddLoadFunction("sohStats", 1, GameplayStats_InitSave);
     // Add main section save, no parent.
-    SaveManager::Instance->AddSaveFunction("sohStats", 1, GameplayStats_SaveStats, true, SECTION_PARENT_NONE);
+    SaveManager::Instance->AddSaveFunction("sohStats", 1, SaveStats, true, SECTION_PARENT_NONE);
     // Add subsections, parent of "sohStats". Not sure how to do this without the redundant references to "SaveStats".
     SaveManager::Instance->AddInitFunction(InitStats);
+
+    SaveManager::Instance->AddSaveFunction("entrances", 1, SaveStats, false, SECTION_ID_STATS);
+    SaveManager::Instance->AddSaveFunction("scenes", 1, SaveStats, false, SECTION_ID_STATS);
 }
 
 void RegisterGameplayStats() {
@@ -1236,13 +1239,6 @@ void RegisterGameplayStats() {
         auto statObject = GameplayStats_GetObject(itemEntry.itemId, STAT_TYPE_ITEM);
         if (statObject.entryName == "") {
             return;
-        }
-
-        if ((itemEntry.itemId >= RG_FOREST_TEMPLE_SMALL_KEY && itemEntry.itemId <= RG_TREASURE_GAME_SMALL_KEY) || itemEntry.itemId == RG_TRIFORCE_PIECE) {
-            GameplayStatObject countObject = statObject;
-            countObject.entryTimestamp = 1;
-            countObject.entryType = STAT_TYPE_COLLECT;
-            GameplayStats_AddCount(countObject);
         }
 
         if (statObject.entryName == "Piece of Heart") {
