@@ -739,7 +739,7 @@ void EntranceTrackerSettingsWindow::DrawElement() {
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         UIWidgets::CVarCheckbox(
             "Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"),
-            UIWidgets::CheckboxOptions().Tooltip("Reveal the sourcefor undiscovered entrances").Color(THEME_COLOR));
+            UIWidgets::CheckboxOptions().Tooltip("Reveal the source for undiscovered entrances").Color(THEME_COLOR));
         UIWidgets::CVarCheckbox("Show Destination", CVAR_TRACKER_ENTRANCE("ShowTo"),
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("Reveal the destination for undiscovered entrances")
@@ -836,7 +836,7 @@ void EntranceTrackerWindow::DrawElement() {
     ImGui::BeginChild("ChildEntranceTrackerLocations", ImVec2(0, -8));
     bool showTo = CVarGetInteger(CVAR_TRACKER_ENTRANCE("ShowTo"), 0);
     bool showFrom = CVarGetInteger(CVAR_TRACKER_ENTRANCE("ShowFrom"), 0);
-    bool collapsUndiscovered = CVarGetInteger(CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"), 0);
+    bool collapseUndiscovered = CVarGetInteger(CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"), 0);
     bool highlightPrevious = CVarGetInteger(CVAR_TRACKER_ENTRANCE("HighlightPrevious"), 0);
     bool highlightAvailable = CVarGetInteger(CVAR_TRACKER_ENTRANCE("HighlightAvailable"), 0);
     bool hideReverse = CVarGetInteger(CVAR_TRACKER_ENTRANCE("HideReverseEntrances"), 1);
@@ -892,7 +892,7 @@ void EntranceTrackerWindow::DrawElement() {
             const char* rplcDstName = showOverride ? override->destination.c_str() : "";
 
             // Filter for entrances by group name, type, source/destination names, and meta tags
-            if ((!locationSearch.IsActive() && (showOriginal || showOverride || !collapsUndiscovered)) ||
+            if ((!locationSearch.IsActive() && (showOriginal || showOverride || !collapseUndiscovered)) ||
                 ((showOriginal &&
                   (locationSearch.PassFilter(origSrcName) || locationSearch.PassFilter(origSrcAreaName) ||
                    locationSearch.PassFilter(origTypeName) || locationSearch.PassFilter(original->metaTag.c_str()))) ||

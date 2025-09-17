@@ -433,6 +433,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_WINDOW("ControllerConfiguration"))
         .RaceDisable(false)
         .WindowName("Configure Controller")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Bindings Window."));
 
     // Input Viewer
@@ -443,6 +444,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_WINDOW("InputViewer"))
         .RaceDisable(false)
         .WindowName("Input Viewer")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Toggles the Input Viewer.").EmbedWindow(false));
 
     AddWidget(path, "Input Viewer Settings", WIDGET_SEPARATOR_TEXT);
@@ -450,6 +452,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_WINDOW("InputViewerSettings"))
         .RaceDisable(false)
         .WindowName("Input Viewer Settings")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Input Viewer Settings Window."));
 
     // Notifications

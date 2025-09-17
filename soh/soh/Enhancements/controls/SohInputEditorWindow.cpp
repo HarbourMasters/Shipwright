@@ -1,7 +1,7 @@
 #include "SohInputEditorWindow.h"
 #include <utils/StringHelper.h>
 #include "soh/OTRGlobals.h"
-#include "soh/SohGui/UIWidgets.hpp"
+#include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "z64.h"
 #include "soh/cvar_prefixes.h"
@@ -12,6 +12,17 @@
 #define SCALE_IMGUI_SIZE(value) ((value / 13.0f) * ImGui::GetFontSize())
 
 using namespace UIWidgets;
+
+static WidgetInfo freeLook;
+static WidgetInfo mouseControl;
+static WidgetInfo rightStickOcarina;
+static WidgetInfo dpadOcarina;
+static WidgetInfo dpadPause;
+static WidgetInfo dpadText;
+
+namespace SohGui {
+extern std::shared_ptr<SohMenu> mSohMenu;
+}
 
 SohInputEditorWindow::~SohInputEditorWindow() {
 }
@@ -1321,8 +1332,8 @@ void SohInputEditorWindow::DrawOcarinaControlPanel() {
     ImGui::SetCursorPos(ImVec2(cursor.x, cursor.y + 5));
 
     CheckboxOptions checkOpt = CheckboxOptions().Color(THEME_COLOR);
-    CVarCheckbox("Dpad Ocarina Playback", CVAR_SETTING("CustomOcarina.Dpad"), checkOpt);
-    CVarCheckbox("Right Stick Ocarina Playback", CVAR_SETTING("CustomOcarina.RightStick"), checkOpt);
+    SohGui::mSohMenu->MenuDrawItem(dpadOcarina, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+    SohGui::mSohMenu->MenuDrawItem(rightStickOcarina, ImGui::GetContentRegionAvail().x, THEME_COLOR);
     CVarCheckbox("Customize Ocarina Controls", CVAR_SETTING("CustomOcarina.Enabled"), checkOpt);
 
     if (!CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0)) {
@@ -1354,12 +1365,8 @@ void SohInputEditorWindow::DrawOcarinaControlPanel() {
 void SohInputEditorWindow::DrawCameraControlPanel() {
     ImVec2 cursor = ImGui::GetCursorPos();
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
-    CVarCheckbox(
-        "Enable Mouse Controls", CVAR_SETTING("EnableMouse"),
-        CheckboxOptions()
-            .Color(THEME_COLOR)
-            .Tooltip("Allows for using the mouse to control the camera (must enable Free Look), "
-                     "aim with the shield, and perform quickspin attacks (quickly rotate the mouse then press B)"));
+    SohGui::mSohMenu->MenuDrawItem(mouseControl, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+
     Ship::GuiWindow::BeginGroupPanel("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
     CVarCheckbox("Right Stick Aiming", CVAR_SETTING("Controls.RightStickAim"),
                  CheckboxOptions()
@@ -1427,14 +1434,7 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
     Ship::GuiWindow::BeginGroupPanel("Third-Person Camera", ImGui::GetContentRegionAvail());
 
-    CVarCheckbox(
-        "Free Look", CVAR_SETTING("FreeLook.Enabled"),
-        CheckboxOptions()
-            .Color(THEME_COLOR)
-            .Tooltip("Enables free look camera control\nNote: You must remap C buttons off of the right stick in the "
-                     "controller config menu, and map the camera stick to the right stick.\n"
-                     "Doesn't work in areas were the game locks the camera.\n"
-                     "Scene reload may be necessary to enable."));
+    SohGui::mSohMenu->MenuDrawItem(freeLook, ImGui::GetContentRegionAvail().x, THEME_COLOR);
     CVarCheckbox("Invert Camera X Axis", CVAR_SETTING("FreeLook.InvertXAxis"),
                  CheckboxOptions().Color(THEME_COLOR).Tooltip("Inverts the Camera X Axis in:\n-Free look"));
     CVarCheckbox(
@@ -1467,16 +1467,8 @@ void SohInputEditorWindow::DrawDpadControlPanel() {
     ImVec2 cursor = ImGui::GetCursorPos();
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
     Ship::GuiWindow::BeginGroupPanel("D-Pad Options", ImGui::GetContentRegionAvail());
-    CVarCheckbox("D-pad Support on Pause Screen", CVAR_SETTING("DPadOnPause"),
-                 CheckboxOptions()
-                     .Color(THEME_COLOR)
-                     .Tooltip("Navigate Pause with the D-pad\nIf used with \"D-pad as Equip Items\", you must hold "
-                              "C-Up to equip instead of navigate"));
-    CVarCheckbox("D-pad Support in Text Boxes", CVAR_SETTING("DpadInText"),
-                 CheckboxOptions()
-                     .Color(THEME_COLOR)
-                     .Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry "
-                              "screens with the D-pad"));
+    SohGui::mSohMenu->MenuDrawItem(dpadPause, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+    SohGui::mSohMenu->MenuDrawItem(dpadText, ImGui::GetContentRegionAvail().x, THEME_COLOR);
 
     if (!CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) && !CVarGetInteger(CVAR_SETTING("DpadInText"), 0)) {
         ImGui::BeginDisabled();
@@ -1902,3 +1894,52 @@ void SohInputEditorWindow::DrawElement() {
     ImGui::PopStyleColor(3);
     ImGui::PopFont();
 }
+
+void RegisterInputEditorWidgets() {
+    dpadOcarina = { .name = "Dpad Ocarina Playback", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    dpadOcarina.CVar(CVAR_SETTING("CustomOcarina.Dpad")).Options(CheckboxOptions().Color(THEME_COLOR));
+    SohGui::mSohMenu->AddSearchWidget({ dpadOcarina, "Settings", "Controls", "Ocarina Controls", "" });
+
+    freeLook = { .name = "Free Look", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    freeLook.CVar(CVAR_SETTING("FreeLook.Enabled"))
+        .Options(
+            CheckboxOptions()
+                .Color(THEME_COLOR)
+                .Tooltip(
+                    "Enables free look camera control\nNote: You must remap C buttons off of the right stick in the "
+                    "controller config menu, and map the camera stick to the right stick.\n"
+                    "Doesn't work in areas were the game locks the camera.\n"
+                    "Scene reload may be necessary to enable."));
+    SohGui::mSohMenu->AddSearchWidget({ freeLook, "Settings", "Controls", "Camera Controls" });
+
+    mouseControl = { .name = "Enable Mouse Controls", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    mouseControl.CVar(CVAR_SETTING("EnableMouse"))
+        .Options(
+            CheckboxOptions()
+                .Color(THEME_COLOR)
+                .Tooltip("Allows for using the mouse to control the camera (must enable Free Look), "
+                         "aim with the shield, and perform quickspin attacks (quickly rotate the mouse then press B)"));
+    SohGui::mSohMenu->AddSearchWidget({ mouseControl, "Settings", "Controls", "Camera Controls" });
+
+    rightStickOcarina = { .name = "Right Stick Ocarina Playback", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    rightStickOcarina.CVar(CVAR_SETTING("CustomOcarina.RightStick")).Options(CheckboxOptions().Color(THEME_COLOR));
+    SohGui::mSohMenu->AddSearchWidget({ rightStickOcarina, "Settings", "Controls", "Ocarina Controls" });
+
+    dpadPause = { .name = "D-pad Support on Pause Screen", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    dpadPause.CVar(CVAR_SETTING("DPadOnPause"))
+        .Options(CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("Navigate Pause with the D-pad\nIf used with \"D-pad as Equip Items\", you must hold "
+                              "C-Up to equip instead of navigate"));
+    SohGui::mSohMenu->AddSearchWidget({ dpadPause, "Settings", "Controls", "Dpad Controls" });
+
+    dpadText = { .name = "D-pad Support in Text Boxes", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    dpadText.CVar(CVAR_SETTING("DpadInText"))
+        .Options(CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry "
+                              "screens with the D-pad"));
+    SohGui::mSohMenu->AddSearchWidget({ dpadText, "Settings", "Controls", "Dpad Controls" });
+}
+
+static RegisterMenuInitFunc initInputWidgets(RegisterInputEditorWidgets);
