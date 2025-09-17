@@ -643,6 +643,20 @@ GameplayStatObject GameplayStats_GetCountObjectById(uint32_t countId, uint32_t c
     return innerIt->second;
 }
 
+void GameplayStats_SortTimestamps(bool shouldSort) {
+    if (!shouldSort) {
+        std::sort(currentTimestamps.begin(), currentTimestamps.end(),
+                  [](const GameplayStatObject& a, const GameplayStatObject& b) {
+                      return a.entryTimestamp < b.entryTimestamp;
+                  });
+    } else {
+        std::sort(currentTimestamps.begin(), currentTimestamps.end(),
+                  [](const GameplayStatObject& a, const GameplayStatObject& b) {
+                      return a.entryTimestamp > b.entryTimestamp;
+                  });
+    }
+}
+
 void GameplayStats_SaveFileActions(uint32_t action, int32_t fileNum) {
     std::string filename = Ship::Context::GetPathRelativeToAppDirectory("SoHGameplayStats.json");
     json saveFile;
@@ -815,37 +829,25 @@ void GameplayStats_AddTimestamp(GameplayStatObject statObject) {
 }
 
 void DrawGameplayStatsOptionsTab() {
-    if (ImGui::BeginTable("Options", 3)) {
+    if (ImGui::BeginTable("Options", 2)) {
         ImGui::TableNextColumn();
         UIWidgets::CVarCheckbox("Enable Gameplay Stats Tracking", CVAR_SETTING("Gameplaystats.Enable"),
                                 UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 
         ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("Latest timestamps on top", CVAR_GAMEPLAY_STATS("ReverseTimestamps"),
-                                UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+        if (UIWidgets::CVarCheckbox("Latest Timestamps on Top", CVAR_GAMEPLAY_STATS("ReverseTimestamps"),
+                                    UIWidgets::CheckboxOptions().Color(THEME_COLOR))) {
+            GameplayStats_SortTimestamps(CVarGetInteger(CVAR_GAMEPLAY_STATS("ReverseTimestamps"), 0));
+        }
 
         ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("Room Breakdown", CVAR_GAMEPLAY_STATS("RoomBreakdown"),
-                                UIWidgets::CheckboxOptions()
-                                    .Tooltip("Allows a more in-depth perspective of time spent in a certain map.")
-                                    .Color(THEME_COLOR));
-
-        ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("RTA Timing on new files", CVAR_GAMEPLAY_STATS("RTATiming"),
+        UIWidgets::CVarCheckbox("RTA Timing on New Files", CVAR_GAMEPLAY_STATS("RTATiming"),
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("Timestamps are relative to starting timestamp rather than in game time, "
                                              "usually necessary for races/speedruns.\n\n"
                                              "Starting timestamp is on first non-C-up input after intro cutscene.\n\n"
                                              "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT")
                                     .Color(THEME_COLOR));
-
-        ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("Show additional detail timers", CVAR_GAMEPLAY_STATS("ShowAdditionalTimers"),
-                                UIWidgets::CheckboxOptions().Color(THEME_COLOR));
-
-        ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("Show Debug Info", CVAR_GAMEPLAY_STATS("ShowDebugInfo"),
-                                UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 
         ImGui::EndTable();
     }
@@ -959,12 +961,12 @@ void GameplayStatsWindow::DrawElement() {
             if (ImGui::BeginTabItem("Counts")) {
                 if (ImGui::BeginChild("Counts Window")) {
                     if (ImGui::BeginTable("Counts Table", 2)) {
-                        ImGui::TableSetupColumn("Enemy Kills");
+                        ImGui::TableSetupColumn("Item Counts");
                         ImGui::TableSetupColumn("Action Counts");
 
                         ImGui::TableNextColumn();
-                        ImGui::SeparatorText("Enemy Kills");
-                        GameplayStats_DrawCounts(STAT_TYPE_ENEMY);
+                        ImGui::SeparatorText("Item Counts");
+                        GameplayStats_DrawCounts(STAT_TYPE_COLLECT);
 
                         ImGui::TableNextColumn();
                         ImGui::SeparatorText("Action Counts");
@@ -972,6 +974,13 @@ void GameplayStatsWindow::DrawElement() {
 
                         ImGui::EndTable();
                     }
+                    ImGui::EndChild();
+                }
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("Enemy Kills")) {
+                if (ImGui::BeginChild("Enemy Kills Window")) {
+                    GameplayStats_DrawCounts(STAT_TYPE_ENEMY);
                     ImGui::EndChild();
                 }
                 ImGui::EndTabItem();
