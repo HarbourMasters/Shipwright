@@ -1293,6 +1293,15 @@ void RegisterGameplayStats() {
             return;
         }
 
+        if (isRandoItem) {
+            if (itemEntry.itemId >= RG_FOREST_TEMPLE_SMALL_KEY && itemEntry.itemId <= RG_TREASURE_GAME_SMALL_KEY) {
+                GameplayStatObject countObject = statObject;
+                countObject.entryTimestamp = 1;
+                countObject.entryType = STAT_TYPE_COLLECT;
+                GameplayStats_AddCount(countObject);
+            }
+        }
+
         if (statObject.entryName == "Piece of Heart") {
             GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_PIECE_OF_HEART, STAT_TYPE_PLAYER));
             GameplayStats_AddCount(statObject);
