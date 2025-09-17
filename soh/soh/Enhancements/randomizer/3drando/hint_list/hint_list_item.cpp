@@ -2157,14 +2157,14 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("some fast hands", /*german*/"QPA", /*french*/"QPA")});
                                                 // /*spanish*/QPA
-    hintTextTable[RHT_ABILITY_HESS] = HintText(CustomMessage("HESS", /*german*/"HESS", /*french*/"HESS"),
-                                               // /*spanish*/HESS
+    hintTextTable[RHT_ABILITY_HESS] = HintText(CustomMessage("Extended Superslide", /*german*/"Extended Superslide", /*french*/"Extended Superslide"),
+                                               // /*spanish*/Extended Superslide
                                                {
-                                               CustomMessage("some explosive speed", /*german*/"HESS", /*french*/"HESS")
-                                                // /*spanish*/HESS
+                                               CustomMessage("some explosive speed", /*german*/"Extended Superslide", /*french*/"Extended Superslide")
+                                                // /*spanish*/Extended Superslide
                                                }, {
-                                               CustomMessage("some slick feet", /*german*/"HESS", /*french*/"HESS")});
-                                                // /*spanish*/HESS
+                                               CustomMessage("some slick feet", /*german*/"Extended Superslide", /*french*/"Extended Superslide")});
+                                                // /*spanish*/Extended Superslide
     hintTextTable[RHT_ABILITY_SUPERSLIDE] = HintText(CustomMessage("Superslide", /*german*/"Superslide", /*french*/"Superslide"),
                                                // /*spanish*/Superslide
                                                {
@@ -2173,14 +2173,14 @@ void StaticData::HintTable_Init_Item() {
                                                }, {
                                                CustomMessage("some shield power", /*german*/"Superslide", /*french*/"Superslide")});
                                                 // /*spanish*/Superslide
-    hintTextTable[RHT_ABILITY_HOVER] = HintText(CustomMessage("Hover", /*german*/"Hover", /*french*/"Hover"),
-                                               // /*spanish*/Hover
+    hintTextTable[RHT_ABILITY_HOVER] = HintText(CustomMessage("Hovering", /*german*/"Hovering", /*french*/"Hovering"),
+                                               // /*spanish*/Hovering
                                                {
-                                               CustomMessage("a weightless trick", /*german*/"Hover", /*french*/"Hover")
-                                                // /*spanish*/Hover
+                                               CustomMessage("a weightless trick", /*german*/"Hovering", /*french*/"Hovering")
+                                                // /*spanish*/Hovering
                                                }, {
-                                               CustomMessage("gravityn't", /*german*/"Hover", /*french*/"Hover")});
-                                                // /*spanish*/Hover
+                                               CustomMessage("gravityn't", /*german*/"Hovering", /*french*/"Hovering")});
+                                                // /*spanish*/Hovering
     hintTextTable[RHT_ABILITY_EQUIP_SWAP] = HintText(CustomMessage("Equip Swap", /*german*/"Equip Swap", /*french*/"Equip Swap"),
                                                // /*spanish*/Equip Swap
                                                {
