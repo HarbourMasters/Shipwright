@@ -812,12 +812,14 @@ void GameplayStats_AddTimestamp(GameplayStatObject statObject) {
         statObject.entryName = GameplayStats_ResolveSceneByName(statObject.entryName);
     }
 
-    auto it = std::find_if(currentTimestamps.begin(), currentTimestamps.end(), [&](const GameplayStatObject& obj) {
-        return std::strcmp(obj.entryName.c_str(), statObject.entryName.c_str()) == 0;
-    });
+    if (statObject.entryType != STAT_TYPE_ITEM) {
+        auto it = std::find_if(currentTimestamps.begin(), currentTimestamps.end(), [&](const GameplayStatObject& obj) {
+            return std::strcmp(obj.entryName.c_str(), statObject.entryName.c_str()) == 0;
+        });
 
-    if (it != currentTimestamps.end()) {
-        return;
+        if (it != currentTimestamps.end()) {
+            return;
+        }
     }
 
     currentTimestamps.push_back(statObject);
@@ -985,7 +987,7 @@ void GameplayStatsWindow::DrawElement() {
                 }
                 ImGui::EndTabItem();
             }
-            if (ImGui::BeginTabItem("SceneTimers")) {
+            if (ImGui::BeginTabItem("Scene Timers")) {
                 if (ImGui::BeginChild("Scene Timers Window")) {
                     GameplayStats_DrawSceneTimers();
                     ImGui::EndChild();
@@ -1026,22 +1028,23 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveManager::Instance->SaveData("fileCreatedAt", saveContext->ship.stats.fileCreatedAt);
     SaveManager::Instance->SaveData("playTimer", saveContext->ship.stats.playTimer);
     SaveManager::Instance->SaveData("pauseTimer", saveContext->ship.stats.pauseTimer);
-    //SaveManager::Instance->SaveArray(
-    //    "itemTimestamps", ARRAY_COUNT(saveContext->ship.stats.itemTimestamp),
-    //    [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.itemTimestamp[i]); });
-    //SaveManager::Instance->SaveArray(
-    //    "sceneTimestamps", ARRAY_COUNT(saveContext->ship.stats.sceneTimestamps), [&](size_t i) {
-    //        if (saveContext->ship.stats.sceneTimestamps[i].scene != 254 &&
-    //            saveContext->ship.stats.sceneTimestamps[i].room != 254) {
-    //            SaveManager::Instance->SaveStruct("", [&]() {
-    //                SaveManager::Instance->SaveData("scene", saveContext->ship.stats.sceneTimestamps[i].scene);
-    //                SaveManager::Instance->SaveData("room", saveContext->ship.stats.sceneTimestamps[i].room);
-    //                SaveManager::Instance->SaveData("sceneTime", saveContext->ship.stats.sceneTimestamps[i].sceneTime);
-    //                SaveManager::Instance->SaveData("roomTime", saveContext->ship.stats.sceneTimestamps[i].roomTime);
-    //                SaveManager::Instance->SaveData("isRoom", saveContext->ship.stats.sceneTimestamps[i].isRoom);
-    //            });
-    //        }
-    //    });
+    // SaveManager::Instance->SaveArray(
+    //     "itemTimestamps", ARRAY_COUNT(saveContext->ship.stats.itemTimestamp),
+    //     [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.itemTimestamp[i]); });
+    // SaveManager::Instance->SaveArray(
+    //     "sceneTimestamps", ARRAY_COUNT(saveContext->ship.stats.sceneTimestamps), [&](size_t i) {
+    //         if (saveContext->ship.stats.sceneTimestamps[i].scene != 254 &&
+    //             saveContext->ship.stats.sceneTimestamps[i].room != 254) {
+    //             SaveManager::Instance->SaveStruct("", [&]() {
+    //                 SaveManager::Instance->SaveData("scene", saveContext->ship.stats.sceneTimestamps[i].scene);
+    //                 SaveManager::Instance->SaveData("room", saveContext->ship.stats.sceneTimestamps[i].room);
+    //                 SaveManager::Instance->SaveData("sceneTime",
+    //                 saveContext->ship.stats.sceneTimestamps[i].sceneTime);
+    //                 SaveManager::Instance->SaveData("roomTime", saveContext->ship.stats.sceneTimestamps[i].roomTime);
+    //                 SaveManager::Instance->SaveData("isRoom", saveContext->ship.stats.sceneTimestamps[i].isRoom);
+    //             });
+    //         }
+    //     });
     SaveManager::Instance->SaveData("tsIdx", saveContext->ship.stats.tsIdx);
     SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->ship.stats.count), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->ship.stats.count[i]);
@@ -1053,7 +1056,6 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
         "entrancesDiscovered", ARRAY_COUNT(saveContext->ship.stats.entrancesDiscovered),
         [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.entrancesDiscovered[i]); });
 }
-
 
 void LoadStatsVersion1() {
     SaveManager::Instance->LoadCharArray("buildVersion", gSaveContext.ship.stats.buildVersion,
@@ -1071,28 +1073,28 @@ void LoadStatsVersion1() {
     SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
     SaveManager::Instance->LoadData("playTimer", gSaveContext.ship.stats.playTimer);
     SaveManager::Instance->LoadData("pauseTimer", gSaveContext.ship.stats.pauseTimer);
-    //SaveManager::Instance->LoadArray(
-    //    "itemTimestamps", ARRAY_COUNT(gSaveContext.ship.stats.itemTimestamp),
-    //    [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.ship.stats.itemTimestamp[i]); });
-    //SaveManager::Instance->LoadArray(
-    //    "sceneTimestamps", ARRAY_COUNT(gSaveContext.ship.stats.sceneTimestamps), [&](size_t i) {
-    //        SaveManager::Instance->LoadStruct("", [&]() {
-    //            int scene, room, sceneTime, roomTime, isRoom;
-    //            SaveManager::Instance->LoadData("scene", scene);
-    //            SaveManager::Instance->LoadData("room", room);
-    //            SaveManager::Instance->LoadData("sceneTime", sceneTime);
-    //            SaveManager::Instance->LoadData("roomTime", roomTime);
-    //            SaveManager::Instance->LoadData("isRoom", isRoom);
-    //            if (scene == 0 && room == 0 && sceneTime == 0 && roomTime == 0 && isRoom == 0) {
-    //                return;
-    //            }
-    //            gSaveContext.ship.stats.sceneTimestamps[i].scene = scene;
-    //            gSaveContext.ship.stats.sceneTimestamps[i].room = room;
-    //            gSaveContext.ship.stats.sceneTimestamps[i].sceneTime = sceneTime;
-    //            gSaveContext.ship.stats.sceneTimestamps[i].roomTime = roomTime;
-    //            gSaveContext.ship.stats.sceneTimestamps[i].isRoom = isRoom;
-    //        });
-    //    });
+    // SaveManager::Instance->LoadArray(
+    //     "itemTimestamps", ARRAY_COUNT(gSaveContext.ship.stats.itemTimestamp),
+    //     [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.ship.stats.itemTimestamp[i]); });
+    // SaveManager::Instance->LoadArray(
+    //     "sceneTimestamps", ARRAY_COUNT(gSaveContext.ship.stats.sceneTimestamps), [&](size_t i) {
+    //         SaveManager::Instance->LoadStruct("", [&]() {
+    //             int scene, room, sceneTime, roomTime, isRoom;
+    //             SaveManager::Instance->LoadData("scene", scene);
+    //             SaveManager::Instance->LoadData("room", room);
+    //             SaveManager::Instance->LoadData("sceneTime", sceneTime);
+    //             SaveManager::Instance->LoadData("roomTime", roomTime);
+    //             SaveManager::Instance->LoadData("isRoom", isRoom);
+    //             if (scene == 0 && room == 0 && sceneTime == 0 && roomTime == 0 && isRoom == 0) {
+    //                 return;
+    //             }
+    //             gSaveContext.ship.stats.sceneTimestamps[i].scene = scene;
+    //             gSaveContext.ship.stats.sceneTimestamps[i].room = room;
+    //             gSaveContext.ship.stats.sceneTimestamps[i].sceneTime = sceneTime;
+    //             gSaveContext.ship.stats.sceneTimestamps[i].roomTime = roomTime;
+    //             gSaveContext.ship.stats.sceneTimestamps[i].isRoom = isRoom;
+    //         });
+    //     });
     SaveManager::Instance->LoadData("tsIdx", gSaveContext.ship.stats.tsIdx);
     SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.ship.stats.count), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.ship.stats.count[i]);
@@ -1294,7 +1296,7 @@ void RegisterGameplayStats() {
         }
 
         if (isRandoItem) {
-            if (itemEntry.itemId >= RG_FOREST_TEMPLE_SMALL_KEY && itemEntry.itemId <= RG_TREASURE_GAME_SMALL_KEY) {
+            if ((itemEntry.itemId >= RG_FOREST_TEMPLE_SMALL_KEY && itemEntry.itemId <= RG_TREASURE_GAME_SMALL_KEY) || itemEntry.itemId == RG_TRIFORCE_PIECE) {
                 GameplayStatObject countObject = statObject;
                 countObject.entryTimestamp = 1;
                 countObject.entryType = STAT_TYPE_COLLECT;
