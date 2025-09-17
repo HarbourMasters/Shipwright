@@ -516,33 +516,6 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
     return fmt::format("{:#x}", value, value);
 }
 
-void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
-    SaveManager::Instance->SaveData("buildVersion", saveContext->ship.stats.buildVersion);
-    SaveManager::Instance->SaveData("buildVersionMajor", saveContext->ship.stats.buildVersionMajor);
-    SaveManager::Instance->SaveData("buildVersionMinor", saveContext->ship.stats.buildVersionMinor);
-    SaveManager::Instance->SaveData("buildVersionPatch", saveContext->ship.stats.buildVersionPatch);
-
-    SaveManager::Instance->SaveData("rtaTiming", saveContext->ship.stats.rtaTiming);
-    SaveManager::Instance->SaveData("fileCreatedAt", saveContext->ship.stats.fileCreatedAt);
-    SaveManager::Instance->SaveData("playTimer", saveContext->ship.stats.playTimer);
-    SaveManager::Instance->SaveData("pauseTimer", saveContext->ship.stats.pauseTimer);
-
-    SaveManager::Instance->SaveData("tsIdx", saveContext->ship.stats.tsIdx);
-    SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->ship.stats.count), [&](size_t i) {
-        SaveManager::Instance->SaveData("", saveContext->ship.stats.count[i]);
-    });
-    SaveManager::Instance->SaveArray(
-        "scenesDiscovered", ARRAY_COUNT(saveContext->ship.stats.scenesDiscovered),
-        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.scenesDiscovered[i]); });
-    SaveManager::Instance->SaveArray(
-        "entrancesDiscovered", ARRAY_COUNT(saveContext->ship.stats.entrancesDiscovered),
-        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.entrancesDiscovered[i]); });
-}
-
-// bool compareTimestampInfoByTime(const TimestampInfo& a, const TimestampInfo& b) {
-//     return CVarGetInteger(CVAR_GAMEPLAY_STATS("ReverseTimestamps"), 0) ? a.time > b.time : a.time < b.time;
-// }
-
 nlohmann::json GameplayStats_ObjectToJson(const GameplayStatObject& entry) {
     return nlohmann::json{
         { "entryType", entry.entryType },
@@ -668,6 +641,20 @@ GameplayStatObject GameplayStats_GetCountObjectById(uint32_t countId, uint32_t c
     }
 
     return innerIt->second;
+}
+
+void GameplayStats_SortTimestamps(bool shouldSort) {
+    if (!shouldSort) {
+        std::sort(currentTimestamps.begin(), currentTimestamps.end(),
+                  [](const GameplayStatObject& a, const GameplayStatObject& b) {
+                      return a.entryTimestamp < b.entryTimestamp;
+                  });
+    } else {
+        std::sort(currentTimestamps.begin(), currentTimestamps.end(),
+                  [](const GameplayStatObject& a, const GameplayStatObject& b) {
+                      return a.entryTimestamp > b.entryTimestamp;
+                  });
+    }
 }
 
 void GameplayStats_SaveFileActions(uint32_t action, int32_t fileNum) {
@@ -842,37 +829,25 @@ void GameplayStats_AddTimestamp(GameplayStatObject statObject) {
 }
 
 void DrawGameplayStatsOptionsTab() {
-    if (ImGui::BeginTable("Options", 3)) {
+    if (ImGui::BeginTable("Options", 2)) {
         ImGui::TableNextColumn();
         UIWidgets::CVarCheckbox("Enable Gameplay Stats Tracking", CVAR_SETTING("Gameplaystats.Enable"),
                                 UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 
         ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("Latest timestamps on top", CVAR_GAMEPLAY_STATS("ReverseTimestamps"),
-                                UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+        if (UIWidgets::CVarCheckbox("Latest Timestamps on Top", CVAR_GAMEPLAY_STATS("ReverseTimestamps"),
+                                    UIWidgets::CheckboxOptions().Color(THEME_COLOR))) {
+            GameplayStats_SortTimestamps(CVarGetInteger(CVAR_GAMEPLAY_STATS("ReverseTimestamps"), 0));
+        }
 
         ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("Room Breakdown", CVAR_GAMEPLAY_STATS("RoomBreakdown"),
-                                UIWidgets::CheckboxOptions()
-                                    .Tooltip("Allows a more in-depth perspective of time spent in a certain map.")
-                                    .Color(THEME_COLOR));
-
-        ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("RTA Timing on new files", CVAR_GAMEPLAY_STATS("RTATiming"),
+        UIWidgets::CVarCheckbox("RTA Timing on New Files", CVAR_GAMEPLAY_STATS("RTATiming"),
                                 UIWidgets::CheckboxOptions()
                                     .Tooltip("Timestamps are relative to starting timestamp rather than in game time, "
                                              "usually necessary for races/speedruns.\n\n"
                                              "Starting timestamp is on first non-C-up input after intro cutscene.\n\n"
                                              "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT")
                                     .Color(THEME_COLOR));
-
-        ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("Show additional detail timers", CVAR_GAMEPLAY_STATS("ShowAdditionalTimers"),
-                                UIWidgets::CheckboxOptions().Color(THEME_COLOR));
-
-        ImGui::TableNextColumn();
-        UIWidgets::CVarCheckbox("Show Debug Info", CVAR_GAMEPLAY_STATS("ShowDebugInfo"),
-                                UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 
         ImGui::EndTable();
     }
@@ -967,19 +942,6 @@ void GameplayStats_DrawTimeStamps() {
     }
 }
 
-void InitStats(bool isDebug) {
-    SohUtils::CopyStringToCharArray(gSaveContext.ship.stats.buildVersion, std::string((char*)gBuildVersion),
-                                    ARRAY_COUNT(gSaveContext.ship.stats.buildVersion));
-    gSaveContext.ship.stats.buildVersionMajor = gBuildVersionMajor;
-    gSaveContext.ship.stats.buildVersionMinor = gBuildVersionMinor;
-    gSaveContext.ship.stats.buildVersionPatch = gBuildVersionPatch;
-
-    gSaveContext.ship.stats.rtaTiming = CVarGetInteger(CVAR_GAMEPLAY_STATS("RTATiming"), 0);
-    gSaveContext.ship.stats.fileCreatedAt = 0;
-    gSaveContext.ship.stats.playTimer = 0;
-    gSaveContext.ship.stats.pauseTimer = 0;
-}
-
 void GameplayStatsWindow::DrawElement() {
     DrawGameplayStatsOptionsTab();
     UIWidgets::PaddedSeparator();
@@ -999,12 +961,12 @@ void GameplayStatsWindow::DrawElement() {
             if (ImGui::BeginTabItem("Counts")) {
                 if (ImGui::BeginChild("Counts Window")) {
                     if (ImGui::BeginTable("Counts Table", 2)) {
-                        ImGui::TableSetupColumn("Enemy Kills");
+                        ImGui::TableSetupColumn("Item Counts");
                         ImGui::TableSetupColumn("Action Counts");
 
                         ImGui::TableNextColumn();
-                        ImGui::SeparatorText("Enemy Kills");
-                        GameplayStats_DrawCounts(STAT_TYPE_ENEMY);
+                        ImGui::SeparatorText("Item Counts");
+                        GameplayStats_DrawCounts(STAT_TYPE_COLLECT);
 
                         ImGui::TableNextColumn();
                         ImGui::SeparatorText("Action Counts");
@@ -1012,6 +974,13 @@ void GameplayStatsWindow::DrawElement() {
 
                         ImGui::EndTable();
                     }
+                    ImGui::EndChild();
+                }
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("Enemy Kills")) {
+                if (ImGui::BeginChild("Enemy Kills Window")) {
+                    GameplayStats_DrawCounts(STAT_TYPE_ENEMY);
                     ImGui::EndChild();
                 }
                 ImGui::EndTabItem();
@@ -1029,38 +998,121 @@ void GameplayStatsWindow::DrawElement() {
     }
 }
 
-void GameplayStats_InitSave() {
-    SaveManager::Instance->SaveData("buildVersion", gSaveContext.ship.stats.buildVersion);
-    SaveManager::Instance->SaveData("buildVersionMajor", gSaveContext.ship.stats.buildVersionMajor);
-    SaveManager::Instance->SaveData("buildVersionMinor", gSaveContext.ship.stats.buildVersionMinor);
-    SaveManager::Instance->SaveData("buildVersionPatch", gSaveContext.ship.stats.buildVersionPatch);
+void InitStats(bool isDebug) {
+    SohUtils::CopyStringToCharArray(gSaveContext.ship.stats.buildVersion, std::string((char*)gBuildVersion),
+                                    ARRAY_COUNT(gSaveContext.ship.stats.buildVersion));
+    gSaveContext.ship.stats.buildVersionMajor = gBuildVersionMajor;
+    gSaveContext.ship.stats.buildVersionMinor = gBuildVersionMinor;
+    gSaveContext.ship.stats.buildVersionPatch = gBuildVersionPatch;
 
-    SaveManager::Instance->SaveData("rtaTiming", gSaveContext.ship.stats.rtaTiming);
-    SaveManager::Instance->SaveData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
-    SaveManager::Instance->SaveData("playTimer", gSaveContext.ship.stats.playTimer);
-    SaveManager::Instance->SaveData("pauseTimer", gSaveContext.ship.stats.pauseTimer);
+    gSaveContext.ship.stats.rtaTiming = CVarGetInteger(CVAR_GAMEPLAY_STATS("RTATiming"), 0);
+    gSaveContext.ship.stats.fileCreatedAt = 0;
+    gSaveContext.ship.stats.playTimer = 0;
+    gSaveContext.ship.stats.pauseTimer = 0;
+}
 
+void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
+    SaveManager::Instance->SaveData("buildVersion", saveContext->ship.stats.buildVersion);
+    SaveManager::Instance->SaveData("buildVersionMajor", saveContext->ship.stats.buildVersionMajor);
+    SaveManager::Instance->SaveData("buildVersionMinor", saveContext->ship.stats.buildVersionMinor);
+    SaveManager::Instance->SaveData("buildVersionPatch", saveContext->ship.stats.buildVersionPatch);
+
+    SaveManager::Instance->SaveData("heartPieces", saveContext->ship.stats.heartPieces);
+    SaveManager::Instance->SaveData("heartContainers", saveContext->ship.stats.heartContainers);
+    SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext->ship.stats.dungeonKeys), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->ship.stats.dungeonKeys[i]);
+    });
+    SaveManager::Instance->SaveData("rtaTiming", saveContext->ship.stats.rtaTiming);
+    SaveManager::Instance->SaveData("fileCreatedAt", saveContext->ship.stats.fileCreatedAt);
+    SaveManager::Instance->SaveData("playTimer", saveContext->ship.stats.playTimer);
+    SaveManager::Instance->SaveData("pauseTimer", saveContext->ship.stats.pauseTimer);
+    //SaveManager::Instance->SaveArray(
+    //    "itemTimestamps", ARRAY_COUNT(saveContext->ship.stats.itemTimestamp),
+    //    [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.itemTimestamp[i]); });
+    //SaveManager::Instance->SaveArray(
+    //    "sceneTimestamps", ARRAY_COUNT(saveContext->ship.stats.sceneTimestamps), [&](size_t i) {
+    //        if (saveContext->ship.stats.sceneTimestamps[i].scene != 254 &&
+    //            saveContext->ship.stats.sceneTimestamps[i].room != 254) {
+    //            SaveManager::Instance->SaveStruct("", [&]() {
+    //                SaveManager::Instance->SaveData("scene", saveContext->ship.stats.sceneTimestamps[i].scene);
+    //                SaveManager::Instance->SaveData("room", saveContext->ship.stats.sceneTimestamps[i].room);
+    //                SaveManager::Instance->SaveData("sceneTime", saveContext->ship.stats.sceneTimestamps[i].sceneTime);
+    //                SaveManager::Instance->SaveData("roomTime", saveContext->ship.stats.sceneTimestamps[i].roomTime);
+    //                SaveManager::Instance->SaveData("isRoom", saveContext->ship.stats.sceneTimestamps[i].isRoom);
+    //            });
+    //        }
+    //    });
+    SaveManager::Instance->SaveData("tsIdx", saveContext->ship.stats.tsIdx);
+    SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->ship.stats.count), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->ship.stats.count[i]);
+    });
+    SaveManager::Instance->SaveArray(
+        "scenesDiscovered", ARRAY_COUNT(saveContext->ship.stats.scenesDiscovered),
+        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.scenesDiscovered[i]); });
+    SaveManager::Instance->SaveArray(
+        "entrancesDiscovered", ARRAY_COUNT(saveContext->ship.stats.entrancesDiscovered),
+        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.entrancesDiscovered[i]); });
+}
+
+
+void LoadStatsVersion1() {
     SaveManager::Instance->LoadCharArray("buildVersion", gSaveContext.ship.stats.buildVersion,
                                          ARRAY_COUNT(gSaveContext.ship.stats.buildVersion));
     SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.ship.stats.buildVersionMajor);
     SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.ship.stats.buildVersionMinor);
     SaveManager::Instance->LoadData("buildVersionPatch", gSaveContext.ship.stats.buildVersionPatch);
 
+    SaveManager::Instance->LoadData("heartPieces", gSaveContext.ship.stats.heartPieces);
+    SaveManager::Instance->LoadData("heartContainers", gSaveContext.ship.stats.heartContainers);
+    SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.ship.stats.dungeonKeys), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.ship.stats.dungeonKeys[i]);
+    });
     SaveManager::Instance->LoadData("rtaTiming", gSaveContext.ship.stats.rtaTiming);
     SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
     SaveManager::Instance->LoadData("playTimer", gSaveContext.ship.stats.playTimer);
     SaveManager::Instance->LoadData("pauseTimer", gSaveContext.ship.stats.pauseTimer);
+    //SaveManager::Instance->LoadArray(
+    //    "itemTimestamps", ARRAY_COUNT(gSaveContext.ship.stats.itemTimestamp),
+    //    [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.ship.stats.itemTimestamp[i]); });
+    //SaveManager::Instance->LoadArray(
+    //    "sceneTimestamps", ARRAY_COUNT(gSaveContext.ship.stats.sceneTimestamps), [&](size_t i) {
+    //        SaveManager::Instance->LoadStruct("", [&]() {
+    //            int scene, room, sceneTime, roomTime, isRoom;
+    //            SaveManager::Instance->LoadData("scene", scene);
+    //            SaveManager::Instance->LoadData("room", room);
+    //            SaveManager::Instance->LoadData("sceneTime", sceneTime);
+    //            SaveManager::Instance->LoadData("roomTime", roomTime);
+    //            SaveManager::Instance->LoadData("isRoom", isRoom);
+    //            if (scene == 0 && room == 0 && sceneTime == 0 && roomTime == 0 && isRoom == 0) {
+    //                return;
+    //            }
+    //            gSaveContext.ship.stats.sceneTimestamps[i].scene = scene;
+    //            gSaveContext.ship.stats.sceneTimestamps[i].room = room;
+    //            gSaveContext.ship.stats.sceneTimestamps[i].sceneTime = sceneTime;
+    //            gSaveContext.ship.stats.sceneTimestamps[i].roomTime = roomTime;
+    //            gSaveContext.ship.stats.sceneTimestamps[i].isRoom = isRoom;
+    //        });
+    //    });
+    SaveManager::Instance->LoadData("tsIdx", gSaveContext.ship.stats.tsIdx);
+    SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.ship.stats.count), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.ship.stats.count[i]);
+    });
+    SaveManager::Instance->LoadArray(
+        "scenesDiscovered", ARRAY_COUNT(gSaveContext.ship.stats.scenesDiscovered),
+        [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.ship.stats.scenesDiscovered[i]); });
+    SaveManager::Instance->LoadArray(
+        "entrancesDiscovered", ARRAY_COUNT(gSaveContext.ship.stats.entrancesDiscovered),
+        [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.ship.stats.entrancesDiscovered[i]); });
 }
 
 void GameplayStatsWindow::InitElement() {
-    SaveManager::Instance->AddLoadFunction("sohStats", 1, GameplayStats_InitSave);
+    SaveManager::Instance->AddLoadFunction("sohStats", 1, LoadStatsVersion1);
     // Add main section save, no parent.
     SaveManager::Instance->AddSaveFunction("sohStats", 1, SaveStats, true, SECTION_PARENT_NONE);
     // Add subsections, parent of "sohStats". Not sure how to do this without the redundant references to "SaveStats".
-    SaveManager::Instance->AddInitFunction(InitStats);
-
     SaveManager::Instance->AddSaveFunction("entrances", 1, SaveStats, false, SECTION_ID_STATS);
     SaveManager::Instance->AddSaveFunction("scenes", 1, SaveStats, false, SECTION_ID_STATS);
+    SaveManager::Instance->AddInitFunction(InitStats);
 }
 
 void RegisterGameplayStats() {
@@ -1239,6 +1291,15 @@ void RegisterGameplayStats() {
         auto statObject = GameplayStats_GetObject(itemEntry.itemId, STAT_TYPE_ITEM);
         if (statObject.entryName == "") {
             return;
+        }
+
+        if (isRandoItem) {
+            if (itemEntry.itemId >= RG_FOREST_TEMPLE_SMALL_KEY && itemEntry.itemId <= RG_TREASURE_GAME_SMALL_KEY) {
+                GameplayStatObject countObject = statObject;
+                countObject.entryTimestamp = 1;
+                countObject.entryType = STAT_TYPE_COLLECT;
+                GameplayStats_AddCount(countObject);
+            }
         }
 
         if (statObject.entryName == "Piece of Heart") {
