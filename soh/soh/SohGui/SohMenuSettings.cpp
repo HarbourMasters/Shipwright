@@ -159,7 +159,7 @@ void SohMenu::AddMenuSettings() {
             Ship::Context::GetInstance()->GetWindow()->SetForceCursorVisibility(
                 CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
         })
-        .Options(CheckboxOptions().Tooltip("Makes the cursor always visible, even in full screen.").DefaultValue(true));
+        .Options(CheckboxOptions().Tooltip("Makes the cursor always visible, even in full screen."));
 #endif
     AddWidget(path, "Search In Sidebar", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("Menu.SidebarSearch"))
