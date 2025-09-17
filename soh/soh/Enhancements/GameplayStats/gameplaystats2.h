@@ -36,6 +36,7 @@ typedef enum {
 typedef enum {
     STAT_TYPE_ENEMY = 0x4,
     STAT_TYPE_PLAYER,
+    STAT_TYPE_COLLECT,
 } GameplaystatCountTypes;
 
 typedef enum {
