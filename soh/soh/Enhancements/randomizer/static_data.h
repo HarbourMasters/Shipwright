@@ -9,7 +9,7 @@
 
 namespace Rando {
 
-  struct Identifier {
+struct Identifier {
     SceneID scene;
     RandomizerCheckQuest quest;
     int16_t params;
@@ -91,20 +91,18 @@ class StaticData {
     StaticData();
     ~StaticData();
 };
-}
+} // namespace Rando
 
 namespace std {
-  template<>
-  struct hash<Rando::Identifier> {
-      inline size_t operator()(const Rando::Identifier& id) const {
-          return hash<int>{}(id.scene) ^ hash<int>{}(id.quest) ^ hash<int>{}(id.params);
-      }
-  };
+template <> struct hash<Rando::Identifier> {
+    inline size_t operator()(const Rando::Identifier& id) const {
+        return hash<int>{}(id.scene) ^ hash<int>{}(id.quest) ^ hash<int>{}(id.params);
+    }
+};
 
-  template<>
-    struct equal_to<Rando::Identifier> {
-        inline bool operator()(const Rando::Identifier& a, const Rando::Identifier& b) const {
-            return a.scene == b.scene && a.params == b.params && a.quest == b.quest;
-        }
-    };
-}
+template <> struct equal_to<Rando::Identifier> {
+    inline bool operator()(const Rando::Identifier& a, const Rando::Identifier& b) const {
+        return a.scene == b.scene && a.params == b.params && a.quest == b.quest;
+    }
+};
+} // namespace std

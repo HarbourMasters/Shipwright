@@ -1305,33 +1305,31 @@ void Settings::CreateOptions() {
                               WidgetContainerType::COLUMN);
     mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS_IMGUI] =
         OptionGroup::SubGroup("Shuffle Dungeon Items",
-                              {
-                                  &mOptions[RSK_SHUFFLE_DUNGEON_REWARDS],
-                                  &mOptions[RSK_SHUFFLE_MAPANDCOMPASS],
-                                  &mOptions[RSK_KEYSANITY],
-                                  &mOptions[RSK_GERUDO_KEYS],
-                                  &mOptions[RSK_BOSS_KEYSANITY],
-                                  &mOptions[RSK_GANONS_BOSS_KEY],
-                                  &mOptions[RSK_LACS_STONE_COUNT],
-                                  &mOptions[RSK_LACS_MEDALLION_COUNT],
-                                  &mOptions[RSK_LACS_DUNGEON_COUNT],
-                                  &mOptions[RSK_LACS_REWARD_COUNT],
-                                  &mOptions[RSK_LACS_TOKEN_COUNT],
-                                  &mOptions[RSK_LACS_OPTIONS],
-                                  &mOptions[RSK_KEYRINGS],
-                                  &mOptions[RSK_KEYRINGS_RANDOM_COUNT],
-                                  &mOptions[RSK_KEYRINGS_GERUDO_FORTRESS],
-                                  &mOptions[RSK_KEYRINGS_FOREST_TEMPLE],
-                                  &mOptions[RSK_KEYRINGS_FIRE_TEMPLE],
-                                  &mOptions[RSK_KEYRINGS_WATER_TEMPLE],
-                                  &mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE],
-                                  &mOptions[RSK_KEYRINGS_SHADOW_TEMPLE],
-                                  &mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL],
-                                  &mOptions[RSK_KEYRINGS_GTG],
-                                  &mOptions[RSK_KEYRINGS_GANONS_CASTLE],
-                                  &mOptions[RSK_SHUFFLE_SILVER_RUPEES],
-                                  &mOptions[RSK_BOTTOMLESS_SILVER_RUPEE_POUCH]
-                              },
+                              { &mOptions[RSK_SHUFFLE_DUNGEON_REWARDS],
+                                &mOptions[RSK_SHUFFLE_MAPANDCOMPASS],
+                                &mOptions[RSK_KEYSANITY],
+                                &mOptions[RSK_GERUDO_KEYS],
+                                &mOptions[RSK_BOSS_KEYSANITY],
+                                &mOptions[RSK_GANONS_BOSS_KEY],
+                                &mOptions[RSK_LACS_STONE_COUNT],
+                                &mOptions[RSK_LACS_MEDALLION_COUNT],
+                                &mOptions[RSK_LACS_DUNGEON_COUNT],
+                                &mOptions[RSK_LACS_REWARD_COUNT],
+                                &mOptions[RSK_LACS_TOKEN_COUNT],
+                                &mOptions[RSK_LACS_OPTIONS],
+                                &mOptions[RSK_KEYRINGS],
+                                &mOptions[RSK_KEYRINGS_RANDOM_COUNT],
+                                &mOptions[RSK_KEYRINGS_GERUDO_FORTRESS],
+                                &mOptions[RSK_KEYRINGS_FOREST_TEMPLE],
+                                &mOptions[RSK_KEYRINGS_FIRE_TEMPLE],
+                                &mOptions[RSK_KEYRINGS_WATER_TEMPLE],
+                                &mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE],
+                                &mOptions[RSK_KEYRINGS_SHADOW_TEMPLE],
+                                &mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL],
+                                &mOptions[RSK_KEYRINGS_GTG],
+                                &mOptions[RSK_KEYRINGS_GANONS_CASTLE],
+                                &mOptions[RSK_SHUFFLE_SILVER_RUPEES],
+                                &mOptions[RSK_BOTTOMLESS_SILVER_RUPEE_POUCH] },
                               WidgetContainerType::COLUMN);
     mOptionGroups[RSG_ITEMS_IMGUI_TABLE] = OptionGroup::SubGroup("Items",
                                                                  {
@@ -1547,32 +1545,30 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_FAIRIES],
                                         });
     mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS] =
-        OptionGroup("Shuffle Dungeon Items", {
-                                                 &mOptions[RSK_SHUFFLE_MAPANDCOMPASS],
-                                                 &mOptions[RSK_KEYSANITY],
-                                                 &mOptions[RSK_GERUDO_KEYS],
-                                                 &mOptions[RSK_BOSS_KEYSANITY],
-                                                 &mOptions[RSK_GANONS_BOSS_KEY],
-                                                 &mOptions[RSK_LACS_STONE_COUNT],
-                                                 &mOptions[RSK_LACS_MEDALLION_COUNT],
-                                                 &mOptions[RSK_LACS_DUNGEON_COUNT],
-                                                 &mOptions[RSK_LACS_REWARD_COUNT],
-                                                 &mOptions[RSK_LACS_TOKEN_COUNT],
-                                                 &mOptions[RSK_LACS_OPTIONS],
-                                                 &mOptions[RSK_KEYRINGS],
-                                                 &mOptions[RSK_KEYRINGS_RANDOM_COUNT],
-                                                 &mOptions[RSK_KEYRINGS_GERUDO_FORTRESS],
-                                                 &mOptions[RSK_KEYRINGS_FOREST_TEMPLE],
-                                                 &mOptions[RSK_KEYRINGS_FIRE_TEMPLE],
-                                                 &mOptions[RSK_KEYRINGS_WATER_TEMPLE],
-                                                 &mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE],
-                                                 &mOptions[RSK_KEYRINGS_SHADOW_TEMPLE],
-                                                 &mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL],
-                                                 &mOptions[RSK_KEYRINGS_GTG],
-                                                 &mOptions[RSK_KEYRINGS_GANONS_CASTLE],
-                                                 &mOptions[RSK_SHUFFLE_SILVER_RUPEES],
-                                                 &mOptions[RSK_BOTTOMLESS_SILVER_RUPEE_POUCH]
-                                             });
+        OptionGroup("Shuffle Dungeon Items", { &mOptions[RSK_SHUFFLE_MAPANDCOMPASS],
+                                               &mOptions[RSK_KEYSANITY],
+                                               &mOptions[RSK_GERUDO_KEYS],
+                                               &mOptions[RSK_BOSS_KEYSANITY],
+                                               &mOptions[RSK_GANONS_BOSS_KEY],
+                                               &mOptions[RSK_LACS_STONE_COUNT],
+                                               &mOptions[RSK_LACS_MEDALLION_COUNT],
+                                               &mOptions[RSK_LACS_DUNGEON_COUNT],
+                                               &mOptions[RSK_LACS_REWARD_COUNT],
+                                               &mOptions[RSK_LACS_TOKEN_COUNT],
+                                               &mOptions[RSK_LACS_OPTIONS],
+                                               &mOptions[RSK_KEYRINGS],
+                                               &mOptions[RSK_KEYRINGS_RANDOM_COUNT],
+                                               &mOptions[RSK_KEYRINGS_GERUDO_FORTRESS],
+                                               &mOptions[RSK_KEYRINGS_FOREST_TEMPLE],
+                                               &mOptions[RSK_KEYRINGS_FIRE_TEMPLE],
+                                               &mOptions[RSK_KEYRINGS_WATER_TEMPLE],
+                                               &mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE],
+                                               &mOptions[RSK_KEYRINGS_SHADOW_TEMPLE],
+                                               &mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL],
+                                               &mOptions[RSK_KEYRINGS_GTG],
+                                               &mOptions[RSK_KEYRINGS_GANONS_CASTLE],
+                                               &mOptions[RSK_SHUFFLE_SILVER_RUPEES],
+                                               &mOptions[RSK_BOTTOMLESS_SILVER_RUPEE_POUCH] });
     mOptionGroups[RSG_STARTING_ITEMS] =
         OptionGroup::SubGroup("Items", { &mOptions[RSK_STARTING_OCARINA], &mOptions[RSK_STARTING_KOKIRI_SWORD],
                                          &mOptions[RSK_STARTING_DEKU_SHIELD] });
@@ -1808,7 +1804,7 @@ const OptionGroup& Settings::GetOptionGroup(const RandomizerSettingGroupKey key)
 
 void Settings::UpdateOptionProperties() {
     // If statement for No Logic Only options.
-    if(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
         // RANDOTODO: Remove when logic is implemented for Silver Rupee Shuffle.
         mOptions[RSK_SHUFFLE_SILVER_RUPEES].Disable("This setting is only available for No Logic runs.");
     }
@@ -2532,8 +2528,10 @@ void Settings::UpdateOptionProperties() {
         mOptions[RSK_BIG_POES_HINT].Enable();
     }
 
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSilverRupees"), RO_DUNGEON_ITEM_LOC_VANILLA) <= RO_DUNGEON_ITEM_LOC_VANILLA) {
-        mOptions[RSK_BOTTOMLESS_SILVER_RUPEE_POUCH].Disable("This option is not available unless Silver Rupees are shuffled.");
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSilverRupees"), RO_DUNGEON_ITEM_LOC_VANILLA) <=
+        RO_DUNGEON_ITEM_LOC_VANILLA) {
+        mOptions[RSK_BOTTOMLESS_SILVER_RUPEE_POUCH].Disable(
+            "This option is not available unless Silver Rupees are shuffled.");
     } else {
         mOptions[RSK_BOTTOMLESS_SILVER_RUPEE_POUCH].Enable();
     }
@@ -2820,7 +2818,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
             (mOptions[RSK_KEYRINGS_GANONS_CASTLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 1)) {
             this->GetDungeon(GANONS_CASTLE)->SetKeyRing();
         }
-        if(mOptions[RSK_SHUFFLE_SILVER_RUPEES].Get() > RO_DUNGEON_ITEM_LOC_VANILLA) {
+        if (mOptions[RSK_SHUFFLE_SILVER_RUPEES].Get() > RO_DUNGEON_ITEM_LOC_VANILLA) {
             mOptions[RSK_BOTTOMLESS_SILVER_RUPEE_POUCH].Set(RO_GENERIC_OFF);
         }
     }

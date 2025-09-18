@@ -1069,9 +1069,8 @@ static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
 
     // randomize Silver Rupees
     if (ctx->GetOption(RSK_SHUFFLE_SILVER_RUPEES).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON)) {
-        auto dungeonSilverRupees = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i) {
-            return dungeon->ContainsSilverRupee(i);
-        });
+        auto dungeonSilverRupees = FilterAndEraseFromPool(
+            ItemPool, [dungeon](const RandomizerGet i) { return dungeon->ContainsSilverRupee(i); });
         AddElementsToPool(dungeonItems, dungeonSilverRupees);
     }
 
@@ -1140,16 +1139,14 @@ static void RandomizeDungeonItems() {
                 FilterAndEraseFromPool(ItemPool, [](const auto i) { return i == RG_GANONS_CASTLE_BOSS_KEY; });
             AddElementsToPool(overworldItems, ganonBossKey);
         }
-        
+
         if (ctx->GetOption(RSK_SHUFFLE_SILVER_RUPEES).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON)) {
-            auto silverRupees = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i) {
-                return dungeon->ContainsSilverRupee(i);
-            });
+            auto silverRupees = FilterAndEraseFromPool(
+                ItemPool, [dungeon](const RandomizerGet i) { return dungeon->ContainsSilverRupee(i); });
             AddElementsToPool(anyDungeonItems, silverRupees);
         } else if (ctx->GetOption(RSK_SHUFFLE_SILVER_RUPEES).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD)) {
-            auto silverRupees = FilterAndEraseFromPool(ItemPool, [dungeon](const RandomizerGet i) {
-                return dungeon->ContainsSilverRupee(i);
-            });
+            auto silverRupees = FilterAndEraseFromPool(
+                ItemPool, [dungeon](const RandomizerGet i) { return dungeon->ContainsSilverRupee(i); });
             AddElementsToPool(overworldItems, silverRupees);
         }
     }

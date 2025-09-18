@@ -18,7 +18,7 @@ typedef struct SilverRupeeIdentity {
 CustomMessage GetSilverRupeeItemMessage(uint16_t rgid);
 namespace Rando {
 class SilverRupeeCounter {
-public:
+  public:
     SilverRupeeCounter();
     SilverRupeeCounter(uint8_t total, RandomizerGet randoGet);
 
@@ -26,7 +26,8 @@ public:
     uint8_t GetTotal() const;
     void IncrementCollected(uint8_t amount = 1);
     bool AllCollected();
-private:
+
+  private:
     uint8_t mCollected = 0;
     uint8_t mTotal;
     RandomizerGet mRandoGet;
@@ -34,4 +35,4 @@ private:
 } // namespace Rando
 #endif
 
-#endif //SHUFLESILVERRUPEES_H
+#endif // SHUFLESILVERRUPEES_H

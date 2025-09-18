@@ -4678,14 +4678,12 @@ template <size_t N> void CreateGetItemMessages(const std::array<GetItemMessage, 
     // Special Case for Silver Rupees
     customMessageManager->CreateMessage(
         Randomizer::getItemMessageTableID, RG_SILVER_RUPEE_FIRST,
-        CustomMessage("You got a %c[[rupee_name]]%w! [[count_text]]", TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM)
-    );
+        CustomMessage("You got a %c[[rupee_name]]%w! [[count_text]]", TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM));
 
     customMessageManager->CreateMessage(
         Randomizer::getItemMessageTableID, RG_BOTTOMLESS_SILVER_RUPEE_POUCH,
         CustomMessage("You found the %cBottomless Silver Rupee Pouch! All Silver Rupee Puzzles are Unlocked",
-        TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM)
-    );
+                      TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM));
 }
 
 void CreateRupeeMessages() {
@@ -6113,12 +6111,15 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             (RandomizerInf)((int)RAND_INF_GUARD_HOUSE_UNLOCKED + ((item - RG_GUARD_HOUSE_KEY) * 2) + 1));
         return Return_Item_Entry(giEntry, RG_NONE);
     } else if (item >= RG_SILVER_RUPEE_FIRST && item <= RG_SILVER_RUPEE_LAST) {
-        OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(item)).IncrementCollected();
+        OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(item))
+            .IncrementCollected();
         return Return_Item_Entry(giEntry, RG_NONE);
     } else if (item == RG_BOTTOMLESS_SILVER_RUPEE_POUCH) {
         for (int i = RG_SILVER_RUPEE_FIRST; i <= RG_SILVER_RUPEE_LAST; i++) {
-            int max = OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(i)).GetTotal();
-            OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(i)).IncrementCollected(max);
+            int max =
+                OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(i)).GetTotal();
+            OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(i))
+                .IncrementCollected(max);
         }
         return Return_Item_Entry(giEntry, RG_NONE);
     }

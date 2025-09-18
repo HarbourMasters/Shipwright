@@ -159,7 +159,6 @@ bool DungeonInfo::ContainsSilverRupee(RandomizerGet silverRupee) const {
         }
     }
     return false;
-
 }
 
 Dungeons::Dungeons() {

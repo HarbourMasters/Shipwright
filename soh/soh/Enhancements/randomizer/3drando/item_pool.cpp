@@ -1287,10 +1287,10 @@ void GenerateItemPool() {
         AddItemToMainPool(RG_BOTTOMLESS_SILVER_RUPEE_POUCH);
     }
 
-  if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
-    if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
-      AddItemToPool(PendingJunkPool, RG_GERUDO_MEMBERSHIP_CARD);
-    }
+    if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
+        if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
+            AddItemToPool(PendingJunkPool, RG_GERUDO_MEMBERSHIP_CARD);
+        }
     }
 
     // Replace ice traps with junk from the pending junk pool if necessary

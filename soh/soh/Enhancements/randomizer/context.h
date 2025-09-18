@@ -177,11 +177,11 @@ class Context {
     void SetHash(std::string hash);
 
     /**
-     * @brief Gets a reference to the silver rupee counter corresponding to the 
+     * @brief Gets a reference to the silver rupee counter corresponding to the
      * Given RandomizerGet value.
-     * 
-     * @param rg 
-     * @return SilverRupeeCounter& 
+     *
+     * @param rg
+     * @return SilverRupeeCounter&
      */
     SilverRupeeCounter& GetSilverRupeeCounter(RandomizerGet rg);
 

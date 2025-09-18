@@ -67,7 +67,8 @@ void GenerateStartingInventory() {
 
     if (ctx->GetOption(RSK_SHUFFLE_SILVER_RUPEES).Is(RO_DUNGEON_ITEM_LOC_STARTWITH)) {
         for (int i = RG_SILVER_RUPEE_FIRST; i <= RG_SILVER_RUPEE_LAST; i++) {
-            ctx->GetSilverRupeeCounter(static_cast<RandomizerGet>(i)).IncrementCollected(ctx->GetSilverRupeeCounter(static_cast<RandomizerGet>(i)).GetTotal());
+            ctx->GetSilverRupeeCounter(static_cast<RandomizerGet>(i))
+                .IncrementCollected(ctx->GetSilverRupeeCounter(static_cast<RandomizerGet>(i)).GetTotal());
         }
     }
 
