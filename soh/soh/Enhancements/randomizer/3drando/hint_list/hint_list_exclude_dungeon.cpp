@@ -2225,6 +2225,28 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                          /*german*/ "Man erzählt sich, daß ein #Herz in Ganons Schloß# #[[1]]# verstecke.",
                                                          /*french*/ "Selon moi, un #coeur dans le Château de Ganon# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
+   hintTextTable[RHT_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE] = HintText(CustomMessage("They say that #spinning blades in Ice Cavern# protect #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_ICE_CAVERN_SLIDING_SILVER_RUPEE] = HintText(CustomMessage("They say that a #freezing slippery room# hides #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_SILVER_RUPEE] = HintText(CustomMessage("They say that the #Bottom of the well acid pit# protects #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_GERUDO_TRAINING_GROUND_BOULDER_SILVER_RUPEE] = HintText(CustomMessage("They say that a #timed boulder maze# guards #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_GERUDO_TRAINING_GROUND_LAVA_SILVER_RUPEE] = HintText(CustomMessage("They say that #a pillar rising out of lava in the desert# holds #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_GERUDO_TRAINING_GROUND_TOILET_SILVER_RUPEE] = HintText(CustomMessage("They say that a #whirlpool in the desert# guards #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_SPIRIT_GATE_SILVER_RUPEE] = HintText(CustomMessage("They say that a #gate in the Spirit Temple# protects #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_SPIRIT_BEAMOS_SILVER_RUPEE] = HintText(CustomMessage("They say that #Beamos in the Spirit Temple# guard #[[1]]# from a #child#.", {QM_RED, QM_GREEN, QM_LBLUE}));
+   hintTextTable[RHT_SPIRIT_BOULDER_SILVER_RUPEE] = HintText(CustomMessage("They say that #boulders in the Spirit Temple# guard #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_SPIRIT_LOBBY_SILVER_RUPEE] = HintText(CustomMessage("They say that #in the first room of the Spirit Temple#, #[[1]]# can be found.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_SHADOW_SPINNING_SCYTHE_SILVER_RUPEE] = HintText(CustomMessage("They say that #visible spinning scythes in the Shadow Temple# guard #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE] = HintText(CustomMessage("They say that #outside the door to falling spikes in the Shadow Temple#, #[[1]]# can be found.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE] = HintText(CustomMessage("They say that #invisible spikes in the Shadow Temple# guard #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_FOREST_TRIAL_SILVER_RUPEE] = HintText(CustomMessage("They say that #a trial of the forest# guards #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_FIRE_TRIAL_SILVER_RUPEE] = HintText(CustomMessage("They say that #a trial of fire# guards #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_WATER_TRIAL_SILVER_RUPEE] = HintText(CustomMessage("They say that #a trial of water# guards #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_SPIRIT_TRIAL_SILVER_RUPEE] = HintText(CustomMessage("They say that #a trial of the spirit# guards #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_SHADOW_TRIAL_SILVER_RUPEE] = HintText(CustomMessage("They say that #a trial of the shadows# guards #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_LIGHT_TRIAL_SILVER_RUPEE] = HintText(CustomMessage("They say that #a trial of light# guards #[[1]]#.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_DODONGOS_CAVERN_SILVER_RUPEE] = HintText(CustomMessage("They say that #around a collapsible staircase#, #[[1]]# can be found.", {QM_RED, QM_GREEN}));
+   hintTextTable[RHT_SHADOW_INVISIBLE_SCYTHE_SILVER_RUPEE] = HintText(CustomMessage("They say that #invisible scythes in the Shadow Temple# guard #[[1]]#.", {QM_RED, QM_GREEN}));
+
     // clang-format on
 }
 } // namespace Rando

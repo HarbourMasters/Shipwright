@@ -2117,6 +2117,15 @@ void StaticData::HintTable_Init_Item() {
 
     hintTextTable[RHT_WALLET_INF] = HintText(CustomMessage("an infinite Wallet", /*german*/"die unendliche Geldbörse", /*french*/"une Bourse sans fond"));
 
+    hintTextTable[RHT_DC_SILVER_RUPEE] = HintText(CustomMessage("a Dodongo's Cavern Silver Rupee"));
+    hintTextTable[RHT_ICE_CAVERN_SILVER_RUPEE] = HintText(CustomMessage("an Ice Cavern Silver Rupee"));
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL] = HintText(CustomMessage("a Bottom of the Well Silver Rupee"));
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_SILVER_RUPEE] = HintText(CustomMessage("a Gerudo Training Ground Silver Rupee"));
+    hintTextTable[RHT_SPIRIT_TEMPLE_SILVER_RUPEE] = HintText(CustomMessage("a Spirit Temple Silver Rupee"));
+    hintTextTable[RHT_SHADOW_TEMPLE_SILVER_RUPEE] = HintText(CustomMessage("a Shadow Temple Silver Rupee"));
+    hintTextTable[RHT_GANONS_CASTLE_SILVER_RUPEE] = HintText(CustomMessage("a Ganon's Castle Silver Rupee"));
+    hintTextTable[RHT_BOTTOMLESS_SILVER_RUPEE_POUCH] = HintText(CustomMessage("a pouch full of Silver Rupees"));
+
     hintTextTable[RHT_EPONA] = HintText(CustomMessage("Epona", /*german*/"Epona", /*french*/"Epona"),
                                     // /*spanish*/a Epona
                                     {
