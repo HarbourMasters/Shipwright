@@ -2118,6 +2118,7 @@ void StaticData::HintTable_Init_Item() {
     hintTextTable[RHT_WALLET_INF] = HintText(CustomMessage("an infinite Wallet", /*german*/"die unendliche Geldbörse", /*french*/"une Bourse sans fond"));
 
     hintTextTable[RHT_DC_SILVER_RUPEE] = HintText(CustomMessage("a Dodongo's Cavern Silver Rupee"));
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_SILVER_RUPEE] = HintText(CustomMessage("a Bottom of the Well Silver Rupee"));
     hintTextTable[RHT_ICE_CAVERN_SILVER_RUPEE] = HintText(CustomMessage("an Ice Cavern Silver Rupee"));
     hintTextTable[RHT_BOTTOM_OF_THE_WELL] = HintText(CustomMessage("a Bottom of the Well Silver Rupee"));
     hintTextTable[RHT_GERUDO_TRAINING_GROUND_SILVER_RUPEE] = HintText(CustomMessage("a Gerudo Training Ground Silver Rupee"));
