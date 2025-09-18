@@ -124,7 +124,7 @@ void EnGSwitch_RandomizerInit(void* actor) {
         srIdentity.index.randomizerGet = Rando::StaticData::silverTrackerMap.at(identifier);
         ObjectExtension::GetInstance().Set<SilverRupeeIdentity>(actor, std::move(srIdentity));
     } else {
-        LUSLOG_INFO("ENGSWITCH_TARGET_RUPEE or ENGSWITCH_ARCHERY_POT, no Randomizer logic required");
+        LUSLOG_INFO("EnGSwitch Actor Type %s, no Randomizer logic required", srActor->type);
     }
 }
 
