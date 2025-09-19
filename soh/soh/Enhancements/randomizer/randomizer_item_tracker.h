@@ -37,6 +37,7 @@ static std::vector<const char*> itemTrackerWindowIDs = { "Item Tracker",
                                                          "Boss Soul Tracker",
                                                          "Ocarina Button Tracker",
                                                          "Overworld Key Tracker",
+                                                         "Silver Rupee Tracker",
                                                          "Fishing Pole Tracker",
                                                          "Personal Notes",
                                                          "Total Checks" };

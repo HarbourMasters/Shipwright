@@ -133,6 +133,10 @@ std::map<uint32_t, ItemMapEntry> gregMapping = {
     { ITEM_RUPEE_GREEN, { ITEM_RUPEE_GREEN, "ITEM_RUPEE_GREEN", "ITEM_RUPEE_GREEN_Faded", gRupeeCounterIconTex } }
 };
 
+std::map<uint32_t, ItemMapEntry> silverRupeeMapping = {
+    { ITEM_RUPEE_GREEN, { ITEM_RUPEE_GREEN, "ITEM_RUPEE_SILVER", "ITEM_RUPEE_SILVER_Faded", gRupeeCounterIconTex } }
+};
+
 std::map<uint32_t, ItemMapEntry> triforcePieceMapping = {
     { RG_TRIFORCE_PIECE, { RG_TRIFORCE_PIECE, "RG_TRIFORCE_PIECE", "RG_TRIFORCE_PIECE_Faded", gTriforcePieceTex } }
 };
@@ -214,6 +218,14 @@ void RegisterImGuiItemIcons() {
                                                                             gregGreen);
         Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded,
                                                                             entry.second.texturePath, gregFadedGreen);
+    }
+
+    for (const auto& entry : silverRupeeMapping) {
+        ImVec4 silver = ImVec4(0.7f, 0.7f, 0.7f, 1.0f);
+        ImVec4 silverFaded = silver;
+        silverFaded.w = 0.3f;
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, silver);
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, silverFaded);
     }
 
     for (const auto& entry : triforcePieceMapping) {
