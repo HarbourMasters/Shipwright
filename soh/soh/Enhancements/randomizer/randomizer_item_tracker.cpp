@@ -7,6 +7,7 @@
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "randomizerTypes.h"
+#include "dungeon.h"
 
 #include <map>
 #include <string>
@@ -1601,7 +1602,19 @@ void UpdateVectors() {
         while (mainWindowItems.size() % 6) {
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
         }
-        mainWindowItems.insert(mainWindowItems.end(), silverRupeeItems.begin(), silverRupeeItems.end());
+        for (auto silverRupee : silverRupeeItems) {
+            uint8_t dungeonId =
+                OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(silverRupee.id))
+                    .DungeonID();
+            RandomizerCheckQuest dungeonQuest =
+                OTRGlobals::Instance->gRandoContext->GetDungeon(dungeonId)->IsMQ() ? RCQUEST_MQ : RCQUEST_VANILLA;
+            RandomizerCheckQuest rupeeQuest =
+                OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(silverRupee.id))
+                    .Quest();
+            if (dungeonQuest == rupeeQuest) {
+                mainWindowItems.push_back(silverRupee);
+            }
+        }
     }
 
     shouldUpdateVectors = false;
@@ -1787,8 +1800,23 @@ void ItemTrackerWindow::DrawElement() {
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.SilverRupees"), SECTION_DISPLAY_HIDDEN) ==
             SECTION_DISPLAY_SEPARATE) {
+            std::vector<ItemTrackerItem> questMatchingSilverRupeeItems;
+            for (auto silverRupee : silverRupeeItems) {
+                uint8_t dungeonId = OTRGlobals::Instance->gRandoContext
+                                        ->GetSilverRupeeCounter(static_cast<RandomizerGet>(silverRupee.id))
+                                        .DungeonID();
+                RandomizerCheckQuest dungeonQuest =
+                    OTRGlobals::Instance->gRandoContext->GetDungeon(dungeonId)->IsMQ() ? RCQUEST_MQ : RCQUEST_VANILLA;
+                RandomizerCheckQuest rupeeQuest =
+                    OTRGlobals::Instance->gRandoContext
+                        ->GetSilverRupeeCounter(static_cast<RandomizerGet>(silverRupee.id))
+                        .Quest();
+                if (dungeonQuest == rupeeQuest) {
+                    questMatchingSilverRupeeItems.push_back(silverRupee);
+                }
+            }
             BeginFloatingWindows("Silver Rupee Tracker");
-            DrawItemsInRows(silverRupeeItems);
+            DrawItemsInRows(questMatchingSilverRupeeItems);
             EndFloatingWindows();
         }
 

@@ -256,8 +256,7 @@ void SaveManager::LoadRandomizer() {
     SaveManager::Instance->LoadArray("silverRupees", RG_SILVER_RUPEE_LAST - RG_SILVER_RUPEE_FIRST + 1, [&](size_t i) {
         size_t value;
         SaveManager::Instance->LoadData("", value);
-        randoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(i + RG_SILVER_RUPEE_FIRST))
-            .IncrementCollected(value);
+        randoContext->GetSilverRupeeCounter(static_cast<RandomizerGet>(i + RG_SILVER_RUPEE_FIRST)).SetCollected(value);
     });
 }
 

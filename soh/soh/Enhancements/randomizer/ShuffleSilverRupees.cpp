@@ -974,8 +974,9 @@ static RegisterShipInitFunc registerFunc(Rando::StaticData::RegisterSilverRupeeL
 Rando::SilverRupeeCounter::SilverRupeeCounter() : mCollected(0), mTotal(0), mRandoGet(RG_NONE) {
 }
 
-Rando::SilverRupeeCounter::SilverRupeeCounter(uint8_t total, RandomizerGet randoGet)
-    : mCollected(0), mTotal(total), mRandoGet(randoGet) {
+Rando::SilverRupeeCounter::SilverRupeeCounter(uint8_t total, RandomizerGet randoGet, uint8_t dungeonId,
+                                              RandomizerCheckQuest quest)
+    : mCollected(0), mTotal(total), mRandoGet(randoGet), mDungeonId(dungeonId), mQuest(quest) {
 }
 
 uint8_t Rando::SilverRupeeCounter::GetCollected() const {
@@ -998,4 +999,12 @@ void Rando::SilverRupeeCounter::SetCollected(uint8_t newCollected) {
     if (newCollected >= 0 && newCollected <= GetTotal()) {
         mCollected = newCollected;
     }
+}
+
+uint8_t Rando::SilverRupeeCounter::DungeonID() {
+    return mDungeonId;
+}
+
+RandomizerCheckQuest Rando::SilverRupeeCounter::Quest() {
+    return mQuest;
 }
