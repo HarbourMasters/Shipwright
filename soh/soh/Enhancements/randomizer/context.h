@@ -191,7 +191,7 @@ class Context {
     std::array<ItemLocation, RC_MAX> itemLocationTable = {};
     std::array<OptionValue, RSK_MAX> mOptions;
     std::array<OptionValue, RT_MAX> mTrickOptions;
-    std::array<Rando::SilverRupeeCounter, 27> mSilverRupeeCounters;
+    std::array<Rando::SilverRupeeCounter, 28> mSilverRupeeCounters;
     RandoOptionLACSCondition mLACSCondition = RO_LACS_VANILLA;
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;
     std::shared_ptr<Dungeons> mDungeons;

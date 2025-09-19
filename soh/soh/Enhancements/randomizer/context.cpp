@@ -38,6 +38,7 @@ Context::Context() {
         SilverRupeeCounter(5, RG_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE),
         SilverRupeeCounter(5, RG_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE),
         SilverRupeeCounter(5, RG_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE),
+        SilverRupeeCounter(5, RG_SPIRIT_GATE_SILVER_RUPEE),
         SilverRupeeCounter(5, RG_SPIRIT_BEAMOS_SILVER_RUPEE),
         SilverRupeeCounter(5, RG_SPIRIT_BOULDER_SILVER_RUPEE),
         SilverRupeeCounter(5, RG_SHADOW_SCYTHE_SILVER_RUPEE),
