@@ -28,6 +28,8 @@ CustomMessage GetSilverRupeeItemMessage(uint16_t rgid) {
         messageEntry.Replace(
             "[[rupee_name]]",
             CustomMessage(Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetName()));
+        // Remove the "MQ" text from the item name to avoid *some* MQ dungeon spoiling.
+        messageEntry.Replace(" MQ", CustomMessage(""));
         messageEntry.AutoFormat();
     }
     return messageEntry;
