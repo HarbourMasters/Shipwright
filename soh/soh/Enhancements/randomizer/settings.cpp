@@ -1807,7 +1807,10 @@ void Settings::UpdateOptionProperties() {
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
         // RANDOTODO: Remove when logic is implemented for Silver Rupee Shuffle.
         mOptions[RSK_SHUFFLE_SILVER_RUPEES].Disable("This setting is only available for No Logic runs.");
+    } else {
+        mOptions[RSK_SHUFFLE_SILVER_RUPEES].Enable();
     }
+
     // Default to hiding bridge opts and the extra sliders.
     mOptions[RSK_RAINBOW_BRIDGE].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
     mOptions[RSK_BRIDGE_OPTIONS].Hide();
