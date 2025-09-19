@@ -1683,7 +1683,12 @@ void DrawRandomizerTab() {
             RandomizerGet rgid = static_cast<RandomizerGet>(i);
             int32_t collected = ctx->GetSilverRupeeCounter(rgid).GetCollected();
             PushStyleSlider(THEME_COLOR);
-            if (UIWidgets::SliderInt(Rando::StaticData::RetrieveItem(rgid).GetName().GetEnglish().c_str(), &collected, UIWidgets::IntSliderOptions().DefaultValue(0).Max(ctx->GetSilverRupeeCounter(rgid).GetTotal()).Min(0).ShowButtons(true))) {
+            if (UIWidgets::SliderInt(Rando::StaticData::RetrieveItem(rgid).GetName().GetEnglish().c_str(), &collected,
+                                     UIWidgets::IntSliderOptions()
+                                         .DefaultValue(0)
+                                         .Max(ctx->GetSilverRupeeCounter(rgid).GetTotal())
+                                         .Min(0)
+                                         .ShowButtons(true))) {
                 ctx->GetSilverRupeeCounter(rgid).SetCollected(collected);
             }
             PopStyleSlider();

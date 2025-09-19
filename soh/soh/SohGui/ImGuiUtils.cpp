@@ -224,8 +224,10 @@ void RegisterImGuiItemIcons() {
         ImVec4 silver = ImVec4(0.7f, 0.7f, 0.7f, 1.0f);
         ImVec4 silverFaded = silver;
         silverFaded.w = 0.3f;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, silver);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, silverFaded);
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath,
+                                                                            silver);
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded,
+                                                                            entry.second.texturePath, silverFaded);
     }
 
     for (const auto& entry : triforcePieceMapping) {
