@@ -2258,7 +2258,7 @@ void StaticData::HintTable_Init() {
                                                                 {QM_GREEN, QM_RED}, {}, TEXTBOX_TYPE_BLUE));
 
     hintTextTable[RHT_MIDO_HINT] = HintText(CustomMessage("You'll never find the #Kokiri Sword# I hid in #[[1]]#!",
-                                               /*german*/ TODO_TRANSLATE,
+                                               /*german*/ "Du wirst nie das #Kokiri-Schwert# finden, das ich in #[[1]]# versteckt habe!",
                                                /*french*/ "Pfeuuh! Tu n'trouveras jamais l'#Epée Kokiri# que j'ai cachée dans #[[1]]#!",
                                                           {QM_GREEN, QM_RED}));
 
