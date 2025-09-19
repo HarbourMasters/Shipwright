@@ -991,3 +991,9 @@ void Rando::SilverRupeeCounter::IncrementCollected(uint8_t amount) {
 bool Rando::SilverRupeeCounter::AllCollected() {
     return GetCollected() == GetTotal();
 }
+
+void Rando::SilverRupeeCounter::SetCollected(uint8_t newCollected) {
+    if (newCollected >= 0 && newCollected <= GetTotal()) {
+        mCollected = newCollected;
+    }
+}

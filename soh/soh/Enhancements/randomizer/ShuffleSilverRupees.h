@@ -26,6 +26,7 @@ class SilverRupeeCounter {
     uint8_t GetTotal() const;
     void IncrementCollected(uint8_t amount = 1);
     bool AllCollected();
+    void SetCollected(uint8_t newCollected);
 
   private:
     uint8_t mCollected = 0;

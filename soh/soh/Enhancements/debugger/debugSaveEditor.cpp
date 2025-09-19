@@ -1675,6 +1675,25 @@ void ResetBaseOptions() {
         .Tooltip("");
 }
 
+void DrawRandomizerTab() {
+    auto ctx = OTRGlobals::Instance->gRandoContext;
+    ImGui::Text("Silver Rupee Counts");
+    if (ctx->GetOption(RSK_SHUFFLE_SILVER_RUPEES)) {
+        for (int32_t i = RG_SILVER_RUPEE_FIRST; i <= RG_SILVER_RUPEE_LAST; i++) {
+            RandomizerGet rgid = static_cast<RandomizerGet>(i);
+            int32_t collected = ctx->GetSilverRupeeCounter(rgid).GetCollected();
+            PushStyleSlider(THEME_COLOR);
+            if (UIWidgets::SliderInt(Rando::StaticData::RetrieveItem(rgid).GetName().GetEnglish().c_str(), &collected, UIWidgets::IntSliderOptions().DefaultValue(0).Max(ctx->GetSilverRupeeCounter(rgid).GetTotal()).Min(0).ShowButtons(true))) {
+                ctx->GetSilverRupeeCounter(rgid).SetCollected(collected);
+            }
+            PopStyleSlider();
+        }
+    } else {
+        ImGui::Text("Silver Rupees are not shuffled");
+    }
+    UIWidgets::PaddedSeparator();
+}
+
 void SaveEditorWindow::DrawElement() {
     PushStyleTabs(THEME_COLOR);
     ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
@@ -1714,6 +1733,12 @@ void SaveEditorWindow::DrawElement() {
         ResetBaseOptions();
         if (ImGui::BeginTabItem("Player")) {
             DrawPlayerTab();
+            ImGui::EndTabItem();
+        }
+
+        ResetBaseOptions();
+        if (ImGui::BeginTabItem("Randomizer")) {
+            DrawRandomizerTab();
             ImGui::EndTabItem();
         }
 
