@@ -560,6 +560,11 @@ void SohMenu::AddMenuEnhancements() {
         .RaceDisable(false)
         .Options(IntSliderOptions().Min(4).Max(6).DefaultValue(6).Tooltip(
             "Space between text characters (useful for HD font textures)."));
+    AddWidget(path, "Use 3D Pre-Rendered Scenes", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("3DSceneRender"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip(
+            "Replaces 2D with 3D Pre-rendered backgrounds in Scenes."));
 
     AddWidget(path, "Models & Textures", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Disable LOD", WIDGET_CVAR_CHECKBOX)

@@ -80,16 +80,16 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     gSaveContext.worldMapArea = 0;
     OTRScene_ExecuteCommands(play, (SOH::Scene*)play->sceneSegment);
     
-    // Add a skybox on scenes like the Castle Courtyard (play->envCtx.skyboxDisabled = false;)
-    play->envCtx.skyboxDisabled = false;
-    
-    // Replace skybox with normal sky
-    Player* player = GET_PLAYER(gPlayState);
-    play->skyboxId = SKYBOX_NORMAL_SKY;
-    // Apply the always cloudy skybox as an adult for Temple of Time and the Market
-    if (LINK_IS_ADULT && gPlayState->sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS || gPlayState->sceneNum ==  SCENE_MARKET_RUINS || gPlayState->sceneNum ==  SCENE_MARKET_ENTRANCE_RUINS) {
-        gWeatherMode = 3;
-    }
+    //// Add a skybox on scenes like the Castle Courtyard (play->envCtx.skyboxDisabled = false;)
+    //play->envCtx.skyboxDisabled = false;
+    //
+    //// Replace skybox with normal sky
+    //Player* player = GET_PLAYER(gPlayState);
+    //play->skyboxId = SKYBOX_NORMAL_SKY;
+    //// Apply the always cloudy skybox as an adult for Temple of Time and the Market
+    //if (LINK_IS_ADULT && gPlayState->sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS || gPlayState->sceneNum ==  SCENE_MARKET_RUINS || gPlayState->sceneNum ==  SCENE_MARKET_ENTRANCE_RUINS) {
+    //    gWeatherMode = 3;
+    //}
     
     GameInteractor_ExecuteAfterSceneCommands(play->sceneNum);
     Play_InitEnvironment(play, play->skyboxId);

@@ -928,6 +928,22 @@ void RegisterCustomSkeletons() {
     });
 }
 
+void Register3DPreRenderedScenes() {
+    COND_HOOK(AfterSceneCommands, CVarGetInteger(CVAR_SETTING("3DSceneRender"), 0), [](int16_t sceneNum) {
+        // Add a skybox on scenes like the Castle Courtyard (play->envCtx.skyboxDisabled = false;)
+        gPlayState->envCtx.skyboxDisabled = false;
+
+        // Replace skybox with normal sky
+        Player* player = GET_PLAYER(gPlayState);
+        gPlayState->skyboxId = SKYBOX_NORMAL_SKY;
+        // Apply the always cloudy skybox as an adult for Temple of Time and the Market
+        if (LINK_IS_ADULT && sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS || sceneNum == SCENE_MARKET_RUINS ||
+            sceneNum == SCENE_MARKET_ENTRANCE_RUINS) {
+            gWeatherMode = 3;
+        }
+    });
+}
+
 void InitMods() {
     RandomizerRegisterHooks();
     TimeSaverRegisterHooks();
@@ -951,4 +967,5 @@ void InitMods() {
     RegisterPauseMenuHooks();
     RandoKaleido_RegisterHooks();
     RegisterCustomSkeletons();
+    Register3DPreRenderedScenes();
 }
