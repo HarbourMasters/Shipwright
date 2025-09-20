@@ -942,6 +942,25 @@ void Register3DPreRenderedScenes() {
             gWeatherMode = 3;
         }
     });
+
+    COND_HOOK(OnPlayDrawEnd, CVarGetInteger(CVAR_SETTING("3DSceneRender"), 0), []() {
+        if ((HREG(80) != 10) || (HREG(82) != 0)) {
+            // Furthest possible fog and zFar
+            gPlayState->view.zFar = 12800;
+            gPlayState->lightCtx.fogNear = 996; // Set to 1000 to complete disable fog entirely
+            gPlayState->lightCtx.fogFar = 12800;
+            // General gray fog color
+            gPlayState->lightCtx.fogColor[0] = 100;
+            gPlayState->lightCtx.fogColor[1] = 100;
+            gPlayState->lightCtx.fogColor[2] = 100;
+        }
+    });
+    REGISTER_VB_SHOULD(VB_DRAW_2D_BACKGROUND, {
+        if (CVarGetInteger(CVAR_SETTING("3DSceneRender"), 0)) {
+            *should = false;
+            return;
+        }
+    });
 }
 
 void InitMods() {

@@ -1390,15 +1390,6 @@ void Play_Draw(PlayState* play) {
     Gfx_SetupFrame(gfxCtx, 0, 0, 0);
 
     if ((HREG(80) != 10) || (HREG(82) != 0)) {
-        //// Furthest possible fog and zFar
-        //play->view.zFar = 12800;
-        //play->lightCtx.fogNear = 996; // Set to 1000 to complete disable fog entirely
-        //play->lightCtx.fogFar = 12800;
-        //// General gray fog color
-        //play->lightCtx.fogColor[0] = 100;
-        //play->lightCtx.fogColor[1] = 100;
-        //play->lightCtx.fogColor[2] = 100;
-
         POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
         POLY_XLU_DISP = Play_SetFog(play, POLY_XLU_DISP);
 
