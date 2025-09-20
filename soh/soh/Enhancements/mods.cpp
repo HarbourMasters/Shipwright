@@ -942,7 +942,7 @@ void Register3DPreRenderedScenes() {
         }
     });
 
-    COND_HOOK(OnPlayDrawEnd, CVarGetInteger(CVAR_SETTING("3DSceneRender"), 0), []() {
+    COND_HOOK(OnPlayDrawBegin, CVarGetInteger(CVAR_SETTING("3DSceneRender"), 0), []() {
         if ((HREG(80) != 10) || (HREG(82) != 0)) {
             // Furthest possible fog and zFar
             gPlayState->view.zFar = 12800;
