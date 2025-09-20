@@ -2253,6 +2253,14 @@ typedef enum {
     // #### `args`
     // - `*DoorShutter`
     VB_BE_NEAR_DOOR_SHUTTER,
+
+    // #### `result`
+    // ```c
+    // CVarGetInteger(CVAR_SETTING("3DSceneRender"), 0)
+    // ```
+    // #### `args`
+    // - `*DoorShutter`
+    VB_DRAW_2D_BACKGROUND,
 } GIVanillaBehavior;
 
 #endif

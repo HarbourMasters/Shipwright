@@ -5,6 +5,7 @@
 #include "global.h"
 #include "vt.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <string.h>
 #include <assert.h>
 
@@ -256,89 +257,91 @@ s32 swapAndConvertJPEG(void* data) {
 
 void Room_DrawBackground2D(Gfx** gfxP, void* tex, void* tlut, u16 width, u16 height, u8 fmt, u8 siz, u16 tlutMode,
                            u16 tlutCount, f32 offsetX, f32 offsetY) {
-    Gfx* gfx = *gfxP;
-    uObjBg* bg;
+    if (GameInteractor_Should(VB_DRAW_2D_BACKGROUND, true)) {
+        Gfx* gfx = *gfxP;
+        uObjBg* bg;
 
-    bg = (uObjBg*)(gfx + 1);
-    gSPBranchList(gfx, (Gfx*)(bg + 1));
+        bg = (uObjBg*)(gfx + 1);
+        gSPBranchList(gfx, (Gfx*)(bg + 1));
 
-    bg->b.imageX = 0;
-    bg->b.imageW = width * (1 << 2);
-    bg->b.frameX = offsetX * (1 << 2);
-    bg->b.imageY = 0;
-    bg->b.imageH = height * (1 << 2);
-    bg->b.frameY = offsetY * (1 << 2);
-    bg->b.imagePtr = tex;
-    bg->b.imageLoad = G_BGLT_LOADTILE;
-    bg->b.imageFmt = fmt;
-    bg->b.imageSiz = siz;
-    bg->b.imagePal = 0;
-    bg->b.imageFlip = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? G_BG_FLAG_FLIPS : 0;
+        bg->b.imageX = 0;
+        bg->b.imageW = width * (1 << 2);
+        bg->b.frameX = offsetX * (1 << 2);
+        bg->b.imageY = 0;
+        bg->b.imageH = height * (1 << 2);
+        bg->b.frameY = offsetY * (1 << 2);
+        bg->b.imagePtr = tex;
+        bg->b.imageLoad = G_BGLT_LOADTILE;
+        bg->b.imageFmt = fmt;
+        bg->b.imageSiz = siz;
+        bg->b.imagePal = 0;
+        bg->b.imageFlip = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? G_BG_FLAG_FLIPS : 0;
 
-    // When an alt resource exists for the background, we need to unload the original asset
-    // to clear the cache so the alt asset will be loaded instead
-    // OTRTODO: If Alt loading over original cache is fixed, this line can most likely be removed
-    ResourceMgr_UnloadOriginalWhenAltExists((char*)tex);
+        // When an alt resource exists for the background, we need to unload the original asset
+        // to clear the cache so the alt asset will be loaded instead
+        // OTRTODO: If Alt loading over original cache is fixed, this line can most likely be removed
+        ResourceMgr_UnloadOriginalWhenAltExists((char*)tex);
 
-    if (ResourceMgr_ResourceIsBackground((char*)tex)) {
-        char* blob = (char*)ResourceGetDataByName((char*)tex);
-        swapAndConvertJPEG(blob);
-        bg->b.imagePtr = (uintptr_t)blob;
-    }
-
-    gfx = (Gfx*)(bg + 1);
-
-    if (fmt == G_IM_FMT_CI) {
-        gDPLoadTLUT(gfx++, tlutCount, 256, tlut);
-    } else {
-        gDPPipeSync(gfx++);
-    }
-
-    if ((fmt == G_IM_FMT_RGBA) && (SREG(26) == 0)) {
-        bg->b.frameW = width * (1 << 2);
-        bg->b.frameH = height * (1 << 2);
-        guS2DInitBg(bg);
-
-        // #region SOH [Port][Widescreen]
-        // When larger than 4:3 we want to render an additional black rectangle behind the 2d image
-        // to simulate black bars on the side that cover up the world
-        s16 newX = OTRGetRectDimensionFromLeftEdge(0);
-        if (newX < 0) {
-            gDPSetOtherMode(gfx++, tlutMode | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_FILL | G_PM_NPRIMITIVE,
-                            G_AC_THRESHOLD | G_ZS_PIXEL | G_RM_NOOP | G_RM_NOOP2);
-            gDPSetFillColor(gfx++, GPACK_RGBA5551(0, 0, 0, 1) << 16 | GPACK_RGBA5551(0, 0, 0, 1));
-            gDPFillWideRectangle(gfx++, newX, 0, OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH), SCREEN_HEIGHT);
+        if (ResourceMgr_ResourceIsBackground((char*)tex)) {
+            char* blob = (char*)ResourceGetDataByName((char*)tex);
+            swapAndConvertJPEG(blob);
+            bg->b.imagePtr = (uintptr_t)blob;
         }
-        // #endregion
 
-        gDPSetOtherMode(gfx++, tlutMode | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_COPY | G_PM_NPRIMITIVE,
-                        G_AC_THRESHOLD | G_ZS_PIXEL | G_RM_NOOP | G_RM_NOOP2);
+        gfx = (Gfx*)(bg + 1);
 
-        gDPLoadMultiTile(gfx++, bg->b.imagePtr, 0, G_TX_RENDERTILE, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, 0, 0, 0, 0 + 31,
-                         0 + 31, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP,
-                         G_TX_NOMASK, G_TX_NOLOD);
+        if (fmt == G_IM_FMT_CI) {
+            gDPLoadTLUT(gfx++, tlutCount, 256, tlut);
+        } else {
+            gDPPipeSync(gfx++);
+        }
 
-        gSPBgRectCopy(gfx++, bg);
-    } else {
-        bg->s.frameW = width * (1 << 2);
-        bg->s.frameH = height * (1 << 2);
-        bg->s.scaleW = 1 << 10;
-        bg->s.scaleH = 1 << 10;
-        bg->s.imageYorig = bg->b.imageY;
-        gDPSetOtherMode(gfx++,
-                        tlutMode | G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_POINT | G_TT_NONE |
-                            G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
-                        G_AC_THRESHOLD | G_ZS_PIXEL | AA_EN | CVG_DST_CLAMP | ZMODE_OPA | CVG_X_ALPHA | ALPHA_CVG_SEL |
-                            GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_BL, G_BL_1MA) |
-                            GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_BL, G_BL_1MA));
-        gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, 0, 0, 0, 1, 0, 0, 0, TEXEL0, 0, 0, 0, 1);
-        gSPObjRenderMode(gfx++, G_OBJRM_ANTIALIAS | G_OBJRM_BILERP);
-        gSPBgRect1Cyc(gfx++, bg);
+        if ((fmt == G_IM_FMT_RGBA) && (SREG(26) == 0)) {
+            bg->b.frameW = width * (1 << 2);
+            bg->b.frameH = height * (1 << 2);
+            guS2DInitBg(bg);
+
+            // #region SOH [Port][Widescreen]
+            // When larger than 4:3 we want to render an additional black rectangle behind the 2d image
+            // to simulate black bars on the side that cover up the world
+            s16 newX = OTRGetRectDimensionFromLeftEdge(0);
+            if (newX < 0) {
+                gDPSetOtherMode(gfx++, tlutMode | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_FILL | G_PM_NPRIMITIVE,
+                                G_AC_THRESHOLD | G_ZS_PIXEL | G_RM_NOOP | G_RM_NOOP2);
+                gDPSetFillColor(gfx++, GPACK_RGBA5551(0, 0, 0, 1) << 16 | GPACK_RGBA5551(0, 0, 0, 1));
+                gDPFillWideRectangle(gfx++, newX, 0, OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH), SCREEN_HEIGHT);
+            }
+            // #endregion
+
+            gDPSetOtherMode(gfx++, tlutMode | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_COPY | G_PM_NPRIMITIVE,
+                            G_AC_THRESHOLD | G_ZS_PIXEL | G_RM_NOOP | G_RM_NOOP2);
+
+            gDPLoadMultiTile(gfx++, bg->b.imagePtr, 0, G_TX_RENDERTILE, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, 0, 0, 0,
+                             0 + 31, 0 + 31, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD,
+                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
+
+            gSPBgRectCopy(gfx++, bg);
+        } else {
+            bg->s.frameW = width * (1 << 2);
+            bg->s.frameH = height * (1 << 2);
+            bg->s.scaleW = 1 << 10;
+            bg->s.scaleH = 1 << 10;
+            bg->s.imageYorig = bg->b.imageY;
+            gDPSetOtherMode(gfx++,
+                            tlutMode | G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_POINT | G_TT_NONE |
+                                G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
+                            G_AC_THRESHOLD | G_ZS_PIXEL | AA_EN | CVG_DST_CLAMP | ZMODE_OPA | CVG_X_ALPHA |
+                                ALPHA_CVG_SEL | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_BL, G_BL_1MA) |
+                                GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_BL, G_BL_1MA));
+            gDPSetCombineLERP(gfx++, 0, 0, 0, TEXEL0, 0, 0, 0, 1, 0, 0, 0, TEXEL0, 0, 0, 0, 1);
+            gSPObjRenderMode(gfx++, G_OBJRM_ANTIALIAS | G_OBJRM_BILERP);
+            gSPBgRect1Cyc(gfx++, bg);
+        }
+
+        gDPPipeSync(gfx++);
+
+        *gfxP = gfx;
     }
-
-    gDPPipeSync(gfx++);
-
-    *gfxP = gfx;
 }
 
 // Room Draw Polygon Type 1 - Single Format
