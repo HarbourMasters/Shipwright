@@ -934,7 +934,6 @@ void Register3DPreRenderedScenes() {
         gPlayState->envCtx.skyboxDisabled = false;
 
         // Replace skybox with normal sky
-        Player* player = GET_PLAYER(gPlayState);
         gPlayState->skyboxId = SKYBOX_NORMAL_SKY;
         // Apply the always cloudy skybox as an adult for Temple of Time and the Market
         if (LINK_IS_ADULT && sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS || sceneNum == SCENE_MARKET_RUINS ||
