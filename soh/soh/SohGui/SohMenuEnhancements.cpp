@@ -563,8 +563,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Use 3D Pre-Rendered Scenes", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("3DSceneRender"))
         .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip(
-            "Replaces 2D with 3D Pre-rendered backgrounds in Scenes."));
+        .Options(CheckboxOptions().Tooltip("Replaces 2D with 3D Pre-rendered backgrounds in Scenes."));
 
     AddWidget(path, "Models & Textures", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Disable LOD", WIDGET_CVAR_CHECKBOX)
