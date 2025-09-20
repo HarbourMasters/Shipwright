@@ -2,6 +2,7 @@
 #include "soh/resource/type/Path.h"
 #include "soh/resource/logging/PathLogger.h"
 #include "spdlog/spdlog.h"
+#include <tinyxml2.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>

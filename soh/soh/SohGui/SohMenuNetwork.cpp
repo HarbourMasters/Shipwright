@@ -3,6 +3,7 @@
 #include <soh/Notification/Notification.h>
 #include <soh/Network/Network.h>
 #include "SohGui.hpp"
+#include "soh/OTRGlobals.h"
 #include <soh/Network/Sail/Sail.h>
 #include <soh/Network/CrowdControl/CrowdControl.h>
 
@@ -39,7 +40,7 @@ void SohMenu::AddMenuNetwork() {
         })
         .Options(ButtonOptions().Tooltip("https://github.com/HarbourMasters/sail"));
     AddWidget(path, "Host & Port", WIDGET_CUSTOM).CustomFunction([](WidgetInfo& info) {
-        ImGui::BeginDisabled(Sail::Instance->isEnabled);
+        ImGui::BeginDisabled(Sail::Instance->isEnabled || CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         ImGui::Text("%s", info.name.c_str());
         CVarInputString("##HostSail", CVAR_REMOTE_SAIL("Host"),
                         InputOptions()
@@ -95,23 +96,17 @@ void SohMenu::AddMenuNetwork() {
     AddSidebarEntry("Network", path.sidebarName, 3);
     path.column = SECTION_COLUMN_1;
 
+    AddWidget(path, "About Crowd Control", WIDGET_SEPARATOR_TEXT);
     AddWidget(path,
               "Crowd Control is a platform that allows viewers to interact "
               "with a streamer's game in real time.\n"
               "\n"
-              "Click the question mark to copy the link to the Crowd Control "
-              "website to your clipboard.",
+              "Please head over to www.crowdcontrol.live for more information!",
               WIDGET_TEXT);
-    AddWidget(path, ICON_FA_CLIPBOARD "##CrowdControl", WIDGET_BUTTON)
-        .Callback([](WidgetInfo& info) {
-            ImGui::SetClipboardText("https://crowdcontrol.live");
-            Notification::Emit({
-                .message = "Copied to clipboard",
-            });
-        })
-        .Options(ButtonOptions().Tooltip("https://crowdcontrol.live"));
+
+    AddWidget(path, "Connect to Crowd Control", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Host & Port", WIDGET_CUSTOM).CustomFunction([](WidgetInfo& info) {
-        ImGui::BeginDisabled(CrowdControl::Instance->isEnabled);
+        ImGui::BeginDisabled(CrowdControl::Instance->isEnabled || CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         ImGui::Text("%s", info.name.c_str());
         CVarInputString("##HostCrowdControl", CVAR_REMOTE_CROWD_CONTROL("Host"),
                         InputOptions()
@@ -154,14 +149,25 @@ void SohMenu::AddMenuNetwork() {
                 CrowdControl::Instance->Enable();
             }
         });
-    AddWidget(path, "Connecting...##CrowdControl", WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
+    AddWidget(path, "Connecting...", WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
         info.isHidden = !CrowdControl::Instance->isEnabled;
         if (CrowdControl::Instance->isConnected) {
-            info.name = "Connected##CrowdControl";
+            info.name = "Connected";
         } else {
-            info.name = "Connecting...##CrowdControl";
+            info.name = "Connecting...";
         }
     });
+    AddWidget(path, "Additional Settings", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Enemy Name Tags", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_REMOTE_CROWD_CONTROL("EnemyNameTags"))
+        .RaceDisable(true)
+        .Options(CheckboxOptions().Tooltip(
+            "When viewers spawn enemies, the enemy will have a name tag above them with the viewer's name."));
+    AddWidget(path, "Spawned Enemies Ignored Ingame", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_REMOTE_CROWD_CONTROL("SpawnedEnemiesIgnoredIngame"))
+        .RaceDisable(true)
+        .Options(CheckboxOptions().Tooltip("Enemies spawned by CrowdControl won't be considered for \"clear enemy "
+                                           "rooms\", so they don't need to be killed to complete these rooms."));
 }
 
 } // namespace SohGui

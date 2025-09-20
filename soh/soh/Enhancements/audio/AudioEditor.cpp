@@ -265,6 +265,9 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
         }
     }
 
+    auto playingFromMenu = CVarGetInteger(CVAR_AUDIO("Playing"), 0);
+    auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+
     // Longest text in Audio Editor
     ImVec2 columnSize = ImGui::CalcTextSize("Navi - Look/Hey/Watchout (Target Enemy)");
     ImGui::BeginTable(tabId.c_str(), 3, ImGuiTableFlags_SizingFixedFit);
@@ -291,10 +294,16 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
         const std::string lockedButton = ICON_FA_LOCK + hiddenKey;
         const std::string unlockedButton = ICON_FA_UNLOCK + hiddenKey;
         const int currentValue = CVarGetInteger(cvarKey.c_str(), defaultValue);
+        const bool isCurrentlyPlaying = currentValue == playingFromMenu || seqData.sequenceId == currentBGM;
 
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        ImGui::Text("%s", seqData.label.c_str());
+        if (isCurrentlyPlaying) {
+            ImGui::TextColored(UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow), "%s %s", ICON_FA_PLAY,
+                               seqData.label.c_str());
+        } else {
+            ImGui::Text("%s", seqData.label.c_str());
+        }
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(-FLT_MIN);
         const int initialValue = map.contains(currentValue) ? currentValue : defaultValue;
@@ -459,8 +468,17 @@ void AudioEditorRegisterOnSceneInitHook() {
     });
 }
 
+void AudioEditorRegisterOnGenerationCompletionHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGenerationCompletion>([]() {
+        if (CVarGetInteger(CVAR_AUDIO("RandomizeAllOnRandoGen"), 0)) {
+            AudioEditor_RandomizeAll();
+        }
+    });
+}
+
 void AudioEditor::InitElement() {
     AudioEditorRegisterOnSceneInitHook();
+    AudioEditorRegisterOnGenerationCompletionHook();
 }
 
 void AudioEditor::DrawElement() {
@@ -564,6 +582,12 @@ void AudioEditor::DrawElement() {
                         .Color(THEME_COLOR)
                         .Tooltip(
                             "Enables randomizing all unlocked music and sound effects when you enter a new scene."));
+                UIWidgets::CVarCheckbox("Randomize All Music and Sound Effects on Randomizer Generation",
+                                        CVAR_AUDIO("RandomizeAllOnRandoGen"),
+                                        UIWidgets::CheckboxOptions()
+                                            .Color(THEME_COLOR)
+                                            .Tooltip("Enables randomizing all unlocked music and sound effects when "
+                                                     "you generate a new randomizer."));
                 UIWidgets::CVarCheckbox(
                     "Lower Octaves of Unplayable High Notes", CVAR_AUDIO("ExperimentalOctaveDrop"),
                     UIWidgets::CheckboxOptions()

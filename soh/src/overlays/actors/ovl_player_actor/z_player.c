@@ -1926,14 +1926,14 @@ void Player_ZeroRootLimbYaw(Player* this) {
  * it can also be called within action functions to change animations in the middle of an action.
  */
 void Player_FinishAnimMovement(Player* this) {
-    if (this->skelAnime.moveFlags != 0) {
+    if (this->skelAnime.movementFlags != 0) {
         Player_ApplyYawFromAnim(this);
 
         this->skelAnime.jointTable[0].x = this->skelAnime.baseTransl.x;
         this->skelAnime.jointTable[0].z = this->skelAnime.baseTransl.z;
 
-        if (this->skelAnime.moveFlags & 8) {
-            if (this->skelAnime.moveFlags & 2) {
+        if (this->skelAnime.movementFlags & 8) {
+            if (this->skelAnime.movementFlags & 2) {
                 this->skelAnime.jointTable[0].y = this->skelAnime.prevTransl.y;
             }
         } else {
@@ -1942,7 +1942,7 @@ void Player_FinishAnimMovement(Player* this) {
 
         Player_ResetAnimMovement(this);
 
-        this->skelAnime.moveFlags = 0;
+        this->skelAnime.movementFlags = 0;
     }
 }
 
@@ -1958,7 +1958,7 @@ void Player_FinishAnimMovement(Player* this) {
 void Player_ApplyAnimMovementScaledByAge(Player* this, s32 movementFlags) {
     Vec3f diff;
 
-    this->skelAnime.moveFlags = movementFlags;
+    this->skelAnime.movementFlags = movementFlags;
     this->skelAnime.prevTransl = this->skelAnime.baseTransl;
 
     SkelAnime_UpdateTranslation(&this->skelAnime, &diff, this->actor.shape.rot.y);
@@ -2005,7 +2005,7 @@ void Player_ApplyAnimMovementScaledByAge(Player* this, s32 movementFlags) {
 void Player_StartAnimMovement(PlayState* play, Player* this, s32 flags) {
     if (flags & PLAYER_ANIM_MOVEMENT_RESET_BY_AGE) {
         Player_ResetAnimMovementScaledByAge(this);
-    } else if ((flags & PLAYER_ANIM_MOVEMENT_RESET) || (this->skelAnime.moveFlags != 0)) {
+    } else if ((flags & PLAYER_ANIM_MOVEMENT_RESET) || (this->skelAnime.movementFlags != 0)) {
         // If AnimMovement is already in use when this function is called and
         // `PLAYER_ANIM_MOVEMENT_RESET_BY_AGE` is not set, then this case will be used.
         Player_ResetAnimMovement(this);
@@ -2017,7 +2017,7 @@ void Player_StartAnimMovement(PlayState* play, Player* this, s32 flags) {
     }
 
     // Remove Player specific flags by masking the lower byte before setting to `skelAnime.movementFlags`
-    this->skelAnime.moveFlags = flags /*&& 0xFF*/;
+    this->skelAnime.movementFlags = flags /*&& 0xFF*/;
 
     Player_ZeroSpeedXZ(this);
     AnimationContext_DisableQueue(play);
@@ -3138,7 +3138,7 @@ s32 func_80835588(Player* this, PlayState* play) {
 void Player_SetParallel(Player* this) {
     this->stateFlags1 |= PLAYER_STATE1_PARALLEL;
 
-    if (!(this->skelAnime.moveFlags & 0x80) && (this->actor.bgCheckFlags & 0x200) &&
+    if (!(this->skelAnime.movementFlags & 0x80) && (this->actor.bgCheckFlags & 0x200) &&
         (sShapeYawToTouchedWall < 0x2000)) {
         // snap to the wall
         this->yaw = this->actor.shape.rot.y = this->actor.wallYaw + 0x8000;
@@ -3362,14 +3362,14 @@ s32 Player_SetupAction(PlayState* play, Player* this, PlayerActionFunc actionFun
 void Player_SetupActionPreserveAnimMovement(PlayState* play, Player* this, PlayerActionFunc actionFunc, s32 flags) {
     s32 savedMovementFlags;
 
-    savedMovementFlags = this->skelAnime.moveFlags;
+    savedMovementFlags = this->skelAnime.movementFlags;
 
     // Setting `skelAnime.movementFlags` to 0 will prevent `Player_FinishAnimMovement` from ending
     // AnimMovement when `Player_SetupAction` is called.
-    this->skelAnime.moveFlags = 0;
+    this->skelAnime.movementFlags = 0;
 
     Player_SetupAction(play, this, actionFunc, flags);
-    this->skelAnime.moveFlags = savedMovementFlags;
+    this->skelAnime.movementFlags = savedMovementFlags;
 }
 
 /**
@@ -4764,7 +4764,9 @@ s32 func_808382DC(Player* this, PlayState* play) {
                     gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = respawnInfo->yaw;
                 }
 
-                Play_TriggerVoidOut(play);
+                if (GameInteractor_Should(VB_TRIGGER_VOIDOUT, true, this)) {
+                    Play_TriggerVoidOut(play);
+                }
             }
 
             Player_PlayVoiceSfx(this, NA_SE_VO_LI_TAKEN_AWAY);
@@ -5129,7 +5131,9 @@ s32 Player_HandleExitsAndVoids(PlayState* play, Player* this, CollisionPoly* pol
             }
 
             if (exitIndex == 0) {
-                Play_TriggerVoidOut(play);
+                if (GameInteractor_Should(VB_TRIGGER_VOIDOUT, true, this)) {
+                    Play_TriggerVoidOut(play);
+                }
                 Scene_SetTransitionForNextEntrance(play);
             } else {
                 play->nextEntranceIndex = play->setupExitList[exitIndex - 1];
@@ -5163,7 +5167,9 @@ s32 Player_HandleExitsAndVoids(PlayState* play, Player* this, CollisionPoly* pol
                                               SurfaceType_GetSlope(&play->colCtx, poly, bgId) == 2,
                                               play->setupExitList[exitIndex - 1])) {
                         gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex = play->nextEntranceIndex;
-                        Play_TriggerVoidOut(play);
+                        if (GameInteractor_Should(VB_TRIGGER_VOIDOUT, true, this)) {
+                            Play_TriggerVoidOut(play);
+                        }
                         gSaveContext.respawnFlag = -2;
                     }
                     gSaveContext.retainWeatherMode = 1;
@@ -5226,7 +5232,7 @@ s32 Player_HandleExitsAndVoids(PlayState* play, Player* this, CollisionPoly* pol
                     if (this->actor.bgCheckFlags & 1) {
                         if (this->floorProperty == 5) {
                             Play_TriggerRespawn(play);
-                        } else {
+                        } else if (GameInteractor_Should(VB_TRIGGER_VOIDOUT, true, this)) {
                             Play_TriggerVoidOut(play);
                         }
                         play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
@@ -5779,7 +5785,7 @@ void func_8083AA10(Player* this, PlayState* play) {
                 return;
             }
 
-            if (!(this->stateFlags3 & PLAYER_STATE3_MIDAIR) && !(this->skelAnime.moveFlags & 0x80) &&
+            if (!(this->stateFlags3 & PLAYER_STATE3_MIDAIR) && !(this->skelAnime.movementFlags & 0x80) &&
                 (Player_Action_8084411C != this->actionFunc) && (Player_Action_80844A44 != this->actionFunc)) {
 
                 if ((sPrevFloorProperty == 7) || (this->meleeWeaponState != 0)) {
@@ -6927,7 +6933,7 @@ void func_8083D53C(PlayState* play, Player* this) {
             }
         } else if ((this->stateFlags1 & PLAYER_STATE1_IN_WATER) &&
                    (this->actor.yDistToWater < this->ageProperties->unk_24)) {
-            if ((this->skelAnime.moveFlags == 0) && (this->currentBoots != PLAYER_BOOTS_IRON)) {
+            if ((this->skelAnime.movementFlags == 0) && (this->currentBoots != PLAYER_BOOTS_IRON)) {
                 Player_SetupTurnInPlace(play, this, this->actor.shape.rot.y);
             }
             func_8083D0A8(play, this, this->actor.velocity.y);
@@ -7117,15 +7123,6 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
 
     if (this->meleeWeaponState == 0) {
         float maxSpeed = R_RUN_SPEED_LIMIT / 100.0f;
-
-        int32_t giSpeedModifier = GameInteractor_RunSpeedModifier();
-        if (giSpeedModifier != 0) {
-            if (giSpeedModifier > 0) {
-                maxSpeed *= giSpeedModifier;
-            } else {
-                maxSpeed /= abs(giSpeedModifier);
-            }
-        }
 
         if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) == BUNNY_HOOD_FAST_AND_JUMP &&
             this->currentMask == PLAYER_MASK_BUNNY) {
@@ -7679,19 +7676,10 @@ s32 Player_TryEnteringCrawlspace(Player* this, PlayState* play, u32 interactWall
                 this->actor.world.pos.z = zVertex1 + (distToInteractWall * wallPolyNormZ);
                 func_80832224(this);
                 this->actor.prevPos = this->actor.world.pos;
-                // #region SOH [Enhancement]
-                if (CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) > 1) {
-                    // increase animation speed when entering a tunnel
-                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
-                                         ((CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) + 1.0f) / 2.0f), 0.0f,
-                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), ANIMMODE_ONCE,
-                                         0.0f);
-                    Player_StartAnimMovement(play, this, 0x9D);
-                    // #endregion
-                } else {
+                if (GameInteractor_Should(VB_CRAWL_SPEED_ENTER, true)) {
                     Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_start);
-                    Player_StartAnimMovement(play, this, 0x9D);
                 }
+                Player_StartAnimMovement(play, this, 0x9D);
                 return true;
             }
         }
@@ -7773,36 +7761,16 @@ s32 Player_TryLeavingCrawlspace(Player* this, PlayState* play) {
         if (ABS(yawToWall) > 0x4000) {
             Player_SetupAction(play, this, Player_Action_8084C81C, 0);
 
-            if (this->linearVelocity > 0.0f) {
-                // Leaving a crawlspace forwards
-                this->actor.shape.rot.y = this->actor.wallYaw + 0x8000;
-                // #region SOH [Enhancement]
-                if (CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) > 1) {
-                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_end,
-                                         ((CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) + 1.0f) / 2.0f), 0.0f,
-                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_end), ANIMMODE_ONCE,
-                                         0.0f);
-                    Player_StartAnimMovement(play, this, 0x9D);
-                    OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
-                    // #endregion
-                } else {
+            if (GameInteractor_Should(VB_CRAWL_SPEED_EXIT, true)) {
+                if (this->linearVelocity > 0.0f) {
+                    // Leaving a crawlspace forwards
+                    this->actor.shape.rot.y = this->actor.wallYaw + 0x8000;
                     Player_AnimPlayOnce(play, this, &gPlayerAnim_link_child_tunnel_end);
                     Player_StartAnimMovement(play, this, 0x9D);
                     OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
-                }
-            } else {
-                // Leaving a crawlspace backwards
-                this->actor.shape.rot.y = this->actor.wallYaw;
-                // #region SOH [Enhancement]
-                if (CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) > 1) {
-                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start,
-                                         -1.0f * ((CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) + 1.0f) / 2.0f),
-                                         Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f,
-                                         ANIMMODE_ONCE, 0.0f);
-                    Player_StartAnimMovement(play, this, 0x9D);
-                    OnePointCutscene_Init(play, 9602, 999, NULL, MAIN_CAM);
-                    // #endregion
                 } else {
+                    // Leaving a crawlspace backwards
+                    this->actor.shape.rot.y = this->actor.wallYaw;
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_child_tunnel_start, -1.0f,
                                          Animation_GetLastFrame(&gPlayerAnim_link_child_tunnel_start), 0.0f,
                                          ANIMMODE_ONCE, 0.0f);
@@ -8896,14 +8864,6 @@ void Player_Action_80842180(Player* this, PlayState* play) {
         Player_GetMovementSpeedAndYaw(this, &sp2C, &sp2A, SPEED_MODE_CURVED, play);
 
         if (!func_8083C484(this, &sp2C, &sp2A)) {
-            int32_t giSpeedModifier = GameInteractor_RunSpeedModifier();
-            if (giSpeedModifier != 0) {
-                if (giSpeedModifier > 0) {
-                    sp2C *= giSpeedModifier;
-                } else {
-                    sp2C /= abs(giSpeedModifier);
-                }
-            }
 
             if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA &&
                 this->currentMask == PLAYER_MASK_BUNNY) {
@@ -9612,6 +9572,10 @@ static FallImpactInfo D_80854600[] = {
 
 s32 func_80843E64(PlayState* play, Player* this) {
     s32 sp34;
+
+    if (!GameInteractor_Should(VB_RECIEVE_FALL_DAMAGE, true, this)) {
+        return 0;
+    }
 
     if ((sFloorType == 6) || (sFloorType == 9)) {
         sp34 = 0;
@@ -12088,7 +12052,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
             func_8084FF7C(this);
         }
 
-        if (!(this->skelAnime.moveFlags & 0x80)) {
+        if (!(this->skelAnime.movementFlags & 0x80)) {
             if (((this->actor.bgCheckFlags & 1) && (sFloorType == 5) && (this->currentBoots != PLAYER_BOOTS_IRON)) ||
                 ((this->currentBoots == PLAYER_BOOTS_HOVER || GameInteractor_GetSlipperyFloorActive()) &&
                  !(this->stateFlags1 & (PLAYER_STATE1_IN_WATER | PLAYER_STATE1_IN_CUTSCENE)))) {
@@ -12275,9 +12239,9 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
 
         Player_UpdateCamAndSeqModes(play, this);
 
-        if (this->skelAnime.moveFlags & 8) {
+        if (this->skelAnime.movementFlags & 8) {
             AnimationContext_SetMoveActor(play, &this->actor, &this->skelAnime,
-                                          (this->skelAnime.moveFlags & 4) ? 1.0f : this->ageProperties->unk_08);
+                                          (this->skelAnime.movementFlags & 4) ? 1.0f : this->ageProperties->unk_08);
         }
 
         Player_UpdateShapeYaw(this, play);
@@ -12773,9 +12737,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
             temp2 += sControlInput->rel.stick_y * 240.0f * invertYAxisMulti * yAxisMulti;
         }
-        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0) &&
-            fabsf(sControlInput->cur.right_stick_y) > 15.0f) {
-            temp2 += sControlInput->cur.right_stick_y * 240.0f * invertYAxisMulti * yAxisMulti;
+        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
+            temp2 += sControlInput->rel.right_stick_y * 240.0f * invertYAxisMulti * yAxisMulti;
         }
         if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
             temp2 += (-sControlInput->cur.gyro_x) * 750.0f;
@@ -12792,9 +12755,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
             temp2 += sControlInput->rel.stick_x * -16.0f * invertXAxisMulti * xAxisMulti;
         }
-        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0) &&
-            fabsf(sControlInput->cur.right_stick_x) > 15.0f) {
-            temp2 += sControlInput->cur.right_stick_x * -16.0f * invertXAxisMulti * xAxisMulti;
+        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
+            temp2 += sControlInput->rel.right_stick_x * -16.0f * invertXAxisMulti * xAxisMulti;
         }
         if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
             temp2 += (sControlInput->cur.gyro_y) * 750.0f * invertXAxisMulti;
@@ -12810,10 +12772,9 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
                      (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f) * invertYAxisMulti *
                      yAxisMulti;
         }
-        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0) &&
-            fabsf(sControlInput->cur.right_stick_y) > 15.0f) {
-            temp3 += ((sControlInput->cur.right_stick_y >= 0) ? 1 : -1) *
-                     (s32)((1.0f - Math_CosS(sControlInput->cur.right_stick_y * 200)) * 1500.0f) * invertYAxisMulti *
+        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
+            temp3 += ((sControlInput->rel.right_stick_y >= 0) ? 1 : -1) *
+                     (s32)((1.0f - Math_CosS(sControlInput->rel.right_stick_y * 200)) * 1500.0f) * invertYAxisMulti *
                      yAxisMulti;
         }
         if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
@@ -12831,10 +12792,9 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
                     (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f) * invertXAxisMulti *
                     xAxisMulti;
         }
-        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0) &&
-            fabsf(sControlInput->cur.right_stick_x) > 15.0f) {
-            temp3 += ((sControlInput->cur.right_stick_x >= 0) ? 1 : -1) *
-                     (s32)((1.0f - Math_CosS(sControlInput->cur.right_stick_x * 200)) * -1500.0f) * invertXAxisMulti *
+        if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
+            temp3 += ((sControlInput->rel.right_stick_x >= 0) ? 1 : -1) *
+                     (s32)((1.0f - Math_CosS(sControlInput->rel.right_stick_x * 200)) * -1500.0f) * invertXAxisMulti *
                      xAxisMulti;
         }
         if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
@@ -13146,7 +13106,7 @@ void Player_Action_Talk(Player* this, PlayState* play) {
     } else if (func_808332B8(this)) {
         Player_Action_8084D610(this, play);
     } else if (!Player_CheckHostileLockOn(this) && LinkAnimation_Update(play, &this->skelAnime)) {
-        if (this->skelAnime.moveFlags != 0) {
+        if (this->skelAnime.movementFlags != 0) {
             Player_FinishAnimMovement(this);
 
             if ((this->talkActor->category == ACTORCAT_NPC) && (this->heldItemAction != PLAYER_IA_FISHING_POLE)) {
@@ -13584,19 +13544,14 @@ void Player_Action_8084C760(Player* this, PlayState* play) {
 
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         if (!(this->stateFlags1 & PLAYER_STATE1_LOADING)) {
-            if (this->skelAnime.moveFlags != 0) {
-                this->skelAnime.moveFlags = 0;
+            if (this->skelAnime.movementFlags != 0) {
+                this->skelAnime.movementFlags = 0;
                 return;
             }
 
             // player speed in a tunnel
             if (!Player_TryLeavingCrawlspace(this, play)) {
-                // #region SOH [Enhancement]
-                if (CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1) > 1) {
-                    this->linearVelocity =
-                        sControlInput->rel.stick_y * 0.03f * CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 1);
-                    // #endregion
-                } else {
+                if (GameInteractor_Should(VB_CRAWL_SPEED_INCREASE, true)) {
                     this->linearVelocity = sControlInput->rel.stick_y * 0.03f;
                 }
             }
@@ -14691,7 +14646,7 @@ void Player_Action_SwingBottle(Player* this, PlayState* play) {
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         if (this->av1.bottleCatchType != BOTTLE_CATCH_NONE) {
             if (!this->av2.startedTextbox) {
-                if (CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("FastBottles"), 0)) {
                     this->av1.bottleCatchType = BOTTLE_CATCH_NONE;
                 } else {
                     // 1 is subtracted because `sBottleCatchInfo` does not have an entry for `BOTTLE_CATCH_NONE`
@@ -14734,13 +14689,13 @@ void Player_Action_SwingBottle(Player* this, PlayState* play) {
                     this->av1.bottleCatchType = i + 1;
 
                     this->av2.startedTextbox = false;
-                    if (!CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
+                    if (!CVarGetInteger(CVAR_ENHANCEMENT("FastBottles"), 0)) {
                         this->stateFlags1 |= PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE;
                     }
                     this->interactRangeActor->parent = &this->actor;
 
                     Player_UpdateBottleHeld(play, this, catchInfo->itemId, ABS(catchInfo->itemAction));
-                    if (!CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
+                    if (!CVarGetInteger(CVAR_ENHANCEMENT("FastBottles"), 0)) {
                         Player_AnimPlayOnceAdjusted(play, this, swingEntry->catchAnimation);
                         func_80835EA4(play, 4);
                     }
@@ -14789,6 +14744,8 @@ static AnimSfxEntry D_80854A34[] = {
 
 void Player_Action_8084EFC0(Player* this, PlayState* play) {
     Player_DecelerateToZero(this);
+
+    GameInteractor_Should(VB_EMPTYING_BOTTLE, true, this);
 
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         func_8083C0E8(this, play);
@@ -15013,7 +14970,7 @@ void Player_Action_8084F88C(Player* this, PlayState* play) {
                 if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                     Grotto_ForceRegularVoidOut();
                 }
-            } else {
+            } else if (GameInteractor_Should(VB_TRIGGER_VOIDOUT, true, this)) {
                 Play_TriggerVoidOut(play);
             }
 
@@ -15297,7 +15254,7 @@ void Player_Action_808502D0(Player* this, PlayState* play) {
 
         if (LinkAnimation_Update(play, &this->skelAnime)) {
             if (!Player_ActionHandler_7(this, play)) {
-                u8 sp43 = this->skelAnime.moveFlags;
+                u8 sp43 = this->skelAnime.movementFlags;
                 LinkAnimationHeader* sp3C;
 
                 if (Player_CheckHostileLockOn(this)) {
@@ -15307,7 +15264,7 @@ void Player_Action_808502D0(Player* this, PlayState* play) {
                 }
 
                 func_80832318(this);
-                this->skelAnime.moveFlags = 0;
+                this->skelAnime.movementFlags = 0;
 
                 if ((sp3C == &gPlayerAnim_link_fighter_Lpower_jump_kiru_end) &&
                     (this->modelAnimType != PLAYER_ANIMTYPE_3)) {
@@ -15316,7 +15273,7 @@ void Player_Action_808502D0(Player* this, PlayState* play) {
 
                 func_8083A098(this, sp3C, play);
 
-                this->skelAnime.moveFlags = sp43;
+                this->skelAnime.movementFlags = sp43;
                 this->stateFlags3 |= PLAYER_STATE3_FINISHED_ATTACKING;
             }
         } else if (this->heldItemAction == PLAYER_IA_HAMMER) {
@@ -16589,7 +16546,7 @@ void func_80852A54(PlayState* play, Player* this, CsCmdActorCue* cue) {
         func_808529D0(play, this, cue);
     }
 
-    this->skelAnime.moveFlags = 0;
+    this->skelAnime.movementFlags = 0;
     Player_ZeroRootLimbYaw(this);
 }
 
@@ -16600,7 +16557,7 @@ void func_80852B4C(PlayState* play, Player* this, CsCmdActorCue* cue, struct_808
         arg3->func(play, this, cue);
     }
 
-    if ((D_80858AA0 & 4) && !(this->skelAnime.moveFlags & 4)) {
+    if ((D_80858AA0 & 4) && !(this->skelAnime.movementFlags & 4)) {
         this->skelAnime.morphTable[0].y /= this->ageProperties->unk_08;
         D_80858AA0 = 0;
     }
@@ -16639,7 +16596,7 @@ void func_80852C50(PlayState* play, Player* this, CsCmdActorCue* cue) {
             }
         }
 
-        D_80858AA0 = this->skelAnime.moveFlags;
+        D_80858AA0 = this->skelAnime.movementFlags;
 
         Player_FinishAnimMovement(this);
         osSyncPrintf("TOOL MODE=%d\n", sp24);
@@ -16662,7 +16619,7 @@ void func_80852C50(PlayState* play, Player* this, CsCmdActorCue* cue) {
 
 void Player_Action_CsAction(Player* this, PlayState* play) {
     if (this->csAction != this->prevCsAction) {
-        D_80858AA0 = this->skelAnime.moveFlags;
+        D_80858AA0 = this->skelAnime.movementFlags;
 
         Player_FinishAnimMovement(this);
         this->prevCsAction = this->csAction;

@@ -4,7 +4,7 @@
 #include "window/gui/GuiMenuBar.h"
 #include "window/gui/GuiElement.h"
 
-class SohModalWindow : public Ship::GuiWindow {
+class SohModalWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
     void Draw() override;

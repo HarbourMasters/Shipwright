@@ -1,6 +1,5 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/OTRGlobals.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Zl4/z_en_zl4.h"
@@ -33,16 +32,17 @@ void EnZl4_SkipToGivingZeldasLetter(EnZl4* enZl4, PlayState* play) {
 }
 
 void SkipToGivingZeldasLetter_OnActorInit(void* actorPtr) {
-    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-        EnZl4* enZl4 = static_cast<EnZl4*>(actorPtr);
-        if (enZl4->actionFunc != EnZl4_Cutscene || enZl4->csState != 0)
-            return;
+    EnZl4* enZl4 = static_cast<EnZl4*>(actorPtr);
+    if (enZl4->actionFunc != EnZl4_Cutscene || enZl4->csState != 0)
+        return;
 
-        enZl4->actionFunc = EnZl4_SkipToGivingZeldasLetter;
-    }
+    enZl4->actionFunc = EnZl4_SkipToGivingZeldasLetter;
 }
 
-void SkipToGivingZeldasLetter_Register() {
-    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnActorInit>(ACTOR_EN_ZL4,
-                                                                                 SkipToGivingZeldasLetter_OnActorInit);
+void RegisterSkipToGivingZeldasLetter() {
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_ZL4, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO),
+                 SkipToGivingZeldasLetter_OnActorInit);
 }
+
+static RegisterShipInitFunc initFunc(RegisterSkipToGivingZeldasLetter,
+                                     { CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), "IS_RANDO" });

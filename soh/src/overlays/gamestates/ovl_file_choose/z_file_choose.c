@@ -26,6 +26,7 @@
 #include "soh/SaveManager.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/ShipUtils.h"
 
 typedef struct {
     s16 left;
@@ -1053,20 +1054,27 @@ void FileChoose_UpdateRandomizer() {
     if (!SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) &&
         !CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
         CVarSetString(CVAR_GENERAL("SpoilerLog"), "");
+        Randomizer_SetSpoilerLoaded(false);
     }
 
     if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0 ||
         !(Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) &&
             SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) && !fileSelectSpoilerFileLoaded) {
         if (CVarGetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0) != 0) {
-            CVarSetString(CVAR_GENERAL("SpoilerLog"), CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), ""));
-            Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+            if (SpoilerFileExists(CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), ""))) {
+                CVarSetString(CVAR_GENERAL("SpoilerLog"), CVarGetString(CVAR_GENERAL("RandomizerDroppedFile"), ""));
+                Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
+            } else {
+                Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
+            }
         }
         const char* fileLoc = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
         CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 0);
         CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), "");
-        Randomizer_ParseSpoiler(fileLoc);
-        fileSelectSpoilerFileLoaded = true;
+        if (!Ship_IsCStringEmpty(fileLoc)) {
+            Randomizer_ParseSpoiler(fileLoc);
+            fileSelectSpoilerFileLoaded = true;
+        }
 
         if (SpoilerFileExists(CVarGetString(CVAR_GENERAL("SpoilerLog"), "")) &&
             CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
@@ -1086,10 +1094,6 @@ static s16 sLastFileChooseButtonIndex;
  * Update function for `CM_MAIN_MENU`
  */
 void FileChoose_UpdateMainMenu(GameState* thisx) {
-    static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
-    static u8 emptyNameNES[] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
-    static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
-    static u8 linkNameNES[] = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
@@ -1300,6 +1304,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     static u8 emptyNameNES[] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
     static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
     static u8 linkNameNES[] = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+    static u8 linkNameJP[] = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
     FileChoose_UpdateStickDirectionPromptAnim(thisx);
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
@@ -1369,7 +1374,16 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->nameEntryBoxAlpha = 0;
             if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
                 defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName;
-            } else { // GAME_REGION_NTSC
+            } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
+                if (CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) != 0) {
+                    // Set player name to "リンク" ("Link" in Katakana, 3 characters long) when playing in Japanese.
+                    defaultName = &linkNameJP;
+                    this->newFileNameCharCount = 3;
+                } else {
+                    defaultName = &emptyNameNES;
+                }
+                this->charPage = FS_CHAR_PAGE_HIRA; // Default to Hiragana Keyboard
+            } else {                                // GAME_REGION_NTSC
                 defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkNameNES : &emptyNameNES;
             }
             memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, defaultName, 8);
@@ -1380,110 +1394,6 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
         this->configMode = CM_QUEST_TO_MAIN;
         sLastFileChooseButtonIndex = -1;
-        return;
-    }
-}
-
-static s8 sLastBossRushOptionIndex = -1;
-static s8 sLastBossRushOptionValue = -1;
-
-void FileChoose_UpdateBossRushMenu(GameState* thisx) {
-    FileChoose_UpdateStickDirectionPromptAnim(thisx);
-    FileChooseContext* this = (FileChooseContext*)thisx;
-    Input* input = &this->state.input[0];
-    bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
-
-    // Fade in elements after opening Boss Rush options menu
-    this->bossRushUIAlpha += 25;
-    if (this->bossRushUIAlpha > 255) {
-        this->bossRushUIAlpha = 255;
-    }
-
-    // Animate up/down arrows.
-    this->bossRushArrowOffset += 1;
-    if (this->bossRushArrowOffset >= 30) {
-        this->bossRushArrowOffset = 0;
-    }
-
-    // Move menu selection up or down.
-    if (ABS(this->stickRelY) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
-        // Move down
-        if (this->stickRelY < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN))) {
-            // When selecting past the last option, cycle back to the first option.
-            if ((this->bossRushIndex + 1) > BR_OPTIONS_MAX - 1) {
-                this->bossRushIndex = 0;
-                this->bossRushOffset = 0;
-            } else {
-                this->bossRushIndex++;
-                // When last visible option is selected when moving down, offset the list down by one.
-                if (this->bossRushIndex - this->bossRushOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN - 1) {
-                    this->bossRushOffset++;
-                }
-            }
-        } else if (this->stickRelY > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP))) {
-            // When selecting past the first option, cycle back to the last option and offset the list to view it
-            // properly.
-            if ((this->bossRushIndex - 1) < 0) {
-                this->bossRushIndex = BR_OPTIONS_MAX - 1;
-                this->bossRushOffset = this->bossRushIndex - BOSSRUSH_MAX_OPTIONS_ON_SCREEN + 1;
-            } else {
-                // When first visible option is selected when moving up, offset the list up by one.
-                if (this->bossRushIndex - this->bossRushOffset == 0) {
-                    this->bossRushOffset--;
-                }
-                this->bossRushIndex--;
-            }
-        }
-
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-    }
-
-    // Cycle through choices for currently selected option.
-    if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
-        if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
-            // If exceeding the amount of choices for the selected option, cycle back to the first.
-            if ((gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] + 1) ==
-                BossRush_GetSettingOptionsAmount(this->bossRushIndex)) {
-                gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] = 0;
-            } else {
-                gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]++;
-            }
-        } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
-            // If cycling back when already at the first choice for the selected option, cycle back to the last choice.
-            if ((gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] - 1) < 0) {
-                gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex] =
-                    BossRush_GetSettingOptionsAmount(this->bossRushIndex) - 1;
-            } else {
-                gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]--;
-            }
-        }
-
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-    }
-
-    if (sLastBossRushOptionIndex != this->bossRushIndex ||
-        sLastBossRushOptionValue != gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]) {
-        GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(
-            this->bossRushIndex, gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex]);
-        sLastBossRushOptionIndex = this->bossRushIndex;
-        sLastBossRushOptionValue = gSaveContext.ship.quest.data.bossRush.options[this->bossRushIndex];
-    }
-
-    if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
-        this->configMode = CM_BOSS_RUSH_TO_QUEST;
-        return;
-    }
-
-    // Load into the game.
-    if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-        this->buttonIndex = 0xFE;
-        this->menuMode = FS_MENU_MODE_SELECT;
-        this->selectMode = SM_FADE_OUT;
-        this->prevConfigMode = this->configMode;
         return;
     }
 }
@@ -1526,6 +1436,8 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
             }
         }
 
+        GameInteractor_ExecuteOnUpdateFileRandomizerOptionSelection(this->randomizerIndex);
+
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
@@ -1544,6 +1456,7 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
                 static u8 emptyNameNES[] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
                 static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
                 static u8 linkNameNES[] = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+                static u8 linkNameJP[] = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
                 u8* defaultName;
 
                 this->prevConfigMode = this->configMode;
@@ -1561,7 +1474,16 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
                 this->nameEntryBoxAlpha = 0;
                 if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
                     defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName;
-                } else { // GAME_REGION_NTSC
+                } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) != 0) {
+                        // Set player name to "リンク" ("Link" in Katakana, 3 characters long) when playing in Japanese.
+                        defaultName = &linkNameJP;
+                        this->newFileNameCharCount = 3;
+                    } else {
+                        defaultName = &emptyNameNES;
+                    }
+                    this->charPage = FS_CHAR_PAGE_HIRA; // Default to Hiragana Keyboard
+                } else {                                // GAME_REGION_NTSC
                     defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkNameNES : &emptyNameNES;
                 }
                 memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, defaultName, 8);
@@ -2564,63 +2486,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 break;
         }
     } else if (this->configMode == CM_BOSS_RUSH_MENU) {
-        uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
-        uint8_t listOffset = this->bossRushOffset;
-        uint8_t textAlpha = this->bossRushUIAlpha;
-
-        // Draw arrows to indicate that the list can scroll up or down.
-        // Arrow up
-        if (listOffset > 0) {
-            uint16_t arrowUpX = 140;
-            uint16_t arrowUpY = 76 - (this->bossRushArrowOffset / 10);
-            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowUpTex, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 16, 0,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                                G_TX_NOLOD, G_TX_NOLOD);
-            gSPWideTextureRectangle(POLY_OPA_DISP++, arrowUpX << 2, arrowUpY << 2, (arrowUpX + 8) << 2,
-                                    (arrowUpY + 8) << 2, G_TX_RENDERTILE, 0, 0, (1 << 11), (1 << 11));
-        }
-        // Arrow down
-        if (BR_OPTIONS_MAX - listOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN) {
-            uint16_t arrowDownX = 140;
-            uint16_t arrowDownY = 181 + (this->bossRushArrowOffset / 10);
-            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowDownTex, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 16, 0,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                                G_TX_NOLOD, G_TX_NOLOD);
-            gSPWideTextureRectangle(POLY_OPA_DISP++, arrowDownX << 2, arrowDownY << 2, (arrowDownX + 8) << 2,
-                                    (arrowDownY + 8) << 2, G_TX_RENDERTILE, 0, 0, (1 << 11), (1 << 11));
-        }
-
-        // Draw options. There's more options than what fits on the screen, so the visible options
-        // depend on the current offset of the list. Currently selected option pulses in
-        // color and has arrows surrounding the option.
-        for (uint8_t i = listOffset; i - listOffset < BOSSRUSH_MAX_OPTIONS_ON_SCREEN; i++) {
-            uint16_t textYOffset = (i - listOffset) * 16;
-
-            // Option name.
-            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingName(i, language), 65, (87 + textYOffset),
-                                   255, 255, 80, textAlpha, 0.8f, true);
-
-            // Selected choice for option.
-            uint16_t finalKerning = Interface_DrawTextLine(
-                this->state.gfxCtx,
-                BossRush_GetSettingChoiceName(i, gSaveContext.ship.quest.data.bossRush.options[i], language), 165,
-                (87 + textYOffset), 255, 255, 255, textAlpha, 0.8f, true);
-
-            // Draw arrows around selected option.
-            if (this->bossRushIndex == i) {
-                Gfx_SetupDL_39Opa(this->state.gfxCtx);
-                gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-                gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
-                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
-                                    G_TX_NOLOD);
-                FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
-                                       this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB, textAlpha,
-                                       160, (92 + textYOffset), 0.42f, 0, 0, -1.0f, 1.0f);
-                FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
-                                       this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
-                                       textAlpha, (171 + finalKerning), (92 + textYOffset), 0.42f, 0, 0, 1.0f, 1.0f);
-            }
-        }
+        FileChoose_DrawBossRushMenuWindowContents(this);
     } else if (this->configMode == CM_RANDOMIZER_SETTINGS_MENU) {
         uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
         uint8_t textAlpha = this->randomizerUIAlpha;
@@ -3541,6 +3407,9 @@ void FileChoose_Main(GameState* thisx) {
     Input* input = &this->state.input[0];
 
     Color_RGB8 helpTextColor = { 100, 255, 255 };
+
+    GameInteractor_ExecuteOnFileChooseMain(thisx);
+
     if (CVarGetInteger(CVAR_COSMETIC("Title.FileChoose.Changed"), 0)) {
         Color_RGB8 backgroundColor =
             CVarGetColor24(CVAR_COSMETIC("Title.FileChoose.Value"), (Color_RGB8){ 100, 150, 255 });
@@ -3566,10 +3435,6 @@ void FileChoose_Main(GameState* thisx) {
         sWindowContentColors[0][0] = 100;
         sWindowContentColors[0][1] = 150;
         sWindowContentColors[0][2] = 255;
-    }
-
-    if (CVarGetInteger(CVAR_ENHANCEMENT("TimeFlowFileSelect"), 0) != 0) {
-        gSaveContext.skyboxTime += 0x10;
     }
 
     OPEN_DISPS(this->state.gfxCtx);

@@ -17,7 +17,7 @@
         <Texture Name="object_sstTex_01A730" OutName="object_sstTex_01A730" Format="rgba16" Width="4" Height="16" Offset="0x19330" AddedByScript="true"/>
         <Texture Name="object_sstTex_01A7B0" OutName="object_sstTex_01A7B0" Format="rgba16" Width="16" Height="16" Offset="0x193B0" AddedByScript="true"/>
         <!-- Boss Title Card -->
-        <Texture Name="gBongoTitleCardTex" OutName="bongo_title_card" Format="i8" Width="128" Height="120" Offset="0x13D80"/>
+        <Texture Name="gBongoTitleCardTex" OutName="bongo_title_card" Format="i8" Width="128" Height="80" Offset="0x13D80"/>
         
         <!-- Skeletons -->
         <Skeleton Name="gBongoLeftHandSkel" Type="Flex" LimbType="Standard" Offset="0x04DE0"/>

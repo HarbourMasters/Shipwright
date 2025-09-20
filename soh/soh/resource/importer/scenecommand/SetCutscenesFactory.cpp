@@ -3,6 +3,7 @@
 #include "soh/resource/logging/SceneCommandLoggers.h"
 #include <libultraship/libultraship.h>
 #include "spdlog/spdlog.h"
+#include <tinyxml2.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource> SetCutscenesFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,

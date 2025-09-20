@@ -4,6 +4,7 @@ set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 
 project(soh LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
+set(CMAKE_C_STANDARD 23 CACHE STRING "The C standard to use")
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     enable_language(OBJCXX)
@@ -137,20 +138,27 @@ endforeach()
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set_source_files_properties(soh/OTRGlobals.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
     set_source_files_properties(soh/Enhancements/tts/tts.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
+    set_source_files_properties(soh/Enhancements/custom-message/CustomMessageManager.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
+    set_source_files_properties(soh/Enhancements/custom-message/CustomMessageManager.h PROPERTIES COMPILE_FLAGS "/utf-8")
 endif()
 
 # handle Network removals
 if (!BUILD_REMOTE_CONTROL)
-    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/crowd-control/*")
+    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/crowd-control/")
 endif()
 
 # handle speechsynthesizer removals
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/Darwin*")
+    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/Darwin")
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/SAPI*")
+    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/SAPI")
 else()
-    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/(Darwin|SAPI).*")
+    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/(Darwin|SAPI)")
+endif()
+
+find_library(ESPEAK espeak-ng)
+if (NOT ESPEAK)
+    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/ESpeak")
 endif()
 
 # soh/Extractor {{{
@@ -176,12 +184,12 @@ file(GLOB_RECURSE src__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.c" "src/*.h"
 set_source_files_properties(${src__} PROPERTIES COMPILE_OPTIONS "${WARNING_OVERRIDE}")
 
 list(APPEND src__ ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
-list(FILTER src__ EXCLUDE REGEX "src/dmadata/*")
-list(FILTER src__ EXCLUDE REGEX "src/elf_message/*")
-list(FILTER src__ EXCLUDE REGEX "src/libultra/io/*")
-list(FILTER src__ EXCLUDE REGEX "src/libultra/libc/*")
-list(FILTER src__ EXCLUDE REGEX "src/libultra/os/*")
-list(FILTER src__ EXCLUDE REGEX "src/libultra/rmon/*")
+list(FILTER src__ EXCLUDE REGEX "src/dmadata/")
+list(FILTER src__ EXCLUDE REGEX "src/elf_message/")
+list(FILTER src__ EXCLUDE REGEX "src/libultra/io/")
+list(FILTER src__ EXCLUDE REGEX "src/libultra/libc/")
+list(FILTER src__ EXCLUDE REGEX "src/libultra/os/")
+list(FILTER src__ EXCLUDE REGEX "src/libultra/rmon/")
 list(APPEND src__ "src/libultra/libc/sprintf.c")
 list(REMOVE_ITEM src__ "src/libultra/gu/cosf.c")
 list(REMOVE_ITEM src__ "src/libultra/gu/lookat.c")
@@ -275,34 +283,17 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
 endif()
 ################################################################################
-# Find/download Boost
+# Find/download Dr Libs (For custom audio)
 ################################################################################
 include(FetchContent)
+
 FetchContent_Declare(
-    Boost
-    URL      https://archives.boost.io/release/1.81.0/source/boost_1_81_0.tar.gz
-    URL_HASH SHA256=205666dea9f6a7cfed87c7a6dfbeb52a2c1b9de55712c9c1a87735d7181452b6
-    SOURCE_SUBDIR "null" # Set to a nonexistent directory so boost is not built (we don't need to build it)
-    DOWNLOAD_EXTRACT_TIMESTAMP false # supress timestamp warning, not needed since the url wont change
+        dr_libs
+        GIT_REPOSITORY https://github.com/mackron/dr_libs.git
+        GIT_TAG da35f9d6c7374a95353fd1df1d394d44ab66cf01
 )
+FetchContent_MakeAvailable(dr_libs)
 
-set(Boost_NO_BOOST_CMAKE false)
-set(BOOST_INCLUDEDIR ${FETCHCONTENT_BASE_DIR}/boost-src) # Location where FetchContent stores the source
-message("Searching for Boost installation")
-find_package(Boost)
-
-if (NOT ${Boost_FOUND})
-    message("Boost not found. Downloading now...")
-    FetchContent_MakeAvailable(Boost)
-    message("Boost downloaded to " ${FETCHCONTENT_BASE_DIR}/boost-src)
-    set(BOOST-INCLUDE ${FETCHCONTENT_BASE_DIR}/boost-src)
-else()
-    message("Boost found in " ${Boost_INCLUDE_DIRS})
-    set(BOOST-INCLUDE ${Boost_INCLUDE_DIRS})
-endif()
-################################################################################
-# Compile definitions
-################################################################################
 find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
@@ -316,6 +307,14 @@ if (BUILD_REMOTE_CONTROL)
         set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
     endif()
 endif()
+
+if (ESPEAK)
+    add_compile_definitions(ESPEAK=1)
+endif()
+
+################################################################################
+# Compile definitions
+################################################################################
 
 target_include_directories(${PROJECT_NAME} PRIVATE assets
 	${CMAKE_CURRENT_SOURCE_DIR}/include/
@@ -348,8 +347,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
     ${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD/resource/type
 	${SDL2-INCLUDE}
     ${SDL2-NET-INCLUDE}
-    ${BOOST-INCLUDE}
 	${CMAKE_CURRENT_SOURCE_DIR}/assets/
+	${dr_libs_SOURCE_DIR}
 	.
 )
 
@@ -503,6 +502,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
     if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         target_compile_options(${PROJECT_NAME} PRIVATE
             -Wall -Wextra -Wno-error
+            -Wformat-security
             -Wno-return-type
             -Wno-unused-parameter
             -Wno-unused-function
@@ -511,10 +511,10 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-parentheses
             -Wno-narrowing
             -Wno-missing-braces
-            -Wno-int-conversion
             $<$<COMPILE_LANGUAGE:C>:
                 -Werror-implicit-function-declaration
                 -Wno-incompatible-pointer-types
+                -Wno-int-conversion
             >
             $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
             $<$<COMPILE_LANGUAGE:CXX>:
@@ -530,6 +530,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
     elseif (CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
         target_compile_options(${PROJECT_NAME} PRIVATE
             -Wall -Wextra -Wno-error
+            -Wformat-security
             -Wno-return-type
             -Wno-unused-parameter
             -Wno-unused-function
@@ -580,6 +581,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
 
         target_compile_options(${PROJECT_NAME} PRIVATE
             -Wall -Wextra -Wno-error
+            -Wformat-security
             -Wno-unused-parameter
             -Wno-unused-function
             -Wno-unused-variable
@@ -587,11 +589,11 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-parentheses
             -Wno-narrowing
             -Wno-missing-braces
-            -Wno-int-conversion
-            -Wno-implicit-int
             $<$<COMPILE_LANGUAGE:C>:
                 -Werror-implicit-function-declaration
+                -Wno-implicit-int
                 -Wno-incompatible-pointer-types
+                -Wno-int-conversion
             >
             $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
             $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
@@ -601,6 +603,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
 
         target_link_options(${PROJECT_NAME} PRIVATE
             -pthread
+				#-fsanitize=address
             -Wl,-export-dynamic
         )
     endif()
@@ -609,21 +612,22 @@ endif()
 # Pre build events
 ################################################################################
 if (CMAKE_GENERATOR MATCHES "Visual Studio")
-	set(VS_COPY_ASSETS_CMD ${CMAKE_COMMAND} -E copy_directory_if_different $<TARGET_FILE_DIR:soh>/assets ${CMAKE_BINARY_DIR}/soh/assets)
+	add_custom_command(
+    TARGET ${PROJECT_NAME}
+	POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/extractor ${CMAKE_BINARY_DIR}/soh/assets
+    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/xml ${CMAKE_BINARY_DIR}/soh/assets/xml
+    )
 endif()
 if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
     add_custom_command(
 		TARGET ${PROJECT_NAME}
 		POST_BUILD
 		COMMENT "Copying asset xmls..."
-        COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/extractor $<TARGET_FILE_DIR:soh>/assets/extractor
-		COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/xml $<TARGET_FILE_DIR:soh>/assets/extractor/xmls
-        COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/filelists $<TARGET_FILE_DIR:soh>/assets/extractor/filelists
-        COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ActorList_OoTMqDbg.txt $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ObjectList_OoTMqDbg.txt $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
-	    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/SymbolMap_OoTMqDbg.txt $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
-		COMMAND ${VS_COPY_ASSETS_CMD}
+        COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/extractor $<TARGET_FILE_DIR:soh>/assets
+		COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/xml $<TARGET_FILE_DIR:soh>/assets/xml
+        COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:soh>/assets/symbols
+	#	COMMAND ${VS_COPY_ASSETS_CMD}
     )
 endif()
 ################################################################################
@@ -640,6 +644,15 @@ endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     find_package(glfw3 REQUIRED)
+	find_package(Ogg CONFIG REQUIRED)
+	link_libraries(Ogg::ogg)
+
+	find_package(Vorbis CONFIG REQUIRED)
+	link_libraries(Vorbis::vorbisfile)
+	find_package(Opus CONFIG REQUIRED)
+	link_libraries(Opus::opus)
+	find_package(OpusFile CONFIG REQUIRED)
+	link_libraries(OpusFile::opusfile CONFIG REQUIRED)
 	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
@@ -653,6 +666,12 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"imm32;"
 			"version;"
 			"setupapi"
+			"Ogg::ogg"
+			"Opus::opus"
+			"Vorbis::vorbis"
+			"Vorbis::vorbisenc"
+			"Vorbis::vorbisfile"
+			"OpusFile::opusfile"
 		)
 	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
@@ -693,10 +712,21 @@ else()
     find_package(SDL2)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
+	find_package(Threads REQUIRED)
+	find_package(Ogg REQUIRED)
+	find_package(Vorbis REQUIRED)
+	find_package(Opus REQUIRED)
+	find_package(OpusFile REQUIRED)
  	set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
 		"ZAPDLib;"
 		SDL2::SDL2
+		"Ogg::ogg"
+		"Vorbis::vorbis"
+		"Vorbis::vorbisenc"
+		"Vorbis::vorbisfile"
+		"Opus::opus"
+		"Opusfile::Opusfile"
         "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net>"
 		${CMAKE_DL_LIBS}
 		Threads::Threads
@@ -709,21 +739,17 @@ endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 INSTALL(FILES $<TARGET_PDB_FILE:soh> DESTINATION ./debug COMPONENT ship)
-INSTALL(FILES ${CMAKE_BINARY_DIR}/soh/soh.otr DESTINATION . COMPONENT ship)
-endif()
-
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/../scripts/linux/appimage/soh.sh.in ${CMAKE_BINARY_DIR}/linux/soh.sh @ONLY)
+INSTALL(FILES ${CMAKE_BINARY_DIR}/soh/soh.o2r DESTINATION . COMPONENT ship)
 endif()
 
 find_program(CURL NAMES curl DOC "Path to the curl program.  Used to download files.")
-execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
+execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/macosx/Info.plist.in ${CMAKE_BINARY_DIR}/macosx/Info.plist @ONLY)
 INSTALL(TARGETS soh DESTINATION ../MacOS COMPONENT ship)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION ../MacOS COMPONENT ship)
-INSTALL(FILES ${CMAKE_BINARY_DIR}/soh/soh.otr DESTINATION ../Resources COMPONENT ship)
+INSTALL(FILES ${CMAKE_BINARY_DIR}/soh/soh.o2r DESTINATION ../Resources COMPONENT ship)
 elseif(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch|CafeOS")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
 endif()

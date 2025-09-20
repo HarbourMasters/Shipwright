@@ -1,13 +1,17 @@
-#include <libultraship/bridge.h>
 #include "draw.h"
-#include "z64.h"
-#include "macros.h"
-#include "functions.h"
-#include "variables.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "randomizerTypes.h"
 #include <array>
+#include "soh_assets.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+
+extern "C" {
+#include "z64.h"
+#include "macros.h"
+#include "functions.h"
+#include "variables.h"
+#include "dungeon.h"
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
 #include "objects/object_gi_compass/object_gi_compass.h"
@@ -30,11 +34,6 @@
 #include "overlays/ovl_Boss_Sst/ovl_Boss_Sst.h"
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
-#include "soh_assets.h"
-#include "dungeon.h"
-#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
-
-extern "C" {
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
@@ -597,7 +596,7 @@ extern "C" s32 OverrideLimbDrawBarinade(PlayState* play, s32 limbIndex, Gfx** dL
                    (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 8, 16, 1, 0,
                                                (play->gameplayFrames * -2) % 64, 16, 16));
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 200);
-        Matrix_RotateX(-M_PI / 2, MTXMODE_APPLY);
+        Matrix_RotateX(-M_PIf / 2.0f, MTXMODE_APPLY);
     } else if ((limbIndex >= 10) && (limbIndex < 20)) {
         rot->x -= 0x4000;
         *dList = NULL;
@@ -1097,7 +1096,7 @@ extern "C" void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getIte
     gSPSegment(POLY_XLU_DISP++, 0x08,
                (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 2),
                                            -1 * (play->state.frames * 2), 64, 64, 1, 1 * (play->state.frames * 4),
-                                           1 * -(play->state.frames * 4), 32, 32));
+                                           -1 * (play->state.frames * 4), 32, 32));
 
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
@@ -1116,7 +1115,7 @@ extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getI
 
     // Draw rod
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    Matrix_Scale(0.2, 0.2, 0.2, MTXMODE_APPLY);
+    Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingPoleGiDL);
@@ -1126,8 +1125,8 @@ extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getI
     Matrix_Scale(5.0f, 5.0f, 5.0f, MTXMODE_APPLY);
     pos = { 0.0f, -25.5f, -4.0f };
     Matrix_Translate(pos.x, pos.y, pos.z, MTXMODE_APPLY);
-    Matrix_RotateZ(-M_PI_2, MTXMODE_APPLY);
-    Matrix_RotateY(-M_PI_2 - 0.2f, MTXMODE_APPLY);
+    Matrix_RotateZ(-M_PI_2f, MTXMODE_APPLY);
+    Matrix_RotateY(-M_PI_2f - 0.2f, MTXMODE_APPLY);
     Matrix_Scale(0.006f, 0.006f, 0.006f, MTXMODE_APPLY);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
@@ -1140,7 +1139,7 @@ extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getI
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
-    Matrix_RotateZ(M_PI_2, MTXMODE_APPLY);
+    Matrix_RotateZ(M_PI_2f, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
@@ -1149,7 +1148,7 @@ extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getI
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
-    Matrix_RotateZ(M_PI / 2, MTXMODE_APPLY);
+    Matrix_RotateZ(M_PIf / 2.0f, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);

@@ -3,7 +3,7 @@
 #include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
 #include <utils/StringHelper.h>
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "global.h"
 #include "vt.h"
 #include <Vertex.h>
@@ -59,7 +59,7 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneId, s32 spawn) {
 
     osSyncPrintf("ROOM SIZE=%fK\n", roomSize / 1024.0f);
 
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(play->sceneNum);
+    GameInteractor_ExecuteOnSceneInit(play->sceneNum);
     SPDLOG_INFO("Scene Init - sceneNum: {0:#x}, entranceIndex: {1:#x}", play->sceneNum, gSaveContext.entranceIndex);
 }
 
@@ -91,6 +91,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
         gWeatherMode = 3;
     }
     
+    GameInteractor_ExecuteAfterSceneCommands(play->sceneNum);
     Play_InitEnvironment(play, play->skyboxId);
     /* auto data = static_cast<LUS::Vertex*>(Ship::Context::GetInstance()
                                                ->GetResourceManager()

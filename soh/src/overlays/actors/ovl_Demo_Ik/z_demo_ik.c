@@ -55,12 +55,12 @@ s32 DemoIk_CheckCue(PlayState* play, u16 action, s32 index) {
 }
 
 void DemoIk_SetMove(DemoIk* this, PlayState* play) {
-    this->skelAnime.moveFlags |= 1;
+    this->skelAnime.movementFlags |= 1;
     AnimationContext_SetMoveActor(play, &this->actor, &this->skelAnime, 1.0f);
 }
 
 void DemoIk_EndMove(DemoIk* this) {
-    this->skelAnime.moveFlags &= ~1;
+    this->skelAnime.movementFlags &= ~1;
 }
 
 f32 DemoIk_GetCurFrame(DemoIk* this) {

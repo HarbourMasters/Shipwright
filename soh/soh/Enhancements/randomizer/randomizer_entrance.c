@@ -253,7 +253,9 @@ void Entrance_Init(void) {
             for (s16 i = 0; i < 4; i++) {
                 // Zero out the bit in the field which tells the game to keep playing
                 // background music for all four scene setups at each index
-                gEntranceTable[override + i].field &= ~ENTRANCE_INFO_CONTINUE_BGM_FLAG;
+                if (override + i < ENTRANCE_TABLE_SIZE) {
+                    gEntranceTable[override + i].field &= ~ENTRANCE_INFO_CONTINUE_BGM_FLAG;
+                }
             }
         }
     }
@@ -404,9 +406,9 @@ void Entrance_SetSavewarpEntrance(void) {
         gSaveContext.entranceIndex = ENTR_ICE_CAVERN_ENTRANCE;
     } else if (scene == SCENE_INSIDE_GANONS_CASTLE) {
         gSaveContext.entranceIndex = ENTR_INSIDE_GANONS_CASTLE_ENTRANCE;
-    } else if (scene == SCENE_GANONS_TOWER || scene == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE ||
-               scene == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR || scene == SCENE_GANON_BOSS ||
-               scene == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
+    } else if (scene == SCENE_GANONS_TOWER || scene == SCENE_GANONDORF_BOSS ||
+               scene == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE || scene == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR ||
+               scene == SCENE_GANON_BOSS || scene == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
         gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0;    // Inside Ganon's Castle -> Ganon's Tower Climb
     } else if (scene == SCENE_THIEVES_HIDEOUT) {             // Theives hideout
         gSaveContext.entranceIndex = ENTR_THIEVES_HIDEOUT_0; // Gerudo Fortress -> Thieve's Hideout spawn 0
@@ -809,6 +811,7 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance) {
     if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
         u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
         gSaveContext.ship.stats.entrancesDiscovered[idx] |= entranceBit;
+        CheckTracker_RecalculateAvailableChecks();
 
         // Set reverse entrance when not decoupled
         if (!Randomizer_GetSettingValue(RSK_DECOUPLED_ENTRANCES) && !isReversedEntrance) {

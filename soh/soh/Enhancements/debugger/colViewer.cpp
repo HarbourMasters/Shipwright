@@ -6,8 +6,6 @@
 #include <vector>
 #include <string>
 #include <cmath>
-#include <libultraship/bridge.h>
-#include <libultraship/libultraship.h>
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
@@ -20,7 +18,7 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-typedef enum ColRenderSetting { ColRenderDisabled, ColRenderSolid, ColRenderTransparent } ColRenderSetting;
+enum ColRenderSetting { ColRenderDisabled, ColRenderSolid, ColRenderTransparent };
 
 static std::unordered_map<int32_t, const char*> ColRenderSettingNames = {
     { ColRenderDisabled, "Disabled" },
@@ -58,6 +56,7 @@ using namespace UIWidgets;
 
 // Draws the ImGui window for the collision viewer
 void ColViewerWindow::DrawElement() {
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
     CheckboxOptions checkOpt = CheckboxOptions().Color(THEME_COLOR);
     ComboboxOptions comboOpt = ComboboxOptions().Color(THEME_COLOR);
     CVarCheckbox("Enabled", CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), checkOpt);
@@ -139,6 +138,7 @@ void ColViewerWindow::DrawElement() {
         UIWidgets::Tooltip(colorHelpText.c_str());
     }
     PopStyleHeader();
+    ImGui::EndDisabled();
 }
 
 // Calculates the normal for a triangle at the 3 specified points

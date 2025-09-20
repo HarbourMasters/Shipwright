@@ -18,21 +18,16 @@ enum class GlitchType {
     EquipSwap,
 };
 
-enum class GlitchDifficulty {
-    NOVICE = 1,
-    INTERMEDIATE,
-    ADVANCED,
-    EXPERT,
-    HERO,
-};
-
 class Logic {
   public:
     bool noVariable = false;
 
-    // Child item logic
-    bool SkullMask = false;
-    bool MaskOfTruth = false;
+    // Mask Quest
+    bool CanBorrowMasks = false;
+    bool BorrowSkullMask = false;
+    bool BorrowSpookyMask = false;
+    bool BorrowBunnyHood = false;
+    bool BorrowRightMasks = false;
 
     // Adult logic
     bool FreedEpona = false;
@@ -59,19 +54,13 @@ class Logic {
     bool LightTrialClear = false;
 
     // Logical keysanity
-    bool IsKeysanity = false;
+    bool IsFireLoopLocked = false;
 
     // Bottle Count
     uint8_t Bottles = 0;
     uint8_t NumBottles = 0;
     // this event covers if the player can currently empty big poes in logic
     bool CanEmptyBigPoes = false;
-    // this event covers if the player could, if they filled their bottle with big poes in field, empty them at the poe
-    // merchant. Works in tandem with the big poes safety check during entrance validation
-    bool CouldEmptyBigPoes = false;
-    // this check is used to tell logic that we are checking big poes accessibility in logic, to ensure it's not
-    // bottle-locked.
-    bool AreCheckingBigPoes = false;
 
     // Drops and Bottle Contents Access
     bool NutPot = false;
@@ -116,7 +105,11 @@ class Logic {
 
     // Events
     bool ShowedMidoSwordAndShield = false;
-    bool CarpenterRescue = false;
+    bool THCouldFree1TorchCarpenter = false;
+    bool THCouldFreeDoubleCellCarpenter = false;
+    bool TH_CouldFreeDeadEndCarpenter = false;
+    bool THCouldRescueSlopeCarpenter = false;
+    bool THRescuedAllCarpenters = false;
     bool GF_GateOpen = false;
     bool GtG_GateOpen = false;
     bool DampesWindmillAccess = false;
@@ -183,6 +176,9 @@ class Logic {
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
+    bool CalculatingAvailableChecks = false;
+    bool ACProcessUndiscoveredExits = false;
+
     SaveContext* mSaveContext = nullptr;
     Logic();
     bool CanUse(RandomizerGet itemName);
@@ -190,8 +186,8 @@ class Logic {
     bool HasItem(RandomizerGet itemName);
     bool HasBossSoul(RandomizerGet itemName);
     bool CanOpenOverworldDoor(RandomizerGet itemName);
-    bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
-    bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
+    bool SmallKeys(s16 scene, uint8_t requiredAmount);
+    bool CanOpenUnderwaterChest();
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
     bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true,
@@ -209,6 +205,7 @@ class Logic {
     uint8_t BottleCount();
     uint8_t OcarinaButtons();
     bool HasBottle();
+    bool CanUseSword();
     bool CanJumpslashExceptHammer();
     bool CanJumpslash();
     bool CanHitSwitch(EnemyDistance distance = ED_CLOSE, bool inWater = false);
@@ -225,7 +222,6 @@ class Logic {
     bool CanReflectNuts();
     bool CanCutShrubs();
     bool CanStunDeku();
-    bool CanLeaveForest();
     bool CallGossipFairy();
     bool CallGossipFairyExceptSuns();
     uint8_t EffectiveHealth();
@@ -247,13 +243,12 @@ class Logic {
     bool HasFireSource();
     bool HasFireSourceWithTorch();
     bool TradeQuestStep(RandomizerGet rg);
-    bool CanFinishGerudoFortress();
     bool CanStandingShield();
     bool CanShield();
     bool CanUseProjectile();
     bool CanBuildRainbowBridge();
     bool CanTriggerLACS();
-    void Reset();
+    void Reset(bool resetSaveContext = true);
     void SetContext(std::shared_ptr<Context> _ctx);
     bool GetInLogic(LogicVal logicVal);
     void SetInLogic(LogicVal logicVal, bool remove);
@@ -267,6 +262,7 @@ class Logic {
     bool CheckEquipment(uint32_t item);
     bool CheckQuestItem(uint32_t item);
     void SetQuestItem(uint32_t item, bool state);
+    int8_t GetUsedSmallKeyCount(SceneID sceneId);
     uint8_t GetSmallKeyCount(uint32_t dungeonIndex);
     void SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count);
     bool CheckDungeonItem(uint32_t item, uint32_t dungeonIndex);

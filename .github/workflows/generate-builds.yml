@@ -62,16 +62,16 @@ jobs:
         cmake ..
         make
         sudo make install
-    - name: Generate soh.otr
+    - name: Generate soh.o2r
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --config Release --target GenerateSohOtr -j3
-    - name: Upload soh.otr
+    - name: Upload soh.o2r
       uses: actions/upload-artifact@v4
       with:
-        name: soh.otr
-        path: soh.otr
+        name: soh.o2r
+        path: soh.o2r
         retention-days: 3
 
   build-macos:
@@ -122,10 +122,10 @@ jobs:
         brew uninstall --ignore-dependencies libpng
         sudo port install $(cat .github/workflows/macports-deps.txt)
         brew install ninja
-    - name: Download soh.otr
+    - name: Download soh.o2r
       uses: actions/download-artifact@v4
       with:
-        name: soh.otr
+        name: soh.o2r
         path: build-cmake/soh
     - name: Build SoH
       run: |
@@ -233,10 +233,10 @@ jobs:
         make
         sudo make install
         sudo cp -av /usr/local/lib/libzip* /lib/x86_64-linux-gnu/
-    - name: Download soh.otr
+    - name: Download soh.o2r
       uses: actions/download-artifact@v4
       with:
-        name: soh.otr
+        name: soh.o2r
         path: build-cmake/soh
     - name: Build SoH
       run: |
@@ -298,10 +298,10 @@ jobs:
         path: vcpkg
     - name: Configure Developer Command Prompt
       uses: ilammy/msvc-dev-cmd@v1
-    - name: Download soh.otr
+    - name: Download soh.o2r
       uses: actions/download-artifact@v4
       with:
-        name: soh.otr
+        name: soh.o2r
         path: build-windows/soh
     - name: Build SoH
       env:

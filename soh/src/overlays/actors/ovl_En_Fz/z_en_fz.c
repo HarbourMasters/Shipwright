@@ -2,6 +2,7 @@
 #include "objects/object_fz/object_fz.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ActorMaximumHealth.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -725,7 +726,7 @@ void EnFz_Draw(Actor* thisx, PlayState* play) {
     // displayLists, so we need to recompute the index based on the scaled health (using the maximum health value) and
     // clamp the final result for safety.
     if (CVarGetInteger(CVAR_ENHANCEMENT("EnemySizeScalesHealth"), 0)) {
-        u8 scaledHealth = (u8)(((f32)this->actor.colChkInfo.health / this->actor.maximumHealth) * 6);
+        u8 scaledHealth = (u8)(((f32)this->actor.colChkInfo.health / GetActorMaximumHealth(this)) * 6);
         index = (6 - scaledHealth) >> 1;
         index = CLAMP(index, 0, 2);
     }
