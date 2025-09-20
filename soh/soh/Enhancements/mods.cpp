@@ -60,6 +60,42 @@ static const ALIGN_ASSET(2) char tokinoma_room_0DL_007A70[] = dtokinoma_room_0DL
 #define dtokinoma_room_0DL_007FD0 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007FD0"
 static const ALIGN_ASSET(2) char tokinoma_room_0DL_007FD0[] = dtokinoma_room_0DL_007FD0;
 
+// Used in Register3DPreRenderedScenes to determine Fog Control
+std::vector<SceneID> fogControlList = {
+    SCENE_MARKET_ENTRANCE_DAY,
+    SCENE_MARKET_ENTRANCE_NIGHT,
+    SCENE_MARKET_ENTRANCE_RUINS,
+    SCENE_BACK_ALLEY_DAY,
+    SCENE_BACK_ALLEY_NIGHT,
+    SCENE_MARKET_DAY,
+    SCENE_MARKET_NIGHT,
+    SCENE_MARKET_RUINS,
+    SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY,
+    SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT,
+    SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS,
+    SCENE_KNOW_IT_ALL_BROS_HOUSE,
+    SCENE_TWINS_HOUSE,
+    SCENE_MIDOS_HOUSE,
+    SCENE_SARIAS_HOUSE,
+    //SCENE_KAKARIKO_CENTER_GUEST_HOUSE,
+    SCENE_BACK_ALLEY_HOUSE,
+    SCENE_BAZAAR,
+    SCENE_KOKIRI_SHOP,
+    SCENE_GORON_SHOP,
+    SCENE_ZORA_SHOP,
+    SCENE_POTION_SHOP_KAKARIKO,
+    SCENE_POTION_SHOP_MARKET,
+    SCENE_BOMBCHU_SHOP,
+    SCENE_HAPPY_MASK_SHOP,
+    SCENE_LINKS_HOUSE,
+    SCENE_DOG_LADY_HOUSE,
+    SCENE_STABLE,
+    SCENE_IMPAS_HOUSE,
+    //SCENE_LAKESIDE_LABORATORY,
+    SCENE_CARPENTERS_TENT,
+    SCENE_GRAVEKEEPERS_HUT,
+};
+
 /// Switches Link's age and respawns him at the last entrance he entered.
 void SwitchAge() {
     if (gPlayState == NULL)
@@ -943,15 +979,23 @@ void Register3DPreRenderedScenes() {
     });
 
     COND_HOOK(OnPlayDrawBegin, CVarGetInteger(CVAR_SETTING("3DSceneRender"), 0), []() {
-        if ((HREG(80) != 10) || (HREG(82) != 0)) {
-            // Furthest possible fog and zFar
-            gPlayState->view.zFar = 12800;
-            gPlayState->lightCtx.fogNear = 996; // Set to 1000 to complete disable fog entirely
-            gPlayState->lightCtx.fogFar = 12800;
-            // General gray fog color
-            gPlayState->lightCtx.fogColor[0] = 100;
-            gPlayState->lightCtx.fogColor[1] = 100;
-            gPlayState->lightCtx.fogColor[2] = 100;
+        if (!CVarGetInteger(CVAR_SETTING("3DSceneRender"), 0)) {
+            return;
+        }
+        for (auto& scene : fogControlList) {
+            if (scene == gPlayState->sceneNum) {
+                if ((HREG(80) != 10) || (HREG(82) != 0)) {
+                    // Furthest possible fog and zFar
+                    gPlayState->view.zFar = 12800;
+                    gPlayState->lightCtx.fogNear = 996; // Set to 1000 to complete disable fog entirely
+                    gPlayState->lightCtx.fogFar = 12800;
+                    // General gray fog color
+                    gPlayState->lightCtx.fogColor[0] = 100;
+                    gPlayState->lightCtx.fogColor[1] = 100;
+                    gPlayState->lightCtx.fogColor[2] = 100;
+                }
+                break;
+            }
         }
     });
     REGISTER_VB_SHOULD(VB_DRAW_2D_BACKGROUND, {
