@@ -46,22 +46,19 @@ std::vector<SceneID> fogControlList = {
     SCENE_GRAVEKEEPERS_HUT,
 };
 
-std::vector<SceneID> skyboxControlList = { 
-    SCENE_MARKET_ENTRANCE_DAY,
-    SCENE_MARKET_ENTRANCE_NIGHT,
-    SCENE_MARKET_ENTRANCE_RUINS,
-    SCENE_BACK_ALLEY_DAY,
-    SCENE_BACK_ALLEY_NIGHT,
-    SCENE_MARKET_DAY,
-    SCENE_MARKET_NIGHT,
-    SCENE_MARKET_RUINS,
-    SCENE_CASTLE_COURTYARD_ZELDA,
-    SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY,
-    SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT,
-    SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS,
-    SCENE_FOREST_TEMPLE
-};
-
+std::vector<SceneID> skyboxControlList = { SCENE_MARKET_ENTRANCE_DAY,
+                                           SCENE_MARKET_ENTRANCE_NIGHT,
+                                           SCENE_MARKET_ENTRANCE_RUINS,
+                                           SCENE_BACK_ALLEY_DAY,
+                                           SCENE_BACK_ALLEY_NIGHT,
+                                           SCENE_MARKET_DAY,
+                                           SCENE_MARKET_NIGHT,
+                                           SCENE_MARKET_RUINS,
+                                           SCENE_CASTLE_COURTYARD_ZELDA,
+                                           SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY,
+                                           SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT,
+                                           SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS,
+                                           SCENE_FOREST_TEMPLE };
 
 void Register3DPreRenderedScenes() {
     COND_HOOK(AfterSceneCommands, CVAR_VALUE, [](int16_t sceneNum) {
