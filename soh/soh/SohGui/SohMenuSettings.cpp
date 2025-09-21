@@ -401,8 +401,8 @@ void SohMenu::AddMenuSettings() {
         .PreFunc(
             [](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NO_MULTI_VIEWPORT).active; })
         .Options(CheckboxOptions()
-            .Tooltip("Allows multiple windows to be opened at once. Requires a reload to take effect.")
-            .DefaultValue(true));
+                     .Tooltip("Allows multiple windows to be opened at once. Requires a reload to take effect.")
+                     .DefaultValue(true));
     AddWidget(path, "Texture Filter (Needs reload)", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_TEXTURE_FILTER)
         .RaceDisable(false)
