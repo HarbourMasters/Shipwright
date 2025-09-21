@@ -346,7 +346,8 @@ void OTRGlobals::Initialize() {
         std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({ sohInputEditorWindow }));
     context->InitWindow(sohFast3dWindow);
 
-    context->GetWindow()->SetAutoCaptureMouse(CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1));
+    context->GetWindow()->SetAutoCaptureMouse(CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) &&
+                                              CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1));
     context->GetWindow()->SetForceCursorVisibility(CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
