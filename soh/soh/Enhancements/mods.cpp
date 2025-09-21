@@ -96,6 +96,20 @@ std::vector<SceneID> fogControlList = {
     SCENE_GRAVEKEEPERS_HUT,
 };
 
+// Used in Register3DPreRenderedScenes to determine Skybox Control
+std::vector<SceneID> skyboxControlList = { SCENE_MARKET_ENTRANCE_DAY,
+                                           SCENE_MARKET_ENTRANCE_NIGHT,
+                                           SCENE_MARKET_ENTRANCE_RUINS,
+                                           SCENE_BACK_ALLEY_DAY,
+                                           SCENE_BACK_ALLEY_NIGHT,
+                                           SCENE_MARKET_DAY,
+                                           SCENE_MARKET_NIGHT,
+                                           SCENE_MARKET_RUINS,
+                                           SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY,
+                                           SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT,
+                                           SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS,
+                                           SCENE_FOREST_TEMPLE };
+
 /// Switches Link's age and respawns him at the last entrance he entered.
 void SwitchAge() {
     if (gPlayState == NULL)
@@ -966,15 +980,26 @@ void RegisterCustomSkeletons() {
 
 void Register3DPreRenderedScenes() {
     COND_HOOK(AfterSceneCommands, CVarGetInteger(CVAR_SETTING("3DSceneRender"), 0), [](int16_t sceneNum) {
-        // Add a skybox on scenes like the Castle Courtyard (play->envCtx.skyboxDisabled = false;)
-        gPlayState->envCtx.skyboxDisabled = false;
+        // Check if this scene is in the skyboxControlList
+        bool shouldControlSkybox = false;
+        for (const auto& scene : skyboxControlList) {
+            if (sceneNum == scene) {
+                shouldControlSkybox = true;
+                break;
+            }
+        }
 
-        // Replace skybox with normal sky
-        gPlayState->skyboxId = SKYBOX_NORMAL_SKY;
-        // Apply the always cloudy skybox as an adult for Temple of Time and the Market
-        if (LINK_IS_ADULT && sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS || sceneNum == SCENE_MARKET_RUINS ||
-            sceneNum == SCENE_MARKET_ENTRANCE_RUINS) {
-            gWeatherMode = 3;
+        if (shouldControlSkybox) {
+            // Add a skybox on scenes from skyboxControlList
+            gPlayState->envCtx.skyboxDisabled = false;
+
+            // Replace skybox with normal sky
+            gPlayState->skyboxId = SKYBOX_NORMAL_SKY;
+            // Apply the always cloudy skybox as an adult for Temple of Time and the Market
+            if (LINK_IS_ADULT && sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS || sceneNum == SCENE_MARKET_RUINS ||
+                sceneNum == SCENE_MARKET_ENTRANCE_RUINS) {
+                gWeatherMode = 3;
+            }
         }
     });
 
