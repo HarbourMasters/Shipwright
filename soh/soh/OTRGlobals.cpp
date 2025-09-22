@@ -1132,7 +1132,30 @@ void CheckAndCreateModFolder() {
     }
 }
 
-extern "C" void InitOTR() {
+extern "C" void InitOTR(int argc, char* argv[]) {
+    if (argc > 0) {
+        for (int i = 1; i < argc; i++) {
+            std::string installPath = Ship::Context::GetAppBundlePath();
+            Extractor extract;
+            if (extract.RunFileStandalone(argv[i])) {
+                bool doExtract = true;
+                std::string archive = (extract.IsMasterQuest() ? "oot-mq.o2r" : "oot.o2r");
+                if (std::filesystem::exists(Ship::Context::GetAppBundlePath() + "/" + archive)) {
+                    std::string msg = "Archive for current ROM, " + archive + ", already exists. Extract again?";
+                    doExtract = !extract.ShowYesNoBox("Confirm Re-extract", msg.c_str());
+                }
+                if (doExtract) {
+                    extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName));
+                }
+            } else {
+                std::string msg = "File " + std::string(argv[i]) + " is not a ROM or does not match supported ROMs.";
+                extract.ShowErrorBox("Incompatible File", msg.c_str());
+            }
+        }
+        if (!Extractor::ShowYesNoBox("Run Ship of Harkinian", "All files have been processed. Run SoH?")) {
+            exit(0);
+        }
+    }
     OTRGlobals::Instance = new OTRGlobals();
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);
