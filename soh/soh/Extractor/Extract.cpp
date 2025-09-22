@@ -458,8 +458,7 @@ bool Extractor::RunFileStandalone(std::string rom) {
         return false;
     }
     auto file = std::filesystem::path(rom);
-    if ((file.extension() != ".n64") && (file.extension() != ".z64") &&
-        (file.extension() != ".v64")) {
+    if ((file.extension() != ".n64") && (file.extension() != ".z64") && (file.extension() != ".v64")) {
         return false;
     }
     SetRomInfo(rom);
@@ -478,7 +477,7 @@ bool Extractor::RunFileStandalone(std::string rom) {
     if (!ValidateRom(true)) {
         return false;
     }
-    
+
     return true;
 }
 

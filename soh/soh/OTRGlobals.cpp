@@ -1133,6 +1133,7 @@ void CheckAndCreateModFolder() {
 }
 
 extern "C" void InitOTR(int argc, char* argv[]) {
+#if !defined(__SWITCH__) && !defined(__WIIU__)
     if (argc > 0) {
         for (int i = 1; i < argc; i++) {
             std::string installPath = Ship::Context::GetAppBundlePath();
@@ -1156,6 +1157,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
             exit(0);
         }
     }
+#endif
     OTRGlobals::Instance = new OTRGlobals();
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);
