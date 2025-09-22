@@ -1134,7 +1134,7 @@ void CheckAndCreateModFolder() {
 
 extern "C" void InitOTR(int argc, char* argv[]) {
 #if !defined(__SWITCH__) && !defined(__WIIU__)
-    if (argc > 0) {
+    if (argc > 1) {
         for (int i = 1; i < argc; i++) {
             std::string installPath = Ship::Context::GetAppBundlePath();
             Extractor extract;
@@ -1143,7 +1143,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
                 std::string archive = (extract.IsMasterQuest() ? "oot-mq.o2r" : "oot.o2r");
                 if (std::filesystem::exists(Ship::Context::GetAppBundlePath() + "/" + archive)) {
                     std::string msg = "Archive for current ROM, " + archive + ", already exists. Extract again?";
-                    doExtract = !extract.ShowYesNoBox("Confirm Re-extract", msg.c_str());
+                    doExtract = extract.ShowYesNoBox("Confirm Re-extract", msg.c_str()) == IDYES;
                 }
                 if (doExtract) {
                     extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName));
@@ -1153,7 +1153,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
                 extract.ShowErrorBox("Incompatible File", msg.c_str());
             }
         }
-        if (!Extractor::ShowYesNoBox("Run Ship of Harkinian", "All files have been processed. Run SoH?")) {
+        if (Extractor::ShowYesNoBox("Run Ship of Harkinian", "All files have been processed. Run SoH?") != IDYES) {
             exit(0);
         }
     }
