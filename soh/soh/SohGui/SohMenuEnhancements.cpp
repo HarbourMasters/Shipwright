@@ -560,10 +560,11 @@ void SohMenu::AddMenuEnhancements() {
         .RaceDisable(false)
         .Options(IntSliderOptions().Min(4).Max(6).DefaultValue(6).Tooltip(
             "Space between text characters (useful for HD font textures)."));
-    AddWidget(path, "Use 3D Pre-Rendered Scenes", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_SETTING("3DSceneRender"))
+    AddWidget(path, "Disable 2D Pre-Rendered Scenes", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("3DSceneRender"))
         .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip("Replaces 2D with 3D Pre-rendered backgrounds in Scenes."));
+        .Options(CheckboxOptions().Tooltip("Disables 2D pre-rendered backgrounds. Enable this when using a mod that "
+                                           "implements 3D backdrops for these areas."));
 
     AddWidget(path, "Models & Textures", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Disable LOD", WIDGET_CVAR_CHECKBOX)

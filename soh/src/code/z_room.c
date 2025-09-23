@@ -257,7 +257,7 @@ s32 swapAndConvertJPEG(void* data) {
 
 void Room_DrawBackground2D(Gfx** gfxP, void* tex, void* tlut, u16 width, u16 height, u8 fmt, u8 siz, u16 tlutMode,
                            u16 tlutCount, f32 offsetX, f32 offsetY) {
-    if (GameInteractor_Should(VB_DRAW_2D_BACKGROUND, true)) {
+    if (!GameInteractor_Should(VB_DRAW_2D_BACKGROUND, true)) {
         return;
     }
     Gfx* gfx = *gfxP;
