@@ -2259,7 +2259,7 @@ typedef enum {
     // CVarGetInteger(CVAR_SETTING("3DSceneRender"), 0)
     // ```
     // #### `args`
-    // - `*DoorShutter`
+    // - None
     VB_DRAW_2D_BACKGROUND,
 } GIVanillaBehavior;
 
