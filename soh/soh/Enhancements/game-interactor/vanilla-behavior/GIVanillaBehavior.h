@@ -2256,7 +2256,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // CVarGetInteger(CVAR_SETTING("3DSceneRender"), 0)
+    // CVarGetInteger(CVAR_ENHANCEMENT("3DSceneRender"), 0)
     // ```
     // #### `args`
     // - None
