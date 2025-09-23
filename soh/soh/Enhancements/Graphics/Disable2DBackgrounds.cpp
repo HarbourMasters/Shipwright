@@ -10,7 +10,7 @@ extern PlayState* gPlayState;
 #include "variables.h"
 }
 
-#define CVAR_NAME CVAR_SETTING("3DSceneRender")
+#define CVAR_NAME CVAR_ENHANCEMENT("3DSceneRender")
 #define CVAR_VALUE CVarGetInteger(CVAR_NAME, 0)
 
 std::vector<SceneID> fogControlList = {
@@ -86,9 +86,10 @@ void Register3DPreRenderedScenes() {
     });
 
     COND_HOOK(OnPlayDrawBegin, CVAR_VALUE, []() {
-        if (!CVarGetInteger(CVAR_SETTING("3DSceneRender"), 0)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("3DSceneRender"), 0)) {
             return;
         }
+        SPDLOG_INFO("Here");
         for (auto& scene : fogControlList) {
             if (scene == gPlayState->sceneNum) {
                 if ((HREG(80) != 10) || (HREG(82) != 0)) {
