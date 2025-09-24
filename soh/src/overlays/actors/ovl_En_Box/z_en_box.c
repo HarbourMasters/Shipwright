@@ -567,8 +567,10 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
             Actor_SetFocus(&this->dyna.actor, 40.0f);
     }
 
-    if ((this->dyna.actor.params >> 5 & 0x7F) == GI_ICE_TRAP && this->actionFunc == EnBox_Open &&
-        this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100) {
+    if (GameInteractor_Should(VB_CHEST_USE_ICE_EFFECT,
+                              (this->dyna.actor.params >> 5 & 0x7F) == GI_ICE_TRAP && this->actionFunc == EnBox_Open &&
+                                  this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100,
+                              this)) {
         EnBox_SpawnIceSmoke(this, play);
     }
 }

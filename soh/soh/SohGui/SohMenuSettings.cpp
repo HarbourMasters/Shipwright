@@ -1,5 +1,7 @@
 #include "SohMenu.h"
 #include "soh/Notification/Notification.h"
+#include "soh/Enhancements/controls/SohInputEditorWindow.h"
+#include "SohModals.h"
 #include "soh/OTRGlobals.h"
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
@@ -14,6 +16,7 @@ extern "C" {
 namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;
+extern std::shared_ptr<SohModalWindow> mModalWindow;
 using namespace UIWidgets;
 
 static std::unordered_map<int32_t, const char*> imguiScaleOptions = {
@@ -411,11 +414,26 @@ void SohMenu::AddMenuSettings() {
     path.sidebarName = "Controls";
     path.column = SECTION_COLUMN_1;
     AddSidebarEntry("Settings", "Controls", 2);
+    AddWidget(path, "Clear Devices", WIDGET_BUTTON)
+        .Callback([](WidgetInfo& info) {
+            SohGui::mModalWindow->RegisterPopup(
+                "Clear Config",
+                "This will completely erase the controls config, including registered devices.\nContinue?", "Clear",
+                "Cancel",
+                []() {
+                    Ship::Context::GetInstance()->GetConsoleVariables()->ClearBlock(CVAR_PREFIX_SETTING ".Controllers");
+                    uint8_t bits = 0;
+                    Ship::Context::GetInstance()->GetControlDeck()->Init(&bits);
+                },
+                nullptr);
+        })
+        .Options(ButtonOptions().Size(Sizes::Inline));
     AddWidget(path, "Controller Bindings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Bindings Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("ControllerConfiguration"))
         .RaceDisable(false)
         .WindowName("Configure Controller")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Bindings Window."));
 
     // Input Viewer
@@ -426,6 +444,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_WINDOW("InputViewer"))
         .RaceDisable(false)
         .WindowName("Input Viewer")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Toggles the Input Viewer.").EmbedWindow(false));
 
     AddWidget(path, "Input Viewer Settings", WIDGET_SEPARATOR_TEXT);
@@ -433,6 +452,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_WINDOW("InputViewerSettings"))
         .RaceDisable(false)
         .WindowName("Input Viewer Settings")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Input Viewer Settings Window."));
 
     // Notifications

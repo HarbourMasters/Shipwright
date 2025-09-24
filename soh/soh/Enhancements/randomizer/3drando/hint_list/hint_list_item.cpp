@@ -494,7 +494,7 @@ void StaticData::HintTable_Init_Item() {
                                                },
                                                CustomMessage("Poacher's Saw", "Säge", "Scie du Chasseur"));
 
-    hintTextTable[RHT_BROKEN_SWORD] = HintText(CustomMessage("the Broken Goron's Sword", /*german*/"das zerbrochene Goronen-Schwert", /*french*/"l'Épée Brisée de Goron"),
+    hintTextTable[RHT_BROKEN_SWORD] = HintText(CustomMessage("the Broken Goron's Sword", /*german*/"das Zerbr. Goronen-Schwert", /*french*/"l'Épée Brisée de Goron"),
                                                // /*spanish*/la espada goron rota
                                                {
                                                CustomMessage("a trade quest item", /*german*/"ein Handelsgegenstand", /*french*/"un objet de quête d'échanges"),

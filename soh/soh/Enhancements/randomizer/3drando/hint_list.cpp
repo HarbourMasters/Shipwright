@@ -2257,6 +2257,11 @@ void StaticData::HintTable_Init() {
                                                      /*french*/ "As-tu récemment ressenti une vague de #puissance magique#? Un mystérieux hibou m'a dit qu'elle provenait du #[[1]]#.^Tu devrais aller y jeter un coup d'oeil, @!\x0B",
                                                                 {QM_GREEN, QM_RED}, {}, TEXTBOX_TYPE_BLUE));
 
+    hintTextTable[RHT_MIDO_HINT] = HintText(CustomMessage("You'll never find the #Kokiri Sword# I hid in #[[1]]#!",
+                                               /*german*/ "Du wirst nie das #Kokiri-Schwert# finden, das ich in #[[1]]# versteckt habe!",
+                                               /*french*/ "Pfeuuh! Tu n'trouveras jamais l'#Epée Kokiri# que j'ai cachée dans #[[1]]#!",
+                                                          {QM_GREEN, QM_RED}));
+
     hintTextTable[RHT_LOACH_HINT] = HintText(CustomMessage("What?^You wanna know about the&%rHyrule Loach%w?^It's a big fish, but it's so rare that I'll give my %g[[1]]%w to anyone who catches it. Seriously!",
 	                                            /*german*/ "Was?^Du willst etwas über die&%rhylianische Forelle%w wissen?&Es ist ein riesiger Fisch,&der unfassbar selten ist!^Wenn Du mir eine bringst, |springt|springen| für Dich&%g[[1]]%w dabei raus.&Ganz im Ernst!",
                                                 /*french*/ "Quoi?&Tu veux en savoir plus sur le&%rBrochet d'Hyrule%w?^C'est un gros poisson, mais il&est si rare que je donne&%g[[1]]%w&à celui qui l'attrape.^Ouais, j'suis sérieux!",
