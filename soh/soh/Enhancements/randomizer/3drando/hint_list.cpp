@@ -2477,6 +2477,10 @@ void StaticData::HintTable_Init() {
                                                        /*german*/ "&Man kann darauf die Worte&%rMaster Quest%w entziffern...",
                                                        /*french*/ "&Étrange... les mots %r\"Master_Quest\"%w sont gravés dessus."));
 
+    hintTextTable[RHT_YOU_FOUND] = HintText(CustomMessage("You found ",
+                                               /*german*/ "Du erhältst: ",
+                                               /*french*/ "Vous obtenez: "));
+
     // clang-format on
 }
 } // namespace Rando

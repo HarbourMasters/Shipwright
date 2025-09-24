@@ -358,7 +358,7 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("a desert tribe's pass", /*german*/"ein Pass eines Wüstenstammes", /*french*/"un laissez-passer")
                                                          // /*spanish*/el vale del desierto
                                                          },
-                                                         CustomMessage("Gerudo Membership Card", "Gerudo-Pass", "Carte Gerudo"));
+                                                         CustomMessage("Gerudo Membership Card", "Gerudo-Paß", "Carte Gerudo"));
 
     hintTextTable[RHT_MAGIC_BEAN] = HintText(CustomMessage("a Magic Bean", /*german*/"eine Wundererbse", /*french*/"un Haricot Magique"),
                                              // /*spanish*/una judía mágica
@@ -466,7 +466,7 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a powder ingredient", /*german*/"eine Puderzutat", /*french*/"un ingrédient à poudre")
                                                // /*spanish*/un oloroso ingrediente
                                                },
-                                               CustomMessage("Odd Mushroom", "Schimmelpilz", "Champigon Suspect"));
+                                               CustomMessage("Odd Mushroom", "Schimmelpilz", "Champignon Suspect"));
 
     hintTextTable[RHT_ODD_POTION] = HintText(CustomMessage("an Odd Potion", /*german*/"ein Modertrank", /*french*/"une Mixture Suspecte"),
                                              // /*spanish*/una medicina rara
@@ -505,7 +505,7 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a shattered slicer", /*german*/"ein zersplitterter Schneider", /*french*/"une arme cassée")
                                                // /*spanish*/una rebanadora rota
                                                },
-                                               CustomMessage("Broken Goron's Sword", "zerbr. Goronen-Schwert", "Épée Brisée de Goron"));
+                                               CustomMessage("Broken Goron's Sword", "Zerbr. Goronen-Schwert", "Épée Brisée de Goron"));
 
     hintTextTable[RHT_PRESCRIPTION] = HintText(CustomMessage("the Prescription", /*german*/"ein Rezept", /*french*/"une Ordonnance"),
                                                // /*spanish*/la receta
@@ -641,7 +641,7 @@ void StaticData::HintTable_Init_Item() {
                                                      CustomMessage("a portable bank", /*german*/"eine tragbare Bank", /*french*/"une petite banque")
                                                      // /*spanish*/un banco portable
                                                      },
-                                                     CustomMessage("Progressive Wallet", "Geldbörse (prog.)", "Bourse (prog.)"));
+                                                     CustomMessage("Progressive Wallet", "Geldbörse (prog.)", "Börse (prog.)"));
 
     hintTextTable[RHT_PROGRESSIVE_SCALE] = HintText(CustomMessage("a Zora Scale", /*german*/"eine Zora-Schuppe", /*french*/"une Écaille Zora"),
                                                     // /*spanish*/una escama Zora
@@ -2820,7 +2820,7 @@ void StaticData::HintTable_Init_Item() {
 
     hintTextTable[RHT_WALLET_INF] = HintText(CustomMessage("an infinite Wallet", /*german*/"die unendliche Geldbörse", /*french*/"une Bourse sans fond"),
                                              {}, {},
-                                             CustomMessage("Infinite Wallet", "Unendliche Geldbörse", "Bourse Infinie"));
+                                             CustomMessage("Infinite Wallet", "Unendliche Geldbörse", "Börse Infinie"));
 
     hintTextTable[RHT_EPONA] = HintText(CustomMessage("Epona", /*german*/"Epona", /*french*/"Epona"),
                                     // /*spanish*/a Epona
@@ -2923,19 +2923,19 @@ void StaticData::HintTable_Init_Item() {
 
     hintTextTable[RHT_CHILD_WALLET] = HintText(CustomMessage("a Child's Wallet", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
-                                             CustomMessage("Child Wallet", "Kindergeldbörse", "Petite Bourse"));
+                                             CustomMessage("Child Wallet", "Kindergeldbörse", "Kinderbörse"));
 
     hintTextTable[RHT_ADULT_WALLET] = HintText(CustomMessage("an Adult's Wallet", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
-                                             CustomMessage("Adult Wallet", "Große Geldbörse", "Grande Bourse"));
+                                             CustomMessage("Adult Wallet", "Große Geldbörse", "Große Börse"));
 
     hintTextTable[RHT_GIANT_WALLET] = HintText(CustomMessage("a Giant Wallet", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
-                                             CustomMessage("Giant Wallet", "Riesengeldbörse", "Bourse de Géant"));
+                                             CustomMessage("Giant Wallet", "Riesengeldbörse", "Riesenbörse"));
 
     hintTextTable[RHT_TYCOON_WALLET] = HintText(CustomMessage("the Tycoon Wallet", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},
-                                             CustomMessage("Tycoon Wallet", "Goldene Geldbörse", "Bourse de Magnat"));
+                                             CustomMessage("Tycoon Wallet", "Goldene Geldbörse", "Goldene Börse"));
 
     hintTextTable[RHT_DEKU_NUT_BAG] = HintText(CustomMessage("a Deku Nut Bag", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE),
                                              {}, {},

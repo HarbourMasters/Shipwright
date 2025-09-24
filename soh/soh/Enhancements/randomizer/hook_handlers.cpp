@@ -1047,7 +1047,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     });
                 } else if (item00->itemEntry.modIndex == MOD_RANDOMIZER) {
                     Notification::Emit({
-                        .message = Rando::StaticData::hintTextTable[RHT_YOU_FOUND].GetClear().GetForCurrentLanguage(MF_RAW),
+                        .message =
+                            Rando::StaticData::hintTextTable[RHT_YOU_FOUND].GetClear().GetForCurrentLanguage(MF_RAW),
                         .suffix = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
                                       .GetName()
                                       .GetForCurrentLanguage(MF_RAW),
