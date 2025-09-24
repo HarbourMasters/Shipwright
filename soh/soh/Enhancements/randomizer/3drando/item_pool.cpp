@@ -46,7 +46,7 @@ void AddItemToPool(RandomizerGet item, int plentifulCount, size_t balancedCount,
         if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
             plentifulPool.insert(plentifulPool.end(), plentifulCount - count, item);
         }
-        if (iceTrapModel && count > 0) {
+        if (iceTrapModel && count > 0 && item != RG_ICE_TRAP) {
             ctx->possibleIceTrapModels.insert(item);
         }
     } else {
@@ -57,7 +57,7 @@ void AddItemToPool(RandomizerGet item, int plentifulCount, size_t balancedCount,
 void AddFixedItemToPool(RandomizerGet item, int count = 1, bool iceTrapModel = true) {
     if (!poolForItem.contains(item)) {
         itemPool.insert(itemPool.end(), count, item);
-        if (iceTrapModel && count > 0) {
+        if (iceTrapModel && count > 0 && item != RG_ICE_TRAP) {
             ctx->possibleIceTrapModels.insert(item);
         }
     } else {
@@ -65,18 +65,10 @@ void AddFixedItemToPool(RandomizerGet item, int count = 1, bool iceTrapModel = t
     }
 }
 
-template <typename FromPool> static void AddItemsToPool(std::vector<RandomizerGet>& toPool, const FromPool& fromPool) {
-    AddElementsToPool(toPool, fromPool);
-}
-
-static void AddItemToMainPool(const RandomizerGet item, size_t count = 1) {
-    itemPool.insert(itemPool.end(), count, item);
-}
-
 RandomizerGet GetJunkItem() {
     auto ctx = Rando::Context::GetInstance();
-    if (!ctx->GetOption(RSK_ICE_TRAP_PERCENT).Is(0) &&
-        (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Is(100) || Random(1, 101) > ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get())) {
+    if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).IsNot(0) &&
+        (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Is(100) || Random(0, 100) < ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get())) {
         return RG_ICE_TRAP;
     }
     return RandomElement(JunkPoolItems);
@@ -174,7 +166,7 @@ void GenerateItemPool() {
     lesserPool.clear();
     int reservedSlots = 0;
 
-    //clang-format off
+    // clang-format off
     AddItemToPool(RG_BOOMERANG, 2, 1, 1, 1);
     AddItemToPool(RG_LENS_OF_TRUTH, 2, 1, 1, 1);
     AddItemToPool(RG_MEGATON_HAMMER, 2, 1, 1, 1);
@@ -217,34 +209,41 @@ void GenerateItemPool() {
     }
 
     int infiniteProgressive = ctx->GetOption(RSK_INFINITE_UPGRADES).Is(RO_INF_UPGRADES_PROGRESSIVE) ? 1 : 0;
-    AddItemToPool(RG_PROGRESSIVE_BOW, 4 + infiniteProgressive, 3 + infiniteProgressive, 2 + infiniteProgressive,
-                  1 + infiniteProgressive);
-    AddItemToPool(RG_PROGRESSIVE_SLINGSHOT, 4 + infiniteProgressive, 3 + infiniteProgressive, 2 + infiniteProgressive,
-                  1 + infiniteProgressive);
-    AddItemToPool(RG_PROGRESSIVE_BOMB_BAG, 4 + infiniteProgressive, 3 + infiniteProgressive, 2 + infiniteProgressive,
-                  1 + infiniteProgressive);
-    AddItemToPool(RG_PROGRESSIVE_MAGIC_METER, 3 + infiniteProgressive, 2 + infiniteProgressive, 1 + infiniteProgressive,
-                  1 + infiniteProgressive);
-    AddItemToPool(RG_PROGRESSIVE_STICK_UPGRADE, 3 + infiniteProgressive, 2 + infiniteProgressive,
-                  1 + infiniteProgressive, 0 + infiniteProgressive);
-    AddItemToPool(RG_PROGRESSIVE_NUT_UPGRADE, 3 + infiniteProgressive, 2 + infiniteProgressive, 1 + infiniteProgressive,
-                  0 + infiniteProgressive);
+    AddItemToPool(RG_PROGRESSIVE_BOW, 4 + infiniteProgressive, 
+                                      3 + infiniteProgressive, 
+                                      2 + infiniteProgressive,
+                                      1 + infiniteProgressive);
+    AddItemToPool(RG_PROGRESSIVE_SLINGSHOT, 4 + infiniteProgressive, 
+                                            3 + infiniteProgressive, 
+                                            2 + infiniteProgressive,
+                                            1 + infiniteProgressive);
+    AddItemToPool(RG_PROGRESSIVE_BOMB_BAG,  4 + infiniteProgressive, 
+                                            3 + infiniteProgressive, 
+                                            2 + infiniteProgressive,
+                                            1 + infiniteProgressive);
+    AddItemToPool(RG_PROGRESSIVE_MAGIC_METER, 3 + infiniteProgressive, 
+                                              2 + infiniteProgressive, 
+                                              1 + infiniteProgressive,
+                                              1 + infiniteProgressive);
     //clang-format on
 
-    int extraWallets =
-        (ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET) ? 1 : 0) + (ctx->GetOption(RSK_INCLUDE_TYCOON_WALLET) ? 1 : 0);
-    AddItemToPool(RG_PROGRESSIVE_WALLET, 3 + infiniteProgressive + extraWallets, 2 + infiniteProgressive + extraWallets,
-                  2 + infiniteProgressive + extraWallets, 2 + infiniteProgressive + extraWallets);
+    int extraWallets =(ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET) ? 1 : 0) + (ctx->GetOption(RSK_INCLUDE_TYCOON_WALLET) ? 1 : 0);
+    AddItemToPool(RG_PROGRESSIVE_WALLET, 3 + infiniteProgressive + extraWallets, 
+                                         2 + infiniteProgressive + extraWallets,
+                                         2 + infiniteProgressive + extraWallets,
+                                         2 + infiniteProgressive + extraWallets);
 
     int stickShuffle = ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG) ? 1 : 0;
     AddItemToPool(RG_PROGRESSIVE_STICK_UPGRADE, 3 + infiniteProgressive + stickShuffle,
-                  2 + infiniteProgressive + stickShuffle, 1 + infiniteProgressive + stickShuffle,
-                  0 + infiniteProgressive + stickShuffle);
+                                                2 + infiniteProgressive + stickShuffle,
+                                                1 + infiniteProgressive + stickShuffle,
+                                                0 + infiniteProgressive + stickShuffle);
 
     int nutShuffle = ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG) ? 1 : 0;
     AddItemToPool(RG_PROGRESSIVE_NUT_UPGRADE, 3 + infiniteProgressive + nutShuffle,
-                  2 + infiniteProgressive + nutShuffle, 1 + infiniteProgressive + nutShuffle,
-                  0 + infiniteProgressive + nutShuffle);
+                                              2 + infiniteProgressive + nutShuffle,
+                                              1 + infiniteProgressive + nutShuffle,
+                                              0 + infiniteProgressive + nutShuffle);
 
     // add extra songs only if song shuffle is anywhere
     if (ctx->GetOption(RSK_SHUFFLE_SONGS).IsNot(RO_SONG_SHUFFLE_OFF)) {
@@ -345,7 +344,7 @@ void GenerateItemPool() {
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_OCARINA)) {
-        if (!ctx->GetOption(RSK_STARTING_OCARINA).Is(RO_STARTING_OCARINA_TIME)) {
+        if (ctx->GetOption(RSK_STARTING_OCARINA).IsNot(RO_STARTING_OCARINA_TIME)) {
             int baseOcarinas = ctx->GetOption(RSK_STARTING_OCARINA).Is(RO_STARTING_OCARINA_OFF) ? 2 : 1;
             AddItemToPool(RG_PROGRESSIVE_OCARINA, baseOcarinas + 1, baseOcarinas, baseOcarinas, baseOcarinas);
         }
@@ -372,8 +371,8 @@ void GenerateItemPool() {
         AddFixedItemToPool(RG_SKELETON_KEY, 1);
     }
 
-    int swimScale = ctx->GetOption(RSK_SHUFFLE_SWIM) ? 1 : 0;
-    AddItemToPool(RG_PROGRESSIVE_SCALE, 3 + swimScale, 2 + swimScale, 2 + swimScale, 2 + swimScale);
+    int bronzeScale = ctx->GetOption(RSK_SHUFFLE_SWIM) ? 1 : 0;
+    AddItemToPool(RG_PROGRESSIVE_SCALE, 3 + bronzeScale, 2 + bronzeScale, 2 + bronzeScale, 2 + bronzeScale);
 
     if (ctx->GetOption(RSK_SHUFFLE_BEEHIVES)) {
         PlaceItemsForType(RCTYPE_BEEHIVE, true, true);
@@ -528,7 +527,6 @@ void GenerateItemPool() {
         ctx->PlaceItemInLocation(RC_TH_STEEP_SLOPE_CARPENTER, RG_RECOVERY_HEART, false, true);
 
     } else if (ctx->GetOption(RSK_GERUDO_KEYS).IsNot(RO_GERUDO_KEYS_VANILLA)) {
-
         if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
             AddItemToPool(RG_GERUDO_FORTRESS_SMALL_KEY, 2, 1, 1, 1);
             ctx->PlaceItemInLocation(RC_TH_DEAD_END_CARPENTER, RG_RECOVERY_HEART, false, true);
@@ -599,7 +597,7 @@ void GenerateItemPool() {
 
     if (ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_VANILLA)) {
         PlaceVanillaSmallKeys();
-    } else if (!ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_STARTWITH)) {
+    } else if (ctx->GetOption(RSK_KEYSANITY).IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH)) {
         for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
             if (dungeon->HasKeyRing()) {
                 AddItemToPool(dungeon->GetKeyRing(), 2, 1, 1, 1);
@@ -612,7 +610,7 @@ void GenerateItemPool() {
 
     if (ctx->GetOption(RSK_BOSS_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_VANILLA)) {
         PlaceVanillaBossKeys();
-    } else if (!ctx->GetOption(RSK_BOSS_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_STARTWITH)) {
+    } else if (ctx->GetOption(RSK_BOSS_KEYSANITY).IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH)) {
         AddItemToPool(RG_FOREST_TEMPLE_BOSS_KEY, 2, 1, 1, 1);
         AddItemToPool(RG_FIRE_TEMPLE_BOSS_KEY, 2, 1, 1, 1);
         AddItemToPool(RG_WATER_TEMPLE_BOSS_KEY, 2, 1, 1, 1);
@@ -744,7 +742,7 @@ void GenerateItemPool() {
 
     // Add 4 total bottles
     uint8_t bottleCount = 4;
-    if (!ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_OPEN)) {
+    if (ctx->GetOption(RSK_ZORAS_FOUNTAIN).IsNot(RO_ZF_OPEN)) {
         AddFixedItemToPool(RG_RUTOS_LETTER);
         bottleCount--;
     }
@@ -756,7 +754,7 @@ void GenerateItemPool() {
 
     ctx->possibleIceTrapModels.insert(RG_EMPTY_BOTTLE); // ice traps reroll this into a random normal bottle
     for (uint8_t i = 0; i < bottleCount; i++) {
-        AddItemToMainPool(RandomElement(Rando::StaticData::normalBottles));
+        AddFixedItemToPool(RandomElement(Rando::StaticData::normalBottles), 1, false);
     }
 
     /*For item pool generation, dungeon items are either placed in their vanilla
@@ -768,7 +766,7 @@ void GenerateItemPool() {
 
     if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).Is(RO_DUNGEON_ITEM_LOC_VANILLA)) {
         PlaceVanillaMapsAndCompasses();
-    } else if (!ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).Is(RO_DUNGEON_ITEM_LOC_STARTWITH)) {
+    } else if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH)) {
         for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
             if (dungeon->GetMap() != RG_NONE) {
                 AddFixedItemToPool(dungeon->GetMap(), false);
@@ -838,9 +836,9 @@ void GenerateItemPool() {
                 iceTrapstoAdd += 4;
             }
         }
-        iceTrapstoAdd += ctx->GetOption(RSK_ICE_TRAP_COUNT).Get();
-        AddItemToMainPool(RG_ICE_TRAP,
-                          itemPool.size() + iceTrapstoAdd < locCount ? iceTrapstoAdd : locCount - itemPool.size());
+        iceTrapstoAdd += ctx->GetOption(RSK_ADDITIONAL_ICE_TRAPS).Get();
+        AddFixedItemToPool(RG_ICE_TRAP,
+                          itemPool.size() + iceTrapstoAdd < locCount ? iceTrapstoAdd : locCount - itemPool.size(), false);
         if (itemPool.size() + lesserPool.size() < locCount) {
             itemPool.insert(itemPool.end(), lesserPool.begin(), lesserPool.end());
         } else {
@@ -866,7 +864,7 @@ void GenerateItemPool() {
                 }
             }
         }
-        AddItemToMainPool(RG_ICE_TRAP, iceTrapstoAdd);
+        AddFixedItemToPool(RG_ICE_TRAP, iceTrapstoAdd, false);
         junkToAdd -= iceTrapstoAdd;
         if (junkToAdd > junkPool.size()) {
             itemPool.insert(itemPool.end(), junkPool.begin(), junkPool.end());

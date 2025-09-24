@@ -622,13 +622,15 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_BASE_ICE_TRAPS] =
         "Sets if ice traps that exist in vanilla are shuffled into the item pool.\n"
         "If this is on, 1 Trap will always be added to the pool,\n"
-        "an additional trap will be added is Gerudo Training Grounds\n"
+        "an additional trap will be added if Gerudo Training Grounds\n"
         "is NOT master quest,\n"
-        "and 4 more will be added if Ganon's Castle is NOR Master Quest.";
-    mOptionDescriptions[RSK_ICE_TRAP_COUNT] = "Sets how many Ice Traps will be added to item pool,\n"
-                                              "assuming there is enough space after placing Progression Items.";
+        "and 4 more will be added if Ganon's Castle is NOT Master Quest.";
+    mOptionDescriptions[RSK_ADDITIONAL_ICE_TRAPS] =
+        "Sets how many more Ice Traps will be added to item pool,\n"
+        "assuming there is enough space after placing Progression Items.\n\n"
+        "You do not need to have base ice traps on for this setting to work.";
     mOptionDescriptions[RSK_ICE_TRAP_PERCENT] =
-        "If set above 0, each Junk items has that chance of being replaced with an extra Ice Trap.";
+        "If set above 0, each Junk item has that chance of being replaced with an extra Ice Trap.";
     mOptionDescriptions[RSK_GOSSIP_STONE_HINTS] =
         "Allows Gossip Stones to provide hints on item locations. Hints mentioning "
         "\"Way of the Hero\" indicate a location that holds an item required to beat "

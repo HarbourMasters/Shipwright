@@ -863,7 +863,6 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
         // shuffle the order of items to place
         Shuffle(itemsToPlace);
         while (!itemsToPlace.empty()) {
-            auto test = ctx->CountEmptyLocations(false);
             RandomizerGet item = std::move(itemsToPlace.back());
             Rando::StaticData::RetrieveItem(item).SetAsPlaythrough();
             itemsToPlace.pop_back();
@@ -1303,6 +1302,7 @@ int Fill() {
                     ->SetCustomPrice(Rando::StaticData::GetLocation(scrubLoc[i])->GetVanillaPrice());
             }
         }
+
         // set merchant prices
         if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
             ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)) {
@@ -1313,6 +1313,7 @@ int Fill() {
             ctx->GetItemLocation(RC_ZR_MAGIC_BEAN_SALESMAN)
                 ->SetCustomPrice(Rando::StaticData::GetLocation(RC_ZR_MAGIC_BEAN_SALESMAN)->GetVanillaPrice());
         }
+
         auto merchantLoc = Rando::StaticData::GetMerchantLocations();
 
         if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) ||

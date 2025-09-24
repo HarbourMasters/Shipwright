@@ -307,7 +307,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SKELETON_KEY, "Skeleton Key", CVAR_RANDOMIZER_SETTING("SkeletonKey"), mOptionDescriptions[RSK_SKELETON_KEY]);
     OPT_U8(RSK_ITEM_POOL, "Item Pool", {"Plentiful", "Balanced", "Scarce", "Minimal"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ItemPool"), mOptionDescriptions[RSK_ITEM_POOL], WidgetType::Combobox, RO_ITEM_POOL_BALANCED);
     OPT_BOOL(RSK_BASE_ICE_TRAPS, "Base Ice Traps", CVAR_RANDOMIZER_SETTING("BaseIceTraps"), mOptionDescriptions[RSK_BASE_ICE_TRAPS], IMFLAG_NONE, WidgetType::Checkbox, RO_GENERIC_ON);
-    OPT_U8(RSK_ICE_TRAP_COUNT, "Ice Trap Count", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("IceTrapCount"), mOptionDescriptions[RSK_ICE_TRAP_COUNT], WidgetType::Slider, 0);
+    OPT_U8(RSK_ADDITIONAL_ICE_TRAPS, "Additional Ice Traps", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("AdditionalIceTraps"), mOptionDescriptions[RSK_ADDITIONAL_ICE_TRAPS], WidgetType::Slider, 0);
     OPT_U8(RSK_ICE_TRAP_PERCENT, "Ice Trap Percent", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("IceTrapPercent"), mOptionDescriptions[RSK_ICE_TRAP_PERCENT], WidgetType::Slider, 0);
     // TODO: Remove Double Defense, Progressive Goron Sword
     OPT_U8(RSK_STARTING_OCARINA, "Start with Ocarina", {"Off", "Fairy Ocarina", "Ocarina of Time"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingOcarina"), "", WidgetType::Combobox, RO_STARTING_OCARINA_OFF);
@@ -1348,7 +1348,7 @@ void Settings::CreateOptions() {
                                                                      {
                                                                          &mOptions[RSK_ITEM_POOL],
                                                                          &mOptions[RSK_BASE_ICE_TRAPS],
-                                                                         &mOptions[RSK_ICE_TRAP_COUNT],
+                                                                         &mOptions[RSK_ADDITIONAL_ICE_TRAPS],
                                                                          &mOptions[RSK_ICE_TRAP_PERCENT],
                                                                          &mOptions[RSK_GOSSIP_STONE_HINTS],
                                                                          &mOptions[RSK_HINT_CLARITY],
