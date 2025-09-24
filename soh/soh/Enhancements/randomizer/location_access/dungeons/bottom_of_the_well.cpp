@@ -66,7 +66,7 @@ void RegionTable_Init_BottomOfTheWell() {
         Entrance(RR_BOTW_PERIMETER,       []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
         Entrance(RR_BOTW_WEST_CAGE,       []{return ctx->GetTrickOption(RT_BOTW_PITS) && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH));}),
         Entrance(RR_BOTW_WEST_INNER_ROOM, []{return logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 3);}),
-        Entrance(RR_BOTW_EAST_INNER_ROOM, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}),
+        Entrance(RR_BOTW_EAST_INNER_ROOM, []{return logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 3);}),
         Entrance(RR_BOTW_B3,              []{return true;}),
         Entrance(RR_BOTW_B3_PLATFORM,     []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
     });
@@ -84,7 +84,7 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTW_NORTHEAST_CRAWLSPACE] = Region("Bottom of the Well Northwest Crawlspace", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
         //Exits
         Entrance(RR_BOTW_PERIMETER,         []{return logic->IsChild;}),
-        Entrance(RR_BOTW_KEESE_BEAMOS_ROOM, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}),
+        Entrance(RR_BOTW_KEESE_BEAMOS_ROOM, []{return logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 3);}),
     });
 
     //Passing through this area needs lens, but entering doesn't, so that the fire keese can be killed without crossing the pits if enemy drops are ever shuffled
@@ -128,7 +128,7 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
     }, {
         //Exits
-        Entrance(RR_BOTW_MIDDLE, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}),
+        Entrance(RR_BOTW_MIDDLE, []{return logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 3);}),
     });
 
     areaTable[RR_BOTW_EAST_INNER_ROOM] = Region("Bottom of the Well East Inner Room", SCENE_BOTTOM_OF_THE_WELL, {}, {
@@ -345,7 +345,7 @@ void RegionTable_Init_BottomOfTheWell() {
         //Climb always needed in case water is lowered out of logic
         Entrance(RR_BOTW_MQ_PERIMETER,   []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE) || 
                                                     (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))/* && CanClimb*/);}),
-        Entrance(RR_BOTW_MQ_COFFIN_ROOM, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}),
+        Entrance(RR_BOTW_MQ_COFFIN_ROOM, []{return logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 2);}),
     });
 
     areaTable[RR_BOTW_MQ_COFFIN_ROOM] = Region("Bottom of the Well MQ Coffin Room", SCENE_BOTTOM_OF_THE_WELL, {}, {
@@ -355,7 +355,7 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_COFFIN_ROOM_MIDDLE_LEFT_HEART,  logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
-        Entrance(RR_BOTW_MQ_WEST_LEDGE, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}),
+        Entrance(RR_BOTW_MQ_WEST_LEDGE, []{return logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 2);}),
     });
 
     areaTable[RR_BOTW_MQ_NORTHEAST_CRAWLSPACE] = Region("Bottom of the Well MQ Northeast Crawlspace", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
@@ -373,13 +373,13 @@ void RegionTable_Init_BottomOfTheWell() {
         EventAccess(&logic->OpenedMiddleHoleMQBotw, []{return logic->HasExplosives();}),
     }, {}, {
         //Exits
-        Entrance(RR_BOTW_MQ_FLOORMASTER_ROOM, []{return logic->IsChild && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}),
+        Entrance(RR_BOTW_MQ_FLOORMASTER_ROOM, []{return logic->IsChild && logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 2);}),
     });
 
     areaTable[RR_BOTW_MQ_SE_CRAWLSPACE_LOWER] = Region("Bottom of the Well MQ SE Crawlspace Lower", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
         //Exits
         Entrance(RR_BOTW_MQ_PERIMETER,           []{return logic->IsChild/*CanCrawl()*/ && (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE));}),
-        Entrance(SCENE_BOTW_MQ_SE_CRAWLSPACE_UPPER, []{return true/*CanClimb*/;}),
+        Entrance(RR_BOTW_MQ_SE_CRAWLSPACE_UPPER, []{return true/*CanClimb*/;}),
     });
 
     areaTable[RR_BOTW_MQ_SE_CRAWLSPACE_UPPER] = Region("Bottom of the Well MQ SE Crawlspace Upper", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
