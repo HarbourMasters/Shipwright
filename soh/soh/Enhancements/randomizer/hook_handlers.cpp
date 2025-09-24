@@ -1,4 +1,4 @@
-#include <libultraship/bridge.h>
+﻿#include <libultraship/bridge.h>
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -333,7 +333,10 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
                     getItemEntry.modIndex == MOD_RANDOMIZER) &&
                   (getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
                    getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
-                   getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER))))) {
+                   getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER ||
+                   // Treat small keys as junk if Skeleton Key is obtained.
+                   (getItemEntry.getItemCategory == ITEM_CATEGORY_SMALL_KEY &&
+                    Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY))))))) {
             Item_DropCollectible(gPlayState, &spawnPos, static_cast<int16_t>(ITEM00_SOH_GIVE_ITEM_ENTRY | 0x8000));
         }
     }
@@ -871,7 +874,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL) && LINK_IS_ADULT &&
                       gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_KAKARIKO_VILLAGE &&
                       CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) &&
-                      CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER);
+                      CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && gSaveContext.cutsceneIndex < 0xFFF0;
             break;
         case VB_BE_ELIGIBLE_FOR_CHILD_ROLLING_GORON_REWARD: {
             // Don't require a bomb bag to get prize in rando
@@ -887,7 +890,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_GIVE_ITEM_MASTER_SWORD:
-            if (RAND_GET_OPTION(RSK_SHUFFLE_MASTER_SWORD)) {
+            if (RAND_GET_OPTION(RSK_SHUFFLE_MASTER_SWORD) || RAND_GET_OPTION(RSK_STARTING_MASTER_SWORD)) {
                 *should = false;
             } else {
                 *should = true;
@@ -1022,17 +1025,55 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 }
 
                 if (item00->itemEntry.modIndex == MOD_NONE) {
+                    std::string message;
+
+                    switch (gSaveContext.language) {
+                        case LANGUAGE_FRA:
+                            message = "Vous obtenez: ";
+                            break;
+                        case LANGUAGE_GER:
+                            message = "Du erhältst: ";
+                            break;
+                        case LANGUAGE_ENG:
+                        default:
+                            message = "You found ";
+                            break;
+                    }
+
                     Notification::Emit({
                         .itemIcon = GetTextureForItemId(item00->itemEntry.itemId),
-                        .message = "You found ",
+                        .message = message,
                         .suffix = SohUtils::GetItemName(item00->itemEntry.itemId),
                     });
                 } else if (item00->itemEntry.modIndex == MOD_RANDOMIZER) {
+                    std::string message;
+                    std::string itemName;
+
+                    switch (gSaveContext.language) {
+                        case LANGUAGE_FRA:
+                            message = "Vous obtenez: ";
+                            itemName = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
+                                           .GetName()
+                                           .french;
+                            break;
+                        case LANGUAGE_GER:
+                            message = "Du erhältst: ";
+                            itemName = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
+                                           .GetName()
+                                           .german;
+                            break;
+                        case LANGUAGE_ENG:
+                        default:
+                            message = "You found ";
+                            itemName = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
+                                           .GetName()
+                                           .english;
+                            break;
+                    }
+
                     Notification::Emit({
-                        .message = "You found ",
-                        .suffix = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
-                                      .GetName()
-                                      .english,
+                        .message = message,
+                        .suffix = itemName,
                     });
                 }
 
@@ -1091,7 +1132,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_SELL_POES_TO_POE_COLLECTOR: {
-            if (!Flags_GetRandomizerInf(RAND_INF_10_BIG_POES) && HIGH_SCORE(HS_POE_POINTS) >= 1000) {
+            if (!Flags_GetRandomizerInf(RAND_INF_10_BIG_POES) && HIGH_SCORE(HS_POE_POINTS) >= 1000 &&
+                !(GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS)) {
                 EnGb* enGb = va_arg(args, EnGb*);
                 enGb->textId = 0x70F8;
                 Message_ContinueTextbox(gPlayState, enGb->textId);
@@ -1444,7 +1486,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_GERUDO_GUARD_SET_ACTION_AFTER_TALK:
-            if (gPlayState->msgCtx.choiceIndex == 0) {
+            if (gPlayState->msgCtx.choiceIndex == 0 && gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS) {
                 EnGe2* enGe2 = va_arg(args, EnGe2*);
                 EnGe2_SetupCapturePlayer(enGe2, gPlayState);
                 *should = false;

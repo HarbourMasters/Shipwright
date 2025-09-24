@@ -3800,6 +3800,8 @@ void GenerateRandomizerImgui(std::string seed = "") {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 
     generated = 1;
+
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGenerationCompletion>();
 }
 
 bool GenerateRandomizer(std::string seed /*= ""*/) {
@@ -3809,6 +3811,7 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
     }
     if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0) {
         randoThread = std::thread(&GenerateRandomizerImgui, seed);
+
         return true;
     }
     return false;
@@ -5119,12 +5122,12 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "Das ist kein Item - das ist Karma.",
         "Und wieder hat Dich 'ne Kiste besiegt.",
         "Rauru lacht Dich aus.",
-        "Saria hat sich gerade entfreundet.",
+        "Salia hat sich gerade entfreundet.",
         "Prinzessin Ruto hat die Verlobung aufgelöst.",
         "Kein Seed, kein Ärger!",
         "Diese Truhe wurde Ihnen präsentiert von: ABSICHT!",
         "Nicht heute.",
-        "Nächster halt, #Frosthausen#!",
+        "Nächster Halt, #Frosthausen#!",
         "Genau so nützlich wie Navi im Bosskampf.",
         "Zelda? Die kennt Dich nicht.",
         "Zufall? Nein. Absicht!",
@@ -5167,11 +5170,11 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "Der Spind von Davy Jones!",
         "Herzog Onkled lacht Dich aus.",
         "GEWINNER!",
-        "vERLIERER!",
+        "VERLIERER!",
         "Drücke B, Unten und Select um zu überleben.",
         "#Chill# mal jetzt.",
         "Hier halt mal eben.",
-        "Sony lacht Dich aus",
+        "Sony lacht Dich aus!",
         "Dieses Item ist nicht in deinem Land verfügbar.",
         "Es ist wichtig, die #Kühltruhe# mal für einen Tag auszuschalten.",
         "#Kacknoob#!",

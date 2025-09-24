@@ -2245,6 +2245,14 @@ typedef enum {
     // #### `args`
     // - `*EnBox`
     VB_CHEST_USE_ICE_EFFECT,
+
+    // #### `result`
+    // ```c
+    // arg3 < fabsf(sp1C.x) || arg4 < fabsf(sp1C.y)
+    // ```
+    // #### `args`
+    // - `*DoorShutter`
+    VB_BE_NEAR_DOOR_SHUTTER,
 } GIVanillaBehavior;
 
 #endif

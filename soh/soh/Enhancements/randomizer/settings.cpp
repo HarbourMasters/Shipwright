@@ -281,6 +281,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_GREG_HINT, "Greg the Green Rupee Hint", CVAR_RANDOMIZER_SETTING("GregHint"), mOptionDescriptions[RSK_GREG_HINT], IMFLAG_NONE);
     OPT_BOOL(RSK_LOACH_HINT, "Hyrule Loach Hint", CVAR_RANDOMIZER_SETTING("LoachHint"), mOptionDescriptions[RSK_LOACH_HINT], IMFLAG_NONE);
     OPT_BOOL(RSK_SARIA_HINT, "Saria's Hint", CVAR_RANDOMIZER_SETTING("SariaHint"), mOptionDescriptions[RSK_SARIA_HINT], IMFLAG_NONE);
+    OPT_BOOL(RSK_MIDO_HINT, "Mido's Hint", CVAR_RANDOMIZER_SETTING("MidoHint"), mOptionDescriptions[RSK_MIDO_HINT], IMFLAG_NONE);
     OPT_BOOL(RSK_FISHING_POLE_HINT, "Fishing Pole Hint", CVAR_RANDOMIZER_SETTING("FishingPoleHint"), mOptionDescriptions[RSK_FISHING_POLE_HINT], IMFLAG_NONE);
     OPT_BOOL(RSK_FROGS_HINT, "Frog Ocarina Game Hint", CVAR_RANDOMIZER_SETTING("FrogsHint"), mOptionDescriptions[RSK_FROGS_HINT], IMFLAG_NONE);
     OPT_BOOL(RSK_OOT_HINT, "Ocarina of Time Hint", CVAR_RANDOMIZER_SETTING("OoTHint"), mOptionDescriptions[RSK_OOT_HINT], IMFLAG_NONE);
@@ -1356,14 +1357,31 @@ void Settings::CreateOptions() {
                                                                      WidgetContainerType::SECTION);
     mOptionGroups[RSG_EXTRA_HINTS_IMGUI] = OptionGroup::SubGroup(
         "Extra Hints",
-        { &mOptions[RSK_TOT_ALTAR_HINT],     &mOptions[RSK_GANONDORF_HINT],     &mOptions[RSK_SHEIK_LA_HINT],
-          &mOptions[RSK_DAMPES_DIARY_HINT],  &mOptions[RSK_GREG_HINT],          &mOptions[RSK_LOACH_HINT],
-          &mOptions[RSK_SARIA_HINT],         &mOptions[RSK_FROGS_HINT],         &mOptions[RSK_OOT_HINT],
-          &mOptions[RSK_BIGGORON_HINT],      &mOptions[RSK_BIG_POES_HINT],      &mOptions[RSK_CHICKENS_HINT],
-          &mOptions[RSK_MALON_HINT],         &mOptions[RSK_HBA_HINT],           &mOptions[RSK_FISHING_POLE_HINT],
-          &mOptions[RSK_WARP_SONG_HINTS],    &mOptions[RSK_SCRUB_TEXT_HINT],    &mOptions[RSK_MERCHANT_TEXT_HINT],
-          &mOptions[RSK_KAK_10_SKULLS_HINT], &mOptions[RSK_KAK_20_SKULLS_HINT], &mOptions[RSK_KAK_30_SKULLS_HINT],
-          &mOptions[RSK_KAK_40_SKULLS_HINT], &mOptions[RSK_KAK_50_SKULLS_HINT], &mOptions[RSK_KAK_100_SKULLS_HINT],
+        { &mOptions[RSK_TOT_ALTAR_HINT],
+          &mOptions[RSK_GANONDORF_HINT],
+          &mOptions[RSK_SHEIK_LA_HINT],
+          &mOptions[RSK_DAMPES_DIARY_HINT],
+          &mOptions[RSK_GREG_HINT],
+          &mOptions[RSK_LOACH_HINT],
+          &mOptions[RSK_SARIA_HINT],
+          &mOptions[RSK_MIDO_HINT],
+          &mOptions[RSK_FROGS_HINT],
+          &mOptions[RSK_OOT_HINT],
+          &mOptions[RSK_BIGGORON_HINT],
+          &mOptions[RSK_BIG_POES_HINT],
+          &mOptions[RSK_CHICKENS_HINT],
+          &mOptions[RSK_MALON_HINT],
+          &mOptions[RSK_HBA_HINT],
+          &mOptions[RSK_FISHING_POLE_HINT],
+          &mOptions[RSK_WARP_SONG_HINTS],
+          &mOptions[RSK_SCRUB_TEXT_HINT],
+          &mOptions[RSK_MERCHANT_TEXT_HINT],
+          &mOptions[RSK_KAK_10_SKULLS_HINT],
+          &mOptions[RSK_KAK_20_SKULLS_HINT],
+          &mOptions[RSK_KAK_30_SKULLS_HINT],
+          &mOptions[RSK_KAK_40_SKULLS_HINT],
+          &mOptions[RSK_KAK_50_SKULLS_HINT],
+          &mOptions[RSK_KAK_100_SKULLS_HINT],
           &mOptions[RSK_MASK_SHOP_HINT] },
         WidgetContainerType::SECTION, "This setting adds some hints at locations other than Gossip Stones.");
     mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI_COLUMN] =
@@ -1623,6 +1641,7 @@ void Settings::CreateOptions() {
                                               &mOptions[RSK_GREG_HINT],
                                               &mOptions[RSK_LOACH_HINT],
                                               &mOptions[RSK_SARIA_HINT],
+                                              &mOptions[RSK_MIDO_HINT],
                                               &mOptions[RSK_FROGS_HINT],
                                               &mOptions[RSK_OOT_HINT],
                                               &mOptions[RSK_WARP_SONG_HINTS],
@@ -2520,10 +2539,10 @@ void Settings::UpdateOptionProperties() {
             "setting where you present the loach to the fishing pond owner.");
     }
 
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 7) == 0) {
-        mOptions[RSK_CHICKENS_HINT].Disable("Anju will just give you the item instead with 0 chickens.");
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 10) == 0) {
+        mOptions[RSK_BIG_POES_HINT].Disable("Poe Collector will just give you the item instead with 0 big poes.");
     } else {
-        mOptions[RSK_CHICKENS_HINT].Enable();
+        mOptions[RSK_BIG_POES_HINT].Enable();
     }
 }
 
@@ -2598,7 +2617,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     }
     if (!mOptions[RSK_SHUFFLE_MASTER_SWORD]) {
         if (mOptions[RSK_STARTING_MASTER_SWORD]) {
-            this->GetItemLocation(RC_MASTER_SWORD_PEDESTAL)->SetExcludedOption(1);
+            this->GetItemLocation(RC_TOT_MASTER_SWORD)->SetExcludedOption(1);
         }
     }
     if (!mOptions[RSK_SHUFFLE_OCARINA]) {

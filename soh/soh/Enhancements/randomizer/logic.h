@@ -18,14 +18,6 @@ enum class GlitchType {
     EquipSwap,
 };
 
-enum class GlitchDifficulty {
-    NOVICE = 1,
-    INTERMEDIATE,
-    ADVANCED,
-    EXPERT,
-    HERO,
-};
-
 class Logic {
   public:
     bool noVariable = false;
@@ -194,8 +186,7 @@ class Logic {
     bool HasItem(RandomizerGet itemName);
     bool HasBossSoul(RandomizerGet itemName);
     bool CanOpenOverworldDoor(RandomizerGet itemName);
-    bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
-    bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
+    bool SmallKeys(s16 scene, uint8_t requiredAmount);
     bool CanOpenUnderwaterChest();
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);

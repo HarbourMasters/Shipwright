@@ -1046,28 +1046,26 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
 
 #if defined(__SWITCH__) || defined(__WIIU__)
     FILE* w = fopen(tempFile.c_str(), "w");
-    std::string json_string = saveBlock.dump(4);
+    std::string json_string = saveBlock.dump(1);
     fwrite(json_string.c_str(), sizeof(char), json_string.length(), w);
     fclose(w);
 #else
     std::ofstream output(tempFile);
-    output << std::setw(4) << saveBlock << std::endl;
+    output << std::setw(1) << saveBlock << std::endl;
     output.close();
 #endif
 
+#if defined(__SWITCH__) || defined(__WIIU__)
     if (std::filesystem::exists(fileName)) {
         std::filesystem::remove(fileName);
     }
-
-#if defined(__SWITCH__) || defined(__WIIU__)
     copy_file(tempFile.c_str(), fileName.c_str());
-#else
-    std::filesystem::copy_file(tempFile, fileName);
-#endif
-
     if (std::filesystem::exists(tempFile)) {
         std::filesystem::remove(tempFile);
     }
+#else
+    std::filesystem::rename(tempFile, fileName);
+#endif
 
     delete saveContext;
     InitMeta(fileNum);
@@ -1112,7 +1110,7 @@ void SaveManager::SaveGlobal() {
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
 
     std::ofstream output(sGlobalPath);
-    output << std::setw(4) << globalBlock << std::endl;
+    output << std::setw(1) << globalBlock << std::endl;
 }
 
 void SaveManager::LoadFile(int fileNum) {
@@ -1164,15 +1162,12 @@ void SaveManager::LoadFile(int fileNum) {
                             std::string newFileName = Ship::Context::GetPathRelativeToAppDirectory("Save") +
                                                       ("/file" + std::to_string(fileNum + 1) + "-" +
                                                        std::to_string(GetUnixTimestamp()) + ".bak");
-                            std::filesystem::path newFile(newFileName);
-
 #if defined(__SWITCH__) || defined(__WIIU__)
-                            copy_file(fileName.c_str(), newFile.c_str());
-#else
-                            std::filesystem::copy_file(fileName, newFile);
-#endif
-
+                            copy_file(fileName.c_str(), newFileName.c_str());
                             std::filesystem::remove(fileName);
+#else
+                            std::filesystem::rename(fileName, newFileName);
+#endif
                             SohGui::RegisterPopup(
                                 "Outdated Randomizer Save",
                                 "The SoH version in the file in slot " + std::to_string(fileNum + 1) +
@@ -1229,16 +1224,15 @@ void SaveManager::LoadFile(int fileNum) {
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
     } catch (const std::exception& e) {
         input.close();
-        std::filesystem::path newFile(
+        std::string newFileName =
             Ship::Context::GetPathRelativeToAppDirectory("Save") +
-            ("/file" + std::to_string(fileNum + 1) + "-" + std::to_string(GetUnixTimestamp()) + ".bak"));
+            ("/file" + std::to_string(fileNum + 1) + "-" + std::to_string(GetUnixTimestamp()) + ".bak");
 #if defined(__SWITCH__) || defined(__WIIU__)
-        copy_file(fileName.c_str(), newFile.c_str());
-#else
-        std::filesystem::copy_file(fileName, newFile);
-#endif
-
+        copy_file(fileName.c_str(), newFileName.c_str());
         std::filesystem::remove(fileName);
+#else
+        std::filesystem::rename(fileName, newFileName);
+#endif
         SohGui::RegisterPopup("Error loading save file", "A problem occurred loading the save in slot " +
                                                              std::to_string(fileNum + 1) +
                                                              ".\nSave file corruption is suspected.\n" +
