@@ -563,7 +563,6 @@ void Region::ResetVariables() {
     }
 }
 
-
 void Region::printAgeTimeAccess() {
     auto message = "Child Day:   " + std::to_string(childDay) +
                    "\t"
@@ -648,8 +647,8 @@ std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
     {RR_SPIRIT_TEMPLE_INNER_EAST_HAND,         {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->CanUse(RG_HOOKSHOT)/* && logic->CanClimbHigh()*/;},   []{return true/*logic->CanClimbHigh() && str0*/;},                                                               []{return logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS);}}},
     {RR_SPIRIT_TEMPLE_SHORTCUT_SWITCH,         {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->CanUse(RG_HOOKSHOT) && logic->SpiritEastToSwitch();}, []{return logic->SpiritEastToSwitch()/* && logic->CanClimbHigh() && str0*/;},                                    []{return logic->SpiritEastToSwitch() && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS));}}},
     //MQ                                                              /*&& logic->CanClimbHigh()*/
-    {RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE,      {7, 6, 7, 7, []{return logic->StatueRoomMQKeyLogic();},                                                                 []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 6) && logic->CanHitSwitch()/* && logic->Climb*/;},                  []{return logic->StatueRoomMQKeyLogic() && logic->CanHitSwitch()/* && (logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS))*/;}}},
-    {RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR,         {7, 6, 7, 7, []{return logic->StatueRoomMQKeyLogic() && logic->CanHitSwitch()/* && logic->CanClimbHigh()*/;},           []{return logic->SmallKeys(RR_SPIRIT_TEMPLE, 6)/* && logic->Climb*/;},                                           []{return logic->StatueRoomMQKeyLogic()/* && (logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS))*/;}}},
+    {RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE,      {7, 6, 7, 7, []{return logic->StatueRoomMQKeyLogic();},                                                                 []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 6) && logic->CanHitSwitch()/* && logic->Climb*/;},                  []{return logic->StatueRoomMQKeyLogic() && logic->CanHitSwitch()/* && (logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS))*/;}}},
+    {RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR,         {7, 6, 7, 7, []{return logic->StatueRoomMQKeyLogic() && logic->CanHitSwitch()/* && logic->CanClimbHigh()*/;},           []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 6)/* && logic->Climb*/;},                                           []{return logic->StatueRoomMQKeyLogic()/* && (logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS))*/;}}},
     {RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_WEST,     {7, 0, 0, 0, []{return logic->CanHitSwitch()/* && logic->CanClimbHigh()*/;},                                            []{return true/*logic->Climb*/;},                                                                                []{return true/*logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)*/;}}},
     {RR_SPIRIT_TEMPLE_MQ_POT_LEDGE,            {7, 0, 0, 0, []{return logic->CanHitSwitch() && logic->MQSpiritWestToPots()/* && logic->CanClimbHigh()*/;},             []{return logic->MQSpiritWestToPots()/* && logic->Climb*/;},                                                     []{return /*logic->CanUse(RG_HOVER_BOOTS) || (logic->CanClimb() && */logic->MQSpiritWestToPots()/*)*/;}}},
     {RR_SPIRIT_TEMPLE_MQ_INNER_WEST_HAND,      {7, 0, 0, 0, []{return logic->CanHitSwitch() && logic->MQSpiritWestToPots()/* && logic->CanClimbHigh()*/;},             []{return logic->MQSpiritWestToPots()/* && logic->Climb*/;},                                                     []{return /*logic->CanUse(RG_HOVER_BOOTS) || (logic->CanClimb() && */logic->MQSpiritWestToPots()/*)*/;}}},
@@ -670,22 +669,22 @@ bool SpiritCertainAccess(RandomizerRegion region) {
         bool knownFrontAccess = logic->ForwardsSpiritChild || !logic->IsReverseAccessPossible();
         // If we have enough keys that an age cannot be kept out, we have Certain Access
         // otherwise if we have entered in reverse and can reach from the face, we have Certain Access
-        return ((knownFrontAccess && curRegionData.childAccess()) && logic->SmallKeys(RR_SPIRIT_TEMPLE, keys)) ||
+        return ((knownFrontAccess && curRegionData.childAccess()) && logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys)) ||
                ((logic->ReverseSpiritChild && curRegionData.reverseAccess()) &&
-                logic->SmallKeys(RR_SPIRIT_TEMPLE, revKeys)) ||
+                logic->SmallKeys(SCENE_SPIRIT_TEMPLE, revKeys)) ||
                (curRegionData.childAccess() && curRegionData.reverseAccess() &&
-                logic->SmallKeys(RR_SPIRIT_TEMPLE, keys > revKeys ? keys : revKeys));
+                logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys > revKeys ? keys : revKeys));
     } else {
         uint8_t keys = curRegionData.adultKeys;
         uint8_t revKeys = curRegionData.adultRevKeys;
         bool knownFrontAccess = logic->ForwardsSpiritAdult || !logic->IsReverseAccessPossible();
         // If we have enough keys that an age cannot be kept out, we have Certain Access
         // otherwise if we have entered in reverse and can reach from the face, we have Certain Access
-        return ((knownFrontAccess && curRegionData.adultAccess()) && logic->SmallKeys(RR_SPIRIT_TEMPLE, keys)) ||
+        return ((knownFrontAccess && curRegionData.adultAccess()) && logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys)) ||
                ((logic->ReverseSpiritAdult && curRegionData.reverseAccess()) &&
-                logic->SmallKeys(RR_SPIRIT_TEMPLE, revKeys)) ||
+                logic->SmallKeys(SCENE_SPIRIT_TEMPLE, revKeys)) ||
                (curRegionData.adultAccess() && curRegionData.reverseAccess() &&
-                logic->SmallKeys(RR_SPIRIT_TEMPLE, keys > revKeys ? keys : revKeys));
+                logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys > revKeys ? keys : revKeys));
     }
 }
 
@@ -742,17 +741,16 @@ bool SpiritShared(RandomizerRegion region, ConditionFn condition, bool anyAge, R
 
             // If Adult can get there and get the check, we can get the check in logic
             // If reverse spirit is also possible, we need to make sure Adult can get it via reverse entry too
-            result =
-                (curRegionData.adultAccess() &&
-                 (!logic->IsReverseAccessPossible() || curRegionData.reverseAccess) && condition()) ||
-                (otherRegion != RR_NONE &&
-                 (Region::spiritLogicData[otherRegion].adultAccess() &&
-                  (!logic->IsReverseAccessPossible() || Region::spiritLogicData[otherRegion].reverseAccess()) &&
-                  otherCondition())) ||
-                (thirdRegion != RR_NONE &&
-                 (Region::spiritLogicData[thirdRegion].adultAccess() &&
-                  (!logic->IsReverseAccessPossible() || Region::spiritLogicData[thirdRegion].reverseAccess()) &&
-                  thirdCondition()));
+            result = (curRegionData.adultAccess() &&
+                      (!logic->IsReverseAccessPossible() || curRegionData.reverseAccess) && condition()) ||
+                     (otherRegion != RR_NONE &&
+                      (Region::spiritLogicData[otherRegion].adultAccess() &&
+                       (!logic->IsReverseAccessPossible() || Region::spiritLogicData[otherRegion].reverseAccess()) &&
+                       otherCondition())) ||
+                     (thirdRegion != RR_NONE &&
+                      (Region::spiritLogicData[thirdRegion].adultAccess() &&
+                       (!logic->IsReverseAccessPossible() || Region::spiritLogicData[thirdRegion].reverseAccess()) &&
+                       thirdCondition()));
         }
     } else if (areaTable[region].Adult() && pastAdult) {
         result = condition();
@@ -767,17 +765,16 @@ bool SpiritShared(RandomizerRegion region, ConditionFn condition, bool anyAge, R
 
             // If Child can get there and get the check, we can get the check in logic
             // If reverse spirit is also possible, we need to make sure Child can get it via reverse entry too
-            result =
-                (curRegionData.childAccess() &&
-                 (!logic->IsReverseAccessPossible() || curRegionData.reverseAccess()) && condition()) ||
-                (otherRegion != RR_NONE &&
-                 (Region::spiritLogicData[otherRegion].childAccess() &&
-                  (!logic->IsReverseAccessPossible() || Region::spiritLogicData[otherRegion].reverseAccess()) &&
-                  otherCondition())) ||
-                (thirdRegion != RR_NONE &&
-                 (Region::spiritLogicData[thirdRegion].childAccess() &&
-                  (!logic->IsReverseAccessPossible() || Region::spiritLogicData[thirdRegion].reverseAccess()) &&
-                  thirdCondition()));
+            result = (curRegionData.childAccess() &&
+                      (!logic->IsReverseAccessPossible() || curRegionData.reverseAccess()) && condition()) ||
+                     (otherRegion != RR_NONE &&
+                      (Region::spiritLogicData[otherRegion].childAccess() &&
+                       (!logic->IsReverseAccessPossible() || Region::spiritLogicData[otherRegion].reverseAccess()) &&
+                       otherCondition())) ||
+                     (thirdRegion != RR_NONE &&
+                      (Region::spiritLogicData[thirdRegion].childAccess() &&
+                       (!logic->IsReverseAccessPossible() || Region::spiritLogicData[thirdRegion].reverseAccess()) &&
+                       thirdCondition()));
         }
     }
     // set back age variables
