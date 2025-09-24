@@ -647,7 +647,7 @@ void PlandomizerOverlayText(std::pair<Rando::Item, uint32_t> drawObject) {
                             imageMax.y - ImGui::CalcTextSize(std::to_string(drawObject.second).c_str()).y - 2);
 
     ImGui::SetCursorScreenPos(textPos);
-    ImGui::Text(std::to_string(drawObject.second).c_str());
+    ImGui::Text("%s", std::to_string(drawObject.second).c_str());
 
     // Overlay item info
     if (drawObject.first.GetRandomizerGet() >= RG_PROGRESSIVE_HOOKSHOT &&
@@ -665,7 +665,7 @@ void PlandomizerOverlayText(std::pair<Rando::Item, uint32_t> drawObject) {
         ImGui::SetCursorScreenPos(textPos);
         std::string overlayText = "+";
         overlayText += extractNumberInParentheses(drawObject.first.GetName().english.c_str());
-        ImGui::Text(overlayText.c_str());
+        ImGui::Text("%s", overlayText.c_str());
     }
     if (drawObject.first.GetRandomizerGet() >= RG_FOREST_TEMPLE_BOSS_KEY &&
         drawObject.first.GetRandomizerGet() <= RG_GANONS_CASTLE_BOSS_KEY) {
@@ -678,7 +678,7 @@ void PlandomizerOverlayText(std::pair<Rando::Item, uint32_t> drawObject) {
                 break;
             }
         }
-        ImGui::Text(shortName.c_str());
+        ImGui::Text("%s", shortName.c_str());
     }
     if (drawObject.first.GetRandomizerGet() >= RG_OCARINA_A_BUTTON &&
         drawObject.first.GetRandomizerGet() <= RG_OCARINA_C_RIGHT_BUTTON) {
@@ -691,7 +691,7 @@ void PlandomizerOverlayText(std::pair<Rando::Item, uint32_t> drawObject) {
                 break;
             }
         }
-        ImGui::Text(shortName.c_str());
+        ImGui::Text("%s", shortName.c_str());
     }
 }
 
@@ -1066,7 +1066,7 @@ void PlandomizerDrawHintsWindow() {
             ImGui::SeparatorText(hintData.hintName.c_str());
             ImGui::Text("Current Hint: ");
             ImGui::SameLine();
-            ImGui::TextWrapped(hintData.hintText.c_str());
+            ImGui::TextWrapped("%s", hintData.hintText.c_str());
 
             if (spoilerHintData.size() > 0) {
                 hintInputText = plandoHintData[index].hintText.c_str();
@@ -1115,9 +1115,9 @@ void PlandomizerDrawLocationsWindow(RandomizerCheckArea rcArea) {
             auto randoArea = Rando::StaticData::GetLocation(checkID)->GetArea();
             if (rcArea == RCAREA_INVALID || rcArea == randoArea) {
                 ImGui::TableNextColumn();
-                ImGui::TextWrapped(spoilerData.checkName.c_str());
+                ImGui::TextWrapped("%s", spoilerData.checkName.c_str());
                 ImGui::TableNextColumn();
-                ImGui::TextWrapped(spoilerData.checkRewardItem.GetName().english.c_str());
+                ImGui::TextWrapped("%s", spoilerData.checkRewardItem.GetName().english.c_str());
                 ImGui::TableNextColumn();
                 PlandomizerDrawItemSlots(index);
                 if (plandoLogData[index].checkRewardItem.GetRandomizerGet() == RG_ICE_TRAP) {

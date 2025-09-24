@@ -30,7 +30,7 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_SOUTHMOST_CENTER_CRATE, logic->CanBreakCrates()),
         LOCATION(RC_GF_MID_SOUTH_CENTER_CRATE, logic->CanBreakCrates()),
         LOCATION(RC_GF_MID_NORTH_CENTER_CRATE, logic->CanBreakCrates()),
-        LOCATION(RR_GF_NORTHMOST_CENTER_CRATE, logic->CanBreakCrates()),
+        LOCATION(RC_GF_NORTHMOST_CENTER_CRATE, logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_TH_1_TORCH_CELL,       []{return true;}),

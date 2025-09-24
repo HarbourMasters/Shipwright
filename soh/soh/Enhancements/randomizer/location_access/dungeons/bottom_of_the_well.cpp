@@ -65,7 +65,7 @@ void RegionTable_Init_BottomOfTheWell() {
         //Exits
         Entrance(RR_BOTW_PERIMETER,       []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
         Entrance(RR_BOTW_WEST_CAGE,       []{return ctx->GetTrickOption(RT_BOTW_PITS) && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH));}),
-        Entrance(RR_BOTW_WEST_INNER_ROOM, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}),
+        Entrance(RR_BOTW_WEST_INNER_ROOM, []{return logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 3);}),
         Entrance(RR_BOTW_EAST_INNER_ROOM, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}),
         Entrance(RR_BOTW_B3,              []{return true;}),
         Entrance(RR_BOTW_B3_PLATFORM,     []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
@@ -94,7 +94,7 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_POT_1, logic->CanBreakPots() && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH))),
     }, {
         //Exits
-        Entrance(RR_BOTW_NORTHEAST_CRAWLSPACE, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3) && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH));}),
+        Entrance(RR_BOTW_NORTHEAST_CRAWLSPACE, []{return logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 3) && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH));}),
         Entrance(RR_BOTW_LOCKED_CAGE,          []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
         //not sure if this lens check is needed, these holes are a bit too easy to find, but it matches existing logic
         Entrance(RR_BOTW_B3_EAST,              []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
@@ -136,7 +136,7 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
     }, {
         //Exits
-        Entrance(RR_BOTW_MIDDLE, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}),
+        Entrance(RR_BOTW_MIDDLE, []{return logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 3);}),
         Entrance(RR_BOTW_B3,     []{return true;}),
     });
 
@@ -365,7 +365,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_MQ_FLOORMASTER_ROOM] = Region("Bottom of the Well MQ Floormaster Room", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
         Entrance(RR_BOTW_MQ_NORTHEAST_CRAWLSPACE, []{return true;}),
-        Entrance(RR_BOTW_MQ_LOCKED_CAGE,          []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}),
+        Entrance(RR_BOTW_MQ_LOCKED_CAGE,          []{return logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 2);}),
     });
 
     areaTable[RR_BOTW_MQ_LOCKED_CAGE] = Region("Bottom of the Well MQ Locked Cage", SCENE_BOTTOM_OF_THE_WELL, {
@@ -379,7 +379,7 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTW_MQ_SE_CRAWLSPACE_LOWER] = Region("Bottom of the Well MQ SE Crawlspace Lower", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
         //Exits
         Entrance(RR_BOTW_MQ_PERIMETER,           []{return logic->IsChild/*CanCrawl()*/ && (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE));}),
-        Entrance(RR_BOTW_MQ_SE_CRAWLSPACE_UPPER, []{return true/*CanClimb*/;}),
+        Entrance(SCENE_BOTW_MQ_SE_CRAWLSPACE_UPPER, []{return true/*CanClimb*/;}),
     });
 
     areaTable[RR_BOTW_MQ_SE_CRAWLSPACE_UPPER] = Region("Bottom of the Well MQ SE Crawlspace Upper", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {

@@ -1130,7 +1130,7 @@ static bool SpeedModifierHandler(std::shared_ptr<Ship::Console> Console, const s
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
-    GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyRunSpeedModifier();
+    GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyMovementSpeedMultiplier();
 
     try {
         dynamic_cast<ParameterizedGameInteractionEffect*>(effect)->parameters[0] = std::stoi(args[1], nullptr, 10);

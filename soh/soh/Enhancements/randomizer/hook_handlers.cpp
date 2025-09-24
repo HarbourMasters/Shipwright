@@ -1,4 +1,4 @@
-#include <libultraship/bridge.h>
+﻿#include <libultraship/bridge.h>
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -22,6 +22,7 @@ extern "C" {
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
+#include "src/overlays/actors/ovl_Bg_Jya_Bigmirror/z_bg_jya_bigmirror.h"
 #include "src/overlays/actors/ovl_En_Si/z_en_si.h"
 #include "src/overlays/actors/ovl_En_Shopnuts/z_en_shopnuts.h"
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
@@ -263,6 +264,14 @@ void RandomizerOnSceneFlagSetHandler(int16_t sceneNum, int16_t flagType, int16_t
         Flags_SetRandomizerInf(RAND_INF_GF_GTG_GATE_PERMANENTLY_OPEN);
     }
 
+    if (sceneNum == SCENE_SPIRIT_TEMPLE && flagType == FLAG_SCENE_SWITCH) {
+        bool isVanilla =
+            Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(SCENE_SPIRIT_TEMPLE)->IsVanilla();
+        if (isVanilla && flag == 0x23) {
+            Flags_SetRandomizerInf(RAND_INF_SPIRIT_SUN_ON_FLOOR_ON);
+        }
+    }
+
     RandomizerCheck rc = GetRandomizerCheckFromSceneFlag(sceneNum, flagType, flag);
     if (rc == RC_UNKNOWN_CHECK)
         return;
@@ -324,7 +333,10 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
                     getItemEntry.modIndex == MOD_RANDOMIZER) &&
                   (getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
                    getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
-                   getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER))))) {
+                   getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER ||
+                   // Treat small keys as junk if Skeleton Key is obtained.
+                   (getItemEntry.getItemCategory == ITEM_CATEGORY_SMALL_KEY &&
+                    Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY))))))) {
             Item_DropCollectible(gPlayState, &spawnPos, static_cast<int16_t>(ITEM00_SOH_GIVE_ITEM_ENTRY | 0x8000));
         }
     }
@@ -862,7 +874,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL) && LINK_IS_ADULT &&
                       gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_KAKARIKO_VILLAGE &&
                       CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) &&
-                      CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER);
+                      CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && gSaveContext.cutsceneIndex < 0xFFF0;
             break;
         case VB_BE_ELIGIBLE_FOR_CHILD_ROLLING_GORON_REWARD: {
             // Don't require a bomb bag to get prize in rando
@@ -878,7 +890,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_GIVE_ITEM_MASTER_SWORD:
-            if (RAND_GET_OPTION(RSK_SHUFFLE_MASTER_SWORD)) {
+            if (RAND_GET_OPTION(RSK_SHUFFLE_MASTER_SWORD) || RAND_GET_OPTION(RSK_STARTING_MASTER_SWORD)) {
                 *should = false;
             } else {
                 *should = true;
@@ -1013,17 +1025,55 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 }
 
                 if (item00->itemEntry.modIndex == MOD_NONE) {
+                    std::string message;
+
+                    switch (gSaveContext.language) {
+                        case LANGUAGE_FRA:
+                            message = "Vous obtenez: ";
+                            break;
+                        case LANGUAGE_GER:
+                            message = "Du erhältst: ";
+                            break;
+                        case LANGUAGE_ENG:
+                        default:
+                            message = "You found ";
+                            break;
+                    }
+
                     Notification::Emit({
                         .itemIcon = GetTextureForItemId(item00->itemEntry.itemId),
-                        .message = "You found ",
+                        .message = message,
                         .suffix = SohUtils::GetItemName(item00->itemEntry.itemId),
                     });
                 } else if (item00->itemEntry.modIndex == MOD_RANDOMIZER) {
+                    std::string message;
+                    std::string itemName;
+
+                    switch (gSaveContext.language) {
+                        case LANGUAGE_FRA:
+                            message = "Vous obtenez: ";
+                            itemName = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
+                                           .GetName()
+                                           .french;
+                            break;
+                        case LANGUAGE_GER:
+                            message = "Du erhältst: ";
+                            itemName = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
+                                           .GetName()
+                                           .german;
+                            break;
+                        case LANGUAGE_ENG:
+                        default:
+                            message = "You found ";
+                            itemName = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
+                                           .GetName()
+                                           .english;
+                            break;
+                    }
+
                     Notification::Emit({
-                        .message = "You found ",
-                        .suffix = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
-                                      .GetName()
-                                      .english,
+                        .message = message,
+                        .suffix = itemName,
                     });
                 }
 
@@ -1082,7 +1132,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_SELL_POES_TO_POE_COLLECTOR: {
-            if (!Flags_GetRandomizerInf(RAND_INF_10_BIG_POES) && HIGH_SCORE(HS_POE_POINTS) >= 1000) {
+            if (!Flags_GetRandomizerInf(RAND_INF_10_BIG_POES) && HIGH_SCORE(HS_POE_POINTS) >= 1000 &&
+                !(GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS)) {
                 EnGb* enGb = va_arg(args, EnGb*);
                 enGb->textId = 0x70F8;
                 Message_ContinueTextbox(gPlayState, enGb->textId);
@@ -1435,7 +1486,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_GERUDO_GUARD_SET_ACTION_AFTER_TALK:
-            if (gPlayState->msgCtx.choiceIndex == 0) {
+            if (gPlayState->msgCtx.choiceIndex == 0 && gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS) {
                 EnGe2* enGe2 = va_arg(args, EnGe2*);
                 EnGe2_SetupCapturePlayer(enGe2, gPlayState);
                 *should = false;
@@ -1704,6 +1755,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_GIVE_ITEM_WATER_MEDALLION:
         case VB_GIVE_ITEM_SPIRIT_MEDALLION:
         case VB_GIVE_ITEM_SHADOW_MEDALLION:
+        case VB_CHEST_USE_ICE_EFFECT:
             *should = false;
             break;
         case VB_GIVE_ITEM_SKULL_TOKEN:
@@ -1783,7 +1835,7 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
         Entrance_OverrideSpawnScene(sceneNum, gPlayState->curSpawn);
     }
 
-    // LACs & Prelude checks
+    // LACS & Prelude checks
     static uint32_t updateHook = 0;
 
     if (updateHook) {
@@ -1854,6 +1906,16 @@ void EnDns_RandomizerPurchase(EnDns* enDns) {
 
 void RandomizerOnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
+
+    if (actor->id == ACTOR_PLAYER) {
+        if (gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE) {
+            bool isVanilla =
+                Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(SCENE_SPIRIT_TEMPLE)->IsVanilla();
+            if (isVanilla && Flags_GetRandomizerInf(RAND_INF_SPIRIT_SUN_ON_FLOOR_ON)) {
+                Flags_SetSwitch(gPlayState, 0x23);
+            }
+        }
+    }
 
     if (actor->id == ACTOR_EN_SI) {
         RandomizerCheck rc =
@@ -1984,6 +2046,15 @@ void RandomizerOnActorInitHandler(void* actorRef) {
             Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0, 0x95B0, 0,
                         0x0300 | GE1_TYPE_GATE_OPERATOR, true);
         }
+    }
+
+    if (actor->id == ACTOR_BG_JYA_BIGMIRROR && Flags_GetRandomizerInf(RAND_INF_SPIRIT_BIG_MIRROR_STATUE_TURNED)) {
+        Flags_SetSwitch(gPlayState, 0x29); // destroy wall
+        auto jyaBigMirror = static_cast<BgJyaBigmirror*>(actorRef);
+        jyaBigMirror->puzzleFlags |=
+            BIGMIR_PUZZLE_COBRA1_SOLVED | BIGMIR_PUZZLE_COBRA2_SOLVED | BIGMIR_PUZZLE_BOMBIWA_DESTROYED;
+        jyaBigMirror->cobraInfo[0].rotY = 0x4000;
+        jyaBigMirror->cobraInfo[1].rotY = 0x8000;
     }
 
     if (actor->id == ACTOR_DEMO_KEKKAI && actor->params == 0) { // 0 == KEKKAI_TOWER
@@ -2148,6 +2219,16 @@ void RandomizerOnActorUpdateHandler(void* refActor) {
             DoorGerudo* gerudoDoor = reinterpret_cast<DoorGerudo*>(actor);
             gerudoDoor->actionFunc = func_8099485C;
             gerudoDoor->dyna.actor.world.pos.y = gerudoDoor->dyna.actor.home.pos.y + 200.0f;
+        }
+    }
+
+    if (actor->id == ACTOR_BG_JYA_BIGMIRROR) {
+        auto jyaBigMirror = reinterpret_cast<BgJyaBigmirror*>(actor);
+        if ((jyaBigMirror->puzzleFlags & (BIGMIR_PUZZLE_COBRA1_SOLVED | BIGMIR_PUZZLE_COBRA2_SOLVED)) ==
+            (BIGMIR_PUZZLE_COBRA1_SOLVED | BIGMIR_PUZZLE_COBRA2_SOLVED)) {
+            Flags_SetRandomizerInf(RAND_INF_SPIRIT_BIG_MIRROR_STATUE_TURNED);
+        } else {
+            Flags_UnsetRandomizerInf(RAND_INF_SPIRIT_BIG_MIRROR_STATUE_TURNED);
         }
     }
 

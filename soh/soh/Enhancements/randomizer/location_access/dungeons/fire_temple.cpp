@@ -20,9 +20,9 @@ void RegionTable_Init_FireTemple() {
         //Exits
         Entrance(RR_FIRE_TEMPLE_ENTRYWAY,       []{return true;}),
         Entrance(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM, []{return logic->FireTimer() >= 24;}),
-        Entrance(RR_FIRE_TEMPLE_LOOP_ENEMIES,   []{return Here(RR_FIRE_TEMPLE_FIRST_ROOM, []{return logic->CanUse(RG_MEGATON_HAMMER);}) && (logic->SmallKeys(RR_FIRE_TEMPLE, 8) || !logic->IsFireLoopLocked);}),
+        Entrance(RR_FIRE_TEMPLE_LOOP_ENEMIES,   []{return Here(RR_FIRE_TEMPLE_FIRST_ROOM, []{return logic->CanUse(RG_MEGATON_HAMMER);}) && (logic->SmallKeys(SCENE_FIRE_TEMPLE, 8) || !logic->IsFireLoopLocked);}),
         Entrance(RR_FIRE_TEMPLE_LOOP_EXIT,      []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_BIG_LAVA_ROOM,  []{return logic->SmallKeys(RR_FIRE_TEMPLE, 2) && logic->FireTimer() >= 24;}),
+        Entrance(RR_FIRE_TEMPLE_BIG_LAVA_ROOM,  []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 2) && logic->FireTimer() >= 24;}),
     });
 
     areaTable[RR_FIRE_TEMPLE_NEAR_BOSS_ROOM] = Region("Fire Temple Near Boss Room", SCENE_FIRE_TEMPLE, {
@@ -43,7 +43,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_LOOP_ENEMIES] = Region("Fire Temple Loop Enemies", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_FIRST_ROOM, []{return logic->SmallKeys(RR_FIRE_TEMPLE, 8) || !logic->IsFireLoopLocked;}),
+        Entrance(RR_FIRE_TEMPLE_FIRST_ROOM, []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 8) || !logic->IsFireLoopLocked;}),
         Entrance(RR_FIRE_TEMPLE_LOOP_TILES, []{return Here(RR_FIRE_TEMPLE_LOOP_ENEMIES, []{return logic->CanKillEnemy(RE_TORCH_SLUG) && logic->CanKillEnemy(RE_FIRE_KEESE);});}),
     });
 
@@ -96,11 +96,11 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_BIG_LAVA_POT_3, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_FIRST_ROOM,                []{return logic->SmallKeys(RR_FIRE_TEMPLE, 2);}),
+        Entrance(RR_FIRE_TEMPLE_FIRST_ROOM,                []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 2);}),
         Entrance(RR_FIRE_TEMPLE_BIG_LAVA_ROOM_NORTH_GORON, []{return true;}),
         Entrance(RR_FIRE_TEMPLE_BIG_LAVA_ROOM_NORTH_TILES, []{return logic->IsAdult && (logic->CanUse(RG_SONG_OF_TIME) || ctx->GetTrickOption(RT_FIRE_SOT));}),
         Entrance(RR_FIRE_TEMPLE_BIG_LAVA_ROOM_SOUTH_GORON, []{return logic->IsAdult && logic->HasExplosives();}),
-        Entrance(RR_FIRE_TEMPLE_FIRE_PILLAR_ROOM,          []{return logic->SmallKeys(RR_FIRE_TEMPLE, 3);}),
+        Entrance(RR_FIRE_TEMPLE_FIRE_PILLAR_ROOM,          []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 3);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_BIG_LAVA_ROOM_NORTH_GORON] = Region("Fire Temple Big Lava Room North Goron", SCENE_FIRE_TEMPLE, {}, {
@@ -135,8 +135,8 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_FIRE_PILLAR_BACK_HEART,  logic->FireTimer() >= 56),
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_BIG_LAVA_ROOM, []{return logic->SmallKeys(RR_FIRE_TEMPLE, 3);}),
-        Entrance(RR_FIRE_TEMPLE_SHORTCUT_ROOM, []{return logic->FireTimer() >= 56 && logic->SmallKeys(RR_FIRE_TEMPLE, 4);}),
+        Entrance(RR_FIRE_TEMPLE_BIG_LAVA_ROOM, []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 3);}),
+        Entrance(RR_FIRE_TEMPLE_SHORTCUT_ROOM, []{return logic->FireTimer() >= 56 && logic->SmallKeys(SCENE_FIRE_TEMPLE, 4);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_SHORTCUT_ROOM] = Region("Fire Temple Shortcut Room", SCENE_FIRE_TEMPLE, {}, {
@@ -144,7 +144,7 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST, Here(RR_FIRE_TEMPLE_SHORTCUT_CLIMB, []{return true;})),
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_FIRE_PILLAR_ROOM,   []{return logic->SmallKeys(RR_FIRE_TEMPLE, 4);}),
+        Entrance(RR_FIRE_TEMPLE_FIRE_PILLAR_ROOM,   []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 4);}),
         Entrance(RR_FIRE_TEMPLE_SHORTCUT_CLIMB,     []{return Here(RR_FIRE_TEMPLE_SHORTCUT_CLIMB, []{return true;});}),
         Entrance(RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER, []{return logic->IsAdult && (logic->HasItem(RG_GORONS_BRACELET) || ctx->GetTrickOption(RT_FIRE_STRENGTH)) && (logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_FAIRY_SLINGSHOT));}),
     });
@@ -163,7 +163,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         Entrance(RR_FIRE_TEMPLE_SHORTCUT_ROOM,                []{return true;}),
         Entrance(RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER_SIDE_ROOM, []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_EAST_CENTRAL_ROOM,            []{return logic->SmallKeys(RR_FIRE_TEMPLE, 5, 7);}),
+        Entrance(RR_FIRE_TEMPLE_EAST_CENTRAL_ROOM,            []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 5);}),
         Entrance(RR_FIRE_TEMPLE_BOULDER_MAZE_UPPER,           []{return false;}),
     });
 
@@ -183,8 +183,8 @@ void RegionTable_Init_FireTemple() {
     }, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_BIG_LAVA_ROOM,      []{return logic->TakeDamage();}),
-        Entrance(RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER, []{return logic->SmallKeys(RR_FIRE_TEMPLE, 5, 8);}),
-        Entrance(RR_FIRE_TEMPLE_FIRE_WALL_CHASE,    []{return logic->SmallKeys(RR_FIRE_TEMPLE, 6, 8);}),
+        Entrance(RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER, []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 5);}),
+        Entrance(RR_FIRE_TEMPLE_FIRE_WALL_CHASE,    []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 6);}),
         Entrance(RR_FIRE_TEMPLE_MAP_AREA,           []{return logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW);}),
     });
 
@@ -195,10 +195,10 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_FIRE_WALL_EXIT_HEART, logic->FireTimer() >= 24),
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_EAST_CENTRAL_ROOM,  []{return logic->FireTimer() >= 24 && logic->SmallKeys(RR_FIRE_TEMPLE, 6, 8);}),
+        Entrance(RR_FIRE_TEMPLE_EAST_CENTRAL_ROOM,  []{return logic->FireTimer() >= 24 && logic->SmallKeys(SCENE_FIRE_TEMPLE, 6);}),
         Entrance(RR_FIRE_TEMPLE_MAP_AREA,           []{return logic->IsAdult;}),
         Entrance(RR_FIRE_TEMPLE_BOULDER_MAZE_UPPER, []{return logic->FireTimer() >= 24 && logic->IsAdult;}),
-        Entrance(RR_FIRE_TEMPLE_CORRIDOR,           []{return logic->FireTimer() >= 24 && logic->IsAdult && logic->SmallKeys(RR_FIRE_TEMPLE, 7);}),
+        Entrance(RR_FIRE_TEMPLE_CORRIDOR,           []{return logic->FireTimer() >= 24 && logic->IsAdult && logic->SmallKeys(SCENE_FIRE_TEMPLE, 7);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MAP_AREA] = Region("Fire Temple Map Region", SCENE_FIRE_TEMPLE, {}, {
@@ -241,7 +241,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_CORRIDOR] = Region("Fire Temple Corridor", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_FIRE_WALL_CHASE, []{return logic->SmallKeys(RR_FIRE_TEMPLE, 7);}),
+        Entrance(RR_FIRE_TEMPLE_FIRE_WALL_CHASE, []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 7);}),
         Entrance(RR_FIRE_TEMPLE_FIRE_MAZE_ROOM,  []{return true;}),
     });
 
@@ -256,7 +256,7 @@ void RegionTable_Init_FireTemple() {
         Entrance(RR_FIRE_TEMPLE_CORRIDOR,            []{return true;}),
         Entrance(RR_FIRE_TEMPLE_FIRE_MAZE_UPPER,     []{return logic->CanUse(RG_HOVER_BOOTS);}),
         Entrance(RR_FIRE_TEMPLE_FIRE_MAZE_SIDE_ROOM, []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_WEST_CENTRAL_LOWER,  []{return logic->SmallKeys(RR_FIRE_TEMPLE, 8);}),
+        Entrance(RR_FIRE_TEMPLE_WEST_CENTRAL_LOWER,  []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 8);}),
         Entrance(RR_FIRE_TEMPLE_LATE_FIRE_MAZE,      []{return ctx->GetTrickOption(RT_FIRE_FLAME_MAZE) || false;}),
     });
 
@@ -280,7 +280,7 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST, Here(RR_FIRE_TEMPLE_WEST_CENTRAL_UPPER, []{return (logic->CanUse(RG_SONG_OF_TIME) || ctx->GetTrickOption(RT_RUSTED_SWITCHES)) && logic->CanUse(RG_MEGATON_HAMMER);})),
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_FIRE_MAZE_ROOM,     []{return logic->SmallKeys(RR_FIRE_TEMPLE, 8);}),
+        Entrance(RR_FIRE_TEMPLE_FIRE_MAZE_ROOM,     []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 8);}),
         Entrance(RR_FIRE_TEMPLE_WEST_CENTRAL_UPPER, []{return logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME);}),
         Entrance(RR_FIRE_TEMPLE_LATE_FIRE_MAZE,     []{return true;}),
     });
@@ -357,7 +357,7 @@ void RegionTable_Init_FireTemple() {
         Entrance(RR_FIRE_TEMPLE_ENTRYWAY,            []{return true;}),
         Entrance(RR_FIRE_TEMPLE_MQ_MAP_ROOM_SOUTH,   []{return true;}),
         Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER, []{return logic->IsAdult || logic->CanUse(RG_HOOKSHOT);}),
-        Entrance(RR_FIRE_TEMPLE_MQ_STALFOS_ROOM,     []{return logic->SmallKeys(RR_FIRE_TEMPLE, 5);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_STALFOS_ROOM,     []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 5);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER] = Region("Fire Temple MQ First Room Upper", SCENE_FIRE_TEMPLE, {}, {}, {
@@ -485,7 +485,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         // Fewer tunic requirements ends here
         Entrance(RR_FIRE_TEMPLE_MQ_FIRST_ROOM_UPPER,    []{return logic->FireTimer() >= 20;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_ELEVATOR_ROOM,       []{return logic->CanUse(RG_GORON_TUNIC) && logic->SmallKeys(RR_FIRE_TEMPLE, 2);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_ELEVATOR_ROOM,       []{return logic->CanUse(RG_GORON_TUNIC) && logic->SmallKeys(SCENE_FIRE_TEMPLE, 2);}),
         Entrance(RR_FIRE_TEMPLE_MQ_TORCH_FIREWALL_ROOM, []{return logic->HasFireSource() && ((logic->CanUse(RG_FAIRY_BOW) && logic->FireTimer() >= 25) || (ctx->GetTrickOption(RT_FIRE_MQ_BK_CHEST) && logic->FireTimer() >= 50)) && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && ctx->GetTrickOption(RT_FIRE_SOT)));}),
     });
 
@@ -556,7 +556,7 @@ void RegionTable_Init_FireTemple() {
         Entrance(RR_FIRE_TEMPLE_MQ_MAZE_SHORTCUT,       []{return logic->HasExplosives();}),
         //Implies RR_FIRE_TEMPLE_MQ_LOWER_MAZE access
         Entrance(RR_FIRE_TEMPLE_MQ_BURNING_BLOCK_CLIMB, []{return logic->HasExplosives() && logic->CanUse(RG_MEGATON_HAMMER) && (logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_SONG_OF_TIME)));}),
-        Entrance(RR_FIRE_TEMPLE_MQ_HIGH_TORCH_ROOM,     []{return logic->SmallKeys(RR_FIRE_TEMPLE, 3) && logic->CanUse(RG_GORON_TUNIC);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_HIGH_TORCH_ROOM,     []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 3) && logic->CanUse(RG_GORON_TUNIC);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_UPPER_MAZE_BOX_CAGE] = Region("Fire Temple MQ Upper Maze Box Cage", SCENE_FIRE_TEMPLE, {}, {
@@ -642,7 +642,7 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_5,    logic->CanBreakSmallCrates()),
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_MQ_UPPER_MAZE,       []{return logic->SmallKeys(RR_FIRE_TEMPLE, 3);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_UPPER_MAZE,       []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 3);}),
         Entrance(RR_FIRE_TEMPLE_MQ_NARROW_PATH_ROOM, []{return true;}),
         //Child has issues navigating the higher points of this room without an equip swapped hookshot
         Entrance(RR_FIRE_TEMPLE_MQ_SOUTH_FIRE_MAZE,  []{return Here(RR_FIRE_TEMPLE_MQ_HIGH_TORCH_ROOM, []{return logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_FAIRY_BOW) && logic->CanUse(RG_HOOKSHOT));}) && (logic->IsAdult || logic->CanUse(RG_HOOKSHOT));}),
@@ -705,7 +705,7 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY, logic->CanKillEnemy(RE_FLARE_DANCER)),
     }, {
         Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PAST_WALL, []{return logic->CanKillEnemy(RE_FLARE_DANCER);}),
-        Entrance(RR_FIRE_TEMPLE_MQ_SCARECROW_ROOM,      []{return logic->CanKillEnemy(RE_FLARE_DANCER) && logic->SmallKeys(RR_FIRE_TEMPLE, 4);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_SCARECROW_ROOM,      []{return logic->CanKillEnemy(RE_FLARE_DANCER) && logic->SmallKeys(SCENE_FIRE_TEMPLE, 4);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_SCARECROW_ROOM] = Region("Fire Temple MQ Scarecrow Room", SCENE_FIRE_TEMPLE, {}, {
@@ -718,8 +718,8 @@ void RegionTable_Init_FireTemple() {
         //Using this dropdown is in N64 logic elsewhere, but not here, probably because it requires good foreknowlege to determine where to land
         //This would be a logical method to reach the hammer switch without hookshot, but it practically requires access to the area that switch unlocks already. It could also be first child access to PLATFORMS if tricks ever enable that
         //If a practical use for this drop is found, it should be made a trick
-        Entrance(RR_FIRE_TEMPLE_MQ_UPPER_FLARE_DANCER, []{return logic->SmallKeys(RR_FIRE_TEMPLE, 4);}),
-        Entrance(RR_FIRE_TEMPLE_MQ_COLLAPSED_STAIRS,   []{return Here(RR_FIRE_TEMPLE_MQ_SCARECROW_ROOM, []{return logic->CanUse(RG_MEGATON_HAMMER);}) && logic->SmallKeys(RR_FIRE_TEMPLE, 5);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_UPPER_FLARE_DANCER, []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 4);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_COLLAPSED_STAIRS,   []{return Here(RR_FIRE_TEMPLE_MQ_SCARECROW_ROOM, []{return logic->CanUse(RG_MEGATON_HAMMER);}) && logic->SmallKeys(SCENE_FIRE_TEMPLE, 5);}),
     });
 
     //The peg knocked down from here could have logical implications for child in the fire maze if tricks to gain height like bomb jumps exist

@@ -572,7 +572,9 @@ void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& fl
         PopStyleCheckbox();
         if (ImGui::IsItemHovered() && hasDescription) {
             ImGui::BeginTooltip();
-            ImGui::Text("%s", UIWidgets::WrappedText(flagTable.flagDescriptions.at(row * 16 + flagIndex), 60).c_str());
+            uint16_t index = row * 16 + flagIndex;
+            const char* desc = flagTable.flagDescriptions.at(index);
+            ImGui::Text("0x%02X: %s", index, UIWidgets::WrappedText(desc, 60).c_str());
             ImGui::EndTooltip();
         }
         ImGui::PopID();
@@ -930,7 +932,15 @@ void DrawFlagsTab() {
             for (int j = 0; j < flagTable.size + 1; j++) {
                 DrawGroupWithBorder(
                     [&]() {
-                        ImGui::Text("%s", fmt::format("{:<2x}", j).c_str());
+                        if (j == 0) {
+                            for (int k = 0xF; k >= 0; k--) {
+                                ImGui::SameLine(37.5 + ((0xF - k) * 33.8));
+                                ImGui::Text("%X", k);
+                            }
+                        }
+
+                        ImGui::Text("%s", fmt::format("{:<2X}", j).c_str());
+
                         switch (flagTable.flagTableType) {
                             case EVENT_CHECK_INF:
                                 DrawFlagTableArray16(flagTable, j, gSaveContext.eventChkInf[j]);
@@ -1305,6 +1315,15 @@ void DrawQuestStatusTab() {
             ImGui::Text("Dungeon Items");
 
             static int32_t dungeonItemsScene = SCENE_DEKU_TREE;
+            static int32_t lastDungeonScene = -1;
+            if (gPlayState != nullptr) {
+                int32_t sceneNum = gPlayState->sceneNum;
+                if (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_JABU_JABU_BOSS && lastDungeonScene != sceneNum) {
+                    dungeonItemsScene = sceneNum;
+                    lastDungeonScene = sceneNum;
+                }
+            }
+
             PushStyleCombobox(THEME_COLOR);
             if (ImGui::BeginCombo("##DungeonSelect", SohUtils::GetSceneName(dungeonItemsScene).c_str())) {
                 for (int32_t dungeonIndex = SCENE_DEKU_TREE; dungeonIndex < SCENE_JABU_JABU_BOSS + 1; dungeonIndex++) {

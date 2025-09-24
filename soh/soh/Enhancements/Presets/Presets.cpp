@@ -395,7 +395,7 @@ void PresetsCustomWidget(WidgetInfo& info) {
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
             ImGui::AlignTextToFramePadding();
-            ImGui::Text(name.c_str());
+            ImGui::Text("%s", name.c_str());
             for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
                 ImGui::TableNextColumn();
                 DrawSectionCheck(name, !info.presetValues["blocks"].contains(blockInfo[i].names[1]), &info.apply[i],
@@ -437,7 +437,9 @@ void PresetsCustomWidget(WidgetInfo& info) {
 void RegisterPresetsWidgets() {
     SohGui::mSohMenu->AddSidebarEntry("Settings", "Presets", 1);
     WidgetPath path = { "Settings", "Presets", SECTION_COLUMN_1 };
-    SohGui::mSohMenu->AddWidget(path, "PresetsWidget", WIDGET_CUSTOM).CustomFunction(PresetsCustomWidget);
+    SohGui::mSohMenu->AddWidget(path, "PresetsWidget", WIDGET_CUSTOM)
+        .CustomFunction(PresetsCustomWidget)
+        .HideInSearch(true);
     presetFolder = Ship::Context::GetInstance()->GetPathRelativeToAppDirectory("presets");
     std::fill_n(saveSection, PRESET_SECTION_MAX, true);
     LoadPresets();

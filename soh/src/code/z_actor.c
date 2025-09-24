@@ -1284,8 +1284,16 @@ void Actor_UpdatePos(Actor* actor) {
 }
 
 void Actor_UpdateVelocityXZGravity(Actor* actor) {
-    actor->velocity.x = Math_SinS(actor->world.rot.y) * actor->speedXZ;
-    actor->velocity.z = Math_CosS(actor->world.rot.y) * actor->speedXZ;
+    Player* player = GET_PLAYER(gPlayState);
+    uint8_t inCutscene = player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER ||
+                         player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE ||
+                         player->stateFlags2 & PLAYER_STATE2_CRAWLING;
+    f32 speedModifier = 1.0f;
+    if (actor->id == ACTOR_PLAYER && !inCutscene) {
+        speedModifier = GameInteractor_MovementSpeedMultiplier();
+    }
+    actor->velocity.x = Math_SinS(actor->world.rot.y) * actor->speedXZ * speedModifier;
+    actor->velocity.z = Math_CosS(actor->world.rot.y) * actor->speedXZ * speedModifier;
 
     actor->velocity.y += actor->gravity;
     if (actor->velocity.y < actor->minVelocityY) {
@@ -5047,8 +5055,8 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
     */
 
     s32 previouslyOff = !Flags_GetRandomizerInf(flag);
-    gSaveContext.ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
     if (previouslyOff) {
+        gSaveContext.ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
         LUSLOG_INFO("RandomizerInf Flag Set - %#x", flag);
         GameInteractor_ExecuteOnFlagSet(FLAG_RANDOMIZER_INF, flag);
     }
@@ -5068,8 +5076,8 @@ void Flags_UnsetRandomizerInf(RandomizerInf flag) {
     */
 
     s32 previouslyOn = Flags_GetRandomizerInf(flag);
-    gSaveContext.ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
     if (previouslyOn) {
+        gSaveContext.ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
         LUSLOG_INFO("RandomizerInf Flag Unset - %#x", flag);
         GameInteractor_ExecuteOnFlagUnset(FLAG_RANDOMIZER_INF, flag);
     }

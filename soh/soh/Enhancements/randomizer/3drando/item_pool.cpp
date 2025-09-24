@@ -861,7 +861,7 @@ void GenerateItemPool() {
         AddItemToMainPool(RG_GERUDO_MEMBERSHIP_CARD);
         ctx->possibleIceTrapModels.push_back(RG_GERUDO_MEMBERSHIP_CARD);
     } else if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
-        AddItemToPool(PendingJunkPool, RG_GERUDO_MEMBERSHIP_CARD);
+        AddItemToPool(ItemPool, RG_GERUDO_MEMBERSHIP_CARD);
         ctx->PlaceItemInLocation(RC_TH_FREED_CARPENTERS, RG_ICE_TRAP, false, true);
     } else {
         ctx->PlaceItemInLocation(RC_TH_FREED_CARPENTERS, RG_GERUDO_MEMBERSHIP_CARD, false, true);
