@@ -322,7 +322,7 @@ void RegionTable_Init_BottomOfTheWell() {
         //Using a deku nut however stuns everything easily. and if you have a melee weapon you can kill the skull through the grave then grab the drop
         //though it can be hard to tell where the safe direct path to the grave is without lens.
         //Also you get cheap shotted on entry sometimes.
-        //An MQ lens trick is recommended here, and a review of this room for OHKO logic what that is added is advised.
+        //An MQ lens trick is recommended here, and a review of this room for OHKO logic when that is added is advised.
         //In the meantime I assume damage taken or the easy answer (nuts)
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM, (logic->TakeDamage() || logic->CanUse(RG_NUTS)) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
         }, {
