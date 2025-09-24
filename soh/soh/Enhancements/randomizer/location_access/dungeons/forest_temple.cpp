@@ -50,7 +50,7 @@ void RegionTable_Init_ForestTemple() {
         Entrance(RR_FOREST_TEMPLE_NORTH_CORRIDOR,    []{return true;}),
         Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_LOWER, []{return logic->CanUse(RG_SONG_OF_TIME) || logic->IsChild;}),
         Entrance(RR_FOREST_TEMPLE_NE_OUTDOORS_LOWER, []{return logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT);}),
-        Entrance(RR_FOREST_TEMPLE_WEST_CORRIDOR,     []{return logic->SmallKeys(RR_FOREST_TEMPLE, 1, 5);}),
+        Entrance(RR_FOREST_TEMPLE_WEST_CORRIDOR,     []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 1);}),
         Entrance(RR_FOREST_TEMPLE_EAST_CORRIDOR,     []{return false;}),
         Entrance(RR_FOREST_TEMPLE_BOSS_REGION,       []{return logic->ForestTempleMeg;}),
         Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY,     []{return false;}),
@@ -171,7 +171,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_WEST_CORRIDOR] = Region("Forest Temple West Corridor", SCENE_FOREST_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_FOREST_TEMPLE_LOBBY,           []{return logic->SmallKeys(RR_FOREST_TEMPLE, 1, 5);}),
+        Entrance(RR_FOREST_TEMPLE_LOBBY,           []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 1);}),
         Entrance(RR_FOREST_TEMPLE_BLOCK_PUSH_ROOM, []{return logic->CanAttack() || logic->CanUse(RG_NUTS);}),
     });
 
@@ -182,14 +182,14 @@ void RegionTable_Init_ForestTemple() {
         //Exits
         Entrance(RR_FOREST_TEMPLE_WEST_CORRIDOR,            []{return true;}),
         Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER,        []{return logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_FOREST_OUTSIDE_BACKDOOR) && logic->CanJumpslashExceptHammer() && logic->HasItem(RG_GORONS_BRACELET));}),
-        Entrance(RR_FOREST_TEMPLE_NW_CORRIDOR_TWISTED,      []{return logic->IsAdult && logic->HasItem(RG_GORONS_BRACELET) && logic->SmallKeys(RR_FOREST_TEMPLE, 2);}),
-        Entrance(RR_FOREST_TEMPLE_NW_CORRIDOR_STRAIGHTENED, []{return logic->IsAdult && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)) && logic->HasItem(RG_GORONS_BRACELET) && logic->SmallKeys(RR_FOREST_TEMPLE, 2);}),
+        Entrance(RR_FOREST_TEMPLE_NW_CORRIDOR_TWISTED,      []{return logic->IsAdult && logic->HasItem(RG_GORONS_BRACELET) && logic->SmallKeys(SCENE_FOREST_TEMPLE, 2);}),
+        Entrance(RR_FOREST_TEMPLE_NW_CORRIDOR_STRAIGHTENED, []{return logic->IsAdult && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)) && logic->HasItem(RG_GORONS_BRACELET) && logic->SmallKeys(SCENE_FOREST_TEMPLE, 2);}),
     });
 
     areaTable[RR_FOREST_TEMPLE_NW_CORRIDOR_TWISTED] = Region("Forest Temple NW Corridor Twisted", SCENE_FOREST_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_FOREST_TEMPLE_BLOCK_PUSH_ROOM, []{return logic->SmallKeys(RR_FOREST_TEMPLE, 2);}),
-        Entrance(RR_FOREST_TEMPLE_RED_POE_ROOM,    []{return logic->SmallKeys(RR_FOREST_TEMPLE, 3);}),
+        Entrance(RR_FOREST_TEMPLE_BLOCK_PUSH_ROOM, []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 2);}),
+        Entrance(RR_FOREST_TEMPLE_RED_POE_ROOM,    []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 3);}),
     });
 
     areaTable[RR_FOREST_TEMPLE_NW_CORRIDOR_STRAIGHTENED] = Region("Forest Temple NW Corridor Straightened", SCENE_FOREST_TEMPLE, {}, {
@@ -198,7 +198,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_BELOW_BOSS_KEY_CHEST, []{return true;}),
-        Entrance(RR_FOREST_TEMPLE_BLOCK_PUSH_ROOM,      []{return logic->SmallKeys(RR_FOREST_TEMPLE, 2);}),
+        Entrance(RR_FOREST_TEMPLE_BLOCK_PUSH_ROOM,      []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 2);}),
     });
 
     areaTable[RR_FOREST_TEMPLE_RED_POE_ROOM] = Region("Forest Temple Red Poe Room", SCENE_FOREST_TEMPLE, {
@@ -209,7 +209,7 @@ void RegionTable_Init_ForestTemple() {
         LOCATION(RC_FOREST_TEMPLE_RED_POE_CHEST, logic->ForestTempleJoelle),
     }, {
         //Exits
-        Entrance(RR_FOREST_TEMPLE_NW_CORRIDOR_TWISTED, []{return logic->SmallKeys(RR_FOREST_TEMPLE, 3);}),
+        Entrance(RR_FOREST_TEMPLE_NW_CORRIDOR_TWISTED, []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 3);}),
         Entrance(RR_FOREST_TEMPLE_UPPER_STALFOS,       []{return true;}),
     });
 
@@ -238,18 +238,18 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_UPPER_STALFOS,            []{return true;}),
-        Entrance(RR_FOREST_TEMPLE_NE_CORRIDOR_STRAIGHTENED, []{return logic->SmallKeys(RR_FOREST_TEMPLE, 4);}),
+        Entrance(RR_FOREST_TEMPLE_NE_CORRIDOR_STRAIGHTENED, []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 4);}),
     });
 
     areaTable[RR_FOREST_TEMPLE_NE_CORRIDOR_STRAIGHTENED] = Region("Forest Temple NE Corridor Straightened", SCENE_FOREST_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_FOREST_TEMPLE_BLUE_POE_ROOM,   []{return logic->SmallKeys(RR_FOREST_TEMPLE, 4);}),
-        Entrance(RR_FOREST_TEMPLE_FROZEN_EYE_ROOM, []{return logic->SmallKeys(RR_FOREST_TEMPLE, 5);}),
+        Entrance(RR_FOREST_TEMPLE_BLUE_POE_ROOM,   []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 4);}),
+        Entrance(RR_FOREST_TEMPLE_FROZEN_EYE_ROOM, []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 5);}),
     });
 
     areaTable[RR_FOREST_TEMPLE_NE_CORRIDOR_TWISTED] = Region("Forest Temple NE Corridor Twisted", SCENE_FOREST_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_FOREST_TEMPLE_FROZEN_EYE_ROOM, []{return logic->SmallKeys(RR_FOREST_TEMPLE, 5);}),
+        Entrance(RR_FOREST_TEMPLE_FROZEN_EYE_ROOM, []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 5);}),
         Entrance(RR_FOREST_TEMPLE_FALLING_ROOM,    []{return true;}),
     });
 
@@ -259,8 +259,8 @@ void RegionTable_Init_ForestTemple() {
         LOCATION(RC_FOREST_TEMPLE_FROZEN_EYE_POT_2, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_FOREST_TEMPLE_NE_CORRIDOR_STRAIGHTENED, []{return logic->SmallKeys(RR_FOREST_TEMPLE, 5);}),
-        Entrance(RR_FOREST_TEMPLE_NE_CORRIDOR_TWISTED,      []{return logic->SmallKeys(RR_FOREST_TEMPLE, 5) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DINS_FIRE));}),
+        Entrance(RR_FOREST_TEMPLE_NE_CORRIDOR_STRAIGHTENED, []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 5);}),
+        Entrance(RR_FOREST_TEMPLE_NE_CORRIDOR_TWISTED,      []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 5) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DINS_FIRE));}),
     });
 
     areaTable[RR_FOREST_TEMPLE_FALLING_ROOM] = Region("Forest Temple Falling Room", SCENE_FOREST_TEMPLE, {}, {
@@ -313,7 +313,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_ENTRYWAY,        []{return true;}),
-        Entrance(RR_FOREST_TEMPLE_MQ_CENTRAL_AREA, []{return logic->SmallKeys(RR_FOREST_TEMPLE, 1) && logic->CanPassEnemy(RE_BIG_SKULLTULA);}),
+        Entrance(RR_FOREST_TEMPLE_MQ_CENTRAL_AREA, []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 1) && logic->CanPassEnemy(RE_BIG_SKULLTULA);}),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_CENTRAL_AREA] = Region("Forest Temple MQ Central Region", SCENE_FOREST_TEMPLE, {
@@ -382,21 +382,21 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_MQ_UPPER_BLOCK_PUZZLE] = Region("Forest Temple MQ After Block Puzzle", SCENE_FOREST_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, logic->SmallKeys(RR_FOREST_TEMPLE, 3)),
+        LOCATION(RC_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, logic->SmallKeys(SCENE_FOREST_TEMPLE, 3)),
     }, {
         //Exits
-        Entrance(RR_FOREST_TEMPLE_MQ_STRAIGHT_HALLWAY, []{return logic->SmallKeys(RR_FOREST_TEMPLE, 3);}),
-        Entrance(RR_FOREST_TEMPLE_MQ_JOELLE_ROOM,      []{return logic->ForestCanTwistHallway && logic->SmallKeys(RR_FOREST_TEMPLE, 4);}),
+        Entrance(RR_FOREST_TEMPLE_MQ_STRAIGHT_HALLWAY, []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 3);}),
+        Entrance(RR_FOREST_TEMPLE_MQ_JOELLE_ROOM,      []{return logic->ForestCanTwistHallway && logic->SmallKeys(SCENE_FOREST_TEMPLE, 4);}),
         //!QUANTUM LOGIC!
         //As there is no way in default logic to reach the other possible key use without going through RR_FOREST_TEMPLE_MQ_NW_OUTDOORS, this is logically safe for now
         //Breaks if there's any other way to RR_FOREST_TEMPLE_MQ_FALLING_ROOM than going through the eye targets in RR_FOREST_TEMPLE_MQ_CENTRAL_AREA
         //Requires a bow/sling ammo source once ammo logic is done, to avoid edge cases.
-        Entrance(RR_FOREST_TEMPLE_MQ_NW_OUTDOORS,      []{return logic->SmallKeys(RR_FOREST_TEMPLE, 2) && Here(RR_FOREST_TEMPLE_MQ_UPPER_BLOCK_PUZZLE, []{return logic->CanKillEnemy(RE_FLOORMASTER);});}),
+        Entrance(RR_FOREST_TEMPLE_MQ_NW_OUTDOORS,      []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 2) && Here(RR_FOREST_TEMPLE_MQ_UPPER_BLOCK_PUZZLE, []{return logic->CanKillEnemy(RE_FLOORMASTER);});}),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_STRAIGHT_HALLWAY] = Region("Forest Temple MQ Straight Hallway", SCENE_FOREST_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, logic->SmallKeys(RR_FOREST_TEMPLE, 3)),
+        LOCATION(RC_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, logic->SmallKeys(SCENE_FOREST_TEMPLE, 3)),
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_MQ_FLOORMASTER_ROOM, []{return true;}),
@@ -489,7 +489,7 @@ void RegionTable_Init_ForestTemple() {
         LOCATION(RC_FOREST_TEMPLE_MQ_MAP_CHEST, logic->ForestTempleJoelle),
     }, {
         //Exits
-        Entrance(RR_FOREST_TEMPLE_MQ_UPPER_BLOCK_PUZZLE, []{return logic->SmallKeys(RR_FOREST_TEMPLE, 4);}),
+        Entrance(RR_FOREST_TEMPLE_MQ_UPPER_BLOCK_PUZZLE, []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 4);}),
         Entrance(RR_FOREST_TEMPLE_MQ_3_STALFOS_ROOM,     []{return true;}),
     });
 
@@ -524,8 +524,8 @@ void RegionTable_Init_ForestTemple() {
         //!QUANTUM LOGIC!
         //This key logic assumes that you can get to falling room either by spending the 5th key here, or by wasting a key in falling room itself.
         //While being the 5th key makes this simpler in theory, if a different age can waste the key compared to reaching this room it breaks
-        Entrance(RR_FOREST_TEMPLE_MQ_FALLING_ROOM,    []{return logic->SmallKeys(RR_FOREST_TEMPLE, 5) && Here(RR_FOREST_TEMPLE_MQ_BETH_ROOM, []{return logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DINS_FIRE);});}),
-        Entrance(RR_FOREST_TEMPLE_MQ_TORCH_SHOT_ROOM, []{return logic->SmallKeys(RR_FOREST_TEMPLE, 6);}),
+        Entrance(RR_FOREST_TEMPLE_MQ_FALLING_ROOM,    []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 5) && Here(RR_FOREST_TEMPLE_MQ_BETH_ROOM, []{return logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DINS_FIRE);});}),
+        Entrance(RR_FOREST_TEMPLE_MQ_TORCH_SHOT_ROOM, []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 6);}),
         Entrance(RR_FOREST_TEMPLE_MQ_3_STALFOS_ROOM,  []{return true;}),
     });
 
@@ -538,7 +538,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_MQ_FALLING_ROOM, []{return logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DINS_FIRE);}),
-        Entrance(RR_FOREST_TEMPLE_MQ_BETH_ROOM,    []{return logic->SmallKeys(RR_FOREST_TEMPLE, 6);}),
+        Entrance(RR_FOREST_TEMPLE_MQ_BETH_ROOM,    []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 6);}),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_FALLING_ROOM] = Region("Forest Temple MQ Falling Room", SCENE_FOREST_TEMPLE, {}, {
@@ -547,7 +547,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_MQ_NE_OUTDOORS_LEDGE, []{return true;}),
-        Entrance(RR_FOREST_TEMPLE_MQ_AMY_ROOM,          []{return logic->SmallKeys(RR_FOREST_TEMPLE, 6);}),
+        Entrance(RR_FOREST_TEMPLE_MQ_AMY_ROOM,          []{return logic->SmallKeys(SCENE_FOREST_TEMPLE, 6);}),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_AMY_ROOM] = Region("Forest Temple MQ Amy Room", SCENE_FOREST_TEMPLE, {

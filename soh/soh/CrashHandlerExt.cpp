@@ -19,7 +19,7 @@ static std::array<const char*, ACTORCAT_MAX> sCatToStrArray{
     "SWITCH", "BG", "PLAYER", "EXPLOSIVE", "NPC", "ENEMY", "PROP", "ITEMACTION", "MISC", "BOSS", "DOOR", "CHEST",
 };
 
-#define DEFINE_SCENE(_1, _2, enumName, _4, _5, _6) #enumName
+#define DEFINE_SCENE(_1, _2, enumName, _4, _5, _6) #enumName,
 
 static std::array<const char*, SCENE_ID_MAX> sSceneIdToStrArray{
 #include "tables/scene_table.h"

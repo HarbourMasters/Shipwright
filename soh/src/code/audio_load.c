@@ -640,10 +640,8 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
         if (gPlayState != NULL) {
             previousSceneNum = gPlayState->sceneNum;
         }
-        const char* sequenceName = AudioCollection_GetSequenceName(seqId);
-        if (sequenceName != NULL) {
-            Overlay_DisplayText_Seconds(CVarGetInteger(CVAR_AUDIO("SeqNameOverlayDuration"), 5), sequenceName);
-        }
+
+        AudioCollection_EmitSongNameNotification(seqId);
     }
 }
 

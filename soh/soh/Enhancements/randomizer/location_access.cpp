@@ -1002,7 +1002,7 @@ void RegionTable_Init() {
     RegionTable_Init_GanonsCastle();
 
     // Set parent regions
-    for (uint32_t i = RR_ROOT; i <= RR_GANONS_CASTLE; i++) {
+    for (uint32_t i = RR_ROOT; i < RR_MAX; i++) {
         for (LocationAccess& locPair : areaTable[i].locations) {
             RandomizerCheck location = locPair.GetLocation();
             Rando::Context::GetInstance()->GetItemLocation(location)->SetParentRegion((RandomizerRegion)i);

@@ -2,6 +2,7 @@
 #include "sequence.h"
 #include "sfx.h"
 #include "soh/cvar_prefixes.h"
+#include "soh/Notification/Notification.h"
 #include <vector>
 #include <utils/StringHelper.h>
 #include <libultraship/bridge.h>
@@ -457,4 +458,12 @@ extern "C" bool AudioCollection_HasSequenceNum(uint16_t seqId) {
 
 extern "C" size_t AudioCollection_SequenceMapSize() {
     return AudioCollection::Instance->SequenceMapSize();
+}
+
+extern "C" void AudioCollection_EmitSongNameNotification(s32 seqId) {
+    const char* sequenceName = AudioCollection_GetSequenceName(seqId);
+    if (sequenceName != NULL) {
+        Notification::Emit({ .message = "Currently playing: " + std::string(sequenceName),
+                             .remainingTime = (float)CVarGetInteger(CVAR_AUDIO("SeqNameOverlayDuration"), 5) });
+    }
 }
