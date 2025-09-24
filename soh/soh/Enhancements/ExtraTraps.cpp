@@ -191,8 +191,8 @@ static void RollRandomTrap(uint32_t seed) {
     uint32_t finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
                                           : static_cast<uint32_t>(gSaveContext.ship.stats.fileCreatedAt));
     Random_Init(finalSeed);
-    roll = ADD_POCKET_TRAP;
-    // roll = RandomElement(getEnabledAddTraps());
+    //roll = ADD_POCKET_TRAP;
+    roll = RandomElement(getEnabledAddTraps());
     switch (roll) {
         case ADD_ICE_TRAP:
             GameInteractor::RawAction::FreezePlayer();
