@@ -76,7 +76,7 @@ void KaleidoEntryIcon::Draw(PlayState* play, std::vector<Gfx>* mEntryDl) {
                                    G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW));
 
     // icon
-    if (!mAchieved) {
+    if (mGrayscale) {
         mEntryDl->push_back(gsDPSetGrayscaleColor(109, 109, 109, 255));
         mEntryDl->push_back(gsSPGrayscale(true));
     }
@@ -273,6 +273,7 @@ KaleidoEntryIconFlag::KaleidoEntryIconFlag(const char* iconResourceName, int ico
 
 void KaleidoEntryIconFlag::Update(PlayState* play) {
     mAchieved = GameInteractor::RawAction::CheckFlag(mFlagType, static_cast<int16_t>(mFlag));
+    mGrayscale = !mAchieved;
 }
 
 KaleidoEntryIconCountRequired::KaleidoEntryIconCountRequired(const char* iconResourceName, int iconFormat, int iconSize,
@@ -283,6 +284,8 @@ KaleidoEntryIconCountRequired::KaleidoEntryIconCountRequired(const char* iconRes
     if (mWatch != nullptr) {
         mCount = *mWatch;
     }
+    mAchieved = mCount >= mRequired;
+    mGrayscale = mCount == 0;
     BuildText();
     BuildVertices();
 }
@@ -303,9 +306,11 @@ void KaleidoEntryIconCountRequired::BuildText() {
 
 KaleidoEntrySilverRupeeCounter::KaleidoEntrySilverRupeeCounter(RandomizerGet rgid, int16_t x, int16_t y)
     : mRgid(rgid), KaleidoEntryIconCountRequired(gRupeeCounterIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16,
-                                                 Color_RGBA8{ 200, 200, 200, 255 }, x, y) {
+                                                 Color_RGBA8{ 255, 255, 255, 255 }, x, y) {
     mCount = OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(mRgid).GetCollected();
     mRequired = OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(mRgid).GetTotal();
+    mAchieved = mCount >= mRequired;
+    mGrayscale = mCount == 0;
     BuildText();
     BuildVertices();
 }
@@ -338,6 +343,7 @@ void KaleidoEntrySilverRupeeCounter::Update(PlayState* play) {
         BuildText();
         RebuildVertices();
         mAchieved = mCount >= mRequired;
+        mGrayscale = mCount == 0;
     }
 }
 
@@ -396,6 +402,7 @@ void KaleidoEntryIconCountRequired::Update(PlayState* play) {
         BuildText();
         RebuildVertices();
         mAchieved = mCount >= mRequired;
+        mGrayscale = mCount == 0;
     }
 }
 
@@ -451,11 +458,13 @@ void KaleidoEntryOcarinaButtons::Update(PlayState* play) {
     mButtonCollected[4] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_RIGHT) > 0;
     CalculateColors();
     mAchieved = false;
+    mGrayscale = true;
     for (int i = 0; i < mButtonCollected.size(); i++) {
         if (!mButtonCollected[i]) {
             mButtonColors[i] = Color_RGBA8{ 109, 109, 109, 255 };
         } else {
             mAchieved = true;
+            mGrayscale = false;
         }
     }
 }
@@ -476,7 +485,7 @@ void KaleidoEntryOcarinaButtons::Draw(PlayState* play, std::vector<Gfx>* mEntryD
                                    G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW));
 
     // icon
-    if (!mAchieved) {
+    if (mGrayscale) {
         mEntryDl->push_back(gsDPSetGrayscaleColor(109, 109, 109, 255));
         mEntryDl->push_back(gsSPGrayscale(true));
     }

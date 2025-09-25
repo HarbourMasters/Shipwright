@@ -39,6 +39,7 @@ class KaleidoEntry {
     Vtx* vtx;
     std::string mText;
     bool mAchieved = false;
+    bool mGrayscale = true;
 };
 
 /**
