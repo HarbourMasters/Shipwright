@@ -1638,6 +1638,10 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Pocket"))
         .PreFunc(
             [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+    AddWidget(path, "Perma Death Traps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Permadeath"))
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
 
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Enemy Randomizer", WIDGET_CVAR_COMBOBOX)

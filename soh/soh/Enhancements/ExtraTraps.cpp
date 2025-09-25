@@ -5,6 +5,7 @@
 #include "soh/Notification/Notification.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/ImGuiUtils.h"
+#include "soh/SaveManager.h"
 
 extern "C" {
 #include "variables.h"
@@ -13,6 +14,7 @@ extern "C" {
 extern PlayState* gPlayState;
 GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 GetItemID RetrieveGetItemIDFromItemID(ItemID itemID);
+RandomizerGet RetrieveRandomizerGetFromItemID(ItemID itemID);
 }
 
 #define CVAR_EXTRA_TRAPS_NAME CVAR_ENHANCEMENT("ExtraTraps.Enabled")
@@ -31,12 +33,15 @@ typedef enum {
     ADD_KILL_TRAP,
     ADD_TELEPORT_TRAP,
     ADD_POCKET_TRAP,
+    ADD_PERMADEATH_TRAP,
     ADD_TRAP_MAX
 } AltTrapType;
 
 static AltTrapType roll = ADD_TRAP_MAX;
 static int statusTimer = -1;
 static int eventTimer = -1;
+static int permaDeathTimer = -1;
+bool shouldFileDelete = false;
 
 const char* altTrapTypeCvars[] = {
     CVAR_ENHANCEMENT("ExtraTraps.Ice"),    CVAR_ENHANCEMENT("ExtraTraps.Burn"),
@@ -44,7 +49,32 @@ const char* altTrapTypeCvars[] = {
     CVAR_ENHANCEMENT("ExtraTraps.Speed"),  CVAR_ENHANCEMENT("ExtraTraps.Bomb"),
     CVAR_ENHANCEMENT("ExtraTraps.Void"),   CVAR_ENHANCEMENT("ExtraTraps.Ammo"),
     CVAR_ENHANCEMENT("ExtraTraps.Kill"),   CVAR_ENHANCEMENT("ExtraTraps.Teleport"),
-    CVAR_ENHANCEMENT("ExtraTraps.Pocket"),
+    CVAR_ENHANCEMENT("ExtraTraps.Pocket"), CVAR_ENHANCEMENT("ExtraTraps.Permadeath"),
+};
+
+static std::unordered_map<ItemID, QuestItem> itemToQuestMap = {
+    { ITEM_MEDALLION_FOREST, QUEST_MEDALLION_FOREST },
+    { ITEM_MEDALLION_FIRE, QUEST_MEDALLION_FIRE },
+    { ITEM_MEDALLION_WATER, QUEST_MEDALLION_WATER },
+    { ITEM_MEDALLION_SPIRIT, QUEST_MEDALLION_SPIRIT },
+    { ITEM_MEDALLION_SHADOW, QUEST_MEDALLION_SHADOW },
+    { ITEM_MEDALLION_LIGHT, QUEST_MEDALLION_LIGHT },
+    { ITEM_SONG_MINUET, QUEST_SONG_MINUET },
+    { ITEM_SONG_BOLERO, QUEST_SONG_BOLERO },
+    { ITEM_SONG_SERENADE, QUEST_SONG_SERENADE },
+    { ITEM_SONG_REQUIEM, QUEST_SONG_REQUIEM },
+    { ITEM_SONG_NOCTURNE, QUEST_SONG_NOCTURNE },
+    { ITEM_SONG_PRELUDE, QUEST_SONG_PRELUDE },
+    { ITEM_SONG_LULLABY, QUEST_SONG_LULLABY },
+    { ITEM_SONG_EPONA, QUEST_SONG_EPONA },
+    { ITEM_SONG_SARIA, QUEST_SONG_SARIA },
+    { ITEM_SONG_SUN, QUEST_SONG_SUN },
+    { ITEM_SONG_TIME, QUEST_SONG_TIME },
+    { ITEM_SONG_STORMS, QUEST_SONG_STORMS },
+    { ITEM_KOKIRI_EMERALD, QUEST_KOKIRI_EMERALD },
+    { ITEM_GORON_RUBY, QUEST_GORON_RUBY },
+    { ITEM_ZORA_SAPPHIRE, QUEST_ZORA_SAPPHIRE },
+    { ITEM_GERUDO_CARD, QUEST_GERUDO_CARD },
 };
 
 std::vector<AltTrapType> getEnabledAddTraps() {
@@ -104,6 +134,16 @@ void ExecutePocketTrap() {
     for (auto& items : itemMapping) {
         if (INV_CONTENT(items.second.id) == items.second.id) {
             currentLoadout.push_back(items.second.id);
+            continue;
+        }
+        auto questItem = itemToQuestMap.find(
+            (ItemID)items.second.id); // std::find(itemToQuestMap.begin(), itemToQuestMap.end(), items.second.id);
+        if (questItem == itemToQuestMap.end()) {
+            continue;
+        }
+        if (CHECK_QUEST_ITEM(questItem->second)) {
+            currentLoadout.push_back(items.second.id);
+            continue;
         }
     }
 
@@ -112,18 +152,23 @@ void ExecutePocketTrap() {
         return;
     }
 
-    uint32_t roll = Random(0, currentLoadout.size() - 1);
-    GetItemID getItemId = RetrieveGetItemIDFromItemID((ItemID)currentLoadout[roll]);
     RandomizerGet rgItem = RG_NONE;
 
-    for (auto& randoGet : Rando::StaticData::GetItemTable()) {
-        if (randoGet.GetItemID() == getItemId) {
-            rgItem = randoGet.GetRandomizerGet();
-            break;
+    uint32_t roll = Random(0, currentLoadout.size() - 1);
+    if (currentLoadout[roll] >= ITEM_SONG_MINUET) {
+        rgItem = RetrieveRandomizerGetFromItemID((ItemID)currentLoadout[roll]);
+    } else {
+        GetItemID getItemId = RetrieveGetItemIDFromItemID((ItemID)currentLoadout[roll]);
+        for (auto& randoGet : Rando::StaticData::GetItemTable()) {
+            if (randoGet.GetItemID() == getItemId) {
+                rgItem = randoGet.GetRandomizerGet();
+                break;
+            }
         }
     }
 
     if (rgItem == RG_NONE) {
+        GameInteractor::RawAction::FreezePlayer();
         return;
     }
 
@@ -191,7 +236,7 @@ static void RollRandomTrap(uint32_t seed) {
     uint32_t finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
                                           : static_cast<uint32_t>(gSaveContext.ship.stats.fileCreatedAt));
     Random_Init(finalSeed);
-    //roll = ADD_POCKET_TRAP;
+    // roll = ADD_PERMADEATH_TRAP;
     roll = RandomElement(getEnabledAddTraps());
     switch (roll) {
         case ADD_ICE_TRAP:
@@ -233,6 +278,15 @@ static void RollRandomTrap(uint32_t seed) {
             break;
         case ADD_POCKET_TRAP:
             ExecutePocketTrap();
+            break;
+        case ADD_PERMADEATH_TRAP:
+            permaDeathTimer = 180;
+            shouldFileDelete = true;
+            Notification::Emit({ .itemIcon = (const char*)gItemIcons[ITEM_BOMB],
+                                 .message = "Collect a Check or Perma Death executes in ",
+                                 .messageColor = UIWidgets::ColorValues.at(UIWidgets::Colors::White),
+                                 .suffix = "60 seconds.",
+                                 .suffixColor = UIWidgets::ColorValues.at(UIWidgets::Colors::Red) });
             break;
         default:
             break;
@@ -298,6 +352,17 @@ static void OnPlayerUpdate() {
                 break;
         }
     }
+    if (permaDeathTimer == 0) {
+        if (shouldFileDelete) {
+            SaveManager::Instance->DeleteZeldaFile(gSaveContext.fileNum);
+            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+                ->Dispatch("reset");
+        }
+    }
+    if (permaDeathTimer >= 0) {
+        permaDeathTimer--;
+    }
     if (statusTimer >= 0) {
         statusTimer--;
     }
@@ -324,6 +389,20 @@ void RegisterExtraTraps() {
             RollRandomTrap(gPlayState->sceneNum + player->getItemEntry.drawItemId);
         } else {
             GameInteractor::RawAction::FreezePlayer();
+        }
+    });
+
+    COND_HOOK(OnFlagSet, CVAR_EXTRA_TRAPS_NAME, [](int16_t flagType, int16_t flag) {
+        SPDLOG_INFO("Flag Set Here {}", std::to_string(flagType).c_str());
+        if (flagType != FLAG_SCENE_CLEAR) {
+            shouldFileDelete = false;
+        }
+    });
+
+    COND_HOOK(OnSceneFlagSet, CVAR_EXTRA_TRAPS_NAME, [](int16_t sceneNum, int16_t flagType, int16_t flag) {
+        SPDLOG_INFO("Scene Flag Set Here {}", std::to_string(flagType).c_str());
+        if (flagType != FLAG_SCENE_CLEAR) {
+            shouldFileDelete = false;
         }
     });
 }
