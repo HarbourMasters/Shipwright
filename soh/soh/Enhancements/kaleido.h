@@ -128,17 +128,28 @@ class KaleidoEntryIconCountRequired : public KaleidoEntryIcon {
      * @param total The amount of this collectible available in the seed. Set to 0 to not render.
      */
     KaleidoEntryIconCountRequired(const char* iconResourceName, int iconFormat, int iconSize, int iconWidth,
-                                  int iconHeight, Color_RGBA8 iconColor, int16_t x, int16_t y, int* watch,
+                                  int iconHeight, Color_RGBA8 iconColor, int16_t x, int16_t y, int* watch = nullptr,
                                   int required = 0, int total = 0);
     void Update(PlayState* play) override;
+    void BuildText();
+
+  protected:
+    int mRequired;
+    int mCount;
 
   private:
     int* mWatch;
-    int mRequired;
     int mTotal;
-    int mCount;
+};
 
+class KaleidoEntrySilverRupeeCounter : public KaleidoEntryIconCountRequired {
+  public:
+    KaleidoEntrySilverRupeeCounter(RandomizerGet rgid, int16_t x, int16_t y);
+    void Update(PlayState* play) override;
     void BuildText();
+
+  private:
+    RandomizerGet mRgid;
 };
 
 class KaleidoEntryOcarinaButtons : public KaleidoEntryIcon {

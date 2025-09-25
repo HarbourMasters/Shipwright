@@ -18,6 +18,7 @@ extern PlayState* gPlayState;
 #include "textures/icon_item_static/icon_item_static.h"
 #include "consolevariablebridge.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/randomizer/dungeon.h"
 
 #include <sstream>
 
@@ -146,6 +147,24 @@ Kaleido::Kaleido() {
             FlagType::FLAG_RANDOMIZER_INF, RAND_INF_GANON_SOUL, 0, yOffset, "Ganon's Soul"));
         yOffset += 18;
     }
+    if (ctx->GetOption(RSK_SHUFFLE_SILVER_RUPEES).Get() > RO_DUNGEON_ITEM_LOC_VANILLA) {
+        for (int i = RG_SILVER_RUPEE_FIRST; i <= RG_SILVER_RUPEE_LAST; i++) {
+            uint8_t dungeonId =
+                ctx->GetSilverRupeeCounter(static_cast<RandomizerGet>(i))
+                    .DungeonID();
+            RandomizerCheckQuest dungeonQuest =
+                ctx->GetDungeon(dungeonId)->IsMQ() ? RCQUEST_MQ : RCQUEST_VANILLA;
+            RandomizerCheckQuest rupeeQuest =
+                ctx->GetSilverRupeeCounter(static_cast<RandomizerGet>(i))
+                    .Quest();
+            if (dungeonQuest == rupeeQuest) {
+                mEntries.push_back(std::make_shared<KaleidoEntrySilverRupeeCounter>(
+                    static_cast<RandomizerGet>(i), 0, yOffset
+                ));
+                yOffset += 18;
+            }
+        }
+    }
 }
 
 extern "C" {
@@ -267,14 +286,18 @@ KaleidoEntryIconCountRequired::KaleidoEntryIconCountRequired(const char* iconRes
                                                              int16_t x, int16_t y, int* watch, int required, int total)
     : mWatch(watch), mRequired(required), mTotal(total),
       KaleidoEntryIcon(iconResourceName, iconFormat, iconSize, iconWidth, iconHeight, iconColor, x, y) {
-    mCount = *mWatch;
+    if (mWatch != nullptr) {
+        mCount = *mWatch;
+    }
     BuildText();
     BuildVertices();
 }
 
 void KaleidoEntryIconCountRequired::BuildText() {
     std::ostringstream totals;
-    totals << mCount;
+    if (mCount < mRequired) {
+        totals << mCount;
+    }
     if (mRequired != 0 && mCount < mRequired) {
         totals << '/' << mRequired;
     }
@@ -282,6 +305,49 @@ void KaleidoEntryIconCountRequired::BuildText() {
         totals << '/' << mTotal;
     }
     mText = totals.str();
+}
+
+KaleidoEntrySilverRupeeCounter::KaleidoEntrySilverRupeeCounter(RandomizerGet rgid, int16_t x, int16_t y)
+    : mRgid(rgid), KaleidoEntryIconCountRequired(gRupeeCounterIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, Color_RGBA8(200, 200, 200, 255), x, y) {
+    mCount = OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(mRgid).GetCollected();
+    mRequired = OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(mRgid).GetTotal();
+    BuildText();
+    BuildVertices();
+}
+
+void KaleidoEntrySilverRupeeCounter::BuildText() {
+    KaleidoEntryIconCountRequired::BuildText();
+    CustomMessage name = CustomMessage(Rando::StaticData::RetrieveItem(mRgid).GetName());
+    // Abbreviate Dungeon Names
+    name.Replace("Spirit Temple", "SpT");
+    name.Replace("Shadow Temple", "ShT");
+    name.Replace("Bottom of the Well", "BotW");
+    name.Replace("Gerudo Training Grounds", "GTG");
+    name.Replace("Dodongo's Cavern", "DC");
+    name.Replace("Ice Cavern", "IC");
+    name.Replace("Ganon's Castle", "GC");
+    // Remove MQ to make spoilers less prevalent
+    name.Replace("MQ", "");
+    // Remove "Silver Rupee" from the name
+    name.Replace("Silver Rupee", "");
+    if (!mText.empty()) {
+        mText += " ";
+    }
+    mText += name.GetForCurrentLanguage();
+    if (mText.length() > 24) {
+        mText = mText.substr(0, 21) + "...";
+    }
+}
+
+
+void KaleidoEntrySilverRupeeCounter::Update(PlayState* play) {
+    int newCount = OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(mRgid).GetCollected();
+    if (mCount  != newCount) {
+        mCount = newCount;
+        BuildText();
+        RebuildVertices();
+        mAchieved = mCount >= mRequired;
+    }
 }
 
 void KaleidoEntryIcon::BuildVertices() {
