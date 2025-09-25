@@ -2031,7 +2031,7 @@ void RegisterItemTrackerWidgets() {
     SohGui::mSohMenu->AddSearchWidget({ gregTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
 
     bossSoulsTracking = { .name = "Boss Souls", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
-    bossSoulsTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.Greg"))
+    bossSoulsTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.BossSouls"))
         .Options(ComboboxOptions()
                      .DefaultIndex(SECTION_DISPLAY_HIDDEN)
                      .ComponentAlignment(ComponentAlignments::Right)
