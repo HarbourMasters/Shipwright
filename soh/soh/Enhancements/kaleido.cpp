@@ -334,9 +334,6 @@ void KaleidoEntrySilverRupeeCounter::BuildText() {
         mText += " ";
     }
     mText += name.GetForCurrentLanguage();
-    if (mText.length() > 24) {
-        mText = mText.substr(0, 21) + "...";
-    }
 }
 
 
@@ -360,8 +357,22 @@ void KaleidoEntryIcon::BuildVertices() {
     offsetX += 18;
     for (size_t i = 0; i < mText.length(); i++) {
         int charWidth = static_cast<int>(Ship_GetCharFontWidth(mText[i]));
+        if ((offsetX + charWidth) > 220) {
+            offsetX -= Ship_GetCharFontWidth(mText[i-1]);
+            offsetX -= Ship_GetCharFontWidth(mText[i-2]);
+            mText = mText.substr(0, i-2) + "...";
+            int periodWidth = Ship_GetCharFontWidth('.');
+            Ship_CreateQuadVertexGroup(&(vertices)[(i - 1) * 4], offsetX, offsetY, periodWidth, 16, 0);
+            offsetX += periodWidth;
+            Ship_CreateQuadVertexGroup(&(vertices)[(i) * 4], offsetX, offsetY, periodWidth, 16, 0);
+            offsetX += periodWidth;
+            Ship_CreateQuadVertexGroup(&(vertices)[(i + 1) * 4], offsetX, offsetY, periodWidth, 16, 0);
+            offsetX += periodWidth;
+            break;
+        }
         Ship_CreateQuadVertexGroup(&(vertices)[(i + 1) * 4], offsetX, offsetY, charWidth, 16, 0);
         offsetX += charWidth;
+
     }
     offsetY += FONT_CHAR_TEX_HEIGHT;
     mWidth = static_cast<int16_t>(offsetX);
