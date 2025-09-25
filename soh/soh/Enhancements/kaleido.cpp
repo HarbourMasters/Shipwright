@@ -149,18 +149,12 @@ Kaleido::Kaleido() {
     }
     if (ctx->GetOption(RSK_SHUFFLE_SILVER_RUPEES).Get() > RO_DUNGEON_ITEM_LOC_VANILLA) {
         for (int i = RG_SILVER_RUPEE_FIRST; i <= RG_SILVER_RUPEE_LAST; i++) {
-            uint8_t dungeonId =
-                ctx->GetSilverRupeeCounter(static_cast<RandomizerGet>(i))
-                    .DungeonID();
-            RandomizerCheckQuest dungeonQuest =
-                ctx->GetDungeon(dungeonId)->IsMQ() ? RCQUEST_MQ : RCQUEST_VANILLA;
-            RandomizerCheckQuest rupeeQuest =
-                ctx->GetSilverRupeeCounter(static_cast<RandomizerGet>(i))
-                    .Quest();
+            uint8_t dungeonId = ctx->GetSilverRupeeCounter(static_cast<RandomizerGet>(i)).DungeonID();
+            RandomizerCheckQuest dungeonQuest = ctx->GetDungeon(dungeonId)->IsMQ() ? RCQUEST_MQ : RCQUEST_VANILLA;
+            RandomizerCheckQuest rupeeQuest = ctx->GetSilverRupeeCounter(static_cast<RandomizerGet>(i)).Quest();
             if (dungeonQuest == rupeeQuest) {
-                mEntries.push_back(std::make_shared<KaleidoEntrySilverRupeeCounter>(
-                    static_cast<RandomizerGet>(i), 0, yOffset
-                ));
+                mEntries.push_back(
+                    std::make_shared<KaleidoEntrySilverRupeeCounter>(static_cast<RandomizerGet>(i), 0, yOffset));
                 yOffset += 18;
             }
         }
@@ -308,7 +302,8 @@ void KaleidoEntryIconCountRequired::BuildText() {
 }
 
 KaleidoEntrySilverRupeeCounter::KaleidoEntrySilverRupeeCounter(RandomizerGet rgid, int16_t x, int16_t y)
-    : mRgid(rgid), KaleidoEntryIconCountRequired(gRupeeCounterIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, Color_RGBA8(200, 200, 200, 255), x, y) {
+    : mRgid(rgid), KaleidoEntryIconCountRequired(gRupeeCounterIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16,
+                                                 Color_RGBA8{ 200, 200, 200, 255 }, x, y) {
     mCount = OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(mRgid).GetCollected();
     mRequired = OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(mRgid).GetTotal();
     BuildText();
@@ -336,10 +331,9 @@ void KaleidoEntrySilverRupeeCounter::BuildText() {
     mText += name.GetForCurrentLanguage();
 }
 
-
 void KaleidoEntrySilverRupeeCounter::Update(PlayState* play) {
     int newCount = OTRGlobals::Instance->gRandoContext->GetSilverRupeeCounter(mRgid).GetCollected();
-    if (mCount  != newCount) {
+    if (mCount != newCount) {
         mCount = newCount;
         BuildText();
         RebuildVertices();
@@ -358,13 +352,13 @@ void KaleidoEntryIcon::BuildVertices() {
     for (size_t i = 0; i < mText.length(); i++) {
         int charWidth = static_cast<int>(Ship_GetCharFontWidth(mText[i]));
         if ((offsetX + charWidth) > 220) {
-            offsetX -= Ship_GetCharFontWidth(mText[i-1]);
-            offsetX -= Ship_GetCharFontWidth(mText[i-2]);
-            mText = mText.substr(0, i-2) + "...";
+            offsetX -= Ship_GetCharFontWidth(mText[i - 1]);
+            offsetX -= Ship_GetCharFontWidth(mText[i - 2]);
+            mText = mText.substr(0, i - 2) + "...";
             int periodWidth = Ship_GetCharFontWidth('.');
             Ship_CreateQuadVertexGroup(&(vertices)[(i - 1) * 4], offsetX, offsetY, periodWidth, 16, 0);
             offsetX += periodWidth;
-            Ship_CreateQuadVertexGroup(&(vertices)[(i) * 4], offsetX, offsetY, periodWidth, 16, 0);
+            Ship_CreateQuadVertexGroup(&(vertices)[(i)*4], offsetX, offsetY, periodWidth, 16, 0);
             offsetX += periodWidth;
             Ship_CreateQuadVertexGroup(&(vertices)[(i + 1) * 4], offsetX, offsetY, periodWidth, 16, 0);
             offsetX += periodWidth;
@@ -372,7 +366,6 @@ void KaleidoEntryIcon::BuildVertices() {
         }
         Ship_CreateQuadVertexGroup(&(vertices)[(i + 1) * 4], offsetX, offsetY, charWidth, 16, 0);
         offsetX += charWidth;
-
     }
     offsetY += FONT_CHAR_TEX_HEIGHT;
     mWidth = static_cast<int16_t>(offsetX);
