@@ -106,7 +106,8 @@ bool LocationAccess::CanBuy(bool calculatingAvailableChecks) const {
     const auto& loc = Rando::StaticData::GetLocation(location);
     const auto& itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(location);
 
-    if (loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT) {
+    if (loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT ||
+        location == RC_ZR_MAGIC_BEAN_SALESMAN) {
         // Checks should only be identified while playing
         if (calculatingAvailableChecks && itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
             return CanBuyAnother(GetMinimumPrice(loc));

@@ -2239,6 +2239,7 @@ typedef enum {
     // #### `args`
     // - `*PlayState`
     VB_SHOW_GAMEPLAY_TIMER,
+
     // (this->dyna.actor.params >> 5 & 0x7F) == GI_ICE_TRAP && this->actionFunc == EnBox_Open &&
     // this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100
     // ```
@@ -2269,6 +2270,21 @@ typedef enum {
     // #### `args`
     // - None
     VB_LOAD_SKYBOX,
+
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_SET_STATIC_PREV_FLOOR_TYPE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_SET_STATIC_FLOOR_TYPE,
+
 } GIVanillaBehavior;
 
 #endif
