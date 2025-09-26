@@ -343,6 +343,7 @@ const char* SpoilerLog_Write() {
     jsonData.clear();
 
     jsonData["version"] = (char*)gBuildVersion;
+    jsonData["fileType"] = FILE_TYPE_SPOILER;
     jsonData["git_branch"] = (char*)gGitBranch;
     jsonData["git_commit"] = (char*)gGitCommitHash;
     jsonData["seed"] = ctx->GetSeedString();
