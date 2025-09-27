@@ -11,7 +11,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnTa_Init(Actor* thisx, PlayState* play);
 void EnTa_Destroy(Actor* thisx, PlayState* play);
@@ -106,8 +106,7 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 36.0f);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gTalonSkel, &gTalonStandAnim, this->jointTable, this->morphTable,
-                       17);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gTalonSkel, &gTalonStandAnim, this->jointTable, this->morphTable, 17);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
 
@@ -184,7 +183,7 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
                     Actor_Kill(&this->actor);
                 } else {
                     if (IS_DAY) {
-                        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+                        this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
                         this->unk_2C4[0] = this->unk_2C4[1] = this->unk_2C4[2] = 7;
                         this->superCuccos[0] = (EnNiw*)Actor_Spawn(
                             &play->actorCtx, play, ACTOR_EN_NIW, this->actor.world.pos.x + 5.0f,
@@ -240,7 +239,7 @@ void EnTa_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyCylinder(play, &this->collider);
 
     if (this->actor.params != 1 && this->actor.params != 2 && play->sceneNum == SCENE_LON_LON_BUILDINGS) {
-        gSaveContext.timer1State = 0;
+        gSaveContext.timerState = 0;
     }
 
     if (this->unk_2E0 & 0x200) {
@@ -459,7 +458,7 @@ void func_80B14AF4(EnTa* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_VO_TA_CRY_1);
         EnTa_SetupAction(this, func_80B14A54, EnTa_AnimRepeatCurrent);
         this->unk_2CC = 65;
-        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     }
 }
 
@@ -625,7 +624,7 @@ void func_80B15100(EnTa* this, PlayState* play) {
 void func_80B15260(EnTa* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = func_80B15100;
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     } else {
         func_8002F2CC(&this->actor, play, 1000.0f);
     }
@@ -708,7 +707,7 @@ void EnTa_RunCuccoGame(EnTa* this, PlayState* play) {
 
                     switch (EnTa_GetSuperCuccosCount(this, play)) {
                         case 1:
-                            gSaveContext.timer1State = 0;
+                            gSaveContext.timerState = 0;
                             Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
 
                             Message_StartTextbox(play, 0x2084, &this->actor);
@@ -732,7 +731,7 @@ void EnTa_RunCuccoGame(EnTa* this, PlayState* play) {
                             break;
                     }
                     this->actionFunc = func_80B15260;
-                    this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+                    this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
                     func_8002F2CC(&this->actor, play, 1000.0f);
                     return;
                 }
@@ -742,15 +741,15 @@ void EnTa_RunCuccoGame(EnTa* this, PlayState* play) {
         }
     }
 
-    if (gSaveContext.timer1Value == 10) {
+    if (gSaveContext.timerSeconds == 10) {
         func_800F5918();
     }
 
-    if (gSaveContext.timer1Value == 0 && !Play_InCsMode(play)) {
+    if (gSaveContext.timerSeconds == 0 && !Play_InCsMode(play)) {
         Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
         this->unk_2E0 &= ~0x200;
         Sfx_PlaySfxCentered(NA_SE_SY_FOUND);
-        gSaveContext.timer1State = 0;
+        gSaveContext.timerState = 0;
         Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
         Message_StartTextbox(play, 0x2081, &this->actor);
         this->actionFunc = func_80B15424;
@@ -871,7 +870,8 @@ void EnTa_TalkGeneralInLonLonHouse(EnTa* this, PlayState* play) {
 }
 
 void EnTa_GiveItemInLonLonHouse(EnTa* this, PlayState* play) {
-    if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_FROM_TALONS_CHICKENS, true, &this->actor)) {
+    if (Actor_HasParent(&this->actor, play) ||
+        !GameInteractor_Should(VB_GIVE_ITEM_FROM_TALONS_CHICKENS, true, &this->actor)) {
         this->actor.parent = NULL;
         this->actionFunc = EnTa_TalkGeneralInLonLonHouse;
         if (!(this->unk_2E0 & 0x2)) {
@@ -917,8 +917,8 @@ void func_80B15FE8(EnTa* this, PlayState* play) {
                         EnTa_SetupAction(this, EnTa_GiveItemInLonLonHouse, EnTa_AnimRunToEnd);
                         Rupees_ChangeBy(-30);
                         GetItemEntry itemEntry = ItemTable_Retrieve(GI_MILK);
-                        gSaveContext.pendingSale = itemEntry.itemId;
-                        gSaveContext.pendingSaleMod = itemEntry.modIndex;
+                        gSaveContext.ship.pendingSale = itemEntry.itemId;
+                        gSaveContext.ship.pendingSaleMod = itemEntry.modIndex;
                         Actor_OfferGetItem(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
                         break;
                 }
@@ -1061,9 +1061,9 @@ void EnTa_IdleAfterCuccoGameFinished(EnTa* this, PlayState* play) {
                 this->actionFunc = func_80B1642C;
                 break;
         }
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     } else {
-        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+        this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         func_8002F2CC(&this->actor, play, 1000.0f);
     }
     this->unk_2E0 |= 1;

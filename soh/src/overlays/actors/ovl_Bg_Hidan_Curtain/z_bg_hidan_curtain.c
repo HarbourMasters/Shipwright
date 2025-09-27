@@ -6,8 +6,9 @@
 
 #include "z_bg_hidan_curtain.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgHidanCurtain_Init(Actor* thisx, PlayState* play);
 void BgHidanCurtain_Destroy(Actor* thisx, PlayState* play);
@@ -76,8 +77,8 @@ void BgHidanCurtain_Init(Actor* thisx, PlayState* play) {
     this->type = (thisx->params >> 0xC) & 0xF;
     if (this->type > 6) {
         // "Type is not set"
-        osSyncPrintf("Error : object のタイプが設定されていない(%s %d)(arg_data 0x%04x)\n", __FILE__,
-                     __LINE__, this->actor.params);
+        osSyncPrintf("Error : object のタイプが設定されていない(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
+                     this->actor.params);
         Actor_Kill(&this->actor);
         return;
     }
@@ -89,8 +90,8 @@ void BgHidanCurtain_Init(Actor* thisx, PlayState* play) {
 
     if ((this->actor.params < 0) || (this->actor.params > 0x3F)) {
         // "Save bit is not set"
-        osSyncPrintf("Warning : object のセーブビットが設定されていない(%s %d)(arg_data 0x%04x)\n",
-                     __FILE__, __LINE__, this->actor.params);
+        osSyncPrintf("Warning : object のセーブビットが設定されていない(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
+                     this->actor.params);
     }
     Actor_SetScale(&this->actor, hcParams->scale);
     Collider_InitCylinder(play, &this->collider);
@@ -191,7 +192,10 @@ void BgHidanCurtain_TurnOff(BgHidanCurtain* this, PlayState* play) {
 }
 
 void BgHidanCurtain_WaitForTimer(BgHidanCurtain* this, PlayState* play) {
-    DECR(this->timer);
+    if (GameInteractor_Should(VB_SWITCH_TIMER_TICK, true, this, &this->timer)) {
+        DECR(this->timer);
+    }
+
     if (this->timer == 0) {
         this->actionFunc = BgHidanCurtain_TurnOn;
     }
@@ -253,8 +257,7 @@ void BgHidanCurtain_Draw(Actor* thisx, PlayState* play) {
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, this->texScroll & 0x7F, 0, 0x20, 0x40, 1, 0,
                                 (this->texScroll * -0xF) & 0xFF, 0x20, 0x40));
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_XLU_DISP++, gEffFireCircleDL);
 

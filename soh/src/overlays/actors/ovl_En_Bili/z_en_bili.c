@@ -9,7 +9,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_ARROW_DRAGGABLE)
+#define FLAGS \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_CAN_ATTACH_TO_ARROW)
 
 void EnBili_Init(Actor* thisx, PlayState* play);
 void EnBili_Destroy(Actor* thisx, PlayState* play);
@@ -224,7 +225,7 @@ void EnBili_SetupBurnt(EnBili* this) {
     this->timer = 20;
     this->collider.base.atFlags &= ~AT_ON;
     this->collider.base.acFlags &= ~AC_ON;
-    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     this->actor.speedXZ = 0.0f;
     Actor_SetColorFilter(&this->actor, 0x4000, 0xC8, 0x2000, 0x14);
     this->actionFunc = EnBili_Burnt;
@@ -232,7 +233,7 @@ void EnBili_SetupBurnt(EnBili* this) {
 
 void EnBili_SetupDie(EnBili* this) {
     this->timer = 18;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actionFunc = EnBili_Die;
     this->actor.speedXZ = 0.0f;
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
@@ -256,7 +257,7 @@ void EnBili_SetupFrozen(EnBili* this, PlayState* play) {
     s32 i;
     Vec3f effectPos;
 
-    if (!(this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW)) {
+    if (!(this->actor.flags & ACTOR_FLAG_ATTACHED_TO_ARROW)) {
         this->actor.gravity = -1.0f;
     }
 
@@ -461,7 +462,7 @@ void EnBili_Recoil(EnBili* this, PlayState* play) {
 void EnBili_Burnt(EnBili* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
 
-    if (this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW) {
+    if (this->actor.flags & ACTOR_FLAG_ATTACHED_TO_ARROW) {
         this->actor.colorFilterTimer = 20;
     } else {
         if (this->timer != 0) {
@@ -482,7 +483,7 @@ void EnBili_Die(EnBili* this, PlayState* play) {
     s32 i;
 
     if (this->actor.draw != NULL) {
-        if (this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW) {
+        if (this->actor.flags & ACTOR_FLAG_ATTACHED_TO_ARROW) {
             return;
         }
         this->actor.draw = NULL;
@@ -503,11 +504,11 @@ void EnBili_Die(EnBili* this, PlayState* play) {
             effectScale = Rand_S16Offset(40, 40);
 
             if (Rand_ZeroOne() < 0.7f) {
-                EffectSsDtBubble_SpawnColorProfile(play, &effectPos, &effectVelocity, &effectAccel, effectScale,
-                                                   25, 2, 1);
+                EffectSsDtBubble_SpawnColorProfile(play, &effectPos, &effectVelocity, &effectAccel, effectScale, 25, 2,
+                                                   1);
             } else {
-                EffectSsDtBubble_SpawnColorProfile(play, &effectPos, &effectVelocity, &effectAccel, effectScale,
-                                                   25, 0, 1);
+                EffectSsDtBubble_SpawnColorProfile(play, &effectPos, &effectVelocity, &effectAccel, effectScale, 25, 0,
+                                                   1);
             }
         }
     } else {
@@ -538,7 +539,7 @@ void EnBili_Frozen(EnBili* this, PlayState* play) {
         this->timer--;
     }
 
-    if (!(this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW)) {
+    if (!(this->actor.flags & ACTOR_FLAG_ATTACHED_TO_ARROW)) {
         this->actor.gravity = -1.0f;
     }
 
@@ -561,7 +562,7 @@ void EnBili_UpdateDamage(EnBili* this, PlayState* play) {
             if (Actor_ApplyDamage(&this->actor) == 0) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_BIRI_DEAD);
                 Enemy_StartFinishingBlow(play, &this->actor);
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             }
 
             damageEffect = this->actor.colChkInfo.damageEffect;
@@ -593,7 +594,7 @@ void EnBili_UpdateDamage(EnBili* this, PlayState* play) {
             }
 
             if (this->collider.info.acHitInfo->toucher.dmgFlags & 0x1F820) { // DMG_ARROW
-                this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+                this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
             }
         }
     }
@@ -769,7 +770,6 @@ void EnBili_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_XLU_DISP++, 0x09, D_809C1700);
     }
 
-    POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
-                                   EnBili_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
+    POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime, EnBili_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
     CLOSE_DISPS(play->state.gfxCtx);
 }

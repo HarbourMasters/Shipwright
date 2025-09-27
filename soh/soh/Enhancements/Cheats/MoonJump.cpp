@@ -3,11 +3,11 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "macros.h"
 extern PlayState* gPlayState;
+#include "macros.h"
 }
 
-#define CVAR_MOON_JUMP_NAME "gCheats.MoonJumpOnL"
+#define CVAR_MOON_JUMP_NAME CVAR_CHEAT("MoonJumpOnL")
 #define CVAR_MOON_JUMP_DEFAULT 0
 #define CVAR_MOON_JUMP_VALUE CVarGetInteger(CVAR_MOON_JUMP_NAME, CVAR_MOON_JUMP_DEFAULT)
 

@@ -6,8 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "soh/Enhancements/debugger/colViewer.h"
-#include "soh/Enhancements/debugger/valueViewer.h"
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/OTRGlobals.h"
 #include "libultraship/bridge.h"
@@ -18,7 +16,6 @@
 // SOH [Port] Game State management for our render loop
 static struct RunFrameContext {
     GraphicsContext gfxCtx;
-    GameState* gameState;
     GameStateOverlay* nextOvl;
     GameStateOverlay* ovl;
     int state;
@@ -57,7 +54,7 @@ void Graph_FaultClient() {
 }
 
 void Graph_DisassembleUCode(Gfx* workBuf) {
-    #if 0
+#if 0
     UCodeDisas disassembler;
 
     if (HREG(80) == 7 && HREG(81) != 0) {
@@ -90,11 +87,11 @@ void Graph_DisassembleUCode(Gfx* workBuf) {
         }
         UCodeDisas_Destroy(&disassembler);
     }
-    #endif
+#endif
 }
 
 void Graph_UCodeFaultClient(Gfx* workBuf) {
-    #if 0
+#if 0
     UCodeDisas disassembler;
 
     UCodeDisas_Init(&disassembler);
@@ -103,7 +100,7 @@ void Graph_UCodeFaultClient(Gfx* workBuf) {
     //UCodeDisas_SetCurUCode(&disassembler, D_80155F50);
     UCodeDisas_Disassemble(&disassembler, workBuf);
     UCodeDisas_Destroy(&disassembler);
-    #endif
+#endif
 }
 
 void Graph_InitTHGA(GraphicsContext* gfxCtx) {
@@ -113,13 +110,11 @@ void Graph_InitTHGA(GraphicsContext* gfxCtx) {
     pool->tailMagic = GFXPOOL_TAIL_MAGIC;
     THGA_Ct(&gfxCtx->polyOpa, pool->polyOpaBuffer, sizeof(pool->polyOpaBuffer));
     THGA_Ct(&gfxCtx->polyXlu, pool->polyXluBuffer, sizeof(pool->polyXluBuffer));
-    THGA_Ct(&gfxCtx->polyKal, pool->polyKalBuffer, sizeof(pool->polyKalBuffer));
     THGA_Ct(&gfxCtx->overlay, pool->overlayBuffer, sizeof(pool->overlayBuffer));
     THGA_Ct(&gfxCtx->work, pool->workBuffer, sizeof(pool->workBuffer));
 
     gfxCtx->polyOpaBuffer = pool->polyOpaBuffer;
     gfxCtx->polyXluBuffer = pool->polyXluBuffer;
-    gfxCtx->polyKalBuffer = pool->polyKalBuffer;
     gfxCtx->overlayBuffer = pool->overlayBuffer;
     gfxCtx->workBuffer = pool->workBuffer;
 
@@ -154,7 +149,7 @@ GameStateOverlay* Graph_GetNextGameState(GameState* gameState) {
 }
 
 void Graph_Init(GraphicsContext* gfxCtx) {
-    memset(gfxCtx,0, sizeof(GraphicsContext));
+    memset(gfxCtx, 0, sizeof(GraphicsContext));
     gfxCtx->gfxPoolIdx = 0;
     gfxCtx->fbIdx = 0;
     gfxCtx->viMode = NULL;
@@ -189,8 +184,8 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
 
     osRecvMesg(&gfxCtx->queue, &msg, OS_MESG_BLOCK);
     osStopTimer(&timer);
-    //OTRTODO - Proper GFX crash handler
-    #if 0
+// OTRTODO - Proper GFX crash handler
+#if 0
     if (msg == (OSMesg)666) {
         osSyncPrintf(VT_FGCOL(RED));
         osSyncPrintf("RCPが帰ってきませんでした。"); // "RCP did not return."
@@ -209,7 +204,7 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
         }
         Fault_AddHungupAndCrashImpl("RCP is HUNG UP!!", "Oh! MY GOD!!");
     }
-    #endif
+#endif
     osRecvMesg(&gfxCtx->queue, &msg, OS_MESG_NOBLOCK);
 
     D_8012D260 = gfxCtx->workBuffer;
@@ -303,28 +298,6 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     OPEN_DISPS(gfxCtx);
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"), 0)) {
-        Gfx* gfx;
-        Gfx* polyOpa;
-        GfxPrint printer;
-
-        polyOpa = POLY_OPA_DISP;
-        gfx = Graph_GfxPlusOne(polyOpa);
-        gSPDisplayList(OVERLAY_DISP++, gfx);
-
-        GfxPrint_Init(&printer);
-        GfxPrint_Open(&printer, gfx);
-
-        ValueViewer_Draw(&printer);
-
-        gfx = GfxPrint_Close(&printer);
-        GfxPrint_Destroy(&printer);
-
-        gSPEndDisplayList(gfx++);
-        Graph_BranchDlist(polyOpa, gfx);
-        POLY_OPA_DISP = gfx;
-    }
-
     gDPNoOpString(WORK_DISP++, "WORK_DISP 終了", 0);
     gDPNoOpString(POLY_OPA_DISP++, "POLY_OPA_DISP 終了", 0);
     gDPNoOpString(POLY_XLU_DISP++, "POLY_XLU_DISP 終了", 0);
@@ -336,8 +309,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     gSPBranchList(WORK_DISP++, gfxCtx->polyOpaBuffer);
     gSPBranchList(POLY_OPA_DISP++, gfxCtx->polyXluBuffer);
-    gSPBranchList(POLY_XLU_DISP++, gfxCtx->polyKalBuffer);
-    gSPBranchList(POLY_KAL_DISP++, gfxCtx->overlayBuffer);
+    gSPBranchList(POLY_XLU_DISP++, gfxCtx->overlayBuffer);
     gDPPipeSync(OVERLAY_DISP++);
     gDPFullSync(OVERLAY_DISP++);
     gSPEndDisplayList(OVERLAY_DISP++);
@@ -436,11 +408,10 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
         sGraphUpdateTime = time;
     }
 
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0))
-    {
+    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) {
         if (CHECK_BTN_ALL(gameState->input[0].press.button, BTN_Z) &&
             CHECK_BTN_ALL(gameState->input[0].cur.button, BTN_L | BTN_R)) {
-            gSaveContext.gameMode = 0;
+            gSaveContext.gameMode = GAMEMODE_NORMAL;
             SET_NEXT_GAMESTATE(gameState, Select_Init, SelectContext);
             gameState->running = false;
         }
@@ -461,8 +432,7 @@ extern AudioMgr gAudioMgr;
 
 extern void ProcessSaveStateRequests(void);
 
-static void RunFrame()
-{
+static void RunFrame() {
     u32 size;
     char faultMsg[0x50];
     static bool hasSetupSkybox = false;
@@ -479,46 +449,43 @@ static void RunFrame()
     osSyncPrintf("グラフィックスレッド実行開始\n"); // "Start graphic thread execution"
     Graph_Init(&runFrameContext.gfxCtx);
 
-    while (runFrameContext.nextOvl)
-    {
+    while (runFrameContext.nextOvl) {
         runFrameContext.ovl = runFrameContext.nextOvl;
         Overlay_LoadGameState(runFrameContext.ovl);
 
         size = runFrameContext.ovl->instanceSize;
         osSyncPrintf("クラスサイズ＝%dバイト\n", size); // "Class size = %d bytes"
 
-        runFrameContext.gameState = SYSTEM_ARENA_MALLOC_DEBUG(size);
+        gGameState = SYSTEM_ARENA_MALLOC_DEBUG(size);
 
-        if (!runFrameContext.gameState)
-        {
+        if (!gGameState) {
             osSyncPrintf("確保失敗\n"); // "Failure to secure"
 
             snprintf(faultMsg, sizeof(faultMsg), "CLASS SIZE= %d bytes", size);
             Fault_AddHungupAndCrashImpl("GAME CLASS MALLOC FAILED", faultMsg);
         }
-        GameState_Init(runFrameContext.gameState, runFrameContext.ovl->init, &runFrameContext.gfxCtx);
+        GameState_Init(gGameState, runFrameContext.ovl->init, &runFrameContext.gfxCtx);
 
         // Setup the normal skybox once before entering any game states to avoid the 0xabababab crash.
         // The crash is due to certain skyboxes not loading all the data they need from Skybox_Setup.
         if (!hasSetupSkybox) {
-            PlayState* play = (PlayState*)runFrameContext.gameState;
+            PlayState* play = (PlayState*)gGameState;
             Skybox_Setup(play, &play->skyboxCtx, SKYBOX_NORMAL_SKY);
             hasSetupSkybox = true;
         }
 
         uint64_t freq = GetFrequency();
 
-        while (GameState_IsRunning(runFrameContext.gameState))
-        {
-            //uint64_t ticksA, ticksB;
-            //ticksA = GetPerfCounter();
+        while (GameState_IsRunning(gGameState)) {
+            // uint64_t ticksA, ticksB;
+            // ticksA = GetPerfCounter();
 
             Graph_StartFrame();
 
             PadMgr_ThreadEntry(&gPadMgr);
 
-            Graph_Update(&runFrameContext.gfxCtx, runFrameContext.gameState);
-            //ticksB = GetPerfCounter();
+            Graph_Update(&runFrameContext.gfxCtx, gGameState);
+            // ticksB = GetPerfCounter();
 
             if (GfxDebuggerIsDebuggingRequested()) {
                 GfxDebuggerDebugDisplayList(runFrameContext.gfxCtx.workBuffer);
@@ -526,24 +493,23 @@ static void RunFrame()
 
             Graph_ProcessGfxCommands(runFrameContext.gfxCtx.workBuffer);
 
-
-            //uint64_t diff = (ticksB - ticksA) / (freq / 1000);
-            //printf("Frame simulated in %ims\n", diff);
+            // uint64_t diff = (ticksB - ticksA) / (freq / 1000);
+            // printf("Frame simulated in %ims\n", diff);
             runFrameContext.state = 1;
             ProcessSaveStateRequests();
             return;
-            nextFrame:;
+        nextFrame:;
         }
 
-        runFrameContext.nextOvl = Graph_GetNextGameState(runFrameContext.gameState);
-        GameState_Destroy(runFrameContext.gameState);
-        SYSTEM_ARENA_FREE_DEBUG(runFrameContext.gameState);
+        runFrameContext.nextOvl = Graph_GetNextGameState(gGameState);
+        GameState_Destroy(gGameState);
+        SYSTEM_ARENA_FREE_DEBUG(gGameState);
         Overlay_FreeGameState(runFrameContext.ovl);
     }
     Graph_Destroy(&runFrameContext.gfxCtx);
     osSyncPrintf("グラフィックスレッド実行終了\n"); // "End of graphic thread execution"
 
-    //Graph_Update(gfxCtxTest, gameStateTest);
+    // Graph_Update(gfxCtxTest, gameStateTest);
     exit(0);
 }
 

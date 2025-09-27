@@ -12,7 +12,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
+#define FLAGS                                                                                 \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_LOCK_ON_DISABLED)
 
 void EnReeba_Init(Actor* thisx, PlayState* play);
 void EnReeba_Destroy(Actor* thisx, PlayState* play);
@@ -183,7 +185,7 @@ void func_80AE4F40(EnReeba* this, PlayState* play) {
         this->unk_278 = 20;
     }
 
-    this->actor.flags &= ~ACTOR_FLAG_NO_LOCKON;
+    this->actor.flags &= ~ACTOR_FLAG_LOCK_ON_DISABLED;
     this->actor.world.pos.y = this->actor.floorHeight;
 
     if (this->isBig) {
@@ -202,8 +204,8 @@ void func_80AE5054(EnReeba* this, PlayState* play) {
     SkelAnime_Update(&this->skelanime);
 
     if ((play->gameplayFrames % 4) == 0) {
-        Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1,
-                                 8.0f, 500, 10, true);
+        Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1, 8.0f,
+                                 500, 10, true);
     }
 
     if (this->unk_278 == 0) {
@@ -269,7 +271,7 @@ void func_80AE5270(EnReeba* this, PlayState* play) {
 }
 
 void func_80AE538C(EnReeba* this, PlayState* play) {
-    this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE;
+    this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE;
     this->actionfunc = func_80AE53AC;
 }
 
@@ -331,8 +333,8 @@ void func_80AE561C(EnReeba* this, PlayState* play) {
 void func_80AE5688(EnReeba* this, PlayState* play) {
     this->unk_27E = 0;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_AKINDONUTS_HIDE);
-    this->actor.flags |= ACTOR_FLAG_NO_LOCKON;
-    this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE);
+    this->actor.flags |= ACTOR_FLAG_LOCK_ON_DISABLED;
+    this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE);
     this->actionfunc = func_80AE56E0;
 }
 
@@ -343,8 +345,8 @@ void func_80AE56E0(EnReeba* this, PlayState* play) {
 
     if ((this->unk_284 + 10.0f) <= this->actor.shape.yOffset) {
         if ((play->gameplayFrames % 4) == 0) {
-            Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1,
-                                     8.0f, 500, 10, true);
+            Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1, 8.0f,
+                                     500, 10, true);
         }
 
         Math_ApproachF(&this->actor.shape.yOffset, this->unk_284, 1.0f, this->unk_288);
@@ -383,8 +385,8 @@ void func_80AE58EC(EnReeba* this, PlayState* play) {
     this->unk_278 = 14;
     this->actor.world.rot.y = this->actor.yawTowardsPlayer;
     this->actor.speedXZ = -8.0f;
-    this->actor.flags |= ACTOR_FLAG_NO_LOCKON;
-    this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE);
+    this->actor.flags |= ACTOR_FLAG_LOCK_ON_DISABLED;
+    this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE);
     this->actionfunc = func_80AE5938;
 }
 
@@ -452,7 +454,7 @@ void func_80AE5BC4(EnReeba* this, PlayState* play) {
     this->actor.world.rot.y = this->actor.yawTowardsPlayer;
     Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 8);
     this->unk_278 = 14;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actionfunc = func_80AE5C38;
 }
 

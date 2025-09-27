@@ -3,7 +3,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS                                                                                 \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnBigokuta_Init(Actor* thisx, PlayState* play);
 void EnBigokuta_Destroy(Actor* thisx, PlayState* play);
@@ -388,7 +390,7 @@ void func_809BD6B8(EnBigokuta* this) {
 void func_809BD768(EnBigokuta* this) {
     this->unk_194 = Rand_ZeroOne() < 0.5f ? -1 : 1;
     this->unk_19A = 0;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->cylinder[0].base.atFlags &= ~AT_ON;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DAIOCTA_SINK);
     this->actionFunc = func_809BE4A4;
@@ -639,8 +641,8 @@ void func_809BE26C(EnBigokuta* this, PlayState* play) {
             effectPos.x = this->actor.world.pos.x;
             effectPos.y = this->actor.world.pos.y + 150.0f;
             effectPos.z = this->actor.world.pos.z;
-            func_8002829C(play, &effectPos, &sEffectPosAccel, &sEffectPosAccel, &sEffectPrimColor,
-                          &sEffectEnvColor, 1200, 20);
+            func_8002829C(play, &effectPos, &sEffectPosAccel, &sEffectPosAccel, &sEffectPrimColor, &sEffectEnvColor,
+                          1200, 20);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_OCTAROCK_DEAD2);
         }
         if (this->unk_198 == 0 && Math_StepToF(&this->actor.scale.y, 0.0f, 0.001f)) {
@@ -690,7 +692,7 @@ void func_809BE4A4(EnBigokuta* this, PlayState* play) {
 
 void func_809BE518(EnBigokuta* this, PlayState* play) {
     if (Math_StepToF(&this->actor.world.pos.y, this->actor.home.pos.y, 10.0f)) {
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
         func_809BD3F8(this);
     }
 }
@@ -791,7 +793,7 @@ void EnBigokuta_Update(Actor* thisx, PlayState* play2) {
             for (i = 0; i < ARRAY_COUNT(this->cylinder); i++) {
                 CollisionCheck_SetAT(play, &play->colChkCtx, &this->cylinder[i].base);
             }
-            this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
+            this->actor.flags |= ACTOR_FLAG_SFX_FOR_PLAYER_BODY_HIT;
         } else {
             for (i = 0; i < ARRAY_COUNT(this->cylinder); i++) {
                 CollisionCheck_SetOC(play, &play->colChkCtx, &this->cylinder[i].base);
@@ -813,8 +815,7 @@ void EnBigokuta_Update(Actor* thisx, PlayState* play2) {
     func_809BCEBC(this, play);
 }
 
-s32 EnBigokuta_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                void* thisx) {
+s32 EnBigokuta_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnBigokuta* this = (EnBigokuta*)thisx;
     u8 intensity;
     f32 temp_f0;

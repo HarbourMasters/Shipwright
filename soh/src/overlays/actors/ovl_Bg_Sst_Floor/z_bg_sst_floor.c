@@ -8,7 +8,7 @@
 #include "objects/object_sst/object_sst.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void BgSstFloor_Init(BgSstFloor* this, PlayState* play);
 void BgSstFloor_Destroy(BgSstFloor* this, PlayState* play);
@@ -82,7 +82,8 @@ void BgSstFloor_Update(BgSstFloor* thisx, PlayState* play) {
         this->dyna.actor.params = BONGOFLOOR_REST;
         this->drumPhase = 28;
 
-        if (DynaPolyActor_IsPlayerOnTop(&this->dyna) && !(player->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE))) {
+        if (DynaPolyActor_IsPlayerOnTop(&this->dyna) &&
+            !(player->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE))) {
             distFromRim = 600.0f - this->dyna.actor.xzDistToPlayer;
             if (distFromRim > 0.0f) {
                 if (distFromRim > 350.0f) {
@@ -128,8 +129,7 @@ void BgSstFloor_Draw(BgSstFloor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_Scale(1.0f, this->drumHeight * -0.0025f, 1.0f, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gBongoDrumDL);
 

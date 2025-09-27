@@ -9,7 +9,7 @@
 #include "objects/object_spot11_obj/object_spot11_obj.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void BgSpot11Bakudankabe_Init(Actor* thisx, PlayState* play);
 void BgSpot11Bakudankabe_Destroy(Actor* thisx, PlayState* play);
@@ -97,8 +97,8 @@ void func_808B2218(BgSpot11Bakudankabe* this, PlayState* play) {
         } else {
             rotationSpeed = 33;
         }
-        EffectSsKakera_Spawn(play, &burstDepthY, &burstDepthX, &burstDepthY, gravityInfluence, rotationSpeed, 0x1E,
-                             4, 0, scale, 1, 3, 80, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_FIELD_KEEP, gFieldKakeraDL);
+        EffectSsKakera_Spawn(play, &burstDepthY, &burstDepthX, &burstDepthY, gravityInfluence, rotationSpeed, 0x1E, 4,
+                             0, scale, 1, 3, 80, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_FIELD_KEEP, gFieldKakeraDL);
     }
     Math_Vec3f_Sum(&thisx->world.pos, &D_808B272C, &burstDepthY);
     func_80033480(play, &burstDepthY, 70, 4, 110, 160, 1);

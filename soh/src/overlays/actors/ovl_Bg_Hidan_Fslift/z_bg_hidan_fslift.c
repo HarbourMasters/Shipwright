@@ -7,7 +7,7 @@
 #include "z_bg_hidan_fslift.h"
 #include "objects/object_hidan_objects/object_hidan_objects.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgHidanFslift_Init(Actor* thisx, PlayState* play);
 void BgHidanFslift_Destroy(Actor* thisx, PlayState* play);
@@ -48,9 +48,9 @@ void BgHidanFslift_Init(Actor* thisx, PlayState* play) {
     DynaPolyActor_Init(&this->dyna, DPM_PLAYER);
     CollisionHeader_GetVirtual(&gFireTempleHookshotElevatorCol, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
-    if (Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_OBJ_HSBLOCK,
-                           this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y + 40.0f,
-                           this->dyna.actor.world.pos.z + -28.0f, 0, 0, 0, 2) == NULL) {
+    if (Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_OBJ_HSBLOCK, this->dyna.actor.world.pos.x,
+                           this->dyna.actor.world.pos.y + 40.0f, this->dyna.actor.world.pos.z + -28.0f, 0, 0, 0,
+                           2) == NULL) {
         Actor_Kill(&this->dyna.actor);
         return;
     }

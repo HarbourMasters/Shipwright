@@ -10,7 +10,9 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
+#define FLAGS                                                                                  \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_LOCK_ON_DISABLED)
 
 void EnTakaraMan_Init(Actor* thisx, PlayState* play);
 void EnTakaraMan_Reset(Actor* thisx, PlayState* play);
@@ -106,20 +108,20 @@ void func_80B1778C(EnTakaraMan* this, PlayState* play) {
     } else {
         yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
         if (play->roomCtx.curRoom.num == 6 && !this->unk_21A) {
-            this->actor.textId = 0x6E; //Real Gambler
+            this->actor.textId = 0x6E; // Real Gambler
             this->unk_21A = 1;
             this->dialogState = TEXT_STATE_DONE;
         }
 
         if (!this->unk_21A && this->unk_214) {
             if (Flags_GetSwitch(play, 0x32)) {
-                this->actor.textId = 0x84; //Thanks a lot! (Lost)
+                this->actor.textId = 0x84; // Thanks a lot! (Lost)
                 // with text state event, it is only possible to talk to the person running the game
                 // once. we want the player to be able to ask again if they accidentally blast through
                 // the greg hint box, so we check for greg hint here
                 this->dialogState = Randomizer_GetSettingValue(RSK_GREG_HINT) ? TEXT_STATE_DONE : TEXT_STATE_EVENT;
             } else {
-                this->actor.textId = 0x704C; //Proceed
+                this->actor.textId = 0x704C; // Proceed
                 this->dialogState = TEXT_STATE_DONE;
             }
         }
@@ -127,11 +129,11 @@ void func_80B1778C(EnTakaraMan* this, PlayState* play) {
         absYawDiff = ABS(yawDiff);
         if (absYawDiff < 0x4300) {
             if (play->roomCtx.curRoom.num != this->originalRoomNum) {
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                 this->unk_218 = 0;
             } else {
                 if (!this->unk_218) {
-                    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+                    this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
                     this->unk_218 = 1;
                 }
                 func_8002F2CC(&this->actor, play, 100.0f);
@@ -211,8 +213,7 @@ void EnTakaraMan_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 }
 
-s32 EnTakaraMan_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                 void* thisx) {
+s32 EnTakaraMan_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnTakaraMan* this = (EnTakaraMan*)thisx;
 
     if (limbIndex == 1) {

@@ -53,12 +53,12 @@ void ObjHsblock_SetupAction(ObjHsblock* this, ObjHsblockActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
-void func_80B93B68(ObjHsblock* this, PlayState* play, CollisionHeader* collision, s32 moveFlags) {
+void func_80B93B68(ObjHsblock* this, PlayState* play, CollisionHeader* collision, s32 movementFlags) {
     s32 pad;
     CollisionHeader* colHeader = NULL;
     s32 pad2[2];
 
-    DynaPolyActor_Init(&this->dyna, moveFlags);
+    DynaPolyActor_Init(&this->dyna, movementFlags);
     CollisionHeader_GetVirtual(collision, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     if (this->dyna.bgId == BG_ACTOR_MAX) {
@@ -69,9 +69,9 @@ void func_80B93B68(ObjHsblock* this, PlayState* play, CollisionHeader* collision
 
 void func_80B93BF0(ObjHsblock* this, PlayState* play) {
     if ((this->dyna.actor.params >> 5) & 1) {
-        Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_OBJ_ICE_POLY,
-                           this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z,
-                           this->dyna.actor.world.rot.x, this->dyna.actor.world.rot.y, this->dyna.actor.world.rot.z, 1);
+        Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_OBJ_ICE_POLY, this->dyna.actor.world.pos.x,
+                           this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, this->dyna.actor.world.rot.x,
+                           this->dyna.actor.world.rot.y, this->dyna.actor.world.rot.z, 1);
     }
 }
 
@@ -111,7 +111,7 @@ void func_80B93D90(ObjHsblock* this) {
 }
 
 void func_80B93DB0(ObjHsblock* this) {
-    this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+    this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y - 105.0f;
     ObjHsblock_SetupAction(this, func_80B93DF4);
 }
@@ -132,7 +132,7 @@ void func_80B93E5C(ObjHsblock* this, PlayState* play) {
                                  this->dyna.actor.velocity.y, 0.3f)) < 0.001f) {
         this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y;
         func_80B93D90(this);
-        this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     }
 }
 
@@ -153,8 +153,7 @@ void ObjHsblock_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (play->sceneNum == SCENE_FIRE_TEMPLE) {
         color = &sFireTempleColor;

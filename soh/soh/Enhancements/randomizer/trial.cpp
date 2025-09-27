@@ -2,7 +2,9 @@
 #include "static_data.h"
 
 namespace Rando {
-TrialInfo::TrialInfo(RandomizerHintTextKey nameKey_, TrialKey trialKey_) : nameKey(std::move(nameKey_)), trialKey(std::move(trialKey_)) {}
+TrialInfo::TrialInfo(RandomizerHintTextKey nameKey_, TrialKey trialKey_)
+    : nameKey(std::move(nameKey_)), trialKey(std::move(trialKey_)) {
+}
 TrialInfo::TrialInfo() = default;
 TrialInfo::~TrialInfo() = default;
 
@@ -35,7 +37,7 @@ void TrialInfo::SetAsSkipped() {
 }
 
 Trials::Trials() {
-    for (const auto trial : StaticData::trialData){
+    for (const auto trial : StaticData::trialData) {
         mTrials[trial.first] = TrialInfo(trial.second, static_cast<TrialKey>(trial.first));
     }
 }
@@ -71,13 +73,13 @@ size_t Trials::GetTrialListSize() const {
 
 void Trials::ParseJson(nlohmann::json spoilerFileJson) {
     nlohmann::json trialsJson = spoilerFileJson["requiredTrials"];
-    for (auto it = trialsJson.begin(); it != trialsJson.end(); ++it) {
-        std::string trialName = it.value().get<std::string>();
-        for (auto& trial : mTrials) {
-            if (trial.GetName() == trialName) {
+
+    for (auto& trial : mTrials) {
+        trial.SetAsSkipped();
+
+        for (auto nameInLang : trial.GetName().GetAllMessages()) {
+            if (std::find(trialsJson.begin(), trialsJson.end(), nameInLang) != trialsJson.end()) {
                 trial.SetAsRequired();
-            } else {
-                trial.SetAsSkipped();
             }
         }
     }
@@ -85,7 +87,7 @@ void Trials::ParseJson(nlohmann::json spoilerFileJson) {
 
 std::unordered_map<uint32_t, RandomizerHintTextKey> Trials::GetAllTrialHintHeys() const {
     std::unordered_map<uint32_t, RandomizerHintTextKey> output = {};
-    for (auto trial: mTrials){
+    for (auto trial : mTrials) {
         output[(uint32_t)trial.GetTrialKey()] = trial.GetNameKey();
     }
     return output;

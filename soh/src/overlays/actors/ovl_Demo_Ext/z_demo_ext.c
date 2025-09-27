@@ -8,7 +8,7 @@
 #include "vt.h"
 #include "objects/object_fhg/object_fhg.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 typedef enum {
     /* 0x00 */ EXT_WAIT,
@@ -45,8 +45,8 @@ void DemoExt_Init(Actor* thisx, PlayState* play) {
 
 void DemoExt_PlayVortexSFX(DemoExt* this) {
     if (this->alphaTimer <= (kREG(35) + 40.0f) - 15.0f) {
-        Audio_PlaySoundGeneral(NA_SE_EV_FANTOM_WARP_L - SFX_FLAG, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_EV_FANTOM_WARP_L - SFX_FLAG, &this->actor.projectedPos, 4,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 

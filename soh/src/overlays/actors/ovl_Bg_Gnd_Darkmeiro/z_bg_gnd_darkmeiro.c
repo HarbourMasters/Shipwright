@@ -6,8 +6,9 @@
 
 #include "z_bg_gnd_darkmeiro.h"
 #include "objects/object_demo_kekkai/object_demo_kekkai.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void BgGndDarkmeiro_Init(Actor* thisx, PlayState* play);
 void BgGndDarkmeiro_Destroy(Actor* thisx, PlayState* play);
@@ -56,7 +57,7 @@ void BgGndDarkmeiro_Init(Actor* thisx, PlayState* play2) {
     switch (this->dyna.actor.params & 0xFF) {
         case DARKMEIRO_INVISIBLE_PATH:
             this->dyna.actor.draw = BgGndDarkmeiro_DrawInvisiblePath;
-            this->dyna.actor.flags |= ACTOR_FLAG_LENS;
+            this->dyna.actor.flags |= ACTOR_FLAG_REACT_TO_LENS;
             break;
         case DARKMEIRO_CLEAR_BLOCK:
             CollisionHeader_GetVirtual(&gClearBlockCol, &colHeader);
@@ -115,7 +116,9 @@ void BgGndDarkmeiro_UpdateBlockTimer(BgGndDarkmeiro* this, PlayState* play) {
     if (Flags_GetSwitch(play, ((this->dyna.actor.params >> 8) & 0x3F) + 1)) {
         if (this->actionFlags & 4) {
             if (this->timer1 > 0) {
-                this->timer1--;
+                if (GameInteractor_Should(VB_SWITCH_TIMER_TICK, true, this, &this->timer1)) {
+                    this->timer1--;
+                }
             } else {
                 Flags_UnsetSwitch(play, ((this->dyna.actor.params >> 8) & 0x3F) + 1);
                 this->actionFlags &= ~4;
@@ -123,14 +126,17 @@ void BgGndDarkmeiro_UpdateBlockTimer(BgGndDarkmeiro* this, PlayState* play) {
         } else {
             this->actionFlags |= 4;
             this->timer1 = 304;
-            Audio_PlaySoundGeneral(NA_SE_EV_RED_EYE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_EV_RED_EYE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     }
 
     if (Flags_GetSwitch(play, ((this->dyna.actor.params >> 8) & 0x3F) + 2)) {
         if (this->actionFlags & 8) {
             if (this->timer2 > 0) {
-                this->timer2--;
+                if (GameInteractor_Should(VB_SWITCH_TIMER_TICK, true, this, &this->timer2)) {
+                    this->timer2--;
+                }
             } else {
                 Flags_UnsetSwitch(play, ((this->dyna.actor.params >> 8) & 0x3F) + 2);
                 this->actionFlags &= ~8;
@@ -138,7 +144,8 @@ void BgGndDarkmeiro_UpdateBlockTimer(BgGndDarkmeiro* this, PlayState* play) {
         } else {
             this->actionFlags |= 8;
             this->timer2 = 304;
-            Audio_PlaySoundGeneral(NA_SE_EV_RED_EYE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_EV_RED_EYE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     }
 

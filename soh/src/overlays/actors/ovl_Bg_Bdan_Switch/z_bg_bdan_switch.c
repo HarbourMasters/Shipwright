@@ -8,7 +8,7 @@
 #include "objects/object_bdan_objects/object_bdan_objects.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgBdanSwitch_Init(Actor* thisx, PlayState* play);
 void BgBdanSwitch_Destroy(Actor* thisx, PlayState* play);
@@ -162,7 +162,7 @@ void BgBdanSwitch_Init(Actor* thisx, PlayState* play) {
         case YELLOW_TALL_1:
         case YELLOW_TALL_2:
             BgBdanSwitch_InitCollision(this, play);
-            this->dyna.actor.flags |= ACTOR_FLAG_TARGETABLE;
+            this->dyna.actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
             this->dyna.actor.targetMode = 4;
             break;
     }
@@ -194,8 +194,7 @@ void BgBdanSwitch_Init(Actor* thisx, PlayState* play) {
             }
             break;
         default:
-            osSyncPrintf("不正な ARG_DATA(arg_data 0x%04x)(%s %d)\n", this->dyna.actor.params, __FILE__,
-                         __LINE__);
+            osSyncPrintf("不正な ARG_DATA(arg_data 0x%04x)(%s %d)\n", this->dyna.actor.params, __FILE__, __LINE__);
             Actor_Kill(&this->dyna.actor);
             return;
     }

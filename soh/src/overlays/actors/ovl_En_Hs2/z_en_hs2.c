@@ -9,7 +9,7 @@
 #include "objects/object_hs/object_hs.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnHs2_Init(Actor* thisx, PlayState* play);
 void EnHs2_Destroy(Actor* thisx, PlayState* play);

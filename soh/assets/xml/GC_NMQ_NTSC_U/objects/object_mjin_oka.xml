@@ -1,0 +1,8 @@
+<Root>
+    <File Name="object_mjin_oka" Segment="6">
+        <DList Name="gOcarinaWarpPadDL" Offset="0x140"/>
+        <Collision Name="gOcarinaWarpPadCol" Offset="0x330"/>
+        <Texture Name="gOcarinaWarpPadSideTex" OutName="side" Format="rgba16" Width="64" Height="16" Offset="0x360"/>
+        <Texture Name="gOcarinaWarpPadOcarinaTex" OutName="ocarina" Format="i8" Width="64" Height="64" Offset="0xB60"/>
+    </File>
+</Root>

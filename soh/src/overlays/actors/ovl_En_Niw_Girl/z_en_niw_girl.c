@@ -9,7 +9,7 @@
 #include "vt.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnNiwGirl_Init(Actor* thisx, PlayState* play);
 void EnNiwGirl_Destroy(Actor* thisx, PlayState* play);
@@ -60,8 +60,7 @@ void EnNiwGirl_Init(Actor* thisx, PlayState* play) {
     Vec3f vec2;
     s32 pad2;
 
-    SkelAnime_InitFlex(play, &this->skelAnime, &gNiwGirlSkel, &gNiwGirlRunAnim, this->jointTable, this->morphTable,
-                       17);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gNiwGirlSkel, &gNiwGirlRunAnim, this->jointTable, this->morphTable, 17);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     this->actor.targetMode = 6;
@@ -102,7 +101,7 @@ void EnNiwGirl_Destroy(Actor* thisx, PlayState* play) {
 void EnNiwGirl_Jump(EnNiwGirl* this, PlayState* play) {
     f32 frameCount = Animation_GetLastFrame(&gNiwGirlRunAnim);
     Animation_Change(&this->skelAnime, &gNiwGirlRunAnim, 1.0f, 0.0f, frameCount, 0, -10.0f);
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actionFunc = func_80AB9210;
 }
 
@@ -143,7 +142,7 @@ void func_80AB9210(EnNiwGirl* this, PlayState* play) {
 void EnNiwGirl_Talk(EnNiwGirl* this, PlayState* play) {
     Animation_Change(&this->skelAnime, &gNiwGirlJumpAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gNiwGirlJumpAnim), 0,
                      -10.0f);
-    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+    this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.textId = 0x7000;
     if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) && (this->unk_27A == 0)) {
         this->actor.textId = 0x70EA;
@@ -233,8 +232,7 @@ void EnNiwGirl_Update(Actor* thisx, PlayState* play) {
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
 }
 
-s32 EnNiwGirlOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                              void* thisx) {
+s32 EnNiwGirlOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnNiwGirl* this = (EnNiwGirl*)thisx;
 
     if (limbIndex == 3) {

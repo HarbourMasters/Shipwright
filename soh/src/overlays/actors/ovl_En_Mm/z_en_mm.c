@@ -9,7 +9,7 @@
 #include "objects/object_link_child/object_link_child.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 typedef enum {
     /* 0 */ RM_ANIM_RUN,
@@ -463,7 +463,7 @@ void func_80AAE294(EnMm* this, PlayState* play) {
             dustPos.y = this->actor.world.pos.y;
             dustPos.z = this->actor.world.pos.z;
 
-            if (gSaveContext.gameMode != 3) {
+            if (gSaveContext.gameMode != GAMEMODE_END_CREDITS) {
                 func_80033480(play, &dustPos, 50.0f, 2, 350, 20, 0);
             }
 

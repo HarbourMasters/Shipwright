@@ -13,7 +13,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 #define GE2_STATE_ANIMCOMPLETE (1 << 1)
 #define GE2_STATE_KO (1 << 2)
@@ -312,7 +312,7 @@ void EnGe2_KnockedOut(EnGe2* this, PlayState* play) {
     s32 effectAngle;
     Vec3f effectPos;
 
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     if (this->stateFlags & GE2_STATE_ANIMCOMPLETE) {
         effectAngle = (play->state.frames) * 0x2800;
         effectPos.x = this->actor.focus.pos.x + (Math_CosS(effectAngle) * 5.0f);
@@ -439,20 +439,21 @@ void EnGe2_LookAtPlayer(EnGe2* this, PlayState* play) {
 
 void EnGe2_SetActionAfterTalk(EnGe2* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
-
-        switch (this->actor.params & 0xFF) {
-            case GE2_TYPE_PATROLLING:
-                EnGe2_ChangeAction(this, GE2_ACTION_ABOUTTURN);
-                break;
-            case GE2_TYPE_STATIONARY:
-                EnGe2_ChangeAction(this, GE2_ACTION_STAND);
-                break;
-            case GE2_TYPE_GERUDO_CARD_GIVER:
-                this->actionFunc = EnGe2_WaitLookAtPlayer;
-                break;
+        if (GameInteractor_Should(VB_GERUDO_GUARD_SET_ACTION_AFTER_TALK, true, this)) {
+            switch (this->actor.params & 0xFF) {
+                case GE2_TYPE_PATROLLING:
+                    EnGe2_ChangeAction(this, GE2_ACTION_ABOUTTURN);
+                    break;
+                case GE2_TYPE_STATIONARY:
+                    EnGe2_ChangeAction(this, GE2_ACTION_STAND);
+                    break;
+                case GE2_TYPE_GERUDO_CARD_GIVER:
+                    this->actionFunc = EnGe2_WaitLookAtPlayer;
+                    break;
+            }
+            this->actor.update = EnGe2_UpdateFriendly;
+            this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         }
-        this->actor.update = EnGe2_UpdateFriendly;
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
     }
     EnGe2_TurnToFacePlayer(this, play);
 }
@@ -473,7 +474,7 @@ void EnGe2_WaitTillCardGiven(EnGe2* this, PlayState* play) {
 void EnGe2_GiveCard(EnGe2* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actionFunc = EnGe2_WaitTillCardGiven;
         if (GameInteractor_Should(VB_GIVE_ITEM_GERUDO_MEMBERSHIP_CARD, true)) {
             Actor_OfferGetItem(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
@@ -487,7 +488,7 @@ void EnGe2_ForceTalk(EnGe2* this, PlayState* play) {
         this->actionFunc = EnGe2_GiveCard;
     } else {
         this->actor.textId = 0x6004;
-        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+        this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         func_8002F1C4(&this->actor, play, 300.0f, 300.0f, 0);
     }
     EnGe2_LookAtPlayer(this, play);
@@ -585,8 +586,7 @@ void EnGe2_Update(Actor* thisx, PlayState* play) {
     } else {
         this->actionFunc(this, play);
 
-        if (Ge2_DetectPlayerInUpdate(play, this, &this->actor.focus.pos, this->actor.shape.rot.y,
-                                     this->yDetectRange)) {
+        if (Ge2_DetectPlayerInUpdate(play, this, &this->actor.focus.pos, this->actor.shape.rot.y, this->yDetectRange)) {
             // "Discovered!"
             osSyncPrintf(VT_FGCOL(GREEN) "発見!!!!!!!!!!!!\n" VT_RST);
             EnGe2_SetupCapturePlayer(this, play);
@@ -607,7 +607,8 @@ void EnGe2_Update(Actor* thisx, PlayState* play) {
     }
     EnGe2_MoveAndBlink(this, play);
 
-    if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe2_CheckCarpentersFreed()) && !(this->stateFlags & GE2_STATE_KO)) {
+    if (GameInteractor_Should(VB_GERUDOS_BE_FRIENDLY, EnGe2_CheckCarpentersFreed()) &&
+        !(this->stateFlags & GE2_STATE_KO)) {
         this->actor.update = EnGe2_UpdateFriendly;
         this->actor.targetMode = 6;
     }

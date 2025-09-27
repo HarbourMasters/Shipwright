@@ -14,6 +14,8 @@
 #include <map>
 #include <nlohmann/json.hpp>
 
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
+
 /**
  * @brief Singleton for storing and accessing dynamic Randomizer-related data
  *
@@ -25,7 +27,6 @@
 namespace Rando {
 class EntranceShuffler;
 class Logic;
-class Settings;
 class Dungeons;
 class DungeonInfo;
 class TrialInfo;
@@ -42,17 +43,20 @@ class Context {
     void AddHint(const RandomizerHint hintId, const Hint hint);
     ItemLocation* GetItemLocation(RandomizerCheck locKey);
     ItemLocation* GetItemLocation(size_t locKey);
+    bool IsLocationShuffled(RandomizerCheck locKey);
     ItemOverride& GetItemOverride(RandomizerCheck locKey);
     ItemOverride& GetItemOverride(size_t locKey);
     void PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bool applyEffectImmediately = false,
                              bool setHidden = false);
     std::vector<RandomizerCheck> allLocations;
+    std::vector<RandomizerCheck> overworldLocations;
     void AddLocation(RandomizerCheck loc, std::vector<RandomizerCheck>* destination = nullptr);
     template <typename Container>
     void AddLocations(const Container& locations, std::vector<RandomizerCheck>* destination = nullptr);
     bool IsQuestOfLocationActive(RandomizerCheck rc);
     void GenerateLocationPool();
-    static std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool, const RandomizerCheckType checkType);
+    static std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool,
+                                                     const RandomizerCheckType checkType);
     void AddExcludedOptions();
     void LocationReset();
     void ClearItemLocations();
@@ -63,7 +67,24 @@ class Context {
     void SetSeedGenerated(bool seedGenerated = true);
     bool IsSpoilerLoaded() const;
     void SetSpoilerLoaded(bool spoilerLoaded = true);
-    std::shared_ptr<Settings> GetSettings();
+
+    /**
+     * @brief Reset all RandomizerTrick keys.
+     */
+    void ResetTrickOptions();
+
+    /**
+     * @brief Runs before seed generation to ensure all options are compatible with each
+     * other and resolve options that have been set to random (such as random trial count,
+     * or starting age).
+     *
+     * @param excludedLocations Set of locations that should be forced to have junk items.
+     * @param enabledTricks Set of tricks that should be considered logically possible. Tricks
+     * are things that are possible to do in gameplay but are difficult, not intuitive or that
+     * require more extensive game knowledge, i.e. opening invisible chests without the Lens of Truth.
+     */
+    void FinalizeSettings(const std::set<RandomizerCheck>& excludedLocations,
+                          const std::set<RandomizerTrick>& enabledTricks);
     std::shared_ptr<EntranceShuffler> GetEntranceShuffler();
     std::shared_ptr<Dungeons> GetDungeons();
     std::shared_ptr<Fishsanity> GetFishsanity();
@@ -74,29 +95,93 @@ class Context {
     TrialInfo* GetTrial(size_t key) const;
     TrialInfo* GetTrial(TrialKey key) const;
     static Sprite* GetSeedTexture(uint8_t index);
-    Option& GetOption(RandomizerSettingKey key) const;
-    TrickOption& GetTrickOption(RandomizerTrick key) const;
+    OptionValue& GetOption(RandomizerSettingKey key);
+    OptionValue& GetTrickOption(RandomizerTrick key);
+    OptionValue& GetLocationOption(RandomizerCheck key);
+
+    /**
+     * @brief Gets the resolved Light Arrow CutScene check condition.
+     * There is no direct option for this, it is inferred based on the value of a few other options.
+     *
+     * @return RandoOptionLACSCondition
+     */
+    RandoOptionLACSCondition LACSCondition() const;
+
+    /**
+     * @brief Sets the resolved Light Arrow CutScene check condition.
+     * There is no direct option for this, it is inferred based on the value of a few other options.
+     *
+     * @param lacsCondition
+     */
+    void LACSCondition(RandoOptionLACSCondition lacsCondition);
+
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
     void ParseSpoiler(const char* spoilerFileName);
     void ParseHashIconIndexesJson(nlohmann::json spoilerFileJson);
     void ParseItemLocationsJson(nlohmann::json spoilerFileJson);
     void WriteHintJson(nlohmann::ordered_json& spoilerFileJson);
     void ParseHintJson(nlohmann::json spoilerFileJson);
+    void ParseTricksJson(nlohmann::json spoilerFileJson);
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
     std::vector<RandomizerCheck> everyPossibleLocation = {};
     std::vector<RandomizerGet> possibleIceTrapModels = {};
     std::unordered_map<RandomizerCheck, RandomizerGet> iceTrapModels = {};
+    std::vector<OptionValue*> VanillaLogicDefaults = {};
     std::array<uint8_t, 5> hashIconIndexes = {};
     bool playthroughBeatable = false;
     bool allLocationsReachable = false;
     RandomizerArea GetAreaFromString(std::string str);
 
+    /**
+     * @brief Get the hash for the current seed.
+     *
+     * @return std::string
+     */
+    std::string GetHash() const;
+
+    /**
+     * @brief Get the Seed String
+     *
+     * @return const std::string&
+     */
+    const std::string& GetSeedString() const;
+
+    /**
+     * @brief Set the Seed String
+     *
+     * @param seedString
+     */
+    void SetSeedString(std::string seedString);
+
+    /**
+     * @brief Get the Seed
+     *
+     * @return const uint32_t
+     */
+    uint32_t GetSeed() const;
+
+    /**
+     * @brief Set the Seed
+     *
+     * @param seed
+     */
+    void SetSeed(uint32_t seed);
+
+    /**
+     * @brief Set the Seed Hash for the current seed.
+     *
+     * @param hash
+     */
+    void SetHash(std::string hash);
+
   private:
     static std::weak_ptr<Context> mContext;
     std::array<Hint, RH_MAX> hintTable = {};
     std::array<ItemLocation, RC_MAX> itemLocationTable = {};
-    std::shared_ptr<Settings> mSettings;
+    std::array<OptionValue, RSK_MAX> mOptions;
+    std::array<OptionValue, RT_MAX> mTrickOptions;
+    RandoOptionLACSCondition mLACSCondition = RO_LACS_VANILLA;
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;
     std::shared_ptr<Dungeons> mDungeons;
     std::shared_ptr<Logic> mLogic;
@@ -105,5 +190,8 @@ class Context {
     std::shared_ptr<Kaleido> mKaleido;
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;
+    std::string mHash;
+    std::string mSeedString;
+    uint32_t mFinalSeed = 0;
 };
 } // namespace Rando

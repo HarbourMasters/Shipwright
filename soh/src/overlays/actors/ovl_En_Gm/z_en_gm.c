@@ -13,7 +13,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnGm_Init(Actor* thisx, PlayState* play);
 void EnGm_Destroy(Actor* thisx, PlayState* play);
@@ -99,9 +99,10 @@ void EnGm_Destroy(Actor* thisx, PlayState* play) {
 s32 func_80A3D7C8(void) {
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         return 0;
-    } else if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_GIANTS_KNIFE_PURCHASE, (
-        !CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON) // Don't have giant's knife
-    ))) {
+    } else if (GameInteractor_Should(
+                   VB_BE_ELIGIBLE_FOR_GIANTS_KNIFE_PURCHASE,
+                   (!CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON) // Don't have giant's knife
+                    ))) {
         return 1;
     } else if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)) { // Have broken giant's knife
         return 2;
@@ -112,7 +113,7 @@ s32 func_80A3D7C8(void) {
 
 void func_80A3D838(EnGm* this, PlayState* play) {
     if (Object_IsLoaded(&play->objectCtx, this->objGmBankIndex)) {
-        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         SkelAnime_InitFlex(play, &this->skelAnime, &gGoronSkel, NULL, this->jointTable, this->morphTable, 18);
         gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[this->objGmBankIndex].segment);
         Animation_Change(&this->skelAnime, &object_gm_Anim_0002B8, 1.0f, 0.0f,
@@ -255,7 +256,6 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
                         Actor_OfferGetItem(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
                         this->actionFunc = func_80A3DF00;
                     }
-                    
                 }
                 break;
             case 1: // no

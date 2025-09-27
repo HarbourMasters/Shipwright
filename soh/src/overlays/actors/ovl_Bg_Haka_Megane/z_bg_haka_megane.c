@@ -8,7 +8,7 @@
 #include "objects/object_hakach_objects/object_hakach_objects.h"
 #include "objects/object_haka_objects/object_haka_objects.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_LENS)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_REACT_TO_LENS)
 
 void BgHakaMegane_Init(Actor* thisx, PlayState* play);
 void BgHakaMegane_Destroy(Actor* thisx, PlayState* play);
@@ -110,10 +110,10 @@ void func_8087DBF0(BgHakaMegane* this, PlayState* play) {
     Actor* thisx = &this->dyna.actor;
 
     if (play->actorCtx.lensActive) {
-        thisx->flags |= ACTOR_FLAG_LENS;
+        thisx->flags |= ACTOR_FLAG_REACT_TO_LENS;
         func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
     } else {
-        thisx->flags &= ~ACTOR_FLAG_LENS;
+        thisx->flags &= ~ACTOR_FLAG_REACT_TO_LENS;
         func_8003EC50(play, &play->colCtx.dyna, this->dyna.bgId);
     }
 }
@@ -130,7 +130,7 @@ void BgHakaMegane_Update(Actor* thisx, PlayState* play) {
 void BgHakaMegane_Draw(Actor* thisx, PlayState* play) {
     BgHakaMegane* this = (BgHakaMegane*)thisx;
 
-    if (CHECK_FLAG_ALL(thisx->flags, ACTOR_FLAG_LENS)) {
+    if (CHECK_FLAG_ALL(thisx->flags, ACTOR_FLAG_REACT_TO_LENS)) {
         Gfx_DrawDListXlu(play, sDLists[thisx->params]);
     } else {
         Gfx_DrawDListOpa(play, sDLists[thisx->params]);

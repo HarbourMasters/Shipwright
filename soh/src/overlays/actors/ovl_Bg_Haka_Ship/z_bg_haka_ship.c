@@ -7,7 +7,9 @@
 #include "z_bg_haka_ship.h"
 #include "objects/object_haka_objects/object_haka_objects.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void BgHakaShip_Init(Actor* thisx, PlayState* play);
 void BgHakaShip_Destroy(Actor* thisx, PlayState* play);
@@ -133,7 +135,7 @@ void BgHakaShip_Move(BgHakaShip* this, PlayState* play) {
         this->dyna.actor.speedXZ = 0.0f;
         Message_StartTextbox(play, 0x5071, NULL);
         this->actionFunc = BgHakaShip_SetupCrash;
-    } else {
+    } else if (GameInteractor_Should(VB_SHADOW_SHIP_SET_SPEED, true, this, play)) {
         Math_StepToF(&this->dyna.actor.speedXZ, 4.0f, 0.2f);
     }
     child = this->dyna.actor.child;
@@ -179,7 +181,8 @@ void BgHakaShip_CrashFall(BgHakaShip* this, PlayState* play) {
         }
     } else {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCKSINK - SFX_FLAG);
-        if ((this->dyna.actor.home.pos.y - this->dyna.actor.world.pos.y > 500.0f) && DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
+        if ((this->dyna.actor.home.pos.y - this->dyna.actor.world.pos.y > 500.0f) &&
+            DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             Play_TriggerVoidOut(play);
         }
     }
@@ -201,23 +204,19 @@ void BgHakaShip_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     if (this->dyna.actor.params == 0) {
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_00D330);
         angleTemp = this->yOffset * (M_PI / 0x8000);
         Matrix_Translate(-3670.0f, 620.0f, 1150.0f, MTXMODE_APPLY);
         Matrix_RotateZ(angleTemp, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_005A70);
         Matrix_Translate(0.0f, 0.0f, -2300.0f, MTXMODE_APPLY);
         Matrix_RotateZ(-(2.0f * angleTemp), MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_005A70);
     } else {
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_00E910);
     }
     CLOSE_DISPS(play->state.gfxCtx);

@@ -17,7 +17,7 @@ typedef struct {
     N64ButtonMask defaultBtn;
 } CustomButtonMap;
 
-class SohInputEditorWindow : public Ship::GuiWindow {
+class SohInputEditorWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
     ~SohInputEditorWindow();
@@ -41,7 +41,8 @@ class SohInputEditorWindow : public Ship::GuiWindow {
     void DrawButtonLineEditMappingButton(uint8_t port, N64ButtonMask bitmask, std::string id);
     void DrawButtonLineAddMappingButton(uint8_t port, N64ButtonMask bitmask);
 
-    void DrawStickDirectionLineEditMappingButton(uint8_t port, uint8_t stick, Ship::Direction direction, std::string id);
+    void DrawStickDirectionLineEditMappingButton(uint8_t port, uint8_t stick, Ship::Direction direction,
+                                                 std::string id);
     void DrawStickDirectionLineAddMappingButton(uint8_t port, uint8_t stick, Ship::Direction direction);
     void DrawStickSection(uint8_t port, uint8_t stick, int32_t id, ImVec4 color);
 
@@ -83,8 +84,8 @@ class SohInputEditorWindow : public Ship::GuiWindow {
     void UpdateBitmaskToMappingIds(uint8_t port);
     void UpdateStickDirectionToMappingIds(uint8_t port);
 
-    void GetButtonColorsForLUSDeviceIndex(Ship::ShipDeviceIndex lusIndex, ImVec4& buttonColor,
-                                          ImVec4& buttonHoveredColor);
+    void GetButtonColorsForDeviceType(Ship::PhysicalDeviceType lusIndex, ImVec4& buttonColor,
+                                      ImVec4& buttonHoveredColor);
     void DrawLinkTab();
     void DrawIvanTab();
     void DrawDebugPortTab(uint8_t portIndex, std::string customName = "");
@@ -92,15 +93,9 @@ class SohInputEditorWindow : public Ship::GuiWindow {
     std::set<N64ButtonMask> mDpadBitmasks;
     std::set<N64ButtonMask> mModifierButtonsBitmasks;
     std::set<N64ButtonMask> mCustomOcarinaButtonsBitmasks;
-    void DrawButtonDeviceIcons(uint8_t portIndex, std::set<N64ButtonMask> bitmasks);
-    void DrawAnalogStickDeviceIcons(uint8_t portIndex, Ship::StickIndex stickIndex);
-    void DrawRumbleDeviceIcons(uint8_t portIndex);
-    void DrawGyroDeviceIcons(uint8_t portIndex);
-    void DrawLEDDeviceIcons(uint8_t portIndex);
     bool mInputEditorPopupOpen;
     void DrawSetDefaultsButton(uint8_t portIndex);
     void DrawClearAllButton(uint8_t portIndex);
 
-    std::map<Ship::ShipDeviceIndex, bool> mDeviceIndexVisiblity;
-    void DrawDeviceVisibilityButtons();
+    void DrawDeviceToggles(uint8_t portIndex);
 };

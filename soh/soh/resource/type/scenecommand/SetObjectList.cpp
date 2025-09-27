@@ -6,6 +6,6 @@ int16_t* SetObjectList::GetPointer() {
 }
 
 size_t SetObjectList::GetPointerSize() {
-	return objects.size() * sizeof(int16_t);
+    return objects.size() * sizeof(int16_t);
 }
 } // namespace SOH

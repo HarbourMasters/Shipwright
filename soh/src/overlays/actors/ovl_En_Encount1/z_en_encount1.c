@@ -2,7 +2,7 @@
 #include "vt.h"
 #include "overlays/actors/ovl_En_Tite/z_en_tite.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_LOCK_ON_DISABLED)
 
 void EnEncount1_Init(Actor* thisx, PlayState* play);
 void EnEncount1_Update(Actor* thisx, PlayState* play);
@@ -65,7 +65,7 @@ void EnEncount1_Init(Actor* thisx, PlayState* play) {
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 発生チェック範囲   ☆☆☆☆☆ %f\n" VT_RST, this->spawnRange);
     osSyncPrintf("\n\n");
 
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     switch (this->spawnType) {
         case SPAWNER_LEEVER:
             this->timer = 30;
@@ -138,10 +138,10 @@ void EnEncount1_SpawnLeevers(EnEncount1* this, PlayState* play) {
                 }
                 spawnPos.y = floorY;
 
-                leever = (EnReeba*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_REEBA,
-                                                      spawnPos.x, spawnPos.y, spawnPos.z, 0, 0, 0, spawnParams);
+                leever = (EnReeba*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_REEBA, spawnPos.x,
+                                                      spawnPos.y, spawnPos.z, 0, 0, 0, spawnParams);
 
-                        if (leever != NULL) {
+                if (leever != NULL) {
                     this->curNumSpawn++;
                     leever->unk_280 = this->leeverIndex++;
                     if (this->leeverIndex >= 5) {
@@ -200,8 +200,8 @@ void EnEncount1_SpawnTektites(EnEncount1* this, PlayState* play) {
                     return;
                 }
                 spawnPos.y = floorY;
-                if (Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_TITE, spawnPos.x,
-                                       spawnPos.y, spawnPos.z, 0, 0, 0, TEKTITE_RED) != NULL) { // Red tektite
+                if (Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_TITE, spawnPos.x, spawnPos.y,
+                                       spawnPos.z, 0, 0, 0, TEKTITE_RED) != NULL) { // Red tektite
                     this->curNumSpawn++;
                     this->totalNumSpawn++;
                 } else {
@@ -247,10 +247,10 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
     // enemies because it's much more difficult tracking how many enemies specifically spawned by this spawner have
     // been spawned and/or killed.
     int8_t enemyCount = play->actorCtx.actorLists[ACTORCAT_ENEMY].length;
-    if ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || 
-            (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && enemyCount < 15)) {
-        while ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || 
-                (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && enemyCount < 15)) {
+    if ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) ||
+        (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && enemyCount < 15)) {
+        while ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) ||
+               (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && enemyCount < 15)) {
             if (play->sceneNum == SCENE_HYRULE_FIELD) {
                 if ((player->floorSfxOffset == 0) || (player->actor.floorBgId != BGCHECK_SCENE) ||
                     !(player->actor.bgCheckFlags & 1) || (player->stateFlags1 & PLAYER_STATE1_IN_WATER)) {
@@ -282,7 +282,9 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
                     break;
                 }
                 if ((player->actor.yDistToWater != BGCHECK_Y_MIN) &&
-                    (floorY < (player->actor.world.pos.y + player->actor.yDistToWater*(CVarGetInteger(CVAR_ENHANCEMENT("EnemySpawnsOverWaterboxes"), 0) ? 1 : -1)))) {
+                    (floorY < (player->actor.world.pos.y +
+                               player->actor.yDistToWater *
+                                   (CVarGetInteger(CVAR_ENHANCEMENT("EnemySpawnsOverWaterboxes"), 0) ? 1 : -1)))) {
                     break;
                 }
                 spawnPos.y = floorY;
@@ -303,8 +305,8 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
                 }
                 this->killCount++;
             }
-            if (Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, spawnId, spawnPos.x, spawnPos.y,
-                                   spawnPos.z, 0, 0, 0, spawnParams) != NULL) {
+            if (Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, spawnId, spawnPos.x, spawnPos.y, spawnPos.z, 0,
+                                   0, 0, spawnParams) != NULL) {
                 this->curNumSpawn++;
                 if (this->curNumSpawn >= this->maxCurSpawns) {
                     this->fieldSpawnTimer = 100;

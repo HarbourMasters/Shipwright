@@ -3,7 +3,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_ARROW_DRAGGABLE)
+#define FLAGS \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_CAN_ATTACH_TO_ARROW)
 
 void EnCrow_Init(Actor* thisx, PlayState* play);
 void EnCrow_Destroy(Actor* thisx, PlayState* play);
@@ -180,12 +181,12 @@ void EnCrow_SetupDamaged(EnCrow* this, PlayState* play) {
         Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 40);
     }
 
-    if (this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW) {
+    if (this->actor.flags & ACTOR_FLAG_ATTACHED_TO_ARROW) {
         this->actor.speedXZ = 0.0f;
     }
 
     this->collider.base.acFlags &= ~AC_ON;
-    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
 
     this->actionFunc = EnCrow_Damaged;
 }
@@ -282,9 +283,9 @@ void EnCrow_FlyIdle(EnCrow* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
     }
-    if ((this->timer == 0) && (this->actor.xzDistToPlayer < 300.0f) && !(player->stateFlags1 & PLAYER_STATE1_ON_HORSE) &&
-        (this->actor.yDistToWater < -40.0f) && (Player_GetMask(play) != PLAYER_MASK_SKULL) &&
-        !CVarGetInteger(CVAR_CHEAT("NoKeeseGuayTarget"), 0)) {
+    if ((this->timer == 0) && (this->actor.xzDistToPlayer < 300.0f) &&
+        !(player->stateFlags1 & PLAYER_STATE1_ON_HORSE) && (this->actor.yDistToWater < -40.0f) &&
+        (Player_GetMask(play) != PLAYER_MASK_SKULL) && GameInteractor_Should(VB_GUAY_DO_DIVE_ATTACK, true, this)) {
         EnCrow_SetupDiveAttack(this);
     }
 }
@@ -319,10 +320,9 @@ void EnCrow_DiveAttack(EnCrow* this, PlayState* play) {
         Math_ApproachS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 4, 0xC00);
     }
 
-    if ((this->timer == 0) || (Player_GetMask(play) == PLAYER_MASK_SKULL) ||
-        (this->collider.base.atFlags & AT_HIT) || (this->actor.bgCheckFlags & 9) ||
-        (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) || (this->actor.yDistToWater > -40.0f) ||
-        CVarGetInteger(CVAR_CHEAT("NoKeeseGuayTarget"), 0)) {
+    if ((this->timer == 0) || (Player_GetMask(play) == PLAYER_MASK_SKULL) || (this->collider.base.atFlags & AT_HIT) ||
+        (this->actor.bgCheckFlags & 9) || (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) ||
+        (this->actor.yDistToWater > -40.0f) || GameInteractor_Should(VB_GUAY_FORCE_FLY_AWAY, false, this)) {
         if (this->collider.base.atFlags & AT_HIT) {
             this->collider.base.atFlags &= ~AT_HIT;
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_KAICHO_ATTACK);
@@ -336,7 +336,7 @@ void EnCrow_Damaged(EnCrow* this, PlayState* play) {
     Math_StepToF(&this->actor.speedXZ, 0.0f, 0.5f);
     this->actor.colorFilterTimer = 40;
 
-    if (!(this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW)) {
+    if (!(this->actor.flags & ACTOR_FLAG_ATTACHED_TO_ARROW)) {
         if (this->actor.colorFilterParams & 0x4000) {
             Math_ScaledStepToS(&this->actor.shape.rot.x, 0x4000, 0x200);
             this->actor.shape.rot.z += 0x1780;
@@ -411,8 +411,8 @@ void EnCrow_Respawn(EnCrow* this, PlayState* play) {
             target = 0.01f;
         }
         if (Math_StepToF(&this->actor.scale.x, target, target * 0.1f)) {
-            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
-            this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
+            this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+            this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
             this->actor.colChkInfo.health = 1;
             EnCrow_SetupFlyIdle(this);
         }
@@ -429,7 +429,7 @@ void EnCrow_UpdateDamage(EnCrow* this, PlayState* play) {
                 EnCrow_SetupTurnAway(this);
             } else {
                 Actor_ApplyDamage(&this->actor);
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                 Enemy_StartFinishingBlow(play, &this->actor);
                 EnCrow_SetupDamaged(this, play);
             }

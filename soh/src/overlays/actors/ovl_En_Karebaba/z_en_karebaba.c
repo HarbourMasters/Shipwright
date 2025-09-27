@@ -11,7 +11,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
 
 void EnKarebaba_Init(Actor* thisx, PlayState* play);
 void EnKarebaba_Destroy(Actor* thisx, PlayState* play);
@@ -97,8 +97,8 @@ void EnKarebaba_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 22.0f);
-    SkelAnime_Init(play, &this->skelAnime, &gDekuBabaSkel, &gDekuBabaFastChompAnim, this->jointTable,
-                   this->morphTable, 8);
+    SkelAnime_Init(play, &this->skelAnime, &gDekuBabaSkel, &gDekuBabaFastChompAnim, this->jointTable, this->morphTable,
+                   8);
     Collider_InitCylinder(play, &this->bodyCollider);
     Collider_SetCylinder(play, &this->bodyCollider, &this->actor, &sBodyColliderInit);
     Collider_UpdateCylinder(&this->actor, &this->bodyCollider);
@@ -182,7 +182,7 @@ void EnKarebaba_SetupDying(EnKarebaba* this) {
     this->actor.world.rot.y = this->actor.shape.rot.y + 0x8000;
     this->actor.speedXZ = 3.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DEKU_JR_DEAD);
-    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED;
     this->actionFunc = EnKarebaba_Dying;
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
@@ -196,7 +196,7 @@ void EnKarebaba_SetupDeadItemDrop(EnKarebaba* this, PlayState* play) {
     this->actor.shape.shadowScale = 3.0f;
     Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_MISC);
     this->actor.params = 200;
-    this->actor.flags &= ~ACTOR_FLAG_DRAW_WHILE_CULLED;
+    this->actor.flags &= ~ACTOR_FLAG_DRAW_CULLING_DISABLED;
     this->actionFunc = EnKarebaba_DeadItemDrop;
 }
 
@@ -333,9 +333,8 @@ void EnKarebaba_Dying(EnKarebaba* this, PlayState* play) {
         if (this->actor.scale.x > 0.005f && ((this->actor.bgCheckFlags & 2) || (this->actor.bgCheckFlags & 8))) {
             this->actor.scale.x = this->actor.scale.y = this->actor.scale.z = 0.0f;
             this->actor.speedXZ = 0.0f;
-            this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE);
-            EffectSsHahen_SpawnBurst(play, &this->actor.world.pos, 3.0f, 0, 12, 5, 15, HAHEN_OBJECT_DEFAULT, 10,
-                                     NULL);
+            this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE);
+            EffectSsHahen_SpawnBurst(play, &this->actor.world.pos, 3.0f, 0, 12, 5, 15, HAHEN_OBJECT_DEFAULT, 10, NULL);
         }
 
         if (this->actor.bgCheckFlags & 2) {
@@ -405,8 +404,8 @@ void EnKarebaba_Regrow(EnKarebaba* this, PlayState* play) {
     this->actor.world.pos.y = this->actor.home.pos.y + (14.0f * scaleFactor);
 
     if (this->actor.params == 20) {
-        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE;
         Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_ENEMY);
         EnKarebaba_SetupIdle(this);
     }
@@ -455,8 +454,7 @@ void EnKarebaba_DrawBaseShadow(EnKarebaba* this, PlayState* play) {
     func_80038A28(this->boundFloor, this->actor.home.pos.x, this->actor.home.pos.y, this->actor.home.pos.z, &mf);
     Matrix_Mult(&mf, MTXMODE_NEW);
     Matrix_Scale(0.15f, 1.0f, 0.15f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gCircleShadowDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -478,8 +476,7 @@ void EnKarebaba_Draw(Actor* thisx, PlayState* play) {
     if (this->actionFunc == EnKarebaba_DeadItemDrop) {
         if (this->actor.params > 40 || (this->actor.params & 1)) {
             Matrix_Translate(0.0f, 0.0f, 200.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gDekuBabaStickDropDL);
         }
     } else if (this->actionFunc != EnKarebaba_Dead) {
@@ -504,8 +501,7 @@ void EnKarebaba_Draw(Actor* thisx, PlayState* play) {
 
         for (i = 0; i < stemSections; i++) {
             Matrix_Translate(0.0f, 0.0f, -2000.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_LOAD | G_MTX_NOPUSH | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD | G_MTX_NOPUSH | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, stemDLists[i]);
 
             if (i == 0 && this->actionFunc == EnKarebaba_Dying) {
@@ -525,14 +521,12 @@ void EnKarebaba_Draw(Actor* thisx, PlayState* play) {
 
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
     Matrix_RotateY(this->actor.home.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_LOAD | G_MTX_NOPUSH | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD | G_MTX_NOPUSH | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gDekuBabaBaseLeavesDL);
 
     if (this->actionFunc == EnKarebaba_Dying) {
         Matrix_RotateZYX(-0x4000, (s16)(this->actor.shape.rot.y - this->actor.home.rot.y), 0, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_LOAD | G_MTX_NOPUSH | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD | G_MTX_NOPUSH | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gDekuBabaStemBaseDL);
     }
 

@@ -14,7 +14,9 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS                                                                                 \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 typedef enum {
     /* 0 */ THROW_NORMAL,
@@ -231,7 +233,7 @@ void BossGanondrof_Init(Actor* thisx, PlayState* play) {
     Collider_InitCylinder(play, &this->colliderSpear);
     Collider_SetCylinder(play, &this->colliderBody, &this->actor, &sCylinderInitBody);
     Collider_SetCylinder(play, &this->colliderSpear, &this->actor, &sCylinderInitSpear);
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
         Actor_Kill(&this->actor);
         if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
@@ -339,8 +341,8 @@ void BossGanondrof_Intro(BossGanondrof* this, PlayState* play) {
 
         Animation_MorphToPlayOnce(&this->skelAnime, &gPhantomGanonRideSpearRaiseAnim, -7.0f);
         horseTemp = (EnfHG*)this->actor.child;
-        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->spearTip.x,
-                           this->spearTip.y, this->spearTip.z, 50, FHGFIRE_LIGHT_GREEN, 0, FHGFIRE_SPEAR_LIGHT);
+        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->spearTip.x, this->spearTip.y,
+                           this->spearTip.z, 50, FHGFIRE_LIGHT_GREEN, 0, FHGFIRE_SPEAR_LIGHT);
         this->actor.child = &horseTemp->actor;
     }
 
@@ -397,10 +399,10 @@ void BossGanondrof_Paintings(BossGanondrof* this, PlayState* play) {
         EnfHG* horseTemp;
 
         Animation_MorphToPlayOnce(&this->skelAnime, &gPhantomGanonRideSpearRaiseAnim, -2.0f);
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
         horseTemp = (EnfHG*)this->actor.child;
-        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->spearTip.x,
-                           this->spearTip.y, this->spearTip.z, 30, FHGFIRE_LIGHT_GREEN, 0, FHGFIRE_SPEAR_LIGHT);
+        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->spearTip.x, this->spearTip.y,
+                           this->spearTip.z, 30, FHGFIRE_LIGHT_GREEN, 0, FHGFIRE_SPEAR_LIGHT);
         this->actor.child = &horseTemp->actor;
     } else if (horse->bossGndSignal == FHG_LIGHTNING) {
         Animation_MorphToPlayOnce(&this->skelAnime, &gPhantomGanonRideSpearStrikeAnim, -2.0f);
@@ -408,7 +410,7 @@ void BossGanondrof_Paintings(BossGanondrof* this, PlayState* play) {
         Animation_MorphToPlayOnce(&this->skelAnime, &gPhantomGanonRideSpearResetAnim, -2.0f);
     } else if (horse->bossGndSignal == FHG_RIDE) {
         Animation_MorphToLoop(&this->skelAnime, &gPhantomGanonRideAnim, -2.0f);
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     }
 
     osSyncPrintf("RUN 3\n");
@@ -435,7 +437,7 @@ void BossGanondrof_Paintings(BossGanondrof* this, PlayState* play) {
 void BossGanondrof_SetupNeutral(BossGanondrof* this, f32 arg1) {
     Animation_MorphToLoop(&this->skelAnime, &gPhantomGanonNeutralAnim, arg1);
     this->actionFunc = BossGanondrof_Neutral;
-    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+    this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
     this->fwork[GND_FLOAT_SPEED] = 0.0f;
     this->timers[0] = (s16)(Rand_ZeroOne() * 64.0f) + 30;
 }
@@ -593,8 +595,8 @@ void BossGanondrof_SetupThrow(BossGanondrof* this, PlayState* play) {
     }
 
     horseTemp = (EnfHG*)this->actor.child;
-    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->spearTip.x,
-                       this->spearTip.y, this->spearTip.z, lightTime, FHGFIRE_LIGHT_GREEN, 0, FHGFIRE_SPEAR_LIGHT);
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->spearTip.x, this->spearTip.y,
+                       this->spearTip.z, lightTime, FHGFIRE_LIGHT_GREEN, 0, FHGFIRE_SPEAR_LIGHT);
     this->actor.child = &horseTemp->actor;
     this->work[GND_THROW_COUNT]++;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_FANTOM_STICK);
@@ -627,8 +629,8 @@ void BossGanondrof_Throw(BossGanondrof* this, PlayState* play) {
     if (Animation_OnFrame(&this->skelAnime, this->work[GND_THROW_FRAME])) {
         EnfHG* horseTemp = (EnfHG*)this->actor.child;
 
-        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->spearTip.x,
-                           this->spearTip.y, this->spearTip.z, this->work[GND_ACTION_STATE], 0, 0, FHGFIRE_ENERGY_BALL);
+        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->spearTip.x, this->spearTip.y,
+                           this->spearTip.z, this->work[GND_ACTION_STATE], 0, 0, FHGFIRE_ENERGY_BALL);
         this->actor.child = &horseTemp->actor;
     }
 
@@ -707,7 +709,7 @@ void BossGanondrof_Stunned(BossGanondrof* this, PlayState* play) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_FANTOM_DAMAGE2);
         }
 
-        this->actor.flags |= ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
+        this->actor.flags |= ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER;
     }
 
     osSyncPrintf("TIME0 %d ********************************************\n", this->timers[0]);
@@ -877,8 +879,8 @@ void BossGanondrof_Charge(BossGanondrof* this, PlayState* play) {
     if (!(this->work[GND_VARIANCE_TIMER] & 7)) {
         EnfHG* horse = (EnfHG*)thisx->child;
 
-        Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_EN_FHG_FIRE, this->spearTip.x,
-                           this->spearTip.y, this->spearTip.z, 8, FHGFIRE_LIGHT_BLUE, 0, FHGFIRE_SPEAR_LIGHT);
+        Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_EN_FHG_FIRE, this->spearTip.x, this->spearTip.y,
+                           this->spearTip.z, 8, FHGFIRE_LIGHT_BLUE, 0, FHGFIRE_SPEAR_LIGHT);
         thisx->child = &horse->actor;
     }
 }
@@ -890,7 +892,7 @@ void BossGanondrof_SetupDeath(BossGanondrof* this, PlayState* play) {
     Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_FANTOM_DEAD);
     this->deathState = DEATH_START;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->work[GND_VARIANCE_TIMER] = 0;
     this->shockTimer = 50;
 }
@@ -952,7 +954,7 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
                         if (Animation_OnFrame(&this->skelAnime, this->fwork[GND_END_FRAME])) {
                             this->fwork[GND_END_FRAME] = Animation_GetLastFrame(&gPhantomGanonAirDamageAnim);
                             Animation_Change(&this->skelAnime, &gPhantomGanonAirDamageAnim, 0.5f, 0.0f,
-                                                this->fwork[GND_END_FRAME], ANIMMODE_ONCE_INTERP, 0.0f);
+                                             this->fwork[GND_END_FRAME], ANIMMODE_ONCE_INTERP, 0.0f);
                             this->work[GND_ACTION_STATE] = DEATH_LIMP;
                         }
                     }
@@ -992,9 +994,9 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
             if (this->timers[1] == 1) {
                 EnfHG* horseTemp = (EnfHG*)this->actor.child;
 
-                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE,
-                                   GND_BOSSROOM_CENTER_X, GND_BOSSROOM_CENTER_Y + 3.0f, GND_BOSSROOM_CENTER_Z, 0x4000,
-                                   0, 0, FHGFIRE_WARP_DEATH);
+                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, GND_BOSSROOM_CENTER_X,
+                                   GND_BOSSROOM_CENTER_Y + 3.0f, GND_BOSSROOM_CENTER_Z, 0x4000, 0, 0,
+                                   FHGFIRE_WARP_DEATH);
                 this->actor.child = &horseTemp->actor;
                 Message_StartTextbox(play, 0x108E, NULL);
             }
@@ -1138,8 +1140,7 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
                     accelHahen.z = (GND_BOSSROOM_CENTER_Z - pos.z) * 0.001f;
                 }
 
-                EffectSsKFire_Spawn(play, &pos, &vel, &accelKFire, (s16)Rand_ZeroFloat(20.0f) + 15,
-                                    bodyDecayLevel);
+                EffectSsKFire_Spawn(play, &pos, &vel, &accelKFire, (s16)Rand_ZeroFloat(20.0f) + 15, bodyDecayLevel);
                 if ((Rand_ZeroOne() < 0.5f) || (bodyDecayLevel == 3)) {
                     EffectSsHahen_Spawn(play, &pos, &vel, &accelHahen, 0, (s16)Rand_ZeroFloat(4.0f) + 7,
                                         HAHEN_OBJECT_DEFAULT, 10, NULL);
@@ -1263,7 +1264,7 @@ void BossGanondrof_Update(Actor* thisx, PlayState* play) {
     EnfHG* horse;
 
     osSyncPrintf("MOVE START %d\n", this->actor.params);
-    this->actor.flags &= ~ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
+    this->actor.flags &= ~ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER;
     this->colliderBody.base.colType = COLTYPE_HIT3;
     if (this->killActor) {
         Actor_Kill(&this->actor);
@@ -1342,8 +1343,7 @@ void BossGanondrof_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 BossGanondrof_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                   void* thisx) {
+s32 BossGanondrof_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     BossGanondrof* this = (BossGanondrof*)thisx;
 
     switch (limbIndex) {
@@ -1487,9 +1487,7 @@ void BossGanondrof_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x08, BossGanondrof_GetNullDList(play->state.gfxCtx));
     }
 
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime,
-                              BossGanondrof_OverrideLimbDraw,
-                      BossGanondrof_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, BossGanondrof_OverrideLimbDraw, BossGanondrof_PostLimbDraw, this);
     osSyncPrintf("DRAW 22\n");
     POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
     CLOSE_DISPS(play->state.gfxCtx);

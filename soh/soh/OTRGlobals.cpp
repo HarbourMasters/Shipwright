@@ -1,4 +1,4 @@
-﻿#include "OTRGlobals.h"
+#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
@@ -26,6 +26,8 @@
 #include "Enhancements/audio/AudioCollection.h"
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/debugconsole.h"
+#include "Enhancements/randomizer/entrance.h"
+#include "Enhancements/randomizer/location_access.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
@@ -34,24 +36,23 @@
 #include "Enhancements/randomizer/static_data.h"
 #include "Enhancements/randomizer/dungeon.h"
 #include "Enhancements/gameplaystats.h"
-#include "Enhancements/n64_weird_frame_data.inc"
 #include "frame_interpolation.h"
 #include "variables.h"
 #include "z64.h"
 #include "macros.h"
 #include "Fonts.h"
+#include "window/FileDropMgr.h"
+#include "window/gui/resource/Font.h"
 #include <utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
-#include "ImGuiUtils.h"
-#include "Enhancements/presets.h"
+#include "Enhancements/Presets/Presets.h"
 #include "util.h"
-#include <boost_custom/container_hash/hash_32.hpp>
 
-#if not defined (__SWITCH__) && not defined(__WIIU__)
+#if not defined(__SWITCH__) && not defined(__WIIU__)
 #include "Extractor/Extract.h"
 #endif
 
-#include <Fast3D/gfx_pc.h>
+#include <Fast3D/interpreter.h>
 
 #ifdef SDL_PLATFORM_APPLE
 #include <SDL3/SDL_scancode.h>
@@ -66,11 +67,11 @@
 #include <coreinit/debug.h> // OSFatal
 #endif
 
-
 #include "Enhancements/custom-message/CustomMessageTypes.h"
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
-#include "SohGui.hpp"
+#include "soh/SohGui/SohGui.hpp"
+#include "soh/SohGui/ImGuiUtils.h"
 #include "ActorDB.h"
 #include "SaveManager.h"
 
@@ -182,7 +183,8 @@ const NaviColor_RGB8 LEDColorDefaultNaviColorList[] = {
     defaultPropsColor, // ACTORCAT_MAX
 };
 
-// OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
+// OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks.
+// Ignore unused ones.
 const char* constCameraStrings[] = {
     "INSUFFICIENT",
     "KEYFRAMES",
@@ -200,7 +202,7 @@ const char* constCameraStrings[] = {
     "E MODE FIX",
     "E MODE ABS",
     GFXP_HIRAGANA "ｶﾞﾒﾝ" GFXP_KATAKANA "   ﾃﾞﾓ", // OTRTODO: Unused, get a translation! Number 15
-    GFXP_HIRAGANA "ｶﾞﾒﾝ   ﾌﾂｳ", // OTRTODO: Unused, get a translation! Number 16
+    GFXP_HIRAGANA "ｶﾞﾒﾝ   ﾌﾂｳ",                  // OTRTODO: Unused, get a translation! Number 16
     "P TIME  MAX",
     GFXP_KATAKANA "ﾘﾝｸ" GFXP_HIRAGANA "    ｷｵｸ", // OTRTODO: Unused, get a translation! Number 18
     GFXP_KATAKANA "ﾘﾝｸ" GFXP_HIRAGANA "     ﾑｼ", // OTRTODO: Unused, get a translation! Number 19
@@ -227,7 +229,7 @@ const char* constCameraStrings[] = {
     GFXP_HIRAGANA "ｦﾐﾂｹﾗﾚﾏｾﾝ",
     GFXP_KATAKANA "ﾌｧｲﾙ " GFXP_HIRAGANA "ｦ",
     GFXP_HIRAGANA "ｼﾃﾓｲｲﾃﾞｽｶ?",
-    GFXP_HIRAGANA "ｹﾞﾝｻﾞｲﾍﾝｼｭｳﾁｭｳﾉ", // OTRTODO: Unused, get a translation! Number 43
+    GFXP_HIRAGANA "ｹﾞﾝｻﾞｲﾍﾝｼｭｳﾁｭｳﾉ",              // OTRTODO: Unused, get a translation! Number 43
     GFXP_KATAKANA "ﾌｧｲﾙ" GFXP_HIRAGANA "ﾊﾊｷｻﾚﾏｽ", // OTRTODO: Unused, get a translation! Number 44
     GFXP_HIRAGANA "ﾊｲ",
     GFXP_HIRAGANA "ｲｲｴ",
@@ -249,7 +251,7 @@ const char* constCameraStrings[] = {
     "FOV              ",
     "N FRAME          ",
     "Z ROT            ",
-    GFXP_KATAKANA  "ﾓ-ﾄﾞ        ", // OTRTODO: Unused, need translation. Number 65
+    GFXP_KATAKANA "ﾓ-ﾄﾞ        ", // OTRTODO: Unused, need translation. Number 65
     "  R FOCUS   ",
     "PMAX              ",
     "DEPTH             ",
@@ -261,16 +263,22 @@ const char* constCameraStrings[] = {
 };
 
 OTRGlobals::OTRGlobals() {
+    context = Ship::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
+}
+
+void OTRGlobals::Initialize() {
     std::vector<std::string> OTRFiles;
-    std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName);
-    if (std::filesystem::exists(mqPath)) { 
+    std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName);
+    if (std::filesystem::exists(mqPath)) {
         OTRFiles.push_back(mqPath);
-    } 
-    std::string ootPath = Ship::Context::LocateFileAcrossAppDirs("oot.otr", appShortName);
+    }
+    std::string ootPath = Ship::Context::LocateFileAcrossAppDirs("oot.o2r", appShortName);
     if (std::filesystem::exists(ootPath)) {
         OTRFiles.push_back(ootPath);
     }
-    std::string sohOtrPath = Ship::Context::GetPathRelativeToAppBundle("soh.otr");
+
+    std::string sohOtrPath = Ship::Context::LocateFileAcrossAppDirs("soh.o2r");
+
     if (std::filesystem::exists(sohOtrPath)) {
         OTRFiles.push_back(sohOtrPath);
     }
@@ -278,7 +286,8 @@ OTRGlobals::OTRGlobals() {
     std::vector<std::string> patchOTRs = {};
     if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
         if (std::filesystem::is_directory(patchesPath)) {
-            for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath, std::filesystem::directory_options::follow_directory_symlink)) {
+            for (const auto& p : std::filesystem::recursive_directory_iterator(
+                     patchesPath, std::filesystem::directory_options::follow_directory_symlink)) {
                 if (StringHelper::IEquals(p.path().extension().string(), ".otr") ||
                     StringHelper::IEquals(p.path().extension().string(), ".mpq") ||
                     StringHelper::IEquals(p.path().extension().string(), ".o2r") ||
@@ -289,43 +298,25 @@ OTRGlobals::OTRGlobals() {
         }
     }
     std::sort(patchOTRs.begin(), patchOTRs.end(), [](const std::string& a, const std::string& b) {
-        return std::lexicographical_compare(
-            a.begin(), a.end(),
-            b.begin(), b.end(),
-            [](char c1, char c2) {
-                return std::tolower(c1) < std::tolower(c2);
-            }
-        );
+        return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(),
+                                            [](char c1, char c2) { return std::tolower(c1) < std::tolower(c2); });
     });
     OTRFiles.insert(OTRFiles.end(), patchOTRs.begin(), patchOTRs.end());
     std::unordered_set<uint32_t> ValidHashes = {
-        OOT_PAL_MQ,
-        OOT_NTSC_JP_MQ,
-        OOT_NTSC_US_MQ,
-        OOT_PAL_GC_MQ_DBG,
-        OOT_NTSC_US_10,
-        OOT_NTSC_US_11,
-        OOT_NTSC_US_12,
-        OOT_PAL_10,
-        OOT_PAL_11,
-        OOT_NTSC_JP_GC_CE,
-        OOT_NTSC_JP_GC,
-        OOT_NTSC_US_GC,
-        OOT_PAL_GC,
-        OOT_PAL_GC_DBG1,
-        OOT_PAL_GC_DBG2
+        OOT_PAL_MQ,     OOT_NTSC_JP_MQ, OOT_NTSC_US_MQ, OOT_PAL_GC_MQ_DBG, OOT_NTSC_US_10,
+        OOT_NTSC_US_11, OOT_NTSC_US_12, OOT_PAL_10,     OOT_PAL_11,        OOT_NTSC_JP_GC_CE,
+        OOT_NTSC_JP_GC, OOT_NTSC_US_GC, OOT_PAL_GC,     OOT_PAL_GC_DBG1,   OOT_PAL_GC_DBG2,
     };
-
-    context = Ship::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
 
     context->InitLogging();
     context->InitGfxDebugger();
     context->InitConfiguration();
     context->InitConsoleVariables();
+    context->InitFileDropMgr();
 
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
     context->InitResourceManager(OTRFiles, {}, 3);
-    prevAltAssets = CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
+    prevAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 0);
     context->GetResourceManager()->SetAltAssetsEnabled(prevAltAssets);
 
     auto controlDeck = std::make_shared<LUS::ControlDeck>(std::vector<CONTROLLERBUTTONS_T>({
@@ -341,13 +332,18 @@ OTRGlobals::OTRGlobals() {
         BTN_CUSTOM_OCARINA_PITCH_DOWN,
     }));
     context->InitControlDeck(controlDeck);
-    context->GetControlDeck()->SetSinglePlayerMappingMode(true);
 
     context->InitCrashHandler();
     context->InitConsole();
 
-    auto sohInputEditorWindow = std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Controller Configuration");
-    auto sohFast3dWindow = std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({sohInputEditorWindow}));
+    Ship::Context::GetInstance()->GetLogger()->set_level(
+        (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), 1));
+    Ship::Context::GetInstance()->GetLogger()->set_pattern("[%H:%M:%S.%e] [%s:%#] [%l] %v");
+
+    auto sohInputEditorWindow =
+        std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Configure Controller");
+    auto sohFast3dWindow =
+        std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({ sohInputEditorWindow }));
     context->InitWindow(sohFast3dWindow);
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
@@ -357,57 +353,109 @@ OTRGlobals::OTRGlobals() {
 
     context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
 
-    SPDLOG_INFO("Starting Ship of Harkinian version {} (Branch: {} | Commit: {})", (char*)gBuildVersion, (char*)gGitBranch, (char*)gGitCommitHash);
+    SPDLOG_INFO("Starting Ship of Harkinian version {} (Branch: {} | Commit: {})", (char*)gBuildVersion,
+                (char*)gGitBranch, (char*)gGitCommitHash);
 
     auto loader = context->GetResourceManager()->GetResourceLoader();
-    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryTextureV0>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(Fast::ResourceType::Texture), 0);
-    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryTextureV1>(), RESOURCE_FORMAT_BINARY, "Texture", static_cast<uint32_t>(Fast::ResourceType::Texture), 1);
-    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryVertexV0>(), RESOURCE_FORMAT_BINARY, "Vertex", static_cast<uint32_t>(Fast::ResourceType::Vertex), 0);
-    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryXMLVertexV0>(), RESOURCE_FORMAT_XML, "Vertex", static_cast<uint32_t>(Fast::ResourceType::Vertex), 0);
-    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryDisplayListV0>(), RESOURCE_FORMAT_BINARY, "DisplayList", static_cast<uint32_t>(Fast::ResourceType::DisplayList), 0);
-    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryXMLDisplayListV0>(), RESOURCE_FORMAT_XML, "DisplayList", static_cast<uint32_t>(Fast::ResourceType::DisplayList), 0);
-    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryMatrixV0>(), RESOURCE_FORMAT_BINARY, "Matrix", static_cast<uint32_t>(Fast::ResourceType::Matrix), 0);
-    loader->RegisterResourceFactory(std::make_shared<Ship::ResourceFactoryBinaryBlobV0>(), RESOURCE_FORMAT_BINARY, "Blob", static_cast<uint32_t>(Ship::ResourceType::Blob), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryArrayV0>(), RESOURCE_FORMAT_BINARY, "Array", static_cast<uint32_t>(SOH::ResourceType::SOH_Array), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAnimationV0>(), RESOURCE_FORMAT_BINARY, "Animation", static_cast<uint32_t>(SOH::ResourceType::SOH_Animation), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryPlayerAnimationV0>(), RESOURCE_FORMAT_BINARY, "PlayerAnimation", static_cast<uint32_t>(SOH::ResourceType::SOH_PlayerAnimation), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinarySceneV0>(), RESOURCE_FORMAT_BINARY, "Room", static_cast<uint32_t>(SOH::ResourceType::SOH_Room), 0); // Is room scene? maybe?
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLSceneV0>(), RESOURCE_FORMAT_XML, "Room", static_cast<uint32_t>(SOH::ResourceType::SOH_Room), 0); // Is room scene? maybe?
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryCollisionHeaderV0>(), RESOURCE_FORMAT_BINARY, "CollisionHeader", static_cast<uint32_t>(SOH::ResourceType::SOH_CollisionHeader), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLCollisionHeaderV0>(), RESOURCE_FORMAT_XML, "CollisionHeader", static_cast<uint32_t>(SOH::ResourceType::SOH_CollisionHeader), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinarySkeletonV0>(), RESOURCE_FORMAT_BINARY, "Skeleton", static_cast<uint32_t>(SOH::ResourceType::SOH_Skeleton), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLSkeletonV0>(), RESOURCE_FORMAT_XML, "Skeleton", static_cast<uint32_t>(SOH::ResourceType::SOH_Skeleton), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinarySkeletonLimbV0>(), RESOURCE_FORMAT_BINARY, "SkeletonLimb", static_cast<uint32_t>(SOH::ResourceType::SOH_SkeletonLimb), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLSkeletonLimbV0>(), RESOURCE_FORMAT_XML, "SkeletonLimb", static_cast<uint32_t>(SOH::ResourceType::SOH_SkeletonLimb), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryPathV0>(), RESOURCE_FORMAT_BINARY, "Path", static_cast<uint32_t>(SOH::ResourceType::SOH_Path), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLPathV0>(), RESOURCE_FORMAT_XML, "Path", static_cast<uint32_t>(SOH::ResourceType::SOH_Path), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryCutsceneV0>(), RESOURCE_FORMAT_BINARY, "Cutscene", static_cast<uint32_t>(SOH::ResourceType::SOH_Cutscene), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryTextV0>(), RESOURCE_FORMAT_BINARY, "Text", static_cast<uint32_t>(SOH::ResourceType::SOH_Text), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLTextV0>(), RESOURCE_FORMAT_XML, "Text", static_cast<uint32_t>(SOH::ResourceType::SOH_Text), 0);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSampleV2>(), RESOURCE_FORMAT_BINARY, "AudioSample", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSample), 2);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSoundFontV2>(), RESOURCE_FORMAT_BINARY, "AudioSoundFont", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSoundFont), 2);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSequenceV2>(), RESOURCE_FORMAT_BINARY, "AudioSequence", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSequence), 2);
-    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryBackgroundV0>(), RESOURCE_FORMAT_BINARY, "Background", static_cast<uint32_t>(SOH::ResourceType::SOH_Background), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryTextureV0>(), RESOURCE_FORMAT_BINARY,
+                                    "Texture", static_cast<uint32_t>(Fast::ResourceType::Texture), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryTextureV1>(), RESOURCE_FORMAT_BINARY,
+                                    "Texture", static_cast<uint32_t>(Fast::ResourceType::Texture), 1);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryVertexV0>(), RESOURCE_FORMAT_BINARY,
+                                    "Vertex", static_cast<uint32_t>(Fast::ResourceType::Vertex), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryXMLVertexV0>(), RESOURCE_FORMAT_XML, "Vertex",
+                                    static_cast<uint32_t>(Fast::ResourceType::Vertex), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryDisplayListV0>(),
+                                    RESOURCE_FORMAT_BINARY, "DisplayList",
+                                    static_cast<uint32_t>(Fast::ResourceType::DisplayList), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryXMLDisplayListV0>(), RESOURCE_FORMAT_XML,
+                                    "DisplayList", static_cast<uint32_t>(Fast::ResourceType::DisplayList), 0);
+    loader->RegisterResourceFactory(std::make_shared<Fast::ResourceFactoryBinaryMatrixV0>(), RESOURCE_FORMAT_BINARY,
+                                    "Matrix", static_cast<uint32_t>(Fast::ResourceType::Matrix), 0);
+    loader->RegisterResourceFactory(std::make_shared<Ship::ResourceFactoryBinaryBlobV0>(), RESOURCE_FORMAT_BINARY,
+                                    "Blob", static_cast<uint32_t>(Ship::ResourceType::Blob), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryArrayV0>(), RESOURCE_FORMAT_BINARY,
+                                    "Array", static_cast<uint32_t>(SOH::ResourceType::SOH_Array), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAnimationV0>(), RESOURCE_FORMAT_BINARY,
+                                    "Animation", static_cast<uint32_t>(SOH::ResourceType::SOH_Animation), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryPlayerAnimationV0>(),
+                                    RESOURCE_FORMAT_BINARY, "PlayerAnimation",
+                                    static_cast<uint32_t>(SOH::ResourceType::SOH_PlayerAnimation), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinarySceneV0>(), RESOURCE_FORMAT_BINARY,
+                                    "Room", static_cast<uint32_t>(SOH::ResourceType::SOH_Room),
+                                    0); // Is room scene? maybe?
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLSceneV0>(), RESOURCE_FORMAT_XML, "Room",
+                                    static_cast<uint32_t>(SOH::ResourceType::SOH_Room), 0); // Is room scene? maybe?
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryCollisionHeaderV0>(),
+                                    RESOURCE_FORMAT_BINARY, "CollisionHeader",
+                                    static_cast<uint32_t>(SOH::ResourceType::SOH_CollisionHeader), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLCollisionHeaderV0>(), RESOURCE_FORMAT_XML,
+                                    "CollisionHeader", static_cast<uint32_t>(SOH::ResourceType::SOH_CollisionHeader),
+                                    0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinarySkeletonV0>(), RESOURCE_FORMAT_BINARY,
+                                    "Skeleton", static_cast<uint32_t>(SOH::ResourceType::SOH_Skeleton), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLSkeletonV0>(), RESOURCE_FORMAT_XML,
+                                    "Skeleton", static_cast<uint32_t>(SOH::ResourceType::SOH_Skeleton), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinarySkeletonLimbV0>(),
+                                    RESOURCE_FORMAT_BINARY, "SkeletonLimb",
+                                    static_cast<uint32_t>(SOH::ResourceType::SOH_SkeletonLimb), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLSkeletonLimbV0>(), RESOURCE_FORMAT_XML,
+                                    "SkeletonLimb", static_cast<uint32_t>(SOH::ResourceType::SOH_SkeletonLimb), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryPathV0>(), RESOURCE_FORMAT_BINARY,
+                                    "Path", static_cast<uint32_t>(SOH::ResourceType::SOH_Path), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLPathV0>(), RESOURCE_FORMAT_XML, "Path",
+                                    static_cast<uint32_t>(SOH::ResourceType::SOH_Path), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryCutsceneV0>(), RESOURCE_FORMAT_BINARY,
+                                    "Cutscene", static_cast<uint32_t>(SOH::ResourceType::SOH_Cutscene), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryTextV0>(), RESOURCE_FORMAT_BINARY,
+                                    "Text", static_cast<uint32_t>(SOH::ResourceType::SOH_Text), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLTextV0>(), RESOURCE_FORMAT_XML, "Text",
+                                    static_cast<uint32_t>(SOH::ResourceType::SOH_Text), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSampleV2>(), RESOURCE_FORMAT_BINARY,
+                                    "AudioSample", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSample), 2);
+
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLAudioSampleV0>(), RESOURCE_FORMAT_XML,
+                                    "Sample", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSample), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSoundFontV2>(),
+                                    RESOURCE_FORMAT_BINARY, "AudioSoundFont",
+                                    static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSoundFont), 2);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLSoundFontV0>(), RESOURCE_FORMAT_XML,
+                                    "SoundFont", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSoundFont), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryAudioSequenceV2>(),
+                                    RESOURCE_FORMAT_BINARY, "AudioSequence",
+                                    static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSequence), 2);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLAudioSequenceV0>(), RESOURCE_FORMAT_XML,
+                                    "Sequence", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSequence), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryBackgroundV0>(), RESOURCE_FORMAT_BINARY,
+                                    "Background", static_cast<uint32_t>(SOH::ResourceType::SOH_Background), 0);
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandoContext->InitStaticData();
     gRandoContext = Rando::Context::CreateInstance();
-    Rando::StaticData::InitItemTable();//RANDOTODO make this not rely on context's logic so it can be initialised in InitStaticData
-    gRandoContext->AddExcludedOptions();
-    gRandoContext->GetSettings()->CreateOptions();
+    Rando::Settings::GetInstance()->AssignContext(gRandoContext);
+    Rando::StaticData::InitItemTable(); // RANDOTODO make this not rely on context's logic so it can be initialised in
+                                        // InitStaticData
+    Rando::Settings::GetInstance()->CreateOptions();
     gRandomizer = std::make_shared<Randomizer>();
 
     hasMasterQuest = hasOriginal = false;
 
     previousImGuiScale = defaultImGuiScale;
-    defaultFontSmaller = CreateDefaultFontWithSize(10.0f);
-    defaultFontLarger = CreateDefaultFontWithSize(16.0f);
-    defaultFontLargest = CreateDefaultFontWithSize(20.0f);
+
+    fontMonoSmall = CreateFontWithSize(14.0f, "fonts/Inconsolata-Regular.ttf");
+    fontMono = CreateFontWithSize(16.0f, "fonts/Inconsolata-Regular.ttf");
+    fontMonoLarger = CreateFontWithSize(20.0f, "fonts/Inconsolata-Regular.ttf");
+    fontMonoLargest = CreateFontWithSize(24.0f, "fonts/Inconsolata-Regular.ttf");
+    fontStandard = CreateFontWithSize(16.0f, "fonts/Montserrat-Regular.ttf");
+    fontStandardLarger = CreateFontWithSize(20.0f, "fonts/Montserrat-Regular.ttf");
+    fontStandardLargest = CreateFontWithSize(24.0f, "fonts/Montserrat-Regular.ttf");
+    ImGui::GetIO().FontDefault = fontStandardLarger;
     ScaleImGui();
 
     // Move the camera strings from read only memory onto the heap (writable memory)
-    // This is in OTRGlobals right now because this is a place that will only ever be run once at the beginning of startup.
-    // We should probably find some code in db_camera that does initialization and only run once, and then dealloc on deinitialization.
+    // This is in OTRGlobals right now because this is a place that will only ever be run once at the beginning of
+    // startup. We should probably find some code in db_camera that does initialization and only run once, and then
+    // dealloc on deinitialization.
     cameraStrings = (char**)malloc(sizeof(constCameraStrings));
     for (int32_t i = 0; i < sizeof(constCameraStrings) / sizeof(char*); i++) {
         // OTRTODO: never deallocated...
@@ -481,7 +529,8 @@ ImFont* OTRGlobals::CreateDefaultFontWithSize(float size) {
     iconsConfig.MergeMode = true;
     iconsConfig.PixelSnapH = true;
     iconsConfig.GlyphMinAdvanceX = iconFontSize;
-    mImGuiIo->Fonts->AddFontFromMemoryCompressedBase85TTF(fontawesome_compressed_data_base85, iconFontSize, &iconsConfig, sIconsRanges);
+    mImGuiIo->Fonts->AddFontFromMemoryCompressedBase85TTF(fontawesome_compressed_data_base85, iconFontSize,
+                                                          &iconsConfig, sIconsRanges);
     return font;
 }
 
@@ -494,15 +543,14 @@ bool OTRGlobals::HasOriginal() {
 }
 
 uint32_t OTRGlobals::GetInterpolationFPS() {
-    if (Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() == Ship::WindowBackend::FAST3D_DXGI_DX11) {
-        return CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20);
-    }
-
     if (CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0)) {
         return Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
+    } else if (CVarGetInteger(CVAR_VSYNC_ENABLED, 1) ||
+               !Ship::Context::GetInstance()->GetWindow()->CanDisableVerticalSync()) {
+        return std::min<uint32_t>(Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate(),
+                                  CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20));
     }
-
-    return std::min<uint32_t>(Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate(), CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20));
+    return CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20);
 }
 
 extern "C" void OTRMessage_Init();
@@ -525,14 +573,14 @@ void OTRAudio_Thread() {
             }
         }
         std::unique_lock<std::mutex> Lock(audio.mutex);
-        //AudioMgr_ThreadEntry(&gAudioMgr);
-        // 528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
-        // in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
-        #define SAMPLES_HIGH 560
-        #define SAMPLES_LOW 528
+// AudioMgr_ThreadEntry(&gAudioMgr);
+//  528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
+//  in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
+#define SAMPLES_HIGH 560
+#define SAMPLES_LOW 528
 
-        #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
-        #define NUM_AUDIO_CHANNELS 2
+#define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1)
+#define NUM_AUDIO_CHANNELS 2
 
         int samples_left = AudioPlayer_Buffered();
         u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
@@ -540,10 +588,12 @@ void OTRAudio_Thread() {
         // 3 is the maximum authentic frame divisor.
         s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
         for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
+            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
+                                           num_audio_samples);
         }
 
-        AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
+        AudioPlayer_Play((u8*)audio_buffer,
+                         num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
 
         audio.processing = false;
         audio.cv_from_thread.notify_one();
@@ -551,8 +601,7 @@ void OTRAudio_Thread() {
 }
 
 // C->C++ Bridge
-extern "C" void OTRAudio_Init()
-{
+extern "C" void OTRAudio_Init() {
     // Precache all our samples, sequences, etc...
     ResourceMgr_LoadDirectory("audio");
 
@@ -561,6 +610,12 @@ extern "C" void OTRAudio_Init()
         audio.thread = std::thread(OTRAudio_Thread);
     }
 }
+
+extern "C" char** sequenceMap;
+extern "C" size_t sequenceMapSize;
+
+extern "C" char** fontMap;
+extern "C" size_t fontMapSize;
 
 extern "C" void OTRAudio_Exit() {
     // Tell the audio thread to stop
@@ -572,10 +627,24 @@ extern "C" void OTRAudio_Exit() {
 
     // Wait until the audio thread quit
     audio.thread.join();
+#if 0
+    for (size_t i = 0; i < sequenceMapSize; i++) {
+        free(sequenceMap[i]);
+    }
+    free(sequenceMap);
+
+    for (size_t i = 0; i < fontMapSize; i++) {
+        free(fontMap[i]);
+    }
+    free(fontMap);
+    free(gAudioContext.seqLoadStatus);
+    free(gAudioContext.fontLoadStatus);
+#endif
 }
 
 extern "C" void VanillaItemTable_Init() {
     static GetItemEntry getItemTable[] = {
+        // clang-format off
         GET_ITEM(ITEM_BOMBS_5,          OBJECT_GI_BOMB_1,        GID_BOMB,             0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBS_5),
         GET_ITEM(ITEM_NUTS_5,           OBJECT_GI_NUTS,          GID_NUTS,             0x34, 0x0C, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_NUTS_5),
         GET_ITEM(ITEM_BOMBCHU,          OBJECT_GI_BOMB_2,        GID_BOMBCHU,          0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_BOMBCHUS_10),
@@ -702,6 +771,7 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM_NONE,
         GET_ITEM_NONE,
         GET_ITEM_NONE // GI_MAX - if you need to add to this table insert it before this entry.
+        // clang-format on
     };
     ItemTableManager::Instance->AddItemTable(MOD_NONE);
     for (uint8_t i = 0; i < ARRAY_COUNT(getItemTable); i++) {
@@ -710,11 +780,11 @@ extern "C" void VanillaItemTable_Init() {
         // that table was accessed used `GetItemID - 1`. This allows the
         // "first" item of the new map to start at 1, syncing it up with
         // the GetItemID values and removing the need for the `- 1`
-        ItemTableManager::Instance->AddItemEntry(MOD_NONE, i+1, getItemTable[i]);
+        ItemTableManager::Instance->AddItemEntry(MOD_NONE, i + 1, getItemTable[i]);
     }
 }
 
-std::unordered_map<ItemID, GetItemID> ItemIDtoGetItemIDMap {
+std::unordered_map<ItemID, GetItemID> ItemIDtoGetItemIDMap{
     { ITEM_ARROWS_LARGE, GI_ARROWS_LARGE },
     { ITEM_ARROWS_MEDIUM, GI_ARROWS_MEDIUM },
     { ITEM_ARROWS_SMALL, GI_ARROWS_SMALL },
@@ -838,7 +908,7 @@ std::unordered_map<ItemID, GetItemID> ItemIDtoGetItemIDMap {
     { ITEM_TUNIC_ZORA, GI_TUNIC_ZORA },
     { ITEM_WALLET_ADULT, GI_WALLET_ADULT },
     { ITEM_WALLET_GIANT, GI_WALLET_GIANT },
-    { ITEM_WEIRD_EGG, GI_WEIRD_EGG }
+    { ITEM_WEIRD_EGG, GI_WEIRD_EGG },
 };
 
 extern "C" GetItemID RetrieveGetItemIDFromItemID(ItemID itemID) {
@@ -848,7 +918,7 @@ extern "C" GetItemID RetrieveGetItemIDFromItemID(ItemID itemID) {
     return GI_MAX;
 }
 
-std::unordered_map<ItemID, RandomizerGet> ItemIDtoRandomizerGetMap {
+std::unordered_map<ItemID, RandomizerGet> ItemIDtoRandomizerGetMap{
     { ITEM_SONG_MINUET, RG_MINUET_OF_FOREST },
     { ITEM_SONG_BOLERO, RG_BOLERO_OF_FIRE },
     { ITEM_SONG_SERENADE, RG_SERENADE_OF_WATER },
@@ -904,9 +974,9 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
     OTRVersion version = {};
 
     // Use a temporary archive instance to load the otr and read the version file
-    auto archive = std::make_shared<Ship::OtrArchive>(otrPath);
+    auto archive = std::make_shared<Ship::O2rArchive>(otrPath);
     if (archive->Open()) {
-        auto t = archive->LoadFile("portVersion", std::make_shared<Ship::ResourceInitData>());
+        auto t = archive->LoadFile("portVersion");
         if (t != nullptr && t->IsLoaded) {
             auto stream = std::make_shared<Ship::MemoryStream>(t->Buffer->data(), t->Buffer->size());
             auto reader = std::make_shared<Ship::BinaryReader>(stream);
@@ -916,47 +986,48 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
             version.minor = reader->ReadUInt16();
             version.patch = reader->ReadUInt16();
         }
-        archive->Close();
     }
 
     return version;
 }
 
-// Check that a soh.otr exists and matches the version of soh running
+// Check that a soh.o2r exists and matches the version of soh running
 // Otherwise show a message and exit
 void CheckSoHOTRVersion(std::string otrPath) {
     std::string msg;
 
 #if defined(__SWITCH__)
     msg = "\x1b[4;2HPlease re-extract it from the download."
-                       "\x1b[6;2HPress the Home button to exit...";
+          "\x1b[6;2HPress the Home button to exit...";
 #elif defined(__WIIU__)
-    msg = "Please extract the soh.otr from the Ship of Harkinian download\nto your folder.\n\nPress and hold the power button to shutdown...";
+    msg = "Please extract the soh.o2r from the Ship of Harkinian download\nto your folder.\n\nPress and hold the power "
+          "button to shutdown...";
 #else
-    msg = "Please extract the soh.otr from the Ship of Harkinian download to your folder.\n\nExiting...";
+    msg = "Please extract the soh.o2r from the Ship of Harkinian download to your folder.\n\nExiting...";
 #endif
 
     if (!std::filesystem::exists(otrPath)) {
 #if not defined(__SWITCH__) && not defined(__WIIU__)
-        Extractor::ShowErrorBox("soh.otr file is missing", msg.c_str());
+        Extractor::ShowErrorBox("soh.o2r file is missing", msg.c_str());
         exit(1);
 #elif defined(__SWITCH__)
-        Ship::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou are missing the soh.otr file." + msg).c_str());
+        Ship::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou are missing the soh.o2r file." + msg).c_str());
 #elif defined(__WIIU__)
-        OSFatal(("You are missing the soh.otr file\n\n" + msg).c_str());
+        OSFatal(("You are missing the soh.o2r file\n\n" + msg).c_str());
 #endif
     }
 
     OTRVersion otrVersion = ReadPortVersionFromOTR(otrPath);
 
-    if (otrVersion.major != gBuildVersionMajor || otrVersion.minor != gBuildVersionMinor || otrVersion.patch != gBuildVersionPatch) {
+    if (otrVersion.major != gBuildVersionMajor || otrVersion.minor != gBuildVersionMinor ||
+        otrVersion.patch != gBuildVersionPatch) {
 #if not defined(__SWITCH__) && not defined(__WIIU__)
-        Extractor::ShowErrorBox("soh.otr file version does not match", msg.c_str());
+        Extractor::ShowErrorBox("soh.o2r file version does not match", msg.c_str());
         exit(1);
 #elif defined(__SWITCH__)
-        Ship::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou have an old soh.otr file." + msg).c_str());
+        Ship::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou have an old soh.o2r file." + msg).c_str());
 #elif defined(__WIIU__)
-        OSFatal(("You have an old soh.otr file\n\n" + msg).c_str());
+        OSFatal(("You have an old soh.o2r file\n\n" + msg).c_str());
 #endif
     }
 }
@@ -990,20 +1061,23 @@ void DetectOTRVersion(std::string fileName, bool isMQ) {
         }
 
         snprintf(msgBuf, 250,
-            "The %s file was generated with a different version of Ship of Harkinian.\nOTR version: %s\n\n"
-            "You must regenerate to be able to play, otherwise the program will exit.\nWould you like to regenerate it now?",
-            fileName.c_str(), version);
+                 "The %s file was generated with a different version of Ship of Harkinian.\nOTR version: %s\n\n"
+                 "You must regenerate to be able to play, otherwise the program will exit.\nWould you like to "
+                 "regenerate it now?",
+                 fileName.c_str(), version);
 
         if (Extractor::ShowYesNoBox("Old OTR File Found", msgBuf) == IDYES) {
             std::string installPath = Ship::Context::GetAppBundlePath();
-            if (!std::filesystem::exists(installPath + "/assets/extractor")) {
-                Extractor::ShowErrorBox("Extractor assets not found",
-                    "Unable to regenerate. Missing assets/extractor folder needed to generate OTR file.\n\nExiting...");
+            if (!std::filesystem::exists(installPath + "/assets")) {
+                Extractor::ShowErrorBox(
+                    "Extractor assets not found",
+                    "Unable to regenerate. Missing assets/ folder needed to generate OTR file.\n\nExiting...");
                 exit(1);
             }
 
             Extractor extract;
-            if (!extract.Run(Ship::Context::GetAppDirectoryPath(appShortName), isMQ ? RomSearchMode::MQ : RomSearchMode::Vanilla)) {
+            if (!extract.Run(Ship::Context::GetAppDirectoryPath(appShortName),
+                             isMQ ? RomSearchMode::MQ : RomSearchMode::Vanilla)) {
                 Extractor::ShowErrorBox("Error", "An error occured, no OTR file was generated.\n\nExiting...");
                 exit(1);
             }
@@ -1014,14 +1088,18 @@ void DetectOTRVersion(std::string fileName, bool isMQ) {
 
 #elif defined(__SWITCH__)
         Ship::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship with an old game OTR file."
-                                               "\x1b[4;2HPlease regenerate a new game OTR and relaunch."
-                                               "\x1b[6;2HPress the Home button to exit...");
+                                                "\x1b[4;2HPlease regenerate a new game OTR and relaunch."
+                                                "\x1b[6;2HPress the Home button to exit...");
 #elif defined(__WIIU__)
         OSFatal("You've launched the Ship with an old a game OTR file.\n\n"
                 "Please generate a game OTR and relaunch.\n\n"
                 "Press and hold the Power button to shutdown...");
 #endif
     }
+}
+
+extern "C" void Messagebox_ShowErrorBox(char* title, char* body) {
+    Extractor::ShowErrorBox(title, body);
 }
 
 bool IsSubpath(const std::filesystem::path& path, const std::filesystem::path& base) {
@@ -1031,15 +1109,33 @@ bool IsSubpath(const std::filesystem::path& path, const std::filesystem::path& b
 
 bool PathTestCleanup(FILE* tfile) {
     try {
-        if (std::filesystem::exists("./text.txt")) std::filesystem::remove("./text.txt");
-        if (std::filesystem::exists("./test/")) std::filesystem::remove("./test/");
-    }
-    catch (std::filesystem::filesystem_error const& ex) { return false; }
+        if (std::filesystem::exists("./text.txt"))
+            std::filesystem::remove("./text.txt");
+        if (std::filesystem::exists("./test/"))
+            std::filesystem::remove("./test/");
+    } catch (std::filesystem::filesystem_error const& ex) { return false; }
     return true;
 }
 
-extern "C" void InitOTR() {
+void CheckAndCreateModFolder() {
+    try {
+        std::string modsPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
+        if (!std::filesystem::exists(modsPath)) {
+            // Create mods folder relative to app dir
+            modsPath = Ship::Context::GetPathRelativeToAppDirectory("mods", appShortName);
+            std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
+            if (std::filesystem::create_directories(modsPath)) {
+                std::ofstream(filePath).close();
+            }
+        }
+    } catch (std::filesystem::filesystem_error const& ex) {
+        // Couldn't make the folder, continue silently
+        return;
+    }
+}
 
+extern "C" void InitOTR() {
+    OTRGlobals::Instance = new OTRGlobals();
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);
 #elif defined(__WIIU__)
@@ -1068,31 +1164,43 @@ extern "C" void InitOTR() {
     bool error = false;
     try {
         create_directories(tfolder);
-    } catch (std::filesystem::filesystem_error const& ex) {
-        error = true;
-    }
+    } catch (std::filesystem::filesystem_error const& ex) { error = true; }
     if (tfile == NULL || error) {
-        Extractor::ShowErrorBox("Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
+        Extractor::ShowErrorBox(
+            "Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
         PathTestCleanup(tfile);
         exit(1);
     }
     fclose(tfile);
     if (!PathTestCleanup(tfile)) {
-        Extractor::ShowErrorBox("Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
+        Extractor::ShowErrorBox(
+            "Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
+        exit(1);
+    }
+    if (ownPath.string().find("OneDrive") != std::string::npos) {
+        Extractor::ShowErrorBox(
+            "Error",
+            "SoH appears to be in a OneDrive folder, which will cause issues. "
+            "Please move it to a folder outside of OneDrive, like the root of a drive (e.g. \"C:\\Games\\SoH\").");
         exit(1);
     }
 #endif
 
-    CheckSoHOTRVersion(Ship::Context::GetPathRelativeToAppBundle("soh.otr"));
+#if not defined(__SWITCH__) && not defined(__WIIU__)
+    CheckAndCreateModFolder();
+#endif
+    const bool ootO2RExists =
+        std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName)) ||
+        std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.o2r", appShortName));
 
-    if (!std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName)) &&
-        !std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.otr", appShortName))){
+    if (!ootO2RExists) {
 
 #if not defined(__SWITCH__) && not defined(__WIIU__)
         std::string installPath = Ship::Context::GetAppBundlePath();
-        if (!std::filesystem::exists(installPath + "/assets/extractor")) {
-            Extractor::ShowErrorBox("Extractor assets not found",
-                "No OTR files found. Missing assets/extractor folder needed to generate OTR file.\n\nExiting...");
+        if (!std::filesystem::exists(installPath + "/assets")) {
+            Extractor::ShowErrorBox(
+                "Extractor assets not found",
+                "No OTR files found. Missing assets/ folder needed to generate OTR file.\n\nExiting...");
             exit(1);
         }
 
@@ -1110,8 +1218,11 @@ extern "C" void InitOTR() {
         }
         if (Extractor::ShowYesNoBox("Extraction Complete", "ROM Extracted. Extract another?") == IDYES) {
             Extractor extract;
-            if (!extract.Run(Ship::Context::GetAppDirectoryPath(appShortName), generatedOtrIsMQ ? RomSearchMode::Vanilla : RomSearchMode::MQ)) {
-                Extractor::ShowErrorBox("Error", "An error occured, an OTR file may have been generated by a different step.\n\nContinuing...");
+            if (!extract.Run(Ship::Context::GetAppDirectoryPath(appShortName),
+                             generatedOtrIsMQ ? RomSearchMode::Vanilla : RomSearchMode::MQ)) {
+                Extractor::ShowErrorBox(
+                    "Error",
+                    "An error occured, an OTR file may have been generated by a different step.\n\nContinuing...");
             } else {
                 extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName));
             }
@@ -1119,8 +1230,8 @@ extern "C" void InitOTR() {
 
 #elif defined(__SWITCH__)
         Ship::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship without a game OTR file."
-                                               "\x1b[4;2HPlease generate a game OTR and relaunch."
-                                               "\x1b[6;2HPress the Home button to exit...");
+                                                "\x1b[4;2HPlease generate a game OTR and relaunch."
+                                                "\x1b[6;2HPress the Home button to exit...");
 #elif defined(__WIIU__)
         OSFatal("You've launched the Ship without a game OTR file.\n\n"
                 "Please generate a game OTR and relaunch.\n\n"
@@ -1128,10 +1239,10 @@ extern "C" void InitOTR() {
 #endif
     }
 
-    DetectOTRVersion("oot.otr", false);
-    DetectOTRVersion("oot-mq.otr", true);
+    DetectOTRVersion("oot.o2r", false);
+    DetectOTRVersion("oot-mq.o2r", true);
 
-    OTRGlobals::Instance = new OTRGlobals();
+    OTRGlobals::Instance->Initialize();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();
@@ -1145,18 +1256,21 @@ extern "C" void InitOTR() {
 
     SohGui::SetupGuiElements();
     ShipInit::InitAll();
+
+    Rando::StaticData::InitHashMaps();
+    OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
 #ifdef SDL_PLATFORM_APPLE
     SpeechSynthesizer::Instance = new DarwinSpeechSynthesizer();
-    SpeechSynthesizer::Instance->Init();
 #elif defined(_WIN32)
     SpeechSynthesizer::Instance = new SAPISpeechSynthesizer();
-    SpeechSynthesizer::Instance->Init();
+#elif ESPEAK
+    SpeechSynthesizer::Instance = new ESpeakSpeechSynthesizer();
 #else
     SpeechSynthesizer::Instance = new SpeechLogger();
-    SpeechSynthesizer::Instance->Init();
 #endif
+    SpeechSynthesizer::Instance->Init();
 
 #ifdef ENABLE_REMOTE_CONTROL
     CrowdControl::Instance = new CrowdControl();
@@ -1180,7 +1294,7 @@ extern "C" void InitOTR() {
     RegisterImGuiItemIcons();
 
     time_t now = time(NULL);
-    tm *tm_now = localtime(&now);
+    tm* tm_now = localtime(&now);
     if (tm_now->tm_mon == 11 && tm_now->tm_mday >= 24 && tm_now->tm_mday <= 25) {
         CVarRegisterInteger(CVAR_GENERAL("LetItSnow"), 1);
     } else {
@@ -1216,7 +1330,8 @@ extern "C" void DeinitOTR() {
     SDLNet_Quit();
 #endif
 
-    // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before these shared ptrs.
+    // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before
+    // these shared ptrs.
     SohGui::Destroy();
 
     OTRGlobals::Instance->context = nullptr;
@@ -1267,10 +1382,23 @@ extern "C" void Graph_StartFrame() {
     OTRGlobals::Instance->context->GetWindow()->SetLastScancode(-1);
 
     switch (dwScancode) {
+        case KbScancode::LUS_KB_F1: {
+            std::shared_ptr<SohModalWindow> modal = static_pointer_cast<SohModalWindow>(
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Modal Window"));
+            if (modal->IsPopupOpen("Menu Moved")) {
+                modal->DismissPopup();
+            } else {
+                modal->RegisterPopup("Menu Moved",
+                                     "The menubar, accessed by hitting F1, no longer exists.\nThe new menu can be "
+                                     "accessed by hitting the Esc button instead.",
+                                     "OK");
+            }
+            break;
+        }
         case KbScancode::LUS_KB_F5: {
             if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
-                    TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
+                    6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
             }
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
@@ -1284,15 +1412,14 @@ extern "C" void Graph_StartFrame() {
                 case SaveStateReturn::FAIL_WRONG_GAMESTATE:
                     SPDLOG_ERROR("[SOH] Can not save a state outside of \"GamePlay\"");
                     break;
-                [[unlikely]] default:
-                    break;
+                    [[unlikely]] default : break;
             }
             break;
         }
         case KbScancode::LUS_KB_F6: {
             if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
-                    TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
+                    6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
             }
             unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
@@ -1306,8 +1433,8 @@ extern "C" void Graph_StartFrame() {
         }
         case KbScancode::LUS_KB_F7: {
             if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->
-                    TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
+                    6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
             }
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
@@ -1327,8 +1454,7 @@ extern "C" void Graph_StartFrame() {
                 case SaveStateReturn::FAIL_WRONG_GAMESTATE:
                     SPDLOG_ERROR("[SOH] Can not load a state outside of \"GamePlay\"");
                     break;
-                [[unlikely]] default:
-                    break;
+                    [[unlikely]] default : break;
             }
 
             break;
@@ -1341,19 +1467,21 @@ extern "C" void Graph_StartFrame() {
         }
 #endif
         case KbScancode::LUS_KB_TAB: {
-            CVarSetInteger(CVAR_ENHANCEMENT("AltAssets"), !CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0));
+            if (CVarGetInteger(CVAR_SETTING("Mods.AlternateAssetsHotkey"), 1)) {
+                CVarSetInteger(CVAR_SETTING("AltAssets"), !CVarGetInteger(CVAR_SETTING("AltAssets"), 0));
+            }
             break;
         }
     }
 #endif
 
-    if (CVarGetInteger(CVAR_NEW_FILE_DROPPED, 0)) {
-        std::string filePath = SohUtils::Sanitize(CVarGetString(CVAR_DROPPED_FILE, ""));
+    auto dropMgr = Ship::Context::GetInstance()->GetFileDropMgr();
+    if (dropMgr->FileDropped()) {
+        std::string filePath = dropMgr->GetDroppedFile();
         if (!filePath.empty()) {
             GameInteractor::Instance->ExecuteHooks<GameInteractor::OnFileDropped>(filePath);
         }
-        CVarClear(CVAR_NEW_FILE_DROPPED);
-        CVarClear(CVAR_DROPPED_FILE);
+        dropMgr->ClearDroppedFile();
     }
 }
 
@@ -1367,9 +1495,13 @@ void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>
     // Process window events for resize, mouse, keyboard events
     wnd->HandleEvents();
 
+    UIWidgets::Colors themeColor =
+        static_cast<UIWidgets::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), UIWidgets::Colors::LightBlue));
+    ImGui::PushStyleColor(ImGuiCol_TitleBgActive, UIWidgets::ColorValues.at(themeColor));
     for (const auto& m : mtx_replacements) {
         wnd->DrawAndRunGraphicsCommands(Commands, m);
     }
+    ImGui::PopStyleColor();
 }
 
 // C->C++ Bridge
@@ -1415,9 +1547,6 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         wnd->SetTargetFps(fps);
     }
 
-    int threshold = CVarGetInteger(CVAR_SETTING("ExtraLatencyThreshold"), 80);
-    wnd->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
-
     // When the gfx debugger is active, only run with the final mtx
     if (GfxDebuggerIsDebugging()) {
         mtx_replacements.clear();
@@ -1436,7 +1565,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         }
     }
 
-    bool curAltAssets = CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0);
+    bool curAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 0);
     if (prevAltAssets != curAltAssets) {
         prevAltAssets = curAltAssets;
         Ship::Context::GetInstance()->GetResourceManager()->SetAltAssetsEnabled(curAltAssets);
@@ -1446,9 +1575,8 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     }
 
     // OTRTODO: FIGURE OUT END FRAME POINT
-   /* if (OTRGlobals::Instance->context->lastScancode != -1)
-        OTRGlobals::Instance->context->lastScancode = -1;*/
-
+    /* if (OTRGlobals::Instance->context->lastScancode != -1)
+         OTRGlobals::Instance->context->lastScancode = -1;*/
 }
 
 float divisor_num = 0.0f;
@@ -1483,7 +1611,7 @@ std::map<std::string, SoundFontSample*> cachedCustomSFs;
 
 extern "C" SoundFontSample* ReadCustomSample(const char* path) {
     return nullptr;
-/*
+    /*
     if (!ExtensionCache.contains(path))
         return nullptr;
 
@@ -1500,10 +1628,8 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
         drwav_uint32 sampleRate;
         drwav_uint64 totalPcm;
         drmp3_int16* pcmData =
-            drwav_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->BufferSize, &channels, &sampleRate, &totalPcm, NULL);
-        sampleC->size = totalPcm;
-        sampleC->sampleAddr = (uint8_t*)pcmData;
-        sampleC->codec = CODEC_S16;
+            drwav_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->BufferSize, &channels, &sampleRate, &totalPcm,
+    NULL); sampleC->size = totalPcm; sampleC->sampleAddr = (uint8_t*)pcmData; sampleC->codec = CODEC_S16;
 
         sampleC->loop = new AdpcmLoop;
         sampleC->loop->start = 0;
@@ -1536,11 +1662,45 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
     }
 
     return nullptr;
-*/
+    */
+}
+
+ImFont* OTRGlobals::CreateFontWithSize(float size, std::string fontPath) {
+    auto mImGuiIo = &ImGui::GetIO();
+    ImFont* font;
+    if (fontPath == "") {
+        ImFontConfig fontCfg = ImFontConfig();
+        fontCfg.OversampleH = fontCfg.OversampleV = 1;
+        fontCfg.PixelSnapH = true;
+        fontCfg.SizePixels = size;
+        font = mImGuiIo->Fonts->AddFontDefault(&fontCfg);
+    } else {
+        auto initData = std::make_shared<Ship::ResourceInitData>();
+        initData->Format = RESOURCE_FORMAT_BINARY;
+        initData->Type = static_cast<uint32_t>(RESOURCE_TYPE_FONT);
+        initData->ResourceVersion = 0;
+        initData->Path = fontPath;
+        std::shared_ptr<Ship::Font> fontData = std::static_pointer_cast<Ship::Font>(
+            Ship::Context::GetInstance()->GetResourceManager()->LoadResource(fontPath, false, initData));
+        ImFontConfig fontConf;
+        fontConf.FontDataOwnedByAtlas = false;
+        font = mImGuiIo->Fonts->AddFontFromMemoryTTF(fontData->Data, fontData->DataSize, size, &fontConf);
+    }
+    // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
+    float iconFontSize = size * 2.0f / 3.0f;
+    static const ImWchar sIconsRanges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
+    ImFontConfig iconsConfig;
+    iconsConfig.MergeMode = true;
+    iconsConfig.PixelSnapH = true;
+    iconsConfig.GlyphMinAdvanceX = iconFontSize;
+    mImGuiIo->Fonts->AddFontFromMemoryCompressedBase85TTF(fontawesome_compressed_data_base85, iconFontSize,
+                                                          &iconsConfig, sIconsRanges);
+    return font;
 }
 
 std::filesystem::path GetSaveFile(std::shared_ptr<Ship::Config> Conf) {
-    const std::string fileName = Conf->GetString("Game.SaveName", Ship::Context::GetPathRelativeToAppDirectory("oot_save.sav"));
+    const std::string fileName =
+        Conf->GetString("Game.SaveName", Ship::Context::GetPathRelativeToAppDirectory("oot_save.sav"));
     std::filesystem::path saveFile = std::filesystem::absolute(fileName);
 
     if (!exists(saveFile.parent_path())) {
@@ -1581,6 +1741,7 @@ extern "C" void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
 std::wstring StringToU16(const std::string& s) {
     std::vector<unsigned long> result;
     size_t i = 0;
+
     while (i < s.size()) {
         unsigned long uni;
         size_t nbytes = 0;
@@ -1589,7 +1750,13 @@ std::wstring StringToU16(const std::string& s) {
         if (c < 0x80) { // ascii
             uni = c;
             nbytes = 0;
-        } else if (c <= 0xBF) { // assuming kata/hiragana delimiter
+        } else if (c == GFXP_HIRAGANA_CHAR) { // Start Hiragana Mode
+            uni = c;
+            nbytes = 0;
+        } else if (c == GFXP_KATAKANA_CHAR) { // Start Katakana Mode
+            uni = c;
+            nbytes = 0;
+        } else if (c <= 0xBF) { // Invalid Characters (Skipped)
             nbytes = 0;
             uni = '\1';
         } else if (c <= 0xDF) {
@@ -1624,19 +1791,6 @@ std::wstring StringToU16(const std::string& s) {
     return utf16;
 }
 
-int CopyStringToCharBuffer(const std::string& inputStr, char* buffer, const int maxBufferSize) {
-    if (!inputStr.empty()) {
-        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents negatives.
-        memset(buffer, 0, std::max<int>(0, maxBufferSize));
-        // Gaurentee that this value will be greater than 0, regardless of passed variables.
-        const int copiedCharLen = std::min<int>(std::max<int>(0, maxBufferSize - 1), inputStr.length());
-        memcpy(buffer, inputStr.c_str(), copiedCharLen);
-        return copiedCharLen;
-    }
-
-    return 0;
-}
-
 extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char)) {
     const std::vector<uint32_t> hira1 = {
         u'を', u'ぁ', u'ぃ', u'ぅ', u'ぇ', u'ぉ', u'ゃ', u'ゅ', u'ょ', u'っ', u'-',  u'あ', u'い',
@@ -1648,23 +1802,55 @@ extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(vo
         u'み', u'む', u'め', u'も', u'や', u'ゆ', u'よ', u'ら', u'り', u'る', u'れ', u'ろ', u'わ', u'ん', u'゛', u'゜',
     };
 
+    const std::vector<uint32_t> kata1 = {
+        u'ヲ', u'ァ', u'ィ', u'ゥ', u'ェ', u'ォ', u'ャ', u'ュ', u'ョ', u'ッ', u'ー',
+    };
+
+    const std::vector<uint32_t> kata2 = {
+        u'ア', u'イ', u'ウ', u'エ', u'オ', u'カ', u'キ', u'ク', u'ケ', u'コ', u'サ', u'シ', u'ス', u'セ', u'ソ',
+        u'タ', u'チ', u'ツ', u'テ', u'ト', u'ナ', u'ニ', u'ヌ', u'ネ', u'ノ', u'ハ', u'ヒ', u'フ', u'ヘ', u'ホ',
+        u'マ', u'ミ', u'ム', u'メ', u'モ', u'ヤ', u'ユ', u'ヨ', u'ラ', u'リ', u'ル', u'レ', u'ロ', u'ワ', u'ン',
+    };
+
     std::wstring wstr = StringToU16(str);
+    bool hiraganaMode = false;
 
     for (const auto& c : wstr) {
-        unsigned char convt = ' ';
         if (c < 0x80) {
             printImpl(printer, c);
-        } else if (c >= u'｡' && c <= u'ﾟ') { // katakana
-            printImpl(printer, c - 0xFEC0);
+        } else if (c == GFXP_HIRAGANA_CHAR) {
+            hiraganaMode = true;
+        } else if (c == GFXP_KATAKANA_CHAR) {
+            hiraganaMode = false;
+        } else if (c >= u'｡' && c <= u'ﾟ') { // katakana (hankaku)
+            if (hiraganaMode && c >= u'ｦ' && c <= u'ｿ') {
+                printImpl(printer, c - 0xFEC0 - 0x20); // Hiragana Mode, Block 1
+            } else if (hiraganaMode && c >= u'ﾀ' && c <= u'ﾝ') {
+                printImpl(printer, c - 0xFEC0 + 0x20); // Hiragana Mode, Block 2
+            } else {
+                printImpl(printer, c - 0xFEC0);
+            }
+        } else if (c == u'　') { // zenkaku space
+            printImpl(printer, u' ');
         } else {
             auto it = std::find(hira1.begin(), hira1.end(), c);
             if (it != hira1.end()) { // hiragana block 1
-                printImpl(printer, 0x88 + std::distance(hira1.begin(), it));
+                printImpl(printer, 0x86 + std::distance(hira1.begin(), it));
             }
 
             auto it2 = std::find(hira2.begin(), hira2.end(), c);
             if (it2 != hira2.end()) { // hiragana block 2
                 printImpl(printer, 0xe0 + std::distance(hira2.begin(), it2));
+            }
+
+            auto it3 = std::find(kata1.begin(), kata1.end(), c);
+            if (it3 != kata1.end()) { // katakana zenkaku block 1
+                printImpl(printer, 0xa6 + std::distance(kata1.begin(), it3));
+            }
+
+            auto it4 = std::find(kata2.begin(), kata2.end(), c);
+            if (it4 != kata2.end()) { // katakana zenkaku block 2
+                printImpl(printer, 0xb1 + std::distance(kata2.begin(), it4));
             }
         }
     }
@@ -1682,7 +1868,8 @@ Color_RGB8 GetColorForControllerLED() {
     auto brightness = CVarGetFloat(CVAR_SETTING("LEDBrightness"), 1.0f) / 1.0f;
     Color_RGB8 color = { 0, 0, 0 };
     if (brightness > 0.0f) {
-        LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger(CVAR_SETTING("LEDColorSource"), LED_SOURCE_TUNIC_ORIGINAL));
+        LEDColorSource source =
+            static_cast<LEDColorSource>(CVarGetInteger(CVAR_SETTING("LEDColorSource"), LED_SOURCE_TUNIC_ORIGINAL));
         bool criticalOverride = CVarGetInteger(CVAR_SETTING("LEDCriticalOverride"), 1);
         if (gPlayState && (source == LED_SOURCE_TUNIC_ORIGINAL || source == LED_SOURCE_TUNIC_COSMETICS)) {
             switch (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)) {
@@ -1742,7 +1929,8 @@ Color_RGB8 GetColorForControllerLED() {
                         color = LEDColorDefaultNaviColorList[category].inner;
                 }
             } else { // No target actor.
-                if (source == LED_SOURCE_NAVI_COSMETICS && CVarGetInteger(CVAR_COSMETIC("Navi.IdlePrimary.Changed"), 0)) {
+                if (source == LED_SOURCE_NAVI_COSMETICS &&
+                    CVarGetInteger(CVAR_COSMETIC("Navi.IdlePrimary.Changed"), 0)) {
                     color = CVarGetColor24(CVAR_COSMETIC("Navi.IdlePrimary.Value"), defaultIdleColor.inner);
                 } else {
                     color = LEDColorDefaultNaviColorList[ACTORCAT_PLAYER].inner;
@@ -1774,11 +1962,13 @@ Color_RGB8 GetColorForControllerLED() {
 extern "C" void OTRControllerCallback(uint8_t rumble) {
     // We call this every tick, SDL accounts for this use and prevents driver spam
     // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
-    Ship::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetLED()->SetLEDColor(GetColorForControllerLED());
+    Ship::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetLED()->SetLEDColor(
+        GetColorForControllerLED());
 
     static std::shared_ptr<SohInputEditorWindow> controllerConfigWindow = nullptr;
     if (controllerConfigWindow == nullptr) {
-        controllerConfigWindow = std::dynamic_pointer_cast<SohInputEditorWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Controller Configuration"));
+        controllerConfigWindow = std::dynamic_pointer_cast<SohInputEditorWindow>(
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Controller Configuration"));
     } else if (controllerConfigWindow->TestingRumble()) {
         return;
     }
@@ -1791,7 +1981,7 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
 }
 
 extern "C" float OTRGetAspectRatio() {
-    return gfx_current_dimensions.aspect_ratio;
+    return Ship::Context::GetInstance()->GetWindow()->GetAspectRatio();
 }
 
 extern "C" float OTRGetDimensionFromLeftEdge(float v) {
@@ -1804,16 +1994,38 @@ extern "C" float OTRGetDimensionFromRightEdge(float v) {
 
 // Gets the width of the current render target area
 extern "C" uint32_t OTRGetGameRenderWidth() {
-    return gfx_current_dimensions.width;
+    auto fastWnd = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
+    auto intP = fastWnd->GetInterpreterWeak().lock();
+
+    if (!intP) {
+        assert(false && "Lost reference to Fast::Interpreter");
+        return 320;
+    }
+
+    uint32_t height, width;
+    intP->GetCurDimensions(&width, &height);
+
+    return width;
 }
 
 // Gets the height of the current render target area
 extern "C" uint32_t OTRGetGameRenderHeight() {
-    return gfx_current_dimensions.height;
+    auto fastWnd = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
+    auto intP = fastWnd->GetInterpreterWeak().lock();
+
+    if (!intP) {
+        assert(false && "Lost reference to Fast::Interpreter");
+        return 240;
+    }
+
+    uint32_t height, width;
+    intP->GetCurDimensions(&width, &height);
+
+    return height;
 }
 
-f32 floorf(f32 x);// RANDOTODO False positive error "allowing all exceptions is incompatible with previous function"
-f32 ceilf(f32 x); // This gets annoying
+f32 floorf(f32 x); // RANDOTODO False positive error "allowing all exceptions is incompatible with previous function"
+f32 ceilf(f32 x);  // This gets annoying
 
 extern "C" int16_t OTRGetRectDimensionFromLeftEdge(float v) {
     return ((int)floorf(OTRGetDimensionFromLeftEdge(v)));
@@ -1836,25 +2048,30 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 }
 
 extern "C" int Controller_ShouldRumble(size_t slot) {
-    for (auto [id, mapping] : Ship::Context::GetInstance()
-                                  ->GetControlDeck()
-                                  ->GetControllerByPort(static_cast<uint8_t>(slot))
-                                  ->GetRumble()
-                                  ->GetAllRumbleMappings()) {
-        if (mapping->PhysicalDeviceIsConnected()) {
-            return 1;
-        }
+    // don't rumble if we don't have rumble mappings
+    if (Ship::Context::GetInstance()
+            ->GetControlDeck()
+            ->GetControllerByPort(static_cast<uint8_t>(slot))
+            ->GetRumble()
+            ->GetAllRumbleMappings()
+            .empty()) {
+        return 0;
     }
 
-    return 0;
+    // don't rumble if we don't have connected gamepads
+    if (Ship::Context::GetInstance()
+            ->GetControlDeck()
+            ->GetConnectedPhysicalDeviceManager()
+            ->GetConnectedSDLGamepadsForPort(slot)
+            .empty()) {
+        return 0;
+    }
+
+    // rumble
+    return 1;
 }
 
-extern "C" void* getN64WeirdFrame(s32 i) {
-    char* weirdFrameBytes = reinterpret_cast<char*>(n64WeirdFrames);
-    return &weirdFrameBytes[i + sizeof(n64WeirdFrames)];
-}
-
-extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize) {
+extern "C" size_t GetEquipNowMessage(char* buffer, char* src, const size_t maxBufferSize) {
     CustomMessage customMessage("\x04\x1A\x08"
                                 "Would you like to equip it now?"
                                 "\x09&&"
@@ -1873,7 +2090,7 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
                                 "&"
                                 "Nein!"
                                 "%w\x02",
-				"\x04\x1A\x08"
+                                "\x04\x1A\x08"
                                 "D\x96sirez-vous l'\x96quiper maintenant?"
                                 "\x09&&"
                                 "\x1B%g"
@@ -1895,7 +2112,7 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
 
     if (!str.empty()) {
         memset(buffer, 0, maxBufferSize);
-        const int copiedCharLen = std::min<int>(maxBufferSize - 1, str.length());
+        const size_t copiedCharLen = std::min<size_t>(maxBufferSize - 1, str.length());
         memcpy(buffer, str.c_str(), copiedCharLen);
         return copiedCharLen;
     }
@@ -1923,7 +2140,7 @@ extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {
 }
 
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey) {
-    return OTRGlobals::Instance->gRandoContext->GetOption(randoSettingKey).GetContextOptionIndex();
+    return OTRGlobals::Instance->gRandoContext->GetOption(randoSettingKey).Get();
 }
 
 extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
@@ -1966,7 +2183,8 @@ extern "C" GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s
     return OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, sceneNum, actorParams, ogId);
 }
 
-extern "C" GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId) {
+extern "C" GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams,
+                                                                             GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, sceneNum, actorParams, ogId, false);
 }
 
@@ -1974,7 +2192,8 @@ extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomi
     return OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(randomizerCheck, ogId);
 }
 
-extern "C" GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
+extern "C" GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck,
+                                                                                  GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(randomizerCheck, ogId, false);
 }
 
@@ -1991,7 +2210,7 @@ extern "C" bool Randomizer_IsCheckShuffled(RandomizerCheck rc) {
 }
 
 extern "C" GetItemEntry GetItemMystery() {
-    return { ITEM_NONE_FE, 0, 0, 0, 0, 0, 0, ITEM_NONE_FE, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL, MOD_RANDOMIZER, (CustomDrawFunc)Randomizer_DrawMysteryItem };
+    return GET_ITEM_MYSTERY;
 }
 
 extern "C" uint8_t Randomizer_IsSeedGenerated() {
@@ -2025,7 +2244,8 @@ CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
     } else {
         giid = player->getItemId;
     }
-    const CustomMessage getItemText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
+    const CustomMessage getItemText =
+        CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
     return getItemText;
 }
 
@@ -2034,13 +2254,156 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     uint16_t textId = msgCtx->textId;
     Font* font = &msgCtx->font;
     char* buffer = font->msgBuf;
-    const int maxBufferSize = sizeof(font->msgBuf);
+    const size_t maxBufferSize = sizeof(font->msgBuf);
     CustomMessage messageEntry;
     s16 actorParams = 0;
     if (IS_RANDO) {
         auto ctx = Rando::Context::GetInstance();
-        bool nonBeanMerchants = ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) || 
-                                 ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL);
+        if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
+            s16 entrance = -1;
+            switch (textId) {
+                case TEXT_WATERFALL:
+                    entrance = ENTR_ZORAS_DOMAIN_ENTRANCE;
+                    break;
+                case TEXT_OUTSIDE_FISHING_POND:
+                    entrance = ENTR_FISHING_POND_0;
+                    break;
+                case TEXT_HF_SIGN:
+                    if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE) {
+                        entrance = ENTR_HYRULE_FIELD_STAIRS_EXIT;
+                    } else if (gPlayState->sceneNum == SCENE_GERUDO_VALLEY) {
+                        entrance = ENTR_HYRULE_FIELD_ROCKY_PATH;
+                    } else if (gPlayState->sceneNum == SCENE_LAKE_HYLIA) {
+                        entrance = ENTR_HYRULE_FIELD_FENCE_EXIT;
+                    }
+                    break;
+                case TEXT_HC_GREAT_FAIRY_SIGN:
+                    entrance = ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_DINS_HC;
+                    break;
+                case TEXT_DMT_KAK_SIGN:
+                    if (gPlayState->sceneNum == SCENE_HYRULE_FIELD) {
+                        entrance = ENTR_KAKARIKO_VILLAGE_FRONT_GATE;
+                    } else {
+                        entrance = ENTR_KAKARIKO_VILLAGE_GUARD_GATE;
+                    }
+                    break;
+                case TEXT_KAK_TO_GY_SIGN:
+                    entrance = ENTR_GRAVEYARD_ENTRANCE;
+                    break;
+                case TEXT_KAK_WELL_SIGN:
+                    entrance = ENTR_BOTTOM_OF_THE_WELL_ENTRANCE;
+                    break;
+                case TEXT_KAK_DMT_SIGN:
+                    entrance = ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT;
+                    break;
+                case TEXT_DMT_SIGN:
+                    entrance = ENTR_GROTTOS_13;
+                    break;
+                case TEXT_DMT_DC_SIGN:
+                    entrance = ENTR_DEATH_MOUNTAIN_TRAIL_OUTSIDE_DODONGOS_CAVERN;
+                    break;
+                case TEXT_DMT_GC_SIGN:
+                    entrance = ENTR_GORON_CITY_UPPER_EXIT;
+                    break;
+                case TEXT_GC_SIGN:
+                    if (gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL) {
+                        entrance = ENTR_GORON_CITY_UPPER_EXIT;
+                    } else {
+                        entrance = ENTR_GORON_CITY_DARUNIA_ROOM_EXIT;
+                    }
+                    break;
+                case TEXT_DMT_DMC_SIGN:
+                    entrance = ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT;
+                    break;
+                case TEXT_DMT_SUMMIT_SIGN:
+                    entrance = ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMT;
+                    break;
+                case TEXT_HF_ZR_SIGN:
+                    entrance = ENTR_ZORAS_RIVER_WEST_EXIT;
+                    break;
+                case TEXT_KF_SHOP_SIGN:
+                    entrance = ENTR_KOKIRI_SHOP_0;
+                    break;
+                case TEXT_LINKS_HOUSE_SIGN:
+                    entrance = ENTR_LINKS_HOUSE_1;
+                    break;
+                case TEXT_KOKIRI_EXIT_SIGN:
+                    entrance = ENTR_LOST_WOODS_BRIDGE_EAST_EXIT;
+                    break;
+                case TEXT_ZD_SIGN:
+                    if (gPlayState->sceneNum == SCENE_ZORAS_DOMAIN) {
+                        entrance = ENTR_ZORAS_RIVER_WATERFALL_EXIT;
+                    } else {
+                        entrance = ENTR_ZORAS_DOMAIN_KING_ZORA_EXIT;
+                    }
+                    break;
+                case TEXT_ZF_JABU_SIGN:
+                    entrance = ENTR_JABU_JABU_ENTRANCE;
+                    break;
+                case TEXT_KF_LW_SIGN:
+                    entrance = ENTR_LOST_WOODS_SOUTH_EXIT;
+                    break;
+                case TEXT_HF_LON_LON_SIGN:
+                    entrance = ENTR_LON_LON_RANCH_ENTRANCE;
+                    break;
+                case TEXT_LA_SIGN:
+                    entrance = ENTR_LAKE_HYLIA_NORTH_EXIT;
+                    break;
+                case TEXT_LA_LAB_SIGN:
+                    entrance = ENTR_LAKESIDE_LABORATORY_0;
+                    break;
+                case TEXT_GV_SIGN:
+                    if (gPlayState->sceneNum == SCENE_HYRULE_FIELD) {
+                        entrance = ENTR_GERUDO_VALLEY_EAST_EXIT;
+                    } else {
+                        entrance = ENTR_GERUDO_VALLEY_WEST_EXIT;
+                    }
+                    break;
+                case TEXT_ZD_SHOP_SIGN:
+                    entrance = ENTR_ZORA_SHOP_0;
+                    break;
+                case TEXT_OUTSIDE_KOKIRI_SIGN:
+                    entrance = ENTR_MARKET_ENTRANCE_NEAR_GUARD_EXIT;
+                    break;
+                case TEXT_OUTSIDE_MARKET_SIGN:
+                    entrance = ENTR_LON_LON_RANCH_ENTRANCE;
+                    break;
+                case TEXT_MIDO_HOUSE_SIGN:
+                    entrance = ENTR_MIDOS_HOUSE_0;
+                    break;
+                case TEXT_KNOW_IT_ALL_HOUSE_SIGN:
+                    entrance = ENTR_KNOW_IT_ALL_BROS_HOUSE_0;
+                    break;
+                case TEXT_TWINS_HOUSE_SIGN:
+                    entrance = ENTR_TWINS_HOUSE_0;
+                    break;
+                case TEXT_SARIAS_HOUSE_SIGN:
+                    entrance = ENTR_SARIAS_HOUSE_0;
+                    break;
+                case TEXT_NO_DIVING_SIGN:
+                    entrance = ENTR_LAKE_HYLIA_RIVER_EXIT;
+                    break;
+            }
+            if (entrance != -1) {
+                auto entranceCtx = ctx->GetEntranceShuffler();
+                for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
+                    if (Entrance_EntranceIsNull(&entranceCtx->entranceOverrides[i])) {
+                        break;
+                    }
+                    if (entranceCtx->entranceOverrides[i].index == entrance) {
+                        s16 overrideIndex = entranceCtx->entranceOverrides[i].override;
+                        Entrance_SetEntranceDiscovered(entrance, false);
+                        auto data = GetEntranceData(overrideIndex);
+                        font->charTexBuf[0] = (TEXTBOX_TYPE_WOODEN << 4) | TEXTBOX_POS_BOTTOM;
+                        return msgCtx->msgLength = font->msgLength = SohUtils::CopyStringToCharBuffer(
+                                   buffer, data->source + CustomMessage::MESSAGE_END(), maxBufferSize);
+                    }
+                }
+            }
+        }
+
+        bool nonBeanMerchants = ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) ||
+                                ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL);
         Player* player = GET_PLAYER(play);
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
             if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
@@ -2053,7 +2416,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (textId == TEXT_ITEM_DUNGEON_MAP || textId == TEXT_ITEM_COMPASS) {
             if (DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS)) {
                 if (textId == TEXT_ITEM_DUNGEON_MAP) {
-                    messageEntry = OTRGlobals::Instance->gRandomizer->GetMapGetItemMessageWithHint(player->getItemEntry);
+                    messageEntry =
+                        OTRGlobals::Instance->gRandomizer->GetMapGetItemMessageWithHint(player->getItemEntry);
                 } else {
                     messageEntry = Randomizer_GetCustomGetItemMessage(player);
                 }
@@ -2078,283 +2442,294 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                     messageEntry = Randomizer_GetCustomGetItemMessage(player);
                 }
             }
-        } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != RO_GOSSIP_STONES_NONE &&
-            (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_NOTHING ||
-             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_TRUTH &&
-              Player_GetMask(play) == PLAYER_MASK_TRUTH) ||
-             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_STONE && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+        } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS &&
+                   Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != RO_GOSSIP_STONES_NONE &&
+                   (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_NOTHING ||
+                    (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_TRUTH &&
+                     Player_GetMask(play) == PLAYER_MASK_TRUTH) ||
+                    (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_STONE &&
+                     CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
 
-            Actor* stone = GET_PLAYER(play)->talkActor; 
+            Actor* stone = player->talkActor;
             RandomizerHint stoneHint = RH_NONE;
             s16 hintParams = stone->params & 0xFF;
-            
-            if (Rando::StaticData::stoneParamsToHint.contains(hintParams)){
+
+            if (Rando::StaticData::stoneParamsToHint.contains(hintParams)) {
                 stoneHint = Rando::StaticData::stoneParamsToHint[hintParams];
-            } else if (hintParams == 0x18){
+            } else if (hintParams == 0x18) {
                 // look for the chest in the actorlist to determine
                 // which grotto we're in
-                int numOfActorLists =
-                    sizeof(play->actorCtx.actorLists) / sizeof(play->actorCtx.actorLists[0]);
+                int numOfActorLists = sizeof(play->actorCtx.actorLists) / sizeof(play->actorCtx.actorLists[0]);
                 for (int i = 0; i < numOfActorLists; i++) {
                     if (play->actorCtx.actorLists[i].length) {
-                        if (play->actorCtx.actorLists[i].head->id == 10 && 
-                            Rando::StaticData::grottoChestParamsToHint.contains(play->actorCtx.actorLists[i].head->params)) {
-                            //use the chest params to find the stone hint
-                            stoneHint = Rando::StaticData::grottoChestParamsToHint[play->actorCtx.actorLists[i].head->params];
+                        if (play->actorCtx.actorLists[i].head->id == 10 &&
+                            Rando::StaticData::grottoChestParamsToHint.contains(
+                                play->actorCtx.actorLists[i].head->params)) {
+                            // use the chest params to find the stone hint
+                            stoneHint =
+                                Rando::StaticData::grottoChestParamsToHint[play->actorCtx.actorLists[i].head->params];
                         }
                     }
                 }
             }
-            if (stoneHint == RH_NONE){
+            if (stoneHint == RH_NONE) {
                 messageEntry = CustomMessage("INVALID STONE. PARAMS: " + std::to_string(hintParams));
             } else {
                 messageEntry = ctx->GetHint(stoneHint)->GetHintMessage(MF_AUTO_FORMAT);
             }
-        } else if ((textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT)) {
+        } else if (textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) {
             // rando hints at altar
-            messageEntry = (LINK_IS_ADULT) ? ctx->GetHint(RH_ALTAR_ADULT)->GetHintMessage() : ctx->GetHint(RH_ALTAR_CHILD)->GetHintMessage(MF_AUTO_FORMAT);
+            messageEntry = (LINK_IS_ADULT) ? ctx->GetHint(RH_ALTAR_ADULT)->GetHintMessage(MF_AUTO_FORMAT)
+                                           : ctx->GetHint(RH_ALTAR_CHILD)->GetHintMessage(MF_AUTO_FORMAT);
         } else if (textId == TEXT_GANONDORF) {
-            if (ctx->GetOption(RSK_GANONDORF_HINT)){
-                if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)){
-                    messageEntry = INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT ?
-                                   ctx->GetHint(RH_GANONDORF_HINT)->GetHintMessage(MF_AUTO_FORMAT, 1):
-                                   ctx->GetHint(RH_GANONDORF_HINT)->GetHintMessage(MF_AUTO_FORMAT, 2);
+            if (ctx->GetOption(RSK_GANONDORF_HINT)) {
+                if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD) &&
+                    !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
+                    messageEntry = INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT
+                                       ? ctx->GetHint(RH_GANONDORF_HINT)->GetHintMessage(MF_AUTO_FORMAT, 1)
+                                       : ctx->GetHint(RH_GANONDORF_HINT)->GetHintMessage(MF_AUTO_FORMAT, 2);
                 } else {
-                    messageEntry = INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT ?
-                                   ctx->GetHint(RH_GANONDORF_JOKE)->GetHintMessage(MF_AUTO_FORMAT):
-                                   ctx->GetHint(RH_GANONDORF_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);
+                    messageEntry = INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT
+                                       ? ctx->GetHint(RH_GANONDORF_JOKE)->GetHintMessage(MF_AUTO_FORMAT)
+                                       : ctx->GetHint(RH_GANONDORF_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);
                 }
             }
         } else if (textId == TEXT_SHEIK_NEED_HOOK || textId == TEXT_SHEIK_HAVE_HOOK) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetSheikMessage(gPlayState->sceneNum, textId);            
-        // Shop items each have two message entries, second one offset by NUM_SHOP_ITEMS
-        // textId: TEXT_SHOP_ITEM_RANDOM + (randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1)
-        // textId: TEXT_SHOP_ITEM_RANDOM + ((randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS)
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetSheikMessage(gPlayState->sceneNum, textId);
+            // Shop items each have two message entries, second one offset by NUM_SHOP_ITEMS
+            // textId: TEXT_SHOP_ITEM_RANDOM + (randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1)
+            // textId: TEXT_SHOP_ITEM_RANDOM + ((randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS)
         } else if (textId >= TEXT_SHOP_ITEM_RANDOM && textId < TEXT_SHOP_ITEM_RANDOM_CONFIRM) {
-            RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)((textId - TEXT_SHOP_ITEM_RANDOM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
+            RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(
+                (RandomizerInf)((textId - TEXT_SHOP_ITEM_RANDOM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(rc, TEXT_SHOP_ITEM_RANDOM);
-        } else if (textId >= TEXT_SHOP_ITEM_RANDOM_CONFIRM && textId <= TEXT_SHOP_ITEM_RANDOM_CONFIRM_END){
-            RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)((textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
+        } else if (textId >= TEXT_SHOP_ITEM_RANDOM_CONFIRM && textId <= TEXT_SHOP_ITEM_RANDOM_CONFIRM_END) {
+            RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(
+                (RandomizerInf)((textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(rc, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
         } else if (textId == TEXT_SCRUB_RANDOM) {
-            EnDns* enDns = (EnDns*)GET_PLAYER(play)->talkActor;
-            RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf((RandomizerInf)enDns->sohScrubIdentity.randomizerInf);
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(rc, TEXT_SCRUB_RANDOM, TEXT_SCRUB_RANDOM_FREE, Randomizer_GetSettingValue(RSK_SCRUB_TEXT_HINT) == RO_GENERIC_OFF);
+            EnDns* enDns = (EnDns*)player->talkActor;
+            RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(
+                (RandomizerInf)enDns->sohScrubIdentity.randomizerInf);
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
+                rc, TEXT_SCRUB_RANDOM, TEXT_SCRUB_RANDOM_FREE,
+                Randomizer_GetSettingValue(RSK_SCRUB_TEXT_HINT) == RO_GENERIC_OFF);
         } else if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), 1) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
-                   textId == TEXT_HUGE_RUPEE)) {
+                    textId == TEXT_HUGE_RUPEE)) {
             messageEntry = Randomizer::GetRupeeMessage(textId);
             // In rando, replace Navi's general overworld hints with rando-related gameplay tips
-        } else if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"), 1) && textId >= TEXT_NAVI_DEKU_TREE_SUMMONS && textId <= TEXT_NAVI_TRY_TO_KEEP_MOVING) {
+        } else if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"), 1) &&
+                   textId >= TEXT_NAVI_DEKU_TREE_SUMMONS && textId <= TEXT_NAVI_TRY_TO_KEEP_MOVING) {
             u16 naviTextId = Random(0, NUM_NAVI_MESSAGES);
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId, MF_FORMATTED);
-        } 
-        else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_10 && 
-                 (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) || 
-                  ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL))) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(RC_ZR_MAGIC_BEAN_SALESMAN, TEXT_BEAN_SALESMAN_BUY_FOR_10, TEXT_NONE, Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
-        } 
-        else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_100) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100, MF_AUTO_FORMAT);
-        } 
-        else if (textId == TEXT_GRANNYS_SHOP && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) && nonBeanMerchants &&
-            (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)){
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(RC_KAK_GRANNYS_SHOP, TEXT_GRANNYS_SHOP, TEXT_NONE, Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
-        } 
-        else if (textId == TEXT_MEDIGORON && nonBeanMerchants){
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(RC_GC_MEDIGORON, TEXT_MEDIGORON, TEXT_NONE, Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
-        } 
-        else if (textId == TEXT_CARPET_SALESMAN_1 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN) && nonBeanMerchants){
-            if (Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT)){
-                messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(RC_WASTELAND_BOMBCHU_SALESMAN, TEXT_CARPET_SALESMAN_1, TEXT_NONE, Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID,
+                                                                           naviTextId, MF_FORMATTED);
+        } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_10 &&
+                   (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
+                    ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL))) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
+                RC_ZR_MAGIC_BEAN_SALESMAN, TEXT_BEAN_SALESMAN_BUY_FOR_10, TEXT_NONE,
+                Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
+        } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_100) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(
+                Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100, MF_AUTO_FORMAT);
+        } else if (textId == TEXT_GRANNYS_SHOP && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) &&
+                   nonBeanMerchants &&
+                   (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
+                RC_KAK_GRANNYS_SHOP, TEXT_GRANNYS_SHOP, TEXT_NONE,
+                Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
+        } else if (textId == TEXT_MEDIGORON && nonBeanMerchants) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
+                RC_GC_MEDIGORON, TEXT_MEDIGORON, TEXT_NONE,
+                Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
+        } else if (textId == TEXT_CARPET_SALESMAN_1 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN) &&
+                   nonBeanMerchants) {
+            if (Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT)) {
+                messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
+                    RC_WASTELAND_BOMBCHU_SALESMAN, TEXT_CARPET_SALESMAN_1, TEXT_NONE,
+                    Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
             } else {
-                messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(RC_WASTELAND_BOMBCHU_SALESMAN, TEXT_CARPET_SALESMAN_MYSTERIOUS, TEXT_NONE, Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
+                messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
+                    RC_WASTELAND_BOMBCHU_SALESMAN, TEXT_CARPET_SALESMAN_MYSTERIOUS, TEXT_NONE,
+                    Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
             }
-        } 
-        else if (textId == TEXT_CARPET_SALESMAN_ARMS_DEALER){
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId, MF_AUTO_FORMAT);
+        } else if (textId == TEXT_CARPET_SALESMAN_ARMS_DEALER) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId,
+                                                                           MF_AUTO_FORMAT);
         } else if (textId == TEXT_SKULLTULA_PEOPLE_IM_CURSED) {
-            actorParams = GET_PLAYER(play)->talkActor->params;
-            if (actorParams == 1 && ctx->GetOption(RSK_KAK_10_SKULLS_HINT)){
+            actorParams = player->talkActor->params;
+            if (actorParams == 1 && ctx->GetOption(RSK_KAK_10_SKULLS_HINT)) {
                 messageEntry = ctx->GetHint(RH_KAK_10_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-            } else if (actorParams == 2 && ctx->GetOption(RSK_KAK_20_SKULLS_HINT)){
+            } else if (actorParams == 2 && ctx->GetOption(RSK_KAK_20_SKULLS_HINT)) {
                 messageEntry = ctx->GetHint(RH_KAK_20_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-            } else if (actorParams == 3 && ctx->GetOption(RSK_KAK_30_SKULLS_HINT)){
+            } else if (actorParams == 3 && ctx->GetOption(RSK_KAK_30_SKULLS_HINT)) {
                 messageEntry = ctx->GetHint(RH_KAK_30_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-            } else if (actorParams == 4 && ctx->GetOption(RSK_KAK_40_SKULLS_HINT)){
+            } else if (actorParams == 4 && ctx->GetOption(RSK_KAK_40_SKULLS_HINT)) {
                 messageEntry = ctx->GetHint(RH_KAK_40_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-            } else if (ctx->GetOption(RSK_KAK_50_SKULLS_HINT)){
+            } else if (ctx->GetOption(RSK_KAK_50_SKULLS_HINT)) {
                 messageEntry = ctx->GetHint(RH_KAK_50_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
             }
         } else if (textId == TEXT_DAMPES_DIARY && ctx->GetOption(RSK_DAMPES_DIARY_HINT)) {
             messageEntry = ctx->GetHint(RH_DAMPES_DIARY)->GetHintMessage(MF_AUTO_FORMAT);
-        }
-        else if ((textId == TEXT_CHEST_GAME_PROCEED || textId == TEXT_CHEST_GAME_REAL_GAMBLER || textId == TEXT_CHEST_GAME_THANKS_A_LOT) &&
+        } else if ((textId == TEXT_CHEST_GAME_PROCEED || textId == TEXT_CHEST_GAME_REAL_GAMBLER ||
+                    textId == TEXT_CHEST_GAME_THANKS_A_LOT) &&
                    play->sceneNum == SCENE_TREASURE_BOX_SHOP && ctx->GetOption(RSK_GREG_HINT)) {
             messageEntry = ctx->GetHint(RH_GREG_RUPEE)->GetHintMessage(MF_AUTO_FORMAT);
-        }
-        else if (textId == TEXT_WARP_MINUET_OF_FOREST && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
+        } else if (textId == TEXT_WARP_MINUET_OF_FOREST && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
             messageEntry = ctx->GetHint(RH_MINUET_WARP_LOC)->GetHintMessage(MF_FORMATTED);
-        }
-        else if (textId == TEXT_WARP_BOLERO_OF_FIRE && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
+        } else if (textId == TEXT_WARP_BOLERO_OF_FIRE && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
             messageEntry = ctx->GetHint(RH_BOLERO_WARP_LOC)->GetHintMessage(MF_FORMATTED);
-        }
-        else if (textId == TEXT_WARP_SERENADE_OF_WATER && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
+        } else if (textId == TEXT_WARP_SERENADE_OF_WATER && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
             messageEntry = ctx->GetHint(RH_SERENADE_WARP_LOC)->GetHintMessage(MF_FORMATTED);
-        }
-        else if (textId == TEXT_WARP_REQUIEM_OF_SPIRIT && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
+        } else if (textId == TEXT_WARP_REQUIEM_OF_SPIRIT && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
             messageEntry = ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetHintMessage(MF_FORMATTED);
-        }
-        else if (textId == TEXT_WARP_NOCTURNE_OF_SHADOW && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
+        } else if (textId == TEXT_WARP_NOCTURNE_OF_SHADOW && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
             messageEntry = ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetHintMessage(MF_FORMATTED);
-        }
-        else if (textId == TEXT_WARP_PRELUDE_OF_LIGHT && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
+        } else if (textId == TEXT_WARP_PRELUDE_OF_LIGHT && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
             messageEntry = ctx->GetHint(RH_PRELUDE_WARP_LOC)->GetHintMessage(MF_FORMATTED);
-        }
-        else if (textId >= TEXT_WARP_MINUET_OF_FOREST &&  textId <= TEXT_WARP_PRELUDE_OF_LIGHT 
-                 && ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_WARP_MINUET_OF_FOREST, MF_FORMATTED);
-        }
-        else if (textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI || textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, textId, MF_AUTO_FORMAT);
-        }
-        else if (textId == TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW, MF_AUTO_FORMAT);
-        }
-        else if (textId == TEXT_FIRE_TEMPLE_GORON_OWE_YOU_BIG_TIME || (textId >= TEXT_FIRE_TEMPLE_GORON_FALLING_DOORS_SECRET && textId <= TEXT_FIRE_TEMPLE_GORON_SOUNDS_DIFFERENT_SECRET)) {
+        } else if (textId >= TEXT_WARP_MINUET_OF_FOREST && textId <= TEXT_WARP_PRELUDE_OF_LIGHT &&
+                   ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID,
+                                                                           TEXT_WARP_MINUET_OF_FOREST, MF_FORMATTED);
+        } else if (textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI || textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
+            messageEntry =
+                CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, textId, MF_AUTO_FORMAT);
+        } else if (textId == TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(
+                Randomizer::hintMessageTableID, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW, MF_AUTO_FORMAT);
+        } else if (textId == TEXT_FIRE_TEMPLE_GORON_OWE_YOU_BIG_TIME ||
+                   (textId >= TEXT_FIRE_TEMPLE_GORON_FALLING_DOORS_SECRET &&
+                    textId <= TEXT_FIRE_TEMPLE_GORON_SOUNDS_DIFFERENT_SECRET)) {
             u16 choice = Random(0, NUM_GORON_MESSAGES);
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
-        }
-        else if (textId == TEXT_FROGS_UNDERWATER && ctx->GetOption(RSK_FROGS_HINT)) {
-           messageEntry = ctx->GetHint(RH_FROGS_HINT)->GetHintMessage(MF_AUTO_FORMAT), TEXTBOX_TYPE_BLUE;
-        }
-        else if (
-            Randomizer_GetSettingValue(RSK_LOACH_HINT) &&
-            (
-                textId == TEXT_FISHING_CLOUDY ||
-                textId == TEXT_FISHING_TRY_ANOTHER_LURE ||
-                textId == TEXT_FISHING_SECRETS ||
-                textId == TEXT_FISHING_GOOD_FISHERMAN ||
-                textId == TEXT_FISHING_DIFFERENT_POND ||
-                textId == TEXT_FISHING_SCRATCHING ||
-                textId == TEXT_FISHING_TRY_ANOTHER_LURE_WITH_SINKING_LURE
-            )
-        ) {
+        } else if (textId == TEXT_FROGS_UNDERWATER && ctx->GetOption(RSK_FROGS_HINT)) {
+            messageEntry = ctx->GetHint(RH_FROGS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        } else if (Randomizer_GetSettingValue(RSK_LOACH_HINT) &&
+                   (textId == TEXT_FISHING_CLOUDY || textId == TEXT_FISHING_TRY_ANOTHER_LURE ||
+                    textId == TEXT_FISHING_SECRETS || textId == TEXT_FISHING_GOOD_FISHERMAN ||
+                    textId == TEXT_FISHING_DIFFERENT_POND || textId == TEXT_FISHING_SCRATCHING ||
+                    textId == TEXT_FISHING_TRY_ANOTHER_LURE_WITH_SINKING_LURE)) {
             messageEntry = ctx->GetHint(RH_LOACH_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-        }
-        else if ((textId == TEXT_FISHING_POND_START || textId == TEXT_FISHING_POND_START_MET) &&
+        } else if ((textId == TEXT_FISHING_POND_START || textId == TEXT_FISHING_POND_START_MET) &&
                    ctx->GetOption(RSK_SHUFFLE_FISHING_POLE) && !Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND)) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetFishingPondOwnerMessage(textId);
-        }
-        else if (textId == TEXT_SARIA_SFM && gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && ctx->GetOption(RSK_SARIA_HINT)){
+        } else if (textId == TEXT_SARIA_SFM && gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW &&
+                   ctx->GetOption(RSK_SARIA_HINT)) {
             messageEntry = ctx->GetHint(RH_SARIA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);
-        }
-        else if ((textId >= TEXT_SARIAS_SONG_FACE_TO_FACE && textId <= TEXT_SARIAS_SONG_CHANNELING_POWER) && ctx->GetOption(RSK_SARIA_HINT)){
+        } else if ((textId >= TEXT_SARIAS_SONG_FACE_TO_FACE && textId <= TEXT_SARIAS_SONG_CHANNELING_POWER) &&
+                   ctx->GetOption(RSK_SARIA_HINT)) {
             messageEntry = ctx->GetHint(RH_SARIA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 1);
-        }
-        else if (ctx->GetOption(RSK_BIGGORON_HINT) && (textId == TEXT_BIGGORON_BETTER_AT_SMITHING || textId ==  TEXT_BIGGORON_WAITING_FOR_YOU ||
-                                                       textId == TEXT_BIGGORON_RETURN_AFTER_A_FEW_DAYS || textId == TEXT_BIGGORON_I_MAAAADE_THISSSS)) {
-           messageEntry = ctx->GetHint(RH_BIGGORON_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-        }
-        else if (ctx->GetOption(RSK_BIG_POES_HINT) && (textId == TEXT_GHOST_SHOP_EXPLAINATION || textId == TEXT_GHOST_SHOP_CARD_HAS_POINTS)) {
+        } else if ((textId == TEXT_MIDO_SPEAK_TO_MIDO_FIRST_TIME || textId == TEXT_MIDO_SPEAK_TO_MIDO_AGAIN ||
+                    textId == TEXT_MIDO_HOME_AFTER_ZELDAS_LETTER || textId == TEXT_MIDO_HOME_BEFORE_ZELDAS_LETTER) &&
+                   ctx->GetOption(RSK_MIDO_HINT)) {
+            messageEntry = ctx->GetHint(RH_MIDO_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        } else if (ctx->GetOption(RSK_BIGGORON_HINT) &&
+                   (textId == TEXT_BIGGORON_BETTER_AT_SMITHING || textId == TEXT_BIGGORON_WAITING_FOR_YOU ||
+                    textId == TEXT_BIGGORON_RETURN_AFTER_A_FEW_DAYS || textId == TEXT_BIGGORON_I_MAAAADE_THISSSS)) {
+            messageEntry = ctx->GetHint(RH_BIGGORON_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        } else if (ctx->GetOption(RSK_BIG_POES_HINT) &&
+                   (textId == TEXT_GHOST_SHOP_EXPLAINATION || textId == TEXT_GHOST_SHOP_CARD_HAS_POINTS)) {
             messageEntry = ctx->GetHint(RH_BIG_POES_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-        }
-        else if (ctx->GetOption(RSK_CHICKENS_HINT) && (textId >= TEXT_ANJU_PLEASE_BRING_MY_CUCCOS_BACK && textId <= TEXT_ANJU_PLEASE_BRING_1_CUCCO)) {
+        } else if (ctx->GetOption(RSK_CHICKENS_HINT) &&
+                   (textId >= TEXT_ANJU_PLEASE_BRING_MY_CUCCOS_BACK && textId <= TEXT_ANJU_PLEASE_BRING_1_CUCCO)) {
             messageEntry = ctx->GetHint(RH_CHICKENS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-        }
-        else if ((textId == TEXT_MALON_EVERYONE_TURNING_EVIL || textId == TEXT_MALON_I_SING_THIS_SONG)&& ctx->GetOption(RSK_MALON_HINT)){
+        } else if ((textId == TEXT_MALON_EVERYONE_TURNING_EVIL || textId == TEXT_MALON_I_SING_THIS_SONG) &&
+                   ctx->GetOption(RSK_MALON_HINT)) {
             messageEntry = ctx->GetHint(RH_MALON_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);
-        }
-        else if (textId == TEXT_MALON_HOW_IS_EPONA_DOING && ctx->GetOption(RSK_MALON_HINT)){
+        } else if (textId == TEXT_MALON_HOW_IS_EPONA_DOING && ctx->GetOption(RSK_MALON_HINT)) {
             messageEntry = ctx->GetHint(RH_MALON_HINT)->GetHintMessage(MF_AUTO_FORMAT, 1);
-        }
-        else if (textId == TEXT_MALON_OBSTICLE_COURSE && ctx->GetOption(RSK_MALON_HINT)){
+        } else if (textId == TEXT_MALON_OBSTICLE_COURSE && ctx->GetOption(RSK_MALON_HINT)) {
             messageEntry = ctx->GetHint(RH_MALON_HINT)->GetHintMessage(MF_AUTO_FORMAT, 2);
-        }
-        else if (textId == TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED && ctx->GetOption(RSK_MALON_HINT)){
+        } else if (textId == TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED && ctx->GetOption(RSK_MALON_HINT)) {
             messageEntry = ctx->GetHint(RH_MALON_HINT)->GetHintMessage(MF_AUTO_FORMAT, 3);
-        }
-        else if (ctx->GetOption(RSK_KAK_100_SKULLS_HINT) && textId == TEXT_SKULLTULA_PEOPLE_MAKE_YOU_VERY_RICH) {
+        } else if (ctx->GetOption(RSK_KAK_100_SKULLS_HINT) && textId == TEXT_SKULLTULA_PEOPLE_MAKE_YOU_VERY_RICH) {
             messageEntry = ctx->GetHint(RH_KAK_100_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-        }
-        else if (textId == TEXT_GF_HBA_SIGN && ctx->GetOption(RSK_HBA_HINT)) {
+        } else if (textId == TEXT_GF_HBA_SIGN && ctx->GetOption(RSK_HBA_HINT)) {
             messageEntry = ctx->GetHint(RH_HBA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);
-        }
-        else if (textId == TEXT_HBA_NOT_ON_HORSE && ctx->GetOption(RSK_HBA_HINT)) {
+        } else if (textId == TEXT_HBA_NOT_ON_HORSE && ctx->GetOption(RSK_HBA_HINT)) {
             messageEntry = ctx->GetHint(RH_HBA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 1);
-        }
-        else if (textId == TEXT_HBA_INITIAL_EXPLAINATION && ctx->GetOption(RSK_HBA_HINT)) {
+        } else if (textId == TEXT_HBA_INITIAL_EXPLAINATION && ctx->GetOption(RSK_HBA_HINT)) {
             messageEntry = ctx->GetHint(RH_HBA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 2);
-        }
-        else if (textId == TEXT_HBA_ALREADY_HAVE_1000 && ctx->GetOption(RSK_HBA_HINT)) {
+        } else if (textId == TEXT_HBA_ALREADY_HAVE_1000 && ctx->GetOption(RSK_HBA_HINT)) {
             messageEntry = ctx->GetHint(RH_HBA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 3);
-        } 
-        else if (textId == TEXT_CARPET_SALESMAN_CUSTOM_FAIL_TO_BUY){
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_AUTO_FORMAT);
-        }
-        else if (textId == TEXT_MASK_SHOP_SIGN && ctx->GetOption(RSK_MASK_SHOP_HINT)) {
+        } else if (textId == TEXT_CARPET_SALESMAN_CUSTOM_FAIL_TO_BUY) {
+            messageEntry =
+                CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_AUTO_FORMAT);
+        } else if (textId == TEXT_MASK_SHOP_SIGN && ctx->GetOption(RSK_MASK_SHOP_HINT)) {
             messageEntry = ctx->GetHint(RH_MASK_SHOP_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        } else if (textId == TEXT_BIG_POE_COLLECTED_RANDO) {
+            messageEntry =
+                CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_AUTO_FORMAT);
+        } else if (textId == TEXT_GERUDO_GUARD_FRIENDLY && player->talkActor->id == ACTOR_EN_GE2 &&
+                   gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS) {
+            // TODO_TRANSLATE Translate into french and german
+            messageEntry = CustomMessage("Want me to throw you in jail?&\x1B#Yes please&No thanks#", { QM_GREEN });
+            messageEntry.AutoFormat();
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 0) != 0) {
             // The freeze text cannot be manually dismissed and must be auto-dismissed.
             // This is fine and even wanted when skull tokens are not shuffled, but when
-            // when they are shuffled we don't want to be able to manually dismiss the box.
+            // when they are shuffled we want to be able to manually dismiss the box.
             // Otherwise if we get a token from a chest or an NPC we get stuck in the ItemGet
             // animation until the text box auto-dismisses.
             // RANDOTODO: Implement a way to determine if an item came from a skulltula and
             // inject the auto-dismiss control code if it did.
-            if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 &&
-                !(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
+            bool gsTokensShuffled = Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF;
+            if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 && !(IS_RANDO && gsTokensShuffled)) {
                 textId = TEXT_GS_NO_FREEZE;
             } else {
                 textId = TEXT_GS_FREEZE;
             }
             // In vanilla, GS token count is incremented prior to the text box displaying
             // In rando we need to bump the token count by one to show the correct count
-            s16 gsCount = gSaveContext.inventory.gsTokens + (IS_RANDO ? 1 : 0);
+            s16 gsCount = gSaveContext.inventory.gsTokens + ((IS_RANDO && gsTokensShuffled) ? 1 : 0);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_FORMATTED);
             messageEntry.Replace("[[gsCount]]", std::to_string(gsCount));
-        } 
+        } else if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 &&
+                   (!IS_RANDO || Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) == RO_TOKENSANITY_OFF)) {
+            messageEntry = CustomMessage::LoadVanillaMessageTableEntry(TEXT_GS_FREEZE);
+            messageEntry.Replace(CustomMessage::MESSAGE_END(), "\x0E\x3C");
+            messageEntry += CustomMessage::MESSAGE_END();
+        }
     } else if ((IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0)) &&
-                (textId == TEXT_BUY_BOMBCHUS_10_DESC || textId == TEXT_BUY_BOMBCHUS_10_PROMPT)) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_FORMATTED);
-    } else if (textId == TEXT_HEART_CONTAINER && CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 0)) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER, MF_FORMATTED);
-        messageEntry.Replace("[[heartContainerCount]]", std::to_string(gSaveContext.sohStats.heartContainers + 1));
-    } else if (textId >= TEXT_HEART_PIECE && textId < TEXT_HEART_CONTAINER && CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 0)) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE, MF_FORMATTED);
-        messageEntry.Replace("[[heartPieceCount]]", std::to_string(gSaveContext.sohStats.heartPieces + 1));
-    } else if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger(CVAR_ENHANCEMENT("MarketSneak"), 0) && play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT, MF_FORMATTED);
+               (textId == TEXT_BUY_BOMBCHUS_10_DESC || textId == TEXT_BUY_BOMBCHUS_10_PROMPT)) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_FORMATTED);
+    } else if (textId == TEXT_HEART_CONTAINER &&
+               CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 0)) {
+        messageEntry =
+            CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER, MF_FORMATTED);
+        messageEntry.Replace("[[heartContainerCount]]", std::to_string(gSaveContext.ship.stats.heartContainers + 1));
+    } else if (textId >= TEXT_HEART_PIECE && textId < TEXT_HEART_CONTAINER &&
+               CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 0)) {
+        messageEntry =
+            CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE, MF_FORMATTED);
+        messageEntry.Replace("[[heartPieceCount]]", std::to_string(gSaveContext.ship.stats.heartPieces + 1));
+    } else if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger(CVAR_ENHANCEMENT("MarketSneak"), 0) &&
+               play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT,
+                                                                       MF_FORMATTED);
     }
     if (textId == TEXT_FISHERMAN_LEAVE && CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0)) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_FISHERMAN_LEAVE, MF_FORMATTED);
+        messageEntry =
+            CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_FISHERMAN_LEAVE, MF_FORMATTED);
     }
     font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
     switch (gSaveContext.language) {
         case LANGUAGE_FRA:
             return msgCtx->msgLength = font->msgLength =
-                       CopyStringToCharBuffer(messageEntry.GetFrench(MF_RAW), buffer, maxBufferSize);
+                       SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetFrench(MF_RAW), maxBufferSize);
         case LANGUAGE_GER:
             return msgCtx->msgLength = font->msgLength =
-                       CopyStringToCharBuffer(messageEntry.GetGerman(MF_RAW), buffer, maxBufferSize);
+                       SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetGerman(MF_RAW), maxBufferSize);
         case LANGUAGE_ENG:
         default:
             return msgCtx->msgLength = font->msgLength =
-                       CopyStringToCharBuffer(messageEntry.GetEnglish(MF_RAW), buffer, maxBufferSize);
+                       SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetEnglish(MF_RAW), maxBufferSize);
     }
     return false;
-}
-
-extern "C" void Overlay_DisplayText(float duration, const char* text) {
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(duration, true, text);
-}
-
-extern "C" void Overlay_DisplayText_Seconds(int seconds, const char* text) {
-    float duration = seconds * OTRGlobals::Instance->GetInterpolationFPS() * 0.05;
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
 extern "C" void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex) {
@@ -2366,11 +2741,23 @@ extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
 }
 
 extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement) {
-    gfx_register_blended_texture(name, mask, replacement);
+    if (auto intP = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())
+                        ->GetInterpreterWeak()
+                        .lock()) {
+        intP->RegisterBlendedTexture(name, mask, replacement);
+    } else {
+        assert(false && "Lost reference to Fast::Interpreter");
+    }
 }
 
 extern "C" void Gfx_UnregisterBlendedTexture(const char* name) {
-    gfx_unregister_blended_texture(name);
+    if (auto intP = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())
+                        ->GetInterpreterWeak()
+                        .lock()) {
+        intP->UnregisterBlendedTexture(name);
+    } else {
+        assert(false && "Lost reference to Fast::Interpreter");
+    }
 }
 
 extern "C" void Gfx_TextureCacheDelete(const uint8_t* texAddr) {
@@ -2384,7 +2771,13 @@ extern "C" void Gfx_TextureCacheDelete(const uint8_t* texAddr) {
         texAddr = (const uint8_t*)ResourceMgr_GetResourceDataByNameHandlingMQ(imgName);
     }
 
-    gfx_texture_cache_delete(texAddr);
+    if (auto intP = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())
+                        ->GetInterpreterWeak()
+                        .lock()) {
+        intP->TextureCacheDelete(texAddr);
+    } else {
+        assert(false && "Lost reference to Fast::Interpreter");
+    }
 }
 
 void SoH_ProcessDroppedFiles(std::string filePath) {
@@ -2397,7 +2790,7 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         nlohmann::json configJson;
         configStream >> configJson;
 
-        // #region SOH [Randomizer] TODO: Refactor spoiler file handling for randomizer 
+        // #region SOH [Randomizer] TODO: Refactor spoiler file handling for randomizer
         if (configJson.contains("version") && configJson.contains("finalSeed")) {
             CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), filePath.c_str());
             CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 1);
@@ -2409,9 +2802,11 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
             return;
         }
 
-        clearCvars(enhancementsCvars);
-        clearCvars(cheatCvars);
-        clearCvars(randomizerCvars);
+        CVarClearBlock(CVAR_PREFIX_ENHANCEMENT);
+        CVarClearBlock(CVAR_PREFIX_CHEAT);
+        CVarClearBlock(CVAR_PREFIX_RANDOMIZER_SETTING);
+        CVarClearBlock(CVAR_PREFIX_RANDOMIZER_ENHANCEMENT);
+        CVarClearBlock(CVAR_PREFIX_DEVELOPER_TOOLS);
 
         // Flatten everything under CVars into a single array
         auto cvars = configJson["CVars"].flatten();
@@ -2432,6 +2827,8 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
             }
         }
 
+        Rando::Settings::GetInstance()->UpdateOptionProperties();
+
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->GetGuiWindow("Console")->Hide();
         gui->GetGuiWindow("Actor Viewer")->Hide();
@@ -2439,11 +2836,14 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         gui->GetGuiWindow("Save Editor")->Hide();
         gui->GetGuiWindow("Display List Viewer")->Hide();
         gui->GetGuiWindow("Stats")->Hide();
-        std::dynamic_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->ClearBindings();
+        std::dynamic_pointer_cast<Ship::ConsoleWindow>(
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+            ->ClearBindings();
 
         gui->SaveConsoleVariablesNextFrame();
+        ShipInit::Init("*");
 
-        uint32_t finalHash = boost::hash_32<std::string>{}(configJson.dump());
+        uint32_t finalHash = SohUtils::Hash(configJson.dump());
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);
     } catch (std::exception& e) {
         SPDLOG_ERROR("Failed to load config file: {}", e.what());
@@ -2457,4 +2857,7 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
         return;
     }
 }
-// #endregion
+
+extern "C" void CheckTracker_RecalculateAvailableChecks() {
+    CheckTracker::RecalculateAvailableChecks();
+}

@@ -8,7 +8,7 @@
 #include "objects/object_po_field/object_po_field.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_LENS | ACTOR_FLAG_IGNORE_QUAKE)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_REACT_TO_LENS | ACTOR_FLAG_IGNORE_QUAKE)
 
 void EnPoDesert_Init(Actor* thisx, PlayState* play);
 void EnPoDesert_Destroy(Actor* thisx, PlayState* play);
@@ -64,8 +64,7 @@ void EnPoDesert_Init(Actor* thisx, PlayState* play) {
     EnPoDesert* this = (EnPoDesert*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    SkelAnime_Init(play, &this->skelAnime, &gPoeFieldSkel, &gPoeFieldFloatAnim, this->jointTable, this->morphTable,
-                   10);
+    SkelAnime_Init(play, &this->skelAnime, &gPoeFieldSkel, &gPoeFieldFloatAnim, this->jointTable, this->morphTable, 10);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sColliderInit);
     this->lightColor.r = 255;
@@ -202,16 +201,16 @@ void EnPoDesert_Update(Actor* thisx, PlayState* play) {
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     if (play->actorCtx.lensActive) {
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_LENS;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_REACT_TO_LENS;
         this->actor.shape.shadowDraw = ActorShadow_DrawCircle;
     } else {
         this->actor.shape.shadowDraw = NULL;
-        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_LENS);
+        this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_REACT_TO_LENS);
     }
 }
 
-s32 EnPoDesert_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                void* thisx, Gfx** gfxP) {
+s32 EnPoDesert_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
+                                Gfx** gfxP) {
     EnPoDesert* this = (EnPoDesert*)thisx;
     f32 mtxScale;
 
@@ -219,14 +218,13 @@ s32 EnPoDesert_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec
         mtxScale = this->actionTimer / 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
     }
-    if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_LENS)) {
+    if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_REACT_TO_LENS)) {
         *dList = NULL;
     }
     return false;
 }
 
-void EnPoDesert_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx,
-                             Gfx** gfxP) {
+void EnPoDesert_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfxP) {
     static Vec3f baseLightPos = { 0.0f, 1400.0f, 0.0f };
 
     EnPoDesert* this = (EnPoDesert*)thisx;
@@ -240,11 +238,10 @@ void EnPoDesert_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s*
         color.r = (s16)(rand * 30.0f) + 225;
         color.g = (s16)(rand * 100.0f) + 155;
         color.b = (s16)(rand * 160.0f) + 95;
-        if (CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_LENS)) {
+        if (CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_REACT_TO_LENS)) {
             gDPPipeSync((*gfxP)++);
             gDPSetEnvColor((*gfxP)++, color.r, color.g, color.b, 255);
-            gSPMatrix((*gfxP)++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix((*gfxP)++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList((*gfxP)++, gPoeFieldLanternDL);
             gSPDisplayList((*gfxP)++, gPoeFieldLanternTopDL);
             gDPPipeSync((*gfxP)++);
@@ -268,7 +265,7 @@ void EnPoDesert_Draw(Actor* thisx, PlayState* play) {
     } else {
         gSPSegment(POLY_XLU_DISP++, 0x0C, D_80116280 + 2);
     }
-    POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime,
-                                   EnPoDesert_OverrideLimbDraw, EnPoDesert_PostLimbDraw, &this->actor, POLY_XLU_DISP);
+    POLY_XLU_DISP = SkelAnime_DrawSkeleton2(play, &this->skelAnime, EnPoDesert_OverrideLimbDraw,
+                                            EnPoDesert_PostLimbDraw, &this->actor, POLY_XLU_DISP);
     CLOSE_DISPS(play->state.gfxCtx);
 }

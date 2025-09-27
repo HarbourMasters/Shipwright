@@ -10,7 +10,9 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS                                                                                  \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
 #define FU_RESET_LOOK_ANGLE (1 << 0)
 #define FU_WAIT (1 << 1)
@@ -152,17 +154,6 @@ void EnFu_WaitChild(EnFu* this, PlayState* play) {
     }
 }
 
-void GivePlayerRandoRewardSongOfStorms(EnFu* windmillGuy, PlayState* play, RandomizerCheck check) {
-    if (windmillGuy->actor.parent != NULL && windmillGuy->actor.parent->id == GET_PLAYER(play)->actor.id &&
-        !Flags_GetTreasure(play, 0x1F)) {
-        Flags_SetTreasure(play, 0x1F);
-        windmillGuy->actionFunc = func_80A1DBD4;
-    } else if (!Flags_GetTreasure(play, 0x1F)) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_STORMS);
-        GiveItemEntryFromActor(&windmillGuy->actor, play, getItemEntry, 10000.0f, 100.0f);
-    }
-}
-
 void func_80A1DB60(EnFu* this, PlayState* play) {
     if (play->csCtx.state == CS_STATE_IDLE) {
         this->actionFunc = EnFu_WaitAdult;
@@ -183,11 +174,11 @@ void func_80A1DBD4(EnFu* this, PlayState* play) {
     if (play->msgCtx.ocarinaMode >= OCARINA_MODE_04) {
         this->actionFunc = EnFu_WaitAdult;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         this->actionFunc = func_80A1DB60;
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
 
         play->msgCtx.ocarinaMode = OCARINA_MODE_00;
         Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL);

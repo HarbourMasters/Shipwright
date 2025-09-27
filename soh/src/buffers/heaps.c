@@ -12,8 +12,7 @@
 u8* gAudioHeap;
 u8* gSystemHeap;
 
-void Heaps_Alloc(void)
-{
+void Heaps_Alloc(void) {
 #ifdef _MSC_VER
     gAudioHeap = (u8*)_aligned_malloc(AUDIO_HEAP_SIZE, 0x10);
     gSystemHeap = (u8*)_aligned_malloc(SYSTEM_HEAP_SIZE, 0x10);
@@ -31,8 +30,7 @@ void Heaps_Alloc(void)
     assert(gSystemHeap != NULL);
 }
 
-void Heaps_Free(void)
-{
+void Heaps_Free(void) {
 #ifdef _MSC_VER
     _aligned_free(gAudioHeap);
     _aligned_free(gSystemHeap);

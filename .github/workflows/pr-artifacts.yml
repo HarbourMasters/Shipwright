@@ -48,7 +48,7 @@ jobs:
             });
 
             return allArtifacts.data.artifacts.reduce((acc, item) => {
-              if (item.name === "soh.otr") return acc;
+              if (item.name === "soh.o2r") return acc;
               acc += `
               - [${item.name}.zip](https://nightly.link/${context.repo.owner}/${context.repo.repo}/actions/artifacts/${item.id}.zip)`;
               return acc;

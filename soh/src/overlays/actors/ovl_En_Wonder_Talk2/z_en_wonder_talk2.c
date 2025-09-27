@@ -8,7 +8,7 @@
 #include "vt.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_NO_LOCKON)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_LOCK_ON_DISABLED)
 
 void EnWonderTalk2_Init(Actor* thisx, PlayState* play);
 void EnWonderTalk2_Destroy(Actor* thisx, PlayState* play);
@@ -93,7 +93,7 @@ void EnWonderTalk2_Init(Actor* thisx, PlayState* play) {
         this->talkMode = 4;
     }
     if (this->talkMode == 3) {
-        this->actor.flags &= ~ACTOR_FLAG_NO_LOCKON;
+        this->actor.flags &= ~ACTOR_FLAG_LOCK_ON_DISABLED;
         this->actionFunc = EnWonderTalk2_DoNothing;
     } else {
         this->actionFunc = func_80B3A10C;
@@ -116,7 +116,7 @@ void func_80B3A15C(EnWonderTalk2* this, PlayState* play) {
     this->unk_158++;
     if ((this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag)) {
         if (!this->unk_15A) {
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             this->unk_15A = true;
         }
     } else if (Actor_ProcessTalkRequest(&this->actor, play)) {
@@ -194,7 +194,7 @@ void func_80B3A3D4(EnWonderTalk2* this, PlayState* play) {
             if (this->talkMode == 4) {
                 this->unk_15A = true;
             }
-            this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED);
+            this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED);
             if (GameInteractor_Should(VB_WONDER_TALK, true, this)) {
                 Player_SetCsActionWithHaltedActors(play, NULL, 7);
             }
@@ -211,7 +211,7 @@ void func_80B3A4F8(EnWonderTalk2* this, PlayState* play) {
     this->unk_158++;
     if (this->switchFlag >= 0 && Flags_GetSwitch(play, this->switchFlag)) {
         if (!this->unk_15A) {
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             this->unk_15A = true;
         }
     } else if ((this->talkMode != 4) || !this->unk_15A) {
@@ -259,7 +259,7 @@ void func_80B3A4F8(EnWonderTalk2* this, PlayState* play) {
                     Message_StartTextbox(play, this->actor.textId, NULL);
                     Player_SetCsActionWithHaltedActors(play, NULL, 8);
                 }
-                this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED;
+                this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED;
                 this->actionFunc = func_80B3A3D4;
             }
 

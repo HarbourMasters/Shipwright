@@ -7,7 +7,7 @@
 #include "z_bg_mori_idomizu.h"
 #include "objects/object_mori_objects/object_mori_objects.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void BgMoriIdomizu_Init(Actor* thisx, PlayState* play);
 void BgMoriIdomizu_Destroy(Actor* thisx, PlayState* play);
@@ -71,8 +71,7 @@ void BgMoriIdomizu_Init(Actor* thisx, PlayState* play) {
     if (this->moriTexObjIndex < 0) {
         Actor_Kill(&this->actor);
         // "Bank danger!"
-        osSyncPrintf("Error : バンク危険！(arg_data 0x%04x)(%s %d)\n", this->actor.params, __FILE__,
-                     __LINE__);
+        osSyncPrintf("Error : バンク危険！(arg_data 0x%04x)(%s %d)\n", this->actor.params, __FILE__, __LINE__);
         return;
     }
     BgMoriIdomizu_SetupWaitForMoriTex(this);
@@ -167,8 +166,7 @@ void BgMoriIdomizu_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPSegment(POLY_XLU_DISP++, 0x08, play->objectCtx.status[this->moriTexObjIndex].segment);
 

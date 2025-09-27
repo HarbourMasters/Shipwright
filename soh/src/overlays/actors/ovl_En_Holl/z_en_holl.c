@@ -1,6 +1,6 @@
 #include "z_en_holl.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 // Horizontal Plane parameters
 
@@ -343,8 +343,7 @@ void EnHoll_Draw(Actor* thisx, PlayState* play) {
             Matrix_RotateY(M_PI, MTXMODE_APPLY);
         }
 
-        gSPMatrix(gfxP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(gfxP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPSetPrimColor(gfxP++, 0, 0, 0, 0, 0, (u8)this->planeAlpha);
         gSPDisplayList(gfxP++, sPlaneDL);
 

@@ -10,7 +10,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnJs_Init(Actor* thisx, PlayState* play);
 void EnJs_Destroy(Actor* thisx, PlayState* play);
@@ -61,8 +61,8 @@ void EnJs_Init(Actor* thisx, PlayState* play) {
     s32 pad;
 
     ActorShape_Init(&this->actor.shape, 0.0f, NULL, 36.0f);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gCarpetMerchantSkel, &gCarpetMerchantSlappingKneeAnim,
-                       this->jointTable, this->morphTable, 13);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gCarpetMerchantSkel, &gCarpetMerchantSlappingKneeAnim, this->jointTable,
+                       this->morphTable, 13);
     Animation_PlayOnce(&this->skelAnime, &gCarpetMerchantSlappingKneeAnim);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
@@ -109,7 +109,7 @@ void func_80A89008(EnJs* this) {
 void func_80A89078(EnJs* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         func_80A89008(this);
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     }
 }
 
@@ -125,7 +125,7 @@ void func_80A8910C(EnJs* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->actor.textId = 0x6078;
         En_Js_SetupAction(this, func_80A890C0);
-        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+        this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     }
 }
 
@@ -135,8 +135,8 @@ void func_80A89160(EnJs* this, PlayState* play) {
         En_Js_SetupAction(this, func_80A8910C);
     } else {
         GetItemEntry itemEntry = ItemTable_Retrieve(GI_BOMBCHUS_10);
-        gSaveContext.pendingSale = itemEntry.itemId;
-        gSaveContext.pendingSaleMod = itemEntry.modIndex;
+        gSaveContext.ship.pendingSale = itemEntry.itemId;
+        gSaveContext.ship.pendingSaleMod = itemEntry.modIndex;
         Actor_OfferGetItem(&this->actor, play, GI_BOMBCHUS_10, 10000.0f, 50.0f);
     }
 }
@@ -150,10 +150,11 @@ void func_80A891C4(EnJs* this, PlayState* play) {
                     func_80A89008(this);
                 } else {
                     if (!GameInteractor_Should(VB_GIVE_ITEM_FROM_CARPET_SALESMAN, false, this)) {
-                        if (GameInteractor_Should(VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN, true, this) || Actor_HasParent(&this->actor, play)){
+                        if (GameInteractor_Should(VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN, true, this) ||
+                            Actor_HasParent(&this->actor, play)) {
                             Rupees_ChangeBy(-200);
                             En_Js_SetupAction(this, func_80A89160);
-                        } else{
+                        } else {
                             Message_ContinueTextbox(play, 0x6073);
                             func_80A89008(this);
                         }

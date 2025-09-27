@@ -6,7 +6,7 @@
 
 #include "z_en_oe2.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnOE2_Init(Actor* thisx, PlayState* play);
 void EnOE2_Destroy(Actor* thisx, PlayState* play);

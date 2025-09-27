@@ -6,6 +6,6 @@ ActorEntry* SetStartPositionList::GetPointer() {
 }
 
 size_t SetStartPositionList::GetPointerSize() {
-	return startPositions.size() * sizeof(ActorEntry);
+    return startPositions.size() * sizeof(ActorEntry);
 }
 } // namespace SOH

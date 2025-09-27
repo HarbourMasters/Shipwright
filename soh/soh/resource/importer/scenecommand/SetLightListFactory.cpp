@@ -2,22 +2,23 @@
 #include "soh/resource/type/scenecommand/SetLightList.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
+#include <tinyxml2.h>
 
 namespace SOH {
-std::shared_ptr<Ship::IResource>
-SetLightListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource> SetLightListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                                   std::shared_ptr<Ship::BinaryReader> reader) {
     auto setLightList = std::make_shared<SetLightList>(initData);
 
     ReadCommandId(setLightList, reader);
-    
+
     setLightList->numLights = reader->ReadUInt32();
     setLightList->lightList.reserve(setLightList->numLights);
     for (uint32_t i = 0; i < setLightList->numLights; i++) {
         LightInfo light;
 
         light.type = reader->ReadUByte();
-		
-	    light.params.point.x = reader->ReadInt16();
+
+        light.params.point.x = reader->ReadInt16();
         light.params.point.y = reader->ReadInt16();
         light.params.point.z = reader->ReadInt16();
 
@@ -26,7 +27,7 @@ SetLightListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initDa
         light.params.point.color[2] = reader->ReadUByte(); // b
 
         light.params.point.drawGlow = reader->ReadUByte();
-	    light.params.point.radius = reader->ReadInt16();
+        light.params.point.radius = reader->ReadInt16();
 
         setLightList->lightList.push_back(light);
     }
@@ -39,7 +40,7 @@ SetLightListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initDa
 }
 
 std::shared_ptr<Ship::IResource> SetLightListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
-                                                                   tinyxml2::XMLElement* reader) {
+                                                                      tinyxml2::XMLElement* reader) {
     auto setLightList = std::make_shared<SetLightList>(initData);
 
     setLightList->cmdId = SceneCommandID::SetLightList;
@@ -51,7 +52,7 @@ std::shared_ptr<Ship::IResource> SetLightListFactoryXML::ReadResource(std::share
         if (childName == "LightInfo") {
             LightInfo light;
             light.type = child->IntAttribute("Type");
-            if (false/*light.type == LIGHT_DIRECTIONAL*/) {
+            if (false /*light.type == LIGHT_DIRECTIONAL*/) {
                 light.params.dir.x = child->IntAttribute("X");
                 light.params.dir.y = child->IntAttribute("Y");
                 light.params.dir.z = child->IntAttribute("Z");

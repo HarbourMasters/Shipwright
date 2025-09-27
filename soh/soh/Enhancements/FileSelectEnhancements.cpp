@@ -4,63 +4,61 @@
 
 #include <array>
 #include <string>
-#include <vector>
 
-std::array<std::string, LANGUAGE_MAX> RandomizerSettingsMenuText[RSM_MAX] = {     
+std::array<std::string, LANGUAGE_MAX> RandomizerSettingsMenuText[RSM_MAX] = {
     {
         // English
         "Start Randomizer",
         // German
-        "Start Randomizer",
+        "Randomizer starten",
         // French
-        "Start Randomizer",
+        "Commencer le Randomizer",
     },
     {
         // English
         "Generate New Randomizer Seed",
         // German
-        "Generate New Randomizer Seed",
+        "Neuen Randomizer Seed generieren",
         // French
-        "Generate New Randomizer Seed",
+        "Générer une nouvelle seed pour le Randomizer",
     },
     {
         // English
         "Open Randomizer Settings",
         // German
-        "Open Randomizer Settings",
+        "Randomizer Optionen öffnen",
         // French
-        "Open Randomizer Settings",
+        "Ouvrir les paramètres du Randomizer",
     },
     {
         // English
         "Generating...",
         // German
-        "Generating...",
+        "Generiere...",
         // French
-        "Generating...",
+        "Génération en cours...",
     },
-    {
-        // English
-        "No randomizer seed loaded.\nPlease generate one first"
-    #if defined(__WIIU__) || defined(__SWITCH__)
-        ".",
-    #else
-        ",\nor drop a spoiler log on the game window.",
-    #endif
-        // German
-        "No randomizer seed loaded.\nPlease generate one first"
-    #if defined(__WIIU__) || defined(__SWITCH__)
-        ".",
-    #else
-        ",\nor drop a spoiler log on the game window.",
-    #endif
-        // French
-        "Aucune Seed de Randomizer actuellement disponible.\nGénérez-en une dans les \"Randomizer Settings\""
-    #if (defined(__WIIU__) || defined(__SWITCH__))
-        "."
-    #else
-        "\nou glissez un spoilerlog sur la fenêtre du jeu."
-    #endif
+    { // English
+      "No randomizer seed loaded.\nPlease generate one first"
+#if defined(__WIIU__) || defined(__SWITCH__)
+      ".",
+#else
+      ",\nor drop a spoiler log on the game window.",
+#endif
+      // German
+      "Kein Randomizer Seed gefunden.\nBitte generiere zuerst einen"
+#if defined(__WIIU__) || defined(__SWITCH__)
+      ".",
+#else
+      ",\noder ziehe ein Spoiler Log\nauf das Spielfenster.",
+#endif
+      // French
+      "Aucune Seed de Randomizer actuellement disponible.\nGénérez-en une dans les \"Randomizer Settings\""
+#if (defined(__WIIU__) || defined(__SWITCH__))
+      "."
+#else
+      "\nou glissez un spoilerlog sur la fenêtre du jeu."
+#endif
     },
 };
 

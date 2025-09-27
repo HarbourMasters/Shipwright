@@ -81,7 +81,7 @@ void EnYabusameMark_Init(Actor* thisx, PlayState* play) {
 
     osSyncPrintf("\n\n");
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ やぶさめまと ☆☆☆☆☆ %x\n" VT_RST, this->actor.params);
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->typeIndex = this->actor.params;
     this->actor.targetMode = 5;
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 種類インデックス \t   ☆☆☆☆☆ %d\n" VT_RST, this->typeIndex);
@@ -105,7 +105,7 @@ void EnYabusameMark_Init(Actor* thisx, PlayState* play) {
     Collider_InitQuad(play, &this->collider);
     Collider_SetQuad(play, &this->collider, &this->actor, &sQuadInit);
     this->worldPos = this->actor.world.pos;
-    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
     if (gSaveContext.sceneSetupIndex != 4) {
         Actor_Kill(&this->actor);
         return;

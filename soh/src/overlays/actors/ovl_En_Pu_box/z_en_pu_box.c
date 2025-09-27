@@ -7,7 +7,7 @@
 #include "z_en_pu_box.h"
 #include "objects/object_pu_box/object_pu_box.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnPubox_Init(Actor* thisx, PlayState* play);
 void EnPubox_Destroy(Actor* thisx, PlayState* play);
@@ -74,8 +74,8 @@ void EnPubox_Update(Actor* thisx, PlayState* play) {
     thisx->speedXZ = (thisx->speedXZ < -2.5f) ? -2.5f : ((thisx->speedXZ > 2.5f) ? 2.5f : thisx->speedXZ);
     Math_SmoothStepToF(&thisx->speedXZ, 0.0f, 1.0f, 1.0f, 0.0f);
     if (thisx->speedXZ != 0.0f) {
-        Audio_PlaySoundGeneral(NA_SE_EV_ROCK_SLIDE - SFX_FLAG, &thisx->projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_EV_ROCK_SLIDE - SFX_FLAG, &thisx->projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
     this->dyna.unk_154 = 0.0f;
     this->dyna.unk_150 = 0.0f;

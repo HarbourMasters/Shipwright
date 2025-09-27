@@ -47,8 +47,7 @@ void Main_LogSystemHeap(void) {
 }
 
 #ifdef _WIN32
-int SDL_main(int argc, char** argv)
-{
+int SDL_main(int argc, char** argv) {
     AllocConsole();
     (void)freopen("CONIN$", "r", stdin);
     (void)freopen("CONOUT$", "w", stdout);
@@ -58,8 +57,7 @@ int SDL_main(int argc, char** argv)
 #endif
 
 #else //_WIN32
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
 #endif
 
     GameConsole_Init();

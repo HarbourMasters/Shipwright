@@ -25,4 +25,4 @@ class SetEntranceList : public SceneCommand<EntranceEntry> {
 
     std::vector<EntranceEntry> entrances;
 };
-}; // namespace LUS
+}; // namespace SOH

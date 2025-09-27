@@ -12,10 +12,9 @@ extern "C"
 
 #include "luslog.h"
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
-#include <soh/Enhancements/randomizer/randomizer_inf.h>
 
 #if defined(INCLUDE_GAME_PRINTF) && defined(_DEBUG)
-#define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, __VA_ARGS__)
+#define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, ##__VA_ARGS__)
 #else
 #define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, ##__VA_ARGS__)
 #endif
@@ -901,9 +900,8 @@ s32 Jpeg_Decode(void* data, void* zbuffer, void* workBuff, u32 workSize);
 void KaleidoSetup_Update(PlayState* play);
 void KaleidoSetup_Init(PlayState* play);
 void KaleidoSetup_Destroy(PlayState* play);
-void func_8006EE50(Font* font, u16 arg1, u16 arg2);
+void Font_LoadCharWide(Font* font, u16 arg1, u16 arg2);
 void Font_LoadChar(Font* font, u8 character, u16 codePointIndex);
-void* Font_FetchCharTexture(u8 character);
 void Font_LoadMessageBoxIcon(Font* font, u16 icon);
 void Font_LoadOrderedFont(Font* font);
 s32 func_8006F0A0(s32 arg0);
@@ -1045,6 +1043,7 @@ VecSph* OLib_Vec3fToVecSph(VecSph* dest, Vec3f* vec);
 VecSph* OLib_Vec3fToVecSphGeo(VecSph* arg0, Vec3f* arg1);
 VecSph* OLib_Vec3fDiffToVecSphGeo(VecSph* arg0, Vec3f* a, Vec3f* b);
 Vec3f* OLib_Vec3fDiffRad(Vec3f* dest, Vec3f* a, Vec3f* b);
+void OnePointCutscene_SetCsCamPoints(Camera* camera, s16 actionParameters, s16 initTimer, CutsceneCameraPoint* atPoints, CutsceneCameraPoint* eyePoints);
 s16 OnePointCutscene_Init(PlayState* play, s16 csId, s16 timer, Actor* actor, s16 camIdx);
 s16 OnePointCutscene_EndCutscene(PlayState* play, s16 camIdx);
 s32 OnePointCutscene_Attention(PlayState* play, Actor* actor);
@@ -1073,7 +1072,6 @@ uint16_t Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, in
 u8 Item_Give(PlayState* play, u8 item);
 u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry);
 u8 Item_CheckObtainability(u8 item);
-void PerformAutosave(PlayState* play, u8 item);
 void Inventory_DeleteItem(u16 item, u16 invSlot);
 s32 Inventory_ReplaceItem(PlayState* play, u16 oldItem, u16 newItem);
 s32 Inventory_HasEmptyBottle(void);
@@ -1104,6 +1102,7 @@ void FrameAdvance_Init(FrameAdvanceContext* frameAdvCtx);
 s32 FrameAdvance_Update(FrameAdvanceContext* frameAdvCtx, Input* input);
 u8 PlayerGrounded(Player* player);
 void Player_SetBootData(PlayState* play, Player* player);
+void Player_StartAnimMovement(PlayState* play, Player* player, s32 flags);
 s32 Player_InBlockingCsMode(PlayState* play, Player* player);
 s32 Player_TryCsAction(PlayState* play, Actor* actor, s32 csAction);
 s32 Player_InCsMode(PlayState* play);
@@ -1213,12 +1212,10 @@ Gfx* Gfx_SetupDL_66(Gfx* gfx);
 Gfx* func_800947AC(Gfx* gfx);
 void Gfx_SetupDL_42Opa(GraphicsContext* gfxCtx);
 void Gfx_SetupDL_42Overlay(GraphicsContext* gfxCtx);
-void Gfx_SetupDL_42Kal(GraphicsContext* gfxCtx);
 void Gfx_SetupDL_27Xlu(GraphicsContext* gfxCtx);
 void Gfx_SetupDL_60NoCDXlu(GraphicsContext* gfxCtx);
 void Gfx_SetupDL_61Xlu(GraphicsContext* gfxCtx);
 void Gfx_SetupDL_56Ptr(Gfx** gfxp);
-void Gfx_SetupDL_39Kal(GraphicsContext* gfxp);
 Gfx* Gfx_BranchTexScroll(Gfx** gfxp, u32 x, u32 y, s32 width, s32 height);
 Gfx* func_80094E78(GraphicsContext* gfxCtx, u32 x, u32 y);
 Gfx* Gfx_TexScroll(GraphicsContext* gfxCtx, u32 x, u32 y, s32 width, s32 height);
@@ -1380,7 +1377,7 @@ void func_800AA0B4();
 void func_800AA0F0(void);
 u32 func_800AA148();
 void func_800AA15C();
-void func_800AA16C();
+void Rumble_ClearRequests();
 void func_800AA178(u32);
 View* View_New(GraphicsContext* gfxCtx);
 void View_Free(View* view);
@@ -2421,7 +2418,6 @@ u8 Message_GetState(MessageContext* msgCtx);
 void Message_Draw(PlayState* play);
 void Message_Update(PlayState* play);
 void Message_SetTables(void);
-f32 Message_GetCharacterWidth(unsigned char characterIndex);
 void GameOver_Init(PlayState* play);
 void GameOver_FadeInLights(PlayState* play);
 void GameOver_Update(PlayState* play);
@@ -2450,9 +2446,13 @@ void Message_OpenText(PlayState* play, u16 textId);
 void Message_Decode(PlayState* play);
 void Message_DrawText(PlayState* play, Gfx** gfxP);
 
+// #region SOH [NTSC Support]
+s32 Kanji_OffsetFromShiftJIS(u32 arg0);
+void Font_LoadOrderedFontNTSC(Font* font);
+// #endregion
+
 // #region SOH [General]
 
-void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
 void Interface_RandoRestoreSwordless(void);
 s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projectedPos, f32 projectedW, bool* shouldDraw,
                                  bool* shouldUpdate);

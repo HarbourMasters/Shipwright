@@ -102,8 +102,8 @@ static const ALIGN_ASSET(2) char gBusinessScrubNervousIdleAnim[] = dgBusinessScr
 #define dgBusinessScrubAnim_139C "__OTR__objects/object_shopnuts/gBusinessScrubAnim_139C"
 static const ALIGN_ASSET(2) char gBusinessScrubAnim_139C[] = dgBusinessScrubAnim_139C;
 
-#define dgBusinessScrubAnim_4404 "__OTR__objects/object_shopnuts/gBusinessScrubAnim_4404"
-static const ALIGN_ASSET(2) char gBusinessScrubAnim_4404[] = dgBusinessScrubAnim_4404;
+#define dgBusinessScrubLeaveBurrowAnim "__OTR__objects/object_shopnuts/gBusinessScrubLeaveBurrowAnim"
+static const ALIGN_ASSET(2) char gBusinessScrubLeaveBurrowAnim[] = dgBusinessScrubLeaveBurrowAnim;
 
 #define dgBusinessScrubAnim_4574 "__OTR__objects/object_shopnuts/gBusinessScrubAnim_4574"
 static const ALIGN_ASSET(2) char gBusinessScrubAnim_4574[] = dgBusinessScrubAnim_4574;

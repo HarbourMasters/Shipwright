@@ -11,7 +11,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 typedef enum {
     /* 0 */ ZL4_CS_WAIT,
@@ -305,7 +305,7 @@ void EnZl4_UpdateFace(EnZl4* this) {
 }
 
 void EnZl4_SetMove(EnZl4* this, PlayState* play) {
-    this->skelAnime.moveFlags |= 1;
+    this->skelAnime.movementFlags |= 1;
     AnimationContext_SetMoveActor(play, &this->actor, &this->skelAnime, 1.0f);
 }
 
@@ -1112,7 +1112,7 @@ s32 EnZl4_CsMakePlan(EnZl4* this, PlayState* play) {
                 play->talkWithPlayer(play, &this->actor);
                 if (GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LETTER, true)) {
                     Actor_OfferGetItem(&this->actor, play, GI_LETTER_ZELDA, fabsf(this->actor.xzDistToPlayer) + 1.0f,
-                                fabsf(this->actor.yDistToPlayer) + 1.0f);
+                                       fabsf(this->actor.yDistToPlayer) + 1.0f);
                 }
                 play->msgCtx.stateTimer = 4;
                 play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
@@ -1124,7 +1124,7 @@ s32 EnZl4_CsMakePlan(EnZl4* this, PlayState* play) {
                 this->talkState++;
             } else {
                 Actor_OfferGetItem(&this->actor, play, GI_LETTER_ZELDA, fabsf(this->actor.xzDistToPlayer) + 1.0f,
-                              fabsf(this->actor.yDistToPlayer) + 1.0f);
+                                   fabsf(this->actor.yDistToPlayer) + 1.0f);
             }
             // no break here is required for matching
     }

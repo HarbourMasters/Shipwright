@@ -1,0 +1,8 @@
+<Root>
+    <File Name="object_efc_star_field" Segment="6">
+        <DList Name="object_efc_star_field_DL_000080" Offset="0x80"/> <!-- rain -->
+        <Texture Name="object_efc_star_field_Tex_000108" OutName="tex_00000108" Format="i8" Width="16" Height="64" Offset="0x108"/>
+        <DList Name="object_efc_star_field_DL_000DE0" Offset="0xDE0"/> <!-- rocks -->
+        <Texture Name="object_efc_star_field_Tex_000FD0" OutName="tex_00000FD0" Format="i4" Width="64" Height="64" Offset="0xFD0"/>
+    </File>
+</Root>

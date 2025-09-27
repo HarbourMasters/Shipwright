@@ -2,15 +2,16 @@
 #include "soh/resource/type/scenecommand/SetMesh.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
+#include <tinyxml2.h>
 #include "libultraship/libultraship.h"
 
 namespace SOH {
-std::shared_ptr<Ship::IResource>
-SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, std::shared_ptr<Ship::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource> SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                                              std::shared_ptr<Ship::BinaryReader> reader) {
     auto setMesh = std::make_shared<SetMesh>(initData);
 
     ReadCommandId(setMesh, reader);
-    
+
     setMesh->data = reader->ReadInt8();
 
     setMesh->meshHeader.base.type = reader->ReadInt8();
@@ -23,7 +24,8 @@ SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, s
         } else if (setMesh->meshHeader.base.type == 2) {
             setMesh->meshHeader.polygon2.num = polyNum;
         } else {
-            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
+            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}",
+                         setMesh->meshHeader.base.type);
         }
     }
 
@@ -36,30 +38,38 @@ SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, s
     for (int32_t i = 0; i < polyNum; i++) {
         if (setMesh->meshHeader.base.type == 0) {
             PolygonDlist dlist;
+            dlist.opa = nullptr;
+            dlist.xlu = nullptr;
 
             int32_t polyType = reader->ReadInt8(); // Unused
             std::string meshOpa = reader->ReadString();
             std::string meshXlu = reader->ReadString();
 
-            auto opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
-            auto xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
-            dlist.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
-            dlist.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
+            // Enables alt-toggling support by setting maintained c_str references to DList resource after pushing to
+            // vector the first Defers resource loading later in game when the scene is drawn
+            if (meshOpa != "") {
+                meshOpa = "__OTR__" + meshOpa;
+                setMesh->opaPaths.push_back(meshOpa);
+                dlist.opa = (Gfx*)setMesh->opaPaths.back().c_str();
+            }
+            if (meshXlu != "") {
+                meshXlu = "__OTR__" + meshXlu;
+                setMesh->xluPaths.push_back(meshXlu);
+                dlist.xlu = (Gfx*)setMesh->xluPaths.back().c_str();
+            }
 
-            setMesh->opaPaths.push_back(meshOpa);
-            setMesh->xluPaths.push_back(meshXlu);
             setMesh->dlists.push_back(dlist);
         } else if (setMesh->meshHeader.base.type == 1) {
             PolygonDlist pType;
+            pType.opa = nullptr;
+            pType.xlu = nullptr;
 
             setMesh->meshHeader.polygon1.format = reader->ReadUByte();
-            std::string imgOpa = reader->ReadString();
-            std::string imgXlu = reader->ReadString();
 
-            auto opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(imgOpa.c_str());
-            auto xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(imgXlu.c_str());
-            pType.opa = imgOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
-            pType.xlu = imgXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
+            // These strings are the same that are read and used below. Not sure why they get exported twice from the
+            // exporter. We read and ignore these to advance the reader.
+            reader->ReadString();
+            reader->ReadString();
 
             int32_t bgImageCount = reader->ReadUInt32();
             setMesh->images.reserve(bgImageCount);
@@ -83,7 +93,8 @@ SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, s
                 if (setMesh->meshHeader.polygon1.format == 1) {
                     setMesh->meshHeader.polygon1.single.source = image.source;
                     setMesh->meshHeader.polygon1.single.unk_0C = image.unk_0C;
-                    setMesh->meshHeader.polygon1.single.tlut = (void*)image.tlut; // OTRTODO: type of bgimage.tlut should be uintptr_t
+                    setMesh->meshHeader.polygon1.single.tlut =
+                        (void*)image.tlut; // OTRTODO: type of bgimage.tlut should be uintptr_t
                     setMesh->meshHeader.polygon1.single.width = image.width;
                     setMesh->meshHeader.polygon1.single.height = image.height;
                     setMesh->meshHeader.polygon1.single.fmt = image.fmt;
@@ -104,17 +115,24 @@ SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, s
             std::string meshOpa = reader->ReadString();
             std::string meshXlu = reader->ReadString();
 
-            opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
-            xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
-            pType.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
-            pType.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
+            // Use long-lived maintained c_str references
+            if (meshOpa != "") {
+                meshOpa = "__OTR__" + meshOpa;
+                setMesh->opaPaths.push_back(meshOpa);
+                pType.opa = (Gfx*)setMesh->opaPaths.back().c_str();
+            }
+            if (meshXlu != "") {
+                meshXlu = "__OTR__" + meshXlu;
+                setMesh->xluPaths.push_back(meshXlu);
+                pType.xlu = (Gfx*)setMesh->xluPaths.back().c_str();
+            }
 
-            setMesh->opaPaths.push_back(meshOpa);
-            setMesh->xluPaths.push_back(meshXlu);
             setMesh->dlists.push_back(pType);
         } else if (setMesh->meshHeader.base.type == 2) {
             PolygonDlist2 dlist;
-            
+            dlist.opa = nullptr;
+            dlist.xlu = nullptr;
+
             int32_t polyType = reader->ReadInt8(); // Unused
             dlist.pos.x = reader->ReadInt16();
             dlist.pos.y = reader->ReadInt16();
@@ -124,16 +142,22 @@ SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, s
             std::string meshOpa = reader->ReadString();
             std::string meshXlu = reader->ReadString();
 
-            auto opaRes = meshOpa != "" ? Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str()) : nullptr;
-            auto xluRes = meshXlu != "" ? Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str()) : nullptr;
-            dlist.opa = (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr);
-            dlist.xlu = (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr);
+            // Use long-lived maintained c_str references
+            if (meshOpa != "") {
+                meshOpa = "__OTR__" + meshOpa;
+                setMesh->opaPaths.push_back(meshOpa);
+                dlist.opa = (Gfx*)setMesh->opaPaths.back().c_str();
+            }
+            if (meshXlu != "") {
+                meshXlu = "__OTR__" + meshXlu;
+                setMesh->xluPaths.push_back(meshXlu);
+                dlist.xlu = (Gfx*)setMesh->xluPaths.back().c_str();
+            }
 
-            setMesh->opaPaths.push_back(meshOpa);
-            setMesh->xluPaths.push_back(meshXlu);
             setMesh->dlists2.push_back(dlist);
         } else {
-            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
+            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}",
+                         setMesh->meshHeader.base.type);
         }
     }
 
@@ -145,7 +169,8 @@ SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, s
         setMesh->meshHeader.polygon1.multi.list = setMesh->images.data();
         setMesh->meshHeader.polygon1.dlist = (Gfx*)setMesh->dlists.data();
     } else {
-        SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
+        SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}",
+                     setMesh->meshHeader.base.type);
     }
 
     if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
@@ -156,7 +181,7 @@ SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData, s
 }
 
 std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
-                                                                   tinyxml2::XMLElement* reader) {
+                                                                 tinyxml2::XMLElement* reader) {
     auto setMesh = std::make_shared<SetMesh>(initData);
 
     setMesh->cmdId = SceneCommandID::SetMesh;
@@ -173,7 +198,8 @@ std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr
         } else if (setMesh->meshHeader.base.type == 2) {
             setMesh->meshHeader.polygon2.num = polyNum;
         } else {
-            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
+            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}",
+                         setMesh->meshHeader.base.type);
         }
     }
 
@@ -194,38 +220,33 @@ std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr
 
         if (setMesh->meshHeader.base.type == 0) {
             PolygonDlist dlist;
+            dlist.opa = nullptr;
+            dlist.xlu = nullptr;
 
             int32_t polyType = child->IntAttribute("PolyType"); // Unused
             std::string meshOpa = child->Attribute("MeshOpa");
             std::string meshXlu = child->Attribute("MeshXlu");
+
+            // Enables alt-toggling support by setting maintained c_str references to DList resource after pushing to
+            // vector the first Defers resource loading later in game when the scene is drawn
             if (meshOpa != "") {
-                auto opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
-                dlist.opa = (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr);
-            } else {
-                dlist.opa = 0;
+                meshOpa = "__OTR__" + meshOpa;
+                setMesh->opaPaths.push_back(meshOpa);
+                dlist.opa = (Gfx*)setMesh->opaPaths.back().c_str();
             }
-
             if (meshXlu != "") {
-                auto xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
-                dlist.xlu = (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr);
-            } else {
-                dlist.xlu = 0;
+                meshXlu = "__OTR__" + meshXlu;
+                setMesh->xluPaths.push_back(meshXlu);
+                dlist.xlu = (Gfx*)setMesh->xluPaths.back().c_str();
             }
 
-            setMesh->opaPaths.push_back(meshOpa);
-            setMesh->xluPaths.push_back(meshXlu);
             setMesh->dlists.push_back(dlist);
         } else if (setMesh->meshHeader.base.type == 1) {
             PolygonDlist pType;
+            pType.opa = nullptr;
+            pType.xlu = nullptr;
 
             setMesh->meshHeader.polygon1.format = child->IntAttribute("Format");
-            std::string imgOpa = child->Attribute("ImgOpa");
-            std::string imgXlu = child->Attribute("ImgXlu");
-
-            auto opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(imgOpa.c_str());
-            auto xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(imgXlu.c_str());
-            pType.opa = imgOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
-            pType.xlu = imgXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
 
             int32_t bgImageCount = child->IntAttribute("BgImageCount");
             setMesh->images.reserve(bgImageCount);
@@ -256,7 +277,8 @@ std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr
                 if (setMesh->meshHeader.polygon1.format == 1) {
                     setMesh->meshHeader.polygon1.single.source = image.source;
                     setMesh->meshHeader.polygon1.single.unk_0C = image.unk_0C;
-                    setMesh->meshHeader.polygon1.single.tlut = (void*)image.tlut; // OTRTODO: type of bgimage.tlut should be uintptr_t
+                    setMesh->meshHeader.polygon1.single.tlut =
+                        (void*)image.tlut; // OTRTODO: type of bgimage.tlut should be uintptr_t
                     setMesh->meshHeader.polygon1.single.width = image.width;
                     setMesh->meshHeader.polygon1.single.height = image.height;
                     setMesh->meshHeader.polygon1.single.fmt = image.fmt;
@@ -279,16 +301,23 @@ std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr
             std::string meshOpa = child->Attribute("MeshOpa");
             std::string meshXlu = child->Attribute("MeshXlu");
 
-            opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
-            xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
-            pType.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
-            pType.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
+            // Use long-lived maintained c_str references
+            if (meshOpa != "") {
+                meshOpa = "__OTR__" + meshOpa;
+                setMesh->opaPaths.push_back(meshOpa);
+                pType.opa = (Gfx*)setMesh->opaPaths.back().c_str();
+            }
+            if (meshXlu != "") {
+                meshXlu = "__OTR__" + meshXlu;
+                setMesh->xluPaths.push_back(meshXlu);
+                pType.xlu = (Gfx*)setMesh->xluPaths.back().c_str();
+            }
 
-            setMesh->opaPaths.push_back(meshOpa);
-            setMesh->xluPaths.push_back(meshXlu);
             setMesh->dlists.push_back(pType);
         } else if (setMesh->meshHeader.base.type == 2) {
             PolygonDlist2 dlist;
+            dlist.opa = nullptr;
+            dlist.xlu = nullptr;
 
             int32_t polyType = child->IntAttribute("PolyType"); // Unused
             dlist.pos.x = child->IntAttribute("PosX");
@@ -299,16 +328,22 @@ std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr
             std::string meshOpa = child->Attribute("MeshOpa");
             std::string meshXlu = child->Attribute("MeshXlu");
 
-            auto opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
-            auto xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
-            dlist.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
-            dlist.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
+            // Use long-lived maintained c_str references
+            if (meshOpa != "") {
+                meshOpa = "__OTR__" + meshOpa;
+                setMesh->opaPaths.push_back(meshOpa);
+                dlist.opa = (Gfx*)setMesh->opaPaths.back().c_str();
+            }
+            if (meshXlu != "") {
+                meshXlu = "__OTR__" + meshXlu;
+                setMesh->xluPaths.push_back(meshXlu);
+                dlist.xlu = (Gfx*)setMesh->xluPaths.back().c_str();
+            }
 
-            setMesh->opaPaths.push_back(meshOpa);
-            setMesh->xluPaths.push_back(meshXlu);
             setMesh->dlists2.push_back(dlist);
         } else {
-            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
+            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}",
+                         setMesh->meshHeader.base.type);
         }
 
         child = child->NextSiblingElement();
@@ -322,7 +357,8 @@ std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr
         setMesh->meshHeader.polygon1.multi.list = setMesh->images.data();
         setMesh->meshHeader.polygon1.dlist = (Gfx*)setMesh->dlists.data();
     } else {
-        SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
+        SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}",
+                     setMesh->meshHeader.base.type);
     }
 
     return setMesh;

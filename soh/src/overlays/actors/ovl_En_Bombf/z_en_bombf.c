@@ -8,7 +8,7 @@
 #include "objects/object_bombf/object_bombf.h"
 #include "overlays/effects/ovl_Effect_Ss_Dead_Sound/z_eff_ss_dead_sound.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnBombf_Init(Actor* thisx, PlayState* play);
 void EnBombf_Destroy(Actor* thisx, PlayState* play);
@@ -105,7 +105,7 @@ void EnBombf_Init(Actor* thisx, PlayState* play) {
     thisx->focus.pos = thisx->world.pos;
 
     if (Actor_FindNearby(play, thisx, ACTOR_BG_DDAN_KD, ACTORCAT_BG, 10000.0f) != NULL) {
-        thisx->flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
+        thisx->flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
     }
 
     thisx->colChkInfo.cylRadius = 10.0f;
@@ -118,7 +118,7 @@ void EnBombf_Init(Actor* thisx, PlayState* play) {
         thisx->gravity = -1.5f;
         Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_EXPLOSIVE);
         thisx->colChkInfo.mass = 200;
-        thisx->flags &= ~ACTOR_FLAG_TARGETABLE;
+        thisx->flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
         EnBombf_SetupAction(this, EnBombf_Move);
     } else {
         thisx->colChkInfo.mass = MASS_IMMOVABLE;
@@ -158,7 +158,7 @@ void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
                 this->timer = 180;
                 this->flowerBombScale = 0.0f;
                 Audio_PlayActorSound2(&this->actor, NA_SE_PL_PULL_UP_ROCK);
-                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             } else {
                 player->actor.child = NULL;
                 player->heldActor = NULL;
@@ -170,26 +170,24 @@ void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
             this->bombCollider.base.acFlags &= ~AC_HIT;
 
             if (this->bombCollider.base.ac->category != ACTORCAT_BOSS) {
-                bombFlower =
-                    (EnBombf*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOMBF, this->actor.world.pos.x,
-                                          this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                bombFlower = (EnBombf*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOMBF, this->actor.world.pos.x,
+                                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
                 if (bombFlower != NULL) {
                     bombFlower->isFuseEnabled = 1;
                     bombFlower->timer = 0;
                     this->timer = 180;
-                    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                     this->flowerBombScale = 0.0f;
                 }
             }
         } else {
             if (Player_IsBurningStickInRange(play, &this->actor.world.pos, 30.0f, 50.0f)) {
-                bombFlower =
-                    (EnBombf*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOMBF, this->actor.world.pos.x,
-                                          this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                bombFlower = (EnBombf*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOMBF, this->actor.world.pos.x,
+                                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
                 if (bombFlower != NULL) {
                     bombFlower->timer = 100;
                     this->timer = 180;
-                    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+                    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                     this->flowerBombScale = 0.0f;
                 }
             } else {
@@ -209,7 +207,7 @@ void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
         if (this->timer == 0) {
             this->flowerBombScale += 0.05f;
             if (this->flowerBombScale >= 1.0f) {
-                this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+                this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
             }
         }
 
@@ -263,7 +261,7 @@ void EnBombf_Explode(EnBombf* this, PlayState* play) {
     Player* player;
 
     if (this->explosionCollider.elements[0].dim.modelSphere.radius == 0) {
-        this->actor.flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
+        this->actor.flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
         func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
     }
 
@@ -423,14 +421,13 @@ void EnBombf_Update(Actor* thisx, PlayState* play) {
                 }
 
                 Audio_PlayActorSound2(thisx, NA_SE_IT_BOMB_EXPLOSION);
-                play->envCtx.adjLight1Color[0] = play->envCtx.adjLight1Color[1] =
-                    play->envCtx.adjLight1Color[2] = 250;
-                play->envCtx.adjAmbientColor[0] = play->envCtx.adjAmbientColor[1] =
-                    play->envCtx.adjAmbientColor[2] = 250;
+                play->envCtx.adjLight1Color[0] = play->envCtx.adjLight1Color[1] = play->envCtx.adjLight1Color[2] = 250;
+                play->envCtx.adjAmbientColor[0] = play->envCtx.adjAmbientColor[1] = play->envCtx.adjAmbientColor[2] =
+                    250;
                 Camera_AddQuake(&play->mainCamera, 2, 0xB, 8);
                 thisx->params = BOMBFLOWER_EXPLOSION;
                 this->timer = 10;
-                thisx->flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
+                thisx->flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
                 EnBombf_SetupAction(this, EnBombf_Explode);
             }
         }
@@ -471,8 +468,7 @@ Gfx* EnBombf_NewMtxDList(GraphicsContext* gfxCtx, PlayState* play) {
     displayList = Graph_Alloc(gfxCtx, 5 * sizeof(Gfx));
     displayListHead = displayList;
     Matrix_ReplaceRotation(&play->billboardMtxF);
-    gSPMatrix(displayListHead++, MATRIX_NEWMTX(gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(displayListHead++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPEndDisplayList(displayListHead);
     return displayList;
 }
@@ -487,8 +483,7 @@ void EnBombf_Draw(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
         if (thisx->params != BOMBFLOWER_BODY) {
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gBombFlowerLeavesDL);
             gSPDisplayList(POLY_OPA_DISP++, gBombFlowerBaseLeavesDL);
 
@@ -499,10 +494,8 @@ void EnBombf_Draw(Actor* thisx, PlayState* play) {
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 200, 255, 200, 255);
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetEnvColor(POLY_OPA_DISP++, (s16)this->flashIntensity, 20, 10, 0);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPSegment(POLY_OPA_DISP++, 0x08,
-                   SEGMENTED_TO_VIRTUAL(EnBombf_NewMtxDList(play->state.gfxCtx, play)));
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(EnBombf_NewMtxDList(play->state.gfxCtx, play)));
         gSPDisplayList(POLY_OPA_DISP++, gBombFlowerBombAndSparkDL);
     } else {
         Collider_UpdateSpheres(0, &this->explosionCollider);

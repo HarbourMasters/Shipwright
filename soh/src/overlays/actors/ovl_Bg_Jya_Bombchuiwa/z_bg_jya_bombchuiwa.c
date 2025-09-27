@@ -1,7 +1,7 @@
 #include "z_bg_jya_bombchuiwa.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "objects/object_jya_obj/object_jya_obj.h"
-#define FLAGS ACTOR_FLAG_TARGETABLE
+#define FLAGS ACTOR_FLAG_ATTENTION_ENABLED
 
 void BgJyaBombchuiwa_Init(Actor* thisx, PlayState* play);
 void BgJyaBombchuiwa_Destroy(Actor* thisx, PlayState* play);
@@ -163,7 +163,7 @@ void BgJyaBombchuiwa_CleanUpAfterExplosion(BgJyaBombchuiwa* this, PlayState* pla
     BgJyaBombchuiwa_SetDrawFlags(this, 4);
     this->lightRayIntensity = 0.3f;
     this->timer = 0;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
 }
 
 void func_808949B8(BgJyaBombchuiwa* this, PlayState* play) {
@@ -183,8 +183,7 @@ void BgJyaBombchuiwa_SpawnLightRay(BgJyaBombchuiwa* this, PlayState* play) {
     if (Actor_Spawn(&play->actorCtx, play, ACTOR_MIR_RAY, this->actor.world.pos.x, this->actor.world.pos.y,
                     this->actor.world.pos.z, 0, 0, 0, 0, true) == NULL) {
         // "Occurrence failure"
-        osSyncPrintf("Ｅｒｒｏｒ : Mir_Ray 発生失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
-                     this->actor.params);
+        osSyncPrintf("Ｅｒｒｏｒ : Mir_Ray 発生失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, this->actor.params);
     }
 }
 
@@ -199,8 +198,7 @@ void BgJyaBombchuiwa_Update(Actor* thisx, PlayState* play) {
 void BgJyaBombchuiwa_DrawRock(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gBombchuiwa2DL);
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -210,8 +208,7 @@ void BgJyaBombchuiwa_DrawLight(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, CLAMP_MAX((u32)(this->lightRayIntensity * 153.0f), 153));
     gSPDisplayList(POLY_XLU_DISP++, gBombchuiwaLight1DL);
     gDPPipeSync(POLY_XLU_DISP++);

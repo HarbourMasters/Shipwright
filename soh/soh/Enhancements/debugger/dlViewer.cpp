@@ -1,9 +1,10 @@
 #include "actorViewer.h"
-#include "../../util.h"
-#include "../../UIWidgets.hpp"
+#include "soh/util.h"
+#include "soh/SohGui/UIWidgets.hpp"
+#include "soh/SohGui/SohGui.hpp"
 #include "ResourceManager.h"
 #include "DisplayList.h"
-#include "../../OTRGlobals.h"
+#include "soh/OTRGlobals.h"
 
 #include <array>
 #include <bit>
@@ -65,7 +66,8 @@ std::map<int, std::string> cmdMap = {
 };
 
 void PerformDisplayListSearch() {
-    auto result = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles("*" + std::string(searchString) + "*DL*");
+    auto result = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(
+        "*" + std::string(searchString) + "*DL*");
 
     displayListSearchResults.clear();
 
@@ -78,23 +80,25 @@ void PerformDisplayListSearch() {
     }
 
     // Sort the final list
-    std::sort(displayListSearchResults.begin(), displayListSearchResults.end(), [](const std::string& a, const std::string& b) {
-        return std::lexicographical_compare(
-            a.begin(), a.end(),
-            b.begin(), b.end(),
-            [](char c1, char c2) {
-                return std::tolower(c1) < std::tolower(c2);
-            }
-        );
-    });
+    std::sort(displayListSearchResults.begin(), displayListSearchResults.end(),
+              [](const std::string& a, const std::string& b) {
+                  return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(), [](char c1, char c2) {
+                      return std::tolower(c1) < std::tolower(c2);
+                  });
+              });
 }
 
 void DLViewerWindow::DrawElement() {
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
     // Debounce the search field as listing otr files is expensive
+    UIWidgets::PushStyleInput(THEME_COLOR);
+    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
+
     if (ImGui::InputText("Search Display Lists", searchString, ARRAY_COUNT(searchString))) {
         doSearch = true;
         searchDebounceFrames = 30;
     }
+    UIWidgets::PopStyleInput();
 
     if (doSearch) {
         if (searchDebounceFrames == 0) {
@@ -105,6 +109,7 @@ void DLViewerWindow::DrawElement() {
         searchDebounceFrames--;
     }
 
+    UIWidgets::PushStyleCombobox(THEME_COLOR);
     if (ImGui::BeginCombo("Active Display List", activeDisplayList.c_str())) {
         for (size_t i = 0; i < displayListSearchResults.size(); i++) {
             if (ImGui::Selectable(displayListSearchResults[i].c_str())) {
@@ -114,16 +119,22 @@ void DLViewerWindow::DrawElement() {
         }
         ImGui::EndCombo();
     }
+    UIWidgets::PopStyleCombobox();
 
     if (activeDisplayList == "") {
+        ImGui::PopFont();
+        ImGui::EndDisabled();
         return;
     }
 
     try {
-        auto res = std::static_pointer_cast<Fast::DisplayList>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
+        auto res = std::static_pointer_cast<Fast::DisplayList>(
+            Ship::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
 
         if (res->GetInitData()->Type != static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
             ImGui::Text("Resource type is not a Display List. Please choose another.");
+            ImGui::PopFont();
+            ImGui::EndDisabled();
             return;
         }
 
@@ -133,7 +144,8 @@ void DLViewerWindow::DrawElement() {
             std::string id = "##CMD" + std::to_string(i);
             Gfx* gfx = (Gfx*)&res->Instructions[i];
             int cmd = gfx->words.w0 >> 24;
-            if (cmdMap.find(cmd) == cmdMap.end()) continue;
+            if (cmdMap.find(cmd) == cmdMap.end())
+                continue;
 
             std::string cmdLabel = cmdMap.at(cmd);
 
@@ -144,6 +156,7 @@ void DLViewerWindow::DrawElement() {
             ImGui::SameLine();
             ImGui::PushItemWidth(175.0f);
 
+            UIWidgets::PushStyleCombobox(THEME_COLOR);
             if (ImGui::BeginCombo(("CMD" + id).c_str(), cmdLabel.c_str())) {
                 if (ImGui::Selectable("gsDPSetPrimColor") && cmd != G_SETPRIMCOLOR) {
                     *gfx = gsDPSetPrimColor(0, 0, 0, 0, 0, 255);
@@ -162,6 +175,7 @@ void DLViewerWindow::DrawElement() {
                 }
                 ImGui::EndCombo();
             }
+            UIWidgets::PopStyleCombobox();
 
             ImGui::PopItemWidth();
 
@@ -189,14 +203,15 @@ void DLViewerWindow::DrawElement() {
                 }
                 ImGui::PopItemWidth();
             }
-            if (cmd == G_RDPPIPESYNC) {
-            }
+            if (cmd == G_RDPPIPESYNC) {}
             if (cmd == G_SETGRAYSCALE) {
                 bool* state = (bool*)&gfx->words.w1;
                 ImGui::SameLine();
+                UIWidgets::PushStyleCheckbox(THEME_COLOR);
                 if (ImGui::Checkbox(("state" + id).c_str(), state)) {
-                    // 
+                    //
                 }
+                UIWidgets::PopStyleCheckbox();
             }
             if (cmd == G_SETTILE) {
                 ImGui::SameLine();
@@ -292,8 +307,7 @@ void DLViewerWindow::DrawElement() {
                 ImGui::SameLine();
                 ImGui::Text("Vertex Name: %s", fileName);
             }
-            if (cmd == G_DL) {
-            }
+            if (cmd == G_DL) {}
             if (cmd == G_DL_OTR_HASH) {
                 gfx++;
                 uint64_t hash = ((uint64_t)gfx->words.w0 << 32) + (uint64_t)gfx->words.w1;
@@ -308,17 +322,17 @@ void DLViewerWindow::DrawElement() {
             }
 
             // Skip second half of instructions that are over 128-bit wide
-            if (cmd == G_SETTIMG_OTR_HASH || cmd == G_DL_OTR_HASH || cmd == G_VTX_OTR_HASH ||
-                cmd == G_BRANCH_Z_OTR || cmd == G_MARKER || cmd == G_MTX_OTR) {
+            if (cmd == G_SETTIMG_OTR_HASH || cmd == G_DL_OTR_HASH || cmd == G_VTX_OTR_HASH || cmd == G_BRANCH_Z_OTR ||
+                cmd == G_MARKER || cmd == G_MTX_OTR) {
                 i++;
                 ImGui::Text("%lu - Reserved - Second half of %s", i, cmdLabel.c_str());
             }
             ImGui::EndGroup();
         }
-    } catch (const std::exception& e) {
-        ImGui::Text("Error displaying DL instructions.");
-        return;
-    }
+    } catch (const std::exception& e) { ImGui::Text("Error displaying DL instructions."); }
+
+    ImGui::PopFont();
+    ImGui::EndDisabled();
 }
 
 void DLViewerWindow::InitElement() {

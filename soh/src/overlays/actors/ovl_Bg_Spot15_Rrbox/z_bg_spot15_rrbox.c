@@ -158,8 +158,8 @@ s32 func_808B3CA0(BgSpot15Rrbox* this, PlayState* play, s32 arg2) {
     actorPosition.y += this->dyna.actor.prevPos.y;
     actorPosition.z += this->dyna.actor.world.pos.z;
 
-    this->dyna.actor.floorHeight = BgCheck_EntityRaycastFloor6(&play->colCtx, &this->dyna.actor.floorPoly,
-                                                               &this->bgId, &this->dyna.actor, &actorPosition, chkDist);
+    this->dyna.actor.floorHeight = BgCheck_EntityRaycastFloor6(&play->colCtx, &this->dyna.actor.floorPoly, &this->bgId,
+                                                               &this->dyna.actor, &actorPosition, chkDist);
 
     if ((this->dyna.actor.floorHeight - this->dyna.actor.world.pos.y) >= -0.001f) {
         this->dyna.actor.world.pos.y = this->dyna.actor.floorHeight;
@@ -323,8 +323,7 @@ void func_808B43D0(BgSpot15Rrbox* this, PlayState* play) {
 
     if (actor->world.pos.y <= BGCHECK_Y_MIN + 10.0f) {
         // "Lon Lon wooden crate fell too much"
-        osSyncPrintf("Warning : ロンロン木箱落ちすぎた(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
-                     actor->params);
+        osSyncPrintf("Warning : ロンロン木箱落ちすぎた(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, actor->params);
 
         Actor_Kill(actor);
 

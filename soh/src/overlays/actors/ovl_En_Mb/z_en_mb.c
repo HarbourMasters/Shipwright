@@ -16,7 +16,7 @@
  * - "Spear Patrol" (variable 0xPP00 PP=pathId): uses a spear, patrols following a path, charges
  */
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 typedef enum {
     /* -1 */ ENMB_TYPE_SPEAR_GUARD = -1,
@@ -277,8 +277,8 @@ void EnMb_Init(Actor* thisx, PlayState* play) {
 
     switch (this->actor.params) {
         case ENMB_TYPE_SPEAR_GUARD:
-            SkelAnime_InitFlex(play, &this->skelAnime, &gEnMbSpearSkel, &gEnMbSpearStandStillAnim,
-                               this->jointTable, this->morphTable, 28);
+            SkelAnime_InitFlex(play, &this->skelAnime, &gEnMbSpearSkel, &gEnMbSpearStandStillAnim, this->jointTable,
+                               this->morphTable, 28);
             this->actor.colChkInfo.health = 2;
             this->actor.colChkInfo.mass = MASS_HEAVY;
             this->maxHomeDist = 1000.0f;
@@ -303,20 +303,20 @@ void EnMb_Init(Actor* thisx, PlayState* play) {
 
             relYawFromPlayer =
                 this->actor.world.rot.y - Math_Vec3f_Yaw(&this->actor.world.pos, &player->actor.world.pos);
-            if (ABS(relYawFromPlayer) > 0x4000) {
+            if (ABS(relYawFromPlayer) > 0x4000 && !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
                 this->actor.world.rot.y = thisx->world.rot.y + 0x8000;
                 this->actor.shape.rot.y = thisx->world.rot.y;
                 this->actor.world.pos.z = thisx->world.pos.z + 600.0f;
             }
 
             ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawFeet, 90.0f);
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             this->actor.naviEnemyId += 1;
             EnMb_SetupClubWaitPlayerNear(this);
             break;
         default: /* Spear Patrol */
-            SkelAnime_InitFlex(play, &this->skelAnime, &gEnMbSpearSkel, &gEnMbSpearStandStillAnim,
-                               this->jointTable, this->morphTable, 28);
+            SkelAnime_InitFlex(play, &this->skelAnime, &gEnMbSpearSkel, &gEnMbSpearStandStillAnim, this->jointTable,
+                               this->morphTable, 28);
 
             Actor_SetScale(&this->actor, 0.014f);
             this->path = (thisx->params & 0xFF00) >> 8;
@@ -326,7 +326,7 @@ void EnMb_Init(Actor* thisx, PlayState* play) {
             this->actor.colChkInfo.mass = MASS_HEAVY;
             this->maxHomeDist = 350.0f;
             this->playerDetectionRange = 1750.0f;
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             EnMb_SetupSpearPatrolTurnTowardsWaypoint(this, play);
             break;
     }
@@ -586,7 +586,7 @@ void EnMb_SetupClubDamagedWhileKneeling(EnMb* this) {
 void EnMb_SetupClubDead(EnMb* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &gEnMbClubFallOnItsBackAnim, -4.0f);
     this->state = ENMB_STATE_CLUB_DEAD;
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->hitbox.dim.height = 80;
     this->hitbox.dim.radius = 95;
     this->timer1 = 30;
@@ -846,12 +846,13 @@ void EnMb_ClubAttack(EnMb* this, PlayState* play) {
     // Rotate Club Moblin towards player in Enemy Randomizer because they're
     // borderline useless otherwise in most scenarios.
     if (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
-        Math_SmoothStepToS(&this->actor.shape.rot.y, relYawTarget[this->attack - 1] + this->actor.world.rot.y, 1, 0x2EE, 0);
+        Math_SmoothStepToS(&this->actor.shape.rot.y, relYawTarget[this->attack - 1] + this->actor.world.rot.y, 1, 0x2EE,
+                           0);
     } else {
         Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
         Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
     }
-    
+
     if (this->attackCollider.base.atFlags & AT_HIT) {
         this->attackCollider.base.atFlags &= ~AT_HIT;
         if (this->attackCollider.base.at == &player->actor) {
@@ -895,8 +896,8 @@ void EnMb_ClubAttack(EnMb* this, PlayState* play) {
             if (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
                 Camera_AddQuake(&play->mainCamera, 2, 0x19, 5);
             }
-            func_800358DC(&this->actor, &effSpawnPos, &this->actor.world.rot, flamesParams, 20, flamesUnused, play,
-                          -1, 0);
+            func_800358DC(&this->actor, &effSpawnPos, &this->actor.world.rot, flamesParams, 20, flamesUnused, play, -1,
+                          0);
             EnMb_SetupClubWaitAfterAttack(this);
         }
     } else {
@@ -1126,8 +1127,8 @@ void EnMb_ClubDead(EnMb* this, PlayState* play) {
                 effPos.x = Rand_CenteredFloat(240.0f) + effPosBase.x;
                 effPos.y = Rand_CenteredFloat(15.0f) + (effPosBase.y + 20.0f);
                 effPos.z = Rand_CenteredFloat(240.0f) + effPosBase.z;
-                EffectSsDeadDb_Spawn(play, &effPos, &effZeroVec, &effZeroVec, 230, 7, 255, 255, 255, 255, 0, 255,
-                                     0, 1, 9, true);
+                EffectSsDeadDb_Spawn(play, &effPos, &effZeroVec, &effZeroVec, 230, 7, 255, 255, 255, 255, 0, 255, 0, 1,
+                                     9, true);
             }
         } else {
             Item_DropCollectibleRandom(play, &this->actor, &effPos, 0xC0);
@@ -1166,12 +1167,12 @@ void EnMb_SpearGuardWalk(EnMb* this, PlayState* play) {
     if (this->timer3 == 0 &&
         Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < this->playerDetectionRange) {
         Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 1, 0x2EE, 0);
-        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
         if (this->actor.xzDistToPlayer < 500.0f && relYawTowardsPlayer < 0x1388) {
             EnMb_SetupSpearPrepareAndCharge(this);
         }
     } else {
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
         if (Math_Vec3f_DistXZ(&this->actor.world.pos, &this->actor.home.pos) > this->maxHomeDist || this->timer2 != 0) {
             yawTowardsHome = Math_Vec3f_Yaw(&this->actor.world.pos, &this->actor.home.pos);
             Math_SmoothStepToS(&this->actor.world.rot.y, yawTowardsHome, 1, 0x2EE, 0);
@@ -1280,7 +1281,8 @@ void EnMb_ClubWaitPlayerNear(EnMb* this, PlayState* play) {
         // Without the height check, the Moblin will attack (and play the sound effect) a lot even though
         // the Moblin is very far away from the player in vertical rooms (like the first room in Deku Tree).
         s8 enemyRando = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
-        if (!enemyRando || (enemyRando && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
+        if (!enemyRando ||
+            (enemyRando && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
             EnMb_SetupClubAttack(this);
         }
     }
@@ -1331,7 +1333,7 @@ void EnMb_SetupSpearDead(EnMb* this) {
     this->timer1 = 30;
     this->state = ENMB_STATE_SPEAR_SPEARPATH_DAMAGED;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_MORIBLIN_DEAD);
-    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     EnMb_SetupAction(this, EnMb_SpearDead);
 }
 
@@ -1361,8 +1363,8 @@ void EnMb_SpearDead(EnMb* this, PlayState* play) {
                 effPos.y = Rand_CenteredFloat(15.0f) + (this->actor.world.pos.y + 20.0f);
                 effPos.z = Rand_CenteredFloat(110.0f) + this->actor.world.pos.z;
 
-                EffectSsDeadDb_Spawn(play, &effPos, &zeroVec, &zeroVec, 100, 7, 255, 255, 255, 255, 0, 255, 0, 1,
-                                     9, true);
+                EffectSsDeadDb_Spawn(play, &effPos, &zeroVec, &zeroVec, 100, 7, 255, 255, 255, 255, 0, 255, 0, 1, 9,
+                                     true);
             }
         } else {
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xE0);
@@ -1597,8 +1599,8 @@ void EnMb_Draw(Actor* thisx, PlayState* play) {
                 scale = 4.0f;
             }
             bodyPartIdx = this->iceEffectTimer >> 2;
-            EffectSsEnIce_SpawnFlyingVec3s(play, thisx, &this->bodyPartsPos[bodyPartIdx], 150, 150, 150, 250, 235,
-                                           245, 255, scale);
+            EffectSsEnIce_SpawnFlyingVec3s(play, thisx, &this->bodyPartsPos[bodyPartIdx], 150, 150, 150, 250, 235, 245,
+                                           255, scale);
         }
     }
 }

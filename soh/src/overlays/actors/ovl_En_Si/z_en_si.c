@@ -9,7 +9,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/OTRGlobals.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOOKSHOT_DRAGS)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOOKSHOT_PULLS_ACTOR)
 
 void EnSi_Init(Actor* thisx, PlayState* play);
 void EnSi_Destroy(Actor* thisx, PlayState* play);
@@ -137,7 +137,8 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
 void func_80AFB950(EnSi* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (Message_GetState(&play->msgCtx) != TEXT_STATE_CLOSING && GameInteractor_Should(VB_FREEZE_ON_SKULL_TOKEN, true)) {
+    if (Message_GetState(&play->msgCtx) != TEXT_STATE_CLOSING &&
+        GameInteractor_Should(VB_FREEZE_ON_SKULL_TOKEN, true)) {
         player->actor.freezeTimer = 10;
     } else {
         SET_GS_FLAGS((this->actor.params & 0x1F00) >> 8, this->actor.params & 0xFF);

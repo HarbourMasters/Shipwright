@@ -6,12 +6,11 @@
 
 #include "z_en_mk.h"
 #include "objects/object_mk/object_mk.h"
-#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
 void EnMk_Init(Actor* thisx, PlayState* play);
 void EnMk_Destroy(Actor* thisx, PlayState* play);
@@ -88,7 +87,7 @@ void EnMk_Destroy(Actor* thisx, PlayState* play) {
 
 void func_80AACA40(EnMk* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
-        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actionFunc = EnMk_Wait;
     }
 
@@ -235,9 +234,8 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
             player->actor.textId = this->actor.textId;
             this->actionFunc = func_80AACA40;
         } else {
-            if (GameInteractor_Should(VB_USE_EYEDROP_DIALOGUE, (
-                INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS
-            ), this)) {
+            if (GameInteractor_Should(VB_USE_EYEDROP_DIALOGUE, (INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS),
+                                      this)) {
                 player->actor.textId = 0x4032;
                 this->actionFunc = func_80AACA40;
             } else {
@@ -268,7 +266,7 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
                         Animation_Change(&this->skelAnime, &object_mk_Anim_000368, 1.0f, 0.0f,
                                          Animation_GetLastFrame(&object_mk_Anim_000368), ANIMMODE_ONCE, -4.0f);
                         this->flags &= ~2;
-                        gSaveContext.timer2State = 0;
+                        gSaveContext.subTimerState = 0;
                         Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
                         break;
                     default:

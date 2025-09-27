@@ -12,8 +12,10 @@
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "overlays/actors/ovl_Bg_Spot15_Saku/z_bg_spot15_saku.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
+#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
 void EnHeishi2_Init(Actor* thisx, PlayState* play);
 void EnHeishi2_Destroy(Actor* thisx, PlayState* play);
@@ -94,7 +96,7 @@ void EnHeishi2_Init(Actor* thisx, PlayState* play) {
 
     if ((this->type == 6) || (this->type == 9)) {
         this->actor.draw = EnHeishi2_DrawKingGuard;
-        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
         Actor_ChangeCategory(play, &play->actorCtx, &this->actor, 6);
         if (this->type == 6) {
             this->actionFunc = EnHeishi2_DoNothing1;
@@ -114,14 +116,14 @@ void EnHeishi2_Init(Actor* thisx, PlayState* play) {
             this->actor.shape.rot.y = this->actor.world.rot.y;
             Collider_DestroyCylinder(play, &this->collider);
             Player_SetCsActionWithHaltedActors(play, 0, 8);
-            this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED;
+            this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED;
             this->actionFunc = func_80A544AC;
         }
     } else {
         this->unk_2E0 = 60.0f;
         ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
-        SkelAnime_Init(play, &this->skelAnime, &gEnHeishiSkel, &gEnHeishiIdleAnim, this->jointTable,
-                       this->morphTable, 17);
+        SkelAnime_Init(play, &this->skelAnime, &gEnHeishiSkel, &gEnHeishiIdleAnim, this->jointTable, this->morphTable,
+                       17);
         collider = &this->collider;
         Collider_InitCylinder(play, collider);
         Collider_SetCylinder(play, collider, &this->actor, &sCylinderInit);
@@ -145,7 +147,7 @@ void EnHeishi2_Init(Actor* thisx, PlayState* play) {
                 // "Peep hole soldier!"
                 osSyncPrintf(VT_FGCOL(GREEN) " ☆☆☆☆☆ 覗き穴奥兵士ふぃ〜 ☆☆☆☆☆ \n" VT_RST);
                 Collider_DestroyCylinder(play, collider);
-                this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
+                this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY);
                 this->actionFunc = EnHeishi_DoNothing2;
                 break;
         }
@@ -192,7 +194,8 @@ void func_80A53278(EnHeishi2* this, PlayState* play) {
         this->unk_30B = 1;
         this->unk_300 = TEXT_STATE_DONE;
         this->actionFunc = func_80A5475C;
-    } else if ((Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) && (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) &&
+    } else if ((Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) &&
+               (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) &&
                (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP))) {
         // "Get all spiritual stones!"
         osSyncPrintf(VT_FGCOL(GREEN) " ☆☆☆☆☆ 全部の精霊石GET！ ☆☆☆☆☆ \n" VT_RST);
@@ -311,19 +314,21 @@ void func_80A5372C(EnHeishi2* this, PlayState* play) {
     f32 frameCount = Animation_GetLastFrame(&gEnHeishiIdleAnim);
 
     Animation_Change(&this->skelAnime, &gEnHeishiIdleAnim, 1.0f, 0.0f, (s16)frameCount, ANIMMODE_LOOP, -10.0f);
-    this->unk_2F2[0] = 200;
-    this->cameraId = Play_CreateSubCamera(play);
-    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
-    Play_ChangeCameraStatus(play, this->cameraId, CAM_STAT_ACTIVE);
-    this->unk_280.x = 947.0f;
-    this->unk_280.y = 1195.0f;
-    this->unk_280.z = 2682.0f;
+    if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, false)) {
+        this->unk_2F2[0] = 200;
+        this->cameraId = Play_CreateSubCamera(play);
+        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+        Play_ChangeCameraStatus(play, this->cameraId, CAM_STAT_ACTIVE);
+        this->unk_280.x = 947.0f;
+        this->unk_280.y = 1195.0f;
+        this->unk_280.z = 2682.0f;
 
-    this->unk_28C.x = 1164.0f;
-    this->unk_28C.y = 1145.0f;
-    this->unk_28C.z = 3014.0f;
+        this->unk_28C.x = 1164.0f;
+        this->unk_28C.y = 1145.0f;
+        this->unk_28C.z = 3014.0f;
 
-    Play_CameraSetAtEye(play, this->cameraId, &this->unk_280, &this->unk_28C);
+        Play_CameraSetAtEye(play, this->cameraId, &this->unk_280, &this->unk_28C);
+    }
     this->actionFunc = func_80A53850;
 }
 
@@ -331,11 +336,15 @@ void func_80A53850(EnHeishi2* this, PlayState* play) {
     BgSpot15Saku* gate;
 
     SkelAnime_Update(&this->skelAnime);
-    Play_CameraSetAtEye(play, this->cameraId, &this->unk_280, &this->unk_28C);
+    if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, false)) {
+        Play_CameraSetAtEye(play, this->cameraId, &this->unk_280, &this->unk_28C);
+    }
     gate = (BgSpot15Saku*)this->gate;
     if ((this->unk_2F2[0] == 0) || (gate->unk_168 == 0)) {
-        Play_ClearCamera(play, this->cameraId);
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+        if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, true)) {
+            Play_ClearCamera(play, this->cameraId);
+            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+        }
         Message_CloseTextbox(play);
         this->unk_30C = 1;
         Player_SetCsActionWithHaltedActors(play, NULL, 7);
@@ -407,7 +416,8 @@ void func_80A53AD4(EnHeishi2* this, PlayState* play) {
     this->unk_300 = TEXT_STATE_DONE;
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         exchangeItemId = func_8002F368(play);
-        if (exchangeItemId == EXCH_ITEM_LETTER_ZELDA) {
+        if (GameInteractor_Should(VB_HEISHI2_ACCEPT_ITEM_AS_ZELDAS_LETTER, exchangeItemId == EXCH_ITEM_LETTER_ZELDA,
+                                  exchangeItemId)) {
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
             player->actor.textId = 0x2010;
             this->unk_300 = TEXT_STATE_EVENT;
@@ -475,23 +485,25 @@ void func_80A53DF8(EnHeishi2* this, PlayState* play) {
     f32 frameCount = Animation_GetLastFrame(&gEnHeishiIdleAnim);
 
     Animation_Change(&this->skelAnime, &gEnHeishiIdleAnim, 1.0f, 0.0f, (s16)frameCount, ANIMMODE_LOOP, -10.0f);
-    this->unk_2F2[0] = 200;
-    this->cameraId = Play_CreateSubCamera(play);
-    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
-    Play_ChangeCameraStatus(play, this->cameraId, CAM_STAT_ACTIVE);
-    this->unk_2BC.x = -71.0f;
-    this->unk_280.x = -71.0f;
-    this->unk_2BC.y = 571.0f;
-    this->unk_280.y = 571.0f;
-    this->unk_2BC.z = -1487.0f;
-    this->unk_280.z = -1487.0f;
-    this->unk_298.x = 181.0f;
-    this->unk_28C.x = 181.0f;
-    this->unk_298.y = 417.0f;
-    this->unk_28C.y = 417.0f;
-    this->unk_298.z = -1079.0f;
-    this->unk_28C.z = -1079.0f;
-    Play_CameraSetAtEye(play, this->cameraId, &this->unk_280, &this->unk_28C);
+    if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, false)) {
+        this->unk_2F2[0] = 200;
+        this->cameraId = Play_CreateSubCamera(play);
+        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+        Play_ChangeCameraStatus(play, this->cameraId, CAM_STAT_ACTIVE);
+        this->unk_2BC.x = -71.0f;
+        this->unk_280.x = -71.0f;
+        this->unk_2BC.y = 571.0f;
+        this->unk_280.y = 571.0f;
+        this->unk_2BC.z = -1487.0f;
+        this->unk_280.z = -1487.0f;
+        this->unk_298.x = 181.0f;
+        this->unk_28C.x = 181.0f;
+        this->unk_298.y = 417.0f;
+        this->unk_28C.y = 417.0f;
+        this->unk_298.z = -1079.0f;
+        this->unk_28C.z = -1079.0f;
+        Play_CameraSetAtEye(play, this->cameraId, &this->unk_280, &this->unk_28C);
+    }
     this->actionFunc = func_80A53F30;
 }
 
@@ -499,11 +511,15 @@ void func_80A53F30(EnHeishi2* this, PlayState* play) {
     BgGateShutter* gate;
 
     SkelAnime_Update(&this->skelAnime);
-    Play_CameraSetAtEye(play, this->cameraId, &this->unk_280, &this->unk_28C);
+    if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, false)) {
+        Play_CameraSetAtEye(play, this->cameraId, &this->unk_280, &this->unk_28C);
+    }
     gate = (BgGateShutter*)this->gate;
     if ((this->unk_2F2[0] == 0) || (gate->openingState == 0)) {
-        Play_ClearCamera(play, this->cameraId);
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+        if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, true)) {
+            Play_ClearCamera(play, this->cameraId);
+            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+        }
         if ((this->unk_30A != 2)) {
             if (this->unk_30A == 0) {
                 this->actor.textId = 0x2015;
@@ -641,7 +657,7 @@ void func_80A544AC(EnHeishi2* this, PlayState* play) {
     this->actor.world.rot.z = this->actor.shape.rot.z;
     if (this->actor.shape.rot.z < -6000) {
         Message_StartTextbox(play, 0x708F, NULL);
-        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
+        this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actionFunc = func_80A5455C;
         this->unk_2E4 = 0.0f;
     }
@@ -798,8 +814,7 @@ void EnHeishi2_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 EnHeishi2_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                               void* thisx) {
+s32 EnHeishi2_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnHeishi2* this = (EnHeishi2*)thisx;
 
     switch (this->type) {
@@ -831,8 +846,7 @@ void EnHeishi2_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* 
 void EnHeishi2_DrawKingGuard(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gHeishiKingGuardDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -847,8 +861,7 @@ void EnHeishi2_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHeishi2_OverrideLimbDraw,
-                      EnHeishi2_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHeishi2_OverrideLimbDraw, EnHeishi2_PostLimbDraw, this);
     if ((this->type == 5) && (Flags_GetInfTable(INFTABLE_GATE_GUARD_PUT_ON_KEATON_MASK))) {
         linkObjBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_LINK_CHILD);
         if (linkObjBankIndex >= 0) {

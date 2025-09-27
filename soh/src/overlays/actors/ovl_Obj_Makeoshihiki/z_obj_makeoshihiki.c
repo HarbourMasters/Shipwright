@@ -8,7 +8,7 @@
 #include "overlays/actors/ovl_Obj_Oshihiki/z_obj_oshihiki.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_DRAW_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_DRAW_CULLING_DISABLED
 
 void ObjMakeoshihiki_Init(Actor* thisx, PlayState* play);
 void ObjMakeoshihiki_Draw(Actor* thisx, PlayState* play);
@@ -63,9 +63,8 @@ void ObjMakeoshihiki_Init(Actor* thisx, PlayState* play) {
 
     spawnPos = &block->posVecs[typeIdx];
 
-    if (Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_OBJ_OSHIHIKI, spawnPos->x, spawnPos->y,
-                           spawnPos->z, 0, block->rotY, 0,
-                           ((block->color << 6) & 0xC0) | (block->type & 0xF) | 0xFF00) == NULL) {
+    if (Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_OBJ_OSHIHIKI, spawnPos->x, spawnPos->y, spawnPos->z, 0,
+                           block->rotY, 0, ((block->color << 6) & 0xC0) | (block->type & 0xF) | 0xFF00) == NULL) {
         // "Push-pull block failure"
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("Ｅｒｒｏｒ : 押し引きブロック発生失敗(%s %d)\n", __FILE__, __LINE__);

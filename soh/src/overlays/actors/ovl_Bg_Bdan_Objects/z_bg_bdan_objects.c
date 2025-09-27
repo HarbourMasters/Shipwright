@@ -7,7 +7,7 @@
 #include "z_bg_bdan_objects.h"
 #include "objects/object_bdan_objects/object_bdan_objects.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void BgBdanObjects_Init(Actor* thisx, PlayState* play);
 void BgBdanObjects_Destroy(Actor* thisx, PlayState* play);
@@ -115,7 +115,7 @@ void BgBdanObjects_Init(Actor* thisx, PlayState* play) {
     this->switchFlag = (thisx->params >> 8) & 0x3F;
     thisx->params &= 0xFF;
     if (thisx->params == 2) {
-        thisx->flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
+        thisx->flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED;
         play->colCtx.colHeader->waterBoxes[7].ySurface = thisx->world.pos.y;
         this->actionFunc = func_8086C9A8;
         return;
@@ -130,9 +130,9 @@ void BgBdanObjects_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = func_8086C6EC;
         } else {
             if (BgBdanObjects_GetContactRu1(this, 4)) {
-                if (Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_BIGOKUTA,
-                                       thisx->home.pos.x, thisx->home.pos.y, thisx->home.pos.z, 0,
-                                       thisx->shape.rot.y + 0x8000, 0, 3) != NULL) {
+                if (Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_BIGOKUTA, thisx->home.pos.x,
+                                       thisx->home.pos.y, thisx->home.pos.z, 0, thisx->shape.rot.y + 0x8000, 0,
+                                       3) != NULL) {
                     thisx->child->world.pos.z = thisx->child->home.pos.z + 263.0f;
                 }
                 thisx->world.rot.y = 0;
@@ -235,9 +235,9 @@ void func_8086C29C(BgBdanObjects* this, PlayState* play) {
     }
 
     if (BgBdanObjects_GetContactRu1(this, 3)) {
-        Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_BIGOKUTA,
-                           this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y + 140.0f,
-                           this->dyna.actor.world.pos.z, 0, this->dyna.actor.shape.rot.y + 0x8000, 0, 0);
+        Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_BIGOKUTA, this->dyna.actor.world.pos.x,
+                           this->dyna.actor.world.pos.y + 140.0f, this->dyna.actor.world.pos.z, 0,
+                           this->dyna.actor.shape.rot.y + 0x8000, 0, 0);
         BgBdanObjects_SetContactRu1(this, 4);
         this->timer = 10;
         this->actionFunc = func_8086C55C;

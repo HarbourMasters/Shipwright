@@ -7,7 +7,7 @@
 #include "z_bg_menkuri_kaiten.h"
 #include "objects/object_menkuri_objects/object_menkuri_objects.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void BgMenkuriKaiten_Init(Actor* thisx, PlayState* play);
 void BgMenkuriKaiten_Destroy(Actor* thisx, PlayState* play);

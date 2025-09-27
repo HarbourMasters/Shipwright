@@ -16,7 +16,7 @@ extern "C" {
 #include "soh/Enhancements/randomizer/item.h"
 
 #ifdef __cplusplus
-class PlandomizerWindow : public Ship::GuiWindow {
+class PlandomizerWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 
@@ -39,14 +39,14 @@ typedef struct {
     std::string hintText;
 } SpoilerHintObject;
 
-typedef enum {
+typedef enum PlandoTabs {
     TAB_HINTS,
-    TAB_LOCATIONS
-};
+    TAB_LOCATIONS,
+} PlandoTabs;
 
-typedef enum {
+typedef enum PlandoHints {
     HINT_SINGLE,
     HINT_ALL,
-};
+} PlandoHints;
 
 #endif

@@ -8,7 +8,7 @@
 #include "objects/object_geff/object_geff.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void DemoGeff_Init(Actor* thisx, PlayState* play);
 void DemoGeff_Destroy(Actor* thisx, PlayState* play);
@@ -77,8 +77,7 @@ void func_80977EA8(PlayState* play, Gfx* dlist) {
 
     Gfx_SetupDL_25Opa(gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
-              G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, dlist);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 

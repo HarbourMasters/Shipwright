@@ -3,7 +3,7 @@
 #include "../ovl_En_Diving_Game/z_en_diving_game.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
+#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
 void EnExRuppy_Init(Actor* thisx, PlayState* play);
 void EnExRuppy_Destroy(Actor* thisx, PlayState* play);
@@ -106,7 +106,7 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
             this->unk_15A = this->actor.world.rot.z;
             this->actor.world.rot.z = 0;
             this->timer = 30;
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             this->actionFunc = EnExRuppy_DropIntoWater;
             break;
 
@@ -124,7 +124,7 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ わーなーコイン ☆☆☆☆☆ \n" VT_RST);
             this->actor.shape.shadowScale = 6.0f;
             this->actor.shape.yOffset = 700.0f;
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             this->actionFunc = EnExRuppy_WaitToBlowUp;
             break;
 
@@ -146,13 +146,13 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ ノーマルルピー ☆☆☆☆☆ \n" VT_RST);
             this->actor.shape.shadowScale = 6.0f;
             this->actor.shape.yOffset = 700.0f;
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             this->actionFunc = EnExRuppy_WaitAsCollectible;
             break;
 
         case 4: // Progress markers in the shooting gallery
             this->actor.gravity = -3.0f;
-            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
             Actor_SetScale(&this->actor, 0.01f);
             this->actor.shape.shadowScale = 6.0f;
             this->actor.shape.yOffset = -700.0f;
@@ -336,8 +336,7 @@ void EnExRuppy_WaitToBlowUp(EnExRuppy* this, PlayState* play) {
             explosionScale = 20;
             explosionScaleStep = 6;
         }
-        EffectSsBomb2_SpawnLayered(play, &this->actor.world.pos, &velocity, &accel, explosionScale,
-                                   explosionScaleStep);
+        EffectSsBomb2_SpawnLayered(play, &this->actor.world.pos, &velocity, &accel, explosionScale, explosionScaleStep);
         func_8002F71C(play, &this->actor, 2.0f, this->actor.yawTowardsPlayer, 0.0f);
         Audio_PlayActorSound2(&this->actor, NA_SE_IT_BOMB_EXPLOSION);
         Actor_Kill(&this->actor);
@@ -389,6 +388,9 @@ void EnExRuppy_Draw(Actor* thisx, PlayState* play) {
         OPEN_DISPS(play->state.gfxCtx);
 
         if (CVarGetInteger(CVAR_ENHANCEMENT("NewDrops"), 0)) {
+            func_8002EBCC(&this->actor, play, 0);
+            func_8002ED80(&this->actor, play, 0);
+
             // purple/gold rupees need less scaling
             f32 mtxScale = this->colorIdx >= 3 ? 17.5f : 25.0f;
             Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
@@ -398,23 +400,28 @@ void EnExRuppy_Draw(Actor* thisx, PlayState* play) {
             u8 shouldColor = 0;
             switch (this->colorIdx) {
                 case 0:
-                    rupeeColor = CVarGetColor24(CVAR_COSMETIC("Consumable.GreenRupee.Value"), (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor =
+                        CVarGetColor24(CVAR_COSMETIC("Consumable.GreenRupee.Value"), (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger(CVAR_COSMETIC("Consumable.GreenRupee.Changed"), 0);
                     break;
                 case 1:
-                    rupeeColor = CVarGetColor24(CVAR_COSMETIC("Consumable.BlueRupee.Value"), (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor =
+                        CVarGetColor24(CVAR_COSMETIC("Consumable.BlueRupee.Value"), (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger(CVAR_COSMETIC("Consumable.BlueRupee.Changed"), 0);
                     break;
                 case 2:
-                    rupeeColor = CVarGetColor24(CVAR_COSMETIC("Consumable.RedRupee.Value"), (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor =
+                        CVarGetColor24(CVAR_COSMETIC("Consumable.RedRupee.Value"), (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger(CVAR_COSMETIC("Consumable.RedRupee.Changed"), 0);
                     break;
                 case 4: // orange rupee texture corresponds to the purple rupee (authentic bug)
-                    rupeeColor = CVarGetColor24(CVAR_COSMETIC("Consumable.PurpleRupee.Value"), (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor =
+                        CVarGetColor24(CVAR_COSMETIC("Consumable.PurpleRupee.Value"), (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger(CVAR_COSMETIC("Consumable.PurpleRupee.Changed"), 0);
                     break;
                 case 3: // pink rupee texture corresponds to the gold rupee (authentic bug)
-                    rupeeColor = CVarGetColor24(CVAR_COSMETIC("Consumable.GoldRupee.Value"), (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor =
+                        CVarGetColor24(CVAR_COSMETIC("Consumable.GoldRupee.Value"), (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger(CVAR_COSMETIC("Consumable.GoldRupee.Changed"), 0);
                     break;
             }

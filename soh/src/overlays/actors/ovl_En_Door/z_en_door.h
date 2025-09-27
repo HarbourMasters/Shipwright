@@ -55,6 +55,9 @@ typedef struct EnDoor {
     /* 0x0198 */ Vec3s jointTable[5];
     /* 0x01B6 */ Vec3s morphTable[5];
     /* 0x01D4 */ EnDoorActionFunc actionFunc;
+    // #region SOH [Randomizer]
+    /*        */ RandomizerInf randomizerInf;
+    // #endregion
 } EnDoor; // size = 0x01D8
 
 #ifdef __cplusplus

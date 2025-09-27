@@ -1,0 +1,9 @@
+<Root>
+    <File Name="object_yukabyun" Segment="6">
+        <Texture Name="gFloorTileEnemyBottomTex" OutName="bottom" Format="rgba16" Width="32" Height="32" Offset="0x0"/>
+        <Texture Name="gFloorTileEnemyTopTex" OutName="top" Format="rgba16" Width="32" Height="32" Offset="0xAF0"/>
+        <Texture Name="gFloorTileEnemyFragmentTex" OutName="fragment" Format="rgba16" Width="16" Height="16" Offset="0x12F0"/>
+        <DList Name="gFloorTileEnemyDL" Offset="0x970"/>
+        <DList Name="gFloorTileEnemyFragmentDL" Offset="0xA60"/>
+    </File>
+</Root>
