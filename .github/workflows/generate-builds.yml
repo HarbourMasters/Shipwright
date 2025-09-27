@@ -186,11 +186,11 @@ jobs:
     - name: Install latest SDL
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "SDL3-3.1.8" ]; then
-          wget https://www.libsdl.org/release/SDL3-3.1.8.tar.gz
-          tar -xzf SDL3-3.1.8.tar.gz
+        if [ ! -d "deps/SDL3-3.2.22" ]; then
+          wget https://github.com/libsdl-org/SDL/releases/download/SDL3-3.2.22.tar.gz
+          tar -xzf SDL3-3.2.22.tar.gz -C deps
         fi
-        cd SDL3-3.1.8
+        cd deps/SDL3-3.2.22
         mkdir -p build
         cd build
         cmake -S .. -B .
