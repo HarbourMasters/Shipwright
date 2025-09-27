@@ -555,15 +555,15 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
 
     fileMetaInfo[fileNum].randoSave = isRando;
     if (isRando) {
-        nlohmann::json& randoBlock = metaSaveBlock["sections"]["randomizer"]["data"];
+        nlohmann::json &randoBlock = metaSaveBlock["sections"]["randomizer"]["data"];
 
         for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].seedHash); i++) {
             fileMetaInfo[fileNum].seedHash[i] = randoBlock["seed"][i];
         }
         fileMetaInfo[fileNum].gregFound =
-            baseBlock["randomizerInf"][RAND_INF_GREG_FOUND >> 4] & (1 << (RAND_INF_GREG_FOUND & 0xF));
+            (int16_t)baseBlock["randomizerInf"][RAND_INF_GREG_FOUND >> 4] & (1 << (RAND_INF_GREG_FOUND & 0xF));
         fileMetaInfo[fileNum].hasWallet =
-            baseBlock["randomizerInf"][RAND_INF_HAS_WALLET >> 4] & (1 << (RAND_INF_HAS_WALLET & 0xF));
+            (int16_t)baseBlock["randomizerInf"][RAND_INF_HAS_WALLET >> 4] & (1 << (RAND_INF_HAS_WALLET & 0xF));
         fileMetaInfo[fileNum].requiresMasterQuest = randoBlock["masterQuestDungeonCount"] > 0;
         // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ
         // dungeons, in which case we don't actually require a vanilla OTR.
