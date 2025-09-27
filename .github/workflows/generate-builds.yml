@@ -40,7 +40,7 @@ jobs:
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         if [ ! -d "deps/SDL3-3.2.22" ]; then
-          wget https://github.com/libsdl-org/SDL/releases/download/SDL3-3.2.22.tar.gz
+          wget https://github.com/libsdl-org/SDL/releases/download/release-3.2.22/SDL3-3.2.22.tar.gz
           tar -xzf SDL3-3.2.22.tar.gz -C deps
         fi
         cd deps/SDL3-3.2.22
@@ -187,7 +187,7 @@ jobs:
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         if [ ! -d "deps/SDL3-3.2.22" ]; then
-          wget https://github.com/libsdl-org/SDL/releases/download/SDL3-3.2.22.tar.gz
+          wget https://github.com/libsdl-org/SDL/releases/download/release-3.2.22/SDL3-3.2.22.tar.gz
           tar -xzf SDL3-3.2.22.tar.gz -C deps
         fi
         cd deps/SDL3-3.2.22
