@@ -54,11 +54,7 @@
 
 #include <Fast3D/interpreter.h>
 
-#ifdef SDL_PLATFORM_APPLE
 #include <SDL3/SDL_scancode.h>
-#else
-#include <SDL3/SDL_scancode.h>
-#endif
 
 #ifdef __SWITCH__
 #include <port/switch/SwitchImpl.h>
@@ -1261,7 +1257,7 @@ extern "C" void InitOTR() {
     OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
-#ifdef SDL_PLATFORM_APPLE
+#ifdef __APPLE__
     SpeechSynthesizer::Instance = new DarwinSpeechSynthesizer();
 #elif defined(_WIN32)
     SpeechSynthesizer::Instance = new SAPISpeechSynthesizer();

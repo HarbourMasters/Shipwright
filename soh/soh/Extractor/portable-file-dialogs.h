@@ -32,7 +32,7 @@
 #ifndef _POSIX_C_SOURCE
 #define _POSIX_C_SOURCE 2 // for popen()
 #endif
-#ifdef SDL_PLATFORM_APPLE
+#ifdef __APPLE__
 #ifndef _DARWIN_C_SOURCE
 #define _DARWIN_C_SOURCE
 #endif
@@ -489,7 +489,7 @@ inline settings::settings(bool resync) {
 
 #if _WIN32
     flags(flag::is_vista) = internal::is_vista();
-#elif !SDL_PLATFORM_APPLE
+#elif !__APPLE__
     flags(flag::has_zenity) = check_program("zenity");
     flags(flag::has_matedialog) = check_program("matedialog");
     flags(flag::has_qarma) = check_program("qarma");
@@ -511,7 +511,7 @@ inline settings::settings(bool resync) {
 inline bool settings::available() {
 #if _WIN32
     return true;
-#elif SDL_PLATFORM_APPLE
+#elif __APPLE__
     return true;
 #elif __EMSCRIPTEN__
     // FIXME: Return true after implementation is complete.
@@ -549,7 +549,7 @@ inline bool settings::check_program(std::string const& program) {
 }
 
 inline bool settings::is_osascript() const {
-#if SDL_PLATFORM_APPLE
+#if __APPLE__
     return true;
 #else
     return false;
@@ -889,7 +889,7 @@ inline internal::dialog::dialog() : m_async(std::make_shared<executor>()) {
 }
 
 inline std::vector<std::string> internal::dialog::desktop_helper() const {
-#if SDL_PLATFORM_APPLE
+#if __APPLE__
     return { "osascript" };
 #else
     return { flags(flag::has_zenity) ? "zenity"

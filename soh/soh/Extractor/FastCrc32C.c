@@ -125,7 +125,7 @@ uint32_t CRC32C(unsigned char* data, size_t dataSize) {
     unsigned int cpuidData[4];
 #ifdef _WIN32
     __cpuid(cpuidData, 1);
-#elif SDL_PLATFORM_APPLE || (defined(__aarch64__) && defined(__ARM_FEATURE_CRC32))
+#elif __APPLE__ || (defined(__aarch64__) && defined(__ARM_FEATURE_CRC32))
     // Every Mac that supports SoH should support this instruction. Also check for ARM64 at the same time
     return CRC32IntrinImpl(data, dataSize);
 #else
