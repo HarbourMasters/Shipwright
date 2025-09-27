@@ -555,7 +555,7 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
 
     fileMetaInfo[fileNum].randoSave = isRando;
     if (isRando) {
-        nlohmann::json &randoBlock = metaSaveBlock["sections"]["randomizer"]["data"];
+        nlohmann::json& randoBlock = metaSaveBlock["sections"]["randomizer"]["data"];
 
         for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].seedHash); i++) {
             fileMetaInfo[fileNum].seedHash[i] = randoBlock["seed"][i];
