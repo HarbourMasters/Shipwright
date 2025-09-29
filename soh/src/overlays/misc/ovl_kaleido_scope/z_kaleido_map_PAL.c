@@ -59,11 +59,11 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     s16 stepG;
     s16 stepB;
     u16 rgba16;
-    bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
 
     OPEN_DISPS(gfxCtx);
 
     if ((pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0) && (pauseCtx->pageIndex == PAUSE_MAP)) {
+        bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
         pauseCtx->cursorColorSet = 0;
         oldCursorPoint = pauseCtx->cursorPoint[PAUSE_MAP];
 

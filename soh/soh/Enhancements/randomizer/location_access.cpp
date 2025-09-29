@@ -106,7 +106,8 @@ bool LocationAccess::CanBuy(bool calculatingAvailableChecks) const {
     const auto& loc = Rando::StaticData::GetLocation(location);
     const auto& itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(location);
 
-    if (loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT) {
+    if (loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT ||
+        location == RC_ZR_MAGIC_BEAN_SALESMAN) {
         // Checks should only be identified while playing
         if (calculatingAvailableChecks && itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
             return CanBuyAnother(GetMinimumPrice(loc));
@@ -617,7 +618,7 @@ void Region::ResetVariables() {
 bool Region::MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAge) {
     // if we have Certain Access as child, we can check anyAge and if true, resolve a condition with Here as if
     // adult is here it's also Certain Access
-    if (logic->SmallKeys(RR_SPIRIT_TEMPLE, 7)) {
+    if (logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7)) {
         if (anyAge) {
             return Here(condition);
         }
@@ -627,10 +628,9 @@ bool Region::MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAg
     } else if (Adult() && logic->IsAdult) {
         return condition();
         // if we do not have Certain Access, we need to check the overlap by seeing if we are both here as child and
-        // meet the adult universe's access condition We only need to do it as child, as only child access matters
+        // meet the adult universe's access condition. We only need to do it as child, as only child access matters
         // for this check, as adult access is assumed based on keys
-    } else if (Child() && logic->IsChild && (!IsBrokenWall || logic->SmallKeys(RR_SPIRIT_TEMPLE, 6))) {
-        bool result = false;
+    } else if (Child() && logic->IsChild && (!IsBrokenWall || logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 6))) {
         // store current age variables
         bool pastAdult = logic->IsAdult;
         bool pastChild = logic->IsChild;
@@ -638,7 +638,7 @@ bool Region::MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAg
         // First check if the check is possible as child
         logic->IsChild = true;
         logic->IsAdult = false;
-        result = condition();
+        bool result = condition();
         // If so, check again as adult. both have to be true for result to be true
         if (result) {
             logic->IsChild = false;
@@ -761,10 +761,6 @@ bool ChildCanAccess(const RandomizerRegion region) {
 
 bool AdultCanAccess(const RandomizerRegion region) {
     return areaTable[region].Adult();
-}
-
-bool HasAccessTo(const RandomizerRegion region) {
-    return areaTable[region].HasAccess();
 }
 
 Rando::Context* ctx;
@@ -897,7 +893,7 @@ void RegionTable_Init() {
     RegionTable_Init_GanonsCastle();
 
     // Set parent regions
-    for (uint32_t i = RR_ROOT; i <= RR_GANONS_CASTLE; i++) {
+    for (uint32_t i = RR_ROOT; i < RR_MAX; i++) {
         for (LocationAccess& locPair : areaTable[i].locations) {
             RandomizerCheck location = locPair.GetLocation();
             Rando::Context::GetInstance()->GetItemLocation(location)->SetParentRegion((RandomizerRegion)i);

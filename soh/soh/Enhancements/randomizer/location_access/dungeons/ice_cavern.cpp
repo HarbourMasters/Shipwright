@@ -85,7 +85,7 @@ void RegionTable_Init_IceCavern() {
         //the switch for the glass blocking the entrance is linked to the switch that controls the glass around the skulltulla in RR_ICE_CAVERN_MQ_SCARECROW_ROOM
         //if you clear the ice, you can hit it with a pot from here.
         Entrance(RR_ICE_CAVERN_MQ_BEGINNING,      []{return logic->BlueFire();}),
-        Entrance(RR_ICE_CAVERN_MQ_MAP_ROOM,       []{return Here(RR_ICE_CAVERN_MQ_BEGINNING, []{return logic->CanKillEnemy(RE_WHITE_WOLFOS) && logic->CanKillEnemy(RE_FREEZARD);});}),
+        Entrance(RR_ICE_CAVERN_MQ_MAP_ROOM,       []{return Here(RR_ICE_CAVERN_MQ_HUB, []{return logic->CanKillEnemy(RE_WHITE_WOLFOS) && logic->CanKillEnemy(RE_FREEZARD);});}),
         Entrance(RR_ICE_CAVERN_MQ_COMPASS_ROOM,   []{return logic->IsAdult && logic->BlueFire();}),
         Entrance(RR_ICE_CAVERN_MQ_SCARECROW_ROOM, []{return logic->BlueFire();}),
     });

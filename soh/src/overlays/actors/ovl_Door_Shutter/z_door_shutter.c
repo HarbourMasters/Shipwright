@@ -335,7 +335,7 @@ f32 func_80996840(PlayState* play, DoorShutter* this, f32 arg2, f32 arg3, f32 ar
     sp28.y = player->actor.world.pos.y + arg2;
     sp28.z = player->actor.world.pos.z;
     Actor_WorldToActorCoords(&this->dyna.actor, &sp1C, &sp28);
-    if (arg3 < fabsf(sp1C.x) || arg4 < fabsf(sp1C.y)) {
+    if (GameInteractor_Should(VB_BE_NEAR_DOOR_SHUTTER, arg3 < fabsf(sp1C.x) || arg4 < fabsf(sp1C.y), this, &sp1C)) {
         return FLT_MAX;
     } else {
         return sp1C.z;

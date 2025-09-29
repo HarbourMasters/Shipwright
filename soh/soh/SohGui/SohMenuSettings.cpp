@@ -400,8 +400,9 @@ void SohMenu::AddMenuSettings() {
         .RaceDisable(false)
         .PreFunc(
             [](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NO_MULTI_VIEWPORT).active; })
-        .Options(CheckboxOptions().Tooltip(
-            "Allows multiple windows to be opened at once. Requires a reload to take effect."));
+        .Options(CheckboxOptions()
+                     .Tooltip("Allows multiple windows to be opened at once. Requires a reload to take effect.")
+                     .DefaultValue(true));
     AddWidget(path, "Texture Filter (Needs reload)", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_TEXTURE_FILTER)
         .RaceDisable(false)
@@ -433,6 +434,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_WINDOW("ControllerConfiguration"))
         .RaceDisable(false)
         .WindowName("Configure Controller")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Bindings Window."));
 
     // Input Viewer
@@ -443,6 +445,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_WINDOW("InputViewer"))
         .RaceDisable(false)
         .WindowName("Input Viewer")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Toggles the Input Viewer.").EmbedWindow(false));
 
     AddWidget(path, "Input Viewer Settings", WIDGET_SEPARATOR_TEXT);
@@ -450,6 +453,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_WINDOW("InputViewerSettings"))
         .RaceDisable(false)
         .WindowName("Input Viewer Settings")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Input Viewer Settings Window."));
 
     // Notifications

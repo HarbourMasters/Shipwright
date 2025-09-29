@@ -26,4 +26,4 @@ static void ActorMaximumHealth_Register() {
     });
 }
 
-RegisterShipInitFunc actorMaximumHealthInit(ActorMaximumHealth_Register);
+static RegisterShipInitFunc actorMaximumHealthInit(ActorMaximumHealth_Register);

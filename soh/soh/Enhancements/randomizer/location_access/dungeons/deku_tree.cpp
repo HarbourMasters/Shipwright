@@ -91,7 +91,7 @@ void RegionTable_Init_DekuTree() {
         //Exits
         Entrance(RR_DEKU_TREE_LOBBY,               []{return true;}),
         Entrance(RR_DEKU_TREE_BASEMENT_SCRUB_ROOM, []{return Here(RR_DEKU_TREE_BASEMENT_LOWER, []{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);});}),
-        Entrance(RR_DEKU_TREE_BASEMENT_UPPER,      []{return logic->IsAdult || ctx->GetTrickOption(RT_DEKU_B1_SKIP) || HasAccessTo(RR_DEKU_TREE_BASEMENT_UPPER);}),
+        Entrance(RR_DEKU_TREE_BASEMENT_UPPER,      []{return logic->IsAdult || ctx->GetTrickOption(RT_DEKU_B1_SKIP) || logic->PushedDekuBasementBlock;}),
         Entrance(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM,   []{return false;}),
     });
 
@@ -162,8 +162,9 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_BASEMENT_UPPER] = Region("Deku Tree Basement Upper", SCENE_DEKU_TREE, {
         //Events
-        EventAccess(&logic->DekuBabaSticks, []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(&logic->DekuBabaNuts,   []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(&logic->DekuBabaSticks,          []{return logic->CanGetDekuBabaSticks();}),
+        EventAccess(&logic->DekuBabaNuts,            []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(&logic->PushedDekuBasementBlock, []{return true;}),
     }, {}, {
         //Exits
         Entrance(RR_DEKU_TREE_BASEMENT_LOWER,      []{return true;}),

@@ -18,14 +18,6 @@ enum class GlitchType {
     EquipSwap,
 };
 
-enum class GlitchDifficulty {
-    NOVICE = 1,
-    INTERMEDIATE,
-    ADVANCED,
-    EXPERT,
-    HERO,
-};
-
 class Logic {
   public:
     bool noVariable = false;
@@ -143,6 +135,7 @@ class Logic {
     bool LinksCow = false;
     bool DeliverLetter = false;
     bool ClearMQDCUpperLobbyRocks = false;
+    bool MQDCBehindFireSwitch = false;
     bool LoweredWaterInsideBotw = false;
     bool OpenedWestRoomMQBotw = false;
     bool OpenedMiddleHoleMQBotw = false;
@@ -181,6 +174,10 @@ class Logic {
     bool MQSpirit3SunsEnemies = false;
     bool Spirit1FSilverRupees = false;
     bool JabuRutoIn1F = false;
+    bool DCEyesLit = false;
+    bool DCLiftPlatform = false;
+    bool DCStairsRoomDoor = false;
+    bool DCKilledLowerLizalfos = false;
 
     /* --- END OF HELPERS AND LOCATION ACCESS --- */
 
@@ -194,8 +191,7 @@ class Logic {
     bool HasItem(RandomizerGet itemName);
     bool HasBossSoul(RandomizerGet itemName);
     bool CanOpenOverworldDoor(RandomizerGet itemName);
-    bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
-    bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
+    bool SmallKeys(s16 scene, uint8_t requiredAmount);
     bool CanOpenUnderwaterChest();
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);

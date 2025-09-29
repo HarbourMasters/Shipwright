@@ -35,7 +35,7 @@ void RegionTable_Init_BottomOfTheWell() {
         Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY,          []{return logic->IsChild && logic->CanPassEnemy(RE_BIG_SKULLTULA);}),
         Entrance(RR_BOTTOM_OF_THE_WELL_BEHIND_FAKE_WALLS, []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
         Entrance(RR_BOTTOM_OF_THE_WELL_SOUTHWEST_ROOM,    []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
-        Entrance(RR_BOTTOM_OF_THE_WELL_KEESE_BEAMOS_ROOM, []{return logic->IsChild && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}),
+        Entrance(RR_BOTTOM_OF_THE_WELL_KEESE_BEAMOS_ROOM, []{return logic->IsChild && logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 3);}),
         Entrance(RR_BOTTOM_OF_THE_WELL_COFFIN_ROOM,       []{return logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE);}),
         Entrance(RR_BOTTOM_OF_THE_WELL_DEAD_HAND_ROOM,    []{return logic->LoweredWaterInsideBotw && logic->IsChild;}),
         //Falling down into basement requires nothing, but falling down somewhere specific requires lens or lens trick
@@ -56,7 +56,7 @@ void RegionTable_Init_BottomOfTheWell() {
     }, {
         //Exits
         Entrance(RR_BOTTOM_OF_THE_WELL_PERIMETER,         []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
-        Entrance(RR_BOTTOM_OF_THE_WELL_INNER_ROOMS,       []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}),
+        Entrance(RR_BOTTOM_OF_THE_WELL_INNER_ROOMS,       []{return logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 3);}),
         Entrance(RR_BOTTOM_OF_THE_WELL_BASEMENT,          []{return true;}),
         Entrance(RR_BOTTOM_OF_THE_WELL_BASEMENT_PLATFORM, []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
     });
@@ -79,7 +79,7 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_POT_1, logic->CanBreakPots() && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH))),
     }, {
         //Exits
-        Entrance(RR_BOTTOM_OF_THE_WELL_PERIMETER,                    []{return logic->IsChild && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3) && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH));}),
+        Entrance(RR_BOTTOM_OF_THE_WELL_PERIMETER,                    []{return logic->IsChild && logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 3) && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH));}),
         Entrance(RR_BOTTOM_OF_THE_WELL_LIKE_LIKE_CAGE,               []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
         //not sure if this lens check is needed, these holes are a bit too easy to find, but it matches existing logic
         Entrance(RR_BOTTOM_OF_THE_WELL_BASEMENT_USEFUL_BOMB_FLOWERS, []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
@@ -105,7 +105,7 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
     }, {
         //Exits
-        Entrance(RR_BOTTOM_OF_THE_WELL_BEHIND_FAKE_WALLS, []{return logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 3);}),
+        Entrance(RR_BOTTOM_OF_THE_WELL_BEHIND_FAKE_WALLS, []{return logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 3);}),
     });
 
     areaTable[RR_BOTTOM_OF_THE_WELL_COFFIN_ROOM] = Region("Bottom of the Well Coffin Room", SCENE_BOTTOM_OF_THE_WELL, {}, {
@@ -207,8 +207,8 @@ void RegionTable_Init_BottomOfTheWell() {
         //Exits
         Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY,            []{return logic->IsChild;}),
         Entrance(RR_BOTTOM_OF_THE_WELL_MQ_WEST_ROOM_SWITCH, []{return Here(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanPassEnemy(RE_BIG_SKULLTULA);}),
-        Entrance(RR_BOTTOM_OF_THE_WELL_MQ_COFFIN_ROOM,      []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE)) && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}),
-        Entrance(RR_BOTTOM_OF_THE_WELL_MQ_LOCKED_CAGE,      []{return logic->IsChild && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2) && logic->CanUseProjectile();}),
+        Entrance(RR_BOTTOM_OF_THE_WELL_MQ_COFFIN_ROOM,      []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE)) && logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 2);}),
+        Entrance(RR_BOTTOM_OF_THE_WELL_MQ_LOCKED_CAGE,      []{return logic->IsChild && logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 2) && logic->CanUseProjectile();}),
         Entrance(RR_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_ROOM,   []{return logic->IsChild && logic->LoweredWaterInsideBotw;}),
         Entrance(RR_BOTTOM_OF_THE_WELL_MQ_MIDDLE,           []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
         Entrance(RR_BOTTOM_OF_THE_WELL_MQ_BASEMENT,         []{return true;}),
@@ -231,7 +231,7 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_COFFIN_ROOM_MIDDLE_LEFT_HEART,  logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
-        Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER,  []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE)) && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}),
+        Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER,  []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE)) && logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 2);}),
     });
 
     areaTable[RR_BOTTOM_OF_THE_WELL_MQ_LOCKED_CAGE] = Region("Bottom of the Well MQ Locked Cage", SCENE_BOTTOM_OF_THE_WELL, {
@@ -239,7 +239,7 @@ void RegionTable_Init_BottomOfTheWell() {
         EventAccess(&logic->OpenedMiddleHoleMQBotw, []{return logic->HasExplosives();}),
     }, {}, {
         //Exits
-        Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->IsChild && logic->SmallKeys(RR_BOTTOM_OF_THE_WELL, 2);}),
+        Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->IsChild && logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 2);}),
     });
 
     areaTable[RR_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_ROOM] = Region("Bottom of the Well MQ Dead Hand Room", SCENE_BOTTOM_OF_THE_WELL, {}, {

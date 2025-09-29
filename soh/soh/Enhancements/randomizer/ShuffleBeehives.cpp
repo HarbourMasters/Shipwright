@@ -43,7 +43,7 @@ void ObjComb_RandomizerWait(ObjComb* objComb, PlayState* play) {
     objComb->unk_1B0 -= 50;
 
     const auto beehiveIdentity = ObjectExtension::GetInstance().Get<BeehiveIdentity>(&objComb->actor);
-    if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && beehiveIdentity == nullptr &&
+    if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && beehiveIdentity != nullptr &&
         !Flags_GetRandomizerInf(beehiveIdentity->randomizerInf)) {
         if (objComb->unk_1B0 <= -5000) {
             objComb->unk_1B0 = 1500;
@@ -82,9 +82,11 @@ void ObjComb_RandomizerInit(void* actor) {
 
 void ObjComb_RandomizerUpdate(void* actor) {
     ObjComb* combActor = reinterpret_cast<ObjComb*>(actor);
+    PlayState* play = gPlayState;
+    combActor->unk_1B2 += 0x2EE0;
+    combActor->actionFunc(combActor, play);
     combActor->actor.shape.rot.x =
-        static_cast<int16_t>(Math_SinS(combActor->unk_1B2)) * CLAMP_MIN(combActor->unk_1B0, 0) +
-        combActor->actor.home.rot.x;
+        Math_SinS(combActor->unk_1B2) * CLAMP_MIN(combActor->unk_1B0, 0) + combActor->actor.home.rot.x;
 }
 
 void RegisterShuffleBeehives() {
