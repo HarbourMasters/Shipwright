@@ -1904,9 +1904,10 @@ void SohMenu::AddMenuEnhancements() {
     // Mod Menu
     path.sidebarName = "Mod Menu";
     AddSidebarEntry("Enhancements", path.sidebarName, 1);
-    AddWidget(path, "Toggle Mod Menu Window", WIDGET_WINDOW_BUTTON)
+    AddWidget(path, "Popout Mod Menu Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("ModMenu"))
         .WindowName("Mod Menu")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Mod Menu Window."));
 }
 
