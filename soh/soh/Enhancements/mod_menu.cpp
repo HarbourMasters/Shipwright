@@ -127,7 +127,7 @@ void DisableMod(std::string file) {
 
 void DrawModInfo(std::string file) {
     ImGui::SameLine();
-    ImGui::Text(file.c_str());
+    ImGui::Text("%s", file.c_str());
 }
 
 void DrawMods(bool enabled) {
@@ -199,14 +199,10 @@ void ModMenuWindow::DrawElement() {
     ImGui::TextColored(
         yellow, "Mods are currently not reloaded at runtime.\nClose and re-open Ship for the changes to take effect.");
 
-    const std::string updateButtonTooltip = "Re-check the mods folder for new files";
-
     if (UIWidgets::Button("Update", UIWidgets::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
-        UIWidgets::Tooltip(updateButtonTooltip.c_str());
         UpdateModFiles();
-    } else {
-        UIWidgets::Tooltip(updateButtonTooltip.c_str());
     }
+    UIWidgets::Tooltip("Re-check the mods folder for new files");
 
     if (ImGui::BeginTable("tableMods", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Disabled Mods", ImGuiTableColumnFlags_WidthStretch, 200.0f);
