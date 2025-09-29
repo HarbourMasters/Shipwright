@@ -54,11 +54,7 @@
 
 #include <Fast3D/interpreter.h>
 
-#ifdef __APPLE__
-#include <SDL_scancode.h>
-#else
-#include <SDL2/SDL_scancode.h>
-#endif
+#include <SDL3/SDL_scancode.h>
 
 #ifdef __SWITCH__
 #include <port/switch/SwitchImpl.h>
@@ -1459,7 +1455,7 @@ extern "C" void Graph_StartFrame() {
 
             break;
         }
-#if defined(_WIN32) || defined(__APPLE__)
+#if defined(_WIN32) || defined(SDL_PLATFORM_APPLE)
         case KbScancode::LUS_KB_F9: {
             // Toggle TTS
             CVarSetInteger(CVAR_SETTING("A11yTTS"), !CVarGetInteger(CVAR_SETTING("A11yTTS"), 0));

@@ -1,5 +1,8 @@
 #ifdef _WIN32
 #include <Windows.h>
+// https://wiki.libsdl.org/SDL3/README/migration
+//     The SDLmain library has been removed, it's been entirely replaced by SDL_main.h.
+#include <SDL3/SDL_main.h>
 #endif
 
 #include "global.h"

@@ -39,14 +39,16 @@ jobs:
     - name: Install latest SDL
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "deps/SDL2-2.30.3" ]; then
-          wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-2.30.3.tar.gz
-          tar -xzf SDL2-2.30.3.tar.gz -C deps
+        if [ ! -d "deps/SDL3-3.2.22" ]; then
+          wget https://github.com/libsdl-org/SDL/releases/download/release-3.2.22/SDL3-3.2.22.tar.gz
+          tar -xzf SDL3-3.2.22.tar.gz -C deps
         fi
-        cd deps/SDL2-2.30.3
-        ./configure --enable-hidapi-libusb
-        make -j 10
-        sudo make install
+        cd deps/SDL3-3.2.22
+        mkdir -p build
+        cd build
+        cmake -S .. -B .
+        cmake --build .
+        sudo cmake --install . --prefix /usr/local 
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
     - name: Install latest tinyxml2
       run: |
@@ -130,7 +132,7 @@ jobs:
     - name: Build SoH
       run: |
         export PATH="/usr/lib/ccache:/opt/homebrew/opt/ccache/libexec:/usr/local/opt/ccache/libexec:$PATH"
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DBUILD_REMOTE_CONTROL=1
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DBUILD_REMOTE_CONTROL=0
         cmake --build build-cmake --config Release --parallel 10
         (cd build-cmake && cpack)
 
@@ -184,14 +186,16 @@ jobs:
     - name: Install latest SDL
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "deps/SDL2-2.30.3" ]; then
-          wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-2.30.3.tar.gz
-          tar -xzf SDL2-2.30.3.tar.gz -C deps
+        if [ ! -d "deps/SDL3-3.2.22" ]; then
+          wget https://github.com/libsdl-org/SDL/releases/download/release-3.2.22/SDL3-3.2.22.tar.gz
+          tar -xzf SDL3-3.2.22.tar.gz -C deps
         fi
-        cd deps/SDL2-2.30.3
-        ./configure --enable-hidapi-libusb
-        make -j 10
-        sudo make install
+        cd deps/SDL3-3.2.22
+        mkdir -p build
+        cd build
+        cmake -S .. -B .
+        cmake --build .
+        sudo cmake --install . --prefix /usr/local 
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
     - name: Install latest SDL_net
       run: |
@@ -241,7 +245,7 @@ jobs:
     - name: Build SoH
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=0
         cmake --build build-cmake --config Release -j3
         (cd build-cmake && cpack -G External)
 
@@ -308,7 +312,7 @@ jobs:
         VCPKG_ROOT: ${{github.workspace}}/vcpkg
       run: |
         set $env:PATH="$env:USERPROFILE/.cargo/bin;$env:PATH"
-        cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache -DBUILD_REMOTE_CONTROL=1
+        cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache -DBUILD_REMOTE_CONTROL=0
         cmake --build build-windows --config Release --parallel 10
 
         (cd build-windows && cpack)
