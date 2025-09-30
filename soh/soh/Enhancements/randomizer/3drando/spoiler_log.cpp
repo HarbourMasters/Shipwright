@@ -26,10 +26,10 @@
 #include <filesystem>
 #include <variables.h>
 
-#include <Context.h>
+#include <ship/Context.h>
 #include <soh/OTRGlobals.h>
 
-#include "consolevariablebridge.h"
+#include <ship/public/bridge/consolevariablebridge.h>
 
 using json = nlohmann::ordered_json;
 using namespace Rando;

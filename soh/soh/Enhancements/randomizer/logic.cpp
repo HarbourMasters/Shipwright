@@ -13,7 +13,7 @@
 #include "macros.h"
 #include "variables.h"
 #include <spdlog/spdlog.h>
-#include "StringHelper.h"
+#include <ship/utils/StringHelper.h>
 #include "soh/resource/type/Scene.h"
 #include "soh/resource/type/scenecommand/SetTransitionActorList.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"

@@ -8,7 +8,7 @@
 
 #include <utility>
 
-#include "consolevariablebridge.h"
+#include <ship/public/bridge/consolevariablebridge.h>
 
 namespace Rando {
 std::shared_ptr<Settings> Settings::mInstance;

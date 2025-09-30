@@ -1,8 +1,8 @@
 #include "InputViewer.h"
 
-#include "public/bridge/consolevariablebridge.h"
+#include <ship/public/bridge/consolevariablebridge.h>
 #include "libultraship/libultra/controller.h"
-#include "Context.h"
+#include <ship/Context.h>
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include <imgui.h>

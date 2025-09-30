@@ -10,7 +10,7 @@
 #include "../randomizer/3drando/random.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
-#include <utils/StringHelper.h>
+#include <ship/utils/StringHelper.h>
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "AudioCollection.h"

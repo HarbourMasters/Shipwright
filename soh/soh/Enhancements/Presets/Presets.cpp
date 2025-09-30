@@ -2,11 +2,11 @@
 #include <variant>
 #include <string>
 #include <fstream>
-#include <config/Config.h>
+#include <ship/config/Config.h>
 #include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
 #include <libultraship/libultraship.h>
-#include <Json.h>
+#include <ship/resource/type/Json.h>
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"

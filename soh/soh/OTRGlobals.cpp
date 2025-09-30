@@ -10,7 +10,7 @@
 #include "graphic/Fast3D/Fast3dWindow.h"
 #include <File.h>
 #include <DisplayList.h>
-#include <Window.h>
+#include <ship/window/Window.h>
 #include <soh/GameVersions.h>
 
 #include "Enhancements/gameconsole.h"
@@ -43,7 +43,7 @@
 #include "Fonts.h"
 #include "window/FileDropMgr.h"
 #include "window/gui/resource/Font.h"
-#include <utils/StringHelper.h>
+#include <ship/utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 #include "Enhancements/Presets/Presets.h"
 #include "util.h"

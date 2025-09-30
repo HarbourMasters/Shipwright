@@ -1,6 +1,6 @@
 #include "SohInputEditorWindow.h"
-#include <utils/StringHelper.h>
-#include "graphic/Fast3D/Fast3dWindow.h"
+#include <ship/utils/StringHelper.h>
+#include <fast/Fast3dWindow.h>
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"

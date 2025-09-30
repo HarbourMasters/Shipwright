@@ -2,7 +2,7 @@
 #include "ResourceManagerHelpers.h"
 #include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
-#include <utils/StringHelper.h>
+#include <ship/utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
 #include "soh/resource/type/CollisionHeader.h"
