@@ -1195,6 +1195,7 @@ typedef enum {
     PARTICLE_PINK,
     PARTICLE_BRIGHT_RED,
     PARTICLE_BLUE,
+    PARTICLE_DARK_PURPLE
 } Item00ParticleColors;
 
 void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry giEntry) {
@@ -1231,21 +1232,42 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
                     colorIndex = PARTICLE_BRIGHT_GREEN;
                     break;
                 case RG_BOLERO_OF_FIRE:
+                case RG_DODONGOS_CAVERN_MQ_SILVER_RUPEE:
                     colorIndex = PARTICLE_RED;
                     break;
                 case RG_SERENADE_OF_WATER:
                 case RG_BOTTLE_WITH_FISH:
+                case RG_ICE_CAVERN_SLIDING_SILVER_RUPEE:
+                case RG_ICE_CAVERN_SPINNING_BLADES_SILVER_RUPEE:
                     colorIndex = PARTICLE_CYAN;
                     break;
                 case RG_REQUIEM_OF_SPIRIT:
+                case RG_SPIRIT_GATE_SILVER_RUPEE:
+                case RG_SPIRIT_BEAMOS_SILVER_RUPEE:
+                case RG_SPIRIT_BOULDER_SILVER_RUPEE:
+                case RG_SPIRIT_MQ_LOBBY_SILVER_RUPEE:
                     colorIndex = PARTICLE_ORANGE;
                     break;
                 case RG_NOCTURNE_OF_SHADOW:
                 case RG_BOTTLE_WITH_POE:
+                case RG_SHADOW_SCYTHE_SILVER_RUPEE:
+                case RG_SHADOW_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE:
+                case RG_SHADOW_INVISIBLE_SPIKES_SILVER_RUPEE:
+                case RG_SHADOW_MQ_SCYTHE_SILVER_RUPEE:
+                case RG_SHADOW_MQ_OUTSIDE_SPIKE_RAIN_SILVER_RUPEE:
+                case RG_SHADOW_MQ_INVISIBLE_SCYTHE_SILVER_RUPEE:
+                case RG_SHADOW_MQ_INVISIBLE_SPIKES_SILVER_RUPEE:
+                case RG_BOTTOM_OF_THE_WELL_SILVER_RUPEE:
                     colorIndex = PARTICLE_VIOLET;
                     break;
                 case RG_PRELUDE_OF_LIGHT:
                 case RG_BOTTLE_WITH_BIG_POE:
+                case RG_GERUDO_TRAINING_GROUNDS_BOULDER_SILVER_RUPEE:
+                case RG_GERUDO_TRAINING_GROUNDS_LAVA_SILVER_RUPEE:
+                case RG_GERUDO_TRAINING_GROUNDS_TOILET_SILVER_RUPEE:
+                case RG_GERUDO_TRAINING_GROUNDS_MQ_BOULDER_SILVER_RUPEE:
+                case RG_GERUDO_TRAINING_GROUNDS_MQ_LAVA_SILVER_RUPEE:
+                case RG_GERUDO_TRAINING_GROUNDS_MQ_TOILET_SILVER_RUPEE:
                     colorIndex = PARTICLE_YELLOW;
                     break;
                 case RG_DEKU_STICK_BAG:
@@ -1272,6 +1294,15 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
                 case RG_BOTTLE_WITH_BLUE_POTION:
                     colorIndex = PARTICLE_BLUE;
                     break;
+                case RG_FIRE_TRIAL_SILVER_RUPEE:
+                case RG_FIRE_TRIAL_MQ_SILVER_RUPEE:
+                case RG_SPIRIT_TRIAL_SILVER_RUPEE:
+                case RG_FOREST_TRIAL_SILVER_RUPEE:
+                case RG_LIGHT_TRIAL_SILVER_RUPEE:
+                case RG_SHADOW_TRIAL_MQ_SILVER_RUPEE:
+                case RG_WATER_TRIAL_MQ_SILVER_RUPEE:
+                    colorIndex = PARTICLE_DARK_PURPLE;
+                    break;
                 default:
                     return;
             }
@@ -1281,7 +1312,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
     }
 
     // Color of the circle for the particles
-    static Color_RGBA8 mainColors[13][3] = {
+    static Color_RGBA8 mainColors[14][3] = {
         { 34, 255, 76 },   // Minuet, Bean Pack, Magic Upgrades, Bottle with Green Potion, Bottle with Bugs, and Greg
         { 177, 35, 35 },   // Bolero
         { 115, 251, 253 }, // Serenade and Bottle with Fish
@@ -1294,11 +1325,12 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
         { 19, 120, 182 },  // Progressive Bombchu
         { 255, 205, 255 }, // Bottle with Fairy
         { 255, 118, 118 }, // Bottle with Red Potion
-        { 154, 204, 255 }  // Bottle with Blue Fire and Bottle with Blue Potion
+        { 154, 204, 255 }, // Bottle with Blue Fire and Bottle with Blue Potion
+        { 118, 10, 143 }   // Ganon's Castle Silver Rupees
     };
 
     // Color of the faded flares stretching off the particles
-    static Color_RGBA8 flareColors[13][3] = {
+    static Color_RGBA8 flareColors[14][3] = {
         { 30, 110, 30 },   // Minuet, Bean Pack, Magic Upgrades, Bottle with Green Potion, Bottle with Bugs, and Greg
         { 90, 10, 10 },    // Bolero
         { 35, 35, 177 },   // Serenade and Bottle with Fish
@@ -1311,7 +1343,8 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
         { 204, 102, 0 },   // Progressive Bombchu
         { 216, 70, 216 },  // Bottle with Fairy
         { 90, 10, 10 },    // Bottle with Red Potion
-        { 35, 35, 177 }    // Bottle with Blue Fire
+        { 35, 35, 177 },   // Bottle with Blue Fire
+        { 131, 81, 143 }   // Ganon's Castle Silver Rupees
     };
 
     static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
