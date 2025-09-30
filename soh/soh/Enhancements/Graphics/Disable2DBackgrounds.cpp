@@ -86,7 +86,7 @@ std::vector<SkyboxId> skyboxIdControlList = {
     SKYBOX_HOUSE_ALLEY,
 };
 
-void Register3DPreRenderedScenes() {
+void PreRender3DInitFunc() {
     COND_HOOK(AfterSceneCommands, CVAR_VALUE, [](int16_t sceneNum) {
         // Check if this scene is in the skyboxControlList
         bool shouldControlSkybox = false;
@@ -104,7 +104,7 @@ void Register3DPreRenderedScenes() {
             // Replace skybox with normal sky
             gPlayState->skyboxId = SKYBOX_NORMAL_SKY;
             // Apply the always cloudy skybox as an adult for Temple of Time and the Market
-            if (LINK_IS_ADULT && sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS || sceneNum == SCENE_MARKET_RUINS ||
+            if (sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS || sceneNum == SCENE_MARKET_RUINS ||
                 sceneNum == SCENE_MARKET_ENTRANCE_RUINS) {
                 gWeatherMode = 3;
             }
@@ -158,4 +158,4 @@ void Register3DPreRenderedScenes() {
     });
 }
 
-static RegisterShipInitFunc initFunc(Register3DPreRenderedScenes, { CVAR_NAME });
+static RegisterShipInitFunc initFunc(PreRender3DInitFunc, { CVAR_NAME });
