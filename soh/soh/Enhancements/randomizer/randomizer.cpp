@@ -27,7 +27,7 @@
 #include <functional>
 #include "draw.h"
 #include "soh/OTRGlobals.h"
-#include "window/FileDropMgr.h"
+#include <ship/window/FileDropMgr.h>
 #include "soh/SohGui/UIWidgets.hpp"
 #include "static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"

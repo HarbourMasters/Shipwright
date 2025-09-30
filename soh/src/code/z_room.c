@@ -8,7 +8,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include "public/bridge/gfxbridge.h"
+#include <fast/public/bridge/gfxbridge.h>
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 

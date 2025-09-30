@@ -6,11 +6,11 @@
 #include "global.h"
 #include "vt.h"
 #include "soh/resource/type/CollisionHeader.h"
-#include <DisplayList.h>
+#include <fast/resource/type/DisplayList.h>
 #include "soh/resource/type/Cutscene.h"
 #include "soh/resource/type/Path.h"
 #include "soh/resource/type/Text.h"
-#include <Blob.h>
+#include <ship/resource/type/Blob.h>
 #include <memory>
 #include <cassert>
 #include "soh/resource/type/scenecommand/SetCameraSettings.h"

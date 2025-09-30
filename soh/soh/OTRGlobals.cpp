@@ -7,9 +7,9 @@
 #include <chrono>
 
 #include "ResourceManagerHelpers.h"
-#include "graphic/Fast3D/Fast3dWindow.h"
-#include <File.h>
-#include <DisplayList.h>
+#include <fast/Fast3dWindow.h>
+#include <ship/resource/File.h>
+#include <fast/resource/type/DisplayList.h>
 #include <ship/window/Window.h>
 #include <soh/GameVersions.h>
 
@@ -19,7 +19,7 @@
 #else
 #include <time.h>
 #endif
-#include <AudioPlayer.h>
+#include <ship/audio/AudioPlayer.h>
 #include "Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "Enhancements/controls/SohInputEditorWindow.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
@@ -40,9 +40,9 @@
 #include "variables.h"
 #include "z64.h"
 #include "macros.h"
-#include "Fonts.h"
-#include "window/FileDropMgr.h"
-#include "window/gui/resource/Font.h"
+#include <ship/window/gui/Fonts.h>
+#include <ship/window/FileDropMgr.h>
+#include <ship/window/gui/resource/Font.h>
 #include <ship/utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 #include "Enhancements/Presets/Presets.h"
@@ -52,7 +52,7 @@
 #include "Extractor/Extract.h"
 #endif
 
-#include <Fast3D/interpreter.h>
+#include <fast/interpreter.h>
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -86,14 +86,16 @@ Sail* Sail::Instance;
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/randomizer/draw.h"
 #include <libultraship/libultraship.h>
+#include <libultraship/controller/controldeck/ControlDeck.h>
+#include <fast/resource/ResourceType.h>
 
 // Resource Types/Factories
-#include "resource/type/Array.h"
-#include "resource/type/Blob.h"
-#include "resource/type/DisplayList.h"
-#include "resource/type/Matrix.h"
-#include "resource/type/Texture.h"
-#include "resource/type/Vertex.h"
+#include "soh/resource/type/Array.h"
+#include <ship/resource/type/Blob.h>
+#include <fast/resource/type/DisplayList.h>
+#include <fast/resource/type/Matrix.h>
+#include <fast/resource/type/Texture.h>
+#include <fast/resource/type/Vertex.h>
 #include "soh/resource/type/SohResourceType.h"
 #include "soh/resource/type/Animation.h"
 #include "soh/resource/type/AudioSample.h"
@@ -107,11 +109,11 @@ Sail* Sail::Instance;
 #include "soh/resource/type/Skeleton.h"
 #include "soh/resource/type/SkeletonLimb.h"
 #include "soh/resource/type/Text.h"
-#include "resource/factory/BlobFactory.h"
-#include "resource/factory/DisplayListFactory.h"
-#include "resource/factory/MatrixFactory.h"
-#include "resource/factory/TextureFactory.h"
-#include "resource/factory/VertexFactory.h"
+#include <ship/resource/factory/BlobFactory.h>
+#include <fast/resource/factory/DisplayListFactory.h>
+#include <fast/resource/factory/MatrixFactory.h>
+#include <fast/resource/factory/TextureFactory.h>
+#include <fast/resource/factory/VertexFactory.h>
 #include "soh/resource/importer/ArrayFactory.h"
 #include "soh/resource/importer/AnimationFactory.h"
 #include "soh/resource/importer/AudioSampleFactory.h"

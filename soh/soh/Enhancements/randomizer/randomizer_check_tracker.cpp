@@ -20,6 +20,7 @@
 #include <vector>
 #include <set>
 #include <libultraship/libultraship.h>
+#include <libultraship/controller/controldeck/ControlDeck.h>
 #include "location.h"
 #include "item_location.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"

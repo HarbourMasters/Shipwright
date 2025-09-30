@@ -7,7 +7,7 @@
 #include "z64.h"
 #include "soh/cvar_prefixes.h"
 #ifndef __WIIU__
-#include "controller/controldevice/controller/mapping/sdl/SDLAxisDirectionToButtonMapping.h"
+#include <ship/controller/controldevice/controller/mapping/sdl/SDLAxisDirectionToButtonMapping.h>
 #endif
 
 #define SCALE_IMGUI_SIZE(value) ((value / 13.0f) * ImGui::GetFontSize())

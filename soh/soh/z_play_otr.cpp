@@ -6,7 +6,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "global.h"
 #include "vt.h"
-#include <Vertex.h>
+#include <fast/resource/type/Vertex.h>
 
 extern "C" void Play_InitScene(PlayState* play, s32 spawn);
 extern "C" void Play_InitEnvironment(PlayState* play, s16 skyboxId);
