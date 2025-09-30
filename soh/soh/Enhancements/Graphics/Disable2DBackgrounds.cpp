@@ -86,7 +86,7 @@ std::vector<SkyboxId> skyboxIdControlList = {
     SKYBOX_HOUSE_ALLEY,
 };
 
-void PreRender3DInitFunc() {
+void Register3DPreRenderedScenes() {
     COND_HOOK(AfterSceneCommands, CVAR_VALUE, [](int16_t sceneNum) {
         // Check if this scene is in the skyboxControlList
         bool shouldControlSkybox = false;
@@ -158,4 +158,4 @@ void PreRender3DInitFunc() {
     });
 }
 
-static RegisterShipInitFunc initFunc(PreRender3DInitFunc, { CVAR_NAME });
+static RegisterShipInitFunc PreRender3DInitFunc(Register3DPreRenderedScenes, { CVAR_NAME });
