@@ -642,7 +642,7 @@ void Rando::StaticData::RegisterSilverRupeeLocations() {
         SpoilerCollectionCheck::RandomizerInf(RAND_INF_SHADOW_MQ_SCYTHE_SILVER_RUPEE_4));
     locationTable[RC_SHADOW_MQ_SCYTHE_SILVER_RUPEE_5] = Location::Base(
         RC_SHADOW_MQ_SCYTHE_SILVER_RUPEE_5, RCQUEST_MQ, RCTYPE_SILVER_RUPEE, RCAREA_SHADOW_TEMPLE, ACTOR_EN_G_SWITCH,
-        SCENE_SHADOW_TEMPLE, TWO_ACTOR_PARAMS(2180, -961), "Spinning Scythe Silver Rupee 5",
+        SCENE_SHADOW_TEMPLE, TWO_ACTOR_PARAMS(2810, -961), "Spinning Scythe Silver Rupee 5",
         RHT_SHADOW_SPINNING_SCYTHE_SILVER_RUPEE, RG_SHADOW_MQ_SCYTHE_SILVER_RUPEE,
         SpoilerCollectionCheck::RandomizerInf(RAND_INF_SHADOW_MQ_SCYTHE_SILVER_RUPEE_5));
 
