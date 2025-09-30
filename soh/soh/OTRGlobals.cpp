@@ -134,7 +134,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
 }
 
-void SoH_ProcessDroppedFiles(std::string filePath);
+bool SoH_HandleConfigDrop(char* filePath);
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
@@ -345,6 +345,10 @@ void OTRGlobals::Initialize() {
     auto sohFast3dWindow =
         std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({ sohInputEditorWindow }));
     context->InitWindow(sohFast3dWindow);
+
+    context->GetWindow()->SetAutoCaptureMouse(CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) &&
+                                              CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1));
+    context->GetWindow()->SetForceCursorVisibility(CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
     overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
@@ -1289,7 +1293,8 @@ extern "C" void InitOTR() {
     CVarClear(CVAR_GENERAL("RandomizerNewFileDropped"));
     CVarClear(CVAR_GENERAL("RandomizerDroppedFile"));
     // #endregion
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFileDropped>(SoH_ProcessDroppedFiles);
+
+    Ship::Context::GetInstance()->GetFileDropMgr()->RegisterDropHandler(SoH_HandleConfigDrop);
 
     RegisterImGuiItemIcons();
 
@@ -1474,15 +1479,6 @@ extern "C" void Graph_StartFrame() {
         }
     }
 #endif
-
-    auto dropMgr = Ship::Context::GetInstance()->GetFileDropMgr();
-    if (dropMgr->FileDropped()) {
-        std::string filePath = dropMgr->GetDroppedFile();
-        if (!filePath.empty()) {
-            GameInteractor::Instance->ExecuteHooks<GameInteractor::OnFileDropped>(filePath);
-        }
-        dropMgr->ClearDroppedFile();
-    }
 }
 
 void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>>& mtx_replacements) {
@@ -2780,26 +2776,21 @@ extern "C" void Gfx_TextureCacheDelete(const uint8_t* texAddr) {
     }
 }
 
-void SoH_ProcessDroppedFiles(std::string filePath) {
+bool SoH_HandleConfigDrop(char* filePath) {
+    if (SohUtils::IsStringEmpty(filePath)) {
+        return false;
+    }
     try {
         std::ifstream configStream(filePath);
         if (!configStream) {
-            return;
+            return false;
         }
 
         nlohmann::json configJson;
         configStream >> configJson;
 
-        // #region SOH [Randomizer] TODO: Refactor spoiler file handling for randomizer
-        if (configJson.contains("version") && configJson.contains("finalSeed")) {
-            CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), filePath.c_str());
-            CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 1);
-            return;
-        }
-        // #endregion
-
         if (!configJson.contains("CVars")) {
-            return;
+            return false;
         }
 
         CVarClearBlock(CVAR_PREFIX_ENHANCEMENT);
@@ -2845,17 +2836,19 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
 
         uint32_t finalHash = SohUtils::Hash(configJson.dump());
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);
+        return true;
     } catch (std::exception& e) {
         SPDLOG_ERROR("Failed to load config file: {}", e.what());
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
-        return;
+        return false;
     } catch (...) {
         SPDLOG_ERROR("Failed to load config file");
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
-        return;
+        return false;
     }
+    return false;
 }
 
 extern "C" void CheckTracker_RecalculateAvailableChecks() {
