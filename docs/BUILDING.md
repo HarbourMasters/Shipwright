@@ -33,15 +33,14 @@ cd Shipwright
 # Add `-DCMAKE_BUILD_TYPE:STRING=Release` if you're packaging
 # Add `-DSUPPRESS_WARNINGS=0` to prevent suppression of warnings from LUS and decomp (src) files. set to 1 to re-enable suppression
 # Add -DBUILD_REMOTE_CONTROL=ON to make sure Network compiles
-& 'C:\Users\aiden_\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v143 -A x64
+& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v143 -A x64
 
 # Generate soh.otr
-& 'C:\Users\aiden_\CMake\bin\cmake.exe' --build .\build\x64 --target GenerateSohOtr
+& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target GenerateSohOtr
 
 # Compile project
 # Add `--config Release` if you're packaging
-# Add -j + number of CPUs to probably work faster
-& 'C:\Users\aiden_\CMake\bin\cmake.exe' --build .\build\x64
+& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64
 
 # Now you can run the executable in .\build\x64 or run in Visual Studio
 ```
