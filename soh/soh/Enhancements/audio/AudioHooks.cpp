@@ -29,6 +29,7 @@ void NotifySequenceName(int32_t playerIdx, int32_t seqId) {
         if (sequenceName != NULL) {
             Notification::Emit({
                 .message = ICON_FA_MUSIC " " + std::string(sequenceName),
+                .remainingTime = static_cast<float>(CVarGetInteger(CVAR_AUDIO("SeqNameNotificationDuration"), 10)),
                 .mute = true,
             });
         }

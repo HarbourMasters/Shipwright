@@ -32,6 +32,7 @@ static WidgetInfo naviCall;
 static WidgetInfo enemyProx;
 static WidgetInfo leadingMusic;
 static WidgetInfo displaySeqName;
+static WidgetInfo ovlDuration;
 static WidgetInfo voicePitch;
 static WidgetInfo randoMusicOnSceneChange;
 static WidgetInfo randomAudioOnSeedGen;
@@ -548,6 +549,7 @@ void AudioEditor::DrawElement() {
                 SohGui::mSohMenu->MenuDrawItem(enemyProx, ImGui::GetContentRegionAvail().x, THEME_COLOR);
                 SohGui::mSohMenu->MenuDrawItem(leadingMusic, ImGui::GetContentRegionAvail().x, THEME_COLOR);
                 SohGui::mSohMenu->MenuDrawItem(displaySeqName, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+                SohGui::mSohMenu->MenuDrawItem(ovlDuration, ImGui::GetContentRegionAvail().x, THEME_COLOR);
                 SohGui::mSohMenu->MenuDrawItem(voicePitch, ImGui::GetContentRegionAvail().x, THEME_COLOR);
                 ImGui::SameLine();
                 ImGui::SetCursorPosY(ImGui::GetCursorPos().y + 40.f);
@@ -847,6 +849,11 @@ void RegisterAudioWidgets() {
                      .Tooltip("Emits a notification with the current song name whenever it changes. "
                               "(does not apply to fanfares or enemy BGM)."));
     SohGui::mSohMenu->AddSearchWidget({ displaySeqName, "Enhancements", "Audio Editor", "Audio Options" });
+
+    ovlDuration = { .name = "Sequence Notification Duration: %d seconds", .type = WidgetType::WIDGET_CVAR_SLIDER_INT };
+    ovlDuration.CVar(CVAR_AUDIO("SeqNameNotificationDuration"))
+        .Options(IntSliderOptions().Color(THEME_COLOR).Min(1).Max(20).DefaultValue(10).Size(ImVec2(300.0f, 0.0f)));
+    SohGui::mSohMenu->AddSearchWidget({ ovlDuration, "Enhancements", "Audio Editor", "Audio Options" });
 
     voicePitch = { .name = "Link's Voice Pitch Multiplier", .type = WidgetType::WIDGET_CVAR_SLIDER_FLOAT };
     voicePitch.CVar(CVAR_AUDIO("LinkVoiceFreqMultiplier"))
