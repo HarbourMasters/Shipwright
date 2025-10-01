@@ -89,13 +89,11 @@ static bool SpawnFairy(f32 posX, f32 posY, f32 posZ, int32_t params, FairyType f
 }
 
 void RegisterShuffleFairies() {
-    bool shouldRegister =
-        IS_RANDO && (RAND_GET_OPTION(RSK_SHUFFLE_FOUNTAIN_FAIRIES) || RAND_GET_OPTION(RSK_SHUFFLE_STONE_FAIRIES) ||
-                     RAND_GET_OPTION(RSK_SHUFFLE_BEAN_FAIRIES) || RAND_GET_OPTION(RSK_SHUFFLE_SONG_FAIRIES));
     bool shouldRegisterFountain = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_FOUNTAIN_FAIRIES);
     bool shouldRegisterStone = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_STONE_FAIRIES);
     bool shouldRegisterBean = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_BEAN_FAIRIES);
     bool shouldRegisterSong = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SONG_FAIRIES);
+    bool shouldRegister = shouldRegisterFountain || shouldRegisterStone || shouldRegisterBean || shouldRegisterSong;
 
     // Grant item when picking up fairy.
     COND_VB_SHOULD(VB_FAIRY_HEAL, shouldRegister, {
