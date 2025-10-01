@@ -847,7 +847,7 @@ void RegisterAudioWidgets() {
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
                      .Tooltip("Emits a notification with the current song name whenever it changes. "
-                                 "(does not apply to fanfares or enemy BGM)."));
+                              "(does not apply to fanfares or enemy BGM)."));
     SohGui::mSohMenu->AddSearchWidget({ displaySeqName, "Enhancements", "Audio Editor", "Audio Options" });
 
     voicePitch = { .name = "Link's Voice Pitch Multiplier", .type = WidgetType::WIDGET_CVAR_SLIDER_FLOAT };

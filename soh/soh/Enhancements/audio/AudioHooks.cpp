@@ -20,7 +20,7 @@ void NotifySequenceName(int32_t playerIdx, int32_t seqId) {
     static int16_t previousSceneNum = INT16_MAX;
     if (playerIdx == SEQ_PLAYER_BGM_MAIN &&
         (seqId != previousSeqId || (gPlayState != NULL && gPlayState->sceneNum != previousSceneNum))) {
-        
+
         previousSeqId = seqId;
         if (gPlayState != NULL) {
             previousSceneNum = gPlayState->sceneNum;
