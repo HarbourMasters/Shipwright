@@ -221,11 +221,11 @@ void BgGanonOtyuka_Fall(BgGanonOtyuka* this, PlayState* play) {
         }
     } else {
         if (this->dropTimer == 1) {
-            Audio_PlaySoundGeneral(NA_SE_EV_STONEDOOR_STOP, &this->dyna.actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_EV_STONEDOOR_STOP, &this->dyna.actor.projectedPos, 4,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         } else {
-            Audio_PlaySoundGeneral(NA_SE_EV_BLOCKSINK - SFX_FLAG, &this->dyna.actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_EV_BLOCKSINK - SFX_FLAG, &this->dyna.actor.projectedPos, 4,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
         Math_ApproachF(&this->dyna.actor.world.pos.y, -1000.0f, 1.0f, this->dyna.actor.speedXZ);
         Math_ApproachF(&this->dyna.actor.speedXZ, 100.0f, 1.0f, 0.1f);
@@ -316,8 +316,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, PlayState* play) {
                         Matrix_Push();
                         Matrix_Translate(sSideCenters[i].x, 0.0f, sSideCenters[i].z, MTXMODE_APPLY);
                         Matrix_RotateY(sSideAngles[i], MTXMODE_APPLY);
-                        gSPMatrix(POLY_OPA_DISP++,
-                                  MATRIX_NEWMTX(play->state.gfxCtx),
+                        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                         gSPDisplayList(POLY_OPA_DISP++, sPlatformSideDL);
                         Matrix_Pop();
@@ -354,8 +353,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, PlayState* play) {
                         Matrix_Translate(sSideCenters[i].x, 0.0f, sSideCenters[i].z, MTXMODE_APPLY);
                         Matrix_RotateY(sSideAngles[i], MTXMODE_APPLY);
                         Matrix_Scale(0.3f, platform->flashYScale * 0.3f, 0.3f, MTXMODE_APPLY);
-                        gSPMatrix(POLY_XLU_DISP++,
-                                  MATRIX_NEWMTX(play->state.gfxCtx),
+                        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                         gSPDisplayList(POLY_XLU_DISP++, sFlashDL);
                         Matrix_Pop();

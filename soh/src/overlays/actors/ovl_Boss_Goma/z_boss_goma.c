@@ -8,7 +8,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
+#define FLAGS                                                                                 \
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
+     ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 // IRIS_FOLLOW: gohma looks towards the player (iris rotation)
 // BONUS_IFRAMES: gain invincibility frames when the player does something (throwing things?), or
@@ -342,8 +344,8 @@ void BossGoma_Init(Actor* thisx, PlayState* play) {
     if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
         Actor_Kill(&this->actor);
         if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
-            Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, -640.0f, 0.0f, 0, 0,
-                               0, WARP_DUNGEON_CHILD);
+            Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, -640.0f, 0.0f, 0, 0, 0,
+                               WARP_DUNGEON_CHILD);
         }
         if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 141.0f, -640.0f, -84.0f, 0, 0, 0, 0, true);
@@ -368,13 +370,13 @@ void BossGoma_Init(Actor* thisx, PlayState* play) {
 
 void BossGoma_PlayEffectsAndSfx(BossGoma* this, PlayState* play, s16 arg2, s16 amountMinus1) {
     if (arg2 == 0 || arg2 == 1 || arg2 == 3) {
-        Actor_SpawnFloorDustRing(play, &this->actor, &this->rightHandBackLimbWorldPos, 25.0f, amountMinus1, 8.0f,
-                                 500, 10, true);
+        Actor_SpawnFloorDustRing(play, &this->actor, &this->rightHandBackLimbWorldPos, 25.0f, amountMinus1, 8.0f, 500,
+                                 10, true);
     }
 
     if (arg2 == 0 || arg2 == 2 || arg2 == 3) {
-        Actor_SpawnFloorDustRing(play, &this->actor, &this->leftHandBackLimbWorldPos, 25.0f, amountMinus1, 8.0f,
-                                 500, 10, true);
+        Actor_SpawnFloorDustRing(play, &this->actor, &this->leftHandBackLimbWorldPos, 25.0f, amountMinus1, 8.0f, 500,
+                                 10, true);
     }
 
     if (arg2 == 0) {
@@ -688,8 +690,8 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
                 fabsf(player->actor.world.pos.z - 350.0f) < 60.0f) {
                 if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_GOHMA_BATTLE)) {
                     BossGoma_SetupEncounterState4(this, play);
-                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_SHUTTER, 164.72f,
-                                       -480.0f, 397.68002f, 0, -0x705C, 0, 0x180);
+                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_SHUTTER, 164.72f, -480.0f,
+                                       397.68002f, 0, -0x705C, 0, 0x180);
                 } else {
                     Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
                     this->actionState = 1;
@@ -784,8 +786,7 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
                 this->lookedAtFrames++;
                 Math_ApproachZeroF(&this->actor.speedXZ, 0.5f, 2.0f);
                 Math_ApproachS(&this->actor.world.rot.y,
-                               Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor) + 0x8000, 2,
-                               0xBB8);
+                               Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor) + 0x8000, 2, 0xBB8);
                 this->eyeLidBottomRotX = this->eyeLidTopRotX = this->eyeIrisRotX = this->eyeIrisRotY = 0;
             } else {
                 this->lookedAtFrames = 0;
@@ -885,8 +886,8 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
             this->subCameraAt.z = this->actor.world.pos.z;
             SkelAnime_Update(&this->skelanime);
             Math_ApproachS(&this->actor.shape.rot.x, 0, 2, 0xBB8);
-            Math_ApproachS(&this->actor.world.rot.y,
-                           Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor), 2, 0x7D0);
+            Math_ApproachS(&this->actor.world.rot.y, Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor),
+                           2, 0x7D0);
 
             if (this->actor.bgCheckFlags & 1) {
                 this->actionState = 130;
@@ -908,8 +909,8 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
             Math_ApproachF(&this->subCameraEye.z, this->actor.world.pos.z + 45.0f + 40.0f, 0.1f,
                            this->subCameraFollowSpeed * 30.0f);
             Math_ApproachS(&this->actor.shape.rot.x, 0, 2, 0xBB8);
-            Math_ApproachS(&this->actor.world.rot.y,
-                           Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor), 2, 0x7D0);
+            Math_ApproachS(&this->actor.world.rot.y, Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor),
+                           2, 0x7D0);
             SkelAnime_Update(&this->skelanime);
             this->subCameraAt.x = this->actor.world.pos.x;
             this->subCameraAt.z = this->actor.world.pos.z;
@@ -926,8 +927,8 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_CRY1);
 
                 if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_GOHMA_BATTLE)) {
-                    TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
-                                           SEGMENTED_TO_VIRTUAL(gGohmaTitleCardENGTex), 160, 180, 128, 40, true);
+                    TitleCard_InitBossName(play, &play->actorCtx.titleCtx, SEGMENTED_TO_VIRTUAL(gGohmaTitleCardENGTex),
+                                           160, 180, 128, 40, true);
                 }
 
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS);
@@ -1050,8 +1051,7 @@ void BossGoma_Defeated(BossGoma* this, PlayState* play) {
                 pos.x = Rand_CenteredFloat(20.0f) + this->defeatedLimbPositions[j].x;
                 pos.y = Rand_CenteredFloat(10.0f) + this->defeatedLimbPositions[j].y;
                 pos.z = Rand_CenteredFloat(20.0f) + this->defeatedLimbPositions[j].z;
-                EffectSsHahen_Spawn(play, &pos, &vel2, &accel2, 0, (s16)(Rand_ZeroOne() * 5.0f) + 10, -1, 10,
-                                    NULL);
+                EffectSsHahen_Spawn(play, &pos, &vel2, &accel2, 0, (s16)(Rand_ZeroOne() * 5.0f) + 10, -1, 10, NULL);
             }
         }
     }
@@ -1269,8 +1269,8 @@ void BossGoma_FloorAttackPosture(BossGoma* this, PlayState* play) {
     Math_ApproachZeroF(&this->actor.speedXZ, 0.5f, 2.0f);
 
     if (this->skelanime.curFrame >= (19.0f + 1.0f / 3.0f) && this->skelanime.curFrame <= 30.0f) {
-        Math_ApproachS(&this->actor.world.rot.y, Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor),
-                       3, 0xBB8);
+        Math_ApproachS(&this->actor.world.rot.y, Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor), 3,
+                       0xBB8);
     }
 
     if (Animation_OnFrame(&this->skelanime, Animation_GetLastFrame(&gGohmaPrepareAttackAnim))) {
@@ -1568,9 +1568,11 @@ void BossGoma_CeilingIdle(BossGoma* this, PlayState* play) {
         if (this->childrenGohmaState[0] == 0 && this->childrenGohmaState[1] == 0 && this->childrenGohmaState[2] == 0) {
             // if no child gohma has been spawned
             BossGoma_SetupCeilingPrepareSpawnGohmas(this);
-        } else if ((this->childrenGohmaState[0] < 0 && this->childrenGohmaState[1] < 0 && this->childrenGohmaState[2] < 0) ||
+        } else if ((this->childrenGohmaState[0] < 0 && this->childrenGohmaState[1] < 0 &&
+                    this->childrenGohmaState[2] < 0) ||
                    (nearbyEnTest == NULL && CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0))) {
-            // In authentic gameplay, check if all baby Ghomas are dead. In Enemy Randomizer, check if there's no enemies alive.
+            // In authentic gameplay, check if all baby Ghomas are dead. In Enemy Randomizer, check if there's no
+            // enemies alive.
             BossGoma_SetupFallJump(this);
         } else {
             for (i = 0; i < ARRAY_COUNT(this->childrenGohmaState); i++) {
@@ -1963,8 +1965,7 @@ void BossGoma_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 BossGoma_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                              void* thisx) {
+s32 BossGoma_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     BossGoma* this = (BossGoma*)thisx;
     s32 doNotDrawLimb = false;
 
@@ -2121,8 +2122,8 @@ void BossGoma_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* r
         Matrix_Get(&mtx);
         Matrix_MtxFToYXZRotS(&mtx, &childRot, 0);
         // These are the pieces of Gohma as it falls apart. It appears to use the same actor as the baby gohmas.
-        babyGohma = (EnGoma*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_GOMA,
-                                                childPos.x, childPos.y, childPos.z, childRot.x, childRot.y, childRot.z,
+        babyGohma = (EnGoma*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_GOMA, childPos.x,
+                                                childPos.y, childPos.z, childRot.x, childRot.y, childRot.z,
                                                 sDeadLimbLifetime[limbIndex] + 100);
         if (babyGohma != NULL) {
             babyGohma->bossLimbDL = *dList;
@@ -2178,9 +2179,7 @@ void BossGoma_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x08, BossGoma_EmptyDlist(play->state.gfxCtx));
     }
 
-    SkelAnime_DrawSkeletonOpa(play, &this->skelanime,
-                                               BossGoma_OverrideLimbDraw,
-                      BossGoma_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelanime, BossGoma_OverrideLimbDraw, BossGoma_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

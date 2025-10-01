@@ -294,7 +294,7 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
         input->press.stick_x += (s8)(input->cur.stick_x - input->prev.stick_x);
         input->press.stick_y += (s8)(input->cur.stick_y - input->prev.stick_y);
         // #region SOH [Enhancement]
-        PadUtils_UpdateRelRXY(input); 
+        PadUtils_UpdateRelRXY(input);
         input->press.right_stick_x += (s8)(input->cur.right_stick_x - input->prev.right_stick_x);
         input->press.right_stick_y += (s8)(input->cur.right_stick_y - input->prev.right_stick_y);
         // #endregion
@@ -339,9 +339,9 @@ void PadMgr_HandleRetraceMsg(PadMgr* padMgr) {
             if (padMgr->padStatus[i].type == CONT_TYPE_NORMAL) {
                 mask |= 1 << i;
             } else {
-                //LOG_HEX("this->pad_status[i].type", padMgr->padStatus[i].type);
-                // "An unknown type of controller is connected"
-                //osSyncPrintf("知らない種類のコントローラが接続されています\n");
+                // LOG_HEX("this->pad_status[i].type", padMgr->padStatus[i].type);
+                //  "An unknown type of controller is connected"
+                // osSyncPrintf("知らない種類のコントローラが接続されています\n");
             }
         }
     }
@@ -349,7 +349,8 @@ void PadMgr_HandleRetraceMsg(PadMgr* padMgr) {
 
     /* if (gFaultStruct.msgId) {
         PadMgr_RumbleStop(padMgr);
-    } else */ if (padMgr->rumbleOffFrames > 0) {
+    } else */
+    if (padMgr->rumbleOffFrames > 0) {
         --padMgr->rumbleOffFrames;
         PadMgr_RumbleStop(padMgr);
     } else if (padMgr->rumbleOnFrames == 0) {
@@ -409,7 +410,7 @@ void PadMgr_ThreadEntry(PadMgr* padMgr) {
     s16* mesg = NULL;
     s32 exit;
 
-    //osSyncPrintf("コントローラスレッド実行開始\n"); // "Controller thread execution start"
+    // osSyncPrintf("コントローラスレッド実行開始\n"); // "Controller thread execution start"
 
     exit = false;
     while (!exit) {
@@ -419,7 +420,7 @@ void PadMgr_ThreadEntry(PadMgr* padMgr) {
         }
 
         osRecvMesg(&padMgr->interruptMsgQ, (OSMesg*)&mesg, OS_MESG_BLOCK);
-        //LOG_CHECK_NULL_POINTER("msg", mesg);
+        // LOG_CHECK_NULL_POINTER("msg", mesg);
 
         PadMgr_HandleRetraceMsg(padMgr);
         break;
@@ -449,9 +450,9 @@ void PadMgr_ThreadEntry(PadMgr* padMgr) {
     }
 
     // OTRTODO: Removed due to crash
-    //IrqMgr_RemoveClient(padMgr->irqMgr, &padMgr->irqClient);
+    // IrqMgr_RemoveClient(padMgr->irqMgr, &padMgr->irqClient);
 
-    //osSyncPrintf("コントローラスレッド実行終了\n"); // "Controller thread execution end"
+    // osSyncPrintf("コントローラスレッド実行終了\n"); // "Controller thread execution end"
 }
 
 void PadMgr_Init(PadMgr* padMgr, OSMesgQueue* siIntMsgQ, IrqMgr* irqMgr, OSId id, OSPri priority, void* stack) {
@@ -462,7 +463,7 @@ void PadMgr_Init(PadMgr* padMgr, OSMesgQueue* siIntMsgQ, IrqMgr* irqMgr, OSId id
 
     osCreateMesgQueue(&padMgr->interruptMsgQ, padMgr->interruptMsgBuf, 4);
     // OTRTODO: Removed due to crash
-    //IrqMgr_AddClient(padMgr->irqMgr, &padMgr->irqClient, &padMgr->interruptMsgQ);
+    // IrqMgr_AddClient(padMgr->irqMgr, &padMgr->irqClient, &padMgr->interruptMsgQ);
     osCreateMesgQueue(&padMgr->serialMsgQ, padMgr->serialMsgBuf, 1);
     PadMgr_UnlockSerialMesgQueue(padMgr, siIntMsgQ);
     osCreateMesgQueue(&padMgr->lockMsgQ, padMgr->lockMsgBuf, 1);

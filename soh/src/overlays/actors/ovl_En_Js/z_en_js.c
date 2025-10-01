@@ -61,8 +61,8 @@ void EnJs_Init(Actor* thisx, PlayState* play) {
     s32 pad;
 
     ActorShape_Init(&this->actor.shape, 0.0f, NULL, 36.0f);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gCarpetMerchantSkel, &gCarpetMerchantSlappingKneeAnim,
-                       this->jointTable, this->morphTable, 13);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gCarpetMerchantSkel, &gCarpetMerchantSlappingKneeAnim, this->jointTable,
+                       this->morphTable, 13);
     Animation_PlayOnce(&this->skelAnime, &gCarpetMerchantSlappingKneeAnim);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
@@ -150,10 +150,11 @@ void func_80A891C4(EnJs* this, PlayState* play) {
                     func_80A89008(this);
                 } else {
                     if (!GameInteractor_Should(VB_GIVE_ITEM_FROM_CARPET_SALESMAN, false, this)) {
-                        if (GameInteractor_Should(VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN, true, this) || Actor_HasParent(&this->actor, play)){
+                        if (GameInteractor_Should(VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN, true, this) ||
+                            Actor_HasParent(&this->actor, play)) {
                             Rupees_ChangeBy(-200);
                             En_Js_SetupAction(this, func_80A89160);
-                        } else{
+                        } else {
                             Message_ContinueTextbox(play, 0x6073);
                             func_80A89008(this);
                         }

@@ -1,18 +1,28 @@
-#include "ShuffleFairies.h"
+#include "soh/OTRGlobals.h"
 #include "randomizer_grotto.h"
 #include "draw.h"
+#include "soh/cvar_prefixes.h"
+#include "static_data.h"
+#include "soh/Enhancements/item-tables/ItemTableTypes.h"
+#include "soh/ObjectExtension/ObjectExtension.h"
+
+extern "C" {
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
 #include "src/overlays/actors/ovl_En_Gs/z_en_gs.h"
 #include "src/overlays/actors/ovl_Shot_Sun/z_shot_sun.h"
-#include "../../OTRGlobals.h"
-#include "../../cvar_prefixes.h"
-#include "static_data.h"
+}
 
 #define FAIRY_FLAG_TIMED (1 << 8)
 
 void ShuffleFairies_DrawRandomizedItem(EnElf* enElf, PlayState* play) {
-    GetItemEntry randoGetItem = enElf->sohFairyIdentity.itemEntry;
+    const auto fairyIdentity = ObjectExtension::GetInstance().Get<FairyIdentity>(&enElf->actor);
+    if (fairyIdentity == nullptr) {
+        return;
+    }
+
+    GetItemEntry randoGetItem =
+        Rando::Context::GetInstance()->GetFinalGIEntry(fairyIdentity->randomizerCheck, true, GI_FAIRY);
     if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
         randoGetItem = GET_ITEM_MYSTERY;
     }
@@ -32,8 +42,8 @@ bool ShuffleFairies_FairyExists(FairyIdentity fairyIdentity) {
         if (actor->id != ACTOR_EN_ELF) {
             actor = actor->next;
         } else {
-            EnElf* enElf = (EnElf*)(actor);
-            if (fairyIdentity.randomizerInf == enElf->sohFairyIdentity.randomizerInf) {
+            const auto actorFairyIdentity = ObjectExtension::GetInstance().Get<FairyIdentity>(&actor);
+            if (actorFairyIdentity != nullptr && fairyIdentity.randomizerInf == actorFairyIdentity->randomizerInf) {
                 return true;
             }
             actor = actor->next;
@@ -52,100 +62,108 @@ FairyIdentity ShuffleFairies_GetFairyIdentity(int32_t params) {
         sceneNum = SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY;
     }
 
-    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_ELF, sceneNum, params);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_ELF, sceneNum, params);
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("FairyGetIdentity did not receive a valid RC value (%d).", location->GetRandomizerCheck());
         assert(false);
     } else {
         fairyIdentity.randomizerInf = static_cast<RandomizerInf>(location->GetCollectionCheck().flag);
-        fairyIdentity.itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(location->GetRandomizerCheck(), true, GI_FAIRY);
+        fairyIdentity.randomizerCheck = location->GetRandomizerCheck();
     }
 
     return fairyIdentity;
 }
 
-bool ShuffleFairies_SpawnFairy(f32 posX, f32 posY, f32 posZ, int32_t params) {
+static bool SpawnFairy(f32 posX, f32 posY, f32 posZ, int32_t params, FairyType fairyType) {
     FairyIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params);
     if (!Flags_GetRandomizerInf(fairyIdentity.randomizerInf)) {
-        EnElf* fairy = (EnElf*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_ELF, posX, posY - 30.0f, posZ, 0,
-                                           0, 0, FAIRY_HEAL, true);
-        fairy->sohFairyIdentity = fairyIdentity;
-        fairy->actor.draw = (ActorFunc)ShuffleFairies_DrawRandomizedItem;
+        Actor* fairy = Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_ELF, posX, posY - 30.0f, posZ, 0, 0, 0,
+                                   fairyType, true);
+        ObjectExtension::GetInstance().Set<FairyIdentity>(fairy, std::move(fairyIdentity));
+        fairy->draw = (ActorFunc)ShuffleFairies_DrawRandomizedItem;
         return true;
     }
     return false;
 }
 
-void ShuffleFairies_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
-    va_list args;
-    va_copy(args, originalArgs);
-
-    Actor* actor = va_arg(args, Actor*);
-
-    va_end(args);
+void RegisterShuffleFairies() {
+    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_FAIRIES);
 
     // Grant item when picking up fairy.
-    if (id == VB_FAIRY_HEAL) {
-        EnElf* enElf = (EnElf*)(actor);
-        if (enElf->sohFairyIdentity.randomizerInf && enElf->sohFairyIdentity.randomizerInf != RAND_INF_MAX) {
-            Flags_SetRandomizerInf(enElf->sohFairyIdentity.randomizerInf);
+    COND_VB_SHOULD(VB_FAIRY_HEAL, shouldRegister, {
+        EnElf* enElf = va_arg(args, EnElf*);
+
+        const auto fairyIdentity = ObjectExtension::GetInstance().Get<FairyIdentity>(&enElf->actor);
+        if (fairyIdentity == nullptr) {
+            return;
         }
+
+        if (fairyIdentity != nullptr && fairyIdentity->randomizerInf && fairyIdentity->randomizerInf != RAND_INF_MAX) {
+            Flags_SetRandomizerInf(fairyIdentity->randomizerInf);
+        }
+    });
+
     // Spawn fairies in fairy fountains
-    } else if (id == VB_SPAWN_FOUNTAIN_FAIRIES) {
+    COND_VB_SHOULD(VB_SPAWN_FOUNTAIN_FAIRIES, shouldRegister, {
+        Actor* actor = va_arg(args, Actor*);
         bool fairySpawned = false;
         s16 grottoId = (gPlayState->sceneNum == SCENE_FAIRYS_FOUNTAIN) ? Grotto_CurrentGrotto() : 0;
         for (s16 index = 0; index < 8; index++) {
             int32_t params = (grottoId << 8) | index;
-            if (ShuffleFairies_SpawnFairy(actor->world.pos.x, actor->world.pos.y, actor->world.pos.z,
-                params)) {
+            if (SpawnFairy(actor->world.pos.x, actor->world.pos.y, actor->world.pos.z, params, FAIRY_HEAL)) {
                 fairySpawned = true;
             }
         }
         if (fairySpawned) {
             *should = false;
         }
+    });
+
     // Spawn 3 fairies when playing Song of Storms next to a planted bean
-    } else if (id == VB_SPAWN_BEAN_STALK_FAIRIES) {
-        ObjBean* objBean = (ObjBean*)(actor);
+    COND_VB_SHOULD(VB_SPAWN_BEAN_STALK_FAIRIES, shouldRegister, {
+        ObjBean* objBean = va_arg(args, ObjBean*);
         bool fairySpawned = false;
         for (s16 index = 0; index < 3; index++) {
             int32_t params = ((objBean->dyna.actor.params & 0x3F) << 8) | index;
-            if (ShuffleFairies_SpawnFairy(objBean->dyna.actor.world.pos.x, objBean->dyna.actor.world.pos.y,
-                objBean->dyna.actor.world.pos.z,
-                params)) {
+            if (SpawnFairy(objBean->dyna.actor.world.pos.x, objBean->dyna.actor.world.pos.y,
+                           objBean->dyna.actor.world.pos.z, params, FAIRY_HEAL)) {
                 fairySpawned = true;
             }
         }
         if (fairySpawned) {
             *should = false;
         }
+    });
+
     // Spawn a fairy from a ShotSun when playing the right song near it
-    } else if (id == VB_SPAWN_SONG_FAIRY) {
-        ShotSun* shotSun = (ShotSun*)(actor);
-        if (ShuffleFairies_SpawnFairy(shotSun->actor.world.pos.x, shotSun->actor.world.pos.y,
-            shotSun->actor.world.pos.z,
-            TWO_ACTOR_PARAMS(0x1000, (int32_t)shotSun->actor.world.pos.z))) {
+    COND_VB_SHOULD(VB_SPAWN_SONG_FAIRY, shouldRegister, {
+        ShotSun* shotSun = va_arg(args, ShotSun*);
+        if (SpawnFairy(shotSun->actor.world.pos.x, shotSun->actor.world.pos.y, shotSun->actor.world.pos.z,
+                       TWO_ACTOR_PARAMS(0x1000, (int32_t)shotSun->actor.world.pos.z), FAIRY_HEAL_BIG)) {
             *should = false;
         }
+    });
+
     // Handle playing both misc songs and song of storms in front of a gossip stone.
-    } else if (id == VB_SPAWN_GOSSIP_STONE_FAIRY) {
-        EnGs* gossipStone = (EnGs*)(actor);
+    COND_VB_SHOULD(VB_SPAWN_GOSSIP_STONE_FAIRY, shouldRegister, {
+        EnGs* gossipStone = va_arg(args, EnGs*);
+        FairyType fairyType = FAIRY_HEAL;
 
         // Mimic vanilla behaviour, only go into this path if song played is one of the ones normally spawning a fairy.
         // Otherwise fall back to vanilla behaviour.
         if (gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_04 &&
             (gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_LULLABY ||
-                gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_SARIAS ||
-                gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_EPONAS ||
-                gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_SUNS || 
-                gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_TIME ||
-                gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_STORMS)) {
+             gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_SARIAS || gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_EPONAS ||
+             gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_SUNS || gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_TIME ||
+             gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_STORMS)) {
 
             int32_t params = (gPlayState->sceneNum == SCENE_GROTTOS) ? Grotto_CurrentGrotto() : 0;
             // Distinguish storms fairies from the normal song fairies
             if (gPlayState->msgCtx.unk_E3F2 == OCARINA_SONG_STORMS) {
                 params |= 0x1000;
+                fairyType = FAIRY_HEAL_BIG;
             }
 
             // Combine actor + song params with position to get the right randomizer check
@@ -158,8 +176,8 @@ void ShuffleFairies_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should,
             // collected, the vanilla code will handle that part automatically.
             FairyIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params);
             if (!ShuffleFairies_FairyExists(fairyIdentity)) {
-                if (ShuffleFairies_SpawnFairy(gossipStone->actor.world.pos.x, gossipStone->actor.world.pos.y,
-                                                gossipStone->actor.world.pos.z, params)) {
+                if (SpawnFairy(gossipStone->actor.world.pos.x, gossipStone->actor.world.pos.y,
+                               gossipStone->actor.world.pos.z, params, fairyType)) {
                     Audio_PlayActorSound2(&gossipStone->actor, NA_SE_EV_BUTTERFRY_TO_FAIRY);
                     // Set vanilla check for fairy spawned so it doesn't spawn the vanilla fairy afterwards as well.
                     gossipStone->unk_19D = 0;
@@ -169,66 +187,55 @@ void ShuffleFairies_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should,
                 *should = false;
             }
         }
-    }
-}
-
-uint32_t onVanillaBehaviorHook = 0;
-
-void ShuffleFairies_RegisterHooks() {
-    onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(ShuffleFairies_OnVanillaBehaviorHandler);
-}
-
-void ShuffleFairies_UnregisterHooks() {
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
-
-    onVanillaBehaviorHook = 0;
+    });
 }
 
 void Rando::StaticData::RegisterFairyLocations() {
     static bool registered = false;
-    if (registered) return;
+    if (registered)
+        return;
     registered = true;
     // clang-format off
-    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_1] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_1,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1800,                          "Grotto Fairy 1",                                     RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_1));
-    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_2] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_2,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1801,                          "Grotto Fairy 2",                                     RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_2));
-    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_3] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_3,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1802,                          "Grotto Fairy 3",                                     RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_3));
-    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_4] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_4,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1803,                          "Grotto Fairy 4",                                     RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_4));
-    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_5] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_5,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1804,                          "Grotto Fairy 5",                                     RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_5));
-    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_6] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_6,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1805,                          "Grotto Fairy 6",                                     RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_6));
-    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_7] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_7,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1806,                          "Grotto Fairy 7",                                     RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_7));
-    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_8] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_8,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1807,                          "Grotto Fairy 8",                                     RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_8));
-    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_1] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_1,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0300,                          "Grotto Fairy 1",                                     RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_1));
-    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_2] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_2,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0301,                          "Grotto Fairy 2",                                     RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_2));
-    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_3] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_3,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0302,                          "Grotto Fairy 3",                                     RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_3));
-    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_4] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_4,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0303,                          "Grotto Fairy 4",                                     RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_4));
-    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_5] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_5,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0304,                          "Grotto Fairy 5",                                     RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_5));
-    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_6] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_6,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0305,                          "Grotto Fairy 6",                                     RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_6));
-    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_7] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_7,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0306,                          "Grotto Fairy 7",                                     RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_7));
-    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_8] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_8,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0307,                          "Grotto Fairy 8",                                     RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_8));
-    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_1] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_1,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F00,                          "Grotto Fairy 1",                                     RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_1));
-    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_2] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_2,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F01,                          "Grotto Fairy 2",                                     RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_2));
-    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_3] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_3,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F02,                          "Grotto Fairy 3",                                     RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_3));
-    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_4] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_4,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F03,                          "Grotto Fairy 4",                                     RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_4));
-    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_5] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_5,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F04,                          "Grotto Fairy 5",                                     RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_5));
-    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_6] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_6,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F05,                          "Grotto Fairy 6",                                     RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_6));
-    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_7] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_7,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F06,                          "Grotto Fairy 7",                                     RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_7));
-    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_8] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_8,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F07,                          "Grotto Fairy 8",                                     RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_8));
-    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_1] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_1,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C00,                          "Grotto Fairy 1",                                     RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_1));
-    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_2] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_2,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C01,                          "Grotto Fairy 2",                                     RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_2));
-    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_3] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_3,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C02,                          "Grotto Fairy 3",                                     RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_3));
-    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_4] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_4,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C03,                          "Grotto Fairy 4",                                     RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_4));
-    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_5] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_5,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C04,                          "Grotto Fairy 5",                                     RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_5));
-    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_6] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_6,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C05,                          "Grotto Fairy 6",                                     RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_6));
-    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_7] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_7,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C06,                          "Grotto Fairy 7",                                     RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_7));
-    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_8] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_8,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C07,                          "Grotto Fairy 8",                                     RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_8));
-    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_1] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_1,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D00,                          "Grotto Fairy 1",                                     RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_1));
-    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_2] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_2,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D01,                          "Grotto Fairy 2",                                     RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_2));
-    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_3] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_3,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D02,                          "Grotto Fairy 3",                                     RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_3));
-    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_4] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_4,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D03,                          "Grotto Fairy 4",                                     RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_4));
-    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_5] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_5,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D04,                          "Grotto Fairy 5",                                     RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_5));
-    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_6] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_6,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D05,                          "Grotto Fairy 6",                                     RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_6));
-    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_7] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_7,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D06,                          "Grotto Fairy 7",                                     RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_7));
-    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_8] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_8,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D07,                          "Grotto Fairy 8",                                     RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_8));
+    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_1] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_1,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1800,                          "Fairy Grotto Fairy 1",                               RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_1));
+    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_2] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_2,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1801,                          "Fairy Grotto Fairy 2",                               RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_2));
+    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_3] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_3,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1802,                          "Fairy Grotto Fairy 3",                               RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_3));
+    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_4] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_4,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1803,                          "Fairy Grotto Fairy 4",                               RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_4));
+    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_5] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_5,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1804,                          "Fairy Grotto Fairy 5",                               RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_5));
+    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_6] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_6,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1805,                          "Fairy Grotto Fairy 6",                               RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_6));
+    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_7] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_7,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1806,                          "Fairy Grotto Fairy 7",                               RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_7));
+    locationTable[RC_SFM_FAIRY_GROTTO_FAIRY_8] =                        Location::Fairy(RC_SFM_FAIRY_GROTTO_FAIRY_8,                        RCQUEST_BOTH,   RCAREA_SACRED_FOREST_MEADOW,  SCENE_FAIRYS_FOUNTAIN,              0x1807,                          "Fairy Grotto Fairy 8",                               RHT_SFM_FAIRY_GROTTO_FAIRY,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_FAIRY_GROTTO_FAIRY_8));
+    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_1] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_1,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0300,                          "Fairy Grotto Fairy 1",                               RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_1));
+    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_2] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_2,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0301,                          "Fairy Grotto Fairy 2",                               RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_2));
+    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_3] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_3,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0302,                          "Fairy Grotto Fairy 3",                               RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_3));
+    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_4] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_4,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0303,                          "Fairy Grotto Fairy 4",                               RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_4));
+    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_5] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_5,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0304,                          "Fairy Grotto Fairy 5",                               RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_5));
+    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_6] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_6,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0305,                          "Fairy Grotto Fairy 6",                               RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_6));
+    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_7] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_7,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0306,                          "Fairy Grotto Fairy 7",                               RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_7));
+    locationTable[RC_ZR_FAIRY_GROTTO_FAIRY_8] =                         Location::Fairy(RC_ZR_FAIRY_GROTTO_FAIRY_8,                         RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_FAIRYS_FOUNTAIN,              0x0307,                          "Fairy Grotto Fairy 8",                               RHT_ZR_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_FAIRY_GROTTO_FAIRY_8));
+    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_1] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_1,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F00,                          "Fairy Grotto Fairy 1",                               RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_1));
+    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_2] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_2,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F01,                          "Fairy Grotto Fairy 2",                               RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_2));
+    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_3] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_3,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F02,                          "Fairy Grotto Fairy 3",                               RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_3));
+    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_4] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_4,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F03,                          "Fairy Grotto Fairy 4",                               RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_4));
+    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_5] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_5,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F04,                          "Fairy Grotto Fairy 5",                               RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_5));
+    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_6] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_6,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F05,                          "Fairy Grotto Fairy 6",                               RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_6));
+    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_7] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_7,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F06,                          "Fairy Grotto Fairy 7",                               RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_7));
+    locationTable[RC_HF_FAIRY_GROTTO_FAIRY_8] =                         Location::Fairy(RC_HF_FAIRY_GROTTO_FAIRY_8,                         RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_FAIRYS_FOUNTAIN,              0x0F07,                          "Fairy Grotto Fairy 8",                               RHT_HF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FAIRY_GROTTO_FAIRY_8));
+    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_1] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_1,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C00,                          "Fairy Grotto Fairy 1",                               RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_1));
+    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_2] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_2,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C01,                          "Fairy Grotto Fairy 2",                               RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_2));
+    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_3] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_3,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C02,                          "Fairy Grotto Fairy 3",                               RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_3));
+    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_4] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_4,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C03,                          "Fairy Grotto Fairy 4",                               RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_4));
+    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_5] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_5,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C04,                          "Fairy Grotto Fairy 5",                               RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_5));
+    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_6] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_6,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C05,                          "Fairy Grotto Fairy 6",                               RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_6));
+    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_7] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_7,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C06,                          "Fairy Grotto Fairy 7",                               RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_7));
+    locationTable[RC_ZD_FAIRY_GROTTO_FAIRY_8] =                         Location::Fairy(RC_ZD_FAIRY_GROTTO_FAIRY_8,                         RCQUEST_BOTH,   RCAREA_ZORAS_DOMAIN,          SCENE_FAIRYS_FOUNTAIN,              0x1C07,                          "Fairy Grotto Fairy 8",                               RHT_ZD_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_FAIRY_GROTTO_FAIRY_8));
+    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_1] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_1,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D00,                          "Fairy Grotto Fairy 1",                               RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_1));
+    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_2] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_2,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D01,                          "Fairy Grotto Fairy 2",                               RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_2));
+    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_3] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_3,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D02,                          "Fairy Grotto Fairy 3",                               RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_3));
+    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_4] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_4,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D03,                          "Fairy Grotto Fairy 4",                               RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_4));
+    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_5] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_5,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D04,                          "Fairy Grotto Fairy 5",                               RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_5));
+    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_6] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_6,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D05,                          "Fairy Grotto Fairy 6",                               RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_6));
+    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_7] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_7,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D06,                          "Fairy Grotto Fairy 7",                               RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_7));
+    locationTable[RC_GF_FAIRY_GROTTO_FAIRY_8] =                         Location::Fairy(RC_GF_FAIRY_GROTTO_FAIRY_8,                         RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_FAIRYS_FOUNTAIN,              0x1D07,                          "Fairy Grotto Fairy 8",                               RHT_GF_FAIRY_GROTTO_FAIRY,                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAIRY_GROTTO_FAIRY_8));
 
     locationTable[RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_1] =                  Location::Fairy(RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_1,                  RCQUEST_BOTH,   RCAREA_GRAVEYARD,             SCENE_GRAVE_WITH_FAIRYS_FOUNTAIN,     0x00,                          "Shield Grave Fairy 1",                               RHT_GRAVEYARD_SHIELD_GRAVE_FAIRY,                    SpoilerCollectionCheck::RandomizerInf(RAND_INF_GRAVEYARD_SHIELD_GRAVE_FAIRY_1));
     locationTable[RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_2] =                  Location::Fairy(RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_2,                  RCQUEST_BOTH,   RCAREA_GRAVEYARD,             SCENE_GRAVE_WITH_FAIRYS_FOUNTAIN,     0x01,                          "Shield Grave Fairy 2",                               RHT_GRAVEYARD_SHIELD_GRAVE_FAIRY,                    SpoilerCollectionCheck::RandomizerInf(RAND_INF_GRAVEYARD_SHIELD_GRAVE_FAIRY_2));
@@ -370,8 +377,8 @@ void Rando::StaticData::RegisterFairyLocations() {
     locationTable[RC_KAK_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG] =          Location::Fairy(RC_KAK_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG,          RCQUEST_BOTH,   RCAREA_KAKARIKO_VILLAGE,      SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(0x100A, -236),  "Open Grotto Gossip Stone Big Fairy",                 RHT_KAK_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_KAK_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG));
     locationTable[RC_ZR_OPEN_GROTTO_GOSSIP_STONE_FAIRY] =               Location::Fairy(RC_ZR_OPEN_GROTTO_GOSSIP_STONE_FAIRY,               RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(   0x4, -236),  "Open Grotto Gossip Stone Fairy",                     RHT_ZR_OPEN_GROTTO_GOSSIP_STONE_FAIRY,               SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_OPEN_GROTTO_GOSSIP_STONE_FAIRY));
     locationTable[RC_ZR_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG] =           Location::Fairy(RC_ZR_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG,           RCQUEST_BOTH,   RCAREA_ZORAS_RIVER,           SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(0x1004, -236),  "Open Grotto Gossip Stone Big Fairy",                 RHT_ZR_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG,           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG));
-    locationTable[RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY] =     Location::Fairy(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY,     RCQUEST_BOTH,   RCAREA_LOST_WOODS,            SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(  0x1A, -236),  "Near Shortcuts Gossip Stone Fairy",                  RHT_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY,     SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY));
-    locationTable[RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY_BIG] = Location::Fairy(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY_BIG, RCQUEST_BOTH,   RCAREA_LOST_WOODS,            SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(0x101A, -236),  "Near Shortcuts Gossip Stone Big Fairy",              RHT_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY_BIG, SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY_BIG));
+    locationTable[RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY] =     Location::Fairy(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY,     RCQUEST_BOTH,   RCAREA_LOST_WOODS,            SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(  0x1A, -236),  "Tunnel Grotto Gossip Stone Fairy",                   RHT_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY,     SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY));
+    locationTable[RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY_BIG] = Location::Fairy(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY_BIG, RCQUEST_BOTH,   RCAREA_LOST_WOODS,            SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(0x101A, -236),  "Tunnel Grotto Gossip Stone Big Fairy",               RHT_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY_BIG, SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY_BIG));
     locationTable[RC_DMT_STORMS_GROTTO_GOSSIP_STONE_FAIRY] =            Location::Fairy(RC_DMT_STORMS_GROTTO_GOSSIP_STONE_FAIRY,            RCQUEST_BOTH,   RCAREA_DEATH_MOUNTAIN_TRAIL,  SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(   0x8, -236),  "Storms Grotto Gossip Stone Fairy",                   RHT_DMT_STORMS_GROTTO_GOSSIP_STONE_FAIRY,            SpoilerCollectionCheck::RandomizerInf(RAND_INF_DMT_STORMS_GROTTO_GOSSIP_STONE_FAIRY));
     locationTable[RC_DMT_STORMS_GROTTO_GOSSIP_STONE_FAIRY_BIG] =        Location::Fairy(RC_DMT_STORMS_GROTTO_GOSSIP_STONE_FAIRY_BIG,        RCQUEST_BOTH,   RCAREA_DEATH_MOUNTAIN_TRAIL,  SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(0x1008, -236),  "Storms Grotto Gossip Stone Big Fairy",               RHT_DMT_STORMS_GROTTO_GOSSIP_STONE_FAIRY_BIG,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_DMT_STORMS_GROTTO_GOSSIP_STONE_FAIRY_BIG));
     locationTable[RC_DMC_UPPER_GROTTO_GOSSIP_STONE_FAIRY] =             Location::Fairy(RC_DMC_UPPER_GROTTO_GOSSIP_STONE_FAIRY,             RCQUEST_BOTH,   RCAREA_DEATH_MOUNTAIN_CRATER, SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(   0x6, -236),  "Upper Grotto Gossip Stone Fairy",                    RHT_DMC_UPPER_GROTTO_GOSSIP_STONE_FAIRY,             SpoilerCollectionCheck::RandomizerInf(RAND_INF_DMC_UPPER_GROTTO_GOSSIP_STONE_FAIRY));
@@ -379,13 +386,13 @@ void Rando::StaticData::RegisterFairyLocations() {
 
     locationTable[RC_LH_ISLAND_SUN_FAIRY] =                             Location::Fairy(RC_LH_ISLAND_SUN_FAIRY,                             RCQUEST_BOTH,   RCAREA_LAKE_HYLIA,            SCENE_LAKE_HYLIA,                   TWO_ACTOR_PARAMS(0x1000, 7319),  "Island Sun's Song Fairy",                            RHT_LH_ISLAND_SUN_FAIRY,                             SpoilerCollectionCheck::RandomizerInf(RAND_INF_LH_ISLAND_SUN_FAIRY));
     locationTable[RC_HF_POND_STORMS_FAIRY] =                            Location::Fairy(RC_HF_POND_STORMS_FAIRY,                            RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                 TWO_ACTOR_PARAMS(0x1000, 5012),  "Pond Song of Storms Fairy",                          RHT_HF_POND_STORMS_FAIRY,                            SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_POND_STORMS_FAIRY));
-    locationTable[RC_HF_FENCE_GROTTO_STORMS_FAIRY] =                    Location::Fairy(RC_HF_FENCE_GROTTO_STORMS_FAIRY,                    RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(0x1000, -308),  "Inside Fence Storms Fairy",                          RHT_HF_FENCE_GROTTO_STORMS_FAIRY,                    SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FENCE_GROTTO_STORMS_FAIRY));
+    locationTable[RC_HF_FENCE_GROTTO_STORMS_FAIRY] =                    Location::Fairy(RC_HF_FENCE_GROTTO_STORMS_FAIRY,                    RCQUEST_BOTH,   RCAREA_HYRULE_FIELD,          SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(0x1000, -308),  "Deku Scrub Grotto Storms Fairy",                     RHT_HF_FENCE_GROTTO_STORMS_FAIRY,                    SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_FENCE_GROTTO_STORMS_FAIRY));
     locationTable[RC_DMT_FLAG_SUN_FAIRY] =                              Location::Fairy(RC_DMT_FLAG_SUN_FAIRY,                              RCQUEST_BOTH,   RCAREA_DEATH_MOUNTAIN_TRAIL,  SCENE_DEATH_MOUNTAIN_TRAIL,         TWO_ACTOR_PARAMS(0x1000, 464),   "Flag Sun's Song Fairy",                              RHT_DMT_FLAG_SUN_FAIRY,                              SpoilerCollectionCheck::RandomizerInf(RAND_INF_DMT_FLAG_SUN_FAIRY));
     locationTable[RC_DMT_COW_GROTTO_STORMS_FAIRY] =                     Location::Fairy(RC_DMT_COW_GROTTO_STORMS_FAIRY,                     RCQUEST_BOTH,   RCAREA_DEATH_MOUNTAIN_TRAIL,  SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(0x1000, -311),  "Cow Grotto Song of Storms Fairy",                    RHT_DMT_COW_GROTTO_STORMS_FAIRY,                     SpoilerCollectionCheck::RandomizerInf(RAND_INF_DMT_COW_GROTTO_STORMS_FAIRY));
     locationTable[RC_LW_SHORTCUT_STORMS_FAIRY] =                        Location::Fairy(RC_LW_SHORTCUT_STORMS_FAIRY,                        RCQUEST_BOTH,   RCAREA_LOST_WOODS,            SCENE_LOST_WOODS,                   TWO_ACTOR_PARAMS(0x1000, -795),  "Shortcuts Song of Storms Fairy",                     RHT_LW_SHORTCUT_STORMS_FAIRY,                        SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_SHORTCUT_STORMS_FAIRY));
-    locationTable[RC_GF_KITCHEN_SUN_FAIRY] =                            Location::Fairy(RC_GF_KITCHEN_SUN_FAIRY,                            RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_THIEVES_HIDEOUT,              TWO_ACTOR_PARAMS(0x1000, -621),  "Kitchen Sun's Song Fairy",                           RHT_GF_KITCHEN_SUN_FAIRY,                            SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_KITCHEN_SUN_FAIRY));
-    locationTable[RC_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY] =                  Location::Fairy(RC_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY,                  RCQUEST_BOTH,   RCAREA_LOST_WOODS,            SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(0x1000, 741),   "Scrub Grotto Sun's Song Fairy",                      RHT_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY,                  SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY));
-    locationTable[RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY] =          Location::Fairy(RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY,          RCQUEST_BOTH,   RCAREA_GRAVEYARD,             SCENE_ROYAL_FAMILYS_TOMB,           TWO_ACTOR_PARAMS(0x1000, 1476),  "Composer's Grave Sun's Song Fairy",                  RHT_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY));
+    locationTable[RC_TH_KITCHEN_SUN_FAIRY] =                            Location::Fairy(RC_TH_KITCHEN_SUN_FAIRY,                            RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_THIEVES_HIDEOUT,              TWO_ACTOR_PARAMS(0x1000, -621),  "Kitchen Sun's Song Fairy",                           RHT_TH_KITCHEN_SUN_FAIRY,                            SpoilerCollectionCheck::RandomizerInf(RAND_INF_TH_KITCHEN_SUN_FAIRY));
+    locationTable[RC_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY] =                  Location::Fairy(RC_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY,                  RCQUEST_BOTH,   RCAREA_LOST_WOODS,            SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(0x1000, 741),   "Deku Scrub Grotto Sun's Song Fairy",                 RHT_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY,                  SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY));
+    locationTable[RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY] =          Location::Fairy(RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY,          RCQUEST_BOTH,   RCAREA_GRAVEYARD,             SCENE_ROYAL_FAMILYS_TOMB,           TWO_ACTOR_PARAMS(0x1000, 1476),  "Royal Family's Tomb Sun's Song Fairy",               RHT_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY));
 
     locationTable[RC_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY] =            Location::Fairy(RC_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY,            RCQUEST_VANILLA,RCAREA_SPIRIT_TEMPLE,         SCENE_SPIRIT_TEMPLE,                TWO_ACTOR_PARAMS(0x1000, -1896), "After Boulder Room Sun's Song Fairy",                RHT_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY,            SpoilerCollectionCheck::RandomizerInf(RAND_INF_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY));
     locationTable[RC_SPIRIT_TEMPLE_ARMOS_ROOM_SUN_FAIRY] =              Location::Fairy(RC_SPIRIT_TEMPLE_ARMOS_ROOM_SUN_FAIRY,              RCQUEST_VANILLA,RCAREA_SPIRIT_TEMPLE,         SCENE_SPIRIT_TEMPLE,                TWO_ACTOR_PARAMS(0x1000, -220),  "Four Armos Room Sun's Song Fairy",                   RHT_SPIRIT_TEMPLE_ARMOS_ROOM_SUN_FAIRY,              SpoilerCollectionCheck::RandomizerInf(RAND_INF_SPIRIT_TEMPLE_ARMOS_ROOM_SUN_FAIRY));
@@ -412,4 +419,6 @@ void Rando::StaticData::RegisterFairyLocations() {
     // clang-format on
 }
 
-static RegisterShipInitFunc initFunc(Rando::StaticData::RegisterFairyLocations);
+static ObjectExtension::Register<FairyIdentity> RegisterFairyIdentity;
+static RegisterShipInitFunc registerShuffleFairies(RegisterShuffleFairies, { "IS_RANDO" });
+static RegisterShipInitFunc registerShuffleFairiesLocations(Rando::StaticData::RegisterFairyLocations);

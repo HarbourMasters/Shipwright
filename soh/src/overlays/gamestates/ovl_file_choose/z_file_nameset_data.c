@@ -52,8 +52,6 @@ s16 gKeyboardCharactersAlphanumeric[] = {
 };
 // clang-format on
 
-s16 D_808127DC_ne0[] = {
-    0, 1, 2, 1, 0, 2, 0, 2, 1, 0
-};
+s16 D_808127DC_ne0[] = { 0, 1, 2, 1, 0, 2, 0, 2, 1, 0 };
 
 // #endregion

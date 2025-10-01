@@ -98,11 +98,13 @@ void HandleBAInventoryQuestItems() {
 
 void HandleRBAInventoryQuestItems(uint8_t itemToPutInBottle) {
     auto itemOnCRight = gSaveContext.equips.buttonItems[3];
-    
+
     if (itemOnCRight == ITEM_ODD_MUSHROOM) {
-        gSaveContext.inventory.questItems = (itemToPutInBottle << 24) | (gSaveContext.inventory.questItems & 0x00FFFFFF);
+        gSaveContext.inventory.questItems =
+            (itemToPutInBottle << 24) | (gSaveContext.inventory.questItems & 0x00FFFFFF);
     } else if (itemOnCRight == ITEM_ODD_POTION) {
-        gSaveContext.inventory.questItems = (itemToPutInBottle << 16) | (gSaveContext.inventory.questItems & 0xFF00FFFF);
+        gSaveContext.inventory.questItems =
+            (itemToPutInBottle << 16) | (gSaveContext.inventory.questItems & 0xFF00FFFF);
     } else if (itemOnCRight == ITEM_SAW) {
         gSaveContext.inventory.questItems = (itemToPutInBottle << 8) | (gSaveContext.inventory.questItems & 0xFFFF00FF);
     } else if (itemOnCRight == ITEM_SWORD_BROKEN) {
@@ -119,7 +121,7 @@ void HandleBAInventoryDungeonItems() {
 
 void HandleRBAInventoryDungeonItems(uint8_t itemToPutInBottle) {
     auto itemOnCRight = gSaveContext.equips.buttonItems[3];
-    
+
     gSaveContext.inventory.dungeonItems[itemOnCRight - ITEM_PRESCRIPTION] = itemToPutInBottle;
 }
 
@@ -132,7 +134,7 @@ void HandleBAInventoryDungeonKeys() {
 
 void HandleRBAInventoryDungeonKeys(uint8_t itemToPutInBottle) {
     auto itemOnCRight = gSaveContext.equips.buttonItems[3];
-    
+
     gSaveContext.inventory.dungeonKeys[itemOnCRight - ITEM_BULLET_BAG_40] = itemToPutInBottle;
 }
 
@@ -172,90 +174,90 @@ void HandleBASceneFlags() {
     u32 offset = gSaveContext.equips.buttonItems[3] - ITEM_SONG_LULLABY;
     u32 scene = offset / sizeof(SavedSceneFlags);
     switch (offset % sizeof(SavedSceneFlags)) {
-    case 0:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 24) & 0xFF;
-        break;
-    case 1:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 16) & 0xFF;
-        break;
-    case 2:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 8) & 0xFF;
-        break;
-    case 3:
-        gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].chest & 0xFF;
-        break;
-    case 4:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 24) & 0xFF;
-        break;
-    case 5:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 16) & 0xFF;
-        break;
-    case 6:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 8) & 0xFF;
-        break;
-    case 7:
-        gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].swch & 0xFF;
-        break;
-    case 8:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 24) & 0xFF;
-        break;
-    case 9:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 16) & 0xFF;
-        break;
-    case 10:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 8) & 0xFF;
-        break;
-    case 11:
-        gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].clear & 0xFF;
-        break;
-    case 12:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 24) & 0xFF;
-        break;
-    case 13:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 16) & 0xFF;
-        break;
-    case 14:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 8) & 0xFF;
-        break;
-    case 15:
-        gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].collect & 0xFF;
-        break;
-    case 16:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 24) & 0xFF;
-        break;
-    case 17:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 16) & 0xFF;
-        break;
-    case 18:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 8) & 0xFF;
-        break;
-    case 19:
-        gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].unk & 0xFF;
-        break;
-    case 20:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 24) & 0xFF;
-        break;
-    case 21:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 16) & 0xFF;
-        break;
-    case 22:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 8) & 0xFF;
-        break;
-    case 23:
-        gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].rooms & 0xFF;
-        break;
-    case 24:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 24) & 0xFF;
-        break;
-    case 25:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 16) & 0xFF;
-        break;
-    case 26:
-        gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 8) & 0xFF;
-        break;
-    case 27:
-        gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].floors & 0xFF;
-        break;
+        case 0:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 24) & 0xFF;
+            break;
+        case 1:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 16) & 0xFF;
+            break;
+        case 2:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].chest >> 8) & 0xFF;
+            break;
+        case 3:
+            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].chest & 0xFF;
+            break;
+        case 4:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 24) & 0xFF;
+            break;
+        case 5:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 16) & 0xFF;
+            break;
+        case 6:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].swch >> 8) & 0xFF;
+            break;
+        case 7:
+            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].swch & 0xFF;
+            break;
+        case 8:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 24) & 0xFF;
+            break;
+        case 9:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 16) & 0xFF;
+            break;
+        case 10:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].clear >> 8) & 0xFF;
+            break;
+        case 11:
+            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].clear & 0xFF;
+            break;
+        case 12:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 24) & 0xFF;
+            break;
+        case 13:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 16) & 0xFF;
+            break;
+        case 14:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].collect >> 8) & 0xFF;
+            break;
+        case 15:
+            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].collect & 0xFF;
+            break;
+        case 16:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 24) & 0xFF;
+            break;
+        case 17:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 16) & 0xFF;
+            break;
+        case 18:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].unk >> 8) & 0xFF;
+            break;
+        case 19:
+            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].unk & 0xFF;
+            break;
+        case 20:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 24) & 0xFF;
+            break;
+        case 21:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 16) & 0xFF;
+            break;
+        case 22:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].rooms >> 8) & 0xFF;
+            break;
+        case 23:
+            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].rooms & 0xFF;
+            break;
+        case 24:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 24) & 0xFF;
+            break;
+        case 25:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 16) & 0xFF;
+            break;
+        case 26:
+            gSaveContext.equips.buttonItems[0] = (gSaveContext.sceneFlags[scene].floors >> 8) & 0xFF;
+            break;
+        case 27:
+            gSaveContext.equips.buttonItems[0] = gSaveContext.sceneFlags[scene].floors & 0xFF;
+            break;
     }
 }
 
@@ -264,90 +266,117 @@ void HandleRBASceneFlags(uint8_t itemToPutInBottle) {
     u32 offset = gSaveContext.equips.buttonItems[3] - ITEM_SONG_LULLABY;
     u32 scene = offset / sizeof(SavedSceneFlags);
     switch (offset % sizeof(SavedSceneFlags)) {
-    case 0:
-        gSaveContext.sceneFlags[scene].chest = (itemToPutInBottle << 24) | (gSaveContext.sceneFlags[scene].chest & 0x00FFFFFF);
-        break;
-    case 1:
-        gSaveContext.sceneFlags[scene].chest = (itemToPutInBottle << 16) | (gSaveContext.sceneFlags[scene].chest & 0xFF00FFFF);
-        break;
-    case 2:
-        gSaveContext.sceneFlags[scene].chest = (itemToPutInBottle << 8) | (gSaveContext.sceneFlags[scene].chest & 0xFFFF00FF);
-        break;
-    case 3:
-        gSaveContext.sceneFlags[scene].chest = itemToPutInBottle | (gSaveContext.sceneFlags[scene].chest & 0xFFFFFF00);
-        break;
-    case 4:
-        gSaveContext.sceneFlags[scene].swch = (itemToPutInBottle << 24) | (gSaveContext.sceneFlags[scene].swch & 0x00FFFFFF);
-        break;
-    case 5:
-        gSaveContext.sceneFlags[scene].swch = (itemToPutInBottle << 16) | (gSaveContext.sceneFlags[scene].swch & 0xFF00FFFF);
-        break;
-    case 6:
-        gSaveContext.sceneFlags[scene].swch = (itemToPutInBottle << 8) | (gSaveContext.sceneFlags[scene].swch & 0xFFFF00FF);
-        break;
-    case 7:
-        gSaveContext.sceneFlags[scene].swch = itemToPutInBottle | (gSaveContext.sceneFlags[scene].swch & 0xFFFFFF00);
-        break;
-    case 8:
-        gSaveContext.sceneFlags[scene].clear = (itemToPutInBottle << 24) | (gSaveContext.sceneFlags[scene].clear & 0x00FFFFFF);
-        break;
-    case 9:
-        gSaveContext.sceneFlags[scene].clear = (itemToPutInBottle << 16) | (gSaveContext.sceneFlags[scene].clear & 0xFF00FFFF);
-        break;
-    case 10:
-        gSaveContext.sceneFlags[scene].clear = (itemToPutInBottle << 8) | (gSaveContext.sceneFlags[scene].clear & 0xFFFF00FF);
-        break;
-    case 11:
-        gSaveContext.sceneFlags[scene].clear = itemToPutInBottle | (gSaveContext.sceneFlags[scene].clear & 0xFFFFFF00);
-        break;
-    case 12:
-        gSaveContext.sceneFlags[scene].collect = (itemToPutInBottle << 24) | (gSaveContext.sceneFlags[scene].collect & 0x00FFFFFF);
-        break;
-    case 13:
-        gSaveContext.sceneFlags[scene].collect = (itemToPutInBottle << 16) | (gSaveContext.sceneFlags[scene].collect & 0xFF00FFFF);
-        break;
-    case 14:
-        gSaveContext.sceneFlags[scene].collect = (itemToPutInBottle << 8) | (gSaveContext.sceneFlags[scene].collect & 0xFFFF00FF);
-        break;
-    case 15:
-        gSaveContext.sceneFlags[scene].collect = itemToPutInBottle | (gSaveContext.sceneFlags[scene].collect & 0xFFFFFF00);
-        break;
-    case 16:
-        gSaveContext.sceneFlags[scene].unk = (itemToPutInBottle << 24) | (gSaveContext.sceneFlags[scene].unk & 0x00FFFFFF);
-        break;
-    case 17:
-        gSaveContext.sceneFlags[scene].unk = (itemToPutInBottle << 16) | (gSaveContext.sceneFlags[scene].unk & 0xFF00FFFF);
-        break;
-    case 18:
-        gSaveContext.sceneFlags[scene].unk = (itemToPutInBottle << 8) | (gSaveContext.sceneFlags[scene].unk & 0xFFFF00FF);
-        break;
-    case 19:
-        gSaveContext.sceneFlags[scene].unk = itemToPutInBottle | (gSaveContext.sceneFlags[scene].unk & 0xFFFFFF00);
-        break;
-    case 20:
-        gSaveContext.sceneFlags[scene].rooms = (itemToPutInBottle << 24) | (gSaveContext.sceneFlags[scene].rooms & 0x00FFFFFF);
-        break;
-    case 21:
-        gSaveContext.sceneFlags[scene].rooms = (itemToPutInBottle << 16) | (gSaveContext.sceneFlags[scene].rooms & 0xFF00FFFF);
-        break;
-    case 22:
-        gSaveContext.sceneFlags[scene].rooms = (itemToPutInBottle << 8) | (gSaveContext.sceneFlags[scene].rooms & 0xFFFF00FF);
-        break;
-    case 23:
-        gSaveContext.sceneFlags[scene].rooms = itemToPutInBottle | (gSaveContext.sceneFlags[scene].rooms & 0xFFFFFF00);
-        break;
-    case 24:
-        gSaveContext.sceneFlags[scene].floors = (itemToPutInBottle << 24) | (gSaveContext.sceneFlags[scene].floors & 0x00FFFFFF);
-        break;
-    case 25:
-        gSaveContext.sceneFlags[scene].floors = (itemToPutInBottle << 16) | (gSaveContext.sceneFlags[scene].floors & 0xFF00FFFF);
-        break;
-    case 26:
-        gSaveContext.sceneFlags[scene].floors = (itemToPutInBottle << 8) | (gSaveContext.sceneFlags[scene].floors & 0xFFFF00FF);
-        break;
-    case 27:
-        gSaveContext.sceneFlags[scene].floors = itemToPutInBottle | (gSaveContext.sceneFlags[scene].floors & 0xFFFFFF00);
-        break;
+        case 0:
+            gSaveContext.sceneFlags[scene].chest =
+                (itemToPutInBottle << 24) | (gSaveContext.sceneFlags[scene].chest & 0x00FFFFFF);
+            break;
+        case 1:
+            gSaveContext.sceneFlags[scene].chest =
+                (itemToPutInBottle << 16) | (gSaveContext.sceneFlags[scene].chest & 0xFF00FFFF);
+            break;
+        case 2:
+            gSaveContext.sceneFlags[scene].chest =
+                (itemToPutInBottle << 8) | (gSaveContext.sceneFlags[scene].chest & 0xFFFF00FF);
+            break;
+        case 3:
+            gSaveContext.sceneFlags[scene].chest =
+                itemToPutInBottle | (gSaveContext.sceneFlags[scene].chest & 0xFFFFFF00);
+            break;
+        case 4:
+            gSaveContext.sceneFlags[scene].swch =
+                (itemToPutInBottle << 24) | (gSaveContext.sceneFlags[scene].swch & 0x00FFFFFF);
+            break;
+        case 5:
+            gSaveContext.sceneFlags[scene].swch =
+                (itemToPutInBottle << 16) | (gSaveContext.sceneFlags[scene].swch & 0xFF00FFFF);
+            break;
+        case 6:
+            gSaveContext.sceneFlags[scene].swch =
+                (itemToPutInBottle << 8) | (gSaveContext.sceneFlags[scene].swch & 0xFFFF00FF);
+            break;
+        case 7:
+            gSaveContext.sceneFlags[scene].swch =
+                itemToPutInBottle | (gSaveContext.sceneFlags[scene].swch & 0xFFFFFF00);
+            break;
+        case 8:
+            gSaveContext.sceneFlags[scene].clear =
+                (itemToPutInBottle << 24) | (gSaveContext.sceneFlags[scene].clear & 0x00FFFFFF);
+            break;
+        case 9:
+            gSaveContext.sceneFlags[scene].clear =
+                (itemToPutInBottle << 16) | (gSaveContext.sceneFlags[scene].clear & 0xFF00FFFF);
+            break;
+        case 10:
+            gSaveContext.sceneFlags[scene].clear =
+                (itemToPutInBottle << 8) | (gSaveContext.sceneFlags[scene].clear & 0xFFFF00FF);
+            break;
+        case 11:
+            gSaveContext.sceneFlags[scene].clear =
+                itemToPutInBottle | (gSaveContext.sceneFlags[scene].clear & 0xFFFFFF00);
+            break;
+        case 12:
+            gSaveContext.sceneFlags[scene].collect =
+                (itemToPutInBottle << 24) | (gSaveContext.sceneFlags[scene].collect & 0x00FFFFFF);
+            break;
+        case 13:
+            gSaveContext.sceneFlags[scene].collect =
+                (itemToPutInBottle << 16) | (gSaveContext.sceneFlags[scene].collect & 0xFF00FFFF);
+            break;
+        case 14:
+            gSaveContext.sceneFlags[scene].collect =
+                (itemToPutInBottle << 8) | (gSaveContext.sceneFlags[scene].collect & 0xFFFF00FF);
+            break;
+        case 15:
+            gSaveContext.sceneFlags[scene].collect =
+                itemToPutInBottle | (gSaveContext.sceneFlags[scene].collect & 0xFFFFFF00);
+            break;
+        case 16:
+            gSaveContext.sceneFlags[scene].unk =
+                (itemToPutInBottle << 24) | (gSaveContext.sceneFlags[scene].unk & 0x00FFFFFF);
+            break;
+        case 17:
+            gSaveContext.sceneFlags[scene].unk =
+                (itemToPutInBottle << 16) | (gSaveContext.sceneFlags[scene].unk & 0xFF00FFFF);
+            break;
+        case 18:
+            gSaveContext.sceneFlags[scene].unk =
+                (itemToPutInBottle << 8) | (gSaveContext.sceneFlags[scene].unk & 0xFFFF00FF);
+            break;
+        case 19:
+            gSaveContext.sceneFlags[scene].unk = itemToPutInBottle | (gSaveContext.sceneFlags[scene].unk & 0xFFFFFF00);
+            break;
+        case 20:
+            gSaveContext.sceneFlags[scene].rooms =
+                (itemToPutInBottle << 24) | (gSaveContext.sceneFlags[scene].rooms & 0x00FFFFFF);
+            break;
+        case 21:
+            gSaveContext.sceneFlags[scene].rooms =
+                (itemToPutInBottle << 16) | (gSaveContext.sceneFlags[scene].rooms & 0xFF00FFFF);
+            break;
+        case 22:
+            gSaveContext.sceneFlags[scene].rooms =
+                (itemToPutInBottle << 8) | (gSaveContext.sceneFlags[scene].rooms & 0xFFFF00FF);
+            break;
+        case 23:
+            gSaveContext.sceneFlags[scene].rooms =
+                itemToPutInBottle | (gSaveContext.sceneFlags[scene].rooms & 0xFFFFFF00);
+            break;
+        case 24:
+            gSaveContext.sceneFlags[scene].floors =
+                (itemToPutInBottle << 24) | (gSaveContext.sceneFlags[scene].floors & 0x00FFFFFF);
+            break;
+        case 25:
+            gSaveContext.sceneFlags[scene].floors =
+                (itemToPutInBottle << 16) | (gSaveContext.sceneFlags[scene].floors & 0xFF00FFFF);
+            break;
+        case 26:
+            gSaveContext.sceneFlags[scene].floors =
+                (itemToPutInBottle << 8) | (gSaveContext.sceneFlags[scene].floors & 0xFFFF00FF);
+            break;
+        case 27:
+            gSaveContext.sceneFlags[scene].floors =
+                itemToPutInBottle | (gSaveContext.sceneFlags[scene].floors & 0xFFFFFF00);
+            break;
     }
 }
 

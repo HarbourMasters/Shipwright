@@ -58,7 +58,9 @@ static inline uint32_t read_CMD_HH(std::shared_ptr<Ship::BinaryReader> reader) {
 }
 
 namespace SOH {
-std::shared_ptr<Ship::IResource> ResourceFactoryBinaryCutsceneV0::ReadResource(std::shared_ptr<Ship::File> file, std::shared_ptr<Ship::ResourceInitData> initData) {
+std::shared_ptr<Ship::IResource>
+ResourceFactoryBinaryCutsceneV0::ReadResource(std::shared_ptr<Ship::File> file,
+                                              std::shared_ptr<Ship::ResourceInitData> initData) {
     if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }

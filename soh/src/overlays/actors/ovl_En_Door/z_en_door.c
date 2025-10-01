@@ -66,7 +66,8 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneForward, 4000, ICHAIN_STOP),
 };
 
-static AnimationHeader* D_809FCECC[] = { &gDoorAdultOpeningLeftAnim, &gDoorChildOpeningLeftAnim, &gDoorAdultOpeningRightAnim, &gDoorChildOpeningRightAnim };
+static AnimationHeader* D_809FCECC[] = { &gDoorAdultOpeningLeftAnim, &gDoorChildOpeningLeftAnim,
+                                         &gDoorAdultOpeningRightAnim, &gDoorChildOpeningRightAnim };
 
 static u8 sDoorAnimOpenFrames[] = { 25, 25, 25, 25 };
 
@@ -91,7 +92,8 @@ void EnDoor_Init(Actor* thisx, PlayState* play2) {
 
     objectInfo = &sDoorInfo[0];
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    SkelAnime_Init(play, &this->skelAnime, &gDoorSkel, &gDoorAdultOpeningLeftAnim, this->jointTable, this->morphTable, 5);
+    SkelAnime_Init(play, &this->skelAnime, &gDoorSkel, &gDoorAdultOpeningLeftAnim, this->jointTable, this->morphTable,
+                   5);
     for (i = 0; i < ARRAY_COUNT(sDoorInfo) - 2; i++, objectInfo++) {
         if (play->sceneNum == objectInfo->sceneNum) {
             break;
@@ -217,7 +219,8 @@ void EnDoor_Idle(EnDoor* this, PlayState* play) {
             }
             if (ABS(phi_v0) < 0x3000) {
                 if (this->lockTimer != 0) {
-                    if (GameInteractor_Should(VB_NOT_HAVE_SMALL_KEY, gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] <= 0, this)) {
+                    if (GameInteractor_Should(VB_NOT_HAVE_SMALL_KEY,
+                                              gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] <= 0, this)) {
                         Player* player2 = GET_PLAYER(play);
 
                         player2->naviTextId = -0x203;
@@ -280,8 +283,8 @@ void EnDoor_Open(EnDoor* this, PlayState* play) {
             this->playerIsOpening = 0;
         } else if (Animation_OnFrame(&this->skelAnime, sDoorAnimOpenFrames[this->animStyle])) {
             Audio_PlayActorSound2(&this->actor,
-                                  (play->sceneNum == SCENE_SHADOW_TEMPLE || play->sceneNum == SCENE_BOTTOM_OF_THE_WELL ||
-                                   play->sceneNum == SCENE_FIRE_TEMPLE)
+                                  (play->sceneNum == SCENE_SHADOW_TEMPLE ||
+                                   play->sceneNum == SCENE_BOTTOM_OF_THE_WELL || play->sceneNum == SCENE_FIRE_TEMPLE)
                                       ? NA_SE_EV_IRON_DOOR_OPEN
                                       : NA_SE_OC_DOOR_OPEN);
             if (this->skelAnime.playSpeed < 1.5f) {
@@ -292,8 +295,8 @@ void EnDoor_Open(EnDoor* this, PlayState* play) {
             }
         } else if (Animation_OnFrame(&this->skelAnime, sDoorAnimCloseFrames[this->animStyle])) {
             Audio_PlayActorSound2(&this->actor,
-                                  (play->sceneNum == SCENE_SHADOW_TEMPLE || play->sceneNum == SCENE_BOTTOM_OF_THE_WELL ||
-                                   play->sceneNum == SCENE_FIRE_TEMPLE)
+                                  (play->sceneNum == SCENE_SHADOW_TEMPLE ||
+                                   play->sceneNum == SCENE_BOTTOM_OF_THE_WELL || play->sceneNum == SCENE_FIRE_TEMPLE)
                                       ? NA_SE_EV_IRON_DOOR_CLOSE
                                       : NA_SE_EV_DOOR_CLOSE);
         }
@@ -319,8 +322,7 @@ s32 EnDoor_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* 
         temp_a2 = D_809FCEE4[this->dListIndex];
         transitionEntry = &play->transiActorCtx.list[(u16)this->actor.params >> 0xA];
         rot->z += this->actor.world.rot.y;
-        if ((play->roomCtx.prevRoom.num >= 0) ||
-            (transitionEntry->sides[0].room == transitionEntry->sides[1].room)) {
+        if ((play->roomCtx.prevRoom.num >= 0) || (transitionEntry->sides[0].room == transitionEntry->sides[1].room)) {
             phi_v0_2 = ((this->actor.shape.rot.y + this->skelAnime.jointTable[3].z) + rot->z) -
                        Math_Vec3f_Yaw(&play->view.eye, &this->actor.world.pos);
             *dList = (ABS(phi_v0_2) < 0x4000) ? temp_a2[0] : temp_a2[1];
@@ -342,9 +344,7 @@ void EnDoor_Draw(Actor* thisx, PlayState* play) {
         OPEN_DISPS(play->state.gfxCtx);
 
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime,
-                                                   EnDoor_OverrideLimbDraw,
-                          NULL, &this->actor);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnDoor_OverrideLimbDraw, NULL, &this->actor);
         if (this->actor.world.rot.y != 0) {
             if (this->actor.world.rot.y > 0) {
                 gSPDisplayList(POLY_OPA_DISP++, gDoorRightDL);

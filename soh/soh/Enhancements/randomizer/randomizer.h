@@ -57,13 +57,16 @@ class Randomizer {
     GrassIdentity IdentifyGrass(s32 sceneNum, s32 posX, s32 posZ, s32 respawnData, s32 linkAge);
     CrateIdentity IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ);
     SmallCrateIdentity IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ);
-    GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId, bool checkObtainability = true);
-    GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId, bool checkObtainability = true);
+    GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId,
+                                       bool checkObtainability = true);
+    GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId,
+                                  bool checkObtainability = true);
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
     CustomMessage GetSheikMessage(s16 scene, u16 originalTextId);
     CustomMessage GetFishingPondOwnerMessage(u16 originalTextId);
-    CustomMessage GetMerchantMessage(RandomizerCheck rc, TextIDs textId, TextIDs freeTextId = TEXT_NONE, bool mysterious = false);
+    CustomMessage GetMerchantMessage(RandomizerCheck rc, TextIDs textId, TextIDs freeTextId = TEXT_NONE,
+                                     bool mysterious = false);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     CustomMessage GetGoronMessage(u16 index);
     CustomMessage GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
@@ -82,4 +85,3 @@ bool GenerateRandomizer(std::string seed = "");
 #ifdef __cplusplus
 }
 #endif
-

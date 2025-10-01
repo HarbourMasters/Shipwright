@@ -76,8 +76,12 @@ typedef struct {
 
 extern EntranceTrackingData gEntranceTrackingData;
 
-#define SINGLE_SCENE_INFO(scene) {{ scene, -1 }}
-#define SCENE_NO_SPAWN(scene) { scene, -1 }
+#define SINGLE_SCENE_INFO(scene) \
+    {                            \
+        { scene, -1 }            \
+    }
+#define SCENE_NO_SPAWN(scene) \
+    { scene, -1 }
 
 void SetCurrentGrottoIDForTracker(int16_t entranceIndex);
 void SetLastEntranceOverrideForTracker(int16_t entranceIndex);
@@ -86,23 +90,24 @@ void InitEntranceTrackingData();
 s16 GetLastEntranceOverride();
 s16 GetCurrentGrottoId();
 const EntranceData* GetEntranceData(s16);
+void EntranceTracker_LoadFromPreset(nlohmann::json info);
 
-class EntranceTrackerSettingsWindow : public Ship::GuiWindow {
+class EntranceTrackerSettingsWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 
   protected:
-    void InitElement() override {};
+    void InitElement() override{};
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };
 
-class EntranceTrackerWindow : public Ship::GuiWindow {
+class EntranceTrackerWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
     void Draw() override;
 
     void InitElement() override;
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };

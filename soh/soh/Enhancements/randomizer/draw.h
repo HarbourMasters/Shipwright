@@ -28,8 +28,11 @@ void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* getItemEntr
 void Randomizer_DrawBombchuBag(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawOverworldKey(PlayState* play, GetItemEntry* getItemEntry);
 
-#define GET_ITEM_MYSTERY \
-    { ITEM_NONE_FE, 0, 0, 0, 0, MOD_RANDOMIZER, MOD_RANDOMIZER, ITEM_NONE_FE, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, ITEM_NONE_FE, MOD_RANDOMIZER, (CustomDrawFunc)Randomizer_DrawMysteryItem }
+#define GET_ITEM_MYSTERY                                                                                 \
+    {                                                                                                    \
+        ITEM_NONE_FE, 0, 0, 0, 0, MOD_RANDOMIZER, MOD_RANDOMIZER, ITEM_NONE_FE, 0, false, ITEM_FROM_NPC, \
+            ITEM_CATEGORY_JUNK, ITEM_NONE_FE, MOD_RANDOMIZER, (CustomDrawFunc)Randomizer_DrawMysteryItem \
+    }
 #ifdef __cplusplus
 };
 #endif

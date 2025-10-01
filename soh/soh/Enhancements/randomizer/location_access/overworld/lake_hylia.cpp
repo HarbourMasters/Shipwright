@@ -5,18 +5,18 @@ using namespace Rando;
 
 void RegionTable_Init_LakeHylia() {
     // clang-format off
-    areaTable[RR_LAKE_HYLIA] = Region("Lake Hylia", "Lake Hylia", {RA_LAKE_HYLIA}, DAY_NIGHT_CYCLE, {
+    areaTable[RR_LAKE_HYLIA] = Region("Lake Hylia", SCENE_LAKE_HYLIA, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
-        EventAccess(&logic->BeanPlantFairy,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
-        EventAccess(&logic->ButterflyFairy,   []{return logic->ButterflyFairy   || logic->CanUse(RG_STICKS);}),
-        EventAccess(&logic->BugShrub,         []{return logic->BugShrub         || (logic->IsChild && logic->CanCutShrubs());}),
-        EventAccess(&logic->ChildScarecrow,   []{return logic->ChildScarecrow   || (logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2);}),
-        EventAccess(&logic->AdultScarecrow,   []{return logic->AdultScarecrow   || (logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2);}),
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
+        EventAccess(LOGIC_BEAN_PLANT_FAIRY,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
+        EventAccess(LOGIC_BUTTERFLY_FAIRY,    []{return logic->CanUse(RG_STICKS);}),
+        EventAccess(LOGIC_BUG_SHRUB,          []{return logic->IsChild && logic->CanCutShrubs();}),
+        EventAccess(LOGIC_CHILD_SCARECROW,    []{return logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2;}),
+        EventAccess(LOGIC_ADULT_SCARECROW,    []{return logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2;}),
     }, {
         //Locations
         LOCATION(RC_LH_UNDERWATER_ITEM,                  logic->IsChild && logic->HasItem(RG_SILVER_SCALE)),
-        LOCATION(RC_LH_SUN,                              logic->IsAdult && ((logic->WaterTempleClear && logic->HasItem(RG_BRONZE_SCALE)) || logic->CanUse(RG_DISTANT_SCARECROW)) && logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_LH_SUN,                              logic->IsAdult && ((logic->Get(LOGIC_WATER_TEMPLE_CLEAR) && logic->HasItem(RG_BRONZE_SCALE)) || logic->CanUse(RG_DISTANT_SCARECROW)) && logic->CanUse(RG_FAIRY_BOW)),
         LOCATION(RC_LH_FREESTANDING_POH,                 logic->IsAdult && (logic->CanUse(RG_SCARECROW) || CanPlantBean(RR_LAKE_HYLIA))),
         LOCATION(RC_LH_GS_BEAN_PATCH,                    logic->CanSpawnSoilSkull() && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
         LOCATION(RC_LH_GS_LAB_WALL,                      logic->IsChild && (logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || (ctx->GetTrickOption(RT_LH_LAB_WALL_GS) && logic->CanJumpslashExceptHammer())) && logic->CanGetNightTimeGS()),
@@ -35,7 +35,7 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_SOUTHEAST_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_LH_SOUTHWEST_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
         LOCATION(RC_LH_SOUTHWEST_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_LH_ISLAND_SUN_FAIRY,                 logic->CanUse(RG_SUNS_SONG) && ((logic->HasItem(RG_BRONZE_SCALE) && (logic->IsChild || logic->WaterTempleClear)) || logic->CanUse(RG_DISTANT_SCARECROW))),
+        LOCATION(RC_LH_ISLAND_SUN_FAIRY,                 logic->CanUse(RG_SUNS_SONG) && ((logic->HasItem(RG_BRONZE_SCALE) && (logic->IsChild || logic->Get(LOGIC_WATER_TEMPLE_CLEAR))) || logic->CanUse(RG_DISTANT_SCARECROW))),
         LOCATION(RC_LH_LAB_GOSSIP_STONE,                 true),
         LOCATION(RC_LH_SOUTHEAST_GOSSIP_STONE,           true),
         LOCATION(RC_LH_SOUTHWEST_GOSSIP_STONE,           true),
@@ -84,28 +84,40 @@ void RegionTable_Init_LakeHylia() {
     }, {
         //Exits
         Entrance(RR_HYRULE_FIELD,          []{return true;}),
-        Entrance(RR_ZORAS_DOMAIN,          []{return logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS));}),
+        Entrance(RR_LH_FROM_SHORTCUT,      []{return true;}),
         Entrance(RR_LH_OWL_FLIGHT,         []{return logic->IsChild;}),
-        Entrance(RR_LH_FISHING_ISLAND,     []{return ((logic->IsChild || logic->WaterTempleClear) && logic->HasItem(RG_BRONZE_SCALE)) || (logic->IsAdult && (logic->CanUse(RG_SCARECROW) || CanPlantBean(RR_LAKE_HYLIA)));}),
+        Entrance(RR_LH_FISHING_ISLAND,     []{return ((logic->IsChild || logic->Get(LOGIC_WATER_TEMPLE_CLEAR)) && logic->HasItem(RG_BRONZE_SCALE)) || (logic->IsAdult && (logic->CanUse(RG_SCARECROW) || CanPlantBean(RR_LAKE_HYLIA)));}),
         Entrance(RR_LH_LAB,                []{return logic->CanOpenOverworldDoor(RG_HYLIA_LAB_KEY);}),
-        Entrance(RR_WATER_TEMPLE_ENTRYWAY, []{return logic->CanUse(RG_HOOKSHOT) && ((logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_LH_WATER_HOOKSHOT) && logic->HasItem(RG_GOLDEN_SCALE))) || (logic->IsAdult && logic->CanUse(RG_LONGSHOT) && logic->HasItem(RG_GOLDEN_SCALE)));}),
+        Entrance(RR_LH_FROM_WATER_TEMPLE,  []{return true;}),
         Entrance(RR_LH_GROTTO,             []{return true;}),
     });
 
-    areaTable[RR_LH_FISHING_ISLAND] = Region("LH Fishing Island", "Lake Hylia", {RA_LAKE_HYLIA}, DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_LH_FROM_SHORTCUT] = Region("LH From Shortcut", SCENE_LAKE_HYLIA, TIME_DOESNT_PASS, {RA_LAKE_HYLIA}, {}, {}, {
+        //Exits
+        Entrance(RR_LAKE_HYLIA,   []{return logic->Hearts() > 1 || logic->HasItem(RG_BOTTLE_WITH_FAIRY) || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
+        Entrance(RR_ZORAS_DOMAIN, []{return logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS));}),
+    });
+
+    areaTable[RR_LH_FROM_WATER_TEMPLE] = Region("LH From Water Temple", SCENE_LAKE_HYLIA, TIME_DOESNT_PASS, {RA_LAKE_HYLIA}, {}, {}, {
+        //Exits
+        Entrance(RR_LAKE_HYLIA,            []{return logic->HasItem(RG_BRONZE_SCALE) || logic->HasItem(RG_BOTTLE_WITH_FAIRY) || logic->CanUse(RG_IRON_BOOTS);}),
+        Entrance(RR_WATER_TEMPLE_ENTRYWAY, []{return logic->CanUse(RG_HOOKSHOT) && ((logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_LH_WATER_HOOKSHOT) && logic->HasItem(RG_GOLDEN_SCALE))) || (logic->IsAdult && logic->CanUse(RG_LONGSHOT) && logic->HasItem(RG_GOLDEN_SCALE)));}),
+    });
+
+    areaTable[RR_LH_FISHING_ISLAND] = Region("LH Fishing Island", SCENE_LAKE_HYLIA, {}, {}, {
         //Exits
         Entrance(RR_LAKE_HYLIA,      []{return logic->HasItem(RG_BRONZE_SCALE);}),
         Entrance(RR_LH_FISHING_POND, []{return logic->CanOpenOverworldDoor(RG_FISHING_HOLE_KEY);}),
     });
 
-    areaTable[RR_LH_OWL_FLIGHT] = Region("LH Owl Flight", "Lake Hylia", {RA_LAKE_HYLIA}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_LH_OWL_FLIGHT] = Region("LH Owl Flight", SCENE_LAKE_HYLIA, {}, {}, {
         //Exits
         Entrance(RR_HYRULE_FIELD, []{return true;}, false),
     });
 
-    areaTable[RR_LH_LAB] = Region("LH Lab", "LH Lab", {}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_LH_LAB] = Region("LH Lab", SCENE_LAKESIDE_LABORATORY, {}, {
         //Locations
-        LOCATION(RC_LH_LAB_DIVE,        logic->HasItem(RG_GOLDEN_SCALE) || (ctx->GetTrickOption(RT_LH_LAB_DIVING) && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))),
+        LOCATION(RC_LH_LAB_DIVE,        logic->HasItem(RG_GOLDEN_SCALE) || (ctx->GetTrickOption(RT_LH_LAB_DIVING) && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_BRONZE_SCALE))),
         LOCATION(RC_LH_TRADE_FROG,      logic->IsAdult && logic->CanUse(RG_EYEBALL_FROG)),
         LOCATION(RC_LH_GS_LAB_CRATE,    logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->CanBreakCrates()),
         LOCATION(RC_LH_LAB_FRONT_RUPEE, logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
@@ -118,7 +130,7 @@ void RegionTable_Init_LakeHylia() {
     });
 
     // TODO: should some of these helpers be done via events instead?
-    areaTable[RR_LH_FISHING_POND] = Region("LH Fishing Hole", "LH Fishing Hole", {}, DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_LH_FISHING_POND] = Region("LH Fishing Hole", SCENE_FISHING_POND, {}, {
         //Locations
         LOCATION(RC_LH_CHILD_FISHING,  logic->CanUse(RG_FISHING_POLE) && logic->IsChild),
         LOCATION(RC_LH_CHILD_FISH_1,   logic->CanUse(RG_FISHING_POLE) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
@@ -162,7 +174,7 @@ void RegionTable_Init_LakeHylia() {
         Entrance(RR_LH_FISHING_ISLAND, []{return true;}),
     });
 
-    areaTable[RR_LH_GROTTO] = Region("LH Grotto", "LH Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_LH_GROTTO] = Region("LH Grotto", SCENE_GROTTOS, {}, {
         //Locations
         LOCATION(RC_LH_DEKU_SCRUB_GROTTO_LEFT,   logic->CanStunDeku()),
         LOCATION(RC_LH_DEKU_SCRUB_GROTTO_RIGHT,  logic->CanStunDeku()),

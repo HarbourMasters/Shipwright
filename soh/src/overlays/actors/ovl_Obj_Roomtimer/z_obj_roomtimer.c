@@ -75,7 +75,8 @@ void func_80B9D0B0(ObjRoomtimer* this, PlayState* play) {
         Actor_Kill(&this->actor);
     } else {
         if ((this->actor.params != 0x3FF) && (gSaveContext.timerSeconds == 0)) {
-            Audio_PlaySoundGeneral(NA_SE_OC_ABYSS, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_OC_ABYSS, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             Play_TriggerVoidOut(play);
             Actor_Kill(&this->actor);
         }

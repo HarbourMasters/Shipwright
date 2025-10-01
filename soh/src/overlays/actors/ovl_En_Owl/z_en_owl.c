@@ -118,10 +118,9 @@ void EnOwl_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 0, ActorShadow_DrawCircle, 36.0f);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gOwlFlyingSkel, &gOwlFlyAnim, this->jointTable, this->morphTable,
-                       21);
-    SkelAnime_InitFlex(play, &this->skelAnime2, &gOwlPerchingSkel, &gOwlPerchAnim, this->jointTable2,
-                       this->morphTable2, 16);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gOwlFlyingSkel, &gOwlFlyAnim, this->jointTable, this->morphTable, 21);
+    SkelAnime_InitFlex(play, &this->skelAnime2, &gOwlPerchingSkel, &gOwlPerchAnim, this->jointTable2, this->morphTable2,
+                       16);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sOwlCylinderInit);
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
@@ -187,7 +186,8 @@ void EnOwl_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = EnOwl_WaitLakeHylia;
             break;
         case OWL_ZORA_RIVER:
-            if ((Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN)) || !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
+            if ((Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN)) ||
+                !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 // opened zora's domain or has zelda's letter
                 osSyncPrintf("フクロウ退避\n"); // "Owl evacuation"
                 Actor_Kill(&this->actor);
@@ -754,8 +754,7 @@ void func_80ACB748(EnOwl* this, PlayState* play) {
     switch (owlType) {
         case 7:
             func_800F436C(&D_80ACD62C, NA_SE_EV_FLYING_AIR - SFX_FLAG, weight * 2.0f);
-            if ((play->csCtx.frames > 324) ||
-                ((play->csCtx.frames >= 142 && (play->csCtx.frames <= 266)))) {
+            if ((play->csCtx.frames > 324) || ((play->csCtx.frames >= 142 && (play->csCtx.frames <= 266)))) {
                 func_800F4414(&D_80ACD62C, NA_SE_EN_OWL_FLUTTER, weight * 2.0f);
             }
             if (play->csCtx.frames == 85) {
@@ -765,8 +764,7 @@ void func_80ACB748(EnOwl* this, PlayState* play) {
         case 8:
         case 9:
             func_800F436C(&D_80ACD62C, NA_SE_EV_FLYING_AIR - SFX_FLAG, weight * 2.0f);
-            if ((play->csCtx.frames >= 420) ||
-                ((0xC1 < play->csCtx.frames && (play->csCtx.frames <= 280)))) {
+            if ((play->csCtx.frames >= 420) || ((0xC1 < play->csCtx.frames && (play->csCtx.frames <= 280)))) {
                 func_800F4414(&D_80ACD62C, NA_SE_EN_OWL_FLUTTER, weight * 2.0f);
             }
             if (play->csCtx.frames == 217) {
@@ -1376,8 +1374,8 @@ void func_80ACD130(EnOwl* this, PlayState* play, s32 idx) {
 }
 
 f32 func_80ACD1C4(PlayState* play, s32 idx) {
-    f32 ret = Environment_LerpWeight(play->csCtx.npcActions[idx]->endFrame,
-                                     play->csCtx.npcActions[idx]->startFrame, play->csCtx.frames);
+    f32 ret = Environment_LerpWeight(play->csCtx.npcActions[idx]->endFrame, play->csCtx.npcActions[idx]->startFrame,
+                                     play->csCtx.frames);
 
     ret = CLAMP_MAX(ret, 1.0f);
     return ret;

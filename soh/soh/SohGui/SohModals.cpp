@@ -42,7 +42,10 @@ void SohModalWindow::DrawElement() {
             modals.erase(modals.begin());
             closePopup = false;
         }
-        if (ImGui::BeginPopupModal(curModal.title_.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings)) {
+        if (ImGui::BeginPopupModal(curModal.title_.c_str(), NULL,
+                                   ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
+                                       ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
+                                       ImGuiWindowFlags_NoSavedSettings)) {
             ImGui::Text("%s", curModal.message_.c_str());
             UIWidgets::PushStyleButton(THEME_COLOR);
             if (ImGui::Button(curModal.button1_.c_str())) {
@@ -70,7 +73,8 @@ void SohModalWindow::DrawElement() {
     }
 }
 
-void SohModalWindow::RegisterPopup(std::string title, std::string message, std::string button1, std::string button2, std::function<void()> button1callback, std::function<void()> button2callback) {
+void SohModalWindow::RegisterPopup(std::string title, std::string message, std::string button1, std::string button2,
+                                   std::function<void()> button1callback, std::function<void()> button2callback) {
     modals.push_back({ title, message, button1, button2, button1callback, button2callback });
 }
 

@@ -3,21 +3,10 @@
 #define TIMESPLITS_H
 
 #include <stdint.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif // TIMESPLITS_H
-
 #include <libultraship/libultraship.h>
 
 #ifdef __cplusplus
-class TimeSplitWindow : public Ship::GuiWindow {
+class TimeSplitWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 
@@ -39,7 +28,7 @@ typedef enum SplitStatus {
     SPLIT_STATUS_ACTIVE,
     SPLIT_STATUS_INACTIVE,
     SPLIT_STATUS_COLLECTED,
-    SPLIT_STATUS_SKIPPED
+    SPLIT_STATUS_SKIPPED,
 } SplitStatus;
 
 typedef enum SplitType {
@@ -66,3 +55,5 @@ typedef struct {
 } SplitObject;
 
 #endif
+
+#endif // TIMESPLITS_H

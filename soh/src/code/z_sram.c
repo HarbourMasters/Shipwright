@@ -44,19 +44,19 @@ void Sram_InitBossRushSave(void) {
 
 static s16 sDungeonEntrances[] = {
     ENTR_DEKU_TREE_ENTRANCE,               // SCENE_DEKU_TREE
-    ENTR_DODONGOS_CAVERN_ENTRANCE,                // SCENE_DODONGOS_CAVERN
-    ENTR_JABU_JABU_ENTRANCE,                      // SCENE_JABU_JABU
+    ENTR_DODONGOS_CAVERN_ENTRANCE,         // SCENE_DODONGOS_CAVERN
+    ENTR_JABU_JABU_ENTRANCE,               // SCENE_JABU_JABU
     ENTR_FOREST_TEMPLE_ENTRANCE,           // SCENE_FOREST_TEMPLE
-    ENTR_FIRE_TEMPLE_ENTRANCE,                    // SCENE_FIRE_TEMPLE
-    ENTR_WATER_TEMPLE_ENTRANCE,                   // SCENE_WATER_TEMPLE
-    ENTR_SPIRIT_TEMPLE_ENTRANCE,                  // SCENE_SPIRIT_TEMPLE
-    ENTR_SHADOW_TEMPLE_ENTRANCE,                  // SCENE_SHADOW_TEMPLE
+    ENTR_FIRE_TEMPLE_ENTRANCE,             // SCENE_FIRE_TEMPLE
+    ENTR_WATER_TEMPLE_ENTRANCE,            // SCENE_WATER_TEMPLE
+    ENTR_SPIRIT_TEMPLE_ENTRANCE,           // SCENE_SPIRIT_TEMPLE
+    ENTR_SHADOW_TEMPLE_ENTRANCE,           // SCENE_SHADOW_TEMPLE
     ENTR_BOTTOM_OF_THE_WELL_ENTRANCE,      // SCENE_BOTTOM_OF_THE_WELL
-    ENTR_ICE_CAVERN_ENTRANCE,                     // SCENE_ICE_CAVERN
+    ENTR_ICE_CAVERN_ENTRANCE,              // SCENE_ICE_CAVERN
     ENTR_GANONS_TOWER_0,                   // SCENE_GANONS_TOWER
-    ENTR_GERUDO_TRAINING_GROUND_ENTRANCE,         // SCENE_GERUDO_TRAINING_GROUND
+    ENTR_GERUDO_TRAINING_GROUND_ENTRANCE,  // SCENE_GERUDO_TRAINING_GROUND
     ENTR_THIEVES_HIDEOUT_0,                // SCENE_THIEVES_HIDEOUT
-    ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,           // SCENE_INSIDE_GANONS_CASTLE
+    ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,    // SCENE_INSIDE_GANONS_CASTLE
     ENTR_GANONS_TOWER_COLLAPSE_INTERIOR_0, // SCENE_GANONS_TOWER_COLLAPSE_INTERIOR
     ENTR_INSIDE_GANONS_CASTLE_COLLAPSE_0,  // SCENE_INSIDE_GANONS_CASTLE_COLLAPSE
 };
@@ -129,13 +129,14 @@ void Sram_OpenSave() {
 
         default:
             // Use the saved entrance value with remember save location, except when in grottos/fairy fountains
-            if (CVarGetInteger(CVAR_ENHANCEMENT("RememberSaveLocation"), 0) && gSaveContext.savedSceneNum != SCENE_FAIRYS_FOUNTAIN &&
-                gSaveContext.savedSceneNum != SCENE_GROTTOS) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("RememberSaveLocation"), 0) &&
+                gSaveContext.savedSceneNum != SCENE_FAIRYS_FOUNTAIN && gSaveContext.savedSceneNum != SCENE_GROTTOS) {
                 break;
             }
 
             if (gSaveContext.savedSceneNum != SCENE_LINKS_HOUSE) {
-                gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? ENTR_LINKS_HOUSE_CHILD_SPAWN : ENTR_TEMPLE_OF_TIME_WARP_PAD;
+                gSaveContext.entranceIndex =
+                    (LINK_AGE_IN_YEARS == YEARS_CHILD) ? ENTR_LINKS_HOUSE_CHILD_SPAWN : ENTR_TEMPLE_OF_TIME_WARP_PAD;
             } else {
                 gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_CHILD_SPAWN;
             }
@@ -150,7 +151,8 @@ void Sram_OpenSave() {
     osSyncPrintf(VT_RST);
 
     if (gSaveContext.health < 0x30) {
-        gSaveContext.health = CVarGetInteger(CVAR_ENHANCEMENT("FullHealthSpawn"), 0) ? gSaveContext.healthCapacity : 0x30;
+        gSaveContext.health =
+            CVarGetInteger(CVAR_ENHANCEMENT("FullHealthSpawn"), 0) ? gSaveContext.healthCapacity : 0x30;
     }
 
     if (gSaveContext.scarecrowLongSongSet) {
@@ -184,7 +186,8 @@ void Sram_OpenSave() {
     }
 
     // if zelda cutscene has been watched but lullaby was not obtained, restore cutscene and take away letter
-    if ((Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) && !CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) && !IS_RANDO) {
+    if ((Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) && !CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) &&
+        !IS_RANDO) {
         i = gSaveContext.eventChkInf[4] & ~1;
         gSaveContext.eventChkInf[4] = i;
 
@@ -242,7 +245,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
     if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
     } else { // GAME_REGION_NTSC
-        gSaveContext.ship.filenameLanguage = (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
+        gSaveContext.ship.filenameLanguage =
+            (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
 
     if ((fileChooseCtx->buttonIndex == 0 && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0))) {

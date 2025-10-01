@@ -54,8 +54,8 @@ void func_801109B0(PlayState* play) {
     interfaceCtx->doActionSegment[1] = gCheckDoActionENGTex;
     interfaceCtx->doActionSegment[2] = gReturnDoActionENGTex;
 
-    interfaceCtx->iconItemSegment = GAMESTATE_ALLOC_MC(
-        &play->state, 0x1000 * ARRAY_COUNT(gSaveContext.equips.buttonItems));
+    interfaceCtx->iconItemSegment =
+        GAMESTATE_ALLOC_MC(&play->state, 0x1000 * ARRAY_COUNT(gSaveContext.equips.buttonItems));
 
     // "Icon Item Texture Initialization = %x"
     osSyncPrintf("アイコンアイテム テクスチャ初期=%x\n", 0x4000);

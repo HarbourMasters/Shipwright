@@ -1,6 +1,10 @@
 #ifndef Z64_AUDIO_H
 #define Z64_AUDIO_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <endianness.h>
 
 #define MK_CMD(b0,b1,b2,b3) ((((b0) & 0xFF) << 0x18) | (((b1) & 0xFF) << 0x10) | (((b2) & 0xFF) << 0x8) | (((b3) & 0xFF) << 0))
@@ -24,8 +28,8 @@
 
 //#define MAX_SEQUENCES 0x800
 extern size_t sequenceMapSize;
-
-extern char* fontMap[256];
+extern size_t fontMapSize;
+extern char** fontMap;
 
 #define MAX_AUTHENTIC_SEQID 110
 
@@ -54,7 +58,8 @@ typedef enum {
     /* 2 */ CODEC_S16_INMEMORY,
     /* 3 */ CODEC_SMALL_ADPCM,
     /* 4 */ CODEC_REVERB,
-    /* 5 */ CODEC_S16
+    /* 5 */ CODEC_S16,
+    /* 6 */ CODEC_OPUS,
 } SampleCodec;
 
 typedef enum {
@@ -117,13 +122,14 @@ typedef struct {
     /* 0x2 */ s16 arg;
 } AdsrEnvelope; // size = 0x4
 
-typedef struct {
-    /* 0x00 */ uintptr_t start;
-    /* 0x04 */ uintptr_t end;
-    /* 0x08 */ u32 count;
-    /* 0x0C */ char unk_0C[0x4];
-    /* 0x10 */ s16 state[16]; // only exists if count != 0. 8-byte aligned
-} AdpcmLoop; // size = 0x30 (or 0x10)
+typedef struct AdpcmLoop {
+    /* 0x00 */ u32 start;
+    /* 0x04 */ u32 loopEnd;   // numSamples position into the sample where the loop ends
+    /* 0x08 */ u32 count;     // The number of times the loop is played before the sound completes. Setting count to -1
+    // indicates that the loop should play indefinitely.
+    /* 0x0C */ u32 sampleEnd; // total number of s16-samples in the sample audio clip
+    /* 0x10 */ s16 predictorState[16]; // only exists if count != 0. 8-byte aligned
+} AdpcmLoop;    // size = 0x30 (or 0x10)
 
 typedef struct {
     /* 0x00 */ s32 order;
@@ -131,24 +137,23 @@ typedef struct {
     /* 0x08 */ s16* book; // size 8 * order * npredictors. 8-byte aligned
 } AdpcmBook; // size >= 0x8
 
-typedef struct 
-{
+typedef struct SoundFontSample {
     union {
         struct {
-            /* 0x00 */ u32 codec : 4;
-            /* 0x00 */ u32 medium : 2;
-            /* 0x00 */ u32 unk_bit26 : 1;
-            /* 0x00 */ u32 unk_bit25 : 1; // this has been named isRelocated in zret
-            /* 0x01 */ u32 size : 24;
+            ///* 0x0 */ u32 unk_0 : 1;
+            /* 0x0 */ u32 codec : 4; // The state of compression or decompression, See `SampleCodec`
+            /* 0x0 */ u32 medium : 2; // Medium where sample is currently stored. See `SampleMedium`
+            /* 0x0 */ u32 unk_bit26 : 1;
+            /* 0x0 */ u32 isRelocated : 1; // Has the sample header been relocated (offsets to pointers)
+
         };
         u32 asU32;
     };
-
-    /* 0x04 */ u8* sampleAddr;
-    /* 0x08 */ AdpcmLoop* loop;
-    /* 0x0C */ AdpcmBook* book;
-    u32 sampleRateMagicValue; // For wav samples only...
-    s32 sampleRate;           // For wav samples only...
+    /* 0x1 */ u32 size;  // Size of the sample
+    u32 fileSize;
+    /* 0x4 */ u8* sampleAddr; // Raw sample data. Offset from the start of the sample bank or absolute address to either rom or ram
+    /* 0x8 */ AdpcmLoop* loop; // Adpcm loop parameters used by the sample. Offset from the start of the sound font / pointer to ram
+    /* 0xC */ AdpcmBook* book; // Adpcm book parameters used by the sample. Offset from the start of the sound font / pointer to ram
 } SoundFontSample; // size = 0x10
 
 typedef struct {
@@ -465,6 +470,8 @@ typedef struct {
     /* 0x00F0 */ s16 dummyResampleState[0x10];
 } NoteSynthesisBuffers; // size = 0x110
 
+struct OggOpusFile;
+
 typedef struct {
     /* 0x00 */ u8 restart;
     /* 0x01 */ u8 sampleDmaIndex;
@@ -483,6 +490,7 @@ typedef struct {
     /* 0x1A */ u8 unk_1A;
     /* 0x1C */ u16 unk_1C;
     /* 0x1E */ u16 unk_1E;
+    struct OggOpusFile* opusFile; // Only for streamed opus audio
 } NoteSynthesisState; // size = 0x20
 
 typedef struct {
@@ -917,7 +925,7 @@ typedef struct {
     /* 0x3420 */ AudioPoolSplit3 persistentCommonPoolSplit;
     /* 0x342C */ AudioPoolSplit3 temporaryCommonPoolSplit;
     /* 0x3438 */ u8 sampleFontLoadStatus[0x30];
-    /* 0x3468 */ u8 fontLoadStatus[0x30];
+    /* 0x3468 */ u8* fontLoadStatus;
     /* 0x3498 */ u8* seqLoadStatus;
     /* 0x3518 */ volatile u8 resetStatus;
     /* 0x3519 */ u8 audioResetSpecIdToLoad;
@@ -1118,10 +1126,6 @@ typedef struct {
     int32_t numFonts;
     uint8_t fonts[16];
 } SequenceData;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 void Audio_SetGameVolume(int player_id, f32 volume);
 float Audio_GetGameVolume(int player_id);

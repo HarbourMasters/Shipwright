@@ -2,7 +2,6 @@
 
 #include <stdint.h>
 #include "z64item.h"
-#include "randomizer_inf.h"
 
 #define MAX_TRICK_NAME_SIZE 50
 
@@ -184,10 +183,10 @@ typedef enum {
     LOGIC_GREG,
     LOGIC_PIECE_OF_HEART,
     LOGIC_HEART_CONTAINER,
-    LOGIC_NUTS,
+    LOGIC_BUY_NUTS,
     LOGIC_BUY_ARROW,
     LOGIC_BUY_BOMB,
-    LOGIC_STICKS,
+    LOGIC_BUY_STICKS,
     LOGIC_FISH_ACCESS,
     LOGIC_BUY_MAGIC_POTION,
     LOGIC_BUY_BOMBCHUS,
@@ -209,10 +208,136 @@ typedef enum {
     LOGIC_OCARINA_C_UP_BUTTON,
     LOGIC_OCARINA_C_DOWN_BUTTON,
     LOGIC_OCARINA_C_LEFT_BUTTON,
-    LOGIC_OCARINA_C_RIGHT_BUTTON,  
+    LOGIC_OCARINA_C_RIGHT_BUTTON,
     LOGIC_TRIFORCE_PIECES,
+    LOGIC_CAN_BORROW_MASKS,
+    LOGIC_BORROW_SKULL_MASK,
+    LOGIC_BORROW_SPOOKY_MASK,
+    LOGIC_BORROW_BUNNY_HOOD,
+    LOGIC_BORROW_RIGHT_MASKS,
+    LOGIC_FREED_EPONA,
+    LOGIC_DEKU_TREE_CLEAR,
+    LOGIC_DODONGOS_CAVERN_CLEAR,
+    LOGIC_JABU_JABUS_BELLY_CLEAR,
+    LOGIC_FOREST_TEMPLE_CLEAR,
+    LOGIC_FIRE_TEMPLE_CLEAR,
+    LOGIC_WATER_TEMPLE_CLEAR,
+    LOGIC_SPIRIT_TEMPLE_CLEAR,
+    LOGIC_SHADOW_TEMPLE_CLEAR,
+    LOGIC_FOREST_TRIAL_CLEAR,
+    LOGIC_FIRE_TRIAL_CLEAR,
+    LOGIC_WATER_TRIAL_CLEAR,
+    LOGIC_SPIRIT_TRIAL_CLEAR,
+    LOGIC_SHADOW_TRIAL_CLEAR,
+    LOGIC_LIGHT_TRIAL_CLEAR,
+    LOGIC_CAN_EMPTY_BIG_POES,
+    LOGIC_NUT_POT,
+    LOGIC_NUT_CRATE,
+    LOGIC_DEKU_BABA_NUTS,
+    LOGIC_STICK_POT,
+    LOGIC_DEKU_BABA_STICKS,
+    LOGIC_BUG_SHRUB,
+    LOGIC_WANDERING_BUGS,
+    LOGIC_BUG_ROCK,
+    LOGIC_FISH_GROUP,
+    LOGIC_LONE_FISH,
+    LOGIC_GOSSIP_STONE_FAIRY,
+    LOGIC_BEAN_PLANT_FAIRY,
+    LOGIC_BUTTERFLY_FAIRY,
+    LOGIC_FAIRY_POT,
+    LOGIC_FREE_FAIRIES,
+    LOGIC_FAIRY_POND,
+    LOGIC_CHILD_SCARECROW,
+    LOGIC_ADULT_SCARECROW,
+    LOGIC_CARPET_MERCHANT,
+    LOGIC_COULD_PLAY_BOWLING,
+    LOGIC_BIG_POE_KILL,
+    LOGIC_BUILD_RAINBOW_BRIDGE,
+    LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD,
+    LOGIC_TH_COULD_FREE_1_TORCH_CARPENTER,
+    LOGIC_TH_COULD_FREE_DOUBLE_CELL_CARPENTER,
+    LOGIC_TH_COULD_FREE_DEAD_END_CARPENTER,
+    LOGIC_TH_COULD_FREE_SLOPE_CARPENTER,
+    LOGIC_TH_RESCUED_ALL_CARPENTERS,
+    LOGIC_GF_GATE_OPEN,
+    LOGIC_GTG_GATE_OPEN,
+    LOGIC_DAMPES_WINDMILL_ACCESS,
+    LOGIC_DRAIN_WELL,
+    LOGIC_GORON_CITY_CHILD_FIRE,
+    LOGIC_GORON_CITY_WOODS_WARP_OPEN,
+    LOGIC_GORON_CITY_DARUNIAS_DOOR_OPEN_CHILD,
+    LOGIC_GORON_CITY_STOP_ROLLING_GORON_AS_ADULT,
+    LOGIC_DEKU_TREE_1F_BROKE_WEB,
+    LOGIC_DEKU_TREE_PUSHED_BASEMENT_BLOCK,
+    LOGIC_DEKU_TREE_MQ_CLEARED_SE_ROOM,
+    LOGIC_DEKU_TREE_MQ_WATER_ROOM_TORCHES,
+    LOGIC_DC_EYES_LIT,
+    LOGIC_DC_STAIRS_ROOM_DOOR,
+    LOGIC_DC_LIFT_PLATFORM,
+    LOGIC_DC_KILLED_LOWER_LIZALFOS,
+    LOGIC_DC_MQ_CLEAR_UPPER_LOBBY_ROCKS,
+    LOGIC_DC_MQ_BEHIND_FIRE_SWITCH,
+    LOGIC_JABU_RUTO_IN_1F,
+    LOGIC_JABU_WEST_TENTACLE,
+    LOGIC_JABU_EAST_TENTACLE,
+    LOGIC_JABU_NORTH_TENTACLE,
+    LOGIC_JABU_LOWERED_PATH,
+    LOGIC_JABU_MQ_HOLES_ROOM_DOOR,
+    LOGIC_JABU_MQ_LIFT_ROOM_COW,
+    LOGIC_FOREST_MQ_BLOCK_ROOM_TARGETS,
+    LOGIC_FOREST_CAN_TWIST_HALLWAY,
+    LOGIC_FOREST_CLEAR_BETWEEN_JOELLE_AND_BETH,
+    LOGIC_FOREST_OPEN_BOSS_CORRIDOR,
+    LOGIC_FOREST_JOELLE,
+    LOGIC_FOREST_BETH,
+    LOGIC_FOREST_AMY,
+    LOGIC_FOREST_MEG,
+    LOGIC_FIRE_LOOP_SWITCH,
+    LOGIC_FIRE_OPENED_LOWEST_GORON_CAGE,
+    LOGIC_FIRE_OPENED_UPPER_SHORTCUT,
+    LOGIC_FIRE_HIT_PLATFORM,
+    LOGIC_FIRE_MQ_OPENED_FIRE_MAZE_DOOR,
+    LOGIC_WATER_LOW_FROM_HIGH,
+    LOGIC_WATER_LOW_FROM_MID,
+    LOGIC_WATER_MIDDLE,
+    LOGIC_WATER_HIGH,
+    LOGIC_WATER_COULD_LOW,
+    LOGIC_WATER_COULD_MIDDLE,
+    LOGIC_WATER_REACHED_HIGH_EMBLEM,
+    LOGIC_WATER_MQ_STALFOS_PIT,
+    LOGIC_WATER_MQ_DRAGON_TORCHES,
+    LOGIC_WATER_MQ_B1_SWITCH,
+    LOGIC_WATER_MQ_B1_OPENED_PILLAR,
+    LOGIC_SPIRIT_1F_SILVER_RUPEES,
+    LOGIC_SPIRIT_MQ_CRAWL_BOULDER,
+    LOGIC_SPIRIT_MQ_MAP_ROOM_ENEMIES,
+    LOGIC_SPIRIT_MQ_TIME_TRAVEL_CHEST,
+    LOGIC_SPIRIT_MQ_3SUNS_ENEMIES,
+    LOGIC_SHADOW_SHORTCUT_BLOCK,
+    LOGIC_SHADOW_MQ_FLOOR_SPIKES_RUPEES,
+    LOGIC_WAKE_UP_ADULT_TALON,
+    LOGIC_KAKARIKO_GATE_OPEN,
+    LOGIC_DELIVER_RUTOS_LETTER,
+    LOGIC_KING_ZORA_THAWED,
+    LOGIC_LINKS_COW,
+    LOGIC_BOTW_LOWERED_WATER,
+    LOGIC_BOTW_MQ_OPENED_WEST_ROOM,
+    LOGIC_BOTW_MQ_OPENED_MIDDLE_HOLE,
+    LOGIC_GTG_MQ_MAZE_SWITCH,
+    LOGIC_GTG_MQ_RIGHT_SIDE_SWITCH,
+    LOGIC_GTG_PLATFORM_SILVER_RUPEES,
+    LOGIC_SHADOW_TRIAL_FIRST_CHEST,
     LOGIC_MAX
 } LogicVal;
+
+#define DEFINE_RAND_INF(enum) enum,
+
+typedef enum {
+#include "randomizer_inf.h"
+    RAND_INF_MAX,
+} RandomizerInf;
+
+#undef DEFINE_RAND_INF
 
 typedef enum {
     RA_NONE,
@@ -394,6 +519,8 @@ typedef enum {
     RR_HF_NEAR_KAK_GROTTO,
     RR_HF_TEKTITE_GROTTO,
     RR_LAKE_HYLIA,
+    RR_LH_FROM_SHORTCUT,
+    RR_LH_FROM_WATER_TEMPLE,
     RR_LH_FISHING_ISLAND,
     RR_LH_OWL_FLIGHT,
     RR_LH_LAB,
@@ -408,9 +535,36 @@ typedef enum {
     RR_GV_FORTRESS_SIDE,
     RR_GV_CARPENTER_TENT,
     RR_GV_STORMS_GROTTO,
-    RR_GERUDO_FORTRESS,
+    RR_GF_OUTSKIRTS,
+    RR_GF_NEAR_GROTTO,
+    RR_GF_OUTSIDE_GTG,
+    RR_GF_TO_GTG,
+    RR_GF_EXITING_GTG,
+    RR_GF_ABOVE_GTG,
+    RR_GF_BOTTOM_OF_LOWER_VINES,
+    RR_GF_TOP_OF_LOWER_VINES,
+    RR_GF_NEAR_GS,
+    RR_GF_SLOPED_ROOF,
+    RR_GF_BOTTOM_OF_UPPER_VINES,
+    RR_GF_TOP_OF_UPPER_VINES,
+    RR_GF_NEAR_CHEST,
+    RR_GF_LONG_ROOF,
+    RR_GF_BELOW_GS,
+    RR_GF_BELOW_CHEST,
+    RR_GF_HBA_RANGE,
+    RR_GF_ABOVE_JAIL,
+    RR_GF_JAIL_WINDOW,
     RR_GF_OUTSIDE_GATE,
     RR_GF_STORMS_GROTTO,
+    RR_TH_1_TORCH_CELL,
+    RR_TH_DOUBLE_CELL,
+    RR_TH_DEAD_END_CELL,
+    RR_TH_STEEP_SLOPE_CELL,
+    RR_TH_KITCHEN_CORRIDOR,
+    RR_TH_KITCHEN_MAIN,
+    RR_TH_KITCHEN_TOP,
+    RR_TH_BREAK_ROOM,
+    RR_TH_BREAK_ROOM_CORRIDOR,
     RR_WASTELAND_NEAR_FORTRESS,
     RR_HAUNTED_WASTELAND,
     RR_WASTELAND_NEAR_COLOSSUS,
@@ -499,6 +653,7 @@ typedef enum {
     RR_DMC_DISTANT_PLATFORM,
     RR_ZR_FRONT,
     RR_ZORAS_RIVER,
+    RR_ZR_FROM_SHORTCUT,
     RR_ZR_BEHIND_WATERFALL,
     RR_ZR_OPEN_GROTTO,
     RR_ZR_FAIRY_GROTTO,
@@ -509,6 +664,12 @@ typedef enum {
     RR_ZD_SHOP,
     RR_ZD_STORMS_GROTTO,
     RR_ZORAS_FOUNTAIN,
+    RR_ZF_ICEBERGS,
+    RR_ZF_LAKEBED,
+    RR_ZF_LEDGE,
+    RR_ZF_HIDDEN_CAVE,
+    RR_ZF_HIDDEN_LEDGE,
+    RR_ZF_ROCK,
     RR_ZF_GREAT_FAIRY_FOUNTAIN,
     RR_LON_LON_RANCH,
     RR_LLR_TALONS_HOUSE,
@@ -560,6 +721,7 @@ typedef enum {
     RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM,
 
     RR_DEKU_TREE_BOSS_ENTRYWAY,
+    RR_DEKU_TREE_BOSS_EXIT,
     RR_DEKU_TREE_BOSS_ROOM,
 
     RR_DODONGOS_CAVERN_BEGINNING,
@@ -607,7 +769,9 @@ typedef enum {
     RR_DODONGOS_CAVERN_MQ_BEHIND_MOUTH,
     RR_DODONGOS_CAVERN_MQ_BACK_BEHIND_FIRE,
     RR_DODONGOS_CAVERN_MQ_BACK_SWITCH_GRAVE,
+
     RR_DODONGOS_CAVERN_BOSS_ENTRYWAY,
+    RR_DODONGOS_CAVERN_BOSS_EXIT,
     RR_DODONGOS_CAVERN_BOSS_ROOM,
 
     RR_JABU_JABUS_BELLY_BEGINNING,
@@ -636,6 +800,7 @@ typedef enum {
     RR_JABU_JABUS_BELLY_MQ_EAST_ROOM,
 
     RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY,
+    RR_JABU_JABUS_BELLY_BOSS_EXIT,
     RR_JABU_JABUS_BELLY_BOSS_ROOM,
 
     RR_FOREST_TEMPLE_FIRST_ROOM,
@@ -649,6 +814,7 @@ typedef enum {
     RR_FOREST_TEMPLE_NE_OUTDOORS_UPPER,
     RR_FOREST_TEMPLE_MAP_ROOM,
     RR_FOREST_TEMPLE_SEWER,
+    RR_FOREST_TEMPLE_DRAINED_SEWER,
     RR_FOREST_TEMPLE_BELOW_BOSS_KEY_CHEST,
     RR_FOREST_TEMPLE_FLOORMASTER_ROOM,
     RR_FOREST_TEMPLE_WEST_CORRIDOR,
@@ -1029,21 +1195,6 @@ typedef enum {
     RR_GANONS_CASTLE_ESCAPE,
     RR_GANONS_CASTLE_GANON_ARENA,
 
-    RR_MARKER_AREAS_END, // Used for area key count
-
-    // DUNGEONS
-    RR_DEKU_TREE,
-    RR_DODONGOS_CAVERN,
-    RR_JABU_JABUS_BELLY,
-    RR_FOREST_TEMPLE,
-    RR_FIRE_TEMPLE,
-    RR_WATER_TEMPLE,
-    RR_SPIRIT_TEMPLE,
-    RR_SHADOW_TEMPLE,
-    RR_BOTTOM_OF_THE_WELL,
-    RR_ICE_CAVERN,
-    RR_GERUDO_TRAINING_GROUND,
-    RR_GANONS_CASTLE,
     RR_MAX,
 } RandomizerRegion;
 
@@ -1372,13 +1523,13 @@ typedef enum {
     RC_GF_CHEST,
     RC_GF_HBA_1000_POINTS,
     RC_GF_HBA_1500_POINTS,
-    RC_GF_GERUDO_MEMBERSHIP_CARD,
-    RC_GF_NORTH_F1_CARPENTER,
-    RC_GF_NORTH_F2_CARPENTER,
-    RC_GF_SOUTH_F1_CARPENTER,
-    RC_GF_SOUTH_F2_CARPENTER,
+    RC_TH_FREED_CARPENTERS,
+    RC_TH_1_TORCH_CARPENTER,
+    RC_TH_DEAD_END_CARPENTER,
+    RC_TH_DOUBLE_CELL_CARPENTER,
+    RC_TH_STEEP_SLOPE_CARPENTER,
     RC_GF_GS_TOP_FLOOR,
-    RC_GF_GS_ARCHERY_RANGE,
+    RC_GF_HBA_RANGE_GS,
     RC_HIDEOUT_JAIL_GUARD_1_TORCH,
     RC_HIDEOUT_JAIL_GUARD_2_TORCHES,
     RC_HIDEOUT_JAIL_GUARD_3_TORCHES,
@@ -1796,22 +1947,22 @@ typedef enum {
     RC_KF_TWINS_HOUSE_POT_2,
     RC_KF_BROTHERS_HOUSE_POT_1,
     RC_KF_BROTHERS_HOUSE_POT_2,
-    RC_GF_BREAK_ROOM_POT_1,
-    RC_GF_BREAK_ROOM_POT_2,
-    RC_GF_KITCHEN_POT_1,
-    RC_GF_KITCHEN_POT_2,
-    RC_GF_NORTH_F1_CARPENTER_POT_1,
-    RC_GF_NORTH_F1_CARPENTER_POT_2,
-    RC_GF_NORTH_F1_CARPENTER_POT_3,
-    RC_GF_NORTH_F2_CARPENTER_POT_1,
-    RC_GF_NORTH_F2_CARPENTER_POT_2,
-    RC_GF_SOUTH_F1_CARPENTER_POT_1,
-    RC_GF_SOUTH_F1_CARPENTER_POT_2,
-    RC_GF_SOUTH_F1_CARPENTER_POT_3,
-    RC_GF_SOUTH_F1_CARPENTER_CELL_POT_1,
-    RC_GF_SOUTH_F1_CARPENTER_CELL_POT_2,
-    RC_GF_SOUTH_F1_CARPENTER_CELL_POT_3,
-    RC_GF_SOUTH_F1_CARPENTER_CELL_POT_4,
+    RC_TH_BREAK_ROOM_FRONT_POT,
+    RC_TH_BREAK_ROOM_BACK_POT,
+    RC_TH_KITCHEN_POT_1,
+    RC_TH_KITCHEN_POT_2,
+    RC_TH_1_TORCH_CELL_RIGHT_POT,
+    RC_TH_1_TORCH_CELL_MID_POT,
+    RC_TH_1_TORCH_CELL_LEFT_POT,
+    RC_TH_STEEP_SLOPE_RIGHT_POT,
+    RC_TH_STEEP_SLOPE_LEFT_POT,
+    RC_TH_NEAR_DOUBLE_CELL_RIGHT_POT,
+    RC_TH_NEAR_DOUBLE_CELL_MID_POT,
+    RC_TH_NEAR_DOUBLE_CELL_LEFT_POT,
+    RC_TH_RIGHTMOST_JAILED_POT,
+    RC_TH_RIGHT_MIDDLE_JAILED_POT,
+    RC_TH_LEFT_MIDDLE_JAILED_POT,
+    RC_TH_LEFTMOST_JAILED_POT,
     RC_WASTELAND_NEAR_GS_POT_1,
     RC_WASTELAND_NEAR_GS_POT_2,
     RC_WASTELAND_NEAR_GS_POT_3,
@@ -2336,7 +2487,7 @@ typedef enum {
     RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_POT_1,
     RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_POT_2,
     // End Pots
-    
+
     // Overworld Crates
     RC_GV_FREESTANDING_POH_CRATE,
     RC_GV_NEAR_COW_CRATE,
@@ -2345,39 +2496,39 @@ typedef enum {
     RC_GV_CRATE_BRIDGE_3,
     RC_GV_CRATE_BRIDGE_4,
     RC_GF_ABOVE_JAIL_CRATE,
-    RC_GF_OUTSIDE_CENTER_CRATE_1,
-    RC_GF_OUTSIDE_CENTER_CRATE_2,
-    RC_GF_OUTSIDE_CENTER_CRATE_3,
-    RC_GF_OUTSIDE_CENTER_CRATE_4,
-    RC_GF_OUTSIDE_LEFT_CRATE_1,
-    RC_GF_OUTSIDE_LEFT_CRATE_2,
-    RC_GF_ARCHERY_RANGE_CRATE_1,
-    RC_GF_ARCHERY_RANGE_CRATE_2,
-    RC_GF_ARCHERY_RANGE_CRATE_3,
-    RC_GF_ARCHERY_RANGE_CRATE_4,
-    RC_GF_ARCHERY_RANGE_CRATE_5,
-    RC_GF_ARCHERY_RANGE_CRATE_6,
-    RC_GF_ARCHERY_RANGE_CRATE_7,
-    RC_GF_ARCHERY_START_CRATE_1,
-    RC_GF_ARCHERY_START_CRATE_2,
-    RC_GF_ARCHERY_LEFT_END_CRATE_1,
-    RC_GF_ARCHERY_LEFT_END_CRATE_2,
-    RC_GF_ARCHERY_LEFT_END_CHILD_CRATE,
-    RC_GF_ARCHERY_RIGHT_END_CRATE_1,
-    RC_GF_ARCHERY_RIGHT_END_CRATE_2,
-    RC_GF_KITCHEN_CRATE_1,
-    RC_GF_KITCHEN_CRATE_2,
-    RC_GF_KITCHEN_CRATE_3,
-    RC_GF_KITCHEN_CRATE_4,
-    RC_GF_KITCHEN_CRATE_5,
-    RC_GF_BREAK_ROOM_CRATE_1,
-    RC_GF_BREAK_ROOM_CRATE_2,
-    RC_GF_BREAK_ROOM_CRATE_3,
-    RC_GF_BREAK_ROOM_CRATE_4,
-    RC_GF_NORTH_F1_CARPENTER_CRATE,
-    RC_GF_NORTH_F3_CARPENTER_CRATE,
-    RC_GF_SOUTH_F2_CARPENTER_CRATE_1,
-    RC_GF_SOUTH_F2_CARPENTER_CRATE_2,
+    RC_GF_SOUTHMOST_CENTER_CRATE,
+    RC_GF_MID_SOUTH_CENTER_CRATE,
+    RC_GF_MID_NORTH_CENTER_CRATE,
+    RC_GF_NORTHMOST_CENTER_CRATE,
+    RC_GF_OUTSKIRTS_NE_CRATE,
+    RC_GF_OUTSKIRTS_NW_CRATE,
+    RC_GF_HBA_RANGE_CRATE_1,
+    RC_GF_HBA_RANGE_CRATE_2,
+    RC_GF_HBA_RANGE_CRATE_3,
+    RC_GF_HBA_RANGE_CRATE_4,
+    RC_GF_HBA_RANGE_CRATE_5,
+    RC_GF_HBA_RANGE_CRATE_6,
+    RC_GF_HBA_RANGE_CRATE_7,
+    RC_GF_HBA_CANOPY_EAST_CRATE,
+    RC_GF_HBA_CANOPY_WEST_CRATE,
+    RC_GF_NORTH_TARGET_EAST_CRATE,
+    RC_GF_NORTH_TARGET_WEST_CRATE,
+    RC_GF_NORTH_TARGET_CHILD_CRATE,
+    RC_GF_SOUTH_TARGET_EAST_CRATE,
+    RC_GF_SOUTH_TARGET_WEST_CRATE,
+    RC_TH_NEAR_KITCHEN_LEFTMOST_CRATE,
+    RC_TH_NEAR_KITCHEN_MID_LEFT_CRATE,
+    RC_TH_NEAR_KITCHEN_MID_RIGHT_CRATE,
+    RC_TH_NEAR_KITCHEN_RIGHTMOST_CRATE,
+    RC_TH_KITCHEN_CRATE,
+    RC_TH_BREAK_HALLWAY_OUTER_CRATE,
+    RC_TH_BREAK_HALLWAY_INNER_CRATE,
+    RC_TH_BREAK_ROOM_RIGHT_CRATE,
+    RC_TH_BREAK_ROOM_LEFT_CRATE,
+    RC_TH_1_TORCH_CELL_CRATE,
+    RC_TH_DEAD_END_CELL_CRATE,
+    RC_TH_DOUBLE_CELL_LEFT_CRATE,
+    RC_TH_DOUBLE_CELL_RIGHT_CRATE,
     RC_HW_BEFORE_QUICKSAND_CRATE,
     RC_HW_AFTER_QUICKSAND_CRATE_1,
     RC_HW_AFTER_QUICKSAND_CRATE_2,
@@ -2570,6 +2721,8 @@ typedef enum {
     // MQ Dungeon Small Crates
     RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_1,
     RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_2,
+    RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_1,
+    RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_2,
     RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_1,
     RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_2,
     RC_FOREST_TEMPLE_MQ_FROZEN_EYE_SWITCH_SMALL_CRATE_3,
@@ -2599,7 +2752,6 @@ typedef enum {
 
     RC_PIERRE,
     RC_DELIVER_RUTOS_LETTER,
-    RC_MASTER_SWORD_PEDESTAL,
     RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE,
     RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE,
     RC_KF_GOSSIP_STONE,
@@ -3089,7 +3241,7 @@ typedef enum {
     RC_DMT_FLAG_SUN_FAIRY,
     RC_DMT_COW_GROTTO_STORMS_FAIRY,
     RC_LW_SHORTCUT_STORMS_FAIRY,
-    RC_GF_KITCHEN_SUN_FAIRY,
+    RC_TH_KITCHEN_SUN_FAIRY,
     RC_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY,
     RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY,
     RC_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY,
@@ -3442,7 +3594,7 @@ typedef enum {
     RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_1,
     RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_2,
     RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_3,
-    RC_JABU_JABUS_BELLY_MQ_WIGGLERS_GRASS,
+    RC_JABU_JABUS_BELLY_MQ_JIGGLIES_GRASS,
     RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_1,
     RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_2,
     RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_GRASS,
@@ -3467,12 +3619,13 @@ typedef enum {
     RC_MAX
 } RandomizerCheck;
 
-// Randomizer tricks and glitches (beta) based on knowledge of what is achievable in Ship of Harkinian randomizer, excludes Item manipulation (e.g. RBA/GIM/SRM) and Wrong Warping and Ganon BK Skip
-// TODO Fill and alphabetize (area based tricks must have area in name and come alphetized after general tricks) 
+// Randomizer tricks and glitches (beta) based on knowledge of what is achievable in Ship of Harkinian randomizer,
+// excludes Item manipulation (e.g. RBA/GIM/SRM) and Wrong Warping and Ganon BK Skip
+// TODO Fill and alphabetize (area based tricks must have area in name and come alphetized after general tricks)
 // TODO test commented out tricks to see if consistent with console on SoH
 // TODO add area specific tricks
 typedef enum {
-    RT_VISIBLE_COLLISION,                          // -- general tricks
+    RT_VISIBLE_COLLISION, // -- general tricks
     RT_GROTTOS_WITHOUT_AGONY,
     RT_FEWER_TUNIC_REQUIREMENTS,
     RT_RUSTED_SWITCHES,
@@ -3482,15 +3635,17 @@ typedef enum {
     RT_HOVER_BOOST_SIMPLE,
     RT_BOMBCHU_BEEHIVES,
     RT_BLUE_FIRE_MUD_WALLS,
-    RT_KF_ADULT_GS,                            // -- location tricks
+    RT_OPEN_UNDERWATER_CHEST,
+    RT_KF_ADULT_GS, // -- location tricks
     RT_LW_BRIDGE,
     RT_LW_MIDO_BACKFLIP,
     RT_LW_GS_BEAN,
     RT_HC_STORMS_GS,
+    RT_HF_BIG_POE_WITHOUT_EPONA,
     RT_KAK_MAN_ON_ROOF,
     RT_KAK_TOWER_GS,
     RT_KAK_ADULT_WINDMILL_POH,
-    RT_KAK_CHILD_WINDMILL_POH, 
+    RT_KAK_CHILD_WINDMILL_POH,
     RT_KAK_ROOFTOP_GS,
     RT_GY_POH,
     RT_GY_CHILD_DAMPE_RACE_POH,
@@ -3525,9 +3680,10 @@ typedef enum {
     RT_LH_LAB_DIVING,
     RT_LH_WATER_HOOKSHOT,
     RT_GV_CRATE_HOVERS,
-    RT_GF_KITCHEN,
+    RT_PASS_GUARDS_WITH_NOTHING,
     RT_GF_JUMP,
     RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON,
+    RT_GF_LEDGE_CLIP_INTO_GTG,
     RT_HW_BUNNY_CROSSING,
     RT_HW_CROSSING,
     RT_LENS_HW,
@@ -3541,14 +3697,16 @@ typedef enum {
     RT_DEKU_MQ_LOG,
     RT_DC_SCARECROW_GS,
     RT_DC_VINES_GS,
-    RT_DC_STAIRCASE,
+    RT_DC_STAIRS_WITH_BOW,
     RT_DC_SLINGSHOT_SKIP,
     RT_DC_SCRUB_ROOM,
     RT_DC_JUMP,
     RT_DC_HAMMER_FLOOR,
+    RT_DC_MQ_STAIRS_WITH_ONLY_STRENGTH,
     RT_DC_MQ_CHILD_BOMBS,
     RT_DC_MQ_CHILD_EYES,
     RT_DC_MQ_ADULT_EYES,
+    RT_DC_DODONGO_CHU,
     RT_JABU_ALCOVE_JUMP_DIVE,
     RT_JABU_BOSS_HOVER,
     RT_JABU_NEAR_BOSS_RANGED,
@@ -3604,10 +3762,12 @@ typedef enum {
     RT_WATER_CHILD_DRAGON,
     RT_WATER_MQ_CENTRAL_PILLAR,
     RT_WATER_MQ_LOCKED_GS,
+    RT_WATER_MORPHA_WITHOUT_HOOKSHOT,
     RT_LENS_SHADOW,
     RT_LENS_SHADOW_PLATFORM,
     RT_LENS_BONGO,
-    RT_SHADOW_UMBRELLA,
+    RT_SHADOW_UMBRELLA_HOVER,
+    RT_SHADOW_UMBRELLA_CLIP,
     RT_SHADOW_UMBRELLA_GS,
     RT_SHADOW_FREESTANDING_KEY,
     RT_SHADOW_STATUE,
@@ -3642,14 +3802,14 @@ typedef enum {
     RT_GTG_FAKE_WALL,
     RT_LENS_GTG_MQ,
     RT_GTG_MQ_WITH_HOOKSHOT,
-    RT_GTG_MQ_WIHTOUT_HOOKSHOT,
+    RT_GTG_MQ_WITHOUT_HOOKSHOT,
     RT_LENS_GANON,
     RT_GANON_SPIRIT_TRIAL_HOOKSHOT,
     RT_LENS_GANON_MQ,
     RT_GANON_MQ_FIRE_TRIAL,
     RT_GANON_MQ_SHADOW_TRIAL,
     RT_GANON_MQ_LIGHT_TRIAL,
-    //RT_ROCS_FEATHER                       --if implemented with main branch
+    // RT_ROCS_FEATHER                       --if implemented with main branch
     RT_FOREST_TEMPLE_BK_SKIP,
     RT_FIRE_TEMPLE_BK_SKIP,
     RT_WATER_TEMPLE_BK_SKIP,
@@ -3688,6 +3848,8 @@ typedef enum {
     RT_MEGASIDEHOP_BOMB,
     RT_MEGASIDEHOP_BOMBCHU,
     RT_NAVI_DIVE,
+    RT_BOTTOM_OF_THE_WELL_NAVI_DIVE,
+    RT_LOST_WOOD_NAVI_DIVE,
     RT_OCARINA_ITEMS,
     RT_OCARINA_ITEMS_BOMB,
     RT_OCARINA_ITEMS_ESS,
@@ -3704,11 +3866,11 @@ typedef enum {
     RT_WEIRDSHOT,
     RT_WEIRDSHOT_CHU,
     RT_WEIRDSHOT_ENEMY,
-    //RT_FW_VOID_WARP_FAST_TEXT,                      --untested tricks:
-    //RT_ACTION_SWAP,
-    //RT_ACTOR_GLITCH,
-    //RT_ADULT_TRADE_TTG,
-    RT_TOT_DOT_SKIP_SWORDLESS,           //AREA SPECIFIC GLITCHES
+    // RT_FW_VOID_WARP_FAST_TEXT,                      --untested tricks:
+    // RT_ACTION_SWAP,
+    // RT_ACTOR_GLITCH,
+    // RT_ADULT_TRADE_TTG,
+    RT_TOT_DOT_SKIP_SWORDLESS, // AREA SPECIFIC GLITCHES
     RT_TOT_DOT_SKIP_SWORD,
     RT_LLR_STEAL_EPONA,
     RT_KF_POKEY_SKIP,
@@ -3724,7 +3886,7 @@ typedef enum {
     RT_ZF_JABU_ADULT_HOVERBOOT_BOMB,
     RT_FOREST_TEMPLE_FOUR_POE_SKIP,
     RT_FOREST_TEMPLE_JUNGLE_JUMP,
-    //RT_DARUNIA_CUTSCENE,
+    // RT_DARUNIA_CUTSCENE,
     RT_BOTTOM_OF_THE_WELL_SKULL_PUSH,
     RT_GANONS_CASTLE_BARRIER_SKIP_HOVER,
     RT_GANONS_CASTLE_GOLD_GAUNTLET_SKIP,
@@ -3985,7 +4147,7 @@ typedef enum {
     RG_LONGSHOT,
     RG_SCARECROW,
 
-    //Overworld keys
+    // Overworld keys
     RG_GUARD_HOUSE_KEY,
     RG_MARKET_BAZAAR_KEY,
     RG_MARKET_POTION_SHOP_KEY,
@@ -4068,6 +4230,7 @@ typedef enum {
     RH_ALTAR_CHILD,
     RH_ALTAR_ADULT,
     RH_SARIA_HINT,
+    RH_MIDO_HINT,
     RH_LOACH_HINT,
     RH_FISHING_POLE,
     RH_MINUET_WARP_LOC,
@@ -4473,11 +4636,11 @@ typedef enum {
     RHT_GF_CHEST,
     RHT_GF_HBA_1000_POINTS,
     RHT_GF_HBA_1500_POINTS,
-    RHT_GF_GERUDO_MEMBERSHIP_CARD,
-    RHT_GF_NORTH_F1_CARPENTER,
-    RHT_GF_NORTH_F2_CARPENTER,
-    RHT_GF_SOUTH_F1_CARPENTER,
-    RHT_GF_SOUTH_F2_CARPENTER,
+    RHT_TH_FREED_CARPENTERS,
+    RHT_TH_1_TORCH_CARPENTER,
+    RHT_TH_DEAD_END_CARPENTER,
+    RHT_TH_DOUBLE_CELL_CARPENTER,
+    RHT_TH_STEEP_SLOPE_CARPENTER,
     RHT_GF_GS_TOP_FLOOR,
     RHT_GF_GS_ARCHERY_RANGE,
     RHT_HIDEOUT_JAIL_GUARD_1_TORCH,
@@ -4891,7 +5054,6 @@ typedef enum {
     RHT_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT,
     RHT_GANONS_TOWER_BOSS_KEY_CHEST,
     RHT_DELIVER_RUTOS_LETTER,
-    RHT_MASTER_SWORD_PEDESTAL,
     // Beehives
     RHT_BEEHIVE_CHEST_GROTTO,
     RHT_BEEHIVE_COW_GROTTO,
@@ -5336,6 +5498,7 @@ typedef enum {
     RHT_GREG_HINT,
     RHT_SARIA_TALK_HINT,
     RHT_SARIA_SONG_HINT,
+    RHT_MIDO_HINT,
     RHT_LOACH_HINT,
     RHT_FISHING_POLE_HINT,
     // Static Entrance Hints
@@ -5359,19 +5522,39 @@ typedef enum {
     RHT_SKULLS_HINT,
     RHT_MASK_SHOP_HINT,
     // Shuffle Pots
-    RHT_POT_KOKIRI_FOREST,
-    RHT_POT_GERUDO_FORTRESS,
+    RHT_POT_LINKS_HOUSE,
+    RHT_POT_TWINS_HOUSE,
+    RHT_POT_KNOW_IT_ALL,
+    RHT_TH_BREAK_ROOM_FRONT_POT,
+    RHT_TH_BREAK_ROOM_BACK_POT,
+    RHT_TH_KITCHEN_POT_1,
+    RHT_TH_KITCHEN_POT_2,
+    RHT_TH_1_TORCH_CELL_RIGHT_POT,
+    RHT_TH_1_TORCH_CELL_MID_POT,
+    RHT_TH_1_TORCH_CELL_LEFT_POT,
+    RHT_TH_STEEP_SLOPE_RIGHT_POT,
+    RHT_TH_STEEP_SLOPE_LEFT_POT,
+    RHT_TH_NEAR_DOUBLE_CELL_RIGHT_POT,
+    RHT_TH_NEAR_DOUBLE_CELL_MID_POT,
+    RHT_TH_NEAR_DOUBLE_CELL_LEFT_POT,
+    RHT_TH_RIGHTMOST_JAILED_POT,
+    RHT_TH_RIGHT_MIDDLE_JAILED_POT,
+    RHT_TH_LEFT_MIDDLE_JAILED_POT,
+    RHT_TH_LEFTMOST_JAILED_POT,
     RHT_POT_WASTELAND,
-    RHT_POT_MARKET,
+    RHT_POT_GUARD_HOUSE,
+    RHT_POT_POE_SHOP,
+    RHT_POT_ALLEY_HOUSE,
     RHT_POT_KAKARIKO,
-    RHT_POT_GRAVEYARD,
+    RHT_POT_DAMPE,
     RHT_POT_GORON_CITY,
     RHT_POT_DEATH_MOUNTAIN_CRATER,
     RHT_POT_ZORAS_DOMAIN,
     RHT_POT_ZORAS_FOUNTAIN,
     RHT_POT_LON_LON_RANCH,
-    RHT_POT_HYRULE_FIELD,
-    RHT_POT_HYRULE_CASTLE,
+    RHT_POT_TALONS_HOUSE,
+    RHT_POT_WEB_GROTTO,
+    RHT_POT_MUD_WALL_GROTTO,
     RHT_POT_DODONGOS_CAVERN,
     RHT_POT_JABU_JABUS_BELLY,
     RHT_POT_FOREST_TEMPLE,
@@ -5405,7 +5588,7 @@ typedef enum {
     RHT_CRATE_WATER_TEMPLE,
     RHT_CRATE_SPIRIT_TEMPLE,
     RHT_CRATE_SHADOW_TEMPLE,
-    RHT_CRATE_GERUDO_TRAINING_GROUND,   
+    RHT_CRATE_GERUDO_TRAINING_GROUND,
     // Ganon Line
     RHT_GANON_JOKE01,
     RHT_GANON_JOKE02,
@@ -5550,7 +5733,7 @@ typedef enum {
     RHT_DMT_FLAG_SUN_FAIRY,
     RHT_DMT_COW_GROTTO_STORMS_FAIRY,
     RHT_LW_SHORTCUT_STORMS_FAIRY,
-    RHT_GF_KITCHEN_SUN_FAIRY,
+    RHT_TH_KITCHEN_SUN_FAIRY,
     RHT_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY,
     RHT_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY,
     RHT_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY,
@@ -5588,7 +5771,6 @@ typedef enum {
     // MAX
     RHT_MAX,
 } RandomizerHintTextKey;
-
 
 typedef struct {
     RandomizerGet rgID;
@@ -5678,6 +5860,7 @@ typedef enum {
     RSK_DOOR_OF_TIME,
     RSK_ZORAS_FOUNTAIN,
     RSK_SLEEPING_WATERFALL,
+    RSK_JABU_OPEN,
     RSK_STARTING_AGE,
     RSK_SELECTED_STARTING_AGE,
     RSK_GERUDO_FORTRESS,
@@ -5698,16 +5881,16 @@ typedef enum {
     RSK_STARTING_KOKIRI_SWORD,
     RSK_STARTING_MASTER_SWORD,
     RSK_STARTING_ZELDAS_LULLABY,
-    RSK_STARTING_EPONAS_SONG, 
-    RSK_STARTING_SARIAS_SONG, 
+    RSK_STARTING_EPONAS_SONG,
+    RSK_STARTING_SARIAS_SONG,
     RSK_STARTING_SUNS_SONG,
     RSK_STARTING_SONG_OF_TIME,
     RSK_STARTING_SONG_OF_STORMS,
-    RSK_STARTING_MINUET_OF_FOREST, 
+    RSK_STARTING_MINUET_OF_FOREST,
     RSK_STARTING_BOLERO_OF_FIRE,
     RSK_STARTING_SERENADE_OF_WATER,
-    RSK_STARTING_REQUIEM_OF_SPIRIT, 
-    RSK_STARTING_NOCTURNE_OF_SHADOW, 
+    RSK_STARTING_REQUIEM_OF_SPIRIT,
+    RSK_STARTING_NOCTURNE_OF_SHADOW,
     RSK_STARTING_PRELUDE_OF_LIGHT,
     RSK_SHUFFLE_KOKIRI_SWORD,
     RSK_SHUFFLE_MASTER_SWORD,
@@ -5756,6 +5939,7 @@ typedef enum {
     RSK_GREG_HINT,
     RSK_LOACH_HINT,
     RSK_SARIA_HINT,
+    RSK_MIDO_HINT,
     RSK_FROGS_HINT,
     RSK_OOT_HINT,
     RSK_KAK_10_SKULLS_HINT,
@@ -5787,7 +5971,6 @@ typedef enum {
     RSK_STARTING_NUTS,
     RSK_FULL_WALLETS,
     RSK_SHUFFLE_CHEST_MINIGAME,
-    RSK_CUCCO_COUNT,
     RSK_BIG_POE_COUNT,
     RSK_SKIP_EPONA_RACE,
     RSK_COMPLETE_MASK_QUEST,
@@ -5807,6 +5990,7 @@ typedef enum {
     RSK_MERCHANT_PRICES_AFFORDABLE,
     RSK_BLUE_FIRE_ARROWS,
     RSK_SUNLIGHT_ARROWS,
+    RSK_SLINGBOW_BREAK_BEEHIVES,
     RSK_ENABLE_BOMBCHU_DROPS,
     RSK_BOMBCHU_BAG,
     RSK_LINKS_POCKET,
@@ -5882,8 +6066,8 @@ typedef enum {
     RSK_MAX
 } RandomizerSettingKey;
 
-//Generic Settings (any binary option can use this)
-// off/on
+// Generic Settings (any binary option can use this)
+//  off/on
 typedef enum {
     RO_GENERIC_OFF,
     RO_GENERIC_ON,
@@ -5901,54 +6085,60 @@ typedef enum {
     RO_GENERIC_SKIP,
 } RandoOptionGenericSkip;
 
-//Closed Forest settings (On, Deku Only, Off)
+// Closed Forest settings (On, Deku Only, Off)
 typedef enum {
     RO_CLOSED_FOREST_ON,
     RO_CLOSED_FOREST_DEKU_ONLY,
     RO_CLOSED_FOREST_OFF,
 } RandoOptionForest;
 
-//Door of Time settings (closed, song only, open)
+// Door of Time settings (closed, song only, open)
 typedef enum {
     RO_DOOROFTIME_CLOSED,
     RO_DOOROFTIME_SONGONLY,
     RO_DOOROFTIME_OPEN,
 } RandoOptionDoorOfTime;
 
-//Zora's Fountain settings (closed, closed as child, open)
+// Zora's Fountain settings (closed, closed as child, open)
 typedef enum {
     RO_ZF_CLOSED,
     RO_ZF_CLOSED_CHILD,
     RO_ZF_OPEN,
 } RandoOptionZorasFountain;
 
-//Sleeping Waterfall settings (closed, open)
+// Sleeping Waterfall settings (closed, open)
 typedef enum {
     RO_WATERFALL_CLOSED,
     RO_WATERFALL_OPEN,
 } RandoOptionSleepingWaterfall;
 
-//Starting Age settings (child, adult, random)
+// Jabu-Jabu settings (closed, open)
+typedef enum {
+    RO_JABU_CLOSED,
+    RO_JABU_OPEN,
+} RandoOptionJabu;
+
+// Starting Age settings (child, adult, random)
 typedef enum {
     RO_AGE_CHILD,
     RO_AGE_ADULT,
     RO_AGE_RANDOM,
 } RandoOptionStartingAge;
 
-//Fortress Carpenters settings (normal, fast, free)
+// Fortress Carpenters settings (normal, fast, free)
 typedef enum {
     RO_GF_CARPENTERS_NORMAL,
     RO_GF_CARPENTERS_FAST,
     RO_GF_CARPENTERS_FREE,
 } RandoOptionGerudoFortress;
 
-//Kakariko Gate settings (closed/open)
+// Kakariko Gate settings (closed/open)
 typedef enum {
     RO_KAK_GATE_CLOSED,
     RO_KAK_GATE_OPEN,
 } RandoOptionKakarikoGate;
 
-//Rainbow Bridge settings (vanilla, always open, stones, medallions, dungeon rewards, dungeons, tokens)
+// Rainbow Bridge settings (vanilla, always open, stones, medallions, dungeon rewards, dungeons, tokens)
 typedef enum {
     RO_BRIDGE_VANILLA = 0,
     RO_BRIDGE_ALWAYS_OPEN,
@@ -5967,14 +6157,14 @@ typedef enum {
     RO_BRIDGE_WILDCARD_REWARD,
 } RandoOptionBridgeRewards;
 
-//Shopsanity settings (off, specific count, random)
+// Shopsanity settings (off, specific count, random)
 typedef enum {
     RO_SHOPSANITY_OFF,
     RO_SHOPSANITY_SPECIFIC_COUNT,
     RO_SHOPSANITY_RANDOM,
 } RandoOptionShopsanity;
 
-//Shopsanity count settings (0-7 items)
+// Shopsanity count settings (0-7 items)
 typedef enum {
     RO_SHOPSANITY_COUNT_ZERO_ITEMS,
     RO_SHOPSANITY_COUNT_ONE_ITEM,
@@ -5987,27 +6177,27 @@ typedef enum {
     RO_SHOPSANITY_COUNT_EIGHT_ITEMS,
 } RandoOptionShopsanityCount;
 
-//Shopsanity price ranges
+// Shopsanity price ranges
 typedef enum {
     RO_PRICE_VANILLA,
-    RO_PRICE_CHEAP_BALANCED, //Balanced random from 0-95, favoring lower numbers
-    RO_PRICE_BALANCED, //Random from 0-300, favoring lower numbers
+    RO_PRICE_CHEAP_BALANCED, // Balanced random from 0-95, favoring lower numbers
+    RO_PRICE_BALANCED,       // Random from 0-300, favoring lower numbers
     RO_PRICE_FIXED,
     RO_PRICE_RANGE,
     RO_PRICE_SET_BY_WALLET,
 } RandoOptionPrices;
 
-//Scrubsanity settings (off, affordable, expensive, random)
+// Scrubsanity settings (off, affordable, expensive, random)
 typedef enum {
     RO_SCRUBS_OFF,
     RO_SCRUBS_ONE_TIME_ONLY,
     RO_SCRUBS_ALL,
 } RandoOptionScrubsanity;
 
-//Ammo drop settings (on, "on+bombchu", off)
+// Ammo drop settings (on, "on+bombchu", off)
 typedef enum {
     RO_AMMO_DROPS_OFF,
-    //RO_AMMO_DROPS_ON_PLUS_BOMBCHU,
+    // RO_AMMO_DROPS_ON_PLUS_BOMBCHU,
     RO_AMMO_DROPS_ON,
 } RandoOptionAmmoDrops;
 
@@ -6017,7 +6207,7 @@ typedef enum {
     RO_BOSS_SOULS_ON_PLUS_GANON,
 } RandoOptionBossSouls;
 
-//Fishsanity settings (off, loach only, pond only, grottos only, both)
+// Fishsanity settings (off, loach only, pond only, grottos only, both)
 typedef enum {
     RO_FISHSANITY_OFF,
     RO_FISHSANITY_HYRULE_LOACH,
@@ -6026,15 +6216,15 @@ typedef enum {
     RO_FISHSANITY_BOTH
 } RandoOptionsFishsanity;
 
-//Infinite Upgrades settings (off, progressive, condensed progressive)
+// Infinite Upgrades settings (off, progressive, condensed progressive)
 typedef enum {
     RO_INF_UPGRADES_OFF,
     RO_INF_UPGRADES_PROGRESSIVE,
     RO_INF_UPGRADES_CONDENSED_PROGRESSIVE,
 } RandoOptionInfiniteUpgrades;
 
-//Any Dungeon Item (start with, vanilla, own dungeon, any dungeon,
-//overworld, anywhere)
+// Any Dungeon Item (start with, vanilla, own dungeon, any dungeon,
+// overworld, anywhere)
 typedef enum {
     RO_DUNGEON_ITEM_LOC_STARTWITH,
     RO_DUNGEON_ITEM_LOC_VANILLA,
@@ -6044,7 +6234,7 @@ typedef enum {
     RO_DUNGEON_ITEM_LOC_ANYWHERE,
 } RandoOptionDungeonItemLocation;
 
-//Dungeon reward settings
+// Dungeon reward settings
 typedef enum {
     RO_DUNGEON_REWARDS_VANILLA,
     RO_DUNGEON_REWARDS_END_OF_DUNGEON,
@@ -6053,7 +6243,7 @@ typedef enum {
     RO_DUNGEON_REWARDS_ANYWHERE,
 } RandoOptionDungeonRewards;
 
-//Keyring Settings
+// Keyring Settings
 typedef enum {
     RO_KEYRINGS_OFF,
     RO_KEYRINGS_RANDOM,
@@ -6067,8 +6257,8 @@ typedef enum {
     RO_KEYRING_FOR_DUNGEON_ON,
 } RandoOptionKeyringForDungeon;
 
-//Ganon's Boss Key Settings (vanilla, own dungeon, start with,
-//overworld, anywhere, 100 GS reward)
+// Ganon's Boss Key Settings (vanilla, own dungeon, start with,
+// overworld, anywhere, 100 GS reward)
 typedef enum {
     RO_GANON_BOSS_KEY_VANILLA,
     RO_GANON_BOSS_KEY_OWN_DUNGEON,
@@ -6101,42 +6291,43 @@ typedef enum {
     RO_LACS_WILDCARD_REWARD,
 } RandoOptionLACSRewards;
 
-//Ganon's Trials
+// Ganon's Trials
 typedef enum {
     RO_GANONS_TRIALS_SKIP,
     RO_GANONS_TRIALS_SET_NUMBER,
     RO_GANONS_TRIALS_RANDOM_NUMBER,
 } RandoOptionGanonsTrials;
 
-//Shuffle Dungeon Entrance Settings (Off, on, plus ganon)
+// Shuffle Dungeon Entrance Settings (Off, on, plus ganon)
 typedef enum {
     RO_DUNGEON_ENTRANCE_SHUFFLE_OFF,
     RO_DUNGEON_ENTRANCE_SHUFFLE_ON,
     RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON,
 } RandoOptionDungeonEntranceShuffle;
 
-//Shuffle Boss Room Entrance Settings (Off, Age Restricted, Full)
+// Shuffle Boss Room Entrance Settings (Off, Age Restricted, Full)
 typedef enum {
     RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF,
     RO_BOSS_ROOM_ENTRANCE_SHUFFLE_AGE_RESTRICTED,
     RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL,
 } RandoOptionBossRoomEntranceShuffle;
 
-//Shuffle Interior Entrance Settings (Off, simple, all)
+// Shuffle Interior Entrance Settings (Off, simple, all)
 typedef enum {
     RO_INTERIOR_ENTRANCE_SHUFFLE_OFF,
     RO_INTERIOR_ENTRANCE_SHUFFLE_SIMPLE,
     RO_INTERIOR_ENTRANCE_SHUFFLE_ALL,
 } RandoOptionInteriorEntranceShuffle;
 
-//Song shuffle Settings (Song locations, Dungeon rewards, anywhere)
+// Song shuffle Settings (Song locations, Dungeon rewards, anywhere)
 typedef enum {
+    RO_SONG_SHUFFLE_OFF,
     RO_SONG_SHUFFLE_SONG_LOCATIONS,
     RO_SONG_SHUFFLE_DUNGEON_REWARDS,
     RO_SONG_SHUFFLE_ANYWHERE,
 } RandoOptionSongShuffle;
 
-//Shuffle Merchants Settings (Off, Beans Only, All but Beans, All)
+// Shuffle Merchants Settings (Off, Beans Only, All but Beans, All)
 typedef enum {
     RO_SHUFFLE_MERCHANTS_OFF,
     RO_SHUFFLE_MERCHANTS_BEANS_ONLY,
@@ -6144,14 +6335,14 @@ typedef enum {
     RO_SHUFFLE_MERCHANTS_ALL
 } RandoOptionShuffleMerchants;
 
-//Starting Ocarina Settings (off, fairy)
+// Starting Ocarina Settings (off, fairy)
 typedef enum {
     RO_STARTING_OCARINA_OFF,
     RO_STARTING_OCARINA_FAIRY,
     RO_STARTING_OCARINA_TIME,
 } RandoOptionStartingOcarina;
 
-//Item Pool Settings
+// Item Pool Settings
 typedef enum {
     RO_ITEM_POOL_PLENTIFUL,
     RO_ITEM_POOL_BALANCED,
@@ -6159,7 +6350,7 @@ typedef enum {
     RO_ITEM_POOL_MINIMAL,
 } RandoOptionItemPool;
 
-//Ice Trap Settings
+// Ice Trap Settings
 typedef enum {
     RO_ICE_TRAPS_OFF,
     RO_ICE_TRAPS_NORMAL,
@@ -6168,8 +6359,8 @@ typedef enum {
     RO_ICE_TRAPS_ONSLAUGHT,
 } RandoOptionIceTraps;
 
-//Gossip Stone Hint Settings (no hints, needs nothing,
-//needs mask of truth, needs stone of agony)
+// Gossip Stone Hint Settings (no hints, needs nothing,
+// needs mask of truth, needs stone of agony)
 typedef enum {
     RO_GOSSIP_STONES_NONE,
     RO_GOSSIP_STONES_NEED_NOTHING,
@@ -6177,14 +6368,14 @@ typedef enum {
     RO_GOSSIP_STONES_NEED_STONE,
 } RandoOptionGossipStones;
 
-//Hint Clarity Settings (obscure, ambiguous, clear)
+// Hint Clarity Settings (obscure, ambiguous, clear)
 typedef enum {
     RO_HINT_CLARITY_OBSCURE,
     RO_HINT_CLARITY_AMBIGUOUS,
     RO_HINT_CLARITY_CLEAR,
 } RandoOptionHintClarity;
 
-//Hint Distribution Settings (useless, balanced, strong, very strong)
+// Hint Distribution Settings (useless, balanced, strong, very strong)
 typedef enum {
     RO_HINT_DIST_USELESS,
     RO_HINT_DIST_BALANCED,
@@ -6192,8 +6383,8 @@ typedef enum {
     RO_HINT_DIST_VERY_STRONG,
 } RandoOptionHintDistribution;
 
-//Gerudo Fortress Key Settings (vanilla, any dungeon, overworld,
-//anywhere)
+// Gerudo Fortress Key Settings (vanilla, any dungeon, overworld,
+// anywhere)
 typedef enum {
     RO_GERUDO_KEYS_VANILLA,
     RO_GERUDO_KEYS_ANY_DUNGEON,
@@ -6201,7 +6392,7 @@ typedef enum {
     RO_GERUDO_KEYS_ANYWHERE,
 } RandoOptionGerudoKeys;
 
-//Tokensanity settings (off, dungeons, overworld, all)
+// Tokensanity settings (off, dungeons, overworld, all)
 typedef enum {
     RO_TOKENSANITY_OFF,
     RO_TOKENSANITY_DUNGEONS,
@@ -6209,7 +6400,7 @@ typedef enum {
     RO_TOKENSANITY_ALL,
 } RandoOptionTokensanity;
 
-//Freestanding Hearts/Rupees settings (off, dungeons, overworld, all)
+// Freestanding Hearts/Rupees settings (off, dungeons, overworld, all)
 typedef enum {
     RO_SHUFFLE_FREESTANDING_OFF,
     RO_SHUFFLE_FREESTANDING_DUNGEONS,
@@ -6241,7 +6432,7 @@ typedef enum {
     RO_SHUFFLE_CRATES_ALL,
 } RandoOptionShuffleCrates;
 
-//Link's Pocket Settings (dungeon reward, advancement, anything, nothing)
+// Link's Pocket Settings (dungeon reward, advancement, anything, nothing)
 typedef enum {
     RO_LINKS_POCKET_DUNGEON_REWARD,
     RO_LINKS_POCKET_ADVANCEMENT,
@@ -6336,6 +6527,11 @@ typedef struct FishIdentity {
     RandomizerCheck randomizerCheck;
 } FishIdentity;
 
+typedef struct FairyIdentity {
+    RandomizerInf randomizerInf;
+    RandomizerCheck randomizerCheck;
+} FairyIdentity;
+
 typedef struct GrassIdentity {
     RandomizerInf randomizerInf;
     RandomizerCheck randomizerCheck;
@@ -6419,6 +6615,8 @@ typedef enum {
     RE_STINGER,
     RE_BIG_OCTO,
     RE_GERUDO_WARRIOR,
+    RE_GERUDO_GUARD,
+    RE_BREAK_ROOM_GUARD,
     RE_GIBDO,
     RE_GOHMA,
     RE_KING_DODONGO,
@@ -6441,13 +6639,13 @@ typedef enum {
     RE_OCTOROK,
 } RandomizerEnemy;
 
-//RANDOTODO compare child long jumpslash range with adult short
+// RANDOTODO compare child long jumpslash range with adult short
 typedef enum {
     ED_CLOSE,
-    //hammer or kokiri sword
+    // hammer or kokiri sword
     ED_SHORT_JUMPSLASH,
     ED_MASTER_SWORD_JUMPSLASH,
-    //sticks or BGS
+    // sticks or BGS
     ED_LONG_JUMPSLASH,
     ED_BOMB_THROW,
     ED_BOOMERANG,

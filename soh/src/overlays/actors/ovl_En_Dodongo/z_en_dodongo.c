@@ -319,8 +319,7 @@ void EnDodongo_Init(Actor* thisx, PlayState* play) {
     this->bodyScale.x = this->bodyScale.y = this->bodyScale.z = 1.0f;
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 48.0f);
     Actor_SetScale(&this->actor, 0.01875f);
-    SkelAnime_Init(play, &this->skelAnime, &gDodongoSkel, &gDodongoWaitAnim, this->jointTable, this->morphTable,
-                   31);
+    SkelAnime_Init(play, &this->skelAnime, &gDodongoSkel, &gDodongoWaitAnim, this->jointTable, this->morphTable, 31);
     this->actor.colChkInfo.health = 4;
     this->actor.colChkInfo.mass = MASS_HEAVY;
     this->actor.colChkInfo.damageTable = &sDamageTable;
@@ -800,8 +799,7 @@ void EnDodongo_Update(Actor* thisx, PlayState* play) {
     this->actor.focus.pos.z = this->actor.world.pos.z + Math_CosS(this->actor.shape.rot.y) * -30.0f;
 }
 
-s32 EnDodongo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                               void* thisx) {
+s32 EnDodongo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnDodongo* this = (EnDodongo*)thisx;
 
     if ((limbIndex == 15) || (limbIndex == 16)) {
@@ -924,16 +922,15 @@ void EnDodongo_Draw(Actor* thisx, PlayState* play2) {
     s32 index;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnDodongo_OverrideLimbDraw,
-                      EnDodongo_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnDodongo_OverrideLimbDraw, EnDodongo_PostLimbDraw, this);
 
     if (this->iceTimer != 0) {
         this->actor.colorFilterTimer++;
         this->iceTimer--;
         if ((this->iceTimer % 4) == 0) {
             index = this->iceTimer >> 2;
-            EffectSsEnIce_SpawnFlyingVec3f(play, &this->actor, &this->icePos[index], 150, 150, 150, 250, 235, 245,
-                                           255, 1.8f);
+            EffectSsEnIce_SpawnFlyingVec3f(play, &this->actor, &this->icePos[index], 150, 150, 150, 250, 235, 245, 255,
+                                           1.8f);
         }
     }
 }

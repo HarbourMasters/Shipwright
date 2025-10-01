@@ -234,9 +234,8 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
             player->actor.textId = this->actor.textId;
             this->actionFunc = func_80AACA40;
         } else {
-            if (GameInteractor_Should(VB_USE_EYEDROP_DIALOGUE, (
-                INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS
-            ), this)) {
+            if (GameInteractor_Should(VB_USE_EYEDROP_DIALOGUE, (INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS),
+                                      this)) {
                 player->actor.textId = 0x4032;
                 this->actionFunc = func_80AACA40;
             } else {

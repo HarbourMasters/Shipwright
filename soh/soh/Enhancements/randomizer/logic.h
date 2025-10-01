@@ -18,169 +18,21 @@ enum class GlitchType {
     EquipSwap,
 };
 
-enum class GlitchDifficulty {
-    NOVICE = 1,
-    INTERMEDIATE,
-    ADVANCED,
-    EXPERT,
-    HERO,
-};
-
 class Logic {
   public:
-    bool noVariable = false;
-
-    // Child item logic
-    bool SkullMask = false;
-    bool MaskOfTruth = false;
-
-    // Adult logic
-    bool FreedEpona = false;
-
-    // Trade Quest Events
-    bool WakeUpAdultTalon = false;
-
-    // Dungeon Clears
-    bool DekuTreeClear = false;
-    bool DodongosCavernClear = false;
-    bool JabuJabusBellyClear = false;
-    bool ForestTempleClear = false;
-    bool FireTempleClear = false;
-    bool WaterTempleClear = false;
-    bool SpiritTempleClear = false;
-    bool ShadowTempleClear = false;
-
-    // Trial Clears
-    bool ForestTrialClear = false;
-    bool FireTrialClear = false;
-    bool WaterTrialClear = false;
-    bool SpiritTrialClear = false;
-    bool ShadowTrialClear = false;
-    bool LightTrialClear = false;
-
-    // Logical keysanity
-    bool IsKeysanity = false;
-
-    // Bottle Count
     uint8_t Bottles = 0;
     uint8_t NumBottles = 0;
-    //this event covers if the player can currently empty big poes in logic
-    bool CanEmptyBigPoes = false;
-    //this event covers if the player could, if they filled their bottle with big poes in field, empty them at the poe merchant. 
-    //Works in tandem with the big poes safety check during entrance validation
-    bool CouldEmptyBigPoes = false;
-    //this check is used to tell logic that we are checking big poes accessibility in logic, to ensure it's not bottle-locked.
-    bool AreCheckingBigPoes = false;
-
-    // Drops and Bottle Contents Access
-    bool NutPot = false;
-    bool NutCrate = false;
-    bool DekuBabaNuts = false;
-    bool StickPot = false;
-    bool DekuBabaSticks = false;
-    bool BugShrub = false;
-    bool WanderingBugs = false;
-    bool BugRock = false;
-    bool BlueFireAccess = false;
-    bool FishGroup = false;
-    bool LoneFish = false;
-    bool GossipStoneFairy = false;
-    bool BeanPlantFairy = false;
-    bool ButterflyFairy = false;
-    bool FairyPot = false;
-    bool FreeFairies = false;
-    bool FairyPond = false;
-    bool AmmoCanDrop = true;
-
     uint8_t PieceOfHeart = 0;
     uint8_t HeartContainer = 0;
-
-    bool ChildScarecrow = false;
-    bool AdultScarecrow = false;
-
-    bool CarpetMerchant = false;
-    bool CouldPlayBowling = false;
     bool IsChild = false;
     bool IsAdult = false;
-    bool BigPoeKill = false;
     uint8_t BigPoes = 0;
     uint8_t BaseHearts = 0;
-
-    // Bridge and LACS Requirements
-    bool BuiltRainbowBridge = false;
-
-    // Other
     bool AtDay = false;
     bool AtNight = false;
 
-    // Events
-    bool ShowedMidoSwordAndShield = false;
-    bool CarpenterRescue = false;
-    bool GF_GateOpen = false;
-    bool GtG_GateOpen = false;
-    bool DampesWindmillAccess = false;
-    bool DrainWell = false;
-    bool GoronCityChildFire = false;
-    bool GCWoodsWarpOpen = false;
-    bool GCDaruniasDoorOpenChild = false;
-    bool StopGCRollingGoronAsAdult = false;
-    bool CanWaterTempleLowFromHigh = false;
-    bool CanWaterTempleMiddle = false;
-    bool CanWaterTempleHigh = false;
-    bool CanWaterTempleLowFromMid = false;
-    bool CouldWaterTempleLow = false;
-    bool CouldWaterTempleMiddle = false;
-    bool ReachedWaterHighEmblem = false;
-    bool KakarikoVillageGateOpen = false;
-    bool KingZoraThawed = false;
-    bool ForestTempleJoelle = false;
-    bool ForestTempleBeth = false;
-    bool ForestTempleAmy = false;
-    bool ForestTempleMeg = false;
-    bool FireLoopSwitch = false;
-    bool LinksCow = false;
-    bool DeliverLetter = false;
-    bool ClearMQDCUpperLobbyRocks = false;
-    bool LoweredWaterInsideBotw = false;
-    bool OpenedWestRoomMQBotw = false;
-    bool OpenedMiddleHoleMQBotw = false;
-    bool BrokeDeku1FWeb = false;
-    bool ClearedMQDekuSERoom = false;
-    bool MQDekuWaterRoomTorches = false;
-    bool PushedDekuBasementBlock = false;
-    bool OpenedLowestGoronCage = false;
-    bool OpenedUpperFireShortcut = false;
-    bool HitFireTemplePlatform = false;
-    bool OpenedFireMQFireMazeDoor = false;
-    bool MQForestBlockRoomTargets = false;
-    bool ForestCanTwistHallway = false;
-    bool ForestClearBelowBowChest = false; //a better name that covers both versions would be nice
-    bool ForestOpenBossCorridor = false;
-    bool ShadowTrialFirstChest = false;
-    bool MQGTGMazeSwitch = false;
-    bool MQGTGRightSideSwitch = false;
-    bool GTGPlatformSilverRupees = false;
-    bool MQJabuHolesRoomDoor = false;
-    bool JabuWestTentacle = false;
-    bool JabuEastTentacle = false;
-    bool JabuNorthTentacle = false;
-    bool LoweredJabuPath = false;
-    bool MQJabuLiftRoomCow = false;
-    bool MQShadowFloorSpikeRupees = false;
-    bool ShadowShortcutBlock = false;
-    bool MQWaterStalfosPit = false;
-    bool MQWaterDragonTorches = false;
-    bool MQWaterB1Switch = false;
-    //bool MQWaterPillarSoTBlock = false; should be irrelevant. SHOULD.
-    bool MQWaterOpenedPillarB1 = false;
-    bool MQSpiritCrawlBoulder = false;
-    bool MQSpiritMapRoomEnemies = false;
-    bool MQSpiritTimeTravelChest = false;
-    bool MQSpirit3SunsEnemies = false;
-    bool Spirit1FSilverRupees = false;
-    bool JabuRutoIn1F = false;
-
-    /* --- END OF HELPERS AND LOCATION ACCESS --- */
+    bool CalculatingAvailableChecks = false;
+    bool ACProcessUndiscoveredExits = false;
 
     SaveContext* mSaveContext = nullptr;
     Logic();
@@ -189,11 +41,12 @@ class Logic {
     bool HasItem(RandomizerGet itemName);
     bool HasBossSoul(RandomizerGet itemName);
     bool CanOpenOverworldDoor(RandomizerGet itemName);
-    bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
-    bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
+    bool SmallKeys(s16 scene, uint8_t requiredAmount);
+    bool CanOpenUnderwaterChest();
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
-    bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true, uint8_t quantity = 1, bool timer = false, bool inWater = false);
+    bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true,
+                      uint8_t quantity = 1, bool timer = false, bool inWater = false);
     bool CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true);
     bool CanAvoidEnemy(RandomizerEnemy enemy, bool grounded = false, uint8_t quantity = 1);
     bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
@@ -207,6 +60,7 @@ class Logic {
     uint8_t BottleCount();
     uint8_t OcarinaButtons();
     bool HasBottle();
+    bool CanUseSword();
     bool CanJumpslashExceptHammer();
     bool CanJumpslash();
     bool CanHitSwitch(EnemyDistance distance = ED_CLOSE, bool inWater = false);
@@ -223,7 +77,6 @@ class Logic {
     bool CanReflectNuts();
     bool CanCutShrubs();
     bool CanStunDeku();
-    bool CanLeaveForest();
     bool CallGossipFairy();
     bool CallGossipFairyExceptSuns();
     uint8_t EffectiveHealth();
@@ -245,16 +98,16 @@ class Logic {
     bool HasFireSource();
     bool HasFireSourceWithTorch();
     bool TradeQuestStep(RandomizerGet rg);
-    bool CanFinishGerudoFortress();
     bool CanStandingShield();
     bool CanShield();
     bool CanUseProjectile();
     bool CanBuildRainbowBridge();
     bool CanTriggerLACS();
-    void Reset();
+    bool IsFireLoopLocked();
+    void Reset(bool resetSaveContext = true);
     void SetContext(std::shared_ptr<Context> _ctx);
-    bool GetInLogic(LogicVal logicVal);
-    void SetInLogic(LogicVal logicVal, bool remove);
+    bool Get(LogicVal logicVal);
+    void Set(LogicVal logicVal, bool remove);
     void ApplyItemEffect(Item& item, bool state);
     uint8_t InventorySlot(uint32_t item);
     void SetUpgrade(uint32_t upgrade, uint8_t level);
@@ -265,6 +118,7 @@ class Logic {
     bool CheckEquipment(uint32_t item);
     bool CheckQuestItem(uint32_t item);
     void SetQuestItem(uint32_t item, bool state);
+    int8_t GetUsedSmallKeyCount(SceneID sceneId);
     uint8_t GetSmallKeyCount(uint32_t dungeonIndex);
     void SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count);
     bool CheckDungeonItem(uint32_t item, uint32_t dungeonIndex);

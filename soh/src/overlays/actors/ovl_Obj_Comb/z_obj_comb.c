@@ -119,8 +119,8 @@ void ObjComb_Break(ObjComb* this, PlayState* play) {
             arg5 = 32;
         }
 
-        EffectSsKakera_Spawn(play, &pos, &velocity, &pos, gravity, arg5, arg6, 4, 0, scale, 0, 0, 80,
-                             KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_FIELD_KEEP, dlist);
+        EffectSsKakera_Spawn(play, &pos, &velocity, &pos, gravity, arg5, arg6, 4, 0, scale, 0, 0, 80, KAKERA_COLOR_NONE,
+                             OBJECT_GAMEPLAY_FIELD_KEEP, dlist);
     }
 
     pos.x = this->actor.world.pos.x;
@@ -218,8 +218,7 @@ void ObjComb_Draw(Actor* thisx, PlayState* play) {
     Matrix_Translate(0, -(this->actor.scale.y * 118.0f), 0, MTXMODE_APPLY);
     Matrix_Scale(this->actor.scale.x, this->actor.scale.y, this->actor.scale.z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gFieldBeehiveDL);
 

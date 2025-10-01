@@ -412,6 +412,7 @@ ReleaseObj/*
 .tags
 tags
 *.otr
+*.o2r
 *.sav
 shipofharkinian.ini
 shipofharkinian.json
@@ -452,3 +453,8 @@ _packages
 
 soh/src/boot/build.c
 soh/properties.h
+
+# Tools
+/clang-format
+/clang-format.exe
+*.o2r

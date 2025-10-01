@@ -19,10 +19,8 @@ typedef struct {
 } DListPatchInfo;
 
 static DListPatchInfo freezardBodyDListPatchInfos[] = {
-    { gFreezardIntactDL, 5 },
-    { gFreezardTopRightHornChippedDL, 5 },
-    { gFreezardHeadChippedDL, 5 },
-    { gFreezardIceTriangleDL, 5 },
+    { gFreezardIntactDL, 5 },      { gFreezardTopRightHornChippedDL, 5 },
+    { gFreezardHeadChippedDL, 5 }, { gFreezardIceTriangleDL, 5 },
     { gFreezardIceRockDL, 5 },
 };
 
@@ -283,11 +281,24 @@ void PatchIronKnuckleTextureOverflow() {
     }
 }
 
+void PatchBoulderFragment() {
+    // The boulder fragment renders invisible due to the change made by https://github.com/Kenix3/libultraship/pull/721
+    // Until it is known wether this change is approriate or something else should be done to it, the following patches
+    // adjust the render mode for the DL to not become invisible
+    ResourceMgr_PatchGfxByName(gBoulderFragmentsDL, "boulderFragmentRenderFix3", 3,
+                               gsDPSetRenderMode(G_RM_FOG_SHADE_A, G_RM_AA_ZB_OPA_SURF2));
+    ResourceMgr_PatchGfxByName(gBoulderFragmentsDL, "boulderFragmentRenderFix6", 6,
+                               gsDPSetCombineMode(G_CC_MODULATEIDECALA, G_CC_MODULATEIA_PRIM2));
+}
+
 void ApplyAuthenticGfxPatches() {
+    // Overflow textures
     PatchArrowTipTexture();
     PatchDekuStickTextureOverflow();
     PatchFreezardTextureOverflow();
     PatchIronKnuckleTextureOverflow();
+
+    PatchBoulderFragment();
 }
 
 // Patches the Sold Out GI DL to render the texture in the mirror boundary
@@ -339,7 +350,8 @@ void PatchMirroredSoldOutGI() {
 void PatchMirroredSunSongEtching() {
     // Only using these strings for graphics patching lookup, we don't need aligned assets here
     static const char gRoyalGraveBackRoomDL[] = "__OTR__scenes/shared/hakaana_ouke_scene/hakaana_ouke_room_2DL_005040";
-    static const char gRoyalGraveBackRoomSongVtx[] = "__OTR__scenes/shared/hakaana_ouke_scene/hakaana_ouke_room_2Vtx_004F80";
+    static const char gRoyalGraveBackRoomSongVtx[] =
+        "__OTR__scenes/shared/hakaana_ouke_scene/hakaana_ouke_room_2Vtx_004F80";
 
     static Vtx* mirroredSunSongVtx;
 
@@ -365,7 +377,8 @@ void PatchMirroredSunSongEtching() {
 
         ResourceMgr_PatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTexture_1", 13, mirroredSunSongTex[1]);
         ResourceMgr_PatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTexture_2", 17, mirroredSunSongTex[5]);
-        ResourceMgr_PatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_1", 24, gsSPVertex(mirroredSunSongVtx, 4, 0));
+        ResourceMgr_PatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_1", 24,
+                                   gsSPVertex(mirroredSunSongVtx, 4, 0));
         // noop as the original vertex command is 128 bit wide
         ResourceMgr_PatchGfxByName(gRoyalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_2", 25, gsSPNoOp());
     } else {

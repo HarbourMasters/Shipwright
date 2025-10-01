@@ -90,14 +90,14 @@ class Entrance {
     Entrance* reverse = nullptr;
     Entrance* assumed = nullptr;
     Entrance* replacement = nullptr;
-    int16_t index = 0xFFFF;
+    int16_t index = -1;
     bool shuffled = false;
     bool primary = false;
     bool addedToPool = false;
     bool decoupled = false;
     std::string name = "";
-    //If this is false, areas only spread to interiors through this entrance if there is no other choice
-    //Set to false for owl drops, the windmill path between dampe's grave and windmill and blue warps
+    // If this is false, areas only spread to interiors through this entrance if there is no other choice
+    // Set to false for owl drops, the windmill path between dampe's grave and windmill and blue warps
     bool spreadsAreasWithPriority = true;
 };
 
@@ -128,6 +128,8 @@ class EntranceShuffler {
     void CreateEntranceOverrides();
     void UnshuffleAllEntrances();
     void ParseJson(nlohmann::json spoilerFileJson);
+    void ApplyEntranceOverrides();
+
   private:
     std::vector<Entrance*> AssumeEntrancePool(std::vector<Entrance*>& entrancePool);
     bool ShuffleOneWayPriorityEntrances(std::map<std::string, PriorityEntrance>& oneWayPriorities,
@@ -150,7 +152,7 @@ class EntranceShuffler {
 
 extern "C" {
 #endif
-  EntranceOverride* Randomizer_GetEntranceOverrides();
+EntranceOverride* Randomizer_GetEntranceOverrides();
 #ifdef __cplusplus
 }
 #endif

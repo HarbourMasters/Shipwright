@@ -19,4 +19,4 @@ class SetObjectList : public SceneCommand<int16_t> {
     uint32_t numObjects;
     std::vector<int16_t> objects;
 };
-}; // namespace LUS
+}; // namespace SOH

@@ -434,8 +434,7 @@ void func_80B4F230(EnZl2* this, s16 arg1, s32 arg2) {
     this->unk_20C[arg2] = arg1;
 }
 
-s32 func_80B4F45C(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
-                  Gfx** gfx) {
+s32 func_80B4F45C(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx, Gfx** gfx) {
     s32 pad;
     EnZl2* this = (EnZl2*)thisx;
     Mtx* sp74;
@@ -551,8 +550,7 @@ void EnZl2_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
                 Matrix_Translate(180.0f, 979.0f, -375.0f, MTXMODE_APPLY);
                 Matrix_RotateZYX(-0x5DE7, -0x53E9, 0x3333, MTXMODE_APPLY);
                 Matrix_Scale(1.2f, 1.2f, 1.2f, MTXMODE_APPLY);
-                gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList((*gfx)++, gZelda2OcarinaDL);
             }
             Matrix_Pop();
@@ -666,8 +664,8 @@ void func_80B4FFF0(EnZl2* this, PlayState* play) {
         posY = this->actor.world.pos.y + (kREG(5) + -26.0f);
         posZ = this->actor.world.pos.z;
 
-        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0x4000,
-                           0, WARP_PURPLE_CRYSTAL);
+        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0x4000, 0,
+                           WARP_PURPLE_CRYSTAL);
         this->unk_248 = 1;
     }
 }
@@ -719,8 +717,7 @@ void func_80B501E8(EnZl2* this, PlayState* play) {
 
     if (npcAction != NULL) {
         this->actor.shape.shadowAlpha = this->alpha =
-            (1.0f - Environment_LerpWeight(npcAction->endFrame, npcAction->startFrame, play->csCtx.frames)) *
-            255.0f;
+            (1.0f - Environment_LerpWeight(npcAction->endFrame, npcAction->startFrame, play->csCtx.frames)) * 255.0f;
         func_80B501C4(this, this->alpha);
     }
 }

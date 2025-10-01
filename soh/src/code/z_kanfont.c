@@ -11,8 +11,7 @@
 extern MessageTableEntry* sJpnMessageEntryTablePtr;
 
 // #region SOH [Port] Asset tables we can pull from instead of from ROM
-const char* fontTbl[140] =
-{
+const char* fontTbl[140] = {
     gMsgChar20SpaceTex,
     gMsgChar21ExclamationMarkTex,
     gMsgChar22QuotationMarkTex,
@@ -4132,8 +4131,7 @@ static const char* kanjiFontTbl[] = {
     gMsgKanji98FCEmptyTex,
 };
 
-const char* msgStaticTbl[] =
-{
+const char* msgStaticTbl[] = {
     gDefaultMessageBackgroundTex,
     gSignMessageBackgroundTex,
     gNoteStaffMessageBackgroundTex,
@@ -4149,7 +4147,8 @@ const char* msgStaticTbl[] =
  * at `codePointIndex`. The value of `character` is the SHIFT-JIS encoding of the character.
  */
 void Font_LoadCharWide(Font* font, u16 character, u16 codePointIndex) {
-    // DmaMgr_RequestSync(&font->charTexBuf[codePointIndex], _kanjiSegmentStart + Kanji_OffsetFromShiftJIS(character), 0x80);
+    // DmaMgr_RequestSync(&font->charTexBuf[codePointIndex], _kanjiSegmentStart + Kanji_OffsetFromShiftJIS(character),
+    // 0x80);
 
     // #region SOH [NTSC]
     // This function is called even for non-nstc, but this function would be empty for non-ntsc.
@@ -4170,9 +4169,9 @@ void Font_LoadCharWide(Font* font, u16 character, u16 codePointIndex) {
  * at `codePointIndex`. The value of `character` is the ASCII codepoint subtract ' '/0x20.
  */
 void Font_LoadChar(Font* font, u8 character, u16 codePointIndex) {
-    //DmaMgr_SendRequest1(&font->charTexBuf[codePointIndex],
-                        //&_nes_font_staticSegmentRomStart[character * FONT_CHAR_TEX_SIZE], FONT_CHAR_TEX_SIZE,
-                        //__FILE__, __LINE__);
+    // DmaMgr_SendRequest1(&font->charTexBuf[codePointIndex],
+    //&_nes_font_staticSegmentRomStart[character * FONT_CHAR_TEX_SIZE], FONT_CHAR_TEX_SIZE,
+    //__FILE__, __LINE__);
 
     if (character < 0x8B)
         memcpy(&font->charTexBuf[codePointIndex], fontTbl[character], strlen(fontTbl[character]) + 1);
@@ -4220,7 +4219,7 @@ void Font_LoadOrderedFont(Font* font) {
 
             offset = (font->msgBuf[codePointIndex] - '\x20') * FONT_CHAR_TEX_SIZE;
             memcpy(fontBuf, fontTbl[offset / FONT_CHAR_TEX_SIZE], strlen(fontTbl[offset / FONT_CHAR_TEX_SIZE]) + 1);
-            //DmaMgr_SendRequest1(fontBuf, fontStatic + offset, FONT_CHAR_TEX_SIZE, __FILE__, __LINE__);
+            // DmaMgr_SendRequest1(fontBuf, fontStatic + offset, FONT_CHAR_TEX_SIZE, __FILE__, __LINE__);
             fontBufIndex += FONT_CHAR_TEX_SIZE / 8;
         }
     }
@@ -4248,7 +4247,6 @@ void Font_LoadOrderedFontNTSC(Font* font) {
     len = (u32)size / 2;
     memcpy(font->msgBuf, msgEntry->segment, size);
 
-
     fontBufIndex = 0;
     for (codePointIndex = 0; font->msgBufWide[codePointIndex] != 0x8170; codePointIndex++) {
         if (len < codePointIndex) {
@@ -4260,7 +4258,8 @@ void Font_LoadOrderedFontNTSC(Font* font) {
             offset = Kanji_OffsetFromShiftJIS(font->msgBufWide[codePointIndex]);
             offset /= FONT_CHAR_TEX_SIZE;
             memcpy(&font->fontBuf[fontBufIndex * 8], kanjiFontTbl[offset], strlen(kanjiFontTbl[offset]) + 1);
-            // DmaMgr_RequestSync(&font->fontBuf[fontBufIndex * 8], (uintptr_t)_kanjiSegmentStart + offset, FONT_CHAR_TEX_SIZE);
+            // DmaMgr_RequestSync(&font->fontBuf[fontBufIndex * 8], (uintptr_t)_kanjiSegmentStart + offset,
+            // FONT_CHAR_TEX_SIZE);
             fontBufIndex += FONT_CHAR_TEX_SIZE / 8;
         }
     }

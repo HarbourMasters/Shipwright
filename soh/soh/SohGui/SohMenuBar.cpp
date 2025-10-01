@@ -5,7 +5,7 @@
 #include <libultraship/libultraship.h>
 #include "UIWidgets.hpp"
 #include "include/z64audio.h"
-#include "graphic/Fast3D/gfx_rendering_api.h"
+#include "graphic/Fast3D/backends/gfx_rendering_api.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
 #include "z64.h"
@@ -22,7 +22,6 @@
 #include "soh/Network/CrowdControl/CrowdControl.h"
 #include "soh/Network/Sail/Sail.h"
 #endif
-
 
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/Enhancements/controls/InputViewer.h"
@@ -58,7 +57,9 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
         strcat(buttonText, ICON_FA_CHEVRON_RIGHT " ");
     }
     strcat(buttonText, text);
-    if (!menuOpen) { strcat(buttonText, "  "); }
+    if (!menuOpen) {
+        strcat(buttonText, "  ");
+    }
     return buttonText;
 }
 
@@ -68,14 +69,14 @@ static std::unordered_map<Ship::WindowBackend, const char*> windowBackendNames =
     { Ship::WindowBackend::FAST3D_SDL_METAL, "Metal" },
 };
 
-    static const char* filters[3] = {
+static const char* filters[3] = {
 #ifdef __WIIU__
-            "",
+    "",
 #else
-            "Three-Point",
+    "Three-Point",
 #endif
-            "Linear", "None"
-    };
+    "Linear", "None"
+};
 
 extern "C" SaveContext gSaveContext;
 
@@ -88,7 +89,6 @@ void DrawSettingsMenu() {
 }
 
 void SohMenuBar::InitElement() {
-    
 }
 
 void SohMenuBar::DrawElement() {

@@ -1,4 +1,4 @@
-/* 
+/*
 GameInteractor is meant to be used for interacting with the game (yup...).
 It exposes functions that directly modify, add or remove game related elements.
 
@@ -54,7 +54,10 @@ bool GameInteractor::IsSaveLoaded(bool allowDbgSave) {
 
 bool GameInteractor::IsGameplayPaused() {
     Player* player = GET_PLAYER(gPlayState);
-    return (Player_InBlockingCsMode(gPlayState, player) || gPlayState->pauseCtx.state != 0 || gPlayState->msgCtx.msgMode != 0) ? true : false;
+    return (Player_InBlockingCsMode(gPlayState, player) || gPlayState->pauseCtx.state != 0 ||
+            gPlayState->msgCtx.msgMode != 0)
+               ? true
+               : false;
 }
 
 bool GameInteractor::CanSpawnActor() {

@@ -97,20 +97,6 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     EnGe1* this = (EnGe1*)thisx;
 
-    // When spawning the gate operator, also spawn an extra gate operator on the wasteland side
-    if (IS_RANDO && (Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) ||
-        Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) && (this->actor.params & 0xFF) == GE1_TYPE_GATE_OPERATOR) {
-        // Spawn the extra gaurd with params matching the custom type added (0x0300 + 0x02)
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0, 0x95B0, 0,
-                    0x0300 | GE1_TYPE_EXTRA_GATE_OPERATOR, true);
-    }
-
-    // Convert the "extra" gate operator into a normal one so it matches the same params
-    if ((this->actor.params & 0xFF) == GE1_TYPE_EXTRA_GATE_OPERATOR) {
-        this->actor.params &= ~0xFF;
-        this->actor.params |= GE1_TYPE_GATE_OPERATOR;
-    }
-
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
     SkelAnime_InitFlex(play, &this->skelAnime, &gGerudoWhiteSkel, &gGerudoWhiteIdleAnim, this->jointTable,
                        this->morphTable, GE1_LIMB_MAX);
@@ -253,7 +239,8 @@ void EnGe1_KickPlayer(EnGe1* this, PlayState* play) {
 
         if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
             play->nextEntranceIndex = ENTR_GERUDO_VALLEY_1;
-        } else if (Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO)) { // Caught previously
+        } else if (Flags_GetEventChkInf(
+                       EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO)) { // Caught previously
             play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_18;
         } else {
             play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_17;
@@ -521,7 +508,7 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
     GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     s32 getItemId;
 
-    if (!GameInteractor_Should(VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)){
+    if (!GameInteractor_Should(VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY, true, this)) {
         return;
     }
     if (Actor_HasParent(&this->actor, play)) {

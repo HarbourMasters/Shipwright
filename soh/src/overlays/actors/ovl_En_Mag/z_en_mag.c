@@ -108,7 +108,7 @@ void EnMag_Init(Actor* thisx, PlayState* play) {
         this->effectPrimLodFrac = 128.0f;
         this->effectAlpha = 255.0f;
 
-        if (isMQ) {
+        if (!isMQ) {
             this->effectPrimColor[0] = 255.0f;
             this->effectPrimColor[1] = 255.0f;
             this->effectPrimColor[2] = 170;
@@ -159,7 +159,8 @@ void EnMag_Update(Actor* thisx, PlayState* play) {
                 CHECK_BTN_ALL(play->state.input[0].press.button, BTN_A) ||
                 CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B)) {
 
-                Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
                 this->mainAlpha = 210;
                 this->subAlpha = 255;
@@ -197,8 +198,8 @@ void EnMag_Update(Actor* thisx, PlayState* play) {
                     if (play->transitionTrigger != TRANS_TRIGGER_START) {
                         Audio_SetCutsceneFlag(0);
 
-                        Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultReverb);
+                        Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
                         gSaveContext.gameMode = GAMEMODE_FILE_SELECT;
                         play->transitionTrigger = TRANS_TRIGGER_START;
@@ -242,7 +243,7 @@ void EnMag_Update(Actor* thisx, PlayState* play) {
                 this->effectFadeInState = 1;
             }
         } else if (this->effectFadeInState == 1) {
-            if (isMQ) {
+            if (!isMQ) {
                 this->effectPrimColor[2] += -2.125f;
                 this->effectEnvColor[1] += -3.875f;
             } else {
@@ -257,7 +258,7 @@ void EnMag_Update(Actor* thisx, PlayState* play) {
             if (this->effectFadeInTimer == 0) {
                 this->effectPrimLodFrac = 128.0f;
 
-                if (isMQ) {
+                if (!isMQ) {
                     this->effectPrimColor[2] = 170.0f;
                     this->effectEnvColor[1] = 100.0f;
                 } else {
@@ -432,14 +433,13 @@ bool EnMag_ShouldDrawNoController(Font* font, Gfx** gfxP, bool isActualText) {
 
     for (i = 0; i < length; i++) {
         EnMag_DrawCharTexture(&gfx, font->fontBuf + (noControllerMsg[language][i] - '\x37') * FONT_CHAR_TEX_SIZE,
-                                rectLeft, rectTop);
+                              rectLeft, rectTop);
         if (noControllerMsg[language][i] == ' ') {
             rectLeft += VREG(23);
         } else {
             rectLeft += VREG(21);
         }
     }
-
 
     *gfxP = gfx;
     return false;
@@ -468,14 +468,13 @@ bool EnMag_ShouldDrawPressStart(Font* font, Gfx** gfxP, bool isActualText) {
 
     for (i = 0; i < length; i++) {
         EnMag_DrawCharTexture(&gfx, font->fontBuf + (pressStartMsg[language][i] - '\x37') * FONT_CHAR_TEX_SIZE,
-                                rectLeft, rectTop);
+                              rectLeft, rectTop);
         if (pressStartMsg[language][i] == ' ') {
             rectLeft += YREG(9);
         } else {
             rectLeft += YREG(8);
         }
     }
-
 
     *gfxP = gfx;
     return false;
@@ -485,8 +484,17 @@ bool EnMag_ShouldDrawPressStart(Font* font, Gfx** gfxP, bool isActualText) {
 // Title logo is shifted to the left in Master Quest
 #define LOGO_X_SHIFT (isMQ ? 0 : -8)
 #define LOGO_TEX (isMQ ? gTitleZeldaShieldLogoMQTex : gTitleZeldaShieldLogoTex)
+// Copyright texture is different depending on the version
+// JPN CE displays two slightly different 2004 copyrights when lang is jpn or not
+// Otherwise the other GC JPN versions either display 2002 for JPN or 2003 for others
+// Else fallback to 2003 for GC or 1998 for N64
+#define COPYRIGHT_TEX                                                                                              \
+    (isJpnGC_CE                                                                                                    \
+         ? (gSaveContext.language == LANGUAGE_JPN ? gTitleCopyright19982004JpnTex : gTitleCopyright19982004EngTex) \
+         : (isGC ? ((isJpnGC_notCE || gSaveContext.language == LANGUAGE_JPN) ? gTitleCopyright19982002Tex          \
+                                                                             : gTitleCopyright19982003Tex)         \
+                 : gTitleCopyright1998Tex))
 // Copyright texture is larger on GC
-#define COPYRIGHT_TEX (isGC ? gTitleCopyright19982003Tex : gTitleCopyright1998Tex)
 #define COPYRIGHT_TEX_WIDTH (isGC ? 160 : 128)
 #define COPYRIGHT_TEX_LEFT (isGC ? 78 : 94)
 
@@ -516,6 +524,9 @@ void EnMag_DrawInner(Actor* thisx, PlayState* play, Gfx** gfxP) {
     u16 rectTop;
     bool isMQ = ResourceMgr_IsGameMasterQuest();
     bool isGC = ResourceMgr_GetGamePlatform(0) == GAME_PLATFORM_GC;
+    bool isJpnGC_CE = isGC && ResourceMgr_GetGameVersion(0) == OOT_NTSC_JP_GC_CE;
+    bool isJpnGC_notCE =
+        isGC && (ResourceMgr_GetGameVersion(0) == OOT_NTSC_JP_GC || ResourceMgr_GetGameVersion(0) == OOT_NTSC_JP_MQ);
 
     gSPSegment(gfx++, 0x06, play->objectCtx.status[this->actor.objBankIndex].segment);
 
@@ -564,7 +575,7 @@ void EnMag_DrawInner(Actor* thisx, PlayState* play, Gfx** gfxP) {
 
     gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, (s16)this->mainAlpha);
 
-    if (isMQ) {
+    if (!isMQ) {
         gDPSetEnvColor(gfx++, 100, 0, 100, 255);
     } else {
         gDPSetEnvColor(gfx++, 0, 0, 100, 255);
@@ -608,7 +619,8 @@ void EnMag_DrawInner(Actor* thisx, PlayState* play, Gfx** gfxP) {
         } else {
             gDPSetRenderMode(gfx++, G_RM_PASS, G_RM_XLU_SURF2);
         }
-        gDPSetCombineLERP(gfx++, TEXEL1, PRIMITIVE, PRIM_LOD_FRAC, TEXEL0, 0, 0, 0, TEXEL0, PRIMITIVE, ENVIRONMENT, COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
+        gDPSetCombineLERP(gfx++, TEXEL1, PRIMITIVE, PRIM_LOD_FRAC, TEXEL0, 0, 0, 0, TEXEL0, PRIMITIVE, ENVIRONMENT,
+                          COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
 
         if (!isMQ) {
             gDPSetPrimColor(gfx++, 0, 0x80, 255, 255, 170, (s16)this->subAlpha);
@@ -619,11 +631,14 @@ void EnMag_DrawInner(Actor* thisx, PlayState* play, Gfx** gfxP) {
         }
         if ((s16)this->subAlpha != 0) {
             gDPLoadTextureBlock(gfx++, gTitleTitleJPNTex, G_IM_FMT_I, G_IM_SIZ_8b, 128, 16, 0,
-                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP,
+                                G_TX_NOMASK, G_TX_NOLOD);
             gDPLoadMultiBlock(gfx++, gTitleFlameEffectTex, 0x100, 1, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32, 0,
-                          G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 2, 1);
-            gDPSetTileSize(gfx++, 1, this->unk_E30C & 0x7F, this->effectScroll & 0x7F, (this->unk_E30C & 0x7F) + ((32 - 1) << 2), (this->effectScroll & 0x7F) + ((32 - 1) << 2));
-            gSPTextureRectangle(gfx++, 106 << 2, 144 << 2, (106 + 128) << 2, (144 + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                              G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 2, 1);
+            gDPSetTileSize(gfx++, 1, this->unk_E30C & 0x7F, this->effectScroll & 0x7F,
+                           (this->unk_E30C & 0x7F) + ((32 - 1) << 2), (this->effectScroll & 0x7F) + ((32 - 1) << 2));
+            gSPTextureRectangle(gfx++, 106 << 2, 144 << 2, (106 + 128) << 2, (144 + 16) << 2, G_TX_RENDERTILE, 0, 0,
+                                1 << 10, 1 << 10);
         }
     }
 
@@ -640,7 +655,8 @@ void EnMag_DrawInner(Actor* thisx, PlayState* play, Gfx** gfxP) {
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
-        gSPTextureRectangle(gfx++, COPYRIGHT_TEX_LEFT << 2, 198 << 2, (COPYRIGHT_TEX_LEFT + COPYRIGHT_TEX_WIDTH) << 2, (198 + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        gSPTextureRectangle(gfx++, COPYRIGHT_TEX_LEFT << 2, 198 << 2, (COPYRIGHT_TEX_LEFT + COPYRIGHT_TEX_WIDTH) << 2,
+                            (198 + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
     }
 
     if (gSaveContext.fileNum == 0xFEDC) {
@@ -659,8 +675,8 @@ void EnMag_DrawInner(Actor* thisx, PlayState* play, Gfx** gfxP) {
         if (EnMag_ShouldDrawNoController(font, &gfx, false)) {
             rectLeft = VREG(19) + 1;
             for (i = 0; i < ARRAY_COUNT(noControllerFontIndices[sFontType]); i++) {
-                EnMag_DrawCharTexture(&gfx, font->fontBuf + noControllerFontIndices[sFontType][i] * FONT_CHAR_TEX_SIZE, rectLeft,
-                                    YREG(10) + 172);
+                EnMag_DrawCharTexture(&gfx, font->fontBuf + noControllerFontIndices[sFontType][i] * FONT_CHAR_TEX_SIZE,
+                                      rectLeft, YREG(10) + 172);
                 rectLeft += VREG(21);
                 if (i == 1) {
                     rectLeft += VREG(23);
@@ -675,8 +691,8 @@ void EnMag_DrawInner(Actor* thisx, PlayState* play, Gfx** gfxP) {
         if (EnMag_ShouldDrawNoController(font, &gfx, true)) {
             rectLeft = VREG(19);
             for (i = 0; i < ARRAY_COUNT(noControllerFontIndices[sFontType]); i++) {
-                EnMag_DrawCharTexture(&gfx, font->fontBuf + noControllerFontIndices[sFontType][i] * FONT_CHAR_TEX_SIZE, rectLeft,
-                                    YREG(10) + 171);
+                EnMag_DrawCharTexture(&gfx, font->fontBuf + noControllerFontIndices[sFontType][i] * FONT_CHAR_TEX_SIZE,
+                                      rectLeft, YREG(10) + 171);
                 rectLeft += VREG(21);
                 if (i == 1) {
                     rectLeft += VREG(23);
@@ -699,8 +715,8 @@ void EnMag_DrawInner(Actor* thisx, PlayState* play, Gfx** gfxP) {
         if (EnMag_ShouldDrawPressStart(font, &gfx, false)) {
             rectLeft = YREG(7) + 1;
             for (i = 0; i < ARRAY_COUNT(pressStartFontIndices[sFontType]); i++) {
-                EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndices[sFontType][i] * FONT_CHAR_TEX_SIZE, rectLeft,
-                                    YREG(10) + 172);
+                EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndices[sFontType][i] * FONT_CHAR_TEX_SIZE,
+                                      rectLeft, YREG(10) + 172);
                 rectLeft += YREG(8);
                 if (i == 4) {
                     rectLeft += YREG(9);
@@ -715,8 +731,8 @@ void EnMag_DrawInner(Actor* thisx, PlayState* play, Gfx** gfxP) {
         if (EnMag_ShouldDrawPressStart(font, &gfx, true)) {
             rectLeft = YREG(7);
             for (i = 0; i < ARRAY_COUNT(pressStartFontIndices[sFontType]); i++) {
-                EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndices[sFontType][i] * FONT_CHAR_TEX_SIZE, rectLeft,
-                                    YREG(10) + 171);
+                EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndices[sFontType][i] * FONT_CHAR_TEX_SIZE,
+                                      rectLeft, YREG(10) + 171);
                 rectLeft += YREG(8);
                 if (i == 4) {
                     rectLeft += YREG(9);

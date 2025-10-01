@@ -23,12 +23,13 @@ void Main_ThreadEntry(void* arg) {
     DmaMgr_Init();
     osSyncPrintf("codeセグメントロード中...");
     time = osGetTime();
-    //DmaMgr_SendRequest1(_codeSegmentStart, (uintptr_t)_codeSegmentRomStart, _codeSegmentRomEnd - _codeSegmentRomStart,
-                        //"../idle.c", 238);
+    // DmaMgr_SendRequest1(_codeSegmentStart, (uintptr_t)_codeSegmentRomStart, _codeSegmentRomEnd -
+    // _codeSegmentRomStart,
+    //"../idle.c", 238);
     time -= osGetTime();
     osSyncPrintf("\rcodeセグメントロード中...完了\n");
     osSyncPrintf("転送時間 %6.3f\n");
-    //bzero(_codeSegmentBssStart, _codeSegmentBssEnd - _codeSegmentBssStart);
+    // bzero(_codeSegmentBssStart, _codeSegmentBssEnd - _codeSegmentBssStart);
     osSyncPrintf("codeセグメントBSSクリア完了\n");
     Main(arg);
     osSyncPrintf("mainx 実行終了\n");
@@ -41,7 +42,7 @@ void Idle_ThreadEntry(void* arg) {
     osSyncPrintf("MAKEOPTION: %s\n", gBuildMakeOption);
     osSyncPrintf(VT_FGCOL(GREEN));
     osSyncPrintf("ＲＡＭサイズは %d キロバイトです(osMemSize/osGetMemSize)\n", (s32)osMemSize / 1024);
-    //osSyncPrintf("_bootSegmentEnd(%08x) 以降のＲＡＭ領域はクリアされました(boot)\n", _bootSegmentEnd);
+    // osSyncPrintf("_bootSegmentEnd(%08x) 以降のＲＡＭ領域はクリアされました(boot)\n", _bootSegmentEnd);
     osSyncPrintf("Ｚバッファのサイズは %d キロバイトです\n", 0x96);
     osSyncPrintf("ダイナミックバッファのサイズは %d キロバイトです\n", 0x92);
     osSyncPrintf("ＦＩＦＯバッファのサイズは %d キロバイトです\n", 0x60);

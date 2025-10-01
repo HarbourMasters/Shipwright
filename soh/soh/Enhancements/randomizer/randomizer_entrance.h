@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-//Entrance Table Data: https://wiki.cloudmodding.com/oot/Entrance_Table_(Data)
-//Accessed June 2021, published content date at the time was 14 March 2020, at 21:47
+// Entrance Table Data: https://wiki.cloudmodding.com/oot/Entrance_Table_(Data)
+// Accessed June 2021, published content date at the time was 14 March 2020, at 21:47
 
 #define ENTRANCE_TABLE_SIZE ENTR_MAX
 
@@ -13,12 +13,12 @@
 #define SHUFFLEABLE_BOSS_COUNT 8
 
 #define SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT 66 // Max entrance rando index is 0x0820, (2080 / 32 == 65) + 1
-#define SAVEFILE_SCENES_DISCOVERED_IDX_COUNT 4 // Max scene ID is 0x6E, (110 / 32 == 3) + 1
+#define SAVEFILE_SCENES_DISCOVERED_IDX_COUNT 4     // Max scene ID is 0x6E, (110 / 32 == 3) + 1
 
-#define ENTRANCE_INFO_FIELD(continueBgm, displayTitleCard, endTransType, startTransType)               \
-    (((continueBgm) ? ENTRANCE_INFO_CONTINUE_BGM_FLAG : 0) |                                           \
-     ((displayTitleCard) ? ENTRANCE_INFO_DISPLAY_TITLE_CARD_FLAG : 0) |                                \
-     (((endTransType) << ENTRANCE_INFO_END_TRANS_TYPE_SHIFT) & ENTRANCE_INFO_END_TRANS_TYPE_MASK) |    \
+#define ENTRANCE_INFO_FIELD(continueBgm, displayTitleCard, endTransType, startTransType)            \
+    (((continueBgm) ? ENTRANCE_INFO_CONTINUE_BGM_FLAG : 0) |                                        \
+     ((displayTitleCard) ? ENTRANCE_INFO_DISPLAY_TITLE_CARD_FLAG : 0) |                             \
+     (((endTransType) << ENTRANCE_INFO_END_TRANS_TYPE_SHIFT) & ENTRANCE_INFO_END_TRANS_TYPE_MASK) | \
      (((startTransType) << ENTRANCE_INFO_START_TRANS_TYPE_SHIFT) & ENTRANCE_INFO_START_TRANS_TYPE_MASK))
 
 typedef struct {

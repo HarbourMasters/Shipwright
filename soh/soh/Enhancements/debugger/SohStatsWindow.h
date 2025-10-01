@@ -3,15 +3,15 @@
 
 #include <libultraship/libultraship.h>
 
-class SohStatsWindow : public Ship::GuiWindow {
+class SohStatsWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
-    ~SohStatsWindow() {};
+    ~SohStatsWindow(){};
 
   protected:
-    void InitElement() override {};
+    void InitElement() override{};
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };
 
 #endif // SOH_STATS_H

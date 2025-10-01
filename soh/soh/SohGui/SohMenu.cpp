@@ -61,8 +61,9 @@ WidgetInfo& SohMenu::AddWidget(WidgetPath& pathInfo, std::string widgetName, Wid
         case WIDGET_WINDOW_BUTTON:
             widget.options = std::make_shared<WindowButtonOptions>();
             break;
-        case WIDGET_COLOR_24:
-        case WIDGET_COLOR_32:
+        case WIDGET_CVAR_COLOR_PICKER:
+        case WIDGET_COLOR_PICKER:
+            widget.options = std::make_shared<ColorPickerOptions>();
             break;
         case WIDGET_SEPARATOR_TEXT:
         case WIDGET_TEXT:
@@ -151,8 +152,16 @@ void SohMenu::InitElement() {
           { [](disabledInfo& info) -> bool { return !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 0); },
             "Advanced Resolution is Disabled" } },
         { DISABLE_FOR_VERTICAL_RESOLUTION_OFF,
-          { [](disabledInfo& info) -> bool { return !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0); },
+          { [](disabledInfo& info) -> bool {
+               return !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0);
+           },
             "Vertical Resolution Toggle is Off" } },
+        { DISABLE_FOR_BOOT_TO_DEBUG_WARP_SCREEN_ON,
+          { [](disabledInfo& info) -> bool {
+               return CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) &&
+                      CVarGetInteger(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"), 0);
+           },
+            "\"Boot To Debug Warp Screen\" Enabled (see Dev Tools -> General)" } },
     };
 }
 

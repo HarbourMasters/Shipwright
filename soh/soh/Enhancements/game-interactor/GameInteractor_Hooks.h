@@ -18,20 +18,24 @@ void GameInteractor_ExecuteOnItemReceiveHooks(GetItemEntry itemEntry);
 void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry itemEntry);
 void GameInteractor_ExecuteOnTransitionEndHooks(int16_t sceneNum);
 void GameInteractor_ExecuteOnSceneInit(int16_t sceneNum);
+void GameInteractor_ExecuteAfterSceneCommands(int16_t sceneNum);
 void GameInteractor_ExecuteOnSceneFlagSet(int16_t sceneNum, int16_t flagType, int16_t flag);
 void GameInteractor_ExecuteOnSceneFlagUnset(int16_t sceneNum, int16_t flagType, int16_t flag);
 void GameInteractor_ExecuteOnFlagSet(int16_t flagType, int16_t flag);
 void GameInteractor_ExecuteOnFlagUnset(int16_t flagType, int16_t flag);
 void GameInteractor_ExecuteOnSceneSpawnActors();
 void GameInteractor_ExecuteOnPlayerUpdate();
+void GameInteractor_ExecuteOnSetDoAction(uint16_t action);
 void GameInteractor_ExecuteOnOcarinaSongAction();
 void GameInteractor_ExecuteOnCuccoOrChickenHatch();
 void GameInteractor_ExecuteOnActorInit(void* actor);
+void GameInteractor_ExecuteOnActorSpawn(void* actor);
 void GameInteractor_ExecuteOnActorUpdate(void* actor);
 void GameInteractor_ExecuteOnActorKill(void* actor);
+void GameInteractor_ExecuteOnActorDestroy(void* actor);
 void GameInteractor_ExecuteOnEnemyDefeat(void* actor);
 void GameInteractor_ExecuteOnBossDefeat(void* actor);
-void GameInteractor_ExecuteOnTimestamp (u8 item);
+void GameInteractor_ExecuteOnTimestamp(u8 item);
 void GameInteractor_ExecuteOnPlayerBonk();
 void GameInteractor_ExecuteOnPlayerHealthChange(int16_t amount);
 void GameInteractor_ExecuteOnPlayerBottleUpdate(int16_t contents);
@@ -41,6 +45,7 @@ void GameInteractor_ExecuteOnPlayerShieldControl(float_t* sp50, float_t* sp54);
 void GameInteractor_ExecuteOnPlayerProcessStick();
 void GameInteractor_ExecuteOnShopSlotChangeHooks(uint8_t cursorIndex, int16_t price);
 void GameInteractor_ExecuteOnPlayDestroy();
+void GameInteractor_ExecuteOnPlayDrawBegin();
 void GameInteractor_ExecuteOnPlayDrawEnd();
 bool GameInteractor_Should(GIVanillaBehavior flag, uint32_t result, ...);
 
@@ -68,7 +73,9 @@ void GameInteractor_ExecuteOnUpdateFileTargetSelection(uint8_t optionIndex);
 void GameInteractor_ExecuteOnUpdateFileLanguageSelection(uint8_t optionIndex);
 void GameInteractor_ExecuteOnUpdateFileQuestSelection(uint8_t questIndex);
 void GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(uint8_t optionIndex, uint8_t optionValue);
+void GameInteractor_ExecuteOnUpdateFileRandomizerOptionSelection(uint8_t optionIndex);
 void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode);
+void GameInteractor_ExecuteOnFileChooseMain(void* gameState);
 
 // MARK: - Game
 void GameInteractor_ExecuteOnSetGameLanguage();
@@ -76,7 +83,7 @@ void GameInteractor_ExecuteOnSetGameLanguage();
 // MARK: - System
 void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void));
 
-//Mark: - Pause Menu
+// Mark: - Pause Menu
 void GameInteractor_ExecuteOnKaleidoUpdate();
 
 //Mark: - Audio

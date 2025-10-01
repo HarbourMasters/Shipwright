@@ -2,14 +2,16 @@
 #include "soh/resource/type/scenecommand/SetSkyboxSettings.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
+#include <tinyxml2.h>
 
 namespace SOH {
-std::shared_ptr<Ship::IResource> SetSkyboxSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
-                                                                 std::shared_ptr<Ship::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource>
+SetSkyboxSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                       std::shared_ptr<Ship::BinaryReader> reader) {
     auto setSkyboxSettings = std::make_shared<SetSkyboxSettings>(initData);
 
     ReadCommandId(setSkyboxSettings, reader);
-	
+
     setSkyboxSettings->settings.unk = reader->ReadInt8();
     setSkyboxSettings->settings.skyboxId = reader->ReadInt8();
     setSkyboxSettings->settings.weather = reader->ReadInt8();
@@ -22,8 +24,9 @@ std::shared_ptr<Ship::IResource> SetSkyboxSettingsFactory::ReadResource(std::sha
     return setSkyboxSettings;
 }
 
-std::shared_ptr<Ship::IResource> SetSkyboxSettingsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
-                                                                   tinyxml2::XMLElement* reader) {
+std::shared_ptr<Ship::IResource>
+SetSkyboxSettingsFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                          tinyxml2::XMLElement* reader) {
     auto setSkyboxSettings = std::make_shared<SetSkyboxSettings>(initData);
 
     setSkyboxSettings->cmdId = SceneCommandID::SetSkyboxSettings;

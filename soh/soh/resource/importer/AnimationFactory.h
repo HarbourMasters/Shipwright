@@ -4,8 +4,9 @@
 #include "ResourceFactoryBinary.h"
 
 namespace SOH {
-class ResourceFactoryBinaryAnimationV0 : public Ship::ResourceFactoryBinary {
+class ResourceFactoryBinaryAnimationV0 final : public Ship::ResourceFactoryBinary {
   public:
-    std::shared_ptr<Ship::IResource> ReadResource(std::shared_ptr<Ship::File> file, std::shared_ptr<Ship::ResourceInitData> initData) override;
+    std::shared_ptr<Ship::IResource> ReadResource(std::shared_ptr<Ship::File> file,
+                                                  std::shared_ptr<Ship::ResourceInitData> initData) override;
 };
 } // namespace SOH

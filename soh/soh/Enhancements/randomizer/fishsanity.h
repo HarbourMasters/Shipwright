@@ -29,7 +29,7 @@ namespace Rando {
 
 /**
  * @brief Class to provide an interface for and direct Fishsanity features
-*/
+ */
 class Fishsanity {
   public:
     Fishsanity();
@@ -47,110 +47,114 @@ class Fishsanity {
     /**
      * @brief Returns true if the given FishIdentity represents an actual fish
      * @param fish The fish to check
-    */
+     */
     static bool IsFish(FishIdentity* fish);
 
     /**
      * @brief Returns true if the given fish location is active
-     * 
+     *
      * @param loc The Location to check
      * @param optionsSource Optionally declare from which source to pull settings
-    */
+     */
     bool GetFishLocationIncluded(Rando::Location* loc, FishsanityOptionsSource optionsSource = FSO_SOURCE_RANDO);
 
     /**
      * @brief Get the active and inactive locations in the fishing pond.
-     * 
+     *
      * @param optionsSource Optionally declare from which source to pull settings
-     * @return A pair of vectors, where the fist is all active pond fish checks, and the second is all inactive pond fish checks.
-    */
-    std::pair<std::vector<RandomizerCheck>, std::vector<RandomizerCheck>> GetFishingPondLocations(FishsanityOptionsSource optionsSource = FSO_SOURCE_RANDO);
+     * @return A pair of vectors, where the fist is all active pond fish checks, and the second is all inactive pond
+     * fish checks.
+     */
+    std::pair<std::vector<RandomizerCheck>, std::vector<RandomizerCheck>>
+    GetFishingPondLocations(FishsanityOptionsSource optionsSource = FSO_SOURCE_RANDO);
 
     /**
      * @brief Get all active fishsanity locations, and all inactive fishing pond locations.
-     * 
-     * @param optionsSource Optionally declare from which source to pull settings 
-     * @return A pair of vectors, where the first is all active fishsanity checks, and the second is all inactive fishsanity checks.
-    */
-    std::pair<std::vector<RandomizerCheck>, std::vector<RandomizerCheck>> GetFishsanityLocations(FishsanityOptionsSource optionsSource = FSO_SOURCE_RANDO);
+     *
+     * @param optionsSource Optionally declare from which source to pull settings
+     * @return A pair of vectors, where the first is all active fishsanity checks, and the second is all inactive
+     * fishsanity checks.
+     */
+    std::pair<std::vector<RandomizerCheck>, std::vector<RandomizerCheck>>
+    GetFishsanityLocations(FishsanityOptionsSource optionsSource = FSO_SOURCE_RANDO);
 
     /**
      * @brief Returns the identity for a caught pond fish given its params.
      * Not for use externally from rando, use Randomizer::IdentifyFish or Randomizer_IdentifyFish for that
-     * 
+     *
      * @param fishParams Actor parameters for the fish to identify
-    */
+     */
     FishIdentity IdentifyPondFish(u8 fishParams);
 
     /**
      * @brief Get fishsanity fishing pond options from the requested source
-    */
+     */
     FishsanityPondOptions GetOptions(FishsanityOptionsSource optionsSource = FSO_SOURCE_RANDO);
-    
+
     /**
      * @brief Updates current pond fish according to save data
-    */
+     */
     void UpdateCurrentPondFish();
-    
+
     /**
      * @brief Initializes internal state from save
-    */
+     */
     void InitializeFromSave();
 
     /**
      * @brief Returns true if the fishing pond is shuffled
-    */
+     */
     bool GetPondFishShuffled();
 
     /**
-     * @brief Returns true if overworld fish are shuffled 
-    */
+     * @brief Returns true if overworld fish are shuffled
+     */
     bool GetOverworldFishShuffled();
 
     /**
      * @brief Returns true if the fishing pond is currently adult (i.e., age split is enabled and Link is adult)
-    */
+     */
     bool IsAdultPond();
 
     /**
      * @brief Returns true if all available pond fish checks have been collected for the current age
-    */
+     */
     bool GetPondCleared();
 
     /**
      * @brief Returns true if all available Zora's Domain fish checks have been collected
-    */
+     */
     bool GetDomainCleared();
 
     /**
      * @brief Advances current fishing pond check; no effect if every fish is shuffled
      * @return The new FishIdentity for the current pond, or default identity if every fish is shuffled
-    */
+     */
     FishIdentity AdvancePond();
 
     /**
      * @brief ActorInit hook handler for fishsanity
-    */
+     */
     static void OnActorInitHandler(void* refActor);
 
     /**
      * @brief PlayerUpdate hook handler for fishsanity
-    */
+     */
     static void OnPlayerUpdateHandler();
 
     /**
      * @brief ActorUpdate hook handler for fishsanity
-    */
+     */
     static void OnActorUpdateHandler(void* refActor);
 
     /**
      * @brief SceneInit hook handler for fishsanity
-    */
+     */
     static void OnSceneInitHandler(int16_t sceneNum);
 
     /**
      * @brief VB hook handler for fishsanity
-    */
+     */
     static void OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs);
 
     static void OnItemReceiveHandler(GetItemEntry itemEntry);
@@ -158,26 +162,26 @@ class Fishsanity {
   private:
     /**
      * @brief Initialize helper statics if they have not been initialized yet
-    */
+     */
     void InitializeHelpers();
-    
+
     /**
      * @brief Resolves a pond fish's FishIdentity directly from params & pond age
-     * 
+     *
      * @param params Params for Fishing actor
      * @param adultPond Whether to resolve this fish as an adult check
      * @return The FishIdentity for the described fish
-    */
+     */
     static FishIdentity GetPondFish(s16 params, bool adultPond);
 
     /**
      * @brief Current pond fish when all pond fish are not randomized
-    */
+     */
     std::pair<FishIdentity, FishIdentity> mCurrPondFish;
-    
+
     /**
      * @brief True if fishsanity helpers have been initialized
-    */
+     */
     static bool fishsanityHelpersInit;
 
     static s16 fishGroupCounter;
@@ -189,20 +193,20 @@ class Fishsanity {
 
     /**
      * @brief Mapping from pond fish check to the age where that check can be collected
-    */
+     */
     static std::unordered_map<RandomizerCheck, LinkAge> pondFishAgeMap;
 
     /**
      * @brief List of child pond fish checks
-    */
+     */
     static std::vector<RandomizerCheck> childPondFish;
 
     /**
      * @brief List of adult pond fish checks
-    */
+     */
     static std::vector<RandomizerCheck> adultPondFish;
 };
-}
+} // namespace Rando
 
 extern "C" {
 #endif

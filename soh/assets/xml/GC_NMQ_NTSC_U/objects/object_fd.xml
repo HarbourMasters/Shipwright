@@ -28,7 +28,7 @@
         <Texture Name="object_fdTLUT_000A58" OutName="object_fdTLUT_000A58" Format="rgba16" Width="4" Height="4" Offset="0xA58" AddedByScript="true"/>
         <Texture Name="object_fdTLUT_0032A8" OutName="object_fdTLUT_0032A8" Format="rgba16" Width="16" Height="16" Offset="0x32A8" AddedByScript="true"/>
         <!-- Boss title card -->
-        <!-- <Texture Name="gVolvagiaTitleCardTex" OutName="volvagia_boss_title_card" Format="i8" Width="128" Height="120" Offset="0xD700"/> -->
+        <!-- <Texture Name="gVolvagiaTitleCardTex" OutName="volvagia_boss_title_card" Format="i8" Width="128" Height="80" Offset="0xD700"/> -->
 
         <!-- Skeletons -->
         <Skeleton Name="gVolvagiaLeftArmSkel" Type="Normal" LimbType="Standard" Offset="0x100E0"/>
