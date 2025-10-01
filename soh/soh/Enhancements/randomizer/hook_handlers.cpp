@@ -1022,9 +1022,24 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 }
 
                 if (item00->itemEntry.modIndex == MOD_NONE) {
+                  std::string message;
+
+                  switch (gSaveContext.language) {
+                        case LANGUAGE_FRA:
+                            message = "Vous obtenez: ";
+                            break;
+                        case LANGUAGE_GER:
+                            message = "Du erhältst: ";
+                            break;
+                        case LANGUAGE_ENG:
+                        default:
+                            message = "You found ";
+                            break;
+                    }
+                  
                     Notification::Emit({
                         .itemIcon = GetTextureForItemId(item00->itemEntry.itemId),
-                        .message = "You found",
+                        .message = message,
                         .suffix = SohUtils::GetItemName(item00->itemEntry.itemId),
                     });
                 } else if (item00->itemEntry.modIndex == MOD_RANDOMIZER) {
