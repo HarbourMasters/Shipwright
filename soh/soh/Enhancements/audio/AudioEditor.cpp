@@ -32,7 +32,6 @@ static WidgetInfo naviCall;
 static WidgetInfo enemyProx;
 static WidgetInfo leadingMusic;
 static WidgetInfo displaySeqName;
-static WidgetInfo ovlDuration;
 static WidgetInfo voicePitch;
 static WidgetInfo randoMusicOnSceneChange;
 static WidgetInfo randomAudioOnSeedGen;
@@ -549,7 +548,6 @@ void AudioEditor::DrawElement() {
                 SohGui::mSohMenu->MenuDrawItem(enemyProx, ImGui::GetContentRegionAvail().x, THEME_COLOR);
                 SohGui::mSohMenu->MenuDrawItem(leadingMusic, ImGui::GetContentRegionAvail().x, THEME_COLOR);
                 SohGui::mSohMenu->MenuDrawItem(displaySeqName, ImGui::GetContentRegionAvail().x, THEME_COLOR);
-                SohGui::mSohMenu->MenuDrawItem(ovlDuration, ImGui::GetContentRegionAvail().x, THEME_COLOR);
                 SohGui::mSohMenu->MenuDrawItem(voicePitch, ImGui::GetContentRegionAvail().x, THEME_COLOR);
                 ImGui::SameLine();
                 ImGui::SetCursorPosY(ImGui::GetCursorPos().y + 40.f);
