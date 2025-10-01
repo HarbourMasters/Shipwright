@@ -184,7 +184,7 @@ s16 Grotto_GetEntranceValueHandlingGrottoRando(s16 nextEntranceIndex) {
 }
 
 // Translates and overrides the passed in entrance index if it corresponds to a
-// special grotto entrance (grotto load or returnpoint) and updates player respawn data correctly.
+// special grotto entrance (grotto load or return point) and updates player respawn data correctly.
 s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
 
     // Don't change anything unless grotto shuffle has been enabled

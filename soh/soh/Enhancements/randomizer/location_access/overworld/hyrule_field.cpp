@@ -7,8 +7,8 @@ void RegionTable_Init_HyruleField() {
     // clang-format off
     areaTable[RR_HYRULE_FIELD] = Region("Hyrule Field", SCENE_HYRULE_FIELD, {
         //Events
-        EventAccess(&logic->BigPoeKill, []{return logic->HasBottle() && logic->CanUse(RG_FAIRY_BOW) && (logic->CanUse(RG_EPONA) || ctx->GetTrickOption(RT_HF_BIG_POE_WITHOUT_EPONA));}),
-        EventAccess(&logic->BorrowRightMasks, []{return logic->IsChild && logic->BorrowBunnyHood && logic->HasItem(RG_KOKIRI_EMERALD) && logic->HasItem(RG_GORON_RUBY) && logic->HasItem(RG_ZORA_SAPPHIRE) && logic->HasItem(RG_CHILD_WALLET);}),
+        EventAccess(LOGIC_BIG_POE_KILL,       []{return logic->HasBottle() && logic->CanUse(RG_FAIRY_BOW) && (logic->CanUse(RG_EPONA) || ctx->GetTrickOption(RT_HF_BIG_POE_WITHOUT_EPONA));}),
+        EventAccess(LOGIC_BORROW_RIGHT_MASKS, []{return logic->IsChild && logic->Get(LOGIC_BORROW_BUNNY_HOOD) && logic->HasItem(RG_KOKIRI_EMERALD) && logic->HasItem(RG_GORON_RUBY) && logic->HasItem(RG_ZORA_SAPPHIRE) && logic->HasItem(RG_CHILD_WALLET);}),
     }, {
         //Locations
         LOCATION(RC_HF_OCARINA_OF_TIME_ITEM,   logic->IsChild && logic->StoneCount() == 3 && logic->HasItem(RG_BRONZE_SCALE)),
@@ -135,8 +135,8 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_COW_GROTTO_BEHIND_WEBS] = Region("HF Cow Grotto Behind Webs", SCENE_GROTTOS, {
         //Events
-        EventAccess(&logic->BugShrub,         []{return logic->CanCutShrubs();}),
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
+        EventAccess(LOGIC_BUG_SHRUB,         []{return logic->CanCutShrubs();}),
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
     }, {
         //Locations
         LOCATION(RC_HF_GS_COW_GROTTO,                     logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
@@ -173,7 +173,7 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_FAIRY_GROTTO] = Region("HF Fairy Grotto", SCENE_GROTTOS, {
         //Events
-        EventAccess(&logic->FreeFairies, []{return true;}),
+        EventAccess(LOGIC_FREE_FAIRIES, []{return true;}),
     }, {
         //Locations
         LOCATION(RC_HF_FAIRY_GROTTO_FAIRY_1, true),

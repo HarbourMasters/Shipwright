@@ -2782,7 +2782,6 @@ void Message_OpenText(PlayState* play, u16 textId) {
         gSaveContext.eventInf[0] = gSaveContext.eventInf[1] = gSaveContext.eventInf[2] = gSaveContext.eventInf[3] = 0;
     }
 
-    // RANDOTODO: Use this for ice trap messages
     if (CustomMessage_RetrieveIfExists(play)) {
         osSyncPrintf("Found custom message");
         if (gSaveContext.language == LANGUAGE_JPN) {

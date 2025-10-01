@@ -71,6 +71,9 @@
 #include "assets/textures/skyboxes/vr_holy1_static.h"
 #include "assets/textures/skyboxes/vr_holy1_pal_static.h"
 
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
 u32 D_8012AC90[4] = {
     0x00000000,
     0x00010000,
@@ -449,17 +452,23 @@ void func_800AF178(SkyboxContext* skyboxCtx, s32 arg1) {
 
 void LoadSkyboxTex(SkyboxContext* skyboxCtx, int segmentIndex, int imageIndex, char* tex, int width, int height,
                    int offsetW, int offsetH) {
-    skyboxCtx->textures[segmentIndex][imageIndex] = tex;
+    if (GameInteractor_Should(VB_LOAD_SKYBOX, true)) {
+        skyboxCtx->textures[segmentIndex][imageIndex] = tex;
+    }
 }
 
 void LoadSkyboxTexAtOffset(SkyboxContext* skyboxCtx, int segmentIndex, int imageIndex, char* tex, int width, int height,
                            int offset) {
-    skyboxCtx->textures[segmentIndex][imageIndex] = tex;
+    if (GameInteractor_Should(VB_LOAD_SKYBOX, true)) {
+        skyboxCtx->textures[segmentIndex][imageIndex] = tex;
+    }
 }
 
 void LoadSkyboxPalette(SkyboxContext* skyboxCtx, int paletteIndex, char* palTex, int width, int height) {
-    skyboxCtx->palettes[paletteIndex] = palTex;
-    skyboxCtx->palette_size = width * height;
+    if (GameInteractor_Should(VB_LOAD_SKYBOX, true)) {
+        skyboxCtx->palettes[paletteIndex] = palTex;
+        skyboxCtx->palette_size = width * height;
+    }
 }
 
 static const char* sSBVRFine0Tex[] = { gSunriseSkybox1Tex, gSunriseSkybox2Tex, gSunriseSkybox3Tex, gSunriseSkybox4Tex,

@@ -284,6 +284,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_GREG_HINT, "Greg the Green Rupee Hint", CVAR_RANDOMIZER_SETTING("GregHint"), mOptionDescriptions[RSK_GREG_HINT], IMFLAG_NONE);
     OPT_BOOL(RSK_LOACH_HINT, "Hyrule Loach Hint", CVAR_RANDOMIZER_SETTING("LoachHint"), mOptionDescriptions[RSK_LOACH_HINT], IMFLAG_NONE);
     OPT_BOOL(RSK_SARIA_HINT, "Saria's Hint", CVAR_RANDOMIZER_SETTING("SariaHint"), mOptionDescriptions[RSK_SARIA_HINT], IMFLAG_NONE);
+    OPT_BOOL(RSK_MIDO_HINT, "Mido's Hint", CVAR_RANDOMIZER_SETTING("MidoHint"), mOptionDescriptions[RSK_MIDO_HINT], IMFLAG_NONE);
     OPT_BOOL(RSK_FISHING_POLE_HINT, "Fishing Pole Hint", CVAR_RANDOMIZER_SETTING("FishingPoleHint"), mOptionDescriptions[RSK_FISHING_POLE_HINT], IMFLAG_NONE);
     OPT_BOOL(RSK_FROGS_HINT, "Frog Ocarina Game Hint", CVAR_RANDOMIZER_SETTING("FrogsHint"), mOptionDescriptions[RSK_FROGS_HINT], IMFLAG_NONE);
     OPT_BOOL(RSK_OOT_HINT, "Ocarina of Time Hint", CVAR_RANDOMIZER_SETTING("OoTHint"), mOptionDescriptions[RSK_OOT_HINT], IMFLAG_NONE);
@@ -307,6 +308,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SUNLIGHT_ARROWS, "Sunlight Arrows", CVAR_RANDOMIZER_SETTING("SunlightArrows"), mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
     OPT_U8(RSK_INFINITE_UPGRADES, "Infinite Upgrades", {"Off", "Progressive", "Condensed Progressive"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("InfiniteUpgrades"), mOptionDescriptions[RSK_INFINITE_UPGRADES]);
     OPT_BOOL(RSK_SKELETON_KEY, "Skeleton Key", CVAR_RANDOMIZER_SETTING("SkeletonKey"), mOptionDescriptions[RSK_SKELETON_KEY]);
+    OPT_BOOL(RSK_SLINGBOW_BREAK_BEEHIVES, "Slingshot/Bow Can Break Beehives", CVAR_RANDOMIZER_SETTING("SlingBowBeehives"), mOptionDescriptions[RSK_SLINGBOW_BREAK_BEEHIVES]);
     OPT_U8(RSK_ITEM_POOL, "Item Pool", {"Plentiful", "Balanced", "Scarce", "Minimal"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ItemPool"), mOptionDescriptions[RSK_ITEM_POOL], WidgetType::Combobox, RO_ITEM_POOL_BALANCED);
     OPT_U8(RSK_ICE_TRAPS, "Ice Traps", {"Off", "Normal", "Extra", "Mayhem", "Onslaught"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("IceTraps"), mOptionDescriptions[RSK_ICE_TRAPS], WidgetType::Combobox, RO_ICE_TRAPS_NORMAL);
     // TODO: Remove Double Defense, Progressive Goron Sword
@@ -971,17 +973,20 @@ void Settings::CreateOptions() {
               "Shadow Temple Bongo Bongo without Lens of Truth",
               "Bongo Bongo can be defeated without the use of Lens of Truth, as the hands give a pretty good idea of "
               "where the eye is.");
-    OPT_TRICK(RT_SHADOW_UMBRELLA, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::EXPERT },
+    OPT_TRICK(RT_SHADOW_UMBRELLA_HOVER, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::EXPERT },
               "Shadow Temple Stone Umbrella Skip",
               "A very precise Hover Boots movement from off of the lower chest can get you on top of the crushing "
               "spikes without needing to pull the block. Applies to both Vanilla and Master Quest.");
+    OPT_TRICK(RT_SHADOW_UMBRELLA_CLIP, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
+              "Shadow Temple Stone Umbrella Clip",
+              "Backflipping as the falling spikes fall clips above without needing any other requirements. "
+              "Applies to both Vanilla and Master Quest.");
     OPT_TRICK(RT_SHADOW_UMBRELLA_GS, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::EXPERT },
               "Shadow Temple Falling Spikes GS with Hover Boots",
               "After killing the Skulltula, a very precise Hover Boots movement from off of the lower chest can get "
               "you on top of the crushing spikes without needing to pull the block. From there, another very precise "
               "Hover Boots movement can be used to obtain the token without needing the Hookshot. Applies to both "
-              "Vanilla and Master Quest. For obtaining the chests in this room with just Hover Boots, be sure to "
-              "enable \"Shadow Temple Stone Umbrella Skip\".");
+              "Vanilla and Master Quest.");
     OPT_TRICK(RT_SHADOW_FREESTANDING_KEY, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },
               "Shadow Temple Freestanding Key with Bombchu",
               "Release the Bombchu with good timing so that it explodes near the bottom of the pot.");
@@ -1358,14 +1363,31 @@ void Settings::CreateOptions() {
                                                                      WidgetContainerType::SECTION);
     mOptionGroups[RSG_EXTRA_HINTS_IMGUI] = OptionGroup::SubGroup(
         "Extra Hints",
-        { &mOptions[RSK_TOT_ALTAR_HINT],     &mOptions[RSK_GANONDORF_HINT],     &mOptions[RSK_SHEIK_LA_HINT],
-          &mOptions[RSK_DAMPES_DIARY_HINT],  &mOptions[RSK_GREG_HINT],          &mOptions[RSK_LOACH_HINT],
-          &mOptions[RSK_SARIA_HINT],         &mOptions[RSK_FROGS_HINT],         &mOptions[RSK_OOT_HINT],
-          &mOptions[RSK_BIGGORON_HINT],      &mOptions[RSK_BIG_POES_HINT],      &mOptions[RSK_CHICKENS_HINT],
-          &mOptions[RSK_MALON_HINT],         &mOptions[RSK_HBA_HINT],           &mOptions[RSK_FISHING_POLE_HINT],
-          &mOptions[RSK_WARP_SONG_HINTS],    &mOptions[RSK_SCRUB_TEXT_HINT],    &mOptions[RSK_MERCHANT_TEXT_HINT],
-          &mOptions[RSK_KAK_10_SKULLS_HINT], &mOptions[RSK_KAK_20_SKULLS_HINT], &mOptions[RSK_KAK_30_SKULLS_HINT],
-          &mOptions[RSK_KAK_40_SKULLS_HINT], &mOptions[RSK_KAK_50_SKULLS_HINT], &mOptions[RSK_KAK_100_SKULLS_HINT],
+        { &mOptions[RSK_TOT_ALTAR_HINT],
+          &mOptions[RSK_GANONDORF_HINT],
+          &mOptions[RSK_SHEIK_LA_HINT],
+          &mOptions[RSK_DAMPES_DIARY_HINT],
+          &mOptions[RSK_GREG_HINT],
+          &mOptions[RSK_LOACH_HINT],
+          &mOptions[RSK_SARIA_HINT],
+          &mOptions[RSK_MIDO_HINT],
+          &mOptions[RSK_FROGS_HINT],
+          &mOptions[RSK_OOT_HINT],
+          &mOptions[RSK_BIGGORON_HINT],
+          &mOptions[RSK_BIG_POES_HINT],
+          &mOptions[RSK_CHICKENS_HINT],
+          &mOptions[RSK_MALON_HINT],
+          &mOptions[RSK_HBA_HINT],
+          &mOptions[RSK_FISHING_POLE_HINT],
+          &mOptions[RSK_WARP_SONG_HINTS],
+          &mOptions[RSK_SCRUB_TEXT_HINT],
+          &mOptions[RSK_MERCHANT_TEXT_HINT],
+          &mOptions[RSK_KAK_10_SKULLS_HINT],
+          &mOptions[RSK_KAK_20_SKULLS_HINT],
+          &mOptions[RSK_KAK_30_SKULLS_HINT],
+          &mOptions[RSK_KAK_40_SKULLS_HINT],
+          &mOptions[RSK_KAK_50_SKULLS_HINT],
+          &mOptions[RSK_KAK_100_SKULLS_HINT],
           &mOptions[RSK_MASK_SHOP_HINT] },
         WidgetContainerType::SECTION, "This setting adds some hints at locations other than Gossip Stones.");
     mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI_COLUMN] =
@@ -1384,6 +1406,7 @@ void Settings::CreateOptions() {
                                                                              &mOptions[RSK_SUNLIGHT_ARROWS],
                                                                              &mOptions[RSK_INFINITE_UPGRADES],
                                                                              &mOptions[RSK_SKELETON_KEY],
+                                                                             &mOptions[RSK_SLINGBOW_BREAK_BEEHIVES],
                                                                          },
                                                                          WidgetContainerType::COLUMN);
     mOptionGroups[RSG_GAMEPLAY_IMGUI_TABLE] =
@@ -1628,6 +1651,7 @@ void Settings::CreateOptions() {
                                               &mOptions[RSK_GREG_HINT],
                                               &mOptions[RSK_LOACH_HINT],
                                               &mOptions[RSK_SARIA_HINT],
+                                              &mOptions[RSK_MIDO_HINT],
                                               &mOptions[RSK_FROGS_HINT],
                                               &mOptions[RSK_OOT_HINT],
                                               &mOptions[RSK_WARP_SONG_HINTS],
@@ -1652,6 +1676,7 @@ void Settings::CreateOptions() {
                                               &mOptions[RSK_SUNLIGHT_ARROWS],
                                               &mOptions[RSK_INFINITE_UPGRADES],
                                               &mOptions[RSK_SKELETON_KEY],
+                                              &mOptions[RSK_SLINGBOW_BREAK_BEEHIVES],
                                           });
     mOptionGroups[RSG_ITEM_POOL] = OptionGroup(
         "Item Pool Settings", std::initializer_list<Option*>({ &mOptions[RSK_ITEM_POOL], &mOptions[RSK_ICE_TRAPS] }));
@@ -2524,10 +2549,16 @@ void Settings::UpdateOptionProperties() {
             "setting where you present the loach to the fishing pond owner.");
     }
 
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("CuccosToReturn"), 7) == 0) {
-        mOptions[RSK_CHICKENS_HINT].Disable("Anju will just give you the item instead with 0 chickens.");
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), 10) == 0) {
+        mOptions[RSK_BIG_POES_HINT].Disable("Poe Collector will just give you the item instead with 0 big poes.");
     } else {
-        mOptions[RSK_CHICKENS_HINT].Enable();
+        mOptions[RSK_BIG_POES_HINT].Enable();
+    }
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBeehives"), RO_GENERIC_OFF)) {
+        mOptions[RSK_SLINGBOW_BREAK_BEEHIVES].Enable();
+    } else {
+        mOptions[RSK_SLINGBOW_BREAK_BEEHIVES].Disable(
+            "This option is disabled because Shuffle Beehives is not enabled.");
     }
 }
 
@@ -2602,7 +2633,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     }
     if (!mOptions[RSK_SHUFFLE_MASTER_SWORD]) {
         if (mOptions[RSK_STARTING_MASTER_SWORD]) {
-            this->GetItemLocation(RC_MASTER_SWORD_PEDESTAL)->SetExcludedOption(1);
+            this->GetItemLocation(RC_TOT_MASTER_SWORD)->SetExcludedOption(1);
         }
     }
     if (!mOptions[RSK_SHUFFLE_OCARINA]) {
