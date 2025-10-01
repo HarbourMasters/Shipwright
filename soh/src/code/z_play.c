@@ -1390,6 +1390,8 @@ void Play_Draw(PlayState* play) {
     Gfx_SetupFrame(gfxCtx, 0, 0, 0);
 
     if ((HREG(80) != 10) || (HREG(82) != 0)) {
+        GameInteractor_ExecuteOnPlayDrawBegin();
+
         POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
         POLY_XLU_DISP = Play_SetFog(play, POLY_XLU_DISP);
 

@@ -33,6 +33,7 @@
 #include "soh/Enhancements/debugger/MessageViewer.h"
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
+#include "soh/Enhancements/mod_menu.h"
 
 #ifdef ENABLE_REMOTE_CONTROL
 #include "soh/Network/Anchor/Anchor.h"
@@ -76,6 +77,7 @@ std::shared_ptr<SohStatsWindow> mStatsWindow;
 std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
 
 std::shared_ptr<SohMenu> mSohMenu;
+std::shared_ptr<ModMenuWindow> mModMenuWindow;
 std::shared_ptr<AudioEditor> mAudioEditorWindow;
 std::shared_ptr<InputViewer> mInputViewer;
 std::shared_ptr<InputViewerSettingsWindow> mInputViewerSettings;
@@ -142,6 +144,8 @@ void SetupGuiElements() {
         SPDLOG_ERROR("Could not find input editor window");
     }*/
 
+    mModMenuWindow = std::make_shared<ModMenuWindow>(CVAR_WINDOW("ModMenu"), "Mod Menu", ImVec2(820, 630));
+    gui->AddGuiWindow(mModMenuWindow);
     mAudioEditorWindow = std::make_shared<AudioEditor>(CVAR_WINDOW("AudioEditor"), "Audio Editor", ImVec2(820, 630));
     gui->AddGuiWindow(mAudioEditorWindow);
     mInputViewer = std::make_shared<InputViewer>(CVAR_WINDOW("InputViewer"), "Input Viewer");
@@ -238,6 +242,7 @@ void Destroy() {
     mColViewerWindow = nullptr;
     mActorViewerWindow = nullptr;
     mCosmeticsEditorWindow = nullptr;
+    mModMenuWindow = nullptr;
     mAudioEditorWindow = nullptr;
     mStatsWindow = nullptr;
     mConsoleWindow = nullptr;

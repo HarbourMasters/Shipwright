@@ -2,6 +2,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/context.h"
 #include "soh/ShipInit.hpp"
+#include "soh/Enhancements/timesaver_hook_handlers.h"
 
 extern "C" {
 #include "macros.h"
@@ -10,7 +11,9 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 }
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
 
+extern "C" PlayState* gPlayState;
 static bool sEnteredBlueWarp = false;
 
 // Todo: Move item queueing here
@@ -64,7 +67,16 @@ void RegisterSkipBlueWarp() {
      * to the player instead.
      */
     COND_VB_SHOULD(VB_GIVE_ITEM_FROM_BLUE_WARP,
-                   CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO), { *should = false; });
+                   CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO), {
+                       if (IS_VANILLA) {
+                           if (gPlayState->sceneNum == SCENE_SHADOW_TEMPLE_BOSS) {
+                               TimeSaverQueueItem(RG_SHADOW_MEDALLION);
+                           } else if (gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE_BOSS) {
+                               TimeSaverQueueItem(RG_SPIRIT_MEDALLION);
+                           }
+                       }
+                       *should = false;
+                   });
 }
 
 void RegisterShouldPlayBlueWarp() {

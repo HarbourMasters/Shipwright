@@ -684,6 +684,7 @@ void Settings::CreateOptionDescriptions() {
                                           "tell you what's the reward for the Hyrule Loach.";
     mOptionDescriptions[RSK_SARIA_HINT] = "Talking to Saria either in person or through Saria's Song will tell you the "
                                           "location of a progressive magic meter.";
+    mOptionDescriptions[RSK_MIDO_HINT] = "Talking to Mido as child will tell you the location of the Kokiri Sword.";
     mOptionDescriptions[RSK_FISHING_POLE_HINT] =
         "Talking to the fishing pond owner without the fishing pole will tell you its location.";
     mOptionDescriptions[RSK_OOT_HINT] =
@@ -742,6 +743,8 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SUNLIGHT_ARROWS] =
         "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
+    mOptionDescriptions[RSK_SLINGBOW_BREAK_BEEHIVES] =
+        "Allows Slingshot and Bow to break beehives when Beehive Shuffle is turned on.";
     mOptionDescriptions[RSK_LOGIC_RULES] =
         "Glitchless - No glitches are required, but may require some minor tricks. Additional tricks may be enabled "
         "and disabled below.\n"

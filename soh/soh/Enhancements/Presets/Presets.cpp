@@ -437,7 +437,9 @@ void PresetsCustomWidget(WidgetInfo& info) {
 void RegisterPresetsWidgets() {
     SohGui::mSohMenu->AddSidebarEntry("Settings", "Presets", 1);
     WidgetPath path = { "Settings", "Presets", SECTION_COLUMN_1 };
-    SohGui::mSohMenu->AddWidget(path, "PresetsWidget", WIDGET_CUSTOM).CustomFunction(PresetsCustomWidget);
+    SohGui::mSohMenu->AddWidget(path, "PresetsWidget", WIDGET_CUSTOM)
+        .CustomFunction(PresetsCustomWidget)
+        .HideInSearch(true);
     presetFolder = Ship::Context::GetInstance()->GetPathRelativeToAppDirectory("presets");
     std::fill_n(saveSection, PRESET_SECTION_MAX, true);
     LoadPresets();

@@ -22,6 +22,7 @@ void SohMenu::AddMenuRandomizer() {
     AddWidget(path, "Popout Randomizer Settings Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("RandomizerSettings"))
         .WindowName("Randomizer Settings")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Randomizer Settings Window."));
 
     // Enhancements
@@ -104,6 +105,7 @@ void SohMenu::AddMenuRandomizer() {
         .CVar(CVAR_WINDOW("PlandomizerEditor"))
         .RaceDisable(false)
         .WindowName("Plandomizer Editor")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Randomizer Settings Window."));
 
     // Item Tracker
@@ -115,6 +117,7 @@ void SohMenu::AddMenuRandomizer() {
         .CVar(CVAR_WINDOW("ItemTracker"))
         .RaceDisable(false)
         .WindowName("Item Tracker")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Toggles the Item Tracker.").EmbedWindow(false));
 
     AddWidget(path, "Item Tracker Settings", WIDGET_SEPARATOR_TEXT);
@@ -122,6 +125,7 @@ void SohMenu::AddMenuRandomizer() {
         .CVar(CVAR_WINDOW("ItemTrackerSettings"))
         .RaceDisable(false)
         .WindowName("Item Tracker Settings")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Item Tracker Settings Window."));
 
     // Entrance Tracker
@@ -133,6 +137,7 @@ void SohMenu::AddMenuRandomizer() {
         .CVar(CVAR_WINDOW("EntranceTracker"))
         .RaceDisable(false)
         .WindowName("Entrance Tracker")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Toggles the Entrance Tracker.").EmbedWindow(false));
 
     AddWidget(path, "Entrance Tracker Settings", WIDGET_SEPARATOR_TEXT);
@@ -140,6 +145,7 @@ void SohMenu::AddMenuRandomizer() {
         .CVar(CVAR_WINDOW("EntranceTrackerSettings"))
         .RaceDisable(false)
         .WindowName("Entrance Tracker Settings")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Entrance Tracker Settings Window."));
 
     // Check Tracker
@@ -151,6 +157,7 @@ void SohMenu::AddMenuRandomizer() {
         .CVar(CVAR_WINDOW("CheckTracker"))
         .RaceDisable(false)
         .WindowName("Check Tracker")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Toggles the Check Tracker.").EmbedWindow(false));
 
     AddWidget(path, "Check Tracker Settings", WIDGET_SEPARATOR_TEXT);
@@ -158,6 +165,7 @@ void SohMenu::AddMenuRandomizer() {
         .CVar(CVAR_WINDOW("CheckTrackerSettings"))
         .RaceDisable(false)
         .WindowName("Check Tracker Settings")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Check Tracker Settings Window."));
 }
 

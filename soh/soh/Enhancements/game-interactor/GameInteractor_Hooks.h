@@ -48,6 +48,7 @@ void GameInteractor_ExecuteOnPlayerProcessStick();
 void GameInteractor_ExecuteOnShopSlotChangeHooks(uint8_t cursorIndex, int16_t price);
 void GameInteractor_ExecuteOnDungeonKeyUsedHooks(uint16_t mapIndex);
 void GameInteractor_ExecuteOnPlayDestroy();
+void GameInteractor_ExecuteOnPlayDrawBegin();
 void GameInteractor_ExecuteOnPlayDrawEnd();
 bool GameInteractor_Should(GIVanillaBehavior flag, uint32_t result, ...);
 

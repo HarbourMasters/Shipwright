@@ -27,6 +27,7 @@
 #include <functional>
 #include "draw.h"
 #include "soh/OTRGlobals.h"
+#include "window/FileDropMgr.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -387,6 +388,29 @@ static const char* frenchRupeeNames[39] = {
     "Pièces",   "Plastyks",    "Pokédollars", "Pokémon", "Radis",      "Rubis",    "Zennies",
 };
 
+bool Rando_HandleSpoilerDrop(char* filePath) {
+    if (SohUtils::IsStringEmpty(filePath)) {
+        return false;
+    }
+
+    try {
+        std::ifstream stream(filePath);
+        if (!stream) {
+            return false;
+        }
+
+        nlohmann::json json;
+        stream >> json;
+
+        if (json.contains("version") && json.contains("finalSeed")) {
+            CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), filePath);
+            CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 1);
+            return true;
+        }
+    } catch (std::exception& e) {}
+    return false;
+}
+
 Randomizer::Randomizer() {
     Rando::StaticData::InitItemTable();
     Rando::StaticData::InitLocationTable();
@@ -403,6 +427,8 @@ Randomizer::Randomizer() {
     for (size_t c = 0; c < Rando::StaticData::hintTypeNames.size(); c++) {
         SpoilerfileHintTypeNameToEnum[Rando::StaticData::hintTypeNames[(HintType)c].GetEnglish(MF_CLEAN)] = (HintType)c;
     }
+
+    Ship::Context::GetInstance()->GetFileDropMgr()->RegisterDropHandler(Rando_HandleSpoilerDrop);
 }
 
 Randomizer::~Randomizer() {
@@ -5122,12 +5148,12 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "Das ist kein Item - das ist Karma.",
         "Und wieder hat Dich 'ne Kiste besiegt.",
         "Rauru lacht Dich aus.",
-        "Saria hat sich gerade entfreundet.",
+        "Salia hat sich gerade entfreundet.",
         "Prinzessin Ruto hat die Verlobung aufgelöst.",
         "Kein Seed, kein Ärger!",
         "Diese Truhe wurde Ihnen präsentiert von: ABSICHT!",
         "Nicht heute.",
-        "Nächster halt, #Frosthausen#!",
+        "Nächster Halt, #Frosthausen#!",
         "Genau so nützlich wie Navi im Bosskampf.",
         "Zelda? Die kennt Dich nicht.",
         "Zufall? Nein. Absicht!",
@@ -5170,11 +5196,11 @@ CustomMessage Randomizer::GetIceTrapMessage() {
         "Der Spind von Davy Jones!",
         "Herzog Onkled lacht Dich aus.",
         "GEWINNER!",
-        "vERLIERER!",
+        "VERLIERER!",
         "Drücke B, Unten und Select um zu überleben.",
         "#Chill# mal jetzt.",
         "Hier halt mal eben.",
-        "Sony lacht Dich aus",
+        "Sony lacht Dich aus!",
         "Dieses Item ist nicht in deinem Land verfügbar.",
         "Es ist wichtig, die #Kühltruhe# mal für einen Tag auszuschalten.",
         "#Kacknoob#!",
