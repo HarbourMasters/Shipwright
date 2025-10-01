@@ -23,8 +23,10 @@ extern PlayState* gPlayState;
  */
 
 nlohmann::json Anchor::PrepClientState() {
+    AnchorClient self = BuildLocalClientState();
+
     nlohmann::json payload;
-    payload["name"] = CVarGetString(CVAR_REMOTE_ANCHOR("Name"), "");
+    /*payload["name"] = CVarGetString(CVAR_REMOTE_ANCHOR("Name"), "");
     payload["color"] = CVarGetColor24(CVAR_REMOTE_ANCHOR("Color"), { 100, 255, 100 });
     payload["clientVersion"] = clientVersion;
     payload["teamId"] = CVarGetString(CVAR_REMOTE_ANCHOR("TeamId"), "default");
@@ -42,7 +44,19 @@ nlohmann::json Anchor::PrepClientState() {
         payload["isGameComplete"] = false;
         payload["sceneNum"] = SCENE_ID_MAX;
         payload["entranceIndex"] = 0x00;
-    }
+    }*/
+
+    payload["clientId"] = self.clientId;
+    payload["name"] = self.name;
+    payload["color"] = { self.color.r, self.color.g, self.color.b };
+    payload["clientVersion"] = self.clientVersion;
+    payload["teamId"] = self.teamId;
+    payload["online"] = self.online;
+    payload["seed"] = self.seed;
+    payload["isSaveLoaded"] = self.isSaveLoaded;
+    payload["isGameComplete"] = self.isGameComplete;
+    payload["sceneNum"] = self.sceneNum;
+    payload["entranceIndex"] = self.entranceIndex;
 
     return payload;
 }
@@ -53,6 +67,9 @@ void Anchor::SendPacket_UpdateClientState() {
     payload["state"] = PrepClientState();
 
     SendJsonToRemote(payload);
+
+    AnchorClient self = BuildLocalClientState();
+    clients[self.clientId] = self;
 }
 
 void Anchor::HandlePacket_UpdateClientState(nlohmann::json payload) {

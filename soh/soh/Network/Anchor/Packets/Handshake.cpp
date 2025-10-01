@@ -14,6 +14,9 @@
  */
 
 void Anchor::SendPacket_Handshake() {
+    AnchorClient self = BuildLocalClientState();
+    clients[self.clientId] = self;
+
     nlohmann::json payload;
     payload["type"] = HANDSHAKE;
     payload["roomId"] = CVarGetString(CVAR_REMOTE_ANCHOR("RoomId"), "");

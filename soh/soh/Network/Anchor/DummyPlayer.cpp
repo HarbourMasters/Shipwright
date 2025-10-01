@@ -3,6 +3,7 @@
 #include "Anchor.h"
 #include "soh/Enhancements/nametag.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/nametag.h"
 
 extern "C" {
 #include "macros.h"
@@ -207,7 +208,12 @@ void DummyPlayer_Draw(Actor* actor, PlayState* play) {
     u8 originalButtonItem0 = gSaveContext.equips.buttonItems[0];
     gSaveContext.equips.buttonItems[0] = client.buttonItem0;
 
+    NameTag_RegisterForActor(actor, client.name.c_str());
+
     Player_Draw((Actor*)player, play);
+
+
+
     gSaveContext.linkAge = originalAge;
     gSaveContext.equips.buttonItems[0] = originalButtonItem0;
 }

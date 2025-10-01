@@ -60,6 +60,13 @@ typedef struct {
 } RoomState;
 
 class Anchor : public Network {
+  public:
+    uint32_t getOwnClientId() {
+        return ownClientId;
+    }
+
+    AnchorClient BuildLocalClientState();
+
   private:
     bool refreshingActors = false;
     bool justLoadedSave = false;
@@ -68,6 +75,7 @@ class Anchor : public Network {
 
     nlohmann::json PrepClientState();
     nlohmann::json PrepRoomState();
+
     void RegisterHooks();
     void RefreshClientActors();
     void HandlePacket_AllClientState(nlohmann::json payload);
@@ -160,7 +168,7 @@ typedef enum {
     DUMMY_PLAYER_HIT_RESPONSE_NORMAL,
 } DummyPlayerDamageResponseType;
 
-class AnchorRoomWindow : public Ship::GuiWindow {
+class AnchorRoomWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 

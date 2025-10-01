@@ -79,7 +79,7 @@
 #include "soh/Network/Anchor/Anchor.h"
 CrowdControl* CrowdControl::Instance;
 Sail* Sail::Instance;
-Anchor* Anchor::Instance;
+//Anchor* Anchor::Instance;
 #endif
 
 #include "Enhancements/mods.h"
@@ -1275,7 +1275,7 @@ extern "C" void InitOTR() {
 #ifdef ENABLE_REMOTE_CONTROL
     CrowdControl::Instance = new CrowdControl();
     Sail::Instance = new Sail();
-    Anchor::Instance = new Anchor();
+    //Anchor::Instance = new Anchor();
 #endif
 
     OTRMessage_Init();

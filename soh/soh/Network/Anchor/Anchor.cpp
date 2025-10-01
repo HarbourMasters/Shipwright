@@ -14,11 +14,43 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
+Anchor* Anchor::Instance = new Anchor();
+
+//MARK: - Should be in BuildLocalClientState.cpp
+AnchorClient Anchor::BuildLocalClientState() {
+    AnchorClient self;
+    self.clientId = getOwnClientId();
+    self.name = CVarGetString(CVAR_REMOTE_ANCHOR("Name"), "");
+    self.color = CVarGetColor24(CVAR_REMOTE_ANCHOR("Color"), { 100, 255, 100 });
+    self.clientVersion = clientVersion;
+    self.teamId = CVarGetString(CVAR_REMOTE_ANCHOR("TeamId"), "default");
+    self.online = true;
+    self.self = true;
+
+    if (IsSaveLoaded()) {
+        self.seed = IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : 0;
+        self.isSaveLoaded = true;
+        self.isGameComplete = gSaveContext.ship.stats.gameComplete;
+        self.sceneNum = gPlayState->sceneNum;
+        self.entranceIndex = gSaveContext.entranceIndex;
+    } else {
+        self.seed = 0;
+        self.isSaveLoaded = false;
+        self.isGameComplete = false;
+        self.sceneNum = SCENE_ID_MAX;
+        self.entranceIndex = 0x00;
+    }
+
+    return self;
+}
+
+
+
 // MARK: - Overrides
 
 void Anchor::Enable() {
     Network::Enable(CVarGetString(CVAR_REMOTE_ANCHOR("Host"), "anchor.proxysaw.dev"),
-                    CVarGetInteger(CVAR_REMOTE_ANCHOR("Port"), 43383));
+                    CVarGetInteger(CVAR_REMOTE_ANCHOR("Port"), 43385));
     ownClientId = CVarGetInteger(CVAR_REMOTE_ANCHOR("LastClientId"), 0);
     roomState.ownerClientId = 0;
 }
@@ -170,6 +202,7 @@ void Anchor::RegisterHooks() {
             SendPacket_RequestTeamState();
         }
         SendPacket_PlayerUpdate();
+        SendPacket_UpdateClientState();
     });
 
     HOOK(OnPlayerSfx, isConnected, [&](u16 sfxId) { SendPacket_PlayerSfx(sfxId); });
@@ -264,11 +297,16 @@ void Anchor::RefreshClientActors() {
 }
 
 bool Anchor::IsSaveLoaded() {
+    //printf("gPlayState: {}", gPlayState);
+    //printf("Player: {}", GET_PLAYER(gPlayState));
+    SPDLOG_INFO("fileNum: {}", gSaveContext.fileNum);
+    SPDLOG_INFO("gameMode: {}", gSaveContext.gameMode);
+
     if (gPlayState == nullptr) {
         return false;
     }
 
-    if (GET_PLAYER(gPlayState) == nullptr) {
+    /*if (GET_PLAYER(gPlayState) == nullptr) {
         return false;
     }
 
@@ -278,174 +316,9 @@ bool Anchor::IsSaveLoaded() {
 
     if (gSaveContext.gameMode != GAMEMODE_NORMAL) {
         return false;
-    }
+    }*/
 
     return true;
-}
-
-// MARK: - UI
-
-void Anchor::DrawMenu() {
-    ImGui::PushID("Anchor");
-
-    std::string host = CVarGetString(CVAR_REMOTE_ANCHOR("Host"), "anchor.proxysaw.dev");
-    uint16_t port = CVarGetInteger(CVAR_REMOTE_ANCHOR("Port"), 43383);
-    std::string anchorTeamId = CVarGetString(CVAR_REMOTE_ANCHOR("TeamId"), "default");
-    std::string anchorRoomId = CVarGetString(CVAR_REMOTE_ANCHOR("RoomId"), "");
-    std::string anchorName = CVarGetString(CVAR_REMOTE_ANCHOR("Name"), "");
-    bool isFormValid = !SohUtils::IsStringEmpty(host) && port > 1024 && port < 65535 &&
-                       !SohUtils::IsStringEmpty(anchorRoomId) && !SohUtils::IsStringEmpty(anchorName);
-
-    ImGui::SeparatorText("Anchor");
-    // UIWidgets::Tooltip("Anchor Stuff");
-    if (ImGui::IsItemClicked()) {
-        // ImGui::SetClipboardText("https://github.com/garrettjoecox/anchor");
-    }
-
-    ImGui::BeginDisabled(isEnabled);
-    ImGui::Text("Host & Port");
-    if (UIWidgets::InputString("##Host", &host)) {
-        CVarSetString(CVAR_REMOTE_ANCHOR("Host"), host.c_str());
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-
-    ImGui::SameLine();
-    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 5);
-    if (ImGui::InputScalar("##Port", ImGuiDataType_U16, &port)) {
-        CVarSetInteger(CVAR_REMOTE_ANCHOR("Port"), port);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-
-    ImGui::Text("Tunic Color & Name");
-    static Color_RGBA8 color = CVarGetColor(CVAR_REMOTE_ANCHOR("Color"), { 100, 255, 100, 255 });
-    static ImVec4 colorVec = ImVec4(color.r / 255.0, color.g / 255.0, color.b / 255.0, 1);
-    if (ImGui::ColorEdit3("##Color", (float*)&colorVec, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
-        color.r = colorVec.x * 255.0;
-        color.g = colorVec.y * 255.0;
-        color.b = colorVec.z * 255.0;
-
-        CVarSetColor(CVAR_REMOTE_ANCHOR("Color"), color);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    ImGui::SameLine();
-    ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-    if (UIWidgets::InputString("##Name", &anchorName)) {
-        CVarSetString(CVAR_REMOTE_ANCHOR("Name"), anchorName.c_str());
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    ImGui::Text("Room ID");
-    ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-    if (UIWidgets::InputString("##RoomId", &anchorRoomId/*, isEnabled ? ImGuiInputTextFlags_Password : 0*/)) {
-        CVarSetString(CVAR_REMOTE_ANCHOR("RoomId"), anchorRoomId.c_str());
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    ImGui::Text("Team ID (Items & Flags Shared)");
-    ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-    if (UIWidgets::InputString("##TeamId", &anchorTeamId)) {
-        CVarSetString(CVAR_REMOTE_ANCHOR("TeamId"), anchorTeamId.c_str());
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    ImGui::EndDisabled();
-
-    ImGui::Spacing();
-
-    ImGui::BeginDisabled(!isFormValid);
-    const char* buttonLabel = isEnabled ? "Disable" : "Enable";
-    if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
-        if (isEnabled) {
-            CVarClear(CVAR_REMOTE_ANCHOR("Enabled"));
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-            Disable();
-        } else {
-            CVarSetInteger(CVAR_REMOTE_ANCHOR("Enabled"), 1);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-            Enable();
-        }
-    }
-    ImGui::EndDisabled();
-
-    if (isEnabled) {
-        ImGui::Spacing();
-        if (isConnected) {
-            ImGui::Text("Connected");
-
-            if (roomState.ownerClientId == ownClientId) {
-                if (ImGui::BeginMenu("Room Settings")) {
-
-                    //PvP
-                    ImGui::Text("PvP Mode:");
-                    static const std::unordered_map<int32_t, const char*> pvpModes =
-                    { 
-                        { 0, "Off" },
-                        { 1, "On" },
-                        { 2, "On + Friendly Fire" }
-                    };
-
-                    UIWidgets::ComboboxOptions options;
-
-                    options.DefaultIndex(0)
-                        .Color(UIWidgets::Colors::LightBlue)
-                        .Tooltip("Do you want to be able to fight your friends?");
-
-                    if (UIWidgets::CVarCombobox("PVP Settings", CVAR_REMOTE_ANCHOR("RoomSettings.PvpMode"), pvpModes, options)) {
-                        SendPacket_UpdateRoomState();
-                    }
-
-
-                    //Locations
-                    ImGui::Text("Show Locations For:");
-                    static const std::unordered_map<int32_t, const char*> showLocationsMap =
-                    { 
-                        { 0, "None" },
-                        { 1, "Team Only" },
-                        { 2, "All" }
-                    };
-
-                    options.DefaultIndex(1) //"Team Only"
-                        .Color(UIWidgets::Colors::LightBlue)
-                        .Tooltip("Who can see your locations on the map?");
-                        
-
-                    if (UIWidgets::CVarCombobox("Show Locations", CVAR_REMOTE_ANCHOR("RoomSettings.ShowLocationsMode"), showLocationsMap, options)) {
-                        SendPacket_UpdateRoomState();
-                    }
-
-                    //Teleporting
-                    ImGui::Text("Allow Teleporting To:");
-                    static const std::unordered_map<int32_t, const char*> teleportModes =
-                    { 
-                        {0, "None" },
-                        {1, "Team Only" },
-                        {2, "All" }
-                    };
-
-                    options.DefaultIndex(1) //team only
-                        .Color(UIWidgets::Colors::LightBlue)
-                        .Tooltip("Do you want to be able to warp to your friends?");
-
-                    if (UIWidgets::CVarCombobox("Teleport Modes", CVAR_REMOTE_ANCHOR("RoomSettings.TeleportMode"), teleportModes, options)) {
-                        SendPacket_UpdateRoomState();
-                    }
-                    ImGui::EndMenu();
-                }
-            }
-
-            if (ImGui::Button("Request Team State", ImVec2(ImGui::GetContentRegionAvail().x - 25.0f, 0.0f))) {
-                SendPacket_RequestTeamState();
-            }
-            if (roomState.ownerClientId == ownClientId) {
-                ImGui::SameLine();
-                if (ImGui::Button(ICON_FA_TRASH)) {
-                    SendPacket_ClearTeamState();
-                }
-                UIWidgets::Tooltip("Clear Team State");
-            }
-        } else {
-            ImGui::Text("Connecting...");
-        }
-    }
-
-    ImGui::PopID();
 }
 
 #endif

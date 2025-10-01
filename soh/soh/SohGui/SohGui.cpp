@@ -211,7 +211,7 @@ void SetupGuiElements() {
     gui->AddGuiWindow(mTimeDisplayWindow);
 
     #ifdef ENABLE_REMOTE_CONTROL
-    mAnchorRoomWindow = std::make_shared<AnchorRoomWindow>(CVAR_WINDOW("AnchorRoom"), "Anchor Room");
+    mAnchorRoomWindow = std::make_shared<AnchorRoomWindow>(CVAR_WINDOW("AnchorRoomEnabled"), "Anchor Room");
     gui->AddGuiWindow(mAnchorRoomWindow);
     #endif
 }
