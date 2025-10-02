@@ -648,6 +648,9 @@ void CreateStoneHints() {
     if (ctx->GetOption(RSK_SKIP_CHILD_ZELDA)) {
         ctx->GetItemLocation(RC_SONG_FROM_IMPA)->SetHintAccesible();
     }
+    if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT)) {
+        ctx->GetItemLocation(RC_TOT_MASTER_SWORD)->SetHintAccesible();
+    }
 
     // Add 'always' location hints
     std::vector<RandomizerCheck> alwaysHintLocations = {};
@@ -728,20 +731,22 @@ std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> i
 
 void CreateChildAltarHint() {
     auto ctx = Rando::Context::GetInstance();
-    if (!ctx->GetHint(RH_ALTAR_CHILD)->IsEnabled() && ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
+    if (!ctx->GetHint(RH_ALTAR_CHILD)->IsEnabled()) {
         std::vector<RandomizerCheck> stoneLocs = {};
-        // force marking the rewards as hinted if they are at the end of dungeons as they can be inferred
-        if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) ||
-            ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
-            stoneLocs = FindItemsAndMarkHinted({ RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE }, {});
-        } else {
-            stoneLocs =
-                FindItemsAndMarkHinted({ RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE }, { RC_ALTAR_HINT_CHILD });
-        }
         std::vector<RandomizerArea> stoneAreas = {};
-        for (auto loc : stoneLocs) {
-            if (loc != RC_UNKNOWN_CHECK) {
-                stoneAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+        if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
+            // force marking the rewards as hinted if they are at the end of dungeons as they can be inferred
+            if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) ||
+                ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
+                stoneLocs = FindItemsAndMarkHinted({ RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE }, {});
+            } else {
+                stoneLocs = FindItemsAndMarkHinted({ RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE },
+                                                   { RC_ALTAR_HINT_CHILD });
+            }
+            for (auto loc : stoneLocs) {
+                if (loc != RC_UNKNOWN_CHECK) {
+                    stoneAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+                }
             }
         }
         ctx->AddHint(RH_ALTAR_CHILD, Hint(RH_ALTAR_CHILD, HINT_TYPE_ALTAR_CHILD, {}, stoneLocs, stoneAreas));
@@ -752,6 +757,7 @@ void CreateAdultAltarHint() {
     auto ctx = Rando::Context::GetInstance();
     if (!ctx->GetHint(RH_ALTAR_ADULT)->IsEnabled()) {
         std::vector<RandomizerCheck> medallionLocs = {};
+        std::vector<RandomizerArea> medallionAreas = {};
         if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
             // force marking the rewards as hinted if they are at the end of dungeons as they can be inferred
             if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) ||
@@ -764,11 +770,10 @@ void CreateAdultAltarHint() {
                                                          RG_WATER_MEDALLION, RG_SPIRIT_MEDALLION, RG_SHADOW_MEDALLION },
                                                        { RC_ALTAR_HINT_ADULT });
             }
-        }
-        std::vector<RandomizerArea> medallionAreas = {};
-        for (auto loc : medallionLocs) {
-            if (loc != RC_UNKNOWN_CHECK) {
-                medallionAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+            for (auto loc : medallionLocs) {
+                if (loc != RC_UNKNOWN_CHECK) {
+                    medallionAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+                }
             }
         }
         ctx->AddHint(RH_ALTAR_ADULT, Hint(RH_ALTAR_ADULT, HINT_TYPE_ALTAR_ADULT, {}, medallionLocs, medallionAreas));

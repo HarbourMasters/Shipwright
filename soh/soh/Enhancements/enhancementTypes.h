@@ -112,7 +112,9 @@ typedef enum {
 typedef enum {
     TIME_TRAVEL_DISABLED,
     TIME_TRAVEL_OOT,
+    TIME_TRAVEL_OOT_MS,
     TIME_TRAVEL_ANY,
+    TIME_TRAVEL_ANY_MS
 } TimeTravelType;
 
 typedef enum {

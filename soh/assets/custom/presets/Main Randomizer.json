@@ -45,6 +45,7 @@
                 "FishNeverEscape": 1,
                 "FixBrokenGiantsKnife": 1,
                 "FixDaruniaDanceSpeed": 1,
+                "FixDampeGoingBackwards": 1,
                 "FixDungeonMinimapIcon": 1,
                 "FixFloorSwitches": 1,
                 "FixHammerHand": 1,
@@ -116,6 +117,7 @@
                         "Story": 1
                     },
                     "SkipForcedDialog": 3,
+                    "SkipJabuJabuFish": 1,
                     "SkipMiscInteractions": 1,
                     "SkipOwlInteractions": 1,
                     "SkipTowerEscape": 1,

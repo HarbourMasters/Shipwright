@@ -119,6 +119,72 @@ zypper in gcc gcc-c++ git cmake ninja SDL2-devel libpng16-devel libzip-devel lib
 # or using clang
 zypper in clang libstdc++-devel git cmake ninja SDL2-devel libpng16-devel libzip-devel libzip-tools nlohmann_json-devel tinyxml2-devel spdlog-devel
 ```
+#### Nix
+You can use a `flake.nix` file to instantly setup a development environment using [Nix](https://nixos.org/). Write this `flake.nix` file in the root directory:
+
+```nix
+{
+  description = "Shipwright development environment";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
+
+  outputs = { self, nixpkgs, flake-utils }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+      {
+        devShells.default = pkgs.mkShell {
+          buildInputs = with pkgs; [
+            # Build tools
+            clang
+            git
+            cmake
+            ninja
+            lsb-release
+            pkg-config
+
+            # SDL2 libraries
+            SDL2
+            SDL2.dev
+            SDL2_net
+
+            # Other libraries
+            libpng
+            libzip
+            nlohmann_json
+            tinyxml-2
+            spdlog
+            libGL
+            libGL.dev
+            bzip2
+
+            # X11 libraries
+            xorg.libX11
+
+            # Audio libraries
+            libogg
+            libogg.dev
+            libvorbis
+            libvorbis.dev
+            libopus
+            libopus.dev
+            opusfile
+            opusfile.dev
+          ];
+          shellHook = ''
+            echo "Shipwright development environment loaded"
+            echo "Available tools: clang, git, cmake, ninja"
+          '';
+        };
+      });
+}
+```
+
+Now type `nix develop` and you will be dropped into a shell with all dependencies, ensuring that all build commands work.
 
 ### Build
 
@@ -231,7 +297,7 @@ cmake --build build-cmake --target ExtractAssetHeaders
 
 ## Switch
 1. Requires that your build machine is setup with the tools necessary for your platform above
-2. Requires that you have the switch build tools installed 
+2. Requires that you have the switch build tools installed
 3. Clone the Ship of Harkinian repository
 4. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
 
@@ -252,7 +318,7 @@ cmake --build build-switch --target soh_nro
 
 ## Wii U
 1. Requires that your build machine is setup with the tools necessary for your platform above
-2. Requires that you have the Wii U build tools installed 
+2. Requires that you have the Wii U build tools installed
 3. Clone the Ship of Harkinian repository
 4. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
 
@@ -265,7 +331,7 @@ cmake --build build-cmake --target ExtractAssets
 # Setup cmake project for building for Wii U
 cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
 # Build project and generate rpx
-cmake --build build-wiiu --target soh # --target soh_wuhb (for building .wuhb) 
+cmake --build build-wiiu --target soh # --target soh_wuhb (for building .wuhb)
 
 # Now you can run the executable in ./build-wiiu/soh/soh.rpx or the Wii U Homebrew Bundle in ./build-wiiu/soh/soh.wuhb
 # To develop the project open the repository in VSCode (or your preferred editor)

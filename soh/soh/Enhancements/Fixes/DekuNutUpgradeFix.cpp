@@ -1,12 +1,13 @@
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
+
+extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
 #include "z64save.h"
-
-extern "C" PlayState* gPlayState;
+extern PlayState* gPlayState;
+}
 
 static constexpr int32_t CVAR_NUT_UPGRADE_FIX_DEFAULT = 0;
 #define CVAR_NUT_UPGRADE_FIX_NAME CVAR_ENHANCEMENT("DekuNutUpgradeFix")

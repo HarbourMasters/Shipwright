@@ -136,9 +136,11 @@ void CrowdControl::EmitMessage(uint32_t eventId, long timeRemaining, EffectResul
 CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
     GameInteractionEffectQueryResult giResult;
     if (effect->category == kEffectCatSpawnEnemy) {
-        giResult = GameInteractor::RawAction::SpawnEnemyWithOffset(effect->spawnParams[0], effect->spawnParams[1]);
+        giResult = GameInteractor::RawAction::SpawnEnemyWithOffset(effect->spawnParams[0], effect->spawnParams[1],
+                                                                   effect->viewerName);
     } else if (effect->category == kEffectCatSpawnActor) {
-        giResult = GameInteractor::RawAction::SpawnActor(effect->spawnParams[0], effect->spawnParams[1]);
+        giResult =
+            GameInteractor::RawAction::SpawnActor(effect->spawnParams[0], effect->spawnParams[1], effect->viewerName);
     } else {
         giResult = GameInteractor::ApplyEffect(effect->giEffect);
     }
@@ -185,6 +187,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
     Effect* effect = new Effect();
     effect->lastExecutionResult = EffectResult::Initiate;
     effect->id = dataReceived["id"];
+    effect->viewerName = dataReceived["viewer"];
     auto parameters = dataReceived["parameters"];
     uint32_t receivedParameter = 0;
     auto effectName = dataReceived["code"].get<std::string>();
@@ -301,13 +304,13 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
         case kEffectIncreaseSpeed:
             effect->category = kEffectCatSpeed;
             effect->timeRemaining = 30000;
-            effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
+            effect->giEffect = new GameInteractionEffect::ModifyMovementSpeedMultiplier();
             dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 2;
             break;
         case kEffectDecreaseSpeed:
             effect->category = kEffectCatSpeed;
             effect->timeRemaining = 30000;
-            effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
+            effect->giEffect = new GameInteractionEffect::ModifyMovementSpeedMultiplier();
             dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = -2;
             break;
         case kEffectLowGravity:
@@ -618,147 +621,6 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
         case kEffectTpPrelude:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
             dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TP_DEST_PRELUDE;
-            break;
-
-        // Tunic Color (Bidding War)
-        case kEffectTunicRed:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_RED;
-            break;
-        case kEffectTunicGreen:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_GREEN;
-            break;
-        case kEffectTunicBlue:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BLUE;
-            break;
-        case kEffectTunicOrange:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_ORANGE;
-            break;
-        case kEffectTunicYellow:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_YELLOW;
-            break;
-        case kEffectTunicPurple:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_PURPLE;
-            break;
-        case kEffectTunicPink:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_PINK;
-            break;
-        case kEffectTunicBrown:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BROWN;
-            break;
-        case kEffectTunicBlack:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BLACK;
-            break;
-
-        // Navi Color (Bidding War)
-        case kEffectNaviRed:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_RED;
-            break;
-        case kEffectNaviGreen:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_GREEN;
-            break;
-        case kEffectNaviBlue:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BLUE;
-            break;
-        case kEffectNaviOrange:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_ORANGE;
-            break;
-        case kEffectNaviYellow:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_YELLOW;
-            break;
-        case kEffectNaviPurple:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_PURPLE;
-            break;
-        case kEffectNaviPink:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_PINK;
-            break;
-        case kEffectNaviBrown:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BROWN;
-            break;
-        case kEffectNaviBlack:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BLACK;
-            break;
-
-        // Link's Hair Color (Bidding War)
-        case kEffectHairRed:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_RED;
-            break;
-        case kEffectHairGreen:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_GREEN;
-            break;
-        case kEffectHairBlue:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BLUE;
-            break;
-        case kEffectHairOrange:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_ORANGE;
-            break;
-        case kEffectHairYellow:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_YELLOW;
-            break;
-        case kEffectHairPurple:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_PURPLE;
-            break;
-        case kEffectHairPink:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_PINK;
-            break;
-        case kEffectHairBrown:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BROWN;
-            break;
-        case kEffectHairBlack:
-            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BLACK;
             break;
 
         default:

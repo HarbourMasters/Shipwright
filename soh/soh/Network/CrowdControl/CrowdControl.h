@@ -56,6 +56,7 @@ class CrowdControl : public Network {
         uint32_t category = 0;
         long timeRemaining;
         GameInteractionEffectBase* giEffect;
+        std::string viewerName;
 
         // Metadata used while executing (only for timed effects)
         bool isPaused;

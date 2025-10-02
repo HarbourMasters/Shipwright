@@ -9,7 +9,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_OUTSKIRTS] = Region("Gerudo Fortress Outskirts", SCENE_GERUDOS_FORTRESS, {
         //Events
-        EventAccess(&logic->GF_GateOpen,  []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}), //needs climb
+        EventAccess(LOGIC_GF_GATE_OPEN,  []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}), //needs climb
     }, {
         //Locations
         LOCATION(RC_GF_OUTSKIRTS_NE_CRATE, (logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)) && logic->CanBreakCrates()),
@@ -18,7 +18,7 @@ void RegionTable_Init_GerudoFortress() {
         //Exits
         Entrance(RR_GV_FORTRESS_SIDE, []{return true;}),
         Entrance(RR_TH_1_TORCH_CELL,  []{return true;}),
-        Entrance(RR_GF_OUTSIDE_GATE,  []{return logic->GF_GateOpen;}),
+        Entrance(RR_GF_OUTSIDE_GATE,  []{return logic->Get(LOGIC_GF_GATE_OPEN);}),
         Entrance(RR_GF_NEAR_GROTTO,   []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
         Entrance(RR_GF_OUTSIDE_GTG,   []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
         //You can talk to the guards to get yourself thrown in jail, so long as you have a hookshot to actually end up there
@@ -30,7 +30,7 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_SOUTHMOST_CENTER_CRATE, logic->CanBreakCrates()),
         LOCATION(RC_GF_MID_SOUTH_CENTER_CRATE, logic->CanBreakCrates()),
         LOCATION(RC_GF_MID_NORTH_CENTER_CRATE, logic->CanBreakCrates()),
-        LOCATION(RR_GF_NORTHMOST_CENTER_CRATE, logic->CanBreakCrates()),
+        LOCATION(RC_GF_NORTHMOST_CENTER_CRATE, logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_TH_1_TORCH_CELL,       []{return true;}),
@@ -46,18 +46,29 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_OUTSIDE_GTG] = Region("GF Outside GTG", SCENE_GERUDOS_FORTRESS, {
         //Events
-        EventAccess(&logic->GtG_GateOpen, []{return (logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET));}),
+        EventAccess(LOGIC_GTG_GATE_OPEN, []{return (logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET));}),
     }, {}, {
         //Exits
-        Entrance(RR_GERUDO_TRAINING_GROUND_ENTRYWAY, []{return logic->GtG_GateOpen && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES));}),
+        Entrance(RR_GF_TO_GTG,             []{return logic->Get(LOGIC_GTG_GATE_OPEN) && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES));}),
         //Jail
+        Entrance(RR_GF_JAIL_WINDOW,        []{return logic->CanUse(RG_HOOKSHOT);}),
+        Entrance(RR_GF_OUTSKIRTS,          []{return true;}),
+        Entrance(RR_GF_NEAR_GROTTO,        []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        // RANDTODO: Add tricks for getting past the gerudo guarding the hba range
+        Entrance(RR_GF_ABOVE_GTG,          []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        Entrance(RR_GF_TOP_OF_UPPER_VINES, []{return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_GF_HBA_RANGE,          []{return logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
+    });
+
+    areaTable[RR_GF_TO_GTG] = Region("GF to GTG", SCENE_GERUDOS_FORTRESS, {}, {}, {
+        Entrance(RR_GERUDO_TRAINING_GROUND_ENTRYWAY, []{return true;}),
+    });
+
+    // Split out to handle adult being immediately captured without card
+    areaTable[RR_GF_EXITING_GTG] = Region("GF Exiting GTG", SCENE_GERUDOS_FORTRESS, {}, {}, {
+        Entrance(RR_GF_OUTSIDE_GTG,                  []{return logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
         Entrance(RR_GF_JAIL_WINDOW,                  []{return logic->CanUse(RG_HOOKSHOT);}),
         Entrance(RR_GF_OUTSKIRTS,                    []{return true;}),
-        Entrance(RR_GF_NEAR_GROTTO,                  []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
-        // RANDTODO: Add tricks for getting past the gerudo guarding the hba range
-        Entrance(RR_GF_ABOVE_GTG,                    []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
-        Entrance(RR_GF_TOP_OF_UPPER_VINES,           []{return logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_LONGSHOT);}),
-        Entrance(RR_GF_HBA_RANGE,                    []{return logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
     });
 
 #pragma endregion
@@ -123,6 +134,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_TOP_OF_LOWER_VINES, []{return true;}),
         Entrance(RR_GF_SLOPED_ROOF,        []{return logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS);}),
         Entrance(RR_GF_TOP_OF_UPPER_VINES, []{return true /* logic->CanClimb() */;}),
+        Entrance(RR_GF_TO_GTG,             []{return logic->IsAdult && ctx->GetTrickOption(RT_GF_LEDGE_CLIP_INTO_GTG).Get();}),
     });
 
     areaTable[RR_GF_TOP_OF_UPPER_VINES] = Region("GF Top of Upper Vines", SCENE_GERUDOS_FORTRESS, {}, {
@@ -221,16 +233,16 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_OUTSIDE_GATE] = Region("GF Outside Gate", SCENE_GERUDOS_FORTRESS, {
         //Events
-        EventAccess(&logic->GF_GateOpen, []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
+        EventAccess(LOGIC_GF_GATE_OPEN, []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
     }, {}, {
         //Exits
-        Entrance(RR_GF_OUTSKIRTS,            []{return logic->GF_GateOpen;}),
+        Entrance(RR_GF_OUTSKIRTS,            []{return logic->Get(LOGIC_GF_GATE_OPEN);}),
         Entrance(RR_WASTELAND_NEAR_FORTRESS, []{return true;}),
     });
 
     areaTable[RR_GF_STORMS_GROTTO] = Region("GF Storms Grotto", SCENE_GROTTOS, {
         //Events
-        EventAccess(&logic->FreeFairies, []{return true;}),
+        EventAccess(LOGIC_FREE_FAIRIES, []{return true;}),
     }, {
         //Locations
         LOCATION(RC_GF_FAIRY_GROTTO_FAIRY_1, true),

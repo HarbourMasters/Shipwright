@@ -354,7 +354,7 @@ void PlaceJunkInExcludedLocation(const RandomizerCheck il) {
     // place a non-advancement item in this location
     auto ctx = Rando::Context::GetInstance();
     for (size_t i = 0; i < ItemPool.size(); i++) {
-        if (!Rando::StaticData::RetrieveItem(ItemPool[i]).IsAdvancement()) {
+        if (Rando::StaticData::RetrieveItem(ItemPool[i]).GetCategory() == ITEM_CATEGORY_JUNK) {
             ctx->PlaceItemInLocation(il, ItemPool[i]);
             ItemPool.erase(ItemPool.begin() + i);
             return;
@@ -861,7 +861,7 @@ void GenerateItemPool() {
         AddItemToMainPool(RG_GERUDO_MEMBERSHIP_CARD);
         ctx->possibleIceTrapModels.push_back(RG_GERUDO_MEMBERSHIP_CARD);
     } else if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
-        AddItemToPool(PendingJunkPool, RG_GERUDO_MEMBERSHIP_CARD);
+        AddItemToPool(ItemPool, RG_GERUDO_MEMBERSHIP_CARD);
         ctx->PlaceItemInLocation(RC_TH_FREED_CARPENTERS, RG_ICE_TRAP, false, true);
     } else {
         ctx->PlaceItemInLocation(RC_TH_FREED_CARPENTERS, RG_GERUDO_MEMBERSHIP_CARD, false, true);

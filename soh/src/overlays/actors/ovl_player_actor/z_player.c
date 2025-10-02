@@ -5796,7 +5796,10 @@ void func_8083AA10(Player* this, PlayState* play) {
 
                 if (this->hoverBootsTimer != 0) {
                     this->actor.velocity.y = 1.0f;
-                    sPrevFloorProperty = 9;
+
+                    if (GameInteractor_Should(VB_SET_STATIC_PREV_FLOOR_TYPE, true, this)) {
+                        sPrevFloorProperty = 9;
+                    }
                     return;
                 }
 
@@ -7123,15 +7126,6 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
 
     if (this->meleeWeaponState == 0) {
         float maxSpeed = R_RUN_SPEED_LIMIT / 100.0f;
-
-        int32_t giSpeedModifier = GameInteractor_RunSpeedModifier();
-        if (giSpeedModifier != 0) {
-            if (giSpeedModifier > 0) {
-                maxSpeed *= giSpeedModifier;
-            } else {
-                maxSpeed /= abs(giSpeedModifier);
-            }
-        }
 
         if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) == BUNNY_HOOD_FAST_AND_JUMP &&
             this->currentMask == PLAYER_MASK_BUNNY) {
@@ -8873,14 +8867,6 @@ void Player_Action_80842180(Player* this, PlayState* play) {
         Player_GetMovementSpeedAndYaw(this, &sp2C, &sp2A, SPEED_MODE_CURVED, play);
 
         if (!func_8083C484(this, &sp2C, &sp2A)) {
-            int32_t giSpeedModifier = GameInteractor_RunSpeedModifier();
-            if (giSpeedModifier != 0) {
-                if (giSpeedModifier > 0) {
-                    sp2C *= giSpeedModifier;
-                } else {
-                    sp2C /= abs(giSpeedModifier);
-                }
-            }
 
             if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA &&
                 this->currentMask == PLAYER_MASK_BUNNY) {
@@ -11168,7 +11154,9 @@ s32 Player_UpdateHoverBoots(Player* this) {
         }
         return false;
     } else {
-        sFloorType = 0;
+        if (GameInteractor_Should(VB_SET_STATIC_FLOOR_TYPE, true, this)) {
+            sFloorType = 0;
+        }
         this->floorPitch = this->floorPitchAlt = sFloorShapePitch = 0;
 
         return true;
@@ -11199,7 +11187,9 @@ void Player_ProcessSceneCollision(PlayState* play, Player* this) {
     f32 ceilingCheckHeight;
     u32 flags;
 
-    sPrevFloorProperty = this->floorProperty;
+    if (GameInteractor_Should(VB_SET_STATIC_PREV_FLOOR_TYPE, true, this)) {
+        sPrevFloorProperty = this->floorProperty;
+    }
 
 #define vWallCheckRadius float0
 #define vWallCheckHeight float1
@@ -11470,7 +11460,9 @@ void Player_ProcessSceneCollision(PlayState* play, Player* this) {
     }
 
     if (this->actor.bgCheckFlags & 1) {
-        sFloorType = func_80041D4C(&play->colCtx, floorPoly, this->actor.floorBgId);
+        if (GameInteractor_Should(VB_SET_STATIC_FLOOR_TYPE, true, this)) {
+            sFloorType = func_80041D4C(&play->colCtx, floorPoly, this->actor.floorBgId);
+        }
 
         if (!Player_UpdateHoverBoots(this)) {
             f32 floorPolyNormalX;
@@ -12117,7 +12109,9 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
             Actor_UpdatePos(&this->actor);
             Player_ProcessSceneCollision(play, this);
         } else {
-            sFloorType = 0;
+            if (GameInteractor_Should(VB_SET_STATIC_FLOOR_TYPE, true, this)) {
+                sFloorType = 0;
+            }
             this->floorProperty = 0;
 
             if (!(this->stateFlags1 & PLAYER_STATE1_LOADING) && (this->stateFlags1 & PLAYER_STATE1_ON_HORSE)) {
@@ -14663,7 +14657,7 @@ void Player_Action_SwingBottle(Player* this, PlayState* play) {
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         if (this->av1.bottleCatchType != BOTTLE_CATCH_NONE) {
             if (!this->av2.startedTextbox) {
-                if (CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
+                if (CVarGetInteger(CVAR_ENHANCEMENT("FastBottles"), 0)) {
                     this->av1.bottleCatchType = BOTTLE_CATCH_NONE;
                 } else {
                     // 1 is subtracted because `sBottleCatchInfo` does not have an entry for `BOTTLE_CATCH_NONE`
@@ -14706,13 +14700,13 @@ void Player_Action_SwingBottle(Player* this, PlayState* play) {
                     this->av1.bottleCatchType = i + 1;
 
                     this->av2.startedTextbox = false;
-                    if (!CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
+                    if (!CVarGetInteger(CVAR_ENHANCEMENT("FastBottles"), 0)) {
                         this->stateFlags1 |= PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE;
                     }
                     this->interactRangeActor->parent = &this->actor;
 
                     Player_UpdateBottleHeld(play, this, catchInfo->itemId, ABS(catchInfo->itemAction));
-                    if (!CVarGetInteger(CVAR_ENHANCEMENT("FastDrops"), 0)) {
+                    if (!CVarGetInteger(CVAR_ENHANCEMENT("FastBottles"), 0)) {
                         Player_AnimPlayOnceAdjusted(play, this, swingEntry->catchAnimation);
                         func_80835EA4(play, 4);
                     }
