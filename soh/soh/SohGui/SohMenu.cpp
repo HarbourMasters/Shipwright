@@ -83,6 +83,11 @@ SohMenu::SohMenu(const std::string& consoleVariable, const std::string& name)
 
 #ifndef ENABLE_REMOTE_CONTROL
 void SohMenu::AddMenuNetwork() {
+#ifndef _DEBUG
+    // in release builds, the tab doesn't even show
+    return;
+#endif
+
     // Add Network Menu
     AddMenuEntry("Network", CVAR_SETTING("Menu.NetworkSidebarSection"));
 
