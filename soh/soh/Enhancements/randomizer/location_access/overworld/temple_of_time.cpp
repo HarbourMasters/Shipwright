@@ -7,7 +7,7 @@ void RegionTable_Init_TempleOfTime() {
     // clang-format off
     areaTable[RR_TOT_ENTRANCE] = Region("ToT Entrance", SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairyExceptSuns();}),
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairyExceptSuns();}),
     }, {
         //Locations
         LOCATION(RC_TOT_LEFTMOST_GOSSIP_STONE_FAIRY,         logic->CallGossipFairyExceptSuns() || (logic->CanUse(RG_SUNS_SONG) && logic->IsAdult)),
@@ -40,10 +40,7 @@ void RegionTable_Init_TempleOfTime() {
         Entrance(RR_TOT_BEYOND_DOOR_OF_TIME, []{return ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_OPEN) || (logic->CanUse(RG_SONG_OF_TIME) && (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_SONGONLY) || (logic->StoneCount() == 3 && logic->HasItem(RG_OCARINA_OF_TIME))));}),
     });
 
-    areaTable[RR_TOT_BEYOND_DOOR_OF_TIME] = Region("Beyond Door of Time", SCENE_TEMPLE_OF_TIME, {
-        //Events
-        //EventAccess(&logic->TimeTravel, []{return true;}),
-    }, {
+    areaTable[RR_TOT_BEYOND_DOOR_OF_TIME] = Region("Beyond Door of Time", SCENE_TEMPLE_OF_TIME, {}, {
         //Locations
         LOCATION(RC_TOT_MASTER_SWORD, logic->IsAdult),
         LOCATION(RC_GIFT_FROM_RAURU,  logic->IsAdult),

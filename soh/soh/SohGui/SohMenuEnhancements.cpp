@@ -555,12 +555,17 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Disables Grottos rotating with the Camera. To be used in conjuction with mods that want to "
             "replace grottos with 3D objects."));
+    AddWidget(path, "Disable 2D Pre-Rendered Scenes", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("3DSceneRender"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip("Disables 2D pre-rendered backgrounds. Enable this when using a mod that "
+                                           "implements 3D backdrops for these areas.\n"
+                                           "Requires Scene Change to alter."));
     AddWidget(path, "Ingame Text Spacing: %d", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("TextSpacing"))
         .RaceDisable(false)
         .Options(IntSliderOptions().Min(4).Max(6).DefaultValue(6).Tooltip(
             "Space between text characters (useful for HD font textures)."));
-
     AddWidget(path, "Models & Textures", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Disable LOD", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableLOD"))
@@ -1900,6 +1905,15 @@ void SohMenu::AddMenuEnhancements() {
             .CVar(timer.timeEnable)
             .Callback([](WidgetInfo& info) { TimeDisplayUpdateDisplayOptions(); });
     }
+
+    // Mod Menu
+    path.sidebarName = "Mod Menu";
+    AddSidebarEntry("Enhancements", path.sidebarName, 1);
+    AddWidget(path, "Popout Mod Menu Window", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("ModMenu"))
+        .WindowName("Mod Menu")
+        .HideInSearch(true)
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Mod Menu Window."));
 }
 
 } // namespace SohGui

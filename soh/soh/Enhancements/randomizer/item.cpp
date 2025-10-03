@@ -71,7 +71,7 @@ void Item::ApplyEffect() const {
     if (!logic->CalculatingAvailableChecks) {
         logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
     }
-    logic->SetInLogic(logicVal, true);
+    logic->Set(logicVal, true);
 }
 
 void Item::UndoEffect() const {
@@ -80,7 +80,7 @@ void Item::UndoEffect() const {
     if (!logic->CalculatingAvailableChecks) {
         logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
     }
-    logic->SetInLogic(logicVal, false);
+    logic->Set(logicVal, false);
 }
 
 const CustomMessage& Item::GetName() const {

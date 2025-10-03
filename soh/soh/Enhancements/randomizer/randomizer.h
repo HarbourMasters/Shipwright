@@ -57,6 +57,7 @@ class Randomizer {
     GrassIdentity IdentifyGrass(s32 sceneNum, s32 posX, s32 posZ, s32 respawnData, s32 linkAge);
     CrateIdentity IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ);
     SmallCrateIdentity IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ);
+    TreeIdentity IdentifyTree(s32 sceneNum, s32 posX, s32 posZ);
     GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId,
                                        bool checkObtainability = true);
     GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId,
