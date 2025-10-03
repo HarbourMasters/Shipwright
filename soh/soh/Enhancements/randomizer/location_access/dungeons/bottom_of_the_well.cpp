@@ -142,11 +142,11 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_WEST_LEDGE] = Region("Bottom of the Well West Ledge", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
-        LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST, logic->LoweredWaterInsideBotw || logic->CanOpenUnderwaterChest()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST, logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->CanOpenUnderwaterChest()),
     }, {
         //Exits
         //Climb always needed in case water is lowered out of logic
-        Entrance(RR_BOTW_PERIMETER,   []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE) || 
+        Entrance(RR_BOTW_PERIMETER,   []{return (logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->HasItem(RG_BRONZE_SCALE) || 
                                                  (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))/* && CanClimb()*/);}),
         Entrance(RR_BOTW_COFFIN_ROOM, []{return true;}),
     });
@@ -260,12 +260,12 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTW_MQ_PERIMETER] = Region("Bottom of the Well MQ Perimeter", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
         //technically obsolete due to a wonder item fairy which only needs a projectile, but we don't have an event var for it yet
-        EventAccess(LOGIC_FAIRY_POT,               []{return Here(RR_BOTW_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets();}),
+        EventAccess(LOGIC_FAIRY_POT,            []{return Here(RR_BOTW_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets();}),
         //It is possible to hit the water switch with a pot from RR_BOTW_MQ_MIDDLE, however the hitbox for making it activate is very unintuitive
         //You have to throw the pot from further back to hit the switch from the front instead of the top, trying to hit the "fingers" directly
         //This unintuitiveness means it should be a trick. ZL is needed to get a clear path to carry the pot
-        EventAccess(LOGIC_BOTW_LOWERED_WATER, []{return logic->CanHitSwitch(ED_SHORT_JUMPSLASH);}),
-        EventAccess(&logic->OpenedMQBotwGates,      []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
+        EventAccess(LOGIC_BOTW_LOWERED_WATER,   []{return logic->CanHitSwitch(ED_SHORT_JUMPSLASH);}),
+        EventAccess(LOGIC_BOTW_MQ_OPENED_GATES, []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
     }, {
         //Locations
         //Implies CanBreakPots(). Hitting this with rang through the wall is possible but would be a trick.
@@ -275,13 +275,13 @@ void RegionTable_Init_BottomOfTheWell() {
     }, {
         //Exits
         Entrance(RR_BOTW_ENTRYWAY,                []{return logic->IsChild/*CanCrawl() && CanClimb()*/;}),
-        Entrance(RR_BOTW_MQ_MIDDLE,               []{return logic->OpenedMQBotwGates;}),
+        Entrance(RR_BOTW_MQ_MIDDLE,               []{return logic->Get(LOGIC_BOTW_MQ_OPENED_GATES);}),
         Entrance(RR_BOTW_MQ_WEST_CAGE,            []{return Here(RR_BOTW_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanPassEnemy(RE_BIG_SKULLTULA);}),
         //Climb always needed in case water is lowered out of logic
-        Entrance(RR_BOTW_MQ_WEST_LEDGE,           []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE) || 
+        Entrance(RR_BOTW_MQ_WEST_LEDGE,           []{return (logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->HasItem(RG_BRONZE_SCALE) || 
                                                              (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))/*&& CanClimb()*/);}),
         Entrance(RR_BOTW_MQ_NORTHEAST_CRAWLSPACE, []{return logic->IsChild/*CanCrawl()*/;}),
-        Entrance(RR_BOTW_MQ_SE_CRAWLSPACE_LOWER,  []{return logic->IsChild/*CanCrawl()*/ && logic->LoweredWaterInsideBotw;}),
+        Entrance(RR_BOTW_MQ_SE_CRAWLSPACE_LOWER,  []{return logic->IsChild/*CanCrawl()*/ && logic->Get(LOGIC_BOTW_LOWERED_WATER);}),
         Entrance(RR_BOTW_MQ_B3,                   []{return true;}),
     });
 
@@ -294,12 +294,12 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_CELL_SUN_FAIRY,    logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
-        Entrance(RR_BOTW_MQ_PERIMETER,       []{return logic->OpenedMQBotwGates;}),
+        Entrance(RR_BOTW_MQ_PERIMETER,       []{return logic->Get(LOGIC_BOTW_MQ_OPENED_GATES);}),
         Entrance(RR_BOTW_MQ_WEST_CAGE,       []{return (bool)ctx->GetTrickOption(RT_BOTW_PITS);}),
-        Entrance(RR_BOTW_MQ_SWITCH_PLATFORM, []{return logic->OpenedMiddleHoleMQBotw;}),
+        Entrance(RR_BOTW_MQ_SWITCH_PLATFORM, []{return logic->Get(LOGIC_BOTW_MQ_OPENED_MIDDLE_HOLE);}),
         Entrance(RR_BOTW_MQ_B3,              []{return true;}),
         Entrance(RR_BOTW_MQ_EAST_INNER_ROOM, []{return true/*str0 or CanHitSwitch(ED_BOMB_THROW)*/;}),
-        Entrance(RR_BOTW_MQ_WEST_INNER_ROOM, []{return logic->OpenedWestRoomMQBotw;}),
+        Entrance(RR_BOTW_MQ_WEST_INNER_ROOM, []{return logic->Get(LOGIC_BOTW_MQ_OPENED_WEST_ROOM);}),
     });
 
     areaTable[RR_BOTW_MQ_EAST_INNER_ROOM] = Region("Bottom of the Well East Inner Room", SCENE_BOTTOM_OF_THE_WELL, {}, {
@@ -343,7 +343,7 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTW_MQ_WEST_LEDGE] = Region("Bottom of the Well MQ West Ledge", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
         //Exits
         //Climb always needed in case water is lowered out of logic
-        Entrance(RR_BOTW_MQ_PERIMETER,   []{return (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE) || 
+        Entrance(RR_BOTW_MQ_PERIMETER,   []{return (logic->Get(LOGIC_BOTW_LOWERED_WATER)|| logic->HasItem(RG_BRONZE_SCALE) || 
                                                     (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))/* && CanClimb*/);}),
         Entrance(RR_BOTW_MQ_COFFIN_ROOM, []{return logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 2);}),
     });
@@ -378,7 +378,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_MQ_SE_CRAWLSPACE_LOWER] = Region("Bottom of the Well MQ SE Crawlspace Lower", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
         //Exits
-        Entrance(RR_BOTW_MQ_PERIMETER,           []{return logic->IsChild/*CanCrawl()*/ && (logic->LoweredWaterInsideBotw || logic->HasItem(RG_BRONZE_SCALE));}),
+        Entrance(RR_BOTW_MQ_PERIMETER,           []{return logic->IsChild/*CanCrawl()*/ && (logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->HasItem(RG_BRONZE_SCALE));}),
         Entrance(RR_BOTW_MQ_SE_CRAWLSPACE_UPPER, []{return true/*CanClimb*/;}),
     });
 
