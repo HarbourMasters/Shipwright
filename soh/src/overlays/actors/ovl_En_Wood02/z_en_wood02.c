@@ -357,16 +357,18 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
             dropsSpawnPt = this->actor.world.pos;
             dropsSpawnPt.y += 200.0f;
 
-            if ((this->unk_14C >= 0) && (this->unk_14C < 0x64)) {
-                if (GameInteractor_Should(VB_TREE_DROP_COLLECTIBLE, true, this)) {
-                    Item_DropCollectibleRandom(play, &this->actor, &dropsSpawnPt, this->unk_14C << 4);
+            if (GameInteractor_Should(VB_TREE_DROP_ITEM, true, this)) {
+                if ((this->unk_14C >= 0) && (this->unk_14C < 0x64)) {
+                    if (GameInteractor_Should(VB_TREE_DROP_COLLECTIBLE, true, this)) {
+                        Item_DropCollectibleRandom(play, &this->actor, &dropsSpawnPt, this->unk_14C << 4);
+                    }
+                } else if (this->actor.home.rot.z != 0) {
+                    this->actor.home.rot.z &= 0x1FFF;
+                    this->actor.home.rot.z |= 0xE000;
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y, dropsSpawnPt.z, 0,
+                                this->actor.world.rot.y, 0, this->actor.home.rot.z, true);
+                    this->actor.home.rot.z = 0;
                 }
-            } else if (this->actor.home.rot.z != 0) {
-                this->actor.home.rot.z &= 0x1FFF;
-                this->actor.home.rot.z |= 0xE000;
-                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y, dropsSpawnPt.z, 0,
-                            this->actor.world.rot.y, 0, this->actor.home.rot.z, true);
-                this->actor.home.rot.z = 0;
             }
 
             // Spawn falling leaves
@@ -457,12 +459,13 @@ void EnWood02_Draw(Actor* thisx, PlayState* play) {
     }
 
     Gfx_SetupDL_25Xlu(gfxCtx);
-
-    if ((this->actor.params == WOOD_LEAF_GREEN) || (this->actor.params == WOOD_LEAF_YELLOW)) {
+    if (GameInteractor_Should(VB_TREE_SETUP_DRAW,
+                              (this->actor.params == WOOD_LEAF_GREEN) || (this->actor.params == WOOD_LEAF_YELLOW),
+                              this)) {
         Gfx_SetupDL_25Opa(gfxCtx);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, red, green, blue, 127);
         Gfx_DrawDListOpa(play, object_wood02_DL_000700);
-    } else if (D_80B3BF70[this->drawType & 0xF] != NULL) {
+    } else if (GameInteractor_Should(VB_TREE_SETUP_DRAW, D_80B3BF70[this->drawType & 0xF] != NULL, this)) {
         Gfx_DrawDListOpa(play, D_80B3BF54[this->drawType & 0xF]);
         gDPSetEnvColor(POLY_XLU_DISP++, red, green, blue, 0);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

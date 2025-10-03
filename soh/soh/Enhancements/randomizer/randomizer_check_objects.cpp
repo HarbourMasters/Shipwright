@@ -189,6 +189,10 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleCrates"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_SMALL_CRATE ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleCrates"), RO_GENERIC_NO)) &&
+            (location.GetRCType() != RCTYPE_TREE ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleTrees"), RO_GENERIC_NO)) &&
+            (location.GetRCType() != RCTYPE_NLTREE ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleTrees"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_FISH ||
              ctx->GetFishsanity()->GetFishLocationIncluded(&location, FSO_SOURCE_CVARS)) &&
             (location.GetRCType() != RCTYPE_ADULT_TRADE ||

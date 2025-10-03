@@ -95,6 +95,7 @@ class Logic {
     bool CanBreakPots();
     bool CanBreakCrates();
     bool CanBreakSmallCrates();
+    bool CanBonkTrees();
     bool HasFireSource();
     bool HasFireSourceWithTorch();
     bool TradeQuestStep(RandomizerGet rg);

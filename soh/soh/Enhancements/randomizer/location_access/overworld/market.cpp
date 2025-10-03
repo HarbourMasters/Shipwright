@@ -27,6 +27,7 @@ void RegionTable_Init_Market() {
         LOCATION(RC_MK_NEAR_BAZAAR_CRATE_2,      logic->IsChild /*&& logic->CanRoll()*/),
         LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_1, logic->IsChild /*&& logic->CanRoll()*/),
         LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_2, logic->IsChild /*&& logic->CanRoll()*/),
+        LOCATION(RC_MARKET_TREE,                 logic->IsChild && logic->CanBonkTrees()),
     }, {
         //Exits
         Entrance(RR_MARKET_ENTRANCE,            []{return true;}),
