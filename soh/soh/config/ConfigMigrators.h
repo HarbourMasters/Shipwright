@@ -1522,7 +1522,7 @@ std::vector<Migration> version3Migrations = {
 };
 
 std::vector<Migration> version4Migrations = {
-    { MigrationAction::Rename, "gSeqNameOverlay", "gAudioEditor.SeqNameNotification" },
-    { MigrationAction::Rename, "gSeqNameOverlayDuration", "gAudioEditor.SeqNameNotificationDuration" },
+    { MigrationAction::Rename, "gAudioEditor.SeqNameOverlay", "gAudioEditor.SeqNameNotification" },
+    { MigrationAction::Rename, "gAudioEditor.SeqNameOverlayDuration", "gAudioEditor.SeqNameNotificationDuration" },
 };
 } // namespace SOH
