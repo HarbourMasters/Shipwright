@@ -9,6 +9,8 @@ ConfigVersion2Updater::ConfigVersion2Updater() : ConfigVersionUpdater(2) {
 }
 ConfigVersion3Updater::ConfigVersion3Updater() : ConfigVersionUpdater(3) {
 }
+ConfigVersion4Updater::ConfigVersion4Updater() : ConfigVersionUpdater(4) {
+}
 
 void ConfigVersion1Updater::Update(Ship::Config* conf) {
     if (conf->GetInt("Window.Width", 640) == 640) {
@@ -105,6 +107,15 @@ void ConfigVersion3Updater::Update(Ship::Config* conf) {
     }
 
     for (Migration migration : version3Migrations) {
+        if (migration.action == MigrationAction::Rename) {
+            CVarCopy(migration.from.c_str(), migration.to.value().c_str());
+        }
+        CVarClear(migration.from.c_str());
+    }
+}
+
+void ConfigVersion4Updater::Update(Ship::Config* conf) {
+    for (Migration migration : version4Migrations) {
         if (migration.action == MigrationAction::Rename) {
             CVarCopy(migration.from.c_str(), migration.to.value().c_str());
         }
