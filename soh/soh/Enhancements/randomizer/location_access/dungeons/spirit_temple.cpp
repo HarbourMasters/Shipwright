@@ -34,7 +34,7 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_1F_WEST] = Region("Spirit Temple 1F West", SCENE_SPIRIT_TEMPLE, {
         //Events
-        EventAccess(&logic->NutCrate, []{return true;}),
+        EventAccess(LOGIC_NUT_CRATE, []{return true;}),
     }, {}, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_LOBBY,               []{return logic->IsChild/*CanUse(RG_CRAWL)*/;}),
@@ -109,21 +109,21 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_BEFORE_CHILD_CLIMB_SMALL_CRATE_2, logic->CanBreakSmallCrates()),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_1F_WEST,     []{return logic->IsChild/*CanUse(RG_CRAWL)*/;}),
+        Entrance(RR_SPIRIT_TEMPLE_1F_WEST,      []{return logic->IsChild/*CanUse(RG_CRAWL)*/;}),
         Entrance(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR, []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 1);}),
     });
 
-    areaTable[RR_SPIRIT_TEMPLE_WEST_CLIMB_BASE] = Region("Spirit Temple Child Climb Base", SCENE_SPIRIT_TEMPLE, {}, {
+    areaTable[RR_SPIRIT_TEMPLE_WEST_CLIMB_BASE] = Region("Spirit Temple West Climb Base", SCENE_SPIRIT_TEMPLE, {}, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_GS_SUN_ON_FLOOR_ROOM, SpiritShared(RR_SPIRIT_TEMPLE_WEST_CLIMB_BASE, []{return logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG);})),
         LOCATION(RC_SPIRIT_TEMPLE_CHILD_CLIMB_POT_1,    SpiritShared(RR_SPIRIT_TEMPLE_WEST_CLIMB_BASE, []{return logic->CanBreakPots();})),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_1F_BOXES,    []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 5);}),
+        Entrance(RR_SPIRIT_TEMPLE_1F_BOXES,     []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 5);}),
         Entrance(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR, []{return true/*CanClimbHigh()*/;}),
     });
 
-    areaTable[RR_SPIRIT_TEMPLE_SUN_ON_FLOOR] = Region("Spirit Temple Broken Wall", SCENE_SPIRIT_TEMPLE, {}, {
+    areaTable[RR_SPIRIT_TEMPLE_SUN_ON_FLOOR] = Region("Spirit Temple Sun On Floor", SCENE_SPIRIT_TEMPLE, {}, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_CHILD_CLIMB_NORTH_CHEST, SpiritShared(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR, []{return logic->CanHitSwitch(ED_BOMB_THROW);})),
         LOCATION(RC_SPIRIT_TEMPLE_CHILD_CLIMB_EAST_CHEST,  SpiritShared(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR, []{return logic->CanHitSwitch(ED_BOMB_THROW);})),
@@ -553,7 +553,7 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_LEFT_CHEST,  true),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST,   Here(RR_SPIRIT_TEMPLE_MQ_LOBBY, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_RIGHT_CHEST,  logic->CanHitSwitch(ED_BOOMERANG)),
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_RIGHT_CHEST, logic->Spirit1FSilverRupees),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_RIGHT_CHEST, logic->Get(LOGIC_SPIRIT_1F_SILVER_RUPEES)),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_POT_1,             logic->CanBreakPots()),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_POT_2,             logic->CanBreakPots()),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_POT_3,             logic->CanBreakPots()),
@@ -569,10 +569,10 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_1F_WEST] = Region("Spirit Temple MQ 1F West", SCENE_SPIRIT_TEMPLE, {
         //Events
         //not technically a rusted switch, but a boulder through a wall, but is part of the same trick on N64
-        EventAccess(&logic->MQSpiritCrawlBoulder, []{return logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_RUSTED_SWITCHES) && logic->CanUse(RG_MEGATON_HAMMER));}),
+        EventAccess(LOGIC_SPIRIT_MQ_CRAWL_BOULDER, []{return logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_RUSTED_SWITCHES) && logic->CanUse(RG_MEGATON_HAMMER));}),
     }, {
         //Locations
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST, logic->MQSpiritTimeTravelChest),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST, logic->Get(LOGIC_SPIRIT_MQ_TIME_TRAVEL_CHEST)),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_SLUGMA_POT,          logic->CanBreakPots()),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_LEFT_HEART,          logic->CanHitEyeTargets()),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_RIGHT_HEART,         logic->CanHitEyeTargets()),
@@ -582,7 +582,7 @@ void RegionTable_Init_SpiritTemple() {
         Entrance(RR_SPIRIT_TEMPLE_MQ_LOBBY,                 []{return logic->IsChild/*logic->CanUse(RG_CRAWL)*/;}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_1F_GIBDO_ROOM_SOUTH,   []{return Here(RR_SPIRIT_TEMPLE_MQ_1F_WEST, []{return logic->CanKillEnemy(RE_TORCH_SLUG);});}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_SOUTH,        []{return Here(RR_SPIRIT_TEMPLE_MQ_1F_WEST, []{return logic->CanKillEnemy(RE_TORCH_SLUG);});}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_WEST_1F_RUSTED_SWITCH, []{return logic->IsChild/*logic->CanUse(RG_CRAWL)*/ && logic->MQSpiritCrawlBoulder;}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_WEST_1F_RUSTED_SWITCH, []{return logic->IsChild/*logic->CanUse(RG_CRAWL)*/ && logic->Get(LOGIC_SPIRIT_MQ_CRAWL_BOULDER);}),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_1F_GIBDO_ROOM_SOUTH] = Region("Spirit Temple MQ 1F Gibdo Room South", SCENE_SPIRIT_TEMPLE, {
@@ -610,7 +610,7 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_TURNTABLE_ROOM] = Region("Spirit Temple MQ Turntable Room", SCENE_SPIRIT_TEMPLE, {
         //Events
-        EventAccess(&logic->FairyPot, []{return Here(RR_SPIRIT_TEMPLE_MQ_TURNTABLE_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);});}),
+        EventAccess(LOGIC_FAIRY_POT, []{return Here(RR_SPIRIT_TEMPLE_MQ_TURNTABLE_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);});}),
     }, {
         //Locations
         //implies logic->CanBreakPots()
@@ -626,11 +626,11 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_NORTH] = Region("Spirit Temple MQ Map Room North", SCENE_SPIRIT_TEMPLE, {
         //Events
-        EventAccess(&logic->MQSpiritMapRoomEnemies, []{return /*(*/logic->CanKillEnemy(RE_ANUBIS) && logic->CanKillEnemy(RE_KEESE)/*) && (str0 || CanUse(RG_HOVER_BOOTS) || CanUse(RG_HOOKSHOT) || (logic->IsAdult && CanBunnyJump())) ||
+        EventAccess(LOGIC_SPIRIT_MQ_MAP_ROOM_ENEMIES, []{return /*(*/logic->CanKillEnemy(RE_ANUBIS) && logic->CanKillEnemy(RE_KEESE)/*) && (str0 || CanUse(RG_HOVER_BOOTS) || CanUse(RG_HOOKSHOT) || (logic->IsAdult && CanBunnyJump())) ||
                                                                 logic->CanKillEnemy(RE_ANUBIS, ED_BOOMERANG) && logic->CanKillEnemy(RE_KEESE, ED_FAR)*/;}),
     }, {
         //Locations
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_MAP_ROOM_ENEMY_CHEST,  logic->MQSpiritMapRoomEnemies),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_MAP_ROOM_ENEMY_CHEST, logic->Get(LOGIC_SPIRIT_MQ_MAP_ROOM_ENEMIES)),
     }, {
         //Exits
         //Stalfos room blocks you in with fire until you kill the stalfos, which won't spawn from behind the fire
@@ -641,7 +641,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_SOUTH] = Region("Spirit Temple MQ Map Room South", SCENE_SPIRIT_TEMPLE, {
         //Events
         //You can lure the keese over by aggroing them with dins if you use it as close to the torch keese as possible, but it's a trick as it's not intuitive and basically never comes up
-        EventAccess(&logic->MQSpiritMapRoomEnemies, []{return logic->CanKillEnemy(RE_ANUBIS) && logic->CanKillEnemy(RE_KEESE, ED_BOOMERANG);}),
+        EventAccess(LOGIC_SPIRIT_MQ_MAP_ROOM_ENEMIES, []{return logic->CanKillEnemy(RE_ANUBIS) && logic->CanKillEnemy(RE_KEESE, ED_BOOMERANG);}),
     }, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_MQ_MAP_CHEST, true),
@@ -654,11 +654,11 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_WEST_1F_RUSTED_SWITCH] = Region("Spirit Temple MQ West 1F Rusted Switch", SCENE_SPIRIT_TEMPLE, {
         //Events
-        EventAccess(&logic->MQSpiritTimeTravelChest, []{return logic->CanUse(RG_MEGATON_HAMMER);}),
-        EventAccess(&logic->MQSpiritCrawlBoulder,    []{return logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_RUSTED_SWITCHES) && logic->CanUse(RG_MEGATON_HAMMER));}),
+        EventAccess(LOGIC_SPIRIT_MQ_TIME_TRAVEL_CHEST, []{return logic->CanUse(RG_MEGATON_HAMMER);}),
+        EventAccess(LOGIC_SPIRIT_MQ_CRAWL_BOULDER,     []{return logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_RUSTED_SWITCHES) && logic->CanUse(RG_MEGATON_HAMMER));}),
     }, {}, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_WEST,         []{return logic->IsChild/*logic->CanUse(RG_CRAWL)*/ && logic->MQSpiritCrawlBoulder;}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_WEST,         []{return logic->IsChild/*logic->CanUse(RG_CRAWL)*/ && logic->Get(LOGIC_SPIRIT_MQ_CRAWL_BOULDER);}),
         //This tracks possible child access, if adult has not entered STATUE_ROOM. Certain Child Access is checked for separately as 7 Keys
         Entrance(RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE, []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 1);}),
     });
@@ -886,24 +886,24 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_2F] = Region("Spirit Temple MQ Three Suns Room 2F", SCENE_SPIRIT_TEMPLE, {
         //Events
         //implies logic->CanKillEnemy(RE_WALLMASTER). If we have lights, we can kill stalfos and wallmasters with bow
-        EventAccess(&logic->MQSpirit3SunsEnemies, []{return (logic->CanUse(RG_MIRROR_SHIELD) && logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2)) || logic->SunlightArrows();}),
+        EventAccess(LOGIC_SPIRIT_MQ_3SUNS_ENEMIES, []{return (logic->CanUse(RG_MIRROR_SHIELD) && logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2)) || logic->SunlightArrows();}),
     }, {}, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_EAST,   []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_1F, []{return logic->MQSpirit3SunsEnemies;}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_1F, []{return logic->Get(LOGIC_SPIRIT_MQ_3SUNS_ENEMIES);}),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_1F] = Region("Spirit Temple MQ Three Suns Room 1F", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
         //It is possible to clip through here with longshot by aiming high enough
-        Entrance(RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_2F, []{return logic->MQSpirit3SunsEnemies/* && CanClimbHigh()*/;}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_2F, []{return logic->Get(LOGIC_SPIRIT_MQ_3SUNS_ENEMIES)/* && CanClimbHigh()*/;}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_1F_EAST,            []{return true;}),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_1F_EAST] = Region("Spirit Temple MQ 1F East", SCENE_SPIRIT_TEMPLE, {
         //Events
         //Assumes RR_SPIRIT_TEMPLE_MQ_LOBBY access
-        EventAccess(&logic->Spirit1FSilverRupees, []{return logic->CanUse(RG_MEGATON_HAMMER);}),
+        EventAccess(LOGIC_SPIRIT_1F_SILVER_RUPEES, []{return logic->CanUse(RG_MEGATON_HAMMER);}),
     }, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_MQ_EARLY_ADULT_POT_1, logic->CanBreakPots()),
@@ -1135,15 +1135,15 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_BOSS_ROOM] = Region("Spirit Temple Boss Room", SCENE_SPIRIT_TEMPLE_BOSS, {
         // Events
-        EventAccess(&logic->SpiritTempleClear, []{return logic->CanKillEnemy(RE_TWINROVA);}),
+        EventAccess(LOGIC_SPIRIT_TEMPLE_CLEAR, []{return logic->CanKillEnemy(RE_TWINROVA);}),
     }, {
         // Locations
-        LOCATION(RC_SPIRIT_TEMPLE_TWINROVA_HEART, logic->SpiritTempleClear),
-        LOCATION(RC_TWINROVA,                     logic->SpiritTempleClear),
+        LOCATION(RC_SPIRIT_TEMPLE_TWINROVA_HEART, logic->Get(LOGIC_SPIRIT_TEMPLE_CLEAR)),
+        LOCATION(RC_TWINROVA,                     logic->Get(LOGIC_SPIRIT_TEMPLE_CLEAR)),
     }, {
         // Exits
         Entrance(RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY, []{return false;}),
-        Entrance(RR_DESERT_COLOSSUS,             []{return logic->SpiritTempleClear;}, false),
+        Entrance(RR_DESERT_COLOSSUS,             []{return logic->Get(LOGIC_SPIRIT_TEMPLE_CLEAR);}, false),
     });
 
     // clang-format on

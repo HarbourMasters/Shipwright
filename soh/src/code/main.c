@@ -1,5 +1,6 @@
 #ifdef _WIN32
 #include <Windows.h>
+#include <locale.h>
 #endif
 
 #include "global.h"
@@ -52,6 +53,8 @@ int SDL_main(int argc, char** argv) {
 #ifndef _DEBUG
     ShowWindow(GetConsoleWindow(), SW_HIDE);
 #endif
+    // Allow non-ascii characters for Windows
+    setlocale(LC_ALL, ".UTF8");
 
 #else //_WIN32
 int main(int argc, char** argv) {

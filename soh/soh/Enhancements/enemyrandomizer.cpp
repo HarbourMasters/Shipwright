@@ -619,6 +619,7 @@ void FixClubMoblinScale(void* ptr) {
 
 void RegisterEnemyRandomizer() {
     COND_ID_HOOK(OnActorInit, ACTOR_EN_MB, CVAR_ENEMY_RANDOMIZER_VALUE, FixClubMoblinScale);
+
     // prevent dark link from triggering a voidout
     COND_VB_SHOULD(VB_TRIGGER_VOIDOUT, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
         Actor* actor = va_arg(args, Actor*);
@@ -643,6 +644,24 @@ void RegisterEnemyRandomizer() {
         Actor* darkLink = va_arg(args, Actor*);
 
         if (darkLink->xzDistToPlayer > 100.0f) {
+            *should = false;
+        }
+    });
+
+    // prevent dark link from interfering with ice floors
+    COND_VB_SHOULD(VB_SET_STATIC_PREV_FLOOR_TYPE, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        Player* playerOrDarkLink = va_arg(args, Player*);
+
+        if (playerOrDarkLink->actor.id != ACTOR_PLAYER) {
+            *should = false;
+        }
+    });
+
+    // prevent dark link from interfering with ice floors
+    COND_VB_SHOULD(VB_SET_STATIC_FLOOR_TYPE, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        Player* playerOrDarkLink = va_arg(args, Player*);
+
+        if (playerOrDarkLink->actor.id != ACTOR_PLAYER) {
             *should = false;
         }
     });
