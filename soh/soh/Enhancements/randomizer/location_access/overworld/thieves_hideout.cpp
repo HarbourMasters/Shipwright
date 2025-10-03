@@ -8,8 +8,8 @@ using namespace Rando;
 void RegionTable_Init_ThievesHideout() {
     areaTable[RR_TH_1_TORCH_CELL] = Region("Thieves Hideout 1 Torch Cell", SCENE_THIEVES_HIDEOUT, {
         //Events
-        EventAccess(&logic->THCouldFree1TorchCarpenter, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
-        EventAccess(&logic->THRescuedAllCarpenters,     []{return logic->SmallKeys(SCENE_THIEVES_HIDEOUT, ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) ? 4 : 1) && logic->THCouldFree1TorchCarpenter && logic->THCouldFreeDoubleCellCarpenter && logic->TH_CouldFreeDeadEndCarpenter && logic->THCouldRescueSlopeCarpenter;}),
+        EventAccess(LOGIC_TH_COULD_FREE_1_TORCH_CARPENTER, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
+        EventAccess(LOGIC_TH_RESCUED_ALL_CARPENTERS,       []{return logic->SmallKeys(SCENE_THIEVES_HIDEOUT, ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) ? 4 : 1) && logic->Get(LOGIC_TH_COULD_FREE_1_TORCH_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DOUBLE_CELL_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DEAD_END_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_SLOPE_CARPENTER);}),
     }, {
         //Locations
         LOCATION(RC_TH_1_TORCH_CARPENTER,      logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
@@ -17,7 +17,7 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_1_TORCH_CELL_MID_POT,   logic->CanBreakPots()),
         LOCATION(RC_TH_1_TORCH_CELL_LEFT_POT,  logic->CanBreakPots()),
         LOCATION(RC_TH_1_TORCH_CELL_CRATE,     logic->CanBreakCrates()),
-        LOCATION(RC_TH_FREED_CARPENTERS,       logic->THRescuedAllCarpenters),
+        LOCATION(RC_TH_FREED_CARPENTERS,       logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS)),
     }, {
         //Exits
         Entrance(RR_GF_OUTSKIRTS,   []{return true;}),
@@ -26,8 +26,8 @@ void RegionTable_Init_ThievesHideout() {
 
     areaTable[RR_TH_DOUBLE_CELL] = Region("Thieves Hideout Double Cell", SCENE_THIEVES_HIDEOUT, {
         //Events
-        EventAccess(&logic->THCouldFreeDoubleCellCarpenter, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
-        EventAccess(&logic->THRescuedAllCarpenters,         []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && logic->SmallKeys(SCENE_THIEVES_HIDEOUT, 4) && logic->THCouldFree1TorchCarpenter && logic->THCouldFreeDoubleCellCarpenter && logic->TH_CouldFreeDeadEndCarpenter && logic->THCouldRescueSlopeCarpenter;}),
+        EventAccess(LOGIC_TH_COULD_FREE_DOUBLE_CELL_CARPENTER, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
+        EventAccess(LOGIC_TH_RESCUED_ALL_CARPENTERS,           []{return logic->SmallKeys(SCENE_THIEVES_HIDEOUT, ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) ? 4 : 1) && logic->Get(LOGIC_TH_COULD_FREE_1_TORCH_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DOUBLE_CELL_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DEAD_END_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_SLOPE_CARPENTER);}),
     }, {
         //Locations
         LOCATION(RC_TH_DOUBLE_CELL_CARPENTER,      logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
@@ -40,7 +40,7 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_LEFTMOST_JAILED_POT,        logic->CanBreakPots()),
         LOCATION(RC_TH_DOUBLE_CELL_LEFT_CRATE,     logic->CanBreakCrates()),
         LOCATION(RC_TH_DOUBLE_CELL_RIGHT_CRATE,    logic->CanBreakCrates()),
-        LOCATION(RC_TH_FREED_CARPENTERS,           logic->THRescuedAllCarpenters),
+        LOCATION(RC_TH_FREED_CARPENTERS,           logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS)),
     }, {
         //Exits
         Entrance(RR_GF_OUTSKIRTS,   []{return true;}),
@@ -49,13 +49,13 @@ void RegionTable_Init_ThievesHideout() {
 
     areaTable[RR_TH_DEAD_END_CELL] = Region("Thieves Hideout Dead End Cell", SCENE_THIEVES_HIDEOUT, {
         //Events
-        EventAccess(&logic->TH_CouldFreeDeadEndCarpenter, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
-        EventAccess(&logic->THRescuedAllCarpenters,       []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && logic->SmallKeys(SCENE_THIEVES_HIDEOUT, 4) && logic->THCouldFree1TorchCarpenter && logic->THCouldFreeDoubleCellCarpenter && logic->TH_CouldFreeDeadEndCarpenter && logic->THCouldRescueSlopeCarpenter;}),
+        EventAccess(LOGIC_TH_COULD_FREE_DEAD_END_CARPENTER, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
+        EventAccess(LOGIC_TH_RESCUED_ALL_CARPENTERS,        []{return logic->SmallKeys(SCENE_THIEVES_HIDEOUT, ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) ? 4 : 1) && logic->Get(LOGIC_TH_COULD_FREE_1_TORCH_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DOUBLE_CELL_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DEAD_END_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_SLOPE_CARPENTER);}),
     }, {
         //Locations
         LOCATION(RC_TH_DEAD_END_CARPENTER,  logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
         LOCATION(RC_TH_DEAD_END_CELL_CRATE, logic->CanBreakCrates()),
-        LOCATION(RC_TH_FREED_CARPENTERS,    logic->THRescuedAllCarpenters),
+        LOCATION(RC_TH_FREED_CARPENTERS,    logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS)),
     }, {
         //Exits
         Entrance(RR_GF_BELOW_GS, []{return true;}),
@@ -63,14 +63,14 @@ void RegionTable_Init_ThievesHideout() {
 
     areaTable[RR_TH_STEEP_SLOPE_CELL] = Region("Thieves Hideout Steep Slope Cell", SCENE_THIEVES_HIDEOUT, {
         //Events
-        EventAccess(&logic->THCouldRescueSlopeCarpenter, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
-        EventAccess(&logic->THRescuedAllCarpenters,      []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) && logic->SmallKeys(SCENE_THIEVES_HIDEOUT, 4) && logic->THCouldFree1TorchCarpenter && logic->THCouldFreeDoubleCellCarpenter && logic->TH_CouldFreeDeadEndCarpenter && logic->THCouldRescueSlopeCarpenter;}),
+        EventAccess(LOGIC_TH_COULD_FREE_SLOPE_CARPENTER, []{return logic->CanKillEnemy(RE_GERUDO_WARRIOR);}),
+        EventAccess(LOGIC_TH_RESCUED_ALL_CARPENTERS,     []{return logic->SmallKeys(SCENE_THIEVES_HIDEOUT, ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) ? 4 : 1) && logic->Get(LOGIC_TH_COULD_FREE_1_TORCH_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DOUBLE_CELL_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DEAD_END_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_SLOPE_CARPENTER);}),
     }, {
         //Locations
         LOCATION(RC_TH_STEEP_SLOPE_CARPENTER, logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
         LOCATION(RC_TH_STEEP_SLOPE_RIGHT_POT, logic->CanBreakPots()),
         LOCATION(RC_TH_STEEP_SLOPE_LEFT_POT,  logic->CanBreakPots()),
-        LOCATION(RC_TH_FREED_CARPENTERS,      logic->THRescuedAllCarpenters),
+        LOCATION(RC_TH_FREED_CARPENTERS,      logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS)),
     }, {
         //Exits
         Entrance(RR_GF_ABOVE_GTG,          []{return true;}),

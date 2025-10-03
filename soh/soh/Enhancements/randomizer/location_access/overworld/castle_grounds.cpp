@@ -18,13 +18,13 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_HYRULE_CASTLE_GROUNDS] = Region("Hyrule Castle Grounds", SCENE_HYRULE_CASTLE, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
-        EventAccess(&logic->ButterflyFairy,   []{return logic->CanUse(RG_STICKS);}),
-        EventAccess(&logic->BugRock,          []{return true;}),
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
+        EventAccess(LOGIC_BUTTERFLY_FAIRY,   []{return logic->CanUse(RG_STICKS);}),
+        EventAccess(LOGIC_BUG_ROCK,          []{return true;}),
     }, {
         //Locations
         LOCATION(RC_HC_MALON_EGG,                        true),
-        LOCATION(RC_HC_GS_TREE,                          logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE)),
+        LOCATION(RC_HC_GS_TREE,                          logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE) && logic->CanBonkTrees()),
         LOCATION(RC_HC_MALON_GOSSIP_STONE_FAIRY,         logic->CallGossipFairy()),
         LOCATION(RC_HC_MALON_GOSSIP_STONE_FAIRY_BIG,     logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
@@ -33,6 +33,16 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE,           true),
         LOCATION(RC_HC_GRASS_1,                          logic->CanCutShrubs()),
         LOCATION(RC_HC_GRASS_2,                          logic->CanCutShrubs()),
+        LOCATION(RC_HC_GROTTO_TREE,                      logic->CanBonkTrees()),
+        LOCATION(RC_HC_NL_TREE_1,                        false),
+        LOCATION(RC_HC_NL_TREE_2,                        false),
+        LOCATION(RC_HC_SKULLTULA_TREE,                   logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_1,               logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_2,               logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_3,               logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_4,               logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_5,               logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_6,               logic->CanBonkTrees()),
     }, {
         //Exits
         Entrance(RR_CASTLE_GROUNDS,          []{return true;}),
@@ -69,9 +79,9 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_HC_STORMS_GROTTO_BEHIND_WALLS] = Region("HC Storms Grotto Behind Walls", SCENE_GROTTOS, {
         //Events
-        EventAccess(&logic->NutPot,           []{return true;}),
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
-        EventAccess(&logic->WanderingBugs,    []{return true;}),
+        EventAccess(LOGIC_NUT_POT,           []{return true;}),
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
+        EventAccess(LOGIC_WANDERING_BUGS,    []{return true;}),
     }, {
         //Locations
         LOCATION(RC_HC_GS_STORMS_GROTTO,                     logic->HookshotOrBoomerang()),
@@ -89,7 +99,7 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_GANONS_CASTLE_GROUNDS] = Region("Ganon's Castle Grounds", SCENE_OUTSIDE_GANONS_CASTLE, {
         //Events
-        EventAccess(&logic->BuiltRainbowBridge, []{return logic->CanBuildRainbowBridge();}),
+        EventAccess(LOGIC_BUILD_RAINBOW_BRIDGE, []{return logic->CanBuildRainbowBridge();}),
     }, {
         //Locations
         LOCATION(RC_OGC_GS, logic->CanJumpslashExceptHammer() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)),
@@ -97,7 +107,7 @@ void RegionTable_Init_CastleGrounds() {
         //Exits
         Entrance(RR_CASTLE_GROUNDS,           []{return logic->AtNight;}),
         Entrance(RR_OGC_GREAT_FAIRY_FOUNTAIN, []{return logic->CanUse(RG_GOLDEN_GAUNTLETS) && logic->AtNight;}),
-        Entrance(RR_GANONS_CASTLE_LEDGE,      []{return logic->BuiltRainbowBridge;}),
+        Entrance(RR_GANONS_CASTLE_LEDGE,      []{return logic->Get(LOGIC_BUILD_RAINBOW_BRIDGE);}),
     });
 
     areaTable[RR_OGC_GREAT_FAIRY_FOUNTAIN] = Region("OGC Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, {}, {
@@ -116,7 +126,7 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_GANONS_CASTLE_LEDGE] = Region("Ganon's Castle Ledge", SCENE_OUTSIDE_GANONS_CASTLE, {}, {}, {
         // Exits
-        Entrance(RR_GANONS_CASTLE_GROUNDS,  []{return logic->BuiltRainbowBridge;}),
+        Entrance(RR_GANONS_CASTLE_GROUNDS,  []{return logic->Get(LOGIC_BUILD_RAINBOW_BRIDGE);}),
         Entrance(RR_GANONS_CASTLE_ENTRYWAY, []{return logic->IsAdult;}),
     });
 

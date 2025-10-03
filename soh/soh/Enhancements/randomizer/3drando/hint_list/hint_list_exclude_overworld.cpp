@@ -2102,6 +2102,30 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                             /*german*/ "Man erzählt sich, daß eine #Kiste im Labor am See# #[[1]]# enthielte.",
                                             /*french*/ "Selon moi, une #caisse dans un laboratoire# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_TREE_HYRULE_FIELD] =
+        HintText(CustomMessage("They say that a #tree in Hyrule Field# contains #[[1]]#.",
+                               /*german*/ "",
+                               /*french*/ "Selon moi, un #arbre dans la Plaine d'Hyrule# cache #[[1]]#.", { QM_RED, QM_GREEN }));
+    hintTextTable[RHT_TREE_MARKET] =
+        HintText(CustomMessage("They say that a #tree in Hyrule Market# contains #[[1]]#.",
+                               /*german*/ "",
+                               /*french*/ "Selon moi, un #arbre sur la Place du Marché# cache #[[1]]#.", { QM_RED, QM_GREEN }));
+    hintTextTable[RHT_TREE_HYRULE_CASTLE] =
+        HintText(CustomMessage("They say that a #tree in Hyrule Castle# contains #[[1]]#.",
+                               /*german*/ "",
+                               /*french*/ "Selon moi, un #arbre au Château d'Hyrule# cache #[[1]]#.", { QM_RED, QM_GREEN }));
+    hintTextTable[RHT_TREE_ZORAS_RIVER] =
+        HintText(CustomMessage("They say that a #tree in Zora's River# contains #[[1]]#.",
+                               /*german*/ "",
+                               /*french*/ "Selon moi, un #arbre à la Rivière Zora# cache #[[1]]#.", { QM_RED, QM_GREEN }));
+    hintTextTable[RHT_TREE_ZORAS_FOUNTAIN] =
+        HintText(CustomMessage("They say that a #tree in Zora's Fountain# contains #[[1]]#.",
+                               /*german*/ "",
+                               /*french*/ "Selon moi, un #arbre à la Fontaine Zora# cache #[[1]]#.", { QM_RED, QM_GREEN }));
+    hintTextTable[RHT_TREE_LON_LON_RANCH] =
+        HintText(CustomMessage("They say that a #tree in Lon Lon Ranch# contains #[[1]]#.",
+                               /*german*/ "",
+                               /*french*/ "Selon moi, un #arbre au Ranch Lon Lon# cache #[[1]]#.", { QM_RED, QM_GREEN }));
     // clang-format on
 }
 } // namespace Rando

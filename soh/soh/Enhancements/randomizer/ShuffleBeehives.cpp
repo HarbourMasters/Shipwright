@@ -55,7 +55,10 @@ void ObjComb_RandomizerWait(ObjComb* objComb, PlayState* play) {
     if ((objComb->collider.base.acFlags & AC_HIT) != 0) {
         objComb->collider.base.acFlags &= ~AC_HIT;
         s32 dmgFlags = objComb->collider.elements[0].info.acHitInfo->toucher.dmgFlags;
-        if (dmgFlags & 0x4001F866) {
+
+        bool slingBowDmg = RAND_GET_OPTION(RSK_SLINGBOW_BREAK_BEEHIVES) && (dmgFlags & (DMG_ARROW | DMG_SLINGSHOT));
+
+        if ((dmgFlags & 0x4001F866) && !slingBowDmg) {
             objComb->unk_1B0 = 1500;
         } else {
             ObjComb_Break(objComb, play);

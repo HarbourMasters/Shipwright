@@ -1,5 +1,6 @@
 #include "SohInputEditorWindow.h"
 #include <utils/StringHelper.h>
+#include "graphic/Fast3D/Fast3dWindow.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
@@ -15,6 +16,7 @@ using namespace UIWidgets;
 
 static WidgetInfo freeLook;
 static WidgetInfo mouseControl;
+static WidgetInfo mouseAutoCapture;
 static WidgetInfo rightStickOcarina;
 static WidgetInfo dpadOcarina;
 static WidgetInfo dpadPause;
@@ -1366,6 +1368,9 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
     ImVec2 cursor = ImGui::GetCursorPos();
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
     SohGui::mSohMenu->MenuDrawItem(mouseControl, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+    cursor = ImGui::GetCursorPos();
+    ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+    SohGui::mSohMenu->MenuDrawItem(mouseAutoCapture, ImGui::GetContentRegionAvail().x, THEME_COLOR);
 
     Ship::GuiWindow::BeginGroupPanel("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
     CVarCheckbox("Right Stick Aiming", CVAR_SETTING("Controls.RightStickAim"),
@@ -1914,12 +1919,34 @@ void RegisterInputEditorWidgets() {
 
     mouseControl = { .name = "Enable Mouse Controls", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     mouseControl.CVar(CVAR_SETTING("EnableMouse"))
+        .Callback([](WidgetInfo& info) {
+            bool enabled =
+                CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) && CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1);
+            auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
+            wnd->SetAutoCaptureMouse(enabled);
+        })
         .Options(
             CheckboxOptions()
                 .Color(THEME_COLOR)
                 .Tooltip("Allows for using the mouse to control the camera (must enable Free Look), "
-                         "aim with the shield, and perform quickspin attacks (quickly rotate the mouse then press B)"));
+                         "aim with the shield, and perform quickspin attacks (quickly rotate the mouse then press B)\n"
+                         "Press F2 to toggle mouse capture manually."));
     SohGui::mSohMenu->AddSearchWidget({ mouseControl, "Settings", "Controls", "Camera Controls" });
+
+    mouseAutoCapture = { .name = "Auto Capture Mouse Input", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    mouseAutoCapture.CVar(CVAR_SETTING("AutoCaptureMouse"))
+        .Callback([](WidgetInfo& info) {
+            bool enabled =
+                CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) && CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1);
+            auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
+            wnd->SetAutoCaptureMouse(enabled);
+        })
+        .Options(CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("When Mouse Controls are enabled, this toggles whether the program will automatically "
+                              "hide the cursor "
+                              "and capture mouse input when closing the menu."));
+    SohGui::mSohMenu->AddSearchWidget({ mouseAutoCapture, "Settings", "Controls", "Camera Controls" });
 
     rightStickOcarina = { .name = "Right Stick Ocarina Playback", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     rightStickOcarina.CVar(CVAR_SETTING("CustomOcarina.RightStick")).Options(CheckboxOptions().Color(THEME_COLOR));

@@ -186,6 +186,10 @@ void GameInteractor_ExecuteOnPlayDestroy() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDestroy>();
 }
 
+void GameInteractor_ExecuteOnPlayDrawBegin() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDrawBegin>();
+}
+
 void GameInteractor_ExecuteOnPlayDrawEnd() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDrawEnd>();
 }
