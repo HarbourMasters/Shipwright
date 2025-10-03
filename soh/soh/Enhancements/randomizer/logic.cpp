@@ -2412,7 +2412,7 @@ bool Logic::StatueRoomMQKeyLogic() {
     // without opening the Statue room to Broken Wall Room lock first
     // if adult can ever cross crawlspaces this becomes more complicated.
     return SmallKeys(SCENE_SPIRIT_TEMPLE,
-                     IsChild && ReverseSpiritChild && CanHitSwitch() /* && CanClimbHigh()*/ ? 6 : 7);
+                     IsChild && Get(LOGIC_REVERSE_SPIRIT_CHILD) && CanHitSwitch() /* && CanClimbHigh()*/ ? 6 : 7);
 }
 
 void Logic::Reset(bool resetSaveContext /*= true*/) {

@@ -667,22 +667,22 @@ bool SpiritCertainAccess(RandomizerRegion region) {
     if (logic->IsChild) {
         uint8_t keys = curRegionData.childKeys;
         uint8_t revKeys = curRegionData.childRevKeys;
-        bool knownFrontAccess = logic->ForwardsSpiritChild || !logic->IsReverseAccessPossible();
+        bool knownFrontAccess = logic->Get(LOGIC_FORWARDS_SPIRIT_CHILD) || !logic->IsReverseAccessPossible();
         // If we have enough keys that an age cannot be kept out, we have Certain Access
         // otherwise if we have entered in reverse and can reach from the face, we have Certain Access
         return ((knownFrontAccess && curRegionData.childAccess()) && logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys)) ||
-               ((logic->ReverseSpiritChild && curRegionData.reverseAccess()) &&
+               ((logic->Get(LOGIC_REVERSE_SPIRIT_CHILD) && curRegionData.reverseAccess()) &&
                 logic->SmallKeys(SCENE_SPIRIT_TEMPLE, revKeys)) ||
                (curRegionData.childAccess() && curRegionData.reverseAccess() &&
                 logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys > revKeys ? keys : revKeys));
     } else {
         uint8_t keys = curRegionData.adultKeys;
         uint8_t revKeys = curRegionData.adultRevKeys;
-        bool knownFrontAccess = logic->ForwardsSpiritAdult || !logic->IsReverseAccessPossible();
+        bool knownFrontAccess = logic->Get(LOGIC_FORWARDS_SPIRIT_ADULT) || !logic->IsReverseAccessPossible();
         // If we have enough keys that an age cannot be kept out, we have Certain Access
         // otherwise if we have entered in reverse and can reach from the face, we have Certain Access
         return ((knownFrontAccess && curRegionData.adultAccess()) && logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys)) ||
-               ((logic->ReverseSpiritAdult && curRegionData.reverseAccess()) &&
+               ((logic->Get(LOGIC_FORWARDS_SPIRIT_ADULT) && curRegionData.reverseAccess()) &&
                 logic->SmallKeys(SCENE_SPIRIT_TEMPLE, revKeys)) ||
                (curRegionData.adultAccess() && curRegionData.reverseAccess() &&
                 logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys > revKeys ? keys : revKeys));
