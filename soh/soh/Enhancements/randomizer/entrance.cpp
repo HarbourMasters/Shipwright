@@ -1222,7 +1222,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
                 }
             }
 
-            if (ctx->GetOption(RSK_SHUFFLE_GANON_TOWER_ENTRANCE).IsNot(RO_GENERIC_OFF)) {
+            if (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE).IsNot(RO_GENERIC_OFF)) {
                 AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::GanonTower));
                 if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                     for (Entrance* entrance : GetShuffleableEntrances(EntranceType::GanonTower)) {
@@ -1242,7 +1242,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
                 }
             }
 
-            if (ctx->GetOption(RSK_SHUFFLE_GANON_TOWER_ENTRANCE).IsNot(RO_GENERIC_OFF)) {
+            if (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE).IsNot(RO_GENERIC_OFF)) {
                 AddElementsToPool(entrancePools[EntranceType::AdultBoss],
                                   GetShuffleableEntrances(EntranceType::GanonTower));
                 if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {

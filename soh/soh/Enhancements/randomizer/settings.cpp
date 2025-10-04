@@ -142,7 +142,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SHUFFLE_ENTRANCES, "Shuffle Entrances");
     OPT_U8(RSK_SHUFFLE_DUNGEON_ENTRANCES, "Dungeon Entrances", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), mOptionDescriptions[RSK_SHUFFLE_DUNGEON_ENTRANCES], WidgetType::Combobox, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
     OPT_U8(RSK_SHUFFLE_BOSS_ENTRANCES, "Boss Entrances", {"Off", "Age Restricted", "Full"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), mOptionDescriptions[RSK_SHUFFLE_BOSS_ENTRANCES], WidgetType::Combobox, RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
-    OPT_BOOL(RSK_SHUFFLE_GANON_TOWER_ENTRANCE, "Ganon's Tower Entrance", CVAR_RANDOMIZER_SETTING("ShuffleGanonTowerEntrance"), mOptionDescriptions[RSK_SHUFFLE_GANON_TOWER_ENTRANCE]);
+    OPT_BOOL(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE, "Ganon's Tower Entrance", CVAR_RANDOMIZER_SETTING("ShuffleGanonTowerEntrance"), mOptionDescriptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE]);
     OPT_BOOL(RSK_SHUFFLE_OVERWORLD_ENTRANCES, "Overworld Entrances", CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES]);
     OPT_U8(RSK_SHUFFLE_INTERIOR_ENTRANCES, "Interior Entrances", {"Off", "Simple", "All"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), mOptionDescriptions[RSK_SHUFFLE_INTERIOR_ENTRANCES], WidgetType::Combobox, RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
     OPT_BOOL(RSK_SHUFFLE_GROTTO_ENTRANCES, "Grottos Entrances", CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), mOptionDescriptions[RSK_SHUFFLE_GROTTO_ENTRANCES]);
@@ -1216,7 +1216,7 @@ void Settings::CreateOptions() {
     mOptionGroups[RSG_SHUFFLE_ENTRANCES_IMGUI] = OptionGroup::SubGroup(
         "Shuffle Entrances",
         { &mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES], &mOptions[RSK_SHUFFLE_BOSS_ENTRANCES],
-          &mOptions[RSK_SHUFFLE_GANON_TOWER_ENTRANCE], &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES],
+          &mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE], &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES],
           &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES], &mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES],
           &mOptions[RSK_SHUFFLE_OWL_DROPS], &mOptions[RSK_SHUFFLE_WARP_SONGS], &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS],
           &mOptions[RSK_DECOUPLED_ENTRANCES], &mOptions[RSK_MIXED_ENTRANCE_POOLS], &mOptions[RSK_MIX_DUNGEON_ENTRANCES],
@@ -1451,7 +1451,7 @@ void Settings::CreateOptions() {
                                                                  &mOptions[RSK_SHUFFLE_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_BOSS_ENTRANCES],
-                                                                 &mOptions[RSK_SHUFFLE_GANON_TOWER_ENTRANCE],
+                                                                 &mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE],
                                                                  &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES],
@@ -2059,9 +2059,9 @@ void Settings::UpdateOptionProperties() {
     bool grottoShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF);
 
     if (!bossShuffle) {
-        mOptions[RSK_SHUFFLE_GANON_TOWER_ENTRANCE].Hide();
+        mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE].Hide();
     } else {
-        mOptions[RSK_SHUFFLE_GANON_TOWER_ENTRANCE].Unhide();
+        mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE].Unhide();
     }
 
     // Hide Mixed Entrances option if 1 or no applicable entrance shuffles are visible
@@ -2568,7 +2568,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     // If any of the individual shuffle settings are on, turn on the main Shuffle Entrances option
     if (mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES].IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
         mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].IsNot(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ||
-        mOptions[RSK_SHUFFLE_GANON_TOWER_ENTRANCE] || mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES] ||
+        mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE] || mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES] ||
         mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].IsNot(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) ||
         mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] || mOptions[RSK_SHUFFLE_OWL_DROPS] || mOptions[RSK_SHUFFLE_WARP_SONGS] ||
         mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]) {
@@ -2578,7 +2578,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     }
 
     if (mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-        mOptions[RSK_SHUFFLE_GANON_TOWER_ENTRANCE].Set(RO_GENERIC_OFF);
+        mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE].Set(RO_GENERIC_OFF);
     }
 
     if (mOptions[RSK_SHUFFLE_DUNGEON_REWARDS].Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
