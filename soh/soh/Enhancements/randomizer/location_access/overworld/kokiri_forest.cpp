@@ -93,6 +93,7 @@ void RegionTable_Init_KokiriForest() {
         //Events
         EventAccess(LOGIC_DEKU_BABA_STICKS,             []{return logic->CanGetDekuBabaSticks();}),
         EventAccess(LOGIC_DEKU_BABA_NUTS,               []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY,           []{return logic->CallGossipFairyExceptSuns();}),
         EventAccess(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD, []{return logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD);}),
     }, {
         //Locations
