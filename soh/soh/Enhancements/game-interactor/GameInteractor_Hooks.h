@@ -45,6 +45,7 @@ void GameInteractor_ExecuteOnPlayerShieldControl(float_t* sp50, float_t* sp54);
 void GameInteractor_ExecuteOnPlayerProcessStick();
 void GameInteractor_ExecuteOnShopSlotChangeHooks(uint8_t cursorIndex, int16_t price);
 void GameInteractor_ExecuteOnPlayDestroy();
+void GameInteractor_ExecuteOnPlayDrawBegin();
 void GameInteractor_ExecuteOnPlayDrawEnd();
 bool GameInteractor_Should(GIVanillaBehavior flag, uint32_t result, ...);
 
@@ -84,6 +85,9 @@ void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void));
 
 // Mark: - Pause Menu
 void GameInteractor_ExecuteOnKaleidoUpdate();
+
+// Mark: - Audio
+void GameInteractor_ExecuteOnSeqPlayerInit(int32_t playerIdx, int32_t seqId);
 
 #ifdef __cplusplus
 }

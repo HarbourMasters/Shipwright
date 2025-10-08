@@ -1520,4 +1520,9 @@ std::vector<Migration> version3Migrations = {
     { MigrationAction::Remove, "gPreset0" },
     { MigrationAction::Remove, "gPreset1" },
 };
+
+std::vector<Migration> version4Migrations = {
+    { MigrationAction::Rename, "gAudioEditor.SeqNameOverlay", "gAudioEditor.SeqNameNotification" },
+    { MigrationAction::Rename, "gAudioEditor.SeqNameOverlayDuration", "gAudioEditor.SeqNameNotificationDuration" },
+};
 } // namespace SOH

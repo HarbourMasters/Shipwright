@@ -79,6 +79,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     YREG(15) = 0;
     gSaveContext.worldMapArea = 0;
     OTRScene_ExecuteCommands(play, (SOH::Scene*)play->sceneSegment);
+
     GameInteractor_ExecuteAfterSceneCommands(play->sceneNum);
     Play_InitEnvironment(play, play->skyboxId);
     /* auto data = static_cast<LUS::Vertex*>(Ship::Context::GetInstance()

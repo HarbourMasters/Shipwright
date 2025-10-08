@@ -472,6 +472,10 @@ extern "C" s32 OTRfunc_800973FC(PlayState* play, RoomContext* roomCtx) {
             gSegments[3] = VIRTUAL_TO_PHYSICAL(roomCtx->unk_34);
 
             OTRScene_ExecuteCommands(play, (SOH::Scene*)roomCtx->roomToLoad);
+            if (!GameInteractor_Should(VB_DRAW_2D_BACKGROUND, true)) {
+                play->envCtx.skyboxDisabled = false;
+            }
+
             Player_SetBootData(play, GET_PLAYER(play));
             Actor_SpawnTransitionActors(play, &play->actorCtx);
 

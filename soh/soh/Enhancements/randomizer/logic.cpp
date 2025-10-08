@@ -444,6 +444,11 @@ bool Logic::CanOpenOverworldDoor(RandomizerGet key) {
     return HasItem(key);
 }
 
+bool Logic::CanGroundJump(bool hasBombflower) {
+    return ctx->GetTrickOption(RT_GROUND_JUMP) && CanStandingShield() &&
+           (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
+}
+
 bool Logic::CanOpenUnderwaterChest() {
     return ctx->GetTrickOption(RT_OPEN_UNDERWATER_CHEST) && CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT);
 }
@@ -1155,6 +1160,10 @@ bool Logic::CanBreakSmallCrates() {
     return true;
 }
 
+bool Logic::CanBonkTrees() {
+    return true;
+}
+
 bool Logic::HasExplosives() {
     return CanUse(RG_BOMB_BAG) || CanUse(RG_BOMBCHU_5);
 }
@@ -1257,7 +1266,8 @@ bool Logic::CanGetNightTimeGS() {
 }
 
 bool Logic::CanBreakUpperBeehives() {
-    return HookshotOrBoomerang() || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && CanUse(RG_BOMBCHU_5));
+    return HookshotOrBoomerang() || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && CanUse(RG_BOMBCHU_5)) ||
+           (ctx->GetOption(RSK_SLINGBOW_BREAK_BEEHIVES) && (CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT)));
 }
 
 bool Logic::CanBreakLowerBeehives() {

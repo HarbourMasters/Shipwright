@@ -186,6 +186,10 @@ void GameInteractor_ExecuteOnPlayDestroy() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDestroy>();
 }
 
+void GameInteractor_ExecuteOnPlayDrawBegin() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDrawBegin>();
+}
+
 void GameInteractor_ExecuteOnPlayDrawEnd() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDrawEnd>();
 }
@@ -322,4 +326,9 @@ void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void)) {
 
 void GameInteractor_ExecuteOnKaleidoUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnKaleidoUpdate>();
+}
+
+// Mark: Audio
+void GameInteractor_ExecuteOnSeqPlayerInit(int32_t playerIdx, int32_t seqId) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSeqPlayerInit>(playerIdx, seqId);
 }

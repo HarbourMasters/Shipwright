@@ -842,18 +842,17 @@ void RegisterAudioWidgets() {
                               "the area for the effect to kick in."));
     SohGui::mSohMenu->AddSearchWidget({ leadingMusic, "Enhancements", "Audio Editor", "Audio Options" });
 
-    displaySeqName = { .name = "Display Sequence Name on Overlay", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
-    displaySeqName.CVar(CVAR_AUDIO("SeqNameOverlay"))
+    displaySeqName = { .name = "Display Sequence Name in Notifications", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    displaySeqName.CVar(CVAR_AUDIO("SeqNameNotification"))
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("Displays the name of the current sequence in the corner of the screen whenever a new "
-                              "sequence "
-                              "is loaded to the main sequence player (does not apply to fanfares or enemy BGM)."));
+                     .Tooltip("Emits a notification with the current song name whenever it changes. "
+                              "(does not apply to fanfares or enemy BGM)."));
     SohGui::mSohMenu->AddSearchWidget({ displaySeqName, "Enhancements", "Audio Editor", "Audio Options" });
 
-    ovlDuration = { .name = "Overlay Duration: %d seconds", .type = WidgetType::WIDGET_CVAR_SLIDER_INT };
-    ovlDuration.CVar(CVAR_AUDIO("SeqNameOverlayDuration"))
-        .Options(IntSliderOptions().Color(THEME_COLOR).Min(1).Max(10).DefaultValue(5).Size(ImVec2(300.0f, 0.0f)));
+    ovlDuration = { .name = "Sequence Notification Duration: %d seconds", .type = WidgetType::WIDGET_CVAR_SLIDER_INT };
+    ovlDuration.CVar(CVAR_AUDIO("SeqNameNotificationDuration"))
+        .Options(IntSliderOptions().Color(THEME_COLOR).Min(1).Max(20).DefaultValue(10).Size(ImVec2(300.0f, 0.0f)));
     SohGui::mSohMenu->AddSearchWidget({ ovlDuration, "Enhancements", "Audio Editor", "Audio Options" });
 
     voicePitch = { .name = "Link's Voice Pitch Multiplier", .type = WidgetType::WIDGET_CVAR_SLIDER_FLOAT };

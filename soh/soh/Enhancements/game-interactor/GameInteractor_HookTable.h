@@ -42,6 +42,7 @@ DEFINE_HOOK(OnPlayerFirstPersonControl, (Player * player));
 DEFINE_HOOK(OnPlayerProcessStick, ());
 DEFINE_HOOK(OnPlayerShieldControl, (float_t * sp50, float_t* sp54));
 DEFINE_HOOK(OnPlayDestroy, ());
+DEFINE_HOOK(OnPlayDrawBegin, ());
 DEFINE_HOOK(OnPlayDrawEnd, ());
 DEFINE_HOOK(OnVanillaBehavior, (GIVanillaBehavior flag, bool* result, va_list originalArgs));
 DEFINE_HOOK(OnSaveFile, (int32_t fileNum));
@@ -73,3 +74,6 @@ DEFINE_HOOK(OnGenerationCompletion, ());
 DEFINE_HOOK(OnSetGameLanguage, ());
 DEFINE_HOOK(OnAssetAltChange, ());
 DEFINE_HOOK(OnKaleidoUpdate, ());
+
+// Audio
+DEFINE_HOOK(OnSeqPlayerInit, (int32_t playerIdx, int32_t seqId));

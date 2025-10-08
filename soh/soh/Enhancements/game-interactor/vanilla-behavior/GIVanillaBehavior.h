@@ -2155,6 +2155,23 @@ typedef enum {
     // - `*EnWood02`
     VB_TREE_DROP_COLLECTIBLE,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*ObjWood02`
+    VB_TREE_SETUP_DRAW,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*ObjWood02`
+    VB_TREE_DROP_ITEM,
+
+    // #### `result`
     // ```c
     // true
     // ```
@@ -2257,6 +2274,20 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // CVarGetInteger(CVAR_ENHANCEMENT("3DSceneRender"), 0)
+    // ```
+    // #### `args`
+    // - None
+    VB_DRAW_2D_BACKGROUND,
+
+    // #### `result`
+    // ```c
+    // CVarGetInteger(CVAR_ENHANCEMENT("3DSceneRender"), 0)
+    // ```
+    // #### `args`
+    // - None
+    VB_LOAD_SKYBOX,
+
     // true
     // ```
     // #### `args`
@@ -2270,6 +2301,7 @@ typedef enum {
     // #### `args`
     // - `*Player`
     VB_SET_STATIC_FLOOR_TYPE,
+
 } GIVanillaBehavior;
 
 #endif

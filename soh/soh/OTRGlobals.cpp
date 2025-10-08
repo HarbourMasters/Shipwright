@@ -284,26 +284,7 @@ void OTRGlobals::Initialize() {
     if (std::filesystem::exists(sohOtrPath)) {
         OTRFiles.push_back(sohOtrPath);
     }
-    std::string patchesPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
-    std::vector<std::string> patchOTRs = {};
-    if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
-        if (std::filesystem::is_directory(patchesPath)) {
-            for (const auto& p : std::filesystem::recursive_directory_iterator(
-                     patchesPath, std::filesystem::directory_options::follow_directory_symlink)) {
-                if (StringHelper::IEquals(p.path().extension().string(), ".otr") ||
-                    StringHelper::IEquals(p.path().extension().string(), ".mpq") ||
-                    StringHelper::IEquals(p.path().extension().string(), ".o2r") ||
-                    StringHelper::IEquals(p.path().extension().string(), ".zip")) {
-                    patchOTRs.push_back(p.path().generic_string());
-                }
-            }
-        }
-    }
-    std::sort(patchOTRs.begin(), patchOTRs.end(), [](const std::string& a, const std::string& b) {
-        return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(),
-                                            [](char c1, char c2) { return std::tolower(c1) < std::tolower(c2); });
-    });
-    OTRFiles.insert(OTRFiles.end(), patchOTRs.begin(), patchOTRs.end());
+
     std::unordered_set<uint32_t> ValidHashes = {
         OOT_PAL_MQ,     OOT_NTSC_JP_MQ, OOT_NTSC_US_MQ, OOT_PAL_GC_MQ_DBG, OOT_NTSC_US_10,
         OOT_NTSC_US_11, OOT_NTSC_US_12, OOT_PAL_10,     OOT_PAL_11,        OOT_NTSC_JP_GC_CE,
@@ -1258,6 +1239,7 @@ extern "C" void InitOTR() {
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion4Updater>());
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
