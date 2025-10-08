@@ -89,8 +89,11 @@ void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void));
 // Mark: - Pause Menu
 void GameInteractor_ExecuteOnKaleidoUpdate();
 
+
 //Mark: - Rando
 void GameInteractor_ExecuteOnRandoEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance);
+// Mark: - Audio
+void GameInteractor_ExecuteOnSeqPlayerInit(int32_t playerIdx, int32_t seqId);
 
 #ifdef __cplusplus
 }

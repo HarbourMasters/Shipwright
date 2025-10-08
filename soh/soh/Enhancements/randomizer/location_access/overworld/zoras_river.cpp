@@ -7,7 +7,7 @@ void RegionTable_Init_ZoraRiver() {
     // clang-format off
     areaTable[RR_ZR_FRONT] = Region("ZR Front", SCENE_ZORAS_RIVER, {}, {
         //Locations
-        LOCATION(RC_ZR_GS_TREE,  logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE)),
+        LOCATION(RC_ZR_GS_TREE,  logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE) && logic->CanBonkTrees()),
         LOCATION(RC_ZR_GRASS_1,  logic->CanCutShrubs()),
         LOCATION(RC_ZR_GRASS_2,  logic->CanCutShrubs()),
         LOCATION(RC_ZR_GRASS_3,  logic->CanCutShrubs()),
@@ -20,6 +20,7 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_GRASS_10, logic->CanCutShrubs()),
         LOCATION(RC_ZR_GRASS_11, logic->CanCutShrubs()),
         LOCATION(RC_ZR_GRASS_12, logic->CanCutShrubs()),
+        LOCATION(RC_ZR_TREE,     logic->IsChild && logic->CanBonkTrees()),
     }, {
         //Exits
         Entrance(RR_ZORAS_RIVER,  []{return logic->IsAdult || logic->BlastOrSmash();}),

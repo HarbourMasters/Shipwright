@@ -81,3 +81,5 @@ DEFINE_HOOK(OnKaleidoUpdate, ());
 DEFINE_HOOK(OnRandoSetCheckStatus, (RandomizerCheck rc, RandomizerCheckStatus status));
 DEFINE_HOOK(OnRandoSetIsSkipped, (RandomizerCheck rc, bool isSkipped));
 DEFINE_HOOK(OnRandoEntranceDiscovered, (u16 entranceIndex, u8 isReversedEntrance));
+// Audio
+DEFINE_HOOK(OnSeqPlayerInit, (int32_t playerIdx, int32_t seqId));

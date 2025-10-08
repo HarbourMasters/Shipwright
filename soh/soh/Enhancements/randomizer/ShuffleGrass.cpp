@@ -15,11 +15,10 @@ extern PlayState* gPlayState;
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 void DrawTypeOfGrass(EnKusa* grassActor, Gfx* bushDList, Gfx* grassDList, PlayState* play) {
-    // Actor params is -255 for regrowable grass.
-    if (grassActor->actor.params == -255) {
-        Gfx_DrawDListOpa(play, grassDList);
-    } else {
+    if ((grassActor->actor.params & 3) == 0) {
         Gfx_DrawDListOpa(play, bushDList);
+    } else {
+        Gfx_DrawDListOpa(play, grassDList);
     }
 }
 
