@@ -29,7 +29,7 @@
 #include <ship/Context.h>
 #include <soh/OTRGlobals.h>
 
-#include <ship/public/bridge/consolevariablebridge.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 using json = nlohmann::ordered_json;
 using namespace Rando;

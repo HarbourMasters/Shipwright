@@ -9,7 +9,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include <fast/public/bridge/gfxbridge.h>
+#include <libultraship/bridge/gfxbridge.h>
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 

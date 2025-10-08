@@ -1,6 +1,6 @@
 #include "InputViewer.h"
 
-#include <ship/public/bridge/consolevariablebridge.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 #include "libultraship/libultra/controller.h"
 #include <ship/Context.h>
 #include <libultraship/controller/controldeck/ControlDeck.h>

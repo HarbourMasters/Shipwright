@@ -1,7 +1,7 @@
 #include "SohMenuBar.h"
 #include <imgui.h>
 #include "regex"
-#include <ship/public/bridge/consolevariablebridge.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 #include <libultraship/libultraship.h>
 #include "UIWidgets.hpp"
 #include "include/z64audio.h"
