@@ -6280,6 +6280,12 @@ typedef enum {
 } RandoOptionAmmoDrops;
 
 typedef enum {
+    RO_BOMBCHU_BAG_NONE,
+    RO_BOMBCHU_BAG_SINGLE,
+    RO_BOMBCHU_BAG_PROGRESSIVE
+} RandoOptionBombchuBag;
+
+typedef enum {
     RO_BOSS_SOULS_OFF,
     RO_BOSS_SOULS_ON,
     RO_BOSS_SOULS_ON_PLUS_GANON,

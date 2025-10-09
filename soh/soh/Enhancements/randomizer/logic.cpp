@@ -1126,7 +1126,7 @@ bool Logic::CanAttack() {
 }
 
 bool Logic::BombchusEnabled() {
-    return ctx->GetOption(RSK_BOMBCHU_BAG) ? CheckInventory(ITEM_BOMBCHU, true) : HasItem(RG_BOMB_BAG);
+    return ctx->GetOption(RSK_BOMBCHU_BAG).IsNot(RO_BOMBCHU_BAG_NONE) ? CheckInventory(ITEM_BOMBCHU, true) : HasItem(RG_BOMB_BAG);
 }
 
 // TODO: Implement Ammo Drop Setting in place of bombchu drops
