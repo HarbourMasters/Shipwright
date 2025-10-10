@@ -569,8 +569,6 @@ void InitTrickNames() {
               "Rokopterbomben (prog.)€" },                                          // "Bomba de helicobot progresivo"
         Text{ "Progressive Bomb-ombs", "Bombe Soldat (prog.)", "Bob-omb (prog.)" }, // "Soldado bomba progresivo"
         Text{ "Progressive Missiles", "Missiles (prog.)", "Missiles (prog.)€" },    // "Misiles progresivos"
-        Text{ "Progressive Bombchu Bag", "Sac à Bombchu (prog.)",
-              "Krabbelminenbeutel (prog.)" }, // "Bombachus progresivos"
     };
     trickNameTable[RG_PROGRESSIVE_MAGIC_METER] = {
         Text{ "Progressive Stamina Meter", "Jauge d'endurance (prog.)",
