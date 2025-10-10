@@ -547,6 +547,21 @@ void Context::SetHash(std::string hash) {
     mHash = std::move(hash);
 }
 
+uint8_t Context::GetBombchuCapacity() {
+    switch(bombchuUpgradeValue) {
+        case 0:
+            return 0;
+        case 1:
+            return 20;
+        case 2:
+            return 30;
+        case 3:
+            return 50;
+        default:
+            return 0;
+    }
+}
+
 const std::string& Context::GetSeedString() const {
     return mSeedString;
 }

@@ -2302,6 +2302,22 @@ typedef enum {
     // - `*Player`
     VB_SET_STATIC_FLOOR_TYPE,
 
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - *EnGirlACanBuyResult
+    VB_CAN_BUY_BOMBCHUS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_CHECK_BOMBCHU_CAPACITY,
+
 } GIVanillaBehavior;
 
 #endif

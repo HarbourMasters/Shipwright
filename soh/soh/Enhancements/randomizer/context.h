@@ -174,6 +174,7 @@ class Context {
      * @param hash
      */
     void SetHash(std::string hash);
+    uint8_t GetBombchuCapacity();
 
   private:
     static std::weak_ptr<Context> mContext;
@@ -193,5 +194,6 @@ class Context {
     std::string mHash;
     std::string mSeedString;
     uint32_t mFinalSeed = 0;
+    uint8_t bombchuUpgradeValue = 0;
 };
 } // namespace Rando
