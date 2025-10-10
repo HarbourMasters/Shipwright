@@ -355,22 +355,23 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_GORONSWORD: // todo progressive?
             actual = RG_BIGGORON_SWORD;
             break;
-        case RG_PROGRESSIVE_BOMBCHUS:
-            if (logic->CurrentInventory(ITEM_BOMBCHU) == ITEM_NONE) {
-                actual = RG_BOMBCHU_BAG;
-            } else if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
-                actual = RG_BOMBCHU_INF;
-            } else {
-                actual = RG_BOMBCHU_10;
-            }
-            break;
-        case RG_BOMBCHU_BAG:
-            if (logic->CurrentInventory(ITEM_BOMBCHU) != ITEM_NONE) {
-                if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
+        case RG_PROGRESSIVE_BOMBCHU_BAG:
+            if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
+                if (logic->CurrentInventory(ITEM_BOMBCHU) == ITEM_NONE) {
+                    actual = RG_PROGRESSIVE_BOMBCHU_BAG;
+                } else if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
                     actual = RG_BOMBCHU_INF;
-                } else if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
-                    if (OTRGlobals::Instance->gRandoContext->GetBombchuCapacity() == 50) {
+                } else {
+                    actual = RG_BOMBCHU_10;
+                }
+            } else if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+                if (logic->CurrentInventory(ITEM_BOMBCHU) != ITEM_NONE) {
+                    if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
                         actual = RG_BOMBCHU_INF;
+                    } else if (infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE) {
+                        if (OTRGlobals::Instance->gRandoContext->GetBombchuCapacity() == 50) {
+                            actual = RG_BOMBCHU_INF;
+                        }
                     }
                 }
             }

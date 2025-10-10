@@ -563,7 +563,7 @@ void InitTrickNames() {
         Text{ "Progressive Rod Capacity", "Capacité de tiges (prog.)",
               "Stock-Kapazität (prog.)" }, // "Mayor capacidad de cetros deku"
     };
-    trickNameTable[RG_PROGRESSIVE_BOMBCHUS] = {
+    trickNameTable[RG_PROGRESSIVE_BOMBCHU_BAG] = {
         Text{ "Progressive Bomblings", "Bombinsectes (prog.)", "Bombenmäuse (prog.)€" }, // "Bombinsectos progresivos"
         Text{ "Progressive Sentrobe Bombs", "Bombe de Sphérodrone (prog.)",
               "Rokopterbomben (prog.)€" },                                          // "Bomba de helicobot progresivo"

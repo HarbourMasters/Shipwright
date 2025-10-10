@@ -921,9 +921,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BOMBCHU_20:
         case RG_BUY_BOMBCHUS_10:
         case RG_BUY_BOMBCHUS_20:
-        case RG_PROGRESSIVE_BOMBCHUS:
-        case RG_BOMBCHU_BAG: // RANDOTODO Do we want bombchu refills to exist seperatly from bombchu bags? If
-                             // so, this needs changing.
+        case RG_PROGRESSIVE_BOMBCHU_BAG: // RANDOTODO Do we want bombchu refills to exist seperatly from bombchu bags?
+                                         // If so, this needs changing.
             return CAN_OBTAIN;
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {
@@ -5832,7 +5831,7 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_FISHING_POLE, ITEM_FISHING_POLE, "You found a lost %rFishing Pole%w!&Time to hit the pond!",
                   "Du hast eine verlorene %rAngelrute%w&gefunden!&Zeit, im Teich&zu angeln!",
                   "Vous obtenez une %rCanne à pêche%w&perdue!&Il est temps d'aller à %gl'étang%w!"),
-        GIMESSAGE(RG_BOMBCHU_BAG, ITEM_BOMBCHU, "You found the %rBombchu Bag%w!",
+        GIMESSAGE(RG_PROGRESSIVE_BOMBCHU_BAG, ITEM_BOMBCHU, "You found the %rBombchu Bag%w!",
                   "Du hast die %rKrabbelminentasche%w&gefunden!", "Vous obtenez un %rSac de Missiles&Teigneux%w!"),
         GIMESSAGE(
             RG_BOMB_BAG_INF, ITEM_BOMB_BAG_40, "You got an %rInfinite Bomb Bag%w!&Now you have %yinfinite bombs%w!",
@@ -5975,7 +5974,7 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
     }
 
     // Count any bombchu pack as bombchus
-    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS || item == RG_BOMBCHU_BAG) {
+    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHU_BAG) {
         if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = 0) {
             gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
@@ -6276,8 +6275,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             }
 
             break;
-        case RG_PROGRESSIVE_BOMBCHUS:
-        case RG_BOMBCHU_BAG:
+        case RG_PROGRESSIVE_BOMBCHU_BAG:
             OTRGlobals::Instance->gRandoContext->HandleGetBombchuBag();
             break;
         case RG_MASTER_SWORD:
