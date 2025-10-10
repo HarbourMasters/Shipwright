@@ -266,41 +266,15 @@ const char* constCameraStrings[] = {
 
 OTRGlobals::OTRGlobals() {
     context = Ship::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
-}
-
-void OTRGlobals::Initialize() {
-    std::vector<std::string> OTRFiles;
-    std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName);
-    if (std::filesystem::exists(mqPath)) {
-        OTRFiles.push_back(mqPath);
-    }
-    std::string ootPath = Ship::Context::LocateFileAcrossAppDirs("oot.o2r", appShortName);
-    if (std::filesystem::exists(ootPath)) {
-        OTRFiles.push_back(ootPath);
-    }
 
     std::string sohOtrPath = Ship::Context::LocateFileAcrossAppDirs("soh.o2r");
-
-    if (std::filesystem::exists(sohOtrPath)) {
-        OTRFiles.push_back(sohOtrPath);
+    if (!std::filesystem::exists(sohOtrPath)) {
+        Extractor::ShowErrorBox("Missing Port Archive", "soh.o2r was not found in the program directory. "
+                                                        "Please re-extract it from the SoH download.");
+        exit(0);
     }
-
-    std::unordered_set<uint32_t> ValidHashes = {
-        OOT_PAL_MQ,     OOT_NTSC_JP_MQ, OOT_NTSC_US_MQ, OOT_PAL_GC_MQ_DBG, OOT_NTSC_US_10,
-        OOT_NTSC_US_11, OOT_NTSC_US_12, OOT_PAL_10,     OOT_PAL_11,        OOT_NTSC_JP_GC_CE,
-        OOT_NTSC_JP_GC, OOT_NTSC_US_GC, OOT_PAL_GC,     OOT_PAL_GC_DBG1,   OOT_PAL_GC_DBG2,
-    };
-
-    context->InitLogging();
-    context->InitGfxDebugger();
     context->InitConfiguration();
     context->InitConsoleVariables();
-    context->InitFileDropMgr();
-
-    // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
-    context->InitResourceManager(OTRFiles, {}, 3);
-    prevAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 0);
-    context->GetResourceManager()->SetAltAssetsEnabled(prevAltAssets);
 
     auto controlDeck = std::make_shared<LUS::ControlDeck>(std::vector<CONTROLLERBUTTONS_T>({
         BTN_CUSTOM_MODIFIER1,
@@ -315,19 +289,46 @@ void OTRGlobals::Initialize() {
         BTN_CUSTOM_OCARINA_PITCH_DOWN,
     }));
     context->InitControlDeck(controlDeck);
-
-    context->InitCrashHandler();
+    context->InitResourceManager({ sohOtrPath }, {}, 3);
     context->InitConsole();
-
-    Ship::Context::GetInstance()->GetLogger()->set_level(
-        (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), 1));
-    Ship::Context::GetInstance()->GetLogger()->set_pattern("[%H:%M:%S.%e] [%s:%#] [%l] %v");
 
     auto sohInputEditorWindow =
         std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Configure Controller");
     auto sohFast3dWindow =
         std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({ sohInputEditorWindow }));
     context->InitWindow(sohFast3dWindow);
+}
+
+void OTRGlobals::Initialize() {
+    std::vector<std::string> OTRFiles;
+    std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName);
+    if (std::filesystem::exists(mqPath)) {
+        context->GetResourceManager()->GetArchiveManager()->AddArchive(mqPath);
+    }
+    std::string ootPath = Ship::Context::LocateFileAcrossAppDirs("oot.o2r", appShortName);
+    if (std::filesystem::exists(ootPath)) {
+        context->GetResourceManager()->GetArchiveManager()->AddArchive(ootPath);
+    }
+
+    std::unordered_set<uint32_t> ValidHashes = {
+        OOT_PAL_MQ,     OOT_NTSC_JP_MQ, OOT_NTSC_US_MQ, OOT_PAL_GC_MQ_DBG, OOT_NTSC_US_10,
+        OOT_NTSC_US_11, OOT_NTSC_US_12, OOT_PAL_10,     OOT_PAL_11,        OOT_NTSC_JP_GC_CE,
+        OOT_NTSC_JP_GC, OOT_NTSC_US_GC, OOT_PAL_GC,     OOT_PAL_GC_DBG1,   OOT_PAL_GC_DBG2,
+    };
+
+    context->InitLogging();
+    context->InitGfxDebugger();
+    context->InitFileDropMgr();
+
+    // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
+    prevAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 0);
+    context->GetResourceManager()->SetAltAssetsEnabled(prevAltAssets);
+
+    context->InitCrashHandler();
+
+    Ship::Context::GetInstance()->GetLogger()->set_level(
+        (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), 1));
+    Ship::Context::GetInstance()->GetLogger()->set_pattern("[%H:%M:%S.%e] [%s:%#] [%l] %v");
 
     context->GetWindow()->SetAutoCaptureMouse(CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) &&
                                               CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1));
@@ -1122,6 +1123,7 @@ void CheckAndCreateModFolder() {
 }
 
 extern "C" void InitOTR(int argc, char* argv[]) {
+    OTRGlobals::Instance = new OTRGlobals();
 #if !defined(__SWITCH__) && !defined(__WIIU__)
     if (argc > 1) {
         for (int i = 1; i < argc; i++) {
@@ -1147,7 +1149,6 @@ extern "C" void InitOTR(int argc, char* argv[]) {
         }
     }
 #endif
-    OTRGlobals::Instance = new OTRGlobals();
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);
 #elif defined(__WIIU__)
@@ -1268,7 +1269,6 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
-    ShipInit::InitAll();
 
     Rando::StaticData::InitHashMaps();
     OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
@@ -1325,6 +1325,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
         Sail::Instance->Enable();
     }
 #endif
+    ShipInit::InitAll();
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {
