@@ -72,6 +72,7 @@ class OTRGlobals {
 
     void ScaleImGui();
     void Initialize();
+    void RunExtract(int argc, char* argv[]);
     bool HasMasterQuest();
     bool HasOriginal();
     uint32_t GetInterpolationFPS();
