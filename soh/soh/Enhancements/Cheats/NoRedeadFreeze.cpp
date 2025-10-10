@@ -14,4 +14,4 @@ void RegisterNoRedeadFreeze() {
     COND_VB_SHOULD(VB_REDEAD_GIBDO_FREEZE_LINK, CVAR_NOREDEADFREEZE_VALUE, { *should = false; });
 }
 
-static RegisterShipInitFunc initFunc_NoRedeadFreeze(RegisterNoRedeadFreeze, { CVAR_NOREDEADFREEZE_NAME });
+static RegisterShipInitFunc initFunc(RegisterNoRedeadFreeze, { CVAR_NOREDEADFREEZE_NAME });

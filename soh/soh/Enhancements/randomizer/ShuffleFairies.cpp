@@ -421,4 +421,4 @@ void Rando::StaticData::RegisterFairyLocations() {
 
 static ObjectExtension::Register<FairyIdentity> RegisterFairyIdentity;
 static RegisterShipInitFunc registerShuffleFairies(RegisterShuffleFairies, { "IS_RANDO" });
-static RegisterShipInitFunc registerShuffleFairiesLocations(Rando::StaticData::RegisterFairyLocations);
+static RegisterShipInitFunc registerFairyLocations(Rando::StaticData::RegisterFairyLocations);

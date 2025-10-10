@@ -117,4 +117,4 @@ void CrawlSpeed_Register() {
     });
 }
 
-static RegisterShipInitFunc initSpeed(CrawlSpeed_Register, { CVAR_CRAWL_SPEED_NAME });
+static RegisterShipInitFunc initFunc(CrawlSpeed_Register, { CVAR_CRAWL_SPEED_NAME });

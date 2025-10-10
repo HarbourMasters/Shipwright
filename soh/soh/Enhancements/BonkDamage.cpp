@@ -48,4 +48,4 @@ void RegisterBonkDamage() {
               });
 }
 
-static RegisterShipInitFunc registerBonkDamage(RegisterBonkDamage, { CVAR_ENHANCEMENT("BonkDamageMult") });
+static RegisterShipInitFunc initFunc(RegisterBonkDamage, { CVAR_ENHANCEMENT("BonkDamageMult") });

@@ -894,4 +894,4 @@ void RegisterAudioWidgets() {
     SohGui::mSohMenu->AddSearchWidget({ lowerOctaves, "Enhancements", "Audio Editor", "Audio Options" });
 }
 
-static RegisterMenuInitFunc initAudioWidgets(RegisterAudioWidgets);
+static RegisterMenuInitFunc menuInitFunc(RegisterAudioWidgets);

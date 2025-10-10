@@ -445,4 +445,4 @@ void RegisterPresetsWidgets() {
     LoadPresets();
 }
 
-static RegisterMenuInitFunc initFunc(RegisterPresetsWidgets);
+static RegisterMenuInitFunc menuInitFunc(RegisterPresetsWidgets);

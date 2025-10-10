@@ -597,6 +597,6 @@ bool IsDroppingFrames() {
 }
 
 static RegisterMenuUpdateFunc updateFunc(UpdateResolutionVars, "Settings", "Graphics");
-static RegisterMenuInitFunc initFunc(RegisterResolutionWidgets);
+static RegisterMenuInitFunc menuInitFunc(RegisterResolutionWidgets);
 
 } // namespace SohGui

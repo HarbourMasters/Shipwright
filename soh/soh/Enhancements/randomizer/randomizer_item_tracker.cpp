@@ -2125,4 +2125,4 @@ void RegisterItemTrackerWidgets() {
         { hookshotIdentWidget, "Settings", "Controls", "Camera Controls", "longshot icon" });
 }
 
-static RegisterMenuInitFunc initItemTrackerWidgets(RegisterItemTrackerWidgets);
+static RegisterMenuInitFunc menuInitFunc(RegisterItemTrackerWidgets);

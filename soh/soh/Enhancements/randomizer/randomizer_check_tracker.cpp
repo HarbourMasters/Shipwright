@@ -2298,5 +2298,5 @@ void RegisterCheckTrackerWidgets() {
         });
 }
 
-static RegisterMenuInitFunc initCheckTrackerWidgets(RegisterCheckTrackerWidgets);
+static RegisterMenuInitFunc menuInitFunc(RegisterCheckTrackerWidgets);
 } // namespace CheckTracker
