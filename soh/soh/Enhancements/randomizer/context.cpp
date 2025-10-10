@@ -551,7 +551,7 @@ void Context::SetHash(std::string hash) {
 }
 
 uint8_t Context::GetBombchuCapacity() {
-    switch (bombchuUpgradeValue) {
+    switch (gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel) {
         case 0:
             return 0;
         case 1:
@@ -580,11 +580,11 @@ void Context::HandleGetBombchuBag() {
         }
         return;
     }
-    switch (bombchuUpgradeValue) {
+    switch (gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel) {
         case 0:
         case 1:
         case 2:
-            bombchuUpgradeValue++;
+            gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel++;
             if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
                 INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
             } else if (GetOption(RSK_INFINITE_UPGRADES).Is(RO_INF_UPGRADES_CONDENSED_PROGRESSIVE)) {
