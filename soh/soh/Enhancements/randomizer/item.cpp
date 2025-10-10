@@ -364,6 +364,17 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                 actual = RG_BOMBCHU_10;
             }
             break;
+        case RG_BOMBCHU_BAG:
+            if (logic->CurrentInventory(ITEM_BOMBCHU) != ITEM_NONE) {
+                if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
+                    actual = RG_BOMBCHU_INF;
+                } else if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
+                    if (OTRGlobals::Instance->gRandoContext->GetBombchuCapacity() == 50) {
+                        actual = RG_BOMBCHU_INF;
+                    }
+                }
+            }
+            break;
         default:
             actual = RG_NONE;
             break;

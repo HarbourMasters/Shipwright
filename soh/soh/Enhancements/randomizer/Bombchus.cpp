@@ -7,8 +7,6 @@ extern "C" {
     #include "z64save.h"
 }
 
-#define RAND_GET_OPTION(option) OTRGlobals::Instance->gRandoContext->GetOption(option).Get()
-
 void RegisterVBOverrides() {
     COND_VB_SHOULD(VB_CAN_BUY_BOMBCHUS, IS_RANDO, {
         EnGirlACanBuyResult* canBuy = va_arg(args, EnGirlACanBuyResult*);
@@ -37,6 +35,16 @@ void RegisterVBOverrides() {
             AMMO(ITEM_BOMBCHU) = capacity;
         }
     });
+
+    COND_VB_SHOULD(VB_COLOR_AMMO_GREEN, IS_RANDO && RAND_GET_OPTION(RSK_BOMBCHU_BAG) == RO_BOMBCHU_BAG_PROGRESSIVE, {
+        int16_t i = va_arg(args, int16_t);
+        if (i == ITEM_BOMBCHU) {
+            uint8_t capacity = OTRGlobals::Instance->gRandoContext->GetBombchuCapacity();
+            if (AMMO(i) == capacity) {
+                *should = true;
+            }
+        }
+    });
 }
 
-static RegisterShipInitFunc initHooks(RegisterVBOverrides);
+static RegisterShipInitFunc initHooks(RegisterVBOverrides, { "IS_RANDO" });

@@ -591,7 +591,8 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
         // If they have bombchus, don't consider the bombchu item major
         if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
             ((this->getItemEntry.modIndex == MOD_RANDOMIZER &&
-              this->getItemEntry.getItemId == RG_PROGRESSIVE_BOMBCHUS) ||
+              (this->getItemEntry.getItemId == RG_PROGRESSIVE_BOMBCHUS ||
+               this->getItemEntry.getItemId == RG_BOMBCHU_BAG)) ||
              (this->getItemEntry.modIndex == MOD_NONE &&
               (this->getItemEntry.getItemId == GI_BOMBCHUS_5 || this->getItemEntry.getItemId == GI_BOMBCHUS_10 ||
                this->getItemEntry.getItemId == GI_BOMBCHUS_20)))) {

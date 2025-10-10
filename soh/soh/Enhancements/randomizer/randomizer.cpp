@@ -921,7 +921,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BOMBCHU_20:
         case RG_BUY_BOMBCHUS_10:
         case RG_BUY_BOMBCHUS_20:
-        case RG_PROGRESSIVE_BOMBCHUS: // RANDOTODO Do we want bombchu refills to exist seperatly from bombchu bags? If
+        case RG_PROGRESSIVE_BOMBCHUS:
+        case RG_BOMBCHU_BAG: // RANDOTODO Do we want bombchu refills to exist seperatly from bombchu bags? If
                                       // so, this needs changing.
             return CAN_OBTAIN;
         case RG_PROGRESSIVE_HOOKSHOT:
@@ -5974,7 +5975,7 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
     }
 
     // Count any bombchu pack as bombchus
-    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS) {
+    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS || item == RG_BOMBCHU_BAG) {
         if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = 0) {
             gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
         }

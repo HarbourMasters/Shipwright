@@ -2318,6 +2318,14 @@ typedef enum {
     // - None
     VB_CHECK_BOMBCHU_CAPACITY,
 
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - int16_t
+    VB_COLOR_AMMO_GREEN,
+
 } GIVanillaBehavior;
 
 #endif
