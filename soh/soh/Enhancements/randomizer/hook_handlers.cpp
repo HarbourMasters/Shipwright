@@ -1178,7 +1178,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN: {
-            *should = RAND_GET_OPTION(RSK_BOMBCHU_BAG) == RO_BOMBCHU_BAG_NONE || INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU;
+            *should =
+                RAND_GET_OPTION(RSK_BOMBCHU_BAG) == RO_BOMBCHU_BAG_NONE || INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU;
             break;
         }
         case VB_CHECK_RANDO_PRICE_OF_MEDIGORON: {

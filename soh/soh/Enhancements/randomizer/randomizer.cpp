@@ -923,7 +923,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BUY_BOMBCHUS_20:
         case RG_PROGRESSIVE_BOMBCHUS:
         case RG_BOMBCHU_BAG: // RANDOTODO Do we want bombchu refills to exist seperatly from bombchu bags? If
-                                      // so, this needs changing.
+                             // so, this needs changing.
             return CAN_OBTAIN;
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {

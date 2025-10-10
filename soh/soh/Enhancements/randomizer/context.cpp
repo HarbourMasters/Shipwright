@@ -17,7 +17,7 @@
 #include <fstream>
 #include <spdlog/spdlog.h>
 extern "C" {
-    #include <functions.h>
+#include <functions.h>
 }
 
 namespace Rando {
@@ -551,7 +551,7 @@ void Context::SetHash(std::string hash) {
 }
 
 uint8_t Context::GetBombchuCapacity() {
-    switch(bombchuUpgradeValue) {
+    switch (bombchuUpgradeValue) {
         case 0:
             return 0;
         case 1:

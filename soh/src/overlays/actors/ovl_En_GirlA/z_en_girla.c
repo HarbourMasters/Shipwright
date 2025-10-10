@@ -766,7 +766,7 @@ s32 EnGirlA_CanBuy_Bombchus(PlayState* play, EnGirlA* this) {
     if (GameInteractor_Should(VB_CAN_BUY_BOMBCHUS, false, &canBuy)) {
         return canBuy;
     }
-    
+
     if (AMMO(ITEM_BOMBCHU) >= 50) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
