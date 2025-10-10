@@ -807,6 +807,9 @@ void GenerateItemPool() {
         AddItemToMainPool(RG_PROGRESSIVE_BOMBCHUS, 5);
     } else if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
         AddItemToMainPool(RG_BOMBCHU_BAG, 3);
+        if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
+            AddItemToPool(PendingJunkPool, RG_BOMBCHU_BAG);
+        }
     } else {
         AddItemToMainPool(RG_BOMBCHU_5);
         AddItemToMainPool(RG_BOMBCHU_10, 3);
