@@ -5,13 +5,13 @@
 #include <fstream>
 #include <filesystem>
 
+#include "soh/Enhancements/randomizer/static_data.h"
 #include "assets/textures/icon_item_static/icon_item_static.h"
 
 using json = nlohmann::json;
 
 extern "C" {
 #include "variables.h"
-#include "overlays/actors/ovl_Bg_Dy_Yoseizo/z_bg_dy_yoseizo.h"
 uint64_t GetUnixTimestamp();
 }
 
@@ -365,14 +365,23 @@ void RegisterTimesplits() {
     SplitSaveFileAction(SPLIT_RETRIEVE, "");
 
     COND_HOOK(OnItemReceive, CVAR, [](GetItemEntry itemEntry) {
-        if (itemEntry.itemId == ITEM_HEART_PIECE_2) {
-            itemEntry.itemId = ITEM_HEART_PIECE;
-        }
-        if (itemEntry.itemId == ITEM_LONGSHOT) {
-            itemEntry.itemId = ITEM_POTION_RED;
-        }
-        if (itemEntry.itemId >= ITEM_BOMBCHUS_20 && itemEntry.itemId <= ITEM_BOMBCHUS_5) {
-            itemEntry.itemId = ITEM_BOMBCHU;
+        if (itemEntry.modIndex == MOD_RANDOMIZER) {
+            if (itemEntry.itemId == RG_MAGIC_SINGLE) {
+                itemEntry.itemId = SPLIT_SINGLE_MAGIC;
+            }
+            if (itemEntry.itemId == RG_MAGIC_DOUBLE) {
+                itemEntry.itemId = SPLIT_DOUBLE_MAGIC;
+            }
+            if (itemEntry.itemId == RG_DOUBLE_DEFENSE) {
+                itemEntry.itemId = SPLIT_DOUBLE_DEFENSE;
+            }
+        } else {
+            if (itemEntry.itemId == ITEM_HEART_PIECE_2) {
+                itemEntry.itemId = ITEM_HEART_PIECE;
+            }
+            if (itemEntry.itemId >= ITEM_BOMBCHUS_20 && itemEntry.itemId <= ITEM_BOMBCHUS_5) {
+                itemEntry.itemId = ITEM_BOMBCHU;
+            }
         }
 
         UpdateSplitStatusById((uint32_t)itemEntry.itemId);
@@ -384,17 +393,6 @@ void RegisterTimesplits() {
         GetSplitByActorId(actor->id);
     });
 
-    // COND_VB_SHOULD(VB_GIVE_ITEM_FROM_GREAT_FAIRY, CVAR, {
-    //     Actor* actor = va_arg(args, Actor*);
-    //
-    //     GetSplitByActorId(actor->id, GREAT_FAIRY_GET_TYPE(actor));
-    // });
-    //
-    // COND_VB_SHOULD(VB_GIVE_ITEM_FROM_STRAY_FAIRY_MANAGER, CVAR, {
-    //     Actor* actor = va_arg(args, Actor*);
-    //
-    //     GetSplitByActorId(actor->id, GREAT_FAIRY_GET_TYPE(actor));
-    // });
     COND_HOOK(OnSceneInit, CVAR, [](int16_t sceneNum) { UpdateSplitStatusBySceneId(sceneNum); });
 }
 

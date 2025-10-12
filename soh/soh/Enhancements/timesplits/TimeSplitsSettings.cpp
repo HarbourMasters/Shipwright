@@ -7,6 +7,7 @@
 
 #include "soh/ShipUtils.h"
 #include "soh_assets.h"
+#include "soh/SohGui/ImGuiUtils.h"
 #include "assets/textures/parameter_static/parameter_static.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "assets/textures/icon_item_static/icon_item_static.h"
@@ -126,8 +127,9 @@ std::vector<TimesplitObject> splitObjectList = {
     { ITEM_BOOTS_IRON,                 "Iron Boots" },
     { ITEM_BOOTS_HOVER,                "Hover Boots" },
     { ITEM_BRACELET,                   "Goron's Bracelet" },
-    { ITEM_SINGLE_MAGIC,    		   "Magic" },
+    { SPLIT_SINGLE_MAGIC,    		   "Magic" },
     { ITEM_WALLET_ADULT,               "Adult's Wallet" },
+    { SPLIT_DOUBLE_DEFENSE,            "Double Defense" },
     
     // Inventory
     { ITEM_STICK,                      "Deku Stick" },
@@ -190,19 +192,19 @@ std::vector<TimesplitObject> splitObjectList = {
     // Upgrade Items
     { ITEM_OCARINA_TIME,               "Ocarina of Time" },
     { ITEM_LONGSHOT,                   "Longshot" },
-    { ITEM_BULLET_BAG_40,              "Bullet Bag (40)" },
-    { ITEM_BULLET_BAG_50,              "Bullet Bag (50)" },
-    { ITEM_QUIVER_40,                  "Quiver (40)" },
-    { ITEM_QUIVER_50,                  "Quiver (50)" },
-    { ITEM_BOMB_BAG_20,                "Bomb Bag (20)" },
-    { ITEM_BOMB_BAG_30,                "Bomb Bag (30)" },
-    { ITEM_BOMB_BAG_40,                "Bomb Bag (40)" },
+    { ITEM_BULLET_BAG_40,              "Big Bullet Bag" },
+    { ITEM_BULLET_BAG_50,              "Biggest Bullet Bag" },
+    { ITEM_QUIVER_40,                  "Big Quiver" },
+    { ITEM_QUIVER_50,                  "Biggest Quiver" },
+    { ITEM_BOMB_BAG_20,                "Bomb Bag" },
+    { ITEM_BOMB_BAG_30,                "Big Bomb Bag" },
+    { ITEM_BOMB_BAG_40,                "Biggest Bomb Bag" },
     { ITEM_WALLET_GIANT,               "Giant's Wallet" },
     { ITEM_GAUNTLETS_SILVER,           "Silver Gauntlets" },
     { ITEM_GAUNTLETS_GOLD,             "Gold Gauntlets" },
     { ITEM_SCALE_SILVER,               "Silver Scale" },
     { ITEM_SCALE_GOLDEN,               "Gold Scale" },
-    { ITEM_DOUBLE_MAGIC,    		   "Double Magic" },
+    { SPLIT_DOUBLE_MAGIC,    		   "Double Magic" },
     
     // Trade Items
     { ITEM_CHICKEN,                    "Chicken" },
@@ -339,7 +341,7 @@ IndexRangeObject GetIndexRange(uint32_t start, uint32_t end) {
 bool shouldPopUpOpen = false;
 uint32_t popupItem = 0;
 const char* popupTooltip = "";
-IndexRangeObject range = GetIndexRange((uint32_t)ITEM_SWORD_KOKIRI, (uint32_t)ITEM_WALLET_ADULT);
+IndexRangeObject range = GetIndexRange((uint32_t)ITEM_SWORD_KOKIRI, (uint32_t)SPLIT_DOUBLE_DEFENSE);
 const char* listName = "Equipment";
 uint32_t listColumns = 3;
 const char* itemImage;
@@ -364,7 +366,7 @@ const char* GetItemImageById(uint32_t itemId) {
             return (const char*)gItemIcons[ITEM_HEART_CONTAINER];
         default:
             if (itemId <= ITEM_NONE) {
-                return (const char*)gItemIcons[itemId];
+                return itemMapping.find(itemId)->second.name.c_str();
             }
             break;
     }
@@ -679,7 +681,7 @@ void TimesplitsSettingsWindow::DrawElement() {
                 if (UIWidgets::Button("Equipment", {
                                                        .color = THEME_COLOR,
                                                    })) {
-                    range = GetIndexRange((uint32_t)ITEM_SWORD_KOKIRI, (uint32_t)ITEM_WALLET_ADULT);
+                    range = GetIndexRange((uint32_t)ITEM_SWORD_KOKIRI, (uint32_t)SPLIT_DOUBLE_DEFENSE);
                     listName = "Equipment";
                     listColumns = 3;
                 }
@@ -702,7 +704,7 @@ void TimesplitsSettingsWindow::DrawElement() {
                                                 })) {
                     range = GetIndexRange((uint32_t)SPLIT_KILLED_GOHMA, (uint32_t)SPLIT_KILLED_GANON);
                     listName = "Bosses";
-                    listColumns = 1;
+                    listColumns = 2;
                 }
                 if (UIWidgets::Button("Entrances", {
                                                        .color = THEME_COLOR,
@@ -711,11 +713,7 @@ void TimesplitsSettingsWindow::DrawElement() {
                 }
                 ImGui::TableNextColumn();
                 if (listName != "Entrances") {
-                    if (ImGui::BeginChild("SelectedList")) {
-                        DrawItemList(listName, range, listColumns);
-                        ImGui::EndChild();
-                    }
-
+                    DrawItemList(listName, range, listColumns);
                 } else {
                     DrawEntranceList();
                 }
