@@ -1,6 +1,6 @@
 
-#include "TimesplitsSettings.h"
-#include "Timesplits.h"
+#include "TimeSplitsSettings.h"
+#include "TimeSplits.h"
 #include <libultraship/libultraship.h>
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"

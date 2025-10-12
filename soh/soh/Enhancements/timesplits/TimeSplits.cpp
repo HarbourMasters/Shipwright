@@ -1,4 +1,4 @@
-#include "Timesplits.h"
+#include "TimeSplits.h"
 #include <libultraship/libultraship.h>
 #include "soh/SohGui/UIWidgets.hpp"
 
