@@ -51,17 +51,17 @@ class Extractor {
     void ShowCompressedErrorBox() const;
     int ShowRomPickBox(uint32_t verCrc) const;
     bool ManuallySearchForRom();
-    bool ManuallySearchForRomMatchingType(RomSearchMode searchMode);
 
   public:
     // TODO create some kind of abstraction for message boxes.
     static int ShowYesNoBox(const char* title, const char* text);
     static void ShowErrorBox(const char* title, const char* text);
     bool IsMasterQuest() const;
+    bool ManuallySearchForRomMatchingType(RomSearchMode searchMode);
 
     bool RunFileStandalone(std::string file);
     bool Run(std::string searchPath, RomSearchMode searchMode = RomSearchMode::Both);
-    bool CallZapd(std::string installPath, std::string exportdir);
+    bool CallZapd(std::string installPath, std::string exportdir, size_t* extractCount = nullptr, size_t* totalExtract = nullptr);
     const char* GetZapdStr();
     std::string Mkdtemp();
 };
