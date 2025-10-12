@@ -254,4 +254,14 @@ void RegisterImGuiItemIcons() {
     for (const auto& entry : gSeedTextures) {
         Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.tex, entry.tex, ImVec4(1, 1, 1, 1));
     }
+
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("gPauseUnusedCursorTex", gPauseUnusedCursorTex,
+                                                                        ImVec4(1, 1, 1, 1));
+
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("gWTriforcePieceTex", gWTriforcePieceTex,
+                                                                        ImVec4(1, 1, 1, 1));
+
+    // TODO: Figure out why this texture wouldn't load in the TimeSplits Windows
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("gSongNoteTex", gSongNoteTex,
+                                                                        ImVec4(1, 1, 1, 1));
 }

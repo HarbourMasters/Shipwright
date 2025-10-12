@@ -5,54 +5,99 @@
 #include <stdint.h>
 #include <libultraship/libultraship.h>
 
+#include <vector>
+#include <map>
+
 #ifdef __cplusplus
-class TimeSplitWindow final : public Ship::GuiWindow {
+class TimesplitsWindow : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 
     void InitElement() override;
+    void DrawElement() override{};
     void Draw() override;
-    void DrawElement() override;
     void UpdateElement() override{};
 };
 
-typedef enum SplitAction {
-    SPLIT_ACTION_SAVE,
-    SPLIT_ACTION_LOAD,
-    SPLIT_ACTION_UPDATE,
-    SPLIT_ACTION_COLLECT,
-    SPLIT_ACTION_DELETE
-} SplitAction;
+typedef enum ExtendedSplitIds {
+    SPLIT_KILLED_GOHMA = 256,
+    SPLIT_KILLED_KING_DODONGO,
+    SPLIT_KILLED_BARINADE,
+    SPLIT_KILLED_PHANTOM_GANON,
+    SPLIT_KILLED_VOLVAGIA,
+    SPLIT_KILLED_MORPHA,
+    SPLIT_KILLED_BONGO_BONGO,
+    SPLIT_KILLED_TWINROVA,
+    SPLIT_KILLED_GANONDORF,
+    SPLIT_KILLED_GANON,
+    SPLIT_SINGLE_MAGIC,
+    SPLIT_DOUBLE_MAGIC,
+    SPLIT_DOUBLE_DEFENSE,
+};
 
-typedef enum SplitStatus {
-    SPLIT_STATUS_ACTIVE,
-    SPLIT_STATUS_INACTIVE,
-    SPLIT_STATUS_COLLECTED,
-    SPLIT_STATUS_SKIPPED,
-} SplitStatus;
+typedef enum SplitSettings {
+    SPLIT_HEADERS,
+    SPLIT_OPACITY,
+    SPLIT_HIGHLIGHT,
+    SPLIT_COMPARE,
+};
 
-typedef enum SplitType {
-    SPLIT_TYPE_ITEM,
-    SPLIT_TYPE_UPGRADE,
-    SPLIT_TYPE_EQUIPMENT,
-    SPLIT_TYPE_QUEST,
-    SPLIT_TYPE_BOSS,
-    SPLIT_TYPE_ENTRANCE,
-    SPLIT_TYPE_MISC
-} SplitType;
+typedef enum SplitFileActions {
+    SPLIT_SAVE,
+    SPLIT_LOAD,
+    SPLIT_RETRIEVE,
+};
+
+typedef enum SplitStatus { SPLIT_INACTIVE, SPLIT_ACTIVE, SPLIT_COMPLETE, SPLIT_SKIPPED };
+typedef enum SplitTypes { SPLIT_TYPE_NORMAL, SPLIT_TYPE_SCENE };
 
 typedef struct {
-    uint32_t splitType;
-    uint32_t splitID;
+    uint32_t splitId;
     std::string splitName;
-    std::string splitImage;
-    ImVec4 splitTint;
-    uint32_t splitTimeCurrent;
-    uint32_t splitTimeBest;
-    uint32_t splitTimePreviousBest;
-    uint32_t splitTimeStatus;
-    uint32_t splitSkullTokenCount;
-} SplitObject;
+    uint32_t splitCurrentTime;
+    uint32_t splitPreviousBest;
+    uint8_t splitStatus;
+    uint32_t splitType;
+} TimesplitObject;
+
+typedef struct {
+    uint32_t timeDisplay;
+    ImVec4 colorDisplay;
+} SplitTextObject;
+
+typedef struct {
+    uint32_t startIndex;
+    uint32_t endIndex;
+} IndexRangeObject;
+
+extern std::vector<TimesplitObject> splitList;
+extern std::vector<TimesplitObject> comparisonList;
+extern std::vector<TimesplitObject> splitObjectList;
+extern std::vector<TimesplitObject> sceneObjectList;
+extern std::vector<std::string> savedLists;
+extern std::map<uint32_t, std::vector<uint32_t>> itemSubMenuList;
+extern std::map<uint32_t, ImVec4> songColorMap;
+extern uint32_t comparedIndex;
+extern bool shouldPopUpOpen;
+extern uint32_t GetTotalTime();
+extern ImVec4 GetItemColor(int16_t itemId);
+extern TimesplitObject GetSplitObjectById(uint32_t itemId);
+extern ImVec2 GetItemImageSizeById(uint32_t itemId);
+extern void TableCellCenteredText(ImVec4 color, const char* text);
+extern const char* GetItemImageById(uint32_t itemId);
+extern void SplitsPushImageButtonStyle();
+extern void SplitsPopImageButtonStyle();
+extern void HandlePopUpContext(uint32_t popupId);
+extern void HandleDragAndDrop(size_t i);
+extern void UpdateSplitBests();
+extern void UpdateSplitSettings(uint32_t settingName);
+extern void SkipSplitEntry(uint32_t index);
+extern void AddSplitEntryBySceneId(uint32_t sceneId);
+extern void AddSplitEntryById(uint32_t itemId);
+extern void RemoveSplitEntry(uint32_t splitId, uint32_t index);
+extern void SplitSaveFileAction(uint32_t action, std::string listName);
+extern void DrawSplitsList(bool isMain);
+extern void SplitLoadComparisonList();
 
 #endif
 

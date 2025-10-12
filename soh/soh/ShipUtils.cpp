@@ -13,6 +13,15 @@ extern f32 sFontWidths[144];
 extern const char* fontTbl[140];
 }
 
+extern std::string Ship_FormatTimeDisplay(uint32_t value) {
+    uint32_t sec = value / 10;
+    uint32_t hh = sec / 3600;
+    uint32_t mm = (sec - hh * 3600) / 60;
+    uint32_t ss = sec - hh * 3600 - mm * 60;
+    uint32_t ds = value % 10;
+    return fmt::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
+}
+
 constexpr f32 fourByThree = 4.0f / 3.0f;
 
 // Gets the additional ratio of the screen compared to the original 4:3 ratio, clamping to 1 if smaller

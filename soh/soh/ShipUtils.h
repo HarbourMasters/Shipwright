@@ -6,6 +6,9 @@
 
 #ifdef __cplusplus
 
+#include <string>
+std::string Ship_FormatTimeDisplay(uint32_t value);
+
 void LoadGuiTextures();
 
 extern "C" {

@@ -92,7 +92,8 @@ std::shared_ptr<EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
 std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
 std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
 std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
-std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
+std::shared_ptr<TimesplitsWindow> mTimeSplitsWindow;
+std::shared_ptr<TimesplitsSettingsWindow> mTimeSplitSettingsWindow;
 std::shared_ptr<PlandomizerWindow> mPlandomizerWindow;
 std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 std::shared_ptr<SohModalWindow> mModalWindow;
@@ -192,8 +193,11 @@ void SetupGuiElements() {
     mRandomizerSettingsWindow = std::make_shared<RandomizerSettingsWindow>(CVAR_WINDOW("RandomizerSettings"),
                                                                            "Randomizer Settings", ImVec2(920, 600));
     gui->AddGuiWindow(mRandomizerSettingsWindow);
-    mTimeSplitWindow = std::make_shared<TimeSplitWindow>(CVAR_WINDOW("TimeSplits"), "Time Splits", ImVec2(450, 660));
-    gui->AddGuiWindow(mTimeSplitWindow);
+    mTimeSplitsWindow = std::make_shared<TimesplitsWindow>(CVAR_WINDOW("TimeSplits"), "Time Splits", ImVec2(450, 660));
+    gui->AddGuiWindow(mTimeSplitsWindow);
+    mTimeSplitSettingsWindow = std::make_shared<TimesplitsSettingsWindow>(
+        CVAR_WINDOW("TimeSplitSettings"), "Time Splits Settings Window", ImVec2(450, 660));
+    gui->AddGuiWindow(mTimeSplitSettingsWindow);
     mPlandomizerWindow =
         std::make_shared<PlandomizerWindow>(CVAR_WINDOW("PlandomizerEditor"), "Plandomizer Editor", ImVec2(850, 760));
     gui->AddGuiWindow(mPlandomizerWindow);
@@ -237,7 +241,8 @@ void Destroy() {
     mSohMenuBar = nullptr;
     mInputViewer = nullptr;
     mInputViewerSettings = nullptr;
-    mTimeSplitWindow = nullptr;
+    mTimeSplitsWindow = nullptr;
+    mTimeSplitSettingsWindow = nullptr;
     mPlandomizerWindow = nullptr;
     mTimeDisplayWindow = nullptr;
 }
