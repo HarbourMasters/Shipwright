@@ -365,7 +365,7 @@ const char* GetItemImageById(uint32_t itemId) {
         case SPLIT_DOUBLE_DEFENSE:
             return (const char*)gItemIcons[ITEM_HEART_CONTAINER];
         default:
-            if (itemId <= ITEM_NONE) {
+            if (itemId <= ITEM_MAGIC_LARGE) {
                 return itemMapping.find(itemId)->second.name.c_str();
             }
             break;

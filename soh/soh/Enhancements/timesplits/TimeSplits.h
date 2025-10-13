@@ -46,6 +46,7 @@ typedef enum SplitFileActions {
     SPLIT_SAVE,
     SPLIT_LOAD,
     SPLIT_RETRIEVE,
+    SPLIT_CONVERT,
 };
 
 typedef enum SplitStatus { SPLIT_INACTIVE, SPLIT_ACTIVE, SPLIT_COMPLETE, SPLIT_SKIPPED };

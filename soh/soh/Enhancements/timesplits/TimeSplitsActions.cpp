@@ -307,7 +307,14 @@ void SplitLoadComparisonList() {
 }
 
 void SplitSaveFileAction(uint32_t action, std::string listName) {
-    std::string filename = Ship::Context::GetPathRelativeToAppDirectory("SoHTimeSplitData.json");
+    std::string filename = "";
+
+    if (action == SPLIT_CONVERT) {
+        filename = Ship::Context::GetPathRelativeToAppDirectory("timesplitdata.json");
+    } else {
+        filename = Ship::Context::GetPathRelativeToAppDirectory("SoHTimeSplitData.json");
+    }
+
     json saveFile;
     json listArray = nlohmann::json::array();
 
@@ -352,6 +359,45 @@ void SplitSaveFileAction(uint32_t action, std::string listName) {
             savedLists.push_back("Create a List First");
         }
     }
+
+    if (action == SPLIT_CONVERT) {
+        for (auto& data : saveFile.items()) {
+            splitList.clear();
+            for (auto& items : data.value()) {
+                if (items["splitName"].get<std::string>() == "Skulltula Token") {
+                    continue;
+                }
+
+                TimesplitObject splitObject;
+                // 4 is the old SPLIT_TYPE_BOSS which does not exist anymore
+                if (items["splitType"] == 4) {
+                    splitObject.splitId = ITEM_NONE;
+                    for (auto& split : splitObjectList) {
+                        if (split.splitName == items["splitName"].get<std::string>()) {
+                            splitObject.splitId = split.splitId;
+                            break;
+                        }
+                    }
+                } else {
+                    splitObject.splitId = items["splitID"];
+                }
+
+                splitObject.splitName = items["splitName"].get<std::string>();
+                splitObject.splitCurrentTime = items["splitTimeCurrent"];
+                splitObject.splitPreviousBest = items["splitTimePreviousBest"];
+                splitObject.splitStatus = SPLIT_INACTIVE;
+                // 5 is the old SPLIT_TYPE_ENTRANCE which is replaced by SPLIT_TYPE_SCENE
+                if (items["splitType"] == 5) {
+                    splitObject.splitType = SPLIT_TYPE_SCENE;
+                } else {
+                    splitObject.splitType = SPLIT_TYPE_NORMAL;
+                }
+                splitList.push_back(splitObject);
+            }
+            SplitSaveFileAction(SPLIT_SAVE, data.key().c_str());
+        }
+        splitList.clear();
+    }
 }
 
 void RegisterTimesplits() {
@@ -360,6 +406,13 @@ void RegisterTimesplits() {
         std::ofstream file(Ship::Context::GetPathRelativeToAppDirectory("SoHTimeSplitData.json"));
         file << initFile.dump(4);
         file.close();
+    }
+
+    // Handles Converting any old save data into the new format.
+    if (std::filesystem::exists(Ship::Context::GetPathRelativeToAppDirectory("timesplitdata.json"))) {
+        SplitSaveFileAction(SPLIT_CONVERT, "");
+        std::filesystem::rename(Ship::Context::GetPathRelativeToAppDirectory("timesplitdata.json"),
+                                Ship::Context::GetPathRelativeToAppDirectory("timesplitdata.backup"));
     }
 
     SplitSaveFileAction(SPLIT_RETRIEVE, "");
