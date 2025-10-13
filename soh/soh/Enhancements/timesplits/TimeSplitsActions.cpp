@@ -429,11 +429,14 @@ void RegisterTimesplits() {
                 itemEntry.itemId = SPLIT_DOUBLE_DEFENSE;
             }
         } else {
-            if (itemEntry.itemId == ITEM_HEART_PIECE_2) {
-                itemEntry.itemId = ITEM_HEART_PIECE;
-            }
-            if (itemEntry.itemId >= ITEM_BOMBCHUS_20 && itemEntry.itemId <= ITEM_BOMBCHUS_5) {
+            if (itemEntry.itemId == ITEM_BOMBCHUS_20 || itemEntry.itemId == ITEM_BOMBCHUS_5) {
                 itemEntry.itemId = ITEM_BOMBCHU;
+            }
+            if (itemEntry.itemId == ITEM_STICKS_5 || itemEntry.itemId == ITEM_STICKS_10) {
+                itemEntry.itemId == ITEM_STICK;
+            }
+            if (itemEntry.itemId == ITEM_NUTS_5 || itemEntry.itemId == ITEM_NUTS_10) {
+                itemEntry.itemId == ITEM_NUT;
             }
         }
 
