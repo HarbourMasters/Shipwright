@@ -9,7 +9,7 @@
 
 extern "C" {
 #include "variables.h"
-PlayState* gPlayState;
+extern PlayState* gPlayState;
 uint64_t GetUnixTimestamp();
 }
 
