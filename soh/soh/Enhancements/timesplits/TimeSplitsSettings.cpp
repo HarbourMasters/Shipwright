@@ -342,7 +342,7 @@ bool shouldPopUpOpen = false;
 uint32_t popupItem = 0;
 const char* popupTooltip = "";
 IndexRangeObject range = GetIndexRange((uint32_t)ITEM_SWORD_KOKIRI, (uint32_t)SPLIT_DOUBLE_DEFENSE);
-const char* listName = "Equipment";
+std::string listName = "Equipment";
 uint32_t listColumns = 3;
 const char* itemImage;
 std::string listInputName;
@@ -590,8 +590,8 @@ void DrawEntranceList() {
     }
 }
 
-void DrawItemList(const char* tableName, IndexRangeObject range, uint32_t tableSize) {
-    if (ImGui::BeginTable(tableName, tableSize)) {
+void DrawItemList(std::string tableName, IndexRangeObject range, uint32_t tableSize) {
+    if (ImGui::BeginTable(tableName.c_str(), tableSize)) {
         for (int i = range.startIndex; i <= range.endIndex; i++) {
             ImGui::TableNextColumn();
             SplitsPushImageButtonStyle();
