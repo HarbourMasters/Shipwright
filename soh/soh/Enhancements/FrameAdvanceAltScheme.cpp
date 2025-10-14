@@ -54,5 +54,4 @@ void RegisterFrameAdvanceAltScheme() {
     });
 }
 
-static RegisterShipInitFunc initFunc_FrameAdvanceAltScheme(RegisterFrameAdvanceAltScheme,
-                                                           { CVAR_FRAMEADVANCEALTSCHEME_NAME });
+static RegisterShipInitFunc initFunc(RegisterFrameAdvanceAltScheme, { CVAR_FRAMEADVANCEALTSCHEME_NAME });
