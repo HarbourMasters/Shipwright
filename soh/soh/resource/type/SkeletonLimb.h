@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Resource.h"
+#include <ship/resource/Resource.h>
 #include "libultraship/libultra.h"
 #include "z64math.h"
 

@@ -40,4 +40,4 @@ void RegisterAudioNotificationHooks() {
     COND_HOOK(OnSeqPlayerInit, CVAR_SEQOVERLAY_VALUE, NotifySequenceName);
 }
 
-static RegisterShipInitFunc notifInitFunc(RegisterAudioNotificationHooks, { CVAR_SEQOVERLAY_NAME });
+static RegisterShipInitFunc initFunc(RegisterAudioNotificationHooks, { CVAR_SEQOVERLAY_NAME });

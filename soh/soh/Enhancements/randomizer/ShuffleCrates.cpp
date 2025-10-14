@@ -597,5 +597,5 @@ void Rando::StaticData::RegisterCrateLocations() {
 
 static ObjectExtension::Register<CrateIdentity> RegisterCrateIdentity;
 static ObjectExtension::Register<SmallCrateIdentity> RegisterSmallCrateIdentity;
-static RegisterShipInitFunc initFunc(RegisterShuffleCrates, { "IS_RANDO" });
-static RegisterShipInitFunc locFunc(Rando::StaticData::RegisterCrateLocations);
+static RegisterShipInitFunc registerShuffleCrates(RegisterShuffleCrates, { "IS_RANDO" });
+static RegisterShipInitFunc registerCrateLocations(Rando::StaticData::RegisterCrateLocations);

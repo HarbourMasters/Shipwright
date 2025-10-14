@@ -1,6 +1,6 @@
 #pragma once
 
-#include "resource/Resource.h"
+#include <ship/resource/Resource.h>
 
 namespace Fast {
 union F3DVtx;

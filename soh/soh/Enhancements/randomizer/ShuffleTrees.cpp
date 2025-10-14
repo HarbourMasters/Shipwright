@@ -262,4 +262,4 @@ void Rando::StaticData::RegisterTreeLocations() {
 
 static ObjectExtension::Register<TreeIdentity> RegisterPotIdentity;
 static RegisterShipInitFunc registerShuffleTrees(RegisterShuffleTrees, { "IS_RANDO" });
-static RegisterShipInitFunc registerShuffleTreeLocations(Rando::StaticData::RegisterTreeLocations);
+static RegisterShipInitFunc registerTreeLocations(Rando::StaticData::RegisterTreeLocations);

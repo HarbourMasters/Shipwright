@@ -10,7 +10,7 @@ extern "C"
 {
 #endif
 
-#include "luslog.h"
+#include <libultraship/log/luslog.h>
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
 #if defined(INCLUDE_GAME_PRINTF) && defined(_DEBUG)

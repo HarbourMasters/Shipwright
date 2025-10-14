@@ -7,10 +7,10 @@
 #include <chrono>
 
 #include "ResourceManagerHelpers.h"
-#include "graphic/Fast3D/Fast3dWindow.h"
-#include <File.h>
-#include <DisplayList.h>
-#include <Window.h>
+#include <fast/Fast3dWindow.h>
+#include <ship/resource/File.h>
+#include <fast/resource/type/DisplayList.h>
+#include <ship/window/Window.h>
 #include <soh/GameVersions.h>
 
 #include "Enhancements/gameconsole.h"
@@ -19,7 +19,7 @@
 #else
 #include <time.h>
 #endif
-#include <AudioPlayer.h>
+#include <ship/audio/AudioPlayer.h>
 #include "Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "Enhancements/controls/SohInputEditorWindow.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
@@ -40,10 +40,10 @@
 #include "variables.h"
 #include "z64.h"
 #include "macros.h"
-#include "Fonts.h"
-#include "window/FileDropMgr.h"
-#include "window/gui/resource/Font.h"
-#include <utils/StringHelper.h>
+#include <ship/window/gui/Fonts.h>
+#include <ship/window/FileDropMgr.h>
+#include <ship/window/gui/resource/Font.h>
+#include <ship/utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 #include "Enhancements/Presets/Presets.h"
 #include "util.h"
@@ -52,7 +52,7 @@
 #include "Extractor/Extract.h"
 #endif
 
-#include <Fast3D/interpreter.h>
+#include <fast/interpreter.h>
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -86,14 +86,16 @@ Sail* Sail::Instance;
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/randomizer/draw.h"
 #include <libultraship/libultraship.h>
+#include <libultraship/controller/controldeck/ControlDeck.h>
+#include <fast/resource/ResourceType.h>
 
 // Resource Types/Factories
-#include "resource/type/Array.h"
-#include "resource/type/Blob.h"
-#include "resource/type/DisplayList.h"
-#include "resource/type/Matrix.h"
-#include "resource/type/Texture.h"
-#include "resource/type/Vertex.h"
+#include "soh/resource/type/Array.h"
+#include <ship/resource/type/Blob.h>
+#include <fast/resource/type/DisplayList.h>
+#include <fast/resource/type/Matrix.h>
+#include <fast/resource/type/Texture.h>
+#include <fast/resource/type/Vertex.h>
 #include "soh/resource/type/SohResourceType.h"
 #include "soh/resource/type/Animation.h"
 #include "soh/resource/type/AudioSample.h"
@@ -107,11 +109,11 @@ Sail* Sail::Instance;
 #include "soh/resource/type/Skeleton.h"
 #include "soh/resource/type/SkeletonLimb.h"
 #include "soh/resource/type/Text.h"
-#include "resource/factory/BlobFactory.h"
-#include "resource/factory/DisplayListFactory.h"
-#include "resource/factory/MatrixFactory.h"
-#include "resource/factory/TextureFactory.h"
-#include "resource/factory/VertexFactory.h"
+#include <ship/resource/factory/BlobFactory.h>
+#include <fast/resource/factory/DisplayListFactory.h>
+#include <fast/resource/factory/MatrixFactory.h>
+#include <fast/resource/factory/TextureFactory.h>
+#include <fast/resource/factory/VertexFactory.h>
 #include "soh/resource/importer/ArrayFactory.h"
 #include "soh/resource/importer/AnimationFactory.h"
 #include "soh/resource/importer/AudioSampleFactory.h"
@@ -1119,7 +1121,32 @@ void CheckAndCreateModFolder() {
     }
 }
 
-extern "C" void InitOTR() {
+extern "C" void InitOTR(int argc, char* argv[]) {
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+    if (argc > 1) {
+        for (int i = 1; i < argc; i++) {
+            std::string installPath = Ship::Context::GetAppBundlePath();
+            Extractor extract;
+            if (extract.RunFileStandalone(argv[i])) {
+                bool doExtract = true;
+                std::string archive = (extract.IsMasterQuest() ? "oot-mq.o2r" : "oot.o2r");
+                if (std::filesystem::exists(Ship::Context::GetAppBundlePath() + "/" + archive)) {
+                    std::string msg = "Archive for current ROM, " + archive + ", already exists. Extract again?";
+                    doExtract = extract.ShowYesNoBox("Confirm Re-extract", msg.c_str()) == IDYES;
+                }
+                if (doExtract) {
+                    extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName));
+                }
+            } else {
+                std::string msg = "File " + std::string(argv[i]) + " is not a ROM or does not match supported ROMs.";
+                extract.ShowErrorBox("Incompatible File", msg.c_str());
+            }
+        }
+        if (Extractor::ShowYesNoBox("Run Ship of Harkinian", "All files have been processed. Run SoH?") != IDYES) {
+            exit(0);
+        }
+    }
+#endif
     OTRGlobals::Instance = new OTRGlobals();
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);

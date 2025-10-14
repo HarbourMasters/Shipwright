@@ -1364,6 +1364,22 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->switchFlag >= 0
+    // ```
+    // #### `args`
+    // - `*EnOkarinaTag`
+    VB_OKARINA_TAG_COMPLETE,
+
+    // #### `result`
+    // ```c
+    // (this->switchFlag >= 0) && (Flags_GetSwitch(play, this->switchFlag))
+    // ```
+    // #### `args`
+    // - `*EnOkarinaTag`
+    VB_OKARINA_TAG_COMPLETED,
+
+    // #### `result`
+    // ```c
     // CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)
     // ```
     // #### `args`

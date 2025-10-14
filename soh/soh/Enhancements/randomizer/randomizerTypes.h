@@ -423,7 +423,10 @@ typedef enum {
     RCTYPE_BEEHIVE,                    // Beehives
     RCTYPE_FISH,                       // Fishes
     RCTYPE_FREESTANDING,               // Freestanding rupees and hearts
-    RCTYPE_FAIRY,                      // Fairies
+    RCTYPE_FOUNTAIN_FAIRY,             // Fairies in Fountains
+    RCTYPE_STONE_FAIRY,                // Fairies from Gossip Stones
+    RCTYPE_BEAN_FAIRY,                 // Fairies from Beans
+    RCTYPE_SONG_FAIRY,                 // Fairies from Songs
     RCTYPE_GRASS,                      // Grass
 } RandomizerCheckType;
 
@@ -6137,7 +6140,10 @@ typedef enum {
     RSK_SHUFFLE_DEKU_STICK_BAG,
     RSK_SHUFFLE_DEKU_NUT_BAG,
     RSK_SHUFFLE_FREESTANDING,
-    RSK_SHUFFLE_FAIRIES,
+    RSK_SHUFFLE_FOUNTAIN_FAIRIES,
+    RSK_SHUFFLE_STONE_FAIRIES,
+    RSK_SHUFFLE_BEAN_FAIRIES,
+    RSK_SHUFFLE_SONG_FAIRIES,
     RSK_LOCK_OVERWORLD_DOORS,
     RSK_SHUFFLE_GRASS,
     RSK_MAX
@@ -6523,7 +6529,6 @@ typedef enum {
 typedef enum {
     RO_LOGIC_GLITCHLESS,
     RO_LOGIC_NO_LOGIC,
-    RO_LOGIC_VANILLA,
 } RandoOptionLogic;
 
 // Damage Multiplier

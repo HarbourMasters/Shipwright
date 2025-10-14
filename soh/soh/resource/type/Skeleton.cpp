@@ -1,4 +1,4 @@
-#include "resource/ResourceManager.h"
+#include <ship/resource/ResourceManager.h>
 #include "Skeleton.h"
 #include "soh/OTRGlobals.h"
 #include "libultraship/libultraship.h"

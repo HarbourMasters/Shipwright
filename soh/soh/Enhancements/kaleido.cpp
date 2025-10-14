@@ -16,7 +16,7 @@ extern PlayState* gPlayState;
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh_assets.h"
 #include "textures/icon_item_static/icon_item_static.h"
-#include "consolevariablebridge.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
 #include <sstream>

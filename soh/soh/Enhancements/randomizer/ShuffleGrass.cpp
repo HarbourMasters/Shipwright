@@ -530,4 +530,4 @@ void Rando::StaticData::RegisterGrassLocations() {
 
 static ObjectExtension::Register<GrassIdentity> RegisterGrassIdentity;
 static RegisterShipInitFunc registerShuffleGrass(RegisterShuffleGrass, { "IS_RANDO" });
-static RegisterShipInitFunc registerShuffleGrassLocations(Rando::StaticData::RegisterGrassLocations);
+static RegisterShipInitFunc registerGrassLocations(Rando::StaticData::RegisterGrassLocations);

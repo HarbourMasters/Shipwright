@@ -3,9 +3,9 @@
 #include <tinyxml2.h>
 #include <z64.h>
 #include "z64audio.h"
-#include "Context.h"
-#include "resource/archive/Archive.h"
-#include "resource/ResourceManager.h"
+#include <ship/Context.h>
+#include <ship/resource/archive/Archive.h>
+#include <ship/resource/ResourceManager.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>
