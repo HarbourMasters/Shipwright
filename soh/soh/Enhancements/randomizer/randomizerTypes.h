@@ -423,7 +423,10 @@ typedef enum {
     RCTYPE_BEEHIVE,                    // Beehives
     RCTYPE_FISH,                       // Fishes
     RCTYPE_FREESTANDING,               // Freestanding rupees and hearts
-    RCTYPE_FAIRY,                      // Fairies
+    RCTYPE_FOUNTAIN_FAIRY,             // Fairies in Fountains
+    RCTYPE_STONE_FAIRY,                // Fairies from Gossip Stones
+    RCTYPE_BEAN_FAIRY,                 // Fairies from Beans
+    RCTYPE_SONG_FAIRY,                 // Fairies from Songs
     RCTYPE_GRASS,                      // Grass
 } RandomizerCheckType;
 
@@ -3704,6 +3707,7 @@ typedef enum {
     RT_BOMBCHU_BEEHIVES,
     RT_BLUE_FIRE_MUD_WALLS,
     RT_OPEN_UNDERWATER_CHEST,
+    RT_HOOKSHOT_EXTENSION,
     RT_KF_ADULT_GS, // -- location tricks
     RT_LW_BRIDGE,
     RT_LW_MIDO_BACKFLIP,
@@ -3720,7 +3724,6 @@ typedef enum {
     RT_GY_SHADOW_FIRE_ARROWS,
     RT_DMT_SOIL_GS,
     RT_DMT_BOMBABLE,
-    RT_DMT_HOOKSHOT_LOWER_GS,
     RT_DMT_HOVERS_LOWER_GS,
     RT_DMT_BEAN_LOWER_GS,
     RT_DMT_JS_LOWER_GS,
@@ -3896,6 +3899,7 @@ typedef enum {
     RT_FW_VOID_WARP,
     RT_GROUND_CLIP,
     RT_GROUND_JUMP,
+    RT_GROUND_JUMP_HARD,
     RT_HESS,
     RT_HOOKSHOT_CLIP,
     RT_HOOKSHOT_JUMP,
@@ -6139,7 +6143,10 @@ typedef enum {
     RSK_SHUFFLE_DEKU_STICK_BAG,
     RSK_SHUFFLE_DEKU_NUT_BAG,
     RSK_SHUFFLE_FREESTANDING,
-    RSK_SHUFFLE_FAIRIES,
+    RSK_SHUFFLE_FOUNTAIN_FAIRIES,
+    RSK_SHUFFLE_STONE_FAIRIES,
+    RSK_SHUFFLE_BEAN_FAIRIES,
+    RSK_SHUFFLE_SONG_FAIRIES,
     RSK_LOCK_OVERWORLD_DOORS,
     RSK_SHUFFLE_GRASS,
     RSK_MAX
@@ -6517,7 +6524,6 @@ typedef enum {
 typedef enum {
     RO_LOGIC_GLITCHLESS,
     RO_LOGIC_NO_LOGIC,
-    RO_LOGIC_VANILLA,
 } RandoOptionLogic;
 
 // Damage Multiplier

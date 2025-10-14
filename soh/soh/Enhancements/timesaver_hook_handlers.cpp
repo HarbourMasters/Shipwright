@@ -1471,5 +1471,5 @@ void RegisterSkipTimerDelay() {
                  });
 }
 
-static RegisterShipInitFunc skipTimerDelay(RegisterSkipTimerDelay,
-                                           { CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), "IS_RANDO" });
+static RegisterShipInitFunc initFunc(RegisterSkipTimerDelay,
+                                     { CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), "IS_RANDO" });

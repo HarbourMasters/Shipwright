@@ -10,7 +10,7 @@
 
 #ifdef __cplusplus
 #include <memory>
-#include <Resource.h>
+#include <ship/resource/Resource.h>
 
 std::shared_ptr<Ship::IResource> ResourceMgr_GetResourceByNameHandlingMQ(const char* path);
 

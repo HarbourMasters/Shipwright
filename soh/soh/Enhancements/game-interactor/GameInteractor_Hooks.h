@@ -86,6 +86,9 @@ void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void));
 // Mark: - Pause Menu
 void GameInteractor_ExecuteOnKaleidoUpdate();
 
+// Mark: - Audio
+void GameInteractor_ExecuteOnSeqPlayerInit(int32_t playerIdx, int32_t seqId);
+
 #ifdef __cplusplus
 }
 #endif

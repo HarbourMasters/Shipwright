@@ -74,3 +74,6 @@ DEFINE_HOOK(OnGenerationCompletion, ());
 DEFINE_HOOK(OnSetGameLanguage, ());
 DEFINE_HOOK(OnAssetAltChange, ());
 DEFINE_HOOK(OnKaleidoUpdate, ());
+
+// Audio
+DEFINE_HOOK(OnSeqPlayerInit, (int32_t playerIdx, int32_t seqId));

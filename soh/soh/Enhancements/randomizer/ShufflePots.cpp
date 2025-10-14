@@ -661,4 +661,4 @@ void Rando::StaticData::RegisterPotLocations() {
 
 static ObjectExtension::Register<PotIdentity> RegisterPotIdentity;
 static RegisterShipInitFunc registerShufflePots(RegisterShufflePots, { "IS_RANDO" });
-static RegisterShipInitFunc registerShufflePotLocations(Rando::StaticData::RegisterPotLocations);
+static RegisterShipInitFunc registerPotLocations(Rando::StaticData::RegisterPotLocations);

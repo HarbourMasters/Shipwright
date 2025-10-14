@@ -48,6 +48,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Ds/z_en_ds.h"
 #include "src/overlays/actors/ovl_En_Gm/z_en_gm.h"
 #include "src/overlays/actors/ovl_En_Js/z_en_js.h"
+#include "src/overlays/actors/ovl_En_Okarina_Tag/z_en_okarina_tag.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
@@ -1370,6 +1371,30 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should |= RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) == RO_GENERIC_OFF;
             break;
         }
+        case VB_OKARINA_TAG_COMPLETE: {
+            if (gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL) {
+                auto dungeon =
+                    OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
+                if (dungeon->IsVanilla()) {
+                    EnOkarinaTag* enOkarinaTag = va_arg(args, EnOkarinaTag*);
+                    if (enOkarinaTag->switchFlag >= 0 && Flags_GetSwitch(gPlayState, enOkarinaTag->switchFlag)) {
+                        Flags_UnsetSwitch(gPlayState, enOkarinaTag->switchFlag);
+                        *should = false;
+                    }
+                }
+            }
+            break;
+        }
+        case VB_OKARINA_TAG_COMPLETED: {
+            if (gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL) {
+                auto dungeon =
+                    OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
+                if (dungeon->IsVanilla()) {
+                    *should = false;
+                }
+            }
+            break;
+        }
         case VB_GRANNY_SAY_INSUFFICIENT_RUPEES: {
             if (EnDs_RandoCanGetGrannyItem()) {
                 *should = gSaveContext.rupees <
@@ -2155,6 +2180,15 @@ void RandomizerOnActorInitHandler(void* actorRef) {
           Entrance_SceneAndSpawnAre(SCENE_SHOOTING_GALLERY, 0x01)))) {
         Actor_Kill(actor);
         return;
+    }
+
+    // Turn MQ switch into toggle
+    if (actor->id == ACTOR_OBJ_SWITCH && gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL && (actor->params & 7) == 3) {
+        auto dungeon =
+            OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
+        if (dungeon->IsMQ()) {
+            actor->params |= 0x10;
+        }
     }
 
     // In ER, once Link has spawned we know the scene has loaded, so we can sanitize the last known entrance type

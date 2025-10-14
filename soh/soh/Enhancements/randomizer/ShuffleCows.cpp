@@ -58,7 +58,7 @@ void RegisterShuffleCows() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterShuffleCows, { "IS_RANDO" });
+static RegisterShipInitFunc registerShuffleCows(RegisterShuffleCows, { "IS_RANDO" });
 
 void Rando::StaticData::RegisterCowLocations() {
     static bool registered = false;
@@ -79,4 +79,4 @@ void Rando::StaticData::RegisterCowLocations() {
     // clang-format-on
 }
 
-static RegisterShipInitFunc registerFunc(Rando::StaticData::RegisterCowLocations);
+static RegisterShipInitFunc registerCowLocations(Rando::StaticData::RegisterCowLocations);

@@ -5,7 +5,7 @@
 #include "rando_main.hpp"
 #include "../context.h"
 #include <libultraship/bridge.h>
-#include <Context.h>
+#include <ship/Context.h>
 #include <libultraship/libultra/types.h>
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"

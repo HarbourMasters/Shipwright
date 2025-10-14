@@ -4,7 +4,7 @@
 #include <libultraship/libultraship.h>
 #include "UIWidgets.hpp"
 #include "Menu.h"
-#include "graphic/Fast3D/backends/gfx_rendering_api.h"
+#include <fast/backends/gfx_rendering_api.h>
 #include "soh/cvar_prefixes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/Presets/Presets.h"

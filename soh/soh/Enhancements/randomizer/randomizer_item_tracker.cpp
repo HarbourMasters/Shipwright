@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <libultraship/libultraship.h>
+#include <libultraship/controller/controldeck/ControlDeck.h>
 
 #include "randomizer_check_tracker.h"
 #include "randomizer_item_tracker.h"
@@ -2124,4 +2125,4 @@ void RegisterItemTrackerWidgets() {
         { hookshotIdentWidget, "Settings", "Controls", "Camera Controls", "longshot icon" });
 }
 
-static RegisterMenuInitFunc initItemTrackerWidgets(RegisterItemTrackerWidgets);
+static RegisterMenuInitFunc menuInitFunc(RegisterItemTrackerWidgets);

@@ -1,7 +1,7 @@
 #ifndef MACROS_H
 #define MACROS_H
 
-#include <endianness.h>
+#include <ship/utils/binarytools/endianness.h>
 
 // Upstream TODO: Document reasoning for change
 // #ifndef __GNUC__

@@ -96,8 +96,8 @@ void RegionTable_Init_GerudoTrainingGround() {
         LOCATION(RC_GERUDO_TRAINING_GROUND_BEFORE_HEAVY_BLOCK_CHEST, logic->CanKillEnemy(RE_WOLFOS, ED_CLOSE, true, 4, true)),
     }, {
         //Exits
-        Entrance(RR_GERUDO_TRAINING_GROUND_EYE_STATUE_UPPER, []{return (ctx->GetTrickOption(RT_LENS_GTG) || logic->CanUse(RG_LENS_OF_TRUTH)) && (logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_GTG_FAKE_WALL) && logic->CanUse(RG_HOVER_BOOTS)));}),
-        Entrance(RR_GERUDO_TRAINING_GROUND_LIKE_LIKE_ROOM,   []{return (ctx->GetTrickOption(RT_LENS_GTG) || logic->CanUse(RG_LENS_OF_TRUTH)) && (logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_GTG_FAKE_WALL) && logic->CanUse(RG_HOVER_BOOTS))) && logic->CanUse(RG_SILVER_GAUNTLETS);}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_EYE_STATUE_UPPER, []{return (ctx->GetTrickOption(RT_LENS_GTG) || logic->CanUse(RG_LENS_OF_TRUTH)) && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && (ctx->GetTrickOption(RT_GTG_FAKE_WALL) && logic->CanUse(RG_HOVER_BOOTS)) || logic->CanGroundJump()));}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_LIKE_LIKE_ROOM,   []{return (ctx->GetTrickOption(RT_LENS_GTG) || logic->CanUse(RG_LENS_OF_TRUTH)) && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && (ctx->GetTrickOption(RT_GTG_FAKE_WALL) && logic->CanUse(RG_HOVER_BOOTS)) || logic->CanGroundJump())) && logic->CanUse(RG_SILVER_GAUNTLETS);}),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_LIKE_LIKE_ROOM] = Region("Gerudo Training Ground Like Like Room", SCENE_GERUDO_TRAINING_GROUND, {}, {
@@ -186,7 +186,7 @@ void RegionTable_Init_GerudoTrainingGround() {
     }, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_BEHIND_BLOCK,      []{return Here(RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);}) && logic->CanUse(RG_SILVER_GAUNTLETS);}),
-        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_STATUE_ROOM_LEDGE, []{return logic->IsAdult && Here(RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);}) && (ctx->GetTrickOption(RT_LENS_GTG_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->BlueFire() && (logic->CanUse(RG_SONG_OF_TIME) || (ctx->GetTrickOption(RT_GTG_FAKE_WALL) && logic->CanUse(RG_HOVER_BOOTS)));}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_STATUE_ROOM_LEDGE, []{return logic->IsAdult && Here(RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);}) && (ctx->GetTrickOption(RT_LENS_GTG_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->BlueFire() && logic->IsAdult && (logic->CanUse(RG_SONG_OF_TIME) || (ctx->GetTrickOption(RT_GTG_FAKE_WALL) && logic->CanUse(RG_HOVER_BOOTS)) || logic->CanGroundJump());}),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_BEHIND_BLOCK] = Region("Gerudo Training Ground MQ Behind Block", SCENE_GERUDO_TRAINING_GROUND, {}, {

@@ -1746,6 +1746,9 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Keese and Guay no longer target you and simply ignore you as if you were wearing the "
             "Skull Mask."));
+    AddWidget(path, "Disable Haunted Wasteland Sandstorm", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_CHEAT("DisableSandstorm"))
+        .Options(CheckboxOptions().Tooltip("Disables sandstorm effect in Haunted Wasteland."));
 
     AddWidget(path, "Glitch Aids", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Easy Frame Advancing with Pause", WIDGET_CVAR_CHECKBOX)

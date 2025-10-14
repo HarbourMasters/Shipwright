@@ -1,11 +1,11 @@
 #include "SohMenuBar.h"
 #include <imgui.h>
 #include "regex"
-#include "public/bridge/consolevariablebridge.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 #include <libultraship/libultraship.h>
 #include "UIWidgets.hpp"
 #include "include/z64audio.h"
-#include "graphic/Fast3D/backends/gfx_rendering_api.h"
+#include <fast/backends/gfx_rendering_api.h>
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
 #include "z64.h"

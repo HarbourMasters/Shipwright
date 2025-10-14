@@ -1,10 +1,10 @@
 #include "SohMenu.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/controls/SohInputEditorWindow.h"
-#include "window/gui/GuiMenuBar.h"
-#include "window/gui/GuiElement.h"
+#include <ship/window/gui/GuiMenuBar.h>
+#include <ship/window/gui/GuiElement.h>
 #include <variant>
-#include "StringHelper.h"
+#include <ship/utils/StringHelper.h>
 #include <spdlog/fmt/fmt.h>
 #include <tuple>
 
