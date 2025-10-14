@@ -36,4 +36,4 @@ void RegisterDynamicShadow() {
     });
 }
 
-static RegisterShipInitFunc initFunc_DynamicShadow(RegisterDynamicShadow, { CVAR_DYNAMICSHADOW_NAME });
+static RegisterShipInitFunc initFunc(RegisterDynamicShadow, { CVAR_DYNAMICSHADOW_NAME });
