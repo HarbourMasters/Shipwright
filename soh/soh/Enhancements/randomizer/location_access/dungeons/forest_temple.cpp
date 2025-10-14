@@ -87,7 +87,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_LOBBY,             []{return logic->CanUse(RG_SONG_OF_TIME);}),
-        Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER, []{return ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanUse(RG_HOVER_BOOTS);}),
+        Entrance(RR_FOREST_TEMPLE_NW_OUTDOORS_UPPER, []{return logic->CanUse(RG_HOVER_BOOTS) && ((ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()) || (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->CanGroundJump()));}),
         Entrance(RR_FOREST_TEMPLE_MAP_ROOM,          []{return true;}),
         Entrance(RR_FOREST_TEMPLE_SEWER,             []{return logic->HasItem(RG_GOLDEN_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
         Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY,     []{return false;}),

@@ -996,13 +996,44 @@ void GenerateItemPool() {
         AddItemsToPool(ItemPool, shopsanityRupees); // Shopsanity gets extra large rupees
     }
 
-    // Shuffle Fairies
-    if (ctx->GetOption(RSK_SHUFFLE_FAIRIES)) {
-        for (auto rc : Rando::StaticData::GetOverworldFairyLocations()) {
+    // Shuffle Fountain Fairies
+    if (ctx->GetOption(RSK_SHUFFLE_FOUNTAIN_FAIRIES)) {
+        for (auto rc : Rando::StaticData::GetFountainFairyLocations()) {
             AddItemToMainPool(GetJunkItem());
         }
-        // 8 extra for Ganon's Castle + 2 Dodongo's Cavern Gossip Stone + 3 Shadow Temple
-        int extra = 13;
+        // 8 extra for Ganon's Castle
+        int extra = 8;
+        for (int i = 0; i < extra; i++) {
+            AddItemToMainPool(GetJunkItem());
+        }
+    }
+
+    // Shuffle Gossip Stone Fairies
+    if (ctx->GetOption(RSK_SHUFFLE_STONE_FAIRIES)) {
+        for (auto rc : Rando::StaticData::GetStoneFairyLocations()) {
+            AddItemToMainPool(GetJunkItem());
+        }
+        // 2 Dodongo's Cavern Gossip Stone
+        int extra = 2;
+        for (int i = 0; i < extra; i++) {
+            AddItemToMainPool(GetJunkItem());
+        }
+    }
+
+    // Shuffle Bean Fairies
+    if (ctx->GetOption(RSK_SHUFFLE_BEAN_FAIRIES)) {
+        for (auto rc : Rando::StaticData::GetBeanFairyLocations()) {
+            AddItemToMainPool(GetJunkItem());
+        }
+    }
+
+    // Shuffle Song Fairies
+    if (ctx->GetOption(RSK_SHUFFLE_SONG_FAIRIES)) {
+        for (auto rc : Rando::StaticData::GetSongFairyLocations()) {
+            AddItemToMainPool(GetJunkItem());
+        }
+        // 3 Shadow Temple
+        int extra = 3;
         extra += ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla() ? 0 : 2;
         extra += ctx->GetDungeon(Rando::WATER_TEMPLE)->IsVanilla() ? 0 : 3;
         extra += ctx->GetDungeon(Rando::SPIRIT_TEMPLE)->IsVanilla() ? 2 : 1;

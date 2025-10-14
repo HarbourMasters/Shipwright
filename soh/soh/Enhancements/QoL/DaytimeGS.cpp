@@ -66,4 +66,4 @@ void RegisterDaytimeGoldSkultullas() {
     COND_HOOK(OnSceneSpawnActors, CVAR_DAYTIME_GS_VALUE, OnSpawnNighttimeGoldSkulltula);
 }
 
-static RegisterShipInitFunc initFunc_DaytimeGoldSkulltulas(RegisterDaytimeGoldSkultullas, { CVAR_DAYTIME_GS_NAME });
+static RegisterShipInitFunc initFunc(RegisterDaytimeGoldSkultullas, { CVAR_DAYTIME_GS_NAME });

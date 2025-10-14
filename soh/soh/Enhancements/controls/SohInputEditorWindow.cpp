@@ -1,13 +1,13 @@
 #include "SohInputEditorWindow.h"
-#include <utils/StringHelper.h>
-#include "graphic/Fast3D/Fast3dWindow.h"
+#include <ship/utils/StringHelper.h>
+#include <fast/Fast3dWindow.h>
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "z64.h"
 #include "soh/cvar_prefixes.h"
 #ifndef __WIIU__
-#include "controller/controldevice/controller/mapping/sdl/SDLAxisDirectionToButtonMapping.h"
+#include <ship/controller/controldevice/controller/mapping/sdl/SDLAxisDirectionToButtonMapping.h>
 #endif
 
 #define SCALE_IMGUI_SIZE(value) ((value / 13.0f) * ImGui::GetFontSize())
@@ -1969,4 +1969,4 @@ void RegisterInputEditorWidgets() {
     SohGui::mSohMenu->AddSearchWidget({ dpadText, "Settings", "Controls", "Dpad Controls" });
 }
 
-static RegisterMenuInitFunc initInputWidgets(RegisterInputEditorWidgets);
+static RegisterMenuInitFunc menuInitFunc(RegisterInputEditorWidgets);

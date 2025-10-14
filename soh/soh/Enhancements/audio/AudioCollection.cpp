@@ -4,7 +4,7 @@
 #include "soh/cvar_prefixes.h"
 #include "soh/Notification/Notification.h"
 #include <vector>
-#include <utils/StringHelper.h>
+#include <ship/utils/StringHelper.h>
 #include <libultraship/bridge.h>
 #include <libultraship/classes.h>
 #include <soh/OTRGlobals.h>

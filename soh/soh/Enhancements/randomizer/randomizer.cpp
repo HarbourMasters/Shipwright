@@ -27,7 +27,7 @@
 #include <functional>
 #include "draw.h"
 #include "soh/OTRGlobals.h"
-#include "window/FileDropMgr.h"
+#include <ship/window/FileDropMgr.h>
 #include "soh/SohGui/UIWidgets.hpp"
 #include "static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -4009,32 +4009,24 @@ void RandomizerSettingsWindow::DrawElement() {
 
         if (ImGui::BeginTabItem("Items")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                                 RO_LOGIC_VANILLA);
             if (mSettings->GetOptionGroup(RSG_ITEMS_IMGUI_TABLE).RenderImGui()) {
                 mNeedsUpdate = true;
             }
-            ImGui::EndDisabled();
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
 
         if (ImGui::BeginTabItem("Gameplay")) {
-            ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                                 RO_LOGIC_VANILLA);
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (mSettings->GetOptionGroup(RSG_GAMEPLAY_IMGUI_TABLE).RenderImGui()) {
                 mNeedsUpdate = true;
             }
-            ImGui::EndDisabled();
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
 
         if (ImGui::BeginTabItem("Locations")) {
-            ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings ||
-                                 CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                                     RO_LOGIC_VANILLA);
+            ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (!locationsTabOpen) {
                 locationsTabOpen = true;
@@ -4208,19 +4200,11 @@ void RandomizerSettingsWindow::DrawElement() {
                         mNeedsUpdate = true;
                     }
                 }
-                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA) {
-                    ImGui::SameLine();
-                    ImGui::TextColored(
-                        ImVec4(1.0f, 0.0f, 0.0f, 1.0f),
-                        "Heads up! This will disable all rando settings except for entrance shuffle and starter items");
-                }
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
 
-            ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings ||
-                                 CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                                     RO_LOGIC_VANILLA);
+            ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
 
             // Tricks
             static std::unordered_map<RandomizerArea, bool> areaTreeDisabled{

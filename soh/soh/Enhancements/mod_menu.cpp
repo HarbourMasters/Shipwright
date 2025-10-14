@@ -1,5 +1,5 @@
 #include "mod_menu.h"
-#include "utils/StringHelper.h"
+#include <ship/utils/StringHelper.h>
 #include <libultraship/classes.h>
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"
