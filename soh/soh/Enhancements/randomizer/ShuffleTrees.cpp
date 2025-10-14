@@ -96,7 +96,7 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
             Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallMajorCrateDL);
             break;
-        case ITEM_CATEGORY_SKULLTULA_TOKEN:
+        case ITEM_CATEGORY_SKULL_TOKEN:
             Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallTokenCrateDL);
             break;
