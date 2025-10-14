@@ -2,8 +2,8 @@
 #include "UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/controls/SohInputEditorWindow.h"
-#include "window/gui/GuiMenuBar.h"
-#include "window/gui/GuiElement.h"
+#include <ship/window/gui/GuiMenuBar.h>
+#include <ship/window/gui/GuiElement.h>
 #include "SohModals.h"
 #include <variant>
 #include <spdlog/fmt/fmt.h>

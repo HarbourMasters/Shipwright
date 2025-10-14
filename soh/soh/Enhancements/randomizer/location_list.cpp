@@ -104,10 +104,40 @@ std::vector<RandomizerCheck> Rando::StaticData::GetAllDungeonLocations() {
     return dungeonLocations;
 }
 
-std::vector<RandomizerCheck> Rando::StaticData::GetOverworldFairyLocations() {
+std::vector<RandomizerCheck> Rando::StaticData::GetFountainFairyLocations() {
     std::vector<RandomizerCheck> fairyLocations = {};
     for (Location& location : locationTable) {
-        if (location.GetRCType() == RCTYPE_FAIRY && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        if (location.GetRCType() == RCTYPE_FOUNTAIN_FAIRY && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+            fairyLocations.push_back(location.GetRandomizerCheck());
+        }
+    }
+    return fairyLocations;
+}
+
+std::vector<RandomizerCheck> Rando::StaticData::GetStoneFairyLocations() {
+    std::vector<RandomizerCheck> fairyLocations = {};
+    for (Location& location : locationTable) {
+        if (location.GetRCType() == RCTYPE_STONE_FAIRY && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+            fairyLocations.push_back(location.GetRandomizerCheck());
+        }
+    }
+    return fairyLocations;
+}
+
+std::vector<RandomizerCheck> Rando::StaticData::GetBeanFairyLocations() {
+    std::vector<RandomizerCheck> fairyLocations = {};
+    for (Location& location : locationTable) {
+        if (location.GetRCType() == RCTYPE_BEAN_FAIRY && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+            fairyLocations.push_back(location.GetRandomizerCheck());
+        }
+    }
+    return fairyLocations;
+}
+
+std::vector<RandomizerCheck> Rando::StaticData::GetSongFairyLocations() {
+    std::vector<RandomizerCheck> fairyLocations = {};
+    for (Location& location : locationTable) {
+        if (location.GetRCType() == RCTYPE_SONG_FAIRY && location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
             fairyLocations.push_back(location.GetRandomizerCheck());
         }
     }

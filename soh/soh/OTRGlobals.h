@@ -21,7 +21,7 @@
 #define M_SQRT1_2f 0.70710678118654752440f /* 1/sqrt(2) */
 
 #ifdef __cplusplus
-#include <Context.h>
+#include <ship/Context.h>
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include <vector>
@@ -87,7 +87,7 @@ class OTRGlobals {
 #endif
 
 #ifndef __cplusplus
-void InitOTR(void);
+void InitOTR(int argc, char* argv[]);
 void DeinitOTR(void);
 void VanillaItemTable_Init();
 void OTRAudio_Init();

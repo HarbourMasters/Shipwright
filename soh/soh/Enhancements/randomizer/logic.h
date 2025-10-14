@@ -42,6 +42,7 @@ class Logic {
     bool HasBossSoul(RandomizerGet itemName);
     bool CanOpenOverworldDoor(RandomizerGet itemName);
     bool SmallKeys(s16 scene, uint8_t requiredAmount);
+    bool CanGroundJump(bool hasBombflower = false);
     bool CanOpenUnderwaterChest();
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);

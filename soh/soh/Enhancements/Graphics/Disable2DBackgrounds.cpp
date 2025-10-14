@@ -158,4 +158,4 @@ void Register3DPreRenderedScenes() {
     });
 }
 
-static RegisterShipInitFunc PreRender3DInitFunc(Register3DPreRenderedScenes, { CVAR_NAME });
+static RegisterShipInitFunc initFunc(Register3DPreRenderedScenes, { CVAR_NAME });

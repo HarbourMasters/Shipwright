@@ -1,8 +1,8 @@
 #include "soh/resource/importer/AnimationFactory.h"
 #include "soh/resource/type/Animation.h"
-#include "ResourceManager.h"
+#include <ship/resource/ResourceManager.h>
 #include "spdlog/spdlog.h"
-#include "Context.h"
+#include <ship/Context.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>

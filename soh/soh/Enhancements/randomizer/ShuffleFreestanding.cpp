@@ -287,4 +287,4 @@ void Rando::StaticData::RegisterFreestandingLocations() {
 }
 
 static RegisterShipInitFunc registerShuffleFreestanding(RegisterShuffleFreestanding, { "IS_RANDO" });
-static RegisterShipInitFunc registerShuffleFreestandingLocations(Rando::StaticData::RegisterFreestandingLocations);
+static RegisterShipInitFunc registerFreestandingLocations(Rando::StaticData::RegisterFreestandingLocations);

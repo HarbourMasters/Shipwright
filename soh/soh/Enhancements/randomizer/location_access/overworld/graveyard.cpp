@@ -111,7 +111,7 @@ void RegionTable_Init_Graveyard() {
     }, {
         //Exits
         Entrance(RR_THE_GRAVEYARD, []{return true;}),
-        Entrance(RR_KAK_WINDMILL,  []{return logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME);}, false),
+        Entrance(RR_KAK_WINDMILL,  []{return (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (logic->IsChild && logic->CanGroundJump());}, false),
     });
 
     areaTable[RR_GRAVEYARD_DAMPES_HOUSE] = Region("Graveyard Dampes House", SCENE_GRAVEKEEPERS_HUT, {}, {

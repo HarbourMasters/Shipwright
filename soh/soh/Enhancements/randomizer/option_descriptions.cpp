@@ -481,7 +481,15 @@ void Settings::CreateOptionDescriptions() {
         "Overworld - Only freestanding rupees & hearts that are outside of dungeons.\n"
         "\n"
         "All Items - Shuffle all freestanding rupees & hearts.";
-    mOptionDescriptions[RSK_SHUFFLE_FAIRIES] = "Shuffle fairy locations.";
+    mOptionDescriptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES] =
+        "Shuffle fairies in fountain locations. "
+        "This includes the sets of fairies found in Ganon's Castle and the Desert Oasis.";
+    mOptionDescriptions[RSK_SHUFFLE_STONE_FAIRIES] = "Shuffle fairies from gossip stone locations.";
+    mOptionDescriptions[RSK_SHUFFLE_BEAN_FAIRIES] = "Shuffle fairies from magic bean locations.";
+    mOptionDescriptions[RSK_SHUFFLE_SONG_FAIRIES] =
+        "Shuffle fairy spots. These are spots where a big fairy is revealed by a song."
+        "\n"
+        "This excludes gossip stones and magic bean locations.";
     mOptionDescriptions[RSK_SHUFFLE_GRASS] =
         "Grass/Bushes will drop a randomized item the first time they're cut and collected. "
         "Grass/Bushes will have a different appearance when they hold a randomized item.\n"
@@ -754,11 +762,7 @@ void Settings::CreateOptionDescriptions() {
         "Glitchless - No glitches are required, but may require some minor tricks. Additional tricks may be enabled "
         "and disabled below.\n"
         "\n"
-        //"Glitched - Glitches may be required to beat the game. You can disable and enable glitches below.\n"
-        //"\n"
-        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.\n"
-        "\n"
-        "Vanilla - Places all items and dungeon rewards in their vanilla locations.";
+        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.";
     mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE] = "When this options is enabled, the randomizer will "
                                                        "guarantee that every item is obtainable and every "
                                                        "location is reachable. When disabled, only "
