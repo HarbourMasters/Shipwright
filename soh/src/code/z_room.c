@@ -658,7 +658,8 @@ void func_80097534(PlayState* play, RoomContext* roomCtx) {
     u8 idx = GetGlobalShipSaveContextData()->stats.tsIdx;
     GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].scene = GetGlobalShipSaveContextData()->stats.sceneNum;
     GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].room = GetGlobalShipSaveContextData()->stats.roomNum;
-    GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].roomTime = GetGlobalShipSaveContextData()->stats.roomTimer / 2;
+    GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].roomTime =
+        GetGlobalShipSaveContextData()->stats.roomTimer / 2;
     GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].isRoom =
         gPlayState->sceneNum == GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].scene &&
         gPlayState->roomCtx.curRoom.num != GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].room;

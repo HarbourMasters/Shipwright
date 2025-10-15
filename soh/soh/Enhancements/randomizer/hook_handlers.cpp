@@ -633,14 +633,14 @@ bool ShouldGiveFishingPrize(f32 sFishOnHandLength) {
                              : 10;
         f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
         return sFishOnHandLength >= score && (IsRando() ? !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING)
-                                                       : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD));
+                                                        : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD));
     } else {
         int32_t weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0)
                              ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 13)
                              : 13;
         f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
         return sFishOnHandLength >= score && (IsRando() ? !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING)
-                                                       : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT));
+                                                        : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT));
     }
 }
 

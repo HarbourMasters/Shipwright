@@ -31,11 +31,11 @@ uint8_t IsMasterQuest() {
     return 0;
 }
 
-ShipSaveContextData *GetGlobalShipSaveContextData() {
+ShipSaveContextData* GetGlobalShipSaveContextData() {
     return ObjectExtension::GetInstance().Get<ShipSaveContextData>(&gSaveContext);
 }
 
-ShipSaveContextData *GetShipSaveContextData(SaveContext* saveContext) {
+ShipSaveContextData* GetShipSaveContextData(SaveContext* saveContext) {
     if (saveContext == nullptr) {
         saveContext = &gSaveContext;
     }

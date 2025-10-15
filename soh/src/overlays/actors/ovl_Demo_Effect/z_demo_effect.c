@@ -160,7 +160,7 @@ void DemoEffect_InitJewel(PlayState* play, DemoEffect* this) {
     this->csActionId = 1;
     this->actor.shape.rot.x =
         (IsRando() && (play->sceneNum != SCENE_TEMPLE_OF_TIME || this->actor.params == DEMO_EFFECT_LIGHTARROW)) ? 0
-                                                                                                               : 16384;
+                                                                                                                : 16384;
     DemoEffect_InitJewelColor(this);
     this->jewel.alpha = 0;
     this->jewelCsRotation.x = this->jewelCsRotation.y = this->jewelCsRotation.z = 0;

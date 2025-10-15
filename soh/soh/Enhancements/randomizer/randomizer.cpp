@@ -6239,7 +6239,8 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         case RG_GREG_RUPEE:
             Rupees_ChangeBy(1);
             Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
-            GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+            GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_FOUND_GREG] =
+                static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
             break;
         case RG_TRIFORCE_PIECE:
             GetShipSaveContextData()->quest.data.randomizer.triforcePiecesCollected++;

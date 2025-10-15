@@ -163,7 +163,8 @@ void UpdatePermanentHeartLossState() {
 
     if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) && hasAffectedHealth) {
         uint8_t heartContainers = GetShipSaveContextData()->stats.heartContainers; // each worth 16 health
-        uint8_t heartPieces = GetShipSaveContextData()->stats.heartPieces; // each worth 4 health, but only in groups of 4
+        uint8_t heartPieces =
+            GetShipSaveContextData()->stats.heartPieces; // each worth 4 health, but only in groups of 4
         uint8_t startingHealth =
             16 * (IsRando() ? (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_HEARTS) + 1) : 3);
 
@@ -328,8 +329,8 @@ void UpdateMirrorModeState(int32_t sceneNum) {
                         (sceneNum == SCENE_GANON_BOSS);
 
     if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
-        uint32_t seed =
-            sceneNum + (IsRando() ? Rando::Context::GetInstance()->GetSeed() : GetShipSaveContextData()->stats.fileCreatedAt);
+        uint32_t seed = sceneNum + (IsRando() ? Rando::Context::GetInstance()->GetSeed()
+                                              : GetShipSaveContextData()->stats.fileCreatedAt);
         Random_Init(seed);
     }
 

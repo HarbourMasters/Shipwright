@@ -475,7 +475,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                 IsRando() && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) ? 0 : CUR_CAPACITY(UPG_WALLET);
             result.maxCapacity =
                 IsRando() && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET) ? 999
-                                                                                                               : 500;
+                                                                                                                : 500;
             result.currentAmmo = gSaveContext.rupees;
             break;
         case ITEM_BOMBCHU:

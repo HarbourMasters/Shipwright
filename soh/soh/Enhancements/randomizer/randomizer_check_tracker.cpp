@@ -837,7 +837,7 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
     }
     for (auto& loc : Rando::StaticData::GetLocationTable()) {
         if ((!IsRando() && ((loc.GetQuest() == RCQUEST_MQ && !IsMasterQuest()) ||
-                           (loc.GetQuest() == RCQUEST_VANILLA && IsMasterQuest()))) ||
+                            (loc.GetQuest() == RCQUEST_VANILLA && IsMasterQuest()))) ||
             (IsRando() &&
              !(OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc.GetScene()) == nullptr) &&
              ((OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc.GetScene())->IsMQ() &&
@@ -1324,22 +1324,24 @@ void LoadSettings() {
     // If in randomzer, then get the setting and check if in general we should be showing the settings
     // If in vanilla, _try_ to show items that at least are needed for 100%
 
-    showShops =
-        IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF : false;
+    showShops = IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF
+                          : false;
     showBeans = IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) ==
-                                   RO_SHUFFLE_MERCHANTS_BEANS_ONLY ||
-                               OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) ==
-                                   RO_SHUFFLE_MERCHANTS_ALL
-                         : true;
-    showScrubs =
-        IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_ALL : false;
-    showMajorScrubs =
-        IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) != RO_SCRUBS_OFF : false;
+                                    RO_SHUFFLE_MERCHANTS_BEANS_ONLY ||
+                                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) ==
+                                    RO_SHUFFLE_MERCHANTS_ALL
+                          : true;
+    showScrubs = IsRando()
+                     ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_ALL
+                     : false;
+    showMajorScrubs = IsRando()
+                          ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) != RO_SCRUBS_OFF
+                          : false;
     showMerchants = IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) ==
-                                       RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS ||
-                                   OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) ==
-                                       RO_SHUFFLE_MERCHANTS_ALL
-                             : true;
+                                        RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS ||
+                                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) ==
+                                        RO_SHUFFLE_MERCHANTS_ALL
+                              : true;
     showSongs = IsRando()
                     ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SONGS) != RO_SONG_SHUFFLE_OFF
                     : false;
@@ -1350,22 +1352,22 @@ void LoadSettings() {
         IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_COWS) == RO_GENERIC_YES : false;
     showAdultTrade =
         IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) == RO_GENERIC_YES
-                 : true;
+                  : true;
     showKokiriSword =
         IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_KOKIRI_SWORD) == RO_GENERIC_YES
-                 : true;
+                  : true;
     showMasterSword =
         IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MASTER_SWORD) == RO_GENERIC_YES
-                 : true;
-    showHyruleLoach =
-        IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) == RO_FISHSANITY_HYRULE_LOACH
-                 : false;
+                  : true;
+    showHyruleLoach = IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) ==
+                                      RO_FISHSANITY_HYRULE_LOACH
+                                : false;
     showWeirdEgg =
         IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WEIRD_EGG) == RO_GENERIC_YES
-                 : true;
+                  : true;
     showGerudoCard = IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(
-                                    RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) == RO_GENERIC_YES
-                              : true;
+                                     RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) == RO_GENERIC_YES
+                               : true;
     showFrogSongRupees =
         IsRando()
             ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FROG_SONG_RUPEES) == RO_GENERIC_YES
@@ -1376,38 +1378,38 @@ void LoadSettings() {
             : false;
     showStoneFairies =
         IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_STONE_FAIRIES) == RO_GENERIC_YES
-                 : false;
+                  : false;
     showBeanFairies =
         IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BEAN_FAIRIES) == RO_GENERIC_YES
-                 : false;
+                  : false;
     showSongFairies =
         IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SONG_FAIRIES) == RO_GENERIC_YES
-                 : false;
+                  : false;
     showStartingMapsCompasses = IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(
-                                               RSK_SHUFFLE_MAPANDCOMPASS) != RO_DUNGEON_ITEM_LOC_VANILLA
-                                         : false;
-    showKeysanity =
-        IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) != RO_DUNGEON_ITEM_LOC_VANILLA
-                 : false;
+                                                RSK_SHUFFLE_MAPANDCOMPASS) != RO_DUNGEON_ITEM_LOC_VANILLA
+                                          : false;
+    showKeysanity = IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) !=
+                                    RO_DUNGEON_ITEM_LOC_VANILLA
+                              : false;
     showBossKeysanity = IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) !=
-                                       RO_DUNGEON_ITEM_LOC_VANILLA
-                                 : false;
+                                        RO_DUNGEON_ITEM_LOC_VANILLA
+                                  : false;
     showGerudoFortressKeys =
         IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA
-                 : false;
+                  : false;
     showGanonBossKey = IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) !=
-                                      RO_GANON_BOSS_KEY_VANILLA
-                                : false;
+                                       RO_GANON_BOSS_KEY_VANILLA
+                                 : false;
     showOcarinas = IsRando()
                        ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_OCARINA) == RO_GENERIC_YES
                        : false;
     show100SkullReward =
         IsRando() ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_100_GS_REWARD) == RO_GENERIC_YES
-                 : false;
+                  : false;
     showLinksPocket =
         IsRando() ? // don't show Link's Pocket if not randomizer, or if rando and pocket is disabled
             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING
-                 : false;
+                  : false;
 
     if (IsRando()) {
         switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS)) {

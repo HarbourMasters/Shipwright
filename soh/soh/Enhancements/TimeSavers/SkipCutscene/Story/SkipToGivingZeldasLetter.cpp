@@ -41,7 +41,8 @@ void SkipToGivingZeldasLetter_OnActorInit(void* actorPtr) {
 }
 
 void RegisterSkipToGivingZeldasLetter() {
-    COND_ID_HOOK(OnActorInit, ACTOR_EN_ZL4, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IsRando()),
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_ZL4,
+                 CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IsRando()),
                  SkipToGivingZeldasLetter_OnActorInit);
 }
 

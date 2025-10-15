@@ -1811,7 +1811,8 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                     SetRandoInf(RandoGetToRandInf.at(randoGet), state);
                     break;
                 case RG_TRIFORCE_PIECE:
-                    GetShipSaveContextData(mSaveContext)->quest.data.randomizer.triforcePiecesCollected += (!state ? -1 : 1);
+                    GetShipSaveContextData(mSaveContext)->quest.data.randomizer.triforcePiecesCollected +=
+                        (!state ? -1 : 1);
                     break;
                 case RG_BOMBCHU_5:
                 case RG_BOMBCHU_10:

@@ -19,17 +19,18 @@ char* GameplayStats_GetCurrentTime();
 // Total gameplay time is tracked in tenths of seconds
 // I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
 // Frame counts in z_play.c and z_kaleido_scope_call.c
-#define GAMEPLAYSTAT_TOTAL_TIME                                                                \
+#define GAMEPLAYSTAT_TOTAL_TIME                                                                              \
     (GetGlobalShipSaveContextData()->stats.rtaTiming                                                         \
          ? (!GetGlobalShipSaveContextData()->stats.gameComplete                                              \
                 ? (!GetGlobalShipSaveContextData()->stats.fileCreatedAt                                      \
-                       ? 0                                                                     \
+                       ? 0                                                                                   \
                        : ((GetUnixTimestamp() - GetGlobalShipSaveContextData()->stats.fileCreatedAt) / 100)) \
                 : (GetGlobalShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]               \
                        ? GetGlobalShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]         \
                        : GetGlobalShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED])) \
-         : (GetGlobalShipSaveContextData()->stats.playTimer / 2 + GetGlobalShipSaveContextData()->stats.pauseTimer / 3))
-#define CURRENT_MODE_TIMER                                                                       \
+         : (GetGlobalShipSaveContextData()->stats.playTimer / 2 +                                            \
+            GetGlobalShipSaveContextData()->stats.pauseTimer / 3))
+#define CURRENT_MODE_TIMER                                                                                     \
     (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) ? GetGlobalShipSaveContextData()->stats.roomTimer \
                                                              : GetGlobalShipSaveContextData()->stats.sceneTimer)
 

@@ -296,9 +296,9 @@ void LoadStatsVersion1() {
 
     SaveManager::Instance->LoadData("heartPieces", GetShipSaveContextData()->stats.heartPieces);
     SaveManager::Instance->LoadData("heartContainers", GetShipSaveContextData()->stats.heartContainers);
-    SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(GetShipSaveContextData()->stats.dungeonKeys), [](size_t i) {
-        SaveManager::Instance->LoadData("", GetShipSaveContextData()->stats.dungeonKeys[i]);
-    });
+    SaveManager::Instance->LoadArray(
+        "dungeonKeys", ARRAY_COUNT(GetShipSaveContextData()->stats.dungeonKeys),
+        [](size_t i) { SaveManager::Instance->LoadData("", GetShipSaveContextData()->stats.dungeonKeys[i]); });
     SaveManager::Instance->LoadData("rtaTiming", GetShipSaveContextData()->stats.rtaTiming);
     SaveManager::Instance->LoadData("fileCreatedAt", GetShipSaveContextData()->stats.fileCreatedAt);
     SaveManager::Instance->LoadData("playTimer", GetShipSaveContextData()->stats.playTimer);
@@ -345,39 +345,49 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
 
     SaveManager::Instance->SaveData("heartPieces", GetShipSaveContextData(saveContext)->stats.heartPieces);
     SaveManager::Instance->SaveData("heartContainers", GetShipSaveContextData(saveContext)->stats.heartContainers);
-    SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(GetShipSaveContextData(saveContext)->stats.dungeonKeys), [&](size_t i) {
-        SaveManager::Instance->SaveData("", GetShipSaveContextData(saveContext)->stats.dungeonKeys[i]);
-    });
+    SaveManager::Instance->SaveArray(
+        "dungeonKeys", ARRAY_COUNT(GetShipSaveContextData(saveContext)->stats.dungeonKeys), [&](size_t i) {
+            SaveManager::Instance->SaveData("", GetShipSaveContextData(saveContext)->stats.dungeonKeys[i]);
+        });
     SaveManager::Instance->SaveData("rtaTiming", GetShipSaveContextData(saveContext)->stats.rtaTiming);
     SaveManager::Instance->SaveData("fileCreatedAt", GetShipSaveContextData(saveContext)->stats.fileCreatedAt);
     SaveManager::Instance->SaveData("playTimer", GetShipSaveContextData(saveContext)->stats.playTimer);
     SaveManager::Instance->SaveData("pauseTimer", GetShipSaveContextData(saveContext)->stats.pauseTimer);
     SaveManager::Instance->SaveArray(
-        "itemTimestamps", ARRAY_COUNT(GetShipSaveContextData(saveContext)->stats.itemTimestamp),
-        [&](size_t i) { SaveManager::Instance->SaveData("", GetShipSaveContextData(saveContext)->stats.itemTimestamp[i]); });
+        "itemTimestamps", ARRAY_COUNT(GetShipSaveContextData(saveContext)->stats.itemTimestamp), [&](size_t i) {
+            SaveManager::Instance->SaveData("", GetShipSaveContextData(saveContext)->stats.itemTimestamp[i]);
+        });
     SaveManager::Instance->SaveArray(
         "sceneTimestamps", ARRAY_COUNT(GetShipSaveContextData(saveContext)->stats.sceneTimestamps), [&](size_t i) {
             if (GetShipSaveContextData(saveContext)->stats.sceneTimestamps[i].scene != 254 &&
                 GetShipSaveContextData(saveContext)->stats.sceneTimestamps[i].room != 254) {
                 SaveManager::Instance->SaveStruct("", [&]() {
-                    SaveManager::Instance->SaveData("scene", GetShipSaveContextData(saveContext)->stats.sceneTimestamps[i].scene);
-                    SaveManager::Instance->SaveData("room", GetShipSaveContextData(saveContext)->stats.sceneTimestamps[i].room);
-                    SaveManager::Instance->SaveData("sceneTime", GetShipSaveContextData(saveContext)->stats.sceneTimestamps[i].sceneTime);
-                    SaveManager::Instance->SaveData("roomTime", GetShipSaveContextData(saveContext)->stats.sceneTimestamps[i].roomTime);
-                    SaveManager::Instance->SaveData("isRoom", GetShipSaveContextData(saveContext)->stats.sceneTimestamps[i].isRoom);
+                    SaveManager::Instance->SaveData(
+                        "scene", GetShipSaveContextData(saveContext)->stats.sceneTimestamps[i].scene);
+                    SaveManager::Instance->SaveData("room",
+                                                    GetShipSaveContextData(saveContext)->stats.sceneTimestamps[i].room);
+                    SaveManager::Instance->SaveData(
+                        "sceneTime", GetShipSaveContextData(saveContext)->stats.sceneTimestamps[i].sceneTime);
+                    SaveManager::Instance->SaveData(
+                        "roomTime", GetShipSaveContextData(saveContext)->stats.sceneTimestamps[i].roomTime);
+                    SaveManager::Instance->SaveData(
+                        "isRoom", GetShipSaveContextData(saveContext)->stats.sceneTimestamps[i].isRoom);
                 });
             }
         });
     SaveManager::Instance->SaveData("tsIdx", GetShipSaveContextData(saveContext)->stats.tsIdx);
-    SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(GetShipSaveContextData(saveContext)->stats.count), [&](size_t i) {
-        SaveManager::Instance->SaveData("", GetShipSaveContextData(saveContext)->stats.count[i]);
-    });
     SaveManager::Instance->SaveArray(
-        "scenesDiscovered", ARRAY_COUNT(GetShipSaveContextData(saveContext)->stats.scenesDiscovered),
-        [&](size_t i) { SaveManager::Instance->SaveData("", GetShipSaveContextData(saveContext)->stats.scenesDiscovered[i]); });
+        "counts", ARRAY_COUNT(GetShipSaveContextData(saveContext)->stats.count),
+        [&](size_t i) { SaveManager::Instance->SaveData("", GetShipSaveContextData(saveContext)->stats.count[i]); });
+    SaveManager::Instance->SaveArray(
+        "scenesDiscovered", ARRAY_COUNT(GetShipSaveContextData(saveContext)->stats.scenesDiscovered), [&](size_t i) {
+            SaveManager::Instance->SaveData("", GetShipSaveContextData(saveContext)->stats.scenesDiscovered[i]);
+        });
     SaveManager::Instance->SaveArray(
         "entrancesDiscovered", ARRAY_COUNT(GetShipSaveContextData(saveContext)->stats.entrancesDiscovered),
-        [&](size_t i) { SaveManager::Instance->SaveData("", GetShipSaveContextData(saveContext)->stats.entrancesDiscovered[i]); });
+        [&](size_t i) {
+            SaveManager::Instance->SaveData("", GetShipSaveContextData(saveContext)->stats.entrancesDiscovered[i]);
+        });
 }
 
 void GameplayStatsRow(const char* label, const std::string& value, ImVec4 color = COLOR_WHITE,
@@ -461,8 +471,8 @@ void DrawGameplayStatsHeader() {
     if (CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowAdditionalTimers"), 0)) { // !Only display total game time
         GameplayStatsRow("Gameplay Time:", formatTimestampGameplayStat(GetShipSaveContextData()->stats.playTimer / 2),
                          COLOR_GREY);
-        GameplayStatsRow("Pause Menu Time:", formatTimestampGameplayStat(GetShipSaveContextData()->stats.pauseTimer / 3),
-                         COLOR_GREY);
+        GameplayStatsRow("Pause Menu Time:",
+                         formatTimestampGameplayStat(GetShipSaveContextData()->stats.pauseTimer / 3), COLOR_GREY);
         GameplayStatsRow("Time in scene:", formatTimestampGameplayStat(GetShipSaveContextData()->stats.sceneTimer / 2),
                          COLOR_LIGHT_BLUE);
         GameplayStatsRow("Time in room:", formatTimestampGameplayStat(GetShipSaveContextData()->stats.roomTimer / 2),
@@ -538,17 +548,20 @@ void DrawGameplayStatsCountsTab() {
         if (ImGui::TreeNodeEx("Enemy Details...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
             for (int i = COUNT_ENEMIES_DEFEATED_ANUBIS; i <= COUNT_ENEMIES_DEFEATED_WOLFOS; i++) {
                 if (i == COUNT_ENEMIES_DEFEATED_FLOORMASTER) {
-                    GameplayStatsRow(countMappings[i], formatIntGameplayStat(GetShipSaveContextData()->stats.count[i] / 3));
+                    GameplayStatsRow(countMappings[i],
+                                     formatIntGameplayStat(GetShipSaveContextData()->stats.count[i] / 3));
                 } else {
                     GameplayStatsRow(countMappings[i], formatIntGameplayStat(GetShipSaveContextData()->stats.count[i]));
                 }
             }
         }
     }
-    GameplayStatsRow("Rupees Collected:", formatIntGameplayStat(GetShipSaveContextData()->stats.count[COUNT_RUPEES_COLLECTED]),
-                     COLOR_WHITE, "Includes rupees collected with a full wallet.");
+    GameplayStatsRow(
+        "Rupees Collected:", formatIntGameplayStat(GetShipSaveContextData()->stats.count[COUNT_RUPEES_COLLECTED]),
+        COLOR_WHITE, "Includes rupees collected with a full wallet.");
     GameplayStatsRow("Rupees Spent:", formatIntGameplayStat(GetShipSaveContextData()->stats.count[COUNT_RUPEES_SPENT]));
-    GameplayStatsRow("Chests Opened:", formatIntGameplayStat(GetShipSaveContextData()->stats.count[COUNT_CHESTS_OPENED]));
+    GameplayStatsRow("Chests Opened:",
+                     formatIntGameplayStat(GetShipSaveContextData()->stats.count[COUNT_CHESTS_OPENED]));
     GameplayStatsRow("Ammo Used:", formatIntGameplayStat(ammoUsed));
     if (ammoUsed > 0) {
         ImGui::TableNextRow();
@@ -620,10 +633,12 @@ void DrawGameplayStatsBreakdownTab() {
         }
     }
     std::string toPass;
-    if (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) && GetShipSaveContextData()->stats.sceneNum != SCENE_GROTTOS) {
-        toPass = fmt::format("{:s} Room {:d}",
-                             ResolveSceneID(GetShipSaveContextData()->stats.sceneNum, GetShipSaveContextData()->stats.roomNum),
-                             GetShipSaveContextData()->stats.roomNum);
+    if (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) &&
+        GetShipSaveContextData()->stats.sceneNum != SCENE_GROTTOS) {
+        toPass = fmt::format(
+            "{:s} Room {:d}",
+            ResolveSceneID(GetShipSaveContextData()->stats.sceneNum, GetShipSaveContextData()->stats.roomNum),
+            GetShipSaveContextData()->stats.roomNum);
     } else {
         toPass = ResolveSceneID(GetShipSaveContextData()->stats.sceneNum, GetShipSaveContextData()->stats.roomNum);
     }

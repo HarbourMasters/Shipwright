@@ -273,12 +273,14 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
     }
 
     if (sLastBossRushOptionIndex != fileChooseContext->bossRushIndex ||
-        sLastBossRushOptionValue != GetShipSaveContextData()->quest.data.bossRush.options[fileChooseContext->bossRushIndex]) {
+        sLastBossRushOptionValue !=
+            GetShipSaveContextData()->quest.data.bossRush.options[fileChooseContext->bossRushIndex]) {
         GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(
             fileChooseContext->bossRushIndex,
             GetShipSaveContextData()->quest.data.bossRush.options[fileChooseContext->bossRushIndex]);
         sLastBossRushOptionIndex = fileChooseContext->bossRushIndex;
-        sLastBossRushOptionValue = GetShipSaveContextData()->quest.data.bossRush.options[fileChooseContext->bossRushIndex];
+        sLastBossRushOptionValue =
+            GetShipSaveContextData()->quest.data.bossRush.options[fileChooseContext->bossRushIndex];
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
@@ -340,8 +342,8 @@ void FileChoose_DrawBossRushMenuWindowContents(FileChooseContext* fileChooseCont
         // Selected choice for option.
         uint16_t finalKerning = Interface_DrawTextLine(
             fileChooseContext->state.gfxCtx,
-            (char*)BossRush_GetSettingChoiceName(i, GetShipSaveContextData()->quest.data.bossRush.options[i], language), 165,
-            (87 + textYOffset), 255, 255, 255, textAlpha, 0.8f, true);
+            (char*)BossRush_GetSettingChoiceName(i, GetShipSaveContextData()->quest.data.bossRush.options[i], language),
+            165, (87 + textYOffset), 255, 255, 255, textAlpha, 0.8f, true);
 
         // Draw arrows around selected option.
         if (fileChooseContext->bossRushIndex == i) {
@@ -496,7 +498,8 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
             if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ALL) {
                 BossRush_SetEquipment(LINK_AGE_ADULT);
                 // Warp to credits.
-            } else if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) {
+            } else if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_BOSSES] ==
+                       BR_CHOICE_BOSSES_CHILD) {
                 play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
                 play->transitionTrigger = TRANS_TRIGGER_START;
@@ -719,7 +722,8 @@ extern "C" void BossRush_InitSave() {
         Flags_SetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP);
         Flags_SetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP);
         Flags_SetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP);
-        if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
+        if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_BOSSES] ==
+            BR_CHOICE_BOSSES_GANONDORF_GANON) {
             Flags_SetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
             Flags_SetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP);
             Flags_SetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP);

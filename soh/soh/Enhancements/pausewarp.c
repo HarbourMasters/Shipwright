@@ -77,8 +77,7 @@ void PauseWarp_HandleSelection() {
         int song = gPlayState->pauseCtx.cursorPoint[PAUSE_QUEST];
         if (aButtonPressed && CHECK_QUEST_ITEM(song) && song >= QUEST_SONG_MINUET && song <= QUEST_SONG_PRELUDE &&
             gPlayState->pauseCtx.pageIndex == PAUSE_QUEST && gPlayState->pauseCtx.state == 6) {
-            if (IsRando() &&
-                Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS)) {
+            if (IsRando() && Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS)) {
                 bool canplay = false;
                 switch (song) {
                     case QUEST_SONG_MINUET:

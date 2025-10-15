@@ -644,9 +644,12 @@ void Play_Init(GameState* thisx) {
     // #region SOH [Stats]
     if (GetGlobalShipSaveContextData()->stats.sceneNum != gPlayState->sceneNum) {
         u16 idx = GetGlobalShipSaveContextData()->stats.tsIdx;
-        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].sceneTime = GetGlobalShipSaveContextData()->stats.sceneTimer / 2;
-        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].roomTime = GetGlobalShipSaveContextData()->stats.roomTimer / 2;
-        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].scene = GetGlobalShipSaveContextData()->stats.sceneNum;
+        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].sceneTime =
+            GetGlobalShipSaveContextData()->stats.sceneTimer / 2;
+        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].roomTime =
+            GetGlobalShipSaveContextData()->stats.roomTimer / 2;
+        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].scene =
+            GetGlobalShipSaveContextData()->stats.sceneNum;
         GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].room = GetGlobalShipSaveContextData()->stats.roomNum;
         GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].isRoom =
             gPlayState->sceneNum == GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].scene &&
@@ -656,8 +659,10 @@ void Play_Init(GameState* thisx) {
         GetGlobalShipSaveContextData()->stats.roomTimer = 0;
     } else if (GetGlobalShipSaveContextData()->stats.roomNum != gPlayState->roomCtx.curRoom.num) {
         u16 idx = GetGlobalShipSaveContextData()->stats.tsIdx;
-        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].roomTime = GetGlobalShipSaveContextData()->stats.roomTimer / 2;
-        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].scene = GetGlobalShipSaveContextData()->stats.sceneNum;
+        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].roomTime =
+            GetGlobalShipSaveContextData()->stats.roomTimer / 2;
+        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].scene =
+            GetGlobalShipSaveContextData()->stats.sceneNum;
         GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].room = GetGlobalShipSaveContextData()->stats.roomNum;
         GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].isRoom =
             gPlayState->sceneNum == GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].scene &&

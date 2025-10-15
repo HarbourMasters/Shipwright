@@ -2707,7 +2707,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 0)) {
         messageEntry =
             CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER, MF_FORMATTED);
-        messageEntry.Replace("[[heartContainerCount]]", std::to_string(GetShipSaveContextData()->stats.heartContainers + 1));
+        messageEntry.Replace("[[heartContainerCount]]",
+                             std::to_string(GetShipSaveContextData()->stats.heartContainers + 1));
     } else if (textId >= TEXT_HEART_PIECE && textId < TEXT_HEART_CONTAINER &&
                CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 0)) {
         messageEntry =

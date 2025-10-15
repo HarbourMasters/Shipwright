@@ -14,7 +14,6 @@ extern "C" {
 }
 #endif
 
-
 struct ShipRandomizerSaveContextData {
     u8 triforcePiecesCollected;
 };
@@ -42,7 +41,7 @@ struct SceneTimestamp {
     u8 isRoom;
 };
 
-struct SohStats{
+struct SohStats {
     /*      */ char buildVersion[50];
     /*      */ s16 buildVersionMajor;
     /*      */ s16 buildVersionMinor;
@@ -76,22 +75,23 @@ struct ShipSaveContextData {
     struct ShipQuestSaveContextData quest;
     u8 maskMemory;
     u8 filenameLanguage;
-    //TODO: Move non-rando specific flags to a new sohInf and move the remaining randomizerInf to ShipRandomizerSaveContextData
+    // TODO: Move non-rando specific flags to a new sohInf and move the remaining randomizerInf to
+    // ShipRandomizerSaveContextData
     u16 randomizerInf[(RAND_INF_MAX + 15) / 16];
 };
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-    uint8_t IsRando();
-    uint8_t IsBossRush();
-    uint8_t IsVanilla();
-    uint8_t IsMasterQuest();
-    struct ShipSaveContextData *GetGlobalShipSaveContextData();
-    void ShipSaveContextData_Init(SaveContext* saveContext);
-    void ShipSaveContextData_Free(SaveContext* saveContext);
+uint8_t IsRando();
+uint8_t IsBossRush();
+uint8_t IsVanilla();
+uint8_t IsMasterQuest();
+struct ShipSaveContextData* GetGlobalShipSaveContextData();
+void ShipSaveContextData_Init(SaveContext* saveContext);
+void ShipSaveContextData_Free(SaveContext* saveContext);
 #ifdef __cplusplus
-    ShipSaveContextData *GetShipSaveContextData(SaveContext* saveContext = nullptr);
+ShipSaveContextData* GetShipSaveContextData(SaveContext* saveContext = nullptr);
 }
 #endif
 

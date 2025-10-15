@@ -1472,9 +1472,9 @@ void SaveManager::LoadBaseVersion1() {
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(GetShipSaveContextData()->randomizerInf), [](size_t i) {
-        SaveManager::Instance->LoadData("", GetShipSaveContextData()->randomizerInf[i]);
-    });
+    SaveManager::Instance->LoadArray(
+        "randomizerInf", ARRAY_COUNT(GetShipSaveContextData()->randomizerInf),
+        [](size_t i) { SaveManager::Instance->LoadData("", GetShipSaveContextData()->randomizerInf[i]); });
 }
 
 void SaveManager::LoadBaseVersion2() {
@@ -1564,9 +1564,9 @@ void SaveManager::LoadBaseVersion2() {
     SaveManager::Instance->LoadStruct("sohStats", []() {
         SaveManager::Instance->LoadData("heartPieces", GetShipSaveContextData()->stats.heartPieces);
         SaveManager::Instance->LoadData("heartContainers", GetShipSaveContextData()->stats.heartContainers);
-        SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(GetShipSaveContextData()->stats.dungeonKeys), [](size_t i) {
-            SaveManager::Instance->LoadData("", GetShipSaveContextData()->stats.dungeonKeys[i]);
-        });
+        SaveManager::Instance->LoadArray(
+            "dungeonKeys", ARRAY_COUNT(GetShipSaveContextData()->stats.dungeonKeys),
+            [](size_t i) { SaveManager::Instance->LoadData("", GetShipSaveContextData()->stats.dungeonKeys[i]); });
         SaveManager::Instance->LoadData("rtaTiming", GetShipSaveContextData()->stats.rtaTiming);
         SaveManager::Instance->LoadData("fileCreatedAt", GetShipSaveContextData()->stats.fileCreatedAt);
         SaveManager::Instance->LoadData("playTimer", GetShipSaveContextData()->stats.playTimer);
@@ -1581,8 +1581,9 @@ void SaveManager::LoadBaseVersion2() {
             "scenesDiscovered", ARRAY_COUNT(GetShipSaveContextData()->stats.scenesDiscovered),
             [](size_t i) { SaveManager::Instance->LoadData("", GetShipSaveContextData()->stats.scenesDiscovered[i]); });
         SaveManager::Instance->LoadArray(
-            "entrancesDiscovered", ARRAY_COUNT(GetShipSaveContextData()->stats.entrancesDiscovered),
-            [](size_t i) { SaveManager::Instance->LoadData("", GetShipSaveContextData()->stats.entrancesDiscovered[i]); });
+            "entrancesDiscovered", ARRAY_COUNT(GetShipSaveContextData()->stats.entrancesDiscovered), [](size_t i) {
+                SaveManager::Instance->LoadData("", GetShipSaveContextData()->stats.entrancesDiscovered[i]);
+            });
     });
     SaveManager::Instance->LoadArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
@@ -1655,9 +1656,9 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(GetShipSaveContextData()->randomizerInf), [](size_t i) {
-        SaveManager::Instance->LoadData("", GetShipSaveContextData()->randomizerInf[i]);
-    });
+    SaveManager::Instance->LoadArray(
+        "randomizerInf", ARRAY_COUNT(GetShipSaveContextData()->randomizerInf),
+        [](size_t i) { SaveManager::Instance->LoadData("", GetShipSaveContextData()->randomizerInf[i]); });
     int isMQ = 0;
     SaveManager::Instance->LoadData("isMasterQuest", isMQ);
     if (isMQ) {
@@ -1786,9 +1787,9 @@ void SaveManager::LoadBaseVersion3() {
 
         SaveManager::Instance->LoadData("heartPieces", GetShipSaveContextData()->stats.heartPieces);
         SaveManager::Instance->LoadData("heartContainers", GetShipSaveContextData()->stats.heartContainers);
-        SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(GetShipSaveContextData()->stats.dungeonKeys), [](size_t i) {
-            SaveManager::Instance->LoadData("", GetShipSaveContextData()->stats.dungeonKeys[i]);
-        });
+        SaveManager::Instance->LoadArray(
+            "dungeonKeys", ARRAY_COUNT(GetShipSaveContextData()->stats.dungeonKeys),
+            [](size_t i) { SaveManager::Instance->LoadData("", GetShipSaveContextData()->stats.dungeonKeys[i]); });
         SaveManager::Instance->LoadData("rtaTiming", GetShipSaveContextData()->stats.rtaTiming);
         SaveManager::Instance->LoadData("fileCreatedAt", GetShipSaveContextData()->stats.fileCreatedAt);
         SaveManager::Instance->LoadData("playTimer", GetShipSaveContextData()->stats.playTimer);
@@ -1801,9 +1802,12 @@ void SaveManager::LoadBaseVersion3() {
                 SaveManager::Instance->LoadStruct("", [&i]() {
                     SaveManager::Instance->LoadData("scene", GetShipSaveContextData()->stats.sceneTimestamps[i].scene);
                     SaveManager::Instance->LoadData("room", GetShipSaveContextData()->stats.sceneTimestamps[i].room);
-                    SaveManager::Instance->LoadData("sceneTime", GetShipSaveContextData()->stats.sceneTimestamps[i].sceneTime);
-                    SaveManager::Instance->LoadData("roomTime", GetShipSaveContextData()->stats.sceneTimestamps[i].roomTime);
-                    SaveManager::Instance->LoadData("isRoom", GetShipSaveContextData()->stats.sceneTimestamps[i].isRoom);
+                    SaveManager::Instance->LoadData("sceneTime",
+                                                    GetShipSaveContextData()->stats.sceneTimestamps[i].sceneTime);
+                    SaveManager::Instance->LoadData("roomTime",
+                                                    GetShipSaveContextData()->stats.sceneTimestamps[i].roomTime);
+                    SaveManager::Instance->LoadData("isRoom",
+                                                    GetShipSaveContextData()->stats.sceneTimestamps[i].isRoom);
                 });
             });
         SaveManager::Instance->LoadData("tsIdx", GetShipSaveContextData()->stats.tsIdx);
@@ -1814,8 +1818,9 @@ void SaveManager::LoadBaseVersion3() {
             "scenesDiscovered", ARRAY_COUNT(GetShipSaveContextData()->stats.scenesDiscovered),
             [](size_t i) { SaveManager::Instance->LoadData("", GetShipSaveContextData()->stats.scenesDiscovered[i]); });
         SaveManager::Instance->LoadArray(
-            "entrancesDiscovered", ARRAY_COUNT(GetShipSaveContextData()->stats.entrancesDiscovered),
-            [](size_t i) { SaveManager::Instance->LoadData("", GetShipSaveContextData()->stats.entrancesDiscovered[i]); });
+            "entrancesDiscovered", ARRAY_COUNT(GetShipSaveContextData()->stats.entrancesDiscovered), [](size_t i) {
+                SaveManager::Instance->LoadData("", GetShipSaveContextData()->stats.entrancesDiscovered[i]);
+            });
     });
     SaveManager::Instance->LoadArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
@@ -1888,9 +1893,9 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(GetShipSaveContextData()->randomizerInf), [](size_t i) {
-        SaveManager::Instance->LoadData("", GetShipSaveContextData()->randomizerInf[i]);
-    });
+    SaveManager::Instance->LoadArray(
+        "randomizerInf", ARRAY_COUNT(GetShipSaveContextData()->randomizerInf),
+        [](size_t i) { SaveManager::Instance->LoadData("", GetShipSaveContextData()->randomizerInf[i]); });
     int isMQ = 0;
     SaveManager::Instance->LoadData("isMasterQuest", isMQ);
     if (isMQ) {
@@ -2068,9 +2073,9 @@ void SaveManager::LoadBaseVersion4() {
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(GetShipSaveContextData()->randomizerInf), [](size_t i) {
-        SaveManager::Instance->LoadData("", GetShipSaveContextData()->randomizerInf[i]);
-    });
+    SaveManager::Instance->LoadArray(
+        "randomizerInf", ARRAY_COUNT(GetShipSaveContextData()->randomizerInf),
+        [](size_t i) { SaveManager::Instance->LoadData("", GetShipSaveContextData()->randomizerInf[i]); });
     int isMQ = 0;
     SaveManager::Instance->LoadData("isMasterQuest", isMQ);
     if (isMQ) {
@@ -2241,9 +2246,9 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
         SaveManager::Instance->SaveData("angle", saveContext->horseData.angle);
     });
 
-    SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(GetShipSaveContextData(saveContext)->randomizerInf), [&](size_t i) {
-        SaveManager::Instance->SaveData("", GetShipSaveContextData(saveContext)->randomizerInf[i]);
-    });
+    SaveManager::Instance->SaveArray(
+        "randomizerInf", ARRAY_COUNT(GetShipSaveContextData(saveContext)->randomizerInf),
+        [&](size_t i) { SaveManager::Instance->SaveData("", GetShipSaveContextData(saveContext)->randomizerInf[i]); });
     SaveManager::Instance->SaveData("isMasterQuest", GetShipSaveContextData(saveContext)->quest.id == QUEST_MASTER);
     SaveManager::Instance->SaveStruct("backupFW", [&]() {
         SaveManager::Instance->SaveStruct("pos", [&]() {
@@ -2257,7 +2262,8 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
         SaveManager::Instance->SaveData("roomIndex", GetShipSaveContextData(saveContext)->backupFW.roomIndex);
         SaveManager::Instance->SaveData("set", GetShipSaveContextData(saveContext)->backupFW.set);
         SaveManager::Instance->SaveData("tempSwchFlags", GetShipSaveContextData(saveContext)->backupFW.tempSwchFlags);
-        SaveManager::Instance->SaveData("tempCollectFlags", GetShipSaveContextData(saveContext)->backupFW.tempCollectFlags);
+        SaveManager::Instance->SaveData("tempCollectFlags",
+                                        GetShipSaveContextData(saveContext)->backupFW.tempCollectFlags);
     });
     SaveManager::Instance->SaveData("dogParams", saveContext->dogParams);
     SaveManager::Instance->SaveData("filenameLanguage", GetShipSaveContextData(saveContext)->filenameLanguage);
