@@ -8,6 +8,7 @@
 #include "objects/object_demo_kekkai/object_demo_kekkai.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_spot02_objects/object_spot02_objects.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include "soh/frame_interpolation.h"
 #include <assert.h>
@@ -205,23 +206,25 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, PlayState* play) {
             dist = 1.0f;
         }
 
-        func_800F436C(&sSoundPos, NA_SE_EV_NAVY_FLY - SFX_FLAG, (0.4f * dist) + 0.6f);
-        switch (play->csCtx.frames) {
-            case 473:
-                Sfx_PlaySfxCentered2(NA_SE_VO_NA_HELLO_3);
-                break;
+        if (GameInteractor_Should(VB_PLAY_INTRO_NAVI_SOUNDS, true, this)) {
+            func_800F436C(&sSoundPos, NA_SE_EV_NAVY_FLY - SFX_FLAG, (0.4f * dist) + 0.6f);
+            switch (play->csCtx.frames) {
+                case 473:
+                    Sfx_PlaySfxCentered2(NA_SE_VO_NA_HELLO_3);
+                    break;
 
-            case 583:
-                func_800F4524(&gSfxDefaultPos, NA_SE_VO_NA_HELLO_2, 32);
-                break;
+                case 583:
+                    func_800F4524(&gSfxDefaultPos, NA_SE_VO_NA_HELLO_2, 32);
+                    break;
 
-            case 763:
-                Sfx_PlaySfxCentered(NA_SE_EV_NAVY_CRASH - SFX_FLAG);
-                break;
+                case 763:
+                    Sfx_PlaySfxCentered(NA_SE_EV_NAVY_CRASH - SFX_FLAG);
+                    break;
 
-            case 771:
-                Sfx_PlaySfxCentered(NA_SE_VO_RT_THROW);
-                break;
+                case 771:
+                    Sfx_PlaySfxCentered(NA_SE_VO_RT_THROW);
+                    break;
+            }
         }
     }
 

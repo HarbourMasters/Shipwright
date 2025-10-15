@@ -1206,7 +1206,7 @@ void EnElf_SpawnSparkles(EnElf* this, PlayState* play, s32 sparkleLife) {
     Color_RGBA8 primColor;
     Color_RGBA8 envColor;
 
-    if (GameInteractor_Should(VB_FAIRY_SPAWN_SPARKLES, true, this)) {
+    if (GameInteractor_Should(VB_FAIRY_SPAWN_SPARKLES, true, this, sparkleLife)) {
         sparklePos.x = Rand_CenteredFloat(6.0f) + this->actor.world.pos.x;
         sparklePos.y = (Rand_ZeroOne() * 6.0f) + this->actor.world.pos.y;
         sparklePos.z = Rand_CenteredFloat(6.0f) + this->actor.world.pos.z;

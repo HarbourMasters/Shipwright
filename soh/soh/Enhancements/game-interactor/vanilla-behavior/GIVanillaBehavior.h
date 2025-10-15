@@ -541,6 +541,7 @@ typedef enum {
     // ```
     // #### `args`
     // - `*EnElf`
+    // - `int32_t` (sparkleLife)
     VB_FAIRY_SPAWN_SPARKLES,
 
     // #### `result`
@@ -1627,6 +1628,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_PLAY_GORON_FREE_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*ObjectKankyo`
+    VB_PLAY_INTRO_NAVI_SOUNDS,
 
     // #### `result`
     // ```c

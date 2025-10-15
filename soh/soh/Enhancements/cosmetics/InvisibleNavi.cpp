@@ -56,6 +56,8 @@ void RegisterInvisibleNavi() {
     });
 
     COND_VB_SHOULD(VB_PLAY_NAVI_CALL_SOUND, CVAR_INVISIBLENAVI_VALUE, { *should = false; });
+
+    COND_VB_SHOULD(VB_PLAY_INTRO_NAVI_SOUNDS, CVAR_INVISIBLENAVI_VALUE, { *should = false; });
 }
 
 static RegisterShipInitFunc initFunc(RegisterInvisibleNavi, { CVAR_INVISIBLENAVI_NAME });
