@@ -2103,7 +2103,7 @@ void RegisterItemTrackerWidgets() {
         .PreFunc([&](WidgetInfo& info) {
             if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
                 CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
-                TRACKER_DISPLAY_COMBO_BUTTON) {
+                    TRACKER_DISPLAY_COMBO_BUTTON) {
                 info.options.get()->disabled = true;
                 info.options.get()->disabledTooltip = notesDisabledTooltip;
             }
