@@ -4,6 +4,7 @@
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/resource/type/Skeleton.h"
+#include "soh/cvar_prefixes.h"
 #include <map>
 #include <ranges>
 #include <vector>

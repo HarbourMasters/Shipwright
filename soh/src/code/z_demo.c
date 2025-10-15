@@ -35,6 +35,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 u16 D_8011E1C0 = 0;
 u16 D_8011E1C4 = 0;
@@ -250,7 +251,7 @@ void func_80064824(PlayState* play, CutsceneContext* csCtx, CsCmdBase* cmd) {
             if (sp3F != 0) {
                 Flags_SetEnv(play, 0);
                 if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE ||
-                    (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
+                    (IsRando() && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
                     Flags_SetEnv(play, 2);
                 }
             }
@@ -628,8 +629,8 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 break;
             case 8:
                 if (CVarGetInteger(CVAR_ENHANCEMENT("BetterFarore"), 0)) {
-                    FaroresWindData tempFW = gSaveContext.ship.backupFW;
-                    gSaveContext.ship.backupFW = gSaveContext.fw;
+                    FaroresWindData tempFW = GetGlobalShipSaveContextData()->backupFW;
+                    GetGlobalShipSaveContextData()->backupFW = gSaveContext.fw;
                     gSaveContext.fw = tempFW;
                 } else {
                     gSaveContext.fw.set = 0;
@@ -743,7 +744,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->transitionType = TRANS_TYPE_FADE_WHITE;
                 break;
             case 24:
-                if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+                if (IsRando() && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                     play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_JABU_JABU_ENTRANCE);
                 } else {
                     play->nextEntranceIndex = ENTR_JABU_JABU_ENTRANCE;
@@ -1586,7 +1587,7 @@ void Cutscene_Command_Textbox(PlayState* play, CutsceneContext* csCtx, CsCmdText
                     Message_StartTextbox(play, cmd->textId1, NULL);
                 } else {
                     GetItemEntry getItemEntry = GET_ITEM_NONE;
-                    if (IS_RANDO) {
+                    if (IsRando()) {
                         switch (cmd->base) {
                             case 0x80:
                                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_QUEEN_GOHMA, RG_KOKIRI_EMERALD);
@@ -1626,7 +1627,7 @@ void Cutscene_Command_Textbox(PlayState* play, CutsceneContext* csCtx, CsCmdText
                         }
                     }
                     Message_StartTextbox(play, cmd->base, NULL);
-                    if (IS_RANDO && getItemEntry.getItemId != GI_NONE) {
+                    if (IsRando() && getItemEntry.getItemId != GI_NONE) {
                         // GET_PLAYER(play)->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                     }
                 }

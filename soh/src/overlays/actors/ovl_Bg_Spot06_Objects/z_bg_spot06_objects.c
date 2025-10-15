@@ -7,6 +7,7 @@
 #include "z_bg_spot06_objects.h"
 #include "objects/object_spot06_objects/object_spot06_objects.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS ACTOR_FLAG_HOOKSHOT_PULLS_ACTOR
 
@@ -217,7 +218,7 @@ void BgSpot06Objects_Destroy(Actor* thisx, PlayState* play) {
     // Due to Ships resource caching, the water box collisions for the river have to be manually reset
     play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].zMin = WATER_LEVEL_RIVER_LOWER_Z;
 
-    if (IS_RANDO && Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
+    if (IsRando() && Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
         // For randomizer when leaving lake hylia while the water level is lowered,
         // reset the "raise lake hylia water" flag back to on if the water temple is cleared
         Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
@@ -451,7 +452,7 @@ void BgSpot06Objects_Update(Actor* thisx, PlayState* play) {
     }
 
     // Bail early for water control system for child or non-rando
-    if (LINK_IS_CHILD || !IS_RANDO) {
+    if (LINK_IS_CHILD || !IsRando()) {
         return;
     }
 
@@ -596,7 +597,7 @@ void BgSpot06Objects_WaterPlaneCutsceneRise(BgSpot06Objects* this, PlayState* pl
         this->actionFunc = BgSpot06Objects_DoNothing;
 
         // On rando, this is used with the water control system switch to finalize raising the water
-        if (IS_RANDO) {
+        if (IsRando()) {
             this->lakeHyliaWaterLevel = 0;
             play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface = WATER_LEVEL_RIVER_RAISED;
             play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].zMin = WATER_LEVEL_RIVER_LOWER_Z;

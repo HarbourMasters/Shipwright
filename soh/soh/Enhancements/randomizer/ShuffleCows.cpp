@@ -1,5 +1,6 @@
 #include <soh/OTRGlobals.h>
 #include "static_data.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Cow/z_en_cow.h"
@@ -34,7 +35,7 @@ void EnCow_MoveForRandomizer(EnCow* enCow, PlayState* play) {
 }
 
 void RegisterShuffleCows() {
-    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_COWS);
+    bool shouldRegister = IsRando() && RAND_GET_OPTION(RSK_SHUFFLE_COWS);
 
     COND_VB_SHOULD(VB_GIVE_ITEM_FROM_COW, shouldRegister, {
         EnCow* enCow = va_arg(args, EnCow*);

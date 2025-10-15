@@ -5,6 +5,7 @@
 #include "static_data.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
@@ -89,10 +90,10 @@ static bool SpawnFairy(f32 posX, f32 posY, f32 posZ, int32_t params, FairyType f
 }
 
 void RegisterShuffleFairies() {
-    bool shouldRegisterFountain = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_FOUNTAIN_FAIRIES);
-    bool shouldRegisterStone = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_STONE_FAIRIES);
-    bool shouldRegisterBean = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_BEAN_FAIRIES);
-    bool shouldRegisterSong = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SONG_FAIRIES);
+    bool shouldRegisterFountain = IsRando() && RAND_GET_OPTION(RSK_SHUFFLE_FOUNTAIN_FAIRIES);
+    bool shouldRegisterStone = IsRando() && RAND_GET_OPTION(RSK_SHUFFLE_STONE_FAIRIES);
+    bool shouldRegisterBean = IsRando() && RAND_GET_OPTION(RSK_SHUFFLE_BEAN_FAIRIES);
+    bool shouldRegisterSong = IsRando() && RAND_GET_OPTION(RSK_SHUFFLE_SONG_FAIRIES);
     bool shouldRegister = shouldRegisterFountain || shouldRegisterStone || shouldRegisterBean || shouldRegisterSong;
 
     // Grant item when picking up fairy.

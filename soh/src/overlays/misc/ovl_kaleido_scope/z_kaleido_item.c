@@ -9,6 +9,7 @@
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 u8 gAmmoItems[] = {
     ITEM_STICK,   ITEM_NUT,  ITEM_BOMB, ITEM_BOW,  ITEM_NONE, ITEM_NONE, ITEM_SLINGSHOT, ITEM_NONE,
@@ -322,7 +323,7 @@ void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle,
 }
 
 bool CanMaskSelect() {
-    if (IS_RANDO) {
+    if (IsRando()) {
         return CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) &&
                Flags_GetRandomizerInf(
                    RAND_INF_ZELDAS_LETTER); /* || Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_TRADE) */
@@ -343,11 +344,11 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
     // handle the mask select
     KaleidoScope_HandleItemCycleExtras(
         play, SLOT_TRADE_CHILD, CanMaskSelect(),
-        IS_RANDO ? Randomizer_GetPrevChildTradeItem()
+        IsRando() ? Randomizer_GetPrevChildTradeItem()
                  : (INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_KEATON || INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_TRUTH
                         ? ITEM_MASK_TRUTH
                         : INV_CONTENT(ITEM_TRADE_CHILD) - 1),
-        IS_RANDO ? Randomizer_GetNextChildTradeItem()
+        IsRando() ? Randomizer_GetNextChildTradeItem()
                  : (INV_CONTENT(ITEM_TRADE_CHILD) >= ITEM_MASK_TRUTH || INV_CONTENT(ITEM_TRADE_CHILD) < ITEM_MASK_KEATON
                         ? ITEM_MASK_KEATON
                         : INV_CONTENT(ITEM_TRADE_CHILD) + 1),
@@ -372,7 +373,7 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
 
     // handle the adult trade select
     KaleidoScope_HandleItemCycleExtras(play, SLOT_TRADE_ADULT,
-                                       IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
+                                       IsRando() && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
                                        Randomizer_GetPrevAdultTradeItem(), Randomizer_GetNextAdultTradeItem(), true);
 }
 
@@ -380,18 +381,18 @@ void KaleidoScope_DrawItemCycles(PlayState* play) {
     // draw the mask select
     KaleidoScope_DrawItemCycleExtras(
         play, SLOT_TRADE_CHILD, CanMaskSelect(),
-        IS_RANDO ? Randomizer_GetPrevChildTradeItem()
+        IsRando() ? Randomizer_GetPrevChildTradeItem()
                  : (INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_KEATON || INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_TRUTH
                         ? ITEM_MASK_TRUTH
                         : INV_CONTENT(ITEM_TRADE_CHILD) - 1),
-        IS_RANDO ? Randomizer_GetNextChildTradeItem()
+        IsRando() ? Randomizer_GetNextChildTradeItem()
                  : (INV_CONTENT(ITEM_TRADE_CHILD) >= ITEM_MASK_TRUTH || INV_CONTENT(ITEM_TRADE_CHILD) < ITEM_MASK_KEATON
                         ? ITEM_MASK_KEATON
                         : INV_CONTENT(ITEM_TRADE_CHILD) + 1));
 
     // draw the adult trade select
     KaleidoScope_DrawItemCycleExtras(play, SLOT_TRADE_ADULT,
-                                     IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
+                                     IsRando() && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
                                      Randomizer_GetPrevAdultTradeItem(), Randomizer_GetNextAdultTradeItem());
 }
 
@@ -435,7 +436,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
         bool dpad = (CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
         bool pauseAnyCursor =
             pauseCtx->cursorSpecialPos == 0 &&
-            ((CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
+            ((CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IsRando()) ||
              (CVarGetInteger(CVAR_ENHANCEMENT("PauseAnyCursor"), 0) == PAUSE_ANY_CURSOR_ALWAYS_ON));
 
         moveCursorResult = 0 || IsItemCycling();

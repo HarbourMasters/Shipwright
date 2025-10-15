@@ -34,6 +34,7 @@ extern PlayState* gPlayState;
 
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
+#include <soh/ObjectExtension/ShipSaveContextData.h>
 
 #define CMD_REGISTER Ship::Context::GetInstance()->GetConsole()->AddCommand
 // TODO: Commands should be using the output passed in.
@@ -495,7 +496,7 @@ static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<
                 break;
             case 2: // backup
                 if (CVarGetInteger(CVAR_ENHANCEMENT("BetterFarore"), 0)) {
-                    gSaveContext.fw = gSaveContext.ship.backupFW;
+                    gSaveContext.fw = GetShipSaveContextData()->backupFW;
                     gSaveContext.fw.set = 1;
                     INFO_MESSAGE("[SOH] Backup FW data copied! Reload scene to take effect.");
                     return 0;

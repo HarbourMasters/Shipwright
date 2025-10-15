@@ -16,6 +16,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -276,7 +277,7 @@ void func_80B3C9EC(EnXc* this) {
     this->drawMode = SHEIK_DRAW_DEFAULT;
     this->unk_30C = 1;
     // SOH [Randomizer] We don't want sheik blocking the pedestal in randomizer
-    if (IS_RANDO) {
+    if (IsRando()) {
         Actor_Kill(&this->actor);
     }
     return;
@@ -406,7 +407,7 @@ void SoH_EnXc_RandoStand(EnXc* this, PlayState* play) {
     this->action = SHEIK_ACTION_BLOCK_PEDESTAL;
     this->drawMode = SHEIK_DRAW_DEFAULT;
     this->unk_30C = 1;
-    if (!IS_RANDO) {
+    if (!IsRando()) {
         Actor_Kill(&this->actor);
     }
 }

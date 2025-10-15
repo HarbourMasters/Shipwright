@@ -2,6 +2,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 #include "functions.h"
+#include "soh/cvar_prefixes.h"
 
 extern "C" PlayState* gPlayState;
 

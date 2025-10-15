@@ -1,8 +1,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "soh/cvar_prefixes.h"
 
 extern "C" {
-#include "z64save.h"
 #include "macros.h"
 #include "variables.h"
 #include "functions.h"

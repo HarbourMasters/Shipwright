@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include "UIWidgets.hpp"
+#include "soh/cvar_prefixes.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/controls/SohInputEditorWindow.h"
 #include <ship/window/gui/GuiMenuBar.h>

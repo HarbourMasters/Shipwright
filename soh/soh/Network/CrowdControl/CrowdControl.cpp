@@ -9,6 +9,7 @@
 #include <spdlog/fmt/fmt.h>
 #include <regex>
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 
 extern "C" {
 #include <z64.h>

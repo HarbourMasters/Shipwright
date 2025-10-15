@@ -28,6 +28,7 @@ extern PlayState* gPlayState;
 
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
+#include <soh/ObjectExtension/ShipSaveContextData.h>
 }
 
 void DrawEquip(ItemTrackerItem item);
@@ -471,9 +472,9 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
         case ITEM_WALLET_ADULT:
         case ITEM_WALLET_GIANT:
             result.currentCapacity =
-                IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) ? 0 : CUR_CAPACITY(UPG_WALLET);
+                IsRando() && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) ? 0 : CUR_CAPACITY(UPG_WALLET);
             result.maxCapacity =
-                IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET) ? 999
+                IsRando() && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET) ? 999
                                                                                                                : 500;
             result.currentAmmo = gSaveContext.rupees;
             break;
@@ -493,17 +494,17 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             break;
         case ITEM_HEART_CONTAINER:
             result.maxCapacity = result.currentCapacity = 8;
-            result.currentAmmo = gSaveContext.ship.stats.heartContainers;
+            result.currentAmmo = GetShipSaveContextData()->stats.heartContainers;
             break;
         case ITEM_HEART_PIECE:
             result.maxCapacity = result.currentCapacity = 36;
-            result.currentAmmo = gSaveContext.ship.stats.heartPieces;
+            result.currentAmmo = GetShipSaveContextData()->stats.heartPieces;
             break;
         case ITEM_KEY_SMALL:
             // Though the ammo/capacity naming doesn't really make sense for keys, we are
             // hijacking the same system to display key counts as there are enough similarities
             result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
-            result.currentCapacity = gSaveContext.ship.stats.dungeonKeys[item.data];
+            result.currentCapacity = GetShipSaveContextData()->stats.dungeonKeys[item.data];
             switch (item.data) {
                 case SCENE_FOREST_TEMPLE:
                     result.maxCapacity = FOREST_TEMPLE_SMALL_KEY_MAX;
@@ -527,7 +528,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                     result.maxCapacity = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
                     break;
                 case SCENE_THIEVES_HIDEOUT:
-                    if (IS_RANDO) {
+                    if (IsRando()) {
                         switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS)) {
                             case RO_GF_CARPENTERS_NORMAL:
                                 result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
@@ -686,7 +687,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
         ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
-    } else if (item.id == RG_TRIFORCE_PIECE && IS_RANDO &&
+    } else if (item.id == RG_TRIFORCE_PIECE && IsRando() &&
                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) && IsValidSaveFile()) {
         std::string currentString = "";
         std::string requiredString = "";
@@ -695,14 +696,14 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
             (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1);
         uint8_t piecesTotal =
             (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) + 1);
-        ImU32 currentColor = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected >= piecesRequired
+        ImU32 currentColor = GetShipSaveContextData()->quest.data.randomizer.triforcePiecesCollected >= piecesRequired
                                  ? IM_COL_GREEN
                                  : IM_COL_WHITE;
         ImU32 maxColor = IM_COL_GREEN;
         int32_t trackerTriforcePieceNumberDisplayMode =
             CVarGetInteger(CVAR_TRACKER_ITEM("TriforcePieceCounts"), TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX);
 
-        currentString += std::to_string(gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
+        currentString += std::to_string(GetShipSaveContextData()->quest.data.randomizer.triforcePiecesCollected);
         currentString += "/";
         // gItemTrackerTriforcePieceTrack
         if (trackerTriforcePieceNumberDisplayMode == TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX) {
@@ -771,11 +772,11 @@ void DrawItem(ItemTrackerItem item) {
     switch (item.id) {
         case ITEM_HEART_CONTAINER:
             actualItemId = item.id;
-            hasItem = gSaveContext.ship.stats.heartContainers > 0;
+            hasItem = GetShipSaveContextData()->stats.heartContainers > 0;
             break;
         case ITEM_HEART_PIECE:
             actualItemId = item.id;
-            hasItem = gSaveContext.ship.stats.heartPieces > 0;
+            hasItem = GetShipSaveContextData()->stats.heartPieces > 0;
             break;
         case ITEM_MAGIC_SMALL:
         case ITEM_MAGIC_LARGE:
@@ -785,7 +786,7 @@ void DrawItem(ItemTrackerItem item) {
         case ITEM_WALLET_ADULT:
         case ITEM_WALLET_GIANT:
             actualItemId = CUR_UPG_VALUE(UPG_WALLET) == 2 ? ITEM_WALLET_GIANT : ITEM_WALLET_ADULT;
-            hasItem = !IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET);
+            hasItem = !IsRando() || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET);
             break;
         case ITEM_BRACELET:
         case ITEM_GAUNTLETS_SILVER:
@@ -806,7 +807,7 @@ void DrawItem(ItemTrackerItem item) {
             break;
         case RG_TRIFORCE_PIECE:
             actualItemId = item.id;
-            hasItem = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT);
+            hasItem = IsRando() && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT);
             itemName = "Triforce Piece";
             break;
         case RG_GOHMA_SOUL:
@@ -885,7 +886,7 @@ void DrawItem(ItemTrackerItem item) {
             break;
         case ITEM_FISHING_POLE:
             actualItemId = item.id;
-            hasItem = IS_RANDO && Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
+            hasItem = IsRando() && Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
             itemName = "Fishing Pole";
             break;
 

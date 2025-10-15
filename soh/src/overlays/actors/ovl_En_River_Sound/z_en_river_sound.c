@@ -5,6 +5,7 @@
  */
 
 #include "z_en_river_sound.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
@@ -42,7 +43,7 @@ void EnRiverSound_Init(Actor* thisx, PlayState* play) {
     } else if (this->actor.params == RS_SARIAS_SONG) {
         // Always have leading music in rando
         if (CVarGetInteger(CVAR_AUDIO("LostWoodsConsistentVolume"), 0) ||
-            ((!CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) || CHECK_QUEST_ITEM(QUEST_SONG_SARIA)) && !IS_RANDO)) {
+            ((!CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) || CHECK_QUEST_ITEM(QUEST_SONG_SARIA)) && !IsRando())) {
             Actor_Kill(&this->actor);
         }
     }

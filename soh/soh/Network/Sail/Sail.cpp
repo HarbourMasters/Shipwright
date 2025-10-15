@@ -5,6 +5,7 @@
 #include <libultraship/libultraship.h>
 #include <nlohmann/json.hpp>
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #include "soh/util.h"
 
 template <class DstType, class SrcType> bool IsType(const SrcType* src) {

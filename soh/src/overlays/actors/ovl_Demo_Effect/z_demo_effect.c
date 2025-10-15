@@ -11,6 +11,7 @@
 #include "objects/object_gi_jewel/object_gi_jewel.h"
 #include <assert.h>
 #include "soh/OTRGlobals.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
@@ -143,7 +144,7 @@ f32 DemoEffect_InterpolateCsFrames(PlayState* play, s32 csActionId) {
  */
 void DemoEffect_InitJewel(PlayState* play, DemoEffect* this) {
     this->initDrawFunc = DemoEffect_DrawJewel;
-    if (IS_RANDO && (play->sceneNum != SCENE_TEMPLE_OF_TIME || this->actor.params == DEMO_EFFECT_LIGHTARROW)) {
+    if (IsRando() && (play->sceneNum != SCENE_TEMPLE_OF_TIME || this->actor.params == DEMO_EFFECT_LIGHTARROW)) {
         this->initDrawFunc = DemoEffect_DrawGetItem;
     }
     if (!LINK_IS_ADULT) {
@@ -158,7 +159,7 @@ void DemoEffect_InitJewel(PlayState* play, DemoEffect* this) {
     }
     this->csActionId = 1;
     this->actor.shape.rot.x =
-        (IS_RANDO && (play->sceneNum != SCENE_TEMPLE_OF_TIME || this->actor.params == DEMO_EFFECT_LIGHTARROW)) ? 0
+        (IsRando() && (play->sceneNum != SCENE_TEMPLE_OF_TIME || this->actor.params == DEMO_EFFECT_LIGHTARROW)) ? 0
                                                                                                                : 16384;
     DemoEffect_InitJewelColor(this);
     this->jewel.alpha = 0;
@@ -639,7 +640,7 @@ void DemoEffect_UpdateGetItem(DemoEffect* this, PlayState* play) {
         Actor_SetScale(thisx, 0.20f);
 
         if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE ||
-            (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
+            (IsRando() && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
             switch (play->csCtx.npcActions[this->csActionId]->action) {
                 case 2:
                     DemoEffect_MedalSparkle(this, play, 0);
@@ -652,7 +653,7 @@ void DemoEffect_UpdateGetItem(DemoEffect* this, PlayState* play) {
         switch (play->csCtx.npcActions[this->csActionId]->action) {
             case 2:
                 if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE ||
-                    (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
+                    (IsRando() && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
                     Audio_PlayActorSound2(thisx, NA_SE_EV_MEDAL_APPEAR_L - SFX_FLAG);
                 } else {
                     Sfx_PlaySfxCentered2(NA_SE_EV_MEDAL_APPEAR_S - SFX_FLAG);
@@ -668,7 +669,7 @@ void DemoEffect_UpdateGetItem(DemoEffect* this, PlayState* play) {
                     this->actor.shape.rot.y += this->getItem.rotation;
                 }
                 if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE ||
-                    (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
+                    (IsRando() && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
                     Audio_PlayActorSound2(thisx, NA_SE_EV_MEDAL_APPEAR_L - SFX_FLAG);
                 } else {
                     Sfx_PlaySfxCentered2(NA_SE_EV_MEDAL_APPEAR_S - SFX_FLAG);
@@ -1550,7 +1551,7 @@ void DemoEffect_UpdateJewelAdult(DemoEffect* this, PlayState* play) {
     this->actor.shape.rot.y += 0x0400;
     DemoEffect_PlayJewelSfx(this, play);
 
-    if (IS_RANDO) {
+    if (IsRando()) {
         switch (this->jewel.type) {
             case DEMO_EFFECT_JEWEL_KOKIRI:
                 if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
@@ -1620,7 +1621,7 @@ void DemoEffect_UpdateJewelChild(DemoEffect* this, PlayState* play) {
             default:
                 DemoEffect_MoveToCsEndpoint(this, play, this->csActionId, 0);
                 if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE ||
-                    (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
+                    (IsRando() && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
                     DemoEffect_MoveJewelSplit(&thisx->world, this);
                 }
                 break;
@@ -1628,7 +1629,7 @@ void DemoEffect_UpdateJewelChild(DemoEffect* this, PlayState* play) {
     }
 
     if (gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_ENTRANCE ||
-        (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
+        (IsRando() && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
         if (!Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME)) {
             hasCmdAction = play->csCtx.state && play->csCtx.npcActions[this->csActionId];
             if (!hasCmdAction) {
@@ -1642,7 +1643,7 @@ void DemoEffect_UpdateJewelChild(DemoEffect* this, PlayState* play) {
     DemoEffect_PlayJewelSfx(this, play);
     this->effectFlags &= ~1;
 
-    if (IS_RANDO) {
+    if (IsRando()) {
         switch (this->jewel.type) {
             case DEMO_EFFECT_JEWEL_KOKIRI:
                 if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
@@ -2075,7 +2076,7 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
             this->getItem.isLoaded = 1;
             return;
         }
-        if (IS_RANDO && (play->sceneNum != SCENE_TEMPLE_OF_TIME || this->actor.params == DEMO_EFFECT_LIGHTARROW)) {
+        if (IsRando() && (play->sceneNum != SCENE_TEMPLE_OF_TIME || this->actor.params == DEMO_EFFECT_LIGHTARROW)) {
             GetItemEntry getItemEntry = GET_ITEM_NONE;
             RandomizerCheck rc = RC_MAX;
             RandomizerGet rg = RG_NONE;

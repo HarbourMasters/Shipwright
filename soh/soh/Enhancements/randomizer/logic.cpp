@@ -18,6 +18,7 @@
 #include "soh/resource/type/scenecommand/SetTransitionActorList.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
+#include <soh/ObjectExtension/ShipSaveContextData.h>
 
 namespace Rando {
 
@@ -1810,7 +1811,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                     SetRandoInf(RandoGetToRandInf.at(randoGet), state);
                     break;
                 case RG_TRIFORCE_PIECE:
-                    mSaveContext->ship.quest.data.randomizer.triforcePiecesCollected += (!state ? -1 : 1);
+                    GetShipSaveContextData(mSaveContext)->quest.data.randomizer.triforcePiecesCollected += (!state ? -1 : 1);
                     break;
                 case RG_BOMBCHU_5:
                 case RG_BOMBCHU_10:
@@ -2057,23 +2058,25 @@ void Logic::InitSaveContext() {
     mSaveContext->sceneFlags[5].swch = 0x40000000;
 
     // SoH specific
-    mSaveContext->ship.backupFW = mSaveContext->fw;
-    mSaveContext->ship.pendingSale = ITEM_NONE;
-    mSaveContext->ship.pendingSaleMod = MOD_NONE;
-    mSaveContext->ship.pendingIceTrapCount = 0;
+    GetShipSaveContextData(mSaveContext)->backupFW = mSaveContext->fw;
+    GetShipSaveContextData(mSaveContext)->pendingSale = ITEM_NONE;
+    GetShipSaveContextData(mSaveContext)->pendingSaleMod = MOD_NONE;
+    GetShipSaveContextData(mSaveContext)->pendingIceTrapCount = 0;
 
     // Init with normal quest unless only an MQ rom is provided
-    mSaveContext->ship.quest.id = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
+    GetShipSaveContextData(mSaveContext)->quest.id = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
 
     // RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
 
 void Logic::NewSaveContext() {
     if (mSaveContext != nullptr && mSaveContext != &gSaveContext) {
+        ShipSaveContextData_Free(mSaveContext);
         free(mSaveContext);
     }
     mSaveContext = new SaveContext();
     InitSaveContext();
+    ShipSaveContextData_Init(mSaveContext);
 }
 
 uint8_t Logic::InventorySlot(uint32_t item) {
@@ -2230,14 +2233,14 @@ void Logic::SetDungeonItem(uint32_t item, uint32_t dungeonIndex, bool state) {
 }
 
 bool Logic::CheckRandoInf(uint32_t flag) {
-    return mSaveContext->ship.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
+    return GetShipSaveContextData(mSaveContext)->randomizerInf[flag >> 4] & (1 << (flag & 0xF));
 }
 
 void Logic::SetRandoInf(uint32_t flag, bool state) {
     if (!state) {
-        mSaveContext->ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+        GetShipSaveContextData(mSaveContext)->randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
     } else {
-        mSaveContext->ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+        GetShipSaveContextData(mSaveContext)->randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
     }
 }
 

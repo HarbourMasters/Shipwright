@@ -1,6 +1,7 @@
 #include <soh/OTRGlobals.h>
 #include "static_data.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_Obj_Comb/z_obj_comb.h"
@@ -93,7 +94,7 @@ void ObjComb_RandomizerUpdate(void* actor) {
 }
 
 void RegisterShuffleBeehives() {
-    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES);
+    bool shouldRegister = IsRando() && RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES);
 
     COND_ID_HOOK(OnActorInit, ACTOR_OBJ_COMB, shouldRegister, ObjComb_RandomizerInit);
     COND_ID_HOOK(OnActorUpdate, ACTOR_OBJ_COMB, shouldRegister, ObjComb_RandomizerUpdate);

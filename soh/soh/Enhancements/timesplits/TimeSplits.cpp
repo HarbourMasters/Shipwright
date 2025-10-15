@@ -9,6 +9,7 @@
 #include "soh/util.h"
 
 #include "soh/OTRGlobals.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/debugger/debugSaveEditor.h"
 #include "soh_assets.h"
@@ -350,8 +351,8 @@ void HandleDragAndDrop(std::vector<SplitObject>& objectList, int targetIndex, co
 }
 
 void TimeSplitCompleteSplits() {
-    gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-    gSaveContext.ship.stats.gameComplete = true;
+    GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+    GetShipSaveContextData()->stats.gameComplete = true;
 }
 
 void TimeSplitsSkipSplit(uint32_t index) {

@@ -15,6 +15,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/nametag.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #include "soh/ActorDB.h"
 #include "soh/OTRGlobals.h"
@@ -2028,7 +2029,7 @@ s32 GiveItemEntryWithoutActor(PlayState* play, GetItemEntry getItemEntry) {
            PLAYER_STATE1_CLIMBING_LADDER)) &&
         Player_GetExplosiveHeld(player) < 0) {
         if (((player->heldActor != NULL) && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX)) ||
-             (IS_RANDO && (getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))) ||
+             (IsRando() && (getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))) ||
             (!(player->stateFlags1 & (PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE)))) {
             if ((getItemEntry.getItemId != GI_NONE)) {
                 player->getItemEntry = getItemEntry;
@@ -2068,8 +2069,8 @@ s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEn
            PLAYER_STATE1_CLIMBING_LADDER)) &&
         Player_GetExplosiveHeld(player) < 0) {
         if ((((player->heldActor != NULL) || (actor == player->talkActor)) &&
-             ((!IS_RANDO && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX))) ||
-              (IS_RANDO && ((getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))))) ||
+             ((!IsRando() && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX))) ||
+              (IsRando() && ((getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))))) ||
             (!(player->stateFlags1 & (PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE)))) {
             if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
                 s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
@@ -2113,8 +2114,8 @@ s32 Actor_OfferGetItem(Actor* actor, PlayState* play, s32 getItemId, f32 xzRange
            PLAYER_STATE1_CLIMBING_LADDER)) &&
         Player_GetExplosiveHeld(player) < 0) {
         if ((((player->heldActor != NULL) || (actor == player->talkActor)) &&
-             ((!IS_RANDO && ((getItemId > GI_NONE) && (getItemId < GI_MAX))) ||
-              (IS_RANDO && ((getItemId > RG_NONE) && (getItemId < RG_MAX))))) ||
+             ((!IsRando() && ((getItemId > GI_NONE) && (getItemId < GI_MAX))) ||
+              (IsRando() && ((getItemId > RG_NONE) && (getItemId < RG_MAX))))) ||
             (!(player->stateFlags1 & (PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE)))) {
             if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
                 s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
@@ -5031,14 +5032,14 @@ void Flags_UnsetEventInf(s32 flag) {
 s32 Flags_GetRandomizerInf(RandomizerInf flag) {
     // Randomizer flags are currently accessible from any quest (boss rush as an example)
     /*
-    if (!IS_RANDO) {
+    if (!IsRando()) {
         LUSLOG_ERROR("Tried to get randomizerInf flag \"%d\" outside of rando", flag);
         assert(false);
         return 0;
     }
     */
 
-    return gSaveContext.ship.randomizerInf[flag >> 4] & (1 << (flag & 0xF));
+    return GetGlobalShipSaveContextData()->randomizerInf[flag >> 4] & (1 << (flag & 0xF));
 }
 
 /**
@@ -5047,7 +5048,7 @@ s32 Flags_GetRandomizerInf(RandomizerInf flag) {
 void Flags_SetRandomizerInf(RandomizerInf flag) {
     // Randomizer flags are currently accessible from any quest (boss rush as an example)
     /*
-    if (!IS_RANDO) {
+    if (!IsRando()) {
         LUSLOG_ERROR("Tried to set randomizerInf flag \"%d\" outside of rando", flag);
         assert(false);
         return;
@@ -5056,7 +5057,7 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
 
     s32 previouslyOff = !Flags_GetRandomizerInf(flag);
     if (previouslyOff) {
-        gSaveContext.ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+        GetGlobalShipSaveContextData()->randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
         LUSLOG_INFO("RandomizerInf Flag Set - %#x", flag);
         GameInteractor_ExecuteOnFlagSet(FLAG_RANDOMIZER_INF, flag);
     }
@@ -5068,7 +5069,7 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
 void Flags_UnsetRandomizerInf(RandomizerInf flag) {
     // Randomizer flags are currently accessible from any quest (boss rush as an example)
     /*
-    if (!IS_RANDO) {
+    if (!IsRando()) {
         LUSLOG_ERROR("Tried to unset randomizerInf flag \"%d\" outside of rando", flag);
         assert(false);
         return;
@@ -5077,7 +5078,7 @@ void Flags_UnsetRandomizerInf(RandomizerInf flag) {
 
     s32 previouslyOn = Flags_GetRandomizerInf(flag);
     if (previouslyOn) {
-        gSaveContext.ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+        GetGlobalShipSaveContextData()->randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
         LUSLOG_INFO("RandomizerInf Flag Unset - %#x", flag);
         GameInteractor_ExecuteOnFlagUnset(FLAG_RANDOMIZER_INF, flag);
     }

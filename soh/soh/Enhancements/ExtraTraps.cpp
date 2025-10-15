@@ -4,6 +4,8 @@
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Notification/Notification.h"
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "variables.h"
@@ -61,8 +63,8 @@ std::vector<AltTrapType> getEnabledAddTraps() {
 };
 
 static void RollRandomTrap(uint32_t seed) {
-    uint32_t finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
-                                          : static_cast<uint32_t>(gSaveContext.ship.stats.fileCreatedAt));
+    uint32_t finalSeed = seed + (IsRando() ? Rando::Context::GetInstance()->GetSeed()
+                                          : static_cast<uint32_t>(GetShipSaveContextData()->stats.fileCreatedAt));
     Random_Init(finalSeed);
 
     roll = RandomElement(getEnabledAddTraps());
@@ -180,15 +182,15 @@ void RegisterExtraTraps() {
     COND_HOOK(OnPlayerUpdate, CVAR_EXTRA_TRAPS_VALUE, OnPlayerUpdate);
 
     COND_VB_SHOULD(VB_SHORT_CIRCUIT_GIVE_ITEM_PROCESS, true, {
-        if (!gSaveContext.ship.pendingIceTrapCount) {
+        if (!GetShipSaveContextData()->pendingIceTrapCount) {
             return;
         }
 
         Player* player = GET_PLAYER(gPlayState);
 
         *should = true;
-        gSaveContext.ship.pendingIceTrapCount--;
-        gSaveContext.ship.stats.count[COUNT_ICE_TRAPS]++;
+        GetShipSaveContextData()->pendingIceTrapCount--;
+        GetShipSaveContextData()->stats.count[COUNT_ICE_TRAPS]++;
         GameInteractor_ExecuteOnItemReceiveHooks(ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ICE_TRAP));
         if (CVAR_EXTRA_TRAPS_VALUE) {
             RollRandomTrap(gPlayState->sceneNum + player->getItemEntry.drawItemId);

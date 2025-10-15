@@ -2,6 +2,7 @@
 #include "soh_assets.h"
 #include "static_data.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 #include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
@@ -100,7 +101,7 @@ uint8_t EnKusa_RandomizerHoldsItem(EnKusa* grassActor, PlayState* play) {
     uint8_t grassSetting = RAND_GET_OPTION(RSK_SHUFFLE_GRASS);
 
     // Don't pull randomized item if grass isn't randomized or is already checked
-    if (!IS_RANDO || (grassSetting == RO_SHUFFLE_GRASS_OVERWORLD && isDungeon) ||
+    if (!IsRando() || (grassSetting == RO_SHUFFLE_GRASS_OVERWORLD && isDungeon) ||
         (grassSetting == RO_SHUFFLE_GRASS_DUNGEONS && !isDungeon) ||
         Flags_GetRandomizerInf(grassIdentity->randomizerInf) || rc == RC_UNKNOWN_CHECK) {
         return false;
@@ -139,7 +140,7 @@ void EnKusa_RandomizerInit(void* actorRef) {
 }
 
 void RegisterShuffleGrass() {
-    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_GRASS);
+    bool shouldRegister = IsRando() && RAND_GET_OPTION(RSK_SHUFFLE_GRASS);
 
     COND_ID_HOOK(OnActorInit, ACTOR_EN_KUSA, shouldRegister, EnKusa_RandomizerInit);
 

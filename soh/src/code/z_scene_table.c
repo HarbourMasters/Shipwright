@@ -26,6 +26,7 @@
 #include "soh/mq_asset_hacks.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 // Entrance Table definition
 #define DEFINE_ENTRANCE(_0, sceneId, spawn, continueBgm, displayTitleCard, endTransType, startTransType) \
@@ -1294,7 +1295,7 @@ void func_8009EE44(PlayState* play) {
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
 
     bool playerHasCojiro = INV_CONTENT(ITEM_COJIRO) == ITEM_COJIRO;
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
+    if (IsRando() && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
         playerHasCojiro = Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_COJIRO);
     }
     if ((play->roomCtx.unk_74[0] == 0) && playerHasCojiro) {

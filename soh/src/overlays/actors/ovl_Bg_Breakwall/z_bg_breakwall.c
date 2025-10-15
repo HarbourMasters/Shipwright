@@ -11,6 +11,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -110,7 +111,7 @@ void BgBreakwall_Init(Actor* thisx, PlayState* play) {
 
     // Initialize this with the mud wall, so it can't be affected by toggling while the actor is loaded
     blueFireArrowsEnabledOnMudwallLoad = CVarGetInteger(CVAR_ENHANCEMENT("BlueFireArrows"), 0) ||
-                                         (IS_RANDO && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
+                                         (IsRando() && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);

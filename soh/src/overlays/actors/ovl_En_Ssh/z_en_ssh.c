@@ -2,6 +2,7 @@
 #include "objects/object_ssh/object_ssh.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -355,7 +356,7 @@ void EnSsh_Bob(EnSsh* this, PlayState* play) {
 
 s32 EnSsh_IsCloseToLink(EnSsh* this, PlayState* play) {
     // #region SOH [Randomizer] automatically lower skultulla people
-    if (IS_RANDO) {
+    if (IsRando()) {
         return true;
     }
     // #endregion
@@ -705,7 +706,7 @@ void EnSsh_Idle(EnSsh* this, PlayState* play) {
                     if (this->actor.params == ENSSH_FATHER) {
                         // #region SOH [Randomizer] Skip the complexity of the father's text when he should just give a
                         // hint
-                        if (IS_RANDO && Randomizer_GetSettingValue(RSK_KAK_100_SKULLS_HINT)) {
+                        if (IsRando() && Randomizer_GetSettingValue(RSK_KAK_100_SKULLS_HINT)) {
                             this->actor.textId = 0x27;
                             // #endregion
                         } else {

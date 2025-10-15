@@ -1,5 +1,6 @@
 ﻿#include <libultraship/bridge.h>
 #include "soh/OTRGlobals.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
@@ -325,7 +326,7 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
             // Always show ItemGet animation for ice traps
             !(getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId == RG_ICE_TRAP) &&
             // Always show ItemGet animation outside of randomizer to keep behaviour consistent in vanilla
-            IS_RANDO &&
+            IsRando() &&
             (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_JUNK) == SGIA_ALL ||
              (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_JUNK) == SGIA_JUNK &&
               (
@@ -396,7 +397,7 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
     }
 
     if (loc->GetRandomizerCheck() == RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST &&
-        !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
+        !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IsRando())) {
         static uint32_t updateHook;
         updateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
             Player* player = GET_PLAYER(gPlayState);
@@ -631,14 +632,14 @@ bool ShouldGiveFishingPrize(f32 sFishOnHandLength) {
                              ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 10)
                              : 10;
         f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
-        return sFishOnHandLength >= score && (IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING)
+        return sFishOnHandLength >= score && (IsRando() ? !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING)
                                                        : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD));
     } else {
         int32_t weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0)
                              ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 13)
                              : 13;
         f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
-        return sFishOnHandLength >= score && (IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING)
+        return sFishOnHandLength >= score && (IsRando() ? !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING)
                                                        : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT));
     }
 }
@@ -1019,7 +1020,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     Item_Give(gPlayState, static_cast<uint8_t>(item00->itemEntry.itemId));
                 } else if (item00->itemEntry.modIndex == MOD_RANDOMIZER) {
                     if (item00->itemEntry.getItemId == RG_ICE_TRAP) {
-                        gSaveContext.ship.pendingIceTrapCount++;
+                        GetShipSaveContextData()->pendingIceTrapCount++;
                     } else {
                         Randomizer_Item_Give(gPlayState, item00->itemEntry);
                     }
@@ -1651,11 +1652,11 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE: {
             VBFishingData* fishData = va_arg(args, VBFishingData*);
-            *should = !IS_RANDO && ShouldGiveFishingPrize(fishData->fishWeight);
+            *should = !IsRando() && ShouldGiveFishingPrize(fishData->fishWeight);
             break;
         }
         case VB_GIVE_RANDO_FISHING_PRIZE: {
-            if (IS_RANDO) {
+            if (IsRando()) {
                 VBFishingData* fishData = va_arg(args, VBFishingData*);
                 if (*fishData->sFishOnHandIsLoach) {
                     if (!Flags_GetRandomizerInf(RAND_INF_CAUGHT_LOACH) &&
@@ -1684,7 +1685,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_GIVE_RANDO_GLITCH_FISHING_PRIZE: {
-            if (IS_RANDO) {
+            if (IsRando()) {
                 Fishing* fishing = va_arg(args, Fishing*);
                 if (!Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING)) {
                     Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
@@ -2502,7 +2503,7 @@ void RandomizerRegisterHooks() {
         fishsanityOnVanillaBehaviorHook = 0;
         fishsanityOnItemReceiveHook = 0;
 
-        if (!IS_RANDO)
+        if (!IsRando())
             return;
 
         // ENTRTODO: Move all entrance rando handling to a dedicated file

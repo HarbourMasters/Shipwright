@@ -3,6 +3,7 @@
 #include "z64.h"
 #include "game-interactor/GameInteractor.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 static const int songMessageMap[] = {
     TEXT_WARP_MINUET_OF_FOREST,  TEXT_WARP_BOLERO_OF_FIRE,     TEXT_WARP_SERENADE_OF_WATER,
@@ -39,7 +40,7 @@ void PauseWarp_Execute() {
     if (gPlayState->msgCtx.choiceIndex != 0) {
         return;
     }
-    if (IS_RANDO) {
+    if (IsRando()) {
         Entrance_SetWarpSongEntrance();
         return;
     }
@@ -76,7 +77,7 @@ void PauseWarp_HandleSelection() {
         int song = gPlayState->pauseCtx.cursorPoint[PAUSE_QUEST];
         if (aButtonPressed && CHECK_QUEST_ITEM(song) && song >= QUEST_SONG_MINUET && song <= QUEST_SONG_PRELUDE &&
             gPlayState->pauseCtx.pageIndex == PAUSE_QUEST && gPlayState->pauseCtx.state == 6) {
-            if (gSaveContext.ship.quest.id == QUEST_RANDOMIZER &&
+            if (IsRando() &&
                 Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS)) {
                 bool canplay = false;
                 switch (song) {

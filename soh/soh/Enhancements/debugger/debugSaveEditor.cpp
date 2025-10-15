@@ -25,6 +25,7 @@ extern PlayState* gPlayState;
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/parameter_static/parameter_static.h"
+#include <soh/ObjectExtension/ShipSaveContextData.h>
 }
 
 // Maps entries in the GS flag array to the area name it represents
@@ -297,10 +298,10 @@ void DrawInfoTab() {
     Combobox("Z Target Mode", &gSaveContext.zTargetSetting, zTargetMap,
              comboboxOptionsBase.Tooltip("Z-Targeting behavior"));
 
-    if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
+    if (IsRando() && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
         PushStyleInput(THEME_COLOR);
         ImGui::InputScalar("Triforce Pieces", ImGuiDataType_U8,
-                           &gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
+                           &GetShipSaveContextData()->quest.data.randomizer.triforcePiecesCollected);
         Tooltip("Currently obtained Triforce Pieces. For Triforce Hunt.");
         PopStyleInput();
     }
@@ -535,7 +536,7 @@ void DrawInventoryTab() {
 
     // Trade quest flags are only used when shuffling the trade sequence, so
     // don't show this if it isn't needed.
-    if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
+    if (IsRando() && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
         ImGui::TreeNode("Adult trade quest items")) {
         for (int i = ITEM_POCKET_EGG; i <= ITEM_CLAIM_CHECK; i++) {
             DrawBGSItemFlag(i);
@@ -905,7 +906,7 @@ void DrawFlagsTab() {
 
             // If playing a Randomizer Save with Shuffle Skull Tokens on anything other than "Off" we don't want to keep
             // GS Token Count updated, since Gold Skulltulas killed will not correlate to GS Tokens Collected.
-            if (!(IS_RANDO &&
+            if (!(IsRando() &&
                   OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
                 static bool keepGsCountUpdated = true;
                 Checkbox("Keep GS Count Updated", &keepGsCountUpdated,
@@ -924,7 +925,7 @@ void DrawFlagsTab() {
 
     for (int i = 0; i < flagTables.size(); i++) {
         const FlagTable& flagTable = flagTables[i];
-        if (flagTable.flagTableType == RANDOMIZER_INF && !IS_RANDO && !IS_BOSS_RUSH) {
+        if (flagTable.flagTableType == RANDOMIZER_INF && !IsRando() && !IsBossRush()) {
             continue;
         }
 
@@ -955,7 +956,7 @@ void DrawFlagsTab() {
                                 DrawFlagTableArray16(flagTable, j, gSaveContext.eventInf[j]);
                                 break;
                             case RANDOMIZER_INF:
-                                DrawFlagTableArray16(flagTable, j, gSaveContext.ship.randomizerInf[j]);
+                                DrawFlagTableArray16(flagTable, j, GetShipSaveContextData()->randomizerInf[j]);
                                 break;
                         }
                     },
@@ -1165,7 +1166,7 @@ void DrawEquipmentTab() {
         "Giant (500)",
     };
     // only display Tycoon wallet if you're in a save file that would allow it.
-    if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET)) {
+    if (IsRando() && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET)) {
         const std::string walletName = "Tycoon (999)";
         walletNamesImpl.push_back(walletName);
     }
@@ -1352,7 +1353,7 @@ void DrawQuestStatusTab() {
                 PushStyleInput(THEME_COLOR);
                 if (ImGui::InputScalar("##Keys", ImGuiDataType_S8,
                                        gSaveContext.inventory.dungeonKeys + dungeonItemsScene)) {
-                    gSaveContext.ship.stats.dungeonKeys[dungeonItemsScene] =
+                    GetShipSaveContextData()->stats.dungeonKeys[dungeonItemsScene] =
                         gSaveContext.inventory.dungeonKeys[dungeonItemsScene];
                 };
                 PopStyleInput();

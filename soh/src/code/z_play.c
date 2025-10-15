@@ -11,6 +11,7 @@
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SaveManager.h"
@@ -641,32 +642,32 @@ void Play_Init(GameState* thisx) {
     gSaveContext.respawnFlag = 0;
 
     // #region SOH [Stats]
-    if (gSaveContext.ship.stats.sceneNum != gPlayState->sceneNum) {
-        u16 idx = gSaveContext.ship.stats.tsIdx;
-        gSaveContext.ship.stats.sceneTimestamps[idx].sceneTime = gSaveContext.ship.stats.sceneTimer / 2;
-        gSaveContext.ship.stats.sceneTimestamps[idx].roomTime = gSaveContext.ship.stats.roomTimer / 2;
-        gSaveContext.ship.stats.sceneTimestamps[idx].scene = gSaveContext.ship.stats.sceneNum;
-        gSaveContext.ship.stats.sceneTimestamps[idx].room = gSaveContext.ship.stats.roomNum;
-        gSaveContext.ship.stats.sceneTimestamps[idx].isRoom =
-            gPlayState->sceneNum == gSaveContext.ship.stats.sceneTimestamps[idx].scene &&
-            gPlayState->roomCtx.curRoom.num != gSaveContext.ship.stats.sceneTimestamps[idx].room;
-        gSaveContext.ship.stats.tsIdx++;
-        gSaveContext.ship.stats.sceneTimer = 0;
-        gSaveContext.ship.stats.roomTimer = 0;
-    } else if (gSaveContext.ship.stats.roomNum != gPlayState->roomCtx.curRoom.num) {
-        u16 idx = gSaveContext.ship.stats.tsIdx;
-        gSaveContext.ship.stats.sceneTimestamps[idx].roomTime = gSaveContext.ship.stats.roomTimer / 2;
-        gSaveContext.ship.stats.sceneTimestamps[idx].scene = gSaveContext.ship.stats.sceneNum;
-        gSaveContext.ship.stats.sceneTimestamps[idx].room = gSaveContext.ship.stats.roomNum;
-        gSaveContext.ship.stats.sceneTimestamps[idx].isRoom =
-            gPlayState->sceneNum == gSaveContext.ship.stats.sceneTimestamps[idx].scene &&
-            gPlayState->roomCtx.curRoom.num != gSaveContext.ship.stats.sceneTimestamps[idx].room;
-        gSaveContext.ship.stats.tsIdx++;
-        gSaveContext.ship.stats.roomTimer = 0;
+    if (GetGlobalShipSaveContextData()->stats.sceneNum != gPlayState->sceneNum) {
+        u16 idx = GetGlobalShipSaveContextData()->stats.tsIdx;
+        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].sceneTime = GetGlobalShipSaveContextData()->stats.sceneTimer / 2;
+        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].roomTime = GetGlobalShipSaveContextData()->stats.roomTimer / 2;
+        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].scene = GetGlobalShipSaveContextData()->stats.sceneNum;
+        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].room = GetGlobalShipSaveContextData()->stats.roomNum;
+        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].isRoom =
+            gPlayState->sceneNum == GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].scene &&
+            gPlayState->roomCtx.curRoom.num != GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].room;
+        GetGlobalShipSaveContextData()->stats.tsIdx++;
+        GetGlobalShipSaveContextData()->stats.sceneTimer = 0;
+        GetGlobalShipSaveContextData()->stats.roomTimer = 0;
+    } else if (GetGlobalShipSaveContextData()->stats.roomNum != gPlayState->roomCtx.curRoom.num) {
+        u16 idx = GetGlobalShipSaveContextData()->stats.tsIdx;
+        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].roomTime = GetGlobalShipSaveContextData()->stats.roomTimer / 2;
+        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].scene = GetGlobalShipSaveContextData()->stats.sceneNum;
+        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].room = GetGlobalShipSaveContextData()->stats.roomNum;
+        GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].isRoom =
+            gPlayState->sceneNum == GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].scene &&
+            gPlayState->roomCtx.curRoom.num != GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].room;
+        GetGlobalShipSaveContextData()->stats.tsIdx++;
+        GetGlobalShipSaveContextData()->stats.roomTimer = 0;
     }
 
-    gSaveContext.ship.stats.sceneNum = gPlayState->sceneNum;
-    gSaveContext.ship.stats.roomNum = gPlayState->roomCtx.curRoom.num;
+    GetGlobalShipSaveContextData()->stats.sceneNum = gPlayState->sceneNum;
+    GetGlobalShipSaveContextData()->stats.roomNum = gPlayState->roomCtx.curRoom.num;
     // #endregion
 
 #if 0
@@ -736,55 +737,55 @@ void Play_Update(PlayState* play) {
         }
 
         // #region SOH [Stats] Gameplay stats: Count button presses
-        if (!gSaveContext.ship.stats.gameComplete) {
+        if (!GetGlobalShipSaveContextData()->stats.gameComplete) {
             if (CHECK_BTN_ALL(input[0].press.button, BTN_A)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_A]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_BUTTON_PRESSES_A]++;
             }
             if (CHECK_BTN_ALL(input[0].press.button, BTN_B)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_B]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_BUTTON_PRESSES_B]++;
             }
             if (CHECK_BTN_ALL(input[0].press.button, BTN_CUP)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CUP]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_BUTTON_PRESSES_CUP]++;
             }
             if (CHECK_BTN_ALL(input[0].press.button, BTN_CRIGHT)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CRIGHT]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_BUTTON_PRESSES_CRIGHT]++;
             }
             if (CHECK_BTN_ALL(input[0].press.button, BTN_CLEFT)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CLEFT]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_BUTTON_PRESSES_CLEFT]++;
             }
             if (CHECK_BTN_ALL(input[0].press.button, BTN_CDOWN)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CDOWN]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_BUTTON_PRESSES_CDOWN]++;
             }
             if (CHECK_BTN_ALL(input[0].press.button, BTN_DUP)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DUP]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_BUTTON_PRESSES_DUP]++;
             }
             if (CHECK_BTN_ALL(input[0].press.button, BTN_DRIGHT)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DRIGHT]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_BUTTON_PRESSES_DRIGHT]++;
             }
             if (CHECK_BTN_ALL(input[0].press.button, BTN_DDOWN)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DDOWN]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_BUTTON_PRESSES_DDOWN]++;
             }
             if (CHECK_BTN_ALL(input[0].press.button, BTN_DLEFT)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DLEFT]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_BUTTON_PRESSES_DLEFT]++;
             }
             if (CHECK_BTN_ALL(input[0].press.button, BTN_L)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_L]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_BUTTON_PRESSES_L]++;
             }
             if (CHECK_BTN_ALL(input[0].press.button, BTN_R)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_R]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_BUTTON_PRESSES_R]++;
             }
             if (CHECK_BTN_ALL(input[0].press.button, BTN_Z)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_Z]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_BUTTON_PRESSES_Z]++;
             }
             if (CHECK_BTN_ALL(input[0].press.button, BTN_START)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_START]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_BUTTON_PRESSES_START]++;
             }
 
             // Start RTA timing on first non-c-up input after intro cutscene
-            if (!gSaveContext.ship.stats.fileCreatedAt && !Player_InCsMode(play) &&
+            if (!GetGlobalShipSaveContextData()->stats.fileCreatedAt && !Player_InCsMode(play) &&
                 ((input[0].press.button && input[0].press.button != 0x8) || input[0].rel.stick_x != 0 ||
                  input[0].rel.stick_y != 0)) {
-                gSaveContext.ship.stats.fileCreatedAt = GetUnixTimestamp();
+                GetGlobalShipSaveContextData()->stats.fileCreatedAt = GetUnixTimestamp();
             }
         }
         // #endregion
@@ -1167,15 +1168,15 @@ void Play_Update(PlayState* play) {
                 func_800AA178(true);
 
                 // Gameplay stat tracking
-                if (!gSaveContext.ship.stats.gameComplete &&
-                    (!IS_BOSS_RUSH || !gSaveContext.ship.quest.data.bossRush.isPaused)) {
-                    gSaveContext.ship.stats.playTimer++;
-                    gSaveContext.ship.stats.sceneTimer++;
-                    gSaveContext.ship.stats.roomTimer++;
+                if (!GetGlobalShipSaveContextData()->stats.gameComplete &&
+                    (!IsBossRush() || !GetGlobalShipSaveContextData()->quest.data.bossRush.isPaused)) {
+                    GetGlobalShipSaveContextData()->stats.playTimer++;
+                    GetGlobalShipSaveContextData()->stats.sceneTimer++;
+                    GetGlobalShipSaveContextData()->stats.roomTimer++;
 
                     if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA &&
                         Player_GetMask(play) == PLAYER_MASK_BUNNY) {
-                        gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD]++;
+                        GetGlobalShipSaveContextData()->stats.count[COUNT_TIME_BUNNY_HOOD]++;
                     }
                 }
 

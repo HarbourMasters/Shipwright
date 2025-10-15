@@ -3,6 +3,7 @@
 #include <assert.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 s32 func_8006CFC0(s32 scene) {
     s32 validScenes[] = { SCENE_HYRULE_FIELD, SCENE_LAKE_HYLIA, SCENE_GERUDO_VALLEY, SCENE_GERUDOS_FORTRESS,
@@ -78,7 +79,7 @@ void func_8006D0EC(PlayState* play, Player* player) {
         assert(horseActor != NULL);
     } else if ((play->sceneNum == gSaveContext.horseData.scene) &&
                (((Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) != 0) &&
-                 (!IS_RANDO || (IS_RANDO && CHECK_QUEST_ITEM(QUEST_SONG_EPONA) &&
+                 (!IsRando() || (IsRando() && CHECK_QUEST_ITEM(QUEST_SONG_EPONA) &&
                                 GameInteractor_Should(VB_HAVE_OCARINA_NOTE_D5, true) &&
                                 GameInteractor_Should(VB_HAVE_OCARINA_NOTE_B4, true) &&
                                 GameInteractor_Should(VB_HAVE_OCARINA_NOTE_A4, true) &&

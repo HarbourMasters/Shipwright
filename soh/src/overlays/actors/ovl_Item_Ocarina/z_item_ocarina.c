@@ -8,6 +8,7 @@
 #include "scenes/overworld/spot00/spot00_scene.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -208,7 +209,7 @@ void ItemOcarina_Draw(Actor* thisx, PlayState* play) {
     func_8002EBCC(thisx, play, 0);
     func_8002ED80(thisx, play, 0);
 
-    if (IS_RANDO) {
+    if (IsRando()) {
         GetItemEntry randoGetItem = (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) &&
                                      Randomizer_IsCheckShuffled(RC_HF_OCARINA_OF_TIME_ITEM))
                                         ? GetItemMystery()

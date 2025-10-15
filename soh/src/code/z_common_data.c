@@ -1,5 +1,6 @@
 #include "global.h"
 #include <string.h>
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 SaveContext gSaveContext;
 
@@ -16,4 +17,6 @@ void SaveContext_Init(void) {
     gSaveContext.dogIsLost = true;
     gSaveContext.nextTransitionType = TRANS_NEXT_TYPE_DEFAULT;
     gSaveContext.unk_13EE = 50;
+
+    ShipSaveContextData_Init(&gSaveContext);
 }

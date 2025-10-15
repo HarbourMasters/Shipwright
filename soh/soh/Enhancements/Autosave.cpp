@@ -3,6 +3,8 @@
 #include "soh/Notification/Notification.h"
 #include "soh/ShipInit.hpp"
 #include "soh/SaveManager.h"
+#include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 
 extern "C" {
 extern PlayState* gPlayState;

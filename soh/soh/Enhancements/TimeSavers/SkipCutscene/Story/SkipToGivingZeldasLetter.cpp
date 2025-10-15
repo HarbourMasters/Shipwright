@@ -1,5 +1,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Zl4/z_en_zl4.h"
@@ -40,7 +41,7 @@ void SkipToGivingZeldasLetter_OnActorInit(void* actorPtr) {
 }
 
 void RegisterSkipToGivingZeldasLetter() {
-    COND_ID_HOOK(OnActorInit, ACTOR_EN_ZL4, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO),
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_ZL4, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IsRando()),
                  SkipToGivingZeldasLetter_OnActorInit);
 }
 

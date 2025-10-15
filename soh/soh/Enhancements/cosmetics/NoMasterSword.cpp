@@ -3,6 +3,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "objects/object_link_boy/object_link_boy.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "functions.h"
@@ -73,7 +74,7 @@ static Vec3f D_808546F4 = { -1.0f, 69.0f, 20.0f };
 
 void RegisterNoMasterSword() {
     // don't show link taking out master sword to put in pedestal when we don't have a master sword
-    COND_VB_SHOULD(VB_SHOW_MASTER_SWORD_TO_PLACE_IN_PEDESTAL, IS_RANDO && MASTER_SWORD_SHUFFLED, {
+    COND_VB_SHOULD(VB_SHOW_MASTER_SWORD_TO_PLACE_IN_PEDESTAL, IsRando() && MASTER_SWORD_SHUFFLED, {
         // if the vanilla condition is false respect it
         if (!*should) {
             return;
@@ -85,7 +86,7 @@ void RegisterNoMasterSword() {
     });
 
     // skip post pedestal animation when we don't have a master sword
-    COND_VB_SHOULD(VB_EXECUTE_PLAYER_STARTMODE_FUNC, IS_RANDO && MASTER_SWORD_SHUFFLED, {
+    COND_VB_SHOULD(VB_EXECUTE_PLAYER_STARTMODE_FUNC, IsRando() && MASTER_SWORD_SHUFFLED, {
         int32_t startMode = va_arg(args, int32_t);
         Player* player = GET_PLAYER(gPlayState);
 
@@ -103,7 +104,7 @@ void RegisterNoMasterSword() {
         }
     });
 
-    COND_HOOK(OnPlayerUpdate, IS_RANDO, [] {
+    COND_HOOK(OnPlayerUpdate, IsRando(), [] {
         static uint16_t lastItemOnB = gSaveContext.equips.buttonItems[0];
         if (lastItemOnB != gSaveContext.equips.buttonItems[0]) {
             UpdateNoMSPatch();
@@ -111,7 +112,7 @@ void RegisterNoMasterSword() {
         }
     });
 
-    COND_HOOK(OnSceneSpawnActors, IS_RANDO, UpdateNoMSPatch);
+    COND_HOOK(OnSceneSpawnActors, IsRando(), UpdateNoMSPatch);
 }
 
 static RegisterShipInitFunc initFunc(RegisterNoMasterSword, { "IS_RANDO" });

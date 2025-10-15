@@ -10,6 +10,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #include <string.h>
 
@@ -182,7 +183,7 @@ void BossGanon2_Init(Actor* thisx, PlayState* play) {
     this->actor.gravity = 0.0f;
 
     hasFoundMasterSword = 1;
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+    if (IsRando() && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
         !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
         hasFoundMasterSword = 0;
     }
@@ -245,7 +246,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 sBossGanon2Zelda->actor.shape.rot.y = -0x7000;
 
                 // In rando, skip past the cutscene to the part where the player takes control again.
-                if (!IS_RANDO && !IS_BOSS_RUSH) {
+                if (!IsRando() && !IsBossRush()) {
                     this->csState = 1;
                     this->csTimer = 0;
                 } else {
@@ -2890,7 +2891,7 @@ void func_80905DA8(BossGanon2* this, PlayState* play) {
             if (effect->type == 1) {
                 // Prevent invisible master sword from making spark effect/sound when landing in the ground
                 // and prevent the player from picking it up if the player has not found the master sword
-                if (IS_RANDO && !hasFoundMasterSword) {
+                if (IsRando() && !hasFoundMasterSword) {
                     continue;
                 }
                 if (effect->unk_2E == 0) {
@@ -2954,7 +2955,7 @@ void func_809060E8(PlayState* play) {
     for (i = 0; i < 1; i++) {
         if (effect->type == 1) {
             // Do not draw the master sword in the ground if the player has not found it yet
-            if (IS_RANDO && !hasFoundMasterSword) {
+            if (IsRando() && !hasFoundMasterSword) {
                 continue;
             }
 

@@ -3,6 +3,7 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS 0
 
@@ -252,7 +253,7 @@ void DoorWarp1_SetupBlueCrystal(DoorWarp1* this, PlayState* play) {
         play->envCtx.adjAmbientColor[i] = play->envCtx.adjFogColor[i] = play->envCtx.adjLight1Color[i] = -255;
     }
 
-    if (!IS_BOSS_RUSH) {
+    if (!IsBossRush()) {
         play->envCtx.adjFogNear = -500;
         this->warpTimer = 30;
     } else {
@@ -299,7 +300,7 @@ void DoorWarp1_SetPlayerPos(DoorWarp1* this, PlayState* play) {
 
     player->actor.velocity.y = 0.0f;
     player->actor.world.pos.x = this->actor.world.pos.x;
-    if (!IS_BOSS_RUSH) {
+    if (!IsBossRush()) {
         player->actor.world.pos.y = this->actor.world.pos.y + 55.0f;
     } else {
         player->actor.world.pos.y = this->actor.world.pos.y;
@@ -323,7 +324,7 @@ void func_80999214(DoorWarp1* this, PlayState* play) {
 
     Math_SmoothStepToF(&this->crystalAlpha, 255.0f, 0.2f, 5.0f, 0.1f);
 
-    if (!IS_BOSS_RUSH) {
+    if (!IsBossRush()) {
         darkness = (f32)(40 - this->warpTimer) / 40.0f;
         darkness = CLAMP_MIN(darkness, 0);
     } else {
@@ -366,7 +367,7 @@ void func_80999348(DoorWarp1* this, PlayState* play) {
 void DoorWarp1_FloatPlayer(DoorWarp1* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (!IS_BOSS_RUSH) {
+    if (!IsBossRush()) {
         player->actor.gravity = -0.1f;
     }
 }

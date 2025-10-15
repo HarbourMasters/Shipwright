@@ -9,6 +9,7 @@
 #include "objects/object_gla/object_gla.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 #include <assert.h>
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -254,7 +255,7 @@ void EnGe2_CaptureClose(EnGe2* this, PlayState* play) {
             play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_17;
         }
 
-        if (IS_RANDO) {
+        if (IsRando()) {
             Entrance_OverrideGeurdoGuardCapture();
         }
 
@@ -284,7 +285,7 @@ void EnGe2_CaptureCharge(EnGe2* this, PlayState* play) {
             play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_17;
         }
 
-        if (IS_RANDO) {
+        if (IsRando()) {
             Entrance_OverrideGeurdoGuardCapture();
         }
 

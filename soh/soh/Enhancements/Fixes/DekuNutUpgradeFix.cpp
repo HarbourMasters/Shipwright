@@ -1,11 +1,12 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
+#include "soh/cvar_prefixes.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
-#include "z64save.h"
 extern PlayState* gPlayState;
 }
 
@@ -35,9 +36,9 @@ void DekuNutUpgradeSetByPoachersSaw(bool* should) {
 }
 
 void RegisterDekuNutUpgradeFix() {
-    COND_VB_SHOULD(VB_POACHERS_SAW_SET_DEKU_NUT_UPGRADE_FLAG, CVAR_NUT_UPGRADE_FIX_VALUE || IS_RANDO,
+    COND_VB_SHOULD(VB_POACHERS_SAW_SET_DEKU_NUT_UPGRADE_FLAG, CVAR_NUT_UPGRADE_FIX_VALUE || IsRando(),
                    { DekuNutUpgradeSetByPoachersSaw(should); });
-    COND_VB_SHOULD(VB_DEKU_SCRUBS_REACT_TO_MASK_OF_TRUTH, CVAR_NUT_UPGRADE_FIX_VALUE && !IS_RANDO,
+    COND_VB_SHOULD(VB_DEKU_SCRUBS_REACT_TO_MASK_OF_TRUTH, CVAR_NUT_UPGRADE_FIX_VALUE && !IsRando(),
                    { DekuNutUpgradeFixAtForestStage(should); });
 }
 

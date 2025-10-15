@@ -9,6 +9,7 @@
 #include "overlays/actors/ovl_Obj_Oshihiki/z_obj_oshihiki.h"
 #include "objects/object_lightswitch/object_lightswitch.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -125,7 +126,7 @@ void ObjLightswitch_InitCollider(ObjLightswitch* this, PlayState* play) {
 
     // Initialize this with the sun switch, so it can't be affected by toggling while the actor is loaded
     sunLightArrowsEnabledOnSunSwitchLoad = CVarGetInteger(CVAR_ENHANCEMENT("SunlightArrows"), 0) ||
-                                           (IS_RANDO && Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS));
+                                           (IsRando() && Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS));
 
     Collider_InitJntSph(play, &this->collider);
     // If "Sunlight Arrows" is enabled, set up the collider to allow Light Arrow hits

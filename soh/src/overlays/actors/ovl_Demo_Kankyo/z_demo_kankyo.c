@@ -6,6 +6,7 @@
 #include "soh/frame_interpolation.h"
 #include <assert.h>
 #include "soh/OTRGlobals.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
@@ -796,7 +797,7 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, PlayState* play) {
                 this->unk_150[i].unk_23 = 0;
 
                 // Skip the first part of warp song cutscenes in rando
-                if (IS_RANDO && this->actor.params == DEMOKANKYO_WARP_OUT) {
+                if (IsRando() && this->actor.params == DEMOKANKYO_WARP_OUT) {
                     this->unk_150[i].unk_22 = 2;
                 } else {
                     this->unk_150[i].unk_22++;

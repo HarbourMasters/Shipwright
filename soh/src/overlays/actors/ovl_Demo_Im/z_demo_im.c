@@ -13,6 +13,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -874,7 +875,7 @@ void func_80986B2C(PlayState* play) {
         Player* player = GET_PLAYER(play);
 
         // In entrance rando have impa bring link back to the front of castle grounds
-        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+        if (IsRando() && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
             play->nextEntranceIndex = ENTR_CASTLE_GROUNDS_SOUTH_EXIT;
         } else {
             play->nextEntranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
@@ -944,7 +945,7 @@ void func_80986D40(DemoIm* this, PlayState* play) {
         this->action = 19;
         this->drawConfig = 1;
     } else if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) &&
-               !IS_RANDO) { // SoH [Randomizer] Not sure why we're not killing impa here.
+               !IsRando()) { // SoH [Randomizer] Not sure why we're not killing impa here.
         Actor_Kill(&this->actor);
     } else if (!Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY)) {
         this->action = 23;

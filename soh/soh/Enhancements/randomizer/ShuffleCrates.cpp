@@ -5,6 +5,7 @@
 #include "global.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "variables.h"
@@ -177,7 +178,7 @@ uint8_t ObjKibako2_RandomizerHoldsItem(ObjKibako2* crateActor, PlayState* play) 
     uint8_t crateSetting = RAND_GET_OPTION(RSK_SHUFFLE_CRATES);
 
     // Don't pull randomized item if crate isn't randomized or is already checked
-    if (!IS_RANDO || (crateSetting == RO_SHUFFLE_CRATES_OVERWORLD && isDungeon) ||
+    if (!IsRando() || (crateSetting == RO_SHUFFLE_CRATES_OVERWORLD && isDungeon) ||
         (crateSetting == RO_SHUFFLE_CRATES_DUNGEONS && !isDungeon) ||
         Flags_GetRandomizerInf(crateIdentity->randomizerInf) || crateIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
         return false;
@@ -197,7 +198,7 @@ uint8_t ObjKibako_RandomizerHoldsItem(ObjKibako* smallCrateActor, PlayState* pla
     uint8_t crateSetting = RAND_GET_OPTION(RSK_SHUFFLE_CRATES);
 
     // Don't pull randomized item if crate isn't randomized or is already checked
-    if (!IS_RANDO || (crateSetting == RO_SHUFFLE_CRATES_OVERWORLD && isDungeon) ||
+    if (!IsRando() || (crateSetting == RO_SHUFFLE_CRATES_OVERWORLD && isDungeon) ||
         (crateSetting == RO_SHUFFLE_CRATES_DUNGEONS && !isDungeon) ||
         Flags_GetRandomizerInf(crateIdentity->randomizerInf) || crateIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
         return false;
@@ -279,7 +280,7 @@ void ObjKibako_RandomizerInit(void* actorRef) {
 }
 
 void RegisterShuffleCrates() {
-    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_CRATES);
+    bool shouldRegister = IsRando() && RAND_GET_OPTION(RSK_SHUFFLE_CRATES);
 
     COND_ID_HOOK(OnActorInit, ACTOR_OBJ_KIBAKO2, shouldRegister, ObjKibako2_RandomizerInit);
 

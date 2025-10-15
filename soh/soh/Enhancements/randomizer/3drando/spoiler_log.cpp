@@ -28,6 +28,7 @@
 
 #include <ship/Context.h>
 #include <soh/OTRGlobals.h>
+#include "soh/cvar_prefixes.h"
 
 #include <libultraship/bridge/consolevariablebridge.h>
 

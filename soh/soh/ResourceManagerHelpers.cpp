@@ -3,6 +3,7 @@
 #include "variables.h"
 #include "z64.h"
 #include "cvar_prefixes.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/randomizer/dungeon.h"
 #include <libultraship/libultraship.h>
@@ -95,11 +96,11 @@ u32 IsSceneMasterQuest(s16 sceneNum) {
             return true;
         }
 
-        if (IS_MASTER_QUEST) {
+        if (IsMasterQuest()) {
             return true;
         }
 
-        if (IS_RANDO) {
+        if (IsRando()) {
             auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(sceneNum);
             if (dungeon != nullptr && dungeon->IsMQ()) {
                 return true;
