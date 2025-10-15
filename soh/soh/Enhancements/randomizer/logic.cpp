@@ -2075,8 +2075,8 @@ void Logic::NewSaveContext() {
         free(mSaveContext);
     }
     mSaveContext = new SaveContext();
-    InitSaveContext();
     ShipSaveContextData_Init(mSaveContext);
+    InitSaveContext();
 }
 
 uint8_t Logic::InventorySlot(uint32_t item) {

@@ -1093,6 +1093,10 @@ void SaveManager::SaveSection(int fileNum, int sectionID, bool threaded) {
     }
     auto saveContext = new SaveContext;
     memcpy(saveContext, &gSaveContext, sizeof(gSaveContext));
+    ShipSaveContextData* gShipSaveContextData = GetShipSaveContextData();
+    ShipSaveContextData lShipSaveContextData;
+    memcpy(&lShipSaveContextData, gShipSaveContextData, sizeof(lShipSaveContextData));
+    ObjectExtension::GetInstance().Set<ShipSaveContextData>(saveContext, std::move(lShipSaveContextData));
     if (threaded) {
         smThreadPool->detach_task(std::bind(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, sectionID));
     } else {
