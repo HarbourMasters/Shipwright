@@ -58,34 +58,43 @@ std::shared_ptr<Ship::ArchiveManager> GetArchiveManager() {
 void UpdateModFiles(bool init = false) {
     if (init) {
         enabledModFiles.clear();
+        enabledModFiles = GetEnabledModsFromCVar();
     }
     disabledModFiles.clear();
-    std::vector<std::string> enabledMods = GetEnabledModsFromCVar();
     std::string modsPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
+    bool changed = false;
     if (modsPath.length() > 0 && std::filesystem::exists(modsPath)) {
         if (std::filesystem::is_directory(modsPath)) {
             for (const std::filesystem::directory_entry& p : std::filesystem::recursive_directory_iterator(
                      modsPath, std::filesystem::directory_options::follow_directory_symlink)) {
                 std::string extension = p.path().extension().string();
                 if (
-#ifndef EXCLUDE_MPQ_SUPPORT
+#ifdef INCLUDE_MPQ_SUPPORT
                     StringHelper::IEquals(extension, ".otr") || StringHelper::IEquals(extension, ".mpq") ||
 #endif
                     StringHelper::IEquals(extension, ".o2r") || StringHelper::IEquals(extension, ".zip")) {
                     std::string path = p.path().generic_string();
-                    bool shouldBeEnabled = std::find(enabledMods.begin(), enabledMods.end(), path) != enabledMods.end();
+                    bool shouldBeEnabled =
+                        std::find(enabledModFiles.begin(), enabledModFiles.end(), path) != enabledModFiles.end();
 
-                    if (shouldBeEnabled) {
-                        if (init) {
-                            enabledModFiles.push_back(path);
-                            GetArchiveManager()->AddArchive(path);
-                        }
-                    } else {
+                    if (!shouldBeEnabled) {
                         disabledModFiles.push_back(path);
                     }
                 }
             }
+            for (std::string mod : enabledModFiles) {
+                std::string path = modsPath + "/" + mod;
+                if (std::filesystem::exists(path)) {
+                    GetArchiveManager()->AddArchive(path);
+                } else {
+                    changed = true;
+                    enabledModFiles.erase(std::find(enabledModFiles.begin(), enabledModFiles.end(), mod));
+                }
+            }
         }
+    }
+    if (changed) {
+        SetEnabledModsCVarValue();
     }
 }
 
