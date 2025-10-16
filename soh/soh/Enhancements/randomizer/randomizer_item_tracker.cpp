@@ -1595,10 +1595,7 @@ void ItemTrackerWindow::DrawElement() {
             DrawItemsInRows(mainWindowItems, 6);
 
             if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Notes"), SECTION_DISPLAY_HIDDEN) ==
-                    SECTION_DISPLAY_MAIN_WINDOW &&
-                (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
-                 CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
-                     TRACKER_DISPLAY_ALWAYS)) {
+                SECTION_DISPLAY_MAIN_WINDOW) {
                 DrawNotes();
             }
             EndFloatingWindows();
@@ -2104,10 +2101,9 @@ void RegisterItemTrackerWidgets() {
                      .Color(THEME_COLOR)
                      .ComboMap(displayTypes))
         .PreFunc([&](WidgetInfo& info) {
-            if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW ||
-                (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
-                 CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) !=
-                     TRACKER_DISPLAY_COMBO_BUTTON)) {
+            if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
+                CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
+                    TRACKER_DISPLAY_COMBO_BUTTON) {
                 info.options.get()->disabled = true;
                 info.options.get()->disabledTooltip = notesDisabledTooltip;
             }
