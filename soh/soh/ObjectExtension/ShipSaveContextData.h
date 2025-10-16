@@ -42,28 +42,28 @@ struct SceneTimestamp {
 };
 
 struct SohStats {
-    /*      */ char buildVersion[50];
-    /*      */ s16 buildVersionMajor;
-    /*      */ s16 buildVersionMinor;
-    /*      */ s16 buildVersionPatch;
-    /*      */ u8 heartPieces;
-    /*      */ u8 heartContainers;
-    /*      */ u8 dungeonKeys[19];
-    /*      */ u32 playTimer;
-    /*      */ u32 pauseTimer;
-    /*      */ u32 sceneTimer;
-    /*      */ u32 roomTimer;
-    /*      */ s16 sceneNum;
-    /*      */ s8 roomNum;
-    /*      */ bool gameComplete;
-    /*      */ u32 itemTimestamp[TIMESTAMP_MAX];
-    /*      */ struct SceneTimestamp sceneTimestamps[8191];
-    /*      */ u32 tsIdx;
-    /*      */ u32 count[COUNT_MAX];
-    /*      */ u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
-    /*      */ u32 scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
-    /*      */ bool rtaTiming;
-    /*      */ uint64_t fileCreatedAt;
+    char buildVersion[50];
+    s16 buildVersionMajor;
+    s16 buildVersionMinor;
+    s16 buildVersionPatch;
+    u8 heartPieces;
+    u8 heartContainers;
+    u8 dungeonKeys[19];
+    u32 playTimer;
+    u32 pauseTimer;
+    u32 sceneTimer;
+    u32 roomTimer;
+    s16 sceneNum;
+    s8 roomNum;
+    bool gameComplete;
+    u32 itemTimestamp[TIMESTAMP_MAX];
+    struct SceneTimestamp sceneTimestamps[8191];
+    u32 tsIdx;
+    u32 count[COUNT_MAX];
+    u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
+    u32 scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
+    bool rtaTiming;
+    uint64_t fileCreatedAt;
 };
 
 struct ShipSaveContextData {
