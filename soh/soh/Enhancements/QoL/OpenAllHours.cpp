@@ -39,8 +39,7 @@ static void OpenAllHours(void* refActor) {
         case DOOR_NIGHT_KAK_ARCHERY_GAME:
         case DOOR_NIGHT_KAK_BAZAAR:
         case DOOR_NIGHT_KAK_POTION_SHOP:
-        case DOOR_NIGHT_KAK_POTION_SHOP_BACK:
-        {
+        case DOOR_NIGHT_KAK_POTION_SHOP_BACK: {
             actor->params = (actor->params & 0xFC00) | (DOOR_SCENEEXIT << 7) | 0x3F;
             EnDoor* enDoor = static_cast<EnDoor*>(refActor);
             EnDoor_SetupType(enDoor, gPlayState);
