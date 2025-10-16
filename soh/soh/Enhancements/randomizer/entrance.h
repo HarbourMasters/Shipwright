@@ -29,6 +29,8 @@ enum class EntranceType {
     Interior,
     InteriorReverse,
     SpecialInterior,
+    ThievesHideout,
+    ThievesHideoutReverse,
     GrottoGrave,
     GrottoGraveReverse,
     Overworld,
