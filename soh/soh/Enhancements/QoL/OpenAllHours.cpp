@@ -57,4 +57,4 @@ static void RegisterOpenAllHours() {
     COND_HOOK(OnActorInit, CVAR_OPEN_ALL_HOURS_VALUE && overworldDoorsOpen, OpenAllHours);
 }
 
-static RegisterShipInitFunc initFunc_OpenAllHours(RegisterOpenAllHours, { CVAR_OPEN_ALL_HOURS_NAME, "IS_RANDO" });
+static RegisterShipInitFunc initFunc(RegisterOpenAllHours, { CVAR_OPEN_ALL_HOURS_NAME, "IS_RANDO" });
