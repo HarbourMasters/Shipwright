@@ -281,18 +281,12 @@ void DrawMods(bool enabled) {
 bool editing = false;
 
 void ModMenuWindow::DrawElement() {
-    ImGui::BeginDisabled(editing);
     SohGui::mSohMenu->MenuDrawItem(enableModsWidget, 200, THEME_COLOR);
-    if (editing) {
-        UIWidgets::Tooltip("Disabled while editing mods.");
-    } else {
-        UIWidgets::Tooltip("Toggle mods. For graphics mods, this means toggling between default and mod graphics.");
-    }
-    ImGui::EndDisabled();
 
     ImGui::TextColored(
         UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow),
-        "Mods are currently not reloaded at runtime.\nClose and re-open Ship for the changes to take effect.");
+        "Mods are currently not reloaded at runtime.\nClose and re-open Ship for the changes to take effect.\n"
+        "Mod load order is top to bottom. Mods at the top are loaded first.");
 
     if (UIWidgets::Button(
             "Update", UIWidgets::ButtonOptions({ { .disabled = editing, .disabledTooltip = "Currently editing..." } })
@@ -374,7 +368,10 @@ void ModMenuWindow::InitElement() {
 
 void RegisterModMenuWidgets() {
     enableModsWidget = { .name = "Enable Mods", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
-    enableModsWidget.CVar(CVAR_SETTING("AltAssets")).Options(UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+    enableModsWidget.CVar(CVAR_SETTING("AltAssets"))
+        .Options(UIWidgets::CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("Toggle mods. For graphics mods, this means toggling between default and mod graphics."));
     SohGui::mSohMenu->AddSearchWidget({ enableModsWidget, "Enhancements", "Mod Menu", "Top", "alternat assets" });
 }
 
