@@ -300,32 +300,35 @@ void EnRr_SetupReleasePlayer(EnRr* this, PlayState* play) {
     this->wobbleSizeTarget = 2048.0f;
     tunic = 0;
     shield = 0;
-    if (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) != EQUIP_VALUE_SHIELD_MIRROR) {
-        shield = Inventory_DeleteEquipment(play, EQUIP_TYPE_SHIELD);
-        if (shield != 0) {
-            this->eatenShield = shield;
-            this->retreat = true;
+    if (GameInteractor_Should(VB_LIKE_LIKE_STEAL_EQUIPMENT, true, this)) {
+        if (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) != EQUIP_VALUE_SHIELD_MIRROR) {
+            shield = Inventory_DeleteEquipment(play, EQUIP_TYPE_SHIELD);
+            if (shield != 0) {
+                this->eatenShield = shield;
+                this->retreat = true;
+            }
         }
-    }
-    if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) != EQUIP_VALUE_TUNIC_KOKIRI && !IS_RANDO /* Randomizer Save File */) {
-        tunic = Inventory_DeleteEquipment(play, EQUIP_TYPE_TUNIC);
-        if (tunic != 0) {
-            this->eatenTunic = tunic;
-            this->retreat = true;
+        if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) != EQUIP_VALUE_TUNIC_KOKIRI && !IS_RANDO /* Randomizer Save File */) {
+            tunic = Inventory_DeleteEquipment(play, EQUIP_TYPE_TUNIC);
+            if (tunic != 0) {
+                this->eatenTunic = tunic;
+                this->retreat = true;
+            }
+        }
+
+        switch (EnRr_GetMessage(shield, tunic)) {
+            case RR_MESSAGE_SHIELD:
+                Message_StartTextbox(play, 0x305F, NULL);
+                break;
+            case RR_MESSAGE_TUNIC:
+                Message_StartTextbox(play, 0x3060, NULL);
+                break;
+            case RR_MESSAGE_TUNIC | RR_MESSAGE_SHIELD:
+                Message_StartTextbox(play, 0x3061, NULL);
+                break;
         }
     }
     player->actor.parent = NULL;
-    switch (EnRr_GetMessage(shield, tunic)) {
-        case RR_MESSAGE_SHIELD:
-            Message_StartTextbox(play, 0x305F, NULL);
-            break;
-        case RR_MESSAGE_TUNIC:
-            Message_StartTextbox(play, 0x3060, NULL);
-            break;
-        case RR_MESSAGE_TUNIC | RR_MESSAGE_SHIELD:
-            Message_StartTextbox(play, 0x3061, NULL);
-            break;
-    }
     osSyncPrintf(VT_FGCOL(YELLOW) "%s[%d] : Rr_Catch_Cancel" VT_RST "\n", __FILE__, __LINE__);
     func_8002F6D4(play, &this->actor, 4.0f, this->actor.shape.rot.y, 12.0f, 8);
     if (this->actor.colorFilterTimer == 0) {
@@ -666,50 +669,53 @@ void EnRr_Death(EnRr* this, PlayState* play) {
                 (SQ(4 - i) * (f32)this->frameCount * 0.003f) + 1.0f;
         }
     } else if (this->frameCount >= 95) {
-        Vec3f dropPos;
+        if (GameInteractor_Should(VB_LIKE_LIKE_DROP_COLLECTIBLE, true, this)) {
+            Vec3f dropPos;
 
-        dropPos.x = this->actor.world.pos.x;
-        dropPos.y = this->actor.world.pos.y;
-        dropPos.z = this->actor.world.pos.z;
-        switch (this->eatenShield) {
-            case 1:
-                Item_DropCollectible(play, &dropPos, ITEM00_SHIELD_DEKU);
-                break;
-            case 2:
-                Item_DropCollectible(play, &dropPos, ITEM00_SHIELD_HYLIAN);
-                break;
+            dropPos.x = this->actor.world.pos.x;
+            dropPos.y = this->actor.world.pos.y;
+            dropPos.z = this->actor.world.pos.z;
+            switch (this->eatenShield) {
+                case 1:
+                    Item_DropCollectible(play, &dropPos, ITEM00_SHIELD_DEKU);
+                    break;
+                case 2:
+                    Item_DropCollectible(play, &dropPos, ITEM00_SHIELD_HYLIAN);
+                    break;
+            }
+            switch (this->eatenTunic) {
+                case 2:
+                    Item_DropCollectible(play, &dropPos, ITEM00_TUNIC_GORON);
+                    break;
+                case 3:
+                    Item_DropCollectible(play, &dropPos, ITEM00_TUNIC_ZORA);
+                    break;
+            }
+            // "dropped"
+            osSyncPrintf(VT_FGCOL(GREEN) "「%s」が出た！！" VT_RST "\n", sDropNames[this->dropType]);
+            switch (this->dropType) {
+                case RR_DROP_MAGIC:
+                    Item_DropCollectible(play, &dropPos, ITEM00_MAGIC_SMALL);
+                    break;
+                case RR_DROP_ARROW:
+                    Item_DropCollectible(play, &dropPos, ITEM00_ARROWS_SINGLE);
+                    break;
+                case RR_DROP_FLEXIBLE:
+                    Item_DropCollectible(play, &dropPos, ITEM00_FLEXIBLE);
+                    break;
+                case RR_DROP_RUPEE_PURPLE:
+                    Item_DropCollectible(play, &dropPos, ITEM00_RUPEE_PURPLE);
+                    break;
+                case RR_DROP_RUPEE_RED:
+                    Item_DropCollectible(play, &dropPos, ITEM00_RUPEE_RED);
+                    break;
+                case RR_DROP_RANDOM_RUPEE:
+                default:
+                    Item_DropCollectibleRandom(play, &this->actor, &dropPos, 12 << 4);
+                    break;
+            }
         }
-        switch (this->eatenTunic) {
-            case 2:
-                Item_DropCollectible(play, &dropPos, ITEM00_TUNIC_GORON);
-                break;
-            case 3:
-                Item_DropCollectible(play, &dropPos, ITEM00_TUNIC_ZORA);
-                break;
-        }
-        // "dropped"
-        osSyncPrintf(VT_FGCOL(GREEN) "「%s」が出た！！" VT_RST "\n", sDropNames[this->dropType]);
-        switch (this->dropType) {
-            case RR_DROP_MAGIC:
-                Item_DropCollectible(play, &dropPos, ITEM00_MAGIC_SMALL);
-                break;
-            case RR_DROP_ARROW:
-                Item_DropCollectible(play, &dropPos, ITEM00_ARROWS_SINGLE);
-                break;
-            case RR_DROP_FLEXIBLE:
-                Item_DropCollectible(play, &dropPos, ITEM00_FLEXIBLE);
-                break;
-            case RR_DROP_RUPEE_PURPLE:
-                Item_DropCollectible(play, &dropPos, ITEM00_RUPEE_PURPLE);
-                break;
-            case RR_DROP_RUPEE_RED:
-                Item_DropCollectible(play, &dropPos, ITEM00_RUPEE_RED);
-                break;
-            case RR_DROP_RANDOM_RUPEE:
-            default:
-                Item_DropCollectibleRandom(play, &this->actor, &dropPos, 12 << 4);
-                break;
-        }
+
         Actor_Kill(&this->actor);
     } else if (this->frameCount == 88) {
         Vec3f pos;

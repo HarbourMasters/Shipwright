@@ -1722,6 +1722,9 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Keese and Guay no longer target you and simply ignore you as if you were wearing the "
             "Skull Mask."));
+    AddWidget(path, "Like Like don't Steal Items", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_CHEAT("NoLikeLikeItemSteal"))
+        .Options(CheckboxOptions().Tooltip("Prevents Like Likes from being able to steal your equipments."));
     AddWidget(path, "Disable Haunted Wasteland Sandstorm", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_CHEAT("DisableSandstorm"))
         .Options(CheckboxOptions().Tooltip("Disables sandstorm effect in Haunted Wasteland."));
