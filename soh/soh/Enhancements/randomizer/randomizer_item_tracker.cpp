@@ -2117,8 +2117,7 @@ void RegisterItemTrackerWidgets() {
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
                      .Tooltip("Shows an 'H' or an 'L' to more easily distinguish between Hookshot and Longshot."));
-    SohGui::mSohMenu->AddSearchWidget(
-        { hookshotIdentWidget, "Randomizer", "Item Tracker", "General Settings" });
+    SohGui::mSohMenu->AddSearchWidget({ hookshotIdentWidget, "Randomizer", "Item Tracker", "General Settings" });
 }
 
 static RegisterMenuInitFunc menuInitFunc(RegisterItemTrackerWidgets);

@@ -215,7 +215,6 @@ void DrawModInfo(std::string file) {
 }
 
 void RemoveExtension(std::string& file) {
-    
 }
 
 void DrawMods(bool enabled) {
@@ -291,53 +290,52 @@ void ModMenuWindow::DrawElement() {
     }
     ImGui::EndDisabled();
 
-    ImGui::TextColored(UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow),
+    ImGui::TextColored(
+        UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow),
         "Mods are currently not reloaded at runtime.\nClose and re-open Ship for the changes to take effect.");
 
-    if (UIWidgets::Button("Update",
-                          UIWidgets::ButtonOptions({ .disabled = editing, .disabledTooltip = "Currently editing..." })
-                              .Size(UIWidgets::Sizes::Inline)
-                              .Color(THEME_COLOR))) {
+    if (UIWidgets::Button(
+            "Update", UIWidgets::ButtonOptions({ { .disabled = editing, .disabledTooltip = "Currently editing..." } })
+                          .Size(UIWidgets::Sizes::Inline)
+                          .Color(THEME_COLOR))) {
         UpdateModFiles();
     }
     ImGui::SameLine();
     if (UIWidgets::Button("Edit",
-        UIWidgets::ButtonOptions({ .disabled = editing, .disabledTooltip = "Already editing..." })
-            .Size(UIWidgets::Sizes::Inline)
-            .Color(THEME_COLOR))) {
+                          UIWidgets::ButtonOptions({ { .disabled = editing, .disabledTooltip = "Already editing..." } })
+                              .Size(UIWidgets::Sizes::Inline)
+                              .Color(THEME_COLOR))) {
         editing = true;
     }
     if (editing) {
         ImGui::SameLine();
-        if (UIWidgets::Button("Cancel", UIWidgets::ButtonOptions()
-                                            .Size(UIWidgets::Sizes::Inline))) {
+        if (UIWidgets::Button("Cancel", UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline))) {
             editing = false;
             extChanges.clear();
             UpdateModFiles(true);
         }
         ImGui::SameLine();
-        if (UIWidgets::Button("Apply & Close", UIWidgets::ButtonOptions()
-                .Size(UIWidgets::Sizes::Inline)
-                .Color(THEME_COLOR))) {
-            SohGui::RegisterPopup(
-                "Apply & Close", "Application currently requires a restart. Save the mod info and close SoH?", "Close", "Cancel",
-                [&]() {
-                    // TODO: runtime changes
-                    // GetArchiveManager()->RemoveArchive(file);
-                    for (auto& [op, np] : extChanges) {
-                        GetArchiveManager()->RemoveArchive(op);
-                        std::filesystem::rename(op, np);
-                    }
-                    extChanges.clear();
-                    SetEnabledModsCVarValue();
-                    // TODO: runtime changes
-                    /*
-                    gfx_texture_cache_clear();
-                    SOH::SkeletonPatcher::ClearSkeletons();
-                    */
-                    Ship::Context::GetInstance()->GetConsoleVariables()->Save();
-                    Ship::Context::GetInstance()->GetWindow()->Close();
-                });
+        if (UIWidgets::Button("Apply & Close",
+                              UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
+            SohGui::RegisterPopup("Apply & Close",
+                                  "Application currently requires a restart. Save the mod info and close SoH?", "Close",
+                                  "Cancel", [&]() {
+                                      // TODO: runtime changes
+                                      // GetArchiveManager()->RemoveArchive(file);
+                                      for (auto& [op, np] : extChanges) {
+                                          GetArchiveManager()->RemoveArchive(op);
+                                          std::filesystem::rename(op, np);
+                                      }
+                                      extChanges.clear();
+                                      SetEnabledModsCVarValue();
+                                      // TODO: runtime changes
+                                      /*
+                                      gfx_texture_cache_clear();
+                                      SOH::SkeletonPatcher::ClearSkeletons();
+                                      */
+                                      Ship::Context::GetInstance()->GetConsoleVariables()->Save();
+                                      Ship::Context::GetInstance()->GetWindow()->Close();
+                                  });
         }
     }
     ImGui::BeginDisabled(!editing);
@@ -376,9 +374,7 @@ void ModMenuWindow::InitElement() {
 
 void RegisterModMenuWidgets() {
     enableModsWidget = { .name = "Enable Mods", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
-    enableModsWidget.CVar(CVAR_SETTING("AltAssets"))
-        .Options(UIWidgets::CheckboxOptions()
-                     .Color(THEME_COLOR));
+    enableModsWidget.CVar(CVAR_SETTING("AltAssets")).Options(UIWidgets::CheckboxOptions().Color(THEME_COLOR));
     SohGui::mSohMenu->AddSearchWidget({ enableModsWidget, "Enhancements", "Mod Menu", "Top", "alternat assets" });
 }
 
