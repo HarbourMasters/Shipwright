@@ -22,7 +22,6 @@ std::vector<std::string> enabledModFiles;
 std::vector<std::string> disabledModFiles;
 std::vector<std::string> unsupportedFiles;
 std::map<std::string, std::filesystem::path> filePaths;
-bool prevModsState;
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
@@ -94,8 +93,8 @@ ExtensionType GetExtensionType(std::string extension) {
     return EXT_UNSUPPORTED;
 }
 
-void UpdateModFiles(bool init = false) {
-    if (init) {
+void UpdateModFiles(bool init = false, bool reset = false) {
+    if (init || reset) {
         enabledModFiles.clear();
         enabledModFiles = GetEnabledModsFromCVar();
     }
@@ -131,10 +130,18 @@ void UpdateModFiles(bool init = false) {
             }
             std::vector<std::string> enabledTemp(enabledModFiles);
             for (std::string mod : enabledTemp) {
+                auto archives = GetArchiveManager()->GetArchives();
+                // TODO ensure archives don't get added multiple times. breaks the renaming on close
                 if (filePaths.contains(mod)) {
-                    GetArchiveManager()->AddArchive(filePaths.at(mod).generic_string());
+                    if (init/* && !GetArchiveManager()->HasFile(filePaths.at(mod).lexically_normal().generic_string())*/) {
+                        GetArchiveManager()->AddArchive(filePaths.at(mod).generic_string());
+                    }
                 } else {
                     enabledModFiles.erase(std::find(enabledModFiles.begin(), enabledModFiles.end(), mod));
+                    // if (!init /*&&
+                    // GetArchiveManager()->HasFile(filePaths.at(mod).lexically_normal().generic_string())*/) {
+                    //     GetArchiveManager()->RemoveArchive(filePaths.at(mod).lexically_normal().generic_string());
+                    // }
                     changed = true;
                 }
             }
@@ -288,13 +295,14 @@ void ModMenuWindow::DrawElement() {
         "Mods are currently not reloaded at runtime.\nClose and re-open Ship for the changes to take effect.\n"
         "Mod load order is top to bottom. Mods at the top are loaded first.");
 
-    if (UIWidgets::Button(
-            "Update", UIWidgets::ButtonOptions({ { .disabled = editing, .disabledTooltip = "Currently editing..." } })
-                          .Size(UIWidgets::Sizes::Inline)
-                          .Color(THEME_COLOR))) {
-        UpdateModFiles();
-    }
-    ImGui::SameLine();
+    // if (UIWidgets::Button(
+    //         "Update", UIWidgets::ButtonOptions({ { .disabled = editing, .disabledTooltip = "Currently editing..." }
+    //         })
+    //                       .Size(UIWidgets::Sizes::Inline)
+    //                       .Color(THEME_COLOR))) {
+    //     UpdateModFiles();
+    // }
+    // ImGui::SameLine();
     if (UIWidgets::Button("Edit",
                           UIWidgets::ButtonOptions({ { .disabled = editing, .disabledTooltip = "Already editing..." } })
                               .Size(UIWidgets::Sizes::Inline)
@@ -306,7 +314,7 @@ void ModMenuWindow::DrawElement() {
         if (UIWidgets::Button("Cancel", UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline))) {
             editing = false;
             extChanges.clear();
-            UpdateModFiles(true);
+            UpdateModFiles(false, true);
         }
         ImGui::SameLine();
         if (UIWidgets::Button("Apply & Close",
@@ -369,9 +377,13 @@ void ModMenuWindow::InitElement() {
 void RegisterModMenuWidgets() {
     enableModsWidget = { .name = "Enable Mods", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     enableModsWidget.CVar(CVAR_SETTING("AltAssets"))
-        .Options(UIWidgets::CheckboxOptions()
+        .Options(UIWidgets::CheckboxOptions({ { .disabledTooltip = "Temporarily disabled while editing mods list." } })
                      .Color(THEME_COLOR)
-                     .Tooltip("Toggle mods. For graphics mods, this means toggling between default and mod graphics."));
+                     .Tooltip("Toggle mods. For graphics mods, this means toggling between default and mod graphics."))
+        .PreFunc([&](WidgetInfo& info) {
+            auto options = std::static_pointer_cast<UIWidgets::CheckboxOptions>(info.options);
+            options->disabled = editing;
+        });
     SohGui::mSohMenu->AddSearchWidget({ enableModsWidget, "Enhancements", "Mod Menu", "Top", "alternat assets" });
 }
 
