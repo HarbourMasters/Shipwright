@@ -689,7 +689,7 @@ void GenerateItemPool() {
         }
         if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
             AddItemToMainPool(RG_PROGRESSIVE_BOMBCHU_BAG);
-        } else {
+        } else if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_NONE)) {
             AddItemToMainPool(RG_BOMBCHU_10);
         }
     } else {
