@@ -921,9 +921,30 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BOMBCHU_20:
         case RG_BUY_BOMBCHUS_10:
         case RG_BUY_BOMBCHUS_20:
+            return OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_NONE) ?
+                CAN_OBTAIN :
+                (INV_CONTENT(ITEM_BOMBCHU) != ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE);
         case RG_PROGRESSIVE_BOMBCHU_BAG: // RANDOTODO Do we want bombchu refills to exist seperatly from bombchu bags?
                                          // If so, this needs changing.
-            return CAN_OBTAIN;
+            switch (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Get()) {
+                case RO_BOMBCHU_BAG_NONE:
+                    return CANT_OBTAIN_MISC;
+                case RO_BOMBCHU_BAG_SINGLE:
+                    return INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ?
+                        (infiniteUpgrades != RO_INF_UPGRADES_OFF ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE) :
+                        CAN_OBTAIN;
+                case RO_BOMBCHU_BAG_PROGRESSIVE:
+                    switch (gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel) {
+                        case 0:
+                            return CAN_OBTAIN;
+                        case 1:
+                         return infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+                        case 2:
+                            return infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+                        case 3:
+                            return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+                    }
+            }
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {
                 case ITEM_NONE:
