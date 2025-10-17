@@ -2116,9 +2116,9 @@ void RegisterItemTrackerWidgets() {
     hookshotIdentWidget.CVar(CVAR_SETTING("FreeLook.Enabled"))
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("Shows an 'H' or an 'L' to more easiely distinguish between Hookshot and Longshot."));
+                     .Tooltip("Shows an 'H' or an 'L' to more easily distinguish between Hookshot and Longshot."));
     SohGui::mSohMenu->AddSearchWidget(
-        { hookshotIdentWidget, "Settings", "Controls", "Camera Controls", "longshot icon" });
+        { hookshotIdentWidget, "Randomizer", "Item Tracker", "General Settings" });
 }
 
 static RegisterMenuInitFunc menuInitFunc(RegisterItemTrackerWidgets);

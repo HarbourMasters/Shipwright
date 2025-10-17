@@ -1,12 +1,16 @@
-#include "mod_menu.h"
-#include <ship/utils/StringHelper.h>
-#include <libultraship/classes.h>
-#include "soh/SohGui/SohGui.hpp"
-#include "soh/OTRGlobals.h"
-#include "soh/resource/type/Skeleton.h"
 #include <map>
 #include <ranges>
 #include <vector>
+
+#include <libultraship/classes.h>
+#include <ship/utils/StringHelper.h>
+
+#include "mod_menu.h"
+#include "soh/OTRGlobals.h"
+#include "soh/resource/type/Skeleton.h"
+#include "soh/SohGui/MenuTypes.h"
+#include "soh/SohGui/SohMenu.h"
+#include "soh/SohGui/SohGui.hpp"
 
 typedef enum ExtensionType {
     EXT_ENABLED,
@@ -18,6 +22,13 @@ std::vector<std::string> enabledModFiles;
 std::vector<std::string> disabledModFiles;
 std::vector<std::string> unsupportedFiles;
 std::map<std::string, std::filesystem::path> filePaths;
+bool prevModsState;
+
+namespace SohGui {
+extern std::shared_ptr<SohMenu> mSohMenu;
+}
+
+static WidgetInfo enableModsWidget;
 
 #define CVAR_ENABLED_MODS_NAME CVAR_GENERAL("EnabledMods")
 #define CVAR_ENABLED_MODS_DEFAULT ""
@@ -90,6 +101,7 @@ void UpdateModFiles(bool init = false) {
     }
     disabledModFiles.clear();
     unsupportedFiles.clear();
+    filePaths.clear();
     std::string modsPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
     bool changed = false;
     if (modsPath.length() > 0 && std::filesystem::exists(modsPath)) {
@@ -135,15 +147,9 @@ void UpdateModFiles(bool init = false) {
 
 extern "C" void gfx_texture_cache_clear();
 
-void AfterModChange() {
-    SetEnabledModsCVarValue();
-    // TODO: runtime changes
-    /*
-    gfx_texture_cache_clear();
-    SOH::SkeletonPatcher::ClearSkeletons();
-    */
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+std::map<std::string, std::string> extChanges;
 
+void AfterModChange() {
     // disabled mods are always sorted
     std::sort(disabledModFiles.begin(), disabledModFiles.end(), [](const std::string& a, const std::string& b) {
         return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(),
@@ -154,6 +160,23 @@ void AfterModChange() {
 void EnableMod(std::string file) {
     disabledModFiles.erase(std::find(disabledModFiles.begin(), disabledModFiles.end(), file));
     enabledModFiles.insert(enabledModFiles.begin(), file);
+    std::string newExt;
+    auto& path = filePaths.at(file);
+    if (path.extension() == ".disabled1") {
+        newExt = ".otr";
+    } else {
+        newExt = ".o2r";
+    }
+    std::string oldPath = path.generic_string();
+    path.replace_extension(newExt);
+    std::string newPath = path.generic_string();
+    if (!extChanges.contains(oldPath)) {
+        if (extChanges.contains(newPath)) {
+            extChanges.erase(newPath);
+        } else {
+            extChanges.emplace(oldPath, newPath);
+        }
+    }
 
     // TODO: runtime changes
     // GetArchiveManager()->AddArchive(file);
@@ -163,6 +186,23 @@ void EnableMod(std::string file) {
 void DisableMod(std::string file) {
     enabledModFiles.erase(std::find(enabledModFiles.begin(), enabledModFiles.end(), file));
     disabledModFiles.insert(disabledModFiles.begin(), file);
+    std::string newExt;
+    auto& path = filePaths.at(file);
+    if (path.extension() == ".otr") {
+        newExt = ".disabled1";
+    } else {
+        newExt = ".disabled2";
+    }
+    std::string oldPath = path.generic_string();
+    path.replace_extension(newExt);
+    std::string newPath = path.generic_string();
+    if (!extChanges.contains(oldPath)) {
+        if (extChanges.contains(newPath)) {
+            extChanges.erase(newPath);
+        } else {
+            extChanges.emplace(oldPath, newPath);
+        }
+    }
 
     // TODO: runtime changes
     // GetArchiveManager()->RemoveArchive(file);
@@ -172,6 +212,10 @@ void DisableMod(std::string file) {
 void DrawModInfo(std::string file) {
     ImGui::SameLine();
     ImGui::Text("%s", file.c_str());
+}
+
+void RemoveExtension(std::string& file) {
+    
 }
 
 void DrawMods(bool enabled) {
@@ -185,13 +229,13 @@ void DrawMods(bool enabled) {
     int switchToIndex = -1;
 
     for (int i = 0; i < selectedModFiles.size(); i += 1) {
-        std::string file = selectedModFiles[i];
+        std::string file = selectedModFiles[i].substr(0, selectedModFiles[i].rfind("."));
         if (UIWidgets::StateButton((file + "_left_right").c_str(), enabled ? ICON_FA_ARROW_LEFT : ICON_FA_ARROW_RIGHT,
                                    ImVec2(25, 25), UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
             if (enabled) {
-                DisableMod(file);
+                DisableMod(selectedModFiles[i]);
             } else {
-                EnableMod(file);
+                EnableMod(selectedModFiles[i]);
             }
         }
 
@@ -235,19 +279,68 @@ void DrawMods(bool enabled) {
     }
 }
 
+bool editing = false;
+
 void ModMenuWindow::DrawElement() {
-    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
+    ImGui::BeginDisabled(editing);
+    SohGui::mSohMenu->MenuDrawItem(enableModsWidget, 200, THEME_COLOR);
+    if (editing) {
+        UIWidgets::Tooltip("Disabled while editing mods.");
+    } else {
+        UIWidgets::Tooltip("Toggle mods. For graphics mods, this means toggling between default and mod graphics.");
+    }
+    ImGui::EndDisabled();
 
-    const ImVec4 yellow = ImVec4(1, 1, 0, 1);
+    ImGui::TextColored(UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow),
+        "Mods are currently not reloaded at runtime.\nClose and re-open Ship for the changes to take effect.");
 
-    ImGui::TextColored(
-        yellow, "Mods are currently not reloaded at runtime.\nClose and re-open Ship for the changes to take effect.");
-
-    if (UIWidgets::Button("Update", UIWidgets::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
+    if (UIWidgets::Button("Update",
+                          UIWidgets::ButtonOptions({ .disabled = editing, .disabledTooltip = "Currently editing..." })
+                              .Size(UIWidgets::Sizes::Inline)
+                              .Color(THEME_COLOR))) {
         UpdateModFiles();
     }
-    UIWidgets::Tooltip("Re-check the mods folder for new files");
-
+    ImGui::SameLine();
+    if (UIWidgets::Button("Edit",
+        UIWidgets::ButtonOptions({ .disabled = editing, .disabledTooltip = "Already editing..." })
+            .Size(UIWidgets::Sizes::Inline)
+            .Color(THEME_COLOR))) {
+        editing = true;
+    }
+    if (editing) {
+        ImGui::SameLine();
+        if (UIWidgets::Button("Cancel", UIWidgets::ButtonOptions()
+                                            .Size(UIWidgets::Sizes::Inline))) {
+            editing = false;
+            extChanges.clear();
+            UpdateModFiles(true);
+        }
+        ImGui::SameLine();
+        if (UIWidgets::Button("Apply & Close", UIWidgets::ButtonOptions()
+                .Size(UIWidgets::Sizes::Inline)
+                .Color(THEME_COLOR))) {
+            SohGui::RegisterPopup(
+                "Apply & Close", "Application currently requires a restart. Save the mod info and close SoH?", "Close", "Cancel",
+                [&]() {
+                    // TODO: runtime changes
+                    // GetArchiveManager()->RemoveArchive(file);
+                    for (auto& [op, np] : extChanges) {
+                        GetArchiveManager()->RemoveArchive(op);
+                        std::filesystem::rename(op, np);
+                    }
+                    extChanges.clear();
+                    SetEnabledModsCVarValue();
+                    // TODO: runtime changes
+                    /*
+                    gfx_texture_cache_clear();
+                    SOH::SkeletonPatcher::ClearSkeletons();
+                    */
+                    Ship::Context::GetInstance()->GetConsoleVariables()->Save();
+                    Ship::Context::GetInstance()->GetWindow()->Close();
+                });
+        }
+    }
+    ImGui::BeginDisabled(!editing);
     if (ImGui::BeginTable("tableMods", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Disabled Mods", ImGuiTableColumnFlags_WidthStretch, 200.0f);
         ImGui::TableSetupColumn("Enabled Mods", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -274,10 +367,19 @@ void ModMenuWindow::DrawElement() {
 
         ImGui::EndTable();
     }
-
     ImGui::EndDisabled();
 }
 
 void ModMenuWindow::InitElement() {
     UpdateModFiles(true);
 }
+
+void RegisterModMenuWidgets() {
+    enableModsWidget = { .name = "Enable Mods", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    enableModsWidget.CVar(CVAR_SETTING("AltAssets"))
+        .Options(UIWidgets::CheckboxOptions()
+                     .Color(THEME_COLOR));
+    SohGui::mSohMenu->AddSearchWidget({ enableModsWidget, "Enhancements", "Mod Menu", "Top", "alternat assets" });
+}
+
+static RegisterMenuInitFunc menuInitFunc(RegisterModMenuWidgets);
