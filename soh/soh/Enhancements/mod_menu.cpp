@@ -8,8 +8,16 @@
 #include <ranges>
 #include <vector>
 
+typedef enum ExtensionType {
+    EXT_ENABLED,
+    EXT_DISABLED,
+    EXT_UNSUPPORTED,
+} ExtensionType;
+
 std::vector<std::string> enabledModFiles;
 std::vector<std::string> disabledModFiles;
+std::vector<std::string> unsupportedFiles;
+std::map<std::string, std::filesystem::path> filePaths;
 
 #define CVAR_ENABLED_MODS_NAME CVAR_GENERAL("EnabledMods")
 #define CVAR_ENABLED_MODS_DEFAULT ""
@@ -55,40 +63,67 @@ std::shared_ptr<Ship::ArchiveManager> GetArchiveManager() {
     return Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager();
 }
 
+ExtensionType GetExtensionType(std::string extension) {
+    if (
+#ifdef INCLUDE_MPQ_SUPPORT
+        // .mpq doesn't make sense to support because all tools to make such mods output OTR
+        StringHelper::IEquals(extension, ".otr") /*|| StringHelper::IEquals(extension, ".mpq")*/ ||
+#endif
+        // .zip needs to be excluded because mods are most often distributed in zip archives
+        // and thus could contain .otr/o2r files
+        StringHelper::IEquals(extension, ".o2r") /*|| StringHelper::IEquals(extension, ".zip")*/) {
+        return EXT_ENABLED;
+    } else if (
+#ifdef INCLUDE_MPQ_SUPPORT
+        StringHelper::IEquals(extension, ".disabled1") ||
+#endif
+        StringHelper::IEquals(extension, ".disabled2")) {
+        return EXT_DISABLED;
+    }
+    return EXT_UNSUPPORTED;
+}
+
 void UpdateModFiles(bool init = false) {
     if (init) {
         enabledModFiles.clear();
         enabledModFiles = GetEnabledModsFromCVar();
     }
     disabledModFiles.clear();
+    unsupportedFiles.clear();
     std::string modsPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
     bool changed = false;
     if (modsPath.length() > 0 && std::filesystem::exists(modsPath)) {
+        std::vector<std::filesystem::path> enabledFiles;
         if (std::filesystem::is_directory(modsPath)) {
             for (const std::filesystem::directory_entry& p : std::filesystem::recursive_directory_iterator(
                      modsPath, std::filesystem::directory_options::follow_directory_symlink)) {
-                std::string extension = p.path().extension().string();
-                if (
-#ifdef INCLUDE_MPQ_SUPPORT
-                    StringHelper::IEquals(extension, ".otr") || StringHelper::IEquals(extension, ".mpq") ||
-#endif
-                    StringHelper::IEquals(extension, ".o2r") || StringHelper::IEquals(extension, ".zip")) {
-                    std::string path = p.path().generic_string();
-                    bool shouldBeEnabled =
-                        std::find(enabledModFiles.begin(), enabledModFiles.end(), path) != enabledModFiles.end();
-
-                    if (!shouldBeEnabled) {
-                        disabledModFiles.push_back(path);
-                    }
+                if (p.is_directory()) {
+                    continue;
                 }
-            }
-            for (std::string mod : enabledModFiles) {
-                std::string path = modsPath + "/" + mod;
-                if (std::filesystem::exists(path)) {
-                    GetArchiveManager()->AddArchive(path);
+                std::string filename = p.path().filename().generic_string();
+                std::string extension = p.path().extension().generic_string();
+                ExtensionType extType = GetExtensionType(extension);
+                bool enabled =
+                    std::find(enabledModFiles.begin(), enabledModFiles.end(), filename) != enabledModFiles.end();
+                if (extType == EXT_ENABLED) {
+                    if (!enabled) {
+                        enabledModFiles.push_back(filename);
+                        changed = true;
+                    }
+                } else if (extType == EXT_DISABLED) {
+                    disabledModFiles.push_back(filename);
                 } else {
-                    changed = true;
+                    unsupportedFiles.push_back(p.path().filename().generic_string());
+                }
+                filePaths.emplace(filename, p.path());
+            }
+            std::vector<std::string> enabledTemp(enabledModFiles);
+            for (std::string mod : enabledTemp) {
+                if (filePaths.contains(mod)) {
+                    GetArchiveManager()->AddArchive(filePaths.at(mod).generic_string());
+                } else {
                     enabledModFiles.erase(std::find(enabledModFiles.begin(), enabledModFiles.end(), mod));
+                    changed = true;
                 }
             }
         }
