@@ -22,6 +22,9 @@ std::vector<std::string> enabledModFiles;
 std::vector<std::string> disabledModFiles;
 std::vector<std::string> unsupportedFiles;
 std::map<std::string, std::filesystem::path> filePaths;
+std::map<std::string, std::string> extChanges;
+static int dragSourceIndex = -1;
+static int dragTargetIndex = -1;
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
@@ -29,7 +32,7 @@ extern std::shared_ptr<SohMenu> mSohMenu;
 
 static WidgetInfo enableModsWidget;
 
-#define CVAR_ENABLED_MODS_NAME CVAR_GENERAL("EnabledMods")
+#define CVAR_ENABLED_MODS_NAME CVAR_SETTING("EnabledMods")
 #define CVAR_ENABLED_MODS_DEFAULT ""
 #define CVAR_ENABLED_MODS_VALUE CVarGetString(CVAR_ENABLED_MODS_NAME, CVAR_ENABLED_MODS_DEFAULT)
 
@@ -58,6 +61,42 @@ void SetEnabledModsCVarValue() {
     }
 
     CVarSetString(CVAR_ENABLED_MODS_NAME, s.c_str());
+}
+
+void AfterModChange() {
+    // disabled mods are always sorted
+    std::sort(disabledModFiles.begin(), disabledModFiles.end(), [](const std::string& a, const std::string& b) {
+        return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(),
+                                            [](char c1, char c2) { return std::tolower(c1) < std::tolower(c2); });
+    });
+}
+
+void ModsPostDragAndDrop() {
+    if (dragTargetIndex != -1) {
+        std::string file = enabledModFiles[dragSourceIndex];
+        enabledModFiles.erase(enabledModFiles.begin() + dragSourceIndex);
+        enabledModFiles.insert(enabledModFiles.begin() + dragTargetIndex, file);
+        dragTargetIndex = dragSourceIndex = -1;
+        AfterModChange();
+    }
+}
+
+void ModsHandleDragAndDrop(std::vector<std::string>& objectList, int targetIndex, const std::string& itemName,
+                           ImGuiDragDropFlags flags = ImGuiDragDropFlags_SourceAllowNullID) {
+    if (ImGui::BeginDragDropSource(flags)) {
+        ImGui::SetDragDropPayload("DragMove", &targetIndex, sizeof(uint32_t));
+        ImGui::Text("Move %s", itemName.c_str());
+        ImGui::EndDragDropSource();
+    }
+
+    if (ImGui::BeginDragDropTarget()) {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragMove")) {
+            IM_ASSERT(payload->DataSize == sizeof(uint32_t));
+            dragSourceIndex = *(const int*)payload->Data;
+            dragTargetIndex = targetIndex;
+        }
+        ImGui::EndDragDropTarget();
+    }
 }
 
 std::vector<std::string> GetEnabledModsFromCVar() {
@@ -111,7 +150,8 @@ void UpdateModFiles(bool init = false, bool reset = false) {
                 if (p.is_directory()) {
                     continue;
                 }
-                std::string filename = p.path().filename().generic_string();
+                std::string filename =
+                    p.path().filename().generic_string().substr(0, p.path().filename().generic_string().rfind("."));
                 std::string extension = p.path().extension().generic_string();
                 ExtensionType extType = GetExtensionType(extension);
                 bool enabled =
@@ -128,21 +168,26 @@ void UpdateModFiles(bool init = false, bool reset = false) {
                 }
                 filePaths.emplace(filename, p.path());
             }
-            std::vector<std::string> enabledTemp(enabledModFiles);
-            for (std::string mod : enabledTemp) {
-                auto archives = GetArchiveManager()->GetArchives();
-                // TODO ensure archives don't get added multiple times. breaks the renaming on close
-                if (filePaths.contains(mod)) {
-                    if (init/* && !GetArchiveManager()->HasFile(filePaths.at(mod).lexically_normal().generic_string())*/) {
+            if (init) {
+                std::vector<std::string> enabledTemp(enabledModFiles);
+                for (std::string mod : enabledTemp) {
+                    // auto archives = GetArchiveManager()->GetArchives();
+                    //  TODO ensure archives don't get added multiple times. breaks the renaming on close
+                    if (filePaths.contains(mod)) {
+                        // if (init/* &&
+                        // !GetArchiveManager()->HasFile(filePaths.at(mod).lexically_normal().generic_string())*/) {
                         GetArchiveManager()->AddArchive(filePaths.at(mod).generic_string());
+                        //}
+                    } else {
+                        enabledModFiles.erase(std::find(enabledModFiles.begin(), enabledModFiles.end(), mod));
+                        //    // if (!init /*&&
+                        //    // GetArchiveManager()->HasFile(filePaths.at(mod).lexically_normal().generic_string())*/)
+                        //    {
+                        //    //
+                        //    GetArchiveManager()->RemoveArchive(filePaths.at(mod).lexically_normal().generic_string());
+                        //    // }
+                        changed = true;
                     }
-                } else {
-                    enabledModFiles.erase(std::find(enabledModFiles.begin(), enabledModFiles.end(), mod));
-                    // if (!init /*&&
-                    // GetArchiveManager()->HasFile(filePaths.at(mod).lexically_normal().generic_string())*/) {
-                    //     GetArchiveManager()->RemoveArchive(filePaths.at(mod).lexically_normal().generic_string());
-                    // }
-                    changed = true;
                 }
             }
         }
@@ -153,16 +198,6 @@ void UpdateModFiles(bool init = false, bool reset = false) {
 }
 
 extern "C" void gfx_texture_cache_clear();
-
-std::map<std::string, std::string> extChanges;
-
-void AfterModChange() {
-    // disabled mods are always sorted
-    std::sort(disabledModFiles.begin(), disabledModFiles.end(), [](const std::string& a, const std::string& b) {
-        return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(),
-                                            [](char c1, char c2) { return std::tolower(c1) < std::tolower(c2); });
-    });
-}
 
 void EnableMod(std::string file) {
     disabledModFiles.erase(std::find(disabledModFiles.begin(), disabledModFiles.end(), file));
@@ -233,15 +268,19 @@ void DrawMods(bool enabled) {
     bool madeAnyChange = false;
     int switchFromIndex = -1;
     int switchToIndex = -1;
+    uint32_t index = 0;
 
     for (int i = 0; i < selectedModFiles.size(); i += 1) {
-        std::string file = selectedModFiles[i].substr(0, selectedModFiles[i].rfind("."));
-        if (UIWidgets::StateButton((file + "_left_right").c_str(), enabled ? ICON_FA_ARROW_LEFT : ICON_FA_ARROW_RIGHT,
+        std::string file = selectedModFiles[i];
+        if (enabled) {
+            ImGui::BeginGroup();
+        }
+        if (UIWidgets::StateButton((file + "_left_right").c_str(), enabled ? ICON_FA_ARROW_RIGHT : ICON_FA_ARROW_LEFT,
                                    ImVec2(25, 25), UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
             if (enabled) {
-                DisableMod(selectedModFiles[i]);
+                DisableMod(file);
             } else {
-                EnableMod(selectedModFiles[i]);
+                EnableMod(file);
             }
         }
 
@@ -276,7 +315,15 @@ void DrawMods(bool enabled) {
             }
         }
 
-        DrawModInfo(file);
+        DrawModInfo(filePaths.at(file).filename().generic_string());
+        if (enabled) {
+            ImGui::EndGroup();
+            ModsHandleDragAndDrop(selectedModFiles, i, file);
+        }
+    }
+
+    if (enabled) {
+        ModsPostDragAndDrop();
     }
 
     if (madeAnyChange) {
@@ -292,8 +339,9 @@ void ModMenuWindow::DrawElement() {
 
     ImGui::TextColored(
         UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow),
-        "Mods are currently not reloaded at runtime.\nClose and re-open Ship for the changes to take effect.\n"
-        "Mod load order is top to bottom. Mods at the top are loaded first.");
+        "Mods are currently not reloaded at runtime. Close and re-open Ship for the changes to take effect.\n"
+        "Drag ordering for the enabled list is available.\nMod load order is top to bottom. Mods at the top are loaded "
+        "first.");
 
     // if (UIWidgets::Button(
     //         "Update", UIWidgets::ButtonOptions({ { .disabled = editing, .disabledTooltip = "Currently editing..." }
@@ -342,8 +390,8 @@ void ModMenuWindow::DrawElement() {
     }
     ImGui::BeginDisabled(!editing);
     if (ImGui::BeginTable("tableMods", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("Disabled Mods", ImGuiTableColumnFlags_WidthStretch, 200.0f);
         ImGui::TableSetupColumn("Enabled Mods", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+        ImGui::TableSetupColumn("Disabled Mods", ImGuiTableColumnFlags_WidthStretch, 200.0f);
         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
         ImGui::TableHeadersRow();
         ImGui::PopItemFlag();
@@ -351,16 +399,16 @@ void ModMenuWindow::DrawElement() {
 
         ImGui::TableNextColumn();
 
-        if (ImGui::BeginChild("Disabled Mods", ImVec2(0, -8))) {
-            DrawMods(false);
+        if (ImGui::BeginChild("Enabled Mods", ImVec2(0, -8))) {
+            DrawMods(true);
 
             ImGui::EndChild();
         }
 
         ImGui::TableNextColumn();
 
-        if (ImGui::BeginChild("Enabled Mods", ImVec2(0, -8))) {
-            DrawMods(true);
+        if (ImGui::BeginChild("Disabled Mods", ImVec2(0, -8))) {
+            DrawMods(false);
 
             ImGui::EndChild();
         }
