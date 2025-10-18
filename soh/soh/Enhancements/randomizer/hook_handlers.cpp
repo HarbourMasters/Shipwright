@@ -2068,8 +2068,8 @@ void RandomizerOnActorInitHandler(void* actorRef) {
             enGe1->actionFunc = (EnGe1ActionFunc)EnGe1_SetNormalText;
         } else if (ge1Type == GE1_TYPE_GATE_OPERATOR && enGe1->actor.world.pos.x != -1358.0f) {
             // When spawning the gate operator, also spawn an extra gate operator on the wasteland side
-            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0, static_cast<s16>(0x95B0), 0,
-                        0x0300 | GE1_TYPE_GATE_OPERATOR, true);
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0,
+                        static_cast<s16>(0x95B0), 0, 0x0300 | GE1_TYPE_GATE_OPERATOR, true);
         }
     }
 

@@ -1168,7 +1168,8 @@ ImVec4 GetRandomValue() {
 }
 
 Color_RGBA8 RGBA8FromVec(ImVec4 vec) {
-    Color_RGBA8 color = { static_cast<u8>(vec.x * 255), static_cast<u8>(vec.y * 255), static_cast<u8>(vec.z * 255), static_cast<u8>(vec.w * 255) };
+    Color_RGBA8 color = { static_cast<u8>(vec.x * 255), static_cast<u8>(vec.y * 255), static_cast<u8>(vec.z * 255),
+                          static_cast<u8>(vec.w * 255) };
     return color;
 }
 

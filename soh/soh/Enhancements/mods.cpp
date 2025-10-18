@@ -631,35 +631,45 @@ void RegisterBossDefeatTimestamps() {
         Actor* actor = static_cast<Actor*>(refActor);
         switch (actor->id) {
             case ACTOR_BOSS_DODONGO:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] =
+                    static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_FD2:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] =
+                    static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_GANON:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] =
+                    static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_GANON2:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] =
+                    static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 gSaveContext.ship.stats.gameComplete = true;
                 break;
             case ACTOR_BOSS_GANONDROF:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] =
+                    static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_GOMA:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] =
+                    static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_MO:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] =
+                    static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_SST:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] =
+                    static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_TW:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] =
+                    static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_VA:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] =
+                    static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
         }
     });

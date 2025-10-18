@@ -205,8 +205,8 @@ void MessageDebug_StartTextBox(const char* tableId, uint16_t textId, uint8_t lan
         constexpr size_t maxBufferSize = sizeof(font->msgBuf);
         const CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(tableId, textId);
         font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
-        font->msgLength =
-            static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetForLanguage(language), maxBufferSize));
+        font->msgLength = static_cast<u32>(
+            SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetForLanguage(language), maxBufferSize));
         msgCtx->msgLength = static_cast<int32_t>(font->msgLength);
     }
     msgCtx->textBoxProperties = font->charTexBuf[0];

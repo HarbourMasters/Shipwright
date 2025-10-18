@@ -696,48 +696,30 @@ void SaveManager::InitFileDebug() {
 
     gSaveContext.deaths = 0;
     if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
-        const static std::array<u8, 8> sPlayerName = {
-            static_cast<u8>(0x15),
-            static_cast<u8>(0x12),
-            static_cast<u8>(0x17),
-            static_cast<u8>(0x14),
-            static_cast<u8>(0x3E),
-            static_cast<u8>(0x3E),
-            static_cast<u8>(0x3E),
-            static_cast<u8>(0x3E)
-        };
+        const static std::array<u8, 8> sPlayerName = { static_cast<u8>(0x15), static_cast<u8>(0x12),
+                                                       static_cast<u8>(0x17), static_cast<u8>(0x14),
+                                                       static_cast<u8>(0x3E), static_cast<u8>(0x3E),
+                                                       static_cast<u8>(0x3E), static_cast<u8>(0x3E) };
 
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
     } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
-        const static std::array<u8, 8> sPlayerName = {
-            static_cast<u8>(0x81),
-            static_cast<u8>(0x87),
-            static_cast<u8>(0x61),
-            static_cast<u8>(0xDF),
-            static_cast<u8>(0xDF),
-            static_cast<u8>(0xDF),
-            static_cast<u8>(0xDF),
-            static_cast<u8>(0xDF)
-        };
+        const static std::array<u8, 8> sPlayerName = { static_cast<u8>(0x81), static_cast<u8>(0x87),
+                                                       static_cast<u8>(0x61), static_cast<u8>(0xDF),
+                                                       static_cast<u8>(0xDF), static_cast<u8>(0xDF),
+                                                       static_cast<u8>(0xDF), static_cast<u8>(0xDF) };
 
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_NTSC_JPN;
     } else { // GAME_REGION_NTSC
-        const static std::array<u8, 8> sPlayerName = {
-            static_cast<u8>(0xB6),
-            static_cast<u8>(0xB3),
-            static_cast<u8>(0xB8),
-            static_cast<u8>(0xB5),
-            static_cast<u8>(0xDF),
-            static_cast<u8>(0xDF),
-            static_cast<u8>(0xDF),
-            static_cast<u8>(0xDF)
-        };
+        const static std::array<u8, 8> sPlayerName = { static_cast<u8>(0xB6), static_cast<u8>(0xB3),
+                                                       static_cast<u8>(0xB8), static_cast<u8>(0xB5),
+                                                       static_cast<u8>(0xDF), static_cast<u8>(0xDF),
+                                                       static_cast<u8>(0xDF), static_cast<u8>(0xDF) };
 
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
@@ -847,48 +829,30 @@ void SaveManager::InitFileMaxed() {
 
     gSaveContext.deaths = 0;
     if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
-        const static std::array<u8, 8> sPlayerName = {
-            static_cast<u8>(0x15),
-            static_cast<u8>(0x12),
-            static_cast<u8>(0x17),
-            static_cast<u8>(0x14),
-            static_cast<u8>(0x3E),
-            static_cast<u8>(0x3E),
-            static_cast<u8>(0x3E),
-            static_cast<u8>(0x3E)
-        };
+        const static std::array<u8, 8> sPlayerName = { static_cast<u8>(0x15), static_cast<u8>(0x12),
+                                                       static_cast<u8>(0x17), static_cast<u8>(0x14),
+                                                       static_cast<u8>(0x3E), static_cast<u8>(0x3E),
+                                                       static_cast<u8>(0x3E), static_cast<u8>(0x3E) };
 
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
     } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
-        const static std::array<u8, 8> sPlayerName = {
-            static_cast<u8>(0x81),
-            static_cast<u8>(0x87),
-            static_cast<u8>(0x61),
-            static_cast<u8>(0xDF),
-            static_cast<u8>(0xDF),
-            static_cast<u8>(0xDF),
-            static_cast<u8>(0xDF),
-            static_cast<u8>(0xDF)
-        };
+        const static std::array<u8, 8> sPlayerName = { static_cast<u8>(0x81), static_cast<u8>(0x87),
+                                                       static_cast<u8>(0x61), static_cast<u8>(0xDF),
+                                                       static_cast<u8>(0xDF), static_cast<u8>(0xDF),
+                                                       static_cast<u8>(0xDF), static_cast<u8>(0xDF) };
 
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_NTSC_JPN;
     } else { // GAME_REGION_NTSC
-        const static std::array<u8, 8> sPlayerName = {
-            static_cast<u8>(0xB6),
-            static_cast<u8>(0xB3),
-            static_cast<u8>(0xB8),
-            static_cast<u8>(0xB5),
-            static_cast<u8>(0xDF),
-            static_cast<u8>(0xDF),
-            static_cast<u8>(0xDF),
-            static_cast<u8>(0xDF)
-        };
+        const static std::array<u8, 8> sPlayerName = { static_cast<u8>(0xB6), static_cast<u8>(0xB3),
+                                                       static_cast<u8>(0xB8), static_cast<u8>(0xB5),
+                                                       static_cast<u8>(0xDF), static_cast<u8>(0xDF),
+                                                       static_cast<u8>(0xDF), static_cast<u8>(0xDF) };
 
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];

@@ -109,7 +109,8 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gEffIceFragment3DL);
     }
 
-    Environment_FillScreen(titleContext->state.gfxCtx, 0, 0, 0, static_cast<u8>(titleContext->coverAlpha), FILL_SCREEN_XLU);
+    Environment_FillScreen(titleContext->state.gfxCtx, 0, 0, 0, static_cast<u8>(titleContext->coverAlpha),
+                           FILL_SCREEN_XLU);
 
     sTitleRotY += static_cast<s16>(300 * CVarGetFloat(CVAR_COSMETIC("N64Logo.SpinSpeed"), 1.0f));
 

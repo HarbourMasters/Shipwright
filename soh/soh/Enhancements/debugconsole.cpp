@@ -755,7 +755,8 @@ static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::ve
 
     try {
         dynamic_cast<ParameterizedGameInteractionEffect*>(effect)->parameters[0] =
-            static_cast<int32_t>(Ship::Math::clamp(static_cast<float>(std::stoi(args[1], nullptr, 10)), GI_GRAVITY_LEVEL_LIGHT, GI_GRAVITY_LEVEL_HEAVY));
+            static_cast<int32_t>(Ship::Math::clamp(static_cast<float>(std::stoi(args[1], nullptr, 10)),
+                                                   GI_GRAVITY_LEVEL_LIGHT, GI_GRAVITY_LEVEL_HEAVY));
     } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Gravity value must be a number.");
         return 1;

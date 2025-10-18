@@ -136,6 +136,10 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
 }
 
+#ifdef _MSC_VER
+#define strdup _strdup
+#endif
+
 bool SoH_HandleConfigDrop(char* filePath);
 
 OTRGlobals* OTRGlobals::Instance;
@@ -446,7 +450,7 @@ void OTRGlobals::Initialize() {
     cameraStrings = (char**)malloc(sizeof(constCameraStrings));
     for (int32_t i = 0; i < sizeof(constCameraStrings) / sizeof(char*); i++) {
         // OTRTODO: never deallocated...
-        auto dup = _strdup(constCameraStrings[i]);
+        auto dup = strdup(constCameraStrings[i]);
         cameraStrings[i] = dup;
     }
 
@@ -1689,7 +1693,8 @@ ImFont* OTRGlobals::CreateFontWithSize(float size, std::string fontPath) {
             Ship::Context::GetInstance()->GetResourceManager()->LoadResource(fontPath, false, initData));
         ImFontConfig fontConf;
         fontConf.FontDataOwnedByAtlas = false;
-        font = mImGuiIo->Fonts->AddFontFromMemoryTTF(fontData->Data, static_cast<int>(fontData->DataSize), size, &fontConf);
+        font = mImGuiIo->Fonts->AddFontFromMemoryTTF(fontData->Data, static_cast<int>(fontData->DataSize), size,
+                                                     &fontConf);
     }
     // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
     float iconFontSize = size * 2.0f / 3.0f;
@@ -2727,15 +2732,15 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
     switch (gSaveContext.language) {
         case LANGUAGE_FRA:
-            return msgCtx->msgLength = font->msgLength =
-                       static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetFrench(MF_RAW), maxBufferSize));
+            return msgCtx->msgLength = font->msgLength = static_cast<u32>(
+                       SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetFrench(MF_RAW), maxBufferSize));
         case LANGUAGE_GER:
-            return msgCtx->msgLength = font->msgLength =
-                       static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetGerman(MF_RAW), maxBufferSize));
+            return msgCtx->msgLength = font->msgLength = static_cast<u32>(
+                       SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetGerman(MF_RAW), maxBufferSize));
         case LANGUAGE_ENG:
         default:
-            return msgCtx->msgLength = font->msgLength =
-                       static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetEnglish(MF_RAW), maxBufferSize));
+            return msgCtx->msgLength = font->msgLength = static_cast<u32>(
+                       SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetEnglish(MF_RAW), maxBufferSize));
     }
     return false;
 }

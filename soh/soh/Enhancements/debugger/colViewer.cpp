@@ -543,7 +543,9 @@ void DrawColCheckList(std::vector<Gfx>& dl, Collider** objects, int32_t count) {
 
                 Mtx m;
                 MtxF mt;
-                SkinMatrix_SetTranslate(&mt, static_cast<f32>(cyl->dim.pos.x), static_cast<f32>(cyl->dim.pos.y + cyl->dim.yShift), static_cast<f32>(cyl->dim.pos.z));
+                SkinMatrix_SetTranslate(&mt, static_cast<f32>(cyl->dim.pos.x),
+                                        static_cast<f32>(cyl->dim.pos.y + cyl->dim.yShift),
+                                        static_cast<f32>(cyl->dim.pos.z));
                 MtxF ms;
                 int32_t radius = cyl->dim.radius == 0 ? 1 : cyl->dim.radius;
                 SkinMatrix_SetScale(&ms, radius / 128.0f, cyl->dim.height / 128.0f, radius / 128.0f);
@@ -621,13 +623,19 @@ void DrawWaterbox(std::vector<Gfx>& dl, WaterBox* water, float water_max_depth =
     }
 
     Vec3f vtx[] = {
-        { static_cast<f32>(water->xMin), static_cast<f32>(water->ySurface), static_cast<f32>(water->zMin + water->zLength) },
-        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water->ySurface), static_cast<f32>(water->zMin + water->zLength) },
-        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water->ySurface), static_cast<f32>(water->zMin) },
+        { static_cast<f32>(water->xMin), static_cast<f32>(water->ySurface),
+          static_cast<f32>(water->zMin + water->zLength) },
+        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water->ySurface),
+          static_cast<f32>(water->zMin + water->zLength) },
+        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water->ySurface),
+          static_cast<f32>(water->zMin) },
         { static_cast<f32>(water->xMin), static_cast<f32>(water->ySurface), static_cast<f32>(water->zMin) },
-        { static_cast<f32>(water->xMin), static_cast<f32>(water_max_depth), static_cast<f32>(water->zMin + water->zLength) },
-        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water_max_depth), static_cast<f32>(water->zMin + water->zLength) },
-        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water_max_depth), static_cast<f32>(water->zMin) },
+        { static_cast<f32>(water->xMin), static_cast<f32>(water_max_depth),
+          static_cast<f32>(water->zMin + water->zLength) },
+        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water_max_depth),
+          static_cast<f32>(water->zMin + water->zLength) },
+        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water_max_depth),
+          static_cast<f32>(water->zMin) },
         { static_cast<f32>(water->xMin), static_cast<f32>(water_max_depth), static_cast<f32>(water->zMin) },
     };
     DrawQuad(dl, vtx[0], vtx[1], vtx[2], vtx[3]);

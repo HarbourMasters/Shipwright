@@ -246,8 +246,8 @@ bool Scene_CommandTimeSettings(PlayState* play, SOH::ISceneCommand* cmd) {
     SOH::SetTimeSettings* cmdTime = (SOH::SetTimeSettings*)cmd;
 
     if ((cmdTime->settings.hour != 0xFF) && (cmdTime->settings.minute != 0xFF)) {
-        gSaveContext.skyboxTime = gSaveContext.dayTime =
-            static_cast<u16>(((cmdTime->settings.hour + (cmdTime->settings.minute / 60.0f)) * 60.0f) / ((f32)(24 * 60) / 0x10000));
+        gSaveContext.skyboxTime = gSaveContext.dayTime = static_cast<u16>(
+            ((cmdTime->settings.hour + (cmdTime->settings.minute / 60.0f)) * 60.0f) / ((f32)(24 * 60) / 0x10000));
     }
 
     if (cmdTime->settings.timeIncrement != 0xFF) {

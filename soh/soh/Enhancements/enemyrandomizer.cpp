@@ -173,24 +173,24 @@ static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_FIREFLY, 1 },     // Fire Keese
     // { ACTOR_EN_FD, 0 },          // Flare Dancer (possible cause of crashes because of spawning flame actors on
     // sloped ground)
-    { ACTOR_EN_YUKABYUN, 0 },      // Flying Floor Tile
-    { ACTOR_EN_FLOORMAS, 0 },      // Floormaster
-    { ACTOR_EN_PEEHAT, -1 },       // Flying Peahat (big grounded, doesn't spawn larva)
-    { ACTOR_EN_TUBO_TRAP, 0 },     // Flying pot
-    { ACTOR_EN_FZ, 0 },            // Freezard
-    { ACTOR_EN_RD, 32766 },        // Gibdo (standing)
-    { ACTOR_EN_GOMA, 7 },          // Gohma Larva (Non-Gohma rooms)
-    { ACTOR_EN_CROW, 0 },          // Guay
-    { ACTOR_EN_FIREFLY, 4 },       // Ice Keese
+    { ACTOR_EN_YUKABYUN, 0 },                        // Flying Floor Tile
+    { ACTOR_EN_FLOORMAS, 0 },                        // Floormaster
+    { ACTOR_EN_PEEHAT, -1 },                         // Flying Peahat (big grounded, doesn't spawn larva)
+    { ACTOR_EN_TUBO_TRAP, 0 },                       // Flying pot
+    { ACTOR_EN_FZ, 0 },                              // Freezard
+    { ACTOR_EN_RD, 32766 },                          // Gibdo (standing)
+    { ACTOR_EN_GOMA, 7 },                            // Gohma Larva (Non-Gohma rooms)
+    { ACTOR_EN_CROW, 0 },                            // Guay
+    { ACTOR_EN_FIREFLY, 4 },                         // Ice Keese
     { ACTOR_EN_FIREFLY, static_cast<s16>(0x8001) },  // Fire Keese (invisible)
     { ACTOR_EN_FLOORMAS, static_cast<s16>(0x8000) }, // Floormaster (invisible)
     { ACTOR_EN_FIREFLY, static_cast<s16>(0x8004) },  // Ice Keese (invisible)
     { ACTOR_EN_FIREFLY, static_cast<s16>(0x8002) },  // Keese (invisible)
-    { ACTOR_EN_RD, 3 },            // Redead (invisible)
-    { ACTOR_EN_ST, 2 },            // Skulltula (invisible)
-    { ACTOR_EN_TEST, 0 },          // Stalfos (invisible)
-    { ACTOR_EN_FIREFLY, 2 },       // Regular Keese
-    { ACTOR_EN_DEKUBABA, 1 },      // Deku Baba (large)
+    { ACTOR_EN_RD, 3 },                              // Redead (invisible)
+    { ACTOR_EN_ST, 2 },                              // Skulltula (invisible)
+    { ACTOR_EN_TEST, 0 },                            // Stalfos (invisible)
+    { ACTOR_EN_FIREFLY, 2 },                         // Regular Keese
+    { ACTOR_EN_DEKUBABA, 1 },                        // Deku Baba (large)
     // Doesn't work (reliant on surface, without a spawner it kills itself too quickly)
     // { ACTOR_EN_REEBA, 0 },       // Leever
     { ACTOR_EN_RR, 0 },         // Like-Like

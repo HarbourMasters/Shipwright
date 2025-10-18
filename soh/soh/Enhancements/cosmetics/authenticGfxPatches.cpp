@@ -171,7 +171,8 @@ void PatchDekuStickTextureOverflow() {
             if (i == 0) {
                 ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction), gsSPNoOp());
             } else {
-                ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction), dekuStickTexWithSizeFixGfx[i - 1]);
+                ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction),
+                                           dekuStickTexWithSizeFixGfx[i - 1]);
             }
         }
     }
