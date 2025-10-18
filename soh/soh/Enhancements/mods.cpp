@@ -326,7 +326,7 @@ void UpdateMirrorModeState(int32_t sceneNum) {
                         (sceneNum == SCENE_GANON_BOSS);
 
     if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
-        uint32_t seed =
+        uint64_t seed =
             sceneNum + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
         Random_Init(seed);
     }
@@ -631,35 +631,35 @@ void RegisterBossDefeatTimestamps() {
         Actor* actor = static_cast<Actor*>(refActor);
         switch (actor->id) {
             case ACTOR_BOSS_DODONGO:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_FD2:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_GANON:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_GANON2:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 gSaveContext.ship.stats.gameComplete = true;
                 break;
             case ACTOR_BOSS_GANONDROF:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_GOMA:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_MO:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_SST:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_TW:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
             case ACTOR_BOSS_VA:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
+                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                 break;
         }
     });
@@ -709,21 +709,18 @@ void RegisterRandomizedEnemySizes() {
             return;
         }
 
-        float randomNumber;
         float randomScale;
 
         uint8_t bigActor = rand() % 2;
 
         // Big actor
         if (bigActor && !smallOnlyEnemy) {
-            randomNumber = rand() % 200;
             // Between 100% and 300% size.
-            randomScale = 1.0f + (randomNumber / 100);
+            randomScale = 1.0f + ((rand() % 200) / 100);
         } else {
             // Small actor
-            randomNumber = rand() % 90;
             // Between 10% and 100% size.
-            randomScale = 0.1f + (randomNumber / 100);
+            randomScale = 0.1f + ((rand() % 90) / 100);
         }
 
         Actor_SetScale(actor, actor->scale.z * randomScale);
@@ -734,7 +731,7 @@ void RegisterRandomizedEnemySizes() {
             float scaledHealth = actor->colChkInfo.health * (randomScale * healthScalingFactor);
 
             // Ensure the scaled health doesn't go below zero
-            actor->colChkInfo.health = fmax(scaledHealth, 1.0f);
+            actor->colChkInfo.health = static_cast<u8>(fmax(scaledHealth, 1.0f));
         } else {
             return;
         }

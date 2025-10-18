@@ -182,10 +182,10 @@ static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_GOMA, 7 },          // Gohma Larva (Non-Gohma rooms)
     { ACTOR_EN_CROW, 0 },          // Guay
     { ACTOR_EN_FIREFLY, 4 },       // Ice Keese
-    { ACTOR_EN_FIREFLY, 0x8001 },  // Fire Keese (invisible)
-    { ACTOR_EN_FLOORMAS, 0x8000 }, // Floormaster (invisible)
-    { ACTOR_EN_FIREFLY, 0x8004 },  // Ice Keese (invisible)
-    { ACTOR_EN_FIREFLY, 0x8002 },  // Keese (invisible)
+    { ACTOR_EN_FIREFLY, static_cast<s16>(0x8001) },  // Fire Keese (invisible)
+    { ACTOR_EN_FLOORMAS, static_cast<s16>(0x8000) }, // Floormaster (invisible)
+    { ACTOR_EN_FIREFLY, static_cast<s16>(0x8004) },  // Ice Keese (invisible)
+    { ACTOR_EN_FIREFLY, static_cast<s16>(0x8002) },  // Keese (invisible)
     { ACTOR_EN_RD, 3 },            // Redead (invisible)
     { ACTOR_EN_ST, 2 },            // Skulltula (invisible)
     { ACTOR_EN_TEST, 0 },          // Stalfos (invisible)
@@ -414,13 +414,13 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play) {
         filteredEnemyList = selectedEnemyList;
     }
     if (CVAR_ENEMY_RANDOMIZER_VALUE == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
-        uint32_t finalSeed =
+        uint64_t finalSeed =
             seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
         Random_Init(finalSeed);
-        uint32_t randomNumber = Random(0, filteredEnemyList.size());
+        uint32_t randomNumber = Random(0, static_cast<u32>(filteredEnemyList.size()));
         return filteredEnemyList[randomNumber];
     } else {
-        uint32_t randomSelectedEnemy = Random(0, filteredEnemyList.size());
+        uint32_t randomSelectedEnemy = Random(0, static_cast<u32>(filteredEnemyList.size()));
         return filteredEnemyList[randomSelectedEnemy];
     }
 }

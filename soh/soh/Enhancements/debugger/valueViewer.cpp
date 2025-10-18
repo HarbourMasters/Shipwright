@@ -79,8 +79,8 @@ extern "C" void ValueViewer_Draw(GfxPrint* printer) {
         ValueTableElement& element = valueTable[i];
         if (!element.isActive || !element.isPrinted || (gPlayState == NULL && element.requiresPlayState))
             continue;
-        GfxPrint_SetColor(printer, element.color.x * 255, element.color.y * 255, element.color.z * 255,
-                          element.color.w * 255);
+        GfxPrint_SetColor(printer, static_cast<u32>(element.color.x * 255), static_cast<u32>(element.color.y * 255), static_cast<u32>(element.color.z * 255),
+                          static_cast<u32>(element.color.w * 255));
         GfxPrint_SetPos(printer, element.x, element.y);
         switch (element.type) {
             case TYPE_S8:

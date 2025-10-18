@@ -150,10 +150,8 @@ bool Scene_CommandObjectList(PlayState* play, SOH::ISceneCommand* cmd) {
     s32 i;
     s32 j;
     s32 k;
-    ObjectStatus* status2;
     // s16* objectEntry = SEGMENTED_TO_VIRTUAL(cmd->objectList.segment);
     s16* objectEntry = (s16*)cmdObj->GetRawPointer();
-    void* nextPtr;
 
     k = 0;
     i = play->objectCtx.unk_09;
@@ -249,7 +247,7 @@ bool Scene_CommandTimeSettings(PlayState* play, SOH::ISceneCommand* cmd) {
 
     if ((cmdTime->settings.hour != 0xFF) && (cmdTime->settings.minute != 0xFF)) {
         gSaveContext.skyboxTime = gSaveContext.dayTime =
-            ((cmdTime->settings.hour + (cmdTime->settings.minute / 60.0f)) * 60.0f) / ((f32)(24 * 60) / 0x10000);
+            static_cast<u16>(((cmdTime->settings.hour + (cmdTime->settings.minute / 60.0f)) * 60.0f) / ((f32)(24 * 60) / 0x10000));
     }
 
     if (cmdTime->settings.timeIncrement != 0xFF) {
@@ -502,7 +500,7 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
         if (roomNum >= play->numRooms)
             return 0; // UH OH
 
-        size = play->roomList[roomNum].vromEnd - play->roomList[roomNum].vromStart;
+        size = static_cast<u32>(play->roomList[roomNum].vromEnd - play->roomList[roomNum].vromStart);
         roomCtx->unk_34 =
             (void*)ALIGN16((uintptr_t)roomCtx->bufPtrs[roomCtx->unk_30] - ((size + 8) * roomCtx->unk_30 + 7));
 

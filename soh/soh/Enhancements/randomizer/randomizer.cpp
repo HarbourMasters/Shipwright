@@ -407,7 +407,7 @@ bool Rando_HandleSpoilerDrop(char* filePath) {
             CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 1);
             return true;
         }
-    } catch (std::exception& e) {}
+    } catch ([[maybe_unused]] std::exception& e) {}
     return false;
 }
 

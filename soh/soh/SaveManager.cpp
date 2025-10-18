@@ -592,7 +592,7 @@ void SaveManager::InitFileNormal() {
         gSaveContext.inventory.dungeonItems[dungeon] = 0;
     }
     for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.inventory.dungeonKeys); dungeon++) {
-        gSaveContext.inventory.dungeonKeys[dungeon] = 0xFF;
+        gSaveContext.inventory.dungeonKeys[dungeon] = static_cast<u8>(0xFF);
     }
     gSaveContext.inventory.defenseHearts = 0;
     gSaveContext.inventory.gsTokens = 0;
@@ -696,19 +696,49 @@ void SaveManager::InitFileDebug() {
 
     gSaveContext.deaths = 0;
     if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
-        const static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+        const static std::array<u8, 8> sPlayerName = {
+            static_cast<u8>(0x15),
+            static_cast<u8>(0x12),
+            static_cast<u8>(0x17),
+            static_cast<u8>(0x14),
+            static_cast<u8>(0x3E),
+            static_cast<u8>(0x3E),
+            static_cast<u8>(0x3E),
+            static_cast<u8>(0x3E)
+        };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
     } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
-        const static std::array<char, 8> sPlayerName = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
+        const static std::array<u8, 8> sPlayerName = {
+            static_cast<u8>(0x81),
+            static_cast<u8>(0x87),
+            static_cast<u8>(0x61),
+            static_cast<u8>(0xDF),
+            static_cast<u8>(0xDF),
+            static_cast<u8>(0xDF),
+            static_cast<u8>(0xDF),
+            static_cast<u8>(0xDF)
+        };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_NTSC_JPN;
     } else { // GAME_REGION_NTSC
-        const static std::array<char, 8> sPlayerName = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+        const static std::array<u8, 8> sPlayerName = {
+            static_cast<u8>(0xB6),
+            static_cast<u8>(0xB3),
+            static_cast<u8>(0xB8),
+            static_cast<u8>(0xB5),
+            static_cast<u8>(0xDF),
+            static_cast<u8>(0xDF),
+            static_cast<u8>(0xDF),
+            static_cast<u8>(0xDF)
+        };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
@@ -817,19 +847,49 @@ void SaveManager::InitFileMaxed() {
 
     gSaveContext.deaths = 0;
     if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
-        const static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+        const static std::array<u8, 8> sPlayerName = {
+            static_cast<u8>(0x15),
+            static_cast<u8>(0x12),
+            static_cast<u8>(0x17),
+            static_cast<u8>(0x14),
+            static_cast<u8>(0x3E),
+            static_cast<u8>(0x3E),
+            static_cast<u8>(0x3E),
+            static_cast<u8>(0x3E)
+        };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
     } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
-        const static std::array<char, 8> sPlayerName = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
+        const static std::array<u8, 8> sPlayerName = {
+            static_cast<u8>(0x81),
+            static_cast<u8>(0x87),
+            static_cast<u8>(0x61),
+            static_cast<u8>(0xDF),
+            static_cast<u8>(0xDF),
+            static_cast<u8>(0xDF),
+            static_cast<u8>(0xDF),
+            static_cast<u8>(0xDF)
+        };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_NTSC_JPN;
     } else { // GAME_REGION_NTSC
-        const static std::array<char, 8> sPlayerName = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+        const static std::array<u8, 8> sPlayerName = {
+            static_cast<u8>(0xB6),
+            static_cast<u8>(0xB3),
+            static_cast<u8>(0xB8),
+            static_cast<u8>(0xB5),
+            static_cast<u8>(0xDF),
+            static_cast<u8>(0xDF),
+            static_cast<u8>(0xDF),
+            static_cast<u8>(0xDF)
+        };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
@@ -1222,7 +1282,7 @@ void SaveManager::LoadFile(int fileNum) {
         }
         InitMeta(fileNum);
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
-    } catch (const std::exception& e) {
+    } catch ([[maybe_unused]] const std::exception& e) {
         input.close();
         std::string newFileName =
             Ship::Context::GetPathRelativeToAppDirectory("Save") +
@@ -1252,7 +1312,7 @@ bool SaveManager::SaveFile_Exist(int fileNum) {
         bool exists = std::filesystem::exists(GetFileName(fileNum));
         SPDLOG_INFO("File[{}] - {}", fileNum, exists ? "exists" : "does not exist");
         return exists;
-    } catch (std::filesystem::filesystem_error const& ex) {
+    } catch ([[maybe_unused]] std::filesystem::filesystem_error const& ex) {
         SPDLOG_ERROR("Filesystem error");
         return false;
     }

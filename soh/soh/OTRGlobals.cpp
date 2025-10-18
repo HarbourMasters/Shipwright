@@ -446,7 +446,7 @@ void OTRGlobals::Initialize() {
     cameraStrings = (char**)malloc(sizeof(constCameraStrings));
     for (int32_t i = 0; i < sizeof(constCameraStrings) / sizeof(char*); i++) {
         // OTRTODO: never deallocated...
-        auto dup = strdup(constCameraStrings[i]);
+        auto dup = _strdup(constCameraStrings[i]);
         cameraStrings[i] = dup;
     }
 
@@ -1100,7 +1100,7 @@ bool PathTestCleanup(FILE* tfile) {
             std::filesystem::remove("./text.txt");
         if (std::filesystem::exists("./test/"))
             std::filesystem::remove("./test/");
-    } catch (std::filesystem::filesystem_error const& ex) { return false; }
+    } catch ([[maybe_unused]] std::filesystem::filesystem_error const& ex) { return false; }
     return true;
 }
 
@@ -1115,7 +1115,7 @@ void CheckAndCreateModFolder() {
                 std::ofstream(filePath).close();
             }
         }
-    } catch (std::filesystem::filesystem_error const& ex) {
+    } catch ([[maybe_unused]] std::filesystem::filesystem_error const& ex) {
         // Couldn't make the folder, continue silently
         return;
     }
@@ -1159,7 +1159,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     std::filesystem::path tempPath;
     try {
         tempPath = std::filesystem::canonical(tempVar);
-    } catch (std::filesystem::filesystem_error const& ex) {
+    } catch ([[maybe_unused]] std::filesystem::filesystem_error const& ex) {
         std::string userPath = getenv("USERPROFILE");
         userPath.append("\\AppData\\Local\\Temp");
         tempPath = std::filesystem::canonical(userPath);
@@ -1176,7 +1176,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     bool error = false;
     try {
         create_directories(tfolder);
-    } catch (std::filesystem::filesystem_error const& ex) { error = true; }
+    } catch ([[maybe_unused]] std::filesystem::filesystem_error const& ex) { error = true; }
     if (tfile == NULL || error) {
         Extractor::ShowErrorBox(
             "Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
@@ -1315,7 +1315,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
         CVarClear(CVAR_GENERAL("LetItSnow"));
     }
 
-    srand(now);
+    srand(static_cast<unsigned int>(now));
 #ifdef ENABLE_REMOTE_CONTROL
     SDLNet_Init();
     if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) {
@@ -1689,7 +1689,7 @@ ImFont* OTRGlobals::CreateFontWithSize(float size, std::string fontPath) {
             Ship::Context::GetInstance()->GetResourceManager()->LoadResource(fontPath, false, initData));
         ImFontConfig fontConf;
         fontConf.FontDataOwnedByAtlas = false;
-        font = mImGuiIo->Fonts->AddFontFromMemoryTTF(fontData->Data, fontData->DataSize, size, &fontConf);
+        font = mImGuiIo->Fonts->AddFontFromMemoryTTF(fontData->Data, static_cast<int>(fontData->DataSize), size, &fontConf);
     }
     // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
     float iconFontSize = size * 2.0f / 3.0f;
@@ -1822,7 +1822,7 @@ extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(vo
 
     for (const auto& c : wstr) {
         if (c < 0x80) {
-            printImpl(printer, c);
+            printImpl(printer, static_cast<char>(c));
         } else if (c == GFXP_HIRAGANA_CHAR) {
             hiraganaMode = true;
         } else if (c == GFXP_KATAKANA_CHAR) {
@@ -1840,22 +1840,22 @@ extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(vo
         } else {
             auto it = std::find(hira1.begin(), hira1.end(), c);
             if (it != hira1.end()) { // hiragana block 1
-                printImpl(printer, 0x86 + std::distance(hira1.begin(), it));
+                printImpl(printer, static_cast<char>(0x86 + std::distance(hira1.begin(), it)));
             }
 
             auto it2 = std::find(hira2.begin(), hira2.end(), c);
             if (it2 != hira2.end()) { // hiragana block 2
-                printImpl(printer, 0xe0 + std::distance(hira2.begin(), it2));
+                printImpl(printer, static_cast<char>(0xe0 + std::distance(hira2.begin(), it2)));
             }
 
             auto it3 = std::find(kata1.begin(), kata1.end(), c);
             if (it3 != kata1.end()) { // katakana zenkaku block 1
-                printImpl(printer, 0xa6 + std::distance(kata1.begin(), it3));
+                printImpl(printer, static_cast<char>(0xa6 + std::distance(kata1.begin(), it3)));
             }
 
             auto it4 = std::find(kata2.begin(), kata2.end(), c);
             if (it4 != kata2.end()) { // katakana zenkaku block 2
-                printImpl(printer, 0xb1 + std::distance(kata2.begin(), it4));
+                printImpl(printer, static_cast<char>(0xb1 + std::distance(kata2.begin(), it4)));
             }
         }
     }
@@ -1956,9 +1956,9 @@ Color_RGB8 GetColorForControllerLED() {
                 }
             }
         }
-        color.r = color.r * brightness;
-        color.g = color.g * brightness;
-        color.b = color.b * brightness;
+        color.r = static_cast<u8>(color.r * brightness);
+        color.g = static_cast<u8>(color.g * brightness);
+        color.b = static_cast<u8>(color.b * brightness);
     }
 
     return color;
@@ -2067,7 +2067,7 @@ extern "C" int Controller_ShouldRumble(size_t slot) {
     if (Ship::Context::GetInstance()
             ->GetControlDeck()
             ->GetConnectedPhysicalDeviceManager()
-            ->GetConnectedSDLGamepadsForPort(slot)
+            ->GetConnectedSDLGamepadsForPort(static_cast<s32>(slot))
             .empty()) {
         return 0;
     }
@@ -2108,7 +2108,7 @@ extern "C" size_t GetEquipNowMessage(char* buffer, char* src, const size_t maxBu
     std::string postfix = customMessage.GetForCurrentLanguage();
     std::string str;
     std::string FixedBaseStr(src);
-    int RemoveControlChar = FixedBaseStr.find_first_of("\x02");
+    int RemoveControlChar = static_cast<int>(FixedBaseStr.find_first_of("\x02"));
 
     if (RemoveControlChar != std::string::npos) {
         FixedBaseStr = FixedBaseStr.substr(0, RemoveControlChar);
@@ -2403,8 +2403,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                         Entrance_SetEntranceDiscovered(entrance, false);
                         auto data = GetEntranceData(overrideIndex);
                         font->charTexBuf[0] = (TEXTBOX_TYPE_WOODEN << 4) | TEXTBOX_POS_BOTTOM;
-                        return msgCtx->msgLength = font->msgLength = SohUtils::CopyStringToCharBuffer(
-                                   buffer, data->destination + CustomMessage::MESSAGE_END(), maxBufferSize);
+                        return msgCtx->msgLength = font->msgLength = static_cast<u32>(SohUtils::CopyStringToCharBuffer(
+                                   buffer, data->destination + CustomMessage::MESSAGE_END(), maxBufferSize));
                     }
                 }
             }
@@ -2728,14 +2728,14 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     switch (gSaveContext.language) {
         case LANGUAGE_FRA:
             return msgCtx->msgLength = font->msgLength =
-                       SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetFrench(MF_RAW), maxBufferSize);
+                       static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetFrench(MF_RAW), maxBufferSize));
         case LANGUAGE_GER:
             return msgCtx->msgLength = font->msgLength =
-                       SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetGerman(MF_RAW), maxBufferSize);
+                       static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetGerman(MF_RAW), maxBufferSize));
         case LANGUAGE_ENG:
         default:
             return msgCtx->msgLength = font->msgLength =
-                       SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetEnglish(MF_RAW), maxBufferSize);
+                       static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetEnglish(MF_RAW), maxBufferSize));
     }
     return false;
 }

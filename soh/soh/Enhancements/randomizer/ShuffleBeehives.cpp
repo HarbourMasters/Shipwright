@@ -89,7 +89,7 @@ void ObjComb_RandomizerUpdate(void* actor) {
     combActor->unk_1B2 += 0x2EE0;
     combActor->actionFunc(combActor, play);
     combActor->actor.shape.rot.x =
-        Math_SinS(combActor->unk_1B2) * CLAMP_MIN(combActor->unk_1B0, 0) + combActor->actor.home.rot.x;
+        static_cast<s16>(Math_SinS(combActor->unk_1B2) * CLAMP_MIN(combActor->unk_1B0, 0)) + combActor->actor.home.rot.x;
 }
 
 void RegisterShuffleBeehives() {

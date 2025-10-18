@@ -63,7 +63,7 @@ SetStartPositionListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitD
         child = child->NextSiblingElement();
     }
 
-    setStartPositionList->numStartPositions = setStartPositionList->startPositions.size();
+    setStartPositionList->numStartPositions = static_cast<u32>(setStartPositionList->startPositions.size());
 
     return setStartPositionList;
 }

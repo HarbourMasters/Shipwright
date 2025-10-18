@@ -742,7 +742,7 @@ static void PareDownPlaythrough() {
     }
 
     // Some spheres may now be empty, remove these
-    for (int i = ctx->playthroughLocations.size() - 2; i >= 0; i--) {
+    for (size_t i = ctx->playthroughLocations.size() - 2; i >= 0; i--) {
         if (ctx->playthroughLocations.at(i).size() == 0) {
             ctx->playthroughLocations.erase(ctx->playthroughLocations.begin() + i);
         }

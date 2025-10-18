@@ -116,7 +116,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
         verticalPixelCount = pixelCountPresets[item_pixelCount];
 
         if (showHorizontalResField) {
-            horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+            horizontalPixelCount = static_cast<s32>((verticalPixelCount / aspectRatioY) * aspectRatioX);
         }
 
         CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalPixelCount", verticalPixelCount);
@@ -135,8 +135,8 @@ void ResolutionCustomWidget(WidgetInfo& info) {
                 if (horizontalPixelCount < SCREEN_WIDTH) {
                     horizontalPixelCount = SCREEN_WIDTH;
                 }
-                aspectRatioX = horizontalPixelCount;
-                aspectRatioY = verticalPixelCount;
+                aspectRatioX = static_cast<f32>(horizontalPixelCount);
+                aspectRatioY = static_cast<f32>(verticalPixelCount);
                 update[UPDATE_aspectRatioX] = true;
                 update[UPDATE_aspectRatioY] = true;
             }
@@ -152,7 +152,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
                 aspectRatioY = aspectRatioPresetsY[2];
                 update[UPDATE_aspectRatioX] = true;
                 update[UPDATE_aspectRatioY] = true;
-                horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+                horizontalPixelCount = static_cast<s32>((verticalPixelCount / aspectRatioY) * aspectRatioX);
             }
         }
     }
@@ -166,8 +166,8 @@ void ResolutionCustomWidget(WidgetInfo& info) {
         // Ignore vertical resolutions that are below the lower clamp constant.
         if (showHorizontalResField && !(verticalPixelCount < minVerticalPixelCount)) {
             item_aspectRatio = default_aspectRatio;
-            aspectRatioX = horizontalPixelCount;
-            aspectRatioY = verticalPixelCount;
+            aspectRatioX = static_cast<f32>(horizontalPixelCount);
+            aspectRatioY = static_cast<f32>(verticalPixelCount);
             update[UPDATE_aspectRatioX] = true;
             update[UPDATE_aspectRatioY] = true;
         }
@@ -267,12 +267,12 @@ void ResolutionCustomWidget(WidgetInfo& info) {
             if (!showHorizontalResField && (aspectRatioX > 0.0f)) { // when turning this setting off
                 // Refresh relevant values
                 aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
-                horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+                horizontalPixelCount = static_cast<s32>((verticalPixelCount / aspectRatioY) * aspectRatioX);
             } else { // when turning this setting on
                 item_aspectRatio = default_aspectRatio;
                 if (aspectRatioX > 0.0f) {
                     // Refresh relevant values in the opposite order
-                    horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+                    horizontalPixelCount = static_cast<s32>((verticalPixelCount / aspectRatioY) * aspectRatioX);
                     aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
                 }
             }
@@ -459,7 +459,7 @@ void RegisterResolutionWidgets() {
                 aspectRatioY = aspectRatioPresetsY[item_aspectRatio];
 
                 if (showHorizontalResField) {
-                    horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+                    horizontalPixelCount = static_cast<s32>((verticalPixelCount / aspectRatioY) * aspectRatioX);
                 }
 
                 CVarSetFloat(CVAR_PREFIX_ADVANCED_RESOLUTION ".AspectRatioX", aspectRatioX);
@@ -582,7 +582,7 @@ void UpdateResolutionVars() {
     verticalPixelCount =
         CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalPixelCount", pixelCountPresets[item_pixelCount]);
     // Additional settings
-    horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+    horizontalPixelCount = static_cast<s32>((verticalPixelCount / aspectRatioY) * aspectRatioX);
     // Disabling flags
     disabled_everything = !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 0);
     disabled_pixelCount = !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0);

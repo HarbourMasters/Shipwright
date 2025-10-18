@@ -80,7 +80,7 @@ void SohInputEditorWindow::UpdateElement() {
         Ship::Context::GetInstance()->GetControlDeck()->BlockGameInput(INPUT_EDITOR_WINDOW_GAME_INPUT_BLOCK_ID);
 
         // continue to block input for a third of a second after getting the mapping
-        mGameInputBlockTimer = ImGui::GetIO().Framerate / 3;
+        mGameInputBlockTimer = static_cast<s32>(ImGui::GetIO().Framerate / 3);
 
         if (mMappingInputBlockTimer != INT32_MAX) {
             mMappingInputBlockTimer--;
@@ -101,7 +101,7 @@ void SohInputEditorWindow::UpdateElement() {
         }
 
         if (Ship::Context::GetInstance()->GetWindow()->GetGui()->GamepadNavigationEnabled()) {
-            mMappingInputBlockTimer = ImGui::GetIO().Framerate / 3;
+            mMappingInputBlockTimer = static_cast<s32>(ImGui::GetIO().Framerate / 3);
         } else {
             mMappingInputBlockTimer = INT32_MAX;
         }
@@ -906,7 +906,7 @@ void SohInputEditorWindow::DrawRumbleSection(uint8_t port) {
                 mRumbleMappingToTest->StopRumble();
                 mRumbleMappingToTest = nullptr;
             } else {
-                mRumbleTimer = ImGui::GetIO().Framerate;
+                mRumbleTimer = static_cast<s32>(ImGui::GetIO().Framerate);
                 mRumbleMappingToTest = mapping;
             }
         }
@@ -1100,9 +1100,9 @@ void SohInputEditorWindow::DrawLEDSection(uint8_t port) {
                     if (ImGui::ColorEdit3("", (float*)&colorVec,
                                           ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
                         Color_RGB8 color;
-                        color.r = colorVec.x * 255.0;
-                        color.g = colorVec.y * 255.0;
-                        color.b = colorVec.z * 255.0;
+                        color.r = static_cast<u8>(colorVec.x * 255.0);
+                        color.g = static_cast<u8>(colorVec.y * 255.0);
+                        color.b = static_cast<u8>(colorVec.z * 255.0);
 
                         CVarSetColor24(CVAR_SETTING("LEDPort1Color"), color);
                         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
