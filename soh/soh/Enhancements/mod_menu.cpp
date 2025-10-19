@@ -218,7 +218,7 @@ void DrawMods(bool enabled) {
     int switchToIndex = -1;
     uint32_t index = 0;
 
-    for (int i = 0; i < selectedModFiles.size(); i += 1) {
+    for (int i = selectedModFiles.size() - 1; i >= 0; i--) {
         std::string file = selectedModFiles[i];
         if (enabled) {
             ImGui::BeginGroup();
@@ -236,30 +236,30 @@ void DrawMods(bool enabled) {
         // it's not relevant to reorder disabled mods
         if (enabled) {
             // ImGui::SameLine();
-            if (i == 0) {
+            if (i == selectedModFiles.size() - 1) {
                 ImGui::BeginDisabled();
             }
             if (UIWidgets::StateButton((file + "_up").c_str(), ICON_FA_ARROW_UP, ImVec2(25, 25),
                                        UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
                 madeAnyChange = true;
                 switchFromIndex = i;
-                switchToIndex = i - 1;
+                switchToIndex = i + 1;
             }
-            if (i == 0) {
+            if (i == selectedModFiles.size() - 1) {
                 ImGui::EndDisabled();
             }
 
             ImGui::SameLine();
-            if (i == selectedModFiles.size() - 1) {
+            if (i == 0) {
                 ImGui::BeginDisabled();
             }
             if (UIWidgets::StateButton((file + "_down").c_str(), ICON_FA_ARROW_DOWN, ImVec2(25, 25),
                                        UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
                 madeAnyChange = true;
                 switchFromIndex = i;
-                switchToIndex = i + 1;
+                switchToIndex = i - 1;
             }
-            if (i == selectedModFiles.size() - 1) {
+            if (i == 0) {
                 ImGui::EndDisabled();
             }
         }
@@ -291,8 +291,8 @@ void ModMenuWindow::DrawElement() {
     ImGui::TextColored(
         UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow),
         "Mods are currently not reloaded at runtime. Close and re-open Ship for the changes to take effect.\n"
-        "Drag ordering for the enabled list is available.\nMod load order is top to bottom. Mods at the top are loaded "
-        "first.");
+        "Drag ordering for the enabled list is available.\nMod priority is top to bottom. They override mods listed "
+        "below them.");
 
     // if (UIWidgets::Button(
     //         "Update", UIWidgets::ButtonOptions({ { .disabled = editing, .disabledTooltip = "Currently editing..." }
