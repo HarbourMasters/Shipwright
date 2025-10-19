@@ -22,7 +22,6 @@ std::vector<std::string> enabledModFiles;
 std::vector<std::string> disabledModFiles;
 std::vector<std::string> unsupportedFiles;
 std::map<std::string, std::filesystem::path> filePaths;
-std::map<std::string, std::string> extChanges;
 static int dragSourceIndex = -1;
 static int dragTargetIndex = -1;
 
@@ -31,6 +30,7 @@ extern std::shared_ptr<SohMenu> mSohMenu;
 }
 
 static WidgetInfo enableModsWidget;
+static WidgetInfo tabHotkeyWidget;
 
 #define CVAR_ENABLED_MODS_NAME CVAR_SETTING("EnabledMods")
 #define CVAR_ENABLED_MODS_DEFAULT ""
@@ -154,39 +154,24 @@ void UpdateModFiles(bool init = false, bool reset = false) {
                     p.path().filename().generic_string().substr(0, p.path().filename().generic_string().rfind("."));
                 std::string extension = p.path().extension().generic_string();
                 ExtensionType extType = GetExtensionType(extension);
+                if (extType != EXT_ENABLED) {
+                    continue;
+                }
                 bool enabled =
                     std::find(enabledModFiles.begin(), enabledModFiles.end(), filename) != enabledModFiles.end();
-                if (extType == EXT_ENABLED) {
-                    if (!enabled) {
-                        enabledModFiles.push_back(filename);
-                        changed = true;
-                    }
-                } else if (extType == EXT_DISABLED) {
-                    disabledModFiles.push_back(filename);
-                } else {
-                    unsupportedFiles.push_back(p.path().filename().generic_string());
+                if (!enabled) {
+                    enabledModFiles.push_back(filename);
+                    changed = true;
                 }
                 filePaths.emplace(filename, p.path());
             }
             if (init) {
                 std::vector<std::string> enabledTemp(enabledModFiles);
                 for (std::string mod : enabledTemp) {
-                    // auto archives = GetArchiveManager()->GetArchives();
-                    //  TODO ensure archives don't get added multiple times. breaks the renaming on close
                     if (filePaths.contains(mod)) {
-                        // if (init/* &&
-                        // !GetArchiveManager()->HasFile(filePaths.at(mod).lexically_normal().generic_string())*/) {
                         GetArchiveManager()->AddArchive(filePaths.at(mod).generic_string());
-                        //}
                     } else {
                         enabledModFiles.erase(std::find(enabledModFiles.begin(), enabledModFiles.end(), mod));
-                        //    // if (!init /*&&
-                        //    // GetArchiveManager()->HasFile(filePaths.at(mod).lexically_normal().generic_string())*/)
-                        //    {
-                        //    //
-                        //    GetArchiveManager()->RemoveArchive(filePaths.at(mod).lexically_normal().generic_string());
-                        //    // }
-                        changed = true;
                     }
                 }
             }
@@ -202,23 +187,6 @@ extern "C" void gfx_texture_cache_clear();
 void EnableMod(std::string file) {
     disabledModFiles.erase(std::find(disabledModFiles.begin(), disabledModFiles.end(), file));
     enabledModFiles.insert(enabledModFiles.begin(), file);
-    std::string newExt;
-    auto& path = filePaths.at(file);
-    if (path.extension() == ".disabled1") {
-        newExt = ".otr";
-    } else {
-        newExt = ".o2r";
-    }
-    std::string oldPath = path.generic_string();
-    path.replace_extension(newExt);
-    std::string newPath = path.generic_string();
-    if (!extChanges.contains(oldPath)) {
-        if (extChanges.contains(newPath)) {
-            extChanges.erase(newPath);
-        } else {
-            extChanges.emplace(oldPath, newPath);
-        }
-    }
 
     // TODO: runtime changes
     // GetArchiveManager()->AddArchive(file);
@@ -228,23 +196,6 @@ void EnableMod(std::string file) {
 void DisableMod(std::string file) {
     enabledModFiles.erase(std::find(enabledModFiles.begin(), enabledModFiles.end(), file));
     disabledModFiles.insert(disabledModFiles.begin(), file);
-    std::string newExt;
-    auto& path = filePaths.at(file);
-    if (path.extension() == ".otr") {
-        newExt = ".disabled1";
-    } else {
-        newExt = ".disabled2";
-    }
-    std::string oldPath = path.generic_string();
-    path.replace_extension(newExt);
-    std::string newPath = path.generic_string();
-    if (!extChanges.contains(oldPath)) {
-        if (extChanges.contains(newPath)) {
-            extChanges.erase(newPath);
-        } else {
-            extChanges.emplace(oldPath, newPath);
-        }
-    }
 
     // TODO: runtime changes
     // GetArchiveManager()->RemoveArchive(file);
@@ -254,9 +205,6 @@ void DisableMod(std::string file) {
 void DrawModInfo(std::string file) {
     ImGui::SameLine();
     ImGui::Text("%s", file.c_str());
-}
-
-void RemoveExtension(std::string& file) {
 }
 
 void DrawMods(bool enabled) {
@@ -275,18 +223,19 @@ void DrawMods(bool enabled) {
         if (enabled) {
             ImGui::BeginGroup();
         }
-        if (UIWidgets::StateButton((file + "_left_right").c_str(), enabled ? ICON_FA_ARROW_RIGHT : ICON_FA_ARROW_LEFT,
-                                   ImVec2(25, 25), UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
-            if (enabled) {
-                DisableMod(file);
-            } else {
-                EnableMod(file);
-            }
-        }
+        // if (UIWidgets::StateButton((file + "_left_right").c_str(), enabled ? ICON_FA_ARROW_RIGHT :
+        // ICON_FA_ARROW_LEFT,
+        //                            ImVec2(25, 25), UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
+        //     if (enabled) {
+        //         DisableMod(file);
+        //     } else {
+        //         EnableMod(file);
+        //     }
+        // }
 
         // it's not relevant to reorder disabled mods
         if (enabled) {
-            ImGui::SameLine();
+            // ImGui::SameLine();
             if (i == 0) {
                 ImGui::BeginDisabled();
             }
@@ -336,6 +285,8 @@ bool editing = false;
 
 void ModMenuWindow::DrawElement() {
     SohGui::mSohMenu->MenuDrawItem(enableModsWidget, 200, THEME_COLOR);
+    ImGui::SameLine();
+    SohGui::mSohMenu->MenuDrawItem(tabHotkeyWidget, 200, THEME_COLOR);
 
     ImGui::TextColored(
         UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow),
@@ -361,7 +312,6 @@ void ModMenuWindow::DrawElement() {
         ImGui::SameLine();
         if (UIWidgets::Button("Cancel", UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline))) {
             editing = false;
-            extChanges.clear();
             UpdateModFiles(false, true);
         }
         ImGui::SameLine();
@@ -371,12 +321,6 @@ void ModMenuWindow::DrawElement() {
                                   "Application currently requires a restart. Save the mod info and close SoH?", "Close",
                                   "Cancel", [&]() {
                                       // TODO: runtime changes
-                                      // GetArchiveManager()->RemoveArchive(file);
-                                      for (auto& [op, np] : extChanges) {
-                                          GetArchiveManager()->RemoveArchive(op);
-                                          std::filesystem::rename(op, np);
-                                      }
-                                      extChanges.clear();
                                       SetEnabledModsCVarValue();
                                       // TODO: runtime changes
                                       /*
@@ -391,7 +335,7 @@ void ModMenuWindow::DrawElement() {
     ImGui::BeginDisabled(!editing);
     if (ImGui::BeginTable("tableMods", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Enabled Mods", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-        ImGui::TableSetupColumn("Disabled Mods", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+        // ImGui::TableSetupColumn("Disabled Mods", ImGuiTableColumnFlags_WidthStretch, 200.0f);
         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
         ImGui::TableHeadersRow();
         ImGui::PopItemFlag();
@@ -405,13 +349,13 @@ void ModMenuWindow::DrawElement() {
             ImGui::EndChild();
         }
 
-        ImGui::TableNextColumn();
+        /*ImGui::TableNextColumn();
 
         if (ImGui::BeginChild("Disabled Mods", ImVec2(0, -8))) {
             DrawMods(false);
 
             ImGui::EndChild();
-        }
+        }*/
 
         ImGui::EndTable();
     }
@@ -425,14 +369,26 @@ void ModMenuWindow::InitElement() {
 void RegisterModMenuWidgets() {
     enableModsWidget = { .name = "Enable Mods", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     enableModsWidget.CVar(CVAR_SETTING("AltAssets"))
+        .RaceDisable(false)
         .Options(UIWidgets::CheckboxOptions({ { .disabledTooltip = "Temporarily disabled while editing mods list." } })
                      .Color(THEME_COLOR)
-                     .Tooltip("Toggle mods. For graphics mods, this means toggling between default and mod graphics."))
+                     .Tooltip("Toggle mods. For graphics mods, this means toggling between default and mod graphics.")
+                     .DefaultValue(true))
         .PreFunc([&](WidgetInfo& info) {
             auto options = std::static_pointer_cast<UIWidgets::CheckboxOptions>(info.options);
             options->disabled = editing;
         });
-    SohGui::mSohMenu->AddSearchWidget({ enableModsWidget, "Enhancements", "Mod Menu", "Top", "alternat assets" });
+    SohGui::mSohMenu->AddSearchWidget({ enableModsWidget, "Settings", "Mod Menu", "Top", "alternat assets" });
+
+    tabHotkeyWidget = { .name = "Mods Tab Hotkey", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    tabHotkeyWidget.CVar(CVAR_SETTING("Mods.AlternateAssetsHotkey"))
+        .RaceDisable(false)
+        .Options(UIWidgets::CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("Allows pressing the Tab key to toggle mods")
+                     .DefaultValue(true));
+    SohGui::mSohMenu->AddSearchWidget(
+        { enableModsWidget, "Settings", "Mod Menu", "Top", "alternat assets tab hotkey" });
 }
 
 static RegisterMenuInitFunc menuInitFunc(RegisterModMenuWidgets);
