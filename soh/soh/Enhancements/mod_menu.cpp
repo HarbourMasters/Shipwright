@@ -12,12 +12,6 @@
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 
-typedef enum ExtensionType {
-    EXT_ENABLED,
-    EXT_DISABLED,
-    EXT_UNSUPPORTED,
-} ExtensionType;
-
 std::vector<std::string> enabledModFiles;
 std::vector<std::string> disabledModFiles;
 std::vector<std::string> unsupportedFiles;
@@ -112,7 +106,7 @@ std::shared_ptr<Ship::ArchiveManager> GetArchiveManager() {
     return Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager();
 }
 
-ExtensionType GetExtensionType(std::string extension) {
+bool IsValidExtension(std::string extension) {
     if (
 #ifdef INCLUDE_MPQ_SUPPORT
         // .mpq doesn't make sense to support because all tools to make such mods output OTR
@@ -121,15 +115,9 @@ ExtensionType GetExtensionType(std::string extension) {
         // .zip needs to be excluded because mods are most often distributed in zip archives
         // and thus could contain .otr/o2r files
         StringHelper::IEquals(extension, ".o2r") /*|| StringHelper::IEquals(extension, ".zip")*/) {
-        return EXT_ENABLED;
-    } else if (
-#ifdef INCLUDE_MPQ_SUPPORT
-        StringHelper::IEquals(extension, ".disabled1") ||
-#endif
-        StringHelper::IEquals(extension, ".disabled2")) {
-        return EXT_DISABLED;
+        return true;
     }
-    return EXT_UNSUPPORTED;
+    return false;
 }
 
 void UpdateModFiles(bool init = false, bool reset = false) {
@@ -153,8 +141,7 @@ void UpdateModFiles(bool init = false, bool reset = false) {
                 std::string filename =
                     p.path().filename().generic_string().substr(0, p.path().filename().generic_string().rfind("."));
                 std::string extension = p.path().extension().generic_string();
-                ExtensionType extType = GetExtensionType(extension);
-                if (extType != EXT_ENABLED) {
+                if (!IsValidExtension(extension)) {
                     continue;
                 }
                 bool enabled =
