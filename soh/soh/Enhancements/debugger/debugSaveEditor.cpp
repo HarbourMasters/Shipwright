@@ -138,7 +138,25 @@ std::unordered_map<uint8_t, const char*> zTargetMap = {
     { Z_TARGET_HOLD, "Hold" },
 };
 
+std::unordered_map<int32_t, const char*> fileNumMap = {
+    { 0, "File 1" },
+    { 1, "File 2" },
+    { 2, "File 3" },
+};
+
 void DrawInfoTab() {
+    if (gSaveContext.gameMode == GAMEMODE_TITLE_SCREEN) {
+        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Title Screen");
+    } else if (gSaveContext.gameMode == GAMEMODE_FILE_SELECT) {
+        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "File Select");
+    } else if (gPlayState == nullptr) {
+        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Game Inactive");
+    } else if (gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2) {
+        Combobox("File Number", &gSaveContext.fileNum, fileNumMap, comboboxOptionsBase.Tooltip("Current File Number"));
+    } else {
+        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Debug File");
+    }
+
     // TODO Needs a better method for name changing but for now this will work.
     std::string name;
     ImU16 one = 1;
