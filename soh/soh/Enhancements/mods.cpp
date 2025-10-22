@@ -428,14 +428,6 @@ void RegisterPatchHandHandler() {
         [](int32_t sceneNum) { UpdatePatchHand(); });
 }
 
-void RegisterResetNaviTimer() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("ResetNaviTimer"), 0)) {
-            gSaveContext.naviTimer = 0;
-        }
-    });
-}
-
 // this map is used for enemies that can be uniquely identified by their id
 // and that are always counted
 // enemies that can't be uniquely identified by their id
@@ -909,7 +901,6 @@ void InitMods() {
     UpdateHyperEnemiesState();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
-    RegisterResetNaviTimer();
     RegisterEnemyDefeatCounts();
     RegisterBossDefeatTimestamps();
     RegisterRandomizedEnemySizes();
