@@ -8,8 +8,6 @@
 #include "soh/resource/type/Skeleton.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
-#include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/timesaver_hook_handlers.h"
 #include "soh/Enhancements/randomizer/hook_handlers.h"
@@ -284,51 +282,6 @@ void UpdateHyperEnemiesState() {
                 }
             });
     }
-}
-
-void UpdateMirrorModeState(int32_t sceneNum) {
-    static bool prevMirroredWorld = false;
-    bool nextMirroredWorld = false;
-
-    int16_t mirroredMode = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorldMode"), MIRRORED_WORLD_OFF);
-    int16_t inDungeon = (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_INSIDE_GANONS_CASTLE_COLLAPSE &&
-                         sceneNum != SCENE_THIEVES_HIDEOUT) ||
-                        (sceneNum >= SCENE_DEKU_TREE_BOSS && sceneNum <= SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
-                        (sceneNum == SCENE_GANON_BOSS);
-
-    if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
-        uint32_t seed =
-            sceneNum + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
-        Random_Init(seed);
-    }
-
-    bool randomMirror = Random(0, 2) == 1;
-
-    if (mirroredMode == MIRRORED_WORLD_ALWAYS ||
-        ((mirroredMode == MIRRORED_WORLD_RANDOM || mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED) && randomMirror) ||
-        // Dungeon modes
-        (inDungeon &&
-         (mirroredMode == MIRRORED_WORLD_DUNGEONS_ALL ||
-          (mirroredMode == MIRRORED_WORLD_DUNGEONS_VANILLA && !ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
-          (mirroredMode == MIRRORED_WORLD_DUNGEONS_MQ && ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
-          ((mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) &&
-           randomMirror)))) {
-        nextMirroredWorld = true;
-        CVarSetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 1);
-    } else {
-        nextMirroredWorld = false;
-        CVarClear(CVAR_ENHANCEMENT("MirroredWorld"));
-    }
-
-    if (prevMirroredWorld != nextMirroredWorld) {
-        prevMirroredWorld = nextMirroredWorld;
-        ApplyMirrorWorldGfxPatches();
-    }
-}
-
-void RegisterMirrorModeHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
-        [](int32_t sceneNum) { UpdateMirrorModeState(sceneNum); });
 }
 
 void UpdatePatchHand() {
@@ -736,7 +689,6 @@ void InitMods() {
     RegisterDeleteFileOnDeath();
     RegisterHyperBosses();
     UpdateHyperEnemiesState();
-    RegisterMirrorModeHandler();
     RegisterEnemyDefeatCounts();
     RegisterBossDefeatTimestamps();
     RegisterRandomizedEnemySizes();
