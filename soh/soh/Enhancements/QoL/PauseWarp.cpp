@@ -10,7 +10,7 @@ static constexpr int32_t CVAR_PAUSE_WARP_DEFAULT = 0;
 #define CVAR_PAUSE_WARP_NAME CVAR_ENHANCEMENT("PauseWarp")
 #define CVAR_PAUSE_WARP_VALUE CVarGetInteger(CVAR_PAUSE_WARP_NAME, CVAR_PAUSE_WARP_DEFAULT)
 
-void RegisterPauseMenuHooks() {
+static void RegisterPauseMenuHooks() {
     COND_HOOK(OnKaleidoUpdate, CVAR_PAUSE_WARP_VALUE, [] {
         if (GameInteractor::IsSaveLoaded())
             PauseWarp_HandleSelection();
