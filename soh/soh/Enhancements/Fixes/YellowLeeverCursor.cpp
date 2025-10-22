@@ -1,6 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
 #include "functions.h"
@@ -16,7 +17,12 @@ extern PlayState* gPlayState;
 
 void OnActorInitYellowLeeverCursor(void* refActor) {
     Actor* actor = (Actor*)refActor;
-    Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, actor, ACTORCAT_ENEMY);
+    uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(gPlayState->sceneNum);
+
+    // Exclude MQ Spirit Temple because there is a room that relies on Leevers belong in "misc" category
+    if (!(isMQ && gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE)) {
+        Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, actor, ACTORCAT_ENEMY);
+    }
 }
 
 void RegisterYellowLeeverCursor() {
