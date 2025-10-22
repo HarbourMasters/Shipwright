@@ -4,6 +4,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
+#include "soh/SaveManager.h"
 
 #include <spdlog/fmt/fmt.h>
 #include <array>
@@ -106,6 +107,26 @@ char z2ASCII(int code) {
     return char(ret);
 }
 
+char ntscZ2ASCII(int code) {
+    int ret;
+    if (code < 10) { // Digits
+        ret = code + 48;
+    } else if (code >= 171 && code < 197) { // Uppercase letters
+        ret = code - 171 + 65;
+    } else if (code >= 197 && code < 223) { // Lowercase letters
+        ret = code - 197 + 97;
+    } else if (code == 223) { // Space
+        ret = ' ';
+    } else if (code == 228) { // -
+        ret = '-';
+    } else if (code == 234) { // .
+        ret = '.';
+    } else {
+        ret = '?';
+    }
+    return char(ret);
+}
+
 enum MagicLevel { MAGIC_LEVEL_NONE, MAGIC_LEVEL_SINGLE, MAGIC_LEVEL_DOUBLE };
 
 std::unordered_map<int8_t, const char*> magicLevelMap = {
@@ -144,6 +165,12 @@ std::unordered_map<int32_t, const char*> fileNumMap = {
     { 2, "File 3" },
 };
 
+std::unordered_map<uint8_t, const char*> filenameLanguageMap = {
+    { NAME_LANGUAGE_PAL, "PAL" },
+    { NAME_LANGUAGE_NTSC_JPN, "NTSC JPN" },
+    { NAME_LANGUAGE_NTSC_ENG, "NTSC ENG" },
+};
+
 void DrawInfoTab() {
     if (gSaveContext.gameMode == GAMEMODE_TITLE_SCREEN) {
         ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Title Screen");
@@ -161,7 +188,9 @@ void DrawInfoTab() {
     std::string name;
     ImU16 one = 1;
     for (int i = 0; i < 8; i++) {
-        char letter = z2ASCII(gSaveContext.playerName[i]);
+        char letter = (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL)
+                          ? z2ASCII(gSaveContext.playerName[i])
+                          : ntscZ2ASCII(gSaveContext.playerName[i]);
         name += letter;
     }
     name += '\0';
@@ -172,7 +201,7 @@ void DrawInfoTab() {
     Tooltip("Player Name");
     std::string nameID;
     for (int i = 0; i < 8; i++) {
-        nameID = z2ASCII(i);
+        nameID = (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) ? z2ASCII(i) : ntscZ2ASCII(i);
         if (i % 4 != 0) {
             ImGui::SameLine();
         }
@@ -180,6 +209,9 @@ void DrawInfoTab() {
         ImGui::InputScalar(nameID.c_str(), ImGuiDataType_U8, &gSaveContext.playerName[i], &one, NULL);
         PopStyleInput();
     }
+
+    Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMap,
+             comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
 
     // Use an intermediary to keep the health from updating (and potentially killing the player)
     // until it is done being edited
