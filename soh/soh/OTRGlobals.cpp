@@ -299,7 +299,7 @@ void OTRGlobals::Initialize() {
 
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
     context->InitResourceManager(OTRFiles, {}, 3);
-    prevAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 0);
+    prevAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 1);
     context->GetResourceManager()->SetAltAssetsEnabled(prevAltAssets);
 
     auto controlDeck = std::make_shared<LUS::ControlDeck>(std::vector<CONTROLLERBUTTONS_T>({
@@ -1482,7 +1482,7 @@ extern "C" void Graph_StartFrame() {
 #endif
         case KbScancode::LUS_KB_TAB: {
             if (CVarGetInteger(CVAR_SETTING("Mods.AlternateAssetsHotkey"), 1)) {
-                CVarSetInteger(CVAR_SETTING("AltAssets"), !CVarGetInteger(CVAR_SETTING("AltAssets"), 0));
+                CVarSetInteger(CVAR_SETTING("AltAssets"), !CVarGetInteger(CVAR_SETTING("AltAssets"), 1));
             }
             break;
         }
@@ -1570,7 +1570,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         }
     }
 
-    bool curAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 0);
+    bool curAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 1);
     if (prevAltAssets != curAltAssets) {
         prevAltAssets = curAltAssets;
         Ship::Context::GetInstance()->GetResourceManager()->SetAltAssetsEnabled(curAltAssets);
@@ -2326,6 +2326,9 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 case TEXT_HF_ZR_SIGN:
                     entrance = ENTR_ZORAS_RIVER_WEST_EXIT;
                     break;
+                case TEXT_GF_GTG_SIGN:
+                    entrance = ENTR_GERUDO_TRAINING_GROUND_ENTRANCE;
+                    break;
                 case TEXT_KF_SHOP_SIGN:
                     entrance = ENTR_KOKIRI_SHOP_0;
                     break;
@@ -2401,7 +2404,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                         auto data = GetEntranceData(overrideIndex);
                         font->charTexBuf[0] = (TEXTBOX_TYPE_WOODEN << 4) | TEXTBOX_POS_BOTTOM;
                         return msgCtx->msgLength = font->msgLength = SohUtils::CopyStringToCharBuffer(
-                                   buffer, data->source + CustomMessage::MESSAGE_END(), maxBufferSize);
+                                   buffer, data->destination + CustomMessage::MESSAGE_END(), maxBufferSize);
                     }
                 }
             }

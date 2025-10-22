@@ -537,12 +537,6 @@ void SohMenu::AddMenuEnhancements() {
     path.column = SECTION_COLUMN_1;
 
     AddWidget(path, "Mods", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Use Alternate Assets", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_SETTING("AltAssets"))
-        .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip(
-            "Toggle between standard assets and alternate assets. Usually mods will indicate if "
-            "this setting has to be used or not."));
     AddWidget(path, "Disable Bomb Billboarding", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableBombBillboarding"))
         .RaceDisable(false)
@@ -1908,15 +1902,6 @@ void SohMenu::AddMenuEnhancements() {
             .CVar(timer.timeEnable)
             .Callback([](WidgetInfo& info) { TimeDisplayUpdateDisplayOptions(); });
     }
-
-    // Mod Menu
-    path.sidebarName = "Mod Menu";
-    AddSidebarEntry("Enhancements", path.sidebarName, 1);
-    AddWidget(path, "Popout Mod Menu Window", WIDGET_WINDOW_BUTTON)
-        .CVar(CVAR_WINDOW("ModMenu"))
-        .WindowName("Mod Menu")
-        .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Mod Menu Window."));
 }
 
 } // namespace SohGui
