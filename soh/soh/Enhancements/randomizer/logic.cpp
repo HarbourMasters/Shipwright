@@ -449,6 +449,11 @@ bool Logic::CanGroundJump(bool hasBombflower) {
            (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
 }
 
+bool Logic::CanGroundJumpJumpSlash(bool hasBombflower) {
+    return ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && CanStandingShield() && CanJumpslash() &&
+           (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
+}
+
 bool Logic::CanOpenUnderwaterChest() {
     return ctx->GetTrickOption(RT_OPEN_UNDERWATER_CHEST) && CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT);
 }
