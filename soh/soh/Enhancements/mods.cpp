@@ -858,23 +858,6 @@ void RegisterFloorSwitchesHook() {
     });
 }
 
-void RegisterPauseMenuHooks() {
-    static bool pauseWarpHooksRegistered = false;
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&]() {
-        if (!GameInteractor::IsSaveLoaded() || !CVarGetInteger(CVAR_ENHANCEMENT("PauseWarp"), 0)) {
-            pauseWarpHooksRegistered = false;
-            return;
-        }
-        if (!pauseWarpHooksRegistered) {
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoUpdate>(
-                []() { PauseWarp_HandleSelection(); });
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(
-                []() { PauseWarp_Execute(); });
-            pauseWarpHooksRegistered = true;
-        }
-    });
-}
-
 void RegisterCustomSkeletons() {
     static int8_t previousTunic = -1;
 
@@ -917,7 +900,6 @@ void InitMods() {
     RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
-    RegisterPauseMenuHooks();
     RandoKaleido_RegisterHooks();
     RegisterCustomSkeletons();
 }
