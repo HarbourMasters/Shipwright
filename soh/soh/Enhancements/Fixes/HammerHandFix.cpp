@@ -13,19 +13,29 @@ static constexpr int32_t CVAR_HAMMER_HAND_DEFAULT = 0;
 #define CVAR_HAMMER_HAND_NAME CVAR_ENHANCEMENT("FixHammerHand")
 #define CVAR_HAMMER_HAND_VALUE CVarGetInteger(CVAR_HAMMER_HAND_NAME, CVAR_HAMMER_HAND_DEFAULT)
 
-void UpdateHammerHand() {
-    if (CVAR_HAMMER_HAND_VALUE && LINK_IS_ADULT) {
+static void FixHammerHand() {
+    if (LINK_IS_ADULT) {
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand1", 92,
                                    gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand2", 93, gsSPEndDisplayList());
+    }
+}
+
+static void ResetHammerHand() {
+    ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand1");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand2");
+}
+
+void UpdateHammerHand() {
+    if (CVAR_HAMMER_HAND_VALUE) {
+        FixHammerHand();
     } else {
-        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand1");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand2");
+        ResetHammerHand();
     }
 }
 
 static void RegisterHammerHandFix() {
-    COND_HOOK(OnSceneInit, true, [](int32_t) { UpdateHammerHand(); });
+    COND_HOOK(OnSceneInit, CVAR_HAMMER_HAND_VALUE, [](int32_t) { FixHammerHand(); });
 }
 
 static RegisterShipInitFunc initFunc(RegisterHammerHandFix, { CVAR_HAMMER_HAND_NAME });
