@@ -15,7 +15,8 @@ void UpdatePermanentHeartLossState();
 void UpdateHyperEnemiesState();
 void UpdateHyperBossesState();
 void InitMods();
-void UpdatePatchHand();
+void UpdateHammerHand();
+void UpdateEquipmentAlwaysVisible();
 void SwitchAge();
 
 #ifdef __cplusplus
