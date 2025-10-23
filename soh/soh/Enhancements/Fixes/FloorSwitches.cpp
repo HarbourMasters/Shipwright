@@ -11,12 +11,7 @@ static constexpr int32_t CVAR_FLOOR_SWITCHES_DEFAULT = 0;
 #define CVAR_FLOOR_SWITCHES_VALUE CVarGetInteger(CVAR_FLOOR_SWITCHES_NAME, CVAR_FLOOR_SWITCHES_DEFAULT)
 
 static void OnInitFloorSwitches(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
-    if (actor->id != ACTOR_OBJ_SWITCH) {
-        return;
-    }
-
-    ObjSwitch* switchActor = reinterpret_cast<ObjSwitch*>(actor);
+    ObjSwitch* switchActor = reinterpret_cast<ObjSwitch*>(refActor);
     s32 type = (switchActor->dyna.actor.params & 7);
 
     if (switchActor->dyna.actor.params == 0x1200 || switchActor->dyna.actor.params == 0x3A00) {
@@ -25,7 +20,7 @@ static void OnInitFloorSwitches(void* refActor) {
 }
 
 static void RegisterFloorSwitchesFix() {
-    COND_HOOK(OnActorInit, CVAR_FLOOR_SWITCHES_VALUE, OnInitFloorSwitches);
+    COND_ID_HOOK(OnActorInit, ACTOR_OBJ_SWITCH, CVAR_FLOOR_SWITCHES_VALUE, OnInitFloorSwitches);
 }
 
 static RegisterShipInitFunc initFunc(RegisterFloorSwitchesFix, { CVAR_FLOOR_SWITCHES_NAME });
