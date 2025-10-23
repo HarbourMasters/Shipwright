@@ -24,10 +24,8 @@ static constexpr int32_t DOOR_NIGHT_KAK_POTION_SHOP = 7822;
 static constexpr int32_t DOOR_NIGHT_KAK_POTION_SHOP_BACK = 8846;
 
 static void OpenAllHours(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
-    if (actor->id != ACTOR_EN_DOOR) {
-        return;
-    }
+    EnDoor* enDoor = static_cast<EnDoor*>(refActor);
+    Actor* actor = &enDoor->actor;
 
     switch (actor->params) {
         case DOOR_DAY_CHEST_GAME:
@@ -41,7 +39,6 @@ static void OpenAllHours(void* refActor) {
         case DOOR_NIGHT_KAK_POTION_SHOP:
         case DOOR_NIGHT_KAK_POTION_SHOP_BACK: {
             actor->params = (actor->params & 0xFC00) | (DOOR_SCENEEXIT << 7) | 0x3F;
-            EnDoor* enDoor = static_cast<EnDoor*>(refActor);
             EnDoor_SetupType(enDoor, gPlayState);
             break;
         }
@@ -54,7 +51,7 @@ static void RegisterOpenAllHours() {
     bool overworldDoorsOpen =
         !IS_RANDO || !OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOCK_OVERWORLD_DOORS);
 
-    COND_HOOK(OnActorInit, CVAR_OPEN_ALL_HOURS_VALUE && overworldDoorsOpen, OpenAllHours);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_DOOR, CVAR_OPEN_ALL_HOURS_VALUE && overworldDoorsOpen, OpenAllHours);
 }
 
 static RegisterShipInitFunc initFunc(RegisterOpenAllHours, { CVAR_OPEN_ALL_HOURS_NAME, "IS_RANDO" });
