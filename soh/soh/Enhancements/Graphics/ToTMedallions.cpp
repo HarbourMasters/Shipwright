@@ -12,6 +12,16 @@ static constexpr int32_t CVAR_TOT_MEDALLION_COLORS_DEFAULT = 0;
 #define CVAR_TOT_MEDALLION_COLORS_VALUE \
     CVarGetInteger(CVAR_TOT_MEDALLION_COLORS_NAME, CVAR_TOT_MEDALLION_COLORS_DEFAULT)
 
+// GreyScaleEndDlist
+#define dgEndGrayscaleAndEndDlistDL "__OTR__helpers/cosmetics/gEndGrayscaleAndEndDlistDL"
+static const ALIGN_ASSET(2) char gEndGrayscaleAndEndDlistDL[] = dgEndGrayscaleAndEndDlistDL;
+
+// This is used for the Temple of Time Medalions' color
+#define dtokinoma_room_0DL_007A70 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007A70"
+static const ALIGN_ASSET(2) char tokinoma_room_0DL_007A70[] = dtokinoma_room_0DL_007A70;
+#define dtokinoma_room_0DL_007FD0 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007FD0"
+static const ALIGN_ASSET(2) char tokinoma_room_0DL_007FD0[] = dtokinoma_room_0DL_007FD0;
+
 static void PatchToTMedallions();
 static void ResetToTMedallions();
 
