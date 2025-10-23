@@ -2,8 +2,6 @@
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
-#include "soh/OTRGlobals.h"
-#include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -136,58 +134,6 @@ void RegisterOcarinaTimeTravel() {
 
         if (justPlayedSoT && notNearAnySource && meetsTimeTravelRequirements) {
             SwitchAge();
-        }
-    });
-}
-
-static bool hasAffectedHealth = false;
-void UpdatePermanentHeartLossState() {
-    if (!GameInteractor::IsSaveLoaded())
-        return;
-
-    if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) && hasAffectedHealth) {
-        uint8_t heartContainers = gSaveContext.ship.stats.heartContainers; // each worth 16 health
-        uint8_t heartPieces = gSaveContext.ship.stats.heartPieces; // each worth 4 health, but only in groups of 4
-        uint8_t startingHealth =
-            16 * (IS_RANDO ? (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_HEARTS) + 1) : 3);
-
-        uint8_t newCapacity = startingHealth + (heartContainers * 16) + ((heartPieces - (heartPieces % 4)) * 4);
-        gSaveContext.healthCapacity = MAX(newCapacity, gSaveContext.healthCapacity);
-        gSaveContext.health = MIN(gSaveContext.health, gSaveContext.healthCapacity);
-        hasAffectedHealth = false;
-    }
-}
-
-void RegisterPermanentHeartLoss() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int16_t fileNum) {
-        hasAffectedHealth = false;
-        UpdatePermanentHeartLossState();
-    });
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) || !GameInteractor::IsSaveLoaded())
-            return;
-
-        if (gSaveContext.healthCapacity > 16 && gSaveContext.healthCapacity - gSaveContext.health >= 16) {
-            gSaveContext.healthCapacity -= 16;
-            gSaveContext.health = MIN(gSaveContext.health, gSaveContext.healthCapacity);
-            hasAffectedHealth = true;
-        }
-    });
-};
-
-void RegisterDeleteFileOnDeath() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("DeleteFileOnDeath"), 0) || !GameInteractor::IsSaveLoaded() ||
-            gPlayState == NULL)
-            return;
-
-        if (gPlayState->gameOverCtx.state == GAMEOVER_DEATH_MENU && gPlayState->pauseCtx.state == 9) {
-            SaveManager::Instance->DeleteZeldaFile(gSaveContext.fileNum);
-            hasAffectedHealth = false;
-            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
-                ->Dispatch("reset");
         }
     });
 }
@@ -661,8 +607,6 @@ void InitMods() {
     TimeSaverRegisterHooks();
     RegisterTTS();
     RegisterOcarinaTimeTravel();
-    RegisterPermanentHeartLoss();
-    RegisterDeleteFileOnDeath();
     RegisterHyperBosses();
     UpdateHyperEnemiesState();
     RegisterEnemyDefeatCounts();
