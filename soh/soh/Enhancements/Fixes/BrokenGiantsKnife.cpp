@@ -13,11 +13,7 @@ static constexpr int32_t CVAR_BGS_FIX_DEFAULT = 0;
 #define CVAR_BGS_FIX_NAME CVAR_ENHANCEMENT("FixBrokenGiantsKnife")
 #define CVAR_BGS_FIX_VALUE CVarGetInteger(CVAR_BGS_FIX_NAME, CVAR_BGS_FIX_DEFAULT)
 
-void OnReceiveBrokenGiantsKnife(GetItemEntry itemEntry) {
-    if (itemEntry.itemId != ITEM_SWORD_BGS) {
-        return;
-    }
-
+static void OnReceiveBrokenGiantsKnife(GetItemEntry itemEntry) {
     // Flag wasn't reset because Kokiri or Master Sword was missing, so we need to bypass those checks
     int32_t bypassEquipmentChecks = (1 << EQUIP_INV_SWORD_KOKIRI) | (1 << EQUIP_INV_SWORD_MASTER);
 
@@ -39,9 +35,9 @@ void OnReceiveBrokenGiantsKnife(GetItemEntry itemEntry) {
     }
 }
 
-void RegisterBrokenGiantsKnifeFix() {
+static void RegisterBrokenGiantsKnifeFix() {
     // If enhancement is off, flag should be handled exclusively by vanilla behaviour
-    COND_HOOK(OnItemReceive, CVAR_BGS_FIX_VALUE || IS_RANDO, OnReceiveBrokenGiantsKnife);
+    COND_ID_HOOK(OnItemReceive, ITEM_SWORD_BGS, CVAR_BGS_FIX_VALUE || IS_RANDO, OnReceiveBrokenGiantsKnife);
 }
 
 static RegisterShipInitFunc initFunc(RegisterBrokenGiantsKnifeFix, { CVAR_BGS_FIX_NAME, "IS_RANDO" });
