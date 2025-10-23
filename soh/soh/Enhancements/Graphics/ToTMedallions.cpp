@@ -1,11 +1,14 @@
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/mods.h"
 #include "soh/ShipInit.hpp"
-#include "functions.h"
+
+extern "C" {
+#include "align_asset_macro.h"
 #include "macros.h"
 #include "variables.h"
-
-extern "C" PlayState* gPlayState;
+#include "soh/ResourceManagerHelpers.h"
+extern PlayState* gPlayState;
+}
 
 static constexpr int32_t CVAR_TOT_MEDALLION_COLORS_DEFAULT = 0;
 #define CVAR_TOT_MEDALLION_COLORS_NAME CVAR_ENHANCEMENT("ToTMedallionsColors")
