@@ -14,6 +14,19 @@ static constexpr int32_t CVAR_AGE_EQUIPMENT_DEFAULT = 0;
 #define CVAR_AGE_EQUIPMENT_NAME CVAR_ENHANCEMENT("EquipmentAlwaysVisible")
 #define CVAR_AGE_EQUIPMENT_VALUE CVarGetInteger(CVAR_AGE_EQUIPMENT_NAME, CVAR_AGE_EQUIPMENT_DEFAULT)
 
+static void MakeEquipmentAlwaysVisible();
+static void ResetAdultHands();
+static void ResetChildHands();
+
+void UpdateEquipmentAlwaysVisible() {
+    if (CVAR_AGE_EQUIPMENT_VALUE) {
+        MakeEquipmentAlwaysVisible();
+    } else {
+        ResetAdultHands();
+        ResetChildHands();
+    }
+}
+
 static void MakeEquipmentAlwaysVisible() {
     if (LINK_IS_CHILD) {
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92,
@@ -71,15 +84,6 @@ static void ResetChildHands() {
     ResourceMgr_UnpatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot");
     ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang");
     ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield");
-}
-
-void UpdateEquipmentAlwaysVisible() {
-    if (CVAR_AGE_EQUIPMENT_VALUE) {
-        MakeEquipmentAlwaysVisible();
-    } else {
-        ResetAdultHands();
-        ResetChildHands();
-    }
 }
 
 static void RegisterAgeDependentEquipmentHook() {
