@@ -75,8 +75,9 @@ static MedallionColorPatch medallionColorPatches[] = {
                                             "ToTMedallions_2_MakePurple", 27) },
 };
 
-static ToTPatchSetup endGrayscale = ToTPatchSetup(gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL),
-                                                  "ToTMedallions_EndGrayscaleAndEndDlist", 160, "ToTMedallions_2_EndGrayscaleAndEndDlist", 51);
+static ToTPatchSetup endGrayscale =
+    ToTPatchSetup(gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL), "ToTMedallions_EndGrayscaleAndEndDlist", 160,
+                  "ToTMedallions_2_EndGrayscaleAndEndDlist", 51);
 
 static void PatchToTMedallions() {
     // TODO: Refactor the DemoEffect_UpdateJewelAdult and DemoEffect_UpdateJewelChild from z_demo_effect
