@@ -36,14 +36,14 @@ class ToTPatchSetup {
     void ApplyPatch(bool colored = true) {
         Gfx colorGfx = colored ? ifColored : grayscaleWhite;
         ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, patchName, index, colorGfx);
-        if (patchName2 != "") {
+        if (patchName2 && *patchName2) {
             ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, patchName2, index2, colorGfx);
         }
     }
 
     void RevertPatch() {
         ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, patchName);
-        if (patchName2 != "") {
+        if (patchName2 && *patchName2) {
             ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007FD0, patchName2);
         }
     }
