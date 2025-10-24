@@ -64,23 +64,6 @@ void SwitchAge() {
     });
 }
 
-static bool MeetsTimeTravelRequirements() {
-    bool hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
-    bool hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
-    switch (CVAR_TIME_TRAVEL_VALUE) {
-        case TIME_TRAVEL_ANY:
-            return true;
-        case TIME_TRAVEL_ANY_MS:
-            return hasMasterSword;
-        case TIME_TRAVEL_OOT_MS:
-            return hasMasterSword && hasOcarinaOfTime;
-        case TIME_TRAVEL_OOT:
-            return hasOcarinaOfTime;
-        default:
-            return false;
-    }
-}
-
 static void OnSongOfTime() {
     if (!GameInteractor::IsSaveLoaded()) {
         return;
@@ -104,17 +87,40 @@ static void OnSongOfTime() {
 }
 
 static void RegisterOcarinaTimeTravel() {
-    bool meetsRequirements = MeetsTimeTravelRequirements();
+    bool needsOcarinaOfTime = false;
+    bool needsMasterSword = false;
+    int timeTravelSetting = CVAR_TIME_TRAVEL_VALUE;
+
+    switch (timeTravelSetting) {
+        case TIME_TRAVEL_ANY:
+            break;
+        case TIME_TRAVEL_ANY_MS:
+            needsMasterSword = true;
+            break;
+        case TIME_TRAVEL_OOT_MS:
+            needsOcarinaOfTime = true;
+            needsMasterSword = true;
+            break;
+        case TIME_TRAVEL_OOT:
+            needsOcarinaOfTime = true;
+            break;
+        case TIME_TRAVEL_DISABLED:
+        default:
+            break;
+    }
+
+    bool meetsOcarinaRequirement = !needsOcarinaOfTime || (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
+    bool meetsMasterSwordRequirement = !needsMasterSword || CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
 
     // If requirements are met at the time of registration, we hook directly into the song action
-    COND_HOOK(OnOcarinaSongAction, meetsRequirements, OnSongOfTime);
+    COND_HOOK(OnOcarinaSongAction, timeTravelSetting && meetsOcarinaRequirement && meetsMasterSwordRequirement,
+              OnSongOfTime);
 
     // Otherwise, if not disabled, check requirements again when one of the relevant items is received
-    COND_HOOK(OnItemReceive, !meetsRequirements && CVAR_TIME_TRAVEL_VALUE, [](GetItemEntry itemEntry) {
-        if (itemEntry.itemId == ITEM_OCARINA_TIME || itemEntry.itemId == ITEM_SWORD_MASTER) {
-            RegisterOcarinaTimeTravel();
-        }
-    });
+    COND_ID_HOOK(OnItemReceive, ITEM_OCARINA_TIME, timeTravelSetting && !meetsOcarinaRequirement,
+                 [](GetItemEntry itemEntry) { RegisterOcarinaTimeTravel(); });
+    COND_ID_HOOK(OnItemReceive, ITEM_SWORD_MASTER, timeTravelSetting && !meetsMasterSwordRequirement,
+                 [](GetItemEntry itemEntry) { RegisterOcarinaTimeTravel(); });
 }
 
 static RegisterShipInitFunc initFunc(RegisterOcarinaTimeTravel, { CVAR_TIME_TRAVEL_NAME });
