@@ -227,9 +227,10 @@ uint8_t StonesRequiredBySettings() {
     }
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
         stones = std::max<uint8_t>({ stones, ctx->GetOption(RSK_LACS_STONE_COUNT).Get() });
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
         stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Get() - 6) });
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS)) {
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS) &&
+               ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
         stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get() - 6) });
     }
     return stones;
@@ -247,12 +248,12 @@ uint8_t MedallionsRequiredBySettings() {
         medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Get() - 3;
     }
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_MEDALLIONS)) {
-        medallions = std::max({ medallions, ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Get() });
+        medallions = std::max(medallions, ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Get());
     } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
-        medallions = std::max({ medallions, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Get() - 3) });
+        medallions = std::max(medallions, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Get() - 3));
     } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS) &&
                ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
-        medallions = std::max({ medallions, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get() - 3) });
+        medallions = std::max(medallions, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get() - 3));
     }
     return medallions;
 }
@@ -264,7 +265,7 @@ uint8_t TokensRequiredBySettings() {
         tokens = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Get();
     }
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
-        tokens = std::max<uint8_t>({ tokens, ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get() });
+        tokens = std::max<uint8_t>(tokens, ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get());
     }
     return tokens;
 }
