@@ -11,7 +11,7 @@ static constexpr int32_t CVAR_HURT_CONTAINER_DEFAULT = 0;
 #define CVAR_HURT_CONTAINER_NAME CVAR_ENHANCEMENT("HurtContainer")
 #define CVAR_HURT_CONTAINER_VALUE CVarGetInteger(CVAR_HURT_CONTAINER_NAME, CVAR_HURT_CONTAINER_DEFAULT)
 
-static int32_t hurtEnabled = false;
+static bool hurtEnabled = false;
 
 void UpdateHurtContainerModeState() {
     hurtEnabled = CVAR_HURT_CONTAINER_VALUE;
