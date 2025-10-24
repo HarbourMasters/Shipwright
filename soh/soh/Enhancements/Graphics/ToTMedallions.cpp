@@ -25,17 +25,6 @@ static const ALIGN_ASSET(2) char tokinoma_room_0DL_007A70[] = dtokinoma_room_0DL
 #define dtokinoma_room_0DL_007FD0 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007FD0"
 static const ALIGN_ASSET(2) char tokinoma_room_0DL_007FD0[] = dtokinoma_room_0DL_007FD0;
 
-static void PatchToTMedallions();
-static void ResetToTMedallions();
-
-void UpdateToTMedallions() {
-    if (CVAR_TOT_MEDALLION_COLORS_VALUE) {
-        PatchToTMedallions();
-    } else {
-        ResetToTMedallions();
-    }
-}
-
 static void PatchToTMedallions() {
     // TODO: Refactor the DemoEffect_UpdateJewelAdult and DemoEffect_UpdateJewelChild from z_demo_effect
     // effects to take effect in there
@@ -120,6 +109,14 @@ static void ResetToTMedallions() {
 
     ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_EndGrayscaleAndEndDlist");
     ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_EndGrayscaleAndEndDlist");
+}
+
+void UpdateToTMedallions() {
+    if (CVAR_TOT_MEDALLION_COLORS_VALUE) {
+        PatchToTMedallions();
+    } else {
+        ResetToTMedallions();
+    }
 }
 
 static void CheckTempleOfTime(int16_t sceneNum) {
