@@ -1,4 +1,3 @@
-#include <vector>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/mods.h"
 #include "soh/ShipInit.hpp"
@@ -30,101 +29,76 @@ static Gfx grayscaleWhite = gsDPSetGrayscaleColor(255, 255, 255, 255);
 
 class ToTPatchSetup {
   public:
-    ToTPatchSetup(const char* path, const char* patchName, int index, Gfx ifColored)
-        : path(path), patchName(patchName), index(index), ifColored(ifColored) {
+    ToTPatchSetup(Gfx ifColored, const char* patchName, int index, const char* patchName2 = "", int index2 = 0)
+        : patchName(patchName), index(index), ifColored(ifColored), patchName2(patchName2), index2(index2) {
     }
 
     void ApplyPatch(bool colored = true) {
-        ResourceMgr_PatchGfxByName(path, patchName, index, colored ? ifColored : grayscaleWhite);
+        Gfx colorGfx = colored ? ifColored : grayscaleWhite;
+        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, patchName, index, colorGfx);
+        if (patchName2 != "") {
+            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, patchName2, index2, colorGfx);
+        }
     }
 
     void RevertPatch() {
-        ResourceMgr_UnpatchGfxByName(path, patchName);
+        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, patchName);
+        if (patchName2 != "") {
+            ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007FD0, patchName2);
+        }
     }
 
   private:
-    const char* path;
     const char* patchName;
+    const char* patchName2;
     int index;
+    int index2;
     Gfx ifColored;
 };
 
 typedef struct MedallionColorPatch {
     QuestItem questItemId;
-    std::vector<ToTPatchSetup> patches;
+    ToTPatchSetup patch;
 } MedallionColorPatch;
 
-static ToTPatchSetup startGrayscale[] = {
-    ToTPatchSetup(tokinoma_room_0DL_007A70, "ToTMedallions_StartGrayscale", 7, gsSPGrayscale(true)),
-    ToTPatchSetup(tokinoma_room_0DL_007FD0, "ToTMedallions_2_StartGrayscale", 7, gsSPGrayscale(true)),
-};
+static ToTPatchSetup startGrayscale =
+    ToTPatchSetup(gsSPGrayscale(true), "ToTMedallions_StartGrayscale", 7, "ToTMedallions_2_StartGrayscale", 7);
 
 static MedallionColorPatch medallionColorPatches[] = {
-    { QUEST_MEDALLION_WATER,
-      { ToTPatchSetup(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue", 16,
-                      gsDPSetGrayscaleColor(0, 161, 255, 255)) } },
-    { QUEST_MEDALLION_SPIRIT,
-      { ToTPatchSetup(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange", 45,
-                      gsDPSetGrayscaleColor(255, 135, 0, 255)) } },
-    { QUEST_MEDALLION_LIGHT,
-      { ToTPatchSetup(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow", 69,
-                      gsDPSetGrayscaleColor(255, 255, 0, 255)),
-        ToTPatchSetup(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow", 16,
-                      gsDPSetGrayscaleColor(255, 255, 0, 255)) } },
-    { QUEST_MEDALLION_FOREST,
-      { ToTPatchSetup(tokinoma_room_0DL_007A70, "ToTMedallions_MakeGreen", 94,
-                      gsDPSetGrayscaleColor(0, 255, 0, 255)) } },
-    { QUEST_MEDALLION_FIRE,
-      { ToTPatchSetup(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed", 118,
-                      gsDPSetGrayscaleColor(255, 0, 0, 255)) } },
-    { QUEST_MEDALLION_SHADOW,
-      { ToTPatchSetup(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142,
-                      gsDPSetGrayscaleColor(212, 0, 255, 255)),
-        ToTPatchSetup(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27,
-                      gsDPSetGrayscaleColor(212, 0, 255, 255) } },
+    { QUEST_MEDALLION_WATER, ToTPatchSetup(gsDPSetGrayscaleColor(0, 161, 255, 255), "ToTMedallions_MakeBlue", 16) },
+    { QUEST_MEDALLION_SPIRIT, ToTPatchSetup(gsDPSetGrayscaleColor(255, 135, 0, 255), "ToTMedallions_MakeOrange", 45) },
+    { QUEST_MEDALLION_LIGHT, ToTPatchSetup(gsDPSetGrayscaleColor(255, 255, 0, 255), "ToTMedallions_MakeYellow", 69,
+                                           "ToTMedallions_2_MakeYellow", 16) },
+    { QUEST_MEDALLION_FOREST, ToTPatchSetup(gsDPSetGrayscaleColor(0, 255, 0, 255), "ToTMedallions_MakeGreen", 94) },
+    { QUEST_MEDALLION_FIRE, ToTPatchSetup(gsDPSetGrayscaleColor(255, 0, 0, 255), "ToTMedallions_MakeRed", 118) },
+    { QUEST_MEDALLION_SHADOW, ToTPatchSetup(gsDPSetGrayscaleColor(212, 0, 255, 255), "ToTMedallions_MakePurple", 142,
+                                            "ToTMedallions_2_MakePurple", 27) },
 };
 
-static ToTPatchSetup endGrayscale[] = {
-    ToTPatchSetup(tokinoma_room_0DL_007A70, "ToTMedallions_EndGrayscaleAndEndDlist", 160,
-                  gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL)),
-    ToTPatchSetup(tokinoma_room_0DL_007FD0, "ToTMedallions_2_EndGrayscaleAndEndDlist", 51,
-                  gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL)),
-};
+static ToTPatchSetup endGrayscale = ToTPatchSetup(gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL),
+                                                  "ToTMedallions_EndGrayscaleAndEndDlist", 160, "ToTMedallions_2_EndGrayscaleAndEndDlist", 51);
 
 static void PatchToTMedallions() {
     // TODO: Refactor the DemoEffect_UpdateJewelAdult and DemoEffect_UpdateJewelChild from z_demo_effect
     // effects to take effect in there
-    for (auto& patch : startGrayscale) {
-        patch.ApplyPatch();
-    }
+    startGrayscale.ApplyPatch();
 
     for (auto& medallionPatch : medallionColorPatches) {
-        bool hasMedallion = CHECK_QUEST_ITEM(medallionPatch.questItemId);
-        for (auto& patch : medallionPatch.patches) {
-            patch.ApplyPatch(hasMedallion);
-        }
+        medallionPatch.patch.ApplyPatch(CHECK_QUEST_ITEM(medallionPatch.questItemId));
     }
 
-    for (auto& patch : endGrayscale) {
-        patch.ApplyPatch();
-    }
+    endGrayscale.ApplyPatch();
 }
 
 static void ResetToTMedallions() {
     // Unpatch everything
-    for (auto& patch : startGrayscale) {
-        patch.RevertPatch();
-    }
+    startGrayscale.RevertPatch();
 
     for (auto& medallionPatch : medallionColorPatches) {
-        for (auto& patch : medallionPatch.patches) {
-            patch.RevertPatch();
-        }
+        medallionPatch.patch.RevertPatch();
     }
 
-    for (auto& patch : endGrayscale) {
-        patch.RevertPatch();
-    }
+    endGrayscale.RevertPatch();
 }
 
 void UpdateToTMedallions() {
