@@ -97,7 +97,7 @@ static void OnSongOfTime() {
     bool justPlayedSoT = gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME;
     bool notNearAnySource = !nearbyTimeBlockEmpty && !nearbyTimeBlock && !nearbyOcarinaSpot && !nearbyDoorOfTime &&
                             !nearbyFrogs && !nearbyGossipStone;
-    
+
     if (justPlayedSoT && notNearAnySource) {
         SwitchAge();
     }
