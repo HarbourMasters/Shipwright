@@ -1177,6 +1177,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_HEARTS_INCREASE_WITH_CONTAINERS,
+
+    // #### `result`
+    // ```c
     // (respawnFlag == 1) || (respawnFlag == -1)
     // ```
     // #### `args`

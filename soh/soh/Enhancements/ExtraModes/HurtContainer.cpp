@@ -27,6 +27,12 @@ void UpdateHurtContainerModeState() {
 
 static void RegisterHurtContainer() {
     COND_HOOK(OnLoadGame, hurtEnabled != CVAR_HURT_CONTAINER_VALUE, [](int32_t) { UpdateHurtContainerModeState(); });
+
+    COND_VB_SHOULD(VB_HEARTS_INCREASE_WITH_CONTAINERS, CVAR_HURT_CONTAINER_VALUE, {
+        *should = false;
+        gSaveContext.healthCapacity -= 0x10;
+        gSaveContext.health -= 0x10;
+    });
 }
 
 static RegisterShipInitFunc initFunc(RegisterHurtContainer, { CVAR_HURT_CONTAINER_NAME });
