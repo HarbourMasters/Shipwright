@@ -11,14 +11,14 @@ static constexpr int32_t CVAR_HURT_CONTAINER_DEFAULT = 0;
 #define CVAR_HURT_CONTAINER_NAME CVAR_ENHANCEMENT("HurtContainer")
 #define CVAR_HURT_CONTAINER_VALUE CVarGetInteger(CVAR_HURT_CONTAINER_NAME, CVAR_HURT_CONTAINER_DEFAULT)
 
-static bool hurtEnabled = false;
+static int32_t hurtEnabled = false;
 
 void UpdateHurtContainerModeState() {
     hurtEnabled = CVAR_HURT_CONTAINER_VALUE;
     uint16_t getHeartPieces = gSaveContext.ship.stats.heartPieces / 4;
     uint16_t getHeartContainers = gSaveContext.ship.stats.heartContainers;
 
-    if (hurtEnabled) {
+    if (hurtEnabled != CVAR_HURT_CONTAINER_DEFAULT) {
         gSaveContext.healthCapacity = 320 - ((getHeartPieces + getHeartContainers) * 16);
     } else {
         gSaveContext.healthCapacity = 48 + ((getHeartPieces + getHeartContainers) * 16);
