@@ -28,7 +28,6 @@
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
-#include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
@@ -772,22 +771,6 @@ void RegisterToTMedallions() {
     });
 }
 
-void RegisterFloorSwitchesHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
-        Actor* actor = static_cast<Actor*>(refActor);
-        if (actor->id != ACTOR_OBJ_SWITCH || !CVarGetInteger(CVAR_ENHANCEMENT("FixFloorSwitches"), 0)) {
-            return;
-        }
-
-        ObjSwitch* switchActor = reinterpret_cast<ObjSwitch*>(actor);
-        s32 type = (switchActor->dyna.actor.params & 7);
-
-        if (switchActor->dyna.actor.params == 0x1200 || switchActor->dyna.actor.params == 0x3A00) {
-            switchActor->dyna.actor.world.pos.y -= 1;
-        }
-    });
-}
-
 void RegisterPauseMenuHooks() {
     static bool pauseWarpHooksRegistered = false;
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&]() {
@@ -844,7 +827,6 @@ void InitMods() {
     RegisterBossDefeatTimestamps();
     RegisterRandomizedEnemySizes();
     RegisterToTMedallions();
-    RegisterFloorSwitchesHook();
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();
     RandoKaleido_RegisterHooks();
