@@ -1083,7 +1083,7 @@ void SohMenu::AddMenuEnhancements() {
         .RaceDisable(false)
         .Callback([](WidgetInfo& info) {
             if (gPlayState != NULL) {
-                UpdateDirtPathFixState(gPlayState->sceneNum);
+                DirtPathFix_UpdateZFightingMode(gPlayState->sceneNum);
             }
         })
         .Options(

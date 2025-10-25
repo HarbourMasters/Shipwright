@@ -7,7 +7,7 @@ static constexpr ZFightingFixType CVAR_DIRT_PATH_DEFAULT = ZFIGHT_FIX_DISABLED;
 #define CVAR_DIRT_PATH_NAME CVAR_ENHANCEMENT("SceneSpecificDirtPathFix")
 #define CVAR_DIRT_PATH_VALUE CVarGetInteger(CVAR_DIRT_PATH_NAME, CVAR_DIRT_PATH_DEFAULT)
 
-void UpdateDirtPathFixState(int32_t sceneNum) {
+void DirtPathFix_UpdateZFightingMode(int32_t sceneNum) {
     switch (sceneNum) {
         case SCENE_HYRULE_FIELD:
         case SCENE_KOKIRI_FOREST:
@@ -20,7 +20,7 @@ void UpdateDirtPathFixState(int32_t sceneNum) {
 }
 
 static void RegisterDirtPathFix() {
-    COND_HOOK(OnTransitionEnd, CVAR_DIRT_PATH_VALUE, UpdateDirtPathFixState);
+    COND_HOOK(OnTransitionEnd, CVAR_DIRT_PATH_VALUE, DirtPathFix_UpdateZFightingMode);
 }
 
 static RegisterShipInitFunc initFunc(RegisterDirtPathFix, { CVAR_DIRT_PATH_NAME });

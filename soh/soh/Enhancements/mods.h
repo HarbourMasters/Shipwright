@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-void UpdateDirtPathFixState(int32_t sceneNum);
+void DirtPathFix_UpdateZFightingMode(int32_t sceneNum);
 void UpdateMirrorModeState(int32_t sceneNum);
 void UpdateHurtContainerModeState(bool newState);
 void PatchToTMedallions();
