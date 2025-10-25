@@ -14,7 +14,6 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Poh/z_en_poh.h"
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
-#include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 
 extern SaveContext gSaveContext;
 }
@@ -23,14 +22,13 @@ static void IncrementEnemyDefeatCount(GameplayStatCount countType) {
     gSaveContext.ship.stats.count[countType]++;
 }
 
-#define ENEMY_DEFEAT_COUNT(actorID, func) COND_ID_HOOK(OnEnemyDefeat, actorID, true, func);
+#define ENEMY_DEFEAT_COUNT(actorID, func) \
+    COND_ID_HOOK(OnEnemyDefeat, actorID, true, [](void* refActor) { func(static_cast<Actor*>(refActor)); });
 
 #define ENEMY_DEFEAT_COUNT_UNIQUE(actorID, countType) \
     ENEMY_DEFEAT_COUNT(actorID, [](void*) { IncrementEnemyDefeatCount(countType); });
 
-static void EnemyDefeatCounts_EnBb(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
-
+static void EnemyDefeatCounts_EnBb(Actor* actor) {
     GameplayStatCount countType;
     switch (actor->params) {
         case ENBB_GREEN:
@@ -53,36 +51,30 @@ static void EnemyDefeatCounts_EnBb(void* refActor) {
     IncrementEnemyDefeatCount(countType);
 }
 
-static void EnemyDefeatCounts_EnDekubaba(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
+static void EnemyDefeatCounts_EnDekubaba(Actor* actor) {
     GameplayStatCount countType =
         (actor->params == DEKUBABA_BIG) ? COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG : COUNT_ENEMIES_DEFEATED_DEKU_BABA;
     IncrementEnemyDefeatCount(countType);
 }
 
-static void EnemyDefeatCounts_EnZf(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
+static void EnemyDefeatCounts_EnZf(Actor* actor) {
     GameplayStatCount countType =
         (actor->params == ENZF_TYPE_DINOLFOS) ? COUNT_ENEMIES_DEFEATED_DINOLFOS : COUNT_ENEMIES_DEFEATED_LIZALFOS;
     IncrementEnemyDefeatCount(countType);
 }
 
-static void EnemyDefeatCounts_EnRd(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
+static void EnemyDefeatCounts_EnRd(Actor* actor) {
     GameplayStatCount countType = (actor->params >= -1) ? COUNT_ENEMIES_DEFEATED_REDEAD : COUNT_ENEMIES_DEFEATED_GIBDO;
     IncrementEnemyDefeatCount(countType);
 }
 
-static void EnemyDefeatCounts_EnIk(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
+static void EnemyDefeatCounts_EnIk(Actor* actor) {
     GameplayStatCount countType =
         (actor->params == 0) ? COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU : COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE;
     IncrementEnemyDefeatCount(countType);
 }
 
-static void EnemyDefeatCounts_EnFirefly(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
-
+static void EnemyDefeatCounts_EnFirefly(Actor* actor) {
     GameplayStatCount countType;
     switch (actor->params) {
         case KEESE_NORMAL_FLY:
@@ -103,59 +95,51 @@ static void EnemyDefeatCounts_EnFirefly(void* refActor) {
     IncrementEnemyDefeatCount(countType);
 }
 
-static void EnemyDefeatCounts_EnTp(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
+static void EnemyDefeatCounts_EnTp(Actor* actor) {
     // Only count the head, otherwise each body segment will increment
     if (actor->params == TAILPASARAN_HEAD) {
         IncrementEnemyDefeatCount(COUNT_ENEMIES_DEFEATED_TAILPASARAN);
     }
 }
 
-static void EnemyDefeatCounts_EnReeba(void* refActor) {
-    EnReeba* reeba = static_cast<EnReeba*>(refActor);
+static void EnemyDefeatCounts_EnReeba(Actor* actor) {
+    EnReeba* reeba = (EnReeba*)actor;
     GameplayStatCount countType = reeba->isBig ? COUNT_ENEMIES_DEFEATED_LEEVER_BIG : COUNT_ENEMIES_DEFEATED_LEEVER;
     IncrementEnemyDefeatCount(countType);
 }
 
-static void EnemyDefeatCounts_EnMb(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
+static void EnemyDefeatCounts_EnMb(Actor* actor) {
     GameplayStatCount countType =
         (actor->params == 0) ? COUNT_ENEMIES_DEFEATED_MOBLIN_CLUB : COUNT_ENEMIES_DEFEATED_MOBLIN;
     IncrementEnemyDefeatCount(countType);
 }
 
-static void EnemyDefeatCounts_EnPeehat(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
+static void EnemyDefeatCounts_EnPeehat(Actor* actor) {
     GameplayStatCount countType =
         (actor->params == PEAHAT_TYPE_LARVA) ? COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA : COUNT_ENEMIES_DEFEATED_PEAHAT;
     IncrementEnemyDefeatCount(countType);
 }
 
-static void EnemyDefeatCounts_EnPoh(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
+static void EnemyDefeatCounts_EnPoh(Actor* actor) {
     GameplayStatCount countType = (actor->params == EN_POH_FLAT || actor->params == EN_POH_SHARP)
                                       ? COUNT_ENEMIES_DEFEATED_POE_COMPOSER
                                       : COUNT_ENEMIES_DEFEATED_POE;
     IncrementEnemyDefeatCount(countType);
 }
 
-static void EnemyDefeatCounts_EnPoField(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
+static void EnemyDefeatCounts_EnPoField(Actor* actor) {
     GameplayStatCount countType =
         (actor->params == EN_PO_FIELD_BIG) ? COUNT_ENEMIES_DEFEATED_POE_BIG : COUNT_ENEMIES_DEFEATED_POE;
     IncrementEnemyDefeatCount(countType);
 }
 
-static void EnemyDefeatCounts_EnSt(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
+static void EnemyDefeatCounts_EnSt(Actor* actor) {
     GameplayStatCount countType =
         (actor->params == 1) ? COUNT_ENEMIES_DEFEATED_SKULLTULA_BIG : COUNT_ENEMIES_DEFEATED_SKULLTULA;
     IncrementEnemyDefeatCount(countType);
 }
 
-static void EnemyDefeatCounts_EnSw(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
-
+static void EnemyDefeatCounts_EnSw(Actor* actor) {
     GameplayStatCount countType;
     if (((actor->params & 0xE000) >> 0xD) != 0) {
         countType = COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD;
@@ -166,15 +150,13 @@ static void EnemyDefeatCounts_EnSw(void* refActor) {
     IncrementEnemyDefeatCount(countType);
 }
 
-static void EnemyDefeatCounts_EnTite(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
+static void EnemyDefeatCounts_EnTite(Actor* actor) {
     GameplayStatCount countType =
         (actor->params == TEKTITE_BLUE) ? COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE : COUNT_ENEMIES_DEFEATED_TEKTITE_RED;
     IncrementEnemyDefeatCount(countType);
 }
 
-static void EnemyDefeatCounts_EnWf(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
+static void EnemyDefeatCounts_EnWf(Actor* actor) {
     GameplayStatCount countType =
         (actor->params == WOLFOS_WHITE) ? COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE : COUNT_ENEMIES_DEFEATED_WOLFOS;
     IncrementEnemyDefeatCount(countType);
