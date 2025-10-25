@@ -17,7 +17,6 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 
 extern SaveContext gSaveContext;
-extern PlayState* gPlayState;
 }
 
 static void IncrementEnemyDefeatCount(GameplayStatCount countType) {
