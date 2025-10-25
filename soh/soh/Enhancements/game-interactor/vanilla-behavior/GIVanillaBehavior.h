@@ -537,6 +537,15 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*EnFz`
+    // - `*s32`
+    VB_FREEZARD_SCALE_HEALTH_WITH_SIZE,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`

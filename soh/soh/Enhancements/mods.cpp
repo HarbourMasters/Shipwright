@@ -677,60 +677,6 @@ void RegisterHurtContainerModeHandler() {
         [](int32_t fileNum) { UpdateHurtContainerModeState(CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0)); });
 }
 
-void RegisterRandomizedEnemySizes() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
-        // Randomized Enemy Sizes
-        Player* player = GET_PLAYER(gPlayState);
-        Actor* actor = static_cast<Actor*>(refActor);
-
-        // Exclude wobbly platforms in Jabu because they need to act like platforms.
-        // Exclude demo effect for Zora sapphire being re-categorized as a "boss".
-        // Exclude Dead Hand hands and Bongo Bongo main body because they make the fights (near) impossible.
-        uint8_t excludedEnemy = actor->id == ACTOR_EN_BROB || actor->id == ACTOR_EN_DHA ||
-                                actor->id == ACTOR_DEMO_EFFECT || (actor->id == ACTOR_BOSS_SST && actor->params == -1);
-
-        // Dodongo, Volvagia and Dead Hand are always smaller because they're impossible when bigger.
-        uint8_t smallOnlyEnemy = actor->id == ACTOR_BOSS_DODONGO || actor->id == ACTOR_BOSS_FD ||
-                                 actor->id == ACTOR_BOSS_FD2 || actor->id == ACTOR_EN_DH;
-
-        // Only apply to enemies and bosses.
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemySizes"), 0) ||
-            (actor->category != ACTORCAT_ENEMY && actor->category != ACTORCAT_BOSS) || excludedEnemy) {
-            return;
-        }
-
-        float randomNumber;
-        float randomScale;
-
-        uint8_t bigActor = rand() % 2;
-
-        // Big actor
-        if (bigActor && !smallOnlyEnemy) {
-            randomNumber = rand() % 200;
-            // Between 100% and 300% size.
-            randomScale = 1.0f + (randomNumber / 100);
-        } else {
-            // Small actor
-            randomNumber = rand() % 90;
-            // Between 10% and 100% size.
-            randomScale = 0.1f + (randomNumber / 100);
-        }
-
-        Actor_SetScale(actor, actor->scale.z * randomScale);
-
-        if (CVarGetInteger(CVAR_ENHANCEMENT("EnemySizeScalesHealth"), 0) && (actor->category == ACTORCAT_ENEMY)) {
-            // Scale the health based on a smaller factor than randomScale
-            float healthScalingFactor = 0.8f; // Adjust this factor as needed
-            float scaledHealth = actor->colChkInfo.health * (randomScale * healthScalingFactor);
-
-            // Ensure the scaled health doesn't go below zero
-            actor->colChkInfo.health = fmax(scaledHealth, 1.0f);
-        } else {
-            return;
-        }
-    });
-}
-
 void RegisterFloorSwitchesHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
@@ -784,7 +730,6 @@ void InitMods() {
     RegisterResetNaviTimer();
     RegisterEnemyDefeatCounts();
     RegisterBossDefeatTimestamps();
-    RegisterRandomizedEnemySizes();
     RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
