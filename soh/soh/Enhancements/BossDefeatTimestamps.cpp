@@ -1,14 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
-extern "C" {
-#include "functions.h"
-#include "macros.h"
-#include "variables.h"
-#include "z64save.h"
-extern SaveContext gSaveContext;
-extern PlayState* gPlayState;
-}
+extern "C" SaveContext gSaveContext;
 
 #define BOSS_DEFEAT_TIMESTAMP(actorID, timestamp) \
     COND_ID_HOOK(OnBossDefeat, actorID, true,     \
