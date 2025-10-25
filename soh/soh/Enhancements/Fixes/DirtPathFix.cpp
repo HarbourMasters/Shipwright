@@ -20,7 +20,7 @@ void UpdateDirtPathFixState(int32_t sceneNum) {
 }
 
 static void RegisterDirtPathFix() {
-    COND_HOOK(OnTransitionEnd, true, UpdateDirtPathFixState);
+    COND_HOOK(OnTransitionEnd, CVAR_DIRT_PATH_VALUE, UpdateDirtPathFixState);
 }
 
 static RegisterShipInitFunc initFunc(RegisterDirtPathFix, { CVAR_DIRT_PATH_NAME });
