@@ -2,10 +2,20 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "functions.h"
-#include "macros.h"
-#include "variables.h"
-#include "z64save.h"
+#include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
+#include "src/overlays/actors/ovl_En_Dekubaba/z_en_dekubaba.h"
+#include "src/overlays/actors/ovl_En_Mb/z_en_mb.h"
+#include "src/overlays/actors/ovl_En_Tite/z_en_tite.h"
+#include "src/overlays/actors/ovl_En_Zf/z_en_zf.h"
+#include "src/overlays/actors/ovl_En_Wf/z_en_wf.h"
+#include "src/overlays/actors/ovl_En_Reeba/z_en_reeba.h"
+#include "src/overlays/actors/ovl_En_Peehat/z_en_peehat.h"
+#include "src/overlays/actors/ovl_En_Po_Field/z_en_po_field.h"
+#include "src/overlays/actors/ovl_En_Poh/z_en_poh.h"
+#include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
+#include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
+#include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
+
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
