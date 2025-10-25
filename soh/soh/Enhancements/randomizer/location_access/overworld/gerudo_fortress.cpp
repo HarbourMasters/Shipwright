@@ -94,11 +94,12 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_NEAR_GROTTO,        []{return true;}),
         Entrance(RR_GF_TOP_OF_LOWER_VINES, []{return true /* logic->CanClimb() */;}),
         Entrance(RR_GF_ABOVE_GTG,          []{return true;}),
+        Entrance(RR_GF_BELOW_GS,           []{return logic->IsAdult && logic->CanGroundJump();}),
     });
 
     areaTable[RR_GF_TOP_OF_LOWER_VINES] = Region("GF Top of Lower Vines", SCENE_GERUDOS_FORTRESS, {}, {}, {
         //Exits
-        Entrance(RR_TH_KITCHEN_TOP,           []{return true;}),
+        Entrance(RR_TH_KITCHEN_BY_CORRIDOR,   []{return true;}),
         Entrance(RR_TH_DOUBLE_CELL,           []{return true;}),
         Entrance(RR_GF_ABOVE_GTG,             []{return true;}),
         Entrance(RR_GF_BOTTOM_OF_LOWER_VINES, []{return true;}),
@@ -111,13 +112,13 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOMB_THROW) && logic->CanGetNightTimeGS()),
     }, {
         //Exits
-        Entrance(RR_TH_KITCHEN_TOP,           []{return true;}),
-        Entrance(RR_GF_BOTTOM_OF_LOWER_VINES, []{return true;}),
-        Entrance(RR_GF_TOP_OF_LOWER_VINES,    []{return true;}),
-        Entrance(RR_GF_SLOPED_ROOF,           []{return logic->IsAdult;}),
-        Entrance(RR_GF_LONG_ROOF,             []{return logic->CanUse(RG_HOVER_BOOTS) /* || bunny hood jump */ || logic->IsAdult && ctx->GetTrickOption(RT_GF_JUMP);}),
-        Entrance(RR_GF_NEAR_CHEST,            []{return logic->CanUse(RG_LONGSHOT);}),
-        Entrance(RR_GF_BELOW_GS,              []{return true;}),
+        Entrance(RR_TH_KITCHEN_OPPOSITE_CORRIDOR, []{return true;}),
+        Entrance(RR_GF_BOTTOM_OF_LOWER_VINES,     []{return true;}),
+        Entrance(RR_GF_TOP_OF_LOWER_VINES,        []{return true;}),
+        Entrance(RR_GF_SLOPED_ROOF,               []{return logic->IsAdult || logic->CanGroundJump();}),
+        Entrance(RR_GF_LONG_ROOF,                 []{return logic->CanUse(RG_HOVER_BOOTS);}),
+        Entrance(RR_GF_NEAR_CHEST,                []{return logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_GF_BELOW_GS,                  []{return true;}),
     });
 
     areaTable[RR_GF_SLOPED_ROOF] = Region("GF Sloped Roof", SCENE_GERUDOS_FORTRESS, {}, {}, {
@@ -132,7 +133,7 @@ void RegionTable_Init_GerudoFortress() {
         //Exits
         Entrance(RR_GF_OUTSIDE_GTG,        []{return true;}),
         Entrance(RR_GF_TOP_OF_LOWER_VINES, []{return true;}),
-        Entrance(RR_GF_SLOPED_ROOF,        []{return logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS);}),
+        Entrance(RR_GF_SLOPED_ROOF,        []{return logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_GF_JUMP));}),
         Entrance(RR_GF_TOP_OF_UPPER_VINES, []{return true /* logic->CanClimb() */;}),
         Entrance(RR_GF_TO_GTG,             []{return logic->IsAdult && ctx->GetTrickOption(RT_GF_LEDGE_CLIP_INTO_GTG).Get();}),
     });
@@ -193,10 +194,11 @@ void RegionTable_Init_GerudoFortress() {
         //Exits
         //you don't take fall damage if you land on the rock with the flag on for some reason
         //there's a trick to reach RR_GF_LONG_ROOF but that's too intricate for GF_JUMP
-        Entrance(RR_GF_OUTSKIRTS,   []{return ctx->GetTrickOption(RT_GF_JUMP).Get() != 0;}),
-        Entrance(RR_GF_NEAR_CHEST,  []{return logic->CanUse(RG_LONGSHOT);}),
-        Entrance(RR_GF_BELOW_CHEST, []{return logic->TakeDamage();}),
-        Entrance(RR_GF_JAIL_WINDOW, []{return logic->CanUse(RG_HOOKSHOT);}),
+        Entrance(RR_GF_OUTSKIRTS,           []{return ctx->GetTrickOption(RT_GF_JUMP).Get() != 0;}),
+        Entrance(RR_GF_NEAR_CHEST,          []{return logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_GF_BELOW_CHEST,         []{return logic->TakeDamage();}),
+        Entrance(RR_GF_JAIL_WINDOW,         []{return logic->CanUse(RG_HOOKSHOT);}),
+        Entrance(RR_TH_BREAK_ROOM_CORRIDOR, []{return true;}),
     });
 
     areaTable[RR_GF_JAIL_WINDOW] = Region("GF Jail Window", SCENE_GERUDOS_FORTRESS, {}, {}, {

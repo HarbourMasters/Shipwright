@@ -20,6 +20,7 @@
 #include <vector>
 #include <set>
 #include <libultraship/libultraship.h>
+#include <libultraship/controller/controldeck/ControlDeck.h>
 #include "location.h"
 #include "item_location.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -83,7 +84,10 @@ bool showOverworldCrates;
 bool showDungeonCrates;
 bool showTrees;
 bool showFrogSongRupees;
-bool showFairies;
+bool showFountainFairies;
+bool showStoneFairies;
+bool showBeanFairies;
+bool showSongFairies;
 bool showStartingMapsCompasses;
 bool showKeysanity;
 bool showGerudoFortressKeys;
@@ -1365,9 +1369,19 @@ void LoadSettings() {
         IS_RANDO
             ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FROG_SONG_RUPEES) == RO_GENERIC_YES
             : false;
-    showFairies = IS_RANDO
-                      ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FAIRIES) == RO_GENERIC_YES
-                      : false;
+    showFountainFairies =
+        IS_RANDO
+            ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FOUNTAIN_FAIRIES) == RO_GENERIC_YES
+            : false;
+    showStoneFairies =
+        IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_STONE_FAIRIES) == RO_GENERIC_YES
+                 : false;
+    showBeanFairies =
+        IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BEAN_FAIRIES) == RO_GENERIC_YES
+                 : false;
+    showSongFairies =
+        IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SONG_FAIRIES) == RO_GENERIC_YES
+                 : false;
     showStartingMapsCompasses = IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(
                                                RSK_SHUFFLE_MAPANDCOMPASS) != RO_DUNGEON_ITEM_LOC_VANILLA
                                          : false;
@@ -1553,7 +1567,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
     if (loc->GetRCType() == RCTYPE_SHOP) {
         auto identity = OTRGlobals::Instance->gRandomizer->IdentifyShopItem(loc->GetScene(), loc->GetActorParams() + 1);
     }
-    if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) != RO_LOGIC_VANILLA) {
+    if (IS_RANDO) {
         return (loc->GetArea() != RCAREA_INVALID) &&        // don't show Invalid locations
                (loc->GetRCType() != RCTYPE_GOSSIP_STONE) && // TODO: Don't show hints until tracker supports them
                (loc->GetRCType() != RCTYPE_STATIC_HINT) &&  // TODO: Don't show hints until tracker supports them
@@ -1612,7 +1626,10 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (rc != RC_HC_MALON_EGG || showWeirdEgg) &&
                (loc->GetRCType() != RCTYPE_FROG_SONG || showFrogSongRupees) &&
                ((loc->GetRCType() != RCTYPE_MAP && loc->GetRCType() != RCTYPE_COMPASS) || showStartingMapsCompasses) &&
-               (loc->GetRCType() != RCTYPE_FAIRY || showFairies) &&
+               (loc->GetRCType() != RCTYPE_FOUNTAIN_FAIRY || showFountainFairies) &&
+               (loc->GetRCType() != RCTYPE_STONE_FAIRY || showStoneFairies) &&
+               (loc->GetRCType() != RCTYPE_BEAN_FAIRY || showBeanFairies) &&
+               (loc->GetRCType() != RCTYPE_SONG_FAIRY || showSongFairies) &&
                (loc->GetRCType() != RCTYPE_SMALL_KEY || showKeysanity) &&
                (loc->GetRCType() != RCTYPE_BOSS_KEY || showBossKeysanity) &&
                (loc->GetRCType() != RCTYPE_GANON_BOSS_KEY || showGanonBossKey) &&
@@ -2297,5 +2314,5 @@ void RegisterCheckTrackerWidgets() {
         });
 }
 
-static RegisterMenuInitFunc initCheckTrackerWidgets(RegisterCheckTrackerWidgets);
+static RegisterMenuInitFunc menuInitFunc(RegisterCheckTrackerWidgets);
 } // namespace CheckTracker

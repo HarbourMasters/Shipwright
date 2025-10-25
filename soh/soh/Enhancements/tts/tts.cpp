@@ -2,8 +2,8 @@
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 
 #include <cassert>
-#include <File.h>
-#include <Json.h>
+#include <ship/resource/File.h>
+#include <ship/resource/type/Json.h>
 #include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
 #include <spdlog/fmt/fmt.h>

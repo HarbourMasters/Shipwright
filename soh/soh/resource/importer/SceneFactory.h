@@ -3,9 +3,9 @@
 #include "soh/resource/type/Scene.h"
 #include "soh/resource/type/scenecommand/SceneCommand.h"
 #include "soh/resource/importer/scenecommand/SceneCommandFactory.h"
-#include "Resource.h"
-#include "ResourceFactoryBinary.h"
-#include "ResourceFactoryXML.h"
+#include <ship/resource/Resource.h>
+#include <ship/resource/ResourceFactoryBinary.h>
+#include <ship/resource/ResourceFactoryXML.h>
 
 namespace SOH {
 class ResourceFactoryBinarySceneV0 final : public Ship::ResourceFactoryBinary {

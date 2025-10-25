@@ -13,7 +13,7 @@
 #include "macros.h"
 #include "variables.h"
 #include <spdlog/spdlog.h>
-#include "StringHelper.h"
+#include <ship/utils/StringHelper.h>
 #include "soh/resource/type/Scene.h"
 #include "soh/resource/type/scenecommand/SetTransitionActorList.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
@@ -442,6 +442,11 @@ bool Logic::CanOpenOverworldDoor(RandomizerGet key) {
     }
 
     return HasItem(key);
+}
+
+bool Logic::CanGroundJump(bool hasBombflower) {
+    return ctx->GetTrickOption(RT_GROUND_JUMP) && CanStandingShield() &&
+           (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
 }
 
 bool Logic::CanOpenUnderwaterChest() {
@@ -2166,7 +2171,7 @@ const std::vector<uint8_t>& GetDungeonSmallKeyDoors(SceneID sceneId) {
                 dungeonSmallKeyDoors[key].emplace_back(transitionActor.params & 0x3F);
             }
         } else if (transitionActor.id == ACTOR_DOOR_SHUTTER) {
-            uint8_t doorType = (transitionActor.params >> 7) & 15;
+            uint8_t doorType = (transitionActor.params >> 6) & 15;
             if (doorType == SHUTTER_KEY_LOCKED) {
                 dungeonSmallKeyDoors[key].emplace_back(transitionActor.params & 0x3F);
             }

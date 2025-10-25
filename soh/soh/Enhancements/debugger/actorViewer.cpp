@@ -1228,4 +1228,4 @@ void ActorViewer_RegisterNameTagHooks() {
               [](void* actor) { ActorViewer_AddTagForActor(static_cast<Actor*>(actor)); });
 }
 
-RegisterShipInitFunc nametagInit(ActorViewer_RegisterNameTagHooks, { CVAR_ACTOR_NAME_TAGS_ENABLED_NAME });
+static RegisterShipInitFunc initFunc(ActorViewer_RegisterNameTagHooks, { CVAR_ACTOR_NAME_TAGS_ENABLED_NAME });

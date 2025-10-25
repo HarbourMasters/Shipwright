@@ -42,6 +42,5 @@ void RegisterBootToDebugWarpScreen() {
               OnZTitleUpdateBootToDebugWarpScreen);
 }
 
-static RegisterShipInitFunc initFunc_BootToDebugWarpScreen(RegisterBootToDebugWarpScreen,
-                                                           { CVAR_DEBUG_ENABLED_NAME,
-                                                             CVAR_BOOT_TO_DEBUG_WARP_SCREEN_NAME });
+static RegisterShipInitFunc initFunc(RegisterBootToDebugWarpScreen,
+                                     { CVAR_DEBUG_ENABLED_NAME, CVAR_BOOT_TO_DEBUG_WARP_SCREEN_NAME });

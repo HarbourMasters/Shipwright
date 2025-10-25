@@ -9,7 +9,7 @@
 #define ENTRANCE_TABLE_SIZE ENTR_MAX
 
 #define MAX_ENTRANCE_RANDO_USED_INDEX 0x0820
-#define ENTRANCE_OVERRIDES_MAX_COUNT 267 // 19 one-way entrances + 124 two-way entrances (x2)
+#define ENTRANCE_OVERRIDES_MAX_COUNT 293 // 19 one-way entrances + 124 two-way entrances (x2) + 26 Thieves' Hideout
 #define SHUFFLEABLE_BOSS_COUNT 8
 
 #define SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT 66 // Max entrance rando index is 0x0820, (2080 / 32 == 65) + 1
@@ -47,7 +47,7 @@ void Entrance_SetWarpSongEntrance(void);
 void Entrance_OverrideBlueWarp(void);
 void Entrance_HandleEponaState(void);
 void Entrance_OverrideWeatherState(void);
-void Entrance_OverrideGeurdoGuardCapture(void);
+void Entrance_OverrideGerudoGuardCapture(void);
 void Entrance_OverrideSpawnScene(int32_t sceneNum, int32_t spawn);
 int32_t Entrance_OverrideSpawnSceneRoom(int32_t sceneNum, int32_t spawn, int32_t room);
 void Entrance_EnableFW(void);
