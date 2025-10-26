@@ -111,15 +111,17 @@ void UpdateToTMedallions() {
 }
 
 static void CheckTempleOfTime(int16_t sceneNum) {
-    if (sceneNum != SCENE_TEMPLE_OF_TIME)
+    if (sceneNum != SCENE_TEMPLE_OF_TIME) {
         return;
+    }
     PatchToTMedallions();
 }
 
 static void RegisterToTMedallions() {
     COND_HOOK(OnItemReceive, CVAR_TOT_MEDALLION_COLORS_VALUE, [](GetItemEntry) {
-        if (gPlayState)
+        if (gPlayState) {
             CheckTempleOfTime(gPlayState->sceneNum);
+        }
     });
     COND_HOOK(OnSceneInit, CVAR_TOT_MEDALLION_COLORS_VALUE, CheckTempleOfTime);
 }
