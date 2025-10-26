@@ -27,7 +27,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_NEAR_BOSS_ROOM] = Region("Fire Temple Near Boss Room", SCENE_FIRE_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FAIRY_POT, []{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT);}),
+        EVENT_ACCESS(LOGIC_FAIRY_POT, logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_NEAR_BOSS_CHEST, true),
@@ -67,7 +67,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_LOOP_HAMMER_SWITCH] = Region("Fire Temple Loop Hammer Switch", SCENE_FIRE_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FIRE_LOOP_SWITCH, []{return logic->CanUse(RG_MEGATON_HAMMER);}),
+        EVENT_ACCESS(LOGIC_FIRE_LOOP_SWITCH, logic->CanUse(RG_MEGATON_HAMMER)),
     }, {}, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_LOOP_FLARE_DANCER, []{return true;}),
@@ -263,7 +263,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_FIRE_MAZE_UPPER] = Region("Fire Temple Fire Maze Upper", SCENE_FIRE_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FIRE_HIT_PLATFORM,    []{return logic->CanUse(RG_MEGATON_HAMMER);}),
+        EVENT_ACCESS(LOGIC_FIRE_HIT_PLATFORM,    logic->CanUse(RG_MEGATON_HAMMER)),
     }, {}, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM,     []{return logic->CanUse(RG_MEGATON_HAMMER);}),
@@ -391,7 +391,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM] = Region("Fire Temple MQ Iron Knuckle Room", SCENE_FIRE_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FAIRY_POT, []{return true;}),
+        EVENT_ACCESS(LOGIC_FAIRY_POT, true),
     }, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_MQ_LOOP_KNUCKLE_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
@@ -420,7 +420,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_MQ_MAP_ROOM_NORTH] = Region("Fire Temple MQ Map Room North", SCENE_FIRE_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FIRE_OPENED_LOWEST_GORON_CAGE, []{return logic->CanUse(RG_MEGATON_HAMMER);}),
+        EVENT_ACCESS(LOGIC_FIRE_OPENED_LOWEST_GORON_CAGE, logic->CanUse(RG_MEGATON_HAMMER)),
     }, {}, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_LOWER_FLARE_DANCER, []{return true;}),
@@ -495,7 +495,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_MQ_TORCH_FIREWALL_ROOM] = Region("Fire Temple MQ Torch Firewall Room", SCENE_FIRE_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FAIRY_POT, []{return logic->CanUse(RG_HOOKSHOT);}),
+        EVENT_ACCESS(LOGIC_FAIRY_POT, logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST,   logic->CanUse(RG_HOOKSHOT)),
@@ -580,7 +580,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_MQ_MAZE_SHORTCUT] = Region("Fire Temple MQ Maze Shortcut", SCENE_FIRE_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FIRE_OPENED_UPPER_SHORTCUT,  []{return logic->CanUse(RG_MEGATON_HAMMER);}),
+        EVENT_ACCESS(LOGIC_FIRE_OPENED_UPPER_SHORTCUT,  logic->CanUse(RG_MEGATON_HAMMER)),
     }, {}, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_UPPER_MAZE,         []{return true;}),
@@ -605,7 +605,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_MQ_BURNING_BLOCK_CLIMB] = Region("Fire Temple MQ Burning Block Climb", SCENE_FIRE_TEMPLE, {
         //Events
-        //EventAccess(&WallFairy, []{return logic->CanUse(RG_HOOKSHOT);}),
+        //EVENT_ACCESS(&WallFairy, logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Locations
         //There's definitely ways to do this hammerless, but with one points on it's a trick
@@ -618,7 +618,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_MQ_NARROW_PATH_ROOM] = Region("Fire Temple MQ Narrow Path Room", SCENE_FIRE_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FAIRY_POT, []{return true;}),
+        EVENT_ACCESS(LOGIC_FAIRY_POT, true),
     }, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_MQ_ABOVE_LAVA_POT_1, logic->CanBreakPots()),
@@ -669,8 +669,8 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PLATFORMS] = Region("Fire Temple MQ Fire Maze Platforms", SCENE_FIRE_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FIRE_HIT_PLATFORM,             []{return logic->CanUse(RG_MEGATON_HAMMER);}),
-        EventAccess(LOGIC_FIRE_MQ_OPENED_FIRE_MAZE_DOOR, []{return logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOOKSHOT);}),
+        EVENT_ACCESS(LOGIC_FIRE_HIT_PLATFORM,             logic->CanUse(RG_MEGATON_HAMMER)),
+        EVENT_ACCESS(LOGIC_FIRE_MQ_OPENED_FIRE_MAZE_DOOR, logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOOKSHOT)),
     }, {}, {
         Entrance(RR_FIRE_TEMPLE_MQ_SOUTH_FIRE_MAZE, []{return true;}),
         Entrance(RR_FIRE_TEMPLE_MQ_NORTH_FIRE_MAZE, []{return logic->CanUse(RG_SONG_OF_TIME) || logic->CanUse(RG_HOVER_BOOTS);}),
@@ -748,7 +748,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_BOSS_ROOM] = Region("Fire Temple Boss Room", SCENE_FIRE_TEMPLE_BOSS, {
         // Events
-        EventAccess(LOGIC_FIRE_TEMPLE_CLEAR, []{return logic->FireTimer() >= 64 && logic->CanKillEnemy(RE_VOLVAGIA);}),
+        EVENT_ACCESS(LOGIC_FIRE_TEMPLE_CLEAR, logic->FireTimer() >= 64 && logic->CanKillEnemy(RE_VOLVAGIA)),
     }, {
         // Locations
         LOCATION(RC_FIRE_TEMPLE_VOLVAGIA_HEART, logic->Get(LOGIC_FIRE_TEMPLE_CLEAR)),

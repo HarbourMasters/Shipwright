@@ -29,10 +29,10 @@ void RegionTable_Init_ZoraRiver() {
 
     areaTable[RR_ZORAS_RIVER] = Region("Zora River", SCENE_ZORAS_RIVER, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
-        EventAccess(LOGIC_BEAN_PLANT_FAIRY,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
-        EventAccess(LOGIC_BUTTERFLY_FAIRY,   []{return logic->CanUse(RG_STICKS);}),
-        EventAccess(LOGIC_BUG_SHRUB,         []{return logic->CanCutShrubs();}),
+        EVENT_ACCESS(LOGIC_GOSSIP_STONE_FAIRY, logic->CallGossipFairy()),
+        EVENT_ACCESS(LOGIC_BEAN_PLANT_FAIRY,   logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        EVENT_ACCESS(LOGIC_BUTTERFLY_FAIRY,   logic->CanUse(RG_STICKS)),
+        EVENT_ACCESS(LOGIC_BUG_SHRUB,         logic->CanCutShrubs()),
     }, {
         //Locations
         LOCATION(RC_ZR_MAGIC_BEAN_SALESMAN,                  logic->IsChild),
@@ -104,7 +104,7 @@ void RegionTable_Init_ZoraRiver() {
 
     areaTable[RR_ZR_FAIRY_GROTTO] = Region("ZR Fairy Grotto", SCENE_GROTTOS, {
         //Event
-        EventAccess(LOGIC_FREE_FAIRIES, []{return true;}),
+        EVENT_ACCESS(LOGIC_FREE_FAIRIES, true),
     }, {
         //Locations
         LOCATION(RC_ZR_FAIRY_GROTTO_FAIRY_1, true),

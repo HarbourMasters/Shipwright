@@ -19,9 +19,9 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTTOM_OF_THE_WELL_PERIMETER] = Region("Bottom of the Well Perimeter", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
-        EventAccess(LOGIC_STICK_POT,          []{return true;}),
-        EventAccess(LOGIC_NUT_POT,            []{return true;}),
-        EventAccess(LOGIC_BOTW_LOWERED_WATER, []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
+        EVENT_ACCESS(LOGIC_STICK_POT,          true),
+        EVENT_ACCESS(LOGIC_NUT_POT,            true),
+        EVENT_ACCESS(LOGIC_BOTW_LOWERED_WATER, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Locations
         LOCATION(RC_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST,  logic->HasExplosives()),
@@ -97,8 +97,8 @@ void RegionTable_Init_BottomOfTheWell() {
     //If the player can voidwarp into one of these rooms they will need splitting up, and Fake walls will need specifying into middle and the rest moved to perimeter
     areaTable[RR_BOTTOM_OF_THE_WELL_INNER_ROOMS] = Region("Bottom of the Well Inner Rooms", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
-        EventAccess(LOGIC_DEKU_BABA_STICKS, []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(LOGIC_DEKU_BABA_NUTS,   []{return logic->CanGetDekuBabaNuts();}),
+        EVENT_ACCESS(LOGIC_DEKU_BABA_STICKS, logic->CanGetDekuBabaSticks()),
+        EVENT_ACCESS(LOGIC_DEKU_BABA_NUTS,   logic->CanGetDekuBabaNuts()),
     }, {
         //Locations
         LOCATION(RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
@@ -192,11 +192,11 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER] = Region("Bottom of the Well MQ Perimeter", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
         //technically obsolete due to a wonder item fairy which only needs a projectile, but we don't have an event var for it yet
-        EventAccess(LOGIC_FAIRY_POT,               []{return Here(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets();}),
+        EVENT_ACCESS(LOGIC_FAIRY_POT,               Here(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()),
         //It is possible to hit the water switch with a pot from RR_BOTTOM_OF_THE_WELL_MQ_MIDDLE, however the hitbox for making it activate is very unintuitive
         //You have to throw the pot from further back to hit the switch from the front instead of the top, trying to hit the "fingers" directly
         //This unintuitiveness means it should be a trick. ZL is needed to get a clear path to carry the pot
-        EventAccess(LOGIC_BOTW_LOWERED_WATER, []{return logic->CanJumpslash() || logic->CanUseProjectile();}),
+        EVENT_ACCESS(LOGIC_BOTW_LOWERED_WATER, logic->CanJumpslash() || logic->CanUseProjectile()),
     }, {
         //Locations
         //Implies CanBreakPots()
@@ -216,7 +216,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTTOM_OF_THE_WELL_MQ_WEST_ROOM_SWITCH] = Region("Bottom of the Well MQ West Room Switch", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
-        EventAccess(LOGIC_BOTW_MQ_OPENED_WEST_ROOM, []{return true;}),
+        EVENT_ACCESS(LOGIC_BOTW_MQ_OPENED_WEST_ROOM, true),
     }, {}, {
         //Exits
         Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->BlastOrSmash() && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || ctx->GetTrickOption(RT_BOTW_MQ_PITS));}),
@@ -236,7 +236,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTTOM_OF_THE_WELL_MQ_LOCKED_CAGE] = Region("Bottom of the Well MQ Locked Cage", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
-        EventAccess(LOGIC_BOTW_MQ_OPENED_MIDDLE_HOLE, []{return logic->HasExplosives();}),
+        EVENT_ACCESS(LOGIC_BOTW_MQ_OPENED_MIDDLE_HOLE, logic->HasExplosives()),
     }, {}, {
         //Exits
         Entrance(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, []{return logic->IsChild && logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 2);}),

@@ -7,12 +7,12 @@ void RegionTable_Init_ZorasDomain() {
     // clang-format off
     areaTable[RR_ZORAS_DOMAIN] = Region("Zoras Domain", SCENE_ZORAS_DOMAIN, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY,   []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(LOGIC_NUT_POT,              []{return true;}),
-        EventAccess(LOGIC_STICK_POT,            []{return logic->IsChild;}),
-        EventAccess(LOGIC_FISH_GROUP,           []{return logic->IsChild;}),
-        EventAccess(LOGIC_KING_ZORA_THAWED,     []{return logic->IsAdult && logic->BlueFire();}),
-        EventAccess(LOGIC_DELIVER_RUTOS_LETTER, []{return logic->CanUse(RG_RUTOS_LETTER) && logic->IsChild && ctx->GetOption(RSK_ZORAS_FOUNTAIN).IsNot(RO_ZF_OPEN);}),
+        EVENT_ACCESS(LOGIC_GOSSIP_STONE_FAIRY,   logic->CallGossipFairyExceptSuns()),
+        EVENT_ACCESS(LOGIC_NUT_POT,              true),
+        EVENT_ACCESS(LOGIC_STICK_POT,            logic->IsChild),
+        EVENT_ACCESS(LOGIC_FISH_GROUP,           logic->IsChild),
+        EVENT_ACCESS(LOGIC_KING_ZORA_THAWED,     logic->IsAdult && logic->BlueFire()),
+        EVENT_ACCESS(LOGIC_DELIVER_RUTOS_LETTER, logic->CanUse(RG_RUTOS_LETTER) && logic->IsChild && ctx->GetOption(RSK_ZORAS_FOUNTAIN).IsNot(RO_ZF_OPEN)),
     }, {
         //Locations
         LOCATION(RC_ZD_DIVING_MINIGAME,                     logic->HasItem(RG_BRONZE_SCALE) && logic->HasItem(RG_CHILD_WALLET) && logic->IsChild),
@@ -52,7 +52,7 @@ void RegionTable_Init_ZorasDomain() {
 
     areaTable[RR_ZD_BEHIND_KING_ZORA] = Region("ZD Behind King Zora", SCENE_ZORAS_DOMAIN, {
         //Events
-        EventAccess(LOGIC_KING_ZORA_THAWED, []{return logic->IsAdult && logic->BlueFire();}),
+        EVENT_ACCESS(LOGIC_KING_ZORA_THAWED, logic->IsAdult && logic->BlueFire()),
     }, {
         //Locations
         LOCATION(RC_ZD_BEHIND_KING_ZORA_BEEHIVE, logic->IsChild && logic->CanBreakUpperBeehives()),
@@ -79,7 +79,7 @@ void RegionTable_Init_ZorasDomain() {
 
     areaTable[RR_ZD_STORMS_GROTTO] = Region("ZD Storms Grotto", SCENE_GROTTOS, {
         //Events
-        EventAccess(LOGIC_FREE_FAIRIES, []{return true;}),
+        EVENT_ACCESS(LOGIC_FREE_FAIRIES, true),
     }, {
         //Locations
         LOCATION(RC_ZD_FAIRY_GROTTO_FAIRY_1, true),

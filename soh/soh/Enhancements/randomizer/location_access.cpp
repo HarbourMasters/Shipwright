@@ -771,10 +771,10 @@ void RegionTable_Init() {
     ctx = Context::GetInstance().get();
     logic = ctx->GetLogic(); // RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
     grottoEvents = {
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, [] { return logic->CallGossipFairy(); }),
-        EventAccess(LOGIC_BUTTERFLY_FAIRY, [] { return logic->CanUse(RG_STICKS); }),
-        EventAccess(LOGIC_BUG_SHRUB, [] { return logic->CanCutShrubs(); }),
-        EventAccess(LOGIC_LONE_FISH, [] { return true; }),
+        EVENT_ACCESS(LOGIC_GOSSIP_STONE_FAIRY, logic->CallGossipFairy()),
+        EVENT_ACCESS(LOGIC_BUTTERFLY_FAIRY, logic->CanUse(RG_STICKS)),
+        EVENT_ACCESS(LOGIC_BUG_SHRUB, logic->CanCutShrubs()),
+        EVENT_ACCESS(LOGIC_LONE_FISH, true),
     };
     // Clear the array from any previous playthrough attempts. This is important so that
     // locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
@@ -783,13 +783,13 @@ void RegionTable_Init() {
     // clang-format off
     areaTable[RR_ROOT] = Region("Root", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {
         //Events
-        EventAccess(LOGIC_KAKARIKO_GATE_OPEN,                  []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
-        EventAccess(LOGIC_TH_COULD_FREE_1_TORCH_CARPENTER,     []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);}),
-        EventAccess(LOGIC_TH_COULD_FREE_DOUBLE_CELL_CARPENTER, []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
-        EventAccess(LOGIC_TH_COULD_FREE_DEAD_END_CARPENTER,    []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
-        EventAccess(LOGIC_TH_COULD_FREE_SLOPE_CARPENTER,       []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
-        EventAccess(LOGIC_TH_RESCUED_ALL_CARPENTERS,           []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);}),
-        EventAccess(LOGIC_FREED_EPONA,                         []{return (bool)ctx->GetOption(RSK_SKIP_EPONA_RACE);}),
+        EVENT_ACCESS(LOGIC_KAKARIKO_GATE_OPEN,                  ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN)),
+        EVENT_ACCESS(LOGIC_TH_COULD_FREE_1_TORCH_CARPENTER,     ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE)),
+        EVENT_ACCESS(LOGIC_TH_COULD_FREE_DOUBLE_CELL_CARPENTER, ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)),
+        EVENT_ACCESS(LOGIC_TH_COULD_FREE_DEAD_END_CARPENTER,    ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)),
+        EVENT_ACCESS(LOGIC_TH_COULD_FREE_SLOPE_CARPENTER,       ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)),
+        EVENT_ACCESS(LOGIC_TH_RESCUED_ALL_CARPENTERS,           ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE)),
+        EVENT_ACCESS(LOGIC_FREED_EPONA,                         (bool)ctx->GetOption(RSK_SKIP_EPONA_RACE)),
     }, {
         //Locations
         LOCATION(RC_LINKS_POCKET,       true),

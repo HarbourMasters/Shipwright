@@ -7,15 +7,15 @@ void RegionTable_Init_GoronCity() {
     // clang-format off
     areaTable[RR_GORON_CITY] = Region("Goron City", SCENE_GORON_CITY, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY,                     []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(LOGIC_STICK_POT,                              []{return logic->IsChild;}),
-        EventAccess(LOGIC_BUG_ROCK,                               []{return logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS);}),
-        EventAccess(LOGIC_GORON_CITY_CHILD_FIRE,                  []{return logic->IsChild && logic->CanUse(RG_DINS_FIRE);}),
-        EventAccess(LOGIC_GORON_CITY_WOODS_WARP_OPEN,             []{return logic->CanDetonateUprightBombFlower() || logic->CanUse(RG_MEGATON_HAMMER) || logic->Get(LOGIC_GORON_CITY_CHILD_FIRE);}),
-        EventAccess(LOGIC_GORON_CITY_DARUNIAS_DOOR_OPEN_CHILD,    []{return logic->IsChild && logic->CanUse(RG_ZELDAS_LULLABY);}),
+        EVENT_ACCESS(LOGIC_GOSSIP_STONE_FAIRY,                     logic->CallGossipFairyExceptSuns()),
+        EVENT_ACCESS(LOGIC_STICK_POT,                              logic->IsChild),
+        EVENT_ACCESS(LOGIC_BUG_ROCK,                               logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)),
+        EVENT_ACCESS(LOGIC_GORON_CITY_CHILD_FIRE,                  logic->IsChild && logic->CanUse(RG_DINS_FIRE)),
+        EVENT_ACCESS(LOGIC_GORON_CITY_WOODS_WARP_OPEN,             logic->CanDetonateUprightBombFlower() || logic->CanUse(RG_MEGATON_HAMMER) || logic->Get(LOGIC_GORON_CITY_CHILD_FIRE)),
+        EVENT_ACCESS(LOGIC_GORON_CITY_DARUNIAS_DOOR_OPEN_CHILD,    logic->IsChild && logic->CanUse(RG_ZELDAS_LULLABY)),
         // bottle animation causes similar complications as stopping goron with Din's Fire, only put in logic when both din's & blue fire tricks enabled
-        EventAccess(LOGIC_GORON_CITY_STOP_ROLLING_GORON_AS_ADULT, []{return logic->IsAdult && (logic->HasItem(RG_GORONS_BRACELET) || logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) ||
-                                                                                   (ctx->GetTrickOption(RT_GC_LINK_GORON_DINS) && (logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)))));}),
+        EVENT_ACCESS(LOGIC_GORON_CITY_STOP_ROLLING_GORON_AS_ADULT, logic->IsAdult && (logic->HasItem(RG_GORONS_BRACELET) || logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) ||
+                                                                         (ctx->GetTrickOption(RT_GC_LINK_GORON_DINS) && (logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)))))),
     }, {
         //Locations
         LOCATION(RC_GC_MAZE_LEFT_CHEST,             logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_SILVER_GAUNTLETS) || (ctx->GetTrickOption(RT_GC_LEFTMOST) && logic->HasExplosives() && logic->CanUse(RG_HOVER_BOOTS))),
@@ -60,7 +60,7 @@ void RegionTable_Init_GoronCity() {
 
     areaTable[RR_GC_WOODS_WARP] = Region("GC Woods Warp", SCENE_GORON_CITY, {
         //Events
-        EventAccess(LOGIC_GORON_CITY_WOODS_WARP_OPEN, []{return logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE);}),
+        EVENT_ACCESS(LOGIC_GORON_CITY_WOODS_WARP_OPEN, logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE)),
     }, {}, {
         //Exits
         Entrance(RR_GORON_CITY,     []{return logic->Get(LOGIC_GORON_CITY_WOODS_WARP_OPEN);}),
@@ -69,7 +69,7 @@ void RegionTable_Init_GoronCity() {
 
     areaTable[RR_GC_DARUNIAS_CHAMBER] = Region("GC Darunias Chamber", SCENE_GORON_CITY, {
         //Events
-        EventAccess(LOGIC_GORON_CITY_CHILD_FIRE, []{return logic->IsChild && logic->CanUse(RG_STICKS);}),
+        EVENT_ACCESS(LOGIC_GORON_CITY_CHILD_FIRE, logic->IsChild && logic->CanUse(RG_STICKS)),
     }, {
         //Locations
         LOCATION(RC_GC_DARUNIAS_JOY,  logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),

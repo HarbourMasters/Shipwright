@@ -24,7 +24,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_LOBBY] = Region("Dodongos Cavern Lobby", SCENE_DODONGOS_CAVERN, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return (Here(RR_DODONGOS_CAVERN_LOBBY, []{return logic->CanBreakMudWalls();}) || logic->HasItem(RG_GORONS_BRACELET)) && logic->CallGossipFairy();}),
+        EVENT_ACCESS(LOGIC_GOSSIP_STONE_FAIRY, (Here(RR_DODONGOS_CAVERN_LOBBY, []{return logic->CanBreakMudWalls();}) || logic->HasItem(RG_GORONS_BRACELET)) && logic->CallGossipFairy()),
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MAP_CHEST,              logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET);),
@@ -45,7 +45,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_LOBBY_SWITCH] = Region("Dodongos Cavern Lobby Switch", SCENE_DODONGOS_CAVERN, {
         //Events
-        EventAccess(LOGIC_DC_STAIRS_ROOM_DOOR, []{return true;}),
+        EVENT_ACCESS(LOGIC_DC_STAIRS_ROOM_DOOR, true),
     }, {}, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_LOBBY,        []{return true;}),
@@ -85,7 +85,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_LOWER_LIZALFOS] = Region("Dodongos Cavern Lower Lizalfos", SCENE_DODONGOS_CAVERN, {
         //Events
-        EventAccess(LOGIC_DC_KILLED_LOWER_LIZALFOS, []{return logic->CanKillEnemy(RE_LIZALFOS, ED_CLOSE, true, 2);}),
+        EVENT_ACCESS(LOGIC_DC_KILLED_LOWER_LIZALFOS, logic->CanKillEnemy(RE_LIZALFOS, ED_CLOSE, true, 2)),
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_LIZALFOS_POT_1,       logic->CanBreakPots()),
@@ -236,8 +236,8 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_FAR_BRIDGE] = Region("Dodongos Cavern Far Bridge", SCENE_DODONGOS_CAVERN, {
         //Events
-        EventAccess(LOGIC_DC_EYES_LIT,      []{return logic->HasExplosives();}),
-        EventAccess(LOGIC_DC_LIFT_PLATFORM, []{return true;}),
+        EVENT_ACCESS(LOGIC_DC_EYES_LIT,      logic->HasExplosives()),
+        EVENT_ACCESS(LOGIC_DC_LIFT_PLATFORM, true),
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_END_OF_BRIDGE_CHEST, logic->CanBreakMudWalls()),
@@ -249,7 +249,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_BOSS_AREA] = Region("Dodongos Cavern Boss Region", SCENE_DODONGOS_CAVERN, {
         //Events
-        EventAccess(LOGIC_FAIRY_POT, []{return true;}),
+        EVENT_ACCESS(LOGIC_FAIRY_POT, true),
     }, {
         //Location
         LOCATION(RC_DODONGOS_CAVERN_BEFORE_BOSS_GRASS, logic->CanCutShrubs()),
@@ -300,7 +300,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_GOSSIP_STONE] = Region("Dodongos Cavern MQ Gossip Stone", SCENE_DODONGOS_CAVERN, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
+        EVENT_ACCESS(LOGIC_GOSSIP_STONE_FAIRY, logic->CallGossipFairy()),
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_GOSSIP_STONE,              true),
@@ -313,8 +313,8 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_MOUTH_SIDE_BRIDGE] = Region("Dodongos Cavern MQ Mouth Side Bridge", SCENE_DODONGOS_CAVERN, {
         //Events
-        EventAccess(LOGIC_DC_MQ_CLEAR_UPPER_LOBBY_ROCKS, []{return logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE);}),
-        EventAccess(LOGIC_DC_EYES_LIT,                   []{return logic->HasExplosives() || (logic->Get(LOGIC_DC_MQ_CLEAR_UPPER_LOBBY_ROCKS) && logic->HasItem(RG_GORONS_BRACELET) && ((logic->IsAdult && ctx->GetTrickOption(RT_DC_MQ_ADULT_EYES)) || (logic->IsChild && ctx->GetTrickOption(RT_DC_MQ_CHILD_EYES))));}),
+        EVENT_ACCESS(LOGIC_DC_MQ_CLEAR_UPPER_LOBBY_ROCKS, logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE)),
+        EVENT_ACCESS(LOGIC_DC_EYES_LIT,                   logic->HasExplosives() || (logic->Get(LOGIC_DC_MQ_CLEAR_UPPER_LOBBY_ROCKS) && logic->HasItem(RG_GORONS_BRACELET) && ((logic->IsAdult && ctx->GetTrickOption(RT_DC_MQ_ADULT_EYES)) || (logic->IsChild && ctx->GetTrickOption(RT_DC_MQ_CHILD_EYES))))),
     }, {}, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_MQ_LOBBY,              []{return true;}),
@@ -326,7 +326,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_STAIRS_LOWER] = Region("Dodongos Cavern MQ Stairs Lower", SCENE_DODONGOS_CAVERN, {
         //Events
-        //EventAccess(LOGIC_DC_CAN_CLIMB_STAIRS, []{return logic->HasExplosives() || logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_DC_STAIRS_WITH_BOW) && logic->CanUse(RG_FAIRY_BOW));}),
+        //EVENT_ACCESS(LOGIC_DC_CAN_CLIMB_STAIRS, logic->HasExplosives() || logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_DC_STAIRS_WITH_BOW) && logic->CanUse(RG_FAIRY_BOW))),
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_POT_1,         logic->CanBreakPots()),
@@ -345,8 +345,8 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_STAIRS_PAST_MUD_WALL] = Region("Dodongos Cavern MQ Stairs Past Mud Wall", SCENE_DODONGOS_CAVERN, {
         //Events
-        EventAccess(LOGIC_DEKU_BABA_STICKS, []{return logic->CanGetDekuBabaSticks();}),
-        //EventAccess(LOGIC_DC_CAN_CLIMB_STAIRS, []{return logic->HasItem(RG_GORONS_BRACELET) && (logic->CanUse(RG_STICKS));}),
+        EVENT_ACCESS(LOGIC_DEKU_BABA_STICKS, logic->CanGetDekuBabaSticks()),
+        //EVENT_ACCESS(LOGIC_DC_CAN_CLIMB_STAIRS, logic->HasItem(RG_GORONS_BRACELET) && (logic->CanUse(RG_STICKS))),
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MQ_GS_SONG_OF_TIME_BLOCK_ROOM, logic->CanUse(RG_SONG_OF_TIME) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
@@ -394,7 +394,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_LOWER] = Region("Dodongos Cavern MQ Torch Puzzle Lower", SCENE_DODONGOS_CAVERN, {
         //Events
-        EventAccess(LOGIC_DC_MQ_CLEAR_UPPER_LOBBY_ROCKS, []{return (((logic->IsAdult /*or bunny hood jump*/) && ctx->GetTrickOption(RT_DC_JUMP)) || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_STICKS);}),
+        EVENT_ACCESS(LOGIC_DC_MQ_CLEAR_UPPER_LOBBY_ROCKS, (((logic->IsAdult /*or bunny hood jump*/) && ctx->GetTrickOption(RT_DC_JUMP)) || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_STICKS)),
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_MIDDLE_POT, logic->CanUse(RG_BOOMERANG)),
@@ -464,7 +464,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_UPPER] = Region("Dodongos Cavern MQ Torch Puzzle Upper", SCENE_DODONGOS_CAVERN, {
         //Events
-        EventAccess(LOGIC_DC_MQ_CLEAR_UPPER_LOBBY_ROCKS, []{return logic->CanDetonateUprightBombFlower() || logic->CanUse(RG_MEGATON_HAMMER);}),
+        EVENT_ACCESS(LOGIC_DC_MQ_CLEAR_UPPER_LOBBY_ROCKS, logic->CanDetonateUprightBombFlower() || logic->CanUse(RG_MEGATON_HAMMER)),
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_ROOM_CHEST, true),
@@ -553,7 +553,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_BACK_BEHIND_FIRE] = Region("Dodongos Cavern MQ Back Behind Fire", SCENE_DODONGOS_CAVERN, {
         //Events
-        EventAccess(LOGIC_DC_MQ_BEHIND_FIRE_SWITCH, []{return logic->CanDetonateBombFlowers();}),
+        EVENT_ACCESS(LOGIC_DC_MQ_BEHIND_FIRE_SWITCH, logic->CanDetonateBombFlowers()),
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MQ_UNDER_GRAVE_CHEST, true), //pulling the grave isn't required, as you can open the chest through it
@@ -571,8 +571,8 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_BACK_SWITCH_GRAVE] = Region("Dodongos Cavern MQ BossArea", SCENE_DODONGOS_CAVERN, {
         //Events
-        EventAccess(LOGIC_DC_MQ_BEHIND_FIRE_SWITCH, []{return true/*str0 || logic->CanHitSwitch() || logic->CanDetonateBombFlowers()*/;}),
-        EventAccess(LOGIC_FAIRY_POT,                []{return true;}),
+        EVENT_ACCESS(LOGIC_DC_MQ_BEHIND_FIRE_SWITCH, true/*str0 || logic->CanHitSwitch() || logic->CanDetonateBombFlowers()*/),
+        EVENT_ACCESS(LOGIC_FAIRY_POT,                true),
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MQ_GS_BACK_AREA,      logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA) || logic->HasItem(RG_GORONS_BRACELET)),
@@ -602,10 +602,10 @@ void RegionTable_Init_DodongosCavern() {
     areaTable[RR_DODONGOS_CAVERN_BOSS_ROOM] = Region("Dodongos Cavern Boss Room", SCENE_DODONGOS_CAVERN_BOSS, {
         // Events
         // Blue Fire Arrows need similar accuracy as hammer trick, only put in logic when both hammer & blue fire tricks enabled
-        EventAccess(LOGIC_DODONGOS_CAVERN_CLEAR, []{return Here(RR_DODONGOS_CAVERN_BOSS_ROOM, []{return logic->HasExplosives() ||
-                                                                                                         (ctx->GetTrickOption(RT_DC_HAMMER_FLOOR) ? logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->BlueFire()) :
-                                                                                                                                                    ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE));})
-                                                                                                         && logic->CanKillEnemy(RE_KING_DODONGO);}),
+        EVENT_ACCESS(LOGIC_DODONGOS_CAVERN_CLEAR, Here(RR_DODONGOS_CAVERN_BOSS_ROOM, []{return logic->HasExplosives() ||
+                                                                                                (ctx->GetTrickOption(RT_DC_HAMMER_FLOOR) ? logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->BlueFire()) :
+                                                                                                                                           ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE));})
+                                                                                                && logic->CanKillEnemy(RE_KING_DODONGO)),
     }, {
         // Locations
         LOCATION(RC_DODONGOS_CAVERN_BOSS_ROOM_CHEST,    true),

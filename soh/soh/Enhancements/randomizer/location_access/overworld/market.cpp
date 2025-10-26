@@ -52,7 +52,7 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_GUARD_HOUSE] = Region("Market Guard House", SCENE_MARKET_GUARD_HOUSE, {
         //Events
-        EventAccess(LOGIC_CAN_EMPTY_BIG_POES, []{return logic->IsAdult;}),
+        EVENT_ACCESS(LOGIC_CAN_EMPTY_BIG_POES, logic->IsAdult),
     }, {
         //Locations
         LOCATION(RC_MARKET_10_BIG_POES,          logic->IsAdult && (logic->Get(LOGIC_BIG_POE_KILL) || logic->BigPoes >= ctx->GetOption(RSK_BIG_POE_COUNT).Get())),
@@ -142,11 +142,11 @@ void RegionTable_Init_Market() {
         //Currently, mask swap in menu doesn't need access to the mask shop
         //If it is forced on/a setting, a copy of these events should be added to root
         //it also doesn't need you to open kak gate, but that might be best treated as a bug
-        EventAccess(LOGIC_CAN_BORROW_MASKS,   []{return logic->HasItem(RG_ZELDAS_LETTER) && logic->Get(LOGIC_KAKARIKO_GATE_OPEN);}),
-        EventAccess(LOGIC_BORROW_SKULL_MASK,  []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS);}),
-        EventAccess(LOGIC_BORROW_SPOOKY_MASK, []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS);}),
-        EventAccess(LOGIC_BORROW_BUNNY_HOOD,  []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS);}),
-        EventAccess(LOGIC_BORROW_RIGHT_MASKS, []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS);}),
+        EVENT_ACCESS(LOGIC_CAN_BORROW_MASKS,   logic->HasItem(RG_ZELDAS_LETTER) && logic->Get(LOGIC_KAKARIKO_GATE_OPEN)),
+        EVENT_ACCESS(LOGIC_BORROW_SKULL_MASK,  ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS)),
+        EVENT_ACCESS(LOGIC_BORROW_SPOOKY_MASK, ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS)),
+        EVENT_ACCESS(LOGIC_BORROW_BUNNY_HOOD,  ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS)),
+        EVENT_ACCESS(LOGIC_BORROW_RIGHT_MASKS, ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS)),
     }, {
         //Locations
         LOCATION(RC_MASK_SHOP_HINT, true),
@@ -165,7 +165,7 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_BOMBCHU_BOWLING] = Region("Market Bombchu Bowling", SCENE_BOMBCHU_BOWLING_ALLEY, {
         //Events
-        EventAccess(LOGIC_COULD_PLAY_BOWLING, []{return logic->HasItem(RG_CHILD_WALLET);}),
+        EVENT_ACCESS(LOGIC_COULD_PLAY_BOWLING, logic->HasItem(RG_CHILD_WALLET)),
     }, {
         //Locations
         LOCATION(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE,  logic->Get(LOGIC_COULD_PLAY_BOWLING) && logic->BombchusEnabled()),
