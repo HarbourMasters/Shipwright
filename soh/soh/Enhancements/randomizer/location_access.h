@@ -111,7 +111,7 @@ class LocationAccess {
 };
 
 bool CanBuyAnother(uint16_t price);
-bool CanBuyAnother(RandomizerCheck rc);
+bool CanBuyCheck(RandomizerCheck rc);
 
 namespace Rando {
 class Entrance;

@@ -119,7 +119,7 @@ bool LocationAccess::CanBuy(bool calculatingAvailableChecks) const {
     return true;
 }
 
-bool CanBuyAnother(RandomizerCheck rc) {
+bool CanBuyCheck(RandomizerCheck rc) {
     return CanBuyAnother(ctx->GetItemLocation(rc)->GetPrice());
 }
 
@@ -794,7 +794,7 @@ void RegionTable_Init() {
     }, {
         //Locations
         LOCATION(RC_LINKS_POCKET,       true),
-        LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->ship.quest.data.randomizer.triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1;),
+        LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->ship.quest.data.randomizer.triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1),
         LOCATION(RC_SARIA_SONG_HINT,    logic->CanUse(RG_SARIAS_SONG)),
         LOCATION(RC_SONG_FROM_IMPA,     (bool)ctx->GetOption(RSK_SKIP_CHILD_ZELDA)),
         LOCATION(RC_TOT_MASTER_SWORD,   (bool)ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT)),

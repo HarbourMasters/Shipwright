@@ -10,8 +10,8 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTTOM_OF_THE_WELL_ENTRYWAY] = Region("Bottom of the Well Entryway", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
         //Exits
         //Technically involves an fake wall, but passing it lensless is intended in vanilla and it is well telegraphed
-        ENTRANCE(RR_BOTTOM_OF_THE_WELL_PERIMETER,    ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla() && logic->IsChild && logic->CanPassEnemy(RE_BIG_SKULLTULA)),
-        ENTRANCE(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()      && logic->IsChild),
+        ENTRANCE(RR_BOTTOM_OF_THE_WELL_PERIMETER,    ctx->GetDungeon(BOTTOM_OF_THE_WELL)->IsVanilla() && logic->IsChild && logic->CanPassEnemy(RE_BIG_SKULLTULA)),
+        ENTRANCE(RR_BOTTOM_OF_THE_WELL_MQ_PERIMETER, ctx->GetDungeon(BOTTOM_OF_THE_WELL)->IsMQ()      && logic->IsChild),
         ENTRANCE(RR_KAK_WELL,                        true),
     });
 
