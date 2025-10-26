@@ -63,7 +63,7 @@ class EventAccess {
     std::string condition_str;
 };
 
-std::string CleanCheckConditionString(std::string condition);
+constexpr std::string CleanCheckConditionString(std::string condition);
 
 #define LOCATION(check, condition) \
     LocationAccess(                \
@@ -117,6 +117,13 @@ namespace Rando {
 class Entrance;
 enum class EntranceType;
 } // namespace Rando
+
+enum class RegionAgeTime {
+    childDay,
+    childNight,
+    adultDay,
+    adultNight,
+};
 
 class Region {
   public:

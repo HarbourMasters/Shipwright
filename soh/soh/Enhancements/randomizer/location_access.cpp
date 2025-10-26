@@ -908,7 +908,10 @@ void RegionTable_Init() {
     }
 }
 
-void ReplaceFirstInString(std::string& s, std::string const& toReplace, std::string const& replaceWith) {
+constexpr void ReplaceFirstInString(std::string& s, std::string const& toReplace, std::string const& replaceWith) {
+    if (toReplace.empty() || toReplace == replaceWith) {
+        return;
+    }
     size_t pos = s.find(toReplace);
     if (pos == std::string::npos) {
         return;
@@ -916,33 +919,392 @@ void ReplaceFirstInString(std::string& s, std::string const& toReplace, std::str
     s.replace(pos, toReplace.length(), replaceWith);
 }
 
-void ReplaceAllInString(std::string& s, std::string const& toReplace, std::string const& replaceWith) {
-    std::string buf;
-    size_t pos = 0;
-    size_t prevPos;
-
-    buf.reserve(s.size());
-
-    while (true) {
-        prevPos = pos;
-        pos = s.find(toReplace, pos);
-        if (pos == std::string::npos) {
-            break;
-        }
-        buf.append(s, prevPos, pos - prevPos);
-        buf += replaceWith;
-        pos += toReplace.size();
+constexpr void ReplaceAllInString(std::string& s, std::string const& toReplace, std::string const& replaceWith) {
+    if (toReplace.empty() || toReplace == replaceWith) {
+        return;
     }
 
-    buf.append(s, prevPos, s.size() - prevPos);
+    std::string buf;
+    buf.reserve(s.size());
+    size_t pos = 0;
+
+    while (true) {
+        size_t next = s.find(toReplace, pos);
+        if (next == std::string::npos) {
+            // append the tail and finish
+            buf.append(s, pos, s.size() - pos);
+            break;
+        }
+        // append chunk before the match
+        buf.append(s, pos, next - pos);
+        // append replacement
+        buf += replaceWith;
+        // move past the matched pattern
+        pos = next + toReplace.size();
+    }
+
     s.swap(buf);
 }
 
-std::string CleanCheckConditionString(std::string condition) {
+constexpr bool isWhitespace(char c) {
+    return c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v';
+}
+
+constexpr bool isIdentifierChar(char c) {
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_';
+}
+
+constexpr void RemoveLambdaSyntax(std::string& s) {
+    std::string out;
+    out.reserve(s.size());
+
+    size_t pos = 0;
+    while (pos < s.size()) {
+        // Find start of lambda capture
+        size_t capStart = s.find('[', pos);
+        if (capStart == std::string::npos) {
+            out.append(s, pos, s.size() - pos);
+            break;
+        }
+
+        // Copy prefix
+        out.append(s, pos, capStart - pos);
+
+        // Find end of capture list
+        size_t capEnd = s.find(']', capStart);
+        if (capEnd == std::string::npos) {
+            // Not a well-formed lambda; copy rest and stop
+            out.append(s, capStart, s.size() - capStart);
+            break;
+        }
+
+        size_t cur = capEnd + 1;
+        // Skip whitespace
+        while (cur < s.size() && isWhitespace(s[cur]))
+            ++cur;
+
+        // Optional parameter list (...)
+        if (cur < s.size() && s[cur] == '(') {
+            int depth = 1;
+            size_t p = cur + 1;
+            for (; p < s.size() && depth > 0; ++p) {
+                if (s[p] == '(')
+                    ++depth;
+                else if (s[p] == ')')
+                    --depth;
+            }
+            if (depth != 0) {
+                // Unbalanced parens; keep original and stop
+                out.append(s, capStart, s.size() - capStart);
+                break;
+            }
+            cur = p;
+            while (cur < s.size() && isWhitespace(s[cur]))
+                ++cur;
+        }
+
+        // Expect body starting with '{'
+        if (cur >= s.size() || s[cur] != '{') {
+            // Not a lambda body we can simplify; emit original part and continue
+            out.append(s, capStart, cur - capStart);
+            pos = cur;
+            continue;
+        }
+
+        // Find matching closing brace for the body
+        size_t bodyOpen = cur;
+        int braceDepth = 0;
+        size_t p = bodyOpen;
+        for (; p < s.size(); ++p) {
+            if (s[p] == '{')
+                ++braceDepth;
+            else if (s[p] == '}') {
+                --braceDepth;
+                if (braceDepth == 0) {
+                    ++p; // include the closing brace
+                    break;
+                }
+            }
+        }
+        if (braceDepth != 0) {
+            // Unbalanced braces; keep original and stop
+            out.append(s, capStart, s.size() - capStart);
+            break;
+        }
+
+        // Extract body content without the braces and surrounding whitespace
+        size_t bodyStart = bodyOpen + 1;
+        size_t bodyEnd = p - 1; // position of '}'
+        while (bodyStart < bodyEnd && isWhitespace(s[bodyStart]))
+            ++bodyStart;
+        while (bodyEnd > bodyStart && isWhitespace(s[bodyEnd - 1]))
+            --bodyEnd;
+
+        // Must start with "return"
+        static const char retkw[] = "return";
+        bool hasReturn = (bodyEnd >= bodyStart + 6) && s.compare(bodyStart, 6, retkw) == 0;
+        if (!hasReturn) {
+            // Not a simple "return expr;" lambda; keep original and continue
+            out.append(s, capStart, p - capStart);
+            pos = p;
+            continue;
+        }
+
+        // Skip "return" and whitespace
+        size_t exprStart = bodyStart + 6;
+        while (exprStart < bodyEnd && isWhitespace(s[exprStart]))
+            ++exprStart;
+
+        // Find terminating semicolon of the return
+        size_t semi = s.find(';', exprStart);
+        if (semi == std::string::npos || semi > bodyEnd) {
+            // Malformed; keep original
+            out.append(s, capStart, p - capStart);
+            pos = p;
+            continue;
+        }
+
+        // Trim trailing whitespace before ';'
+        size_t exprEnd = semi;
+        while (exprEnd > exprStart && isWhitespace(s[exprEnd - 1]))
+            --exprEnd;
+
+        // Append only the return expression (lambda simplified)
+        out.append(s, exprStart, exprEnd - exprStart);
+        pos = p; // continue after lambda body
+    }
+
+    s.swap(out);
+}
+
+constexpr void UpdateIsDungeonCondition(std::string& s) {
+    std::string const pattern = "GetDungeon(";
+    std::string const arrowIs = "->Is";
+    std::string const endParen = "()";
+    std::string buf;
+    buf.reserve(s.size());
+
+    size_t pos = 0;
+    while (pos < s.length()) {
+        size_t start = s.find(pattern, pos);
+        if (start == std::string::npos) {
+            buf.append(s, pos, s.size() - pos);
+            break;
+        }
+
+        buf.append(s, pos, start - pos);
+
+        size_t dungeonStart = start + pattern.length();
+        size_t closeParen = s.find(')', dungeonStart);
+        if (closeParen == std::string::npos) {
+            // Can't parse; copy remainder and stop
+            buf.append(s, start, s.size() - start);
+            break;
+        }
+
+        size_t arrowStart = s.find(arrowIs, closeParen);
+        if (arrowStart != closeParen + 1) {
+            // Not an immediate ")->Is"; copy through ')' and continue
+            buf.append(s, start, closeParen + 1 - start);
+            pos = closeParen + 1;
+            continue;
+        }
+
+        size_t methodStart = arrowStart + arrowIs.length();
+        size_t methodEnd = s.find(endParen, methodStart);
+        if (methodEnd == std::string::npos) {
+            // Malformed; copy from start and stop
+            buf.append(s, start, s.size() - start);
+            break;
+        }
+
+        std::string dungeonName = s.substr(dungeonStart, closeParen - dungeonStart);
+        std::string methodName = s.substr(methodStart, methodEnd - methodStart);
+        buf += "IsDungeon" + methodName + "(" + dungeonName + ")";
+        pos = methodEnd + endParen.length();
+    }
+
+    s = std::move(buf);
+}
+
+constexpr void UpdateIsTrialCondition(std::string& s) {
+    std::string const pattern = "GetTrial(";
+    std::string const arrowIs = "->Is";
+    std::string const endParen = "()";
+    std::string buf;
+    buf.reserve(s.size());
+
+    size_t pos = 0;
+    while (pos < s.length()) {
+        size_t start = s.find(pattern, pos);
+        if (start == std::string::npos) {
+            buf.append(s, pos, s.size() - pos);
+            break;
+        }
+
+        buf.append(s, pos, start - pos);
+
+        size_t trialStart = start + pattern.length();
+        size_t closeParen = s.find(')', trialStart);
+        if (closeParen == std::string::npos) {
+            buf.append(s, start, s.size() - start);
+            break;
+        }
+
+        size_t arrowStart = s.find(arrowIs, closeParen);
+        if (arrowStart != closeParen + 1) {
+            buf.append(s, start, closeParen + 1 - start);
+            pos = closeParen + 1;
+            continue;
+        }
+
+        size_t methodStart = arrowStart + arrowIs.length();
+        size_t methodEnd = s.find(endParen, methodStart);
+        if (methodEnd == std::string::npos) {
+            buf.append(s, start, s.size() - start);
+            break;
+        }
+
+        std::string trialName = s.substr(trialStart, closeParen - trialStart);
+        std::string methodName = s.substr(methodStart, methodEnd - methodStart);
+        buf += "IsTrial" + methodName + "(" + trialName + ")";
+        pos = methodEnd + endParen.length();
+    }
+
+    s = std::move(buf);
+}
+
+constexpr void ReplaceOptionIs(std::string& s) {
+    std::string const pattern = ".Is(";
+    std::string buf;
+    buf.reserve(s.size());
+
+    size_t pos = 0;
+    while (true) {
+        size_t start = s.find(pattern, pos);
+        if (start == std::string::npos) {
+            buf.append(s, pos, s.size() - pos);
+            break;
+        }
+
+        buf.append(s, pos, start - pos);
+
+        size_t end = s.find(')', start + pattern.length());
+        if (end == std::string::npos) {
+            // Malformed; copy remainder and stop
+            buf.append(s, start, s.size() - start);
+            break;
+        }
+
+        std::string param = s.substr(start + pattern.length(), end - (start + pattern.length()));
+        buf += " == " + param;
+
+        pos = end + 1;
+    }
+
+    s = std::move(buf);
+}
+
+constexpr void ReplaceOptionIsNot(std::string& s) {
+    std::string const pattern = ".IsNot(";
+    std::string buf;
+    buf.reserve(s.size());
+
+    size_t pos = 0;
+    while (true) {
+        size_t start = s.find(pattern, pos);
+        if (start == std::string::npos) {
+            buf.append(s, pos, s.size() - pos);
+            break;
+        }
+
+        buf.append(s, pos, start - pos);
+
+        size_t end = s.find(')', start + pattern.length());
+        if (end == std::string::npos) {
+            buf.append(s, start, s.size() - start);
+            break;
+        }
+
+        std::string param = s.substr(start + pattern.length(), end - (start + pattern.length()));
+        buf += " != " + param;
+
+        pos = end + 1;
+    }
+
+    s = std::move(buf);
+}
+
+constexpr void ReplaceRegionAgeTime(std::string& s) {
+    std::string const pattern = "RegionTable(";
+    std::string buf;
+    buf.reserve(s.size());
+
+    size_t pos = 0;
+    while (pos < s.size()) {
+        size_t start = s.find(pattern, pos);
+        if (start == std::string::npos) {
+            buf.append(s, pos, s.size() - pos);
+            break;
+        }
+
+        // Append everything up to the pattern
+        buf.append(s, pos, start - pos);
+
+        // Find closing parenthesis
+        size_t closeParen = s.find(')', start + pattern.length());
+        if (closeParen == std::string::npos) {
+            // Not well-formed; copy remainder and stop
+            buf.append(s, start, s.size() - start);
+            break;
+        }
+
+        // Expect immediate arrow after ')'
+        size_t arrow = s.find("->", closeParen);
+        if (arrow != closeParen + 1) {
+            // Not the pattern we want; copy through ')' and continue scanning
+            buf.append(s, start, closeParen + 1 - start);
+            pos = closeParen + 1;
+            continue;
+        }
+
+        // Extract region identifier
+        std::string region = s.substr(start + pattern.length(), closeParen - (start + pattern.length()));
+
+        // Extract property name
+        size_t propStart = arrow + 2;
+        size_t propEnd = propStart;
+        while (propEnd < s.length() && isIdentifierChar(s[propEnd])) {
+            ++propEnd;
+        }
+        if (propEnd <= propStart) {
+            // No property; copy through '->' and continue
+            buf.append(s, start, propStart - start);
+            pos = propStart;
+            continue;
+        }
+
+        std::string property = s.substr(propStart, propEnd - propStart);
+        buf += "RegionAgeTimeAccess(" + region + ", RegionAgeTime::" + property + ")";
+        pos = propEnd;
+    }
+
+    s = std::move(buf);
+}
+
+constexpr std::string CleanCheckConditionString(std::string condition) {
     ReplaceAllInString(condition, "logic->", "");
     ReplaceAllInString(condition, "ctx->", "");
     ReplaceAllInString(condition, ".Get()", "");
     ReplaceAllInString(condition, "GetSaveContext()->", "");
+    ReplaceAllInString(condition, "(bool)", "");
+    RemoveLambdaSyntax(condition);
+    ReplaceAllInString(condition, "ship.quest.data.randomizer.triforcePiecesCollected", "TriforcePiecesCollected()");
+    UpdateIsDungeonCondition(condition);
+    UpdateIsTrialCondition(condition);
+    ReplaceOptionIs(condition);
+    ReplaceOptionIsNot(condition);
+    ReplaceRegionAgeTime(condition);
     return condition;
 }
 
