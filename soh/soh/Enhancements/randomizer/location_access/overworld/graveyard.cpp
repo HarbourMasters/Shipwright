@@ -35,13 +35,13 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_CRATE,                   ((logic->IsAdult && CanPlantBean(RR_THE_GRAVEYARD)) || logic->CanUse(RG_LONGSHOT)) && logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_GRAVEYARD_SHIELD_GRAVE,       []{return logic->IsAdult || logic->AtNight;}),
-        Entrance(RR_GRAVEYARD_COMPOSERS_GRAVE,    []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
-        Entrance(RR_GRAVEYARD_HEART_PIECE_GRAVE,  []{return logic->IsAdult || logic->AtNight;}),
-        Entrance(RR_GRAVEYARD_DAMPES_GRAVE,       []{return logic->IsAdult;}),
-        Entrance(RR_GRAVEYARD_DAMPES_HOUSE,       []{return logic->IsAdult && logic->CanOpenOverworldDoor(RG_DAMPES_HUT_KEY) /*|| logic->AtDampeTime*/;}), //TODO: This needs to be handled in ToD rework
-        Entrance(RR_KAKARIKO_VILLAGE,             []{return true;}),
-        Entrance(RR_GRAVEYARD_WARP_PAD_REGION,    []{return false;}),
+        ENTRANCE(RR_GRAVEYARD_SHIELD_GRAVE,       logic->IsAdult || logic->AtNight),
+        ENTRANCE(RR_GRAVEYARD_COMPOSERS_GRAVE,    logic->CanUse(RG_ZELDAS_LULLABY)),
+        ENTRANCE(RR_GRAVEYARD_HEART_PIECE_GRAVE,  logic->IsAdult || logic->AtNight),
+        ENTRANCE(RR_GRAVEYARD_DAMPES_GRAVE,       logic->IsAdult),
+        ENTRANCE(RR_GRAVEYARD_DAMPES_HOUSE,       logic->IsAdult && logic->CanOpenOverworldDoor(RG_DAMPES_HUT_KEY) /*|| logic->AtDampeTime*/), //TODO: This needs to be handled in ToD rework
+        ENTRANCE(RR_KAKARIKO_VILLAGE,             true),
+        ENTRANCE(RR_GRAVEYARD_WARP_PAD_REGION,    false),
     });
 
     areaTable[RR_GRAVEYARD_SHIELD_GRAVE] = Region("Graveyard Shield Grave", SCENE_GRAVE_WITH_FAIRYS_FOUNTAIN, {}, {
@@ -49,8 +49,8 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_SHIELD_GRAVE_CHEST, true),
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD,               []{return true;}),
-        Entrance(RR_GRAVEYARD_SHIELD_GRAVE_BACK, []{return Here(RR_GRAVEYARD_SHIELD_GRAVE, []{return logic->CanBreakMudWalls();});}),
+        ENTRANCE(RR_THE_GRAVEYARD,               true),
+        ENTRANCE(RR_GRAVEYARD_SHIELD_GRAVE_BACK, Here(RR_GRAVEYARD_SHIELD_GRAVE, []{return logic->CanBreakMudWalls();})),
     });
 
     areaTable[RR_GRAVEYARD_SHIELD_GRAVE_BACK] = Region("Graveyard Shield Grave Back", SCENE_GRAVE_WITH_FAIRYS_FOUNTAIN, {}, {
@@ -65,7 +65,7 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_SHIELD_GRAVE_FAIRY_8, true),
     }, {
         //Exits
-        Entrance(RR_GRAVEYARD_SHIELD_GRAVE, []{return true;}),
+        ENTRANCE(RR_GRAVEYARD_SHIELD_GRAVE, true),
     });
 
     areaTable[RR_GRAVEYARD_HEART_PIECE_GRAVE] = Region("Graveyard Heart Piece Grave", SCENE_REDEAD_GRAVE, {}, {
@@ -73,7 +73,7 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST, logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD, []{return true;}),
+        ENTRANCE(RR_THE_GRAVEYARD, true),
     });
 
     areaTable[RR_GRAVEYARD_COMPOSERS_GRAVE] = Region("Graveyard Composers Grave", SCENE_ROYAL_FAMILYS_TOMB, {}, {
@@ -83,7 +83,7 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD, []{return true;}),
+        ENTRANCE(RR_THE_GRAVEYARD, true),
     });
 
     areaTable[RR_GRAVEYARD_DAMPES_GRAVE] = Region("Graveyard Dampes Grave", SCENE_WINDMILL_AND_DAMPES_GRAVE, {
@@ -110,8 +110,8 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_8,          true),
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD, []{return true;}),
-        Entrance(RR_KAK_WINDMILL,  []{return (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (logic->IsChild && logic->CanGroundJump());}, false),
+        ENTRANCE(RR_THE_GRAVEYARD, true),
+        ENTRANCE(RR_KAK_WINDMILL,  (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (logic->IsChild && logic->CanGroundJump()), false),
     });
 
     areaTable[RR_GRAVEYARD_DAMPES_HOUSE] = Region("Graveyard Dampes House", SCENE_GRAVEKEEPERS_HUT, {}, {
@@ -119,7 +119,7 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_DAMPE_HINT, logic->IsAdult),
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD, []{return true;}),
+        ENTRANCE(RR_THE_GRAVEYARD, true),
     });
 
     areaTable[RR_GRAVEYARD_WARP_PAD_REGION] = Region("Graveyard Warp Pad Region", SCENE_GRAVEYARD, {
@@ -132,8 +132,8 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_GOSSIP_STONE,           true),
     }, {
         //Exits
-        Entrance(RR_THE_GRAVEYARD,          []{return true;}),
-        Entrance(RR_SHADOW_TEMPLE_ENTRYWAY, []{return logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_GY_SHADOW_FIRE_ARROWS) && logic->IsAdult && logic->CanUse(RG_FIRE_ARROWS));}),
+        ENTRANCE(RR_THE_GRAVEYARD,          true),
+        ENTRANCE(RR_SHADOW_TEMPLE_ENTRYWAY, logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_GY_SHADOW_FIRE_ARROWS) && logic->IsAdult && logic->CanUse(RG_FIRE_ARROWS))),
     });
 
     // clang-format on

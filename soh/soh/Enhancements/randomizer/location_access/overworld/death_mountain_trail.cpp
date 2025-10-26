@@ -23,11 +23,11 @@ void RegionTable_Init_DeathMountainTrail() {
         LOCATION(RC_DMT_FLAG_SUN_FAIRY,           logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
-        Entrance(RR_KAK_BEHIND_GATE,          []{return true;}),
-        Entrance(RR_GORON_CITY,               []{return true;}),
-        Entrance(RR_DEATH_MOUNTAIN_SUMMIT,    []{return Here(RR_DEATH_MOUNTAIN_TRAIL, []{return logic->BlastOrSmash();}) || (logic->IsAdult && ((CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL) && logic->HasItem(RG_GORONS_BRACELET)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_DMT_CLIMB_HOVERS))));}),
-        Entrance(RR_DODONGOS_CAVERN_ENTRYWAY, []{return logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET) || logic->IsAdult;}),
-        Entrance(RR_DMT_STORMS_GROTTO,        []{return logic->CanOpenStormsGrotto();}),
+        ENTRANCE(RR_KAK_BEHIND_GATE,          true),
+        ENTRANCE(RR_GORON_CITY,               true),
+        ENTRANCE(RR_DEATH_MOUNTAIN_SUMMIT,    Here(RR_DEATH_MOUNTAIN_TRAIL, []{return logic->BlastOrSmash();}) || (logic->IsAdult && ((CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL) && logic->HasItem(RG_GORONS_BRACELET)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_DMT_CLIMB_HOVERS))))),
+        ENTRANCE(RR_DODONGOS_CAVERN_ENTRYWAY, logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET) || logic->IsAdult),
+        ENTRANCE(RR_DMT_STORMS_GROTTO,        logic->CanOpenStormsGrotto()),
     });
 
     areaTable[RR_DEATH_MOUNTAIN_SUMMIT] = Region("Death Mountain Summit", SCENE_DEATH_MOUNTAIN_TRAIL, {
@@ -45,16 +45,16 @@ void RegionTable_Init_DeathMountainTrail() {
         LOCATION(RC_DMT_GOSSIP_STONE,           true),
     }, {
         //Exits
-        Entrance(RR_DEATH_MOUNTAIN_TRAIL,     []{return true;}),
-        Entrance(RR_DMC_UPPER_LOCAL,          []{return true;}),
-        Entrance(RR_DMT_OWL_FLIGHT,           []{return logic->IsChild;}, false),
-        Entrance(RR_DMT_COW_GROTTO,           []{return Here(RR_DEATH_MOUNTAIN_SUMMIT, []{return logic->BlastOrSmash();});}),
-        Entrance(RR_DMT_GREAT_FAIRY_FOUNTAIN, []{return Here(RR_DEATH_MOUNTAIN_SUMMIT, []{return logic->BlastOrSmash();});}),
+        ENTRANCE(RR_DEATH_MOUNTAIN_TRAIL,     true),
+        ENTRANCE(RR_DMC_UPPER_LOCAL,          true),
+        ENTRANCE(RR_DMT_OWL_FLIGHT,           logic->IsChild, false),
+        ENTRANCE(RR_DMT_COW_GROTTO,           Here(RR_DEATH_MOUNTAIN_SUMMIT, []{return logic->BlastOrSmash();})),
+        ENTRANCE(RR_DMT_GREAT_FAIRY_FOUNTAIN, Here(RR_DEATH_MOUNTAIN_SUMMIT, []{return logic->BlastOrSmash();})),
     });
 
     areaTable[RR_DMT_OWL_FLIGHT] = Region("DMT Owl Flight", SCENE_DEATH_MOUNTAIN_TRAIL, {}, {}, {
         //Exits
-        Entrance(RR_KAK_IMPAS_ROOFTOP, []{return true;}),
+        ENTRANCE(RR_KAK_IMPAS_ROOFTOP, true),
     });
 
     areaTable[RR_DMT_COW_GROTTO] = Region("DMT Cow Grotto", SCENE_GROTTOS, {}, {
@@ -77,7 +77,7 @@ void RegionTable_Init_DeathMountainTrail() {
         LOCATION(RC_DMT_COW_GROTTO_GRASS_2,            logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_DEATH_MOUNTAIN_SUMMIT, []{return true;}),
+        ENTRANCE(RR_DEATH_MOUNTAIN_SUMMIT, true),
     });
 
     areaTable[RR_DMT_STORMS_GROTTO] = Region("DMT Storms Grotto", SCENE_GROTTOS, grottoEvents, {
@@ -95,7 +95,7 @@ void RegionTable_Init_DeathMountainTrail() {
         LOCATION(RC_DMT_STORMS_GROTTO_GRASS_4,                logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_DEATH_MOUNTAIN_TRAIL, []{return true;}),
+        ENTRANCE(RR_DEATH_MOUNTAIN_TRAIL, true),
     });
 
     areaTable[RR_DMT_GREAT_FAIRY_FOUNTAIN] = Region("DMT Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, {}, {
@@ -103,7 +103,7 @@ void RegionTable_Init_DeathMountainTrail() {
         LOCATION(RC_DMT_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
-        Entrance(RR_DEATH_MOUNTAIN_SUMMIT, []{return true;}),
+        ENTRANCE(RR_DEATH_MOUNTAIN_SUMMIT, true),
     });
 
     // clang-format on

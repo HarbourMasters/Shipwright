@@ -38,9 +38,13 @@ enum class EntranceType {
     All,
 };
 
+#define ENTRANCE(check, condition, ...) \
+    Entrance(RandomizerRegion::check, [] { return condition; }, CleanCheckConditionString(#condition), ##__VA_ARGS__)
+
 class Entrance {
   public:
-    Entrance(RandomizerRegion connectedRegion_, ConditionFn condition_function_, bool spreadsAreasWithPriority_ = true);
+    Entrance(RandomizerRegion connectedRegion_, ConditionFn condition_function_, std::string condition_str_,
+             bool spreadsAreasWithPriority_ = true);
     void SetCondition(ConditionFn newCondition);
     bool GetConditionsMet() const;
     std::string to_string() const;
@@ -80,6 +84,7 @@ class Entrance {
     Entrance* GetNewTarget();
     Entrance* AssumeReachable();
     bool DoesSpreadAreas();
+    std::string GetConditionStr() const;
 
   private:
     RandomizerRegion parentRegion;
@@ -101,6 +106,7 @@ class Entrance {
     // If this is false, areas only spread to interiors through this entrance if there is no other choice
     // Set to false for owl drops, the windmill path between dampe's grave and windmill and blue warps
     bool spreadsAreasWithPriority = true;
+    std::string condition_str = "";
 };
 
 typedef struct {

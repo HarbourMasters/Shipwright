@@ -153,7 +153,8 @@ class Region {
 
     bool UpdateEvents();
 
-    void AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition);
+    void AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition,
+                 std::string condition_str_);
 
     void RemoveExit(Rando::Entrance* exitToRemove);
 

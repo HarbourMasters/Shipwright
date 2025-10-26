@@ -9,9 +9,9 @@ void RegionTable_Init_SpiritTemple() {
     // Vanilla/MQ Decider
     areaTable[RR_SPIRIT_TEMPLE_ENTRYWAY] = Region("Spirit Temple Entryway", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_LOBBY,            []{return ctx->GetDungeon(SPIRIT_TEMPLE)->IsVanilla();}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_LOBBY,         []{return ctx->GetDungeon(SPIRIT_TEMPLE)->IsMQ();}),
-        Entrance(RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE, []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_LOBBY,            ctx->GetDungeon(SPIRIT_TEMPLE)->IsVanilla()),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_LOBBY,         ctx->GetDungeon(SPIRIT_TEMPLE)->IsMQ()),
+        ENTRANCE(RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE, true),
     });
 
 #pragma region Vanilla
@@ -22,9 +22,9 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_LOBBY_POT_2, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY,    []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_CHILD,       []{return logic->IsChild;}),
-        Entrance(RR_SPIRIT_TEMPLE_EARLY_ADULT, []{return logic->CanUse(RG_SILVER_GAUNTLETS);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_ENTRYWAY,    true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_CHILD,       logic->IsChild),
+        ENTRANCE(RR_SPIRIT_TEMPLE_EARLY_ADULT, logic->CanUse(RG_SILVER_GAUNTLETS)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_CHILD] = Region("Child Spirit Temple", SCENE_SPIRIT_TEMPLE, {
@@ -43,7 +43,7 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_BEFORE_CHILD_CLIMB_SMALL_CRATE_2, logic->CanBreakSmallCrates()),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_CHILD_CLIMB, []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 1);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_CHILD_CLIMB, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 1)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_CHILD_CLIMB] = Region("Child Spirit Temple Climb", SCENE_SPIRIT_TEMPLE, {}, {
@@ -57,7 +57,7 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_CHILD_CLIMB_POT_1,       logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_CENTRAL_CHAMBER, []{return logic->HasExplosives() || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS));}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_CENTRAL_CHAMBER, logic->HasExplosives() || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS))),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_EARLY_ADULT] = Region("Early Adult Spirit Temple", SCENE_SPIRIT_TEMPLE, {}, {
@@ -70,7 +70,7 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY,   logic->CanUse(RG_SUNS_SONG) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && logic->IsAdult && ctx->GetTrickOption(RT_SPIRIT_LOWER_ADULT_SWITCH))) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanJumpslash())),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_CENTRAL_CHAMBER, []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 1);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_CENTRAL_CHAMBER, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 1)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_CENTRAL_CHAMBER] = Region("Spirit Temple Central Chamber", SCENE_SPIRIT_TEMPLE, {}, {
@@ -102,11 +102,11 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_CENTRAL_CHAMBER_POT_6,        logic->CanBreakPots() && logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 2)),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_OUTDOOR_HANDS,              []{return logic->CanJumpslashExceptHammer() || logic->HasExplosives();}),
-        Entrance(RR_SPIRIT_TEMPLE_BEYOND_CENTRAL_LOCKED_DOOR, []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 4) && logic->CanUse(RG_SILVER_GAUNTLETS);}),
-        Entrance(RR_SPIRIT_TEMPLE_CHILD_CLIMB,                []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_OUTDOOR_HANDS,              logic->CanJumpslashExceptHammer() || logic->HasExplosives()),
+        ENTRANCE(RR_SPIRIT_TEMPLE_BEYOND_CENTRAL_LOCKED_DOOR, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 4) && logic->CanUse(RG_SILVER_GAUNTLETS)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_CHILD_CLIMB,                true),
         // RT_SPIRIT_PLATFORM_HOOKSHOT is currently disabled
-        Entrance(RR_SPIRIT_TEMPLE_INSIDE_STATUE_HEAD,         []{return ctx->GetTrickOption(RT_SPIRIT_PLATFORM_HOOKSHOT) && logic->CanUse(RG_HOOKSHOT);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_INSIDE_STATUE_HEAD,         ctx->GetTrickOption(RT_SPIRIT_PLATFORM_HOOKSHOT) && logic->CanUse(RG_HOOKSHOT)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_OUTDOOR_HANDS] = Region("Spirit Temple Outdoor Hands", SCENE_SPIRIT_TEMPLE, {}, {
@@ -115,7 +115,7 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST,    logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 4) && logic->CanUse(RG_SILVER_GAUNTLETS) && logic->HasExplosives()),
     }, {
         //Exits
-        Entrance(RR_DESERT_COLOSSUS, []{return (logic->IsChild && logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 5)) || (logic->CanUse(RG_SILVER_GAUNTLETS) && ((logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 3) && logic->HasExplosives()) || logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 5)));}),
+        ENTRANCE(RR_DESERT_COLOSSUS, (logic->IsChild && logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 5)) || (logic->CanUse(RG_SILVER_GAUNTLETS) && ((logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 3) && logic->HasExplosives()) || logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 5)))),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_BEYOND_CENTRAL_LOCKED_DOOR] = Region("Spirit Temple Beyond Central Locked Door", SCENE_SPIRIT_TEMPLE, {}, {
@@ -127,7 +127,7 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_ARMOS_ROOM_SUN_FAIRY,          logic->HasExplosives() && logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_BEYOND_FINAL_LOCKED_DOOR, []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 5) && (ctx->GetTrickOption(RT_SPIRIT_WALL) || logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_BOMBCHU_5) || ((logic->CanUse(RG_BOMB_BAG) || logic->CanUse(RG_NUTS) || logic->CanUse(RG_DINS_FIRE)) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_MEGATON_HAMMER))));}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_BEYOND_FINAL_LOCKED_DOOR, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 5) && (ctx->GetTrickOption(RT_SPIRIT_WALL) || logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_BOMBCHU_5) || ((logic->CanUse(RG_BOMB_BAG) || logic->CanUse(RG_NUTS) || logic->CanUse(RG_DINS_FIRE)) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_MEGATON_HAMMER))))),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_BEYOND_FINAL_LOCKED_DOOR] = Region("Spirit Temple Beyond Final Locked Door", SCENE_SPIRIT_TEMPLE, {}, {
@@ -139,13 +139,13 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_ADULT_CLIMB_RIGHT_HEART,  logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_INSIDE_STATUE_HEAD, []{return logic->CanUse(RG_MIRROR_SHIELD) && logic->HasExplosives() && logic->CanUse(RG_HOOKSHOT);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_INSIDE_STATUE_HEAD, logic->CanUse(RG_MIRROR_SHIELD) && logic->HasExplosives() && logic->CanUse(RG_HOOKSHOT)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_INSIDE_STATUE_HEAD] = Region("Spirit Temple Inside Statue Head", SCENE_SPIRIT_TEMPLE, {}, {}, {
         // Exits
-        Entrance(RR_SPIRIT_TEMPLE_CENTRAL_CHAMBER, []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY,   []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_CENTRAL_CHAMBER, true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY,   true),
     });
 
 #pragma endregion
@@ -164,9 +164,9 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_POT_4,             logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY,                []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_WEST,              []{return logic->IsChild;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_BIG_BLOCK_ROOM_SOUTH, []{return logic->CanUse(RG_LONGSHOT) && logic->CanUse(RG_BOMBCHU_5);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_ENTRYWAY,                true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_1F_WEST,              logic->IsChild),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BIG_BLOCK_ROOM_SOUTH, logic->CanUse(RG_LONGSHOT) && logic->CanUse(RG_BOMBCHU_5)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_1F_WEST] = Region("Spirit Temple MQ 1F West", SCENE_SPIRIT_TEMPLE, {
@@ -181,16 +181,16 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_RIGHT_HEART,         logic->CanHitEyeTargets()),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_GIBDO_ROOM_SOUTH,   []{return Here(RR_SPIRIT_TEMPLE_MQ_1F_WEST, []{return logic->CanKillEnemy(RE_TORCH_SLUG);});}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_SOUTH,        []{return Here(RR_SPIRIT_TEMPLE_MQ_1F_WEST, []{return logic->CanKillEnemy(RE_TORCH_SLUG);});}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_WEST_1F_RUSTED_SWITCH, []{return logic->IsChild && logic->Get(LOGIC_SPIRIT_MQ_CRAWL_BOULDER);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_1F_GIBDO_ROOM_SOUTH,   Here(RR_SPIRIT_TEMPLE_MQ_1F_WEST, []{return logic->CanKillEnemy(RE_TORCH_SLUG);})),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_SOUTH,        Here(RR_SPIRIT_TEMPLE_MQ_1F_WEST, []{return logic->CanKillEnemy(RE_TORCH_SLUG);})),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_WEST_1F_RUSTED_SWITCH, logic->IsChild && logic->Get(LOGIC_SPIRIT_MQ_CRAWL_BOULDER)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_1F_GIBDO_ROOM_SOUTH] = Region("Spirit Temple MQ 1F Gibdo Room South", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_WEST,             []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_GIBDO_ROOM_NORTH, []{return logic->CanUse(RG_BOMBCHU_5) && logic->CanHitEyeTargets();}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_TURNTABLE_ROOM,      []{return logic->CanUse(RG_BOMBCHU_5) && logic->CanHitEyeTargets() && logic->CanKillEnemy(RE_GIBDO);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_1F_WEST,             true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_1F_GIBDO_ROOM_NORTH, logic->CanUse(RG_BOMBCHU_5) && logic->CanHitEyeTargets()),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_TURNTABLE_ROOM,      logic->CanUse(RG_BOMBCHU_5) && logic->CanHitEyeTargets() && logic->CanKillEnemy(RE_GIBDO)),
     });
 
     // Room to store the 2 pots in to handle glitch logic going backwards around the loop later
@@ -213,8 +213,8 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_STALFOS_POT_4, logic->CanUse(RG_BOOMERANG) || logic->CanKillEnemy(RE_STALFOS)),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_GIBDO_ROOM_NORTH, []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_NORTH,      []{return Here(RR_SPIRIT_TEMPLE_MQ_TURNTABLE_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);});}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_1F_GIBDO_ROOM_NORTH, true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_NORTH,      Here(RR_SPIRIT_TEMPLE_MQ_TURNTABLE_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);})),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_NORTH] = Region("Spirit Temple MQ Map Room North", SCENE_SPIRIT_TEMPLE, {
@@ -226,7 +226,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         //Stalfos room blocks you in with fire until you kill the stalfos, which won't spawn from behind the fire
-        Entrance(RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_SOUTH, []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_SOUTH, true),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_SOUTH] = Region("Spirit Temple MQ Map Room South", SCENE_SPIRIT_TEMPLE, {
@@ -239,8 +239,8 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         //The bridge is a temp flag, so not a way to cross south to north in logic
-        Entrance(RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_NORTH, []{return logic->CanUse(RG_HOOKSHOT);}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_WEST,        []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_MAP_ROOM_NORTH, logic->CanUse(RG_HOOKSHOT)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_1F_WEST,        true),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_WEST_1F_RUSTED_SWITCH] = Region("Spirit Temple MQ West 1F Rusted Switch", SCENE_SPIRIT_TEMPLE, {
@@ -249,9 +249,9 @@ void RegionTable_Init_SpiritTemple() {
         EVENT_ACCESS(LOGIC_SPIRIT_MQ_CRAWL_BOULDER,     logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_RUSTED_SWITCHES) && logic->CanUse(RG_MEGATON_HAMMER))),
     }, {}, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_WEST,         []{return logic->IsChild && logic->Get(LOGIC_SPIRIT_MQ_CRAWL_BOULDER);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_1F_WEST,         logic->IsChild && logic->Get(LOGIC_SPIRIT_MQ_CRAWL_BOULDER)),
         //This tracks possible child access, if adult has not entered STATUE_ROOM. Certain Child Access is checked for separately as 7 Keys
-        Entrance(RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE, []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 1);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 1)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE] = Region("Spirit Temple MQ Under Like Like", SCENE_SPIRIT_TEMPLE, {}, {
@@ -260,8 +260,8 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         //This covers adult access only, as child arrives here from the other side of this door
-        Entrance(RR_SPIRIT_TEMPLE_MQ_WEST_1F_RUSTED_SWITCH, []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7);}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_BROKEN_WALL_ROOM,      []{return logic->CanHitSwitch();}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_WEST_1F_RUSTED_SWITCH, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BROKEN_WALL_ROOM,      logic->CanHitSwitch()),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_BROKEN_WALL_ROOM] = Region("Spirit Temple MQ Broken Wall Room", SCENE_SPIRIT_TEMPLE, {}, {
@@ -273,9 +273,9 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_CHILD_CLIMB_SOUTH_CHEST, logic->IsAdult && (logic->HasExplosives() || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS))) && logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE, []{return logic->CanHitSwitch();}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE, logic->CanHitSwitch()),
         //This exit only governs child possible access, adult access starts on the other side so never checks this
-        Entrance(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,     []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 2);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,     logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 2)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM] = Region("Spirit Temple MQ Statue Room", SCENE_SPIRIT_TEMPLE, {}, {
@@ -293,12 +293,12 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         //we check possible adult access directly in MQSpiritSharedBrokenWallRoom, so this exit only covers Certain Access
-        Entrance(RR_SPIRIT_TEMPLE_MQ_BROKEN_WALL_ROOM,     []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BROKEN_WALL_ROOM,     logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7)),
         //We can use Here instead of Shared here because adult will never need to rely on child access to reach this room, and adult access is Certain
-        Entrance(RR_SPIRIT_TEMPLE_MQ_BIG_BLOCK_ROOM_NORTH, []{return Here(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM, []{return logic->HasFireSource() || (ctx->GetTrickOption(RT_SPIRIT_MQ_FROZEN_EYE) && logic->CanUse(RG_FAIRY_BOW) && logic->CanUse(RG_SONG_OF_TIME));});}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM,       []{return logic->IsAdult || ctx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) || logic->CanUse(RG_SONG_OF_TIME);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BIG_BLOCK_ROOM_NORTH, Here(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM, []{return logic->HasFireSource() || (ctx->GetTrickOption(RT_SPIRIT_MQ_FROZEN_EYE) && logic->CanUse(RG_FAIRY_BOW) && logic->CanUse(RG_SONG_OF_TIME));})),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM,       logic->IsAdult || ctx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) || logic->CanUse(RG_SONG_OF_TIME)),
         //explicit adult check here is a precaution against possible child logic leaking, child with a hookshot can do this
-        Entrance(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_EAST,     []{return logic->IsAdult && logic->CanUse(RG_HOOKSHOT);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_EAST,     logic->IsAdult && logic->CanUse(RG_HOOKSHOT)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM] = Region("Spirit Temple MQ Sun Block Room", SCENE_SPIRIT_TEMPLE, {}, {
@@ -310,15 +310,15 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_SUN_BLOCKS_POT_2,     MQSpiritSharedStatueRoom(RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM, []{return logic->CanBreakPots();})),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,       []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,       true),
         //This door causes the Universes to merge as it requires 7 keys for both ages
-        Entrance(RR_SPIRIT_TEMPLE_MQ_WEST_IRON_KNUCKLE, []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_WEST_IRON_KNUCKLE, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_WEST_IRON_KNUCKLE] = Region("Spirit Temple MQ East Iron Knuckle", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM,        []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7);}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_SILVER_GAUNTLETS_HAND, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM,        logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_SILVER_GAUNTLETS_HAND, logic->CanKillEnemy(RE_IRON_KNUCKLE)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_SILVER_GAUNTLETS_HAND] = Region("Spirit Temple MQ Silver Gauntlets Hand", SCENE_SPIRIT_TEMPLE, {}, {
@@ -327,16 +327,16 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         //If it is ever relevent for 1 age to spawn the mirror shield chest for the other can longshot across, it needs an eventAccess
-        Entrance(RR_SPIRIT_TEMPLE_MQ_WEST_IRON_KNUCKLE, []{return true;}),
-        Entrance(RR_DESERT_COLOSSUS,                    []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_WEST_IRON_KNUCKLE, true),
+        ENTRANCE(RR_DESERT_COLOSSUS,                    true),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCK_ROOM_SOUTH] = Region("Spirit Temple MQ Block Room South", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_LOBBY,                []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_LOBBY,                true),
         //The block here is unusual in that it is a permanent flag, but reset anyway as child. This is because there's a check that would be blocked off by pushing them otherwise
         //It may be worth considering making this always temp in future so adult doesn't have the same issue
-        Entrance(RR_SPIRIT_TEMPLE_MQ_BIG_BLOCK_ROOM_NORTH, []{return logic->IsChild ? logic->CanUse(RG_SILVER_GAUNTLETS) : Here(RR_SPIRIT_TEMPLE_MQ_BIG_BLOCK_ROOM_SOUTH, []{return logic->CanUse(RG_SILVER_GAUNTLETS);});}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BIG_BLOCK_ROOM_NORTH, logic->IsChild ? logic->CanUse(RG_SILVER_GAUNTLETS) : Here(RR_SPIRIT_TEMPLE_MQ_BIG_BLOCK_ROOM_SOUTH, []{return logic->CanUse(RG_SILVER_GAUNTLETS);})),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCK_ROOM_NORTH] = Region("Spirit Temple MQ Block Room North", SCENE_SPIRIT_TEMPLE, {}, {
@@ -346,7 +346,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         //if going to RR_SPIRIT_TEMPLE_MQ_BIG_BLOCK_ROOM_SOUTH from here is ever relevant, there needs to be an event to handle the block
-        Entrance(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM, []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM, true),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_EAST] = Region("Spirit Temple MQ Statue Room East", SCENE_SPIRIT_TEMPLE, {}, {
@@ -355,19 +355,19 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_STATUE_ROOM_INVISIBLE_CHEST, (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS))),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,           []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,           true),
         //!QUANTUM LOGIC!
         //We only need 4 keys, access to Shield hand and longshot to reach Gauntlets hand, as if we waste the 5th key we have given ourselves Gauntlets hand access through child climb
         //This exit handles that possibility as cleanly as possible without quantum logic, but will not survive glitch logic
         //logic->CanKillEnemy(RE_FLOORMASTER) is implied
-        Entrance(RR_SPIRIT_TEMPLE_MQ_SILVER_GAUNTLETS_HAND, []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 4) &&
-                                                                       logic->CanAvoidEnemy(RE_BEAMOS, true, 4) && logic->CanUse(RG_SONG_OF_TIME) &&
-                                                                       logic->CanJumpslash() &&
-                                                                       (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
-                                                                       logic->CanKillEnemy(RE_IRON_KNUCKLE) &&
-                                                                       logic->CanUse(RG_LONGSHOT);}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_FOUR_BEAMOS_ROOM,      []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 5) && logic->CanUse(RG_HOOKSHOT);}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_2F,    []{return logic->CanUse(RG_FIRE_ARROWS) || (ctx->GetTrickOption(RT_SPIRIT_MQ_LOWER_ADULT) && logic->CanUse(RG_DINS_FIRE));}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_SILVER_GAUNTLETS_HAND, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 4) &&
+                                                            logic->CanAvoidEnemy(RE_BEAMOS, true, 4) && logic->CanUse(RG_SONG_OF_TIME) &&
+                                                            logic->CanJumpslash() &&
+                                                            (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
+                                                            logic->CanKillEnemy(RE_IRON_KNUCKLE) &&
+                                                            logic->CanUse(RG_LONGSHOT)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FOUR_BEAMOS_ROOM,      logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 5) && logic->CanUse(RG_HOOKSHOT)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_2F,    logic->CanUse(RG_FIRE_ARROWS) || (ctx->GetTrickOption(RT_SPIRIT_MQ_LOWER_ADULT) && logic->CanUse(RG_DINS_FIRE))),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_2F] = Region("Spirit Temple MQ Three Suns Room 2F", SCENE_SPIRIT_TEMPLE, {
@@ -376,14 +376,14 @@ void RegionTable_Init_SpiritTemple() {
         EVENT_ACCESS(LOGIC_SPIRIT_MQ_3SUNS_ENEMIES, (logic->CanUse(RG_MIRROR_SHIELD) && logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2)) || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS))),
     }, {}, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_EAST,   []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_1F, []{return logic->Get(LOGIC_SPIRIT_MQ_3SUNS_ENEMIES);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_EAST,   true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_1F, logic->Get(LOGIC_SPIRIT_MQ_3SUNS_ENEMIES)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_1F] = Region("Spirit Temple MQ Three Suns Room 1F", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_2F, []{return logic->Get(LOGIC_SPIRIT_MQ_3SUNS_ENEMIES);}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_EAST,            []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_2F, logic->Get(LOGIC_SPIRIT_MQ_3SUNS_ENEMIES)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_1F_EAST,            true),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_1F_EAST] = Region("Spirit Temple MQ 1F East", SCENE_SPIRIT_TEMPLE, {
@@ -396,10 +396,10 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_EARLY_ADULT_POT_2, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_LOBBY,              []{return logic->CanUse(RG_MEGATON_HAMMER);}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_1F, []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_LEEVER_ROOM,        []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM,      []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_LOBBY,              logic->CanUse(RG_MEGATON_HAMMER)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_THREE_SUNS_ROOM_1F, true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_LEEVER_ROOM,        true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM,      logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_LEEVER_ROOM] = Region("Spirit Temple MQ Leever Room", SCENE_SPIRIT_TEMPLE, {}, {
@@ -408,14 +408,14 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_GS_LEEVER_ROOM,    logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_EAST, []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_1F_EAST, logic->CanUse(RG_ZELDAS_LULLABY)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM] = Region("Spirit Temple MQ Symphony Room", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_EAST,             []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_1F_EAST,             logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7)),
         //Implies CanPassEnemy(RE_MOBLIN_CHIEF)
-        Entrance(RR_SPIRIT_TEMPLE_MQ_AFTER_SYMPHONY_ROOM, []{return logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_SONG_OF_TIME) && logic->CanUse(RG_EPONAS_SONG) && logic->CanUse(RG_SUNS_SONG) && logic->CanUse(RG_SONG_OF_STORMS) && logic->CanUse(RG_ZELDAS_LULLABY);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_AFTER_SYMPHONY_ROOM, logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_SONG_OF_TIME) && logic->CanUse(RG_EPONAS_SONG) && logic->CanUse(RG_SUNS_SONG) && logic->CanUse(RG_SONG_OF_STORMS) && logic->CanUse(RG_ZELDAS_LULLABY)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_AFTER_SYMPHONY_ROOM] = Region("Spirit Temple MQ After Symphony Room", SCENE_SPIRIT_TEMPLE, {}, {
@@ -424,7 +424,7 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_GS_SYMPHONY_ROOM,    logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM, []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM, true),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_FOUR_BEAMOS_ROOM] = Region("Spirit Temple MQ Four Beamos Room", SCENE_SPIRIT_TEMPLE, {}, {
@@ -433,9 +433,9 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_BEAMOS_SMALL_CRATE, logic->CanKillEnemy(RE_BEAMOS) && logic->CanUse(RG_SONG_OF_TIME) && logic->CanBreakSmallCrates()),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_EAST,   []{return logic->CanAvoidEnemy(RE_BEAMOS, true, 4) && logic->CanUse(RG_SONG_OF_TIME) && logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 5) && logic->CanUse(RG_HOOKSHOT);}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_SOT_SUN_ROOM,       []{return logic->CanAvoidEnemy(RE_BEAMOS, true, 4) && logic->CanUse(RG_SONG_OF_TIME);}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_BIG_WALL,           []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 6);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_EAST,   logic->CanAvoidEnemy(RE_BEAMOS, true, 4) && logic->CanUse(RG_SONG_OF_TIME) && logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 5) && logic->CanUse(RG_HOOKSHOT)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_SOT_SUN_ROOM,       logic->CanAvoidEnemy(RE_BEAMOS, true, 4) && logic->CanUse(RG_SONG_OF_TIME)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BIG_WALL,           logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 6)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_SOT_SUN_ROOM] = Region("Spirit Temple MQ SoT Sun Room", SCENE_SPIRIT_TEMPLE, {}, {
@@ -444,21 +444,21 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_DINALFOS_ROOM_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_FOUR_BEAMOS_ROOM,    []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_EAST_STAIRS_TO_HAND, []{return logic->CanJumpslash();}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_3F_GIBDO_ROOM,       []{return Here(RR_SPIRIT_TEMPLE_MQ_SOT_SUN_ROOM, []{return (logic->IsAdult || logic->CanUse(RG_SONG_OF_TIME)) && logic->CanUse(RG_MIRROR_SHIELD);});}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FOUR_BEAMOS_ROOM,    true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_EAST_STAIRS_TO_HAND, logic->CanJumpslash()),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_3F_GIBDO_ROOM,       Here(RR_SPIRIT_TEMPLE_MQ_SOT_SUN_ROOM, []{return (logic->IsAdult || logic->CanUse(RG_SONG_OF_TIME)) && logic->CanUse(RG_MIRROR_SHIELD);})),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_EAST_STAIRS_TO_HAND] = Region("Spirit Temple MQ East Stairs to Hand", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_SOT_SUN_ROOM,      []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_EAST_IRON_KNUCKLE, []{return (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && Here(RR_SPIRIT_TEMPLE_MQ_EAST_STAIRS_TO_HAND, []{return logic->CanKillEnemy(RE_FLOORMASTER);});}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_SOT_SUN_ROOM,      true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_EAST_IRON_KNUCKLE, (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && Here(RR_SPIRIT_TEMPLE_MQ_EAST_STAIRS_TO_HAND, []{return logic->CanKillEnemy(RE_FLOORMASTER);})),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_EAST_IRON_KNUCKLE] = Region("Spirit Temple MQ East Iron Knuckle", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_EAST_STAIRS_TO_HAND, []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_MIRROR_SHIELD_HAND,  []{return Here(RR_SPIRIT_TEMPLE_MQ_EAST_IRON_KNUCKLE, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE);});}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_EAST_STAIRS_TO_HAND, true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_MIRROR_SHIELD_HAND,  Here(RR_SPIRIT_TEMPLE_MQ_EAST_IRON_KNUCKLE, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE);})),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_MIRROR_SHIELD_HAND] = Region("Spirit Temple MQ Mirror Shield Hand", SCENE_SPIRIT_TEMPLE, {}, {
@@ -466,9 +466,9 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST, true),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_SILVER_GAUNTLETS_HAND, []{return logic->CanUse(RG_LONGSHOT);}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_EAST_IRON_KNUCKLE,     []{return true;}),
-        Entrance(RR_DESERT_COLOSSUS,                        []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_SILVER_GAUNTLETS_HAND, logic->CanUse(RG_LONGSHOT)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_EAST_IRON_KNUCKLE,     true),
+        ENTRANCE(RR_DESERT_COLOSSUS,                        true),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_3F_GIBDO_ROOM] = Region("Spirit Temple MQ 3F Gibdo Room", SCENE_SPIRIT_TEMPLE, {}, {
@@ -476,7 +476,7 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_BOSS_KEY_CHEST, true),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_SOT_SUN_ROOM, []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_SOT_SUN_ROOM, true),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_WALL] = Region("Spirit Temple MQ Big Wall", SCENE_SPIRIT_TEMPLE, {}, {
@@ -485,10 +485,10 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_LONG_CLIMB_POT_2, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_FOUR_BEAMOS_ROOM, []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FOUR_BEAMOS_ROOM, true),
         //technically we only need to avoid them, but the sheer height and the moving walls makes getting to the top after only stunning them very difficult/impossible
         //The silver rupees are irrelevant without silver shuffle
-        Entrance(RR_SPIRIT_TEMPLE_MQ_4F_CENTRAL,       []{return logic->CanKillEnemy(RE_KEESE);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_4F_CENTRAL,       logic->CanKillEnemy(RE_KEESE)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_4F_CENTRAL] = Region("Spirit Temple MQ 4F Central", SCENE_SPIRIT_TEMPLE, {}, {
@@ -497,9 +497,9 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_BEFORE_MIRROR_POT_2, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_BIG_WALL,         []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_NINE_CHAIRS_ROOM, []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7);}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_ROOM,  []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BIG_WALL,         true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_NINE_CHAIRS_ROOM, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_ROOM,  logic->CanUse(RG_ZELDAS_LULLABY)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_NINE_CHAIRS_ROOM] = Region("Spirit Temple MQ Nine Chairs Room", SCENE_SPIRIT_TEMPLE, {}, {
@@ -509,7 +509,7 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_NORTH,  logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_4F_CENTRAL, []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_4F_CENTRAL, true),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_ROOM] = Region("Spirit Temple MQ Big Mirror Room", SCENE_SPIRIT_TEMPLE, {}, {
@@ -524,8 +524,8 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CRATE_3, logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_4F_CENTRAL,      []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CAVE, []{return Here(RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_ROOM, []{return logic->CanUse(RG_MEGATON_HAMMER);});}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_4F_CENTRAL,      true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CAVE, Here(RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_ROOM, []{return logic->CanUse(RG_MEGATON_HAMMER);})),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CAVE] = Region("Spirit Temple MQ Big Mirror Cave", SCENE_SPIRIT_TEMPLE, {}, {
@@ -534,14 +534,14 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         //If it's ever relevant to longshot into head from lobby, this needs to be an event access
-        Entrance(RR_SPIRIT_TEMPLE_MQ_INSIDE_STATUE_HEAD, []{return Here(RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CAVE, []{return logic->CanUse(RG_MIRROR_SHIELD);}) && logic->CanUse(RG_HOOKSHOT);}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,        []{return Here(RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CAVE, []{return logic->CanUse(RG_MIRROR_SHIELD);});}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_INSIDE_STATUE_HEAD, Here(RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CAVE, []{return logic->CanUse(RG_MIRROR_SHIELD);}) && logic->CanUse(RG_HOOKSHOT)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,        Here(RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CAVE, []{return logic->CanUse(RG_MIRROR_SHIELD);})),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_INSIDE_STATUE_HEAD] = Region("Spirit Temple MQ Inside Statue Head", SCENE_SPIRIT_TEMPLE, {}, {}, {
         // Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_LOBBY,      []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY, []{return true;}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_LOBBY,      true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY, true),
     });
 
 #pragma endregion
@@ -549,9 +549,9 @@ void RegionTable_Init_SpiritTemple() {
     // Boss Room
     areaTable[RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY] = Region("Spirit Temple Boss Entryway", SCENE_SPIRIT_TEMPLE, {}, {}, {
         // Exits
-        Entrance(RR_SPIRIT_TEMPLE_INSIDE_STATUE_HEAD,    []{return ctx->GetDungeon(SPIRIT_TEMPLE)->IsVanilla() && false;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_INSIDE_STATUE_HEAD, []{return ctx->GetDungeon(SPIRIT_TEMPLE)->IsMQ() && false;}),
-        Entrance(RR_SPIRIT_TEMPLE_BOSS_ROOM,             []{return logic->HasItem(RG_SPIRIT_TEMPLE_BOSS_KEY);}),
+        ENTRANCE(RR_SPIRIT_TEMPLE_INSIDE_STATUE_HEAD,    ctx->GetDungeon(SPIRIT_TEMPLE)->IsVanilla() && false),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_INSIDE_STATUE_HEAD, ctx->GetDungeon(SPIRIT_TEMPLE)->IsMQ() && false),
+        ENTRANCE(RR_SPIRIT_TEMPLE_BOSS_ROOM,             logic->HasItem(RG_SPIRIT_TEMPLE_BOSS_KEY)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_BOSS_ROOM] = Region("Spirit Temple Boss Room", SCENE_SPIRIT_TEMPLE_BOSS, {
@@ -563,8 +563,8 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_TWINROVA,                     logic->Get(LOGIC_SPIRIT_TEMPLE_CLEAR)),
     }, {
         // Exits
-        Entrance(RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY, []{return false;}),
-        Entrance(RR_DESERT_COLOSSUS,             []{return logic->Get(LOGIC_SPIRIT_TEMPLE_CLEAR);}, false),
+        ENTRANCE(RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY, false),
+        ENTRANCE(RR_DESERT_COLOSSUS,             logic->Get(LOGIC_SPIRIT_TEMPLE_CLEAR), false),
     });
 
     // clang-format on

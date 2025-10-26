@@ -112,21 +112,21 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_TEKTITE_GROTTO_TREE,    logic->CanBonkTrees()),
     }, {
         //Exits
-        Entrance(RR_LW_BRIDGE,              []{return true;}),
-        Entrance(RR_LAKE_HYLIA,             []{return true;}),
-        Entrance(RR_GERUDO_VALLEY,          []{return true;}),
-        Entrance(RR_MARKET_ENTRANCE,        []{return true;}),
-        Entrance(RR_KAKARIKO_VILLAGE,       []{return true;}),
-        Entrance(RR_ZR_FRONT,               []{return true;}),
-        Entrance(RR_LON_LON_RANCH,          []{return true;}),
-        Entrance(RR_HF_SOUTHEAST_GROTTO,    []{return Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();});}),
-        Entrance(RR_HF_OPEN_GROTTO,         []{return true;}),
-        Entrance(RR_HF_INSIDE_FENCE_GROTTO, []{return logic->CanOpenBombGrotto();}),
-        Entrance(RR_HF_COW_GROTTO,          []{return (logic->CanUse(RG_MEGATON_HAMMER) || logic->IsChild) && logic->CanOpenBombGrotto();}),
-        Entrance(RR_HF_NEAR_MARKET_GROTTO,  []{return Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();});}),
-        Entrance(RR_HF_FAIRY_GROTTO,        []{return Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();});}),
-        Entrance(RR_HF_NEAR_KAK_GROTTO,     []{return logic->CanOpenBombGrotto();}),
-        Entrance(RR_HF_TEKTITE_GROTTO,      []{return logic->CanOpenBombGrotto();}),
+        ENTRANCE(RR_LW_BRIDGE,              true),
+        ENTRANCE(RR_LAKE_HYLIA,             true),
+        ENTRANCE(RR_GERUDO_VALLEY,          true),
+        ENTRANCE(RR_MARKET_ENTRANCE,        true),
+        ENTRANCE(RR_KAKARIKO_VILLAGE,       true),
+        ENTRANCE(RR_ZR_FRONT,               true),
+        ENTRANCE(RR_LON_LON_RANCH,          true),
+        ENTRANCE(RR_HF_SOUTHEAST_GROTTO,    Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();})),
+        ENTRANCE(RR_HF_OPEN_GROTTO,         true),
+        ENTRANCE(RR_HF_INSIDE_FENCE_GROTTO, logic->CanOpenBombGrotto()),
+        ENTRANCE(RR_HF_COW_GROTTO,          (logic->CanUse(RG_MEGATON_HAMMER) || logic->IsChild) && logic->CanOpenBombGrotto()),
+        ENTRANCE(RR_HF_NEAR_MARKET_GROTTO,  Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();})),
+        ENTRANCE(RR_HF_FAIRY_GROTTO,        Here(RR_HYRULE_FIELD, []{return logic->BlastOrSmash();})),
+        ENTRANCE(RR_HF_NEAR_KAK_GROTTO,     logic->CanOpenBombGrotto()),
+        ENTRANCE(RR_HF_TEKTITE_GROTTO,      logic->CanOpenBombGrotto()),
     });
 
     areaTable[RR_HF_SOUTHEAST_GROTTO] = Region("HF Southeast Grotto", SCENE_GROTTOS, grottoEvents, {
@@ -144,7 +144,7 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_SOUTHEAST_GROTTO_GRASS_4,                logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, []{return true;}),
+        ENTRANCE(RR_HYRULE_FIELD, true),
     });
 
     areaTable[RR_HF_OPEN_GROTTO] = Region("HF Open Grotto", SCENE_GROTTOS, grottoEvents, {
@@ -162,7 +162,7 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_OPEN_GROTTO_GRASS_4,                 logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, []{return true;}),
+        ENTRANCE(RR_HYRULE_FIELD, true),
     });
 
     areaTable[RR_HF_INSIDE_FENCE_GROTTO] = Region("HF Inside Fence Grotto", SCENE_GROTTOS, {}, {
@@ -172,13 +172,13 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_FENCE_GROTTO_STORMS_FAIRY,   logic->CanUse(RG_SONG_OF_STORMS)),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, []{return true;}),
+        ENTRANCE(RR_HYRULE_FIELD, true),
     });
 
     areaTable[RR_HF_COW_GROTTO] = Region("HF Cow Grotto", SCENE_GROTTOS, {}, {}, {
         //Exits
-        Entrance(RR_HYRULE_FIELD,              []{return true;}),
-        Entrance(RR_HF_COW_GROTTO_BEHIND_WEBS, []{return logic->HasFireSource();}),
+        ENTRANCE(RR_HYRULE_FIELD,              true),
+        ENTRANCE(RR_HF_COW_GROTTO_BEHIND_WEBS, logic->HasFireSource()),
     });
 
     areaTable[RR_HF_COW_GROTTO_BEHIND_WEBS] = Region("HF Cow Grotto Behind Webs", SCENE_GROTTOS, {
@@ -198,7 +198,7 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_COW_GROTTO_GRASS_2,                logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_HF_COW_GROTTO, []{return true;}),
+        ENTRANCE(RR_HF_COW_GROTTO, true),
     });
 
     areaTable[RR_HF_NEAR_MARKET_GROTTO] = Region("HF Near Market Grotto", SCENE_GROTTOS, grottoEvents, {
@@ -216,7 +216,7 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_NEAR_MARKET_GROTTO_GRASS_4,                logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, []{return true;}),
+        ENTRANCE(RR_HYRULE_FIELD, true),
     });
 
     areaTable[RR_HF_FAIRY_GROTTO] = Region("HF Fairy Grotto", SCENE_GROTTOS, {
@@ -234,7 +234,7 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_FAIRY_GROTTO_FAIRY_8, true),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, []{return true;}),
+        ENTRANCE(RR_HYRULE_FIELD, true),
     });
 
     areaTable[RR_HF_NEAR_KAK_GROTTO] = Region("HF Near Kak Grotto", SCENE_GROTTOS, {}, {
@@ -242,7 +242,7 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_GS_NEAR_KAK_GROTTO, logic->HookshotOrBoomerang()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, []{return true;}),
+        ENTRANCE(RR_HYRULE_FIELD, true),
     });
 
     areaTable[RR_HF_TEKTITE_GROTTO] = Region("HF Tektite Grotto", SCENE_GROTTOS, {}, {
@@ -250,7 +250,7 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_TEKTITE_GROTTO_FREESTANDING_POH, logic->HasItem(RG_GOLDEN_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD, []{return true;}),
+        ENTRANCE(RR_HYRULE_FIELD, true),
     });
 
     // clang-format on

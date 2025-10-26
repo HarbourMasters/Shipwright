@@ -11,9 +11,9 @@ void RegionTable_Init_CastleGrounds() {
     //Temporarily uses SCENE_OUTSIDE_GANONS_CASTLE to avoid self connection between ages
     areaTable[RR_CASTLE_GROUNDS] = Region("Castle Grounds", SCENE_OUTSIDE_GANONS_CASTLE, TIME_DOESNT_PASS, {RA_CASTLE_GROUNDS}, {}, {}, {
         //Exits
-        Entrance(RR_THE_MARKET,            []{return true;}),
-        Entrance(RR_HYRULE_CASTLE_GROUNDS, []{return logic->IsChild;}),
-        Entrance(RR_GANONS_CASTLE_GROUNDS, []{return logic->IsAdult;}),
+        ENTRANCE(RR_THE_MARKET,            true),
+        ENTRANCE(RR_HYRULE_CASTLE_GROUNDS, logic->IsChild),
+        ENTRANCE(RR_GANONS_CASTLE_GROUNDS, logic->IsAdult),
     });
 
     areaTable[RR_HYRULE_CASTLE_GROUNDS] = Region("Hyrule Castle Grounds", SCENE_HYRULE_CASTLE, {
@@ -45,10 +45,10 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_NEAR_GUARDS_TREE_6,               logic->CanBonkTrees()),
     }, {
         //Exits
-        Entrance(RR_CASTLE_GROUNDS,          []{return true;}),
-        Entrance(RR_HC_GARDEN,               []{return logic->CanUse(RG_WEIRD_EGG) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanJumpslash());}),
-        Entrance(RR_HC_GREAT_FAIRY_FOUNTAIN, []{return logic->BlastOrSmash();}),
-        Entrance(RR_HC_STORMS_GROTTO,        []{return logic->CanOpenStormsGrotto();}),
+        ENTRANCE(RR_CASTLE_GROUNDS,          true),
+        ENTRANCE(RR_HC_GARDEN,               logic->CanUse(RG_WEIRD_EGG) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanJumpslash())),
+        ENTRANCE(RR_HC_GREAT_FAIRY_FOUNTAIN, logic->BlastOrSmash()),
+        ENTRANCE(RR_HC_STORMS_GROTTO,        logic->CanOpenStormsGrotto()),
     });
 
     areaTable[RR_HC_GARDEN] = Region("HC Garden", SCENE_CASTLE_COURTYARD_ZELDA, {}, {
@@ -57,7 +57,7 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_SONG_FROM_IMPA,   true),
     }, {
         //Exits
-        Entrance(RR_HYRULE_CASTLE_GROUNDS, []{return true;}),
+        ENTRANCE(RR_HYRULE_CASTLE_GROUNDS, true),
     });
 
     areaTable[RR_HC_GREAT_FAIRY_FOUNTAIN] = Region("HC Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, {}, {
@@ -65,7 +65,7 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
-        Entrance(RR_CASTLE_GROUNDS, []{return true;}),
+        ENTRANCE(RR_CASTLE_GROUNDS, true),
     });
 
     areaTable[RR_HC_STORMS_GROTTO] = Region("HC Storms Grotto", SCENE_GROTTOS, {}, {
@@ -73,8 +73,8 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_GS_STORMS_GROTTO, logic->CanUse(RG_BOOMERANG) && ctx->GetTrickOption(RT_HC_STORMS_GS)),
     }, {
         //Exits
-        Entrance(RR_CASTLE_GROUNDS,                []{return true;}),
-        Entrance(RR_HC_STORMS_GROTTO_BEHIND_WALLS, []{return logic->CanBreakMudWalls();}),
+        ENTRANCE(RR_CASTLE_GROUNDS,                true),
+        ENTRANCE(RR_HC_STORMS_GROTTO_BEHIND_WALLS, logic->CanBreakMudWalls()),
     });
 
     areaTable[RR_HC_STORMS_GROTTO_BEHIND_WALLS] = Region("HC Storms Grotto Behind Walls", SCENE_GROTTOS, {
@@ -94,7 +94,7 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_STORMS_GROTTO_POT_4,                  logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_HC_STORMS_GROTTO, []{return true;}),
+        ENTRANCE(RR_HC_STORMS_GROTTO, true),
     });
 
     areaTable[RR_GANONS_CASTLE_GROUNDS] = Region("Ganon's Castle Grounds", SCENE_OUTSIDE_GANONS_CASTLE, {
@@ -105,9 +105,9 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_OGC_GS, logic->CanJumpslashExceptHammer() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)),
     }, {
         //Exits
-        Entrance(RR_CASTLE_GROUNDS,           []{return logic->AtNight;}),
-        Entrance(RR_OGC_GREAT_FAIRY_FOUNTAIN, []{return logic->CanUse(RG_GOLDEN_GAUNTLETS) && logic->AtNight;}),
-        Entrance(RR_GANONS_CASTLE_LEDGE,      []{return logic->Get(LOGIC_BUILD_RAINBOW_BRIDGE);}),
+        ENTRANCE(RR_CASTLE_GROUNDS,           logic->AtNight),
+        ENTRANCE(RR_OGC_GREAT_FAIRY_FOUNTAIN, logic->CanUse(RG_GOLDEN_GAUNTLETS) && logic->AtNight),
+        ENTRANCE(RR_GANONS_CASTLE_LEDGE,      logic->Get(LOGIC_BUILD_RAINBOW_BRIDGE)),
     });
 
     areaTable[RR_OGC_GREAT_FAIRY_FOUNTAIN] = Region("OGC Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, {}, {
@@ -115,19 +115,19 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_OGC_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
-        Entrance(RR_CASTLE_GROUNDS, []{return true;}),
+        ENTRANCE(RR_CASTLE_GROUNDS, true),
     });
 
     areaTable[RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE] = Region("Castle Grounds From Ganon's Castle", SCENE_OUTSIDE_GANONS_CASTLE, {}, {}, {
         // Exits
-        Entrance(RR_HYRULE_CASTLE_GROUNDS, []{return logic->IsChild;}),
-        Entrance(RR_GANONS_CASTLE_LEDGE,   []{return logic->IsAdult;}),
+        ENTRANCE(RR_HYRULE_CASTLE_GROUNDS, logic->IsChild),
+        ENTRANCE(RR_GANONS_CASTLE_LEDGE,   logic->IsAdult),
     });
 
     areaTable[RR_GANONS_CASTLE_LEDGE] = Region("Ganon's Castle Ledge", SCENE_OUTSIDE_GANONS_CASTLE, {}, {}, {
         // Exits
-        Entrance(RR_GANONS_CASTLE_GROUNDS,  []{return logic->Get(LOGIC_BUILD_RAINBOW_BRIDGE);}),
-        Entrance(RR_GANONS_CASTLE_ENTRYWAY, []{return logic->IsAdult;}),
+        ENTRANCE(RR_GANONS_CASTLE_GROUNDS,  logic->Get(LOGIC_BUILD_RAINBOW_BRIDGE)),
+        ENTRANCE(RR_GANONS_CASTLE_ENTRYWAY, logic->IsAdult),
     });
 
     // clang-format on

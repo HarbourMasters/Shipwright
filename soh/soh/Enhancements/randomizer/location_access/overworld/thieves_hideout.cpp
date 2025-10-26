@@ -20,8 +20,8 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_FREED_CARPENTERS,       logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS)),
     }, {
         //Exits
-        Entrance(RR_GF_OUTSKIRTS,   []{return true;}),
-        Entrance(RR_GF_NEAR_GROTTO, []{return true;}),
+        ENTRANCE(RR_GF_OUTSKIRTS,   true),
+        ENTRANCE(RR_GF_NEAR_GROTTO, true),
     });
 
     areaTable[RR_TH_DOUBLE_CELL] = Region("Thieves Hideout Double Cell", SCENE_THIEVES_HIDEOUT, {
@@ -43,9 +43,9 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_FREED_CARPENTERS,           logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS)),
     }, {
         //Exits
-        Entrance(RR_GF_OUTSKIRTS,          []{return true;}),
-        Entrance(RR_GF_ABOVE_GTG,          []{return true;}),
-        Entrance(RR_GF_TOP_OF_LOWER_VINES, []{return true;}),
+        ENTRANCE(RR_GF_OUTSKIRTS,          true),
+        ENTRANCE(RR_GF_ABOVE_GTG,          true),
+        ENTRANCE(RR_GF_TOP_OF_LOWER_VINES, true),
     });
 
     areaTable[RR_TH_DEAD_END_CELL] = Region("Thieves Hideout Dead End Cell", SCENE_THIEVES_HIDEOUT, {
@@ -59,7 +59,7 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_FREED_CARPENTERS,    logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS)),
     }, {
         //Exits
-        Entrance(RR_GF_BELOW_GS, []{return true;}),
+        ENTRANCE(RR_GF_BELOW_GS, true),
     });
 
     areaTable[RR_TH_STEEP_SLOPE_CELL] = Region("Thieves Hideout Steep Slope Cell", SCENE_THIEVES_HIDEOUT, {
@@ -74,8 +74,8 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_FREED_CARPENTERS,      logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS)),
     }, {
         //Exits
-        Entrance(RR_GF_BOTTOM_OF_LOWER_VINES, []{return true;}),
-        Entrance(RR_GF_NEAR_GROTTO,           []{return true;}),
+        ENTRANCE(RR_GF_BOTTOM_OF_LOWER_VINES, true),
+        ENTRANCE(RR_GF_NEAR_GROTTO,           true),
     });
 
     areaTable[RR_TH_KITCHEN_CORRIDOR] = Region("Thieves Hideout Kitchen Corridor", SCENE_THIEVES_HIDEOUT, {}, {
@@ -86,9 +86,9 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_NEAR_KITCHEN_RIGHTMOST_CRATE, logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_GF_NEAR_GROTTO,  []{return true;}),
-        Entrance(RR_GF_ABOVE_GTG,    []{return true;}),
-        Entrance(RR_TH_KITCHEN_MAIN, []{return logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        ENTRANCE(RR_GF_NEAR_GROTTO,  true),
+        ENTRANCE(RR_GF_ABOVE_GTG,    true),
+        ENTRANCE(RR_TH_KITCHEN_MAIN, logic->CanPassEnemy(RE_GERUDO_GUARD)),
     });
 
     areaTable[RR_TH_KITCHEN_MAIN] = Region("Thieves Hideout Kitchen Bottom", SCENE_THIEVES_HIDEOUT, {}, {
@@ -99,9 +99,9 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_KITCHEN_SUN_FAIRY, logic->CanPassEnemy(RE_GERUDO_GUARD) && logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
-        Entrance(RR_TH_KITCHEN_CORRIDOR,          []{return logic->CanPassEnemy(RE_GERUDO_GUARD);}),
-        Entrance(RR_TH_KITCHEN_BY_CORRIDOR,       []{return logic->CanPassEnemy(RE_GERUDO_GUARD);}),
-        Entrance(RR_TH_KITCHEN_OPPOSITE_CORRIDOR, []{return logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        ENTRANCE(RR_TH_KITCHEN_CORRIDOR,          logic->CanPassEnemy(RE_GERUDO_GUARD)),
+        ENTRANCE(RR_TH_KITCHEN_BY_CORRIDOR,       logic->CanPassEnemy(RE_GERUDO_GUARD)),
+        ENTRANCE(RR_TH_KITCHEN_OPPOSITE_CORRIDOR, logic->CanPassEnemy(RE_GERUDO_GUARD)),
     });
 
     areaTable[RR_TH_KITCHEN_BY_CORRIDOR] = Region("Thieves Hideout Kitchen Top By Corridor", SCENE_THIEVES_HIDEOUT, {}, {
@@ -110,10 +110,10 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_KITCHEN_POT_2, logic->CanUse(RG_BOOMERANG)),
     }, {
         //Exits
-        Entrance(RR_TH_KITCHEN_MAIN,              []{return true;}),
+        ENTRANCE(RR_TH_KITCHEN_MAIN,              true),
         //hookshot to cross using rafters implied by logic->CanPassEnemy(RE_GERUDO_GUARD)
-        Entrance(RR_TH_KITCHEN_OPPOSITE_CORRIDOR, []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS);}),
-        Entrance(RR_GF_TOP_OF_LOWER_VINES,        []{return true;}),
+        ENTRANCE(RR_TH_KITCHEN_OPPOSITE_CORRIDOR, logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS)),
+        ENTRANCE(RR_GF_TOP_OF_LOWER_VINES,        true),
     });
 
     areaTable[RR_TH_KITCHEN_OPPOSITE_CORRIDOR] = Region("Thieves Hideout Kitchen Top Across From Corridor", SCENE_THIEVES_HIDEOUT, {}, {
@@ -122,10 +122,10 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_KITCHEN_POT_2, logic->CanUse(RG_BOOMERANG)),
     }, {
         //Exits
-        Entrance(RR_TH_KITCHEN_MAIN,        []{return true;}),
+        ENTRANCE(RR_TH_KITCHEN_MAIN,        true),
         //hookshot to cross using rafters implied by logic->CanPassEnemy(RE_GERUDO_GUARD)
-        Entrance(RR_TH_KITCHEN_BY_CORRIDOR, []{return logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS);}),
-        Entrance(RR_GF_NEAR_GS,             []{return true;}),
+        ENTRANCE(RR_TH_KITCHEN_BY_CORRIDOR, logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS)),
+        ENTRANCE(RR_GF_NEAR_GS,             true),
     });
 
     areaTable[RR_TH_BREAK_ROOM] = Region("Thieves Hideout Break Room", SCENE_THIEVES_HIDEOUT, {}, {
@@ -142,15 +142,15 @@ void RegionTable_Init_ThievesHideout() {
                                                    (logic->CanPassEnemy(RE_GERUDO_GUARD) && logic->HasExplosives() && logic->CanUse(RG_BOOMERANG))),
     }, {
         //Exits
-        Entrance(RR_GF_BELOW_CHEST,         []{return logic->CanPassEnemy(RE_GERUDO_GUARD);}),
+        ENTRANCE(RR_GF_BELOW_CHEST,         logic->CanPassEnemy(RE_GERUDO_GUARD)),
         //Implies logic->CanPassEnemy(RE_GERUDO_GUARD)
-        Entrance(RR_TH_BREAK_ROOM_CORRIDOR, []{return logic->CanUse(RG_HOOKSHOT);}),
+        ENTRANCE(RR_TH_BREAK_ROOM_CORRIDOR, logic->CanUse(RG_HOOKSHOT)),
     });
 
     areaTable[RR_TH_BREAK_ROOM_CORRIDOR] = Region("Thieves Hideout Break Room", SCENE_THIEVES_HIDEOUT, {}, {}, {
         //Exits
-        Entrance(RR_TH_BREAK_ROOM, []{return logic->CanUse(RG_HOOKSHOT);}),
-        Entrance(RR_GF_ABOVE_JAIL, []{return true;}),
+        ENTRANCE(RR_TH_BREAK_ROOM, logic->CanUse(RG_HOOKSHOT)),
+        ENTRANCE(RR_GF_ABOVE_JAIL, true),
     });
 }
 // clang-format on
