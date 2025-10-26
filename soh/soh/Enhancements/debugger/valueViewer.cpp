@@ -151,7 +151,7 @@ void RegisterValueViewerHooks() {
     COND_HOOK(OnGameFrameUpdate, CVAR_VALUE, []() { ValueViewer_SetupDraw(); });
 }
 
-RegisterShipInitFunc initFunc(RegisterValueViewerHooks, { CVAR_NAME });
+static RegisterShipInitFunc initFunc(RegisterValueViewerHooks, { CVAR_NAME });
 
 void ValueViewerWindow::DrawElement() {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));

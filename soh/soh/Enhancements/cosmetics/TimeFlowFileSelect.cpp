@@ -17,4 +17,4 @@ void RegisterTimeFlowFileSelect() {
     COND_HOOK(OnFileChooseMain, CVAR_TIMEFLOWFILESELECT_VALUE, OnFileChooseMainTimeFlowFileSelect);
 }
 
-static RegisterShipInitFunc initFunc_TimeFlowFileSelect(RegisterTimeFlowFileSelect, { CVAR_TIMEFLOWFILESELECT_NAME });
+static RegisterShipInitFunc initFunc(RegisterTimeFlowFileSelect, { CVAR_TIMEFLOWFILESELECT_NAME });

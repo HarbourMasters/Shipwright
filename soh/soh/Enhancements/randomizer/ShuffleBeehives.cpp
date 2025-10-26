@@ -99,7 +99,7 @@ void RegisterShuffleBeehives() {
     COND_ID_HOOK(OnActorUpdate, ACTOR_OBJ_COMB, shouldRegister, ObjComb_RandomizerUpdate);
 }
 
-static RegisterShipInitFunc initFunc(RegisterShuffleBeehives, { "IS_RANDO" });
+static RegisterShipInitFunc registerShuffleBeehives(RegisterShuffleBeehives, { "IS_RANDO" });
 
 void Rando::StaticData::RegisterBeehiveLocations() {
     static bool registered = false;
@@ -143,4 +143,4 @@ void Rando::StaticData::RegisterBeehiveLocations() {
 }
 
 static ObjectExtension::Register<BeehiveIdentity> RegisterBeehiveIdentity;
-static RegisterShipInitFunc registerFunc(Rando::StaticData::RegisterBeehiveLocations);
+static RegisterShipInitFunc registerBeehiveLocations(Rando::StaticData::RegisterBeehiveLocations);

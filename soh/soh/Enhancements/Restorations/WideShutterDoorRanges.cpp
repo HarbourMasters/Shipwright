@@ -27,5 +27,4 @@ void RegisterWideShutterDoorRange() {
     });
 }
 
-static RegisterShipInitFunc initFunc_WideShutterDoorRange(RegisterWideShutterDoorRange,
-                                                          { CVAR_WIDE_SHUTTER_DOOR_RANGE });
+static RegisterShipInitFunc initFunc(RegisterWideShutterDoorRange, { CVAR_WIDE_SHUTTER_DOOR_RANGE });

@@ -423,7 +423,10 @@ typedef enum {
     RCTYPE_BEEHIVE,                    // Beehives
     RCTYPE_FISH,                       // Fishes
     RCTYPE_FREESTANDING,               // Freestanding rupees and hearts
-    RCTYPE_FAIRY,                      // Fairies
+    RCTYPE_FOUNTAIN_FAIRY,             // Fairies in Fountains
+    RCTYPE_STONE_FAIRY,                // Fairies from Gossip Stones
+    RCTYPE_BEAN_FAIRY,                 // Fairies from Beans
+    RCTYPE_SONG_FAIRY,                 // Fairies from Songs
     RCTYPE_GRASS,                      // Grass
 } RandomizerCheckType;
 
@@ -564,7 +567,8 @@ typedef enum {
     RR_TH_STEEP_SLOPE_CELL,
     RR_TH_KITCHEN_CORRIDOR,
     RR_TH_KITCHEN_MAIN,
-    RR_TH_KITCHEN_TOP,
+    RR_TH_KITCHEN_BY_CORRIDOR,
+    RR_TH_KITCHEN_OPPOSITE_CORRIDOR,
     RR_TH_BREAK_ROOM,
     RR_TH_BREAK_ROOM_CORRIDOR,
     RR_WASTELAND_NEAR_FORTRESS,
@@ -6108,6 +6112,7 @@ typedef enum {
     RSK_SHUFFLE_DUNGEON_ENTRANCES,
     RSK_SHUFFLE_OVERWORLD_ENTRANCES,
     RSK_SHUFFLE_INTERIOR_ENTRANCES,
+    RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES,
     RSK_SHUFFLE_GROTTO_ENTRANCES,
     RSK_SHUFFLE_OWL_DROPS,
     RSK_SHUFFLE_WARP_SONGS,
@@ -6117,6 +6122,7 @@ typedef enum {
     RSK_MIX_BOSS_ENTRANCES,
     RSK_MIX_OVERWORLD_ENTRANCES,
     RSK_MIX_INTERIOR_ENTRANCES,
+    RSK_MIX_THIEVES_HIDEOUT_ENTRANCES,
     RSK_MIX_GROTTO_ENTRANCES,
     RSK_DECOUPLED_ENTRANCES,
     RSK_STARTING_SKULLTULA_TOKEN,
@@ -6138,7 +6144,10 @@ typedef enum {
     RSK_SHUFFLE_DEKU_STICK_BAG,
     RSK_SHUFFLE_DEKU_NUT_BAG,
     RSK_SHUFFLE_FREESTANDING,
-    RSK_SHUFFLE_FAIRIES,
+    RSK_SHUFFLE_FOUNTAIN_FAIRIES,
+    RSK_SHUFFLE_STONE_FAIRIES,
+    RSK_SHUFFLE_BEAN_FAIRIES,
+    RSK_SHUFFLE_SONG_FAIRIES,
     RSK_LOCK_OVERWORLD_DOORS,
     RSK_SHUFFLE_GRASS,
     RSK_MAX
@@ -6522,7 +6531,6 @@ typedef enum {
 typedef enum {
     RO_LOGIC_GLITCHLESS,
     RO_LOGIC_NO_LOGIC,
-    RO_LOGIC_VANILLA,
 } RandoOptionLogic;
 
 // Damage Multiplier
