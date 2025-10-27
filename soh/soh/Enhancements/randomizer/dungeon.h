@@ -59,18 +59,8 @@ class DungeonInfo {
 };
 
 typedef enum {
-    DEKU_TREE,
-    DODONGOS_CAVERN,
-    JABU_JABUS_BELLY,
-    FOREST_TEMPLE,
-    FIRE_TEMPLE,
-    WATER_TEMPLE,
-    SPIRIT_TEMPLE,
-    SHADOW_TEMPLE,
-    BOTTOM_OF_THE_WELL,
-    ICE_CAVERN,
-    GERUDO_TRAINING_GROUND,
-    GANONS_CASTLE
+#define DEFINE_DungeonKey(enum) enum,
+#include "randomizerEnums.h"
 } DungeonKey;
 
 class Dungeons {
