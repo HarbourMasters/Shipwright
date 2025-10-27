@@ -634,7 +634,7 @@ std::string Extractor::Mkdtemp() {
     return tmppath;
 }
 
-extern "C" int zapd_main(int argc, char** argv, size_t* extractCount, size_t* totalExtract);
+extern "C" int zapd_report(int argc, char** argv, size_t* extractCount, size_t* totalExtract);
 static void MessageboxWorker();
 
 bool Extractor::CallZapd(std::string installPath, std::string exportdir, size_t* extractCount, size_t* totalExtract) {
@@ -688,7 +688,7 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir, size_t*
     argv[20] = "-osf";
     argv[21] = "placeholder";
 
-    zapd_main(argc, (char**)argv.data(), extractCount, totalExtract);
+    zapd_report(argc, (char**)argv.data(), extractCount, totalExtract);
 
     std::filesystem::copy(otrFile, exportdir + "/" + otrFile, std::filesystem::copy_options::overwrite_existing);
 

@@ -1409,7 +1409,7 @@ void DetectOTRVersion(std::string fileName, bool isMQ) {
                 Extractor::ShowErrorBox("Error", "An error occured, no OTR file was generated.\n\nExiting...");
                 exit(1);
             }
-            extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName));
+            extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName), nullptr, nullptr);
         } else {
             exit(1);
         }
