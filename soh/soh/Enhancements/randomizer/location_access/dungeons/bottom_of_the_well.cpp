@@ -165,11 +165,11 @@ void RegionTable_Init_BottomOfTheWell() {
         //Exitss
         //Climb always needed in case the water is lowered out of logic
         //Adult can ground jump out of the pit without climb but needs a way through the crawlspace
-        Entrance(RR_BOTW_PERIMETER,             []{return logic->IsChild/*CanCrawl*/ && (logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->HasItem(RG_BRONZE_SCALE))/*&& CanClimb*/;}),
-        Entrance(RR_BOTW_SKULLTULA_GRATE_UPPER, []{return true/*CanClimb*/;}),
+        Entrance(RR_BOTW_PERIMETER,       []{return logic->IsChild/*CanCrawl*/ && (logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->HasItem(RG_BRONZE_SCALE))/*&& CanClimb*/;}),
+        Entrance(RR_BOTW_NEAR_BOSS_UPPER, []{return true/*CanClimb or (isAdult && CanGroundJump)*/;}),
     });
 
-    areaTable[RR_BOTW_SKULLTULA_GRATE_UPPER] = Region("Bottom of the Well Near Boss Upper", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
+    areaTable[RR_BOTW_NEAR_BOSS_UPPER] = Region("Bottom of the Well Near Boss Upper", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
         //Exits
         Entrance(RR_BOTW_NEAR_BOSS_LOWER, []{return true;}),
         Entrance(RR_BOTW_DEAD_HAND_ROOM,  []{return true;}),
@@ -181,7 +181,7 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST,     (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH))),
     }, {
         //Exits
-        Entrance(RR_BOTW_SKULLTULA_GRATE_UPPER, []{return logic->CanKillEnemy(RE_DEAD_HAND);}),
+        Entrance(RR_BOTW_NEAR_BOSS_UPPER, []{return logic->CanKillEnemy(RE_DEAD_HAND);}),
     });
 
     areaTable[RR_BOTW_B3_OOZE] = Region("Bottom of the Well B3 Ooze", SCENE_BOTTOM_OF_THE_WELL, {}, {
@@ -271,6 +271,9 @@ void RegionTable_Init_BottomOfTheWell() {
     }, {
         //Locations
         //Implies CanBreakPots(). Hitting this with rang through the wall is possible but would be a trick.
+        //Instead of blowing up the boulder, you can aim through the lower left side with sling(either age) or as child with bow
+        //Not even bow extension seems to get adult's bow to work
+        //this would be a trick
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_OUTER_LOBBY_POT,  Here(RR_BOTW_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_LEFT_HEART,  logic->HasExplosives()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_RIGHT_HEART, logic->HasExplosives()),
@@ -380,7 +383,9 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_MQ_NEAR_BOSS_LOWER] = Region("Bottom of the Well MQ Near Boss Lower", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
         //Exits
-        Entrance(RR_BOTW_MQ_PERIMETER,       []{return logic->IsChild/*CanCrawl()*/ && (logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->HasItem(RG_BRONZE_SCALE));}),
+        //Climb always needed in case the water is lowered out of logic
+        //Adult can ground jump out of the pit without climb but needs a way through the crawlspace
+        Entrance(RR_BOTW_MQ_PERIMETER,       []{return logic->IsChild/*CanCrawl*/ && (logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->HasItem(RG_BRONZE_SCALE))/*&& CanClimb*/;}),
         Entrance(RR_BOTW_MQ_NEAR_BOSS_UPPER, []{return true/*CanClimb*/;}),
     });
 
