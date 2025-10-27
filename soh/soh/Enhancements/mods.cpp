@@ -44,7 +44,6 @@ extern "C" {
 #include "soh/cvar_prefixes.h"
 #include "variables.h"
 #include "functions.h"
-#include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
@@ -742,35 +741,6 @@ void RegisterRandomizedEnemySizes() {
     });
 }
 
-void RegisterOpenAllHours() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
-        Actor* actor = static_cast<Actor*>(refActor);
-
-        if (CVarGetInteger(CVAR_ENHANCEMENT("OpenAllHours"), 0) && (actor->id == ACTOR_EN_DOOR) &&
-            (!IS_RANDO || !OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOCK_OVERWORLD_DOORS))) {
-            switch (actor->params) {
-                case 4753: // Night Market Bazaar
-                case 1678: // Night Potion Shop
-                case 2689: // Day Bombchu Shop
-                case 2703: // Night Slingshot Game
-                case 653:  // Day Chest Game
-                case 6801: // Night Kak Bazaar
-                case 7822: // Night Kak Potion Shop
-                case 4751: // Night Kak Archery Game
-                case 3728: // Night Mask Shop
-                {
-                    actor->params = (actor->params & 0xFC00) | (DOOR_SCENEEXIT << 7) | 0x3F;
-                    EnDoor* enDoor = static_cast<EnDoor*>(refActor);
-                    EnDoor_SetupType(enDoor, gPlayState);
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-    });
-}
-
 void PatchToTMedallions() {
     // TODO: Refactor the DemoEffect_UpdateJewelAdult and DemoEffect_UpdateJewelChild from z_demo_effect
     // effects to take effect in there
@@ -943,7 +913,6 @@ void InitMods() {
     RegisterEnemyDefeatCounts();
     RegisterBossDefeatTimestamps();
     RegisterRandomizedEnemySizes();
-    RegisterOpenAllHours();
     RegisterToTMedallions();
     RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();
