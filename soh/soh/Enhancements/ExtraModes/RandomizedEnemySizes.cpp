@@ -67,8 +67,8 @@ static void RegisterRandomizedEnemySizes() {
     COND_HOOK(OnActorInit, CVAR_RANDO_ENEMY_SIZE_VALUE, RandomizedEnemySizes);
 }
 
-static void RegisterEnemySizeScalesHealth() {
-    COND_VB_SHOULD(VB_FREEZARD_SCALE_HEALTH_WITH_SIZE, CVAR_ENEMY_SCALE_HEALTH_VALUE, {
+static void RegisterFreezardHealthScale() {
+    COND_VB_SHOULD(VB_FREEZARD_SCALE_HEALTH_WITH_SIZE, CVAR_RANDO_ENEMY_SIZE_VALUE && CVAR_ENEMY_SCALE_HEALTH_VALUE, {
         // With enemy health scaling, the Freezard's health could cause an index out of bounds for the displayLists, so
         // we need to recompute the index based on the scaled health (using the maximum health value) and clamp the
         // final result for safety.
@@ -80,6 +80,6 @@ static void RegisterEnemySizeScalesHealth() {
     });
 }
 
-static RegisterShipInitFunc initFunc_RandomizedEnemySizes(RegisterRandomizedEnemySizes, { CVAR_RANDO_ENEMY_SIZE_NAME });
-static RegisterShipInitFunc initFunc_EnemySizeScalesHealth(RegisterEnemySizeScalesHealth,
-                                                           { CVAR_ENEMY_SCALE_HEALTH_NAME });
+static RegisterShipInitFunc initFunc(RegisterRandomizedEnemySizes, { CVAR_RANDO_ENEMY_SIZE_NAME });
+static RegisterShipInitFunc initFunc_Freezard(RegisterFreezardHealthScale,
+                                              { CVAR_RANDO_ENEMY_SIZE_NAME, CVAR_ENEMY_SCALE_HEALTH_NAME });
