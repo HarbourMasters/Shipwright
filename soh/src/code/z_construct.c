@@ -10,7 +10,7 @@ void func_80110990(PlayState* play) {
 void func_801109B0(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     u32 parameterSize;
-    u8 temp;
+    u8 timerId;
 
     gSaveContext.sunsSongState = SUNSSONG_INACTIVE;
     gSaveContext.unk_13E8 = gSaveContext.unk_13EA = 0;
@@ -92,24 +92,24 @@ void func_801109B0(PlayState* play) {
         if ((gSaveContext.respawnFlag == -1) || (gSaveContext.respawnFlag == 1)) {
             if (gSaveContext.timerState == TIMER_STATE_ENV_HAZARD_TICK) {
                 gSaveContext.timerState = TIMER_STATE_ENV_HAZARD_INIT;
-                gSaveContext.timerX[0] = 140;
-                gSaveContext.timerY[0] = 80;
+                gSaveContext.timerX[TIMER_ID_MAIN] = 140;
+                gSaveContext.timerY[TIMER_ID_MAIN] = 80;
             }
         }
 
         if ((gSaveContext.timerState == TIMER_STATE_ENV_HAZARD_TICK) ||
             (gSaveContext.timerState == TIMER_STATE_DOWN_TICK)) {
-            temp = 0;
+            timerId = TIMER_ID_MAIN;
         } else {
-            temp = 1;
+            timerId = TIMER_ID_SUB;
         }
 
-        gSaveContext.timerX[temp] = 26;
+        gSaveContext.timerX[timerId] = 26;
 
         if (gSaveContext.healthCapacity > 0xA0) {
-            gSaveContext.timerY[temp] = 54;
+            gSaveContext.timerY[timerId] = 54;
         } else {
-            gSaveContext.timerY[temp] = 46;
+            gSaveContext.timerY[timerId] = 46;
         }
     }
 

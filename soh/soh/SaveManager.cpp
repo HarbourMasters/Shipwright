@@ -2523,8 +2523,8 @@ typedef struct {
     /* 0x13D0 */ s16 timerSeconds;
     /* 0x13D2 */ s16 subTimerState;
     /* 0x13D4 */ s16 subTimerSeconds;
-    /* 0x13D6 */ s16 timerX[2];
-    /* 0x13DA */ s16 timerY[2];
+    /* 0x13D6 */ s16 timerX[TIMER_ID_MAX];
+    /* 0x13DA */ s16 timerY[TIMER_ID_MAX];
     /* 0x13DE */ char unk_13DE[0x0002];
     /* 0x13E0 */ u8 seqId;
     /* 0x13E1 */ u8 natureAmbienceId;

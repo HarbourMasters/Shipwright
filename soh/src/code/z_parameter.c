@@ -5945,7 +5945,7 @@ void Interface_Draw(PlayState* play) {
             (play->transitionTrigger == TRANS_TRIGGER_OFF) && (play->transitionMode == TRANS_MODE_OFF) &&
             !Play_InCsMode(play) && (gSaveContext.minigameState != 1) && (play->shootingGalleryStatus <= 1) &&
             !((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
-            timerId = 0;
+            timerId = TIMER_ID_MAIN;
             switch (gSaveContext.timerState) {
                 case TIMER_STATE_ENV_HAZARD_INIT:
                     sTimerStateTimer = 20;
@@ -6127,7 +6127,7 @@ void Interface_Draw(PlayState* play) {
                 case TIMER_STATE_UP_FREEZE:
                     break;
                 default:
-                    timerId = 1;
+                    timerId = TIMER_ID_SUB;
                     switch (gSaveContext.subTimerState) {
                         case SUBTIMER_STATE_DOWN_INIT:
                         case SUBTIMER_STATE_UP_INIT:
