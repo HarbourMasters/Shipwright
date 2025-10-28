@@ -12,7 +12,7 @@
 #define TIME_PASSES true
 #define TIME_DOESNT_PASS false
 
-typedef bool (*ConditionFn)();
+using ConditionFn = std::function<bool()>;
 
 // I hate this but every alternative I can think of right now is worse
 extern Rando::Context* ctx;

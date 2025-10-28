@@ -13,6 +13,7 @@
 #include <soh/OTRGlobals.h>
 
 #include "3drando/shops.hpp"
+#include "logic_expression.h"
 extern "C" {
 extern PlayState* gPlayState;
 }
@@ -906,6 +907,50 @@ void RegionTable_Init() {
             exit.GetConnectedRegion()->entrances.push_front(&exit);
         }
     }
+
+#if 1 // Evaluate all logic expressions to find any that fail to parse or evaluate
+    // RANDOTODO: Remove before merging
+    if (Rando::Context::GetInstance()->GetLogic()->mSaveContext != nullptr) {
+        std::function<void(std::shared_ptr<LogicExpression>)> eval;
+        eval = [&eval](std::shared_ptr<LogicExpression> expression) {
+            expression->Evaluate<bool>();
+            for (auto& child : expression->GetChildren()) {
+                eval(child);
+            }
+        };
+
+        std::ostringstream ss;
+
+        for (uint32_t i = RR_ROOT; i < RR_MAX; i++) {
+            for (EventAccess& eventAccess : areaTable[i].events) {
+                try {
+                    eval(LogicExpression::Parse(eventAccess.GetConditionStr()));
+                } catch (std::exception& ex) {
+                    ss << eventAccess.GetConditionStr() << std::endl;
+                    ss << ex.what() << std::endl << std::endl;
+                }
+            }
+            for (LocationAccess& locPair : areaTable[i].locations) {
+                try {
+                    eval(LogicExpression::Parse(locPair.GetConditionStr()));
+                } catch (std::exception& ex) {
+                    ss << locPair.GetConditionStr() << std::endl;
+                    ss << ex.what() << std::endl << std::endl;
+                }
+            }
+            for (Entrance& exit : areaTable[i].exits) {
+                try {
+                    eval(LogicExpression::Parse(exit.GetConditionStr()));
+                } catch (std::exception& ex) {
+                    ss << exit.GetConditionStr() << std::endl;
+                    ss << ex.what() << std::endl << std::endl;
+                }
+            }
+        }
+
+        SPDLOG_INFO("Parse/Eval Failure Conditions:\n{}", ss.str());
+    }
+#endif
 }
 
 constexpr void ReplaceFirstInString(std::string& s, std::string const& toReplace, std::string const& replaceWith) {
