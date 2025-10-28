@@ -138,12 +138,14 @@ static void PauseWarp_HandleSelection() {
 
 static void RegisterPauseMenuHooks() {
     COND_HOOK(OnKaleidoUpdate, CVAR_PAUSE_WARP_VALUE, [] {
-        if (GameInteractor::IsSaveLoaded())
+        if (GameInteractor::IsSaveLoaded()) {
             PauseWarp_HandleSelection();
+        }
     });
     COND_HOOK(OnGameFrameUpdate, CVAR_PAUSE_WARP_VALUE, [] {
-        if (GameInteractor::IsSaveLoaded())
+        if (GameInteractor::IsSaveLoaded()) {
             PauseWarp_Execute();
+        }
     });
 }
 
