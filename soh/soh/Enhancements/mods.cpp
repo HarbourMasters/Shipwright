@@ -28,7 +28,6 @@
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
-#include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
@@ -44,7 +43,6 @@ extern "C" {
 #include "soh/cvar_prefixes.h"
 #include "variables.h"
 #include "functions.h"
-#include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
@@ -298,24 +296,6 @@ void UpdateHyperEnemiesState() {
     }
 }
 
-void UpdateDirtPathFixState(int32_t sceneNum) {
-    switch (sceneNum) {
-        case SCENE_HYRULE_FIELD:
-        case SCENE_KOKIRI_FOREST:
-        case SCENE_HYRULE_CASTLE:
-            CVarSetInteger(CVAR_Z_FIGHTING_MODE,
-                           CVarGetInteger(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"), ZFIGHT_FIX_DISABLED));
-            return;
-        default:
-            CVarClear(CVAR_Z_FIGHTING_MODE);
-    }
-}
-
-void RegisterMenuPathFix() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(
-        [](int32_t sceneNum) { UpdateDirtPathFixState(sceneNum); });
-}
-
 void UpdateMirrorModeState(int32_t sceneNum) {
     static bool prevMirroredWorld = false;
     bool nextMirroredWorld = false;
@@ -427,14 +407,6 @@ void UpdatePatchHand() {
 void RegisterPatchHandHandler() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
         [](int32_t sceneNum) { UpdatePatchHand(); });
-}
-
-void RegisterResetNaviTimer() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("ResetNaviTimer"), 0)) {
-            gSaveContext.naviTimer = 0;
-        }
-    });
 }
 
 // this map is used for enemies that can be uniquely identified by their id
@@ -742,35 +714,6 @@ void RegisterRandomizedEnemySizes() {
     });
 }
 
-void RegisterOpenAllHours() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
-        Actor* actor = static_cast<Actor*>(refActor);
-
-        if (CVarGetInteger(CVAR_ENHANCEMENT("OpenAllHours"), 0) && (actor->id == ACTOR_EN_DOOR) &&
-            (!IS_RANDO || !OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOCK_OVERWORLD_DOORS))) {
-            switch (actor->params) {
-                case 4753: // Night Market Bazaar
-                case 1678: // Night Potion Shop
-                case 2689: // Day Bombchu Shop
-                case 2703: // Night Slingshot Game
-                case 653:  // Day Chest Game
-                case 6801: // Night Kak Bazaar
-                case 7822: // Night Kak Potion Shop
-                case 4751: // Night Kak Archery Game
-                case 3728: // Night Mask Shop
-                {
-                    actor->params = (actor->params & 0xFC00) | (DOOR_SCENEEXIT << 7) | 0x3F;
-                    EnDoor* enDoor = static_cast<EnDoor*>(refActor);
-                    EnDoor_SetupType(enDoor, gPlayState);
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-    });
-}
-
 void PatchToTMedallions() {
     // TODO: Refactor the DemoEffect_UpdateJewelAdult and DemoEffect_UpdateJewelChild from z_demo_effect
     // effects to take effect in there
@@ -872,22 +815,6 @@ void RegisterToTMedallions() {
     });
 }
 
-void RegisterFloorSwitchesHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
-        Actor* actor = static_cast<Actor*>(refActor);
-        if (actor->id != ACTOR_OBJ_SWITCH || !CVarGetInteger(CVAR_ENHANCEMENT("FixFloorSwitches"), 0)) {
-            return;
-        }
-
-        ObjSwitch* switchActor = reinterpret_cast<ObjSwitch*>(actor);
-        s32 type = (switchActor->dyna.actor.params & 7);
-
-        if (switchActor->dyna.actor.params == 0x1200 || switchActor->dyna.actor.params == 0x3A00) {
-            switchActor->dyna.actor.world.pos.y -= 1;
-        }
-    });
-}
-
 void RegisterPauseMenuHooks() {
     static bool pauseWarpHooksRegistered = false;
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&]() {
@@ -937,15 +864,11 @@ void InitMods() {
     RegisterDeleteFileOnDeath();
     RegisterHyperBosses();
     UpdateHyperEnemiesState();
-    RegisterMenuPathFix();
     RegisterMirrorModeHandler();
-    RegisterResetNaviTimer();
     RegisterEnemyDefeatCounts();
     RegisterBossDefeatTimestamps();
     RegisterRandomizedEnemySizes();
-    RegisterOpenAllHours();
     RegisterToTMedallions();
-    RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
     RegisterPauseMenuHooks();

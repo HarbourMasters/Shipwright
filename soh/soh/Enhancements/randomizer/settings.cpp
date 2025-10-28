@@ -144,6 +144,7 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_SHUFFLE_BOSS_ENTRANCES, "Boss Entrances", {"Off", "Age Restricted", "Full"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), mOptionDescriptions[RSK_SHUFFLE_BOSS_ENTRANCES], WidgetType::Combobox, RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
     OPT_BOOL(RSK_SHUFFLE_OVERWORLD_ENTRANCES, "Overworld Entrances", CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES]);
     OPT_U8(RSK_SHUFFLE_INTERIOR_ENTRANCES, "Interior Entrances", {"Off", "Simple", "All"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), mOptionDescriptions[RSK_SHUFFLE_INTERIOR_ENTRANCES], WidgetType::Combobox, RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
+    OPT_BOOL(RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES, "Thieves' Hideout Entrances", CVAR_RANDOMIZER_SETTING("ShuffleThievesHideoutEntrances"), mOptionDescriptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES]);
     OPT_BOOL(RSK_SHUFFLE_GROTTO_ENTRANCES, "Grottos Entrances", CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), mOptionDescriptions[RSK_SHUFFLE_GROTTO_ENTRANCES]);
     OPT_BOOL(RSK_SHUFFLE_OWL_DROPS, "Owl Drops", CVAR_RANDOMIZER_SETTING("ShuffleOwlDrops"), mOptionDescriptions[RSK_SHUFFLE_OWL_DROPS]);
     OPT_BOOL(RSK_SHUFFLE_WARP_SONGS, "Warp Songs", CVAR_RANDOMIZER_SETTING("ShuffleWarpSongs"), mOptionDescriptions[RSK_SHUFFLE_WARP_SONGS]);
@@ -153,6 +154,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_MIX_BOSS_ENTRANCES, "Mix Bosses", CVAR_RANDOMIZER_SETTING("MixBosses"), mOptionDescriptions[RSK_MIX_BOSS_ENTRANCES], IMFLAG_NONE);
     OPT_BOOL(RSK_MIX_OVERWORLD_ENTRANCES, "Mix Overworld", CVAR_RANDOMIZER_SETTING("MixOverworld"), mOptionDescriptions[RSK_MIX_OVERWORLD_ENTRANCES], IMFLAG_NONE);
     OPT_BOOL(RSK_MIX_INTERIOR_ENTRANCES, "Mix Interiors", CVAR_RANDOMIZER_SETTING("MixInteriors"), mOptionDescriptions[RSK_MIX_INTERIOR_ENTRANCES], IMFLAG_NONE);
+    OPT_BOOL(RSK_MIX_THIEVES_HIDEOUT_ENTRANCES, "Mix Thieves' Hideout", CVAR_RANDOMIZER_SETTING("MixThievesHideout"), mOptionDescriptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES]);
     OPT_BOOL(RSK_MIX_GROTTO_ENTRANCES, "Mix Grottos", CVAR_RANDOMIZER_SETTING("MixGrottos"), mOptionDescriptions[RSK_MIX_GROTTO_ENTRANCES]);
     OPT_BOOL(RSK_DECOUPLED_ENTRANCES, "Decouple Entrances", CVAR_RANDOMIZER_SETTING("DecoupleEntrances"), mOptionDescriptions[RSK_DECOUPLED_ENTRANCES]);
     OPT_BOOL(RSK_BOMBCHU_BAG, "Bombchu Bag", CVAR_RANDOMIZER_SETTING("BombchuBag"), mOptionDescriptions[RSK_BOMBCHU_BAG]);
@@ -1233,10 +1235,11 @@ void Settings::CreateOptions() {
         "Shuffle Entrances",
         { &mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES], &mOptions[RSK_SHUFFLE_BOSS_ENTRANCES],
           &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES], &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES],
-          &mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES], &mOptions[RSK_SHUFFLE_OWL_DROPS], &mOptions[RSK_SHUFFLE_WARP_SONGS],
-          &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS], &mOptions[RSK_DECOUPLED_ENTRANCES],
-          &mOptions[RSK_MIXED_ENTRANCE_POOLS], &mOptions[RSK_MIX_DUNGEON_ENTRANCES], &mOptions[RSK_MIX_BOSS_ENTRANCES],
-          &mOptions[RSK_MIX_OVERWORLD_ENTRANCES], &mOptions[RSK_MIX_INTERIOR_ENTRANCES],
+          &mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES], &mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES],
+          &mOptions[RSK_SHUFFLE_OWL_DROPS], &mOptions[RSK_SHUFFLE_WARP_SONGS], &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS],
+          &mOptions[RSK_DECOUPLED_ENTRANCES], &mOptions[RSK_MIXED_ENTRANCE_POOLS], &mOptions[RSK_MIX_DUNGEON_ENTRANCES],
+          &mOptions[RSK_MIX_BOSS_ENTRANCES], &mOptions[RSK_MIX_OVERWORLD_ENTRANCES],
+          &mOptions[RSK_MIX_INTERIOR_ENTRANCES], &mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES],
           &mOptions[RSK_MIX_GROTTO_ENTRANCES] },
         WidgetContainerType::COLUMN);
     mOptionGroups[RSG_WORLD_IMGUI_TABLE] = OptionGroup::SubGroup("World",
@@ -1491,6 +1494,7 @@ void Settings::CreateOptions() {
                                                                  &mOptions[RSK_SHUFFLE_BOSS_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES],
+                                                                 &mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_OWL_DROPS],
                                                                  &mOptions[RSK_SHUFFLE_WARP_SONGS],
@@ -1500,6 +1504,7 @@ void Settings::CreateOptions() {
                                                                  &mOptions[RSK_MIX_BOSS_ENTRANCES],
                                                                  &mOptions[RSK_MIX_OVERWORLD_ENTRANCES],
                                                                  &mOptions[RSK_MIX_INTERIOR_ENTRANCES],
+                                                                 &mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES],
                                                                  &mOptions[RSK_MIX_GROTTO_ENTRANCES],
                                                                  &mOptions[RSK_DECOUPLED_ENTRANCES],
                                                                  &mOptions[RSK_BOMBCHU_BAG],
@@ -2091,6 +2096,7 @@ void Settings::UpdateOptionProperties() {
         mOptions[RSK_MIX_BOSS_ENTRANCES].Hide();
         mOptions[RSK_MIX_OVERWORLD_ENTRANCES].Hide();
         mOptions[RSK_MIX_INTERIOR_ENTRANCES].Hide();
+        mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES].Hide();
         mOptions[RSK_MIX_GROTTO_ENTRANCES].Hide();
     } else {
         mOptions[RSK_MIXED_ENTRANCE_POOLS].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
@@ -2098,6 +2104,7 @@ void Settings::UpdateOptionProperties() {
         mOptions[RSK_MIX_BOSS_ENTRANCES].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
         mOptions[RSK_MIX_OVERWORLD_ENTRANCES].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
         mOptions[RSK_MIX_INTERIOR_ENTRANCES].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+        mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
         mOptions[RSK_MIX_GROTTO_ENTRANCES].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
         RandomizerSettingKey lastKey = RSK_MIXED_ENTRANCE_POOLS;
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ==
@@ -2125,6 +2132,13 @@ void Settings::UpdateOptionProperties() {
         } else {
             mOptions[RSK_MIX_INTERIOR_ENTRANCES].Unhide();
             lastKey = RSK_MIX_INTERIOR_ENTRANCES;
+        }
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleThievesHideoutEntrances"), RO_GENERIC_OFF) ==
+            RO_GENERIC_OFF) {
+            mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES].Hide();
+        } else {
+            mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES].Unhide();
+            lastKey = RSK_MIX_THIEVES_HIDEOUT_ENTRANCES;
         }
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF) {
             mOptions[RSK_MIX_GROTTO_ENTRANCES].Hide();
@@ -2589,8 +2603,8 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
         mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].IsNot(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ||
         mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES] ||
         mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].IsNot(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) ||
-        mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] || mOptions[RSK_SHUFFLE_OWL_DROPS] || mOptions[RSK_SHUFFLE_WARP_SONGS] ||
-        mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]) {
+        mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES] || mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] ||
+        mOptions[RSK_SHUFFLE_OWL_DROPS] || mOptions[RSK_SHUFFLE_WARP_SONGS] || mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]) {
         mOptions[RSK_SHUFFLE_ENTRANCES].Set(RO_GENERIC_ON);
     } else {
         mOptions[RSK_SHUFFLE_ENTRANCES].Set(RO_GENERIC_OFF);
@@ -2846,6 +2860,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     bool bossShuffle = !mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].Is(RO_GENERIC_OFF);
     bool overworldShuffle = !mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES].Is(RO_GENERIC_OFF);
     bool interiorShuffle = !mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].Is(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
+    bool gerudoFortressShuffle = !mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES].Is(RO_GENERIC_OFF);
     bool grottoShuffle = !mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES].Is(RO_GENERIC_OFF);
 
     if (dungeonShuffle + bossShuffle + overworldShuffle + interiorShuffle + grottoShuffle <= 1) {
@@ -2866,6 +2881,10 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
 
     if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !interiorShuffle) {
         mOptions[RSK_MIX_INTERIOR_ENTRANCES].Set(RO_GENERIC_OFF);
+    }
+
+    if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !gerudoFortressShuffle) {
+        mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES].Set(RO_GENERIC_OFF);
     }
 
     if (!mOptions[RSK_MIXED_ENTRANCE_POOLS] || !grottoShuffle) {
