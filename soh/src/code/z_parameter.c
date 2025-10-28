@@ -3755,8 +3755,8 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
 }
 
 void Interface_SetSubTimer(s16 seconds) {
-    gSaveContext.timerX[1] = 140;
-    gSaveContext.timerY[1] = 80;
+    gSaveContext.timerX[TIMER_ID_SUB] = 140;
+    gSaveContext.timerY[TIMER_ID_SUB] = 80;
     sEnvHazardActive = false;
     gSaveContext.subTimerSeconds = seconds;
 
@@ -3778,8 +3778,8 @@ void Interface_SetSubTimerToFinalSecond(PlayState* play) {
 }
 
 void Interface_SetTimer(s16 seconds) {
-    gSaveContext.timerX[0] = 140;
-    gSaveContext.timerY[0] = 80;
+    gSaveContext.timerX[TIMER_ID_MAIN] = 140;
+    gSaveContext.timerY[TIMER_ID_MAIN] = 80;
     sEnvHazardActive = false;
     gSaveContext.timerSeconds = seconds;
 
@@ -5984,25 +5984,25 @@ void Interface_Draw(PlayState* play) {
                     break;
                 case TIMER_STATE_ENV_HAZARD_MOVE:
                 case TIMER_STATE_DOWN_MOVE:
-                    svar1 = (gSaveContext.timerX[0] - 26) / sTimerStateTimer;
-                    gSaveContext.timerX[0] -= svar1;
+                    svar1 = (gSaveContext.timerX[TIMER_ID_MAIN] - 26) / sTimerStateTimer;
+                    gSaveContext.timerX[TIMER_ID_MAIN] -= svar1;
 
                     if (gSaveContext.healthCapacity > 0xA0) {
-                        svar1 = (gSaveContext.timerY[0] - 54) / sTimerStateTimer;
+                        svar1 = (gSaveContext.timerY[TIMER_ID_MAIN] - 54) / sTimerStateTimer;
                     } else {
-                        svar1 = (gSaveContext.timerY[0] - 46) / sTimerStateTimer;
+                        svar1 = (gSaveContext.timerY[TIMER_ID_MAIN] - 46) / sTimerStateTimer;
                     }
-                    gSaveContext.timerY[0] -= svar1;
+                    gSaveContext.timerY[TIMER_ID_MAIN] -= svar1;
 
                     sTimerStateTimer--;
                     if (sTimerStateTimer == 0) {
                         sTimerStateTimer = 20;
-                        gSaveContext.timerX[0] = 26;
+                        gSaveContext.timerX[TIMER_ID_MAIN] = 26;
 
                         if (gSaveContext.healthCapacity > 0xA0) {
-                            gSaveContext.timerY[0] = 54;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 54;
                         } else {
-                            gSaveContext.timerY[0] = 46;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 46;
                         }
 
                         if (gSaveContext.timerState == TIMER_STATE_ENV_HAZARD_MOVE) {
@@ -6016,9 +6016,9 @@ void Interface_Draw(PlayState* play) {
                     if ((gSaveContext.timerState == TIMER_STATE_ENV_HAZARD_TICK) ||
                         (gSaveContext.timerState == TIMER_STATE_DOWN_TICK)) {
                         if (gSaveContext.healthCapacity > 0xA0) {
-                            gSaveContext.timerY[0] = 54;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 54;
                         } else {
-                            gSaveContext.timerY[0] = 46;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 46;
                         }
                     }
 
@@ -6059,24 +6059,24 @@ void Interface_Draw(PlayState* play) {
                     }
                     break;
                 case TIMER_STATE_UP_MOVE:
-                    svar1 = (gSaveContext.timerX[0] - 26) / sTimerStateTimer;
-                    gSaveContext.timerX[0] -= svar1;
+                    svar1 = (gSaveContext.timerX[TIMER_ID_MAIN] - 26) / sTimerStateTimer;
+                    gSaveContext.timerX[TIMER_ID_MAIN] -= svar1;
 
                     if (gSaveContext.healthCapacity > 0xA0) {
-                        svar1 = (gSaveContext.timerY[0] - 54) / sTimerStateTimer;
+                        svar1 = (gSaveContext.timerY[TIMER_ID_MAIN] - 54) / sTimerStateTimer;
                     } else {
-                        svar1 = (gSaveContext.timerY[0] - 46) / sTimerStateTimer;
+                        svar1 = (gSaveContext.timerY[TIMER_ID_MAIN] - 46) / sTimerStateTimer;
                     }
-                    gSaveContext.timerY[0] -= svar1;
+                    gSaveContext.timerY[TIMER_ID_MAIN] -= svar1;
 
                     sTimerStateTimer--;
                     if (sTimerStateTimer == 0) {
                         sTimerStateTimer = 20;
-                        gSaveContext.timerX[0] = 26;
+                        gSaveContext.timerX[TIMER_ID_MAIN] = 26;
                         if (gSaveContext.healthCapacity > 0xA0) {
-                            gSaveContext.timerY[0] = 54;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 54;
                         } else {
-                            gSaveContext.timerY[0] = 46;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 46;
                         }
 
                         gSaveContext.timerState = TIMER_STATE_UP_TICK;
@@ -6084,9 +6084,9 @@ void Interface_Draw(PlayState* play) {
                 case TIMER_STATE_UP_TICK:
                     if (gSaveContext.timerState == TIMER_STATE_UP_TICK) {
                         if (gSaveContext.healthCapacity > 0xA0) {
-                            gSaveContext.timerY[0] = 54;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 54;
                         } else {
-                            gSaveContext.timerY[0] = 46;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 46;
                         }
                     }
 
@@ -6111,8 +6111,8 @@ void Interface_Draw(PlayState* play) {
                     if (gSaveContext.subTimerState != SUBTIMER_STATE_OFF) {
                         sSubTimerStateTimer = 20;
                         sSubTimerNextSecondTimer = 20;
-                        gSaveContext.timerX[1] = 140;
-                        gSaveContext.timerY[1] = 80;
+                        gSaveContext.timerX[TIMER_ID_SUB] = 140;
+                        gSaveContext.timerY[TIMER_ID_SUB] = 80;
 
                         if (gSaveContext.subTimerState <= SUBTIMER_STATE_STOP) {
                             gSaveContext.subTimerState = SUBTIMER_STATE_DOWN_PREVIEW;
@@ -6133,8 +6133,8 @@ void Interface_Draw(PlayState* play) {
                         case SUBTIMER_STATE_UP_INIT:
                             sSubTimerStateTimer = 20;
                             sSubTimerNextSecondTimer = 20;
-                            gSaveContext.timerX[1] = 140;
-                            gSaveContext.timerY[1] = 80;
+                            gSaveContext.timerX[TIMER_ID_SUB] = 140;
+                            gSaveContext.timerY[TIMER_ID_SUB] = 80;
                             if (gSaveContext.subTimerState == SUBTIMER_STATE_DOWN_INIT) {
                                 gSaveContext.subTimerState = SUBTIMER_STATE_DOWN_PREVIEW;
                             } else {
@@ -6156,26 +6156,26 @@ void Interface_Draw(PlayState* play) {
                         case SUBTIMER_STATE_DOWN_MOVE:
                         case SUBTIMER_STATE_UP_MOVE:
                             osSyncPrintf("event_xp[1]=%d,  event_yp[1]=%d  TOTAL_EVENT_TM=%d\n",
-                                         svar5 = gSaveContext.timerX[1], svar2 = gSaveContext.timerY[1],
-                                         gSaveContext.subTimerSeconds);
-                            svar1 = (gSaveContext.timerX[1] - 26) / sSubTimerStateTimer;
-                            gSaveContext.timerX[1] -= svar1;
+                                         svar5 = gSaveContext.timerX[TIMER_ID_SUB],
+                                         svar2 = gSaveContext.timerY[TIMER_ID_SUB], gSaveContext.subTimerSeconds);
+                            svar1 = (gSaveContext.timerX[TIMER_ID_SUB] - 26) / sSubTimerStateTimer;
+                            gSaveContext.timerX[TIMER_ID_SUB] -= svar1;
                             if (gSaveContext.healthCapacity > 0xA0) {
-                                svar1 = (gSaveContext.timerY[1] - 54) / sSubTimerStateTimer;
+                                svar1 = (gSaveContext.timerY[TIMER_ID_SUB] - 54) / sSubTimerStateTimer;
                             } else {
-                                svar1 = (gSaveContext.timerY[1] - 46) / sSubTimerStateTimer;
+                                svar1 = (gSaveContext.timerY[TIMER_ID_SUB] - 46) / sSubTimerStateTimer;
                             }
-                            gSaveContext.timerY[1] -= svar1;
+                            gSaveContext.timerY[TIMER_ID_SUB] -= svar1;
 
                             sSubTimerStateTimer--;
                             if (sSubTimerStateTimer == 0) {
                                 sSubTimerStateTimer = 20;
-                                gSaveContext.timerX[1] = 26;
+                                gSaveContext.timerX[TIMER_ID_SUB] = 26;
 
                                 if (gSaveContext.healthCapacity > 0xA0) {
-                                    gSaveContext.timerY[1] = 54;
+                                    gSaveContext.timerY[TIMER_ID_SUB] = 54;
                                 } else {
-                                    gSaveContext.timerY[1] = 46;
+                                    gSaveContext.timerY[TIMER_ID_SUB] = 46;
                                 }
 
                                 if (gSaveContext.subTimerState == SUBTIMER_STATE_DOWN_MOVE) {
@@ -6189,9 +6189,9 @@ void Interface_Draw(PlayState* play) {
                             if ((gSaveContext.subTimerState == SUBTIMER_STATE_DOWN_TICK) ||
                                 (gSaveContext.subTimerState == SUBTIMER_STATE_UP_TICK)) {
                                 if (gSaveContext.healthCapacity > 0xA0) {
-                                    gSaveContext.timerY[1] = 54;
+                                    gSaveContext.timerY[TIMER_ID_SUB] = 54;
                                 } else {
-                                    gSaveContext.timerY[1] = 46;
+                                    gSaveContext.timerY[TIMER_ID_SUB] = 46;
                                 }
                             }
 
@@ -6794,8 +6794,8 @@ void Interface_Update(PlayState* play) {
              (sEnvHazard == PLAYER_ENV_HAZARD_UNDERWATER_FREE)) &&
             ((gSaveContext.health >> 1) != 0)) {
             gSaveContext.timerState = TIMER_STATE_ENV_HAZARD_INIT;
-            gSaveContext.timerX[0] = 140;
-            gSaveContext.timerY[0] = 80;
+            gSaveContext.timerX[TIMER_ID_MAIN] = 140;
+            gSaveContext.timerY[TIMER_ID_MAIN] = 80;
             sEnvHazardActive = true;
         }
     } else {
