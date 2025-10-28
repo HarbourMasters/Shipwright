@@ -85,6 +85,14 @@ typedef enum PlayerMask {
     /* 0x09 */ PLAYER_MASK_MAX
 } PlayerMask;
 
+typedef enum PlayerEnvHazard {
+    /* 0x0 */ PLAYER_ENV_HAZARD_NONE,
+    /* 0x1 */ PLAYER_ENV_HAZARD_HOTROOM,
+    /* 0x2 */ PLAYER_ENV_HAZARD_UNDERWATER_FLOOR,
+    /* 0x3 */ PLAYER_ENV_HAZARD_SWIMMING,
+    /* 0x4 */ PLAYER_ENV_HAZARD_UNDERWATER_FREE
+} PlayerEnvHazard;
+
 typedef enum PlayerIdleType {
     /* -0x1 */ PLAYER_IDLE_CRIT_HEALTH = -1,
     /*  0x0 */ PLAYER_IDLE_DEFAULT,

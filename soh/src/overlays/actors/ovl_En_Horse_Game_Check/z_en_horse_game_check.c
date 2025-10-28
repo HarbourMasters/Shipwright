@@ -130,7 +130,7 @@ void EnHorseGameCheck_FinishIngoRace(EnHorseGameCheckIngoRace* this, PlayState* 
     }
     DREG(25) = 0;
     play->transitionTrigger = TRANS_TRIGGER_START;
-    gSaveContext.timerState = 0;
+    gSaveContext.timerState = TIMER_STATE_OFF;
 }
 
 s32 EnHorseGameCheck_UpdateIngoRace(EnHorseGameCheckBase* base, PlayState* play) {
@@ -142,7 +142,7 @@ s32 EnHorseGameCheck_UpdateIngoRace(EnHorseGameCheckBase* base, PlayState* play)
 
     if ((this->startTimer > 50) && !(this->startFlags & INGORACE_SET_TIMER)) {
         this->startFlags |= INGORACE_SET_TIMER;
-        func_80088B34(0);
+        Interface_SetTimer(0);
     } else if ((this->startTimer > 80) && (player->rideActor != NULL) && !(this->startFlags & INGORACE_PLAYER_MOVE)) {
         this->startFlags |= INGORACE_PLAYER_MOVE;
         horse = (EnHorse*)player->rideActor;
@@ -301,7 +301,7 @@ void EnHorseGameCheck_FinishMalonRace(EnHorseGameCheckMalonRace* this, PlayState
         play->transitionTrigger = TRANS_TRIGGER_START;
     } else if (this->result == MALONRACE_FAILURE) {
         gSaveContext.timerSeconds = 240;
-        gSaveContext.timerState = 0xF;
+        gSaveContext.timerState = TIMER_STATE_UP_FREEZE;
         gSaveContext.cutsceneIndex = 0;
         play->nextEntranceIndex = ENTR_LON_LON_RANCH_7;
         play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
@@ -330,7 +330,7 @@ s32 EnHorseGameCheck_UpdateMalonRace(EnHorseGameCheckBase* base, PlayState* play
     }
     if ((this->startTimer > 50) && !(this->raceFlags & MALONRACE_SET_TIMER)) {
         this->raceFlags |= MALONRACE_SET_TIMER;
-        func_80088B34(0);
+        Interface_SetTimer(0);
     } else if ((this->startTimer > 80) && (player->rideActor != NULL) && !(this->raceFlags & MALONRACE_PLAYER_MOVE)) {
         this->raceFlags |= MALONRACE_PLAYER_MOVE;
         horse = (EnHorse*)player->rideActor;
@@ -385,7 +385,7 @@ s32 EnHorseGameCheck_UpdateMalonRace(EnHorseGameCheckBase* base, PlayState* play
                                        &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->result = MALONRACE_SUCCESS;
                 this->finishTimer = 70;
-                gSaveContext.timerState = 0xF;
+                gSaveContext.timerState = TIMER_STATE_UP_FREEZE;
             } else if ((this->fenceCheck[7] == 1) && !(this->raceFlags & MALONRACE_SECOND_LAP)) {
                 this->lapCount = 1;
                 this->raceFlags |= MALONRACE_SECOND_LAP;
@@ -406,7 +406,7 @@ s32 EnHorseGameCheck_UpdateMalonRace(EnHorseGameCheckBase* base, PlayState* play
             gSaveContext.timerSeconds = 240;
             this->result = MALONRACE_TIME_UP;
             this->finishTimer = 30;
-            gSaveContext.timerState = 0;
+            gSaveContext.timerState = TIMER_STATE_OFF;
         }
     } else {
         if (this->finishTimer > 0) {
