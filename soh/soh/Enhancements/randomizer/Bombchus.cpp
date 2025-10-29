@@ -8,6 +8,7 @@ extern "C" {
 }
 
 void RegisterVBOverrides() {
+    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_BOMBCHU_BAG) == RO_BOMBCHU_BAG_PROGRESSIVE;
     COND_VB_SHOULD(VB_CAN_BUY_BOMBCHUS, IS_RANDO, {
         EnGirlACanBuyResult* canBuy = va_arg(args, EnGirlACanBuyResult*);
         u8 bombchuBag = RAND_GET_OPTION(RSK_BOMBCHU_BAG);
@@ -28,17 +29,16 @@ void RegisterVBOverrides() {
         }
     });
 
-    COND_VB_SHOULD(VB_CHECK_BOMBCHU_CAPACITY,
-                   IS_RANDO && RAND_GET_OPTION(RSK_BOMBCHU_BAG) == RO_BOMBCHU_BAG_PROGRESSIVE, {
-                       *should = false;
-                       uint8_t capacity = OTRGlobals::Instance->gRandoContext->GetBombchuCapacity();
-                       if (AMMO(ITEM_BOMBCHU) > capacity) {
-                           AMMO(ITEM_BOMBCHU) = capacity;
-                       }
-                   });
+    COND_VB_SHOULD(VB_CHECK_BOMBCHU_CAPACITY, shouldRegister, {
+        *should = false;
+        uint8_t capacity = OTRGlobals::Instance->gRandoContext->GetBombchuCapacity();
+        if (AMMO(ITEM_BOMBCHU) > capacity) {
+            AMMO(ITEM_BOMBCHU) = capacity;
+        }
+    });
 
-    COND_VB_SHOULD(VB_COLOR_AMMO_GREEN, IS_RANDO && RAND_GET_OPTION(RSK_BOMBCHU_BAG) == RO_BOMBCHU_BAG_PROGRESSIVE, {
-        int16_t i = va_arg(args, int16_t);
+    COND_VB_SHOULD(VB_COLOR_AMMO_GREEN, shouldRegister, {
+        int16_t i = va_arg(args, int);
         if (i == ITEM_BOMBCHU) {
             uint8_t capacity = OTRGlobals::Instance->gRandoContext->GetBombchuCapacity();
             if (AMMO(i) == capacity) {
