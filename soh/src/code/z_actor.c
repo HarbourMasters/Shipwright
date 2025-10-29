@@ -540,8 +540,15 @@ void func_8002C124(TargetContext* targetCtx, PlayState* play) {
 
     actor = targetCtx->unk_94;
     if ((actor != NULL) && !(actor->flags & ACTOR_FLAG_LOCK_ON_DISABLED)) {
+        s32 actorCategory;
+        actorCategory = actor->category;
+        // Override Leever's Target Arrow color to Yellow
+        if (CVarGetInteger(CVAR_ENHANCEMENT("YellowLeeverCursor"), 0) && (actor->id == ACTOR_EN_REEBA)) {
+            actorCategory = ACTORCAT_ENEMY;
+        }
+
         FrameInterpolation_RecordOpenChild(actor, 1);
-        NaviColor* naviColor = &sNaviColorList[actor->category];
+        NaviColor* naviColor = &sNaviColorList[actorCategory];
 
         POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x7);
 
@@ -591,6 +598,10 @@ void func_8002C7BC(TargetContext* targetCtx, Player* player, Actor* actorArg, Pl
 
     if (unkActor != NULL) {
         actorCategory = unkActor->category;
+        // Override Leever's Navi color to Yellow
+        if (CVarGetInteger(CVAR_ENHANCEMENT("YellowLeeverCursor"), 0) && (unkActor->id == ACTOR_EN_REEBA)) {
+            actorCategory = ACTORCAT_ENEMY;
+        }
     } else {
         actorCategory = player->actor.category;
     }
@@ -626,7 +637,14 @@ void func_8002C7BC(TargetContext* targetCtx, Player* player, Actor* actorArg, Pl
 
     if (actorArg != NULL) {
         if (actorArg != targetCtx->targetedActor) {
-            func_8002BE98(targetCtx, actorArg->category, play);
+            s32 actorArgCaregory;
+            actorArgCaregory = actorArg->category;
+            // Override Leever's Z-Target Triangle color to Yellow
+            if (CVarGetInteger(CVAR_ENHANCEMENT("YellowLeeverCursor"), 0) && (actorArg->id == ACTOR_EN_REEBA)) {
+                actorArgCaregory = ACTORCAT_ENEMY;
+            }
+
+            func_8002BE98(targetCtx, actorArgCaregory, play);
             targetCtx->targetedActor = actorArg;
 
             if (actorArg->id == ACTOR_EN_BOOM) {

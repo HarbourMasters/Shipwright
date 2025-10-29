@@ -981,10 +981,8 @@ void SohMenu::AddMenuEnhancements() {
             "Make Anubis Fireballs do Fire damage when reflected back at them with the Mirror Shield."));
     AddWidget(path, "Fix Leever's Z-Targeting Color", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("YellowLeeverCursor"))
-        .Options(CheckboxOptions().Tooltip(
-            "Changes Leevers' Z-Targeting Cursor to Yellow instead of Green, like in "
-            "Majora's Mask.\nThis triggers Battle Music when approached.\nThe Leevers in MQ Spirit Temple are excluded "
-            "because there is a room that relies on Leevers not count as enemies."));
+        .Options(CheckboxOptions().Tooltip("Changes Leevers' Z-Targeting Cursor to Yellow instead of Green, like in "
+                                           "Majora's Mask."));
 
     AddWidget(path, "Item-related Fixes", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix Deku Nut Upgrade", WIDGET_CVAR_CHECKBOX)
