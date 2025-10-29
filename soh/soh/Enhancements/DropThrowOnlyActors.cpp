@@ -11,7 +11,7 @@ void OnAllowThrowOnlyDrop(void* actor) {
 }
 
 void RegisterAllowThrowOnlyDrop() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(OnAllowThrowOnlyDrop);
+    COND_HOOK(OnActorUpdate, true, OnAllowThrowOnlyDrop);
 }
 
 static RegisterShipInitFunc initFunc(RegisterAllowThrowOnlyDrop, { CVAR_ENHANCEMENT("DropThrowOnlyObjects") });
