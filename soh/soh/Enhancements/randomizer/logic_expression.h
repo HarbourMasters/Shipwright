@@ -338,7 +338,7 @@ class LogicExpression {
 
         // Add this function in the Template Magic section to implement variable registration.
         template <typename T>
-        static FunctionAdapter RegisterLogicVariable(const std::string& varName, T Rando::Logic::* var) {
+        static FunctionAdapter RegisterLogicVariable(const std::string& varName, T Rando::Logic::*var) {
             return
                 [varName, var](const std::vector<std::shared_ptr<LogicExpression::Impl>>& args, const std::string& path,
                                int depth, const EvaluationCallback& callback) -> ValueVariant {

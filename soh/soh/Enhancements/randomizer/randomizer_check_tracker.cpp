@@ -2297,9 +2297,8 @@ void RegisterCheckTrackerWidgets() {
     // RANDOTODO: Only allow if Available Checks is enabled
     showLogicWidget = { .name = "Show Logic", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     showLogicWidget.CVar(CVAR_TRACKER_CHECK("ShowLogic"))
-        .Options(CheckboxOptions()
-                     .Color(THEME_COLOR)
-                     .Tooltip("If enabled, will add a button to show a check's logic."));
+        .Options(
+            CheckboxOptions().Color(THEME_COLOR).Tooltip("If enabled, will add a button to show a check's logic."));
     SohGui::mSohMenu->AddSearchWidget({ showLogicWidget, "Randomizer", "Check Tracker", "General Settings" });
 
     checkAvailabilityWidget = { .name = "Enable Available Checks", .type = WidgetType::WIDGET_CVAR_CHECKBOX };

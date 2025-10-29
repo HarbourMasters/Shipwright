@@ -211,7 +211,8 @@ void Entrance::BindTwoWay(Entrance* otherEntrance) {
 }
 
 Entrance* Entrance::GetNewTarget() {
-    RegionTable(RR_ROOT)->AddExit(RR_ROOT, connectedRegion, [] { return true; }, "true");
+    RegionTable(RR_ROOT)->AddExit(
+        RR_ROOT, connectedRegion, [] { return true; }, "true");
     Entrance* targetEntrance = RegionTable(RR_ROOT)->GetExit(connectedRegion);
     targetEntrance->SetReplacement(this);
     targetEntrance->SetName(RegionTable(RR_ROOT)->regionName + " -> " + GetConnectedRegion()->regionName);

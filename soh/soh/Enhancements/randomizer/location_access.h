@@ -21,7 +21,8 @@ extern std::shared_ptr<Rando::Logic> logic;
 class Region;
 
 #define EVENT_ACCESS(event, condition) \
-    EventAccess(event, #event, [] { return condition; }, CleanCheckConditionString(#condition))
+    EventAccess(                       \
+        event, #event, [] { return condition; }, CleanCheckConditionString(#condition))
 
 class EventAccess {
   public:

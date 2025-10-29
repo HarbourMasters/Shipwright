@@ -430,18 +430,23 @@ std::string LogicExpression::Impl::GetExprErrorContext() const {
 // This macro simplifies the insertion of functions into the functionAdapters map by
 // automatically converting the function pointer or lambda into a FunctionAdapter.
 // Usage: REGISTER_FUNCTION(functionName)
-#define REGISTER_FUNCTION(fn) { #fn, LogicExpression::Impl::RegisterFunction(#fn, fn) }
+#define REGISTER_FUNCTION(fn) \
+    { #fn, LogicExpression::Impl::RegisterFunction(#fn, fn) }
 
 #define REGISTER_FUNCTION_WITH_DEFAULTS(fn, ...) \
     { #fn, LogicExpression::Impl::RegisterFunctionWithDefaults(#fn, fn, std::make_tuple(__VA_ARGS__)) }
 
-#define REGISTER_LOGIC_FUNCTION(fn) { #fn, LogicExpression::Impl::RegisterLogicFunction(#fn, &Rando::Logic::fn) }
+#define REGISTER_LOGIC_FUNCTION(fn) \
+    { #fn, LogicExpression::Impl::RegisterLogicFunction(#fn, &Rando::Logic::fn) }
 
-#define REGISTER_LOGIC_FUNCTION_WITH_DEFAULTS(fn, ...) \
-    { #fn,                                             \
-      LogicExpression::Impl::RegisterLogicFunctionWithDefaults(#fn, &Rando::Logic::fn, std::make_tuple(__VA_ARGS__)) }
+#define REGISTER_LOGIC_FUNCTION_WITH_DEFAULTS(fn, ...)                                              \
+    {                                                                                               \
+#fn, LogicExpression::Impl::RegisterLogicFunctionWithDefaults(#fn, &Rando::Logic::fn,       \
+                                                                      std::make_tuple(__VA_ARGS__)) \
+    }
 
-#define REGISTER_LOGIC_VARIABLE(var) { #var, LogicExpression::Impl::RegisterLogicVariable(#var, &Rando::Logic::var) }
+#define REGISTER_LOGIC_VARIABLE(var) \
+    { #var, LogicExpression::Impl::RegisterLogicVariable(#var, &Rando::Logic::var) }
 
 #pragma region Forwarding Functions
 static uint8_t GetOption(const RandomizerSettingKey key) {
@@ -696,16 +701,11 @@ LogicExpression::ValueVariant LogicExpression::Impl::EvaluateEnum() const {
 std::unordered_map<std::string, LogicExpression::Impl::FunctionAdapter> LogicExpression::Impl::variableAdapters;
 void LogicExpression::Impl::PopulateVariableAdapters() {
     variableAdapters = {
-        REGISTER_LOGIC_VARIABLE(Bottles),
-        REGISTER_LOGIC_VARIABLE(NumBottles),
-        REGISTER_LOGIC_VARIABLE(PieceOfHeart),
-        REGISTER_LOGIC_VARIABLE(HeartContainer),
-        REGISTER_LOGIC_VARIABLE(IsChild),
-        REGISTER_LOGIC_VARIABLE(IsAdult),
-        REGISTER_LOGIC_VARIABLE(BigPoes),
-        REGISTER_LOGIC_VARIABLE(BaseHearts),
-        REGISTER_LOGIC_VARIABLE(AtDay),
-        REGISTER_LOGIC_VARIABLE(AtNight),
+        REGISTER_LOGIC_VARIABLE(Bottles),      REGISTER_LOGIC_VARIABLE(NumBottles),
+        REGISTER_LOGIC_VARIABLE(PieceOfHeart), REGISTER_LOGIC_VARIABLE(HeartContainer),
+        REGISTER_LOGIC_VARIABLE(IsChild),      REGISTER_LOGIC_VARIABLE(IsAdult),
+        REGISTER_LOGIC_VARIABLE(BigPoes),      REGISTER_LOGIC_VARIABLE(BaseHearts),
+        REGISTER_LOGIC_VARIABLE(AtDay),        REGISTER_LOGIC_VARIABLE(AtNight),
     };
 }
 
