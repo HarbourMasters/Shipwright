@@ -5,6 +5,7 @@
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/enemyrandomizer.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define CVAR_INT_SHIP_INIT(cvar, val) \
     CVarSetInteger(cvar, val);        \
@@ -213,7 +214,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("OpenAllHours"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled =
-                IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_LOCK_OVERWORLD_DOORS).Is(RO_GENERIC_ON);
+                IsRando() && OTRGlobals::Instance->gRandoContext->GetOption(RSK_LOCK_OVERWORLD_DOORS).Is(RO_GENERIC_ON);
         })
         .Options(
             CheckboxOptions()
@@ -316,7 +317,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled =
-                IS_RANDO &&
+                IsRando() &&
                 OTRGlobals::Instance->gRandoContext->GetOption(RSK_SLEEPING_WATERFALL).Is(RO_WATERFALL_OPEN);
             info.options->disabledTooltip = "This setting is forcefully enabled because a randomizer savefile with "
                                             "\"Sleeping Waterfall: Open\" is loaded.";
@@ -335,7 +336,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled =
-                IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_JABU_OPEN).Is(RO_JABU_OPEN);
+                IsRando() && OTRGlobals::Instance->gRandoContext->GetOption(RSK_JABU_OPEN).Is(RO_JABU_OPEN);
             info.options->disabledTooltip =
                 "This setting is disabled because a randomizer savefile with \"Jabu-Jabu: Open\" is loaded.";
         })
@@ -382,34 +383,34 @@ void SohMenu::AddMenuEnhancements() {
         });
     AddWidget(path, "Skip Intro", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"))
-        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+        .Options(CheckboxOptions().DefaultValue(IsRando()));
     AddWidget(path, "Skip Entrance Cutscenes", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"))
-        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+        .Options(CheckboxOptions().DefaultValue(IsRando()));
     AddWidget(path, "Skip Story Cutscenes", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"))
-        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+        .Options(CheckboxOptions().DefaultValue(IsRando()));
     AddWidget(path, "Skip Song Cutscenes", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"))
-        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+        .Options(CheckboxOptions().DefaultValue(IsRando()));
     AddWidget(path, "Skip Boss Introductions", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"))
-        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+        .Options(CheckboxOptions().DefaultValue(IsRando()));
     AddWidget(path, "Quick Boss Deaths", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"))
-        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+        .Options(CheckboxOptions().DefaultValue(IsRando()));
     AddWidget(path, "Skip One Point Cutscenes (Chests, Door Unlocks, etc.)", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"))
-        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+        .Options(CheckboxOptions().DefaultValue(IsRando()));
     AddWidget(path, "Skip Owl Interactions", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipOwlInteractions"))
-        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+        .Options(CheckboxOptions().DefaultValue(IsRando()));
     AddWidget(path, "Skip Misc Interactions", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"))
-        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+        .Options(CheckboxOptions().DefaultValue(IsRando()));
     AddWidget(path, "Disable Title Card", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"))
-        .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+        .Options(CheckboxOptions().DefaultValue(IsRando()));
     AddWidget(path, "Exclude Glitch-Aiding Cutscenes", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"))
         .Options(
@@ -495,7 +496,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("InstantScarecrow"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled =
-                IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_SKIP_SCARECROWS_SONG);
+                IsRando() && OTRGlobals::Instance->gRandoContext->GetOption(RSK_SKIP_SCARECROWS_SONG);
             info.options->disabledTooltip = "This setting is forcefully enabled because a randomized "
                                             "save file with the option \"Skip Scarecrow Song\" is currently loaded.";
         })
@@ -507,7 +508,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "No Skulltula Freeze", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("SkulltulaFreeze"))
         .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = IS_RANDO && GameInteractor::IsSaveLoaded(true);
+            info.options->disabled = IsRando() && GameInteractor::IsSaveLoaded(true);
             info.options->disabledTooltip =
                 "This setting is disabled because a randomizer savefile is loaded. Please use the "
                 "\"Skip Get Item Animation\" option within the randomizer enhancements instead.";
@@ -842,7 +843,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Better Bombchu Shopping", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("BetterBombchuShopping"))
         .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = IS_RANDO && GameInteractor::IsSaveLoaded(true);
+            info.options->disabled = IsRando() && GameInteractor::IsSaveLoaded(true);
             info.options->disabledTooltip = "This setting is forcefully enabled when you are playing a randomizer.";
         })
         .Options(
@@ -937,7 +938,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Fix the Gravedigging Tour Glitch", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("GravediggingTourFix"))
         .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = IS_RANDO && GameInteractor::IsSaveLoaded(true);
+            info.options->disabled = IsRando() && GameInteractor::IsSaveLoaded(true);
             info.options->disabledTooltip = "This setting is always enabled in randomized save files.";
         })
         .Options(CheckboxOptions().Tooltip(
@@ -1004,7 +1005,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Fix Broken Giant's Knife Bug", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixBrokenGiantsKnife"))
         .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = IS_RANDO && GameInteractor::IsSaveLoaded(true);
+            info.options->disabled = IsRando() && GameInteractor::IsSaveLoaded(true);
             info.options->disabledTooltip = "This setting is forcefully enabled when you are playing a Randomizer.";
         })
         .Callback([](WidgetInfo& info) {
@@ -1245,7 +1246,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("EnableBombchuDrops"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled =
-                IS_RANDO && GameInteractor::IsSaveLoaded(true) &&
+                IsRando() && GameInteractor::IsSaveLoaded(true) &&
                 OTRGlobals::Instance->gRandoContext->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_GENERIC_ON);
             info.options->disabledTooltip = "This setting is forcefully enabled because a randomized savefile with "
                                             "\"Enable Bombchu Drops\" is loaded.";

@@ -6,6 +6,7 @@
 #include "vt.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 #include <string.h>
 #include <assert.h>
 
@@ -654,14 +655,15 @@ void func_80097534(PlayState* play, RoomContext* roomCtx) {
         Map_SavePlayerInitialInfo(play);
     }
     Audio_SetEnvReverb(play->roomCtx.curRoom.echo);
-    u8 idx = gSaveContext.ship.stats.tsIdx;
-    gSaveContext.ship.stats.sceneTimestamps[idx].scene = gSaveContext.ship.stats.sceneNum;
-    gSaveContext.ship.stats.sceneTimestamps[idx].room = gSaveContext.ship.stats.roomNum;
-    gSaveContext.ship.stats.sceneTimestamps[idx].roomTime = gSaveContext.ship.stats.roomTimer / 2;
-    gSaveContext.ship.stats.sceneTimestamps[idx].isRoom =
-        gPlayState->sceneNum == gSaveContext.ship.stats.sceneTimestamps[idx].scene &&
-        gPlayState->roomCtx.curRoom.num != gSaveContext.ship.stats.sceneTimestamps[idx].room;
-    gSaveContext.ship.stats.tsIdx++;
-    gSaveContext.ship.stats.roomNum = roomCtx->curRoom.num;
-    gSaveContext.ship.stats.roomTimer = 0;
+    u8 idx = GetGlobalShipSaveContextData()->stats.tsIdx;
+    GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].scene = GetGlobalShipSaveContextData()->stats.sceneNum;
+    GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].room = GetGlobalShipSaveContextData()->stats.roomNum;
+    GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].roomTime =
+        GetGlobalShipSaveContextData()->stats.roomTimer / 2;
+    GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].isRoom =
+        gPlayState->sceneNum == GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].scene &&
+        gPlayState->roomCtx.curRoom.num != GetGlobalShipSaveContextData()->stats.sceneTimestamps[idx].room;
+    GetGlobalShipSaveContextData()->stats.tsIdx++;
+    GetGlobalShipSaveContextData()->stats.roomNum = roomCtx->curRoom.num;
+    GetGlobalShipSaveContextData()->stats.roomTimer = 0;
 }

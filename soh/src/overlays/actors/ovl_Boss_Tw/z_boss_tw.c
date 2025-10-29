@@ -6,6 +6,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #include <string.h>
 
@@ -2376,7 +2377,7 @@ void BossTw_DeathCSMsgSfx(BossTw* this, PlayState* play) {
     sp35 = 0;
 
     // Skip ahead to last part of the cutscene in rando
-    if (this->work[CS_TIMER_2] == 10 && (IS_RANDO || IS_BOSS_RUSH)) {
+    if (this->work[CS_TIMER_2] == 10 && (IsRando() || IsBossRush())) {
         this->work[CS_TIMER_2] = 860;
     }
 
@@ -2561,7 +2562,7 @@ void BossTw_DeathCSMsgSfx(BossTw* this, PlayState* play) {
 
     // Add separate timings for the "beam" that opens and closes around the sisters
     // Needed because we skip ahead in cutscene timer value so it never gets called otherwise
-    if (IS_RANDO || IS_BOSS_RUSH) {
+    if (IsRando() || IsBossRush()) {
         if (this->work[CS_TIMER_2] < 900) {
             Math_ApproachF(&this->workf[UNK_F18], 255.0f, 0.1f, 5.0f);
         } else if (this->work[CS_TIMER_2] > 910) {

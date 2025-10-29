@@ -1,6 +1,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
+#include "soh/cvar_prefixes.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "z64save.h"
@@ -14,16 +16,17 @@ void RegisterSkipLostWoodsBridge() {
      * This skips the cutscene where you speak to Saria on the bridge in Lost Woods, where she gives you the Fairy
      * Ocarina.
      */
-    COND_VB_SHOULD(VB_PLAY_TRANSITION_CS, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO), {
-        if ((gSaveContext.entranceIndex == ENTR_LOST_WOODS_BRIDGE_EAST_EXIT) &&
-            !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)) {
-            Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
-            if (GameInteractor_Should(VB_GIVE_ITEM_FAIRY_OCARINA, true)) {
-                Item_Give(gPlayState, ITEM_OCARINA_FAIRY);
-            }
-            *should = false;
-        }
-    });
+    COND_VB_SHOULD(VB_PLAY_TRANSITION_CS, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IsRando()),
+                   {
+                       if ((gSaveContext.entranceIndex == ENTR_LOST_WOODS_BRIDGE_EAST_EXIT) &&
+                           !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)) {
+                           Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
+                           if (GameInteractor_Should(VB_GIVE_ITEM_FAIRY_OCARINA, true)) {
+                               Item_Give(gPlayState, ITEM_OCARINA_FAIRY);
+                           }
+                           *should = false;
+                       }
+                   });
 
     /**
      * While we could rely on the Item_Give that's normally called (and that we have above), it's not very clear to the
@@ -31,7 +34,7 @@ void RegisterSkipLostWoodsBridge() {
      * instead.
      */
     COND_VB_SHOULD(VB_GIVE_ITEM_FAIRY_OCARINA,
-                   CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO), { *should = false; });
+                   CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IsRando()), { *should = false; });
 
     // Todo: Move item queueing here
 }

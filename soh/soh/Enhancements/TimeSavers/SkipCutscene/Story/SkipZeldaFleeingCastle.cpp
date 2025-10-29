@@ -1,5 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "soh/cvar_prefixes.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "z64save.h"
@@ -48,17 +50,19 @@ void SkipZeldaFleeingCastle_OnActorInit(void* actorPtr) {
 
 void RegisterSkipZeldaFleeingCastle() {
     COND_ID_HOOK(OnActorInit, ACTOR_ITEM_OCARINA,
-                 CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO),
+                 CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IsRando()),
                  SkipZeldaFleeingCastle_OnActorInit);
-    COND_VB_SHOULD(VB_PLAY_TRANSITION_CS, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO), {
-        if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN && gSaveContext.cutsceneIndex == 0xFFF1) {
-            // Normally set in the cutscene
-            gSaveContext.dayTime = gSaveContext.skyboxTime = 0x4AAA;
+    COND_VB_SHOULD(VB_PLAY_TRANSITION_CS, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IsRando()),
+                   {
+                       if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN &&
+                           gSaveContext.cutsceneIndex == 0xFFF1) {
+                           // Normally set in the cutscene
+                           gSaveContext.dayTime = gSaveContext.skyboxTime = 0x4AAA;
 
-            gSaveContext.cutsceneIndex = 0;
-            *should = false;
-        }
-    });
+                           gSaveContext.cutsceneIndex = 0;
+                           *should = false;
+                       }
+                   });
 }
 
 static RegisterShipInitFunc initFunc(RegisterSkipZeldaFleeingCastle,

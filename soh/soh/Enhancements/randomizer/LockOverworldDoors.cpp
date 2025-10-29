@@ -2,6 +2,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 extern PlayState* gPlayState;
@@ -84,7 +85,7 @@ static void OnDoorInit(void* actorRef) {
 }
 
 void RegisterLockOverworldDoors() {
-    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_LOCK_OVERWORLD_DOORS);
+    bool shouldRegister = IsRando() && RAND_GET_OPTION(RSK_LOCK_OVERWORLD_DOORS);
 
     COND_ID_HOOK(OnActorInit, ACTOR_EN_DOOR, shouldRegister, OnDoorInit);
 

@@ -8,6 +8,7 @@
 #include "objects/object_sd/object_sd.h"
 #include "vt.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -125,14 +126,14 @@ void EnHeishi1_Init(Actor* thisx, PlayState* play) {
 
     if (this->type != 5) {
         if ((gSaveContext.dayTime < 0xB888 || IS_DAY) &&
-            ((!IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) || (IS_RANDO && !metZelda))) {
+            ((!IsRando() && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) || (IsRando() && !metZelda))) {
             this->actionFunc = EnHeishi1_SetupWalk;
         } else {
             Actor_Kill(&this->actor);
         }
     } else {
         if ((gSaveContext.dayTime >= 0xB889) || !IS_DAY ||
-            (!IS_RANDO && Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) || (IS_RANDO && metZelda)) {
+            (!IsRando() && Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) || (IsRando() && metZelda)) {
             this->actionFunc = EnHeishi1_SetupWaitNight;
         } else {
             Actor_Kill(&this->actor);

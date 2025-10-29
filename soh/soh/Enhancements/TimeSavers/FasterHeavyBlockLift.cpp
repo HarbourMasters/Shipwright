@@ -1,8 +1,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "soh/cvar_prefixes.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
-#include "z64save.h"
 #include "macros.h"
 #include "variables.h"
 #include "functions.h"
@@ -14,7 +15,7 @@ extern SaveContext gSaveContext;
 #define CVAR_BLOCKLIFT_VALUE CVarGetInteger(CVAR_BLOCKLIFT_NAME, 0)
 
 #define CVAR_SKIP_CUTSCENE_NAME CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint")
-#define CVAR_SKIP_CUTSCENE_VALUE CVarGetInteger(CVAR_SKIP_CUTSCENE_NAME, IS_RANDO)
+#define CVAR_SKIP_CUTSCENE_VALUE CVarGetInteger(CVAR_SKIP_CUTSCENE_NAME, IsRando())
 
 /**
  * This primarily handles speeding up the heavy block lifts (OGC and in the Fire Trial) but also handles skipping

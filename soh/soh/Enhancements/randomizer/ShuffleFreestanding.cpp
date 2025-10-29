@@ -1,4 +1,5 @@
 #include <soh/OTRGlobals.h>
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "variables.h"
@@ -9,7 +10,7 @@ extern PlayState* gPlayState;
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 void RegisterShuffleFreestanding() {
-    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING);
+    bool shouldRegister = IsRando() && RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING);
 
     COND_VB_SHOULD(VB_ITEM00_DESPAWN, shouldRegister, {
         EnItem00* item00 = va_arg(args, EnItem00*);

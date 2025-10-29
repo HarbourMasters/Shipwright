@@ -6,6 +6,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS                                                                                  \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -151,7 +152,7 @@ u16 func_80AF55E0(PlayState* play, Actor* thisx) {
     if (reaction != 0) {
         return reaction;
     }
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SARIA_HINT)) {
+    if (IsRando() && Randomizer_GetSettingValue(RSK_SARIA_HINT)) {
         return 0x10AD;
     }
     if (CHECK_QUEST_ITEM(QUEST_SONG_SARIA)) {

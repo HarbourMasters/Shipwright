@@ -1,3 +1,4 @@
+#include "soh/cvar_prefixes.h"
 #include <map>
 #include <ranges>
 #include <vector>

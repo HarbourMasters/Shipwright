@@ -8,6 +8,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #include "vt.h"
 
@@ -334,7 +335,7 @@ void EnIshi_Init(Actor* thisx, PlayState* play) {
     }
     // If dungeon entrance randomizer is on, remove the grey boulders that normally
     // block child Link from reaching the Fire Temple entrance.
-    if (type == ROCK_LARGE && IS_RANDO &&
+    if (type == ROCK_LARGE && IsRando() &&
         Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
         play->sceneNum == SCENE_DEATH_MOUNTAIN_CRATER) { // Death Mountain Creater
         Actor_Kill(&this->actor);

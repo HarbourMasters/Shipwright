@@ -5,6 +5,7 @@
 
 #include "randomizer_grotto.h"
 #include "soh/OTRGlobals.h"
+#include "randomizer_entrance.h"
 
 #include "global.h"
 

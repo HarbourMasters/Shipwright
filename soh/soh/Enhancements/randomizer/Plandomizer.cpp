@@ -10,6 +10,7 @@
 #include <fstream>
 #include <filesystem>
 
+#include "soh/cvar_prefixes.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/Enhancements/randomizer/logic.h"

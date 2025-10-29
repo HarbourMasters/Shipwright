@@ -12,6 +12,7 @@
 #include "randomizer_grotto.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 #include <string.h>
 
 #include "global.h"
@@ -774,7 +775,7 @@ u8 Entrance_GetIsSceneDiscovered(u8 sceneNum) {
     u32 idx = sceneNum / bitsPerIndex;
     if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
         u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
-        return (gSaveContext.ship.stats.scenesDiscovered[idx] & sceneBit) != 0;
+        return (GetGlobalShipSaveContextData()->stats.scenesDiscovered[idx] & sceneBit) != 0;
     }
     return 0;
 }
@@ -788,7 +789,7 @@ void Entrance_SetSceneDiscovered(u8 sceneNum) {
     u32 idx = sceneNum / bitsPerIndex;
     if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
         u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
-        gSaveContext.ship.stats.scenesDiscovered[idx] |= sceneBit;
+        GetGlobalShipSaveContextData()->stats.scenesDiscovered[idx] |= sceneBit;
     }
     // Save scenesDiscovered
     Save_SaveSection(SECTION_ID_SCENES);
@@ -799,7 +800,7 @@ u8 Entrance_GetIsEntranceDiscovered(u16 entranceIndex) {
     u32 idx = entranceIndex / bitsPerIndex;
     if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
         u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
-        return (gSaveContext.ship.stats.entrancesDiscovered[idx] & entranceBit) != 0;
+        return (GetGlobalShipSaveContextData()->stats.entrancesDiscovered[idx] & entranceBit) != 0;
     }
     return 0;
 }
@@ -816,7 +817,7 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance) {
     u32 idx = entranceIndex / bitsPerIndex;
     if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
         u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
-        gSaveContext.ship.stats.entrancesDiscovered[idx] |= entranceBit;
+        GetGlobalShipSaveContextData()->stats.entrancesDiscovered[idx] |= entranceBit;
         CheckTracker_RecalculateAvailableChecks();
 
         // Set reverse entrance when not decoupled

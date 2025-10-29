@@ -41,6 +41,7 @@
 #include "fishsanity.h"
 #include "randomizerTypes.h"
 #include "soh/Notification/Notification.h"
+#include <soh/ObjectExtension/ShipSaveContextData.h>
 
 extern std::map<RandomizerCheckArea, std::string> rcAreaNames;
 
@@ -4848,7 +4849,7 @@ void CreateTriforcePieceMessages() {
 
 CustomMessage Randomizer::GetTriforcePieceMessage() {
     // Item is only given after the textbox, so reflect that inside the textbox.
-    uint8_t current = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected + 1;
+    uint8_t current = GetShipSaveContextData()->quest.data.randomizer.triforcePiecesCollected + 1;
     uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1;
     uint8_t remaining = required - current;
     float percentageCollected = (float)current / (float)required;
@@ -5480,7 +5481,7 @@ void CreateFireTempleGoronMessages() {
 CustomMessage Randomizer::GetGoronMessage(u16 index) {
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, goronIDs[index]);
     messageEntry.Replace("[[days]]", std::to_string(gSaveContext.totalDays));
-    messageEntry.Replace("[[a_btn]]", std::to_string(gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_A]));
+    messageEntry.Replace("[[a_btn]]", std::to_string(GetShipSaveContextData()->stats.count[COUNT_BUTTON_PRESSES_A]));
     messageEntry.Format();
     return messageEntry;
 }
@@ -5940,38 +5941,38 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
 
     // Use ITEM_KEY_BOSS to timestamp Ganon's boss key
     if (item == RG_GANONS_CASTLE_BOSS_KEY) {
-        gSaveContext.ship.stats.itemTimestamp[ITEM_KEY_BOSS] = time;
+        GetShipSaveContextData()->stats.itemTimestamp[ITEM_KEY_BOSS] = time;
         return;
     }
 
     if (randomizerGetToStatsTimeStamp.contains((RandomizerGet)item)) {
-        gSaveContext.ship.stats.itemTimestamp[randomizerGetToStatsTimeStamp[(RandomizerGet)item]] = time;
+        GetShipSaveContextData()->stats.itemTimestamp[randomizerGetToStatsTimeStamp[(RandomizerGet)item]] = time;
         return;
     }
 
     // Count any bottled item as a bottle
     if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
-        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] = time;
+        if (GetShipSaveContextData()->stats.itemTimestamp[ITEM_BOTTLE] == 0) {
+            GetShipSaveContextData()->stats.itemTimestamp[ITEM_BOTTLE] = time;
         }
         return;
     }
 
     // Count any bombchu pack as bombchus
     if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS) {
-        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = 0) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
+        if (GetShipSaveContextData()->stats.itemTimestamp[ITEM_BOMBCHU] = 0) {
+            GetShipSaveContextData()->stats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
 
     if (item == RG_MAGIC_SINGLE) {
-        gSaveContext.ship.stats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
+        GetShipSaveContextData()->stats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
         return;
     }
 
     if (item == RG_DOUBLE_DEFENSE) {
-        gSaveContext.ship.stats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
+        GetShipSaveContextData()->stats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
         return;
     }
 }
@@ -6165,7 +6166,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         }
 
         if ((item >= RG_FOREST_TEMPLE_SMALL_KEY) && (item <= RG_GANONS_CASTLE_SMALL_KEY)) {
-            gSaveContext.ship.stats.dungeonKeys[mapIndex]++;
+            GetShipSaveContextData()->stats.dungeonKeys[mapIndex]++;
             if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
                 gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
             } else {
@@ -6175,7 +6176,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         }
 
         if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_GANONS_CASTLE_KEY_RING)) {
-            gSaveContext.ship.stats.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
+            GetShipSaveContextData()->stats.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
             gSaveContext.inventory.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
             return Return_Item_Entry(giEntry, RG_NONE);
         }
@@ -6238,18 +6239,19 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         case RG_GREG_RUPEE:
             Rupees_ChangeBy(1);
             Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
-            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+            GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_FOUND_GREG] =
+                static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
             break;
         case RG_TRIFORCE_PIECE:
-            gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected++;
+            GetShipSaveContextData()->quest.data.randomizer.triforcePiecesCollected++;
             GameInteractor_SetTriforceHuntPieceGiven(true);
 
             // Teleport to credits when goal is reached.
-            if (gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected ==
+            if (GetShipSaveContextData()->quest.data.randomizer.triforcePiecesCollected ==
                 (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
+                GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
                     static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
-                gSaveContext.ship.stats.gameComplete = 1;
+                GetShipSaveContextData()->stats.gameComplete = 1;
                 Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
                 Play_PerformSave(play);
                 Notification::Emit({

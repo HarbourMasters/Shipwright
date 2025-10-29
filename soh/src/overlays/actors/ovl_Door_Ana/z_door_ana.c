@@ -9,6 +9,7 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_DURING_OCARINA
 
@@ -146,7 +147,7 @@ void DoorAna_WaitOpen(DoorAna* this, PlayState* play) {
             play->nextEntranceIndex = sGrottoEntrances[destinationIdx];
 
             // In ER, load the correct entrance based on the grotto link is falling into
-            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+            if (IsRando() && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                 Grotto_OverrideActorEntrance(&this->actor);
             }
 

@@ -1,5 +1,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "soh/cvar_prefixes.h"
 
 void RegisterSkipAmyPuzzle() {
     COND_VB_SHOULD(VB_AMY_SOLVE, CVarGetInteger(CVAR_ENHANCEMENT("SkipAmyPuzzle"), 0), { *should = true; });

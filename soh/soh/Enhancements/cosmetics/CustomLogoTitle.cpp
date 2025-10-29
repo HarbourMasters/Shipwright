@@ -4,6 +4,7 @@
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 #include "assets/objects/gameplay_keep/gameplay_keep.h"
 #include "soh_assets.h"
+#include "soh/cvar_prefixes.h"
 
 extern "C" {
 #include "macros.h"

@@ -1,6 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ShipInit.hpp"
+#include <soh/ObjectExtension/ShipSaveContextData.h>
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
@@ -52,7 +53,7 @@ static void OpenAllHours(void* refActor) {
 
 static void RegisterOpenAllHours() {
     bool overworldDoorsOpen =
-        !IS_RANDO || !OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOCK_OVERWORLD_DOORS);
+        !IsRando() || !OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOCK_OVERWORLD_DOORS);
 
     COND_HOOK(OnActorInit, CVAR_OPEN_ALL_HOURS_VALUE && overworldDoorsOpen, OpenAllHours);
 }

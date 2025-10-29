@@ -2,6 +2,7 @@
 #include "soh_assets.h"
 #include "static_data.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "variables.h"
@@ -42,7 +43,7 @@ uint8_t EnWood02_RandomizerHoldsItem(EnWood02* treeActor, PlayState* play) {
     }
 
     // Don't pull randomized item if tree isn't randomized or is already checked
-    return IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TREES).Get() &&
+    return IsRando() && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TREES).Get() &&
            !Flags_GetRandomizerInf(treeIdentity->randomizerInf) && treeIdentity->randomizerCheck != RC_UNKNOWN_CHECK;
 }
 
@@ -160,7 +161,7 @@ void EnWood02_RandomizerInit(void* actorRef) {
 }
 
 void RegisterShuffleTrees() {
-    bool shouldRegister = IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TREES).Get();
+    bool shouldRegister = IsRando() && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TREES).Get();
 
     COND_ID_HOOK(OnActorInit, ACTOR_EN_WOOD02, shouldRegister, EnWood02_RandomizerInit);
 

@@ -2,6 +2,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 #include <string>
 #include <version>
 

@@ -4,10 +4,6 @@
 #include <libultraship/libultra.h>
 #include "z64math.h"
 #include "z64audio.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include "soh/Enhancements/gameplaystats.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#include "soh/Enhancements/boss-rush/BossRush.h"
 
 typedef enum {
     /* 0x0 */ MAGIC_STATE_IDLE, // Regular gameplay
@@ -53,14 +49,6 @@ typedef struct {
     /* 0x5C */ s16 gsTokens;
 } Inventory; // size = 0x5E
 
-typedef struct {
-    u16 scene;
-    u8 room;
-    u32 sceneTime;
-    u32 roomTime;
-    u8 isRoom;
-} SceneTimestamp;
-
 typedef enum { // Pre-existing IDs for save sections in base code
     SECTION_ID_BASE,
     SECTION_ID_RANDOMIZER,
@@ -70,31 +58,6 @@ typedef enum { // Pre-existing IDs for save sections in base code
     SECTION_ID_TRACKER_DATA,
     SECTION_ID_MAX
 } SaveFuncIDs;
-
-typedef struct {
-    /*      */ char buildVersion[50];
-    /*      */ s16 buildVersionMajor;
-    /*      */ s16 buildVersionMinor;
-    /*      */ s16 buildVersionPatch;
-    /*      */ u8 heartPieces;
-    /*      */ u8 heartContainers;
-    /*      */ u8 dungeonKeys[19];
-    /*      */ u32 playTimer;
-    /*      */ u32 pauseTimer;
-    /*      */ u32 sceneTimer;
-    /*      */ u32 roomTimer;
-    /*      */ s16 sceneNum;
-    /*      */ s8 roomNum;
-    /*      */ bool gameComplete;
-    /*      */ u32 itemTimestamp[TIMESTAMP_MAX];
-    /*      */ SceneTimestamp sceneTimestamps[8191];
-    /*      */ u32 tsIdx;
-    /*      */ u32 count[COUNT_MAX];
-    /*      */ u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
-    /*      */ u32 scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
-    /*      */ bool rtaTiming;
-    /*      */ uint64_t fileCreatedAt;
-} SohStats;
 
 typedef struct {
     /* 0x00 */ u32 chest;
@@ -146,51 +109,6 @@ typedef struct {
     /* 0x20 */ s32 tempSwchFlags;
     /* 0x24 */ s32 tempCollectFlags;
 } FaroresWindData; // size = 0x28
-
-typedef struct {
-    RandomizerCheck check;
-    RandomizerCheck hintedCheck;
-    RandomizerGet rGet;
-    RandomizerCheckArea area;
-    HintType type;
-    char hintText[200];
-} HintLocationRando;
-
-#pragma region SoH
-
-typedef struct ShipRandomizerSaveContextData {
-    u8 triforcePiecesCollected;
-} ShipRandomizerSaveContextData;
-
-typedef struct ShipBossRushSaveContextData {
-    u32 isPaused;
-    u8 options[BR_OPTIONS_MAX];
-} ShipBossRushSaveContextData;
-
-typedef union ShipQuestSpecificSaveContextData {
-    ShipRandomizerSaveContextData randomizer;
-    ShipBossRushSaveContextData bossRush;
-} ShipQuestSpecificSaveContextData;
-
-typedef struct ShipQuestSaveContextData {
-    u8 id;
-    ShipQuestSpecificSaveContextData data;
-} ShipQuestSaveContextData;
-
-typedef struct ShipSaveContextData {
-    u16 pendingSale;
-    u16 pendingSaleMod;
-    u8 pendingIceTrapCount;
-    SohStats stats;
-    FaroresWindData backupFW;
-    ShipQuestSaveContextData quest;
-    u8 maskMemory;
-    u8 filenameLanguage;
-    //TODO: Move non-rando specific flags to a new sohInf and move the remaining randomizerInf to ShipRandomizerSaveContextData
-    u16 randomizerInf[(RAND_INF_MAX + 15) / 16];
-} ShipSaveContextData;
-
-#pragma endregion
 
 typedef struct {
     /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
@@ -305,7 +223,6 @@ typedef struct {
     /* 0x1420 */ s16 worldMapArea;
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
     /* 0x1424 */ s16 healthAccumulator;
-    /*        */ ShipSaveContextData ship;
 } SaveContext; // size = 0x1428
 
 typedef enum {
@@ -314,11 +231,6 @@ typedef enum {
     /* 02 */ QUEST_RANDOMIZER,
     /* 03 */ QUEST_BOSSRUSH,
 } Quest;
-
-#define IS_VANILLA (gSaveContext.ship.quest.id == QUEST_NORMAL)
-#define IS_MASTER_QUEST (gSaveContext.ship.quest.id == QUEST_MASTER)
-#define IS_RANDO (gSaveContext.ship.quest.id == QUEST_RANDOMIZER)
-#define IS_BOSS_RUSH (gSaveContext.ship.quest.id == QUEST_BOSSRUSH)
 
 typedef enum {
     /* 0x00 */ BTN_ENABLED,

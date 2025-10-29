@@ -13,6 +13,8 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -627,7 +629,7 @@ void func_80ACB274(EnOwl* this, PlayState* play) {
 void EnOwl_WaitDeathMountainShortcut(EnOwl* this, PlayState* play) {
     EnOwl_LookAtLink(this, play);
 
-    if (!gSaveContext.isMagicAcquired && !IS_RANDO) {
+    if (!gSaveContext.isMagicAcquired && !IsRando()) {
         if (func_80ACA558(this, play, 0x3062)) {
             Audio_PlayFanfare(NA_BGM_OWL);
             this->actionFunc = func_80ACB274;
@@ -946,7 +948,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                     osSyncPrintf(VT_FGCOL(CYAN));
                     osSyncPrintf("SPOT 06 の デモがはしった\n"); // "Demo of SPOT 06 has been completed"
                     osSyncPrintf(VT_RST);
-                    if (IS_RANDO) {
+                    if (IsRando()) {
                         if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
                             play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_OWL_DROP);
                         } else {
@@ -961,7 +963,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                     break;
                 case 8:
                 case 9:
-                    if (IS_RANDO) {
+                    if (IsRando()) {
                         if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
                             play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_KAKARIKO_VILLAGE_OWL_DROP);
                         } else {

@@ -131,6 +131,7 @@ Sail* Sail::Instance;
 
 #include "soh/config/ConfigUpdaters.h"
 #include "soh/ShipInit.hpp"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
@@ -2262,7 +2263,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     const size_t maxBufferSize = sizeof(font->msgBuf);
     CustomMessage messageEntry;
     s16 actorParams = 0;
-    if (IS_RANDO) {
+    if (IsRando()) {
         auto ctx = Rando::Context::GetInstance();
         if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
             s16 entrance = -1;
@@ -2686,35 +2687,36 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             // RANDOTODO: Implement a way to determine if an item came from a skulltula and
             // inject the auto-dismiss control code if it did.
             bool gsTokensShuffled = Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF;
-            if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 && !(IS_RANDO && gsTokensShuffled)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 && !(IsRando() && gsTokensShuffled)) {
                 textId = TEXT_GS_NO_FREEZE;
             } else {
                 textId = TEXT_GS_FREEZE;
             }
             // In vanilla, GS token count is incremented prior to the text box displaying
             // In rando we need to bump the token count by one to show the correct count
-            s16 gsCount = gSaveContext.inventory.gsTokens + ((IS_RANDO && gsTokensShuffled) ? 1 : 0);
+            s16 gsCount = gSaveContext.inventory.gsTokens + ((IsRando() && gsTokensShuffled) ? 1 : 0);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_FORMATTED);
             messageEntry.Replace("[[gsCount]]", std::to_string(gsCount));
         } else if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 &&
-                   (!IS_RANDO || Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) == RO_TOKENSANITY_OFF)) {
+                   (!IsRando() || Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) == RO_TOKENSANITY_OFF)) {
             messageEntry = CustomMessage::LoadVanillaMessageTableEntry(TEXT_GS_FREEZE);
             messageEntry.Replace(CustomMessage::MESSAGE_END(), "\x0E\x3C");
             messageEntry += CustomMessage::MESSAGE_END();
         }
-    } else if ((IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0)) &&
+    } else if ((IsRando() || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0)) &&
                (textId == TEXT_BUY_BOMBCHUS_10_DESC || textId == TEXT_BUY_BOMBCHUS_10_PROMPT)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_FORMATTED);
     } else if (textId == TEXT_HEART_CONTAINER &&
                CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 0)) {
         messageEntry =
             CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER, MF_FORMATTED);
-        messageEntry.Replace("[[heartContainerCount]]", std::to_string(gSaveContext.ship.stats.heartContainers + 1));
+        messageEntry.Replace("[[heartContainerCount]]",
+                             std::to_string(GetShipSaveContextData()->stats.heartContainers + 1));
     } else if (textId >= TEXT_HEART_PIECE && textId < TEXT_HEART_CONTAINER &&
                CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 0)) {
         messageEntry =
             CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE, MF_FORMATTED);
-        messageEntry.Replace("[[heartPieceCount]]", std::to_string(gSaveContext.ship.stats.heartPieces + 1));
+        messageEntry.Replace("[[heartPieceCount]]", std::to_string(GetShipSaveContextData()->stats.heartPieces + 1));
     } else if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger(CVAR_ENHANCEMENT("MarketSneak"), 0) &&
                play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT,

@@ -5,6 +5,8 @@
 #include "z64save.h"
 #include "objects/object_gi_compass/object_gi_compass.h"
 #include "objects/object_gi_map/object_gi_map.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
+#include "soh/cvar_prefixes.h"
 
 extern "C" {
 extern SaveContext gSaveContext;
@@ -20,7 +22,7 @@ u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 void OnLoadFileColoredMapsAndCompasses(int32_t _) {
     s8 mapsAndCompassesCanBeOutsideDungeon =
-        IS_RANDO && DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
+        IsRando() && DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
     s8 isColoredMapsAndCompassesEnabled = mapsAndCompassesCanBeOutsideDungeon && CVAR_COLORED_MAPS_AND_COMPASSES_VALUE;
     if (isColoredMapsAndCompassesEnabled) {
         ResourceMgr_PatchGfxByName(gGiDungeonMapDL, "Map_PrimColor", 5, gsDPNoOp());

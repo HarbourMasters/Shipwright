@@ -1,4 +1,5 @@
 #include "TimeDisplay.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 #include "soh/Enhancements/gameplaystats.h"
 #include <global.h>
 

@@ -1,11 +1,12 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
+#include "soh/cvar_prefixes.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
-#include "z64save.h"
 extern PlayState* gPlayState;
 }
 
@@ -41,7 +42,7 @@ void OnReceiveBrokenGiantsKnife(GetItemEntry itemEntry) {
 
 void RegisterBrokenGiantsKnifeFix() {
     // If enhancement is off, flag should be handled exclusively by vanilla behaviour
-    COND_HOOK(OnItemReceive, CVAR_BGS_FIX_VALUE || IS_RANDO, OnReceiveBrokenGiantsKnife);
+    COND_HOOK(OnItemReceive, CVAR_BGS_FIX_VALUE || IsRando(), OnReceiveBrokenGiantsKnife);
 }
 
 static RegisterShipInitFunc initFunc(RegisterBrokenGiantsKnifeFix, { CVAR_BGS_FIX_NAME, "IS_RANDO" });

@@ -10,6 +10,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
@@ -917,8 +918,8 @@ void func_80B15FE8(EnTa* this, PlayState* play) {
                         EnTa_SetupAction(this, EnTa_GiveItemInLonLonHouse, EnTa_AnimRunToEnd);
                         Rupees_ChangeBy(-30);
                         GetItemEntry itemEntry = ItemTable_Retrieve(GI_MILK);
-                        gSaveContext.ship.pendingSale = itemEntry.itemId;
-                        gSaveContext.ship.pendingSaleMod = itemEntry.modIndex;
+                        GetGlobalShipSaveContextData()->pendingSale = itemEntry.itemId;
+                        GetGlobalShipSaveContextData()->pendingSaleMod = itemEntry.modIndex;
                         Actor_OfferGetItem(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
                         break;
                 }

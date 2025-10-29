@@ -6,6 +6,7 @@
 #include "textures/map_grand_static/map_grand_static.h"
 #include <assert.h>
 #include "soh/OTRGlobals.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
 MapData* gMapData;
@@ -394,8 +395,8 @@ void Map_InitData(PlayState* play, s16 room) {
                 }
             } else if (play->sceneNum == SCENE_LAKE_HYLIA) {
                 if ((LINK_AGE_IN_YEARS == YEARS_ADULT) &&
-                    ((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) ||
-                     (IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)))) {
+                    ((!IsRando() && !CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) ||
+                     (IsRando() && !Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)))) {
                     extendedMapIndex = 0x15;
                 }
             } else if (play->sceneNum == SCENE_GERUDO_VALLEY) {
@@ -403,8 +404,8 @@ void Map_InitData(PlayState* play, s16 room) {
                     extendedMapIndex = 0x16;
                 }
             } else if (play->sceneNum == SCENE_GERUDOS_FORTRESS) {
-                if ((!IS_RANDO && GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) ||
-                    (IS_RANDO && CHECK_QUEST_ITEM(QUEST_GERUDO_CARD))) {
+                if ((!IsRando() && GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) ||
+                    (IsRando() && CHECK_QUEST_ITEM(QUEST_GERUDO_CARD))) {
                     extendedMapIndex = 0x17;
                 }
             }

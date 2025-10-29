@@ -33,6 +33,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -1790,9 +1791,9 @@ void Player_PlaySteppingSfx(Player* this, f32 pitchAdjustment) {
     func_800F4010(&this->actor.projectedPos, sfxId, pitchAdjustment);
     // Gameplay stats: Count footsteps
     // Only count while game isn't complete and don't count Link's idle animations or crawling in crawlspaces
-    if (!gSaveContext.ship.stats.gameComplete && !(this->stateFlags2 & PLAYER_STATE2_IDLE_FIDGET) &&
+    if (!GetGlobalShipSaveContextData()->stats.gameComplete && !(this->stateFlags2 & PLAYER_STATE2_IDLE_FIDGET) &&
         !(this->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
-        gSaveContext.ship.stats.count[COUNT_STEPS]++;
+        GetGlobalShipSaveContextData()->stats.count[COUNT_STEPS]++;
     }
 }
 
@@ -2376,7 +2377,7 @@ void func_80833A20(Player* this, s32 newMeleeWeaponState) {
         }
 
         if (this->heldItemAction >= PLAYER_IA_SWORD_MASTER && this->heldItemAction <= PLAYER_IA_SWORD_BIGGORON) {
-            gSaveContext.ship.stats.count[COUNT_SWORD_SWINGS]++;
+            GetGlobalShipSaveContextData()->stats.count[COUNT_SWORD_SWINGS]++;
         }
     }
 
@@ -3484,7 +3485,7 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
                     this->currentMask = itemAction - PLAYER_IA_MASK_KEATON + 1;
                 }
 
-                gSaveContext.ship.maskMemory = this->currentMask;
+                GetGlobalShipSaveContextData()->maskMemory = this->currentMask;
 
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
             } else if (((itemAction >= PLAYER_IA_OCARINA_FAIRY) && (itemAction <= PLAYER_IA_OCARINA_OF_TIME)) ||
@@ -5139,7 +5140,7 @@ s32 Player_HandleExitsAndVoids(PlayState* play, Player* this, CollisionPoly* pol
                 play->nextEntranceIndex = play->setupExitList[exitIndex - 1];
 
                 // Main override for entrance rando and entrance skips
-                if (IS_RANDO) {
+                if (IsRando()) {
                     play->nextEntranceIndex = Entrance_OverrideNextIndex(play->nextEntranceIndex);
                 }
 
@@ -5150,7 +5151,7 @@ s32 Player_HandleExitsAndVoids(PlayState* play, Player* this, CollisionPoly* pol
                     gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
                 } else if (play->nextEntranceIndex >= ENTR_RETURN_YOUSEI_IZUMI_YOKO) {
                     // handle dynamic exits
-                    if (IS_RANDO) {
+                    if (IsRando()) {
                         play->nextEntranceIndex = Entrance_OverrideDynamicExit(
                             sReturnEntranceGroupIndices[play->nextEntranceIndex - ENTR_RETURN_YOUSEI_IZUMI_YOKO] +
                             play->curSpawn);
@@ -5562,7 +5563,7 @@ void func_8083A0F4(PlayState* play, Player* this) {
             this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
             if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0) ||
                 !CVarGetInteger(CVAR_ENHANCEMENT("AdultMasks"), 0)) {
-                gSaveContext.ship.maskMemory = PLAYER_MASK_NONE;
+                GetGlobalShipSaveContextData()->maskMemory = PLAYER_MASK_NONE;
             }
         } else {
             LinkAnimationHeader* anim;
@@ -6305,7 +6306,7 @@ void Player_SetupRoll(Player* this, PlayState* play) {
     LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime,
                                    GET_PLAYER_ANIM(PLAYER_ANIMGROUP_landing_roll, this->modelAnimType),
                                    1.25f * sWaterSpeedFactor);
-    gSaveContext.ship.stats.count[COUNT_ROLLS]++;
+    GetGlobalShipSaveContextData()->stats.count[COUNT_ROLLS]++;
 }
 
 s32 Player_TryRoll(Player* this, PlayState* play) {
@@ -6365,10 +6366,10 @@ s32 Player_ActionHandler_10(Player* this, PlayState* play) {
             func_8083BCD0(this, play, controlStickDirection);
 
             if (controlStickDirection == 1 || controlStickDirection == 3) {
-                gSaveContext.ship.stats.count[COUNT_SIDEHOPS]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_SIDEHOPS]++;
             }
             if (controlStickDirection == 2) {
-                gSaveContext.ship.stats.count[COUNT_BACKFLIPS]++;
+                GetGlobalShipSaveContextData()->stats.count[COUNT_BACKFLIPS]++;
             }
 
             return 1;
@@ -7320,12 +7321,12 @@ s32 Player_ActionHandler_2(Player* this, PlayState* play) {
 
                 iREG(67) = false;
 
-                if (IS_RANDO && giEntry.getItemId == RG_ICE_TRAP && giEntry.getItemFrom == ITEM_FROM_FREESTANDING) {
+                if (IsRando() && giEntry.getItemId == RG_ICE_TRAP && giEntry.getItemFrom == ITEM_FROM_FREESTANDING) {
                     this->actor.freezeTimer = 30;
                     Player_SetPendingFlag(this, play);
                     Message_StartTextbox(play, 0xF8, NULL);
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
-                    gSaveContext.ship.pendingIceTrapCount++;
+                    GetGlobalShipSaveContextData()->pendingIceTrapCount++;
                     return 1;
                 }
 
@@ -7334,7 +7335,7 @@ s32 Player_ActionHandler_2(Player* this, PlayState* play) {
                 // rando, we're overruling this because we need to keep showing the cutscene because those items can be
                 // randomized and thus it's important to keep showing the cutscene.
                 uint8_t showItemCutscene = play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY ||
-                                           Item_CheckObtainability(giEntry.itemId) == ITEM_NONE || IS_RANDO;
+                                           Item_CheckObtainability(giEntry.itemId) == ITEM_NONE || IsRando();
 
                 // Only skip cutscenes for drops when they're items/consumables from bushes/rocks/enemies.
                 uint8_t isDropToSkip =
@@ -7354,7 +7355,7 @@ s32 Player_ActionHandler_2(Player* this, PlayState* play) {
                 // freestanding PoH's and keys. So we need to once again overrule this specifically for items coming
                 // from bushes/rocks/enemies when the player has already picked that item up.
                 uint8_t skipItemCutsceneRando =
-                    IS_RANDO && Item_CheckObtainability(giEntry.itemId) != ITEM_NONE && isDropToSkip;
+                    IsRando() && Item_CheckObtainability(giEntry.itemId) != ITEM_NONE && isDropToSkip;
 
                 // Show cutscene when picking up a item.
                 if (showItemCutscene && !skipItemCutscene && !skipItemCutsceneRando) {
@@ -9521,7 +9522,7 @@ void func_80843AE8(PlayState* play, Player* this) {
     } else if (play->gameOverCtx.state == GAMEOVER_DEATH_WAIT_GROUND) {
         play->gameOverCtx.state = GAMEOVER_DEATH_DELAY_MENU;
         if (!CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
-            gSaveContext.ship.maskMemory = PLAYER_MASK_NONE;
+            GetGlobalShipSaveContextData()->maskMemory = PLAYER_MASK_NONE;
         }
     }
 }
@@ -9834,7 +9835,7 @@ void Player_Action_Roll(Player* this, PlayState* play) {
                     Player_PlayVoiceSfx(this, NA_SE_VO_LI_CLIMB_END);
                     this->av2.bonked = 1;
 
-                    gSaveContext.ship.stats.count[COUNT_BONKS]++;
+                    GetGlobalShipSaveContextData()->stats.count[COUNT_BONKS]++;
                     GameInteractor_ExecuteOnPlayerBonk();
 
                     return;
@@ -10824,9 +10825,9 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     // keep masks thru loading zones
     if (CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
         if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT) {
-            gSaveContext.ship.maskMemory = PLAYER_MASK_NONE;
+            GetGlobalShipSaveContextData()->maskMemory = PLAYER_MASK_NONE;
         }
-        this->currentMask = gSaveContext.ship.maskMemory;
+        this->currentMask = GetGlobalShipSaveContextData()->maskMemory;
     }
     Player_InitCommon(this, play, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
     // `giObjectSegment` is used for both "get item" objects and title cards. The maximum size for
@@ -14239,7 +14240,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
 
         // Use this if we do have a getItemEntry
         if (giEntry.modIndex == MOD_NONE) {
-            if (IS_RANDO) {
+            if (IsRando()) {
                 Audio_PlayFanfare_Rando(giEntry);
             } else if (((giEntry.itemId >= ITEM_RUPEE_GREEN) && (giEntry.itemId <= ITEM_RUPEE_RED)) ||
                        ((giEntry.itemId >= ITEM_RUPEE_PURPLE) && (giEntry.itemId <= ITEM_RUPEE_GOLD)) ||
@@ -14258,7 +14259,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
                 Audio_PlayFanfare(temp1);
             }
         } else if (giEntry.modIndex == MOD_RANDOMIZER) {
-            if (IS_RANDO) {
+            if (IsRando()) {
                 Audio_PlayFanfare_Rando(giEntry);
             } else if (giEntry.itemId == RG_DOUBLE_DEFENSE || giEntry.itemId == RG_MAGIC_SINGLE ||
                        giEntry.itemId == RG_MAGIC_DOUBLE) {
@@ -14314,7 +14315,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
             // #region SOH [Randomizer] TODO Better Ice trap handling?
             if (this->getItemEntry.itemId == RG_ICE_TRAP && this->getItemEntry.modIndex == MOD_RANDOMIZER) {
                 this->unk_862 = 0;
-                gSaveContext.ship.pendingIceTrapCount++;
+                GetGlobalShipSaveContextData()->pendingIceTrapCount++;
                 Player_SetPendingFlag(this, play);
             }
             // #endregion
@@ -14483,17 +14484,17 @@ void Player_Action_8084E6D4(Player* this, PlayState* play) {
             }
         } else {
             Player_FinishAnimMovement(this);
-            if ((this->getItemId == GI_ICE_TRAP && !IS_RANDO) ||
-                (IS_RANDO && (this->getItemId == RG_ICE_TRAP || this->getItemEntry.getItemId == RG_ICE_TRAP))) {
+            if ((this->getItemId == GI_ICE_TRAP && !IsRando()) ||
+                (IsRando() && (this->getItemId == RG_ICE_TRAP || this->getItemEntry.getItemId == RG_ICE_TRAP))) {
                 this->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_CARRYING_ACTOR);
 
-                if ((this->getItemId != GI_ICE_TRAP && !IS_RANDO) ||
-                    (IS_RANDO && (this->getItemId != RG_ICE_TRAP || this->getItemEntry.getItemId != RG_ICE_TRAP))) {
+                if ((this->getItemId != GI_ICE_TRAP && !IsRando()) ||
+                    (IsRando() && (this->getItemId != RG_ICE_TRAP || this->getItemEntry.getItemId != RG_ICE_TRAP))) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, this->actor.world.pos.x,
                                 this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
                     func_8083C0E8(this, play);
-                } else if (IS_RANDO) {
-                    gSaveContext.ship.pendingIceTrapCount++;
+                } else if (IsRando()) {
+                    GetGlobalShipSaveContextData()->pendingIceTrapCount++;
                     Player_SetPendingFlag(this, play);
                     func_8083C0E8(this, play);
                 } else {
@@ -14978,7 +14979,7 @@ void Player_Action_8084F88C(Player* this, PlayState* play) {
             } else if (this->av1.actionVar1 < 0) {
                 Play_TriggerRespawn(play);
                 // In ER, handle DMT and other special void outs to respawn from last entrance from grotto
-                if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+                if (IsRando() && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                     Grotto_ForceRegularVoidOut();
                 }
             } else if (GameInteractor_Should(VB_TRIGGER_VOIDOUT, true, this)) {
@@ -16448,7 +16449,7 @@ void func_80852648(PlayState* play, Player* this, CsCmdActorCue* cue) {
 
         // If MS sword is shuffled and not in the players inventory, then we need to unequip the current sword
         // and set swordless flag to mimic Link having his weapon knocked out of his hand in the Ganon fight
-        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+        if (IsRando() && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
             !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
             Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_NONE);
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;

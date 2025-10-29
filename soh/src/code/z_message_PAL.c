@@ -12,6 +12,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
 
@@ -1597,7 +1598,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
             // #region SOH [NTSC] - support multiple file name languages
             case MESSAGE_NAME:
                 if (ResourceMgr_GetGameRegion(0) == GAME_REGION_NTSC &&
-                    gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_NTSC_JPN) {
+                    GetGlobalShipSaveContextData()->filenameLanguage == NAME_LANGUAGE_NTSC_JPN) {
                     if (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING && i + 1 == msgCtx->textDrawPos &&
                         msgCtx->textDelayTimer == msgCtx->textDelay) {
                         Audio_PlaySoundGeneral(0, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
@@ -1677,7 +1678,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
     u8 curChar2;
     MessageContext* msgCtx = &play->msgCtx;
     Font* font = &play->msgCtx.font;
-    u8 emptyChar = (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) ? 0x3E : 0xDF;
+    u8 emptyChar = (GetGlobalShipSaveContextData()->filenameLanguage == NAME_LANGUAGE_PAL) ? 0x3E : 0xDF;
 
     for (playerNameLen = ARRAY_COUNT(gSaveContext.playerName); playerNameLen > 0; playerNameLen--) {
         if (gSaveContext.playerName[playerNameLen - 1] != emptyChar) {
@@ -1687,7 +1688,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
 
     if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL &&
         (gSaveContext.language != LANGUAGE_JPN || sDisplayNextMessageAsEnglish)) {
-        if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) {
+        if (GetGlobalShipSaveContextData()->filenameLanguage == NAME_LANGUAGE_PAL) {
             for (i = 0; i < playerNameLen; i++) {
                 curChar2 = gSaveContext.playerName[i];
                 if (curChar2 == 0x3E) {
@@ -1714,7 +1715,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
                 msgCtx->msgBufDecoded[*decodedBufPosPtr] = curChar2;
                 (*decodedBufPosPtr)++;
             }
-        } else if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_NTSC_ENG) {
+        } else if (GetGlobalShipSaveContextData()->filenameLanguage == NAME_LANGUAGE_NTSC_ENG) {
             for (i = 0; i < playerNameLen; i++) {
                 curChar2 = gSaveContext.playerName[i];
                 if (curChar2 == 0xDF) {
@@ -1780,7 +1781,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
         }
     } else { // GAME_REGION_NTSC
 
-        if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_NTSC_JPN) {
+        if (GetGlobalShipSaveContextData()->filenameLanguage == NAME_LANGUAGE_NTSC_JPN) {
             if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                 for (i = 0; i < playerNameLen; i++) {
                     curChar2 = gSaveContext.playerName[i];
@@ -1808,7 +1809,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
                     *charTexIdxPtr += FONT_CHAR_TEX_SIZE;
                 }
             }
-        } else if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_NTSC_ENG) {
+        } else if (GetGlobalShipSaveContextData()->filenameLanguage == NAME_LANGUAGE_NTSC_ENG) {
             if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                 for (i = 0; i < playerNameLen; i++) {
                     curChar2 = gSaveContext.playerName[i];
@@ -1850,7 +1851,7 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
                     (*decodedBufPosPtr)++;
                 }
             }
-        } else if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) {
+        } else if (GetGlobalShipSaveContextData()->filenameLanguage == NAME_LANGUAGE_PAL) {
             if (gSaveContext.language == LANGUAGE_JPN && !sDisplayNextMessageAsEnglish) {
                 for (i = 0; i < playerNameLen; i++) {
                     curChar2 = gSaveContext.playerName[i];
@@ -2754,9 +2755,9 @@ void Message_OpenText(PlayState* play, u16 textId) {
         // Increments text id based on piece of heart count, assumes the piece of heart text is all
         // in order and that you don't have more than the intended amount of heart pieces.
         textId += (gSaveContext.inventory.questItems & 0xF0000000 & 0xF0000000) >> 0x1C;
-    } else if (!IS_RANDO && (msgCtx->textId == 0xC && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON))) {
+    } else if (!IsRando() && (msgCtx->textId == 0xC && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON))) {
         textId = 0xB; // Traded Giant's Knife for Biggoron Sword
-    } else if (!IS_RANDO &&
+    } else if (!IsRando() &&
                (msgCtx->textId == 0xB4 && (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_CURSED_MAN_IN_SKULL_HOUSE)))) {
         textId = 0xB5; // Destroyed Gold Skulltula
     }
@@ -3764,7 +3765,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     if (msgCtx->lastPlayedSong < OCARINA_SONG_SARIAS &&
                         (msgCtx->ocarinaAction < OCARINA_ACTION_PLAYBACK_MINUET ||
                          msgCtx->ocarinaAction >= OCARINA_ACTION_PLAYBACK_SARIA)) {
-                        if (msgCtx->disableWarpSongs || (interfaceCtx->restrictions.warpSongs == 3 && !IS_RANDO)) {
+                        if (msgCtx->disableWarpSongs || (interfaceCtx->restrictions.warpSongs == 3 && !IsRando())) {
                             Message_StartTextbox(play, 0x88C, NULL); // "You can't warp here!"
                             play->msgCtx.ocarinaMode = OCARINA_MODE_04;
                         } else if ((gSaveContext.eventInf[0] & 0xF) != 1) {

@@ -10,6 +10,7 @@
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -1104,7 +1105,7 @@ void EnNb_LookUp(EnNb* this, PlayState* play) {
 }
 
 void EnNb_CrawlspaceSpawnCheck(EnNb* this, PlayState* play) {
-    if (!IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_NABOORU_CAPTURED_BY_TWINROVA) && LINK_IS_CHILD) {
+    if (!IsRando() && !Flags_GetEventChkInf(EVENTCHKINF_NABOORU_CAPTURED_BY_TWINROVA) && LINK_IS_CHILD) {
         EnNb_UpdatePath(this, play);
 
         // looking into crawlspace

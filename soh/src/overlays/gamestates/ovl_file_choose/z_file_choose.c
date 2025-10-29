@@ -27,6 +27,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/ShipUtils.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 typedef struct {
     s16 left;
@@ -1013,7 +1014,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
            this->configMode == CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU || this->configMode == CM_START_NAME_ENTRY ||
            this->configMode == CM_START_RANDOMIZER_SETTINGS_MENU) ||
           this->configMode == CM_RANDOMIZER_SETTINGS_MENU) &&
-         gSaveContext.ship.quest.id == QUEST_RANDOMIZER)) {
+         GetGlobalShipSaveContextData()->quest.id == QUEST_RANDOMIZER)) {
 
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
         u16 xStart = 64;
@@ -1343,7 +1344,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
-        gSaveContext.ship.quest.id = this->questType[this->buttonIndex];
+        GetGlobalShipSaveContextData()->quest.id = this->questType[this->buttonIndex];
 
         if (this->questType[this->buttonIndex] == QUEST_BOSSRUSH) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
@@ -1359,7 +1360,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         } else {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-            osSyncPrintf("Selected Dungeon Quest: %d\n", IS_MASTER_QUEST);
+            osSyncPrintf("Selected Dungeon Quest: %d\n", IsMasterQuest());
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_NAME_ENTRY;
             this->logoAlpha = 0;

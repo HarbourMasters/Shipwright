@@ -8,6 +8,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include <z64.h>
@@ -414,8 +415,8 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play) {
         filteredEnemyList = selectedEnemyList;
     }
     if (CVAR_ENEMY_RANDOMIZER_VALUE == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
-        uint32_t finalSeed =
-            seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
+        uint32_t finalSeed = seed + (IsRando() ? Rando::Context::GetInstance()->GetSeed()
+                                               : GetShipSaveContextData()->stats.fileCreatedAt);
         Random_Init(finalSeed);
         uint32_t randomNumber = Random(0, filteredEnemyList.size());
         return filteredEnemyList[randomNumber];

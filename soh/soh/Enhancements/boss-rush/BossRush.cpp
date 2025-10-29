@@ -4,6 +4,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh_assets.h"
 #include "soh/frame_interpolation.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #include <array>
 #include <string>
@@ -251,19 +252,19 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
         (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
         if (fileChooseContext->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
             // If exceeding the amount of choices for the selected option, cycle back to the first.
-            if ((gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex] + 1) ==
+            if ((GetShipSaveContextData()->quest.data.bossRush.options[fileChooseContext->bossRushIndex] + 1) ==
                 BossRush_GetSettingOptionsAmount(fileChooseContext->bossRushIndex)) {
-                gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex] = 0;
+                GetShipSaveContextData()->quest.data.bossRush.options[fileChooseContext->bossRushIndex] = 0;
             } else {
-                gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]++;
+                GetShipSaveContextData()->quest.data.bossRush.options[fileChooseContext->bossRushIndex]++;
             }
         } else if (fileChooseContext->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
             // If cycling back when already at the first choice for the selected option, cycle back to the last choice.
-            if ((gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex] - 1) < 0) {
-                gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex] =
+            if ((GetShipSaveContextData()->quest.data.bossRush.options[fileChooseContext->bossRushIndex] - 1) < 0) {
+                GetShipSaveContextData()->quest.data.bossRush.options[fileChooseContext->bossRushIndex] =
                     BossRush_GetSettingOptionsAmount(fileChooseContext->bossRushIndex) - 1;
             } else {
-                gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]--;
+                GetShipSaveContextData()->quest.data.bossRush.options[fileChooseContext->bossRushIndex]--;
             }
         }
 
@@ -272,12 +273,14 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
     }
 
     if (sLastBossRushOptionIndex != fileChooseContext->bossRushIndex ||
-        sLastBossRushOptionValue != gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]) {
+        sLastBossRushOptionValue !=
+            GetShipSaveContextData()->quest.data.bossRush.options[fileChooseContext->bossRushIndex]) {
         GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(
             fileChooseContext->bossRushIndex,
-            gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]);
+            GetShipSaveContextData()->quest.data.bossRush.options[fileChooseContext->bossRushIndex]);
         sLastBossRushOptionIndex = fileChooseContext->bossRushIndex;
-        sLastBossRushOptionValue = gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex];
+        sLastBossRushOptionValue =
+            GetShipSaveContextData()->quest.data.bossRush.options[fileChooseContext->bossRushIndex];
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
@@ -339,8 +342,8 @@ void FileChoose_DrawBossRushMenuWindowContents(FileChooseContext* fileChooseCont
         // Selected choice for option.
         uint16_t finalKerning = Interface_DrawTextLine(
             fileChooseContext->state.gfxCtx,
-            (char*)BossRush_GetSettingChoiceName(i, gSaveContext.ship.quest.data.bossRush.options[i], language), 165,
-            (87 + textYOffset), 255, 255, 255, textAlpha, 0.8f, true);
+            (char*)BossRush_GetSettingChoiceName(i, GetShipSaveContextData()->quest.data.bossRush.options[i], language),
+            165, (87 + textYOffset), 255, 255, 255, textAlpha, 0.8f, true);
 
         // Draw arrows around selected option.
         if (fileChooseContext->bossRushIndex == i) {
@@ -492,10 +495,11 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
             gSaveContext.linkAge = LINK_AGE_ADULT;
 
             // Change to Adult Link.
-            if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ALL) {
+            if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ALL) {
                 BossRush_SetEquipment(LINK_AGE_ADULT);
                 // Warp to credits.
-            } else if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) {
+            } else if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_BOSSES] ==
+                       BR_CHOICE_BOSSES_CHILD) {
                 play->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
                 play->transitionTrigger = TRANS_TRIGGER_START;
@@ -512,14 +516,14 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
 void BossRush_HandleBlueWarpHeal(PlayState* play) {
 
     // This function gets called multiple times per blue warp, so only heal when player isn't at max HP.
-    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
+    if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
         gSaveContext.health != gSaveContext.healthCapacity) {
         Health_ChangeBy(play, 320);
     }
 }
 
 void BossRush_HandleCompleteBoss(PlayState* play) {
-    gSaveContext.ship.quest.data.bossRush.isPaused = true;
+    GetShipSaveContextData()->quest.data.bossRush.isPaused = true;
     switch (play->sceneNum) {
         case SCENE_DEKU_TREE_BOSS:
             Flags_SetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP);
@@ -550,17 +554,17 @@ void BossRush_HandleCompleteBoss(PlayState* play) {
     }
 
     // Fully heal the player after Ganondorf
-    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
+    if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
         play->sceneNum == SCENE_GANONDORF_BOSS) {
         Health_ChangeBy(play, 320);
     }
 
     if ((CheckDungeonCount() == 3 &&
-         gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) ||
+         GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) ||
         play->sceneNum == SCENE_GANON_BOSS) {
-        gSaveContext.ship.stats.playTimer += 2;
-        gSaveContext.ship.stats.gameComplete = 1;
-        gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_BOSSRUSH_FINISH] =
+        GetShipSaveContextData()->stats.playTimer += 2;
+        GetShipSaveContextData()->stats.gameComplete = 1;
+        GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_BOSSRUSH_FINISH] =
             static_cast<uint32_t>(GAMEPLAYSTAT_TOTAL_TIME);
     }
 }
@@ -573,14 +577,14 @@ extern "C" void BossRush_InitSave() {
         gSaveContext.playerName[i] = brPlayerName[i];
     }
 
-    gSaveContext.ship.quest.id = QUEST_BOSSRUSH;
-    gSaveContext.ship.quest.data.bossRush.isPaused = true;
+    GetShipSaveContextData()->quest.id = QUEST_BOSSRUSH;
+    GetShipSaveContextData()->quest.data.bossRush.isPaused = true;
     gSaveContext.entranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
     gSaveContext.cutsceneIndex = 0x8000;
     gSaveContext.isMagicAcquired = 1;
 
     // Set magic
-    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_MAGIC] == BR_CHOICE_MAGIC_SINGLE) {
+    if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_MAGIC] == BR_CHOICE_MAGIC_SINGLE) {
         gSaveContext.magicLevel = 1;
         gSaveContext.magic = 48;
     } else {
@@ -591,7 +595,7 @@ extern "C" void BossRush_InitSave() {
 
     // Set health
     u16 health = 16;
-    switch (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HEARTS]) {
+    switch (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_HEARTS]) {
         case BR_CHOICE_HEARTS_7:
             health *= 7;
             break;
@@ -630,8 +634,8 @@ extern "C" void BossRush_InitSave() {
     // Sets all rando flags to false
     // Boss Rush currently uses 2 randomizer flags (RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE &
     // RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)
-    for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.ship.randomizerInf); i++) {
-        gSaveContext.ship.randomizerInf[i] = 0;
+    for (s32 i = 0; i < ARRAY_COUNT(GetShipSaveContextData()->randomizerInf); i++) {
+        GetShipSaveContextData()->randomizerInf[i] = 0;
     }
 
     // Set items
@@ -641,11 +645,11 @@ extern "C" void BossRush_InitSave() {
         ITEM_ARROW_LIGHT, ITEM_NONE,     ITEM_NONE, ITEM_NONE, ITEM_NONE,      ITEM_NONE, ITEM_NONE,      ITEM_NONE,
     };
 
-    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_LONGSHOT] == BR_CHOICE_LONGSHOT_YES) {
+    if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_LONGSHOT] == BR_CHOICE_LONGSHOT_YES) {
         brItems[9] = ITEM_LONGSHOT;
     }
 
-    switch (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOTTLE]) {
+    switch (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_BOTTLE]) {
         case BR_CHOICE_BOTTLE_EMPTY:
             brItems[18] = ITEM_BOTTLE;
             break;
@@ -665,7 +669,7 @@ extern "C" void BossRush_InitSave() {
             break;
     }
 
-    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BUNNYHOOD] == BR_CHOICE_BUNNYHOOD_YES) {
+    if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_BUNNYHOOD] == BR_CHOICE_BUNNYHOOD_YES) {
         brItems[23] = ITEM_MASK_BUNNY;
     }
 
@@ -676,9 +680,9 @@ extern "C" void BossRush_InitSave() {
     // Set consumable counts
     std::array<s8, 16> brAmmo = { 5, 5, 10, 10, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_FULL) {
+    if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_FULL) {
         brAmmo = { 10, 20, 20, 30, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    } else if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
+    } else if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
         brAmmo = { 30, 40, 40, 50, 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     }
 
@@ -692,17 +696,17 @@ extern "C" void BossRush_InitSave() {
     gSaveContext.inventory.equipment |= 1 << 4; // Deku Shield
     gSaveContext.inventory.equipment |= 1 << 6; // Mirror Shield
     gSaveContext.inventory.equipment |= 1 << 9; // Goron Tunic
-    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BGS] == BR_CHOICE_BGS_YES) {
+    if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_BGS] == BR_CHOICE_BGS_YES) {
         gSaveContext.inventory.equipment |= 1 << 2; // Biggoron Sword
         gSaveContext.bgsFlag = 1;
     }
-    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HOVERBOOTS] == BR_CHOICE_HOVERBOOTS_YES) {
+    if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_HOVERBOOTS] == BR_CHOICE_HOVERBOOTS_YES) {
         gSaveContext.inventory.equipment |= 1 << 14; // Hover Boots
     }
 
     // Upgrades
     u8 upgradeLevel = 1;
-    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
+    if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
         upgradeLevel = 3;
     }
     Inventory_ChangeUpgrade(UPG_QUIVER, upgradeLevel);
@@ -713,12 +717,13 @@ extern "C" void BossRush_InitSave() {
     Inventory_ChangeUpgrade(UPG_STRENGTH, 1);
 
     // Set flags and Link's age based on chosen settings.
-    if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ADULT ||
-        gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
+    if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ADULT ||
+        GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
         Flags_SetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP);
         Flags_SetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP);
         Flags_SetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP);
-        if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
+        if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_BOSSES] ==
+            BR_CHOICE_BOSSES_GANONDORF_GANON) {
             Flags_SetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
             Flags_SetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP);
             Flags_SetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP);
@@ -746,7 +751,7 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
     switch (id) {
         // Allow not healing before ganon
         case VB_GANON_HEAL_BEFORE_FIGHT: {
-            if (gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_NEVER) {
+            if (GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_NEVER) {
                 *should = false;
             }
             break;
@@ -870,7 +875,7 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             break;
         }
         case VB_SHOW_GAMEPLAY_TIMER: {
-            *should |= gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES;
+            *should |= GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES;
             break;
         }
         // Prevent saving
@@ -896,7 +901,7 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
 void BossRush_OnSceneInitHandler(s16 sceneNum) {
     // Unpause the timer when the scene loaded isn't the Chamber of Sages.
     if (sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
-        gSaveContext.ship.quest.data.bossRush.isPaused = false;
+        GetShipSaveContextData()->quest.data.bossRush.isPaused = false;
     }
 }
 
@@ -914,7 +919,7 @@ void BossRush_OnBlueWarpUpdate(void* actor) {
 
 void RegisterBossRush() {
     COND_HOOK(OnLoadGame, true, [](int32_t fileNum) {
-        COND_ID_HOOK(OnActorInit, ACTOR_DEMO_SA, IS_BOSS_RUSH, [](void* actorPtr) {
+        COND_ID_HOOK(OnActorInit, ACTOR_DEMO_SA, IsBossRush(), [](void* actorPtr) {
             BossRush_SpawnBlueWarps(gPlayState);
             Actor_Kill((Actor*)actorPtr);
             GET_PLAYER(gPlayState)->actor.world.rot.y = 27306;
@@ -922,21 +927,21 @@ void RegisterBossRush() {
         });
 
         // Remove bushes, used in Gohma's arena
-        COND_ID_HOOK(OnActorInit, ACTOR_EN_KUSA, IS_BOSS_RUSH, [](void* actorPtr) { Actor_Kill((Actor*)actorPtr); });
+        COND_ID_HOOK(OnActorInit, ACTOR_EN_KUSA, IsBossRush(), [](void* actorPtr) { Actor_Kill((Actor*)actorPtr); });
 
         // Remove pots, used in Barinade's and Ganondorf's arenas
-        COND_ID_HOOK(OnActorInit, ACTOR_OBJ_TSUBO, IS_BOSS_RUSH, [](void* actorPtr) { Actor_Kill((Actor*)actorPtr); });
+        COND_ID_HOOK(OnActorInit, ACTOR_OBJ_TSUBO, IsBossRush(), [](void* actorPtr) { Actor_Kill((Actor*)actorPtr); });
 
         // Remove chests, mainly for the chest in King Dodongo's boss room
-        COND_ID_HOOK(OnActorInit, ACTOR_EN_BOX, IS_BOSS_RUSH, [](void* actorPtr) { Actor_Kill((Actor*)actorPtr); });
+        COND_ID_HOOK(OnActorInit, ACTOR_EN_BOX, IsBossRush(), [](void* actorPtr) { Actor_Kill((Actor*)actorPtr); });
 
-        COND_HOOK(OnVanillaBehavior, IS_BOSS_RUSH, BossRush_OnVanillaBehaviorHandler);
+        COND_HOOK(OnVanillaBehavior, IsBossRush(), BossRush_OnVanillaBehaviorHandler);
 
-        COND_HOOK(OnSceneInit, IS_BOSS_RUSH, BossRush_OnSceneInitHandler);
+        COND_HOOK(OnSceneInit, IsBossRush(), BossRush_OnSceneInitHandler);
 
-        COND_HOOK(OnBossDefeat, IS_BOSS_RUSH, BossRush_OnBossDefeatHandler);
+        COND_HOOK(OnBossDefeat, IsBossRush(), BossRush_OnBossDefeatHandler);
 
-        COND_ID_HOOK(OnActorUpdate, ACTOR_DOOR_WARP1, IS_BOSS_RUSH, BossRush_OnBlueWarpUpdate);
+        COND_ID_HOOK(OnActorUpdate, ACTOR_DOOR_WARP1, IsBossRush(), BossRush_OnBlueWarpUpdate);
     });
 }
 

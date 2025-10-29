@@ -3,6 +3,7 @@
 #include "dungeon.h"
 
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 
 #include <spdlog/spdlog.h>
 

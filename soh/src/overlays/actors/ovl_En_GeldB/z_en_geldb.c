@@ -8,6 +8,7 @@
 #include "objects/object_geldb/object_geldb.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -1575,7 +1576,7 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
                     play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_17;
                 }
 
-                if (IS_RANDO) {
+                if (IsRando()) {
                     Entrance_OverrideGerudoGuardCapture();
                 }
 

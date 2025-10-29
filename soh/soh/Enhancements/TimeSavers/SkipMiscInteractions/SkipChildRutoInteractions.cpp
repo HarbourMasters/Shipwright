@@ -1,5 +1,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "overlays/actors/ovl_En_Ru1/z_en_ru1.h"
@@ -23,7 +24,7 @@ void Ru1Init(void* actorRef) {
 void RegisterSkipChildRutoInteractions() {
     // Skips the Child Ruto introduction cutscene, where she drops down into the hole in Jabu-Jabu's Belly
     COND_VB_SHOULD(
-        VB_PLAY_CHILD_RUTO_INTRO, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO), {
+        VB_PLAY_CHILD_RUTO_INTRO, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IsRando()), {
             EnRu1* enRu1 = va_arg(args, EnRu1*);
 
             Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_MEET_RUTO);
@@ -46,7 +47,7 @@ void RegisterSkipChildRutoInteractions() {
 
     // Skips a short dialogue sequence where Ruto tells you to throw her to the Sapphire
     COND_VB_SHOULD(VB_RUTO_WANT_TO_BE_TOSSED_TO_SAPPHIRE,
-                   CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO), {
+                   CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IsRando()), {
                        if (*should) {
                            Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE);
                            *should = false;
@@ -56,7 +57,7 @@ void RegisterSkipChildRutoInteractions() {
     // Prevents Ruto from running to the Sapphire when she wants to be tossed to it, instead she just stands up and
     // waits for link to get closer
     COND_VB_SHOULD(VB_RUTO_RUN_TO_SAPPHIRE,
-                   CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO), {
+                   CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IsRando()), {
                        EnRu1* enRu1 = va_arg(args, EnRu1*);
                        DynaPolyActor* dynaPolyActor = va_arg(args, DynaPolyActor*);
 
@@ -71,7 +72,7 @@ void RegisterSkipChildRutoInteractions() {
                            // If we aren't skipping one point cutscenes and BgBdan objects has set the camera setting
                            // to CAM_SET_NORMAL1 (2), don't reset the camera setting to 1. This prevents the One Point
                            // Cutscene of Ruto getting lifted up from getting queued up twice.
-                           if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO) ||
+                           if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IsRando()) ||
                                enRu1->unk_28C->cameraSetting != 2) {
                                enRu1->unk_28C->cameraSetting = 1;
                            }
@@ -87,7 +88,7 @@ void RegisterSkipChildRutoInteractions() {
     // This overrides the behavior that causes Ruto to get upset at you before sitting back down again when
     // INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME is set
     COND_ID_HOOK(OnActorInit, ACTOR_EN_RU1,
-                 CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO), Ru1Init);
+                 CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IsRando()), Ru1Init);
 }
 
 static RegisterShipInitFunc initFunc(RegisterSkipChildRutoInteractions,

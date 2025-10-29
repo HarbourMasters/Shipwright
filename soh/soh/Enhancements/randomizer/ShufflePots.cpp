@@ -2,6 +2,7 @@
 #include "soh_assets.h"
 #include "static_data.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "variables.h"
@@ -36,7 +37,7 @@ uint8_t ObjTsubo_RandomizerHoldsItem(ObjTsubo* potActor, PlayState* play) {
     uint8_t potSetting = RAND_GET_OPTION(RSK_SHUFFLE_POTS);
 
     // Don't pull randomized item if pot isn't randomized or is already checked
-    if (!IS_RANDO || (potSetting == RO_SHUFFLE_POTS_OVERWORLD && isDungeon) ||
+    if (!IsRando() || (potSetting == RO_SHUFFLE_POTS_OVERWORLD && isDungeon) ||
         (potSetting == RO_SHUFFLE_POTS_DUNGEONS && !isDungeon) || Flags_GetRandomizerInf(potIdentity->randomizerInf) ||
         potIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
         return false;
@@ -61,7 +62,7 @@ void ObjTsubo_RandomizerSpawnCollectible(ObjTsubo* potActor, PlayState* play) {
 }
 
 void RegisterShufflePots() {
-    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_POTS);
+    bool shouldRegister = IsRando() && RAND_GET_OPTION(RSK_SHUFFLE_POTS);
 
     COND_ID_HOOK(OnActorInit, ACTOR_OBJ_TSUBO, shouldRegister, [](void* actorRef) {
         Actor* actor = static_cast<Actor*>(actorRef);

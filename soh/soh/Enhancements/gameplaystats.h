@@ -19,19 +19,20 @@ char* GameplayStats_GetCurrentTime();
 // Total gameplay time is tracked in tenths of seconds
 // I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
 // Frame counts in z_play.c and z_kaleido_scope_call.c
-#define GAMEPLAYSTAT_TOTAL_TIME                                                                \
-    (gSaveContext.ship.stats.rtaTiming                                                         \
-         ? (!gSaveContext.ship.stats.gameComplete                                              \
-                ? (!gSaveContext.ship.stats.fileCreatedAt                                      \
-                       ? 0                                                                     \
-                       : ((GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100)) \
-                : (gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]               \
-                       ? gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]         \
-                       : gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED])) \
-         : (gSaveContext.ship.stats.playTimer / 2 + gSaveContext.ship.stats.pauseTimer / 3))
-#define CURRENT_MODE_TIMER                                                                       \
-    (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) ? gSaveContext.ship.stats.roomTimer \
-                                                             : gSaveContext.ship.stats.sceneTimer)
+#define GAMEPLAYSTAT_TOTAL_TIME                                                                              \
+    (GetGlobalShipSaveContextData()->stats.rtaTiming                                                         \
+         ? (!GetGlobalShipSaveContextData()->stats.gameComplete                                              \
+                ? (!GetGlobalShipSaveContextData()->stats.fileCreatedAt                                      \
+                       ? 0                                                                                   \
+                       : ((GetUnixTimestamp() - GetGlobalShipSaveContextData()->stats.fileCreatedAt) / 100)) \
+                : (GetGlobalShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]               \
+                       ? GetGlobalShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]         \
+                       : GetGlobalShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED])) \
+         : (GetGlobalShipSaveContextData()->stats.playTimer / 2 +                                            \
+            GetGlobalShipSaveContextData()->stats.pauseTimer / 3))
+#define CURRENT_MODE_TIMER                                                                                     \
+    (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) ? GetGlobalShipSaveContextData()->stats.roomTimer \
+                                                             : GetGlobalShipSaveContextData()->stats.sceneTimer)
 
 void InitStatTracker();
 

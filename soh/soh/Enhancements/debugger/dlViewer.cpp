@@ -6,6 +6,7 @@
 #include <fast/resource/ResourceType.h>
 #include <fast/resource/type/DisplayList.h>
 #include "soh/OTRGlobals.h"
+#include "soh/cvar_prefixes.h"
 
 #include <array>
 #include <bit>

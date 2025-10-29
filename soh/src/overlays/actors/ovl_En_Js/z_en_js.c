@@ -9,6 +9,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
@@ -135,8 +136,8 @@ void func_80A89160(EnJs* this, PlayState* play) {
         En_Js_SetupAction(this, func_80A8910C);
     } else {
         GetItemEntry itemEntry = ItemTable_Retrieve(GI_BOMBCHUS_10);
-        gSaveContext.ship.pendingSale = itemEntry.itemId;
-        gSaveContext.ship.pendingSaleMod = itemEntry.modIndex;
+        GetGlobalShipSaveContextData()->pendingSale = itemEntry.itemId;
+        GetGlobalShipSaveContextData()->pendingSaleMod = itemEntry.modIndex;
         Actor_OfferGetItem(&this->actor, play, GI_BOMBCHUS_10, 10000.0f, 50.0f);
     }
 }

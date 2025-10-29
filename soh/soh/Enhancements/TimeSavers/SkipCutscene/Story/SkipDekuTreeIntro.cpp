@@ -1,5 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "soh/cvar_prefixes.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
@@ -10,7 +12,7 @@ extern "C" {
  */
 void RegisterSkipDekuTreeIntro() {
     COND_VB_SHOULD(VB_PLAY_DEKU_TREE_INTRO_CS,
-                   CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO), {
+                   CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IsRando()), {
                        BgTreemouth* treeMouth = va_arg(args, BgTreemouth*);
                        Flags_SetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH);
                        Audio_PlaySoundGeneral(NA_SE_EV_WOODDOOR_OPEN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,

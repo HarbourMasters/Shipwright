@@ -20,6 +20,8 @@ extern PlayState* gPlayState;
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
 #include <sstream>
+#include <soh/ObjectExtension/ObjectExtension.h>
+#include <soh/ObjectExtension/ShipSaveContextData.h>
 
 extern "C" {
 void KaleidoScope_MoveCursorToSpecialPos(PlayState* play, u16 specialPos);
@@ -111,6 +113,7 @@ void KaleidoEntryIcon::Draw(PlayState* play, std::vector<Gfx>* mEntryDl) {
 
 Kaleido::Kaleido() {
     const auto ctx = Rando::Context::GetInstance();
+    const auto shipSaveContext = ObjectExtension::GetInstance().Get<ShipSaveContextData>(&gSaveContext);
     int yOffset = 2;
     mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
         gRupeeCounterIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, Color_RGBA8{ 0xC8, 0xFF, 0x64, 255 },
@@ -119,7 +122,7 @@ Kaleido::Kaleido() {
     if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
         mEntries.push_back(std::make_shared<KaleidoEntryIconCountRequired>(
             gTriforcePieceTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 }, 0, yOffset,
-            reinterpret_cast<int*>(&gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected),
+            reinterpret_cast<int*>(&shipSaveContext->quest.data.randomizer.triforcePiecesCollected),
             ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1,
             ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get() + 1));
         yOffset += 18;

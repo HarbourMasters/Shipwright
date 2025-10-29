@@ -3,6 +3,7 @@
 
 #include "randomizerTypes.h"
 #include "location_access.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #include <nlohmann/json.hpp>
 

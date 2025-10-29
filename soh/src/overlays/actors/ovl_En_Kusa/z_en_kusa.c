@@ -11,6 +11,7 @@
 #include "objects/object_kusa/object_kusa.h"
 #include "vt.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_THROW_ONLY)
 
@@ -318,7 +319,7 @@ void EnKusa_Main(EnKusa* this, PlayState* play) {
         EnKusa_SpawnFragments(this, play);
         EnKusa_DropCollectible(this, play);
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EV_PLANT_BROKEN);
-        gSaveContext.ship.stats.count[COUNT_BUSHES_CUT]++;
+        GetGlobalShipSaveContextData()->stats.count[COUNT_BUSHES_CUT]++;
 
         if ((this->actor.params >> 4) & 1) {
             EnKusa_SpawnBugs(this, play);
@@ -387,7 +388,7 @@ void EnKusa_Fall(EnKusa* this, PlayState* play) {
     if (this->actor.bgCheckFlags & 0xB) {
         if (!(this->actor.bgCheckFlags & 0x20)) {
             SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EV_PLANT_BROKEN);
-            gSaveContext.ship.stats.count[COUNT_BUSHES_CUT]++;
+            GetGlobalShipSaveContextData()->stats.count[COUNT_BUSHES_CUT]++;
         }
         EnKusa_SpawnFragments(this, play);
         EnKusa_DropCollectible(this, play);

@@ -8,6 +8,7 @@
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -76,7 +77,7 @@ void BgTokiSwd_Init(Actor* thisx, PlayState* play) {
     BgTokiSwd_SetupAction(this, func_808BAF40);
 
     if (LINK_IS_ADULT) {
-        if (IS_RANDO) {
+        if (IsRando()) {
             if (!CUR_UPG_VALUE(UPG_BOMB_BAG)) {
                 for (size_t i = 0; i < 8; i++) {
                     if (gSaveContext.equips.buttonItems[i] == ITEM_BOMB) {
@@ -86,7 +87,7 @@ void BgTokiSwd_Init(Actor* thisx, PlayState* play) {
             }
         }
         this->actor.draw = NULL;
-    } else if (IS_RANDO) {
+    } else if (IsRando()) {
         // don't give child link a kokiri sword if we don't have one
         uint32_t kokiriSwordBitMask = 1 << 0;
         if (!(gSaveContext.inventory.equipment & kokiriSwordBitMask)) {
@@ -124,7 +125,7 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
         }
     }
 
-    if (!LINK_IS_ADULT || (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && !IS_RANDO) || IS_RANDO) {
+    if (!LINK_IS_ADULT || (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && !IsRando()) || IsRando()) {
         if (Actor_HasParent(&this->actor, play)) {
             if (!LINK_IS_ADULT) {
                 if (GameInteractor_Should(VB_GIVE_ITEM_MASTER_SWORD, true)) {
@@ -198,7 +199,7 @@ void BgTokiSwd_Draw(Actor* thisx, PlayState* play2) {
     s32 pad[3];
 
     // Do not draw the Master Sword in the pedestal if the player has not found it yet
-    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
+    if (IsRando() && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) &&
         !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
         return;
     }

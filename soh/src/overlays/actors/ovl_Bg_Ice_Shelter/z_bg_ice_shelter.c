@@ -1,6 +1,7 @@
 #include "z_bg_ice_shelter.h"
 #include "objects/object_ice_objects/object_ice_objects.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS 0
 
@@ -107,7 +108,7 @@ void func_80890740(BgIceShelter* this, PlayState* play) {
 
     // Initialize this with the red ice, so it can't be affected by toggling while the actor is loaded
     blueFireArrowsEnabledOnRedIceLoad = CVarGetInteger(CVAR_ENHANCEMENT("BlueFireArrows"), 0) ||
-                                        (IS_RANDO && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
+                                        (IsRando() && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
 
     Collider_InitCylinder(play, &this->cylinder1);
     // If "Blue Fire Arrows" is enabled, set up a collider on the red ice that responds to them

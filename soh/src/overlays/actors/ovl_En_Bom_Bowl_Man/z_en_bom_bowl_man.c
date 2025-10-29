@@ -7,6 +7,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #define FLAGS                                                                                  \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -92,7 +93,7 @@ void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
         }
     }
 
-    this->prizeSelect = IS_RANDO ? 0 : (s16)Rand_ZeroFloat(4.99f);
+    this->prizeSelect = IsRando() ? 0 : (s16)Rand_ZeroFloat(4.99f);
     this->actor.targetMode = 1;
     this->actionFunc = EnBomBowMan_SetupWaitAsleep;
 }
@@ -182,7 +183,7 @@ void EnBomBowMan_CheckBeatenDC(EnBomBowlMan* this, PlayState* play) {
         this->blinkTimer = (s16)Rand_ZeroFloat(60.0f) + 20;
 
         bool bombchuBowlingClosed;
-        if (IS_RANDO) {
+        if (IsRando()) {
             // when rando'd, check if we have bombchus if chus are in logic
             // and check if we have a bomb bag if chus aren't in logic
             u8 explosive = Randomizer_GetSettingValue(RSK_BOMBCHU_BAG) ? ITEM_BOMBCHU : ITEM_BOMB;
@@ -424,7 +425,7 @@ void EnBomBowMan_ChooseShowPrize(EnBomBowlMan* this, PlayState* play) {
                 }
                 break;
             case 1:
-                if (!IS_RANDO) {
+                if (!IsRando()) {
                     prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
                 } else {
                     prizeTemp = EXITEM_HEART_PIECE_BOWLING;
@@ -437,7 +438,7 @@ void EnBomBowMan_ChooseShowPrize(EnBomBowlMan* this, PlayState* play) {
                 prizeTemp = EXITEM_BOMBCHUS_BOWLING;
                 break;
             case 3:
-                if (!IS_RANDO) {
+                if (!IsRando()) {
                     prizeTemp = EXITEM_HEART_PIECE_BOWLING;
                     if (Flags_GetItemGetInf(ITEMGETINF_12)) {
                         prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;

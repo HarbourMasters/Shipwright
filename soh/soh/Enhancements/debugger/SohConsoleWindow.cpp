@@ -2,6 +2,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
+#include "soh/cvar_prefixes.h"
 
 void SohConsoleWindow::InitElement() {
     ConsoleWindow::InitElement();

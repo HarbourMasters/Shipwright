@@ -1,5 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "soh/cvar_prefixes.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 extern "C" {
 #include "z64save.h"
@@ -16,7 +18,7 @@ extern SaveContext gSaveContext;
  */
 void RegisterMoveMidoInKokiriForest() {
     COND_VB_SHOULD(
-        VB_MOVE_MIDO_IN_KOKIRI_FOREST, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO), {
+        VB_MOVE_MIDO_IN_KOKIRI_FOREST, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IsRando()), {
             if (!Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD) &&
                 (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) == EQUIP_VALUE_SHIELD_DEKU) &&
                 (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) == EQUIP_VALUE_SWORD_KOKIRI) && gSaveContext.cutsceneIndex == 0) {

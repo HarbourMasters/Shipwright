@@ -13,6 +13,7 @@
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/timesaver_hook_handlers.h"
 #include "soh/Enhancements/randomizer/hook_handlers.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
 #include "src/overlays/actors/ovl_En_Dekubaba/z_en_dekubaba.h"
@@ -159,10 +160,11 @@ void UpdatePermanentHeartLossState() {
         return;
 
     if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) && hasAffectedHealth) {
-        uint8_t heartContainers = gSaveContext.ship.stats.heartContainers; // each worth 16 health
-        uint8_t heartPieces = gSaveContext.ship.stats.heartPieces; // each worth 4 health, but only in groups of 4
+        uint8_t heartContainers = GetShipSaveContextData()->stats.heartContainers; // each worth 16 health
+        uint8_t heartPieces =
+            GetShipSaveContextData()->stats.heartPieces; // each worth 4 health, but only in groups of 4
         uint8_t startingHealth =
-            16 * (IS_RANDO ? (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_HEARTS) + 1) : 3);
+            16 * (IsRando() ? (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_HEARTS) + 1) : 3);
 
         uint8_t newCapacity = startingHealth + (heartContainers * 16) + ((heartPieces - (heartPieces % 4)) * 4);
         gSaveContext.healthCapacity = MAX(newCapacity, gSaveContext.healthCapacity);
@@ -207,8 +209,8 @@ void RegisterDeleteFileOnDeath() {
 
 bool IsHyperBossesActive() {
     return CVarGetInteger(CVAR_ENHANCEMENT("HyperBosses"), 0) ||
-           (IS_BOSS_RUSH &&
-            gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
+           (IsBossRush() &&
+            GetShipSaveContextData()->quest.data.bossRush.options[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
 }
 
 void UpdateHyperBossesState() {
@@ -307,8 +309,8 @@ void UpdateMirrorModeState(int32_t sceneNum) {
                         (sceneNum == SCENE_GANON_BOSS);
 
     if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
-        uint32_t seed =
-            sceneNum + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
+        uint32_t seed = sceneNum + (IsRando() ? Rando::Context::GetInstance()->GetSeed()
+                                              : GetShipSaveContextData()->stats.fileCreatedAt);
         Random_Init(seed);
     }
 
@@ -458,140 +460,140 @@ void RegisterEnemyDefeatCounts() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnEnemyDefeat>([](void* refActor) {
         Actor* actor = static_cast<Actor*>(refActor);
         if (uniqueEnemyIdToStatCount.contains(actor->id)) {
-            gSaveContext.ship.stats.count[uniqueEnemyIdToStatCount[actor->id]]++;
+            GetShipSaveContextData()->stats.count[uniqueEnemyIdToStatCount[actor->id]]++;
         } else {
             switch (actor->id) {
                 case ACTOR_EN_BB:
                     if (actor->params == ENBB_GREEN || actor->params == ENBB_GREEN_BIG) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN]++;
                     } else if (actor->params == ENBB_BLUE) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE]++;
                     } else if (actor->params == ENBB_WHITE) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE]++;
                     } else if (actor->params == ENBB_RED) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_RED]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_RED]++;
                     }
                     break;
 
                 case ACTOR_EN_DEKUBABA:
                     if (actor->params == DEKUBABA_BIG) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
                     } else {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
                     }
                     break;
 
                 case ACTOR_EN_ZF:
                     if (actor->params == ENZF_TYPE_DINOLFOS) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_DINOLFOS]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_DINOLFOS]++;
                     } else {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_LIZALFOS]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_LIZALFOS]++;
                     }
                     break;
 
                 case ACTOR_EN_RD:
                     if (actor->params >= -1) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_REDEAD]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_REDEAD]++;
                     } else {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_GIBDO]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_GIBDO]++;
                     }
                     break;
 
                 case ACTOR_EN_IK:
                     if (actor->params == 0) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU]++;
                     } else {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE]++;
                     }
                     break;
 
                 case ACTOR_EN_FIREFLY:
                     if (actor->params == KEESE_NORMAL_FLY || actor->params == KEESE_NORMAL_PERCH) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_KEESE]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_KEESE]++;
                     } else if (actor->params == KEESE_FIRE_FLY || actor->params == KEESE_FIRE_PERCH) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_KEESE_FIRE]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_KEESE_FIRE]++;
                     } else if (actor->params == KEESE_ICE_FLY) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_KEESE_ICE]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_KEESE_ICE]++;
                     }
                     break;
 
                 case ACTOR_EN_REEBA: {
                     EnReeba* reeba = (EnReeba*)actor;
                     if (reeba->isBig) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]++;
                     } else {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
                     }
                 } break;
 
                 case ACTOR_EN_MB:
                     if (actor->params == 0) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_MOBLIN_CLUB]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_MOBLIN_CLUB]++;
                     } else {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_MOBLIN]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_MOBLIN]++;
                     }
                     break;
 
                 case ACTOR_EN_PEEHAT:
                     if (actor->params == PEAHAT_TYPE_LARVA) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA]++;
                     } else {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_PEAHAT]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_PEAHAT]++;
                     }
                     break;
 
                 case ACTOR_EN_POH:
                     if (actor->params == EN_POH_FLAT || actor->params == EN_POH_SHARP) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_POE_COMPOSER]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_POE_COMPOSER]++;
                     } else {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_POE]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_POE]++;
                     }
                     break;
 
                 case ACTOR_EN_PO_FIELD:
                     if (actor->params == EN_PO_FIELD_BIG) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_POE_BIG]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_POE_BIG]++;
                     } else {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_POE]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_POE]++;
                     }
                     break;
 
                 case ACTOR_EN_ST:
                     if (actor->params == 1) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_BIG]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_BIG]++;
                     } else {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA]++;
                     }
                     break;
 
                 case ACTOR_EN_SW:
                     if (((actor->params & 0xE000) >> 0xD) != 0) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD]++;
                     } else {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_SKULLWALLTULA]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_SKULLWALLTULA]++;
                     }
                     break;
 
                 case ACTOR_EN_TP:
                     // Only count the head, otherwise each body segment will increment
                     if (actor->params == TAILPASARAN_HEAD) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]++;
                     }
                     break;
 
                 case ACTOR_EN_TITE:
                     if (actor->params == TEKTITE_BLUE) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE]++;
                     } else {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_RED]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_RED]++;
                     }
                     break;
 
                 case ACTOR_EN_WF:
                     if (actor->params == WOLFOS_WHITE) {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE]++;
                     } else {
-                        gSaveContext.ship.stats.count[COUNT_ENEMIES_DEFEATED_WOLFOS]++;
+                        GetShipSaveContextData()->stats.count[COUNT_ENEMIES_DEFEATED_WOLFOS]++;
                     }
                     break;
             }
@@ -604,35 +606,35 @@ void RegisterBossDefeatTimestamps() {
         Actor* actor = static_cast<Actor*>(refActor);
         switch (actor->id) {
             case ACTOR_BOSS_DODONGO:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+                GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_FD2:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
+                GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_GANON:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
+                GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_GANON2:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-                gSaveContext.ship.stats.gameComplete = true;
+                GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                GetShipSaveContextData()->stats.gameComplete = true;
                 break;
             case ACTOR_BOSS_GANONDROF:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_GOMA:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
+                GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_MO:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
+                GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_SST:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+                GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_TW:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
+                GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
             case ACTOR_BOSS_VA:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
+                GetShipSaveContextData()->stats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
                 break;
         }
     });
@@ -645,8 +647,8 @@ void UpdateHurtContainerModeState(bool newState) {
     }
 
     hurtEnabled = newState;
-    uint16_t getHeartPieces = gSaveContext.ship.stats.heartPieces / 4;
-    uint16_t getHeartContainers = gSaveContext.ship.stats.heartContainers;
+    uint16_t getHeartPieces = GetShipSaveContextData()->stats.heartPieces / 4;
+    uint16_t getHeartContainers = GetShipSaveContextData()->stats.heartContainers;
 
     if (hurtEnabled) {
         gSaveContext.healthCapacity = 320 - ((getHeartPieces + getHeartContainers) * 16);

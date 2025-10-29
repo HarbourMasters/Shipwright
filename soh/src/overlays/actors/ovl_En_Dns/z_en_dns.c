@@ -9,6 +9,7 @@
 #include "vt.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ObjectExtension/ShipSaveContextData.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -376,8 +377,8 @@ void EnDns_OfferSaleItem(EnDns* this, PlayState* play) {
         pendingGetItemId = this->dnsItemEntry->getItemId;
     }
     GetItemEntry itemEntry = ItemTable_Retrieve(pendingGetItemId);
-    gSaveContext.ship.pendingSale = itemEntry.itemId;
-    gSaveContext.ship.pendingSaleMod = itemEntry.modIndex;
+    GetGlobalShipSaveContextData()->pendingSale = itemEntry.itemId;
+    GetGlobalShipSaveContextData()->pendingSaleMod = itemEntry.modIndex;
     Actor_OfferGetItem(&this->actor, play, pendingGetItemId, 130.0f, 100.0f);
 }
 
