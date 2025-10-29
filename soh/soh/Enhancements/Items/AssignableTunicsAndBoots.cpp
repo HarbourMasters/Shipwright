@@ -14,7 +14,7 @@ extern PlayState* gPlayState;
 
 static u16 sItemButtons[] = { BTN_B, BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT };
 
-void UseTunicBoots(Player* player, PlayState* play, Input* input) {
+static void UseTunicBoots(Player* player, PlayState* play, Input* input) {
     // Boots and tunics equip despite state
     if (player->stateFlags1 & (PLAYER_STATE1_INPUT_DISABLED | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE |
                                PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD) ||
@@ -54,7 +54,7 @@ void UseTunicBoots(Player* player, PlayState* play, Input* input) {
     }
 }
 
-void ClearAssignedTunicsBoots(int32_t unused = 0) {
+static void ClearAssignedTunicsBoots(int32_t unused = 0) {
     for (int32_t buttonIndex = 0; buttonIndex < 8; buttonIndex++) {
         int32_t item = gSaveContext.equips.buttonItems[buttonIndex];
 
@@ -68,7 +68,7 @@ void ClearAssignedTunicsBoots(int32_t unused = 0) {
 #define CVAR_TUNICBOOTS_DEFAULT 0
 #define CVAR_TUNICBOOTS_VALUE CVarGetInteger(CVAR_TUNICBOOTS_NAME, CVAR_TUNICBOOTS_DEFAULT)
 
-void RegisterAssignableTunicsBoots() {
+static void RegisterAssignableTunicsBoots() {
     // make sure we don't change our held/equipped item when changing tunics/boots
     COND_VB_SHOULD(VB_CHANGE_HELD_ITEM_AND_USE_ITEM, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
         int32_t item = va_arg(args, int32_t);
