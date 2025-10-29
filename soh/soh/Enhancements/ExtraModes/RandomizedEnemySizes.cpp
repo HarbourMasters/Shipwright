@@ -80,6 +80,6 @@ static void RegisterFreezardHealthScale() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterRandomizedEnemySizes, { CVAR_RANDO_ENEMY_SIZE_NAME });
+static RegisterShipInitFunc initFunc_EnemySizes(RegisterRandomizedEnemySizes, { CVAR_RANDO_ENEMY_SIZE_NAME });
 static RegisterShipInitFunc initFunc_Freezard(RegisterFreezardHealthScale,
                                               { CVAR_RANDO_ENEMY_SIZE_NAME, CVAR_ENEMY_SCALE_HEALTH_NAME });
