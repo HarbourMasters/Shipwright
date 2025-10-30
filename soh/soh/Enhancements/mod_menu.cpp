@@ -205,7 +205,7 @@ void DrawMods(bool enabled) {
     int switchToIndex = -1;
     uint32_t index = 0;
 
-    for (int i = selectedModFiles.size() - 1; i >= 0; i--) {
+    for (int i = static_cast<int>(selectedModFiles.size()) - 1; i >= 0; i--) {
         std::string file = selectedModFiles[i];
         if (enabled) {
             ImGui::BeginGroup();
@@ -365,7 +365,7 @@ void RegisterModMenuWidgets() {
             auto options = std::static_pointer_cast<UIWidgets::CheckboxOptions>(info.options);
             options->disabled = editing;
         });
-    SohGui::mSohMenu->AddSearchWidget({ enableModsWidget, "Settings", "Mod Menu", "Top", "alternat assets" });
+    SohGui::mSohMenu->AddSearchWidget({ enableModsWidget, "Settings", "Mod Menu", "Top", "alternate assets" });
 
     tabHotkeyWidget = { .name = "Mods Tab Hotkey", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     tabHotkeyWidget.CVar(CVAR_SETTING("Mods.AlternateAssetsHotkey"))
@@ -375,7 +375,7 @@ void RegisterModMenuWidgets() {
                      .Tooltip("Allows pressing the Tab key to toggle mods")
                      .DefaultValue(true));
     SohGui::mSohMenu->AddSearchWidget(
-        { enableModsWidget, "Settings", "Mod Menu", "Top", "alternat assets tab hotkey" });
+        { tabHotkeyWidget, "Settings", "Mod Menu", "Top", "alternate assets tab hotkey" });
 }
 
 static RegisterMenuInitFunc menuInitFunc(RegisterModMenuWidgets);
