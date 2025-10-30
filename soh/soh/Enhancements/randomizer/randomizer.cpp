@@ -934,18 +934,20 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
                                ? (infiniteUpgrades != RO_INF_UPGRADES_OFF ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE)
                                : CAN_OBTAIN;
                 case RO_BOMBCHU_BAG_PROGRESSIVE:
-                    switch (gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel) {
-                        case 0:
-                            return CAN_OBTAIN;
-                        case 1:
-                            return infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE ? CAN_OBTAIN
-                                                                                             : CANT_OBTAIN_ALREADY_HAVE;
-                        case 2:
-                            return infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE ? CANT_OBTAIN_ALREADY_HAVE
-                                                                                             : CAN_OBTAIN;
-                        case 3:
-                            return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? CAN_OBTAIN
-                                                                                   : CANT_OBTAIN_ALREADY_HAVE;
+                    if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS)) {
+                        return CANT_OBTAIN_ALREADY_HAVE;
+                    } else {
+                        switch (gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel) {
+                            case 0:
+                            case 1:
+                                return CAN_OBTAIN;
+                            case 2:
+                                return infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE ? CANT_OBTAIN_ALREADY_HAVE
+                                                                                                : CAN_OBTAIN;
+                            case 3:
+                                return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? CAN_OBTAIN
+                                                                                    : CANT_OBTAIN_ALREADY_HAVE;
+                        }
                     }
             }
         case RG_PROGRESSIVE_HOOKSHOT:
