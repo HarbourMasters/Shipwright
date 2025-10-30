@@ -250,4 +250,8 @@ void RegisterPopup(std::string title, std::string message, std::string button1, 
 void ShowRandomizerSettingsMenu() {
     mRandomizerSettingsWindow->Show();
 }
+
+void ShowEscMenu() {
+    mSohMenu->Show();
+}
 } // namespace SohGui
