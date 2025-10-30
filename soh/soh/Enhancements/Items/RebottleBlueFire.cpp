@@ -9,7 +9,7 @@ u32 EnIceHono_InBottleRange(EnIceHono* thisx, PlayState* play);
 
 extern PlayState* gPlayState;
 
-void OnEnIceHonoUpdate(void* actor) {
+static void OnEnIceHonoUpdate(void* actor) {
     EnIceHono* thisx = (EnIceHono*)actor;
     if (thisx->actionFunc != EnIceHono_CapturableFlame && EnIceHono_InBottleRange(thisx, gPlayState)) {
         // GI_MAX in this case allows the player to catch the actor in a bottle
@@ -17,7 +17,7 @@ void OnEnIceHonoUpdate(void* actor) {
     }
 }
 
-void RegisterRebottleBlueFire() {
+static void RegisterRebottleBlueFire() {
     COND_ID_HOOK(OnActorUpdate, ACTOR_EN_ICE_HONO, CVarGetInteger(CVAR_ENHANCEMENT("RebottleBlueFire"), 0),
                  OnEnIceHonoUpdate);
 }
