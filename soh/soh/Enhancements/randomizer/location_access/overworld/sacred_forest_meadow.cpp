@@ -9,32 +9,32 @@ void RegionTable_Init_SacredForestMeadow() {
         //Exits
         Entrance(RR_LW_BEYOND_MIDO,       []{return true;}),
         Entrance(RR_SACRED_FOREST_MEADOW, []{return logic->IsAdult || logic->CanKillEnemy(RE_WOLFOS);}),
-        Entrance(RR_SFM_WOLFOS_GROTTO,    []{return logic->CanOpenBombGrotto();}),
+        Entrance(RR_SFM_WOLFOS_GROTTO,    []{return logic->CanOpenBombGrotto();}, true),
     });
 
     areaTable[RR_SACRED_FOREST_MEADOW] = Region("Sacred Forest Meadow", SCENE_SACRED_FOREST_MEADOW, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairyExceptSuns();}),
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairyExceptSuns();}, true),
     }, {
         //Locations
-        LOCATION(RC_SONG_FROM_SARIA,                       logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER)),
-        LOCATION(RC_SHEIK_IN_FOREST,                       logic->IsAdult),
-        LOCATION(RC_SFM_GS,                                logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
-        LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
-        LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_SFM_MAZE_UPPER_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
-        LOCATION(RC_SFM_MAZE_UPPER_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_SFM_SARIA_GOSSIP_STONE_FAIRY,          logic->CallGossipFairyExceptSuns()),
-        LOCATION(RC_SFM_SARIA_GOSSIP_STONE_FAIRY_BIG,      logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE,           true),
-        LOCATION(RC_SFM_MAZE_UPPER_GOSSIP_STONE,           true),
-        LOCATION(RC_SFM_SARIA_GOSSIP_STONE,                true),
+        LOCATION_NNL(RC_SONG_FROM_SARIA,                       logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER)),
+        LOCATION_NNL(RC_SHEIK_IN_FOREST,                       logic->IsAdult),
+        LOCATION(RC_SFM_GS,                                    logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
+        LOCATION_NNL(RC_SFM_MAZE_LOWER_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
+        LOCATION_NNL(RC_SFM_MAZE_LOWER_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION_NNL(RC_SFM_MAZE_UPPER_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
+        LOCATION_NNL(RC_SFM_MAZE_UPPER_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION_NNL(RC_SFM_SARIA_GOSSIP_STONE_FAIRY,          logic->CallGossipFairyExceptSuns()),
+        LOCATION_NNL(RC_SFM_SARIA_GOSSIP_STONE_FAIRY_BIG,      logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE,               true),
+        LOCATION(RC_SFM_MAZE_UPPER_GOSSIP_STONE,               true),
+        LOCATION(RC_SFM_SARIA_GOSSIP_STONE,                    true),
     }, {
         //Exits
         Entrance(RR_SFM_ENTRYWAY,           []{return true;}),
         Entrance(RR_FOREST_TEMPLE_ENTRYWAY, []{return logic->CanUse(RG_HOOKSHOT);}),
         Entrance(RR_SFM_FAIRY_GROTTO,       []{return true;}),
-        Entrance(RR_SFM_STORMS_GROTTO,      []{return logic->CanOpenStormsGrotto();}),
+        Entrance(RR_SFM_STORMS_GROTTO,      []{return logic->CanOpenStormsGrotto();}, true),
     });
 
     areaTable[RR_SFM_FAIRY_GROTTO] = Region("SFM Fairy Grotto", SCENE_GROTTOS, {
@@ -65,9 +65,9 @@ void RegionTable_Init_SacredForestMeadow() {
 
     areaTable[RR_SFM_STORMS_GROTTO] = Region("SFM Storms Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_SFM_DEKU_SCRUB_GROTTO_REAR,  logic->CanStunDeku()),
-        LOCATION(RC_SFM_DEKU_SCRUB_GROTTO_FRONT, logic->CanStunDeku()),
-        LOCATION(RC_SFM_STORMS_GROTTO_BEEHIVE,   logic->CanBreakUpperBeehives()),
+        LOCATION_NNL(RC_SFM_DEKU_SCRUB_GROTTO_REAR,  logic->CanStunDeku()),
+        LOCATION_NNL(RC_SFM_DEKU_SCRUB_GROTTO_FRONT, logic->CanStunDeku()),
+        LOCATION(RC_SFM_STORMS_GROTTO_BEEHIVE,       logic->CanBreakUpperBeehives()),
     }, {
         //Exits
         Entrance(RR_SACRED_FOREST_MEADOW, []{return true;}),

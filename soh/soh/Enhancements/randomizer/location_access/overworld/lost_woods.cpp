@@ -12,16 +12,16 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_THE_LOST_WOODS] = Region("Lost Woods", SCENE_LOST_WOODS, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(LOGIC_BEAN_PLANT_FAIRY,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
-        EventAccess(LOGIC_BUG_SHRUB,         []{return logic->IsChild && logic->CanCutShrubs();}),
-        EventAccess(LOGIC_BORROW_SPOOKY_MASK, []{return logic->IsChild && logic->Get(LOGIC_BORROW_SKULL_MASK) && logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_CHILD_WALLET);}),
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairyExceptSuns();}, true),
+        EventAccess(LOGIC_BEAN_PLANT_FAIRY,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}, true),
+        EventAccess(LOGIC_BUG_SHRUB,         []{return logic->IsChild && logic->CanCutShrubs();}, true),
+        EventAccess(LOGIC_BORROW_SPOOKY_MASK, []{return logic->IsChild && logic->Get(LOGIC_BORROW_SKULL_MASK) && logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_CHILD_WALLET);}, true),
     }, {
         //Locations
-        LOCATION(RC_LW_SKULL_KID,                       logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
-        LOCATION(RC_LW_TRADE_COJIRO,                    logic->IsAdult && logic->CanUse(RG_COJIRO)),
+        LOCATION_NNL(RC_LW_SKULL_KID,                   logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
+        LOCATION_NNL(RC_LW_TRADE_COJIRO,                logic->IsAdult && logic->CanUse(RG_COJIRO)),
         //I cannot think of a case where you can use Odd pot but not Cojiro to reset the quadrant should you have both. If one exists, add it to logic
-        LOCATION(RC_LW_TRADE_ODD_POTION,                logic->IsAdult && logic->CanUse(RG_ODD_POTION)),
+        LOCATION_NNL(RC_LW_TRADE_ODD_POTION,            logic->IsAdult && logic->CanUse(RG_ODD_POTION)),
                                                                                                               //all 5 buttons are logically required for memory game
                                                                                                               //because the chances of being able to beat it
                                                                                                               //every time you attempt it are as follows:
@@ -30,10 +30,10 @@ void RegionTable_Init_LostWoods() {
                                                                                                               //3 buttons        => 3.75%
                                                                                                               //4 buttons        => 25.3125%
                                                                                                               //5 buttons        => 100%
-        LOCATION(RC_LW_OCARINA_MEMORY_GAME,             logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 5),
-        LOCATION(RC_LW_TARGET_IN_WOODS,                 logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)),
-        LOCATION(RC_LW_DEKU_SCRUB_NEAR_BRIDGE,          logic->IsChild && logic->CanStunDeku()),
-        LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE,       logic->CanSpawnSoilSkull() && logic->CanAttack()),
+        LOCATION_NNL(RC_LW_OCARINA_MEMORY_GAME,         logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 5),
+        LOCATION_NNL(RC_LW_TARGET_IN_WOODS,             logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION_NNL(RC_LW_DEKU_SCRUB_NEAR_BRIDGE,      logic->IsChild && logic->CanStunDeku()),
+        LOCATION_NNL(RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE,   logic->CanSpawnSoilSkull() && logic->CanAttack()),
         //RANDOTODO handle collecting some of these as you leave the shortcut from the other side
         LOCATION(RC_LW_SHORTCUT_RUPEE_1,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
         LOCATION(RC_LW_SHORTCUT_RUPEE_2,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
@@ -43,16 +43,16 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_SHORTCUT_RUPEE_6,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
         LOCATION(RC_LW_SHORTCUT_RUPEE_7,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
         LOCATION(RC_LW_SHORTCUT_RUPEE_8,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-        LOCATION(RC_LW_BEAN_SPROUT_NEAR_BRIDGE_FAIRY_1, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_LW_BEAN_SPROUT_NEAR_BRIDGE_FAIRY_2, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_LW_BEAN_SPROUT_NEAR_BRIDGE_FAIRY_3, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_LW_GOSSIP_STONE_FAIRY,              logic->CallGossipFairyExceptSuns()),
-        LOCATION(RC_LW_GOSSIP_STONE_FAIRY_BIG,          logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_LW_SHORTCUT_STORMS_FAIRY,           logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_LW_GOSSIP_STONE,                    true),
-        LOCATION(RC_LW_GRASS_1,                         logic->CanCutShrubs()),
-        LOCATION(RC_LW_GRASS_2,                         logic->CanCutShrubs()),
-        LOCATION(RC_LW_GRASS_3,                         logic->CanCutShrubs()),
+        LOCATION_NNL(RC_LW_BEAN_SPROUT_NEAR_BRIDGE_FAIRY_1, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION_NNL(RC_LW_BEAN_SPROUT_NEAR_BRIDGE_FAIRY_2, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION_NNL(RC_LW_BEAN_SPROUT_NEAR_BRIDGE_FAIRY_3, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION_NNL(RC_LW_GOSSIP_STONE_FAIRY,              logic->CallGossipFairyExceptSuns()),
+        LOCATION_NNL(RC_LW_GOSSIP_STONE_FAIRY_BIG,          logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION_NNL(RC_LW_SHORTCUT_STORMS_FAIRY,           logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_LW_GOSSIP_STONE,                        true),
+        LOCATION_NNL(RC_LW_GRASS_1,                         logic->CanCutShrubs()),
+        LOCATION_NNL(RC_LW_GRASS_2,                         logic->CanCutShrubs()),
+        LOCATION_NNL(RC_LW_GRASS_3,                         logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_LW_FOREST_EXIT,           []{return true;}),
@@ -65,23 +65,23 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_LW_BEYOND_MIDO] = Region("LW Beyond Mido", SCENE_LOST_WOODS, {
         //Events
-        EventAccess(LOGIC_BUTTERFLY_FAIRY, []{return logic->CanUse(RG_STICKS);}),
+        EventAccess(LOGIC_BUTTERFLY_FAIRY, []{return logic->CanUse(RG_STICKS);}, true),
     }, {
         //Locations
-        LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, logic->IsChild && logic->CanStunDeku()),
-        LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  logic->IsChild && logic->CanStunDeku()),
-        LOCATION(RC_LW_GS_ABOVE_THEATER,                   logic->IsAdult && ((CanPlantBean(RR_LW_BEYOND_MIDO) && logic->CanAttack()) || (ctx->GetTrickOption(RT_LW_GS_BEAN) && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_DINS_FIRE)))) && logic->CanGetNightTimeGS()),
-        LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,         logic->CanSpawnSoilSkull() && (logic->CanAttack() || (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF) && logic->CanReflectNuts()))),
-        LOCATION(RC_LW_BOULDER_RUPEE,                      logic->BlastOrSmash()),
-        LOCATION(RC_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY_1,   logic->IsChild && logic->HasItem(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY_2,   logic->IsChild && logic->HasItem(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY_3,   logic->IsChild && logic->HasItem(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_LW_GRASS_4,                            logic->CanCutShrubs()),
-        LOCATION(RC_LW_GRASS_5,                            logic->CanCutShrubs()),
-        LOCATION(RC_LW_GRASS_6,                            logic->CanCutShrubs()),
-        LOCATION(RC_LW_GRASS_7,                            logic->CanCutShrubs()),
-        LOCATION(RC_LW_GRASS_8,                            logic->CanCutShrubs()),
-        LOCATION(RC_LW_GRASS_9,                            logic->CanCutShrubs()),
+        LOCATION_NNL(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, logic->IsChild && logic->CanStunDeku()),
+        LOCATION_NNL(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  logic->IsChild && logic->CanStunDeku()),
+        LOCATION_NNL(RC_LW_GS_ABOVE_THEATER,                   logic->IsAdult && ((CanPlantBean(RR_LW_BEYOND_MIDO) && logic->CanAttack()) || (ctx->GetTrickOption(RT_LW_GS_BEAN) && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_DINS_FIRE)))) && logic->CanGetNightTimeGS()),
+        LOCATION_NNL(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,         logic->CanSpawnSoilSkull() && (logic->CanAttack() || (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF) && logic->CanReflectNuts()))),
+        LOCATION(RC_LW_BOULDER_RUPEE,                          logic->BlastOrSmash()),
+        LOCATION_NNL(RC_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY_1,   logic->IsChild && logic->HasItem(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION_NNL(RC_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY_2,   logic->IsChild && logic->HasItem(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION_NNL(RC_LW_BEAN_SPROUT_NEAR_THEATER_FAIRY_3,   logic->IsChild && logic->HasItem(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION_NNL(RC_LW_GRASS_4,                            logic->CanCutShrubs()),
+        LOCATION_NNL(RC_LW_GRASS_5,                            logic->CanCutShrubs()),
+        LOCATION_NNL(RC_LW_GRASS_6,                            logic->CanCutShrubs()),
+        LOCATION_NNL(RC_LW_GRASS_7,                            logic->CanCutShrubs()),
+        LOCATION_NNL(RC_LW_GRASS_8,                            logic->CanCutShrubs()),
+        LOCATION_NNL(RC_LW_GRASS_9,                            logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_LW_FOREST_EXIT,   []{return true;}),
@@ -93,17 +93,17 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_LW_NEAR_SHORTCUTS_GROTTO] = Region("LW Near Shortcuts Grotto", SCENE_GROTTOS, grottoEvents, {
         //Locations
-        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST,                  true),
-        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,                   logic->HasBottle()),
-        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
-        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,           true),
-        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,           logic->CanBreakLowerBeehives()),
-        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT,          logic->CanBreakLowerBeehives()),
-        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_1,                logic->CanCutShrubs()),
-        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_2,                logic->CanCutShrubs()),
-        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_3,                logic->CanCutShrubs()),
-        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_4,                logic->CanCutShrubs()),
+        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST,                      true),
+        LOCATION_NNL(RC_LW_NEAR_SHORTCUTS_GROTTO_FISH,                   logic->HasBottle()),
+        LOCATION_NNL(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
+        LOCATION_NNL(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,               true),
+        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,               logic->CanBreakLowerBeehives()),
+        LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT,              logic->CanBreakLowerBeehives()),
+        LOCATION_NNL(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_1,                logic->CanCutShrubs()),
+        LOCATION_NNL(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_2,                logic->CanCutShrubs()),
+        LOCATION_NNL(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_3,                logic->CanCutShrubs()),
+        LOCATION_NNL(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_4,                logic->CanCutShrubs()),
     }, {
         //Exits
         Entrance(RR_THE_LOST_WOODS, []{return true;}),
@@ -111,8 +111,8 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_DEKU_THEATER] = Region("Deku Theater", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_DEKU_THEATER_SKULL_MASK,    logic->IsChild && logic->Get(LOGIC_BORROW_SKULL_MASK)),
-        LOCATION(RC_DEKU_THEATER_MASK_OF_TRUTH, logic->IsChild && logic->Get(LOGIC_BORROW_RIGHT_MASKS)),
+        LOCATION_NNL(RC_DEKU_THEATER_SKULL_MASK,    logic->IsChild && logic->Get(LOGIC_BORROW_SKULL_MASK)),
+        LOCATION_NNL(RC_DEKU_THEATER_MASK_OF_TRUTH, logic->IsChild && logic->Get(LOGIC_BORROW_RIGHT_MASKS)),
     }, {
         //Exits
         Entrance(RR_LW_BEYOND_MIDO, []{return true;}),
@@ -120,10 +120,10 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_LW_SCRUBS_GROTTO] = Region("LW Scrubs Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_REAR,      logic->CanStunDeku()),
-        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_FRONT,     logic->CanStunDeku()),
-        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE,   logic->CanBreakUpperBeehives()), 
-        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
+        LOCATION_NNL(RC_LW_DEKU_SCRUB_GROTTO_REAR,      logic->CanStunDeku()),
+        LOCATION_NNL(RC_LW_DEKU_SCRUB_GROTTO_FRONT,     logic->CanStunDeku()),
+        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE,       logic->CanBreakUpperBeehives()), 
+        LOCATION_NNL(RC_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
         Entrance(RR_LW_BEYOND_MIDO, []{return true;}),

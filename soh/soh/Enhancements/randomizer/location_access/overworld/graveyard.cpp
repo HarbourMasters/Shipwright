@@ -7,39 +7,39 @@ void RegionTable_Init_Graveyard() {
     // clang-format off
     areaTable[RR_THE_GRAVEYARD] = Region("The Graveyard", SCENE_GRAVEYARD, {
         //Events
-        EventAccess(LOGIC_BUTTERFLY_FAIRY, []{return logic->CanUse(RG_STICKS) && logic->AtDay;}),
-        EventAccess(LOGIC_BEAN_PLANT_FAIRY, []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
+        EventAccess(LOGIC_BUTTERFLY_FAIRY, []{return logic->CanUse(RG_STICKS) && logic->AtDay;}, true),
+        EventAccess(LOGIC_BEAN_PLANT_FAIRY, []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}, true),
         EventAccess(LOGIC_BUG_ROCK,        []{return true;}),
-        EventAccess(LOGIC_BORROW_BUNNY_HOOD, []{return logic->IsChild && logic->AtDay && logic->Get(LOGIC_BORROW_SPOOKY_MASK) && logic->HasItem(RG_CHILD_WALLET);}),
+        EventAccess(LOGIC_BORROW_BUNNY_HOOD, []{return logic->IsChild && logic->AtDay && logic->Get(LOGIC_BORROW_SPOOKY_MASK) && logic->HasItem(RG_CHILD_WALLET);}, true),
     }, {
         //Locations
         LOCATION(RC_GRAVEYARD_FREESTANDING_POH,        (((logic->IsAdult && CanPlantBean(RR_THE_GRAVEYARD)) || logic->CanUse(RG_LONGSHOT)) && logic->CanBreakCrates()) || (ctx->GetTrickOption(RT_GY_POH) && logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, logic->HasItem(RG_CHILD_WALLET) && logic->IsChild && logic->AtNight), //TODO: This needs to change
+        LOCATION_NNL(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, logic->HasItem(RG_CHILD_WALLET) && logic->IsChild && logic->AtNight), //TODO: This needs to change
         LOCATION(RC_GRAVEYARD_GS_WALL,                 logic->IsChild && logic->HookshotOrBoomerang() && logic->AtNight && logic->CanGetNightTimeGS()),
-        LOCATION(RC_GRAVEYARD_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull() && logic->CanAttack()),
-        LOCATION(RC_GRAVEYARD_BEAN_SPROUT_FAIRY_1,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_GRAVEYARD_BEAN_SPROUT_FAIRY_2,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_GRAVEYARD_BEAN_SPROUT_FAIRY_3,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_GY_GRASS_1,                        logic->CanCutShrubs()),
-        LOCATION(RC_GY_GRASS_2,                        logic->CanCutShrubs()),
-        LOCATION(RC_GY_GRASS_3,                        logic->CanCutShrubs()),
-        LOCATION(RC_GY_GRASS_4,                        logic->CanCutShrubs()),
-        LOCATION(RC_GY_GRASS_5,                        logic->CanCutShrubs()),
-        LOCATION(RC_GY_GRASS_6,                        logic->CanCutShrubs()),
-        LOCATION(RC_GY_GRASS_7,                        logic->CanCutShrubs()),
-        LOCATION(RC_GY_GRASS_8,                        logic->CanCutShrubs()),
-        LOCATION(RC_GY_GRASS_9,                        logic->CanCutShrubs()),
-        LOCATION(RC_GY_GRASS_10,                       logic->CanCutShrubs()),
-        LOCATION(RC_GY_GRASS_11,                       logic->CanCutShrubs()),
-        LOCATION(RC_GY_GRASS_12,                       logic->CanCutShrubs()),
+        LOCATION_NNL(RC_GRAVEYARD_GS_BEAN_PATCH,       logic->CanSpawnSoilSkull() && logic->CanAttack()),
+        LOCATION_NNL(RC_GRAVEYARD_BEAN_SPROUT_FAIRY_1, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION_NNL(RC_GRAVEYARD_BEAN_SPROUT_FAIRY_2, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION_NNL(RC_GRAVEYARD_BEAN_SPROUT_FAIRY_3, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION_NNL(RC_GY_GRASS_1,                    logic->CanCutShrubs()),
+        LOCATION_NNL(RC_GY_GRASS_2,                    logic->CanCutShrubs()),
+        LOCATION_NNL(RC_GY_GRASS_3,                    logic->CanCutShrubs()),
+        LOCATION_NNL(RC_GY_GRASS_4,                    logic->CanCutShrubs()),
+        LOCATION_NNL(RC_GY_GRASS_5,                    logic->CanCutShrubs()),
+        LOCATION_NNL(RC_GY_GRASS_6,                    logic->CanCutShrubs()),
+        LOCATION_NNL(RC_GY_GRASS_7,                    logic->CanCutShrubs()),
+        LOCATION_NNL(RC_GY_GRASS_8,                    logic->CanCutShrubs()),
+        LOCATION_NNL(RC_GY_GRASS_9,                    logic->CanCutShrubs()),
+        LOCATION_NNL(RC_GY_GRASS_10,                   logic->CanCutShrubs()),
+        LOCATION_NNL(RC_GY_GRASS_11,                   logic->CanCutShrubs()),
+        LOCATION_NNL(RC_GY_GRASS_12,                   logic->CanCutShrubs()),
         LOCATION(RC_GRAVEYARD_CRATE,                   ((logic->IsAdult && CanPlantBean(RR_THE_GRAVEYARD)) || logic->CanUse(RG_LONGSHOT)) && logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_GRAVEYARD_SHIELD_GRAVE,       []{return logic->IsAdult || logic->AtNight;}),
-        Entrance(RR_GRAVEYARD_COMPOSERS_GRAVE,    []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
+        Entrance(RR_GRAVEYARD_COMPOSERS_GRAVE,    []{return logic->CanUse(RG_ZELDAS_LULLABY);}, true),
         Entrance(RR_GRAVEYARD_HEART_PIECE_GRAVE,  []{return logic->IsAdult || logic->AtNight;}),
         Entrance(RR_GRAVEYARD_DAMPES_GRAVE,       []{return logic->IsAdult;}),
-        Entrance(RR_GRAVEYARD_DAMPES_HOUSE,       []{return logic->IsAdult && logic->CanOpenOverworldDoor(RG_DAMPES_HUT_KEY) /*|| logic->AtDampeTime*/;}), //TODO: This needs to be handled in ToD rework
+        Entrance(RR_GRAVEYARD_DAMPES_HOUSE,       []{return logic->IsAdult && logic->CanOpenOverworldDoor(RG_DAMPES_HUT_KEY) /*|| logic->AtDampeTime*/;}, true), //TODO: This needs to be handled in ToD rework
         Entrance(RR_KAKARIKO_VILLAGE,             []{return true;}),
         Entrance(RR_GRAVEYARD_WARP_PAD_REGION,    []{return false;}),
     });
@@ -70,7 +70,7 @@ void RegionTable_Init_Graveyard() {
 
     areaTable[RR_GRAVEYARD_HEART_PIECE_GRAVE] = Region("Graveyard Heart Piece Grave", SCENE_REDEAD_GRAVE, {}, {
         //Locations
-        LOCATION(RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST, logic->CanUse(RG_SUNS_SONG)),
+        LOCATION_NNL(RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST, logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
         Entrance(RR_THE_GRAVEYARD, []{return true;}),
@@ -111,7 +111,7 @@ void RegionTable_Init_Graveyard() {
     }, {
         //Exits
         Entrance(RR_THE_GRAVEYARD, []{return true;}),
-        Entrance(RR_KAK_WINDMILL,  []{return (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (logic->IsChild && logic->CanGroundJump());}, false),
+        Entrance(RR_KAK_WINDMILL,  []{return (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (logic->IsChild && logic->CanGroundJump());}, false, false),
     });
 
     areaTable[RR_GRAVEYARD_DAMPES_HOUSE] = Region("Graveyard Dampes House", SCENE_GRAVEKEEPERS_HUT, {}, {
@@ -124,12 +124,12 @@ void RegionTable_Init_Graveyard() {
 
     areaTable[RR_GRAVEYARD_WARP_PAD_REGION] = Region("Graveyard Warp Pad Region", SCENE_GRAVEYARD, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairyExceptSuns();}),
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairyExceptSuns();}, true),
     }, {
         //Locations
-        LOCATION(RC_GRAVEYARD_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
-        LOCATION(RC_GRAVEYARD_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_GRAVEYARD_GOSSIP_STONE,           true),
+        LOCATION_NNL(RC_GRAVEYARD_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
+        LOCATION_NNL(RC_GRAVEYARD_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_GRAVEYARD_GOSSIP_STONE,               true),
     }, {
         //Exits
         Entrance(RR_THE_GRAVEYARD,          []{return true;}),

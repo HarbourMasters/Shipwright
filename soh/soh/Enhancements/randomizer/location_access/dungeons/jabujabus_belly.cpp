@@ -9,8 +9,8 @@ void RegionTable_Init_JabuJabusBelly() {
     // Vanilla/MQ Decider
     areaTable[RR_JABU_JABUS_BELLY_ENTRYWAY] = Region("Jabu Jabus Belly Entryway", SCENE_JABU_JABU, {}, {}, {
         //Exits
-        Entrance(RR_JABU_JABUS_BELLY_BEGINNING,    []{return ctx->GetDungeon(JABU_JABUS_BELLY)->IsVanilla();}),
-        Entrance(RR_JABU_JABUS_BELLY_MQ_BEGINNING, []{return ctx->GetDungeon(JABU_JABUS_BELLY)->IsMQ();}),
+        Entrance(RR_JABU_JABUS_BELLY_BEGINNING,    []{return ctx->GetDungeon(JABU_JABUS_BELLY)->IsVanilla();}, true),
+        Entrance(RR_JABU_JABUS_BELLY_MQ_BEGINNING, []{return ctx->GetDungeon(JABU_JABUS_BELLY)->IsMQ();}, true),
         Entrance(RR_ZORAS_FOUNTAIN,                []{return true;}),
     });
 
@@ -28,7 +28,7 @@ void RegionTable_Init_JabuJabusBelly() {
         EventAccess(LOGIC_JABU_WEST_TENTACLE, []{return logic->Get(LOGIC_JABU_RUTO_IN_1F) && logic->CanKillEnemy(RE_TENTACLE, ED_BOOMERANG);}),
     }, {
         //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_DEKU_SCRUB,                    logic->HasItem(RG_BRONZE_SCALE) && (logic->IsChild || logic->HasItem(RG_SILVER_SCALE) || ctx->GetTrickOption(RT_JABU_ALCOVE_JUMP_DIVE) || logic->CanUse(RG_IRON_BOOTS)) && logic->CanStunDeku()),
+        LOCATION_NNL(RC_JABU_JABUS_BELLY_DEKU_SCRUB,                logic->HasItem(RG_BRONZE_SCALE) && (logic->IsChild || logic->HasItem(RG_SILVER_SCALE) || ctx->GetTrickOption(RT_JABU_ALCOVE_JUMP_DIVE) || logic->CanUse(RG_IRON_BOOTS)) && logic->CanStunDeku()),
         //We can kill the Stingers with ruto
         LOCATION(RC_JABU_JABUS_BELLY_BOOMERANG_CHEST,               logic->Get(LOGIC_JABU_RUTO_IN_1F)),
         LOCATION(RC_JABU_JABUS_BELLY_MAP_CHEST,                     logic->Get(LOGIC_JABU_WEST_TENTACLE)),
@@ -212,9 +212,9 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_MQ_GEYSER_POT_1,  logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_GEYSER_POT_2,  logic->CanBreakPots()),
         //Getting the ones closest to the ledge with rang may be a trick due to the awkward angle without blind shooting through the flesh
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_1,  logic->HasItem(RG_GOLDEN_SCALE) || logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_2,  logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_3,  logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG)),
+        LOCATION_NNL(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_1, logic->HasItem(logic->IsNNL() ? RG_BRONZE_SCALE : RG_GOLDEN_SCALE) || logic->CanUse(RG_BOOMERANG)),
+        LOCATION_NNL(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_2, logic->HasItem(logic->IsNNL() ? RG_BRONZE_SCALE : RG_SILVER_SCALE) || logic->CanUse(RG_BOOMERANG)),
+        LOCATION_NNL(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_3, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG)),
     }, {
         //Exits
         Entrance(RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM, []{return logic->HasItem(RG_BRONZE_SCALE);}),
@@ -311,12 +311,12 @@ void RegionTable_Init_JabuJabusBelly() {
         EventAccess(LOGIC_JABU_LOWERED_PATH, []{return logic->CanUse(RG_BOOMERANG) && logic->CanUse(RG_FAIRY_SLINGSHOT);}),
     }, {
         //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_COW,                    logic->CanUse(RG_EPONAS_SONG) && logic->CanUse(RG_FAIRY_SLINGSHOT)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_GRASS,         logic->CanCutShrubs()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_1, logic->CanCutShrubs()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_2, logic->CanCutShrubs()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_1, logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->CanBreakSmallCrates()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_2, logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->CanBreakSmallCrates()),
+        LOCATION_NNL(RC_JABU_JABUS_BELLY_MQ_COW,                    logic->CanUse(RG_EPONAS_SONG) && logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION_NNL(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_GRASS,         logic->CanCutShrubs()),
+        LOCATION_NNL(RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_1, logic->CanCutShrubs()),
+        LOCATION_NNL(RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_2, logic->CanCutShrubs()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_1,     logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->CanBreakSmallCrates()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_2,     logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->CanBreakSmallCrates()),
     }, {
         //Exits
         Entrance(RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM,  []{return logic->CanUse(RG_BOOMERANG) && logic->CanUse(RG_FAIRY_SLINGSHOT);}),
@@ -359,13 +359,13 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_BOSS_EXIT] = Region("Jabu Jabus Belly Boss Exit", SCENE_JABU_JABU, {}, {}, {
         // Exits
-        Entrance(RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM, []{return ctx->GetDungeon(JABU_JABUS_BELLY)->IsVanilla();}),
-        Entrance(RR_JABU_JABUS_BELLY_MQ_EAST_ROOM,   []{return ctx->GetDungeon(JABU_JABUS_BELLY)->IsMQ();}),
+        Entrance(RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM, []{return ctx->GetDungeon(JABU_JABUS_BELLY)->IsVanilla();}, true),
+        Entrance(RR_JABU_JABUS_BELLY_MQ_EAST_ROOM,   []{return ctx->GetDungeon(JABU_JABUS_BELLY)->IsMQ();}, true),
     });
 
     areaTable[RR_JABU_JABUS_BELLY_BOSS_ROOM] = Region("Jabu Jabus Belly Boss Room", SCENE_JABU_JABU_BOSS, {
         // Events //todo: add pot kill trick
-        EventAccess(LOGIC_JABU_JABUS_BELLY_CLEAR, []{return logic->CanKillEnemy(RE_BARINADE);}),
+        EventAccess(LOGIC_JABU_JABUS_BELLY_CLEAR, []{return logic->CanKillEnemy(RE_BARINADE);}, true),
     }, {
         // Locations
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_1, logic->CanBreakPots()),
@@ -374,12 +374,12 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_4, logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_5, logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_6, logic->CanBreakPots()),
-        LOCATION(RC_JABU_JABUS_BELLY_BARINADE_HEART, logic->Get(LOGIC_JABU_JABUS_BELLY_CLEAR)),
-        LOCATION(RC_BARINADE,                        logic->Get(LOGIC_JABU_JABUS_BELLY_CLEAR)),
+        LOCATION_NNL(RC_JABU_JABUS_BELLY_BARINADE_HEART, logic->Get(LOGIC_JABU_JABUS_BELLY_CLEAR)),
+        LOCATION_NNL(RC_BARINADE,                        logic->Get(LOGIC_JABU_JABUS_BELLY_CLEAR)),
     }, {
         // Exits
         Entrance(RR_JABU_JABUS_BELLY_BOSS_EXIT, []{return false;}),
-        Entrance(RR_ZORAS_FOUNTAIN,             []{return logic->Get(LOGIC_JABU_JABUS_BELLY_CLEAR);}, false),
+        Entrance(RR_ZORAS_FOUNTAIN,             []{return logic->Get(LOGIC_JABU_JABUS_BELLY_CLEAR);}, true, false),
     });
 
     // clang-format on

@@ -20,6 +20,9 @@
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 
 namespace Rando {
+bool Logic::IsNNL() {
+    return ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NEARLY_NO_LOGIC);
+}
 
 bool Logic::HasItem(RandomizerGet itemName) {
     switch (itemName) {

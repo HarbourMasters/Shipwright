@@ -861,7 +861,8 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
         return;
     }
 
-    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC)) {
+    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) ||
+        (logic->IsNNL() && !ctx->GetOption(RSK_ALL_LOCATIONS_REACHABLE))) {
         FastFill(items, GetEmptyLocations(allowedLocations), true);
         return;
     }
@@ -877,6 +878,7 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
             return;
         }
         unsuccessfulPlacement = false;
+
         std::vector<RandomizerGet> itemsToPlace = items;
 
         // copy all not yet placed advancement items so that we can apply their effects for the fill algorithm

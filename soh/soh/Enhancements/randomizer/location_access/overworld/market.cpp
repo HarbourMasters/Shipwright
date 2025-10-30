@@ -7,9 +7,9 @@ void RegionTable_Init_Market() {
     // clang-format off
     areaTable[RR_MARKET_ENTRANCE] = Region("Market Entrance", SCENE_MARKET_ENTRANCE_DAY, {}, {}, {
         //Exits
-        Entrance(RR_HYRULE_FIELD,       []{return logic->IsAdult || logic->AtDay;}),
+        Entrance(RR_HYRULE_FIELD,       []{return logic->IsAdult || logic->AtDay;}, true),
         Entrance(RR_THE_MARKET,         []{return true;}),
-        Entrance(RR_MARKET_GUARD_HOUSE, []{return logic->CanOpenOverworldDoor(RG_GUARD_HOUSE_KEY);}),
+        Entrance(RR_MARKET_GUARD_HOUSE, []{return logic->CanOpenOverworldDoor(RG_GUARD_HOUSE_KEY);}, true),
     });
 
     areaTable[RR_THE_MARKET] = Region("Market", SCENE_MARKET_DAY, {}, {
@@ -33,90 +33,90 @@ void RegionTable_Init_Market() {
         Entrance(RR_MARKET_ENTRANCE,            []{return true;}),
         Entrance(RR_TOT_ENTRANCE,               []{return true;}),
         Entrance(RR_CASTLE_GROUNDS,             []{return true;}),
-        Entrance(RR_MARKET_BAZAAR,              []{return logic->IsChild && logic->AtDay && logic->CanOpenOverworldDoor(RG_MARKET_BAZAAR_KEY);}),
-        Entrance(RR_MARKET_MASK_SHOP,           []{return logic->IsChild && logic->AtDay && logic->CanOpenOverworldDoor(RG_MASK_SHOP_KEY);}),
-        Entrance(RR_MARKET_SHOOTING_GALLERY,    []{return logic->IsChild && logic->AtDay && logic->CanOpenOverworldDoor(RG_MARKET_SHOOTING_GALLERY_KEY);}),
-        Entrance(RR_MARKET_BOMBCHU_BOWLING,     []{return logic->IsChild && logic->CanOpenOverworldDoor(RG_BOMBCHU_BOWLING_KEY);}),
-        Entrance(RR_MARKET_TREASURE_CHEST_GAME, []{return logic->IsChild && logic->AtNight && logic->CanOpenOverworldDoor(RG_TREASURE_CHEST_GAME_BUILDING_KEY);}),
-        Entrance(RR_MARKET_POTION_SHOP,         []{return logic->IsChild && logic->AtDay && logic->CanOpenOverworldDoor(RG_MARKET_POTION_SHOP_KEY);}),
-        Entrance(RR_MARKET_BACK_ALLEY,          []{return logic->IsChild;}),
+        Entrance(RR_MARKET_BAZAAR,              []{return logic->IsChild && logic->AtDay && logic->CanOpenOverworldDoor(RG_MARKET_BAZAAR_KEY);}, true),
+        Entrance(RR_MARKET_MASK_SHOP,           []{return logic->IsChild && logic->AtDay && logic->CanOpenOverworldDoor(RG_MASK_SHOP_KEY);}, true),
+        Entrance(RR_MARKET_SHOOTING_GALLERY,    []{return logic->IsChild && logic->AtDay && logic->CanOpenOverworldDoor(RG_MARKET_SHOOTING_GALLERY_KEY);}, true),
+        Entrance(RR_MARKET_BOMBCHU_BOWLING,     []{return logic->IsChild && logic->CanOpenOverworldDoor(RG_BOMBCHU_BOWLING_KEY);}, true),
+        Entrance(RR_MARKET_TREASURE_CHEST_GAME, []{return logic->IsChild && logic->AtNight && logic->CanOpenOverworldDoor(RG_TREASURE_CHEST_GAME_BUILDING_KEY);}, true),
+        Entrance(RR_MARKET_POTION_SHOP,         []{return logic->IsChild && logic->AtDay && logic->CanOpenOverworldDoor(RG_MARKET_POTION_SHOP_KEY);}, true),
+        Entrance(RR_MARKET_BACK_ALLEY,          []{return logic->IsChild;}, true),
     });
 
     areaTable[RR_MARKET_BACK_ALLEY] = Region("Market Back Alley", SCENE_BACK_ALLEY_DAY, {}, {}, {
         //Exits
         Entrance(RR_THE_MARKET,                []{return true;}),
-        Entrance(RR_MARKET_BOMBCHU_SHOP,       []{return logic->AtNight && logic->CanOpenOverworldDoor(RG_BOMBCHU_SHOP_KEY);}),
-        Entrance(RR_MARKET_DOG_LADY_HOUSE,     []{return logic->CanOpenOverworldDoor(RG_RICHARDS_HOUSE_KEY);}),
-        Entrance(RR_MARKET_MAN_IN_GREEN_HOUSE, []{return logic->AtNight && logic->CanOpenOverworldDoor(RG_ALLEY_HOUSE_KEY);}),
+        Entrance(RR_MARKET_BOMBCHU_SHOP,       []{return logic->AtNight && logic->CanOpenOverworldDoor(RG_BOMBCHU_SHOP_KEY);}, true),
+        Entrance(RR_MARKET_DOG_LADY_HOUSE,     []{return logic->CanOpenOverworldDoor(RG_RICHARDS_HOUSE_KEY);}, true),
+        Entrance(RR_MARKET_MAN_IN_GREEN_HOUSE, []{return logic->AtNight && logic->CanOpenOverworldDoor(RG_ALLEY_HOUSE_KEY);}, true),
     });
 
     areaTable[RR_MARKET_GUARD_HOUSE] = Region("Market Guard House", SCENE_MARKET_GUARD_HOUSE, {
         //Events
-        EventAccess(LOGIC_CAN_EMPTY_BIG_POES, []{return logic->IsAdult;}),
+        EventAccess(LOGIC_CAN_EMPTY_BIG_POES, []{return logic->IsAdult;}, true),
     }, {
         //Locations
-        LOCATION(RC_MARKET_10_BIG_POES,          logic->IsAdult && (logic->Get(LOGIC_BIG_POE_KILL) || logic->BigPoes >= ctx->GetOption(RSK_BIG_POE_COUNT).Get())),
-        LOCATION(RC_MARKET_GS_GUARD_HOUSE,       logic->IsChild),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_1,  logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_2,  logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_3,  logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_4,  logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_5,  logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_6,  logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_7,  logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_8,  logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_9,  logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_10, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_11, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_12, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_13, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_14, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_15, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_16, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_17, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_18, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_19, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_20, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_21, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_22, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_23, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_24, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_25, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_26, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_27, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_28, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_29, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_30, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_31, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_32, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_33, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_34, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_35, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_36, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_37, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_38, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_39, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_40, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_41, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_42, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_43, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CHILD_POT_44, logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_ADULT_POT_1,  logic->IsAdult && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_ADULT_POT_2,  logic->IsAdult && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_ADULT_POT_3,  logic->IsAdult && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_ADULT_POT_4,  logic->IsAdult && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_ADULT_POT_5,  logic->IsAdult && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_ADULT_POT_6,  logic->IsAdult && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_ADULT_POT_7,  logic->IsAdult && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_ADULT_POT_8,  logic->IsAdult && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_ADULT_POT_9,  logic->IsAdult && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_ADULT_POT_10, logic->IsAdult && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_ADULT_POT_11, logic->IsAdult && logic->CanBreakPots()),
-        LOCATION(RC_MK_GUARD_HOUSE_CRATE_1,      logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_MK_GUARD_HOUSE_CRATE_2,      logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_MK_GUARD_HOUSE_CRATE_3,      logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_MK_GUARD_HOUSE_CRATE_4,      logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_MK_GUARD_HOUSE_CRATE_5,      logic->IsChild && logic->CanBreakCrates()),
+        LOCATION_NNL(RC_MARKET_10_BIG_POES,          logic->IsAdult && (logic->Get(LOGIC_BIG_POE_KILL) || logic->BigPoes >= ctx->GetOption(RSK_BIG_POE_COUNT).Get())),
+        LOCATION_NNL(RC_MARKET_GS_GUARD_HOUSE,       logic->IsChild),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_1,  logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_2,  logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_3,  logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_4,  logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_5,  logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_6,  logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_7,  logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_8,  logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_9,  logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_10, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_11, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_12, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_13, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_14, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_15, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_16, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_17, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_18, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_19, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_20, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_21, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_22, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_23, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_24, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_25, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_26, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_27, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_28, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_29, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_30, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_31, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_32, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_33, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_34, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_35, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_36, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_37, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_38, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_39, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_40, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_41, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_42, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_43, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CHILD_POT_44, logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_ADULT_POT_1,  logic->IsAdult && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_ADULT_POT_2,  logic->IsAdult && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_ADULT_POT_3,  logic->IsAdult && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_ADULT_POT_4,  logic->IsAdult && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_ADULT_POT_5,  logic->IsAdult && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_ADULT_POT_6,  logic->IsAdult && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_ADULT_POT_7,  logic->IsAdult && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_ADULT_POT_8,  logic->IsAdult && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_ADULT_POT_9,  logic->IsAdult && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_ADULT_POT_10, logic->IsAdult && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_ADULT_POT_11, logic->IsAdult && logic->CanBreakPots()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CRATE_1,      logic->IsChild && logic->CanBreakCrates()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CRATE_2,      logic->IsChild && logic->CanBreakCrates()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CRATE_3,      logic->IsChild && logic->CanBreakCrates()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CRATE_4,      logic->IsChild && logic->CanBreakCrates()),
+        LOCATION_NNL(RC_MK_GUARD_HOUSE_CRATE_5,      logic->IsChild && logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_MARKET_ENTRANCE, []{return true;}),
@@ -143,10 +143,10 @@ void RegionTable_Init_Market() {
         //If it is forced on/a setting, a copy of these events should be added to root
         //it also doesn't need you to open kak gate, but that might be best treated as a bug
         EventAccess(LOGIC_CAN_BORROW_MASKS,   []{return logic->HasItem(RG_ZELDAS_LETTER) && logic->Get(LOGIC_KAKARIKO_GATE_OPEN);}),
-        EventAccess(LOGIC_BORROW_SKULL_MASK,  []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS);}),
-        EventAccess(LOGIC_BORROW_SPOOKY_MASK, []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS);}),
-        EventAccess(LOGIC_BORROW_BUNNY_HOOD,  []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS);}),
-        EventAccess(LOGIC_BORROW_RIGHT_MASKS, []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS);}),
+        EventAccess(LOGIC_BORROW_SKULL_MASK,  []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS);}, true),
+        EventAccess(LOGIC_BORROW_SPOOKY_MASK, []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS);}, true),
+        EventAccess(LOGIC_BORROW_BUNNY_HOOD,  []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS);}, true),
+        EventAccess(LOGIC_BORROW_RIGHT_MASKS, []{return ctx->GetOption(RSK_COMPLETE_MASK_QUEST) && logic->Get(LOGIC_CAN_BORROW_MASKS);}, true),
     }, {
         //Locations
         LOCATION(RC_MASK_SHOP_HINT, true),
@@ -157,7 +157,7 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_SHOOTING_GALLERY] = Region("Market Shooting Gallery", SCENE_SHOOTING_GALLERY, {}, {
         //Locations
-        LOCATION(RC_MARKET_SHOOTING_GALLERY_REWARD, logic->IsChild && logic->HasItem(RG_CHILD_WALLET)),
+        LOCATION_NNL(RC_MARKET_SHOOTING_GALLERY_REWARD, logic->IsChild && logic->HasItem(RG_CHILD_WALLET)),
     }, {
         //Exits
         Entrance(RR_THE_MARKET, []{return true;}),
@@ -165,11 +165,11 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_BOMBCHU_BOWLING] = Region("Market Bombchu Bowling", SCENE_BOMBCHU_BOWLING_ALLEY, {
         //Events
-        EventAccess(LOGIC_COULD_PLAY_BOWLING, []{return logic->HasItem(RG_CHILD_WALLET);}),
+        EventAccess(LOGIC_COULD_PLAY_BOWLING, []{return logic->HasItem(RG_CHILD_WALLET);}, true),
     }, {
         //Locations
-        LOCATION(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE,  logic->Get(LOGIC_COULD_PLAY_BOWLING) && logic->BombchusEnabled()),
-        LOCATION(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, logic->Get(LOGIC_COULD_PLAY_BOWLING) && logic->BombchusEnabled()),
+        LOCATION_NNL(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE,  logic->Get(LOGIC_COULD_PLAY_BOWLING) && logic->BombchusEnabled()),
+        LOCATION_NNL(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, logic->Get(LOGIC_COULD_PLAY_BOWLING) && logic->BombchusEnabled()),
     }, {
         //Exits
         Entrance(RR_THE_MARKET, []{return true;}),
@@ -192,18 +192,18 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_TREASURE_CHEST_GAME] = Region("Market Treasure Chest Game", SCENE_TREASURE_BOX_SHOP, {}, {
         //Locations
-        LOCATION(RC_GREG_HINT,                         logic->HasItem(RG_CHILD_WALLET)),
-        LOCATION(RC_MARKET_TREASURE_CHEST_GAME_REWARD, logic->HasItem(RG_CHILD_WALLET) && ((logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 6)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)))),
-        LOCATION(RC_MARKET_TREASURE_CHEST_GAME_KEY_1,  logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
-        LOCATION(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
-        LOCATION(RC_MARKET_TREASURE_CHEST_GAME_KEY_2,  logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 2)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
-        LOCATION(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 2)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
-        LOCATION(RC_MARKET_TREASURE_CHEST_GAME_KEY_3,  logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 3)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
-        LOCATION(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 3)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
-        LOCATION(RC_MARKET_TREASURE_CHEST_GAME_KEY_4,  logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 4)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
-        LOCATION(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 4)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
-        LOCATION(RC_MARKET_TREASURE_CHEST_GAME_KEY_5,  logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 5)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
-        LOCATION(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 5)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
+        LOCATION_NNL(RC_GREG_HINT,                         logic->HasItem(RG_CHILD_WALLET)),
+        LOCATION_NNL(RC_MARKET_TREASURE_CHEST_GAME_REWARD, logic->HasItem(RG_CHILD_WALLET) && ((logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 6)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)))),
+        LOCATION_NNL(RC_MARKET_TREASURE_CHEST_GAME_KEY_1,  logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
+        LOCATION_NNL(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
+        LOCATION_NNL(RC_MARKET_TREASURE_CHEST_GAME_KEY_2,  logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 2)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
+        LOCATION_NNL(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 2)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
+        LOCATION_NNL(RC_MARKET_TREASURE_CHEST_GAME_KEY_3,  logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 3)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
+        LOCATION_NNL(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 3)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
+        LOCATION_NNL(RC_MARKET_TREASURE_CHEST_GAME_KEY_4,  logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 4)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
+        LOCATION_NNL(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 4)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
+        LOCATION_NNL(RC_MARKET_TREASURE_CHEST_GAME_KEY_5,  logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 5)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
+        LOCATION_NNL(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, logic->HasItem(RG_CHILD_WALLET) && ((ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 5)) || (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK) && logic->SmallKeys(SCENE_TREASURE_BOX_SHOP, 1)) || (logic->CanUse(RG_LENS_OF_TRUTH) && !ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)))),
     }, {
         //Exits
         Entrance(RR_THE_MARKET, []{return true;}),
@@ -226,7 +226,7 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_DOG_LADY_HOUSE] = Region("Market Dog Lady House", SCENE_DOG_LADY_HOUSE, {}, {
         //Locations
-        LOCATION(RC_MARKET_LOST_DOG,         logic->IsChild && logic->AtNight),
+        LOCATION_NNL(RC_MARKET_LOST_DOG,     logic->IsChild && logic->AtNight),
         LOCATION(RC_MK_LOST_DOG_HOUSE_CRATE, logic->CanBreakCrates()),
     }, {
         //Exits

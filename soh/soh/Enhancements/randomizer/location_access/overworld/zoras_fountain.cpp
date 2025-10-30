@@ -7,23 +7,23 @@ void RegionTable_Init_ZorasFountain() {
     // clang-format off
     areaTable[RR_ZORAS_FOUNTAIN] = Region("Zoras Fountain", SCENE_ZORAS_FOUNTAIN, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(LOGIC_BUTTERFLY_FAIRY,   []{return logic->CanUse(RG_STICKS) && logic->AtDay;}),
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairyExceptSuns();}, true),
+        EventAccess(LOGIC_BUTTERFLY_FAIRY,   []{return logic->CanUse(RG_STICKS) && logic->AtDay;}, true),
     }, {
         //Locations
-        LOCATION(RC_ZF_GS_TREE,                      logic->IsChild && logic->CanBonkTrees()),
-        LOCATION(RC_ZF_GS_ABOVE_THE_LOG,             logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
-        LOCATION(RC_ZF_FAIRY_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
-        LOCATION(RC_ZF_FAIRY_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_ZF_JABU_GOSSIP_STONE_FAIRY,      logic->CallGossipFairyExceptSuns()),
-        LOCATION(RC_ZF_JABU_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION_NNL(RC_ZF_GS_TREE,                      logic->IsChild && logic->CanBonkTrees()),
+        LOCATION_NNL(RC_ZF_GS_ABOVE_THE_LOG,             logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
+        LOCATION_NNL(RC_ZF_FAIRY_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
+        LOCATION_NNL(RC_ZF_FAIRY_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION_NNL(RC_ZF_JABU_GOSSIP_STONE_FAIRY,      logic->CallGossipFairyExceptSuns()),
+        LOCATION_NNL(RC_ZF_JABU_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_ZF_FAIRY_GOSSIP_STONE,           true),
         LOCATION(RC_ZF_JABU_GOSSIP_STONE,            true),
-        LOCATION(RC_ZF_NEAR_JABU_POT_1,              logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_ZF_NEAR_JABU_POT_2,              logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_ZF_NEAR_JABU_POT_3,              logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_ZF_NEAR_JABU_POT_4,              logic->IsChild && logic->CanBreakPots()),
-        LOCATION(RC_ZF_TREE,                         logic->IsChild && logic->CanBonkTrees()),
+        LOCATION_NNL(RC_ZF_NEAR_JABU_POT_1,              logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_ZF_NEAR_JABU_POT_2,              logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_ZF_NEAR_JABU_POT_3,              logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_ZF_NEAR_JABU_POT_4,              logic->IsChild && logic->CanBreakPots()),
+        LOCATION_NNL(RC_ZF_TREE,                         logic->IsChild && logic->CanBonkTrees()),
     }, {
         //Exits
         Entrance(RR_ZD_BEHIND_KING_ZORA,       []{return true;}),
@@ -38,7 +38,7 @@ void RegionTable_Init_ZorasFountain() {
 
     areaTable[RR_ZF_ICEBERGS] = Region("ZF Icebergs", SCENE_ZORAS_FOUNTAIN, {}, {
         //Locations
-        LOCATION(RC_ZF_ICEBERG_FREESTANDING_POH, logic->IsAdult),
+        LOCATION_NNL(RC_ZF_ICEBERG_FREESTANDING_POH, logic->IsAdult),
     }, {
         //Exits
         //This hover is pretty tight, come at it with momentum and aim for the small corner polygon of the big iceburg while spamming roll
@@ -49,7 +49,7 @@ void RegionTable_Init_ZorasFountain() {
 
     areaTable[RR_ZF_LAKEBED] = Region("ZF Lakebed", SCENE_ZORAS_FOUNTAIN, {}, {
         //Locations
-        LOCATION(RC_ZF_BOTTOM_FREESTANDING_POH,       logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
+        LOCATION_NNL(RC_ZF_BOTTOM_FREESTANDING_POH,   logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
         LOCATION(RC_ZF_BOTTOM_NORTH_INNER_RUPEE,      logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
         LOCATION(RC_ZF_BOTTOM_NORTHEAST_INNER_RUPEE,  logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
         LOCATION(RC_ZF_BOTTOM_SOUTHEAST_INNER_RUPEE,  logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
@@ -113,7 +113,7 @@ void RegionTable_Init_ZorasFountain() {
 
     areaTable[RR_ZF_GREAT_FAIRY_FOUNTAIN] = Region("ZF Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, {}, {
         //Locations
-        LOCATION(RC_ZF_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
+        LOCATION_NNL(RC_ZF_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
         Entrance(RR_ZORAS_FOUNTAIN, []{return true;}),

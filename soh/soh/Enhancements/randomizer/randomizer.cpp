@@ -4193,8 +4193,10 @@ void RandomizerSettingsWindow::DrawElement() {
                 if (mSettings->GetOption(RSK_LOGIC_RULES).RenderImGui()) {
                     mNeedsUpdate = true;
                 }
-                // RANDOTODO: Implement Disalbling of Options for Vanilla Logic
-                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHLESS) {
+                // RANDOTODO: Implement Disabling of Options for Vanilla Logic
+                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_GLITCHLESS ||
+                    CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) !=
+                        RO_LOGIC_NEARLY_NO_LOGIC) {
                     ImGui::SameLine();
                     if (mSettings->GetOption(RSK_ALL_LOCATIONS_REACHABLE).RenderImGui()) {
                         mNeedsUpdate = true;

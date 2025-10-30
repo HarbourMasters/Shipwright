@@ -764,6 +764,9 @@ void Settings::CreateOptionDescriptions() {
         "Glitchless - No glitches are required, but may require some minor tricks. Additional tricks may be enabled "
         "and disabled below.\n"
         "\n"
+        "Nearly No Logic - Minimal logic, like preventing Lullaby blocked on Great Fairies. MAY BE IMPOSSIBLE TO "
+        "BEAT.\n"
+        "\n"
         "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.";
     mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE] = "When this options is enabled, the randomizer will "
                                                        "guarantee that every item is obtainable and every "

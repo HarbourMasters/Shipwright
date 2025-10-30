@@ -9,8 +9,8 @@ void RegionTable_Init_GerudoTrainingGround() {
     // Vanilla/MQ Decider
     areaTable[RR_GERUDO_TRAINING_GROUND_ENTRYWAY] = Region("Gerudo Training Ground Entryway", SCENE_GERUDO_TRAINING_GROUND, {}, {}, {
         //Exits
-        Entrance(RR_GERUDO_TRAINING_GROUND_LOBBY,    []{return ctx->GetDungeon(GERUDO_TRAINING_GROUND)->IsVanilla();}),
-        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY, []{return ctx->GetDungeon(GERUDO_TRAINING_GROUND)->IsMQ();}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_LOBBY,    []{return ctx->GetDungeon(GERUDO_TRAINING_GROUND)->IsVanilla();}, true),
+        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY, []{return ctx->GetDungeon(GERUDO_TRAINING_GROUND)->IsMQ();}, true),
         Entrance(RR_GF_EXITING_GTG,                  []{return true;}),
     });
 
@@ -22,7 +22,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         LOCATION(RC_GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST,     logic->CanHitEyeTargets()),
         LOCATION(RC_GERUDO_TRAINING_GROUND_STALFOS_CHEST,         logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true)),
         LOCATION(RC_GERUDO_TRAINING_GROUND_BEAMOS_CHEST,          logic->CanKillEnemy(RE_BEAMOS) && logic->CanKillEnemy(RE_DINOLFOS, ED_CLOSE, true, 2, true)),
-        LOCATION(RC_GERUDO_TRAINING_GROUND_ENTRANCE_STORMS_FAIRY, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION_NNL(RC_GERUDO_TRAINING_GROUND_ENTRANCE_STORMS_FAIRY, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_GERUDO_TRAINING_GROUND_BEAMOS_SOUTH_HEART,    true),
         LOCATION(RC_GERUDO_TRAINING_GROUND_BEAMOS_EAST_HEART,     true),
     }, {
@@ -62,7 +62,7 @@ void RegionTable_Init_GerudoTrainingGround() {
     }, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_CENTRAL_MAZE_RIGHT, []{return logic->CanUse(RG_SONG_OF_TIME) || logic->IsChild;}),
-        Entrance(RR_GERUDO_TRAINING_GROUND_HAMMER_ROOM,        []{return logic->CanUse(RG_LONGSHOT)  || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_HOOKSHOT));}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_HAMMER_ROOM,        []{return logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_HOOKSHOT));}),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_HAMMER_ROOM] = Region("Gerudo Training Ground Hammer Room", SCENE_GERUDO_TRAINING_GROUND, {}, {
@@ -77,7 +77,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_EYE_STATUE_LOWER] = Region("Gerudo Training Ground Eye Statue Lower", SCENE_GERUDO_TRAINING_GROUND, {}, {
         //Locations
-        LOCATION(RC_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST, logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION_NNL(RC_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST, logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_HAMMER_ROOM, []{return true;}),
@@ -85,7 +85,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_EYE_STATUE_UPPER] = Region("Gerudo Training Ground Eye Statue Upper", SCENE_GERUDO_TRAINING_GROUND, {}, {
         //Locations
-        LOCATION(RC_GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST, logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION_NNL(RC_GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST, logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_EYE_STATUE_LOWER, []{return true;}),
@@ -151,7 +151,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_MAZE_CENTER] = Region("Gerudo Training Ground MQ Center", SCENE_GERUDO_TRAINING_GROUND, {
         //Events
-        EventAccess(LOGIC_GTG_MQ_MAZE_SWITCH, []{return logic->CanUse(RG_MEGATON_HAMMER);}),
+        EventAccess(LOGIC_GTG_MQ_MAZE_SWITCH, []{return logic->CanUse(RG_MEGATON_HAMMER);}, true),
     }, 
     {   //Locations
         LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_CRATE, logic->CanBreakCrates()),
@@ -213,7 +213,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_STATUE_ROOM] = Region("Gerudo Training Ground MQ Statue ROom", SCENE_GERUDO_TRAINING_GROUND, {}, {
         //Locations
-        LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_EYE_STATUE_CHEST, logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION_NNL(RC_GERUDO_TRAINING_GROUND_MQ_EYE_STATUE_CHEST, logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
         Entrance(RR_GERUDO_TRAINING_GROUND_MQ_STATUE_ROOM_LEDGE, []{return logic->CanUse(RG_LONGSHOT);}),
