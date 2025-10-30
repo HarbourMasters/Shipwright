@@ -1086,8 +1086,7 @@ constexpr void RemoveLambdaSyntax(std::string& s) {
             --bodyEnd;
 
         // Must start with "return"
-        static const char retkw[] = "return";
-        bool hasReturn = (bodyEnd >= bodyStart + 6) && s.compare(bodyStart, 6, retkw) == 0;
+        bool hasReturn = (bodyEnd >= bodyStart + 6) && s.compare(bodyStart, 6, "return") == 0;
         if (!hasReturn) {
             // Not a simple "return expr;" lambda; keep original and continue
             out.append(s, capStart, p - capStart);
