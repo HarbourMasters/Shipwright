@@ -133,7 +133,7 @@ void RegionTable_Init_DekuTree() {
         LOCATION(RC_DEKU_TREE_BASEMENT_TORCHES_GRASS_2, logic->CanCutShrubs()),
     }, {
         //Exits
-        ENTRANCE(RR_DEKU_TREE_BASEMENT_WATER_ROOM_BACK, true),
+        ENTRANCE(RR_DEKU_TREE_BASEMENT_WATER_ROOM_BACK, Here(RR_DEKU_TREE_BASEMENT_TORCH_ROOM, []{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);})),
         ENTRANCE(RR_DEKU_TREE_BASEMENT_BACK_LOBBY,      Here(RR_DEKU_TREE_BASEMENT_TORCH_ROOM, []{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);})),
     });
 
