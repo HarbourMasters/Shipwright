@@ -942,11 +942,12 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
                             case 1:
                                 return CAN_OBTAIN;
                             case 2:
-                                return infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE ? CANT_OBTAIN_ALREADY_HAVE
-                                                                                                : CAN_OBTAIN;
+                                return infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE
+                                           ? CANT_OBTAIN_ALREADY_HAVE
+                                           : CAN_OBTAIN;
                             case 3:
                                 return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? CAN_OBTAIN
-                                                                                    : CANT_OBTAIN_ALREADY_HAVE;
+                                                                                       : CANT_OBTAIN_ALREADY_HAVE;
                         }
                     }
             }
