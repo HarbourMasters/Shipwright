@@ -32,7 +32,7 @@ void RegionTable_Init_ZoraRiver() {
         EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
         EventAccess(LOGIC_BEAN_PLANT_FAIRY,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
         EventAccess(LOGIC_BUTTERFLY_FAIRY,   []{return logic->CanUse(RG_STICKS);}),
-        EventAccess(LOGIC_BUG_SHRUB,         []{return logic->CanCutShrubs();}),
+        EventAccess(LOGIC_BUG_SHRUB,         []{return logic->CanCutShrubs() && (logic->IsChild || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_ZR_LOWER));}),
     }, {
         //Locations
         LOCATION(RC_ZR_MAGIC_BEAN_SALESMAN,                  logic->IsChild),
@@ -61,7 +61,7 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_BENEATH_WATERFALL_RIGHT_RUPEE,        logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,            true),
         LOCATION(RC_ZR_NEAR_DOMAIN_GOSSIP_STONE,             true),
-        LOCATION(RC_ZR_NEAR_FREESTANDING_POH_GRASS,          logic->CanCutShrubs()),
+        LOCATION(RC_ZR_NEAR_FREESTANDING_POH_GRASS,          (logic->CanCutShrubs() && (logic->IsChild || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_ZR_LOWER))) || logic->CanUse(RG_BOOMERANG)),
     }, {
         //Exits
         Entrance(RR_ZR_FRONT,            []{return true;}),
