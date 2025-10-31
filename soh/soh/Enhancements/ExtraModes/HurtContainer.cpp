@@ -15,13 +15,14 @@ static bool hurtEnabled = false;
 
 void UpdateHurtContainerModeState() {
     hurtEnabled = CVAR_HURT_CONTAINER_VALUE;
-    uint16_t getHeartPieces = gSaveContext.ship.stats.heartPieces / 4;
-    uint16_t getHeartContainers = gSaveContext.ship.stats.heartContainers;
+    uint16_t heartPieceContainers = gSaveContext.ship.stats.heartPieces / 4;
+    uint16_t heartContainers = gSaveContext.ship.stats.heartContainers;
+    uint16_t healthCapacityMod = (heartPieceContainers + heartContainers) * 16;
 
     if (hurtEnabled != CVAR_HURT_CONTAINER_DEFAULT) {
-        gSaveContext.healthCapacity = 320 - ((getHeartPieces + getHeartContainers) * 16);
+        gSaveContext.healthCapacity = 320 - healthCapacityMod;
     } else {
-        gSaveContext.healthCapacity = 48 + ((getHeartPieces + getHeartContainers) * 16);
+        gSaveContext.healthCapacity = 48 + healthCapacityMod;
     }
 }
 
