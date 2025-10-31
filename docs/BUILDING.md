@@ -44,6 +44,15 @@ cd Shipwright
 # Now you can run the executable in .\build\x64 or run in Visual Studio
 ```
 
+Alternatively, an automated script is available at `scripts\windows\build-windows.bat`. Running it from a Developer PowerShell
+or Command Prompt will perform the full configure, asset generation, and build steps described above:
+
+```powershell
+# From the repository root
+scripts\windows\build-windows.bat           # Builds RelWithDebInfo by default
+scripts\windows\build-windows.bat Release   # Builds the Release configuration
+```
+
 ### Developing SoH
 With the cmake build system you have two options for working on the project:
 
