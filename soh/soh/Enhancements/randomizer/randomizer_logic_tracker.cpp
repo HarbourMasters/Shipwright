@@ -5,16 +5,6 @@
 #include "logic_expression.h"
 #include "../../OTRGlobals.h"
 
-//#include <src/Context.h>
-
-extern "C" {
-#include "macros.h"
-#include "functions.h"
-#include "variables.h"
-extern PlayState* gPlayState;
-uint64_t GetUnixTimestamp();
-}
-
 struct ExpressionTable {
     struct ExpressionRow {
         std::shared_ptr<LogicExpression> Expression;
@@ -114,7 +104,7 @@ static std::tuple<bool, bool, bool> CalculateCombines(const ExpressionTable::Exp
     return { combineAll, combineChild, combineAdult };
 }
 
-static void PopulateConnectionExpression(LogicTrackerNode::Connection& connection, std::string expressionStr) {
+static void PopulateConnectionExpression(LogicTrackerNode::Connection& connection, const std::string& expressionStr) {
     std::shared_ptr<LogicExpression> expression;
 
     try {
@@ -293,8 +283,8 @@ static void CalculateShowRandomizerEvent() {
         return;
     }
 
-    const auto& eventes = randomizerEventMap.find(showEvent);
-    if (eventes == randomizerEventMap.end()) {
+    const auto& events = randomizerEventMap.find(showEvent);
+    if (events == randomizerEventMap.end()) {
         return;
     }
 
@@ -302,7 +292,7 @@ static void CalculateShowRandomizerEvent() {
     node.NodeName = "Event: " + showEvent;
     node.NodeId = nodes.size();
 
-    for (const auto& eventInfo : eventes->second) {
+    for (const auto& eventInfo : events->second) {
         const auto& region = areaTable[eventInfo.RandomizerRegion];
 
         LogicTrackerNode::Connection connection;
@@ -379,36 +369,38 @@ static void DrawCondition(const LogicExpression& expression) {
         ImVec4(0.5f, 1.0f, 1.0f, 1.0f), // Cyan
     };
     static size_t fontColorsLength = std::size(fontColors);
-    static ImVec4 defaultColor = ImGui::GetStyleColorVec4(ImGuiCol_Text);
+    const ImVec4 defaultColor = ImGui::GetStyleColorVec4(ImGuiCol_Text);
 
     LogicExpression::Type type = expression.GetType();
+    const auto& children = expression.GetChildren();
+
     if (type == LogicExpression::Type::And || type == LogicExpression::Type::Or ||
         type == LogicExpression::Type::Comparison || type == LogicExpression::Type::Add ||
         type == LogicExpression::Type::Subtract || type == LogicExpression::Type::Multiply ||
         type == LogicExpression::Type::Divide) {
-        DrawColoredWrappedText({ { fontColors[0], expression.GetChildren()[0]->ToString() },
+        DrawColoredWrappedText({ { fontColors[0], children[0]->ToString() },
                                  { defaultColor, " " + expression.GetOperation() + " " },
-                                 { fontColors[1], expression.GetChildren()[1]->ToString() } });
+                                 { fontColors[1], children[1]->ToString() } });
     } else if (type == LogicExpression::Type::Not) {
-        DrawColoredWrappedText({ { defaultColor, "!" }, { fontColors[0], expression.GetChildren()[0]->ToString() } });
+        DrawColoredWrappedText({ { defaultColor, "!" }, { fontColors[0], children[0]->ToString() } });
     } else if (type == LogicExpression::Type::FunctionCall) {
         std::vector<std::pair<ImVec4, std::string>> segments;
         segments.emplace_back(fontColors[0], expression.GetFunctionName());
         segments.emplace_back(defaultColor, "(");
-        for (size_t i = 0; i < expression.GetChildren().size(); ++i) {
-            segments.emplace_back(fontColors[i + 1 % fontColorsLength], expression.GetChildren()[i]->ToString());
-            if (i < expression.GetChildren().size() - 1) {
+        for (size_t i = 0; i < children.size(); ++i) {
+            segments.emplace_back(fontColors[(i + 1) % fontColorsLength], children[i]->ToString());
+            if (i < children.size() - 1) {
                 segments.emplace_back(defaultColor, ", ");
             }
         }
         segments.emplace_back(defaultColor, ")");
         DrawColoredWrappedText(segments);
     } else if (type == LogicExpression::Type::Ternary) {
-        DrawColoredWrappedText({ { fontColors[0], expression.GetChildren()[0]->ToString() },
+        DrawColoredWrappedText({ { fontColors[0], children[0]->ToString() },
                                  { defaultColor, " ? " },
-                                 { fontColors[1], expression.GetChildren()[1]->ToString() },
+                                 { fontColors[1], children[1]->ToString() },
                                  { defaultColor, " : " },
-                                 { fontColors[2], expression.GetChildren()[2]->ToString() } });
+                                 { fontColors[2], children[2]->ToString() } });
     } else if (type == LogicExpression::Type::Value) {
         DrawColoredWrappedText({ { fontColors[0], expression.ToString() } });
     } else {
@@ -503,6 +495,7 @@ static void DrawExpressionTable(const LogicTrackerNode& node, ExpressionTable& t
         }
     }
 
+    ImGui::PushID(&table);
     if (ImGui::BeginTable("", columnCount,
                           ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit)) {
         ImGui::TableSetupColumn("Level", ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_WidthFixed);
@@ -524,11 +517,12 @@ static void DrawExpressionTable(const LogicTrackerNode& node, ExpressionTable& t
             }
         }
         ImGui::TableHeadersRow();
+
+        DrawExpressionRow(node, table, table.Root, 0);
+
+        ImGui::EndTable();
     }
-
-    DrawExpressionRow(node, table, table.Root, 0);
-
-    ImGui::EndTable();
+    ImGui::PopID();
 }
 
 static void DrawNodeConnection(const LogicTrackerNode& node, LogicTrackerNode::Connection& connection) {
@@ -650,8 +644,6 @@ static void DrawNode(LogicTrackerNode& node) {
         for (int i = 0; i < node.Connections.size(); i++) {
             auto& connection = node.Connections[i];
             ImGui::PushID(connection.ParentName.c_str());
-
-            auto& connectionHeader = connection.ParentName;
 
             if (expandingNode && node.Connections.size() == 1) {
                 ImGui::SetNextItemOpen(expandNodeId == node.NodeId, ImGuiCond_Always);
