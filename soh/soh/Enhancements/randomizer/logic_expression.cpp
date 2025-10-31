@@ -669,7 +669,12 @@ void LogicExpression::Impl::PopulateEnumMap() {
 #define DEFINE_RandoOptionChestGame(value) { #value, value },
 #define DEFINE_RandoOptionMQSet(value) { #value, value },
 
-    enumMap = {
+    // static const fixes C6262: Excessive stack usage
+    struct Pair {
+        const char* key;
+        int value;
+    };
+    static const Pair kEnumPairs[] = {
 #include "randomizerEnums.h"
         { "HasProjectileAge::Adult", (int)Rando::HasProjectileAge::Adult },
         { "HasProjectileAge::Child", (int)Rando::HasProjectileAge::Child },
@@ -685,6 +690,11 @@ void LogicExpression::Impl::PopulateEnumMap() {
 #include "tables/scene_table.h"
 #undef DEFINE_SCENE
     };
+
+    enumMap.reserve(sizeof(kEnumPairs) / sizeof(Pair));
+    for (const auto& p : kEnumPairs) {
+        enumMap.emplace(p.key, p.value);
+    }
 }
 
 LogicExpression::ValueVariant LogicExpression::Impl::EvaluateEnum() const {
