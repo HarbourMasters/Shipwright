@@ -45,13 +45,18 @@ cd Shipwright
 ```
 
 Alternatively, an automated script is available at `scripts\windows\build-windows.bat`. Running it from a Developer PowerShell
-or Command Prompt will perform the full configure, asset generation, and build steps described above:
+or Command Prompt will perform the full configure, asset generation, and build steps described above. The script automatically
+provisions a local copy of vcpkg inside the build directory when the environment is using Visual Studio's bundled snapshot so
+that `git pull` errors like `fatal: not a git repository` are avoided:
 
 ```powershell
 # From the repository root
 scripts\windows\build-windows.bat           # Builds RelWithDebInfo by default
 scripts\windows\build-windows.bat Release   # Builds the Release configuration
 ```
+
+If you prefer to use an existing vcpkg checkout, set the environment variable `SOH_USE_SYSTEM_VCPKG=1` before running the script
+and make sure `VCPKG_ROOT` points to a valid git clone.
 
 ### Developing SoH
 With the cmake build system you have two options for working on the project:
