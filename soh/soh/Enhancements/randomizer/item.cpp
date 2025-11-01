@@ -93,7 +93,7 @@ uint16_t Item::GetPrice() const {
 }
 
 std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursion)
-    if (giEntry != nullptr) {
+    if (giEntry != nullptr && giEntry->itemId != RG_PROGRESSIVE_BOMBCHU_BAG) {
         return giEntry;
     }
     std::shared_ptr<Rando::Context> ctx = Rando::Context::GetInstance();
@@ -357,19 +357,19 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             break;
         case RG_PROGRESSIVE_BOMBCHU_BAG:
             if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
-                if (logic->CurrentInventory(ITEM_BOMBCHU) == ITEM_NONE) {
-                    actual = RG_PROGRESSIVE_BOMBCHU_BAG;
-                } else if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
-                    actual = RG_BOMBCHU_INF;
-                } else {
-                    actual = RG_BOMBCHU_10;
+                if (logic->CurrentInventory(ITEM_BOMBCHU) != ITEM_NONE) {
+                    if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
+                        actual = RG_BOMBCHU_INF;
+                    } else {
+                        actual = RG_BOMBCHU_10;
+                    }
                 }
             } else if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
                 if (logic->CurrentInventory(ITEM_BOMBCHU) != ITEM_NONE) {
                     if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
                         actual = RG_BOMBCHU_INF;
                     } else if (infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE) {
-                        if (OTRGlobals::Instance->gRandoContext->GetBombchuCapacity() == 50) {
+                        if (logic->GetSaveContext()->ship.quest.data.randomizer.bombchuUpgradeLevel >= 3) {
                             actual = RG_BOMBCHU_INF;
                         }
                     }
@@ -379,6 +379,9 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         default:
             actual = RG_NONE;
             break;
+    }
+    if (giEntry != nullptr && actual == RG_NONE) {
+        return giEntry;
     }
     return StaticData::RetrieveItem(actual).GetGIEntry();
 }
