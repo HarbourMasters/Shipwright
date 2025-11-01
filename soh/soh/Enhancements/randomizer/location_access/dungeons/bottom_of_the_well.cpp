@@ -331,7 +331,7 @@ void RegionTable_Init_BottomOfTheWell() {
         //An MQ lens trick is recommended here, and a review of this room for OHKO logic when that is added is advised.
         //In the meantime I assume damage taken or the easy answer (nuts)
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM, (logic->TakeDamage() || logic->CanUse(RG_NUTS)) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
-        }, {
+    }, {
         //Exits
         Entrance(RR_BOTW_MQ_MIDDLE, []{return true;}),
     });
