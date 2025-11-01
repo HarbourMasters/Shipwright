@@ -92,7 +92,7 @@ void RegionTable_Init_ZoraRiver() {
         //Locations
         LOCATION(RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH, true),
         LOCATION(RC_ZR_NEAR_FREESTANDING_POH_GRASS,       logic->CanCutShrubs()),
-        }, {
+    }, {
         //Exits
         Entrance(RR_ZORAS_RIVER, []{return true;}),
     });
