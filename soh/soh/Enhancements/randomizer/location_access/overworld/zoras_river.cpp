@@ -88,7 +88,7 @@ void RegionTable_Init_ZoraRiver() {
     areaTable[RR_ZR_PILLAR] = Region("ZR Pillar", SCENE_ZORAS_RIVER, {
         //Events
         EventAccess(LOGIC_BUG_SHRUB, []{return logic->CanCutShrubs();}),
-        }, {
+    }, {
         //Locations
         LOCATION(RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH, true),
         LOCATION(RC_ZR_NEAR_FREESTANDING_POH_GRASS,       logic->CanCutShrubs()),
