@@ -71,7 +71,7 @@ void RegionTable_Init_ZoraRiver() {
     areaTable[RR_ZR_ATOP_LADDER] = Region("ZR Atop Ladder", SCENE_ZORAS_RIVER, {
         //Events
         EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
-        }, {
+    }, {
         //Locations
         LOCATION(RC_ZR_GS_NEAR_RAISED_GROTTOS,              logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) && logic->CanGetNightTimeGS()),
         LOCATION(RC_ZR_NEAR_GROTTOS_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
