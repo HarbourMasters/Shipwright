@@ -80,7 +80,7 @@ void RegionTable_Init_ZoraRiver() {
         }, {
         //Exits
         Entrance(RR_ZORAS_RIVER,     []{return true;}),
-        Entrance(RR_ZR_PILLAR,       []{return logic->IsChild/* && str0*/ || logic->CanUse(RG_HOVER_BOOTS);}),
+        Entrance(RR_ZR_PILLAR,       []{return (logic->IsChild/* && str0*/) || logic->CanUse(RG_HOVER_BOOTS);}),
         Entrance(RR_ZR_OPEN_GROTTO,  []{return true;}),
         Entrance(RR_ZR_FAIRY_GROTTO, []{return Here(RR_ZR_ATOP_LADDER, []{return logic->BlastOrSmash();});}),
     });
