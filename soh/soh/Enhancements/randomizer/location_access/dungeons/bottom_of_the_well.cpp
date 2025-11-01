@@ -231,7 +231,7 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_7, logic->CanCutShrubs()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_8, logic->CanCutShrubs()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_BEHIND_ROCKS_GRASS_9, logic->CanCutShrubs()),
-        }, {
+    }, {
         //Exits
         Entrance(RR_BOTW_B3_OOZE, []{return Here(RR_BOTW_B3_BLOCKED_GRASS, []{return logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET);});}),
     });
