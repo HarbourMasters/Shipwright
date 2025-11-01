@@ -2113,7 +2113,7 @@ void RegisterItemTrackerWidgets() {
     SohGui::mSohMenu->AddSearchWidget({ personalNotesWiget, "Randomizer", "Item Tracker", "General Settings" });
 
     hookshotIdentWidget = { .name = "Show Hookshot Identifiers", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
-    hookshotIdentWidget.CVar(CVAR_SETTING("FreeLook.Enabled"))
+    hookshotIdentWidget.CVar(CVAR_TRACKER_ITEM("HookshotIdentifier"))
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
                      .Tooltip("Shows an 'H' or an 'L' to more easily distinguish between Hookshot and Longshot."));
