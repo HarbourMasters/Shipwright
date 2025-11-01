@@ -107,24 +107,46 @@ char z2ASCII(int code) {
     return char(ret);
 }
 
-char ntscZ2ASCII(int code) {
-    int ret;
-    if (code < 10) { // Digits
-        ret = code + 48;
+std::string decodeNTSCPlayerNameChar(int code) {
+    const std::string charmap[] = {
+        "0",  "1",  "2",  "3",  "4",  "5",  "6",  "7",  "8",  "9",  // 10
+        "あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ", // 20
+        "さ", "し", "す", "せ", "そ", "た", "ち", "つ", "て", "と", // 30
+        "な", "に", "ぬ", "ね", "の", "は", "ひ", "ふ", "へ", "ほ", // 40
+        "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "ら", "り", // 50
+        "る", "れ", "ろ", "わ", "を", "ん", "ぁ", "ぃ", "ぅ", "ぇ", // 60
+        "ぉ", "っ", "ゃ", "ゅ", "ょ", "が", "ぎ", "ぐ", "げ", "ご", // 70
+        "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", // 80
+        "ば", "び", "ぶ", "べ", "ぼ", "ぱ", "ぴ", "ぷ", "ぺ", "ぽ", // 90
+        "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", // 100
+        "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト", // 110
+        "ナ", "ニ", "ヌ", "ネ", "ノ", "ハ", "ヒ", "フ", "ヘ", "ホ", // 120
+        "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ラ", "リ", // 130
+        "ル", "レ", "ロ", "ワ", "ヲ", "ン", "ァ", "ィ", "ゥ", "ェ", // 140
+        "ォ", "ッ", "ャ", "ュ", "ョ", "ガ", "ギ", "グ", "ゲ", "ゴ", // 150
+        "ザ", "ジ", "ズ", "ゼ", "ゾ", "ダ", "ヂ", "ヅ", "デ", "ド", // 160
+        "バ", "ビ", "ブ", "ベ", "ボ", "パ", "ピ", "プ", "ペ", "ポ", // 170
+        "ヴ",
+    };
+    std::string ret;
+
+    if (code < 171) { // Digits and Japanese
+        ret = charmap[code];
     } else if (code >= 171 && code < 197) { // Uppercase letters
-        ret = code - 171 + 65;
+        ret.assign(1, (char)(code - 171 + 65));
     } else if (code >= 197 && code < 223) { // Lowercase letters
-        ret = code - 197 + 97;
+        ret.assign(1, (char)(code - 197 + 97));
     } else if (code == 223) { // Space
-        ret = ' ';
+        ret = " ";
     } else if (code == 228) { // -
-        ret = '-';
+        ret = "-";
     } else if (code == 234) { // .
-        ret = '.';
+        ret = ".";
     } else {
-        ret = '?';
+        ret = "?";
     }
-    return char(ret);
+
+    return ret;
 }
 
 enum MagicLevel { MAGIC_LEVEL_NONE, MAGIC_LEVEL_SINGLE, MAGIC_LEVEL_DOUBLE };
@@ -187,21 +209,34 @@ void DrawInfoTab() {
     // TODO Needs a better method for name changing but for now this will work.
     std::string name;
     ImU16 one = 1;
-    for (int i = 0; i < 8; i++) {
-        char letter = (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL)
-                          ? z2ASCII(gSaveContext.playerName[i])
-                          : ntscZ2ASCII(gSaveContext.playerName[i]);
-        name += letter;
+
+    if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) {
+        for (int i = 0; i < 8; i++) {
+            char letter = z2ASCII(gSaveContext.playerName[i]);
+            name += letter;
+        }
+        name += '\0';
+    } else {
+        for (int i = 0; i < 8; i++) {
+            name += decodeNTSCPlayerNameChar(gSaveContext.playerName[i]);
+        }
+        name += '\0';
     }
-    name += '\0';
 
     ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
 
-    ImGui::Text("Name: %s", name.c_str());
+    if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) {
+        ImGui::Text("Name: %s", name.c_str());
+    } else {
+        ImGui::PushFont(OTRGlobals::Instance->fontJapanese);
+        ImGui::Text("Name: %s", name.c_str());
+        ImGui::PopFont();
+    }
+
     Tooltip("Player Name");
     std::string nameID;
     for (int i = 0; i < 8; i++) {
-        nameID = (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) ? z2ASCII(i) : ntscZ2ASCII(i);
+        nameID = z2ASCII(i);
         if (i % 4 != 0) {
             ImGui::SameLine();
         }
