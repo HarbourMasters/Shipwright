@@ -163,7 +163,7 @@ void RegionTable_Init_BottomOfTheWell() {
     });
 
     areaTable[RR_BOTW_NEAR_BOSS_LOWER] = Region("Bottom of the Well Near Boss Lower", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
-        //Exitss
+        //Exits
         //Climb always needed in case the water is lowered out of logic
         //Adult can ground jump out of the pit without climb but needs a way through the crawlspace
         Entrance(RR_BOTW_PERIMETER,       []{return logic->IsChild/*CanCrawl*/ && (logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->HasItem(RG_BRONZE_SCALE))/*&& CanClimb*/;}),
