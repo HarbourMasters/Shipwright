@@ -61,7 +61,7 @@ void RegionTable_Init_ZoraRiver() {
     }, {
         //Exits
         Entrance(RR_ZR_FRONT,            []{return true;}),
-        Entrance(RR_ZR_ATOP_LADDER,      []{return true/*(isAdult || str0) && (Logic->CanUse(RG_CLIMB) || (IsAdult && logic->CanUse(RG_LONGSHOT)))*/;}),
+        Entrance(RR_ZR_ATOP_LADDER,      []{return true/*(logic->IsAdult || str0) && (logic->CanUse(RG_CLIMB) || (logic->IsAdult && logic->CanUse(RG_LONGSHOT)))*/;}),
         Entrance(RR_ZR_PILLAR,           []{return (logic->IsChild/* && str0*/) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && ctx->GetTrickOption(RT_ZR_LOWER));}),
         Entrance(RR_THE_LOST_WOODS,      []{return logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
         Entrance(RR_ZR_STORMS_GROTTO,    []{return logic->CanOpenStormsGrotto();}),
