@@ -12,6 +12,7 @@
 #include <fast/resource/type/DisplayList.h>
 #include <ship/window/Window.h>
 #include <soh/GameVersions.h>
+#include <spdlog/sinks/rotating_file_sink.h>
 
 #include "Enhancements/gameconsole.h"
 #ifdef _WIN32
@@ -319,8 +320,13 @@ void OTRGlobals::Initialize() {
     context->InitCrashHandler();
     context->InitConsole();
 
+#if (_DEBUG)
+    int defaultLogLevel = 0;
+#else
+    int defaultLogLevel = 2;
+#endif
     Ship::Context::GetInstance()->GetLogger()->set_level(
-        (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), 1));
+        (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), defaultLogLevel));
     Ship::Context::GetInstance()->GetLogger()->set_pattern("[%H:%M:%S.%e] [%s:%#] [%l] %v");
 
     auto sohInputEditorWindow =
