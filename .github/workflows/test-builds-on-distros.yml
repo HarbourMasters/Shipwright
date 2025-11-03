@@ -51,7 +51,7 @@ jobs:
     - name: Install dependencies (Nix)
       if: ${{ matrix.image == 'nix/nixos:latest' }}
       run: |
-        nix develop
+        nix develop .github/workflows/flake.nix
     - name: Install latest nlohmann
       if: ${{ matrix.image == 'fedora:39' }}
       run: |
