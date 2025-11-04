@@ -1,0 +1,6 @@
+{
+  "cmake.configureSettings": {
+    "CMAKE_INSTALL_PREFIX": "${workspaceFolder}/local"
+  },
+  "cmake.buildDirectory": "${workspaceFolder}/build"
+}
