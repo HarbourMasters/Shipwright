@@ -19,6 +19,7 @@ expected/
 notes/
 baserom/
 docs/doxygen/
+local/
 *.elf
 *.sra
 *.z64
