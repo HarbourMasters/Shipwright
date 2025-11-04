@@ -1492,6 +1492,20 @@ void SohInputEditorWindow::DrawDpadControlPanel() {
     Ship::GuiWindow::EndGroupPanel(0);
 }
 
+void SohInputEditorWindow::DrawAdvancedControlPanel() {
+    ImVec2 cursor = ImGui::GetCursorPos();
+    ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+    Ship::GuiWindow::BeginGroupPanel("Advanced Options", ImGui::GetContentRegionAvail());
+
+    CVarCheckbox("Disable Steam virtual gamepad", CVAR_CONTROLLER_DISABLE_STEAM_VIRTUAL_GAMEPAD,
+                 CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .DefaultValue(false)
+                     .Tooltip("Requires Restart. Must be checked for Steam Deck gyro."));
+
+    Ship::GuiWindow::EndGroupPanel(0);
+}
+
 void SohInputEditorWindow::DrawDeviceToggles(uint8_t portIndex) {
     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
 
@@ -1675,6 +1689,16 @@ void SohInputEditorWindow::DrawLinkTab() {
             ImGui::PopStyleColor();
             ImGui::PopStyleColor();
             DrawDpadControlPanel();
+            ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.133f, 0.133f, 0.133f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+        }
+
+        if (ImGui::CollapsingHeader("Advanced Options")) {
+            ImGui::PopStyleColor();
+            ImGui::PopStyleColor();
+            ImGui::PopStyleColor();
+            DrawAdvancedControlPanel();
             ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.133f, 0.133f, 0.133f, 1.0f));
             ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
             ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));

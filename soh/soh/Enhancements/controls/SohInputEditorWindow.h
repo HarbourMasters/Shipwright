@@ -67,6 +67,7 @@ class SohInputEditorWindow final : public Ship::GuiWindow {
     void DrawOcarinaControlPanel();
     void DrawCameraControlPanel();
     void DrawDpadControlPanel();
+    void DrawAdvancedControlPanel();
 
     int32_t mGameInputBlockTimer;
     int32_t mMappingInputBlockTimer;
