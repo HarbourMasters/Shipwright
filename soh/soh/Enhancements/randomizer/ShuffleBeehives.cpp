@@ -93,6 +93,10 @@ void ObjComb_RandomizerUpdate(void* actor) {
 }
 
 void RegisterShuffleBeehives() {
+    SHOULD_SHUFFLE_LOCATION({
+        *should = location->GetRCType() == RCTYPE_BEEHIVE && ctx->GetOption(RSK_SHUFFLE_BEEHIVES);
+    });
+
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES);
 
     COND_ID_HOOK(OnActorInit, ACTOR_OBJ_COMB, shouldRegister, ObjComb_RandomizerInit);
