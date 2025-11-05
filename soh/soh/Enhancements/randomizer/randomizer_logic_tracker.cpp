@@ -250,6 +250,10 @@ static void CalculateShowRandomizerRegion() {
 
         LogicTrackerNode::Connection connection;
         connection.ParentName = "Region: " + parentRegion->regionName;
+        if (entrance->IsShuffled()) {
+            const auto& originalConnectedRegion = RegionTable(entrance->GetOriginalConnectedRegionKey());
+            connection.ParentName += ",    Originally to: " + originalConnectedRegion->regionName;
+        }
         connection.ParentRandomizerRegion = entrance->GetParentRegionKey();
         connection.ChildDayAccess = parentRegion->childDay;
         connection.ChildNightAccess = parentRegion->childNight;
