@@ -161,13 +161,33 @@ bool Context::IsQuestOfLocationActive(RandomizerCheck rc) {
            loc->GetQuest() == RCQUEST_VANILLA && mDungeons->GetDungeonFromScene(loc->GetScene())->IsVanilla();
 }
 
+bool Context::ShouldAddLocationToPool(Location* location, bool result) {
+    bool boolResult = static_cast<bool>(result);
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::ShouldAddLocationToPool>(location, &boolResult);
+    return boolResult;
+}
+
 void Context::GenerateLocationPool() {
     allLocations.clear();
     overworldLocations.clear();
     for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
         dungeon->locations.clear();
     }
+
     for (Location& location : StaticData::GetLocationTable()) {
+        if (ShouldAddLocationToPool(&location, true)) {
+            if (location.IsOverworld()) {
+                AddLocation(location.GetRandomizerCheck(), &overworldLocations);
+                AddLocation(location.GetRandomizerCheck());
+            } else { // Is a Dungeon check
+                auto* dungeon = GetDungeon(location.GetArea() - RCAREA_DEKU_TREE);
+                if (location.GetQuest() == RCQUEST_BOTH || (location.GetQuest() == RCQUEST_MQ) == dungeon->IsMQ()) {
+                    // also add to that dungeon's location list.
+                    AddLocation(location.GetRandomizerCheck(), &dungeon->locations);
+                    AddLocation(location.GetRandomizerCheck());
+                }
+            }
+        }
         // skip RCs that shouldn't be in the pool for any reason (i.e. settings, unsupported check type, etc.)
         // TODO: Exclude checks for some of the older shuffles from the pool too i.e. Frog Songs, Scrubs, etc.)
         if (location.GetRandomizerCheck() == RC_UNKNOWN_CHECK ||
