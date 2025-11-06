@@ -27,6 +27,7 @@
 #include <functional>
 #include "draw.h"
 #include "soh/OTRGlobals.h"
+#include <ship/window/FileDropMgr.h>
 #include "soh/SohGui/UIWidgets.hpp"
 #include "static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -388,6 +389,29 @@ static const char* frenchRupeeNames[39] = {
     "Pièces",   "Plastyks",    "Pokédollars", "Pokémon", "Radis",      "Rubis",    "Zennies",
 };
 
+bool Rando_HandleSpoilerDrop(char* filePath) {
+    if (SohUtils::IsStringEmpty(filePath)) {
+        return false;
+    }
+
+    try {
+        std::ifstream stream(filePath);
+        if (!stream) {
+            return false;
+        }
+
+        nlohmann::json json;
+        stream >> json;
+
+        if (json.contains("version") && json.contains("finalSeed")) {
+            CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), filePath);
+            CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 1);
+            return true;
+        }
+    } catch (std::exception& e) {}
+    return false;
+}
+
 Randomizer::Randomizer() {
     Rando::StaticData::InitItemTable();
     Rando::StaticData::InitLocationTable();
@@ -404,6 +428,8 @@ Randomizer::Randomizer() {
     for (size_t c = 0; c < Rando::StaticData::hintTypeNames.size(); c++) {
         SpoilerfileHintTypeNameToEnum[Rando::StaticData::hintTypeNames[(HintType)c].GetEnglish(MF_CLEAN)] = (HintType)c;
     }
+
+    Ship::Context::GetInstance()->GetFileDropMgr()->RegisterDropHandler(Rando_HandleSpoilerDrop);
 }
 
 Randomizer::~Randomizer() {
@@ -3307,6 +3333,69 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
         RC_SPIRIT_TEMPLE_MQ_BEAMOS_SMALL_CRATE,
         RAND_INF_SPIRIT_TEMPLE_MQ_BEAMOS_SMALL_CRATE,
     },
+    { RC_MARKET_TREE, RAND_INF_MARKET_TREE },
+    { RC_HC_NEAR_GUARDS_TREE_1, RAND_INF_HC_NEAR_GUARDS_TREE_1 },
+    { RC_HC_NEAR_GUARDS_TREE_2, RAND_INF_HC_NEAR_GUARDS_TREE_2 },
+    { RC_HC_NEAR_GUARDS_TREE_3, RAND_INF_HC_NEAR_GUARDS_TREE_3 },
+    { RC_HC_NEAR_GUARDS_TREE_4, RAND_INF_HC_NEAR_GUARDS_TREE_4 },
+    { RC_HC_NEAR_GUARDS_TREE_5, RAND_INF_HC_NEAR_GUARDS_TREE_5 },
+    { RC_HC_NEAR_GUARDS_TREE_6, RAND_INF_HC_NEAR_GUARDS_TREE_6 },
+    { RC_HC_SKULLTULA_TREE, RAND_INF_HC_SKULLTULA_TREE },
+    { RC_HC_GROTTO_TREE, RAND_INF_HC_GROTTO_TREE },
+    { RC_HC_NL_TREE_1, RAND_INF_HC_NL_TREE_1 },
+    { RC_HC_NL_TREE_2, RAND_INF_HC_NL_TREE_2 },
+    { RC_HF_NEAR_KAK_TREE, RAND_INF_HF_NEAR_KAK_TREE },
+    { RC_HF_NEAR_KAK_SMALL_TREE, RAND_INF_HF_NEAR_KAK_SMALL_TREE },
+    { RC_HF_NEAR_MARKET_TREE_1, RAND_INF_HF_NEAR_MARKET_TREE_1 },
+    { RC_HF_NEAR_MARKET_TREE_2, RAND_INF_HF_NEAR_MARKET_TREE_2 },
+    { RC_HF_NEAR_MARKET_TREE_3, RAND_INF_HF_NEAR_MARKET_TREE_3 },
+    { RC_HF_NEAR_LLR_TREE, RAND_INF_HF_NEAR_LLR_TREE },
+    { RC_HF_NEAR_LH_TREE, RAND_INF_HF_NEAR_LH_TREE },
+    { RC_HF_CHILD_NEAR_GV_TREE, RAND_INF_HF_CHILD_NEAR_GV_TREE },
+    { RC_HF_ADULT_NEAR_GV_TREE, RAND_INF_HF_ADULT_NEAR_GV_TREE },
+    { RC_HF_NEAR_ZR_TREE, RAND_INF_HF_NEAR_ZR_TREE },
+    { RC_HF_NORTHWEST_TREE_1, RAND_INF_HF_NORTHWEST_TREE_1 },
+    { RC_HF_NORTHWEST_TREE_2, RAND_INF_HF_NORTHWEST_TREE_2 },
+    { RC_HF_NORTHWEST_TREE_3, RAND_INF_HF_NORTHWEST_TREE_3 },
+    { RC_HF_NORTHWEST_TREE_4, RAND_INF_HF_NORTHWEST_TREE_4 },
+    { RC_HF_NORTHWEST_TREE_5, RAND_INF_HF_NORTHWEST_TREE_5 },
+    { RC_HF_NORTHWEST_TREE_6, RAND_INF_HF_NORTHWEST_TREE_6 },
+    { RC_HF_EAST_TREE_1, RAND_INF_HF_EAST_TREE_1 },
+    { RC_HF_EAST_TREE_2, RAND_INF_HF_EAST_TREE_2 },
+    { RC_HF_EAST_TREE_3, RAND_INF_HF_EAST_TREE_3 },
+    { RC_HF_EAST_TREE_4, RAND_INF_HF_EAST_TREE_4 },
+    { RC_HF_EAST_TREE_5, RAND_INF_HF_EAST_TREE_5 },
+    { RC_HF_EAST_TREE_6, RAND_INF_HF_EAST_TREE_6 },
+    { RC_HF_SOUTHEAST_TREE_1, RAND_INF_HF_SOUTHEAST_TREE_1 },
+    { RC_HF_SOUTHEAST_TREE_2, RAND_INF_HF_SOUTHEAST_TREE_2 },
+    { RC_HF_SOUTHEAST_TREE_3, RAND_INF_HF_SOUTHEAST_TREE_3 },
+    { RC_HF_SOUTHEAST_TREE_4, RAND_INF_HF_SOUTHEAST_TREE_4 },
+    { RC_HF_SOUTHEAST_TREE_5, RAND_INF_HF_SOUTHEAST_TREE_5 },
+    { RC_HF_SOUTHEAST_TREE_6, RAND_INF_HF_SOUTHEAST_TREE_6 },
+    { RC_HF_SOUTHEAST_TREE_7, RAND_INF_HF_SOUTHEAST_TREE_7 },
+    { RC_HF_SOUTHEAST_TREE_8, RAND_INF_HF_SOUTHEAST_TREE_8 },
+    { RC_HF_SOUTHEAST_TREE_9, RAND_INF_HF_SOUTHEAST_TREE_9 },
+    { RC_HF_SOUTHEAST_TREE_10, RAND_INF_HF_SOUTHEAST_TREE_10 },
+    { RC_HF_SOUTHEAST_TREE_11, RAND_INF_HF_SOUTHEAST_TREE_11 },
+    { RC_HF_SOUTHEAST_TREE_12, RAND_INF_HF_SOUTHEAST_TREE_12 },
+    { RC_HF_SOUTHEAST_TREE_13, RAND_INF_HF_SOUTHEAST_TREE_13 },
+    { RC_HF_SOUTHEAST_TREE_14, RAND_INF_HF_SOUTHEAST_TREE_14 },
+    { RC_HF_SOUTHEAST_TREE_15, RAND_INF_HF_SOUTHEAST_TREE_15 },
+    { RC_HF_SOUTHEAST_TREE_16, RAND_INF_HF_SOUTHEAST_TREE_16 },
+    { RC_HF_SOUTHEAST_TREE_17, RAND_INF_HF_SOUTHEAST_TREE_17 },
+    { RC_HF_SOUTHEAST_TREE_18, RAND_INF_HF_SOUTHEAST_TREE_18 },
+    { RC_HF_SOUTHEAST_TREE_19, RAND_INF_HF_SOUTHEAST_TREE_19 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_1, RAND_INF_HF_CHILD_SOUTHEAST_TREE_1 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_2, RAND_INF_HF_CHILD_SOUTHEAST_TREE_2 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_3, RAND_INF_HF_CHILD_SOUTHEAST_TREE_3 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_4, RAND_INF_HF_CHILD_SOUTHEAST_TREE_4 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_5, RAND_INF_HF_CHILD_SOUTHEAST_TREE_5 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_6, RAND_INF_HF_CHILD_SOUTHEAST_TREE_6 },
+    { RC_HF_TEKTITE_GROTTO_TREE, RAND_INF_HF_TEKTITE_GROTTO_TREE },
+    { RC_ZF_TREE, RAND_INF_ZF_TREE },
+    { RC_ZR_TREE, RAND_INF_ZR_TREE },
+    { RC_KAK_TREE, RAND_INF_KAK_TREE },
+    { RC_LLR_TREE, RAND_INF_LLR_TREE },
 };
 
 BeehiveIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
@@ -3728,6 +3817,27 @@ SmallCrateIdentity Randomizer::IdentifySmallCrate(s32 sceneNum, s32 posX, s32 po
     return smallCrateIdentity;
 }
 
+TreeIdentity Randomizer::IdentifyTree(s32 sceneNum, s32 posX, s32 posZ) {
+    struct TreeIdentity treeIdentity;
+
+    if (sceneNum == SCENE_MARKET_NIGHT) {
+        sceneNum = SCENE_MARKET_DAY;
+    }
+
+    s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_WOOD02, sceneNum, actorParams);
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK &&
+        (location->GetRCType() != RCTYPE_NLTREE || GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) {
+        treeIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        treeIdentity.randomizerCheck = location->GetRandomizerCheck();
+        return treeIdentity;
+    }
+
+    treeIdentity.randomizerInf = RAND_INF_MAX;
+    treeIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+    return treeIdentity;
+}
+
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return Rando::Context::GetInstance()->GetOption(randoSettingKey).Get();
 }
@@ -3900,32 +4010,24 @@ void RandomizerSettingsWindow::DrawElement() {
 
         if (ImGui::BeginTabItem("Items")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                                 RO_LOGIC_VANILLA);
             if (mSettings->GetOptionGroup(RSG_ITEMS_IMGUI_TABLE).RenderImGui()) {
                 mNeedsUpdate = true;
             }
-            ImGui::EndDisabled();
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
 
         if (ImGui::BeginTabItem("Gameplay")) {
-            ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                                 RO_LOGIC_VANILLA);
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (mSettings->GetOptionGroup(RSG_GAMEPLAY_IMGUI_TABLE).RenderImGui()) {
                 mNeedsUpdate = true;
             }
-            ImGui::EndDisabled();
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
 
         if (ImGui::BeginTabItem("Locations")) {
-            ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings ||
-                                 CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                                     RO_LOGIC_VANILLA);
+            ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (!locationsTabOpen) {
                 locationsTabOpen = true;
@@ -4099,19 +4201,11 @@ void RandomizerSettingsWindow::DrawElement() {
                         mNeedsUpdate = true;
                     }
                 }
-                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA) {
-                    ImGui::SameLine();
-                    ImGui::TextColored(
-                        ImVec4(1.0f, 0.0f, 0.0f, 1.0f),
-                        "Heads up! This will disable all rando settings except for entrance shuffle and starter items");
-                }
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
 
-            ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings ||
-                                 CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                                     RO_LOGIC_VANILLA);
+            ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
 
             // Tricks
             static std::unordered_map<RandomizerArea, bool> areaTreeDisabled{
@@ -5442,7 +5536,7 @@ void Randomizer::CreateCustomMessages() {
                   "vielleicht&dafür...",
                   "Vous obtenez une %rBouteille avec&un Esprit%w! Ça intéresserait&peut-être le vendeur d'Âme "),
 
-        GIMESSAGE(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yThieves Hideout &%wSmall Key!",
+        GIMESSAGE(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yThieves' Hideout &%wSmall Key!",
                   "Du erhältst einen %rkleinen&Schlüssel%w des %yDiebesverstecks%w!",
                   "Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
         GIMESSAGE(RG_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %gForest Temple &%wSmall Key!",
@@ -5542,7 +5636,7 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_FISHING_HOLE_KEY, ITEM_KEY_SMALL, "You found the key to the&%gPond%w!",
                   "Du erhältst den %rSchlüssel%w&zum %gFischweiher%w!", "Vous obtenez la %rClé %wde l'%gÉtang%w!"),
 
-        GIMESSAGE(RG_GERUDO_FORTRESS_KEY_RING, ITEM_KEY_SMALL, "You found a %yThieves Hideout&%wKeyring!",
+        GIMESSAGE(RG_GERUDO_FORTRESS_KEY_RING, ITEM_KEY_SMALL, "You found a %yThieves' Hideout&%wKeyring!",
                   "Du erhältst das %rSchlüsselbund%w&des %yDiebesverstecks%w!",
                   "Vous obtenez le trousseau de&clés du %yRepaire des Voleurs%w!"),
         GIMESSAGE(RG_FOREST_TEMPLE_KEY_RING, ITEM_KEY_SMALL, "You found a %gForest Temple&%wKeyring!",

@@ -6,7 +6,7 @@
 #endif
 #include "Extract.h"
 #include "portable-file-dialogs.h"
-#include <utils/binarytools/BitConverter.h>
+#include <ship/utils/binarytools/BitConverter.h>
 #include "variables.h"
 
 #ifdef unix
@@ -448,6 +448,34 @@ bool Extractor::ManuallySearchForRomMatchingType(RomSearchMode searchMode) {
                 UNREACHABLE;
                 break;
         }
+    }
+
+    return true;
+}
+
+bool Extractor::RunFileStandalone(std::string rom) {
+    if (std::filesystem::is_directory(rom)) {
+        return false;
+    }
+    auto file = std::filesystem::path(rom);
+    if ((file.extension() != ".n64") && (file.extension() != ".z64") && (file.extension() != ".v64")) {
+        return false;
+    }
+    SetRomInfo(rom);
+
+    if (!ValidateRomSize()) {
+        return false;
+    }
+    std::ifstream inFile;
+
+    inFile.open(rom, std::ios::in | std::ios::binary);
+    inFile.read((char*)mRomData.get(), mCurRomSize);
+    inFile.clear();
+    inFile.close();
+    BitConverter::RomToBigEndian(mRomData.get(), mCurRomSize);
+
+    if (!ValidateRom(true)) {
+        return false;
     }
 
     return true;

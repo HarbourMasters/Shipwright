@@ -9,7 +9,6 @@
 #include "hints.hpp"
 #include "shops.hpp"
 #include "pool_functions.hpp"
-//#include "debug.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/debugger/performanceTimer.h"
 
@@ -974,8 +973,7 @@ static void RandomizeDungeonRewards() {
             return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;
         });
 
-        if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA) ||
-            ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS)
+        if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS)
                 .Is(RO_DUNGEON_REWARDS_VANILLA)) { // Place dungeon rewards in vanilla locations
             for (RandomizerCheck loc : Rando::StaticData::dungeonRewardLocations) {
                 ctx->GetItemLocation(loc)->PlaceVanillaItem();

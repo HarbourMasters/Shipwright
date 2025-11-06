@@ -10,7 +10,7 @@ extern "C"
 {
 #endif
 
-#include "luslog.h"
+#include <libultraship/log/luslog.h>
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
 #if defined(INCLUDE_GAME_PRINTF) && defined(_DEBUG)
@@ -2455,10 +2455,6 @@ void Font_LoadOrderedFontNTSC(Font* font);
 void Interface_RandoRestoreSwordless(void);
 s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projectedPos, f32 projectedW, bool* shouldDraw,
                                  bool* shouldUpdate);
-
-//Pause Warp
-void PauseWarp_HandleSelection();
-void PauseWarp_Execute();
 
 // #endregion
 

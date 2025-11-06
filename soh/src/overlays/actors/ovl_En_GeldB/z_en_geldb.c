@@ -1576,7 +1576,7 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
                 }
 
                 if (IS_RANDO) {
-                    Entrance_OverrideGeurdoGuardCapture();
+                    Entrance_OverrideGerudoGuardCapture();
                 }
 
                 play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);

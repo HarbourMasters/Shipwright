@@ -2,11 +2,11 @@
 #include <variant>
 #include <string>
 #include <fstream>
-#include <config/Config.h>
+#include <ship/config/Config.h>
 #include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
 #include <libultraship/libultraship.h>
-#include <Json.h>
+#include <ship/resource/type/Json.h>
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
@@ -437,10 +437,12 @@ void PresetsCustomWidget(WidgetInfo& info) {
 void RegisterPresetsWidgets() {
     SohGui::mSohMenu->AddSidebarEntry("Settings", "Presets", 1);
     WidgetPath path = { "Settings", "Presets", SECTION_COLUMN_1 };
-    SohGui::mSohMenu->AddWidget(path, "PresetsWidget", WIDGET_CUSTOM).CustomFunction(PresetsCustomWidget);
+    SohGui::mSohMenu->AddWidget(path, "PresetsWidget", WIDGET_CUSTOM)
+        .CustomFunction(PresetsCustomWidget)
+        .HideInSearch(true);
     presetFolder = Ship::Context::GetInstance()->GetPathRelativeToAppDirectory("presets");
     std::fill_n(saveSection, PRESET_SECTION_MAX, true);
     LoadPresets();
 }
 
-static RegisterMenuInitFunc initFunc(RegisterPresetsWidgets);
+static RegisterMenuInitFunc menuInitFunc(RegisterPresetsWidgets);

@@ -52,7 +52,10 @@ Context::Context() {
         &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
         &mOptions[RSK_SHUFFLE_ADULT_TRADE],
         &mOptions[RSK_SHUFFLE_100_GS_REWARD],
-        &mOptions[RSK_SHUFFLE_FAIRIES],
+        &mOptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES],
+        &mOptions[RSK_SHUFFLE_STONE_FAIRIES],
+        &mOptions[RSK_SHUFFLE_BEAN_FAIRIES],
+        &mOptions[RSK_SHUFFLE_SONG_FAIRIES],
         &mOptions[RSK_GOSSIP_STONE_HINTS],
     };
 }
@@ -124,8 +127,7 @@ void Context::PlaceItemInLocation(const RandomizerCheck locKey, const Randomizer
     SPDLOG_DEBUG(StaticData::RetrieveItem(item).GetName().GetEnglish() + " placed at " +
                  StaticData::GetLocation(locKey)->GetName() + "\n");
 
-    if (applyEffectImmediately || mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_GLITCHLESS) ||
-        mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_VANILLA)) {
+    if (applyEffectImmediately || mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_GLITCHLESS)) {
         StaticData::RetrieveItem(item).ApplyEffect();
     }
 
@@ -193,9 +195,15 @@ void Context::GenerateLocationPool() {
             (location.GetRCType() == RCTYPE_GRASS && mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_OFF)) ||
             (location.GetRCType() == RCTYPE_CRATE && mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OFF)) ||
             (location.GetRCType() == RCTYPE_NLCRATE && (mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OFF) ||
-                                                        !mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_NO_LOGIC))) ||
+                                                        mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC))) ||
             (location.GetRCType() == RCTYPE_SMALL_CRATE && mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OFF)) ||
-            (location.GetRCType() == RCTYPE_FAIRY && !mOptions[RSK_SHUFFLE_FAIRIES]) ||
+            (location.GetRCType() == RCTYPE_FOUNTAIN_FAIRY && !mOptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES]) ||
+            (location.GetRCType() == RCTYPE_STONE_FAIRY && !mOptions[RSK_SHUFFLE_STONE_FAIRIES]) ||
+            (location.GetRCType() == RCTYPE_BEAN_FAIRY && !mOptions[RSK_SHUFFLE_BEAN_FAIRIES]) ||
+            (location.GetRCType() == RCTYPE_SONG_FAIRY && !mOptions[RSK_SHUFFLE_SONG_FAIRIES]) ||
+            (location.GetRCType() == RCTYPE_TREE && !mOptions[RSK_SHUFFLE_TREES]) ||
+            (location.GetRCType() == RCTYPE_NLTREE &&
+             (!mOptions[RSK_SHUFFLE_TREES] || mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC))) ||
             (location.GetRCType() == RCTYPE_FREESTANDING &&
              mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_OFF)) ||
             (location.GetRCType() == RCTYPE_BEEHIVE && !mOptions[RSK_SHUFFLE_BEEHIVES])) {

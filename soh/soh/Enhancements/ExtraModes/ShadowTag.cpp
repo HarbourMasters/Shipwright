@@ -47,4 +47,4 @@ void RegisterShadowTag() {
     COND_HOOK(OnSceneInit, true, [](int16_t) { ResetShadowTagSpawnTimer(); });
 }
 
-static RegisterShipInitFunc initFunc_ShadowTag(RegisterShadowTag, { CVAR_SHADOW_TAG_NAME });
+static RegisterShipInitFunc initFunc(RegisterShadowTag, { CVAR_SHADOW_TAG_NAME });

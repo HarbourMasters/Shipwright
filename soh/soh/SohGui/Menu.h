@@ -2,7 +2,7 @@
 #define MENU_H
 
 #include <libultraship/libultraship.h>
-#include "graphic/Fast3D/backends/gfx_rendering_api.h"
+#include <fast/backends/gfx_rendering_api.h>
 #include "MenuTypes.h"
 
 namespace Ship {
@@ -26,6 +26,7 @@ class Menu : public GuiWindow {
 
     void MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors menuThemeIndex);
     void AddMenuEntry(std::string entryName, const char* entryCvar);
+    void AddSearchWidget(SearchWidget widget);
     std::unordered_map<uint32_t, disabledInfo>& GetDisabledMap();
 
   protected:

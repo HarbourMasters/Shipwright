@@ -7,7 +7,7 @@ void RegionTable_Init_GerudoValley() {
     // clang-format off
     areaTable[RR_GERUDO_VALLEY] = Region("Gerudo Valley", SCENE_GERUDO_VALLEY, {
         //Events
-        EventAccess(&logic->BugRock, []{return logic->IsChild;}),
+        EventAccess(LOGIC_BUG_ROCK, []{return logic->IsChild;}),
     }, {
         //Locations
         LOCATION(RC_GV_GS_SMALL_BRIDGE, logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
@@ -17,14 +17,14 @@ void RegionTable_Init_GerudoValley() {
         Entrance(RR_GV_UPPER_STREAM,  []{return logic->IsChild || logic->HasItem(RG_BRONZE_SCALE) || logic->TakeDamage();}),
         Entrance(RR_GV_CRATE_LEDGE,   []{return logic->IsChild || logic->CanUse(RG_LONGSHOT);}),
         Entrance(RR_GV_GROTTO_LEDGE,  []{return true;}),
-        Entrance(RR_GV_FORTRESS_SIDE, []{return (logic->IsAdult && (logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->THRescuedAllCarpenters)) || (logic->IsChild && logic->CanUse(RG_HOOKSHOT));}),
+        Entrance(RR_GV_FORTRESS_SIDE, []{return (logic->IsAdult && (logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS))) || ((logic->IsChild || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION)) && logic->CanUse(RG_HOOKSHOT));}),
         Entrance(RR_GV_LOWER_STREAM,  []{return logic->IsChild;}), //can use cucco as child
     });
 
     areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", SCENE_GERUDO_VALLEY, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
-        EventAccess(&logic->BeanPlantFairy,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
+        EventAccess(LOGIC_BEAN_PLANT_FAIRY,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
     }, {
         //Locations
         LOCATION(RC_GV_WATERFALL_FREESTANDING_POH, logic->IsChild || logic->HasItem(RG_BRONZE_SCALE)),//can use cucco as child
@@ -80,7 +80,7 @@ void RegionTable_Init_GerudoValley() {
         //Exits
         Entrance(RR_GF_OUTSKIRTS,  []{return true;}),
         Entrance(RR_GV_UPPER_STREAM,   []{return true;}),
-        Entrance(RR_GERUDO_VALLEY,     []{return logic->IsChild || logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->THRescuedAllCarpenters;}),
+        Entrance(RR_GERUDO_VALLEY,     []{return logic->IsChild || logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS);}),
         Entrance(RR_GV_CARPENTER_TENT, []{return logic->IsAdult;}),
         Entrance(RR_GV_STORMS_GROTTO,  []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
         Entrance(RR_GV_CRATE_LEDGE,    []{return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives();}),

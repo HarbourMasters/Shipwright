@@ -178,11 +178,6 @@ void SohMenu::AddMenuSettings() {
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Search input box gets autofocus when visible. Does not affect using other widgets."));
-    AddWidget(path, "Alt Assets Tab hotkey", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_SETTING("Mods.AlternateAssetsHotkey"))
-        .RaceDisable(false)
-        .Options(
-            CheckboxOptions().Tooltip("Allows pressing the Tab key to toggle alternate assets").DefaultValue(true));
     AddWidget(path, "Open App Files Folder", WIDGET_BUTTON)
         .RaceDisable(false)
         .Callback([](WidgetInfo& info) {
@@ -400,8 +395,9 @@ void SohMenu::AddMenuSettings() {
         .RaceDisable(false)
         .PreFunc(
             [](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NO_MULTI_VIEWPORT).active; })
-        .Options(CheckboxOptions().Tooltip(
-            "Allows multiple windows to be opened at once. Requires a reload to take effect."));
+        .Options(CheckboxOptions()
+                     .Tooltip("Allows multiple windows to be opened at once. Requires a reload to take effect.")
+                     .DefaultValue(true));
     AddWidget(path, "Texture Filter (Needs reload)", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_TEXTURE_FILTER)
         .RaceDisable(false)
@@ -433,6 +429,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_WINDOW("ControllerConfiguration"))
         .RaceDisable(false)
         .WindowName("Configure Controller")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Bindings Window."));
 
     // Input Viewer
@@ -443,6 +440,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_WINDOW("InputViewer"))
         .RaceDisable(false)
         .WindowName("Input Viewer")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Toggles the Input Viewer.").EmbedWindow(false));
 
     AddWidget(path, "Input Viewer Settings", WIDGET_SEPARATOR_TEXT);
@@ -450,6 +448,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_WINDOW("InputViewerSettings"))
         .RaceDisable(false)
         .WindowName("Input Viewer Settings")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Input Viewer Settings Window."));
 
     // Notifications
@@ -501,6 +500,15 @@ void SohMenu::AddMenuSettings() {
             });
         })
         .Options(ButtonOptions().Tooltip("Displays a test notification."));
+
+    // Mod Menu
+    path.sidebarName = "Mod Menu";
+    AddSidebarEntry("Settings", path.sidebarName, 1);
+    AddWidget(path, "Popout Mod Menu Window", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("ModMenu"))
+        .WindowName("Mod Menu")
+        .HideInSearch(true)
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Mod Menu Window."));
 }
 
 } // namespace SohGui

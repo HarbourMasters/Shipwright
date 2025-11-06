@@ -166,6 +166,8 @@ void Settings::CreateOptionDescriptions() {
         "- Link's House\n"
         "- Temple of Time\n"
         "- Kakariko Potion Shop";
+    mOptionDescriptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES] =
+        "Shuffle the pool of entrances between Gerudo Fortress & Thieves' Hideout.";
     mOptionDescriptions[RSK_SHUFFLE_GROTTO_ENTRANCES] =
         "Shuffle the pool of grotto entrances, including all graves, small Fairy fountains and the Deku Theatre.";
     mOptionDescriptions[RSK_SHUFFLE_OWL_DROPS] = "Randomize where Kaepora Gaebora (the Owl) drops you at when you talk "
@@ -290,6 +292,11 @@ void Settings::CreateOptionDescriptions() {
         "Overworld - Only shuffle crates that are outside of dungeons.\n"
         "\n"
         "All Crates - Shuffle all crates.";
+    mOptionDescriptions[RSK_SHUFFLE_TREES] =
+        "Trees will contain randomized items which are dropped the first time the player rolls into one.\n"
+        "Trees will have a special appearance when carrying randomized items.\n"
+        "\nSome trees are dependant on Link's age, such as some trees in Hyrule Field.\nTwo trees at Hyrule Castle are "
+        "only shuffle with No Logic.";
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
                                                     "\n"
                                                     "The fishing pole is required to play the fishing pond minigame.";
@@ -476,7 +483,15 @@ void Settings::CreateOptionDescriptions() {
         "Overworld - Only freestanding rupees & hearts that are outside of dungeons.\n"
         "\n"
         "All Items - Shuffle all freestanding rupees & hearts.";
-    mOptionDescriptions[RSK_SHUFFLE_FAIRIES] = "Shuffle fairy locations.";
+    mOptionDescriptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES] =
+        "Shuffle fairies in fountain locations. "
+        "This includes the sets of fairies found in Ganon's Castle and the Desert Oasis.";
+    mOptionDescriptions[RSK_SHUFFLE_STONE_FAIRIES] = "Shuffle fairies from gossip stone locations.";
+    mOptionDescriptions[RSK_SHUFFLE_BEAN_FAIRIES] = "Shuffle fairies from magic bean locations.";
+    mOptionDescriptions[RSK_SHUFFLE_SONG_FAIRIES] =
+        "Shuffle fairy spots. These are spots where a big fairy is revealed by a song."
+        "\n"
+        "This excludes gossip stones and magic bean locations.";
     mOptionDescriptions[RSK_SHUFFLE_GRASS] =
         "Grass/Bushes will drop a randomized item the first time they're cut and collected. "
         "Grass/Bushes will have a different appearance when they hold a randomized item.\n"
@@ -684,6 +699,7 @@ void Settings::CreateOptionDescriptions() {
                                           "tell you what's the reward for the Hyrule Loach.";
     mOptionDescriptions[RSK_SARIA_HINT] = "Talking to Saria either in person or through Saria's Song will tell you the "
                                           "location of a progressive magic meter.";
+    mOptionDescriptions[RSK_MIDO_HINT] = "Talking to Mido as child will tell you the location of the Kokiri Sword.";
     mOptionDescriptions[RSK_FISHING_POLE_HINT] =
         "Talking to the fishing pond owner without the fishing pole will tell you its location.";
     mOptionDescriptions[RSK_OOT_HINT] =
@@ -742,15 +758,13 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SUNLIGHT_ARROWS] =
         "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
+    mOptionDescriptions[RSK_SLINGBOW_BREAK_BEEHIVES] =
+        "Allows Slingshot and Bow to break beehives when Beehive Shuffle is turned on.";
     mOptionDescriptions[RSK_LOGIC_RULES] =
         "Glitchless - No glitches are required, but may require some minor tricks. Additional tricks may be enabled "
         "and disabled below.\n"
         "\n"
-        //"Glitched - Glitches may be required to beat the game. You can disable and enable glitches below.\n"
-        //"\n"
-        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.\n"
-        "\n"
-        "Vanilla - Places all items and dungeon rewards in their vanilla locations.";
+        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.";
     mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE] = "When this options is enabled, the randomizer will "
                                                        "guarantee that every item is obtainable and every "
                                                        "location is reachable. When disabled, only "

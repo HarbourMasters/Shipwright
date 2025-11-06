@@ -1,4 +1,4 @@
-#include "public/bridge/consolevariablebridge.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 #include "functions.h"
@@ -69,4 +69,4 @@ void RegisterGraveHoleJumps() {
     ApplyGraveyardGeometryPatches();
 }
 
-static RegisterShipInitFunc initFunc_GraveHoleJumps(RegisterGraveHoleJumps, { CVAR_GRAVE_HOLE_NAME });
+static RegisterShipInitFunc initFunc(RegisterGraveHoleJumps, { CVAR_GRAVE_HOLE_NAME });

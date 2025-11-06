@@ -5,7 +5,7 @@
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-#include <consolevariablebridge.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 extern "C" {
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"

@@ -13,7 +13,7 @@
 #include "macros.h"
 #include "variables.h"
 #include <spdlog/spdlog.h>
-#include "StringHelper.h"
+#include <ship/utils/StringHelper.h>
 #include "soh/resource/type/Scene.h"
 #include "soh/resource/type/scenecommand/SetTransitionActorList.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
@@ -56,7 +56,8 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_10:
         case RG_BOMBCHU_20:
-            return (BombchusEnabled() && (GetInLogic(LOGIC_BUY_BOMBCHUS) || CouldPlayBowling || CarpetMerchant)) ||
+            return (BombchusEnabled() &&
+                    (Get(LOGIC_BUY_BOMBCHUS) || Get(LOGIC_COULD_PLAY_BOWLING) || Get(LOGIC_CARPET_MERCHANT))) ||
                    CheckInventory(ITEM_BOMBCHU, true);
         case RG_FAIRY_SLINGSHOT:
             return CheckInventory(ITEM_SLINGSHOT, true);
@@ -173,7 +174,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CheckRandoInf(RandoGetToRandInf.at(itemName));
             // Boss Keys
         case RG_EPONA:
-            return FreedEpona;
+            return Get(LOGIC_FREED_EPONA);
         case RG_FOREST_TEMPLE_BOSS_KEY:
         case RG_FIRE_TEMPLE_BOSS_KEY:
         case RG_WATER_TEMPLE_BOSS_KEY:
@@ -263,7 +264,7 @@ bool Logic::CanUse(RandomizerGet itemName) {
     switch (itemName) {
         // Magic items
         case RG_MAGIC_SINGLE:
-            return AmmoCanDrop || (HasBottle() && GetInLogic(LOGIC_BUY_MAGIC_POTION));
+            return true; // AmmoCanDrop || (HasBottle() && Get(LOGIC_BUY_MAGIC_POTION))
         case RG_DINS_FIRE:
         case RG_FARORES_WIND:
         case RG_NAYRUS_LOVE:
@@ -277,7 +278,7 @@ bool Logic::CanUse(RandomizerGet itemName) {
         // Adult items
         // TODO: Uncomment those if we ever implement more item usability settings
         case RG_FAIRY_BOW:
-            return IsAdult && (AmmoCanDrop || GetInLogic(LOGIC_BUY_ARROW)); // || BowAsChild;
+            return IsAdult; // || BowAsChild && (AmmoCanDrop || Get(LOGIC_BUY_ARROW));
         case RG_MEGATON_HAMMER:
             return IsAdult; // || HammerAsChild;
         case RG_IRON_BOOTS:
@@ -316,20 +317,21 @@ bool Logic::CanUse(RandomizerGet itemName) {
 
         // Child items
         case RG_FAIRY_SLINGSHOT:
-            return IsChild && (AmmoCanDrop || GetInLogic(LOGIC_BUY_SEED)); // || SlingshotAsAdult;
+            return IsChild; // || SlingshotAsAdult && (AmmoCanDrop || Get(LOGIC_LOGIC_BUY_SEED));
         case RG_BOOMERANG:
             return IsChild; // || BoomerangAsAdult;
         case RG_KOKIRI_SWORD:
             return IsChild; // || KokiriSwordAsAdult;
         case RG_NUTS:
-            return ((NutPot || NutCrate || DekuBabaNuts) && AmmoCanDrop) || GetInLogic(LOGIC_BUY_NUTS);
+            return Get(LOGIC_NUT_POT) || Get(LOGIC_NUT_CRATE) || Get(LOGIC_DEKU_BABA_NUTS) || Get(LOGIC_BUY_NUTS);
         case RG_STICKS:
-            return IsChild /* || StickAsAdult;*/ && (StickPot || DekuBabaSticks || GetInLogic(LOGIC_BUY_STICKS));
+            return IsChild /* || StickAsAdult;*/ &&
+                   (Get(LOGIC_STICK_POT) || Get(LOGIC_DEKU_BABA_STICKS) || Get(LOGIC_BUY_STICKS));
         case RG_DEKU_SHIELD:
             return IsChild; // || DekuShieldAsAdult;
         case RG_PROGRESSIVE_BOMB_BAG:
         case RG_BOMB_BAG:
-            return AmmoCanDrop || GetInLogic(LOGIC_BUY_BOMB);
+            return true; // AmmoCanDrop || Get(LOGIC_BUY_BOMB)
         case RG_PROGRESSIVE_BOMBCHUS:
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_10:
@@ -377,15 +379,16 @@ bool Logic::CanUse(RandomizerGet itemName) {
 
         // Bottle Items
         case RG_BOTTLE_WITH_BUGS:
-            return BugShrub || WanderingBugs || BugRock || GetInLogic(LOGIC_BUGS_ACCESS);
+            return Get(LOGIC_BUG_SHRUB) || Get(LOGIC_WANDERING_BUGS) || Get(LOGIC_BUG_ROCK) || Get(LOGIC_BUGS_ACCESS);
         case RG_BOTTLE_WITH_FISH:
-            return LoneFish || FishGroup ||
-                   GetInLogic(LOGIC_FISH_ACCESS); // is there any need to care about lone vs group?
-        case RG_BOTTLE_WITH_BLUE_FIRE:            // RANDOTODO should probably be better named
-            return BlueFireAccess || GetInLogic(LOGIC_BLUE_FIRE_ACCESS);
+            return Get(LOGIC_LONE_FISH) || Get(LOGIC_FISH_GROUP) ||
+                   Get(LOGIC_FISH_ACCESS); // is there any need to care about lone vs group?
+        case RG_BOTTLE_WITH_BLUE_FIRE:     // RANDOTODO should probably be better named
+            return Get(LOGIC_BLUE_FIRE_ACCESS);
         case RG_BOTTLE_WITH_FAIRY:
-            return FairyPot || GossipStoneFairy || BeanPlantFairy || ButterflyFairy || FreeFairies || FairyPond ||
-                   GetInLogic(LOGIC_FAIRY_ACCESS);
+            return Get(LOGIC_FAIRY_POT) || Get(LOGIC_GOSSIP_STONE_FAIRY) || Get(LOGIC_BEAN_PLANT_FAIRY) ||
+                   Get(LOGIC_BUTTERFLY_FAIRY) || Get(LOGIC_FREE_FAIRIES) || Get(LOGIC_FAIRY_POND) ||
+                   Get(LOGIC_FAIRY_ACCESS);
 
         default:
             SPDLOG_ERROR("CanUse reached `default` for {}. Assuming intention is no extra requirements for use so "
@@ -439,6 +442,11 @@ bool Logic::CanOpenOverworldDoor(RandomizerGet key) {
     }
 
     return HasItem(key);
+}
+
+bool Logic::CanGroundJump(bool hasBombflower) {
+    return ctx->GetTrickOption(RT_GROUND_JUMP) && CanStandingShield() &&
+           (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
 }
 
 bool Logic::CanOpenUnderwaterChest() {
@@ -996,17 +1004,17 @@ bool Logic::MQWaterLevel(RandoWaterLevel level) {
         // WL_LOW in logic. Alternativly a way to reach WL_LOW from WL_MID could exist, but all glitchless methods need
         // you to do a Low-locked action
         case WL_LOW:
-            return (CanWaterTempleHigh && CanWaterTempleLowFromHigh) ||
-                   (CanWaterTempleLowFromMid && CanWaterTempleLowFromHigh);
+            return (Get(LOGIC_WATER_HIGH) && Get(LOGIC_WATER_LOW_FROM_HIGH)) ||
+                   (Get(LOGIC_WATER_LOW_FROM_MID) && Get(LOGIC_WATER_LOW_FROM_HIGH));
         case WL_LOW_OR_MID:
-            return (CanWaterTempleHigh && CanWaterTempleLowFromHigh) ||
-                   (CanWaterTempleLowFromHigh && CanWaterTempleMiddle) ||
-                   (CanWaterTempleLowFromMid && CanWaterTempleLowFromHigh);
+            return (Get(LOGIC_WATER_HIGH) && Get(LOGIC_WATER_LOW_FROM_HIGH)) ||
+                   (Get(LOGIC_WATER_LOW_FROM_HIGH) && Get(LOGIC_WATER_MIDDLE)) ||
+                   (Get(LOGIC_WATER_LOW_FROM_MID) && Get(LOGIC_WATER_LOW_FROM_HIGH));
         // If we can set it to High out of logic we can just repeat what we did to lower the water in the first place as
         // High is the default. Because of this you only need to be able to use the Low and Mid Emblems, WL_LOW could be
         // skipped if it was ever possible to play ZL underwater.
         case WL_MID:
-            return CanWaterTempleLowFromHigh && CanWaterTempleMiddle;
+            return Get(LOGIC_WATER_LOW_FROM_HIGH) && Get(LOGIC_WATER_MIDDLE);
         // Despite being the initial state of water temple, WL_HIGH has the extra requirement of making sure that, if we
         // were to lower the water out of logic, we could put it back to WL_HIGH However because it is the default
         // state, we do not need to check if we can actually change the water level, only to make sure we can return to
@@ -1016,9 +1024,9 @@ bool Logic::MQWaterLevel(RandoWaterLevel level) {
         // but we assume the water is WL_MID (as if we can set it to WL_LOW, we can set it to WL_MID, as Mid Emblem has
         // no requirements) The latter check can be assumed for now but will want a revisit once OI tricks are added.
         case WL_HIGH:
-            return ReachedWaterHighEmblem;
+            return Get(LOGIC_WATER_REACHED_HIGH_EMBLEM);
         case WL_HIGH_OR_MID:
-            return ReachedWaterHighEmblem || (CanWaterTempleLowFromHigh && CanWaterTempleMiddle);
+            return Get(LOGIC_WATER_REACHED_HIGH_EMBLEM) || (Get(LOGIC_WATER_LOW_FROM_HIGH) && Get(LOGIC_WATER_MIDDLE));
     }
     SPDLOG_ERROR("MQWaterLevel reached `return false;`. Missing case for a Water Level");
     assert(false);
@@ -1034,12 +1042,12 @@ uint8_t Logic::BottleCount() {
         uint8_t item = GetSaveContext()->inventory.items[i];
         switch (item) {
             case ITEM_LETTER_RUTO:
-                if (DeliverLetter) {
+                if (Get(LOGIC_DELIVER_RUTOS_LETTER)) {
                     count++;
                 }
                 break;
             case ITEM_BIG_POE:
-                if (CanEmptyBigPoes) {
+                if (Get(LOGIC_CAN_EMPTY_BIG_POES)) {
                     count++;
                 }
                 break;
@@ -1073,6 +1081,10 @@ bool Logic::CanJumpslashExceptHammer() {
 
 bool Logic::CanJumpslash() {
     return CanJumpslashExceptHammer() || CanUse(RG_MEGATON_HAMMER);
+}
+
+bool Logic::CanClearStalagmite() {
+    return CanJumpslash() || HasExplosives();
 }
 
 bool Logic::CanHitSwitch(EnemyDistance distance, bool inWater) {
@@ -1123,7 +1135,7 @@ bool Logic::BombchusEnabled() {
 
 // TODO: Implement Ammo Drop Setting in place of bombchu drops
 bool Logic::BombchuRefill() {
-    return GetInLogic(LOGIC_BUY_BOMBCHUS) || CouldPlayBowling || CarpetMerchant ||
+    return Get(LOGIC_BUY_BOMBCHUS) || Get(LOGIC_COULD_PLAY_BOWLING) || Get(LOGIC_CARPET_MERCHANT) ||
            (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_AMMO_DROPS_ON /*_PLUS_BOMBCHU*/));
 }
 
@@ -1133,7 +1145,7 @@ bool Logic::HookshotOrBoomerang() {
 
 bool Logic::ScarecrowsSong() {
     return (ctx->GetOption(RSK_SKIP_SCARECROWS_SONG) && HasItem(RG_FAIRY_OCARINA) && OcarinaButtons() >= 2) ||
-           (ChildScarecrow && AdultScarecrow);
+           (Get(LOGIC_CHILD_SCARECROW) && Get(LOGIC_ADULT_SCARECROW));
 }
 
 bool Logic::BlueFire() {
@@ -1149,6 +1161,10 @@ bool Logic::CanBreakCrates() {
 }
 
 bool Logic::CanBreakSmallCrates() {
+    return true;
+}
+
+bool Logic::CanBonkTrees() {
     return true;
 }
 
@@ -1213,8 +1229,9 @@ uint8_t Logic::Hearts() {
 }
 
 uint8_t Logic::DungeonCount() {
-    return DekuTreeClear + DodongosCavernClear + JabuJabusBellyClear + ForestTempleClear + FireTempleClear +
-           WaterTempleClear + SpiritTempleClear + ShadowTempleClear;
+    return Get(LOGIC_DEKU_TREE_CLEAR) + Get(LOGIC_DODONGOS_CAVERN_CLEAR) + Get(LOGIC_JABU_JABUS_BELLY_CLEAR) +
+           Get(LOGIC_FOREST_TEMPLE_CLEAR) + Get(LOGIC_FIRE_TEMPLE_CLEAR) + Get(LOGIC_WATER_TEMPLE_CLEAR) +
+           Get(LOGIC_SPIRIT_TEMPLE_CLEAR) + Get(LOGIC_SHADOW_TEMPLE_CLEAR);
 }
 
 uint8_t Logic::StoneCount() {
@@ -1253,7 +1270,8 @@ bool Logic::CanGetNightTimeGS() {
 }
 
 bool Logic::CanBreakUpperBeehives() {
-    return HookshotOrBoomerang() || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && CanUse(RG_BOMBCHU_5));
+    return HookshotOrBoomerang() || (ctx->GetTrickOption(RT_BOMBCHU_BEEHIVES) && CanUse(RG_BOMBCHU_5)) ||
+           (ctx->GetOption(RSK_SLINGBOW_BREAK_BEEHIVES) && (CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT)));
 }
 
 bool Logic::CanBreakLowerBeehives() {
@@ -2158,7 +2176,7 @@ const std::vector<uint8_t>& GetDungeonSmallKeyDoors(SceneID sceneId) {
                 dungeonSmallKeyDoors[key].emplace_back(transitionActor.params & 0x3F);
             }
         } else if (transitionActor.id == ACTOR_DOOR_SHUTTER) {
-            uint8_t doorType = (transitionActor.params >> 7) & 15;
+            uint8_t doorType = (transitionActor.params >> 6) & 15;
             if (doorType == SHUTTER_KEY_LOCKED) {
                 dungeonSmallKeyDoors[key].emplace_back(transitionActor.params & 0x3F);
             }
@@ -2255,12 +2273,18 @@ void Logic::SetContext(std::shared_ptr<Context> _ctx) {
     ctx = _ctx;
 }
 
-bool Logic::GetInLogic(LogicVal logicVal) {
+bool Logic::Get(LogicVal logicVal) {
     return inLogic[logicVal];
 }
 
-void Logic::SetInLogic(LogicVal logicVal, bool value) {
+void Logic::Set(LogicVal logicVal, bool value) {
     inLogic[logicVal] = value;
+}
+
+bool Logic::IsFireLoopLocked() {
+    return ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
+           ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) ||
+           ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON);
 }
 
 void Logic::Reset(bool resetSaveContext /*= true*/) {
@@ -2269,44 +2293,6 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
     }
     StartPerformanceTimer(PT_LOGIC_RESET);
     memset(inLogic, false, sizeof(inLogic));
-    // Settings-dependent variables
-    IsFireLoopLocked = ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
-                       ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) ||
-                       ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON);
-
-    // AmmoCanDrop = /*AmmoDrops.IsNot(AMMODROPS_NONE)*/ false; TODO: AmmoDrop setting
-
-    // Mask quest
-    CanBorrowMasks = false;
-    BorrowSkullMask = false;
-    BorrowSpookyMask = false;
-    BorrowBunnyHood = false;
-    BorrowRightMasks = false;
-
-    // Adult logic
-    FreedEpona = false;
-    // BigPoe        = false;
-
-    // Trade Quest Events
-    WakeUpAdultTalon = false;
-
-    // Dungeon Clears
-    DekuTreeClear = false;
-    DodongosCavernClear = false;
-    JabuJabusBellyClear = false;
-    ForestTempleClear = false;
-    FireTempleClear = false;
-    WaterTempleClear = false;
-    SpiritTempleClear = false;
-    ShadowTempleClear = false;
-
-    // Trial Clears
-    ForestTrialClear = false;
-    FireTrialClear = false;
-    WaterTrialClear = false;
-    SpiritTrialClear = false;
-    ShadowTrialClear = false;
-    LightTrialClear = false;
 
     if (resetSaveContext) {
         // Ocarina C Buttons
@@ -2338,130 +2324,27 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
 
         // If not keysanity, start with 1 logical key to account for automatically unlocking the basement door in
         // vanilla FiT
-        if (!IsFireLoopLocked && ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
+        if (!IsFireLoopLocked() && ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
             SetSmallKeyCount(SCENE_FIRE_TEMPLE, 1);
         }
     }
 
-    // Bottle Count
     Bottles = 0;
     NumBottles = 0;
-    CanEmptyBigPoes = false;
-
-    // Drops and Bottle Contents Access
-    NutPot = false;
-    NutCrate = false;
-    DekuBabaNuts = false;
-    StickPot = false;
-    DekuBabaSticks = false;
-    BugShrub = false;
-    WanderingBugs = false;
-    BugRock = false;
-    BlueFireAccess = false;
-    FishGroup = false;
-    LoneFish = false;
-    GossipStoneFairy = false;
-    BeanPlantFairy = false;
-    ButterflyFairy = false;
-    FairyPot = false;
-    FreeFairies = false;
-    FairyPond = false;
-
     PieceOfHeart = 0;
     HeartContainer = 0;
 
-    /* --- HELPERS, EVENTS, AND LOCATION ACCESS --- */
-    /* These are used to simplify reading the logic, but need to be updated
-    /  every time a base value is updated.                       */
-
-    ChildScarecrow = false;
-    AdultScarecrow = false;
-
-    CouldPlayBowling = false;
     IsChild = false;
     IsAdult = false;
-    // CanPlantBean        = false;
-    BigPoeKill = false;
     BigPoes = 0;
 
     BaseHearts = ctx->GetOption(RSK_STARTING_HEARTS).Get() + 1;
 
-    // Bridge Requirements
-    BuiltRainbowBridge = false;
-
-    // Other
     AtDay = false;
     AtNight = false;
     if (resetSaveContext) {
         GetSaveContext()->linkAge = !ctx->GetOption(RSK_SELECTED_STARTING_AGE).Get();
     }
-
-    // Events
-    ShowedMidoSwordAndShield = false;
-    THCouldFree1TorchCarpenter = false;
-    THCouldFreeDoubleCellCarpenter = false;
-    TH_CouldFreeDeadEndCarpenter = false;
-    THCouldRescueSlopeCarpenter = false;
-    THRescuedAllCarpenters = false;
-    GF_GateOpen = false;
-    GtG_GateOpen = false;
-    DampesWindmillAccess = false;
-    DrainWell = false;
-    GoronCityChildFire = false;
-    GCWoodsWarpOpen = false;
-    GCDaruniasDoorOpenChild = false;
-    StopGCRollingGoronAsAdult = false;
-    CanWaterTempleLowFromHigh = false;
-    CanWaterTempleLowFromMid = false;
-    CanWaterTempleMiddle = false;
-    CanWaterTempleHigh = false;
-    KakarikoVillageGateOpen = false;
-    KingZoraThawed = false;
-    ForestTempleJoelle = false;
-    ForestTempleBeth = false;
-    ForestTempleAmy = false;
-    ForestTempleMeg = false;
-    FireLoopSwitch = false;
-    LinksCow = false;
-    DeliverLetter = false;
-    ClearMQDCUpperLobbyRocks = false;
-    LoweredWaterInsideBotw = false;
-    OpenedWestRoomMQBotw = false;
-    OpenedMiddleHoleMQBotw = false;
-    BrokeDeku1FWeb = false;
-    ClearedMQDekuSERoom = false;
-    MQDekuWaterRoomTorches = false;
-    PushedDekuBasementBlock = false;
-    OpenedLowestGoronCage = false;
-    OpenedUpperFireShortcut = false;
-    HitFireTemplePlatform = false;
-    OpenedFireMQFireMazeDoor = false;
-    MQForestBlockRoomTargets = false;
-    ForestCanTwistHallway = false;
-    ForestClearBelowBowChest = false;
-    ForestOpenBossCorridor = false;
-    ShadowTrialFirstChest = false;
-    MQGTGMazeSwitch = false;
-    MQGTGRightSideSwitch = false;
-    GTGPlatformSilverRupees = false;
-    MQJabuHolesRoomDoor = false;
-    JabuWestTentacle = false;
-    JabuEastTentacle = false;
-    JabuNorthTentacle = false;
-    LoweredJabuPath = false;
-    MQJabuLiftRoomCow = false;
-    MQShadowFloorSpikeRupees = false;
-    ShadowShortcutBlock = false;
-    MQWaterStalfosPit = false;
-    MQWaterDragonTorches = false;
-    MQWaterB1Switch = false;
-    // MQWaterPillarSoTBlock          = false;
-    MQWaterOpenedPillarB1 = false;
-    MQSpiritCrawlBoulder = false;
-    MQSpiritMapRoomEnemies = false;
-    MQSpirit3SunsEnemies = false;
-    Spirit1FSilverRupees = false;
-    JabuRutoIn1F = false;
 
     CalculatingAvailableChecks = false;
 

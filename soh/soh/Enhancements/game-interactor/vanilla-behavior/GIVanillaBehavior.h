@@ -1364,6 +1364,22 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->switchFlag >= 0
+    // ```
+    // #### `args`
+    // - `*EnOkarinaTag`
+    VB_OKARINA_TAG_COMPLETE,
+
+    // #### `result`
+    // ```c
+    // (this->switchFlag >= 0) && (Flags_GetSwitch(play, this->switchFlag))
+    // ```
+    // #### `args`
+    // - `*EnOkarinaTag`
+    VB_OKARINA_TAG_COMPLETED,
+
+    // #### `result`
+    // ```c
     // CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)
     // ```
     // #### `args`
@@ -2155,6 +2171,23 @@ typedef enum {
     // - `*EnWood02`
     VB_TREE_DROP_COLLECTIBLE,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*ObjWood02`
+    VB_TREE_SETUP_DRAW,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*ObjWood02`
+    VB_TREE_DROP_ITEM,
+
+    // #### `result`
     // ```c
     // true
     // ```
@@ -2239,6 +2272,7 @@ typedef enum {
     // #### `args`
     // - `*PlayState`
     VB_SHOW_GAMEPLAY_TIMER,
+
     // (this->dyna.actor.params >> 5 & 0x7F) == GI_ICE_TRAP && this->actionFunc == EnBox_Open &&
     // this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100
     // ```
@@ -2253,6 +2287,37 @@ typedef enum {
     // #### `args`
     // - `*DoorShutter`
     VB_BE_NEAR_DOOR_SHUTTER,
+
+    // #### `result`
+    // ```c
+    // CVarGetInteger(CVAR_ENHANCEMENT("3DSceneRender"), 0)
+    // ```
+    // #### `args`
+    // - None
+    VB_DRAW_2D_BACKGROUND,
+
+    // #### `result`
+    // ```c
+    // CVarGetInteger(CVAR_ENHANCEMENT("3DSceneRender"), 0)
+    // ```
+    // #### `args`
+    // - None
+    VB_LOAD_SKYBOX,
+
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_SET_STATIC_PREV_FLOOR_TYPE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_SET_STATIC_FLOOR_TYPE,
+
 } GIVanillaBehavior;
 
 #endif

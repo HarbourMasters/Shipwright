@@ -243,6 +243,11 @@ extern "C" void Randomizer_InitSaveFile() {
     Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
     Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE);
 
+    if (Randomizer_GetSettingValue(RSK_FOREST) == RO_CLOSED_FOREST_OFF) {
+        Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
+        Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH);
+    }
+
     // Go away Ruto (Water Temple first cutscene).
     gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x10);
 
@@ -277,15 +282,15 @@ extern "C" void Randomizer_InitSaveFile() {
     }
 
     int startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
+    gSaveContext.savedSceneNum = -1;
     switch (startingAge) {
         case RO_AGE_ADULT: // Adult
             gSaveContext.linkAge = LINK_AGE_ADULT;
             gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_WARP_PAD;
-            gSaveContext.savedSceneNum = SCENE_LON_LON_RANCH; // Set scene num manually to ToT.
+            gSaveContext.cutsceneIndex = 0;
             break;
         case RO_AGE_CHILD: // Child
             gSaveContext.linkAge = LINK_AGE_CHILD;
-            gSaveContext.savedSceneNum = -1;
             break;
         default:
             break;

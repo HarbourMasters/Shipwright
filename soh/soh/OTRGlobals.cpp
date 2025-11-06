@@ -7,10 +7,10 @@
 #include <chrono>
 
 #include "ResourceManagerHelpers.h"
-#include "graphic/Fast3D/Fast3dWindow.h"
-#include <File.h>
-#include <DisplayList.h>
-#include <Window.h>
+#include <fast/Fast3dWindow.h>
+#include <ship/resource/File.h>
+#include <fast/resource/type/DisplayList.h>
+#include <ship/window/Window.h>
 #include <soh/GameVersions.h>
 
 #include "Enhancements/gameconsole.h"
@@ -19,13 +19,15 @@
 #else
 #include <time.h>
 #endif
-#include <AudioPlayer.h>
+#include <ship/audio/AudioPlayer.h>
 #include "Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "Enhancements/controls/SohInputEditorWindow.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/audio/AudioCollection.h"
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/debugconsole.h"
+#include "Enhancements/randomizer/entrance.h"
+#include "Enhancements/randomizer/location_access.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
@@ -38,10 +40,10 @@
 #include "variables.h"
 #include "z64.h"
 #include "macros.h"
-#include "Fonts.h"
-#include "window/FileDropMgr.h"
-#include "window/gui/resource/Font.h"
-#include <utils/StringHelper.h>
+#include <ship/window/gui/Fonts.h>
+#include <ship/window/FileDropMgr.h>
+#include <ship/window/gui/resource/Font.h>
+#include <ship/utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 #include "Enhancements/Presets/Presets.h"
 #include "util.h"
@@ -50,7 +52,7 @@
 #include "Extractor/Extract.h"
 #endif
 
-#include <Fast3D/interpreter.h>
+#include <fast/interpreter.h>
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -84,14 +86,16 @@ Sail* Sail::Instance;
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/randomizer/draw.h"
 #include <libultraship/libultraship.h>
+#include <libultraship/controller/controldeck/ControlDeck.h>
+#include <fast/resource/ResourceType.h>
 
 // Resource Types/Factories
-#include "resource/type/Array.h"
-#include "resource/type/Blob.h"
-#include "resource/type/DisplayList.h"
-#include "resource/type/Matrix.h"
-#include "resource/type/Texture.h"
-#include "resource/type/Vertex.h"
+#include "soh/resource/type/Array.h"
+#include <ship/resource/type/Blob.h>
+#include <fast/resource/type/DisplayList.h>
+#include <fast/resource/type/Matrix.h>
+#include <fast/resource/type/Texture.h>
+#include <fast/resource/type/Vertex.h>
 #include "soh/resource/type/SohResourceType.h"
 #include "soh/resource/type/Animation.h"
 #include "soh/resource/type/AudioSample.h"
@@ -105,11 +109,11 @@ Sail* Sail::Instance;
 #include "soh/resource/type/Skeleton.h"
 #include "soh/resource/type/SkeletonLimb.h"
 #include "soh/resource/type/Text.h"
-#include "resource/factory/BlobFactory.h"
-#include "resource/factory/DisplayListFactory.h"
-#include "resource/factory/MatrixFactory.h"
-#include "resource/factory/TextureFactory.h"
-#include "resource/factory/VertexFactory.h"
+#include <ship/resource/factory/BlobFactory.h>
+#include <fast/resource/factory/DisplayListFactory.h>
+#include <fast/resource/factory/MatrixFactory.h>
+#include <fast/resource/factory/TextureFactory.h>
+#include <fast/resource/factory/VertexFactory.h>
 #include "soh/resource/importer/ArrayFactory.h"
 #include "soh/resource/importer/AnimationFactory.h"
 #include "soh/resource/importer/AudioSampleFactory.h"
@@ -132,7 +136,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
 }
 
-void SoH_ProcessDroppedFiles(std::string filePath);
+bool SoH_HandleConfigDrop(char* filePath);
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
@@ -280,26 +284,7 @@ void OTRGlobals::Initialize() {
     if (std::filesystem::exists(sohOtrPath)) {
         OTRFiles.push_back(sohOtrPath);
     }
-    std::string patchesPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
-    std::vector<std::string> patchOTRs = {};
-    if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
-        if (std::filesystem::is_directory(patchesPath)) {
-            for (const auto& p : std::filesystem::recursive_directory_iterator(
-                     patchesPath, std::filesystem::directory_options::follow_directory_symlink)) {
-                if (StringHelper::IEquals(p.path().extension().string(), ".otr") ||
-                    StringHelper::IEquals(p.path().extension().string(), ".mpq") ||
-                    StringHelper::IEquals(p.path().extension().string(), ".o2r") ||
-                    StringHelper::IEquals(p.path().extension().string(), ".zip")) {
-                    patchOTRs.push_back(p.path().generic_string());
-                }
-            }
-        }
-    }
-    std::sort(patchOTRs.begin(), patchOTRs.end(), [](const std::string& a, const std::string& b) {
-        return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(),
-                                            [](char c1, char c2) { return std::tolower(c1) < std::tolower(c2); });
-    });
-    OTRFiles.insert(OTRFiles.end(), patchOTRs.begin(), patchOTRs.end());
+
     std::unordered_set<uint32_t> ValidHashes = {
         OOT_PAL_MQ,     OOT_NTSC_JP_MQ, OOT_NTSC_US_MQ, OOT_PAL_GC_MQ_DBG, OOT_NTSC_US_10,
         OOT_NTSC_US_11, OOT_NTSC_US_12, OOT_PAL_10,     OOT_PAL_11,        OOT_NTSC_JP_GC_CE,
@@ -314,7 +299,7 @@ void OTRGlobals::Initialize() {
 
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
     context->InitResourceManager(OTRFiles, {}, 3);
-    prevAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 0);
+    prevAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 1);
     context->GetResourceManager()->SetAltAssetsEnabled(prevAltAssets);
 
     auto controlDeck = std::make_shared<LUS::ControlDeck>(std::vector<CONTROLLERBUTTONS_T>({
@@ -343,6 +328,10 @@ void OTRGlobals::Initialize() {
     auto sohFast3dWindow =
         std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({ sohInputEditorWindow }));
     context->InitWindow(sohFast3dWindow);
+
+    context->GetWindow()->SetAutoCaptureMouse(CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) &&
+                                              CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1));
+    context->GetWindow()->SetForceCursorVisibility(CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
 
     auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
     overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
@@ -1132,7 +1121,32 @@ void CheckAndCreateModFolder() {
     }
 }
 
-extern "C" void InitOTR() {
+extern "C" void InitOTR(int argc, char* argv[]) {
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+    if (argc > 1) {
+        for (int i = 1; i < argc; i++) {
+            std::string installPath = Ship::Context::GetAppBundlePath();
+            Extractor extract;
+            if (extract.RunFileStandalone(argv[i])) {
+                bool doExtract = true;
+                std::string archive = (extract.IsMasterQuest() ? "oot-mq.o2r" : "oot.o2r");
+                if (std::filesystem::exists(Ship::Context::GetAppBundlePath() + "/" + archive)) {
+                    std::string msg = "Archive for current ROM, " + archive + ", already exists. Extract again?";
+                    doExtract = extract.ShowYesNoBox("Confirm Re-extract", msg.c_str()) == IDYES;
+                }
+                if (doExtract) {
+                    extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName));
+                }
+            } else {
+                std::string msg = "File " + std::string(argv[i]) + " is not a ROM or does not match supported ROMs.";
+                extract.ShowErrorBox("Incompatible File", msg.c_str());
+            }
+        }
+        if (Extractor::ShowYesNoBox("Run Ship of Harkinian", "All files have been processed. Run SoH?") != IDYES) {
+            exit(0);
+        }
+    }
+#endif
     OTRGlobals::Instance = new OTRGlobals();
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);
@@ -1250,6 +1264,7 @@ extern "C" void InitOTR() {
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion4Updater>());
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
@@ -1287,7 +1302,8 @@ extern "C" void InitOTR() {
     CVarClear(CVAR_GENERAL("RandomizerNewFileDropped"));
     CVarClear(CVAR_GENERAL("RandomizerDroppedFile"));
     // #endregion
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFileDropped>(SoH_ProcessDroppedFiles);
+
+    Ship::Context::GetInstance()->GetFileDropMgr()->RegisterDropHandler(SoH_HandleConfigDrop);
 
     RegisterImGuiItemIcons();
 
@@ -1466,21 +1482,12 @@ extern "C" void Graph_StartFrame() {
 #endif
         case KbScancode::LUS_KB_TAB: {
             if (CVarGetInteger(CVAR_SETTING("Mods.AlternateAssetsHotkey"), 1)) {
-                CVarSetInteger(CVAR_SETTING("AltAssets"), !CVarGetInteger(CVAR_SETTING("AltAssets"), 0));
+                CVarSetInteger(CVAR_SETTING("AltAssets"), !CVarGetInteger(CVAR_SETTING("AltAssets"), 1));
             }
             break;
         }
     }
 #endif
-
-    auto dropMgr = Ship::Context::GetInstance()->GetFileDropMgr();
-    if (dropMgr->FileDropped()) {
-        std::string filePath = dropMgr->GetDroppedFile();
-        if (!filePath.empty()) {
-            GameInteractor::Instance->ExecuteHooks<GameInteractor::OnFileDropped>(filePath);
-        }
-        dropMgr->ClearDroppedFile();
-    }
 }
 
 void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>>& mtx_replacements) {
@@ -1563,7 +1570,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         }
     }
 
-    bool curAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 0);
+    bool curAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 1);
     if (prevAltAssets != curAltAssets) {
         prevAltAssets = curAltAssets;
         Ship::Context::GetInstance()->GetResourceManager()->SetAltAssetsEnabled(curAltAssets);
@@ -2257,6 +2264,152 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     s16 actorParams = 0;
     if (IS_RANDO) {
         auto ctx = Rando::Context::GetInstance();
+        if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
+            s16 entrance = -1;
+            switch (textId) {
+                case TEXT_WATERFALL:
+                    entrance = ENTR_ZORAS_DOMAIN_ENTRANCE;
+                    break;
+                case TEXT_OUTSIDE_FISHING_POND:
+                    entrance = ENTR_FISHING_POND_0;
+                    break;
+                case TEXT_HF_SIGN:
+                    if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE) {
+                        entrance = ENTR_HYRULE_FIELD_STAIRS_EXIT;
+                    } else if (gPlayState->sceneNum == SCENE_GERUDO_VALLEY) {
+                        entrance = ENTR_HYRULE_FIELD_ROCKY_PATH;
+                    } else if (gPlayState->sceneNum == SCENE_LAKE_HYLIA) {
+                        entrance = ENTR_HYRULE_FIELD_FENCE_EXIT;
+                    }
+                    break;
+                case TEXT_HC_GREAT_FAIRY_SIGN:
+                    entrance = ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_DINS_HC;
+                    break;
+                case TEXT_DMT_KAK_SIGN:
+                    if (gPlayState->sceneNum == SCENE_HYRULE_FIELD) {
+                        entrance = ENTR_KAKARIKO_VILLAGE_FRONT_GATE;
+                    } else {
+                        entrance = ENTR_KAKARIKO_VILLAGE_GUARD_GATE;
+                    }
+                    break;
+                case TEXT_KAK_TO_GY_SIGN:
+                    entrance = ENTR_GRAVEYARD_ENTRANCE;
+                    break;
+                case TEXT_KAK_WELL_SIGN:
+                    entrance = ENTR_BOTTOM_OF_THE_WELL_ENTRANCE;
+                    break;
+                case TEXT_KAK_DMT_SIGN:
+                    entrance = ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT;
+                    break;
+                case TEXT_DMT_SIGN:
+                    entrance = ENTR_GROTTOS_13;
+                    break;
+                case TEXT_DMT_DC_SIGN:
+                    entrance = ENTR_DEATH_MOUNTAIN_TRAIL_OUTSIDE_DODONGOS_CAVERN;
+                    break;
+                case TEXT_DMT_GC_SIGN:
+                    entrance = ENTR_GORON_CITY_UPPER_EXIT;
+                    break;
+                case TEXT_GC_SIGN:
+                    if (gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL) {
+                        entrance = ENTR_GORON_CITY_UPPER_EXIT;
+                    } else {
+                        entrance = ENTR_GORON_CITY_DARUNIA_ROOM_EXIT;
+                    }
+                    break;
+                case TEXT_DMT_DMC_SIGN:
+                    entrance = ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT;
+                    break;
+                case TEXT_DMT_SUMMIT_SIGN:
+                    entrance = ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMT;
+                    break;
+                case TEXT_HF_ZR_SIGN:
+                    entrance = ENTR_ZORAS_RIVER_WEST_EXIT;
+                    break;
+                case TEXT_GF_GTG_SIGN:
+                    entrance = ENTR_GERUDO_TRAINING_GROUND_ENTRANCE;
+                    break;
+                case TEXT_KF_SHOP_SIGN:
+                    entrance = ENTR_KOKIRI_SHOP_0;
+                    break;
+                case TEXT_LINKS_HOUSE_SIGN:
+                    entrance = ENTR_LINKS_HOUSE_1;
+                    break;
+                case TEXT_KOKIRI_EXIT_SIGN:
+                    entrance = ENTR_LOST_WOODS_BRIDGE_EAST_EXIT;
+                    break;
+                case TEXT_ZD_SIGN:
+                    if (gPlayState->sceneNum == SCENE_ZORAS_DOMAIN) {
+                        entrance = ENTR_ZORAS_RIVER_WATERFALL_EXIT;
+                    } else {
+                        entrance = ENTR_ZORAS_DOMAIN_KING_ZORA_EXIT;
+                    }
+                    break;
+                case TEXT_ZF_JABU_SIGN:
+                    entrance = ENTR_JABU_JABU_ENTRANCE;
+                    break;
+                case TEXT_KF_LW_SIGN:
+                    entrance = ENTR_LOST_WOODS_SOUTH_EXIT;
+                    break;
+                case TEXT_HF_LON_LON_SIGN:
+                    entrance = ENTR_LON_LON_RANCH_ENTRANCE;
+                    break;
+                case TEXT_LA_SIGN:
+                    entrance = ENTR_LAKE_HYLIA_NORTH_EXIT;
+                    break;
+                case TEXT_LA_LAB_SIGN:
+                    entrance = ENTR_LAKESIDE_LABORATORY_0;
+                    break;
+                case TEXT_GV_SIGN:
+                    if (gPlayState->sceneNum == SCENE_HYRULE_FIELD) {
+                        entrance = ENTR_GERUDO_VALLEY_EAST_EXIT;
+                    } else {
+                        entrance = ENTR_GERUDO_VALLEY_WEST_EXIT;
+                    }
+                    break;
+                case TEXT_ZD_SHOP_SIGN:
+                    entrance = ENTR_ZORA_SHOP_0;
+                    break;
+                case TEXT_OUTSIDE_KOKIRI_SIGN:
+                    entrance = ENTR_MARKET_ENTRANCE_NEAR_GUARD_EXIT;
+                    break;
+                case TEXT_OUTSIDE_MARKET_SIGN:
+                    entrance = ENTR_LON_LON_RANCH_ENTRANCE;
+                    break;
+                case TEXT_MIDO_HOUSE_SIGN:
+                    entrance = ENTR_MIDOS_HOUSE_0;
+                    break;
+                case TEXT_KNOW_IT_ALL_HOUSE_SIGN:
+                    entrance = ENTR_KNOW_IT_ALL_BROS_HOUSE_0;
+                    break;
+                case TEXT_TWINS_HOUSE_SIGN:
+                    entrance = ENTR_TWINS_HOUSE_0;
+                    break;
+                case TEXT_SARIAS_HOUSE_SIGN:
+                    entrance = ENTR_SARIAS_HOUSE_0;
+                    break;
+                case TEXT_NO_DIVING_SIGN:
+                    entrance = ENTR_LAKE_HYLIA_RIVER_EXIT;
+                    break;
+            }
+            if (entrance != -1) {
+                auto entranceCtx = ctx->GetEntranceShuffler();
+                for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
+                    if (Entrance_EntranceIsNull(&entranceCtx->entranceOverrides[i])) {
+                        break;
+                    }
+                    if (entranceCtx->entranceOverrides[i].index == entrance) {
+                        s16 overrideIndex = entranceCtx->entranceOverrides[i].override;
+                        Entrance_SetEntranceDiscovered(entrance, false);
+                        auto data = GetEntranceData(overrideIndex);
+                        font->charTexBuf[0] = (TEXTBOX_TYPE_WOODEN << 4) | TEXTBOX_POS_BOTTOM;
+                        return msgCtx->msgLength = font->msgLength = SohUtils::CopyStringToCharBuffer(
+                                   buffer, data->destination + CustomMessage::MESSAGE_END(), maxBufferSize);
+                    }
+                }
+            }
+        }
+
         bool nonBeanMerchants = ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) ||
                                 ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL);
         Player* player = GET_PLAYER(play);
@@ -2332,7 +2485,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             } else {
                 messageEntry = ctx->GetHint(stoneHint)->GetHintMessage(MF_AUTO_FORMAT);
             }
-        } else if ((textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT)) {
+        } else if (textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) {
             // rando hints at altar
             messageEntry = (LINK_IS_ADULT) ? ctx->GetHint(RH_ALTAR_ADULT)->GetHintMessage(MF_AUTO_FORMAT)
                                            : ctx->GetHint(RH_ALTAR_CHILD)->GetHintMessage(MF_AUTO_FORMAT);
@@ -2475,6 +2628,10 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if ((textId >= TEXT_SARIAS_SONG_FACE_TO_FACE && textId <= TEXT_SARIAS_SONG_CHANNELING_POWER) &&
                    ctx->GetOption(RSK_SARIA_HINT)) {
             messageEntry = ctx->GetHint(RH_SARIA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 1);
+        } else if ((textId == TEXT_MIDO_SPEAK_TO_MIDO_FIRST_TIME || textId == TEXT_MIDO_SPEAK_TO_MIDO_AGAIN ||
+                    textId == TEXT_MIDO_HOME_AFTER_ZELDAS_LETTER || textId == TEXT_MIDO_HOME_BEFORE_ZELDAS_LETTER) &&
+                   ctx->GetOption(RSK_MIDO_HINT)) {
+            messageEntry = ctx->GetHint(RH_MIDO_HINT)->GetHintMessage(MF_AUTO_FORMAT);
         } else if (ctx->GetOption(RSK_BIGGORON_HINT) &&
                    (textId == TEXT_BIGGORON_BETTER_AT_SMITHING || textId == TEXT_BIGGORON_WAITING_FOR_YOU ||
                     textId == TEXT_BIGGORON_RETURN_AFTER_A_FEW_DAYS || textId == TEXT_BIGGORON_I_MAAAADE_THISSSS)) {
@@ -2631,26 +2788,21 @@ extern "C" void Gfx_TextureCacheDelete(const uint8_t* texAddr) {
     }
 }
 
-void SoH_ProcessDroppedFiles(std::string filePath) {
+bool SoH_HandleConfigDrop(char* filePath) {
+    if (SohUtils::IsStringEmpty(filePath)) {
+        return false;
+    }
     try {
         std::ifstream configStream(filePath);
         if (!configStream) {
-            return;
+            return false;
         }
 
         nlohmann::json configJson;
         configStream >> configJson;
 
-        // #region SOH [Randomizer] TODO: Refactor spoiler file handling for randomizer
-        if (configJson.contains("version") && configJson.contains("finalSeed")) {
-            CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), filePath.c_str());
-            CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 1);
-            return;
-        }
-        // #endregion
-
         if (!configJson.contains("CVars")) {
-            return;
+            return false;
         }
 
         CVarClearBlock(CVAR_PREFIX_ENHANCEMENT);
@@ -2696,17 +2848,19 @@ void SoH_ProcessDroppedFiles(std::string filePath) {
 
         uint32_t finalHash = SohUtils::Hash(configJson.dump());
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Configuration Loaded. Hash: %d", finalHash);
+        return true;
     } catch (std::exception& e) {
         SPDLOG_ERROR("Failed to load config file: {}", e.what());
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
-        return;
+        return false;
     } catch (...) {
         SPDLOG_ERROR("Failed to load config file");
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
-        return;
+        return false;
     }
+    return false;
 }
 
 extern "C" void CheckTracker_RecalculateAvailableChecks() {

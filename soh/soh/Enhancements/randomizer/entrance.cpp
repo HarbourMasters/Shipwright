@@ -343,7 +343,7 @@ void SetAllEntrancesData() {
         { { EntranceType::Interior, RR_HYRULE_CASTLE_GROUNDS,         RR_HC_GREAT_FAIRY_FOUNTAIN,       ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_DINS_HC },
           { EntranceType::Interior, RR_HC_GREAT_FAIRY_FOUNTAIN,       RR_CASTLE_GROUNDS,                ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT } },
         { { EntranceType::Interior, RR_GANONS_CASTLE_GROUNDS,         RR_OGC_GREAT_FAIRY_FOUNTAIN,      ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_OGC_DD },
-        // 0x3E8 is an unused entrance index repruposed to differentiate between the HC and OGC fairy
+        // 0x3E8 is an unused entrance index repurposed to differentiate between the HC and OGC fairy
         // fountain exits (normally they both use 0x340)
           { EntranceType::Interior, RR_OGC_GREAT_FAIRY_FOUNTAIN,      RR_CASTLE_GROUNDS,                ENTR_POTION_SHOP_KAKARIKO_1 } },
         { { EntranceType::Interior, RR_DMC_LOWER_NEARBY,              RR_DMC_GREAT_FAIRY_FOUNTAIN,      ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMC },
@@ -364,6 +364,33 @@ void SetAllEntrancesData() {
         { { EntranceType::SpecialInterior, RR_KAK_BACKYARD,          RR_KAK_POTION_SHOP_BACK,  ENTR_POTION_SHOP_KAKARIKO_BACK },
           { EntranceType::SpecialInterior, RR_KAK_POTION_SHOP_BACK,  RR_KAK_BACKYARD,          ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_BACK } },
         
+        { { EntranceType::ThievesHideout, RR_GF_OUTSKIRTS,                 RR_TH_1_TORCH_CELL,              ENTR_THIEVES_HIDEOUT_0 },
+          { EntranceType::ThievesHideout, RR_TH_1_TORCH_CELL,              RR_GF_OUTSKIRTS,                 ENTR_GERUDOS_FORTRESS_1 } },
+        { { EntranceType::ThievesHideout, RR_GF_NEAR_GROTTO,               RR_TH_1_TORCH_CELL,              ENTR_THIEVES_HIDEOUT_1 },
+          { EntranceType::ThievesHideout, RR_TH_1_TORCH_CELL,              RR_GF_NEAR_GROTTO,               ENTR_GERUDOS_FORTRESS_2 } },
+        { { EntranceType::ThievesHideout, RR_GF_NEAR_GROTTO,               RR_TH_KITCHEN_CORRIDOR,          ENTR_THIEVES_HIDEOUT_2 },
+          { EntranceType::ThievesHideout, RR_TH_KITCHEN_CORRIDOR,          RR_GF_NEAR_GROTTO,               ENTR_GERUDOS_FORTRESS_3 } },
+        { { EntranceType::ThievesHideout, RR_GF_ABOVE_GTG,                 RR_TH_KITCHEN_CORRIDOR,          ENTR_THIEVES_HIDEOUT_3 },
+          { EntranceType::ThievesHideout, RR_TH_KITCHEN_CORRIDOR,          RR_GF_ABOVE_GTG,                 ENTR_GERUDOS_FORTRESS_4 } },
+        { { EntranceType::ThievesHideout, RR_GF_NEAR_GROTTO,               RR_TH_STEEP_SLOPE_CELL,          ENTR_THIEVES_HIDEOUT_4 },
+          { EntranceType::ThievesHideout, RR_TH_STEEP_SLOPE_CELL,          RR_GF_NEAR_GROTTO,               ENTR_GERUDOS_FORTRESS_5 } },
+        { { EntranceType::ThievesHideout, RR_GF_BOTTOM_OF_LOWER_VINES,     RR_TH_STEEP_SLOPE_CELL,          ENTR_THIEVES_HIDEOUT_5 },
+          { EntranceType::ThievesHideout, RR_TH_STEEP_SLOPE_CELL,          RR_GF_BOTTOM_OF_LOWER_VINES,     ENTR_GERUDOS_FORTRESS_6 } },
+        { { EntranceType::ThievesHideout, RR_GF_ABOVE_GTG,                 RR_TH_DOUBLE_CELL,               ENTR_THIEVES_HIDEOUT_6 },
+          { EntranceType::ThievesHideout, RR_TH_DOUBLE_CELL,               RR_GF_ABOVE_GTG,                 ENTR_GERUDOS_FORTRESS_7 } },
+        { { EntranceType::ThievesHideout, RR_GF_TOP_OF_LOWER_VINES,        RR_TH_DOUBLE_CELL,               ENTR_THIEVES_HIDEOUT_7 },
+          { EntranceType::ThievesHideout, RR_TH_DOUBLE_CELL,               RR_GF_TOP_OF_LOWER_VINES,        ENTR_GERUDOS_FORTRESS_8 } },
+        { { EntranceType::ThievesHideout, RR_GF_TOP_OF_LOWER_VINES,        RR_TH_KITCHEN_BY_CORRIDOR,       ENTR_THIEVES_HIDEOUT_8 },
+          { EntranceType::ThievesHideout, RR_TH_KITCHEN_BY_CORRIDOR,       RR_GF_TOP_OF_LOWER_VINES,        ENTR_GERUDOS_FORTRESS_9 } },
+        { { EntranceType::ThievesHideout, RR_GF_NEAR_GS,                   RR_TH_KITCHEN_OPPOSITE_CORRIDOR, ENTR_THIEVES_HIDEOUT_9 },
+          { EntranceType::ThievesHideout, RR_TH_KITCHEN_OPPOSITE_CORRIDOR, RR_GF_NEAR_GS,                   ENTR_GERUDOS_FORTRESS_10 } },
+        { { EntranceType::ThievesHideout, RR_GF_BELOW_CHEST,               RR_TH_BREAK_ROOM,                ENTR_THIEVES_HIDEOUT_10 },
+          { EntranceType::ThievesHideout, RR_TH_BREAK_ROOM,                RR_GF_BELOW_CHEST,               ENTR_GERUDOS_FORTRESS_11 } },
+        { { EntranceType::ThievesHideout, RR_GF_ABOVE_JAIL,                RR_TH_BREAK_ROOM_CORRIDOR,       ENTR_THIEVES_HIDEOUT_11 },
+          { EntranceType::ThievesHideout, RR_TH_BREAK_ROOM_CORRIDOR,       RR_GF_ABOVE_JAIL,                ENTR_GERUDOS_FORTRESS_12 } },
+        { { EntranceType::ThievesHideout, RR_GF_BELOW_GS,                  RR_TH_DEAD_END_CELL,             ENTR_THIEVES_HIDEOUT_12 },
+          { EntranceType::ThievesHideout, RR_TH_DEAD_END_CELL,             RR_GF_BELOW_GS,                  ENTR_GERUDOS_FORTRESS_13 } },
+
         // Grotto Loads use an entrance index of 0x0700 + their grotto id. The id is used as index for the
         // grottoLoadTable in soh/soh/Enhancements/randomizer/randomizer_grotto.c
         // Grotto Returns use an entrance index of 0x0800 + their grotto id. The id is used as index for the
@@ -643,7 +670,8 @@ std::vector<Entrance*> EntranceShuffler::AssumeEntrancePool(std::vector<Entrance
                   (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
                    ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)))) {
                 auto type = entrance->GetType();
-                if (((type == EntranceType::Dungeon || type == EntranceType::GrottoGrave) &&
+                if (((type == EntranceType::Dungeon || type == EntranceType::ThievesHideout ||
+                      type == EntranceType::GrottoGrave) &&
                      entrance->GetReverse()->GetName() !=
                          "Spirit Temple Entryway -> Desert Colossus From Spirit Entryway") ||
                     (type == EntranceType::Interior &&
@@ -1260,6 +1288,17 @@ int EntranceShuffler::ShuffleAllEntrances() {
         }
     }
 
+    // Thieves' Hideout entrances
+    if (ctx->GetOption(RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES)) {
+        entrancePools[EntranceType::ThievesHideout] = GetShuffleableEntrances(EntranceType::ThievesHideout);
+
+        if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
+            for (Entrance* entrance : entrancePools[EntranceType::ThievesHideout]) {
+                entrancePools[EntranceType::ThievesHideoutReverse].push_back(entrance->GetReverse());
+            }
+        }
+    }
+
     // grotto entrances
     if (ctx->GetOption(RSK_SHUFFLE_GROTTO_ENTRANCES)) {
         entrancePools[EntranceType::GrottoGrave] = GetShuffleableEntrances(EntranceType::GrottoGrave);
@@ -1325,6 +1364,12 @@ int EntranceShuffler::ShuffleAllEntrances() {
             poolsToMix.insert(EntranceType::Interior);
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 poolsToMix.insert(EntranceType::InteriorReverse);
+            }
+        }
+        if (ctx->GetOption(RSK_MIX_THIEVES_HIDEOUT_ENTRANCES)) {
+            poolsToMix.insert(EntranceType::ThievesHideout);
+            if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
+                poolsToMix.insert(EntranceType::ThievesHideoutReverse);
             }
         }
         if (ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES)) {

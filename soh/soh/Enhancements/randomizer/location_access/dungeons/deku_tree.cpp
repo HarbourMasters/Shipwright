@@ -18,8 +18,8 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_LOBBY] = Region("Deku Tree Lobby", SCENE_DEKU_TREE, {
         //Events
-        EventAccess(&logic->DekuBabaSticks, []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(&logic->DekuBabaNuts,   []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(LOGIC_DEKU_BABA_STICKS, []{return logic->CanGetDekuBabaSticks();}),
+        EventAccess(LOGIC_DEKU_BABA_NUTS,   []{return logic->CanGetDekuBabaNuts();}),
     }, {
         //Locations
         LOCATION(RC_DEKU_TREE_MAP_CHEST,         true),
@@ -61,8 +61,8 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_COMPASS_ROOM] = Region("Deku Tree Compass Room", SCENE_DEKU_TREE, {
         //Events
-        EventAccess(&logic->DekuBabaSticks, []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(&logic->DekuBabaNuts,   []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(LOGIC_DEKU_BABA_STICKS, []{return logic->CanGetDekuBabaSticks();}),
+        EventAccess(LOGIC_DEKU_BABA_NUTS,   []{return logic->CanGetDekuBabaNuts();}),
     }, {
         //Locations
         LOCATION(RC_DEKU_TREE_COMPASS_CHEST,           true),
@@ -78,8 +78,8 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_BASEMENT_LOWER] = Region("Deku Tree Basement Lower", SCENE_DEKU_TREE, {
         //Events
-        EventAccess(&logic->DekuBabaSticks, []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(&logic->DekuBabaNuts,   []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(LOGIC_DEKU_BABA_STICKS, []{return logic->CanGetDekuBabaSticks();}),
+        EventAccess(LOGIC_DEKU_BABA_NUTS,   []{return logic->CanGetDekuBabaNuts();}),
     }, {
         //Locations
         LOCATION(RC_DEKU_TREE_BASEMENT_CHEST,    true),
@@ -91,7 +91,7 @@ void RegionTable_Init_DekuTree() {
         //Exits
         Entrance(RR_DEKU_TREE_LOBBY,               []{return true;}),
         Entrance(RR_DEKU_TREE_BASEMENT_SCRUB_ROOM, []{return Here(RR_DEKU_TREE_BASEMENT_LOWER, []{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);});}),
-        Entrance(RR_DEKU_TREE_BASEMENT_UPPER,      []{return logic->IsAdult || ctx->GetTrickOption(RT_DEKU_B1_SKIP) || HasAccessTo(RR_DEKU_TREE_BASEMENT_UPPER);}),
+        Entrance(RR_DEKU_TREE_BASEMENT_UPPER,      []{return logic->IsAdult || ctx->GetTrickOption(RT_DEKU_B1_SKIP) || logic->CanGroundJump() || logic->Get(LOGIC_DEKU_TREE_PUSHED_BASEMENT_BLOCK);}),
         Entrance(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM,   []{return false;}),
     });
 
@@ -125,22 +125,22 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_BASEMENT_TORCH_ROOM] = Region("Deku Tree Basement Torch Room", SCENE_DEKU_TREE, {
         //Events
-        EventAccess(&logic->DekuBabaSticks, []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(&logic->DekuBabaNuts,   []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(LOGIC_DEKU_BABA_STICKS, []{return logic->CanGetDekuBabaSticks();}),
+        EventAccess(LOGIC_DEKU_BABA_NUTS,   []{return logic->CanGetDekuBabaNuts();}),
     }, {
         //Locations
         LOCATION(RC_DEKU_TREE_BASEMENT_TORCHES_GRASS_1, logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_BASEMENT_TORCHES_GRASS_2, logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_DEKU_TREE_BASEMENT_WATER_ROOM_BACK, []{return true;}),
+        Entrance(RR_DEKU_TREE_BASEMENT_WATER_ROOM_BACK, []{return Here(RR_DEKU_TREE_BASEMENT_TORCH_ROOM, []{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);});}),
         Entrance(RR_DEKU_TREE_BASEMENT_BACK_LOBBY,      []{return Here(RR_DEKU_TREE_BASEMENT_TORCH_ROOM, []{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);});}),
     });
 
     areaTable[RR_DEKU_TREE_BASEMENT_BACK_LOBBY] = Region("Deku Tree Basement Back Lobby", SCENE_DEKU_TREE, {
         //Events
-        EventAccess(&logic->DekuBabaSticks, []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(&logic->DekuBabaNuts,   []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(LOGIC_DEKU_BABA_STICKS, []{return logic->CanGetDekuBabaSticks();}),
+        EventAccess(LOGIC_DEKU_BABA_NUTS,   []{return logic->CanGetDekuBabaNuts();}),
     }, {
         //Location
         LOCATION(RC_DEKU_TREE_BASEMENT_LARVAE_GRASS_1, logic->CanCutShrubs()),
@@ -162,8 +162,9 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_BASEMENT_UPPER] = Region("Deku Tree Basement Upper", SCENE_DEKU_TREE, {
         //Events
-        EventAccess(&logic->DekuBabaSticks, []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(&logic->DekuBabaNuts,   []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(LOGIC_DEKU_BABA_STICKS,                []{return logic->CanGetDekuBabaSticks();}),
+        EventAccess(LOGIC_DEKU_BABA_NUTS,                  []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(LOGIC_DEKU_TREE_PUSHED_BASEMENT_BLOCK, []{return true;}),
     }, {}, {
         //Exits
         Entrance(RR_DEKU_TREE_BASEMENT_LOWER,      []{return true;}),
@@ -191,8 +192,8 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_MQ_1F] = Region("Deku Tree MQ 1F", SCENE_DEKU_TREE, {
         //Events
-        EventAccess(&logic->DekuBabaSticks, []{return logic->CanKillEnemy(RE_WITHERED_DEKU_BABA);}),
-        EventAccess(&logic->BrokeDeku1FWeb, []{return logic->HasFireSource();}),
+        EventAccess(LOGIC_DEKU_BABA_STICKS, []{return logic->CanKillEnemy(RE_WITHERED_DEKU_BABA);}),
+        EventAccess(LOGIC_DEKU_TREE_1F_BROKE_WEB, []{return logic->HasFireSource();}),
     }, {
         //Locations
         LOCATION(RC_DEKU_TREE_MQ_LOBBY_GRASS_1, logic->CanCutShrubs()),
@@ -208,7 +209,7 @@ void RegionTable_Init_DekuTree() {
         //Swim is not required because you can jump with enough momentum to hit land.
         //You even avoid fall damage if you hit the shallow water, though it's obscure knowledge so may be a trick
         //if it is, then we need a landing room with (IsAdult || HasItem(RG_BRONZE_SCALE) || TakeDamage() || that trick) to reach basement
-        Entrance(RR_DEKU_TREE_MQ_BASEMENT, []{return logic->BrokeDeku1FWeb;}),
+        Entrance(RR_DEKU_TREE_MQ_BASEMENT, []{return logic->Get(LOGIC_DEKU_TREE_1F_BROKE_WEB);}),
         //is it possible to recoil from here to the ledge with a trick?
     });
 
@@ -230,9 +231,9 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_MQ_3F] = Region("Deku Tree MQ 3F", SCENE_DEKU_TREE, {
         //Events
-        EventAccess(&logic->DekuBabaSticks,    []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(&logic->DekuBabaNuts,      []{return logic->CanGetDekuBabaNuts();}),
-        EventAccess(&logic->BrokeDeku1FWeb,    []{return true;}),
+        EventAccess(LOGIC_DEKU_BABA_STICKS,       []{return logic->CanGetDekuBabaSticks();}),
+        EventAccess(LOGIC_DEKU_BABA_NUTS,         []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(LOGIC_DEKU_TREE_1F_BROKE_WEB, []{return true;}),
     }, {
         //Locations
         //Implies CanKillEnemy(RE_GOHMA_LARVA)
@@ -293,8 +294,8 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_MQ_BASEMENT] = Region("Deku Tree MQ Basement", SCENE_DEKU_TREE, {
         //Events
-        EventAccess(&logic->DekuBabaSticks, []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(&logic->DekuBabaNuts,   []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(LOGIC_DEKU_BABA_STICKS, []{return logic->CanGetDekuBabaSticks();}),
+        EventAccess(LOGIC_DEKU_BABA_NUTS,   []{return logic->CanGetDekuBabaNuts();}),
     }, {
         //Locations
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_CHEST,         logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
@@ -307,14 +308,14 @@ void RegionTable_Init_DekuTree() {
         Entrance(RR_DEKU_TREE_MQ_1F,                        []{return true;}),
         Entrance(RR_DEKU_TREE_MQ_BASEMENT_SOUTHEAST_ROOM,   []{return Here(RR_DEKU_TREE_MQ_BASEMENT, []{return logic->CanHitEyeTargets();});}),
         //includes RR_DEKU_TREE_MQ_BASEMENT_SOUTHEAST_ROOM Access, other fire sources clear directly from there
-        Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, []{return Here(RR_DEKU_TREE_MQ_BASEMENT, []{return logic->CanHitEyeTargets();}) && logic->ClearedMQDekuSERoom && Here(RR_DEKU_TREE_MQ_BASEMENT, []{return logic->CanUse(RG_STICKS);});}),
-        Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE,            []{return ctx->GetTrickOption(RT_DEKU_B1_SKIP) || logic->PushedDekuBasementBlock || logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS);}),
+        Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, []{return Here(RR_DEKU_TREE_MQ_BASEMENT, []{return logic->CanHitEyeTargets();}) && logic->Get(LOGIC_DEKU_TREE_MQ_CLEARED_SE_ROOM) && Here(RR_DEKU_TREE_MQ_BASEMENT, []{return logic->CanUse(RG_STICKS);});}),
+        Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE,            []{return logic->IsAdult || ctx->GetTrickOption(RT_DEKU_B1_SKIP) || logic->CanGroundJump() || logic->Get(LOGIC_DEKU_TREE_PUSHED_BASEMENT_BLOCK) || logic->CanUse(RG_HOVER_BOOTS);}),
     });
 
     areaTable[RR_DEKU_TREE_MQ_BASEMENT_SOUTHEAST_ROOM] = Region("Deku Tree MQ Southeast Room", SCENE_DEKU_TREE, {
         //Events
         //Implies CanKillEnemy(RE_GOHMA_LARVA)
-        EventAccess(&logic->ClearedMQDekuSERoom, []{return logic->CanKillEnemy(RE_MAD_SCRUB);}),
+        EventAccess(LOGIC_DEKU_TREE_MQ_CLEARED_SE_ROOM, []{return logic->CanKillEnemy(RE_MAD_SCRUB);}),
     }, {
         //Locations
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_TORCHES_GRASS_1, logic->CanCutShrubs()),
@@ -324,13 +325,13 @@ void RegionTable_Init_DekuTree() {
     }, {
         //Exits
         Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, []{return logic->HasFireSource();}),
-        Entrance(RR_DEKU_TREE_MQ_BASEMENT,                  []{return logic->ClearedMQDekuSERoom;}),
+        Entrance(RR_DEKU_TREE_MQ_BASEMENT,                  []{return logic->Get(LOGIC_DEKU_TREE_MQ_CLEARED_SE_ROOM);}),
     });
 
     areaTable[RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT] = Region("Deku Tree MQ Basement Water Room Front", SCENE_DEKU_TREE, {
         //Events
         //It's possible to get this with bow if you have move while in first person and one-point skips on, noticeably harder and jankier as child, but that's a trick
-        EventAccess(&logic->MQDekuWaterRoomTorches, []{return logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_STICKS) && (ctx->GetTrickOption(RT_DEKU_MQ_LOG) || (logic->IsChild && logic->CanShield())));}),
+        EventAccess(LOGIC_DEKU_TREE_MQ_WATER_ROOM_TORCHES, []{return logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_STICKS) && (ctx->GetTrickOption(RT_DEKU_MQ_LOG) || (logic->IsChild && logic->CanShield())));}),
     }, {
         //Locations
         LOCATION(RC_DEKU_TREE_MQ_BEFORE_SPINNING_LOG_CHEST,           true),
@@ -345,8 +346,8 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK] = Region("Deku Tree MQ Basement Water Room Back", SCENE_DEKU_TREE, {
         //Events
-        EventAccess(&logic->DekuBabaSticks,         []{return logic->CanKillEnemy(RE_WITHERED_DEKU_BABA);}),
-        EventAccess(&logic->MQDekuWaterRoomTorches, []{return logic->HasFireSource();}),
+        EventAccess(LOGIC_DEKU_BABA_STICKS,         []{return logic->CanKillEnemy(RE_WITHERED_DEKU_BABA);}),
+        EventAccess(LOGIC_DEKU_TREE_MQ_WATER_ROOM_TORCHES, []{return logic->HasFireSource();}),
     }, {
         //Locations
         //it blocks the chest while stunned unless you stun it from afar while it's slightly off the ground
@@ -355,7 +356,7 @@ void RegionTable_Init_DekuTree() {
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_SPIKE_ROLLER_BACK_GRASS_2, logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_DEKU_TREE_MQ_BASEMENT_SOUTHWEST_ROOM,   []{return logic->MQDekuWaterRoomTorches && logic->CanPassEnemy(RE_BIG_SKULLTULA, logic->CanUse(RG_SONG_OF_TIME) ? ED_CLOSE : ED_SHORT_JUMPSLASH);}),
+        Entrance(RR_DEKU_TREE_MQ_BASEMENT_SOUTHWEST_ROOM,   []{return logic->Get(LOGIC_DEKU_TREE_MQ_WATER_ROOM_TORCHES) && logic->CanPassEnemy(RE_BIG_SKULLTULA, logic->CanUse(RG_SONG_OF_TIME) ? ED_CLOSE : ED_SHORT_JUMPSLASH);}),
         Entrance(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, []{return ctx->GetTrickOption(RT_DEKU_MQ_LOG) || (logic->IsChild && logic->CanShield()) || logic->CanUse(RG_LONGSHOT) || logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && (logic->IsAdult || logic->CanUse(RG_HOOKSHOT)));}),
     });
 
@@ -372,8 +373,8 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_MQ_BASEMENT_GRAVE_ROOM] = Region("Deku Tree MQ Basement Grave Room", SCENE_DEKU_TREE, {
         //Events
-        EventAccess(&logic->DekuBabaSticks, []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(&logic->DekuBabaNuts,   []{return logic->CanGetDekuBabaNuts();})
+        EventAccess(LOGIC_DEKU_BABA_STICKS, []{return logic->CanGetDekuBabaSticks();}),
+        EventAccess(LOGIC_DEKU_BABA_NUTS,   []{return logic->CanGetDekuBabaNuts();})
     }, {
         //Locations
         LOCATION(RC_DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM, logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_SONG_OF_TIME) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG))),
@@ -403,7 +404,7 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_MQ_BASEMENT_LEDGE] = Region("Deku Tree MQ Basement Ledge", SCENE_DEKU_TREE, {
         //Events
-        EventAccess(&logic->PushedDekuBasementBlock, []{return true;}),
+        EventAccess(LOGIC_DEKU_TREE_PUSHED_BASEMENT_BLOCK, []{return true;}),
     }, {
         //Locations
         LOCATION(RC_DEKU_TREE_MQ_DEKU_SCRUB,             logic->CanStunDeku()),
@@ -416,7 +417,7 @@ void RegionTable_Init_DekuTree() {
         Entrance(RR_DEKU_TREE_MQ_BASEMENT,            []{return true;}),
         //If strength 0 is shuffled, add hovers or block push to the stick check
         //recoiling to skip swim is possible, but would be a trick
-        Entrance(RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM,   []{return Here(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, []{return logic->HasFireSource() || (/*logic->PushedDekuBasementBlock && */logic->CanUse(RG_STICKS));}) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS));}),
+        Entrance(RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM,   []{return Here(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, []{return logic->HasFireSource() || (/*logic->Get(LOGIC_DEKU_TREE_PUSHED_BASEMENT_BLOCK) && */logic->CanUse(RG_STICKS));}) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS));}),
     });
 
     areaTable[RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM] = Region("Deku Tree MQ Outside Boss Room", SCENE_DEKU_TREE, {}, {
@@ -449,11 +450,11 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_BOSS_ROOM] = Region("Deku Tree Boss Room", SCENE_DEKU_TREE_BOSS, {
         // Events
-        EventAccess(&logic->DekuTreeClear, []{return logic->CanKillEnemy(RE_GOHMA);}),
+        EventAccess(LOGIC_DEKU_TREE_CLEAR, []{return logic->CanKillEnemy(RE_GOHMA);}),
     }, {
         // Locations
-        LOCATION(RC_QUEEN_GOHMA,                   logic->DekuTreeClear),
-        LOCATION(RC_DEKU_TREE_QUEEN_GOHMA_HEART,   logic->DekuTreeClear),
+        LOCATION(RC_QUEEN_GOHMA,                   logic->Get(LOGIC_DEKU_TREE_CLEAR)),
+        LOCATION(RC_DEKU_TREE_QUEEN_GOHMA_HEART,   logic->Get(LOGIC_DEKU_TREE_CLEAR)),
         LOCATION(RC_DEKU_TREE_QUEEN_GOHMA_GRASS_1, logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_QUEEN_GOHMA_GRASS_2, logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_QUEEN_GOHMA_GRASS_3, logic->CanCutShrubs()),
@@ -465,7 +466,7 @@ void RegionTable_Init_DekuTree() {
     }, {
         // Exits
         Entrance(RR_DEKU_TREE_BOSS_EXIT,  []{return true;}),
-        Entrance(RR_KF_OUTSIDE_DEKU_TREE, []{return logic->DekuTreeClear;}, false),
+        Entrance(RR_KF_OUTSIDE_DEKU_TREE, []{return logic->Get(LOGIC_DEKU_TREE_CLEAR);}, false),
     });
 
     // clang-format on

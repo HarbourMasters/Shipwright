@@ -8,7 +8,7 @@
 #include "textures/icon_item_dungeon_static/icon_item_dungeon_static.h"
 #include "textures/icon_item_nes_static/icon_item_nes_static.h"
 
-#include "public/bridge/gfxbridge.h"
+#include <libultraship/bridge/gfxbridge.h>
 
 void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     static void* dungeonItemTexs[] = {

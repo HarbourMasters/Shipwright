@@ -1,10 +1,10 @@
 #include "SohMenu.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/controls/SohInputEditorWindow.h"
-#include "window/gui/GuiMenuBar.h"
-#include "window/gui/GuiElement.h"
+#include <ship/window/gui/GuiMenuBar.h>
+#include <ship/window/gui/GuiElement.h>
 #include <variant>
-#include "StringHelper.h"
+#include <ship/utils/StringHelper.h>
 #include <spdlog/fmt/fmt.h>
 #include <tuple>
 
@@ -61,8 +61,9 @@ WidgetInfo& SohMenu::AddWidget(WidgetPath& pathInfo, std::string widgetName, Wid
         case WIDGET_WINDOW_BUTTON:
             widget.options = std::make_shared<WindowButtonOptions>();
             break;
-        case WIDGET_COLOR_24:
-        case WIDGET_COLOR_32:
+        case WIDGET_CVAR_COLOR_PICKER:
+        case WIDGET_COLOR_PICKER:
+            widget.options = std::make_shared<ColorPickerOptions>();
             break;
         case WIDGET_SEPARATOR_TEXT:
         case WIDGET_TEXT:
@@ -80,14 +81,33 @@ SohMenu::SohMenu(const std::string& consoleVariable, const std::string& name)
     : Menu(consoleVariable, name, 0, UIWidgets::Colors::LightBlue) {
 }
 
+#ifndef ENABLE_REMOTE_CONTROL
+void SohMenu::AddMenuNetwork() {
+#ifndef _DEBUG
+    // in release builds, the tab doesn't even show
+    return;
+#endif
+
+    // Add Network Menu
+    AddMenuEntry("Network", CVAR_SETTING("Menu.NetworkSidebarSection"));
+
+    WidgetPath path = { "Network", "Info", SECTION_COLUMN_1 };
+    AddSidebarEntry("Network", path.sidebarName, 2);
+
+    AddWidget(path,
+              ICON_FA_EXCLAMATION_TRIANGLE " The Network features are unavailable because SoH was compiled without "
+                                           "network support (\"ENABLE_REMOTE_CONTROL\" build flag).",
+              WIDGET_TEXT)
+        .Options(TextOptions().Color(Colors::Orange));
+}
+#endif
+
 void SohMenu::InitElement() {
     Ship::Menu::InitElement();
     AddMenuSettings();
     AddMenuEnhancements();
     AddMenuRandomizer();
-#ifdef ENABLE_REMOTE_CONTROL
     AddMenuNetwork();
-#endif
     AddMenuDevTools();
 
     if (CVarGetInteger(CVAR_SETTING("Menu.SidebarSearch"), 0)) {

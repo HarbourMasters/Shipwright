@@ -40,4 +40,4 @@ void RegisterRupeeDash() {
     COND_HOOK(OnPlayerUpdate, CVAR_RUPEE_DASH_VALUE, UpdateRupeeDash);
 }
 
-static RegisterShipInitFunc initFunc_RupeeDash(RegisterRupeeDash, { CVAR_RUPEE_DASH_NAME });
+static RegisterShipInitFunc initFunc(RegisterRupeeDash, { CVAR_RUPEE_DASH_NAME });

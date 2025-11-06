@@ -2,15 +2,15 @@
 #include "ResourceManagerHelpers.h"
 #include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
-#include <utils/StringHelper.h>
+#include <ship/utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
 #include "soh/resource/type/CollisionHeader.h"
-#include <DisplayList.h>
+#include <fast/resource/type/DisplayList.h>
 #include "soh/resource/type/Cutscene.h"
 #include "soh/resource/type/Path.h"
 #include "soh/resource/type/Text.h"
-#include <Blob.h>
+#include <ship/resource/type/Blob.h>
 #include <memory>
 #include <cassert>
 #include "soh/resource/type/scenecommand/SetCameraSettings.h"
@@ -472,6 +472,10 @@ extern "C" s32 OTRfunc_800973FC(PlayState* play, RoomContext* roomCtx) {
             gSegments[3] = VIRTUAL_TO_PHYSICAL(roomCtx->unk_34);
 
             OTRScene_ExecuteCommands(play, (SOH::Scene*)roomCtx->roomToLoad);
+            if (!GameInteractor_Should(VB_DRAW_2D_BACKGROUND, true)) {
+                play->envCtx.skyboxDisabled = false;
+            }
+
             Player_SetBootData(play, GET_PLAYER(play));
             Actor_SpawnTransitionActors(play, &play->actorCtx);
 
