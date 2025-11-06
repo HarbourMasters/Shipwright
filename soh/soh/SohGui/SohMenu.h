@@ -26,6 +26,13 @@ void disableBetaQuest();
 }
 #endif
 
+
+#if (_DEBUG)
+#define DEFAULT_LOG_LEVEL = 0
+#else
+#define DEFAULT_LOG_LEVEL = 2
+#endif
+
 namespace SohGui {
 static std::unordered_map<int32_t, const char*> languages = {
     { LANGUAGE_ENG, "English" },
