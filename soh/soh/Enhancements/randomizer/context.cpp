@@ -163,6 +163,15 @@ bool Context::IsQuestOfLocationActive(RandomizerCheck rc) {
 
 bool Context::ShouldAddLocationToPool(Location* location, bool result) {
     bool boolResult = static_cast<bool>(result);
+    // A few things that need to return false regardless of any settings
+    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK ||
+        location->GetRandomizerCheck() == RC_TRIFORCE_COMPLETED ||
+        location->GetRCType() == RCTYPE_CHEST_GAME ||   // not supported yet
+        location->GetRCType() == RCTYPE_STATIC_HINT ||  // can't have items
+        location->GetRCType() == RCTYPE_GOSSIP_STONE // can't have items
+        ) {
+            return false;
+        }
     GameInteractor::Instance->ExecuteHooks<GameInteractor::ShouldAddLocationToPool>(location, &boolResult);
     return boolResult;
 }
