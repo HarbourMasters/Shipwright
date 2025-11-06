@@ -393,14 +393,6 @@ void RegisterResetNaviTimer() {
         if (CVarGetInteger(CVAR_ENHANCEMENT("ResetNaviTimer"), 0)) {
             gSaveContext.naviTimer = 0;
         }
-                break;
-            case ACTOR_BOSS_TW:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_VA:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-        }
     });
 }
 
@@ -512,8 +504,6 @@ void InitMods() {
     UpdateHyperEnemiesState();
     RegisterMirrorModeHandler();
     RegisterResetNaviTimer();
-    RegisterEnemyDefeatCounts();
-    RegisterBossDefeatTimestamps();
     RegisterRandomizedEnemySizes();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();

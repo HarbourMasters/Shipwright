@@ -441,6 +441,7 @@ std::unordered_map<uint32_t, std::map<uint32_t, GameplayStatObject>> gameplayCou
             { COUNT_BONKS,	                { STAT_TYPE_PLAYER, "Action - Bonks",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_PAUSES,	                { STAT_TYPE_PLAYER, "Action - Pauses",   		    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_STEPS,	                { STAT_TYPE_PLAYER, "Action - Steps Taken",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
+            { COUNT_SCENE_INIT,	            { STAT_TYPE_PLAYER, "Action - Scenes Transitioned", UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_POTS_BROKEN,	        { STAT_TYPE_PLAYER, "Pots Shattered",   	        UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_BUSHES_CUT,	            { STAT_TYPE_PLAYER, "Lawns Mowed",   	            UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
             { COUNT_SWORD_SWINGS,	        { STAT_TYPE_PLAYER, "Action - Sword Swings",   	    UIWidgets::ColorValues.at(UIWidgets::Colors::White) } },
@@ -1353,6 +1354,7 @@ void RegisterGameplayStats() {
 
         GameplayStats_AddTimestamp(statObject);
         GameplayStats_UpdateSceneTimer(statObject);
+        GameplayStats_AddCount(GameplayStats_GetCountObjectById(COUNT_SCENE_INIT, STAT_TYPE_PLAYER));
     });
     COND_HOOK(OnAmmoUsed, CVAR, [](s16 item, s16 ammoUsed) {
         if (item == ITEM_SEEDS) {

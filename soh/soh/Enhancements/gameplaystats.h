@@ -124,6 +124,7 @@ typedef enum {
     COUNT_BONKS,
     COUNT_PAUSES,
     COUNT_STEPS,
+    COUNT_SCENE_INIT,
     COUNT_POTS_BROKEN,
     COUNT_BUSHES_CUT, // z_en_kusa.c
     COUNT_SWORD_SWINGS,
