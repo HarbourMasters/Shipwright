@@ -369,8 +369,8 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
         case 1:
             if (CHECK_BTN_ALL(input->press.button, BTN_CUP) || CHECK_BTN_ALL(input->press.button, BTN_CLEFT)) {
                 gSaveContext.healthCapacity -= 0x10;
-                if (gSaveContext.healthCapacity < 0x30) {
-                    gSaveContext.healthCapacity = 0x30;
+                if (gSaveContext.healthCapacity < STARTING_HEALTH) {
+                    gSaveContext.healthCapacity = STARTING_HEALTH;
                 }
             } else if (CHECK_BTN_ALL(input->press.button, BTN_CDOWN) ||
                        CHECK_BTN_ALL(input->press.button, BTN_CRIGHT)) {

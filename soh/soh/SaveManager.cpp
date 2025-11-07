@@ -540,10 +540,10 @@ void SaveManager::InitFileNormal() {
             (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
     gSaveContext.n64ddFlag = 0;
-    gSaveContext.healthCapacity = 0x30;
-    gSaveContext.health = 0x30;
+    gSaveContext.healthCapacity = STARTING_HEALTH;
+    gSaveContext.health = STARTING_HEALTH;
     gSaveContext.magicLevel = 0;
-    gSaveContext.magic = 0x30;
+    gSaveContext.magic = MAGIC_NORMAL_METER;
     gSaveContext.rupees = 0;
     gSaveContext.swordHealth = 0;
     gSaveContext.naviTimer = 0;
