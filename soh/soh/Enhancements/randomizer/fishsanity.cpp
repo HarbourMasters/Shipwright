@@ -634,7 +634,7 @@ void Rando::StaticData::RegisterFishLocations() {
     // clang-format on
 }
 
-// RANDOTODO: Convert fishsanity to "Shuffle Fish" and use hooks like 
+// RANDOTODO: Convert fishsanity to "Shuffle Fish" and use hooks like
 // the newer shuffles.
 void RegisterShuffleFish() {
     SHOULD_SHUFFLE_LOCATION({

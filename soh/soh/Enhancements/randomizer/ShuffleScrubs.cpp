@@ -4,8 +4,8 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ShipInit.hpp"
 
-//RANDOTODO: Convert the reset of Scrub Shuffle to be in this file and
-//use hooks appropriately
+// RANDOTODO: Convert the reset of Scrub Shuffle to be in this file and
+// use hooks appropriately
 
 void RegisterShuffleScrubs() {
     SHOULD_SHUFFLE_LOCATION({
