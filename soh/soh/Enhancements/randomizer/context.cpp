@@ -215,7 +215,6 @@ void Context::GenerateLocationPool() {
              mOptions[RSK_FISHSANITY].IsNot(RO_FISHSANITY_HYRULE_LOACH)) ||
             (location.GetRCType() == RCTYPE_FISH && !mFishsanity->GetFishLocationIncluded(&location)) ||
             (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OFF)) ||
-            (location.GetRCType() == RCTYPE_GRASS && mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_OFF)) ||
             (location.GetRCType() == RCTYPE_NLTREE &&
              (!mOptions[RSK_SHUFFLE_TREES] || mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC)))) {
             continue;
@@ -223,8 +222,7 @@ void Context::GenerateLocationPool() {
         if (location.IsOverworld()) {
             // Skip stuff that is shuffled to dungeon only, i.e. tokens, pots, etc., or other checks that
             // should not have a shuffled item.
-            if ((location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_DUNGEONS)) ||
-                (location.GetRCType() == RCTYPE_GRASS && mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_DUNGEONS))) {
+            if ((location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_DUNGEONS))) {
                 continue;
             }
             // If we've gotten past all the conditions where an overworld location should not be
@@ -233,8 +231,7 @@ void Context::GenerateLocationPool() {
             AddLocation(location.GetRandomizerCheck());
         } else { // is a dungeon check
             auto* dungeon = GetDungeon(location.GetArea() - RCAREA_DEKU_TREE);
-            if ((location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OVERWORLD)) ||
-                (location.GetRCType() == RCTYPE_GRASS && mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_OVERWORLD))) {
+            if ((location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OVERWORLD))) {
                 continue;
             }
             // also add to that dungeon's location list.
