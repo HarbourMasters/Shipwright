@@ -1,3 +1,4 @@
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/OTRGlobals.h"
 #include "randomizer_grotto.h"
 #include "draw.h"
@@ -89,6 +90,20 @@ static bool SpawnFairy(f32 posX, f32 posY, f32 posZ, int32_t params, FairyType f
 }
 
 void RegisterShuffleFairies() {
+    SHOULD_SHUFFLE_LOCATION({
+        if (location->GetRCType() == RCTYPE_FOUNTAIN_FAIRY) {
+            *should = RAND_GET_OPTION(RSK_SHUFFLE_FOUNTAIN_FAIRIES) == RO_GENERIC_ON;
+        }
+        if (location->GetRCType() == RCTYPE_STONE_FAIRY) {
+            *should = RAND_GET_OPTION(RSK_SHUFFLE_STONE_FAIRIES) == RO_GENERIC_ON;
+        }
+        if (location->GetRCType() == RCTYPE_BEAN_FAIRY) {
+            *should = RAND_GET_OPTION(RSK_SHUFFLE_BEAN_FAIRIES) == RO_GENERIC_ON;
+        }
+        if (location->GetRCType() == RCTYPE_SONG_FAIRY) {
+            *should = RAND_GET_OPTION(RSK_SHUFFLE_SONG_FAIRIES) == RO_GENERIC_ON;
+        }
+    });
     bool shouldRegisterFountain = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_FOUNTAIN_FAIRIES);
     bool shouldRegisterStone = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_STONE_FAIRIES);
     bool shouldRegisterBean = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_BEAN_FAIRIES);
