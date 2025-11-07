@@ -634,4 +634,22 @@ void Rando::StaticData::RegisterFishLocations() {
     // clang-format on
 }
 
+// RANDOTODO: Convert fishsanity to "Shuffle Fish" and use hooks like 
+// the newer shuffles.
+void RegisterShuffleFish() {
+    SHOULD_SHUFFLE_LOCATION({
+        if (location->GetRCType() == RCTYPE_FISH) {
+            if (!OTRGlobals::Instance->gRandoContext->GetFishsanity()->GetFishLocationIncluded(location)) {
+                *should = false;
+            }
+        }
+        if (location->GetRandomizerCheck() == RC_LH_HYRULE_LOACH) {
+            if (RAND_GET_OPTION(RSK_FISHSANITY) != RO_FISHSANITY_HYRULE_LOACH) {
+                *should = false;
+            }
+        }
+    });
+}
+
+static RegisterShipInitFunc registerShuffleFish(RegisterShuffleFish, { "IS_RANDO" });
 static RegisterShipInitFunc initFunc(Rando::StaticData::RegisterFishLocations);

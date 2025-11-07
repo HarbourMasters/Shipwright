@@ -209,13 +209,7 @@ void Context::GenerateLocationPool() {
              !(location.GetRandomizerCheck() == RC_LW_DEKU_SCRUB_GROTTO_FRONT ||
                location.GetRandomizerCheck() == RC_LW_DEKU_SCRUB_NEAR_BRIDGE ||
                location.GetRandomizerCheck() == RC_HF_DEKU_SCRUB_GROTTO)) ||
-            (location.GetRCType() == RCTYPE_ADULT_TRADE && mOptions[RSK_SHUFFLE_ADULT_TRADE].Is(RO_GENERIC_OFF)) ||
-            (location.GetRCType() == RCTYPE_SONG_LOCATION && mOptions[RSK_SHUFFLE_SONGS].Is(RO_SONG_SHUFFLE_OFF)) ||
-            (location.GetRandomizerCheck() == RC_LH_HYRULE_LOACH &&
-             mOptions[RSK_FISHSANITY].IsNot(RO_FISHSANITY_HYRULE_LOACH)) ||
-            (location.GetRCType() == RCTYPE_FISH && !mFishsanity->GetFishLocationIncluded(&location)) ||
-            (location.GetRCType() == RCTYPE_NLTREE &&
-             (!mOptions[RSK_SHUFFLE_TREES] || mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC)))) {
+            (location.GetRCType() == RCTYPE_SONG_LOCATION && mOptions[RSK_SHUFFLE_SONGS].Is(RO_SONG_SHUFFLE_OFF))) {
             continue;
         }
     }
