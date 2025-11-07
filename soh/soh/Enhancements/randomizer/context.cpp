@@ -164,14 +164,14 @@ bool Context::IsQuestOfLocationActive(RandomizerCheck rc) {
 bool Context::ShouldAddLocationToPool(Location* location, bool result) {
     bool boolResult = static_cast<bool>(result);
     // A few things that need to return false regardless of any settings
-    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK ||
-        location->GetRandomizerCheck() == RC_TRIFORCE_COMPLETED ||
+    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK || location->GetRandomizerCheck() == RC_TRIFORCE_COMPLETED ||
         location->GetRCType() == RCTYPE_CHEST_GAME ||   // not supported yet
         location->GetRCType() == RCTYPE_STATIC_HINT ||  // can't have items
-        location->GetRCType() == RCTYPE_GOSSIP_STONE // can't have items
-        ) {
-            return false;
-        }
+        location->GetRCType() == RCTYPE_GOSSIP_STONE || // can't have items
+        (location->IsDungeon() && location->GetQuest() != RCQUEST_BOTH &&
+         (location->GetQuest() == RCQUEST_MQ) != GetDungeon(location->GetArea() - RCAREA_DEKU_TREE)->IsMQ())) {
+        return false;
+    }
     GameInteractor::Instance->ExecuteHooks<GameInteractor::ShouldAddLocationToPool>(location, &boolResult);
     return boolResult;
 }
@@ -185,16 +185,16 @@ void Context::GenerateLocationPool() {
 
     for (Location& location : StaticData::GetLocationTable()) {
         if (ShouldAddLocationToPool(&location, true)) {
+            // If we've gotten here, we are definitely adding the location to the pool,
+            // determine if we are adding to to overworldLocations or a dungeon's location
+            // list.
+            AddLocation(location.GetRandomizerCheck());
             if (location.IsOverworld()) {
                 AddLocation(location.GetRandomizerCheck(), &overworldLocations);
-                AddLocation(location.GetRandomizerCheck());
             } else { // Is a Dungeon check
                 auto* dungeon = GetDungeon(location.GetArea() - RCAREA_DEKU_TREE);
-                if (location.GetQuest() == RCQUEST_BOTH || (location.GetQuest() == RCQUEST_MQ) == dungeon->IsMQ()) {
-                    // also add to that dungeon's location list.
-                    AddLocation(location.GetRandomizerCheck(), &dungeon->locations);
-                    AddLocation(location.GetRandomizerCheck());
-                }
+                // also add to that dungeon's location list.
+                AddLocation(location.GetRandomizerCheck(), &dungeon->locations);
             }
         }
         // skip RCs that shouldn't be in the pool for any reason (i.e. settings, unsupported check type, etc.)
@@ -242,18 +242,16 @@ void Context::GenerateLocationPool() {
             AddLocation(location.GetRandomizerCheck());
         } else { // is a dungeon check
             auto* dungeon = GetDungeon(location.GetArea() - RCAREA_DEKU_TREE);
-            if (location.GetQuest() == RCQUEST_BOTH || (location.GetQuest() == RCQUEST_MQ) == dungeon->IsMQ()) {
-                if ((location.GetRCType() == RCTYPE_FREESTANDING &&
-                     mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_OVERWORLD)) ||
-                    (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OVERWORLD)) ||
-                    (location.GetRCType() == RCTYPE_GRASS &&
-                     mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_OVERWORLD))) {
-                    continue;
-                }
-                // also add to that dungeon's location list.
-                AddLocation(location.GetRandomizerCheck(), &dungeon->locations);
-                AddLocation(location.GetRandomizerCheck());
+            if ((location.GetRCType() == RCTYPE_FREESTANDING &&
+                    mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_OVERWORLD)) ||
+                (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OVERWORLD)) ||
+                (location.GetRCType() == RCTYPE_GRASS &&
+                    mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_OVERWORLD))) {
+                continue;
             }
+            // also add to that dungeon's location list.
+            AddLocation(location.GetRandomizerCheck(), &dungeon->locations);
+            AddLocation(location.GetRandomizerCheck());
         }
     }
 }
