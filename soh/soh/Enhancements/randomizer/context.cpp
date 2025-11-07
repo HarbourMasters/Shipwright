@@ -217,17 +217,13 @@ void Context::GenerateLocationPool() {
             (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OFF)) ||
             (location.GetRCType() == RCTYPE_GRASS && mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_OFF)) ||
             (location.GetRCType() == RCTYPE_NLTREE &&
-             (!mOptions[RSK_SHUFFLE_TREES] || mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC))) ||
-            (location.GetRCType() == RCTYPE_FREESTANDING &&
-             mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_OFF))) {
+             (!mOptions[RSK_SHUFFLE_TREES] || mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC)))) {
             continue;
         }
         if (location.IsOverworld()) {
             // Skip stuff that is shuffled to dungeon only, i.e. tokens, pots, etc., or other checks that
             // should not have a shuffled item.
-            if ((location.GetRCType() == RCTYPE_FREESTANDING &&
-                 mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_DUNGEONS)) ||
-                (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_DUNGEONS)) ||
+            if ((location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_DUNGEONS)) ||
                 (location.GetRCType() == RCTYPE_GRASS && mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_DUNGEONS))) {
                 continue;
             }
@@ -237,11 +233,8 @@ void Context::GenerateLocationPool() {
             AddLocation(location.GetRandomizerCheck());
         } else { // is a dungeon check
             auto* dungeon = GetDungeon(location.GetArea() - RCAREA_DEKU_TREE);
-            if ((location.GetRCType() == RCTYPE_FREESTANDING &&
-                    mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_OVERWORLD)) ||
-                (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OVERWORLD)) ||
-                (location.GetRCType() == RCTYPE_GRASS &&
-                    mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_OVERWORLD))) {
+            if ((location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OVERWORLD)) ||
+                (location.GetRCType() == RCTYPE_GRASS && mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_OVERWORLD))) {
                 continue;
             }
             // also add to that dungeon's location list.

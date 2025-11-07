@@ -1,3 +1,4 @@
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include <soh/OTRGlobals.h>
 
 extern "C" {
@@ -9,6 +10,19 @@ extern PlayState* gPlayState;
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 void RegisterShuffleFreestanding() {
+    SHOULD_SHUFFLE_LOCATION({
+        if (location->GetRCType() == RCTYPE_FREESTANDING) {
+            if (RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING) == RO_SHUFFLE_FREESTANDING_OFF) {
+                *should = false;
+            }
+            if (RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING) == RO_SHUFFLE_FREESTANDING_OVERWORLD) {
+                *should = location->IsOverworld();
+            }
+            if (RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING) == RO_SHUFFLE_FREESTANDING_DUNGEONS) {
+                *should = location->IsDungeon();
+            }
+        }
+    });
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING);
 
     COND_VB_SHOULD(VB_ITEM00_DESPAWN, shouldRegister, {
