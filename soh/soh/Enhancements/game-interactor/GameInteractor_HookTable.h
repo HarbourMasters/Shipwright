@@ -72,7 +72,7 @@ DEFINE_HOOK(OnFileChooseMain, (void* gameState));
 
 // Rando Generation
 DEFINE_HOOK(OnGenerationCompletion, ());
-DEFINE_HOOK(ShouldAddLocationToPool, (Rando::Location* location, bool* result));
+DEFINE_HOOK(ShouldAddLocationToPool, (Rando::Location * location, bool* result));
 
 DEFINE_HOOK(OnSetGameLanguage, ());
 DEFINE_HOOK(OnAssetAltChange, ());
