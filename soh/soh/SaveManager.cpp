@@ -837,10 +837,10 @@ void SaveManager::InitFileMaxed() {
             (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
     gSaveContext.n64ddFlag = 0;
-    gSaveContext.healthCapacity = 0x140;
-    gSaveContext.health = 0x140;
+    gSaveContext.healthCapacity = MAX_HEALTH;
+    gSaveContext.health = MAX_HEALTH;
     gSaveContext.magicLevel = 2;
-    gSaveContext.magic = 0x60;
+    gSaveContext.magic = MAGIC_DOUBLE_METER;
     gSaveContext.rupees = 500;
     gSaveContext.swordHealth = 8;
     gSaveContext.naviTimer = 0;

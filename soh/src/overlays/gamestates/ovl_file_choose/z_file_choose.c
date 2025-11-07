@@ -2209,7 +2209,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
             gDPSetEnvColor(POLY_OPA_DISP++, heartBorder.r, heartBorder.g, heartBorder.b, 255);
         }
 
-        i = Save_GetSaveMetaInfo(fileIndex)->healthCapacity / 0x10;
+        i = Save_GetSaveMetaInfo(fileIndex)->healthCapacity / FULL_HEART_HEALTH;
 
         if (CVarGetInteger(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 0) == 0 || this->menuMode != FS_MENU_MODE_SELECT) {
             // draw hearts

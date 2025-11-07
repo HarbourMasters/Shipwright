@@ -13,14 +13,11 @@ static constexpr int32_t CVAR_HURT_CONTAINER_DEFAULT = 0;
 
 static bool hurtEnabled = false;
 
-static constexpr s16 CONTAINER_HEALTH = 0x10;
-static constexpr s16 MAX_HEALTH = 20 * CONTAINER_HEALTH;
-
 void UpdateHurtContainerModeState() {
     hurtEnabled = CVAR_HURT_CONTAINER_VALUE;
     uint16_t heartPieceContainers = gSaveContext.ship.stats.heartPieces / 4;
     uint16_t heartContainers = gSaveContext.ship.stats.heartContainers;
-    uint16_t healthCapacityMod = (heartPieceContainers + heartContainers) * CONTAINER_HEALTH;
+    uint16_t healthCapacityMod = (heartPieceContainers + heartContainers) * FULL_HEART_HEALTH;
 
     if (hurtEnabled != CVAR_HURT_CONTAINER_DEFAULT) {
         gSaveContext.healthCapacity = MAX_HEALTH - healthCapacityMod;
@@ -34,8 +31,8 @@ static void RegisterHurtContainer() {
 
     COND_VB_SHOULD(VB_HEARTS_INCREASE_WITH_CONTAINERS, CVAR_HURT_CONTAINER_VALUE, {
         *should = false;
-        gSaveContext.healthCapacity -= CONTAINER_HEALTH;
-        gSaveContext.health -= CONTAINER_HEALTH;
+        gSaveContext.healthCapacity -= FULL_HEART_HEALTH;
+        gSaveContext.health -= FULL_HEART_HEALTH;
     });
 }
 
