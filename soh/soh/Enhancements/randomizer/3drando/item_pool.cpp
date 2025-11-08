@@ -351,16 +351,9 @@ static void ReplaceMaxItem(const RandomizerGet itemToReplace, int max) {
 }
 
 void PlaceJunkInExcludedLocation(const RandomizerCheck il) {
-    // place a non-advancement item in this location
+    // place a Bluee Rupee in this location
     auto ctx = Rando::Context::GetInstance();
-    for (size_t i = 0; i < ItemPool.size(); i++) {
-        if (Rando::StaticData::RetrieveItem(ItemPool[i]).GetCategory() == ITEM_CATEGORY_JUNK) {
-            ctx->PlaceItemInLocation(il, ItemPool[i]);
-            ItemPool.erase(ItemPool.begin() + i);
-            return;
-        }
-    }
-    SPDLOG_ERROR("ERROR: No Junk to Place!!!");
+    ctx->PlaceItemInLocation(il, RG_BLUE_RUPEE);
 }
 
 static void PlaceVanillaMapsAndCompasses() {
