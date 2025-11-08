@@ -1616,12 +1616,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
-        case VB_RENDER_KEY_COUNTER: {
-            if (Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY)) {
-                *should = false;
-            }
-            break;
-        }
         case VB_RENDER_RUPEE_COUNTER: {
             if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) || Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MONEY)) {
                 *should = false;
