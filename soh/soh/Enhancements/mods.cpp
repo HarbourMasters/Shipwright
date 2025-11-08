@@ -5,7 +5,6 @@
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/resource/type/Skeleton.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
@@ -704,29 +703,6 @@ void RegisterRandomizedEnemySizes() {
     });
 }
 
-void RegisterCustomSkeletons() {
-    static int8_t previousTunic = -1;
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
-            return;
-        }
-
-        if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) != previousTunic) {
-            SOH::SkeletonPatcher::UpdateCustomSkeletons();
-        }
-        previousTunic = CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC);
-    });
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAssetAltChange>([]() {
-        if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
-            return;
-        }
-
-        SOH::SkeletonPatcher::UpdateCustomSkeletons();
-    });
-}
-
 void InitMods() {
     RandomizerRegisterHooks();
     TimeSaverRegisterHooks();
@@ -743,5 +719,4 @@ void InitMods() {
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
     RandoKaleido_RegisterHooks();
-    RegisterCustomSkeletons();
 }
