@@ -59,7 +59,7 @@ static void RegisterMirroredWorld() {
     COND_HOOK(OnSceneInit, CVAR_MIRRORED_WORLD_MODE_VALUE, UpdateMirrorModeState);
 }
 
-static RegisterShipInitFunc initFunc(RegisterMirroredWorld, { CVAR_MIRRORED_WORLD_MODE_NAME, "IS_RANDO" });
+static RegisterShipInitFunc initFunc(RegisterMirroredWorld, { CVAR_MIRRORED_WORLD_MODE_NAME });
 
 void UpdateMirrorModeState(int32_t sceneNum) {
     bool nextMirroredWorld = MirroredWorld_ShouldApply(sceneNum);
