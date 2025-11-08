@@ -5,6 +5,7 @@
 #include <ship/Context.h>
 #include "TimeSplits.h"
 #include "soh/Enhancements/gameplaystats.h"
+#include "soh/Enhancements/GameplayStats/gameplaystats2.h"
 #include "soh/SaveManager.h"
 #include "soh/util.h"
 
@@ -350,7 +351,7 @@ void HandleDragAndDrop(std::vector<SplitObject>& objectList, int targetIndex, co
 }
 
 void TimeSplitCompleteSplits() {
-    gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+    GameplayStats_AddTimestamp(GameplayStats_GetObject(TIMESTAMP_DEFEAT_GANON, STAT_TYPE_EVENT));
     gSaveContext.ship.stats.gameComplete = true;
 }
 
@@ -586,10 +587,11 @@ void TimeSplitsItemSplitEvent(uint32_t type, u8 item) {
         if (split.splitType == type) {
             if (item == split.splitID) {
                 if (split.splitTimeStatus == SPLIT_STATUS_ACTIVE) {
-                    split.splitTimeCurrent = GAMEPLAYSTAT_TOTAL_TIME;
+                    split.splitTimeCurrent = (GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100;
                     split.splitTimeStatus = SPLIT_STATUS_COLLECTED;
-                    if (split.splitTimeBest > GAMEPLAYSTAT_TOTAL_TIME || split.splitTimeBest == 0) {
-                        split.splitTimeBest = GAMEPLAYSTAT_TOTAL_TIME;
+                    if (split.splitTimeBest > (GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100 ||
+                        split.splitTimeBest == 0) {
+                        split.splitTimeBest = (GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100;
                     }
                     if (split.splitTimePreviousBest == 0) {
                         split.splitTimePreviousBest = GAMEPLAYSTAT_TOTAL_TIME;

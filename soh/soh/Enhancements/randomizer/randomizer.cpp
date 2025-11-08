@@ -41,6 +41,7 @@
 #include "fishsanity.h"
 #include "randomizerTypes.h"
 #include "soh/Notification/Notification.h"
+#include "soh/Enhancements/GameplayStats/gameplaystats2.h"
 
 extern std::map<RandomizerCheckArea, std::string> rcAreaNames;
 
@@ -5880,102 +5881,6 @@ void RandomizerSettingsWindow::InitElement() {
     mSettings->UpdateOptionProperties();
 }
 
-static std::unordered_map<RandomizerGet, GameplayStatTimestamp> randomizerGetToStatsTimeStamp = {
-    { RG_GOHMA_SOUL, TIMESTAMP_FOUND_GOHMA_SOUL },
-    { RG_KING_DODONGO_SOUL, TIMESTAMP_FOUND_KING_DODONGO_SOUL },
-    { RG_BARINADE_SOUL, TIMESTAMP_FOUND_BARINADE_SOUL },
-    { RG_PHANTOM_GANON_SOUL, TIMESTAMP_FOUND_PHANTOM_GANON_SOUL },
-    { RG_VOLVAGIA_SOUL, TIMESTAMP_FOUND_VOLVAGIA_SOUL },
-    { RG_MORPHA_SOUL, TIMESTAMP_FOUND_MORPHA_SOUL },
-    { RG_BONGO_BONGO_SOUL, TIMESTAMP_FOUND_BONGO_BONGO_SOUL },
-    { RG_TWINROVA_SOUL, TIMESTAMP_FOUND_TWINROVA_SOUL },
-    { RG_GANON_SOUL, TIMESTAMP_FOUND_GANON_SOUL },
-
-    { RG_BRONZE_SCALE, TIMESTAMP_FOUND_BRONZE_SCALE },
-
-    { RG_OCARINA_A_BUTTON, TIMESTAMP_FOUND_OCARINA_A_BUTTON },
-    { RG_OCARINA_C_UP_BUTTON, TIMESTAMP_FOUND_OCARINA_C_UP_BUTTON },
-    { RG_OCARINA_C_DOWN_BUTTON, TIMESTAMP_FOUND_OCARINA_C_DOWN_BUTTON },
-    { RG_OCARINA_C_LEFT_BUTTON, TIMESTAMP_FOUND_OCARINA_C_LEFT_BUTTON },
-    { RG_OCARINA_C_RIGHT_BUTTON, TIMESTAMP_FOUND_OCARINA_C_RIGHT_BUTTON },
-
-    { RG_FISHING_POLE, TIMESTAMP_FOUND_FISHING_POLE },
-
-    { RG_GUARD_HOUSE_KEY, TIMESTAMP_FOUND_GUARD_HOUSE_KEY },
-    { RG_MARKET_BAZAAR_KEY, TIMESTAMP_FOUND_MARKET_BAZAAR_KEY },
-    { RG_MARKET_POTION_SHOP_KEY, TIMESTAMP_FOUND_MARKET_POTION_SHOP_KEY },
-    { RG_MASK_SHOP_KEY, TIMESTAMP_FOUND_MASK_SHOP_KEY },
-    { RG_MARKET_SHOOTING_GALLERY_KEY, TIMESTAMP_FOUND_MARKET_SHOOTING_GALLERY_KEY },
-    { RG_BOMBCHU_BOWLING_KEY, TIMESTAMP_FOUND_BOMBCHU_BOWLING_KEY },
-    { RG_TREASURE_CHEST_GAME_BUILDING_KEY, TIMESTAMP_FOUND_TREASURE_CHEST_GAME_BUILDING_KEY },
-    { RG_BOMBCHU_SHOP_KEY, TIMESTAMP_FOUND_BOMBCHU_SHOP_KEY },
-    { RG_RICHARDS_HOUSE_KEY, TIMESTAMP_FOUND_RICHARDS_HOUSE_KEY },
-    { RG_ALLEY_HOUSE_KEY, TIMESTAMP_FOUND_ALLEY_HOUSE_KEY },
-    { RG_KAK_BAZAAR_KEY, TIMESTAMP_FOUND_KAK_BAZAAR_KEY },
-    { RG_KAK_POTION_SHOP_KEY, TIMESTAMP_FOUND_KAK_POTION_SHOP_KEY },
-    { RG_BOSS_HOUSE_KEY, TIMESTAMP_FOUND_BOSS_HOUSE_KEY },
-    { RG_GRANNYS_POTION_SHOP_KEY, TIMESTAMP_FOUND_GRANNYS_POTION_SHOP_KEY },
-    { RG_SKULLTULA_HOUSE_KEY, TIMESTAMP_FOUND_SKULLTULA_HOUSE_KEY },
-    { RG_IMPAS_HOUSE_KEY, TIMESTAMP_FOUND_IMPAS_HOUSE_KEY },
-    { RG_WINDMILL_KEY, TIMESTAMP_FOUND_WINDMILL_KEY },
-    { RG_KAK_SHOOTING_GALLERY_KEY, TIMESTAMP_FOUND_KAK_SHOOTING_GALLERY_KEY },
-    { RG_DAMPES_HUT_KEY, TIMESTAMP_FOUND_DAMPES_HUT_KEY },
-    { RG_TALONS_HOUSE_KEY, TIMESTAMP_FOUND_TALONS_HOUSE_KEY },
-    { RG_STABLES_KEY, TIMESTAMP_FOUND_STABLES_KEY },
-    { RG_BACK_TOWER_KEY, TIMESTAMP_FOUND_BACK_TOWER_KEY },
-    { RG_HYLIA_LAB_KEY, TIMESTAMP_FOUND_HYLIA_LAB_KEY },
-    { RG_FISHING_HOLE_KEY, TIMESTAMP_FOUND_FISHING_HOLE_KEY },
-};
-
-// Gameplay stat tracking: Update time the item was acquired
-// (special cases for rando items)
-void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
-
-    u32 time = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
-
-    // Have items in Link's pocket shown as being obtained at 0.1 seconds
-    if (time == 0) {
-        time = 1;
-    }
-
-    // Use ITEM_KEY_BOSS to timestamp Ganon's boss key
-    if (item == RG_GANONS_CASTLE_BOSS_KEY) {
-        gSaveContext.ship.stats.itemTimestamp[ITEM_KEY_BOSS] = time;
-        return;
-    }
-
-    if (randomizerGetToStatsTimeStamp.contains((RandomizerGet)item)) {
-        gSaveContext.ship.stats.itemTimestamp[randomizerGetToStatsTimeStamp[(RandomizerGet)item]] = time;
-        return;
-    }
-
-    // Count any bottled item as a bottle
-    if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
-        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] = time;
-        }
-        return;
-    }
-
-    // Count any bombchu pack as bombchus
-    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS) {
-        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = 0) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
-        }
-        return;
-    }
-
-    if (item == RG_MAGIC_SINGLE) {
-        gSaveContext.ship.stats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
-        return;
-    }
-
-    if (item == RG_DOUBLE_DEFENSE) {
-        gSaveContext.ship.stats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
-        return;
-    }
-}
-
 extern "C" u8 Return_Item_Entry(GetItemEntry itemEntry, u8 returnItem);
 
 // used for items that only set a rand inf when obtained
@@ -6017,9 +5922,6 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     }
 
     RandomizerGet item = (RandomizerGet)giEntry.getItemId;
-
-    // Gameplay stats: Update the time the item was obtained
-    Randomizer_GameplayStats_SetTimestamp(item);
 
     // if it's an item that just sets a randomizerInf, set it
     if (randomizerGetToRandInf.find(item) != randomizerGetToRandInf.end()) {
@@ -6238,7 +6140,6 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         case RG_GREG_RUPEE:
             Rupees_ChangeBy(1);
             Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
-            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
             break;
         case RG_TRIFORCE_PIECE:
             gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected++;
@@ -6247,8 +6148,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             // Teleport to credits when goal is reached.
             if (gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected ==
                 (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
-                    static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+                GameplayStats_AddTimestamp(GameplayStats_GetObject(TIMESTAMP_TRIFORCE_COMPLETED, STAT_TYPE_EVENT));
                 gSaveContext.ship.stats.gameComplete = 1;
                 Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
                 Play_PerformSave(play);

@@ -7,7 +7,6 @@
 extern "C" {
 #endif
 uint64_t GetUnixTimestamp(void);
-char* GameplayStats_GetCurrentTime();
 #ifdef __cplusplus
 };
 #endif
@@ -19,81 +18,15 @@ char* GameplayStats_GetCurrentTime();
 // Total gameplay time is tracked in tenths of seconds
 // I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
 // Frame counts in z_play.c and z_kaleido_scope_call.c
-#define GAMEPLAYSTAT_TOTAL_TIME                                                                \
-    (gSaveContext.ship.stats.rtaTiming                                                         \
-         ? (!gSaveContext.ship.stats.gameComplete                                              \
-                ? (!gSaveContext.ship.stats.fileCreatedAt                                      \
-                       ? 0                                                                     \
-                       : ((GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100)) \
-                : (gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]               \
-                       ? gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]         \
-                       : gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED])) \
+#define GAMEPLAYSTAT_TOTAL_TIME                                                         \
+    (gSaveContext.ship.stats.rtaTiming                                                  \
+         ? (!gSaveContext.ship.stats.fileCreatedAt                                      \
+                ? 0                                                                     \
+                : ((GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100)) \
          : (gSaveContext.ship.stats.playTimer / 2 + gSaveContext.ship.stats.pauseTimer / 3))
 #define CURRENT_MODE_TIMER                                                                       \
     (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) ? gSaveContext.ship.stats.roomTimer \
                                                              : gSaveContext.ship.stats.sceneTimer)
-
-void InitStatTracker();
-
-typedef enum {
-    // 0x00 to 0x9B (0 to 155) used for getting items,
-    // piggybacked off enum "ItemID" in z64item.h
-
-    /* 0xA0 */ TIMESTAMP_DEFEAT_GOHMA = 0xA0,  // z_boss_goma.c
-    /* 0xA1 */ TIMESTAMP_DEFEAT_KING_DODONGO,  // z_boss_dodongo.c
-    /* 0xA2 */ TIMESTAMP_DEFEAT_BARINADE,      // z_boss_va.c
-    /* 0xA3 */ TIMESTAMP_DEFEAT_PHANTOM_GANON, // z_boss_ganondrof.c
-    /* 0xA4 */ TIMESTAMP_DEFEAT_VOLVAGIA,      // z_boss_fd2.c
-    /* 0xA5 */ TIMESTAMP_DEFEAT_MORPHA,        // z_boss_mo.c
-    /* 0xA6 */ TIMESTAMP_DEFEAT_BONGO_BONGO,   // z_boss_sst.c
-    /* 0xA7 */ TIMESTAMP_DEFEAT_TWINROVA,      // z_boss_tw.c
-    /* 0xA8 */ TIMESTAMP_DEFEAT_GANONDORF,     // z_boss_ganon.c
-    /* 0xA9 */ TIMESTAMP_DEFEAT_GANON,         // z_boss_ganon2.c
-    /* 0xA9 */ TIMESTAMP_BOSSRUSH_FINISH,      // z_boss_ganon2.c
-    /* 0xAA */ TIMESTAMP_FOUND_GREG,           // z_parameter.c
-    /* 0xAB */ TIMESTAMP_TRIFORCE_COMPLETED,   // z_parameter.c
-    /* 0xAC */ TIMESTAMP_FOUND_GOHMA_SOUL,
-    /* 0xAD */ TIMESTAMP_FOUND_KING_DODONGO_SOUL,
-    /* 0xAE */ TIMESTAMP_FOUND_BARINADE_SOUL,
-    /* 0xAF */ TIMESTAMP_FOUND_PHANTOM_GANON_SOUL,
-    /* 0xB0 */ TIMESTAMP_FOUND_VOLVAGIA_SOUL,
-    /* 0xB1 */ TIMESTAMP_FOUND_MORPHA_SOUL,
-    /* 0xB2 */ TIMESTAMP_FOUND_BONGO_BONGO_SOUL,
-    /* 0xB3 */ TIMESTAMP_FOUND_TWINROVA_SOUL,
-    /* 0xB5 */ TIMESTAMP_FOUND_GANON_SOUL,
-    /* 0xB6 */ TIMESTAMP_FOUND_BRONZE_SCALE,
-    /* 0xB7 */ TIMESTAMP_FOUND_OCARINA_A_BUTTON,
-    /* 0xB8 */ TIMESTAMP_FOUND_OCARINA_C_UP_BUTTON,
-    /* 0xB9 */ TIMESTAMP_FOUND_OCARINA_C_DOWN_BUTTON,
-    /* 0xBA */ TIMESTAMP_FOUND_OCARINA_C_LEFT_BUTTON,
-    /* 0xBB */ TIMESTAMP_FOUND_OCARINA_C_RIGHT_BUTTON,
-    /* 0xBC */ TIMESTAMP_FOUND_FISHING_POLE,
-    /* 0xBD */ TIMESTAMP_FOUND_GUARD_HOUSE_KEY,
-    /* 0xBE */ TIMESTAMP_FOUND_MARKET_BAZAAR_KEY,
-    /* 0xBF */ TIMESTAMP_FOUND_MARKET_POTION_SHOP_KEY,
-    /* 0xC0 */ TIMESTAMP_FOUND_MASK_SHOP_KEY,
-    /* 0xC1 */ TIMESTAMP_FOUND_MARKET_SHOOTING_GALLERY_KEY,
-    /* 0xC2 */ TIMESTAMP_FOUND_BOMBCHU_BOWLING_KEY,
-    /* 0xC3 */ TIMESTAMP_FOUND_TREASURE_CHEST_GAME_BUILDING_KEY,
-    /* 0xC4 */ TIMESTAMP_FOUND_BOMBCHU_SHOP_KEY,
-    /* 0xC5 */ TIMESTAMP_FOUND_RICHARDS_HOUSE_KEY,
-    /* 0xC6 */ TIMESTAMP_FOUND_ALLEY_HOUSE_KEY,
-    /* 0xC7 */ TIMESTAMP_FOUND_KAK_BAZAAR_KEY,
-    /* 0xC8 */ TIMESTAMP_FOUND_KAK_POTION_SHOP_KEY,
-    /* 0xC9 */ TIMESTAMP_FOUND_BOSS_HOUSE_KEY,
-    /* 0xCA */ TIMESTAMP_FOUND_GRANNYS_POTION_SHOP_KEY,
-    /* 0xCB */ TIMESTAMP_FOUND_SKULLTULA_HOUSE_KEY,
-    /* 0xCC */ TIMESTAMP_FOUND_IMPAS_HOUSE_KEY,
-    /* 0xCD */ TIMESTAMP_FOUND_WINDMILL_KEY,
-    /* 0xCE */ TIMESTAMP_FOUND_KAK_SHOOTING_GALLERY_KEY,
-    /* 0xCF */ TIMESTAMP_FOUND_DAMPES_HUT_KEY,
-    /* 0xD0 */ TIMESTAMP_FOUND_TALONS_HOUSE_KEY,
-    /* 0xD1 */ TIMESTAMP_FOUND_STABLES_KEY,
-    /* 0xD2 */ TIMESTAMP_FOUND_BACK_TOWER_KEY,
-    /* 0xD3 */ TIMESTAMP_FOUND_HYLIA_LAB_KEY,
-    /* 0xD4 */ TIMESTAMP_FOUND_FISHING_HOLE_KEY,
-    /* 0xD5 */ TIMESTAMP_MAX
-} GameplayStatTimestamp;
 
 typedef enum {
     // Enemies defeated
@@ -167,15 +100,7 @@ typedef enum {
     COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA,   // EN_KAREBABA
     COUNT_ENEMIES_DEFEATED_WOLFOS,               // EN_WF
     COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE,         // EN_WF
-    // Ammo used (z_parameter.c)
-    COUNT_AMMO_USED_STICK,
-    COUNT_AMMO_USED_NUT,
-    COUNT_AMMO_USED_BOMB,
-    COUNT_AMMO_USED_ARROW,
-    COUNT_AMMO_USED_SEED,
-    COUNT_AMMO_USED_BOMBCHU,
-    COUNT_AMMO_USED_BEAN,
-    // Buttons pressed (z_play.c)
+    // Buttons pressed
     COUNT_BUTTON_PRESSES_A,
     COUNT_BUTTON_PRESSES_B,
     COUNT_BUTTON_PRESSES_L,
@@ -191,21 +116,34 @@ typedef enum {
     COUNT_BUTTON_PRESSES_DLEFT,
     COUNT_BUTTON_PRESSES_START,
     // Other counts
-    COUNT_RUPEES_COLLECTED, // z_parameter.c
-    COUNT_RUPEES_SPENT,     // z_parameter.c
-    COUNT_CHESTS_OPENED,    // z_en_box.c
-    COUNT_DAMAGE_TAKEN,     // z_parameter.c
-    COUNT_ICE_TRAPS,        // z_player.c
-    COUNT_ROLLS,            // z_player.c
-    COUNT_BONKS,            // z_player.c
-    COUNT_PAUSES,           // z_kaleido_scope_call.c
-    COUNT_STEPS,            // z_player.c
-    COUNT_POTS_BROKEN,      // z_obj_tsubo.c
-    COUNT_BUSHES_CUT,       // z_en_kusa.c
-    COUNT_SWORD_SWINGS,     // z_player.c
-    COUNT_SIDEHOPS,         // z_player.c
-    COUNT_BACKFLIPS,        // z_player.c
-    COUNT_TIME_BUNNY_HOOD,  // z_play.c
+    COUNT_RUPEES_COLLECTED,
+    COUNT_RUPEES_SPENT,
+    COUNT_CHESTS_OPENED,
+    COUNT_DAMAGE_TAKEN,
+    COUNT_ROLLS,
+    COUNT_BONKS,
+    COUNT_PAUSES,
+    COUNT_STEPS,
+    COUNT_SCENE_INIT,
+    COUNT_POTS_BROKEN,
+    COUNT_BUSHES_CUT, // z_en_kusa.c
+    COUNT_SWORD_SWINGS,
+    COUNT_SIDEHOPS,
+    COUNT_BACKFLIPS,
+    COUNT_TIME_BUNNY_HOOD,
+    COUNT_PIECE_OF_HEART,
+    COUNT_HEART_CONTAINER,
+    // Ice Trap Counts
+    COUNT_ICE_TRAPS,
+    COUNT_BURN_TRAPS,
+    COUNT_SHOCK_TRAPS,
+    COUNT_KNOCK_TRAPS,
+    COUNT_SPEED_TRAPS,
+    COUNT_BOMB_TRAPS,
+    COUNT_VOID_TRAPS,
+    COUNT_AMMO_TRAPS,
+    COUNT_KILL_TRAPS,
+    COUNT_TELEPORT_TRAPS,
 
     COUNT_MAX
 

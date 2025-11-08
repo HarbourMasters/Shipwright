@@ -1787,48 +1787,6 @@ void func_80084BF4(PlayState* play, u16 flag) {
     }
 }
 
-// Gameplay stat tracking: Update time the item was acquired
-// (special cases for some duplicate items)
-void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
-
-    // If we already have a timestamp for this item, do nothing
-    if (gSaveContext.ship.stats.itemTimestamp[item] != 0) {
-        return;
-    }
-    // Use ITEM_KEY_BOSS only for Ganon's boss key - not any other boss keys
-    if (play != NULL) {
-        if (item == ITEM_KEY_BOSS && play->sceneNum != SCENE_INSIDE_GANONS_CASTLE &&
-            play->sceneNum != SCENE_GANONS_TOWER) {
-            return;
-        }
-    }
-
-    u32 time = GAMEPLAYSTAT_TOTAL_TIME;
-
-    // Have items in Link's pocket shown as being obtained at 0.1 seconds
-    if (time == 0) {
-        time = 1;
-    }
-
-    // Count any bottled item as a bottle
-    if (item >= ITEM_BOTTLE && item <= ITEM_POE) {
-        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] = time;
-        }
-        return;
-    }
-    // Count any bombchu pack as bombchus
-    if (item == ITEM_BOMBCHU || (item >= ITEM_BOMBCHUS_5 && item <= ITEM_BOMBCHUS_20)) {
-        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] == 0) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
-        }
-        return;
-    }
-
-    gSaveContext.ship.stats.itemTimestamp[item] = time;
-    GameInteractor_ExecuteOnTimestamp(item);
-}
-
 u8 Return_Item_Entry(GetItemEntry itemEntry, u8 returnItem) {
     GameInteractor_ExecuteOnItemReceiveHooks(itemEntry);
     return returnItem;
@@ -1891,9 +1849,6 @@ u8 Item_Give(PlayState* play, u8 item) {
     s16 temp;
 
     GetItemID returnItem = ITEM_NONE;
-
-    // Gameplay stats: Update the time the item was obtained
-    GameplayStats_SetTimestamp(play, item);
 
     slot = SLOT(item);
     if (item >= ITEM_STICKS_5) {
@@ -2869,7 +2824,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
                  gSaveContext.healthCapacity);
 
     if (healthChange < 0) {
-        gSaveContext.ship.stats.count[COUNT_DAMAGE_TAKEN] += -healthChange;
+        GameInteractor_ExecuteOnPlayerHealthChange(-healthChange);
     }
 
     // If one-hit ko mode is on, any damage kills you and you cannot gain health.
@@ -2939,43 +2894,13 @@ void Rupees_ChangeBy(s16 rupeeChange) {
     }
 
     if (rupeeChange > 0) {
-        gSaveContext.ship.stats.count[COUNT_RUPEES_COLLECTED] += rupeeChange;
+        GameInteractor_ExecuteOnAmmoUsed(COUNT_RUPEES_COLLECTED, rupeeChange);
     }
     if (rupeeChange < 0) {
-        gSaveContext.ship.stats.count[COUNT_RUPEES_SPENT] += -rupeeChange;
+        GameInteractor_ExecuteOnAmmoUsed(COUNT_RUPEES_SPENT, -rupeeChange);
     }
 }
-
-void GameplayStats_UpdateAmmoUsed(s16 item, s16 ammoUsed) {
-
-    switch (item) {
-        case ITEM_STICK:
-            gSaveContext.ship.stats.count[COUNT_AMMO_USED_STICK] += ammoUsed;
-            break;
-        case ITEM_NUT:
-            gSaveContext.ship.stats.count[COUNT_AMMO_USED_NUT] += ammoUsed;
-            break;
-        case ITEM_BOMB:
-            gSaveContext.ship.stats.count[COUNT_AMMO_USED_BOMB] += ammoUsed;
-            break;
-        case ITEM_BOW:
-            gSaveContext.ship.stats.count[COUNT_AMMO_USED_ARROW] += ammoUsed;
-            break;
-        case ITEM_SLINGSHOT:
-            gSaveContext.ship.stats.count[COUNT_AMMO_USED_SEED] += ammoUsed;
-            break;
-        case ITEM_BOMBCHU:
-            gSaveContext.ship.stats.count[COUNT_AMMO_USED_BOMBCHU] += ammoUsed;
-            break;
-        case ITEM_BEAN:
-            gSaveContext.ship.stats.count[COUNT_AMMO_USED_BEAN] += ammoUsed;
-            break;
-        default:
-            break;
-    }
-    return;
-}
-
+//
 void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {
     // "Item = (%d)    Amount = (%d + %d)"
     osSyncPrintf("アイテム = (%d)    数 = (%d + %d)  ", item, AMMO(item), ammoChange);
@@ -3035,7 +2960,7 @@ void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {
     osSyncPrintf("合計 = (%d)\n", AMMO(item)); // "Total = (%d)"
 
     if (ammoChange < 0) {
-        GameplayStats_UpdateAmmoUsed(item, -ammoChange);
+        GameInteractor_ExecuteOnAmmoUsed(item, -ammoChange);
     }
 }
 
@@ -6369,113 +6294,6 @@ void Interface_Draw(PlayState* play) {
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
-}
-
-void Interface_DrawTotalGameplayTimer(PlayState* play) {
-    // Draw timer based on the Gameplay Stats total time.
-    if (GameInteractor_Should(VB_SHOW_GAMEPLAY_TIMER,
-                              CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowIngameTimer"), 0) && gSaveContext.fileNum >= 0 &&
-                                  gSaveContext.fileNum <= 2,
-                              play)) {
-        s32 X_Margins_Timer = 0;
-        if (CVarGetInteger(CVAR_COSMETIC("HUD.IGT.UseMargins"), 0) != 0) {
-            if (CVarGetInteger(CVAR_COSMETIC("HUD.IGT.PosType"), 0) == ORIGINAL_LOCATION) {
-                X_Margins_Timer = Left_HUD_Margin;
-            };
-        }
-        s32 rectLeftOri = OTRGetRectDimensionFromLeftEdge(24 + X_Margins_Timer);
-        s32 rectTopOri = 73;
-        if (CVarGetInteger(CVAR_COSMETIC("HUD.IGT.PosType"), 0) != ORIGINAL_LOCATION) {
-            rectTopOri = (CVarGetInteger(CVAR_COSMETIC("HUD.IGT.PosY"), 0));
-            if (CVarGetInteger(CVAR_COSMETIC("HUD.IGT.PosType"), 0) == ANCHOR_LEFT) {
-                if (CVarGetInteger(CVAR_COSMETIC("HUD.IGT.UseMargins"), 0) != 0) {
-                    X_Margins_Timer = Left_HUD_Margin;
-                };
-                rectLeftOri =
-                    OTRGetRectDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.IGT.PosX"), 0) + X_Margins_Timer);
-            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.IGT.PosType"), 0) == ANCHOR_RIGHT) {
-                if (CVarGetInteger(CVAR_COSMETIC("HUD.IGT.UseMargins"), 0) != 0) {
-                    X_Margins_Timer = Right_HUD_Margin;
-                };
-                rectLeftOri = OTRGetRectDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.IGT.PosX"), 0) +
-                                                               X_Margins_Timer);
-            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.IGT.PosType"), 0) == ANCHOR_NONE) {
-                rectLeftOri = CVarGetInteger(CVAR_COSMETIC("HUD.IGT.PosX"), 0) + 204 + X_Margins_Timer;
-            } else if (CVarGetInteger(CVAR_COSMETIC("HUD.IGT.PosType"), 0) == HIDDEN) {
-                rectLeftOri = -9999;
-            }
-        }
-
-        s32 rectLeft;
-        s32 rectTop;
-        s32 rectWidth = 8;
-        s32 rectHeightOri = 16;
-        s32 rectHeight;
-
-        OPEN_DISPS(play->state.gfxCtx);
-
-        gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
-                          PRIMITIVE, 0);
-
-        gDPSetOtherMode(OVERLAY_DISP++,
-                        G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_IA16 | G_TL_TILE |
-                            G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
-                        G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
-
-        char* totalTimeText = GameplayStats_GetCurrentTime();
-        size_t textLength = strlen(totalTimeText);
-        uint16_t textureIndex = 0;
-
-        for (size_t i = 0; i < textLength; i++) {
-            if (totalTimeText[i] == ':' || totalTimeText[i] == '.') {
-                textureIndex = 10;
-            } else {
-                textureIndex = totalTimeText[i] - 48;
-            }
-
-            rectLeft = rectLeftOri + (i * 8);
-            rectTop = rectTopOri;
-            rectHeight = rectHeightOri;
-
-            // Load correct digit (or : symbol)
-            gDPLoadTextureBlock(OVERLAY_DISP++, ((u8*)digitTextures[textureIndex]), G_IM_FMT_I, G_IM_SIZ_8b, rectWidth,
-                                rectHeight, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
-            // Create dot image from the colon image.
-            if (totalTimeText[i] == '.') {
-                rectHeight = rectHeight / 2;
-                rectTop += 5;
-                rectLeft -= 1;
-            }
-
-            // Draw text shadow
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 0, 0, 255);
-            gDPSetEnvColor(OVERLAY_DISP++, 255, 255, 255, 255);
-            gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2,
-                                    (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-
-            // Draw regular text. Change color based on if the timer is paused, running or the game is completed.
-            if (gSaveContext.ship.stats.gameComplete) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, 255);
-            } else if (IS_BOSS_RUSH && gSaveContext.ship.quest.data.bossRush.isPaused &&
-                       !gSaveContext.ship.stats.rtaTiming) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 150, 150, 150, 255);
-            } else {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
-            }
-
-            // Offset text so underlaying shadow is to the bottom right of the text.
-            rectLeft -= 1;
-            rectTop -= 1;
-
-            gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2,
-                                    (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-        }
-        free(totalTimeText);
-
-        CLOSE_DISPS(play->state.gfxCtx);
-    }
 }
 
 void Interface_Update(PlayState* play) {

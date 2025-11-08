@@ -1788,12 +1788,6 @@ void Player_PlaySteppingSfx(Player* this, f32 pitchAdjustment) {
     }
 
     func_800F4010(&this->actor.projectedPos, sfxId, pitchAdjustment);
-    // Gameplay stats: Count footsteps
-    // Only count while game isn't complete and don't count Link's idle animations or crawling in crawlspaces
-    if (!gSaveContext.ship.stats.gameComplete && !(this->stateFlags2 & PLAYER_STATE2_IDLE_FIDGET) &&
-        !(this->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
-        gSaveContext.ship.stats.count[COUNT_STEPS]++;
-    }
 }
 
 void Player_PlayJumpingSfx(Player* this) {
@@ -2373,10 +2367,6 @@ void func_80833A20(Player* this, s32 newMeleeWeaponState) {
         if (!((this->meleeWeaponAnimation >= PLAYER_MWA_FLIPSLASH_START) &&
               (this->meleeWeaponAnimation <= PLAYER_MWA_JUMPSLASH_FINISH))) {
             Player_PlayVoiceSfx(this, voiceSfx);
-        }
-
-        if (this->heldItemAction >= PLAYER_IA_SWORD_MASTER && this->heldItemAction <= PLAYER_IA_SWORD_BIGGORON) {
-            gSaveContext.ship.stats.count[COUNT_SWORD_SWINGS]++;
         }
     }
 
@@ -6305,7 +6295,6 @@ void Player_SetupRoll(Player* this, PlayState* play) {
     LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime,
                                    GET_PLAYER_ANIM(PLAYER_ANIMGROUP_landing_roll, this->modelAnimType),
                                    1.25f * sWaterSpeedFactor);
-    gSaveContext.ship.stats.count[COUNT_ROLLS]++;
 }
 
 s32 Player_TryRoll(Player* this, PlayState* play) {
@@ -6363,13 +6352,6 @@ s32 Player_ActionHandler_10(Player* this, PlayState* play) {
             }
         } else {
             func_8083BCD0(this, play, controlStickDirection);
-
-            if (controlStickDirection == 1 || controlStickDirection == 3) {
-                gSaveContext.ship.stats.count[COUNT_SIDEHOPS]++;
-            }
-            if (controlStickDirection == 2) {
-                gSaveContext.ship.stats.count[COUNT_BACKFLIPS]++;
-            }
 
             return 1;
         }
@@ -9834,7 +9816,6 @@ void Player_Action_Roll(Player* this, PlayState* play) {
                     Player_PlayVoiceSfx(this, NA_SE_VO_LI_CLIMB_END);
                     this->av2.bonked = 1;
 
-                    gSaveContext.ship.stats.count[COUNT_BONKS]++;
                     GameInteractor_ExecuteOnPlayerBonk();
 
                     return;

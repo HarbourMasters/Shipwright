@@ -640,35 +640,6 @@ void Play_Init(GameState* thisx) {
     AnimationContext_Update(play, &play->animationCtx);
     gSaveContext.respawnFlag = 0;
 
-    // #region SOH [Stats]
-    if (gSaveContext.ship.stats.sceneNum != gPlayState->sceneNum) {
-        u16 idx = gSaveContext.ship.stats.tsIdx;
-        gSaveContext.ship.stats.sceneTimestamps[idx].sceneTime = gSaveContext.ship.stats.sceneTimer / 2;
-        gSaveContext.ship.stats.sceneTimestamps[idx].roomTime = gSaveContext.ship.stats.roomTimer / 2;
-        gSaveContext.ship.stats.sceneTimestamps[idx].scene = gSaveContext.ship.stats.sceneNum;
-        gSaveContext.ship.stats.sceneTimestamps[idx].room = gSaveContext.ship.stats.roomNum;
-        gSaveContext.ship.stats.sceneTimestamps[idx].isRoom =
-            gPlayState->sceneNum == gSaveContext.ship.stats.sceneTimestamps[idx].scene &&
-            gPlayState->roomCtx.curRoom.num != gSaveContext.ship.stats.sceneTimestamps[idx].room;
-        gSaveContext.ship.stats.tsIdx++;
-        gSaveContext.ship.stats.sceneTimer = 0;
-        gSaveContext.ship.stats.roomTimer = 0;
-    } else if (gSaveContext.ship.stats.roomNum != gPlayState->roomCtx.curRoom.num) {
-        u16 idx = gSaveContext.ship.stats.tsIdx;
-        gSaveContext.ship.stats.sceneTimestamps[idx].roomTime = gSaveContext.ship.stats.roomTimer / 2;
-        gSaveContext.ship.stats.sceneTimestamps[idx].scene = gSaveContext.ship.stats.sceneNum;
-        gSaveContext.ship.stats.sceneTimestamps[idx].room = gSaveContext.ship.stats.roomNum;
-        gSaveContext.ship.stats.sceneTimestamps[idx].isRoom =
-            gPlayState->sceneNum == gSaveContext.ship.stats.sceneTimestamps[idx].scene &&
-            gPlayState->roomCtx.curRoom.num != gSaveContext.ship.stats.sceneTimestamps[idx].room;
-        gSaveContext.ship.stats.tsIdx++;
-        gSaveContext.ship.stats.roomTimer = 0;
-    }
-
-    gSaveContext.ship.stats.sceneNum = gPlayState->sceneNum;
-    gSaveContext.ship.stats.roomNum = gPlayState->roomCtx.curRoom.num;
-    // #endregion
-
 #if 0
     if (R_USE_DEBUG_CUTSCENE) {
         static u64 sDebugCutsceneScriptBuf[0xA00];
@@ -735,52 +706,8 @@ void Play_Update(PlayState* play) {
             play->transitionMode = TRANS_MODE_SETUP;
         }
 
-        // #region SOH [Stats] Gameplay stats: Count button presses
+        // #region SOH Start RTA timing on first non-c-up input after intro cutscene
         if (!gSaveContext.ship.stats.gameComplete) {
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_A)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_A]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_B)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_B]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CUP)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CUP]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CRIGHT)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CRIGHT]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CLEFT)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CLEFT]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CDOWN)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_CDOWN]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DUP)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DUP]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DRIGHT)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DRIGHT]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DDOWN)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DDOWN]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DLEFT)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_DLEFT]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_L)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_L]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_R)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_R]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_Z)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_Z]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_START)) {
-                gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_START]++;
-            }
-
-            // Start RTA timing on first non-c-up input after intro cutscene
             if (!gSaveContext.ship.stats.fileCreatedAt && !Player_InCsMode(play) &&
                 ((input[0].press.button && input[0].press.button != 0x8) || input[0].rel.stick_x != 0 ||
                  input[0].rel.stick_y != 0)) {
@@ -1170,13 +1097,6 @@ void Play_Update(PlayState* play) {
                 if (!gSaveContext.ship.stats.gameComplete &&
                     (!IS_BOSS_RUSH || !gSaveContext.ship.quest.data.bossRush.isPaused)) {
                     gSaveContext.ship.stats.playTimer++;
-                    gSaveContext.ship.stats.sceneTimer++;
-                    gSaveContext.ship.stats.roomTimer++;
-
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA &&
-                        Player_GetMask(play) == PLAYER_MASK_BUNNY) {
-                        gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD]++;
-                    }
                 }
 
                 if (play->actorCtx.freezeFlashTimer && (play->actorCtx.freezeFlashTimer-- < 5)) {
@@ -1671,8 +1591,6 @@ Play_Draw_skip:
     Camera_Finish(GET_ACTIVE_CAM(play));
 
     CLOSE_DISPS(gfxCtx);
-
-    Interface_DrawTotalGameplayTimer(play);
 }
 
 time_t Play_GetRealTime() {

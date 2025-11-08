@@ -86,8 +86,6 @@ typedef struct {
     /*      */ s16 sceneNum;
     /*      */ s8 roomNum;
     /*      */ bool gameComplete;
-    /*      */ u32 itemTimestamp[TIMESTAMP_MAX];
-    /*      */ SceneTimestamp sceneTimestamps[8191];
     /*      */ u32 tsIdx;
     /*      */ u32 count[COUNT_MAX];
     /*      */ u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];

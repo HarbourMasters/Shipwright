@@ -72,7 +72,6 @@ void KaleidoScopeCall_Update(PlayState* play) {
                 pauseCtx->unk_1E4 = 0;
                 pauseCtx->unk_1EC = 0;
                 pauseCtx->state = (pauseCtx->state & 0xFFFF) + 1;
-                gSaveContext.ship.stats.count[COUNT_PAUSES]++;
             }
         } else if (pauseCtx->state == 8) {
             HREG(80) = 7;

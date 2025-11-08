@@ -35,3 +35,4 @@ typedef struct {
 } TimeObject;
 
 extern const std::vector<TimeObject> timeDisplayList;
+extern std::string formatTimeDisplay(uint32_t value);

@@ -4,6 +4,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh_assets.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/GameplayStats/gameplaystats2.h"
 
 #include <array>
 #include <string>
@@ -560,8 +561,7 @@ void BossRush_HandleCompleteBoss(PlayState* play) {
         play->sceneNum == SCENE_GANON_BOSS) {
         gSaveContext.ship.stats.playTimer += 2;
         gSaveContext.ship.stats.gameComplete = 1;
-        gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_BOSSRUSH_FINISH] =
-            static_cast<uint32_t>(GAMEPLAYSTAT_TOTAL_TIME);
+        GameplayStats_AddTimestamp(GameplayStats_GetObject(TIMESTAMP_BOSSRUSH_FINISH, STAT_TYPE_EVENT));
     }
 }
 
