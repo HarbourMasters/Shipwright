@@ -2187,7 +2187,8 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     }
 
     // Turn MQ switch into toggle
-    if (actor->id == ACTOR_OBJ_SWITCH && gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL && (actor->params & 7) == 3) {
+    if (actor->id == ACTOR_OBJ_SWITCH && gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL &&
+        (actor->params & 0x3f07) == 0x303) {
         auto dungeon =
             OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
         if (dungeon->IsMQ()) {
