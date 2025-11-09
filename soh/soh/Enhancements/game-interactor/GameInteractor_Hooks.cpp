@@ -31,7 +31,6 @@ void GameInteractor_ExecuteOnGameFrameUpdate() {
 
 void GameInteractor_ExecuteOnItemReceiveHooks(GetItemEntry itemEntry) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnItemReceive>(itemEntry);
-    GameInteractor::Instance->ExecuteHooksForID<GameInteractor::OnItemReceive>(itemEntry.itemId, itemEntry);
     GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnItemReceive>(itemEntry);
 }
 
