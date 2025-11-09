@@ -2341,7 +2341,7 @@ typedef enum {
     // #### `args`
     // - int16_t
     VB_COLOR_AMMO_GREEN,
-    
+
     // (this->collider.base.acFlags & AC_HIT) && !Player_InCsMode(play) &&
     //   (player->meleeWeaponAnimation == 22 || player->meleeWeaponAnimation == 23)
     // ```
