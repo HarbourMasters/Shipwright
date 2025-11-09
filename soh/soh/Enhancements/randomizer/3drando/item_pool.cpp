@@ -350,12 +350,6 @@ static void ReplaceMaxItem(const RandomizerGet itemToReplace, int max) {
     }
 }
 
-void PlaceJunkInExcludedLocation(const RandomizerCheck il) {
-    // place a Bluee Rupee in this location
-    auto ctx = Rando::Context::GetInstance();
-    ctx->PlaceItemInLocation(il, RG_BLUE_RUPEE);
-}
-
 static void PlaceVanillaMapsAndCompasses() {
     auto ctx = Rando::Context::GetInstance();
     for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
