@@ -1,8 +1,21 @@
-#include "custom-message/CustomMessageTypes.h"
-#include "global.h"
-#include "z64.h"
-#include "game-interactor/GameInteractor.h"
-#include "soh/OTRGlobals.h"
+#include <string>
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ShipInit.hpp"
+
+extern "C" {
+#include "functions.h"
+#include "macros.h"
+#include "variables.h"
+
+extern PlayState* gPlayState;
+
+u8 Randomizer_GetSettingValue(RandomizerSettingKey);
+}
+
+static constexpr int32_t CVAR_PAUSE_WARP_DEFAULT = 0;
+#define CVAR_PAUSE_WARP_NAME CVAR_ENHANCEMENT("PauseWarp")
+#define CVAR_PAUSE_WARP_VALUE CVarGetInteger(CVAR_PAUSE_WARP_NAME, CVAR_PAUSE_WARP_DEFAULT)
 
 static const int songMessageMap[] = {
     TEXT_WARP_MINUET_OF_FOREST,  TEXT_WARP_BOLERO_OF_FIRE,     TEXT_WARP_SERENADE_OF_WATER,
@@ -30,7 +43,7 @@ static const int songAudioMap[] = {
 
 static bool isWarpActive = false;
 
-void PauseWarp_Execute() {
+static void PauseWarp_Execute() {
     if (!isWarpActive || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
         return;
     }
@@ -48,13 +61,14 @@ void PauseWarp_Execute() {
     for (int i = 0; i < ARRAY_COUNT(ocarinaSongMap); i++) {
         if (gPlayState->msgCtx.lastPlayedSong == ocarinaSongMap[i]) {
             gPlayState->nextEntranceIndex = entranceIndexMap[i];
+            func_80088AF0(gPlayState);
             return;
         }
     }
     gPlayState->transitionTrigger = TRANS_TRIGGER_OFF;
 }
 
-void ActivateWarp(PauseContext* pauseCtx, int song) {
+static void ActivateWarp(PauseContext* pauseCtx, int song) {
     Audio_OcaSetInstrument(0);
     Interface_SetDoAction(gPlayState, DO_ACTION_NONE);
     pauseCtx->state = 0x12;
@@ -70,7 +84,7 @@ void ActivateWarp(PauseContext* pauseCtx, int song) {
     isWarpActive = true;
 }
 
-void PauseWarp_HandleSelection() {
+static void PauseWarp_HandleSelection() {
     if (gSaveContext.inventory.items[SLOT_OCARINA] != ITEM_NONE) {
         int aButtonPressed = CHECK_BTN_ALL(gPlayState->state.input->press.button, BTN_A);
         int song = gPlayState->pauseCtx.cursorPoint[PAUSE_QUEST];
@@ -122,3 +136,18 @@ void PauseWarp_HandleSelection() {
         }
     }
 }
+
+static void RegisterPauseMenuHooks() {
+    COND_HOOK(OnKaleidoUpdate, CVAR_PAUSE_WARP_VALUE, [] {
+        if (GameInteractor::IsSaveLoaded()) {
+            PauseWarp_HandleSelection();
+        }
+    });
+    COND_HOOK(OnGameFrameUpdate, CVAR_PAUSE_WARP_VALUE, [] {
+        if (GameInteractor::IsSaveLoaded()) {
+            PauseWarp_Execute();
+        }
+    });
+}
+
+static RegisterShipInitFunc initFunc(RegisterPauseMenuHooks, { CVAR_PAUSE_WARP_NAME });
