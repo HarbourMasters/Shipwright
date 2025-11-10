@@ -14,7 +14,7 @@ static constexpr BonkDamage CVAR_BONK_DAMAGE_DEFAULT = BONK_DAMAGE_NONE;
 #define CVAR_BONK_DAMAGE_VALUE CVarGetInteger(CVAR_BONK_DAMAGE_NAME, CVAR_BONK_DAMAGE_DEFAULT)
 #define CVAR_BONK_DAMAGE_SET (CVAR_BONK_DAMAGE_VALUE != CVAR_BONK_DAMAGE_DEFAULT)
 
-void RegisterBonkDamage() {
+static void RegisterBonkDamage() {
     COND_HOOK(OnPlayerBonk, CVAR_BONK_DAMAGE_SET, [] {
         uint16_t bonkDamage = 0;
         switch (CVAR_BONK_DAMAGE_VALUE) {
