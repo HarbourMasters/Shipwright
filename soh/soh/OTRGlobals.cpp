@@ -77,6 +77,7 @@
 #include "SaveManager.h"
 #include "soh/Network/CrowdControl/CrowdControl.h"
 #include "soh/Network/Sail/Sail.h"
+#include "soh/Network/Anchor/Anchor.h"
 #include "Enhancements/mods.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/randomizer/draw.h"
@@ -142,6 +143,7 @@ AudioCollection* AudioCollection::Instance;
 SpeechSynthesizer* SpeechSynthesizer::Instance;
 CrowdControl* CrowdControl::Instance;
 Sail* Sail::Instance;
+Anchor* Anchor::Instance;
 
 extern "C" char** cameraStrings;
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
@@ -1289,6 +1291,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
 
     CrowdControl::Instance = new CrowdControl();
     Sail::Instance = new Sail();
+    Anchor::Instance = new Anchor();
 
     OTRMessage_Init();
     OTRAudio_Init();
@@ -1325,6 +1328,9 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     if (CVarGetInteger(CVAR_REMOTE_SAIL("Enabled"), 0)) {
         Sail::Instance->Enable();
     }
+    if (CVarGetInteger(CVAR_REMOTE_ANCHOR("Enabled"), 0)) {
+        Anchor::Instance->Enable();
+    }
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {
@@ -1339,6 +1345,9 @@ extern "C" void DeinitOTR() {
     }
     if (CVarGetInteger(CVAR_REMOTE_SAIL("Enabled"), 0)) {
         Sail::Instance->Disable();
+    }
+    if (CVarGetInteger(CVAR_REMOTE_ANCHOR("Enabled"), 0)) {
+        Anchor::Instance->Disable();
     }
 #ifdef ENABLE_REMOTE_CONTROL
     SDLNet_Quit();
