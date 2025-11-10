@@ -1083,6 +1083,10 @@ bool Logic::CanJumpslash() {
     return CanJumpslashExceptHammer() || CanUse(RG_MEGATON_HAMMER);
 }
 
+bool Logic::CanClearStalagmite() {
+    return CanJumpslash() || HasExplosives();
+}
+
 bool Logic::CanHitSwitch(EnemyDistance distance, bool inWater) {
     bool hit = false;
     switch (distance) {
