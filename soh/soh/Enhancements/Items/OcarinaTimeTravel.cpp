@@ -117,10 +117,15 @@ static void RegisterOcarinaTimeTravel() {
               OnSongOfTime);
 
     // Otherwise, if not disabled, check requirements again when one of the relevant items is received
-    COND_ID_HOOK(OnItemReceive, ITEM_OCARINA_TIME, timeTravelSetting && !meetsOcarinaRequirement,
-                 [](GetItemEntry itemEntry) { RegisterOcarinaTimeTravel(); });
-    COND_ID_HOOK(OnItemReceive, ITEM_SWORD_MASTER, timeTravelSetting && !meetsMasterSwordRequirement,
-                 [](GetItemEntry itemEntry) { RegisterOcarinaTimeTravel(); });
+#define REASSESS_ON(itemType, requirement)                                                   \
+    COND_HOOK(OnItemReceive, timeTravelSetting && !requirement, [](GetItemEntry itemEntry) { \
+        if (itemEntry.itemId == itemType) {                                                  \
+            RegisterOcarinaTimeTravel();                                                     \
+        }                                                                                    \
+    });
+
+    REASSESS_ON(ITEM_OCARINA_TIME, meetsOcarinaRequirement);
+    REASSESS_ON(ITEM_SWORD_MASTER, meetsMasterSwordRequirement);
 }
 
 static RegisterShipInitFunc initFunc(RegisterOcarinaTimeTravel, { CVAR_TIME_TRAVEL_NAME });
