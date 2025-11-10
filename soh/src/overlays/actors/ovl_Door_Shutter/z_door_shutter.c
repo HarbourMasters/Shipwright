@@ -391,6 +391,7 @@ void func_80996B0C(DoorShutter* this, PlayState* play) {
             if (this->doorType != SHUTTER_BOSS) {
                 gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]--;
                 Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_CHAIN_KEY_UNLOCK);
+                GameInteractor_ExecuteOnDungeonKeyUsedHooks(gSaveContext.mapIndex);
             } else {
                 Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_CHAIN_KEY_UNLOCK_B);
             }

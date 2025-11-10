@@ -1256,10 +1256,16 @@ void Actor_Init(Actor* actor, PlayState* play) {
     ActorShape_Init(&actor->shape, 0.0f, NULL, 0.0f);
     if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
         Actor_SetObjectDependency(play, actor);
-        actor->init(actor, play);
-        actor->init = NULL;
 
-        GameInteractor_ExecuteOnActorInit(actor);
+        if (GameInteractor_ShouldActorInit(actor)) {
+            actor->init(actor, play);
+            actor->init = NULL;
+
+            GameInteractor_ExecuteOnActorInit(actor);
+        } else {
+            actor->init = NULL;
+            Actor_Kill(actor);
+        }
     }
 }
 
@@ -2244,6 +2250,10 @@ void Player_PlaySfx(Actor* actor, u16 sfxId) {
         Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &freqMultiplier, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultReverb);
     }
+
+    if (actor->id == ACTOR_PLAYER) {
+        GameInteractor_ExecuteOnPlayerSfx(sfxId);
+    }
 }
 
 void Audio_PlayActorSound2(Actor* actor, u16 sfxId) {
@@ -2624,10 +2634,16 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
             if (actor->init != NULL) {
                 if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
                     Actor_SetObjectDependency(play, actor);
-                    actor->init(actor, play);
-                    actor->init = NULL;
 
-                    GameInteractor_ExecuteOnActorInit(actor);
+                    if (GameInteractor_ShouldActorInit(actor)) {
+                        actor->init(actor, play);
+                        actor->init = NULL;
+
+                        GameInteractor_ExecuteOnActorInit(actor);
+                    } else {
+                        actor->init = NULL;
+                        Actor_Kill(actor);
+                    }
                 }
                 actor = actor->next;
             } else if (!Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
@@ -2670,8 +2686,10 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                     if (actor->colorFilterTimer != 0) {
                         actor->colorFilterTimer--;
                     }
-                    actor->update(actor, play);
-                    GameInteractor_ExecuteOnActorUpdate(actor);
+                    if (GameInteractor_ShouldActorUpdate(actor)) {
+                        actor->update(actor, play);
+                        GameInteractor_ExecuteOnActorUpdate(actor);
+                    }
                     func_8003F8EC(play, &play->colCtx.dyna, actor);
                 }
 

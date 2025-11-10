@@ -5,11 +5,8 @@
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/resource/type/Skeleton.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
-#include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/timesaver_hook_handlers.h"
 #include "soh/Enhancements/randomizer/hook_handlers.h"
@@ -28,7 +25,6 @@
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
-#include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
@@ -48,16 +44,6 @@ extern "C" {
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
-
-// GreyScaleEndDlist
-#define dgEndGrayscaleAndEndDlistDL "__OTR__helpers/cosmetics/gEndGrayscaleAndEndDlistDL"
-static const ALIGN_ASSET(2) char gEndGrayscaleAndEndDlistDL[] = dgEndGrayscaleAndEndDlistDL;
-
-// This is used for the Temple of Time Medalions' color
-#define dtokinoma_room_0DL_007A70 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007A70"
-static const ALIGN_ASSET(2) char tokinoma_room_0DL_007A70[] = dtokinoma_room_0DL_007A70;
-#define dtokinoma_room_0DL_007FD0 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007FD0"
-static const ALIGN_ASSET(2) char tokinoma_room_0DL_007FD0[] = dtokinoma_room_0DL_007FD0;
 
 /// Switches Link's age and respawns him at the last entrance he entered.
 void SwitchAge() {
@@ -297,69 +283,6 @@ void UpdateHyperEnemiesState() {
     }
 }
 
-void UpdateDirtPathFixState(int32_t sceneNum) {
-    switch (sceneNum) {
-        case SCENE_HYRULE_FIELD:
-        case SCENE_KOKIRI_FOREST:
-        case SCENE_HYRULE_CASTLE:
-            CVarSetInteger(CVAR_Z_FIGHTING_MODE,
-                           CVarGetInteger(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"), ZFIGHT_FIX_DISABLED));
-            return;
-        default:
-            CVarClear(CVAR_Z_FIGHTING_MODE);
-    }
-}
-
-void RegisterMenuPathFix() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(
-        [](int32_t sceneNum) { UpdateDirtPathFixState(sceneNum); });
-}
-
-void UpdateMirrorModeState(int32_t sceneNum) {
-    static bool prevMirroredWorld = false;
-    bool nextMirroredWorld = false;
-
-    int16_t mirroredMode = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorldMode"), MIRRORED_WORLD_OFF);
-    int16_t inDungeon = (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_INSIDE_GANONS_CASTLE_COLLAPSE &&
-                         sceneNum != SCENE_THIEVES_HIDEOUT) ||
-                        (sceneNum >= SCENE_DEKU_TREE_BOSS && sceneNum <= SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
-                        (sceneNum == SCENE_GANON_BOSS);
-
-    if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
-        uint32_t seed =
-            sceneNum + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
-        Random_Init(seed);
-    }
-
-    bool randomMirror = Random(0, 2) == 1;
-
-    if (mirroredMode == MIRRORED_WORLD_ALWAYS ||
-        ((mirroredMode == MIRRORED_WORLD_RANDOM || mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED) && randomMirror) ||
-        // Dungeon modes
-        (inDungeon &&
-         (mirroredMode == MIRRORED_WORLD_DUNGEONS_ALL ||
-          (mirroredMode == MIRRORED_WORLD_DUNGEONS_VANILLA && !ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
-          (mirroredMode == MIRRORED_WORLD_DUNGEONS_MQ && ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
-          ((mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) &&
-           randomMirror)))) {
-        nextMirroredWorld = true;
-        CVarSetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 1);
-    } else {
-        nextMirroredWorld = false;
-        CVarClear(CVAR_ENHANCEMENT("MirroredWorld"));
-    }
-
-    if (prevMirroredWorld != nextMirroredWorld) {
-        prevMirroredWorld = nextMirroredWorld;
-        ApplyMirrorWorldGfxPatches();
-    }
-}
-
-void RegisterMirrorModeHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
-        [](int32_t sceneNum) { UpdateMirrorModeState(sceneNum); });
-}
-
 void UpdatePatchHand() {
     if ((CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && LINK_IS_CHILD) {
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92,
@@ -426,14 +349,6 @@ void UpdatePatchHand() {
 void RegisterPatchHandHandler() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
         [](int32_t sceneNum) { UpdatePatchHand(); });
-}
-
-void RegisterResetNaviTimer() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("ResetNaviTimer"), 0)) {
-            gSaveContext.naviTimer = 0;
-        }
-    });
 }
 
 // this map is used for enemies that can be uniquely identified by their id
@@ -702,163 +617,6 @@ void RegisterRandomizedEnemySizes() {
     });
 }
 
-void PatchToTMedallions() {
-    // TODO: Refactor the DemoEffect_UpdateJewelAdult and DemoEffect_UpdateJewelChild from z_demo_effect
-    // effects to take effect in there
-    if (CVarGetInteger(CVAR_ENHANCEMENT("ToTMedallionsColors"), 0)) {
-        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_StartGrayscale", 7, gsSPGrayscale(true));
-        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_StartGrayscale", 7, gsSPGrayscale(true));
-
-        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue", 16,
-                                       gsDPSetGrayscaleColor(0, 161, 255, 255));
-        } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue", 16,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-        }
-
-        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange", 45,
-                                       gsDPSetGrayscaleColor(255, 135, 0, 255));
-        } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange", 45,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-        }
-
-        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow", 69,
-                                       gsDPSetGrayscaleColor(255, 255, 0, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow", 16,
-                                       gsDPSetGrayscaleColor(255, 255, 0, 255));
-        } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow", 69,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow", 16,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-        }
-
-        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeGreen", 94,
-                                       gsDPSetGrayscaleColor(0, 255, 0, 255));
-        } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeGreen", 94,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-        }
-
-        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed", 118,
-                                       gsDPSetGrayscaleColor(255, 0, 0, 255));
-        } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed", 118,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-        }
-
-        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142,
-                                       gsDPSetGrayscaleColor(212, 0, 255, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27,
-                                       gsDPSetGrayscaleColor(212, 0, 255, 255));
-        } else {
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple", 142,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-            ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple", 27,
-                                       gsDPSetGrayscaleColor(255, 255, 255, 255));
-        }
-
-        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_EndGrayscaleAndEndDlist", 160,
-                                   gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
-        ResourceMgr_PatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_EndGrayscaleAndEndDlist", 51,
-                                   gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
-    } else {
-        // Unpatch everything
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_StartGrayscale");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_StartGrayscale");
-
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeBlue");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeOrange");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeYellow");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakeYellow");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakeRed");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_MakePurple");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_MakePurple");
-
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007A70, "ToTMedallions_EndGrayscaleAndEndDlist");
-        ResourceMgr_UnpatchGfxByName(tokinoma_room_0DL_007FD0, "ToTMedallions_2_EndGrayscaleAndEndDlist");
-    }
-}
-
-void RegisterToTMedallions() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry _unused) {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("ToTMedallionsColors"), 0) || !gPlayState ||
-            gPlayState->sceneNum != SCENE_TEMPLE_OF_TIME) {
-            return;
-        }
-        PatchToTMedallions();
-    });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("ToTMedallionsColors"), 0) || sceneNum != SCENE_TEMPLE_OF_TIME) {
-            return;
-        }
-        PatchToTMedallions();
-    });
-}
-
-void RegisterFloorSwitchesHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
-        Actor* actor = static_cast<Actor*>(refActor);
-        if (actor->id != ACTOR_OBJ_SWITCH || !CVarGetInteger(CVAR_ENHANCEMENT("FixFloorSwitches"), 0)) {
-            return;
-        }
-
-        ObjSwitch* switchActor = reinterpret_cast<ObjSwitch*>(actor);
-        s32 type = (switchActor->dyna.actor.params & 7);
-
-        if (switchActor->dyna.actor.params == 0x1200 || switchActor->dyna.actor.params == 0x3A00) {
-            switchActor->dyna.actor.world.pos.y -= 1;
-        }
-    });
-}
-
-void RegisterPauseMenuHooks() {
-    static bool pauseWarpHooksRegistered = false;
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&]() {
-        if (!GameInteractor::IsSaveLoaded() || !CVarGetInteger(CVAR_ENHANCEMENT("PauseWarp"), 0)) {
-            pauseWarpHooksRegistered = false;
-            return;
-        }
-        if (!pauseWarpHooksRegistered) {
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoUpdate>(
-                []() { PauseWarp_HandleSelection(); });
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(
-                []() { PauseWarp_Execute(); });
-            pauseWarpHooksRegistered = true;
-        }
-    });
-}
-
-void RegisterCustomSkeletons() {
-    static int8_t previousTunic = -1;
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
-            return;
-        }
-
-        if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) != previousTunic) {
-            SOH::SkeletonPatcher::UpdateCustomSkeletons();
-        }
-        previousTunic = CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC);
-    });
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAssetAltChange>([]() {
-        if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
-            return;
-        }
-
-        SOH::SkeletonPatcher::UpdateCustomSkeletons();
-    });
-}
-
 void InitMods() {
     RandomizerRegisterHooks();
     TimeSaverRegisterHooks();
@@ -868,16 +626,9 @@ void InitMods() {
     RegisterDeleteFileOnDeath();
     RegisterHyperBosses();
     UpdateHyperEnemiesState();
-    RegisterMenuPathFix();
-    RegisterMirrorModeHandler();
-    RegisterResetNaviTimer();
     RegisterEnemyDefeatCounts();
     RegisterRandomizedEnemySizes();
-    RegisterToTMedallions();
-    RegisterFloorSwitchesHook();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
-    RegisterPauseMenuHooks();
     RandoKaleido_RegisterHooks();
-    RegisterCustomSkeletons();
 }
