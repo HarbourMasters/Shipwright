@@ -14,9 +14,10 @@ using namespace UIWidgets;
 void SohMenu::AddMenuNetwork() {
     // Add Network Menu
     AddMenuEntry("Network", CVAR_SETTING("Menu.NetworkSidebarSection"));
+    WidgetPath path;
 
 #ifndef ENABLE_REMOTE_CONTROL
-    WidgetPath path = { "Network", "Info", SECTION_COLUMN_1 };
+    path = { "Network", "Info", SECTION_COLUMN_1 };
     AddSidebarEntry("Network", path.sidebarName, 2);
 
     AddWidget(path,
@@ -28,7 +29,7 @@ void SohMenu::AddMenuNetwork() {
 #endif
 
     // Sail
-    WidgetPath path = { "Network", "Sail", SECTION_COLUMN_1 };
+    path = { "Network", "Sail", SECTION_COLUMN_1 };
     AddSidebarEntry("Network", path.sidebarName, 3);
 
     AddWidget(path,
