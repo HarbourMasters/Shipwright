@@ -1007,7 +1007,7 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Make Anubis Fireballs do Fire damage when reflected back at them with the Mirror Shield."));
     AddWidget(path, "Fix Goron City Doors After Fire Temple", WIDGET_CVAR_CHECKBOX)
-    .CVar(CVAR_ENHANCEMENT("GCDoorsAfterFireFix"))
+        .CVar(CVAR_ENHANCEMENT("GCDoorsAfterFireFix"))
         .Options(CheckboxOptions().Tooltip(
             "Forces Goron City doors open if you somehow complete Fire Temple without talking to Goron Link "
             " and receiving the Goron Tunic. "
