@@ -1010,8 +1010,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("GCDoorsAfterFireFix"))
         .Options(CheckboxOptions().Tooltip(
             "Forces Goron City doors open if you somehow complete Fire Temple without talking to Goron Link "
-            " and receiving the Goron Tunic. "
-        ));
+            " and receiving the Goron Tunic. "));
         
     AddWidget(path, "Item-related Fixes", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix Deku Nut Upgrade", WIDGET_CVAR_CHECKBOX)
