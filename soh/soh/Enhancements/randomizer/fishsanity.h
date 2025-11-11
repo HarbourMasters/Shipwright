@@ -3,7 +3,6 @@
 #pragma once
 
 #include <z64.h>
-#include "location.h"
 #include "randomizerTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
