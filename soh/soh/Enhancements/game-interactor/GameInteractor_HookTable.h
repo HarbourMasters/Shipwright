@@ -12,6 +12,7 @@ DEFINE_HOOK(OnExitGame, (int32_t fileNum));
 DEFINE_HOOK(OnGameStateMainStart, ());
 DEFINE_HOOK(OnGameFrameUpdate, ());
 DEFINE_HOOK(OnItemReceive, (GetItemEntry itemEntry));
+DEFINE_HOOK(OnEquipmentDelete, (int16_t equipmentType, uint16_t equipValue));
 DEFINE_HOOK(OnSaleEnd, (GetItemEntry itemEntry));
 DEFINE_HOOK(OnTransitionEnd, (int16_t sceneNum));
 DEFINE_HOOK(OnSceneInit, (int16_t sceneNum));
