@@ -75,14 +75,8 @@
 #include "soh/SohGui/ImGuiUtils.h"
 #include "ActorDB.h"
 #include "SaveManager.h"
-
-#ifdef ENABLE_REMOTE_CONTROL
 #include "soh/Network/CrowdControl/CrowdControl.h"
 #include "soh/Network/Sail/Sail.h"
-CrowdControl* CrowdControl::Instance;
-Sail* Sail::Instance;
-#endif
-
 #include "Enhancements/mods.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/randomizer/draw.h"
@@ -146,6 +140,8 @@ ItemTableManager* ItemTableManager::Instance;
 GameInteractor* GameInteractor::Instance;
 AudioCollection* AudioCollection::Instance;
 SpeechSynthesizer* SpeechSynthesizer::Instance;
+CrowdControl* CrowdControl::Instance;
+Sail* Sail::Instance;
 
 extern "C" char** cameraStrings;
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
@@ -1291,10 +1287,8 @@ extern "C" void InitOTR(int argc, char* argv[]) {
 #endif
     SpeechSynthesizer::Instance->Init();
 
-#ifdef ENABLE_REMOTE_CONTROL
     CrowdControl::Instance = new CrowdControl();
     Sail::Instance = new Sail();
-#endif
 
     OTRMessage_Init();
     OTRAudio_Init();
@@ -1324,13 +1318,13 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     srand(now);
 #ifdef ENABLE_REMOTE_CONTROL
     SDLNet_Init();
+#endif
     if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) {
         CrowdControl::Instance->Enable();
     }
     if (CVarGetInteger(CVAR_REMOTE_SAIL("Enabled"), 0)) {
         Sail::Instance->Enable();
     }
-#endif
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {
@@ -1340,13 +1334,13 @@ extern "C" void SaveManager_ThreadPoolWait() {
 extern "C" void DeinitOTR() {
     SaveManager_ThreadPoolWait();
     OTRAudio_Exit();
-#ifdef ENABLE_REMOTE_CONTROL
     if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) {
         CrowdControl::Instance->Disable();
     }
     if (CVarGetInteger(CVAR_REMOTE_SAIL("Enabled"), 0)) {
         Sail::Instance->Disable();
     }
+#ifdef ENABLE_REMOTE_CONTROL
     SDLNet_Quit();
 #endif
 

@@ -1,4 +1,3 @@
-#ifdef ENABLE_REMOTE_CONTROL
 #include "SohMenu.h"
 #include <soh/Notification/Notification.h>
 #include <soh/Network/Network.h>
@@ -15,9 +14,22 @@ using namespace UIWidgets;
 void SohMenu::AddMenuNetwork() {
     // Add Network Menu
     AddMenuEntry("Network", CVAR_SETTING("Menu.NetworkSidebarSection"));
+    WidgetPath path;
+
+#ifndef ENABLE_REMOTE_CONTROL
+    path = { "Network", "Info", SECTION_COLUMN_1 };
+    AddSidebarEntry("Network", path.sidebarName, 2);
+
+    AddWidget(path,
+              ICON_FA_EXCLAMATION_TRIANGLE " The Network features are unavailable because SoH was compiled without "
+                                           "network support (\"ENABLE_REMOTE_CONTROL\" build flag).",
+              WIDGET_TEXT)
+        .Options(TextOptions().Color(Colors::Orange));
+    return;
+#endif
 
     // Sail
-    WidgetPath path = { "Network", "Sail", SECTION_COLUMN_1 };
+    path = { "Network", "Sail", SECTION_COLUMN_1 };
     AddSidebarEntry("Network", path.sidebarName, 3);
 
     AddWidget(path,
@@ -171,4 +183,3 @@ void SohMenu::AddMenuNetwork() {
 }
 
 } // namespace SohGui
-#endif
