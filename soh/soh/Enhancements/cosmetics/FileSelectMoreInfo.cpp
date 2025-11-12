@@ -4,6 +4,7 @@
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/icon_item_dungeon_static/icon_item_dungeon_static.h"
 #include "textures/parameter_static/parameter_static.h"
+#include "textures/nes_font_static/nes_font_static.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/SaveManager.h"
 #include "soh/frame_interpolation.h"
@@ -54,6 +55,10 @@ typedef struct {
     }
 #define CREATE_SPRITE_COUNTER_DIGIT(i) \
     { dgAmmoDigit##i##Tex, 8, 8, G_IM_FMT_IA, G_IM_SIZ_8b, 105 + i }
+#define CREATE_SPRITE_OCARINA_BUTTON(iconTex, spriteId)       \
+    { iconTex, 16, 16, G_IM_FMT_I, G_IM_SIZ_4b, spriteId }, { \
+        0xFF, 0xFF, 0xFF, 0xFF                                \
+    }
 
 #define ICON_SIZE 12
 #define COUNTER_SIZE 16
@@ -83,6 +88,8 @@ typedef struct {
     { 0x5A + ICON_SIZE * x, 0x2A + ICON_SIZE * y }
 #define STONE_ICON_POS(i) \
     { 0x29 + ICON_SIZE * i, 0x31 }
+#define OCARINA_BUTTON_ICON_POS(i) \
+    { 0xA8 + ICON_SIZE * i, 0x00 }
 
 static ItemData itemData[] = {
     { CREATE_SPRITE_32(dgItemIconDekuStickTex, 1), ITEM_STICK, INVENTORY_ICON_POS(0, 0), SIZE_NORMAL },
@@ -184,6 +191,18 @@ static ItemData itemData[] = {
     { CREATE_SPRITE_SONG(255, 240, 100), ITEM_SONG_PRELUDE, SONG_ICON_POS(5, 1), SIZE_SONG },
 
     { CREATE_SPRITE_24(dgQuestIconHeartContainerTex, 101), ITEM_DOUBLE_DEFENSE, { 0x05, -0x04 }, SIZE_COUNTER },
+
+    // using 0xB0 and later as they're not real item ids
+    // TODO: improve this
+
+    // disabled due to lus issue
+    /*
+    { CREATE_SPRITE_OCARINA_BUTTON(dgMsgChar9FButtonATex, 115), 0xB0, OCARINA_BUTTON_ICON_POS(0), SIZE_NORMAL },
+    { CREATE_SPRITE_OCARINA_BUTTON(dgMsgCharA5ButtonCUpTex, 116), 0xB1, OCARINA_BUTTON_ICON_POS(1), SIZE_NORMAL },
+    { CREATE_SPRITE_OCARINA_BUTTON(dgMsgCharA6ButtonCDownTex, 117), 0xB2, OCARINA_BUTTON_ICON_POS(2), SIZE_NORMAL },
+    { CREATE_SPRITE_OCARINA_BUTTON(dgMsgCharA7ButtonCLeftTex, 118), 0xB3, OCARINA_BUTTON_ICON_POS(3), SIZE_NORMAL },
+    { CREATE_SPRITE_OCARINA_BUTTON(dgMsgCharA8ButtonCRightTex, 119), 0xB4, OCARINA_BUTTON_ICON_POS(4), SIZE_NORMAL },
+    */
 };
 
 static u8 ColorProduct(u8 c1, u8 c2) {
@@ -436,8 +455,11 @@ static bool ShouldRenderItem(s16 fileIndex, u8 item) {
         return false;
     }
 
-    // greg
-    if (item == ITEM_RUPEE_GREEN) {
+    // greg + ocarina buttons
+    if (
+        item == ITEM_RUPEE_GREEN ||
+        (item >= 0xB0 && item <= 0xB4)
+    ) {
         return Save_GetSaveMetaInfo(fileIndex)->randoSave;
     }
 
