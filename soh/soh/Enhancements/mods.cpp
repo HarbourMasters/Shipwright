@@ -5,11 +5,8 @@
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/resource/type/Skeleton.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
-#include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/timesaver_hook_handlers.h"
 #include "soh/Enhancements/randomizer/hook_handlers.h"
@@ -286,51 +283,6 @@ void UpdateHyperEnemiesState() {
     }
 }
 
-void UpdateMirrorModeState(int32_t sceneNum) {
-    static bool prevMirroredWorld = false;
-    bool nextMirroredWorld = false;
-
-    int16_t mirroredMode = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorldMode"), MIRRORED_WORLD_OFF);
-    int16_t inDungeon = (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_INSIDE_GANONS_CASTLE_COLLAPSE &&
-                         sceneNum != SCENE_THIEVES_HIDEOUT) ||
-                        (sceneNum >= SCENE_DEKU_TREE_BOSS && sceneNum <= SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
-                        (sceneNum == SCENE_GANON_BOSS);
-
-    if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
-        uint32_t seed =
-            sceneNum + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
-        Random_Init(seed);
-    }
-
-    bool randomMirror = Random(0, 2) == 1;
-
-    if (mirroredMode == MIRRORED_WORLD_ALWAYS ||
-        ((mirroredMode == MIRRORED_WORLD_RANDOM || mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED) && randomMirror) ||
-        // Dungeon modes
-        (inDungeon &&
-         (mirroredMode == MIRRORED_WORLD_DUNGEONS_ALL ||
-          (mirroredMode == MIRRORED_WORLD_DUNGEONS_VANILLA && !ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
-          (mirroredMode == MIRRORED_WORLD_DUNGEONS_MQ && ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
-          ((mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) &&
-           randomMirror)))) {
-        nextMirroredWorld = true;
-        CVarSetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 1);
-    } else {
-        nextMirroredWorld = false;
-        CVarClear(CVAR_ENHANCEMENT("MirroredWorld"));
-    }
-
-    if (prevMirroredWorld != nextMirroredWorld) {
-        prevMirroredWorld = nextMirroredWorld;
-        ApplyMirrorWorldGfxPatches();
-    }
-}
-
-void RegisterMirrorModeHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
-        [](int32_t sceneNum) { UpdateMirrorModeState(sceneNum); });
-}
-
 void UpdatePatchHand() {
     if ((CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && LINK_IS_CHILD) {
         ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92,
@@ -589,45 +541,6 @@ void RegisterEnemyDefeatCounts() {
     });
 }
 
-void RegisterBossDefeatTimestamps() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>([](void* refActor) {
-        Actor* actor = static_cast<Actor*>(refActor);
-        switch (actor->id) {
-            case ACTOR_BOSS_DODONGO:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_FD2:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_GANON:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_GANON2:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-                gSaveContext.ship.stats.gameComplete = true;
-                break;
-            case ACTOR_BOSS_GANONDROF:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_GOMA:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_MO:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_SST:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_TW:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_VA:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-        }
-    });
-}
-
 void UpdateHurtContainerModeState(bool newState) {
     static bool hurtEnabled = false;
     if (hurtEnabled == newState) {
@@ -704,29 +617,6 @@ void RegisterRandomizedEnemySizes() {
     });
 }
 
-void RegisterCustomSkeletons() {
-    static int8_t previousTunic = -1;
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
-            return;
-        }
-
-        if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) != previousTunic) {
-            SOH::SkeletonPatcher::UpdateCustomSkeletons();
-        }
-        previousTunic = CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC);
-    });
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAssetAltChange>([]() {
-        if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
-            return;
-        }
-
-        SOH::SkeletonPatcher::UpdateCustomSkeletons();
-    });
-}
-
 void InitMods() {
     RandomizerRegisterHooks();
     TimeSaverRegisterHooks();
@@ -736,12 +626,9 @@ void InitMods() {
     RegisterDeleteFileOnDeath();
     RegisterHyperBosses();
     UpdateHyperEnemiesState();
-    RegisterMirrorModeHandler();
     RegisterEnemyDefeatCounts();
-    RegisterBossDefeatTimestamps();
     RegisterRandomizedEnemySizes();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
     RandoKaleido_RegisterHooks();
-    RegisterCustomSkeletons();
 }

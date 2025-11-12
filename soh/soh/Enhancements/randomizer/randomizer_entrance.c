@@ -16,6 +16,7 @@
 
 #include "global.h"
 #include "entrance.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 extern PlayState* gPlayState;
 
@@ -811,6 +812,8 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance) {
     if (entranceIndex > MAX_ENTRANCE_RANDO_USED_INDEX || Entrance_GetIsEntranceDiscovered(entranceIndex)) {
         return;
     }
+
+    GameInteractor_ExecuteOnRandoEntranceDiscovered(entranceIndex, isReversedEntrance);
 
     u16 bitsPerIndex = sizeof(u32) * 8;
     u32 idx = entranceIndex / bitsPerIndex;
