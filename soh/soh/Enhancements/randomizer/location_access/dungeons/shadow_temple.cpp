@@ -134,8 +134,8 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_UPPER_HUGE_PIT_DOOR_LEDGE] = Region("Shadow Temple Upper Huge Pit Door Ledge", SCENE_SHADOW_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_SHADOW_TEMPLE_UPPER_HUGE_PIT,   []{return ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
-        Entrance(RR_SHADOW_TEMPLE_INVISIBLE_SPIKES, []{return logic->SmallKeys(SCENE_SHADOW_TEMPLE, 2);}),
+        Entrance(RR_SHADOW_TEMPLE_UPPER_HUGE_PIT,            []{return ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
+        Entrance(RR_SHADOW_TEMPLE_INVISIBLE_SPINNING_BLADES, []{return logic->SmallKeys(SCENE_SHADOW_TEMPLE, 2);}),
     });
 
     areaTable[RR_SHADOW_TEMPLE_LOWER_HUGE_PIT] = Region("Shadow Temple Lower Huge Pit", SCENE_SHADOW_TEMPLE, {}, {},{
