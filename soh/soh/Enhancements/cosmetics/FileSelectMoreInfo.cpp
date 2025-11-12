@@ -84,7 +84,7 @@ typedef struct {
 #define STONE_ICON_POS(i) \
     { 0x29 + ICON_SIZE * i, 0x31 }
 
-static ItemData itemData[88] = {
+static ItemData itemData[] = {
     { CREATE_SPRITE_32(dgItemIconDekuStickTex, 1), ITEM_STICK, INVENTORY_ICON_POS(0, 0), SIZE_NORMAL },
     { CREATE_SPRITE_32(dgItemIconDekuNutTex, 0), ITEM_NUT, INVENTORY_ICON_POS(1, 0), SIZE_NORMAL },
     { CREATE_SPRITE_32(dgItemIconBombTex, 2), ITEM_BOMB, INVENTORY_ICON_POS(2, 0), SIZE_NORMAL },
@@ -186,7 +186,7 @@ static ItemData itemData[88] = {
     { CREATE_SPRITE_24(dgQuestIconHeartContainerTex, 101), ITEM_DOUBLE_DEFENSE, { 0x05, -0x04 }, SIZE_COUNTER },
 };
 
-static u8 color_product(u8 c1, u8 c2) {
+static u8 ColorProduct(u8 c1, u8 c2) {
     u16 prod = (u16)c1 * (u16)c2;
     u16 div255 = (prod + 1 + (prod >> 8)) >> 8;
     return (u8)div255;
@@ -455,11 +455,11 @@ static void DrawItems(FileChooseContext* thisx, s16 fileIndex, u8 alpha) {
         if (ShouldRenderItem(fileIndex, data->item)) {
             if (HasItem(fileIndex, data->item)) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, data->color.r, data->color.g, data->color.b,
-                                color_product(data->color.a, alpha));
+                                ColorProduct(data->color.a, alpha));
             } else {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color_product(data->color.r, DIM.r),
-                                color_product(data->color.g, DIM.g), color_product(data->color.b, DIM.b),
-                                color_product(color_product(data->color.a, DIM.a), alpha));
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, ColorProduct(data->color.r, DIM.r),
+                                ColorProduct(data->color.g, DIM.g), ColorProduct(data->color.b, DIM.b),
+                                ColorProduct(ColorProduct(data->color.a, DIM.a), alpha));
             }
 
             SpriteLoad(thisx, &(data->sprite));
@@ -538,7 +538,7 @@ static bool ShouldRenderCounter(s16 fileIndex, u8 counterId) {
                 gUpgradeShifts[UPG_WALLET]) == 3;
     }
 
-    return 1;
+    return true;
 }
 
 static u16 GetCurrentCounterValue(s16 fileIndex, u8 counter) {
@@ -677,7 +677,7 @@ static void DrawCounters(FileChooseContext* thisx, s16 fileIndex, u8 alpha) {
 
         if (ShouldRenderCounter(fileIndex, data->id)) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, data->color.r, data->color.g, data->color.b,
-                            color_product(data->color.a, alpha));
+                            ColorProduct(data->color.a, alpha));
 
             SpriteLoad(thisx, &(data->sprite));
             SpriteDraw(thisx, &(data->sprite), LEFT_OFFSET + data->pos.left, TOP_OFFSET + data->pos.top,
