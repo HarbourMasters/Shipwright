@@ -61,7 +61,9 @@ void PresetCheckboxStyle(const ImVec4& color) {
 }
 
 static BlockInfo blockInfo[PRESET_SECTION_MAX] = {
-    { { CVAR_PREFIX_SETTING, CVAR_PREFIX_WINDOW }, ICON_FA_COG, { "Settings", "settings" } },
+    { { CVAR_PREFIX_SETTING, CVAR_PREFIX_WINDOW, CVAR_PREFIX_GAMEPLAY_STATS },
+      ICON_FA_COG,
+      { "Settings", "settings" } },
     { { CVAR_PREFIX_ENHANCEMENT, CVAR_PREFIX_RANDOMIZER_ENHANCEMENT, CVAR_PREFIX_CHEAT },
       ICON_FA_PLUS_CIRCLE,
       { "Enhancements", "enhancements" } },
@@ -96,12 +98,28 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
                 }
             }
             auto section = info.presetValues["blocks"][blockInfo[i].names[1]];
+            std::string sectionStrategy = "overwrite";
+            if (info.presetValues.contains("blockStrategy") &&
+                info.presetValues["blockStrategy"].contains(blockInfo[i].names[1])) {
+                sectionStrategy = info.presetValues["blockStrategy"][blockInfo[i].names[1]];
+            }
+
             for (auto& item : section.items()) {
                 if (section[item.key()].is_null()) {
                     CVarClearBlock(item.key().c_str());
                 } else {
+                    auto block = item.value();
+                    if (sectionStrategy == "merge") {
+                        auto currentJson = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+                        if (currentJson.contains("CVars") && currentJson["CVars"].contains(item.key())) {
+                            block = currentJson["CVars"][item.key()];
+                            // Recursively merge the two json objects
+                            block.update(item.value(), true);
+                        }
+                    }
+
                     Ship::Context::GetInstance()->GetConfig()->SetBlock(fmt::format("{}.{}", "CVars", item.key()),
-                                                                        item.value());
+                                                                        block);
                     Ship::Context::GetInstance()->GetConsoleVariables()->Load();
                 }
             }

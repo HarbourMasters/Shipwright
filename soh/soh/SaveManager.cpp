@@ -1069,7 +1069,7 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
 
     delete saveContext;
     InitMeta(fileNum);
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum);
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum, sectionID);
     SPDLOG_INFO("Save File Finish - fileNum: {}", fileNum);
     saveMtx.unlock();
 }
