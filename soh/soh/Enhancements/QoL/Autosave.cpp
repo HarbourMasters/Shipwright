@@ -26,11 +26,13 @@ typedef enum {
 static bool Autosave_CanSave() {
 
     // Don't save when in title screen or debug file
+    // Don't save a file that doesn't exist (e.g. it was deleted on death by user option)
     // Don't save the first 60 frames to not save the magic meter when it's still in the animation of filling it.
     // Don't save in Chamber of Sages and the Cutscene map because of remember save location and cutscene item gives.
     // Don't save between obtaining Ocarina of Time and Song of Time because the latter would become unobtainable.
-    if (!GameInteractor::IsSaveLoaded(false) || gPlayState->gameplayFrames < 60 ||
-        gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES || gPlayState->sceneNum == SCENE_CUTSCENE_MAP ||
+    if (!SaveManager::Instance->SaveFile_Exist(gSaveContext.fileNum) || !GameInteractor::IsSaveLoaded(false) ||
+        gPlayState->gameplayFrames < 60 || gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES ||
+        gPlayState->sceneNum == SCENE_CUTSCENE_MAP ||
         (!CHECK_QUEST_ITEM(QUEST_SONG_TIME) && (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME))) {
         return false;
     }
