@@ -670,8 +670,7 @@ std::vector<Entrance*> EntranceShuffler::AssumeEntrancePool(std::vector<Entrance
                   (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
                    ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)))) {
                 auto type = entrance->GetType();
-                if (((type == EntranceType::Dungeon || type == EntranceType::ThievesHideout ||
-                      type == EntranceType::GrottoGrave) &&
+                if (((type == EntranceType::Dungeon || type == EntranceType::GrottoGrave) &&
                      entrance->GetReverse()->GetName() !=
                          "Spirit Temple Entryway -> Desert Colossus From Spirit Entryway") ||
                     (type == EntranceType::Interior &&
@@ -796,10 +795,11 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
     bool checkOtherEntranceAccess =
         (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
          ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL) ||
-         ctx->GetOption(RSK_SHUFFLE_OVERWORLD_SPAWNS)) &&
+         ctx->GetOption(RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_SPAWNS)) &&
         (entrancePlaced == nullptr || ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS) ||
-         type == EntranceType::SpecialInterior || type == EntranceType::Overworld || type == EntranceType::Spawn ||
-         type == EntranceType::WarpSong || type == EntranceType::OwlDrop);
+         type == EntranceType::SpecialInterior || type == EntranceType::Overworld ||
+         type == EntranceType::ThievesHideout || type == EntranceType::Spawn || type == EntranceType::WarpSong ||
+         type == EntranceType::OwlDrop);
 
     // Search the world to verify that all necessary conditions are still being held
     // Conditions will be checked during the search and any that fail will be figured out
@@ -1333,6 +1333,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
     int totalMixedPools =
         (ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_BOSS_ENTRANCES) ? 1 : 0) +
         (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES) ? 1 : 0) +
+        (ctx->GetOption(RSK_MIX_THIEVES_HIDEOUT_ENTRANCES) ? 1 : 0) +
         (ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES) ? 1 : 0);
     if (totalMixedPools < 2) {
         ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).Set(RO_GENERIC_OFF);
@@ -1340,6 +1341,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
         ctx->GetOption(RSK_MIX_BOSS_ENTRANCES).Set(RO_GENERIC_OFF);
         ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).Set(RO_GENERIC_OFF);
         ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_THIEVES_HIDEOUT_ENTRANCES).Set(RO_GENERIC_OFF);
         ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).Set(RO_GENERIC_OFF);
     }
     if (ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS)) {
