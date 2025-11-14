@@ -297,12 +297,12 @@ void OTRGlobals::Initialize() {
 #else
     auto defaultLogLevel = spdlog::level::info;
 #endif
+    context->InitConfiguration();
+    context->InitConsoleVariables();
     auto logLevel =
         static_cast<spdlog::level::level_enum>(CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), defaultLogLevel));
     context->InitLogging(logLevel, logLevel);
     Ship::Context::GetInstance()->GetLogger()->set_pattern("[%H:%M:%S.%e] [%s:%#] [%l] %v");
-    context->InitConfiguration();
-    context->InitConsoleVariables();
 
     context->InitGfxDebugger();
     context->InitFileDropMgr();
