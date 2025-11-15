@@ -1,5 +1,4 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/mods.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
 #include "soh/ShipInit.hpp"
@@ -23,7 +22,7 @@ static constexpr int32_t CVAR_DELETE_FILE_DEFAULT = 0;
 
 static bool hasAffectedHealth = false;
 
-void UpdatePermanentHeartLossState() {
+static void UpdatePermanentHeartLossState() {
     if (!GameInteractor::IsSaveLoaded() || !hasAffectedHealth || CVAR_PERM_HEART_LOSS_VALUE)
         return;
 
@@ -63,6 +62,7 @@ static void DeleteFileOnDeath() {
 }
 
 static void RegisterPermanentHeartLoss() {
+    UpdatePermanentHeartLossState();
     COND_HOOK(OnPlayerUpdate, CVAR_PERM_HEART_LOSS_VALUE, UpdateHealthCapacity);
 }
 
