@@ -26,7 +26,7 @@ static void MakeHyperEnemies(void* refActor) {
     }
 }
 
-extern "C" void UpdateHyperEnemiesState() {
+static void UpdateHyperEnemiesState() {
     COND_HOOK(OnActorUpdate, CVAR_HYPER_ENEMIES_VALUE, MakeHyperEnemies);
 }
 
