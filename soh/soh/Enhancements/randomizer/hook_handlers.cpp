@@ -13,6 +13,7 @@
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/Notification/Notification.h"
 #include "soh/SaveManager.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "macros.h"
@@ -2423,7 +2424,7 @@ void RandomizerOnCuccoOrChickenHatch() {
     }
 }
 
-void RandomizerRegisterHooks() {
+static void RandomizerRegisterHooks() {
     static uint32_t onFlagSetHook = 0;
     static uint32_t onSceneFlagSetHook = 0;
     static uint32_t onPlayerUpdateForRCQueueHook = 0;
@@ -2573,3 +2574,5 @@ void RandomizerRegisterHooks() {
         }
     });
 }
+
+static RegisterShipInitFunc initFunc_RegisterHooks(RandomizerRegisterHooks);
