@@ -20,9 +20,9 @@ void enableBetaQuest() {
 void disableBetaQuest() {
     isBetaQuestEnabled = false;
 }
-}
 
-extern void UpdateHyperEnemiesState();
+void UpdateHyperEnemiesState();
+}
 
 namespace SohGui {
 
