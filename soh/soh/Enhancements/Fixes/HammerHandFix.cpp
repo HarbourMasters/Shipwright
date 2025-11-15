@@ -1,5 +1,4 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/mods.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -26,15 +25,13 @@ static void ResetHammerHand() {
     ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand2");
 }
 
-void UpdateHammerHand() {
+static void RegisterHammerHandFix() {
     if (CVAR_HAMMER_HAND_VALUE) {
         FixHammerHand();
     } else {
         ResetHammerHand();
     }
-}
 
-static void RegisterHammerHandFix() {
     COND_HOOK(OnSceneInit, CVAR_HAMMER_HAND_VALUE, [](int32_t) { FixHammerHand(); });
 }
 

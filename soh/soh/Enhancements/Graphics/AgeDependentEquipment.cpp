@@ -1,5 +1,4 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/mods.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -73,16 +72,14 @@ static void MakeEquipmentAlwaysVisible() {
     }
 }
 
-void UpdateEquipmentAlwaysVisible() {
+static void RegisterAgeDependentEquipmentHook() {
     if (CVAR_AGE_EQUIPMENT_VALUE) {
         MakeEquipmentAlwaysVisible();
     } else {
         ResetAdultHands();
         ResetChildHands();
     }
-}
 
-static void RegisterAgeDependentEquipmentHook() {
     COND_HOOK(OnSceneInit, CVAR_AGE_EQUIPMENT_VALUE, [](int32_t) { MakeEquipmentAlwaysVisible(); });
 }
 

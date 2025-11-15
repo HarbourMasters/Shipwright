@@ -581,7 +581,6 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Show Age-Dependent Equipment", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"))
         .RaceDisable(false)
-        .Callback([](WidgetInfo& info) { UpdateEquipmentAlwaysVisible(); })
         .Options(CheckboxOptions().Tooltip("Makes all equipment visible, regardless of age."));
     AddWidget(path, "Scale Adult Equipment as Child", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"))
@@ -1074,7 +1073,6 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Fix Hand Holding Hammer", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixHammerHand"))
         .RaceDisable(false)
-        .Callback([](WidgetInfo& info) { UpdateHammerHand(); })
         .Options(CheckboxOptions().Tooltip(
             "Fixes Adult Link having a backwards Left hand when holding the Megaton Hammer."));
     AddWidget(path, "Fix Vanishing Paths", WIDGET_CVAR_COMBOBOX)
