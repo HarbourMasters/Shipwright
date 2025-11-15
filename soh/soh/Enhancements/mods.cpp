@@ -2,14 +2,9 @@
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
-#include "soh/OTRGlobals.h"
-#include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/resource/type/Skeleton.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
-#include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/timesaver_hook_handlers.h"
 #include "soh/Enhancements/randomizer/hook_handlers.h"
@@ -27,7 +22,6 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
-#include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
@@ -143,58 +137,6 @@ void RegisterOcarinaTimeTravel() {
     });
 }
 
-static bool hasAffectedHealth = false;
-void UpdatePermanentHeartLossState() {
-    if (!GameInteractor::IsSaveLoaded())
-        return;
-
-    if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) && hasAffectedHealth) {
-        uint8_t heartContainers = gSaveContext.ship.stats.heartContainers; // each worth 16 health
-        uint8_t heartPieces = gSaveContext.ship.stats.heartPieces; // each worth 4 health, but only in groups of 4
-        uint8_t startingHealth =
-            16 * (IS_RANDO ? (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_HEARTS) + 1) : 3);
-
-        uint8_t newCapacity = startingHealth + (heartContainers * 16) + ((heartPieces - (heartPieces % 4)) * 4);
-        gSaveContext.healthCapacity = MAX(newCapacity, gSaveContext.healthCapacity);
-        gSaveContext.health = MIN(gSaveContext.health, gSaveContext.healthCapacity);
-        hasAffectedHealth = false;
-    }
-}
-
-void RegisterPermanentHeartLoss() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int16_t fileNum) {
-        hasAffectedHealth = false;
-        UpdatePermanentHeartLossState();
-    });
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) || !GameInteractor::IsSaveLoaded())
-            return;
-
-        if (gSaveContext.healthCapacity > 16 && gSaveContext.healthCapacity - gSaveContext.health >= 16) {
-            gSaveContext.healthCapacity -= 16;
-            gSaveContext.health = MIN(gSaveContext.health, gSaveContext.healthCapacity);
-            hasAffectedHealth = true;
-        }
-    });
-};
-
-void RegisterDeleteFileOnDeath() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("DeleteFileOnDeath"), 0) || !GameInteractor::IsSaveLoaded() ||
-            gPlayState == NULL)
-            return;
-
-        if (gPlayState->gameOverCtx.state == GAMEOVER_DEATH_MENU && gPlayState->pauseCtx.state == 9) {
-            SaveManager::Instance->DeleteZeldaFile(gSaveContext.fileNum);
-            hasAffectedHealth = false;
-            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
-                ->Dispatch("reset");
-        }
-    });
-}
-
 bool IsHyperBossesActive() {
     return CVarGetInteger(CVAR_ENHANCEMENT("HyperBosses"), 0) ||
            (IS_BOSS_RUSH &&
@@ -284,51 +226,6 @@ void UpdateHyperEnemiesState() {
                 }
             });
     }
-}
-
-void UpdateMirrorModeState(int32_t sceneNum) {
-    static bool prevMirroredWorld = false;
-    bool nextMirroredWorld = false;
-
-    int16_t mirroredMode = CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorldMode"), MIRRORED_WORLD_OFF);
-    int16_t inDungeon = (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_INSIDE_GANONS_CASTLE_COLLAPSE &&
-                         sceneNum != SCENE_THIEVES_HIDEOUT) ||
-                        (sceneNum >= SCENE_DEKU_TREE_BOSS && sceneNum <= SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
-                        (sceneNum == SCENE_GANON_BOSS);
-
-    if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
-        uint32_t seed =
-            sceneNum + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
-        Random_Init(seed);
-    }
-
-    bool randomMirror = Random(0, 2) == 1;
-
-    if (mirroredMode == MIRRORED_WORLD_ALWAYS ||
-        ((mirroredMode == MIRRORED_WORLD_RANDOM || mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED) && randomMirror) ||
-        // Dungeon modes
-        (inDungeon &&
-         (mirroredMode == MIRRORED_WORLD_DUNGEONS_ALL ||
-          (mirroredMode == MIRRORED_WORLD_DUNGEONS_VANILLA && !ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
-          (mirroredMode == MIRRORED_WORLD_DUNGEONS_MQ && ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
-          ((mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) &&
-           randomMirror)))) {
-        nextMirroredWorld = true;
-        CVarSetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 1);
-    } else {
-        nextMirroredWorld = false;
-        CVarClear(CVAR_ENHANCEMENT("MirroredWorld"));
-    }
-
-    if (prevMirroredWorld != nextMirroredWorld) {
-        prevMirroredWorld = nextMirroredWorld;
-        ApplyMirrorWorldGfxPatches();
-    }
-}
-
-void RegisterMirrorModeHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
-        [](int32_t sceneNum) { UpdateMirrorModeState(sceneNum); });
 }
 
 void UpdatePatchHand() {
@@ -589,45 +486,6 @@ void RegisterEnemyDefeatCounts() {
     });
 }
 
-void RegisterBossDefeatTimestamps() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>([](void* refActor) {
-        Actor* actor = static_cast<Actor*>(refActor);
-        switch (actor->id) {
-            case ACTOR_BOSS_DODONGO:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_FD2:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_GANON:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_GANON2:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-                gSaveContext.ship.stats.gameComplete = true;
-                break;
-            case ACTOR_BOSS_GANONDROF:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_GOMA:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_MO:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_SST:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_TW:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_VA:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-        }
-    });
-}
-
 void UpdateHurtContainerModeState(bool newState) {
     static bool hurtEnabled = false;
     if (hurtEnabled == newState) {
@@ -704,44 +562,16 @@ void RegisterRandomizedEnemySizes() {
     });
 }
 
-void RegisterCustomSkeletons() {
-    static int8_t previousTunic = -1;
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
-            return;
-        }
-
-        if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) != previousTunic) {
-            SOH::SkeletonPatcher::UpdateCustomSkeletons();
-        }
-        previousTunic = CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC);
-    });
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAssetAltChange>([]() {
-        if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
-            return;
-        }
-
-        SOH::SkeletonPatcher::UpdateCustomSkeletons();
-    });
-}
-
 void InitMods() {
     RandomizerRegisterHooks();
     TimeSaverRegisterHooks();
     RegisterTTS();
     RegisterOcarinaTimeTravel();
-    RegisterPermanentHeartLoss();
-    RegisterDeleteFileOnDeath();
     RegisterHyperBosses();
     UpdateHyperEnemiesState();
-    RegisterMirrorModeHandler();
     RegisterEnemyDefeatCounts();
-    RegisterBossDefeatTimestamps();
     RegisterRandomizedEnemySizes();
     RegisterPatchHandHandler();
     RegisterHurtContainerModeHandler();
     RandoKaleido_RegisterHooks();
-    RegisterCustomSkeletons();
 }

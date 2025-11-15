@@ -2,6 +2,8 @@
 #include <string>
 #include <stdint.h>
 
+typedef enum FileType { FILE_TYPE_SAVE_VANILLA, FILE_TYPE_SAVE_RANDO, FILE_TYPE_PRESET, FILE_TYPE_SPOILER } FileType;
+
 namespace SohUtils {
 const std::string& GetSceneName(int32_t scene);
 
