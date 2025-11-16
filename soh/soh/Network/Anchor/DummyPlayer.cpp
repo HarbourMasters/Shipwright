@@ -12,9 +12,6 @@ void Player_UseItem(PlayState* play, Player* player, s32 item);
 void Player_Draw(Actor* actor, PlayState* play);
 }
 
-// Hijacking player->zTargetActiveTimer (unused s32 for the dummy) to store the clientId for convenience
-#define DUMMY_CLIENT_ID player->zTargetActiveTimer
-
 static DamageTable DummyPlayerDamageTable = {
     /* Deku nut      */ DMG_ENTRY(0, DUMMY_PLAYER_HIT_RESPONSE_STUN),
     /* Deku stick    */ DMG_ENTRY(2, DUMMY_PLAYER_HIT_RESPONSE_NORMAL),
@@ -53,15 +50,14 @@ static DamageTable DummyPlayerDamageTable = {
 void DummyPlayer_Init(Actor* actor, PlayState* play) {
     Player* player = (Player*)actor;
 
-    uint32_t clientId = Anchor::Instance->actorIndexToClientId[actor->params];
-    DUMMY_CLIENT_ID = clientId;
+    uint32_t clientId = Anchor::Instance->GetDummyPlayerClientId(actor);
 
-    if (!Anchor::Instance->clients.contains(DUMMY_CLIENT_ID)) {
+    if (!Anchor::Instance->clients.contains(clientId)) {
         Actor_Kill(actor);
         return;
     }
 
-    AnchorClient& client = Anchor::Instance->clients[DUMMY_CLIENT_ID];
+    AnchorClient& client = Anchor::Instance->clients[clientId];
 
     // Hack to account for usage of gSaveContext in Player_Init
     s32 originalAge = gSaveContext.linkAge;
@@ -104,12 +100,14 @@ void Math_Vec3s_Copy(Vec3s* dest, Vec3s* src) {
 void DummyPlayer_Update(Actor* actor, PlayState* play) {
     Player* player = (Player*)actor;
 
-    if (!Anchor::Instance->clients.contains(DUMMY_CLIENT_ID)) {
+    uint32_t clientId = Anchor::Instance->GetDummyPlayerClientId(actor);
+
+    if (!Anchor::Instance->clients.contains(clientId)) {
         Actor_Kill(actor);
         return;
     }
 
-    AnchorClient& client = Anchor::Instance->clients[DUMMY_CLIENT_ID];
+    AnchorClient& client = Anchor::Instance->clients[clientId];
 
     if (client.sceneNum != gPlayState->sceneNum || !client.online || !client.isSaveLoaded) {
         actor->world.pos.x = -9999.0f;
@@ -195,12 +193,14 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
 void DummyPlayer_Draw(Actor* actor, PlayState* play) {
     Player* player = (Player*)actor;
 
-    if (!Anchor::Instance->clients.contains(DUMMY_CLIENT_ID)) {
+    uint32_t clientId = Anchor::Instance->GetDummyPlayerClientId(actor);
+
+    if (!Anchor::Instance->clients.contains(clientId)) {
         Actor_Kill(actor);
         return;
     }
 
-    AnchorClient& client = Anchor::Instance->clients[DUMMY_CLIENT_ID];
+    AnchorClient& client = Anchor::Instance->clients[clientId];
 
     if (client.sceneNum != gPlayState->sceneNum || !client.online || !client.isSaveLoaded) {
         return;
