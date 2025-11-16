@@ -23,7 +23,8 @@ static constexpr int32_t CVAR_DELETE_FILE_DEFAULT = 0;
 static bool hasAffectedHealth = false;
 
 static void UpdatePermanentHeartLossState() {
-    // Reset Link's health capacity to its normal value without permanent losses. Only applies if all of the following are true:
+    // Reset Link's health capacity to its normal value without permanent losses. Only applies if all of the following
+    // are true:
     // - A saved game is playing
     // - The "Permanent Heart Loss" setting is turned off
     // - The player has lost at least one Heart Container
