@@ -13,9 +13,11 @@
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
 #include "z64.h"
+#include "z64save.h"
 #include "macros.h"
 #include "soh/cvar_prefixes.h"
 #include "objects/object_link_boy/object_link_boy.h"
@@ -47,6 +49,7 @@ extern "C" {
 #include "objects/object_gi_rabit_mask/object_gi_rabit_mask.h"
 #include "overlays/ovl_Magic_Wind/ovl_Magic_Wind.h"
 
+extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex,
@@ -94,6 +97,14 @@ std::map<CosmeticGroup, const char*> groupLabels = {
     { COSMETICS_GROUP_NAVI, "Navi" },
     { COSMETICS_GROUP_IVAN, "Ivan" },
     { COSMETICS_GROUP_MESSAGE, "Message" },
+};
+
+static const std::unordered_map<int32_t, const char*> cosmeticsRandomizerModes = {
+    { RANDOMIZE_OFF, "Disabled" },
+    { RANDOMIZE_ON_NEW_SCENE, "On New Scene" },
+    { RANDOMIZE_ON_RANDO_GEN_ONLY, "On Rando Gen Only" },
+    { RANDOMIZE_ON_FILE_LOAD, "On File Load" },
+    { RANDOMIZE_ON_FILE_LOAD_SEEDED, "On File Load (Seeded)" },
 };
 
 typedef struct {
@@ -2093,8 +2104,25 @@ void ApplySideEffects(CosmeticOption& cosmeticOption) {
     }
 }
 
-void RandomizeColor(CosmeticOption& cosmeticOption) {
-    ImVec4 randomColor = GetRandomValue();
+void RandomizeColor(CosmeticOption& cosmeticOption, bool manual = true) {
+    ImVec4 randomColor;
+
+    if (!manual && IS_RANDO &&
+            CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED ||
+        !manual && IS_RANDO &&
+            CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
+
+        uint32_t finalSeed = cosmeticOption.defaultColor.r + cosmeticOption.defaultColor.g +
+                             cosmeticOption.defaultColor.b + cosmeticOption.defaultColor.a +
+                             (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
+                                       : static_cast<uint32_t>(gSaveContext.ship.stats.fileCreatedAt));
+        Random_Init(finalSeed);
+
+        randomColor = GetRandomValue(finalSeed);
+    } else {
+        randomColor = GetRandomValue();
+    }
+
     Color_RGBA8 newColor;
     newColor.r = static_cast<uint8_t>(randomColor.x * 255.0f);
     newColor.g = static_cast<uint8_t>(randomColor.y * 255.0f);
@@ -2372,17 +2400,17 @@ void CosmeticsEditorWindow::DrawElement() {
                                    .Step(0.01f)
                                    .Size(ImVec2(300.0f, 0.0f))
                                    .Color(THEME_COLOR));
-    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-    UIWidgets::CVarCheckbox("Randomize All on New Scene", CVAR_COSMETIC("RandomizeAllOnNewScene"),
-                            UIWidgets::CheckboxOptions()
-                                .Color(THEME_COLOR)
-                                .Tooltip("Enables randomizing all unlocked cosmetics when you enter a new scene."));
-    ImGui::EndDisabled();
-    UIWidgets::CVarCheckbox(
-        "Randomize All on Randomizer Generation", CVAR_COSMETIC("RandomizeAllOnRandoGen"),
-        UIWidgets::CheckboxOptions()
+    UIWidgets::CVarCombobox(
+        "Randomize All Cosmetics Mode", CVAR_COSMETIC("RandomizeCosmeticsGenModes"), cosmeticsRandomizerModes,
+        UIWidgets::ComboboxOptions()
+            .DefaultIndex(RANDOMIZE_OFF)
             .Color(THEME_COLOR)
-            .Tooltip("Enables randomizing all unlocked cosmetics when you generate a new randomizer."));
+            .Tooltip("Set when the cosmetics is automaticly randomized:\n"
+                     "- Disabled: No cosmetics are randomized\n"
+                     "- On New Scene : Randomizes when you enter a new scene.\n"
+                     "- On Rando Gen Only: Randomizes only when you generate a new randomizer.\n"
+                     "- On File Load: Randomizes on File Load.\n"
+                     "- On File Load (Seeded): Randomizes on file load based on the current randomizer seed/file.\n"));
     UIWidgets::CVarCheckbox(
         "Advanced Mode", CVAR_COSMETIC("AdvancedMode"),
         UIWidgets::CheckboxOptions()
@@ -2573,6 +2601,38 @@ void CosmeticsEditorWindow::DrawElement() {
     UIWidgets::PopStyleTabs();
 }
 
+void RegisterOnLoadGameHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+        if (CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD ||
+            CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED) {
+
+            CosmeticsEditor_AutoRandomizeAll();
+        } else {
+            ApplyOrResetCustomGfxPatches();
+        }
+    });
+}
+
+void RegisterOnGameFrameUpdateHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() { CosmeticsUpdateTick(); });
+}
+
+void Cosmetics_RegisterOnSceneInitHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        if (CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_NEW_SCENE) {
+            CosmeticsEditor_AutoRandomizeAll();
+        }
+    });
+}
+
+void CosmeticsEditorRegisterOnGenerationCompletionHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGenerationCompletion>([]() {
+        if (CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
+            CosmeticsEditor_AutoRandomizeAll();
+        }
+    });
+}
+
 void CosmeticsEditorWindow::InitElement() {
     // Convert the `current color` into the format that the ImGui color picker expects
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
@@ -2588,6 +2648,11 @@ void CosmeticsEditorWindow::InitElement() {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
     ApplyAuthenticGfxPatches();
+
+    RegisterOnLoadGameHook();
+    RegisterOnGameFrameUpdateHook();
+    Cosmetics_RegisterOnSceneInitHook();
+    CosmeticsEditorRegisterOnGenerationCompletionHook();
 }
 
 void CosmeticsEditor_RandomizeAll() {
@@ -2595,6 +2660,18 @@ void CosmeticsEditor_RandomizeAll() {
         if (!CVarGetInteger(cosmeticOption.lockedCvar, 0) &&
             (!cosmeticOption.advancedOption || CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0))) {
             RandomizeColor(cosmeticOption);
+        }
+    }
+
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    ApplyOrResetCustomGfxPatches();
+}
+
+void CosmeticsEditor_AutoRandomizeAll() {
+    for (auto& [id, cosmeticOption] : cosmeticOptions) {
+        if (!CVarGetInteger(cosmeticOption.lockedCvar, 0) &&
+            (!cosmeticOption.advancedOption || CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0))) {
+            RandomizeColor(cosmeticOption, false);
         }
     }
 
