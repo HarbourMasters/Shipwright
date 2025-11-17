@@ -706,6 +706,11 @@ void Settings::CreateOptions() {
         RT_DC_MQ_ADULT_EYES, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED },
         "Dodongo\'s Cavern MQ Light the Eyes with Strength as Adult",
         "If you move very quickly, it is possible to use the bomb flower at the top of the room to light the eyes.");
+    OPT_TRICK(
+        RT_DC_EYES_CHU, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED },
+        "Dodongo\'s Cavern Light the Eyes with Bombchus",
+        "You can light the dodongo head's eyes with bombchus from the main room, allowing instant access to the end "
+        "of the dungeon.");
     OPT_TRICK(RT_JABU_ALCOVE_JUMP_DIVE, RCQUEST_BOTH, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE },
               "Jabu Underwater Alcove as Adult with Jump Dive",
               "Standing above the underwater tunnel leading to the scrub, jump down and swim through the tunnel. This "
