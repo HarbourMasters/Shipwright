@@ -25,7 +25,7 @@ void RegionTable_Init_DodongosCavern() {
     areaTable[RR_DODONGOS_CAVERN_LOBBY] = Region("Dodongos Cavern Lobby", SCENE_DODONGOS_CAVERN, {
         //Events
         EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return (Here(RR_DODONGOS_CAVERN_LOBBY, []{return logic->CanBreakMudWalls();}) || logic->HasItem(RG_GORONS_BRACELET)) && logic->CallGossipFairy();}),
-        EventAccess(LOGIC_DC_EYES_LIT, []{return (ctx->GetTrickOption(RT_DC_EYES_CHU) && logic->CanUse(RG_BOMBCHU_5));}),
+        EventAccess(LOGIC_DC_EYES_LIT, []{return ctx->GetTrickOption(RT_DC_EYES_CHU) && logic->CanUse(RG_BOMBCHU_5);}),
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MAP_CHEST,              logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET);),
