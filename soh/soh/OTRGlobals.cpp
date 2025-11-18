@@ -2270,7 +2270,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     s16 actorParams = 0;
     if (IS_RANDO) {
         auto ctx = Rando::Context::GetInstance();
-        if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
+        if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES) &&
+            CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("EntrancesOnSigns"), 0)) {
             s16 entrance = -1;
             switch (textId) {
                 case TEXT_WATERFALL:
