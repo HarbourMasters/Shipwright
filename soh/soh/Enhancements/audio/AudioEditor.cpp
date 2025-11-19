@@ -904,7 +904,7 @@ void RegisterAudioWidgets() {
                      .Size(ImVec2(300.0f, 0.0f)));
     SohGui::mSohMenu->AddSearchWidget({ voicePitch, "Enhancements", "Audio Editor", "Audio Options" });
 
-    randomAudioGenModes = { .name = "Randomize All Music and Sound Effects Mode",
+    randomAudioGenModes = { .name = "Automatically Randomize All Music and Sound Effects",
                             .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     randomAudioGenModes.CVar(CVAR_AUDIO("RandomizeAudioGenModes"))
         .Options(

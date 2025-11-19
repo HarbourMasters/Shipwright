@@ -2401,7 +2401,7 @@ void CosmeticsEditorWindow::DrawElement() {
                                    .Size(ImVec2(300.0f, 0.0f))
                                    .Color(THEME_COLOR));
     UIWidgets::CVarCombobox(
-        "Randomize All Cosmetics Mode", CVAR_COSMETIC("RandomizeCosmeticsGenModes"), cosmeticsRandomizerModes,
+        "Automatically Randomize All Cosmetics", CVAR_COSMETIC("RandomizeCosmeticsGenModes"), cosmeticsRandomizerModes,
         UIWidgets::ComboboxOptions()
             .DefaultIndex(RANDOMIZE_OFF)
             .Color(THEME_COLOR)
