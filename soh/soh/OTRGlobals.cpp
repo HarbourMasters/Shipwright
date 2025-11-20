@@ -75,14 +75,9 @@
 #include "soh/SohGui/ImGuiUtils.h"
 #include "ActorDB.h"
 #include "SaveManager.h"
-
-#ifdef ENABLE_REMOTE_CONTROL
 #include "soh/Network/CrowdControl/CrowdControl.h"
 #include "soh/Network/Sail/Sail.h"
-CrowdControl* CrowdControl::Instance;
-Sail* Sail::Instance;
-#endif
-
+#include "soh/Network/Anchor/Anchor.h"
 #include "Enhancements/mods.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/randomizer/draw.h"
@@ -146,6 +141,9 @@ ItemTableManager* ItemTableManager::Instance;
 GameInteractor* GameInteractor::Instance;
 AudioCollection* AudioCollection::Instance;
 SpeechSynthesizer* SpeechSynthesizer::Instance;
+CrowdControl* CrowdControl::Instance;
+Sail* Sail::Instance;
+Anchor* Anchor::Instance;
 
 extern "C" char** cameraStrings;
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
@@ -292,10 +290,19 @@ void OTRGlobals::Initialize() {
         OOT_NTSC_JP_GC, OOT_NTSC_US_GC, OOT_PAL_GC,     OOT_PAL_GC_DBG1,   OOT_PAL_GC_DBG2,
     };
 
-    context->InitLogging();
-    context->InitGfxDebugger();
+#if (_DEBUG)
+    auto defaultLogLevel = spdlog::level::trace;
+#else
+    auto defaultLogLevel = spdlog::level::info;
+#endif
     context->InitConfiguration();
     context->InitConsoleVariables();
+    auto logLevel =
+        static_cast<spdlog::level::level_enum>(CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), defaultLogLevel));
+    context->InitLogging(logLevel, logLevel);
+    Ship::Context::GetInstance()->GetLogger()->set_pattern("[%H:%M:%S.%e] [%s:%#] [%l] %v");
+
+    context->InitGfxDebugger();
     context->InitFileDropMgr();
 
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
@@ -319,15 +326,6 @@ void OTRGlobals::Initialize() {
 
     context->InitCrashHandler();
     context->InitConsole();
-
-#if (_DEBUG)
-    int defaultLogLevel = 0;
-#else
-    int defaultLogLevel = 2;
-#endif
-    Ship::Context::GetInstance()->GetLogger()->set_level(
-        (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), defaultLogLevel));
-    Ship::Context::GetInstance()->GetLogger()->set_pattern("[%H:%M:%S.%e] [%s:%#] [%l] %v");
 
     auto sohInputEditorWindow =
         std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Configure Controller");
@@ -1291,10 +1289,9 @@ extern "C" void InitOTR(int argc, char* argv[]) {
 #endif
     SpeechSynthesizer::Instance->Init();
 
-#ifdef ENABLE_REMOTE_CONTROL
     CrowdControl::Instance = new CrowdControl();
     Sail::Instance = new Sail();
-#endif
+    Anchor::Instance = new Anchor();
 
     OTRMessage_Init();
     OTRAudio_Init();
@@ -1324,13 +1321,16 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     srand(now);
 #ifdef ENABLE_REMOTE_CONTROL
     SDLNet_Init();
+#endif
     if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) {
         CrowdControl::Instance->Enable();
     }
     if (CVarGetInteger(CVAR_REMOTE_SAIL("Enabled"), 0)) {
         Sail::Instance->Enable();
     }
-#endif
+    if (CVarGetInteger(CVAR_REMOTE_ANCHOR("Enabled"), 0)) {
+        Anchor::Instance->Enable();
+    }
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {
@@ -1340,13 +1340,16 @@ extern "C" void SaveManager_ThreadPoolWait() {
 extern "C" void DeinitOTR() {
     SaveManager_ThreadPoolWait();
     OTRAudio_Exit();
-#ifdef ENABLE_REMOTE_CONTROL
     if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) {
         CrowdControl::Instance->Disable();
     }
     if (CVarGetInteger(CVAR_REMOTE_SAIL("Enabled"), 0)) {
         Sail::Instance->Disable();
     }
+    if (CVarGetInteger(CVAR_REMOTE_ANCHOR("Enabled"), 0)) {
+        Anchor::Instance->Disable();
+    }
+#ifdef ENABLE_REMOTE_CONTROL
     SDLNet_Quit();
 #endif
 

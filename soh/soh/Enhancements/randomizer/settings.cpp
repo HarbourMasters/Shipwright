@@ -751,7 +751,8 @@ void Settings::CreateOptions() {
               "Bottom of the Well Map Chest with Strength & Sticks",
               "The chest in the basement can be reached with strength by doing a jump slash with a lit stick to access "
               "the Bomb Flowers.");
-    OPT_TRICK(RT_BOTW_MQ_PITS, RCQUEST_MQ, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
+    // RANDOTODO with doorsanity, this can be relevant in Vanilla
+    OPT_TRICK(RT_BOTW_PITS, RCQUEST_MQ, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
               "Bottom of the Well MQ Jump Over the Pits",
               "While the pits in Bottom of the Well don't allow you to jump just by running straight at them, you can "
               "still get over them by side-hopping or backflipping across. With explosives, this allows you to access "
@@ -986,7 +987,7 @@ void Settings::CreateOptions() {
               "where the eye is.");
     OPT_TRICK(RT_SHADOW_UMBRELLA_HOVER, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::EXPERT },
               "Shadow Temple Stone Umbrella Skip",
-              "A very precise Hover Boots movement from off of the lower chest can get you on top of the crushing "
+              "A very precise Hover Boots movement from off of the lower chest can get you on top of the falling "
               "spikes without needing to pull the block. Applies to both Vanilla and Master Quest.");
     OPT_TRICK(RT_SHADOW_UMBRELLA_CLIP, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
               "Shadow Temple Stone Umbrella Clip",
@@ -995,7 +996,7 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_SHADOW_UMBRELLA_GS, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::EXPERT },
               "Shadow Temple Falling Spikes GS with Hover Boots",
               "After killing the Skulltula, a very precise Hover Boots movement from off of the lower chest can get "
-              "you on top of the crushing spikes without needing to pull the block. From there, another very precise "
+              "you on top of the falling spikes without needing to pull the block. From there, another very precise "
               "Hover Boots movement can be used to obtain the token without needing the Hookshot. Applies to both "
               "Vanilla and Master Quest.");
     OPT_TRICK(RT_SHADOW_FREESTANDING_KEY, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },
