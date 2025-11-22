@@ -86,6 +86,9 @@ void UpdateDynamicShadow() {
                     SPDLOG_DEBUG("Killing Dynamic Shadow in ACTORCAT_ITEMACTION");
                     Actor_Kill(shadowActor);
                 }
+
+                // Restore player's normal shadow
+                player->actor.shape.shadowAlpha = 255;
             }
         }
     }

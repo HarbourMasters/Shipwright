@@ -719,14 +719,14 @@ void SohMenu::AddMenuEnhancements() {
             " - Blue Warps\n"
             " - Darunia\n"
             " - Gold Skulltulas\n"));
-    AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT).Options(TextOptions().Color(Colors::Orange));
+    AddWidget(path, ICON_FA_EXCLAMATION_TRIANGLE " EXPERIMENTAL", WIDGET_SEPARATOR_TEXT)
+        .Options(TextOptions().Color(Colors::Orange));
     AddWidget(path, "Dynamic Shadow", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DynamicShadow"))
         .Callback([](WidgetInfo& info) { UpdateDynamicShadow(); })
-        .Options(CheckboxOptions().Tooltip(
-            "Enable Dynamic Shadow for the player. Uses unused functionality left in "
-            "the game's code. May cause graphical glitches or "
-            "gameplay issues. If toggled off during the game, restoring the normal shadow requires a scene reload."));
+        .Options(CheckboxOptions().Tooltip("Enable Dynamic Shadow for the player. Uses unused functionality left in "
+                                           "the game's code. May cause graphical glitches or "
+                                           "gameplay issues."));
 
     path.sidebarName = "Items";
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
