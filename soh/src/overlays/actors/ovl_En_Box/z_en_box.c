@@ -611,8 +611,13 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     // Change size
     if (!isVanilla && (csmc == CSMC_BOTH || csmc == CSMC_SIZE)) {
         switch (getItemCategory) {
-            case ITEM_CATEGORY_JUNK:
             case ITEM_CATEGORY_SMALL_KEY:
+                // Change the size if and only if size is selected.
+                // Otherwise, the texture change is sufficient.
+                Actor_SetScale(&this->dyna.actor, csmc == CSMC_SIZE ? 0.01f : 0.005f);
+                Actor_SetFocus(&this->dyna.actor, csmc == CSMC_SIZE ? 40.0f : 20.0f);
+                break;
+            case ITEM_CATEGORY_JUNK:
             case ITEM_CATEGORY_SKULLTULA_TOKEN:
                 Actor_SetScale(&this->dyna.actor, 0.005f);
                 Actor_SetFocus(&this->dyna.actor, 20.0f);
