@@ -1151,19 +1151,10 @@ void DrawFlagArray8Mask(const std::string& name, uint8_t& flags, Colors color) {
 } // namespace UIWidgets
 
 ImVec4 GetRandomValue() {
-#if !defined(__SWITCH__) && !defined(__WIIU__)
-    std::random_device rd;
-    std::mt19937 rng(rd());
-#else
-    size_t seed = std::hash<std::string>{}(std::to_string(rand()));
-    std::mt19937_64 rng(seed);
-#endif
-    std::uniform_int_distribution<int> dist(0, 255 - 1);
-
     ImVec4 NewColor;
-    NewColor.x = (float)(dist(rng)) / 255.0f;
-    NewColor.y = (float)(dist(rng)) / 255.0f;
-    NewColor.z = (float)(dist(rng)) / 255.0f;
+    NewColor.x = (float)ShipUtils::RandomDouble();
+    NewColor.y = (float)ShipUtils::RandomDouble();
+    NewColor.z = (float)ShipUtils::RandomDouble();
     return NewColor;
 }
 
