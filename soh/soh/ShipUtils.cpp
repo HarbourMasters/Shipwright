@@ -98,7 +98,7 @@ extern "C" void* Ship_GetCharFontTexture(u8 character) {
     return (void*)fontTbl[adjustedChar];
 }
 
-static bool rand_init=false;
+static bool rand_init = false;
 static uint64_t state = 0;
 const uint64_t multiplier = 6364136223846793005ULL;
 const uint64_t increment = 11634580027462260723ULL;
