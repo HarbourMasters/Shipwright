@@ -722,9 +722,11 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT).Options(TextOptions().Color(Colors::Orange));
     AddWidget(path, "Dynamic Shadow", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DynamicShadow"))
-        .Options(CheckboxOptions().Tooltip("Enable Dynamic Shadow for the player. Uses unused functionality left in "
-                                           "the game's code. May cause graphical glitches or "
-                                           "gameplay issues. Requires a scene reload to take effect."));
+        .Callback([](WidgetInfo& info) { UpdateDynamicShadow(); })
+        .Options(CheckboxOptions().Tooltip(
+            "Enable Dynamic Shadow for the player. Uses unused functionality left in "
+            "the game's code. May cause graphical glitches or "
+            "gameplay issues. If toggled off during the game, restoring the normal shadow requires a scene reload."));
 
     path.sidebarName = "Items";
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
