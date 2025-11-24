@@ -2116,7 +2116,6 @@ void RandomizeColor(CosmeticOption& cosmeticOption, bool manual = true) {
                              cosmeticOption.defaultColor.b + cosmeticOption.defaultColor.a +
                              (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
                                        : static_cast<uint32_t>(gSaveContext.ship.stats.fileCreatedAt));
-        Random_Init(finalSeed);
 
         randomColor = GetRandomValue(finalSeed);
     } else {
