@@ -67,7 +67,9 @@ void Anchor::RegisterHooks() {
     COND_ID_HOOK(ShouldActorInit, ACTOR_PLAYER, isConnected, [&](void* actorRef, bool* should) {
         Actor* actor = (Actor*)actorRef;
 
-        if (refreshingActors) {
+        if (spawningDummyPlayerForClientId != 0) {
+            SetDummyPlayerClientId(actor, spawningDummyPlayerForClientId);
+
             // By the time we get here, the actor was already added to the ACTORCAT_PLAYER list, so we need to move it
             Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, actor, ACTORCAT_NPC);
             actor->id = ACTOR_EN_OE2;
@@ -84,6 +86,12 @@ void Anchor::RegisterHooks() {
             justLoadedSave = false;
             SendPacket_RequestTeamState();
         }
+
+        if (shouldRefreshActors) {
+            shouldRefreshActors = false;
+            RefreshClientActors();
+        }
+
         SendPacket_PlayerUpdate();
     });
 

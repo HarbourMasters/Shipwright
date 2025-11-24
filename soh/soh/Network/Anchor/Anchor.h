@@ -63,7 +63,8 @@ typedef struct {
 
 class Anchor : public Network {
   private:
-    bool refreshingActors = false;
+    uint32_t spawningDummyPlayerForClientId = 0;
+    bool shouldRefreshActors = false;
     bool justLoadedSave = false;
     bool isHandlingUpdateTeamState = false;
     bool isProcessingIncomingPacket = false;
@@ -74,6 +75,8 @@ class Anchor : public Network {
     nlohmann::json PrepRoomState();
     void RegisterHooks();
     void RefreshClientActors();
+    void SetDummyPlayerClientId(const Actor* actor, uint32_t clientId);
+
     void HandlePacket_AllClientState(nlohmann::json payload);
     void HandlePacket_ConsumeAdultTradeItem(nlohmann::json payload);
     void HandlePacket_DamagePlayer(nlohmann::json payload);
@@ -125,7 +128,6 @@ class Anchor : public Network {
 
     static Anchor* Instance;
     std::map<uint32_t, AnchorClient> clients;
-    std::vector<uint32_t> actorIndexToClientId;
     RoomState roomState;
 
     void Enable();
@@ -138,6 +140,7 @@ class Anchor : public Network {
     void SendJsonToRemote(nlohmann::json packet);
     bool IsSaveLoaded();
     bool CanTeleportTo(uint32_t clientId);
+    uint32_t GetDummyPlayerClientId(const Actor* actor);
 
     void SendPacket_ClearTeamState(std::string teamId);
     void SendPacket_DamagePlayer(u32 clientId, u8 damageEffect, u8 damage);

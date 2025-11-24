@@ -773,7 +773,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO))) {
                 if (IS_RANDO || *should) {
                     Flags_SetRandomizerInf(flag);
-                    gSaveContext.healthAccumulator = 0x140;
+                    gSaveContext.healthAccumulator = MAX_HEALTH;
                     Magic_Fill(gPlayState);
                 }
                 *should = false;
