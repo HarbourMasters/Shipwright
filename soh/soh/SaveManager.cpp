@@ -156,6 +156,10 @@ SaveManager::SaveManager() {
 }
 
 void SaveManager::LoadRandomizer() {
+    if (gSaveContext.ship.quest.id != QUEST_RANDOMIZER) {
+        return;
+    }
+
     auto randoContext = Rando::Context::GetInstance();
     SaveManager::Instance->LoadArray("itemLocations", RC_MAX, [&](size_t i) {
         SaveManager::Instance->LoadStruct("", [&]() {
@@ -255,9 +259,10 @@ void SaveManager::LoadRandomizer() {
 }
 
 void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave) {
-
-    if (saveContext->ship.quest.id != QUEST_RANDOMIZER)
+    if (saveContext->ship.quest.id != QUEST_RANDOMIZER) {
         return;
+    }
+
     auto randoContext = Rando::Context::GetInstance();
 
     SaveManager::Instance->SaveArray("itemLocations", RC_MAX, [&](size_t i) {
@@ -455,11 +460,122 @@ void SaveManager::Init() {
     // Load files to initialize metadata
     for (int fileNum = 0; fileNum < MaxFiles; fileNum++) {
         if (std::filesystem::exists(GetFileName(fileNum))) {
-            LoadFile(fileNum);
-            saveBlock = nlohmann::json::object();
-            OTRGlobals::Instance->gRandoContext->ClearItemLocations();
+            StartupCheckAndInitMeta(fileNum);
         }
     }
+    saveBlock = nlohmann::json::object();
+}
+
+void SaveManager::StartupCheckAndInitMeta(int fileNum) {
+    saveMtx.lock();
+    SPDLOG_INFO("Init Meta - fileNum: {}", fileNum);
+    std::filesystem::path fileName = GetFileName(fileNum);
+
+    std::ifstream input(fileName);
+
+    bool deleteRando = false;
+    nlohmann::json metaSaveBlock = nlohmann::json::object();
+    input >> metaSaveBlock;
+    input.close();
+    saveMtx.unlock();
+    if (!metaSaveBlock.contains("version")) {
+        SPDLOG_ERROR("Save at " + fileName.string() + " contains no version");
+        assert(false);
+        return;
+    }
+    if (metaSaveBlock["sections"].contains("randomizer")) {
+        if (!metaSaveBlock.contains("fileType") || metaSaveBlock["fileType"] == FILE_TYPE_SAVE_VANILLA) {
+            SohGui::RegisterPopup(
+                "Loading old file",
+                "The file in slot " + std::to_string(fileNum + 1) +
+                    " appears to contain randomizer data, but is a very old format or is empty.\n" +
+                    "The randomizer data has been removed, and this file will be treated as a vanilla "
+                    "file.\nIf this was a vanilla file, it still is, and you shouldn't see this "
+                    "message again.\n" +
+                    "If this was a randomizer file, the file will not work, and should be deleted.");
+            metaSaveBlock["sections"].erase(metaSaveBlock["sections"].find("randomizer"));
+            metaSaveBlock["fileType"] = FILE_TYPE_SAVE_VANILLA;
+            saveMtx.lock();
+            std::ofstream output(GetFileName(fileNum));
+            output << metaSaveBlock.dump(1);
+            output.close();
+            saveMtx.unlock();
+        }
+        s16 major = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMajor"];
+        s16 minor = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMinor"];
+        s16 patch = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionPatch"];
+        // block loading outdated rando save
+        if (!(major == gBuildVersionMajor && minor == gBuildVersionMinor && patch == gBuildVersionPatch)) {
+            std::string newFileName =
+                Ship::Context::GetPathRelativeToAppDirectory("Save") +
+                ("/file" + std::to_string(fileNum + 1) + "-" + std::to_string(GetUnixTimestamp()) + ".bak");
+#if defined(__SWITCH__) || defined(__WIIU__)
+            copy_file(fileName.c_str(), newFileName.c_str());
+            std::filesystem::remove(fileName);
+#else
+            std::filesystem::rename(fileName, newFileName);
+#endif
+            SohGui::RegisterPopup("Outdated Randomizer Save",
+                                  "The SoH version in the file in slot " + std::to_string(fileNum + 1) +
+                                      " does not match the currently running version.\n" +
+                                      "Non-matching rando saves are unsupported, and the file has been renamed to\n" +
+                                      "    " + newFileName + "\n" +
+                                      "If this was not in error, the file should be deleted.");
+            return;
+        }
+    }
+    bool isRando = metaSaveBlock["fileType"] == FILE_TYPE_SAVE_RANDO;
+
+    fileMetaInfo[fileNum].valid = true;
+    nlohmann::json& baseBlock = metaSaveBlock["sections"]["base"]["data"];
+    fileMetaInfo[fileNum].deaths = baseBlock["deaths"];
+    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].playerName); i++) {
+        fileMetaInfo[fileNum].playerName[i] = baseBlock["playerName"][i];
+    }
+    fileMetaInfo[fileNum].healthCapacity = baseBlock["healthCapacity"];
+    fileMetaInfo[fileNum].questItems = baseBlock["inventory"]["questItems"];
+    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].inventoryItems); i++) {
+        fileMetaInfo[fileNum].inventoryItems[i] = baseBlock["inventory"]["items"][i];
+    }
+    fileMetaInfo[fileNum].equipment = baseBlock["inventory"]["equipment"];
+    fileMetaInfo[fileNum].upgrades = baseBlock["inventory"]["upgrades"];
+    fileMetaInfo[fileNum].isMagicAcquired = baseBlock["isMagicAcquired"];
+    fileMetaInfo[fileNum].isDoubleMagicAcquired = baseBlock["isDoubleMagicAcquired"];
+    fileMetaInfo[fileNum].rupees = baseBlock["rupees"];
+    fileMetaInfo[fileNum].gsTokens = baseBlock["inventory"]["gsTokens"];
+    fileMetaInfo[fileNum].isDoubleDefenseAcquired = baseBlock["isDoubleDefenseAcquired"];
+    fileMetaInfo[fileNum].gregFound = false;
+    fileMetaInfo[fileNum].filenameLanguage = baseBlock["filenameLanguage"];
+    fileMetaInfo[fileNum].hasWallet = !isRando;
+    fileMetaInfo[fileNum].defense = baseBlock["inventory"]["defenseHearts"];
+    fileMetaInfo[fileNum].health = baseBlock["health"];
+
+    fileMetaInfo[fileNum].requiresOriginal = !baseBlock["isMasterQuest"];
+    fileMetaInfo[fileNum].requiresMasterQuest = baseBlock["isMasterQuest"];
+
+    fileMetaInfo[fileNum].randoSave = isRando;
+    if (isRando) {
+        nlohmann::json& randoBlock = metaSaveBlock["sections"]["randomizer"]["data"];
+
+        for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].seedHash); i++) {
+            fileMetaInfo[fileNum].seedHash[i] = randoBlock["seed"][i];
+        }
+        fileMetaInfo[fileNum].gregFound =
+            (int16_t)baseBlock["randomizerInf"][RAND_INF_GREG_FOUND >> 4] & (1 << (RAND_INF_GREG_FOUND & 0xF));
+        fileMetaInfo[fileNum].hasWallet =
+            (int16_t)baseBlock["randomizerInf"][RAND_INF_HAS_WALLET >> 4] & (1 << (RAND_INF_HAS_WALLET & 0xF));
+        fileMetaInfo[fileNum].requiresMasterQuest = randoBlock["masterQuestDungeonCount"] > 0;
+        // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ
+        // dungeons, in which case we don't actually require a vanilla OTR.
+        fileMetaInfo[fileNum].requiresOriginal = randoBlock["masterQuestDungeonCount"] < 12;
+    }
+
+    fileMetaInfo[fileNum].buildVersionMajor = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMajor"];
+    fileMetaInfo[fileNum].buildVersionMinor = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMinor"];
+    fileMetaInfo[fileNum].buildVersionPatch = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionPatch"];
+    SohUtils::CopyStringToCharArray(fileMetaInfo[fileNum].buildVersion,
+                                    metaSaveBlock["sections"]["sohStats"]["data"]["buildVersion"],
+                                    ARRAY_COUNT(fileMetaInfo[fileNum].buildVersion));
 }
 
 void SaveManager::InitMeta(int fileNum) {
@@ -539,7 +655,6 @@ void SaveManager::InitFileNormal() {
         gSaveContext.ship.filenameLanguage =
             (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
-    gSaveContext.n64ddFlag = 0;
     gSaveContext.healthCapacity = 0x30;
     gSaveContext.health = 0x30;
     gSaveContext.magicLevel = 0;
@@ -715,7 +830,6 @@ void SaveManager::InitFileDebug() {
         gSaveContext.ship.filenameLanguage =
             (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
-    gSaveContext.n64ddFlag = 0;
     gSaveContext.healthCapacity = 0xE0;
     gSaveContext.health = 0xE0;
     gSaveContext.magicLevel = 0;
@@ -836,7 +950,6 @@ void SaveManager::InitFileMaxed() {
         gSaveContext.ship.filenameLanguage =
             (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
-    gSaveContext.n64ddFlag = 0;
     gSaveContext.healthCapacity = 0x140;
     gSaveContext.health = 0x140;
     gSaveContext.magicLevel = 2;
@@ -1004,6 +1117,11 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
     SPDLOG_INFO("Save File - fileNum: {}", fileNum);
     // Needed for first time save, hasn't changed in forever anyway
     saveBlock["version"] = 1;
+    if (IS_RANDO) {
+        saveBlock["fileType"] = FILE_TYPE_SAVE_RANDO;
+    } else {
+        saveBlock["fileType"] = FILE_TYPE_SAVE_VANILLA;
+    }
     if (sectionID == SECTION_ID_BASE) {
         for (auto& sectionHandlerPair : sectionSaveHandlers) {
             auto& saveFuncInfo = sectionHandlerPair.second;
@@ -1123,62 +1241,20 @@ void SaveManager::LoadFile(int fileNum) {
     std::ifstream input(fileName);
 
     try {
-        bool deleteRando = false;
         saveBlock = nlohmann::json::object();
         input >> saveBlock;
+        input.close();
         if (!saveBlock.contains("version")) {
             SPDLOG_ERROR("Save at " + fileName.string() + " contains no version");
             assert(false);
         }
+        if (saveBlock.contains("fileType") && saveBlock["fileType"] == FILE_TYPE_SAVE_RANDO) {
+            gSaveContext.ship.quest.id = QUEST_RANDOMIZER;
+        }
         switch (saveBlock["version"].get<int>()) {
             case 1:
                 for (auto& block : saveBlock["sections"].items()) {
-                    bool oldVanilla =
-                        block.value()["data"].empty() || block.value()["data"].contains("aat0") ||
-                        block.value()["data"]["entrances"].empty() ||
-                        SohUtils::IsStringEmpty(saveBlock["sections"]["sohStats"]["data"]["buildVersion"]);
                     std::string sectionName = block.key();
-                    if (sectionName == "randomizer") {
-                        bool hasStats = saveBlock["sections"].contains("sohStats");
-                        if (oldVanilla || !hasStats) { // Vanilla "rando" data
-                            SohGui::RegisterPopup(
-                                "Loading old file",
-                                "The file in slot " + std::to_string(fileNum + 1) +
-                                    " appears to contain randomizer data, but is a very old format or is empty.\n" +
-                                    "The randomizer data has been removed, and this file will be treated as a vanilla "
-                                    "file.\nIf this was a vanilla file, it still is, and you shouldn't see this "
-                                    "message again.\n" +
-                                    "If this was a randomizer file, the file will not work, and should be deleted.");
-                            deleteRando = true;
-                            continue;
-                        }
-                        s16 major = saveBlock["sections"]["sohStats"]["data"]["buildVersionMajor"];
-                        s16 minor = saveBlock["sections"]["sohStats"]["data"]["buildVersionMinor"];
-                        s16 patch = saveBlock["sections"]["sohStats"]["data"]["buildVersionPatch"];
-                        // block loading outdated rando save
-                        if (!(major == gBuildVersionMajor && minor == gBuildVersionMinor &&
-                              patch == gBuildVersionPatch)) {
-                            input.close();
-                            std::string newFileName = Ship::Context::GetPathRelativeToAppDirectory("Save") +
-                                                      ("/file" + std::to_string(fileNum + 1) + "-" +
-                                                       std::to_string(GetUnixTimestamp()) + ".bak");
-#if defined(__SWITCH__) || defined(__WIIU__)
-                            copy_file(fileName.c_str(), newFileName.c_str());
-                            std::filesystem::remove(fileName);
-#else
-                            std::filesystem::rename(fileName, newFileName);
-#endif
-                            SohGui::RegisterPopup(
-                                "Outdated Randomizer Save",
-                                "The SoH version in the file in slot " + std::to_string(fileNum + 1) +
-                                    " does not match the currently running version.\n" +
-                                    "Non-matching rando saves are unsupported, and the file has been renamed to\n" +
-                                    "    " + newFileName + "\n" +
-                                    "If this was not in error, the file should be deleted.");
-                            saveMtx.unlock();
-                            return;
-                        }
-                    }
                     int sectionVersion = block.value()["version"];
                     if (sectionName == "randomizer" && sectionVersion != 1) {
                         sectionVersion = 1;
@@ -1213,12 +1289,6 @@ void SaveManager::LoadFile(int fileNum) {
                              GetFileName(fileNum).string());
                 assert(false);
                 break;
-        }
-        input.close();
-        if (deleteRando) {
-            saveBlock["sections"].erase(saveBlock["sections"].find("randomizer"));
-            SaveFile(fileNum);
-            deleteRando = false;
         }
         InitMeta(fileNum);
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
@@ -1335,11 +1405,6 @@ void SaveManager::LoadBaseVersion1() {
     SaveManager::Instance->LoadData("deaths", gSaveContext.deaths);
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName),
                                      [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.playerName[i]); });
-    int isRando = 0;
-    SaveManager::Instance->LoadData("n64ddFlag", isRando);
-    if (isRando) {
-        gSaveContext.ship.quest.id = QUEST_RANDOMIZER;
-    }
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -1479,11 +1544,6 @@ void SaveManager::LoadBaseVersion2() {
     SaveManager::Instance->LoadData("deaths", gSaveContext.deaths);
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName),
                                      [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.playerName[i]); });
-    int isRando = 0;
-    SaveManager::Instance->LoadData("n64ddFlag", isRando);
-    if (isRando) {
-        gSaveContext.ship.quest.id = QUEST_RANDOMIZER;
-    }
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -1695,11 +1755,6 @@ void SaveManager::LoadBaseVersion3() {
     SaveManager::Instance->LoadData("deaths", gSaveContext.deaths);
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName),
                                      [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.playerName[i]); });
-    int isRando = 0;
-    SaveManager::Instance->LoadData("n64ddFlag", isRando);
-    if (isRando) {
-        gSaveContext.ship.quest.id = QUEST_RANDOMIZER;
-    }
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -1915,11 +1970,6 @@ void SaveManager::LoadBaseVersion4() {
     SaveManager::Instance->LoadData("deaths", gSaveContext.deaths);
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName),
                                      [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.playerName[i]); });
-    int isRando = 0;
-    SaveManager::Instance->LoadData("n64ddFlag", isRando);
-    if (isRando) {
-        gSaveContext.ship.quest.id = QUEST_RANDOMIZER;
-    }
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -2098,7 +2148,6 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
     SaveManager::Instance->SaveArray("playerName", ARRAY_COUNT(saveContext->playerName), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->playerName[i]);
     });
-    SaveManager::Instance->SaveData("n64ddFlag", saveContext->ship.quest.id == QUEST_RANDOMIZER);
     SaveManager::Instance->SaveData("healthCapacity", saveContext->healthCapacity);
     SaveManager::Instance->SaveData("health", saveContext->health);
     SaveManager::Instance->SaveData("magicLevel", saveContext->magicLevel);

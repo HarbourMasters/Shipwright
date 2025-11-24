@@ -1018,7 +1018,7 @@ static void FillExcludedLocations() {
         FilterFromPool(ctx->allLocations, [ctx](const auto loc) { return ctx->GetItemLocation(loc)->IsExcluded(); });
 
     for (RandomizerCheck loc : excludedLocations) {
-        PlaceJunkInExcludedLocation(loc);
+        ctx->PlaceItemInLocation(loc, GetJunkItem());
     }
 }
 

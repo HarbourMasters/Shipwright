@@ -2,8 +2,6 @@
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
-#include "soh/OTRGlobals.h"
-#include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -24,7 +22,6 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
-#include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
@@ -134,58 +131,6 @@ void RegisterOcarinaTimeTravel() {
 
         if (justPlayedSoT && notNearAnySource && meetsTimeTravelRequirements) {
             SwitchAge();
-        }
-    });
-}
-
-static bool hasAffectedHealth = false;
-void UpdatePermanentHeartLossState() {
-    if (!GameInteractor::IsSaveLoaded())
-        return;
-
-    if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) && hasAffectedHealth) {
-        uint8_t heartContainers = gSaveContext.ship.stats.heartContainers; // each worth 16 health
-        uint8_t heartPieces = gSaveContext.ship.stats.heartPieces; // each worth 4 health, but only in groups of 4
-        uint8_t startingHealth =
-            16 * (IS_RANDO ? (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_HEARTS) + 1) : 3);
-
-        uint8_t newCapacity = startingHealth + (heartContainers * 16) + ((heartPieces - (heartPieces % 4)) * 4);
-        gSaveContext.healthCapacity = MAX(newCapacity, gSaveContext.healthCapacity);
-        gSaveContext.health = MIN(gSaveContext.health, gSaveContext.healthCapacity);
-        hasAffectedHealth = false;
-    }
-}
-
-void RegisterPermanentHeartLoss() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int16_t fileNum) {
-        hasAffectedHealth = false;
-        UpdatePermanentHeartLossState();
-    });
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) || !GameInteractor::IsSaveLoaded())
-            return;
-
-        if (gSaveContext.healthCapacity > 16 && gSaveContext.healthCapacity - gSaveContext.health >= 16) {
-            gSaveContext.healthCapacity -= 16;
-            gSaveContext.health = MIN(gSaveContext.health, gSaveContext.healthCapacity);
-            hasAffectedHealth = true;
-        }
-    });
-};
-
-void RegisterDeleteFileOnDeath() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("DeleteFileOnDeath"), 0) || !GameInteractor::IsSaveLoaded() ||
-            gPlayState == NULL)
-            return;
-
-        if (gPlayState->gameOverCtx.state == GAMEOVER_DEATH_MENU && gPlayState->pauseCtx.state == 9) {
-            SaveManager::Instance->DeleteZeldaFile(gSaveContext.fileNum);
-            hasAffectedHealth = false;
-            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
-                ->Dispatch("reset");
         }
     });
 }
@@ -471,45 +416,6 @@ void RegisterEnemyDefeatCounts() {
     });
 }
 
-void RegisterBossDefeatTimestamps() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>([](void* refActor) {
-        Actor* actor = static_cast<Actor*>(refActor);
-        switch (actor->id) {
-            case ACTOR_BOSS_DODONGO:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_FD2:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_GANON:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_GANON2:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-                gSaveContext.ship.stats.gameComplete = true;
-                break;
-            case ACTOR_BOSS_GANONDROF:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_GOMA:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_MO:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_SST:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_TW:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-            case ACTOR_BOSS_VA:
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
-                break;
-        }
-    });
-}
-
 void UpdateHurtContainerModeState(bool newState) {
     static bool hurtEnabled = false;
     if (hurtEnabled == newState) {
@@ -591,12 +497,9 @@ void InitMods() {
     TimeSaverRegisterHooks();
     RegisterTTS();
     RegisterOcarinaTimeTravel();
-    RegisterPermanentHeartLoss();
-    RegisterDeleteFileOnDeath();
     RegisterHyperBosses();
     UpdateHyperEnemiesState();
     RegisterEnemyDefeatCounts();
-    RegisterBossDefeatTimestamps();
     RegisterRandomizedEnemySizes();
     RegisterHurtContainerModeHandler();
     RandoKaleido_RegisterHooks();
