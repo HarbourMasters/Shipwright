@@ -16,6 +16,7 @@
 
 #include "global.h"
 #include "entrance.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 extern PlayState* gPlayState;
 
@@ -409,9 +410,10 @@ void Entrance_SetSavewarpEntrance(void) {
     } else if (scene == SCENE_GANONS_TOWER || scene == SCENE_GANONDORF_BOSS ||
                scene == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE || scene == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR ||
                scene == SCENE_GANON_BOSS || scene == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
-        gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0;    // Inside Ganon's Castle -> Ganon's Tower Climb
-    } else if (scene == SCENE_THIEVES_HIDEOUT) {             // Theives hideout
-        gSaveContext.entranceIndex = ENTR_THIEVES_HIDEOUT_0; // Gerudo Fortress -> Thieve's Hideout spawn 0
+        gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0; // Inside Ganon's Castle -> Ganon's Tower Climb
+    } else if (scene == SCENE_THIEVES_HIDEOUT &&
+               !Randomizer_GetSettingValue(RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES)) { // Thieves' Hideout
+        gSaveContext.entranceIndex = ENTR_THIEVES_HIDEOUT_0; // Gerudo Fortress -> Thieves' Hideout spawn 0
     } else if (scene == SCENE_LINKS_HOUSE &&
                Randomizer_GetSettingValue(RSK_SHUFFLE_INTERIOR_ENTRANCES) != RO_INTERIOR_ENTRANCE_SHUFFLE_ALL) {
         // Save warping in Link's house keeps the player there if Link's house not shuffled,
@@ -425,10 +427,9 @@ void Entrance_SetSavewarpEntrance(void) {
     } else if (LINK_IS_CHILD) {
         gSaveContext.entranceIndex = Entrance_OverrideNextIndex(ENTR_LINKS_HOUSE_CHILD_SPAWN); // Child Overworld Spawn
     } else {
-        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(
-            ENTR_HYRULE_FIELD_10); // Adult Overworld Spawn (Normally 0x5F4 (ENTR_TEMPLE_OF_TIME_WARP_PAD), but 0x282
-                                   // (ENTR_HYRULE_FIELD_10) has been repurposed to differentiate from Prelude which
-                                   // also uses 0x5F4)
+        // Adult Overworld Spawn. Normally 0x5F4 (ENTR_TEMPLE_OF_TIME_WARP_PAD), but 0x282
+        // (ENTR_HYRULE_FIELD_10) has been repurposed to differentiate from Prelude which also uses 0x5F4
+        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_10);
     }
 }
 
@@ -673,15 +674,21 @@ void Entrance_OverrideWeatherState() {
 // In ER, Adult should be placed at the fortress entrance when getting caught in the fortress without a hookshot,
 // instead of being thrown in the valley Child should always be thrown in the stream when caught in the valley, and
 // placed at the fortress entrance from valley when caught in the fortress
-void Entrance_OverrideGeurdoGuardCapture(void) {
-    if (LINK_IS_CHILD) {
-        gPlayState->nextEntranceIndex = ENTR_GERUDO_VALLEY_1; // Geurdo Valley thrown out
-    }
+void Entrance_OverrideGerudoGuardCapture(void) {
+    if (gPlayState->sceneNum == SCENE_THIEVES_HIDEOUT &&
+        Randomizer_GetSettingValue(RSK_MIX_THIEVES_HIDEOUT_ENTRANCES)) {
+        // If TH entrances in mixed shuffle, TH captures stay in TH
+        gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+    } else {
+        if (LINK_IS_CHILD) {
+            gPlayState->nextEntranceIndex = ENTR_GERUDO_VALLEY_1; // Gerudo Valley thrown out
+        }
 
-    if ((LINK_IS_CHILD || Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) &&
-        gPlayState->nextEntranceIndex == ENTR_GERUDO_VALLEY_1) {             // Geurdo Valley thrown out
-        if (gPlayState->sceneNum != SCENE_GERUDO_VALLEY) {                   // Geurdo Valley
-            gPlayState->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_EAST_EXIT; // Gerudo Fortress
+        if ((LINK_IS_CHILD || Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) &&
+            gPlayState->nextEntranceIndex == ENTR_GERUDO_VALLEY_1) {             // Gerudo Valley thrown out
+            if (gPlayState->sceneNum != SCENE_GERUDO_VALLEY) {                   // Gerudo Valley
+                gPlayState->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_EAST_EXIT; // Gerudo Fortress
+            }
         }
     }
 }
@@ -805,6 +812,8 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance) {
     if (entranceIndex > MAX_ENTRANCE_RANDO_USED_INDEX || Entrance_GetIsEntranceDiscovered(entranceIndex)) {
         return;
     }
+
+    GameInteractor_ExecuteOnRandoEntranceDiscovered(entranceIndex, isReversedEntrance);
 
     u16 bitsPerIndex = sizeof(u32) * 8;
     u32 idx = entranceIndex / bitsPerIndex;

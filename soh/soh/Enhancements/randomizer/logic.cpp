@@ -858,9 +858,8 @@ bool Logic::CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             return CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
         case RE_GIBDO:
         case RE_REDEAD:
-            // we need a way to check if suns won't force a reload
-            // RANDOTODO: check if stealthing past these guys works everywhere
-            return CanUse(RG_HOOKSHOT) || CanUse(RG_SUNS_SONG);
+            // You can move slowly to avoid getting screamed at
+            return true; // CanUse(RG_HOOKSHOT) || CanUse(RG_SUNS_SONG);
         case RE_IRON_KNUCKLE:
         case RE_BIG_OCTO:
             return false;
@@ -1081,6 +1080,10 @@ bool Logic::CanJumpslashExceptHammer() {
 
 bool Logic::CanJumpslash() {
     return CanJumpslashExceptHammer() || CanUse(RG_MEGATON_HAMMER);
+}
+
+bool Logic::CanClearStalagmite() {
+    return CanJumpslash() || HasExplosives();
 }
 
 bool Logic::CanHitSwitch(EnemyDistance distance, bool inWater) {
@@ -2172,7 +2175,7 @@ const std::vector<uint8_t>& GetDungeonSmallKeyDoors(SceneID sceneId) {
                 dungeonSmallKeyDoors[key].emplace_back(transitionActor.params & 0x3F);
             }
         } else if (transitionActor.id == ACTOR_DOOR_SHUTTER) {
-            uint8_t doorType = (transitionActor.params >> 7) & 15;
+            uint8_t doorType = (transitionActor.params >> 6) & 15;
             if (doorType == SHUTTER_KEY_LOCKED) {
                 dungeonSmallKeyDoors[key].emplace_back(transitionActor.params & 0x3F);
             }

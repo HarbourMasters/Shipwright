@@ -1503,7 +1503,7 @@ std::vector<Migration> version3Migrations = {
     { MigrationAction::Rename, "gOpenMenuBar", "gSettings.OpenMenuBar" },
     { MigrationAction::Rename, "gRandomizeSkipChildStealth", "gRandoSettings.SkipChildStealth" },
     { MigrationAction::Rename, "gRandomizeExcludedLocations", "gRandoSettings.ExcludedLocations" },
-    { MigrationAction::Rename, "gAltAssets", "gEnhancements.AltAssets" },
+    { MigrationAction::Rename, "gAltAssets", "gSettings.AltAssets" },
     { MigrationAction::Rename, "gMSAAValue", "gSettings.MSAAValue" },
     { MigrationAction::Rename, "gInternalResolution", "gSettings.InternalResolution" },
     { MigrationAction::Rename, "gTextureFilter", "gSettings.TextureFilter" },

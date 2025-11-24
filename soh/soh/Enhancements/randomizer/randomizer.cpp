@@ -5535,7 +5535,7 @@ void Randomizer::CreateCustomMessages() {
                   "vielleicht&dafür...",
                   "Vous obtenez une %rBouteille avec&un Esprit%w! Ça intéresserait&peut-être le vendeur d'Âme "),
 
-        GIMESSAGE(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yThieves Hideout &%wSmall Key!",
+        GIMESSAGE(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yThieves' Hideout &%wSmall Key!",
                   "Du erhältst einen %rkleinen&Schlüssel%w des %yDiebesverstecks%w!",
                   "Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
         GIMESSAGE(RG_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %gForest Temple &%wSmall Key!",
@@ -5635,7 +5635,7 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_FISHING_HOLE_KEY, ITEM_KEY_SMALL, "You found the key to the&%gPond%w!",
                   "Du erhältst den %rSchlüssel%w&zum %gFischweiher%w!", "Vous obtenez la %rClé %wde l'%gÉtang%w!"),
 
-        GIMESSAGE(RG_GERUDO_FORTRESS_KEY_RING, ITEM_KEY_SMALL, "You found a %yThieves Hideout&%wKeyring!",
+        GIMESSAGE(RG_GERUDO_FORTRESS_KEY_RING, ITEM_KEY_SMALL, "You found a %yThieves' Hideout&%wKeyring!",
                   "Du erhältst das %rSchlüsselbund%w&des %yDiebesverstecks%w!",
                   "Vous obtenez le trousseau de&clés du %yRepaire des Voleurs%w!"),
         GIMESSAGE(RG_FOREST_TEMPLE_KEY_RING, ITEM_KEY_SMALL, "You found a %gForest Temple&%wKeyring!",
@@ -6221,7 +6221,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         case RG_DOUBLE_DEFENSE:
             gSaveContext.isDoubleDefenseAcquired = true;
             gSaveContext.inventory.defenseHearts = 20;
-            gSaveContext.healthAccumulator = 0x140;
+            gSaveContext.healthAccumulator = MAX_HEALTH;
             break;
         case RG_TYCOON_WALLET:
             Inventory_ChangeUpgrade(UPG_WALLET, 3);

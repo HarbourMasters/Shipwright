@@ -25,6 +25,7 @@ void RegionTable_Init_DodongosCavern() {
     areaTable[RR_DODONGOS_CAVERN_LOBBY] = Region("Dodongos Cavern Lobby", SCENE_DODONGOS_CAVERN, {
         //Events
         EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return (Here(RR_DODONGOS_CAVERN_LOBBY, []{return logic->CanBreakMudWalls();}) || logic->HasItem(RG_GORONS_BRACELET)) && logic->CallGossipFairy();}),
+        EventAccess(LOGIC_DC_EYES_LIT, []{return ctx->GetTrickOption(RT_DC_EYES_CHU) && logic->CanUse(RG_BOMBCHU_5);}),
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MAP_CHEST,              logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET);),
@@ -282,7 +283,10 @@ void RegionTable_Init_DodongosCavern() {
         Entrance(RR_DODONGOS_CAVERN_MQ_LOBBY, []{return Here(RR_DODONGOS_CAVERN_MQ_BEGINNING, []{return logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET);});}),
     });
 
-    areaTable[RR_DODONGOS_CAVERN_MQ_LOBBY] = Region("Dodongos Cavern MQ Lobby", SCENE_DODONGOS_CAVERN, {}, {
+    areaTable[RR_DODONGOS_CAVERN_MQ_LOBBY] = Region("Dodongos Cavern MQ Lobby", SCENE_DODONGOS_CAVERN, {
+        //Events
+        EventAccess(LOGIC_DC_EYES_LIT, []{return ctx->GetTrickOption(RT_DC_EYES_CHU) && logic->CanUse(RG_BOMBCHU_5);}),
+    }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MQ_MAP_CHEST,              logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET)),
         LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR,  logic->CanStunDeku()),

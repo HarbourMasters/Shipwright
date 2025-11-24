@@ -249,11 +249,15 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
         return;
 
     if (flagType == FLAG_GS_TOKEN &&
-        Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OFF))
+        Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OFF)) {
+        Rando::Context::GetInstance()->GetItemLocation(rc)->SetCheckStatus(RCSHOW_COLLECTED);
         return;
+    }
     auto loc = Rando::Context::GetInstance()->GetItemLocation(rc);
-    if (loc == nullptr || loc->HasObtained() || loc->GetPlacedRandomizerGet() == RG_NONE)
+    if (loc == nullptr || loc->HasObtained() || loc->GetPlacedRandomizerGet() == RG_NONE) {
+        Rando::Context::GetInstance()->GetItemLocation(rc)->SetCheckStatus(RCSHOW_COLLECTED);
         return;
+    }
 
     SPDLOG_INFO("Queuing RC: {}", static_cast<uint32_t>(rc));
     randomizerQueuedChecks.push(rc);
@@ -387,11 +391,11 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
     if (receivedItemEntry.modIndex == MOD_NONE &&
         (receivedItemEntry.itemId == ITEM_HEART_PIECE || receivedItemEntry.itemId == ITEM_HEART_PIECE_2 ||
          receivedItemEntry.itemId == ITEM_HEART_CONTAINER)) {
-        gSaveContext.healthAccumulator = 0x140; // Refill 20 hearts
+        gSaveContext.healthAccumulator = MAX_HEALTH; // Refill 20 hearts
         if ((s32)(gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000) {
             gSaveContext.inventory.questItems ^= 0x40000000;
-            gSaveContext.healthCapacity += 0x10;
-            gSaveContext.health += 0x10;
+            gSaveContext.healthCapacity += FULL_HEART_HEALTH;
+            gSaveContext.health += FULL_HEART_HEALTH;
         }
     }
 
@@ -2183,7 +2187,8 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     }
 
     // Turn MQ switch into toggle
-    if (actor->id == ACTOR_OBJ_SWITCH && gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL && (actor->params & 7) == 3) {
+    if (actor->id == ACTOR_OBJ_SWITCH && gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL &&
+        (actor->params & 0x3f07) == 0x303) {
         auto dungeon =
             OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
         if (dungeon->IsMQ()) {

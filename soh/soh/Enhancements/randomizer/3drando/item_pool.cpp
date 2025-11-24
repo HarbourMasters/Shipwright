@@ -87,19 +87,6 @@ static void ReplaceMaxItem(const RandomizerGet itemToReplace, int max) {
     }
 }
 
-void PlaceJunkInExcludedLocation(const RandomizerCheck il) {
-    // place a non-advancement item in this location
-    auto ctx = Rando::Context::GetInstance();
-    for (size_t i = 0; i < itemPool.size(); i++) {
-        if (Rando::StaticData::RetrieveItem(itemPool[i]).GetCategory() == ITEM_CATEGORY_JUNK) {
-            ctx->PlaceItemInLocation(il, itemPool[i]);
-            itemPool.erase(itemPool.begin() + i);
-            return;
-        }
-    }
-    SPDLOG_ERROR("ERROR: No Junk to Place!!!");
-}
-
 static void PlaceVanillaMapsAndCompasses() {
     auto ctx = Rando::Context::GetInstance();
     for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {

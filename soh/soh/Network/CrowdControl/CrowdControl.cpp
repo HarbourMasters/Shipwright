@@ -1,5 +1,3 @@
-#ifdef ENABLE_REMOTE_CONTROL
-
 #include "CrowdControl.h"
 #include "CrowdControlTypes.h"
 #include <libultraship/bridge.h>
@@ -629,4 +627,3 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
 
     return effect;
 }
-#endif

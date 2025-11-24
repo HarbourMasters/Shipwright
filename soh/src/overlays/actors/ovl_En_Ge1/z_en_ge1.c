@@ -247,7 +247,7 @@ void EnGe1_KickPlayer(EnGe1* this, PlayState* play) {
         }
 
         if (IS_RANDO) {
-            Entrance_OverrideGeurdoGuardCapture();
+            Entrance_OverrideGerudoGuardCapture();
         }
 
         play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
