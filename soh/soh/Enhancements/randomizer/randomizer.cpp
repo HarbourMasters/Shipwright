@@ -6221,7 +6221,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         case RG_DOUBLE_DEFENSE:
             gSaveContext.isDoubleDefenseAcquired = true;
             gSaveContext.inventory.defenseHearts = 20;
-            gSaveContext.healthAccumulator = 0x140;
+            gSaveContext.healthAccumulator = MAX_HEALTH;
             break;
         case RG_TYCOON_WALLET:
             Inventory_ChangeUpgrade(UPG_WALLET, 3);

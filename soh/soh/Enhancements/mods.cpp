@@ -486,28 +486,6 @@ void RegisterEnemyDefeatCounts() {
     });
 }
 
-void UpdateHurtContainerModeState(bool newState) {
-    static bool hurtEnabled = false;
-    if (hurtEnabled == newState) {
-        return;
-    }
-
-    hurtEnabled = newState;
-    uint16_t getHeartPieces = gSaveContext.ship.stats.heartPieces / 4;
-    uint16_t getHeartContainers = gSaveContext.ship.stats.heartContainers;
-
-    if (hurtEnabled) {
-        gSaveContext.healthCapacity = 320 - ((getHeartPieces + getHeartContainers) * 16);
-    } else {
-        gSaveContext.healthCapacity = 48 + ((getHeartPieces + getHeartContainers) * 16);
-    }
-}
-
-void RegisterHurtContainerModeHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(
-        [](int32_t fileNum) { UpdateHurtContainerModeState(CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0)); });
-}
-
 void RegisterRandomizedEnemySizes() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         // Randomized Enemy Sizes
@@ -572,6 +550,5 @@ void InitMods() {
     RegisterEnemyDefeatCounts();
     RegisterRandomizedEnemySizes();
     RegisterPatchHandHandler();
-    RegisterHurtContainerModeHandler();
     RandoKaleido_RegisterHooks();
 }

@@ -77,8 +77,6 @@ void Anchor::SendPacket_PlayerUpdate() {
 void Anchor::HandlePacket_PlayerUpdate(nlohmann::json payload) {
     uint32_t clientId = payload["clientId"].get<uint32_t>();
 
-    bool shouldRefreshActors = false;
-
     if (clients.contains(clientId)) {
         auto& client = clients[clientId];
 
@@ -109,9 +107,5 @@ void Anchor::HandlePacket_PlayerUpdate(nlohmann::json payload) {
         client.invincibilityTimer = payload["invincibilityTimer"].get<s8>();
         client.unk_862 = payload["unk_862"].get<s16>();
         client.actionVar1 = payload["actionVar1"].get<s8>();
-    }
-
-    if (shouldRefreshActors) {
-        RefreshClientActors();
     }
 }

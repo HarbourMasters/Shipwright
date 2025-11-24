@@ -7,7 +7,6 @@
 extern "C" {
 #endif
 
-void UpdateHurtContainerModeState(bool newState);
 void UpdateHyperEnemiesState();
 void UpdateHyperBossesState();
 void InitMods();
