@@ -54,8 +54,6 @@ static bool MirroredWorld_ShouldApply(int32_t sceneNum) {
     }
 }
 
-static void RegisterMirroredWorld();
-
 static void UpdateMirrorModeState(int32_t sceneNum) {
     bool nextMirroredWorld = MirroredWorld_ShouldApply(sceneNum);
 
@@ -68,7 +66,6 @@ static void UpdateMirrorModeState(int32_t sceneNum) {
         CVarSetInteger(CVAR_MIRRORED_WORLD_NAME, 1);
     } else {
         CVarClear(CVAR_MIRRORED_WORLD_NAME);
-        RegisterMirroredWorld();
     }
 
     ApplyMirrorWorldGfxPatches();
