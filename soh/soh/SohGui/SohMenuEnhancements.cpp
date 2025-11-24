@@ -1566,9 +1566,6 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip("A Wallmaster follows Link everywhere, don't get caught!"));
     AddWidget(path, "Hurt Container Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HurtContainer"))
-        .Callback([](WidgetInfo& info) {
-            UpdateHurtContainerModeState(CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0));
-        })
         .Options(CheckboxOptions().Tooltip("Changes Heart Piece and Heart Container functionality.\n\n"
                                            " - Each Heart Container or full Heart Piece reduces Link's Hearts by 1.\n"
                                            " - Can be enabled retroactively after a File has already started."));
