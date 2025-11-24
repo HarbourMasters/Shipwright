@@ -225,7 +225,7 @@ StaticData::PopulateTranslationMap(std::unordered_map<uint32_t, CustomMessage> i
             if (output.contains(string)) {
                 if (output[string] != key && string != "") {
                     // RANDOTODO should this cause an error of some kind?
-                    SPDLOG_DEBUG("\tREPEATED STRING IN " + message.GetEnglish(MF_CLEAN) + "\n\n");
+                    SPDLOG_DEBUG("REPEATED STRING IN " + message.GetEnglish(MF_CLEAN));
                 }
             } else {
                 output[string] = key;
@@ -243,7 +243,7 @@ StaticData::PopulateTranslationMap(std::unordered_map<uint32_t, RandomizerHintTe
         for (std::string string : strings) {
             if (output.contains(string)) {
                 if (output[string] != key && string != "") {
-                    SPDLOG_DEBUG("\tREPEATED STRING WITH " + string + "\n\n");
+                    SPDLOG_DEBUG("REPEATED STRING WITH " + string);
                 }
             } else {
                 output[string] = key;

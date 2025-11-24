@@ -334,8 +334,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Skip Feeding Jabu-Jabu", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"))
         .PreFunc([](WidgetInfo& info) {
-            info.options->disabled =
-                IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_JABU_OPEN).Is(RO_JABU_OPEN);
+            info.options->disabled = IS_RANDO;
             info.options->disabledTooltip =
                 "This setting is disabled because a randomizer savefile with \"Jabu-Jabu: Open\" is loaded.";
         })
@@ -603,7 +602,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Color Temple of Time's Medallions", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ToTMedallionsColors"))
         .RaceDisable(false)
-        .Callback([](WidgetInfo& info) { PatchToTMedallions(); })
+        .Callback([](WidgetInfo& info) { UpdateToTMedallions(); })
         .Options(CheckboxOptions().Tooltip(
             "When Medallions are collected, the Medallion imprints around the Master Sword Pedestal in the Temple "
             "of Time will become colored-in."));
@@ -733,9 +732,9 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Equip items and equipment on the D-pad. If used with \"D-pad on Pause Screen\", you must "
             "hold C-Up to equip instead of navigate."));
-    AddWidget(path, "Assignable Tunics and Boots", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Assignable Shields, Tunics and Boots", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"))
-        .Options(CheckboxOptions().Tooltip("Allows equipping the Tunics and Boots to C-Buttons/D-pad."));
+        .Options(CheckboxOptions().Tooltip("Allows equipping Shields, Tunics and Boots to C-Buttons/D-pad."));
     // TODO: Revist strength toggle, it's currently separate but should probably be locked behind the
     // Equipment toggle settings or be absorbed by it completely.
     AddWidget(path, "Equipment Toggle", WIDGET_CVAR_CHECKBOX)
@@ -1569,9 +1568,6 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip("A Wallmaster follows Link everywhere, don't get caught!"));
     AddWidget(path, "Hurt Container Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HurtContainer"))
-        .Callback([](WidgetInfo& info) {
-            UpdateHurtContainerModeState(CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0));
-        })
         .Options(CheckboxOptions().Tooltip("Changes Heart Piece and Heart Container functionality.\n\n"
                                            " - Each Heart Container or full Heart Piece reduces Link's Hearts by 1.\n"
                                            " - Can be enabled retroactively after a File has already started."));

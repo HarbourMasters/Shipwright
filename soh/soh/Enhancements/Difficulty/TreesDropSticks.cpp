@@ -7,8 +7,12 @@ extern "C" {
 
 extern PlayState* gPlayState;
 
-void RegisterTreesDropSticks() {
-    COND_VB_SHOULD(VB_TREE_DROP_COLLECTIBLE, CVarGetInteger(CVAR_ENHANCEMENT("TreesDropSticks"), 0), {
+static constexpr int32_t CVAR_TREES_DROP_STICKS_DEFAULT = 0;
+#define CVAR_TREES_DROP_STICKS_NAME CVAR_ENHANCEMENT("TreesDropSticks")
+#define CVAR_TREES_DROP_STICKS_VALUE CVarGetInteger(CVAR_TREES_DROP_STICKS_NAME, CVAR_TREES_DROP_STICKS_DEFAULT)
+
+static void RegisterTreesDropSticks() {
+    COND_VB_SHOULD(VB_TREE_DROP_COLLECTIBLE, CVAR_TREES_DROP_STICKS_VALUE, {
         if (INV_CONTENT(ITEM_STICK) != ITEM_NONE) {
             EnWood02* tree = va_arg(args, EnWood02*);
             Vec3f dropsSpawnPt = tree->actor.world.pos;
@@ -21,11 +25,11 @@ void RegisterTreesDropSticks() {
         }
     });
 
-    COND_VB_SHOULD(VB_PREVENT_ADULT_STICK, CVarGetInteger(CVAR_ENHANCEMENT("TreesDropSticks"), 0), {
+    COND_VB_SHOULD(VB_PREVENT_ADULT_STICK, CVAR_TREES_DROP_STICKS_VALUE, {
         if (INV_CONTENT(ITEM_STICK) != ITEM_NONE) {
             *should = false;
         }
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterTreesDropSticks, { CVAR_ENHANCEMENT("TreesDropSticks") });
+static RegisterShipInitFunc initFunc(RegisterTreesDropSticks, { CVAR_TREES_DROP_STICKS_NAME });
