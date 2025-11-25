@@ -1,6 +1,5 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
-#include <spdlog/spdlog.h>
 
 extern "C" {
 #include "functions.h"
@@ -28,8 +27,18 @@ static void OnInitGSTargetable(void* refActor) {
     }
 }
 
+static void OnEnemyDefeatGSTargetable(void* refActor) {
+    EnSw* enSw = reinterpret_cast<EnSw*>(refActor);
+
+    if (enSw->actor.naviEnemyId == 0x20) {
+        // Disable Targeting immediately when the Gold Skulltula is defeated (like regular Skullwalltulas)
+        enSw->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
+    }
+}
+
 static void RegisterGSTargetable() {
     COND_ID_HOOK(OnActorInit, ACTOR_EN_SW, CVAR_GSTARGETABLE_VALUE, OnInitGSTargetable);
+    COND_ID_HOOK(OnEnemyDefeat, ACTOR_EN_SW, CVAR_GSTARGETABLE_VALUE, OnEnemyDefeatGSTargetable);
 }
 
 static RegisterShipInitFunc initFunc(RegisterGSTargetable, { CVAR_GSTARGETABLE_NAME });
