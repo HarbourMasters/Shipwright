@@ -30,6 +30,7 @@ class KaleidoEntry {
     virtual void Draw(PlayState* play, std::vector<Gfx>* mEntryDl) = 0;
     virtual void Update(PlayState* play) = 0;
     void SetYOffset(int yOffset);
+    void SetSelected(bool val);
 
   protected:
     int16_t mX;
@@ -38,6 +39,7 @@ class KaleidoEntry {
     int16_t mWidth;
     Vtx* vtx;
     std::string mText;
+    bool mSelected = false;
     bool mAchieved = false;
 };
 
@@ -164,6 +166,7 @@ class Kaleido {
     std::vector<std::shared_ptr<KaleidoEntry>> mEntries;
     std::vector<Gfx> mEntryDl;
     int mTopIndex = 0;
+    int mCursorPos = 0;
     int mNumVisible = 7;
 };
 } // namespace Rando
