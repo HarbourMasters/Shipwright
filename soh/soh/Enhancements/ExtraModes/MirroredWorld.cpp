@@ -3,13 +3,12 @@
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/randomizer/context.h"
 #include "soh/Enhancements/enhancementTypes.h"
-#include "soh/Enhancements/mods.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "variables.h"
 extern SaveContext gSaveContext;
+extern PlayState* gPlayState;
 }
 
 static constexpr MirroredWorldMode CVAR_MIRRORED_WORLD_DEFAULT = MIRRORED_WORLD_OFF;
@@ -55,13 +54,7 @@ static bool MirroredWorld_ShouldApply(int32_t sceneNum) {
     }
 }
 
-static void RegisterMirroredWorld() {
-    COND_HOOK(OnSceneInit, CVAR_MIRRORED_WORLD_MODE_VALUE, UpdateMirrorModeState);
-}
-
-static RegisterShipInitFunc initFunc(RegisterMirroredWorld, { CVAR_MIRRORED_WORLD_MODE_NAME });
-
-void UpdateMirrorModeState(int32_t sceneNum) {
+static void UpdateMirrorModeState(int32_t sceneNum) {
     bool nextMirroredWorld = MirroredWorld_ShouldApply(sceneNum);
 
     if (prevMirroredWorld == nextMirroredWorld) {
@@ -73,8 +66,17 @@ void UpdateMirrorModeState(int32_t sceneNum) {
         CVarSetInteger(CVAR_MIRRORED_WORLD_NAME, 1);
     } else {
         CVarClear(CVAR_MIRRORED_WORLD_NAME);
-        RegisterMirroredWorld();
     }
 
     ApplyMirrorWorldGfxPatches();
 }
+
+static void RegisterMirroredWorld() {
+    if (gPlayState != NULL) {
+        UpdateMirrorModeState(gPlayState->sceneNum);
+    }
+
+    COND_HOOK(OnSceneInit, CVAR_MIRRORED_WORLD_MODE_VALUE, UpdateMirrorModeState);
+}
+
+static RegisterShipInitFunc initFunc(RegisterMirroredWorld, { CVAR_MIRRORED_WORLD_MODE_NAME });

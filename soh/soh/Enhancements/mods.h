@@ -7,10 +7,6 @@
 extern "C" {
 #endif
 
-void DirtPathFix_UpdateZFightingMode(int32_t sceneNum);
-void UpdateMirrorModeState(int32_t sceneNum);
-void UpdateToTMedallions();
-void UpdatePermanentHeartLossState();
 void UpdateHyperBossesState();
 void InitMods();
 void SwitchAge();
