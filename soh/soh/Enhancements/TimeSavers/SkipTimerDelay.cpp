@@ -1,16 +1,10 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/cvar_prefixes.h"
 #include "soh/ShipInit.hpp"
-
-#include "tables/actor_table.h"
-#include "tables/scene_table.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_Obj_Lightswitch/z_obj_lightswitch.h"
 #include "src/overlays/actors/ovl_Bg_Spot06_Objects/z_bg_spot06_objects.h"
 #include "src/overlays/actors/ovl_Bg_Jya_Bombchuiwa/z_bg_jya_bombchuiwa.h"
-#include "z64.h"
-#include "z64save.h"
 extern PlayState* gPlayState;
 }
 
