@@ -540,11 +540,13 @@ void func_8002C124(TargetContext* targetCtx, PlayState* play) {
 
     actor = targetCtx->unk_94;
     if ((actor != NULL) && !(actor->flags & ACTOR_FLAG_LOCK_ON_DISABLED)) {
+        // Target Arrow Category Override
         s32 actorCategory;
+        s32 overrideActorCategory;
         actorCategory = actor->category;
-        // Override Leever's Target Arrow color to Yellow
-        if (CVarGetInteger(CVAR_ENHANCEMENT("YellowLeeverCursor"), 0) && (actor->id == ACTOR_EN_REEBA)) {
-            actorCategory = ACTORCAT_ENEMY;
+        overrideActorCategory = actorCategory;
+        if (GameInteractor_Should(VB_OVERRIDE_TARGET_ARROW_CATEGORY, false, actor, &overrideActorCategory)) {
+            actorCategory = overrideActorCategory;
         }
 
         FrameInterpolation_RecordOpenChild(actor, 1);
@@ -597,10 +599,12 @@ void func_8002C7BC(TargetContext* targetCtx, Player* player, Actor* actorArg, Pl
     }
 
     if (unkActor != NULL) {
+        // Target Navi Category Override
+        s32 overrideActorCategory;
         actorCategory = unkActor->category;
-        // Override Leever's Navi color to Yellow
-        if (CVarGetInteger(CVAR_ENHANCEMENT("YellowLeeverCursor"), 0) && (unkActor->id == ACTOR_EN_REEBA)) {
-            actorCategory = ACTORCAT_ENEMY;
+        overrideActorCategory = actorCategory;
+        if (GameInteractor_Should(VB_OVERRIDE_TARGET_NAVI_CATEGORY, false, unkActor, &overrideActorCategory)) {
+            actorCategory = overrideActorCategory;
         }
     } else {
         actorCategory = player->actor.category;
@@ -637,11 +641,13 @@ void func_8002C7BC(TargetContext* targetCtx, Player* player, Actor* actorArg, Pl
 
     if (actorArg != NULL) {
         if (actorArg != targetCtx->targetedActor) {
+            // Target Cursor Category Override
             s32 actorArgCaregory;
+            s32 overrideActorCategory;
             actorArgCaregory = actorArg->category;
-            // Override Leever's Z-Target Triangle color to Yellow
-            if (CVarGetInteger(CVAR_ENHANCEMENT("YellowLeeverCursor"), 0) && (actorArg->id == ACTOR_EN_REEBA)) {
-                actorArgCaregory = ACTORCAT_ENEMY;
+            overrideActorCategory = actorArgCaregory;
+            if (GameInteractor_Should(VB_OVERRIDE_TARGET_CURSOR_CATEGORY, false, actorArg, &overrideActorCategory)) {
+                actorArgCaregory = overrideActorCategory;
             }
 
             func_8002BE98(targetCtx, actorArgCaregory, play);
