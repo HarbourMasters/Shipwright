@@ -1724,6 +1724,10 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Disable Haunted Wasteland Sandstorm", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_CHEAT("DisableSandstorm"))
         .Options(CheckboxOptions().Tooltip("Disables sandstorm effect in Haunted Wasteland."));
+    AddWidget(path, "Targetable Gold Skulltula", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_CHEAT("GSTargetable"))
+        .Options(
+            CheckboxOptions().Tooltip("Allows Z-Targeting Gold Skulltulas. Requires a scene reload to take effect."));
 
     AddWidget(path, "Glitch Aids", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Easy Frame Advancing with Pause", WIDGET_CVAR_CHECKBOX)
