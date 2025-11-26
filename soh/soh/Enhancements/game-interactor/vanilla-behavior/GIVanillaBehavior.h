@@ -540,6 +540,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - None
+    VB_FLASH_SCREEN_FOR_FINISHING_BLOW,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*BgHeavyBlock`
     VB_FREEZE_LINK_FOR_BLOCK_THROW,
 
