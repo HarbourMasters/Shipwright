@@ -1,5 +1,4 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/mods.h"
 #include "soh/ShipInit.hpp"
 #include "soh/OTRGlobals.h"
 
@@ -38,20 +37,7 @@ static void SpawnDynamicShadow() {
     }
 }
 
-static void RegisterDynamicShadow() {
-    COND_VB_SHOULD(VB_EXECUTE_PLAYER_STARTMODE_FUNC, CVAR_DYNAMICSHADOW_VALUE, {
-        int32_t startMode = va_arg(args, int32_t);
-        Player* player = GET_PLAYER(gPlayState);
-        Actor* shadowActor;
-
-        if ((player != nullptr) && (startMode != PLAYER_START_MODE_NOTHING)) {
-            SPDLOG_DEBUG("Spawning Dynamic Shadow. sceneNum: {0:#x}", gPlayState->sceneNum);
-            SpawnDynamicShadow();
-        }
-    });
-}
-
-void UpdateDynamicShadow() {
+static void UpdateDynamicShadow() {
     if (gPlayState != nullptr) {
         Player* player = GET_PLAYER(gPlayState);
         Actor* shadowActor;
@@ -92,6 +78,20 @@ void UpdateDynamicShadow() {
             }
         }
     }
+}
+
+static void RegisterDynamicShadow() {
+    UpdateDynamicShadow();  // Handle Dynamic Shadow toggle
+
+    COND_VB_SHOULD(VB_EXECUTE_PLAYER_STARTMODE_FUNC, CVAR_DYNAMICSHADOW_VALUE, {
+        int32_t startMode = va_arg(args, int32_t);
+        Player* player = GET_PLAYER(gPlayState);
+
+        if ((player != nullptr) && (startMode != PLAYER_START_MODE_NOTHING)) {
+            SPDLOG_DEBUG("Spawning Dynamic Shadow. sceneNum: {0:#x}", gPlayState->sceneNum);
+            SpawnDynamicShadow();
+        }
+    });
 }
 
 static RegisterShipInitFunc initFunc(RegisterDynamicShadow, { CVAR_DYNAMICSHADOW_NAME });

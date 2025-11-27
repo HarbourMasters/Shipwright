@@ -11,7 +11,6 @@ void UpdateHyperEnemiesState();
 void UpdateHyperBossesState();
 void InitMods();
 void SwitchAge();
-void UpdateDynamicShadow();
 
 #ifdef __cplusplus
 }
