@@ -81,7 +81,7 @@ static void UpdateDynamicShadow() {
 }
 
 static void RegisterDynamicShadow() {
-    UpdateDynamicShadow();  // Handle Dynamic Shadow toggle
+    UpdateDynamicShadow(); // Handle Dynamic Shadow toggle
 
     COND_VB_SHOULD(VB_EXECUTE_PLAYER_STARTMODE_FUNC, CVAR_DYNAMICSHADOW_VALUE, {
         int32_t startMode = va_arg(args, int32_t);
