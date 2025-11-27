@@ -494,7 +494,9 @@ void EnOkuta_ProjectileFly(EnOkuta* this, PlayState* play) {
         this->collider.base.acFlags & AC_HIT || this->collider.base.ocFlags1 & OC1_HIT ||
         this->actor.floorHeight == BGCHECK_Y_MIN) {
         if ((player->currentShield == PLAYER_SHIELD_DEKU ||
-             (player->currentShield == PLAYER_SHIELD_HYLIAN && LINK_IS_ADULT)) &&
+             (player->currentShield == PLAYER_SHIELD_HYLIAN && LINK_IS_ADULT) ||
+             (CVarGetInteger(CVAR_CHEAT("ChildHoldsHylianShield"), 0) &&
+              player->currentShield == PLAYER_SHIELD_HYLIAN)) &&
             this->collider.base.atFlags & AT_HIT && this->collider.base.atFlags & AT_TYPE_ENEMY &&
             this->collider.base.atFlags & AT_BOUNCED) {
             this->collider.base.atFlags &= ~(AT_HIT | AT_BOUNCED | AT_TYPE_ENEMY);
