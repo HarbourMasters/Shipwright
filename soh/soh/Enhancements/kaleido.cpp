@@ -149,6 +149,13 @@ Kaleido::Kaleido() {
             ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get() + 1));
         yOffset += 18;
     }
+    if (ctx->GetOption(RSK_SKELETON_KEY)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
+            gSmallKeyCounterIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, Color_RGBA8{255,255,255,255},
+            FlagType::FLAG_RANDOMIZER_INF, static_cast<int>(RAND_INF_HAS_SKELETON_KEY), 0, yOffset, "Skeleton Key"
+        ));
+        yOffset += 18;
+    }
     if (ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS)) {
         mEntries.push_back(std::make_shared<KaleidoEntryOcarinaButtons>(0, yOffset));
         yOffset += 18;
