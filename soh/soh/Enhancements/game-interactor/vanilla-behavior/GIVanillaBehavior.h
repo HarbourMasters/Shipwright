@@ -1847,6 +1847,24 @@ typedef enum {
     VB_REDEAD_GIBDO_FREEZE_LINK,
 
     // #### `result`
+    // ```c
+    // (player->currentShield == PLAYER_SHIELD_DEKU) || ((player->currentShield == PLAYER_SHIELD_HYLIAN) &&
+    // LINK_IS_ADULT)
+    // ```
+    // #### `args`
+    // - `*EnNutsball`
+    VB_REFLECT_NUTSBALL,
+
+    // #### `result`
+    // ```c
+    // (player->currentShield == PLAYER_SHIELD_DEKU) || ((player->currentShield == PLAYER_SHIELD_HYLIAN) &&
+    // LINK_IS_ADULT)
+    // ```
+    // #### `args`
+    // - `*EnOkuta`
+    VB_REFLECT_OCTOROK_PROJECTILE,
+
+    // #### `result`
     // #### `result`
     // ```c
     // true

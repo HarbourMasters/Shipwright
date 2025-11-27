@@ -19,6 +19,11 @@ static constexpr int32_t CVAR_SCALEADULTEQUIPMENTASCHILD_DEFAULT = 0;
 #define CVAR_SCALEADULTEQUIPMENTASCHILD_VALUE \
     CVarGetInteger(CVAR_SCALEADULTEQUIPMENTASCHILD_NAME, CVAR_SCALEADULTEQUIPMENTASCHILD_DEFAULT)
 
+static constexpr int32_t CVAR_CHILDHOLDSHYLIANSHIELD_DEFAULT = 0;
+#define CVAR_CHILDHOLDSHYLIANSHIELD_NAME CVAR_CHEAT("ChildHoldsHylianShield")
+#define CVAR_CHILDHOLDSHYLIANSHIELD_VALUE \
+    CVarGetInteger(CVAR_CHILDHOLDSHYLIANSHIELD_NAME, CVAR_CHILDHOLDSHYLIANSHIELD_DEFAULT)
+
 static void UpdatePatchChildHylianShield() {
     SPDLOG_DEBUG("ChildHoldsHylianShield: UpdatePatchChildHylianShield called");
 
@@ -41,7 +46,7 @@ static void UpdatePatchChildHylianShield() {
     }
 }
 
-static void RegisterChildHoldsHylianShield() {
+static void RegisterChildHoldsHylianShieldGraphics() {
     COND_HOOK(OnLoadGame, true, [](int32_t fileNum) {
         if (gPlayState == nullptr) {
             return;
@@ -61,4 +66,27 @@ static void RegisterChildHoldsHylianShield() {
     COND_HOOK(OnSceneInit, true, [](int16_t sceneNum) { UpdatePatchChildHylianShield(); });
 }
 
-static RegisterShipInitFunc initFunc(RegisterChildHoldsHylianShield);
+static void RegisterChildHoldsHylianShieldReflect() {
+    COND_VB_SHOULD(VB_REFLECT_NUTSBALL, CVAR_CHILDHOLDSHYLIANSHIELD_VALUE, {
+        Player* player = GET_PLAYER(gPlayState);
+
+        if (LINK_IS_CHILD && (player->currentShield == PLAYER_SHIELD_HYLIAN)) {
+            SPDLOG_DEBUG("Reflecting Nutsball");
+            *should = true;
+        }
+    });
+
+    COND_VB_SHOULD(VB_REFLECT_OCTOROK_PROJECTILE, CVAR_CHILDHOLDSHYLIANSHIELD_VALUE, {
+        Player* player = GET_PLAYER(gPlayState);
+
+        if (LINK_IS_CHILD && (player->currentShield == PLAYER_SHIELD_HYLIAN)) {
+            SPDLOG_DEBUG("Reflecting Octorok Projectile");
+            *should = true;
+        }
+    });
+}
+
+static RegisterShipInitFunc initFunc_Graphics(RegisterChildHoldsHylianShieldGraphics);
+
+static RegisterShipInitFunc initFunc_Reflect(RegisterChildHoldsHylianShieldReflect,
+                                             { CVAR_CHILDHOLDSHYLIANSHIELD_NAME });
