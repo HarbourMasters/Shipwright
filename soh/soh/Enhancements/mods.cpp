@@ -24,9 +24,6 @@
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "soh_assets.h"
 
-#include "objects/object_link_boy/object_link_boy.h"
-#include "objects/object_link_child/object_link_child.h"
-
 extern "C" {
 #include <z64.h>
 #include "align_asset_macro.h"
