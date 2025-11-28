@@ -1,5 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
+#include <spdlog/spdlog.h>
+#include <vector>
 
 extern "C" {
 #include "functions.h"
@@ -36,7 +38,62 @@ static void OnEnemyDefeatGSTargetable(void* refActor) {
     }
 }
 
+static void UpdateGSTargetable() {
+    if (gPlayState != nullptr) {
+        if (CVAR_GSTARGETABLE_VALUE) {
+            SPDLOG_DEBUG("GSTargetable has been toggled on");
+
+            // Find all Gold Skulltulas that are in NPC category
+            std::vector<Actor*> goldSkulltulasInNPCCategory;
+
+            Actor* actorNPC = gPlayState->actorCtx.actorLists[ACTORCAT_NPC].head;
+            while (actorNPC != nullptr) {
+                if ((actorNPC->id == ACTOR_EN_SW) && (actorNPC->naviEnemyId == 0x20)) {
+                    goldSkulltulasInNPCCategory.push_back(actorNPC);
+                }
+                actorNPC = actorNPC->next;
+            }
+
+            // Move all NPC Gold Skulltulas to Misc category
+            for (auto& actor : goldSkulltulasInNPCCategory) {
+                Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, actor, ACTORCAT_MISC);
+            }
+
+            // Make all Gold Skulltulas in Misc category targetable
+            Actor* actorMisc = gPlayState->actorCtx.actorLists[ACTORCAT_MISC].head;
+            while (actorMisc != nullptr) {
+                if ((actorMisc->id == ACTOR_EN_SW) && (actorMisc->naviEnemyId == 0x20)) {
+                    actorMisc->flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+                }
+                actorMisc = actorMisc->next;
+            }
+        } else {
+            SPDLOG_DEBUG("GSTargetable has been toggled off");
+
+            // Make all Gold Skulltulas in NPC category not targetable
+            Actor* actorNPC = gPlayState->actorCtx.actorLists[ACTORCAT_NPC].head;
+            while (actorNPC != nullptr) {
+                if ((actorNPC->id == ACTOR_EN_SW) && (actorNPC->naviEnemyId == 0x20)) {
+                    actorNPC->flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
+                }
+                actorNPC = actorNPC->next;
+            }
+
+            // Make all Gold Skulltulas in Misc category not targetable
+            Actor* actorMisc = gPlayState->actorCtx.actorLists[ACTORCAT_MISC].head;
+            while (actorMisc != nullptr) {
+                if ((actorMisc->id == ACTOR_EN_SW) && (actorMisc->naviEnemyId == 0x20)) {
+                    actorMisc->flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
+                }
+                actorMisc = actorMisc->next;
+            }
+        }
+    }
+}
+
 static void RegisterGSTargetable() {
+    UpdateGSTargetable();
+
     COND_ID_HOOK(OnActorInit, ACTOR_EN_SW, CVAR_GSTARGETABLE_VALUE, OnInitGSTargetable);
     COND_ID_HOOK(OnEnemyDefeat, ACTOR_EN_SW, CVAR_GSTARGETABLE_VALUE, OnEnemyDefeatGSTargetable);
 }
