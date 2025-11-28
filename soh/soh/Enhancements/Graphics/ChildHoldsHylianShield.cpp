@@ -24,12 +24,14 @@ static constexpr int32_t CVAR_CHILDHOLDSHYLIANSHIELD_DEFAULT = 0;
 #define CVAR_CHILDHOLDSHYLIANSHIELD_VALUE \
     CVarGetInteger(CVAR_CHILDHOLDSHYLIANSHIELD_NAME, CVAR_CHILDHOLDSHYLIANSHIELD_DEFAULT)
 
-static void UpdatePatchChildHylianShield() {
-    SPDLOG_DEBUG("ChildHoldsHylianShield: UpdatePatchChildHylianShield called");
-
+static void ResetPatchChildHylianShield() {
     ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield1");
     ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield2");
     ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "childHylianShield3");
+}
+
+static void UpdatePatchChildHylianShield() {
+    ResetPatchChildHylianShield();
 
     if (CVAR_SCALEADULTEQUIPMENTASCHILD_VALUE && LINK_IS_CHILD) {
         if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI ||
@@ -47,7 +49,9 @@ static void UpdatePatchChildHylianShield() {
 }
 
 static void RegisterChildHoldsHylianShieldGraphics() {
-    COND_HOOK(OnLoadGame, true, [](int32_t fileNum) {
+    ResetPatchChildHylianShield();
+
+    COND_HOOK(OnLoadGame, CVAR_SCALEADULTEQUIPMENTASCHILD_VALUE, [](int32_t fileNum) {
         if (gPlayState == nullptr) {
             return;
         }
@@ -55,7 +59,7 @@ static void RegisterChildHoldsHylianShieldGraphics() {
         Player_SetModels(player, Player_ActionToModelGroup(player, player->heldItemAction));
     });
 
-    COND_HOOK(OnPlayerUpdate, true, []() {
+    COND_HOOK(OnPlayerUpdate, CVAR_SCALEADULTEQUIPMENTASCHILD_VALUE, []() {
         static uint16_t lastItemOnB = gSaveContext.equips.buttonItems[0];
         if (lastItemOnB != gSaveContext.equips.buttonItems[0]) {
             UpdatePatchChildHylianShield();
@@ -63,7 +67,8 @@ static void RegisterChildHoldsHylianShieldGraphics() {
         }
     });
 
-    COND_HOOK(OnSceneInit, true, [](int16_t sceneNum) { UpdatePatchChildHylianShield(); });
+    COND_HOOK(OnSceneInit, CVAR_SCALEADULTEQUIPMENTASCHILD_VALUE,
+              [](int16_t sceneNum) { UpdatePatchChildHylianShield(); });
 }
 
 static void RegisterChildHoldsHylianShieldReflect() {
@@ -71,7 +76,6 @@ static void RegisterChildHoldsHylianShieldReflect() {
         Player* player = GET_PLAYER(gPlayState);
 
         if (LINK_IS_CHILD && (player->currentShield == PLAYER_SHIELD_HYLIAN)) {
-            SPDLOG_DEBUG("Reflecting Nutsball");
             *should = true;
         }
     });
@@ -80,13 +84,13 @@ static void RegisterChildHoldsHylianShieldReflect() {
         Player* player = GET_PLAYER(gPlayState);
 
         if (LINK_IS_CHILD && (player->currentShield == PLAYER_SHIELD_HYLIAN)) {
-            SPDLOG_DEBUG("Reflecting Octorok Projectile");
             *should = true;
         }
     });
 }
 
-static RegisterShipInitFunc initFunc_Graphics(RegisterChildHoldsHylianShieldGraphics);
+static RegisterShipInitFunc initFunc_Graphics(RegisterChildHoldsHylianShieldGraphics,
+                                              { CVAR_SCALEADULTEQUIPMENTASCHILD_NAME });
 
 static RegisterShipInitFunc initFunc_Reflect(RegisterChildHoldsHylianShieldReflect,
                                              { CVAR_CHILDHOLDSHYLIANSHIELD_NAME });
