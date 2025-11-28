@@ -300,7 +300,7 @@ void EnRr_SetupReleasePlayer(EnRr* this, PlayState* play) {
     this->wobbleSizeTarget = 2048.0f;
     tunic = 0;
     shield = 0;
-    if (GameInteractor_Should(VB_LIKE_LIKE_STEAL_EQUIPMENT, true, this)) {
+    if (GameInteractor_Should(VB_LIKE_LIKE_STEAL_EQUIPMENT, true, this, &shield, &tunic)) {
         if (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) != EQUIP_VALUE_SHIELD_MIRROR) {
             shield = Inventory_DeleteEquipment(play, EQUIP_TYPE_SHIELD);
             if (shield != 0) {
@@ -315,7 +315,9 @@ void EnRr_SetupReleasePlayer(EnRr* this, PlayState* play) {
                 this->retreat = true;
             }
         }
-
+    }
+    player->actor.parent = NULL;
+    if (GameInteractor_Should(VB_LIKE_LIKE_DISPLAY_EQUIPMENT_STOLEN_MESSAGE, true, this, &shield, &tunic)) {
         switch (EnRr_GetMessage(shield, tunic)) {
             case RR_MESSAGE_SHIELD:
                 Message_StartTextbox(play, 0x305F, NULL);
@@ -328,7 +330,6 @@ void EnRr_SetupReleasePlayer(EnRr* this, PlayState* play) {
                 break;
         }
     }
-    player->actor.parent = NULL;
     osSyncPrintf(VT_FGCOL(YELLOW) "%s[%d] : Rr_Catch_Cancel" VT_RST "\n", __FILE__, __LINE__);
     func_8002F6D4(play, &this->actor, 4.0f, this->actor.shape.rot.y, 12.0f, 8);
     if (this->actor.colorFilterTimer == 0) {

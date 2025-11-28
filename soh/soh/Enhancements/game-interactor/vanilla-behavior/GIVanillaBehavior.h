@@ -2250,6 +2250,16 @@ typedef enum {
     // ```
     // #### `args`
     // - `*EnRr`
+    // - `*u8` (shield)
+    // - `*u8` (tunic)
+    VB_LIKE_LIKE_DISPLAY_EQUIPMENT_STOLEN_MESSAGE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnRr`
     VB_LIKE_LIKE_DROP_COLLECTIBLE,
 
     // #### `result`
@@ -2266,6 +2276,8 @@ typedef enum {
     // ```
     // #### `args`
     // - `*EnRr`
+    // - `*u8` (shield)
+    // - `*u8` (tunic)
     VB_LIKE_LIKE_STEAL_EQUIPMENT,
 
     // #### `result`
