@@ -633,7 +633,8 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->sheathType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_SHEATH];
     this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"), 0)) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"), 0) &&
+        !CVarGetInteger(CVAR_CHEAT("ChildHoldsHylianShield"), 0)) {
         if (LINK_IS_CHILD && this->sheathType == PLAYER_MODELTYPE_SHEATH_18 &&
             this->currentShield == PLAYER_SHIELD_HYLIAN &&
             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER &&
