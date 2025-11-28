@@ -386,8 +386,8 @@ void PresetsCustomWidget(WidgetInfo& info) {
         ImGui::OpenPopup("editPreset");
     }
     if (ImGui::BeginPopup("editPreset", ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
-                                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
-                                           ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar)) {
+                                            ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
+                                            ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar)) {
         DrawEditPresetPopup();
     }
     ImGui::SameLine();
@@ -452,8 +452,7 @@ void PresetsCustomWidget(WidgetInfo& info) {
             ImGui::TableNextColumn();
             UIWidgets::PushStyleButton(THEME_COLOR);
             if (!info.isBuiltIn) {
-                if (UIWidgets::Button(("Edit##" + name).c_str(),
-                                      UIWidgets::ButtonOptions().Padding({ 6.0f, 6.0f }))) {
+                if (UIWidgets::Button(("Edit##" + name).c_str(), UIWidgets::ButtonOptions().Padding({ 6.0f, 6.0f }))) {
                     std::copy(info.apply, info.apply + PRESET_SECTION_MAX, saveSection);
                     newPresetName = name;
                     oldPresetName = name;
