@@ -1,3 +1,5 @@
+#pragma once
+
 #include "libultraship/libultra/types.h"
 
 struct FileChooseContext;

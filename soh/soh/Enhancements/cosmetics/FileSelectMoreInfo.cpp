@@ -5,6 +5,7 @@
 #include "textures/icon_item_dungeon_static/icon_item_dungeon_static.h"
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/nes_font_static/nes_font_static.h"
+#include "soh_assets.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/SaveManager.h"
 #include "soh/frame_interpolation.h"
@@ -13,19 +14,29 @@
 #include "macros.h"
 #include "variables.h"
 
+/*
+ * TODO:
+ *  Ocarina Buttons
+ *  Swim
+ *  Keys
+ *  Boss Keys
+ *  Boss Souls
+ *  Fishing Poles
+ */
+
 #define Save_GetSaveMetaInfo(fileIndex) (&SaveManager::Instance->fileMetaInfo[fileIndex])
 
-typedef struct {
+typedef struct IconPosition {
     s16 left;
     s16 top;
 } IconPosition;
 
-typedef struct {
+typedef struct IconSize {
     s16 width;
     s16 height;
 } IconSize;
 
-typedef struct {
+typedef struct ItemData {
     Sprite sprite;
     Color_RGBA8 color;
     u8 item;
@@ -90,6 +101,8 @@ typedef struct {
     { 0x29 + ICON_SIZE * i, 0x31 }
 #define OCARINA_BUTTON_ICON_POS(i) \
     { 0xA8 + ICON_SIZE * i, 0x00 }
+#define RANDO_ONLY_ITEM_ICON_POS(i) \
+    { 0xA8 + ICON_SIZE * i, 0x2A }
 
 static ItemData itemData[] = {
     { CREATE_SPRITE_32(dgItemIconDekuStickTex, 1), ITEM_STICK, INVENTORY_ICON_POS(0, 0), SIZE_NORMAL },
@@ -173,7 +186,6 @@ static ItemData itemData[] = {
     { CREATE_SPRITE_32(dgItemIconScaleGoldenTex, 74), ITEM_SCALE_GOLDEN, UPGRADE_ICON_POS(1, 0), SIZE_NORMAL },
     { CREATE_SPRITE_24(dgQuestIconMagicJarSmallTex, 97), ITEM_SINGLE_MAGIC, UPGRADE_ICON_POS(2, 0), SIZE_NORMAL },
     { CREATE_SPRITE_24(dgQuestIconMagicJarBigTex, 97), ITEM_DOUBLE_MAGIC, UPGRADE_ICON_POS(2, 0), SIZE_NORMAL },
-    { CREATE_SPRITE_RUPEE(0xC8, 0xFF, 0x64), ITEM_RUPEE_GREEN, UPGRADE_ICON_POS(0, 1), SIZE_NORMAL },
     { CREATE_SPRITE_24(dgQuestIconGerudosCardTex, 91), ITEM_GERUDO_CARD, UPGRADE_ICON_POS(1, 1), SIZE_NORMAL },
     { CREATE_SPRITE_24(dgQuestIconStoneOfAgonyTex, 90), ITEM_STONE_OF_AGONY, UPGRADE_ICON_POS(2, 1), SIZE_NORMAL },
 
@@ -203,6 +215,9 @@ static ItemData itemData[] = {
     { CREATE_SPRITE_OCARINA_BUTTON(dgMsgCharA7ButtonCLeftTex, 118), 0xB3, OCARINA_BUTTON_ICON_POS(3), SIZE_NORMAL },
     { CREATE_SPRITE_OCARINA_BUTTON(dgMsgCharA8ButtonCRightTex, 119), 0xB4, OCARINA_BUTTON_ICON_POS(4), SIZE_NORMAL },
     */
+
+    { CREATE_SPRITE_RUPEE(0xC8, 0xFF, 0x64), ITEM_RUPEE_GREEN, RANDO_ONLY_ITEM_ICON_POS(0), SIZE_NORMAL },
+    { CREATE_SPRITE_32(dgItemIconFishingPoleTex, 120), ITEM_FISHING_POLE, RANDO_ONLY_ITEM_ICON_POS(1), SIZE_NORMAL },
 };
 
 static u8 ColorProduct(u8 c1, u8 c2) {
@@ -292,6 +307,10 @@ static bool HasItem(s16 fileIndex, u8 item) {
     // greg
     if (item == ITEM_RUPEE_GREEN) {
         return Save_GetSaveMetaInfo(fileIndex)->gregFound;
+    }
+
+    if (item == ITEM_FISHING_POLE) {
+        return Save_GetSaveMetaInfo(fileIndex)->hasFishingRod;
     }
 
     return false;
@@ -455,12 +474,13 @@ static bool ShouldRenderItem(s16 fileIndex, u8 item) {
         return false;
     }
 
-    // greg + ocarina buttons
-    if (
-        item == ITEM_RUPEE_GREEN ||
-        (item >= 0xB0 && item <= 0xB4)
-    ) {
+    // greg
+    if (item == ITEM_RUPEE_GREEN) {
         return Save_GetSaveMetaInfo(fileIndex)->randoSave;
+    }
+
+    if (item == ITEM_FISHING_POLE) {
+        return Save_GetSaveMetaInfo(fileIndex)->fishingPoleShuffled;
     }
 
     return true;
@@ -494,7 +514,7 @@ static void DrawItems(FileChooseContext* thisx, s16 fileIndex, u8 alpha) {
     CLOSE_DISPS(thisx->state.gfxCtx);
 }
 
-typedef enum {
+typedef enum CounterID {
     /* 0x00 */ COUNTER_HEALTH,
     /* 0x01 */ COUNTER_WALLET_NONE,
     /* 0x02 */ COUNTER_WALLET_CHILD,
@@ -503,17 +523,19 @@ typedef enum {
     /* 0x05 */ COUNTER_WALLET_TYCOON,
     /* 0x06 */ COUNTER_SKULLTULLAS,
     /* 0x07 */ COUNTER_DEATHS,
+    /* 0x08 */ COUNTER_TRIFORCE_PIECES,
+    /* 0x09 */ COUNTER_MAX,
 } CounterID;
 
-typedef struct {
+typedef struct CounterData {
     Sprite sprite;
     Color_RGBA8 color;
-    u8 id;
+    CounterID id;
     IconPosition pos;
     IconSize size;
 } CounterData;
 
-static CounterData counterData[8] = {
+static CounterData counterData[COUNTER_MAX] = {
     { CREATE_SPRITE_24(dgQuestIconHeartContainerTex, 101), COUNTER_HEALTH, { 0x05, 0x00 }, SIZE_COUNTER },
     { CREATE_SPRITE_RUPEE(0x32, 0x40, 0x19), COUNTER_WALLET_NONE, { 0x05, 0x15 }, SIZE_COUNTER },
     { CREATE_SPRITE_RUPEE(0xC8, 0xFF, 0x64), COUNTER_WALLET_CHILD, { 0x05, 0x15 }, SIZE_COUNTER },
@@ -522,6 +544,7 @@ static CounterData counterData[8] = {
     { CREATE_SPRITE_RUPEE(0xFF, 0x5A, 0xFF), COUNTER_WALLET_TYCOON, { 0x05, 0x15 }, SIZE_COUNTER },
     { CREATE_SPRITE_24(dgQuestIconGoldSkulltulaTex, 103), COUNTER_SKULLTULLAS, { 0x05, 0x2A }, SIZE_COUNTER },
     { CREATE_SPRITE_SKULL, COUNTER_DEATHS, { 0x48, 0x2A }, SIZE_COUNTER },
+    { CREATE_SPRITE_32(dgTriforcePiece, 121), COUNTER_TRIFORCE_PIECES, { 0x27, 0x10 }, SIZE_COUNTER },
 };
 
 static Sprite counterDigitSprites[10] = {
@@ -531,7 +554,7 @@ static Sprite counterDigitSprites[10] = {
     CREATE_SPRITE_COUNTER_DIGIT(9),
 };
 
-static bool ShouldRenderCounter(s16 fileIndex, u8 counterId) {
+static bool ShouldRenderCounter(s16 fileIndex, CounterID counterId) {
     if (counterId == COUNTER_WALLET_NONE) {
         return !Save_GetSaveMetaInfo(fileIndex)->hasWallet;
     }
@@ -560,10 +583,14 @@ static bool ShouldRenderCounter(s16 fileIndex, u8 counterId) {
                 gUpgradeShifts[UPG_WALLET]) == 3;
     }
 
+    if (counterId == COUNTER_TRIFORCE_PIECES) {
+        return Save_GetSaveMetaInfo(fileIndex)->maxTriforcePieces != 0;
+    }
+
     return true;
 }
 
-static u16 GetCurrentCounterValue(s16 fileIndex, u8 counter) {
+static u16 GetCurrentCounterValue(s16 fileIndex, CounterID counter) {
     // one heart is 16 healthCapacity
     if (counter == COUNTER_HEALTH) {
         return Save_GetSaveMetaInfo(fileIndex)->healthCapacity / 16;
@@ -581,10 +608,14 @@ static u16 GetCurrentCounterValue(s16 fileIndex, u8 counter) {
         return Save_GetSaveMetaInfo(fileIndex)->deaths;
     }
 
+    if (counter == COUNTER_TRIFORCE_PIECES) {
+        return Save_GetSaveMetaInfo(fileIndex)->triforcePieces;
+    }
+
     return 0;
 }
 
-static u16 GetMaxCounterValue(s16 fileIndex, u8 counter) {
+static u16 GetMaxCounterValue(s16 fileIndex, CounterID counter) {
     if (counter == COUNTER_HEALTH) {
         return 20;
     }
@@ -611,6 +642,10 @@ static u16 GetMaxCounterValue(s16 fileIndex, u8 counter) {
 
     if (counter == COUNTER_DEATHS) {
         return 999;
+    }
+
+    if (counter == COUNTER_TRIFORCE_PIECES) {
+        return Save_GetSaveMetaInfo(fileIndex)->maxTriforcePieces;
     }
 
     return 0;
