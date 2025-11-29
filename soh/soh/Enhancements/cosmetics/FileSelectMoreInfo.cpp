@@ -24,7 +24,6 @@
  *  Keys
  *  Boss Keys
  *  Boss Souls
- *  Fishing Poles
  */
 
 #define Save_GetSaveMetaInfo(fileIndex) (&SaveManager::Instance->fileMetaInfo[fileIndex])
@@ -208,7 +207,7 @@ static ItemData itemData[] = {
     { CREATE_SPRITE_24(dgQuestIconHeartContainerTex, 101), ITEM_DOUBLE_DEFENSE, { 0x05, -0x04 }, SIZE_COUNTER },
 
     // using 0xB0 and later as they're not real item ids
-    // TODO: improve this
+    // TODO: improve this (RandomizerGet doesn't work)
 
     // disabled due to lus issue
     /*
@@ -751,7 +750,7 @@ static void DrawCounters(FileChooseContext* thisx, s16 fileIndex, u8 alpha) {
     CLOSE_DISPS(thisx->state.gfxCtx);
 }
 
-extern "C" void DrawMoreInfo(FileChooseContext* thisx, s16 fileIndex, u8 alpha) {
+static void DrawMoreInfo(FileChooseContext* thisx, s16 fileIndex, u8 alpha) {
     DrawItems(thisx, fileIndex, alpha);
     DrawCounters(thisx, fileIndex, alpha);
 }
