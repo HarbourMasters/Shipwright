@@ -483,14 +483,18 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].gregFound = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
     fileMetaInfo[fileNum].filenameLanguage = gSaveContext.ship.filenameLanguage;
     fileMetaInfo[fileNum].hasWallet = Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) || !IS_RANDO;
-    fileMetaInfo[fileNum].triforcePieces = IS_RANDO ? gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected : 0;
+    fileMetaInfo[fileNum].triforcePieces =
+        IS_RANDO ? gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected : 0;
     fileMetaInfo[fileNum].hasFishingRod = Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND) || !IS_RANDO;
     fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
     fileMetaInfo[fileNum].health = gSaveContext.health;
     auto randoContext = Rando::Context::GetInstance();
 
-    fileMetaInfo[fileNum].maxTriforcePieces = IS_RANDO && (bool)randoContext->GetOption(RSK_TRIFORCE_HUNT) ? randoContext->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1 : 0;
-    fileMetaInfo[fileNum].fishingPoleShuffled = IS_RANDO ? (bool)randoContext->GetOption(RSK_SHUFFLE_FISHING_POLE) : false;
+    fileMetaInfo[fileNum].maxTriforcePieces = IS_RANDO && (bool)randoContext->GetOption(RSK_TRIFORCE_HUNT)
+                                                  ? randoContext->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1
+                                                  : 0;
+    fileMetaInfo[fileNum].fishingPoleShuffled =
+        IS_RANDO ? (bool)randoContext->GetOption(RSK_SHUFFLE_FISHING_POLE) : false;
 
     for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].seedHash); i++) {
         fileMetaInfo[fileNum].seedHash[i] = randoContext->hashIconIndexes[i];

@@ -91,6 +91,8 @@ typedef struct ItemData {
 #define SIZE_SONG \
     { SONG_WIDTH, SONG_HEIGHT }
 
+// the format exclusion is because clang-format thinks that the * signs are pointers
+// clang-format off
 #define INVENTORY_ICON_POS(x, y) \
     { 0x4E + ICON_SIZE * x, 0x00 + ICON_SIZE * y }
 #define EQUIPMENT_ICON_POS(x, y) \
@@ -105,6 +107,7 @@ typedef struct ItemData {
     { 0xA8 + ICON_SIZE * i, 0x00 }
 #define RANDO_ONLY_ITEM_ICON_POS(i) \
     { 0xA8 + ICON_SIZE * i, 0x2A }
+// clang-format on
 
 static ItemData itemData[] = {
     { CREATE_SPRITE_32(dgItemIconDekuStickTex, 1), ITEM_STICK, INVENTORY_ICON_POS(0, 0), SIZE_NORMAL },
@@ -757,7 +760,8 @@ static void DrawMoreInfo(FileChooseContext* thisx, s16 fileIndex, u8 alpha) {
 
 #define CVAR_FILE_SELECT_MORE_INFO_DEFAULT false
 #define CVAR_FILE_SELECT_MORE_INFO_NAME CVAR_ENHANCEMENT("FileSelectMoreInfo")
-#define CVAR_FILE_SELECT_MORE_INFO_VALUE CVarGetInteger(CVAR_FILE_SELECT_MORE_INFO_NAME, CVAR_FILE_SELECT_MORE_INFO_DEFAULT)
+#define CVAR_FILE_SELECT_MORE_INFO_VALUE \
+    CVarGetInteger(CVAR_FILE_SELECT_MORE_INFO_NAME, CVAR_FILE_SELECT_MORE_INFO_DEFAULT)
 
 void RegisterFileSelectMoreInfo() {
     COND_VB_SHOULD(VB_FILE_SELECT_DRAW_DEATHS, CVAR_FILE_SELECT_MORE_INFO_VALUE, {
