@@ -80,18 +80,18 @@ void KaleidoEntryIcon::Draw(PlayState* play, std::vector<Gfx>* mEntryDl) {
 
     mEntryDl->push_back(gsSPMatrix(Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
                                    G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW));
-    
+
     // cursor (if selected)
     if (mSelected) {
         mEntryDl->push_back(gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
         mEntryDl->push_back(gsSPVertex(vtx, 4, 0));
         Gfx cursorIconTex[] = { gsDPLoadTextureBlock(gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
-                                G_TX_NOLOD) };
+                                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                                                     G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD) };
         mEntryDl->insert(mEntryDl->end(), std::begin(cursorIconTex), std::end(cursorIconTex));
         mEntryDl->push_back(gsSP1Quadrangle(0, 2, 3, 1, 0));
     }
-    
+
     // icon
     if (!mAchieved) {
         mEntryDl->push_back(gsDPSetGrayscaleColor(109, 109, 109, 255));
@@ -136,8 +136,7 @@ Kaleido::Kaleido() {
     if (ctx->GetOption(RSK_SHUFFLE_FISHING_POLE)) {
         mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
             gItemIconFishingPoleTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
-            FlagType::FLAG_RANDOMIZER_INF, static_cast<int>(RAND_INF_FISHING_POLE_FOUND), "Fishing Pole"
-        ));
+            FlagType::FLAG_RANDOMIZER_INF, static_cast<int>(RAND_INF_FISHING_POLE_FOUND), "Fishing Pole"));
     }
     if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
         mEntries.push_back(std::make_shared<KaleidoEntryIconCountRequired>(
@@ -148,9 +147,8 @@ Kaleido::Kaleido() {
     }
     if (ctx->GetOption(RSK_SKELETON_KEY)) {
         mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
-            gSmallKeyCounterIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, Color_RGBA8{255,255,255,255},
-            FlagType::FLAG_RANDOMIZER_INF, static_cast<int>(RAND_INF_HAS_SKELETON_KEY), "Skeleton Key"
-        ));
+            gSmallKeyCounterIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, Color_RGBA8{ 255, 255, 255, 255 },
+            FlagType::FLAG_RANDOMIZER_INF, static_cast<int>(RAND_INF_HAS_SKELETON_KEY), "Skeleton Key"));
     }
     if (ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS)) {
         mEntries.push_back(std::make_shared<KaleidoEntryOcarinaButtons>());
@@ -175,9 +173,9 @@ Kaleido::Kaleido() {
         int rg = RG_GUARD_HOUSE_KEY;
         for (int i = RAND_INF_GUARD_HOUSE_KEY_OBTAINED; i <= RAND_INF_FISHING_HOLE_KEY_OBTAINED; i += 2, rg++) {
             mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
-                gSmallKeyCounterIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, Color_RGBA8{255, 255, 255, 255},
-                FlagType::FLAG_RANDOMIZER_INF, i, Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rg)).GetName().english));
-        
+                gSmallKeyCounterIconTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, Color_RGBA8{ 255, 255, 255, 255 },
+                FlagType::FLAG_RANDOMIZER_INF, i,
+                Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rg)).GetName().english));
         }
     }
 }
@@ -217,7 +215,7 @@ void Kaleido::Draw(PlayState* play) {
                     if (mCursorPos > 0) {
                         mCursorPos--;
                         Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     }
                     if (mCursorPos < mTopIndex) {
                         mTopIndex = mCursorPos;
@@ -227,7 +225,7 @@ void Kaleido::Draw(PlayState* play) {
                     if (mCursorPos < mEntries.size() - 1) {
                         mCursorPos++;
                         Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     }
                     if (mCursorPos >= mTopIndex + mNumVisible && mTopIndex + mNumVisible < mEntries.size()) {
                         mTopIndex = mCursorPos - mNumVisible + 1;
@@ -264,7 +262,8 @@ void Kaleido::Draw(PlayState* play) {
         entry->SetYOffset(yOffset);
         yOffset += 9;
         Matrix_Push();
-        entry->SetSelected((i == mCursorPos) && !(pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT || pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT));
+        entry->SetSelected((i == mCursorPos) && !(pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT ||
+                                                  pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT));
         entry->Draw(play, &mEntryDl);
         Matrix_Pop();
     }
@@ -295,8 +294,8 @@ extern "C" void RandoKaleido_UpdateMiscCollectibles(int16_t inDungeonScene) {
 KaleidoEntryIconFlag::KaleidoEntryIconFlag(const char* iconResourceName, int iconFormat, int iconSize, int iconWidth,
                                            int iconHeight, Color_RGBA8 iconColor, FlagType flagType, int flag,
                                            std::string name)
-    : mFlagType(flagType), mFlag(flag), KaleidoEntryIcon(iconResourceName, iconFormat, iconSize, iconWidth, iconHeight,
-                                                         iconColor, std::move(name)) {
+    : mFlagType(flagType), mFlag(flag),
+      KaleidoEntryIcon(iconResourceName, iconFormat, iconSize, iconWidth, iconHeight, iconColor, std::move(name)) {
     BuildVertices();
 }
 
@@ -346,25 +345,25 @@ void KaleidoEntryIcon::BuildVertices() {
     // mWidth = static_cast<int16_t>(offsetX);
     // mHeight = static_cast<int16_t>(offsetY);
 
-    vertices[1].v.ob[0] = 15; //top-right x
-    vertices[2].v.ob[1] = 15; //bottom-left y
-    vertices[3].v.ob[0] = 15; //bottom-right x
-    vertices[3].v.ob[1] = 15; //bottom-right y
-    vertices[5].v.ob[0] = 32; //top-right x
-    vertices[6].v.ob[1] = 16; //bottom-left-y
-    vertices[7].v.ob[0] = 32; //bottom-right x
-    vertices[7].v.ob[1] = 16; //bottom-right y
+    vertices[1].v.ob[0] = 15; // top-right x
+    vertices[2].v.ob[1] = 15; // bottom-left y
+    vertices[3].v.ob[0] = 15; // bottom-right x
+    vertices[3].v.ob[1] = 15; // bottom-right y
+    vertices[5].v.ob[0] = 32; // top-right x
+    vertices[6].v.ob[1] = 16; // bottom-left-y
+    vertices[7].v.ob[0] = 32; // bottom-right x
+    vertices[7].v.ob[1] = 16; // bottom-right y
 
     for (size_t i = 0; i < mText.length() + 2; i++) {
-        size_t j = i*4;
+        size_t j = i * 4;
         vertices[j].v.ob[0] = vertices[j].v.ob[0] / 2;
         vertices[j].v.ob[1] = vertices[j].v.ob[1] / 2;
-        vertices[j+1].v.ob[0] = vertices[j+1].v.ob[0] / 2;
-        vertices[j+1].v.ob[1] = vertices[j+1].v.ob[1] / 2;
-        vertices[j+2].v.ob[0] = vertices[j+2].v.ob[0] / 2;
-        vertices[j+2].v.ob[1] = vertices[j+2].v.ob[1] / 2;
-        vertices[j+3].v.ob[0] = vertices[j+3].v.ob[0] / 2;
-        vertices[j+3].v.ob[1] = vertices[j+3].v.ob[1] / 2;
+        vertices[j + 1].v.ob[0] = vertices[j + 1].v.ob[0] / 2;
+        vertices[j + 1].v.ob[1] = vertices[j + 1].v.ob[1] / 2;
+        vertices[j + 2].v.ob[0] = vertices[j + 2].v.ob[0] / 2;
+        vertices[j + 2].v.ob[1] = vertices[j + 2].v.ob[1] / 2;
+        vertices[j + 3].v.ob[0] = vertices[j + 3].v.ob[0] / 2;
+        vertices[j + 3].v.ob[1] = vertices[j + 3].v.ob[1] / 2;
     }
 
     mWidth = static_cast<int16_t>(offsetX / 2);
@@ -475,8 +474,8 @@ void KaleidoEntryOcarinaButtons::Draw(PlayState* play, std::vector<Gfx>* mEntryD
         mEntryDl->push_back(gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
         mEntryDl->push_back(gsSPVertex(vtx, 4, 0));
         Gfx cursorIconTex[] = { gsDPLoadTextureBlock(gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
-                                G_TX_NOLOD) };
+                                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                                                     G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD) };
         mEntryDl->insert(mEntryDl->end(), std::begin(cursorIconTex), std::end(cursorIconTex));
         mEntryDl->push_back(gsSP1Quadrangle(0, 2, 3, 1, 0));
     }

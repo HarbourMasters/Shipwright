@@ -129,8 +129,7 @@ class KaleidoEntryIconCountRequired : public KaleidoEntryIcon {
      * @param total The amount of this collectible available in the seed. Set to 0 to not render.
      */
     KaleidoEntryIconCountRequired(const char* iconResourceName, int iconFormat, int iconSize, int iconWidth,
-                                  int iconHeight, Color_RGBA8 iconColor, int* watch,
-                                  int required = 0, int total = 0);
+                                  int iconHeight, Color_RGBA8 iconColor, int* watch, int required = 0, int total = 0);
     void Update(PlayState* play) override;
 
   private:
