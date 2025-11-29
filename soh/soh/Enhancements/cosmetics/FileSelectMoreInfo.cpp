@@ -1,4 +1,3 @@
-#include "FileSelectMoreInfo.h"
 #include "z64.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
@@ -13,6 +12,10 @@
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
+#include "src/overlays/gamestates/ovl_file_choose/file_choose.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ShipInit.hpp"
+#include "assets/textures/title_static/title_static.h"
 
 /*
  * TODO:
@@ -752,3 +755,52 @@ extern "C" void DrawMoreInfo(FileChooseContext* thisx, s16 fileIndex, u8 alpha) 
     DrawItems(thisx, fileIndex, alpha);
     DrawCounters(thisx, fileIndex, alpha);
 }
+
+#define CVAR_FILE_SELECT_MORE_INFO_DEFAULT false
+#define CVAR_FILE_SELECT_MORE_INFO_NAME CVAR_ENHANCEMENT("FileSelectMoreInfo")
+#define CVAR_FILE_SELECT_MORE_INFO_VALUE CVarGetInteger(CVAR_FILE_SELECT_MORE_INFO_NAME, CVAR_FILE_SELECT_MORE_INFO_DEFAULT)
+
+void RegisterFileSelectMoreInfo() {
+    COND_VB_SHOULD(VB_FILE_SELECT_DRAW_DEATHS, CVAR_FILE_SELECT_MORE_INFO_VALUE, {
+        FileChooseContext* thisx = va_arg(args, FileChooseContext*);
+        *should = thisx->menuMode != FS_MENU_MODE_SELECT;
+    });
+
+    COND_VB_SHOULD(VB_FILE_SELECT_DRAW_HEARTS, CVAR_FILE_SELECT_MORE_INFO_VALUE, {
+        FileChooseContext* thisx = va_arg(args, FileChooseContext*);
+        *should = thisx->menuMode != FS_MENU_MODE_SELECT;
+    });
+
+    COND_VB_SHOULD(VB_FILE_SELECT_DRAW_QUEST_ITEMS, CVAR_FILE_SELECT_MORE_INFO_VALUE, {
+        FileChooseContext* thisx = va_arg(args, FileChooseContext*);
+        s16 fileIndex = va_arg(args, s16);
+        u8 textAlpha = va_arg(args, u8);
+
+        if (thisx->menuMode == FS_MENU_MODE_SELECT) {
+            DrawMoreInfo(thisx, fileIndex, textAlpha);
+            *should = false;
+        }
+    });
+
+    COND_VB_SHOULD(VB_FILE_SELECT_DRAW_FILE_INFO_BOX, CVAR_FILE_SELECT_MORE_INFO_VALUE, {
+        FileChooseContext* thisx = va_arg(args, FileChooseContext*);
+
+        // Draw the small file name box instead when more meta info is enabled
+        if (thisx->menuMode == FS_MENU_MODE_SELECT) {
+            OPEN_DISPS(thisx->state.gfxCtx);
+
+            // Location of file 1 small name box vertices
+            gSPVertex(POLY_OPA_DISP++, (uintptr_t)&thisx->windowContentVtx[68], 4, 0);
+
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelNameBoxTex, G_IM_FMT_IA, G_IM_SIZ_16b, 108, 16, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                G_TX_NOLOD, G_TX_NOLOD);
+            gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
+
+            CLOSE_DISPS(thisx->state.gfxCtx);
+            *should = false;
+        }
+    });
+}
+
+static RegisterShipInitFunc initFunc(RegisterFileSelectMoreInfo, { CVAR_FILE_SELECT_MORE_INFO_NAME });

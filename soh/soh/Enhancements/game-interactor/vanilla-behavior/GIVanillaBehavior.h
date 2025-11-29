@@ -2335,6 +2335,39 @@ typedef enum {
     // - `*BgHidanKowarerukabe`
     VB_FIRE_TEMPLE_BOMBABLE_WALL_BREAK,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*FileChooseContext`
+    VB_FILE_SELECT_DRAW_DEATHS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*FileChooseContext`
+    VB_FILE_SELECT_DRAW_HEARTS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*FileChooseContext`
+    // - `s16`
+    // - `u8`
+    VB_FILE_SELECT_DRAW_QUEST_ITEMS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*FileChooseContext`
+    VB_FILE_SELECT_DRAW_FILE_INFO_BOX,
 } GIVanillaBehavior;
 
 #endif

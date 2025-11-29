@@ -15,7 +15,6 @@
 #include "objects/object_mag/object_mag.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh_assets.h"
-#include "soh/Enhancements/cosmetics/FileSelectMoreInfo.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/FileSelectEnhancements.h"
@@ -1515,7 +1514,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
                                &deathCountSplit[2]);
 
         // draw death count
-        if (CVarGetInteger(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 0) == 0 || this->menuMode != FS_MENU_MODE_SELECT) {
+        if (GameInteractor_Should(VB_FILE_SELECT_DRAW_DEATHS, true, this)) {
             for (i = 0, vtxOffset = 0; i < 3; i++, vtxOffset += 4) {
                 FileChoose_DrawCharacter(this->state.gfxCtx, sp54->fontBuf + deathCountSplit[i] * FONT_CHAR_TEX_SIZE,
                                          vtxOffset);
@@ -1541,7 +1540,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
 
         i = Save_GetSaveMetaInfo(fileIndex)->healthCapacity / 0x10;
 
-        if (CVarGetInteger(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 0) == 0 || this->menuMode != FS_MENU_MODE_SELECT) {
+        if (GameInteractor_Should(VB_FILE_SELECT_DRAW_HEARTS, true, this)) {
             // draw hearts
             for (vtxOffset = 0, j = 0; j < i; j++, vtxOffset += 4) {
                 gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[D_8081284C[fileIndex] + vtxOffset] + 0x30, 4, 0);
@@ -1558,9 +1557,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
             textAlpha = 255;
         }
 
-        if (CVarGetInteger(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 0) != 0 && this->menuMode == FS_MENU_MODE_SELECT) {
-            DrawMoreInfo(this, fileIndex, textAlpha);
-        } else {
+        if (GameInteractor_Should(VB_FILE_SELECT_DRAW_QUEST_ITEMS, true, this, fileIndex, textAlpha)) {
             // draw quest items
             for (vtxOffset = 0, j = 0; j < 9; j++, vtxOffset += 4) {
                 if (Save_GetSaveMetaInfo(fileIndex)->questItems & gBitFlags[sQuestItemFlags[j]]) {
@@ -1890,17 +1887,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
                             this->fileInfoAlpha[fileIndex]);
 
-            // Draw the small file name box instead when more meta info is enabled
-            if (CVarGetInteger(CVAR_ENHANCEMENT("FileSelectMoreInfo"), 0) != 0 &&
-                this->menuMode == FS_MENU_MODE_SELECT) {
-                // Location of file 1 small name box vertices
-                gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[68], 4, 0);
-
-                gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelNameBoxTex, G_IM_FMT_IA, G_IM_SIZ_16b, 108, 16, 0,
-                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                                    G_TX_NOLOD, G_TX_NOLOD);
-                gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
-            } else {
+            if (GameInteractor_Should(VB_FILE_SELECT_DRAW_FILE_INFO_BOX, true, this)) {
                 gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[temp], 20, 0);
 
                 for (quadVtxIndex = 0, i = 0; i < 5; i++, quadVtxIndex += 4) {
