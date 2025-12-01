@@ -9499,7 +9499,7 @@ void func_80843AE8(PlayState* play, Player* this) {
                     LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_derth_rebirth, 1.0f, 99.0f,
                                          Animation_GetLastFrame(&gPlayerAnim_link_derth_rebirth), ANIMMODE_ONCE, 0.0f);
                 }
-                gSaveContext.healthAccumulator = 0x140;
+                gSaveContext.healthAccumulator = MAX_HEALTH;
                 this->av2.actionVar2 = -1;
             }
         } else if (gSaveContext.healthAccumulator == 0) {
@@ -14581,20 +14581,20 @@ void Player_Action_8084EAC0(Player* this, PlayState* play) {
                     rand = 3;
                 }
 
-                if ((rand < 0) && (gSaveContext.health <= 0x10)) {
+                if ((rand < 0) && (gSaveContext.health <= FULL_HEART_HEALTH)) {
                     rand = 3;
                 }
 
                 if (rand < 0) {
-                    Health_ChangeBy(play, -0x10);
+                    Health_ChangeBy(play, -FULL_HEART_HEALTH);
                 } else {
-                    gSaveContext.healthAccumulator = rand * 0x10;
+                    gSaveContext.healthAccumulator = rand * FULL_HEART_HEALTH;
                 }
             } else {
                 s32 sp28 = D_808549FC[this->itemAction - PLAYER_IA_BOTTLE_POTION_RED];
 
                 if (sp28 & 1) {
-                    gSaveContext.healthAccumulator = 0x140;
+                    gSaveContext.healthAccumulator = MAX_HEALTH;
                 }
 
                 if (sp28 & 2) {
@@ -14738,7 +14738,7 @@ void Player_Action_8084EED8(Player* this, PlayState* play) {
         Player_PlaySfx(this, NA_SE_EV_BOTTLE_CAP_OPEN);
         Player_PlaySfx(this, NA_SE_EV_FIATY_HEAL - SFX_FLAG);
     } else if (LinkAnimation_OnFrame(&this->skelAnime, 47.0f)) {
-        gSaveContext.healthAccumulator = 0x140;
+        gSaveContext.healthAccumulator = MAX_HEALTH;
     }
 }
 

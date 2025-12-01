@@ -2,8 +2,6 @@
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
-#include "soh/OTRGlobals.h"
-#include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -24,12 +22,9 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
-#include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
-#include "objects/object_link_boy/object_link_boy.h"
-#include "objects/object_link_child/object_link_child.h"
 #include "soh_assets.h"
 #include "kaleido.h"
 
@@ -140,58 +135,6 @@ void RegisterOcarinaTimeTravel() {
     });
 }
 
-static bool hasAffectedHealth = false;
-void UpdatePermanentHeartLossState() {
-    if (!GameInteractor::IsSaveLoaded())
-        return;
-
-    if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) && hasAffectedHealth) {
-        uint8_t heartContainers = gSaveContext.ship.stats.heartContainers; // each worth 16 health
-        uint8_t heartPieces = gSaveContext.ship.stats.heartPieces; // each worth 4 health, but only in groups of 4
-        uint8_t startingHealth =
-            16 * (IS_RANDO ? (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_HEARTS) + 1) : 3);
-
-        uint8_t newCapacity = startingHealth + (heartContainers * 16) + ((heartPieces - (heartPieces % 4)) * 4);
-        gSaveContext.healthCapacity = MAX(newCapacity, gSaveContext.healthCapacity);
-        gSaveContext.health = MIN(gSaveContext.health, gSaveContext.healthCapacity);
-        hasAffectedHealth = false;
-    }
-}
-
-void RegisterPermanentHeartLoss() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int16_t fileNum) {
-        hasAffectedHealth = false;
-        UpdatePermanentHeartLossState();
-    });
-
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("PermanentHeartLoss"), 0) || !GameInteractor::IsSaveLoaded())
-            return;
-
-        if (gSaveContext.healthCapacity > 16 && gSaveContext.healthCapacity - gSaveContext.health >= 16) {
-            gSaveContext.healthCapacity -= 16;
-            gSaveContext.health = MIN(gSaveContext.health, gSaveContext.healthCapacity);
-            hasAffectedHealth = true;
-        }
-    });
-};
-
-void RegisterDeleteFileOnDeath() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("DeleteFileOnDeath"), 0) || !GameInteractor::IsSaveLoaded() ||
-            gPlayState == NULL)
-            return;
-
-        if (gPlayState->gameOverCtx.state == GAMEOVER_DEATH_MENU && gPlayState->pauseCtx.state == 9) {
-            SaveManager::Instance->DeleteZeldaFile(gSaveContext.fileNum);
-            hasAffectedHealth = false;
-            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
-                ->Dispatch("reset");
-        }
-    });
-}
-
 bool IsHyperBossesActive() {
     return CVarGetInteger(CVAR_ENHANCEMENT("HyperBosses"), 0) ||
            (IS_BOSS_RUSH &&
@@ -281,74 +224,6 @@ void UpdateHyperEnemiesState() {
                 }
             });
     }
-}
-
-void UpdatePatchHand() {
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && LINK_IS_CHILD) {
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1", 92,
-                                   gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer2", 93, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1", 84,
-                                   gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot2", 85,
-                                   gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow1", 51,
-                                   gsSPDisplayListOTRFilePath(gLinkChildRightHandClosedNearDL));
-        ResourceMgr_PatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow2", 52, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword1", 104,
-                                   gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword2", 105,
-                                   gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword1", 79,
-                                   gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword2", 80, gsSPEndDisplayList());
-        ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife1", 76,
-                                   gsSPDisplayListOTRFilePath(gLinkChildLeftFistNearDL));
-        ResourceMgr_PatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife2", 77,
-                                   gsSPEndDisplayList());
-
-    } else {
-        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer1");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "childHammer2");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot1");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingHookshotNearDL, "childHookshot2");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow1");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultRightHandHoldingBowNearDL, "childBow2");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword1");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingMasterSwordNearDL, "childMasterSword2");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword1");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingBgsNearDL, "childBiggoronSword2");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife1");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultHandHoldingBrokenGiantsKnifeDL, "childBrokenGiantsKnife2");
-    }
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) && LINK_IS_ADULT) {
-        ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "adultKokiriSword", 13,
-                                   gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
-        ResourceMgr_PatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot", 13,
-                                   gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
-        ResourceMgr_PatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang", 50,
-                                   gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
-        ResourceMgr_PatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield", 49,
-                                   gsSPDisplayListOTRFilePath(gLinkAdultRightHandClosedNearDL));
-    } else {
-        ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndKokiriSwordNearDL, "adultKokiriSword");
-        ResourceMgr_UnpatchGfxByName(gLinkChildRightHandHoldingSlingshotNearDL, "adultSlingshot");
-        ResourceMgr_UnpatchGfxByName(gLinkChildLeftFistAndBoomerangNearDL, "adultBoomerang");
-        ResourceMgr_UnpatchGfxByName(gLinkChildRightFistAndDekuShieldNearDL, "adultDekuShield");
-    }
-    if (CVarGetInteger("gEnhancements.FixHammerHand", 0) && LINK_IS_ADULT) {
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand1", 92,
-                                   gsSPDisplayListOTRFilePath(gLinkAdultLeftHandClosedNearDL));
-        ResourceMgr_PatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand2", 93, gsSPEndDisplayList());
-    } else {
-        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand1");
-        ResourceMgr_UnpatchGfxByName(gLinkAdultLeftHandHoldingHammerNearDL, "hammerHand2");
-    }
-}
-
-void RegisterPatchHandHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
-        [](int32_t sceneNum) { UpdatePatchHand(); });
 }
 
 // this map is used for enemies that can be uniquely identified by their id
@@ -541,28 +416,6 @@ void RegisterEnemyDefeatCounts() {
     });
 }
 
-void UpdateHurtContainerModeState(bool newState) {
-    static bool hurtEnabled = false;
-    if (hurtEnabled == newState) {
-        return;
-    }
-
-    hurtEnabled = newState;
-    uint16_t getHeartPieces = gSaveContext.ship.stats.heartPieces / 4;
-    uint16_t getHeartContainers = gSaveContext.ship.stats.heartContainers;
-
-    if (hurtEnabled) {
-        gSaveContext.healthCapacity = 320 - ((getHeartPieces + getHeartContainers) * 16);
-    } else {
-        gSaveContext.healthCapacity = 48 + ((getHeartPieces + getHeartContainers) * 16);
-    }
-}
-
-void RegisterHurtContainerModeHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(
-        [](int32_t fileNum) { UpdateHurtContainerModeState(CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0)); });
-}
-
 void RegisterRandomizedEnemySizes() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([](void* refActor) {
         // Randomized Enemy Sizes
@@ -622,13 +475,9 @@ void InitMods() {
     TimeSaverRegisterHooks();
     RegisterTTS();
     RegisterOcarinaTimeTravel();
-    RegisterPermanentHeartLoss();
-    RegisterDeleteFileOnDeath();
     RegisterHyperBosses();
     UpdateHyperEnemiesState();
     RegisterEnemyDefeatCounts();
     RegisterRandomizedEnemySizes();
-    RegisterPatchHandHandler();
-    RegisterHurtContainerModeHandler();
     RandoKaleido_RegisterHooks();
 }

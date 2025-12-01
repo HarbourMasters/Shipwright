@@ -206,7 +206,7 @@ void EnBomBowlPit_Reset(EnBomBowlPit* this, PlayState* play) {
         // "Normal termination"/"completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
         if (this->getItemId == GI_HEART_PIECE) {
-            gSaveContext.healthAccumulator = 0x140;
+            gSaveContext.healthAccumulator = MAX_HEALTH;
             // "Ah recovery!" (?)
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ あぁ回復！ ☆☆☆☆☆ \n" VT_RST);
         }

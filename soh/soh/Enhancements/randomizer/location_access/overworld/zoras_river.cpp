@@ -31,11 +31,10 @@ void RegionTable_Init_ZoraRiver() {
         //Events
         EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
         EventAccess(LOGIC_BEAN_PLANT_FAIRY,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
-        EventAccess(LOGIC_BUTTERFLY_FAIRY,   []{return logic->CanUse(RG_STICKS);}),
-        EventAccess(LOGIC_BUG_SHRUB,         []{return logic->CanCutShrubs() && (logic->IsChild || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_ZR_LOWER));}),
+        EventAccess(LOGIC_BUTTERFLY_FAIRY,    []{return logic->IsChild && logic->CanUse(RG_STICKS);}),
     }, {
         //Locations
-        LOCATION(RC_ZR_MAGIC_BEAN_SALESMAN,                  logic->IsChild),
+        LOCATION(RC_ZR_MAGIC_BEAN_SALESMAN,                  logic->IsChild/* && CanUse(SPEAK_HYLIAN)*/),
         LOCATION(RC_ZR_FROGS_OCARINA_GAME,                   logic->IsChild && logic->CanUse(RG_ZELDAS_LULLABY) && logic->CanUse(RG_SARIAS_SONG) && logic->CanUse(RG_SUNS_SONG) && logic->CanUse(RG_EPONAS_SONG) && logic->CanUse(RG_SONG_OF_TIME) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_ZR_FROGS_IN_THE_RAIN,                    logic->IsChild && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_ZR_FROGS_ZELDAS_LULLABY,                 logic->IsChild && logic->CanUse(RG_ZELDAS_LULLABY)),
@@ -43,36 +42,62 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_FROGS_SARIAS_SONG,                    logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
         LOCATION(RC_ZR_FROGS_SUNS_SONG,                      logic->IsChild && logic->CanUse(RG_SUNS_SONG)),
         LOCATION(RC_ZR_FROGS_SONG_OF_TIME,                   logic->IsChild && logic->CanUse(RG_SONG_OF_TIME)),
-        LOCATION(RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH,    logic->IsChild || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && ctx->GetTrickOption(RT_ZR_LOWER))),
-        LOCATION(RC_ZR_NEAR_DOMAIN_FREESTANDING_POH,         logic->IsChild || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && ctx->GetTrickOption(RT_ZR_UPPER))),
-        LOCATION(RC_ZR_GS_LADDER,                            logic->IsChild && logic->CanAttack() && logic->CanGetNightTimeGS()),
-        LOCATION(RC_ZR_GS_NEAR_RAISED_GROTTOS,               logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
-        LOCATION(RC_ZR_GS_ABOVE_BRIDGE,                      logic->IsAdult && logic->CanUse(RG_HOOKSHOT) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH,    logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_ZR_NEAR_DOMAIN_FREESTANDING_POH,         (logic->IsChild /*&& str0*/) || logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && ctx->GetTrickOption(RT_ZR_UPPER))),
+        LOCATION(RC_ZR_GS_LADDER,                            logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_ZR_GS_NEAR_RAISED_GROTTOS,               logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_LONGSHOT) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_ZR_GS_ABOVE_BRIDGE,                      logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_HOOKSHOT) && logic->CanGetNightTimeGS()),
         LOCATION(RC_ZR_BEAN_SPROUT_FAIRY_1,                  logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_ZR_BEAN_SPROUT_FAIRY_2,                  logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_ZR_BEAN_SPROUT_FAIRY_3,                  logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_ZR_NEAR_GROTTOS_GOSSIP_STONE_FAIRY,      logic->CallGossipFairy()),
-        LOCATION(RC_ZR_NEAR_GROTTOS_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_ZR_NEAR_DOMAIN_GOSSIP_STONE_FAIRY,       logic->CallGossipFairy()),
         LOCATION(RC_ZR_NEAR_DOMAIN_GOSSIP_STONE_FAIRY_BIG,   logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_ZR_BENEATH_WATERFALL_LEFT_RUPEE,         logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_ZR_BENEATH_WATERFALL_MIDDLE_LEFT_RUPEE,  logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_ZR_BENEATH_WATERFALL_MIDDLE_RIGHT_RUPEE, logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_ZR_BENEATH_WATERFALL_RIGHT_RUPEE,        logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,            true),
         LOCATION(RC_ZR_NEAR_DOMAIN_GOSSIP_STONE,             true),
-        LOCATION(RC_ZR_NEAR_FREESTANDING_POH_GRASS,          (logic->CanCutShrubs() && (logic->IsChild || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_ZR_LOWER))) || logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_ZR_NEAR_FREESTANDING_POH_GRASS,          logic->CanUse(RG_BOOMERANG)),
     }, {
         //Exits
         Entrance(RR_ZR_FRONT,            []{return true;}),
-        Entrance(RR_ZR_OPEN_GROTTO,      []{return true;}),
-        Entrance(RR_ZR_FAIRY_GROTTO,     []{return Here(RR_ZORAS_RIVER, []{return logic->BlastOrSmash();});}),
+        Entrance(RR_ZR_ATOP_LADDER,      []{return true/*(logic->IsAdult || str0) && (logic->CanUse(RG_CLIMB) || (logic->IsAdult && logic->CanUse(RG_LONGSHOT)))*/;}),
+        Entrance(RR_ZR_PILLAR,           []{return (logic->IsChild/* && str0*/) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && ctx->GetTrickOption(RT_ZR_LOWER));}),
         Entrance(RR_THE_LOST_WOODS,      []{return logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
         Entrance(RR_ZR_STORMS_GROTTO,    []{return logic->CanOpenStormsGrotto();}),
         Entrance(RR_ZR_BEHIND_WATERFALL, []{return ctx->GetOption(RSK_SLEEPING_WATERFALL).Is(RO_WATERFALL_OPEN) || Here(RR_ZORAS_RIVER, []{return logic->CanUse(RG_ZELDAS_LULLABY);}) || (logic->IsChild && ctx->GetTrickOption(RT_ZR_CUCCO)) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_ZR_HOVERS));}),
     });
 
-    areaTable[RR_ZR_FROM_SHORTCUT] = Region("ZR From Shortcut", SCENE_ZORAS_RIVER, TIME_DOESNT_PASS, {RA_ZORAS_RIVER}, {}, {}, {
+    areaTable[RR_ZR_ATOP_LADDER] = Region("ZR Atop Ladder", SCENE_ZORAS_RIVER, {
+        //Events
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
+    }, {
+        //Locations
+        LOCATION(RC_ZR_GS_NEAR_RAISED_GROTTOS,              logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_ZR_NEAR_GROTTOS_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
+        LOCATION(RC_ZR_NEAR_GROTTOS_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,           true),
+    }, {
+        //Exits
+        Entrance(RR_ZORAS_RIVER,     []{return true;}),
+        Entrance(RR_ZR_PILLAR,       []{return (logic->IsChild/* && str0*/) || logic->CanUse(RG_HOVER_BOOTS);}),
+        Entrance(RR_ZR_OPEN_GROTTO,  []{return true;}),
+        Entrance(RR_ZR_FAIRY_GROTTO, []{return Here(RR_ZR_ATOP_LADDER, []{return logic->BlastOrSmash();});}),
+    });
+
+    areaTable[RR_ZR_PILLAR] = Region("ZR Pillar", SCENE_ZORAS_RIVER, {
+        //Events
+        EventAccess(LOGIC_BUG_SHRUB, []{return logic->CanCutShrubs();}),
+    }, {
+        //Locations
+        LOCATION(RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH, true),
+        LOCATION(RC_ZR_NEAR_FREESTANDING_POH_GRASS,       logic->CanCutShrubs()),
+    }, {
+        //Exits
+        Entrance(RR_ZORAS_RIVER, []{return true;}),
+    });
+
+    areaTable[RR_ZR_FROM_SHORTCUT] = Region("ZR From Shortcut", SCENE_ZORAS_RIVER, {}, {}, {
         //Exits
         Entrance(RR_ZORAS_RIVER,    []{return logic->Hearts() > 1 || logic->HasItem(RG_BOTTLE_WITH_FAIRY) || logic->HasItem(RG_BRONZE_SCALE);}),
         Entrance(RR_THE_LOST_WOODS, []{return logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
@@ -99,7 +124,7 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_OPEN_GROTTO_GRASS_4,                logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_ZORAS_RIVER, []{return true;}),
+        Entrance(RR_ZR_ATOP_LADDER, []{return true;}),
     });
 
     areaTable[RR_ZR_FAIRY_GROTTO] = Region("ZR Fairy Grotto", SCENE_GROTTOS, {
@@ -117,7 +142,7 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_FAIRY_GROTTO_FAIRY_8, true),
     }, {
         //Exits
-        Entrance(RR_ZORAS_RIVER, []{return true;}),
+        Entrance(RR_ZR_ATOP_LADDER, []{return true;}),
     });
 
     areaTable[RR_ZR_STORMS_GROTTO] = Region("ZR Storms Grotto", SCENE_GROTTOS, {}, {

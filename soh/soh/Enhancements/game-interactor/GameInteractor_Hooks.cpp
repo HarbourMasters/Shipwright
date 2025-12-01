@@ -34,6 +34,11 @@ void GameInteractor_ExecuteOnItemReceiveHooks(GetItemEntry itemEntry) {
     GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnItemReceive>(itemEntry);
 }
 
+void GameInteractor_ExecuteOnEquipmentDelete(int16_t equipmentType, uint16_t equipValue) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnEquipmentDelete>(equipmentType, equipValue);
+    GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnEquipmentDelete>(equipmentType, equipValue);
+}
+
 void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry itemEntry) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaleEnd>(itemEntry);
     GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnSaleEnd>(itemEntry);
@@ -95,6 +100,10 @@ void GameInteractor_ExecuteOnPlayerSfx(u16 sfxId) {
 
 void GameInteractor_ExecuteOnOcarinaSongAction() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnOcarinaSongAction>();
+}
+
+void GameInteractor_ExecuteOnOcarinaNote(uint8_t note, float modulator, int8_t bend) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnOcarinaNote>(note, modulator, bend);
 }
 
 void GameInteractor_ExecuteOnCuccoOrChickenHatch() {

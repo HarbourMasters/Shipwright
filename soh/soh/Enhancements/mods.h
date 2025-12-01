@@ -7,15 +7,9 @@
 extern "C" {
 #endif
 
-void DirtPathFix_UpdateZFightingMode(int32_t sceneNum);
-void UpdateMirrorModeState(int32_t sceneNum);
-void UpdateHurtContainerModeState(bool newState);
-void UpdateToTMedallions();
-void UpdatePermanentHeartLossState();
 void UpdateHyperEnemiesState();
 void UpdateHyperBossesState();
 void InitMods();
-void UpdatePatchHand();
 void SwitchAge();
 
 #ifdef __cplusplus
