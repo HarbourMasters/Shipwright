@@ -271,6 +271,7 @@ const char* constCameraStrings[] = {
 
 std::shared_ptr<Fast::Fast3dWindow> sohFast3dWindow;
 void CheckSoHOTRVersion(std::string otrPath);
+int32_t sohArchiveCheck = 0;
 
 OTRGlobals::OTRGlobals() {
     context = Ship::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
@@ -302,28 +303,31 @@ OTRGlobals::OTRGlobals() {
         std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({ sohInputEditorWindow }));
     context->InitWindow(sohFast3dWindow);
 
-    auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
-    overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
-    overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
-    overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
-
     SohGui::SetupMenu();
+
+    if (sohArchiveCheck == 0) {
+        auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
+        overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
+        overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
+        overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
+
+        fontMonoSmall = CreateFontWithSize(14.0f, "fonts/Inconsolata-Regular.ttf");
+        fontMono = CreateFontWithSize(16.0f, "fonts/Inconsolata-Regular.ttf");
+        fontMonoLarger = CreateFontWithSize(20.0f, "fonts/Inconsolata-Regular.ttf");
+        fontMonoLargest = CreateFontWithSize(24.0f, "fonts/Inconsolata-Regular.ttf");
+        fontStandard = CreateFontWithSize(16.0f, "fonts/Montserrat-Regular.ttf");
+        fontStandardLarger = CreateFontWithSize(20.0f, "fonts/Montserrat-Regular.ttf");
+        fontStandardLargest = CreateFontWithSize(24.0f, "fonts/Montserrat-Regular.ttf");
+        ImGui::GetIO().FontDefault = fontStandardLarger;
+    }
 
     previousImGuiScaleIndex = -1;
     previousImGuiScale = defaultImGuiScale;
-
-    fontMonoSmall = CreateFontWithSize(14.0f, "fonts/Inconsolata-Regular.ttf");
-    fontMono = CreateFontWithSize(16.0f, "fonts/Inconsolata-Regular.ttf");
-    fontMonoLarger = CreateFontWithSize(20.0f, "fonts/Inconsolata-Regular.ttf");
-    fontMonoLargest = CreateFontWithSize(24.0f, "fonts/Inconsolata-Regular.ttf");
-    fontStandard = CreateFontWithSize(16.0f, "fonts/Montserrat-Regular.ttf");
-    fontStandardLarger = CreateFontWithSize(20.0f, "fonts/Montserrat-Regular.ttf");
-    fontStandardLargest = CreateFontWithSize(24.0f, "fonts/Montserrat-Regular.ttf");
-    ImGui::GetIO().FontDefault = fontStandardLarger;
     ScaleImGui();
 }
 
 typedef enum ExtractSteps {
+    ES_PORT_ARCHIVE,
     ES_WINDOWS,
     ES_EXTRACT_ARGS,
     ES_EXTRACT,
@@ -331,9 +335,11 @@ typedef enum ExtractSteps {
 } ExtractSteps;
 
 typedef enum PromptSteps {
+    PS_LOCAL,
     PS_FIRST,
     PS_SECOND,
     PS_DUPE,
+    PS_WAIT,
     PS_NONE,
 } PromptSteps;
 
@@ -382,13 +388,7 @@ extern std::shared_ptr<SohGui::SohMenu> mSohMenu;
 
 void OTRGlobals::RunExtract(int argc, char* argv[]) {
     bool extractDone = false;
-#ifdef _WIN32
-    ExtractSteps extractStep = ES_WINDOWS;
-#elif (defined(__WIIU__) || defined(__SWITCH__))
-    ExtractSteps extractStep = ES_VERIFY;
-#else
-    ExtractSteps extractStep = ES_EXTRACT;
-#endif
+    ExtractSteps extractStep = ES_PORT_ARCHIVE;
     WindowsSteps windowsStep = WS_TEMP;
     auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(OTRGlobals::Instance->context->GetWindow());
     auto gui = wnd->GetGui();
@@ -401,7 +401,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
         }
     }
     Extractor extract;
-    PromptSteps promptStep = PS_FIRST;
+    PromptSteps promptStep = PS_LOCAL;
     bool generatedIsMQ = false, extracting = false;
     ;
     size_t extractCount = 0, totalExtract = 0;
@@ -419,6 +419,33 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
             goto render;
         }
         switch (extractStep) {
+            case ES_PORT_ARCHIVE: {
+                if (sohArchiveCheck == 0) {
+#ifdef _WIN32
+                    ExtractSteps extractStep = ES_WINDOWS;
+#elif (defined(__WIIU__) || defined(__SWITCH__))
+                    ExtractSteps extractStep = ES_VERIFY;
+#else
+                    ExtractSteps extractStep = ES_EXTRACT;
+#endif
+                } else {
+                    std::string msg;
+
+#if defined(__SWITCH__)
+                    msg = "\x1b[4;2HPlease re-extract it from the download."
+                          "\x1b[6;2HPress the Home button to exit...";
+#elif defined(__WIIU__)
+                    msg = "Please extract the soh.o2r from the Ship of Harkinian download\nto your folder.\n\nPress "
+                          "and hold the power "
+                          "button to shutdown...";
+#else
+                    msg =
+                        "Please extract the soh.o2r from the Ship of Harkinian download to your folder.\n\nExiting...";
+#endif
+                    std::string title = sohArchiveCheck == 1 ? "Missing soh.o2r" : "soh.o2r is outdated";
+                    SohGui::RegisterPopup(title, msg, "OK", "", [&]() { exit(1); });
+                }
+            }
             case ES_WINDOWS: {
                 switch (windowsStep) {
                     case WS_TEMP: {
@@ -550,6 +577,20 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
             }
             case ES_EXTRACT: {
                 switch (promptStep) {
+                    case PS_LOCAL: {
+                        extract = Extractor();
+                        extract.GetRoms(args);
+                        if (!args.empty()) {
+                            promptStep = PS_WAIT;
+                            SohGui::RegisterPopup(
+                                "ROMs found", "ROMs found in application directory. Would you like to process them?",
+                                "Yes", "No", [&]() { extractStep = ES_EXTRACT_ARGS; },
+                                [&]() { promptStep = PS_FIRST; });
+                        } else {
+                            promptStep = PS_FIRST;
+                        }
+                        break;
+                    }
                     case PS_FIRST: {
                         const bool ootO2RExists =
                             std::filesystem::exists(
@@ -560,12 +601,13 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                             SohGui::RegisterPopup(
                                 "No O2R Files", "No O2R files found. Generate one now?", "Yes", "No",
                                 [&]() {
-                                    extract = Extractor();
                                     if (!extract.ManuallySearchForRomMatchingType(RomSearchMode::Both)) {
                                         // Extractor::ShowErrorBox("Error", "An error occured, no OTR file was
                                         // generated.\n\nExiting...");
-                                        SohGui::RegisterPopup("No O2R Files", "No O2R files generated.\nExiting...",
-                                                              "OK", "", [&]() { exit(1); });
+                                        promptStep = PS_FIRST;
+                                        return;
+                                        /*SohGui::RegisterPopup("No O2R Files", "No O2R files generated.\nExiting...",
+                                                              "OK", "", [&]() { exit(1); });*/
                                     }
                                     extracting = true;
                                     threadPool->submit_task([&]() -> void {
@@ -579,6 +621,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                                     });
                                 },
                                 [&]() { exit(1); });
+                            promptStep = PS_WAIT;
                         } else {
                             extractStep = ES_VERIFY;
                         }
@@ -1365,6 +1408,8 @@ void CheckSoHOTRVersion(std::string otrPath) {
 #endif
 
     if (!std::filesystem::exists(otrPath)) {
+        sohArchiveCheck = 1;
+        return;
 #if not defined(__SWITCH__) && not defined(__WIIU__)
         Extractor::ShowErrorBox("soh.o2r file is missing", msg.c_str());
         exit(1);
@@ -1379,6 +1424,8 @@ void CheckSoHOTRVersion(std::string otrPath) {
 
     if (otrVersion.major != gBuildVersionMajor || otrVersion.minor != gBuildVersionMinor ||
         otrVersion.patch != gBuildVersionPatch) {
+        sohArchiveCheck = 2;
+        return;
 #if not defined(__SWITCH__) && not defined(__WIIU__)
         Extractor::ShowErrorBox("soh.o2r file version does not match", msg.c_str());
         exit(1);

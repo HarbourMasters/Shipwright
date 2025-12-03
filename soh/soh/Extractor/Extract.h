@@ -45,7 +45,6 @@ class Extractor {
     void SetRomInfo(const std::string& path);
 
     void FilterRoms(std::vector<std::string>& roms, RomSearchMode searchMode);
-    void GetRoms(std::vector<std::string>& roms);
     void ShowSizeErrorBox() const;
     void ShowCrcErrorBox() const;
     void ShowCompressedErrorBox() const;
@@ -59,6 +58,7 @@ class Extractor {
     bool IsMasterQuest() const;
     bool ManuallySearchForRomMatchingType(RomSearchMode searchMode);
 
+    void GetRoms(std::vector<std::string>& roms);
     bool RunFileStandalone(std::string file);
     bool Run(std::string searchPath, RomSearchMode searchMode = RomSearchMode::Both);
     bool CallZapd(std::string installPath, std::string exportdir, size_t* extractCount, size_t* totalExtract);
