@@ -2600,36 +2600,8 @@ void CosmeticsEditorWindow::DrawElement() {
     UIWidgets::PopStyleTabs();
 }
 
-void RegisterOnLoadGameHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
-        if (CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD ||
-            CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED) {
-
-            CosmeticsEditor_AutoRandomizeAll();
-        } else {
-            ApplyOrResetCustomGfxPatches();
-        }
-    });
-}
-
 void RegisterOnGameFrameUpdateHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() { CosmeticsUpdateTick(); });
-}
-
-void Cosmetics_RegisterOnSceneInitHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        if (CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_NEW_SCENE) {
-            CosmeticsEditor_AutoRandomizeAll();
-        }
-    });
-}
-
-void CosmeticsEditorRegisterOnGenerationCompletionHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGenerationCompletion>([]() {
-        if (CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
-            CosmeticsEditor_AutoRandomizeAll();
-        }
-    });
 }
 
 void CosmeticsEditorWindow::InitElement() {
@@ -2647,11 +2619,6 @@ void CosmeticsEditorWindow::InitElement() {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
     ApplyAuthenticGfxPatches();
-
-    RegisterOnLoadGameHook();
-    RegisterOnGameFrameUpdateHook();
-    Cosmetics_RegisterOnSceneInitHook();
-    CosmeticsEditorRegisterOnGenerationCompletionHook();
 }
 
 void CosmeticsEditor_RandomizeAll() {
@@ -2714,13 +2681,25 @@ void CosmeticsEditor_ResetGroup(CosmeticGroup group) {
 }
 
 void RegisterCosmeticHooks() {
-    COND_HOOK(OnSceneInit, CVarGetInteger(CVAR_COSMETIC("RandomizeAllOnNewScene"), 0),
-              [](s16 sceneNum) { CosmeticsEditor_RandomizeAll(); });
+    COND_HOOK(OnGenerationCompletion,
+              CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_ON_RANDO_GEN_ONLY,
+              []() { CosmeticsEditor_AutoRandomizeAll(); });
 
-    COND_HOOK(OnGenerationCompletion, CVarGetInteger(CVAR_COSMETIC("RandomizeAllOnRandoGen"), 0),
-              []() { CosmeticsEditor_RandomizeAll(); });
+    COND_HOOK(OnLoadGame, CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_OFF,
+              [](s32 fileNum) { ApplyOrResetCustomGfxPatches(); });
 
-    COND_HOOK(OnLoadGame, true, [](int32_t fileNum) { ApplyOrResetCustomGfxPatches(); });
+    COND_HOOK(OnLoadGame,
+              CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_ON_FILE_LOAD,
+              [](s32 fileNum) { CosmeticsEditor_AutoRandomizeAll(); });
+
+    COND_HOOK(OnLoadGame,
+              CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) ==
+                  RANDOMIZE_ON_FILE_LOAD_SEEDED,
+              [](s32 fileNum) { CosmeticsEditor_AutoRandomizeAll(); });
+
+    COND_HOOK(OnSceneInit,
+              CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_ON_NEW_SCENE,
+              [](s16 sceneNum) { CosmeticsEditor_AutoRandomizeAll(); });
 
     COND_HOOK(OnGameFrameUpdate, true, CosmeticsUpdateTick);
 }
@@ -2740,7 +2719,6 @@ void RegisterCosmeticWidgets() {
 }
 
 static RegisterShipInitFunc initFunc(RegisterCosmeticHooks, {
-                                                                CVAR_COSMETIC("RandomizeAllOnNewScene"),
-                                                                CVAR_COSMETIC("RandomizeAllOnRandoGen"),
+                                                                CVAR_COSMETIC("RandomizeCosmeticsGenModes"),
                                                             });
 static RegisterMenuInitFunc menuInitFunc(RegisterCosmeticWidgets);
