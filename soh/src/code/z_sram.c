@@ -150,9 +150,9 @@ void Sram_OpenSave() {
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
     osSyncPrintf(VT_RST);
 
-    if (gSaveContext.health < 0x30) {
+    if (gSaveContext.health < STARTING_HEALTH) {
         gSaveContext.health =
-            CVarGetInteger(CVAR_ENHANCEMENT("FullHealthSpawn"), 0) ? gSaveContext.healthCapacity : 0x30;
+            CVarGetInteger(CVAR_ENHANCEMENT("FullHealthSpawn"), 0) ? gSaveContext.healthCapacity : STARTING_HEALTH;
     }
 
     if (gSaveContext.scarecrowLongSongSet) {

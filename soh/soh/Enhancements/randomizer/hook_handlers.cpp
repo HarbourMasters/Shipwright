@@ -391,11 +391,11 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
     if (receivedItemEntry.modIndex == MOD_NONE &&
         (receivedItemEntry.itemId == ITEM_HEART_PIECE || receivedItemEntry.itemId == ITEM_HEART_PIECE_2 ||
          receivedItemEntry.itemId == ITEM_HEART_CONTAINER)) {
-        gSaveContext.healthAccumulator = 0x140; // Refill 20 hearts
+        gSaveContext.healthAccumulator = MAX_HEALTH; // Refill 20 hearts
         if ((s32)(gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000) {
             gSaveContext.inventory.questItems ^= 0x40000000;
-            gSaveContext.healthCapacity += 0x10;
-            gSaveContext.health += 0x10;
+            gSaveContext.healthCapacity += FULL_HEART_HEALTH;
+            gSaveContext.health += FULL_HEART_HEALTH;
         }
     }
 
@@ -1616,12 +1616,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
-        case VB_RENDER_KEY_COUNTER: {
-            if (Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY)) {
-                *should = false;
-            }
-            break;
-        }
         case VB_RENDER_RUPEE_COUNTER: {
             if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) || Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MONEY)) {
                 *should = false;
@@ -2187,7 +2181,8 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     }
 
     // Turn MQ switch into toggle
-    if (actor->id == ACTOR_OBJ_SWITCH && gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL && (actor->params & 7) == 3) {
+    if (actor->id == ACTOR_OBJ_SWITCH && gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL &&
+        (actor->params & 0x3f07) == 0x303) {
         auto dungeon =
             OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
         if (dungeon->IsMQ()) {

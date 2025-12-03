@@ -13,7 +13,7 @@ void RegionTable_Init_GerudoFortress() {
     }, {
         //Locations
         LOCATION(RC_GF_OUTSKIRTS_NE_CRATE, (logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)) && logic->CanBreakCrates()),
-        LOCATION(RC_GF_OUTSKIRTS_NW_CRATE, logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)),
+        LOCATION(RC_GF_OUTSKIRTS_NW_CRATE, (logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)) && logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_GV_FORTRESS_SIDE, []{return true;}),

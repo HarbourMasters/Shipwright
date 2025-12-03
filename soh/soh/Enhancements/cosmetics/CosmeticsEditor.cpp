@@ -5,12 +5,11 @@
 
 #include <string>
 #include <libultraship/bridge.h>
-#include <random>
 #include <math.h>
-#include <algorithm>
 #include <libultraship/libultraship.h>
 
 #include "soh/SohGui/UIWidgets.hpp"
+#include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -22,7 +21,6 @@ extern "C" {
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_gi_shield_3/object_gi_shield_3.h"
-#include "objects/object_gi_heart/object_gi_heart.h"
 #include "objects/object_gi_bow/object_gi_bow.h"
 #include "objects/object_gi_bracelet/object_gi_bracelet.h"
 #include "objects/object_gi_rupy/object_gi_rupy.h"
@@ -55,6 +53,12 @@ void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchNa
                                            int sourceIndex);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
+}
+
+static WidgetInfo goronNeck;
+
+namespace SohGui {
+extern std::shared_ptr<SohMenu> mSohMenu;
 }
 
 #define PATCH_GFX(path, name, cvar, index, instruction)             \
@@ -1964,15 +1968,7 @@ void DrawSillyTab() {
 
     UIWidgets::Separator(true, true, 2.0f, 2.0f);
 
-    UIWidgets::CVarSliderFloat("Goron Neck Length", CVAR_COSMETIC("Goron.NeckLength"),
-                               UIWidgets::FloatSliderOptions()
-                                   .Format("%.0f")
-                                   .Min(0.0f)
-                                   .Max(5000.0f)
-                                   .DefaultValue(0.0f)
-                                   .Step(10.0f)
-                                   .Size(ImVec2(300.0f, 0.0f))
-                                   .Color(THEME_COLOR));
+    SohGui::mSohMenu->MenuDrawItem(goronNeck, ImGui::GetContentRegionAvail().x, THEME_COLOR);
     Reset_Option_Single("Reset##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"));
 
     UIWidgets::Separator(true, true, 2.0f, 2.0f);
@@ -2586,22 +2582,6 @@ void RegisterOnGameFrameUpdateHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() { CosmeticsUpdateTick(); });
 }
 
-void Cosmetics_RegisterOnSceneInitHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        if (CVarGetInteger(CVAR_COSMETIC("RandomizeAllOnNewScene"), 0)) {
-            CosmeticsEditor_RandomizeAll();
-        }
-    });
-}
-
-void CosmeticsEditorRegisterOnGenerationCompletionHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGenerationCompletion>([]() {
-        if (CVarGetInteger(CVAR_COSMETIC("RandomizeAllOnRandoGen"), 0)) {
-            CosmeticsEditor_RandomizeAll();
-        }
-    });
-}
-
 void CosmeticsEditorWindow::InitElement() {
     // Convert the `current color` into the format that the ImGui color picker expects
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
@@ -2617,11 +2597,6 @@ void CosmeticsEditorWindow::InitElement() {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
     ApplyAuthenticGfxPatches();
-
-    RegisterOnLoadGameHook();
-    RegisterOnGameFrameUpdateHook();
-    Cosmetics_RegisterOnSceneInitHook();
-    CosmeticsEditorRegisterOnGenerationCompletionHook();
 }
 
 void CosmeticsEditor_RandomizeAll() {
@@ -2670,3 +2645,33 @@ void CosmeticsEditor_ResetGroup(CosmeticGroup group) {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
 }
+
+void RegisterCosmeticHooks() {
+    COND_HOOK(OnSceneInit, CVarGetInteger(CVAR_COSMETIC("RandomizeAllOnNewScene"), 0),
+              [](s16 sceneNum) { CosmeticsEditor_RandomizeAll(); });
+
+    COND_HOOK(OnGenerationCompletion, CVarGetInteger(CVAR_COSMETIC("RandomizeAllOnRandoGen"), 0),
+              []() { CosmeticsEditor_RandomizeAll(); });
+
+    COND_HOOK(OnGameFrameUpdate, true, CosmeticsUpdateTick);
+}
+
+void RegisterCosmeticWidgets() {
+    goronNeck = { .name = "Goron Neck Length", .type = WidgetType::WIDGET_CVAR_SLIDER_FLOAT };
+    goronNeck.CVar(CVAR_COSMETIC("Goron.NeckLength"))
+        .Options(UIWidgets::FloatSliderOptions()
+                     .Format("%.0f")
+                     .Min(0.0f)
+                     .Max(5000.0f)
+                     .DefaultValue(0.0f)
+                     .Step(10.0f)
+                     .Size(ImVec2(300.0f, 0.0f))
+                     .Color(THEME_COLOR));
+    SohGui::mSohMenu->AddSearchWidget({ goronNeck, "Enhancements", "Cosmetics Editor", "Silly" });
+}
+
+static RegisterShipInitFunc initFunc(RegisterCosmeticHooks, {
+                                                                CVAR_COSMETIC("RandomizeAllOnNewScene"),
+                                                                CVAR_COSMETIC("RandomizeAllOnRandoGen"),
+                                                            });
+static RegisterMenuInitFunc menuInitFunc(RegisterCosmeticWidgets);

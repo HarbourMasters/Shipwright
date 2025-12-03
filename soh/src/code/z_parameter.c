@@ -2318,19 +2318,16 @@ u8 Item_Give(PlayState* play, u8 item) {
         gSaveContext.ship.stats.heartPieces++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART_CONTAINER) {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0)) {
-            gSaveContext.healthCapacity += 0x10;
-            gSaveContext.health += 0x10;
-        } else {
-            gSaveContext.healthCapacity -= 0x10;
-            gSaveContext.health -= 0x10;
+        if (GameInteractor_Should(VB_HEARTS_INCREASE_WITH_CONTAINERS, true)) {
+            gSaveContext.healthCapacity += FULL_HEART_HEALTH;
+            gSaveContext.health += FULL_HEART_HEALTH;
         }
         gSaveContext.ship.stats.heartContainers++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART) {
         osSyncPrintf("回復ハート回復ハート回復ハート\n"); // "Recovery Heart"
         if (play != NULL) {
-            Health_ChangeBy(play, 0x10);
+            Health_ChangeBy(play, FULL_HEART_HEALTH);
         }
         return Return_Item(item, MOD_NONE, item);
     } else if (item == ITEM_MAGIC_SMALL) {
@@ -2905,7 +2902,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
         gSaveContext.health = gSaveContext.healthCapacity;
     }
 
-    heartCount = gSaveContext.health % 0x10;
+    heartCount = gSaveContext.health % FULL_HEART_HEALTH;
 
     healthLevel = heartCount;
     if (heartCount != 0) {
@@ -3516,7 +3513,7 @@ void Interface_DrawMagicBar(PlayState* play) {
                               R_MAGIC_FILL_X - 1;
             }
         } else {
-            if ((gSaveContext.healthCapacity - 1) / 0x10 >= lineLength && lineLength != 0) {
+            if ((gSaveContext.healthCapacity - 1) / FULL_HEART_HEALTH >= lineLength && lineLength != 0) {
                 magicBarY =
                     magicBarY_original_l +
                     magicDrop * (lineLength == 0 ? 0 : ((gSaveContext.healthCapacity - 1) / (0x10 * lineLength) - 1));

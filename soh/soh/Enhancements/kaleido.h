@@ -26,18 +26,20 @@ class KaleidoEntry {
      * @param text the initial value of the line of text. Can be omitted for an
      * empty string.
      */
-    KaleidoEntry(int16_t x, int16_t y, std::string text = "");
+    KaleidoEntry(std::string text = "");
     virtual void Draw(PlayState* play, std::vector<Gfx>* mEntryDl) = 0;
     virtual void Update(PlayState* play) = 0;
     void SetYOffset(int yOffset);
+    void SetSelected(bool val);
 
   protected:
-    int16_t mX;
-    int16_t mY;
+    int16_t mX = 0;
+    int16_t mY = 0;
     int16_t mHeight;
     int16_t mWidth;
     Vtx* vtx;
     std::string mText;
+    bool mSelected = false;
     bool mAchieved = false;
 };
 
@@ -59,7 +61,7 @@ class KaleidoEntryIcon : public KaleidoEntry {
      * @param text text to draw to the right of the icon.
      */
     KaleidoEntryIcon(const char* iconResourceName, int iconFormat, int iconSize, int iconWidth, int iconHeight,
-                     Color_RGBA8 iconColor, int16_t x, int16_t y, std::string text = "");
+                     Color_RGBA8 iconColor, std::string text = "");
     void Draw(PlayState* play, std::vector<Gfx>* mEntryDl) override;
     void RebuildVertices();
 
@@ -95,8 +97,7 @@ class KaleidoEntryIconFlag : public KaleidoEntryIcon {
      * @param mName name to draw to the right of the icon. Leave blank to omit.
      */
     KaleidoEntryIconFlag(const char* iconResourceName, int iconFormat, int iconSize, int iconWidth, int iconHeight,
-                         Color_RGBA8 iconColor, FlagType flagType, int flag, int16_t x, int16_t y,
-                         std::string name = "");
+                         Color_RGBA8 iconColor, FlagType flagType, int flag, std::string name = "");
     void Update(PlayState* play) override;
 
   private:
@@ -128,8 +129,7 @@ class KaleidoEntryIconCountRequired : public KaleidoEntryIcon {
      * @param total The amount of this collectible available in the seed. Set to 0 to not render.
      */
     KaleidoEntryIconCountRequired(const char* iconResourceName, int iconFormat, int iconSize, int iconWidth,
-                                  int iconHeight, Color_RGBA8 iconColor, int16_t x, int16_t y, int* watch,
-                                  int required = 0, int total = 0);
+                                  int iconHeight, Color_RGBA8 iconColor, int* watch, int required = 0, int total = 0);
     void Update(PlayState* play) override;
 
   private:
@@ -143,7 +143,7 @@ class KaleidoEntryIconCountRequired : public KaleidoEntryIcon {
 
 class KaleidoEntryOcarinaButtons : public KaleidoEntryIcon {
   public:
-    KaleidoEntryOcarinaButtons(int16_t x, int16_t y);
+    KaleidoEntryOcarinaButtons();
     void Update(PlayState* play) override;
     void Draw(PlayState* play, std::vector<Gfx>* mEntryDl) override;
 
@@ -164,7 +164,8 @@ class Kaleido {
     std::vector<std::shared_ptr<KaleidoEntry>> mEntries;
     std::vector<Gfx> mEntryDl;
     int mTopIndex = 0;
-    int mNumVisible = 7;
+    int mCursorPos = 0;
+    int mNumVisible = 14;
 };
 } // namespace Rando
 

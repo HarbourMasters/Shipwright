@@ -7,6 +7,7 @@
 extern "C" {
 extern PlayState* gPlayState;
 #include "functions.h"
+#include "macros.h"
 #include "variables.h"
 }
 
@@ -15,27 +16,31 @@ static uint64_t lastSaveTimestamp = GetUnixTimestamp();
 #define CVAR_AUTOSAVE_NAME CVAR_ENHANCEMENT("Autosave")
 #define CVAR_AUTOSAVE_DEFAULT AUTOSAVE_OFF
 #define CVAR_AUTOSAVE_VALUE CVarGetInteger(CVAR_AUTOSAVE_NAME, CVAR_AUTOSAVE_DEFAULT)
-#define THREE_MINUTES_IN_UNIX 3 * 60000
+static constexpr uint64_t THREE_MINUTES_IN_UNIX = 3 * 60000;
 
 typedef enum {
     AUTOSAVE_OFF,
     AUTOSAVE_ON,
 } AutosaveOptions;
 
-bool Autosave_CanSave() {
+static bool Autosave_CanSave() {
 
     // Don't save when in title screen or debug file
+    // Don't save a file that doesn't exist (e.g. it was deleted on death by user option)
     // Don't save the first 60 frames to not save the magic meter when it's still in the animation of filling it.
     // Don't save in Chamber of Sages and the Cutscene map because of remember save location and cutscene item gives.
-    if (!GameInteractor::IsSaveLoaded(false) || gPlayState->gameplayFrames < 60 ||
-        gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES || gPlayState->sceneNum == SCENE_CUTSCENE_MAP) {
+    // Don't save between obtaining Ocarina of Time and Song of Time because the latter would become unobtainable.
+    if (!SaveManager::Instance->SaveFile_Exist(gSaveContext.fileNum) || !GameInteractor::IsSaveLoaded(false) ||
+        gPlayState->gameplayFrames < 60 || gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES ||
+        gPlayState->sceneNum == SCENE_CUTSCENE_MAP ||
+        (!CHECK_QUEST_ITEM(QUEST_SONG_TIME) && (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME))) {
         return false;
     }
 
     return true;
 }
 
-void Autosave_PerformSave() {
+static void Autosave_PerformSave() {
     Play_PerformSave(gPlayState);
 
     // Send notification
@@ -44,7 +49,7 @@ void Autosave_PerformSave() {
     });
 }
 
-void Autosave_IntervalSave() {
+static void Autosave_IntervalSave() {
     // Check if the interval has passed in minutes.
     uint64_t currentTimestamp = GetUnixTimestamp();
     if ((currentTimestamp - lastSaveTimestamp) < THREE_MINUTES_IN_UNIX) {
@@ -64,13 +69,13 @@ void Autosave_IntervalSave() {
     }
 }
 
-void Autosave_SoftResetSave() {
+static void Autosave_SoftResetSave() {
     if (Autosave_CanSave()) {
         Autosave_PerformSave();
     }
 }
 
-void RegisterAutosave() {
+static void RegisterAutosave() {
     COND_HOOK(GameInteractor::OnGameFrameUpdate, CVAR_AUTOSAVE_VALUE, Autosave_IntervalSave);
     COND_HOOK(GameInteractor::OnExitGame, CVAR_AUTOSAVE_VALUE, [](int32_t fileNum) { Autosave_SoftResetSave(); });
 }
