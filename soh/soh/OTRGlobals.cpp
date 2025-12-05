@@ -269,8 +269,16 @@ const char* constCameraStrings[] = {
     GFXP_KATAKANA "ｷ-     /   ",
 };
 
+typedef struct {
+    uint16_t major;
+    uint16_t minor;
+    uint16_t patch;
+} OTRVersion;
+
 std::shared_ptr<Fast::Fast3dWindow> sohFast3dWindow;
 void CheckSoHOTRVersion(std::string otrPath);
+OTRVersion DetectOTRVersion(std::string path, bool isMq);
+bool VerifyArchiveVersion(OTRVersion version);
 int32_t sohArchiveCheck = 0;
 
 OTRGlobals::OTRGlobals() {
@@ -393,6 +401,12 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
     auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(OTRGlobals::Instance->context->GetWindow());
     auto gui = wnd->GetGui();
 
+    OTRVersion vanillaVersion = DetectOTRVersion("oot.o2r", false);
+    OTRVersion mqVersion = DetectOTRVersion("oot-mq.o2r", true);
+
+    bool shouldRegen = VerifyArchiveVersion(vanillaVersion) || VerifyArchiveVersion(mqVersion);
+    
+
     std::filesystem::path ownPath;
     std::vector<std::string> args;
     if (argc > 1) {
@@ -411,6 +425,14 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
         SohGui::RegisterPopup("Extractor assets not found",
                               "No OTR files found. Missing assets/ folder needed to generate OTR file.\n\nExiting...",
                               "OK", "", [&]() { exit(1); });
+    }
+
+    if (shouldRegen) {
+        SohGui::RegisterPopup("Outdated ROM Archives",
+                              "Your oot.o2r or oot-mq.o2r were created with incompatible versions of SoH.\nYou will "
+                              "now be redirected to re-extract them.");
+        std::filesystem::remove("oot.o2r");
+        std::filesystem::remove("oot-mq.o2r");
     }
 
     std::shared_ptr<BS::thread_pool> threadPool = std::make_shared<BS::thread_pool>(1);
@@ -690,6 +712,13 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
             ImGui::OpenPopup("Extracting");
         }
         if (extracting) {
+            ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 8.0f));
+            ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 5.0f);
+            auto color = UIWidgets::ColorValues.at(THEME_COLOR);
+            ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 0.6f));
+            ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(color.x, color.y, color.z, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
             if (ImGui::BeginPopupModal("Extracting", NULL,
                                        ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
                                            ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
@@ -699,11 +728,12 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                 ImGui::ProgressBar(progress, ImVec2(400.0f, 50.0f), overlay.c_str());
                 ImGui::EndPopup();
             }
+            ImGui::PopStyleColor(3);
+            ImGui::PopStyleVar(3);
         }
         gui->EndDraw();
         sohFast3dWindow->EndFrame();
-        ImGui::PopStyleColor();
-        ImGui::PopStyleColor();
+        ImGui::PopStyleColor(2);
     }
 
 #ifdef __SWITCH__
@@ -1364,12 +1394,6 @@ extern "C" void OTRExtScanner() {
     }
 }
 
-typedef struct {
-    uint16_t major;
-    uint16_t minor;
-    uint16_t patch;
-} OTRVersion;
-
 // Read the port version from an OTR file
 OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
     OTRVersion version = {};
@@ -1439,16 +1463,17 @@ void CheckSoHOTRVersion(std::string otrPath) {
 
 // Checks the program version stored in the otr and compares the major value to soh
 // For Windows/Mac/Linux if the version doesn't match, offer to
-void DetectOTRVersion(std::string fileName, bool isMQ) {
+OTRVersion DetectOTRVersion(std::string fileName, bool isMQ) {
     bool isOtrOld = false;
     std::string otrPath = Ship::Context::LocateFileAcrossAppDirs(fileName, appShortName);
 
     // Doesn't exist so nothing to do here
     if (!std::filesystem::exists(otrPath)) {
-        return;
+        return { INT16_MAX, INT16_MAX, INT16_MAX };
     }
 
-    OTRVersion otrVersion = ReadPortVersionFromOTR(otrPath);
+    return ReadPortVersionFromOTR(otrPath);
+    OTRVersion otrVersion;
 
     if (otrVersion.major != gBuildVersionMajor) {
         isOtrOld = true;
@@ -1507,12 +1532,16 @@ extern "C" void Messagebox_ShowErrorBox(char* title, char* body) {
     Extractor::ShowErrorBox(title, body);
 }
 
+bool VerifyArchiveVersion(OTRVersion version) {
+    if (version.major != INT16_MAX && version.major != gBuildVersionMajor) {
+        return true;
+    }
+    return false;
+}
+
 extern "C" void InitOTR(int argc, char* argv[]) {
     OTRGlobals::Instance = new OTRGlobals();
     OTRGlobals::Instance->RunExtract(argc, argv);
-
-    DetectOTRVersion("oot.o2r", false);
-    DetectOTRVersion("oot-mq.o2r", true);
 
     OTRGlobals::Instance->Initialize();
     CustomMessageManager::Instance = new CustomMessageManager();
