@@ -2750,6 +2750,7 @@ static void SetGreenBloodColor(EffectSparkInit* effectSparkInit) {
 }
 
 static void RegisterBlueBloodHook() {
+    static bool previousHookState = false; // Previous hook enabled state (we don't re-register if unchanged)
     bool hookEnabled = CVarGetInteger(CVAR_COSMETIC("Blood.Blue0Begin.Changed"), 0) ||
                        CVarGetInteger(CVAR_COSMETIC("Blood.Blue0End.Changed"), 0) ||
                        CVarGetInteger(CVAR_COSMETIC("Blood.Blue1Begin.Changed"), 0) ||
@@ -2759,15 +2760,20 @@ static void RegisterBlueBloodHook() {
                        CVarGetInteger(CVAR_COSMETIC("Blood.Blue3Begin.Changed"), 0) ||
                        CVarGetInteger(CVAR_COSMETIC("Blood.Blue3End.Changed"), 0);
 
-    COND_VB_SHOULD(VB_BLOOD_SET_COLOR_BLUE, hookEnabled, {
-        EffectSparkInit* effectSparkInit = va_arg(args, EffectSparkInit*);
-        *should = false; // Don't run vanilla color set code
-        // Call a separate color set function (Inlining code here breaks COND_VB_SHOULD macro for some reason)
-        SetBlueBloodColor(effectSparkInit);
-    });
+    if (previousHookState != hookEnabled) {
+        previousHookState = hookEnabled;
+
+        COND_VB_SHOULD(VB_BLOOD_SET_COLOR_BLUE, hookEnabled, {
+            EffectSparkInit* effectSparkInit = va_arg(args, EffectSparkInit*);
+            *should = false; // Don't run vanilla color set code
+            // Call a separate color set function (Inlining code here breaks COND_VB_SHOULD macro for some reason)
+            SetBlueBloodColor(effectSparkInit);
+        });
+    }
 }
 
 static void RegisterGreenBloodHook() {
+    static bool previousHookState = false;
     bool hookEnabled = CVarGetInteger(CVAR_COSMETIC("Blood.Green0Begin.Changed"), 0) ||
                        CVarGetInteger(CVAR_COSMETIC("Blood.Green0End.Changed"), 0) ||
                        CVarGetInteger(CVAR_COSMETIC("Blood.Green1Begin.Changed"), 0) ||
@@ -2777,11 +2783,15 @@ static void RegisterGreenBloodHook() {
                        CVarGetInteger(CVAR_COSMETIC("Blood.Green3Begin.Changed"), 0) ||
                        CVarGetInteger(CVAR_COSMETIC("Blood.Green3End.Changed"), 0);
 
-    COND_VB_SHOULD(VB_BLOOD_SET_COLOR_GREEN, hookEnabled, {
-        EffectSparkInit* effectSparkInit = va_arg(args, EffectSparkInit*);
-        *should = false;
-        SetGreenBloodColor(effectSparkInit);
-    });
+    if (previousHookState != hookEnabled) {
+        previousHookState = hookEnabled;
+
+        COND_VB_SHOULD(VB_BLOOD_SET_COLOR_GREEN, hookEnabled, {
+            EffectSparkInit* effectSparkInit = va_arg(args, EffectSparkInit*);
+            *should = false;
+            SetGreenBloodColor(effectSparkInit);
+        });
+    }
 }
 
 void RegisterCosmeticHooks() {
