@@ -97,6 +97,7 @@ std::map<CosmeticGroup, const char*> groupLabels = {
     { COSMETICS_GROUP_NAVI, "Navi" },
     { COSMETICS_GROUP_IVAN, "Ivan" },
     { COSMETICS_GROUP_MESSAGE, "Message" },
+    { COSMETICS_GROUP_BLOOD, "Blood" },
 };
 
 static const std::unordered_map<int32_t, const char*> cosmeticsRandomizerModes = {
@@ -419,6 +420,23 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("SpinAttack.Level1Secondary",   "Level 1 Secondary",        COSMETICS_GROUP_SPIN_ATTACK,  ColorRGBA8(  0, 100, 255, 255), false, true, false),
     COSMETIC_OPTION("SpinAttack.Level2Primary",     "Level 2 Primary",          COSMETICS_GROUP_SPIN_ATTACK,  ColorRGBA8(255, 255, 170, 255), false, true, true),
     COSMETIC_OPTION("SpinAttack.Level2Secondary",   "Level 2 Secondary",        COSMETICS_GROUP_SPIN_ATTACK,  ColorRGBA8(255, 100,   0, 255), false, true, false),
+
+    COSMETIC_OPTION("Blood.Blue0Begin",             "Blue 0 Begin",             COSMETICS_GROUP_BLOOD,        ColorRGBA8( 10,  10, 200, 255), true,  true, false),
+    COSMETIC_OPTION("Blood.Blue0End",               "Blue 0 End",               COSMETICS_GROUP_BLOOD,        ColorRGBA8(  0,   0,  32,   0), true,  true, false),
+    COSMETIC_OPTION("Blood.Blue1Begin",             "Blue 1 Begin",             COSMETICS_GROUP_BLOOD,        ColorRGBA8(  0,   0, 128, 255), true,  true, false),
+    COSMETIC_OPTION("Blood.Blue1End",               "Blue 1 End",               COSMETICS_GROUP_BLOOD,        ColorRGBA8(  0,   0,  32,   0), true,  true, false),
+    COSMETIC_OPTION("Blood.Blue2Begin",             "Blue 2 Begin",             COSMETICS_GROUP_BLOOD,        ColorRGBA8(  0,   0, 128, 255), true,  true, false),
+    COSMETIC_OPTION("Blood.Blue2End",               "Blue 2 End",               COSMETICS_GROUP_BLOOD,        ColorRGBA8(  0,   0,  64,   0), true,  true, false),
+    COSMETIC_OPTION("Blood.Blue3Begin",             "Blue 3 Begin",             COSMETICS_GROUP_BLOOD,        ColorRGBA8(  0,   0, 128, 255), true,  true, false),
+    COSMETIC_OPTION("Blood.Blue3End",               "Blue 3 End",               COSMETICS_GROUP_BLOOD,        ColorRGBA8(  0,   0,  64,   0), true,  true, false),
+    COSMETIC_OPTION("Blood.Green0Begin",            "Green 0 Begin",            COSMETICS_GROUP_BLOOD,        ColorRGBA8( 10, 200,  10, 255), true,  true, false),
+    COSMETIC_OPTION("Blood.Green0End",              "Green 0 End",              COSMETICS_GROUP_BLOOD,        ColorRGBA8(  0,  32,   0,   0), true,  true, false),
+    COSMETIC_OPTION("Blood.Green1Begin",            "Green 1 Begin",            COSMETICS_GROUP_BLOOD,        ColorRGBA8(  0, 128,   0, 255), true,  true, false),
+    COSMETIC_OPTION("Blood.Green1End",              "Green 1 End",              COSMETICS_GROUP_BLOOD,        ColorRGBA8(  0,  32,   0,   0), true,  true, false),
+    COSMETIC_OPTION("Blood.Green2Begin",            "Green 2 Begin",            COSMETICS_GROUP_BLOOD,        ColorRGBA8(  0, 128,   0, 255), true,  true, false),
+    COSMETIC_OPTION("Blood.Green2End",              "Green 2 End",              COSMETICS_GROUP_BLOOD,        ColorRGBA8(  0,  64,   0,   0), true,  true, false),
+    COSMETIC_OPTION("Blood.Green3Begin",            "Green 3 Begin",            COSMETICS_GROUP_BLOOD,        ColorRGBA8(  0, 128,   0, 255), true,  true, false),
+    COSMETIC_OPTION("Blood.Green3End",              "Green 3 End",              COSMETICS_GROUP_BLOOD,        ColorRGBA8(  0,  64,   0,   0), true,  true, false),
 
     COSMETIC_OPTION("Trails.Bombchu",               "Bombchu",                  COSMETICS_GROUP_TRAILS,       ColorRGBA8(250,   0,   0, 255), false, true, true),
     COSMETIC_OPTION("Trails.Boomerang",             "Boomerang",                COSMETICS_GROUP_TRAILS,       ColorRGBA8(255, 255, 100, 255), false, true, true),
@@ -2528,6 +2546,7 @@ void CosmeticsEditorWindow::DrawElement() {
             DrawCosmeticGroup(COSMETICS_GROUP_MAGIC);
             DrawCosmeticGroup(COSMETICS_GROUP_ARROWS);
             DrawCosmeticGroup(COSMETICS_GROUP_SPIN_ATTACK);
+            DrawCosmeticGroup(COSMETICS_GROUP_BLOOD);
             DrawCosmeticGroup(COSMETICS_GROUP_TRAILS);
             if (UIWidgets::CVarSliderInt("Trails Duration: %d", CVAR_COSMETIC("Trails.Duration.Value"),
                                          UIWidgets::IntSliderOptions()
@@ -2678,6 +2697,50 @@ void CosmeticsEditor_ResetGroup(CosmeticGroup group) {
     ApplyOrResetCustomGfxPatches();
 }
 
+static void SetBlueBloodColor(EffectSparkInit* effectSparkInit) {
+    Color_RGBA8 blue0begin = { 10, 10, 200, 255 };
+    effectSparkInit->colorStart[0] = CVarGetColor(CVAR_COSMETIC("Blood.Blue0Begin.Value"), blue0begin);
+    Color_RGBA8 blue0end = { 0, 0, 32, 0 };
+    effectSparkInit->colorEnd[0] = CVarGetColor(CVAR_COSMETIC("Blood.Blue0End.Value"), blue0end);
+
+    Color_RGBA8 blue1begin = { 0, 0, 128, 255 };
+    effectSparkInit->colorStart[1] = CVarGetColor(CVAR_COSMETIC("Blood.Blue1Begin.Value"), blue1begin);
+    Color_RGBA8 blue1end = { 0, 0, 32, 0 };
+    effectSparkInit->colorEnd[1] = CVarGetColor(CVAR_COSMETIC("Blood.Blue1End.Value"), blue1end);
+
+    Color_RGBA8 blue2begin = { 0, 0, 128, 255 };
+    effectSparkInit->colorStart[2] = CVarGetColor(CVAR_COSMETIC("Blood.Blue2Begin.Value"), blue2begin);
+    Color_RGBA8 blue2end = { 0, 0, 64, 0 };
+    effectSparkInit->colorEnd[2] = CVarGetColor(CVAR_COSMETIC("Blood.Blue2End.Value"), blue2end);
+
+    Color_RGBA8 blue3begin = { 0, 0, 128, 255 };
+    effectSparkInit->colorStart[3] = CVarGetColor(CVAR_COSMETIC("Blood.Blue3Begin.Value"), blue3begin);
+    Color_RGBA8 blue3end = { 0, 0, 64, 0 };
+    effectSparkInit->colorEnd[3] = CVarGetColor(CVAR_COSMETIC("Blood.Blue3End.Value"), blue3end);
+}
+
+static void SetGreenBloodColor(EffectSparkInit* effectSparkInit) {
+    Color_RGBA8 green0begin = { 10, 200, 10, 255 };
+    effectSparkInit->colorStart[0] = CVarGetColor(CVAR_COSMETIC("Blood.Green0Begin.Value"), green0begin);
+    Color_RGBA8 green0end = { 0, 32, 0, 0 };
+    effectSparkInit->colorEnd[0] = CVarGetColor(CVAR_COSMETIC("Blood.Green0End.Value"), green0end);
+
+    Color_RGBA8 green1begin = { 0, 128, 0, 255 };
+    effectSparkInit->colorStart[1] = CVarGetColor(CVAR_COSMETIC("Blood.Green1Begin.Value"), green1begin);
+    Color_RGBA8 green1end = { 0, 32, 0, 0 };
+    effectSparkInit->colorEnd[1] = CVarGetColor(CVAR_COSMETIC("Blood.Green1End.Value"), green1end);
+
+    Color_RGBA8 green2begin = { 0, 128, 0, 255 };
+    effectSparkInit->colorStart[2] = CVarGetColor(CVAR_COSMETIC("Blood.Green2Begin.Value"), green2begin);
+    Color_RGBA8 green2end = { 0, 64, 0, 0 };
+    effectSparkInit->colorEnd[2] = CVarGetColor(CVAR_COSMETIC("Blood.Green2End.Value"), green2end);
+
+    Color_RGBA8 green3begin = { 0, 128, 0, 255 };
+    effectSparkInit->colorStart[3] = CVarGetColor(CVAR_COSMETIC("Blood.Green3Begin.Value"), green3begin);
+    Color_RGBA8 green3end = { 0, 64, 0, 0 };
+    effectSparkInit->colorEnd[3] = CVarGetColor(CVAR_COSMETIC("Blood.Green3End.Value"), green3end);
+}
+
 void RegisterCosmeticHooks() {
     COND_HOOK(OnGenerationCompletion,
               CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_ON_RANDO_GEN_ONLY,
@@ -2700,6 +2763,19 @@ void RegisterCosmeticHooks() {
               [](s16 sceneNum) { CosmeticsEditor_AutoRandomizeAll(); });
 
     COND_HOOK(OnGameFrameUpdate, true, CosmeticsUpdateTick);
+
+    COND_VB_SHOULD(VB_BLOOD_SET_COLOR_BLUE, true, {
+        EffectSparkInit* effectSparkInit = va_arg(args, EffectSparkInit*);
+        *should = false; // Don't run vanilla color set code
+        // Call a separate color set function (Inlining code here breaks COND_VB_SHOULD macro for some reason)
+        SetBlueBloodColor(effectSparkInit);
+    });
+
+    COND_VB_SHOULD(VB_BLOOD_SET_COLOR_GREEN, true, {
+        EffectSparkInit* effectSparkInit = va_arg(args, EffectSparkInit*);
+        *should = false;
+        SetGreenBloodColor(effectSparkInit);
+    });
 }
 
 void RegisterCosmeticWidgets() {

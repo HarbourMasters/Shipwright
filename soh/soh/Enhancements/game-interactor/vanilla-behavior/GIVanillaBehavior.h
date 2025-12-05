@@ -228,6 +228,22 @@ typedef enum {
     VB_BIGGORON_CONSIDER_TRADE_COMPLETE,
 
     // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EffectSparkInit`
+    VB_BLOOD_SET_COLOR_BLUE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EffectSparkInit`
+    VB_BLOOD_SET_COLOR_GREEN,
+
+    // #### `result`
     // Actor is ACTOR_EN_ELF, ACTOR_EN_FISH, ACTOR_EN_ICE_HONO, or ACTOR_EN_INSECT
     // ```c
     // i < ARRAY_COUNT(sBottleCatchInfo)
