@@ -59,6 +59,8 @@ u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
 
 static WidgetInfo goronNeck;
+static void RegisterBlueBloodHook();
+static void RegisterGreenBloodHook();
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
@@ -1527,6 +1529,12 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
             player->actor.scale.z = scale;
         }
     }
+
+    // (Un)register Hooks
+    if (manualChange) {
+        RegisterBlueBloodHook();
+        RegisterGreenBloodHook();
+    }
 }
 
 extern "C" Color_RGBA8 CosmeticsEditor_GetDefaultValue(const char* id) {
@@ -2741,6 +2749,41 @@ static void SetGreenBloodColor(EffectSparkInit* effectSparkInit) {
     effectSparkInit->colorEnd[3] = CVarGetColor(CVAR_COSMETIC("Blood.Green3End.Value"), green3end);
 }
 
+static void RegisterBlueBloodHook() {
+    bool hookEnabled = CVarGetInteger(CVAR_COSMETIC("Blood.Blue0Begin.Changed"), 0) ||
+                       CVarGetInteger(CVAR_COSMETIC("Blood.Blue0End.Changed"), 0) ||
+                       CVarGetInteger(CVAR_COSMETIC("Blood.Blue1Begin.Changed"), 0) ||
+                       CVarGetInteger(CVAR_COSMETIC("Blood.Blue1End.Changed"), 0) ||
+                       CVarGetInteger(CVAR_COSMETIC("Blood.Blue2Begin.Changed"), 0) ||
+                       CVarGetInteger(CVAR_COSMETIC("Blood.Blue2End.Changed"), 0) ||
+                       CVarGetInteger(CVAR_COSMETIC("Blood.Blue3Begin.Changed"), 0) ||
+                       CVarGetInteger(CVAR_COSMETIC("Blood.Blue3End.Changed"), 0);
+
+    COND_VB_SHOULD(VB_BLOOD_SET_COLOR_BLUE, hookEnabled, {
+        EffectSparkInit* effectSparkInit = va_arg(args, EffectSparkInit*);
+        *should = false; // Don't run vanilla color set code
+        // Call a separate color set function (Inlining code here breaks COND_VB_SHOULD macro for some reason)
+        SetBlueBloodColor(effectSparkInit);
+    });
+}
+
+static void RegisterGreenBloodHook() {
+    bool hookEnabled = CVarGetInteger(CVAR_COSMETIC("Blood.Green0Begin.Changed"), 0) ||
+                       CVarGetInteger(CVAR_COSMETIC("Blood.Green0End.Changed"), 0) ||
+                       CVarGetInteger(CVAR_COSMETIC("Blood.Green1Begin.Changed"), 0) ||
+                       CVarGetInteger(CVAR_COSMETIC("Blood.Green1End.Changed"), 0) ||
+                       CVarGetInteger(CVAR_COSMETIC("Blood.Green2Begin.Changed"), 0) ||
+                       CVarGetInteger(CVAR_COSMETIC("Blood.Green2End.Changed"), 0) ||
+                       CVarGetInteger(CVAR_COSMETIC("Blood.Green3Begin.Changed"), 0) ||
+                       CVarGetInteger(CVAR_COSMETIC("Blood.Green3End.Changed"), 0);
+
+    COND_VB_SHOULD(VB_BLOOD_SET_COLOR_GREEN, hookEnabled, {
+        EffectSparkInit* effectSparkInit = va_arg(args, EffectSparkInit*);
+        *should = false;
+        SetGreenBloodColor(effectSparkInit);
+    });
+}
+
 void RegisterCosmeticHooks() {
     COND_HOOK(OnGenerationCompletion,
               CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_ON_RANDO_GEN_ONLY,
@@ -2763,19 +2806,6 @@ void RegisterCosmeticHooks() {
               [](s16 sceneNum) { CosmeticsEditor_AutoRandomizeAll(); });
 
     COND_HOOK(OnGameFrameUpdate, true, CosmeticsUpdateTick);
-
-    COND_VB_SHOULD(VB_BLOOD_SET_COLOR_BLUE, true, {
-        EffectSparkInit* effectSparkInit = va_arg(args, EffectSparkInit*);
-        *should = false; // Don't run vanilla color set code
-        // Call a separate color set function (Inlining code here breaks COND_VB_SHOULD macro for some reason)
-        SetBlueBloodColor(effectSparkInit);
-    });
-
-    COND_VB_SHOULD(VB_BLOOD_SET_COLOR_GREEN, true, {
-        EffectSparkInit* effectSparkInit = va_arg(args, EffectSparkInit*);
-        *should = false;
-        SetGreenBloodColor(effectSparkInit);
-    });
 }
 
 void RegisterCosmeticWidgets() {
@@ -2792,7 +2822,31 @@ void RegisterCosmeticWidgets() {
     SohGui::mSohMenu->AddSearchWidget({ goronNeck, "Enhancements", "Cosmetics Editor", "Silly" });
 }
 
-static RegisterShipInitFunc initFunc(RegisterCosmeticHooks, {
-                                                                CVAR_COSMETIC("RandomizeCosmeticsGenModes"),
-                                                            });
+static RegisterShipInitFunc initFunc_BlueBlood(RegisterBlueBloodHook, {
+                                                                          CVAR_COSMETIC("Blood.Blue0Begin.Changed"),
+                                                                          CVAR_COSMETIC("Blood.Blue0End.Changed"),
+                                                                          CVAR_COSMETIC("Blood.Blue1Begin.Changed"),
+                                                                          CVAR_COSMETIC("Blood.Blue1End.Changed"),
+                                                                          CVAR_COSMETIC("Blood.Blue2Begin.Changed"),
+                                                                          CVAR_COSMETIC("Blood.Blue2End.Changed"),
+                                                                          CVAR_COSMETIC("Blood.Blue3Begin.Changed"),
+                                                                          CVAR_COSMETIC("Blood.Blue3End.Changed"),
+                                                                      });
+
+static RegisterShipInitFunc initFunc_GreenBlood(RegisterGreenBloodHook, {
+                                                                            CVAR_COSMETIC("Blood.Green0Begin.Changed"),
+                                                                            CVAR_COSMETIC("Blood.Green0End.Changed"),
+                                                                            CVAR_COSMETIC("Blood.Green1Begin.Changed"),
+                                                                            CVAR_COSMETIC("Blood.Green1End.Changed"),
+                                                                            CVAR_COSMETIC("Blood.Green2Begin.Changed"),
+                                                                            CVAR_COSMETIC("Blood.Green2End.Changed"),
+                                                                            CVAR_COSMETIC("Blood.Green3Begin.Changed"),
+                                                                            CVAR_COSMETIC("Blood.Green3End.Changed"),
+                                                                        });
+
+static RegisterShipInitFunc initFunc_CosmeticHooks(RegisterCosmeticHooks,
+                                                   {
+                                                       CVAR_COSMETIC("RandomizeCosmeticsGenModes"),
+                                                   });
+
 static RegisterMenuInitFunc menuInitFunc(RegisterCosmeticWidgets);
