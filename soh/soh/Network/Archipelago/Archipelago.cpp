@@ -20,6 +20,7 @@
 #include "soh/SaveManager.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"
+#include "soh/Network/Anchor/Anchor.h"
 
 extern "C" {
 #include "variables.h"
@@ -49,6 +50,9 @@ bool ArchipelagoClient::StartClient() {
     }
 
     CVarSetInteger(CVAR_REMOTE_ANCHOR("RoomSettings.SyncItemsAndFlags"), 0);
+    if (Anchor::Instance->isConnected && Anchor::Instance->roomState.ownerClientId == Anchor::Instance->ownClientId) {
+        Anchor::Instance->SendPacket_UpdateRoomState();
+    }
 
     disconnecting = false;
     retries = 0;
