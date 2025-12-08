@@ -88,6 +88,18 @@ typedef enum {
 } DamageMultType;
 
 typedef enum {
+    PVP_DAMAGE_MULT_1X,
+    PVP_DAMAGE_MULT_2X,
+    PVP_DAMAGE_MULT_4X,
+    PVP_DAMAGE_MULT_8X,
+    PVP_DAMAGE_MULT_16X,
+    PVP_DAMAGE_MULT_32X,
+    PVP_DAMAGE_MULT_64X,
+    PVP_DAMAGE_MULT_128X,
+    PVP_DAMAGE_MULT_256X,
+} PvpDamageMult;
+
+typedef enum {
     DAMPE_NONE,
     DAMPE_NORMAL,
     DAMPE_JALAPENO,

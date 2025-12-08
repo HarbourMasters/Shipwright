@@ -1,6 +1,7 @@
 #include "soh/Network/Anchor/Anchor.h"
 #include <nlohmann/json.hpp>
 #include <libultraship/libultraship.h>
+#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
@@ -13,6 +14,32 @@ void func_80838280(Player* player);
 /**
  * DAMAGE_PLAYER
  */
+
+int GetPvpDamageMultiplier(const RoomState& roomState) {
+    uint8_t damageOption = roomState.pvpDamageMult;
+    switch (damageOption) {
+        case PVP_DAMAGE_MULT_1X:
+            return 1;
+        case PVP_DAMAGE_MULT_2X:
+            return 2;
+        case PVP_DAMAGE_MULT_4X:
+            return 4;
+        case PVP_DAMAGE_MULT_8X:
+            return 8;
+        case PVP_DAMAGE_MULT_16X:
+            return 16;
+        case PVP_DAMAGE_MULT_32X:
+            return 32;
+        case PVP_DAMAGE_MULT_64X:
+            return 64;
+        case PVP_DAMAGE_MULT_128X:
+            return 128;
+        case PVP_DAMAGE_MULT_256X:
+            return 256;
+        default:
+            return 1;
+    }
+}
 
 void Anchor::SendPacket_DamagePlayer(u32 clientId, u8 damageEffect, u8 damage) {
     if (!IsSaveLoaded()) {
@@ -47,7 +74,7 @@ void Anchor::HandlePacket_DamagePlayer(nlohmann::json payload) {
     u8 damageEffect = payload["damageEffect"].get<u8>();
     u8 damage = payload["damage"].get<u8>();
 
-    self->actor.colChkInfo.damage = damage * 8; // Arbitrary number currently, need to fine tune
+    self->actor.colChkInfo.damage = damage * GetPvpDamageMultiplier(roomState) * 4;
 
     if (damageEffect == DUMMY_PLAYER_HIT_RESPONSE_FIRE) {
         for (int i = 0; i < ARRAY_COUNT(self->bodyFlameTimers); i++) {

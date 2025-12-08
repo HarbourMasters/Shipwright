@@ -62,6 +62,7 @@ typedef struct {
 typedef struct {
     uint32_t ownerClientId;
     u8 pvpMode;           // 0 = off, 1 = on, 2 = on with friendly fire
+    u8 pvpDamageMult;     // 0 = 1x, 1 = 2x, 2 = 4x, ..., 8 = 256x
     u8 showLocationsMode; // 0 = none, 1 = team, 2 = all
     u8 teleportMode;      // 0 = off, 1 = team, 2 = all
     u8 syncItemsAndFlags; // 0 = off, 1 = on

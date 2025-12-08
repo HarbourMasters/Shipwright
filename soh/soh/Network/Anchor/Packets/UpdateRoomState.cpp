@@ -21,11 +21,13 @@ nlohmann::json Anchor::PrepRoomState() {
     if (isGlobalRoom) {
         // Global room uses hardcoded settings
         payload["pvpMode"] = 0;
+        payload["pvpDamageMult"] = 0;
         payload["showLocationsMode"] = 0;
         payload["teleportMode"] = 0;
         payload["syncItemsAndFlags"] = 0;
     } else {
         payload["pvpMode"] = CVarGetInteger(CVAR_REMOTE_ANCHOR("RoomSettings.PvpMode"), 1);
+        payload["pvpDamageMult"] = CVarGetInteger(CVAR_REMOTE_ANCHOR("RoomSettings.PvpDamageMult"), 1);
         payload["showLocationsMode"] = CVarGetInteger(CVAR_REMOTE_ANCHOR("RoomSettings.ShowLocationsMode"), 1);
         payload["teleportMode"] = CVarGetInteger(CVAR_REMOTE_ANCHOR("RoomSettings.TeleportMode"), 1);
         payload["syncItemsAndFlags"] = CVarGetInteger(CVAR_REMOTE_ANCHOR("RoomSettings.SyncItemsAndFlags"), 1);
@@ -49,6 +51,7 @@ void Anchor::HandlePacket_UpdateRoomState(nlohmann::json payload) {
 
     roomState.ownerClientId = payload["state"]["ownerClientId"].get<uint32_t>();
     roomState.pvpMode = payload["state"]["pvpMode"].get<u8>();
+    roomState.pvpDamageMult = payload["state"]["pvpDamageMult"].get<u8>();
     roomState.showLocationsMode = payload["state"]["showLocationsMode"].get<u8>();
     roomState.teleportMode = payload["state"]["teleportMode"].get<u8>();
     roomState.syncItemsAndFlags = payload["state"]["syncItemsAndFlags"].get<u8>();
