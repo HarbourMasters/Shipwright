@@ -200,25 +200,40 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
     for (int i = 0; i < options.size(); i++) {
         optionsMap.emplace(i, options[i].c_str());
     }
+    UIWidgets::LabelPositions labelPosition;
     switch (widgetType) {
         case WIDGET_CVAR_CHECKBOX:
+            // labelPosition = UIWidgets::LabelPositions::Near;
+            // if (imFlags_ & IMFLAG_LABEL_INLINE) {
+            //     labelPosition = UIWidgets::LabelPositions::Near;
+            // }
             widgetOptions = std::make_shared<UIWidgets::CheckboxOptions>(UIWidgets::CheckboxOptions()
                 .DefaultValue(defaultOption)
                 .Tooltip(description.c_str()));
             break;
         case WIDGET_CVAR_COMBOBOX:
+            labelPosition = UIWidgets::LabelPositions::Above;
+            if (imFlags_ & IMFLAG_LABEL_INLINE) {
+                labelPosition = UIWidgets::LabelPositions::Near;
+            }
            widgetOptions = std::make_shared<UIWidgets::ComboboxOptions>(UIWidgets::ComboboxOptions()
                 .DefaultIndex(defaultOption)
                 .ComboMap(optionsMap)
-                .Tooltip(description.c_str()));
+                .Tooltip(description.c_str())
+                .LabelPosition(labelPosition));
             break;
         case WIDGET_CVAR_SLIDER_INT:
+            labelPosition = UIWidgets::LabelPositions::Above;
+            if (imFlags_ & IMFLAG_LABEL_INLINE) {
+                labelPosition = UIWidgets::LabelPositions::Near;
+            }
             widgetOptions = std::make_shared<UIWidgets::IntSliderOptions>(UIWidgets::IntSliderOptions()
                 .DefaultValue(defaultOption)
                 .Tooltip(description.c_str())
                 .Min(0)
                 .Max(options.size() - 1)
-                .Format(options[defaultOption].c_str()));
+                .Format(options[defaultOption].c_str())
+                .LabelPosition(labelPosition));
             break;
         default:
             break;
@@ -301,7 +316,8 @@ void Option::AddWidget(WidgetPath& path) const {
     SohGui::mSohMenu->AddWidget(path, name, widgetType)
         .Callback(callback)
         .CVar(cvarName.c_str())
-        .Options(widgetOptions);
+        .Options(widgetOptions)
+        .SameLine(imFlags & IMFLAG_SAME_LINE);
 }
 
 void Option::PopulateTextToNum() {

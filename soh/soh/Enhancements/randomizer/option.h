@@ -21,6 +21,8 @@ enum ImGuiMenuFlags {
     IMFLAG_SEPARATOR_TOP = 1 << 1,    /** Adds a padded separator above the widget. */
     IMFLAG_INDENT = 1 << 2,           /** Indents this widget and all proceeding widgets. */
     IMFLAG_UNINDENT = 1 << 3,         /** Unindents this widget and all proceeding widgets. */
+    IMFLAG_SAME_LINE = 1 << 4,
+    IMFLAG_LABEL_INLINE = 1 << 5,
 };
 
 /**

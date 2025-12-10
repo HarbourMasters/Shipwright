@@ -337,8 +337,8 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_STARTING_SKULLTULA_TOKEN, "Gold Skulltula Tokens", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingSkulltulaToken"), "", WIDGET_CVAR_SLIDER_INT);
     OPT_U8(RSK_STARTING_HEARTS, "Starting Hearts", {NumOpts(1, 20)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingHearts"), "", WIDGET_CVAR_SLIDER_INT, 2);
     // TODO: Remainder of Starting Items
-    OPT_U8(RSK_LOGIC_RULES, "Logic", {"Glitchless", "No Logic"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LogicRules"), mOptionDescriptions[RSK_LOGIC_RULES], WIDGET_CVAR_COMBOBOX, RO_LOGIC_GLITCHLESS);
-    OPT_BOOL(RSK_ALL_LOCATIONS_REACHABLE, "All Locations Reachable", {"Off", "On"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("AllLocationsReachable"), mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE], WIDGET_CVAR_CHECKBOX, RO_GENERIC_ON);
+    OPT_U8(RSK_LOGIC_RULES, "Logic", {"Glitchless", "No Logic"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LogicRules"), mOptionDescriptions[RSK_LOGIC_RULES], WIDGET_CVAR_COMBOBOX, RO_LOGIC_GLITCHLESS, false, nullptr, IMFLAG_LABEL_INLINE);
+    OPT_BOOL(RSK_ALL_LOCATIONS_REACHABLE, "All Locations Reachable", {"Off", "On"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("AllLocationsReachable"), mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE], WIDGET_CVAR_CHECKBOX, RO_GENERIC_ON, false, nullptr, IMFLAG_SAME_LINE);
     OPT_BOOL(RSK_SKULLS_SUNS_SONG, "Night Skulltula's Expect Sun's Song", CVAR_RANDOMIZER_SETTING("GsExpectSunsSong"), mOptionDescriptions[RSK_SKULLS_SUNS_SONG]);
     OPT_U8(RSK_DAMAGE_MULTIPLIER, "Damage Multiplier", {"x1/2", "x1", "x2", "x4", "x8", "x16", "OHKO"}, OptionCategory::Setting, "", "", WIDGET_CVAR_SLIDER_INT, RO_DAMAGE_MULTIPLIER_DEFAULT);
     // clang-format on
