@@ -232,6 +232,19 @@ void GenerateItemPool() {
                                               1 + infiniteProgressive + nutShuffle,
                                               0 + infiniteProgressive + nutShuffle);
 
+    if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
+        AddItemToPool(RG_PROGRESSIVE_BOMBCHU_BAG, 6, 5, 3, 1);
+    } else if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+        AddItemToPool(RG_PROGRESSIVE_BOMBCHU_BAG,  4 + infiniteProgressive, 
+                                                   3 + infiniteProgressive, 
+                                                   2 + infiniteProgressive,
+                                                   1 + infiniteProgressive);
+    } else {
+        AddItemToPool(RG_BOMBCHU_20, 2, 1, 0, 0);
+        AddItemToPool(RG_BOMBCHU_10, 3, 3, 2, 0);
+        AddItemToPool(RG_BOMBCHU_5, 1, 1, 1, 1);
+    }
+
     // add extra songs only if song shuffle is anywhere
     if (ctx->GetOption(RSK_SHUFFLE_SONGS).IsNot(RO_SONG_SHUFFLE_OFF)) {
         bool songAnywhere = ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_ANYWHERE);
@@ -398,10 +411,6 @@ void GenerateItemPool() {
     if (ctx->GetOption(RSK_SHUFFLE_FISHING_POLE)) {
         AddItemToPool(RG_FISHING_POLE, 2, 1, 1, 1);
     }
-    if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
-        AddItemToMainPool(RG_PROGRESSIVE_BOMBCHU_BAG);
-    }
-
     if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
         ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)) {
         AddItemToPool(RG_MAGIC_BEAN_PACK, 2, 1, 1, 1);
@@ -506,19 +515,6 @@ void GenerateItemPool() {
         if (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON)) {
             AddItemToPool(RG_GANON_SOUL, 2, 1, 1, 1);
         }
-    }
-
-    if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
-        AddItemToPool(RG_PROGRESSIVE_BOMBCHU_BAG, 6, 5, 3, 1);
-    } else if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
-        AddItemToMainPool(RG_PROGRESSIVE_BOMBCHU_BAG, 3);
-        if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
-            AddItemToPool(PendingJunkPool, RG_PROGRESSIVE_BOMBCHU_BAG);
-        }
-    } else {
-        AddItemToPool(RG_BOMBCHU_20, 2, 1, 0, 0);
-        AddItemToPool(RG_BOMBCHU_10, 3, 3, 2, 0);
-        AddItemToPool(RG_BOMBCHU_5, 1, 1, 1, 1);
     }
 
     // Gerudo Fortress
