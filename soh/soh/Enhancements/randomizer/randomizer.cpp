@@ -925,7 +925,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
                        ? CAN_OBTAIN
                        : (INV_CONTENT(ITEM_BOMBCHU) != ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE);
         case RG_PROG_BOMBCHU_BAG: // RANDOTODO Do we want bombchu refills to exist seperatly from bombchu bags?
-                                         // If so, this needs changing.
+                                  // If so, this needs changing.
             switch (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Get()) {
                 case RO_BOMBCHU_BAG_NONE:
                     return CANT_OBTAIN_MISC;
