@@ -101,7 +101,7 @@ void Anchor::HandlePacket_GiveItem(nlohmann::json payload) {
             Notification::Emit({
                 .prefix = client.name,
                 .message = "found",
-                .suffix = Rando::StaticData::RetrieveItem((RandomizerGet)getItemEntry.getItemId).GetName().english,
+                .suffix = Rando::StaticData::RetrieveItem((RandomizerGet)getItemEntry.getItemId).GetName().GetEnglish(),
             });
         }
     }
