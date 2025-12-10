@@ -398,6 +398,9 @@ void GenerateItemPool() {
     if (ctx->GetOption(RSK_SHUFFLE_FISHING_POLE)) {
         AddItemToPool(RG_FISHING_POLE, 2, 1, 1, 1);
     }
+    if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+        AddItemToMainPool(RG_PROGRESSIVE_BOMBCHU_BAG);
+    }
 
     if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
         ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)) {
@@ -411,9 +414,9 @@ void GenerateItemPool() {
         if (/*!ProgressiveGoronSword TODO: Implement Progressive Goron Sword*/ true) {
             AddFixedItemToPool(RG_GIANTS_KNIFE, 1);
         }
-        if (ctx->GetOption(RSK_BOMBCHU_BAG)) {
-            AddFixedItemToPool(RG_PROGRESSIVE_BOMBCHUS, 1);
-        } else {
+        if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
+            AddFixedItemToPool(RG_PROGRESSIVE_BOMBCHU_BAG, 1);
+        } else if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_NONE)) {
             AddFixedItemToPool(RG_BOMBCHU_10, 1);
         }
     } else {
@@ -505,8 +508,13 @@ void GenerateItemPool() {
         }
     }
 
-    if (ctx->GetOption(RSK_BOMBCHU_BAG)) {
-        AddItemToPool(RG_PROGRESSIVE_BOMBCHUS, 6, 5, 3, 1);
+    if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
+        AddItemToPool(RG_PROGRESSIVE_BOMBCHU_BAG, 6, 5, 3, 1);
+    } else if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+        AddItemToMainPool(RG_PROGRESSIVE_BOMBCHU_BAG, 3);
+        if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
+            AddItemToPool(PendingJunkPool, RG_PROGRESSIVE_BOMBCHU_BAG);
+        }
     } else {
         AddItemToPool(RG_BOMBCHU_20, 2, 1, 0, 0);
         AddItemToPool(RG_BOMBCHU_10, 3, 3, 2, 0);

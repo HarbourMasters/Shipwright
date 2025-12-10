@@ -1183,7 +1183,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN: {
-            *should = RAND_GET_OPTION(RSK_BOMBCHU_BAG) == false || INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU;
+            *should =
+                RAND_GET_OPTION(RSK_BOMBCHU_BAG) == RO_BOMBCHU_BAG_NONE || INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU;
             break;
         }
         case VB_CHECK_RANDO_PRICE_OF_MEDIGORON: {
@@ -1613,12 +1614,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             if (gPlayState->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING && RAND_GET_OPTION(RSK_SKIP_SCARECROWS_SONG)) {
                 *should = true;
                 break;
-            }
-            break;
-        }
-        case VB_RENDER_KEY_COUNTER: {
-            if (Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY)) {
-                *should = false;
             }
             break;
         }

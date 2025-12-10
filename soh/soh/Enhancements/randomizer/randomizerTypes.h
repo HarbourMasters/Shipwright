@@ -4105,7 +4105,6 @@ typedef enum {
     RG_PROGRESSIVE_SCALE,
     RG_PROGRESSIVE_NUT_UPGRADE,
     RG_PROGRESSIVE_STICK_UPGRADE,
-    RG_PROGRESSIVE_BOMBCHUS,
     RG_PROGRESSIVE_MAGIC_METER,
     RG_MAGIC_SINGLE, // Added for refactor of GetItemEntries
     RG_MAGIC_DOUBLE, // Added for refactor of GetItemEntries
@@ -4274,7 +4273,7 @@ typedef enum {
     RG_TYCOON_WALLET,
     RG_BRONZE_SCALE,
     RG_CHILD_WALLET,
-    RG_BOMBCHU_BAG,
+    RG_PROGRESSIVE_BOMBCHU_BAG,
     RG_QUIVER_INF,
     RG_BOMB_BAG_INF,
     RG_BULLET_BAG_INF,
@@ -6378,6 +6377,8 @@ typedef enum {
     // RO_AMMO_DROPS_ON_PLUS_BOMBCHU,
     RO_AMMO_DROPS_ON,
 } RandoOptionAmmoDrops;
+
+typedef enum { RO_BOMBCHU_BAG_NONE, RO_BOMBCHU_BAG_SINGLE, RO_BOMBCHU_BAG_PROGRESSIVE } RandoOptionBombchuBag;
 
 typedef enum {
     RO_BOSS_SOULS_OFF,
