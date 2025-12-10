@@ -408,7 +408,7 @@ static void PlaceItemsForType(RandomizerCheckType rctype, bool overworldActive, 
 }
 
 static void SetScarceItemPool() {
-    ReplaceMaxItem(RG_PROGRESSIVE_BOMBCHUS, 3);
+    ReplaceMaxItem(RG_PROG_BOMBCHU_BAG, ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE) ? 3 : 2);
     ReplaceMaxItem(RG_BOMBCHU_5, 1);
     ReplaceMaxItem(RG_BOMBCHU_10, 2);
     ReplaceMaxItem(RG_BOMBCHU_20, 0);
@@ -424,7 +424,7 @@ static void SetScarceItemPool() {
 
 static void SetMinimalItemPool() {
     auto ctx = Rando::Context::GetInstance();
-    ReplaceMaxItem(RG_PROGRESSIVE_BOMBCHUS, 1);
+    ReplaceMaxItem(RG_PROG_BOMBCHU_BAG, 1);
     ReplaceMaxItem(RG_BOMBCHU_5, 1);
     ReplaceMaxItem(RG_BOMBCHU_10, 0);
     ReplaceMaxItem(RG_BOMBCHU_20, 0);
@@ -642,6 +642,9 @@ void GenerateItemPool() {
         AddItemToMainPool(RG_PROGRESSIVE_STICK_BAG);
         AddItemToMainPool(RG_PROGRESSIVE_MAGIC);
         AddItemToMainPool(RG_PROGRESSIVE_WALLET);
+        if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+            AddItemToMainPool(RG_PROG_BOMBCHU_BAG);
+        }
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
@@ -660,9 +663,9 @@ void GenerateItemPool() {
         if (/*!ProgressiveGoronSword TODO: Implement Progressive Goron Sword*/ true) {
             AddItemToMainPool(RG_GIANTS_KNIFE);
         }
-        if (ctx->GetOption(RSK_BOMBCHU_BAG)) {
-            AddItemToMainPool(RG_PROGRESSIVE_BOMBCHUS);
-        } else {
+        if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
+            AddItemToMainPool(RG_PROG_BOMBCHU_BAG);
+        } else if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_NONE)) {
             AddItemToMainPool(RG_BOMBCHU_10);
         }
     } else {
@@ -774,8 +777,13 @@ void GenerateItemPool() {
         AddItemToMainPool(RG_PROGRESSIVE_NUT_BAG);
     }
 
-    if (ctx->GetOption(RSK_BOMBCHU_BAG)) {
-        AddItemToMainPool(RG_PROGRESSIVE_BOMBCHUS, 5);
+    if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
+        AddItemToMainPool(RG_PROG_BOMBCHU_BAG, 5);
+    } else if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+        AddItemToMainPool(RG_PROG_BOMBCHU_BAG, 3);
+        if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
+            AddItemToPool(PendingJunkPool, RG_PROG_BOMBCHU_BAG);
+        }
     } else {
         AddItemToMainPool(RG_BOMBCHU_5);
         AddItemToMainPool(RG_BOMBCHU_10, 3);

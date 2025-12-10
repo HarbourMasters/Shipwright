@@ -122,6 +122,8 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
     Math_Vec3s_Copy(&actor->shape.rot, &client.posRot.rot);
     Math_Vec3f_Copy(&actor->world.pos, &client.posRot.pos);
     player->skelAnime.jointTable = client.jointTable;
+    player->skelAnime.movementFlags = client.movementFlags;
+    Math_Vec3s_Copy(&player->skelAnime.prevTransl, &client.prevTransl);
     player->currentBoots = client.currentBoots;
     player->currentShield = client.currentShield;
     player->currentTunic = client.currentTunic;
@@ -131,15 +133,38 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
     player->heldItemAction = client.heldItemAction;
     player->invincibilityTimer = client.invincibilityTimer;
     player->unk_862 = client.unk_862;
+    player->unk_85C = client.unk_85C;
     player->av1.actionVar1 = client.actionVar1;
 
-    if (player->modelGroup != client.modelGroup) {
+    // Apply animation movement (Copied from Player_ApplyAnimMovementScaledByAge)
+    Vec3f diff;
+    SkelAnime_UpdateTranslation(&player->skelAnime, &diff, player->actor.shape.rot.y);
+
+    if (player->skelAnime.movementFlags & 1) {
+        if (!LINK_IS_ADULT) {
+            diff.x *= 0.64f;
+            diff.z *= 0.64f;
+        }
+
+        player->actor.world.pos.x += diff.x * player->actor.scale.x;
+        player->actor.world.pos.z += diff.z * player->actor.scale.z;
+    }
+
+    if (player->skelAnime.movementFlags & 2) {
+        if (!(player->skelAnime.movementFlags & 4)) {
+            diff.y *= player->ageProperties->unk_08;
+        }
+
+        player->actor.world.pos.y += diff.y * player->actor.scale.y;
+    }
+
+    if (player->modelGroup != Player_ActionToModelGroup(player, player->itemAction)) {
         // Hack to account for usage of gSaveContext
         s32 originalAge = gSaveContext.linkAge;
         gSaveContext.linkAge = client.linkAge;
         u8 originalButtonItem0 = gSaveContext.equips.buttonItems[0];
         gSaveContext.equips.buttonItems[0] = client.buttonItem0;
-        Player_SetModelGroup(player, client.modelGroup);
+        Player_SetModelGroup(player, Player_ActionToModelGroup(player, player->itemAction));
         gSaveContext.linkAge = originalAge;
         gSaveContext.equips.buttonItems[0] = originalButtonItem0;
     }

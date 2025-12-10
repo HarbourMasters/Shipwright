@@ -23,7 +23,7 @@ extern PlayState* gPlayState;
 nlohmann::json Anchor::PrepClientState() {
     nlohmann::json payload;
     payload["name"] = CVarGetString(CVAR_REMOTE_ANCHOR("Name"), "");
-    payload["color"] = CVarGetColor24(CVAR_REMOTE_ANCHOR("Color"), { 100, 255, 100 });
+    payload["color"] = CVarGetColor24(CVAR_REMOTE_ANCHOR("Color.Value"), { 100, 255, 100 });
     payload["clientVersion"] = clientVersion;
     payload["teamId"] = CVarGetString(CVAR_REMOTE_ANCHOR("TeamId"), "default");
     payload["online"] = true;

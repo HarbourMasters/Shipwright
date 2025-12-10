@@ -1,5 +1,4 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/mods.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
 #include "soh/ShipInit.hpp"
@@ -23,9 +22,14 @@ static constexpr int32_t CVAR_DELETE_FILE_DEFAULT = 0;
 
 static bool hasAffectedHealth = false;
 
-void UpdatePermanentHeartLossState() {
-    if (!GameInteractor::IsSaveLoaded() || !hasAffectedHealth || CVAR_PERM_HEART_LOSS_VALUE)
+static void UpdatePermanentHeartLossState() {
+    // Reset Link's hearts to the normal value without permanent losses. Only applies if all of the following are true:
+    // - A saved game is playing
+    // - The "Permanent Heart Loss" setting is turned off
+    // - The player has lost at least one Heart Container
+    if (!GameInteractor::IsSaveLoaded() || !hasAffectedHealth || CVAR_PERM_HEART_LOSS_VALUE) {
         return;
+    }
 
     uint8_t heartContainers = gSaveContext.ship.stats.heartContainers; // each worth 16 health
     uint8_t heartPieces = gSaveContext.ship.stats.heartPieces;         // each worth 4 health, but only in groups of 4
@@ -39,8 +43,10 @@ void UpdatePermanentHeartLossState() {
 }
 
 static void UpdateHealthCapacity() {
-    if (!GameInteractor::IsSaveLoaded())
+    // Applies permanent losses of Heart Containers to Link's health. Only applies when a saved game is playing.
+    if (!GameInteractor::IsSaveLoaded()) {
         return;
+    }
 
     if (gSaveContext.healthCapacity > 16 && gSaveContext.healthCapacity - gSaveContext.health >= 16) {
         gSaveContext.healthCapacity -= 16;
@@ -50,8 +56,9 @@ static void UpdateHealthCapacity() {
 }
 
 static void DeleteFileOnDeath() {
-    if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL)
+    if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
         return;
+    }
 
     if (gPlayState->gameOverCtx.state == GAMEOVER_DEATH_MENU && gPlayState->pauseCtx.state == 9) {
         SaveManager::Instance->DeleteZeldaFile(gSaveContext.fileNum);
@@ -63,6 +70,7 @@ static void DeleteFileOnDeath() {
 }
 
 static void RegisterPermanentHeartLoss() {
+    UpdatePermanentHeartLossState();
     COND_HOOK(OnPlayerUpdate, CVAR_PERM_HEART_LOSS_VALUE, UpdateHealthCapacity);
 }
 

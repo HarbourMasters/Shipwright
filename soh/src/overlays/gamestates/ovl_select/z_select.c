@@ -50,6 +50,8 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
         CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenCurrentScene"), this->currentScene);
         CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenTopDisplayedScene"), this->topDisplayedScene);
         CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenPageDownIndex"), this->pageDownIndex);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenLinkAge"), gSaveContext.linkAge);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenNightFlag"), gSaveContext.nightFlag);
         CVarSave();
 
         if (ResourceMgr_GameHasMasterQuest() && ResourceMgr_GameHasOriginal()) {
@@ -118,6 +120,8 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
         CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenCurrentScene"), this->currentScene);
         CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenTopDisplayedScene"), this->topDisplayedScene);
         CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenPageDownIndex"), this->pageDownIndex);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenLinkAge"), gSaveContext.linkAge);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenNightFlag"), gSaveContext.nightFlag);
         CVarSave();
     }
 
@@ -1833,6 +1837,10 @@ void Select_SwitchBetterWarpMode(SelectContext* this, u8 isBetterWarpMode) {
                 this->opt = 1;
             }
         }
+
+        gSaveContext.linkAge = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenLinkAge"), 1);
+        gSaveContext.nightFlag = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenNightFlag"), 0);
+        gSaveContext.dayTime = gSaveContext.nightFlag ? 0x0000 : 0x8000;
     } else {
         this->count = ARRAY_COUNT(sScenes);
 

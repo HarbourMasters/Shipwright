@@ -134,7 +134,7 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = { { RG_NONE, "ITEM
                                                                 { RG_PROGRESSIVE_SCALE, "ITEM_SCALE_SILVER" },
                                                                 { RG_PROGRESSIVE_NUT_BAG, "ITEM_NUT" },
                                                                 { RG_PROGRESSIVE_STICK_BAG, "ITEM_STICK" },
-                                                                { RG_PROGRESSIVE_BOMBCHUS, "ITEM_BOMBCHU" },
+                                                                { RG_PROG_BOMBCHU_BAG, "ITEM_BOMBCHU" },
                                                                 { RG_PROGRESSIVE_MAGIC, "ITEM_MAGIC_SMALL" },
                                                                 { RG_MAGIC_SINGLE, "ITEM_MAGIC_SMALL" },
                                                                 { RG_MAGIC_DOUBLE, "ITEM_MAGIC_LARGE" },
