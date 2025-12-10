@@ -1,5 +1,6 @@
 #include "SohMenu.h"
 #include "soh/OTRGlobals.h"
+#include "soh/SohGui/SohGui.hpp"
 
 namespace SohGui {
 
@@ -11,6 +12,152 @@ static const std::unordered_map<int32_t, const char*> skipGetItemAnimationOption
     { SGIA_JUNK, "Junk Items" },
     { SGIA_ALL, "All Items" },
 };
+
+static bool locationsDirty = true;
+static std::set<RandomizerCheck> excludedLocations;
+
+void DrawLocationsMenu(WidgetInfo& info) {
+    auto ctx = OTRGlobals::Instance->gRandoContext;
+    static ImVec2 cellPadding(8.0f, 8.0f);
+    bool generating = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0);
+    bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
+    ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+    if (locationsDirty) {
+        RandomizerCheckObjects::UpdateImGuiVisibility();
+        // todo: this efficently when we build out cvar array support
+        std::stringstream excludedLocationStringStream(
+            CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
+        std::string excludedLocationString;
+        excludedLocations.clear();
+        while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
+            excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
+        }
+        locationsDirty = false;
+    }
+
+    if (ImGui::BeginTable("tableRandoLocations", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+        ImGui::TableSetupColumn("Included", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+        ImGui::TableSetupColumn("Excluded", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+        ImGui::TableHeadersRow();
+        ImGui::PopItemFlag();
+        ImGui::TableNextRow();
+
+        // COLUMN 1 - INCLUDED LOCATIONS
+        ImGui::TableNextColumn();
+        // window->DC.CurrLineTextBaseOffset = 0.0f;
+
+        static ImGuiTextFilter locationSearch;
+        UIWidgets::PushStyleInput(THEME_COLOR);
+        locationSearch.Draw();
+        UIWidgets::PopStyleInput();
+
+        ImGui::BeginChild("ChildIncludedLocations", ImVec2(0, -8));
+        for (auto& [rcArea, locations] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
+            bool hasItems = false;
+            for (RandomizerCheck rc : locations) {
+                if (ctx->GetItemLocation(rc)->IsVisible() && !excludedLocations.count(rc) &&
+                    locationSearch.PassFilter(Rando::StaticData::GetLocation(rc)->GetName().c_str())) {
+
+                    hasItems = true;
+                    break;
+                }
+            }
+
+            if (hasItems) {
+                ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
+                    for (auto& location : locations) {
+                        if (ctx->GetItemLocation(location)->IsVisible() && !excludedLocations.count(location) &&
+                            locationSearch.PassFilter(
+                                Rando::StaticData::GetLocation(location)->GetName().c_str())) {
+                            UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
+                            if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Right)) {
+                                excludedLocations.insert(location);
+                                // todo: this efficently when we build out cvar array support
+                                std::string excludedLocationString = "";
+                                for (auto excludedLocationIt : excludedLocations) {
+                                    excludedLocationString += std::to_string(excludedLocationIt);
+                                    excludedLocationString += ",";
+                                }
+                                CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"),
+                                                excludedLocationString.c_str());
+                                Ship::Context::GetInstance()
+                                    ->GetWindow()
+                                    ->GetGui()
+                                    ->SaveConsoleVariablesNextFrame();
+                                locationsDirty = true;
+                            }
+                            UIWidgets::PopStyleButton();
+                            ImGui::SameLine();
+                            ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
+                        }
+                    }
+                    ImGui::TreePop();
+                }
+            }
+        }
+        ImGui::EndChild();
+
+        // COLUMN 2 - EXCLUDED LOCATIONS
+        ImGui::TableNextColumn();
+        // window->DC.CurrLineTextBaseOffset = 0.0f;
+
+        ImGui::BeginChild("ChildExcludedLocations", ImVec2(0, -8));
+        for (auto& [rcArea, locations] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
+            bool hasItems = false;
+            for (RandomizerCheck rc : locations) {
+                if (ctx->GetItemLocation(rc)->IsVisible() && excludedLocations.count(rc)) {
+                    hasItems = true;
+                    break;
+                }
+            }
+
+            if (hasItems) {
+                ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
+                    for (auto& location : locations) {
+                        auto elfound = excludedLocations.find(location);
+                        if (ctx->GetItemLocation(location)->IsVisible() && elfound != excludedLocations.end()) {
+                            UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
+                            if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Left)) {
+                                excludedLocations.erase(elfound);
+                                // todo: this efficently when we build out cvar array support
+                                std::string excludedLocationString = "";
+                                for (auto excludedLocationIt : excludedLocations) {
+                                    excludedLocationString += std::to_string(excludedLocationIt);
+                                    excludedLocationString += ",";
+                                }
+                                if (excludedLocationString == "") {
+                                    CVarClear(CVAR_RANDOMIZER_SETTING("ExcludedLocations"));
+                                } else {
+                                    CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"),
+                                                    excludedLocationString.c_str());
+                                }
+                                Ship::Context::GetInstance()
+                                    ->GetWindow()
+                                    ->GetGui()
+                                    ->SaveConsoleVariablesNextFrame();
+                                locationsDirty = true;
+                            }
+                            UIWidgets::PopStyleButton();
+                            ImGui::SameLine();
+                            ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
+                        }
+                    }
+                    ImGui::TreePop();
+                }
+            }
+        }
+        ImGui::EndChild();
+
+        ImGui::EndTable();
+    }
+    ImGui::PopStyleVar(1);
+    // ImGui::EndTabItem();
+    ImGui::EndDisabled();
+}
 
 void SohMenu::AddMenuRandomizer() {
     // Add Randomizer Menu
@@ -30,6 +177,10 @@ void SohMenu::AddMenuRandomizer() {
     randoSettings->GetOptionGroup(RSG_WORLD_IMGUI_TABLE).AddWidgets(path);
     randoSettings->GetOptionGroup(RSG_ITEMS_IMGUI_TABLE).AddWidgets(path);
     randoSettings->GetOptionGroup(RSG_GAMEPLAY_IMGUI_TABLE).AddWidgets(path);
+    path.sidebarName = "Locations";
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+    AddWidget(path, "Excluded Locations", WIDGET_CUSTOM)
+        .CustomFunction(DrawLocationsMenu);
     randoSettings->GetOptionGroup(RSG_STARTING_INVENTORY_IMGUI_TABLE).AddWidgets(path);
 
 
