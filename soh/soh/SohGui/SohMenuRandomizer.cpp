@@ -290,6 +290,7 @@ void DrawTricksMenu(WidgetInfo& info) {
             }
             CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            tricksDirty = true;
         }
         ImGui::SameLine();
         if (UIWidgets::Button("Enable All",
@@ -306,6 +307,7 @@ void DrawTricksMenu(WidgetInfo& info) {
             }
             CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            tricksDirty = true;
         }
     }
     if (ImGui::BeginTable("trickTags", static_cast<int>(showTag.size()),
@@ -370,6 +372,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                 }
                 CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                tricksDirty = true;
             }
 
             ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false,
@@ -415,6 +418,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                                         ->GetWindow()
                                         ->GetGui()
                                         ->SaveConsoleVariablesNextFrame();
+                                    tricksDirty = true;
                                 }
                                 UIWidgets::PopStyleButton();
                                 Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());
@@ -471,6 +475,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                     CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
                 }
                 Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                tricksDirty = true;
             }
 
             ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -519,6 +524,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                                         ->GetWindow()
                                         ->GetGui()
                                         ->SaveConsoleVariablesNextFrame();
+                                    tricksDirty = true;
                                 }
                                 UIWidgets::PopStyleButton();
                                 Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());
