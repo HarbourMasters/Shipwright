@@ -50,9 +50,9 @@ void BgSpot01Idosoko_Init(Actor* thisx, PlayState* play) {
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     // If dungeon entrance randomizer is on, remove the well stone as adult Link when
     // child Link has drained the water to the well
-    if (!LINK_IS_ADULT || (IS_RANDO &&
-        Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
-        Flags_GetEventChkInf(EVENTCHKINF_DRAINED_WELL_IN_KAKARIKO))) {
+    if (!LINK_IS_ADULT ||
+        (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
+         Flags_GetEventChkInf(EVENTCHKINF_DRAINED_WELL_IN_KAKARIKO))) {
         Actor_Kill(&this->dyna.actor);
     } else {
         BgSpot01Idosoko_SetupAction(this, func_808ABF54);
@@ -79,8 +79,7 @@ void BgSpot01Idosoko_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gKakarikoBOTWStoneDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

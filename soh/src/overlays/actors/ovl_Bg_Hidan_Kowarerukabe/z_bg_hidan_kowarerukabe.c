@@ -8,6 +8,7 @@
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "objects/object_hidan_objects/object_hidan_objects.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -119,8 +120,8 @@ void BgHidanKowarerukabe_Init(Actor* thisx, PlayState* play) {
     if (((this->dyna.actor.params & 0xFF) < CRACKED_STONE_FLOOR) ||
         ((this->dyna.actor.params & 0xFF) > LARGE_BOMBABLE_WALL)) {
         // "Error: Fire Temple Breakable Walls. arg_data I can't determine the (%s %d)(arg_data 0x%04x)"
-        osSyncPrintf("Error : 炎の神殿 壊れる壁 の arg_data が判別出来ない(%s %d)(arg_data 0x%04x)\n",
-                     __FILE__, __LINE__, this->dyna.actor.params);
+        osSyncPrintf("Error : 炎の神殿 壊れる壁 の arg_data が判別出来ない(%s %d)(arg_data 0x%04x)\n", __FILE__,
+                     __LINE__, this->dyna.actor.params);
         Actor_Kill(&this->dyna.actor);
         return;
     }
@@ -303,7 +304,8 @@ void BgHidanKowarerukabe_Update(Actor* thisx, PlayState* play) {
     BgHidanKowarerukabe* this = (BgHidanKowarerukabe*)thisx;
     s32 pad;
 
-    if (Actor_GetCollidedExplosive(play, &this->collider.base) != NULL) {
+    if (GameInteractor_Should(VB_FIRE_TEMPLE_BOMBABLE_WALL_BREAK,
+                              Actor_GetCollidedExplosive(play, &this->collider.base) != NULL, this)) {
         BgHidanKowarerukabe_Break(this, play);
         Flags_SetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F);
 
@@ -328,8 +330,7 @@ void BgHidanKowarerukabe_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, sBreakableWallDLists[this->dyna.actor.params & 0xFF]);
 
     Collider_UpdateSpheres(0, &this->collider);

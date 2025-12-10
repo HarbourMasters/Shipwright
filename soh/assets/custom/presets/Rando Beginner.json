@@ -1,0 +1,51 @@
+{
+    "blocks": {
+        "rando": {
+            "gRandoSettings": {
+                "10GSHint": 1,
+                "20GSHint": 1,
+                "30GSHint": 1,
+                "40GSHint": 1,
+                "50GSHint": 1,
+                "BigPoeTargetCount": 1,
+                "BiggoronHint": 1,
+                "BlueFireArrows": 1,
+                "BossKeysanity": 2,
+                "ClosedForest": 2,
+                "CompleteMaskQuest": 1,
+                "CuccosToReturn": 1,
+                "DampeHint": 1,
+                "DoorOfTime": 2,
+                "EnableBombchuDrops": 1,
+                "ExcludedLocations": "147,148,233,323,",
+                "FortressCarpenters": 1,
+                "FrogsHint": 1,
+                "FullWallets": 1,
+                "GanonTrial": 0,
+                "GregHint": 1,
+                "HBAHint": 1,
+                "IncludeTycoonWallet": 1,
+                "KakarikoGate": 1,
+                "Keysanity": 2,
+                "LacsRewardCount": 6,
+                "MalonHint": 1,
+                "MerchantText": 1,
+                "RainbowBridge": 7,
+                "SariaHint": 1,
+                "SheikLAHint": 0,
+                "ShuffleGanonBossKey": 9,
+                "ShuffleOcarinas": 1,
+                "SkipChildZelda": 1,
+                "SkipEponaRace": 1,
+                "SkipScarecrowsSong": 1,
+                "StartingKokiriSword": 1,
+                "StartingMapsCompasses": 0,
+                "StartingOcarina": 1,
+                "SunlightArrows": 1,
+                "ZorasFountain": 1
+            }
+        }
+    },
+    "presetName": "Rando Beginner",
+	"isBuiltIn": true
+}

@@ -1,0 +1,56 @@
+<Root>
+    <File Name="object_ei" Segment="6">
+        <!-- Stinger Skeleton -->
+        <Skeleton Name="gStingerSkel" Type="Normal" LimbType="Standard" Offset="0x3410"/>
+
+        <!-- Stinger Limbs -->
+        <Limb Name="gStingerRootLimb" LimbType="Standard" Offset="0x32F0"/>
+        <Limb Name="gStingerBodyRootLimb" LimbType="Standard" Offset="0x32FC"/>
+        <Limb Name="gStingerBodyLimb" LimbType="Standard" Offset="0x3308"/>
+        <Limb Name="gStingerTailRootLimb" LimbType="Standard" Offset="0x3314"/>
+        <Limb Name="gStingerTailUpperLimb" LimbType="Standard" Offset="0x3320"/>
+        <Limb Name="gStingerTailLowerLimb" LimbType="Standard" Offset="0x332C"/>
+        <Limb Name="gStingerLimb_3338" LimbType="Standard" Offset="0x3338"/>
+        <Limb Name="gStingerFinRootLimb" LimbType="Standard" Offset="0x3344"/>
+        <Limb Name="gStingerFinUpperLimb" LimbType="Standard" Offset="0x3350"/>
+        <Limb Name="gStingerFinLowerLimb" LimbType="Standard" Offset="0x335C"/>
+        <Limb Name="gStingerHeadRootLimb" LimbType="Standard" Offset="0x3368"/>
+        <Limb Name="gStingerHeadLimb" LimbType="Standard" Offset="0x3374"/>
+        <Limb Name="gStingerLeftWingRootLimb" LimbType="Standard" Offset="0x3380"/>
+        <Limb Name="gStingerLeftWingBaseLimb" LimbType="Standard" Offset="0x338C"/>
+        <Limb Name="gStingerLeftWingEndLimb" LimbType="Standard" Offset="0x3398"/>
+        <Limb Name="gStingerRightWingRootLimb" LimbType="Standard" Offset="0x33A4"/>
+        <Limb Name="gStingerRightWingBaseLimb" LimbType="Standard" Offset="0x33B0"/>
+        <Limb Name="gStingerRightWingEndLimb" LimbType="Standard" Offset="0x33BC"/>
+
+        <!-- Stinger Limb DisplayLists -->
+        <DList Name="gStingerBodyDL" Offset="0x2BD0"/>
+        <DList Name="gStingerTailRootDL" Offset="0x2D00"/>
+        <DList Name="gStingerTailUpperDL" Offset="0x2EB0"/>
+        <DList Name="gStingerTailLowerDL" Offset="0x2F70"/>
+        <DList Name="gStingerFinUpperDL" Offset="0x3178"/>
+        <DList Name="gStingerFinLowerDL" Offset="0x3238"/>
+        <DList Name="gStingerHeadDL" Offset="0x3018"/>
+        <DList Name="gStingerLeftWingBaseDL" Offset="0x2470"/>
+        <DList Name="gStingerLeftWingEndDL" Offset="0x2648"/>
+        <DList Name="gStingerRightWingBaseDL" Offset="0x2820"/>
+        <DList Name="gStingerRightWingEndDL" Offset="0x29F8"/>
+
+        <!-- Stinger DisplayList Textures -->
+        <Texture Name="gStingerWingTex" OutName="wing" Format="rgba16" Width="16" Height="8" Offset="0x12C0"/>
+        <Texture Name="gStingerBodyGradientTex" OutName="body_gradient" Format="rgba16" Width="8" Height="8" Offset="0x13C0"/>
+        <Texture Name="gStingerWingEndTex" OutName="wing_end" Format="rgba16" Width="8" Height="8" Offset="0x1440"/>
+        <Texture Name="gStingerEyeTex" OutName="eye" Format="rgba16" Width="8" Height="16" Offset="0x14C0"/>
+        <Texture Name="gStingerUndersideTex" OutName="underside" Format="rgba16" Width="8" Height="8" Offset="0x15C0"/>
+        <Texture Name="gStingerFinTex" OutName="fin" Format="rgba16" Width="8" Height="8" Offset="0x1640"/>
+        <Texture Name="gStingerTailGradientTex" OutName="tail_gradient" Format="rgba16" Width="4" Height="4" Offset="0x16C0"/>
+        <Texture Name="gStingerTailConnectionGradientTex" OutName="tail_connection_gradient" Format="rgba16" Width="4" Height="4" Offset="0x16E0"/>
+    
+        <!-- Stinger Animations -->
+        <Animation Name="gStingerPopOutAnim" Offset="0x288"/>
+        <Animation Name="gStingerDiveAnim" Offset="0x4C4"/>
+        <Animation Name="gStingerBackflipAnim" Offset="0x704"/>
+        <Animation Name="gStingerHitAnim" Offset="0xFC0"/>
+        <Animation Name="gStingerIdleAnim" Offset="0x12AC"/>
+    </File>
+</Root>

@@ -2,7 +2,7 @@
 
 #include <cstdint>
 #include <vector>
-#include "Resource.h"
+#include <ship/resource/Resource.h>
 #include "soh/resource/type/AudioSample.h"
 #include <libultraship/libultra/types.h>
 
@@ -17,7 +17,7 @@ typedef struct {
     /* 0x00 */ Sample* sample;
     /* 0x04 */ union {
         u32 tuningAsU32;
-        f32 tuning;// frequency scale factor
+        f32 tuning; // frequency scale factor
     };
 } SoundFontSound; // size = 0x8
 
@@ -53,10 +53,12 @@ typedef struct {
 } SoundFont; // size = 0x14
 
 class AudioSoundFont : public Ship::Resource<SoundFont> {
-public:
+  public:
     using Resource::Resource;
 
-    AudioSoundFont() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {}
+    AudioSoundFont() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {
+    }
+    ~AudioSoundFont();
 
     SoundFont* GetPointer();
     size_t GetPointerSize();
@@ -67,18 +69,13 @@ public:
     uint16_t data2;
     uint16_t data3;
 
-    std::vector<Drum> drums;
     std::vector<Drum*> drumAddresses;
-    std::vector<uint32_t> drumEnvelopeCounts;
     std::vector<std::vector<AdsrEnvelope>> drumEnvelopeArrays;
 
-    std::vector<Instrument> instruments;
     std::vector<Instrument*> instrumentAddresses;
-    std::vector<uint32_t> instrumentEnvelopeCounts;
-    std::vector<std::vector<AdsrEnvelope>> instrumentEnvelopeArrays;
 
     std::vector<SoundFontSound> soundEffects;
 
     SoundFont soundFont;
 };
-}; // namespace LUS
+}; // namespace SOH

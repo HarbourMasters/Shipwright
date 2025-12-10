@@ -107,9 +107,9 @@ static AnimationInfo sAnimationInfoFix[] = {
     { NULL },
     { NULL },
     { &gDaruniaDancingLoop1Anim, 0.78f, 0.0f, -1.0f, ANIMMODE_ONCE, -10.0f }, //
-    { &gDaruniaDancingLoop1Anim, 0.77f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f }, // hop
-    { &gDaruniaDancingLoop2Anim, 0.78f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f }, // from hop to spin
-    { &gDaruniaDancingLoop3Anim, 0.77f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f }, // spin
+    { &gDaruniaDancingLoop1Anim, 0.77f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f },   // hop
+    { &gDaruniaDancingLoop2Anim, 0.78f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f },   // from hop to spin
+    { &gDaruniaDancingLoop3Anim, 0.77f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f },   // spin
     { NULL },
     { NULL },
     { &gDaruniaDancingLoop4Anim, 0.78f, 0.0f, -1.0f, ANIMMODE_ONCE, 0.0f }, // from spin to hop
@@ -179,7 +179,8 @@ s16 func_809FDCDC(PlayState* play, Actor* actor) {
 s32 func_809FDDB4(EnDu* this, PlayState* play) {
     if (play->sceneNum == SCENE_GORON_CITY && LINK_IS_CHILD) {
         return 1;
-    } else if (play->sceneNum == SCENE_FIRE_TEMPLE && !Flags_GetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE) && LINK_IS_ADULT) {
+    } else if (play->sceneNum == SCENE_FIRE_TEMPLE && !Flags_GetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE) &&
+               LINK_IS_ADULT) {
         return 1;
     }
     return 0;
@@ -280,7 +281,7 @@ void func_809FE040(EnDu* this) {
         // #region SOH[Enhancement]
         if (CVarGetInteger(CVAR_ENHANCEMENT("FixDaruniaDanceSpeed"), 1)) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfoFix, animationIndices[this->unk_1E6]);
-        // #endregion
+            // #endregion
         } else {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, animationIndices[this->unk_1E6]);
         }
@@ -302,7 +303,7 @@ void func_809FE104(EnDu* this) {
                 // #region SOH[Enhancement]
                 if (CVarGetInteger(CVAR_ENHANCEMENT("FixDaruniaDanceSpeed"), 1) && this->unk_1E6 <= 1) {
                     Animation_ChangeByInfo(&this->skelAnime, sAnimationInfoFix, animationIndices[this->unk_1E6]);
-                // #endregion
+                    // #endregion
                 } else {
                     Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, animationIndices[this->unk_1E6]);
                 }
@@ -386,7 +387,8 @@ void func_809FE4A4(EnDu* this, PlayState* play) {
         EnDu_SetupAction(this, func_809FE890);
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         if (GameInteractor_Should(VB_PLAY_DARUNIAS_JOY_CS, true)) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaCorrectCs);
             gSaveContext.cutsceneTrigger = 1;
@@ -499,7 +501,7 @@ void func_809FE890(EnDu* this, PlayState* play) {
                 // #region SOH[Enhancement]
                 if (CVarGetInteger(CVAR_ENHANCEMENT("FixDaruniaDanceSpeed"), 1)) {
                     Animation_ChangeByInfo(&this->skelAnime, sAnimationInfoFix, ENDU_ANIM_7);
-                // #endregion
+                    // #endregion
                 } else {
                     Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENDU_ANIM_7);
                 }
@@ -627,8 +629,7 @@ void EnDu_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 }
 
-s32 EnDu_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
-                          Gfx** gfx) {
+s32 EnDu_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx, Gfx** gfx) {
     EnDu* this = (EnDu*)thisx;
     Vec3s sp1C;
 

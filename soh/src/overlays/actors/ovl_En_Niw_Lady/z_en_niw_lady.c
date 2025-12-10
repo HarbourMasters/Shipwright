@@ -233,8 +233,7 @@ void func_80ABA244(EnNiwLady* this, PlayState* play) {
         this->cuccosInPen = BREG(7) - 1;
     }
     phi_s1 = this->cuccosInPen;
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) ||
-        (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) || (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE)) {
         this->unk_26E = 101;
     }
     if (this->cuccosInPen >= 7) {
@@ -325,7 +324,6 @@ void func_80ABA654(EnNiwLady* this, PlayState* play) {
 
             this->actionFunc = func_80ABAC00;
             return;
-
         }
         if (this->unk_26C == 1) {
             this->getItemId = GI_RUPEE_PURPLE;
@@ -374,8 +372,7 @@ void func_80ABA878(EnNiwLady* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s8 playerExchangeItemId;
 
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) ||
-        (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) || (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE)) {
         this->unk_26E = 11;
     }
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
@@ -499,8 +496,7 @@ void func_80ABAD7C(EnNiwLady* this, PlayState* play) {
     if (Text_GetFaceReaction(play, 8) != 0) {
         this->actor.textId = Text_GetFaceReaction(play, 8);
     }
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) ||
-        (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) || (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE)) {
         this->unk_26E = 8;
     }
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
@@ -570,8 +566,7 @@ Gfx* func_80ABB0A0(GraphicsContext* gfxCtx) {
     return dList;
 }
 
-s32 EnNiwLady_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                               void* thisx) {
+s32 EnNiwLady_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnNiwLady* this = (EnNiwLady*)thisx;
     s32 pad;
 

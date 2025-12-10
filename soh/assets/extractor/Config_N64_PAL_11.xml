@@ -2,7 +2,7 @@
     <SymbolMap File="symbols/SymbolMap_OoTMqDbg.txt"/>
     <ActorList File="symbols/ActorList_OoTMqDbg.txt"/>
     <ObjectList File="symbols/ObjectList_OoTMqDbg.txt"/>
-    <ExternalXMLFolder Path="assets/extractor/xmls/N64_PAL_11/"/>
+    <ExternalXMLFolder Path="assets/xml/N64_PAL_11/"/>
 	<TexturePool File="TexturePool.xml"/>
     <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="objects/gameplay_keep/"/>
 </Root>

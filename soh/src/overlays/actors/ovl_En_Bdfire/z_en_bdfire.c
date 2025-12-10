@@ -132,8 +132,8 @@ void func_809BC598(EnBdfire* this, PlayState* play) {
     this->unk_158 = bossDodongo->unk_1A2;
     phi_v1_2 = 0;
     if (this->actor.params == 0) {
-        Audio_PlaySoundGeneral(NA_SE_EN_DODO_K_FIRE - SFX_FLAG, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_EN_DODO_K_FIRE - SFX_FLAG, &this->actor.projectedPos, 4,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
     Math_SmoothStepToF(&this->actor.scale.x, this->unk_188, 0.3f, 0.5f, 0.0f);
     Actor_SetScale(&this->actor, this->actor.scale.x);
@@ -217,8 +217,7 @@ void EnBdfire_DrawFire(EnBdfire* this, PlayState* play) {
     gDPSetEnvColor(POLY_XLU_DISP++, 200, 0, 0, 0);
     gSPSegment(POLY_XLU_DISP++, 8, SEGMENTED_TO_VIRTUAL(D_809BCB10[temp]));
     Matrix_Translate(0.0f, 11.0f, 0.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, object_kingdodongo_DL_01D950);
     CLOSE_DISPS(play->state.gfxCtx);
 }

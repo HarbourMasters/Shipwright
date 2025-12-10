@@ -1,0 +1,65 @@
+<Root>
+    <File Name="object_boj" Segment="6">
+        <!-- The textures used by these limbs aren't 64-bit aligned -->
+        <Limb Name="object_boj_Limb_000000" LimbType="Standard" Offset="0x0"/>
+        <Limb Name="object_boj_Limb_00000C" LimbType="Standard" Offset="0xC"/>
+        <Limb Name="object_boj_Limb_000018" LimbType="Standard" Offset="0x18"/>
+        <Limb Name="object_boj_Limb_000024" LimbType="Standard" Offset="0x24"/>
+        <Limb Name="object_boj_Limb_000030" LimbType="Standard" Offset="0x30"/>
+        <Limb Name="object_boj_Limb_00003C" LimbType="Standard" Offset="0x3C"/>
+        <Limb Name="object_boj_Limb_000048" LimbType="Standard" Offset="0x48"/>
+        <Limb Name="object_boj_Limb_000054" LimbType="Standard" Offset="0x54"/>
+        <Limb Name="object_boj_Limb_000060" LimbType="Standard" Offset="0x60"/>
+        <Limb Name="object_boj_Limb_00006C" LimbType="Standard" Offset="0x6C"/>
+        <Limb Name="object_boj_Limb_000078" LimbType="Standard" Offset="0x78"/>
+        <Limb Name="object_boj_Limb_000084" LimbType="Standard" Offset="0x84"/>
+        <Limb Name="object_boj_Limb_000090" LimbType="Standard" Offset="0x90"/>
+        <Limb Name="object_boj_Limb_00009C" LimbType="Standard" Offset="0x9C"/>
+        <Limb Name="object_boj_Limb_0000A8" LimbType="Standard" Offset="0xA8"/>
+
+        <Skeleton Name="object_boj_Skel_0000F0" Type="Flex" LimbType="Standard" Offset="0xF0"/>
+
+        <!-- 32-bit aligned textures. -->
+        <Texture Name="object_boj_TLUT_0000FC" OutName="tlut_000000FC" Format="rgba16" Width="16" Height="16" Offset="0xFC"/>
+        <Texture Name="object_boj_Tex_0002FC" OutName="tex_000002FC" Format="ci8" Width="8" Height="16" Offset="0x2FC" TlutOffset="0xFC"/>
+        <Texture Name="object_boj_Tex_00037C" OutName="tex_0000037C" Format="ci8" Width="8" Height="8" Offset="0x37C" TlutOffset="0xFC"/>
+        <Texture Name="object_boj_Tex_0003BC" OutName="tex_000003BC" Format="ci8" Width="32" Height="16" Offset="0x3BC" TlutOffset="0xFC"/>
+        <Texture Name="object_boj_Tex_0005BC" OutName="tex_000005BC" Format="ci8" Width="8" Height="8" Offset="0x5BC" TlutOffset="0xFC"/>
+        <Texture Name="object_boj_Tex_0005FC" OutName="tex_000005FC" Format="ci8" Width="16" Height="16" Offset="0x5FC" TlutOffset="0xFC"/>
+        <Texture Name="object_boj_Tex_0006FC" OutName="tex_000006FC" Format="ci8" Width="16" Height="16" Offset="0x6FC" TlutOffset="0xFC"/>
+        <Texture Name="object_boj_Tex_0007FC" OutName="tex_000007FC" Format="ci8" Width="16" Height="16" Offset="0x7FC" TlutOffset="0xFC"/>
+        <Texture Name="object_boj_Tex_0008FC" OutName="tex_000008FC" Format="ci8" Width="8" Height="8" Offset="0x8FC" TlutOffset="0xFC"/>
+        <Texture Name="object_boj_Tex_00093C" OutName="tex_0000093C" Format="i8" Width="16" Height="16" Offset="0x93C"/>
+        <Texture Name="object_boj_Tex_000A3C" OutName="tex_00000A3C" Format="ci8" Width="8" Height="8" Offset="0xA3C" TlutOffset="0xFC"/>
+        <Texture Name="object_boj_Tex_000A7C" OutName="tex_00000A7C" Format="i8" Width="8" Height="8" Offset="0xA7C"/>
+        <DList Name="object_boj_DL_0026F0" Offset="0x26F0"/>
+        <DList Name="object_boj_DL_002AC8" Offset="0x2AC8"/>
+        <DList Name="object_boj_DL_002C10" Offset="0x2C10"/>
+        <DList Name="object_boj_DL_002D18" Offset="0x2D18"/>
+        <DList Name="object_boj_DL_002E20" Offset="0x2E20"/>
+        <DList Name="object_boj_DL_002F68" Offset="0x2F68"/>
+        <DList Name="object_boj_DL_003070" Offset="0x3070"/>
+        <DList Name="object_boj_DL_003178" Offset="0x3178"/>
+        <DList Name="object_boj_DL_003350" Offset="0x3350"/>
+        <DList Name="object_boj_DL_003468" Offset="0x3468"/>
+        <DList Name="object_boj_DL_003578" Offset="0x3578"/>
+        <DList Name="object_boj_DL_003680" Offset="0x3680"/>
+        <DList Name="object_boj_DL_003798" Offset="0x3798"/>
+        <DList Name="object_boj_DL_0038A8" Offset="0x38A8"/>
+        <DList Name="object_boj_DL_0039B0" Offset="0x39B0"/>
+
+        <Texture Name="object_boj_TLUT_003B98" OutName="tlut_00003B98" Format="rgba16" Width="63" Height="4" Offset="0x3B98"/>
+        <Texture Name="object_boj_Tex_003D90" OutName="tex_00003D90" Format="ci8" Width="8" Height="8" Offset="0x3D90" TlutOffset="0x3B98"/>
+        <Texture Name="object_boj_Tex_003DD0" OutName="tex_00003DD0" Format="ci8" Width="16" Height="16" Offset="0x3DD0" TlutOffset="0x3B98"/>
+        <Texture Name="object_boj_Tex_003ED0" OutName="tex_00003ED0" Format="ci8" Width="16" Height="16" Offset="0x3ED0" TlutOffset="0x3B98"/>
+        <Texture Name="object_boj_Tex_003FD0" OutName="tex_00003FD0" Format="ci8" Width="8" Height="16" Offset="0x3FD0" TlutOffset="0x3B98"/>
+        <Texture Name="object_boj_Tex_004050" OutName="tex_00004050" Format="ci8" Width="16" Height="16" Offset="0x4050" TlutOffset="0x3B98"/>
+        <Texture Name="object_boj_Tex_004150" OutName="tex_00004150" Format="ci8" Width="16" Height="16" Offset="0x4150" TlutOffset="0x3B98"/>
+        <Texture Name="object_boj_Tex_004250" OutName="tex_00004250" Format="ci8" Width="16" Height="16" Offset="0x4250" TlutOffset="0x3B98"/>
+        <DList Name="object_boj_DL_0052E0" Offset="0x52E0"/>
+        <DList Name="object_boj_DL_005528" Offset="0x5528"/>
+        <DList Name="object_boj_DL_005738" Offset="0x5738"/>
+        <DList Name="object_boj_DL_0059B0" Offset="0x59B0"/>
+        <DList Name="object_boj_DL_005BC8" Offset="0x5BC8"/>
+    </File>
+</Root>

@@ -1,5 +1,3 @@
-#ifdef ENABLE_REMOTE_CONTROL
-
 #include "Sail.h"
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
@@ -7,13 +5,13 @@
 #include "soh/OTRGlobals.h"
 #include "soh/util.h"
 
-template <class DstType, class SrcType>
-bool IsType(const SrcType* src) {
+template <class DstType, class SrcType> bool IsType(const SrcType* src) {
     return dynamic_cast<const DstType*>(src) != nullptr;
 }
 
 void Sail::Enable() {
-    Network::Enable(CVarGetString(CVAR_REMOTE_SAIL("Host"), "127.0.0.1"), CVarGetInteger(CVAR_REMOTE_SAIL("Port"), 43384));
+    Network::Enable(CVarGetString(CVAR_REMOTE_SAIL("Host"), "127.0.0.1"),
+                    CVarGetInteger(CVAR_REMOTE_SAIL("Port"), 43384));
 }
 
 void Sail::OnConnected() {
@@ -56,7 +54,9 @@ void Sail::OnIncomingJson(nlohmann::json payload) {
             }
 
             std::string command = payload["command"].get<std::string>();
-            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch(command);
+            std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+                ->Dispatch(command);
             responsePayload["status"] = "success";
             SendJsonToRemote(responsePayload);
             return;
@@ -78,7 +78,9 @@ void Sail::OnIncomingJson(nlohmann::json payload) {
                 }
 
                 std::string command = payload["effect"]["command"].get<std::string>();
-                std::reinterpret_pointer_cast<Ship::ConsoleWindow>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch(command);
+                std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+                    ->Dispatch(command);
                 responsePayload["status"] = "success";
                 SendJsonToRemote(responsePayload);
                 return;
@@ -128,9 +130,7 @@ void Sail::OnIncomingJson(nlohmann::json payload) {
         SendJsonToRemote(responsePayload);
     } catch (const std::exception& e) {
         SPDLOG_ERROR("[Sail] Exception handling remote JSON: {}", e.what());
-    } catch (...) {
-        SPDLOG_ERROR("[Sail] Unknown exception handling remote JSON");
-    }
+    } catch (...) { SPDLOG_ERROR("[Sail] Unknown exception handling remote JSON"); }
 }
 
 GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
@@ -240,8 +240,8 @@ GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
-    } else if (name == "ModifyRunSpeedModifier") {
-        auto effect = new GameInteractionEffect::ModifyRunSpeedModifier();
+    } else if (name == "ModifyMovementSpeedMultiplier") {
+        auto effect = new GameInteractionEffect::ModifyMovementSpeedMultiplier();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
@@ -280,13 +280,6 @@ GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
         return effect;
     } else if (name == "SetCollisionViewer") {
         return new GameInteractionEffect::SetCollisionViewer();
-    } else if (name == "SetCosmeticsColor") {
-        auto effect = new GameInteractionEffect::SetCosmeticsColor();
-        if (payload.contains("parameters")) {
-            effect->parameters[0] = payload["parameters"][0].get<int32_t>();
-            effect->parameters[1] = payload["parameters"][1].get<int32_t>();
-        }
-        return effect;
     } else if (name == "RandomizeCosmetics") {
         return new GameInteractionEffect::RandomizeCosmetics();
     } else if (name == "PressButton") {
@@ -341,45 +334,9 @@ GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
 }
 
 void Sail::RegisterHooks() {
-    static HOOK_ID onTransitionEndHook = 0;
-    static HOOK_ID onLoadGameHook = 0;
-    static HOOK_ID onExitGameHook = 0;
-    static HOOK_ID onItemReceiveHook = 0;
-    static HOOK_ID onEnemyDefeatHook = 0;
-    static HOOK_ID onActorInitHook = 0;
-    static HOOK_ID onFlagSetHook = 0;
-    static HOOK_ID onFlagUnsetHook = 0;
-    static HOOK_ID onSceneFlagSetHook = 0;
-    static HOOK_ID onSceneFlagUnsetHook = 0;
-
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnTransitionEnd>(onTransitionEndHook);
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnLoadGame>(onLoadGameHook);
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnExitGame>(onExitGameHook);
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(onItemReceiveHook);
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnEnemyDefeat>(onEnemyDefeatHook);
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnFlagSet>(onFlagSetHook);
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnFlagUnset>(onFlagUnsetHook);
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneFlagSet>(onSceneFlagSetHook);
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneFlagUnset>(onSceneFlagUnsetHook);
-
-    onTransitionEndHook = 0;
-    onLoadGameHook = 0;
-    onExitGameHook = 0;
-    onItemReceiveHook = 0;
-    onEnemyDefeatHook = 0;
-    onActorInitHook = 0;
-    onFlagSetHook = 0;
-    onFlagUnsetHook = 0;
-    onSceneFlagSetHook = 0;
-    onSceneFlagUnsetHook = 0;
-
-    if (!isConnected) {
-        return;
-    }
-
-    onTransitionEndHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([&](int32_t sceneNum) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded()) return;
+    COND_HOOK(OnTransitionEnd, isConnected, [&](int32_t sceneNum) {
+        if (!isConnected || !GameInteractor::IsSaveLoaded())
+            return;
 
         nlohmann::json payload;
         payload["id"] = std::rand();
@@ -389,8 +346,10 @@ void Sail::RegisterHooks() {
 
         SendJsonToRemote(payload);
     });
-    onLoadGameHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([&](int32_t fileNum) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded()) return;
+
+    COND_HOOK(OnLoadGame, isConnected, [&](int32_t fileNum) {
+        if (!isConnected || !GameInteractor::IsSaveLoaded())
+            return;
 
         nlohmann::json payload;
         payload["id"] = std::rand();
@@ -400,8 +359,10 @@ void Sail::RegisterHooks() {
 
         SendJsonToRemote(payload);
     });
-    onExitGameHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([&](int32_t fileNum) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded()) return;
+
+    COND_HOOK(OnExitGame, isConnected, [&](int32_t fileNum) {
+        if (!isConnected || !GameInteractor::IsSaveLoaded())
+            return;
 
         nlohmann::json payload;
         payload["id"] = std::rand();
@@ -411,9 +372,10 @@ void Sail::RegisterHooks() {
 
         SendJsonToRemote(payload);
     });
-    onItemReceiveHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([&](GetItemEntry itemEntry) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded()) return;
 
+    COND_HOOK(OnItemReceive, isConnected, [&](GetItemEntry itemEntry) {
+        if (!isConnected || !GameInteractor::IsSaveLoaded())
+            return;
         nlohmann::json payload;
         payload["id"] = std::rand();
         payload["type"] = "hook";
@@ -423,8 +385,10 @@ void Sail::RegisterHooks() {
 
         SendJsonToRemote(payload);
     });
-    onEnemyDefeatHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnEnemyDefeat>([&](void* refActor) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded()) return;
+
+    COND_HOOK(OnEnemyDefeat, isConnected, [&](void* refActor) {
+        if (!isConnected || !GameInteractor::IsSaveLoaded())
+            return;
 
         Actor* actor = (Actor*)refActor;
         nlohmann::json payload;
@@ -436,8 +400,10 @@ void Sail::RegisterHooks() {
 
         SendJsonToRemote(payload);
     });
-    onActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>([&](void* refActor) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded()) return;
+
+    COND_HOOK(OnActorInit, isConnected, [&](void* refActor) {
+        if (!isConnected || !GameInteractor::IsSaveLoaded())
+            return;
 
         Actor* actor = (Actor*)refActor;
         nlohmann::json payload;
@@ -449,9 +415,10 @@ void Sail::RegisterHooks() {
 
         SendJsonToRemote(payload);
     });
-    onFlagSetHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>([&](int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded()) return;
 
+    COND_HOOK(OnFlagSet, isConnected, [&](int16_t flagType, int16_t flag) {
+        if (!isConnected || !GameInteractor::IsSaveLoaded())
+            return;
         nlohmann::json payload;
         payload["id"] = std::rand();
         payload["type"] = "hook";
@@ -461,9 +428,10 @@ void Sail::RegisterHooks() {
 
         SendJsonToRemote(payload);
     });
-    onFlagUnsetHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagUnset>([&](int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded()) return;
 
+    COND_HOOK(OnFlagUnset, isConnected, [&](int16_t flagType, int16_t flag) {
+        if (!isConnected || !GameInteractor::IsSaveLoaded())
+            return;
         nlohmann::json payload;
         payload["id"] = std::rand();
         payload["type"] = "hook";
@@ -473,9 +441,10 @@ void Sail::RegisterHooks() {
 
         SendJsonToRemote(payload);
     });
-    onSceneFlagSetHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneFlagSet>([&](int16_t sceneNum, int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded()) return;
 
+    COND_HOOK(OnSceneFlagSet, isConnected, [&](int16_t sceneNum, int16_t flagType, int16_t flag) {
+        if (!isConnected || !GameInteractor::IsSaveLoaded())
+            return;
         nlohmann::json payload;
         payload["id"] = std::rand();
         payload["type"] = "hook";
@@ -486,9 +455,10 @@ void Sail::RegisterHooks() {
 
         SendJsonToRemote(payload);
     });
-    onSceneFlagUnsetHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneFlagUnset>([&](int16_t sceneNum, int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded()) return;
 
+    COND_HOOK(OnSceneFlagUnset, isConnected, [&](int16_t sceneNum, int16_t flagType, int16_t flag) {
+        if (!isConnected || !GameInteractor::IsSaveLoaded())
+            return;
         nlohmann::json payload;
         payload["id"] = std::rand();
         payload["type"] = "hook";
@@ -500,5 +470,3 @@ void Sail::RegisterHooks() {
         SendJsonToRemote(payload);
     });
 }
-
-#endif // ENABLE_REMOTE_CONTROL

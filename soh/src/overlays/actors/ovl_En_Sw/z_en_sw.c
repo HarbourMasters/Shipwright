@@ -268,7 +268,8 @@ void EnSw_Init(Actor* thisx, PlayState* play) {
     }
 
     if (((thisx->params & 0xE000) >> 0xD) >= 3) {
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 
     switch ((thisx->params & 0xE000) >> 0xD) {
@@ -359,7 +360,7 @@ s32 func_80B0C9F0(EnSw* this, PlayState* play) {
                 this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                 this->actionFunc = func_80B0DB00;
             }
-            
+
             GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALWALL_DEAD);
@@ -554,7 +555,9 @@ void func_80B0D590(EnSw* this, PlayState* play) {
             this->collider.elements[0].info.ocElemFlags = 1;
         }
 
-        Math_ApproachF(&this->actor.scale.x, !IS_DAY || CVarGetInteger(CVAR_ENHANCEMENT("NightGSAlwaysSpawn"), 0) ? 0.02f : 0.0f, 0.2f, 0.01f);
+        Math_ApproachF(&this->actor.scale.x,
+                       !IS_DAY || CVarGetInteger(CVAR_ENHANCEMENT("NightGSAlwaysSpawn"), 0) ? 0.02f : 0.0f, 0.2f,
+                       0.01f);
         Actor_SetScale(&this->actor, this->actor.scale.x);
     }
 
@@ -618,13 +621,14 @@ void func_80B0D878(EnSw* this, PlayState* play) {
     this->actor.shape.rot = this->actor.world.rot;
 
     if ((this->unk_394 == 0) && (this->unk_392 == 0)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_KINSTA_MARK_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySoundGeneral(NA_SE_SY_KINSTA_MARK_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         x = (this->unk_364.x * 10.0f);
         y = (this->unk_364.y * 10.0f);
         z = (this->unk_364.z * 10.0f);
-        temp_v0 = Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_SI,
-                                        this->actor.world.pos.x + x, this->actor.world.pos.y + y,
-                                        this->actor.world.pos.z + z, 0, 0, 0, this->actor.params);
+        temp_v0 =
+            Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_SI, this->actor.world.pos.x + x,
+                               this->actor.world.pos.y + y, this->actor.world.pos.z + z, 0, 0, 0, this->actor.params);
         if (temp_v0 != NULL) {
             temp_v0->parent = NULL;
         }
@@ -637,8 +641,7 @@ void func_80B0D878(EnSw* this, PlayState* play) {
         pos.y += 10.0f + ((Rand_ZeroOne() - 0.5f) * 6.0f);
         pos.x += (Rand_ZeroOne() - 0.5f) * 32.0f;
         pos.z += (Rand_ZeroOne() - 0.5f) * 32.0f;
-        EffectSsDeadDb_Spawn(play, &pos, &velAndAccel, &velAndAccel, 42, 0, 255, 255, 255, 255, 255, 0, 0, 1, 9,
-                             true);
+        EffectSsDeadDb_Spawn(play, &pos, &velAndAccel, &velAndAccel, 42, 0, 255, 255, 255, 255, 255, 0, 0, 1, 9, true);
     }
 }
 
@@ -676,8 +679,7 @@ void func_80B0DC7C(EnSw* this, PlayState* play) {
         pos.y = ((Rand_ZeroOne() - 0.5f) * 6.0f) + (this->actor.world.pos.y + 10.0f);
         pos.x = ((Rand_ZeroOne() - 0.5f) * 32.0f) + this->actor.world.pos.x;
         pos.z = ((Rand_ZeroOne() - 0.5f) * 32.0f) + this->actor.world.pos.z;
-        EffectSsDeadDb_Spawn(play, &pos, &velAndAccel, &velAndAccel, 42, 0, 255, 255, 255, 255, 255, 0, 0, 1, 9,
-                             1);
+        EffectSsDeadDb_Spawn(play, &pos, &velAndAccel, &velAndAccel, 42, 0, 255, 255, 255, 255, 255, 0, 0, 1, 9, 1);
         this->actor.shape.rot.x += 0x1000;
         this->actor.shape.rot.z += 0x1000;
     } else {
@@ -709,8 +711,8 @@ s32 func_80B0DEA8(EnSw* this, PlayState* play, s32 arg2) {
         return false;
     } else if (Math_Vec3f_DistXYZ(&this->actor.world.pos, &player->actor.world.pos) >= 130.0f) {
         return false;
-    } else if (!BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &player->actor.world.pos, &sp48,
-                                        &sp58, true, false, false, true, &sp54)) {
+    } else if (!BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &player->actor.world.pos, &sp48, &sp58,
+                                        true, false, false, true, &sp54)) {
         return true;
     } else {
         return false;
@@ -732,16 +734,16 @@ s32 func_80B0DFFC(EnSw* this, PlayState* play) {
                                         false, false, true, &sp5C)) {
         sp4C = false;
     } else if (((play->state.frames % 4) == 1) &&
-               BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->unk_460, &sp50, &sp60, true,
-                                       false, false, true, &sp5C)) {
+               BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->unk_460, &sp50, &sp60, true, false,
+                                       false, true, &sp5C)) {
         sp4C = false;
     } else if (((play->state.frames % 4) == 2) &&
                !BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->subCamId, &sp50, &sp60, true,
                                         false, false, true, &sp5C)) {
         sp4C = false;
     } else if (((play->state.frames % 4) == 3) &&
-               BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->unk_478, &sp50, &sp60, true,
-                                       false, false, true, &sp5C)) {
+               BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->unk_478, &sp50, &sp60, true, false,
+                                       false, true, &sp5C)) {
         sp4C = false;
     }
 
@@ -1017,8 +1019,7 @@ void EnSw_Draw(Actor* thisx, PlayState* play) {
     }
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnSw_OverrideLimbDraw,
-                      EnSw_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnSw_OverrideLimbDraw, EnSw_PostLimbDraw, this);
     if (this->actionFunc == func_80B0E728) {
         func_80B0EEA4(play);
     }

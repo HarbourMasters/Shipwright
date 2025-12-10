@@ -6,6 +6,6 @@ EnvLightSettings* SetLightingSettings::GetPointer() {
 }
 
 size_t SetLightingSettings::GetPointerSize() {
-	return settings.size() * sizeof(EnvLightSettings);
+    return settings.size() * sizeof(EnvLightSettings);
 }
 } // namespace SOH

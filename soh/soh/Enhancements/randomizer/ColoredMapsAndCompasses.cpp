@@ -7,18 +7,20 @@
 #include "objects/object_gi_map/object_gi_map.h"
 
 extern "C" {
-    extern SaveContext gSaveContext;
-    #include "variables.h"
-    #include "macros.h"
-    u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
+extern SaveContext gSaveContext;
+#include "variables.h"
+#include "macros.h"
+u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
 
 #define CVAR_COLORED_MAPS_AND_COMPASSES_NAME CVAR_RANDOMIZER_ENHANCEMENT("ColoredMapsAndCompasses")
 #define CVAR_COLORED_MAPS_AND_COMPASSES_DEFAULT 1
-#define CVAR_COLORED_MAPS_AND_COMPASSES_VALUE CVarGetInteger(CVAR_COLORED_MAPS_AND_COMPASSES_NAME, CVAR_COLORED_MAPS_AND_COMPASSES_DEFAULT)
+#define CVAR_COLORED_MAPS_AND_COMPASSES_VALUE \
+    CVarGetInteger(CVAR_COLORED_MAPS_AND_COMPASSES_NAME, CVAR_COLORED_MAPS_AND_COMPASSES_DEFAULT)
 
 void OnLoadFileColoredMapsAndCompasses(int32_t _) {
-    s8 mapsAndCompassesCanBeOutsideDungeon = IS_RANDO && DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
+    s8 mapsAndCompassesCanBeOutsideDungeon =
+        IS_RANDO && DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
     s8 isColoredMapsAndCompassesEnabled = mapsAndCompassesCanBeOutsideDungeon && CVAR_COLORED_MAPS_AND_COMPASSES_VALUE;
     if (isColoredMapsAndCompassesEnabled) {
         ResourceMgr_PatchGfxByName(gGiDungeonMapDL, "Map_PrimColor", 5, gsDPNoOp());
@@ -36,7 +38,7 @@ void OnLoadFileColoredMapsAndCompasses(int32_t _) {
 void RegisterColoredMapsAndCompasses() {
     COND_HOOK(OnLoadFile, CVAR_COLORED_MAPS_AND_COMPASSES_VALUE, OnLoadFileColoredMapsAndCompasses)
 
-    //Also need to call it directly to patch/unpatch on cvar change
+    // Also need to call it directly to patch/unpatch on cvar change
     OnLoadFileColoredMapsAndCompasses(0);
 }
 

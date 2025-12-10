@@ -1,12 +1,16 @@
 #ifndef MACROS_H
 #define MACROS_H
 
-#include <endianness.h>
+#include <ship/utils/binarytools/endianness.h>
 
 // Upstream TODO: Document reasoning for change
 // #ifndef __GNUC__
 // #define __attribute__(x)
 // #endif
+
+// this was removed from the LUS rcp.h in https://github.com/Kenix3/libultraship/pull/833/
+// it is still used in graph.c and fault.c
+#define HW_REG(reg, type) *(volatile type*)((reg) | 0xA0000000)
 
 // SoH [Port] Always use the AVOID_UB version (we don't set AVOID_UB while building yet)
 /*

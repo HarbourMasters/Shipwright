@@ -1,11 +1,11 @@
 #include "SohMenuBar.h"
 #include <imgui.h>
 #include "regex"
-#include "public/bridge/consolevariablebridge.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 #include <libultraship/libultraship.h>
 #include "UIWidgets.hpp"
 #include "include/z64audio.h"
-#include "graphic/Fast3D/gfx_rendering_api.h"
+#include <fast/backends/gfx_rendering_api.h>
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
 #include "z64.h"
@@ -14,16 +14,12 @@
 #include "functions.h"
 #include "variables.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/presets.h"
+#include "soh/Enhancements/Presets/Presets.h"
 #include "soh/Enhancements/mods.h"
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
-#ifdef ENABLE_REMOTE_CONTROL
 #include "soh/Network/CrowdControl/CrowdControl.h"
 #include "soh/Network/Sail/Sail.h"
-#endif
-
-
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/Enhancements/controls/InputViewer.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
@@ -58,7 +54,9 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
         strcat(buttonText, ICON_FA_CHEVRON_RIGHT " ");
     }
     strcat(buttonText, text);
-    if (!menuOpen) { strcat(buttonText, "  "); }
+    if (!menuOpen) {
+        strcat(buttonText, "  ");
+    }
     return buttonText;
 }
 
@@ -68,14 +66,14 @@ static std::unordered_map<Ship::WindowBackend, const char*> windowBackendNames =
     { Ship::WindowBackend::FAST3D_SDL_METAL, "Metal" },
 };
 
-    static const char* filters[3] = {
+static const char* filters[3] = {
 #ifdef __WIIU__
-            "",
+    "",
 #else
-            "Three-Point",
+    "Three-Point",
 #endif
-            "Linear", "None"
-    };
+    "Linear", "None"
+};
 
 extern "C" SaveContext gSaveContext;
 
@@ -84,13 +82,10 @@ namespace SohGui {
 std::unordered_map<Ship::WindowBackend, const char*> availableWindowBackendsMap;
 Ship::WindowBackend configWindowBackend;
 
-extern std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
-
 void DrawSettingsMenu() {
 }
 
 void SohMenuBar::InitElement() {
-    
 }
 
 void SohMenuBar::DrawElement() {

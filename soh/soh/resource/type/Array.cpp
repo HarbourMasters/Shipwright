@@ -1,5 +1,5 @@
 #include "Array.h"
-#include "graphic/Fast3D/lus_gbi.h"
+#include <fast/lus_gbi.h>
 namespace SOH {
 Array::Array() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {
 }
@@ -23,7 +23,7 @@ size_t Array::GetPointerSize() {
     size_t typeSize = 0;
     switch (ArrayType) {
         case ArrayResourceType::Vertex:
-            typeSize = sizeof(F3DVtx);
+            typeSize = sizeof(Fast::F3DVtx);
             break;
         case ArrayResourceType::Scalar:
         default:
@@ -42,4 +42,4 @@ size_t Array::GetPointerSize() {
     }
     return ArrayCount * typeSize;
 }
-} // namespace LUS
+} // namespace SOH

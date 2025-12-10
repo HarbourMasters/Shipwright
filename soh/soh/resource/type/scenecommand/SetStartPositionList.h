@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 #include <string>
-#include "Resource.h"
+#include <ship/resource/Resource.h>
 #include "SceneCommand.h"
 #include "soh/resource/type/scenecommand/SetActorList.h"
 // #include <libultraship/libultra/types.h>
@@ -27,4 +27,4 @@ class SetStartPositionList : public SceneCommand<ActorEntry> {
     uint32_t numStartPositions;
     std::vector<ActorEntry> startPositions;
 };
-}; // namespace LUS
+}; // namespace SOH

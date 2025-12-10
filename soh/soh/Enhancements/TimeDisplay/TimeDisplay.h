@@ -1,13 +1,13 @@
 #include <libultraship/libultraship.h>
 
-class TimeDisplayWindow : public Ship::GuiWindow {
+class TimeDisplayWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 
     void InitElement() override;
-    void DrawElement() override {};
+    void DrawElement() override{};
     void Draw() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };
 
 void TimeDisplayUpdateDisplayOptions();
@@ -17,7 +17,7 @@ typedef enum TimerDisplay {
     DISPLAY_IN_GAME_TIMER,
     DISPLAY_TIME_OF_DAY,
     DISPLAY_CONDITIONAL_TIMER,
-    DISPLAY_NAVI_TIMER
+    DISPLAY_NAVI_TIMER,
 } TimerDisplay;
 
 typedef enum NaviTimerValues {

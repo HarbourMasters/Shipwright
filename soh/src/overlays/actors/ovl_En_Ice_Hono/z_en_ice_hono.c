@@ -241,9 +241,8 @@ void EnIceHono_DropFlame(EnIceHono* this, PlayState* play) {
     if (bgFlag != 0) {
         s32 i;
         for (i = 0; i < 8; i++) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ICE_HONO, this->actor.world.pos.x,
-                        this->actor.world.pos.y, this->actor.world.pos.z, 0,
-                        ((s32)(Rand_ZeroOne() * 1000.0f) + i * 0x2000) - 0x1F4, 0, 1, true);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ICE_HONO, this->actor.world.pos.x, this->actor.world.pos.y,
+                        this->actor.world.pos.z, 0, ((s32)(Rand_ZeroOne() * 1000.0f) + i * 0x2000) - 0x1F4, 0, 1, true);
         }
         EnIceHono_SetupActionSpreadFlames(this);
     }
@@ -292,9 +291,8 @@ void EnIceHono_SpreadFlames(EnIceHono* this, PlayState* play) {
         s32 i;
         for (i = 0; i < 10; i++) {
             s32 rot = i * 0x1999;
-            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ICE_HONO, this->actor.world.pos.x,
-                        this->actor.world.pos.y, this->actor.world.pos.z, 0,
-                        ((s32)(Rand_ZeroOne() * 1000.0f) + rot) - 0x1F4, 0, 2, true);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ICE_HONO, this->actor.world.pos.x, this->actor.world.pos.y,
+                        this->actor.world.pos.z, 0, ((s32)(Rand_ZeroOne() * 1000.0f) + rot) - 0x1F4, 0, 2, true);
         }
     }
 
@@ -379,8 +377,7 @@ void EnIceHono_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0, (play->state.frames * -20) % 512,
-                                32, 128));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0, (play->state.frames * -20) % 512, 32, 128));
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 170, 255, 255, this->alpha);
 
@@ -390,8 +387,7 @@ void EnIceHono_Draw(Actor* thisx, PlayState* play) {
                        (M_PI / 0x8000),
                    MTXMODE_APPLY);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
 
     CLOSE_DISPS(play->state.gfxCtx);

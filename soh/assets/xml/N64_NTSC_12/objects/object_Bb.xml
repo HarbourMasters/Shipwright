@@ -1,0 +1,37 @@
+<Root>
+    <File Name="object_Bb" Segment="6">
+        <Animation Name="object_Bb_Anim_000184" Offset="0x184"/>
+        <Animation Name="object_Bb_Anim_0002AC" Offset="0x2AC"/>
+        <Animation Name="object_Bb_Anim_000444" Offset="0x444"/>
+        <DList Name="object_Bb_DL_000C20" Offset="0xC20"/>
+        <DList Name="object_Bb_DL_000CB0" Offset="0xCB0"/>
+        <DList Name="object_Bb_DL_000D40" Offset="0xD40"/>
+        <DList Name="object_Bb_DL_000E08" Offset="0xE08"/>
+        <DList Name="object_Bb_DL_001100" Offset="0x1100"/>
+        <DList Name="object_Bb_DL_001190" Offset="0x1190"/>
+        <Texture Name="object_Bb_Tex_001220" OutName="tex_00001220" Format="rgba16" Width="16" Height="16" Offset="0x1220"/>
+        <Texture Name="object_Bb_Tex_001420" OutName="tex_00001420" Format="rgba16" Width="8" Height="8" Offset="0x1420"/>
+        <Texture Name="object_Bb_Tex_0014A0" OutName="tex_000014A0" Format="rgba16" Width="4" Height="4" Offset="0x14A0"/>
+        <Texture Name="object_Bb_Tex_0014C0" OutName="tex_000014C0" Format="rgba16" Width="8" Height="8" Offset="0x14C0"/>
+        <Texture Name="object_Bb_Tex_001540" OutName="tex_00001540" Format="rgba16" Width="8" Height="8" Offset="0x1540"/>
+        <Texture Name="object_Bb_Tex_0015C0" OutName="tex_000015C0" Format="rgba16" Width="8" Height="8" Offset="0x15C0"/>
+        <Texture Name="object_Bb_Tex_001640" OutName="tex_00001640" Format="rgba16" Width="16" Height="8" Offset="0x1640"/>
+        <Texture Name="object_Bb_Tex_001740" OutName="tex_00001740" Format="rgba16" Width="16" Height="16" Offset="0x1740"/>
+        <Limb Name="object_Bb_Limb_001940" LimbType="Standard" Offset="0x1940"/>
+        <Limb Name="object_Bb_Limb_00194C" LimbType="Standard" Offset="0x194C"/>
+        <Limb Name="object_Bb_Limb_001958" LimbType="Standard" Offset="0x1958"/>
+        <Limb Name="object_Bb_Limb_001964" LimbType="Standard" Offset="0x1964"/>
+        <Limb Name="object_Bb_Limb_001970" LimbType="Standard" Offset="0x1970"/>
+        <Limb Name="object_Bb_Limb_00197C" LimbType="Standard" Offset="0x197C"/>
+        <Limb Name="object_Bb_Limb_001988" LimbType="Standard" Offset="0x1988"/>
+        <Limb Name="object_Bb_Limb_001994" LimbType="Standard" Offset="0x1994"/>
+        <Limb Name="object_Bb_Limb_0019A0" LimbType="Standard" Offset="0x19A0"/>
+        <Limb Name="object_Bb_Limb_0019AC" LimbType="Standard" Offset="0x19AC"/>
+        <Limb Name="object_Bb_Limb_0019B8" LimbType="Standard" Offset="0x19B8"/>
+        <Limb Name="object_Bb_Limb_0019C4" LimbType="Standard" Offset="0x19C4"/>
+        <Limb Name="object_Bb_Limb_0019D0" LimbType="Standard" Offset="0x19D0"/>
+        <Limb Name="object_Bb_Limb_0019DC" LimbType="Standard" Offset="0x19DC"/>
+        <Limb Name="object_Bb_Limb_0019E8" LimbType="Standard" Offset="0x19E8"/>
+        <Skeleton Name="object_Bb_Skel_001A30" Type="Normal" LimbType="Standard" Offset="0x1A30"/>
+    </File>
+</Root>

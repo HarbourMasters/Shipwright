@@ -1,18 +1,19 @@
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
+
+extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
 #include "z64save.h"
-
-extern "C" PlayState* gPlayState;
+extern PlayState* gPlayState;
+}
 
 static constexpr int32_t CVAR_NUT_UPGRADE_FIX_DEFAULT = 0;
 #define CVAR_NUT_UPGRADE_FIX_NAME CVAR_ENHANCEMENT("DekuNutUpgradeFix")
 #define CVAR_NUT_UPGRADE_FIX_VALUE CVarGetInteger(CVAR_NUT_UPGRADE_FIX_NAME, CVAR_NUT_UPGRADE_FIX_DEFAULT)
 
-void DekuNutUpgradeFixAtForestStage(bool* should) {
+static void DekuNutUpgradeFixAtForestStage(bool* should) {
     // This check is needed because of an intentional fallthrough at the source
     if (Player_GetMask(gPlayState) == PLAYER_MASK_SKULL) {
         return;
@@ -29,11 +30,11 @@ void DekuNutUpgradeFixAtForestStage(bool* should) {
     }
 }
 
-void DekuNutUpgradeSetByPoachersSaw(bool* should) {
+static void DekuNutUpgradeSetByPoachersSaw(bool* should) {
     *should = false;
 }
 
-void RegisterDekuNutUpgradeFix() {
+static void RegisterDekuNutUpgradeFix() {
     COND_VB_SHOULD(VB_POACHERS_SAW_SET_DEKU_NUT_UPGRADE_FLAG, CVAR_NUT_UPGRADE_FIX_VALUE || IS_RANDO,
                    { DekuNutUpgradeSetByPoachersSaw(should); });
     COND_VB_SHOULD(VB_DEKU_SCRUBS_REACT_TO_MASK_OF_TRUTH, CVAR_NUT_UPGRADE_FIX_VALUE && !IS_RANDO,

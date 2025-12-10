@@ -6,6 +6,6 @@ WindSettings* SetWindSettings::GetPointer() {
 }
 
 size_t SetWindSettings::GetPointerSize() {
-	return sizeof(WindSettings);
+    return sizeof(WindSettings);
 }
 } // namespace SOH

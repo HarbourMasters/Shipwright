@@ -23,6 +23,7 @@ class TrialInfo {
     bool IsRequired() const;
     void SetAsRequired();
     void SetAsSkipped();
+
   private:
     RandomizerHintTextKey nameKey;
     TrialKey trialKey;
@@ -40,8 +41,9 @@ class Trials {
     size_t GetTrialListSize() const;
     void ParseJson(nlohmann::json spoilerFileJson);
     std::unordered_map<uint32_t, RandomizerHintTextKey> GetAllTrialHintHeys() const;
+
   private:
     std::array<TrialInfo, TK_MAX> mTrials;
 };
-}
+} // namespace Rando
 #endif //RANDOTRIALS_H

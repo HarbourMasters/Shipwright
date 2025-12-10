@@ -1,15 +1,17 @@
 #include "soh/resource/importer/ArrayFactory.h"
 #include "soh/resource/type/Array.h"
 #include "spdlog/spdlog.h"
-#include "graphic/Fast3D/lus_gbi.h"
+#include <fast/lus_gbi.h>
 
 namespace SOH {
-std::shared_ptr<Ship::IResource> ResourceFactoryBinaryArrayV0::ReadResource(std::shared_ptr<Ship::File> file) {
-    if (!FileHasValidFormatAndReader(file)) {
+std::shared_ptr<Ship::IResource>
+ResourceFactoryBinaryArrayV0::ReadResource(std::shared_ptr<Ship::File> file,
+                                           std::shared_ptr<Ship::ResourceInitData> initData) {
+    if (!FileHasValidFormatAndReader(file, initData)) {
         return nullptr;
     }
 
-    auto array = std::make_shared<Array>(file->InitData);
+    auto array = std::make_shared<Array>(initData);
     auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     array->ArrayType = (ArrayResourceType)reader->ReadUInt32();
@@ -18,7 +20,7 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryArrayV0::ReadResource(std:
     for (uint32_t i = 0; i < array->ArrayCount; i++) {
         if (array->ArrayType == ArrayResourceType::Vertex) {
             // OTRTODO: Implement Vertex arrays as just a vertex resource.
-            F3DVtx data;
+            Fast::F3DVtx data;
             data.v.ob[0] = reader->ReadInt16();
             data.v.ob[1] = reader->ReadInt16();
             data.v.ob[2] = reader->ReadInt16();
@@ -61,4 +63,4 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryArrayV0::ReadResource(std:
 
     return array;
 }
-} // namespace LUS
+} // namespace SOH

@@ -142,7 +142,7 @@ void func_80B3943C(EnWonderTalk* this, PlayState* play) {
         if ((Actor_ProcessTalkRequest(&this->actor, play))) {
             if (this->unk_156 != TEXT_STATE_DONE) {
                 // not if we're rando'd in the temple of time talking to the altar
-                if(!(IS_RANDO && play->sceneNum == SCENE_TEMPLE_OF_TIME)) {
+                if (!(IS_RANDO && play->sceneNum == SCENE_TEMPLE_OF_TIME)) {
                     this->actionFunc = func_80B395F0;
                 }
             } else {
@@ -214,8 +214,8 @@ void func_80B395F0(EnWonderTalk* this, PlayState* play) {
             case 3:
                 Message_CloseTextbox(play);
                 if (this->unk_164 == 0) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->actor.world.pos.x,
-                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 2, true);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->actor.world.pos.x, this->actor.world.pos.y,
+                                this->actor.world.pos.z, 0, 0, 0, 2, true);
                     this->unk_164 = 1;
                 }
 
@@ -224,8 +224,8 @@ void func_80B395F0(EnWonderTalk* this, PlayState* play) {
             case 5:
                 Message_CloseTextbox(play);
                 if (this->unk_164 == 0) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->actor.world.pos.x,
-                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 3, true);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->actor.world.pos.x, this->actor.world.pos.y,
+                                this->actor.world.pos.z, 0, 0, 0, 3, true);
                     this->unk_164 = 1;
                 }
                 this->actionFunc = func_80B391CC;

@@ -225,7 +225,7 @@ void EffectSsSolderSrchBall_Draw(PlayState* play, u32 index, EffectSs* this) {
     if (CVarGetInteger(CVAR_ENHANCEMENT("GuardVision"), 0) == 0) {
         return;
     }
-    
+
     GraphicsContext* gfxCtx = play->state.gfxCtx;
     u32 rm;
     u32 blc1;
@@ -242,8 +242,8 @@ void EffectSsSolderSrchBall_Draw(PlayState* play, u32 index, EffectSs* this) {
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetCycleType(POLY_XLU_DISP++, G_CYC_1CYCLE);
     gDPSetRenderMode(POLY_XLU_DISP++, rm | blc1, rm | blc2);
-    gDPSetCombineLERP(POLY_XLU_DISP++, PRIMITIVE, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, PRIMITIVE, 0, SHADE, 0, 0, 0,
-                      0, ENVIRONMENT);
+    gDPSetCombineLERP(POLY_XLU_DISP++, PRIMITIVE, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, PRIMITIVE, 0, SHADE, 0, 0, 0, 0,
+                      ENVIRONMENT);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
     if (*seenLink) {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 0, 0, 255);

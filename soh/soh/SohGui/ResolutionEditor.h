@@ -7,6 +7,6 @@ namespace SohGui {
 bool IsDroppingFrames();
 void RegisterResolutionWidgets();
 void UpdateResolutionVars();
-} // namespace BenGui
+} // namespace SohGui
 
 #endif // RESOLUTIONEDITOR_H

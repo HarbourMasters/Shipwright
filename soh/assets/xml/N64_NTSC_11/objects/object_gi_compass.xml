@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_compass" Segment="6">
+        <DList Name="gGiCompassDL" Offset="0x0960"/>
+        <DList Name="gGiCompassGlassDL" Offset="0x0C50"/>
+    </File>
+</Root>

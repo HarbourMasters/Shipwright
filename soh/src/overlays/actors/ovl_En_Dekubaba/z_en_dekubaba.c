@@ -230,8 +230,8 @@ void EnDekubaba_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 22.0f);
-    SkelAnime_Init(play, &this->skelAnime, &gDekuBabaSkel, &gDekuBabaFastChompAnim, this->jointTable,
-                   this->morphTable, 8);
+    SkelAnime_Init(play, &this->skelAnime, &gDekuBabaSkel, &gDekuBabaFastChompAnim, this->jointTable, this->morphTable,
+                   8);
     Collider_InitJntSph(play, &this->collider);
     Collider_SetJntSph(play, &this->collider, &this->actor, &sJntSphInit, this->colliderElements);
 
@@ -543,8 +543,8 @@ void EnDekubaba_Grow(EnDekubaba* this, PlayState* play) {
     this->actor.world.pos.x = this->actor.home.pos.x + headShiftX;
     this->actor.world.pos.z = this->actor.home.pos.z + headShiftZ;
 
-    EffectSsHahen_SpawnBurst(play, &this->actor.home.pos, this->size * 3.0f, 0, this->size * 12.0f,
-                             this->size * 5.0f, 1, HAHEN_OBJECT_DEFAULT, 10, NULL);
+    EffectSsHahen_SpawnBurst(play, &this->actor.home.pos, this->size * 3.0f, 0, this->size * 12.0f, this->size * 5.0f,
+                             1, HAHEN_OBJECT_DEFAULT, 10, NULL);
 
     if (this->timer == 0) {
         if (Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < 240.0f * this->size) {
@@ -604,8 +604,8 @@ void EnDekubaba_Retract(EnDekubaba* this, PlayState* play) {
     this->actor.world.pos.x = this->actor.home.pos.x + xShift;
     this->actor.world.pos.z = this->actor.home.pos.z + zShift;
 
-    EffectSsHahen_SpawnBurst(play, &this->actor.home.pos, this->size * 3.0f, 0, this->size * 12.0f,
-                             this->size * 5.0f, 1, HAHEN_OBJECT_DEFAULT, 0xA, NULL);
+    EffectSsHahen_SpawnBurst(play, &this->actor.home.pos, this->size * 3.0f, 0, this->size * 12.0f, this->size * 5.0f,
+                             1, HAHEN_OBJECT_DEFAULT, 0xA, NULL);
 
     if (this->timer == 0) {
         EnDekubaba_SetupWait(this);
@@ -1015,8 +1015,8 @@ void EnDekubaba_ShrinkDie(EnDekubaba* this, PlayState* play) {
 
     this->actor.scale.y = this->actor.scale.z = this->actor.scale.x;
     this->actor.shape.rot.z += 0x1C70;
-    EffectSsHahen_SpawnBurst(play, &this->actor.home.pos, this->size * 3.0f, 0, this->size * 12.0f,
-                             this->size * 5.0f, 1, HAHEN_OBJECT_DEFAULT, 10, NULL);
+    EffectSsHahen_SpawnBurst(play, &this->actor.home.pos, this->size * 3.0f, 0, this->size * 12.0f, this->size * 5.0f,
+                             1, HAHEN_OBJECT_DEFAULT, 10, NULL);
 }
 
 void EnDekubaba_DeadStickDrop(EnDekubaba* this, PlayState* play) {
@@ -1165,8 +1165,7 @@ void EnDekubaba_DrawStemRetracted(EnDekubaba* this, PlayState* play) {
                      MTXMODE_NEW);
     Matrix_RotateZYX(this->stemSectionAngle[0], this->actor.shape.rot.y, 0, MTXMODE_APPLY);
     Matrix_Scale(horizontalScale, horizontalScale, horizontalScale, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gDekuBabaStemTopDL);
 
     Actor_SetFocus(&this->actor, 0.0f);
@@ -1210,8 +1209,7 @@ void EnDekubaba_DrawStemExtended(EnDekubaba* this, PlayState* play) {
 
         Matrix_Put(&mtx);
         Matrix_RotateZYX(this->stemSectionAngle[i], this->actor.shape.rot.y, 0, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gSPDisplayList(POLY_OPA_DISP++, stemDLists[i]);
 
@@ -1245,8 +1243,7 @@ void EnDekubaba_DrawStemBasePruned(EnDekubaba* this, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     Matrix_RotateZYX(this->stemSectionAngle[2], this->actor.shape.rot.y, 0, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gDekuBabaStemBaseDL);
 
     Collider_UpdateSpheres(55, &this->collider);
@@ -1268,8 +1265,7 @@ void EnDekubaba_DrawBaseShadow(EnDekubaba* this, PlayState* play) {
 
     horizontalScale = this->size * 0.15f;
     Matrix_Scale(horizontalScale, 1.0f, horizontalScale, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gCircleShadowDL);
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1290,8 +1286,7 @@ void EnDekubaba_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (this->actionFunc != EnDekubaba_DeadStickDrop) {
-        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL,
-                          EnDekubaba_PostLimbDraw, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, EnDekubaba_PostLimbDraw, this);
 
         if (this->actionFunc == EnDekubaba_Wait) {
             EnDekubaba_DrawStemRetracted(this, play);
@@ -1303,8 +1298,7 @@ void EnDekubaba_Draw(Actor* thisx, PlayState* play) {
         Matrix_Translate(this->actor.home.pos.x, this->actor.home.pos.y, this->actor.home.pos.z, MTXMODE_NEW);
         Matrix_RotateY(this->actor.home.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gDekuBabaBaseLeavesDL);
 
         if (this->actionFunc == EnDekubaba_PrunedSomersault) {
@@ -1318,16 +1312,14 @@ void EnDekubaba_Draw(Actor* thisx, PlayState* play) {
         // Display solid until 40 frames left, then blink until killed.
     } else if ((this->timer > 40) || ((this->timer % 2) != 0)) {
         Matrix_Translate(0.0f, 0.0f, 200.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gDekuBabaStickDropDL);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-//OTRTODO fix this one
+// OTRTODO fix this one
 void EnDekuBaba_Reset(void) {
     // DMG_ENTRY(2, DEKUBABA_DMGEFF_SWORD)
-    
 }

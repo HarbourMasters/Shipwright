@@ -12,22 +12,22 @@
 
 namespace CheckTracker {
 
-class CheckTrackerSettingsWindow : public Ship::GuiWindow {
+class CheckTrackerSettingsWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
-    ~CheckTrackerSettingsWindow() {};
+    ~CheckTrackerSettingsWindow(){};
 
   protected:
-    void InitElement() override {};
+    void InitElement() override{};
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };
 
-class CheckTrackerWindow : public Ship::GuiWindow {
+class CheckTrackerWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
     void Draw() override;
-    ~CheckTrackerWindow() {};
+    ~CheckTrackerWindow(){};
 
   protected:
     void InitElement() override;
@@ -35,18 +35,18 @@ class CheckTrackerWindow : public Ship::GuiWindow {
     void UpdateElement() override;
 };
 
-//Converts an index into a Little Endian bitmask, as follows:
-//00: 0000000100000000
-//01: 0000001000000000
+// Converts an index into a Little Endian bitmask, as follows:
+// 00: 0000000100000000
+// 01: 0000001000000000
 //...
-//06: 0100000000000000
-//07: 1000000000000000
-//08: 0000000000000001
-//09: 0000000000000010
+// 06: 0100000000000000
+// 07: 1000000000000000
+// 08: 0000000000000001
+// 09: 0000000000000010
 //...
-//14: 0000000001000000
-//15: 0000000010000000
-//repeat...
+// 14: 0000000001000000
+// 15: 0000000010000000
+// repeat...
 #define INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(idx) (0x8000 >> (7 - (idx % 8) + ((idx % 16) / 8) * 8))
 
 void Teardown();
@@ -65,5 +65,7 @@ void UpdateAllOrdering();
 void UpdateAllAreas();
 void RecalculateAllAreaTotals();
 void SpoilAreaFromCheck(RandomizerCheck rc);
+void RecalculateAvailableChecks(RandomizerRegion startingRegion = RR_ROOT);
+void CheckTracker_LoadFromPreset(nlohmann::json info);
 } // namespace CheckTracker
 #endif //RANDOCHECKTRACKER_H

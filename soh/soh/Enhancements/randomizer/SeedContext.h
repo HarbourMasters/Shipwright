@@ -17,6 +17,8 @@
 #include <map>
 #include <nlohmann/json.hpp>
 
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
+
 /**
  * @brief Singleton for storing and accessing dynamic Randomizer-related data
  *
@@ -56,7 +58,8 @@ class Context {
     void AddLocations(const Container& locations, std::vector<RandomizerCheck>* destination = nullptr);
     bool IsQuestOfLocationActive(RandomizerCheck rc);
     void GenerateLocationPool();
-    static std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool, const RandomizerCheckType checkType);
+    static std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool,
+                                                     const RandomizerCheckType checkType);
     void AddExcludedOptions();
     void LocationReset();
     void ClearItemLocations();
@@ -106,12 +109,22 @@ class Context {
      * @return RandoOptionLACSCondition
      */
     RandoOptionLACSCondition LACSCondition() const;
+
+    /**
+     * @brief Sets the resolved Light Arrow CutScene check condition.
+     * There is no direct option for this, it is inferred based on the value of a few other options.
+     *
+     * @param lacsCondition
+     */
+    void LACSCondition(RandoOptionLACSCondition lacsCondition);
+
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
     void ParseSpoiler(const char* spoilerFileName);
     void ParseHashIconIndexesJson(nlohmann::json spoilerFileJson);
     void ParseItemLocationsJson(nlohmann::json spoilerFileJson);
     void WriteHintJson(nlohmann::ordered_json& spoilerFileJson);
     void ParseHintJson(nlohmann::json spoilerFileJson);
+    void ParseTricksJson(nlohmann::json spoilerFileJson);
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
     std::vector<RandomizerCheck> everyPossibleLocation = {};
@@ -164,6 +177,8 @@ class Context {
      * @param hash
      */
     void SetHash(std::string hash);
+    uint8_t GetBombchuCapacity();
+    void HandleGetBombchuBag();
 
   private:
     static std::weak_ptr<Context> mContext;

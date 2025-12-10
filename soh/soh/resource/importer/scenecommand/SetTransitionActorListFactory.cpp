@@ -2,14 +2,16 @@
 #include "soh/resource/type/scenecommand/SetTransitionActorList.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
+#include <tinyxml2.h>
 
 namespace SOH {
-std::shared_ptr<Ship::IResource> SetTransitionActorListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
-                                                                      std::shared_ptr<Ship::BinaryReader> reader) {
+std::shared_ptr<Ship::IResource>
+SetTransitionActorListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                            std::shared_ptr<Ship::BinaryReader> reader) {
     auto setTransitionActorList = std::make_shared<SetTransitionActorList>(initData);
-    
+
     ReadCommandId(setTransitionActorList, reader);
-	
+
     setTransitionActorList->numTransitionActors = reader->ReadUInt32();
     setTransitionActorList->transitionActorList.reserve(setTransitionActorList->numTransitionActors);
     for (uint32_t i = 0; i < setTransitionActorList->numTransitionActors; i++) {
@@ -36,8 +38,9 @@ std::shared_ptr<Ship::IResource> SetTransitionActorListFactory::ReadResource(std
     return setTransitionActorList;
 }
 
-std::shared_ptr<Ship::IResource> SetTransitionActorListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
-                                                                   tinyxml2::XMLElement* reader) {
+std::shared_ptr<Ship::IResource>
+SetTransitionActorListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
+                                               tinyxml2::XMLElement* reader) {
     auto setTransitionActorList = std::make_shared<SetTransitionActorList>(initData);
 
     setTransitionActorList->cmdId = SceneCommandID::SetTransitionActorList;

@@ -73,8 +73,8 @@ void BgGndSoulmeiro_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = func_8087B284;
             if (Flags_GetSwitch(play, (this->actor.params >> 8) & 0x3F)) {
 
-                Actor_Spawn(&play->actorCtx, play, ACTOR_MIR_RAY, this->actor.world.pos.x,
-                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 9, true);
+                Actor_Spawn(&play->actorCtx, play, ACTOR_MIR_RAY, this->actor.world.pos.x, this->actor.world.pos.y,
+                            this->actor.world.pos.z, 0, 0, 0, 9, true);
                 this->actor.draw = NULL;
                 Actor_Kill(&this->actor);
                 return;
@@ -121,8 +121,8 @@ void func_8087AF38(BgGndSoulmeiro* this, PlayState* play) {
     if (!this->unk_198) {
         Flags_SetSwitch(play, (thisx->params >> 8) & 0x3F);
         Actor_Kill(&this->actor);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_MIR_RAY, thisx->world.pos.x, thisx->world.pos.y,
-                    thisx->world.pos.z, 0, 0, 0, 9, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_MIR_RAY, thisx->world.pos.x, thisx->world.pos.y, thisx->world.pos.z, 0,
+                    0, 0, 9, true);
     } else if ((this->unk_198 % 6) == 0) {
         s32 i;
         s16 temp_2 = Rand_ZeroOne() * (10922.0f); // This should be: 0x10000 / 6.0f
@@ -150,8 +150,8 @@ void func_8087AF38(BgGndSoulmeiro* this, PlayState* play) {
             vecA.x = 4.0f * temp_3 * distXZ;
             vecA.y = 0.0f;
             vecA.z = 4.0f * temp_4 * distXZ;
-            EffectSsDeadDb_Spawn(play, &thisx->home.pos, &vecA, &zeroVec, 60, 6, 255, 255, 150, 170, 255, 0, 0, 1,
-                                 14, true);
+            EffectSsDeadDb_Spawn(play, &thisx->home.pos, &vecA, &zeroVec, 60, 6, 255, 255, 150, 170, 255, 0, 0, 1, 14,
+                                 true);
             temp_2 += 0x2AAA;
         }
     }
@@ -163,7 +163,8 @@ void func_8087B284(BgGndSoulmeiro* this, PlayState* play) {
     if (!Flags_GetSwitch(play, (this->actor.params >> 8) & 0x3F)) {
         this->actor.draw = BgGndSoulmeiro_Draw;
         if (this->collider.base.acFlags & AC_HIT) {
-            Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             this->unk_198 = 40;
             this->actionFunc = func_8087AF38;
         } else {
@@ -201,8 +202,7 @@ void BgGndSoulmeiro_Draw(Actor* thisx, PlayState* play) {
         case 0:
             OPEN_DISPS(play->state.gfxCtx);
             Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, dLists[params]);
             CLOSE_DISPS(play->state.gfxCtx);
             break;

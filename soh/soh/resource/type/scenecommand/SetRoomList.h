@@ -4,11 +4,10 @@
 #include <vector>
 #include <memory>
 #include <string>
-#include "Resource.h"
+#include <ship/resource/Resource.h>
 #include "SceneCommand.h"
 #include "RomFile.h"
 #include <libultraship/libultra/types.h>
-
 
 namespace SOH {
 // typedef struct {
@@ -29,4 +28,4 @@ class SetRoomList : public SceneCommand<RomFile> {
     std::vector<std::string> fileNames;
     std::vector<RomFile> rooms;
 };
-}; // namespace LUS
+}; // namespace SOH

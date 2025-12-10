@@ -85,8 +85,8 @@ void EnVbBall_Destroy(Actor* thisx, PlayState* play) {
     }
 }
 
-void EnVbBall_SpawnDebris(PlayState* play, BossFdEffect* effect, Vec3f* position, Vec3f* velocity,
-                          Vec3f* acceleration, f32 scale) {
+void EnVbBall_SpawnDebris(PlayState* play, BossFdEffect* effect, Vec3f* position, Vec3f* velocity, Vec3f* acceleration,
+                          f32 scale) {
     s16 i;
 
     for (i = 0; i < 180; i++, effect++) {
@@ -103,8 +103,8 @@ void EnVbBall_SpawnDebris(PlayState* play, BossFdEffect* effect, Vec3f* position
     }
 }
 
-void EnVbBall_SpawnDust(PlayState* play, BossFdEffect* effect, Vec3f* position, Vec3f* velocity,
-                        Vec3f* acceleration, f32 scale) {
+void EnVbBall_SpawnDust(PlayState* play, BossFdEffect* effect, Vec3f* position, Vec3f* velocity, Vec3f* acceleration,
+                        f32 scale) {
     s16 i;
 
     for (i = 0; i < 180; i++, effect++) {
@@ -136,8 +136,8 @@ void EnVbBall_UpdateBones(EnVbBall* this, PlayState* play) {
         this->actor.velocity.z = cosf(angle) * 10.0f;
         this->actor.velocity.y *= -0.5f;
         if (this->actor.params & 1) {
-            Audio_PlaySoundGeneral(NA_SE_EN_VALVAISA_LAND, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultReverb);
+            Audio_PlaySoundGeneral(NA_SE_EN_VALVAISA_LAND, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
         for (i = 0; i < 10; i++) {
             Vec3f dustVel = { 0.0f, 0.0f, 0.0f };
@@ -154,8 +154,7 @@ void EnVbBall_UpdateBones(EnVbBall* this, PlayState* play) {
             dustPos.y = this->actor.floorHeight + 10.0f;
             dustPos.z = Rand_CenteredFloat(20.0f) + this->actor.world.pos.z;
 
-            EnVbBall_SpawnDust(play, bossFd->effects, &dustPos, &dustVel, &dustAcc,
-                               Rand_ZeroFloat(80.0f) + 200.0f);
+            EnVbBall_SpawnDust(play, bossFd->effects, &dustPos, &dustVel, &dustAcc, Rand_ZeroFloat(80.0f) + 200.0f);
         }
     }
     if (this->actor.world.pos.y < 50.0f) {
@@ -214,15 +213,15 @@ void EnVbBall_Update(Actor* thisx, PlayState* play2) {
                         spawnOffset.y = Rand_ZeroFloat(3.0f) + 4.0f;
                         spawnOffset.z = Rand_CenteredFloat(10.0f);
                     }
-                    newActor = (EnVbBall*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play,
-                                                             ACTOR_EN_VB_BALL, this->actor.world.pos.x + spawnOffset.x,
-                                                             this->actor.world.pos.y + spawnOffset.y,
-                                                             this->actor.world.pos.z + spawnOffset.z, 0, 0,
-                                                             this->actor.world.rot.z * 0.5f, this->actor.params + 1);
+                    newActor = (EnVbBall*)Actor_SpawnAsChild(
+                        &play->actorCtx, &this->actor, play, ACTOR_EN_VB_BALL, this->actor.world.pos.x + spawnOffset.x,
+                        this->actor.world.pos.y + spawnOffset.y, this->actor.world.pos.z + spawnOffset.z, 0, 0,
+                        this->actor.world.rot.z * 0.5f, this->actor.params + 1);
                     if (newActor != NULL) {
                         if ((i == 0) && (this->actor.params == 100)) {
                             Audio_PlaySoundGeneral(NA_SE_EN_VALVAISA_ROCK, &newActor->actor.projectedPos, 4,
-                                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                   &gSfxDefaultReverb);
                         }
                         newActor->actor.parent = this->actor.parent;
                         newActor->actor.velocity = spawnOffset;
@@ -304,8 +303,7 @@ void EnVbBall_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->actor.params >= 200) {
         gSPDisplayList(POLY_OPA_DISP++, SEGMENTED_TO_VIRTUAL(gVolvagiaRibsDL));
@@ -316,8 +314,7 @@ void EnVbBall_Draw(Actor* thisx, PlayState* play) {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, (s8)this->shadowOpacity);
         Matrix_Translate(this->actor.world.pos.x, 100.0f, this->actor.world.pos.z, MTXMODE_NEW);
         Matrix_Scale(this->shadowSize, 1.0f, this->shadowSize, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gCircleShadowDL));
     }
 

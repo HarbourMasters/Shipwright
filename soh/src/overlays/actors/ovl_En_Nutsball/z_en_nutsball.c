@@ -156,7 +156,9 @@ void EnNutsball_Update(Actor* thisx, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s32 pad;
 
-    if (!(player->stateFlags1 & (PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE)) || (this->actionFunc == func_80ABBB34)) {
+    if (!(player->stateFlags1 &
+          (PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE)) ||
+        (this->actionFunc == func_80ABBB34)) {
         this->actionFunc(this, play);
 
         Actor_MoveXZGravity(&this->actor);
@@ -179,21 +181,18 @@ void EnNutsball_Draw(Actor* thisx, PlayState* play) {
     if (CVarGetInteger(CVAR_ENHANCEMENT("NewDrops"), 0) != 0) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08,
-                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 6),
-                                    1 * (play->state.frames * 6), 32, 32, 1, 1 * (play->state.frames * 6),
-                                    1 * (play->state.frames * 6), 32, 32));
-        Matrix_Scale(25.0f,25.0f,25.0f,MTXMODE_APPLY);
+                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 6), 1 * (play->state.frames * 6),
+                                    32, 32, 1, 1 * (play->state.frames * 6), 1 * (play->state.frames * 6), 32, 32));
+        Matrix_Scale(25.0f, 25.0f, 25.0f, MTXMODE_APPLY);
         Matrix_RotateX(thisx->home.rot.z * 9.58738e-05f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                G_MTX_MODELVIEW | G_MTX_LOAD);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_OPA_DISP++, sDListsNew[thisx->params]);
     } else {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
-        
+
         Matrix_RotateZ(thisx->home.rot.z * 9.58738e-05f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                G_MTX_MODELVIEW | G_MTX_LOAD);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_OPA_DISP++, sDLists[thisx->params]);
     }
 

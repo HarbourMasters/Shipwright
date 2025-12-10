@@ -6,6 +6,6 @@ LightInfo* SetLightList::GetPointer() {
 }
 
 size_t SetLightList::GetPointerSize() {
-	return lightList.size() * sizeof(LightInfo);
+    return lightList.size() * sizeof(LightInfo);
 }
 } // namespace SOH

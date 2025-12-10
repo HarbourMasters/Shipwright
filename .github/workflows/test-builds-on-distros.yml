@@ -23,24 +23,24 @@ jobs:
       if: ${{ matrix.image == 'archlinux:base' }}
       run: |
         echo arch
-        echo pacman -S ${{ matrix.cc }} git cmake ninja lsb-release sdl2 libpng libzip nlohmann-json tinyxml2 spdlog sdl2_net boost
+        echo pacman -S ${{ matrix.cc }} git cmake ninja lsb-release sdl2 libpng libzip nlohmann-json tinyxml2 spdlog sdl2_net
         pacman -Syu --noconfirm
-        pacman -S --noconfirm ${{ matrix.cc }} git cmake ninja lsb-release sdl2 libpng libzip nlohmann-json tinyxml2 spdlog sdl2_net boost
+        pacman -S --noconfirm ${{ matrix.cc }} git cmake ninja lsb-release sdl2 libpng libzip nlohmann-json tinyxml2 spdlog sdl2_net
     - name: Install dependencies (dnf)
       if: ${{ matrix.image == 'fedora:39' }}
       run: |
         echo fedora
-        echo dnf install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} wget git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools tinyxml2-devel spdlog-devel boost-devel
+        echo dnf install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} wget git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools tinyxml2-devel spdlog-devel
         dnf -y upgrade
-        dnf -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} wget git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools tinyxml2-devel spdlog-devel boost-devel
+        dnf -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} wget git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools tinyxml2-devel spdlog-devel
     - name: Install dependencies (apt)
       if: ${{ matrix.image == 'ubuntu:mantic' || matrix.image == 'debian:bookworm' }}
       run: |
         echo debian based
-        echo apt-get install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool nlohmann-json3-dev libtinyxml2-dev libspdlog-dev libboost-dev libopengl-dev
+        echo apt-get install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool nlohmann-json3-dev libtinyxml2-dev libspdlog-dev libopengl-dev
         apt-get update
         apt-get -y full-upgrade
-        apt-get -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool nlohmann-json3-dev libtinyxml2-dev libspdlog-dev libboost-dev libopengl-dev
+        apt-get -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool nlohmann-json3-dev libtinyxml2-dev libspdlog-dev libopengl-dev
     - name: Install dependencies (zypper)
       if: ${{ matrix.image == 'opensuse/tumbleweed:latest' }}
       run: |

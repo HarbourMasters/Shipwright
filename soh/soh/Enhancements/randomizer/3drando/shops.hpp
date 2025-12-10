@@ -16,16 +16,10 @@ struct PriceSettingsStruct {
     RandomizerSettingKey tycoonWallet;
     RandomizerSettingKey affordable;
 
-    PriceSettingsStruct(RandomizerSettingKey _main,
-                        RandomizerSettingKey _fixedPrice,
-                        RandomizerSettingKey _range1,
-                        RandomizerSettingKey _range2,
-                        RandomizerSettingKey _noWallet,
-                        RandomizerSettingKey _childWallet,
-                        RandomizerSettingKey _adultWallet,
-                        RandomizerSettingKey _giantWallet,
-                        RandomizerSettingKey _tycoonWallet,
-                        RandomizerSettingKey _affordable);
+    PriceSettingsStruct(RandomizerSettingKey _main, RandomizerSettingKey _fixedPrice, RandomizerSettingKey _range1,
+                        RandomizerSettingKey _range2, RandomizerSettingKey _noWallet, RandomizerSettingKey _childWallet,
+                        RandomizerSettingKey _adultWallet, RandomizerSettingKey _giantWallet,
+                        RandomizerSettingKey _tycoonWallet, RandomizerSettingKey _affordable);
 };
 
 extern void PlaceVanillaShopItems();
@@ -34,5 +28,3 @@ extern uint16_t GetRandomPrice(Rando::Location* loc, PriceSettingsStruct priceSe
 extern uint16_t GetCheapBalancedPrice();
 extern int GetShopsanityReplaceAmount();
 extern Text GetIceTrapName(uint8_t id);
-
-

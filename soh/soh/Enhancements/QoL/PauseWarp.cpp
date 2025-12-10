@@ -1,0 +1,153 @@
+#include <string>
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ShipInit.hpp"
+
+extern "C" {
+#include "functions.h"
+#include "macros.h"
+#include "variables.h"
+
+extern PlayState* gPlayState;
+
+u8 Randomizer_GetSettingValue(RandomizerSettingKey);
+}
+
+static constexpr int32_t CVAR_PAUSE_WARP_DEFAULT = 0;
+#define CVAR_PAUSE_WARP_NAME CVAR_ENHANCEMENT("PauseWarp")
+#define CVAR_PAUSE_WARP_VALUE CVarGetInteger(CVAR_PAUSE_WARP_NAME, CVAR_PAUSE_WARP_DEFAULT)
+
+static const int songMessageMap[] = {
+    TEXT_WARP_MINUET_OF_FOREST,  TEXT_WARP_BOLERO_OF_FIRE,     TEXT_WARP_SERENADE_OF_WATER,
+    TEXT_WARP_REQUIEM_OF_SPIRIT, TEXT_WARP_NOCTURNE_OF_SHADOW, TEXT_WARP_PRELUDE_OF_LIGHT,
+};
+
+static const int ocarinaSongMap[] = {
+    OCARINA_SONG_MINUET,  OCARINA_SONG_BOLERO,   OCARINA_SONG_SERENADE,
+    OCARINA_SONG_REQUIEM, OCARINA_SONG_NOCTURNE, OCARINA_SONG_PRELUDE,
+};
+
+static const int entranceIndexMap[] = {
+    ENTR_SACRED_FOREST_MEADOW_WARP_PAD,  // Minuet
+    ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD, // Bolero
+    ENTR_LAKE_HYLIA_WARP_PAD,            // Serenade
+    ENTR_DESERT_COLOSSUS_WARP_PAD,       // Requiem
+    ENTR_GRAVEYARD_WARP_PAD,             // Nocturne
+    ENTR_TEMPLE_OF_TIME_WARP_PAD,        // Prelude
+};
+
+static const int songAudioMap[] = {
+    NA_BGM_OCA_MINUET,  NA_BGM_OCA_BOLERO,   NA_BGM_OCA_SERENADE,
+    NA_BGM_OCA_REQUIEM, NA_BGM_OCA_NOCTURNE, NA_BGM_OCA_LIGHT,
+};
+
+static bool isWarpActive = false;
+
+static void PauseWarp_Execute() {
+    if (!isWarpActive || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
+        return;
+    }
+    isWarpActive = false;
+    GET_PLAYER(gPlayState)->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
+    if (gPlayState->msgCtx.choiceIndex != 0) {
+        return;
+    }
+    if (IS_RANDO) {
+        Entrance_SetWarpSongEntrance();
+        return;
+    }
+    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+    gPlayState->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
+    for (int i = 0; i < ARRAY_COUNT(ocarinaSongMap); i++) {
+        if (gPlayState->msgCtx.lastPlayedSong == ocarinaSongMap[i]) {
+            gPlayState->nextEntranceIndex = entranceIndexMap[i];
+            func_80088AF0(gPlayState);
+            return;
+        }
+    }
+    gPlayState->transitionTrigger = TRANS_TRIGGER_OFF;
+}
+
+static void ActivateWarp(PauseContext* pauseCtx, int song) {
+    Audio_OcaSetInstrument(0);
+    Interface_SetDoAction(gPlayState, DO_ACTION_NONE);
+    pauseCtx->state = 0x12;
+    WREG(2) = -6240;
+    func_800F64E0(0);
+    pauseCtx->unk_1E4 = 0;
+    int idx = song - QUEST_SONG_MINUET;
+    gPlayState->msgCtx.lastPlayedSong = ocarinaSongMap[idx];
+    Audio_SetSoundBanksMute(0x20);
+    Audio_PlayFanfare(songAudioMap[idx]);
+    Message_StartTextbox(gPlayState, songMessageMap[idx], NULL);
+    GET_PLAYER(gPlayState)->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
+    isWarpActive = true;
+}
+
+static void PauseWarp_HandleSelection() {
+    if (gSaveContext.inventory.items[SLOT_OCARINA] != ITEM_NONE) {
+        int aButtonPressed = CHECK_BTN_ALL(gPlayState->state.input->press.button, BTN_A);
+        int song = gPlayState->pauseCtx.cursorPoint[PAUSE_QUEST];
+        if (aButtonPressed && CHECK_QUEST_ITEM(song) && song >= QUEST_SONG_MINUET && song <= QUEST_SONG_PRELUDE &&
+            gPlayState->pauseCtx.pageIndex == PAUSE_QUEST && gPlayState->pauseCtx.state == 6) {
+            if (gSaveContext.ship.quest.id == QUEST_RANDOMIZER &&
+                Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS)) {
+                bool canplay = false;
+                switch (song) {
+                    case QUEST_SONG_MINUET:
+                        canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP);
+                        break;
+                    case QUEST_SONG_BOLERO:
+                        canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+                        break;
+                    case QUEST_SONG_SERENADE:
+                        canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+                        break;
+                    case QUEST_SONG_REQUIEM:
+                        canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+                        break;
+                    case QUEST_SONG_NOCTURNE:
+                        canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+                        break;
+                    case QUEST_SONG_PRELUDE:
+                        canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                                  Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP);
+                        break;
+                }
+                if (!canplay) {
+                    return;
+                }
+            }
+            ActivateWarp(&gPlayState->pauseCtx, song);
+        }
+    }
+}
+
+static void RegisterPauseMenuHooks() {
+    COND_HOOK(OnKaleidoUpdate, CVAR_PAUSE_WARP_VALUE, [] {
+        if (GameInteractor::IsSaveLoaded()) {
+            PauseWarp_HandleSelection();
+        }
+    });
+    COND_HOOK(OnGameFrameUpdate, CVAR_PAUSE_WARP_VALUE, [] {
+        if (GameInteractor::IsSaveLoaded()) {
+            PauseWarp_Execute();
+        }
+    });
+}
+
+static RegisterShipInitFunc initFunc(RegisterPauseMenuHooks, { CVAR_PAUSE_WARP_NAME });

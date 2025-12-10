@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 #include <string>
-#include "Resource.h"
+#include <ship/resource/Resource.h>
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
@@ -19,4 +19,4 @@ class SetObjectList : public SceneCommand<int16_t> {
     uint32_t numObjects;
     std::vector<int16_t> objects;
 };
-}; // namespace LUS
+}; // namespace SOH
