@@ -566,7 +566,10 @@ void SohMenu::AddMenuRandomizer() {
 
     // Seed Settings
     WidgetPath path = { "Randomizer", "General", SECTION_COLUMN_1 };
-    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+    AddSidebarEntry("Randomizer", path.sidebarName, 2);
+    AddWidget(path, "Be sure to explore the Presets and Enhancements Menus for various Speedups and Quality of life changes!", WIDGET_TEXT)
+        .Options(TextOptions().Color(UIWidgets::Colors::Gray));
+    AddWidget(path, "Seed Entry", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Manual seed entry", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"))
         .Options(CheckboxOptions().DefaultValue(true));
@@ -620,31 +623,12 @@ void SohMenu::AddMenuRandomizer() {
                 std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
                 ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
             }
-        });
+        }).SameLine(true);
     
-    auto randoSettings = Rando::Settings::GetInstance();
-    randoSettings->CreateOptions();
-    randoSettings->GetOptionGroup(RSG_WORLD_IMGUI_TABLE).AddWidgets(path);
-    randoSettings->GetOptionGroup(RSG_ITEMS_IMGUI_TABLE).AddWidgets(path);
-    randoSettings->GetOptionGroup(RSG_GAMEPLAY_IMGUI_TABLE).AddWidgets(path);
-    path.sidebarName = "Locations";
-    AddSidebarEntry("Randomizer", path.sidebarName, 1);
-    AddWidget(path, "Excluded Locations", WIDGET_CUSTOM)
-        .CustomFunction(DrawLocationsMenu);
-    path.sidebarName = "Tricks/Glitches";
-    AddSidebarEntry("Randomizer", path.sidebarName, 1);
-    randoSettings->GetOption(RSK_LOGIC_RULES).AddWidget(path);
-    randoSettings->GetOption(RSK_ALL_LOCATIONS_REACHABLE).AddWidget(path);
-    AddWidget(path, "Tricks/Glitches", WIDGET_CUSTOM)
-        .CustomFunction(DrawTricksMenu);
-    randoSettings->GetOptionGroup(RSG_STARTING_INVENTORY_IMGUI_TABLE).AddWidgets(path);
-
-
     // Enhancements
-    path.sidebarName = "Enhancements";
-    path.column = SECTION_COLUMN_1;
-    AddSidebarEntry("Randomizer", path.sidebarName, 3);
-    AddWidget(path, "Randomizer Enhancements", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Enhancements", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "These enhancements are only useful in the Randomizer mode but do not affect the randomizer logic.", WIDGET_TEXT)
+        .Options(TextOptions().Color(UIWidgets::Colors::Gray));
     AddWidget(path, "Rando-Relevant Navi Hints", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"))
         .Options(CheckboxOptions()
@@ -713,6 +697,22 @@ void SohMenu::AddMenuRandomizer() {
         })
         .Options(FloatSliderOptions().Min(5.0f).Max(15.0f).Format("%.2f").DefaultValue(10.0f).Tooltip(
             "The size of the item when it is picked up."));
+
+    auto randoSettings = Rando::Settings::GetInstance();
+    randoSettings->CreateOptions();
+    randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_LOGIC_ACCESS).AddWidgets(path);
+    randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_DUNGEONS).AddWidgets(path);
+    randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_SHUFFLES).AddWidgets(path);
+    randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_HINTS_TRAPS).AddWidgets(path);
+    path.sidebarName = "Locations";
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+    AddWidget(path, "Excluded Locations", WIDGET_CUSTOM)
+        .CustomFunction(DrawLocationsMenu);
+    path.sidebarName = "Tricks/Glitches";
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+    AddWidget(path, "Tricks/Glitches", WIDGET_CUSTOM)
+        .CustomFunction(DrawTricksMenu);
+    randoSettings->GetOptionGroup(RSG_STARTING_INVENTORY_IMGUI_TABLE).AddWidgets(path);
 
     // Plandomizer
     path.sidebarName = "Plandomizer";
