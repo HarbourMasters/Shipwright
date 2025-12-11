@@ -311,6 +311,8 @@ class Option {
     uint8_t GetValueFromText(std::string text);
     void SetContextIndexFromText(std::string text);
 
+    void SetCallback(WidgetFunc callback);
+
   protected:
     Option(size_t key_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
            std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,

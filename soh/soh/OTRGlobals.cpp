@@ -2847,8 +2847,6 @@ bool SoH_HandleConfigDrop(char* filePath) {
             }
         }
 
-        Rando::Settings::GetInstance()->UpdateOptionProperties();
-
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->GetGuiWindow("Console")->Hide();
         gui->GetGuiWindow("Actor Viewer")->Hide();

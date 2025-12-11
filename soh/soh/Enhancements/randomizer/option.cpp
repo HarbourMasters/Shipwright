@@ -2,6 +2,7 @@
 #include "libultraship/bridge.h"
 #include <ship/Context.h>
 #include <imgui.h>
+#include "soh/Enhancements/randomizer/settings.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/UIWidgets.hpp"
@@ -313,17 +314,35 @@ bool Option::RenderSlider() {
 }
 
 void Option::AddWidget(WidgetPath& path) const {
-    SohGui::mSohMenu->AddWidget(path, name, widgetType)
+    auto widget = SohGui::mSohMenu->AddWidget(path, name, widgetType)
         .Callback(callback)
+        .PreFunc([this](WidgetInfo& info) {
+            info.isHidden = this->IsHidden();
+            info.options->disabled = this->disabled;
+            info.options->disabledTooltip = this->disabledText.c_str();
+            info.options->tooltip = this->description.c_str();
+            if (info.type == WIDGET_CVAR_SLIDER_INT) {
+                UIWidgets::IntSliderOptions* sliderOpts = (UIWidgets::IntSliderOptions*) info.options.get();
+                sliderOpts->Format(this->GetOptionText(this->GetOptionIndex()).c_str());
+                sliderOpts->Max(this->options.size() - 1);
+            }
+        })
         .CVar(cvarName.c_str())
         .Options(widgetOptions)
         .SameLine(imFlags & IMFLAG_SAME_LINE);
+        if (callback != nullptr) {
+            callback(widget);
+        }
 }
 
 void Option::PopulateTextToNum() {
     for (uint8_t count = 0; count < options.size(); count++) {
         optionsTextToVar[options[count]] = count;
     }
+}
+
+void Option::SetCallback(WidgetFunc callback) {
+    this->callback = callback;
 }
 
 LocationOption::LocationOption(RandomizerCheck key_, const std::string& name_)

@@ -586,7 +586,6 @@ void SohMenu::AddMenuRandomizer() {
     randoSettings->GetOption(RSK_ALL_LOCATIONS_REACHABLE).AddWidget(path);
     AddWidget(path, "Tricks/Glitches", WIDGET_CUSTOM)
         .CustomFunction(DrawTricksMenu);
-    randoSettings->GetOption(RSK_LOGIC_RULES).AddWidget(path);
     randoSettings->GetOptionGroup(RSG_STARTING_INVENTORY_IMGUI_TABLE).AddWidgets(path);
 
 

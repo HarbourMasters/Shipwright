@@ -100,18 +100,6 @@ class Settings {
     const OptionGroup& GetOptionGroup(RandomizerSettingGroupKey key);
 
     /**
-     * @brief Updates various properties of options based on the value of other options.
-     * Used to update visibility, whether or not interaction is disabled, and what the
-     * actual option values are. Actually changing option values should be handled in
-     * `FinalizeSettings`
-     *
-     * For example, this function handles setting the maximum possible keyring count to 9
-     * when Gerudo's Fortress options are set such that a keyring is possible for that
-     * dungeon.
-     */
-    void UpdateOptionProperties();
-
-    /**
      * @brief Parse Options from a JSON file.
      *
      * @param spoilerFileJson

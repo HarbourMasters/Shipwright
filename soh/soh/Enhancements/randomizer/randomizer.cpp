@@ -4618,7 +4618,6 @@ void RandomizerSettingsWindow::SetNeedsUpdate() {
 void RandomizerSettingsWindow::UpdateElement() {
     if (mNeedsUpdate) {
         RandomizerCheckObjects::UpdateImGuiVisibility();
-        mSettings->UpdateOptionProperties();
         locationsTabOpen = false;
         tricksTabOpen = false;
         mNeedsUpdate = false;
@@ -5904,7 +5903,6 @@ void RandomizerSettingsWindow::InitElement() {
     mSettings = Rando::Settings::GetInstance();
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
-    mSettings->UpdateOptionProperties();
 }
 
 static std::unordered_map<RandomizerGet, GameplayStatTimestamp> randomizerGetToStatsTimeStamp = {
