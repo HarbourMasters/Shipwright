@@ -301,7 +301,7 @@ class Option {
      * the `widgetType` property.
      */
     bool RenderImGui();
-    void AddWidget(WidgetPath& path) const;
+    void AddWidget(WidgetPath& path);
 
     bool HasFlag(int imFlag_) const;
     void AddFlag(int imFlag_);
@@ -312,6 +312,7 @@ class Option {
     void SetContextIndexFromText(std::string text);
 
     void SetCallback(WidgetFunc callback);
+    void RunCallback();
 
   protected:
     Option(size_t key_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
@@ -340,6 +341,7 @@ class Option {
     std::string disabledText;
     std::unordered_map<std::string, uint8_t> optionsTextToVar = {};
     std::shared_ptr<UIWidgets::WidgetOptions> widgetOptions;
+    struct WidgetInfo widgetInfo;
     WidgetFunc callback;
     std::unordered_map<int32_t, const char*> optionsMap = {};
 };

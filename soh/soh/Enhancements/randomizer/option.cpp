@@ -313,7 +313,7 @@ bool Option::RenderSlider() {
     return changed;
 }
 
-void Option::AddWidget(WidgetPath& path) const {
+void Option::AddWidget(WidgetPath& path) {
     auto widget = SohGui::mSohMenu->AddWidget(path, name, widgetType)
         .Callback(callback)
         .PreFunc([this](WidgetInfo& info) {
@@ -330,8 +330,9 @@ void Option::AddWidget(WidgetPath& path) const {
         .CVar(cvarName.c_str())
         .Options(widgetOptions)
         .SameLine(imFlags & IMFLAG_SAME_LINE);
+        widgetInfo = widget;
         if (callback != nullptr) {
-            callback(widget);
+            callback(widgetInfo);
         }
 }
 
@@ -343,6 +344,12 @@ void Option::PopulateTextToNum() {
 
 void Option::SetCallback(WidgetFunc callback) {
     this->callback = callback;
+}
+
+void Option::RunCallback() {
+    if (callback != nullptr) {
+        this->callback(widgetInfo);
+    }
 }
 
 LocationOption::LocationOption(RandomizerCheck key_, const std::string& name_)

@@ -2902,6 +2902,12 @@ const OptionGroup& Settings::GetOptionGroup(const RandomizerSettingGroupKey key)
     return mOptionGroups[key];
 }
 
+void Settings::UpdateAllOptions() {
+    for(auto& option : mOptions) {
+        option.RunCallback();
+    }
+}
+
 void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocations,
                                const std::set<RandomizerTrick>& enabledTricks) {
     // if we skip child zelda, we start with zelda's letter, and malon starts
