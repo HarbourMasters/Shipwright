@@ -704,6 +704,7 @@ void SohMenu::AddMenuRandomizer() {
     randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_DUNGEONS).AddWidgets(path);
     randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_SHUFFLES).AddWidgets(path);
     randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_HINTS_TRAPS).AddWidgets(path);
+    randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_STARTING_ITEMS).AddWidgets(path);
     path.sidebarName = "Locations";
     AddSidebarEntry("Randomizer", path.sidebarName, 1);
     AddWidget(path, "Excluded Locations", WIDGET_CUSTOM)
@@ -712,7 +713,6 @@ void SohMenu::AddMenuRandomizer() {
     AddSidebarEntry("Randomizer", path.sidebarName, 1);
     AddWidget(path, "Tricks/Glitches", WIDGET_CUSTOM)
         .CustomFunction(DrawTricksMenu);
-    randoSettings->GetOptionGroup(RSG_STARTING_INVENTORY_IMGUI_TABLE).AddWidgets(path);
 
     // Plandomizer
     path.sidebarName = "Plandomizer";

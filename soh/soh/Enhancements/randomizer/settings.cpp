@@ -2223,6 +2223,7 @@ void Settings::CreateOptions() {
         &mOptions[RSK_FULL_WALLETS],
         &mOptions[RSK_SLINGBOW_BREAK_BEEHIVES],
         &mOptions[RSK_SKIP_CHILD_ZELDA],
+        &mOptions[RSK_COMPLETE_MASK_QUEST],
         &mOptions[RSK_SKIP_CHILD_STEALTH],
         &mOptions[RSK_SKIP_EPONA_RACE],
         &mOptions[RSK_SKIP_SCARECROWS_SONG],
@@ -2478,52 +2479,47 @@ void Settings::CreateOptions() {
         &mOptionGroups[RSG_MENU_COLUMN_HINTS_TRAPS],
         &mOptionGroups[RSG_MENU_COLUMN_STATIC_HINTS],
     }, WidgetContainerType::TABLE);
-    mOptionGroups[RSG_GAMEPLAY_IMGUI_TABLE] =
-        OptionGroup::SubGroup("Gameplay",
-                              { &mOptionGroups[RSG_TIMESAVERS_IMGUI], &mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI_COLUMN],
-                                &mOptionGroups[RSG_ADDITIONAL_FEATURES_IMGUI] },
-                              WidgetContainerType::TABLE);
-    mOptionGroups[RSG_STARTING_EQUIPMENT_IMGUI] =
-        OptionGroup::SubGroup("Starting Equipment",
-                              { &mOptions[RSK_LINKS_POCKET], &mOptions[RSK_STARTING_KOKIRI_SWORD],
-                                &mOptions[RSK_STARTING_MASTER_SWORD], &mOptions[RSK_STARTING_DEKU_SHIELD] },
-                              WidgetContainerType::COLUMN);
-    mOptionGroups[RSG_STARTING_ITEMS_IMGUI] = OptionGroup::SubGroup("Starting Items",
-                                                                    {
-                                                                        &mOptions[RSK_STARTING_OCARINA],
-                                                                        &mOptions[RSK_STARTING_STICKS],
-                                                                        &mOptions[RSK_STARTING_NUTS],
-                                                                        &mOptions[RSK_STARTING_SKULLTULA_TOKEN],
-                                                                        &mOptions[RSK_STARTING_HEARTS],
-                                                                    },
-                                                                    WidgetContainerType::COLUMN);
-    mOptionGroups[RSG_STARTING_NORMAL_SONGS_IMGUI] = OptionGroup::SubGroup("Normal Songs",
-                                                                           {
-                                                                               &mOptions[RSK_STARTING_ZELDAS_LULLABY],
-                                                                               &mOptions[RSK_STARTING_EPONAS_SONG],
-                                                                               &mOptions[RSK_STARTING_SARIAS_SONG],
-                                                                               &mOptions[RSK_STARTING_SUNS_SONG],
-                                                                               &mOptions[RSK_STARTING_SONG_OF_TIME],
-                                                                               &mOptions[RSK_STARTING_SONG_OF_STORMS],
-                                                                           },
-                                                                           WidgetContainerType::SECTION);
-    mOptionGroups[RSG_STARTING_WARP_SONGS_IMGUI] =
-        OptionGroup::SubGroup("Warp Songs",
-                              { &mOptions[RSK_STARTING_MINUET_OF_FOREST], &mOptions[RSK_STARTING_BOLERO_OF_FIRE],
-                                &mOptions[RSK_STARTING_SERENADE_OF_WATER], &mOptions[RSK_STARTING_REQUIEM_OF_SPIRIT],
-                                &mOptions[RSK_STARTING_NOCTURNE_OF_SHADOW], &mOptions[RSK_STARTING_PRELUDE_OF_LIGHT] },
-                              WidgetContainerType::SECTION);
-    mOptionGroups[RSG_STARTING_SONGS_IMGUI] = OptionGroup::SubGroup("Starting Songs",
-                                                                    std::initializer_list<OptionGroup*>({
-                                                                        &mOptionGroups[RSG_STARTING_NORMAL_SONGS_IMGUI],
-                                                                        &mOptionGroups[RSG_STARTING_WARP_SONGS_IMGUI],
-                                                                    }),
-                                                                    WidgetContainerType::COLUMN);
-    mOptionGroups[RSG_STARTING_INVENTORY_IMGUI_TABLE] =
-        OptionGroup::SubGroup("Starting Inventory",
-                              { &mOptionGroups[RSG_STARTING_EQUIPMENT_IMGUI], &mOptionGroups[RSG_STARTING_ITEMS_IMGUI],
-                                &mOptionGroups[RSG_STARTING_SONGS_IMGUI] },
-                              WidgetContainerType::TABLE);
+    mOptionGroups[RSG_MENU_SECTION_STARTING_EQUIPS] = OptionGroup::SubGroup("Equips", {
+        &mOptions[RSK_LINKS_POCKET],
+        &mOptions[RSK_STARTING_KOKIRI_SWORD],
+        &mOptions[RSK_STARTING_MASTER_SWORD],
+        &mOptions[RSK_STARTING_DEKU_SHIELD]
+    }, WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_SECTION_STARTING_ITEMS] = OptionGroup::SubGroup("Items", {
+        &mOptions[RSK_STARTING_OCARINA],
+        &mOptions[RSK_STARTING_STICKS],
+        &mOptions[RSK_STARTING_NUTS],
+        &mOptions[RSK_STARTING_SKULLTULA_TOKEN],
+        &mOptions[RSK_STARTING_HEARTS],
+    }, WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_COLUMN_STARTING_EQUIPMENT] = OptionGroup::SubGroup("", std::initializer_list<OptionGroup*>{
+        &mOptionGroups[RSG_MENU_SECTION_STARTING_EQUIPS],
+        &mOptionGroups[RSG_MENU_SECTION_STARTING_ITEMS],
+    }, WidgetContainerType::COLUMN);
+    mOptionGroups[RSG_MENU_SECTION_NORMAL_SONGS] = OptionGroup::SubGroup("Normal Songs", {
+        &mOptions[RSK_STARTING_ZELDAS_LULLABY],
+        &mOptions[RSK_STARTING_EPONAS_SONG],
+        &mOptions[RSK_STARTING_SARIAS_SONG],
+        &mOptions[RSK_STARTING_SUNS_SONG],
+        &mOptions[RSK_STARTING_SONG_OF_TIME],
+        &mOptions[RSK_STARTING_SONG_OF_STORMS],
+    }, WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_SECTION_WARP_SONGS] = OptionGroup::SubGroup("Warp Songs", {
+        &mOptions[RSK_STARTING_MINUET_OF_FOREST],
+        &mOptions[RSK_STARTING_BOLERO_OF_FIRE],
+        &mOptions[RSK_STARTING_SERENADE_OF_WATER],
+        &mOptions[RSK_STARTING_REQUIEM_OF_SPIRIT],
+        &mOptions[RSK_STARTING_NOCTURNE_OF_SHADOW],
+        &mOptions[RSK_STARTING_PRELUDE_OF_LIGHT],
+    }, WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_COLUMN_STARTING_SONGS] = OptionGroup::SubGroup("", std::initializer_list<OptionGroup*>{
+        &mOptionGroups[RSG_MENU_SECTION_NORMAL_SONGS],
+        &mOptionGroups[RSG_MENU_SECTION_WARP_SONGS],
+    }, WidgetContainerType::COLUMN);
+    mOptionGroups[RSG_MENU_SIDEBAR_STARTING_ITEMS] = OptionGroup::SubGroup("Starting Items", std::initializer_list<OptionGroup*>{
+        &mOptionGroups[RSG_MENU_COLUMN_STARTING_EQUIPMENT],
+        &mOptionGroups[RSG_MENU_COLUMN_STARTING_SONGS],
+    }, WidgetContainerType::TABLE);
     mOptionGroups[RSG_OPEN] = OptionGroup("Open Settings", {
                                                                &mOptions[RSK_FOREST],
                                                                &mOptions[RSK_KAK_GATE],
