@@ -3958,70 +3958,70 @@ static bool locationsTabOpen = false;
 static bool tricksTabOpen = false;
 
 void RandomizerSettingsWindow::DrawElement() {
-    auto ctx = Rando::Context::GetInstance();
-    if (generated) {
-        generated = 0;
-        randoThread.join();
-    }
-    bool generating = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0);
-    bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
+    // auto ctx = Rando::Context::GetInstance();
+    // if (generated) {
+    //     generated = 0;
+    //     randoThread.join();
+    // }
+    // bool generating = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0);
+    // bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
 
-    DrawPresetSelector({ PRESET_SECTION_RANDOMIZER }, "Randomizer", generating);
+    // DrawPresetSelector({ PRESET_SECTION_RANDOMIZER }, "Randomizer", generating);
 
     // UIWidgets::Spacer(0);
-    UIWidgets::CVarCheckbox("Manual seed entry", CVAR_RANDOMIZER_SETTING("ManualSeedEntry"),
-                            UIWidgets::CheckboxOptions().Color(THEME_COLOR));
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0)) {
-        UIWidgets::PushStyleInput(THEME_COLOR);
-        ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter,
-                         UIWidgets::TextFilters::FilterAlphaNum);
-        UIWidgets::Tooltip("Characters from a-z, A-Z, and 0-9 are supported.\n"
-                           "Character limit is 1023, after which the seed will be truncated.\n");
-        ImGui::SameLine();
-        if (UIWidgets::Button(
-                ICON_FA_RANDOM,
-                UIWidgets::ButtonOptions()
-                    .Size(UIWidgets::Sizes::Inline)
-                    .Color(THEME_COLOR)
-                    .Padding(ImVec2(10.f, 6.f))
-                    .Tooltip("Creates a new random seed value to be used when generating a randomizer"))) {
-            SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
-        }
-        ImGui::SameLine();
-        if (UIWidgets::Button(ICON_FA_ERASER, UIWidgets::ButtonOptions()
-                                                  .Size(UIWidgets::Sizes::Inline)
-                                                  .Color(THEME_COLOR)
-                                                  .Padding(ImVec2(10.f, 6.f)))) {
-            memset(seedString, 0, MAX_SEED_STRING_SIZE);
-        }
-        if (strnlen(seedString, MAX_SEED_STRING_SIZE) == 0) {
-            ImGui::SameLine(17.0f);
-            ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Leave blank for random seed");
-        }
-        UIWidgets::PopStyleInput();
-    }
+    // UIWidgets::CVarCheckbox("Manual seed entry", CVAR_RANDOMIZER_SETTING("ManualSeedEntry"),
+    //                         UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+    // if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0)) {
+    //     UIWidgets::PushStyleInput(THEME_COLOR);
+    //     ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter,
+    //                      UIWidgets::TextFilters::FilterAlphaNum);
+    //     UIWidgets::Tooltip("Characters from a-z, A-Z, and 0-9 are supported.\n"
+    //                        "Character limit is 1023, after which the seed will be truncated.\n");
+    //     ImGui::SameLine();
+    //     if (UIWidgets::Button(
+    //             ICON_FA_RANDOM,
+    //             UIWidgets::ButtonOptions()
+    //                 .Size(UIWidgets::Sizes::Inline)
+    //                 .Color(THEME_COLOR)
+    //                 .Padding(ImVec2(10.f, 6.f))
+    //                 .Tooltip("Creates a new random seed value to be used when generating a randomizer"))) {
+    //         SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
+    //     }
+    //     ImGui::SameLine();
+    //     if (UIWidgets::Button(ICON_FA_ERASER, UIWidgets::ButtonOptions()
+    //                                               .Size(UIWidgets::Sizes::Inline)
+    //                                               .Color(THEME_COLOR)
+    //                                               .Padding(ImVec2(10.f, 6.f)))) {
+    //         memset(seedString, 0, MAX_SEED_STRING_SIZE);
+    //     }
+    //     if (strnlen(seedString, MAX_SEED_STRING_SIZE) == 0) {
+    //         ImGui::SameLine(17.0f);
+    //         ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Leave blank for random seed");
+    //     }
+    //     UIWidgets::PopStyleInput();
+    // }
 
-    UIWidgets::Spacer(0);
-    UIWidgets::ButtonOptions options = UIWidgets::ButtonOptions().Size(ImVec2(250.f, 0.f)).Color(THEME_COLOR);
-    options.Disabled((gSaveContext.gameMode != GAMEMODE_FILE_SELECT) || GameInteractor::IsSaveLoaded());
-    if (options.disabled) {
-        options.DisabledTooltip("Must be on File Select to generate a randomizer seed.");
-    }
-    if (UIWidgets::Button("Generate Randomizer", options)) {
-        ctx->SetSpoilerLoaded(false);
-        GenerateRandomizer(CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0) ? seedString : "");
-    }
+    // UIWidgets::Spacer(0);
+    // UIWidgets::ButtonOptions options = UIWidgets::ButtonOptions().Size(ImVec2(250.f, 0.f)).Color(THEME_COLOR);
+    // options.Disabled((gSaveContext.gameMode != GAMEMODE_FILE_SELECT) || GameInteractor::IsSaveLoaded());
+    // if (options.disabled) {
+    //     options.DisabledTooltip("Must be on File Select to generate a randomizer seed.");
+    // }
+    // if (UIWidgets::Button("Generate Randomizer", options)) {
+    //     ctx->SetSpoilerLoaded(false);
+    //     GenerateRandomizer(CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0) ? seedString : "");
+    // }
 
-    ImGui::SameLine();
-    if (!CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
-        std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
-        ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
-    }
+    // ImGui::SameLine();
+    // if (!CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
+    //     std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
+    //     ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
+    // }
 
-    UIWidgets::Separator(true, true, 0.f, 0.f);
+    // UIWidgets::Separator(true, true, 0.f, 0.f);
 
-    ImGuiWindow* window = ImGui::GetCurrentWindow();
-    static ImVec2 cellPadding(8.0f, 8.0f);
+    // ImGuiWindow* window = ImGui::GetCurrentWindow();
+    // static ImVec2 cellPadding(8.0f, 8.0f);
 
     // UIWidgets::PushStyleTabs(THEME_COLOR);
     // if (ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
@@ -5902,7 +5902,7 @@ class ExtendedVanillaTableInvalidItemIdException : public std::exception {
 void RandomizerSettingsWindow::InitElement() {
     mSettings = Rando::Settings::GetInstance();
     Randomizer::CreateCustomMessages();
-    seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
+    // seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
 }
 
 static std::unordered_map<RandomizerGet, GameplayStatTimestamp> randomizerGetToStatsTimeStamp = {

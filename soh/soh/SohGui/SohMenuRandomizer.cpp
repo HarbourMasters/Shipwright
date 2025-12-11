@@ -16,6 +16,7 @@ static const std::unordered_map<int32_t, const char*> skipGetItemAnimationOption
 
 static bool locationsDirty = true;
 static bool tricksDirty = true;
+static char* seedString;
 static std::set<RandomizerCheck> excludedLocations;
 static std::set<RandomizerTrick> enabledTricks;
 static std::set<RandomizerTrick> enabledGlitches;
@@ -559,17 +560,66 @@ void DrawTricksMenu(WidgetInfo& info) {
 }
 
 void SohMenu::AddMenuRandomizer() {
+    seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     // Add Randomizer Menu
     AddMenuEntry("Randomizer", CVAR_SETTING("Menu.RandomizerSidebarSection"));
 
     // Seed Settings
-    WidgetPath path = { "Randomizer", "Seed Settings", SECTION_COLUMN_1 };
+    WidgetPath path = { "Randomizer", "General", SECTION_COLUMN_1 };
     AddSidebarEntry("Randomizer", path.sidebarName, 1);
-    AddWidget(path, "Popout Randomizer Settings Window", WIDGET_WINDOW_BUTTON)
-        .CVar(CVAR_WINDOW("RandomizerSettings"))
-        .WindowName("Randomizer Settings")
-        .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Randomizer Settings Window."));
+    AddWidget(path, "Manual seed entry", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"))
+        .Options(CheckboxOptions().DefaultValue(true));
+    AddWidget(path, "Seed", WIDGET_CUSTOM)
+        .CustomFunction([](WidgetInfo& info) {
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0)) {
+                UIWidgets::PushStyleInput(THEME_COLOR);
+                ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter,
+                                UIWidgets::TextFilters::FilterAlphaNum);
+                UIWidgets::Tooltip("Characters from a-z, A-Z, and 0-9 are supported.\n"
+                                "Character limit is 1023, after which the seed will be truncated.\n");
+                ImGui::SameLine();
+                if (UIWidgets::Button(
+                        ICON_FA_RANDOM,
+                        UIWidgets::ButtonOptions()
+                            .Size(UIWidgets::Sizes::Inline)
+                            .Color(THEME_COLOR)
+                            .Padding(ImVec2(10.f, 6.f))
+                            .Tooltip("Creates a new random seed value to be used when generating a randomizer"))) {
+                    SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
+                }
+                ImGui::SameLine();
+                if (UIWidgets::Button(ICON_FA_ERASER, UIWidgets::ButtonOptions()
+                                                        .Size(UIWidgets::Sizes::Inline)
+                                                        .Color(THEME_COLOR)
+                                                        .Padding(ImVec2(10.f, 6.f)))) {
+                    memset(seedString, 0, MAX_SEED_STRING_SIZE);
+                }
+                if (strnlen(seedString, MAX_SEED_STRING_SIZE) == 0) {
+                    ImGui::SameLine(17.0f);
+                    ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Leave blank for random seed");
+                }
+                UIWidgets::PopStyleInput();
+            }
+        });
+    AddWidget(path, "Generate Randomizer", WIDGET_BUTTON)
+        .Callback([](WidgetInfo& info) {
+            OTRGlobals::Instance->gRandoContext->SetSpoilerLoaded(false);
+            GenerateRandomizer(CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0) ? seedString : "");
+        })
+        .PreFunc([](WidgetInfo& info) {
+            info.options->Disabled((gSaveContext.gameMode != GAMEMODE_FILE_SELECT) || GameInteractor::IsSaveLoaded());
+        })
+        .Options(ButtonOptions()
+            .Size(ImVec2(250.f, 0.f))
+            .DisabledTooltip("Must be on File Select to generate a randomizer seed."));
+    AddWidget(path, "Spoiler File", WIDGET_CUSTOM)
+        .CustomFunction([](WidgetInfo& info) {
+            if (!CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
+                std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
+                ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
+            }
+        });
     
     auto randoSettings = Rando::Settings::GetInstance();
     randoSettings->CreateOptions();
