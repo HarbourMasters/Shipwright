@@ -562,6 +562,63 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
     return GameInteractionEffectQueryResult::TemporarilyNotPossible;
 }
 
+GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActorRelative(uint32_t actorId, int32_t actorParams,
+                                                                               int32_t xOffset, int32_t yOffset,
+                                                                               int32_t zOffset, bool snapToFloor) {
+    if (!GameInteractor::CanSpawnActor()) {
+        return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    }
+
+    Player* player = GET_PLAYER(gPlayState);
+    Vec3f spawnPos;
+
+    // In OoT: Z is Forward/Backward, X is Right/Left relative to rotation.
+    // Standard rotation:
+    // x' = x * cos(theta) + z * sin(theta)
+    // z' = z * cos(theta) - x * sin(theta)
+    // where x is Right and z is Forward.
+
+    f32 theta = player->actor.shape.rot.y * (M_PI / 32768.0f);
+    f32 cosRot = cosf(theta);
+    f32 sinRot = sinf(theta);
+
+    // xOffset is Right (+), Left (-)
+    // zOffset is Forward (+), Backward (-)
+    spawnPos.x = player->actor.world.pos.x + (xOffset * cosRot + zOffset * sinRot);
+    spawnPos.y = player->actor.world.pos.y + yOffset;
+    spawnPos.z = player->actor.world.pos.z + (zOffset * cosRot - xOffset * sinRot);
+
+    if (snapToFloor) {
+        CollisionPoly poly;
+        Vec3f raycastPos = spawnPos;
+        raycastPos.y += 50.0f; // Start raycast from slightly above to catch floor at player height
+        f32 floorY = BgCheck_AnyRaycastFloor1(&gPlayState->colCtx, &poly, &raycastPos);
+
+        if (floorY > BGCHECK_Y_MIN) {
+            spawnPos.y = floorY;
+        }
+    }
+
+    Actor* actor = Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, spawnPos.x, spawnPos.y, spawnPos.z, 0, 0, 0,
+                               actorParams, 0);
+
+    if (actor != NULL) {
+        return GameInteractionEffectQueryResult::Possible;
+    }
+
+    return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+}
+
+GameInteractionEffectQueryResult GameInteractor::RawAction::DisplayMessageBox(std::string text, int32_t style,
+                                                                              int32_t position) {
+    // 0x9100 is a reserved ID we are using for Sail messages.
+    // Ensure we don't conflict with other custom messages if possible, but 0x9100 is generally safe in SoH context.
+    CustomMessage message(text, (TextBoxType)style, (TextBoxPosition)position);
+    CustomMessageManager::Instance->CreateMessage("Sail", 0x9100, message);
+    Message_StartTextbox(gPlayState, 0x9100, NULL);
+    return GameInteractionEffectQueryResult::Possible;
+}
+
 GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t actorId, int32_t actorParams,
                                                                        std::string nameTag) {
 
