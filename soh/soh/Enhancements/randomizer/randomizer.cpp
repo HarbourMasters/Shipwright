@@ -3957,6 +3957,13 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
 static bool locationsTabOpen = false;
 static bool tricksTabOpen = false;
 
+void JoinRandoGenerationThread() {
+    if (generated) {
+        generated = 0;
+        randoThread.join();
+    }
+}
+
 void RandomizerSettingsWindow::DrawElement() {
     // auto ctx = Rando::Context::GetInstance();
     // if (generated) {

@@ -615,6 +615,7 @@ void SohMenu::AddMenuRandomizer() {
             .DisabledTooltip("Must be on File Select to generate a randomizer seed."));
     AddWidget(path, "Spoiler File", WIDGET_CUSTOM)
         .CustomFunction([](WidgetInfo& info) {
+            JoinRandoGenerationThread();
             if (!CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
                 std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
                 ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
