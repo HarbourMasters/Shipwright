@@ -150,4 +150,4 @@ class Logic {
     bool inLogic[LOGIC_MAX];
 }; // class Logic
 } // namespace Rando
-#endif //RANDOLOGIC_H
+#endif // RANDOLOGIC_H

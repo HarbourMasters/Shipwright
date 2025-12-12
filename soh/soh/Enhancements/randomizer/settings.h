@@ -100,7 +100,7 @@ class Settings {
     const OptionGroup& GetOptionGroup(RandomizerSettingGroupKey key);
 
     /**
-     * @brief Runs the Callback on every option, to ensure they are all 
+     * @brief Runs the Callback on every option, to ensure they are all
      * hidden/unhidden and/or disabled/enabled properly after applying a
      * preset or dropping a file.
      */
@@ -145,4 +145,4 @@ class Settings {
     std::unordered_map<std::string, RandomizerTrick> mTrickNameToEnum;
 };
 } // namespace Rando
-#endif //RANDOSETTINGS_H
+#endif // RANDOSETTINGS_H

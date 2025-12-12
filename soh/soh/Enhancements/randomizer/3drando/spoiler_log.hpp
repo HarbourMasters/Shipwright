@@ -27,4 +27,4 @@ typedef enum {
 void GenerateHash();
 
 const char* SpoilerLog_Write();
-#endif //RANDOSPOILER_H
+#endif // RANDOSPOILER_H

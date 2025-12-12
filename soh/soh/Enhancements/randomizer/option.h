@@ -144,7 +144,7 @@ class Option {
     static Option Bool(RandomizerSettingKey key_, std::string name_, std::string cvarName_,
                        std::string description_ = "", int imFlags_ = IMFLAG_SEPARATOR_BOTTOM,
                        WidgetType widgetType_ = WIDGET_CVAR_CHECKBOX, bool defaultOption_ = false,
-                      WidgetFunc callback_ = nullptr);
+                       WidgetFunc callback_ = nullptr);
 
     /**
      * @brief Constructs a U8 Option.

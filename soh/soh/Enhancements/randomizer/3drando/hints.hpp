@@ -79,4 +79,4 @@ extern void CreateAllHints();
 extern void CreateWarpSongTexts();
 void CreateStaticHints();
 RandomizerHintTextKey GetRandomJunkHint();
-#endif //RANDOHINTS_H
+#endif // RANDOHINTS_H

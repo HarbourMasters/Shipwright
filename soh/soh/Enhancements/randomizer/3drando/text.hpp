@@ -167,4 +167,4 @@ class Text {
     std::string german = "";
     std::string spanish = "";
 };
-#endif //RANDOTEXT_H
+#endif // RANDOTEXT_H

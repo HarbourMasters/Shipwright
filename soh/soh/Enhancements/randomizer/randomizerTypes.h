@@ -6903,4 +6903,4 @@ typedef enum {
     /* 0x20 */ GROTTO_LW_DEKU_THEATRE_OFFSET,
     /* 0x21 */ GROTTO_OFFSET_MAX,
 } GrottoEntranceOffsets;
-#endif //RANDOOTYPES_H
+#endif // RANDOOTYPES_H

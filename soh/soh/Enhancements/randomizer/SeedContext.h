@@ -200,4 +200,4 @@ class Context {
     uint32_t mFinalSeed = 0;
 };
 } // namespace Rando
-#endif //RANDOCONTEXT_H
+#endif // RANDOCONTEXT_H

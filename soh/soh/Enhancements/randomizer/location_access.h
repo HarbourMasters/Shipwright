@@ -283,4 +283,4 @@ void RegionTable_Init_IceCavern();
 void RegionTable_Init_ThievesHideout();
 void RegionTable_Init_GerudoTrainingGround();
 void RegionTable_Init_GanonsCastle();
-#endif //RANDOLOCATIONACCESS_H
+#endif // RANDOLOCATIONACCESS_H

@@ -98,4 +98,4 @@ class Dungeons {
     std::array<DungeonInfo, 12> dungeonList;
 };
 } // namespace Rando
-#endif //RANDODUNGEON_H
+#endif // RANDODUNGEON_H

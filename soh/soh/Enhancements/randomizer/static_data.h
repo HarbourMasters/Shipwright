@@ -91,4 +91,4 @@ class StaticData {
     ~StaticData();
 };
 } // namespace Rando
-#endif //RANDOSTATIC_H
+#endif // RANDOSTATIC_H

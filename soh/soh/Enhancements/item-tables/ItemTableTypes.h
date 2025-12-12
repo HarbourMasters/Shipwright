@@ -74,4 +74,4 @@ typedef struct GetItemEntry {
                                       // to function on ice traps.
     CustomDrawFunc drawFunc;
 } GetItemEntry; // size = 0x11
-#endif //ITEMTABLETYPES_H
+#endif          // ITEMTABLETYPES_H

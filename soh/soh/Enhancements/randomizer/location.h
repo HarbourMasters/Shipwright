@@ -308,4 +308,4 @@ class Location {
     Option excludedOption;
 };
 } // namespace Rando
-#endif //RANDOLOCATION_H
+#endif // RANDOLOCATION_H

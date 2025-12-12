@@ -162,4 +162,4 @@ EntranceOverride* Randomizer_GetEntranceOverrides();
 #ifdef __cplusplus
 }
 #endif
-#endif //RANDOENTRANCE_H
+#endif // RANDOENTRANCE_H

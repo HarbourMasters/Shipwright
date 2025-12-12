@@ -115,4 +115,4 @@ class EntranceTrackerWindow final : public Ship::GuiWindow {
     void DrawElement() override;
     void UpdateElement() override{};
 };
-#endif //RANDOENTRANCETRACKER_H
+#endif // RANDOENTRANCETRACKER_H

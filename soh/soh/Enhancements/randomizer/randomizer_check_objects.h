@@ -19,4 +19,4 @@ std::map<SceneID, RandomizerCheckArea> GetAllRCAreaBySceneID();
 RandomizerCheckArea GetRCAreaBySceneID(SceneID sceneId);
 void UpdateImGuiVisibility();
 } // namespace RandomizerCheckObjects
-#endif //RANDOCHECKOBJECTS_H
+#endif // RANDOCHECKOBJECTS_H

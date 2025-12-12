@@ -81,4 +81,4 @@ class Item {
     std::shared_ptr<GetItemEntry> giEntry;
 };
 } // namespace Rando
-#endif //RANDOITEM_H
+#endif // RANDOITEM_H

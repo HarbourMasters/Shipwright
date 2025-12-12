@@ -31,8 +31,7 @@ void DrawLocationsMenu(WidgetInfo& info) {
     if (locationsDirty) {
         RandomizerCheckObjects::UpdateImGuiVisibility();
         // todo: this efficently when we build out cvar array support
-        std::stringstream excludedLocationStringStream(
-            CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
+        std::stringstream excludedLocationStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
         std::string excludedLocationString;
         excludedLocations.clear();
         while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
@@ -75,8 +74,7 @@ void DrawLocationsMenu(WidgetInfo& info) {
                 if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
                     for (auto& location : locations) {
                         if (ctx->GetItemLocation(location)->IsVisible() && !excludedLocations.count(location) &&
-                            locationSearch.PassFilter(
-                                Rando::StaticData::GetLocation(location)->GetName().c_str())) {
+                            locationSearch.PassFilter(Rando::StaticData::GetLocation(location)->GetName().c_str())) {
                             UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                             if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Right)) {
                                 excludedLocations.insert(location);
@@ -87,11 +85,8 @@ void DrawLocationsMenu(WidgetInfo& info) {
                                     excludedLocationString += ",";
                                 }
                                 CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"),
-                                                excludedLocationString.c_str());
-                                Ship::Context::GetInstance()
-                                    ->GetWindow()
-                                    ->GetGui()
-                                    ->SaveConsoleVariablesNextFrame();
+                                              excludedLocationString.c_str());
+                                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                                 locationsDirty = true;
                             }
                             UIWidgets::PopStyleButton();
@@ -138,12 +133,9 @@ void DrawLocationsMenu(WidgetInfo& info) {
                                     CVarClear(CVAR_RANDOMIZER_SETTING("ExcludedLocations"));
                                 } else {
                                     CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"),
-                                                    excludedLocationString.c_str());
+                                                  excludedLocationString.c_str());
                                 }
-                                Ship::Context::GetInstance()
-                                    ->GetWindow()
-                                    ->GetGui()
-                                    ->SaveConsoleVariablesNextFrame();
+                                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                                 locationsDirty = true;
                             }
                             UIWidgets::PopStyleButton();
@@ -180,8 +172,7 @@ void DrawTricksMenu(WidgetInfo& info) {
         while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
             enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
         }
-        std::stringstream enabledGlitchStringStream(
-            CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledGlitches"), ""));
+        std::stringstream enabledGlitchStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledGlitches"), ""));
         std::string enabledGlitchString;
         enabledGlitches.clear();
         while (getline(enabledGlitchStringStream, enabledGlitchString, ',')) {
@@ -276,8 +267,7 @@ void DrawTricksMenu(WidgetInfo& info) {
     UIWidgets::PopStyleInput();
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
         ImGui::SameLine();
-        if (UIWidgets::Button("Disable All",
-                                UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(250.f, 0.f)))) {
+        if (UIWidgets::Button("Disable All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(250.f, 0.f)))) {
             for (int i = 0; i < RT_MAX; i++) {
                 auto etfound = enabledTricks.find(static_cast<RandomizerTrick>(i));
                 if (etfound != enabledTricks.end()) {
@@ -294,8 +284,7 @@ void DrawTricksMenu(WidgetInfo& info) {
             tricksDirty = true;
         }
         ImGui::SameLine();
-        if (UIWidgets::Button("Enable All",
-                                UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(250.f, 0.f)))) {
+        if (UIWidgets::Button("Enable All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(250.f, 0.f)))) {
             for (int i = 0; i < RT_MAX; i++) {
                 if (!enabledTricks.count(static_cast<RandomizerTrick>(i))) {
                     enabledTricks.insert(static_cast<RandomizerTrick>(i));
@@ -312,8 +301,7 @@ void DrawTricksMenu(WidgetInfo& info) {
         }
     }
     if (ImGui::BeginTable("trickTags", static_cast<int>(showTag.size()),
-                            ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings |
-                                ImGuiTableFlags_Borders)) {
+                          ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)) {
         for (auto [rtTag, isShown] : showTag) {
             ImGui::TableNextColumn();
             if (isShown) {
@@ -342,26 +330,25 @@ void DrawTricksMenu(WidgetInfo& info) {
             // window->DC.CurrLineTextBaseOffset = 0.0f;
 
             if (UIWidgets::Button("Collapse All##disabled",
-                                    UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
+                                  UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                 for (int i = 0; i < RA_MAX; i++) {
                     areaTreeDisabled[static_cast<RandomizerArea>(i)] = false;
                 }
             }
             ImGui::SameLine();
             if (UIWidgets::Button("Open All##disabled",
-                                    UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
+                                  UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                 for (int i = 0; i < RA_MAX; i++) {
                     areaTreeDisabled[static_cast<RandomizerArea>(i)] = true;
                 }
             }
             ImGui::SameLine();
             if (UIWidgets::Button("Enable Visible",
-                                    UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
+                                  UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                 for (int i = 0; i < RT_MAX; i++) {
                     auto option = randoSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
                     if (!enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
-                        trickSearch.PassFilter(option.GetName().c_str()) &&
-                        areaTreeDisabled[option.GetArea()] &&
+                        trickSearch.PassFilter(option.GetName().c_str()) && areaTreeDisabled[option.GetArea()] &&
                         Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                         enabledTricks.insert(static_cast<RandomizerTrick>(i));
                     }
@@ -376,8 +363,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                 tricksDirty = true;
             }
 
-            ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false,
-                                ImGuiWindowFlags_HorizontalScrollbar);
+            ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
 
             for (auto [area, trickIds] : randoSettings->mTricksByArea) {
                 bool hasTricks = false;
@@ -390,19 +376,16 @@ void DrawTricksMenu(WidgetInfo& info) {
                     }
                 }
                 if (hasTricks) {
-                    ImGui::TreeNodeSetOpen(
-                        ImGui::GetID((Rando::Tricks::GetAreaName(area) + "##disabled").c_str()),
-                        areaTreeDisabled[area]);
+                    ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(area) + "##disabled").c_str()),
+                                           areaTreeDisabled[area]);
                     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                     if (ImGui::TreeNode((Rando::Tricks::GetAreaName(area) + "##disabled").c_str())) {
                         for (auto rt : trickIds) {
                             auto option = randoSettings->GetTrickOption(rt);
                             if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                !enabledTricks.count(rt) &&
-                                Rando::Tricks::CheckTags(showTag, option.GetTags())) {
+                                !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                 ImGui::TreeNodeSetOpen(
-                                    ImGui::GetID(
-                                        (Rando::Tricks::GetAreaName(option.GetArea()) + "##disabled").c_str()),
+                                    ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##disabled").c_str()),
                                     areaTreeDisabled[option.GetArea()]);
                                 ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                                 UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
@@ -413,8 +396,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                                         enabledTrickString += std::to_string(enabledTrickIt);
                                         enabledTrickString += ",";
                                     }
-                                    CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"),
-                                                    enabledTrickString.c_str());
+                                    CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
                                     Ship::Context::GetInstance()
                                         ->GetWindow()
                                         ->GetGui()
@@ -442,21 +424,21 @@ void DrawTricksMenu(WidgetInfo& info) {
             // window->DC.CurrLineTextBaseOffset = 0.0f;
 
             if (UIWidgets::Button("Collapse All##enabled",
-                                    UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
+                                  UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                 for (int i = 0; i < RA_MAX; i++) {
                     areaTreeEnabled[static_cast<RandomizerArea>(i)] = false;
                 }
             }
             ImGui::SameLine();
             if (UIWidgets::Button("Open All##enabled",
-                                    UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
+                                  UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                 for (int i = 0; i < RA_MAX; i++) {
                     areaTreeEnabled[static_cast<RandomizerArea>(i)] = true;
                 }
             }
             ImGui::SameLine();
             if (UIWidgets::Button("Disable Visible",
-                                    UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
+                                  UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                 for (int i = 0; i < RT_MAX; i++) {
                     auto option = randoSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
                     if (enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
@@ -492,19 +474,16 @@ void DrawTricksMenu(WidgetInfo& info) {
                     }
                 }
                 if (hasTricks) {
-                    ImGui::TreeNodeSetOpen(
-                        ImGui::GetID((Rando::Tricks::GetAreaName(area) + "##enabled").c_str()),
-                        areaTreeEnabled[area]);
+                    ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(area) + "##enabled").c_str()),
+                                           areaTreeEnabled[area]);
                     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                     if (ImGui::TreeNode((Rando::Tricks::GetAreaName(area) + "##enabled").c_str())) {
                         for (auto rt : trickIds) {
                             auto option = randoSettings->GetTrickOption(rt);
                             if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                enabledTricks.count(rt) &&
-                                Rando::Tricks::CheckTags(showTag, option.GetTags())) {
+                                enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                 ImGui::TreeNodeSetOpen(
-                                    ImGui::GetID(
-                                        (Rando::Tricks::GetAreaName(option.GetArea()) + "##enabled").c_str()),
+                                    ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##enabled").c_str()),
                                     areaTreeEnabled[option.GetArea()]);
                                 ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                                 UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
@@ -519,7 +498,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                                         CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
                                     } else {
                                         CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"),
-                                                        enabledTrickString.c_str());
+                                                      enabledTrickString.c_str());
                                     }
                                     Ship::Context::GetInstance()
                                         ->GetWindow()
@@ -568,44 +547,45 @@ void SohMenu::AddMenuRandomizer() {
     // Seed Settings
     WidgetPath path = { "Randomizer", "General", SECTION_COLUMN_1 };
     AddSidebarEntry("Randomizer", path.sidebarName, 2);
-    AddWidget(path, "Be sure to explore the Presets and Enhancements Menus for various Speedups and Quality of life changes!", WIDGET_TEXT)
+    AddWidget(path,
+              "Be sure to explore the Presets and Enhancements Menus for various Speedups and Quality of life changes!",
+              WIDGET_TEXT)
         .Options(TextOptions().Color(UIWidgets::Colors::Gray));
     AddWidget(path, "Seed Entry", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Manual seed entry", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"))
         .Options(CheckboxOptions().DefaultValue(true));
-    AddWidget(path, "Seed", WIDGET_CUSTOM)
-        .CustomFunction([](WidgetInfo& info) {
-            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0)) {
-                UIWidgets::PushStyleInput(THEME_COLOR);
-                ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter,
-                                UIWidgets::TextFilters::FilterAlphaNum);
-                UIWidgets::Tooltip("Characters from a-z, A-Z, and 0-9 are supported.\n"
-                                "Character limit is 1023, after which the seed will be truncated.\n");
-                ImGui::SameLine();
-                if (UIWidgets::Button(
-                        ICON_FA_RANDOM,
-                        UIWidgets::ButtonOptions()
-                            .Size(UIWidgets::Sizes::Inline)
-                            .Color(THEME_COLOR)
-                            .Padding(ImVec2(10.f, 6.f))
-                            .Tooltip("Creates a new random seed value to be used when generating a randomizer"))) {
-                    SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
-                }
-                ImGui::SameLine();
-                if (UIWidgets::Button(ICON_FA_ERASER, UIWidgets::ButtonOptions()
-                                                        .Size(UIWidgets::Sizes::Inline)
-                                                        .Color(THEME_COLOR)
-                                                        .Padding(ImVec2(10.f, 6.f)))) {
-                    memset(seedString, 0, MAX_SEED_STRING_SIZE);
-                }
-                if (strnlen(seedString, MAX_SEED_STRING_SIZE) == 0) {
-                    ImGui::SameLine(17.0f);
-                    ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Leave blank for random seed");
-                }
-                UIWidgets::PopStyleInput();
+    AddWidget(path, "Seed", WIDGET_CUSTOM).CustomFunction([](WidgetInfo& info) {
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0)) {
+            UIWidgets::PushStyleInput(THEME_COLOR);
+            ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE,
+                             ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterAlphaNum);
+            UIWidgets::Tooltip("Characters from a-z, A-Z, and 0-9 are supported.\n"
+                               "Character limit is 1023, after which the seed will be truncated.\n");
+            ImGui::SameLine();
+            if (UIWidgets::Button(
+                    ICON_FA_RANDOM,
+                    UIWidgets::ButtonOptions()
+                        .Size(UIWidgets::Sizes::Inline)
+                        .Color(THEME_COLOR)
+                        .Padding(ImVec2(10.f, 6.f))
+                        .Tooltip("Creates a new random seed value to be used when generating a randomizer"))) {
+                SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
             }
-        });
+            ImGui::SameLine();
+            if (UIWidgets::Button(ICON_FA_ERASER, UIWidgets::ButtonOptions()
+                                                      .Size(UIWidgets::Sizes::Inline)
+                                                      .Color(THEME_COLOR)
+                                                      .Padding(ImVec2(10.f, 6.f)))) {
+                memset(seedString, 0, MAX_SEED_STRING_SIZE);
+            }
+            if (strnlen(seedString, MAX_SEED_STRING_SIZE) == 0) {
+                ImGui::SameLine(17.0f);
+                ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Leave blank for random seed");
+            }
+            UIWidgets::PopStyleInput();
+        }
+    });
     AddWidget(path, "Generate Randomizer", WIDGET_BUTTON)
         .Callback([](WidgetInfo& info) {
             OTRGlobals::Instance->gRandoContext->SetSpoilerLoaded(false);
@@ -615,8 +595,8 @@ void SohMenu::AddMenuRandomizer() {
             info.options->Disabled((gSaveContext.gameMode != GAMEMODE_FILE_SELECT) || GameInteractor::IsSaveLoaded());
         })
         .Options(ButtonOptions()
-            .Size(ImVec2(250.f, 0.f))
-            .DisabledTooltip("Must be on File Select to generate a randomizer seed."));
+                     .Size(ImVec2(250.f, 0.f))
+                     .DisabledTooltip("Must be on File Select to generate a randomizer seed."));
     AddWidget(path, "Spoiler File", WIDGET_CUSTOM)
         .CustomFunction([](WidgetInfo& info) {
             JoinRandoGenerationThread();
@@ -624,11 +604,13 @@ void SohMenu::AddMenuRandomizer() {
                 std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
                 ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
             }
-        }).SameLine(true);
-    
+        })
+        .SameLine(true);
+
     // Enhancements
     AddWidget(path, "Enhancements", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "These enhancements are only useful in the Randomizer mode but do not affect the randomizer logic.", WIDGET_TEXT)
+    AddWidget(path, "These enhancements are only useful in the Randomizer mode but do not affect the randomizer logic.",
+              WIDGET_TEXT)
         .Options(TextOptions().Color(UIWidgets::Colors::Gray));
     AddWidget(path, "Rando-Relevant Navi Hints", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"))
@@ -708,12 +690,10 @@ void SohMenu::AddMenuRandomizer() {
     randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_STARTING_ITEMS).AddWidgets(path);
     path.sidebarName = "Locations";
     AddSidebarEntry("Randomizer", path.sidebarName, 1);
-    AddWidget(path, "Excluded Locations", WIDGET_CUSTOM)
-        .CustomFunction(DrawLocationsMenu);
+    AddWidget(path, "Excluded Locations", WIDGET_CUSTOM).CustomFunction(DrawLocationsMenu);
     path.sidebarName = "Tricks/Glitches";
     AddSidebarEntry("Randomizer", path.sidebarName, 1);
-    AddWidget(path, "Tricks/Glitches", WIDGET_CUSTOM)
-        .CustomFunction(DrawTricksMenu);
+    AddWidget(path, "Tricks/Glitches", WIDGET_CUSTOM).CustomFunction(DrawTricksMenu);
 
     // Plandomizer
     path.sidebarName = "Plandomizer";

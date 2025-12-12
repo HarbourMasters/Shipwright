@@ -8,8 +8,8 @@
 #include "soh/SohGui/UIWidgets.hpp"
 #include <soh/cvar_prefixes.h>
 
-namespace SohGui{
-    extern std::shared_ptr<SohMenu> mSohMenu;
+namespace SohGui {
+extern std::shared_ptr<SohMenu> mSohMenu;
 }
 
 namespace Rando {
@@ -17,24 +17,40 @@ Option Option::Bool(RandomizerSettingKey key_, std::string name_, std::vector<st
                     const OptionCategory category_, std::string cvarName_, std::string description_,
                     WidgetType widgetType_, const uint8_t defaultOption_, const bool defaultHidden_,
                     WidgetFunc callback_, int imFlags_) {
-    return { static_cast<size_t>(key_), std::move(name_), std::move(options_), category_,      std::move(cvarName_),
-             std::move(description_),   widgetType_,      defaultOption_,      defaultHidden_,
-            callback_, imFlags_ };
+    return { static_cast<size_t>(key_),
+             std::move(name_),
+             std::move(options_),
+             category_,
+             std::move(cvarName_),
+             std::move(description_),
+             widgetType_,
+             defaultOption_,
+             defaultHidden_,
+             callback_,
+             imFlags_ };
 }
 
 Option Option::Bool(RandomizerSettingKey key_, std::string name_, std::string cvarName_, std::string description_,
-                    const int imFlags_, const WidgetType widgetType_, const bool defaultOption_,
-                    WidgetFunc callback_) {
+                    const int imFlags_, const WidgetType widgetType_, const bool defaultOption_, WidgetFunc callback_) {
     return Option(key_, std::move(name_), { "Off", "On" }, OptionCategory::Setting, std::move(cvarName_),
                   std::move(description_), widgetType_, defaultOption_, false, callback_, imFlags_);
 }
 
 Option Option::U8(RandomizerSettingKey key_, std::string name_, std::vector<std::string> options_,
                   const OptionCategory category_, std::string cvarName_, std::string description_,
-                  WidgetType widgetType_, const uint8_t defaultOption_, const bool defaultHidden_,
-                  WidgetFunc callback_, int imFlags_) {
-    return { static_cast<size_t>(key_), std::move(name_), std::move(options_), category_,      std::move(cvarName_),
-             std::move(description_),   widgetType_,      defaultOption_,      defaultHidden_, callback_, imFlags_ };
+                  WidgetType widgetType_, const uint8_t defaultOption_, const bool defaultHidden_, WidgetFunc callback_,
+                  int imFlags_) {
+    return { static_cast<size_t>(key_),
+             std::move(name_),
+             std::move(options_),
+             category_,
+             std::move(cvarName_),
+             std::move(description_),
+             widgetType_,
+             defaultOption_,
+             defaultHidden_,
+             callback_,
+             imFlags_ };
 }
 
 Option Option::LogicTrick(RandomizerTrick rt_, std::string name_) {
@@ -188,20 +204,19 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
             // if (imFlags_ & IMFLAG_LABEL_INLINE) {
             //     labelPosition = UIWidgets::LabelPositions::Near;
             // }
-            widgetOptions = std::make_shared<UIWidgets::CheckboxOptions>(UIWidgets::CheckboxOptions()
-                .DefaultValue(defaultOption)
-                .Tooltip(description.c_str()));
+            widgetOptions = std::make_shared<UIWidgets::CheckboxOptions>(
+                UIWidgets::CheckboxOptions().DefaultValue(defaultOption).Tooltip(description.c_str()));
             break;
         case WIDGET_CVAR_COMBOBOX:
             labelPosition = UIWidgets::LabelPositions::Above;
             if (imFlags_ & IMFLAG_LABEL_INLINE) {
                 labelPosition = UIWidgets::LabelPositions::Near;
             }
-           widgetOptions = std::make_shared<UIWidgets::ComboboxOptions>(UIWidgets::ComboboxOptions()
-                .DefaultIndex(defaultOption)
-                .ComboMap(optionsMap)
-                .Tooltip(description.c_str())
-                .LabelPosition(labelPosition));
+            widgetOptions = std::make_shared<UIWidgets::ComboboxOptions>(UIWidgets::ComboboxOptions()
+                                                                             .DefaultIndex(defaultOption)
+                                                                             .ComboMap(optionsMap)
+                                                                             .Tooltip(description.c_str())
+                                                                             .LabelPosition(labelPosition));
             break;
         case WIDGET_CVAR_SLIDER_INT:
             labelPosition = UIWidgets::LabelPositions::Above;
@@ -209,12 +224,12 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
                 labelPosition = UIWidgets::LabelPositions::Near;
             }
             widgetOptions = std::make_shared<UIWidgets::IntSliderOptions>(UIWidgets::IntSliderOptions()
-                .DefaultValue(defaultOption)
-                .Tooltip(description.c_str())
-                .Min(0)
-                .Max(options.size() - 1)
-                .Format(options[defaultOption].c_str())
-                .LabelPosition(labelPosition));
+                                                                              .DefaultValue(defaultOption)
+                                                                              .Tooltip(description.c_str())
+                                                                              .Min(0)
+                                                                              .Max(options.size() - 1)
+                                                                              .Format(options[defaultOption].c_str())
+                                                                              .LabelPosition(labelPosition));
             break;
         default:
             break;
@@ -295,25 +310,26 @@ bool Option::RenderSlider() {
 
 void Option::AddWidget(WidgetPath& path) {
     auto widget = SohGui::mSohMenu->AddWidget(path, name, widgetType)
-        .Callback(callback)
-        .PreFunc([this](WidgetInfo& info) {
-            info.isHidden = this->IsHidden();
-            info.options->disabled = this->disabled;
-            info.options->disabledTooltip = this->disabledText.c_str();
-            info.options->tooltip = this->description.c_str();
-            if (info.type == WIDGET_CVAR_SLIDER_INT) {
-                UIWidgets::IntSliderOptions* sliderOpts = (UIWidgets::IntSliderOptions*) info.options.get();
-                sliderOpts->Format(this->GetOptionText(this->GetOptionIndex()).c_str());
-                sliderOpts->Max(this->options.size() - 1);
-            }
-        })
-        .CVar(cvarName.c_str())
-        .Options(widgetOptions)
-        .SameLine(imFlags & IMFLAG_SAME_LINE);
-        widgetInfo = widget;
-        if (callback != nullptr) {
-            callback(widgetInfo);
-        }
+                      .Callback(callback)
+                      .PreFunc([this](WidgetInfo& info) {
+                          info.isHidden = this->IsHidden();
+                          info.options->disabled = this->disabled;
+                          info.options->disabledTooltip = this->disabledText.c_str();
+                          info.options->tooltip = this->description.c_str();
+                          if (info.type == WIDGET_CVAR_SLIDER_INT) {
+                              UIWidgets::IntSliderOptions* sliderOpts =
+                                  (UIWidgets::IntSliderOptions*)info.options.get();
+                              sliderOpts->Format(this->GetOptionText(this->GetOptionIndex()).c_str());
+                              sliderOpts->Max(this->options.size() - 1);
+                          }
+                      })
+                      .CVar(cvarName.c_str())
+                      .Options(widgetOptions)
+                      .SameLine(imFlags & IMFLAG_SAME_LINE);
+    widgetInfo = widget;
+    if (callback != nullptr) {
+        callback(widgetInfo);
+    }
 }
 
 void Option::PopulateTextToNum() {

@@ -74,4 +74,4 @@ class Hint {
     std::vector<uint8_t> areaNamesChosen = {};
 };
 } // namespace Rando
-#endif //RANDOHINT_H
+#endif // RANDOHINT_H

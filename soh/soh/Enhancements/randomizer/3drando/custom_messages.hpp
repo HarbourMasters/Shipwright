@@ -34,4 +34,4 @@ std::string IF_NOT_MQ();
 std::string MQ_ELSE();
 std::string MQ_END();
 } // namespace CustomMessages
-#endif //RANDOCM_H
+#endif // RANDOCM_H

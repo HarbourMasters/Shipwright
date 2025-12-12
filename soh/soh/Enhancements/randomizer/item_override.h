@@ -25,4 +25,4 @@ class ItemOverride {
     Text mTrickName;
 };
 } // namespace Rando
-#endif //RANDOITEMOVERRIDE_H
+#endif // RANDOITEMOVERRIDE_H

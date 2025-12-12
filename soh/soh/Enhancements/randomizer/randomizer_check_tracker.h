@@ -68,4 +68,4 @@ void SpoilAreaFromCheck(RandomizerCheck rc);
 void RecalculateAvailableChecks(RandomizerRegion startingRegion = RR_ROOT);
 void CheckTracker_LoadFromPreset(nlohmann::json info);
 } // namespace CheckTracker
-#endif //RANDOCHECKTRACKER_H
+#endif // RANDOCHECKTRACKER_H

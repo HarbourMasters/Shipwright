@@ -90,4 +90,4 @@ void JoinRandoGenerationThread();
 #ifdef __cplusplus
 }
 #endif
-#endif //RANDOMIZER_H
+#endif // RANDOMIZER_H

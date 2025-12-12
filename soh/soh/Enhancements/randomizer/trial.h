@@ -46,4 +46,4 @@ class Trials {
     std::array<TrialInfo, TK_MAX> mTrials;
 };
 } // namespace Rando
-#endif //RANDOTRIALS_H
+#endif // RANDOTRIALS_H
