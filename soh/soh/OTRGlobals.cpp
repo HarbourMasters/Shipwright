@@ -427,7 +427,6 @@ void OTRGlobals::Initialize() {
     Rando::Settings::GetInstance()->AssignContext(gRandoContext);
     Rando::StaticData::InitItemTable(); // RANDOTODO make this not rely on context's logic so it can be initialised in
                                         // InitStaticData
-    // Rando::Settings::GetInstance()->CreateOptions();
     gRandomizer = std::make_shared<Randomizer>();
 
     hasMasterQuest = hasOriginal = false;
