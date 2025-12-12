@@ -18,8 +18,6 @@ namespace SohGui {
 static std::map<std::string, nlohmann::json> langs;
 
 std::string Lang::Translate(const char* path) {
-    LUSLOG_WARN("Lang::Translate(%s)", path);
-
     std::string currentLang = CVarGetString(CVAR_SETTING("Language"), "en_US");
 
     if (!langs.contains(currentLang)) {
@@ -38,8 +36,6 @@ std::string Lang::Translate(const char* path) {
     std::replace(path2.begin(), path2.end(), '.', '/');
 
     path2 = "/" + path2;
-
-    LUSLOG_WARN("path2 = %s", path2.c_str());
 
     if (!currentLangData.contains(path2)) {
         return path;
