@@ -26,15 +26,7 @@ int GetPvpDamageMultiplier(const RoomState& roomState) {
             return 4;
         case PVP_DAMAGE_MULT_8X:
             return 8;
-        case PVP_DAMAGE_MULT_16X:
-            return 16;
-        case PVP_DAMAGE_MULT_32X:
-            return 32;
-        case PVP_DAMAGE_MULT_64X:
-            return 64;
-        case PVP_DAMAGE_MULT_128X:
-            return 128;
-        case PVP_DAMAGE_MULT_256X:
+        case PVP_DAMAGE_MULT_OHKO:
             return 256;
         default:
             return 1;
