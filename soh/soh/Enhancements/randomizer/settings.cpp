@@ -2255,6 +2255,7 @@ void Settings::CreateOptions() {
                                   &mOptions[RSK_LOCK_OVERWORLD_DOORS],
                                   &mOptions[RSK_GERUDO_FORTRESS],
                                   &mOptions[RSK_RAINBOW_BRIDGE],
+                                  &mOptions[RSK_BRIDGE_OPTIONS],
                                   &mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT],
                                   &mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT],
                                   &mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT],
