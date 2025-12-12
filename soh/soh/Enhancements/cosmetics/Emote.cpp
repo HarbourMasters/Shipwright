@@ -38,6 +38,9 @@ static EmoteSlot emoteSlots[4] = {
 
 static std::vector<std::string> availableAnimations;
 
+static char animationSearchString[64] = "";
+static int16_t animationSearchDebounceFrames = -1;
+static bool doAnimationSearch = false;
 static bool wheelActive = false;
 static EmoteSlot targetSlot;
 static std::string activeAnimation = "";
@@ -69,8 +72,8 @@ void LoadAvailableAnimations() {
     availableAnimations.clear();
 
     // Get all available animations
-    auto result =
-        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles("*gPlayerAnim_link*");
+    auto result = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(
+        "*gPlayerAnim_link*" + std::string(animationSearchString) + "*");
 
     availableAnimations.clear();
     for (const auto& path : *result.get()) {
@@ -110,6 +113,12 @@ void RegisterEmote() {
 
     COND_HOOK(OnPlayerUpdate, CVarGetInteger("gEmoteWheel.Enabled", 0), []() {
         Player* player = GET_PLAYER(gPlayState);
+
+        if (player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM || player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER ||
+            player->stateFlags1 & PLAYER_STATE1_IN_WATER || player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS) {
+            return;
+        }
+
         if (targetSlot.animationPath != "") {
             activeAnimation = targetSlot.animationPath;
             if (targetSlot.playOnce) {
@@ -158,6 +167,23 @@ void DrawEmoteConfiguration(WidgetInfo& info) {
 
     if (!CVarGetInteger("gEmoteWheel.Enabled", 0)) {
         return;
+    }
+
+    UIWidgets::PushStyleInput(THEME_COLOR);
+
+    if (ImGui::InputText("Search Animations", animationSearchString, ARRAY_COUNT(animationSearchString))) {
+        doAnimationSearch = true;
+        animationSearchDebounceFrames = 30;
+    }
+    UIWidgets::PopStyleInput();
+
+    if (doAnimationSearch) {
+        if (animationSearchDebounceFrames == 0) {
+            doAnimationSearch = false;
+            LoadAvailableAnimations();
+        }
+
+        animationSearchDebounceFrames--;
     }
 
     ImGui::Separator();
