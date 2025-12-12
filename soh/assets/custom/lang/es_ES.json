@@ -1,10 +1,10 @@
 {
-    "language_name": "English (US)",
+    "language_name": "Español (España)",
     "cvars": {
         "gEnhancements": {
             "AssignableTunicsAndBoots": {
-                "name": "Assignable Shields, Tunics and Boots",
-                "tooltip": "Allows equipping Shields, Tunics and Boots to C-Buttons/D-pad."
+                "name": "Escudos, Túnicas y Botas Asignables",
+                "tooltip": "Permite equipar escudos, túnicas y botas a los Botones-C / el D-pad."
             },
             "TimeSavers": {
                 "SkipJabuJabuFish": {
@@ -18,7 +18,7 @@
     "others": {
         "menu": {
             "tabs": {
-                "enhancements": "Enhancements"
+                "enhancements": "Mejoras"
             }
         }
     }
