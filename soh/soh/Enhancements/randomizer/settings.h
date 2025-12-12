@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef RANDOSETTINGS_H
-#define RANDOSETTINGS_H
-
 #include "SeedContext.h"
 #include "option.h"
 #include "randomizerTypes.h"
@@ -145,4 +142,3 @@ class Settings {
     std::unordered_map<std::string, RandomizerTrick> mTrickNameToEnum;
 };
 } // namespace Rando
-#endif // RANDOSETTINGS_H

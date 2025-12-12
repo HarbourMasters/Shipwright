@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef RANDOSPOILER_H
-#define RANDOSPOILER_H
-
 #include <array>
 #include <string>
 #include <string_view>
@@ -27,4 +24,3 @@ typedef enum {
 void GenerateHash();
 
 const char* SpoilerLog_Write();
-#endif // RANDOSPOILER_H

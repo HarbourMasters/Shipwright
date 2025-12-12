@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef RANDOLOCATION_H
-#define RANDOLOCATION_H
-
 #include <utility>
 #include <vector>
 
@@ -308,4 +305,3 @@ class Location {
     Option excludedOption;
 };
 } // namespace Rando
-#endif // RANDOLOCATION_H

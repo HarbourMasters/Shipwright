@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef RANDOLOCATIONACCESS_H
-#define RANDOLOCATIONACCESS_H
-
 #include <string>
 #include <vector>
 #include <list>
@@ -283,4 +280,3 @@ void RegionTable_Init_IceCavern();
 void RegionTable_Init_ThievesHideout();
 void RegionTable_Init_GerudoTrainingGround();
 void RegionTable_Init_GanonsCastle();
-#endif // RANDOLOCATIONACCESS_H

@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef RANDOITEMTRACKER_H
-#define RANDOITEMTRACKER_H
-
 #include <string>
 #include <vector>
 #include <cstdint>
@@ -70,4 +67,3 @@ class ItemTrackerWindow final : public Ship::GuiWindow {
     void DrawElement() override;
     void UpdateElement() override{};
 };
-#endif // RANDOITEMTRACKER_H

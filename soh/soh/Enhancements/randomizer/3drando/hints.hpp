@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef RANDOHINTS_H
-#define RANDOHINTS_H
-
 #include <string>
 #include <vector>
 #include <variant>
@@ -79,4 +76,3 @@ extern void CreateAllHints();
 extern void CreateWarpSongTexts();
 void CreateStaticHints();
 RandomizerHintTextKey GetRandomJunkHint();
-#endif // RANDOHINTS_H

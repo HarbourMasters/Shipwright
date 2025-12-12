@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef RANDOSTATIC_H
-#define RANDOSTATIC_H
-
 #include <array>
 #include <map>
 #include <unordered_map>
@@ -91,4 +88,3 @@ class StaticData {
     ~StaticData();
 };
 } // namespace Rando
-#endif // RANDOSTATIC_H

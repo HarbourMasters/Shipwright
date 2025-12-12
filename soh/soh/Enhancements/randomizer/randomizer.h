@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef RANDOMIZER_H
-#define RANDOMIZER_H
-
 #include <unordered_map>
 #include <unordered_set>
 #include <string>
@@ -90,4 +87,3 @@ void JoinRandoGenerationThread();
 #ifdef __cplusplus
 }
 #endif
-#endif // RANDOMIZER_H

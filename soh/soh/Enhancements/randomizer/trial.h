@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef RANDOTRIALS_H
-#define RANDOTRIALS_H
-
 #include "randomizerTypes.h"
 #include "../custom-message/CustomMessageManager.h"
 #include <nlohmann/json.hpp>
@@ -46,4 +43,3 @@ class Trials {
     std::array<TrialInfo, TK_MAX> mTrials;
 };
 } // namespace Rando
-#endif // RANDOTRIALS_H

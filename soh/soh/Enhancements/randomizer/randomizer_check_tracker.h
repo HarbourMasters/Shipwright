@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef RANDOCHECKTRACKER_H
-#define RANDOCHECKTRACKER_H
-
 #include <nlohmann/json.hpp>
 #include "randomizerTypes.h"
 #include "randomizer_check_objects.h"
@@ -68,4 +65,3 @@ void SpoilAreaFromCheck(RandomizerCheck rc);
 void RecalculateAvailableChecks(RandomizerRegion startingRegion = RR_ROOT);
 void CheckTracker_LoadFromPreset(nlohmann::json info);
 } // namespace CheckTracker
-#endif // RANDOCHECKTRACKER_H

@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef ITEMLOC_H
-#define ITEMLOC_H
-
 #include "randomizerTypes.h"
 #include "3drando/text.hpp"
 #include "static_data.h"
@@ -84,4 +81,3 @@ class ItemLocation {
     bool isAvailable = false;
 };
 } // namespace Rando
-#endif // ITEMLOC_H

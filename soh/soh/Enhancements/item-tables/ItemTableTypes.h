@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef ITEMTABLETYPES_H
-#define ITEMTABLETYPES_H
-
 #ifdef __cplusplus
 #include <stdint.h>
 #endif
@@ -74,4 +71,3 @@ typedef struct GetItemEntry {
                                       // to function on ice traps.
     CustomDrawFunc drawFunc;
 } GetItemEntry; // size = 0x11
-#endif          // ITEMTABLETYPES_H

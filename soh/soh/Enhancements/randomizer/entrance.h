@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef RANDOENTRANCE_H
-#define RANDOENTRANCE_H
-
 #ifdef __cplusplus
 
 #include "randomizerTypes.h"
@@ -162,4 +159,3 @@ EntranceOverride* Randomizer_GetEntranceOverrides();
 #ifdef __cplusplus
 }
 #endif
-#endif // RANDOENTRANCE_H
