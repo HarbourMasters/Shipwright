@@ -71,6 +71,7 @@
 #include "Enhancements/custom-message/CustomMessageTypes.h"
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
+#include "Enhancements/Lang/Lang.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "ActorDB.h"
@@ -1278,6 +1279,8 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion4Updater>());
     conf->RunVersionUpdates();
+
+    Lang::LoadLangs();
 
     SohGui::SetupGuiElements();
     ShipInit::InitAll();
