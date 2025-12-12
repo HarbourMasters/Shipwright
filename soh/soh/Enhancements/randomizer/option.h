@@ -294,13 +294,6 @@ class Option {
     void Disable(std::string text);
     bool IsCategory(OptionCategory category) const;
 
-    /**
-     * @brief Automatically renders a widget for this option in ImGui, based on the various
-     * properties of this Option. Typically, Bool options are rendered as Checkboxes and
-     * U8 options are rendered as Comboboxes, but this can be overridden during construction with
-     * the `widgetType` property.
-     */
-    bool RenderImGui();
     void AddWidget(WidgetPath& path);
 
     bool HasFlag(int imFlag_) const;
@@ -518,10 +511,6 @@ class OptionGroup {
 
     const std::string& GetDescription() const;
 
-    /**
-     * @brief Renders all of the options contained within this `OptionGroup` in the ImGui menu.
-     */
-    bool RenderImGui() const;
     void AddWidgets(WidgetPath& path) const;
     void Disable();
     void Enable();

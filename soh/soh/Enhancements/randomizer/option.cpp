@@ -135,26 +135,6 @@ bool Option::IsCategory(const OptionCategory category) const {
     return category == this->category;
 }
 
-bool Option::RenderImGui() {
-    bool changed = false;
-    ImGui::BeginGroup();
-    switch (widgetType) {
-        case WIDGET_CVAR_CHECKBOX:
-            changed = RenderCheckbox();
-            break;
-        case WIDGET_CVAR_COMBOBOX:
-            changed = RenderCombobox();
-            break;
-        case WIDGET_CVAR_SLIDER_INT:
-            changed = RenderSlider();
-            break;
-        default:
-            break;
-    }
-    ImGui::EndGroup();
-    return changed;
-}
-
 bool Option::HasFlag(const int imFlag_) const {
     return imFlag_ & imFlags;
 }
@@ -475,77 +455,5 @@ void OptionGroup::AddWidgets(WidgetPath& path) const {
         assert(path.column < 3);
         path.column = static_cast<SectionColumns>(path.column + 1);
     }
-}
-
-bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
-    ImGuiWindow* window = ImGui::GetCurrentWindow();
-    bool changed = false;
-    ImGui::BeginDisabled(mDisabled || CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) ||
-                         CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) ||
-                         CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0));
-    if (mContainerType == WidgetContainerType::TABLE) {
-        if (ImGui::BeginTable(mName.c_str(), static_cast<int>(mSubGroups.size()),
-                              ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            for (const auto column : mSubGroups) {
-                if (column->GetContainerType() == WidgetContainerType::COLUMN) {
-                    ImGui::TableSetupColumn(column->GetName().c_str(), ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                }
-            }
-            ImGui::PushItemFlag(ImGuiItemFlags_NoNav, true);
-            ImGui::TableNextRow(ImGuiTableRowFlags_Headers);
-            for (int i = 0; i < mSubGroups.size(); i++) {
-                ImGui::TableSetColumnIndex(i);
-                ImGui::TableHeader(mSubGroups[i]->GetName().c_str());
-                if (!mSubGroups[i]->GetDescription().empty()) {
-                    UIWidgets::Tooltip(mSubGroups[i]->GetDescription().c_str());
-                }
-            }
-            ImGui::PopItemFlag();
-            ImGui::TableNextRow();
-        }
-    }
-    if (mContainerType == WidgetContainerType::SECTION && !mName.empty()) {
-        ImGui::SeparatorText(mName.c_str());
-        if (!mDescription.empty()) {
-            UIWidgets::Tooltip(mDescription.c_str());
-        }
-    }
-    if (mContainerType == WidgetContainerType::COLUMN) {
-        ImGui::TableNextColumn();
-        window->DC.CurrLineTextBaseOffset = 0.0f;
-        ImGui::BeginChild(mName.c_str(), ImVec2(0, -8));
-        ImGui::PushItemWidth(-FLT_MIN);
-    }
-    if (mContainsType == OptionGroupType::SUBGROUP) {
-        for (const auto optionGroup : mSubGroups) {
-            if (optionGroup->RenderImGui()) {
-                changed = true;
-            }
-        }
-    } else {
-        for (const auto option : mOptions) {
-            if (option->IsHidden()) {
-                continue;
-            }
-            if (option->HasFlag(IMFLAG_INDENT)) {
-                ImGui::Indent();
-            }
-            // If any options changed, changed will end up being true
-            if (option->RenderImGui()) {
-                changed = true;
-            }
-            if (option->HasFlag(IMFLAG_UNINDENT)) {
-                ImGui::Unindent();
-            }
-        }
-    }
-    if (mContainerType == WidgetContainerType::COLUMN) {
-        ImGui::EndChild();
-    }
-    if (mContainerType == WidgetContainerType::TABLE) {
-        ImGui::EndTable();
-    }
-    ImGui::EndDisabled();
-    return changed;
 }
 } // namespace Rando
