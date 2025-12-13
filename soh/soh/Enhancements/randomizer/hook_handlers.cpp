@@ -13,6 +13,8 @@
 #include "soh/SaveManager.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/Enhancements/custom-item/CustomItem.h"
+#include "soh/frame_interpolation.h"
 
 extern "C" {
 #include "macros.h"
@@ -56,6 +58,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
 #include "src/overlays/actors/ovl_En_Heishi2/z_en_heishi2.h"
 #include "draw.h"
+#include <objects/gameplay_keep/gameplay_keep.h>
 
 static ObjectExtension::Register<DnsItemEntry> RegisterDnsItemEntryOverride;
 static ObjectExtension::Register<ScrubIdentity> RegisterScrubIdentity;
@@ -74,6 +77,7 @@ extern void EnGe1_Wait_Archery(EnGe1* enGe1, PlayState* play);
 extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
 extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
 extern void EnGe2_SetupCapturePlayer(EnGe2* enGe2, PlayState* play);
+extern void Player_DrawGetItemIceTrap(PlayState* play);
 }
 
 bool LocMatchesQuest(Rando::Location loc) {
@@ -221,10 +225,281 @@ bool MeetsRainbowBridgeRequirements() {
     return false;
 }
 
-// Todo Move this to randomizer context, clear it out on save load etc
-static std::queue<RandomizerCheck> randomizerQueuedChecks;
-static RandomizerCheck randomizerQueuedCheck = RC_UNKNOWN_CHECK;
-static GetItemEntry randomizerQueuedItemEntry = GET_ITEM_NONE;
+bool ShouldShowGetItemCutscene(RandomizerCheck rc, GetItemEntry getItemEntry) {
+    // Skipping ItemGet animation incompatible with checks that require closing a text box to finish
+    if (rc == RC_HF_OCARINA_OF_TIME_ITEM || rc == RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST ||
+        rc == RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE || rc == RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE || RC_LH_GS_TREE) {
+        return true;
+    }
+
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_JUNK) == SGIA_DISABLED) {
+        return true;
+    }
+
+    // If a mix of MQ/Vanilla, and item is a map, show animation for map hints
+    if ((getItemEntry.getItemId >= RG_DEKU_TREE_MAP && getItemEntry.getItemId <= RG_ICE_CAVERN_MAP &&
+         getItemEntry.modIndex == MOD_RANDOMIZER) &&
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) != RO_MQ_DUNGEONS_NONE &&
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) != 12) {
+        return true;
+    }
+
+    // Treat small keys as junk if Skeleton Key is obtained.
+    if (getItemEntry.getItemCategory == ITEM_CATEGORY_SMALL_KEY && Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY)) {
+        return true;
+    }
+
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_JUNK) == SGIA_JUNK &&
+        ((getItemEntry.getItemCategory != ITEM_CATEGORY_JUNK &&
+          getItemEntry.getItemCategory != ITEM_CATEGORY_SKULLTULA_TOKEN &&
+          getItemEntry.getItemCategory != ITEM_CATEGORY_LESSER))) {
+        return true;
+    }
+
+    return false;
+}
+
+void BuildIceTrapMessage(CustomMessage& msg);
+void BuildTriforcePieceMessage(CustomMessage& msg);
+
+void RandomizerQueueCheck(RandomizerCheck rc) {
+    SPDLOG_INFO("RandomizerQueueCheck: {}", static_cast<uint32_t>(rc));
+
+    auto loc = Rando::Context::GetInstance()->GetItemLocation(rc);
+    if (loc == nullptr) {
+        SPDLOG_ERROR("RandomizerQueueCheck: Location not found for RC {}", static_cast<uint32_t>(rc));
+        return;
+    }
+
+    if (loc->HasObtained()) {
+        SPDLOG_ERROR("RandomizerQueueCheck: Location already obtained for RC {}", static_cast<uint32_t>(rc));
+        return;
+    }
+
+    RandomizerGet vanillaRandomizerGet = Rando::StaticData::GetLocation(rc)->GetVanillaItem();
+    GetItemID vanillaGetItemId = (GetItemID)Rando::StaticData::RetrieveItem(vanillaRandomizerGet).GetItemID();
+    GetItemEntry getItemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, vanillaGetItemId);
+
+    // Reset ice trap scale in case it's an ice trap
+    iceTrapScale = 0.0f;
+
+    GameInteractor::Instance->events.emplace_back(GIEventGiveItem{
+        .showGetItemCutscene = ShouldShowGetItemCutscene(rc, getItemEntry),
+        .param = (int16_t)rc,
+        .giveItem =
+            [](Actor* actor, PlayState* play) {
+                RandomizerCheck rc = (RandomizerCheck)CUSTOM_ITEM_PARAM;
+                auto loc = Rando::Context::GetInstance()->GetItemLocation(rc);
+                RandomizerGet vanillaRandomizerGet = Rando::StaticData::GetLocation(rc)->GetVanillaItem();
+                GetItemID vanillaGetItemId =
+                    (GetItemID)Rando::StaticData::RetrieveItem(vanillaRandomizerGet).GetItemID();
+                GetItemEntry getItemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, vanillaGetItemId);
+
+                std::string prefix = "You found";
+                std::string suffix = "!";
+                switch (gSaveContext.language) {
+                    case LANGUAGE_FRA:
+                        prefix = "Vous avez trouvé";
+                        suffix = "!";
+                        break;
+                    case LANGUAGE_GER:
+                        prefix = "Du erhältst";
+                        suffix = "gefunden!";
+                        break;
+                    default:
+                        break;
+                }
+
+                std::string itemName = getItemEntry.modIndex == MOD_NONE
+                                           ? SohUtils::GetItemName(getItemEntry.itemId)
+                                           : Rando::StaticData::RetrieveItem((RandomizerGet)getItemEntry.getItemId)
+                                                 .GetName()
+                                                 .GetForLanguage(gSaveContext.language);
+                std::string article = getItemEntry.modIndex == MOD_NONE
+                                          ? SohUtils::GetItemArticle(getItemEntry.itemId)
+                                          : Rando::StaticData::RetrieveItem((RandomizerGet)getItemEntry.getItemId)
+                                                .GetArticle()
+                                                .GetForLanguage(gSaveContext.language);
+                auto color = getItemEntry.modIndex == MOD_NONE
+                                 ? "%g"
+                                 : Rando::StaticData::RetrieveItem((RandomizerGet)getItemEntry.getItemId).GetColor();
+
+                CustomMessage message = prefix + " " + article + color + itemName + "%w" + suffix;
+                message.SetTextBoxType(TextBoxType::TEXTBOX_TYPE_BLUE);
+
+                if (getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.itemId == RG_ICE_TRAP) {
+                    BuildIceTrapMessage(message);
+                } else if (getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
+                    BuildTriforcePieceMessage(message);
+                    itemName +=
+                        " (" + std::to_string(gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected + 1) +
+                        "/" +
+                        std::to_string(
+                            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) +
+                            1) +
+                        ")";
+                } else if (getItemEntry.modIndex == MOD_NONE && getItemEntry.itemId == ITEM_SKULL_TOKEN) {
+                    auto ext =
+                        CustomMessage("&You've collected %r[[gsCount]]%w tokens&in total!",
+                                      "&Du hast nun insgesamt %r[[gsCount]]&%wGoldene Skulltula-Symbole&gesammelt!",
+                                      "&Vous avez&collecté %r[[gsCount]]%w symboles en tout!");
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 0)) {
+                        s16 gsCount = gSaveContext.inventory.gsTokens + 1;
+                        ext.Replace("[[gsCount]]", std::to_string(gsCount));
+                        message += ext;
+                        itemName += " (" + std::to_string(gsCount) + ")";
+                    }
+                } else if (getItemEntry.modIndex == MOD_NONE && getItemEntry.itemId == ITEM_HEART_CONTAINER) {
+                    auto ext =
+                        CustomMessage("&You've collected %r[[heartContainerCount]]%w containers&in total!",
+                                      "&Du hast nun insgesamt %r[[heartContainerCount]]%w&Herzcontainer gesammelt!",
+                                      "&Vous en avez&collecté %r[[heartContainerCount]]%w en tout!");
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 0)) {
+                        ext.Replace("[[heartContainerCount]]",
+                                    std::to_string(gSaveContext.ship.stats.heartContainers + 1));
+                        message += ext;
+                        itemName += " (" + std::to_string(gSaveContext.ship.stats.heartContainers + 1) + ")";
+                    }
+                } else if (getItemEntry.modIndex == MOD_NONE && getItemEntry.itemId == ITEM_HEART_PIECE_2) {
+                    auto ext = CustomMessage("&You've collected %r[[heartPieceCount]]%w pieces&in total!",
+                                             "&Du hast nun insgesamt %r[[heartPieceCount]]%w&Herzteile gesammelt!",
+                                             "&Vous en avez collecté&%r[[heartPieceCount]]%w en tout!");
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 0)) {
+                        ext.Replace("[[heartPieceCount]]", std::to_string(gSaveContext.ship.stats.heartPieces + 1));
+                        message += ext;
+                        itemName += " (" + std::to_string(gSaveContext.ship.stats.heartPieces + 1) + ")";
+                    }
+                }
+
+                if (CUSTOM_ITEM_FLAGS & CustomItem::GIVE_ITEM_CUTSCENE) {
+                    // This first case is for if we are displaying a GI cutscene
+                    message.AutoFormat();
+                    CustomMessageManager::Instance->SetActiveCustomMessage(message);
+                } else if (ShouldShowGetItemCutscene(rc, getItemEntry)) {
+                    // This case is for if we intended to display a GI cutscene, but the player was busy, so we have to
+                    // display a vanishing text box while the player is frozen for a short time.
+                    message.Replace(CustomMessage::MESSAGE_END(), "");
+                    message += "\x11\x02\x10";
+                    message.AutoFormat();
+                    CustomMessageManager::Instance->StartTextbox(message);
+                } else {
+                    if (getItemEntry.getItemCategory != ITEM_CATEGORY_JUNK) {
+                        Notification::Emit({
+                            .itemIcon =
+                                getItemEntry.modIndex == MOD_NONE ? GetTextureForItemId(getItemEntry.itemId) : nullptr,
+                            .message = prefix,
+                            .suffix = article + itemName,
+                        });
+                    }
+                }
+
+                if (getItemEntry.modIndex == MOD_NONE) {
+                    // Things that should have been handled by the game but nintendo
+                    switch (getItemEntry.itemId) {
+                        case ITEM_SWORD_BGS:
+                            gSaveContext.bgsFlag = true;
+                            gSaveContext.swordHealth = 8;
+                            break;
+                        case ITEM_HEART_PIECE:
+                        case ITEM_HEART_PIECE_2:
+                        case ITEM_HEART_CONTAINER:
+                            gSaveContext.healthAccumulator = MAX_HEALTH; // Refill 20 hearts
+                            if ((s32)(gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000) {
+                                gSaveContext.inventory.questItems ^= 0x40000000;
+                                gSaveContext.healthCapacity += FULL_HEART_HEALTH;
+                                gSaveContext.health += FULL_HEART_HEALTH;
+                            }
+                            break;
+                    }
+                    Item_Give(play, getItemEntry.itemId);
+                } else {
+                    if (getItemEntry.getItemId == RG_ICE_TRAP) {
+                        gSaveContext.ship.pendingIceTrapCount++;
+                    } else {
+                        Randomizer_Item_Give(play, getItemEntry);
+                    }
+                }
+
+                // This is typically called when you close the text box after getting an item, in case a previous
+                // function hid the interface.
+                gSaveContext.unk_13EA = 0;
+                Interface_ChangeAlpha(0x32);
+
+                loc->SetCheckStatus(RCSHOW_COLLECTED);
+                CheckTracker::SpoilAreaFromCheck(rc);
+                CheckTracker::RecalculateAllAreaTotals();
+                CheckTracker::RecalculateAvailableChecks();
+                SaveManager::Instance->SaveSection(gSaveContext.fileNum, SECTION_ID_TRACKER_DATA, true);
+
+                // Transition the player into the Naburu cutscene if we are at the appropriate spot and story cutscenes
+                // are not disabled.
+                if (rc == RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST &&
+                    !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
+                    static uint32_t updateHook;
+                    updateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+                        Player* player = GET_PLAYER(gPlayState);
+                        if (player == NULL || Player_InBlockingCsMode(gPlayState, player) ||
+                            player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS ||
+                            player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM ||
+                            player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
+                            return;
+                        }
+
+                        gPlayState->nextEntranceIndex = ENTR_DESERT_COLOSSUS_EAST_EXIT;
+                        gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+                        gSaveContext.nextCutsceneIndex = 0xFFF1;
+                        gPlayState->transitionType = TRANS_TYPE_SANDSTORM_END;
+                        GET_PLAYER(gPlayState)->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
+                        Player_TryCsAction(gPlayState, NULL, 8);
+                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(updateHook);
+                    });
+                }
+
+                ((EnItem00*)actor)->itemEntry = getItemEntry;
+            },
+        .drawItem =
+            [](Actor* actor, PlayState* play) {
+                GetItemEntry getItemEntry;
+
+                if (CUSTOM_ITEM_FLAGS & CustomItem::CALLED_ACTION) {
+                    getItemEntry = ((EnItem00*)actor)->itemEntry;
+                } else {
+                    RandomizerCheck rc = (RandomizerCheck)CUSTOM_ITEM_PARAM;
+                    auto loc = Rando::Context::GetInstance()->GetItemLocation(rc);
+                    RandomizerGet vanillaRandomizerGet = Rando::StaticData::GetLocation(rc)->GetVanillaItem();
+                    GetItemID vanillaGetItemId =
+                        (GetItemID)Rando::StaticData::RetrieveItem(vanillaRandomizerGet).GetItemID();
+                    getItemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, vanillaGetItemId);
+                }
+
+                Matrix_Scale(30.0f, 30.0f, 30.0f, MTXMODE_APPLY);
+                func_8002EBCC(actor, play, 0);
+                func_8002ED80(actor, play, 0);
+
+                if (CUSTOM_ITEM_FLAGS & CustomItem::CALLED_ACTION && getItemEntry.modIndex == MOD_RANDOMIZER &&
+                    getItemEntry.getItemId == RG_ICE_TRAP) {
+                    if (CUSTOM_ITEM_FLAGS & CustomItem::GIVE_OVERHEAD) {
+                        iceTrapScale = 0.8f;
+                    } else {
+                        if (iceTrapScale < 0.01) {
+                            iceTrapScale += 0.001f;
+                        } else if (iceTrapScale < 0.8f) {
+                            iceTrapScale += 0.2f;
+                        }
+                    }
+                    Player_DrawGetItemIceTrap(play);
+                }
+
+                EnItem00_CustomItemsParticles(actor, play, getItemEntry);
+
+                if (getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
+                    Randomizer_DrawTriforcePieceGI(play, getItemEntry);
+                } else {
+                    GetItemEntry_Draw(play, getItemEntry);
+                }
+            },
+    });
+}
 
 void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
     // Consume adult trade items
@@ -265,8 +540,7 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
         return;
     }
 
-    SPDLOG_INFO("Queuing RC: {}", static_cast<uint32_t>(rc));
-    randomizerQueuedChecks.push(rc);
+    RandomizerQueueCheck(rc);
 }
 
 void RandomizerOnSceneFlagSetHandler(int16_t sceneNum, int16_t flagType, int16_t flag) {
@@ -334,141 +608,7 @@ void RandomizerOnSceneFlagSetHandler(int16_t sceneNum, int16_t flagType, int16_t
     if (loc == nullptr || loc->HasObtained() || loc->GetPlacedRandomizerGet() == RG_NONE)
         return;
 
-    SPDLOG_INFO("Queuing RC: {}", static_cast<uint32_t>(rc));
-    randomizerQueuedChecks.push(rc);
-}
-
-static Vec3f spawnPos = { 0.0f, -999.0f, 0.0f };
-
-void RandomizerOnPlayerUpdateForRCQueueHandler() {
-    // If we're already queued, don't queue again
-    if (randomizerQueuedCheck != RC_UNKNOWN_CHECK)
-        return;
-
-    // If there's nothing to queue, don't queue
-    if (randomizerQueuedChecks.size() < 1)
-        return;
-
-    // If we're in a cutscene, don't queue
-    Player* player = GET_PLAYER(gPlayState);
-    if (Player_InBlockingCsMode(gPlayState, player) || player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS ||
-        player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM || player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
-        return;
-    }
-
-    RandomizerCheck rc = randomizerQueuedChecks.front();
-    auto loc = Rando::Context::GetInstance()->GetItemLocation(rc);
-    RandomizerGet vanillaRandomizerGet = Rando::StaticData::GetLocation(rc)->GetVanillaItem();
-    GetItemID vanillaItem = (GetItemID)Rando::StaticData::RetrieveItem(vanillaRandomizerGet).GetItemID();
-    GetItemEntry getItemEntry =
-        Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)vanillaRandomizerGet);
-
-    if (loc->HasObtained()) {
-        SPDLOG_INFO("RC {} already obtained, skipping", static_cast<uint32_t>(rc));
-    } else {
-        iceTrapScale = 0.0f;
-        randomizerQueuedCheck = rc;
-        randomizerQueuedItemEntry = getItemEntry;
-        SPDLOG_INFO("Queuing Item mod {} item {} from RC {}", getItemEntry.modIndex, getItemEntry.itemId,
-                    static_cast<uint32_t>(rc));
-        if (
-            // Skipping ItemGet animation incompatible with checks that require closing a text box to finish
-            rc != RC_HF_OCARINA_OF_TIME_ITEM && rc != RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST &&
-            rc != RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE && rc != RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE &&
-            // Always show ItemGet animation for ice traps
-            !(getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId == RG_ICE_TRAP) &&
-            // Always show ItemGet animation outside of randomizer to keep behaviour consistent in vanilla
-            IS_RANDO &&
-            (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_JUNK) == SGIA_ALL ||
-             (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_JUNK) == SGIA_JUNK &&
-              (
-                  // crude fix to ensure map hints are readable. Ideally replace with better hint tracking.
-                  !(getItemEntry.getItemId >= RG_DEKU_TREE_MAP && getItemEntry.getItemId <= RG_ICE_CAVERN_MAP &&
-                    getItemEntry.modIndex == MOD_RANDOMIZER) &&
-                  (getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
-                   getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
-                   getItemEntry.getItemCategory == ITEM_CATEGORY_HEALTH ||
-                   getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER ||
-                   // Treat small keys as junk if Skeleton Key is obtained.
-                   (getItemEntry.getItemCategory == ITEM_CATEGORY_SMALL_KEY &&
-                    Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY))))))) {
-            Item_DropCollectible(gPlayState, &spawnPos, static_cast<int16_t>(ITEM00_SOH_GIVE_ITEM_ENTRY | 0x8000));
-        }
-    }
-
-    randomizerQueuedChecks.pop();
-}
-
-void RandomizerOnPlayerUpdateForItemQueueHandler() {
-    if (randomizerQueuedCheck == RC_UNKNOWN_CHECK)
-        return;
-
-    Player* player = GET_PLAYER(gPlayState);
-    if (player == NULL || Player_InBlockingCsMode(gPlayState, player) ||
-        player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM ||
-        player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
-        return;
-    }
-
-    SPDLOG_INFO("Attempting to give Item mod {} item {} from RC {}", randomizerQueuedItemEntry.modIndex,
-                randomizerQueuedItemEntry.itemId, static_cast<uint32_t>(randomizerQueuedCheck));
-    GiveItemEntryWithoutActor(gPlayState, randomizerQueuedItemEntry);
-    if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
-        // Allow the player to receive the item while swimming
-        player->stateFlags2 |= PLAYER_STATE2_UNDERWATER;
-        Player_ActionHandler_2(player, gPlayState);
-    }
-}
-
-void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
-    if (randomizerQueuedCheck == RC_UNKNOWN_CHECK)
-        return;
-
-    auto loc = Rando::Context::GetInstance()->GetItemLocation(randomizerQueuedCheck);
-    if (randomizerQueuedItemEntry.modIndex == receivedItemEntry.modIndex &&
-        randomizerQueuedItemEntry.itemId == receivedItemEntry.itemId) {
-        SPDLOG_INFO("Item received mod {} item {} from RC {}", receivedItemEntry.modIndex, receivedItemEntry.itemId,
-                    static_cast<uint32_t>(randomizerQueuedCheck));
-        loc->SetCheckStatus(RCSHOW_COLLECTED);
-        CheckTracker::SpoilAreaFromCheck(randomizerQueuedCheck);
-        CheckTracker::RecalculateAllAreaTotals();
-        CheckTracker::RecalculateAvailableChecks();
-        SaveManager::Instance->SaveSection(gSaveContext.fileNum, SECTION_ID_TRACKER_DATA, true);
-        randomizerQueuedCheck = RC_UNKNOWN_CHECK;
-        randomizerQueuedItemEntry = GET_ITEM_NONE;
-    }
-
-    if (receivedItemEntry.modIndex == MOD_NONE &&
-        (receivedItemEntry.itemId == ITEM_HEART_PIECE || receivedItemEntry.itemId == ITEM_HEART_PIECE_2 ||
-         receivedItemEntry.itemId == ITEM_HEART_CONTAINER)) {
-        gSaveContext.healthAccumulator = MAX_HEALTH; // Refill 20 hearts
-        if ((s32)(gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000) {
-            gSaveContext.inventory.questItems ^= 0x40000000;
-            gSaveContext.healthCapacity += FULL_HEART_HEALTH;
-            gSaveContext.health += FULL_HEART_HEALTH;
-        }
-    }
-
-    if (loc->GetRandomizerCheck() == RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST &&
-        !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-        static uint32_t updateHook;
-        updateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-            Player* player = GET_PLAYER(gPlayState);
-            if (player == NULL || Player_InBlockingCsMode(gPlayState, player) ||
-                player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM ||
-                player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
-                return;
-            }
-
-            gPlayState->nextEntranceIndex = ENTR_DESERT_COLOSSUS_EAST_EXIT;
-            gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-            gSaveContext.nextCutsceneIndex = 0xFFF1;
-            gPlayState->transitionType = TRANS_TYPE_SANDSTORM_END;
-            GET_PLAYER(gPlayState)->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
-            Player_TryCsAction(gPlayState, NULL, 8);
-            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(updateHook);
-        });
-    }
+    RandomizerQueueCheck(rc);
 }
 
 void EnExItem_DrawRandomizedItem(EnExItem* enExItem, PlayState* play) {
@@ -504,8 +644,7 @@ void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play) {
     f32 mtxScale = CVarGetFloat(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimationScale"), 10.0f);
     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
     GetItemEntry randoItem = enItem00->itemEntry;
-    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0) &&
-        enItem00->actor.params != ITEM00_SOH_GIVE_ITEM_ENTRY) {
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
         randoItem = GET_ITEM_MYSTERY;
     }
     func_8002EBCC(&enItem00->actor, play, 0);
@@ -902,7 +1041,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = !Flags_GetTreasure(gPlayState, 0x1F);
             break;
         case VB_PLAY_NABOORU_CAPTURED_CS:
-            // This behavior is replicated for randomizer in RandomizerOnItemReceiveHandler
+            // This behavior is replicated for randomizer in RandomizerQueueCheck
             *should = false;
             break;
         case VB_SHIEK_PREPARE_TO_GIVE_SERENADE_OF_WATER: {
@@ -999,11 +1138,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
                     *should = Rando::Context::GetInstance()->GetItemLocation(rc)->HasObtained();
                 }
-            } else if (item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY ||
-                       item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY_GI) {
-                GetItemEntry itemEntry = randomizerQueuedItemEntry;
-                item00->itemEntry = itemEntry;
-                item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
             }
             break;
         }
@@ -1102,87 +1236,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     Flags_SetCollectible(gPlayState, item00->collectibleFlag);
                 }
                 Actor_Kill(&item00->actor);
-                *should = false;
-            } else if (item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY) {
-                Audio_PlaySoundGeneral(NA_SE_SY_GET_ITEM, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-                if (item00->itemEntry.modIndex == MOD_NONE) {
-                    if (item00->itemEntry.getItemId == GI_SWORD_BGS) {
-                        gSaveContext.bgsFlag = true;
-                    }
-                    Item_Give(gPlayState, static_cast<uint8_t>(item00->itemEntry.itemId));
-                } else if (item00->itemEntry.modIndex == MOD_RANDOMIZER) {
-                    if (item00->itemEntry.getItemId == RG_ICE_TRAP) {
-                        gSaveContext.ship.pendingIceTrapCount++;
-                    } else {
-                        Randomizer_Item_Give(gPlayState, item00->itemEntry);
-                    }
-                }
-
-                if (item00->itemEntry.modIndex == MOD_NONE) {
-                    std::string message;
-
-                    switch (gSaveContext.language) {
-                        case LANGUAGE_FRA:
-                            message = "Vous obtenez: ";
-                            break;
-                        case LANGUAGE_GER:
-                            message = "Du erhältst: ";
-                            break;
-                        case LANGUAGE_ENG:
-                        default:
-                            message = "You found ";
-                            break;
-                    }
-
-                    Notification::Emit({
-                        .itemIcon = GetTextureForItemId(item00->itemEntry.itemId),
-                        .message = message,
-                        .suffix = SohUtils::GetItemName(item00->itemEntry.itemId),
-                    });
-                } else if (item00->itemEntry.modIndex == MOD_RANDOMIZER) {
-                    std::string message;
-                    std::string itemName;
-
-                    switch (gSaveContext.language) {
-                        case LANGUAGE_FRA:
-                            message = "Vous obtenez: ";
-                            itemName = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
-                                           .GetName()
-                                           .french;
-                            break;
-                        case LANGUAGE_GER:
-                            message = "Du erhältst: ";
-                            itemName = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
-                                           .GetName()
-                                           .german;
-                            break;
-                        case LANGUAGE_ENG:
-                        default:
-                            message = "You found ";
-                            itemName = Rando::StaticData::RetrieveItem((RandomizerGet)item00->itemEntry.getItemId)
-                                           .GetName()
-                                           .english;
-                            break;
-                    }
-
-                    Notification::Emit({
-                        .message = message,
-                        .suffix = itemName,
-                    });
-                }
-
-                // This is typically called when you close the text box after getting an item, in case a previous
-                // function hid the interface.
-                gSaveContext.unk_13EA = 0;
-                Interface_ChangeAlpha(0x32);
-                // EnItem00_SetupAction(item00, func_8001E5C8);
-                // *should = false;
-            } else if (item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY_GI) {
-                if (!Actor_HasParent(&item00->actor, gPlayState)) {
-                    GiveItemEntryFromActorWithFixedRange(&item00->actor, gPlayState, item00->itemEntry);
-                }
-                EnItem00_SetupAction(item00, func_8001E5C8);
                 *should = false;
             }
             break;
@@ -2635,9 +2688,6 @@ void RandomizerOnCuccoOrChickenHatch() {
 static void RandomizerRegisterHooks() {
     static uint32_t onFlagSetHook = 0;
     static uint32_t onSceneFlagSetHook = 0;
-    static uint32_t onPlayerUpdateForRCQueueHook = 0;
-    static uint32_t onPlayerUpdateForItemQueueHook = 0;
-    static uint32_t onItemReceiveHook = 0;
     static uint32_t onDialogMessageHook = 0;
     static uint32_t onVanillaBehaviorHook = 0;
     static uint32_t onSceneInitHook = 0;
@@ -2655,15 +2705,8 @@ static void RandomizerRegisterHooks() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         ShipInit::Init("IS_RANDO");
 
-        randomizerQueuedChecks = std::queue<RandomizerCheck>();
-        randomizerQueuedCheck = RC_UNKNOWN_CHECK;
-        randomizerQueuedItemEntry = GET_ITEM_NONE;
-
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnFlagSet>(onFlagSetHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneFlagSet>(onSceneFlagSetHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(onPlayerUpdateForRCQueueHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(onPlayerUpdateForItemQueueHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(onItemReceiveHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(onDialogMessageHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(onVanillaBehaviorHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(onSceneInitHook);
@@ -2680,9 +2723,6 @@ static void RandomizerRegisterHooks() {
 
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;
-        onPlayerUpdateForRCQueueHook = 0;
-        onPlayerUpdateForItemQueueHook = 0;
-        onItemReceiveHook = 0;
         onDialogMessageHook = 0;
         onVanillaBehaviorHook = 0;
         onSceneInitHook = 0;
@@ -2713,12 +2753,6 @@ static void RandomizerRegisterHooks() {
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(RandomizerOnFlagSetHandler);
         onSceneFlagSetHook =
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneFlagSet>(RandomizerOnSceneFlagSetHandler);
-        onPlayerUpdateForRCQueueHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>(
-            RandomizerOnPlayerUpdateForRCQueueHandler);
-        onPlayerUpdateForItemQueueHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>(
-            RandomizerOnPlayerUpdateForItemQueueHandler);
-        onItemReceiveHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(RandomizerOnItemReceiveHandler);
         onDialogMessageHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDialogMessage>(
             RandomizerOnDialogMessageHandler);
         onVanillaBehaviorHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(

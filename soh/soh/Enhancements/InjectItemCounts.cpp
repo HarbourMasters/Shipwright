@@ -17,14 +17,11 @@ void BuildSkulltulaMessage(uint16_t* textId, bool* loadFromMessageTable) {
     // when they are shuffled we don't want to be able to manually dismiss the box.
     // Otherwise if we get a token from a chest or an NPC we get stuck in the ItemGet
     // animation until the text box auto-dismisses.
-    // RANDOTODO: Implement a way to determine if an item came from a skulltula and
-    // inject the auto-dismiss control code if it did.
-    if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 &&
-        !(IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_TOKENS))) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0) {
         // Auto dismiss textbox after 0x3C (60) frames (about 3 seconds for OoT)
         msg = msg + "\x0E\x3C";
     }
-    int16_t gsCount = gSaveContext.inventory.gsTokens + (IS_RANDO ? 1 : 0);
+    int16_t gsCount = gSaveContext.inventory.gsTokens;
     msg.Replace("[[gsCount]]", std::to_string(gsCount));
     msg.AutoFormat(ITEM_SKULL_TOKEN);
     msg.LoadIntoFont();

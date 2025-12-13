@@ -1581,49 +1581,24 @@ void func_800906D4(PlayState* play, Player* this, Vec3f* newTipPos) {
     }
 }
 
-void Player_DrawGetItemIceTrap(PlayState* play, Player* this, Vec3f* refPos, s32 drawIdPlusOne, f32 height) {
+void Player_DrawGetItemIceTrap(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
-        Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Push();
 
-        Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-        gDPSetGrayscaleColor(POLY_OPA_DISP++, 75, 75, 75, 255);
-        gSPGrayscale(POLY_OPA_DISP++, true);
+    gSPSegment(POLY_XLU_DISP++, 0x08,
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, 0, (0 - play->gameplayFrames) % 128, 32, 32, 1, 0,
+                                        (play->gameplayFrames * -2) % 128, 32, 32, 0, 50, 100, 255));
 
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gSilverRockDL);
+    Matrix_Translate(0.0f, -40.0f, 0.0f, MTXMODE_APPLY);
+    Matrix_Scale(iceTrapScale, iceTrapScale, iceTrapScale, MTXMODE_APPLY);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gDPSetEnvColor(POLY_XLU_DISP++, 0, 50, 100, 255);
+    gSPDisplayList(POLY_XLU_DISP++, gEffIceFragment3DL);
 
-        gSPGrayscale(POLY_OPA_DISP++, false);
-    } else {
-        if (iceTrapScale < 0.01) {
-            iceTrapScale += 0.001f;
-        } else if (iceTrapScale < 0.8f) {
-            iceTrapScale += 0.2f;
-        }
-        gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, (0 - play->gameplayFrames) % 128, 32, 32, 1, 0,
-                                    (play->gameplayFrames * -2) % 128, 32, 32));
-
-        Matrix_Translate(0.0f, -40.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_Scale(iceTrapScale, iceTrapScale, iceTrapScale, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gDPSetEnvColor(POLY_XLU_DISP++, 0, 50, 100, 255);
-        gSPDisplayList(POLY_XLU_DISP++, gEffIceFragment3DL);
-
-        // Reset matrix for the fake item model because we're animating the size of the ice block around it before this.
-        Matrix_Translate(refPos->x + (3.3f * Math_SinS(this->actor.shape.rot.y)), refPos->y + height,
-                         refPos->z + ((3.3f + (IREG(90) / 10.0f)) * Math_CosS(this->actor.shape.rot.y)), MTXMODE_NEW);
-        Matrix_RotateZYX(0, play->gameplayFrames * 1000, 0, MTXMODE_APPLY);
-        Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
-        // Draw fake item model.
-        if (this->getItemEntry.drawFunc != NULL) {
-            this->getItemEntry.drawFunc(play, &this->getItemEntry);
-        } else {
-            GetItem_Draw(play, drawIdPlusOne - 1);
-        }
-    }
+    Matrix_Pop();
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1643,11 +1618,7 @@ void Player_DrawGetItemImpl(PlayState* play, Player* this, Vec3f* refPos, s32 dr
     Matrix_RotateZYX(0, play->gameplayFrames * 1000, 0, MTXMODE_APPLY);
     Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
 
-    if (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId == RG_ICE_TRAP) {
-        Player_DrawGetItemIceTrap(play, this, refPos, drawIdPlusOne, height);
-    } else if (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
-        Randomizer_DrawTriforcePieceGI(play, this->getItemEntry);
-    } else if (this->getItemEntry.drawFunc != NULL) {
+    if (this->getItemEntry.drawFunc != NULL) {
         this->getItemEntry.drawFunc(play, &this->getItemEntry);
     } else {
         GetItem_Draw(play, drawIdPlusOne - 1);

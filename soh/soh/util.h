@@ -9,6 +9,8 @@ const std::string& GetSceneName(int32_t scene);
 
 const std::string& GetItemName(int32_t item);
 
+const std::string& GetItemArticle(int32_t item);
+
 const std::string& GetQuestItemName(int32_t item);
 
 const std::string& GetRandomizerCheckAreaPrefix(int32_t rcarea);

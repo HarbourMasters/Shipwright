@@ -205,7 +205,7 @@ void CustomItem_Update(Actor* actor, PlayState* play) {
                 Actor_SetScale(actor, 0.007f);
 
                 // Account for the different heights of the player forms
-                f32 height = LINK_IS_ADULT ? 60.0f : 45.0f;
+                f32 height = LINK_IS_ADULT ? 70.0f : 45.0f;
 
                 actor->world.pos.y += height;
             }

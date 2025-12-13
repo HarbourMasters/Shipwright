@@ -814,6 +814,10 @@ std::string CustomMessage::TWO_WAY_CHOICE() {
     return "\x1B"s;
 }
 
+std::string CustomMessage::SKULLS_DESTROYED() {
+    return "\x19"s;
+}
+
 bool CustomMessageManager::InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessage messages) {
     auto foundMessageTable = messageTables.find(tableID);
     if (foundMessageTable == messageTables.end()) {

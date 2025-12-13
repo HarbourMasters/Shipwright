@@ -282,6 +282,21 @@ std::vector<std::string> itemNamesEng = {
     "Deku Nut Upgrade (40)",
 };
 
+std::vector<std::string> itemArticlesEng = {
+    "a ",   "a ",   "a ",   "the ", "a ",   "",     "the ", "the ",  "the ",  "a ",   "the ", "the ", "an ",
+    "",     "the ", "the ", "a ",   "the ", "a ",   "",     "an ",   "a ",    "a ",   "a ",   "a ",   "a ",
+    "",     "",     "",     "a ",   "a ",   "",     "a ",   "a ",    "a ",    "",     "the ", "the ", "the ",
+    "the ", "the ", "the ", "the ", "the ", "",     "a ",   "a ",    "",      "an ",  "an ",  "the ", "",
+    "a ",   "an ",  "",     "the ", "the ", "the ", "the ", "the ",  "the ",  "the ", "a ",   "a ",   "a ",
+    "a ",   "a ",   "a ",   "",     "",     "",     "a ",   "a ",    "a ",    "a ",   "a ",   "the ", "a ",
+    "a ",   "the ", "the ", "the ", "the ", "the ", "the ", "the ",  "an ",   "a ",   "",     "a ",   "",
+    "",     "",     "",     "",     "",     "",     "",     "",      "",      "the ", "the ", "the ", "the ",
+    "the ", "the ", "the ", "the ", "the ", "the ", "the ", "the ",  "the ",  "a ",   "a ",   "a ",   "the ",
+    "a ",   "a ",   "a ",   "a ",   "a ",   "a ",   "",     "",      "",      "",     "",     "",     "",
+    "",     "a ",   "a ",   "a ",   "a ",   "a ",   "a ",   "",      "",      "",     "",     "",     "",
+    "",     "",     "",     "",     "",     "",     "",     "some ", "some ", "the ", "the ", "the ", "the ",
+};
+
 std::vector<std::string> itemNamesFra = {
     "Bâton Mojo",
     "Noix Mojo",
@@ -712,6 +727,33 @@ const std::string& SohUtils::GetItemName(int32_t item) {
     }
 
     return (*currentItemNames)[item];
+}
+
+const std::string& SohUtils::GetItemArticle(int32_t item) {
+    const std::vector<std::string>* currentItemArticles = nullptr;
+
+    switch (gSaveContext.language) {
+        case LANGUAGE_FRA:
+            // Articles are not implemented for French yet
+            currentItemArticles = &itemArticlesEng;
+            break;
+        case LANGUAGE_GER:
+            // Articles are not implemented for German yet
+            currentItemArticles = &itemArticlesEng;
+            break;
+        case LANGUAGE_ENG:
+        default:
+            currentItemArticles = &itemArticlesEng;
+            break;
+    }
+
+    if (item >= currentItemArticles->size()) {
+        SPDLOG_WARN("Passed invalid item id to SohUtils::GetItemArticle: ({})", item);
+        assert(false);
+        return "";
+    }
+
+    return (*currentItemArticles)[item];
 }
 
 const std::string& SohUtils::GetQuestItemName(int32_t item) {
