@@ -2118,6 +2118,21 @@ void Logic::SetQuestItem(uint32_t item, bool state) {
     }
 }
 
+const std::vector<uint8_t>& GetThievesHideoutSmallKeyDoors() {
+    // Retrieved from scenes/shared/gerudoway_scene/gerudoway_room_%d
+    // SOH::SceneCommandID::SetActorList, actor.id == ACTOR_DOOR_GERUDO, actor.params & 0x3F
+    static const std::vector<uint8_t> normalSmallKeyDoors{ 1, 2, 3, 4 };
+    static const std::vector<uint8_t> fastSmallKeyDoors{ 1 };
+    static const std::vector<uint8_t> freeSmallKeyDoors{};
+
+    if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS) == RO_GF_CARPENTERS_NORMAL) {
+        return normalSmallKeyDoors;
+    } else if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS) == RO_GF_CARPENTERS_FAST) {
+        return fastSmallKeyDoors;
+    }
+    return freeSmallKeyDoors;
+}
+
 // Get the swch bit positions for the dungeon
 const std::vector<uint8_t>& GetDungeonSmallKeyDoors(SceneID sceneId) {
     static const std::vector<uint8_t> emptyVector;
@@ -2183,7 +2198,8 @@ const std::vector<uint8_t>& GetDungeonSmallKeyDoors(SceneID sceneId) {
 }
 
 int8_t Logic::GetUsedSmallKeyCount(SceneID sceneId) {
-    const auto& smallKeyDoors = GetDungeonSmallKeyDoors(sceneId);
+    const auto& smallKeyDoors =
+        (sceneId == SCENE_THIEVES_HIDEOUT) ? GetThievesHideoutSmallKeyDoors() : GetDungeonSmallKeyDoors(sceneId);
 
     // Get the swch value for the scene
     uint32_t swch;
