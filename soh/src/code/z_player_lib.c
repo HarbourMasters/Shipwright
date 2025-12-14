@@ -7,6 +7,7 @@
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/draw.h"
 #include "soh/ResourceManagerHelpers.h"
 
@@ -1076,7 +1077,9 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
         color = &sTemp;
     }
 
-    gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
+    if (GameInteractor_Should(VB_APPLY_TUNIC_COLOR, true, data, color)) {
+        gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
+    }
 
     // If we have a custom link model, always use the most detailed LOD
     if (Player_IsCustomLinkModel()) {

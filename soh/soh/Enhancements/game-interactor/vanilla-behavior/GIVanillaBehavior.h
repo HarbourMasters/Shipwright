@@ -540,6 +540,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - None
+    VB_FLASH_SCREEN_FOR_FINISHING_BLOW,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*BgHeavyBlock`
     VB_FREEZE_LINK_FOR_BLOCK_THROW,
 
@@ -1174,6 +1182,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_HEALTH_METER_BE_CRITICAL,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_HEARTS_INCREASE_WITH_CONTAINERS,
 
     // #### `result`
     // ```c
@@ -2317,6 +2333,54 @@ typedef enum {
     // #### `args`
     // - `*Player`
     VB_SET_STATIC_FLOOR_TYPE,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - *EnGirlACanBuyResult
+    VB_CAN_BUY_BOMBCHUS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_CHECK_BOMBCHU_CAPACITY,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - int16_t
+    VB_COLOR_AMMO_GREEN,
+
+    // (this->collider.base.acFlags & AC_HIT) && !Player_InCsMode(play) &&
+    //   (player->meleeWeaponAnimation == 22 || player->meleeWeaponAnimation == 23)
+    // ```
+    // #### `args`
+    // - `*BgHidanDalm`
+    VB_HAMMER_TOTEM_BREAK,
+
+    // #### `result`
+    // ```c
+    // Actor_GetCollidedExplosive(play, &this->collider.base) != NULL
+    // ```
+    // #### `args`
+    // - `*BgHidanKowarerukabe`
+    VB_FIRE_TEMPLE_BOMBABLE_WALL_BREAK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `*Color_RGB8`
+    VB_APPLY_TUNIC_COLOR,
 
 } GIVanillaBehavior;
 

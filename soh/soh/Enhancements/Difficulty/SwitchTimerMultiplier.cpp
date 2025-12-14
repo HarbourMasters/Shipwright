@@ -5,9 +5,13 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
+static constexpr int32_t CVAR_SWITCH_TIMER_DEFAULT = 0;
+#define CVAR_SWITCH_TIMER_NAME CVAR_ENHANCEMENT("SwitchTimerMultiplier")
+#define CVAR_SWITCH_TIMER_VALUE CVarGetInteger(CVAR_SWITCH_TIMER_NAME, CVAR_SWITCH_TIMER_DEFAULT)
+
 void RegisterSwitchTimerMultiplier() {
-    COND_VB_SHOULD(VB_SWITCH_TIMER_TICK, CVarGetInteger(CVAR_ENHANCEMENT("SwitchTimerMultiplier"), 0) != 0, {
-        int multiplier = CVarGetInteger(CVAR_ENHANCEMENT("SwitchTimerMultiplier"), 0);
+    COND_VB_SHOULD(VB_SWITCH_TIMER_TICK, CVAR_SWITCH_TIMER_VALUE != 0, {
+        int multiplier = CVAR_SWITCH_TIMER_VALUE;
         if (multiplier != 0) {
             Actor* actor = va_arg(args, Actor*);
             if (multiplier < -3 && actor->id == ACTOR_OBJ_SYOKUDAI) {
@@ -26,4 +30,4 @@ void RegisterSwitchTimerMultiplier() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterSwitchTimerMultiplier, { CVAR_ENHANCEMENT("SwitchTimerMultiplier") });
+static RegisterShipInitFunc initFunc(RegisterSwitchTimerMultiplier, { CVAR_SWITCH_TIMER_NAME });
