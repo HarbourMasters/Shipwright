@@ -973,6 +973,7 @@ void RegionTable_Init_FireTemple() {
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_ABOVE_3F_FLARE_DANCER] = Region("Fire Temple MQ Above 3F Flare Dancer", SCENE_FIRE_TEMPLE, {}, {}, {
+        //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_3F_FLARE_DANCER, []{return true;}),
         Entrance(RR_FIRE_TEMPLE_MQ_LOCKED_CLIMB,    []{return true;}),
     });
