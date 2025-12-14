@@ -16,7 +16,7 @@ SkeletonData* Skeleton::GetPointer() {
     return &skeletonData;
 }
 
-static void OnGameFrameUpdateSkeletons() {
+static void OnPlayerUpdateSkeletons() {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return;
     }
@@ -26,11 +26,11 @@ void RegisterSkeletonFrameUpdater() {
     static HOOK_ID hookId = 0;
 
     GameInteractor::Instance
-        ->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(hookId);
+        ->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(hookId);
 
     hookId = GameInteractor::Instance
-        ->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(
-            OnGameFrameUpdateSkeletons
+        ->RegisterGameHook<GameInteractor::OnPlayerUpdate>(
+            OnPlayerUpdateSkeletons
         );
 }
 
