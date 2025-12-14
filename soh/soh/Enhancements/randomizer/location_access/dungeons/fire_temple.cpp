@@ -985,6 +985,7 @@ void RegionTable_Init_FireTemple() {
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_NARROW_STAIRS_ROOM] = Region("Fire Temple MQ Narrow Stairs Room", SCENE_FIRE_TEMPLE, {
+        //Events
         EventAccess(LOGIC_FIRE_MQ_HIT_SCARECROW_ROOM_PLATFORM, []{return logic->CanUse(RG_MEGATON_HAMMER);}),
     }, {
         //Locations
