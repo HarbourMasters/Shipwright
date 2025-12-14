@@ -51,7 +51,7 @@ void Anchor::HandlePacket_UpdateRoomState(nlohmann::json payload) {
 
     roomState.ownerClientId = payload["state"]["ownerClientId"].get<uint32_t>();
     roomState.pvpMode = payload["state"]["pvpMode"].get<u8>();
-    roomState.pvpDamageMult = payload["state"]["pvpDamageMult"].get<u8>();
+    roomState.pvpDamageMult = payload["state"].value("pvpDamageMult", 1);
     roomState.showLocationsMode = payload["state"]["showLocationsMode"].get<u8>();
     roomState.teleportMode = payload["state"]["teleportMode"].get<u8>();
     roomState.syncItemsAndFlags = payload["state"]["syncItemsAndFlags"].get<u8>();
