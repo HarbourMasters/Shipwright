@@ -72,15 +72,15 @@ void SohFileSelect_ShowPresetMenu() {
     SohGui::ShowEscMenu();
     CVarSetString(CVAR_SETTING("Menu.ActiveHeader"), "Settings");
     CVarSetString(CVAR_SETTING("Menu.SettingsSidebarSection"), "Presets");
-    CVarSetInteger(CVAR_SETTING("Menu.HasSeenPresetModal"), 1);
+    CVarSetInteger(CVAR_GENERAL("HasSeenPresetModal"), 1);
 }
 
 void SohFileSelect_DismissPresetModal() {
-    CVarSetInteger(CVAR_SETTING("Menu.HasSeenPresetModal"), 1);
+    CVarSetInteger(CVAR_GENERAL("HasSeenPresetModal"), 1);
 }
 
 void SohFileSelect_ShowPresetModal() {
-    if (CVarGetInteger(CVAR_SETTING("Menu.HasSeenPresetModal"), 0)) {
+    if (CVarGetInteger(CVAR_GENERAL("HasSeenPresetModal"), 0)) {
         return;
     }
     std::shared_ptr<SohModalWindow> modal = static_pointer_cast<SohModalWindow>(
