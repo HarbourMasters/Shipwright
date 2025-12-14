@@ -5,6 +5,7 @@
 #include <soh_assets.h>
 #include <objects/object_link_child/object_link_child.h>
 #include <objects/object_link_boy/object_link_boy.h>
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 extern "C" SaveContext gSaveContext;
 extern "C" u16 gEquipMasks[4];
@@ -14,6 +15,27 @@ namespace SOH {
 SkeletonData* Skeleton::GetPointer() {
     return &skeletonData;
 }
+
+static void OnGameFrameUpdateSkeletons() {
+    if (!GameInteractor::IsSaveLoaded(true)) {
+        return;
+    }
+    SkeletonPatcher::UpdateCustomSkeletons();
+}
+
+void RegisterSkeletonFrameUpdater() {
+    static HOOK_ID hookId = 0;
+
+    GameInteractor::Instance
+        ->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(hookId);
+
+    hookId = GameInteractor::Instance
+        ->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(
+            OnGameFrameUpdateSkeletons
+        );
+}
+
+static RegisterShipInitFunc initSkeletonUpdater(RegisterSkeletonFrameUpdater);
 
 size_t Skeleton::GetPointerSize() {
     switch (type) {

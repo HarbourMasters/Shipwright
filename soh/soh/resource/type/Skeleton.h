@@ -87,6 +87,7 @@ class SkeletonPatcher {
     static void ClearSkeletons();
     static void UpdateSkeletons();
     static void UpdateCustomSkeletons();
+    static void RegisterSkeletonFrameHook();
 
     static std::vector<SkeletonPatchInfo> skeletons;
 
