@@ -581,7 +581,6 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Show Age-Dependent Equipment", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"))
         .RaceDisable(false)
-        .Callback([](WidgetInfo& info) { UpdatePatchHand(); })
         .Options(CheckboxOptions().Tooltip("Makes all equipment visible, regardless of age."));
     AddWidget(path, "Scale Adult Equipment as Child", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"))
@@ -602,7 +601,6 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Color Temple of Time's Medallions", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ToTMedallionsColors"))
         .RaceDisable(false)
-        .Callback([](WidgetInfo& info) { UpdateToTMedallions(); })
         .Options(CheckboxOptions().Tooltip(
             "When Medallions are collected, the Medallion imprints around the Master Sword Pedestal in the Temple "
             "of Time will become colored-in."));
@@ -732,9 +730,9 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Equip items and equipment on the D-pad. If used with \"D-pad on Pause Screen\", you must "
             "hold C-Up to equip instead of navigate."));
-    AddWidget(path, "Assignable Tunics and Boots", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Assignable Shields, Tunics and Boots", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"))
-        .Options(CheckboxOptions().Tooltip("Allows equipping the Tunics and Boots to C-Buttons/D-pad."));
+        .Options(CheckboxOptions().Tooltip("Allows equipping Shields, Tunics and Boots to C-Buttons/D-pad."));
     // TODO: Revist strength toggle, it's currently separate but should probably be locked behind the
     // Equipment toggle settings or be absorbed by it completely.
     AddWidget(path, "Equipment Toggle", WIDGET_CVAR_CHECKBOX)
@@ -1074,17 +1072,11 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Fix Hand Holding Hammer", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixHammerHand"))
         .RaceDisable(false)
-        .Callback([](WidgetInfo& info) { UpdatePatchHand(); })
         .Options(CheckboxOptions().Tooltip(
             "Fixes Adult Link having a backwards Left hand when holding the Megaton Hammer."));
     AddWidget(path, "Fix Vanishing Paths", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"))
         .RaceDisable(false)
-        .Callback([](WidgetInfo& info) {
-            if (gPlayState != NULL) {
-                DirtPathFix_UpdateZFightingMode(gPlayState->sceneNum);
-            }
-        })
         .Options(
             ComboboxOptions()
                 .ComboMap(zFightingOptions)
@@ -1181,7 +1173,6 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Health", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Permanent Heart Loss", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("PermanentHeartLoss"))
-        .Callback([](WidgetInfo& info) { UpdatePermanentHeartLossState(); })
         .Options(CheckboxOptions().Tooltip(
             "When you lose 4 quarters of a heart you will permanently lose that Heart Container.\n\n"
             "Disabling this after the fact will restore your Heart Containers."));
@@ -1300,7 +1291,6 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip("All Major Bosses move and act twice as fast."));
     AddWidget(path, "Hyper Enemies", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HyperEnemies"))
-        .Callback([](WidgetInfo& info) { UpdateHyperEnemiesState(); })
         .Options(CheckboxOptions().Tooltip("All Regular Enemies and Mini-Bosses move and act twice as fast."));
     AddWidget(path, "Enable Visual Guard Vision", WIDGET_CVAR_CHECKBOX).CVar(CVAR_ENHANCEMENT("GuardVision"));
     AddWidget(path, "Leever Spawn Rate: %d seconds", WIDGET_CVAR_SLIDER_INT)
@@ -1524,11 +1514,6 @@ void SohMenu::AddMenuEnhancements() {
 
     AddWidget(path, "Mirrored World", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("MirroredWorldMode"))
-        .Callback([](WidgetInfo& info) {
-            if (gPlayState != NULL) {
-                UpdateMirrorModeState(gPlayState->sceneNum);
-            }
-        })
         .Options(
             ComboboxOptions()
                 .DefaultIndex(MIRRORED_WORLD_OFF)
@@ -1568,9 +1553,6 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip("A Wallmaster follows Link everywhere, don't get caught!"));
     AddWidget(path, "Hurt Container Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HurtContainer"))
-        .Callback([](WidgetInfo& info) {
-            UpdateHurtContainerModeState(CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0));
-        })
         .Options(CheckboxOptions().Tooltip("Changes Heart Piece and Heart Container functionality.\n\n"
                                            " - Each Heart Container or full Heart Piece reduces Link's Hearts by 1.\n"
                                            " - Can be enabled retroactively after a File has already started."));

@@ -316,7 +316,7 @@ std::vector<RandomizerCheck> GetAllEmptyLocations() {
 }
 
 bool IsBombchus(RandomizerGet item, bool includeShops = false) {
-    return (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS ||
+    return (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHU_BAG ||
            (includeShops && (item == RG_BUY_BOMBCHUS_10 || item == RG_BUY_BOMBCHUS_20));
 }
 
@@ -1018,7 +1018,7 @@ static void FillExcludedLocations() {
         FilterFromPool(ctx->allLocations, [ctx](const auto loc) { return ctx->GetItemLocation(loc)->IsExcluded(); });
 
     for (RandomizerCheck loc : excludedLocations) {
-        PlaceJunkInExcludedLocation(loc);
+        ctx->PlaceItemInLocation(loc, GetJunkItem());
     }
 }
 

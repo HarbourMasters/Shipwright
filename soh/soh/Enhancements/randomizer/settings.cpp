@@ -157,7 +157,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_MIX_THIEVES_HIDEOUT_ENTRANCES, "Mix Thieves' Hideout", CVAR_RANDOMIZER_SETTING("MixThievesHideout"), mOptionDescriptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES]);
     OPT_BOOL(RSK_MIX_GROTTO_ENTRANCES, "Mix Grottos", CVAR_RANDOMIZER_SETTING("MixGrottos"), mOptionDescriptions[RSK_MIX_GROTTO_ENTRANCES]);
     OPT_BOOL(RSK_DECOUPLED_ENTRANCES, "Decouple Entrances", CVAR_RANDOMIZER_SETTING("DecoupleEntrances"), mOptionDescriptions[RSK_DECOUPLED_ENTRANCES]);
-    OPT_BOOL(RSK_BOMBCHU_BAG, "Bombchu Bag", CVAR_RANDOMIZER_SETTING("BombchuBag"), mOptionDescriptions[RSK_BOMBCHU_BAG]);
+    OPT_U8(RSK_BOMBCHU_BAG, "Bombchu Bag", {"None", "Single Bag", "Progressive Bags"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("BombchuBag"), mOptionDescriptions[RSK_BOMBCHU_BAG], WidgetType::Combobox, RO_BOMBCHU_BAG_NONE);
     OPT_U8(RSK_ENABLE_BOMBCHU_DROPS, "Bombchu Drops", {"No", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("EnableBombchuDrops"), mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS], WidgetType::Combobox, RO_AMMO_DROPS_ON);
     // TODO: AmmoDrops and/or HeartDropRefill, combine with/separate Ammo Drops from Bombchu Drops?
     OPT_BOOL(RSK_TRIFORCE_HUNT, "Triforce Hunt", CVAR_RANDOMIZER_SETTING("TriforceHunt"), mOptionDescriptions[RSK_TRIFORCE_HUNT], IMFLAG_NONE);
@@ -706,6 +706,11 @@ void Settings::CreateOptions() {
         RT_DC_MQ_ADULT_EYES, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED },
         "Dodongo\'s Cavern MQ Light the Eyes with Strength as Adult",
         "If you move very quickly, it is possible to use the bomb flower at the top of the room to light the eyes.");
+    OPT_TRICK(
+        RT_DC_EYES_CHU, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED },
+        "Dodongo\'s Cavern Light the Eyes with Bombchus",
+        "You can light the dodongo head's eyes with bombchus from the main room, allowing instant access to the end "
+        "of the dungeon.");
     OPT_TRICK(RT_JABU_ALCOVE_JUMP_DIVE, RCQUEST_BOTH, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE },
               "Jabu Underwater Alcove as Adult with Jump Dive",
               "Standing above the underwater tunnel leading to the scrub, jump down and swim through the tunnel. This "
@@ -751,7 +756,8 @@ void Settings::CreateOptions() {
               "Bottom of the Well Map Chest with Strength & Sticks",
               "The chest in the basement can be reached with strength by doing a jump slash with a lit stick to access "
               "the Bomb Flowers.");
-    OPT_TRICK(RT_BOTW_MQ_PITS, RCQUEST_MQ, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
+    // RANDOTODO with doorsanity, this can be relevant in Vanilla
+    OPT_TRICK(RT_BOTW_PITS, RCQUEST_MQ, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
               "Bottom of the Well MQ Jump Over the Pits",
               "While the pits in Bottom of the Well don't allow you to jump just by running straight at them, you can "
               "still get over them by side-hopping or backflipping across. With explosives, this allows you to access "
@@ -986,7 +992,7 @@ void Settings::CreateOptions() {
               "where the eye is.");
     OPT_TRICK(RT_SHADOW_UMBRELLA_HOVER, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::EXPERT },
               "Shadow Temple Stone Umbrella Skip",
-              "A very precise Hover Boots movement from off of the lower chest can get you on top of the crushing "
+              "A very precise Hover Boots movement from off of the lower chest can get you on top of the falling "
               "spikes without needing to pull the block. Applies to both Vanilla and Master Quest.");
     OPT_TRICK(RT_SHADOW_UMBRELLA_CLIP, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
               "Shadow Temple Stone Umbrella Clip",
@@ -995,7 +1001,7 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_SHADOW_UMBRELLA_GS, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::EXPERT },
               "Shadow Temple Falling Spikes GS with Hover Boots",
               "After killing the Skulltula, a very precise Hover Boots movement from off of the lower chest can get "
-              "you on top of the crushing spikes without needing to pull the block. From there, another very precise "
+              "you on top of the falling spikes without needing to pull the block. From there, another very precise "
               "Hover Boots movement can be used to obtain the token without needing the Hookshot. Applies to both "
               "Vanilla and Master Quest.");
     OPT_TRICK(RT_SHADOW_FREESTANDING_KEY, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },

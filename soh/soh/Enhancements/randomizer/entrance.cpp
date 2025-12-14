@@ -269,8 +269,8 @@ void SetAllEntrancesData() {
           { EntranceType::Dungeon,      RR_SPIRIT_TEMPLE_ENTRYWAY,           RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE,    ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE } },
         { { EntranceType::Dungeon,      RR_GRAVEYARD_WARP_PAD_REGION,        RR_SHADOW_TEMPLE_ENTRYWAY,            ENTR_SHADOW_TEMPLE_ENTRANCE },
           { EntranceType::Dungeon,      RR_SHADOW_TEMPLE_ENTRYWAY,           RR_GRAVEYARD_WARP_PAD_REGION,         ENTR_GRAVEYARD_OUTSIDE_TEMPLE } },
-        { { EntranceType::Dungeon,      RR_KAK_WELL,                         RR_BOTTOM_OF_THE_WELL_ENTRYWAY,       ENTR_BOTTOM_OF_THE_WELL_ENTRANCE },
-          { EntranceType::Dungeon,      RR_BOTTOM_OF_THE_WELL_ENTRYWAY,      RR_KAK_WELL,                          ENTR_KAKARIKO_VILLAGE_OUTSIDE_BOTTOM_OF_THE_WELL } },
+        { { EntranceType::Dungeon,      RR_KAK_WELL,                         RR_BOTW_ENTRYWAY,       ENTR_BOTTOM_OF_THE_WELL_ENTRANCE },
+          { EntranceType::Dungeon,      RR_BOTW_ENTRYWAY,      RR_KAK_WELL,                          ENTR_KAKARIKO_VILLAGE_OUTSIDE_BOTTOM_OF_THE_WELL } },
         { { EntranceType::Dungeon,      RR_ZF_LEDGE,                         RR_ICE_CAVERN_ENTRYWAY,               ENTR_ICE_CAVERN_ENTRANCE },
           { EntranceType::Dungeon,      RR_ICE_CAVERN_ENTRYWAY,              RR_ZF_LEDGE,                          ENTR_ZORAS_FOUNTAIN_OUTSIDE_ICE_CAVERN } },
         { { EntranceType::Dungeon,      RR_GF_TO_GTG,                        RR_GERUDO_TRAINING_GROUND_ENTRYWAY,   ENTR_GERUDO_TRAINING_GROUND_ENTRANCE },
@@ -401,10 +401,10 @@ void SetAllEntrancesData() {
           { EntranceType::GrottoGrave, RR_LH_GROTTO,                RR_LAKE_HYLIA,               ENTRANCE_GROTTO_EXIT(GROTTO_LH_OFFSET) } },
         { { EntranceType::GrottoGrave, RR_ZORAS_RIVER,              RR_ZR_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_ZR_STORMS_OFFSET) },
           { EntranceType::GrottoGrave, RR_ZR_STORMS_GROTTO,         RR_ZORAS_RIVER,              ENTRANCE_GROTTO_EXIT(GROTTO_ZR_STORMS_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_ZORAS_RIVER,              RR_ZR_FAIRY_GROTTO,          ENTRANCE_GROTTO_LOAD(GROTTO_ZR_FAIRY_OFFSET) },
-          { EntranceType::GrottoGrave, RR_ZR_FAIRY_GROTTO,          RR_ZORAS_RIVER,              ENTRANCE_GROTTO_EXIT(GROTTO_ZR_FAIRY_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_ZORAS_RIVER,              RR_ZR_OPEN_GROTTO,           ENTRANCE_GROTTO_LOAD(GROTTO_ZR_OPEN_OFFSET) },
-          { EntranceType::GrottoGrave, RR_ZR_OPEN_GROTTO,           RR_ZORAS_RIVER,              ENTRANCE_GROTTO_EXIT(GROTTO_ZR_OPEN_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_ZR_ATOP_LADDER,           RR_ZR_FAIRY_GROTTO,          ENTRANCE_GROTTO_LOAD(GROTTO_ZR_FAIRY_OFFSET) },
+          { EntranceType::GrottoGrave, RR_ZR_FAIRY_GROTTO,          RR_ZR_ATOP_LADDER,           ENTRANCE_GROTTO_EXIT(GROTTO_ZR_FAIRY_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_ZR_ATOP_LADDER,           RR_ZR_OPEN_GROTTO,           ENTRANCE_GROTTO_LOAD(GROTTO_ZR_OPEN_OFFSET) },
+          { EntranceType::GrottoGrave, RR_ZR_OPEN_GROTTO,           RR_ZR_ATOP_LADDER,           ENTRANCE_GROTTO_EXIT(GROTTO_ZR_OPEN_OFFSET) } },
         { { EntranceType::GrottoGrave, RR_DMC_LOWER_NEARBY,         RR_DMC_HAMMER_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_DMC_HAMMER_OFFSET) },
           { EntranceType::GrottoGrave, RR_DMC_HAMMER_GROTTO,        RR_DMC_LOWER_LOCAL,          ENTRANCE_GROTTO_EXIT(GROTTO_DMC_HAMMER_OFFSET) } },
         { { EntranceType::GrottoGrave, RR_DMC_UPPER_NEARBY,         RR_DMC_UPPER_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_DMC_UPPER_OFFSET) },
@@ -670,8 +670,7 @@ std::vector<Entrance*> EntranceShuffler::AssumeEntrancePool(std::vector<Entrance
                   (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
                    ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)))) {
                 auto type = entrance->GetType();
-                if (((type == EntranceType::Dungeon || type == EntranceType::ThievesHideout ||
-                      type == EntranceType::GrottoGrave) &&
+                if (((type == EntranceType::Dungeon || type == EntranceType::GrottoGrave) &&
                      entrance->GetReverse()->GetName() !=
                          "Spirit Temple Entryway -> Desert Colossus From Spirit Entryway") ||
                     (type == EntranceType::Interior &&
@@ -796,10 +795,11 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
     bool checkOtherEntranceAccess =
         (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
          ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL) ||
-         ctx->GetOption(RSK_SHUFFLE_OVERWORLD_SPAWNS)) &&
+         ctx->GetOption(RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_SPAWNS)) &&
         (entrancePlaced == nullptr || ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS) ||
-         type == EntranceType::SpecialInterior || type == EntranceType::Overworld || type == EntranceType::Spawn ||
-         type == EntranceType::WarpSong || type == EntranceType::OwlDrop);
+         type == EntranceType::SpecialInterior || type == EntranceType::Overworld ||
+         type == EntranceType::ThievesHideout || type == EntranceType::Spawn || type == EntranceType::WarpSong ||
+         type == EntranceType::OwlDrop);
 
     // Search the world to verify that all necessary conditions are still being held
     // Conditions will be checked during the search and any that fail will be figured out
@@ -1333,6 +1333,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
     int totalMixedPools =
         (ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_BOSS_ENTRANCES) ? 1 : 0) +
         (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES) ? 1 : 0) +
+        (ctx->GetOption(RSK_MIX_THIEVES_HIDEOUT_ENTRANCES) ? 1 : 0) +
         (ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES) ? 1 : 0);
     if (totalMixedPools < 2) {
         ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).Set(RO_GENERIC_OFF);
@@ -1340,6 +1341,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
         ctx->GetOption(RSK_MIX_BOSS_ENTRANCES).Set(RO_GENERIC_OFF);
         ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).Set(RO_GENERIC_OFF);
         ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).Set(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_THIEVES_HIDEOUT_ENTRANCES).Set(RO_GENERIC_OFF);
         ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).Set(RO_GENERIC_OFF);
     }
     if (ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS)) {

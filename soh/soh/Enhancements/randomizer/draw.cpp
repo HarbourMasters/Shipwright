@@ -1196,7 +1196,7 @@ extern "C" void Randomizer_DrawBombchuBag(PlayState* play, GetItemEntry* getItem
 }
 
 extern "C" void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* getItemEntry) {
-    if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOMBCHU_BAG)) {
+    if (IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).IsNot(RO_BOMBCHU_BAG_NONE)) {
         Randomizer_DrawBombchuBag(play, getItemEntry);
     } else {
         OPEN_DISPS(play->state.gfxCtx);
