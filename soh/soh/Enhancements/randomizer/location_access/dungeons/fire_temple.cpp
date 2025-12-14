@@ -751,6 +751,7 @@ void RegionTable_Init_FireTemple() {
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_ABOVE_MAZE] = Region("Fire Temple MQ Above Maze", SCENE_FIRE_TEMPLE, {}, {}, {
+        //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_UPPER_LIZALFOS_MAZE, []{return true;}),
         Entrance(RR_FIRE_TEMPLE_MQ_TORCH_SLUG_CLIMB,    []{return true;}),
     });
