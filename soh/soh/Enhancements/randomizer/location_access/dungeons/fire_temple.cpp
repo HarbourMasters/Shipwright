@@ -830,7 +830,7 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_MQ_LAVA_TORCH_SMALL_CRATE_3, logic->CanBreakSmallCrates() && logic->FireTimer() >= 16),
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_MQ_HIGH_TORCH_ROOM_ABOVE_CAGE, []{return logic->IsAdult || logic->CanUse(RG_HOOKSHOT) && logic->FireTimer() >= 24;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_HIGH_TORCH_ROOM_ABOVE_CAGE, []{return (logic->IsAdult || logic->CanUse(RG_HOOKSHOT)) && logic->FireTimer() >= 24;}),
         Entrance(RR_FIRE_TEMPLE_MQ_UPPER_LIZALFOS_MAZE,        []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 3) && logic->FireTimer() >= 24;}),
         Entrance(RR_FIRE_TEMPLE_MQ_NARROW_PATH_ROOM,           []{return logic->FireTimer() >= 24;}),
         //Child has issues navigating the higher points of this room without an equip swapped hookshot
