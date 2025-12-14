@@ -431,6 +431,9 @@ static const ALIGN_ASSET(2) char gFileSelLanguageFRATex[] = dgFileSelLanguageFRA
 #define dgFileSelLanguageGERTex "__OTR__textures/title_static/gFileSelLanguageGERTex"
 static const ALIGN_ASSET(2) char gFileSelLanguageGERTex[] = dgFileSelLanguageGERTex;
 
+#define dgRocsFeather "__OTR__textures/icon_item_static/gRocsFeather"
+static const ALIGN_ASSET(2) char gRocsFeather[] = dgRocsFeather;
+
 #define dgEmptyTexture "__OTR__textures/virtual/gEmptyTexture"
 static const ALIGN_ASSET(2) char gEmptyTexture[] = dgEmptyTexture;
 
@@ -452,6 +455,10 @@ static const ALIGN_ASSET(2) char gLinkAdultGoronTunicSkel[] = dgLinkAdultGoronTu
 
 #define dgLinkAdultZoraTunicSkel "__OTR__objects/object_link_boy_zora/gLinkAdultZoraTunicSkel"
 static const ALIGN_ASSET(2) char gLinkAdultZoraTunicSkel[] = dgLinkAdultZoraTunicSkel;
+
+// Animations
+#define dgPlayerAnim_link_rocs_feather_jump "__OTR__objects/gameplay_keep/gPlayerAnim_link_rocs_feather_jump"
+static const ALIGN_ASSET(2) char gPlayerAnim_link_rocs_feather_jump[] = dgPlayerAnim_link_rocs_feather_jump;
 
 // LUS Logo
 #define dgShipLogoDL "__OTR__textures/nintendo_rogo_static/gShipLogoDL"

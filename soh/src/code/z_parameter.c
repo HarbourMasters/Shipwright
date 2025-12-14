@@ -2464,6 +2464,12 @@ u8 Item_Give(PlayState* play, u8 item) {
         }
 
         return Return_Item(item, MOD_NONE, ITEM_NONE);
+    } else if (item == ITEM_NAYRUS_LOVE && Randomizer_GetSettingValue(RSK_ROCS_FEATHER)) {
+        Flags_SetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE);
+        if (INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE) {
+            INV_CONTENT(ITEM_NAYRUS_LOVE) = ITEM_NAYRUS_LOVE;
+        }
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     }
     returnItem = gSaveContext.inventory.items[slot];
     osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, returnItem);

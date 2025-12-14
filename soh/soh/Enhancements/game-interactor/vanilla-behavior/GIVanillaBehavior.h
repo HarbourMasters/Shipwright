@@ -2382,6 +2382,14 @@ typedef enum {
     // - `*Color_RGB8`
     VB_APPLY_TUNIC_COLOR,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*int32_t` // ItemID
+    VB_USE_ITEM,
+
 } GIVanillaBehavior;
 
 #endif

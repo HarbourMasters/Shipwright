@@ -2435,6 +2435,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 messageEntry = Randomizer::GetIceTrapMessage();
             } else if (player->getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
                 messageEntry = Randomizer::GetTriforcePieceMessage();
+            } else if (player->getItemEntry.getItemId == RG_ROCS_FEATHER) {
+                messageEntry = Randomizer::GetRocsFeatherMessage();
             } else {
                 messageEntry = Randomizer_GetCustomGetItemMessage(player);
             }

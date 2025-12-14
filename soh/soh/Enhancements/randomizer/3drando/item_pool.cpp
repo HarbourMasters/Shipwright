@@ -511,6 +511,11 @@ void GenerateItemPool() {
         ctx->PlaceItemInLocation(RC_GANON, RG_TRIFORCE); // Win condition
     }
 
+    if (ctx->GetOption(RSK_ROCS_FEATHER)) {
+        ctx->possibleIceTrapModels.push_back(RG_ROCS_FEATHER);
+        AddItemToMainPool(RG_ROCS_FEATHER);
+    }
+
     // Fixed item locations
     ctx->PlaceItemInLocation(RC_HC_ZELDAS_LETTER, RG_ZELDAS_LETTER);
 

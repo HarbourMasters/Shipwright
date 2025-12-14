@@ -27,7 +27,7 @@ PriceSettingsStruct::PriceSettingsStruct(RandomizerSettingKey _main, RandomizerS
     affordable = _affordable;
 }
 
-static std::array<std::vector<Text>, 0xF1> trickNameTable; // Table of trick names for ice traps
+static std::array<std::vector<Text>, RG_MAX> trickNameTable; // Table of trick names for ice traps
 bool initTrickNames = false; // Indicates if trick ice trap names have been initialized yet
 
 // Set vanilla shop item locations before potentially shuffling
@@ -886,6 +886,11 @@ void InitTrickNames() {
         Text{ "Piece of Cheese", "Morceau de Fromage", "Käseteil" },        // "Piece of Cheese"
         Text{ "Triforce Shard", "Éclat de Triforce", "Triforce-Fragment" }, // "Triforce Shard"
         Text{ "Shiny Rock", "Caillou Brillant", "glänzender Stein" },       // "Shiny Rock"
+    };
+    trickNameTable[RG_ROCS_FEATHER] = {
+        Text{ "Chicken Wing", "Chicken Wing", "Chicken Wing" },        // "Chicken Wing"
+        Text{ "Roc's Leg", "Roc's Leg", "Roc's Leg" }, // "Roc's Leg"
+        Text{ "Roc's Fapper", "Roc's Fapper", "Roc's Fapper" },       // "Roc's Fapper"
     };
     trickNameTable[RG_GOHMA_SOUL] = {
         Text{ "Spider Sense", "Sens de l'Araignée", "Spinnensinn" },
