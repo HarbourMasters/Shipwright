@@ -22,7 +22,6 @@ static void OnGameFrameUpdateSkeletons() {
     }
     SkeletonPatcher::UpdateCustomSkeletons();
 }
-
 void RegisterSkeletonFrameUpdater() {
     static HOOK_ID hookId = 0;
 
