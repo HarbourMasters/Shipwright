@@ -5,6 +5,45 @@
 #include <soh_assets.h>
 #include <objects/object_link_child/object_link_child.h>
 #include <objects/object_link_boy/object_link_boy.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "z64play.h"
+#include "z64player.h"
+
+static void UpdatePlayerSkeletonEveryFrame(PlayState* play) {
+    if (play == nullptr || play->player == nullptr) {
+        return;
+    }
+
+    Player* player = GET_PLAYER(play);
+    SkelAnime* skelAnime = &player->skelAnime;
+
+    static SkelAnime* lastSkelAnime = nullptr;
+
+    // Detect scene change / player re-init
+    if (skelAnime != lastSkelAnime) {
+        lastSkelAnime = skelAnime;
+
+        // Player was recreated — re-register skeleton
+        SkeletonPatcher::ClearSkeletons();
+
+        std::string path;
+
+        if (LINK_IS_ADULT) {
+            path = std::string(gLinkAdultSkel).substr(strlen("__OTR__"));
+        } else {
+            path = std::string(gLinkChildSkel).substr(strlen("__OTR__"));
+        }
+
+        SkeletonPatcher::RegisterSkeleton(path, skelAnime);
+    }
+
+    // Apply custom skeleton every frame
+    SkeletonPatcher::UpdateCustomSkeletons();
+}
+
+void RegisterSkeletonFrameHook() {
+    GameInteractor::RegisterGameHook(GameInteractor::OnGameFrameUpdate, UpdatePlayerSkeletonEveryFrame);
+}
 
 extern "C" SaveContext gSaveContext;
 extern "C" u16 gEquipMasks[4];
