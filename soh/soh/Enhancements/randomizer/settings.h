@@ -21,6 +21,16 @@ class Settings {
     void HandleShopsanityPriceUI();
 
     /**
+     * @brief Hides or Unhides the UI of Mixed Entrance Pools
+     */
+    void HandleMixedEntrancePoolsUI();
+
+    /**
+     * @brief UI Callback for handling UI state of Starting Age shuffle.
+     */
+    void HandleStartingAgeUI();
+
+    /**
      * @brief Creates the `Option` and `OptionGroup` objects. This happens after construction because certain
      * other events in the codebase need to happen before all of the `Option`s can be created.
      */

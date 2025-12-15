@@ -115,6 +115,37 @@ Settings::Settings() : mExcludeLocationsOptionsAreas(RCAREA_INVALID) {
 // All callbacks will be called once when the widget is Added (on boot, essentially) and
 // once when the widget is interacted with such that the value was changed.
 #define OPT_CALLBACK(rsk, body) mOptions[rsk].SetCallback([this](WidgetInfo & info) body)
+#define OPT_CALLBACK_FN(rsk, fn) mOptions[rsk].SetCallback(fn)
+
+void Settings::HandleMixedEntrancePoolsUI() {
+    bool dungeonShuffle =
+    CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
+    bool bossShuffle =
+        CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
+    bool overworldShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF);
+    bool interiorShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF);
+    bool grottoShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF);
+    bool thievesHideoutShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleThievesHideoutEntrances"), RO_GENERIC_OFF);
+
+    // Hide Mixed Entrances option if 1 or no applicable entrance shuffles are visible
+    if (dungeonShuffle + bossShuffle + overworldShuffle + interiorShuffle + grottoShuffle + thievesHideoutShuffle <= 1) {
+        mOptions[RSK_MIXED_ENTRANCE_POOLS].Hide();
+    } else {
+        mOptions[RSK_MIXED_ENTRANCE_POOLS].Unhide();
+    }
+}
+
+void Settings::HandleStartingAgeUI() {
+    // Starting Age - Disabled under very specific conditions
+    // Same check as RSK_DOOR_OF_TIME above.
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
+        CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_OFF) ==
+            RO_GENERIC_OFF) /* closed door of time with ocarina shuffle off */ {
+        mOptions[RSK_STARTING_AGE].Disable("This option is disabled due to other options making the game unbeatable.");
+    } else {
+        mOptions[RSK_STARTING_AGE].Enable();
+    }
+}
 
 void Settings::CreateOptions() {
     CreateOptionDescriptions();
@@ -123,15 +154,7 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_KAK_GATE, "Kakariko Gate", {"Closed", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("KakarikoGate"), mOptionDescriptions[RSK_KAK_GATE]);
     OPT_U8(RSK_DOOR_OF_TIME, "Door of Time", {"Closed", "Song only", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("DoorOfTime"), mOptionDescriptions[RSK_DOOR_OF_TIME], WIDGET_CVAR_COMBOBOX);
     OPT_CALLBACK(RSK_DOOR_OF_TIME, {
-        // Starting Age - Disabled under very specific conditions
-        // Same Check as RSK_SHUFFLE_OCARINA below, same check needs to happen if either of these options changes.
-        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
-            CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_OFF) ==
-                RO_GENERIC_OFF) /* closed door of time with ocarina shuffle off */ {
-            mOptions[RSK_STARTING_AGE].Disable("This option is disabled due to other options making the game unbeatable.");
-        } else {
-            mOptions[RSK_STARTING_AGE].Enable();
-        }
+        HandleStartingAgeUI();
     });
     OPT_U8(RSK_ZORAS_FOUNTAIN, "Zora's Fountain", {"Closed", "Closed as child", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ZorasFountain"), mOptionDescriptions[RSK_ZORAS_FOUNTAIN]);
     OPT_U8(RSK_SLEEPING_WATERFALL, "Sleeping Waterfall", {"Closed", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SleepingWaterfall"), mOptionDescriptions[RSK_SLEEPING_WATERFALL]);
@@ -259,22 +282,6 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SHUFFLE_ENTRANCES, "Shuffle Entrances");
     OPT_U8(RSK_SHUFFLE_DUNGEON_ENTRANCES, "Dungeon Entrances", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), mOptionDescriptions[RSK_SHUFFLE_DUNGEON_ENTRANCES], WIDGET_CVAR_COMBOBOX, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
     OPT_CALLBACK(RSK_SHUFFLE_DUNGEON_ENTRANCES, {
-        bool dungeonShuffle =
-        CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
-        bool bossShuffle =
-            CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
-        bool overworldShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF);
-        bool interiorShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF);
-        bool grottoShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF);
-        bool thievesHideoutShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleThievesHideoutEntrances"), RO_GENERIC_OFF);
-
-        // Hide Mixed Entrances option if 1 or no applicable entrance shuffles are visible
-        if (dungeonShuffle + bossShuffle + overworldShuffle + interiorShuffle + grottoShuffle + thievesHideoutShuffle <= 1) {
-            mOptions[RSK_MIXED_ENTRANCE_POOLS].Hide();
-        } else {
-            mOptions[RSK_MIXED_ENTRANCE_POOLS].Unhide();
-        }
-
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ==
             RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
             CVarGetInteger(CVAR_RANDOMIZER_SETTING("MixedEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF) {
@@ -285,21 +292,7 @@ void Settings::CreateOptions() {
     });
     OPT_U8(RSK_SHUFFLE_BOSS_ENTRANCES, "Boss Entrances", {"Off", "Age Restricted", "Full"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), mOptionDescriptions[RSK_SHUFFLE_BOSS_ENTRANCES], WIDGET_CVAR_COMBOBOX, RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
     OPT_CALLBACK(RSK_SHUFFLE_BOSS_ENTRANCES, {
-        bool dungeonShuffle =
-        CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
-        bool bossShuffle =
-            CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
-        bool overworldShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF);
-        bool interiorShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF);
-        bool grottoShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF);
-        bool thievesHideoutShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleThievesHideoutEntrances"), RO_GENERIC_OFF);
-
-        // Hide Mixed Entrances option if 1 or no applicable entrance shuffles are visible
-        if (dungeonShuffle + bossShuffle + overworldShuffle + interiorShuffle + grottoShuffle + thievesHideoutShuffle <= 1) {
-            mOptions[RSK_MIXED_ENTRANCE_POOLS].Hide();
-        } else {
-            mOptions[RSK_MIXED_ENTRANCE_POOLS].Unhide();
-        }
+        HandleMixedEntrancePoolsUI();
 
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ==
             RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF ||
@@ -311,21 +304,7 @@ void Settings::CreateOptions() {
     });
     OPT_BOOL(RSK_SHUFFLE_OVERWORLD_ENTRANCES, "Overworld Entrances", CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES]);
     OPT_CALLBACK(RSK_SHUFFLE_OVERWORLD_ENTRANCES, {
-        bool dungeonShuffle =
-        CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
-        bool bossShuffle =
-            CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
-        bool overworldShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF);
-        bool interiorShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF);
-        bool grottoShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF);
-        bool thievesHideoutShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleThievesHideoutEntrances"), RO_GENERIC_OFF);
-
-        // Hide Mixed Entrances option if 1 or no applicable entrance shuffles are visible
-        if (dungeonShuffle + bossShuffle + overworldShuffle + interiorShuffle + grottoShuffle + thievesHideoutShuffle <= 1) {
-            mOptions[RSK_MIXED_ENTRANCE_POOLS].Hide();
-        } else {
-            mOptions[RSK_MIXED_ENTRANCE_POOLS].Unhide();
-        }
+        HandleMixedEntrancePoolsUI();
 
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF ||
             CVarGetInteger(CVAR_RANDOMIZER_SETTING("MixedEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF) {
@@ -336,21 +315,7 @@ void Settings::CreateOptions() {
     });
     OPT_U8(RSK_SHUFFLE_INTERIOR_ENTRANCES, "Interior Entrances", {"Off", "Simple", "All"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), mOptionDescriptions[RSK_SHUFFLE_INTERIOR_ENTRANCES], WIDGET_CVAR_COMBOBOX, RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
     OPT_CALLBACK(RSK_SHUFFLE_INTERIOR_ENTRANCES, {
-        bool dungeonShuffle =
-        CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
-        bool bossShuffle =
-            CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
-        bool overworldShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF);
-        bool interiorShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF);
-        bool grottoShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF);
-        bool thievesHideoutShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleThievesHideoutEntrances"), RO_GENERIC_OFF);
-
-        // Hide Mixed Entrances option if 1 or no applicable entrance shuffles are visible
-        if (dungeonShuffle + bossShuffle + overworldShuffle + interiorShuffle + grottoShuffle + thievesHideoutShuffle <= 1) {
-            mOptions[RSK_MIXED_ENTRANCE_POOLS].Hide();
-        } else {
-            mOptions[RSK_MIXED_ENTRANCE_POOLS].Unhide();
-        }
+        HandleMixedEntrancePoolsUI();
 
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF ||
             CVarGetInteger(CVAR_RANDOMIZER_SETTING("MixedEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF) {
@@ -361,21 +326,7 @@ void Settings::CreateOptions() {
     });
     OPT_BOOL(RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES, "Thieves' Hideout Entrances", CVAR_RANDOMIZER_SETTING("ShuffleThievesHideoutEntrances"), mOptionDescriptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES]);
     OPT_CALLBACK(RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES, {
-        bool dungeonShuffle =
-        CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
-        bool bossShuffle =
-            CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
-        bool overworldShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF);
-        bool interiorShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF);
-        bool grottoShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF);
-        bool thievesHideoutShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleThievesHideoutEntrances"), RO_GENERIC_OFF);
-
-        // Hide Mixed Entrances option if 1 or no applicable entrance shuffles are visible
-        if (dungeonShuffle + bossShuffle + overworldShuffle + interiorShuffle + grottoShuffle + thievesHideoutShuffle <= 1) {
-            mOptions[RSK_MIXED_ENTRANCE_POOLS].Hide();
-        } else {
-            mOptions[RSK_MIXED_ENTRANCE_POOLS].Unhide();
-        }
+        HandleMixedEntrancePoolsUI();
 
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleThievesHideoutEntrances"), RO_GENERIC_OFF) ==
             RO_GENERIC_OFF ||
@@ -387,21 +338,7 @@ void Settings::CreateOptions() {
     });
     OPT_BOOL(RSK_SHUFFLE_GROTTO_ENTRANCES, "Grottos Entrances", CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), mOptionDescriptions[RSK_SHUFFLE_GROTTO_ENTRANCES]);
     OPT_CALLBACK(RSK_SHUFFLE_GROTTO_ENTRANCES, {
-        bool dungeonShuffle =
-        CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
-        bool bossShuffle =
-            CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
-        bool overworldShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF);
-        bool interiorShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF);
-        bool grottoShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF);
-        bool thievesHideoutShuffle = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleThievesHideoutEntrances"), RO_GENERIC_OFF);
-
-        // Hide Mixed Entrances option if 1 or no applicable entrance shuffles are visible
-        if (dungeonShuffle + bossShuffle + overworldShuffle + interiorShuffle + grottoShuffle + thievesHideoutShuffle <= 1) {
-            mOptions[RSK_MIXED_ENTRANCE_POOLS].Hide();
-        } else {
-            mOptions[RSK_MIXED_ENTRANCE_POOLS].Unhide();
-        }
+        HandleMixedEntrancePoolsUI();
 
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF ||
             CVarGetInteger(CVAR_RANDOMIZER_SETTING("MixedEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF) {
@@ -833,15 +770,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_INCLUDE_TYCOON_WALLET, "Include Tycoon Wallet", CVAR_RANDOMIZER_SETTING("IncludeTycoonWallet"), mOptionDescriptions[RSK_INCLUDE_TYCOON_WALLET]);
     OPT_BOOL(RSK_SHUFFLE_OCARINA, "Shuffle Ocarinas", CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), mOptionDescriptions[RSK_SHUFFLE_OCARINA]);
     OPT_CALLBACK(RSK_SHUFFLE_OCARINA, {
-        // Starting Age - Disabled under very specific conditions
-        // Same check as RSK_DOOR_OF_TIME above.
-        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
-            CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_OFF) ==
-                RO_GENERIC_OFF) /* closed door of time with ocarina shuffle off */ {
-            mOptions[RSK_STARTING_AGE].Disable("This option is disabled due to other options making the game unbeatable.");
-        } else {
-            mOptions[RSK_STARTING_AGE].Enable();
-        }
+        HandleStartingAgeUI();
     });
     OPT_BOOL(RSK_SHUFFLE_OCARINA_BUTTONS, "Shuffle Ocarina Buttons", CVAR_RANDOMIZER_SETTING("ShuffleOcarinaButtons"), mOptionDescriptions[RSK_SHUFFLE_OCARINA_BUTTONS]);
     OPT_BOOL(RSK_SHUFFLE_SWIM, "Shuffle Swim", CVAR_RANDOMIZER_SETTING("ShuffleSwim"), mOptionDescriptions[RSK_SHUFFLE_SWIM]);
@@ -2218,6 +2147,7 @@ void Settings::CreateOptions() {
                                                                   {
                                                                       &mOptions[RSK_LOGIC_RULES],
                                                                       &mOptions[RSK_ALL_LOCATIONS_REACHABLE],
+                                                                      &mOptions[RSK_STARTING_AGE],
                                                                       &mOptions[RSK_SKULLS_SUNS_SONG],
                                                                       &mOptions[RSK_BLUE_FIRE_ARROWS],
                                                                       &mOptions[RSK_SUNLIGHT_ARROWS],
