@@ -528,6 +528,7 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
         case RE_GOHMA_LARVA:
         case RE_MAD_SCRUB:
         case RE_DEKU_BABA:
+        case RE_POE:
             return CanAttack();
         case RE_BIG_SKULLTULA:
             switch (distance) {

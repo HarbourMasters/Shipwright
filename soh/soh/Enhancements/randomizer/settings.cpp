@@ -389,6 +389,7 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_RUSTED_SWITCHES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Hammer Through Collision",
               "Applies to:\n"
               "- Hitting Fire Temple Highest Goron Chest's Rusted Switch in the SoT Block without Song of Time.\n"
+              "- Hitting the rusted switch in Water Trial through the Ice."
               "- Hitting MQ Fire Temple Lizalfos Maze's Rusted Switch in the wall.\n"
               "- Having Adult hammer the rock in the west side crawlspace of MQ Spirit so child can get through "
               "without bombchus."
@@ -1161,7 +1162,7 @@ void Settings::CreateOptions() {
               "Removes the requirements for the Lens of Truth in Ganon's Castle.");
     OPT_TRICK(RT_GANON_SPIRIT_TRIAL_HOOKSHOT, RCQUEST_VANILLA, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE },
               "Spirit Trial without Hookshot",
-              "The highest rupee can be obtained as either age by performing a precise jump and a well-timed jumpslash "
+              "The highest rupee can be obtained as adult by performing a precise jump and a well-timed jumpslash "
               "off of an Armos.");
     OPT_TRICK(RT_LENS_GANON_MQ, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE },
               "Ganon\'s Castle MQ without Lens of Truth",
