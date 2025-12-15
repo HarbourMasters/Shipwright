@@ -26,8 +26,8 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_PERIMETER] = Region("Bottom of the Well Perimeter", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
-        EventAccess(LOGIC_STICK_POT,          []{return true;}),
-        EventAccess(LOGIC_NUT_POT,            []{return true;}),
+        EventAccess(LOGIC_STICK_ACCESS,       []{return logic->CanBreakPots();}),
+        EventAccess(LOGIC_NUT_ACCESS,         []{return logic->CanBreakPots();}),
         EventAccess(LOGIC_BOTW_LOWERED_WATER, []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
     }, {
         //Locations
@@ -122,8 +122,8 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_SKULL_WALL_ROOM] = Region("Bottom of the Well SKull Wall Room", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
-        EventAccess(LOGIC_DEKU_BABA_STICKS, []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(LOGIC_DEKU_BABA_NUTS,   []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(LOGIC_STICK_ACCESS, []{return logic->CanGetDekuBabaSticks();}),
+        EventAccess(LOGIC_NUT_ACCESS,   []{return logic->CanGetDekuBabaNuts();}),
     }, {
         //Locations
         LOCATION(RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
@@ -262,8 +262,8 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_MQ_PERIMETER] = Region("Bottom of the Well MQ Perimeter", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
-        //technically obsolete due to a wonder item fairy which only needs a projectile, but we don't have an event var for it yet
-        EventAccess(LOGIC_FAIRY_POT,            []{return Here(RR_BOTW_MQ_PERIMETER, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets();}),
+        // Fairies are in slingshot wonder item, & pot behind grate. Pot can also be broken with boomerang trick
+        EventAccess(LOGIC_FAIRY_ACCESS,         []{return (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)) || ((Here(RR_BOTW_MQ_PERIMETER, []{return logic->BlastOrSmash();}) || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION)) && logic->CanHitEyeTargets());}),
         //It is possible to hit the water switch with a pot from RR_BOTW_MQ_MIDDLE, however the hitbox for making it activate is very unintuitive
         //You have to throw the pot from further back to hit the switch from the front instead of the top, trying to hit the "fingers" directly
         //This unintuitiveness means it should be a trick. ZL is needed to get a clear path to carry the pot
