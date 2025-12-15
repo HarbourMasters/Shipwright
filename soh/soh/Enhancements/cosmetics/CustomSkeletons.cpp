@@ -22,7 +22,15 @@ static void UpdateCustomSkeletonOnEquipTunic() {
 }
 
 static void UpdateCustomSkeletonOnAssetAltChange() {
-    if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
+    if (!GameInteractor::IsSaveLoaded(true) || gPlayState == NULL) {
+        return;
+    }
+
+    SOH::SkeletonPatcher::UpdateCustomSkeletons();
+}
+
+static void UpdateCustomSkeletonOnSceneInit() {
+    if (!GameInteractor::IsSaveLoaded(true) || gPlayState == NULL) {
         return;
     }
 
@@ -32,6 +40,7 @@ static void UpdateCustomSkeletonOnAssetAltChange() {
 static void RegisterCustomSkeletons() {
     COND_HOOK(OnGameFrameUpdate, true, UpdateCustomSkeletonOnEquipTunic);
     COND_HOOK(OnAssetAltChange, true, UpdateCustomSkeletonOnAssetAltChange);
+    COND_HOOK(OnSceneSpawnActors, true, UpdateCustomSkeletonOnSceneInit);
 }
 
 static RegisterShipInitFunc initFunc(RegisterCustomSkeletons);
