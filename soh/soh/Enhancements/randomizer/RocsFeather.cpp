@@ -36,12 +36,12 @@ void RegisterRocsFeather() {
             if (!rocsUseCount) {
                 rocsUseCount++;
 
-                player->linearVelocity = 4.0f;
+                player->linearVelocity = 5.0f;
 
                 //func_80838940(player, (LinkAnimationHeader*)&gPlayerAnim_link_fighter_backturn_jump, 5.8f, gPlayState, 0);
                 func_80838940(player, (LinkAnimationHeader*)&gPlayerAnim_link_rocs_feather_jump, 5.8f, gPlayState, 0);
 
-                player->actor.velocity.y = 7.0f;
+                player->actor.velocity.y = 8.0f;
                 player->actor.world.rot.y = player->yaw = player->actor.shape.rot.y;
 
                 Vec3f effectsPos = player->actor.home.pos;
