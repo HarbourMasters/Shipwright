@@ -139,6 +139,19 @@ void EnKusa_RandomizerInit(void* actorRef) {
 }
 
 void RegisterShuffleGrass() {
+    SHOULD_SHUFFLE_LOCATION({
+        if (location->GetRCType() == RCTYPE_GRASS) {
+            if (RAND_GET_OPTION(RSK_SHUFFLE_GRASS) == RO_SHUFFLE_GRASS_OFF) {
+                *should = false;
+            }
+            if (RAND_GET_OPTION(RSK_SHUFFLE_GRASS) == RO_SHUFFLE_GRASS_OVERWORLD) {
+                *should = location->IsOverworld();
+            }
+            if (RAND_GET_OPTION(RSK_SHUFFLE_GRASS) == RO_SHUFFLE_GRASS_DUNGEONS) {
+                *should = location->IsDungeon();
+            }
+        }
+    });
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_GRASS);
 
     COND_ID_HOOK(OnActorInit, ACTOR_EN_KUSA, shouldRegister, EnKusa_RandomizerInit);

@@ -108,6 +108,11 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 #pragma message("Compiling without <source_location> support, the Hook Debugger will not be available")
 #endif
 
+// Forward Declarations
+namespace Rando {
+class Location;
+};
+
 typedef uint32_t HOOK_ID;
 
 enum HookType {
@@ -187,6 +192,16 @@ struct HookInfo {
         if (condition) {                                                                              \
             hookId = REGISTER_VB_SHOULD(id, body);                                                    \
         }                                                                                             \
+    }
+#define SHOULD_SHUFFLE_LOCATION(body)                                                                  \
+    {                                                                                                  \
+        static HOOK_ID hookId = 0;                                                                     \
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::ShouldAddLocationToPool>(hookId); \
+        hookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::ShouldAddLocationToPool>(  \
+            [](Rando::Location* location, bool* should) {                                              \
+                auto ctx = OTRGlobals::Instance->gRandoContext;                                        \
+                body;                                                                                  \
+            });                                                                                        \
     }
 
 class GameInteractor {

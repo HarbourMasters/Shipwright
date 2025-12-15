@@ -54,6 +54,7 @@ class Context {
     template <typename Container>
     void AddLocations(const Container& locations, std::vector<RandomizerCheck>* destination = nullptr);
     bool IsQuestOfLocationActive(RandomizerCheck rc);
+    bool ShouldAddLocationToPool(Location* location, bool result);
     void GenerateLocationPool();
     static std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool,
                                                      const RandomizerCheckType checkType);

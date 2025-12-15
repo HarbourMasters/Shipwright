@@ -34,6 +34,12 @@ void EnCow_MoveForRandomizer(EnCow* enCow, PlayState* play) {
 }
 
 void RegisterShuffleCows() {
+    SHOULD_SHUFFLE_LOCATION({
+        if (location->GetRCType() == RCTYPE_COW) {
+            *should = ctx->GetOption(RSK_SHUFFLE_COWS).Is(RO_GENERIC_ON);
+        }
+    });
+
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_COWS);
 
     COND_VB_SHOULD(VB_GIVE_ITEM_FROM_COW, shouldRegister, {

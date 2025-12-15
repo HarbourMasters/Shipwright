@@ -61,6 +61,21 @@ void ObjTsubo_RandomizerSpawnCollectible(ObjTsubo* potActor, PlayState* play) {
 }
 
 void RegisterShufflePots() {
+    SHOULD_SHUFFLE_LOCATION({
+        if (location->GetRCType() == RCTYPE_POT) {
+            switch (RAND_GET_OPTION(RSK_SHUFFLE_POTS)) {
+                case RO_SHUFFLE_POTS_OFF:
+                    *should = false;
+                    break;
+                case RO_SHUFFLE_POTS_OVERWORLD:
+                    *should = location->IsOverworld();
+                    break;
+                case RO_SHUFFLE_POTS_DUNGEONS:
+                    *should = location->IsDungeon();
+                    break;
+            }
+        }
+    });
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_POTS);
 
     COND_ID_HOOK(OnActorInit, ACTOR_OBJ_TSUBO, shouldRegister, [](void* actorRef) {

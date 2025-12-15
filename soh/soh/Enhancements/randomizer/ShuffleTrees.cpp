@@ -160,6 +160,19 @@ void EnWood02_RandomizerInit(void* actorRef) {
 }
 
 void RegisterShuffleTrees() {
+    SHOULD_SHUFFLE_LOCATION({
+        if (location->GetRCType() == RCTYPE_TREE) {
+            if (RAND_GET_OPTION(RSK_SHUFFLE_TREES) == RO_GENERIC_OFF) {
+                *should = false;
+            }
+        }
+        if (location->GetRCType() == RCTYPE_NLTREE) {
+            if (RAND_GET_OPTION(RSK_SHUFFLE_TREES) == RO_GENERIC_OFF ||
+                RAND_GET_OPTION(RSK_LOGIC_RULES) != RO_LOGIC_NO_LOGIC) {
+                *should = false;
+            }
+        }
+    })
     bool shouldRegister = IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TREES).Get();
 
     COND_ID_HOOK(OnActorInit, ACTOR_EN_WOOD02, shouldRegister, EnWood02_RandomizerInit);

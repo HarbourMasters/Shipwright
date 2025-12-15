@@ -279,6 +279,38 @@ void ObjKibako_RandomizerInit(void* actorRef) {
 }
 
 void RegisterShuffleCrates() {
+    SHOULD_SHUFFLE_LOCATION({
+        if (location->GetRCType() == RCTYPE_CRATE || location->GetRCType() == RCTYPE_SMALL_CRATE) {
+            if (RAND_GET_OPTION(RSK_SHUFFLE_CRATES) == RO_SHUFFLE_CRATES_OFF) {
+                *should = false;
+            } else if (ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL)) {
+                *should = true;
+            } else {
+                if (location->IsOverworld()) {
+                    *should = RAND_GET_OPTION(RSK_SHUFFLE_CRATES) == RO_SHUFFLE_CRATES_OVERWORLD;
+                } else {
+                    *should = RAND_GET_OPTION(RSK_SHUFFLE_CRATES) == RO_SHUFFLE_CRATES_DUNGEONS;
+                }
+            }
+        } else if (location->GetRCType() == RCTYPE_NLCRATE) {
+            if (RAND_GET_OPTION(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC) {
+                if (RAND_GET_OPTION(RSK_SHUFFLE_CRATES) == RO_SHUFFLE_CRATES_OFF) {
+                    *should = false;
+                } else if (ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL)) {
+                    *should = true;
+                } else {
+                    if (location->IsOverworld()) {
+                        *should = RAND_GET_OPTION(RSK_SHUFFLE_CRATES) == RO_SHUFFLE_CRATES_OVERWORLD;
+                    } else {
+                        *should = RAND_GET_OPTION(RSK_SHUFFLE_CRATES) == RO_SHUFFLE_CRATES_DUNGEONS;
+                    }
+                }
+            } else {
+                *should = false;
+            }
+        }
+    });
+
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_CRATES);
 
     COND_ID_HOOK(OnActorInit, ACTOR_OBJ_KIBAKO2, shouldRegister, ObjKibako2_RandomizerInit);
