@@ -35,12 +35,14 @@ void RegisterRocsFeather() {
 
             if (!rocsUseCount) {
                 rocsUseCount++;
-                player->linearVelocity = 5.0f;
-                player->actor.velocity.y = 8.0f;
-                player->actor.world.rot.y = player->yaw = player->actor.shape.rot.y;
 
-                func_80838940(player, (LinkAnimationHeader*)&gPlayerAnim_link_rocs_feather_jump,
-                              !(2 & 1) ? 5.8f : 3.5f, gPlayState, 0);
+                player->linearVelocity = 4.0f;
+
+                //func_80838940(player, (LinkAnimationHeader*)&gPlayerAnim_link_fighter_backturn_jump, 5.8f, gPlayState, 0);
+                func_80838940(player, (LinkAnimationHeader*)&gPlayerAnim_link_rocs_feather_jump, 5.8f, gPlayState, 0);
+
+                player->actor.velocity.y = 7.0f;
+                player->actor.world.rot.y = player->yaw = player->actor.shape.rot.y;
 
                 Vec3f effectsPos = player->actor.home.pos;
                 effectsPos.y += 3;
@@ -51,7 +53,7 @@ void RegisterRocsFeather() {
                 EffectSsGRipple_Spawn(gPlayState, &effectsPos, 200 * effectsScale, 300 * effectsScale, 1);
                 EffectSsGSplash_Spawn(gPlayState, &effectsPos, NULL, NULL, 0, 150 * effectsScale);
 
-                player->stateFlags2 &= ~(PLAYER_STATE2_HOPPING);
+                player->stateFlags2 &= PLAYER_STATE2_HOPPING;
 
                 Player_PlaySfx(&player->actor, NA_SE_PL_SKIP);
             }

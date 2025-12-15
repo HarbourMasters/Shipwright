@@ -348,6 +348,9 @@ static const ALIGN_ASSET(2) char gKeyringKeysGanonsCastleMQDL[] = dgKeyringKeysG
 #define dgHouseKeyDL "__OTR__objects/object_housekey/gHouseKeyDL"
 static const ALIGN_ASSET(2) char gHouseKeyDL[] = dgHouseKeyDL;
 
+#define dgGiRocsFeatherDL "__OTR__objects/object_rocs_feather/gGiRocsFeatherDL"
+static const ALIGN_ASSET(2) char gGiRocsFeatherDL[] = dgGiRocsFeatherDL;
+
 // overlays
 #define dgOptionsDividerChangeLangVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerChangeLangVtx"
 static const ALIGN_ASSET(2) char gOptionsDividerChangeLangVtx[] = dgOptionsDividerChangeLangVtx;

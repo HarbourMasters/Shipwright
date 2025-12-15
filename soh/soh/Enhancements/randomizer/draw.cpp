@@ -499,12 +499,7 @@ extern "C" void Randomizer_DrawRocsFeather(PlayState* play, GetItemEntry* getIte
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gDPSetGrayscaleColor(POLY_XLU_DISP++, color.r, color.g, color.b, 255);
-    gSPGrayscale(POLY_XLU_DISP++, true);
-
-    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gMysteryItemDL);
-
-    gSPGrayscale(POLY_XLU_DISP++, false);
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiRocsFeatherDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
