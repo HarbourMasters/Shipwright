@@ -7,7 +7,7 @@ void RegionTable_Init_Kakariko() {
     // clang-format off
     areaTable[RR_KAKARIKO_VILLAGE] = Region("Kakariko Village", SCENE_KAKARIKO_VILLAGE, {
         //Events
-        EventAccess(LOGIC_BUG_ROCK,           []{return true;}),
+        EventAccess(LOGIC_BUG_ACCESS,         []{return true;}),
         //Open Gate setting is applied in RR_ROOT
         EventAccess(LOGIC_KAKARIKO_GATE_OPEN, []{return logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER);}),
         //Needs wallet to be able to get another mask after selling Keaton
