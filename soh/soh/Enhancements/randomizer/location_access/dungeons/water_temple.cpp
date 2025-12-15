@@ -121,7 +121,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_BOSS_KEY_ROOM] = Region("Water Temple Boss Key Room", SCENE_WATER_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FAIRY_POT, []{return true;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanBreakPots();}),
     }, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_BOSS_KEY_CHEST, true),
@@ -272,7 +272,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_PRE_BOSS_ROOM] = Region("Water Temple Pre Boss Room", SCENE_WATER_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FAIRY_POT, []{return true;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanBreakPots();}),
     }, {
         // Locations
         LOCATION(RC_WATER_TEMPLE_MAIN_LEVEL_1_POT_1, logic->CanBreakPots()),
@@ -575,8 +575,8 @@ void RegionTable_Init_WaterTemple() {
     //also includes the suns fairy in the middle
     areaTable[RR_WATER_TEMPLE_MQ_STALFOS_PIT_POTS] = Region("Water Temple MQ Stalfos Pit Pots", SCENE_WATER_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FAIRY_POT, []{return true;}),
-        EventAccess(LOGIC_NUT_POT,   []{return true;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanBreakPots();}),
+        EventAccess(LOGIC_NUT_ACCESS,   []{return logic->CanBreakPots();}),
     }, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_MQ_STALFOS_PIT_SOUTH_POT,     logic->CanBreakPots()),
@@ -606,7 +606,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_MQ_AFTER_DARK_LINK] = Region("Water Temple MQ After Dark Link", SCENE_WATER_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FAIRY_POT, []{return true;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanBreakPots();}),
     }, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_MQ_AFTER_DARK_LINK_POT_1, logic->CanBreakPots()),
@@ -628,7 +628,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_MQ_RIVER_POTS] = Region("Water Temple MQ River Pots", SCENE_WATER_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FAIRY_POT, []{return true;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanBreakPots();}),
     }, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_MQ_RIVER_POT_1, logic->CanBreakPots()),

@@ -27,7 +27,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_NEAR_BOSS_ROOM] = Region("Fire Temple Near Boss Room", SCENE_FIRE_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FAIRY_POT, []{return logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT);}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanUse(RG_HOOKSHOT) || (logic->CanBreakPots() && logic->CanUse(RG_HOVER_BOOTS));}),
     }, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_NEAR_BOSS_CHEST, true),
@@ -391,7 +391,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_MQ_IRON_KNUCKLE_ROOM] = Region("Fire Temple MQ Iron Knuckle Room", SCENE_FIRE_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FAIRY_POT, []{return true;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanBreakPots();}),
     }, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_MQ_LOOP_KNUCKLE_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
@@ -495,7 +495,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_MQ_TORCH_FIREWALL_ROOM] = Region("Fire Temple MQ Torch Firewall Room", SCENE_FIRE_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FAIRY_POT, []{return logic->CanUse(RG_HOOKSHOT);}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanUse(RG_HOOKSHOT);}),
     }, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST,   logic->CanUse(RG_HOOKSHOT)),
@@ -605,7 +605,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_MQ_BURNING_BLOCK_CLIMB] = Region("Fire Temple MQ Burning Block Climb", SCENE_FIRE_TEMPLE, {
         //Events
-        //EventAccess(&WallFairy, []{return logic->CanUse(RG_HOOKSHOT);}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanUse(RG_HOOKSHOT);}),
     }, {
         //Locations
         //There's definitely ways to do this hammerless, but with one points on it's a trick
@@ -618,7 +618,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_MQ_NARROW_PATH_ROOM] = Region("Fire Temple MQ Narrow Path Room", SCENE_FIRE_TEMPLE, {
         //Events
-        EventAccess(LOGIC_FAIRY_POT, []{return true;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanBreakPots();}),
     }, {
         //Locations
         LOCATION(RC_FIRE_TEMPLE_MQ_ABOVE_LAVA_POT_1, logic->CanBreakPots()),

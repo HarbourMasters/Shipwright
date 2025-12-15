@@ -64,6 +64,7 @@ class Logic {
     bool CanUseSword();
     bool CanJumpslashExceptHammer();
     bool CanJumpslash();
+    bool CanClearStalagmite();
     bool CanHitSwitch(EnemyDistance distance = ED_CLOSE, bool inWater = false);
     bool CanDamage();
     bool CanAttack();

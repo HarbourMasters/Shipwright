@@ -180,8 +180,9 @@ void RegisterShuffleFairies() {
             // collected, the vanilla code will handle that part automatically.
             FairyIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params);
             if (!ShuffleFairies_FairyExists(fairyIdentity)) {
-                if (SpawnFairy(gossipStone->actor.world.pos.x, gossipStone->actor.world.pos.y,
-                               gossipStone->actor.world.pos.z, params, fairyType)) {
+                Player* player = GET_PLAYER(gPlayState);
+                if (SpawnFairy(player->actor.world.pos.x, (player->actor.world.pos.y + 20), player->actor.world.pos.z,
+                               params, fairyType)) {
                     Audio_PlayActorSound2(&gossipStone->actor, NA_SE_EV_BUTTERFRY_TO_FAIRY);
                     // Set vanilla check for fairy spawned so it doesn't spawn the vanilla fairy afterwards as well.
                     gossipStone->unk_19D = 0;

@@ -44,7 +44,7 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     // If they have bombchus, don't consider the bombchu item major
     if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-        ((crateItem.modIndex == MOD_RANDOMIZER && crateItem.getItemId == RG_PROGRESSIVE_BOMBCHUS) ||
+        ((crateItem.modIndex == MOD_RANDOMIZER && crateItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
          (crateItem.modIndex == MOD_NONE &&
           (crateItem.getItemId == GI_BOMBCHUS_5 || crateItem.getItemId == GI_BOMBCHUS_10 ||
            crateItem.getItemId == GI_BOMBCHUS_20)))) {
@@ -118,7 +118,7 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     // If they have bombchus, don't consider the bombchu item major
     if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-        ((smallCrateItem.modIndex == MOD_RANDOMIZER && smallCrateItem.getItemId == RG_PROGRESSIVE_BOMBCHUS) ||
+        ((smallCrateItem.modIndex == MOD_RANDOMIZER && smallCrateItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
          (smallCrateItem.modIndex == MOD_NONE &&
           (smallCrateItem.getItemId == GI_BOMBCHUS_5 || smallCrateItem.getItemId == GI_BOMBCHUS_10 ||
            smallCrateItem.getItemId == GI_BOMBCHUS_20)))) {

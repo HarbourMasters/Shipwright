@@ -767,15 +767,18 @@ bool InputString(const char* label, std::string* value, const InputOptions& opti
         ImGui::PushStyleColor(ImGuiCol_Border, ColorValues.at(Colors::Red));
     }
     float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
-    if (options.alignment == ComponentAlignments::Left) {
-        if (options.labelPosition == LabelPositions::Above) {
-            ImGui::Text(label, *value->c_str());
-        }
-    } else if (options.alignment == ComponentAlignments::Right) {
-        if (options.labelPosition == LabelPositions::Above) {
-            ImGui::NewLine();
-            ImGui::SameLine(width - ImGui::CalcTextSize(label).x);
-            ImGui::Text(label, *value->c_str());
+    ImVec2 labelSize = ImGui::CalcTextSize(label, NULL, true);
+    if (labelSize.x != 0) {
+        if (options.alignment == ComponentAlignments::Left) {
+            if (options.labelPosition == LabelPositions::Above) {
+                ImGui::Text(label, *value->c_str());
+            }
+        } else if (options.alignment == ComponentAlignments::Right) {
+            if (options.labelPosition == LabelPositions::Above) {
+                ImGui::NewLine();
+                ImGui::SameLine(width - ImGui::CalcTextSize(label).x);
+                ImGui::Text(label, *value->c_str());
+            }
         }
     }
     ImGui::SetNextItemWidth(width);

@@ -34,7 +34,7 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_CHILD_SIDE_HUB] = Region("Spirit Temple Child Side Hub", SCENE_SPIRIT_TEMPLE, {
         //Events
-        EventAccess(LOGIC_NUT_CRATE, []{return true;}),
+        EventAccess(LOGIC_NUT_ACCESS, []{return logic->CanBreakSmallCrates();}),
     }, {}, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_FOYER,               []{return logic->IsChild/*CanUse(RG_CRAWL)*/;}),
@@ -613,7 +613,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_TURNTABLE] = Region("Spirit Temple MQ Turntable", SCENE_SPIRIT_TEMPLE, {
         //Events
         EventAccess(LOGIC_SPIRIT_MQ_TURNTABLE_ENEMY, []{return logic->CanKillEnemy(RE_STALFOS);}),
-        EventAccess(LOGIC_FAIRY_POT,                 []{return logic->Get(LOGIC_SPIRIT_MQ_TURNTABLE_ENEMY);}),
+        EventAccess(LOGIC_FAIRY_ACCESS,              []{return logic->Get(LOGIC_SPIRIT_MQ_TURNTABLE_ENEMY);}),
     }, {
         //Locations
         //implies logic->CanBreakPots()

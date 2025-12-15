@@ -232,6 +232,9 @@ extern "C" void Randomizer_InitSaveFile() {
     // Reset triforce pieces collected.
     gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected = 0;
 
+    // Reset Bombchu Bag Upgrade
+    gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel = 0;
+
     SetStartingItems();
 
     // Set Cutscene flags and texts to skip them.
@@ -282,15 +285,15 @@ extern "C" void Randomizer_InitSaveFile() {
     }
 
     int startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
+    gSaveContext.savedSceneNum = -1;
     switch (startingAge) {
         case RO_AGE_ADULT: // Adult
             gSaveContext.linkAge = LINK_AGE_ADULT;
             gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_WARP_PAD;
-            gSaveContext.savedSceneNum = SCENE_LON_LON_RANCH; // Set scene num manually to ToT.
+            gSaveContext.cutsceneIndex = 0;
             break;
         case RO_AGE_CHILD: // Child
             gSaveContext.linkAge = LINK_AGE_CHILD;
-            gSaveContext.savedSceneNum = -1;
             break;
         default:
             break;
