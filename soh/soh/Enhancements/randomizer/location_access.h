@@ -244,6 +244,7 @@ Region* RegionTable(const RandomizerRegion regionKey);
 std::vector<Rando::Entrance*> GetShuffleableEntrances(Rando::EntranceType type, bool onlyPrimary = true);
 Rando::Entrance* GetEntrance(RandomizerRegion source, RandomizerRegion destination);
 
+void RegionTable_Init_Root();
 // Overworld
 void RegionTable_Init_KokiriForest();
 void RegionTable_Init_LostWoods();

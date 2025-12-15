@@ -395,7 +395,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_ROOM] = Region("Gerudo Training Ground MQ Dinolfos Room", SCENE_GERUDO_TRAINING_GROUND, {
         //Events
-        //EventAccess(&WallFairy, []{return logic->IsAdult && logic->CanUse(RG_FAIRY_BOW);}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->IsAdult && logic->CanUse(RG_FAIRY_BOW);}),
     }, {
         //Locations
         //implies logic->CanKillEnemy(RE_LIZALFOS and logic->CanKillEnemy(RE_DODONGO)
