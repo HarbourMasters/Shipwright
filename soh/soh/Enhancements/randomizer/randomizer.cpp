@@ -5908,7 +5908,7 @@ void Randomizer::CreateCustomMessages() {
     CreateGetItemMessages(getItemMessages);
     CreateRupeeMessages();
     CreateRocsFeatherMessage();
-    CreateFireTempleGoronMessages();
+    CreateTriforcePieceMessages();
     CreateNaviRandoMessages();
     CreateFireTempleGoronMessages();
 }
