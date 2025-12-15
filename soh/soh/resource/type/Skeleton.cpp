@@ -22,7 +22,6 @@ static void OnPlayerUpdateSkeletons() {
     }
     SkeletonPatcher::UpdateCustomSkeletons();
 }
-
 static void OnKaleidoUpdateSkeletons() {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return;
