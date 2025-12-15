@@ -2,9 +2,7 @@
 #include "../debugger/performanceTimer.h"
 
 #include <algorithm>
-#include <cstdio>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include "soh/OTRGlobals.h"
@@ -52,7 +50,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CheckInventory(ITEM_ARROW_ICE, true);
         case RG_LIGHT_ARROWS:
             return CheckInventory(ITEM_ARROW_LIGHT, true);
-        case RG_PROGRESSIVE_BOMBCHUS:
+        case RG_PROGRESSIVE_BOMBCHU_BAG:
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_10:
         case RG_BOMBCHU_20:
@@ -323,16 +321,15 @@ bool Logic::CanUse(RandomizerGet itemName) {
         case RG_KOKIRI_SWORD:
             return IsChild; // || KokiriSwordAsAdult;
         case RG_NUTS:
-            return Get(LOGIC_NUT_POT) || Get(LOGIC_NUT_CRATE) || Get(LOGIC_DEKU_BABA_NUTS) || Get(LOGIC_BUY_NUTS);
+            return Get(LOGIC_NUT_ACCESS);
         case RG_STICKS:
-            return IsChild /* || StickAsAdult;*/ &&
-                   (Get(LOGIC_STICK_POT) || Get(LOGIC_DEKU_BABA_STICKS) || Get(LOGIC_BUY_STICKS));
+            return IsChild /* || StickAsAdult;*/ && Get(LOGIC_STICK_ACCESS);
         case RG_DEKU_SHIELD:
             return IsChild; // || DekuShieldAsAdult;
         case RG_PROGRESSIVE_BOMB_BAG:
         case RG_BOMB_BAG:
             return true; // AmmoCanDrop || Get(LOGIC_BUY_BOMB)
-        case RG_PROGRESSIVE_BOMBCHUS:
+        case RG_PROGRESSIVE_BOMBCHU_BAG:
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_10:
         case RG_BOMBCHU_20:
@@ -379,16 +376,13 @@ bool Logic::CanUse(RandomizerGet itemName) {
 
         // Bottle Items
         case RG_BOTTLE_WITH_BUGS:
-            return Get(LOGIC_BUG_SHRUB) || Get(LOGIC_WANDERING_BUGS) || Get(LOGIC_BUG_ROCK) || Get(LOGIC_BUGS_ACCESS);
+            return Get(LOGIC_BUG_ACCESS);
         case RG_BOTTLE_WITH_FISH:
-            return Get(LOGIC_LONE_FISH) || Get(LOGIC_FISH_GROUP) ||
-                   Get(LOGIC_FISH_ACCESS); // is there any need to care about lone vs group?
-        case RG_BOTTLE_WITH_BLUE_FIRE:     // RANDOTODO should probably be better named
+            return Get(LOGIC_FISH_ACCESS);
+        case RG_BOTTLE_WITH_BLUE_FIRE:
             return Get(LOGIC_BLUE_FIRE_ACCESS);
         case RG_BOTTLE_WITH_FAIRY:
-            return Get(LOGIC_FAIRY_POT) || Get(LOGIC_GOSSIP_STONE_FAIRY) || Get(LOGIC_BEAN_PLANT_FAIRY) ||
-                   Get(LOGIC_BUTTERFLY_FAIRY) || Get(LOGIC_FREE_FAIRIES) || Get(LOGIC_FAIRY_POND) ||
-                   Get(LOGIC_FAIRY_ACCESS);
+            return Get(LOGIC_FAIRY_ACCESS);
 
         default:
             SPDLOG_ERROR("CanUse reached `default` for {}. Assuming intention is no extra requirements for use so "
@@ -863,9 +857,8 @@ bool Logic::CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             return CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
         case RE_GIBDO:
         case RE_REDEAD:
-            // we need a way to check if suns won't force a reload
-            // RANDOTODO: check if stealthing past these guys works everywhere
-            return CanUse(RG_HOOKSHOT) || CanUse(RG_SUNS_SONG);
+            // You can move slowly to avoid getting screamed at
+            return true; // CanUse(RG_HOOKSHOT) || CanUse(RG_SUNS_SONG);
         case RE_IRON_KNUCKLE:
         case RE_BIG_OCTO:
             return false;
@@ -1088,6 +1081,10 @@ bool Logic::CanJumpslash() {
     return CanJumpslashExceptHammer() || CanUse(RG_MEGATON_HAMMER);
 }
 
+bool Logic::CanClearStalagmite() {
+    return CanJumpslash() || HasExplosives();
+}
+
 bool Logic::CanHitSwitch(EnemyDistance distance, bool inWater) {
     bool hit = false;
     switch (distance) {
@@ -1131,7 +1128,8 @@ bool Logic::CanAttack() {
 }
 
 bool Logic::BombchusEnabled() {
-    return ctx->GetOption(RSK_BOMBCHU_BAG) ? CheckInventory(ITEM_BOMBCHU, true) : HasItem(RG_BOMB_BAG);
+    return ctx->GetOption(RSK_BOMBCHU_BAG).IsNot(RO_BOMBCHU_BAG_NONE) ? CheckInventory(ITEM_BOMBCHU, true)
+                                                                      : HasItem(RG_BOMB_BAG);
 }
 
 // TODO: Implement Ammo Drop Setting in place of bombchu drops
@@ -1688,7 +1686,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                     }
                     SetUpgrade(UPG_STICKS, newLevel);
                 } break;
-                case RG_PROGRESSIVE_BOMBCHUS: {
+                case RG_PROGRESSIVE_BOMBCHU_BAG: {
                     auto realGI = item.GetGIEntry();
                     if (realGI->itemId == RG_BOMBCHU_INF && realGI->modIndex == MOD_RANDOMIZER) {
                         SetRandoInf(RAND_INF_HAS_INFINITE_BOMBCHUS, true);

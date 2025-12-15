@@ -9,6 +9,10 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 
+#define FULL_HEART_HEALTH 0x10
+#define STARTING_HEALTH (3 * FULL_HEART_HEALTH)
+#define MAX_HEALTH (20 * FULL_HEART_HEALTH)
+
 typedef enum {
     /* 0x0 */ MAGIC_STATE_IDLE, // Regular gameplay
     /* 0x1 */ MAGIC_STATE_CONSUME_SETUP, // Sets the speed at which magic border flashes
@@ -160,6 +164,7 @@ typedef struct {
 
 typedef struct ShipRandomizerSaveContextData {
     u8 triforcePiecesCollected;
+    u8 bombchuUpgradeLevel;
 } ShipRandomizerSaveContextData;
 
 typedef struct ShipBossRushSaveContextData {

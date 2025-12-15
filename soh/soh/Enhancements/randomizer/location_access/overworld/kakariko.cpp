@@ -7,7 +7,7 @@ void RegionTable_Init_Kakariko() {
     // clang-format off
     areaTable[RR_KAKARIKO_VILLAGE] = Region("Kakariko Village", SCENE_KAKARIKO_VILLAGE, {
         //Events
-        EventAccess(LOGIC_BUG_ROCK,           []{return true;}),
+        EventAccess(LOGIC_BUG_ACCESS,         []{return true;}),
         //Open Gate setting is applied in RR_ROOT
         EventAccess(LOGIC_KAKARIKO_GATE_OPEN, []{return logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER);}),
         //Needs wallet to be able to get another mask after selling Keaton
@@ -270,8 +270,8 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_WELL] = Region("Kak Well", SCENE_KAKARIKO_VILLAGE, {}, {}, {
         //Exits
-        Entrance(RR_KAKARIKO_VILLAGE,            []{return logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->Get(LOGIC_DRAIN_WELL);}),
-        Entrance(RR_BOTTOM_OF_THE_WELL_ENTRYWAY, []{return logic->IsChild || (logic->Get(LOGIC_DRAIN_WELL) && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF));}),
+        Entrance(RR_KAKARIKO_VILLAGE, []{return logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->Get(LOGIC_DRAIN_WELL);}),
+        Entrance(RR_BOTW_ENTRYWAY,    []{return logic->IsChild || (logic->Get(LOGIC_DRAIN_WELL) && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF));}),
     });
 
     // clang-format on

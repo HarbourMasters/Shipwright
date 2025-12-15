@@ -11,6 +11,12 @@ static const std::unordered_map<int32_t, const char*> logLevels = {
     { DEBUG_LOG_OFF, "Off" },
 };
 
+#ifdef _DEBUG
+DebugLogOption defaultLogLevel = DEBUG_LOG_TRACE;
+#else
+DebugLogOption defaultLogLevel = DEBUG_LOG_INFO;
+#endif
+
 static const std::unordered_map<int32_t, const char*> debugSaveFileModes = {
     { 0, "Off" },
     { 1, "Vanilla" },
@@ -110,10 +116,11 @@ void SohMenu::AddMenuDevTools() {
         .Options(ComboboxOptions()
                      .Tooltip("The log level determines which messages are printed to the console."
                               " This does not affect the log file output")
-                     .ComboMap(logLevels))
+                     .ComboMap(logLevels)
+                     .DefaultIndex(defaultLogLevel))
         .Callback([](WidgetInfo& info) {
             Ship::Context::GetInstance()->GetLogger()->set_level(
-                (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), DEBUG_LOG_DEBUG));
+                (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), defaultLogLevel));
         })
         .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_DEBUG_MODE_OFF).active; });
 
