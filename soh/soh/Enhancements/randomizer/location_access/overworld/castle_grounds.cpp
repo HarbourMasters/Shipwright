@@ -18,8 +18,9 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_HYRULE_CASTLE_GROUNDS] = Region("Hyrule Castle Grounds", SCENE_HYRULE_CASTLE, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy() || logic->CanUse(RG_STICKS);}),
-        EventAccess(LOGIC_BUG_ACCESS,   []{return true;}),
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
+        EventAccess(LOGIC_BUTTERFLY_FAIRY,   []{return logic->CanUse(RG_STICKS);}),
+        EventAccess(LOGIC_BUG_ROCK,          []{return true;}),
     }, {
         //Locations
         LOCATION(RC_HC_MALON_EGG,                        true),
@@ -78,9 +79,9 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_HC_STORMS_GROTTO_BEHIND_WALLS] = Region("HC Storms Grotto Behind Walls", SCENE_GROTTOS, {
         //Events
-        EventAccess(LOGIC_NUT_ACCESS,   []{return logic->CanBreakPots();}),
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy();}),
-        EventAccess(LOGIC_BUG_ACCESS,   []{return true;}), // wandering bugs
+        EventAccess(LOGIC_NUT_POT,           []{return true;}),
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
+        EventAccess(LOGIC_WANDERING_BUGS,    []{return true;}),
     }, {
         //Locations
         LOCATION(RC_HC_GS_STORMS_GROTTO,                     logic->HookshotOrBoomerang()),

@@ -29,7 +29,9 @@ void RegionTable_Init_ZoraRiver() {
 
     areaTable[RR_ZORAS_RIVER] = Region("Zora River", SCENE_ZORAS_RIVER, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy() || (logic->IsChild && logic->CanUse(RG_STICKS)) || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS));}),
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
+        EventAccess(LOGIC_BEAN_PLANT_FAIRY,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
+        EventAccess(LOGIC_BUTTERFLY_FAIRY,    []{return logic->IsChild && logic->CanUse(RG_STICKS);}),
     }, {
         //Locations
         LOCATION(RC_ZR_MAGIC_BEAN_SALESMAN,                  logic->IsChild/* && CanUse(SPEAK_HYLIAN)*/),
@@ -68,7 +70,7 @@ void RegionTable_Init_ZoraRiver() {
 
     areaTable[RR_ZR_ATOP_LADDER] = Region("ZR Atop Ladder", SCENE_ZORAS_RIVER, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy();}),
+        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
     }, {
         //Locations
         LOCATION(RC_ZR_GS_NEAR_RAISED_GROTTOS,              logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) && logic->CanGetNightTimeGS()),
@@ -85,7 +87,7 @@ void RegionTable_Init_ZoraRiver() {
 
     areaTable[RR_ZR_PILLAR] = Region("ZR Pillar", SCENE_ZORAS_RIVER, {
         //Events
-        EventAccess(LOGIC_BUG_ACCESS, []{return logic->CanCutShrubs();}),
+        EventAccess(LOGIC_BUG_SHRUB, []{return logic->CanCutShrubs();}),
     }, {
         //Locations
         LOCATION(RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH, true),
@@ -127,7 +129,7 @@ void RegionTable_Init_ZoraRiver() {
 
     areaTable[RR_ZR_FAIRY_GROTTO] = Region("ZR Fairy Grotto", SCENE_GROTTOS, {
         //Event
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return true;}),
+        EventAccess(LOGIC_FREE_FAIRIES, []{return true;}),
     }, {
         //Locations
         LOCATION(RC_ZR_FAIRY_GROTTO_FAIRY_1, true),
