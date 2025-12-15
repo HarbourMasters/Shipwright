@@ -353,7 +353,7 @@ void Settings::CreateOptions() {
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleWarpSongs"), RO_GENERIC_ON)) {
             mOptions[RSK_WARP_SONG_HINTS].Enable();
         } else {
-            mOptions[RSK_WARP_SONG_HINTS].Disable("This option is disabled since warp song locations not shuffled.");
+            mOptions[RSK_WARP_SONG_HINTS].Disable("This option is disabled since warp song locations are not shuffled.");
         }
     });
     OPT_BOOL(RSK_SHUFFLE_OVERWORLD_SPAWNS, "Overworld Spawns", CVAR_RANDOMIZER_SETTING("ShuffleOverworldSpawns"), mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]);
