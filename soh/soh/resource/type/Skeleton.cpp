@@ -22,7 +22,15 @@ static void OnPlayerUpdateSkeletons() {
     }
     SkeletonPatcher::UpdateCustomSkeletons();
 }
-void RegisterSkeletonFrameUpdater() {
+
+static void OnKaleidoUpdateSkeletons() {
+    if (!GameInteractor::IsSaveLoaded(true)) {
+        return;
+    }
+    SkeletonPatcher::UpdateCustomSkeletons();
+}
+
+void RegisterSkeletonUpdater() {
     static HOOK_ID hookId = 0;
 
     GameInteractor::Instance
@@ -32,9 +40,16 @@ void RegisterSkeletonFrameUpdater() {
         ->RegisterGameHook<GameInteractor::OnPlayerUpdate>(
             OnPlayerUpdateSkeletons
         );
+    GameInteractor::Instance
+        ->UnregisterGameHook<GameInteractor::OnKaleidoUpdate>(hookId);
+
+    hookId = GameInteractor::Instance
+        ->RegisterGameHook<GameInteractor::OnKaleidoUpdate>(
+            OnKaleidoUpdateSkeletons
+        );
 }
 
-static RegisterShipInitFunc initSkeletonUpdater(RegisterSkeletonFrameUpdater);
+static RegisterShipInitFunc initSkeletonUpdater(RegisterSkeletonUpdater);
 
 size_t Skeleton::GetPointerSize() {
     switch (type) {
