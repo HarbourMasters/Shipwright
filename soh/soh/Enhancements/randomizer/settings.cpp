@@ -137,7 +137,7 @@ void Settings::HandleMixedEntrancePoolsUI() {
 
 void Settings::HandleStartingAgeUI() {
     // Starting Age - Disabled under very specific conditions
-    // Same check as RSK_DOOR_OF_TIME above.
+    // RANDOTODO: Fix so this is not disabled for No Logic.
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
         CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_OFF) ==
             RO_GENERIC_OFF) /* closed door of time with ocarina shuffle off */ {
