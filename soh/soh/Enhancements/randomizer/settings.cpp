@@ -388,7 +388,8 @@ void Settings::CreateOptions() {
               "Tunic. Applies to MQ also, and includes child access to first floor with dungeon shuffle.");
     OPT_TRICK(RT_RUSTED_SWITCHES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE },
               "Hammer Rusted Switches Through Walls",
-              "Applies to:\n- Fire Temple Highest Goron Chest.\n- MQ Fire Temple Lizalfos Maze.\n- MQ Spirit Trial.");
+              "Applies to:\n- Fire Temple Highest Goron Chest.\n- Water Trial\n- MQ Fire Temple Lizalfos Maze.\n- MQ "
+              "Spirit Trial.");
     OPT_TRICK(RT_FLAMING_CHESTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "Flaming Chests",
               "The chests encircled in flames in Gerudo Training Ground and in Spirit Temple can be opened by running "
               "into the flames while Link is invincible after taking damage.");
@@ -1156,7 +1157,7 @@ void Settings::CreateOptions() {
               "Removes the requirements for the Lens of Truth in Ganon's Castle.");
     OPT_TRICK(RT_GANON_SPIRIT_TRIAL_HOOKSHOT, RCQUEST_VANILLA, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE },
               "Spirit Trial without Hookshot",
-              "The highest rupee can be obtained as either age by performing a precise jump and a well-timed jumpslash "
+              "The highest rupee can be obtained as adult by performing a precise jump and a well-timed jumpslash "
               "off of an Armos.");
     OPT_TRICK(RT_LENS_GANON_MQ, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE },
               "Ganon\'s Castle MQ without Lens of Truth",
