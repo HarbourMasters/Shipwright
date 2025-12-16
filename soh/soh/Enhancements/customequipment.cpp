@@ -73,8 +73,7 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
     if (resource == NULL || gfx == NULL || dlist1 == NULL || dlist2 == NULL)
         return;
 
-    //if (ResourceGetIsCustomByName(gfx)) {
-    if (ResourceMgr_IsAltAssetsEnabled()) {
+    if (ResourceGetIsCustomByName(gfx)) {
         if (ResourceGetIsCustomByName(gfx)) {
             if (alternateDL == NULL || ResourceGetIsCustomByName(alternateDL) || ResourceMgr_FileExists(alternateDL)) {
                 ResourceMgr_PatchCustomGfxByName(resource, dlist1, 0, gsSPDisplayListOTRFilePath(gfx));
