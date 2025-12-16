@@ -674,25 +674,39 @@ void RegionTable_Init_FireTemple() {
         //you can still move "backwards" into the door though and with a roll jump onto the grate, which avoids damage
         Entrance(RR_FIRE_TEMPLE_MQ_LAVA_GEYSER_1F,      []{return logic->FireTimer() >= 24;}),
         Entrance(RR_FIRE_TEMPLE_MQ_LAVA_GEYSER_PILLARS, []{return logic->TakeDamage() && logic->FireTimer() >= 24;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM,       []{return true;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_LOWER, []{return true;}),
     });
 
-    areaTable[RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM] = Region("Fire Temple MQ Shortcut Room", SCENE_FIRE_TEMPLE, {}, {}, {
+    areaTable[RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_LOWER] = Region("Fire Temple MQ Shortcut Room Lower", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_MQ_LOWER_LIZALFOS_MAZE, []{return (logic->HasFireSource() && logic->CanUse(RG_HOOKSHOT) /*&& (logic->IsAdult || CanUse(RG_CLIMB))*/) || (ctx->GetTrickOption(RT_FIRE_MQ_CLIMB) && logic->CanUse(RG_HOVER_BOOTS)/*&& CanUse(RG_CLIMB)*/);}),
-        Entrance(RR_FIRE_TEMPLE_MQ_LAVA_GEYSER_1F,      []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_CAGE,       []{return logic->Get(LOGIC_FIRE_OPENED_UPPER_SHORTCUT);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_MID, []{return (logic->HasFireSource() && (logic->IsAdult || (logic->CanUse(RG_HOOKSHOT)/* && (CanUse(RG_CLIMB)*/))) || 
+                                                                 (ctx->GetTrickOption(RT_FIRE_MQ_CLIMB) && logic->CanUse(RG_HOVER_BOOTS)/*&& CanUse(RG_CLIMB)*/);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_LAVA_GEYSER_2F,    []{return true;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_CAGE,     []{return logic->Get(LOGIC_FIRE_OPENED_UPPER_SHORTCUT);}),
+    });
+
+    //specifically the foot of the final grate, where the lizalfos spawns
+    areaTable[RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_MID] = Region("Fire Temple MQ Shortcut Room Middle", SCENE_FIRE_TEMPLE, {}, {}, {
+        //Exits
+        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_LOWER, []{return true;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_3F,    []{return true/*(logic->CanUse(RG_HOOKSHOT) || (CanUse(RG_CLIMB))*/;}),
+    });
+
+    areaTable[RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_3F] = Region("Fire Temple MQ Shortcut Room 3F", SCENE_FIRE_TEMPLE, {}, {}, {
+        //Exits
+        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_MID,   []{return true;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_LOWER_LIZALFOS_MAZE, []{return true;}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_LOWER_LIZALFOS_MAZE] = Region("Fire Temple MQ Lower Lizalfos Maze", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM,    []{return true;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_LOWER, []{return true;}),
         //Explosives can also reach this room. Chus is relatively simple, they need to detonate on the first horizontal bar up from the floor while horizontally near the switch, but bombs are much harder
-        Entrance(RR_FIRE_TEMPLE_MQ_MAZE_CRATE_CAGE,  []{return Here(RR_FIRE_TEMPLE_MQ_LOWER_LIZALFOS_MAZE, []{return logic->CanJumpslash();});}),
+        Entrance(RR_FIRE_TEMPLE_MQ_MAZE_CRATE_CAGE,     []{return Here(RR_FIRE_TEMPLE_MQ_LOWER_LIZALFOS_MAZE, []{return logic->CanJumpslash();});}),
         //it's possible to make the RT_FIRE_MQ_MAZE_HOVERS as child using bunny hood jumps, but not adult as adult bonks
-        Entrance(RR_FIRE_TEMPLE_MQ_UPPER_LIZALFOS_MAZE,       []{return (logic->HasExplosives() || ctx->GetTrickOption(RT_RUSTED_SWITCHES)) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOOKSHOT);}),
-        Entrance(RR_FIRE_TEMPLE_MQ_MAZE_SWITCH_DOOR, []{return logic->HasExplosives() && ctx->GetTrickOption(RT_FIRE_MQ_MAZE_SIDE_ROOM);}),
-        Entrance(RR_FIRE_TEMPLE_MQ_NARROW_PATH_ROOM, []{return false;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_UPPER_LIZALFOS_MAZE, []{return (logic->HasExplosives() || ctx->GetTrickOption(RT_RUSTED_SWITCHES)) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOOKSHOT);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_MAZE_SWITCH_DOOR,    []{return logic->HasExplosives() && ctx->GetTrickOption(RT_FIRE_MQ_MAZE_SIDE_ROOM);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_NARROW_PATH_ROOM,    []{return false;}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_MAZE_SWITCH_DOOR] = Region("Fire Temple MQ Maze Switch Door", SCENE_FIRE_TEMPLE, {}, {}, {
@@ -779,7 +793,7 @@ void RegionTable_Init_FireTemple() {
     }, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_CLIMB, []{return logic->Get(LOGIC_FIRE_OPENED_UPPER_SHORTCUT);}),
-        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM,  []{return logic->Get(LOGIC_FIRE_OPENED_UPPER_SHORTCUT);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_LOWER,  []{return logic->Get(LOGIC_FIRE_OPENED_UPPER_SHORTCUT);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_TORCH_SLUG_CLIMB] = Region("Fire Temple MQ Torch Slug Climb", SCENE_FIRE_TEMPLE, {
