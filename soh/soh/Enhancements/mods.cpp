@@ -5,6 +5,12 @@
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
+<<<<<<< HEAD
+=======
+#include "soh/Enhancements/timesaver_hook_handlers.h"
+#include "soh/Enhancements/randomizer/hook_handlers.h"
+#include "soh/Enhancements/customequipment.h"
+>>>>>>> a4fa6fbd0 (Add custom equipment header to mods.cpp)
 
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
 #include "src/overlays/actors/ovl_En_Dekubaba/z_en_dekubaba.h"
