@@ -391,16 +391,62 @@ extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const ch
     *destinationGfx = sourceGfx;
 }
 
-extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName) {
-    if (originalGfx.contains(path) && originalGfx[path].contains(patchName)) {
-        auto res = std::static_pointer_cast<Fast::DisplayList>(
-            Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
+//extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName) {
+//    if (originalGfx.contains(path) && originalGfx[path].contains(patchName)) {
+//        auto res = std::static_pointer_cast<Fast::DisplayList>(
+//            Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
+//
+//        Gfx* gfx = (Gfx*)&res->Instructions[originalGfx[path][patchName].index];
+//        *gfx = originalGfx[path][patchName].instruction;
+//
+//        originalGfx[path].erase(patchName);
+//    }
+//}
 
-        Gfx* gfx = (Gfx*)&res->Instructions[originalGfx[path][patchName].index];
-        *gfx = originalGfx[path][patchName].instruction;
-
-        originalGfx[path].erase(patchName);
+void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName) {
+    if (!path || !patchName) {
+        return;
     }
+
+    auto itPath = originalGfx.find(path);
+    if (itPath == originalGfx.end()) {
+        return;
+    }
+
+    auto itPatch = itPath->second.find(patchName);
+    if (itPatch == itPath->second.end()) {
+        return;
+    }
+
+    auto rm = Ship::Context::GetInstance()->GetResourceManager();
+    if (!rm) {
+        itPath->second.erase(itPatch);
+        if (itPath->second.empty()) originalGfx.erase(itPath);
+        return;
+    }
+
+    auto loaded = rm->LoadResource(path);
+
+    // This can temporarily fail while toggling AltAssets.
+    auto res = std::dynamic_pointer_cast<Fast::DisplayList>(loaded);
+    if (!res) {
+        itPath->second.erase(itPatch);
+        if (itPath->second.empty()) originalGfx.erase(itPath);
+        return;
+    }
+
+    const size_t idx = itPatch->second.index;
+    if (idx >= res->Instructions.size()) {
+        itPath->second.erase(itPatch);
+        if (itPath->second.empty()) originalGfx.erase(itPath);
+        return;
+    }
+
+    Gfx* gfx = reinterpret_cast<Gfx*>(&res->Instructions[idx]);
+    *gfx = itPatch->second.instruction;
+
+    itPath->second.erase(itPatch);
+    if (itPath->second.empty()) originalGfx.erase(itPath);
 }
 
 extern "C" char* ResourceMgr_LoadArrayByName(const char* path) {
