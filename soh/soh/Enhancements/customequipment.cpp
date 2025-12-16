@@ -73,7 +73,8 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
     if (resource == NULL || gfx == NULL || dlist1 == NULL || dlist2 == NULL)
         return;
 
-    if (CVarGetInteger(CVAR_SETTING("AltAssets"), 0)) {
+    //if (ResourceGetIsCustomByName(gfx)) {
+    if (ResourceMgr_IsAltAssetsEnabled()) {
         if (ResourceGetIsCustomByName(gfx)) {
             if (alternateDL == NULL || ResourceGetIsCustomByName(alternateDL) || ResourceMgr_FileExists(alternateDL)) {
                 ResourceMgr_PatchCustomGfxByName(resource, dlist1, 0, gsSPDisplayListOTRFilePath(gfx));
@@ -97,6 +98,10 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
 }
 
 void UpdatePatchCustomEquipmentDlists() {
+	if (!GameInteractor::IsSaveLoaded(true) || gPlayState == nullptr) {
+    return;
+	}
+	
     if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI) {
         PatchOrUnpatch(gLinkChildSheathNearDL, gCustomKokiriSwordSheathDL, "customKokiriSheath1", "customKokiriSheath2", NULL, NULL);
         PatchOrUnpatch(gLinkChildSwordAndSheathNearDL, gCustomKokiriSwordInSheathDL, "customKokiriSwordSheath1", "customKokiriSwordSheath2", NULL, NULL);
