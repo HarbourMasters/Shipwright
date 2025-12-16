@@ -10,6 +10,7 @@ extern "C" {
 void UpdateHyperBossesState();
 void InitMods();
 void SwitchAge();
+void UpdatePatchCustomEquipmentDlists();
 
 #ifdef __cplusplus
 }
