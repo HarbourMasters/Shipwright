@@ -300,4 +300,6 @@ void RegisterPatchCustomEquipmentDlistsHandler() {
    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAssetAltChange>([]() {
         UpdatePatchCustomEquipmentDlists();
     });
+
+	UpdatePatchCustomEquipmentDlists();
 }
