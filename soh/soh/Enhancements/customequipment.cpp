@@ -98,9 +98,6 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
 }
 
 void UpdatePatchCustomEquipmentDlists() {
-	if (!GameInteractor::IsSaveLoaded(true) || gPlayState == nullptr) {
-    return;
-	}
 	
     if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI) {
         PatchOrUnpatch(gLinkChildSheathNearDL, gCustomKokiriSwordSheathDL, "customKokiriSheath1", "customKokiriSheath2", NULL, NULL);
