@@ -2,6 +2,8 @@
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_custom_equip/object_custom_equip.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/ResourceManager/ResourceManager.h"
 #include "soh_assets.h"
 #include "kaleido.h"
 
@@ -11,6 +13,7 @@ extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
 
+void UpdatePatchHand();
 
 void RegisterPatchHandHandler() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() { 
