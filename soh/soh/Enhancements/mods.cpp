@@ -451,6 +451,7 @@ void InitMods() {
     RegisterHyperBosses();
     RegisterEnemyDefeatCounts();
     RegisterRandomizedEnemySizes();
+    RegisterPatchHandHandler();  
     RegisterPatchCustomEquipmentDlistsHandler();
     RandoKaleido_RegisterHooks();
 }
