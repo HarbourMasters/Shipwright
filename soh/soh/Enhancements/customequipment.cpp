@@ -301,4 +301,6 @@ void RegisterPatchCustomEquipmentDlistsHandler() {
         UpdatePatchCustomEquipmentDlists();
     });
 
+	UpdatePatchCustomEquipmentDlists();
+	
 }
