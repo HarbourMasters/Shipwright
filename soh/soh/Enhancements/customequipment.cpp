@@ -73,7 +73,7 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
     if (resource == NULL || gfx == NULL || dlist1 == NULL || dlist2 == NULL)
         return;
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0)) {
+    if (CVarGetInteger(CVAR_SETTING("EnabledMods"), 0)) {
         if (ResourceGetIsCustomByName(gfx)) {
             if (alternateDL == NULL || ResourceGetIsCustomByName(alternateDL) || ResourceMgr_FileExists(alternateDL)) {
                 ResourceMgr_PatchCustomGfxByName(resource, dlist1, 0, gsSPDisplayListOTRFilePath(gfx));
@@ -301,5 +301,4 @@ void RegisterPatchCustomEquipmentDlistsHandler() {
         UpdatePatchCustomEquipmentDlists();
     });
 
-	UpdatePatchCustomEquipmentDlists();
 }
