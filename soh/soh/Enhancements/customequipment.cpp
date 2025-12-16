@@ -297,7 +297,7 @@ void RegisterPatchCustomEquipmentDlistsHandler() {
         UpdatePatchCustomEquipmentDlists(); 
     });
 
-   GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAssetAltChange>([]() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnAssetAltChange>([]() {
         UpdatePatchCustomEquipmentDlists();
     });
 
