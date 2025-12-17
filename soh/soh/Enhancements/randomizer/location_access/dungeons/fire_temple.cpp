@@ -792,8 +792,8 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_MQ_COMPASS_CHEST, true),
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_CLIMB, []{return logic->Get(LOGIC_FIRE_OPENED_UPPER_SHORTCUT);}),
-        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_LOWER,  []{return logic->Get(LOGIC_FIRE_OPENED_UPPER_SHORTCUT);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_CLIMB,      []{return logic->Get(LOGIC_FIRE_OPENED_UPPER_SHORTCUT);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_LOWER, []{return logic->Get(LOGIC_FIRE_OPENED_UPPER_SHORTCUT);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_TORCH_SLUG_CLIMB] = Region("Fire Temple MQ Torch Slug Climb", SCENE_FIRE_TEMPLE, {
