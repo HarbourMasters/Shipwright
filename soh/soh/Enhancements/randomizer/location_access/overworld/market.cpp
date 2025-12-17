@@ -124,14 +124,14 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_BAZAAR] = Region("Market Bazaar", SCENE_BAZAAR, {}, {
         //Locations
-        LOCATION(RC_MARKET_BAZAAR_ITEM_1, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_BAZAAR_ITEM_2, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_BAZAAR_ITEM_3, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_BAZAAR_ITEM_4, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_BAZAAR_ITEM_5, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_BAZAAR_ITEM_6, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_BAZAAR_ITEM_7, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_BAZAAR_ITEM_8, CanBuyAnother(GetCheckPrice())),
+        LOCATION(RC_MARKET_BAZAAR_ITEM_1, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_BAZAAR_ITEM_2, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_BAZAAR_ITEM_3, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_BAZAAR_ITEM_4, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_BAZAAR_ITEM_5, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_BAZAAR_ITEM_6, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_BAZAAR_ITEM_7, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_BAZAAR_ITEM_8, GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
         Entrance(RR_THE_MARKET, []{return true;}),
@@ -177,14 +177,14 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_POTION_SHOP] = Region("Market Potion Shop", SCENE_POTION_SHOP_MARKET, {}, {
         //Locations
-        LOCATION(RC_MARKET_POTION_SHOP_ITEM_1, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_POTION_SHOP_ITEM_2, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_POTION_SHOP_ITEM_3, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_POTION_SHOP_ITEM_4, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_POTION_SHOP_ITEM_5, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_POTION_SHOP_ITEM_6, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_POTION_SHOP_ITEM_7, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_POTION_SHOP_ITEM_8, CanBuyAnother(GetCheckPrice())),
+        LOCATION(RC_MARKET_POTION_SHOP_ITEM_1, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_POTION_SHOP_ITEM_2, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_POTION_SHOP_ITEM_3, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_POTION_SHOP_ITEM_4, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_POTION_SHOP_ITEM_5, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_POTION_SHOP_ITEM_6, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_POTION_SHOP_ITEM_7, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_POTION_SHOP_ITEM_8, GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
         Entrance(RR_THE_MARKET, []{return true;}),
@@ -211,14 +211,14 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_BOMBCHU_SHOP] = Region("Market Bombchu Shop", SCENE_BOMBCHU_SHOP, {}, {
         //Locations
-        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_1, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_2, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_3, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_4, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_5, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_6, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_7, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_8, CanBuyAnother(GetCheckPrice())),
+        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_1, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_2, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_3, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_4, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_5, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_6, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_7, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_MARKET_BOMBCHU_SHOP_ITEM_8, GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
         Entrance(RR_MARKET_BACK_ALLEY, []{return true;}),

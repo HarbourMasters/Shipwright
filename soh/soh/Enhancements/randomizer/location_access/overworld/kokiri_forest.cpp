@@ -159,14 +159,14 @@ void RegionTable_Init_KokiriForest() {
 
     areaTable[RR_KF_KOKIRI_SHOP] = Region("KF Kokiri Shop", SCENE_KOKIRI_SHOP, {}, {
         //Locations
-        LOCATION(RC_KF_SHOP_ITEM_1, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_KF_SHOP_ITEM_2, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_KF_SHOP_ITEM_3, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_KF_SHOP_ITEM_4, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_KF_SHOP_ITEM_5, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_KF_SHOP_ITEM_6, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_KF_SHOP_ITEM_7, CanBuyAnother(GetCheckPrice())),
-        LOCATION(RC_KF_SHOP_ITEM_8, CanBuyAnother(GetCheckPrice())),
+        LOCATION(RC_KF_SHOP_ITEM_1, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_2, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_3, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_4, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_5, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_6, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_7, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_8, GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
         Entrance(RR_KOKIRI_FOREST, []{return true;}),

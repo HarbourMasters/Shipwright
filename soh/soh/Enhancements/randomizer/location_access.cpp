@@ -117,17 +117,17 @@ uint16_t GetCheckPrice(RandomizerCheck check /* = RC_UNKNOWN_CHECK */) {
     return itemLoc->GetPrice();
 }
 
-bool CanBuyAnother(uint16_t price) {
-    if (price > 500) {
-        return logic->HasItem(RG_TYCOON_WALLET);
-    } else if (price > 200) {
-        return logic->HasItem(RG_GIANT_WALLET);
-    } else if (price > 99) {
-        return logic->HasItem(RG_ADULT_WALLET);
-    } else if (price > 0) {
-        return logic->HasItem(RG_CHILD_WALLET);
+uint16_t GetWalletCapacity() {
+    if (logic->HasItem(RG_TYCOON_WALLET)) {
+        return 999;
+    } else if (logic->HasItem(RG_GIANT_WALLET)) {
+        return 500;
+    } else if (logic->HasItem(RG_ADULT_WALLET)) {
+        return 200;
+    } else if (logic->HasItem(RG_CHILD_WALLET)) {
+        return 99;
     }
-    return true;
+    return 0;
 }
 
 std::set<RandomizerArea> CalculateAreas(SceneID scene) {
