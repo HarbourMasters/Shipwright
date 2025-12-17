@@ -649,8 +649,9 @@ void Player_SetModels(Player* this, s32 modelGroup) {
 
     // Waist
     this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
-
+    
     Player_SetModelsForHoldingShield(this);
+    GameInteractor_ExecuteOnPlayerChangeItem();
 }
 
 void Player_SetModelGroup(Player* this, s32 modelGroup) {
@@ -1491,7 +1492,7 @@ s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, G
             *dList = NULL;
         }
     }
-
+    GameInteractor_ExecuteOnPlayerAiming();
     return false;
 }
 

@@ -189,8 +189,16 @@ void GameInteractor_ExecuteOnTimestamp(u8 item) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnTimestamp>(item);
 }
 
+void GameInteractor_ExecuteOnPlayerAiming() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerAiming>();
+}
+
 void GameInteractor_ExecuteOnPlayerBonk() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBonk>();
+}
+
+void GameInteractor_ExecuteOnPlayerChangeItem() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerChangeItem>();
 }
 
 void GameInteractor_ExecuteOnPlayerHealthChange(int16_t amount) {
