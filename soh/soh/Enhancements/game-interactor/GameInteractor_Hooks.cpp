@@ -86,6 +86,10 @@ void GameInteractor_ExecuteOnSceneSpawnActors() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneSpawnActors>();
 }
 
+void GameInteractor_ExecuteOnLinkSkeletonInit() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLinkSkeletonInit>();
+}
+
 void GameInteractor_ExecuteOnPlayerUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerUpdate>();
 }

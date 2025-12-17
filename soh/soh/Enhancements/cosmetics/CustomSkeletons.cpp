@@ -32,7 +32,7 @@ static void UpdateCustomSkeleton() {
 static void RegisterCustomSkeletons() {
     COND_HOOK(OnGameFrameUpdate, true, UpdateCustomSkeletonOnEquipTunic);
     COND_HOOK(OnAssetAltChange, true, UpdateCustomSkeleton);
-    COND_HOOK(OnSceneSpawnActors, true, UpdateCustomSkeleton);
+    COND_HOOK(OnLinkSkeletonInit, true, UpdateCustomSkeleton);
 }
 
 static RegisterShipInitFunc initFunc(RegisterCustomSkeletons);
