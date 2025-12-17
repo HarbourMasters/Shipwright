@@ -1259,7 +1259,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
                 case RG_DOUBLE_DEFENSE:
                     colorIndex = PARTICLE_WHITE;
                     break;
-                case RG_PROGRESSIVE_BOMBCHUS:
+                case RG_PROGRESSIVE_BOMBCHU_BAG:
                     colorIndex = PARTICLE_DARK_BLUE;
                     break;
                 case RG_BOTTLE_WITH_FAIRY:
@@ -1707,7 +1707,7 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
     }
 
     if (dropId == ITEM00_FLEXIBLE) {
-        if (gSaveContext.health <= 0x10) { // 1 heart or less
+        if (gSaveContext.health <= FULL_HEART_HEALTH) { // 1 heart or less
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, spawnPos->x, spawnPos->y + 40.0f, spawnPos->z, 0, 0, 0,
                         FAIRY_HEAL_TIMED, true);
             EffectSsDeadSound_SpawnStationary(play, spawnPos, NA_SE_EV_BUTTERFRY_TO_FAIRY, true,

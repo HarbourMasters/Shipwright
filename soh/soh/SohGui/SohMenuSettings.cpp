@@ -231,6 +231,10 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("A11yDisableIdleCam"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Disables the automatic re-centering of the camera when idle."));
+    AddWidget(path, "Disable Screen Flash for Finishing Blow", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("A11yNoScreenFlashForFinishingBlow"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip("Disables the white screen flash on enemy kill."));
     AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT).Options(TextOptions().Color(Colors::Orange));
     AddWidget(path, "ImGui Menu Scaling", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("ImGuiScale"))

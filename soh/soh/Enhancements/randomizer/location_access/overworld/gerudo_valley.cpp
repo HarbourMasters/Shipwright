@@ -7,7 +7,7 @@ void RegionTable_Init_GerudoValley() {
     // clang-format off
     areaTable[RR_GERUDO_VALLEY] = Region("Gerudo Valley", SCENE_GERUDO_VALLEY, {
         //Events
-        EventAccess(LOGIC_BUG_ROCK, []{return logic->IsChild;}),
+        EventAccess(LOGIC_BUG_ACCESS, []{return logic->IsChild;}),
     }, {
         //Locations
         LOCATION(RC_GV_GS_SMALL_BRIDGE, logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
@@ -23,8 +23,7 @@ void RegionTable_Init_GerudoValley() {
 
     areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", SCENE_GERUDO_VALLEY, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
-        EventAccess(LOGIC_BEAN_PLANT_FAIRY,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy() || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS));}),
     }, {
         //Locations
         LOCATION(RC_GV_WATERFALL_FREESTANDING_POH, logic->IsChild || logic->HasItem(RG_BRONZE_SCALE)),//can use cucco as child

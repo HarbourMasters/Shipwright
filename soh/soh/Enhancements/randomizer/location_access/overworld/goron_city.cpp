@@ -7,9 +7,9 @@ void RegionTable_Init_GoronCity() {
     // clang-format off
     areaTable[RR_GORON_CITY] = Region("Goron City", SCENE_GORON_CITY, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY,                     []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(LOGIC_STICK_POT,                              []{return logic->IsChild;}),
-        EventAccess(LOGIC_BUG_ROCK,                               []{return logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS);}),
+        EventAccess(LOGIC_FAIRY_ACCESS,                           []{return logic->CallGossipFairyExceptSuns();}),
+        EventAccess(LOGIC_STICK_ACCESS,                           []{return logic->IsChild && logic->CanBreakPots();}),
+        EventAccess(LOGIC_BUG_ACCESS,                             []{return logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS);}),
         EventAccess(LOGIC_GORON_CITY_CHILD_FIRE,                  []{return logic->IsChild && logic->CanUse(RG_DINS_FIRE);}),
         EventAccess(LOGIC_GORON_CITY_WOODS_WARP_OPEN,             []{return logic->CanDetonateUprightBombFlower() || logic->CanUse(RG_MEGATON_HAMMER) || logic->Get(LOGIC_GORON_CITY_CHILD_FIRE);}),
         EventAccess(LOGIC_GORON_CITY_DARUNIAS_DOOR_OPEN_CHILD,    []{return logic->IsChild && logic->CanUse(RG_ZELDAS_LULLABY);}),

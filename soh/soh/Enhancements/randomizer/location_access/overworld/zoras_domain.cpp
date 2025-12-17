@@ -7,10 +7,10 @@ void RegionTable_Init_ZorasDomain() {
     // clang-format off
     areaTable[RR_ZORAS_DOMAIN] = Region("Zoras Domain", SCENE_ZORAS_DOMAIN, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY,   []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(LOGIC_NUT_POT,              []{return true;}),
-        EventAccess(LOGIC_STICK_POT,            []{return logic->IsChild;}),
-        EventAccess(LOGIC_FISH_GROUP,           []{return logic->IsChild;}),
+        EventAccess(LOGIC_FAIRY_ACCESS,         []{return logic->CallGossipFairyExceptSuns();}),
+        EventAccess(LOGIC_NUT_ACCESS,           []{return true;}),
+        EventAccess(LOGIC_STICK_ACCESS,         []{return logic->IsChild;}),
+        EventAccess(LOGIC_FISH_ACCESS,          []{return logic->IsChild;}),
         EventAccess(LOGIC_KING_ZORA_THAWED,     []{return logic->IsAdult && logic->BlueFire();}),
         EventAccess(LOGIC_DELIVER_RUTOS_LETTER, []{return logic->CanUse(RG_RUTOS_LETTER) && logic->IsChild && ctx->GetOption(RSK_ZORAS_FOUNTAIN).IsNot(RO_ZF_OPEN);}),
     }, {
@@ -79,7 +79,7 @@ void RegionTable_Init_ZorasDomain() {
 
     areaTable[RR_ZD_STORMS_GROTTO] = Region("ZD Storms Grotto", SCENE_GROTTOS, {
         //Events
-        EventAccess(LOGIC_FREE_FAIRIES, []{return true;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return true;}),
     }, {
         //Locations
         LOCATION(RC_ZD_FAIRY_GROTTO_FAIRY_1, true),

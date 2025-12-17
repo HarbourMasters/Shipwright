@@ -183,8 +183,8 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_COW_GROTTO_BEHIND_WEBS] = Region("HF Cow Grotto Behind Webs", SCENE_GROTTOS, {
         //Events
-        EventAccess(LOGIC_BUG_SHRUB,         []{return logic->CanCutShrubs();}),
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
+        EventAccess(LOGIC_BUG_ACCESS,   []{return logic->CanCutShrubs();}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy();}),
     }, {
         //Locations
         LOCATION(RC_HF_GS_COW_GROTTO,                     logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
@@ -221,7 +221,7 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_FAIRY_GROTTO] = Region("HF Fairy Grotto", SCENE_GROTTOS, {
         //Events
-        EventAccess(LOGIC_FREE_FAIRIES, []{return true;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return true;}),
     }, {
         //Locations
         LOCATION(RC_HF_FAIRY_GROTTO_FAIRY_1, true),

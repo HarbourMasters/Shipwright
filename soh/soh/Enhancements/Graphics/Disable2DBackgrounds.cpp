@@ -13,7 +13,7 @@ extern PlayState* gPlayState;
 #define CVAR_NAME CVAR_ENHANCEMENT("3DSceneRender")
 #define CVAR_VALUE CVarGetInteger(CVAR_NAME, 0)
 
-std::vector<SceneID> fogControlList = {
+std::set<SceneID> fogControlList = {
     SCENE_MARKET_ENTRANCE_DAY,
     SCENE_MARKET_ENTRANCE_NIGHT,
     SCENE_MARKET_ENTRANCE_RUINS,
@@ -46,7 +46,7 @@ std::vector<SceneID> fogControlList = {
     SCENE_GRAVEKEEPERS_HUT,
 };
 
-std::vector<SceneID> skyboxSceneControlList = {
+std::set<SceneID> skyboxSceneControlList = {
     SCENE_MARKET_ENTRANCE_DAY,
     SCENE_MARKET_ENTRANCE_NIGHT,
     SCENE_MARKET_ENTRANCE_RUINS,
@@ -62,7 +62,7 @@ std::vector<SceneID> skyboxSceneControlList = {
     SCENE_FOREST_TEMPLE,
 };
 
-std::vector<SkyboxId> skyboxIdControlList = {
+std::set<SkyboxId> skyboxIdControlList = {
     SKYBOX_BAZAAR,
     SKYBOX_HOUSE_LINK,
     SKYBOX_MARKET_ADULT,
@@ -88,73 +88,48 @@ std::vector<SkyboxId> skyboxIdControlList = {
 
 void Register3DPreRenderedScenes() {
     COND_HOOK(AfterSceneCommands, CVAR_VALUE, [](int16_t sceneNum) {
-        // Check if this scene is in the skyboxControlList
-        bool shouldControlSkybox = false;
-        for (const auto& scene : skyboxSceneControlList) {
-            if (sceneNum == scene) {
-                shouldControlSkybox = true;
-                break;
-            }
+        if (!skyboxSceneControlList.contains(static_cast<SceneID>(sceneNum))) {
+            return;
         }
 
-        if (shouldControlSkybox) {
-            // Add a skybox on scenes from skyboxSceneControlList
-            gPlayState->envCtx.skyboxDisabled = false;
+        // Add a skybox on scenes from skyboxSceneControlList
+        gPlayState->envCtx.skyboxDisabled = false;
 
-            // Replace skybox with normal sky
-            gPlayState->skyboxId = SKYBOX_NORMAL_SKY;
-            // Apply the always cloudy skybox as an adult for Temple of Time and the Market
-            if (sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS || sceneNum == SCENE_MARKET_RUINS ||
-                sceneNum == SCENE_MARKET_ENTRANCE_RUINS) {
-                gWeatherMode = 3;
-            }
+        // Replace skybox with normal sky
+        gPlayState->skyboxId = SKYBOX_NORMAL_SKY;
+        // Apply the always cloudy skybox as an adult for Temple of Time and the Market
+        if (sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS || sceneNum == SCENE_MARKET_RUINS ||
+            sceneNum == SCENE_MARKET_ENTRANCE_RUINS) {
+            gWeatherMode = 3;
         }
     });
 
     COND_HOOK(OnPlayDrawBegin, CVAR_VALUE, []() {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("3DSceneRender"), 0)) {
+        if (!fogControlList.contains(static_cast<SceneID>(gPlayState->sceneNum))) {
             return;
         }
 
-        for (auto& scene : fogControlList) {
-            if (scene == gPlayState->sceneNum) {
-                if ((HREG(80) != 10) || (HREG(82) != 0)) {
-                    // Furthest possible fog and zFar
-                    gPlayState->view.zFar = 12800;
-                    gPlayState->lightCtx.fogNear = 996; // Set to 1000 to complete disable fog entirely
-                    gPlayState->lightCtx.fogFar = 12800;
-                    // General gray fog color
-                    gPlayState->lightCtx.fogColor[0] = 100;
-                    gPlayState->lightCtx.fogColor[1] = 100;
-                    gPlayState->lightCtx.fogColor[2] = 100;
-                }
-                break;
-            }
-        }
-    });
-    REGISTER_VB_SHOULD(VB_DRAW_2D_BACKGROUND, {
-        if (CVAR_VALUE) {
-            *should = false;
-            return;
+        if ((HREG(80) != 10) || (HREG(82) != 0)) {
+            // Furthest possible fog and zFar
+            gPlayState->view.zFar = 12800;
+            gPlayState->lightCtx.fogNear = 996; // Set to 1000 to complete disable fog entirely
+            gPlayState->lightCtx.fogFar = 12800;
+            // General gray fog color
+            gPlayState->lightCtx.fogColor[0] = 100;
+            gPlayState->lightCtx.fogColor[1] = 100;
+            gPlayState->lightCtx.fogColor[2] = 100;
         }
     });
 
-    REGISTER_VB_SHOULD(VB_LOAD_SKYBOX, {
-        if (!gPlayState) {
+    COND_VB_SHOULD(VB_DRAW_2D_BACKGROUND, CVAR_VALUE, { *should = false; });
+
+    COND_VB_SHOULD(VB_LOAD_SKYBOX, CVAR_VALUE, {
+        if (!gPlayState || !skyboxIdControlList.contains(static_cast<SkyboxId>(gPlayState->skyboxCtx.skyboxId))) {
             return;
         }
 
-        if (!CVAR_VALUE) {
-            return;
-        }
-
-        for (auto& skybox : skyboxIdControlList) {
-            if (gPlayState->skyboxCtx.skyboxId == skybox) {
-                gPlayState->skyboxCtx.unk_140 = 0;
-                *should = false;
-                return;
-            }
-        }
+        gPlayState->skyboxCtx.unk_140 = 0;
+        *should = false;
     });
 }
 
