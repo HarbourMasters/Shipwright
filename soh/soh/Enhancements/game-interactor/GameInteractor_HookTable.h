@@ -42,6 +42,7 @@ DEFINE_HOOK(OnActorDestroy, (void* actor));
 DEFINE_HOOK(OnEnemyDefeat, (void* actor));
 DEFINE_HOOK(OnBossDefeat, (void* actor));
 DEFINE_HOOK(OnTimestamp, (u8 item));
+DEFINE_HOOK(OnPlayerAiming, ());
 DEFINE_HOOK(OnPlayerBonk, ());
 DEFINE_HOOK(OnPlayerSetModels, (Player * player, u8 modelGroup));
 DEFINE_HOOK(OnPlayerHealthChange, (int16_t amount));

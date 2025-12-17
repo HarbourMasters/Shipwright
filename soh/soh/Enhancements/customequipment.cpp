@@ -15,6 +15,32 @@ extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
 
 static void UpdatePatchCustomEquipmentDlists();
+static void UpdatePatchHand();
+
+static bool sLastAltAssetsEnabled = false;
+
+
+static void UpdateCustomEquipment() {
+    if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
+        return;
+    }
+
+    UpdatePatchHand();
+    UpdatePatchCustomEquipmentDlists();
+    
+}
+
+
+static void PatchCustomEquipment() {
+    COND_HOOK(OnPlayerChangeItem, true, UpdateCustomEquipment);
+    //COND_HOOK(OnPlayerEnteringFPS, true, UpdateCustomEquipment); Disabled for now as it runs on every frame
+    COND_HOOK(OnSceneSpawnActors, true, UpdateCustomEquipment);
+    COND_HOOK(OnAssetAltChange, true, UpdateCustomEquipment);
+}
+
+static RegisterShipInitFunc initFunc(PatchCustomEquipment);
+
+static void UpdatePatchCustomEquipmentDlists();
 static void RefreshCustomEquipment();
 
 static const char* ResolveCustomChain(std::initializer_list<const char*> paths) {

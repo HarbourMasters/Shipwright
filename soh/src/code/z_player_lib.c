@@ -648,7 +648,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
 
     // Waist
     this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
-
+    
     Player_SetModelsForHoldingShield(this);
     GameInteractor_ExecuteOnPlayerSetModels(this, modelGroup);
 }
