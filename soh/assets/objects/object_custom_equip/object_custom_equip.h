@@ -91,9 +91,6 @@ static const ALIGN_ASSET(2) char gCustomDekuShieldDL[] = dgCustomDekuShieldDL;
 #define dgCustomDekuShieldOnBackDL "__OTR__objects/object_custom_equip/gCustomDekuShieldOnBackDL"
 static const ALIGN_ASSET(2) char gCustomDekuShieldOnBackDL[] = dgCustomDekuShieldOnBackDL;
 
-#define dgCustomDekuShieldOnBackScaledDL "__OTR__objects/object_custom_equip/gCustomDekuShieldOnBackScaledDL"
-static const ALIGN_ASSET(2) char gCustomDekuShieldOnBackScaledDL[] = dgCustomDekuShieldOnBackScaledDL;
-
 #define dgCustomHylianShieldDL "__OTR__objects/object_custom_equip/gCustomHylianShieldDL"
 static const ALIGN_ASSET(2) char gCustomHylianShieldDL[] = dgCustomHylianShieldDL;
 
