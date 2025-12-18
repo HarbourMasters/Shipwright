@@ -17,7 +17,7 @@ static constexpr int32_t CVAR_RUPEE_DASH_INTERVAL_DEFAULT = 5;
 #define CVAR_RUPEE_DASH_INTERVAL_TIME \
     CVarGetInteger(CVAR_RUPEE_DASH_INTERVAL_NAME, CVAR_RUPEE_DASH_INTERVAL_DEFAULT) * 20
 
-void UpdateRupeeDash() {
+static void UpdateRupeeDash() {
     // Initialize Timer
     static uint16_t rupeeDashTimer = 0;
 
@@ -36,7 +36,7 @@ void UpdateRupeeDash() {
     }
 }
 
-void RegisterRupeeDash() {
+static void RegisterRupeeDash() {
     COND_HOOK(OnPlayerUpdate, CVAR_RUPEE_DASH_VALUE, UpdateRupeeDash);
 }
 

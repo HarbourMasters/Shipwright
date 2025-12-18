@@ -1,4 +1,3 @@
-#ifdef ENABLE_REMOTE_CONTROL
 #ifndef NETWORK_SAIL_H
 #define NETWORK_SAIL_H
 #ifdef __cplusplus
@@ -22,4 +21,3 @@ class Sail : public Network {
 
 #endif // __cplusplus
 #endif // NETWORK_SAIL_H
-#endif // ENABLE_REMOTE_CONTROL

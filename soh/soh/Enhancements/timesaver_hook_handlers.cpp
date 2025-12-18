@@ -709,11 +709,6 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 *should = false;
             }
             break;
-        case VB_DAMPE_IN_GRAVEYARD_DESPAWN:
-            if (CVarGetInteger(CVAR_ENHANCEMENT("DampeAllNight"), 0)) {
-                *should = LINK_IS_ADULT || gPlayState->sceneNum != SCENE_GRAVEYARD;
-            }
-            break;
         case VB_BE_VALID_GRAVEDIGGING_SPOT:
             if (CVarGetInteger(CVAR_ENHANCEMENT("DampeWin"), IS_RANDO)) {
                 EnTk* enTk = va_arg(args, EnTk*);
@@ -778,7 +773,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO))) {
                 if (IS_RANDO || *should) {
                     Flags_SetRandomizerInf(flag);
-                    gSaveContext.healthAccumulator = 0x140;
+                    gSaveContext.healthAccumulator = MAX_HEALTH;
                     Magic_Fill(gPlayState);
                 }
                 *should = false;

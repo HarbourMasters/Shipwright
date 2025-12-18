@@ -7,12 +7,10 @@ void RegionTable_Init_LakeHylia() {
     // clang-format off
     areaTable[RR_LAKE_HYLIA] = Region("Lake Hylia", SCENE_LAKE_HYLIA, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairy();}),
-        EventAccess(LOGIC_BEAN_PLANT_FAIRY,   []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
-        EventAccess(LOGIC_BUTTERFLY_FAIRY,    []{return logic->CanUse(RG_STICKS);}),
-        EventAccess(LOGIC_BUG_SHRUB,          []{return logic->IsChild && logic->CanCutShrubs();}),
-        EventAccess(LOGIC_CHILD_SCARECROW,    []{return logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2;}),
-        EventAccess(LOGIC_ADULT_SCARECROW,    []{return logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2;}),
+        EventAccess(LOGIC_FAIRY_ACCESS,    []{return logic->CallGossipFairy() || logic->CanUse(RG_STICKS) || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS));}),
+        EventAccess(LOGIC_BUG_ACCESS,      []{return logic->IsChild && logic->CanCutShrubs();}),
+        EventAccess(LOGIC_CHILD_SCARECROW, []{return logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2;}),
+        EventAccess(LOGIC_ADULT_SCARECROW, []{return logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2;}),
     }, {
         //Locations
         LOCATION(RC_LH_UNDERWATER_ITEM,                  logic->IsChild && logic->HasItem(RG_SILVER_SCALE)),
