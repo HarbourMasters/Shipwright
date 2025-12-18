@@ -1,4 +1,5 @@
 #include "SohMenu.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohGui.hpp"
@@ -16,7 +17,7 @@ static const std::unordered_map<int32_t, const char*> skipGetItemAnimationOption
 
 static bool locationsDirty = true;
 static bool tricksDirty = true;
-static char* seedString;
+static char seedString[MAX_SEED_STRING_SIZE];
 static std::set<RandomizerCheck> excludedLocations;
 static std::set<RandomizerTrick> enabledTricks;
 static std::set<RandomizerTrick> enabledGlitches;
@@ -540,7 +541,6 @@ void DrawTricksMenu(WidgetInfo& info) {
 
 void SohMenu::AddMenuRandomizer() {
     Randomizer::CreateCustomMessages();
-    seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     // Add Randomizer Menu
     AddMenuEntry("Randomizer", CVAR_SETTING("Menu.RandomizerSidebarSection"));
 
