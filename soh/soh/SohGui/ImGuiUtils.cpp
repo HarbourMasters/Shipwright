@@ -133,11 +133,9 @@ std::map<uint32_t, ItemMapEntry> gregMapping = {
     { ITEM_RUPEE_GREEN, { ITEM_RUPEE_GREEN, "ITEM_RUPEE_GREEN", "ITEM_RUPEE_GREEN_Faded", gRupeeCounterIconTex } }
 };
 
-std::map<uint32_t, ItemMapEntry> triforcePieceMapping = {
-    { RG_TRIFORCE_PIECE, { RG_TRIFORCE_PIECE, "RG_TRIFORCE_PIECE", "RG_TRIFORCE_PIECE_Faded", gTriforcePieceTex } }
-};
-
-std::map<uint32_t, ItemMapEntry> bossSoulMapping = {
+std::map<uint32_t, ItemMapEntry> customItemsMapping = {
+    { RG_TRIFORCE_PIECE, { RG_TRIFORCE_PIECE, "RG_TRIFORCE_PIECE", "RG_TRIFORCE_PIECE_Faded", gTriforcePieceTex } },
+    { RG_ROCS_FEATHER, { RG_ROCS_FEATHER, "RG_ROCS_FEATHER", "RG_ROCS_FEATHER_Faded", gRocsFeatherTex } },
     { RG_GOHMA_SOUL, { RG_GOHMA_SOUL, "RG_GOHMA_SOUL", "RG_GOHMA_SOUL_Faded", gBossSoulTex } },
     { RG_KING_DODONGO_SOUL,
       { RG_KING_DODONGO_SOUL, "RG_KING_DODONGO_SOUL", "RG_KING_DODONGO_SOUL_Faded", gBossSoulTex } },
@@ -216,14 +214,7 @@ void RegisterImGuiItemIcons() {
                                                                             entry.second.texturePath, gregFadedGreen);
     }
 
-    for (const auto& entry : triforcePieceMapping) {
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath,
-                                                                            ImVec4(1, 1, 1, 1));
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
-            entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
-    }
-
-    for (const auto& entry : bossSoulMapping) {
+    for (const auto& entry : customItemsMapping) {
         Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath,
                                                                             ImVec4(1, 1, 1, 1));
         Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(

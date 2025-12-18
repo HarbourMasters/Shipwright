@@ -1745,6 +1745,6 @@ void SaveEditorWindow::DrawElement() {
 }
 
 void SaveEditorWindow::InitElement() {
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("ROCS_FEATHER", gRocsFeather,
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("ROCS_FEATHER", gRocsFeatherTex,
                                                                         ImVec4(1, 1, 1, 1));
 }

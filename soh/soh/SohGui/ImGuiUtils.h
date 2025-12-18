@@ -36,8 +36,6 @@ typedef struct {
 // Maps items ids to info for use in ImGui
 extern std::map<uint32_t, ItemMapEntry> itemMapping;
 
-extern std::map<uint32_t, ItemMapEntry> gregMapping;
-
 typedef struct {
     uint32_t id;
     std::string name;

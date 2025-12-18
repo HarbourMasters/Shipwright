@@ -196,7 +196,7 @@ void* gItemIcons[] = {
     gItemIconDekuStickTex,
     gItemIconDekuStickTex,
     gItemIconDekuStickTex,
-    gRocsFeather,
+    gRocsFeatherTex,
 };
 
 // Used to map item IDs to inventory slots

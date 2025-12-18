@@ -434,8 +434,8 @@ static const ALIGN_ASSET(2) char gFileSelLanguageFRATex[] = dgFileSelLanguageFRA
 #define dgFileSelLanguageGERTex "__OTR__textures/title_static/gFileSelLanguageGERTex"
 static const ALIGN_ASSET(2) char gFileSelLanguageGERTex[] = dgFileSelLanguageGERTex;
 
-#define dgRocsFeather "__OTR__textures/icon_item_static/gRocsFeather"
-static const ALIGN_ASSET(2) char gRocsFeather[] = dgRocsFeather;
+#define dgRocsFeatherTex "__OTR__textures/icon_item_static/gRocsFeatherTex"
+static const ALIGN_ASSET(2) char gRocsFeatherTex[] = dgRocsFeatherTex;
 
 #define dgEmptyTexture "__OTR__textures/virtual/gEmptyTexture"
 static const ALIGN_ASSET(2) char gEmptyTexture[] = dgEmptyTexture;

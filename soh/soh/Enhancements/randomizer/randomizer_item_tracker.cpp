@@ -136,6 +136,10 @@ std::vector<ItemTrackerItem> triforcePieces = {
     ITEM_TRACKER_ITEM(RG_TRIFORCE_PIECE, 0, DrawItem),
 };
 
+std::vector<ItemTrackerItem> rocsFeather = {
+    ITEM_TRACKER_ITEM(RG_ROCS_FEATHER, 0, DrawItem),
+};
+
 std::vector<ItemTrackerItem> bossSoulItems = {
     ITEM_TRACKER_ITEM(RG_GOHMA_SOUL, 0, DrawItem),       ITEM_TRACKER_ITEM(RG_KING_DODONGO_SOUL, 0, DrawItem),
     ITEM_TRACKER_ITEM(RG_BARINADE_SOUL, 0, DrawItem),    ITEM_TRACKER_ITEM(RG_PHANTOM_GANON_SOUL, 0, DrawItem),
@@ -809,6 +813,11 @@ void DrawItem(ItemTrackerItem item) {
             hasItem = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT);
             itemName = "Triforce Piece";
             break;
+        case RG_ROCS_FEATHER:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER);
+            itemName = "Roc's Feather";
+            break;
         case RG_GOHMA_SOUL:
             actualItemId = item.id;
             hasItem = Flags_GetRandomizerInf(RAND_INF_GOHMA_SOUL);
@@ -1403,6 +1412,9 @@ void UpdateVectors() {
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) ==
         SECTION_DISPLAY_MAIN_WINDOW) {
         mainWindowItems.insert(mainWindowItems.end(), dungeonItems.begin(), dungeonItems.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_ROCS_FEATHER)) {
+        mainWindowItems.insert(mainWindowItems.end(), rocsFeather.begin(), rocsFeather.end());
     }
 
     // if we're adding greg to the misc window,
@@ -2120,4 +2132,11 @@ void RegisterItemTrackerWidgets() {
     SohGui::mSohMenu->AddSearchWidget({ hookshotIdentWidget, "Randomizer", "Item Tracker", "General Settings" });
 }
 
+void RegisterItemTracker() {
+    COND_HOOK(OnLoadFile, true, [](int32_t fileNum) {
+        shouldUpdateVectors = true;
+    });
+}
+
+static RegisterShipInitFunc registerItemTracker(RegisterItemTracker);
 static RegisterMenuInitFunc menuInitFunc(RegisterItemTrackerWidgets);
