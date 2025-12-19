@@ -478,8 +478,8 @@ bool Region::UpdateEvents() {
     return eventsUpdated;
 }
 
-void Region::AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition) {
-    Rando::Entrance newExit = Rando::Entrance(newExitKey, condition);
+void Region::AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition, std::string conditionStr) {
+    Rando::Entrance newExit = Rando::Entrance(newExitKey, condition, conditionStr);
     newExit.SetParentRegion(parentKey);
     exits.push_front(newExit);
 }

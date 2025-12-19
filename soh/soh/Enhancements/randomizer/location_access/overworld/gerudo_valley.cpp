@@ -13,12 +13,12 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_GS_SMALL_BRIDGE, logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD,     []{return true;}),
-        Entrance(RR_GV_UPPER_STREAM,  []{return logic->IsChild || logic->HasItem(RG_BRONZE_SCALE) || logic->TakeDamage();}),
-        Entrance(RR_GV_CRATE_LEDGE,   []{return logic->IsChild || logic->CanUse(RG_LONGSHOT);}),
-        Entrance(RR_GV_GROTTO_LEDGE,  []{return true;}),
-        Entrance(RR_GV_FORTRESS_SIDE, []{return (logic->IsAdult && (logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS))) || ((logic->IsChild || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION)) && logic->CanUse(RG_HOOKSHOT));}),
-        Entrance(RR_GV_LOWER_STREAM,  []{return logic->IsChild;}), //can use cucco as child
+        ENTRANCE(RR_HYRULE_FIELD,     true),
+        ENTRANCE(RR_GV_UPPER_STREAM,  logic->IsChild || logic->HasItem(RG_BRONZE_SCALE) || logic->TakeDamage()),
+        ENTRANCE(RR_GV_CRATE_LEDGE,   logic->IsChild || logic->CanUse(RG_LONGSHOT)),
+        ENTRANCE(RR_GV_GROTTO_LEDGE,  true),
+        ENTRANCE(RR_GV_FORTRESS_SIDE, (logic->IsAdult && (logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS))) || ((logic->IsChild || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION)) && logic->CanUse(RG_HOOKSHOT))),
+        ENTRANCE(RR_GV_LOWER_STREAM,  logic->IsChild), //can use cucco as child
     });
 
     areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", SCENE_GERUDO_VALLEY, {
@@ -38,21 +38,21 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_NEAR_COW_CRATE,             logic->IsChild && logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_GV_LOWER_STREAM, []{return logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
+        ENTRANCE(RR_GV_LOWER_STREAM, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
     });
 
     // scale/boots logic is outside lower stream, as lower stream combines access to lake hylia for entrance randomizer's sake
     areaTable[RR_GV_LOWER_STREAM] = Region("GV Lower Stream", SCENE_GERUDO_VALLEY, {}, {}, {
         //Exits
-        Entrance(RR_LAKE_HYLIA, []{return true;}),
+        ENTRANCE(RR_LAKE_HYLIA, true),
     });
 
     areaTable[RR_GV_GROTTO_LEDGE] = Region("GV Grotto Ledge", SCENE_GERUDO_VALLEY, {}, {}, {
         //Exits
-        Entrance(RR_GV_UPPER_STREAM,   []{return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives();}),
-        Entrance(RR_GV_LOWER_STREAM,   []{return logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
-        Entrance(RR_GV_OCTOROK_GROTTO, []{return logic->CanUse(RG_SILVER_GAUNTLETS);}),
-        Entrance(RR_GV_CRATE_LEDGE,    []{return logic->CanUse(RG_LONGSHOT);}),
+        ENTRANCE(RR_GV_UPPER_STREAM,   ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()),
+        ENTRANCE(RR_GV_LOWER_STREAM,   logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
+        ENTRANCE(RR_GV_OCTOROK_GROTTO, logic->CanUse(RG_SILVER_GAUNTLETS)),
+        ENTRANCE(RR_GV_CRATE_LEDGE,    logic->CanUse(RG_LONGSHOT)),
     });
 
     areaTable[RR_GV_CRATE_LEDGE] = Region("GV Crate Ledge", SCENE_GERUDO_VALLEY, {}, {
@@ -61,8 +61,8 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_FREESTANDING_POH_CRATE, logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_GV_UPPER_STREAM, []{return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives();}),
-        Entrance(RR_GV_LOWER_STREAM, []{return logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
+        ENTRANCE(RR_GV_UPPER_STREAM, ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()),
+        ENTRANCE(RR_GV_LOWER_STREAM, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
     });
 
     areaTable[RR_GV_FORTRESS_SIDE] = Region("GV Fortress Side", SCENE_GERUDO_VALLEY, {}, {
@@ -77,17 +77,17 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_CRATE_BRIDGE_4, logic->IsChild && logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_GF_OUTSKIRTS,  []{return true;}),
-        Entrance(RR_GV_UPPER_STREAM,   []{return true;}),
-        Entrance(RR_GERUDO_VALLEY,     []{return logic->IsChild || logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS);}),
-        Entrance(RR_GV_CARPENTER_TENT, []{return logic->IsAdult;}),
-        Entrance(RR_GV_STORMS_GROTTO,  []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
-        Entrance(RR_GV_CRATE_LEDGE,    []{return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives();}),
+        ENTRANCE(RR_GF_OUTSKIRTS,  true),
+        ENTRANCE(RR_GV_UPPER_STREAM,   true),
+        ENTRANCE(RR_GERUDO_VALLEY,     logic->IsChild || logic->CanUse(RG_EPONA) || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS)),
+        ENTRANCE(RR_GV_CARPENTER_TENT, logic->IsAdult),
+        ENTRANCE(RR_GV_STORMS_GROTTO,  logic->IsAdult && logic->CanOpenStormsGrotto()),
+        ENTRANCE(RR_GV_CRATE_LEDGE,    ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()),
     });
 
     areaTable[RR_GV_CARPENTER_TENT] = Region("GV Carpenter Tent", SCENE_CARPENTERS_TENT, {}, {}, {
         //Exits
-        Entrance(RR_GV_FORTRESS_SIDE, []{return true;}),
+        ENTRANCE(RR_GV_FORTRESS_SIDE, true),
     });
 
     areaTable[RR_GV_OCTOROK_GROTTO] = Region("GV Octorok Grotto", SCENE_GROTTOS, {}, {
@@ -102,7 +102,7 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_OCTOROK_GROTTO_RED_RUPEE,               logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG)),
     }, {
         //Exits
-        Entrance(RR_GV_GROTTO_LEDGE, []{return true;}),
+        ENTRANCE(RR_GV_GROTTO_LEDGE, true),
     });
 
     areaTable[RR_GV_STORMS_GROTTO] = Region("GV Storms Grotto", SCENE_GROTTOS, {}, {
@@ -112,7 +112,7 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE, logic->CanBreakUpperBeehives()),
     }, {
         //Exits
-        Entrance(RR_GV_FORTRESS_SIDE, []{return true;}),
+        ENTRANCE(RR_GV_FORTRESS_SIDE, true),
     });
 
     // clang-format on

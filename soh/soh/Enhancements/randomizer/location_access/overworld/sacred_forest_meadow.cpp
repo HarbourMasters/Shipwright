@@ -7,9 +7,9 @@ void RegionTable_Init_SacredForestMeadow() {
     // clang-format off
     areaTable[RR_SFM_ENTRYWAY] = Region("SFM Entryway", SCENE_SACRED_FOREST_MEADOW, {}, {}, {
         //Exits
-        Entrance(RR_LW_BEYOND_MIDO,       []{return true;}),
-        Entrance(RR_SACRED_FOREST_MEADOW, []{return logic->IsAdult || logic->CanKillEnemy(RE_WOLFOS);}),
-        Entrance(RR_SFM_WOLFOS_GROTTO,    []{return logic->CanOpenBombGrotto();}),
+        ENTRANCE(RR_LW_BEYOND_MIDO,       true),
+        ENTRANCE(RR_SACRED_FOREST_MEADOW, logic->IsAdult || logic->CanKillEnemy(RE_WOLFOS)),
+        ENTRANCE(RR_SFM_WOLFOS_GROTTO,    logic->CanOpenBombGrotto()),
     });
 
     areaTable[RR_SACRED_FOREST_MEADOW] = Region("Sacred Forest Meadow", SCENE_SACRED_FOREST_MEADOW, {
@@ -31,10 +31,10 @@ void RegionTable_Init_SacredForestMeadow() {
         LOCATION(RC_SFM_SARIA_GOSSIP_STONE,                true),
     }, {
         //Exits
-        Entrance(RR_SFM_ENTRYWAY,           []{return true;}),
-        Entrance(RR_FOREST_TEMPLE_ENTRYWAY, []{return logic->CanUse(RG_HOOKSHOT);}),
-        Entrance(RR_SFM_FAIRY_GROTTO,       []{return true;}),
-        Entrance(RR_SFM_STORMS_GROTTO,      []{return logic->CanOpenStormsGrotto();}),
+        ENTRANCE(RR_SFM_ENTRYWAY,           true),
+        ENTRANCE(RR_FOREST_TEMPLE_ENTRYWAY, logic->CanUse(RG_HOOKSHOT)),
+        ENTRANCE(RR_SFM_FAIRY_GROTTO,       true),
+        ENTRANCE(RR_SFM_STORMS_GROTTO,      logic->CanOpenStormsGrotto()),
     });
 
     areaTable[RR_SFM_FAIRY_GROTTO] = Region("SFM Fairy Grotto", SCENE_GROTTOS, {
@@ -52,7 +52,7 @@ void RegionTable_Init_SacredForestMeadow() {
         LOCATION(RC_SFM_FAIRY_GROTTO_FAIRY_8, true),
     }, {
         //Exits
-        Entrance(RR_SACRED_FOREST_MEADOW, []{return true;}),
+        ENTRANCE(RR_SACRED_FOREST_MEADOW, true),
     });
 
     areaTable[RR_SFM_WOLFOS_GROTTO] = Region("SFM Wolfos Grotto", SCENE_GROTTOS, {}, {
@@ -60,7 +60,7 @@ void RegionTable_Init_SacredForestMeadow() {
         LOCATION(RC_SFM_WOLFOS_GROTTO_CHEST, logic->CanKillEnemy(RE_WOLFOS, ED_CLOSE, true, 2)),
     }, {
         //Exits
-        Entrance(RR_SFM_ENTRYWAY, []{return true;}),
+        ENTRANCE(RR_SFM_ENTRYWAY, true),
     });
 
     areaTable[RR_SFM_STORMS_GROTTO] = Region("SFM Storms Grotto", SCENE_GROTTOS, {}, {
@@ -70,7 +70,7 @@ void RegionTable_Init_SacredForestMeadow() {
         LOCATION(RC_SFM_STORMS_GROTTO_BEEHIVE,   logic->CanBreakUpperBeehives()),
     }, {
         //Exits
-        Entrance(RR_SACRED_FOREST_MEADOW, []{return true;}),
+        ENTRANCE(RR_SACRED_FOREST_MEADOW, true),
     });
 
     // clang-format on

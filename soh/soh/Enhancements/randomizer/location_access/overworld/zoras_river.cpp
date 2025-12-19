@@ -23,8 +23,8 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_TREE,     logic->IsChild && logic->CanBonkTrees()),
     }, {
         //Exits
-        Entrance(RR_ZORAS_RIVER,  []{return logic->IsAdult || logic->BlastOrSmash();}),
-        Entrance(RR_HYRULE_FIELD, []{return true;}),
+        ENTRANCE(RR_ZORAS_RIVER,  logic->IsAdult || logic->BlastOrSmash()),
+        ENTRANCE(RR_HYRULE_FIELD, true),
     });
 
     areaTable[RR_ZORAS_RIVER] = Region("Zora River", SCENE_ZORAS_RIVER, {
@@ -58,12 +58,12 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_NEAR_FREESTANDING_POH_GRASS,          logic->CanUse(RG_BOOMERANG)),
     }, {
         //Exits
-        Entrance(RR_ZR_FRONT,            []{return true;}),
-        Entrance(RR_ZR_ATOP_LADDER,      []{return true/*(logic->IsAdult || str0) && (logic->CanUse(RG_CLIMB) || (logic->IsAdult && logic->CanUse(RG_LONGSHOT)))*/;}),
-        Entrance(RR_ZR_PILLAR,           []{return (logic->IsChild/* && str0*/) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && ctx->GetTrickOption(RT_ZR_LOWER));}),
-        Entrance(RR_THE_LOST_WOODS,      []{return logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
-        Entrance(RR_ZR_STORMS_GROTTO,    []{return logic->CanOpenStormsGrotto();}),
-        Entrance(RR_ZR_BEHIND_WATERFALL, []{return ctx->GetOption(RSK_SLEEPING_WATERFALL).Is(RO_WATERFALL_OPEN) || Here(RR_ZORAS_RIVER, []{return logic->CanUse(RG_ZELDAS_LULLABY);}) || (logic->IsChild && ctx->GetTrickOption(RT_ZR_CUCCO)) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_ZR_HOVERS));}),
+        ENTRANCE(RR_ZR_FRONT,            true),
+        ENTRANCE(RR_ZR_ATOP_LADDER,      true/*(logic->IsAdult || str0) && (logic->CanUse(RG_CLIMB) || (logic->IsAdult && logic->CanUse(RG_LONGSHOT)))*/),
+        ENTRANCE(RR_ZR_PILLAR,           (logic->IsChild/* && str0*/) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && ctx->GetTrickOption(RT_ZR_LOWER))),
+        ENTRANCE(RR_THE_LOST_WOODS,      logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
+        ENTRANCE(RR_ZR_STORMS_GROTTO,    logic->CanOpenStormsGrotto()),
+        ENTRANCE(RR_ZR_BEHIND_WATERFALL, ctx->GetOption(RSK_SLEEPING_WATERFALL).Is(RO_WATERFALL_OPEN) || Here(RR_ZORAS_RIVER, []{return logic->CanUse(RG_ZELDAS_LULLABY);}) || (logic->IsChild && ctx->GetTrickOption(RT_ZR_CUCCO)) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_ZR_HOVERS))),
     });
 
     areaTable[RR_ZR_ATOP_LADDER] = Region("ZR Atop Ladder", SCENE_ZORAS_RIVER, {
@@ -77,10 +77,10 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,           true),
     }, {
         //Exits
-        Entrance(RR_ZORAS_RIVER,     []{return true;}),
-        Entrance(RR_ZR_PILLAR,       []{return (logic->IsChild/* && str0*/) || logic->CanUse(RG_HOVER_BOOTS);}),
-        Entrance(RR_ZR_OPEN_GROTTO,  []{return true;}),
-        Entrance(RR_ZR_FAIRY_GROTTO, []{return Here(RR_ZR_ATOP_LADDER, []{return logic->BlastOrSmash();});}),
+        ENTRANCE(RR_ZORAS_RIVER,     true),
+        ENTRANCE(RR_ZR_PILLAR,       (logic->IsChild/* && str0*/) || logic->CanUse(RG_HOVER_BOOTS)),
+        ENTRANCE(RR_ZR_OPEN_GROTTO,  true),
+        ENTRANCE(RR_ZR_FAIRY_GROTTO, Here(RR_ZR_ATOP_LADDER, []{return logic->BlastOrSmash();})),
     });
 
     areaTable[RR_ZR_PILLAR] = Region("ZR Pillar", SCENE_ZORAS_RIVER, {
@@ -92,19 +92,19 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_NEAR_FREESTANDING_POH_GRASS,       logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_ZORAS_RIVER, []{return true;}),
+        ENTRANCE(RR_ZORAS_RIVER, true),
     });
 
     areaTable[RR_ZR_FROM_SHORTCUT] = Region("ZR From Shortcut", SCENE_ZORAS_RIVER, {}, {}, {
         //Exits
-        Entrance(RR_ZORAS_RIVER,    []{return logic->Hearts() > 1 || logic->HasItem(RG_BOTTLE_WITH_FAIRY) || logic->HasItem(RG_BRONZE_SCALE);}),
-        Entrance(RR_THE_LOST_WOODS, []{return logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
+        ENTRANCE(RR_ZORAS_RIVER,    logic->Hearts() > 1 || logic->HasItem(RG_BOTTLE_WITH_FAIRY) || logic->HasItem(RG_BRONZE_SCALE)),
+        ENTRANCE(RR_THE_LOST_WOODS, logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
     });
 
     areaTable[RR_ZR_BEHIND_WATERFALL] = Region("ZR Behind Waterfall", SCENE_ZORAS_RIVER, {}, {}, {
         //Exits
-        Entrance(RR_ZORAS_RIVER,  []{return true;}),
-        Entrance(RR_ZORAS_DOMAIN, []{return true;}),
+        ENTRANCE(RR_ZORAS_RIVER,  true),
+        ENTRANCE(RR_ZORAS_DOMAIN, true),
     });
 
     areaTable[RR_ZR_OPEN_GROTTO] = Region("ZR Open Grotto", SCENE_GROTTOS, grottoEvents, {
@@ -122,7 +122,7 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_OPEN_GROTTO_GRASS_4,                logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_ZR_ATOP_LADDER, []{return true;}),
+        ENTRANCE(RR_ZR_ATOP_LADDER, true),
     });
 
     areaTable[RR_ZR_FAIRY_GROTTO] = Region("ZR Fairy Grotto", SCENE_GROTTOS, {
@@ -140,7 +140,7 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_FAIRY_GROTTO_FAIRY_8, true),
     }, {
         //Exits
-        Entrance(RR_ZR_ATOP_LADDER, []{return true;}),
+        ENTRANCE(RR_ZR_ATOP_LADDER, true),
     });
 
     areaTable[RR_ZR_STORMS_GROTTO] = Region("ZR Storms Grotto", SCENE_GROTTOS, {}, {
@@ -150,7 +150,7 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_STORMS_GROTTO_BEEHIVE,   logic->CanBreakUpperBeehives()),
     }, {
         //Exits
-        Entrance(RR_ZORAS_RIVER, []{return true;}),
+        ENTRANCE(RR_ZORAS_RIVER, true),
     });
 
     // clang-format on
