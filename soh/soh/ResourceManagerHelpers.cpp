@@ -358,8 +358,7 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
 }
 
 // Create or get existing alt DisplayList for custom equipment
-static std::shared_ptr<Fast::DisplayList>
-ResourceMgr_GetOrCreateAltDisplayList(const char* path);
+static std::shared_ptr<Fast::DisplayList> ResourceMgr_GetOrCreateAltDisplayList(const char* path);
 
 // Runtime-generated alt DisplayLists for custom equipment
 static std::unordered_map<std::string, std::shared_ptr<Fast::DisplayList>> runtimeAltDisplayLists;
@@ -367,8 +366,7 @@ static std::unordered_map<std::string, std::shared_ptr<Fast::DisplayList>> runti
 // Create substitute DisplayList for alt assets to be used for custom equips & patches.
 // This prevents modifying the original DisplayList, which could lead to issues when
 // switching between alt & original assets.
-static std::shared_ptr<Fast::DisplayList>
-ResourceMgr_GetOrCreateAltDisplayList(const char* path) {
+static std::shared_ptr<Fast::DisplayList> ResourceMgr_GetOrCreateAltDisplayList(const char* path) {
     std::string basePath = path;
     if (basePath.starts_with("__OTR__")) {
         basePath = basePath.substr(7);
@@ -384,13 +382,11 @@ ResourceMgr_GetOrCreateAltDisplayList(const char* path) {
 
     // 2) Prefer filesystem-backed alt asset if it exists
     if (ExtensionCache.contains(altPath)) {
-        return std::static_pointer_cast<Fast::DisplayList>(
-            rm->LoadResource(altPath.c_str()));
+        return std::static_pointer_cast<Fast::DisplayList>(rm->LoadResource(altPath.c_str()));
     }
 
     // 3) Clone vanilla DL into a runtime alt
-    auto vanilla = std::static_pointer_cast<Fast::DisplayList>(
-        rm->LoadResource(basePath.c_str()));
+    auto vanilla = std::static_pointer_cast<Fast::DisplayList>(rm->LoadResource(basePath.c_str()));
 
     if (!vanilla) {
         return nullptr;
@@ -405,12 +401,7 @@ ResourceMgr_GetOrCreateAltDisplayList(const char* path) {
 }
 
 // Module to patch DisplayList instructions for custom equipment
-extern "C" void ResourceMgr_PatchCustomGfxByName(
-    const char* path,
-    const char* patchName,
-    int index,
-    Gfx instruction
-) {
+extern "C" void ResourceMgr_PatchCustomGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
     auto res = ResourceMgr_GetOrCreateAltDisplayList(path);
     if (!res) {
         return;
