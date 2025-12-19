@@ -7,11 +7,11 @@ void RegionTable_Init_Kakariko() {
     // clang-format off
     areaTable[RR_KAKARIKO_VILLAGE] = Region("Kakariko Village", SCENE_KAKARIKO_VILLAGE, {
         //Events
-        EventAccess(LOGIC_BUG_ACCESS,         []{return true;}),
+        EVENT_ACCESS(LOGIC_BUG_ACCESS,         true),
         //Open Gate setting is applied in RR_ROOT
-        EventAccess(LOGIC_KAKARIKO_GATE_OPEN, []{return logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER);}),
+        EVENT_ACCESS(LOGIC_KAKARIKO_GATE_OPEN, logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER)),
         //Needs wallet to be able to get another mask after selling Keaton
-        EventAccess(LOGIC_BORROW_SKULL_MASK,  []{return logic->IsChild && logic->Get(LOGIC_CAN_BORROW_MASKS) && logic->HasItem(RG_CHILD_WALLET);}),
+        EVENT_ACCESS(LOGIC_BORROW_SKULL_MASK,  logic->IsChild && logic->Get(LOGIC_CAN_BORROW_MASKS) && logic->HasItem(RG_CHILD_WALLET)),
     }, {
         //Locations
         LOCATION(RC_SHEIK_IN_KAKARIKO,                     logic->IsAdult && logic->HasItem(RG_FOREST_MEDALLION) && logic->HasItem(RG_FIRE_MEDALLION) && logic->HasItem(RG_WATER_MEDALLION)),
@@ -131,7 +131,7 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_CARPENTER_BOSS_HOUSE] = Region("Kak Carpenter Boss House", SCENE_KAKARIKO_CENTER_GUEST_HOUSE, {
         //Events
-        EventAccess(LOGIC_WAKE_UP_ADULT_TALON, []{return logic->IsAdult && logic->CanUse(RG_POCKET_EGG);}),
+        EVENT_ACCESS(LOGIC_WAKE_UP_ADULT_TALON, logic->IsAdult && logic->CanUse(RG_POCKET_EGG)),
     }, {}, {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE, true),
@@ -169,7 +169,7 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_WINDMILL] = Region("Kak Windmill", SCENE_WINDMILL_AND_DAMPES_GRAVE, {
         //Events
-        EventAccess(LOGIC_DRAIN_WELL, []{return logic->IsChild && logic->CanUse(RG_SONG_OF_STORMS);}),
+        EVENT_ACCESS(LOGIC_DRAIN_WELL, logic->IsChild && logic->CanUse(RG_SONG_OF_STORMS)),
     }, {
         //Locations
         LOCATION(RC_KAK_WINDMILL_FREESTANDING_POH, logic->CanUse(RG_BOOMERANG) || logic->Get(LOGIC_DAMPES_WINDMILL_ACCESS) || (logic->IsAdult && ctx->GetTrickOption(RT_KAK_ADULT_WINDMILL_POH)) || (logic->IsChild && logic->CanJumpslashExceptHammer() && ctx->GetTrickOption(RT_KAK_CHILD_WINDMILL_POH))),

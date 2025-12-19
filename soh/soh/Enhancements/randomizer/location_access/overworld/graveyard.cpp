@@ -7,9 +7,9 @@ void RegionTable_Init_Graveyard() {
     // clang-format off
     areaTable[RR_THE_GRAVEYARD] = Region("The Graveyard", SCENE_GRAVEYARD, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS,      []{return (logic->AtDay && logic->CanUse(RG_STICKS)) || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS));}),
-        EventAccess(LOGIC_BUG_ACCESS,        []{return true;}),
-        EventAccess(LOGIC_BORROW_BUNNY_HOOD, []{return logic->IsChild && logic->AtDay && logic->Get(LOGIC_BORROW_SPOOKY_MASK) && logic->HasItem(RG_CHILD_WALLET);}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,      (logic->AtDay && logic->CanUse(RG_STICKS)) || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
+        EVENT_ACCESS(LOGIC_BUG_ACCESS,        true),
+        EVENT_ACCESS(LOGIC_BORROW_BUNNY_HOOD, logic->IsChild && logic->AtDay && logic->Get(LOGIC_BORROW_SPOOKY_MASK) && logic->HasItem(RG_CHILD_WALLET)),
     }, {
         //Locations
         LOCATION(RC_GRAVEYARD_FREESTANDING_POH,        (((logic->IsAdult && CanPlantBean(RR_THE_GRAVEYARD)) || logic->CanUse(RG_LONGSHOT)) && logic->CanBreakCrates()) || (ctx->GetTrickOption(RT_GY_POH) && logic->CanUse(RG_BOOMERANG))),
@@ -87,8 +87,8 @@ void RegionTable_Init_Graveyard() {
 
     areaTable[RR_GRAVEYARD_DAMPES_GRAVE] = Region("Graveyard Dampes Grave", SCENE_WINDMILL_AND_DAMPES_GRAVE, {
         //Events
-        EventAccess(LOGIC_NUT_ACCESS,             []{return logic->CanBreakPots();}),
-        EventAccess(LOGIC_DAMPES_WINDMILL_ACCESS, []{return logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME);}),
+        EVENT_ACCESS(LOGIC_NUT_ACCESS,             logic->CanBreakPots()),
+        EVENT_ACCESS(LOGIC_DAMPES_WINDMILL_ACCESS, logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)),
     }, {
         //Locations
         LOCATION(RC_GRAVEYARD_HOOKSHOT_CHEST,              true),
@@ -123,7 +123,7 @@ void RegionTable_Init_Graveyard() {
 
     areaTable[RR_GRAVEYARD_WARP_PAD_REGION] = Region("Graveyard Warp Pad Region", SCENE_GRAVEYARD, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairyExceptSuns();}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairyExceptSuns()),
     }, {
         //Locations
         LOCATION(RC_GRAVEYARD_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),

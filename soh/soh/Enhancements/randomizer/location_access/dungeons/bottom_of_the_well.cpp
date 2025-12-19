@@ -26,9 +26,9 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_PERIMETER] = Region("Bottom of the Well Perimeter", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
-        EventAccess(LOGIC_STICK_ACCESS,       []{return logic->CanBreakPots();}),
-        EventAccess(LOGIC_NUT_ACCESS,         []{return logic->CanBreakPots();}),
-        EventAccess(LOGIC_BOTW_LOWERED_WATER, []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
+        EVENT_ACCESS(LOGIC_STICK_ACCESS,       logic->CanBreakPots()),
+        EVENT_ACCESS(LOGIC_NUT_ACCESS,         logic->CanBreakPots()),
+        EVENT_ACCESS(LOGIC_BOTW_LOWERED_WATER, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Locations
         LOCATION(RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST,   ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)),
@@ -122,8 +122,8 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_SKULL_WALL_ROOM] = Region("Bottom of the Well SKull Wall Room", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
-        EventAccess(LOGIC_STICK_ACCESS, []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(LOGIC_NUT_ACCESS,   []{return logic->CanGetDekuBabaNuts();}),
+        EVENT_ACCESS(LOGIC_STICK_ACCESS, logic->CanGetDekuBabaSticks()),
+        EVENT_ACCESS(LOGIC_NUT_ACCESS,   logic->CanGetDekuBabaNuts()),
     }, {
         //Locations
         LOCATION(RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
@@ -263,12 +263,12 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTW_MQ_PERIMETER] = Region("Bottom of the Well MQ Perimeter", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
         // Fairies are in slingshot wonder item, & pot behind grate. Pot can also be broken with boomerang trick
-        EventAccess(LOGIC_FAIRY_ACCESS,         []{return (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)) || ((Here(RR_BOTW_MQ_PERIMETER, []{return logic->BlastOrSmash();}) || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION)) && logic->CanHitEyeTargets());}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,         (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)) || ((Here(RR_BOTW_MQ_PERIMETER, []{return logic->BlastOrSmash();}) || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION)) && logic->CanHitEyeTargets())),
         //It is possible to hit the water switch with a pot from RR_BOTW_MQ_MIDDLE, however the hitbox for making it activate is very unintuitive
         //You have to throw the pot from further back to hit the switch from the front instead of the top, trying to hit the "fingers" directly
         //This unintuitiveness means it should be a trick. ZL is needed to get a clear path to carry the pot
-        EventAccess(LOGIC_BOTW_LOWERED_WATER,   []{return logic->CanHitSwitch(ED_SHORT_JUMPSLASH);}),
-        EventAccess(LOGIC_BOTW_MQ_OPENED_GATES, []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
+        EVENT_ACCESS(LOGIC_BOTW_LOWERED_WATER,   logic->CanHitSwitch(ED_SHORT_JUMPSLASH)),
+        EVENT_ACCESS(LOGIC_BOTW_MQ_OPENED_GATES, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Locations
         //Implies CanBreakPots(). Hitting this with rang through the wall is possible but would be a trick.
@@ -338,7 +338,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_MQ_PIT_CAGE] = Region("Bottom of the Well MQ Pit Cage", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
-        EventAccess(LOGIC_BOTW_MQ_OPENED_WEST_ROOM, []{return true;}),
+        EVENT_ACCESS(LOGIC_BOTW_MQ_OPENED_WEST_ROOM, true),
     }, {}, {
         //Exits
         ENTRANCE(RR_BOTW_MQ_PERIMETER, logic->BlastOrSmash() && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || ctx->GetTrickOption(RT_BOTW_PITS))),
@@ -376,7 +376,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_MQ_LOCKED_CAGE] = Region("Bottom of the Well MQ Locked Cage", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
-        EventAccess(LOGIC_BOTW_MQ_OPENED_MIDDLE_HOLE, []{return logic->HasExplosives();}),
+        EVENT_ACCESS(LOGIC_BOTW_MQ_OPENED_MIDDLE_HOLE, logic->HasExplosives()),
     }, {}, {
         //Exits
         ENTRANCE(RR_BOTW_MQ_FLOORMASTER_ROOM, logic->IsChild && logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 2)),

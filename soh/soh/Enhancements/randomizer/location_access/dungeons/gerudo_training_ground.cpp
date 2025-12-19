@@ -70,7 +70,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_ROOM] = Region("Gerudo Training Ground Heavy Block Room", SCENE_GERUDO_TRAINING_GROUND, {
         //Events
-        EventAccess(LOGIC_GTG_PUSHED_HEAVY_BLOCK, []{return logic->CanUse(RG_SILVER_GAUNTLETS);}),
+        EVENT_ACCESS(LOGIC_GTG_PUSHED_HEAVY_BLOCK, logic->CanUse(RG_SILVER_GAUNTLETS)),
     }, {
         //Locations
         LOCATION(RC_GERUDO_TRAINING_GROUND_BEFORE_HEAVY_BLOCK_CHEST, logic->CanKillEnemy(RE_WOLFOS, ED_CLOSE, true, 4, true)),
@@ -83,7 +83,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_ROOM_UPPER] = Region("Gerudo Training Ground Heavy Block Room Upper", SCENE_GERUDO_TRAINING_GROUND, {
         //Events
-        EventAccess(LOGIC_GTG_UNLOCKED_DOOR_BEHIND_HEAVY_BLOCK, []{return true;}),
+        EVENT_ACCESS(LOGIC_GTG_UNLOCKED_DOOR_BEHIND_HEAVY_BLOCK, true),
     }, {}, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_ROOM, ctx->GetTrickOption(RT_LENS_GTG) || logic->CanUse(RG_LENS_OF_TRUTH)),
@@ -124,7 +124,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_EYE_STATUE_LOWER] = Region("Gerudo Training Ground Eye Statue Lower", SCENE_GERUDO_TRAINING_GROUND, {
         //Events
-        EventAccess(LOGIC_GTG_CLEARED_EYE_STATUE, []{return logic->CanUse(RG_FAIRY_BOW);}),
+        EVENT_ACCESS(LOGIC_GTG_CLEARED_EYE_STATUE, logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Locations
         LOCATION(RC_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST, logic->Get(LOGIC_GTG_CLEARED_EYE_STATUE)),
@@ -144,7 +144,7 @@ void RegionTable_Init_GerudoTrainingGround() {
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_LAVA_ROOM] = Region("Gerudo Training Ground Lava Room", SCENE_GERUDO_TRAINING_GROUND, {
-        EventAccess(LOGIC_GTG_PLATFORM_SILVER_RUPEES, []{return logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME));}),
+        EVENT_ACCESS(LOGIC_GTG_PLATFORM_SILVER_RUPEES, logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME))),
     }, {}, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_DINALFOS,              true),
@@ -223,7 +223,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_MAZE_CENTER] = Region("Gerudo Training Ground MQ Center", SCENE_GERUDO_TRAINING_GROUND, {
         //Events
-        EventAccess(LOGIC_GTG_MQ_MAZE_SWITCH, []{return logic->CanUse(RG_MEGATON_HAMMER);}),
+        EVENT_ACCESS(LOGIC_GTG_MQ_MAZE_SWITCH, logic->CanUse(RG_MEGATON_HAMMER)),
     }, 
     {   //Locations
         LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_CRATE, logic->CanBreakCrates()),
@@ -250,9 +250,9 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM] = Region("Gerudo Training Ground MQ Stalfos Room", SCENE_GERUDO_TRAINING_GROUND, {
         //Events
-        EventAccess(LOGIC_BLUE_FIRE_ACCESS,                     []{return true;}),
-        EventAccess(LOGIC_GTG_UNLOCKED_DOOR_BEHIND_HEAVY_BLOCK, []{return Here(RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);});}),
-        EventAccess(LOGIC_GTG_PUSHED_HEAVY_BLOCK,               []{return logic->CanUse(RG_SILVER_GAUNTLETS) && logic->CanAvoidEnemy(RE_STALFOS, true, 2);}),
+        EVENT_ACCESS(LOGIC_BLUE_FIRE_ACCESS,                     true),
+        EVENT_ACCESS(LOGIC_GTG_UNLOCKED_DOOR_BEHIND_HEAVY_BLOCK, Here(RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);})),
+        EVENT_ACCESS(LOGIC_GTG_PUSHED_HEAVY_BLOCK,               logic->CanUse(RG_SILVER_GAUNTLETS) && logic->CanAvoidEnemy(RE_STALFOS, true, 2)),
     }, {
         //Locations
         //implies logic->CanKillEnemy(RE_BIG_SKULLTULA)
@@ -315,8 +315,8 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_SWITCH_LEDGE] = Region("Gerudo Training Ground MQ Switch Ledge", SCENE_GERUDO_TRAINING_GROUND, {
         //Events
-        EventAccess(LOGIC_GTG_MQ_RIGHT_SIDE_SWITCH,   []{return logic->CanUse(RG_MEGATON_HAMMER);}),
-        EventAccess(LOGIC_GTG_PLATFORM_SILVER_RUPEES, []{return logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_HOVER_BOOTS);}),
+        EVENT_ACCESS(LOGIC_GTG_MQ_RIGHT_SIDE_SWITCH,   logic->CanUse(RG_MEGATON_HAMMER)),
+        EVENT_ACCESS(LOGIC_GTG_PLATFORM_SILVER_RUPEES, logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_HOVER_BOOTS)),
     }, {}, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LEDGE_SIDE_PLATFORMS,  logic->CanUse(RG_FIRE_ARROWS)),
@@ -346,7 +346,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_PLATFORMS_UNLIT_TORCH] = Region("Gerudo Training Ground MQ Platforms Unlit Torch", SCENE_GERUDO_TRAINING_GROUND, {
         //Events
-        EventAccess(LOGIC_GTG_PLATFORM_SILVER_RUPEES, []{return logic->HasFireSource() && logic->CanUse(RG_HOVER_BOOTS);}),
+        EVENT_ACCESS(LOGIC_GTG_PLATFORM_SILVER_RUPEES, logic->HasFireSource() && logic->CanUse(RG_HOVER_BOOTS)),
     }, {}, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_UNDERWATER,           logic->Get(LOGIC_GTG_PLATFORM_SILVER_RUPEES)),
@@ -358,7 +358,7 @@ void RegionTable_Init_GerudoTrainingGround() {
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_TORCH_SIDE_PLATFORMS] = Region("Gerudo Training Ground Torch Side Platforms", SCENE_GERUDO_TRAINING_GROUND, {
         //Events
         //this torch shot is possible as child but tight and obtuse enough to be a trick
-        EventAccess(LOGIC_GTG_PLATFORM_SILVER_RUPEES, []{return ((logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS)) && logic->CanUse(RG_HOVER_BOOTS);}),
+        EVENT_ACCESS(LOGIC_GTG_PLATFORM_SILVER_RUPEES, ((logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS)) && logic->CanUse(RG_HOVER_BOOTS)),
     }, {}, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LEDGE_SIDE_PLATFORMS,  ((logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS)) && logic->CanUse(RG_HOVER_BOOTS)),
@@ -379,7 +379,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT] = Region("Gerudo Training Ground MQ Maze Right", SCENE_GERUDO_TRAINING_GROUND, {
         //Events
-        EventAccess(LOGIC_GTG_PLATFORM_SILVER_RUPEES, []{return logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_HOVER_BOOTS);}),
+        EVENT_ACCESS(LOGIC_GTG_PLATFORM_SILVER_RUPEES, logic->CanUse(RG_FIRE_ARROWS) && logic->CanUse(RG_HOVER_BOOTS)),
     }, {
         //Locations
         LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_CENTRAL_CHEST, true),
@@ -395,7 +395,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_ROOM] = Region("Gerudo Training Ground MQ Dinolfos Room", SCENE_GERUDO_TRAINING_GROUND, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->IsAdult && logic->CanUse(RG_FAIRY_BOW);}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Locations
         //implies logic->CanKillEnemy(RE_LIZALFOS and logic->CanKillEnemy(RE_DODONGO)

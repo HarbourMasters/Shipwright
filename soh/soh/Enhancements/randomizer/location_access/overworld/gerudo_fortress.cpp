@@ -9,7 +9,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_OUTSKIRTS] = Region("Gerudo Fortress Outskirts", SCENE_GERUDOS_FORTRESS, {
         //Events
-        EventAccess(LOGIC_GF_GATE_OPEN,  []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}), //needs climb
+        EVENT_ACCESS(LOGIC_GF_GATE_OPEN,  logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)), //needs climb
     }, {
         //Locations
         LOCATION(RC_GF_OUTSKIRTS_NE_CRATE, (logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)) && logic->CanBreakCrates()),
@@ -46,7 +46,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_OUTSIDE_GTG] = Region("GF Outside GTG", SCENE_GERUDOS_FORTRESS, {
         //Events
-        EventAccess(LOGIC_GTG_GATE_OPEN, []{return (logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET));}),
+        EVENT_ACCESS(LOGIC_GTG_GATE_OPEN, (logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET))),
     }, {}, {
         //Exits
         ENTRANCE(RR_GF_TO_GTG,             logic->Get(LOGIC_GTG_GATE_OPEN) && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES))),
@@ -235,7 +235,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_OUTSIDE_GATE] = Region("GF Outside Gate", SCENE_GERUDOS_FORTRESS, {
         //Events
-        EventAccess(LOGIC_GF_GATE_OPEN, []{return logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD);}),
+        EVENT_ACCESS(LOGIC_GF_GATE_OPEN, logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)),
     }, {}, {
         //Exits
         ENTRANCE(RR_GF_OUTSKIRTS,            logic->Get(LOGIC_GF_GATE_OPEN)),
@@ -244,7 +244,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_STORMS_GROTTO] = Region("GF Storms Grotto", SCENE_GROTTOS, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return true;}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, true),
     }, {
         //Locations
         LOCATION(RC_GF_FAIRY_GROTTO_FAIRY_1, true),

@@ -25,7 +25,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_WHISPERING_WALLS_START] = Region("Shadow Temple Whispering Walls Start", SCENE_SHADOW_TEMPLE, {
         //Events
-        EventAccess(LOGIC_NUT_ACCESS, []{return logic->CanBreakPots();}),
+        EVENT_ACCESS(LOGIC_NUT_ACCESS, logic->CanBreakPots()),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_WHISPERING_WALLS_POT_1, logic->CanBreakPots()),
@@ -40,7 +40,7 @@ void RegionTable_Init_ShadowTemple() {
     // shares RR_SHADOW_TEMPLE_WHISPERING_WALLS_START area with pots, but handles lens access for reaching door at start
     areaTable[RR_SHADOW_TEMPLE_WHISPERING_WALLS_SIDE] = Region("Shadow Temple Whispering Walls Side", SCENE_SHADOW_TEMPLE, {
         //Events
-        EventAccess(LOGIC_NUT_ACCESS, []{return logic->CanBreakPots();}),
+        EVENT_ACCESS(LOGIC_NUT_ACCESS, logic->CanBreakPots()),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_WHISPERING_WALLS_POT_1, logic->CanBreakPots()),
@@ -258,7 +258,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_DOCK] = Region("Shadow Temple Dock", SCENE_SHADOW_TEMPLE, {
         //Event
-        EventAccess(LOGIC_SHADOW_SHORTCUT_BLOCK, []{return logic->HasItem(RG_GORONS_BRACELET);}),
+        EVENT_ACCESS(LOGIC_SHADOW_SHORTCUT_BLOCK, logic->HasItem(RG_GORONS_BRACELET)),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_GS_NEAR_SHIP,          logic->CanUse(RG_LONGSHOT)),
@@ -273,7 +273,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_BEYOND_BOAT] = Region("Shadow Temple Beyond Boat", SCENE_SHADOW_TEMPLE, {
         //Events
-        EventAccess(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED, []{return logic->CanUse(RG_FAIRY_BOW) || (ctx->GetTrickOption(RT_SHADOW_STATUE) && logic->CanUse(RG_BOMBCHU_5));})
+        EVENT_ACCESS(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED, logic->CanUse(RG_FAIRY_BOW) || (ctx->GetTrickOption(RT_SHADOW_STATUE) && logic->CanUse(RG_BOMBCHU_5)))
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_AFTER_BOAT_POT_1, logic->CanBreakPots()),
@@ -286,7 +286,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_ACROSS_CHASM] = Region("Shadow Temple Across Chasm", SCENE_SHADOW_TEMPLE, {
         //Events
-        EventAccess(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED, []{return logic->CanDetonateUprightBombFlower();})
+        EVENT_ACCESS(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED, logic->CanDetonateUprightBombFlower())
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_AFTER_BOAT_POT_3,             logic->CanBreakPots()),
@@ -475,7 +475,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_MQ_UPPER_HUGE_PIT] = Region("Shadow Temple MQ Upper Huge Pit", SCENE_SHADOW_TEMPLE, {
         //Events
-        EventAccess(LOGIC_SHADOW_MQ_PIT_STAIRS, []{return logic->HasFireSource();}),
+        EVENT_ACCESS(LOGIC_SHADOW_MQ_PIT_STAIRS, logic->HasFireSource()),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_MQ_PIT_STORM_FAIRY, logic->CanUse(RG_SONG_OF_STORMS)),
@@ -552,13 +552,13 @@ void RegionTable_Init_ShadowTemple() {
     //while the spikes here are annoying, they don't really stop you doing anything, so I'll assume either lens trick, lens to see them, or taking damage from them. Not hovers though as a new player won't see the threat without lens to react properly
     areaTable[RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM] = Region("Shadow Temple MQ Floor Spikes Room", SCENE_SHADOW_TEMPLE, {
         //Events                                        //lens or trick is always required for hookshot targets. We handle it here to not complicate the RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_UPPER_DOOR logic
-        EventAccess(LOGIC_SHADOW_MQ_FLOOR_SPIKES_RUPEES, []{return (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
-                                                                //Upper door side high rupee needs (hookshot and redead kill(as either age) for chest and adult) or longshot. hovers can cross from the left side with a backflip but that would be a trick
-                                                                //East midair rupee needs (hookshot and(hover boots or jumpslash from the upper door platform)) or longshot.
-                                                                //Combined these are longshot or (IsAdult && hookshot && (CanJumpslash || (Hover Boots && Here(CanKillRedeads))))
-                                                                (logic->CanUse(RG_LONGSHOT) || (logic->IsAdult && logic->CanUse(RG_HOOKSHOT) && (logic->CanJumpslash() || (logic->CanUse(RG_HOVER_BOOTS) && Here(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM, []{return logic->CanKillEnemy(RE_REDEAD);}))))) &&
-                                                                //1 rupee is in spikes, needs hovers or damage
-                                                                (logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC));}),
+        EVENT_ACCESS(LOGIC_SHADOW_MQ_FLOOR_SPIKES_RUPEES, (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
+                                                          //Upper door side high rupee needs (hookshot and redead kill(as either age) for chest and adult) or longshot. hovers can cross from the left side with a backflip but that would be a trick
+                                                          //East midair rupee needs (hookshot and(hover boots or jumpslash from the upper door platform)) or longshot.
+                                                          //Combined these are longshot or (IsAdult && hookshot && (CanJumpslash || (Hover Boots && Here(CanKillRedeads))))
+                                                          (logic->CanUse(RG_LONGSHOT) || (logic->IsAdult && logic->CanUse(RG_HOOKSHOT) && (logic->CanJumpslash() || (logic->CanUse(RG_HOVER_BOOTS) && Here(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM, []{return logic->CanKillEnemy(RE_REDEAD);}))))) &&
+                                                          //1 rupee is in spikes, needs hovers or damage
+                                                          (logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC))),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_MQ_INVISIBLE_SPIKES_CHEST, logic->CanKillEnemy(RE_REDEAD) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->TakeDamage() || logic->CanUse(RG_LENS_OF_TRUTH))),
@@ -615,7 +615,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_MQ_B4_GIBDO_ROOM] = Region("Shadow Temple MQ B4 Gibdo Room", SCENE_SHADOW_TEMPLE, {
         //Events
-        EventAccess(LOGIC_NUT_ACCESS, []{return logic->CanBreakPots();}),
+        EVENT_ACCESS(LOGIC_NUT_ACCESS, logic->CanBreakPots()),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_MQ_AFTER_WIND_ENEMY_CHEST,  logic->CanKillEnemy(RE_GIBDO)),
@@ -632,7 +632,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_MQ_DOCK] = Region("Shadow Temple MQ Dock", SCENE_SHADOW_TEMPLE, {
         //Events
-        EventAccess(LOGIC_SHADOW_SHORTCUT_BLOCK, []{return logic->HasItem(RG_GORONS_BRACELET);}),
+        EVENT_ACCESS(LOGIC_SHADOW_SHORTCUT_BLOCK, logic->HasItem(RG_GORONS_BRACELET)),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_MQ_SCARECROW_NORTH_HEART, logic->CanUse(RG_DISTANT_SCARECROW)),
@@ -646,7 +646,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT] = Region("Shadow Temple MQ Beyond Boat", SCENE_SHADOW_TEMPLE, {
         //Events
-        EventAccess(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED, []{return logic->CanUse(RG_FAIRY_BOW) || (ctx->GetTrickOption(RT_SHADOW_STATUE) && logic->CanUse(RG_BOMBCHU_5));})
+        EVENT_ACCESS(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED, logic->CanUse(RG_FAIRY_BOW) || (ctx->GetTrickOption(RT_SHADOW_STATUE) && logic->CanUse(RG_BOMBCHU_5)))
     }, {
         //Locations
         //It's a trick on N64 to kill this and drop down to collect this with normal weapons, as doing so without the statue being dropped voids you to before the boat
@@ -662,9 +662,9 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_MQ_ACROSS_CHASM] = Region("Shadow Temple MQ Across Chasm", SCENE_SHADOW_TEMPLE, {
         //Events
-        EventAccess(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED, []{return logic->CanDetonateUprightBombFlower();}),
-        EventAccess(LOGIC_SHADOW_MQ_EYE_SWITCH_ACROSS_CHASM, []{return logic->CanHitEyeTargets() && (logic->CanUse(RG_SONG_OF_TIME) || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION));}),
-        EventAccess(LOGIC_SHADOW_MQ_SWITCH_ACROSS_CHASM,     []{return logic->Get(LOGIC_SHADOW_MQ_EYE_SWITCH_ACROSS_CHASM) && logic->CanUse(RG_LONGSHOT);}),
+        EVENT_ACCESS(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED, logic->CanDetonateUprightBombFlower()),
+        EVENT_ACCESS(LOGIC_SHADOW_MQ_EYE_SWITCH_ACROSS_CHASM, logic->CanHitEyeTargets() && (logic->CanUse(RG_SONG_OF_TIME) || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION))),
+        EVENT_ACCESS(LOGIC_SHADOW_MQ_SWITCH_ACROSS_CHASM,     logic->Get(LOGIC_SHADOW_MQ_EYE_SWITCH_ACROSS_CHASM) && logic->CanUse(RG_LONGSHOT)),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_MQ_AFTER_CHASM_WEST_POT,         logic->CanBreakPots()),
@@ -744,7 +744,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_BOSS_ROOM] = Region("Shadow Temple Boss Room", SCENE_SHADOW_TEMPLE_BOSS, {
         // Events
-        EventAccess(LOGIC_SHADOW_TEMPLE_CLEAR, []{return logic->CanKillEnemy(RE_BONGO_BONGO);}),
+        EVENT_ACCESS(LOGIC_SHADOW_TEMPLE_CLEAR, logic->CanKillEnemy(RE_BONGO_BONGO)),
     }, {
         // Locations
         LOCATION(RC_SHADOW_TEMPLE_BONGO_BONGO_HEART, logic->Get(LOGIC_SHADOW_TEMPLE_CLEAR)),
