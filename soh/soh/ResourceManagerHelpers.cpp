@@ -357,19 +357,79 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
     *gfx = instruction;
 }
 
-extern "C" void ResourceMgr_PatchCustomGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
-    auto res = std::static_pointer_cast<Fast::DisplayList>(
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
+// Create or get existing alt DisplayList for custom equipment
+static std::shared_ptr<Fast::DisplayList>
+ResourceMgr_GetOrCreateAltDisplayList(const char* path);
+
+// Runtime-generated alt DisplayLists for custom equipment
+static std::unordered_map<std::string, std::shared_ptr<Fast::DisplayList>> runtimeAltDisplayLists;
+
+// Create substitute DisplayList for alt assets to be used for custom equips & patches.
+// This prevents modifying the original DisplayList, which could lead to issues when
+// switching between alt & original assets.
+static std::shared_ptr<Fast::DisplayList>
+ResourceMgr_GetOrCreateAltDisplayList(const char* path) {
+    std::string basePath = path;
+    if (basePath.starts_with("__OTR__")) {
+        basePath = basePath.substr(7);
+    }
+
+    std::string altPath = "alt/" + basePath;
+    auto rm = Ship::Context::GetInstance()->GetResourceManager();
+
+    // 1) Prefer runtime-generated alt DL if it already exists
+    if (runtimeAltDisplayLists.contains(altPath)) {
+        return runtimeAltDisplayLists[altPath];
+    }
+
+    // 2) Prefer filesystem-backed alt asset if it exists
+    if (ExtensionCache.contains(altPath)) {
+        return std::static_pointer_cast<Fast::DisplayList>(
+            rm->LoadResource(altPath.c_str()));
+    }
+
+    // 3) Clone vanilla DL into a runtime alt
+    auto vanilla = std::static_pointer_cast<Fast::DisplayList>(
+        rm->LoadResource(basePath.c_str()));
+
+    if (!vanilla) {
+        return nullptr;
+    }
+
+    auto cloned = std::make_shared<Fast::DisplayList>(*vanilla);
+    cloned->GetInitData()->IsCustom = true;
+
+    // Register runtime alt (best-effort; runtimeAltDisplayLists is authoritative)
+    runtimeAltDisplayLists[altPath] = cloned;
+    return cloned;
+}
+
+// Module to patch DisplayList instructions for custom equipment
+extern "C" void ResourceMgr_PatchCustomGfxByName(
+    const char* path,
+    const char* patchName,
+    int index,
+    Gfx instruction
+) {
+    auto res = ResourceMgr_GetOrCreateAltDisplayList(path);
+    if (!res) {
+        return;
+    }
+
+    std::string basePath = path;
+    if (basePath.starts_with("__OTR__")) {
+        basePath = basePath.substr(7);
+    }
+    std::string altPath = "alt/" + basePath;
 
     Gfx* gfx = (Gfx*)&res->Instructions[index];
 
-    if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
-        originalGfx[path][patchName] = { index, *gfx };
+    if (!originalGfx.contains(altPath) || !originalGfx[altPath].contains(patchName)) {
+        originalGfx[altPath][patchName] = { index, *gfx };
     }
 
     *gfx = instruction;
 }
-
 
 extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex,
                                                       int sourceIndex) {
@@ -402,8 +462,6 @@ extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patch
         originalGfx[path].erase(patchName);
     }
 }
-
-
 
 extern "C" char* ResourceMgr_LoadArrayByName(const char* path) {
     auto res = std::static_pointer_cast<SOH::Array>(ResourceMgr_GetResourceByNameHandlingMQ(path));
