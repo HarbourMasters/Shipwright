@@ -48,11 +48,11 @@ class EventAccess {
         return logic->Get(event);
     }
 
-    std::string GetEventStr() const {
+    const std::string& GetEventStr() const {
         return event_str;
     }
 
-    std::string GetConditionStr() const {
+    const std::string& GetConditionStr() const {
         return condition_str;
     }
 
