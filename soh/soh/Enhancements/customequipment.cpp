@@ -9,17 +9,12 @@
 #include "soh_assets.h"
 #include "kaleido.h"
 
-uint8_t Player_IsCustomLinkModel();
-
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
 
 static void UpdatePatchCustomEquipmentDlists();
 static void UpdatePatchHand();
-
-static bool sLastAltAssetsEnabled = false;
-
 
 static void UpdateCustomEquipment() {
     if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
@@ -28,13 +23,12 @@ static void UpdateCustomEquipment() {
 
     UpdatePatchHand();
     UpdatePatchCustomEquipmentDlists();
-    
 }
-
 
 static void PatchCustomEquipment() {
     COND_HOOK(OnPlayerChangeItem, true, UpdateCustomEquipment);
-    COND_HOOK(OnSceneSpawnActors, true, UpdateCustomEquipment);
+    COND_HOOK(OnSceneSpawnActors, true, UpdateCustomEquipment); //To be changed when kaleido hook is made
+    //COND_HOOK(OnLinkSkeletonInit, true, UpdateCustomEquipment); //To be added once custom tunic fix is pulled
     COND_HOOK(OnAssetAltChange, true, UpdateCustomEquipment);
 }
 
@@ -88,58 +82,35 @@ void UpdatePatchHand() {
     }
 }
 
-void PatchOrUnpatch(const char* resource, const char* gfx,
-                    const char* dlist1, const char* dlist2,
-                    const char* dlist3, const char* alternateDL) {
-    if (!resource || !dlist1 || !dlist2) {
+void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, const char* dlist2, const char* dlist3, const char* alternateDL) {
+    if (resource == NULL || gfx == NULL || dlist1 == NULL || dlist2 == NULL)
         return;
-    }
 
-    const bool altEnabled = ResourceMgr_IsAltAssetsEnabled();
-
-    // Custom equipment NEVER touches anything when Alt Assets are OFF
-    if (!altEnabled) {
-        return;
-    }
-
-    const bool gfxExists =
-        ResourceMgr_FileExists(gfx) || ResourceGetIsCustomByName(gfx);
-
-    const bool altDlOk =
-        (alternateDL == nullptr) ||
-        ResourceMgr_FileExists(alternateDL) ||
-        ResourceGetIsCustomByName(alternateDL);
-
-    const bool shouldPatch = altEnabled && gfxExists && altDlOk;
-
-    if (shouldPatch) {
-        ResourceMgr_PatchCustomGfxByName(
-            resource, dlist1, 0,
-            gsSPDisplayListOTRFilePath(gfx));
-
-        if (dlist3 == nullptr) {
-            ResourceMgr_PatchCustomGfxByName(
-                resource, dlist2, 1,
-                gsSPEndDisplayList());
-        } else {
-            ResourceMgr_PatchCustomGfxByName(
-                resource, dlist2, 1,
-                gsSPDisplayListOTRFilePath(alternateDL));
-            ResourceMgr_PatchCustomGfxByName(
-                resource, dlist3, 2,
-                gsSPEndDisplayList());
+    if (CVarGetInteger(CVAR_ENHANCEMENT("AltAssets"), 0)) {
+        if (ResourceGetIsCustomByName(gfx)) {
+            if (alternateDL == NULL || ResourceGetIsCustomByName(alternateDL) || ResourceMgr_FileExists(alternateDL)) {
+                ResourceMgr_PatchCustomGfxByName(resource, dlist1, 0, gsSPDisplayListOTRFilePath(gfx));
+                if (dlist3 == NULL) {
+                    ResourceMgr_PatchCustomGfxByName(resource, dlist2, 1, gsSPEndDisplayList());
+                } else {
+                    ResourceMgr_PatchCustomGfxByName(resource, dlist2, 1, gsSPDisplayListOTRFilePath(alternateDL));
+                }
+                if (dlist3 != NULL) {
+                    ResourceMgr_PatchCustomGfxByName(resource, dlist3, 2, gsSPEndDisplayList());
+                }
+            }
         }
     } else {
         ResourceMgr_UnpatchGfxByName(resource, dlist1);
         ResourceMgr_UnpatchGfxByName(resource, dlist2);
-        if (dlist3) {
+        if (dlist3 != NULL) {
             ResourceMgr_UnpatchGfxByName(resource, dlist3);
         }
     }
 }
 
+
 void UpdatePatchCustomEquipmentDlists() {
-	
     if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI) {
         PatchOrUnpatch(gLinkChildSheathNearDL, gCustomKokiriSwordSheathDL, "customKokiriSheath1", "customKokiriSheath2", NULL, NULL);
         PatchOrUnpatch(gLinkChildSwordAndSheathNearDL, gCustomKokiriSwordInSheathDL, "customKokiriSwordSheath1", "customKokiriSwordSheath2", NULL, NULL);
