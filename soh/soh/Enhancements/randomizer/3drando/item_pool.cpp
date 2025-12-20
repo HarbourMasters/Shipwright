@@ -514,6 +514,9 @@ void GenerateItemPool() {
     if (ctx->GetOption(RSK_ROCS_FEATHER)) {
         ctx->possibleIceTrapModels.push_back(RG_ROCS_FEATHER);
         AddItemToMainPool(RG_ROCS_FEATHER);
+        if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
+            AddItemToPool(PendingJunkPool, RG_ROCS_FEATHER);
+        }
     }
 
     // Fixed item locations

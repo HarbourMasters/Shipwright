@@ -1164,7 +1164,7 @@ void InitTrickNames() {
 }
 
 // Generate a fake name for the ice trap based on the item it's displayed as
-Text GetIceTrapName(uint8_t id) {
+Text GetIceTrapName(uint16_t id) {
     // If the trick names table has not been initialized, do so
     if (!initTrickNames) {
         InitTrickNames();
