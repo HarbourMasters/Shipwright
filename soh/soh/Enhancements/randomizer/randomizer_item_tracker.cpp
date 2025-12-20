@@ -813,6 +813,11 @@ void DrawItem(ItemTrackerItem item) {
             hasItem = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT);
             itemName = "Triforce Piece";
             break;
+        case ITEM_NAYRUS_LOVE:
+            if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ROCS_FEATHER)) {
+                hasItem = Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE);
+            }
+            break;
         case RG_ROCS_FEATHER:
             actualItemId = item.id;
             hasItem = Flags_GetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER);
