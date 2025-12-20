@@ -79,6 +79,22 @@ void RegisterRocsFeather() {
             }
         }
     });
+
+    COND_VB_SHOULD(VB_DRAW_CUSTOM_ITEM_NAME, shouldRegister, {
+        u16 namedItem = va_arg(args, u16);
+        if (namedItem == ITEM_ROCS_FEATHER) {
+            *should = true;
+            const char* textureName = gRocsFeatherItemNameENGTex;
+
+            if (gSaveContext.language == LANGUAGE_GER) {
+                textureName = gRocsFeatherItemNameGERTex;
+            } else if (gSaveContext.language == LANGUAGE_FRA) {
+                textureName = gRocsFeatherItemNameFRATex;
+            }
+
+            memcpy(gPlayState->pauseCtx.nameSegment, textureName, strlen(textureName) + 1);
+        }
+    });
 }
 
 static RegisterShipInitFunc registerRocsFeather(RegisterRocsFeather, { "IS_RANDO" });

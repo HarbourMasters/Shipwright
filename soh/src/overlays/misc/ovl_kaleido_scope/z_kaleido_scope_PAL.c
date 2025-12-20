@@ -2495,17 +2495,9 @@ void KaleidoScope_UpdateNamePanel(PlayState* play) {
 
                 const char* textureName = iconNameTextures[sp2A];
 
-                if (pauseCtx->namedItem == ITEM_ROCS_FEATHER) {
-                    if (gSaveContext.language == LANGUAGE_ENG) {
-                        textureName = gRocsFeatherItemNameENGTex;
-                    } else if (gSaveContext.language == LANGUAGE_GER) {
-                        textureName = gRocsFeatherItemNameGERTex;
-                    } else if (gSaveContext.language == LANGUAGE_FRA) {
-                        textureName = gRocsFeatherItemNameFRATex;
-                    }
+                if (!GameInteractor_Should(VB_DRAW_CUSTOM_ITEM_NAME, false, pauseCtx->namedItem)) {
+                    memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
                 }
-
-                memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
             }
 
             pauseCtx->nameDisplayTimer = 0;
