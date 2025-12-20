@@ -22,6 +22,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SaveManager.h"
 #include "soh/Enhancements/kaleido.h"
+#include <soh_assets.h>
 
 static void* sEquipmentFRATexs[] = {
     gPauseEquipment00FRATex, gPauseEquipment01Tex, gPauseEquipment02Tex, gPauseEquipment03Tex, gPauseEquipment04Tex,
@@ -2493,6 +2494,17 @@ void KaleidoScope_UpdateNamePanel(PlayState* play) {
                 osSyncPrintf("J_N=%d  point=%d\n", gSaveContext.language, sp2A);
 
                 const char* textureName = iconNameTextures[sp2A];
+
+                if (pauseCtx->namedItem == ITEM_ROCS_FEATHER) {
+                    if (gSaveContext.language == LANGUAGE_ENG) {
+                        textureName = gRocsFeatherItemNameENGTex;
+                    } else if (gSaveContext.language == LANGUAGE_GER) {
+                        textureName = gRocsFeatherItemNameGERTex;
+                    } else if (gSaveContext.language == LANGUAGE_FRA) {
+                        textureName = gRocsFeatherItemNameFRATex;
+                    }
+                }
+
                 memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
             }
 
