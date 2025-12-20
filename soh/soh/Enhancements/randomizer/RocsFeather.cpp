@@ -68,7 +68,7 @@ void RegisterRocsFeather() {
 
                 Vec3f effectsPos = player->actor.home.pos;
                 effectsPos.y += 3;
-                
+
                 EffectSsGRipple_Spawn(gPlayState, &effectsPos, 200 * effectsScale, 300 * effectsScale, 1);
                 EffectSsGSplash_Spawn(gPlayState, &effectsPos, NULL, NULL, 0, 150 * effectsScale);
 

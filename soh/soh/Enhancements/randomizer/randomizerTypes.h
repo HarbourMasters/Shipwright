@@ -4337,7 +4337,7 @@ typedef enum {
 
     // Custom Items
     RG_ROCS_FEATHER,
-    
+
     // Logic Only
     RG_DISTANT_SCARECROW,
     RG_STICKS,

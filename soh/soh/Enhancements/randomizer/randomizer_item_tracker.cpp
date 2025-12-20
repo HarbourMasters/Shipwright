@@ -2138,9 +2138,7 @@ void RegisterItemTrackerWidgets() {
 }
 
 void RegisterItemTracker() {
-    COND_HOOK(OnLoadFile, true, [](int32_t fileNum) {
-        shouldUpdateVectors = true;
-    });
+    COND_HOOK(OnLoadFile, true, [](int32_t fileNum) { shouldUpdateVectors = true; });
 }
 
 static RegisterShipInitFunc registerItemTracker(RegisterItemTracker);

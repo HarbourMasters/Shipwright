@@ -888,9 +888,9 @@ void InitTrickNames() {
         Text{ "Shiny Rock", "Caillou Brillant", "glänzender Stein" },       // "Shiny Rock"
     };
     trickNameTable[RG_ROCS_FEATHER] = {
-        Text{ "Chicken Wing", "Chicken Wing", "Chicken Wing" },        // "Chicken Wing"
-        Text{ "Roc's Leg", "Roc's Leg", "Roc's Leg" }, // "Roc's Leg"
-        Text{ "Roc's Fapper", "Roc's Fapper", "Roc's Fapper" },       // "Roc's Fapper"
+        Text{ "Chicken Wing", "Chicken Wing", "Chicken Wing" }, // "Chicken Wing"
+        Text{ "Roc's Leg", "Roc's Leg", "Roc's Leg" },          // "Roc's Leg"
+        Text{ "Roc's Fapper", "Roc's Fapper", "Roc's Fapper" }, // "Roc's Fapper"
     };
     trickNameTable[RG_GOHMA_SOUL] = {
         Text{ "Spider Sense", "Sens de l'Araignée", "Spinnensinn" },

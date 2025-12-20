@@ -988,7 +988,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             }
         case RG_ROCS_FEATHER:
             return Flags_GetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
-            
+
         // Bottles
         case RG_EMPTY_BOTTLE:
         case RG_BOTTLE_WITH_MILK:
@@ -4913,9 +4913,7 @@ CustomMessage Randomizer::GetTriforcePieceMessage() {
 
 void CreateRocsFeatherMessage() {
     CustomMessage RocsFeatherMessage = {
-        { "You found %cRoc's Feather%w!",
-          "You found %cRoc's Feather%w!",
-          "You found %cRoc's Feather%w!" },
+        { "You found %cRoc's Feather%w!", "You found %cRoc's Feather%w!", "You found %cRoc's Feather%w!" },
     };
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::RocsFeatherMessageTableID);
