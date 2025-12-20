@@ -90,6 +90,10 @@ void GameInteractor_ExecuteOnLinkSkeletonInit() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLinkSkeletonInit>();
 }
 
+void GameInteractor_ExecuteOnLinkEquipmentChange() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLinkEquipmentChange>();
+}
+
 void GameInteractor_ExecuteOnPlayerUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerUpdate>();
 }
