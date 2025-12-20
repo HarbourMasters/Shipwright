@@ -357,9 +357,6 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
     *gfx = instruction;
 }
 
-// Create or get existing alt DisplayList for custom equipment
-static std::shared_ptr<Fast::DisplayList> ResourceMgr_GetOrCreateAltDisplayList(const char* path);
-
 // Runtime-generated alt DisplayLists for custom equipment
 static std::unordered_map<std::string, std::shared_ptr<Fast::DisplayList>> runtimeAltDisplayLists;
 

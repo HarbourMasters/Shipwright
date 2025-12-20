@@ -5,7 +5,6 @@
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
-#include "objects/object_custom_equip/object_custom_equip.h"
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -651,7 +650,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
 
     Player_SetModelsForHoldingShield(this);
-    GameInteractor_ExecuteOnPlayerChangeItem();
+    GameInteractor_ExecuteOnPlayerSetModels(modelGroup);
 }
 
 void Player_SetModelGroup(Player* this, s32 modelGroup) {
@@ -1483,7 +1482,6 @@ s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, G
             *dList = NULL;
         }
     }
-    GameInteractor_ExecuteOnPlayerAiming();
     return false;
 }
 

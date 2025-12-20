@@ -3,7 +3,6 @@
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_custom_equip/object_custom_equip.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/customequipment.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh_assets.h"
@@ -16,6 +15,15 @@ extern void Overlay_DisplayText(float duration, const char* text);
 static void UpdatePatchCustomEquipmentDlists();
 static void UpdatePatchHand();
 
+static void UpdateCustomEquipmentSetModel(u8 ModelGroup) {
+    if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
+        return;
+    }
+
+    UpdatePatchHand();
+    UpdatePatchCustomEquipmentDlists();
+}
+
 static void UpdateCustomEquipment() {
     if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
         return;
@@ -26,7 +34,7 @@ static void UpdateCustomEquipment() {
 }
 
 static void PatchCustomEquipment() {
-    COND_HOOK(OnPlayerChangeItem, true, UpdateCustomEquipment);
+    COND_HOOK(OnPlayerSetModels, true, UpdateCustomEquipmentSetModel);
     COND_HOOK(OnSceneSpawnActors, true, UpdateCustomEquipment); // To be changed when kaleido hook is made
     // COND_HOOK(OnLinkSkeletonInit, true, UpdateCustomEquipment); //To be added once custom tunic fix is pulled
     COND_HOOK(OnAssetAltChange, true, UpdateCustomEquipment);
