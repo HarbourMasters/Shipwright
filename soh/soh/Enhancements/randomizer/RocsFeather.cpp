@@ -81,7 +81,7 @@ void RegisterRocsFeather() {
     });
 
     COND_VB_SHOULD(VB_DRAW_CUSTOM_ITEM_NAME, shouldRegister, {
-        u16 namedItem = va_arg(args, u16);
+        u32 namedItem = va_arg(args, u32);
         if (namedItem == ITEM_ROCS_FEATHER) {
             *should = true;
             const char* textureName = gRocsFeatherItemNameENGTex;
