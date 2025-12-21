@@ -160,7 +160,6 @@ static void UnpatchGroup(const char* resource, std::initializer_list<const char*
     }
 }
 
-
 static void ApplySwordlessChildPatches() {
     ApplyPatchEntries({
         { gLinkChildDekuShieldWithMatrixDL, gCustomDekuShieldOnBackDL, "customChildShieldOnly1",
