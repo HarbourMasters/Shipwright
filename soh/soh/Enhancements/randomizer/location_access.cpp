@@ -384,6 +384,7 @@ bool GetTimePassFromScene(SceneID scene) {
         case SCENE_GERUDOS_FORTRESS:
         case SCENE_HAUNTED_WASTELAND:
         case SCENE_DEATH_MOUNTAIN_CRATER:
+        case SCENE_LON_LON_RANCH:
         case SCENE_ID_MAX:
             return false;
 
@@ -400,7 +401,6 @@ bool GetTimePassFromScene(SceneID scene) {
         case SCENE_DESERT_COLOSSUS:
         case SCENE_HYRULE_CASTLE:
         case SCENE_DEATH_MOUNTAIN_TRAIL:
-        case SCENE_LON_LON_RANCH:
             return true;
 
         case SCENE_TEST01:
