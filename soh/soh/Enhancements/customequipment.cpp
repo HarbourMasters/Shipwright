@@ -1,7 +1,6 @@
 #include <initializer_list>
 
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
-#include "global.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_custom_equip/object_custom_equip.h"
@@ -9,7 +8,6 @@
 #include "soh/ShipInit.hpp"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh_assets.h"
-#include "z64player.h"
 #include "kaleido.h"
 
 extern SaveContext gSaveContext;
@@ -161,6 +159,7 @@ static void UnpatchGroup(const char* resource, std::initializer_list<const char*
         ResourceMgr_UnpatchGfxByName(resource, name);
     }
 }
+
 
 static void ApplySwordlessChildPatches() {
     ApplyPatchEntries({
