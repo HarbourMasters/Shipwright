@@ -244,9 +244,15 @@ static void ApplyMasterSwordPatches() {
 }
 
 static void ApplyBiggoronSwordPatches() {
+    if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
+        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomLongswordSheathDL, "customDekuShieldBack1",
+                       "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
+    } else {
+        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomLongswordInSheathDL, "customDekuShieldBack1",
+                       "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
+    }
+
     ApplyPatchEntries({
-        { gLinkChildDekuShieldWithMatrixDL, gCustomLongswordSheathDL, "customDekuShieldBack1", "customDekuShieldBack2",
-          "customDekuShieldBack2", gCustomDekuShieldOnBackDL },
         { gLinkChildHylianShieldAndSheathNearDL, gCustomLongswordSheathDL, "customChildHylianShieldSheath1",
           "customChildHylianShieldSheath2", "customChildHylianShieldSheath3", gCustomHylianShieldOnChildBackDL },
         { gLinkChildDekuShieldAndSheathNearDL, gCustomLongswordSheathDL, "customDekuShieldSheath1",
@@ -261,8 +267,6 @@ static void ApplyBiggoronSwordPatches() {
           "customKokiriSwordSheath2", nullptr, nullptr },
         { gLinkChildDekuShieldSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customDekuShieldSword1",
           "customDekuShieldSword2", "customDekuShieldSword3", gCustomDekuShieldOnBackDL },
-        { gLinkChildDekuShieldWithMatrixDL, gCustomLongswordInSheathDL, "customDekuShieldBack1",
-          "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL },
         { gLinkChildHylianShieldSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customChildHylianShieldSword1",
           "customChildHylianShieldSword2", "customChildHylianShieldSword3", gCustomHylianShieldOnChildBackDL },
         { gLinkAdultSheathNearDL, gCustomLongswordSheathDL, "customSheath1", "customSheath2", nullptr, nullptr },
@@ -278,9 +282,15 @@ static void ApplyBiggoronSwordPatches() {
 }
 
 static void ApplyBreakableLongswordPatches() {
+    if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
+        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomBreakableLongswordSheathDL, "customDekuShieldBack1",
+                       "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
+    } else {
+        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomBreakableLongswordInSheathDL, "customDekuShieldBack1",
+                       "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
+    }
+
     ApplyPatchEntries({
-        { gLinkChildDekuShieldWithMatrixDL, gCustomBreakableLongswordSheathDL, "customDekuShieldBack1",
-          "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL },
         { gLinkChildHylianShieldAndSheathNearDL, gCustomBreakableLongswordSheathDL, "customChildHylianShieldSheath1",
           "customChildHylianShieldSheath2", "customChildHylianShieldSheath3", gCustomHylianShieldOnChildBackDL },
         { gLinkChildDekuShieldAndSheathNearDL, gCustomBreakableLongswordSheathDL, "customDekuShieldSheath1",
@@ -295,8 +305,6 @@ static void ApplyBreakableLongswordPatches() {
           "customKokiriSwordSheath2", nullptr, nullptr },
         { gLinkChildDekuShieldSwordAndSheathNearDL, gCustomBreakableLongswordInSheathDL, "customDekuShieldSword1",
           "customDekuShieldSword2", "customDekuShieldSword3", gCustomDekuShieldOnBackDL },
-        { gLinkChildDekuShieldWithMatrixDL, gCustomBreakableLongswordInSheathDL, "customDekuShieldBack1",
-          "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL },
         { gLinkChildHylianShieldSwordAndSheathNearDL, gCustomBreakableLongswordInSheathDL,
           "customChildHylianShieldSword1", "customChildHylianShieldSword2", "customChildHylianShieldSword3",
           gCustomHylianShieldOnChildBackDL },
@@ -314,9 +322,15 @@ static void ApplyBreakableLongswordPatches() {
 }
 
 static void ApplyBrokenKnifePatches() {
+    if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
+        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomBrokenLongswordSheathDL, "customDekuShieldBack1",
+                       "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
+    } else {
+        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomBrokenLongswordInSheathDL, "customDekuShieldBack1",
+                       "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
+    }
+
     ApplyPatchEntries({
-        { gLinkChildDekuShieldWithMatrixDL, gCustomBrokenLongswordSheathDL, "customDekuShieldBack1",
-          "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL },
         { gLinkChildHylianShieldAndSheathNearDL, gCustomBrokenLongswordSheathDL, "customChildHylianShieldSheath1",
           "customChildHylianShieldSheath2", "customChildHylianShieldSheath3", gCustomHylianShieldOnChildBackDL },
         { gLinkChildDekuShieldAndSheathNearDL, gCustomBrokenLongswordSheathDL, "customDekuShieldSheath1",
@@ -329,8 +343,6 @@ static void ApplyBrokenKnifePatches() {
           "customKokiriSwordSheath2", nullptr, nullptr },
         { gLinkChildDekuShieldSwordAndSheathNearDL, gCustomBrokenLongswordInSheathDL, "customDekuShieldSword1",
           "customDekuShieldSword2", "customDekuShieldSword3", gCustomDekuShieldOnBackDL },
-        { gLinkChildDekuShieldWithMatrixDL, gCustomBrokenLongswordInSheathDL, "customDekuShieldBack1",
-          "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL },
         { gLinkChildHylianShieldSwordAndSheathNearDL, gCustomBrokenLongswordInSheathDL, "customChildHylianShieldSword1",
           "customChildHylianShieldSword2", "customChildHylianShieldSword3", gCustomHylianShieldOnChildBackDL },
         { gLinkAdultSheathNearDL, gCustomBrokenLongswordSheathDL, "customSheath1", "customSheath2", nullptr, nullptr },
