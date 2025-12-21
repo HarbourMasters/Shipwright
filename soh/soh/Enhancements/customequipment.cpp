@@ -1,6 +1,7 @@
 #include <initializer_list>
 
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
+#include "global.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_custom_equip/object_custom_equip.h"
@@ -8,6 +9,7 @@
 #include "soh/ShipInit.hpp"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh_assets.h"
+#include "z64player.h"
 #include "kaleido.h"
 
 extern SaveContext gSaveContext;
@@ -166,6 +168,8 @@ static void ApplySwordlessChildPatches() {
           "customChildShieldOnly2", nullptr, nullptr },
         { gLinkChildHylianShieldSwordAndSheathNearDL, gCustomHylianShieldOnChildBackDL, "customChildHylianShieldOnly1",
           "customChildHylianShieldOnly2", nullptr, nullptr },
+        { gLinkAdultMirrorShieldSwordAndSheathNearDL, gCustomMirrorShieldOnBackDL, "customAdultMirrorOnly1",
+          "customAdultMirrorOnly2", nullptr, nullptr },
     });
 
     UnpatchGroup(gLinkChildSwordAndSheathNearDL, { "customKokiriSwordSheath1", "customKokiriSwordSheath2" });
@@ -182,6 +186,8 @@ static void ApplySwordlessAdultPatches() {
           "customAdultShieldOnly2", nullptr, nullptr },
         { gLinkAdultMirrorShieldSwordAndSheathNearDL, gCustomMirrorShieldOnBackDL, "customAdultMirrorOnly1",
           "customAdultMirrorOnly2", nullptr, nullptr },
+        { gLinkChildDekuShieldSwordAndSheathNearDL, gCustomDekuShieldOnBackDL, "customDekuShieldSword1",
+          "customDekuShieldSword2", nullptr, nullptr },
     });
 
     UnpatchGroup(gLinkAdultMasterSwordAndSheathNearDL, { "customMasterSwordSheath1", "customMasterSwordSheath2" });
