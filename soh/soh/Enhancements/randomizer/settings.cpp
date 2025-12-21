@@ -772,15 +772,15 @@ void Settings::CreateOptions() {
               "Allows killing this Skulltula with Sword or Sticks by jump slashing it as you let go from the vines. "
               "You can avoid taking fall damage by recoiling onto the tree. Also allows killing it as Child with a "
               "Bomb throw. It's much more difficult to use a Bomb as child due to Child Link's shorter height.");
-    OPT_TRICK(RT_FOREST_OUTDOORS_EAST_GS, RCQUEST_VANILLA, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
+    OPT_TRICK(RT_FOREST_COURTYARD_EAST_GS, RCQUEST_VANILLA, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
               "Forest Temple East Courtyard GS with Boomerang",
               "Precise Boomerang throws can allow child to kill the Skulltula and collect the token.");
     OPT_TRICK(RT_FOREST_VINES, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
               "Forest Temple East Courtyard Vines with Hookshot",
               "The vines in Forest Temple leading to where the well drain switch is in the standard form can be barely "
               "reached with just the Hookshot. Applies to MQ also.");
-    OPT_TRICK(RT_FOREST_OUTDOORS_LEDGE, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
-              "Forest Temple NE Outdoors Ledge with Hover Boots",
+    OPT_TRICK(RT_FOREST_COURTYARD_LEDGE, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
+              "Forest Temple NE Courtyard Ledge with Hover Boots",
               "With precise Hover Boots movement you can fall down to this ledge from upper balconies. If done "
               "precisely enough, it is not necessary to take fall damage. In MQ, this skips a Longshot requirement. In "
               "Vanilla, this can skip a Hookshot requirement in entrance randomizer.");
@@ -795,18 +795,18 @@ void Settings::CreateOptions() {
               "A jump slash recoil can be used to reach the ledge in the block puzzle room that leads to the west "
               "courtyard. This skips a potential Hover Boots requirement in Vanilla, and it can sometimes apply in MQ "
               "as well. This trick can be performed as both ages.");
-    OPT_TRICK(RT_FOREST_OUTDOORS_HEARTS_BOOMERANG, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
-              "Forest Temple Outside Hearts with Boomerang",
+    OPT_TRICK(RT_FOREST_COURTYARD_HEARTS_BOOMERANG, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
+              "Forest Temple Courtyard Hearts with Boomerang",
               "A well aimed boomerang from the water's edge can reach the hearts from ground level. If unable to swim, "
               "you can back away from the water while the boomerang is returning so the hearts land on the ground.");
-    OPT_TRICK(RT_FOREST_MQ_WELL_SWIM, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::ADVANCED },
-              "Swim Through Forest Temple MQ Well with Hookshot",
+    OPT_TRICK(RT_FOREST_WELL_SWIM, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
+              "Swim Through Forest Temple Well with Hookshot",
               "Shoot the vines in the well as low and as far to the right as possible, and then immediately swim under "
-              "the ceiling to the right. This can only be required if Forest Temple is in its Master Quest form.");
+              "the ceiling to the right. This is usually only useful in Master Quest.");
     OPT_TRICK(RT_FOREST_MQ_BLOCK_PUZZLE, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
               "Skip Forest Temple MQ Block Puzzle with Bombchu",
               "Send the Bombchu straight up the center of the wall directly to the left upon entering the room.");
-    // Child with hovers cannot do this from the lower floor, and most go to the upper floor which needs goron bracelet.
+    // Child with hovers cannot do this from the lower floor, and must go to the upper floor which needs goron bracelet.
     // Adult can do this with hammer and KSword, But child cannot.
     OPT_TRICK(RT_FOREST_MQ_JS_HALLWAY_SWITCH, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
               "Forest Temple MQ Twisted Hallway Switch with Jump Slash",
