@@ -444,6 +444,13 @@ extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patch
         auto res = std::static_pointer_cast<Fast::DisplayList>(
             Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
 
+        // Skip and clean up if the loaded resource is smaller than the recorded patch index (can happen when alt assets
+        // swap in shorter display lists).
+        if (originalGfx[path][patchName].index >= res->Instructions.size()) {
+            originalGfx[path].erase(patchName);
+            return;
+        }
+
         Gfx* gfx = (Gfx*)&res->Instructions[originalGfx[path][patchName].index];
         *gfx = originalGfx[path][patchName].instruction;
 
