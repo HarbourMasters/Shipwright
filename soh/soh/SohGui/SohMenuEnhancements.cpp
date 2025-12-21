@@ -763,6 +763,17 @@ void SohMenu::AddMenuEnhancements() {
                               "Child Toggle: This will allow for completely unequipping any sword as Child link.\n\n"
                               "Both Ages: Any sword can be unequipped as either age. This may lead to swordless "
                               "glitches as adult."));
+    AddWidget(path, "Child Master Sword (Two-Handed)", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ChildMasterSword"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled =
+                OTRGlobals::Instance->gRandoContext->GetOption(RSK_CHILD_LINK_2H_MS).Is(RO_GENERIC_ON);
+            info.options->disabledTooltip = "This setting is forcefully enabled because a randomized savefile with "
+                                            "\"Child Master Sword\" is currently loaded.";
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Allows child Link to equip and swing the Master Sword like a two-handed weapon.\n"
+            "This mirrors the randomizer option and is locked on when that option is active."));
     AddWidget(path, "Ask to Equip New Items", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("AskToEquip"))
         .Options(CheckboxOptions().Tooltip("Adds a prompt to equip newly-obtained Swords, Shields, and Tunics."));

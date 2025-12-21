@@ -532,6 +532,11 @@ s32 Player_IsChildWithHylianShield(Player* this) {
 s32 Player_ActionToModelGroup(Player* this, s32 actionParam) {
     s32 modelGroup = sActionModelGroups[actionParam];
 
+    if ((actionParam == PLAYER_IA_SWORD_MASTER) && ChildLink2hMS_CanChildUseMasterSword()) {
+        // Use two-handed sword animations when child can wield the Master Sword
+        modelGroup = PLAYER_MODELGROUP_BGS;
+    }
+
     if ((modelGroup == PLAYER_MODELGROUP_SWORD_AND_SHIELD) && Player_IsChildWithHylianShield(this)) {
         // child, using kokiri sword with hylian shield equipped
         return PLAYER_MODELGROUP_CHILD_HYLIAN_SHIELD;

@@ -308,6 +308,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_MASK_SHOP_HINT, "Mask Shop Hint", CVAR_RANDOMIZER_SETTING("MaskShopHint"), mOptionDescriptions[RSK_MASK_SHOP_HINT]);
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     OPT_BOOL(RSK_BLUE_FIRE_ARROWS, "Blue Fire Arrows", CVAR_RANDOMIZER_SETTING("BlueFireArrows"), mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
+    OPT_BOOL(RSK_CHILD_LINK_2H_MS, "Child Master Sword", CVAR_RANDOMIZER_SETTING("ChildMasterSword"), mOptionDescriptions[RSK_CHILD_LINK_2H_MS]);
     OPT_BOOL(RSK_SUNLIGHT_ARROWS, "Sunlight Arrows", CVAR_RANDOMIZER_SETTING("SunlightArrows"), mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
     OPT_U8(RSK_INFINITE_UPGRADES, "Infinite Upgrades", {"Off", "Progressive", "Condensed Progressive"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("InfiniteUpgrades"), mOptionDescriptions[RSK_INFINITE_UPGRADES]);
     OPT_BOOL(RSK_SKELETON_KEY, "Skeleton Key", CVAR_RANDOMIZER_SETTING("SkeletonKey"), mOptionDescriptions[RSK_SKELETON_KEY]);
@@ -1423,6 +1424,7 @@ void Settings::CreateOptions() {
                                                                              &mOptions[RSK_BOMBCHU_BAG],
                                                                              &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
                                                                              &mOptions[RSK_BLUE_FIRE_ARROWS],
+                                                                             &mOptions[RSK_CHILD_LINK_2H_MS],
                                                                              &mOptions[RSK_SUNLIGHT_ARROWS],
                                                                              &mOptions[RSK_INFINITE_UPGRADES],
                                                                              &mOptions[RSK_SKELETON_KEY],

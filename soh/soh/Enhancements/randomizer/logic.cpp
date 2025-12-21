@@ -295,7 +295,7 @@ bool Logic::CanUse(RandomizerGet itemName) {
         case RG_MIRROR_SHIELD:
             return IsAdult; // || MirrorShieldAsChild;
         case RG_MASTER_SWORD:
-            return IsAdult; // || MasterSwordAsChild;
+            return IsAdult || (ctx->GetOption(RSK_CHILD_LINK_2H_MS) && IsChild);
         case RG_BIGGORON_SWORD:
             return IsAdult; // || BiggoronSwordAsChild;
         case RG_SILVER_GAUNTLETS:
