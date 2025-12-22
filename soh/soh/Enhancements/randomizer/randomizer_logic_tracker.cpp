@@ -176,6 +176,10 @@ RandomizerCheck showRandomizerCheck = RC_UNKNOWN_CHECK;
 
 void LogicTrackerWindow::ShowRandomizerCheck(RandomizerCheck randomizerCheck) {
     showRandomizerCheck = randomizerCheck;
+
+    auto window = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Logic Tracker");
+    window->Show();
+    ImGui::SetWindowFocus(window->GetName().c_str());
 }
 
 static void CalculateShowRandomizerCheck() {
@@ -212,9 +216,6 @@ static void CalculateShowRandomizerCheck() {
 
     nodes.emplace_back(std::move(node));
 
-    auto window = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Logic Tracker");
-    window->Show();
-    ImGui::SetWindowFocus(window->GetName().c_str());
     expandNodeId = node.NodeId;
 
     showRandomizerCheck = RC_UNKNOWN_CHECK;
@@ -267,9 +268,6 @@ static void CalculateShowRandomizerRegion() {
 
     nodes.emplace_back(std::move(node));
 
-    auto window = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Logic Tracker");
-    window->Show();
-    ImGui::SetWindowFocus(window->GetName().c_str());
     expandNodeId = node.NodeId;
 
     showToRandomizerRegion = RR_NONE;
@@ -314,9 +312,6 @@ static void CalculateShowRandomizerEvent() {
 
     nodes.emplace_back(std::move(node));
 
-    auto window = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Logic Tracker");
-    window->Show();
-    ImGui::SetWindowFocus(window->GetName().c_str());
     expandNodeId = node.NodeId;
 
     showEvent.clear();
