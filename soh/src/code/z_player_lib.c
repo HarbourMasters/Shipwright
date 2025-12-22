@@ -868,9 +868,9 @@ s32 Player_ActionToMeleeWeapon(s32 actionParam) {
     s32 sword = actionParam - PLAYER_IA_FISHING_POLE;
 
     if ((sword > 0) && (sword < 6)) {
-        return sword;
+        return ChildLink2hMS_OverrideMeleeWeapon(actionParam, sword);
     } else {
-        return 0;
+        return ChildLink2hMS_OverrideMeleeWeapon(actionParam, 0);
     }
 }
 
@@ -879,11 +879,15 @@ s32 Player_GetMeleeWeaponHeld(Player* this) {
 }
 
 s32 Player_HoldsTwoHandedWeapon(Player* this) {
+    if (ChildLink2hMS_IsTwoHanded(this)) {
+        return 1;
+    }
+
     if ((this->heldItemAction >= PLAYER_IA_SWORD_BIGGORON) && (this->heldItemAction <= PLAYER_IA_HAMMER)) {
         return 1;
-    } else {
-        return 0;
     }
+
+    return 0;
 }
 
 s32 Player_HoldsBrokenKnife(Player* this) {
@@ -1378,6 +1382,14 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
     if (!Player_OverrideLimbDrawGameplayCommon(play, limbIndex, dList, pos, rot, thisx)) {
         if (limbIndex == PLAYER_LIMB_L_HAND) {
             Gfx** dLists = this->leftHandDLists;
+
+            if (ChildLink2hMS_IsTwoHanded(this) && (sLeftHandType == PLAYER_MODELTYPE_LH_BGS)) {
+                // Force adult Master Sword grip DL for child two-handed Master Sword
+                Gfx* overrideDl = (sDListsLodOffset >= 2) ? gLinkAdultLeftHandHoldingMasterSwordFarDL
+                                                         : gLinkAdultLeftHandHoldingMasterSwordNearDL;
+                *dList = ResourceMgr_LoadGfxByName(overrideDl);
+                return false;
+            }
 
             if ((sLeftHandType == PLAYER_MODELTYPE_LH_BGS) && (gSaveContext.swordHealth <= 0.0f)) {
                 dLists += 4;

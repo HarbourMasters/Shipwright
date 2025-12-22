@@ -35,3 +35,12 @@ extern "C" s32 ChildLink2hMS_IsTwoHanded(Player* player) {
 
     return ChildLink2hMS_CanChildUseMasterSword() && (player->heldItemAction == PLAYER_IA_SWORD_MASTER);
 }
+
+extern "C" s32 ChildLink2hMS_ShouldAllowEquip(s32 equipType, s32 equipValue) {
+    return ChildLink2hMS_ShouldBypassAgeReq(equipType, equipValue);
+}
+
+extern "C" s32 ChildLink2hMS_OverrideMeleeWeapon(s32 actionParam, s32 baseMeleeWeapon) {
+    // Keep Master Sword hitbox/damage while still using two-handed animations/models.
+    return baseMeleeWeapon;
+}

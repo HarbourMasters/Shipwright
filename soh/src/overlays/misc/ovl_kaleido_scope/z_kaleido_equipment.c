@@ -3,6 +3,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/ChildLink2hMS.h"
 
 static u8 sChildUpgrades[] = { UPG_BULLET_BAG, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
 static u8 sAdultUpgrades[] = { UPG_QUIVER, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
@@ -493,7 +494,16 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
 
         osSyncPrintf("kscope->select_name[Display_Equipment] = %d\n", pauseCtx->cursorItem[PAUSE_EQUIP]);
 
-        if (!(CHECK_AGE_REQ_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP]))) {
+        s32 bypassChildMasterSword =
+            ChildLink2hMS_ShouldAllowEquip(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP]);
+
+        if (bypassChildMasterSword) {
+            // Treat the Master Sword as age-allowed so the icon is not greyed out when the setting is active.
+            pauseCtx->cursorColorSet = 0;
+        }
+
+        if (!(CHECK_AGE_REQ_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP]) ||
+              bypassChildMasterSword)) {
             pauseCtx->nameColorSet = 1;
         }
 
@@ -543,7 +553,8 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             (pauseCtx->unk_1E4 == 0) && CHECK_BTN_ANY(input->press.button, buttonsToCheck) &&
             (pauseCtx->cursorX[PAUSE_EQUIP] != 0)) {
 
-            if (CHECK_AGE_REQ_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP])) {
+            if (CHECK_AGE_REQ_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP]) ||
+                bypassChildMasterSword) {
                 if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
 
                     // #Region SoH [Enhancements]
@@ -731,7 +742,8 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         for (k = 0, temp = rowStart + 1, bit = rowStart, j = point; k < 3; k++, bit++, j += 4, temp++) {
 
             if ((gBitFlags[bit] & gSaveContext.inventory.equipment) && (pauseCtx->cursorSpecialPos == 0)) {
-                if (CHECK_AGE_REQ_EQUIP(i, k + 1)) {
+                if (CHECK_AGE_REQ_EQUIP(i, k + 1) ||
+                    ChildLink2hMS_ShouldAllowEquip(i, k + 1)) {
                     if (temp == cursorSlot) {
                         pauseCtx->equipVtx[j].v.ob[0] = pauseCtx->equipVtx[j + 2].v.ob[0] =
                             pauseCtx->equipVtx[j].v.ob[0] - 2;
@@ -822,6 +834,10 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
 
             int itemId = ITEM_SWORD_KOKIRI + temp;
             bool age_restricted = !CHECK_AGE_REQ_ITEM(itemId);
+            if ((itemId == ITEM_SWORD_MASTER) &&
+                ChildLink2hMS_ShouldAllowEquip(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER)) {
+                age_restricted = false;
+            }
             if (age_restricted) {
                 gDPSetGrayscaleColor(POLY_OPA_DISP++, 109, 109, 109, 255);
                 gSPGrayscale(POLY_OPA_DISP++, true);
