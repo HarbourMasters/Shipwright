@@ -591,6 +591,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActorRelative(u
 
     if (snapToFloor) {
         CollisionPoly* poly = nullptr;
+        CollisionPoly poly;
         Vec3f raycastPos = spawnPos;
         raycastPos.y += 50.0f; // Start raycast from slightly above to catch floor at player height
         f32 floorY = BgCheck_AnyRaycastFloor1(&gPlayState->colCtx, &poly, &raycastPos);
@@ -602,6 +603,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActorRelative(u
 
     Actor* actor = Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, spawnPos.x, spawnPos.y, spawnPos.z, 0, 0, 0,
                                actorParams);
+                               actorParams, 0);
 
     if (actor != NULL) {
         return GameInteractionEffectQueryResult::Possible;
