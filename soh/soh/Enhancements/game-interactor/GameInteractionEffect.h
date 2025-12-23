@@ -4,6 +4,7 @@
 #define GameInteractionEffect_h
 
 #include <stdint.h>
+#include <string>
 
 #ifdef __cplusplus
 enum GameInteractionEffectQueryResult { Possible = 0x00, TemporarilyNotPossible = 0x01, NotPossible = 0xFF };
