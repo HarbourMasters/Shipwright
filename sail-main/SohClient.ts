@@ -268,6 +268,42 @@ export class SohClient extends EventEmitter<{
       },
     });
   }
+
+  /**
+   * Spawns an actor relative to the player's position and rotation.
+   * xOffset: Right/Left
+   * yOffset: Up/Down
+   * zOffset: Forward/Backward
+   */
+  spawnActorRelative(actorId: number, variable: number, xOffset: number, yOffset: number, zOffset: number, snapToFloor: boolean = true) {
+    return this.sendPacket({
+      id: nanoid(),
+      type: "effect",
+      effect: {
+        type: "apply",
+        name: "SpawnActorRelative",
+        parameters: [actorId, variable, xOffset, yOffset, zOffset, snapToFloor ? 1 : 0],
+      },
+    });
+  }
+
+  /**
+   * Displays a message box with the given text.
+   * style: 0 = Black, 1 = Wooden, 2 = Blue, 3 = Ocarina, 4 = None (Bottom), 5 = None (No Shadow)
+   * position: 0 = Top, 1 = Middle, 2 = Bottom
+   */
+  displayMessageBox(text: string, style: number = 2, position: number = 2) {
+    return this.sendPacket({
+      id: nanoid(),
+      type: "effect",
+      effect: {
+        type: "apply",
+        name: "DisplayMessageBox",
+        parameters: [style, position],
+        text: text,
+      },
+    });
+  }
 } // End of SohClient class
 
 function concatUint8Arrays(a: Uint8Array, b: Uint8Array): Uint8Array {

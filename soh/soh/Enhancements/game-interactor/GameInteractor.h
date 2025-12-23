@@ -577,6 +577,10 @@ class GameInteractor {
                                                                      std::string nameTag = "");
         static GameInteractionEffectQueryResult SpawnActor(uint32_t actorId, int32_t actorParams,
                                                            std::string nameTag = "");
+        static GameInteractionEffectQueryResult SpawnActorRelative(uint32_t actorId, int32_t actorParams,
+                                                                   int32_t xOffset, int32_t yOffset, int32_t zOffset,
+                                                                   bool snapToFloor);
+        static GameInteractionEffectQueryResult DisplayMessageBox(std::string text, int32_t style, int32_t position);
     };
 };
 

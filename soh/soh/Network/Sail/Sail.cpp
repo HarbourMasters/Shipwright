@@ -327,6 +327,27 @@ GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
             effect->parameters[1] = payload["parameters"][1].get<int32_t>();
         }
         return effect;
+    } else if (name == "SpawnActorRelative") {
+        auto effect = new GameInteractionEffect::SpawnActorRelative();
+        if (payload.contains("parameters")) {
+            effect->parameters[0] = payload["parameters"][0].get<int32_t>();
+            effect->parameters[1] = payload["parameters"][1].get<int32_t>();
+            effect->parameters[2] = payload["parameters"][2].get<int32_t>();
+            effect->parameters[3] = payload["parameters"][3].get<int32_t>();
+            effect->parameters[4] = payload["parameters"][4].get<int32_t>();
+            effect->parameters[5] = payload["parameters"][5].get<int32_t>();
+        }
+        return effect;
+    } else if (name == "DisplayMessageBox") {
+        auto effect = new GameInteractionEffect::DisplayMessageBox();
+        if (payload.contains("parameters")) {
+            effect->parameters[0] = payload["parameters"][0].get<int32_t>();
+            effect->parameters[1] = payload["parameters"][1].get<int32_t>();
+        }
+        if (payload.contains("text")) {
+            effect->text = payload["text"].get<std::string>();
+        }
+        return effect;
     } else {
         SPDLOG_INFO("[Sail] Unknown effect name: {}", name);
         return nullptr;
