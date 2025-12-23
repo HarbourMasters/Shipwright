@@ -41,6 +41,8 @@ export type EffectName =
   | "RandomBonks"
   | "PlayerInvincibility"
   | "SlipperyFloor"
+  | "SpawnActorRelative"
+  | "DisplayMessageBox"
   | "SpawnActor"; // Keep SpawnActor for Method 1
 
 export interface CommandEffect {
@@ -52,6 +54,7 @@ export interface ApplyEffect {
   type: "apply";
   name: EffectName;
   parameters?: (number | string)[];
+  text?: string;
 }
 
 export interface RemoveEffect {

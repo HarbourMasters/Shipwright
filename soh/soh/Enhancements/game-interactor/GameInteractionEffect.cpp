@@ -655,4 +655,29 @@ GameInteractionEffectQueryResult SpawnActor::CanBeApplied() {
 void SpawnActor::_Apply() {
     GameInteractor::RawAction::SpawnActor(parameters[0], parameters[1]);
 }
+
+// MARK: - SpawnActorRelative
+GameInteractionEffectQueryResult SpawnActorRelative::CanBeApplied() {
+    if (!GameInteractor::CanSpawnActor()) {
+        return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    }
+    return GameInteractionEffectQueryResult::Possible;
+}
+
+void SpawnActorRelative::_Apply() {
+    GameInteractor::RawAction::SpawnActorRelative(parameters[0], parameters[1], parameters[2], parameters[3],
+                                                  parameters[4], parameters[5]);
+}
+
+// MARK: - DisplayMessageBox
+GameInteractionEffectQueryResult DisplayMessageBox::CanBeApplied() {
+    if (!GameInteractor::IsSaveLoaded(true)) {
+        return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    }
+    return GameInteractionEffectQueryResult::Possible;
+}
+
+void DisplayMessageBox::_Apply() {
+    GameInteractor::RawAction::DisplayMessageBox(text, parameters[0], parameters[1]);
+}
 } // namespace GameInteractionEffect

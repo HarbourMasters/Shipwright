@@ -263,6 +263,20 @@ class SpawnActor : public GameInteractionEffectBase, public ParameterizedGameInt
     GameInteractionEffectQueryResult CanBeApplied() override;
     void _Apply() override;
 };
+
+class SpawnActorRelative : public GameInteractionEffectBase {
+  public:
+    int32_t parameters[6];
+    GameInteractionEffectQueryResult CanBeApplied() override;
+    void _Apply() override;
+};
+
+class DisplayMessageBox : public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
+  public:
+    std::string text;
+    GameInteractionEffectQueryResult CanBeApplied() override;
+    void _Apply() override;
+};
 } // namespace GameInteractionEffect
 
 #endif /* __cplusplus */
