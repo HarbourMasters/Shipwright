@@ -52,10 +52,17 @@ void RegisterItemUnequip() {
         }
         
         u8 equippedItem = gSaveContext.equips.buttonItems[targetButton];
+        u8 equippedSlot = gSaveContext.equips.cButtonSlots[targetButton - 1];
         bool shouldUnequip = false;
         
         if (equippedItem == cursorItem) {
-            shouldUnequip = true;
+            if (cursorItem >= ITEM_BOTTLE && cursorItem <= ITEM_POE) {
+                if (equippedSlot == cursorSlot) {
+                    shouldUnequip = true;
+                }
+            } else {
+                shouldUnequip = true;
+            }
         } else if (cursorItem == ITEM_ARROW_FIRE && equippedItem == ITEM_BOW_ARROW_FIRE) {
             shouldUnequip = true;
         } else if (cursorItem == ITEM_ARROW_ICE && equippedItem == ITEM_BOW_ARROW_ICE) {
