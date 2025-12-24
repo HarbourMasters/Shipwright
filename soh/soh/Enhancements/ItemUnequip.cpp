@@ -9,10 +9,6 @@ extern "C" {
 #include "variables.h"
 #include "overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h"
 extern SaveContext gSaveContext;
-extern s16 sCButtonPosX[];
-extern s16 sCButtonPosY[];
-extern s16 sEquipState;
-extern s16 sEquipMoveTimer;
 }
 
 #define CVAR_ITEM_UNEQUIP_NAME CVAR_ENHANCEMENT("ItemUnequip")
@@ -24,11 +20,11 @@ void RegisterItemUnequip() {
         PlayState* play = va_arg(args, PlayState*);
         u16 cursorSlot = va_arg(args, int);
         u16 cursorItem = va_arg(args, int);
-        
+
         Input* input = &play->state.input[0];
-        
+
         int targetButton = -1;
-        
+
         if (CHECK_BTN_ALL(input->press.button, BTN_CLEFT)) {
             targetButton = 1;
         } else if (CHECK_BTN_ALL(input->press.button, BTN_CDOWN)) {
@@ -46,15 +42,15 @@ void RegisterItemUnequip() {
                 targetButton = 7;
             }
         }
-        
+
         if (targetButton == -1) {
             return;
         }
-        
+
         u8 equippedItem = gSaveContext.equips.buttonItems[targetButton];
         u8 equippedSlot = gSaveContext.equips.cButtonSlots[targetButton - 1];
         bool shouldUnequip = false;
-        
+
         if (equippedItem == cursorItem) {
             if (cursorItem >= ITEM_BOTTLE && cursorItem <= ITEM_POE) {
                 if (equippedSlot == cursorSlot) {
@@ -70,15 +66,15 @@ void RegisterItemUnequip() {
         } else if (cursorItem == ITEM_ARROW_LIGHT && equippedItem == ITEM_BOW_ARROW_LIGHT) {
             shouldUnequip = true;
         }
-        
+
         if (shouldUnequip) {
             gSaveContext.equips.buttonItems[targetButton] = ITEM_NONE;
             gSaveContext.equips.cButtonSlots[targetButton - 1] = SLOT_NONE;
             Interface_LoadItemIcon1(play, targetButton);
-            
+
             Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-            
+
             *should = false;
         }
     });

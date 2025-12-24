@@ -732,8 +732,8 @@ void SohMenu::AddMenuEnhancements() {
             "hold C-Up to equip instead of navigate."));
     AddWidget(path, "Unequip C-Items on Re-press", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ItemUnequip"))
-        .Options(CheckboxOptions().Tooltip(
-            "Allows unequipping items from C-Buttons/D-pad by hovering over an equipped item and pressing the button it's equipped to."));
+        .Options(CheckboxOptions().Tooltip("Allows unequipping items from C-Buttons/D-pad by hovering over an equipped "
+                                           "item and pressing the button it's equipped to."));
     AddWidget(path, "Assignable Shields, Tunics and Boots", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"))
         .Options(CheckboxOptions().Tooltip("Allows equipping Shields, Tunics and Boots to C-Buttons/D-pad."));
