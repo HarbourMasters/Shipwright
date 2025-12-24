@@ -178,6 +178,22 @@ class Parser {
         return false;
     }
 
+    // Helper to build an n-ary node with common book-keeping
+    std::shared_ptr<LogicExpression::Impl>
+    BuildNAryNode(LogicExpression::Type type, const std::string& op, size_t initial_pos,
+                  const std::vector<std::shared_ptr<LogicExpression::Impl>>& terms) {
+        auto expr = std::make_shared<LogicExpression::Impl>();
+        expr->type = type;
+        expr->operation = op;
+        for (auto& t : terms) {
+            expr->children.emplace_back(t);
+            expr->children.back()->parent = expr.get();
+        }
+        expr->startIndex = tokens[initial_pos].StartIndex;
+        expr->endIndex = tokens[pos - 1].EndIndex;
+        return expr;
+    }
+
     std::shared_ptr<LogicExpression::Impl> ParsePrimary() {
         size_t initial_pos = pos;
         std::shared_ptr<LogicExpression::Impl> expr;
@@ -271,13 +287,75 @@ class Parser {
     }
 
     std::shared_ptr<LogicExpression::Impl> ParseMulDiv() {
-        return ParseBinaryOp(pos, tokens, &Parser::ParsePrimary,
-                             { { "*", LogicExpression::Type::Multiply }, { "/", LogicExpression::Type::Divide } });
+        // Group consecutive '*' into n-ary Multiply and '/' into n-ary Divide (left associative for '/')
+        size_t initial_pos = pos;
+        auto first = ParsePrimary();
+
+        if (Peek().Type == LETokenType::Operator && (Peek().Text == "*" || Peek().Text == "/")) {
+            if (Peek().Text == "*") {
+                std::vector<std::shared_ptr<LogicExpression::Impl>> terms;
+                terms.emplace_back(first);
+                while (Peek().Type == LETokenType::Operator && Peek().Text == "*") {
+                    Next();
+                    auto nextTerm = ParsePrimary();
+                    terms.emplace_back(nextTerm);
+                }
+                if (terms.size() == 1) {
+                    return first;
+                }
+                return BuildNAryNode(LogicExpression::Type::Multiply, "*", initial_pos, terms);
+            } else { // "/"
+                std::vector<std::shared_ptr<LogicExpression::Impl>> terms;
+                terms.emplace_back(first);
+                while (Peek().Type == LETokenType::Operator && Peek().Text == "/") {
+                    Next();
+                    auto nextTerm = ParsePrimary();
+                    terms.emplace_back(nextTerm);
+                }
+                if (terms.size() == 1) {
+                    return first;
+                }
+                return BuildNAryNode(LogicExpression::Type::Divide, "/", initial_pos, terms);
+            }
+        }
+
+        return first;
     }
 
     std::shared_ptr<LogicExpression::Impl> ParseAddSub() {
-        return ParseBinaryOp(pos, tokens, &Parser::ParseMulDiv,
-                             { { "+", LogicExpression::Type::Add }, { "-", LogicExpression::Type::Subtract } });
+        // Group consecutive '+' as n-ary Add and '-' as n-ary Subtract (left associative for '-')
+        size_t initial_pos = pos;
+        auto first = ParseMulDiv();
+
+        if (Peek().Type == LETokenType::Operator && (Peek().Text == "+" || Peek().Text == "-")) {
+            if (Peek().Text == "+") {
+                std::vector<std::shared_ptr<LogicExpression::Impl>> terms;
+                terms.emplace_back(first);
+                while (Peek().Type == LETokenType::Operator && Peek().Text == "+") {
+                    Next();
+                    auto nextTerm = ParseMulDiv();
+                    terms.emplace_back(nextTerm);
+                }
+                if (terms.size() == 1) {
+                    return first;
+                }
+                return BuildNAryNode(LogicExpression::Type::Add, "+", initial_pos, terms);
+            } else {
+                std::vector<std::shared_ptr<LogicExpression::Impl>> terms;
+                terms.emplace_back(first);
+                while (Peek().Type == LETokenType::Operator && Peek().Text == "-") {
+                    Next();
+                    auto nextTerm = ParseMulDiv();
+                    terms.emplace_back(nextTerm);
+                }
+                if (terms.size() == 1) {
+                    return first;
+                }
+                return BuildNAryNode(LogicExpression::Type::Subtract, "-", initial_pos, terms);
+            }
+        }
+
+        return first;
     }
 
     std::shared_ptr<LogicExpression::Impl> ParseComparison() {
@@ -291,11 +369,43 @@ class Parser {
     }
 
     std::shared_ptr<LogicExpression::Impl> ParseAnd() {
-        return ParseBinaryOp(pos, tokens, &Parser::ParseComparison, { { "&&", LogicExpression::Type::And } });
+        // Parse as n-ary AND collecting chains of '&&'
+        size_t initial_pos = pos;
+        auto first = ParseComparison();
+        std::vector<std::shared_ptr<LogicExpression::Impl>> terms;
+        terms.emplace_back(first);
+
+        while (Peek().Type == LETokenType::Operator && Peek().Text == "&&") {
+            Next(); // consume '&&'
+            auto nextTerm = ParseComparison();
+            terms.emplace_back(nextTerm);
+        }
+
+        if (terms.size() == 1) {
+            return first;
+        }
+
+        return BuildNAryNode(LogicExpression::Type::And, "&&", initial_pos, terms);
     }
 
     std::shared_ptr<LogicExpression::Impl> ParseOr() {
-        return ParseBinaryOp(pos, tokens, &Parser::ParseAnd, { { "||", LogicExpression::Type::Or } });
+        // Parse as n-ary OR collecting chains of '||'
+        size_t initial_pos = pos;
+        auto first = ParseAnd();
+        std::vector<std::shared_ptr<LogicExpression::Impl>> terms;
+        terms.emplace_back(first);
+
+        while (Peek().Type == LETokenType::Operator && Peek().Text == "||") {
+            Next(); // consume '||'
+            auto nextTerm = ParseAnd();
+            terms.emplace_back(nextTerm);
+        }
+
+        if (terms.size() == 1) {
+            return first;
+        }
+
+        return BuildNAryNode(LogicExpression::Type::Or, "||", initial_pos, terms);
     }
 
     std::shared_ptr<LogicExpression::Impl> ParseTernary() {
@@ -736,70 +846,43 @@ LogicExpression::ValueVariant LogicExpression::Impl::EvaluateVariable() const {
 // Helper for arithmetic operations to reduce duplication
 LogicExpression::ValueVariant LogicExpression::Impl::EvaluateArithmetic(char op, const std::string& path, int depth,
                                                                         const EvaluationCallback& callback) const {
-    const auto lhs = children[0]->Evaluate(path + ".0", depth + 1, callback);
-    const auto rhs = children[1]->Evaluate(path + ".1", depth + 1, callback);
+    if (children.empty()) {
+        throw std::runtime_error("Arithmetic node has no children" + GetExprErrorContext());
+    }
 
-    auto arith = [&](auto a, auto b) -> ValueVariant {
+    auto applyOp = [&](auto a, auto b) -> ValueVariant {
         using A = std::decay_t<decltype(a)>;
         using B = std::decay_t<decltype(b)>;
 
-        // Accept any integral types from ValueVariant, but not bool
-        if constexpr (std::is_integral_v<A> && std::is_integral_v<B> && !std::is_same_v<A, bool> &&
-                      !std::is_same_v<B, bool>) {
-            if constexpr (std::is_unsigned_v<A> && std::is_unsigned_v<B>) {
-                uint64_t l = static_cast<uint64_t>(a);
-                uint64_t r = static_cast<uint64_t>(b);
-                uint64_t out = 0;
-
-                switch (op) {
-                    case '+':
-                        out = l + r;
-                        break;
-                    case '-':
-                        out = l - r;
-                        break;
-                    case '*':
-                        out = l * r;
-                        break;
-                    case '/':
-                        if (r == 0) {
-                            throw std::runtime_error("Division by zero" + GetExprErrorContext());
-                        }
-                        out = l / r;
-                        break;
-                    default:
-                        throw std::runtime_error("Unknown arithmetic op" + GetExprErrorContext());
+        if constexpr (std::is_integral_v<A> && std::is_integral_v<B>) {
+            // Normalize to signed for '-', '/' and mixed signedness; keep unsigned for '+' and '*' when both unsigned
+            if (op == '+' || op == '*') {
+                if constexpr (std::is_unsigned_v<A> && std::is_unsigned_v<B>) {
+                    uint64_t l = static_cast<uint64_t>(a);
+                    uint64_t r = static_cast<uint64_t>(b);
+                    uint64_t out = (op == '+') ? (l + r) : (l * r);
+                    return static_cast<uint32_t>(out);
+                } else {
+                    int64_t l = static_cast<int64_t>(a);
+                    int64_t r = static_cast<int64_t>(b);
+                    int64_t out = (op == '+') ? (l + r) : (l * r);
+                    return static_cast<int32_t>(out);
                 }
-
-                // Truncate to the variant's widest unsigned type
-                return static_cast<uint32_t>(out);
-            } else {
+            } else if (op == '-' || op == '/') {
                 int64_t l = static_cast<int64_t>(a);
                 int64_t r = static_cast<int64_t>(b);
                 int64_t out = 0;
-
-                switch (op) {
-                    case '+':
-                        out = l + r;
-                        break;
-                    case '-':
-                        out = l - r;
-                        break;
-                    case '*':
-                        out = l * r;
-                        break;
-                    case '/':
-                        if (r == 0) {
-                            throw std::runtime_error("Division by zero" + GetExprErrorContext());
-                        }
-                        out = l / r;
-                        break;
-                    default:
-                        throw std::runtime_error("Unknown arithmetic op" + GetExprErrorContext());
+                if (op == '-') {
+                    out = l - r;
+                } else {
+                    if (r == 0) {
+                        throw std::runtime_error("Division by zero" + GetExprErrorContext());
+                    }
+                    out = l / r;
                 }
-
-                // Truncate to the variant's widest signed type
                 return static_cast<int32_t>(out);
+            } else {
+                throw std::runtime_error("Unknown arithmetic op" + GetExprErrorContext());
             }
         } else {
             throw std::runtime_error("Invalid types for arithmetic (must be integral, not bool)" +
@@ -807,49 +890,43 @@ LogicExpression::ValueVariant LogicExpression::Impl::EvaluateArithmetic(char op,
         }
     };
 
-    try {
-        auto result = std::visit(arith, lhs, rhs);
+    // Evaluate first child to initialize accumulator
+    ValueVariant accum = children[0]->Evaluate(path + ".0", depth + 1, callback);
 
-        // If callback is provided, call it
-        if (callback) {
-            std::string opStr;
-            switch (op) {
-                case '+':
-                    opStr = "Add";
-                    break;
-                case '-':
-                    opStr = "Subtract";
-                    break;
-                case '*':
-                    opStr = "Multiply";
-                    break;
-                case '/':
-                    opStr = "Divide";
-                    break;
-                default:
-                    opStr = "Unknown";
-            }
-
-            // Get the sub-expression string
-            // Find root to get expression string
-            const Impl* root = this;
-            while (root->parent)
-                root = root->parent;
-
-            std::string exprStr;
-            if (root->expressionString) {
-                exprStr = root->expressionString->substr(startIndex, endIndex - startIndex);
-            } else {
-                exprStr = "Unknown expression";
-            }
-
-            callback(expression, path, depth, opStr, result);
+    // Fold across remaining children left-associatively
+    for (size_t i = 1; i < children.size(); ++i) {
+        auto nextVal = children[i]->Evaluate(path + "." + std::to_string(i), depth + 1, callback);
+        try {
+            accum = std::visit(applyOp, accum, nextVal);
+        } catch (const std::bad_variant_access&) {
+            throw std::runtime_error("Invalid variant access in arithmetic" + GetExprErrorContext());
         }
-
-        return result;
-    } catch (const std::bad_variant_access&) {
-        throw std::runtime_error("Invalid variant access in arithmetic" + GetExprErrorContext());
     }
+
+    // Callback for the whole arithmetic node
+    if (callback) {
+        std::string opStr;
+        switch (op) {
+            case '+':
+                opStr = "Add";
+                break;
+            case '-':
+                opStr = "Subtract";
+                break;
+            case '*':
+                opStr = "Multiply";
+                break;
+            case '/':
+                opStr = "Divide";
+                break;
+            default:
+                opStr = "Unknown";
+                break;
+        }
+        callback(expression, path, depth, opStr, accum);
+    }
+
+    return accum;
 }
 
 LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string& path, int depth,
@@ -908,39 +985,37 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
         }
 
         case Type::And: {
-            // Short-circuit evaluation
-            auto leftResult = children[0]->Evaluate(path + ".0", depth + 1, callback);
-            if (!GetValue<bool>(leftResult)) {
-                result = false;
-                if (callback) {
-                    callback(expression, path, depth, GetTypeString() + " (short-circuit)", result);
+            // Short-circuit evaluation over all children
+            bool accum = true;
+            for (size_t i = 0; i < children.size(); ++i) {
+                auto childResult = children[i]->Evaluate(path + "." + std::to_string(i), depth + 1, callback);
+                if (!GetValue<bool>(childResult)) {
+                    accum = false;
+                    break;
                 }
-                return result;
             }
-
-            auto rightResult = children[1]->Evaluate(path + ".1", depth + 1, callback);
-            result = GetValue<bool>(rightResult);
+            result = accum;
             if (callback) {
-                callback(expression, path, depth, GetTypeString(), result);
+                callback(expression, path, depth, GetTypeString() + (GetValue<bool>(result) ? "" : " (short-circuit)"),
+                         result);
             }
             return result;
         }
 
         case Type::Or: {
-            // Short-circuit evaluation
-            auto leftResult = children[0]->Evaluate(path + ".0", depth + 1, callback);
-            if (GetValue<bool>(leftResult)) {
-                result = true;
-                if (callback) {
-                    callback(expression, path, depth, GetTypeString() + " (short-circuit)", result);
+            // Short-circuit evaluation over all children
+            bool accum = false;
+            for (size_t i = 0; i < children.size(); ++i) {
+                auto childResult = children[i]->Evaluate(path + "." + std::to_string(i), depth + 1, callback);
+                if (GetValue<bool>(childResult)) {
+                    accum = true;
+                    break;
                 }
-                return result;
             }
-
-            auto rightResult = children[1]->Evaluate(path + ".1", depth + 1, callback);
-            result = GetValue<bool>(rightResult);
+            result = accum;
             if (callback) {
-                callback(expression, path, depth, GetTypeString(), result);
+                callback(expression, path, depth, GetTypeString() + (GetValue<bool>(result) ? " (short-circuit)" : ""),
+                         result);
             }
             return result;
         }

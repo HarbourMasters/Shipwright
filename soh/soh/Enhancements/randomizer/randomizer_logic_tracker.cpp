@@ -377,9 +377,14 @@ static void DrawCondition(const LogicExpression& expression) {
         type == LogicExpression::Type::Comparison || type == LogicExpression::Type::Add ||
         type == LogicExpression::Type::Subtract || type == LogicExpression::Type::Multiply ||
         type == LogicExpression::Type::Divide) {
-        DrawColoredWrappedText({ { fontColors[0], children[0]->ToString() },
-                                 { defaultColor, " " + expression.GetOperation() + " " },
-                                 { fontColors[1], children[1]->ToString() } });
+        std::vector<std::pair<ImVec4, std::string>> segments;
+        for (size_t i = 0; i < children.size(); ++i) {
+            segments.emplace_back(fontColors[i % fontColorsLength], children[i]->ToString());
+            if (i < children.size() - 1) {
+                segments.emplace_back(defaultColor, " " + expression.GetOperation() + " ");
+            }
+        }
+        DrawColoredWrappedText(segments);
     } else if (type == LogicExpression::Type::Not) {
         DrawColoredWrappedText({ { defaultColor, "!" }, { fontColors[0], children[0]->ToString() } });
     } else if (type == LogicExpression::Type::FunctionCall) {
