@@ -459,3 +459,4 @@ soh/properties.h
 /clang-format
 /clang-format.exe
 *.o2r
+/soh/soh/Enhancements/Fuse/FuseSystem.cpp
