@@ -1386,7 +1386,7 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
             if (ChildLink2hMS_IsTwoHanded(this) && (sLeftHandType == PLAYER_MODELTYPE_LH_BGS)) {
                 // Force adult Master Sword grip DL for child two-handed Master Sword
                 Gfx* overrideDl = (sDListsLodOffset >= 2) ? gLinkAdultLeftHandHoldingMasterSwordFarDL
-                                                         : gLinkAdultLeftHandHoldingMasterSwordNearDL;
+                                                          : gLinkAdultLeftHandHoldingMasterSwordNearDL;
                 *dList = ResourceMgr_LoadGfxByName(overrideDl);
                 return false;
             }

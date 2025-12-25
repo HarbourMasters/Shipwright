@@ -742,8 +742,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         for (k = 0, temp = rowStart + 1, bit = rowStart, j = point; k < 3; k++, bit++, j += 4, temp++) {
 
             if ((gBitFlags[bit] & gSaveContext.inventory.equipment) && (pauseCtx->cursorSpecialPos == 0)) {
-                if (CHECK_AGE_REQ_EQUIP(i, k + 1) ||
-                    ChildLink2hMS_ShouldAllowEquip(i, k + 1)) {
+                if (CHECK_AGE_REQ_EQUIP(i, k + 1) || ChildLink2hMS_ShouldAllowEquip(i, k + 1)) {
                     if (temp == cursorSlot) {
                         pauseCtx->equipVtx[j].v.ob[0] = pauseCtx->equipVtx[j + 2].v.ob[0] =
                             pauseCtx->equipVtx[j].v.ob[0] - 2;
