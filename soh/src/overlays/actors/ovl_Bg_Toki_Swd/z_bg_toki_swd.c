@@ -8,6 +8,7 @@
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/ChildLink2hMS.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -87,10 +88,11 @@ void BgTokiSwd_Init(Actor* thisx, PlayState* play) {
         }
         this->actor.draw = NULL;
     } else if (IS_RANDO) {
-        // don't give child link a kokiri sword if we don't have one
-        uint32_t kokiriSwordBitMask = 1 << 0;
-        if (!(gSaveContext.inventory.equipment & kokiriSwordBitMask)) {
-            Player* player = GET_PLAYER(gPlayState);
+        // Child Link in ToT: only clear sword if NO valid sword is allowed
+        if (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI) &&
+            !(ChildLink2hMS_CanChildUseMasterSword() && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER))) {
+
+            Player* player = GET_PLAYER(play);
             player->currentSwordItemId = ITEM_NONE;
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
             Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_NONE);
