@@ -12,6 +12,7 @@
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/ShipUtils.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -24,6 +25,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/ObjectExtension/ActorMaximumHealth.h"
+#include "soh/Enhancements/ChildLink2hMS.h"
 
 #include "message_data_static.h"
 extern MessageTableEntry* sNesMessageEntryTablePtr;
@@ -1435,7 +1437,9 @@ void Rando_Inventory_SwapAgeEquipment(void) {
             if (i != 0) {
                 gSaveContext.childEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
             } else {
-                gSaveContext.childEquips.buttonItems[i] = ITEM_SWORD_KOKIRI;
+                gSaveContext.childEquips.buttonItems[i] =
+                    ChildLink2hMS_IsEnabled() ? ChildLink2hMS_SelectChildSword(gSaveContext.equips.buttonItems[i])
+                                              : ITEM_SWORD_KOKIRI;
             }
 
             if (i != 0) {
@@ -1529,7 +1533,10 @@ void Rando_Inventory_SwapAgeEquipment(void) {
 
         gSaveContext.adultEquips.equipment = gSaveContext.equips.equipment;
 
-        if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
+        s32 childEquipsInitialized =
+            (gSaveContext.childEquips.equipment != 0) || (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE);
+
+        if (childEquipsInitialized) {
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                 gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
 
@@ -1547,8 +1554,6 @@ void Rando_Inventory_SwapAgeEquipment(void) {
             }
 
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
-            gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
-            gSaveContext.equips.equipment |= EQUIP_VALUE_SWORD_KOKIRI << (EQUIP_TYPE_SWORD * 4);
         }
         // In Rando we need an extra case to handle starting as adult. We can use the fact that the childEquips will be
         // uninitialised (i.e. 0) at this point
@@ -1567,9 +1572,9 @@ void Rando_Inventory_SwapAgeEquipment(void) {
                                             (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4));
         }
 
-        // When becoming child in rando, set swordless flag and clear B button if player doesn't have kokiri sword
-        // Otherwise, equip sword and unset flag
-        if (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI)) {
+        if (ChildLink2hMS_IsEnabled()) {
+            ChildLink2hMS_ApplyChildSwordEquip(gSaveContext.equips.buttonItems[0]);
+        } else if (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_KOKIRI)) {
             gSaveContext.equips.equipment &= (u16) ~(0xF << (EQUIP_TYPE_SWORD * 4));
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
             Flags_SetInfTable(INFTABLE_SWORDLESS);
