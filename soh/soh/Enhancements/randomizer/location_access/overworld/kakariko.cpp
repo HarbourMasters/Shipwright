@@ -66,7 +66,7 @@ void RegionTable_Init_Kakariko() {
         Entrance(RR_KAK_CARPENTER_BOSS_HOUSE, []{return logic->CanOpenOverworldDoor(RG_BOSS_HOUSE_KEY);}),
         Entrance(RR_KAK_HOUSE_OF_SKULLTULA,   []{return logic->CanOpenOverworldDoor(RG_SKULLTULA_HOUSE_KEY);}),
         Entrance(RR_KAK_IMPAS_HOUSE,          []{return logic->CanOpenOverworldDoor(RG_IMPAS_HOUSE_KEY);}),
-        Entrance(RR_KAK_WINDMILL,             []{return logic->CanOpenOverworldDoor(RG_WINDMILL_KEY);}),
+        Entrance(RR_KAK_WINDMILL_LOWER,       []{return logic->CanOpenOverworldDoor(RG_WINDMILL_KEY);}),
         Entrance(RR_KAK_BAZAAR,               []{return logic->IsAdult && logic->AtDay && logic->CanOpenOverworldDoor(RG_KAK_BAZAAR_KEY);}),
         Entrance(RR_KAK_SHOOTING_GALLERY,     []{return logic->IsAdult && logic->AtDay && logic->CanOpenOverworldDoor(RG_KAK_SHOOTING_GALLERY_KEY);}),
         Entrance(RR_KAK_WELL,                 []{return logic->IsAdult || logic->Get(LOGIC_DRAIN_WELL) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_BOTTOM_OF_THE_WELL_NAVI_DIVE) && logic->IsChild && logic->HasItem(RG_BRONZE_SCALE) && logic->CanJumpslash());}),
@@ -167,16 +167,25 @@ void RegionTable_Init_Kakariko() {
         Entrance(RR_KAK_IMPAS_LEDGE, []{return true;}),
     });
 
-    areaTable[RR_KAK_WINDMILL] = Region("Kak Windmill", SCENE_WINDMILL_AND_DAMPES_GRAVE, {
+    areaTable[RR_KAK_WINDMILL_LOWER] = Region("Kak Windmill Lower", SCENE_WINDMILL_AND_DAMPES_GRAVE, {
         //Events
         EventAccess(LOGIC_DRAIN_WELL, []{return logic->IsChild && logic->CanUse(RG_SONG_OF_STORMS);}),
     }, {
         //Locations
-        LOCATION(RC_KAK_WINDMILL_FREESTANDING_POH, logic->CanUse(RG_BOOMERANG) || logic->Get(LOGIC_DAMPES_WINDMILL_ACCESS) || (logic->IsAdult && ctx->GetTrickOption(RT_KAK_ADULT_WINDMILL_POH)) || (logic->IsChild && logic->CanJumpslashExceptHammer() && ctx->GetTrickOption(RT_KAK_CHILD_WINDMILL_POH))),
+        LOCATION(RC_KAK_WINDMILL_FREESTANDING_POH, logic->CanUse(RG_BOOMERANG)),
         LOCATION(RC_SONG_FROM_WINDMILL,            logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA)),
     }, {
         //Exits
-        Entrance(RR_KAKARIKO_VILLAGE, []{return true;}),
+        Entrance(RR_KAKARIKO_VILLAGE,   []{return true;}),
+        Entrance(RR_KAK_WINDMILL_UPPER, []{return (logic->IsAdult && (ctx->GetTrickOption(RT_KAK_ADULT_WINDMILL_POH) || logic->CanGroundJump())) || (logic->IsChild && logic->CanJumpslash() && ctx->GetTrickOption(RT_KAK_CHILD_WINDMILL_POH));}),
+    });
+
+    areaTable[RR_KAK_WINDMILL_UPPER] = Region("Kak Windmill Upper", SCENE_WINDMILL_AND_DAMPES_GRAVE, {}, {
+        //Locations
+        LOCATION(RC_KAK_WINDMILL_FREESTANDING_POH, true),
+    }, {
+        //Exits
+        Entrance(RR_KAK_WINDMILL_LOWER, []{return true;}),
     });
 
     areaTable[RR_KAK_BAZAAR] = Region("Kak Bazaar", SCENE_BAZAAR, {}, {
