@@ -421,6 +421,10 @@ void Settings::CreateOptions() {
               "- Retrieving DMT Gold Skulltula beside bomb flower\n"
               "- Hitting switch through wall in Spirit Temple's big mirror room with Bow, Slingshot, or Hookshot\n"
               "- Hitting switch through wall in Spirit Trial with Bow or Slingshot");
+    OPT_TRICK(RT_BIG_SKULLTULA_PAUSE_LIFT, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
+              "Lift Big Skulltulas with Pausing",
+              "Pausing while a big skulltula is bobbing upwards slightly lifts it,\n"
+              "eventually allowing passage without any items.");
     OPT_TRICK(RT_GROUND_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "Ground Jump",
               "Enables requiring ground jumps.");
     OPT_TRICK(RT_GROUND_JUMP_HARD, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE, Tricks::Tag::GLITCH },

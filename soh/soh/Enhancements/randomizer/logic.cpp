@@ -848,7 +848,8 @@ bool Logic::CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             return HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT);
         case RE_BIG_SKULLTULA:
             // hammer jumpslash can pass, but only on flat land where you can kill with hammer swing
-            return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
+            return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG) ||
+                   (ctx->GetTrickOption(RT_BIG_SKULLTULA_PAUSE_LIFT) && wallOrFloor && distance == ED_CLOSE);
         case RE_LIKE_LIKE:
             return CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
         case RE_GIBDO:
