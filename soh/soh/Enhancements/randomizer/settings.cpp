@@ -981,6 +981,12 @@ void Settings::CreateOptions() {
         "Water Temple MQ North Basement GS without Small Key",
         "There is an invisible Hookshot target that can be used to get over the gate that blocks you from going to "
         "this Skulltula early, skipping a small key as well as needing Hovers or Scarecrow to reach the locked door.");
+    OPT_TRICK(
+        RT_WATER_IRON_BOOTS_LEDGE_GRAB, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
+        "Water Temple Ledge Grab While Surfacing with Iron Boots",
+        "Diving in front of ledge tapping B to swim up faster, then equipping iron boots while surfacing allows you to "
+        "ledge grab to the higher ground. This can be used to reach ledge to boss door and vanilla compass chest, or "
+        "MQ storage room");
     OPT_TRICK(RT_WATER_MORPHA_WITHOUT_HOOKSHOT, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::EXTREME },
               "Water Temple Morpha without Hookshot", "It is possible to slash at Morpha without hookshot.");
     OPT_TRICK(RT_LENS_SHADOW, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },
