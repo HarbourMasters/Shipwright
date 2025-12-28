@@ -15,12 +15,14 @@ static constexpr int32_t CVAR_GSTARGETABLE_DEFAULT = 0;
 #define CVAR_GSTARGETABLE_NAME CVAR_CHEAT("GSTargetable")
 #define CVAR_GSTARGETABLE_VALUE CVarGetInteger(CVAR_GSTARGETABLE_NAME, CVAR_GSTARGETABLE_DEFAULT)
 
-static void OnInitGSTargetable(void* refActor) {
+static void OnActorInitGSTargetable(void* refActor) {
     EnSw* enSw = reinterpret_cast<EnSw*>(refActor);
 
     if (enSw->actor.naviEnemyId == 0x20) {
-        // Enable Targeting this Gold Skulltula
-        enSw->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+        // Enable Targeting this Gold Skulltula, if visible by default
+        if (enSw->actor.scale.x >= 0.0139999995f) {
+            enSw->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+        }
 
         // By default Gold Skulltulas are categorized as NPCs (blue cursor) which feels wrong.
         // Change the category to Misc (green cursor) instead.
@@ -35,6 +37,23 @@ static void OnEnemyDefeatGSTargetable(void* refActor) {
     if (enSw->actor.naviEnemyId == 0x20) {
         // Disable Targeting immediately when the Gold Skulltula is defeated (like regular Skullwalltulas)
         enSw->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
+    }
+}
+
+static void OnActorUpdateGSTargetable(void* refActor) {
+    EnSw* enSw = reinterpret_cast<EnSw*>(refActor);
+
+    // Handle Night GS Spawning/Despawning
+    if ((enSw->actor.naviEnemyId == 0x20) && (((enSw->actor.params & 0xE000) >> 0xD) == 2) &&
+        (enSw->actor.colChkInfo.health > 0)) {
+        if (enSw->actor.scale.x < 0.0139999995f) {
+            // Night GS Despawn
+            enSw->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
+        }
+        if (enSw->actor.scale.x >= 0.0139999995f) {
+            // Night GS Spawn
+            enSw->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+        }
     }
 }
 
@@ -59,10 +78,11 @@ static void UpdateGSTargetable() {
                 Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, actor, ACTORCAT_MISC);
             }
 
-            // Make all Gold Skulltulas in Misc category targetable
+            // Make all Gold Skulltulas in Misc category targetable, if visible
             Actor* actorMisc = gPlayState->actorCtx.actorLists[ACTORCAT_MISC].head;
             while (actorMisc != nullptr) {
-                if ((actorMisc->id == ACTOR_EN_SW) && (actorMisc->naviEnemyId == 0x20)) {
+                if ((actorMisc->id == ACTOR_EN_SW) && (actorMisc->naviEnemyId == 0x20) &&
+                    (actorMisc->scale.x >= 0.0139999995f)) {
                     actorMisc->flags |= ACTOR_FLAG_ATTENTION_ENABLED;
                 }
                 actorMisc = actorMisc->next;
@@ -94,8 +114,9 @@ static void UpdateGSTargetable() {
 static void RegisterGSTargetable() {
     UpdateGSTargetable();
 
-    COND_ID_HOOK(OnActorInit, ACTOR_EN_SW, CVAR_GSTARGETABLE_VALUE, OnInitGSTargetable);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_SW, CVAR_GSTARGETABLE_VALUE, OnActorInitGSTargetable);
     COND_ID_HOOK(OnEnemyDefeat, ACTOR_EN_SW, CVAR_GSTARGETABLE_VALUE, OnEnemyDefeatGSTargetable);
+    COND_ID_HOOK(OnActorUpdate, ACTOR_EN_SW, CVAR_GSTARGETABLE_VALUE, OnActorUpdateGSTargetable);
 }
 
 static RegisterShipInitFunc initFunc(RegisterGSTargetable, { CVAR_GSTARGETABLE_NAME });
