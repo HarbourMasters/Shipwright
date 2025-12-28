@@ -48,6 +48,7 @@ extern "C" uint32_t ResourceMgr_GetGamePlatform(int index) {
         case OOT_PAL_GC_MQ_DBG:
             return GAME_PLATFORM_GC;
     }
+    return GAME_PLATFORM_N64;
 }
 
 extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
@@ -73,6 +74,7 @@ extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
         case OOT_PAL_GC_MQ_DBG:
             return GAME_REGION_PAL;
     }
+    return GAME_REGION_NTSC;
 }
 
 extern "C" char* _message_0xFFFC_nes;
@@ -324,6 +326,10 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
     auto res = std::static_pointer_cast<Fast::DisplayList>(
         Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
 
+    if (res == nullptr || index < 0 || static_cast<size_t>(index) >= res->Instructions.size()) {
+        return;
+    }
+
     // Leaving this here for people attempting to find the correct Dlist index to patch
     /*if (strcmp("__OTR__objects/object_gi_longsword/gGiBiggoronSwordDL", path) == 0) {
         for (int i = 0; i < res->instructions.size(); i++) {
@@ -357,63 +363,18 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
     *gfx = instruction;
 }
 
-// Runtime-generated alt DisplayLists for custom equipment
-static std::unordered_map<std::string, std::shared_ptr<Fast::DisplayList>> runtimeAltDisplayLists;
-
-// Create substitute DisplayList for alt assets to be used for custom equips & patches.
-// This prevents modifying the original DisplayList, which could lead to issues when
-// switching between alt & original assets.
-static std::shared_ptr<Fast::DisplayList> ResourceMgr_GetOrCreateAltDisplayList(const char* path) {
-    std::string basePath = path;
-    if (basePath.starts_with("__OTR__")) {
-        basePath = basePath.substr(7);
-    }
-
-    std::string altPath = "alt/" + basePath;
-    auto rm = Ship::Context::GetInstance()->GetResourceManager();
-
-    // 1) Prefer runtime-generated alt DL if it already exists
-    if (runtimeAltDisplayLists.contains(altPath)) {
-        return runtimeAltDisplayLists[altPath];
-    }
-
-    // 2) Prefer filesystem-backed alt asset if it exists
-    if (ExtensionCache.contains(altPath)) {
-        return std::static_pointer_cast<Fast::DisplayList>(rm->LoadResource(altPath.c_str()));
-    }
-
-    // 3) Clone vanilla DL into a runtime alt
-    auto vanilla = std::static_pointer_cast<Fast::DisplayList>(rm->LoadResource(basePath.c_str()));
-
-    if (!vanilla) {
-        return nullptr;
-    }
-
-    auto cloned = std::make_shared<Fast::DisplayList>(*vanilla);
-    cloned->GetInitData()->IsCustom = true;
-
-    // Register runtime alt (best-effort; runtimeAltDisplayLists is authoritative)
-    runtimeAltDisplayLists[altPath] = cloned;
-    return cloned;
-}
-
-// Module to patch DisplayList instructions for custom equipment
 extern "C" void ResourceMgr_PatchCustomGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
-    auto res = ResourceMgr_GetOrCreateAltDisplayList(path);
-    if (!res) {
+    auto res = std::static_pointer_cast<Fast::DisplayList>(
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
+
+    if (res == nullptr || index < 0 || static_cast<size_t>(index) >= res->Instructions.size()) {
         return;
     }
 
-    std::string basePath = path;
-    if (basePath.starts_with("__OTR__")) {
-        basePath = basePath.substr(7);
-    }
-    std::string altPath = "alt/" + basePath;
-
     Gfx* gfx = (Gfx*)&res->Instructions[index];
 
-    if (!originalGfx.contains(altPath) || !originalGfx[altPath].contains(patchName)) {
-        originalGfx[altPath][patchName] = { index, *gfx };
+    if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
+        originalGfx[path][patchName] = { index, *gfx };
     }
 
     *gfx = instruction;
@@ -423,6 +384,12 @@ extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const ch
                                                       int sourceIndex) {
     auto res = std::static_pointer_cast<Fast::DisplayList>(
         Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
+
+    if (res == nullptr || destinationIndex < 0 || sourceIndex < 0 ||
+        static_cast<size_t>(destinationIndex) >= res->Instructions.size() ||
+        static_cast<size_t>(sourceIndex) >= res->Instructions.size()) {
+        return;
+    }
 
     // Do not patch custom assets as they most likely do not have the same instructions as authentic assets
     if (res->GetInitData()->IsCustom) {
@@ -444,9 +411,14 @@ extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patch
         auto res = std::static_pointer_cast<Fast::DisplayList>(
             Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
 
+        if (res == nullptr) {
+            originalGfx[path].erase(patchName);
+            return;
+        }
+
         // Skip and clean up if the loaded resource is smaller than the recorded patch index (can happen when alt assets
         // swap in shorter display lists).
-        if (originalGfx[path][patchName].index >= res->Instructions.size()) {
+        if (static_cast<size_t>(originalGfx[path][patchName].index) >= res->Instructions.size()) {
             originalGfx[path].erase(patchName);
             return;
         }
