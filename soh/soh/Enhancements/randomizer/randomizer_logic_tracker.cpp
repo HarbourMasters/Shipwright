@@ -117,6 +117,11 @@ static void PopulateConnectionExpression(LogicTrackerNode::Connection& connectio
     }
 
     try {
+        logic->IsChild = false;
+        logic->IsAdult = false;
+        logic->AtDay = false;
+        logic->AtNight = false;
+
         connection.ExpressionTable.Root = CreateExpressionRows(expression);
 
         if (connection.ChildDayAccess) {
