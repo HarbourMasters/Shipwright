@@ -100,7 +100,7 @@ std::map<CosmeticGroup, const char*> groupLabels = {
 };
 
 static const std::unordered_map<int32_t, const char*> cosmeticsRandomizerModes = {
-    { RANDOMIZE_OFF, "Disabled" },
+    { RANDOMIZE_OFF, "Manual" },
     { RANDOMIZE_ON_NEW_SCENE, "On New Scene" },
     { RANDOMIZE_ON_RANDO_GEN_ONLY, "On Rando Gen Only" },
     { RANDOMIZE_ON_FILE_LOAD, "On File Load" },
@@ -2107,10 +2107,8 @@ void ApplySideEffects(CosmeticOption& cosmeticOption) {
 void RandomizeColor(CosmeticOption& cosmeticOption, bool manual = true) {
     ImVec4 randomColor;
 
-    if (!manual && IS_RANDO &&
-            CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED ||
-        !manual && IS_RANDO &&
-            CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
+    if (!manual && CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED ||
+        !manual && CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
 
         uint32_t finalSeed = cosmeticOption.defaultColor.r + cosmeticOption.defaultColor.g +
                              cosmeticOption.defaultColor.b + cosmeticOption.defaultColor.a +
@@ -2405,7 +2403,7 @@ void CosmeticsEditorWindow::DrawElement() {
             .DefaultIndex(RANDOMIZE_OFF)
             .Color(THEME_COLOR)
             .Tooltip("Set when the cosmetics is automaticly randomized:\n"
-                     "- Disabled: No cosmetics are randomized\n"
+                     "- Manual: Manually randomize cosmetics by pressing the 'Randomize all' button\n"
                      "- On New Scene : Randomizes when you enter a new scene.\n"
                      "- On Rando Gen Only: Randomizes only when you generate a new randomizer.\n"
                      "- On File Load: Randomizes on File Load.\n"

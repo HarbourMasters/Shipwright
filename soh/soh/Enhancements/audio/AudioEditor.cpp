@@ -78,7 +78,7 @@ size_t AuthenticCountBySequenceType(SeqType type) {
 }
 
 static const std::unordered_map<int32_t, const char*> audioRandomizerModes = {
-    { RANDOMIZE_OFF, "Disabled" },
+    { RANDOMIZE_OFF, "Manual" },
     { RANDOMIZE_ON_NEW_SCENE, "On New Scene" },
     { RANDOMIZE_ON_RANDO_GEN_ONLY, "On Rando Gen Only" },
     { RANDOMIZE_ON_FILE_LOAD, "On File Load" },
@@ -111,8 +111,8 @@ void RandomizeGroup(SeqType type, bool manual = true) {
     std::vector<u16> values;
 
     if (!manual) {
-        if (IS_RANDO && CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED ||
-            IS_RANDO && CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
+        if (CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED ||
+            CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
 
             uint32_t finalSeed = type + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
                                                   : static_cast<uint32_t>(gSaveContext.ship.stats.fileCreatedAt));
@@ -913,7 +913,8 @@ void RegisterAudioWidgets() {
                 .ComboMap(audioRandomizerModes)
                 .Tooltip(
                     "Set when the music and sound effects is automaticly randomized:\n"
-                    "- Disabled: No music or sound effects are randomized\n"
+                    "- Manual: Manually randomize music or sound effects by pressing the 'Randomize all Groups' "
+                    "button\n"
                     "- On New Scene : Randomizes when you enter a new scene.\n"
                     "- On Rando Gen Only: Randomizes only when you generate a new randomizer.\n"
                     "- On File Load: Randomizes on File Load.\n"
