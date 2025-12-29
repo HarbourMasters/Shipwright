@@ -87,8 +87,7 @@ void RegionTable_Init_Graveyard() {
 
     areaTable[RR_GRAVEYARD_DAMPES_GRAVE] = Region("Graveyard Dampes Grave", SCENE_WINDMILL_AND_DAMPES_GRAVE, {
         //Events
-        EVENT_ACCESS(LOGIC_NUT_ACCESS,             logic->CanBreakPots()),
-        EVENT_ACCESS(LOGIC_DAMPES_WINDMILL_ACCESS, logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)),
+        EVENT_ACCESS(LOGIC_NUT_ACCESS,                     logic->CanBreakPots()),
     }, {
         //Locations
         LOCATION(RC_GRAVEYARD_HOOKSHOT_CHEST,              true),
@@ -109,8 +108,8 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_8,          true),
     }, {
         //Exits
-        ENTRANCE(RR_THE_GRAVEYARD, true),
-        ENTRANCE(RR_KAK_WINDMILL,  (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (logic->IsChild && logic->CanGroundJump()), false),
+        ENTRANCE(RR_THE_GRAVEYARD,      true),
+        ENTRANCE(RR_KAK_WINDMILL_UPPER, (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (logic->IsChild && logic->CanGroundJump()), false),
     });
 
     areaTable[RR_GRAVEYARD_DAMPES_HOUSE] = Region("Graveyard Dampes House", SCENE_GRAVEKEEPERS_HUT, {}, {

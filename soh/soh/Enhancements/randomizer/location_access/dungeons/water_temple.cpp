@@ -30,12 +30,12 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_WEST_LOWER,            logic->Get(LOGIC_WATER_LOW_FROM_HIGH) && logic->HasItem(RG_GORONS_BRACELET) && (logic->IsChild || logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS)) && (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS) || logic->CanUse(RG_ZORA_TUNIC))),
         ENTRANCE(RR_WATER_TEMPLE_CENTRAL_PILLAR_LOWER,  logic->Get(LOGIC_WATER_LOW_FROM_HIGH) && logic->SmallKeys(SCENE_WATER_TEMPLE, 5)),
         ENTRANCE(RR_WATER_TEMPLE_CENTRAL_PILLAR_UPPER,  (logic->Get(LOGIC_WATER_LOW_FROM_HIGH) || logic->Get(LOGIC_WATER_MIDDLE)) && (logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW))),
-        ENTRANCE(RR_WATER_TEMPLE_EAST_MIDDLE,           (logic->Get(LOGIC_WATER_LOW_FROM_HIGH) || logic->Get(LOGIC_WATER_MIDDLE) || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16)) && logic->CanUse(RG_HOOKSHOT)),
+        ENTRANCE(RR_WATER_TEMPLE_EAST_MIDDLE,           ((logic->Get(LOGIC_WATER_LOW_FROM_HIGH) || logic->Get(LOGIC_WATER_MIDDLE) || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16)) && logic->CanUse(RG_HOOKSHOT)) || (logic->Get(LOGIC_WATER_HIGH) && ctx->GetTrickOption(RT_WATER_IRON_BOOTS_LEDGE_GRAB) && logic->TakeDamage() && logic->HasItem(RG_BRONZE_SCALE) && logic->CanUse(RG_IRON_BOOTS))),
         ENTRANCE(RR_WATER_TEMPLE_WEST_MIDDLE,           logic->Get(LOGIC_WATER_MIDDLE)),
         ENTRANCE(RR_WATER_TEMPLE_HIGH_WATER,            logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_DAMAGE_BOOST) && logic->CanUse(RG_BOMB_BAG) && logic->TakeDamage()))),
         ENTRANCE(RR_WATER_TEMPLE_BLOCK_CORRIDOR,        (logic->Get(LOGIC_WATER_LOW_FROM_HIGH) || logic->Get(LOGIC_WATER_MIDDLE)) && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW)) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_WATER_CENTRAL_BOW) && (logic->IsAdult || logic->Get(LOGIC_WATER_MIDDLE))))),
         ENTRANCE(RR_WATER_TEMPLE_FALLING_PLATFORM_ROOM, logic->Get(LOGIC_WATER_HIGH) && logic->SmallKeys(SCENE_WATER_TEMPLE, 4)),
-        ENTRANCE(RR_WATER_TEMPLE_PRE_BOSS_ROOM,         (logic->Get(LOGIC_WATER_HIGH) && logic->CanUse(RG_LONGSHOT)) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanUse(RG_HOVER_BOOTS))),
+        ENTRANCE(RR_WATER_TEMPLE_PRE_BOSS_ROOM,         (logic->Get(LOGIC_WATER_HIGH) && (logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_WATER_IRON_BOOTS_LEDGE_GRAB) && logic->IsAdult && logic->HasItem(RG_BRONZE_SCALE) && logic->CanUse(RG_IRON_BOOTS)))) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanUse(RG_HOVER_BOOTS))),
     });
 
     areaTable[RR_WATER_TEMPLE_EAST_LOWER] = Region("Water Temple East Lower", SCENE_WATER_TEMPLE, {
@@ -326,7 +326,7 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_MQ_3F_SOUTH_LEDGE,      logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_HOVER_BOOTS)),
         ENTRANCE(RR_WATER_TEMPLE_MQ_2F_CENTRAL,          (logic->MQWaterLevel(WL_LOW_OR_MID) || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16)) && logic->CanUse(RG_HOOKSHOT)),
         ENTRANCE(RR_WATER_TEMPLE_MQ_CENTRAL_PILLAR_HIGH, logic->MQWaterLevel(WL_HIGH) && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16 && logic->CanUse(RG_HOOKSHOT)),
-        ENTRANCE(RR_WATER_TEMPLE_MQ_3F_NORTH_LEDGE,      (logic->MQWaterLevel(WL_HIGH) && logic->CanUse(RG_LONGSHOT)) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanUse(RG_HOVER_BOOTS))),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_3F_NORTH_LEDGE,      (logic->MQWaterLevel(WL_HIGH) && (logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_WATER_IRON_BOOTS_LEDGE_GRAB) && logic->IsAdult && logic->HasItem(RG_BRONZE_SCALE) && logic->CanUse(RG_IRON_BOOTS)))) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanUse(RG_HOVER_BOOTS))),
         //Jumping across is possible but a trick due to the janky ledge
         ENTRANCE(RR_WATER_TEMPLE_MQ_HIGH_EMBLEM,         logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS))),
         //room access is (logic->IsAdult || (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT)))
@@ -342,7 +342,7 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_MQ_MAIN,                  true),
         ENTRANCE(RR_WATER_TEMPLE_MQ_3F_CENTRAL,            logic->CanUse(RG_HOOKSHOT)),
         ENTRANCE(RR_WATER_TEMPLE_MQ_CENTRAL_PILLAR_2F,     logic->MQWaterLevel(WL_LOW_OR_MID)),
-        ENTRANCE(RR_WATER_TEMPLE_MQ_STORAGE_ROOM,          logic->CanUse(RG_HOOKSHOT)),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_STORAGE_ROOM,          logic->CanUse(RG_HOOKSHOT) || (logic->Get(LOGIC_WATER_HIGH) && ctx->GetTrickOption(RT_WATER_IRON_BOOTS_LEDGE_GRAB) && logic->HasItem(RG_BRONZE_SCALE) && logic->CanUse(RG_IRON_BOOTS))),
         ENTRANCE(RR_WATER_TEMPLE_MQ_BEHIND_BLUE_SWITCH_2F, logic->MQWaterLevel(WL_LOW_OR_MID) && (logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_HOOKSHOT)),
         ENTRANCE(RR_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY,      logic->MQWaterLevel(WL_LOW_OR_MID) && logic->CanUse(RG_HOVER_BOOTS)),
     });
