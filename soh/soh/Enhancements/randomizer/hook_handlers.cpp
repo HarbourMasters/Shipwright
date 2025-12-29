@@ -6,7 +6,6 @@
 #include "soh/Enhancements/item-tables/ItemTableManager.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
-#include "soh/Enhancements/randomizer/fishsanity.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -2438,12 +2437,6 @@ void RandomizerRegisterHooks() {
     static uint32_t onKaleidoUpdateHook = 0;
     static uint32_t onCuccoOrChickenHatchHook = 0;
 
-    static uint32_t fishsanityOnActorInitHook = 0;
-    static uint32_t fishsanityOnActorUpdateHook = 0;
-    static uint32_t fishsanityOnSceneInitHook = 0;
-    static uint32_t fishsanityOnVanillaBehaviorHook = 0;
-    static uint32_t fishsanityOnItemReceiveHook = 0;
-
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         ShipInit::Init("IS_RANDO");
 
@@ -2470,13 +2463,6 @@ void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(onKaleidoUpdateHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnCuccoOrChickenHatch>(onCuccoOrChickenHatchHook);
 
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(fishsanityOnActorInitHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(fishsanityOnActorUpdateHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(fishsanityOnSceneInitHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnVanillaBehavior>(
-            fishsanityOnVanillaBehaviorHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(fishsanityOnItemReceiveHook);
-
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;
         onPlayerUpdateForRCQueueHook = 0;
@@ -2495,12 +2481,6 @@ void RandomizerRegisterHooks() {
         onExitGameHook = 0;
         onKaleidoUpdateHook = 0;
         onCuccoOrChickenHatchHook = 0;
-
-        fishsanityOnActorInitHook = 0;
-        fishsanityOnActorUpdateHook = 0;
-        fishsanityOnSceneInitHook = 0;
-        fishsanityOnVanillaBehaviorHook = 0;
-        fishsanityOnItemReceiveHook = 0;
 
         if (!IS_RANDO)
             return;
@@ -2553,18 +2533,6 @@ void RandomizerRegisterHooks() {
 
         if (RAND_GET_OPTION(RSK_FISHSANITY) != RO_FISHSANITY_OFF) {
             OTRGlobals::Instance->gRandoContext->GetFishsanity()->InitializeFromSave();
-
-            fishsanityOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(
-                Rando::Fishsanity::OnActorInitHandler);
-            fishsanityOnActorUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(
-                Rando::Fishsanity::OnActorUpdateHandler);
-            fishsanityOnSceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
-                Rando::Fishsanity::OnSceneInitHandler);
-            fishsanityOnVanillaBehaviorHook =
-                GameInteractor::Instance->RegisterGameHook<GameInteractor::OnVanillaBehavior>(
-                    Rando::Fishsanity::OnVanillaBehaviorHandler);
-            fishsanityOnItemReceiveHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(
-                Rando::Fishsanity::OnItemReceiveHandler);
         }
     });
 }

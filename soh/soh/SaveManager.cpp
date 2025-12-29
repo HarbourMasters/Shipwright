@@ -466,6 +466,7 @@ void SaveManager::Init() {
         }
     }
     saveBlock = nlohmann::json::object();
+    OTRGlobals::Instance->gRandoContext->ClearItemLocations();
 }
 
 void SaveManager::StartupCheckAndInitMeta(int fileNum) {
