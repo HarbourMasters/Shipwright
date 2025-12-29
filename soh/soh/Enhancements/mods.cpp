@@ -15,9 +15,6 @@
 #include "soh/Enhancements/randomizer/hook_handlers.h"
 
 #include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
-#include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
-#include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
-#include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "soh_assets.h"
