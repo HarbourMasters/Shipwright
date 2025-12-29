@@ -93,6 +93,16 @@ u8 hasCreatedRandoChestTextures = 0;
 u8 hasCustomChestDLs = 0;
 u8 hasChristmasChestTexturesAvailable = 0;
 
+static Gfx* EnBox_LoadChestDL(const char* dlName, const char* fallbackName) {
+    Gfx* dl = ResourceMgr_LoadGfxByName(dlName);
+
+    if (dl == NULL && fallbackName != NULL) {
+        dl = ResourceMgr_LoadGfxByName(fallbackName);
+    }
+
+    return dl;
+}
+
 void EnBox_SetupAction(EnBox* this, EnBoxActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
@@ -580,97 +590,93 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
     GetItemCategory getItemCategory;
+    GetItemEntry chestItem = this->getItemEntry;
 
     int isVanilla = csmc == CSMC_DISABLED || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) ||
                     (play->sceneNum == SCENE_TREASURE_BOX_SHOP &&
                      this->dyna.actor.room != 6); // Exclude treasure game chests except for the final room
 
     if (!isVanilla) {
-        GetItemEntry test = this->getItemEntry;
-        getItemCategory = this->getItemEntry.getItemCategory;
+        getItemCategory = chestItem.getItemCategory;
         // If they have bombchus, don't consider the bombchu item major
         if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-            ((this->getItemEntry.modIndex == MOD_RANDOMIZER &&
-              this->getItemEntry.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
-             (this->getItemEntry.modIndex == MOD_NONE &&
-              (this->getItemEntry.getItemId == GI_BOMBCHUS_5 || this->getItemEntry.getItemId == GI_BOMBCHUS_10 ||
-               this->getItemEntry.getItemId == GI_BOMBCHUS_20)))) {
+            ((chestItem.modIndex == MOD_RANDOMIZER && chestItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
+             (chestItem.modIndex == MOD_NONE &&
+              (chestItem.getItemId == GI_BOMBCHUS_5 || chestItem.getItemId == GI_BOMBCHUS_10 ||
+               chestItem.getItemId == GI_BOMBCHUS_20)))) {
             getItemCategory = ITEM_CATEGORY_JUNK;
             // If it's a bottle and they already have one, consider the item lesser
-        } else if ((this->getItemEntry.modIndex == MOD_RANDOMIZER &&
-                    this->getItemEntry.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
-                    this->getItemEntry.getItemId <= RG_BOTTLE_WITH_POE) ||
-                   (this->getItemEntry.modIndex == MOD_NONE &&
-                    (this->getItemEntry.getItemId == GI_BOTTLE || this->getItemEntry.getItemId == GI_MILK_BOTTLE))) {
+        } else if ((chestItem.modIndex == MOD_RANDOMIZER && chestItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
+                    chestItem.getItemId <= RG_BOTTLE_WITH_POE) ||
+                   (chestItem.modIndex == MOD_NONE &&
+                    (chestItem.getItemId == GI_BOTTLE || chestItem.getItemId == GI_MILK_BOTTLE))) {
             if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
                 getItemCategory = ITEM_CATEGORY_LESSER;
             }
         }
     }
 
-    // Change size
-    if (!isVanilla && (csmc == CSMC_BOTH || csmc == CSMC_SIZE)) {
-        switch (getItemCategory) {
-            case ITEM_CATEGORY_JUNK:
-            case ITEM_CATEGORY_SMALL_KEY:
-            case ITEM_CATEGORY_SKULLTULA_TOKEN:
-                Actor_SetScale(&this->dyna.actor, 0.005f);
-                Actor_SetFocus(&this->dyna.actor, 20.0f);
-                break;
-            default:
-                Actor_SetScale(&this->dyna.actor, 0.01f);
-                Actor_SetFocus(&this->dyna.actor, 40.0f);
-                break;
-        }
-    } else {
-        switch (this->type) {
-            case ENBOX_TYPE_SMALL:
-            case ENBOX_TYPE_6:
-            case ENBOX_TYPE_ROOM_CLEAR_SMALL:
-            case ENBOX_TYPE_SWITCH_FLAG_FALL_SMALL:
-                Actor_SetScale(&this->dyna.actor, 0.005f);
-                Actor_SetFocus(&this->dyna.actor, 20.0f);
-                break;
-            default:
-                Actor_SetScale(&this->dyna.actor, 0.01f);
-                Actor_SetFocus(&this->dyna.actor, 40.0f);
-        }
+    // Always keep vanilla size; CSMC no longer alters scale
+    switch (this->type) {
+        case ENBOX_TYPE_SMALL:
+        case ENBOX_TYPE_6:
+        case ENBOX_TYPE_ROOM_CLEAR_SMALL:
+        case ENBOX_TYPE_SWITCH_FLAG_FALL_SMALL:
+            Actor_SetScale(&this->dyna.actor, 0.005f);
+            Actor_SetFocus(&this->dyna.actor, 20.0f);
+            break;
+        default:
+            Actor_SetScale(&this->dyna.actor, 0.01f);
+            Actor_SetFocus(&this->dyna.actor, 40.0f);
     }
 
-    // Change texture
-    if (!isVanilla && hasCreatedRandoChestTextures && !hasCustomChestDLs &&
-        (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE)) {
+    // Change model/texture
+    if (!isVanilla && (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_MAJOR:
-                this->boxBodyDL = gGoldTreasureChestChestFrontDL;
-                this->boxLidDL = gGoldTreasureChestChestSideAndLidDL;
+                this->boxBodyDL = EnBox_LoadChestDL(gChestBodyMajorDL, gTreasureChestChestFrontDL);
+                this->boxLidDL = EnBox_LoadChestDL(gChestLidMajorDL, gTreasureChestChestSideAndLidDL);
                 break;
             case ITEM_CATEGORY_SKULLTULA_TOKEN:
-                this->boxBodyDL = gSkullTreasureChestChestFrontDL;
-                this->boxLidDL = gSkullTreasureChestChestSideAndLidDL;
+                this->boxBodyDL = EnBox_LoadChestDL(gChestBodyTokenDL, gTreasureChestChestFrontDL);
+                this->boxLidDL = EnBox_LoadChestDL(gChestLidTokenDL, gTreasureChestChestSideAndLidDL);
                 break;
             case ITEM_CATEGORY_SMALL_KEY:
-                this->boxBodyDL = gKeyTreasureChestChestFrontDL;
-                this->boxLidDL = gKeyTreasureChestChestSideAndLidDL;
+                this->boxBodyDL = EnBox_LoadChestDL(gChestBodySmallKeyDL, gTreasureChestChestFrontDL);
+                this->boxLidDL = EnBox_LoadChestDL(gChestLidSmallKeyDL, gTreasureChestChestSideAndLidDL);
                 break;
             case ITEM_CATEGORY_BOSS_KEY:
-                this->boxBodyDL = gTreasureChestBossKeyChestFrontDL;
-                this->boxLidDL = gTreasureChestBossKeyChestSideAndTopDL;
+                this->boxBodyDL = EnBox_LoadChestDL(gTreasureChestBossKeyChestFrontDL, gTreasureChestChestFrontDL);
+                this->boxLidDL =
+                    EnBox_LoadChestDL(gTreasureChestBossKeyChestSideAndTopDL, gTreasureChestChestSideAndLidDL);
                 break;
             case ITEM_CATEGORY_LESSER:
+                switch (chestItem.itemId) {
+                    case ITEM_HEART_PIECE:
+                    case ITEM_HEART_PIECE_2:
+                    case ITEM_HEART_CONTAINER:
+                        this->boxBodyDL = EnBox_LoadChestDL(gChestBodyHeartDL, gTreasureChestChestFrontDL);
+                        this->boxLidDL = EnBox_LoadChestDL(gChestLidHeartDL, gTreasureChestChestSideAndLidDL);
+                        break;
+                    default:
+                        this->boxBodyDL = EnBox_LoadChestDL(gChestBodyMinorDL, gTreasureChestChestFrontDL);
+                        this->boxLidDL = EnBox_LoadChestDL(gChestLidMinorDL, gTreasureChestChestSideAndLidDL);
+                        break;
+                }
+                break;
             case ITEM_CATEGORY_JUNK:
             default:
-                this->boxBodyDL = gTreasureChestChestFrontDL;
-                this->boxLidDL = gTreasureChestChestSideAndLidDL;
+                this->boxBodyDL = EnBox_LoadChestDL(gChestBodyJunkDL, gTreasureChestChestFrontDL);
+                this->boxLidDL = EnBox_LoadChestDL(gChestLidJunkDL, gTreasureChestChestSideAndLidDL);
                 break;
         }
     } else {
         if (this->type != ENBOX_TYPE_DECORATED_BIG) {
-            this->boxBodyDL = gTreasureChestChestFrontDL;
-            this->boxLidDL = gTreasureChestChestSideAndLidDL;
+            this->boxBodyDL = EnBox_LoadChestDL(gTreasureChestChestFrontDL, NULL);
+            this->boxLidDL = EnBox_LoadChestDL(gTreasureChestChestSideAndLidDL, NULL);
         } else {
-            this->boxBodyDL = gTreasureChestBossKeyChestFrontDL;
-            this->boxLidDL = gTreasureChestBossKeyChestSideAndTopDL;
+            this->boxBodyDL = EnBox_LoadChestDL(gTreasureChestBossKeyChestFrontDL, gTreasureChestChestFrontDL);
+            this->boxLidDL = EnBox_LoadChestDL(gTreasureChestBossKeyChestSideAndTopDL, gTreasureChestChestSideAndLidDL);
         }
     }
 
