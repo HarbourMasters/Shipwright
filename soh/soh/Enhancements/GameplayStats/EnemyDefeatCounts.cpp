@@ -26,7 +26,7 @@ static void IncrementEnemyDefeatCount(GameplayStatCount countType) {
     COND_ID_HOOK(OnEnemyDefeat, actorID, true, [](void* refActor) { func(static_cast<Actor*>(refActor)); });
 
 #define ENEMY_DEFEAT_COUNT_UNIQUE(actorID, countType) \
-    ENEMY_DEFEAT_COUNT(actorID, [](void*) { IncrementEnemyDefeatCount(countType); });
+    COND_ID_HOOK(OnEnemyDefeat, actorID, true, [](void*) { IncrementEnemyDefeatCount(countType); });
 
 static void EnemyDefeatCounts_EnBb(Actor* actor) {
     GameplayStatCount countType;
