@@ -144,7 +144,7 @@ static void EnemyDefeatCounts_EnSw(Actor* actor) {
     if (((actor->params & 0xE000) >> 0xD) != 0) {
         countType = COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD;
     } else {
-        countType = COUNT_ENEMIES_DEFEATED_SKULLTULA;
+        countType = COUNT_ENEMIES_DEFEATED_SKULLWALLTULA;
     }
 
     IncrementEnemyDefeatCount(countType);
