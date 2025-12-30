@@ -902,7 +902,7 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
 
 #if __SANITIZE_ADDRESS__ || defined(__OpenBSD__)
                     uintptr_t actualAddrLoaded = sampleData - sampleDataStartPad;
-                    uintptr_t offset = actualAddrLoaded - (uintptr_t) sampleAddr;
+                    uintptr_t offset = actualAddrLoaded - (uintptr_t)sampleAddr;
                     if (offset + aligned > audioFontSample->size) {
                         aligned -= (offset + aligned - audioFontSample->size);
                     }
