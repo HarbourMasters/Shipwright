@@ -1121,6 +1121,13 @@ void Settings::CreateOptions() {
               "Spirit Temple MQ Frozen Eye Switch without Fire",
               "You can melt the ice by shooting an arrow through a torch. The only way to find a line of sight for "
               "this shot is to first spawn a Song of Time block, and then stand on the very edge of it.");
+    OPT_TRICK(RT_ICE_STALAGMITE_CLIP, RCQUEST_BOTH, RA_ICE_CAVERN, { Tricks::Tag::NOVICE },
+              "Ice Cavern Stalagmite Clips",
+              "Most stalagmites blocking path in Ice Cavern can be clipped past with basic movement. Also applies to "
+              "Water Trial.");
+    OPT_TRICK(RT_ICE_STALAGMITE_HOOKSHOT, RCQUEST_BOTH, RA_ICE_CAVERN, { Tricks::Tag::NOVICE },
+              "Ice Cavern Stalagmites with Hookshot",
+              "Shooting stalagmites with hookshot in the right way also breaks them. Also applies to Water Trial.");
     OPT_TRICK(RT_ICE_BLOCK_GS, RCQUEST_VANILLA, RA_ICE_CAVERN, { Tricks::Tag::INTERMEDIATE },
               "Ice Cavern Block Room GS with Hover Boots",
               "The Hover Boots can be used to get in front of the Skulltula to kill it with a jump slash. Then, the "
