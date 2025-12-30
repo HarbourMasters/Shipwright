@@ -60,6 +60,9 @@ static void RandomizedEnemySizes(void* refActor) {
 
         // Ensure the scaled health doesn't go below zero
         actor->colChkInfo.health = fmax(scaledHealth, 1.0f);
+
+        // Ensure maximum health gets set
+        SetActorMaximumHealth(actor, actor->colChkInfo.health);
     }
 }
 
