@@ -99,6 +99,7 @@ void RegionTable_Init_ForestTemple() {
         Entrance(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER, []{return logic->CanUse(RG_HOVER_BOOTS) && ((ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()) || (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->IsAdult && logic->CanGroundJump()));}),
         Entrance(RR_FOREST_TEMPLE_MAP_ROOM,           []{return true;}),
         Entrance(RR_FOREST_TEMPLE_SEWER,              []{return logic->HasItem(RG_GOLDEN_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
+        Entrance(RR_FOREST_TEMPLE_DRAINED_SEWER,      []{return logic->Get(LOGIC_FOREST_DRAINED_WELL);}),
         Entrance(RR_FOREST_TEMPLE_BOSS_ENTRYWAY,      []{return false;}),
     });
 
@@ -132,6 +133,7 @@ void RegionTable_Init_ForestTemple() {
         Entrance(RR_FOREST_TEMPLE_NE_COURTYARD_UPPER,  []{return logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_FOREST_VINES) && logic->CanUse(RG_HOOKSHOT));}),
         Entrance(RR_FOREST_TEMPLE_NE_COURTYARD_ISLAND, []{return logic->CanUse(RG_HOOKSHOT);}),
         Entrance(RR_FOREST_TEMPLE_SEWER,               []{return (((logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_FOREST_WELL_SWIM) && logic->CanUse(RG_HOOKSHOT))) && logic->HasItem(RG_BRONZE_SCALE)) || logic->HasItem(RG_GOLDEN_SCALE)) && logic->WaterTimer() >= 16;}),
+        Entrance(RR_FOREST_TEMPLE_DRAINED_SEWER,       []{return logic->Get(LOGIC_FOREST_DRAINED_WELL);}),
     });
 
     areaTable[RR_FOREST_TEMPLE_NE_COURTYARD_UPPER] = Region("Forest Temple NE Courtyard Upper", SCENE_FOREST_TEMPLE, {
@@ -139,12 +141,12 @@ void RegionTable_Init_ForestTemple() {
         EventAccess(LOGIC_STICK_ACCESS,               []{return logic->CanGetDekuBabaSticks();}),
         EventAccess(LOGIC_NUT_ACCESS,                 []{return logic->CanGetDekuBabaNuts();}),
         EventAccess(LOGIC_FOREST_SUMMON_NE_SCARECROW, []{return ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanJumpslash() && logic->CanUse(RG_HOVER_BOOTS) && logic->ScarecrowsSong();}),
+        EventAccess(LOGIC_FOREST_DRAINED_WELL,        []{return true;}),
     }, {}, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_NE_COURTYARD_LOWER,  []{return true;}),
         Entrance(RR_FOREST_TEMPLE_NE_COURTYARD_ISLAND, []{return logic->IsAdult && ctx->GetTrickOption(RT_FOREST_COURTYARD_LEDGE) && logic->CanUse(RG_HOVER_BOOTS);}),
         Entrance(RR_FOREST_TEMPLE_MAP_ROOM,            []{return true;}),
-        Entrance(RR_FOREST_TEMPLE_DRAINED_SEWER,       []{return true;}),
     });
 
     areaTable[RR_FOREST_TEMPLE_NE_COURTYARD_ISLAND] = Region("Forest Temple NE Courtyard Island", SCENE_FOREST_TEMPLE, {
@@ -540,7 +542,10 @@ void RegionTable_Init_ForestTemple() {
         Entrance(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_LEDGE, []{return Here(RR_FOREST_TEMPLE_MQ_REDEAD_ROOM, []{return logic->CanKillEnemy(RE_REDEAD);});}),
     });
 
-    areaTable[RR_FOREST_TEMPLE_MQ_NW_COURTYARD] = Region("Forest Temple MQ NW Courtyard", SCENE_FOREST_TEMPLE, {}, {
+    areaTable[RR_FOREST_TEMPLE_MQ_NW_COURTYARD] = Region("Forest Temple MQ NW Courtyard", SCENE_FOREST_TEMPLE, {
+        //Events
+        EventAccess(LOGIC_FOREST_MQ_BURNED_WEB, []{return logic->CanUse(RG_FIRE_ARROWS);}),
+    }, {
         //Locations
         LOCATION(RC_FOREST_TEMPLE_MQ_GS_LEVEL_ISLAND_COURTYARD, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
         //the well checks are considered from both areas instead of being a region because the draining is a temp flag and the skull (as well as the chest with hook glitch) has different breath timers from each side
@@ -553,30 +558,43 @@ void RegionTable_Init_ForestTemple() {
         LOCATION(RC_FOREST_TEMPLE_MQ_WELL_EAST_HEART,           logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8),
     }, {
         //Exits
-        Entrance(RR_FOREST_TEMPLE_MQ_NE_COURTYARD,       []{return (((logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_FOREST_WELL_SWIM) && logic->CanUse(RG_HOOKSHOT))) && logic->HasItem(RG_BRONZE_SCALE)) || logic->HasItem(RG_GOLDEN_SCALE)) && logic->WaterTimer() >= 16;}),
-        Entrance(RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE,      []{return logic->CanUse(RG_FIRE_ARROWS);}), // temp flag, can't be event
-        Entrance(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_LEDGE, []{return logic->CanUse(RG_HOVER_BOOTS) && ((ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()) || (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->IsAdult && logic->CanGroundJump()));}),
+        Entrance(RR_FOREST_TEMPLE_MQ_NE_COURTYARD,              []{return logic->Get(LOGIC_FOREST_DRAINED_WELL) || ((((logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_FOREST_WELL_SWIM) && logic->CanUse(RG_HOOKSHOT))) && logic->HasItem(RG_BRONZE_SCALE)) || logic->HasItem(RG_GOLDEN_SCALE)) && logic->WaterTimer() >= 16);}),
+        Entrance(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_UPPER_ALCOVE, []{return logic->Get(LOGIC_FOREST_MQ_BURNED_WEB) && (logic->CanKillEnemy(RE_BIG_SKULLTULA, ED_LONGSHOT) || logic->CanUse(RG_BOMBCHU_5));}),
+        Entrance(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_LEDGE,        []{return logic->CanUse(RG_HOVER_BOOTS) && ((ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()) || (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->IsAdult && logic->CanGroundJump()));}),
     });
 
-    areaTable[RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE] = Region("Forest Temple MQ North Passage", SCENE_FOREST_TEMPLE, {}, {}, {
-        Entrance(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,         []{return logic->HasFireSourceWithTorch();}),
-        Entrance(RR_FOREST_TEMPLE_MQ_COURTYARD_TOP_LEDGES, []{return true;}),
+    areaTable[RR_FOREST_TEMPLE_MQ_NW_COURTYARD_UPPER_ALCOVE] = Region("Forest Temple MQ NW Courtyard Upper Alcove", SCENE_FOREST_TEMPLE, {
+        //Events
+        EventAccess(LOGIC_FOREST_MQ_BURNED_WEB, []{return logic->HasFireSource();}),
+    }, {}, {
+        //Exits
+        Entrance(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,  []{return logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->TakeDamage();}),
+        Entrance(RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE, []{return true;}),
     });
 
-    //The well only considers the eye target here because the eye target is a temp flag, making it unwieldy to use as an EventAccess to make it it's own room
+    areaTable[RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE] = Region("Forest Temple MQ North Passage", SCENE_FOREST_TEMPLE, {
+        //Events
+        EventAccess(LOGIC_FOREST_MQ_BURNED_WEB, []{return logic->HasFireSourceWithTorch();}),
+    }, {}, {
+        //Exits
+        Entrance(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_UPPER_ALCOVE, []{return logic->Get(LOGIC_FOREST_MQ_BURNED_WEB);}),
+        Entrance(RR_FOREST_TEMPLE_MQ_COURTYARD_TOP_LEDGES,      []{return true;}),
+    });
+
     areaTable[RR_FOREST_TEMPLE_MQ_NE_COURTYARD] = Region("Forest Temple MQ NE Courtyard", SCENE_FOREST_TEMPLE, {
         //Events
-        EventAccess(LOGIC_STICK_ACCESS, []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(LOGIC_NUT_ACCESS,   []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(LOGIC_STICK_ACCESS,        []{return logic->CanGetDekuBabaSticks();}),
+        EventAccess(LOGIC_NUT_ACCESS,          []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(LOGIC_FOREST_DRAINED_WELL, []{return logic->CanHitEyeTargets();}),
     }, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_MQ_WELL_CHEST,                 logic->CanHitEyeTargets() || (logic->CanOpenUnderwaterChest() && logic->WaterTimer() >= 8)),
+        LOCATION(RC_FOREST_TEMPLE_MQ_WELL_CHEST,                 logic->Get(LOGIC_FOREST_DRAINED_WELL) || (logic->CanOpenUnderwaterChest() && logic->WaterTimer() >= 8)),
         LOCATION(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
         //implies logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)
-        LOCATION(RC_FOREST_TEMPLE_MQ_GS_WELL,                    logic->CanHitEyeTargets() || (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))),
-        LOCATION(RC_FOREST_TEMPLE_MQ_WELL_WEST_HEART,            (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8) || logic->CanHitEyeTargets()),
-        LOCATION(RC_FOREST_TEMPLE_MQ_WELL_MIDDLE_HEART,          (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8) || logic->CanHitEyeTargets()),
-        LOCATION(RC_FOREST_TEMPLE_MQ_WELL_EAST_HEART,            (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8) || logic->CanHitEyeTargets()),
+        LOCATION(RC_FOREST_TEMPLE_MQ_GS_WELL,                    logic->Get(LOGIC_FOREST_DRAINED_WELL) || (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))),
+        LOCATION(RC_FOREST_TEMPLE_MQ_WELL_WEST_HEART,            logic->Get(LOGIC_FOREST_DRAINED_WELL) || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8)),
+        LOCATION(RC_FOREST_TEMPLE_MQ_WELL_MIDDLE_HEART,          logic->Get(LOGIC_FOREST_DRAINED_WELL) || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8)),
+        LOCATION(RC_FOREST_TEMPLE_MQ_WELL_EAST_HEART,            logic->Get(LOGIC_FOREST_DRAINED_WELL) || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8)),
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_MQ_LOBBY,                []{return true;}),
