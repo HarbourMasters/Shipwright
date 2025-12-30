@@ -4,6 +4,14 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #include <string>
+#include <memory>
+#include <vector>
+#include <algorithm>
+#include <cctype>
+#include <cstring>
+#include <unordered_map>
+#include <fast/resource/type/DisplayList.h>
+#include "ship/resource/Resource.h"
 #include <libultraship/bridge.h>
 #include <math.h>
 #include <libultraship/libultraship.h>
@@ -94,6 +102,7 @@ std::map<CosmeticGroup, const char*> groupLabels = {
     { COSMETICS_GROUP_NAVI, "Navi" },
     { COSMETICS_GROUP_IVAN, "Ivan" },
     { COSMETICS_GROUP_MESSAGE, "Message" },
+    { COSMETICS_GROUP_CUSTOM_MODEL, "Custom Model" },
 };
 
 typedef struct {
@@ -111,9 +120,125 @@ typedef struct {
     bool advancedOption;
 } CosmeticOption;
 
+typedef struct {
+    std::string key;
+    std::string label;
+    std::string valuesCvar;
+    std::string rainbowCvar;
+    std::string lockedCvar;
+    std::string changedCvar;
+    ImVec4 currentColor;
+    Color_RGBA8 defaultColor;
+    bool supportsAlpha;
+    bool supportsRainbow;
+} CustomModelCategoryOption;
+
+typedef struct {
+    std::string key;
+    std::string categoryKey;
+    std::string identityKey;
+    std::string label;
+    std::string valuesCvar;
+    std::string rainbowCvar;
+    std::string lockedCvar;
+    std::string changedCvar;
+    ImVec4 currentColor;
+    Color_RGBA8 defaultColor;
+    bool supportsAlpha;
+    bool supportsRainbow;
+    std::string displayListPath;
+    std::vector<int> primColorIndices;
+    std::vector<int> envColorIndices;
+    std::vector<std::string> primPatchNames;
+    std::vector<std::string> envPatchNames;
+} CustomModelCosmeticOption;
+
+static std::map<std::string, CustomModelCategoryOption> customModelCategories;
+static std::map<std::string, CustomModelCosmeticOption> customModelCosmetics;
+static std::map<std::string, std::vector<std::string>> customModelCategoryMembers;
+static bool customModelCosmeticsDiscovered = false;
+static bool customModelAutoDiscoveryAttempted = false;
+static std::unordered_map<std::string, std::unordered_map<std::string, Gfx>> customModelOriginalGfx;
+
 Color_RGBA8 ColorRGBA8(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     Color_RGBA8 color = { r, g, b, a };
     return color;
+}
+
+static std::string StripOtrPrefix(const std::string& path) {
+    static constexpr const char* prefix = "__OTR__";
+    if (path.rfind(prefix, 0) == 0) {
+        return path.substr(strlen(prefix));
+    }
+    return path;
+}
+
+static std::string EnsureOtrPrefix(const std::string& path) {
+    static constexpr const char* prefix = "__OTR__";
+    if (path.rfind(prefix, 0) == 0) {
+        return path;
+    }
+    return std::string(prefix) + path;
+}
+
+static void PatchCustomModelGfx(const std::string& path, const std::string& patchName, int index, Gfx instruction) {
+    auto res = std::static_pointer_cast<Fast::DisplayList>(
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path, true));
+
+    if (res == nullptr || index < 0 || index >= static_cast<int>(res->Instructions.size())) {
+        return;
+    }
+
+    Gfx* gfx = (Gfx*)&res->Instructions[index];
+
+    if (!customModelOriginalGfx[path].contains(patchName)) {
+        customModelOriginalGfx[path][patchName] = *gfx;
+    }
+
+    *gfx = instruction;
+}
+
+static void UnpatchCustomModelGfx(const std::string& path, const std::string& patchName, int index) {
+    auto res = std::static_pointer_cast<Fast::DisplayList>(
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path, true));
+
+    if (res == nullptr || index < 0 || index >= static_cast<int>(res->Instructions.size())) {
+        return;
+    }
+
+    if (!customModelOriginalGfx.contains(path) || !customModelOriginalGfx[path].contains(patchName)) {
+        return;
+    }
+
+    Gfx* gfx = (Gfx*)&res->Instructions[index];
+    *gfx = customModelOriginalGfx[path][patchName];
+    customModelOriginalGfx[path].erase(patchName);
+    if (customModelOriginalGfx[path].empty()) {
+        customModelOriginalGfx.erase(path);
+    }
+}
+
+static std::string ToTitleCase(const std::string& value) {
+    std::string result = value;
+    bool capitalizeNext = true;
+    for (char& c : result) {
+        if (c == '_' || c == '-') {
+            c = ' ';
+            capitalizeNext = true;
+            continue;
+        }
+        if (capitalizeNext && std::isalpha(static_cast<unsigned char>(c))) {
+            c = static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
+            capitalizeNext = false;
+        } else {
+            c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+        }
+    }
+    return result;
+}
+
+static std::string BuildCosmeticCvar(const std::string& key, const std::string& suffix) {
+    return std::string(CVAR_PREFIX_COSMETIC) + "." + key + suffix;
 }
 
 #define COSMETIC_OPTION(id, label, group, defaultColor, supportsAlpha, supportsRainbow, advancedOption)               \
@@ -450,6 +575,490 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
 };
 // clang-format on
 
+static void ClearCustomModelCosmetics() {
+    customModelCategories.clear();
+    customModelCosmetics.clear();
+    customModelCategoryMembers.clear();
+    customModelCosmeticsDiscovered = false;
+    customModelAutoDiscoveryAttempted = false;
+}
+
+static std::vector<std::string> GetCustomModelSearchDirs() {
+    std::vector<std::string> searchDirs;
+    auto maybeAddDir = [&searchDirs](const char* skeletonPath) {
+        if (skeletonPath == nullptr) {
+            return;
+        }
+
+        std::string stripped = StripOtrPrefix(skeletonPath);
+        size_t lastSlash = stripped.find_last_of('/');
+        if (lastSlash == std::string::npos) {
+            return;
+        }
+
+        std::string baseDir = stripped.substr(0, lastSlash + 1);
+
+        // Always search the direct directory, and if alt assets are in use, search the alt/ mirror as well.
+        searchDirs.push_back(baseDir);
+
+        std::string altDirPrefix = Ship::IResource::gAltAssetPrefix;
+        if (altDirPrefix.back() != '/') {
+            altDirPrefix.push_back('/');
+        }
+
+        if (baseDir.rfind(altDirPrefix, 0) != 0) {
+            searchDirs.push_back(altDirPrefix + baseDir);
+        }
+    };
+
+    maybeAddDir(gLinkAdultSkel);
+    maybeAddDir(gLinkChildSkel);
+
+    return searchDirs;
+}
+
+static bool PathMatchesAnyDir(const std::string& path, const std::vector<std::string>& directories) {
+    for (const auto& dir : directories) {
+        if (path.rfind(dir, 0) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+static Color_RGBA8 ExtractPrimColor(const Gfx* gfx) {
+    return ColorRGBA8(_SHIFTR(gfx->words.w1, 24, 8), _SHIFTR(gfx->words.w1, 16, 8), _SHIFTR(gfx->words.w1, 8, 8),
+                      _SHIFTR(gfx->words.w1, 0, 8));
+}
+
+static Color_RGBA8 ExtractEnvColor(const Gfx* gfx) {
+    return ColorRGBA8(_SHIFTR(gfx->words.w1, 24, 8), _SHIFTR(gfx->words.w1, 16, 8), _SHIFTR(gfx->words.w1, 8, 8),
+                      _SHIFTR(gfx->words.w1, 0, 8));
+}
+
+static bool ParseHexColor(const std::string& hex, Color_RGBA8& outColor) {
+    std::string cleaned = hex;
+    if (!cleaned.empty() && cleaned[0] == '#') {
+        cleaned = cleaned.substr(1);
+    }
+    if (cleaned.size() != 6 && cleaned.size() != 8) {
+        return false;
+    }
+
+    auto hexToByte = [](char c) -> int {
+        if (c >= '0' && c <= '9')
+            return c - '0';
+        if (c >= 'a' && c <= 'f')
+            return 10 + (c - 'a');
+        if (c >= 'A' && c <= 'F')
+            return 10 + (c - 'A');
+        return -1;
+    };
+
+    auto readByte = [&](size_t idx) -> int {
+        int hi = hexToByte(cleaned[idx]);
+        int lo = hexToByte(cleaned[idx + 1]);
+        if (hi < 0 || lo < 0) {
+            return -1;
+        }
+        return (hi << 4) | lo;
+    };
+
+    int r = readByte(0);
+    int g = readByte(2);
+    int b = readByte(4);
+    int a = cleaned.size() == 8 ? readByte(6) : 255;
+    if (r < 0 || g < 0 || b < 0 || a < 0) {
+        return false;
+    }
+
+    outColor =
+        ColorRGBA8(static_cast<uint8_t>(r), static_cast<uint8_t>(g), static_cast<uint8_t>(b), static_cast<uint8_t>(a));
+    return true;
+}
+
+static bool ExtractCustomMaterialKeys(const std::string& path, std::string& outCategory, std::string& outIdentity,
+                                      bool& hasNameDefaultColor, Color_RGBA8& nameDefaultColor) {
+    size_t cosmeticPos = path.rfind("cosmetic_");
+    if (cosmeticPos == std::string::npos) {
+        return false;
+    }
+
+    size_t tokenStart = cosmeticPos + strlen("cosmetic_");
+    std::string token = path.substr(tokenStart);
+
+    // Trim at path separators or file extension if they appear after the cosmetic token
+    size_t slashPos = token.find('/');
+    if (slashPos != std::string::npos) {
+        token = token.substr(0, slashPos);
+    }
+    size_t dotPos = token.find('.');
+    if (dotPos != std::string::npos) {
+        token = token.substr(0, dotPos);
+    }
+
+    hasNameDefaultColor = false;
+    size_t hashPos = token.find('#');
+    if (hashPos != std::string::npos) {
+        std::string hexColor = token.substr(hashPos);
+        if (ParseHexColor(hexColor, nameDefaultColor)) {
+            hasNameDefaultColor = true;
+        }
+        token = token.substr(0, hashPos);
+    }
+
+    std::vector<std::string> parts;
+    size_t start = 0;
+    while (start < token.size()) {
+        size_t sep = token.find('_', start);
+        if (sep == std::string::npos) {
+            parts.push_back(token.substr(start));
+            break;
+        }
+        parts.push_back(token.substr(start, sep - start));
+        start = sep + 1;
+    }
+
+    if (parts.empty()) {
+        return false;
+    }
+
+    outCategory = parts[0];
+    outIdentity = parts.size() > 1 ? parts[1] : parts[0];
+    return !outCategory.empty() && !outIdentity.empty();
+}
+
+static void DiscoverCustomModelCosmetics() {
+    ClearCustomModelCosmetics();
+
+    std::vector<std::string> searchDirs = GetCustomModelSearchDirs();
+    if (searchDirs.empty()) {
+        return;
+    }
+
+    auto archiveManager = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager();
+    auto files = archiveManager->ListFiles();
+    if (files == nullptr) {
+        return;
+    }
+
+    for (const auto& rawPath : *files) {
+        std::string normalizedPath = StripOtrPrefix(rawPath);
+        if (!PathMatchesAnyDir(normalizedPath, searchDirs)) {
+            continue;
+        }
+
+        std::string categoryKey;
+        std::string identityKey;
+        bool hasNameDefaultColor = false;
+        Color_RGBA8 nameDefaultColor = ColorRGBA8(255, 255, 255, 255);
+        if (!ExtractCustomMaterialKeys(normalizedPath, categoryKey, identityKey, hasNameDefaultColor,
+                                       nameDefaultColor)) {
+            continue;
+        }
+
+        std::transform(categoryKey.begin(), categoryKey.end(), categoryKey.begin(),
+                       [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+        std::transform(identityKey.begin(), identityKey.end(), identityKey.begin(),
+                       [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+
+        std::string resourcePath = EnsureOtrPrefix(normalizedPath);
+        auto resource = std::dynamic_pointer_cast<Fast::DisplayList>(
+            Ship::Context::GetInstance()->GetResourceManager()->LoadResource(resourcePath, true));
+
+        if (resource == nullptr || resource->Instructions.empty()) {
+            continue;
+        }
+
+        std::vector<int> primIndices;
+        std::vector<int> envIndices;
+        Color_RGBA8 primColor = ColorRGBA8(255, 255, 255, 255);
+        Color_RGBA8 envColor = ColorRGBA8(255, 255, 255, 255);
+
+        for (size_t i = 0; i < resource->Instructions.size(); i++) {
+            const Gfx* gfx = &resource->Instructions[i];
+            uint8_t command = gfx->words.w0 >> 24;
+            if (command == G_SETPRIMCOLOR) {
+                if (primIndices.empty()) {
+                    primColor = ExtractPrimColor(gfx);
+                }
+                primIndices.push_back(static_cast<int>(i));
+            } else if (command == G_SETENVCOLOR) {
+                if (envIndices.empty()) {
+                    envColor = ExtractEnvColor(gfx);
+                }
+                envIndices.push_back(static_cast<int>(i));
+            }
+        }
+
+        if (primIndices.empty() && envIndices.empty()) {
+            continue;
+        }
+
+        Color_RGBA8 defaultColor = !primIndices.empty() ? primColor : envColor;
+        if (hasNameDefaultColor) {
+            defaultColor = nameDefaultColor;
+        }
+
+        std::string categoryLabel = ToTitleCase(categoryKey);
+        std::string identityLabel = ToTitleCase(identityKey);
+        std::string categoryBase = "CustomModel.Category." + categoryKey;
+
+        if (customModelCategories.find(categoryKey) == customModelCategories.end()) {
+            CustomModelCategoryOption categoryOption{
+                .key = categoryKey,
+                .label = categoryLabel,
+                .valuesCvar = BuildCosmeticCvar(categoryBase, ".Value"),
+                .rainbowCvar = BuildCosmeticCvar(categoryBase, ".Rainbow"),
+                .lockedCvar = BuildCosmeticCvar(categoryBase, ".Locked"),
+                .changedCvar = BuildCosmeticCvar(categoryBase, ".Changed"),
+                .currentColor = { defaultColor.r / 255.0f, defaultColor.g / 255.0f, defaultColor.b / 255.0f,
+                                  defaultColor.a / 255.0f },
+                .defaultColor = defaultColor,
+                .supportsAlpha = true,
+                .supportsRainbow = true,
+            };
+
+            Color_RGBA8 categoryColor = CVarGetColor(categoryOption.valuesCvar.c_str(), categoryOption.defaultColor);
+            categoryOption.currentColor = ImVec4(categoryColor.r / 255.0f, categoryColor.g / 255.0f,
+                                                 categoryColor.b / 255.0f, categoryColor.a / 255.0f);
+
+            customModelCategories[categoryKey] = categoryOption;
+        }
+
+        std::string cosmeticBase = "CustomModel." + categoryKey + "." + identityKey;
+        CustomModelCosmeticOption cosmeticOption{
+            .key = categoryKey + "." + identityKey,
+            .categoryKey = categoryKey,
+            .identityKey = identityKey,
+            .label = identityLabel,
+            .valuesCvar = BuildCosmeticCvar(cosmeticBase, ".Value"),
+            .rainbowCvar = BuildCosmeticCvar(cosmeticBase, ".Rainbow"),
+            .lockedCvar = BuildCosmeticCvar(cosmeticBase, ".Locked"),
+            .changedCvar = BuildCosmeticCvar(cosmeticBase, ".Changed"),
+            .currentColor = { defaultColor.r / 255.0f, defaultColor.g / 255.0f, defaultColor.b / 255.0f,
+                              defaultColor.a / 255.0f },
+            .defaultColor = defaultColor,
+            .supportsAlpha = true,
+            .supportsRainbow = true,
+            .displayListPath = resourcePath,
+            .primColorIndices = primIndices,
+            .envColorIndices = envIndices,
+        };
+
+        for (size_t i = 0; i < cosmeticOption.primColorIndices.size(); ++i) {
+            cosmeticOption.primPatchNames.push_back("CustomModel_" + categoryKey + "_" + identityKey + "_Prim_" +
+                                                    std::to_string(i));
+        }
+        for (size_t i = 0; i < cosmeticOption.envColorIndices.size(); ++i) {
+            cosmeticOption.envPatchNames.push_back("CustomModel_" + categoryKey + "_" + identityKey + "_Env_" +
+                                                   std::to_string(i));
+        }
+        Color_RGBA8 cvarColor = CVarGetColor(cosmeticOption.valuesCvar.c_str(), cosmeticOption.defaultColor);
+        cosmeticOption.currentColor = { cvarColor.r / 255.0f, cvarColor.g / 255.0f, cvarColor.b / 255.0f,
+                                        cvarColor.a / 255.0f };
+
+        customModelCosmetics[cosmeticOption.key] = cosmeticOption;
+        customModelCategoryMembers[categoryKey].push_back(cosmeticOption.key);
+    }
+
+    for (auto& [category, members] : customModelCategoryMembers) {
+        std::sort(members.begin(), members.end());
+    }
+
+    customModelCosmeticsDiscovered = !customModelCosmetics.empty();
+}
+
+static void ApplyCustomModelCosmetics(bool manualChange = true) {
+    (void)manualChange;
+    bool usingCustomModel = ResourceGetIsCustomByName(gLinkAdultSkel) || ResourceGetIsCustomByName(gLinkChildSkel);
+
+    if (!usingCustomModel) {
+        for (auto& [key, cosmetic] : customModelCosmetics) {
+            for (size_t i = 0; i < cosmetic.primPatchNames.size(); i++) {
+                UnpatchCustomModelGfx(cosmetic.displayListPath, cosmetic.primPatchNames[i],
+                                      cosmetic.primColorIndices[i]);
+            }
+            for (size_t i = 0; i < cosmetic.envPatchNames.size(); i++) {
+                UnpatchCustomModelGfx(cosmetic.displayListPath, cosmetic.envPatchNames[i], cosmetic.envColorIndices[i]);
+            }
+        }
+        return;
+    }
+
+    if (!customModelCosmeticsDiscovered || customModelCategories.empty()) {
+        return;
+    }
+
+    for (auto& [categoryKey, category] : customModelCategories) {
+        Color_RGBA8 color = CVarGetColor(category.valuesCvar.c_str(), category.defaultColor);
+        category.currentColor = ImVec4(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
+    }
+
+    for (auto& [key, cosmetic] : customModelCosmetics) {
+        auto categoryIter = customModelCategories.find(cosmetic.categoryKey);
+        if (categoryIter == customModelCategories.end()) {
+            continue;
+        }
+
+        CustomModelCategoryOption& category = categoryIter->second;
+        bool categoryChanged =
+            CVarGetInteger(category.changedCvar.c_str(), 0) || CVarGetInteger(category.rainbowCvar.c_str(), 0);
+        Color_RGBA8 categoryColor = { static_cast<uint8_t>(category.currentColor.x * 255.0f),
+                                      static_cast<uint8_t>(category.currentColor.y * 255.0f),
+                                      static_cast<uint8_t>(category.currentColor.z * 255.0f),
+                                      static_cast<uint8_t>(category.currentColor.w * 255.0f) };
+
+        bool cosmeticChanged =
+            CVarGetInteger(cosmetic.changedCvar.c_str(), 0) || CVarGetInteger(cosmetic.rainbowCvar.c_str(), 0);
+        Color_RGBA8 cosmeticColor = CVarGetColor(cosmetic.valuesCvar.c_str(), cosmetic.defaultColor);
+
+        // Category overrides all identities when it has a user-picked color (or rainbow).
+        // Identity colors apply only when the category is at its default (unchanged).
+        Color_RGBA8 finalColor;
+        if (categoryChanged) {
+            finalColor = categoryColor;
+            // Keep identity cvar in sync with the applied category color.
+            CVarSetColor(cosmetic.valuesCvar.c_str(), finalColor);
+        } else if (cosmeticChanged) {
+            finalColor = cosmeticColor;
+        } else {
+            // Both are default; use the identity's own default so identities don't get overridden by category defaults.
+            finalColor = cosmeticColor;
+        }
+
+        cosmetic.currentColor =
+            ImVec4(finalColor.r / 255.0f, finalColor.g / 255.0f, finalColor.b / 255.0f, finalColor.a / 255.0f);
+
+        // Apply to both prim and env where they exist; prim-only materials still work, and env-based materials keep
+        // updating to the chosen color without needing injected commands.
+        for (size_t i = 0; i < cosmetic.primColorIndices.size(); i++) {
+            PatchCustomModelGfx(cosmetic.displayListPath, cosmetic.primPatchNames[i], cosmetic.primColorIndices[i],
+                                gsDPSetPrimColor(0, 0, finalColor.r, finalColor.g, finalColor.b, finalColor.a));
+        }
+        for (size_t i = 0; i < cosmetic.envColorIndices.size(); i++) {
+            PatchCustomModelGfx(cosmetic.displayListPath, cosmetic.envPatchNames[i], cosmetic.envColorIndices[i],
+                                gsDPSetEnvColor(finalColor.r, finalColor.g, finalColor.b, finalColor.a));
+        }
+    }
+}
+
+static void RandomizeCustomModelCategory(CustomModelCategoryOption& category) {
+    ImVec4 randomColor = GetRandomValue();
+    Color_RGBA8 newColor = { static_cast<uint8_t>(randomColor.x * 255.0f), static_cast<uint8_t>(randomColor.y * 255.0f),
+                             static_cast<uint8_t>(randomColor.z * 255.0f),
+                             static_cast<uint8_t>(category.supportsAlpha ? category.currentColor.w * 255.0f : 255) };
+
+    category.currentColor = { newColor.r / 255.0f, newColor.g / 255.0f, newColor.b / 255.0f, newColor.a / 255.0f };
+    CVarSetColor(category.valuesCvar.c_str(), newColor);
+    CVarSetInteger(category.rainbowCvar.c_str(), 0);
+    CVarSetInteger(category.changedCvar.c_str(), 1);
+}
+
+static void RandomizeCustomModelCosmetic(CustomModelCosmeticOption& cosmetic) {
+    ImVec4 randomColor = GetRandomValue();
+    Color_RGBA8 newColor = { static_cast<uint8_t>(randomColor.x * 255.0f), static_cast<uint8_t>(randomColor.y * 255.0f),
+                             static_cast<uint8_t>(randomColor.z * 255.0f),
+                             static_cast<uint8_t>(cosmetic.supportsAlpha ? cosmetic.currentColor.w * 255.0f : 255) };
+
+    cosmetic.currentColor = { newColor.r / 255.0f, newColor.g / 255.0f, newColor.b / 255.0f, newColor.a / 255.0f };
+    CVarSetColor(cosmetic.valuesCvar.c_str(), newColor);
+    CVarSetInteger(cosmetic.rainbowCvar.c_str(), 0);
+    CVarSetInteger(cosmetic.changedCvar.c_str(), 1);
+}
+
+static void ResetCustomModelCategory(CustomModelCategoryOption& category) {
+    CVarClear(category.changedCvar.c_str());
+    CVarClear(category.rainbowCvar.c_str());
+    CVarClear(category.lockedCvar.c_str());
+    CVarClear(category.valuesCvar.c_str());
+    category.currentColor = { category.defaultColor.r / 255.0f, category.defaultColor.g / 255.0f,
+                              category.defaultColor.b / 255.0f, category.defaultColor.a / 255.0f };
+}
+
+static void ResetCustomModelCosmetic(CustomModelCosmeticOption& cosmetic) {
+    CVarClear(cosmetic.changedCvar.c_str());
+    CVarClear(cosmetic.rainbowCvar.c_str());
+    CVarClear(cosmetic.lockedCvar.c_str());
+    CVarClear(cosmetic.valuesCvar.c_str());
+    cosmetic.currentColor = { cosmetic.defaultColor.r / 255.0f, cosmetic.defaultColor.g / 255.0f,
+                              cosmetic.defaultColor.b / 255.0f, cosmetic.defaultColor.a / 255.0f };
+}
+
+static void CustomModel_RandomizeAll() {
+    for (auto& [categoryKey, category] : customModelCategories) {
+        if (!CVarGetInteger(category.lockedCvar.c_str(), 0)) {
+            RandomizeCustomModelCategory(category);
+        }
+    }
+
+    for (auto& [key, cosmetic] : customModelCosmetics) {
+        if (!CVarGetInteger(cosmetic.lockedCvar.c_str(), 0)) {
+            RandomizeCustomModelCosmetic(cosmetic);
+        }
+    }
+
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    ApplyCustomModelCosmetics();
+}
+
+static void CustomModel_ResetAll() {
+    for (auto& [categoryKey, category] : customModelCategories) {
+        if (!CVarGetInteger(category.lockedCvar.c_str(), 0)) {
+            ResetCustomModelCategory(category);
+        }
+    }
+
+    for (auto& [key, cosmetic] : customModelCosmetics) {
+        if (!CVarGetInteger(cosmetic.lockedCvar.c_str(), 0)) {
+            ResetCustomModelCosmetic(cosmetic);
+        }
+    }
+
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    ApplyCustomModelCosmetics();
+}
+
+static void CustomModel_RandomizeCategory(const std::string& categoryKey) {
+    auto categoryIt = customModelCategories.find(categoryKey);
+    if (categoryIt != customModelCategories.end() && !CVarGetInteger(categoryIt->second.lockedCvar.c_str(), 0)) {
+        RandomizeCustomModelCategory(categoryIt->second);
+    }
+
+    auto membersIt = customModelCategoryMembers.find(categoryKey);
+    if (membersIt != customModelCategoryMembers.end()) {
+        for (const auto& cosmeticKey : membersIt->second) {
+            auto cosmeticIt = customModelCosmetics.find(cosmeticKey);
+            if (cosmeticIt != customModelCosmetics.end() && !CVarGetInteger(cosmeticIt->second.lockedCvar.c_str(), 0)) {
+                RandomizeCustomModelCosmetic(cosmeticIt->second);
+            }
+        }
+    }
+
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    ApplyCustomModelCosmetics();
+}
+
+static void CustomModel_ResetCategory(const std::string& categoryKey) {
+    auto categoryIt = customModelCategories.find(categoryKey);
+    if (categoryIt != customModelCategories.end() && !CVarGetInteger(categoryIt->second.lockedCvar.c_str(), 0)) {
+        ResetCustomModelCategory(categoryIt->second);
+    }
+
+    auto membersIt = customModelCategoryMembers.find(categoryKey);
+    if (membersIt != customModelCategoryMembers.end()) {
+        for (const auto& cosmeticKey : membersIt->second) {
+            auto cosmeticIt = customModelCosmetics.find(cosmeticKey);
+            if (cosmeticIt != customModelCosmetics.end() && !CVarGetInteger(cosmeticIt->second.lockedCvar.c_str(), 0)) {
+                ResetCustomModelCosmetic(cosmeticIt->second);
+            }
+        }
+    }
+
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    ApplyCustomModelCosmetics();
+}
+
 static const char* MarginCvarList[]{
     CVAR_COSMETIC("HUD.Hearts"),        CVAR_COSMETIC("HUD.HeartsCount"),    CVAR_COSMETIC("HUD.MagicBar"),
     CVAR_COSMETIC("HUD.VisualSoA"),     CVAR_COSMETIC("HUD.BButton"),        CVAR_COSMETIC("HUD.AButton"),
@@ -523,6 +1132,11 @@ int hue = 0;
 void CosmeticsUpdateTick() {
     int index = 0;
     float rainbowSpeed = CVarGetFloat(CVAR_COSMETIC("RainbowSpeed"), 0.6f);
+    if (!customModelCosmeticsDiscovered && !customModelAutoDiscoveryAttempted &&
+        (ResourceGetIsCustomByName(gLinkAdultSkel) || ResourceGetIsCustomByName(gLinkChildSkel))) {
+        customModelAutoDiscoveryAttempted = true;
+        DiscoverCustomModelCosmetics();
+    }
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         if (cosmeticOption.supportsRainbow && CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
             double frequency = 2 * M_PI / (360 * rainbowSpeed);
@@ -551,6 +1165,44 @@ void CosmeticsUpdateTick() {
         }
     }
     ApplyOrResetCustomGfxPatches(false);
+    for (auto& [categoryKey, category] : customModelCategories) {
+        if (category.supportsRainbow && CVarGetInteger(category.rainbowCvar.c_str(), 0)) {
+            double frequency = 2 * M_PI / (360 * rainbowSpeed);
+            Color_RGBA8 newColor;
+            newColor.r = static_cast<uint8_t>(sin(frequency * (hue + index) + 0) * 127) + 128;
+            newColor.g = static_cast<uint8_t>(sin(frequency * (hue + index) + (2 * M_PI / 3)) * 127) + 128;
+            newColor.b = static_cast<uint8_t>(sin(frequency * (hue + index) + (4 * M_PI / 3)) * 127) + 128;
+            newColor.a = category.supportsAlpha ? static_cast<uint8_t>(category.currentColor.w * 255.0f)
+                                                : static_cast<uint8_t>(category.defaultColor.a);
+            category.currentColor =
+                ImVec4(newColor.r / 255.0f, newColor.g / 255.0f, newColor.b / 255.0f, newColor.a / 255.0f);
+            CVarSetColor(category.valuesCvar.c_str(), newColor);
+        }
+        if (!CVarGetInteger(CVAR_COSMETIC("RainbowSync"), 0)) {
+            index += static_cast<int>(60 * rainbowSpeed);
+        }
+    }
+
+    for (auto& [id, cosmetic] : customModelCosmetics) {
+        if (cosmetic.supportsRainbow && CVarGetInteger(cosmetic.rainbowCvar.c_str(), 0)) {
+            double frequency = 2 * M_PI / (360 * rainbowSpeed);
+            Color_RGBA8 newColor;
+            newColor.r = static_cast<uint8_t>(sin(frequency * (hue + index) + 0) * 127) + 128;
+            newColor.g = static_cast<uint8_t>(sin(frequency * (hue + index) + (2 * M_PI / 3)) * 127) + 128;
+            newColor.b = static_cast<uint8_t>(sin(frequency * (hue + index) + (4 * M_PI / 3)) * 127) + 128;
+            newColor.a = cosmetic.supportsAlpha ? static_cast<uint8_t>(cosmetic.currentColor.w * 255.0f)
+                                                : static_cast<uint8_t>(cosmetic.defaultColor.a);
+
+            cosmetic.currentColor =
+                ImVec4(newColor.r / 255.0f, newColor.g / 255.0f, newColor.b / 255.0f, newColor.a / 255.0f);
+            CVarSetColor(cosmetic.valuesCvar.c_str(), newColor);
+        }
+        if (!CVarGetInteger(CVAR_COSMETIC("RainbowSync"), 0)) {
+            index += static_cast<int>(60 * rainbowSpeed);
+        }
+    }
+
+    ApplyCustomModelCosmetics(false);
     hue++;
     if (hue >= (360 * rainbowSpeed)) {
         hue = 0;
@@ -2258,6 +2910,220 @@ void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
     UIWidgets::Separator(true, true, 2.0f, 2.0f);
 }
 
+static void DrawCustomModelCategoryRow(CustomModelCategoryOption& category) {
+    std::string label = category.label + " (Option)";
+    std::string categoryBaseCvar = category.valuesCvar;
+    constexpr const char* valueSuffix = ".Value";
+    if (categoryBaseCvar.size() > strlen(valueSuffix) &&
+        categoryBaseCvar.rfind(valueSuffix) == categoryBaseCvar.size() - strlen(valueSuffix)) {
+        categoryBaseCvar = categoryBaseCvar.substr(0, categoryBaseCvar.size() - strlen(valueSuffix));
+    }
+
+    if (UIWidgets::CVarColorPicker(label.c_str(), categoryBaseCvar.c_str(), category.defaultColor,
+                                   category.supportsAlpha, 0, THEME_COLOR)) {
+        CVarSetInteger(category.rainbowCvar.c_str(), 0);
+        CVarSetInteger(category.changedCvar.c_str(), 1);
+        ApplyCustomModelCosmetics();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    }
+
+    ImGui::SameLine((ImGui::CalcTextSize("Message Light Blue (None No Shadow)").x * 1.0f) + 60.0f);
+    if (UIWidgets::Button(
+            ("Random##" + label).c_str(),
+            UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)).Color(THEME_COLOR))) {
+        RandomizeCustomModelCategory(category);
+        ApplyCustomModelCosmetics();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    }
+
+    if (category.supportsRainbow) {
+        ImGui::SameLine();
+        if (UIWidgets::CVarCheckbox(("Rainbow##" + label).c_str(), category.rainbowCvar.c_str(),
+                                    UIWidgets::CheckboxOptions().Color(THEME_COLOR))) {
+            CVarSetInteger(category.changedCvar.c_str(), 1);
+            ApplyCustomModelCosmetics();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        }
+    }
+
+    ImGui::SameLine();
+    UIWidgets::CVarCheckbox(("Locked##" + label).c_str(), category.lockedCvar.c_str(),
+                            UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+
+    if (CVarGetInteger(category.changedCvar.c_str(), 0)) {
+        ImGui::SameLine();
+        if (UIWidgets::Button(("Reset##" + label).c_str(),
+                              UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)))) {
+            ResetCustomModelCategory(category);
+            // Reset all suboptions tied to this option so they return to their defaults alongside the option.
+            auto membersIt = customModelCategoryMembers.find(category.key);
+            if (membersIt != customModelCategoryMembers.end()) {
+                for (const auto& cosmeticKey : membersIt->second) {
+                    auto cosmeticIt = customModelCosmetics.find(cosmeticKey);
+                    if (cosmeticIt != customModelCosmetics.end()) {
+                        ResetCustomModelCosmetic(cosmeticIt->second);
+                    }
+                }
+            }
+            ApplyCustomModelCosmetics();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        }
+    }
+}
+
+static void DrawCustomModelCosmeticRow(CustomModelCosmeticOption& cosmetic, bool optionOverrides = false) {
+    std::string cosmeticBaseCvar = cosmetic.valuesCvar;
+    constexpr const char* valueSuffixCosmetic = ".Value";
+    if (cosmeticBaseCvar.size() > strlen(valueSuffixCosmetic) &&
+        cosmeticBaseCvar.rfind(valueSuffixCosmetic) == cosmeticBaseCvar.size() - strlen(valueSuffixCosmetic)) {
+        cosmeticBaseCvar = cosmeticBaseCvar.substr(0, cosmeticBaseCvar.size() - strlen(valueSuffixCosmetic));
+    }
+
+    ImGui::BeginDisabled(optionOverrides);
+    if (UIWidgets::CVarColorPicker(cosmetic.label.c_str(), cosmeticBaseCvar.c_str(), cosmetic.defaultColor,
+                                   cosmetic.supportsAlpha, 0, THEME_COLOR)) {
+        CVarSetInteger(cosmetic.rainbowCvar.c_str(), 0);
+        CVarSetInteger(cosmetic.changedCvar.c_str(), 1);
+        ApplyCustomModelCosmetics();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    }
+    ImGui::EndDisabled();
+
+    ImGui::SameLine((ImGui::CalcTextSize("Message Light Blue (None No Shadow)").x * 1.0f) + 60.0f);
+    if (UIWidgets::Button(
+            ("Random##" + cosmetic.label).c_str(),
+            UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)).Color(THEME_COLOR))) {
+        RandomizeCustomModelCosmetic(cosmetic);
+        ApplyCustomModelCosmetics();
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    }
+
+    if (cosmetic.supportsRainbow) {
+        ImGui::SameLine();
+        if (UIWidgets::CVarCheckbox(("Rainbow##" + cosmetic.label).c_str(), cosmetic.rainbowCvar.c_str(),
+                                    UIWidgets::CheckboxOptions().Color(THEME_COLOR))) {
+            CVarSetInteger(cosmetic.changedCvar.c_str(), 1);
+            ApplyCustomModelCosmetics();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        }
+    }
+
+    ImGui::SameLine();
+    UIWidgets::CVarCheckbox(("Locked##" + cosmetic.label).c_str(), cosmetic.lockedCvar.c_str(),
+                            UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+
+    if (CVarGetInteger(cosmetic.changedCvar.c_str(), 0)) {
+        ImGui::SameLine();
+        if (UIWidgets::Button(("Reset##" + cosmetic.label).c_str(),
+                              UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)))) {
+            ResetCustomModelCosmetic(cosmetic);
+            ApplyCustomModelCosmetics();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        }
+    }
+}
+
+static void DrawCustomModelCategory(const std::string& categoryKey) {
+    auto categoryIt = customModelCategories.find(categoryKey);
+    if (categoryIt == customModelCategories.end()) {
+        return;
+    }
+
+    CustomModelCategoryOption& category = categoryIt->second;
+
+    ImGui::Text("%s", category.label.c_str());
+    ImGui::SameLine((ImGui::CalcTextSize("Message Light Blue (None No Shadow)").x * 1.0f) + 60.0f);
+
+    if (UIWidgets::Button(
+            ("Random##" + categoryKey).c_str(),
+            UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)).Color(THEME_COLOR))) {
+        CustomModel_RandomizeCategory(categoryKey);
+    }
+
+    ImGui::SameLine();
+    if (UIWidgets::Button(("Reset##" + categoryKey).c_str(),
+                          UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)))) {
+        CustomModel_ResetCategory(categoryKey);
+    }
+
+    UIWidgets::Spacer();
+    ImDrawList* drawList = ImGui::GetWindowDrawList();
+    drawList->ChannelsSplit(2);
+    drawList->ChannelsSetCurrent(1); // foreground for widgets
+
+    DrawCustomModelCategoryRow(category);
+
+    bool optionOverrides =
+        CVarGetInteger(category.changedCvar.c_str(), 0) || CVarGetInteger(category.rainbowCvar.c_str(), 0);
+    if (optionOverrides) {
+        ImGui::TextWrapped("    Option color overrides suboptions. Reset the option to edit suboptions.");
+    }
+
+    auto membersIt = customModelCategoryMembers.find(categoryKey);
+    if (membersIt != customModelCategoryMembers.end()) {
+        float indent = 20.0f;
+        ImGui::Indent(indent);
+        for (const auto& cosmeticKey : membersIt->second) {
+            auto cosmeticIt = customModelCosmetics.find(cosmeticKey);
+            if (cosmeticIt != customModelCosmetics.end()) {
+                ImVec2 rowStart = ImGui::GetCursorScreenPos();
+                drawList->ChannelsSetCurrent(1); // foreground for the widgets
+                DrawCustomModelCosmeticRow(cosmeticIt->second, optionOverrides);
+                ImVec2 rowEnd = ImGui::GetCursorScreenPos();
+
+                drawList->ChannelsSetCurrent(0); // background for the guide line
+                float lineX = rowStart.x - indent * 0.5f;
+                float topY = rowStart.y + ImGui::GetTextLineHeight() * -2.0f;
+                float bottomY = rowEnd.y - ImGui::GetTextLineHeight() * 1.3f;
+                drawList->AddLine(ImVec2(lineX, topY), ImVec2(lineX, bottomY),
+                                  ImGui::GetColorU32(ImGuiCol_TextDisabled), 1.0f);
+                drawList->AddLine(ImVec2(lineX, bottomY), ImVec2(lineX + indent * 0.35f, bottomY),
+                                  ImGui::GetColorU32(ImGuiCol_TextDisabled), 1.0f);
+            }
+        }
+        ImGui::Unindent(indent);
+    }
+
+    drawList->ChannelsMerge();
+
+    UIWidgets::Separator(true, true, 2.0f, 2.0f);
+}
+
+static void DrawCustomModelTab() {
+    UIWidgets::Separator(true, true, 2.0f, 2.0f);
+
+    if (UIWidgets::Button("Rescan Custom Model",
+                          UIWidgets::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
+        DiscoverCustomModelCosmetics();
+        ApplyCustomModelCosmetics(true);
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    }
+
+    ImGui::SameLine();
+    if (UIWidgets::Button("Randomize All##CustomModel",
+                          UIWidgets::ButtonOptions().Size(ImVec2(200.0f, 0.0f)).Color(THEME_COLOR))) {
+        CustomModel_RandomizeAll();
+    }
+
+    ImGui::SameLine();
+    if (UIWidgets::Button("Reset All##CustomModel",
+                          UIWidgets::ButtonOptions().Size(ImVec2(200.0f, 0.0f)).Color(THEME_COLOR))) {
+        CustomModel_ResetAll();
+    }
+
+    if (!customModelCosmeticsDiscovered) {
+        ImGui::Separator();
+        ImGui::TextWrapped(
+            "No custom player model materials using the prefix \"cosmetic_<option>_<suboption>#<defaulthexcolor>\" "
+            "were detected. If you have switched models, try rescanning.");
+        return;
+    }
+
+    for (auto& [categoryKey, category] : customModelCategories) {
+        DrawCustomModelCategory(categoryKey);
+    }
+}
+
 static const char* colorSchemes[2] = {
     "N64",
     "Gamecube",
@@ -2463,6 +3329,11 @@ void CosmeticsEditorWindow::DrawElement() {
 
     UIWidgets::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTabBar("CosmeticsContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
+        if (ImGui::BeginTabItem("Custom Model")) {
+            DrawCustomModelTab();
+            ImGui::EndTabItem();
+        }
+
         if (ImGui::BeginTabItem("Link & Items")) {
 
             UIWidgets::Separator(true, true, 2.0f, 2.0f);
@@ -2585,6 +3456,8 @@ void CosmeticsEditorWindow::InitElement() {
         cosmeticOption.currentColor.z = cvarColor.b / 255.0f;
         cosmeticOption.currentColor.w = cvarColor.a / 255.0f;
     }
+    DiscoverCustomModelCosmetics();
+    ApplyCustomModelCosmetics(true);
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
     ApplyAuthenticGfxPatches();

@@ -1361,6 +1361,7 @@ static constexpr std::array<std::pair<const char*, CosmeticGroup>, COSMETICS_GRO
     { "navi", COSMETICS_GROUP_NAVI },
     { "ivan", COSMETICS_GROUP_IVAN },
     { "message", COSMETICS_GROUP_MESSAGE },
+    { "custom_model", COSMETICS_GROUP_CUSTOM_MODEL },
 } };
 
 static bool CosmeticsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args,
