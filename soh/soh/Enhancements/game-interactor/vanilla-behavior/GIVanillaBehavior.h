@@ -585,6 +585,30 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (this->invisible && !Flags_GetSwitch(play, this->actor.home.rot.z)) || this->actor.xzDistToPlayer > 300.0f
+    // ```
+    // #### `args`
+    // - `EnGeldB*`
+    VB_GERUDO_FIGHTER_CONTINUE_WAITING,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `EnGeldB*`
+    VB_GERUDO_FIGHTER_PLAY_MINIBOSS_MUSIC,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `EnGeldB*`
+    VB_GERUDO_FIGHTER_THROW_LINK_TO_JAIL,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`

@@ -359,13 +359,18 @@ void EnGeldB_SetupWait(EnGeldB* this) {
 }
 
 void EnGeldB_Wait(EnGeldB* this, PlayState* play) {
-    if ((this->invisible && !Flags_GetSwitch(play, this->actor.home.rot.z)) || this->actor.xzDistToPlayer > 300.0f) {
+    if (GameInteractor_Should(VB_GERUDO_FIGHTER_CONTINUE_WAITING,
+                              (this->invisible && !Flags_GetSwitch(play, this->actor.home.rot.z)) ||
+                                  this->actor.xzDistToPlayer > 300.0f,
+                              this)) {
         this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
         this->actor.world.pos.y = this->actor.floorHeight + 120.0f;
     } else {
         this->invisible = false;
         this->actor.shape.shadowScale = 90.0f;
-        func_800F5ACC(NA_BGM_MINI_BOSS);
+        if (GameInteractor_Should(VB_GERUDO_FIGHTER_PLAY_MINIBOSS_MUSIC, true, this)) {
+            func_800F5ACC(NA_BGM_MINI_BOSS);
+        }
     }
     if (this->actor.bgCheckFlags & 2) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_DOWN);
@@ -1567,20 +1572,22 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
         } else {
             this->timer--;
             if (this->timer == 0) {
-                if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
-                    play->nextEntranceIndex = ENTR_GERUDO_VALLEY_1;
-                } else if (Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO)) {
-                    play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_18;
-                } else {
-                    play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_17;
-                }
+                if (GameInteractor_Should(VB_GERUDO_FIGHTER_THROW_LINK_TO_JAIL, true, this)) {
+                    if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
+                        play->nextEntranceIndex = ENTR_GERUDO_VALLEY_1;
+                    } else if (Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO)) {
+                        play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_18;
+                    } else {
+                        play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_17;
+                    }
 
-                if (IS_RANDO) {
-                    Entrance_OverrideGerudoGuardCapture();
-                }
+                    if (IS_RANDO) {
+                        Entrance_OverrideGerudoGuardCapture();
+                    }
 
-                play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
-                play->transitionTrigger = TRANS_TRIGGER_START;
+                    play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
+                    play->transitionTrigger = TRANS_TRIGGER_START;
+                }
             }
         }
     }
