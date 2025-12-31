@@ -46,6 +46,9 @@ void Network::OnConnected() {
 void Network::OnDisconnected() {
 }
 
+void Network::ProcessOutgoingPackets() {
+}
+
 void Network::SendDataToRemote(const char* payload) {
 #ifdef ENABLE_REMOTE_CONTROL
     SPDLOG_DEBUG("[Network] Sending data: {}", payload);
@@ -68,6 +71,7 @@ void Network::ReceiveFromServer() {
 
             if (networkSocket) {
                 isConnected = true;
+                receivedData.clear();
                 SPDLOG_INFO("[Network] Connection to server established!");
 
                 OnConnected();
@@ -90,7 +94,11 @@ void Network::ReceiveFromServer() {
                 break;
             }
 
+            // Always process outgoing packets
+            ProcessOutgoingPackets();
+
             if (socketsReady == 0) {
+                // No incoming data
                 continue;
             }
 
@@ -119,9 +127,15 @@ void Network::ReceiveFromServer() {
             }
         }
 
+        if (socketSet) {
+            SDLNet_FreeSocketSet(socketSet);
+        }
+
         if (isConnected) {
             SDLNet_TCP_Close(networkSocket);
+            networkSocket = nullptr;
             isConnected = false;
+            receivedData.clear();
             OnDisconnected();
             SPDLOG_INFO("[Network] Ending receiving thread...");
         }
