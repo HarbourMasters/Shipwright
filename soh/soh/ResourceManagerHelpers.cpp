@@ -48,7 +48,6 @@ extern "C" uint32_t ResourceMgr_GetGamePlatform(int index) {
         case OOT_PAL_GC_MQ_DBG:
             return GAME_PLATFORM_GC;
     }
-    return GAME_PLATFORM_N64;
 }
 
 extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
@@ -74,7 +73,6 @@ extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
         case OOT_PAL_GC_MQ_DBG:
             return GAME_REGION_PAL;
     }
-    return GAME_REGION_NTSC;
 }
 
 extern "C" char* _message_0xFFFC_nes;
@@ -316,6 +314,9 @@ extern "C" uint8_t ResourceMgr_FileIsCustomByName(const char* path) {
 typedef struct {
     int index;
     Gfx instruction;
+    const void* instructionsPtr;
+    size_t instructionCount;
+    bool isCustom;
 } GfxPatch;
 
 std::unordered_map<std::string, std::unordered_map<std::string, GfxPatch>> originalGfx;
@@ -326,7 +327,7 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
     auto res = std::static_pointer_cast<Fast::DisplayList>(
         Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
 
-    if (res == nullptr || index < 0 || static_cast<size_t>(index) >= res->Instructions.size()) {
+    if (res == nullptr || static_cast<size_t>(index) >= res->Instructions.size()) {
         return;
     }
 
@@ -357,24 +358,8 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
     Gfx* gfx = (Gfx*)&res->Instructions[index];
 
     if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
-        originalGfx[path][patchName] = { index, *gfx };
-    }
-
-    *gfx = instruction;
-}
-
-extern "C" void ResourceMgr_PatchCustomGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
-    auto res = std::static_pointer_cast<Fast::DisplayList>(
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
-
-    if (res == nullptr || index < 0 || static_cast<size_t>(index) >= res->Instructions.size()) {
-        return;
-    }
-
-    Gfx* gfx = (Gfx*)&res->Instructions[index];
-
-    if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
-        originalGfx[path][patchName] = { index, *gfx };
+        originalGfx[path][patchName] = { index, *gfx, res->Instructions.data(), res->Instructions.size(),
+                                         res->GetInitData()->IsCustom };
     }
 
     *gfx = instruction;
@@ -385,8 +370,7 @@ extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const ch
     auto res = std::static_pointer_cast<Fast::DisplayList>(
         Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
 
-    if (res == nullptr || destinationIndex < 0 || sourceIndex < 0 ||
-        static_cast<size_t>(destinationIndex) >= res->Instructions.size() ||
+    if (res == nullptr || static_cast<size_t>(destinationIndex) >= res->Instructions.size() ||
         static_cast<size_t>(sourceIndex) >= res->Instructions.size()) {
         return;
     }
@@ -400,10 +384,29 @@ extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const ch
     Gfx sourceGfx = *(Gfx*)&res->Instructions[sourceIndex];
 
     if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
-        originalGfx[path][patchName] = { destinationIndex, *destinationGfx };
+        originalGfx[path][patchName] = { destinationIndex, *destinationGfx, res->Instructions.data(),
+                                         res->Instructions.size(), res->GetInitData()->IsCustom };
     }
 
     *destinationGfx = sourceGfx;
+}
+
+extern "C" void ResourceMgr_PatchCustomGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
+    auto res = std::static_pointer_cast<Fast::DisplayList>(
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
+
+    if (res == nullptr || static_cast<size_t>(index) >= res->Instructions.size()) {
+        return;
+    }
+
+    Gfx* gfx = (Gfx*)&res->Instructions[index];
+
+    if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
+        originalGfx[path][patchName] = { index, *gfx, res->Instructions.data(), res->Instructions.size(),
+                                         res->GetInitData()->IsCustom };
+    }
+
+    *gfx = instruction;
 }
 
 extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName) {
@@ -411,20 +414,32 @@ extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patch
         auto res = std::static_pointer_cast<Fast::DisplayList>(
             Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
 
+        // If the resource is unavailable (e.g. swapped out when toggling alt assets), clean up the record and bail.
         if (res == nullptr) {
+            ResourceMgr_UnloadResource(path);
+            originalGfx[path].erase(patchName);
+            return;
+        }
+
+        const GfxPatch& patch = originalGfx[path][patchName];
+        // Skip and clean up if the backing resource changed since we recorded the patch (e.g. alt<->vanilla swap)
+        // to avoid writing instructions from a different asset onto the current one.
+        if (res->Instructions.data() != patch.instructionsPtr || res->Instructions.size() != patch.instructionCount ||
+            res->GetInitData()->IsCustom != patch.isCustom) {
+            ResourceMgr_UnloadResource(path);
             originalGfx[path].erase(patchName);
             return;
         }
 
         // Skip and clean up if the loaded resource is smaller than the recorded patch index (can happen when alt assets
         // swap in shorter display lists).
-        if (static_cast<size_t>(originalGfx[path][patchName].index) >= res->Instructions.size()) {
+        if (static_cast<size_t>(patch.index) >= res->Instructions.size()) {
             originalGfx[path].erase(patchName);
             return;
         }
 
-        Gfx* gfx = (Gfx*)&res->Instructions[originalGfx[path][patchName].index];
-        *gfx = originalGfx[path][patchName].instruction;
+        Gfx* gfx = (Gfx*)&res->Instructions[patch.index];
+        *gfx = patch.instruction;
 
         originalGfx[path].erase(patchName);
     }
