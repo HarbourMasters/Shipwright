@@ -55,6 +55,7 @@ static WidgetInfo triforcePieceCount;
 static WidgetInfo dungeonItemTracking;
 static WidgetInfo gregTracking;
 static WidgetInfo triforcePieceTracking;
+static WidgetInfo beanSoulsTracking;
 static WidgetInfo bossSoulsTracking;
 static WidgetInfo ocarinaButtonTracking;
 static WidgetInfo overworldKeysTracking;
@@ -134,6 +135,19 @@ std::vector<ItemTrackerItem> gregItems = {
 
 std::vector<ItemTrackerItem> triforcePieces = {
     ITEM_TRACKER_ITEM(RG_TRIFORCE_PIECE, 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> beanSoulItems = {
+    ITEM_TRACKER_ITEM_CUSTOM(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_DESERT_COLOSSUS_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_GERUDO_VALLEY_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_GRAVEYARD_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_KOKIRI_FOREST_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_LAKE_HYLIA_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_LOST_WOODS_BRIDGE_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_LOST_WOODS_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_ZORAS_RIVER_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
 };
 
 std::vector<ItemTrackerItem> bossSoulItems = {
@@ -244,6 +258,19 @@ std::map<uint16_t, std::string> itemTrackerDungeonShortNames = {
     { SCENE_DEKU_TREE, "DEKU" },       { SCENE_DODONGOS_CAVERN, "DCVN" },       { SCENE_JABU_JABU, "JABU" },
     { SCENE_ICE_CAVERN, "ICE" },       { SCENE_INSIDE_GANONS_CASTLE, "GANON" }, { SCENE_GERUDO_TRAINING_GROUND, "GTG" },
     { SCENE_THIEVES_HIDEOUT, "HIDE" },
+};
+
+std::map<uint16_t, std::string> itemTrackerBeanShortNames = {
+    { RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, "DMC" },
+    { RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, "DMT" },
+    { RG_DESERT_COLOSSUS_BEAN_SOUL, "DC" },
+    { RG_GERUDO_VALLEY_BEAN_SOUL, "GV" },
+    { RG_GRAVEYARD_BEAN_SOUL, "GY" },
+    { RG_KOKIRI_FOREST_BEAN_SOUL, "KF" },
+    { RG_LAKE_HYLIA_BEAN_SOUL, "LA" },
+    { RG_LOST_WOODS_BRIDGE_BEAN_SOUL, "LWB" },
+    { RG_LOST_WOODS_BEAN_SOUL, "LWT" },
+    { RG_ZORAS_RIVER_BEAN_SOUL, "ZR" },
 };
 
 std::map<uint16_t, std::string> itemTrackerBossShortNames = {
@@ -809,6 +836,56 @@ void DrawItem(ItemTrackerItem item) {
             hasItem = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT);
             itemName = "Triforce Piece";
             break;
+        case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL);
+            itemName = "Death Mountain Crater Bean Soul";
+            break;
+        case RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL);
+            itemName = "Death Mountain Trail Bean Soul";
+            break;
+        case RG_DESERT_COLOSSUS_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_DESERT_COLOSSUS_BEAN_SOUL);
+            itemName = "Desert Colossus Bean Soul";
+            break;
+        case RG_GERUDO_VALLEY_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_GERUDO_VALLEY_BEAN_SOUL);
+            itemName = "Gerudo Valley Bean Soul";
+            break;
+        case RG_GRAVEYARD_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_GRAVEYARD_BEAN_SOUL);
+            itemName = "Graveyard Bean Soul";
+            break;
+        case RG_KOKIRI_FOREST_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_KOKIRI_FOREST_BEAN_SOUL);
+            itemName = "Kokiri Forest Bean Soul";
+            break;
+        case RG_LAKE_HYLIA_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_LAKE_HYLIA_BEAN_SOUL);
+            itemName = "Lake Hylia Bean Soul";
+            break;
+        case RG_LOST_WOODS_BRIDGE_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL);
+            itemName = "Lost Woods Bridge Bean Soul";
+            break;
+        case RG_LOST_WOODS_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_LOST_WOODS_BEAN_SOUL);
+            itemName = "Lost Woods Theatre Bean Soul";
+            break;
+        case RG_ZORAS_RIVER_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_ZORAS_RIVER_BEAN_SOUL);
+            itemName = "Zora's River Bean Soul";
+            break;
         case RG_GOHMA_SOUL:
             actualItemId = item.id;
             hasItem = Flags_GetRandomizerInf(RAND_INF_GOHMA_SOUL);
@@ -1024,6 +1101,16 @@ void DrawItem(ItemTrackerItem item) {
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     DrawItemCount(item, false);
+
+    if (item.id >= RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL && item.id <= RG_ZORAS_RIVER_BEAN_SOUL) {
+        ImVec2 p = ImGui::GetCursorScreenPos();
+        std::string beanName = itemTrackerBeanShortNames[item.id];
+        ImGui::SetCursorScreenPos(
+            ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(beanName.c_str()).x / 2), p.y - (iconSize + 13)));
+        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL_WHITE);
+        ImGui::Text("%s", beanName.c_str());
+        ImGui::PopStyleColor();
+    }
 
     if (item.id >= RG_GOHMA_SOUL && item.id <= RG_GANON_SOUL) {
         ImVec2 p = ImGui::GetCursorScreenPos();
@@ -1478,6 +1565,19 @@ void UpdateVectors() {
         mainWindowItems.insert(mainWindowItems.end(), fishingPoleItems.begin(), fishingPoleItems.end());
     }
 
+    // If we're adding bean souls to the main window...
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BeanSouls"), SECTION_DISPLAY_HIDDEN) ==
+        SECTION_DISPLAY_MAIN_WINDOW) {
+        //...add empty items on the main window to get the souls on their own row. (Too many to sit with Greg/Triforce
+        // pieces)
+        while (mainWindowItems.size() % 6) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+        }
+
+        // Add bean souls
+        mainWindowItems.insert(mainWindowItems.end(), beanSoulItems.begin(), beanSoulItems.end());
+    }
+
     // If we're adding boss souls to the main window...
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BossSouls"), SECTION_DISPLAY_HIDDEN) ==
         SECTION_DISPLAY_MAIN_WINDOW) {
@@ -1671,6 +1771,13 @@ void ItemTrackerWindow::DrawElement() {
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Triforce Piece Tracker");
             DrawItemsInRows(triforcePieces);
+            EndFloatingWindows();
+        }
+
+        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BeanSouls"), SECTION_DISPLAY_HIDDEN) ==
+            SECTION_DISPLAY_SEPARATE) {
+            BeginFloatingWindows("Bean Soul Tracker");
+            DrawItemsInRows(beanSoulItems);
             EndFloatingWindows();
         }
 
@@ -1914,6 +2021,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
         }
         SohGui::mSohMenu->MenuDrawItem(gregTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(triforcePieceTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(beanSoulsTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(bossSoulsTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(ocarinaButtonTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(overworldKeysTracking, 250, THEME_COLOR);
@@ -2027,6 +2135,18 @@ void RegisterItemTrackerWidgets() {
         .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
     ;
     SohGui::mSohMenu->AddSearchWidget({ gregTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
+
+    beanSoulsTracking = { .name = "Bean Souls", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    beanSoulsTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.BeanSouls"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(displayTypes))
+        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+    ;
+    SohGui::mSohMenu->AddSearchWidget({ beanSoulsTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
 
     bossSoulsTracking = { .name = "Boss Souls", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     bossSoulsTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.BossSouls"))

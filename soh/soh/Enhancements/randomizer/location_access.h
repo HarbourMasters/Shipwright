@@ -209,7 +209,7 @@ class Region {
         return hereVal;
     }
 
-    bool CanPlantBeanCheck() const;
+    bool CanPlantBeanCheck(RandomizerGet bean) const;
     bool AllAccountedFor() const;
     bool MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAge = false);
 
@@ -224,7 +224,7 @@ extern std::vector<EventAccess> grottoEvents;
 bool AnyAgeTime(ConditionFn condition);
 bool MQSpiritSharedStatueRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge = false);
 bool MQSpiritSharedBrokenWallRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge = false);
-bool CanPlantBean(const RandomizerRegion region);
+bool CanPlantBean(const RandomizerRegion region, RandomizerGet bean);
 bool BothAges(const RandomizerRegion region);
 bool ChildCanAccess(const RandomizerRegion region);
 bool AdultCanAccess(const RandomizerRegion region);
