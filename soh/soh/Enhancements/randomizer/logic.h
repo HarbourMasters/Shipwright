@@ -31,6 +31,7 @@ class Logic {
     bool AtDay = false;
     bool AtNight = false;
     RandomizerRegion CurrentRegionKey = RR_NONE;
+    RandomizerCheck CurrentCheckKey = RC_UNKNOWN_CHECK;
 
     bool CalculatingAvailableChecks = false;
     bool ACProcessUndiscoveredExits = false;

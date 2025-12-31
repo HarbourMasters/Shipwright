@@ -1079,7 +1079,8 @@ bool Logic::CanJumpslash() {
 }
 
 bool Logic::CanClearStalagmite() {
-    return CanJumpslash() || HasExplosives();
+    return CanJumpslash() || HasExplosives() ||
+           (ctx->GetTrickOption(RT_ICE_STALAGMITE_HOOKSHOT) && CanUse(RG_HOOKSHOT));
 }
 
 bool Logic::CanHitSwitch(EnemyDistance distance, bool inWater) {

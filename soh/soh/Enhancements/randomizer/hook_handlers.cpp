@@ -263,16 +263,58 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
 }
 
 void RandomizerOnSceneFlagSetHandler(int16_t sceneNum, int16_t flagType, int16_t flag) {
-    if (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
-        sceneNum == SCENE_GERUDOS_FORTRESS && flagType == FLAG_SCENE_SWITCH && flag == 0x3A) {
-        Flags_SetRandomizerInf(RAND_INF_GF_GTG_GATE_PERMANENTLY_OPEN);
-    }
+    if (flagType == FLAG_SCENE_SWITCH) {
+        auto dungeonInfo = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(sceneNum);
+        bool isVanilla = dungeonInfo == nullptr || dungeonInfo->IsVanilla();
 
-    if (sceneNum == SCENE_SPIRIT_TEMPLE && flagType == FLAG_SCENE_SWITCH) {
-        bool isVanilla =
-            Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(SCENE_SPIRIT_TEMPLE)->IsVanilla();
-        if (isVanilla && flag == 0x23) {
-            Flags_SetRandomizerInf(RAND_INF_SPIRIT_SUN_ON_FLOOR_ON);
+        switch (sceneNum) {
+            case SCENE_GERUDOS_FORTRESS:
+                if (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF && flag == 0x3A) {
+                    Flags_SetRandomizerInf(RAND_INF_GF_GTG_GATE_PERMANENTLY_OPEN);
+                }
+                break;
+            case SCENE_DEKU_TREE:
+                if (!isVanilla && flag == 0x27) {
+                    Flags_SetRandomizerInf(RAND_INF_DEKU_TREE_MQ_TORCH_SWITCH);
+                }
+                break;
+            case SCENE_DODONGOS_CAVERN:
+                if (!isVanilla && flag == 0x25) {
+                    Flags_SetRandomizerInf(RAND_INF_DODONGOS_CAVERN_MQ_SILVER_RUPEES);
+                }
+                break;
+            case SCENE_JABU_JABU:
+                if (isVanilla && flag == 0x3b) {
+                    Flags_SetRandomizerInf(RAND_INF_JABU_JABUS_BELLY_FIRST_SWITCH);
+                }
+                break;
+            case SCENE_FOREST_TEMPLE:
+                if (flag == 0x26) {
+                    Flags_SetRandomizerInf(RAND_INF_FOREST_DRAINED_WELL);
+                } else if (flag == 0x25) {
+                    Flags_SetRandomizerInf(RAND_INF_FOREST_LOBBY_EYES);
+                    if (!isVanilla) {
+                        Flags_SetSwitch(gPlayState, 0x2a);
+                    }
+                } else if (!isVanilla && flag == 0x2a) {
+                    Flags_SetRandomizerInf(RAND_INF_FOREST_LOBBY_EYES);
+                    Flags_SetSwitch(gPlayState, 0x25);
+                } else if (!isVanilla && flag == 0x21) {
+                    Flags_SetRandomizerInf(RAND_INF_FOREST_MQ_COURTYARD_WEB_BURNT);
+                }
+                break;
+            case SCENE_FIRE_TEMPLE:
+                if (!isVanilla && flag == 0x28) {
+                    Flags_SetRandomizerInf(RAND_INF_FIRE_MQ_LOBBY_TORCHES);
+                }
+                break;
+            case SCENE_SPIRIT_TEMPLE:
+                if (isVanilla && flag == 0x23) {
+                    Flags_SetRandomizerInf(RAND_INF_SPIRIT_SUN_ON_FLOOR_ON);
+                } else if (!isVanilla && flag == 0x37) {
+                    Flags_SetRandomizerInf(RAND_INF_SPIRIT_MQ_LOBBY_SILVER_RUPEES);
+                }
+                break;
         }
     }
 
@@ -1931,12 +1973,51 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
     if (actor->id == ACTOR_PLAYER) {
-        if (gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE) {
-            bool isVanilla =
-                Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(SCENE_SPIRIT_TEMPLE)->IsVanilla();
-            if (isVanilla && Flags_GetRandomizerInf(RAND_INF_SPIRIT_SUN_ON_FLOOR_ON)) {
-                Flags_SetSwitch(gPlayState, 0x23);
-            }
+        auto dungeonInfo = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(gPlayState->sceneNum);
+        bool isVanilla = dungeonInfo == nullptr || dungeonInfo->IsVanilla();
+        switch (gPlayState->sceneNum) {
+            case SCENE_DEKU_TREE:
+                if (!isVanilla && Flags_GetRandomizerInf(RAND_INF_DEKU_TREE_MQ_TORCH_SWITCH)) {
+                    Flags_SetSwitch(gPlayState, 0x27);
+                }
+                break;
+            case SCENE_DODONGOS_CAVERN:
+                if (!isVanilla && Flags_GetRandomizerInf(RAND_INF_DODONGOS_CAVERN_MQ_SILVER_RUPEES)) {
+                    Flags_SetSwitch(gPlayState, 0x25);
+                }
+                break;
+            case SCENE_JABU_JABU:
+                if (isVanilla && Flags_GetRandomizerInf(RAND_INF_JABU_JABUS_BELLY_FIRST_SWITCH)) {
+                    Flags_SetSwitch(gPlayState, 0x3b);
+                }
+                break;
+            case SCENE_FOREST_TEMPLE:
+                if (Flags_GetRandomizerInf(RAND_INF_FOREST_DRAINED_WELL)) {
+                    Flags_SetSwitch(gPlayState, 0x26);
+                }
+                if (Flags_GetRandomizerInf(RAND_INF_FOREST_LOBBY_EYES)) {
+                    Flags_SetSwitch(gPlayState, 0x25);
+                    if (!isVanilla) {
+                        Flags_SetSwitch(gPlayState, 0x2a);
+                    }
+                }
+                if (!isVanilla && Flags_GetRandomizerInf(RAND_INF_FOREST_MQ_COURTYARD_WEB_BURNT)) {
+                    Flags_SetSwitch(gPlayState, 0x21);
+                }
+                break;
+            case SCENE_FIRE_TEMPLE:
+                if (!isVanilla && Flags_GetRandomizerInf(RAND_INF_FIRE_MQ_LOBBY_TORCHES)) {
+                    Flags_SetSwitch(gPlayState, 0x28);
+                }
+                break;
+            case SCENE_SPIRIT_TEMPLE:
+                if (isVanilla && Flags_GetRandomizerInf(RAND_INF_SPIRIT_SUN_ON_FLOOR_ON)) {
+                    Flags_SetSwitch(gPlayState, 0x23);
+                }
+                if (!isVanilla && Flags_GetRandomizerInf(RAND_INF_SPIRIT_MQ_LOBBY_SILVER_RUPEES)) {
+                    Flags_SetSwitch(gPlayState, 0x37);
+                }
+                break;
         }
     }
 

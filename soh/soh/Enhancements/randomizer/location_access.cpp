@@ -58,7 +58,7 @@ bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailab
         conditionsMet = true;
     }
 
-    return conditionsMet && CanBuy(calculatingAvailableChecks);
+    return conditionsMet;
 }
 
 static uint16_t GetMinimumPrice(const Rando::Location* loc) {
@@ -102,38 +102,32 @@ static uint16_t GetMinimumPrice(const Rando::Location* loc) {
     }
 }
 
-bool LocationAccess::CanBuy(bool calculatingAvailableChecks) const {
-    const auto& loc = Rando::StaticData::GetLocation(location);
-    const auto& itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(location);
+uint16_t GetCheckPrice(RandomizerCheck check /* = RC_UNKNOWN_CHECK */) {
+    RandomizerCheck rc = check != RC_UNKNOWN_CHECK ? check : logic->CurrentCheckKey;
+    assert(rc != RC_UNKNOWN_CHECK);
+    const auto& loc = Rando::StaticData::GetLocation(rc);
+    assert(loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT);
+    const auto& itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
 
-    if (loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT ||
-        location == RC_ZR_MAGIC_BEAN_SALESMAN) {
-        // Checks should only be identified while playing
-        if (calculatingAvailableChecks && itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
-            return CanBuyAnother(GetMinimumPrice(loc));
-        } else {
-            return CanBuyAnother(itemLoc->GetPrice());
-        }
+    // Checks should only be identified while playing
+    if (logic->CalculatingAvailableChecks && itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
+        return GetMinimumPrice(loc);
     }
 
-    return true;
+    return itemLoc->GetPrice();
 }
 
-bool CanBuyAnother(RandomizerCheck rc) {
-    return CanBuyAnother(ctx->GetItemLocation(rc)->GetPrice());
-}
-
-bool CanBuyAnother(uint16_t price) {
-    if (price > 500) {
-        return logic->HasItem(RG_TYCOON_WALLET);
-    } else if (price > 200) {
-        return logic->HasItem(RG_GIANT_WALLET);
-    } else if (price > 99) {
-        return logic->HasItem(RG_ADULT_WALLET);
-    } else if (price > 0) {
-        return logic->HasItem(RG_CHILD_WALLET);
+uint16_t GetWalletCapacity() {
+    if (logic->HasItem(RG_TYCOON_WALLET)) {
+        return 999;
+    } else if (logic->HasItem(RG_GIANT_WALLET)) {
+        return 500;
+    } else if (logic->HasItem(RG_ADULT_WALLET)) {
+        return 200;
+    } else if (logic->HasItem(RG_CHILD_WALLET)) {
+        return 99;
     }
-    return true;
+    return 0;
 }
 
 std::set<RandomizerArea> CalculateAreas(SceneID scene) {
