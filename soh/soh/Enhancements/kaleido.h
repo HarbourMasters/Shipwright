@@ -176,5 +176,6 @@ void RandoKaleido_UpdateMiscCollectibles(int16_t inDungeonScene);
 #ifdef __cplusplus
 }
 #endif
+void RandoKaleido_RegisterHooks();
 
 #endif // KALEIDO_H

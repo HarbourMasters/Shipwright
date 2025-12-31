@@ -403,14 +403,12 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
                  (player->linearVelocity != 0.0f)) ||
                 ((player->rideActor != NULL) && (sqrt(this->actor.xyzDistToPlayerSq) < 60.0) &&
                  (player->rideActor->speedXZ != 0.0f))) {
-                if (GameInteractor_Should(VB_BUSH_DROP_ITEM, true, this)) {
-                    if ((this->unk_14C >= 0) && (this->unk_14C < 0x64)) {
-                        Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos,
-                                                   ((this->unk_14C << 4) | 0x8000));
-                    }
-                    this->unk_14C = -0x15;
-                    Audio_PlayActorSound2(&this->actor, NA_SE_EV_TREE_SWING);
+                if ((this->unk_14C >= 0) && (this->unk_14C < 0x64)) {
+                    Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos,
+                                               ((this->unk_14C << 4) | 0x8000));
                 }
+                this->unk_14C = -0x15;
+                Audio_PlayActorSound2(&this->actor, NA_SE_EV_TREE_SWING);
             }
         }
     } else { // Leaves
