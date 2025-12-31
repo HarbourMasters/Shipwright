@@ -17,7 +17,7 @@ extern PlayState* gPlayState;
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 
 void GameInteractor::RawAction::AddOrRemoveHealthContainers(int16_t amount) {
-    gSaveContext.healthCapacity += amount * 0x10;
+    gSaveContext.healthCapacity += amount * FULL_HEART_HEALTH;
 }
 
 void GameInteractor::RawAction::AddOrRemoveMagic(int8_t amount) {
@@ -46,17 +46,17 @@ void GameInteractor::RawAction::AddOrRemoveMagic(int8_t amount) {
 
 void GameInteractor::RawAction::HealOrDamagePlayer(int16_t hearts) {
     if (hearts > 0) {
-        Health_ChangeBy(gPlayState, hearts * 0x10);
+        Health_ChangeBy(gPlayState, hearts * FULL_HEART_HEALTH);
     } else if (hearts < 0) {
         Player* player = GET_PLAYER(gPlayState);
-        Health_ChangeBy(gPlayState, hearts * 0x10);
+        Health_ChangeBy(gPlayState, hearts * FULL_HEART_HEALTH);
         func_80837C0C(gPlayState, player, 0, 0, 0, 0, 0);
         player->invincibilityTimer = 28;
     }
 }
 
 void GameInteractor::RawAction::SetPlayerHealth(int16_t hearts) {
-    gSaveContext.health = hearts * 0x10;
+    gSaveContext.health = hearts * FULL_HEART_HEALTH;
 }
 
 void GameInteractor::RawAction::SetLinkInvisibility(bool active) {

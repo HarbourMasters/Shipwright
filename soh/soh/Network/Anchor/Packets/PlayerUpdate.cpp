@@ -50,6 +50,8 @@ void Anchor::SendPacket_PlayerUpdate() {
         jointArray.push_back(joint.y);
         jointArray.push_back(joint.z);
     }
+    payload["prevTransl"] = player->skelAnime.prevTransl;
+    payload["movementFlags"] = player->skelAnime.movementFlags;
     payload["jointTable"] = jointArray;
     payload["upperLimbRot"] = player->upperLimbRot;
     payload["currentBoots"] = player->currentBoots;
@@ -63,6 +65,7 @@ void Anchor::SendPacket_PlayerUpdate() {
     payload["modelGroup"] = player->modelGroup;
     payload["invincibilityTimer"] = player->invincibilityTimer;
     payload["unk_862"] = player->unk_862;
+    payload["unk_85C"] = player->unk_85C;
     payload["actionVar1"] = player->av1.actionVar1;
     payload["quiet"] = true;
 
@@ -76,8 +79,6 @@ void Anchor::SendPacket_PlayerUpdate() {
 
 void Anchor::HandlePacket_PlayerUpdate(nlohmann::json payload) {
     uint32_t clientId = payload["clientId"].get<uint32_t>();
-
-    bool shouldRefreshActors = false;
 
     if (clients.contains(clientId)) {
         auto& client = clients[clientId];
@@ -96,6 +97,8 @@ void Anchor::HandlePacket_PlayerUpdate(nlohmann::json payload) {
             client.jointTable[i].y = jointArray[i * 3 + 1];
             client.jointTable[i].z = jointArray[i * 3 + 2];
         }
+        client.movementFlags = payload["movementFlags"].get<u8>();
+        client.prevTransl = payload["prevTransl"].get<Vec3s>();
         client.upperLimbRot = payload["upperLimbRot"].get<Vec3s>();
         client.currentBoots = payload["currentBoots"].get<s8>();
         client.currentShield = payload["currentShield"].get<s8>();
@@ -108,10 +111,7 @@ void Anchor::HandlePacket_PlayerUpdate(nlohmann::json payload) {
         client.modelGroup = payload["modelGroup"].get<u8>();
         client.invincibilityTimer = payload["invincibilityTimer"].get<s8>();
         client.unk_862 = payload["unk_862"].get<s16>();
+        client.unk_85C = payload["unk_85C"].get<f32>();
         client.actionVar1 = payload["actionVar1"].get<s8>();
-    }
-
-    if (shouldRefreshActors) {
-        RefreshClientActors();
     }
 }

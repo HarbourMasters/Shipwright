@@ -229,6 +229,7 @@ void SaveManager::LoadRandomizer() {
 
     SaveManager::Instance->LoadData("triforcePiecesCollected",
                                     gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
+    SaveManager::Instance->LoadData("bombchuUpgradeLevel", gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel);
 
     SaveManager::Instance->LoadData("pendingIceTrapCount", gSaveContext.ship.pendingIceTrapCount);
 
@@ -382,6 +383,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 
     SaveManager::Instance->SaveData("triforcePiecesCollected",
                                     saveContext->ship.quest.data.randomizer.triforcePiecesCollected);
+    SaveManager::Instance->SaveData("bombchuUpgradeLevel", saveContext->ship.quest.data.randomizer.bombchuUpgradeLevel);
 
     SaveManager::Instance->SaveData("pendingIceTrapCount", saveContext->ship.pendingIceTrapCount);
 
@@ -464,6 +466,7 @@ void SaveManager::Init() {
         }
     }
     saveBlock = nlohmann::json::object();
+    OTRGlobals::Instance->gRandoContext->ClearItemLocations();
 }
 
 void SaveManager::StartupCheckAndInitMeta(int fileNum) {
@@ -655,10 +658,10 @@ void SaveManager::InitFileNormal() {
         gSaveContext.ship.filenameLanguage =
             (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
-    gSaveContext.healthCapacity = 0x30;
-    gSaveContext.health = 0x30;
+    gSaveContext.healthCapacity = STARTING_HEALTH;
+    gSaveContext.health = STARTING_HEALTH;
     gSaveContext.magicLevel = 0;
-    gSaveContext.magic = 0x30;
+    gSaveContext.magic = MAGIC_NORMAL_METER;
     gSaveContext.rupees = 0;
     gSaveContext.swordHealth = 0;
     gSaveContext.naviTimer = 0;
@@ -950,10 +953,10 @@ void SaveManager::InitFileMaxed() {
         gSaveContext.ship.filenameLanguage =
             (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
-    gSaveContext.healthCapacity = 0x140;
-    gSaveContext.health = 0x140;
+    gSaveContext.healthCapacity = MAX_HEALTH;
+    gSaveContext.health = MAX_HEALTH;
     gSaveContext.magicLevel = 2;
-    gSaveContext.magic = 0x60;
+    gSaveContext.magic = MAGIC_DOUBLE_METER;
     gSaveContext.rupees = 500;
     gSaveContext.swordHealth = 8;
     gSaveContext.naviTimer = 0;

@@ -25,10 +25,13 @@ void GameInteractor_ExecuteOnSceneFlagUnset(int16_t sceneNum, int16_t flagType, 
 void GameInteractor_ExecuteOnFlagSet(int16_t flagType, int16_t flag);
 void GameInteractor_ExecuteOnFlagUnset(int16_t flagType, int16_t flag);
 void GameInteractor_ExecuteOnSceneSpawnActors();
+void GameInteractor_ExecuteOnLinkSkeletonInit();
+void GameInteractor_ExecuteOnLinkEquipmentChange();
 void GameInteractor_ExecuteOnPlayerUpdate();
 void GameInteractor_ExecuteOnSetDoAction(uint16_t action);
 void GameInteractor_ExecuteOnPlayerSfx(u16 sfxId);
 void GameInteractor_ExecuteOnOcarinaSongAction();
+void GameInteractor_ExecuteOnOcarinaNote(uint8_t note, float modulator, int8_t bend);
 void GameInteractor_ExecuteOnCuccoOrChickenHatch();
 bool GameInteractor_ShouldActorInit(void* actor);
 void GameInteractor_ExecuteOnActorInit(void* actor);

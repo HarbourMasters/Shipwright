@@ -67,7 +67,9 @@ void Anchor::RegisterHooks() {
     COND_ID_HOOK(ShouldActorInit, ACTOR_PLAYER, isConnected, [&](void* actorRef, bool* should) {
         Actor* actor = (Actor*)actorRef;
 
-        if (refreshingActors) {
+        if (spawningDummyPlayerForClientId != 0) {
+            SetDummyPlayerClientId(actor, spawningDummyPlayerForClientId);
+
             // By the time we get here, the actor was already added to the ACTORCAT_PLAYER list, so we need to move it
             Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, actor, ACTORCAT_NPC);
             actor->id = ACTOR_EN_OE2;
@@ -84,12 +86,20 @@ void Anchor::RegisterHooks() {
             justLoadedSave = false;
             SendPacket_RequestTeamState();
         }
+
+        if (shouldRefreshActors) {
+            shouldRefreshActors = false;
+            RefreshClientActors();
+        }
+
         SendPacket_PlayerUpdate();
     });
 
     COND_HOOK(OnGameFrameUpdate, isConnected, [&]() { ProcessIncomingPacketQueue(); });
 
     COND_HOOK(OnPlayerSfx, isConnected, [&](u16 sfxId) { SendPacket_PlayerSfx(sfxId); });
+    COND_HOOK(OnOcarinaNote, isConnected,
+              [&](uint8_t note, float modulator, int8_t bend) { SendPacket_OcarinaSfx(note, modulator, bend); });
 
     COND_HOOK(OnLoadGame, isConnected, [&](s16 fileNum) { justLoadedSave = true; });
 
@@ -142,6 +152,31 @@ void Anchor::RegisterHooks() {
     COND_HOOK(OnDungeonKeyUsed, isConnected, [&](uint16_t mapIndex) {
         // Handle vanilla dungeon items a bit differently
         SendPacket_UpdateDungeonItems();
+    });
+
+    COND_VB_SHOULD(VB_APPLY_TUNIC_COLOR, isConnected, {
+        Actor* myPlayer = (Actor*)GET_PLAYER(gPlayState);
+        Actor* actor = va_arg(args, Actor*);
+        Color_RGB8* color = va_arg(args, Color_RGB8*);
+
+        if (actor == myPlayer) {
+            Color_RGBA8 ownColor = CVarGetColor(CVAR_REMOTE_ANCHOR("Color.Value"), { 100, 255, 100 });
+            color->r = ownColor.r;
+            color->g = ownColor.g;
+            color->b = ownColor.b;
+            return;
+        }
+
+        uint32_t clientId = Anchor::Instance->GetDummyPlayerClientId(actor);
+
+        if (!Anchor::Instance->clients.contains(clientId)) {
+            return;
+        }
+
+        AnchorClient& client = Anchor::Instance->clients[clientId];
+        color->r = client.color.r;
+        color->g = client.color.g;
+        color->b = client.color.b;
     });
 
     // #endregion

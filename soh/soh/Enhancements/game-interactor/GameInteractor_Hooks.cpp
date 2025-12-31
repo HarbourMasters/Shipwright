@@ -86,6 +86,14 @@ void GameInteractor_ExecuteOnSceneSpawnActors() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneSpawnActors>();
 }
 
+void GameInteractor_ExecuteOnLinkSkeletonInit() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLinkSkeletonInit>();
+}
+
+void GameInteractor_ExecuteOnLinkEquipmentChange() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLinkEquipmentChange>();
+}
+
 void GameInteractor_ExecuteOnPlayerUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerUpdate>();
 }
@@ -100,6 +108,10 @@ void GameInteractor_ExecuteOnPlayerSfx(u16 sfxId) {
 
 void GameInteractor_ExecuteOnOcarinaSongAction() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnOcarinaSongAction>();
+}
+
+void GameInteractor_ExecuteOnOcarinaNote(uint8_t note, float modulator, int8_t bend) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnOcarinaNote>(note, modulator, bend);
 }
 
 void GameInteractor_ExecuteOnCuccoOrChickenHatch() {

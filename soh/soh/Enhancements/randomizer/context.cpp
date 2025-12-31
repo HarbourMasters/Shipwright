@@ -16,6 +16,9 @@
 
 #include <fstream>
 #include <spdlog/spdlog.h>
+extern "C" {
+#include <functions.h>
+}
 
 namespace Rando {
 std::weak_ptr<Context> Context::mContext;
@@ -203,6 +206,7 @@ void Context::GenerateLocationPool() {
             (location.GetRCType() == RCTYPE_TREE && !mOptions[RSK_SHUFFLE_TREES]) ||
             (location.GetRCType() == RCTYPE_NLTREE &&
              (!mOptions[RSK_SHUFFLE_TREES] || mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC))) ||
+            (location.GetRCType() == RCTYPE_BUSH && !mOptions[RSK_SHUFFLE_BUSHES]) ||
             (location.GetRCType() == RCTYPE_FREESTANDING &&
              mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_OFF)) ||
             (location.GetRCType() == RCTYPE_BEEHIVE && !mOptions[RSK_SHUFFLE_BEEHIVES])) {
@@ -549,6 +553,56 @@ std::string Context::GetHash() const {
 
 void Context::SetHash(std::string hash) {
     mHash = std::move(hash);
+}
+
+uint8_t Context::GetBombchuCapacity() {
+    switch (mLogic->GetSaveContext()->ship.quest.data.randomizer.bombchuUpgradeLevel) {
+        case 0:
+            return 0;
+        case 1:
+            return 20;
+        case 2:
+            return 30;
+        case 3:
+            return 50;
+        default:
+            return 0;
+    }
+}
+
+void Context::HandleGetBombchuBag() {
+    if (GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
+        if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+            INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+            AMMO(ITEM_BOMBCHU) = 20;
+        } else if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INFINITE_UPGRADES)) {
+            Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
+        } else {
+            AMMO(ITEM_BOMBCHU) += 10;
+            if (AMMO(ITEM_BOMBCHU) > 50) {
+                AMMO(ITEM_BOMBCHU) = 50;
+            }
+        }
+        return;
+    }
+    switch (mLogic->GetSaveContext()->ship.quest.data.randomizer.bombchuUpgradeLevel) {
+        case 0:
+        case 1:
+        case 2:
+            mLogic->GetSaveContext()->ship.quest.data.randomizer.bombchuUpgradeLevel++;
+            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+                INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+            } else if (GetOption(RSK_INFINITE_UPGRADES).Is(RO_INF_UPGRADES_CONDENSED_PROGRESSIVE)) {
+                Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
+            }
+            AMMO(ITEM_BOMBCHU) = GetBombchuCapacity();
+            return;
+        case 3:
+            if (GetOption(RSK_INFINITE_UPGRADES).IsNot(RO_INF_UPGRADES_OFF)) {
+                Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
+            }
+            return;
+    }
 }
 
 const std::string& Context::GetSeedString() const {

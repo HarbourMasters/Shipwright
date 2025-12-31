@@ -21,7 +21,7 @@ struct DayTimeGoldSkulltulas {
 
 using DayTimeGoldSkulltulasList = std::vector<DayTimeGoldSkulltulas>;
 
-void OnSpawnNighttimeGoldSkulltula() {
+static void OnSpawnNighttimeGoldSkulltula() {
     // Gold Skulltulas that are not part of the scene actor list during the day
     // Actor values copied from the night time scene actor list
     static const DayTimeGoldSkulltulasList dayTimeGoldSkulltulas = {
@@ -62,7 +62,7 @@ void OnSpawnNighttimeGoldSkulltula() {
     }
 }
 
-void RegisterDaytimeGoldSkultullas() {
+static void RegisterDaytimeGoldSkultullas() {
     COND_HOOK(OnSceneSpawnActors, CVAR_DAYTIME_GS_VALUE, OnSpawnNighttimeGoldSkulltula);
 }
 

@@ -152,6 +152,7 @@ Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
 Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
 Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
 
+int32_t previousImGuiScaleIndex;
 float previousImGuiScale;
 
 bool prevAltAssets = false;
@@ -431,6 +432,7 @@ void OTRGlobals::Initialize() {
 
     hasMasterQuest = hasOriginal = false;
 
+    previousImGuiScaleIndex = -1;
     previousImGuiScale = defaultImGuiScale;
 
     fontMonoSmall = CreateFontWithSize(14.0f, "fonts/Inconsolata-Regular.ttf");
@@ -499,11 +501,17 @@ OTRGlobals::~OTRGlobals() {
 }
 
 void OTRGlobals::ScaleImGui() {
-    float scale = imguiScaleOptionToValue[CVarGetInteger(CVAR_SETTING("ImGuiScale"), defaultImGuiScale)];
+    int32_t imGuiScaleIndex = CVarGetInteger(CVAR_SETTING("ImGuiScale"), defaultImGuiScale);
+    if (imGuiScaleIndex == previousImGuiScaleIndex) {
+        return;
+    }
+
+    float scale = imguiScaleOptionToValue[imGuiScaleIndex];
     float newScale = scale / previousImGuiScale;
     ImGui::GetStyle().ScaleAllSizes(newScale);
     ImGui::GetIO().FontGlobalScale = scale;
     previousImGuiScale = scale;
+    previousImGuiScaleIndex = imGuiScaleIndex;
 }
 
 ImFont* OTRGlobals::CreateDefaultFontWithSize(float size) {
@@ -2541,12 +2549,18 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             u16 naviTextId = Random(0, NUM_NAVI_MESSAGES);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID,
                                                                            naviTextId, MF_FORMATTED);
-        } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_10 &&
-                   (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
-                    ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL))) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
-                RC_ZR_MAGIC_BEAN_SALESMAN, TEXT_BEAN_SALESMAN_BUY_FOR_10, TEXT_NONE,
-                Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
+        } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_10) {
+            if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
+                ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)) {
+                messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
+                    RC_ZR_MAGIC_BEAN_SALESMAN, TEXT_BEAN_SALESMAN_BUY_FOR_10, TEXT_NONE,
+                    Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
+            } else if (ctx->GetOption(RSK_SKIP_PLANTING_BEANS)) {
+                // TODO_TRANSLATE Translate into french and german
+                messageEntry =
+                    CustomMessage("For #60 rupees# I'll plant beans across Hyrule, deal?\x1B#Yes&No#", { QM_YELLOW });
+                messageEntry.AutoFormat();
+            }
         } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_100) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(
                 Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100, MF_AUTO_FORMAT);

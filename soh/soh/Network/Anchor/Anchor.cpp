@@ -3,6 +3,7 @@
 #include <libultraship/libultraship.h>
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/nametag.h"
+#include "soh/ObjectExtension/ObjectExtension.h"
 
 extern "C" {
 #include "variables.h"
@@ -109,6 +110,8 @@ void Anchor::ProcessIncomingPacketQueue() {
             HandlePacket_GameComplete(payload);
         else if (packetType == GIVE_ITEM)
             HandlePacket_GiveItem(payload);
+        else if (packetType == OCARINA_SFX)
+            HandlePacket_OcarinaSfx(payload);
         else if (packetType == PLAYER_SFX)
             HandlePacket_PlayerSfx(payload);
         else if (packetType == UPDATE_TEAM_STATE)
@@ -143,6 +146,21 @@ void Anchor::ProcessIncomingPacketQueue() {
 // MARK: - Misc/Helpers
 
 // Kills all existing anchor actors and respawns them with the new client data
+
+struct DummyPlayerClientId {
+    uint32_t clientId = 0;
+};
+static ObjectExtension::Register<DummyPlayerClientId> DummyPlayerClientIdRegister;
+
+uint32_t Anchor::GetDummyPlayerClientId(const Actor* actor) {
+    const DummyPlayerClientId* clientId = ObjectExtension::GetInstance().Get<DummyPlayerClientId>(actor);
+    return clientId != nullptr ? clientId->clientId : 0;
+}
+
+void Anchor::SetDummyPlayerClientId(const Actor* actor, uint32_t clientId) {
+    ObjectExtension::GetInstance().Set<DummyPlayerClientId>(actor, DummyPlayerClientId{ clientId });
+}
+
 void Anchor::RefreshClientActors() {
     if (!IsSaveLoaded()) {
         return;
@@ -158,23 +176,21 @@ void Anchor::RefreshClientActors() {
         actor = actor->next;
     }
 
-    actorIndexToClientId.clear();
-    refreshingActors = true;
     for (auto& [clientId, client] : clients) {
         if (!client.online || client.self) {
             continue;
         }
 
-        actorIndexToClientId.push_back(clientId);
+        spawningDummyPlayerForClientId = clientId;
         // We are using a hook `ShouldActorInit` to override the init/update/draw/destroy functions of the Player we
         // spawn We quickly store a mapping of "index" to clientId, then within the init function we use this to get the
         // clientId and store it on player->zTargetActiveTimer (unused s32 for the dummy) for convenience
-        auto dummy = Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_PLAYER, client.posRot.pos.x,
-                                 client.posRot.pos.y, client.posRot.pos.z, client.posRot.rot.x, client.posRot.rot.y,
-                                 client.posRot.rot.z, actorIndexToClientId.size() - 1, false);
+        auto dummy =
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_PLAYER, client.posRot.pos.x, client.posRot.pos.y,
+                        client.posRot.pos.z, client.posRot.rot.x, client.posRot.rot.y, client.posRot.rot.z, 0, false);
         client.player = (Player*)dummy;
     }
-    refreshingActors = false;
+    spawningDummyPlayerForClientId = 0;
 }
 
 bool Anchor::IsSaveLoaded() {

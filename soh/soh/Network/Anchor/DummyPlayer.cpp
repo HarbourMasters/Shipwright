@@ -12,9 +12,6 @@ void Player_UseItem(PlayState* play, Player* player, s32 item);
 void Player_Draw(Actor* actor, PlayState* play);
 }
 
-// Hijacking player->zTargetActiveTimer (unused s32 for the dummy) to store the clientId for convenience
-#define DUMMY_CLIENT_ID player->zTargetActiveTimer
-
 static DamageTable DummyPlayerDamageTable = {
     /* Deku nut      */ DMG_ENTRY(0, DUMMY_PLAYER_HIT_RESPONSE_STUN),
     /* Deku stick    */ DMG_ENTRY(2, DUMMY_PLAYER_HIT_RESPONSE_NORMAL),
@@ -53,15 +50,14 @@ static DamageTable DummyPlayerDamageTable = {
 void DummyPlayer_Init(Actor* actor, PlayState* play) {
     Player* player = (Player*)actor;
 
-    uint32_t clientId = Anchor::Instance->actorIndexToClientId[actor->params];
-    DUMMY_CLIENT_ID = clientId;
+    uint32_t clientId = Anchor::Instance->GetDummyPlayerClientId(actor);
 
-    if (!Anchor::Instance->clients.contains(DUMMY_CLIENT_ID)) {
+    if (!Anchor::Instance->clients.contains(clientId)) {
         Actor_Kill(actor);
         return;
     }
 
-    AnchorClient& client = Anchor::Instance->clients[DUMMY_CLIENT_ID];
+    AnchorClient& client = Anchor::Instance->clients[clientId];
 
     // Hack to account for usage of gSaveContext in Player_Init
     s32 originalAge = gSaveContext.linkAge;
@@ -104,12 +100,14 @@ void Math_Vec3s_Copy(Vec3s* dest, Vec3s* src) {
 void DummyPlayer_Update(Actor* actor, PlayState* play) {
     Player* player = (Player*)actor;
 
-    if (!Anchor::Instance->clients.contains(DUMMY_CLIENT_ID)) {
+    uint32_t clientId = Anchor::Instance->GetDummyPlayerClientId(actor);
+
+    if (!Anchor::Instance->clients.contains(clientId)) {
         Actor_Kill(actor);
         return;
     }
 
-    AnchorClient& client = Anchor::Instance->clients[DUMMY_CLIENT_ID];
+    AnchorClient& client = Anchor::Instance->clients[clientId];
 
     if (client.sceneNum != gPlayState->sceneNum || !client.online || !client.isSaveLoaded) {
         actor->world.pos.x = -9999.0f;
@@ -124,6 +122,8 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
     Math_Vec3s_Copy(&actor->shape.rot, &client.posRot.rot);
     Math_Vec3f_Copy(&actor->world.pos, &client.posRot.pos);
     player->skelAnime.jointTable = client.jointTable;
+    player->skelAnime.movementFlags = client.movementFlags;
+    Math_Vec3s_Copy(&player->skelAnime.prevTransl, &client.prevTransl);
     player->currentBoots = client.currentBoots;
     player->currentShield = client.currentShield;
     player->currentTunic = client.currentTunic;
@@ -133,15 +133,38 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
     player->heldItemAction = client.heldItemAction;
     player->invincibilityTimer = client.invincibilityTimer;
     player->unk_862 = client.unk_862;
+    player->unk_85C = client.unk_85C;
     player->av1.actionVar1 = client.actionVar1;
 
-    if (player->modelGroup != client.modelGroup) {
+    // Apply animation movement (Copied from Player_ApplyAnimMovementScaledByAge)
+    Vec3f diff;
+    SkelAnime_UpdateTranslation(&player->skelAnime, &diff, player->actor.shape.rot.y);
+
+    if (player->skelAnime.movementFlags & 1) {
+        if (!LINK_IS_ADULT) {
+            diff.x *= 0.64f;
+            diff.z *= 0.64f;
+        }
+
+        player->actor.world.pos.x += diff.x * player->actor.scale.x;
+        player->actor.world.pos.z += diff.z * player->actor.scale.z;
+    }
+
+    if (player->skelAnime.movementFlags & 2) {
+        if (!(player->skelAnime.movementFlags & 4)) {
+            diff.y *= player->ageProperties->unk_08;
+        }
+
+        player->actor.world.pos.y += diff.y * player->actor.scale.y;
+    }
+
+    if (player->modelGroup != Player_ActionToModelGroup(player, player->itemAction)) {
         // Hack to account for usage of gSaveContext
         s32 originalAge = gSaveContext.linkAge;
         gSaveContext.linkAge = client.linkAge;
         u8 originalButtonItem0 = gSaveContext.equips.buttonItems[0];
         gSaveContext.equips.buttonItems[0] = client.buttonItem0;
-        Player_SetModelGroup(player, client.modelGroup);
+        Player_SetModelGroup(player, Player_ActionToModelGroup(player, player->itemAction));
         gSaveContext.linkAge = originalAge;
         gSaveContext.equips.buttonItems[0] = originalButtonItem0;
     }
@@ -195,12 +218,14 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
 void DummyPlayer_Draw(Actor* actor, PlayState* play) {
     Player* player = (Player*)actor;
 
-    if (!Anchor::Instance->clients.contains(DUMMY_CLIENT_ID)) {
+    uint32_t clientId = Anchor::Instance->GetDummyPlayerClientId(actor);
+
+    if (!Anchor::Instance->clients.contains(clientId)) {
         Actor_Kill(actor);
         return;
     }
 
-    AnchorClient& client = Anchor::Instance->clients[DUMMY_CLIENT_ID];
+    AnchorClient& client = Anchor::Instance->clients[clientId];
 
     if (client.sceneNum != gPlayState->sceneNum || !client.online || !client.isSaveLoaded) {
         return;

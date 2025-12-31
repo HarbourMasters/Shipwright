@@ -22,10 +22,13 @@ DEFINE_HOOK(OnSceneFlagUnset, (int16_t sceneNum, int16_t flagType, int16_t flag)
 DEFINE_HOOK(OnFlagSet, (int16_t flagType, int16_t flag));
 DEFINE_HOOK(OnFlagUnset, (int16_t flagType, int16_t flag));
 DEFINE_HOOK(OnSceneSpawnActors, ());
+DEFINE_HOOK(OnLinkSkeletonInit, ());
+DEFINE_HOOK(OnLinkEquipmentChange, ());
 DEFINE_HOOK(OnPlayerUpdate, ());
 DEFINE_HOOK(OnSetDoAction, (uint16_t action));
 DEFINE_HOOK(OnPlayerSfx, (u16 sfxId));
 DEFINE_HOOK(OnOcarinaSongAction, ());
+DEFINE_HOOK(OnOcarinaNote, (uint8_t note, float modulator, int8_t bend));
 DEFINE_HOOK(OnCuccoOrChickenHatch, ());
 DEFINE_HOOK(OnShopSlotChange, (uint8_t cursorIndex, int16_t price));
 DEFINE_HOOK(OnDungeonKeyUsed, (uint16_t mapIndex));

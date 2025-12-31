@@ -129,6 +129,7 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
         }
     }
     ShipInit::InitAll();
+    OTRGlobals::Instance->ScaleImGui();
 }
 
 void DrawPresetSelector(std::vector<PresetSection> includeSections, std::string presetLoc, bool disabled) {

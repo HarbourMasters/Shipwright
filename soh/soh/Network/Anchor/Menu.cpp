@@ -46,7 +46,10 @@ void AnchorMainMenu(WidgetInfo& info) {
     }
     UIWidgets::PopStyleInput();
 
-    ImGui::Text("Name");
+    ImGui::Text("Name & Color");
+    static Color_RGBA8 defaultColor = { 100, 255, 100, 255 };
+    UIWidgets::CVarColorPicker("##Color", CVAR_REMOTE_ANCHOR("Color"), defaultColor);
+    ImGui::SameLine();
     ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
     if (UIWidgets::InputString("##Name", &anchorName, UIWidgets::InputOptions().Color(THEME_COLOR))) {
         CVarSetString(CVAR_REMOTE_ANCHOR("Name"), anchorName.c_str());
@@ -222,6 +225,7 @@ void AnchorInstructionsMenu(WidgetInfo& info) {
         "the same randomizer seed, while players on different teams can use different seeds.");
 }
 
+#ifdef ENABLE_REMOTE_CONTROL
 void RegisterAnchorMenu() {
     WidgetPath path = { "Network", "Anchor", SECTION_COLUMN_1 };
     SohGui::mSohMenu->AddWidget(path, "AnchorMainMenu", WIDGET_CUSTOM)
@@ -237,3 +241,4 @@ void RegisterAnchorMenu() {
 }
 
 static RegisterMenuInitFunc menuInitFunc(RegisterAnchorMenu);
+#endif

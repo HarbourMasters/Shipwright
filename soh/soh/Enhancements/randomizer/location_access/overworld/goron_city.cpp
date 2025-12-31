@@ -7,9 +7,9 @@ void RegionTable_Init_GoronCity() {
     // clang-format off
     areaTable[RR_GORON_CITY] = Region("Goron City", SCENE_GORON_CITY, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY,                     []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(LOGIC_STICK_POT,                              []{return logic->IsChild;}),
-        EventAccess(LOGIC_BUG_ROCK,                               []{return logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS);}),
+        EventAccess(LOGIC_FAIRY_ACCESS,                           []{return logic->CallGossipFairyExceptSuns();}),
+        EventAccess(LOGIC_STICK_ACCESS,                           []{return logic->IsChild && logic->CanBreakPots();}),
+        EventAccess(LOGIC_BUG_ACCESS,                             []{return logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS);}),
         EventAccess(LOGIC_GORON_CITY_CHILD_FIRE,                  []{return logic->IsChild && logic->CanUse(RG_DINS_FIRE);}),
         EventAccess(LOGIC_GORON_CITY_WOODS_WARP_OPEN,             []{return logic->CanDetonateUprightBombFlower() || logic->CanUse(RG_MEGATON_HAMMER) || logic->Get(LOGIC_GORON_CITY_CHILD_FIRE);}),
         EventAccess(LOGIC_GORON_CITY_DARUNIAS_DOOR_OPEN_CHILD,    []{return logic->IsChild && logic->CanUse(RG_ZELDAS_LULLABY);}),
@@ -26,7 +26,6 @@ void RegionTable_Init_GoronCity() {
         LOCATION(RC_GC_ROLLING_GORON_AS_ADULT,      logic->Get(LOGIC_GORON_CITY_STOP_ROLLING_GORON_AS_ADULT)),
         LOCATION(RC_GC_GS_BOULDER_MAZE,             logic->IsChild && logic->BlastOrSmash()),
         LOCATION(RC_GC_GS_CENTER_PLATFORM,          logic->IsAdult && logic->CanAttack()),
-        LOCATION(RC_GC_MEDIGORON,                   logic->IsAdult && (logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET))),
         LOCATION(RC_GC_MAZE_GOSSIP_STONE_FAIRY,     (logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)) && logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_GC_MAZE_GOSSIP_STONE_FAIRY_BIG, (logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_GC_MAZE_GOSSIP_STONE,           logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)),
@@ -47,8 +46,12 @@ void RegionTable_Init_GoronCity() {
         Entrance(RR_GC_GROTTO_PLATFORM,   []{return logic->IsAdult && ((logic->CanUse(RG_SONG_OF_TIME) && ((logic->EffectiveHealth() > 2) || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_NAYRUS_LOVE))) || (logic->EffectiveHealth() > 1 && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_HOOKSHOT)) || (logic->CanUse(RG_NAYRUS_LOVE) && logic->CanUse(RG_HOOKSHOT)) || (logic->EffectiveHealth() > 2 && logic->CanUse(RG_HOOKSHOT) && ctx->GetTrickOption(RT_GC_GROTTO)));}),
     });
 
-    areaTable[RR_GC_MEDIGORON] = Region("GC Medigoron", SCENE_GORON_CITY, {}, {
+    areaTable[RR_GC_MEDIGORON] = Region("GC Medigoron", SCENE_GORON_CITY, {
+        //Events
+        EventAccess(LOGIC_MEDIGORON, []{return logic->HasItem(RG_ADULT_WALLET) && GetCheckPrice(RC_GC_MEDIGORON) <= GetWalletCapacity();}),
+    }, {
         //Locations
+        LOCATION(RC_GC_MEDIGORON,                        logic->IsAdult && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_GC_MEDIGORON_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_GC_MEDIGORON_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_GC_MEDIGORON_GOSSIP_STONE,           true),
@@ -90,14 +93,14 @@ void RegionTable_Init_GoronCity() {
 
     areaTable[RR_GC_SHOP] = Region("GC Shop", SCENE_GORON_SHOP, {}, {
         //Locations
-        LOCATION(RC_GC_SHOP_ITEM_1, true),
-        LOCATION(RC_GC_SHOP_ITEM_2, true),
-        LOCATION(RC_GC_SHOP_ITEM_3, true),
-        LOCATION(RC_GC_SHOP_ITEM_4, true),
-        LOCATION(RC_GC_SHOP_ITEM_5, true),
-        LOCATION(RC_GC_SHOP_ITEM_6, true),
-        LOCATION(RC_GC_SHOP_ITEM_7, true),
-        LOCATION(RC_GC_SHOP_ITEM_8, true),
+        LOCATION(RC_GC_SHOP_ITEM_1, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_SHOP_ITEM_2, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_SHOP_ITEM_3, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_SHOP_ITEM_4, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_SHOP_ITEM_5, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_SHOP_ITEM_6, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_SHOP_ITEM_7, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_SHOP_ITEM_8, GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
         Entrance(RR_GORON_CITY, []{return true;}),
@@ -105,9 +108,9 @@ void RegionTable_Init_GoronCity() {
 
     areaTable[RR_GC_GROTTO] = Region("GC Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_GC_DEKU_SCRUB_GROTTO_LEFT,   logic->CanStunDeku()),
-        LOCATION(RC_GC_DEKU_SCRUB_GROTTO_RIGHT,  logic->CanStunDeku()),
-        LOCATION(RC_GC_DEKU_SCRUB_GROTTO_CENTER, logic->CanStunDeku()),
+        LOCATION(RC_GC_DEKU_SCRUB_GROTTO_LEFT,   logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_DEKU_SCRUB_GROTTO_RIGHT,  logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_DEKU_SCRUB_GROTTO_CENTER, logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_GC_GROTTO_BEEHIVE,           logic->CanBreakUpperBeehives()),
     }, {
         //Exits

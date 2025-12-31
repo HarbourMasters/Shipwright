@@ -51,11 +51,12 @@ ActorFunc drawFishing = NULL;
 ActorFunc drawEnFish = NULL;
 Color_RGB8 fsPulseColor = { 30, 240, 200 };
 
+static s16 fishGroupCounter = 0;
+static bool enableAdvance = false;
+
 namespace Rando {
 const FishIdentity Fishsanity::defaultIdentity = { RAND_INF_MAX, RC_UNKNOWN_CHECK };
 bool Fishsanity::fishsanityHelpersInit = false;
-s16 Fishsanity::fishGroupCounter = 0;
-bool Fishsanity::enableAdvance = false;
 std::unordered_map<RandomizerCheck, LinkAge> Fishsanity::pondFishAgeMap;
 std::vector<RandomizerCheck> Fishsanity::childPondFish;
 std::vector<RandomizerCheck> Fishsanity::adultPondFish;
@@ -447,38 +448,6 @@ void Fishsanity::OnActorUpdateHandler(void* refActor) {
         fishGroupCounter = 0;
     }
 }
-
-void Fishsanity::OnSceneInitHandler(int16_t sceneNum) {
-    if (sceneNum == SCENE_ZORAS_DOMAIN) {
-        fishGroupCounter = 0;
-    }
-}
-
-void Fishsanity::OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
-    va_list args;
-    va_copy(args, originalArgs);
-
-    Actor* actor = va_arg(args, Actor*);
-    auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
-
-    va_end(args);
-
-    if (id == VB_BOTTLE_ACTOR && actor->id == ACTOR_EN_FISH && fs->GetOverworldFishShuffled()) {
-        FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
-        if (fish.randomizerCheck != RC_UNKNOWN_CHECK && !Flags_GetRandomizerInf(fish.randomizerInf)) {
-            Flags_SetRandomizerInf(fish.randomizerInf);
-            actor->parent = &GET_PLAYER(gPlayState)->actor;
-            *should = false;
-        }
-    }
-}
-
-void Fishsanity::OnItemReceiveHandler(GetItemEntry itemEntry) {
-    if (enableAdvance) {
-        enableAdvance = false;
-        OTRGlobals::Instance->gRandoContext->GetFishsanity()->AdvancePond();
-    }
-}
 } // namespace Rando
 
 // C interface
@@ -575,6 +544,37 @@ void Fishsanity_CloseGreyscaleColor(PlayState* play) {
 }
 }
 
+void RegisterShuffleFish() {
+    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_FISHSANITY) != RO_FISHSANITY_OFF;
+    COND_HOOK(OnSceneInit, shouldRegister, [](int16_t sceneNum) {
+        if (sceneNum == SCENE_ZORAS_DOMAIN) {
+            fishGroupCounter = 0;
+        }
+    });
+
+    COND_HOOK(OnActorInit, shouldRegister, Rando::Fishsanity::OnActorInitHandler);
+    COND_HOOK(OnActorUpdate, shouldRegister, Rando::Fishsanity::OnActorUpdateHandler);
+    COND_HOOK(OnItemReceive, shouldRegister, [](GetItemEntry itemEntry) {
+        if (enableAdvance) {
+            enableAdvance = false;
+            OTRGlobals::Instance->gRandoContext->GetFishsanity()->AdvancePond();
+        }
+    });
+
+    COND_VB_SHOULD(VB_BOTTLE_ACTOR, shouldRegister, {
+        Actor* actor = va_arg(args, Actor*);
+        auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
+        if (actor->id == ACTOR_EN_FISH && fs->GetOverworldFishShuffled()) {
+            FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+            if (fish.randomizerCheck != RC_UNKNOWN_CHECK && !Flags_GetRandomizerInf(fish.randomizerInf)) {
+                Flags_SetRandomizerInf(fish.randomizerInf);
+                actor->parent = &GET_PLAYER(gPlayState)->actor;
+                *should = false;
+            }
+        }
+    });
+}
+
 void Rando::StaticData::RegisterFishLocations() {
     static bool registered = false;
     if (registered)
@@ -634,4 +634,5 @@ void Rando::StaticData::RegisterFishLocations() {
     // clang-format on
 }
 
+static RegisterShipInitFunc registerShuffleFish(RegisterShuffleFish, { "IS_RANDO" });
 static RegisterShipInitFunc initFunc(Rando::StaticData::RegisterFishLocations);
