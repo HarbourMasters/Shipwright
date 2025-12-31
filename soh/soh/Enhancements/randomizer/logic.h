@@ -76,7 +76,7 @@ class Logic {
     bool BlueFire();
     bool HasExplosives();
     bool BlastOrSmash();
-    bool CanSpawnSoilSkull();
+    bool CanSpawnSoilSkull(RandomizerGet bean);
     bool CanReflectNuts();
     bool CanCutShrubs();
     bool CanStunDeku();

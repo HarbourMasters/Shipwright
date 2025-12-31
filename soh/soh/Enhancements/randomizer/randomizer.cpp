@@ -5579,7 +5579,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 112> getItemMessages = { {
+    const std::array<GetItemMessage, 122> getItemMessages = { {
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, "You found %gGreg%w!", "%gGreg%w! Du hast ihn&wirklich gefunden!",
                   "Félicitation! Vous avez trouvé %gGreg%w!"),
         GIMESSAGE(RG_MASTER_SWORD, ITEM_SWORD_MASTER, "You found the %gMaster Sword%w!",
@@ -5855,6 +5855,27 @@ void Randomizer::CreateCustomMessages() {
                   "Du erhältst die %rKindergeldbörse%w!&Jetzt kannst Du bis&zu %y99 Rubine%w mit Dir führen!",
                   "Vous obtenez la %rPetite Bourse%w!&Elle peut contenir jusqu'à %y99 rubis%w!"),
 
+        GIMESSAGE(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, ITEM_BEAN, "You found the&%gDeath Mountain Crater Bean Soul%w!",
+                  TODO_TRANSLATE, TODO_TRANSLATE),
+        GIMESSAGE(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, ITEM_BEAN, "You found the&%gDeath Mountain Trail Bean Soul%w!",
+                  TODO_TRANSLATE, TODO_TRANSLATE),
+        GIMESSAGE(RG_DESERT_COLOSSUS_BEAN_SOUL, ITEM_BEAN, "You found the&%gDesert Colossus Bean Soul%w!",
+                  TODO_TRANSLATE, TODO_TRANSLATE),
+        GIMESSAGE(RG_GERUDO_VALLEY_BEAN_SOUL, ITEM_BEAN, "You found the&%gGerudo Valley Bean Soul%w!", TODO_TRANSLATE,
+                  TODO_TRANSLATE),
+        GIMESSAGE(RG_GRAVEYARD_BEAN_SOUL, ITEM_BEAN, "You found the&%gGraveyard Bean Soul%w!", TODO_TRANSLATE,
+                  TODO_TRANSLATE),
+        GIMESSAGE(RG_KOKIRI_FOREST_BEAN_SOUL, ITEM_BEAN, "You found the&%gKokiri Forest Bean Soul%w!", TODO_TRANSLATE,
+                  TODO_TRANSLATE),
+        GIMESSAGE(RG_LAKE_HYLIA_BEAN_SOUL, ITEM_BEAN, "You found the&%gLake Hylia Bean Soul%w!", TODO_TRANSLATE,
+                  TODO_TRANSLATE),
+        GIMESSAGE(RG_LOST_WOODS_BRIDGE_BEAN_SOUL, ITEM_BEAN, "You found the&%gLost Wood's Bridge Bean Soul%w!",
+                  TODO_TRANSLATE, TODO_TRANSLATE),
+        GIMESSAGE(RG_LOST_WOODS_BEAN_SOUL, ITEM_BEAN, "You found the&%gLost Wood's Theatre Bean Soul%w!",
+                  TODO_TRANSLATE, TODO_TRANSLATE),
+        GIMESSAGE(RG_ZORAS_RIVER_BEAN_SOUL, ITEM_BEAN, "You found the&%gZora's River Bean Soul%w!", TODO_TRANSLATE,
+                  TODO_TRANSLATE),
+
         GIMESSAGE(RG_GOHMA_SOUL, ITEM_BIG_POE, "You found the soul for %gGohma%w!",
                   "Du hast die Seele von&%gGohma%w gefunden!", "Vous obtenez l'âme de %gGohma%w!"),
         GIMESSAGE(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, "You found the soul for %rKing&Dodongo%w!",
@@ -6086,6 +6107,16 @@ std::map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
     { RG_OCARINA_C_DOWN_BUTTON, RAND_INF_HAS_OCARINA_C_DOWN },
     { RG_OCARINA_C_LEFT_BUTTON, RAND_INF_HAS_OCARINA_C_LEFT },
     { RG_OCARINA_C_RIGHT_BUTTON, RAND_INF_HAS_OCARINA_C_RIGHT },
+    { RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL },
+    { RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL },
+    { RG_DESERT_COLOSSUS_BEAN_SOUL, RAND_INF_DESERT_COLOSSUS_BEAN_SOUL },
+    { RG_GERUDO_VALLEY_BEAN_SOUL, RAND_INF_GERUDO_VALLEY_BEAN_SOUL },
+    { RG_GRAVEYARD_BEAN_SOUL, RAND_INF_GRAVEYARD_BEAN_SOUL },
+    { RG_KOKIRI_FOREST_BEAN_SOUL, RAND_INF_KOKIRI_FOREST_BEAN_SOUL },
+    { RG_LAKE_HYLIA_BEAN_SOUL, RAND_INF_LAKE_HYLIA_BEAN_SOUL },
+    { RG_LOST_WOODS_BRIDGE_BEAN_SOUL, RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL },
+    { RG_LOST_WOODS_BEAN_SOUL, RAND_INF_LOST_WOODS_BEAN_SOUL },
+    { RG_ZORAS_RIVER_BEAN_SOUL, RAND_INF_ZORAS_RIVER_BEAN_SOUL },
     { RG_GOHMA_SOUL, RAND_INF_GOHMA_SOUL },
     { RG_KING_DODONGO_SOUL, RAND_INF_KING_DODONGO_SOUL },
     { RG_BARINADE_SOUL, RAND_INF_BARINADE_SOUL },
@@ -6321,6 +6352,18 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             if (INV_CONTENT(ITEM_BEAN) == ITEM_NONE) {
                 INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
                 AMMO(ITEM_BEAN) = 10;
+                if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_PLANTING_BEANS)) {
+                    gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_CRATER].swch |= (1 << 3);
+                    gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_TRAIL].swch |= (1 << 6);
+                    gSaveContext.sceneFlags[SCENE_DESERT_COLOSSUS].swch |= (1 << 24);
+                    gSaveContext.sceneFlags[SCENE_GERUDO_VALLEY].swch |= (1 << 3);
+                    gSaveContext.sceneFlags[SCENE_GRAVEYARD].swch |= (1 << 3);
+                    gSaveContext.sceneFlags[SCENE_KOKIRI_FOREST].swch |= (1 << 9);
+                    gSaveContext.sceneFlags[SCENE_LAKE_HYLIA].swch |= (1 << 1);
+                    gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 4) | (1 << 18);
+                    gSaveContext.sceneFlags[SCENE_ZORAS_RIVER].swch |= (1 << 3);
+                    AMMO(ITEM_BEAN) = 0;
+                }
             }
             break;
         case RG_DOUBLE_DEFENSE:
