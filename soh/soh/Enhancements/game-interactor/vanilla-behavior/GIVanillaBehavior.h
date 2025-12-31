@@ -2414,6 +2414,16 @@ typedef enum {
     // - `*Color_RGB8`
     VB_APPLY_TUNIC_COLOR,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*PlayState`
+    // - `uint16_t` (cursorSlot - promoted from `u16`)
+    // - `uint16_t` (cursorItem - promoted from `u16`)
+    VB_EQUIP_ITEM_TO_C_BUTTON,
+
 } GIVanillaBehavior;
 
 #endif
