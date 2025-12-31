@@ -316,7 +316,7 @@ std::vector<RandomizerCheck> GetAllEmptyLocations() {
 }
 
 bool IsBombchus(RandomizerGet item, bool includeShops = false) {
-    return (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS ||
+    return (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHU_BAG ||
            (includeShops && (item == RG_BUY_BOMBCHUS_10 || item == RG_BUY_BOMBCHUS_20));
 }
 
@@ -412,6 +412,8 @@ void ApplyOrStoreItem(Rando::ItemLocation* loc, GetAccessibleLocationsStruct& ga
 // Adds the contents of a location to the current progression and optionally playthrough
 bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals, RandomizerGet ignore,
                      bool stopOnBeatable, Region* parentRegion, bool addToPlaythrough = false) {
+    logic->CurrentCheckKey = locPair.GetLocation();
+
     auto ctx = Rando::Context::GetInstance();
     StartPerformanceTimer(PT_LOCATION_LOGIC);
     RandomizerCheck loc = locPair.GetLocation();
@@ -458,10 +460,12 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
         }
         // All we care about is if the game is beatable, used to pare down playthrough
         if (location->GetPlacedRandomizerGet() == RG_TRIFORCE && stopOnBeatable) {
+            logic->CurrentCheckKey = RC_UNKNOWN_CHECK;
             StopPerformanceTimer(PT_LOCATION_LOGIC);
             return true; // Return early for efficiency
         }
     }
+    logic->CurrentCheckKey = RC_UNKNOWN_CHECK;
     StopPerformanceTimer(PT_LOCATION_LOGIC);
     return false;
 }
@@ -1018,7 +1022,7 @@ static void FillExcludedLocations() {
         FilterFromPool(ctx->allLocations, [ctx](const auto loc) { return ctx->GetItemLocation(loc)->IsExcluded(); });
 
     for (RandomizerCheck loc : excludedLocations) {
-        PlaceJunkInExcludedLocation(loc);
+        ctx->PlaceItemInLocation(loc, GetJunkItem());
     }
 }
 

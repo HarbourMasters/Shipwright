@@ -7,8 +7,7 @@ void RegionTable_Init_ZorasFountain() {
     // clang-format off
     areaTable[RR_ZORAS_FOUNTAIN] = Region("Zoras Fountain", SCENE_ZORAS_FOUNTAIN, {
         //Events
-        EVENT_ACCESS(LOGIC_GOSSIP_STONE_FAIRY, logic->CallGossipFairyExceptSuns()),
-        EVENT_ACCESS(LOGIC_BUTTERFLY_FAIRY,   logic->CanUse(RG_STICKS) && logic->AtDay),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairyExceptSuns() || (logic->CanUse(RG_STICKS) && logic->AtDay);}),
     }, {
         //Locations
         LOCATION(RC_ZF_GS_TREE,                      logic->IsChild && logic->CanBonkTrees()),
@@ -24,6 +23,12 @@ void RegionTable_Init_ZorasFountain() {
         LOCATION(RC_ZF_NEAR_JABU_POT_3,              logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_ZF_NEAR_JABU_POT_4,              logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_ZF_TREE,                         logic->IsChild && logic->CanBonkTrees()),
+        LOCATION(RC_ZF_BUSH_1,                       logic->IsChild),
+        LOCATION(RC_ZF_BUSH_2,                       logic->IsChild),
+        LOCATION(RC_ZF_BUSH_3,                       logic->IsChild),
+        LOCATION(RC_ZF_BUSH_4,                       logic->IsChild),
+        LOCATION(RC_ZF_BUSH_5,                       logic->IsChild),
+        LOCATION(RC_ZF_BUSH_6,                       logic->IsChild),
     }, {
         //Exits
         ENTRANCE(RR_ZD_BEHIND_KING_ZORA,       true),

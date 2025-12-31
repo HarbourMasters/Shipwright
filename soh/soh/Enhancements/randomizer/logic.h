@@ -30,6 +30,7 @@ class Logic {
     uint8_t BaseHearts = 0;
     bool AtDay = false;
     bool AtNight = false;
+    RandomizerCheck CurrentCheckKey = RC_UNKNOWN_CHECK;
 
     bool CalculatingAvailableChecks = false;
     bool ACProcessUndiscoveredExits = false;
@@ -64,6 +65,7 @@ class Logic {
     bool CanUseSword();
     bool CanJumpslashExceptHammer();
     bool CanJumpslash();
+    bool CanClearStalagmite();
     bool CanHitSwitch(EnemyDistance distance = ED_CLOSE, bool inWater = false);
     bool CanDamage();
     bool CanAttack();
@@ -74,7 +76,7 @@ class Logic {
     bool BlueFire();
     bool HasExplosives();
     bool BlastOrSmash();
-    bool CanSpawnSoilSkull();
+    bool CanSpawnSoilSkull(RandomizerGet bean);
     bool CanReflectNuts();
     bool CanCutShrubs();
     bool CanStunDeku();

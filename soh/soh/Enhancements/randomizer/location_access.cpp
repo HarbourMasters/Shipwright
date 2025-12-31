@@ -59,7 +59,7 @@ bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailab
         conditionsMet = true;
     }
 
-    return conditionsMet && CanBuy(calculatingAvailableChecks);
+    return conditionsMet;
 }
 
 static uint16_t GetMinimumPrice(const Rando::Location* loc) {
@@ -103,38 +103,32 @@ static uint16_t GetMinimumPrice(const Rando::Location* loc) {
     }
 }
 
-bool LocationAccess::CanBuy(bool calculatingAvailableChecks) const {
-    const auto& loc = Rando::StaticData::GetLocation(location);
-    const auto& itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(location);
+uint16_t GetCheckPrice(RandomizerCheck check /* = RC_UNKNOWN_CHECK */) {
+    RandomizerCheck rc = check != RC_UNKNOWN_CHECK ? check : logic->CurrentCheckKey;
+    assert(rc != RC_UNKNOWN_CHECK);
+    const auto& loc = Rando::StaticData::GetLocation(rc);
+    assert(loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT);
+    const auto& itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
 
-    if (loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT ||
-        location == RC_ZR_MAGIC_BEAN_SALESMAN) {
-        // Checks should only be identified while playing
-        if (calculatingAvailableChecks && itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
-            return CanBuyAnother(GetMinimumPrice(loc));
-        } else {
-            return CanBuyAnother(itemLoc->GetPrice());
-        }
+    // Checks should only be identified while playing
+    if (logic->CalculatingAvailableChecks && itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
+        return GetMinimumPrice(loc);
     }
 
-    return true;
+    return itemLoc->GetPrice();
 }
 
-bool CanBuyCheck(RandomizerCheck rc) {
-    return CanBuyAnother(ctx->GetItemLocation(rc)->GetPrice());
-}
-
-bool CanBuyAnother(uint16_t price) {
-    if (price > 500) {
-        return logic->HasItem(RG_TYCOON_WALLET);
-    } else if (price > 200) {
-        return logic->HasItem(RG_GIANT_WALLET);
-    } else if (price > 99) {
-        return logic->HasItem(RG_ADULT_WALLET);
-    } else if (price > 0) {
-        return logic->HasItem(RG_CHILD_WALLET);
+uint16_t GetWalletCapacity() {
+    if (logic->HasItem(RG_TYCOON_WALLET)) {
+        return 999;
+    } else if (logic->HasItem(RG_GIANT_WALLET)) {
+        return 500;
+    } else if (logic->HasItem(RG_ADULT_WALLET)) {
+        return 200;
+    } else if (logic->HasItem(RG_CHILD_WALLET)) {
+        return 99;
     }
-    return true;
+    return 0;
 }
 
 std::set<RandomizerArea> CalculateAreas(SceneID scene) {
@@ -513,8 +507,11 @@ Rando::Entrance* Region::GetExit(RandomizerRegion exitToReturn) {
     return nullptr;
 }
 
-bool Region::CanPlantBeanCheck() const {
-    return Rando::Context::GetInstance()->GetLogic()->GetAmmo(ITEM_BEAN) > 0 && BothAgesCheck();
+bool Region::CanPlantBeanCheck(RandomizerGet bean) const {
+    auto ctx = Rando::Context::GetInstance();
+    auto logic = ctx->GetLogic();
+    return logic->HasItem(bean) && logic->GetAmmo(ITEM_BEAN) > 0 &&
+           (ctx->GetOption(RSK_SKIP_PLANTING_BEANS) || BothAgesCheck());
 }
 
 bool Region::AllAccountedFor() const {
@@ -683,49 +680,55 @@ bool MQSpiritSharedBrokenWallRoom(const RandomizerRegion region, ConditionFn con
     return areaTable[region].MQSpiritShared(condition, true, anyAge);
 }
 
-bool BeanPlanted(const RandomizerRegion region) {
+bool BeanPlanted(const RandomizerGet bean) {
+    auto logic = Rando::Context::GetInstance()->GetLogic();
+    // flag irrelevant if plant won't spawn
+    if (!logic->HasItem(bean)) {
+        return false;
+    }
+
     // swchFlag found using the Actor Viewer to get the Obj_Bean parameters & 0x3F
     // not tested with multiple OTRs, but can be automated similarly to GetDungeonSmallKeyDoors
     SceneID sceneID;
     uint8_t swchFlag;
-    switch (region) {
-        case RR_ZORAS_RIVER:
+    switch (bean) {
+        case RG_ZORAS_RIVER_BEAN_SOUL:
             sceneID = SceneID::SCENE_ZORAS_RIVER;
             swchFlag = 3;
             break;
-        case RR_THE_GRAVEYARD:
+        case RG_GRAVEYARD_BEAN_SOUL:
             sceneID = SceneID::SCENE_GRAVEYARD;
             swchFlag = 3;
             break;
-        case RR_KOKIRI_FOREST:
+        case RG_KOKIRI_FOREST_BEAN_SOUL:
             sceneID = SceneID::SCENE_KOKIRI_FOREST;
             swchFlag = 9;
             break;
-        case RR_THE_LOST_WOODS:
+        case RG_LOST_WOODS_BRIDGE_BEAN_SOUL:
             sceneID = SceneID::SCENE_LOST_WOODS;
             swchFlag = 4;
             break;
-        case RR_LW_BEYOND_MIDO:
+        case RG_LOST_WOODS_BEAN_SOUL:
             sceneID = SceneID::SCENE_LOST_WOODS;
             swchFlag = 18;
             break;
-        case RR_DEATH_MOUNTAIN_TRAIL:
+        case RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL:
             sceneID = SceneID::SCENE_DEATH_MOUNTAIN_TRAIL;
             swchFlag = 6;
             break;
-        case RR_LAKE_HYLIA:
+        case RG_LAKE_HYLIA_BEAN_SOUL:
             sceneID = SceneID::SCENE_LAKE_HYLIA;
             swchFlag = 1;
             break;
-        case RR_GERUDO_VALLEY:
+        case RG_GERUDO_VALLEY_BEAN_SOUL:
             sceneID = SceneID::SCENE_GERUDO_VALLEY;
             swchFlag = 3;
             break;
-        case RR_DMC_CENTRAL_LOCAL:
+        case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:
             sceneID = SceneID::SCENE_DEATH_MOUNTAIN_CRATER;
             swchFlag = 3;
             break;
-        case RR_DESERT_COLOSSUS:
+        case RG_DESERT_COLOSSUS_BEAN_SOUL:
             sceneID = SceneID::SCENE_DESERT_COLOSSUS;
             swchFlag = 24;
             break;
@@ -741,7 +744,7 @@ bool BeanPlanted(const RandomizerRegion region) {
     if (gPlayState != nullptr && gPlayState->sceneNum == sceneID) {
         swch = gPlayState->actorCtx.flags.swch;
     } else if (sceneID != SCENE_ID_MAX) {
-        swch = Rando::Context::GetInstance()->GetLogic()->GetSaveContext()->sceneFlags[sceneID].swch;
+        swch = logic->GetSaveContext()->sceneFlags[sceneID].swch;
     } else {
         swch = 0;
     }
@@ -749,8 +752,8 @@ bool BeanPlanted(const RandomizerRegion region) {
     return swch >> swchFlag & 1;
 }
 
-bool CanPlantBean(const RandomizerRegion region) {
-    return areaTable[region].CanPlantBeanCheck() || BeanPlanted(region);
+bool CanPlantBean(const RandomizerRegion region, const RandomizerGet bean) {
+    return areaTable[region].CanPlantBeanCheck(bean) || BeanPlanted(bean);
 }
 
 bool BothAges(const RandomizerRegion region) {
@@ -773,91 +776,15 @@ void RegionTable_Init() {
     ctx = Context::GetInstance().get();
     logic = ctx->GetLogic(); // RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
     grottoEvents = {
-        EVENT_ACCESS(LOGIC_GOSSIP_STONE_FAIRY, logic->CallGossipFairy()),
-        EVENT_ACCESS(LOGIC_BUTTERFLY_FAIRY, logic->CanUse(RG_STICKS)),
-        EVENT_ACCESS(LOGIC_BUG_SHRUB, logic->CanCutShrubs()),
-        EVENT_ACCESS(LOGIC_LONE_FISH, true),
+        EventAccess(LOGIC_FAIRY_ACCESS, [] { return logic->CallGossipFairy() || logic->CanUse(RG_STICKS); }),
+        EventAccess(LOGIC_BUG_ACCESS, [] { return logic->CanCutShrubs(); }),
+        EventAccess(LOGIC_FISH_ACCESS, [] { return true; }),
     };
     // Clear the array from any previous playthrough attempts. This is important so that
     // locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
     areaTable.fill(Region("Invalid Region", SCENE_ID_MAX, {}, {}, {}));
 
-    // clang-format off
-    areaTable[RR_ROOT] = Region("Root", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {
-        //Events
-        EVENT_ACCESS(LOGIC_KAKARIKO_GATE_OPEN,                  ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN)),
-        EVENT_ACCESS(LOGIC_TH_COULD_FREE_1_TORCH_CARPENTER,     ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE)),
-        EVENT_ACCESS(LOGIC_TH_COULD_FREE_DOUBLE_CELL_CARPENTER, ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)),
-        EVENT_ACCESS(LOGIC_TH_COULD_FREE_DEAD_END_CARPENTER,    ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)),
-        EVENT_ACCESS(LOGIC_TH_COULD_FREE_SLOPE_CARPENTER,       ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)),
-        EVENT_ACCESS(LOGIC_TH_RESCUED_ALL_CARPENTERS,           ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE)),
-        EVENT_ACCESS(LOGIC_FREED_EPONA,                         (bool)ctx->GetOption(RSK_SKIP_EPONA_RACE)),
-    }, {
-        //Locations
-        LOCATION(RC_LINKS_POCKET,       true),
-        LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->ship.quest.data.randomizer.triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1),
-        LOCATION(RC_SARIA_SONG_HINT,    logic->CanUse(RG_SARIAS_SONG)),
-        LOCATION(RC_SONG_FROM_IMPA,     (bool)ctx->GetOption(RSK_SKIP_CHILD_ZELDA)),
-        LOCATION(RC_TOT_MASTER_SWORD,   (bool)ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT)),
-    }, {
-        //Exits
-        ENTRANCE(RR_ROOT_EXITS, true),
-    });
-
-    areaTable[RR_ROOT_EXITS] = Region("Root Exits", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        ENTRANCE(RR_CHILD_SPAWN,             logic->IsChild),
-        ENTRANCE(RR_ADULT_SPAWN,             logic->IsAdult),
-        ENTRANCE(RR_MINUET_OF_FOREST_WARP,   logic->CanUse(RG_MINUET_OF_FOREST)),
-        ENTRANCE(RR_BOLERO_OF_FIRE_WARP,     logic->CanUse(RG_BOLERO_OF_FIRE)),
-        ENTRANCE(RR_SERENADE_OF_WATER_WARP,  logic->CanUse(RG_SERENADE_OF_WATER)),
-        ENTRANCE(RR_NOCTURNE_OF_SHADOW_WARP, logic->CanUse(RG_NOCTURNE_OF_SHADOW)),
-        ENTRANCE(RR_REQUIEM_OF_SPIRIT_WARP,  logic->CanUse(RG_REQUIEM_OF_SPIRIT)),
-        ENTRANCE(RR_PRELUDE_OF_LIGHT_WARP,   logic->CanUse(RG_PRELUDE_OF_LIGHT)),
-    });
-
-    areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        ENTRANCE(RR_KF_LINKS_HOUSE, true),
-    });
-
-    areaTable[RR_ADULT_SPAWN] = Region("Adult Spawn", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        ENTRANCE(RR_TEMPLE_OF_TIME, true),
-    });
-
-    areaTable[RR_MINUET_OF_FOREST_WARP] = Region("Minuet of Forest Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        ENTRANCE(RR_SACRED_FOREST_MEADOW, true),
-    });
-
-    areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        ENTRANCE(RR_DMC_CENTRAL_LOCAL, true),
-    });
-
-    areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        ENTRANCE(RR_LAKE_HYLIA, true),
-    });
-
-    areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Region("Requiem of Spirit Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        ENTRANCE(RR_DESERT_COLOSSUS, true),
-    });
-
-    areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Region("Nocturne of Shadow Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        ENTRANCE(RR_GRAVEYARD_WARP_PAD_REGION, true),
-    });
-
-    areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Region("Prelude of Light Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        ENTRANCE(RR_TEMPLE_OF_TIME, true),
-    });
-
-    // clang-format on
-
+    RegionTable_Init_Root();
     // Overworld
     RegionTable_Init_KokiriForest();
     RegionTable_Init_LostWoods();

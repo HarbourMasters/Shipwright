@@ -2126,6 +2126,15 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
         HintText(CustomMessage("They say that a #tree in Lon Lon Ranch# contains #[[1]]#.",
                                /*german*/ "",
                                /*french*/ "Selon moi, un #arbre au Ranch Lon Lon# cache #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_BUSH_HYRULE_FIELD] =
+        HintText(CustomMessage("They say that a #bush in Hyrle Field# contains #[[1]]#.",
+                               /*german*/ "",
+                               /*french*/ "Selon moi, un #buisson dans la Plaine d'Hyrule# cache #[[1]]#.", { QM_RED, QM_GREEN }));
+    hintTextTable[RHT_BUSH_ZORAS_FOUNTAIN] =
+        HintText(CustomMessage("They say that a #bush in Zora's Fountain# contains #[[1]]#.",
+                               /*german*/ "",
+                               /*french*/ "Selon moi, un #buisson à la Fontaine Zora# cache #[[1]]#.", { QM_RED, QM_GREEN }));
     // clang-format on
 }
 } // namespace Rando

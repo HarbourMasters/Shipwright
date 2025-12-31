@@ -297,6 +297,8 @@ void Settings::CreateOptionDescriptions() {
         "Trees will have a special appearance when carrying randomized items.\n"
         "\nSome trees are dependant on Link's age, such as some trees in Hyrule Field.\nTwo trees at Hyrule Castle are "
         "only shuffle with No Logic.";
+    mOptionDescriptions[RSK_SHUFFLE_BUSHES] =
+        "Bushes in Hyrule Field & Zora's Fountain will contain randomized items when first walked through.";
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
                                                     "\n"
                                                     "The fishing pole is required to play the fishing pond minigame.";
@@ -625,6 +627,8 @@ void Settings::CreateOptionDescriptions() {
         "Start with the ability to summon Pierre the Scarecrow. Pulling out an Ocarina in the usual locations will "
         "automatically summon him.\n"
         "With \"Shuffle Ocarina Buttons\" enabled, you'll need at least two Ocarina buttons to summon him.";
+    mOptionDescriptions[RSK_SKIP_PLANTING_BEANS] = "Beans will be planted once you find beans.\n"
+                                                   "If bean souls are shuffled, you must find soul still.";
     mOptionDescriptions[RSK_ITEM_POOL] = "Sets how many major items appear in the item pool.\n"
                                          "\n"
                                          "Plentiful - Extra major items are added to the pool.\n"
@@ -738,13 +742,17 @@ void Settings::CreateOptionDescriptions() {
         "Reading the mask shop sign will tell you rewards from showing masks at the Deku Theatre.";
     mOptionDescriptions[RSK_FULL_WALLETS] = "Start with a full wallet. All wallet upgrades come filled with rupees.";
     mOptionDescriptions[RSK_BOMBCHU_BAG] =
-        "Bombchus require their own bag to be found before use. Without this setting, any Bombchu requirement "
-        "is filled by Bomb Bag + a renewable source of Bombchus.\n"
-        "\n"
-        "The first Bombchu you find be a Bag containing 20 chus, and subsequent packs will have 10."
-        "Once found, they can be replenished at shops selling refills, Bombchu Bowling and the carpet merchant.\n"
-        "\n"
-        "Bombchu Bowling is opened by obtaining the Bombchu Bag.";
+        "None - Bombchus have vanilla behavior, any Bombchu requirement is filled by Bomb Bag + a renewable source of "
+        "Bombchus.\n\n"
+        "Single Bag - Bombchus require their own bag to be found before use. 5 of them are added to the pool "
+        "(6 if the Carpet Merchant is shuffled). The first Bombchu Bag you find will be a Bag containing 20 chus, "
+        "and subsequent bags will be replaced with Bombchu Ammo refills. Once found, they can be replenished at "
+        "shops selling refills, Bombchu Bowling and the carpet merchant. Bombchu Bowling is opened by obtaining "
+        "the Bombchu Bag.\n\n"
+        "Progressive Bags - 3 Bombchu Bags are added to the pool, the first one will unlock Bombchus with a capacity "
+        "of 20. The second one will upgrade this capacity to 30, and the final one will upgrade the capacity to the "
+        "usual 50.\n\n"
+        "Bombchu Bowling is opened by obtaining the first Bombchu bag.";
     mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS] = "Once you obtain a Bombchu Bag, refills will sometimes replace "
                                                     "Bomb drops that would spawn."
                                                     "\n"
@@ -770,6 +778,8 @@ void Settings::CreateOptionDescriptions() {
                                                        "location is reachable. When disabled, only "
                                                        "required items and locations to beat the game "
                                                        "will be guaranteed reachable.";
+    mOptionDescriptions[RSK_SHUFFLE_BEAN_SOULS] =
+        "Shuffle 10 bean souls which must be found to spawn corresponding soil / plant.";
     mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS] =
         "Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its "
         "respective soul."

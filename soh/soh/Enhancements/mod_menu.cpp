@@ -55,6 +55,7 @@ void SetEnabledModsCVarValue() {
     }
 
     CVarSetString(CVAR_ENABLED_MODS_NAME, s.c_str());
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
 
 void AfterModChange() {
@@ -128,8 +129,9 @@ void UpdateModFiles(bool init = false, bool reset = false) {
     disabledModFiles.clear();
     unsupportedFiles.clear();
     filePaths.clear();
-    std::string modsPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
     bool changed = false;
+    std::string modsPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
+    std::map<std::string, std::string> tempMods;
     if (modsPath.length() > 0 && std::filesystem::exists(modsPath)) {
         std::vector<std::filesystem::path> enabledFiles;
         if (std::filesystem::is_directory(modsPath)) {
@@ -147,10 +149,16 @@ void UpdateModFiles(bool init = false, bool reset = false) {
                 bool enabled =
                     std::find(enabledModFiles.begin(), enabledModFiles.end(), filename) != enabledModFiles.end();
                 if (!enabled) {
-                    enabledModFiles.push_back(filename);
-                    changed = true;
+                    tempMods.emplace(p.path().lexically_normal().generic_string(), filename);
                 }
                 filePaths.emplace(filename, p.path());
+            }
+            if (tempMods.size() > 0) {
+                changed = true;
+                for (auto [path, name] : tempMods) {
+                    enabledModFiles.push_back(name);
+                }
+                tempMods.clear();
             }
             if (init) {
                 std::vector<std::string> enabledTemp(enabledModFiles);
@@ -159,13 +167,14 @@ void UpdateModFiles(bool init = false, bool reset = false) {
                         GetArchiveManager()->AddArchive(filePaths.at(mod).generic_string());
                     } else {
                         enabledModFiles.erase(std::find(enabledModFiles.begin(), enabledModFiles.end(), mod));
+                        changed = true;
                     }
                 }
             }
         }
-    }
-    if (changed) {
-        SetEnabledModsCVarValue();
+        if (changed) {
+            SetEnabledModsCVarValue();
+        }
     }
 }
 
