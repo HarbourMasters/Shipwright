@@ -601,8 +601,8 @@ void LogicExpression::Impl::PopulateFunctionAdapters() {
         REGISTER_FUNCTION(Here),
         REGISTER_FUNCTION_WITH_DEFAULTS(MQSpiritSharedBrokenWallRoom, RandomizerRegion{}, ConditionFn{}, false),
         REGISTER_FUNCTION_WITH_DEFAULTS(MQSpiritSharedStatueRoom, RandomizerRegion{}, ConditionFn{}, false),
-        REGISTER_FUNCTION(CanBuyAnother),
-        REGISTER_FUNCTION(CanBuyCheck),
+        REGISTER_FUNCTION_WITH_DEFAULTS(GetCheckPrice, RC_UNKNOWN_CHECK),
+        REGISTER_FUNCTION(GetWalletCapacity),
         REGISTER_FUNCTION(GetOption),
         REGISTER_FUNCTION(GetTrickOption),
         REGISTER_FUNCTION(ChildCanAccess),
@@ -685,6 +685,7 @@ void LogicExpression::Impl::PopulateFunctionAdapters() {
         REGISTER_LOGIC_FUNCTION(IsFireLoopLocked),
         REGISTER_LOGIC_FUNCTION(Get),
         REGISTER_LOGIC_FUNCTION(GetGSCount),
+        REGISTER_LOGIC_FUNCTION(CanClearStalagmite),
     };
 }
 
@@ -713,18 +714,24 @@ LogicExpression::ValueVariant LogicExpression::Impl::EvaluateFunction(const std:
 
 std::unordered_map<std::string, int> LogicExpression::Impl::enumMap;
 void LogicExpression::Impl::PopulateEnumMap() {
-#define DEFINE_LogicVal(value) { #value, value },
-#define DEFINE_EnemyDistance(value) { #value, value },
-#define DEFINE_RandomizerCheck(value) { #value, value },
-#define DEFINE_RandomizerEnemy(value) { #value, value },
-#define DEFINE_RandomizerGet(value) { #value, value },
-#define DEFINE_RandomizerTrick(value) { #value, value },
-#define DEFINE_RandomizerRegion(value) { #value, value },
-#define DEFINE_RandoWaterLevel(value) { #value, value },
-#define DEFINE_RandomizerSettingKey(value) { #value, value },
 #define DEFINE_DungeonKey(value) { #value, Rando::value },
+#define DEFINE_HintType(value) { #value, value },
+#define DEFINE_LogicVal(value) { #value, value },
+#define DEFINE_RAND_INF(value) { #value, value },
+#define DEFINE_RandomizerArea(value) { #value, value },
 #define DEFINE_TrialKey(value) { #value, value },
-
+#define DEFINE_RandomizerCheckType(value) { #value, value },
+#define DEFINE_RandomizerCheckQuest(value) { #value, value },
+#define DEFINE_RandomizerCheckArea(value) { #value, value },
+#define DEFINE_RandomizerCheckStatus(value) { #value, value },
+#define DEFINE_RandomizerRegion(value) { #value, value },
+#define DEFINE_RandomizerCheck(value) { #value, value },
+#define DEFINE_RandomizerTrick(value) { #value, value },
+#define DEFINE_RandomizerGet(value) { #value, value },
+#define DEFINE_RandomizerHint(value) { #value, value },
+#define DEFINE_RandomizerHintTextKey(value) { #value, value },
+#define DEFINE_RandomizerSettingGroupKey(value) { #value, value },
+#define DEFINE_RandomizerSettingKey(value) { #value, value },
 #define DEFINE_RandoOptionGenericOffOn(value) { #value, value },
 #define DEFINE_RandoOptionGenericNoYes(value) { #value, value },
 #define DEFINE_RandoOptionGenericSkip(value) { #value, value },
@@ -743,6 +750,7 @@ void LogicExpression::Impl::PopulateEnumMap() {
 #define DEFINE_RandoOptionPrices(value) { #value, value },
 #define DEFINE_RandoOptionScrubsanity(value) { #value, value },
 #define DEFINE_RandoOptionAmmoDrops(value) { #value, value },
+#define DEFINE_RandoOptionBombchuBag(value) { #value, value },
 #define DEFINE_RandoOptionBossSouls(value) { #value, value },
 #define DEFINE_RandoOptionsFishsanity(value) { #value, value },
 #define DEFINE_RandoOptionInfiniteUpgrades(value) { #value, value },
@@ -778,6 +786,15 @@ void LogicExpression::Impl::PopulateEnumMap() {
 #define DEFINE_RandoOptionLocationInclusion(value) { #value, value },
 #define DEFINE_RandoOptionChestGame(value) { #value, value },
 #define DEFINE_RandoOptionMQSet(value) { #value, value },
+#define DEFINE_ItemObtainability(value) { #value, value },
+#define DEFINE_TrackerWindowType(value) { #value, value },
+#define DEFINE_TrackerDisplayType(value) { #value, value },
+#define DEFINE_TrackerComboButton(value) { #value, value },
+#define DEFINE_TriforceHuntMessages(value) { #value, value },
+#define DEFINE_RandomizerEnemy(value) { #value, value },
+#define DEFINE_EnemyDistance(value) { #value, value },
+#define DEFINE_RandoWaterLevel(value) { #value, value },
+#define DEFINE_GrottoEntranceOffsets(value) { #value, value },
 
     // static const fixes C6262: Excessive stack usage
     struct Pair {

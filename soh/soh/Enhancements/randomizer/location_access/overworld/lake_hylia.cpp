@@ -7,10 +7,10 @@ void RegionTable_Init_LakeHylia() {
     // clang-format off
     areaTable[RR_LAKE_HYLIA] = Region("Lake Hylia", SCENE_LAKE_HYLIA, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS,    []{return logic->CallGossipFairy() || logic->CanUse(RG_STICKS) || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_LAKE_HYLIA_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS));}),
-        EventAccess(LOGIC_BUG_ACCESS,      []{return logic->IsChild && logic->CanCutShrubs();}),
-        EventAccess(LOGIC_CHILD_SCARECROW, []{return logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2;}),
-        EventAccess(LOGIC_ADULT_SCARECROW, []{return logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2;}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,    logic->CallGossipFairy() || logic->CanUse(RG_STICKS) || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_LAKE_HYLIA_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS))),
+        EVENT_ACCESS(LOGIC_BUG_ACCESS,      logic->IsChild && logic->CanCutShrubs()),
+        EVENT_ACCESS(LOGIC_CHILD_SCARECROW, logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2),
+        EVENT_ACCESS(LOGIC_ADULT_SCARECROW, logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2),
     }, {
         //Locations
         LOCATION(RC_LH_UNDERWATER_ITEM,                  logic->IsChild && logic->HasItem(RG_SILVER_SCALE)),
@@ -81,13 +81,13 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_WARP_PAD_GRASS_2,                 logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD,          []{return true;}),
-        Entrance(RR_LH_FROM_SHORTCUT,      []{return true;}),
-        Entrance(RR_LH_OWL_FLIGHT,         []{return logic->IsChild;}),
-        Entrance(RR_LH_FISHING_ISLAND,     []{return ((logic->IsChild || logic->Get(LOGIC_WATER_TEMPLE_CLEAR)) && logic->HasItem(RG_BRONZE_SCALE)) || (logic->IsAdult && (logic->CanUse(RG_SCARECROW) || CanPlantBean(RR_LAKE_HYLIA, RG_LAKE_HYLIA_BEAN_SOUL)));}),
-        Entrance(RR_LH_LAB,                []{return logic->CanOpenOverworldDoor(RG_HYLIA_LAB_KEY);}),
-        Entrance(RR_LH_FROM_WATER_TEMPLE,  []{return true;}),
-        Entrance(RR_LH_GROTTO,             []{return true;}),
+        ENTRANCE(RR_HYRULE_FIELD,          true),
+        ENTRANCE(RR_LH_FROM_SHORTCUT,      true),
+        ENTRANCE(RR_LH_OWL_FLIGHT,         logic->IsChild),
+        ENTRANCE(RR_LH_FISHING_ISLAND,     ((logic->IsChild || logic->Get(LOGIC_WATER_TEMPLE_CLEAR)) && logic->HasItem(RG_BRONZE_SCALE)) || (logic->IsAdult && (logic->CanUse(RG_SCARECROW) || CanPlantBean(RR_LAKE_HYLIA, RG_LAKE_HYLIA_BEAN_SOUL)))),
+        ENTRANCE(RR_LH_LAB,                logic->CanOpenOverworldDoor(RG_HYLIA_LAB_KEY)),
+        ENTRANCE(RR_LH_FROM_WATER_TEMPLE,  true),
+        ENTRANCE(RR_LH_GROTTO,             true),
     });
 
     areaTable[RR_LH_FROM_SHORTCUT] = Region("LH From Shortcut", SCENE_LAKE_HYLIA, TIME_DOESNT_PASS, {RA_LAKE_HYLIA}, {}, {}, {

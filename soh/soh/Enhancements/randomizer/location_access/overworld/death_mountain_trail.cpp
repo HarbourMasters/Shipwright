@@ -7,7 +7,7 @@ void RegionTable_Init_DeathMountainTrail() {
     // clang-format off
     areaTable[RR_DEATH_MOUNTAIN_TRAIL] = Region("Death Mountain", SCENE_DEATH_MOUNTAIN_TRAIL, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET));}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
     }, {
         //Locations
         LOCATION(RC_DMT_CHEST,                    logic->BlastOrSmash() || (ctx->GetTrickOption(RT_DMT_BOMBABLE) && logic->IsChild && logic->HasItem(RG_GORONS_BRACELET))),
@@ -23,17 +23,17 @@ void RegionTable_Init_DeathMountainTrail() {
         LOCATION(RC_DMT_FLAG_SUN_FAIRY,           logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
-        Entrance(RR_KAK_BEHIND_GATE,          []{return true;}),
-        Entrance(RR_GORON_CITY,               []{return true;}),
-        Entrance(RR_DEATH_MOUNTAIN_SUMMIT,    []{return Here(RR_DEATH_MOUNTAIN_TRAIL, []{return logic->BlastOrSmash();}) || (logic->IsAdult && ((CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL, RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && logic->HasItem(RG_GORONS_BRACELET)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_DMT_CLIMB_HOVERS))));}),
-        Entrance(RR_DODONGOS_CAVERN_ENTRYWAY, []{return logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET) || logic->IsAdult;}),
-        Entrance(RR_DMT_STORMS_GROTTO,        []{return logic->CanOpenStormsGrotto();}),
+        ENTRANCE(RR_KAK_BEHIND_GATE,          true),
+        ENTRANCE(RR_GORON_CITY,               true),
+        ENTRANCE(RR_DEATH_MOUNTAIN_SUMMIT,    Here(RR_DEATH_MOUNTAIN_TRAIL, []{return logic->BlastOrSmash();}) || (logic->IsAdult && ((CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL, RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && logic->HasItem(RG_GORONS_BRACELET)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_DMT_CLIMB_HOVERS))))),
+        ENTRANCE(RR_DODONGOS_CAVERN_ENTRYWAY, logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET) || logic->IsAdult),
+        ENTRANCE(RR_DMT_STORMS_GROTTO,        logic->CanOpenStormsGrotto()),
     });
 
     areaTable[RR_DEATH_MOUNTAIN_SUMMIT] = Region("Death Mountain Summit", SCENE_DEATH_MOUNTAIN_TRAIL, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy();}),
-        EventAccess(LOGIC_BUG_ACCESS,   []{return logic->IsChild;}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy()),
+        EVENT_ACCESS(LOGIC_BUG_ACCESS,   logic->IsChild),
     }, {
         //Locations
         LOCATION(RC_DMT_TRADE_BROKEN_SWORD,     logic->IsAdult && logic->CanUse(RG_BROKEN_SWORD)),

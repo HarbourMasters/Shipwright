@@ -14,7 +14,7 @@ void RegionTable_Init_SacredForestMeadow() {
 
     areaTable[RR_SACRED_FOREST_MEADOW] = Region("Sacred Forest Meadow", SCENE_SACRED_FOREST_MEADOW, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairyExceptSuns();}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairyExceptSuns()),
     }, {
         //Locations
         LOCATION(RC_SONG_FROM_SARIA,                       logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER)),
@@ -39,7 +39,7 @@ void RegionTable_Init_SacredForestMeadow() {
 
     areaTable[RR_SFM_FAIRY_GROTTO] = Region("SFM Fairy Grotto", SCENE_GROTTOS, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return true;}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, true),
     }, {
         //Locations
         LOCATION(RC_SFM_FAIRY_GROTTO_FAIRY_1, true),

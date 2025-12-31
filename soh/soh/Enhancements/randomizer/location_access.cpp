@@ -776,9 +776,9 @@ void RegionTable_Init() {
     ctx = Context::GetInstance().get();
     logic = ctx->GetLogic(); // RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
     grottoEvents = {
-        EventAccess(LOGIC_FAIRY_ACCESS, [] { return logic->CallGossipFairy() || logic->CanUse(RG_STICKS); }),
-        EventAccess(LOGIC_BUG_ACCESS, [] { return logic->CanCutShrubs(); }),
-        EventAccess(LOGIC_FISH_ACCESS, [] { return true; }),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy() || logic->CanUse(RG_STICKS)),
+        EVENT_ACCESS(LOGIC_BUG_ACCESS, logic->CanCutShrubs()),
+        EVENT_ACCESS(LOGIC_FISH_ACCESS, true),
     };
     // Clear the array from any previous playthrough attempts. This is important so that
     // locations which appear in both MQ and Vanilla dungeons don't get set in both areas.

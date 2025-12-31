@@ -7,7 +7,7 @@ void RegionTable_Init_TempleOfTime() {
     // clang-format off
     areaTable[RR_TOT_ENTRANCE] = Region("ToT Entrance", SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairyExceptSuns();}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairyExceptSuns()),
     }, {
         //Locations
         LOCATION(RC_TOT_LEFTMOST_GOSSIP_STONE_FAIRY,         logic->CallGossipFairyExceptSuns() || (logic->CanUse(RG_SUNS_SONG) && logic->IsAdult)),

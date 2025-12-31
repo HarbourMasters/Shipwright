@@ -48,8 +48,8 @@ void RegionTable_Init_JabuJabusBelly() {
     //contains B1 of hole room (aside from the ledge leading to big octo), 2 octorock room and north water switch room
     areaTable[RR_JABU_JABUS_BELLY_B1_NORTH] = Region("Jabu Jabus Belly B1 North", SCENE_JABU_JABU, {
         //Events
-        EventAccess(LOGIC_JABU_RUTO_IN_1F, []{return logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE);}),
-        EventAccess(LOGIC_FAIRY_ACCESS,    []{return logic->CanBreakPots() && (logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_OCTOROK)));}),
+        EVENT_ACCESS(LOGIC_JABU_RUTO_IN_1F, logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE)),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,    logic->CanBreakPots() && (logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_OCTOROK)))),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER, logic->HookshotOrBoomerang()),
@@ -70,7 +70,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_LEDGE] = Region("Jabu Jabus Belly Water Switch Room Ledge", SCENE_JABU_JABU, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanBreakPots();}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
     }, {
         //Locations
         //this is the logic for climbing back and forth to use the pots to kill the skull...                                                       or killing the skull before climbing to grab the token
@@ -133,8 +133,8 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_ABOVE_BIGOCTO] = Region("Jabu Jabus Belly Above Bigocto", SCENE_JABU_JABU, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanBreakPots();}),
-        EventAccess(LOGIC_NUT_ACCESS,   []{return logic->CanBreakPots();}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
+        EVENT_ACCESS(LOGIC_NUT_ACCESS,   logic->CanBreakPots()),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_ABOVE_BIG_OCTO_POT_1, logic->CanBreakPots()),
@@ -168,7 +168,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_MQ_BEGINNING] = Region("Jabu Jabus Belly MQ Beginning", SCENE_JABU_JABU, {
         //Events
-        EventAccess(LOGIC_NUT_ACCESS, []{return logic->CanBreakPots();}),
+        EVENT_ACCESS(LOGIC_NUT_ACCESS, logic->CanBreakPots()),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_MAP_CHEST,             logic->BlastOrSmash()),
@@ -335,7 +335,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_MQ_EAST_ROOM] = Region("Jabu Jabus Belly MQ Boss Region", SCENE_JABU_JABU, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanBreakPots();}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST,     logic->CanUse(RG_FAIRY_SLINGSHOT)),

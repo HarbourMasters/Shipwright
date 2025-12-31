@@ -12,9 +12,9 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_THE_LOST_WOODS] = Region("Lost Woods", SCENE_LOST_WOODS, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS,       []{return logic->CallGossipFairyExceptSuns() || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_LOST_WOODS_BRIDGE_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS));}),
-        EventAccess(LOGIC_BUG_ACCESS,         []{return logic->IsChild && logic->CanCutShrubs();}),
-        EventAccess(LOGIC_BORROW_SPOOKY_MASK, []{return logic->IsChild && logic->Get(LOGIC_BORROW_SKULL_MASK) && logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_CHILD_WALLET);}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,       logic->CallGossipFairyExceptSuns() || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_LOST_WOODS_BRIDGE_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS))),
+        EVENT_ACCESS(LOGIC_BUG_ACCESS,         logic->IsChild && logic->CanCutShrubs()),
+        EVENT_ACCESS(LOGIC_BORROW_SPOOKY_MASK, logic->IsChild && logic->Get(LOGIC_BORROW_SKULL_MASK) && logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_CHILD_WALLET)),
     }, {
         //Locations
         LOCATION(RC_LW_SKULL_KID,                       logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
@@ -54,17 +54,17 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_GRASS_3,                         logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_LW_FOREST_EXIT,           []{return true;}),
-        Entrance(RR_GC_WOODS_WARP,            []{return true;}),
-        Entrance(RR_LW_BRIDGE,                []{return (logic->IsAdult && (CanPlantBean(RR_THE_LOST_WOODS, RG_LOST_WOODS_BRIDGE_BEAN_SOUL) || ctx->GetTrickOption(RT_LW_BRIDGE))) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT);}),
-        Entrance(RR_ZR_FROM_SHORTCUT,         []{return logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_LOST_WOOD_NAVI_DIVE) && logic->IsChild && logic->HasItem(RG_BRONZE_SCALE) && logic->CanJumpslash());}),
-        Entrance(RR_LW_BEYOND_MIDO,           []{return logic->IsChild || logic->CanUse(RG_SARIAS_SONG) || ctx->GetTrickOption(RT_LW_MIDO_BACKFLIP);}),
-        Entrance(RR_LW_NEAR_SHORTCUTS_GROTTO, []{return Here(RR_THE_LOST_WOODS, []{return logic->BlastOrSmash();});}),
+        ENTRANCE(RR_LW_FOREST_EXIT,           true),
+        ENTRANCE(RR_GC_WOODS_WARP,            true),
+        ENTRANCE(RR_LW_BRIDGE,                (logic->IsAdult && (CanPlantBean(RR_THE_LOST_WOODS, RG_LOST_WOODS_BRIDGE_BEAN_SOUL) || ctx->GetTrickOption(RT_LW_BRIDGE))) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT)),
+        ENTRANCE(RR_ZR_FROM_SHORTCUT,         logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_LOST_WOOD_NAVI_DIVE) && logic->IsChild && logic->HasItem(RG_BRONZE_SCALE) && logic->CanJumpslash())),
+        ENTRANCE(RR_LW_BEYOND_MIDO,           logic->IsChild || logic->CanUse(RG_SARIAS_SONG) || ctx->GetTrickOption(RT_LW_MIDO_BACKFLIP)),
+        ENTRANCE(RR_LW_NEAR_SHORTCUTS_GROTTO, Here(RR_THE_LOST_WOODS, []{return logic->BlastOrSmash();})),
     });
 
     areaTable[RR_LW_BEYOND_MIDO] = Region("LW Beyond Mido", SCENE_LOST_WOODS, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanUse(RG_STICKS) || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_LOST_WOODS_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS));}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanUse(RG_STICKS) || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_LOST_WOODS_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS))),
     }, {
         //Locations
         LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, logic->IsChild && logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),

@@ -7,8 +7,8 @@ void RegionTable_Init_KokiriForest() {
     // clang-format off
     areaTable[RR_KOKIRI_FOREST] = Region("Kokiri Forest", SCENE_KOKIRI_FOREST, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS,                 []{return logic->CallGossipFairyExceptSuns() || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_KOKIRI_FOREST_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS));}),
-        EventAccess(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD, []{return logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD);}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                 logic->CallGossipFairyExceptSuns() || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_KOKIRI_FOREST_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS))),
+        EVENT_ACCESS(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD, logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD)),
     }, {
         //Locations
         LOCATION(RC_KF_KOKIRI_SWORD_CHEST,      logic->IsChild),
@@ -90,10 +90,10 @@ void RegionTable_Init_KokiriForest() {
 
     areaTable[RR_KF_OUTSIDE_DEKU_TREE] = Region("KF Outside Deku Tree", SCENE_KOKIRI_FOREST, {
         //Events
-        EventAccess(LOGIC_STICK_ACCESS,                 []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(LOGIC_NUT_ACCESS,                   []{return logic->CanGetDekuBabaNuts();}),
-        EventAccess(LOGIC_FAIRY_ACCESS,                 []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD, []{return logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD);}),
+        EVENT_ACCESS(LOGIC_STICK_ACCESS,                 logic->CanGetDekuBabaSticks()),
+        EVENT_ACCESS(LOGIC_NUT_ACCESS,                   logic->CanGetDekuBabaNuts()),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                 logic->CallGossipFairyExceptSuns()),
+        EVENT_ACCESS(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD, logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD)),
     }, {
         //Locations
         LOCATION(RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE_FAIRY,      logic->CallGossipFairyExceptSuns()),
