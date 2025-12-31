@@ -74,8 +74,10 @@ static void UpdateCustomEquipment() {
         return;
     }
 
+    const bool altAssetsRuntime = ResourceMgr_IsAltAssetsEnabled();
+
     // If multiplayer dummy actors are present, skip patching shared resources to avoid corrupting them.
-    if (HasDummyPlayers()) {
+    if (HasDummyPlayers() && altAssetsRuntime) {
         return;
     }
 
@@ -96,7 +98,12 @@ static void RefreshCustomEquipment() {
         return;
     }
 
-    if (HasDummyPlayers()) {
+    const bool hasDummyPlayers = HasDummyPlayers();
+    const bool altAssetsRuntime = ResourceMgr_IsAltAssetsEnabled();
+
+    // Keep custom patches off dummy players, but still allow unpatching when alt assets are disabled so we can
+    // restore vanilla display lists.
+    if (hasDummyPlayers && altAssetsRuntime) {
         return;
     }
 
@@ -112,6 +119,14 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
     const bool altAssetsRuntime = ResourceMgr_IsAltAssetsEnabled();
 
     if (!altAssetsRuntime) {
+        // Alt assets are off; ensure any prior patches using these names are reverted.
+        ResourceMgr_UnpatchGfxByName(resource, dlist1);
+        ResourceMgr_UnpatchGfxByName(resource, dlist2);
+        if (dlist3 != NULL) {
+            ResourceMgr_UnpatchGfxByName(resource, dlist3);
+        }
+        // Drop any cached version of the resource so it reloads clean (unpatched) next use.
+        ResourceMgr_UnloadResource(resource);
         return;
     }
 
