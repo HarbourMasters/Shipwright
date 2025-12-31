@@ -2,6 +2,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/context.h"
 #include "soh/ShipInit.hpp"
+#include "soh/Enhancements/timesaver_hook_handlers.h"
 
 extern "C" {
 #include "macros.h"
@@ -14,8 +15,6 @@ extern "C" {
 
 extern "C" PlayState* gPlayState;
 static bool sEnteredBlueWarp = false;
-
-extern void TimeSaverQueueItem(RandomizerGet randoGet);
 
 // Todo: Move item queueing here
 

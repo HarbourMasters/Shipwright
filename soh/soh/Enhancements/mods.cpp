@@ -1,6 +1,7 @@
 #include "mods.h"
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
+#include "tts/tts.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -22,6 +23,7 @@
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "soh_assets.h"
+#include "kaleido.h"
 
 extern "C" {
 #include <z64.h>
@@ -438,8 +440,12 @@ void RegisterRandomizedEnemySizes() {
 }
 
 void InitMods() {
+    RandomizerRegisterHooks();
+    TimeSaverRegisterHooks();
+    RegisterTTS();
     RegisterOcarinaTimeTravel();
     RegisterHyperBosses();
     RegisterEnemyDefeatCounts();
     RegisterRandomizedEnemySizes();
+    RandoKaleido_RegisterHooks();
 }

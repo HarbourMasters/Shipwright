@@ -58,7 +58,7 @@ bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailab
         conditionsMet = true;
     }
 
-    return conditionsMet;
+    return conditionsMet && CanBuy(calculatingAvailableChecks);
 }
 
 static uint16_t GetMinimumPrice(const Rando::Location* loc) {
@@ -102,32 +102,38 @@ static uint16_t GetMinimumPrice(const Rando::Location* loc) {
     }
 }
 
-uint16_t GetCheckPrice(RandomizerCheck check /* = RC_UNKNOWN_CHECK */) {
-    RandomizerCheck rc = check != RC_UNKNOWN_CHECK ? check : logic->CurrentCheckKey;
-    assert(rc != RC_UNKNOWN_CHECK);
-    const auto& loc = Rando::StaticData::GetLocation(rc);
-    assert(loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT);
-    const auto& itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+bool LocationAccess::CanBuy(bool calculatingAvailableChecks) const {
+    const auto& loc = Rando::StaticData::GetLocation(location);
+    const auto& itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(location);
 
-    // Checks should only be identified while playing
-    if (logic->CalculatingAvailableChecks && itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
-        return GetMinimumPrice(loc);
+    if (loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT ||
+        location == RC_ZR_MAGIC_BEAN_SALESMAN) {
+        // Checks should only be identified while playing
+        if (calculatingAvailableChecks && itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
+            return CanBuyAnother(GetMinimumPrice(loc));
+        } else {
+            return CanBuyAnother(itemLoc->GetPrice());
+        }
     }
 
-    return itemLoc->GetPrice();
+    return true;
 }
 
-uint16_t GetWalletCapacity() {
-    if (logic->HasItem(RG_TYCOON_WALLET)) {
-        return 999;
-    } else if (logic->HasItem(RG_GIANT_WALLET)) {
-        return 500;
-    } else if (logic->HasItem(RG_ADULT_WALLET)) {
-        return 200;
-    } else if (logic->HasItem(RG_CHILD_WALLET)) {
-        return 99;
+bool CanBuyAnother(RandomizerCheck rc) {
+    return CanBuyAnother(ctx->GetItemLocation(rc)->GetPrice());
+}
+
+bool CanBuyAnother(uint16_t price) {
+    if (price > 500) {
+        return logic->HasItem(RG_TYCOON_WALLET);
+    } else if (price > 200) {
+        return logic->HasItem(RG_GIANT_WALLET);
+    } else if (price > 99) {
+        return logic->HasItem(RG_ADULT_WALLET);
+    } else if (price > 0) {
+        return logic->HasItem(RG_CHILD_WALLET);
     }
-    return 0;
+    return true;
 }
 
 std::set<RandomizerArea> CalculateAreas(SceneID scene) {
@@ -505,11 +511,8 @@ Rando::Entrance* Region::GetExit(RandomizerRegion exitToReturn) {
     return nullptr;
 }
 
-bool Region::CanPlantBeanCheck(RandomizerGet bean) const {
-    auto ctx = Rando::Context::GetInstance();
-    auto logic = ctx->GetLogic();
-    return logic->HasItem(bean) && logic->GetAmmo(ITEM_BEAN) > 0 &&
-           (ctx->GetOption(RSK_SKIP_PLANTING_BEANS) || BothAgesCheck());
+bool Region::CanPlantBeanCheck() const {
+    return Rando::Context::GetInstance()->GetLogic()->GetAmmo(ITEM_BEAN) > 0 && BothAgesCheck();
 }
 
 bool Region::AllAccountedFor() const {
@@ -678,55 +681,49 @@ bool MQSpiritSharedBrokenWallRoom(const RandomizerRegion region, ConditionFn con
     return areaTable[region].MQSpiritShared(condition, true, anyAge);
 }
 
-bool BeanPlanted(const RandomizerGet bean) {
-    auto logic = Rando::Context::GetInstance()->GetLogic();
-    // flag irrelevant if plant won't spawn
-    if (!logic->HasItem(bean)) {
-        return false;
-    }
-
+bool BeanPlanted(const RandomizerRegion region) {
     // swchFlag found using the Actor Viewer to get the Obj_Bean parameters & 0x3F
     // not tested with multiple OTRs, but can be automated similarly to GetDungeonSmallKeyDoors
     SceneID sceneID;
     uint8_t swchFlag;
-    switch (bean) {
-        case RG_ZORAS_RIVER_BEAN_SOUL:
+    switch (region) {
+        case RR_ZORAS_RIVER:
             sceneID = SceneID::SCENE_ZORAS_RIVER;
             swchFlag = 3;
             break;
-        case RG_GRAVEYARD_BEAN_SOUL:
+        case RR_THE_GRAVEYARD:
             sceneID = SceneID::SCENE_GRAVEYARD;
             swchFlag = 3;
             break;
-        case RG_KOKIRI_FOREST_BEAN_SOUL:
+        case RR_KOKIRI_FOREST:
             sceneID = SceneID::SCENE_KOKIRI_FOREST;
             swchFlag = 9;
             break;
-        case RG_LOST_WOODS_BRIDGE_BEAN_SOUL:
+        case RR_THE_LOST_WOODS:
             sceneID = SceneID::SCENE_LOST_WOODS;
             swchFlag = 4;
             break;
-        case RG_LOST_WOODS_BEAN_SOUL:
+        case RR_LW_BEYOND_MIDO:
             sceneID = SceneID::SCENE_LOST_WOODS;
             swchFlag = 18;
             break;
-        case RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL:
+        case RR_DEATH_MOUNTAIN_TRAIL:
             sceneID = SceneID::SCENE_DEATH_MOUNTAIN_TRAIL;
             swchFlag = 6;
             break;
-        case RG_LAKE_HYLIA_BEAN_SOUL:
+        case RR_LAKE_HYLIA:
             sceneID = SceneID::SCENE_LAKE_HYLIA;
             swchFlag = 1;
             break;
-        case RG_GERUDO_VALLEY_BEAN_SOUL:
+        case RR_GERUDO_VALLEY:
             sceneID = SceneID::SCENE_GERUDO_VALLEY;
             swchFlag = 3;
             break;
-        case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:
+        case RR_DMC_CENTRAL_LOCAL:
             sceneID = SceneID::SCENE_DEATH_MOUNTAIN_CRATER;
             swchFlag = 3;
             break;
-        case RG_DESERT_COLOSSUS_BEAN_SOUL:
+        case RR_DESERT_COLOSSUS:
             sceneID = SceneID::SCENE_DESERT_COLOSSUS;
             swchFlag = 24;
             break;
@@ -742,7 +739,7 @@ bool BeanPlanted(const RandomizerGet bean) {
     if (gPlayState != nullptr && gPlayState->sceneNum == sceneID) {
         swch = gPlayState->actorCtx.flags.swch;
     } else if (sceneID != SCENE_ID_MAX) {
-        swch = logic->GetSaveContext()->sceneFlags[sceneID].swch;
+        swch = Rando::Context::GetInstance()->GetLogic()->GetSaveContext()->sceneFlags[sceneID].swch;
     } else {
         swch = 0;
     }
@@ -750,8 +747,8 @@ bool BeanPlanted(const RandomizerGet bean) {
     return swch >> swchFlag & 1;
 }
 
-bool CanPlantBean(const RandomizerRegion region, const RandomizerGet bean) {
-    return areaTable[region].CanPlantBeanCheck(bean) || BeanPlanted(bean);
+bool CanPlantBean(const RandomizerRegion region) {
+    return areaTable[region].CanPlantBeanCheck() || BeanPlanted(region);
 }
 
 bool BothAges(const RandomizerRegion region) {

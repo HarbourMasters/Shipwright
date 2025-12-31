@@ -1140,8 +1140,6 @@ void SkelAnime_InitLink(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeade
     }
 
     LinkAnimation_Change(play, skelAnime, animation, 1.0f, 0.0f, 0.0f, ANIMMODE_LOOP, 0.0f);
-
-    GameInteractor_ExecuteOnLinkSkeletonInit();
 }
 
 /**

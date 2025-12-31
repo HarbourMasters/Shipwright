@@ -254,10 +254,6 @@ class Location {
                            int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
                            RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck);
 
-    static Location Bush(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
-                         int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
-                         RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck);
-
     static Location OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
                               ActorID actorId_, SceneID scene_, std::string&& shortName_, std::string&& spoilerName_);
 

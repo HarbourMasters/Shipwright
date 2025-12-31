@@ -9,7 +9,6 @@
 #include <spdlog/fmt/fmt.h>
 
 #include "soh/OTRGlobals.h"
-#include "soh/ShipInit.hpp"
 #include "message_data_static.h"
 #include "overlays/gamestates/ovl_file_choose/file_choose.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
@@ -1200,7 +1199,7 @@ void RegisterOnSetDoAction() {
     });
 }
 
-static void RegisterTTSModHooks() {
+void RegisterTTSModHooks() {
     RegisterOnSetGameLanguageHook();
     RegisterOnDialogMessageHook();
     RegisterOnSceneInitHook();
@@ -1211,9 +1210,7 @@ static void RegisterTTSModHooks() {
     RegisterOnSetDoAction();
 }
 
-static void RegisterTTS() {
+void RegisterTTS() {
     InitTTSBank();
     RegisterTTSModHooks();
 }
-
-static RegisterShipInitFunc initFunc(RegisterTTS);

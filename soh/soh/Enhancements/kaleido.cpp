@@ -3,7 +3,6 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/frame_interpolation.h"
-#include "soh/ShipInit.hpp"
 #include "soh/ShipUtils.h"
 
 extern "C" {
@@ -519,9 +518,7 @@ void KaleidoEntryOcarinaButtons::Draw(PlayState* play, std::vector<Gfx>* mEntryD
 }
 } // namespace Rando
 
-static void RandoKaleido_RegisterHooks() {
+void RandoKaleido_RegisterHooks() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(
         RandoKaleido_UpdateMiscCollectibles);
 }
-
-static RegisterShipInitFunc initFunc(RandoKaleido_RegisterHooks);
