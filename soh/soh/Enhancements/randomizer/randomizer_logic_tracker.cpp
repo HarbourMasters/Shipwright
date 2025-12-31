@@ -191,9 +191,9 @@ static void CalculateShowRandomizerCheck() {
     if (showRandomizerCheck == RC_UNKNOWN_CHECK) {
         return;
     }
+    logic->CurrentCheckKey = showRandomizerCheck;
 
     const auto& location = Rando::StaticData::GetLocation(showRandomizerCheck);
-
     nodes.clear();
 
     LogicTrackerNode node;
@@ -223,6 +223,7 @@ static void CalculateShowRandomizerCheck() {
 
     expandNodeId = node.NodeId;
 
+    logic->CurrentCheckKey = RC_UNKNOWN_CHECK;
     showRandomizerCheck = RC_UNKNOWN_CHECK;
 }
 
