@@ -424,7 +424,8 @@ void Settings::CreateOptions() {
               "- Crossing Gerudo Valley with Hookshot\n"
               "- Retrieving DMT Gold Skulltula beside bomb flower\n"
               "- Hitting switch through wall in Spirit Temple's big mirror room with Bow, Slingshot, or Hookshot\n"
-              "- Hitting switch through wall in Spirit Trial with Bow or Slingshot");
+              "- Hitting switch through wall in Spirit Trial with Bow or Slingshot\n"
+              "- Hitting switch through gate in Shadow Temple MQ with Bow or Slingshot");
     OPT_TRICK(RT_BIG_SKULLTULA_PAUSE_LIFT, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
               "Lift Big Skulltulas with Pausing",
               "Pausing while a big skulltula is bobbing upwards slightly lifts it,\n"

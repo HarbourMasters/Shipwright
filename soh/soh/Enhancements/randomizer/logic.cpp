@@ -78,10 +78,13 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_HYLIAN_SHIELD:
         case RG_MIRROR_SHIELD:
         case RG_MASTER_SWORD:
-        case RG_BIGGORON_SWORD:
         case RG_IRON_BOOTS:
         case RG_HOVER_BOOTS:
             return CheckEquipment(RandoGetToEquipFlag.at(itemName));
+        case RG_GIANTS_KNIFE:
+            return CheckEquipment(RandoGetToEquipFlag.at(itemName)) || Get(LOGIC_MEDIGORON);
+        case RG_BIGGORON_SWORD:
+            return CheckEquipment(RandoGetToEquipFlag.at(itemName)) && mSaveContext->bgsFlag;
         case RG_GORONS_BRACELET:
             return CurrentUpgrade(UPG_STRENGTH);
         case RG_SILVER_GAUNTLETS:
@@ -307,6 +310,7 @@ bool Logic::CanUse(RandomizerGet itemName) {
             return IsAdult; // || MirrorShieldAsChild;
         case RG_MASTER_SWORD:
             return IsAdult; // || MasterSwordAsChild;
+        case RG_GIANTS_KNIFE:
         case RG_BIGGORON_SWORD:
             return IsAdult; // || BiggoronSwordAsChild;
         case RG_SILVER_GAUNTLETS:
@@ -1093,7 +1097,7 @@ bool Logic::CanJumpslash() {
 }
 
 bool Logic::CanClearStalagmite() {
-    return CanJumpslash() || HasExplosives() ||
+    return CanJumpslash() || HasExplosives() || CanUse(RG_GIANTS_KNIFE) ||
            (ctx->GetTrickOption(RT_ICE_STALAGMITE_HOOKSHOT) && CanUse(RG_HOOKSHOT));
 }
 
@@ -1102,7 +1106,7 @@ bool Logic::CanHitSwitch(EnemyDistance distance, bool inWater) {
     switch (distance) {
         case ED_CLOSE:
         case ED_SHORT_JUMPSLASH:
-            hit = CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MEGATON_HAMMER);
+            hit = CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_GIANTS_KNIFE);
             [[fallthrough]];
         case ED_MASTER_SWORD_JUMPSLASH:
             hit = hit || CanUse(RG_MASTER_SWORD);
@@ -1197,7 +1201,8 @@ bool Logic::CanReflectNuts() {
 
 bool Logic::CanCutShrubs() {
     return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_BOOMERANG) || HasExplosives() || CanUse(RG_MASTER_SWORD) ||
-           CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD) || HasItem(RG_GORONS_BRACELET);
+           CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_GIANTS_KNIFE) ||
+           HasItem(RG_GORONS_BRACELET);
 }
 
 bool Logic::CanStunDeku() {
@@ -1403,13 +1408,14 @@ bool Logic::SmallKeys(s16 scene, uint8_t requiredAmount) {
 }
 
 std::map<RandomizerGet, uint32_t> Logic::RandoGetToEquipFlag = {
-    { RG_KOKIRI_SWORD, EQUIP_FLAG_SWORD_KOKIRI },   { RG_MASTER_SWORD, EQUIP_FLAG_SWORD_MASTER },
-    { RG_BIGGORON_SWORD, EQUIP_FLAG_SWORD_BGS },    { RG_DEKU_SHIELD, EQUIP_FLAG_SHIELD_DEKU },
-    { RG_HYLIAN_SHIELD, EQUIP_FLAG_SHIELD_HYLIAN }, { RG_MIRROR_SHIELD, EQUIP_FLAG_SHIELD_MIRROR },
-    { RG_GORON_TUNIC, EQUIP_FLAG_TUNIC_GORON },     { RG_ZORA_TUNIC, EQUIP_FLAG_TUNIC_ZORA },
-    { RG_BUY_DEKU_SHIELD, EQUIP_FLAG_SHIELD_DEKU }, { RG_BUY_HYLIAN_SHIELD, EQUIP_FLAG_SHIELD_HYLIAN },
-    { RG_BUY_GORON_TUNIC, EQUIP_FLAG_TUNIC_GORON }, { RG_BUY_ZORA_TUNIC, EQUIP_FLAG_TUNIC_ZORA },
-    { RG_IRON_BOOTS, EQUIP_FLAG_BOOTS_IRON },       { RG_HOVER_BOOTS, EQUIP_FLAG_BOOTS_HOVER }
+    { RG_KOKIRI_SWORD, EQUIP_FLAG_SWORD_KOKIRI },       { RG_MASTER_SWORD, EQUIP_FLAG_SWORD_MASTER },
+    { RG_GIANTS_KNIFE, EQUIP_FLAG_SWORD_BGS },          { RG_BIGGORON_SWORD, EQUIP_FLAG_SWORD_BGS },
+    { RG_DEKU_SHIELD, EQUIP_FLAG_SHIELD_DEKU },         { RG_HYLIAN_SHIELD, EQUIP_FLAG_SHIELD_HYLIAN },
+    { RG_MIRROR_SHIELD, EQUIP_FLAG_SHIELD_MIRROR },     { RG_GORON_TUNIC, EQUIP_FLAG_TUNIC_GORON },
+    { RG_ZORA_TUNIC, EQUIP_FLAG_TUNIC_ZORA },           { RG_BUY_DEKU_SHIELD, EQUIP_FLAG_SHIELD_DEKU },
+    { RG_BUY_HYLIAN_SHIELD, EQUIP_FLAG_SHIELD_HYLIAN }, { RG_BUY_GORON_TUNIC, EQUIP_FLAG_TUNIC_GORON },
+    { RG_BUY_ZORA_TUNIC, EQUIP_FLAG_TUNIC_ZORA },       { RG_IRON_BOOTS, EQUIP_FLAG_BOOTS_IRON },
+    { RG_HOVER_BOOTS, EQUIP_FLAG_BOOTS_HOVER }
 };
 
 std::map<RandomizerGet, uint32_t> Logic::RandoGetToRandInf = {
@@ -1858,18 +1864,18 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
         } break;
         case ITEMTYPE_EQUIP: {
             RandomizerGet itemRG = item.GetRandomizerGet();
-            if (itemRG == RG_GIANTS_KNIFE || itemRG == RG_DEKU_SHIELD || itemRG == RG_HYLIAN_SHIELD) {
+            if (itemRG == RG_DEKU_SHIELD || itemRG == RG_HYLIAN_SHIELD) {
                 return;
             }
             uint32_t equipId = RandoGetToEquipFlag.find(itemRG)->second;
             if (!state) {
                 mSaveContext->inventory.equipment &= ~equipId;
-                if (equipId == EQUIP_FLAG_SWORD_BGS) {
+                if (equipId == EQUIP_FLAG_SWORD_BGS && itemRG != RG_GIANTS_KNIFE) {
                     mSaveContext->bgsFlag = false;
                 }
             } else {
                 mSaveContext->inventory.equipment |= equipId;
-                if (equipId == EQUIP_FLAG_SWORD_BGS) {
+                if (equipId == EQUIP_FLAG_SWORD_BGS && itemRG != RG_GIANTS_KNIFE) {
                     mSaveContext->bgsFlag = true;
                 }
             }

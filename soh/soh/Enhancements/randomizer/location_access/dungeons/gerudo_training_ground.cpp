@@ -272,7 +272,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         //implies logic->CanKillEnemy(RE_SPIKE)
         LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_HEAVY_BLOCK_CHEST, logic->CanKillEnemy(RE_FREEZARD)),
     }, {
-        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_ROOM_BEHIND_BLOCK, []{return true;}),
+        Entrance(RR_GERUDO_TRAINING_GROUND_MQ_BEHIND_BLOCK, []{return true;}),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_STATUE_ROOM_LEDGE] = Region("Gerudo Training Ground MQ Statue Room Ledge", SCENE_GERUDO_TRAINING_GROUND, {}, {}, {
