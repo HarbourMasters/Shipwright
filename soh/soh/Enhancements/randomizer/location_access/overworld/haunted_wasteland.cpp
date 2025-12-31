@@ -19,11 +19,11 @@ void RegionTable_Init_HauntedWasteland() {
         //Events
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,    logic->CanBreakPots()),
         EVENT_ACCESS(LOGIC_NUT_ACCESS,      logic->CanBreakPots()),
-        EVENT_ACCESS(LOGIC_CARPET_MERCHANT, logic->HasItem(RG_ADULT_WALLET) && CanBuyAnother(RC_WASTELAND_BOMBCHU_SALESMAN) && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS))),
+        EVENT_ACCESS(LOGIC_CARPET_MERCHANT, logic->HasItem(RG_ADULT_WALLET) && GetCheckPrice(RC_WASTELAND_BOMBCHU_SALESMAN) <= GetWalletCapacity() && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS))),
     }, {
         //Locations
         LOCATION(RC_WASTELAND_CHEST,            logic->HasFireSource()),
-        LOCATION(RC_WASTELAND_BOMBCHU_SALESMAN, logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)),
+        LOCATION(RC_WASTELAND_BOMBCHU_SALESMAN, logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_WASTELAND_GS,               logic->HookshotOrBoomerang() || (logic->IsAdult && ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->CanGroundJump() && logic->CanJumpslash())), // need to jumpslash immediately with two handed weapons
         LOCATION(RC_WASTELAND_NEAR_GS_POT_1,    logic->CanBreakPots()),
         LOCATION(RC_WASTELAND_NEAR_GS_POT_2,    logic->CanBreakPots()),

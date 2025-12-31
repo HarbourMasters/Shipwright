@@ -419,7 +419,7 @@ void RegionTable_Init_DekuTree() {
         EVENT_ACCESS(LOGIC_DEKU_TREE_PUSHED_BASEMENT_BLOCK, true),
     }, {
         //Locations
-        LOCATION(RC_DEKU_TREE_MQ_DEKU_SCRUB,             logic->CanStunDeku()),
+        LOCATION(RC_DEKU_TREE_MQ_DEKU_SCRUB,             logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_UPPER_GRASS_1, logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_UPPER_GRASS_2, logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_UPPER_GRASS_3, logic->CanCutShrubs()),

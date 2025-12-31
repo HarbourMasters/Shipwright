@@ -8,21 +8,8 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-static void UpdateCustomSkeletonOnEquipTunic() {
-    if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
-        return;
-    }
-
-    static int8_t previousTunic = -1;
-    int8_t equippedTunic = CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC);
-    if (equippedTunic != previousTunic) {
-        SOH::SkeletonPatcher::UpdateCustomSkeletons();
-        previousTunic = equippedTunic;
-    }
-}
-
-static void UpdateCustomSkeletonOnAssetAltChange() {
-    if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
+static void UpdateCustomSkeleton() {
+    if (!GameInteractor::IsSaveLoaded(true) || gPlayState == NULL) {
         return;
     }
 
@@ -30,8 +17,9 @@ static void UpdateCustomSkeletonOnAssetAltChange() {
 }
 
 static void RegisterCustomSkeletons() {
-    COND_HOOK(OnGameFrameUpdate, true, UpdateCustomSkeletonOnEquipTunic);
-    COND_HOOK(OnAssetAltChange, true, UpdateCustomSkeletonOnAssetAltChange);
+    COND_HOOK(OnAssetAltChange, true, UpdateCustomSkeleton);
+    COND_HOOK(OnLinkSkeletonInit, true, SOH::SkeletonPatcher::UpdateCustomSkeletons);
+    COND_HOOK(OnLinkEquipmentChange, true, SOH::SkeletonPatcher::UpdateCustomSkeletons);
 }
 
 static RegisterShipInitFunc initFunc(RegisterCustomSkeletons);

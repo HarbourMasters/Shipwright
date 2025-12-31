@@ -144,20 +144,18 @@ void RegionTable_Init_GerudoTrainingGround() {
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_LAVA_ROOM] = Region("Gerudo Training Ground Lava Room", SCENE_GERUDO_TRAINING_GROUND, {
-        EVENT_ACCESS(LOGIC_GTG_PLATFORM_SILVER_RUPEES, logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME))),
+        EVENT_ACCESS(LOGIC_GTG_PLATFORM_SILVER_RUPEES, logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME) || logic->IsChild)),
     }, {}, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_DINALFOS,              true),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_CENTRAL_MAZE_RIGHT,    logic->CanUse(RG_SONG_OF_TIME) || logic->IsChild),
-        // possible to make across with adult's rolling jump, only requiring hookshot
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_LAVA_ROOM_UPPER_LEDGE, logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME)))),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_LAVA_ROOM_UPPER_LEDGE, logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME) || logic->IsChild || (logic->IsAdult && ctx->GetTrickOption(RT_GTG_LAVA_JUMP)) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->CanUse(RG_BOMB_BAG) && logic->TakeDamage())))),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_UNDERWATER,            logic->Get(LOGIC_GTG_PLATFORM_SILVER_RUPEES)),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_LAVA_ROOM_UPPER_LEDGE] = Region("Gerudo Training Ground Lava Room", SCENE_GERUDO_TRAINING_GROUND, {}, {}, {
         //Exits
-        // possible to make across with as adult's rolling jump, no hookshot necessary
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_LAVA_ROOM,   logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME)),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_LAVA_ROOM,   logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME) || logic->IsChild || (logic->IsAdult && ctx->GetTrickOption(RT_GTG_LAVA_JUMP)) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->CanUse(RG_BOMB_BAG) && logic->TakeDamage())),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_HAMMER_ROOM, true),
     });
 
@@ -166,7 +164,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         LOCATION(RC_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST, logic->CanUse(RG_SONG_OF_TIME) && logic->CanUse(RG_IRON_BOOTS) && logic->HasItem(RG_BRONZE_SCALE) && logic->WaterTimer() >= 24),
     }, {
         //Exits
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_LAVA_ROOM,          true),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_LAVA_ROOM, true),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_DINALFOS] = Region("Gerudo Training Dinalfos", SCENE_GERUDO_TRAINING_GROUND, {}, {
@@ -274,7 +272,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         //implies logic->CanKillEnemy(RE_SPIKE)
         LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_HEAVY_BLOCK_CHEST, logic->CanKillEnemy(RE_FREEZARD)),
     }, {
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_ROOM_BEHIND_BLOCK, true),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_BEHIND_BLOCK, true),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_STATUE_ROOM_LEDGE] = Region("Gerudo Training Ground MQ Statue Room Ledge", SCENE_GERUDO_TRAINING_GROUND, {}, {}, {
@@ -361,7 +359,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         EVENT_ACCESS(LOGIC_GTG_PLATFORM_SILVER_RUPEES, ((logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS)) && logic->CanUse(RG_HOVER_BOOTS)),
     }, {}, {
         //Exits
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LEDGE_SIDE_PLATFORMS,  ((logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS)) && logic->CanUse(RG_HOVER_BOOTS)),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LEDGE_SIDE_PLATFORMS,  ((logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS)) && (logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && ctx->GetTrickOption(RT_GTG_LAVA_JUMP)) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->CanUse(RG_BOMB_BAG) && logic->TakeDamage()))),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_PLATFORMS_UNLIT_TORCH, (logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT,            logic->Get(LOGIC_GTG_MQ_RIGHT_SIDE_SWITCH) && ((logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_LONGSHOT))),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_ROOM,         true),
@@ -387,8 +385,8 @@ void RegionTable_Init_GerudoTrainingGround() {
     }, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY,                 true),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LEDGE_SIDE_PLATFORMS,  logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_LONGSHOT)),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_PLATFORMS_UNLIT_TORCH, logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_LONGSHOT) || (logic->Get(LOGIC_GTG_PLATFORM_SILVER_RUPEES) && logic->CanUse(RG_HOVER_BOOTS))),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_TORCH_SIDE_PLATFORMS,  logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_LONGSHOT)),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_PLATFORMS_UNLIT_TORCH, logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(logic->Get(LOGIC_GTG_PLATFORM_SILVER_RUPEES) ? RG_HOOKSHOT : RG_LONGSHOT)),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LEDGE_SIDE_PLATFORMS,  logic->CanUse(RG_FIRE_ARROWS)),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_FURTHEST_PLATFORM,     logic->CanUse(RG_FIRE_ARROWS)),
     });
