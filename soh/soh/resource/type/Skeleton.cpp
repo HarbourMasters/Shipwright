@@ -75,6 +75,11 @@ void SkeletonPatcher::RegisterSkeleton(std::string& path, SkelAnime* skelAnime) 
 
     if (IsLinkSkeletonPath(info.vanillaSkeletonPath)) {
         info.isLocalPlayer = IsLocalPlayerSkelAnime(skelAnime);
+
+        // Skip registering skeletons that do not belong to the local player (e.g. Anchor dummy actors)
+        if (!info.isLocalPlayer) {
+            return;
+        }
     }
 
     skeletons.push_back(info);
@@ -115,11 +120,7 @@ void SkeletonPatcher::UpdateSkeletons() {
 }
 
 void SkeletonPatcher::UpdateCustomSkeletons() {
-    for (auto& skel : skeletons) {
-        if (IsLinkSkeletonPath(skel.vanillaSkeletonPath)) {
-            skel.isLocalPlayer = IsLocalPlayerSkelAnime(skel.skelAnime);
-        }
-
+    for (auto skel : skeletons) {
         if (!skel.isLocalPlayer) {
             continue;
         }
