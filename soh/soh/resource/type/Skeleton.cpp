@@ -9,6 +9,7 @@
 
 extern "C" {
 #include "variables.h"
+#include "z64.h"
 #include "z64player.h"
 extern PlayState* gPlayState;
 }
@@ -52,7 +53,10 @@ bool SkeletonPatcher::IsLocalPlayerSkelAnime(SkelAnime* skelAnime) {
         return false;
     }
 
-    return (skelAnime == &player->skelAnime) || (skelAnime == &player->upperSkelAnime);
+    PauseContext* pauseCtx = &gPlayState->pauseCtx;
+
+    return (skelAnime == &player->skelAnime) || (skelAnime == &player->upperSkelAnime) ||
+           (skelAnime == &pauseCtx->playerSkelAnime);
 }
 
 void SkeletonPatcher::RegisterSkeleton(std::string& path, SkelAnime* skelAnime) {
