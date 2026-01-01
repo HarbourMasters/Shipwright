@@ -297,6 +297,8 @@ void Settings::CreateOptionDescriptions() {
         "Trees will have a special appearance when carrying randomized items.\n"
         "\nSome trees are dependant on Link's age, such as some trees in Hyrule Field.\nTwo trees at Hyrule Castle are "
         "only shuffle with No Logic.";
+    mOptionDescriptions[RSK_SHUFFLE_BUSHES] =
+        "Bushes in Hyrule Field & Zora's Fountain will contain randomized items when first walked through.";
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
                                                     "\n"
                                                     "The fishing pole is required to play the fishing pond minigame.";
@@ -625,6 +627,8 @@ void Settings::CreateOptionDescriptions() {
         "Start with the ability to summon Pierre the Scarecrow. Pulling out an Ocarina in the usual locations will "
         "automatically summon him.\n"
         "With \"Shuffle Ocarina Buttons\" enabled, you'll need at least two Ocarina buttons to summon him.";
+    mOptionDescriptions[RSK_SKIP_PLANTING_BEANS] = "Beans will be planted once you find beans.\n"
+                                                   "If bean souls are shuffled, you must find soul still.";
     mOptionDescriptions[RSK_ITEM_POOL] = "Sets how many major items appear in the item pool.\n"
                                          "\n"
                                          "Plentiful - Extra major items are added to the pool.\n"
@@ -774,6 +778,8 @@ void Settings::CreateOptionDescriptions() {
                                                        "location is reachable. When disabled, only "
                                                        "required items and locations to beat the game "
                                                        "will be guaranteed reachable.";
+    mOptionDescriptions[RSK_SHUFFLE_BEAN_SOULS] =
+        "Shuffle 10 bean souls which must be found to spawn corresponding soil / plant.";
     mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS] =
         "Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its "
         "respective soul."

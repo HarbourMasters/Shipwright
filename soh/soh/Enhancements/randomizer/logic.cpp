@@ -2,9 +2,7 @@
 #include "../debugger/performanceTimer.h"
 
 #include <algorithm>
-#include <cstdio>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include "soh/OTRGlobals.h"
@@ -80,10 +78,13 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_HYLIAN_SHIELD:
         case RG_MIRROR_SHIELD:
         case RG_MASTER_SWORD:
-        case RG_BIGGORON_SWORD:
         case RG_IRON_BOOTS:
         case RG_HOVER_BOOTS:
             return CheckEquipment(RandoGetToEquipFlag.at(itemName));
+        case RG_GIANTS_KNIFE:
+            return CheckEquipment(RandoGetToEquipFlag.at(itemName)) || Get(LOGIC_MEDIGORON);
+        case RG_BIGGORON_SWORD:
+            return CheckEquipment(RandoGetToEquipFlag.at(itemName)) && mSaveContext->bgsFlag;
         case RG_GORONS_BRACELET:
             return CurrentUpgrade(UPG_STRENGTH);
         case RG_SILVER_GAUNTLETS:
@@ -134,6 +135,17 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_OCARINA_C_RIGHT_BUTTON:
         case RG_OCARINA_C_DOWN_BUTTON:
         case RG_OCARINA_C_UP_BUTTON:
+            // Bean Souls
+        case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:
+        case RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL:
+        case RG_DESERT_COLOSSUS_BEAN_SOUL:
+        case RG_GERUDO_VALLEY_BEAN_SOUL:
+        case RG_GRAVEYARD_BEAN_SOUL:
+        case RG_KOKIRI_FOREST_BEAN_SOUL:
+        case RG_LAKE_HYLIA_BEAN_SOUL:
+        case RG_LOST_WOODS_BRIDGE_BEAN_SOUL:
+        case RG_LOST_WOODS_BEAN_SOUL:
+        case RG_ZORAS_RIVER_BEAN_SOUL:
             // Boss Souls
         case RG_GOHMA_SOUL:
         case RG_KING_DODONGO_SOUL:
@@ -298,6 +310,7 @@ bool Logic::CanUse(RandomizerGet itemName) {
             return IsAdult; // || MirrorShieldAsChild;
         case RG_MASTER_SWORD:
             return IsAdult; // || MasterSwordAsChild;
+        case RG_GIANTS_KNIFE:
         case RG_BIGGORON_SWORD:
             return IsAdult; // || BiggoronSwordAsChild;
         case RG_SILVER_GAUNTLETS:
@@ -323,10 +336,9 @@ bool Logic::CanUse(RandomizerGet itemName) {
         case RG_KOKIRI_SWORD:
             return IsChild; // || KokiriSwordAsAdult;
         case RG_NUTS:
-            return Get(LOGIC_NUT_POT) || Get(LOGIC_NUT_CRATE) || Get(LOGIC_DEKU_BABA_NUTS) || Get(LOGIC_BUY_NUTS);
+            return Get(LOGIC_NUT_ACCESS);
         case RG_STICKS:
-            return IsChild /* || StickAsAdult;*/ &&
-                   (Get(LOGIC_STICK_POT) || Get(LOGIC_DEKU_BABA_STICKS) || Get(LOGIC_BUY_STICKS));
+            return IsChild /* || StickAsAdult;*/ && Get(LOGIC_STICK_ACCESS);
         case RG_DEKU_SHIELD:
             return IsChild; // || DekuShieldAsAdult;
         case RG_PROGRESSIVE_BOMB_BAG:
@@ -379,16 +391,13 @@ bool Logic::CanUse(RandomizerGet itemName) {
 
         // Bottle Items
         case RG_BOTTLE_WITH_BUGS:
-            return Get(LOGIC_BUG_SHRUB) || Get(LOGIC_WANDERING_BUGS) || Get(LOGIC_BUG_ROCK) || Get(LOGIC_BUGS_ACCESS);
+            return Get(LOGIC_BUG_ACCESS);
         case RG_BOTTLE_WITH_FISH:
-            return Get(LOGIC_LONE_FISH) || Get(LOGIC_FISH_GROUP) ||
-                   Get(LOGIC_FISH_ACCESS); // is there any need to care about lone vs group?
-        case RG_BOTTLE_WITH_BLUE_FIRE:     // RANDOTODO should probably be better named
+            return Get(LOGIC_FISH_ACCESS);
+        case RG_BOTTLE_WITH_BLUE_FIRE:
             return Get(LOGIC_BLUE_FIRE_ACCESS);
         case RG_BOTTLE_WITH_FAIRY:
-            return Get(LOGIC_FAIRY_POT) || Get(LOGIC_GOSSIP_STONE_FAIRY) || Get(LOGIC_BEAN_PLANT_FAIRY) ||
-                   Get(LOGIC_BUTTERFLY_FAIRY) || Get(LOGIC_FREE_FAIRIES) || Get(LOGIC_FAIRY_POND) ||
-                   Get(LOGIC_FAIRY_ACCESS);
+            return Get(LOGIC_FAIRY_ACCESS);
 
         default:
             SPDLOG_ERROR("CanUse reached `default` for {}. Assuming intention is no extra requirements for use so "
@@ -534,6 +543,7 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
         case RE_GOHMA_LARVA:
         case RE_MAD_SCRUB:
         case RE_DEKU_BABA:
+        case RE_POE:
             return CanAttack();
         case RE_BIG_SKULLTULA:
             switch (distance) {
@@ -576,6 +586,7 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             return CanJumpslash() || HasExplosives() || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
         case RE_KEESE:
         case RE_FIRE_KEESE:
+        case RE_GUAY:
             switch (distance) {
                 case ED_CLOSE:
                 case ED_SHORT_JUMPSLASH:
@@ -588,15 +599,15 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
                     killed = killed || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
                     [[fallthrough]];
                 case ED_BOMB_THROW:
-                    // RANDOTODO test dins and chu range in a practical example
-                    killed = killed || (!inWater && CanUse(RG_BOMB_BAG));
+                    // RANDOTODO test chu range in a practical example
+                    killed = killed || (!inWater && CanUse(RG_BOMB_BAG)) || (enemy == RE_GUAY && CanUse(RG_DINS_FIRE));
                     [[fallthrough]];
                 case ED_BOOMERANG:
-                    // RANDOTODO test dins and chu range in a practical example
+                    // RANDOTODO test chu range in a practical example
                     killed = killed || CanUse(RG_BOOMERANG);
                     [[fallthrough]];
                 case ED_HOOKSHOT:
-                    // RANDOTODO test dins, bomb and chu range in a practical example
+                    // RANDOTODO test chu range in a practical example
                     killed = killed || CanUse(RG_HOOKSHOT) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
                     [[fallthrough]];
                 case ED_LONGSHOT:
@@ -853,7 +864,8 @@ bool Logic::CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             return HasItem(RG_GERUDO_MEMBERSHIP_CARD) || CanUse(RG_FAIRY_BOW) || CanUse(RG_HOOKSHOT);
         case RE_BIG_SKULLTULA:
             // hammer jumpslash can pass, but only on flat land where you can kill with hammer swing
-            return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG);
+            return CanUse(RG_NUTS) || CanUse(RG_BOOMERANG) ||
+                   (ctx->GetTrickOption(RT_BIG_SKULLTULA_PAUSE_LIFT) && wallOrFloor && distance == ED_CLOSE);
         case RE_LIKE_LIKE:
             return CanUse(RG_HOOKSHOT) || CanUse(RG_BOOMERANG);
         case RE_GIBDO:
@@ -916,6 +928,7 @@ bool Logic::CanAvoidEnemy(RandomizerEnemy enemy, bool grounded, uint8_t quantity
             return !grounded || CanUse(RG_NUTS);
         case RE_KEESE:
         case RE_FIRE_KEESE:
+        case RE_GUAY:
             return CanUse(RG_NUTS);
         case RE_BLUE_BUBBLE:
             // RANDOTODO Trick to use shield hylian shield as child to stun these guys
@@ -960,6 +973,7 @@ bool Logic::CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance, bool 
             break;
         case RE_KEESE:
         case RE_FIRE_KEESE:
+        case RE_GUAY:
             return true;
         default:
             return aboveLink || (distance <= ED_BOOMERANG && CanUse(RG_BOOMERANG));
@@ -1083,7 +1097,8 @@ bool Logic::CanJumpslash() {
 }
 
 bool Logic::CanClearStalagmite() {
-    return CanJumpslash() || HasExplosives();
+    return CanJumpslash() || HasExplosives() || CanUse(RG_GIANTS_KNIFE) ||
+           (ctx->GetTrickOption(RT_ICE_STALAGMITE_HOOKSHOT) && CanUse(RG_HOOKSHOT));
 }
 
 bool Logic::CanHitSwitch(EnemyDistance distance, bool inWater) {
@@ -1091,7 +1106,7 @@ bool Logic::CanHitSwitch(EnemyDistance distance, bool inWater) {
     switch (distance) {
         case ED_CLOSE:
         case ED_SHORT_JUMPSLASH:
-            hit = CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MEGATON_HAMMER);
+            hit = CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_GIANTS_KNIFE);
             [[fallthrough]];
         case ED_MASTER_SWORD_JUMPSLASH:
             hit = hit || CanUse(RG_MASTER_SWORD);
@@ -1176,8 +1191,8 @@ bool Logic::BlastOrSmash() {
     return HasExplosives() || CanUse(RG_MEGATON_HAMMER);
 }
 
-bool Logic::CanSpawnSoilSkull() {
-    return IsChild && CanUse(RG_BOTTLE_WITH_BUGS);
+bool Logic::CanSpawnSoilSkull(RandomizerGet bean) {
+    return IsChild && CanUse(RG_BOTTLE_WITH_BUGS) && HasItem(bean);
 }
 
 bool Logic::CanReflectNuts() {
@@ -1186,7 +1201,8 @@ bool Logic::CanReflectNuts() {
 
 bool Logic::CanCutShrubs() {
     return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_BOOMERANG) || HasExplosives() || CanUse(RG_MASTER_SWORD) ||
-           CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD) || HasItem(RG_GORONS_BRACELET);
+           CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_GIANTS_KNIFE) ||
+           HasItem(RG_GORONS_BRACELET);
 }
 
 bool Logic::CanStunDeku() {
@@ -1392,19 +1408,30 @@ bool Logic::SmallKeys(s16 scene, uint8_t requiredAmount) {
 }
 
 std::map<RandomizerGet, uint32_t> Logic::RandoGetToEquipFlag = {
-    { RG_KOKIRI_SWORD, EQUIP_FLAG_SWORD_KOKIRI },   { RG_MASTER_SWORD, EQUIP_FLAG_SWORD_MASTER },
-    { RG_BIGGORON_SWORD, EQUIP_FLAG_SWORD_BGS },    { RG_DEKU_SHIELD, EQUIP_FLAG_SHIELD_DEKU },
-    { RG_HYLIAN_SHIELD, EQUIP_FLAG_SHIELD_HYLIAN }, { RG_MIRROR_SHIELD, EQUIP_FLAG_SHIELD_MIRROR },
-    { RG_GORON_TUNIC, EQUIP_FLAG_TUNIC_GORON },     { RG_ZORA_TUNIC, EQUIP_FLAG_TUNIC_ZORA },
-    { RG_BUY_DEKU_SHIELD, EQUIP_FLAG_SHIELD_DEKU }, { RG_BUY_HYLIAN_SHIELD, EQUIP_FLAG_SHIELD_HYLIAN },
-    { RG_BUY_GORON_TUNIC, EQUIP_FLAG_TUNIC_GORON }, { RG_BUY_ZORA_TUNIC, EQUIP_FLAG_TUNIC_ZORA },
-    { RG_IRON_BOOTS, EQUIP_FLAG_BOOTS_IRON },       { RG_HOVER_BOOTS, EQUIP_FLAG_BOOTS_HOVER }
+    { RG_KOKIRI_SWORD, EQUIP_FLAG_SWORD_KOKIRI },       { RG_MASTER_SWORD, EQUIP_FLAG_SWORD_MASTER },
+    { RG_GIANTS_KNIFE, EQUIP_FLAG_SWORD_BGS },          { RG_BIGGORON_SWORD, EQUIP_FLAG_SWORD_BGS },
+    { RG_DEKU_SHIELD, EQUIP_FLAG_SHIELD_DEKU },         { RG_HYLIAN_SHIELD, EQUIP_FLAG_SHIELD_HYLIAN },
+    { RG_MIRROR_SHIELD, EQUIP_FLAG_SHIELD_MIRROR },     { RG_GORON_TUNIC, EQUIP_FLAG_TUNIC_GORON },
+    { RG_ZORA_TUNIC, EQUIP_FLAG_TUNIC_ZORA },           { RG_BUY_DEKU_SHIELD, EQUIP_FLAG_SHIELD_DEKU },
+    { RG_BUY_HYLIAN_SHIELD, EQUIP_FLAG_SHIELD_HYLIAN }, { RG_BUY_GORON_TUNIC, EQUIP_FLAG_TUNIC_GORON },
+    { RG_BUY_ZORA_TUNIC, EQUIP_FLAG_TUNIC_ZORA },       { RG_IRON_BOOTS, EQUIP_FLAG_BOOTS_IRON },
+    { RG_HOVER_BOOTS, EQUIP_FLAG_BOOTS_HOVER }
 };
 
 std::map<RandomizerGet, uint32_t> Logic::RandoGetToRandInf = {
     { RG_ZELDAS_LETTER, RAND_INF_ZELDAS_LETTER },
     { RG_WEIRD_EGG, RAND_INF_WEIRD_EGG },
     { RG_RUTOS_LETTER, RAND_INF_OBTAINED_RUTOS_LETTER },
+    { RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL },
+    { RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL },
+    { RG_DESERT_COLOSSUS_BEAN_SOUL, RAND_INF_DESERT_COLOSSUS_BEAN_SOUL },
+    { RG_GERUDO_VALLEY_BEAN_SOUL, RAND_INF_GERUDO_VALLEY_BEAN_SOUL },
+    { RG_GRAVEYARD_BEAN_SOUL, RAND_INF_GRAVEYARD_BEAN_SOUL },
+    { RG_KOKIRI_FOREST_BEAN_SOUL, RAND_INF_KOKIRI_FOREST_BEAN_SOUL },
+    { RG_LAKE_HYLIA_BEAN_SOUL, RAND_INF_LAKE_HYLIA_BEAN_SOUL },
+    { RG_LOST_WOODS_BRIDGE_BEAN_SOUL, RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL },
+    { RG_LOST_WOODS_BEAN_SOUL, RAND_INF_LOST_WOODS_BEAN_SOUL },
+    { RG_ZORAS_RIVER_BEAN_SOUL, RAND_INF_ZORAS_RIVER_BEAN_SOUL },
     { RG_GOHMA_SOUL, RAND_INF_GOHMA_SOUL },
     { RG_KING_DODONGO_SOUL, RAND_INF_KING_DODONGO_SOUL },
     { RG_BARINADE_SOUL, RAND_INF_BARINADE_SOUL },
@@ -1771,6 +1798,16 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_RUTOS_LETTER:
                     SetRandoInf(RAND_INF_OBTAINED_RUTOS_LETTER, state);
                     break;
+                case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:
+                case RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL:
+                case RG_DESERT_COLOSSUS_BEAN_SOUL:
+                case RG_GERUDO_VALLEY_BEAN_SOUL:
+                case RG_GRAVEYARD_BEAN_SOUL:
+                case RG_KOKIRI_FOREST_BEAN_SOUL:
+                case RG_LAKE_HYLIA_BEAN_SOUL:
+                case RG_LOST_WOODS_BRIDGE_BEAN_SOUL:
+                case RG_LOST_WOODS_BEAN_SOUL:
+                case RG_ZORAS_RIVER_BEAN_SOUL:
                 case RG_GOHMA_SOUL:
                 case RG_KING_DODONGO_SOUL:
                 case RG_BARINADE_SOUL:
@@ -1827,18 +1864,18 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
         } break;
         case ITEMTYPE_EQUIP: {
             RandomizerGet itemRG = item.GetRandomizerGet();
-            if (itemRG == RG_GIANTS_KNIFE || itemRG == RG_DEKU_SHIELD || itemRG == RG_HYLIAN_SHIELD) {
+            if (itemRG == RG_DEKU_SHIELD || itemRG == RG_HYLIAN_SHIELD) {
                 return;
             }
             uint32_t equipId = RandoGetToEquipFlag.find(itemRG)->second;
             if (!state) {
                 mSaveContext->inventory.equipment &= ~equipId;
-                if (equipId == EQUIP_FLAG_SWORD_BGS) {
+                if (equipId == EQUIP_FLAG_SWORD_BGS && itemRG != RG_GIANTS_KNIFE) {
                     mSaveContext->bgsFlag = false;
                 }
             } else {
                 mSaveContext->inventory.equipment |= equipId;
-                if (equipId == EQUIP_FLAG_SWORD_BGS) {
+                if (equipId == EQUIP_FLAG_SWORD_BGS && itemRG != RG_GIANTS_KNIFE) {
                     mSaveContext->bgsFlag = true;
                 }
             }
@@ -2320,6 +2357,19 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         // If we're not shuffling fishing pole, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_FISHING_POLE).Is(false)) {
             SetRandoInf(RAND_INF_FISHING_POLE_FOUND, true);
+        }
+
+        if (ctx->GetOption(RSK_SHUFFLE_BEAN_SOULS).Is(false)) {
+            SetRandoInf(RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_DESERT_COLOSSUS_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_GERUDO_VALLEY_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_GRAVEYARD_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_KOKIRI_FOREST_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_LAKE_HYLIA_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_LOST_WOODS_BEAN_SOUL, true);
+            SetRandoInf(RAND_INF_ZORAS_RIVER_BEAN_SOUL, true);
         }
 
         // If not keysanity, start with 1 logical key to account for automatically unlocking the basement door in

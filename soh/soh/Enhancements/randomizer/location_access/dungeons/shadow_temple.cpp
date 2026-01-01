@@ -25,7 +25,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_WHISPERING_WALLS_START] = Region("Shadow Temple Whispering Walls Start", SCENE_SHADOW_TEMPLE, {
         //Events
-        EventAccess(LOGIC_NUT_POT, []{return true;}),
+        EventAccess(LOGIC_NUT_ACCESS, []{return logic->CanBreakPots();}),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_WHISPERING_WALLS_POT_1, logic->CanBreakPots()),
@@ -40,7 +40,7 @@ void RegionTable_Init_ShadowTemple() {
     // shares RR_SHADOW_TEMPLE_WHISPERING_WALLS_START area with pots, but handles lens access for reaching door at start
     areaTable[RR_SHADOW_TEMPLE_WHISPERING_WALLS_SIDE] = Region("Shadow Temple Whispering Walls Side", SCENE_SHADOW_TEMPLE, {
         //Events
-        EventAccess(LOGIC_NUT_POT, []{return true;}),
+        EventAccess(LOGIC_NUT_ACCESS, []{return logic->CanBreakPots();}),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_WHISPERING_WALLS_POT_1, logic->CanBreakPots()),
@@ -514,7 +514,7 @@ void RegionTable_Init_ShadowTemple() {
         Entrance(RR_SHADOW_TEMPLE_MQ_B2_TO_B3_CORRIDOR_B3,      []{return logic->CanUse(RG_LONGSHOT);}),
         Entrance(RR_SHADOW_TEMPLE_MQ_UPPER_HUGE_PIT,            []{return logic->Get(LOGIC_SHADOW_MQ_PIT_STAIRS);}),
         Entrance(RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT_DOOR_LEDGE, []{return logic->CanUse(RG_HOVER_BOOTS) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ_PLATFORM) || logic->CanUse(RG_LENS_OF_TRUTH));}),
-        Entrance(RR_SHADOW_TEMPLE_MQ_STONE_UMBRELLA_ROOM,       []{return Here(RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT, []{return logic->CanJumpslash() || logic->HasExplosives();});}),
+        Entrance(RR_SHADOW_TEMPLE_MQ_STONE_UMBRELLA_ROOM,       []{return Here(RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT, []{return logic->CanJumpslash() || logic->HasExplosives() || logic->CanUse(RG_GIANTS_KNIFE) || (ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)));});}),
     });
 
     areaTable[RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT_DOOR_LEDGE] = Region("Shadow Temple MQ Upper Huge Pit Door Ledge", SCENE_SHADOW_TEMPLE, {}, {}, {
@@ -615,7 +615,7 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_MQ_B4_GIBDO_ROOM] = Region("Shadow Temple MQ B4 Gibdo Room", SCENE_SHADOW_TEMPLE, {
         //Events
-        EventAccess(LOGIC_NUT_POT, []{return true;}),
+        EventAccess(LOGIC_NUT_ACCESS, []{return logic->CanBreakPots();}),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_MQ_AFTER_WIND_ENEMY_CHEST,  logic->CanKillEnemy(RE_GIBDO)),
@@ -669,8 +669,8 @@ void RegionTable_Init_ShadowTemple() {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_MQ_AFTER_CHASM_WEST_POT,         logic->CanBreakPots()),
         LOCATION(RC_SHADOW_TEMPLE_MQ_AFTER_CHASM_EAST_POT,         logic->CanBreakPots()),
-        LOCATION(RC_SHADOW_TEMPLE_MQ_AFTER_SHIP_UPPER_LEFT_HEART,  logic->CanUse(RG_SONG_OF_TIME) && logic->CanHitEyeTargets() && logic->CanUse(RG_LONGSHOT)),
-        LOCATION(RC_SHADOW_TEMPLE_MQ_AFTER_SHIP_UPPER_RIGHT_HEART, logic->CanUse(RG_SONG_OF_TIME) && logic->CanHitEyeTargets() && logic->CanUse(RG_LONGSHOT)),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_AFTER_SHIP_UPPER_LEFT_HEART,  logic->Get(LOGIC_SHADOW_MQ_EYE_SWITCH_ACROSS_CHASM) && logic->CanUse(RG_LONGSHOT)),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_AFTER_SHIP_UPPER_RIGHT_HEART, logic->Get(LOGIC_SHADOW_MQ_EYE_SWITCH_ACROSS_CHASM) && logic->CanUse(RG_LONGSHOT)),
         //There's invisible floor collision that makes aiming for the heart with rang harder than it should be, so it's a trick.
         LOCATION(RC_SHADOW_TEMPLE_MQ_AFTER_SHIP_LOWER_HEART,       logic->IsAdult),
     }, {

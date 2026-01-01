@@ -29,7 +29,7 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_CHILD] = Region("Child Spirit Temple", SCENE_SPIRIT_TEMPLE, {
         //Events
-        EventAccess(LOGIC_NUT_CRATE, []{return true;}),
+        EventAccess(LOGIC_NUT_ACCESS, []{return logic->CanBreakSmallCrates();}),
     }, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST,               (logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_FAIRY_SLINGSHOT) || (logic->CanUse(RG_BOMBCHU_5) && ctx->GetTrickOption(RT_SPIRIT_CHILD_CHU))) && (logic->HasExplosives() || ((logic->CanUse(RG_NUTS) || logic->CanUse(RG_BOOMERANG)) && (logic->CanUse(RG_STICKS) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_FAIRY_SLINGSHOT))))),
@@ -133,7 +133,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_BEYOND_FINAL_LOCKED_DOOR] = Region("Spirit Temple Beyond Final Locked Door", SCENE_SPIRIT_TEMPLE, {}, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_BOSS_KEY_CHEST,           logic->CanUse(RG_ZELDAS_LULLABY) && ((logic->TakeDamage() && ctx->GetTrickOption(RT_FLAMING_CHESTS)) || (logic->CanUse(RG_FAIRY_BOW) && logic->CanUse(RG_HOOKSHOT)))),
-        LOCATION(RC_SPIRIT_TEMPLE_TOPMOST_CHEST,            (logic->CanUse(RG_MIRROR_SHIELD) && (logic->CanJumpslash() || logic->HasExplosives() || (ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_HOOKSHOT))))) ||
+        LOCATION(RC_SPIRIT_TEMPLE_TOPMOST_CHEST,            (logic->CanUse(RG_MIRROR_SHIELD) && (logic->CanJumpslash() || logic->HasExplosives() || logic->CanUse(RG_GIANTS_KNIFE) || (ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_HOOKSHOT))))) ||
                                                             (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS))),
         LOCATION(RC_SPIRIT_TEMPLE_ADULT_CLIMB_LEFT_HEART,   logic->CanUse(RG_HOOKSHOT)),
         LOCATION(RC_SPIRIT_TEMPLE_ADULT_CLIMB_RIGHT_HEART,  logic->CanUse(RG_HOOKSHOT)),
@@ -203,7 +203,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_TURNTABLE_ROOM] = Region("Spirit Temple Turntable Room", SCENE_SPIRIT_TEMPLE, {
         //Events
         //For non-fairy pot items, you can also get them with rang without killing the stalfos
-        EventAccess(LOGIC_FAIRY_POT, []{return Here(RR_SPIRIT_TEMPLE_MQ_TURNTABLE_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);});}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanBreakPots() && Here(RR_SPIRIT_TEMPLE_MQ_TURNTABLE_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);});}),
     }, {
         //Locations
         //implies logic->CanBreakPots()

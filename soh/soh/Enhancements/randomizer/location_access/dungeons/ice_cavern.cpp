@@ -40,7 +40,7 @@ void RegionTable_Init_IceCavern() {
         Entrance(RR_ICE_CAVERN_BEGINNING,    []{return true;}),
         Entrance(RR_ICE_CAVERN_MAP_ROOM,     []{return (logic->IsAdult || (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->CanGroundJump())) && logic->CanClearStalagmite();}),
         Entrance(RR_ICE_CAVERN_COMPASS_ROOM, []{return Here(RR_ICE_CAVERN_HUB, []{return logic->BlueFire();});}),
-        Entrance(RR_ICE_CAVERN_BLOCK_ROOM,   []{return Here(RR_ICE_CAVERN_HUB, []{return logic->BlueFire();}) && logic->CanClearStalagmite();}),
+        Entrance(RR_ICE_CAVERN_BLOCK_ROOM,   []{return Here(RR_ICE_CAVERN_HUB, []{return logic->BlueFire();}) && (logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP));}),
     });
 
     areaTable[RR_ICE_CAVERN_MAP_ROOM] = Region("Ice Cavern Map Room", SCENE_ICE_CAVERN, {
@@ -66,8 +66,8 @@ void RegionTable_Init_IceCavern() {
         EventAccess(LOGIC_BLUE_FIRE_ACCESS, []{return true;}),
     }, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_COMPASS_CHEST,       logic->CanClearStalagmite() && logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_FREESTANDING_POH,    logic->CanClearStalagmite() && logic->BlueFire()), // can skip blue fire with rang trick
+        LOCATION(RC_ICE_CAVERN_COMPASS_CHEST,       (logic->IsChild || logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_FREESTANDING_POH,    (logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->BlueFire()), // can skip blue fire with rang trick
         LOCATION(RC_ICE_CAVERN_GS_HEART_PIECE_ROOM, logic->HookshotOrBoomerang()),
     }, {
         //Exits
@@ -87,7 +87,7 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_3, logic->CanUse(RG_SONG_OF_TIME) || logic->CanUse(RG_BOOMERANG)),
     }, {
         //Exits
-        Entrance(RR_ICE_CAVERN_HUB,               []{return logic->CanClearStalagmite();}),
+        Entrance(RR_ICE_CAVERN_HUB,               []{return logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP);}),
         Entrance(RR_ICE_CAVERN_BEFORE_FINAL_ROOM, []{return Here(RR_ICE_CAVERN_BLOCK_ROOM, []{return logic->BlueFire();});}),
     });
 
@@ -140,7 +140,7 @@ void RegionTable_Init_IceCavern() {
 
     areaTable[RR_ICE_CAVERN_MQ_HUB] = Region("Ice Cavern MQ Hub", SCENE_ICE_CAVERN, {
         //Events
-        EventAccess(LOGIC_FAIRY_POT, []{return true;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanBreakPots();}),
     }, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MQ_FIRST_CRYSTAL_POT_1, logic->CanBreakPots()),
@@ -162,7 +162,7 @@ void RegionTable_Init_IceCavern() {
     areaTable[RR_ICE_CAVERN_MQ_MAP_ROOM] = Region("Ice Cavern MQ Map Room", SCENE_ICE_CAVERN, {
         //Events
         //Child can fit between the stalagmites on the left hand side
-        EventAccess(LOGIC_BLUE_FIRE_ACCESS, []{return logic->IsChild || logic->CanClearStalagmite();}),
+        EventAccess(LOGIC_BLUE_FIRE_ACCESS, []{return logic->IsChild || logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP);}),
     }, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST, logic->BlueFire() && Here(RR_ICE_CAVERN_MQ_MAP_ROOM, []{return logic->CanHitSwitch();})),
