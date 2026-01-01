@@ -5,6 +5,13 @@
 #include <soh_assets.h>
 #include <objects/object_link_child/object_link_child.h>
 #include <objects/object_link_boy/object_link_boy.h>
+#include "macros.h"
+
+extern "C" {
+#include "variables.h"
+#include "z64player.h"
+extern PlayState* gPlayState;
+}
 
 extern "C" SaveContext gSaveContext;
 extern "C" u16 gEquipMasks[4];
@@ -30,12 +37,29 @@ size_t Skeleton::GetPointerSize() {
 
 std::vector<SkeletonPatchInfo> SkeletonPatcher::skeletons;
 
+bool SkeletonPatcher::IsLinkSkeletonPath(const std::string& path) {
+    return (sOtr + path == std::string(gLinkAdultSkel)) || (sOtr + path == std::string(gLinkChildSkel));
+}
+
+bool SkeletonPatcher::IsLocalPlayerSkelAnime(SkelAnime* skelAnime) {
+    if (gPlayState == nullptr) {
+        return false;
+    }
+
+    Player* player = GET_PLAYER(gPlayState);
+
+    if (player == nullptr) {
+        return false;
+    }
+
+    return (skelAnime == &player->skelAnime) || (skelAnime == &player->upperSkelAnime);
+}
+
 void SkeletonPatcher::RegisterSkeleton(std::string& path, SkelAnime* skelAnime) {
     SkeletonPatchInfo info;
 
     info.skelAnime = skelAnime;
-
-    static const std::string sOtr = "__OTR__";
+    info.isLocalPlayer = false;
 
     if (path.starts_with(sOtr)) {
         path = path.substr(sOtr.length());
@@ -47,6 +71,10 @@ void SkeletonPatcher::RegisterSkeleton(std::string& path, SkelAnime* skelAnime) 
                                                path.size() - Ship::IResource::gAltAssetPrefix.length());
     } else {
         info.vanillaSkeletonPath = path;
+    }
+
+    if (IsLinkSkeletonPath(info.vanillaSkeletonPath)) {
+        info.isLocalPlayer = IsLocalPlayerSkelAnime(skelAnime);
     }
 
     skeletons.push_back(info);
@@ -87,7 +115,15 @@ void SkeletonPatcher::UpdateSkeletons() {
 }
 
 void SkeletonPatcher::UpdateCustomSkeletons() {
-    for (auto skel : skeletons) {
+    for (auto& skel : skeletons) {
+        if (IsLinkSkeletonPath(skel.vanillaSkeletonPath)) {
+            skel.isLocalPlayer = IsLocalPlayerSkelAnime(skel.skelAnime);
+        }
+
+        if (!skel.isLocalPlayer) {
+            continue;
+        }
+
         UpdateTunicSkeletons(skel);
     }
 }
