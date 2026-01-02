@@ -1,7 +1,7 @@
 #include "custom_messages.hpp"
 
 #include "../randomizerTypes.h"
-#include "../context.h"
+#include "../SeedContext.h"
 #include "../static_data.h"
 
 using namespace CustomMessages;

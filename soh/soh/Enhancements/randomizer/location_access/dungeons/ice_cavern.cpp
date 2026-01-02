@@ -23,7 +23,7 @@ void RegionTable_Init_IceCavern() {
     }, {
         //Exits
         Entrance(RR_ICE_CAVERN_ENTRYWAY,        []{return true;}),
-        Entrance(RR_ICE_CAVERN_HUB,             []{return Here(RR_ICE_CAVERN_BEGINNING, []{return logic->CanKillEnemy(RE_FREEZARD, ED_CLOSE, true, 4);});}),
+        Entrance(RR_ICE_CAVERN_HUB,             []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_FREEZARD, ED_CLOSE, true, 4);});}),
         Entrance(RR_ICE_CAVERN_ABOVE_BEGINNING, []{return false;}),
     });
 
@@ -39,8 +39,8 @@ void RegionTable_Init_IceCavern() {
         //Exits
         Entrance(RR_ICE_CAVERN_BEGINNING,    []{return true;}),
         Entrance(RR_ICE_CAVERN_MAP_ROOM,     []{return (logic->IsAdult || (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->CanGroundJump())) && logic->CanClearStalagmite();}),
-        Entrance(RR_ICE_CAVERN_COMPASS_ROOM, []{return Here(RR_ICE_CAVERN_HUB, []{return logic->BlueFire();});}),
-        Entrance(RR_ICE_CAVERN_BLOCK_ROOM,   []{return Here(RR_ICE_CAVERN_HUB, []{return logic->BlueFire();}) && (logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP));}),
+        Entrance(RR_ICE_CAVERN_COMPASS_ROOM, []{return AnyAgeTime([]{return logic->BlueFire();});}),
+        Entrance(RR_ICE_CAVERN_BLOCK_ROOM,   []{return AnyAgeTime([]{return logic->BlueFire();}) && (logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP));}),
     });
 
     areaTable[RR_ICE_CAVERN_MAP_ROOM] = Region("Ice Cavern Map Room", SCENE_ICE_CAVERN, {
@@ -88,7 +88,7 @@ void RegionTable_Init_IceCavern() {
     }, {
         //Exits
         Entrance(RR_ICE_CAVERN_HUB,               []{return logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP);}),
-        Entrance(RR_ICE_CAVERN_BEFORE_FINAL_ROOM, []{return Here(RR_ICE_CAVERN_BLOCK_ROOM, []{return logic->BlueFire();});}),
+        Entrance(RR_ICE_CAVERN_BEFORE_FINAL_ROOM, []{return AnyAgeTime([]{return logic->BlueFire();});}),
     });
 
     // this represents being past the red ice barricade, not just past the silver rupee door
@@ -98,18 +98,18 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_NEAR_END_POT_2, logic->CanBreakPots() && logic->BlueFire()),
     }, {
         //Exits
-        Entrance(RR_ICE_CAVERN_BLOCK_ROOM, []{return Here(RR_ICE_CAVERN_BEFORE_FINAL_ROOM, []{return logic->BlueFire();});}),
+        Entrance(RR_ICE_CAVERN_BLOCK_ROOM, []{return AnyAgeTime([]{return logic->BlueFire();});}),
         Entrance(RR_ICE_CAVERN_FINAL_ROOM, []{return true;}),
     });
 
     areaTable[RR_ICE_CAVERN_FINAL_ROOM] = Region("Ice Cavern Final Room", SCENE_ICE_CAVERN, {}, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_IRON_BOOTS_CHEST, Here(RR_ICE_CAVERN_FINAL_ROOM, []{return logic->CanKillEnemy(RE_WOLFOS);})),
-        LOCATION(RC_SHEIK_IN_ICE_CAVERN,         Here(RR_ICE_CAVERN_FINAL_ROOM, []{return logic->CanKillEnemy(RE_WOLFOS);})), // rando enables this for child
+        LOCATION(RC_ICE_CAVERN_IRON_BOOTS_CHEST, AnyAgeTime([]{return logic->CanKillEnemy(RE_WOLFOS);})),
+        LOCATION(RC_SHEIK_IN_ICE_CAVERN,         AnyAgeTime([]{return logic->CanKillEnemy(RE_WOLFOS);})), // rando enables this for child
     }, {
         //Exits
-        Entrance(RR_ICE_CAVERN_BEFORE_FINAL_ROOM,     []{return Here(RR_ICE_CAVERN_FINAL_ROOM, []{return logic->CanKillEnemy(RE_WOLFOS);});}),
-        Entrance(RR_ICE_CAVERN_FINAL_ROOM_UNDERWATER, []{return Here(RR_ICE_CAVERN_FINAL_ROOM, []{return logic->CanKillEnemy(RE_WOLFOS);}) && logic->CanUse(RG_IRON_BOOTS);}),
+        Entrance(RR_ICE_CAVERN_BEFORE_FINAL_ROOM,     []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_WOLFOS);});}),
+        Entrance(RR_ICE_CAVERN_FINAL_ROOM_UNDERWATER, []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_WOLFOS);}) && logic->CanUse(RG_IRON_BOOTS);}),
     });
 
     areaTable[RR_ICE_CAVERN_FINAL_ROOM_UNDERWATER] = Region("Ice Cavern Final Room Underwater", SCENE_ICE_CAVERN, {}, {}, {
@@ -154,7 +154,7 @@ void RegionTable_Init_IceCavern() {
         //the switch for the glass blocking the entrance is linked to the switch that controls the glass around the skulltulla in RR_ICE_CAVERN_MQ_SCARECROW_ROOM
         //if you clear the ice, you can hit it with a pot from here.
         Entrance(RR_ICE_CAVERN_MQ_BEGINNING,      []{return logic->BlueFire();}),
-        Entrance(RR_ICE_CAVERN_MQ_MAP_ROOM,       []{return Here(RR_ICE_CAVERN_MQ_HUB, []{return logic->CanKillEnemy(RE_WHITE_WOLFOS) && logic->CanKillEnemy(RE_FREEZARD);});}),
+        Entrance(RR_ICE_CAVERN_MQ_MAP_ROOM,       []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_WHITE_WOLFOS) && logic->CanKillEnemy(RE_FREEZARD);});}),
         Entrance(RR_ICE_CAVERN_MQ_COMPASS_ROOM,   []{return (logic->IsAdult || (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->CanGroundJump())) && logic->BlueFire();}),
         Entrance(RR_ICE_CAVERN_MQ_SCARECROW_ROOM, []{return logic->BlueFire();}),
     });
@@ -165,7 +165,7 @@ void RegionTable_Init_IceCavern() {
         EventAccess(LOGIC_BLUE_FIRE_ACCESS, []{return logic->IsChild || logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP);}),
     }, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST, logic->BlueFire() && Here(RR_ICE_CAVERN_MQ_MAP_ROOM, []{return logic->CanHitSwitch();})),
+        LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST, logic->BlueFire() && AnyAgeTime([]{return logic->CanHitSwitch();})),
     }, {});
 
     areaTable[RR_ICE_CAVERN_MQ_SCARECROW_ROOM] = Region("Ice Cavern MQ Scarecrow Room", SCENE_ICE_CAVERN, {
@@ -213,8 +213,8 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_SHEIK_IN_ICE_CAVERN,            logic->CanKillEnemy(RE_STALFOS)), // rando enables this for child
     }, {
         //Exits
-        Entrance(RR_ICE_CAVERN_MQ_WEST_CORRIDOR,           []{return Here(RR_ICE_CAVERN_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);});}),
-        Entrance(RR_ICE_CAVERN_MQ_STALFOS_ROOM_UNDERWATER, []{return logic->CanUse(RG_IRON_BOOTS) && Here(RR_ICE_CAVERN_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS);});}),
+        Entrance(RR_ICE_CAVERN_MQ_WEST_CORRIDOR,           []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_STALFOS);});}),
+        Entrance(RR_ICE_CAVERN_MQ_STALFOS_ROOM_UNDERWATER, []{return logic->CanUse(RG_IRON_BOOTS) && AnyAgeTime([]{return logic->CanKillEnemy(RE_STALFOS);});}),
     });
 
     areaTable[RR_ICE_CAVERN_MQ_STALFOS_ROOM_UNDERWATER] = Region("Ice Cavern MQ Stalfos Room Underwater", SCENE_ICE_CAVERN, {}, {}, {

@@ -13,6 +13,7 @@
 #include "soh/Notification/Notification.h"
 #include "soh/SaveManager.h"
 #include "soh/ShipInit.hpp"
+#include "soh/ObjectExtension/ObjectExtension.h"
 
 extern "C" {
 #include "macros.h"
@@ -57,6 +58,9 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Mk/z_en_mk.h"
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
 #include "draw.h"
+
+static ObjectExtension::Register<DnsItemEntry> RegisterDnsItemEntryOverride;
+static ObjectExtension::Register<ScrubIdentity> RegisterScrubIdentity;
 
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
@@ -767,8 +771,11 @@ void RandomizerOnDialogMessageHandler() {
             case TEXT_SCRUB_RANDOM:
                 if (ctx->GetOption(RSK_SCRUB_TEXT_HINT).Get() != RO_GENERIC_OFF) {
                     EnDns* enDns = (EnDns*)actor;
-                    reveal = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(
-                        (RandomizerInf)enDns->sohScrubIdentity.randomizerInf);
+                    auto checkIdentity = ObjectExtension::GetInstance().Get<ScrubIdentity>(actor);
+                    if (checkIdentity != nullptr) {
+                        reveal = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(
+                            checkIdentity->identity.randomizerInf);
+                    }
                 }
                 break;
             case TEXT_BEAN_SALESMAN_BUY_FOR_10:
@@ -1391,14 +1398,14 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             ScrubIdentity scrubIdentity = OTRGlobals::Instance->gRandomizer->IdentifyScrub(
                 gPlayState->sceneNum, enShopnuts->actor.params, respawnData);
 
-            if (scrubIdentity.isShuffled) {
-                *should = Flags_GetRandomizerInf(scrubIdentity.randomizerInf);
+            if (scrubIdentity.identity.randomizerCheck != RC_UNKNOWN_CHECK) {
+                *should = Flags_GetRandomizerInf(scrubIdentity.identity.randomizerInf);
             }
             break;
         }
         case VB_GIVE_ITEM_FROM_BUSINESS_SCRUB: {
             EnDns* enDns = va_arg(args, EnDns*);
-            *should = !enDns->sohScrubIdentity.isShuffled;
+            *should = !ObjectExtension::GetInstance().Has<ScrubIdentity>(enDns);
             break;
         }
         // To explain the logic because Fado and Grog are linked:
@@ -1981,18 +1988,22 @@ void EnSi_DrawRandomizedItem(EnSi* enSi, PlayState* play) {
 }
 
 u32 EnDns_RandomizerPurchaseableCheck(EnDns* enDns) {
-    if (Flags_GetRandomizerInf(enDns->sohScrubIdentity.randomizerInf)) {
-        return 3; // Can't get this now
+    auto checkIdentity = ObjectExtension::GetInstance().Get<ScrubIdentity>(enDns);
+    if (checkIdentity != nullptr && Flags_GetRandomizerInf(checkIdentity->identity.randomizerInf)) {
+        return DNS_CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gSaveContext.rupees < enDns->dnsItemEntry->itemPrice) {
-        return 0; // Not enough rupees
+        return DNS_CANBUY_RESULT_NEED_RUPEES;
     }
-    return 4;
+    return DNS_CANBUY_RESULT_SUCCESS;
 }
 
 void EnDns_RandomizerPurchase(EnDns* enDns) {
     Rupees_ChangeBy(-enDns->dnsItemEntry->itemPrice);
-    Flags_SetRandomizerInf(enDns->sohScrubIdentity.randomizerInf);
+    auto checkIdentity = ObjectExtension::GetInstance().Get<ScrubIdentity>(enDns);
+    if (checkIdentity != nullptr) {
+        Flags_SetRandomizerInf(checkIdentity->identity.randomizerInf);
+    }
 }
 
 void RandomizerOnActorInitHandler(void* actorRef) {
@@ -2061,21 +2072,25 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     if (actor->id == ACTOR_EN_DNS) {
         EnDns* enDns = static_cast<EnDns*>(actorRef);
         s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
-        enDns->sohScrubIdentity =
+        auto scrubIdentity =
             OTRGlobals::Instance->gRandomizer->IdentifyScrub(gPlayState->sceneNum, enDns->actor.params, respawnData);
 
-        if (enDns->sohScrubIdentity.isShuffled) {
+        if (scrubIdentity.identity.randomizerCheck != RC_UNKNOWN_CHECK) {
             // DNS uses pointers so we're creating our own entry instead of modifying the original
-            enDns->sohDnsItemEntry = {
-                enDns->dnsItemEntry->itemPrice, 1, enDns->sohScrubIdentity.getItemId, EnDns_RandomizerPurchaseableCheck,
-                EnDns_RandomizerPurchase,
-            };
-            enDns->dnsItemEntry = &enDns->sohDnsItemEntry;
+            ObjectExtension::GetInstance().Set<DnsItemEntry>(actorRef, std::move(DnsItemEntry{
+                                                                           enDns->dnsItemEntry->itemPrice,
+                                                                           1,
+                                                                           scrubIdentity.getItemId,
+                                                                           EnDns_RandomizerPurchaseableCheck,
+                                                                           EnDns_RandomizerPurchase,
+                                                                       }));
+            enDns->dnsItemEntry = ObjectExtension::GetInstance().Get<DnsItemEntry>(actorRef);
 
-            if (enDns->sohScrubIdentity.itemPrice != -1) {
-                enDns->dnsItemEntry->itemPrice = enDns->sohScrubIdentity.itemPrice;
+            if (scrubIdentity.itemPrice != -1) {
+                enDns->dnsItemEntry->itemPrice = scrubIdentity.itemPrice;
             }
 
+            ObjectExtension::GetInstance().Set<ScrubIdentity>(actorRef, std::move(scrubIdentity));
             enDns->actor.textId = TEXT_SCRUB_RANDOM;
 
             static uint32_t enDnsUpdateHook = 0;
@@ -2085,8 +2100,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) {
                         Actor* innerActor = static_cast<Actor*>(innerActorRef);
                         if (innerActor->id == ACTOR_EN_DNS) {
-                            EnDns* innerEnDns = static_cast<EnDns*>(innerActorRef);
-                            if (innerEnDns->sohScrubIdentity.isShuffled) {
+                            if (ObjectExtension::GetInstance().Has<ScrubIdentity>(innerActor)) {
                                 innerActor->textId = TEXT_SCRUB_RANDOM;
                             }
                         }

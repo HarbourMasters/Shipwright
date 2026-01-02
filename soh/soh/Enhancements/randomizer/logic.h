@@ -1,7 +1,7 @@
 #pragma once
 
 #include "randomizerTypes.h"
-#include "context.h"
+#include "SeedContext.h"
 #include <cstdint>
 
 namespace Rando {
@@ -30,6 +30,7 @@ class Logic {
     uint8_t BaseHearts = 0;
     bool AtDay = false;
     bool AtNight = false;
+    RandomizerRegion CurrentRegionKey = RR_NONE;
     RandomizerCheck CurrentCheckKey = RC_UNKNOWN_CHECK;
 
     bool CalculatingAvailableChecks = false;

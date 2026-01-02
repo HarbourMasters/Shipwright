@@ -1,6 +1,6 @@
 #include "static_data.h"
 #include "z64save.h"
-#include "context.h"
+#include "SeedContext.h"
 #include "dungeon.h"
 
 std::array<Rando::Location, RC_MAX> Rando::StaticData::locationTable;

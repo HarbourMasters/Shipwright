@@ -37,7 +37,7 @@ extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 uint8_t EnWood02_RandomizerHoldsItem(EnWood02* treeActor, PlayState* play) {
     // Don't pull randomized item if tree isn't randomized or is already checked
-    const auto treeIdentity = ObjectExtension::GetInstance().Get<TreeIdentity>(&treeActor->actor);
+    const auto treeIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&treeActor->actor);
     return treeIdentity != nullptr && treeIdentity->randomizerCheck != RC_UNKNOWN_CHECK &&
            treeIdentity->randomizerInf != RAND_INF_MAX && !Flags_GetRandomizerInf(treeIdentity->randomizerInf);
 }
@@ -47,7 +47,7 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemEntry treeItem;
     auto treeActor = (EnWood02*)thisx;
 
-    const auto treeIdentity = ObjectExtension::GetInstance().Get<TreeIdentity>(&treeActor->actor);
+    const auto treeIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&treeActor->actor);
     if (treeIdentity == nullptr || treeIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
         return;
     }
@@ -127,7 +127,7 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
 }
 
 void EnWood02_RandomizerSpawnCollectible(EnWood02* treeActor, PlayState* play) {
-    const auto treeIdentity = ObjectExtension::GetInstance().Get<TreeIdentity>(&treeActor->actor);
+    const auto treeIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&treeActor->actor);
     if (treeIdentity == nullptr || treeIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
         return;
     }
@@ -155,7 +155,7 @@ void EnWood02_RandomizerInit(void* actorRef) {
         auto treeIdentity = OTRGlobals::Instance->gRandomizer->IdentifyTree(
             gPlayState->sceneNum, (s16)treeActor->actor.world.pos.x, (s16)treeActor->actor.world.pos.z);
         if (treeIdentity.randomizerInf != RAND_INF_MAX && treeIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
-            ObjectExtension::GetInstance().Set<TreeIdentity>(actorRef, std::move(treeIdentity));
+            ObjectExtension::GetInstance().Set<CheckIdentity>(actorRef, std::move(treeIdentity));
         }
     }
 }
@@ -194,7 +194,7 @@ void RegisterShuffleTrees() {
     COND_VB_SHOULD(VB_BUSH_DROP_ITEM, shouldRegisterBush, {
         EnWood02* treeActor = va_arg(args, EnWood02*);
         if (EnWood02_RandomizerHoldsItem(treeActor, gPlayState)) {
-            const auto treeIdentity = ObjectExtension::GetInstance().Get<TreeIdentity>(&treeActor->actor);
+            const auto treeIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&treeActor->actor);
             if (treeIdentity == nullptr || treeIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
                 return;
             }
@@ -346,6 +346,5 @@ void Rando::StaticData::RegisterTreeLocations() {
     // clang-format on
 }
 
-static ObjectExtension::Register<TreeIdentity> RegisterTreeIdentity;
 static RegisterShipInitFunc registerShuffleTrees(RegisterShuffleTrees, { "IS_RANDO" });
 static RegisterShipInitFunc registerTreeLocations(Rando::StaticData::RegisterTreeLocations);

@@ -2,7 +2,7 @@
 
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/static_data.h"
-#include "soh/Enhancements/randomizer/context.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/3drando/item_pool.hpp"
 #include "soh/Enhancements/randomizer/3drando/spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/trial.h"
@@ -617,7 +617,7 @@ bool Region::MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAg
     // adult is here it's also Certain Access
     if (logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7)) {
         if (anyAge) {
-            return Here(condition);
+            return AnyAgeTime(condition);
         }
         return condition();
         // else, if we are here as adult, we have Certain Access from that and don't need special handling for
@@ -666,8 +666,9 @@ void Region::printAgeTimeAccess() {
 
 std::array<Region, RR_MAX> areaTable;
 
-bool Here(const RandomizerRegion region, ConditionFn condition) {
-    return areaTable[region].Here(condition);
+bool AnyAgeTime(ConditionFn condition) {
+    assert(logic->CurrentRegionKey != RR_NONE);
+    return areaTable[logic->CurrentRegionKey].AnyAgeTime(condition);
 }
 
 bool MQSpiritSharedStatueRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge) {
@@ -822,6 +823,7 @@ void RegionTable_Init() {
 
     // Set parent regions
     for (uint32_t i = RR_ROOT; i < RR_MAX; i++) {
+        areaTable[i].randomizerRegionKey = (RandomizerRegion)i;
         for (LocationAccess& locPair : areaTable[i].locations) {
             RandomizerCheck location = locPair.GetLocation();
             Rando::Context::GetInstance()->GetItemLocation(location)->SetParentRegion((RandomizerRegion)i);

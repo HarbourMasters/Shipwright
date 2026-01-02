@@ -6,7 +6,7 @@
 #include <set>
 
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include "soh/Enhancements/randomizer/context.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/logic.h"
 
 #define TIME_PASSES true
@@ -130,6 +130,8 @@ class Region {
     bool adultNight = false;
     bool addedToPool = false;
 
+    RandomizerRegion randomizerRegionKey = RR_NONE;
+
     bool TimePass();
 
     void ApplyTimePass();
@@ -188,7 +190,7 @@ class Region {
     // access to this area. For example: if there are rocks that block a path
     // which both child and adult can access, adult having hammer can give
     // both child and adult access to the path.
-    bool Here(ConditionFn condition) {
+    bool AnyAgeTime(ConditionFn condition) const {
         // store current age variables
         bool pastAdult = logic->IsAdult;
         bool pastChild = logic->IsChild;
@@ -219,9 +221,7 @@ class Region {
 extern std::array<Region, RR_MAX> areaTable;
 extern std::vector<EventAccess> grottoEvents;
 
-bool Here(const RandomizerRegion region,
-          ConditionFn
-              condition); // RANDOTODO make a less stupid way to check own at either age than self referencing with this
+bool AnyAgeTime(ConditionFn condition);
 bool MQSpiritSharedStatueRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge = false);
 bool MQSpiritSharedBrokenWallRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge = false);
 bool CanPlantBean(const RandomizerRegion region, RandomizerGet bean);

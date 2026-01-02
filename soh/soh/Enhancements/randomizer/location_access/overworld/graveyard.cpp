@@ -49,7 +49,7 @@ void RegionTable_Init_Graveyard() {
     }, {
         //Exits
         Entrance(RR_THE_GRAVEYARD,               []{return true;}),
-        Entrance(RR_GRAVEYARD_SHIELD_GRAVE_BACK, []{return Here(RR_GRAVEYARD_SHIELD_GRAVE, []{return logic->CanBreakMudWalls();});}),
+        Entrance(RR_GRAVEYARD_SHIELD_GRAVE_BACK, []{return AnyAgeTime([]{return logic->CanBreakMudWalls();});}),
     });
 
     areaTable[RR_GRAVEYARD_SHIELD_GRAVE_BACK] = Region("Graveyard Shield Grave Back", SCENE_GRAVE_WITH_FAIRYS_FOUNTAIN, {}, {

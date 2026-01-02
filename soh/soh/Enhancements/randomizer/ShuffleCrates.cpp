@@ -32,7 +32,7 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
         return;
     }
 
-    const auto crateIdentity = ObjectExtension::GetInstance().Get<CrateIdentity>(thisx);
+    const auto crateIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(thisx);
     if (crateIdentity == nullptr) {
         Gfx_DrawDListOpa(play, (Gfx*)gLargeRandoCrateDL);
         return;
@@ -106,7 +106,7 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
         return;
     }
 
-    const auto crateIdentity = ObjectExtension::GetInstance().Get<SmallCrateIdentity>(thisx);
+    const auto crateIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(thisx);
     if (crateIdentity == nullptr) {
         Gfx_DrawDListOpa(play, (Gfx*)gSmallRandoCrateDL);
         return;
@@ -167,7 +167,7 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
 }
 
 uint8_t ObjKibako2_RandomizerHoldsItem(ObjKibako2* crateActor, PlayState* play) {
-    const auto crateIdentity = ObjectExtension::GetInstance().Get<CrateIdentity>(&crateActor->dyna.actor);
+    const auto crateIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&crateActor->dyna.actor);
     if (crateIdentity == nullptr) {
         return false;
     }
@@ -187,7 +187,7 @@ uint8_t ObjKibako2_RandomizerHoldsItem(ObjKibako2* crateActor, PlayState* play) 
 }
 
 uint8_t ObjKibako_RandomizerHoldsItem(ObjKibako* smallCrateActor, PlayState* play) {
-    const auto crateIdentity = ObjectExtension::GetInstance().Get<SmallCrateIdentity>(&smallCrateActor->actor);
+    const auto crateIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&smallCrateActor->actor);
     if (crateIdentity == nullptr) {
         return false;
     }
@@ -207,7 +207,7 @@ uint8_t ObjKibako_RandomizerHoldsItem(ObjKibako* smallCrateActor, PlayState* pla
 }
 
 void ObjKibako2_RandomizerSpawnCollectible(ObjKibako2* crateActor, PlayState* play) {
-    const auto crateIdentity = ObjectExtension::GetInstance().Get<CrateIdentity>(&crateActor->dyna.actor);
+    const auto crateIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&crateActor->dyna.actor);
     if (crateIdentity == nullptr) {
         return;
     }
@@ -222,7 +222,7 @@ void ObjKibako2_RandomizerSpawnCollectible(ObjKibako2* crateActor, PlayState* pl
 }
 
 void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallCrateActor, PlayState* play) {
-    const auto crateIdentity = ObjectExtension::GetInstance().Get<SmallCrateIdentity>(&smallCrateActor->actor);
+    const auto crateIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&smallCrateActor->actor);
     if (crateIdentity == nullptr) {
         return;
     }
@@ -262,7 +262,7 @@ void ObjKibako2_RandomizerInit(void* actorRef) {
 
     auto crateIdentity = OTRGlobals::Instance->gRandomizer->IdentifyCrate(gPlayState->sceneNum, (s16)actor->world.pos.x,
                                                                           (s16)actor->world.pos.z);
-    ObjectExtension::GetInstance().Set<CrateIdentity>(actor, std::move(crateIdentity));
+    ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(crateIdentity));
 }
 
 void ObjKibako_RandomizerInit(void* actorRef) {
@@ -275,7 +275,7 @@ void ObjKibako_RandomizerInit(void* actorRef) {
 
     auto crateIdentity = OTRGlobals::Instance->gRandomizer->IdentifySmallCrate(
         gPlayState->sceneNum, (s16)actor->home.pos.x, (s16)actor->home.pos.z);
-    ObjectExtension::GetInstance().Set<SmallCrateIdentity>(actor, std::move(crateIdentity));
+    ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(crateIdentity));
 }
 
 void RegisterShuffleCrates() {
@@ -595,7 +595,5 @@ void Rando::StaticData::RegisterCrateLocations() {
     // clang-format on
 }
 
-static ObjectExtension::Register<CrateIdentity> RegisterCrateIdentity;
-static ObjectExtension::Register<SmallCrateIdentity> RegisterSmallCrateIdentity;
 static RegisterShipInitFunc registerShuffleCrates(RegisterShuffleCrates, { "IS_RANDO" });
 static RegisterShipInitFunc registerCrateLocations(Rando::StaticData::RegisterCrateLocations);

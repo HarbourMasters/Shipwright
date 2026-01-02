@@ -55,7 +55,7 @@ static s16 fishGroupCounter = 0;
 static bool enableAdvance = false;
 
 namespace Rando {
-const FishIdentity Fishsanity::defaultIdentity = { RAND_INF_MAX, RC_UNKNOWN_CHECK };
+const CheckIdentity Fishsanity::defaultIdentity = { RAND_INF_MAX, RC_UNKNOWN_CHECK };
 bool Fishsanity::fishsanityHelpersInit = false;
 std::unordered_map<RandomizerCheck, LinkAge> Fishsanity::pondFishAgeMap;
 std::vector<RandomizerCheck> Fishsanity::childPondFish;
@@ -162,9 +162,9 @@ Fishsanity::GetFishsanityLocations(FishsanityOptionsSource optionsSource) {
     return std::make_pair(activeFish, remainingFish);
 }
 
-FishIdentity Fishsanity::IdentifyPondFish(u8 fishParams) {
+CheckIdentity Fishsanity::IdentifyPondFish(u8 fishParams) {
     auto [mode, pondCount, ageSplit] = GetOptions();
-    FishIdentity identity = defaultIdentity;
+    CheckIdentity identity = defaultIdentity;
 
     if (!GetPondFishShuffled()) {
         return identity;
@@ -200,7 +200,7 @@ FishsanityPondOptions Fishsanity::GetOptions(FishsanityOptionsSource optionsSour
 
 void Fishsanity::UpdateCurrentPondFish() {
     auto [mode, pondCount, ageSplit] = GetOptions();
-    mCurrPondFish = std::pair<FishIdentity, FishIdentity>();
+    mCurrPondFish = std::pair<CheckIdentity, CheckIdentity>();
     mCurrPondFish.first = defaultIdentity;
     mCurrPondFish.second = defaultIdentity;
 
@@ -305,13 +305,13 @@ void Fishsanity::InitializeHelpers() {
     }
 }
 
-FishIdentity Fishsanity::GetPondFish(s16 params, bool adultPond) {
+CheckIdentity Fishsanity::GetPondFish(s16 params, bool adultPond) {
     auto pair = Rando::StaticData::randomizerFishingPondFish[params - 100];
     RandomizerCheck rc = adultPond ? pair.second : pair.first;
     return { OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc), rc };
 }
 
-FishIdentity Fishsanity::AdvancePond() {
+CheckIdentity Fishsanity::AdvancePond() {
     auto [mode, pondCount, ageSplit] = GetOptions();
 
     // No need to update state with full pond shuffle
@@ -343,7 +343,7 @@ FishsanityCheckType Fishsanity::GetCheckType(RandomizerCheck rc) {
     }
 }
 
-bool Fishsanity::IsFish(FishIdentity* fish) {
+bool Fishsanity::IsFish(CheckIdentity* fish) {
     if (fish->randomizerCheck == RC_UNKNOWN_CHECK || fish->randomizerInf == RAND_INF_MAX) {
         return false;
     }
@@ -355,7 +355,7 @@ void Fishsanity::OnActorInitHandler(void* refActor) {
     Actor* actor = static_cast<Actor*>(refActor);
 
     auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
-    FishIdentity fish;
+    CheckIdentity fish;
 
     if (actor->id == ACTOR_EN_FISH && fs->GetOverworldFishShuffled()) {
         // Set fish ID for ZD fish
@@ -413,7 +413,7 @@ void Fishsanity::OnActorUpdateHandler(void* refActor) {
 
         // State 6 -> Fish caught and hoisted
         if (fish->fishState == 6) {
-            FishIdentity identity =
+            CheckIdentity identity =
                 OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
             if (identity.randomizerCheck != RC_UNKNOWN_CHECK) {
                 Flags_SetRandomizerInf(identity.randomizerInf);
@@ -428,7 +428,7 @@ void Fishsanity::OnActorUpdateHandler(void* refActor) {
     }
 
     if (actor->id == ACTOR_EN_FISH && fs->GetOverworldFishShuffled()) {
-        FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+        CheckIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
         EnFish* fishActor = static_cast<EnFish*>(refActor);
         if (Rando::Fishsanity::IsFish(&fish) && Flags_GetRandomizerInf(fish.randomizerInf)) {
             // Reset draw method
@@ -505,7 +505,7 @@ void Fishsanity_DrawEffShadow(Actor* actor, Lights* lights, PlayState* play) {
 }
 
 void Fishsanity_DrawEnFish(struct Actor* actor, struct PlayState* play) {
-    FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(play->sceneNum, actor->params);
+    CheckIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(play->sceneNum, actor->params);
     GetItemEntry randoItem = Rando::Context::GetInstance()->GetFinalGIEntry(fish.randomizerCheck, true, GI_FISH);
     if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
         randoItem = GET_ITEM_MYSTERY;
@@ -565,7 +565,7 @@ void RegisterShuffleFish() {
         Actor* actor = va_arg(args, Actor*);
         auto fs = OTRGlobals::Instance->gRandoContext->GetFishsanity();
         if (actor->id == ACTOR_EN_FISH && fs->GetOverworldFishShuffled()) {
-            FishIdentity fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
+            auto fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
             if (fish.randomizerCheck != RC_UNKNOWN_CHECK && !Flags_GetRandomizerInf(fish.randomizerInf)) {
                 Flags_SetRandomizerInf(fish.randomizerInf);
                 actor->parent = &GET_PLAYER(gPlayState)->actor;

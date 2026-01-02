@@ -160,6 +160,10 @@ struct ButtonOptions : WidgetOptions {
         color = color_;
         return *this;
     }
+    ButtonOptions& DisabledTooltip(const char* disabledTooltip_) {
+        WidgetOptions::disabledTooltip = disabledTooltip_;
+        return *this;
+    }
 };
 
 struct ColorPickerOptions : WidgetOptions {

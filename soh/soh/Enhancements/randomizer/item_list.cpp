@@ -1,5 +1,5 @@
 #include "static_data.h"
-#include "context.h"
+#include "SeedContext.h"
 #include "logic.h"
 #include "z64object.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
