@@ -26,7 +26,7 @@ static bool MirroredWorld_IsInDungeon(int32_t sceneNum) {
 }
 
 static void MirroredWorld_InitRandomSeed(int32_t sceneNum) {
-    uint32_t seed =
+    uint64_t seed =
         sceneNum + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
     Random_Init(seed);
 }

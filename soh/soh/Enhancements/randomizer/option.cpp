@@ -227,7 +227,7 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
                                                                               .DefaultValue(defaultOption)
                                                                               .Tooltip(description.c_str())
                                                                               .Min(0)
-                                                                              .Max(options.size() - 1)
+                                                                              .Max(static_cast<int32_t>(options.size() - 1))
                                                                               .Format(options[defaultOption].c_str())
                                                                               .LabelPosition(labelPosition));
             break;
@@ -320,7 +320,7 @@ void Option::AddWidget(WidgetPath& path) {
                               UIWidgets::IntSliderOptions* sliderOpts =
                                   (UIWidgets::IntSliderOptions*)info.options.get();
                               sliderOpts->Format(this->GetOptionText(this->GetOptionIndex()).c_str());
-                              sliderOpts->Max(this->options.size() - 1);
+                              sliderOpts->Max(static_cast<int32_t>(this->options.size() - 1));
                           }
                       })
                       .CVar(cvarName.c_str())
@@ -451,7 +451,7 @@ void OptionGroup::AddWidgets(WidgetPath& path) const {
     if (mContainerType == WidgetContainerType::TABLE) {
         path.column = SECTION_COLUMN_1;
         path.sidebarName = mName;
-        SohGui::mSohMenu->AddSidebarEntry("Randomizer", path.sidebarName, mSubGroups.size());
+        SohGui::mSohMenu->AddSidebarEntry("Randomizer", path.sidebarName, static_cast<uint32_t>(mSubGroups.size()));
     }
     if (mContainerType == WidgetContainerType::SECTION || mContainerType == WidgetContainerType::COLUMN) {
         if (!mName.empty()) {

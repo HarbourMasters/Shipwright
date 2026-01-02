@@ -136,7 +136,8 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
 
         gSaveContext.healthCapacity = loadedData.healthCapacity;
         gSaveContext.magicLevel = loadedData.magicLevel;
-        gSaveContext.magicCapacity = gSaveContext.magic = loadedData.magicCapacity;
+        gSaveContext.magicCapacity = loadedData.magicCapacity;
+        gSaveContext.magic = static_cast<s8>(loadedData.magicCapacity);
         gSaveContext.isMagicAcquired = loadedData.isMagicAcquired;
         gSaveContext.isDoubleMagicAcquired = loadedData.isDoubleMagicAcquired;
         gSaveContext.isDoubleDefenseAcquired = loadedData.isDoubleDefenseAcquired;
