@@ -576,10 +576,6 @@ void Region::printAgeTimeAccess() {
 
 std::array<Region, RR_MAX> areaTable;
 
-bool Here(const RandomizerRegion region, ConditionFn condition) {
-    return areaTable[region].Here(condition);
-}
-
 /*
     * This logic covers checks that exist in the shared areas of Spirit
     * This code will fail if any glitch allows Adult to go in the Child spirit door first or vice versa as it relies on
@@ -653,9 +649,8 @@ std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
     {RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,        {7, 0, 0, 0, []{return logic->CanHitSwitch()/* && logic->CanClimbHigh()*/;},                                            []{return true;},                                                                                                []{return true;}}},
     {RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM,     {7, 0, 0, 0, []{return logic->CanHitSwitch() && logic->MQSpiritStatueToSunBlock()/* && logic->CanClimbHigh()*/;},       []{return logic->MQSpiritStatueToSunBlock()/* && logic->Climb*/;},                                               []{return logic->MQSpiritStatueToSunBlock()/* && (logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS))*/;}}},
     {RR_SPIRIT_TEMPLE_MQ_OUTER_RIGHT_HAND,   {7, 7, 4, 4, []{return logic->CanHitSwitch() && logic->OuterWestHandMQLogic()/* && logic->CanClimbHigh() && str0*/;},   []{return logic->OuterWestHandMQLogic();},                                                                       []{return logic->OuterWestHandMQLogic();}}},
-    {RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR,    {7, 0, 0, 0, []{return logic->CanHitSwitch() && 
-                                                                    areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR].Here([]{return logic->MQSpiritStatueSouthDoor();})
-                                                                    /* && logic->CanClimbHigh()*/;},                                                                 []{return true;},                                                                                                []{return areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR].Here([]{return logic->MQSpiritStatueSouthDoor();});}}},
+    {RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR,    {7, 0, 0, 0, []{return logic->CanHitSwitch() && /* logic->CanClimbHigh() &&*/
+                                                                    areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR].AnyAgeTime([]{return logic->MQSpiritStatueSouthDoor();});}, []{return true;},                                                                                      []{return areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR].AnyAgeTime([]{return logic->MQSpiritStatueSouthDoor();});}}},
 };
 // clang-format on
 
@@ -785,7 +780,6 @@ bool AnyAgeTime(ConditionFn condition) {
     assert(logic->CurrentRegionKey != RR_NONE);
     return areaTable[logic->CurrentRegionKey].AnyAgeTime(condition);
 }
-
 
 bool BeanPlanted(const RandomizerGet bean) {
     auto logic = Rando::Context::GetInstance()->GetLogic();
