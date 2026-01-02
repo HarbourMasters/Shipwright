@@ -6972,4 +6972,4 @@ DEFINE_RandoWaterLevel(WL_HIGH_OR_MID)
 #undef DEFINE_GrottoEntranceOffsets
 #endif
 
-// clang-format on
+    // clang-format on
