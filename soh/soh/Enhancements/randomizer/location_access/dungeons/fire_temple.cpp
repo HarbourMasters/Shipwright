@@ -20,7 +20,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         Entrance(RR_FIRE_TEMPLE_ENTRYWAY,             []{return true;}),
         Entrance(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM,       []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_LOOP_HEXAGON_ROOM,    []{return Here(RR_FIRE_TEMPLE_FOYER, []{return logic->CanUse(RG_MEGATON_HAMMER);}) && (logic->SmallKeys(SCENE_FIRE_TEMPLE, 8) || !logic->IsFireLoopLocked());}),
+        Entrance(RR_FIRE_TEMPLE_LOOP_HEXAGON_ROOM,    []{return AnyAgeTime([]{return logic->CanUse(RG_MEGATON_HAMMER);}) && (logic->SmallKeys(SCENE_FIRE_TEMPLE, 8) || !logic->IsFireLoopLocked());}),
         Entrance(RR_FIRE_TEMPLE_LOOP_CAGE_FOYER_SIDE, []{return true;}),
         Entrance(RR_FIRE_TEMPLE_BIG_LAVA_ROOM,        []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 2) && logic->FireTimer() >= 24;}),
     });
@@ -54,7 +54,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_LOOP_HEXAGON_ROOM] = Region("Fire Temple Loop Hexagon Room", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_FOYER,            []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 8) || !logic->IsFireLoopLocked();}),
-        Entrance(RR_FIRE_TEMPLE_LOOP_5_TILE_ROOM, []{return Here(RR_FIRE_TEMPLE_LOOP_HEXAGON_ROOM, []{return logic->CanKillEnemy(RE_TORCH_SLUG) && logic->CanKillEnemy(RE_FIRE_KEESE);});}),
+        Entrance(RR_FIRE_TEMPLE_LOOP_5_TILE_ROOM, []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_TORCH_SLUG) && logic->CanKillEnemy(RE_FIRE_KEESE);});}),
     });
 
     areaTable[RR_FIRE_TEMPLE_LOOP_5_TILE_ROOM] = Region("Fire Temple Loop 5 Tile Room", SCENE_FIRE_TEMPLE, {}, {
@@ -68,10 +68,10 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_LOOP_FLARE_DANCER] = Region("Fire Temple Loop Flare Dancer", SCENE_FIRE_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_FIRE_TEMPLE_FLARE_DANCER_CHEST, Here(RR_FIRE_TEMPLE_LOOP_FLARE_DANCER, []{return logic->CanKillEnemy(RE_FLARE_DANCER);}) && (logic->IsAdult || logic->CanGroundJump() || logic->CanUse(RG_HOOKSHOT))),
+        LOCATION(RC_FIRE_TEMPLE_FLARE_DANCER_CHEST, AnyAgeTime([]{return logic->CanKillEnemy(RE_FLARE_DANCER);}) && (logic->IsAdult || logic->CanGroundJump() || logic->CanUse(RG_HOOKSHOT))),
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_LOOP_5_TILE_ROOM, []{return Here(RR_FIRE_TEMPLE_LOOP_FLARE_DANCER, []{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
+        Entrance(RR_FIRE_TEMPLE_LOOP_5_TILE_ROOM, []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
         Entrance(RR_FIRE_TEMPLE_LOOP_CAGE_SWITCH, []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
     });
 
@@ -304,7 +304,7 @@ void RegionTable_Init_FireTemple() {
         Entrance(RR_FIRE_TEMPLE_FIRE_MAZE_PLATFORMS, []{return logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && (logic->Get(LOGIC_FIRE_HIT_ABOVE_MAZE_PLATFORM) || logic->CanGroundJump()));}),
         Entrance(RR_FIRE_TEMPLE_CAGELESS_CHEST_ROOM, []{return true;}),
         Entrance(RR_FIRE_TEMPLE_SOT_CAGE_LOWER,      []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 8);}),
-        Entrance(RR_FIRE_TEMPLE_FIRE_MAZE_SWITCH,    []{return (bool)ctx->GetTrickOption(RT_FIRE_FLAME_MAZE);}),
+        Entrance(RR_FIRE_TEMPLE_FIRE_MAZE_SWITCH,    []{return (bool)ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_FIRE_MAZE_PLATFORMS] = Region("Fire Temple Fire Maze Platforms", SCENE_FIRE_TEMPLE, {
@@ -352,7 +352,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_FIRE_MAZE_SWITCH] = Region("Fire Temple Fire Maze Switch", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_FIRE_MAZE_MAIN,      []{return (ctx->GetTrickOption(RT_FIRE_FLAME_MAZE) && logic->TakeDamage()) ||
+        Entrance(RR_FIRE_TEMPLE_FIRE_MAZE_MAIN,      []{return (ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS) && logic->TakeDamage()) ||
                                                                (logic->IsAdult && logic->CanGroundJump() && ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)));}),
         Entrance(RR_FIRE_TEMPLE_SOT_CAGE_LOWER,      []{return true;}),
         Entrance(RR_FIRE_TEMPLE_FIRE_MAZE_PAST_WALL, []{return true;}),
@@ -371,8 +371,8 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_3F_FLARE_DANCER] = Region("Fire Temple 3F Flare Dancer", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_FIRE_MAZE_PAST_WALL,   []{return Here(RR_FIRE_TEMPLE_3F_FLARE_DANCER, []{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
-        Entrance(RR_FIRE_TEMPLE_ABOVE_3F_FLARE_DANCER, []{return Here(RR_FIRE_TEMPLE_3F_FLARE_DANCER, []{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
+        Entrance(RR_FIRE_TEMPLE_FIRE_MAZE_PAST_WALL,   []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
+        Entrance(RR_FIRE_TEMPLE_ABOVE_3F_FLARE_DANCER, []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
     });
 
     areaTable[RR_FIRE_TEMPLE_ABOVE_3F_FLARE_DANCER] = Region("Fire Temple Above 3F Flare Dancer", SCENE_FIRE_TEMPLE, {}, {}, {
@@ -395,12 +395,12 @@ void RegionTable_Init_FireTemple() {
         Entrance(RR_FIRE_TEMPLE_SOT_CAGE_UPPER_DOOR, []{return logic->TakeDamage();}),
         Entrance(RR_FIRE_TEMPLE_SOT_CAGE_SWITCH,     []{return logic->TakeDamage();}),
         Entrance(RR_FIRE_TEMPLE_SWITCH_CLIMB,        []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_NARROW_STAIRS_4F,    []{return Here(RR_FIRE_TEMPLE_NARROW_STAIRS, []{return logic->CanUse(RG_MEGATON_HAMMER);});}),
+        Entrance(RR_FIRE_TEMPLE_NARROW_STAIRS_4F,    []{return AnyAgeTime([]{return logic->CanUse(RG_MEGATON_HAMMER);});}),
     });
 
     areaTable[RR_FIRE_TEMPLE_NARROW_STAIRS_4F] = Region("Fire Temple Narrow Stairs 4F", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_TOP_OF_COLLAPSING_STAIRS, []{return Here(RR_FIRE_TEMPLE_NARROW_STAIRS_4F, []{return logic->CanUse(RG_MEGATON_HAMMER);});}),
+        Entrance(RR_FIRE_TEMPLE_TOP_OF_COLLAPSING_STAIRS, []{return AnyAgeTime([]{return logic->CanUse(RG_MEGATON_HAMMER);});}),
         //this return path is blocked by a hammer peg that is a perm flag, if a way up is ever added, LOGIC_FIRE_MQ_HIT_SCARECROW_ROOM_PLATFORM should be reworked
         Entrance(RR_FIRE_TEMPLE_NARROW_STAIRS,            []{return false;}),
     });
@@ -459,7 +459,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_FOYER_LOWER,    []{return true;}),
         Entrance(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM, []{return logic->HasFireSource();}),
-        Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM,  []{return Here(RR_FIRE_TEMPLE_MQ_FOYER_UPPER, []{return logic->CanUse(RG_MEGATON_HAMMER);});}),
+        Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM,  []{return AnyAgeTime([]{return logic->CanUse(RG_MEGATON_HAMMER);});}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_LOOP_CAGE_FOYER_SIDE] = Region("Fire Temple MQ Loop Cage Foyer Side", SCENE_FIRE_TEMPLE, {}, {
@@ -467,7 +467,7 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST, logic->CanKillEnemy(RE_LIKE_LIKE)),
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_MQ_FOYER_LOWER,     []{return Here(RR_FIRE_TEMPLE_MQ_FOYER_LOWER, []{return logic->CanKillEnemy(RE_LIKE_LIKE);});}),
+        Entrance(RR_FIRE_TEMPLE_MQ_FOYER_LOWER,     []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_LIKE_LIKE);});}),
         Entrance(RR_FIRE_TEMPLE_MQ_LOOP_GORON_CAGE, []{return logic->Get(LOGIC_FIRE_OPENED_LOWEST_GORON_CAGE);}),
     });
 
@@ -477,7 +477,7 @@ void RegionTable_Init_FireTemple() {
     }, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_FOYER_LOWER,      []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_LOOP_5_TILE_ROOM, []{return Here(RR_FIRE_TEMPLE_MQ_LOOP_HEXAGON_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);});}),
+        Entrance(RR_FIRE_TEMPLE_MQ_LOOP_5_TILE_ROOM, []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);});}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_LOOP_5_TILE_ROOM] = Region("Fire Temple MQ Loop 5 Tile Room", SCENE_FIRE_TEMPLE, {
@@ -497,16 +497,16 @@ void RegionTable_Init_FireTemple() {
     }, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_LOOP_HEXAGON_ROOM, []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_LOOP_FLARE_DANCER, []{return Here(RR_FIRE_TEMPLE_MQ_LOOP_5_TILE_ROOM, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE);});}),
+        Entrance(RR_FIRE_TEMPLE_MQ_LOOP_FLARE_DANCER, []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_IRON_KNUCKLE);});}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_LOOP_FLARE_DANCER] = Region("Fire Temple MQ Loop Flare Dancer", SCENE_FIRE_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST, (logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || logic->CanGroundJump()) && Here(RR_FIRE_TEMPLE_MQ_LOOP_FLARE_DANCER, []{return logic->CanKillEnemy(RE_FLARE_DANCER);})),
+        LOCATION(RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST, (logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || logic->CanGroundJump()) && AnyAgeTime([]{return logic->CanKillEnemy(RE_FLARE_DANCER);})),
     }, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_LOOP_5_TILE_ROOM, []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_LOOP_CAGE_SWITCH, []{return Here(RR_FIRE_TEMPLE_MQ_LOOP_FLARE_DANCER, []{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
+        Entrance(RR_FIRE_TEMPLE_MQ_LOOP_CAGE_SWITCH, []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_LOOP_CAGE_SWITCH] = Region("Fire Temple MQ Loop Cage Switch", SCENE_FIRE_TEMPLE, {
@@ -702,7 +702,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_LOWER, []{return true;}),
         //Explosives can also reach this room. Chus is relatively simple, they need to detonate on the first horizontal bar up from the floor while horizontally near the switch, but bombs are much harder
-        Entrance(RR_FIRE_TEMPLE_MQ_MAZE_CRATE_CAGE,     []{return Here(RR_FIRE_TEMPLE_MQ_LOWER_LIZALFOS_MAZE, []{return logic->CanJumpslash();});}),
+        Entrance(RR_FIRE_TEMPLE_MQ_MAZE_CRATE_CAGE,     []{return AnyAgeTime([]{return logic->CanJumpslash();});}),
         //it's possible to make the RT_FIRE_MQ_MAZE_HOVERS as child using bunny hood jumps, but not adult as adult bonks
         Entrance(RR_FIRE_TEMPLE_MQ_UPPER_LIZALFOS_MAZE, []{return (logic->HasExplosives() || ctx->GetTrickOption(RT_RUSTED_SWITCHES)) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOOKSHOT);}),
         Entrance(RR_FIRE_TEMPLE_MQ_MAZE_SWITCH_DOOR,    []{return logic->HasExplosives() && ctx->GetTrickOption(RT_FIRE_MQ_MAZE_SIDE_ROOM);}),
@@ -742,7 +742,7 @@ void RegionTable_Init_FireTemple() {
         Entrance(RR_FIRE_TEMPLE_MQ_LOWER_LIZALFOS_MAZE, []{return true;}),
         //this cage is much more lenient than the lower cage as the switch is close to the front. sling, rang and bow all hit the switch easily, though might be too unintuitive for default logic
         //This shouldn't come up in most cases anyway as most methods to get here need either a melee weapon or explosives
-        Entrance(RR_FIRE_TEMPLE_MQ_MAZE_BOX_CAGE,       []{return Here(RR_FIRE_TEMPLE_MQ_UPPER_LIZALFOS_MAZE, []{return logic->CanJumpslash() || logic->HasExplosives();});}),
+        Entrance(RR_FIRE_TEMPLE_MQ_MAZE_BOX_CAGE,       []{return AnyAgeTime([]{return logic->CanJumpslash() || logic->HasExplosives();});}),
         Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_CLIMB,      []{return logic->HasExplosives();}),
         //Implies RR_FIRE_TEMPLE_MQ_LOWER_LIZALFOS_MAZE access
         Entrance(RR_FIRE_TEMPLE_MQ_ABOVE_MAZE,          []{return logic->HasExplosives() && logic->CanUse(RG_MEGATON_HAMMER) && (logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_SONG_OF_TIME)));}),
@@ -983,8 +983,8 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY, logic->CanKillEnemy(RE_FLARE_DANCER)),
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PAST_WALL,   []{return Here(RR_FIRE_TEMPLE_MQ_3F_FLARE_DANCER, []{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
-        Entrance(RR_FIRE_TEMPLE_MQ_ABOVE_3F_FLARE_DANCER, []{return Here(RR_FIRE_TEMPLE_MQ_3F_FLARE_DANCER, []{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
+        Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PAST_WALL,   []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
+        Entrance(RR_FIRE_TEMPLE_MQ_ABOVE_3F_FLARE_DANCER, []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_ABOVE_3F_FLARE_DANCER] = Region("Fire Temple MQ Above 3F Flare Dancer", SCENE_FIRE_TEMPLE, {}, {}, {
@@ -1044,9 +1044,9 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_MAZE, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MAIN,            []{return Here(RR_FIRE_TEMPLE_MQ_ABOVE_FIRE_MAZE, []{return logic->CanUse(RG_MEGATON_HAMMER);});}),
+        Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MAIN,            []{return AnyAgeTime([]{return logic->CanUse(RG_MEGATON_HAMMER);});}),
         //it's possible to land directly on the upper platform as child and even avoid fall damage, but it's not intuitive (you have to ledge grab, drop down and then air drift with enough momentum to roll)
-        Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PLATFORMS,       []{return Here(RR_FIRE_TEMPLE_MQ_ABOVE_FIRE_MAZE, []{return logic->CanUse(RG_MEGATON_HAMMER);}) && logic->CanJumpslash() && logic->TakeDamage();}),
+        Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PLATFORMS,       []{return AnyAgeTime([]{return logic->CanUse(RG_MEGATON_HAMMER);}) && logic->CanJumpslash() && logic->TakeDamage();}),
         Entrance(RR_FIRE_TEMPLE_MQ_BASE_OF_COLLAPSING_STAIRS, []{return false;}),
     });
 
