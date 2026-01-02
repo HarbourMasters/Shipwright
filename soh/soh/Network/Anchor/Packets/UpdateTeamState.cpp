@@ -228,7 +228,7 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(i)->SetCheckStatus(
                     payload["state"]["rando"]["itemLocations"][i][0].get<RandomizerCheckStatus>());
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(i)->SetIsSkipped(
-                    payload["state"]["rando"]["itemLocations"][i][0].get<u8>());
+                    payload["state"]["rando"]["itemLocations"][i][1].get<u8>());
 
                 // if (payload["state"]["rando"]["itemLocations"][i].contains("fakeRgID")) {
                 //     randoContext->overrides.emplace(static_cast<RandomizerCheck>(i),
