@@ -2138,9 +2138,11 @@ void CheckTrackerSettingsWindow::DrawElement() {
         ImGui::TableHeadersRow();
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        SohGui::mSohMenu->MenuDrawItem(backgroundColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(backgroundColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
 
-        SohGui::mSohMenu->MenuDrawItem(windowTypeWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(windowTypeWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
 
         UIWidgets::CVarSliderFloat("Font Size", CVAR_TRACKER_CHECK("FontSize"),
                                    UIWidgets::FloatSliderOptions()
@@ -2180,17 +2182,22 @@ void CheckTrackerSettingsWindow::DrawElement() {
             }
         }
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-        SohGui::mSohMenu->MenuDrawItem(dungeonSpoilerWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(dungeonSpoilerWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
         ImGui::EndDisabled();
 
-        SohGui::mSohMenu->MenuDrawItem(hideUnshuffledShopWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(hideUnshuffledShopWidget,
+                                       static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
 
-        SohGui::mSohMenu->MenuDrawItem(showGSWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(showGSWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
 
-        SohGui::mSohMenu->MenuDrawItem(showLogicWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(showLogicWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
 
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-        SohGui::mSohMenu->MenuDrawItem(checkAvailabilityWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(checkAvailabilityWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
         ImGui::EndDisabled();
 
         // Filtering settings

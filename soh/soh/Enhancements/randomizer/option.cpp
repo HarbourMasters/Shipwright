@@ -223,13 +223,14 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
             if (imFlags_ & IMFLAG_LABEL_INLINE) {
                 labelPosition = UIWidgets::LabelPositions::Near;
             }
-            widgetOptions = std::make_shared<UIWidgets::IntSliderOptions>(UIWidgets::IntSliderOptions()
-                                                                              .DefaultValue(defaultOption)
-                                                                              .Tooltip(description.c_str())
-                                                                              .Min(0)
-                                                                              .Max(static_cast<int32_t>(options.size() - 1))
-                                                                              .Format(options[defaultOption].c_str())
-                                                                              .LabelPosition(labelPosition));
+            widgetOptions =
+                std::make_shared<UIWidgets::IntSliderOptions>(UIWidgets::IntSliderOptions()
+                                                                  .DefaultValue(defaultOption)
+                                                                  .Tooltip(description.c_str())
+                                                                  .Min(0)
+                                                                  .Max(static_cast<int32_t>(options.size() - 1))
+                                                                  .Format(options[defaultOption].c_str())
+                                                                  .LabelPosition(labelPosition));
             break;
         default:
             break;

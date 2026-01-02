@@ -1335,7 +1335,8 @@ void SohInputEditorWindow::DrawOcarinaControlPanel() {
 
     CheckboxOptions checkOpt = CheckboxOptions().Color(THEME_COLOR);
     SohGui::mSohMenu->MenuDrawItem(dpadOcarina, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
-    SohGui::mSohMenu->MenuDrawItem(rightStickOcarina, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+    SohGui::mSohMenu->MenuDrawItem(rightStickOcarina, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                   THEME_COLOR);
     CVarCheckbox("Customize Ocarina Controls", CVAR_SETTING("CustomOcarina.Enabled"), checkOpt);
 
     if (!CVarGetInteger(CVAR_SETTING("CustomOcarina.Enabled"), 0)) {
@@ -1370,7 +1371,8 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
     SohGui::mSohMenu->MenuDrawItem(mouseControl, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
     cursor = ImGui::GetCursorPos();
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
-    SohGui::mSohMenu->MenuDrawItem(mouseAutoCapture, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+    SohGui::mSohMenu->MenuDrawItem(mouseAutoCapture, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                   THEME_COLOR);
 
     Ship::GuiWindow::BeginGroupPanel("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
     CVarCheckbox("Right Stick Aiming", CVAR_SETTING("Controls.RightStickAim"),
