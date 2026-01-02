@@ -174,6 +174,8 @@ class Context {
      * @param hash
      */
     void SetHash(std::string hash);
+    uint8_t GetBombchuCapacity();
+    void HandleGetBombchuBag();
 
   private:
     static std::weak_ptr<Context> mContext;

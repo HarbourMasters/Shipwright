@@ -921,9 +921,36 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BOMBCHU_20:
         case RG_BUY_BOMBCHUS_10:
         case RG_BUY_BOMBCHUS_20:
-        case RG_PROGRESSIVE_BOMBCHUS: // RANDOTODO Do we want bombchu refills to exist seperatly from bombchu bags? If
-                                      // so, this needs changing.
-            return CAN_OBTAIN;
+            return OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_NONE)
+                       ? CAN_OBTAIN
+                       : (INV_CONTENT(ITEM_BOMBCHU) != ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE);
+        case RG_PROGRESSIVE_BOMBCHU_BAG: // RANDOTODO Do we want bombchu refills to exist seperatly from bombchu bags?
+                                         // If so, this needs changing.
+            switch (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Get()) {
+                case RO_BOMBCHU_BAG_NONE:
+                    return CANT_OBTAIN_MISC;
+                case RO_BOMBCHU_BAG_SINGLE:
+                    return INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU
+                               ? (infiniteUpgrades != RO_INF_UPGRADES_OFF ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE)
+                               : CAN_OBTAIN;
+                case RO_BOMBCHU_BAG_PROGRESSIVE:
+                    if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS)) {
+                        return CANT_OBTAIN_ALREADY_HAVE;
+                    } else {
+                        switch (gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel) {
+                            case 0:
+                            case 1:
+                                return CAN_OBTAIN;
+                            case 2:
+                                return infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE
+                                           ? CANT_OBTAIN_ALREADY_HAVE
+                                           : CAN_OBTAIN;
+                            case 3:
+                                return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? CAN_OBTAIN
+                                                                                       : CANT_OBTAIN_ALREADY_HAVE;
+                        }
+                    }
+            }
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {
                 case ITEM_NONE:
@@ -3395,6 +3422,70 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_ZR_TREE, RAND_INF_ZR_TREE },
     { RC_KAK_TREE, RAND_INF_KAK_TREE },
     { RC_LLR_TREE, RAND_INF_LLR_TREE },
+    { RC_HF_BUSH_NEAR_LAKE_1, RAND_INF_HF_BUSH_NEAR_LAKE_1 },
+    { RC_HF_BUSH_NEAR_LAKE_2, RAND_INF_HF_BUSH_NEAR_LAKE_2 },
+    { RC_HF_BUSH_NEAR_LAKE_3, RAND_INF_HF_BUSH_NEAR_LAKE_3 },
+    { RC_HF_BUSH_NEAR_LAKE_4, RAND_INF_HF_BUSH_NEAR_LAKE_4 },
+    { RC_HF_BUSH_NEAR_LAKE_5, RAND_INF_HF_BUSH_NEAR_LAKE_5 },
+    { RC_HF_BUSH_NEAR_LAKE_6, RAND_INF_HF_BUSH_NEAR_LAKE_6 },
+    { RC_HF_BUSH_NEAR_LAKE_7, RAND_INF_HF_BUSH_NEAR_LAKE_7 },
+    { RC_HF_BUSH_NEAR_LAKE_8, RAND_INF_HF_BUSH_NEAR_LAKE_8 },
+    { RC_HF_BUSH_NEAR_LAKE_9, RAND_INF_HF_BUSH_NEAR_LAKE_9 },
+    { RC_HF_BUSH_NEAR_LAKE_10, RAND_INF_HF_BUSH_NEAR_LAKE_10 },
+    { RC_HF_BUSH_NEAR_LAKE_11, RAND_INF_HF_BUSH_NEAR_LAKE_11 },
+    { RC_HF_NORTHERN_BUSH_1, RAND_INF_HF_NORTHERN_BUSH_1 },
+    { RC_HF_NORTHERN_BUSH_2, RAND_INF_HF_NORTHERN_BUSH_2 },
+    { RC_HF_NORTHERN_BUSH_3, RAND_INF_HF_NORTHERN_BUSH_3 },
+    { RC_HF_NORTHERN_BUSH_4, RAND_INF_HF_NORTHERN_BUSH_4 },
+    { RC_HF_NORTHERN_BUSH_5, RAND_INF_HF_NORTHERN_BUSH_5 },
+    { RC_HF_NORTHERN_BUSH_6, RAND_INF_HF_NORTHERN_BUSH_6 },
+    { RC_HF_CHILD_NORTHERN_BUSH_1, RAND_INF_HF_CHILD_NORTHERN_BUSH_1 },
+    { RC_HF_CHILD_NORTHERN_BUSH_2, RAND_INF_HF_CHILD_NORTHERN_BUSH_2 },
+    { RC_HF_CHILD_NORTHERN_BUSH_3, RAND_INF_HF_CHILD_NORTHERN_BUSH_3 },
+    { RC_HF_CHILD_NORTHERN_BUSH_4, RAND_INF_HF_CHILD_NORTHERN_BUSH_4 },
+    { RC_HF_CHILD_NORTHERN_BUSH_5, RAND_INF_HF_CHILD_NORTHERN_BUSH_5 },
+    { RC_HF_CHILD_NORTHERN_BUSH_6, RAND_INF_HF_CHILD_NORTHERN_BUSH_6 },
+    { RC_HF_CHILD_NORTHERN_BUSH_7, RAND_INF_HF_CHILD_NORTHERN_BUSH_7 },
+    { RC_HF_CHILD_NORTHERN_BUSH_8, RAND_INF_HF_CHILD_NORTHERN_BUSH_8 },
+    { RC_HF_CHILD_NORTHERN_BUSH_9, RAND_INF_HF_CHILD_NORTHERN_BUSH_9 },
+    { RC_HF_CHILD_NORTHERN_BUSH_10, RAND_INF_HF_CHILD_NORTHERN_BUSH_10 },
+    { RC_HF_CHILD_NORTHERN_BUSH_11, RAND_INF_HF_CHILD_NORTHERN_BUSH_11 },
+    { RC_HF_BUSH_BY_ROCKY_PATH_1, RAND_INF_HF_BUSH_BY_ROCKY_PATH_1 },
+    { RC_HF_BUSH_BY_ROCKY_PATH_2, RAND_INF_HF_BUSH_BY_ROCKY_PATH_2 },
+    { RC_HF_BUSH_BY_ROCKY_PATH_3, RAND_INF_HF_BUSH_BY_ROCKY_PATH_3 },
+    { RC_HF_BUSH_BY_ROCKY_PATH_4, RAND_INF_HF_BUSH_BY_ROCKY_PATH_4 },
+    { RC_HF_BUSH_BY_ROCKY_PATH_5, RAND_INF_HF_BUSH_BY_ROCKY_PATH_5 },
+    { RC_HF_BUSH_BY_ROCKY_PATH_6, RAND_INF_HF_BUSH_BY_ROCKY_PATH_6 },
+    { RC_HF_SOUTHERN_BUSH_1, RAND_INF_HF_SOUTHERN_BUSH_1 },
+    { RC_HF_SOUTHERN_BUSH_2, RAND_INF_HF_SOUTHERN_BUSH_2 },
+    { RC_HF_SOUTHERN_BUSH_3, RAND_INF_HF_SOUTHERN_BUSH_3 },
+    { RC_HF_SOUTHERN_BUSH_4, RAND_INF_HF_SOUTHERN_BUSH_4 },
+    { RC_HF_SOUTHERN_BUSH_5, RAND_INF_HF_SOUTHERN_BUSH_5 },
+    { RC_HF_SOUTHERN_BUSH_6, RAND_INF_HF_SOUTHERN_BUSH_6 },
+    { RC_HF_SOUTHERN_BUSH_7, RAND_INF_HF_SOUTHERN_BUSH_7 },
+    { RC_HF_SOUTHERN_BUSH_8, RAND_INF_HF_SOUTHERN_BUSH_8 },
+    { RC_HF_SOUTHERN_BUSH_9, RAND_INF_HF_SOUTHERN_BUSH_9 },
+    { RC_HF_SOUTHERN_BUSH_10, RAND_INF_HF_SOUTHERN_BUSH_10 },
+    { RC_HF_SOUTHERN_BUSH_11, RAND_INF_HF_SOUTHERN_BUSH_11 },
+    { RC_HF_SOUTHERN_BUSH_12, RAND_INF_HF_SOUTHERN_BUSH_12 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_1, RAND_INF_HF_CHILD_SOUTHERN_BUSH_1 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_2, RAND_INF_HF_CHILD_SOUTHERN_BUSH_2 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_3, RAND_INF_HF_CHILD_SOUTHERN_BUSH_3 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_4, RAND_INF_HF_CHILD_SOUTHERN_BUSH_4 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_5, RAND_INF_HF_CHILD_SOUTHERN_BUSH_5 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_6, RAND_INF_HF_CHILD_SOUTHERN_BUSH_6 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_7, RAND_INF_HF_CHILD_SOUTHERN_BUSH_7 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_8, RAND_INF_HF_CHILD_SOUTHERN_BUSH_8 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_9, RAND_INF_HF_CHILD_SOUTHERN_BUSH_9 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_10, RAND_INF_HF_CHILD_SOUTHERN_BUSH_10 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_11, RAND_INF_HF_CHILD_SOUTHERN_BUSH_11 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_12, RAND_INF_HF_CHILD_SOUTHERN_BUSH_12 },
+    { RC_ZF_BUSH_1, RAND_INF_ZF_BUSH_1 },
+    { RC_ZF_BUSH_2, RAND_INF_ZF_BUSH_2 },
+    { RC_ZF_BUSH_3, RAND_INF_ZF_BUSH_3 },
+    { RC_ZF_BUSH_4, RAND_INF_ZF_BUSH_4 },
+    { RC_ZF_BUSH_5, RAND_INF_ZF_BUSH_5 },
+    { RC_ZF_BUSH_6, RAND_INF_ZF_BUSH_6 },
 };
 
 BeehiveIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
@@ -5488,7 +5579,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 112> getItemMessages = { {
+    const std::array<GetItemMessage, 122> getItemMessages = { {
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, "You found %gGreg%w!", "%gGreg%w! Du hast ihn&wirklich gefunden!",
                   "Félicitation! Vous avez trouvé %gGreg%w!"),
         GIMESSAGE(RG_MASTER_SWORD, ITEM_SWORD_MASTER, "You found the %gMaster Sword%w!",
@@ -5764,6 +5855,27 @@ void Randomizer::CreateCustomMessages() {
                   "Du erhältst die %rKindergeldbörse%w!&Jetzt kannst Du bis&zu %y99 Rubine%w mit Dir führen!",
                   "Vous obtenez la %rPetite Bourse%w!&Elle peut contenir jusqu'à %y99 rubis%w!"),
 
+        GIMESSAGE(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, ITEM_BEAN, "You found the&%gDeath Mountain Crater Bean Soul%w!",
+                  TODO_TRANSLATE, TODO_TRANSLATE),
+        GIMESSAGE(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, ITEM_BEAN, "You found the&%gDeath Mountain Trail Bean Soul%w!",
+                  TODO_TRANSLATE, TODO_TRANSLATE),
+        GIMESSAGE(RG_DESERT_COLOSSUS_BEAN_SOUL, ITEM_BEAN, "You found the&%gDesert Colossus Bean Soul%w!",
+                  TODO_TRANSLATE, TODO_TRANSLATE),
+        GIMESSAGE(RG_GERUDO_VALLEY_BEAN_SOUL, ITEM_BEAN, "You found the&%gGerudo Valley Bean Soul%w!", TODO_TRANSLATE,
+                  TODO_TRANSLATE),
+        GIMESSAGE(RG_GRAVEYARD_BEAN_SOUL, ITEM_BEAN, "You found the&%gGraveyard Bean Soul%w!", TODO_TRANSLATE,
+                  TODO_TRANSLATE),
+        GIMESSAGE(RG_KOKIRI_FOREST_BEAN_SOUL, ITEM_BEAN, "You found the&%gKokiri Forest Bean Soul%w!", TODO_TRANSLATE,
+                  TODO_TRANSLATE),
+        GIMESSAGE(RG_LAKE_HYLIA_BEAN_SOUL, ITEM_BEAN, "You found the&%gLake Hylia Bean Soul%w!", TODO_TRANSLATE,
+                  TODO_TRANSLATE),
+        GIMESSAGE(RG_LOST_WOODS_BRIDGE_BEAN_SOUL, ITEM_BEAN, "You found the&%gLost Wood's Bridge Bean Soul%w!",
+                  TODO_TRANSLATE, TODO_TRANSLATE),
+        GIMESSAGE(RG_LOST_WOODS_BEAN_SOUL, ITEM_BEAN, "You found the&%gLost Wood's Theatre Bean Soul%w!",
+                  TODO_TRANSLATE, TODO_TRANSLATE),
+        GIMESSAGE(RG_ZORAS_RIVER_BEAN_SOUL, ITEM_BEAN, "You found the&%gZora's River Bean Soul%w!", TODO_TRANSLATE,
+                  TODO_TRANSLATE),
+
         GIMESSAGE(RG_GOHMA_SOUL, ITEM_BIG_POE, "You found the soul for %gGohma%w!",
                   "Du hast die Seele von&%gGohma%w gefunden!", "Vous obtenez l'âme de %gGohma%w!"),
         GIMESSAGE(RG_KING_DODONGO_SOUL, ITEM_BIG_POE, "You found the soul for %rKing&Dodongo%w!",
@@ -5815,7 +5927,7 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_FISHING_POLE, ITEM_FISHING_POLE, "You found a lost %rFishing Pole%w!&Time to hit the pond!",
                   "Du hast eine verlorene %rAngelrute%w&gefunden!&Zeit, im Teich&zu angeln!",
                   "Vous obtenez une %rCanne à pêche%w&perdue!&Il est temps d'aller à %gl'étang%w!"),
-        GIMESSAGE(RG_BOMBCHU_BAG, ITEM_BOMBCHU, "You found the %rBombchu Bag%w!",
+        GIMESSAGE(RG_PROGRESSIVE_BOMBCHU_BAG, ITEM_BOMBCHU, "You found the %rBombchu Bag%w!",
                   "Du hast die %rKrabbelminentasche%w&gefunden!", "Vous obtenez un %rSac de Missiles&Teigneux%w!"),
         GIMESSAGE(
             RG_BOMB_BAG_INF, ITEM_BOMB_BAG_40, "You got an %rInfinite Bomb Bag%w!&Now you have %yinfinite bombs%w!",
@@ -5958,7 +6070,7 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
     }
 
     // Count any bombchu pack as bombchus
-    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS) {
+    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHU_BAG) {
         if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = 0) {
             gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
@@ -5990,12 +6102,21 @@ std::map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
     { RG_MAGIC_INF, RAND_INF_HAS_INFINITE_MAGIC_METER },
     { RG_BOMBCHU_INF, RAND_INF_HAS_INFINITE_BOMBCHUS },
     { RG_WALLET_INF, RAND_INF_HAS_INFINITE_MONEY },
-    { RG_SKELETON_KEY, RAND_INF_HAS_SKELETON_KEY },
     { RG_OCARINA_A_BUTTON, RAND_INF_HAS_OCARINA_A },
     { RG_OCARINA_C_UP_BUTTON, RAND_INF_HAS_OCARINA_C_UP },
     { RG_OCARINA_C_DOWN_BUTTON, RAND_INF_HAS_OCARINA_C_DOWN },
     { RG_OCARINA_C_LEFT_BUTTON, RAND_INF_HAS_OCARINA_C_LEFT },
     { RG_OCARINA_C_RIGHT_BUTTON, RAND_INF_HAS_OCARINA_C_RIGHT },
+    { RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL },
+    { RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL },
+    { RG_DESERT_COLOSSUS_BEAN_SOUL, RAND_INF_DESERT_COLOSSUS_BEAN_SOUL },
+    { RG_GERUDO_VALLEY_BEAN_SOUL, RAND_INF_GERUDO_VALLEY_BEAN_SOUL },
+    { RG_GRAVEYARD_BEAN_SOUL, RAND_INF_GRAVEYARD_BEAN_SOUL },
+    { RG_KOKIRI_FOREST_BEAN_SOUL, RAND_INF_KOKIRI_FOREST_BEAN_SOUL },
+    { RG_LAKE_HYLIA_BEAN_SOUL, RAND_INF_LAKE_HYLIA_BEAN_SOUL },
+    { RG_LOST_WOODS_BRIDGE_BEAN_SOUL, RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL },
+    { RG_LOST_WOODS_BEAN_SOUL, RAND_INF_LOST_WOODS_BEAN_SOUL },
+    { RG_ZORAS_RIVER_BEAN_SOUL, RAND_INF_ZORAS_RIVER_BEAN_SOUL },
     { RG_GOHMA_SOUL, RAND_INF_GOHMA_SOUL },
     { RG_KING_DODONGO_SOUL, RAND_INF_KING_DODONGO_SOUL },
     { RG_BARINADE_SOUL, RAND_INF_BARINADE_SOUL },
@@ -6191,6 +6312,21 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
         gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
         return Return_Item_Entry(giEntry, RG_NONE);
+    } else if (item == RG_SKELETON_KEY) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_SKELETON_KEY);
+        // This isn't technically necessary, because keys will no longer be consumed,
+        // but for the player's sanity we display that they _have_ keys.
+        gSaveContext.inventory.dungeonKeys[SCENE_FOREST_TEMPLE] = FOREST_TEMPLE_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_FIRE_TEMPLE] = FIRE_TEMPLE_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_WATER_TEMPLE] = WATER_TEMPLE_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_SPIRIT_TEMPLE] = SPIRIT_TEMPLE_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_SHADOW_TEMPLE] = SHADOW_TEMPLE_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_THIEVES_HIDEOUT] = GERUDO_FORTRESS_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX;
+
+        return Return_Item_Entry(giEntry, RG_NONE);
     } else if (item >= RG_GUARD_HOUSE_KEY && item <= RG_FISHING_HOLE_KEY) {
         Flags_SetRandomizerInf(
             (RandomizerInf)((int)RAND_INF_GUARD_HOUSE_UNLOCKED + ((item - RG_GUARD_HOUSE_KEY) * 2) + 1));
@@ -6216,6 +6352,18 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             if (INV_CONTENT(ITEM_BEAN) == ITEM_NONE) {
                 INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
                 AMMO(ITEM_BEAN) = 10;
+                if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_PLANTING_BEANS)) {
+                    gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_CRATER].swch |= (1 << 3);
+                    gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_TRAIL].swch |= (1 << 6);
+                    gSaveContext.sceneFlags[SCENE_DESERT_COLOSSUS].swch |= (1 << 24);
+                    gSaveContext.sceneFlags[SCENE_GERUDO_VALLEY].swch |= (1 << 3);
+                    gSaveContext.sceneFlags[SCENE_GRAVEYARD].swch |= (1 << 3);
+                    gSaveContext.sceneFlags[SCENE_KOKIRI_FOREST].swch |= (1 << 9);
+                    gSaveContext.sceneFlags[SCENE_LAKE_HYLIA].swch |= (1 << 1);
+                    gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 4) | (1 << 18);
+                    gSaveContext.sceneFlags[SCENE_ZORAS_RIVER].swch |= (1 << 3);
+                    AMMO(ITEM_BEAN) = 0;
+                }
             }
             break;
         case RG_DOUBLE_DEFENSE:
@@ -6259,19 +6407,8 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             }
 
             break;
-        case RG_PROGRESSIVE_BOMBCHUS:
-        case RG_BOMBCHU_BAG:
-            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
-                INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
-                AMMO(ITEM_BOMBCHU) = 20;
-            } else if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INFINITE_UPGRADES)) {
-                Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
-            } else {
-                AMMO(ITEM_BOMBCHU) += 10;
-                if (AMMO(ITEM_BOMBCHU) > 50) {
-                    AMMO(ITEM_BOMBCHU) = 50;
-                }
-            }
+        case RG_PROGRESSIVE_BOMBCHU_BAG:
+            OTRGlobals::Instance->gRandoContext->HandleGetBombchuBag();
             break;
         case RG_MASTER_SWORD:
             if (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {

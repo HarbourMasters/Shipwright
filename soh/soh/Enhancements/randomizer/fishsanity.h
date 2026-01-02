@@ -138,26 +138,9 @@ class Fishsanity {
     static void OnActorInitHandler(void* refActor);
 
     /**
-     * @brief PlayerUpdate hook handler for fishsanity
-     */
-    static void OnPlayerUpdateHandler();
-
-    /**
      * @brief ActorUpdate hook handler for fishsanity
      */
     static void OnActorUpdateHandler(void* refActor);
-
-    /**
-     * @brief SceneInit hook handler for fishsanity
-     */
-    static void OnSceneInitHandler(int16_t sceneNum);
-
-    /**
-     * @brief VB hook handler for fishsanity
-     */
-    static void OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs);
-
-    static void OnItemReceiveHandler(GetItemEntry itemEntry);
 
   private:
     /**
@@ -183,9 +166,6 @@ class Fishsanity {
      * @brief True if fishsanity helpers have been initialized
      */
     static bool fishsanityHelpersInit;
-
-    static s16 fishGroupCounter;
-    static bool enableAdvance;
 
     /////////////////////////////////////////////////////////
     //// Helper data structures derived from static data ////

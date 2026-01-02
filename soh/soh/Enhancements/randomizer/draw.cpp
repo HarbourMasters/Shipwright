@@ -28,6 +28,7 @@ extern "C" {
 #include "objects/object_bv/object_bv.h"
 #include "objects/object_gnd/object_gnd.h"
 #include "objects/object_fd/object_fd.h"
+#include "objects/object_mamenoki/object_mamenoki.h"
 #include "objects/object_mo/object_mo.h"
 #include "objects/object_sst/object_sst.h"
 #include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
@@ -929,6 +930,17 @@ extern "C" void DrawGanon(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+extern "C" void Randomizer_DrawBeanSprout(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Scale(0.3f, 0.3f, 0.3f, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gMagicBeanSeedlingDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
 extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEntry) {
     s16 slot;
     if (getItemEntry->getItemId != RG_ICE_TRAP) {
@@ -1196,7 +1208,7 @@ extern "C" void Randomizer_DrawBombchuBag(PlayState* play, GetItemEntry* getItem
 }
 
 extern "C" void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* getItemEntry) {
-    if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOMBCHU_BAG)) {
+    if (IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).IsNot(RO_BOMBCHU_BAG_NONE)) {
         Randomizer_DrawBombchuBag(play, getItemEntry);
     } else {
         OPEN_DISPS(play->state.gfxCtx);

@@ -98,14 +98,19 @@ void RegisterShuffleFairies() {
     // Grant item when picking up fairy.
     COND_VB_SHOULD(VB_FAIRY_HEAL, shouldRegister, {
         EnElf* enElf = va_arg(args, EnElf*);
-
         const auto fairyIdentity = ObjectExtension::GetInstance().Get<FairyIdentity>(&enElf->actor);
-        if (fairyIdentity == nullptr) {
-            return;
-        }
-
-        if (fairyIdentity != nullptr && fairyIdentity->randomizerInf && fairyIdentity->randomizerInf != RAND_INF_MAX) {
+        if (fairyIdentity != nullptr && fairyIdentity->randomizerInf != RAND_INF_MAX) {
             Flags_SetRandomizerInf(fairyIdentity->randomizerInf);
+        }
+    });
+
+    COND_VB_SHOULD(VB_BOTTLE_ACTOR, shouldRegister, {
+        Actor* actor = va_arg(args, Actor*);
+        const auto fairyIdentity = ObjectExtension::GetInstance().Get<FairyIdentity>(actor);
+        if (fairyIdentity != nullptr && fairyIdentity->randomizerInf != RAND_INF_MAX) {
+            Flags_SetRandomizerInf(fairyIdentity->randomizerInf);
+            actor->parent = &GET_PLAYER(gPlayState)->actor;
+            *should = false;
         }
     });
 

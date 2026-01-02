@@ -4,7 +4,6 @@
 #include <map>
 #include <set>
 #include <string>
-#include <sstream>
 #include <libultraship/libultraship.h>
 #include <functions.h>
 #include "../randomizer/3drando/random.hpp"
