@@ -299,6 +299,7 @@ void LoadStatsVersion1() {
         SaveManager::Instance->LoadData("", gSaveContext.ship.stats.dungeonKeys[i]);
     });
     SaveManager::Instance->LoadData("rtaTiming", gSaveContext.ship.stats.rtaTiming);
+    SaveManager::Instance->LoadData("firstInput", gSaveContext.ship.stats.firstInput);
     SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
     SaveManager::Instance->LoadData("playTimer", gSaveContext.ship.stats.playTimer);
     SaveManager::Instance->LoadData("pauseTimer", gSaveContext.ship.stats.pauseTimer);
@@ -348,6 +349,7 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
         SaveManager::Instance->SaveData("", saveContext->ship.stats.dungeonKeys[i]);
     });
     SaveManager::Instance->SaveData("rtaTiming", saveContext->ship.stats.rtaTiming);
+    SaveManager::Instance->SaveData("firstInput", saveContext->ship.stats.firstInput);
     SaveManager::Instance->SaveData("fileCreatedAt", saveContext->ship.stats.fileCreatedAt);
     SaveManager::Instance->SaveData("playTimer", saveContext->ship.stats.playTimer);
     SaveManager::Instance->SaveData("pauseTimer", saveContext->ship.stats.pauseTimer);
@@ -694,7 +696,8 @@ void InitStats(bool isDebug) {
         gSaveContext.ship.stats.dungeonKeys[dungeon] = isDebug ? 8 : 0;
     }
     gSaveContext.ship.stats.rtaTiming = CVarGetInteger(CVAR_GAMEPLAY_STATS("RTATiming"), 0);
-    gSaveContext.ship.stats.fileCreatedAt = 0;
+    gSaveContext.ship.stats.fileCreatedAt = GetUnixTimestamp();
+    gSaveContext.ship.stats.firstInput = 0;
     gSaveContext.ship.stats.playTimer = 0;
     gSaveContext.ship.stats.pauseTimer = 0;
     for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.ship.stats.itemTimestamp); timestamp++) {

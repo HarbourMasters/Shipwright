@@ -948,16 +948,6 @@ void TimeSplitsDrawManageList() {
     ImGui::EndChild();
 }
 
-void InitializeSplitDataFile() {
-    std::string filename = Ship::Context::GetPathRelativeToAppDirectory("timesplitdata.json");
-    if (!std::filesystem::exists(filename)) {
-        json j;
-        std::ofstream file(filename);
-        file << j.dump(4);
-        file.close();
-    }
-}
-
 void TimeSplitWindow::Draw() {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, windowColor);
     GuiWindow::Draw();
@@ -997,7 +987,6 @@ void TimeSplitWindow::InitElement() {
                                                                         ImVec4(1, 1, 1, 1));
     Color_RGBA8 defaultColour = { 0, 0, 0, 255 };
     windowColor = VecFromRGBA8(CVarGetColor(CVAR_ENHANCEMENT("TimeSplits.WindowColor.Value"), defaultColour));
-    InitializeSplitDataFile();
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTimestamp>([](u8 item) {
         if (item != ITEM_SKULL_TOKEN) {

@@ -6,9 +6,12 @@ set(CMAKE_C_STANDARD 23 CACHE STRING "The C standard to use")
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
-project(Ship VERSION 9.0.5 LANGUAGES C CXX)
+project(Ship VERSION 9.1.1 LANGUAGES C CXX)
 include(CMake/soh-cvars.cmake)
 include(CMake/lus-cvars.cmake)
+set(SPDLOG_LEVEL_TRACE 0)
+set(SPDLOG_LEVEL_OFF 6)
+set(SPDLOG_MIN_CUTOFF SPDLOG_LEVEL_TRACE CACHE STRING "cutoff at trace")
 
 option(SUPPRESS_WARNINGS "Suppress warnings in LUS and src (decomp)" ON)
 if(SUPPRESS_WARNINGS)
@@ -35,7 +38,7 @@ math(EXPR PATCH_INDEX "${PROJECT_VERSION_PATCH}")
 # Use the patch number to select the correct word
 list(GET NATO_PHONETIC_ALPHABET ${PATCH_INDEX} PROJECT_PATCH_WORD)
 
-set(PROJECT_BUILD_NAME "Blair ${PROJECT_PATCH_WORD}" CACHE STRING "" FORCE)
+set(PROJECT_BUILD_NAME "Copper ${PROJECT_PATCH_WORD}" CACHE STRING "" FORCE)
 set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "" FORCE)
 
 execute_process(

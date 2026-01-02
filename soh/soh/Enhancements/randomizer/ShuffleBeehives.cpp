@@ -11,7 +11,7 @@ extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 void ObjComb_RandomizerChooseItemDrop(ObjComb* objComb, PlayState* play) {
     s16 params = objComb->actor.params & 0x1F;
-    const auto beehiveIdentity = ObjectExtension::GetInstance().Get<BeehiveIdentity>(&objComb->actor);
+    const auto beehiveIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&objComb->actor);
 
     if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && beehiveIdentity != nullptr &&
         !Flags_GetRandomizerInf(beehiveIdentity->randomizerInf)) {
@@ -42,7 +42,7 @@ void ObjComb_RandomizerChooseItemDrop(ObjComb* objComb, PlayState* play) {
 void ObjComb_RandomizerWait(ObjComb* objComb, PlayState* play) {
     objComb->unk_1B0 -= 50;
 
-    const auto beehiveIdentity = ObjectExtension::GetInstance().Get<BeehiveIdentity>(&objComb->actor);
+    const auto beehiveIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&objComb->actor);
     if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && beehiveIdentity != nullptr &&
         !Flags_GetRandomizerInf(beehiveIdentity->randomizerInf)) {
         if (objComb->unk_1B0 <= -5000) {
@@ -79,7 +79,7 @@ void ObjComb_RandomizerInit(void* actor) {
     s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
     auto beehiveIdentity = OTRGlobals::Instance->gRandomizer->IdentifyBeehive(
         gPlayState->sceneNum, (s16)objComb->actor.world.pos.x, respawnData);
-    ObjectExtension::GetInstance().Set<BeehiveIdentity>(actor, std::move(beehiveIdentity));
+    ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(beehiveIdentity));
     objComb->actionFunc = (ObjCombActionFunc)ObjComb_RandomizerWait;
 }
 
@@ -142,5 +142,4 @@ void Rando::StaticData::RegisterBeehiveLocations() {
     // clang-format-on
 }
 
-static ObjectExtension::Register<BeehiveIdentity> RegisterBeehiveIdentity;
 static RegisterShipInitFunc registerBeehiveLocations(Rando::StaticData::RegisterBeehiveLocations);

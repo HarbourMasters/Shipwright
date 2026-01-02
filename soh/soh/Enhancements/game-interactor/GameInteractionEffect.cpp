@@ -101,8 +101,10 @@ void UnsetFlag::_Apply() {
 GameInteractionEffectQueryResult ModifyHeartContainers::CanBeApplied() {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-    } else if ((parameters[0] > 0 && (gSaveContext.healthCapacity + (parameters[0] * 0x10) > 0x140)) ||
-               (parameters[0] < 0 && (gSaveContext.healthCapacity + (parameters[0] * 0x10) < 0x10))) {
+    } else if ((parameters[0] > 0 &&
+                (gSaveContext.healthCapacity + (parameters[0] * FULL_HEART_HEALTH) > MAX_HEALTH)) ||
+               (parameters[0] < 0 &&
+                (gSaveContext.healthCapacity + (parameters[0] * FULL_HEART_HEALTH) < FULL_HEART_HEALTH))) {
         return GameInteractionEffectQueryResult::NotPossible;
     }
 

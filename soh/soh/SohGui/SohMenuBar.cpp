@@ -18,11 +18,8 @@
 #include "soh/Enhancements/mods.h"
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
-#ifdef ENABLE_REMOTE_CONTROL
 #include "soh/Network/CrowdControl/CrowdControl.h"
 #include "soh/Network/Sail/Sail.h"
-#endif
-
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/Enhancements/controls/InputViewer.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
@@ -37,7 +34,6 @@
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
-#include "soh/Enhancements/randomizer/randomizer_settings_window.h"
 #include "soh/Enhancements/enemyrandomizer.h"
 #include "soh/Enhancements/timesplits/TimeSplits.h"
 #include "soh/Enhancements/randomizer/Plandomizer.h"

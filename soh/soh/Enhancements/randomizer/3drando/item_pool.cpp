@@ -3,7 +3,7 @@
 #include "../dungeon.h"
 #include "fill.hpp"
 #include "../static_data.h"
-#include "../context.h"
+#include "../SeedContext.h"
 #include "pool_functions.hpp"
 #include "random.hpp"
 #include "spoiler_log.hpp"
@@ -350,19 +350,6 @@ static void ReplaceMaxItem(const RandomizerGet itemToReplace, int max) {
     }
 }
 
-void PlaceJunkInExcludedLocation(const RandomizerCheck il) {
-    // place a non-advancement item in this location
-    auto ctx = Rando::Context::GetInstance();
-    for (size_t i = 0; i < ItemPool.size(); i++) {
-        if (Rando::StaticData::RetrieveItem(ItemPool[i]).GetCategory() == ITEM_CATEGORY_JUNK) {
-            ctx->PlaceItemInLocation(il, ItemPool[i]);
-            ItemPool.erase(ItemPool.begin() + i);
-            return;
-        }
-    }
-    SPDLOG_ERROR("ERROR: No Junk to Place!!!");
-}
-
 static void PlaceVanillaMapsAndCompasses() {
     auto ctx = Rando::Context::GetInstance();
     for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
@@ -421,7 +408,7 @@ static void PlaceItemsForType(RandomizerCheckType rctype, bool overworldActive, 
 }
 
 static void SetScarceItemPool() {
-    ReplaceMaxItem(RG_PROGRESSIVE_BOMBCHUS, 3);
+    ReplaceMaxItem(RG_PROGRESSIVE_BOMBCHU_BAG, ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE) ? 3 : 2);
     ReplaceMaxItem(RG_BOMBCHU_5, 1);
     ReplaceMaxItem(RG_BOMBCHU_10, 2);
     ReplaceMaxItem(RG_BOMBCHU_20, 0);
@@ -437,7 +424,7 @@ static void SetScarceItemPool() {
 
 static void SetMinimalItemPool() {
     auto ctx = Rando::Context::GetInstance();
-    ReplaceMaxItem(RG_PROGRESSIVE_BOMBCHUS, 1);
+    ReplaceMaxItem(RG_PROGRESSIVE_BOMBCHU_BAG, 1);
     ReplaceMaxItem(RG_BOMBCHU_5, 1);
     ReplaceMaxItem(RG_BOMBCHU_10, 0);
     ReplaceMaxItem(RG_BOMBCHU_20, 0);
@@ -515,11 +502,22 @@ void GenerateItemPool() {
         ctx->possibleIceTrapModels.push_back(RG_LIGHT_MEDALLION);
     }
 
-    if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
+    if (ctx->GetOption(RSK_TRIFORCE_HUNT).IsNot(RO_TRIFORCE_HUNT_OFF)) {
         ctx->possibleIceTrapModels.push_back(RG_TRIFORCE_PIECE);
         AddItemToMainPool(RG_TRIFORCE_PIECE, (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get() + 1));
-        ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_TRIFORCE); // Win condition
-        ctx->PlaceItemInLocation(RC_GANON, GetJunkItem(), false, true);
+
+        switch (ctx->GetOption(RSK_TRIFORCE_HUNT).Get()) {
+            case RO_TRIFORCE_HUNT_OFF:
+                break;
+            case RO_TRIFORCE_HUNT_WIN:
+                ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_TRIFORCE); // Win condition
+                ctx->PlaceItemInLocation(RC_GANON, GetJunkItem(), false, true);
+                break;
+            case RO_TRIFORCE_HUNT_GBK:
+                ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_GANONS_CASTLE_BOSS_KEY);
+                ctx->PlaceItemInLocation(RC_GANON, RG_TRIFORCE); // Win condition
+                break;
+        }
     } else {
         ctx->PlaceItemInLocation(RC_GANON, RG_TRIFORCE); // Win condition
     }
@@ -611,6 +609,10 @@ void GenerateItemPool() {
         PlaceItemsForType(RCTYPE_NLTREE, treesActive, false);
     }
 
+    // Shuffle Bushes
+    bool bushesActive = (bool)ctx->GetOption(RSK_SHUFFLE_BUSHES);
+    PlaceItemsForType(RCTYPE_BUSH, bushesActive, false);
+
     // Shuffle Crates
     bool overworldCratesActive = ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_OVERWORLD) ||
                                  ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL);
@@ -666,17 +668,21 @@ void GenerateItemPool() {
         AddItemToMainPool(RG_PROGRESSIVE_STICK_UPGRADE);
         AddItemToMainPool(RG_PROGRESSIVE_MAGIC_METER);
         AddItemToMainPool(RG_PROGRESSIVE_WALLET);
+        if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+            AddItemToMainPool(RG_PROGRESSIVE_BOMBCHU_BAG);
+        }
     }
 
-    if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
-        ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)) {
+    // if beans unshuffled, put on bean guy, otherwise if not starting with beans, add to pool
+    if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).IsNot(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) &&
+        ctx->GetOption(RSK_SHUFFLE_MERCHANTS).IsNot(RO_SHUFFLE_MERCHANTS_ALL)) {
+        ctx->PlaceItemInLocation(RC_ZR_MAGIC_BEAN_SALESMAN, RG_MAGIC_BEAN, false, true);
+    } else if (!ctx->GetOption(RSK_STARTING_BEANS)) {
         AddItemToMainPool(RG_MAGIC_BEAN_PACK);
         if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
             AddItemToPool(PendingJunkPool, RG_MAGIC_BEAN_PACK);
         }
         ctx->possibleIceTrapModels.push_back(RG_MAGIC_BEAN_PACK);
-    } else {
-        ctx->PlaceItemInLocation(RC_ZR_MAGIC_BEAN_SALESMAN, RG_MAGIC_BEAN, false, true);
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) ||
@@ -684,9 +690,9 @@ void GenerateItemPool() {
         if (/*!ProgressiveGoronSword TODO: Implement Progressive Goron Sword*/ true) {
             AddItemToMainPool(RG_GIANTS_KNIFE);
         }
-        if (ctx->GetOption(RSK_BOMBCHU_BAG)) {
-            AddItemToMainPool(RG_PROGRESSIVE_BOMBCHUS);
-        } else {
+        if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
+            AddItemToMainPool(RG_PROGRESSIVE_BOMBCHU_BAG);
+        } else if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_NONE)) {
             AddItemToMainPool(RG_BOMBCHU_10);
         }
     } else {
@@ -758,6 +764,19 @@ void GenerateItemPool() {
         ctx->PlaceItemInLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD, RG_HUGE_RUPEE, false, true);
     }
 
+    if (ctx->GetOption(RSK_SHUFFLE_BEAN_SOULS)) {
+        AddItemToMainPool(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL);
+        AddItemToMainPool(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL);
+        AddItemToMainPool(RG_DESERT_COLOSSUS_BEAN_SOUL);
+        AddItemToMainPool(RG_GERUDO_VALLEY_BEAN_SOUL);
+        AddItemToMainPool(RG_GRAVEYARD_BEAN_SOUL);
+        AddItemToMainPool(RG_KOKIRI_FOREST_BEAN_SOUL);
+        AddItemToMainPool(RG_LAKE_HYLIA_BEAN_SOUL);
+        AddItemToMainPool(RG_LOST_WOODS_BRIDGE_BEAN_SOUL);
+        AddItemToMainPool(RG_LOST_WOODS_BEAN_SOUL);
+        AddItemToMainPool(RG_ZORAS_RIVER_BEAN_SOUL);
+    }
+
     if (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS)) {
         AddItemToMainPool(RG_GOHMA_SOUL);
         AddItemToMainPool(RG_KING_DODONGO_SOUL);
@@ -798,8 +817,13 @@ void GenerateItemPool() {
         AddItemToMainPool(RG_PROGRESSIVE_NUT_UPGRADE);
     }
 
-    if (ctx->GetOption(RSK_BOMBCHU_BAG)) {
-        AddItemToMainPool(RG_PROGRESSIVE_BOMBCHUS, 5);
+    if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
+        AddItemToMainPool(RG_PROGRESSIVE_BOMBCHU_BAG, 5);
+    } else if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+        AddItemToMainPool(RG_PROGRESSIVE_BOMBCHU_BAG, 3);
+        if (ctx->GetOption(RSK_ITEM_POOL).Is(RO_ITEM_POOL_PLENTIFUL)) {
+            AddItemToPool(PendingJunkPool, RG_PROGRESSIVE_BOMBCHU_BAG);
+        }
     } else {
         AddItemToMainPool(RG_BOMBCHU_5);
         AddItemToMainPool(RG_BOMBCHU_10, 3);
@@ -1235,7 +1259,8 @@ void GenerateItemPool() {
         AddItemToMainPool(RG_SHADOW_TEMPLE_BOSS_KEY);
     }
 
-    if (!ctx->GetOption(RSK_TRIFORCE_HUNT)) { // Don't add GBK to the pool at all for Triforce Hunt.
+    if (!ctx->GetOption(RSK_TRIFORCE_HUNT)
+             .IsNot(RO_TRIFORCE_HUNT_OFF)) { // Don't add GBK to the pool at all for Triforce Hunt.
         if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
             ctx->PlaceItemInLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD, RG_GANONS_CASTLE_BOSS_KEY);
         } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Get() >= RO_GANON_BOSS_KEY_LACS_VANILLA) {

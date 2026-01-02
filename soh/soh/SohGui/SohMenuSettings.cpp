@@ -178,11 +178,6 @@ void SohMenu::AddMenuSettings() {
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Search input box gets autofocus when visible. Does not affect using other widgets."));
-    AddWidget(path, "Alt Assets Tab hotkey", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_SETTING("Mods.AlternateAssetsHotkey"))
-        .RaceDisable(false)
-        .Options(
-            CheckboxOptions().Tooltip("Allows pressing the Tab key to toggle alternate assets").DefaultValue(true));
     AddWidget(path, "Open App Files Folder", WIDGET_BUTTON)
         .RaceDisable(false)
         .Callback([](WidgetInfo& info) {
@@ -236,6 +231,10 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("A11yDisableIdleCam"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Disables the automatic re-centering of the camera when idle."));
+    AddWidget(path, "Disable Screen Flash for Finishing Blow", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("A11yNoScreenFlashForFinishingBlow"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip("Disables the white screen flash on enemy kill."));
     AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT).Options(TextOptions().Color(Colors::Orange));
     AddWidget(path, "ImGui Menu Scaling", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("ImGuiScale"))
@@ -505,6 +504,15 @@ void SohMenu::AddMenuSettings() {
             });
         })
         .Options(ButtonOptions().Tooltip("Displays a test notification."));
+
+    // Mod Menu
+    path.sidebarName = "Mod Menu";
+    AddSidebarEntry("Settings", path.sidebarName, 1);
+    AddWidget(path, "Popout Mod Menu Window", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("ModMenu"))
+        .WindowName("Mod Menu")
+        .HideInSearch(true)
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Mod Menu Window."));
 }
 
 } // namespace SohGui

@@ -13,7 +13,7 @@ void RegionTable_Init_GerudoFortress() {
     }, {
         //Locations
         LOCATION(RC_GF_OUTSKIRTS_NE_CRATE, (logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)) && logic->CanBreakCrates()),
-        LOCATION(RC_GF_OUTSKIRTS_NW_CRATE, logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)),
+        LOCATION(RC_GF_OUTSKIRTS_NW_CRATE, (logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)) && logic->CanBreakCrates()),
     }, {
         //Exits
         Entrance(RR_GV_FORTRESS_SIDE, []{return true;}),
@@ -244,7 +244,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_STORMS_GROTTO] = Region("GF Storms Grotto", SCENE_GROTTOS, {
         //Events
-        EventAccess(LOGIC_FREE_FAIRIES, []{return true;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return true;}),
     }, {
         //Locations
         LOCATION(RC_GF_FAIRY_GROTTO_FAIRY_1, true),
