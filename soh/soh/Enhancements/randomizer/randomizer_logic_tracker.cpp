@@ -33,6 +33,7 @@ struct LogicTrackerNode {
         bool ChildNightAccess = false;
         bool AdultDayAccess = false;
         bool AdultNightAccess = false;
+        bool IsDiscovered = true;
     };
 
     std::string NodeName;
@@ -260,6 +261,7 @@ static void CalculateShowRandomizerRegion() {
         if (entrance->IsShuffled()) {
             const auto& originalConnectedRegion = RegionTable(entrance->GetOriginalConnectedRegionKey());
             connection.ParentName += ",    Originally to: " + originalConnectedRegion->regionName;
+            connection.IsDiscovered = Entrance_GetIsEntranceDiscovered(entrance->GetIndex());
         }
         connection.ParentRandomizerRegion = entrance->GetParentRegionKey();
         connection.ChildDayAccess = parentRegion->childDay;
@@ -653,6 +655,15 @@ static void DrawNode(LogicTrackerNode& node) {
 
         for (int i = 0; i < node.Connections.size(); i++) {
             auto& connection = node.Connections[i];
+
+            if (!connection.IsDiscovered) {
+                ImGui::BeginDisabled();
+                ImGui::CollapsingHeader("Undiscovered Entrance",
+                                        ImGuiTreeNodeFlags_AllowOverlap | ImGuiTreeNodeFlags_SpanAvailWidth);
+                ImGui::EndDisabled();
+                continue;
+            }
+
             ImGui::PushID(connection.ParentName.c_str());
 
             if (expandingNode && node.Connections.size() == 1) {
