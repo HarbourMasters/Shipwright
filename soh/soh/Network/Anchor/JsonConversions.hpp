@@ -107,11 +107,13 @@ inline void from_json(const json& j, SohStats& sohStats) {
 inline void to_json(json& j, const ShipRandomizerSaveContextData& shipRandomizerSaveContextData) {
     j = json{
         { "triforcePiecesCollected", shipRandomizerSaveContextData.triforcePiecesCollected },
+        { "bombchuUpgradeLevel", shipRandomizerSaveContextData.bombchuUpgradeLevel },
     };
 }
 
 inline void from_json(const json& j, ShipRandomizerSaveContextData& shipRandomizerSaveContextData) {
     j.at("triforcePiecesCollected").get_to(shipRandomizerSaveContextData.triforcePiecesCollected);
+    j.at("bombchuUpgradeLevel").get_to(shipRandomizerSaveContextData.bombchuUpgradeLevel);
 }
 
 inline void to_json(json& j, const ShipQuestSpecificSaveContextData& shipQuestSpecificSaveContextData) {
