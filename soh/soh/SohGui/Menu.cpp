@@ -9,6 +9,7 @@
 #include <spdlog/fmt/fmt.h>
 #include "variables.h"
 #include <tuple>
+#include "imgui_impl_sdl2.h"
 
 extern "C" {
 #include "z64.h"
@@ -120,6 +121,7 @@ UIWidgets::Colors Menu::GetMenuThemeColor() {
 Menu::Menu(const std::string& cVar, const std::string& name, uint8_t searchSidebarIndex_,
            UIWidgets::Colors defaultThemeIndex_)
     : GuiWindow(cVar, name), searchSidebarIndex(searchSidebarIndex_), defaultThemeIndex(defaultThemeIndex_) {
+    ImGui_ImplSDL2_SetGamepadMode(ImGui_ImplSDL2_GamepadMode::ImGui_ImplSDL2_GamepadMode_AutoAll);
 }
 
 void Menu::InitElement() {
