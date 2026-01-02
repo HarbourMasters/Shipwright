@@ -585,7 +585,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_FOYER_UPPER,           []{return logic->FireTimer() >= 32;}),
         Entrance(RR_FIRE_TEMPLE_MQ_GS_GORON_CAGE,         []{return logic->FireTimer() >= 32;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_BLOCKED_DOOR, []{return logic->FireTimer() >= 48 && (logic->CanUse(RG_HOOKSHOT) || ((logic->IsAdult or logic->CanGroundJump()) && ctx->GetTrickOption(RT_FIRE_MQ_BLOCKED_CHEST)));}),
+        Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_BLOCKED_DOOR, []{return logic->FireTimer() >= 48 && (logic->CanUse(RG_HOOKSHOT) || ((logic->IsAdult || logic->CanGroundJump()) && ctx->GetTrickOption(RT_FIRE_MQ_BLOCKED_CHEST)));}),
         // Fewer tunic requirements ends here
         Entrance(RR_FIRE_TEMPLE_MQ_LAVA_GEYSER_1F,        []{return logic->CanUse(RG_GORON_TUNIC) && logic->SmallKeys(SCENE_FIRE_TEMPLE, 2);}),
         Entrance(RR_FIRE_TEMPLE_MQ_TORCH_FIREWALL_ROOM,   []{return logic->HasFireSource() && ((logic->CanUse(RG_FAIRY_BOW) && logic->FireTimer() >= 32) || (ctx->GetTrickOption(RT_FIRE_MQ_BK_CHEST) && logic->FireTimer() >= 56)) && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && ctx->GetTrickOption(RT_FIRE_SOT)));}),
