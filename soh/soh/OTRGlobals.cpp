@@ -37,6 +37,7 @@
 #include "Enhancements/randomizer/static_data.h"
 #include "Enhancements/randomizer/dungeon.h"
 #include "Enhancements/gameplaystats.h"
+#include "ObjectExtension/ObjectExtension.h"
 #include "frame_interpolation.h"
 #include "variables.h"
 #include "z64.h"
@@ -427,7 +428,6 @@ void OTRGlobals::Initialize() {
     Rando::Settings::GetInstance()->AssignContext(gRandoContext);
     Rando::StaticData::InitItemTable(); // RANDOTODO make this not rely on context's logic so it can be initialised in
                                         // InitStaticData
-    Rando::Settings::GetInstance()->CreateOptions();
     gRandomizer = std::make_shared<Randomizer>();
 
     hasMasterQuest = hasOriginal = false;
@@ -2169,24 +2169,8 @@ extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNu
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actorId, sceneNum, actorParams);
 }
 
-extern "C" ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData) {
-    return OTRGlobals::Instance->gRandomizer->IdentifyScrub(sceneNum, actorParams, respawnData);
-}
-
-extern "C" BeehiveIdentity Randomizer_IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
-    return OTRGlobals::Instance->gRandomizer->IdentifyBeehive(sceneNum, xPosition, respawnData);
-}
-
 extern "C" ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
     return OTRGlobals::Instance->gRandomizer->IdentifyShopItem(sceneNum, slotIndex);
-}
-
-extern "C" CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
-    return OTRGlobals::Instance->gRandomizer->IdentifyCow(sceneNum, posX, posZ);
-}
-
-extern "C" FishIdentity Randomizer_IdentifyFish(s32 sceneNum, s32 actorParams) {
-    return OTRGlobals::Instance->gRandomizer->IdentifyFish(sceneNum, actorParams);
 }
 
 extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
@@ -2467,6 +2451,31 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                     messageEntry = Randomizer_GetCustomGetItemMessage(player);
                 }
             }
+        } else if (textId == TEXT_NEED_SPECIAL_KEY && ctx->GetOption(RSK_BOSS_KEY_HINT)) {
+            auto rh = RH_NONE;
+            switch (gPlayState->sceneNum) {
+                case SCENE_FOREST_TEMPLE:
+                    rh = RH_FOREST_BOSS_KEY_HINT;
+                    break;
+                case SCENE_FIRE_TEMPLE:
+                    rh = RH_FIRE_BOSS_KEY_HINT;
+                    break;
+                case SCENE_WATER_TEMPLE:
+                    rh = RH_WATER_BOSS_KEY_HINT;
+                    break;
+                case SCENE_SHADOW_TEMPLE:
+                    rh = RH_SHADOW_BOSS_KEY_HINT;
+                    break;
+                case SCENE_SPIRIT_TEMPLE:
+                    rh = RH_SPIRIT_BOSS_KEY_HINT;
+                    break;
+                case SCENE_GANONS_TOWER:
+                    rh = RH_GANONS_BOSS_KEY_HINT;
+                    break;
+            }
+            if (rh != RH_NONE) {
+                messageEntry = ctx->GetHint(rh)->GetHintMessage(MF_AUTO_FORMAT);
+            }
         } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS &&
                    Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != RO_GOSSIP_STONES_NONE &&
                    (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_NOTHING ||
@@ -2533,12 +2542,14 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 (RandomizerInf)((textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(rc, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
         } else if (textId == TEXT_SCRUB_RANDOM) {
-            EnDns* enDns = (EnDns*)player->talkActor;
-            RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(
-                (RandomizerInf)enDns->sohScrubIdentity.randomizerInf);
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
-                rc, TEXT_SCRUB_RANDOM, TEXT_SCRUB_RANDOM_FREE,
-                Randomizer_GetSettingValue(RSK_SCRUB_TEXT_HINT) == RO_GENERIC_OFF);
+            auto scrubIdentity = ObjectExtension::GetInstance().Get<ScrubIdentity>(player->talkActor);
+            if (scrubIdentity != nullptr) {
+                RandomizerCheck rc =
+                    OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(scrubIdentity->identity.randomizerInf);
+                messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
+                    rc, TEXT_SCRUB_RANDOM, TEXT_SCRUB_RANDOM_FREE,
+                    Randomizer_GetSettingValue(RSK_SCRUB_TEXT_HINT) == RO_GENERIC_OFF);
+            }
         } else if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), 1) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
                     textId == TEXT_HUGE_RUPEE)) {
@@ -2549,12 +2560,18 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             u16 naviTextId = Random(0, NUM_NAVI_MESSAGES);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID,
                                                                            naviTextId, MF_FORMATTED);
-        } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_10 &&
-                   (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
-                    ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL))) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
-                RC_ZR_MAGIC_BEAN_SALESMAN, TEXT_BEAN_SALESMAN_BUY_FOR_10, TEXT_NONE,
-                Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
+        } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_10) {
+            if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
+                ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)) {
+                messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
+                    RC_ZR_MAGIC_BEAN_SALESMAN, TEXT_BEAN_SALESMAN_BUY_FOR_10, TEXT_NONE,
+                    Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
+            } else if (ctx->GetOption(RSK_SKIP_PLANTING_BEANS)) {
+                // TODO_TRANSLATE Translate into french and german
+                messageEntry =
+                    CustomMessage("For #60 rupees# I'll plant beans across Hyrule, deal?\x1B#Yes&No#", { QM_YELLOW });
+                messageEntry.AutoFormat();
+            }
         } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_100) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(
                 Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100, MF_AUTO_FORMAT);
@@ -2847,8 +2864,6 @@ bool SoH_HandleConfigDrop(char* filePath) {
             }
         }
 
-        Rando::Settings::GetInstance()->UpdateOptionProperties();
-
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->GetGuiWindow("Console")->Hide();
         gui->GetGuiWindow("Actor Viewer")->Hide();
@@ -2860,6 +2875,7 @@ bool SoH_HandleConfigDrop(char* filePath) {
             Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
             ->ClearBindings();
 
+        Rando::Settings::GetInstance()->UpdateAllOptions();
         gui->SaveConsoleVariablesNextFrame();
         ShipInit::Init("*");
 

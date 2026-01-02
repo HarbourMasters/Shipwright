@@ -60,7 +60,6 @@ std::map<SceneDoorParamsPair, RandomizerInf> lookupTable = {
     {{ SCENE_LON_LON_RANCH, 447 },               RAND_INF_BACK_TOWER_UNLOCKED },
     {{ SCENE_LAKE_HYLIA, 447 },                  RAND_INF_HYLIA_LAB_UNLOCKED },
     {{ SCENE_LAKE_HYLIA, 1471 },                 RAND_INF_FISHING_HOLE_UNLOCKED },
-
     // clang-format on
 };
 

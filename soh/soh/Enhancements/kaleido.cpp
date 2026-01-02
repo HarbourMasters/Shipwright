@@ -3,6 +3,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/frame_interpolation.h"
+#include "soh/ShipInit.hpp"
 #include "soh/ShipUtils.h"
 
 extern "C" {
@@ -138,7 +139,7 @@ Kaleido::Kaleido() {
             gItemIconFishingPoleTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
             FlagType::FLAG_RANDOMIZER_INF, static_cast<int>(RAND_INF_FISHING_POLE_FOUND), "Fishing Pole"));
     }
-    if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
+    if (ctx->GetOption(RSK_TRIFORCE_HUNT).IsNot(RO_TRIFORCE_HUNT_OFF)) {
         mEntries.push_back(std::make_shared<KaleidoEntryIconCountRequired>(
             gTriforcePieceTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
             reinterpret_cast<int*>(&gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected),
@@ -518,7 +519,9 @@ void KaleidoEntryOcarinaButtons::Draw(PlayState* play, std::vector<Gfx>* mEntryD
 }
 } // namespace Rando
 
-void RandoKaleido_RegisterHooks() {
+static void RandoKaleido_RegisterHooks() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(
         RandoKaleido_UpdateMiscCollectibles);
 }
+
+static RegisterShipInitFunc initFunc(RandoKaleido_RegisterHooks);

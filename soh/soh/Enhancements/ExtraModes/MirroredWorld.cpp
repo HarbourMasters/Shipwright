@@ -1,7 +1,7 @@
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
-#include "soh/Enhancements/randomizer/context.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/ShipInit.hpp"

@@ -1170,6 +1170,21 @@ ImVec4 GetRandomValue() {
     return NewColor;
 }
 
+ImVec4 GetRandomValue(uint32_t seed) {
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+    std::mt19937 rng(seed);
+#else
+    std::mt19937_64 rng(seed);
+#endif
+    std::uniform_int_distribution<int> dist(0, 255 - 1);
+
+    ImVec4 NewColor;
+    NewColor.x = (float)(dist(rng)) / 255.0f;
+    NewColor.y = (float)(dist(rng)) / 255.0f;
+    NewColor.z = (float)(dist(rng)) / 255.0f;
+    return NewColor;
+}
+
 Color_RGBA8 RGBA8FromVec(ImVec4 vec) {
     Color_RGBA8 color = { vec.x * 255, vec.y * 255, vec.z * 255, vec.w * 255 };
     return color;

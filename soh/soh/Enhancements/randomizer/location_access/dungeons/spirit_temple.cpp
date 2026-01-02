@@ -553,7 +553,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_LEFT_CHEST,  true),
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST,   Here(RR_SPIRIT_TEMPLE_MQ_FOYER, []{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST,   AnyAgeTime([]{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_RIGHT_CHEST,  logic->CanHitSwitch(ED_BOOMERANG)),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_RIGHT_CHEST, logic->Get(LOGIC_SPIRIT_1F_SILVER_RUPEES)),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_POT_1,             logic->CanBreakPots()),
@@ -991,7 +991,7 @@ void RegionTable_Init_SpiritTemple() {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_BEAMOS_PITS,        []{return true;}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_FLOORMASTER_STAIRS, []{return logic->CanJumpslash();}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_3F_GIBDO_ROOM,      []{return Here(RR_SPIRIT_TEMPLE_MQ_SOT_SUN_ROOM, []{return ((logic->IsAdult || logic->CanUse(RG_SONG_OF_TIME)) && logic->CanUse(RG_MIRROR_SHIELD)) || logic->SunlightArrows();});}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_3F_GIBDO_ROOM,      []{return AnyAgeTime([]{return ((logic->IsAdult || logic->CanUse(RG_SONG_OF_TIME)) && logic->CanUse(RG_MIRROR_SHIELD)) || logic->SunlightArrows();});}),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_FLOORMASTER_STAIRS] = Region("Spirit Temple MQ Floormaster Stairs", SCENE_SPIRIT_TEMPLE, {}, {}, {
@@ -1088,7 +1088,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_MQ_4F_CENTRAL,      []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CAVE, []{return Here(RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_ROOM, []{return logic->CanUse(RG_MEGATON_HAMMER);});}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_BIG_MIRROR_CAVE, []{return AnyAgeTime([]{return logic->CanUse(RG_MEGATON_HAMMER);});}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_PLATFORM,        []{return logic->Get(LOGIC_SPIRIT_PLATFORM_LOWERED);}),
     });
 

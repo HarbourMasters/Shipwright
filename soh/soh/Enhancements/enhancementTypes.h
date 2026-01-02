@@ -123,4 +123,12 @@ typedef enum {
     WATERFALL_NEVER,
 } SleepingWaterfallType;
 
+typedef enum {
+    RANDOMIZE_OFF,
+    RANDOMIZE_ON_NEW_SCENE,
+    RANDOMIZE_ON_RANDO_GEN_ONLY,
+    RANDOMIZE_ON_FILE_LOAD,
+    RANDOMIZE_ON_FILE_LOAD_SEEDED,
+} RandomizeOnMode;
+
 #endif

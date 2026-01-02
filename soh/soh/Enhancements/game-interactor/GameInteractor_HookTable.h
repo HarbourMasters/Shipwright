@@ -22,6 +22,8 @@ DEFINE_HOOK(OnSceneFlagUnset, (int16_t sceneNum, int16_t flagType, int16_t flag)
 DEFINE_HOOK(OnFlagSet, (int16_t flagType, int16_t flag));
 DEFINE_HOOK(OnFlagUnset, (int16_t flagType, int16_t flag));
 DEFINE_HOOK(OnSceneSpawnActors, ());
+DEFINE_HOOK(OnLinkSkeletonInit, ());
+DEFINE_HOOK(OnLinkEquipmentChange, ());
 DEFINE_HOOK(OnPlayerUpdate, ());
 DEFINE_HOOK(OnSetDoAction, (uint16_t action));
 DEFINE_HOOK(OnPlayerSfx, (u16 sfxId));

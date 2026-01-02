@@ -189,6 +189,7 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
             gSaveContext.gsFlags[i] = loadedData.gsFlags[i];
         }
 
+        gSaveContext.ship.stats.firstInput = loadedData.ship.stats.firstInput;
         gSaveContext.ship.stats.fileCreatedAt = loadedData.ship.stats.fileCreatedAt;
 
         // Restore master sword state
@@ -228,7 +229,7 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(i)->SetCheckStatus(
                     payload["state"]["rando"]["itemLocations"][i][0].get<RandomizerCheckStatus>());
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(i)->SetIsSkipped(
-                    payload["state"]["rando"]["itemLocations"][i][0].get<u8>());
+                    payload["state"]["rando"]["itemLocations"][i][1].get<u8>());
 
                 // if (payload["state"]["rando"]["itemLocations"][i].contains("fakeRgID")) {
                 //     randoContext->overrides.emplace(static_cast<RandomizerCheck>(i),
@@ -291,6 +292,7 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
     }
 
     if (payload.contains("queue")) {
+        std::lock_guard<std::mutex> lock(incomingPacketQueueMutex);
         for (auto& item : payload["queue"]) {
             nlohmann::json itemPayload = nlohmann::json::parse(item.get<std::string>());
             incomingPacketQueue.push(itemPayload);
