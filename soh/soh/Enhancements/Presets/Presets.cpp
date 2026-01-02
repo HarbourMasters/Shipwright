@@ -11,7 +11,6 @@
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
-#include "soh/Enhancements/randomizer/randomizer_settings_window.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
@@ -20,7 +19,6 @@ namespace fs = std::filesystem;
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
-extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 } // namespace SohGui
 
 struct PresetInfo {
@@ -124,7 +122,7 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
                 }
             }
             if (i == PRESET_SECTION_RANDOMIZER) {
-                SohGui::mRandomizerSettingsWindow->SetNeedsUpdate();
+                Rando::Settings::GetInstance()->UpdateAllOptions();
             }
         }
     }

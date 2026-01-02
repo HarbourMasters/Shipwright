@@ -1,4 +1,5 @@
 #pragma once
+
 #include "soh/Enhancements/randomizer/item.h"
 
 #include <set>

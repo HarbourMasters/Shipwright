@@ -72,7 +72,7 @@ void RegionTable_Init_FireTemple() {
     }, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_LOOP_5_TILE_ROOM, []{return Here(RR_FIRE_TEMPLE_LOOP_FLARE_DANCER, []{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
-        Entrance(RR_FIRE_TEMPLE_LOOP_CAGE_SWITCH, []{return Here(RR_FIRE_TEMPLE_LOOP_FLARE_DANCER, []{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
+        Entrance(RR_FIRE_TEMPLE_LOOP_CAGE_SWITCH, []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_FLARE_DANCER);});}),
     });
 
     areaTable[RR_FIRE_TEMPLE_LOOP_CAGE_SWITCH] = Region("Fire Temple Loop Cage Switch", SCENE_FIRE_TEMPLE, {
@@ -451,7 +451,7 @@ void RegionTable_Init_FireTemple() {
         Entrance(RR_FIRE_TEMPLE_ENTRYWAY,                []{return true;}),
         Entrance(RR_FIRE_TEMPLE_MQ_LOOP_CAGE_FOYER_SIDE, []{return true;}),
         //child can easilly pass the flame wall with a well timed sidehop, but that's a generic version of RT_FIRE_FLAME_MAZE
-        Entrance(RR_FIRE_TEMPLE_MQ_FOYER_UPPER,          []{return logic->IsAdult || logic->CanUse(RG_HOOKSHOT);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_FOYER_UPPER,          []{return logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS);}),
         Entrance(RR_FIRE_TEMPLE_MQ_LOOP_HEXAGON_ROOM,    []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 5);}),
     });
 
@@ -900,7 +900,7 @@ void RegionTable_Init_FireTemple() {
         Entrance(RR_FIRE_TEMPLE_MQ_CORRIDOR,            []{return true;}),
         Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PLATFORMS, []{return logic->IsAdult || logic->CanUse(RG_SONG_OF_TIME) || logic->CanUse(RG_HOVER_BOOTS);}),
         //Hover boots get there via the platforms
-        Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MIDDLE,    []{return (bool)ctx->GetTrickOption(RT_FIRE_MQ_FLAME_MAZE);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MIDDLE,    []{return (bool)ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS);}),
         Entrance(RR_FIRE_TEMPLE_MQ_2_FIRE_WALLS_LOWER,  []{return true;}),
     });
 
@@ -949,14 +949,14 @@ void RegionTable_Init_FireTemple() {
     }, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_GS_LIZALFOS_ROOM, []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MAIN,   []{return logic->IsAdult || ctx->GetTrickOption(RT_FIRE_MQ_FLAME_MAZE);}),
-        Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_SWITCH, []{return (bool)ctx->GetTrickOption(RT_FIRE_MQ_FLAME_MAZE);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MAIN,   []{return logic->IsAdult || ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_SWITCH, []{return (bool)ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_FIRE_MAZE_SWITCH] = Region("Fire Temple MQ Fire Maze Switch", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PAST_WALL, []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MIDDLE,    []{return (bool)ctx->GetTrickOption(RT_FIRE_MQ_FLAME_MAZE);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MIDDLE,    []{return (bool)ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS);}),
         Entrance(RR_FIRE_TEMPLE_MQ_2_FIRE_WALLS_LOWER,  []{return true;}),
     });
 

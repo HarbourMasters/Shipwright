@@ -18,6 +18,7 @@ class AudioEditor final : public Ship::GuiWindow {
 };
 
 void AudioEditor_RandomizeAll();
+void AudioEditor_AutoRandomizeAll();
 void AudioEditor_RandomizeGroup(SeqType group);
 void AudioEditor_ResetAll();
 void AudioEditor_ResetGroup(SeqType group);

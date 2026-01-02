@@ -160,6 +160,10 @@ struct ButtonOptions : WidgetOptions {
         color = color_;
         return *this;
     }
+    ButtonOptions& DisabledTooltip(const char* disabledTooltip_) {
+        WidgetOptions::disabledTooltip = disabledTooltip_;
+        return *this;
+    }
 };
 
 struct ColorPickerOptions : WidgetOptions {
@@ -1047,7 +1051,9 @@ void DrawFlagArray8Mask(const std::string& name, uint8_t& flags, Colors color = 
 void InsertHelpHoverText(const std::string& text);
 void InsertHelpHoverText(const char* text);
 } // namespace UIWidgets
+
 ImVec4 GetRandomValue();
+ImVec4 GetRandomValue(uint32_t seed);
 
 Color_RGBA8 RGBA8FromVec(ImVec4 vec);
 ImVec4 VecFromRGBA8(Color_RGBA8 color);
