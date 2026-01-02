@@ -40,6 +40,7 @@ s16 firstInit = 0;
 s16 gEnPartnerId;
 
 void Play_SpawnScene(PlayState* play, s32 sceneId, s32 spawn);
+void DisableFixedCamera_CheckCameraState(PlayState* play);
 
 // This macro prints the number "1" with a file and line number if R_ENABLE_PLAY_LOGS is enabled.
 // For example, it can be used to trace the play state execution at a high level.
@@ -631,7 +632,6 @@ void Play_Init(GameState* thisx) {
     } else {
         play->unk_1242B = 0;
     }
-
     Interface_SetSceneRestrictions(play);
     Environment_PlaySceneSequence(play);
     gSaveContext.seqId = play->sequenceCtx.seqId;
@@ -1302,6 +1302,8 @@ void Play_Update(PlayState* play) {
 
 skip:
     PLAY_LOG(3801);
+
+    DisableFixedCamera_CheckCameraState(play);
 
     if (!isPaused || gDbgCamEnabled) {
         s32 i;
