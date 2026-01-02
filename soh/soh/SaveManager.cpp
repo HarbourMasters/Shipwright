@@ -1631,6 +1631,7 @@ void SaveManager::LoadBaseVersion2() {
             SaveManager::Instance->LoadData("", gSaveContext.ship.stats.dungeonKeys[i]);
         });
         SaveManager::Instance->LoadData("rtaTiming", gSaveContext.ship.stats.rtaTiming);
+        SaveManager::Instance->LoadData("firstInput", gSaveContext.ship.stats.firstInput);
         SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
         SaveManager::Instance->LoadData("playTimer", gSaveContext.ship.stats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.ship.stats.pauseTimer);
@@ -1848,6 +1849,7 @@ void SaveManager::LoadBaseVersion3() {
             SaveManager::Instance->LoadData("", gSaveContext.ship.stats.dungeonKeys[i]);
         });
         SaveManager::Instance->LoadData("rtaTiming", gSaveContext.ship.stats.rtaTiming);
+        SaveManager::Instance->LoadData("firstInput", gSaveContext.ship.stats.firstInput);
         SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
         SaveManager::Instance->LoadData("playTimer", gSaveContext.ship.stats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.ship.stats.pauseTimer);

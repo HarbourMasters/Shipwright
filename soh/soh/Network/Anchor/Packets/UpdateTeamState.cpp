@@ -189,6 +189,7 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
             gSaveContext.gsFlags[i] = loadedData.gsFlags[i];
         }
 
+        gSaveContext.ship.stats.firstInput = loadedData.ship.stats.firstInput;
         gSaveContext.ship.stats.fileCreatedAt = loadedData.ship.stats.fileCreatedAt;
 
         // Restore master sword state
