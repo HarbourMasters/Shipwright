@@ -27,6 +27,7 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 extern PlayState* gPlayState;
+extern u32 sNoclipEnabled;
 
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
@@ -47,12 +48,8 @@ typedef struct {
 } ActorInfo;
 
 std::array<const char*, 12> acMapping = {
-    "Switch",      "Background (Prop type 1)",
-    "Player",      "Bomb",
-    "NPC",         "Enemy",
-    "Prop type 2", "Item/Action",
-    "Misc.",       "Boss",
-    "Door",        "Chest",
+    "Switch",      "Background",  "Player", "Bomb", "NPC",  "Enemy",
+    "Prop type 2", "Item/Action", "Misc.",  "Boss", "Door", "Chest",
 };
 
 using namespace UIWidgets;
@@ -865,6 +862,8 @@ void ActorViewer_AddTagForAllActors() {
     }
 }
 
+std::set<Actor*> selectedActors;
+
 void ActorViewerWindow::DrawElement() {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
     static ActorInfo newActor = { 0, 0, { 0, 0, 0 }, { 0, 0, 0 } };
@@ -874,12 +873,159 @@ void ActorViewerWindow::DrawElement() {
     static s16 currentSelectedInDropdown = -1;
     static std::vector<u16> actorSearchResults;
 
+    int actorIndex = 0;
+
     if (gPlayState != nullptr) {
-        if (ImGui::BeginChild("options", ImVec2(0, 0), ImGuiChildFlags_Border | ImGuiChildFlags_AutoResizeY)) {
+        if (ImGui::BeginChild("Spawning Buttons", ImVec2(ImGui::GetContentRegionAvail().x / 2, 0),
+                              ImGuiChildFlags_AutoResizeY)) {
+            ImGui::SeparatorText("Spawning");
+
+            UIWidgets::CVarCheckbox("Disable Object Dependency", CVAR_SETTING("DisableObjectDependency"));
+
+            if (UIWidgets::Button("Spawn Actor")) {
+                ImGui::OpenPopup("SpawnActorPopup");
+            }
+            if (ImGui::BeginPopup("SpawnActorPopup")) {
+                if (InputString("Search Actor", &searchString,
+                                InputOptions().Color(THEME_COLOR).Size(ImVec2(200.0f, 0)))) {
+                    actorSearchResults = GetActorsWithDescriptionContainingString(searchString);
+                    currentSelectedInDropdown = -1;
+                }
+
+                if (!SohUtils::IsStringEmpty(searchString) && !actorSearchResults.empty()) {
+                    std::string preview =
+                        currentSelectedInDropdown == -1
+                            ? "Please Select"
+                            : ActorDB::Instance->RetrieveEntry(actorSearchResults[currentSelectedInDropdown]).desc;
+                    PushStyleCombobox(THEME_COLOR);
+                    if (ImGui::BeginCombo("Results", preview.c_str())) {
+                        for (u8 i = 0; i < actorSearchResults.size(); i++) {
+                            if (ImGui::Selectable(ActorDB::Instance->RetrieveEntry(actorSearchResults[i]).desc.c_str(),
+                                                  i == currentSelectedInDropdown)) {
+                                currentSelectedInDropdown = i;
+                                newActor.id = actorSearchResults[i];
+                            }
+                        }
+                        ImGui::EndCombo();
+                    }
+                    PopStyleCombobox();
+                }
+
+                ImGui::Text("%s", GetActorDescription(newActor.id).c_str());
+                if (ImGui::InputScalar("ID", ImGuiDataType_S16, &newActor.id, &one)) {
+                    newActor.params = 0;
+                }
+
+                CVarCheckbox("Advanced mode", CVAR_DEVELOPER_TOOLS("ActorViewer.AdvancedParams"),
+                             CheckboxOptions().Tooltip("Changes the actor specific param menus with a direct input"));
+
+                if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ActorViewer.AdvancedParams"), 0)) {
+                    PushStyleInput(THEME_COLOR);
+                    ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
+                    PopStyleInput();
+                } else if (std::find(noParamsActors.begin(), noParamsActors.end(), newActor.id) ==
+                           noParamsActors.end()) {
+                    CreateActorSpecificData();
+                    if (actorSpecificData.find(newActor.id) == actorSpecificData.end()) {
+                        PushStyleInput(THEME_COLOR);
+                        ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
+                        PopStyleInput();
+                    } else {
+                        DrawGroupWithBorder(
+                            [&]() {
+                                ImGui::Text("Actor Specific Data");
+                                newActor.params = actorSpecificData[newActor.id](newActor.params);
+                            },
+                            "Actor Specific Data");
+                    }
+                }
+
+                ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
+
+                DrawGroupWithBorder(
+                    [&]() {
+                        PushStyleInput(THEME_COLOR);
+                        ImGui::Text("New Actor Position");
+                        ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
+                        ImGui::InputScalar("X##NewPos", ImGuiDataType_Float, &newActor.pos.x);
+                        ImGui::InputScalar("Y##NewPos", ImGuiDataType_Float, &newActor.pos.y);
+                        ImGui::InputScalar("Z##NewPos", ImGuiDataType_Float, &newActor.pos.z);
+                        ImGui::PopItemWidth();
+                        PopStyleInput();
+                    },
+                    "New Actor Position");
+                ImGui::SameLine();
+                DrawGroupWithBorder(
+                    [&]() {
+                        PushStyleInput(THEME_COLOR);
+                        ImGui::Text("New Actor Rotation");
+                        ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
+                        ImGui::InputScalar("X##NewRot", ImGuiDataType_S16, &newActor.rot.x);
+                        ImGui::InputScalar("Y##NewRot", ImGuiDataType_S16, &newActor.rot.y);
+                        ImGui::InputScalar("Z##NewRot", ImGuiDataType_S16, &newActor.rot.z);
+                        ImGui::PopItemWidth();
+                        PopStyleInput();
+                    },
+                    "New Actor Rotation");
+
+                if (Button("Copy Players Coords/Rot", ButtonOptions().Color(THEME_COLOR))) {
+                    Player* player = GET_PLAYER(gPlayState);
+                    Vec3f newPos = player->actor.world.pos;
+                    Vec3s newRot = player->actor.world.rot;
+                    newActor.pos = newPos;
+                    newActor.rot = newRot;
+                }
+
+                if (Button("Spawn", ButtonOptions().Color(THEME_COLOR))) {
+                    if (ActorDB::Instance->RetrieveEntry(newActor.id).entry.valid) {
+                        Actor* actor = Actor_Spawn(&gPlayState->actorCtx, gPlayState, newActor.id, newActor.pos.x,
+                                                   newActor.pos.y, newActor.pos.z, newActor.rot.x, newActor.rot.y,
+                                                   newActor.rot.z, newActor.params);
+                        selectedActors.insert(actor);
+                    } else {
+                        Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
+                    }
+                }
+                ImGui::EndPopup();
+            }
+
+            if (UIWidgets::Button("Spawn Actors from JSON (Clipboard)")) {
+                std::string clipboardText = ImGui::GetClipboardText();
+                try {
+                    nlohmann::json actorList = nlohmann::json::parse(clipboardText);
+                    for (auto& actorEntry : actorList) {
+                        u16 actorId = actorEntry["id"];
+                        s16 actorParams = actorEntry["params"];
+                        Vec3f actorPos = {
+                            actorEntry["position"][0],
+                            actorEntry["position"][1],
+                            actorEntry["position"][2],
+                        };
+                        s16 actorRotY = actorEntry["rotation"];
+                        Vec3f actorScale = {
+                            actorEntry["scale"][0],
+                            actorEntry["scale"][1],
+                            actorEntry["scale"][2],
+                        };
+
+                        Actor* actor = Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, actorPos.x, actorPos.y,
+                                                   actorPos.z, 0, actorRotY, 0, actorParams);
+                        actor->scale = actorScale;
+                        selectedActors.insert(actor);
+                    }
+                } catch (nlohmann::json::parse_error& e) {
+                } catch (nlohmann::json::type_error& e) {
+                } catch (...) {}
+            }
+        }
+
+        ImGui::EndChild();
+        ImGui::SameLine();
+        if (ImGui::BeginChild("Nametags", ImVec2(0, 0), ImGuiChildFlags_AutoResizeY)) {
             bool toggled = false;
             bool optionChange = false;
 
-            ImGui::SeparatorText("Options");
+            ImGui::SeparatorText("Name Tags");
 
             toggled = UIWidgets::CVarCheckbox("Actor Name Tags", CVAR_ACTOR_NAME_TAGS("Enabled"),
                                               { { .tooltip = "Adds \"name tags\" above actors for identification" } });
@@ -926,6 +1072,307 @@ void ActorViewerWindow::DrawElement() {
         }
         ImGui::EndChild();
 
+        static bool hideActorsWithListIndex = false;
+        if (UIWidgets::Button("Select All", ButtonOptions().Size(ImVec2(0.0f, 0.0f)))) {
+            selectedActors.clear();
+            for (ActorCategory actorCat = ACTORCAT_SWITCH; actorCat < ACTORCAT_MAX;
+                 actorCat = (ActorCategory)(actorCat + 1)) {
+                Actor* actor = gPlayState->actorCtx.actorLists[actorCat].head;
+                while (actor != nullptr) {
+                    if (hideActorsWithListIndex) {
+                        if (GetActorListIndex(actor) == -1 && actor->id != ACTOR_PLAYER && actor->id != ACTOR_EN_ELF) {
+                            selectedActors.insert(actor);
+                        }
+                    } else {
+                        selectedActors.insert(actor);
+                    }
+                    actor = actor->next;
+                }
+            }
+        }
+
+        ImGui::SameLine();
+
+        UIWidgets::Checkbox("Hide Actors with ActorListIndex", &hideActorsWithListIndex);
+
+        if (ImGui::BeginTable("split", 13,
+                              ImGuiTableFlags_Hideable | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersInnerH |
+                                  ImGuiTableFlags_ScrollY,
+                              ImVec2(0.0f, 0.0f))) {
+            ImGui::TableSetupColumn("##actions", ImGuiTableColumnFlags_WidthFixed, 20.0f);
+            ImGui::TableSetupColumn("ID", ImGuiTableColumnFlags_DefaultHide | ImGuiTableColumnFlags_WidthFixed, 40.0f);
+            ImGui::TableSetupColumn("ID (hex)", ImGuiTableColumnFlags_DefaultHide | ImGuiTableColumnFlags_WidthFixed,
+                                    70.0f);
+            ImGui::TableSetupColumn("Index", ImGuiTableColumnFlags_DefaultHide | ImGuiTableColumnFlags_WidthFixed,
+                                    40.0f);
+            ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_DefaultHide);
+            ImGui::TableSetupColumn("Description");
+            ImGui::TableSetupColumn("Category", ImGuiTableColumnFlags_DefaultHide | ImGuiTableColumnFlags_WidthFixed,
+                                    100.0f);
+            ImGui::TableSetupColumn("Params", ImGuiTableColumnFlags_WidthFixed, 60.0f);
+            ImGui::TableSetupColumn("Params (hex)",
+                                    ImGuiTableColumnFlags_DefaultHide | ImGuiTableColumnFlags_WidthFixed, 70.0f);
+            ImGui::TableSetupColumn("Home Position (x, y, z)",
+                                    ImGuiTableColumnFlags_DefaultHide | ImGuiTableColumnFlags_WidthFixed,
+                                    (ImGui::GetFontSize() * 5) * 3 + ImGui::GetStyle().ItemSpacing.x * 2);
+            ImGui::TableSetupColumn("Position (x, y, z)", ImGuiTableColumnFlags_WidthFixed,
+                                    (ImGui::GetFontSize() * 5) * 3 + ImGui::GetStyle().ItemSpacing.x * 2);
+            ImGui::TableSetupColumn("Rotation (y)", ImGuiTableColumnFlags_WidthFixed, (ImGui::GetFontSize() * 5));
+            ImGui::TableSetupColumn("Scale (x, y, z)",
+                                    ImGuiTableColumnFlags_DefaultHide | ImGuiTableColumnFlags_WidthFixed,
+                                    (ImGui::GetFontSize() * 5) * 3 + ImGui::GetStyle().ItemSpacing.x * 2);
+            ImGui::TableSetupScrollFreeze(0, 1); // Make header row always visible
+            ImGui::TableHeadersRow();
+            for (ActorCategory actorCat = ACTORCAT_SWITCH; actorCat < ACTORCAT_MAX;
+                 actorCat = (ActorCategory)(actorCat + 1)) {
+                Actor* actor = gPlayState->actorCtx.actorLists[actorCat].head;
+                while (actor != nullptr) {
+                    if (hideActorsWithListIndex) {
+                        if (GetActorListIndex(actor) != -1 || actor->id == ACTOR_PLAYER || actor->id == ACTOR_EN_ELF) {
+                            actor = actor->next;
+                            continue;
+                        }
+                    }
+
+                    actorIndex++;
+                    ImGui::PushID(actorIndex);
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::AlignTextToFramePadding();
+                    if (ImGui::Selectable("", selectedActors.contains(actor),
+                                          ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowOverlap)) {
+                        if (selectedActors.contains(actor)) {
+                            selectedActors.erase(actor);
+                        } else {
+                            if (!ImGui::GetIO().KeyCtrl) {
+                                selectedActors.clear();
+                            }
+                            selectedActors.insert(actor);
+                        }
+                    }
+                    if (ImGui::BeginPopupContextItem()) {
+                        if (ImGui::MenuItem("Teleport Player to Actor")) {
+                            static Actor* actorToTeleportTo;
+                            static uint32_t onPlayerUpdateHook;
+                            static uint32_t framesNearActor = 0;
+                            actorToTeleportTo = actor;
+                            onPlayerUpdateHook =
+                                GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([&]() {
+                                    Player* player = GET_PLAYER(gPlayState);
+                                    if (actorToTeleportTo->xzDistToPlayer > 100.0f) {
+                                        sNoclipEnabled = true;
+                                        Math_Vec3f_Copy(&player->actor.world.pos, &actorToTeleportTo->world.pos);
+                                    } else {
+                                        sNoclipEnabled = false;
+                                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(
+                                            onPlayerUpdateHook);
+                                    }
+                                });
+                        }
+                        if (selectedActors.size() > 0) {
+                            if (ImGui::MenuItem("Kill Selected Actors")) {
+                                for (Actor* selectedActor : selectedActors) {
+                                    Actor_Kill(selectedActor);
+                                }
+                                selectedActors.clear();
+                            }
+                            if (ImGui::MenuItem("Copy Selected Actors to JSON (Clipboard)")) {
+                                ImGui::LogToClipboard();
+                                nlohmann::json actorList = nlohmann::json::array();
+                                for (Actor* selectedActor : selectedActors) {
+                                    nlohmann::json actorEntry = nlohmann::json::object();
+                                    actorEntry["id"] = selectedActor->id;
+                                    actorEntry["params"] = selectedActor->params;
+                                    actorEntry["position"] = { selectedActor->world.pos.x, selectedActor->world.pos.y,
+                                                               selectedActor->world.pos.z };
+                                    actorEntry["rotation"] = selectedActor->world.rot.y;
+                                    actorEntry["scale"] = { selectedActor->scale.x, selectedActor->scale.y,
+                                                            selectedActor->scale.z };
+                                    actorList.push_back(actorEntry);
+                                }
+
+                                ImGui::LogText("%s", actorList.dump(4).c_str());
+                                ImGui::LogFinish();
+                            }
+                        } else {
+                            if (ImGui::MenuItem("Kill Actor")) {
+                                Actor_Kill(actor);
+                            }
+                        }
+                        ImGui::EndPopup();
+                    }
+                    ImGui::TableNextColumn();
+                    ImGui::AlignTextToFramePadding();
+                    ImGui::Text("%d", actor->id);
+                    ImGui::TableNextColumn();
+                    ImGui::AlignTextToFramePadding();
+                    ImGui::Text("0x%04X", actor->id);
+                    ImGui::TableNextColumn();
+                    ImGui::AlignTextToFramePadding();
+                    int actorListIndex = GetActorListIndex(actor);
+                    if (actorListIndex != -1) {
+                        ImGui::Text("%d", actorListIndex);
+                    } else {
+                        ImGui::TextDisabled("N/A");
+                    }
+                    ImGui::TableNextColumn();
+                    ImGui::AlignTextToFramePadding();
+                    ImGui::Text("%s", GetActorDebugName(actor->id).c_str());
+                    ImGui::TableNextColumn();
+                    ImGui::Text("%s", GetActorDescription(actor->id).c_str());
+                    ImGui::TableNextColumn();
+                    ImGui::Text("%s", acMapping[actor->category]);
+                    ImGui::TableNextColumn();
+                    ImGui::Text("%d", actor->params);
+                    ImGui::TableNextColumn();
+                    ImGui::Text("0x%04X", (u16)actor->params);
+                    ImGui::TableNextColumn();
+                    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.5f, 0.5f, 0.1f));
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 5);
+                    float prevHomeX = actor->home.pos.x;
+                    if (ImGui::DragScalar("##Xhome", ImGuiDataType_Float, &actor->home.pos.x, 1.0f, NULL, NULL,
+                                          "%.1f")) {
+                        float deltaX = actor->home.pos.x - prevHomeX;
+                        for (Actor* selectedActor : selectedActors) {
+                            if (selectedActor != actor) {
+                                selectedActor->home.pos.x += deltaX;
+                            }
+                        }
+                    }
+                    ImGui::PopStyleColor();
+                    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.5f, 1.0f, 0.5f, 0.1f));
+                    ImGui::SameLine();
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 5);
+                    float prevHomeY = actor->home.pos.y;
+                    if (ImGui::DragScalar("##YHome", ImGuiDataType_Float, &actor->home.pos.y, 1.0f, NULL, NULL,
+                                          "%.1f")) {
+                        float deltaY = actor->home.pos.y - prevHomeY;
+                        for (Actor* selectedActor : selectedActors) {
+                            if (selectedActor != actor) {
+                                selectedActor->home.pos.y += deltaY;
+                            }
+                        }
+                    }
+                    ImGui::PopStyleColor();
+                    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.5f, 0.5f, 1.0f, 0.1f));
+                    ImGui::SameLine();
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 5);
+                    float prevHomeZ = actor->home.pos.z;
+                    if (ImGui::DragScalar("##ZHome", ImGuiDataType_Float, &actor->home.pos.z, 1.0f, NULL, NULL,
+                                          "%.1f")) {
+                        float deltaZ = actor->home.pos.z - prevHomeZ;
+                        for (Actor* selectedActor : selectedActors) {
+                            if (selectedActor != actor) {
+                                selectedActor->home.pos.z += deltaZ;
+                            }
+                        }
+                    }
+                    ImGui::PopStyleColor();
+                    ImGui::TableNextColumn();
+                    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.5f, 0.5f, 0.1f));
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 5);
+                    float prevX = actor->world.pos.x;
+                    if (ImGui::DragScalar("##X", ImGuiDataType_Float, &actor->world.pos.x, 1.0f, NULL, NULL, "%.1f")) {
+                        float deltaX = actor->world.pos.x - prevX;
+                        for (Actor* selectedActor : selectedActors) {
+                            if (selectedActor != actor) {
+                                selectedActor->world.pos.x += deltaX;
+                            }
+                        }
+                    }
+                    ImGui::PopStyleColor();
+                    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.5f, 1.0f, 0.5f, 0.1f));
+                    ImGui::SameLine();
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 5);
+                    float prevY = actor->world.pos.y;
+                    if (ImGui::DragScalar("##Y", ImGuiDataType_Float, &actor->world.pos.y, 1.0f, NULL, NULL, "%.1f")) {
+                        float deltaY = actor->world.pos.y - prevY;
+                        for (Actor* selectedActor : selectedActors) {
+                            if (selectedActor != actor) {
+                                selectedActor->world.pos.y += deltaY;
+                            }
+                        }
+                    }
+                    ImGui::PopStyleColor();
+                    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.5f, 0.5f, 1.0f, 0.1f));
+                    ImGui::SameLine();
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 5);
+                    float prevZ = actor->world.pos.z;
+                    if (ImGui::DragScalar("##Z", ImGuiDataType_Float, &actor->world.pos.z, 1.0f, NULL, NULL, "%.1f")) {
+                        float deltaZ = actor->world.pos.z - prevZ;
+                        for (Actor* selectedActor : selectedActors) {
+                            if (selectedActor != actor) {
+                                selectedActor->world.pos.z += deltaZ;
+                            }
+                        }
+                    }
+                    ImGui::PopStyleColor();
+                    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
+                    ImGui::TableNextColumn();
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 5);
+                    float prevRotY = actor->shape.rot.y;
+                    if (ImGui::DragScalar("##RotY", ImGuiDataType_S16, &actor->shape.rot.y, NULL, NULL, NULL)) {
+                        float deltaRotY = actor->shape.rot.y - prevRotY;
+                        for (Actor* selectedActor : selectedActors) {
+                            if (selectedActor != actor) {
+                                selectedActor->shape.rot.y += deltaRotY;
+                            }
+                        }
+                    }
+                    ImGui::TableNextColumn();
+                    ImGui::PopStyleColor();
+                    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.5f, 0.5f, 0.1f));
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 5);
+                    float prevScaleX = actor->scale.x;
+                    if (ImGui::DragScalar("##ScaleX", ImGuiDataType_Float, &actor->scale.x, 0.01f, NULL, NULL,
+                                          "%.2f")) {
+                        float deltaScaleX = actor->scale.x - prevScaleX;
+                        for (Actor* selectedActor : selectedActors) {
+                            if (selectedActor != actor) {
+                                selectedActor->scale.x += deltaScaleX;
+                            }
+                        }
+                    }
+                    ImGui::PopStyleColor();
+                    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.5f, 1.0f, 0.5f, 0.1f));
+                    ImGui::SameLine();
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 5);
+                    float prevScaleY = actor->scale.y;
+                    if (ImGui::DragScalar("##ScaleY", ImGuiDataType_Float, &actor->scale.y, 0.01f, NULL, NULL,
+                                          "%.2f")) {
+                        float deltaScaleY = actor->scale.y - prevScaleY;
+                        for (Actor* selectedActor : selectedActors) {
+                            if (selectedActor != actor) {
+                                selectedActor->scale.y += deltaScaleY;
+                            }
+                        }
+                    }
+                    ImGui::PopStyleColor();
+                    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.5f, 0.5f, 1.0f, 0.1f));
+                    ImGui::SameLine();
+                    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 5);
+                    float prevScaleZ = actor->scale.z;
+                    if (ImGui::DragScalar("##ScaleZ", ImGuiDataType_Float, &actor->scale.z, 0.01f, NULL, NULL,
+                                          "%.2f")) {
+                        float deltaScaleZ = actor->scale.z - prevScaleZ;
+                        for (Actor* selectedActor : selectedActors) {
+                            if (selectedActor != actor) {
+                                selectedActor->scale.z += deltaScaleZ;
+                            }
+                        }
+                    }
+                    ImGui::PopStyleColor();
+                    ImGui::PopID();
+                    actor = actor->next;
+                }
+            }
+            ImGui::EndTable();
+        }
+    } else {
+        ImGui::Text("Global Context needed for actor info!");
+    }
+
+    if (false) {
         PushStyleCombobox(THEME_COLOR);
         if (ImGui::BeginCombo("Actor Type", acMapping[category])) {
             for (int i = 0; i < acMapping.size(); i++) {
@@ -1187,8 +1634,6 @@ void ActorViewerWindow::DrawElement() {
             ImGui::TreePop();
         }
         PopStyleHeader();
-    } else {
-        ImGui::Text("Global Context needed for actor info!");
     }
     ImGui::EndDisabled();
 }
@@ -1229,3 +1674,15 @@ void ActorViewer_RegisterNameTagHooks() {
 }
 
 static RegisterShipInitFunc initFunc(ActorViewer_RegisterNameTagHooks, { CVAR_ACTOR_NAME_TAGS_ENABLED_NAME });
+
+static RegisterShipInitFunc initFunc2(
+    []() {
+        COND_HOOK(OnPlayDestroy, true, []() { selectedActors.clear(); });
+
+        COND_HOOK(OnActorDestroy, true, [](void* actor) {
+            if (selectedActors.contains(static_cast<Actor*>(actor))) {
+                selectedActors.erase(static_cast<Actor*>(actor));
+            }
+        });
+    },
+    {});

@@ -186,7 +186,7 @@ void SohMenu::AddMenuDevTools() {
 
     // Actor Viewer
     path.sidebarName = "Actor Viewer";
-    AddSidebarEntry("Dev Tools", path.sidebarName, 2);
+    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
     AddWidget(path, "Popout Actor Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("ActorViewer"))
         .WindowName("Actor Viewer")
