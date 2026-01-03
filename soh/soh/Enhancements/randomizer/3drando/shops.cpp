@@ -890,7 +890,7 @@ void InitTrickNames() {
     trickNameTable[RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL] = {
         // TODO_TRANSLATE
         Text{ "Volcano Seed Spirit" },
-        Text{ "Bolero Sprout Platform"},
+        Text{ "Bolero Sprout Platform" },
     };
     trickNameTable[RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL] = {
         // TODO_TRANSLATE
@@ -988,12 +988,9 @@ void InitTrickNames() {
         Text{ "Fishing Reel", "Fishing Reel", "Angelschnur" },
     };
     trickNameTable[RG_SKELETON_KEY] = {
-        //TODO_TRANSLATE
-        Text{ "Stalfos Key" },
-        Text{ "Nightmare Key" },
-        Text{ "Graveyard Key" },
-        Text{ "King's Key" },
-        Text{ "Hero's Key" },
+        // TODO_TRANSLATE
+        Text{ "Stalfos Key" }, Text{ "Nightmare Key" }, Text{ "Graveyard Key" },
+        Text{ "King's Key" },  Text{ "Hero's Key" },
     };
     trickNameTable[RG_OCARINA_A_BUTTON] = {
         Text{ "Ocarina J Button", "Touche Ha de l'Ocarina", "J-Taste der Okarina" },
