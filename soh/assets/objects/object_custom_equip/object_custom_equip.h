@@ -113,6 +113,16 @@ static const ALIGN_ASSET(2) char gCustomAdultFPSHandDL[] = dgCustomAdultFPSHandD
 #define dgCustomChildFPSHandDL "__OTR__objects/object_custom_equip/gCustomChildFPSHandDL"
 static const ALIGN_ASSET(2) char gCustomChildFPSHandDL[] = dgCustomChildFPSHandDL;
 
+#define dgCustomAdultGoronFPSHandDL "__OTR__objects/object_custom_equip/gCustomAdultGoronFPSHandDL"
+static const ALIGN_ASSET(2) char gCustomAdultGoronFPSHandDL[] = dgCustomAdultGoronFPSHandDL;
 
+#define dgCustomChildGoronFPSHandDL "__OTR__objects/object_custom_equip/gCustomChildGoronFPSHandDL"
+static const ALIGN_ASSET(2) char gCustomChildGoronFPSHandDL[] = dgCustomChildGoronFPSHandDL;
+
+#define dgCustomAdultZoraFPSHandDL "__OTR__objects/object_custom_equip/gCustomAdultZoraFPSHandDL"
+static const ALIGN_ASSET(2) char gCustomAdultZoraFPSHandDL[] = dgCustomAdultZoraFPSHandDL;
+
+#define dgCustomChildZoraFPSHandDL "__OTR__objects/object_custom_equip/gCustomChildZoraFPSHandDL"
+static const ALIGN_ASSET(2) char gCustomChildZoraFPSHandDL[] = dgCustomChildZoraFPSHandDL;
 
 #endif // OBJECTS_OBJECT_CUSTOM_EQUIP_H

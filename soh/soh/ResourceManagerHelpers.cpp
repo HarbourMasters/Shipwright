@@ -5,6 +5,7 @@
 #include "cvar_prefixes.h"
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/randomizer/dungeon.h"
+#include "Enhancements/cosmetics/CustomTunicDLs.h"
 #include <libultraship/libultraship.h>
 #include <soh/GameVersions.h>
 #include "resource/type/SohResourceType.h"
@@ -297,6 +298,7 @@ extern "C" void ResourceMgr_PushCurrentDirectory(char* path) {
 }
 
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path) {
+    path = CustomTunicDLs_RemapPath(path);
     // When an alt resource exists for the DL, we need to unload the original asset
     // to clear the cache so the alt asset will be loaded instead
     // OTRTODO: If Alt loading over original cache is fixed, this line can most likely be removed

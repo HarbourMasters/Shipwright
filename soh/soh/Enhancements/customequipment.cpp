@@ -3,6 +3,7 @@
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_custom_equip/object_custom_equip.h"
+#include "soh/Enhancements/cosmetics/CustomTunicDLs.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ResourceManagerHelpers.h"
@@ -372,6 +373,12 @@ static void ApplyCommonEquipmentPatches() {
     const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
     const char* fpsHand = isChild ? gCustomChildFPSHandDL : gCustomAdultFPSHandDL;
     const char* rightHandNear = isChild ? gLinkChildRightHandNearDL : gLinkAdultRightHandNearDL;
+
+    auto remapTunicHand = [](const char* path) { return CustomTunicDLs_RemapPath(path); };
+    rightHandClosed = remapTunicHand(rightHandClosed);
+    leftHandClosed = remapTunicHand(leftHandClosed);
+    fpsHand = remapTunicHand(fpsHand);
+    rightHandNear = remapTunicHand(rightHandNear);
 
     ApplyPatchEntries({
         { gLinkAdultLeftHandHoldingMasterSwordNearDL, gCustomMasterSwordDL, "customMasterSword1", "customMasterSword2",
