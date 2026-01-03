@@ -606,7 +606,6 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
                     [[fallthrough]];
                 case ED_BOOMERANG:
                     // RANDOTODO test chu range in a practical example
-                    // RANDOTODO test chu range in a practical example
                     killed = killed || CanUse(RG_BOOMERANG);
                     [[fallthrough]];
                 case ED_HOOKSHOT:
