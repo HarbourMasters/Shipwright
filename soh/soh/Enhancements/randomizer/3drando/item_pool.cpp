@@ -26,7 +26,8 @@ const std::map<RandomizerGet, std::vector<RandomizerGet>*> poolForItem = {
     { RG_ARROWS_30, &junkPool },       { RG_GREEN_RUPEE, &junkPool },  { RG_BLUE_RUPEE, &junkPool },
     { RG_RED_RUPEE, &junkPool },       { RG_DEKU_NUTS_10, &junkPool }, { RG_TREASURE_GAME_GREEN_RUPEE, &junkPool },
     { RG_PURPLE_RUPEE, &lesserPool },  { RG_HUGE_RUPEE, &lesserPool }, { RG_DEKU_SHIELD, &lesserPool },
-    { RG_HYLIAN_SHIELD, &lesserPool },
+    { RG_HYLIAN_SHIELD, &lesserPool }, { RG_BOMBCHU_5, &lesserPool },  { RG_BOMBCHU_10, &lesserPool },
+    { RG_BOMBCHU_20, &lesserPool }
 };
 
 void AddItemToPool(RandomizerGet item, int plentifulCount, size_t balancedCount, size_t scarceCount = 1,
