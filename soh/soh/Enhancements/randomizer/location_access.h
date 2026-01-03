@@ -77,7 +77,7 @@ class LocationAccess {
 
     bool CheckConditionAtAgeTime(bool& age, bool& time) const;
 
-    bool ConditionsMet(Region* parentRegion, bool calculatingAvailableChecks) const;
+    bool ConditionsMet(Region* parentRegion) const;
 
     RandomizerCheck GetLocation() const {
         return location;

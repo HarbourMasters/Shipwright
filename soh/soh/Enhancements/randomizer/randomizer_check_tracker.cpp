@@ -27,6 +27,7 @@
 #include "z64item.h"
 #include "randomizerTypes.h"
 #include "fishsanity.h"
+#include "textures/icon_item_static/icon_item_static.h"
 
 extern "C" {
 #include "variables.h"
@@ -56,6 +57,10 @@ static WidgetInfo hideUnshuffledShopWidget;
 static WidgetInfo showGSWidget;
 static WidgetInfo showLogicWidget;
 static WidgetInfo checkAvailabilityWidget;
+static WidgetInfo availableChecksNoneWidget;
+static WidgetInfo availableChecksChildWidget;
+static WidgetInfo availableChecksAdultWidget;
+static WidgetInfo availableChecksBothWidget;
 
 // settings
 bool showShops;
@@ -198,8 +203,19 @@ bool hideCollected = false;
 bool showHidden = true;
 bool mystery = false;
 bool showLogicTooltip = false;
-bool enableAvailableChecks = false;
 bool onlyShowAvailable = false;
+
+typedef enum : int {
+    AC_DISABLED,
+    AC_LOCKED_UNLOCKED,
+    AC_ONE_ICON,
+    AC_TWO_ICONS
+} AvailableChecksDisplay;
+AvailableChecksDisplay availableChecksDisplay = AC_DISABLED;
+std::string availableChecksNoneAvailableIcon = ICON_FA_LOCK;
+std::string availableChecksChildAvailableIcon = ICON_FA_CHILD;
+std::string availableChecksAdultAvailableIcon = ICON_FA_USER;
+std::string availableChecksBothAvailableIcon = ICON_FA_USERS;
 
 SceneID DungeonSceneLookupByArea(RandomizerCheckArea area) {
     switch (area) {
@@ -304,7 +320,7 @@ uint16_t GetTotalChecksGotten() {
 bool IsCheckHidden(RandomizerCheck rc) {
     Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
     RandomizerCheckStatus status = itemLocation->GetCheckStatus();
-    bool available = itemLocation->IsAvailable();
+    bool available = itemLocation->IsChildAvailable() || itemLocation->IsAdultAvailable();
     bool skipped = itemLocation->GetIsSkipped();
     bool obtained = itemLocation->HasObtained();
     bool seen = status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED;
@@ -331,7 +347,7 @@ void RecalculateAreaTotals(RandomizerCheckArea rcArea) {
             areaChecksGotten[rcArea]++;
         }
 
-        if (itemLoc->IsAvailable() && !IsCheckHidden(rc)) {
+        if ((itemLoc->IsChildAvailable() || itemLoc->IsAdultAvailable()) && !IsCheckHidden(rc)) {
             areaChecksAvailable[rcArea]++;
         }
     }
@@ -540,7 +556,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
             if (loc->GetCheckStatus() == RCSHOW_SAVED || loc->GetIsSkipped()) {
                 areaChecksGotten[entry2->GetArea()]++;
             }
-            if (loc->IsAvailable()) {
+            if (loc->IsChildAvailable() || loc->IsAdultAvailable()) {
                 areaChecksAvailable[entry2->GetArea()]++;
             }
         }
@@ -954,6 +970,1360 @@ void SetAreaSpoiled(RandomizerCheckArea rcArea) {
     SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
 }
 
+static std::string MapAvailableCheckIcon(std::string name) {
+    if (name == "ICON_FA_GLASS")
+        return ICON_FA_GLASS;
+    if (name == "ICON_FA_MUSIC")
+        return ICON_FA_MUSIC;
+    if (name == "ICON_FA_SEARCH")
+        return ICON_FA_SEARCH;
+    if (name == "ICON_FA_ENVELOPE_O")
+        return ICON_FA_ENVELOPE_O;
+    if (name == "ICON_FA_HEART")
+        return ICON_FA_HEART;
+    if (name == "ICON_FA_STAR")
+        return ICON_FA_STAR;
+    if (name == "ICON_FA_STAR_O")
+        return ICON_FA_STAR_O;
+    if (name == "ICON_FA_USER")
+        return ICON_FA_USER;
+    if (name == "ICON_FA_FILM")
+        return ICON_FA_FILM;
+    if (name == "ICON_FA_TH_LARGE")
+        return ICON_FA_TH_LARGE;
+    if (name == "ICON_FA_TH")
+        return ICON_FA_TH;
+    if (name == "ICON_FA_TH_LIST")
+        return ICON_FA_TH_LIST;
+    if (name == "ICON_FA_CHECK")
+        return ICON_FA_CHECK;
+    if (name == "ICON_FA_TIMES")
+        return ICON_FA_TIMES;
+    if (name == "ICON_FA_SEARCH_PLUS")
+        return ICON_FA_SEARCH_PLUS;
+    if (name == "ICON_FA_SEARCH_MINUS")
+        return ICON_FA_SEARCH_MINUS;
+    if (name == "ICON_FA_POWER_OFF")
+        return ICON_FA_POWER_OFF;
+    if (name == "ICON_FA_SIGNAL")
+        return ICON_FA_SIGNAL;
+    if (name == "ICON_FA_COG")
+        return ICON_FA_COG;
+    if (name == "ICON_FA_TRASH_O")
+        return ICON_FA_TRASH_O;
+    if (name == "ICON_FA_HOME")
+        return ICON_FA_HOME;
+    if (name == "ICON_FA_FILE_O")
+        return ICON_FA_FILE_O;
+    if (name == "ICON_FA_CLOCK_O")
+        return ICON_FA_CLOCK_O;
+    if (name == "ICON_FA_ROAD")
+        return ICON_FA_ROAD;
+    if (name == "ICON_FA_DOWNLOAD")
+        return ICON_FA_DOWNLOAD;
+    if (name == "ICON_FA_ARROW_CIRCLE_O_DOWN")
+        return ICON_FA_ARROW_CIRCLE_O_DOWN;
+    if (name == "ICON_FA_ARROW_CIRCLE_O_UP")
+        return ICON_FA_ARROW_CIRCLE_O_UP;
+    if (name == "ICON_FA_INBOX")
+        return ICON_FA_INBOX;
+    if (name == "ICON_FA_PLAY_CIRCLE_O")
+        return ICON_FA_PLAY_CIRCLE_O;
+    if (name == "ICON_FA_REPEAT")
+        return ICON_FA_REPEAT;
+    if (name == "ICON_FA_REFRESH")
+        return ICON_FA_REFRESH;
+    if (name == "ICON_FA_LIST_ALT")
+        return ICON_FA_LIST_ALT;
+    if (name == "ICON_FA_LOCK")
+        return ICON_FA_LOCK;
+    if (name == "ICON_FA_FLAG")
+        return ICON_FA_FLAG;
+    if (name == "ICON_FA_HEADPHONES")
+        return ICON_FA_HEADPHONES;
+    if (name == "ICON_FA_VOLUME_OFF")
+        return ICON_FA_VOLUME_OFF;
+    if (name == "ICON_FA_VOLUME_DOWN")
+        return ICON_FA_VOLUME_DOWN;
+    if (name == "ICON_FA_VOLUME_UP")
+        return ICON_FA_VOLUME_UP;
+    if (name == "ICON_FA_QRCODE")
+        return ICON_FA_QRCODE;
+    if (name == "ICON_FA_BARCODE")
+        return ICON_FA_BARCODE;
+    if (name == "ICON_FA_TAG")
+        return ICON_FA_TAG;
+    if (name == "ICON_FA_TAGS")
+        return ICON_FA_TAGS;
+    if (name == "ICON_FA_BOOK")
+        return ICON_FA_BOOK;
+    if (name == "ICON_FA_BOOKMARK")
+        return ICON_FA_BOOKMARK;
+    if (name == "ICON_FA_PRINT")
+        return ICON_FA_PRINT;
+    if (name == "ICON_FA_CAMERA")
+        return ICON_FA_CAMERA;
+    if (name == "ICON_FA_FONT")
+        return ICON_FA_FONT;
+    if (name == "ICON_FA_BOLD")
+        return ICON_FA_BOLD;
+    if (name == "ICON_FA_ITALIC")
+        return ICON_FA_ITALIC;
+    if (name == "ICON_FA_TEXT_HEIGHT")
+        return ICON_FA_TEXT_HEIGHT;
+    if (name == "ICON_FA_TEXT_WIDTH")
+        return ICON_FA_TEXT_WIDTH;
+    if (name == "ICON_FA_ALIGN_LEFT")
+        return ICON_FA_ALIGN_LEFT;
+    if (name == "ICON_FA_ALIGN_CENTER")
+        return ICON_FA_ALIGN_CENTER;
+    if (name == "ICON_FA_ALIGN_RIGHT")
+        return ICON_FA_ALIGN_RIGHT;
+    if (name == "ICON_FA_ALIGN_JUSTIFY")
+        return ICON_FA_ALIGN_JUSTIFY;
+    if (name == "ICON_FA_LIST")
+        return ICON_FA_LIST;
+    if (name == "ICON_FA_OUTDENT")
+        return ICON_FA_OUTDENT;
+    if (name == "ICON_FA_INDENT")
+        return ICON_FA_INDENT;
+    if (name == "ICON_FA_VIDEO_CAMERA")
+        return ICON_FA_VIDEO_CAMERA;
+    if (name == "ICON_FA_PICTURE_O")
+        return ICON_FA_PICTURE_O;
+    if (name == "ICON_FA_PENCIL")
+        return ICON_FA_PENCIL;
+    if (name == "ICON_FA_MAP_MARKER")
+        return ICON_FA_MAP_MARKER;
+    if (name == "ICON_FA_ADJUST")
+        return ICON_FA_ADJUST;
+    if (name == "ICON_FA_TINT")
+        return ICON_FA_TINT;
+    if (name == "ICON_FA_PENCIL_SQUARE_O")
+        return ICON_FA_PENCIL_SQUARE_O;
+    if (name == "ICON_FA_SHARE_SQUARE_O")
+        return ICON_FA_SHARE_SQUARE_O;
+    if (name == "ICON_FA_CHECK_SQUARE_O")
+        return ICON_FA_CHECK_SQUARE_O;
+    if (name == "ICON_FA_ARROWS")
+        return ICON_FA_ARROWS;
+    if (name == "ICON_FA_STEP_BACKWARD")
+        return ICON_FA_STEP_BACKWARD;
+    if (name == "ICON_FA_FAST_BACKWARD")
+        return ICON_FA_FAST_BACKWARD;
+    if (name == "ICON_FA_BACKWARD")
+        return ICON_FA_BACKWARD;
+    if (name == "ICON_FA_PLAY")
+        return ICON_FA_PLAY;
+    if (name == "ICON_FA_PAUSE")
+        return ICON_FA_PAUSE;
+    if (name == "ICON_FA_STOP")
+        return ICON_FA_STOP;
+    if (name == "ICON_FA_FORWARD")
+        return ICON_FA_FORWARD;
+    if (name == "ICON_FA_FAST_FORWARD")
+        return ICON_FA_FAST_FORWARD;
+    if (name == "ICON_FA_STEP_FORWARD")
+        return ICON_FA_STEP_FORWARD;
+    if (name == "ICON_FA_EJECT")
+        return ICON_FA_EJECT;
+    if (name == "ICON_FA_CHEVRON_LEFT")
+        return ICON_FA_CHEVRON_LEFT;
+    if (name == "ICON_FA_CHEVRON_RIGHT")
+        return ICON_FA_CHEVRON_RIGHT;
+    if (name == "ICON_FA_PLUS_CIRCLE")
+        return ICON_FA_PLUS_CIRCLE;
+    if (name == "ICON_FA_MINUS_CIRCLE")
+        return ICON_FA_MINUS_CIRCLE;
+    if (name == "ICON_FA_TIMES_CIRCLE")
+        return ICON_FA_TIMES_CIRCLE;
+    if (name == "ICON_FA_CHECK_CIRCLE")
+        return ICON_FA_CHECK_CIRCLE;
+    if (name == "ICON_FA_QUESTION_CIRCLE")
+        return ICON_FA_QUESTION_CIRCLE;
+    if (name == "ICON_FA_INFO_CIRCLE")
+        return ICON_FA_INFO_CIRCLE;
+    if (name == "ICON_FA_CROSSHAIRS")
+        return ICON_FA_CROSSHAIRS;
+    if (name == "ICON_FA_TIMES_CIRCLE_O")
+        return ICON_FA_TIMES_CIRCLE_O;
+    if (name == "ICON_FA_CHECK_CIRCLE_O")
+        return ICON_FA_CHECK_CIRCLE_O;
+    if (name == "ICON_FA_BAN")
+        return ICON_FA_BAN;
+    if (name == "ICON_FA_ARROW_LEFT")
+        return ICON_FA_ARROW_LEFT;
+    if (name == "ICON_FA_ARROW_RIGHT")
+        return ICON_FA_ARROW_RIGHT;
+    if (name == "ICON_FA_ARROW_UP")
+        return ICON_FA_ARROW_UP;
+    if (name == "ICON_FA_ARROW_DOWN")
+        return ICON_FA_ARROW_DOWN;
+    if (name == "ICON_FA_SHARE")
+        return ICON_FA_SHARE;
+    if (name == "ICON_FA_EXPAND")
+        return ICON_FA_EXPAND;
+    if (name == "ICON_FA_COMPRESS")
+        return ICON_FA_COMPRESS;
+    if (name == "ICON_FA_PLUS")
+        return ICON_FA_PLUS;
+    if (name == "ICON_FA_MINUS")
+        return ICON_FA_MINUS;
+    if (name == "ICON_FA_ASTERISK")
+        return ICON_FA_ASTERISK;
+    if (name == "ICON_FA_EXCLAMATION_CIRCLE")
+        return ICON_FA_EXCLAMATION_CIRCLE;
+    if (name == "ICON_FA_GIFT")
+        return ICON_FA_GIFT;
+    if (name == "ICON_FA_LEAF")
+        return ICON_FA_LEAF;
+    if (name == "ICON_FA_FIRE")
+        return ICON_FA_FIRE;
+    if (name == "ICON_FA_EYE")
+        return ICON_FA_EYE;
+    if (name == "ICON_FA_EYE_SLASH")
+        return ICON_FA_EYE_SLASH;
+    if (name == "ICON_FA_EXCLAMATION_TRIANGLE")
+        return ICON_FA_EXCLAMATION_TRIANGLE;
+    if (name == "ICON_FA_PLANE")
+        return ICON_FA_PLANE;
+    if (name == "ICON_FA_CALENDAR")
+        return ICON_FA_CALENDAR;
+    if (name == "ICON_FA_RANDOM")
+        return ICON_FA_RANDOM;
+    if (name == "ICON_FA_COMMENT")
+        return ICON_FA_COMMENT;
+    if (name == "ICON_FA_MAGNET")
+        return ICON_FA_MAGNET;
+    if (name == "ICON_FA_CHEVRON_UP")
+        return ICON_FA_CHEVRON_UP;
+    if (name == "ICON_FA_CHEVRON_DOWN")
+        return ICON_FA_CHEVRON_DOWN;
+    if (name == "ICON_FA_RETWEET")
+        return ICON_FA_RETWEET;
+    if (name == "ICON_FA_SHOPPING_CART")
+        return ICON_FA_SHOPPING_CART;
+    if (name == "ICON_FA_FOLDER")
+        return ICON_FA_FOLDER;
+    if (name == "ICON_FA_FOLDER_OPEN")
+        return ICON_FA_FOLDER_OPEN;
+    if (name == "ICON_FA_ARROWS_V")
+        return ICON_FA_ARROWS_V;
+    if (name == "ICON_FA_ARROWS_H")
+        return ICON_FA_ARROWS_H;
+    if (name == "ICON_FA_BAR_CHART")
+        return ICON_FA_BAR_CHART;
+    if (name == "ICON_FA_TWITTER_SQUARE")
+        return ICON_FA_TWITTER_SQUARE;
+    if (name == "ICON_FA_FACEBOOK_SQUARE")
+        return ICON_FA_FACEBOOK_SQUARE;
+    if (name == "ICON_FA_CAMERA_RETRO")
+        return ICON_FA_CAMERA_RETRO;
+    if (name == "ICON_FA_KEY")
+        return ICON_FA_KEY;
+    if (name == "ICON_FA_COGS")
+        return ICON_FA_COGS;
+    if (name == "ICON_FA_COMMENTS")
+        return ICON_FA_COMMENTS;
+    if (name == "ICON_FA_THUMBS_O_UP")
+        return ICON_FA_THUMBS_O_UP;
+    if (name == "ICON_FA_THUMBS_O_DOWN")
+        return ICON_FA_THUMBS_O_DOWN;
+    if (name == "ICON_FA_STAR_HALF")
+        return ICON_FA_STAR_HALF;
+    if (name == "ICON_FA_HEART_O")
+        return ICON_FA_HEART_O;
+    if (name == "ICON_FA_SIGN_OUT")
+        return ICON_FA_SIGN_OUT;
+    if (name == "ICON_FA_LINKEDIN_SQUARE")
+        return ICON_FA_LINKEDIN_SQUARE;
+    if (name == "ICON_FA_THUMB_TACK")
+        return ICON_FA_THUMB_TACK;
+    if (name == "ICON_FA_EXTERNAL_LINK")
+        return ICON_FA_EXTERNAL_LINK;
+    if (name == "ICON_FA_SIGN_IN")
+        return ICON_FA_SIGN_IN;
+    if (name == "ICON_FA_TROPHY")
+        return ICON_FA_TROPHY;
+    if (name == "ICON_FA_GITHUB_SQUARE")
+        return ICON_FA_GITHUB_SQUARE;
+    if (name == "ICON_FA_UPLOAD")
+        return ICON_FA_UPLOAD;
+    if (name == "ICON_FA_LEMON_O")
+        return ICON_FA_LEMON_O;
+    if (name == "ICON_FA_PHONE")
+        return ICON_FA_PHONE;
+    if (name == "ICON_FA_SQUARE_O")
+        return ICON_FA_SQUARE_O;
+    if (name == "ICON_FA_BOOKMARK_O")
+        return ICON_FA_BOOKMARK_O;
+    if (name == "ICON_FA_PHONE_SQUARE")
+        return ICON_FA_PHONE_SQUARE;
+    if (name == "ICON_FA_TWITTER")
+        return ICON_FA_TWITTER;
+    if (name == "ICON_FA_FACEBOOK")
+        return ICON_FA_FACEBOOK;
+    if (name == "ICON_FA_GITHUB")
+        return ICON_FA_GITHUB;
+    if (name == "ICON_FA_UNLOCK")
+        return ICON_FA_UNLOCK;
+    if (name == "ICON_FA_CREDIT_CARD")
+        return ICON_FA_CREDIT_CARD;
+    if (name == "ICON_FA_RSS")
+        return ICON_FA_RSS;
+    if (name == "ICON_FA_HDD_O")
+        return ICON_FA_HDD_O;
+    if (name == "ICON_FA_BULLHORN")
+        return ICON_FA_BULLHORN;
+    if (name == "ICON_FA_BELL")
+        return ICON_FA_BELL;
+    if (name == "ICON_FA_CERTIFICATE")
+        return ICON_FA_CERTIFICATE;
+    if (name == "ICON_FA_HAND_O_RIGHT")
+        return ICON_FA_HAND_O_RIGHT;
+    if (name == "ICON_FA_HAND_O_LEFT")
+        return ICON_FA_HAND_O_LEFT;
+    if (name == "ICON_FA_HAND_O_UP")
+        return ICON_FA_HAND_O_UP;
+    if (name == "ICON_FA_HAND_O_DOWN")
+        return ICON_FA_HAND_O_DOWN;
+    if (name == "ICON_FA_ARROW_CIRCLE_LEFT")
+        return ICON_FA_ARROW_CIRCLE_LEFT;
+    if (name == "ICON_FA_ARROW_CIRCLE_RIGHT")
+        return ICON_FA_ARROW_CIRCLE_RIGHT;
+    if (name == "ICON_FA_ARROW_CIRCLE_UP")
+        return ICON_FA_ARROW_CIRCLE_UP;
+    if (name == "ICON_FA_ARROW_CIRCLE_DOWN")
+        return ICON_FA_ARROW_CIRCLE_DOWN;
+    if (name == "ICON_FA_GLOBE")
+        return ICON_FA_GLOBE;
+    if (name == "ICON_FA_WRENCH")
+        return ICON_FA_WRENCH;
+    if (name == "ICON_FA_TASKS")
+        return ICON_FA_TASKS;
+    if (name == "ICON_FA_FILTER")
+        return ICON_FA_FILTER;
+    if (name == "ICON_FA_BRIEFCASE")
+        return ICON_FA_BRIEFCASE;
+    if (name == "ICON_FA_ARROWS_ALT")
+        return ICON_FA_ARROWS_ALT;
+    if (name == "ICON_FA_USERS")
+        return ICON_FA_USERS;
+    if (name == "ICON_FA_LINK")
+        return ICON_FA_LINK;
+    if (name == "ICON_FA_CLOUD")
+        return ICON_FA_CLOUD;
+    if (name == "ICON_FA_FLASK")
+        return ICON_FA_FLASK;
+    if (name == "ICON_FA_SCISSORS")
+        return ICON_FA_SCISSORS;
+    if (name == "ICON_FA_FILES_O")
+        return ICON_FA_FILES_O;
+    if (name == "ICON_FA_PAPERCLIP")
+        return ICON_FA_PAPERCLIP;
+    if (name == "ICON_FA_FLOPPY_O")
+        return ICON_FA_FLOPPY_O;
+    if (name == "ICON_FA_SQUARE")
+        return ICON_FA_SQUARE;
+    if (name == "ICON_FA_BARS")
+        return ICON_FA_BARS;
+    if (name == "ICON_FA_LIST_UL")
+        return ICON_FA_LIST_UL;
+    if (name == "ICON_FA_LIST_OL")
+        return ICON_FA_LIST_OL;
+    if (name == "ICON_FA_STRIKETHROUGH")
+        return ICON_FA_STRIKETHROUGH;
+    if (name == "ICON_FA_UNDERLINE")
+        return ICON_FA_UNDERLINE;
+    if (name == "ICON_FA_TABLE")
+        return ICON_FA_TABLE;
+    if (name == "ICON_FA_MAGIC")
+        return ICON_FA_MAGIC;
+    if (name == "ICON_FA_TRUCK")
+        return ICON_FA_TRUCK;
+    if (name == "ICON_FA_PINTEREST")
+        return ICON_FA_PINTEREST;
+    if (name == "ICON_FA_PINTEREST_SQUARE")
+        return ICON_FA_PINTEREST_SQUARE;
+    if (name == "ICON_FA_GOOGLE_PLUS_SQUARE")
+        return ICON_FA_GOOGLE_PLUS_SQUARE;
+    if (name == "ICON_FA_GOOGLE_PLUS")
+        return ICON_FA_GOOGLE_PLUS;
+    if (name == "ICON_FA_MONEY")
+        return ICON_FA_MONEY;
+    if (name == "ICON_FA_CARET_DOWN")
+        return ICON_FA_CARET_DOWN;
+    if (name == "ICON_FA_CARET_UP")
+        return ICON_FA_CARET_UP;
+    if (name == "ICON_FA_CARET_LEFT")
+        return ICON_FA_CARET_LEFT;
+    if (name == "ICON_FA_CARET_RIGHT")
+        return ICON_FA_CARET_RIGHT;
+    if (name == "ICON_FA_COLUMNS")
+        return ICON_FA_COLUMNS;
+    if (name == "ICON_FA_SORT")
+        return ICON_FA_SORT;
+    if (name == "ICON_FA_SORT_DESC")
+        return ICON_FA_SORT_DESC;
+    if (name == "ICON_FA_SORT_ASC")
+        return ICON_FA_SORT_ASC;
+    if (name == "ICON_FA_ENVELOPE")
+        return ICON_FA_ENVELOPE;
+    if (name == "ICON_FA_LINKEDIN")
+        return ICON_FA_LINKEDIN;
+    if (name == "ICON_FA_UNDO")
+        return ICON_FA_UNDO;
+    if (name == "ICON_FA_GAVEL")
+        return ICON_FA_GAVEL;
+    if (name == "ICON_FA_TACHOMETER")
+        return ICON_FA_TACHOMETER;
+    if (name == "ICON_FA_COMMENT_O")
+        return ICON_FA_COMMENT_O;
+    if (name == "ICON_FA_COMMENTS_O")
+        return ICON_FA_COMMENTS_O;
+    if (name == "ICON_FA_BOLT")
+        return ICON_FA_BOLT;
+    if (name == "ICON_FA_SITEMAP")
+        return ICON_FA_SITEMAP;
+    if (name == "ICON_FA_UMBRELLA")
+        return ICON_FA_UMBRELLA;
+    if (name == "ICON_FA_CLIPBOARD")
+        return ICON_FA_CLIPBOARD;
+    if (name == "ICON_FA_LIGHTBULB_O")
+        return ICON_FA_LIGHTBULB_O;
+    if (name == "ICON_FA_EXCHANGE")
+        return ICON_FA_EXCHANGE;
+    if (name == "ICON_FA_CLOUD_DOWNLOAD")
+        return ICON_FA_CLOUD_DOWNLOAD;
+    if (name == "ICON_FA_CLOUD_UPLOAD")
+        return ICON_FA_CLOUD_UPLOAD;
+    if (name == "ICON_FA_USER_MD")
+        return ICON_FA_USER_MD;
+    if (name == "ICON_FA_STETHOSCOPE")
+        return ICON_FA_STETHOSCOPE;
+    if (name == "ICON_FA_SUITCASE")
+        return ICON_FA_SUITCASE;
+    if (name == "ICON_FA_BELL_O")
+        return ICON_FA_BELL_O;
+    if (name == "ICON_FA_COFFEE")
+        return ICON_FA_COFFEE;
+    if (name == "ICON_FA_CUTLERY")
+        return ICON_FA_CUTLERY;
+    if (name == "ICON_FA_FILE_TEXT_O")
+        return ICON_FA_FILE_TEXT_O;
+    if (name == "ICON_FA_BUILDING_O")
+        return ICON_FA_BUILDING_O;
+    if (name == "ICON_FA_HOSPITAL_O")
+        return ICON_FA_HOSPITAL_O;
+    if (name == "ICON_FA_AMBULANCE")
+        return ICON_FA_AMBULANCE;
+    if (name == "ICON_FA_MEDKIT")
+        return ICON_FA_MEDKIT;
+    if (name == "ICON_FA_FIGHTER_JET")
+        return ICON_FA_FIGHTER_JET;
+    if (name == "ICON_FA_BEER")
+        return ICON_FA_BEER;
+    if (name == "ICON_FA_H_SQUARE")
+        return ICON_FA_H_SQUARE;
+    if (name == "ICON_FA_PLUS_SQUARE")
+        return ICON_FA_PLUS_SQUARE;
+    if (name == "ICON_FA_ANGLE_DOUBLE_LEFT")
+        return ICON_FA_ANGLE_DOUBLE_LEFT;
+    if (name == "ICON_FA_ANGLE_DOUBLE_RIGHT")
+        return ICON_FA_ANGLE_DOUBLE_RIGHT;
+    if (name == "ICON_FA_ANGLE_DOUBLE_UP")
+        return ICON_FA_ANGLE_DOUBLE_UP;
+    if (name == "ICON_FA_ANGLE_DOUBLE_DOWN")
+        return ICON_FA_ANGLE_DOUBLE_DOWN;
+    if (name == "ICON_FA_ANGLE_LEFT")
+        return ICON_FA_ANGLE_LEFT;
+    if (name == "ICON_FA_ANGLE_RIGHT")
+        return ICON_FA_ANGLE_RIGHT;
+    if (name == "ICON_FA_ANGLE_UP")
+        return ICON_FA_ANGLE_UP;
+    if (name == "ICON_FA_ANGLE_DOWN")
+        return ICON_FA_ANGLE_DOWN;
+    if (name == "ICON_FA_DESKTOP")
+        return ICON_FA_DESKTOP;
+    if (name == "ICON_FA_LAPTOP")
+        return ICON_FA_LAPTOP;
+    if (name == "ICON_FA_TABLET")
+        return ICON_FA_TABLET;
+    if (name == "ICON_FA_MOBILE")
+        return ICON_FA_MOBILE;
+    if (name == "ICON_FA_CIRCLE_O")
+        return ICON_FA_CIRCLE_O;
+    if (name == "ICON_FA_QUOTE_LEFT")
+        return ICON_FA_QUOTE_LEFT;
+    if (name == "ICON_FA_QUOTE_RIGHT")
+        return ICON_FA_QUOTE_RIGHT;
+    if (name == "ICON_FA_SPINNER")
+        return ICON_FA_SPINNER;
+    if (name == "ICON_FA_CIRCLE")
+        return ICON_FA_CIRCLE;
+    if (name == "ICON_FA_REPLY")
+        return ICON_FA_REPLY;
+    if (name == "ICON_FA_GITHUB_ALT")
+        return ICON_FA_GITHUB_ALT;
+    if (name == "ICON_FA_FOLDER_O")
+        return ICON_FA_FOLDER_O;
+    if (name == "ICON_FA_FOLDER_OPEN_O")
+        return ICON_FA_FOLDER_OPEN_O;
+    if (name == "ICON_FA_SMILE_O")
+        return ICON_FA_SMILE_O;
+    if (name == "ICON_FA_FROWN_O")
+        return ICON_FA_FROWN_O;
+    if (name == "ICON_FA_MEH_O")
+        return ICON_FA_MEH_O;
+    if (name == "ICON_FA_GAMEPAD")
+        return ICON_FA_GAMEPAD;
+    if (name == "ICON_FA_KEYBOARD_O")
+        return ICON_FA_KEYBOARD_O;
+    if (name == "ICON_FA_FLAG_O")
+        return ICON_FA_FLAG_O;
+    if (name == "ICON_FA_FLAG_CHECKERED")
+        return ICON_FA_FLAG_CHECKERED;
+    if (name == "ICON_FA_TERMINAL")
+        return ICON_FA_TERMINAL;
+    if (name == "ICON_FA_CODE")
+        return ICON_FA_CODE;
+    if (name == "ICON_FA_REPLY_ALL")
+        return ICON_FA_REPLY_ALL;
+    if (name == "ICON_FA_STAR_HALF_O")
+        return ICON_FA_STAR_HALF_O;
+    if (name == "ICON_FA_LOCATION_ARROW")
+        return ICON_FA_LOCATION_ARROW;
+    if (name == "ICON_FA_CROP")
+        return ICON_FA_CROP;
+    if (name == "ICON_FA_CODE_FORK")
+        return ICON_FA_CODE_FORK;
+    if (name == "ICON_FA_CHAIN_BROKEN")
+        return ICON_FA_CHAIN_BROKEN;
+    if (name == "ICON_FA_QUESTION")
+        return ICON_FA_QUESTION;
+    if (name == "ICON_FA_INFO")
+        return ICON_FA_INFO;
+    if (name == "ICON_FA_EXCLAMATION")
+        return ICON_FA_EXCLAMATION;
+    if (name == "ICON_FA_SUPERSCRIPT")
+        return ICON_FA_SUPERSCRIPT;
+    if (name == "ICON_FA_SUBSCRIPT")
+        return ICON_FA_SUBSCRIPT;
+    if (name == "ICON_FA_ERASER")
+        return ICON_FA_ERASER;
+    if (name == "ICON_FA_PUZZLE_PIECE")
+        return ICON_FA_PUZZLE_PIECE;
+    if (name == "ICON_FA_MICROPHONE")
+        return ICON_FA_MICROPHONE;
+    if (name == "ICON_FA_MICROPHONE_SLASH")
+        return ICON_FA_MICROPHONE_SLASH;
+    if (name == "ICON_FA_SHIELD")
+        return ICON_FA_SHIELD;
+    if (name == "ICON_FA_CALENDAR_O")
+        return ICON_FA_CALENDAR_O;
+    if (name == "ICON_FA_FIRE_EXTINGUISHER")
+        return ICON_FA_FIRE_EXTINGUISHER;
+    if (name == "ICON_FA_ROCKET")
+        return ICON_FA_ROCKET;
+    if (name == "ICON_FA_MAXCDN")
+        return ICON_FA_MAXCDN;
+    if (name == "ICON_FA_CHEVRON_CIRCLE_LEFT")
+        return ICON_FA_CHEVRON_CIRCLE_LEFT;
+    if (name == "ICON_FA_CHEVRON_CIRCLE_RIGHT")
+        return ICON_FA_CHEVRON_CIRCLE_RIGHT;
+    if (name == "ICON_FA_CHEVRON_CIRCLE_UP")
+        return ICON_FA_CHEVRON_CIRCLE_UP;
+    if (name == "ICON_FA_CHEVRON_CIRCLE_DOWN")
+        return ICON_FA_CHEVRON_CIRCLE_DOWN;
+    if (name == "ICON_FA_HTML5")
+        return ICON_FA_HTML5;
+    if (name == "ICON_FA_CSS3")
+        return ICON_FA_CSS3;
+    if (name == "ICON_FA_ANCHOR")
+        return ICON_FA_ANCHOR;
+    if (name == "ICON_FA_UNLOCK_ALT")
+        return ICON_FA_UNLOCK_ALT;
+    if (name == "ICON_FA_BULLSEYE")
+        return ICON_FA_BULLSEYE;
+    if (name == "ICON_FA_ELLIPSIS_H")
+        return ICON_FA_ELLIPSIS_H;
+    if (name == "ICON_FA_ELLIPSIS_V")
+        return ICON_FA_ELLIPSIS_V;
+    if (name == "ICON_FA_RSS_SQUARE")
+        return ICON_FA_RSS_SQUARE;
+    if (name == "ICON_FA_PLAY_CIRCLE")
+        return ICON_FA_PLAY_CIRCLE;
+    if (name == "ICON_FA_TICKET")
+        return ICON_FA_TICKET;
+    if (name == "ICON_FA_MINUS_SQUARE")
+        return ICON_FA_MINUS_SQUARE;
+    if (name == "ICON_FA_MINUS_SQUARE_O")
+        return ICON_FA_MINUS_SQUARE_O;
+    if (name == "ICON_FA_LEVEL_UP")
+        return ICON_FA_LEVEL_UP;
+    if (name == "ICON_FA_LEVEL_DOWN")
+        return ICON_FA_LEVEL_DOWN;
+    if (name == "ICON_FA_CHECK_SQUARE")
+        return ICON_FA_CHECK_SQUARE;
+    if (name == "ICON_FA_PENCIL_SQUARE")
+        return ICON_FA_PENCIL_SQUARE;
+    if (name == "ICON_FA_EXTERNAL_LINK_SQUARE")
+        return ICON_FA_EXTERNAL_LINK_SQUARE;
+    if (name == "ICON_FA_SHARE_SQUARE")
+        return ICON_FA_SHARE_SQUARE;
+    if (name == "ICON_FA_COMPASS")
+        return ICON_FA_COMPASS;
+    if (name == "ICON_FA_CARET_SQUARE_O_DOWN")
+        return ICON_FA_CARET_SQUARE_O_DOWN;
+    if (name == "ICON_FA_CARET_SQUARE_O_UP")
+        return ICON_FA_CARET_SQUARE_O_UP;
+    if (name == "ICON_FA_CARET_SQUARE_O_RIGHT")
+        return ICON_FA_CARET_SQUARE_O_RIGHT;
+    if (name == "ICON_FA_EUR")
+        return ICON_FA_EUR;
+    if (name == "ICON_FA_GBP")
+        return ICON_FA_GBP;
+    if (name == "ICON_FA_USD")
+        return ICON_FA_USD;
+    if (name == "ICON_FA_INR")
+        return ICON_FA_INR;
+    if (name == "ICON_FA_JPY")
+        return ICON_FA_JPY;
+    if (name == "ICON_FA_RUB")
+        return ICON_FA_RUB;
+    if (name == "ICON_FA_KRW")
+        return ICON_FA_KRW;
+    if (name == "ICON_FA_BTC")
+        return ICON_FA_BTC;
+    if (name == "ICON_FA_FILE")
+        return ICON_FA_FILE;
+    if (name == "ICON_FA_FILE_TEXT")
+        return ICON_FA_FILE_TEXT;
+    if (name == "ICON_FA_SORT_ALPHA_ASC")
+        return ICON_FA_SORT_ALPHA_ASC;
+    if (name == "ICON_FA_SORT_ALPHA_DESC")
+        return ICON_FA_SORT_ALPHA_DESC;
+    if (name == "ICON_FA_SORT_AMOUNT_ASC")
+        return ICON_FA_SORT_AMOUNT_ASC;
+    if (name == "ICON_FA_SORT_AMOUNT_DESC")
+        return ICON_FA_SORT_AMOUNT_DESC;
+    if (name == "ICON_FA_SORT_NUMERIC_ASC")
+        return ICON_FA_SORT_NUMERIC_ASC;
+    if (name == "ICON_FA_SORT_NUMERIC_DESC")
+        return ICON_FA_SORT_NUMERIC_DESC;
+    if (name == "ICON_FA_THUMBS_UP")
+        return ICON_FA_THUMBS_UP;
+    if (name == "ICON_FA_THUMBS_DOWN")
+        return ICON_FA_THUMBS_DOWN;
+    if (name == "ICON_FA_YOUTUBE_SQUARE")
+        return ICON_FA_YOUTUBE_SQUARE;
+    if (name == "ICON_FA_YOUTUBE")
+        return ICON_FA_YOUTUBE;
+    if (name == "ICON_FA_XING")
+        return ICON_FA_XING;
+    if (name == "ICON_FA_XING_SQUARE")
+        return ICON_FA_XING_SQUARE;
+    if (name == "ICON_FA_YOUTUBE_PLAY")
+        return ICON_FA_YOUTUBE_PLAY;
+    if (name == "ICON_FA_DROPBOX")
+        return ICON_FA_DROPBOX;
+    if (name == "ICON_FA_STACK_OVERFLOW")
+        return ICON_FA_STACK_OVERFLOW;
+    if (name == "ICON_FA_INSTAGRAM")
+        return ICON_FA_INSTAGRAM;
+    if (name == "ICON_FA_FLICKR")
+        return ICON_FA_FLICKR;
+    if (name == "ICON_FA_ADN")
+        return ICON_FA_ADN;
+    if (name == "ICON_FA_BITBUCKET")
+        return ICON_FA_BITBUCKET;
+    if (name == "ICON_FA_BITBUCKET_SQUARE")
+        return ICON_FA_BITBUCKET_SQUARE;
+    if (name == "ICON_FA_TUMBLR")
+        return ICON_FA_TUMBLR;
+    if (name == "ICON_FA_TUMBLR_SQUARE")
+        return ICON_FA_TUMBLR_SQUARE;
+    if (name == "ICON_FA_LONG_ARROW_DOWN")
+        return ICON_FA_LONG_ARROW_DOWN;
+    if (name == "ICON_FA_LONG_ARROW_UP")
+        return ICON_FA_LONG_ARROW_UP;
+    if (name == "ICON_FA_LONG_ARROW_LEFT")
+        return ICON_FA_LONG_ARROW_LEFT;
+    if (name == "ICON_FA_LONG_ARROW_RIGHT")
+        return ICON_FA_LONG_ARROW_RIGHT;
+    if (name == "ICON_FA_APPLE")
+        return ICON_FA_APPLE;
+    if (name == "ICON_FA_WINDOWS")
+        return ICON_FA_WINDOWS;
+    if (name == "ICON_FA_ANDROID")
+        return ICON_FA_ANDROID;
+    if (name == "ICON_FA_LINUX")
+        return ICON_FA_LINUX;
+    if (name == "ICON_FA_DRIBBBLE")
+        return ICON_FA_DRIBBBLE;
+    if (name == "ICON_FA_SKYPE")
+        return ICON_FA_SKYPE;
+    if (name == "ICON_FA_FOURSQUARE")
+        return ICON_FA_FOURSQUARE;
+    if (name == "ICON_FA_TRELLO")
+        return ICON_FA_TRELLO;
+    if (name == "ICON_FA_FEMALE")
+        return ICON_FA_FEMALE;
+    if (name == "ICON_FA_MALE")
+        return ICON_FA_MALE;
+    if (name == "ICON_FA_GRATIPAY")
+        return ICON_FA_GRATIPAY;
+    if (name == "ICON_FA_SUN_O")
+        return ICON_FA_SUN_O;
+    if (name == "ICON_FA_MOON_O")
+        return ICON_FA_MOON_O;
+    if (name == "ICON_FA_ARCHIVE")
+        return ICON_FA_ARCHIVE;
+    if (name == "ICON_FA_BUG")
+        return ICON_FA_BUG;
+    if (name == "ICON_FA_VK")
+        return ICON_FA_VK;
+    if (name == "ICON_FA_WEIBO")
+        return ICON_FA_WEIBO;
+    if (name == "ICON_FA_RENREN")
+        return ICON_FA_RENREN;
+    if (name == "ICON_FA_PAGELINES")
+        return ICON_FA_PAGELINES;
+    if (name == "ICON_FA_STACK_EXCHANGE")
+        return ICON_FA_STACK_EXCHANGE;
+    if (name == "ICON_FA_ARROW_CIRCLE_O_RIGHT")
+        return ICON_FA_ARROW_CIRCLE_O_RIGHT;
+    if (name == "ICON_FA_ARROW_CIRCLE_O_LEFT")
+        return ICON_FA_ARROW_CIRCLE_O_LEFT;
+    if (name == "ICON_FA_CARET_SQUARE_O_LEFT")
+        return ICON_FA_CARET_SQUARE_O_LEFT;
+    if (name == "ICON_FA_DOT_CIRCLE_O")
+        return ICON_FA_DOT_CIRCLE_O;
+    if (name == "ICON_FA_WHEELCHAIR")
+        return ICON_FA_WHEELCHAIR;
+    if (name == "ICON_FA_VIMEO_SQUARE")
+        return ICON_FA_VIMEO_SQUARE;
+    if (name == "ICON_FA_TRY")
+        return ICON_FA_TRY;
+    if (name == "ICON_FA_PLUS_SQUARE_O")
+        return ICON_FA_PLUS_SQUARE_O;
+    if (name == "ICON_FA_SPACE_SHUTTLE")
+        return ICON_FA_SPACE_SHUTTLE;
+    if (name == "ICON_FA_SLACK")
+        return ICON_FA_SLACK;
+    if (name == "ICON_FA_ENVELOPE_SQUARE")
+        return ICON_FA_ENVELOPE_SQUARE;
+    if (name == "ICON_FA_WORDPRESS")
+        return ICON_FA_WORDPRESS;
+    if (name == "ICON_FA_OPENID")
+        return ICON_FA_OPENID;
+    if (name == "ICON_FA_UNIVERSITY")
+        return ICON_FA_UNIVERSITY;
+    if (name == "ICON_FA_GRADUATION_CAP")
+        return ICON_FA_GRADUATION_CAP;
+    if (name == "ICON_FA_YAHOO")
+        return ICON_FA_YAHOO;
+    if (name == "ICON_FA_GOOGLE")
+        return ICON_FA_GOOGLE;
+    if (name == "ICON_FA_REDDIT")
+        return ICON_FA_REDDIT;
+    if (name == "ICON_FA_REDDIT_SQUARE")
+        return ICON_FA_REDDIT_SQUARE;
+    if (name == "ICON_FA_STUMBLEUPON_CIRCLE")
+        return ICON_FA_STUMBLEUPON_CIRCLE;
+    if (name == "ICON_FA_STUMBLEUPON")
+        return ICON_FA_STUMBLEUPON;
+    if (name == "ICON_FA_DELICIOUS")
+        return ICON_FA_DELICIOUS;
+    if (name == "ICON_FA_DIGG")
+        return ICON_FA_DIGG;
+    if (name == "ICON_FA_PIED_PIPER_PP")
+        return ICON_FA_PIED_PIPER_PP;
+    if (name == "ICON_FA_PIED_PIPER_ALT")
+        return ICON_FA_PIED_PIPER_ALT;
+    if (name == "ICON_FA_DRUPAL")
+        return ICON_FA_DRUPAL;
+    if (name == "ICON_FA_JOOMLA")
+        return ICON_FA_JOOMLA;
+    if (name == "ICON_FA_LANGUAGE")
+        return ICON_FA_LANGUAGE;
+    if (name == "ICON_FA_FAX")
+        return ICON_FA_FAX;
+    if (name == "ICON_FA_BUILDING")
+        return ICON_FA_BUILDING;
+    if (name == "ICON_FA_CHILD")
+        return ICON_FA_CHILD;
+    if (name == "ICON_FA_PAW")
+        return ICON_FA_PAW;
+    if (name == "ICON_FA_SPOON")
+        return ICON_FA_SPOON;
+    if (name == "ICON_FA_CUBE")
+        return ICON_FA_CUBE;
+    if (name == "ICON_FA_CUBES")
+        return ICON_FA_CUBES;
+    if (name == "ICON_FA_BEHANCE")
+        return ICON_FA_BEHANCE;
+    if (name == "ICON_FA_BEHANCE_SQUARE")
+        return ICON_FA_BEHANCE_SQUARE;
+    if (name == "ICON_FA_STEAM")
+        return ICON_FA_STEAM;
+    if (name == "ICON_FA_STEAM_SQUARE")
+        return ICON_FA_STEAM_SQUARE;
+    if (name == "ICON_FA_RECYCLE")
+        return ICON_FA_RECYCLE;
+    if (name == "ICON_FA_CAR")
+        return ICON_FA_CAR;
+    if (name == "ICON_FA_TAXI")
+        return ICON_FA_TAXI;
+    if (name == "ICON_FA_TREE")
+        return ICON_FA_TREE;
+    if (name == "ICON_FA_SPOTIFY")
+        return ICON_FA_SPOTIFY;
+    if (name == "ICON_FA_DEVIANTART")
+        return ICON_FA_DEVIANTART;
+    if (name == "ICON_FA_SOUNDCLOUD")
+        return ICON_FA_SOUNDCLOUD;
+    if (name == "ICON_FA_DATABASE")
+        return ICON_FA_DATABASE;
+    if (name == "ICON_FA_FILE_PDF_O")
+        return ICON_FA_FILE_PDF_O;
+    if (name == "ICON_FA_FILE_WORD_O")
+        return ICON_FA_FILE_WORD_O;
+    if (name == "ICON_FA_FILE_EXCEL_O")
+        return ICON_FA_FILE_EXCEL_O;
+    if (name == "ICON_FA_FILE_POWERPOINT_O")
+        return ICON_FA_FILE_POWERPOINT_O;
+    if (name == "ICON_FA_FILE_IMAGE_O")
+        return ICON_FA_FILE_IMAGE_O;
+    if (name == "ICON_FA_FILE_ARCHIVE_O")
+        return ICON_FA_FILE_ARCHIVE_O;
+    if (name == "ICON_FA_FILE_AUDIO_O")
+        return ICON_FA_FILE_AUDIO_O;
+    if (name == "ICON_FA_FILE_VIDEO_O")
+        return ICON_FA_FILE_VIDEO_O;
+    if (name == "ICON_FA_FILE_CODE_O")
+        return ICON_FA_FILE_CODE_O;
+    if (name == "ICON_FA_VINE")
+        return ICON_FA_VINE;
+    if (name == "ICON_FA_CODEPEN")
+        return ICON_FA_CODEPEN;
+    if (name == "ICON_FA_JSFIDDLE")
+        return ICON_FA_JSFIDDLE;
+    if (name == "ICON_FA_LIFE_RING")
+        return ICON_FA_LIFE_RING;
+    if (name == "ICON_FA_CIRCLE_O_NOTCH")
+        return ICON_FA_CIRCLE_O_NOTCH;
+    if (name == "ICON_FA_REBEL")
+        return ICON_FA_REBEL;
+    if (name == "ICON_FA_EMPIRE")
+        return ICON_FA_EMPIRE;
+    if (name == "ICON_FA_GIT_SQUARE")
+        return ICON_FA_GIT_SQUARE;
+    if (name == "ICON_FA_GIT")
+        return ICON_FA_GIT;
+    if (name == "ICON_FA_HACKER_NEWS")
+        return ICON_FA_HACKER_NEWS;
+    if (name == "ICON_FA_TENCENT_WEIBO")
+        return ICON_FA_TENCENT_WEIBO;
+    if (name == "ICON_FA_QQ")
+        return ICON_FA_QQ;
+    if (name == "ICON_FA_WEIXIN")
+        return ICON_FA_WEIXIN;
+    if (name == "ICON_FA_PAPER_PLANE")
+        return ICON_FA_PAPER_PLANE;
+    if (name == "ICON_FA_PAPER_PLANE_O")
+        return ICON_FA_PAPER_PLANE_O;
+    if (name == "ICON_FA_HISTORY")
+        return ICON_FA_HISTORY;
+    if (name == "ICON_FA_CIRCLE_THIN")
+        return ICON_FA_CIRCLE_THIN;
+    if (name == "ICON_FA_HEADER")
+        return ICON_FA_HEADER;
+    if (name == "ICON_FA_PARAGRAPH")
+        return ICON_FA_PARAGRAPH;
+    if (name == "ICON_FA_SLIDERS")
+        return ICON_FA_SLIDERS;
+    if (name == "ICON_FA_SHARE_ALT")
+        return ICON_FA_SHARE_ALT;
+    if (name == "ICON_FA_SHARE_ALT_SQUARE")
+        return ICON_FA_SHARE_ALT_SQUARE;
+    if (name == "ICON_FA_BOMB")
+        return ICON_FA_BOMB;
+    if (name == "ICON_FA_FUTBOL_O")
+        return ICON_FA_FUTBOL_O;
+    if (name == "ICON_FA_TTY")
+        return ICON_FA_TTY;
+    if (name == "ICON_FA_BINOCULARS")
+        return ICON_FA_BINOCULARS;
+    if (name == "ICON_FA_PLUG")
+        return ICON_FA_PLUG;
+    if (name == "ICON_FA_SLIDESHARE")
+        return ICON_FA_SLIDESHARE;
+    if (name == "ICON_FA_TWITCH")
+        return ICON_FA_TWITCH;
+    if (name == "ICON_FA_YELP")
+        return ICON_FA_YELP;
+    if (name == "ICON_FA_NEWSPAPER_O")
+        return ICON_FA_NEWSPAPER_O;
+    if (name == "ICON_FA_WIFI")
+        return ICON_FA_WIFI;
+    if (name == "ICON_FA_CALCULATOR")
+        return ICON_FA_CALCULATOR;
+    if (name == "ICON_FA_PAYPAL")
+        return ICON_FA_PAYPAL;
+    if (name == "ICON_FA_GOOGLE_WALLET")
+        return ICON_FA_GOOGLE_WALLET;
+    if (name == "ICON_FA_CC_VISA")
+        return ICON_FA_CC_VISA;
+    if (name == "ICON_FA_CC_MASTERCARD")
+        return ICON_FA_CC_MASTERCARD;
+    if (name == "ICON_FA_CC_DISCOVER")
+        return ICON_FA_CC_DISCOVER;
+    if (name == "ICON_FA_CC_AMEX")
+        return ICON_FA_CC_AMEX;
+    if (name == "ICON_FA_CC_PAYPAL")
+        return ICON_FA_CC_PAYPAL;
+    if (name == "ICON_FA_CC_STRIPE")
+        return ICON_FA_CC_STRIPE;
+    if (name == "ICON_FA_BELL_SLASH")
+        return ICON_FA_BELL_SLASH;
+    if (name == "ICON_FA_BELL_SLASH_O")
+        return ICON_FA_BELL_SLASH_O;
+    if (name == "ICON_FA_TRASH")
+        return ICON_FA_TRASH;
+    if (name == "ICON_FA_COPYRIGHT")
+        return ICON_FA_COPYRIGHT;
+    if (name == "ICON_FA_AT")
+        return ICON_FA_AT;
+    if (name == "ICON_FA_EYEDROPPER")
+        return ICON_FA_EYEDROPPER;
+    if (name == "ICON_FA_PAINT_BRUSH")
+        return ICON_FA_PAINT_BRUSH;
+    if (name == "ICON_FA_BIRTHDAY_CAKE")
+        return ICON_FA_BIRTHDAY_CAKE;
+    if (name == "ICON_FA_AREA_CHART")
+        return ICON_FA_AREA_CHART;
+    if (name == "ICON_FA_PIE_CHART")
+        return ICON_FA_PIE_CHART;
+    if (name == "ICON_FA_LINE_CHART")
+        return ICON_FA_LINE_CHART;
+    if (name == "ICON_FA_LASTFM")
+        return ICON_FA_LASTFM;
+    if (name == "ICON_FA_LASTFM_SQUARE")
+        return ICON_FA_LASTFM_SQUARE;
+    if (name == "ICON_FA_TOGGLE_OFF")
+        return ICON_FA_TOGGLE_OFF;
+    if (name == "ICON_FA_TOGGLE_ON")
+        return ICON_FA_TOGGLE_ON;
+    if (name == "ICON_FA_BICYCLE")
+        return ICON_FA_BICYCLE;
+    if (name == "ICON_FA_BUS")
+        return ICON_FA_BUS;
+    if (name == "ICON_FA_IOXHOST")
+        return ICON_FA_IOXHOST;
+    if (name == "ICON_FA_ANGELLIST")
+        return ICON_FA_ANGELLIST;
+    if (name == "ICON_FA_CC")
+        return ICON_FA_CC;
+    if (name == "ICON_FA_ILS")
+        return ICON_FA_ILS;
+    if (name == "ICON_FA_MEANPATH")
+        return ICON_FA_MEANPATH;
+    if (name == "ICON_FA_BUYSELLADS")
+        return ICON_FA_BUYSELLADS;
+    if (name == "ICON_FA_CONNECTDEVELOP")
+        return ICON_FA_CONNECTDEVELOP;
+    if (name == "ICON_FA_DASHCUBE")
+        return ICON_FA_DASHCUBE;
+    if (name == "ICON_FA_FORUMBEE")
+        return ICON_FA_FORUMBEE;
+    if (name == "ICON_FA_LEANPUB")
+        return ICON_FA_LEANPUB;
+    if (name == "ICON_FA_SELLSY")
+        return ICON_FA_SELLSY;
+    if (name == "ICON_FA_SHIRTSINBULK")
+        return ICON_FA_SHIRTSINBULK;
+    if (name == "ICON_FA_SIMPLYBUILT")
+        return ICON_FA_SIMPLYBUILT;
+    if (name == "ICON_FA_SKYATLAS")
+        return ICON_FA_SKYATLAS;
+    if (name == "ICON_FA_CART_PLUS")
+        return ICON_FA_CART_PLUS;
+    if (name == "ICON_FA_CART_ARROW_DOWN")
+        return ICON_FA_CART_ARROW_DOWN;
+    if (name == "ICON_FA_DIAMOND")
+        return ICON_FA_DIAMOND;
+    if (name == "ICON_FA_SHIP")
+        return ICON_FA_SHIP;
+    if (name == "ICON_FA_USER_SECRET")
+        return ICON_FA_USER_SECRET;
+    if (name == "ICON_FA_MOTORCYCLE")
+        return ICON_FA_MOTORCYCLE;
+    if (name == "ICON_FA_STREET_VIEW")
+        return ICON_FA_STREET_VIEW;
+    if (name == "ICON_FA_HEARTBEAT")
+        return ICON_FA_HEARTBEAT;
+    if (name == "ICON_FA_VENUS")
+        return ICON_FA_VENUS;
+    if (name == "ICON_FA_MARS")
+        return ICON_FA_MARS;
+    if (name == "ICON_FA_MERCURY")
+        return ICON_FA_MERCURY;
+    if (name == "ICON_FA_TRANSGENDER")
+        return ICON_FA_TRANSGENDER;
+    if (name == "ICON_FA_TRANSGENDER_ALT")
+        return ICON_FA_TRANSGENDER_ALT;
+    if (name == "ICON_FA_VENUS_DOUBLE")
+        return ICON_FA_VENUS_DOUBLE;
+    if (name == "ICON_FA_MARS_DOUBLE")
+        return ICON_FA_MARS_DOUBLE;
+    if (name == "ICON_FA_VENUS_MARS")
+        return ICON_FA_VENUS_MARS;
+    if (name == "ICON_FA_MARS_STROKE")
+        return ICON_FA_MARS_STROKE;
+    if (name == "ICON_FA_MARS_STROKE_V")
+        return ICON_FA_MARS_STROKE_V;
+    if (name == "ICON_FA_MARS_STROKE_H")
+        return ICON_FA_MARS_STROKE_H;
+    if (name == "ICON_FA_NEUTER")
+        return ICON_FA_NEUTER;
+    if (name == "ICON_FA_GENDERLESS")
+        return ICON_FA_GENDERLESS;
+    if (name == "ICON_FA_FACEBOOK_OFFICIAL")
+        return ICON_FA_FACEBOOK_OFFICIAL;
+    if (name == "ICON_FA_PINTEREST_P")
+        return ICON_FA_PINTEREST_P;
+    if (name == "ICON_FA_WHATSAPP")
+        return ICON_FA_WHATSAPP;
+    if (name == "ICON_FA_SERVER")
+        return ICON_FA_SERVER;
+    if (name == "ICON_FA_USER_PLUS")
+        return ICON_FA_USER_PLUS;
+    if (name == "ICON_FA_USER_TIMES")
+        return ICON_FA_USER_TIMES;
+    if (name == "ICON_FA_BED")
+        return ICON_FA_BED;
+    if (name == "ICON_FA_VIACOIN")
+        return ICON_FA_VIACOIN;
+    if (name == "ICON_FA_TRAIN")
+        return ICON_FA_TRAIN;
+    if (name == "ICON_FA_SUBWAY")
+        return ICON_FA_SUBWAY;
+    if (name == "ICON_FA_MEDIUM")
+        return ICON_FA_MEDIUM;
+    if (name == "ICON_FA_Y_COMBINATOR")
+        return ICON_FA_Y_COMBINATOR;
+    if (name == "ICON_FA_OPTIN_MONSTER")
+        return ICON_FA_OPTIN_MONSTER;
+    if (name == "ICON_FA_OPENCART")
+        return ICON_FA_OPENCART;
+    if (name == "ICON_FA_EXPEDITEDSSL")
+        return ICON_FA_EXPEDITEDSSL;
+    if (name == "ICON_FA_BATTERY_FULL")
+        return ICON_FA_BATTERY_FULL;
+    if (name == "ICON_FA_BATTERY_THREE_QUARTERS")
+        return ICON_FA_BATTERY_THREE_QUARTERS;
+    if (name == "ICON_FA_BATTERY_HALF")
+        return ICON_FA_BATTERY_HALF;
+    if (name == "ICON_FA_BATTERY_QUARTER")
+        return ICON_FA_BATTERY_QUARTER;
+    if (name == "ICON_FA_BATTERY_EMPTY")
+        return ICON_FA_BATTERY_EMPTY;
+    if (name == "ICON_FA_MOUSE_POINTER")
+        return ICON_FA_MOUSE_POINTER;
+    if (name == "ICON_FA_I_CURSOR")
+        return ICON_FA_I_CURSOR;
+    if (name == "ICON_FA_OBJECT_GROUP")
+        return ICON_FA_OBJECT_GROUP;
+    if (name == "ICON_FA_OBJECT_UNGROUP")
+        return ICON_FA_OBJECT_UNGROUP;
+    if (name == "ICON_FA_STICKY_NOTE")
+        return ICON_FA_STICKY_NOTE;
+    if (name == "ICON_FA_STICKY_NOTE_O")
+        return ICON_FA_STICKY_NOTE_O;
+    if (name == "ICON_FA_CC_JCB")
+        return ICON_FA_CC_JCB;
+    if (name == "ICON_FA_CC_DINERS_CLUB")
+        return ICON_FA_CC_DINERS_CLUB;
+    if (name == "ICON_FA_CLONE")
+        return ICON_FA_CLONE;
+    if (name == "ICON_FA_BALANCE_SCALE")
+        return ICON_FA_BALANCE_SCALE;
+    if (name == "ICON_FA_HOURGLASS_O")
+        return ICON_FA_HOURGLASS_O;
+    if (name == "ICON_FA_HOURGLASS_START")
+        return ICON_FA_HOURGLASS_START;
+    if (name == "ICON_FA_HOURGLASS_HALF")
+        return ICON_FA_HOURGLASS_HALF;
+    if (name == "ICON_FA_HOURGLASS_END")
+        return ICON_FA_HOURGLASS_END;
+    if (name == "ICON_FA_HOURGLASS")
+        return ICON_FA_HOURGLASS;
+    if (name == "ICON_FA_HAND_ROCK_O")
+        return ICON_FA_HAND_ROCK_O;
+    if (name == "ICON_FA_HAND_PAPER_O")
+        return ICON_FA_HAND_PAPER_O;
+    if (name == "ICON_FA_HAND_SCISSORS_O")
+        return ICON_FA_HAND_SCISSORS_O;
+    if (name == "ICON_FA_HAND_LIZARD_O")
+        return ICON_FA_HAND_LIZARD_O;
+    if (name == "ICON_FA_HAND_SPOCK_O")
+        return ICON_FA_HAND_SPOCK_O;
+    if (name == "ICON_FA_HAND_POINTER_O")
+        return ICON_FA_HAND_POINTER_O;
+    if (name == "ICON_FA_HAND_PEACE_O")
+        return ICON_FA_HAND_PEACE_O;
+    if (name == "ICON_FA_TRADEMARK")
+        return ICON_FA_TRADEMARK;
+    if (name == "ICON_FA_REGISTERED")
+        return ICON_FA_REGISTERED;
+    if (name == "ICON_FA_CREATIVE_COMMONS")
+        return ICON_FA_CREATIVE_COMMONS;
+    if (name == "ICON_FA_GG")
+        return ICON_FA_GG;
+    if (name == "ICON_FA_GG_CIRCLE")
+        return ICON_FA_GG_CIRCLE;
+    if (name == "ICON_FA_TRIPADVISOR")
+        return ICON_FA_TRIPADVISOR;
+    if (name == "ICON_FA_ODNOKLASSNIKI")
+        return ICON_FA_ODNOKLASSNIKI;
+    if (name == "ICON_FA_ODNOKLASSNIKI_SQUARE")
+        return ICON_FA_ODNOKLASSNIKI_SQUARE;
+    if (name == "ICON_FA_GET_POCKET")
+        return ICON_FA_GET_POCKET;
+    if (name == "ICON_FA_WIKIPEDIA_W")
+        return ICON_FA_WIKIPEDIA_W;
+    if (name == "ICON_FA_SAFARI")
+        return ICON_FA_SAFARI;
+    if (name == "ICON_FA_CHROME")
+        return ICON_FA_CHROME;
+    if (name == "ICON_FA_FIREFOX")
+        return ICON_FA_FIREFOX;
+    if (name == "ICON_FA_OPERA")
+        return ICON_FA_OPERA;
+    if (name == "ICON_FA_INTERNET_EXPLORER")
+        return ICON_FA_INTERNET_EXPLORER;
+    if (name == "ICON_FA_TELEVISION")
+        return ICON_FA_TELEVISION;
+    if (name == "ICON_FA_CONTAO")
+        return ICON_FA_CONTAO;
+    if (name == "ICON_FA_500PX")
+        return ICON_FA_500PX;
+    if (name == "ICON_FA_AMAZON")
+        return ICON_FA_AMAZON;
+    if (name == "ICON_FA_CALENDAR_PLUS_O")
+        return ICON_FA_CALENDAR_PLUS_O;
+    if (name == "ICON_FA_CALENDAR_MINUS_O")
+        return ICON_FA_CALENDAR_MINUS_O;
+    if (name == "ICON_FA_CALENDAR_TIMES_O")
+        return ICON_FA_CALENDAR_TIMES_O;
+    if (name == "ICON_FA_CALENDAR_CHECK_O")
+        return ICON_FA_CALENDAR_CHECK_O;
+    if (name == "ICON_FA_INDUSTRY")
+        return ICON_FA_INDUSTRY;
+    if (name == "ICON_FA_MAP_PIN")
+        return ICON_FA_MAP_PIN;
+    if (name == "ICON_FA_MAP_SIGNS")
+        return ICON_FA_MAP_SIGNS;
+    if (name == "ICON_FA_MAP_O")
+        return ICON_FA_MAP_O;
+    if (name == "ICON_FA_MAP")
+        return ICON_FA_MAP;
+    if (name == "ICON_FA_COMMENTING")
+        return ICON_FA_COMMENTING;
+    if (name == "ICON_FA_COMMENTING_O")
+        return ICON_FA_COMMENTING_O;
+    if (name == "ICON_FA_HOUZZ")
+        return ICON_FA_HOUZZ;
+    if (name == "ICON_FA_VIMEO")
+        return ICON_FA_VIMEO;
+    if (name == "ICON_FA_BLACK_TIE")
+        return ICON_FA_BLACK_TIE;
+    if (name == "ICON_FA_FONTICONS")
+        return ICON_FA_FONTICONS;
+    if (name == "ICON_FA_REDDIT_ALIEN")
+        return ICON_FA_REDDIT_ALIEN;
+    if (name == "ICON_FA_EDGE")
+        return ICON_FA_EDGE;
+    if (name == "ICON_FA_CREDIT_CARD_ALT")
+        return ICON_FA_CREDIT_CARD_ALT;
+    if (name == "ICON_FA_CODIEPIE")
+        return ICON_FA_CODIEPIE;
+    if (name == "ICON_FA_MODX")
+        return ICON_FA_MODX;
+    if (name == "ICON_FA_FORT_AWESOME")
+        return ICON_FA_FORT_AWESOME;
+    if (name == "ICON_FA_USB")
+        return ICON_FA_USB;
+    if (name == "ICON_FA_PRODUCT_HUNT")
+        return ICON_FA_PRODUCT_HUNT;
+    if (name == "ICON_FA_MIXCLOUD")
+        return ICON_FA_MIXCLOUD;
+    if (name == "ICON_FA_SCRIBD")
+        return ICON_FA_SCRIBD;
+    if (name == "ICON_FA_PAUSE_CIRCLE")
+        return ICON_FA_PAUSE_CIRCLE;
+    if (name == "ICON_FA_PAUSE_CIRCLE_O")
+        return ICON_FA_PAUSE_CIRCLE_O;
+    if (name == "ICON_FA_STOP_CIRCLE")
+        return ICON_FA_STOP_CIRCLE;
+    if (name == "ICON_FA_STOP_CIRCLE_O")
+        return ICON_FA_STOP_CIRCLE_O;
+    if (name == "ICON_FA_SHOPPING_BAG")
+        return ICON_FA_SHOPPING_BAG;
+    if (name == "ICON_FA_SHOPPING_BASKET")
+        return ICON_FA_SHOPPING_BASKET;
+    if (name == "ICON_FA_HASHTAG")
+        return ICON_FA_HASHTAG;
+    if (name == "ICON_FA_BLUETOOTH")
+        return ICON_FA_BLUETOOTH;
+    if (name == "ICON_FA_BLUETOOTH_B")
+        return ICON_FA_BLUETOOTH_B;
+    if (name == "ICON_FA_PERCENT")
+        return ICON_FA_PERCENT;
+    if (name == "ICON_FA_GITLAB")
+        return ICON_FA_GITLAB;
+    if (name == "ICON_FA_WPBEGINNER")
+        return ICON_FA_WPBEGINNER;
+    if (name == "ICON_FA_WPFORMS")
+        return ICON_FA_WPFORMS;
+    if (name == "ICON_FA_ENVIRA")
+        return ICON_FA_ENVIRA;
+    if (name == "ICON_FA_UNIVERSAL_ACCESS")
+        return ICON_FA_UNIVERSAL_ACCESS;
+    if (name == "ICON_FA_WHEELCHAIR_ALT")
+        return ICON_FA_WHEELCHAIR_ALT;
+    if (name == "ICON_FA_QUESTION_CIRCLE_O")
+        return ICON_FA_QUESTION_CIRCLE_O;
+    if (name == "ICON_FA_BLIND")
+        return ICON_FA_BLIND;
+    if (name == "ICON_FA_AUDIO_DESCRIPTION")
+        return ICON_FA_AUDIO_DESCRIPTION;
+    if (name == "ICON_FA_VOLUME_CONTROL_PHONE")
+        return ICON_FA_VOLUME_CONTROL_PHONE;
+    if (name == "ICON_FA_BRAILLE")
+        return ICON_FA_BRAILLE;
+    if (name == "ICON_FA_ASSISTIVE_LISTENING_SYSTEMS")
+        return ICON_FA_ASSISTIVE_LISTENING_SYSTEMS;
+    if (name == "ICON_FA_AMERICAN_SIGN_LANGUAGE_INTERPRETING")
+        return ICON_FA_AMERICAN_SIGN_LANGUAGE_INTERPRETING;
+    if (name == "ICON_FA_DEAF")
+        return ICON_FA_DEAF;
+    if (name == "ICON_FA_GLIDE")
+        return ICON_FA_GLIDE;
+    if (name == "ICON_FA_GLIDE_G")
+        return ICON_FA_GLIDE_G;
+    if (name == "ICON_FA_SIGN_LANGUAGE")
+        return ICON_FA_SIGN_LANGUAGE;
+    if (name == "ICON_FA_LOW_VISION")
+        return ICON_FA_LOW_VISION;
+    if (name == "ICON_FA_VIADEO")
+        return ICON_FA_VIADEO;
+    if (name == "ICON_FA_VIADEO_SQUARE")
+        return ICON_FA_VIADEO_SQUARE;
+    if (name == "ICON_FA_SNAPCHAT")
+        return ICON_FA_SNAPCHAT;
+    if (name == "ICON_FA_SNAPCHAT_GHOST")
+        return ICON_FA_SNAPCHAT_GHOST;
+    if (name == "ICON_FA_SNAPCHAT_SQUARE")
+        return ICON_FA_SNAPCHAT_SQUARE;
+    if (name == "ICON_FA_PIED_PIPER")
+        return ICON_FA_PIED_PIPER;
+    if (name == "ICON_FA_FIRST_ORDER")
+        return ICON_FA_FIRST_ORDER;
+    if (name == "ICON_FA_YOAST")
+        return ICON_FA_YOAST;
+    if (name == "ICON_FA_THEMEISLE")
+        return ICON_FA_THEMEISLE;
+    if (name == "ICON_FA_GOOGLE_PLUS_OFFICIAL")
+        return ICON_FA_GOOGLE_PLUS_OFFICIAL;
+    if (name == "ICON_FA_FONT_AWESOME")
+        return ICON_FA_FONT_AWESOME;
+    if (name == "ICON_FA_HANDSHAKE_O")
+        return ICON_FA_HANDSHAKE_O;
+    if (name == "ICON_FA_ENVELOPE_OPEN")
+        return ICON_FA_ENVELOPE_OPEN;
+    if (name == "ICON_FA_ENVELOPE_OPEN_O")
+        return ICON_FA_ENVELOPE_OPEN_O;
+    if (name == "ICON_FA_LINODE")
+        return ICON_FA_LINODE;
+    if (name == "ICON_FA_ADDRESS_BOOK")
+        return ICON_FA_ADDRESS_BOOK;
+    if (name == "ICON_FA_ADDRESS_BOOK_O")
+        return ICON_FA_ADDRESS_BOOK_O;
+    if (name == "ICON_FA_ADDRESS_CARD")
+        return ICON_FA_ADDRESS_CARD;
+    if (name == "ICON_FA_ADDRESS_CARD_O")
+        return ICON_FA_ADDRESS_CARD_O;
+    if (name == "ICON_FA_USER_CIRCLE")
+        return ICON_FA_USER_CIRCLE;
+    if (name == "ICON_FA_USER_CIRCLE_O")
+        return ICON_FA_USER_CIRCLE_O;
+    if (name == "ICON_FA_USER_O")
+        return ICON_FA_USER_O;
+    if (name == "ICON_FA_ID_BADGE")
+        return ICON_FA_ID_BADGE;
+    if (name == "ICON_FA_ID_CARD")
+        return ICON_FA_ID_CARD;
+    if (name == "ICON_FA_ID_CARD_O")
+        return ICON_FA_ID_CARD_O;
+    if (name == "ICON_FA_QUORA")
+        return ICON_FA_QUORA;
+    if (name == "ICON_FA_FREE_CODE_CAMP")
+        return ICON_FA_FREE_CODE_CAMP;
+    if (name == "ICON_FA_TELEGRAM")
+        return ICON_FA_TELEGRAM;
+    if (name == "ICON_FA_THERMOMETER_FULL")
+        return ICON_FA_THERMOMETER_FULL;
+    if (name == "ICON_FA_THERMOMETER_THREE_QUARTERS")
+        return ICON_FA_THERMOMETER_THREE_QUARTERS;
+    if (name == "ICON_FA_THERMOMETER_HALF")
+        return ICON_FA_THERMOMETER_HALF;
+    if (name == "ICON_FA_THERMOMETER_QUARTER")
+        return ICON_FA_THERMOMETER_QUARTER;
+    if (name == "ICON_FA_THERMOMETER_EMPTY")
+        return ICON_FA_THERMOMETER_EMPTY;
+    if (name == "ICON_FA_SHOWER")
+        return ICON_FA_SHOWER;
+    if (name == "ICON_FA_BATH")
+        return ICON_FA_BATH;
+    if (name == "ICON_FA_PODCAST")
+        return ICON_FA_PODCAST;
+    if (name == "ICON_FA_WINDOW_MAXIMIZE")
+        return ICON_FA_WINDOW_MAXIMIZE;
+    if (name == "ICON_FA_WINDOW_MINIMIZE")
+        return ICON_FA_WINDOW_MINIMIZE;
+    if (name == "ICON_FA_WINDOW_RESTORE")
+        return ICON_FA_WINDOW_RESTORE;
+    if (name == "ICON_FA_WINDOW_CLOSE")
+        return ICON_FA_WINDOW_CLOSE;
+    if (name == "ICON_FA_WINDOW_CLOSE_O")
+        return ICON_FA_WINDOW_CLOSE_O;
+    if (name == "ICON_FA_BANDCAMP")
+        return ICON_FA_BANDCAMP;
+    if (name == "ICON_FA_GRAV")
+        return ICON_FA_GRAV;
+    if (name == "ICON_FA_ETSY")
+        return ICON_FA_ETSY;
+    if (name == "ICON_FA_IMDB")
+        return ICON_FA_IMDB;
+    if (name == "ICON_FA_RAVELRY")
+        return ICON_FA_RAVELRY;
+    if (name == "ICON_FA_EERCAST")
+        return ICON_FA_EERCAST;
+    if (name == "ICON_FA_MICROCHIP")
+        return ICON_FA_MICROCHIP;
+    if (name == "ICON_FA_SNOWFLAKE_O")
+        return ICON_FA_SNOWFLAKE_O;
+    if (name == "ICON_FA_SUPERPOWERS")
+        return ICON_FA_SUPERPOWERS;
+    if (name == "ICON_FA_WPEXPLORER")
+        return ICON_FA_WPEXPLORER;
+    if (name == "ICON_FA_MEETUP")
+        return ICON_FA_MEETUP;
+    return name;
+}
+
 void CheckTrackerWindow::DrawElement() {
     Color_Background = CVarGetColor(CVAR_TRACKER_CHECK("BgColor.Value"), Color_Bg_Default);
     Color_Area_Incomplete_Main = CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.MainColor.Value"), Color_Main_Default);
@@ -987,7 +2357,15 @@ void CheckTrackerWindow::DrawElement() {
     showHidden = CVarGetInteger(CVAR_TRACKER_CHECK("ShowHidden"), 0);
     mystery = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0);
     showLogicTooltip = CVarGetInteger(CVAR_TRACKER_CHECK("ShowLogic"), 0);
-    enableAvailableChecks = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
+    availableChecksDisplay = (AvailableChecksDisplay)CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksDisplay"), 0);
+    availableChecksNoneAvailableIcon =
+        MapAvailableCheckIcon(CVarGetString(CVAR_TRACKER_CHECK("AvailableChecksNoneIcon"), "ICON_FA_LOCK"));
+    availableChecksChildAvailableIcon =
+        MapAvailableCheckIcon(CVarGetString(CVAR_TRACKER_CHECK("AvailableChecksChildIcon"), "ICON_FA_CHILD"));
+    availableChecksAdultAvailableIcon =
+        MapAvailableCheckIcon(CVarGetString(CVAR_TRACKER_CHECK("AvailableChecksAdultIcon"), "ICON_FA_USER"));
+    availableChecksBothAvailableIcon =
+        MapAvailableCheckIcon(CVarGetString(CVAR_TRACKER_CHECK("AvailableChecksBothIcon"), "ICON_FA_USERS"));
     onlyShowAvailable = CVarGetInteger(CVAR_TRACKER_CHECK("OnlyShowAvailable"), 0);
 
     hideShopUnshuffledChecks = CVarGetInteger(CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), 0);
@@ -1062,7 +2440,7 @@ void CheckTrackerWindow::DrawElement() {
         showHidden = CVarGetInteger(CVAR_TRACKER_CHECK("ShowHidden"), 0);
         RecalculateAllAreaTotals();
     }
-    if (enableAvailableChecks && CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"), 1)) {
+    if (availableChecksDisplay != AC_DISABLED && CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"), 1)) {
         if (UIWidgets::CVarCheckbox(
                 "Only Show Available Checks", CVAR_TRACKER_CHECK("OnlyShowAvailable"),
                 UIWidgets::CheckboxOptions({ { .tooltip = "When active, unavailable checks will be hidden." } })
@@ -1105,7 +2483,7 @@ void CheckTrackerWindow::DrawElement() {
     if (CVarGetInteger(CVAR_TRACKER_CHECK("CheckTotalsVisible"), 1)) {
         std::ostringstream totalChecksSS;
         totalChecksSS << "";
-        if (enableAvailableChecks) {
+        if (availableChecksDisplay != AC_DISABLED) {
             totalChecksSS << totalChecksAvailable << " Available / ";
         }
         totalChecksSS << totalChecksGotten << " Checked / " << totalChecks << " Total";
@@ -1114,7 +2492,8 @@ void CheckTrackerWindow::DrawElement() {
 
     bool headerPresent =
         CVarGetInteger(CVAR_TRACKER_CHECK("HiddenItemsToggleVisible"), 1) ||
-        (enableAvailableChecks && CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"), 1)) ||
+                         (availableChecksDisplay != AC_DISABLED &&
+                          CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"), 1)) ||
         CVarGetInteger(CVAR_TRACKER_CHECK("ExpandCollapseButtonsVisible"), 0) ||
         CVarGetInteger(CVAR_TRACKER_CHECK("SearchInputVisible"), 1) ||
         CVarGetInteger(CVAR_TRACKER_CHECK("CheckTotalsVisible"), 1);
@@ -1166,7 +2545,7 @@ void CheckTrackerWindow::DrawElement() {
         }
         if ((shouldHideFilteredAreas && filterAreasHidden[rcArea]) ||
             (!showHidden && ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked))) ||
-            (enableAvailableChecks && onlyShowAvailable && areaChecksAvailable[rcArea] == 0)) {
+            (availableChecksDisplay != AC_DISABLED && onlyShowAvailable && areaChecksAvailable[rcArea] == 0)) {
             doDraw = false;
         } else {
             // Get the colour for the area
@@ -1208,7 +2587,7 @@ void CheckTrackerWindow::DrawElement() {
                 std::ostringstream areaTotalsTooltipSS;
 
                 areaTotalsSS << "(";
-                if (enableAvailableChecks) {
+                if (availableChecksDisplay != AC_DISABLED) {
                     areaTotalsSS << static_cast<uint16_t>(areaChecksAvailable[rcArea]) << " / ";
                     areaTotalsTooltipSS << "Available / ";
                 }
@@ -1763,6 +3142,145 @@ bool IsHeartPiece(GetItemID giid) {
     return giid == GI_HEART_PIECE || giid == GI_HEART_PIECE_WIN;
 }
 
+void DrawAvailability(Rando::ItemLocation* itemLoc, ImVec4 styleColor) {
+    if (availableChecksDisplay == AC_DISABLED) {
+        return;
+    } 
+
+    auto child = itemLoc->IsChildAvailable();
+    auto adult = itemLoc->IsAdultAvailable();
+
+    auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
+    auto textSize = ImGui::CalcTextSize(ICON_FA_LOCK);
+    auto framePadding = ImGui::GetStyle().FramePadding;
+    ImVec2 iconSize(textSize.y + framePadding.y * 2, textSize.y + framePadding.y * 2), zero(0.0f, 0.0f), one(1, 1);
+
+    if (availableChecksDisplay == AC_LOCKED_UNLOCKED) {
+        if (itemLoc->HasObtained()) {
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 0));
+        } else {
+            ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
+        }
+        ImGui::Text(child || adult ? ICON_FA_UNLOCK : ICON_FA_LOCK);
+        ImGui::PopStyleColor();
+        ImGui::SameLine();
+    } else if (availableChecksDisplay == AC_ONE_ICON) {
+        if (itemLoc->HasObtained()) {
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 0));
+        } else {
+            ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
+        }
+
+        if (child && adult) {
+            auto texture = gui->GetTextureByName(availableChecksBothAvailableIcon);
+            if (texture != nullptr) {
+                ImGui::Image(texture, iconSize, zero, one);
+            } else {
+                ImGui::Text(availableChecksBothAvailableIcon.c_str());
+            }
+            ImGui::SameLine();
+            UIWidgets::Tooltip("Child & Adult Available");
+        } else if (child) {
+            auto texture = gui->GetTextureByName(availableChecksChildAvailableIcon);
+            if (texture != nullptr) {
+                ImGui::Image(texture, iconSize, zero, one);
+            } else {
+                ImGui::Text(availableChecksChildAvailableIcon.c_str());
+            }
+            ImGui::SameLine();
+            UIWidgets::Tooltip("Child Available");
+        } else if (adult) {
+            auto texture = gui->GetTextureByName(availableChecksAdultAvailableIcon);
+            if (texture != nullptr) {
+                ImGui::Image(texture, iconSize, zero, one);
+            } else {
+                ImGui::Text(availableChecksAdultAvailableIcon.c_str());
+            }
+            ImGui::SameLine();
+            UIWidgets::Tooltip("Adult Available");
+        } else {
+            auto texture = gui->GetTextureByName(availableChecksNoneAvailableIcon);
+            if (texture != nullptr) {
+                ImGui::Image(texture, iconSize, zero, one);
+            } else {
+                ImGui::Text(availableChecksNoneAvailableIcon.c_str());
+            }
+            ImGui::SameLine();
+            UIWidgets::Tooltip("Neither Available");
+        }
+
+        ImGui::PopStyleColor();
+    } else if (availableChecksDisplay == AC_TWO_ICONS) {
+        auto childTexture = gui->GetTextureByName(availableChecksChildAvailableIcon);
+        if (itemLoc->HasObtained()) {
+            if (childTexture != nullptr) {
+                ImGui::ImageWithBg(childTexture, iconSize, zero, one, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 0));
+            } else {
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 0));
+                ImGui::Text(availableChecksChildAvailableIcon.c_str());
+                ImGui::PopStyleColor();
+            }
+            ImGui::SameLine();
+        } else if (child) {
+            if (childTexture != nullptr) {
+                ImGui::ImageWithBg(childTexture, iconSize, zero, one, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1));
+            } else {
+                ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
+                ImGui::Text(availableChecksChildAvailableIcon.c_str());
+                ImGui::PopStyleColor();
+            }
+            ImGui::SameLine();
+            UIWidgets::Tooltip("Child Available");
+        } else {
+            if (childTexture != nullptr) {
+                ImGui::ImageWithBg(childTexture, iconSize, zero, one, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 0.25));
+            } else {
+                auto dimmed = styleColor;
+                dimmed.w *= 0.25;
+                ImGui::PushStyleColor(ImGuiCol_Text, dimmed);
+                ImGui::Text(availableChecksChildAvailableIcon.c_str());
+                ImGui::PopStyleColor();
+            }
+            ImGui::SameLine();
+            UIWidgets::Tooltip("Child Unavailable");
+        }
+
+        auto adultTexture = gui->GetTextureByName(availableChecksAdultAvailableIcon);
+        if (itemLoc->HasObtained()) {
+            if (adultTexture != nullptr) {
+                ImGui::ImageWithBg(adultTexture, iconSize, zero, one, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 0));
+            } else {
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 0));
+                ImGui::Text(availableChecksAdultAvailableIcon.c_str());
+                ImGui::PopStyleColor();
+            }
+            ImGui::SameLine();
+        } else if (adult) {
+            if (adultTexture != nullptr) {
+                ImGui::ImageWithBg(adultTexture, iconSize, zero, one, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1));
+            } else {
+                ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
+                ImGui::Text(availableChecksAdultAvailableIcon.c_str());
+                ImGui::PopStyleColor();
+            }
+            ImGui::SameLine();
+            UIWidgets::Tooltip("Adult Available");
+        } else {
+            if (adultTexture != nullptr) {
+                ImGui::ImageWithBg(adultTexture, iconSize, zero, one, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 0.25));
+            } else {
+                auto dimmed = styleColor;
+                dimmed.w *= 0.25;
+                ImGui::PushStyleColor(ImGuiCol_Text, dimmed);
+                ImGui::Text(availableChecksAdultAvailableIcon.c_str());
+                ImGui::PopStyleColor();
+            }
+            ImGui::SameLine();
+            UIWidgets::Tooltip("Adult Unavailable");
+        }
+    }
+}
+
 void DrawLocation(RandomizerCheck rc) {
     Color_RGBA8 mainColor;
     Color_RGBA8 extraColor;
@@ -1771,9 +3289,9 @@ void DrawLocation(RandomizerCheck rc) {
     Rando::ItemLocation* itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
     RandomizerCheckStatus status = itemLoc->GetCheckStatus();
     bool skipped = itemLoc->GetIsSkipped();
-    bool available = itemLoc->IsAvailable();
+    bool available = itemLoc->IsChildAvailable() || itemLoc->IsAdultAvailable();
 
-    if (enableAvailableChecks && onlyShowAvailable && !available) {
+    if (availableChecksDisplay != AC_DISABLED && onlyShowAvailable && !available) {
         return;
     }
 
@@ -1881,16 +3399,7 @@ void DrawLocation(RandomizerCheck rc) {
 
     // Draw
     ImVec4 styleColor(mainColor.r / 255.0f, mainColor.g / 255.0f, mainColor.b / 255.0f, mainColor.a / 255.0f);
-    if (enableAvailableChecks) {
-        if (itemLoc->HasObtained()) {
-            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 0));
-        } else {
-            ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
-        }
-        ImGui::Text("%s", available ? ICON_FA_UNLOCK : ICON_FA_LOCK);
-        ImGui::PopStyleColor();
-        ImGui::SameLine();
-    }
+    DrawAvailability(itemLoc, styleColor);
 
     ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
     ImGui::Text("%s", txt.c_str());
@@ -2058,7 +3567,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
 }
 
 void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */) {
-    if (!enableAvailableChecks || !GameInteractor::IsSaveLoaded()) {
+    if (availableChecksDisplay == AC_DISABLED || !GameInteractor::IsSaveLoaded()) {
         return;
     }
 
@@ -2068,29 +3577,15 @@ void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */)
     const auto& ctx = Rando::Context::GetInstance();
     logic = ctx->GetLogic();
 
-    std::vector<RandomizerCheck> targetLocations;
-    targetLocations.reserve(RC_MAX);
-    for (auto& location : Rando::StaticData::GetLocationTable()) {
-        RandomizerCheck rc = location.GetRandomizerCheck();
-        Rando::ItemLocation* itemLocation = ctx->GetItemLocation(rc);
-        itemLocation->SetAvailable(false);
-        if (!itemLocation->HasObtained()) {
-            targetLocations.emplace_back(rc);
-        }
-    }
-
-    std::vector<RandomizerCheck> availableChecks = ReachabilitySearch(targetLocations, RG_NONE, true, startingRegion);
-    for (auto& rc : availableChecks) {
-        const auto& itemLocation = ctx->GetItemLocation(rc);
-        itemLocation->SetAvailable(true);
-    }
+    ReachabilitySearch({}, RG_NONE, true, startingRegion);
 
     totalChecksAvailable = 0;
     for (auto& [rcArea, vec] : checksByArea) {
         areaChecksAvailable[rcArea] = 0;
         for (auto& rc : vec) {
             Rando::ItemLocation* itemLocation = ctx->GetItemLocation(rc);
-            if (itemLocation->IsAvailable() && IsVisibleInCheckTracker(rc) && !IsCheckHidden(rc)) {
+            if ((itemLocation->IsChildAvailable() ||
+                itemLocation->IsAdultAvailable()) && IsVisibleInCheckTracker(rc) && !IsCheckHidden(rc)) {
                 areaChecksAvailable[rcArea]++;
             }
         }
@@ -2129,6 +3624,11 @@ static std::unordered_map<int32_t, const char*> buttonStrings = {
     { TRACKER_COMBO_BUTTON_D_UP, "D-Up" },     { TRACKER_COMBO_BUTTON_D_DOWN, "D-Down" },
     { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" }
 };
+static std::unordered_map<int32_t, const char*> availableChecksDisplayOptions = { { AC_DISABLED, "Disabled" },
+                                                                                  { AC_LOCKED_UNLOCKED,
+                                                                                    "Locked / Unlocked" },
+                                                                                  { AC_ONE_ICON, "One Age Icon" },
+                                                                                  { AC_TWO_ICONS, "Two Age Icons" } };
 
 void CheckTrackerSettingsWindow::DrawElement() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
@@ -2191,6 +3691,10 @@ void CheckTrackerSettingsWindow::DrawElement() {
 
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         SohGui::mSohMenu->MenuDrawItem(checkAvailabilityWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(availableChecksNoneWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(availableChecksChildWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(availableChecksAdultWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(availableChecksBothWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
         ImGui::EndDisabled();
 
         // Filtering settings
@@ -2335,15 +3839,80 @@ void RegisterCheckTrackerWidgets() {
                      .Tooltip("If enabled, will show a check's logic when hovering over it."));
     SohGui::mSohMenu->AddSearchWidget({ showLogicWidget, "Randomizer", "Check Tracker", "General Settings" });
 
-    checkAvailabilityWidget = { .name = "Enable Available Checks", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
-    checkAvailabilityWidget.CVar(CVAR_TRACKER_CHECK("EnableAvailableChecks"))
-        .Options(CheckboxOptions()
+    checkAvailabilityWidget = { .name = "Enable Available Checks", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    checkAvailabilityWidget
+        .CVar(CVAR_TRACKER_CHECK("AvailableChecksDisplay"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(AC_DISABLED)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Near)
                      .Color(THEME_COLOR)
+                     .ComboMap(availableChecksDisplayOptions)
                      .Tooltip("If enabled, will show the checks that are available to be collected "
                               "with your current progress."))
         .Callback([&](WidgetInfo& info) {
-            enableAvailableChecks = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
-            RecalculateAvailableChecks();
+            auto previousAvailableChecksDisplay = availableChecksDisplay;
+            availableChecksDisplay =
+                (AvailableChecksDisplay)CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksDisplay"), 0);
+            if (previousAvailableChecksDisplay == AC_DISABLED && availableChecksDisplay != AC_DISABLED) {
+                RecalculateAvailableChecks();
+            }
+        });
+
+    availableChecksNoneWidget = { .name = "None Available Icon", .type = WidgetType::WIDGET_CVAR_INPUT };
+    availableChecksNoneWidget.CVar(CVAR_TRACKER_CHECK("AvailableChecksNoneIcon"))
+        .Options(InputOptions()
+                     .DefaultValue("ICON_FA_LOCK")
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Near)
+                     .Size(ImVec2(400, 0))
+                     .Color(THEME_COLOR)
+                     .Tooltip("Icon for when the check is not available to child or adult."))
+        .Callback([&](WidgetInfo& info) {
+            availableChecksNoneAvailableIcon =
+                MapAvailableCheckIcon(CVarGetString(CVAR_TRACKER_CHECK("AvailableChecksNoneIcon"), "ICON_FA_LOCK"));
+        });
+
+    availableChecksChildWidget = { .name = "Child Available Icon", .type = WidgetType::WIDGET_CVAR_INPUT };
+    availableChecksChildWidget.CVar(CVAR_TRACKER_CHECK("AvailableChecksChildIcon"))
+        .Options(InputOptions()
+                     .DefaultValue("ICON_FA_CHILD")
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Near)
+                     .Size(ImVec2(400, 0))
+                     .Color(THEME_COLOR)
+                     .Tooltip("Icon for when the check is available as a child."))
+        .Callback([&](WidgetInfo& info) {
+            availableChecksChildAvailableIcon =
+                MapAvailableCheckIcon(CVarGetString(CVAR_TRACKER_CHECK("AvailableChecksChildIcon"), "ICON_FA_CHILD"));
+        });
+
+    availableChecksAdultWidget = { .name = "Adult Available Icon", .type = WidgetType::WIDGET_CVAR_INPUT };
+    availableChecksAdultWidget.CVar(CVAR_TRACKER_CHECK("AvailableChecksAdultIcon"))
+        .Options(InputOptions()
+                     .DefaultValue("ICON_FA_USER")
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Near)
+                     .Size(ImVec2(400, 0))
+                     .Color(THEME_COLOR)
+                     .Tooltip("Icon for when the check is available as an adult."))
+        .Callback([&](WidgetInfo& info) {
+            availableChecksAdultAvailableIcon =
+                MapAvailableCheckIcon(CVarGetString(CVAR_TRACKER_CHECK("AvailableChecksAdultIcon"), "ICON_FA_USER"));
+        });
+
+    availableChecksBothWidget = { .name = "Both Available Icon", .type = WidgetType::WIDGET_CVAR_INPUT };
+    availableChecksBothWidget.CVar(CVAR_TRACKER_CHECK("AvailableChecksBothIcon"))
+        .Options(InputOptions()
+                     .DefaultValue("ICON_FA_USERS")
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Near)
+                     .Size(ImVec2(400, 0))
+                     .Color(THEME_COLOR)
+                     .Tooltip("Icon for when the check is available as a child and an adult."))
+        .Callback([&](WidgetInfo& info) {
+            availableChecksBothAvailableIcon =
+                MapAvailableCheckIcon(CVarGetString(CVAR_TRACKER_CHECK("AvailableChecksBothIcon"), "ICON_FA_USERS"));
         });
 }
 

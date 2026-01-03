@@ -420,7 +420,7 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
     Rando::ItemLocation* location = ctx->GetItemLocation(loc);
     RandomizerGet locItem = location->GetPlacedRandomizerGet();
 
-    if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion, logic->CalculatingAvailableChecks)) {
+    if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion)) {
         location->AddToPool();
 
         if (locItem == RG_NONE || logic->CalculatingAvailableChecks) {

@@ -232,14 +232,23 @@ void ItemLocation::ResetVariables() {
     areas = {};
     status = RCSHOW_UNCHECKED;
     isSkipped = false;
-    isAvailable = false;
+    isChildAvailable = false;
+    isAdultAvailable = false;
 }
 
-bool ItemLocation::IsAvailable() const {
-    return isAvailable;
+bool ItemLocation::IsChildAvailable() const {
+    return isChildAvailable;
 }
 
-void ItemLocation::SetAvailable(bool isAvailable_) {
-    isAvailable = isAvailable_;
+void ItemLocation::SetChildAvailable(bool isChildAvailable_) {
+    isChildAvailable = isChildAvailable_;
+}
+
+bool ItemLocation::IsAdultAvailable() const {
+    return isAdultAvailable;
+}
+
+void ItemLocation::SetAdultAvailable(bool isAdultAvailable_) {
+    isAdultAvailable = isAdultAvailable_;
 }
 } // namespace Rando

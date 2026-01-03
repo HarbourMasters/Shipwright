@@ -309,6 +309,8 @@ void Context::ItemReset() {
 
 void Context::LocationReset() {
     for (auto& il : itemLocationTable) {
+        il.SetChildAvailable(false);
+        il.SetAdultAvailable(false);
         il.RemoveFromPool();
     }
 }

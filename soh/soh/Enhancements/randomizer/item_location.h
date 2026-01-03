@@ -56,8 +56,10 @@ class ItemLocation {
     bool IsFoolishCandidate() const;
     void SetBarrenCandidate();
     void ResetVariables();
-    bool IsAvailable() const;
-    void SetAvailable(bool isAvailable_);
+    bool IsChildAvailable() const;
+    void SetChildAvailable(bool isAvailable_);
+    bool IsAdultAvailable() const;
+    void SetAdultAvailable(bool isAvailable_);
 
   private:
     RandomizerCheck rc;
@@ -78,6 +80,7 @@ class ItemLocation {
     bool barrenCandidate = false;
     RandomizerCheckStatus status = RCSHOW_UNCHECKED;
     bool isSkipped = false;
-    bool isAvailable = false;
+    bool isChildAvailable = false;
+    bool isAdultAvailable = false;
 };
 } // namespace Rando
