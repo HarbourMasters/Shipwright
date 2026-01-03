@@ -205,12 +205,7 @@ bool mystery = false;
 bool showLogicTooltip = false;
 bool onlyShowAvailable = false;
 
-typedef enum : int {
-    AC_DISABLED,
-    AC_LOCKED_UNLOCKED,
-    AC_ONE_ICON,
-    AC_TWO_ICONS
-} AvailableChecksDisplay;
+typedef enum : int { AC_DISABLED, AC_LOCKED_UNLOCKED, AC_ONE_ICON, AC_TWO_ICONS } AvailableChecksDisplay;
 AvailableChecksDisplay availableChecksDisplay = AC_DISABLED;
 std::string availableChecksNoneAvailableIcon = ICON_FA_LOCK;
 std::string availableChecksChildAvailableIcon = ICON_FA_CHILD;
@@ -2440,7 +2435,8 @@ void CheckTrackerWindow::DrawElement() {
         showHidden = CVarGetInteger(CVAR_TRACKER_CHECK("ShowHidden"), 0);
         RecalculateAllAreaTotals();
     }
-    if (availableChecksDisplay != AC_DISABLED && CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"), 1)) {
+    if (availableChecksDisplay != AC_DISABLED &&
+        CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"), 1)) {
         if (UIWidgets::CVarCheckbox(
                 "Only Show Available Checks", CVAR_TRACKER_CHECK("OnlyShowAvailable"),
                 UIWidgets::CheckboxOptions({ { .tooltip = "When active, unavailable checks will be hidden." } })
@@ -2490,13 +2486,12 @@ void CheckTrackerWindow::DrawElement() {
         ImGui::Text("%s", totalChecksSS.str().c_str());
     }
 
-    bool headerPresent =
-        CVarGetInteger(CVAR_TRACKER_CHECK("HiddenItemsToggleVisible"), 1) ||
+    bool headerPresent = CVarGetInteger(CVAR_TRACKER_CHECK("HiddenItemsToggleVisible"), 1) ||
                          (availableChecksDisplay != AC_DISABLED &&
                           CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"), 1)) ||
-        CVarGetInteger(CVAR_TRACKER_CHECK("ExpandCollapseButtonsVisible"), 0) ||
-        CVarGetInteger(CVAR_TRACKER_CHECK("SearchInputVisible"), 1) ||
-        CVarGetInteger(CVAR_TRACKER_CHECK("CheckTotalsVisible"), 1);
+                         CVarGetInteger(CVAR_TRACKER_CHECK("ExpandCollapseButtonsVisible"), 0) ||
+                         CVarGetInteger(CVAR_TRACKER_CHECK("SearchInputVisible"), 1) ||
+                         CVarGetInteger(CVAR_TRACKER_CHECK("CheckTotalsVisible"), 1);
     if (headerPresent) {
         ImGui::Separator();
     }
@@ -3145,7 +3140,7 @@ bool IsHeartPiece(GetItemID giid) {
 void DrawAvailability(Rando::ItemLocation* itemLoc, ImVec4 styleColor) {
     if (availableChecksDisplay == AC_DISABLED) {
         return;
-    } 
+    }
 
     auto child = itemLoc->IsChildAvailable();
     auto adult = itemLoc->IsAdultAvailable();
@@ -3598,8 +3593,8 @@ void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */)
         areaChecksAvailable[rcArea] = 0;
         for (auto& rc : vec) {
             Rando::ItemLocation* itemLocation = ctx->GetItemLocation(rc);
-            if ((itemLocation->IsChildAvailable() ||
-                itemLocation->IsAdultAvailable()) && IsVisibleInCheckTracker(rc) && !IsCheckHidden(rc)) {
+            if ((itemLocation->IsChildAvailable() || itemLocation->IsAdultAvailable()) && IsVisibleInCheckTracker(rc) &&
+                !IsCheckHidden(rc)) {
                 areaChecksAvailable[rcArea]++;
             }
         }
@@ -3854,8 +3849,7 @@ void RegisterCheckTrackerWidgets() {
     SohGui::mSohMenu->AddSearchWidget({ showLogicWidget, "Randomizer", "Check Tracker", "General Settings" });
 
     checkAvailabilityWidget = { .name = "Enable Available Checks", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
-    checkAvailabilityWidget
-        .CVar(CVAR_TRACKER_CHECK("AvailableChecksDisplay"))
+    checkAvailabilityWidget.CVar(CVAR_TRACKER_CHECK("AvailableChecksDisplay"))
         .Options(ComboboxOptions()
                      .DefaultIndex(AC_DISABLED)
                      .ComponentAlignment(ComponentAlignments::Right)

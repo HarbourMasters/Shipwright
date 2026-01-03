@@ -50,7 +50,7 @@ bool LocationAccess::ConditionsMet(Region* parentRegion) const {
     // When refactoring ToD access, either fix the above or do not assume that we
     // have any access at all just because this is being run
     auto itemLocation = Rando::Context::GetInstance()->GetItemLocation(location);
-    
+
     if (itemLocation->IsChildAvailable() ||
         (parentRegion->childDay && CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) ||
         (parentRegion->childNight && CheckConditionAtAgeTime(logic->IsChild, logic->AtNight))) {
