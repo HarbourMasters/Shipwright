@@ -94,8 +94,8 @@ void SohFileSelect_ShowPresetModal() {
                              "\"Enhancements - Curated Randomizer\" preset for a great, curated out of the\n"
                              "box rando experience.\n"
                              "\n"
-                             "Afterwards, consider taking a look at the rest of the ESC menu to further tweak \n"
-                             "the experience to your liking!\n ",
+                             "Afterwards, consider taking a look at the rest of the ESC menu to further tweak\n"
+                             "the experience to your liking!\n",
                              "Cool, show me the presets!", "Got it, just let me play!", SohFileSelect_ShowPresetMenu,
                              SohFileSelect_DismissPresetModal);
     }
