@@ -160,6 +160,12 @@ void SohMenu::AddMenuEnhancements() {
             "autosave will wait if the game is paused in any way (dialogue, pause screen up, cutscenes, "
             "etc.).\n\n"
             "The soft-reset save will *not* trigger in cutscene maps like the Chamber of Sages!"));
+    AddWidget(path, "Notification on Autosave", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("AutosaveNotification"))
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), 0); })
+        .RaceDisable(false)
+        .Options(CheckboxOptions().DefaultValue(true).Tooltip("Show a notification when the game is autosaved."));
+
     AddWidget(path, "Remember Save Location", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RememberSaveLocation"))
         .Options(CheckboxOptions().Tooltip(
