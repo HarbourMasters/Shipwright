@@ -2358,7 +2358,7 @@ typedef enum {
     // ```
     // #### `args`
     // - `*PlayState`
-    VB_FORCE_NORMAL_CAM,
+    VB_USE_FIXED_CAM,
 
     // true
     // ```

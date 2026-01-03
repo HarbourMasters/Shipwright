@@ -62,7 +62,7 @@ static bool IsFixedCameraType(s16 type) {
 }
 
 static void RegisterDisableFixedCamera() {
-    COND_VB_SHOULD(VB_FORCE_NORMAL_CAM, true, {
+    COND_VB_SHOULD(VB_USE_FIXED_CAM, true, {
         PlayState* play = va_arg(args, PlayState*);
         if (!fixedCameraSceneList.contains(static_cast<SceneID>(play->sceneNum))) {
             *should = false;
@@ -158,7 +158,7 @@ extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play) {
     Player* player = (Player*)play->actorCtx.actorLists[ACTORCAT_PLAYER].head;
 
     // prevents normal cam from taking effect during open cutscene to avoid crash
-    if (play->sceneNum == SCENE_LINKS_HOUSE && player && (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE)) {
+    if (play->sceneNum == SCENE_LINKS_HOUSE && player != nullptr && (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE)) {
         return;
     }
 
@@ -203,7 +203,7 @@ extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play) {
         return;
     }
 
-    if (!sIsCamApplied && GameInteractor_Should(VB_FORCE_NORMAL_CAM, false, play)) {
+    if (!sIsCamApplied && GameInteractor_Should(VB_USE_FIXED_CAM, false, play)) {
         DisableFixedCamera_SetNormalCamera(play);
         sIsCamApplied = true;
     }
