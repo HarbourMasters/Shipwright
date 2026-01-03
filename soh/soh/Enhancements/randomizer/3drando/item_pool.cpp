@@ -24,8 +24,9 @@ const std::map<RandomizerGet, std::vector<RandomizerGet>*> poolForItem = {
     { RG_DEKU_NUTS_5, &junkPool },    { RG_DEKU_STICK_1, &junkPool },  { RG_DEKU_SEEDS_30, &junkPool },
     { RG_RECOVERY_HEART, &junkPool }, { RG_ARROWS_5, &junkPool },      { RG_ARROWS_10, &junkPool },
     { RG_ARROWS_30, &junkPool },      { RG_GREEN_RUPEE, &junkPool },   { RG_BLUE_RUPEE, &junkPool },
-    { RG_RED_RUPEE, &junkPool },      { RG_DEKU_NUTS_10, &junkPool },  { RG_PURPLE_RUPEE, &lesserPool },
-    { RG_HUGE_RUPEE, &lesserPool },   { RG_DEKU_SHIELD, &lesserPool }, { RG_HYLIAN_SHIELD, &lesserPool },
+    { RG_RED_RUPEE, &junkPool },      { RG_DEKU_NUTS_10, &junkPool },  { RG_TREASURE_GAME_GREEN_RUPEE, &junkPool },
+    { RG_PURPLE_RUPEE, &lesserPool }, { RG_HUGE_RUPEE, &lesserPool },  { RG_DEKU_SHIELD, &lesserPool },
+    { RG_HYLIAN_SHIELD, &lesserPool },
 };
 
 void AddItemToPool(RandomizerGet item, int plentifulCount, size_t balancedCount, size_t scarceCount = 1,
@@ -511,29 +512,16 @@ void GenerateItemPool() {
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_BEAN_SOULS)) {
-        AddItemToMainPool(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL);
-        AddItemToMainPool(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL);
-        AddItemToMainPool(RG_DESERT_COLOSSUS_BEAN_SOUL);
-        AddItemToMainPool(RG_GERUDO_VALLEY_BEAN_SOUL);
-        AddItemToMainPool(RG_GRAVEYARD_BEAN_SOUL);
-        AddItemToMainPool(RG_KOKIRI_FOREST_BEAN_SOUL);
-        AddItemToMainPool(RG_LAKE_HYLIA_BEAN_SOUL);
-        AddItemToMainPool(RG_LOST_WOODS_BRIDGE_BEAN_SOUL);
-        AddItemToMainPool(RG_LOST_WOODS_BEAN_SOUL);
-        AddItemToMainPool(RG_ZORAS_RIVER_BEAN_SOUL);
-    }
-
-    if (ctx->GetOption(RSK_SHUFFLE_BEAN_SOULS)) {
-        AddItemToMainPool(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL);
-        AddItemToMainPool(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL);
-        AddItemToMainPool(RG_DESERT_COLOSSUS_BEAN_SOUL);
-        AddItemToMainPool(RG_GERUDO_VALLEY_BEAN_SOUL);
-        AddItemToMainPool(RG_GRAVEYARD_BEAN_SOUL);
-        AddItemToMainPool(RG_KOKIRI_FOREST_BEAN_SOUL);
-        AddItemToMainPool(RG_LAKE_HYLIA_BEAN_SOUL);
-        AddItemToMainPool(RG_LOST_WOODS_BRIDGE_BEAN_SOUL);
-        AddItemToMainPool(RG_LOST_WOODS_BEAN_SOUL);
-        AddItemToMainPool(RG_ZORAS_RIVER_BEAN_SOUL);
+        AddItemToPool(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, 2, 1, 1, 1);
+        AddItemToPool(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, 2, 1, 1, 1);
+        AddItemToPool(RG_DESERT_COLOSSUS_BEAN_SOUL, 2, 1, 1, 1);
+        AddItemToPool(RG_GERUDO_VALLEY_BEAN_SOUL, 2, 1, 1, 1);
+        AddItemToPool(RG_GRAVEYARD_BEAN_SOUL, 2, 1, 1, 1);
+        AddItemToPool(RG_KOKIRI_FOREST_BEAN_SOUL, 2, 1, 1, 1);
+        AddItemToPool(RG_LAKE_HYLIA_BEAN_SOUL, 2, 1, 1, 1);
+        AddItemToPool(RG_LOST_WOODS_BRIDGE_BEAN_SOUL, 2, 1, 1, 1);
+        AddItemToPool(RG_LOST_WOODS_BEAN_SOUL, 2, 1, 1, 1);
+        AddItemToPool(RG_ZORAS_RIVER_BEAN_SOUL, 2, 1, 1, 1);
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_TOKENS).IsNot(RO_TOKENSANITY_OFF) &&
