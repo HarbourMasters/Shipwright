@@ -46,13 +46,6 @@ static const std::unordered_map<int32_t, const char*> skipForcedDialogOptions = 
     { FORCED_DIALOG_SKIP_ALL, "All" },
 };
 
-static const std::unordered_map<int32_t, const char*> chestStyleMatchesContentsOptions = {
-    { CSMC_DISABLED, "Disabled" },
-    { CSMC_BOTH, "Both" },
-    { CSMC_TEXTURE, "Texture Only" },
-    { CSMC_SIZE, "Size Only" },
-};
-
 static const std::unordered_map<int32_t, const char*> timeTravelOptions = {
     { TIME_TRAVEL_DISABLED, "Disabled" },
     { TIME_TRAVEL_OOT, "Ocarina of Time" },
@@ -173,31 +166,26 @@ void SohMenu::AddMenuEnhancements() {
             "This doesn't work if the save was made in grottos, fairy fountains, or dungeons."));
 
     AddWidget(path, "Containers Match Contents", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Chest Size & Texture Matches Contents", WIDGET_CVAR_COMBOBOX)
+    AddWidget(path, "Containers Match Contents", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"))
         .Callback([](WidgetInfo& info) {
             if (CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED) == CSMC_DISABLED) {
                 CVarSetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
+            } else {
+                CVarSetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_TEXTURE);
             }
         })
-        .Options(ComboboxOptions()
-                     .ComboMap(chestStyleMatchesContentsOptions)
-                     .DefaultIndex(CSMC_DISABLED)
-                     .Tooltip("Chest sizes and textures are changed to help identify the item inside.\n"
-                              " - Major items: Large gold chests\n"
-                              " - Lesser items: Large brown chests\n"
-                              " - Junk items: Small brown chests\n"
-                              " - Small keys: Small silver chests\n"
-                              " - Boss keys: Vanilla size and texture\n"
-                              " - Skulltula Tokens: Small Skulltula chest\n"
-                              "\n"
-                              "NOTE: Textures will not apply if you are using a mod pack with a custom chest model."));
-    AddWidget(path, "Chests of Agony", WIDGET_CVAR_CHECKBOX)
+        .Options(CheckboxOptions()
+                     .DefaultValue(false)
+                     .Tooltip("Toggle to change container textures to match their contents in randomizer games.\n"
+                              "Categories: Major items, Lesser items, Junk items, Small keys, Boss keys, Skulltula Tokens."));
+    AddWidget(path, "Containers of Agony", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"))
         .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchesContents"), CSMC_DISABLED);
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED) ==
+                            CSMC_DISABLED;
         })
-        .Options(CheckboxOptions().Tooltip("Only change the size/texture of chests if you have the Stone of Agony."));
+        .Options(CheckboxOptions().Tooltip("Only change the texture of chests if you have the Stone of Agony."));
 
     AddWidget(path, "Time of Day", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Nighttime GS Always Spawn", WIDGET_CVAR_CHECKBOX)
