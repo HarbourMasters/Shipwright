@@ -759,6 +759,8 @@ int InputTextResizeCallback(ImGuiInputTextCallbackData* data) {
 
 bool InputString(const char* label, std::string* value, const InputOptions& options) {
     bool dirty = false;
+    std::string invisibleLabelStr = "##" + std::string(label);
+    const char* invisibleLabel = invisibleLabelStr.c_str();
     ImGui::PushID(label);
     ImGui::BeginGroup();
     ImGui::BeginDisabled(options.disabled);
@@ -766,19 +768,27 @@ bool InputString(const char* label, std::string* value, const InputOptions& opti
     if (options.hasError) {
         ImGui::PushStyleColor(ImGuiCol_Border, ColorValues.at(Colors::Red));
     }
-    float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
-    ImVec2 labelSize = ImGui::CalcTextSize(label, NULL, true);
-    if (labelSize.x != 0) {
-        if (options.alignment == ComponentAlignments::Left) {
-            if (options.labelPosition == LabelPositions::Above) {
-                ImGui::Text(label, *value->c_str());
-            }
-        } else if (options.alignment == ComponentAlignments::Right) {
-            if (options.labelPosition == LabelPositions::Above) {
-                ImGui::NewLine();
-                ImGui::SameLine(width - ImGui::CalcTextSize(label).x);
-                ImGui::Text(label, *value->c_str());
-            }
+    float width = options.size.x > 0.0f ? options.size.x : ImGui::GetContentRegionAvail().x;
+    const float labelWidth = ImGui::CalcTextSize(label).x;
+    const float labelSpacing = labelWidth + ImGui::GetStyle().ItemSpacing.x;
+    const float labelPadding = labelWidth + ImGui::GetStyle().FramePadding.x;
+    if (options.labelPosition == LabelPositions::Near || options.labelPosition == LabelPositions::Far) {
+        width = ImMax(width - labelPadding, 0.0f);
+    }
+    ImGui::AlignTextToFramePadding();
+    if (options.alignment == ComponentAlignments::Right) {
+        ImGui::Text(label, *value->c_str());
+        if (options.labelPosition == LabelPositions::Above) {
+            ImGui::NewLine();
+            ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
+        } else if (options.labelPosition == LabelPositions::Near) {
+            ImGui::SameLine();
+        } else if (options.labelPosition == LabelPositions::Far || options.labelPosition == LabelPositions::None) {
+            ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
+        }
+    } else if (options.alignment == ComponentAlignments::Left) {
+        if (options.labelPosition == LabelPositions::Above) {
+            ImGui::Text(label, *value->c_str());
         }
     }
     ImGui::SetNextItemWidth(width);
@@ -787,12 +797,22 @@ bool InputString(const char* label, std::string* value, const InputOptions& opti
         flags |= ImGuiInputTextFlags_Password;
     }
     flags |= options.addedFlags;
-    if (ImGui::InputText(label, (char*)value->c_str(), value->capacity() + 1, flags, InputTextResizeCallback, value)) {
+    if (ImGui::InputText(invisibleLabel, (char*)value->c_str(), value->capacity() + 1, flags, InputTextResizeCallback,
+                         value)) {
         dirty = true;
     }
     if (value->empty() && !options.placeholder.empty()) {
         ImGui::SameLine(17.0f);
         ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "%s", options.placeholder.c_str());
+    }
+    if (options.alignment == ComponentAlignments::Left) {
+        if (options.labelPosition == LabelPositions::Near) {
+            ImGui::SameLine();
+            ImGui::Text(label, *value->c_str());
+        } else if (options.labelPosition == LabelPositions::Far || options.labelPosition == LabelPositions::None) {
+            ImGui::SameLine(ImGui::GetContentRegionAvail().x - labelSpacing);
+            ImGui::Text(label, *value->c_str());
+        }
     }
     if (options.hasError) {
         ImGui::PopStyleColor();

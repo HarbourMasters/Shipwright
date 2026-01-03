@@ -539,6 +539,30 @@ void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors me
                 }
                 DrawSearchResults(menuSearchText);
             } break;
+            case WIDGET_INPUT: {
+                std::string* pointer = std::get<std::string*>(widget.valuePointer);
+                if (pointer == nullptr) {
+                    SPDLOG_ERROR("Checkbox Widget requires a value pointer, currently nullptr");
+                    assert(false);
+                    return;
+                }
+                auto options = std::static_pointer_cast<UIWidgets::InputOptions>(widget.options);
+                options->color = menuThemeIndex;
+                if (UIWidgets::InputString(widget.name.c_str(), pointer, *options)) {
+                    if (widget.callback != nullptr) {
+                        widget.callback(widget);
+                    }
+                }
+            } break;
+            case WIDGET_CVAR_INPUT: {
+                auto options = std::static_pointer_cast<UIWidgets::InputOptions>(widget.options);
+                options->color = menuThemeIndex;
+                if (UIWidgets::CVarInputString(widget.name.c_str(), widget.cVar, *options)) {
+                    if (widget.callback != nullptr) {
+                        widget.callback(widget);
+                    }
+                }
+            } break;
             default:
                 break;
         }

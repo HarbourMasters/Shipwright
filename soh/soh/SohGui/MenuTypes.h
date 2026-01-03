@@ -72,10 +72,10 @@ typedef enum {
 // holds the widget values for a widget, contains all CVar types available from LUS. int32_t is used for boolean
 // evaluation
 using CVarVariant = std::variant<int32_t, const char*, float, Color_RGBA8, Color_RGB8>;
-using OptionsVariant =
-    std::variant<UIWidgets::ButtonOptions, UIWidgets::CheckboxOptions, UIWidgets::ComboboxOptions,
-                 UIWidgets::FloatSliderOptions, UIWidgets::IntSliderOptions, UIWidgets::TextOptions,
-                 UIWidgets::WidgetOptions, UIWidgets::WindowButtonOptions, UIWidgets::ColorPickerOptions>;
+using OptionsVariant = std::variant<UIWidgets::ButtonOptions, UIWidgets::CheckboxOptions, UIWidgets::ComboboxOptions,
+                                    UIWidgets::FloatSliderOptions, UIWidgets::IntSliderOptions, UIWidgets::TextOptions,
+                                    UIWidgets::WidgetOptions, UIWidgets::WindowButtonOptions,
+                                    UIWidgets::ColorPickerOptions, UIWidgets::InputOptions>;
 
 // All the info needed for display and search of all widgets in the menu.
 // `name` is the label displayed,
@@ -102,7 +102,7 @@ struct WidgetInfo {
     const char* cVar; // Used by all widgets except
     WidgetType type;
     std::shared_ptr<UIWidgets::WidgetOptions> options;
-    std::variant<bool*, int32_t*, float*> valuePointer;
+    std::variant<bool*, int32_t*, float*, std::string*> valuePointer;
     WidgetFunc callback = nullptr;
     WidgetFunc preFunc = nullptr;
     WidgetFunc postFunc = nullptr;
@@ -157,6 +157,10 @@ struct WidgetInfo {
             case WIDGET_SEPARATOR_TEXT:
                 options = std::make_shared<UIWidgets::TextOptions>(std::get<UIWidgets::TextOptions>(options_));
                 break;
+            case WIDGET_INPUT:
+            case WIDGET_CVAR_INPUT:
+                options = std::make_shared<UIWidgets::InputOptions>(std::get<UIWidgets::InputOptions>(options_));
+                break;
             case WIDGET_SEPARATOR:
             default:
                 options = std::make_shared<UIWidgets::WidgetOptions>(std::get<UIWidgets::WidgetOptions>(options_));
@@ -189,7 +193,7 @@ struct WidgetInfo {
         return *this;
     }
 
-    WidgetInfo& ValuePointer(std::variant<bool*, int32_t*, float*> valuePointer_) {
+    WidgetInfo& ValuePointer(std::variant<bool*, int32_t*, float*, std::string*> valuePointer_) {
         valuePointer = valuePointer_;
         return *this;
     }
