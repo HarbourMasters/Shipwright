@@ -1,4 +1,5 @@
 #pragma once
+
 #ifdef __cplusplus
 #include <stdint.h>
 #endif

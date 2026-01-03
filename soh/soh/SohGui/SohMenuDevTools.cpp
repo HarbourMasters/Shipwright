@@ -1,4 +1,7 @@
 #include "SohMenu.h"
+#include "SohGui.hpp"
+
+void WarpPointsWidget(WidgetInfo& info);
 
 namespace SohGui {
 
@@ -9,6 +12,11 @@ static const std::unordered_map<int32_t, const char*> logLevels = {
     { DEBUG_LOG_TRACE, "Trace" }, { DEBUG_LOG_DEBUG, "Debug" }, { DEBUG_LOG_INFO, "Info" },
     { DEBUG_LOG_WARN, "Warn" },   { DEBUG_LOG_ERROR, "Error" }, { DEBUG_LOG_CRITICAL, "Critical" },
     { DEBUG_LOG_OFF, "Off" },
+};
+static std::unordered_map<int32_t, const char*> bootToOptions = {
+    { 0, "Disabled" },
+    { 1, "Debug Warp Screen" },
+    { 2, "Warp Point" },
 };
 
 #ifdef _DEBUG
@@ -39,12 +47,6 @@ void SohMenu::AddMenuDevTools() {
         .Options(
             CheckboxOptions().Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip "
                                       "with L + D-pad Right, and open the debug menu with L on the pause screen."));
-    AddWidget(path, "Boot To Debug Warp Screen", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"))
-        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
-        .Options(
-            CheckboxOptions().Tooltip("Automatically shows Debug Warp Screen when starting or resetting the game.\n"
-                                      "This option takes precedence over \"Boot Sequence\" option."));
     AddWidget(path, "OoT Registry Editor", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("RegEditEnabled"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
@@ -61,19 +63,10 @@ void SohMenu::AddMenuDevTools() {
                      .ComboMap(debugSaveFileModes));
     AddWidget(path, "OoT Skulltula Debug", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("SkulltulaDebugEnabled"))
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
         .Options(CheckboxOptions().Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various "
                                            "map icons (boss key, compass, map screen locations, etc.) will set the GS "
                                            "bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT!"));
-    AddWidget(path, "Better Debug Warp Screen", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"))
-        .Options(CheckboxOptions()
-                     .Tooltip("Optimized Debug Warp Screen, with the added ability to chose entrances and time of day.")
-                     .DefaultValue(true));
-    AddWidget(path, "Debug Warp Screen Translation", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"))
-        .Options(CheckboxOptions()
-                     .Tooltip("Translate the Debug Warp Screen based on the game language.")
-                     .DefaultValue(true));
     AddWidget(path, "Resource logging", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("ResourceLogging"))
         .Options(CheckboxOptions().Tooltip("Logs some resources as XML when they're loaded in binary format."));
@@ -123,6 +116,36 @@ void SohMenu::AddMenuDevTools() {
                 (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), defaultLogLevel));
         })
         .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_DEBUG_MODE_OFF).active; });
+
+    path.column = SECTION_COLUMN_2;
+    AddWidget(path, "Warping", WIDGET_SEPARATOR_TEXT).PreFunc([](WidgetInfo& info) {
+        info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0);
+    });
+    AddWidget(path, "Better Debug Warp Screen", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"))
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
+        .Options(CheckboxOptions()
+                     .Tooltip("Optimized Debug Warp Screen, with the added ability to chose entrances and time of day.")
+                     .DefaultValue(true));
+    AddWidget(path, "Debug Warp Screen Translation", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"))
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
+        .Options(CheckboxOptions()
+                     .Tooltip("Translate the Debug Warp Screen based on the game language.")
+                     .DefaultValue(true));
+    AddWidget(path, "Boot To:", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"))
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
+        .Options(ComboboxOptions()
+                     .DefaultIndex(0)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(bootToOptions)
+                     .Tooltip("Automatically boots to Debug Warp Screen or custom Warp Point when starting or "
+                              "resetting the game.\n"
+                              "This option takes precedence over \"Boot Sequence\" option."));
+    AddWidget(path, "Warp Points", WIDGET_CUSTOM).CustomFunction(WarpPointsWidget).HideInSearch(true);
 
     // Stats
     path.sidebarName = "Stats";

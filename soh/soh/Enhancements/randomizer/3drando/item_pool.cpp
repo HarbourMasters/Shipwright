@@ -3,7 +3,7 @@
 #include "../dungeon.h"
 #include "fill.hpp"
 #include "../static_data.h"
-#include "../context.h"
+#include "../SeedContext.h"
 #include "pool_functions.hpp"
 #include "random.hpp"
 #include "spoiler_log.hpp"
@@ -310,10 +310,21 @@ void GenerateItemPool() {
     AddFixedItemToPool(RG_SHADOW_MEDALLION, 1, rewardIceTraps);
     AddFixedItemToPool(RG_LIGHT_MEDALLION, 1, rewardIceTraps);
 
-    if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
+    if (ctx->GetOption(RSK_TRIFORCE_HUNT).IsNot(RO_TRIFORCE_HUNT_OFF)) {
         AddFixedItemToPool(RG_TRIFORCE_PIECE, ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get() + 1, false);
-        ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_TRIFORCE); // Win condition
-        ctx->PlaceItemInLocation(RC_GANON, RG_BLUE_RUPEE, false, true);
+
+        switch (ctx->GetOption(RSK_TRIFORCE_HUNT).Get()) {
+            case RO_TRIFORCE_HUNT_OFF:
+                break;
+            case RO_TRIFORCE_HUNT_WIN:
+                ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_TRIFORCE); // Win condition
+                ctx->PlaceItemInLocation(RC_GANON, RG_BLUE_RUPEE, false, true);
+                break;
+            case RO_TRIFORCE_HUNT_GBK:
+                ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_GANONS_CASTLE_BOSS_KEY);
+                ctx->PlaceItemInLocation(RC_GANON, RG_TRIFORCE); // Win condition
+                break;
+        }
     } else {
         ctx->PlaceItemInLocation(RC_GANON, RG_TRIFORCE); // Win condition
     }
@@ -392,6 +403,10 @@ void GenerateItemPool() {
         PlaceItemsForType(RCTYPE_NLTREE, treesActive, false);
     }
 
+    // Shuffle Bushes
+    bool bushesActive = (bool)ctx->GetOption(RSK_SHUFFLE_BUSHES);
+    PlaceItemsForType(RCTYPE_BUSH, bushesActive, false);
+
     // Shuffle Crates
     bool overworldCratesActive = ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_OVERWORLD) ||
                                  ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL);
@@ -411,11 +426,12 @@ void GenerateItemPool() {
     if (ctx->GetOption(RSK_SHUFFLE_FISHING_POLE)) {
         AddItemToPool(RG_FISHING_POLE, 2, 1, 1, 1);
     }
-    if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
-        ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)) {
-        AddItemToPool(RG_MAGIC_BEAN_PACK, 2, 1, 1, 1);
-    } else {
+    // if beans unshuffled, put on bean guy, otherwise if not starting with beans, add to pool
+    if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).IsNot(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) &&
+        ctx->GetOption(RSK_SHUFFLE_MERCHANTS).IsNot(RO_SHUFFLE_MERCHANTS_ALL)) {
         ctx->PlaceItemInLocation(RC_ZR_MAGIC_BEAN_SALESMAN, RG_MAGIC_BEAN, false, true);
+    } else if (!ctx->GetOption(RSK_STARTING_BEANS)) {
+        AddItemToPool(RG_MAGIC_BEAN_PACK, 2, 1, 1, 1);
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) ||
@@ -492,6 +508,32 @@ void GenerateItemPool() {
         AddFixedItemToPool(RG_HUGE_RUPEE, 1);
     } else {
         ctx->PlaceItemInLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD, RG_HUGE_RUPEE, false, true);
+    }
+
+    if (ctx->GetOption(RSK_SHUFFLE_BEAN_SOULS)) {
+        AddItemToMainPool(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL);
+        AddItemToMainPool(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL);
+        AddItemToMainPool(RG_DESERT_COLOSSUS_BEAN_SOUL);
+        AddItemToMainPool(RG_GERUDO_VALLEY_BEAN_SOUL);
+        AddItemToMainPool(RG_GRAVEYARD_BEAN_SOUL);
+        AddItemToMainPool(RG_KOKIRI_FOREST_BEAN_SOUL);
+        AddItemToMainPool(RG_LAKE_HYLIA_BEAN_SOUL);
+        AddItemToMainPool(RG_LOST_WOODS_BRIDGE_BEAN_SOUL);
+        AddItemToMainPool(RG_LOST_WOODS_BEAN_SOUL);
+        AddItemToMainPool(RG_ZORAS_RIVER_BEAN_SOUL);
+    }
+
+    if (ctx->GetOption(RSK_SHUFFLE_BEAN_SOULS)) {
+        AddItemToMainPool(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL);
+        AddItemToMainPool(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL);
+        AddItemToMainPool(RG_DESERT_COLOSSUS_BEAN_SOUL);
+        AddItemToMainPool(RG_GERUDO_VALLEY_BEAN_SOUL);
+        AddItemToMainPool(RG_GRAVEYARD_BEAN_SOUL);
+        AddItemToMainPool(RG_KOKIRI_FOREST_BEAN_SOUL);
+        AddItemToMainPool(RG_LAKE_HYLIA_BEAN_SOUL);
+        AddItemToMainPool(RG_LOST_WOODS_BRIDGE_BEAN_SOUL);
+        AddItemToMainPool(RG_LOST_WOODS_BEAN_SOUL);
+        AddItemToMainPool(RG_ZORAS_RIVER_BEAN_SOUL);
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_TOKENS).IsNot(RO_TOKENSANITY_OFF) &&

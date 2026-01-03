@@ -3,6 +3,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/frame_interpolation.h"
+#include "soh/ShipInit.hpp"
 #include "soh/ShipUtils.h"
 
 extern "C" {
@@ -138,7 +139,7 @@ Kaleido::Kaleido() {
             gItemIconFishingPoleTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
             FlagType::FLAG_RANDOMIZER_INF, static_cast<int>(RAND_INF_FISHING_POLE_FOUND), "Fishing Pole"));
     }
-    if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
+    if (ctx->GetOption(RSK_TRIFORCE_HUNT).IsNot(RO_TRIFORCE_HUNT_OFF)) {
         mEntries.push_back(std::make_shared<KaleidoEntryIconCountRequired>(
             gTriforcePieceTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
             reinterpret_cast<int*>(&gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected),
@@ -202,10 +203,6 @@ void Kaleido::Draw(PlayState* play) {
     Matrix_Translate(-108.f, 58.f, 0.0f, MTXMODE_APPLY);
     // Invert the matrix to render vertices with positive going down
     Matrix_Scale(1.0f, -1.0f, 1.0f, MTXMODE_APPLY);
-    // The scrolling logic is in here because the built in kaleido input throttling happens
-    // in its Draw functions, which get called after their update functions. I hate it but fixing
-    // it would be a much larger Kaleido change.
-    bool shouldScroll = false;
     bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
     if (((pauseCtx->unk_1E4 == 0) || (pauseCtx->unk_1E4 == 5) || (pauseCtx->unk_1E4 == 8)) &&
         (pauseCtx->pageIndex == PAUSE_QUEST)) {
@@ -219,7 +216,6 @@ void Kaleido::Draw(PlayState* play) {
                     }
                     if (mCursorPos < mTopIndex) {
                         mTopIndex = mCursorPos;
-                        shouldScroll = true;
                     }
                 } else if ((pauseCtx->stickRelY < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
                     if (mCursorPos < mEntries.size() - 1) {
@@ -229,7 +225,6 @@ void Kaleido::Draw(PlayState* play) {
                     }
                     if (mCursorPos >= mTopIndex + mNumVisible && mTopIndex + mNumVisible < mEntries.size()) {
                         mTopIndex = mCursorPos - mNumVisible + 1;
-                        shouldScroll = true;
                     }
                 }
                 if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
@@ -257,7 +252,7 @@ void Kaleido::Draw(PlayState* play) {
         }
     }
     int yOffset = 1;
-    for (int i = mTopIndex; i < (mTopIndex + mNumVisible) && i < mEntries.size(); i++) {
+    for (size_t i = mTopIndex; i < (mTopIndex + mNumVisible) && i < mEntries.size(); i++) {
         auto& entry = mEntries[i];
         entry->SetYOffset(yOffset);
         yOffset += 9;
@@ -274,7 +269,7 @@ void Kaleido::Draw(PlayState* play) {
 }
 
 void Kaleido::Update(PlayState* play) {
-    for (int i = mTopIndex; i < (mTopIndex + mNumVisible) && i < mEntries.size(); i++) {
+    for (size_t i = mTopIndex; i < (mTopIndex + mNumVisible) && i < mEntries.size(); i++) {
         const auto& entry = mEntries[i];
         entry->Update(play);
     }
@@ -294,8 +289,8 @@ extern "C" void RandoKaleido_UpdateMiscCollectibles(int16_t inDungeonScene) {
 KaleidoEntryIconFlag::KaleidoEntryIconFlag(const char* iconResourceName, int iconFormat, int iconSize, int iconWidth,
                                            int iconHeight, Color_RGBA8 iconColor, FlagType flagType, int flag,
                                            std::string name)
-    : mFlagType(flagType), mFlag(flag),
-      KaleidoEntryIcon(iconResourceName, iconFormat, iconSize, iconWidth, iconHeight, iconColor, std::move(name)) {
+    : KaleidoEntryIcon(iconResourceName, iconFormat, iconSize, iconWidth, iconHeight, iconColor, std::move(name)),
+      mFlagType(flagType), mFlag(flag) {
     BuildVertices();
 }
 
@@ -306,8 +301,8 @@ void KaleidoEntryIconFlag::Update(PlayState* play) {
 KaleidoEntryIconCountRequired::KaleidoEntryIconCountRequired(const char* iconResourceName, int iconFormat, int iconSize,
                                                              int iconWidth, int iconHeight, Color_RGBA8 iconColor,
                                                              int* watch, int required, int total)
-    : mWatch(watch), mRequired(required), mTotal(total),
-      KaleidoEntryIcon(iconResourceName, iconFormat, iconSize, iconWidth, iconHeight, iconColor) {
+    : KaleidoEntryIcon(iconResourceName, iconFormat, iconSize, iconWidth, iconHeight, iconColor), mWatch(watch),
+      mRequired(required), mTotal(total) {
     mCount = *mWatch;
     BuildText();
     BuildVertices();
@@ -374,8 +369,8 @@ void KaleidoEntryIcon::BuildVertices() {
 
 KaleidoEntryIcon::KaleidoEntryIcon(const char* iconResourceName, int iconFormat, int iconSize, int iconWidth,
                                    int iconHeight, Color_RGBA8 iconColor, std::string text)
-    : mIconResourceName(iconResourceName), mIconFormat(iconFormat), mIconSize(iconSize), mIconWidth(iconWidth),
-      mIconHeight(iconHeight), mIconColor(iconColor), KaleidoEntry(std::move(text)) {
+    : KaleidoEntry(std::move(text)), mIconResourceName(iconResourceName), mIconFormat(iconFormat), mIconSize(iconSize),
+      mIconWidth(iconWidth), mIconHeight(iconHeight), mIconColor(iconColor) {
 }
 
 void KaleidoEntryIcon::RebuildVertices() {
@@ -445,7 +440,7 @@ void KaleidoEntryOcarinaButtons::Update(PlayState* play) {
     mButtonCollected[4] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_RIGHT) > 0;
     CalculateColors();
     mAchieved = false;
-    for (int i = 0; i < mButtonCollected.size(); i++) {
+    for (size_t i = 0; i < mButtonCollected.size(); i++) {
         if (!mButtonCollected[i]) {
             mButtonColors[i] = Color_RGBA8{ 109, 109, 109, 255 };
         } else {
@@ -518,7 +513,9 @@ void KaleidoEntryOcarinaButtons::Draw(PlayState* play, std::vector<Gfx>* mEntryD
 }
 } // namespace Rando
 
-void RandoKaleido_RegisterHooks() {
+static void RandoKaleido_RegisterHooks() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(
         RandoKaleido_UpdateMiscCollectibles);
 }
+
+static RegisterShipInitFunc initFunc(RandoKaleido_RegisterHooks);

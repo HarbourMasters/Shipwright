@@ -14,24 +14,6 @@ uint8_t Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 }
 
-void StartingItemGive(GetItemEntry getItemEntry, RandomizerCheck randomizerCheck) {
-    if (randomizerCheck != RC_MAX) {
-        OTRGlobals::Instance->gRandoContext->GetItemLocation(randomizerCheck)->SetCheckStatus(RCSHOW_SAVED);
-    }
-    if (getItemEntry.modIndex == MOD_NONE) {
-        if (getItemEntry.getItemId == GI_SWORD_BGS) {
-            gSaveContext.bgsFlag = true;
-        }
-        Item_Give(NULL, static_cast<uint8_t>(getItemEntry.itemId));
-    } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
-        if (getItemEntry.getItemId == RG_ICE_TRAP) {
-            gSaveContext.ship.pendingIceTrapCount++;
-        } else {
-            Randomizer_Item_Give(NULL, getItemEntry);
-        }
-    }
-}
-
 // RANDOTODO: Replace most of these GiveLink functions with calls to
 // Item_Give in z_parameter, we'll need to update Item_Give to ensure
 // nothing breaks when calling it without a valid play first.
@@ -52,6 +34,36 @@ void GiveLinkRupees(int numOfRupees) {
         gSaveContext.rupees = maxRupeeCount;
     } else {
         gSaveContext.rupees = newRupeeCount;
+    }
+}
+
+static uint16_t rupeeCounts[] = {
+    1,   // ITEM_RUPEE_GREEN
+    5,   // ITEM_RUPEE_BLUE
+    20,  // ITEM_RUPEE_RED
+    50,  // ITEM_RUPEE_PURPLE
+    200, // ITEM_RUPEE_GOLD
+};
+
+void StartingItemGive(GetItemEntry getItemEntry, RandomizerCheck randomizerCheck) {
+    if (randomizerCheck != RC_MAX) {
+        OTRGlobals::Instance->gRandoContext->GetItemLocation(randomizerCheck)->SetCheckStatus(RCSHOW_SAVED);
+    }
+    if (getItemEntry.modIndex == MOD_NONE) {
+        if (getItemEntry.itemId >= ITEM_RUPEE_GREEN && getItemEntry.itemId <= ITEM_RUPEE_GOLD) {
+            GiveLinkRupees(rupeeCounts[getItemEntry.itemId - ITEM_RUPEE_GREEN]);
+        } else {
+            if (getItemEntry.getItemId == GI_SWORD_BGS) {
+                gSaveContext.bgsFlag = true;
+            }
+            Item_Give(NULL, static_cast<uint8_t>(getItemEntry.itemId));
+        }
+    } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
+        if (getItemEntry.getItemId == RG_ICE_TRAP) {
+            gSaveContext.ship.pendingIceTrapCount++;
+        } else {
+            Randomizer_Item_Give(NULL, getItemEntry);
+        }
     }
 }
 
@@ -253,6 +265,41 @@ extern "C" void Randomizer_InitSaveFile() {
 
     // Go away Ruto (Water Temple first cutscene).
     gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x10);
+
+    if (Randomizer_GetSettingValue(RSK_STARTING_BEANS)) {
+        INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_BEANS_ONLY &&
+            Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_ALL) {
+            BEANS_BOUGHT = 10;
+        }
+        if (Randomizer_GetSettingValue(RSK_SKIP_PLANTING_BEANS)) {
+            AMMO(ITEM_BEAN) = 0;
+            gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_CRATER].swch |= (1 << 3);
+            gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_TRAIL].swch |= (1 << 6);
+            gSaveContext.sceneFlags[SCENE_DESERT_COLOSSUS].swch |= (1 << 24);
+            gSaveContext.sceneFlags[SCENE_GERUDO_VALLEY].swch |= (1 << 3);
+            gSaveContext.sceneFlags[SCENE_GRAVEYARD].swch |= (1 << 3);
+            gSaveContext.sceneFlags[SCENE_KOKIRI_FOREST].swch |= (1 << 9);
+            gSaveContext.sceneFlags[SCENE_LAKE_HYLIA].swch |= (1 << 1);
+            gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 4) | (1 << 18);
+            gSaveContext.sceneFlags[SCENE_ZORAS_RIVER].swch |= (1 << 3);
+        } else {
+            AMMO(ITEM_BEAN) = 10;
+        }
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BEAN_SOULS) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_DESERT_COLOSSUS_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_GERUDO_VALLEY_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_GRAVEYARD_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_KOKIRI_FOREST_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_LAKE_HYLIA_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_LOST_WOODS_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_ZORAS_RIVER_BEAN_SOUL);
+    }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_A);
