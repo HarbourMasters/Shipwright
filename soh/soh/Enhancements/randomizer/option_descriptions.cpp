@@ -103,6 +103,8 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Random Number - A random number and set of trials will be required.";
     mOptionDescriptions[RSK_TRIAL_COUNT] = "Set the number of trials required to enter Ganon's Tower.";
+    mOptionDescriptions[RSK_MEDALLION_LOCKED_TRIALS] =
+        "Doors to trials will be barred until their corresponding medallion is acquired.";
     mOptionDescriptions[RSK_MQ_DUNGEON_RANDOM] =
         "Sets the number of Master Quest Dungeons that are shuffled into the pool.\n"
         "\n"
@@ -124,10 +126,11 @@ void Settings::CreateOptionDescriptions() {
         "set to either MQ or Random here, you will have fewer MQ Dungeons than the number you "
         "set.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT] =
-        "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n\n"
-        "When the required amount of pieces have been found, the game is saved and Ganon's Boss key is given "
-        "to you when you load back into the game if you desire to beat Ganon afterwards.\n\n"
-        "Keep in mind Ganon might not be logically beatable when \"All Locations Reachable\" is turned off.";
+        "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n"
+        "\n"
+        "If set to Win: the game is saved and the credits roll, though you can load back in to receive Ganon's "
+        "Castle Boss Key. Keep in mind that Ganon might not be logically reachable when \"All Locations Reachable\" "
+        "is disabled.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL] =
         "The amount of Triforce pieces that will be placed in the world. "
         "Keep in mind seed generation can fail if more pieces are placed than there are junk items in the item pool.";
@@ -701,6 +704,7 @@ void Settings::CreateOptionDescriptions() {
         "Talking to the chest game owner after buying a key will tell you the location of Greg the Green Rupee.";
     mOptionDescriptions[RSK_LOACH_HINT] = "Talking to the fishing pond owner and asking to talk about something will "
                                           "tell you what's the reward for the Hyrule Loach.";
+    mOptionDescriptions[RSK_BOSS_KEY_HINT] = "Navi will tell where boss key can be found when prompted at boss door.";
     mOptionDescriptions[RSK_SARIA_HINT] = "Talking to Saria either in person or through Saria's Song will tell you the "
                                           "location of a progressive magic meter.";
     mOptionDescriptions[RSK_MIDO_HINT] = "Talking to Mido as child will tell you the location of the Kokiri Sword.";

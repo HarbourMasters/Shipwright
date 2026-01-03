@@ -2451,6 +2451,31 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                     messageEntry = Randomizer_GetCustomGetItemMessage(player);
                 }
             }
+        } else if (textId == TEXT_NEED_SPECIAL_KEY && ctx->GetOption(RSK_BOSS_KEY_HINT)) {
+            auto rh = RH_NONE;
+            switch (gPlayState->sceneNum) {
+                case SCENE_FOREST_TEMPLE:
+                    rh = RH_FOREST_BOSS_KEY_HINT;
+                    break;
+                case SCENE_FIRE_TEMPLE:
+                    rh = RH_FIRE_BOSS_KEY_HINT;
+                    break;
+                case SCENE_WATER_TEMPLE:
+                    rh = RH_WATER_BOSS_KEY_HINT;
+                    break;
+                case SCENE_SHADOW_TEMPLE:
+                    rh = RH_SHADOW_BOSS_KEY_HINT;
+                    break;
+                case SCENE_SPIRIT_TEMPLE:
+                    rh = RH_SPIRIT_BOSS_KEY_HINT;
+                    break;
+                case SCENE_GANONS_TOWER:
+                    rh = RH_GANONS_BOSS_KEY_HINT;
+                    break;
+            }
+            if (rh != RH_NONE) {
+                messageEntry = ctx->GetHint(rh)->GetHintMessage(MF_AUTO_FORMAT);
+            }
         } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS &&
                    Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != RO_GOSSIP_STONES_NONE &&
                    (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_NOTHING ||

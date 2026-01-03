@@ -2500,7 +2500,7 @@ void RandomizerOnPlayerUpdateHandler() {
                                   *Rando::StaticData::GetItemTable().at(RG_GANONS_CASTLE_BOSS_KEY).GetGIEntry());
     }
 
-    if (!GameInteractor::IsGameplayPaused() && RAND_GET_OPTION(RSK_TRIFORCE_HUNT)) {
+    if (!GameInteractor::IsGameplayPaused() && RAND_GET_OPTION(RSK_TRIFORCE_HUNT) != RO_TRIFORCE_HUNT_OFF) {
         // Warp to credits
         if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
             gPlayState->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;

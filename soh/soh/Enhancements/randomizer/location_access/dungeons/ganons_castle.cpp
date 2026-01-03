@@ -27,11 +27,11 @@ void RegionTable_Init_GanonsCastle() {
     }, {
         //Exits
         Entrance(RR_GANONS_CASTLE_LOBBY,                       []{return true;}),
-        Entrance(RR_GANONS_CASTLE_FOREST_TRIAL_WOLFOS_ROOM,    []{return true;}),
-        Entrance(RR_GANONS_CASTLE_FIRE_TRIAL_MAIN_ROOM,        []{return true;}),
-        Entrance(RR_GANONS_CASTLE_WATER_TRIAL_BLUE_FIRE_ROOM,  []{return true;}),
-        Entrance(RR_GANONS_CASTLE_SHADOW_TRIAL_START,          []{return true;}),
-        Entrance(RR_GANONS_CASTLE_SPIRIT_TRIAL_BEAMOS_ROOM,    []{return true;}),
+        Entrance(RR_GANONS_CASTLE_FOREST_TRIAL_WOLFOS_ROOM,    []{return !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_FOREST_MEDALLION);}),
+        Entrance(RR_GANONS_CASTLE_FIRE_TRIAL_MAIN_ROOM,        []{return !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_FIRE_MEDALLION);}),
+        Entrance(RR_GANONS_CASTLE_WATER_TRIAL_BLUE_FIRE_ROOM,  []{return !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_WATER_MEDALLION);}),
+        Entrance(RR_GANONS_CASTLE_SHADOW_TRIAL_START,          []{return !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_SHADOW_MEDALLION);}),
+        Entrance(RR_GANONS_CASTLE_SPIRIT_TRIAL_BEAMOS_ROOM,    []{return !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_SPIRIT_MEDALLION);}),
         Entrance(RR_GANONS_CASTLE_LIGHT_TRIAL_CHESTS_ROOM,     []{return logic->CanUse(RG_GOLDEN_GAUNTLETS);}),
         Entrance(RR_GANONS_TOWER_ENTRYWAY,                     []{return (logic->Get(LOGIC_FOREST_TRIAL_CLEAR) || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
                                                                          (logic->Get(LOGIC_FIRE_TRIAL_CLEAR)   || ctx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
@@ -304,11 +304,11 @@ void RegionTable_Init_GanonsCastle() {
     }, {
         //Exits
         Entrance(RR_GANONS_CASTLE_MQ_LOBBY,                       []{return true;}),
-        Entrance(RR_GANONS_CASTLE_MQ_FOREST_TRIAL_STALFOS_ROOM,   []{return true;}),
-        Entrance(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_MAIN_ROOM,        []{return true;}),
-        Entrance(RR_GANONS_CASTLE_MQ_WATER_TRIAL_GEYSER_ROOM,     []{return true;}),
-        Entrance(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_STARTING_LEDGE, []{return true;}),
-        Entrance(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_CHAIRS_ROOM,    []{return true;}),
+        Entrance(RR_GANONS_CASTLE_MQ_FOREST_TRIAL_STALFOS_ROOM,   []{return !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_FOREST_MEDALLION);}),
+        Entrance(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_MAIN_ROOM,        []{return !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_FIRE_MEDALLION);}),
+        Entrance(RR_GANONS_CASTLE_MQ_WATER_TRIAL_GEYSER_ROOM,     []{return !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_WATER_MEDALLION);}),
+        Entrance(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_STARTING_LEDGE, []{return !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_SHADOW_MEDALLION);}),
+        Entrance(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_CHAIRS_ROOM,    []{return !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_SPIRIT_MEDALLION);}),
         Entrance(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_DINOLFOS_ROOM,   []{return AnyAgeTime([]{return logic->CanUse(RG_GOLDEN_GAUNTLETS);});}),
         //RANDOTODO could we just set these events automatically based on the setting?
         Entrance(RR_GANONS_TOWER_ENTRYWAY,                        []{return (logic->Get(LOGIC_FOREST_TRIAL_CLEAR) || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&

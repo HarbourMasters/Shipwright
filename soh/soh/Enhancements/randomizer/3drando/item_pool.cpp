@@ -502,11 +502,22 @@ void GenerateItemPool() {
         ctx->possibleIceTrapModels.push_back(RG_LIGHT_MEDALLION);
     }
 
-    if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
+    if (ctx->GetOption(RSK_TRIFORCE_HUNT).IsNot(RO_TRIFORCE_HUNT_OFF)) {
         ctx->possibleIceTrapModels.push_back(RG_TRIFORCE_PIECE);
         AddItemToMainPool(RG_TRIFORCE_PIECE, (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get() + 1));
-        ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_TRIFORCE); // Win condition
-        ctx->PlaceItemInLocation(RC_GANON, GetJunkItem(), false, true);
+
+        switch (ctx->GetOption(RSK_TRIFORCE_HUNT).Get()) {
+            case RO_TRIFORCE_HUNT_OFF:
+                break;
+            case RO_TRIFORCE_HUNT_WIN:
+                ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_TRIFORCE); // Win condition
+                ctx->PlaceItemInLocation(RC_GANON, GetJunkItem(), false, true);
+                break;
+            case RO_TRIFORCE_HUNT_GBK:
+                ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_GANONS_CASTLE_BOSS_KEY);
+                ctx->PlaceItemInLocation(RC_GANON, RG_TRIFORCE); // Win condition
+                break;
+        }
     } else {
         ctx->PlaceItemInLocation(RC_GANON, RG_TRIFORCE); // Win condition
     }
@@ -1248,7 +1259,8 @@ void GenerateItemPool() {
         AddItemToMainPool(RG_SHADOW_TEMPLE_BOSS_KEY);
     }
 
-    if (!ctx->GetOption(RSK_TRIFORCE_HUNT)) { // Don't add GBK to the pool at all for Triforce Hunt.
+    if (!ctx->GetOption(RSK_TRIFORCE_HUNT)
+             .IsNot(RO_TRIFORCE_HUNT_OFF)) { // Don't add GBK to the pool at all for Triforce Hunt.
         if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
             ctx->PlaceItemInLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD, RG_GANONS_CASTLE_BOSS_KEY);
         } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Get() >= RO_GANON_BOSS_KEY_LACS_VANILLA) {
