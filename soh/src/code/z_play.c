@@ -781,10 +781,10 @@ void Play_Update(PlayState* play) {
             }
 
             // Start RTA timing on first non-c-up input after intro cutscene
-            if (!gSaveContext.ship.stats.fileCreatedAt && !Player_InCsMode(play) &&
+            if (!gSaveContext.ship.stats.firstInput && !Player_InCsMode(play) &&
                 ((input[0].press.button && input[0].press.button != 0x8) || input[0].rel.stick_x != 0 ||
                  input[0].rel.stick_y != 0)) {
-                gSaveContext.ship.stats.fileCreatedAt = GetUnixTimestamp();
+                gSaveContext.ship.stats.firstInput = GetUnixTimestamp();
             }
         }
         // #endregion

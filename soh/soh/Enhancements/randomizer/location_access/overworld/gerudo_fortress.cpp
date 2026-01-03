@@ -18,7 +18,7 @@ void RegionTable_Init_GerudoFortress() {
         //Exits
         Entrance(RR_GV_FORTRESS_SIDE, []{return true;}),
         Entrance(RR_TH_1_TORCH_CELL,  []{return true;}),
-        Entrance(RR_GF_OUTSIDE_GATE,  []{return logic->Get(LOGIC_GF_GATE_OPEN);}),
+        Entrance(RR_GF_OUTSIDE_GATE,  []{return logic->Get(LOGIC_GF_GATE_OPEN) || (ctx->GetTrickOption(RT_GF_CHILD_SKIP_WASTELAND_GATE) && logic->IsChild);}),
         Entrance(RR_GF_NEAR_GROTTO,   []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
         Entrance(RR_GF_OUTSIDE_GTG,   []{return logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD);}),
         //You can talk to the guards to get yourself thrown in jail, so long as you have a hookshot to actually end up there
@@ -147,7 +147,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_TOP_OF_LOWER_VINES,    []{return true;}),
         Entrance(RR_GF_SLOPED_ROOF,           []{return true;}),
         Entrance(RR_GF_BOTTOM_OF_UPPER_VINES, []{return true;}),
-        Entrance(RR_GF_NEAR_CHEST,            []{return logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->CanUse(RG_SCARECROW) && logic->CanUse(RG_HOOKSHOT)) || logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_GF_NEAR_CHEST,            []{return logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->ReachScarecrow()) || logic->CanUse(RG_LONGSHOT);}),
     });
 
     areaTable[RR_GF_NEAR_CHEST] = Region("GF Near Chest", SCENE_GERUDOS_FORTRESS, {}, {
@@ -199,6 +199,7 @@ void RegionTable_Init_GerudoFortress() {
         Entrance(RR_GF_BELOW_CHEST,         []{return logic->TakeDamage();}),
         Entrance(RR_GF_JAIL_WINDOW,         []{return logic->CanUse(RG_HOOKSHOT);}),
         Entrance(RR_TH_BREAK_ROOM_CORRIDOR, []{return true;}),
+        Entrance(RR_GF_OUTSIDE_GATE,        []{return ctx->GetTrickOption(RT_GF_ADULT_SKIP_WASTELAND_GATE) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslashExceptHammer();}),
     });
 
     areaTable[RR_GF_JAIL_WINDOW] = Region("GF Jail Window", SCENE_GERUDOS_FORTRESS, {}, {}, {
@@ -206,12 +207,13 @@ void RegionTable_Init_GerudoFortress() {
         //There's a trick where hovers backwalk into backflip gives access to RR_GF_LONG_ROOF from here
         Entrance(RR_GF_OUTSKIRTS,   []{return true;}),
         Entrance(RR_GF_BELOW_CHEST, []{return true;}),
+        Entrance(RR_GF_ABOVE_JAIL,  []{return ctx->GetTrickOption(RT_HOOKSHOT_CLIP) && logic->CanUse(RG_HOOKSHOT);}),
     });
 
     areaTable[RR_GF_HBA_RANGE] = Region("GF HBA Range", SCENE_GERUDOS_FORTRESS, {}, {
         //Locations
-        LOCATION(RC_GF_HBA_1000_POINTS,          logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_EPONA) && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
-        LOCATION(RC_GF_HBA_1500_POINTS,          logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_EPONA) && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
+        LOCATION(RC_GF_HBA_1000_POINTS,          logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->SummonEpona() && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
+        LOCATION(RC_GF_HBA_1500_POINTS,          logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->SummonEpona() && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
         LOCATION(RC_GF_HBA_RANGE_GS,             logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) && logic->CanGetNightTimeGS()),
         LOCATION(RC_GF_HBA_RANGE_CRATE_1,        logic->CanBreakCrates()),
         LOCATION(RC_GF_HBA_RANGE_CRATE_2,        logic->CanBreakCrates()),

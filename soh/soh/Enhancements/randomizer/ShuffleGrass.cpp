@@ -27,7 +27,7 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
     static Gfx* dLists[] = { (Gfx*)gRandoBushJunkDL, (Gfx*)gRandoCuttableGrassJunkDL, (Gfx*)gRandoCuttableGrassJunkDL };
     auto grassActor = ((EnKusa*)thisx);
 
-    const auto grassIdentity = ObjectExtension::GetInstance().Get<GrassIdentity>(thisx);
+    const auto grassIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(thisx);
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
@@ -90,7 +90,7 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
 }
 
 uint8_t EnKusa_RandomizerHoldsItem(EnKusa* grassActor, PlayState* play) {
-    const auto grassIdentity = ObjectExtension::GetInstance().Get<GrassIdentity>(&grassActor->actor);
+    const auto grassIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&grassActor->actor);
 
     if (grassIdentity == nullptr || grassIdentity->randomizerCheck == RC_MAX)
         return false;
@@ -110,7 +110,7 @@ uint8_t EnKusa_RandomizerHoldsItem(EnKusa* grassActor, PlayState* play) {
 }
 
 void EnKusa_RandomizerSpawnCollectible(EnKusa* grassActor, PlayState* play) {
-    const auto grassIdentity = ObjectExtension::GetInstance().Get<GrassIdentity>(&grassActor->actor);
+    const auto grassIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&grassActor->actor);
     if (grassIdentity == nullptr) {
         return;
     }
@@ -135,7 +135,7 @@ void EnKusa_RandomizerInit(void* actorRef) {
 
     auto grassIdentity = OTRGlobals::Instance->gRandomizer->IdentifyGrass(
         gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, respawnData, gPlayState->linkAgeOnLoad);
-    ObjectExtension::GetInstance().Set<GrassIdentity>(actor, std::move(grassIdentity));
+    ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(grassIdentity));
 }
 
 void RegisterShuffleGrass() {
@@ -157,7 +157,7 @@ void RegisterShuffleGrass() {
         EnKusa* grassActor = va_arg(args, EnKusa*);
         if (EnKusa_RandomizerHoldsItem(grassActor, gPlayState)) {
             EnKusa_RandomizerSpawnCollectible(grassActor, gPlayState);
-            ObjectExtension::GetInstance().Set<GrassIdentity>(&grassActor->actor, std::move(GrassIdentity{
+            ObjectExtension::GetInstance().Set<CheckIdentity>(&grassActor->actor, std::move(CheckIdentity{
                                                                                       .randomizerInf = RAND_INF_MAX,
                                                                                       .randomizerCheck = RC_MAX,
                                                                                   }));
@@ -528,6 +528,5 @@ void Rando::StaticData::RegisterGrassLocations() {
     // clang-format on
 }
 
-static ObjectExtension::Register<GrassIdentity> RegisterGrassIdentity;
 static RegisterShipInitFunc registerShuffleGrass(RegisterShuffleGrass, { "IS_RANDO" });
 static RegisterShipInitFunc registerGrassLocations(Rando::StaticData::RegisterGrassLocations);

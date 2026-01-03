@@ -83,6 +83,7 @@ bool showDungeonGrass;
 bool showOverworldCrates;
 bool showDungeonCrates;
 bool showTrees;
+bool showBushes;
 bool showFrogSongRupees;
 bool showFountainFairies;
 bool showStoneFairies;
@@ -1031,11 +1032,6 @@ void CheckTrackerWindow::DrawElement() {
         RecalculateAvailableChecks();
     }
 
-    SceneID sceneId = SCENE_ID_MAX;
-    if (gPlayState != nullptr) {
-        sceneId = (SceneID)gPlayState->sceneNum;
-    }
-
     // Quick Options
 #ifdef __WIIU__
     float headerHeight = 40.0f;
@@ -1494,6 +1490,7 @@ void LoadSettings() {
                 break;
         }
         showTrees = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TREES);
+        showBushes = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BUSHES);
     } else { // Vanilla
         showOverworldTokens = true;
         showDungeonTokens = true;
@@ -1504,6 +1501,7 @@ void LoadSettings() {
         showOverworldCrates = false;
         showDungeonCrates = false;
         showTrees = false;
+        showBushes = false;
     }
 
     fortressFast = false;
@@ -1620,7 +1618,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_NLTREE ||
                 (showTrees &&
                  OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) &&
-               (loc->GetRCType() != RCTYPE_COW || showCows) &&
+               (loc->GetRCType() != RCTYPE_BUSH || showBushes) && (loc->GetRCType() != RCTYPE_COW || showCows) &&
                (loc->GetRCType() != RCTYPE_FISH ||
                 OTRGlobals::Instance->gRandoContext->GetFishsanity()->GetFishLocationIncluded(loc)) &&
                (loc->GetRCType() != RCTYPE_FREESTANDING ||

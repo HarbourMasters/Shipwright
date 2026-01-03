@@ -160,6 +160,12 @@ void SohMenu::AddMenuEnhancements() {
             "autosave will wait if the game is paused in any way (dialogue, pause screen up, cutscenes, "
             "etc.).\n\n"
             "The soft-reset save will *not* trigger in cutscene maps like the Chamber of Sages!"));
+    AddWidget(path, "Notification on Autosave", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("AutosaveNotification"))
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("Autosave"), 0); })
+        .RaceDisable(false)
+        .Options(CheckboxOptions().DefaultValue(true).Tooltip("Show a notification when the game is autosaved."));
+
     AddWidget(path, "Remember Save Location", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RememberSaveLocation"))
         .Options(CheckboxOptions().Tooltip(
@@ -730,6 +736,10 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Equip items and equipment on the D-pad. If used with \"D-pad on Pause Screen\", you must "
             "hold C-Up to equip instead of navigate."));
+    AddWidget(path, "Unequip C-Items on Re-press", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ItemUnequip"))
+        .Options(CheckboxOptions().Tooltip("Allows unequipping items from C-Buttons/D-pad by hovering over an equipped "
+                                           "item and pressing the button it's equipped to."));
     AddWidget(path, "Assignable Shields, Tunics and Boots", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"))
         .Options(CheckboxOptions().Tooltip("Allows equipping Shields, Tunics and Boots to C-Buttons/D-pad."));
