@@ -1344,10 +1344,15 @@ void Settings::CreateOptions() {
               "Allows the following possible without Tunics:\n- Enter Water Temple. The area below the center pillar "
               "still requires Zora Tunic. Applies to MQ also.\n- Enter Fire Temple. Volvagia still requires Goron "
               "Tunic. Applies to MQ also, and includes child access to first floor with dungeon shuffle.");
-    OPT_TRICK(RT_RUSTED_SWITCHES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE },
-              "Hammer Rusted Switches Through Walls",
-              "Applies to:\n- Fire Temple Highest Goron Chest.\n- Water Trial\n- MQ Fire Temple Lizalfos Maze.\n- MQ "
-              "Spirit Trial.");
+    OPT_TRICK(RT_RUSTED_SWITCHES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Hammer Through Collision",
+              "Applies to:\n"
+              "- Hitting Fire Temple Highest Goron Chest's Rusted Switch in the SoT Block without Song of Time.\n"
+              "- Hitting the rusted switch in Water Trial through the Ice."
+              "- Hitting MQ Fire Temple Lizalfos Maze's Rusted Switch in the wall.\n"
+              "- Having Adult hammer the rock in the west side crawlspace of MQ Spirit so child can get through "
+              "without bombchus."
+              "- MQ Spirit Trial's Rusted Switch between the thrones without hitting the eye target to drop an Iron "
+              "Knuckle.\n");
     OPT_TRICK(RT_FLAMING_CHESTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "Flaming Chests",
               "The chests encircled in flames in Gerudo Training Ground and in Spirit Temple can be opened by running "
               "into the flames while Link is invincible after taking damage.");
@@ -1561,6 +1566,11 @@ void Settings::CreateOptions() {
               "Gerudo Valley Crate PoH as Adult with Hover Boots",
               "From the far side of Gerudo Valley, a precise Hover Boots movement and jump-slash recoil can allow "
               "adult to reach the ledge with the crate PoH without needing Longshot. You will take fall damage.");
+    OPT_TRICK(RT_GV_CHILD_CUCCO_JUMP, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE },
+              "Gerudo Valley Jump Fence with Cucco", "Using cucco as child, it's possible to jumpslash over the gate.");
+    OPT_TRICK(RT_GV_CHILD_TENT, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::NOVICE },
+              "Gerudo Valley Enter Carpenter's Tent as Child",
+              "The loading zone for Carpenter's Tent is accessible to child.");
     OPT_TRICK(RT_PASS_GUARDS_WITH_NOTHING, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
               "Sneak Past Moving Gerudo Guards with No Items",
               "The logic normally guarantees Bow or Hookshot to stun them from a distance,"
@@ -1568,6 +1578,12 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_GF_JUMP, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE }, "Gerudo\'s Fortress Ledge Jumps",
               "It is possible to navigate the rooves of Fortress with unintuative jumps to reach additional areas "
               "without going inside.");
+    OPT_TRICK(RT_GF_CHILD_SKIP_WASTELAND_GATE, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
+              "Gerudo\'s Fortress Skip Wasteland Gate as Child",
+              "As child a sidehop out of bounds off the tower can be used to get past the gate.");
+    OPT_TRICK(RT_GF_ADULT_SKIP_WASTELAND_GATE, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::INTERMEDIATE },
+              "Gerudo\'s Fortress Skip Wasteland Gate as Adult",
+              "As adult a precise jumpslash out of bounds with hoverboots can be used to get past the gate.");
     OPT_TRICK(RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
               "Gerudo\'s Fortress Warriors with Difficult Weapons",
               "Warriors can be defeated with Slingshot or Bombchus.");
@@ -1933,16 +1949,16 @@ void Settings::CreateOptions() {
               "torches very finicky to light when using arrows. The torches in the central pillar of MQ Water Temple "
               "are a particularly egregious example. Logic normally expects Din's Fire and Song of Time.");
     OPT_TRICK(
-        RT_WATER_MQ_LOCKED_GS, RCQUEST_MQ, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
-        "Water Temple MQ North Basement GS without Small Key",
-        "There is an invisible Hookshot target that can be used to get over the gate that blocks you from going to "
-        "this Skulltula early, skipping a small key as well as needing Hovers or Scarecrow to reach the locked door.");
-    OPT_TRICK(
         RT_WATER_IRON_BOOTS_LEDGE_GRAB, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
         "Water Temple Ledge Grab While Surfacing with Iron Boots",
         "Diving in front of ledge tapping B to swim up faster, then equipping iron boots while surfacing allows you to "
         "ledge grab to the higher ground. This can be used to reach ledge to boss door and vanilla compass chest, or "
         "MQ storage room");
+    OPT_TRICK(RT_WATER_INVISIBLE_HOOKSHOT_TARGET, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
+              "Water Temple Invisible Hookshot Target",
+              "Invisible hookshot geometry can be used in MQ to get over the gate that blocks you from going to this "
+              "Skulltula early, skipping a small key as well as needing Hovers or Scarecrow to reach the locked door.\n"
+              "In vanilla this can be used to get past without bronze scale.");
     OPT_TRICK(RT_WATER_MORPHA_WITHOUT_HOOKSHOT, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::EXTREME },
               "Water Temple Morpha without Hookshot", "It is possible to slash at Morpha without hookshot.");
     OPT_TRICK(RT_LENS_SHADOW, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },
@@ -2024,18 +2040,18 @@ void Settings::CreateOptions() {
               "Removes the requirements for the Lens of Truth in Spirit Temple.");
     OPT_TRICK(RT_SPIRIT_CHILD_CHU, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE },
               "Spirit Temple Child Side Bridge with Bombchu", "A carefully-timed Bombchu can hit the switch.");
-    OPT_TRICK(RT_SPIRIT_LOBBY_GS, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE },
-              "Spirit Temple Main Room GS with Boomerang",
-              "Standing on the highest part of the arm of the statue, a precise Boomerang throw can kill and obtain "
-              "this Gold Skulltula. You must throw the Boomerang slightly off to the side so that it curves into the "
-              "Skulltula, as aiming directly at it will clank off of the wall in front.");
+    OPT_TRICK(RT_SPIRIT_WEST_LEDGE, RCQUEST_BOTH, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE },
+              "Spirit Temple Statue Room West Ledge Checks with Boomerang",
+              "By carefully walking onto the upper arm of the statue, it's possible to get a good angle on the "
+              "Gold Skulltula (In Vanilla) and the farthest pot (In MQ) to collect the checks with Boomerang. "
+              "The nearest pot in MQ can be reached from the forearm and is always in logic.");
     OPT_TRICK(RT_SPIRIT_LOWER_ADULT_SWITCH, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::ADVANCED },
               "Spirit Temple Lower Adult Switch with Bombs",
               "A bomb can be used to hit the switch on the ceiling, but it must be thrown from a particular distance "
               "away and with precise timing.");
     OPT_TRICK(
-        RT_SPIRIT_LOBBY_JUMP, RCQUEST_BOTH, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-        "Spirit Temple Main Room Jump from Hands to Upper Ledges",
+        RT_SPIRIT_STATUE_JUMP, RCQUEST_BOTH, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE },
+        "Spirit Temple Statue Room Jump from Hands to Upper Ledges",
         "A precise jump to obtain the following as adult without needing one of Hover Boots, or Hookshot (in Vanilla) "
         "or Song of Time (in MQ): - Spirit Temple Statue Room Northeast Chest - Spirit Temple GS Lobby - Spirit Temple "
         "MQ Central Chamber Top Left Pot (Left) - Spirit Temple MQ Central Chamber Top Left Pot (Right)");
@@ -2198,6 +2214,7 @@ void Settings::CreateOptions() {
         WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_LOGIC_WINCON] = OptionGroup::SubGroup("",
                                                                         std::initializer_list<OptionGroup*>{
+                                                                            &mOptionGroups[RSG_ITEM_POOL],
                                                                             &mOptionGroups[RSG_MENU_SECTION_LOGIC],
                                                                             &mOptionGroups[RSG_MENU_SECTION_WINCON],
                                                                         },
@@ -2313,6 +2330,7 @@ void Settings::CreateOptions() {
                                   &mOptions[RSK_SHUFFLE_BEEHIVES],
                                   &mOptions[RSK_SHUFFLE_COWS],
                                   &mOptions[RSK_SHUFFLE_POTS],
+                                  &mOptions[RSK_SHUFFLE_GRASS],
                                   &mOptions[RSK_SHUFFLE_CRATES],
                                   &mOptions[RSK_SHUFFLE_TREES],
                                   &mOptions[RSK_SHUFFLE_BUSHES],
@@ -2585,6 +2603,7 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_BEEHIVES],
                                             &mOptions[RSK_SHUFFLE_COWS],
                                             &mOptions[RSK_SHUFFLE_POTS],
+                                            &mOptions[RSK_SHUFFLE_GRASS],
                                             &mOptions[RSK_SHUFFLE_CRATES],
                                             &mOptions[RSK_SHUFFLE_TREES],
                                             &mOptions[RSK_SHUFFLE_BUSHES],
@@ -3002,7 +3021,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
                     mqSet += 1;
                     break;
                 case RO_MQ_SET_RANDOM:
-                    // 50% per dungeon, rolled seperatly so people can either have a linear distribtuion
+                    // 50% per dungeon, rolled separatly so people can either have a linear distribtuion
                     // or a bell curve for the number of MQ dungeons per seed.
                     if (Random(0, 2)) {
                         dungeon->SetMQ();

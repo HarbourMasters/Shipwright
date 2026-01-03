@@ -1,11 +1,11 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "align_asset_macro.h"
 #include "macros.h"
 #include "variables.h"
-#include "soh/ResourceManagerHelpers.h"
 extern PlayState* gPlayState;
 }
 
