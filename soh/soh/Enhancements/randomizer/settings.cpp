@@ -2403,9 +2403,9 @@ void Settings::CreateOptions() {
                                                                   WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_SECTION_TRAPS] = OptionGroup::SubGroup("Traps",
                                                                   {
-                                                                    &mOptions[RSK_BASE_ICE_TRAPS],
-                                                                    &mOptions[RSK_ADDITIONAL_ICE_TRAPS],
-                                                                    &mOptions[RSK_ICE_TRAP_PERCENT],
+                                                                      &mOptions[RSK_BASE_ICE_TRAPS],
+                                                                      &mOptions[RSK_ADDITIONAL_ICE_TRAPS],
+                                                                      &mOptions[RSK_ICE_TRAP_PERCENT],
                                                                   },
                                                                   WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_HINTS_TRAPS] =
@@ -2727,8 +2727,7 @@ void Settings::CreateOptions() {
                                               &mOptions[RSK_SLINGBOW_BREAK_BEEHIVES],
                                           });
     mOptionGroups[RSG_ITEM_POOL] =
-        OptionGroup("Item Pool Settings",
-                    std::initializer_list<Option*>({ &mOptions[RSK_ITEM_POOL]}));
+        OptionGroup("Item Pool Settings", std::initializer_list<Option*>({ &mOptions[RSK_ITEM_POOL] }));
     // TODO: Progressive Goron Sword, Remove Double Defense
     mOptionGroups[RSG_EXCLUDES_KOKIRI_FOREST] =
         OptionGroup::SubGroup("Kokiri Forest", mExcludeLocationsOptionsAreas[RCAREA_KOKIRI_FOREST]);

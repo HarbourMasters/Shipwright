@@ -20,12 +20,12 @@ const std::array<RandomizerGet, 13> JunkPoolItems = {
 };
 // RANDOTODO should probably check the same thing as check matches contents at some point
 const std::map<RandomizerGet, std::vector<RandomizerGet>*> poolForItem = {
-    { RG_BOMBS_5, &junkPool },        { RG_BOMBS_10, &junkPool },      { RG_BOMBS_20, &junkPool },
-    { RG_DEKU_NUTS_5, &junkPool },    { RG_DEKU_STICK_1, &junkPool },  { RG_DEKU_SEEDS_30, &junkPool },
-    { RG_RECOVERY_HEART, &junkPool }, { RG_ARROWS_5, &junkPool },      { RG_ARROWS_10, &junkPool },
-    { RG_ARROWS_30, &junkPool },      { RG_GREEN_RUPEE, &junkPool },   { RG_BLUE_RUPEE, &junkPool },
-    { RG_RED_RUPEE, &junkPool },      { RG_DEKU_NUTS_10, &junkPool },  { RG_TREASURE_GAME_GREEN_RUPEE, &junkPool },
-    { RG_PURPLE_RUPEE, &lesserPool }, { RG_HUGE_RUPEE, &lesserPool },  { RG_DEKU_SHIELD, &lesserPool },
+    { RG_BOMBS_5, &junkPool },         { RG_BOMBS_10, &junkPool },     { RG_BOMBS_20, &junkPool },
+    { RG_DEKU_NUTS_5, &junkPool },     { RG_DEKU_STICK_1, &junkPool }, { RG_DEKU_SEEDS_30, &junkPool },
+    { RG_RECOVERY_HEART, &junkPool },  { RG_ARROWS_5, &junkPool },     { RG_ARROWS_10, &junkPool },
+    { RG_ARROWS_30, &junkPool },       { RG_GREEN_RUPEE, &junkPool },  { RG_BLUE_RUPEE, &junkPool },
+    { RG_RED_RUPEE, &junkPool },       { RG_DEKU_NUTS_10, &junkPool }, { RG_TREASURE_GAME_GREEN_RUPEE, &junkPool },
+    { RG_PURPLE_RUPEE, &lesserPool },  { RG_HUGE_RUPEE, &lesserPool }, { RG_DEKU_SHIELD, &lesserPool },
     { RG_HYLIAN_SHIELD, &lesserPool },
 };
 
