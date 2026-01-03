@@ -1444,6 +1444,33 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*Actor`
+    // - `*s32` (overrideActorCategory)
+    VB_OVERRIDE_TARGET_ARROW_CATEGORY,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*Actor`
+    // - `*s32` (overrideActorCategory)
+    VB_OVERRIDE_TARGET_CURSOR_CATEGORY,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*Actor`
+    // - `*s32` (overrideActorCategory)
+    VB_OVERRIDE_TARGET_NAVI_CATEGORY,
+
+    // #### `result`
+    // ```c
     // this->actor.xzDistToPlayer < targetDist
     // ```
     // #### `args`
