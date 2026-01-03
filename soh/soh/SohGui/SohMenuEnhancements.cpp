@@ -169,21 +169,17 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Containers Match Contents", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"))
         .Callback([](WidgetInfo& info) {
-            if (CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED) == CSMC_DISABLED) {
+            if (!CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0)) {
                 CVarSetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
-            } else {
-                CVarSetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_TEXTURE);
             }
         })
-        .Options(CheckboxOptions()
-                     .DefaultValue(false)
-                     .Tooltip("Toggle to change container textures to match their contents in randomizer games.\n"
-                              "Categories: Major items, Lesser items, Junk items, Small keys, Boss keys, Skulltula Tokens."));
+        .Options(CheckboxOptions().DefaultValue(false).Tooltip(
+            "Toggle to change container textures to match their contents in randomizer games.\n"
+            "Categories: Major items, Lesser items, Junk items, Small keys, Boss keys, Skulltula Tokens."));
     AddWidget(path, "Containers of Agony", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"))
         .PreFunc([](WidgetInfo& info) {
-            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED) ==
-                            CSMC_DISABLED;
+            info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
         })
         .Options(CheckboxOptions().Tooltip("Only change the texture of chests if you have the Stone of Agony."));
 

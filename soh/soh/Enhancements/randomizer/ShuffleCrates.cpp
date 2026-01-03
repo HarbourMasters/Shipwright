@@ -21,11 +21,10 @@ extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemCategory getItemCategory;
     auto crateActor = ((ObjKibako2*)thisx);
-    int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+    bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    int isVanilla =
-        csmc == CSMC_DISABLED || csmc == CSMC_SIZE || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+    int isVanilla = !csmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
     if (isVanilla) {
         Gfx_DrawDListOpa(play, (Gfx*)gLargeRandoCrateDL);
@@ -85,7 +84,6 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
                     break;
             }
             break;
-        case ITEM_CATEGORY_JUNK:
         default:
             Gfx_DrawDListOpa(play, (Gfx*)gLargeJunkCrateDL);
             break;
@@ -95,11 +93,10 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
 extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemCategory getItemCategory;
     auto smallCrateActor = ((ObjKibako*)thisx);
-    int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+    bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    int isVanilla =
-        csmc == CSMC_DISABLED || csmc == CSMC_SIZE || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+    int isVanilla = !csmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
     if (isVanilla) {
         Gfx_DrawDListOpa(play, (Gfx*)gSmallRandoCrateDL);

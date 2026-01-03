@@ -34,11 +34,10 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     if (grassIdentity != nullptr && grassIdentity->randomizerCheck != RC_MAX &&
         Flags_GetRandomizerInf(grassIdentity->randomizerInf) == 0) {
-        int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+        bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
         int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-        if ((csmc == CSMC_BOTH || csmc == CSMC_TEXTURE) &&
-            (!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+        if (csmc && (!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
             auto itemEntry =
                 Rando::Context::GetInstance()->GetFinalGIEntry(grassIdentity->randomizerCheck, true, GI_NONE);
             GetItemCategory getItemCategory = itemEntry.getItemCategory;
