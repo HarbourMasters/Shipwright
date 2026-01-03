@@ -1303,7 +1303,7 @@ void Play_Update(PlayState* play) {
 skip:
     PLAY_LOG(3801);
 
-    DisableFixedCamera_CheckCameraState(play);
+    GameInteractor_ExecuteOnCameraState(play);
 
     if (!isPaused || gDbgCamEnabled) {
         s32 i;

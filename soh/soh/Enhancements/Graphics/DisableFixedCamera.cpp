@@ -2,7 +2,6 @@
 #include "soh/ShipInit.hpp"
 #include <set>
 #include <unordered_map>
-#include <cstring>
 
 extern "C" {
 #include "functions.h"
@@ -47,6 +46,8 @@ static bool sIsCamApplied = false;
 static int sCheckItemCamState = -1;
 static s16 sStoreLastCamType = -1;
 
+extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play);
+
 struct CamDataBackup {
     CamData* original = nullptr;
     CamData* copy = nullptr;
@@ -71,6 +72,8 @@ static void RegisterDisableFixedCamera() {
 
         *should = CVAR_DISABLE_FIXED_CAMERA_VALUE != 0;
     });
+
+    COND_HOOK(OnCameraState, true, [](PlayState* play) { DisableFixedCamera_CheckCameraState(play); });
 }
 
 static RegisterShipInitFunc initFunc(RegisterDisableFixedCamera, { CVAR_DISABLE_FIXED_CAMERA_NAME });
@@ -121,15 +124,17 @@ extern "C" void DisableFixedCamera_SetNormalCamera(PlayState* play) {
 
 extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play) {
     const bool disableFixedCamEnabled = CVarGetInteger(CVAR_DISABLE_FIXED_CAMERA_NAME, 0) != 0;
-    const bool isInFixedCameraScene = fixedCameraSceneList.contains(static_cast<SceneID>(play->sceneNum));
-
     if (!disableFixedCamEnabled) {
         CollisionHeader* colHeader = BgCheck_GetCollisionHeader(&play->colCtx, BGCHECK_SCENE);
         DisableFixedCamera_RestoreCameraData(colHeader);
         return;
     }
-
+    // prevents normal cam from taking effect during open cutscene to avoid crash
+    if (play->sceneNum == SCENE_LINKS_HOUSE && gSaveContext.cutsceneIndex == 0xFFF1) {
+        return;
+    }
     // Only compute player state if we're in a relevant scene
+    const bool isInFixedCameraScene = fixedCameraSceneList.contains(static_cast<SceneID>(play->sceneNum));
     if (!isInFixedCameraScene) {
         bool sceneChanged = play->sceneNum != sSetNormalCam;
         if (sceneChanged) {
@@ -156,11 +161,6 @@ extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play) {
     }
 
     Player* player = (Player*)play->actorCtx.actorLists[ACTORCAT_PLAYER].head;
-
-    // prevents normal cam from taking effect during open cutscene to avoid crash
-    if (play->sceneNum == SCENE_LINKS_HOUSE && player != nullptr && (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE)) {
-        return;
-    }
 
     bool ocarinaPulling = player && (player->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING);
     bool bottleUsing = false;

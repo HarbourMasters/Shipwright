@@ -29,6 +29,10 @@ void GameInteractor_ExecuteOnGameFrameUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGameFrameUpdate>();
 }
 
+void GameInteractor_ExecuteOnCameraState(PlayState* play) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnCameraState>(play);
+}
+
 void GameInteractor_ExecuteOnItemReceiveHooks(GetItemEntry itemEntry) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnItemReceive>(itemEntry);
     GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnItemReceive>(itemEntry);
