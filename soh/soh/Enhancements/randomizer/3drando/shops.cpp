@@ -1545,6 +1545,10 @@ Text GetIceTrapName(int id) {
         InitTrickNames();
         initTrickNames = true;
     }
+    if (trickNameTable[id].empty()){
+        assert(false);
+        return Text{ "not an Ice Trap" };
+    }
     // Randomly get the easy, medium, or hard name for the given item id
     return RandomElement(trickNameTable[id]);
 }
