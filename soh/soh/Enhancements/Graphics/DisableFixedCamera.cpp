@@ -56,16 +56,9 @@ struct CamDataBackup {
 
 static std::unordered_map<const CollisionHeader*, CamDataBackup> sCamDataBackups;
 
-static void DisableFixedCamera_StoreCamType(Camera* camera) {
-    if (camera->camDataIdx >= 0) {
-        sStoreLastCamType = camera->camDataIdx;
-    }
-}
-
-static void DisableFixedCamera_RestoreCamType(Camera* camera) {
-    if (sStoreLastCamType >= 0) {
-        camera->camDataIdx = sStoreLastCamType;
-    }
+// Helper to check if a camera type is a fixed camera
+static bool IsFixedCameraType(s16 type) {
+    return type == CAM_SET_PREREND_FIXED || type == CAM_SET_PREREND_PIVOT || type == CAM_SET_PIVOT_FROM_SIDE;
 }
 
 static void RegisterDisableFixedCamera() {
@@ -112,16 +105,13 @@ extern "C" void DisableFixedCamera_SetNormalCamera(PlayState* play) {
         backup.active = true;
 
         for (size_t i = 0; i < colHeader->cameraDataListLen; i++) {
-            if (colHeader->cameraDataList[i].cameraSType == CAM_SET_PREREND_FIXED ||
-                colHeader->cameraDataList[i].cameraSType == CAM_SET_PREREND_PIVOT ||
-                colHeader->cameraDataList[i].cameraSType == CAM_SET_PIVOT_FROM_SIDE) {
+            if (IsFixedCameraType(colHeader->cameraDataList[i].cameraSType)) {
                 colHeader->cameraDataList[i].cameraSType = CAM_SET_NORMAL0;
             }
         }
     }
     play->unk_1242B = 0;
-    if (play->mainCamera.setting == CAM_SET_PREREND_FIXED || play->mainCamera.setting == CAM_SET_PREREND_PIVOT ||
-        play->mainCamera.setting == CAM_SET_PIVOT_FROM_SIDE) {
+    if (IsFixedCameraType(play->mainCamera.setting)) {
         play->mainCamera.setting = CAM_SET_NORMAL0;
         play->mainCamera.prevSetting = CAM_SET_NORMAL0;
     }
@@ -130,56 +120,86 @@ extern "C" void DisableFixedCamera_SetNormalCamera(PlayState* play) {
 }
 
 extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play) {
-    bool sceneChanged = play->sceneNum != sSetNormalCam;
-    bool itemCamChanged = false;
-    Player* player = (Player*)play->actorCtx.actorLists[ACTORCAT_PLAYER].head;
-    // prevents normal cam from taking effect during open cutscene to avoid crash
-    if (play->sceneNum == SCENE_LINKS_HOUSE && player != nullptr && (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE)) {
+    const bool disableFixedCamEnabled = CVarGetInteger(CVAR_DISABLE_FIXED_CAMERA_NAME, 0) != 0;
+    const bool isInFixedCameraScene = fixedCameraSceneList.contains(static_cast<SceneID>(play->sceneNum));
+
+    if (!disableFixedCamEnabled) {
+        CollisionHeader* colHeader = BgCheck_GetCollisionHeader(&play->colCtx, BGCHECK_SCENE);
+        DisableFixedCamera_RestoreCameraData(colHeader);
         return;
     }
-    bool ocarinaPulling = (player != nullptr) && (player->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING);
-    bool bottleUsing = false;
-    bool itemCamActive = ocarinaPulling;
-    if (player != nullptr) {
-        bool inItemCs = (player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS) != 0;
-        bool isBottleAction =
-            (player->itemAction >= PLAYER_IA_BOTTLE) && (player->itemAction <= PLAYER_IA_BOTTLE_FAIRY);
-        bottleUsing = inItemCs && isBottleAction;
-        itemCamActive = ocarinaPulling || bottleUsing;
+
+    // Only compute player state if we're in a relevant scene
+    if (!isInFixedCameraScene) {
+        bool sceneChanged = play->sceneNum != sSetNormalCam;
+        if (sceneChanged) {
+            sSetNormalCam = play->sceneNum;
+            sIsCamApplied = false;
+            sStoreLastCamType = -1;
+            // Clean up backups when leaving fixed camera scenes
+            for (auto& [key, backup] : sCamDataBackups) {
+                delete[] backup.copy;
+            }
+            sCamDataBackups.clear();
+        }
+        DisableFixedCamera_RestoreCameraData(BgCheck_GetCollisionHeader(&play->colCtx, BGCHECK_SCENE));
+        return;
     }
-    if (sCheckItemCamState == -1) {
-        sCheckItemCamState = itemCamActive;
-    } else if (sCheckItemCamState != static_cast<int>(itemCamActive)) {
-        sCheckItemCamState = itemCamActive;
-        itemCamChanged = true;
-    }
+
+    bool sceneChanged = play->sceneNum != sSetNormalCam;
+    bool itemCamChanged = false;
+
     if (sceneChanged) {
         sSetNormalCam = play->sceneNum;
         sIsCamApplied = false;
         sStoreLastCamType = -1;
     }
 
-    if (!sceneChanged && !itemCamChanged) {
+    Player* player = (Player*)play->actorCtx.actorLists[ACTORCAT_PLAYER].head;
+
+    // prevents normal cam from taking effect during open cutscene to avoid crash
+    if (play->sceneNum == SCENE_LINKS_HOUSE && player && (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE)) {
         return;
     }
 
-    CollisionHeader* colHeader = BgCheck_GetCollisionHeader(&play->colCtx, BGCHECK_SCENE);
-    if (CVAR_DISABLE_FIXED_CAMERA_VALUE == 0 || !fixedCameraSceneList.contains(static_cast<SceneID>(play->sceneNum))) {
-        DisableFixedCamera_RestoreCameraData(colHeader);
+    bool ocarinaPulling = player && (player->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING);
+    bool bottleUsing = false;
+    if (player) {
+        bool inItemCs = (player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS) != 0;
+        bool isBottleAction =
+            (player->itemAction >= PLAYER_IA_BOTTLE) && (player->itemAction <= PLAYER_IA_BOTTLE_FAIRY);
+        bottleUsing = inItemCs && isBottleAction;
+    }
+    bool itemCamActive = ocarinaPulling || bottleUsing;
+
+    if (sCheckItemCamState == -1) {
+        sCheckItemCamState = itemCamActive;
+    } else if (sCheckItemCamState != static_cast<int>(itemCamActive)) {
+        sCheckItemCamState = itemCamActive;
+        itemCamChanged = true;
+    }
+
+    if (!sceneChanged && !itemCamChanged) {
         return;
     }
 
     // sets cam when ocarina or bottle is used and sets it back to normal when done
     if (itemCamChanged && itemCamActive) {
-        DisableFixedCamera_StoreCamType(&play->mainCamera);
+        if (play->mainCamera.camDataIdx >= 0) {
+            sStoreLastCamType = play->mainCamera.camDataIdx;
+        }
         Camera_ChangeSetting(&play->mainCamera, CAM_SET_TURN_AROUND);
         Camera_ChangeMode(&play->mainCamera, CAM_MODE_NORMAL);
-        DisableFixedCamera_RestoreCamType(&play->mainCamera);
+        if (sStoreLastCamType >= 0) {
+            play->mainCamera.camDataIdx = sStoreLastCamType;
+        }
         return;
     }
     if (itemCamChanged && !itemCamActive) {
         DisableFixedCamera_SetNormalCamera(play);
-        DisableFixedCamera_RestoreCamType(&play->mainCamera);
+        if (sStoreLastCamType >= 0) {
+            play->mainCamera.camDataIdx = sStoreLastCamType;
+        }
         return;
     }
 
