@@ -40,7 +40,6 @@ s16 firstInit = 0;
 s16 gEnPartnerId;
 
 void Play_SpawnScene(PlayState* play, s32 sceneId, s32 spawn);
-void DisableFixedCamera_CheckCameraState(PlayState* play);
 
 // This macro prints the number "1" with a file and line number if R_ENABLE_PLAY_LOGS is enabled.
 // For example, it can be used to trace the play state execution at a high level.
