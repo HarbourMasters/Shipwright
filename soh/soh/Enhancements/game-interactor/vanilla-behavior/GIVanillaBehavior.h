@@ -2352,14 +2352,6 @@ typedef enum {
     // - None
     VB_LOAD_SKYBOX,
 
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - `*PlayState`
-    VB_USE_FIXED_CAM,
-
     // true
     // ```
     // #### `args`

@@ -55,7 +55,28 @@ struct CamDataBackup {
     bool active = false;
 };
 
-static std::unordered_map<const CollisionHeader*, CamDataBackup> sCamDataBackups;
+static std::unordered_map<CollisionHeader*, CamDataBackup> sCamDataBackups;
+
+static void DisableFixedCamera_ResetState() {
+    sSetNormalCam = -1;
+    sIsCamApplied = false;
+    sCheckItemCamState = -1;
+    sStoreLastCamType = -1;
+}
+
+static void DisableFixedCamera_RestoreAllCameraData() {
+    for (auto& [colHeader, backup] : sCamDataBackups) {
+        if (colHeader != nullptr && backup.active) {
+            colHeader->cameraDataList = backup.original;
+            backup.active = false;
+        }
+        delete[] backup.copy;
+        backup.copy = nullptr;
+        backup.original = nullptr;
+        backup.len = 0;
+    }
+    sCamDataBackups.clear();
+}
 
 // Helper to check if a camera type is a fixed camera
 static bool IsFixedCameraType(s16 type) {
@@ -63,17 +84,15 @@ static bool IsFixedCameraType(s16 type) {
 }
 
 static void RegisterDisableFixedCamera() {
-    COND_VB_SHOULD(VB_USE_FIXED_CAM, true, {
-        PlayState* play = va_arg(args, PlayState*);
-        if (!fixedCameraSceneList.contains(static_cast<SceneID>(play->sceneNum))) {
-            *should = false;
-            return;
-        }
+    const bool disableFixedCamEnabled = CVAR_DISABLE_FIXED_CAMERA_VALUE != 0;
 
-        *should = CVAR_DISABLE_FIXED_CAMERA_VALUE != 0;
-    });
+    COND_HOOK(OnCameraState, disableFixedCamEnabled,
+              [](PlayState* play) { DisableFixedCamera_CheckCameraState(play); });
 
-    COND_HOOK(OnCameraState, true, [](PlayState* play) { DisableFixedCamera_CheckCameraState(play); });
+    if (!disableFixedCamEnabled) {
+        DisableFixedCamera_RestoreAllCameraData();
+        DisableFixedCamera_ResetState();
+    }
 }
 
 static RegisterShipInitFunc initFunc(RegisterDisableFixedCamera, { CVAR_DISABLE_FIXED_CAMERA_NAME });
@@ -203,7 +222,7 @@ extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play) {
         return;
     }
 
-    if (!sIsCamApplied && GameInteractor_Should(VB_USE_FIXED_CAM, false, play)) {
+    if (!sIsCamApplied) {
         DisableFixedCamera_SetNormalCamera(play);
         sIsCamApplied = true;
     }
