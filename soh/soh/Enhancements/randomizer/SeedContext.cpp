@@ -344,6 +344,9 @@ void Context::CreateItemOverrides() {
             if (trickModel == RG_GUARD_HOUSE_KEY) {
                 trickModel = RandomElement(StaticData::overworldKeys);
             }
+            if (trickModel == RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) {
+                trickModel = RandomElement(StaticData::beanSouls);
+            }
             ItemOverride val(locKey, trickModel);
             iceTrapModels[locKey] = val.LooksLike();
             val.SetTrickName(GetIceTrapName(val.LooksLike()));

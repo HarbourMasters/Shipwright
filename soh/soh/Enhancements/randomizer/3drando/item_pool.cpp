@@ -512,16 +512,17 @@ void GenerateItemPool() {
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_BEAN_SOULS)) {
-        AddItemToPool(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, 2, 1, 1, 1);
-        AddItemToPool(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, 2, 1, 1, 1);
-        AddItemToPool(RG_DESERT_COLOSSUS_BEAN_SOUL, 2, 1, 1, 1);
-        AddItemToPool(RG_GERUDO_VALLEY_BEAN_SOUL, 2, 1, 1, 1);
-        AddItemToPool(RG_GRAVEYARD_BEAN_SOUL, 2, 1, 1, 1);
-        AddItemToPool(RG_KOKIRI_FOREST_BEAN_SOUL, 2, 1, 1, 1);
-        AddItemToPool(RG_LAKE_HYLIA_BEAN_SOUL, 2, 1, 1, 1);
-        AddItemToPool(RG_LOST_WOODS_BRIDGE_BEAN_SOUL, 2, 1, 1, 1);
-        AddItemToPool(RG_LOST_WOODS_BEAN_SOUL, 2, 1, 1, 1);
-        AddItemToPool(RG_ZORAS_RIVER_BEAN_SOUL, 2, 1, 1, 1);
+        ctx->possibleIceTrapModels.insert(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL); // ice traps reroll this into a random bean soul
+        AddItemToPool(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, 2, 1, 1, 1, false);
+        AddItemToPool(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, 2, 1, 1, 1, false);
+        AddItemToPool(RG_DESERT_COLOSSUS_BEAN_SOUL, 2, 1, 1, 1, false);
+        AddItemToPool(RG_GERUDO_VALLEY_BEAN_SOUL, 2, 1, 1, 1, false);
+        AddItemToPool(RG_GRAVEYARD_BEAN_SOUL, 2, 1, 1, 1, false);
+        AddItemToPool(RG_KOKIRI_FOREST_BEAN_SOUL, 2, 1, 1, 1, false);
+        AddItemToPool(RG_LAKE_HYLIA_BEAN_SOUL, 2, 1, 1, 1, false);
+        AddItemToPool(RG_LOST_WOODS_BRIDGE_BEAN_SOUL, 2, 1, 1, 1, false);
+        AddItemToPool(RG_LOST_WOODS_BEAN_SOUL, 2, 1, 1, 1, false);
+        AddItemToPool(RG_ZORAS_RIVER_BEAN_SOUL, 2, 1, 1, 1, false);
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_TOKENS).IsNot(RO_TOKENSANITY_OFF) &&

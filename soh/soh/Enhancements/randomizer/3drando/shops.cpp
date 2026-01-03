@@ -887,6 +887,56 @@ void InitTrickNames() {
         Text{ "Triforce Shard", "Éclat de Triforce", "Triforce-Fragment" }, // "Triforce Shard"
         Text{ "Shiny Rock", "Caillou Brillant", "glänzender Stein" },       // "Shiny Rock"
     };
+    trickNameTable[RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "Volcano Seed Spirit" },
+        Text{ "Bolero Sprout Platform"},
+    };
+    trickNameTable[RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "Dodongo's Seed Spirit" },
+        Text{ "Boulder Sprout Platform" },
+    };
+    trickNameTable[RG_DESERT_COLOSSUS_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "Spirit Temple Seed Spirit" },
+        Text{ "Colossus Arch Sprout Platform" },
+    };
+    trickNameTable[RG_GERUDO_VALLEY_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "Waterfall Seed Spirit" },
+        Text{ "Gerudo Cow Sprout Platform" },
+    };
+    trickNameTable[RG_GRAVEYARD_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "GY Crate Seed Spirit" },
+        Text{ "Dampe's Sprout Platform" },
+    };
+    trickNameTable[RG_KOKIRI_FOREST_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "Rupee Ledge Seed Spirit" },
+        Text{ "KF Shop Sprout Platform" },
+    };
+    trickNameTable[RG_LAKE_HYLIA_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "Hylia Lab Seed Spirit" },
+        Text{ "Fishing Sprout Platform" },
+    };
+    trickNameTable[RG_LOST_WOODS_BRIDGE_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "LW Bridge Seed Spirit" },
+        Text{ "Skull Kid Sprout Platform" },
+    };
+    trickNameTable[RG_LOST_WOODS_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "Deku Theatre Seed Spirit" },
+        Text{ "Deku Scrubs Sprout Platform" },
+    };
+    trickNameTable[RG_ZORAS_RIVER_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "River Ride Seed Spirit" },
+        Text{ "Bean Salesman Sprout Platform" },
+    };
     trickNameTable[RG_GOHMA_SOUL] = {
         Text{ "Spider Sense", "Sens de l'Araignée", "Spinnensinn" },
         Text{ "Deku Spirit", "Parasite Mojo", "Deku Geist" },
@@ -936,6 +986,14 @@ void InitTrickNames() {
         Text{ "Fish Tickler", "Fish Tickler", "Fischkitzler" },
         Text{ "Floating Lure", "Floating Lure", "Schwimmer" },
         Text{ "Fishing Reel", "Fishing Reel", "Angelschnur" },
+    };
+    trickNameTable[RG_SKELETON_KEY] = {
+        //TODO_TRANSLATE
+        Text{ "Stalfos Key" },
+        Text{ "Nightmare Key" },
+        Text{ "Graveyard Key" },
+        Text{ "King's Key" },
+        Text{ "Hero's Key" },
     };
     trickNameTable[RG_OCARINA_A_BUTTON] = {
         Text{ "Ocarina J Button", "Touche Ha de l'Ocarina", "J-Taste der Okarina" },

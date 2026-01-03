@@ -332,6 +332,19 @@ std::vector<RandomizerGet> StaticData::normalBottles = {
     RG_BOTTLE_WITH_BLUE_FIRE,
 };
 
+std::vector<RandomizerGet> StaticData::beanSouls = {
+    RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL,
+    RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL,
+    RG_DESERT_COLOSSUS_BEAN_SOUL,
+    RG_GERUDO_VALLEY_BEAN_SOUL,
+    RG_GRAVEYARD_BEAN_SOUL,
+    RG_KOKIRI_FOREST_BEAN_SOUL,
+    RG_LAKE_HYLIA_BEAN_SOUL,
+    RG_LOST_WOODS_BRIDGE_BEAN_SOUL,
+    RG_LOST_WOODS_BEAN_SOUL,
+    RG_ZORAS_RIVER_BEAN_SOUL,
+};
+
 std::vector<RandomizerGet> StaticData::overworldKeys = {
     RG_GUARD_HOUSE_KEY,
     RG_MARKET_BAZAAR_KEY,
