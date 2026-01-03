@@ -1032,11 +1032,6 @@ void CheckTrackerWindow::DrawElement() {
         RecalculateAvailableChecks();
     }
 
-    SceneID sceneId = SCENE_ID_MAX;
-    if (gPlayState != nullptr) {
-        sceneId = (SceneID)gPlayState->sceneNum;
-    }
-
     // Quick Options
 #ifdef __WIIU__
     float headerHeight = 40.0f;

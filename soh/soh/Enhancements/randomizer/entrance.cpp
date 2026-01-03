@@ -1082,12 +1082,14 @@ static std::array<std::vector<Entrance*>, 2> SplitEntrancesByRequirements(std::v
     ReachabilitySearch({});
 
     for (Entrance* entrance : entrancesToSplit) {
+        logic->CurrentRegionKey = entrance->GetParentRegionKey();
         // if an entrance is accessible at all times of day by both ages, it's a soft entrance with no restrictions
         if (entrance->ConditionsMet(true)) {
             softEntrances.push_back(entrance);
         } else {
             restrictiveEntrances.push_back(entrance);
         }
+        logic->CurrentRegionKey = RR_NONE;
     }
 
     // Reconnect all disconnected entrances

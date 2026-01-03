@@ -1936,16 +1936,16 @@ void Settings::CreateOptions() {
               "torches very finicky to light when using arrows. The torches in the central pillar of MQ Water Temple "
               "are a particularly egregious example. Logic normally expects Din's Fire and Song of Time.");
     OPT_TRICK(
-        RT_WATER_MQ_LOCKED_GS, RCQUEST_MQ, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
-        "Water Temple MQ North Basement GS without Small Key",
-        "There is an invisible Hookshot target that can be used to get over the gate that blocks you from going to "
-        "this Skulltula early, skipping a small key as well as needing Hovers or Scarecrow to reach the locked door.");
-    OPT_TRICK(
         RT_WATER_IRON_BOOTS_LEDGE_GRAB, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
         "Water Temple Ledge Grab While Surfacing with Iron Boots",
         "Diving in front of ledge tapping B to swim up faster, then equipping iron boots while surfacing allows you to "
         "ledge grab to the higher ground. This can be used to reach ledge to boss door and vanilla compass chest, or "
         "MQ storage room");
+    OPT_TRICK(RT_WATER_INVISIBLE_HOOKSHOT_TARGET, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
+              "Water Temple Invisible Hookshot Target",
+              "Invisible hookshot geometry can be used in MQ to get over the gate that blocks you from going to this "
+              "Skulltula early, skipping a small key as well as needing Hovers or Scarecrow to reach the locked door.\n"
+              "In vanilla this can be used to get past without bronze scale.");
     OPT_TRICK(RT_WATER_MORPHA_WITHOUT_HOOKSHOT, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::EXTREME },
               "Water Temple Morpha without Hookshot", "It is possible to slash at Morpha without hookshot.");
     OPT_TRICK(RT_LENS_SHADOW, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },
@@ -2201,6 +2201,7 @@ void Settings::CreateOptions() {
         WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_LOGIC_WINCON] = OptionGroup::SubGroup("",
                                                                         std::initializer_list<OptionGroup*>{
+                                                                            &mOptionGroups[RSG_ITEM_POOL],
                                                                             &mOptionGroups[RSG_MENU_SECTION_LOGIC],
                                                                             &mOptionGroups[RSG_MENU_SECTION_WINCON],
                                                                         },
@@ -3003,7 +3004,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
                     mqSet += 1;
                     break;
                 case RO_MQ_SET_RANDOM:
-                    // 50% per dungeon, rolled seperatly so people can either have a linear distribtuion
+                    // 50% per dungeon, rolled separatly so people can either have a linear distribtuion
                     // or a bell curve for the number of MQ dungeons per seed.
                     if (Random(0, 2)) {
                         dungeon->SetMQ();

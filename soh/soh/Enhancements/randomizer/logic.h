@@ -45,6 +45,7 @@ class Logic {
     bool CanOpenOverworldDoor(RandomizerGet itemName);
     bool SmallKeys(s16 scene, uint8_t requiredAmount);
     bool CanGroundJump(bool hasBombflower = false);
+    bool CanGroundJumpJumpSlash(bool hasBombflower = false);
     bool CanOpenUnderwaterChest();
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
@@ -59,7 +60,9 @@ class Logic {
     bool CanHitEyeTargets();
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
-    bool MQWaterLevel(RandoWaterLevel level);
+    bool Water3FCentralToHighEmblem();
+    bool WaterRisingTargetTo3FCentral();
+    bool WaterLevel(RandoWaterLevel level);
     uint8_t BottleCount();
     uint8_t OcarinaButtons();
     bool HasBottle();
@@ -96,7 +99,7 @@ class Logic {
     bool CanGetNightTimeGS();
     bool CanBreakUpperBeehives();
     bool CanBreakLowerBeehives();
-    bool CanBreakPots();
+    bool CanBreakPots(EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true, bool inWater = false);
     bool CanBreakCrates();
     bool CanBreakSmallCrates();
     bool CanBonkTrees();

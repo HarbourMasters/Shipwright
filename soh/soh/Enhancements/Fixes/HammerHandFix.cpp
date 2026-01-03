@@ -1,9 +1,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "macros.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "objects/object_link_boy/object_link_boy.h"
 extern SaveContext gSaveContext;
 }
