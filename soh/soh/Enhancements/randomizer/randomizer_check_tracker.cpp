@@ -3156,13 +3156,27 @@ void DrawAvailability(Rando::ItemLocation* itemLoc, ImVec4 styleColor) {
     ImVec2 iconSize(textSize.y + framePadding.y * 2, textSize.y + framePadding.y * 2), zero(0.0f, 0.0f), one(1, 1);
 
     if (availableChecksDisplay == AC_LOCKED_UNLOCKED) {
-        if (itemLoc->HasObtained()) {
-            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 0));
+        if (child || adult) {
+            auto texture = gui->GetTextureByName(availableChecksBothAvailableIcon);
+            if (texture != nullptr) {
+                ImGui::ImageWithBg(texture, iconSize, zero, one, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1));
+            } else {
+                ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
+                ImGui::Text(availableChecksBothAvailableIcon.c_str());
+                ImGui::PopStyleColor();
+            }
+            UIWidgets::Tooltip("Available");
         } else {
-            ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
+            auto texture = gui->GetTextureByName(availableChecksNoneAvailableIcon);
+            if (texture != nullptr) {
+                ImGui::ImageWithBg(texture, iconSize, zero, one, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1));
+            } else {
+                ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
+                ImGui::Text(availableChecksNoneAvailableIcon.c_str());
+                ImGui::PopStyleColor();
+            }
+            UIWidgets::Tooltip("Unavailable");
         }
-        ImGui::Text(child || adult ? ICON_FA_UNLOCK : ICON_FA_LOCK);
-        ImGui::PopStyleColor();
         ImGui::SameLine();
     } else if (availableChecksDisplay == AC_ONE_ICON) {
         if (itemLoc->HasObtained()) {
