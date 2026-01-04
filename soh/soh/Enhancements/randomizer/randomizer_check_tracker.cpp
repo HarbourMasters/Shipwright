@@ -350,8 +350,17 @@ void RecalculateAreaTotals(RandomizerCheckArea rcArea) {
             areaChecksGotten[rcArea]++;
         }
 
-        if ((itemLoc->IsChildAvailable() || itemLoc->IsAdultAvailable()) && !IsCheckHidden(rc)) {
-            areaChecksAvailable[rcArea]++;
+        bool childAvailable = itemLoc->IsChildAvailable();
+        bool adultAvailable = itemLoc->IsAdultAvailable();
+        if (availableChecksDisplay != AC_DISABLED && !IsCheckHidden(rc) && !itemLoc->HasObtained()) {
+            if ((availableChecksOnlyShow == AC_SHOW_ALL_CHECKS && (childAvailable || adultAvailable)) ||
+                (availableChecksOnlyShow == AC_SHOW_AVAILABLE_CHECKS && (childAvailable || adultAvailable)) ||
+                (availableChecksOnlyShow == AC_SHOW_CHILD_CHECKS && childAvailable) ||
+                (availableChecksOnlyShow == AC_SHOW_ADULT_CHECKS && adultAvailable) ||
+                (availableChecksOnlyShow == AC_SHOW_CURRENT_AGE &&
+                 ((LINK_IS_CHILD && childAvailable) || (LINK_IS_ADULT && adultAvailable)))) {
+                areaChecksAvailable[rcArea]++;
+            }
         }
     }
     CalculateTotals();
@@ -2455,6 +2464,8 @@ void CheckTrackerWindow::DrawElement() {
                                         .ComponentAlignment(UIWidgets::ComponentAlignments::Right)
                                         .Color(THEME_COLOR)
                                         .DefaultIndex(AC_SHOW_ALL_CHECKS))) {
+            availableChecksOnlyShow = (AvailableChecksOnlyShow)CVarGetInteger(
+                CVAR_TRACKER_CHECK("AvailableChecksOnlyShow"), AC_SHOW_ALL_CHECKS);
             doAreaScroll = true;
             RecalculateAllAreaTotals();
         }
@@ -3615,23 +3626,8 @@ void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */)
     ResetPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
     StartPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
 
-    const auto& ctx = Rando::Context::GetInstance();
-    logic = ctx->GetLogic();
-
     ReachabilitySearch({}, RG_NONE, true, startingRegion);
-
-    totalChecksAvailable = 0;
-    for (auto& [rcArea, vec] : checksByArea) {
-        areaChecksAvailable[rcArea] = 0;
-        for (auto& rc : vec) {
-            Rando::ItemLocation* itemLocation = ctx->GetItemLocation(rc);
-            if ((itemLocation->IsChildAvailable() || itemLocation->IsAdultAvailable()) && IsVisibleInCheckTracker(rc) &&
-                !IsCheckHidden(rc)) {
-                areaChecksAvailable[rcArea]++;
-            }
-        }
-        totalChecksAvailable += areaChecksAvailable[rcArea];
-    }
+    RecalculateAllAreaTotals();
 
     StopPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
     SPDLOG_INFO("Recalculate Available Checks Time: {}ms",
