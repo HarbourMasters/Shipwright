@@ -2559,7 +2559,8 @@ void CheckTrackerWindow::DrawElement() {
         }
         if ((shouldHideFilteredAreas && filterAreasHidden[rcArea]) ||
             (!showHidden && ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked))) ||
-            (availableChecksDisplay != AC_DISABLED && availableChecksOnlyShow != AC_SHOW_ALL_CHECKS && areaChecksAvailable[rcArea] == 0)) {
+            (availableChecksDisplay != AC_DISABLED && availableChecksOnlyShow != AC_SHOW_ALL_CHECKS &&
+             areaChecksAvailable[rcArea] == 0)) {
             doDraw = false;
         } else {
             // Get the colour for the area
@@ -3319,7 +3320,7 @@ void DrawLocation(RandomizerCheck rc) {
     bool skipped = itemLoc->GetIsSkipped();
     bool childAvailable = itemLoc->IsChildAvailable();
     bool adultAvailable = itemLoc->IsAdultAvailable();
-    
+
     if (availableChecksDisplay != AC_DISABLED) {
         if (availableChecksOnlyShow == AC_SHOW_AVAILABLE_CHECKS && !childAvailable && !adultAvailable) {
             return;
