@@ -198,6 +198,11 @@ std::unordered_map<uint8_t, const char*> filenameLanguageMap = {
     { NAME_LANGUAGE_NTSC_ENG, "NTSC ENG" },
 };
 
+std::unordered_map<uint8_t, const char*> filenameLanguageMapNTSCOnly = {
+    { NAME_LANGUAGE_NTSC_JPN, "NTSC JPN" },
+    { NAME_LANGUAGE_NTSC_ENG, "NTSC ENG" },
+};
+
 void DrawInfoTab() {
     if (gSaveContext.gameMode == GAMEMODE_TITLE_SCREEN) {
         ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Title Screen");
@@ -250,15 +255,22 @@ void DrawInfoTab() {
         PopStyleInput();
     }
 
-    // Only allow filename encoding change when both PAL and NTSC roms exist
+    // Filename encoding
     const bool hasPAL = (sGerMessageEntryTablePtr != nullptr) && (sFraMessageEntryTablePtr != nullptr);
     const bool hasNTSC = (sJpnMessageEntryTablePtr != nullptr);
-    if (!hasPAL || !hasNTSC) {
+    if (hasPAL && hasNTSC) {
+        // Full
+        Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMap,
+                 comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
+    } else if (hasNTSC && (gSaveContext.ship.filenameLanguage != NAME_LANGUAGE_PAL)) {
+        // NTSC only
+        Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMapNTSCOnly,
+                 comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
+    } else {
+        // PAL only (read only)
         ImGui::BeginDisabled();
-    }
-    Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMap,
-             comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
-    if (!hasPAL || !hasNTSC) {
+        Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMap,
+                 comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
         ImGui::EndDisabled();
     }
 
