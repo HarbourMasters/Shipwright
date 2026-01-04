@@ -72,17 +72,11 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
         case ITEM_CATEGORY_BOSS_KEY:
             Gfx_DrawDListOpa(play, (Gfx*)gLargeBossKeyCrateDL);
             break;
+        case ITEM_CATEGORY_HEALTH:
+            Gfx_DrawDListOpa(play, (Gfx*)gLargeHeartCrateDL);
+            break;
         case ITEM_CATEGORY_LESSER:
-            switch (crateItem.itemId) {
-                case ITEM_HEART_PIECE:
-                case ITEM_HEART_PIECE_2:
-                case ITEM_HEART_CONTAINER:
-                    Gfx_DrawDListOpa(play, (Gfx*)gLargeHeartCrateDL);
-                    break;
-                default:
-                    Gfx_DrawDListOpa(play, (Gfx*)gLargeMinorCrateDL);
-                    break;
-            }
+            Gfx_DrawDListOpa(play, (Gfx*)gLargeMinorCrateDL);
             break;
         default:
             Gfx_DrawDListOpa(play, (Gfx*)gLargeJunkCrateDL);
@@ -144,17 +138,11 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
         case ITEM_CATEGORY_BOSS_KEY:
             Gfx_DrawDListOpa(play, (Gfx*)gSmallBossKeyCrateDL);
             break;
+        case ITEM_CATEGORY_HEALTH:
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
+            break;
         case ITEM_CATEGORY_LESSER:
-            switch (smallCrateItem.itemId) {
-                case ITEM_HEART_PIECE:
-                case ITEM_HEART_PIECE_2:
-                case ITEM_HEART_CONTAINER:
-                    Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
-                    break;
-                default:
-                    Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
-                    break;
-            }
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
             break;
         case ITEM_CATEGORY_JUNK:
         default:

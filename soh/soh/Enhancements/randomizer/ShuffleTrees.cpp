@@ -102,18 +102,14 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
             Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallBossKeyCrateDL);
             break;
+        case ITEM_CATEGORY_HEALTH:
+            Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
+            break;
         case ITEM_CATEGORY_LESSER:
             Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
-            switch (treeItem.itemId) {
-                case ITEM_HEART_PIECE:
-                case ITEM_HEART_PIECE_2:
-                case ITEM_HEART_CONTAINER:
-                    Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
-                    break;
-                default:
-                    Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
-                    break;
-            }
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
+            break;
         case ITEM_CATEGORY_JUNK:
         default:
             Matrix_Scale(0.04, 0.02, 0.04, MTXMODE_APPLY);

@@ -47,18 +47,10 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
                     DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushJunkDL, (Gfx*)gRandoCuttableGrassJunkDL, play);
                     break;
                 case ITEM_CATEGORY_LESSER:
-                    switch (itemEntry.itemId) {
-                        case ITEM_HEART_PIECE:
-                        case ITEM_HEART_PIECE_2:
-                        case ITEM_HEART_CONTAINER:
-                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushHeartDL, (Gfx*)gRandoCuttableGrassHeartDL,
-                                            play);
-                            break;
-                        default:
-                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushMinorDL, (Gfx*)gRandoCuttableGrassMinorDL,
-                                            play);
-                            break;
-                    }
+                    DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushMinorDL, (Gfx*)gRandoCuttableGrassMinorDL, play);
+                    break;
+                case ITEM_CATEGORY_HEALTH:
+                    DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushHeartDL, (Gfx*)gRandoCuttableGrassHeartDL, play);
                     break;
                 case ITEM_CATEGORY_BOSS_KEY:
                     DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushBossKeyDL, (Gfx*)gRandoCuttableGrassBossKeyDL, play);

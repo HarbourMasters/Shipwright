@@ -649,22 +649,15 @@ void EnBox_UpdateTexture(EnBox* this, PlayState* play) {
                 this->boxLidDL =
                     EnBox_LoadChestDL(gTreasureChestBossKeyChestSideAndTopDL, gTreasureChestChestSideAndLidDL);
                 break;
+            case ITEM_CATEGORY_HEALTH:
+                this->boxBodyDL = EnBox_LoadChestDL(gChestBodyHeartDL, gTreasureChestChestFrontDL);
+                this->boxLidDL = EnBox_LoadChestDL(gChestLidHeartDL, gTreasureChestChestSideAndLidDL);
+                break;
             case ITEM_CATEGORY_LESSER:
-                switch (chestItem.itemId) {
-                    case ITEM_HEART_PIECE:
-                    case ITEM_HEART_PIECE_2:
-                    case ITEM_HEART_CONTAINER:
-                        this->boxBodyDL = EnBox_LoadChestDL(gChestBodyHeartDL, gTreasureChestChestFrontDL);
-                        this->boxLidDL = EnBox_LoadChestDL(gChestLidHeartDL, gTreasureChestChestSideAndLidDL);
-                        break;
-                    default:
-                        this->boxBodyDL = EnBox_LoadChestDL(gChestBodyMinorDL, gTreasureChestChestFrontDL);
-                        this->boxLidDL = EnBox_LoadChestDL(gChestLidMinorDL, gTreasureChestChestSideAndLidDL);
-                        break;
-                }
+                this->boxBodyDL = EnBox_LoadChestDL(gChestBodyMinorDL, gTreasureChestChestFrontDL);
+                this->boxLidDL = EnBox_LoadChestDL(gChestLidMinorDL, gTreasureChestChestSideAndLidDL);
                 break;
             case ITEM_CATEGORY_JUNK:
-            default:
                 this->boxBodyDL = EnBox_LoadChestDL(gChestBodyJunkDL, gTreasureChestChestFrontDL);
                 this->boxLidDL = EnBox_LoadChestDL(gChestLidJunkDL, gTreasureChestChestSideAndLidDL);
                 break;
