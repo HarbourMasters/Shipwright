@@ -7,7 +7,7 @@ void RegionTable_Init_HyruleField() {
     // clang-format off
     areaTable[RR_HYRULE_FIELD] = Region("Hyrule Field", SCENE_HYRULE_FIELD, {
         //Events
-        EventAccess(LOGIC_BIG_POE_KILL,       []{return logic->HasBottle() && logic->CanUse(RG_FAIRY_BOW) && (logic->CanUse(RG_EPONA) || ctx->GetTrickOption(RT_HF_BIG_POE_WITHOUT_EPONA));}),
+        EventAccess(LOGIC_BIG_POE_KILL,       []{return logic->HasBottle() && logic->CanUse(RG_FAIRY_BOW) && (logic->SummonEpona() || ctx->GetTrickOption(RT_HF_BIG_POE_WITHOUT_EPONA));}),
         EventAccess(LOGIC_BORROW_RIGHT_MASKS, []{return logic->IsChild && logic->Get(LOGIC_BORROW_BUNNY_HOOD) && logic->HasItem(RG_KOKIRI_EMERALD) && logic->HasItem(RG_GORON_RUBY) && logic->HasItem(RG_ZORA_SAPPHIRE) && logic->HasItem(RG_CHILD_WALLET);}),
     }, {
         //Locations

@@ -499,7 +499,7 @@ void RegionTable_Init_JabuJabusBelly() {
         Entrance(RR_JABU_JABUS_BELLY_MQ_ABOVE_LIFT_ROOM, []{return logic->CanUse(RG_BOOMERANG) && logic->CanUse(RG_FAIRY_SLINGSHOT);}),
     });
 
-    areaTable[RR_JABU_JABUS_BELLY_MQ_ABOVE_LIFT_ROOM] = Region("Jabu Jabus Belly MQ Cubes Room", SCENE_JABU_JABU, {
+    areaTable[RR_JABU_JABUS_BELLY_MQ_ABOVE_LIFT_ROOM] = Region("Jabu Jabus Belly MQ Above Lift Room", SCENE_JABU_JABU, {
         //Events
         EventAccess(LOGIC_JABU_LOWERED_PATH, []{return true;}),
     }, {}, {
@@ -513,19 +513,19 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_UPPER_CHEST, logic->Get(LOGIC_JABU_MQ_LIFT_ROOM_COW)),
     }, {
         //Exits
-        Entrance(RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM,    []{return true;}),
-        Entrance(RR_JABU_JABUS_BELLY_MQ_TO_EAST_ROOM, []{return true;}),
+        Entrance(RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM,         []{return true;}),
+        Entrance(RR_JABU_JABUS_BELLY_MQ_TO_NEAR_BOSS_ROOM, []{return true;}),
     });
 
     // this handles spawning in tentacle
-    areaTable[RR_JABU_JABUS_BELLY_MQ_TO_EAST_ROOM] = Region("Jabu Jabus Belly To East Room", SCENE_JABU_JABU, {}, {}, {
+    areaTable[RR_JABU_JABUS_BELLY_MQ_TO_NEAR_BOSS_ROOM] = Region("Jabu Jabus Belly MQ To Near Boss Room", SCENE_JABU_JABU, {}, {}, {
         //Exits
-        Entrance(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, []{return logic->Get(LOGIC_JABU_NORTH_TENTACLE) || logic->TakeDamage();}),
-        Entrance(RR_JABU_JABUS_BELLY_FORK_NORTH_WEST, []{return logic->Get(LOGIC_JABU_NORTH_TENTACLE);}),
+        Entrance(RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM_EAST_LEDGE, []{return logic->Get(LOGIC_JABU_NORTH_TENTACLE) || logic->TakeDamage();}),
+        Entrance(RR_JABU_JABUS_BELLY_MQ_NEAR_BOSS_ROOM,       []{return logic->Get(LOGIC_JABU_NORTH_TENTACLE);}),
     });
 
 
-    areaTable[RR_JABU_JABUS_BELLY_MQ_EAST_ROOM] = Region("Jabu Jabus Belly MQ Boss Region", SCENE_JABU_JABU, {
+    areaTable[RR_JABU_JABUS_BELLY_MQ_NEAR_BOSS_ROOM] = Region("Jabu Jabus Belly MQ Near Boss Room", SCENE_JABU_JABU, {
         //Events
         EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanBreakPots();}),
     }, {
@@ -537,8 +537,8 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_GRASS_2, logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_JABU_JABUS_BELLY_MQ_TO_EAST_ROOM, []{return true;}),
-        Entrance(RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY,   []{return AnyAgeTime([]{return logic->CanUse(RG_FAIRY_SLINGSHOT);});}),
+        Entrance(RR_JABU_JABUS_BELLY_MQ_TO_NEAR_BOSS_ROOM, []{return true;}),
+        Entrance(RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY,        []{return AnyAgeTime([]{return logic->CanUse(RG_FAIRY_SLINGSHOT);});}),
     });
 
 #pragma endregion
@@ -551,8 +551,8 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_BOSS_EXIT] = Region("Jabu Jabus Belly Boss Exit", SCENE_JABU_JABU, {}, {}, {
         //Exits
-        Entrance(RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM, []{return ctx->GetDungeon(JABU_JABUS_BELLY)->IsVanilla();}),
-        Entrance(RR_JABU_JABUS_BELLY_MQ_EAST_ROOM,   []{return ctx->GetDungeon(JABU_JABUS_BELLY)->IsMQ();}),
+        Entrance(RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM,    []{return ctx->GetDungeon(JABU_JABUS_BELLY)->IsVanilla();}),
+        Entrance(RR_JABU_JABUS_BELLY_MQ_NEAR_BOSS_ROOM, []{return ctx->GetDungeon(JABU_JABUS_BELLY)->IsMQ();}),
     });
 
     areaTable[RR_JABU_JABUS_BELLY_BOSS_ROOM] = Region("Jabu Jabus Belly Boss Room", SCENE_JABU_JABU_BOSS, {

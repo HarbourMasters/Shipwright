@@ -55,7 +55,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_SE_CORRIDOR] = Region("Dodongos Cavern SE Corridor", SCENE_DODONGOS_CAVERN, {}, {
         //Locations
-        LOCATION(RC_DODONGOS_CAVERN_GS_SCARECROW,    logic->CanUse(RG_SCARECROW) || (logic->IsAdult && logic->CanUse(RG_LONGSHOT)) || (ctx->GetTrickOption(RT_DC_SCARECROW_GS) && (logic->CanAttack()))),
+        LOCATION(RC_DODONGOS_CAVERN_GS_SCARECROW,    logic->ReachScarecrow() || (logic->IsAdult && logic->CanUse(RG_LONGSHOT)) || (ctx->GetTrickOption(RT_DC_SCARECROW_GS) && logic->CanKillEnemy(RE_GOLD_SKULLTULA))),
         LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_1, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_2, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_3, logic->CanBreakPots()),

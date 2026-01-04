@@ -11,4 +11,4 @@ void AddItemToPool(std::vector<RandomizerGet>& pool, const RandomizerGet item, s
 RandomizerGet GetJunkItem();
 void GenerateItemPool();
 
-extern std::vector<RandomizerGet> ItemPool;
+extern std::vector<RandomizerGet> itemPool;

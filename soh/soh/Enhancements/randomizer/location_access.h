@@ -8,6 +8,7 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/logic.h"
+#include "soh/Enhancements/randomizer/dungeon.h"
 
 #define TIME_PASSES true
 #define TIME_DOESNT_PASS false
@@ -100,6 +101,27 @@ namespace Rando {
 class Entrance;
 enum class EntranceType;
 } // namespace Rando
+
+struct SpiritLogicData {
+    // the minimum number of keys that guarantees Child can reach this region
+    uint8_t childKeys;
+    // The minimum number of keys that guarantees Child can reach this region if they have reverse access
+    uint8_t childRevKeys;
+    // the minimum number of keys that guarantees Adult can reach this region
+    uint8_t adultKeys;
+    // the minimum number of keys that guarantees Adult can reach this region with reverse entry
+    uint8_t adultRevKeys;
+    // The area access condition to reach this region as Child, from the first lock,
+    // including the minimum number of keys for ambiguous access
+    // 1 key is always assumed to be required
+    ConditionFn childAccess;
+    // The area access condition to reach this region as Adult, from the first lock
+    // including the minimum number of keys for ambiguous access
+    // 1 key is always assumed to be required on vanilla
+    ConditionFn adultAccess;
+    // The area access condition to reach this region from the boss door,
+    ConditionFn reverseAccess;
+};
 
 class Region {
   public:
@@ -211,19 +233,22 @@ class Region {
 
     bool CanPlantBeanCheck(RandomizerGet bean) const;
     bool AllAccountedFor() const;
-    bool MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAge = false);
 
     void ResetVariables();
 
     void printAgeTimeAccess();
+    static std::map<RandomizerRegion, SpiritLogicData> spiritLogicData;
 };
 
 extern std::array<Region, RR_MAX> areaTable;
 extern std::vector<EventAccess> grottoEvents;
 
 bool AnyAgeTime(ConditionFn condition);
-bool MQSpiritSharedStatueRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge = false);
-bool MQSpiritSharedBrokenWallRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge = false);
+bool SpiritShared(
+    RandomizerRegion region, ConditionFn condition, bool anyAge = false, RandomizerRegion otherRegion = RR_NONE,
+    ConditionFn otherCondition = [] { return false; }, RandomizerRegion thirdRegion = RR_NONE,
+    ConditionFn thirdCondition = [] { return false; });
+bool SpiritCertainAccess(RandomizerRegion region);
 bool CanPlantBean(const RandomizerRegion region, RandomizerGet bean);
 bool BothAges(const RandomizerRegion region);
 bool ChildCanAccess(const RandomizerRegion region);

@@ -262,8 +262,8 @@ void RegionTable_Init_ShadowTemple() {
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_GS_NEAR_SHIP,          logic->CanUse(RG_LONGSHOT)),
-        LOCATION(RC_SHADOW_TEMPLE_SCARECROW_NORTH_HEART, logic->CanUse(RG_DISTANT_SCARECROW)),
-        LOCATION(RC_SHADOW_TEMPLE_SCARECROW_SOUTH_HEART, logic->CanUse(RG_DISTANT_SCARECROW)),
+        LOCATION(RC_SHADOW_TEMPLE_SCARECROW_NORTH_HEART, logic->ReachDistantScarecrow()),
+        LOCATION(RC_SHADOW_TEMPLE_SCARECROW_SOUTH_HEART, logic->ReachDistantScarecrow()),
     }, {
         //Exits
         Entrance(RR_SHADOW_TEMPLE_ROOM_TO_BOAT,    []{return logic->SmallKeys(SCENE_SHADOW_TEMPLE, 4);}),
@@ -281,7 +281,7 @@ void RegionTable_Init_ShadowTemple() {
     }, {
         //Exits
         Entrance(RR_SHADOW_TEMPLE_MAZE,         []{return true;}),
-        Entrance(RR_SHADOW_TEMPLE_ACROSS_CHASM, []{return logic->Get(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED) || logic->CanUse(RG_DISTANT_SCARECROW);}),
+        Entrance(RR_SHADOW_TEMPLE_ACROSS_CHASM, []{return logic->Get(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED) || logic->ReachDistantScarecrow();}),
     });
 
     areaTable[RR_SHADOW_TEMPLE_ACROSS_CHASM] = Region("Shadow Temple Across Chasm", SCENE_SHADOW_TEMPLE, {
@@ -292,10 +292,10 @@ void RegionTable_Init_ShadowTemple() {
         LOCATION(RC_SHADOW_TEMPLE_AFTER_BOAT_POT_3,             logic->CanBreakPots()),
         LOCATION(RC_SHADOW_TEMPLE_AFTER_BOAT_POT_4,             logic->CanBreakPots()),
         // don't actually need to use hookshot extension
-        LOCATION(RC_SHADOW_TEMPLE_AFTER_SHIP_UPPER_LEFT_HEART,  logic->CanUse(ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION) && logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME) ? RG_SCARECROW : RG_DISTANT_SCARECROW)),
-        LOCATION(RC_SHADOW_TEMPLE_AFTER_SHIP_UPPER_RIGHT_HEART, logic->CanUse(ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION) && logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME) ? RG_SCARECROW : RG_DISTANT_SCARECROW)),
-        // can reach with logic->IsAdult && logic->CanUse(RG_DISTANT_SCARECROW) && logic->CanJumpslash(), but precise enough to be trick
-        LOCATION(RC_SHADOW_TEMPLE_AFTER_SHIP_LOWER_HEART,       (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (logic->CanUse(RG_DISTANT_SCARECROW) && logic->CanUse(RG_HOVER_BOOTS))),
+        LOCATION(RC_SHADOW_TEMPLE_AFTER_SHIP_UPPER_LEFT_HEART,  ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION) && logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME) ? logic->ReachScarecrow() : logic->ReachDistantScarecrow()),
+        LOCATION(RC_SHADOW_TEMPLE_AFTER_SHIP_UPPER_RIGHT_HEART, ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION) && logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME) ? logic->ReachScarecrow() : logic->ReachDistantScarecrow()),
+        // can reach with logic->IsAdult && logic->ReachDistantScarecrow() && logic->CanJumpslash(), but precise enough to be trick
+        LOCATION(RC_SHADOW_TEMPLE_AFTER_SHIP_LOWER_HEART,       (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (logic->ReachDistantScarecrow() && logic->CanUse(RG_HOVER_BOOTS))),
     }, {
         //Exits
         Entrance(RR_SHADOW_TEMPLE_BEYOND_BOAT,   []{return logic->Get(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED) && logic->IsAdult;}),
@@ -635,8 +635,8 @@ void RegionTable_Init_ShadowTemple() {
         EventAccess(LOGIC_SHADOW_SHORTCUT_BLOCK, []{return logic->HasItem(RG_GORONS_BRACELET);}),
     }, {
         //Locations
-        LOCATION(RC_SHADOW_TEMPLE_MQ_SCARECROW_NORTH_HEART, logic->CanUse(RG_DISTANT_SCARECROW)),
-        LOCATION(RC_SHADOW_TEMPLE_MQ_SCARECROW_SOUTH_HEART, logic->CanUse(RG_DISTANT_SCARECROW)),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_SCARECROW_NORTH_HEART, logic->ReachDistantScarecrow()),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_SCARECROW_SOUTH_HEART, logic->ReachDistantScarecrow()),
     }, {
         //Exits
         Entrance(RR_SHADOW_TEMPLE_MQ_SHORTCUT_PATH, []{return logic->Get(LOGIC_SHADOW_SHORTCUT_BLOCK);}),

@@ -568,7 +568,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                             default:
                                 result.maxCapacity = 0;
                                 SPDLOG_ERROR(
-                                    "Invalid value for RSK_GERUDO_FORTRESS: " +
+                                    "Invalid value for RSK_GERUDO_FORTRESS: {}",
                                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS));
                                 assert(false);
                                 break;
@@ -1379,17 +1379,17 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
  * Loops over dungeons and creates vectors of items in the correct order
  * to then call DrawItemsInRows
  */
-std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeon> dungeons, int columns = 6) {
+std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeon> dungeons, size_t columns = 6) {
     std::vector<ItemTrackerItem> dungeonItems = {};
 
-    int rowCount = 0;
-    for (int i = 0; i < dungeons.size(); i++) {
+    size_t rowCount = 0;
+    for (size_t i = 0; i < dungeons.size(); i++) {
         if (dungeons[i].items.size() > rowCount)
             rowCount = static_cast<int32_t>(dungeons[i].items.size());
     }
 
-    for (int i = 0; i < rowCount; i++) {
-        for (int j = 0; j < MIN(dungeons.size(), columns); j++) {
+    for (size_t i = 0; i < rowCount; i++) {
+        for (size_t j = 0; j < MIN(dungeons.size(), columns); j++) {
             if (dungeons[j].items.size() > i) {
                 switch (dungeons[j].items[i]) {
                     case ITEM_KEY_SMALL:

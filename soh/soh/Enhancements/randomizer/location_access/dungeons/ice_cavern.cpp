@@ -174,7 +174,7 @@ void RegionTable_Init_IceCavern() {
     }, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MQ_GS_ICE_BLOCK, (logic->BlueFire() && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)) || (logic->IsAdult && logic->CanHitSwitch(ED_LONG_JUMPSLASH))),
-        LOCATION(RC_ICE_CAVERN_MQ_GS_SCARECROW, logic->CanUse(RG_SCARECROW) || (logic->IsAdult && (logic->CanUse(RG_LONGSHOT) || logic->CanGroundJump() || ctx->GetTrickOption(RT_ICE_MQ_SCARECROW)))),
+        LOCATION(RC_ICE_CAVERN_MQ_GS_SCARECROW, logic->ReachScarecrow() || (logic->IsAdult && (logic->CanUse(RG_LONGSHOT) || logic->CanGroundJump() || ctx->GetTrickOption(RT_ICE_MQ_SCARECROW)))),
     }, {
         //Exits
         Entrance(RR_ICE_CAVERN_MQ_HUB,           []{return logic->BlueFire();}),

@@ -28,7 +28,7 @@ void RegionTable_Init_DeathMountainCrater() {
         //Exits
         Entrance(RR_DMC_UPPER_NEARBY,       []{return true;}),
         Entrance(RR_DMC_LADDER_AREA_NEARBY, []{return logic->FireTimer() >= 16 || logic->Hearts() >= 3;}),
-        Entrance(RR_DMC_CENTRAL_NEARBY,     []{return logic->IsAdult && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_DISTANT_SCARECROW) && ((logic->EffectiveHealth() > 2) || (logic->CanUse(RG_BOTTLE_WITH_FAIRY) && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || logic->CanUse(RG_NAYRUS_LOVE));}),
+        Entrance(RR_DMC_CENTRAL_NEARBY,     []{return logic->IsAdult && logic->CanUse(RG_GORON_TUNIC) && logic->ReachDistantScarecrow() && ((logic->EffectiveHealth() > 2) || (logic->CanUse(RG_BOTTLE_WITH_FAIRY) && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || logic->CanUse(RG_NAYRUS_LOVE));}),
         Entrance(RR_DMC_LOWER_NEARBY,       []{return false;}),
         Entrance(RR_DMC_DISTANT_PLATFORM,   []{return (logic->FireTimer() >= 48 && logic->Hearts() >= 2) || logic->Hearts() >= 3;}),
     });
@@ -96,7 +96,7 @@ void RegionTable_Init_DeathMountainCrater() {
         Entrance(RR_DMC_LOWER_NEARBY,     []{return (logic->IsAdult && CanPlantBean(RR_DMC_CENTRAL_LOCAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL)) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT);}),
         Entrance(RR_DMC_UPPER_NEARBY,     []{return logic->IsAdult && CanPlantBean(RR_DMC_CENTRAL_LOCAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL);}),
         Entrance(RR_FIRE_TEMPLE_ENTRYWAY, []{return (logic->IsChild && logic->Hearts() >= 3 && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || (logic->IsAdult && logic->FireTimer() >= 24);}),
-        Entrance(RR_DMC_DISTANT_PLATFORM, []{return logic->FireTimer() >= 48 && logic->CanUse(RG_DISTANT_SCARECROW);}),
+        Entrance(RR_DMC_DISTANT_PLATFORM, []{return logic->FireTimer() >= 48 && logic->IsAdult && logic->ReachDistantScarecrow();}),
     });
 
     areaTable[RR_DMC_GREAT_FAIRY_FOUNTAIN] = Region("DMC Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, {}, {
@@ -147,7 +147,7 @@ void RegionTable_Init_DeathMountainCrater() {
         LOCATION(RC_DMC_DISTANT_PLATFORM_RED_RUPEE,     logic->IsAdult),
     }, {
         //Exits
-        Entrance(RR_DMC_CENTRAL_LOCAL, []{return logic->FireTimer() >= 48 && logic->CanUse(RG_DISTANT_SCARECROW);}),
+        Entrance(RR_DMC_CENTRAL_LOCAL, []{return logic->FireTimer() >= 48 && logic->IsAdult && logic->ReachDistantScarecrow();}),
     });
 
     // clang-format on

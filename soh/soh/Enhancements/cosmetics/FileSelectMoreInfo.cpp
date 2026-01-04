@@ -776,8 +776,8 @@ void RegisterFileSelectMoreInfo() {
 
     COND_VB_SHOULD(VB_FILE_SELECT_DRAW_QUEST_ITEMS, CVAR_FILE_SELECT_MORE_INFO_VALUE, {
         FileChooseContext* thisx = va_arg(args, FileChooseContext*);
-        s16 fileIndex = va_arg(args, s16);
-        u8 textAlpha = va_arg(args, u8);
+        s32 fileIndex = va_arg(args, s32);
+        u32 textAlpha = va_arg(args, u32);
 
         if (thisx->menuMode == FS_MENU_MODE_SELECT) {
             DrawMoreInfo(thisx, fileIndex, textAlpha);
