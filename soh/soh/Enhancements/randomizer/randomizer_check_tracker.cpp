@@ -203,7 +203,6 @@ bool hideCollected = false;
 bool showHidden = true;
 bool mystery = false;
 bool showLogicTooltip = false;
-bool onlyShowAvailable = false;
 
 typedef enum : int { AC_DISABLED, AC_LOCKED_UNLOCKED, AC_ONE_ICON, AC_TWO_ICONS } AvailableChecksDisplay;
 AvailableChecksDisplay availableChecksDisplay = AC_DISABLED;
@@ -211,6 +210,15 @@ std::string availableChecksNoneAvailableIcon = ICON_FA_LOCK;
 std::string availableChecksChildAvailableIcon = ICON_FA_CHILD;
 std::string availableChecksAdultAvailableIcon = ICON_FA_USER;
 std::string availableChecksBothAvailableIcon = ICON_FA_USERS;
+
+typedef enum : int {
+    AC_SHOW_ALL_CHECKS,
+    AC_SHOW_AVAILABLE_CHECKS,
+    AC_SHOW_CHILD_CHECKS,
+    AC_SHOW_ADULT_CHECKS,
+    AC_SHOW_CURRENT_AGE
+} AvailableChecksOnlyShow;
+AvailableChecksOnlyShow availableChecksOnlyShow = AC_SHOW_ALL_CHECKS;
 
 SceneID DungeonSceneLookupByArea(RandomizerCheckArea area) {
     switch (area) {
@@ -2319,6 +2327,14 @@ static std::string MapAvailableCheckIcon(std::string name) {
     return name;
 }
 
+static std::unordered_map<int32_t, const char*> availableChecksOnlyShowOptions = {
+    { AC_SHOW_ALL_CHECKS, "All Checks" },
+    { AC_SHOW_AVAILABLE_CHECKS, "Either Age" },
+    { AC_SHOW_CHILD_CHECKS, "Child Checks" },
+    { AC_SHOW_ADULT_CHECKS, "Adult Checks" },
+    { AC_SHOW_CURRENT_AGE, "Current Age" }
+};
+
 void CheckTrackerWindow::DrawElement() {
     Color_Background = CVarGetColor(CVAR_TRACKER_CHECK("BgColor.Value"), Color_Bg_Default);
     Color_Area_Incomplete_Main = CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.MainColor.Value"), Color_Main_Default);
@@ -2361,7 +2377,7 @@ void CheckTrackerWindow::DrawElement() {
         MapAvailableCheckIcon(CVarGetString(CVAR_TRACKER_CHECK("AvailableChecksAdultIcon"), "ICON_FA_USER"));
     availableChecksBothAvailableIcon =
         MapAvailableCheckIcon(CVarGetString(CVAR_TRACKER_CHECK("AvailableChecksBothIcon"), "ICON_FA_USERS"));
-    onlyShowAvailable = CVarGetInteger(CVAR_TRACKER_CHECK("OnlyShowAvailable"), 0);
+    availableChecksOnlyShow = (AvailableChecksOnlyShow)CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksOnlyShow"), 0);
 
     hideShopUnshuffledChecks = CVarGetInteger(CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), 0);
     alwaysShowGS = CVarGetInteger(CVAR_TRACKER_CHECK("AlwaysShowGSLocs"), 0);
@@ -2437,10 +2453,13 @@ void CheckTrackerWindow::DrawElement() {
     }
     if (availableChecksDisplay != AC_DISABLED &&
         CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"), 1)) {
-        if (UIWidgets::CVarCheckbox(
-                "Only Show Available Checks", CVAR_TRACKER_CHECK("OnlyShowAvailable"),
-                UIWidgets::CheckboxOptions({ { .tooltip = "When active, unavailable checks will be hidden." } })
-                    .Color(THEME_COLOR))) {
+        if (UIWidgets::CVarCombobox("Only Show Available Checks", CVAR_TRACKER_CHECK("AvailableChecksOnlyShow"),
+                                    availableChecksOnlyShowOptions,
+                                    UIWidgets::ComboboxOptions()
+                                        .LabelPosition(UIWidgets::LabelPositions::Near)
+                                        .ComponentAlignment(UIWidgets::ComponentAlignments::Right)
+                                        .Color(THEME_COLOR)
+                                        .DefaultIndex(AC_SHOW_ALL_CHECKS))) {
             doAreaScroll = true;
             RecalculateAllAreaTotals();
         }
@@ -2540,7 +2559,7 @@ void CheckTrackerWindow::DrawElement() {
         }
         if ((shouldHideFilteredAreas && filterAreasHidden[rcArea]) ||
             (!showHidden && ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked))) ||
-            (availableChecksDisplay != AC_DISABLED && onlyShowAvailable && areaChecksAvailable[rcArea] == 0)) {
+            (availableChecksDisplay != AC_DISABLED && availableChecksOnlyShow != AC_SHOW_ALL_CHECKS && areaChecksAvailable[rcArea] == 0)) {
             doDraw = false;
         } else {
             // Get the colour for the area
@@ -3298,10 +3317,27 @@ void DrawLocation(RandomizerCheck rc) {
     Rando::ItemLocation* itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
     RandomizerCheckStatus status = itemLoc->GetCheckStatus();
     bool skipped = itemLoc->GetIsSkipped();
-    bool available = itemLoc->IsChildAvailable() || itemLoc->IsAdultAvailable();
-
-    if (availableChecksDisplay != AC_DISABLED && onlyShowAvailable && !available) {
-        return;
+    bool childAvailable = itemLoc->IsChildAvailable();
+    bool adultAvailable = itemLoc->IsAdultAvailable();
+    
+    if (availableChecksDisplay != AC_DISABLED) {
+        if (availableChecksOnlyShow == AC_SHOW_AVAILABLE_CHECKS && !childAvailable && !adultAvailable) {
+            return;
+        }
+        if (availableChecksOnlyShow == AC_SHOW_CHILD_CHECKS && !childAvailable) {
+            return;
+        }
+        if (availableChecksOnlyShow == AC_SHOW_ADULT_CHECKS && !adultAvailable) {
+            return;
+        }
+        if (availableChecksOnlyShow == AC_SHOW_CURRENT_AGE) {
+            if (LINK_IS_CHILD && !childAvailable) {
+                return;
+            }
+            if (LINK_IS_ADULT && !adultAvailable) {
+                return;
+            }
+        }
     }
 
     if (status == RCSHOW_COLLECTED) {
@@ -3382,7 +3418,7 @@ void DrawLocation(RandomizerCheck rc) {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(false);
                 areaChecksGotten[loc->GetArea()]--;
                 totalChecksGotten--;
-                if (available) {
+                if (childAvailable || adultAvailable) {
                     areaChecksAvailable[loc->GetArea()]++;
                     totalChecksAvailable++;
                 }
@@ -3390,7 +3426,7 @@ void DrawLocation(RandomizerCheck rc) {
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(true);
                 areaChecksGotten[loc->GetArea()]++;
                 totalChecksGotten++;
-                if (available) {
+                if (childAvailable || adultAvailable) {
                     areaChecksAvailable[loc->GetArea()]--;
                     totalChecksAvailable--;
                 }
