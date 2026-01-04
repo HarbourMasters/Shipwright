@@ -40,6 +40,26 @@ void Anchor::OnDisconnected() {
     RegisterHooks();
 }
 
+void Anchor::ProcessOutgoingPackets() {
+    // Copy all queued packets while holding the lock, then send them after releasing
+    std::queue<nlohmann::json> packetsToSend;
+    {
+        std::lock_guard<std::mutex> lock(outgoingPacketQueueMutex);
+        packetsToSend.swap(outgoingPacketQueue);
+    }
+
+    // Send packets without holding the lock
+    while (!packetsToSend.empty()) {
+        nlohmann::json payload = packetsToSend.front();
+        packetsToSend.pop();
+
+        if (!payload.contains("quiet")) {
+            SPDLOG_DEBUG("[Anchor] Sending payload:\n{}", payload.dump());
+        }
+        Network::SendJsonToRemote(payload);
+    }
+}
+
 void Anchor::SendJsonToRemote(nlohmann::json payload) {
     if (!isConnected) {
         return;
@@ -47,9 +67,17 @@ void Anchor::SendJsonToRemote(nlohmann::json payload) {
 
     payload["clientId"] = ownClientId;
     if (!payload.contains("quiet")) {
-        SPDLOG_DEBUG("[Anchor] Sending payload:\n{}", payload.dump());
+        SPDLOG_DEBUG("[Anchor] Queuing payload:\n{}", payload.dump());
     }
-    Network::SendJsonToRemote(payload);
+
+    if (payload["type"] == HANDSHAKE) {
+        Network::SendJsonToRemote(payload);
+        return;
+    }
+
+    // Queue the packet to be sent on the network thread
+    std::lock_guard<std::mutex> lock(outgoingPacketQueueMutex);
+    outgoingPacketQueue.push(payload);
 }
 
 void Anchor::OnIncomingJson(nlohmann::json payload) {
@@ -87,11 +115,17 @@ void Anchor::OnIncomingJson(nlohmann::json payload) {
 }
 
 void Anchor::ProcessIncomingPacketQueue() {
-    std::lock_guard<std::mutex> lock(incomingPacketQueueMutex);
+    // Copy all queued packets while holding the lock, then process them after releasing
+    std::queue<nlohmann::json> packetsToProcess;
+    {
+        std::lock_guard<std::mutex> lock(incomingPacketQueueMutex);
+        packetsToProcess.swap(incomingPacketQueue);
+    }
 
-    while (!incomingPacketQueue.empty()) {
-        nlohmann::json payload = incomingPacketQueue.front();
-        incomingPacketQueue.pop();
+    // Process packets without holding the lock
+    while (!packetsToProcess.empty()) {
+        nlohmann::json payload = packetsToProcess.front();
+        packetsToProcess.pop();
 
         std::string packetType = payload["type"].get<std::string>();
 

@@ -4,6 +4,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
+#include "soh/SaveManager.h"
 
 #include <spdlog/fmt/fmt.h>
 #include <array>
@@ -26,6 +27,11 @@ extern PlayState* gPlayState;
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/parameter_static/parameter_static.h"
 }
+
+#include "message_data_static.h"
+extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
+extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
+extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
 
 // Maps entries in the GS flag array to the area name it represents
 std::vector<const char*> gsMapping = {
@@ -106,6 +112,48 @@ char z2ASCII(int code) {
     return char(ret);
 }
 
+std::string decodeNTSCPlayerNameChar(int code) {
+    const std::string charmap[] = {
+        "0",  "1",  "2",  "3",  "4",  "5",  "6",  "7",  "8",  "9",  // 10
+        "あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ", // 20
+        "さ", "し", "す", "せ", "そ", "た", "ち", "つ", "て", "と", // 30
+        "な", "に", "ぬ", "ね", "の", "は", "ひ", "ふ", "へ", "ほ", // 40
+        "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "ら", "り", // 50
+        "る", "れ", "ろ", "わ", "を", "ん", "ぁ", "ぃ", "ぅ", "ぇ", // 60
+        "ぉ", "っ", "ゃ", "ゅ", "ょ", "が", "ぎ", "ぐ", "げ", "ご", // 70
+        "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", // 80
+        "ば", "び", "ぶ", "べ", "ぼ", "ぱ", "ぴ", "ぷ", "ぺ", "ぽ", // 90
+        "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", // 100
+        "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト", // 110
+        "ナ", "ニ", "ヌ", "ネ", "ノ", "ハ", "ヒ", "フ", "ヘ", "ホ", // 120
+        "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ラ", "リ", // 130
+        "ル", "レ", "ロ", "ワ", "ヲ", "ン", "ァ", "ィ", "ゥ", "ェ", // 140
+        "ォ", "ッ", "ャ", "ュ", "ョ", "ガ", "ギ", "グ", "ゲ", "ゴ", // 150
+        "ザ", "ジ", "ズ", "ゼ", "ゾ", "ダ", "ヂ", "ヅ", "デ", "ド", // 160
+        "バ", "ビ", "ブ", "ベ", "ボ", "パ", "ピ", "プ", "ペ", "ポ", // 170
+        "ヴ",
+    };
+    std::string ret;
+
+    if (code < 171) { // Digits and Japanese
+        ret = charmap[code];
+    } else if (code >= 171 && code < 197) { // Uppercase letters
+        ret.assign(1, (char)(code - 171 + 65));
+    } else if (code >= 197 && code < 223) { // Lowercase letters
+        ret.assign(1, (char)(code - 197 + 97));
+    } else if (code == 223) { // Space
+        ret = " ";
+    } else if (code == 228) { // -
+        ret = "-";
+    } else if (code == 234) { // .
+        ret = ".";
+    } else {
+        ret = "?";
+    }
+
+    return ret;
+}
+
 enum MagicLevel { MAGIC_LEVEL_NONE, MAGIC_LEVEL_SINGLE, MAGIC_LEVEL_DOUBLE };
 
 std::unordered_map<int8_t, const char*> magicLevelMap = {
@@ -138,19 +186,63 @@ std::unordered_map<uint8_t, const char*> zTargetMap = {
     { Z_TARGET_HOLD, "Hold" },
 };
 
+std::unordered_map<int32_t, const char*> fileNumMap = {
+    { 0, "File 1" },
+    { 1, "File 2" },
+    { 2, "File 3" },
+};
+
+std::unordered_map<uint8_t, const char*> filenameLanguageMap = {
+    { NAME_LANGUAGE_PAL, "PAL" },
+    { NAME_LANGUAGE_NTSC_JPN, "NTSC JPN" },
+    { NAME_LANGUAGE_NTSC_ENG, "NTSC ENG" },
+};
+
+std::unordered_map<uint8_t, const char*> filenameLanguageMapNTSCOnly = {
+    { NAME_LANGUAGE_NTSC_JPN, "NTSC JPN" },
+    { NAME_LANGUAGE_NTSC_ENG, "NTSC ENG" },
+};
+
 void DrawInfoTab() {
+    if (gSaveContext.gameMode == GAMEMODE_TITLE_SCREEN) {
+        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Title Screen");
+    } else if (gSaveContext.gameMode == GAMEMODE_FILE_SELECT) {
+        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "File Select");
+    } else if (gPlayState == nullptr) {
+        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Game Inactive");
+    } else if (gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2) {
+        Combobox("File Number", &gSaveContext.fileNum, fileNumMap, comboboxOptionsBase.Tooltip("Current File Number"));
+    } else {
+        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Debug File");
+    }
+
     // TODO Needs a better method for name changing but for now this will work.
     std::string name;
     ImU16 one = 1;
-    for (int i = 0; i < 8; i++) {
-        char letter = z2ASCII(gSaveContext.playerName[i]);
-        name += letter;
+
+    if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) {
+        for (int i = 0; i < 8; i++) {
+            char letter = z2ASCII(gSaveContext.playerName[i]);
+            name += letter;
+        }
+        name += '\0';
+    } else {
+        for (int i = 0; i < 8; i++) {
+            name += decodeNTSCPlayerNameChar(gSaveContext.playerName[i]);
+        }
+        name += '\0';
     }
-    name += '\0';
 
     ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
 
-    ImGui::Text("Name: %s", name.c_str());
+    if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) {
+        ImGui::Text("Name: %s", name.c_str());
+    } else {
+        ImGui::PushFont(OTRGlobals::Instance->fontJapanese);
+        ImGui::Text("Name: %s", name.c_str());
+        ImGui::PopFont();
+    }
+
     Tooltip("Player Name");
     std::string nameID;
     for (int i = 0; i < 8; i++) {
@@ -161,6 +253,25 @@ void DrawInfoTab() {
         PushStyleInput(THEME_COLOR);
         ImGui::InputScalar(nameID.c_str(), ImGuiDataType_U8, &gSaveContext.playerName[i], &one, NULL);
         PopStyleInput();
+    }
+
+    // Filename encoding
+    const bool hasPAL = (sGerMessageEntryTablePtr != nullptr) && (sFraMessageEntryTablePtr != nullptr);
+    const bool hasNTSC = (sJpnMessageEntryTablePtr != nullptr);
+    if (hasPAL && hasNTSC) {
+        // Full
+        Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMap,
+                 comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
+    } else if (hasNTSC && (gSaveContext.ship.filenameLanguage != NAME_LANGUAGE_PAL)) {
+        // NTSC only
+        Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMapNTSCOnly,
+                 comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
+    } else {
+        // PAL only (read only)
+        ImGui::BeginDisabled();
+        Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMap,
+                 comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
+        ImGui::EndDisabled();
     }
 
     // Use an intermediary to keep the health from updating (and potentially killing the player)
@@ -297,7 +408,8 @@ void DrawInfoTab() {
     Combobox("Z Target Mode", &gSaveContext.zTargetSetting, zTargetMap,
              comboboxOptionsBase.Tooltip("Z-Targeting behavior"));
 
-    if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
+    if (IS_RANDO &&
+        (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) != RO_TRIFORCE_HUNT_OFF)) {
         PushStyleInput(THEME_COLOR);
         ImGui::InputScalar("Triforce Pieces", ImGuiDataType_U8,
                            &gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);

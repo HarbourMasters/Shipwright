@@ -2,7 +2,7 @@
 #include "functions.h"
 #include "macros.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
-#include "soh/Enhancements/randomizer/context.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "variables.h"
 #include "soh/OTRGlobals.h"
@@ -12,6 +12,9 @@
 extern "C" {
 #include <z64.h>
 #include "src/overlays/actors/ovl_En_Rr/z_en_rr.h"
+#include "src/overlays/actors/ovl_En_GeldB/z_en_geldb.h"
+
+extern PlayState* gPlayState;
 }
 
 #define CVAR_ENEMY_RANDOMIZER_NAME CVAR_ENHANCEMENT("RandomizedEnemies")
@@ -51,6 +54,7 @@ const char* enemyCVarList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPeahat"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPot"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.Freezard"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.GerudoFighter"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.Gibdo"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.GohmaLarva"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.Guay"),
@@ -114,6 +118,7 @@ const char* enemyNameList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     "Flying Peahat",
     "Flying Pot",
     "Freezard",
+    "Gerudo Fighter",
     "Gibdo",
     "Gohma Larva",
     "Guay",
@@ -178,6 +183,7 @@ static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_PEEHAT, -1 },       // Flying Peahat (big grounded, doesn't spawn larva)
     { ACTOR_EN_TUBO_TRAP, 0 },     // Flying pot
     { ACTOR_EN_FZ, 0 },            // Freezard
+    { ACTOR_EN_GELDB, 0 },         // Gerudo Fighter
     { ACTOR_EN_RD, 32766 },        // Gibdo (standing)
     { ACTOR_EN_GOMA, 7 },          // Gohma Larva (Non-Gohma rooms)
     { ACTOR_EN_CROW, 0 },          // Guay
@@ -617,6 +623,14 @@ void FixClubMoblinScale(void* ptr) {
     }
 }
 
+static void OnGerudoFighterDefeat(void* refActor) {
+    EnGeldB* enGeldB = reinterpret_cast<EnGeldB*>(refActor);
+
+    if (enGeldB->keyFlag == 0) {
+        Item_DropCollectibleRandom(gPlayState, &enGeldB->actor, &enGeldB->actor.world.pos, 0xC0);
+    }
+}
+
 void RegisterEnemyRandomizer() {
     COND_ID_HOOK(OnActorInit, ACTOR_EN_MB, CVAR_ENEMY_RANDOMIZER_VALUE, FixClubMoblinScale);
 
@@ -675,6 +689,42 @@ void RegisterEnemyRandomizer() {
             *should = false;
         }
     });
+
+    // Allow Random Gerudo Fighters (contain no keys) to spawn without any switch flags
+    COND_VB_SHOULD(VB_GERUDO_FIGHTER_CONTINUE_WAITING, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        EnGeldB* enGeldB = va_arg(args, EnGeldB*);
+
+        if (enGeldB->keyFlag == 0) {
+            if (!enGeldB->invisible || enGeldB->actor.xzDistToPlayer <= 300.0f) {
+                *should = false;
+            }
+        }
+    });
+
+    // Don't play Miniboss music for Random Gerudo Fighters
+    COND_VB_SHOULD(VB_GERUDO_FIGHTER_PLAY_MINIBOSS_MUSIC, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT,
+                   {
+                       EnGeldB* enGeldB = va_arg(args, EnGeldB*);
+
+                       if (enGeldB->keyFlag == 0) {
+                           *should = false;
+                       }
+                   });
+
+    // If Random Gerudo Fighters knock Link down, void him out like Wallmasters
+    COND_VB_SHOULD(VB_GERUDO_FIGHTER_THROW_LINK_TO_JAIL, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        EnGeldB* enGeldB = va_arg(args, EnGeldB*);
+
+        if (enGeldB->keyFlag == 0) {
+            *should = false;
+            Sfx_PlaySfxCentered(NA_SE_OC_ABYSS);
+            Play_TriggerRespawn(gPlayState);
+        }
+    });
+
+    // If Random Gerudo Fighters are defeated, drop some items
+    COND_ID_HOOK(OnEnemyDefeat, ACTOR_EN_GELDB, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT,
+                 OnGerudoFighterDefeat);
 }
 
 static RegisterShipInitFunc initFunc(RegisterEnemyRandomizer, { CVAR_ENEMY_RANDOMIZER_NAME });

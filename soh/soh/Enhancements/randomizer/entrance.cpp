@@ -357,8 +357,8 @@ void SetAllEntrancesData() {
           { EntranceType::SpecialInterior, RR_KF_LINKS_HOUSE,        RR_KOKIRI_FOREST,         ENTR_KOKIRI_FOREST_OUTSIDE_LINKS_HOUSE } },
         { { EntranceType::SpecialInterior, RR_TOT_ENTRANCE,          RR_TEMPLE_OF_TIME,        ENTR_TEMPLE_OF_TIME_ENTRANCE },
           { EntranceType::SpecialInterior, RR_TEMPLE_OF_TIME,        RR_TOT_ENTRANCE,          ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE } },
-        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,      RR_KAK_WINDMILL,          ENTR_WINDMILL_AND_DAMPES_GRAVE_WINDMILL },
-          { EntranceType::SpecialInterior, RR_KAK_WINDMILL,          RR_KAKARIKO_VILLAGE,      ENTR_KAKARIKO_VILLAGE_OUTSIDE_WINDMILL } },
+        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,      RR_KAK_WINDMILL_LOWER,    ENTR_WINDMILL_AND_DAMPES_GRAVE_WINDMILL },
+          { EntranceType::SpecialInterior, RR_KAK_WINDMILL_LOWER,    RR_KAKARIKO_VILLAGE,      ENTR_KAKARIKO_VILLAGE_OUTSIDE_WINDMILL } },
         { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,      RR_KAK_POTION_SHOP_FRONT, ENTR_POTION_SHOP_KAKARIKO_FRONT },
           { EntranceType::SpecialInterior, RR_KAK_POTION_SHOP_FRONT, RR_KAKARIKO_VILLAGE,      ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_FRONT } },
         { { EntranceType::SpecialInterior, RR_KAK_BACKYARD,          RR_KAK_POTION_SHOP_BACK,  ENTR_POTION_SHOP_KAKARIKO_BACK },
@@ -1074,7 +1074,7 @@ static std::array<std::vector<Entrance*>, 2> SplitEntrancesByRequirements(std::v
     logic->Reset();
     // Apply the effects of all advancement items to search for entrance accessibility
     std::vector<RandomizerGet> items = FilterFromPool(
-        ItemPool, [](const RandomizerGet i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
+        itemPool, [](const RandomizerGet i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
     for (RandomizerGet unplacedItem : items) {
         Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
     }
@@ -1082,12 +1082,14 @@ static std::array<std::vector<Entrance*>, 2> SplitEntrancesByRequirements(std::v
     ReachabilitySearch({});
 
     for (Entrance* entrance : entrancesToSplit) {
+        logic->CurrentRegionKey = entrance->GetParentRegionKey();
         // if an entrance is accessible at all times of day by both ages, it's a soft entrance with no restrictions
         if (entrance->ConditionsMet(true)) {
             softEntrances.push_back(entrance);
         } else {
             restrictiveEntrances.push_back(entrance);
         }
+        logic->CurrentRegionKey = RR_NONE;
     }
 
     // Reconnect all disconnected entrances
