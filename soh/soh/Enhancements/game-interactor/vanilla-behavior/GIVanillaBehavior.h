@@ -2458,6 +2458,15 @@ typedef enum {
     // - `uint16_t` (cursorItem - promoted from `u16`)
     VB_EQUIP_ITEM_TO_C_BUTTON,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `s32*`
+    VB_PLAYER_PICK_FIDGET,
+
 } GIVanillaBehavior;
 
 #endif

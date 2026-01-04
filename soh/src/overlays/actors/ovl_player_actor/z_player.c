@@ -8318,6 +8318,8 @@ void Player_ChooseNextIdleAnim(PlayState* play, Player* this) {
                 }
             }
 
+            GameInteractor_Should(VB_PLAYER_PICK_FIDGET, true, this, &fidgetType);
+
             fidgetAnimPtr = &sFidgetAnimations[fidgetType][0];
 
             if (this->modelAnimType != PLAYER_ANIMTYPE_1) {
