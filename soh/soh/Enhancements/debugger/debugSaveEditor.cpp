@@ -28,6 +28,11 @@ extern PlayState* gPlayState;
 #include "textures/parameter_static/parameter_static.h"
 }
 
+#include "message_data_static.h"
+extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
+extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
+extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
+
 // Maps entries in the GS flag array to the area name it represents
 std::vector<const char*> gsMapping = {
     "Deku Tree",
@@ -245,8 +250,17 @@ void DrawInfoTab() {
         PopStyleInput();
     }
 
+    // Only allow filename encoding change when both PAL and NTSC roms exist
+    const bool hasPAL = (sGerMessageEntryTablePtr != nullptr) && (sFraMessageEntryTablePtr != nullptr);
+    const bool hasNTSC = (sJpnMessageEntryTablePtr != nullptr);
+    if (!hasPAL || !hasNTSC) {
+        ImGui::BeginDisabled();
+    }
     Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMap,
              comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
+    if (!hasPAL || !hasNTSC) {
+        ImGui::EndDisabled();
+    }
 
     // Use an intermediary to keep the health from updating (and potentially killing the player)
     // until it is done being edited
