@@ -2199,6 +2199,7 @@ void Settings::CreateOptions() {
                                                                       &mOptions[RSK_SKULLS_SUNS_SONG],
                                                                       &mOptions[RSK_BLUE_FIRE_ARROWS],
                                                                       &mOptions[RSK_SUNLIGHT_ARROWS],
+                                                                      &mOptions[RSK_CHILD_LINK_2H_MS],
                                                                       &mOptions[RSK_FULL_WALLETS],
                                                                       &mOptions[RSK_SLINGBOW_BREAK_BEEHIVES],
                                                                       &mOptions[RSK_SKIP_CHILD_ZELDA],
@@ -2459,24 +2460,6 @@ void Settings::CreateOptions() {
                                   &mOptionGroups[RSG_MENU_COLUMN_HINTS_TRAPS],
                                   &mOptionGroups[RSG_MENU_COLUMN_STATIC_HINTS],
                               },
-                              WidgetContainerType::COLUMN);
-    mOptionGroups[RSG_ADDITIONAL_FEATURES_IMGUI] = OptionGroup::SubGroup("Additional Features",
-                                                                         {
-                                                                             &mOptions[RSK_FULL_WALLETS],
-                                                                             &mOptions[RSK_BOMBCHU_BAG],
-                                                                             &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
-                                                                             &mOptions[RSK_BLUE_FIRE_ARROWS],
-                                                                             &mOptions[RSK_CHILD_LINK_2H_MS],
-                                                                             &mOptions[RSK_SUNLIGHT_ARROWS],
-                                                                             &mOptions[RSK_INFINITE_UPGRADES],
-                                                                             &mOptions[RSK_SKELETON_KEY],
-                                                                             &mOptions[RSK_SLINGBOW_BREAK_BEEHIVES],
-                                                                         },
-                                                                         WidgetContainerType::COLUMN);
-    mOptionGroups[RSG_GAMEPLAY_IMGUI_TABLE] =
-        OptionGroup::SubGroup("Gameplay",
-                              { &mOptionGroups[RSG_TIMESAVERS_IMGUI], &mOptionGroups[RSG_ITEM_POOL_HINTS_IMGUI_COLUMN],
-                                &mOptionGroups[RSG_ADDITIONAL_FEATURES_IMGUI] },
                               WidgetContainerType::TABLE);
     mOptionGroups[RSG_MENU_SECTION_STARTING_EQUIPS] =
         OptionGroup::SubGroup("Equips",
