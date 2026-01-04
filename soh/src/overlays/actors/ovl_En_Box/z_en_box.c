@@ -658,6 +658,7 @@ void EnBox_UpdateTexture(EnBox* this, PlayState* play) {
                 this->boxLidDL = EnBox_LoadChestDL(gChestLidMinorDL, gTreasureChestChestSideAndLidDL);
                 break;
             case ITEM_CATEGORY_JUNK:
+            default:
                 this->boxBodyDL = EnBox_LoadChestDL(gChestBodyJunkDL, gTreasureChestChestFrontDL);
                 this->boxLidDL = EnBox_LoadChestDL(gChestLidJunkDL, gTreasureChestChestSideAndLidDL);
                 break;

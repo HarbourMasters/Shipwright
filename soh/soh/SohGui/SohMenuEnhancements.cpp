@@ -181,7 +181,7 @@ void SohMenu::AddMenuEnhancements() {
         .PreFunc([](WidgetInfo& info) {
             info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
         })
-        .Options(CheckboxOptions().Tooltip("Only change the texture of chests if you have the Stone of Agony."));
+        .Options(CheckboxOptions().Tooltip("Only change the texture of containers if you have the Stone of Agony."));
 
     AddWidget(path, "Time of Day", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Nighttime GS Always Spawn", WIDGET_CVAR_CHECKBOX)
