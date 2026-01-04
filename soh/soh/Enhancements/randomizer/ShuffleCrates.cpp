@@ -78,6 +78,7 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
         case ITEM_CATEGORY_LESSER:
             Gfx_DrawDListOpa(play, (Gfx*)gLargeMinorCrateDL);
             break;
+        case ITEM_CATEGORY_JUNK:
         default:
             Gfx_DrawDListOpa(play, (Gfx*)gLargeJunkCrateDL);
             break;
