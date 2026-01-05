@@ -779,6 +779,7 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
         if (this->randomizerIndex == RSM_START_RANDOMIZER) {
             if (Randomizer_IsSeedGenerated() || Randomizer_IsSpoilerLoaded()) {
+                SohFileSelect_ShowPresetModal();
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                        &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };

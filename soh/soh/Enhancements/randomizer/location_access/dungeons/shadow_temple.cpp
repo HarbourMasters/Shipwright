@@ -281,6 +281,7 @@ void RegionTable_Init_ShadowTemple() {
     }, {
         //Exits
         Entrance(RR_SHADOW_TEMPLE_MAZE,         []{return true;}),
+        // a precise recoil hover back flip can get across too, but isn't a simple hover boost
         Entrance(RR_SHADOW_TEMPLE_ACROSS_CHASM, []{return logic->Get(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED) || logic->ReachDistantScarecrow();}),
     });
 
@@ -298,7 +299,7 @@ void RegionTable_Init_ShadowTemple() {
         LOCATION(RC_SHADOW_TEMPLE_AFTER_SHIP_LOWER_HEART,       (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (logic->ReachDistantScarecrow() && logic->CanUse(RG_HOVER_BOOTS))),
     }, {
         //Exits
-        Entrance(RR_SHADOW_TEMPLE_BEYOND_BOAT,   []{return logic->Get(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED) && logic->IsAdult;}),
+        Entrance(RR_SHADOW_TEMPLE_BEYOND_BOAT,   []{return (logic->Get(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED) && logic->IsAdult) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER));}),
         Entrance(RR_SHADOW_TEMPLE_PRE_BOSS_ROOM, []{return logic->SmallKeys(SCENE_SHADOW_TEMPLE, 5);}),
     });
 
@@ -656,6 +657,7 @@ void RegionTable_Init_ShadowTemple() {
         LOCATION(RC_SHADOW_TEMPLE_MQ_BEFORE_CHASM_EAST_POT, logic->CanBreakPots()),
     }, {
         //Exits
+        // a precise recoil hover back flip can get across too, but isn't a simple hover boost
         Entrance(RR_SHADOW_TEMPLE_MQ_ACROSS_CHASM,   []{return logic->Get(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED) || (logic->Get(LOGIC_SHADOW_MQ_SWITCH_ACROSS_CHASM) && logic->CanUse(RG_LONGSHOT));}),
         Entrance(RR_SHADOW_TEMPLE_MQ_INVISIBLE_MAZE, []{return logic->Get(LOGIC_SHADOW_MQ_SWITCH_ACROSS_CHASM);}),
     });
@@ -675,7 +677,7 @@ void RegionTable_Init_ShadowTemple() {
         LOCATION(RC_SHADOW_TEMPLE_MQ_AFTER_SHIP_LOWER_HEART,       logic->IsAdult),
     }, {
         //Exits
-        Entrance(RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT,    []{return logic->Get(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED) && logic->IsAdult;}),
+        Entrance(RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT,    []{return (logic->Get(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED) && logic->IsAdult) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER));}),
         Entrance(RR_SHADOW_TEMPLE_MQ_PRE_BOSS_ROOM,  []{return true;}),
     });
 

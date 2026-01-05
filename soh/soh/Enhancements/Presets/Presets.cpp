@@ -359,7 +359,7 @@ void DrawNewPresetPopup() {
 }
 
 void PresetsCustomWidget(WidgetInfo& info) {
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
+    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
     if (UIWidgets::Button("New Preset", UIWidgets::ButtonOptions(
                                             { { .disabled = (CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) != 0),
                                                 .disabledTooltip = "Disabled because of race lockout" } })
@@ -378,7 +378,7 @@ void PresetsCustomWidget(WidgetInfo& info) {
     bool hideBuiltIn = CVarGetInteger(CVAR_GENERAL("HideBuiltInPresets"), 0);
     UIWidgets::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTable("PresetWidgetTable", PRESET_SECTION_MAX + 3)) {
-        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 250);
+        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 400);
         for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
             ImGui::TableSetupColumn(blockInfo[i].names[0].c_str());
         }

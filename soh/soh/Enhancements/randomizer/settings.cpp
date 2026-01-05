@@ -1366,10 +1366,10 @@ void Settings::CreateOptions() {
               "Simple damage boosts",
               "Allows damage boosts in order to reach further locations. Can be combined with \"Simple hover boosts\" "
               "for reaching far distances.");
-    OPT_TRICK(RT_HOVER_BOOST_SIMPLE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL },
+    OPT_TRICK(RT_HOVER_BOOST_SIMPLE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::GLITCH },
               "Simple hover boosts",
-              "Allows equipping of hover boots when link is moving at high speeds to extend distance covered. Can be "
-              "combined with \"Simple damage boosts\" for greater uses.");
+              "Allows equipping of hover boots when Link is moving at high speeds to extend distance covered, often "
+              "after recoil. Can be combined with \"Simple damage boosts\" for greater uses.");
     OPT_TRICK(RT_BOMBCHU_BEEHIVES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Bombchu Beehives",
               "Allows exploding beehives with Bombchus.");
     OPT_TRICK(RT_BLUE_FIRE_MUD_WALLS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Blue Fire Beyond Red Ice",

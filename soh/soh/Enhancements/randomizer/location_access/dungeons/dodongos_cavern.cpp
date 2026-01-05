@@ -190,7 +190,7 @@ void RegionTable_Init_DodongosCavern() {
     }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_BOMB_ROOM_LOWER, []{return true;}),
-        Entrance(RR_DODONGOS_CAVERN_UPPER_LIZALFOS,  []{return logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || ctx->GetTrickOption(RT_DC_SLINGSHOT_SKIP) || (logic->IsAdult && logic->CanGroundJump());}),
+        Entrance(RR_DODONGOS_CAVERN_UPPER_LIZALFOS,  []{return logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || ctx->GetTrickOption(RT_DC_SLINGSHOT_SKIP) || (logic->IsAdult && logic->CanGroundJump()) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanUse(RG_MEGATON_HAMMER) || (logic->CanStandingShield() && logic->CanJumpslash())));}),
     });
 
     areaTable[RR_DODONGOS_CAVERN_UPPER_LIZALFOS] = Region("Dodongos Cavern Upper Lizalfos", SCENE_DODONGOS_CAVERN, {}, {
@@ -220,7 +220,7 @@ void RegionTable_Init_DodongosCavern() {
     }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_UPPER_LIZALFOS,  []{return true;}),
-        Entrance(RR_DODONGOS_CAVERN_BOMB_ROOM_UPPER, []{return logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || ctx->GetTrickOption(RT_DC_SLINGSHOT_SKIP) || (logic->IsAdult && logic->CanGroundJump());}),
+        Entrance(RR_DODONGOS_CAVERN_BOMB_ROOM_UPPER, []{return logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || ctx->GetTrickOption(RT_DC_SLINGSHOT_SKIP) || (logic->IsAdult && logic->CanGroundJump()) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanUse(RG_MEGATON_HAMMER) || (logic->CanStandingShield() && logic->CanJumpslash())));}),
     });
 
     areaTable[RR_DODONGOS_CAVERN_BOMB_ROOM_UPPER] = Region("Dodongos Cavern Bomb Room Upper", SCENE_DODONGOS_CAVERN, {}, {

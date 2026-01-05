@@ -204,7 +204,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_JAIL_WINDOW] = Region("GF Jail Window", SCENE_GERUDOS_FORTRESS, {}, {}, {
         //Exits
-        //There's a trick where hovers backwalk into backflip gives access to RR_GF_LONG_ROOF from here
+        Entrance(RR_GF_LONG_ROOF,   []{return ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER);}), // can also get it with hovers backwalk into backflip
         Entrance(RR_GF_OUTSKIRTS,   []{return true;}),
         Entrance(RR_GF_BELOW_CHEST, []{return true;}),
         Entrance(RR_GF_ABOVE_JAIL,  []{return ctx->GetTrickOption(RT_HOOKSHOT_CLIP) && logic->CanUse(RG_HOOKSHOT);}),

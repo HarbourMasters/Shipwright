@@ -252,4 +252,8 @@ void ShowRandomizerSettingsMenu() {
     CVarSetString(CVAR_SETTING("Menu.RandomizerSidebarSection"), "General");
     mSohMenu->Show();
 }
+
+void ShowEscMenu() {
+    mSohMenu->Show();
+}
 } // namespace SohGui
