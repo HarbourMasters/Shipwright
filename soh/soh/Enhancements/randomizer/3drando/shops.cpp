@@ -27,7 +27,7 @@ PriceSettingsStruct::PriceSettingsStruct(RandomizerSettingKey _main, RandomizerS
     affordable = _affordable;
 }
 
-static std::array<std::vector<Text>, 0xF1> trickNameTable; // Table of trick names for ice traps
+static std::array<std::vector<Text>, RG_MAX> trickNameTable; // Table of trick names for ice traps
 bool initTrickNames = false; // Indicates if trick ice trap names have been initialized yet
 
 // Set vanilla shop item locations before potentially shuffling
@@ -887,6 +887,56 @@ void InitTrickNames() {
         Text{ "Triforce Shard", "Éclat de Triforce", "Triforce-Fragment" }, // "Triforce Shard"
         Text{ "Shiny Rock", "Caillou Brillant", "glänzender Stein" },       // "Shiny Rock"
     };
+    trickNameTable[RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "Volcano Seed Spirit" },
+        Text{ "Bolero Sprout Platform" },
+    };
+    trickNameTable[RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "Dodongo's Seed Spirit" },
+        Text{ "Boulder Sprout Platform" },
+    };
+    trickNameTable[RG_DESERT_COLOSSUS_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "Spirit Temple Seed Spirit" },
+        Text{ "Colossus Arch Sprout Platform" },
+    };
+    trickNameTable[RG_GERUDO_VALLEY_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "Waterfall Seed Spirit" },
+        Text{ "Gerudo Cow Sprout Platform" },
+    };
+    trickNameTable[RG_GRAVEYARD_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "GY Crate Seed Spirit" },
+        Text{ "Dampe's Sprout Platform" },
+    };
+    trickNameTable[RG_KOKIRI_FOREST_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "Rupee Ledge Seed Spirit" },
+        Text{ "KF Shop Sprout Platform" },
+    };
+    trickNameTable[RG_LAKE_HYLIA_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "Hylia Lab Seed Spirit" },
+        Text{ "Fishing Sprout Platform" },
+    };
+    trickNameTable[RG_LOST_WOODS_BRIDGE_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "LW Bridge Seed Spirit" },
+        Text{ "Skull Kid Sprout Platform" },
+    };
+    trickNameTable[RG_LOST_WOODS_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "Deku Theatre Seed Spirit" },
+        Text{ "Deku Scrubs Sprout Platform" },
+    };
+    trickNameTable[RG_ZORAS_RIVER_BEAN_SOUL] = {
+        // TODO_TRANSLATE
+        Text{ "River Ride Seed Spirit" },
+        Text{ "Bean Salesman Sprout Platform" },
+    };
     trickNameTable[RG_GOHMA_SOUL] = {
         Text{ "Spider Sense", "Sens de l'Araignée", "Spinnensinn" },
         Text{ "Deku Spirit", "Parasite Mojo", "Deku Geist" },
@@ -937,6 +987,11 @@ void InitTrickNames() {
         Text{ "Floating Lure", "Floating Lure", "Schwimmer" },
         Text{ "Fishing Reel", "Fishing Reel", "Angelschnur" },
     };
+    trickNameTable[RG_SKELETON_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Stalfos Key" }, Text{ "Nightmare Key" }, Text{ "Graveyard Key" },
+        Text{ "King's Key" },  Text{ "Hero's Key" },
+    };
     trickNameTable[RG_OCARINA_A_BUTTON] = {
         Text{ "Ocarina J Button", "Touche Ha de l'Ocarina", "J-Taste der Okarina" },
         Text{ "Ocarina Ayy Button", "Touche Ah de l'Ocarina", "A-Taste der Flöte" },
@@ -963,6 +1018,331 @@ void InitTrickNames() {
         Text{ "Ocarina C East Button", "Touche C Est de l'Ocarina", "C-Ost-Taste der Okarina" },
         Text{ "Ocarina C Wright Button", "Touche C'est Droite de l'Ocarina", "C-Rechts-Trigger der Okarina" },
         Text{ "Overworld C Right Button", "Trou Droit de l'Ocarina", "C-Rechts-Taste der E-Gitarre" },
+    };
+
+    trickNameTable[RG_GREG_RUPEE] = {
+        // TODO_TRANSALTE
+        Text{ "Morshu the Green Ruby", "Morshu the Green Ruby", "Morshu the Green Ruby" },
+        Text{ "Geoffrey the Gray Rupoor", "Geoffrey the Gray Rupoor", "Geoffrey the Gray Rupoor" },
+        Text{ "Validation Rupee", "Validation Rupee", "Validation Rupee" },
+        Text{ "Gary, just Gary", "Gary, just Gary", "Gary, just Gary" },
+        Text{ "Ike the Indigo Ice Trap", "Ike the Indigo Ice Trap", "Ike the Indigo Ice Trap" },
+    };
+
+    trickNameTable[RG_FOREST_TEMPLE_SMALL_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Wind Temple Smol Key", "Wind Temple Smol Key", "Wind Temple Smol Key" },
+        Text{ "Woodfall Temple Small Key", "Woodfall Temple Small Key", "Woodfall Temple Small Key" },
+        Text{ "Skull Woods Small Key", "Skull Woods Small Key", "Skull Woods Small Key" },
+    };
+    trickNameTable[RG_FIRE_TEMPLE_SMALL_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Ice Cavern Small Keese", "Ice Cavern Small Keese", "Ice Cavern Small Keese" },
+        Text{ "Goron Temple Small Key", "Goron Temple Small Key", "Goron Temple Small Key" },
+        Text{ "Eldin Temple Salmon Koi", "Eldin Temple Salmon Koi", "Eldin Temple Salmon Koi" },
+    };
+    trickNameTable[RG_WATER_TEMPLE_SMALL_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Swamp Palace Small Keese", "Swamp Palace Small Keese", "Swamp Palace Small Keese" },
+        Text{ "Great Bay Temple Small Key", "Great Bay Temple Small Key", "Great Bay Temple Small Key" },
+        Text{ "Lakebed Temple Small Key", "Lakebed Temple Small Key", "Lakebed Temple Small Key" },
+    };
+    trickNameTable[RG_SPIRIT_TEMPLE_SMALL_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Light Temple Small Key", "Light Temple Small Key", "Light Temple Small Key" },
+        Text{ "Lightning Temple Smol Key", "Lightning Temple Smol Key", "Lightning Temple Smol Key" },
+        Text{ "Desert Palace Small Key", "Desert Palace Small Key", "Desert Palace Small Key" },
+        Text{ "Stone Tower Small Keese", "Stone Tower Small Keese", "Stone Tower Small Keese" },
+    };
+    trickNameTable[RG_SHADOW_TEMPLE_SMALL_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Palace of Darkness Small Key", "Palace of Darkness Small Key", "Palace of Darkness Small Key" },
+        Text{ "Shrine of Illusion Salmon Koi", "Shrine of Illusion Salmon Koi", "Shrine of Illusion Salmon Koi" },
+        Text{ "Palace of Twilight Small Key", "Palace of Twilight Small Key", "Palace of Twilight Small Key" },
+    };
+    trickNameTable[RG_BOTTOM_OF_THE_WELL_SMALL_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Top of the Wall Small Key", "Top of the Wall Small Key", "Top of the Wall Small Key" },
+        Text{ "Breath of the Wild Small Key", "Breath of the Wild Small Key", "Breath of the Wild Small Key" },
+        Text{ "Beneath the Well Small Key", "Beneath the Well Small Key", "Beneath the Well Small Key" },
+    };
+    trickNameTable[RG_GERUDO_TRAINING_GROUND_SMALL_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Gerudo Sanctum Small Key", "Gerudo Sanctum Small Key", "Gerudo Sanctum Small Key" },
+        Text{ "Lady's Lair Small Keese", "Lady's Lair Small Keese", "Lady's Lair Small Keese" },
+        Text{ "Knight Acadamy Small Key", "Knight Acadamy Small Key", "Knight Acadamy Small Key" },
+    };
+    trickNameTable[RG_GERUDO_FORTRESS_SMALL_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Fortress of Winds Small Key", "Fortress of Winds Small Key", "Fortress of Winds Small Key" },
+        Text{ "Thieve's Town Small Key", "Thieve's Town Small Key", "Thieve's Town Small Key" },
+        Text{ "Fortress Centrum Small Key", "Fortress Centrum Small Key", "Fortress Centrum Small Key" },
+        Text{ "Forsaken Fortress Smol Key", "Forsaken Fortress Smol Key", "Forsaken Fortress Smol Key" },
+        Text{ "Pirate's Fortress Small Key", "Pirate's Fortress Small Key", "Pirate's Fortress Small Key" },
+    };
+    trickNameTable[RG_GANONS_CASTLE_SMALL_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Hyrule Castle Salmon Koi", "Hyrule Castle Salmon Koi", "Hyrule Castle Salmon Koi" },
+        Text{ "Onox's Castle Small Key", "Onox's Castle Small Key", "Onox's Castle Small Key" },
+        Text{ "Vaati's Palace Small Key", "Vaati's Palace Small Key", "Vaati's Palace Small Key" },
+    };
+
+    trickNameTable[RG_FOREST_TEMPLE_KEY_RING] = {
+        // TODO_TRANSALTE
+        Text{ "Wind Temple Key Ring", "Wind Temple Key Ring", "Wind Temple Key Ring" },
+        Text{ "Woodfall Temple Key Ring", "Woodfall Temple Key Ring", "Woodfall Temple Key Ring" },
+        Text{ "Skull Woods Key Ring", "Skull Woods Key Ring", "Skull Woods Key Ring" },
+    };
+    trickNameTable[RG_FIRE_TEMPLE_KEY_RING] = {
+        // TODO_TRANSALTE
+        Text{ "Ice Cavern Keese Ring", "Ice Cavern Keese Ring", "Ice Cavern Keese Ring" },
+        Text{ "Goron Temple Key Ring", "Goron Temple Key Ring", "Goron Temple Key Ring" },
+        Text{ "Eldin Temple Koi Ray", "Eldin Temple Koi Ray", "Eldin Temple Koi Ray" },
+    };
+    trickNameTable[RG_WATER_TEMPLE_KEY_RING] = {
+        // TODO_TRANSALTE
+        Text{ "Swamp Palace Keese Ring", "Swamp Palace Keese Ring", "Swamp Palace Keese Ring" },
+        Text{ "Great Bay Temple Key Ring", "Great Bay Temple Key Ring", "Great Bay Temple Key Ring" },
+        Text{ "Lakebed Temple Key Ring", "Lakebed Temple Key Ring", "Lakebed Temple Key Ring" },
+    };
+    trickNameTable[RG_SPIRIT_TEMPLE_KEY_RING] = {
+        // TODO_TRANSALTE
+        Text{ "Light Temple Key Ring", "Light Temple Key Ring", "Light Temple Key Ring" },
+        Text{ "Lightning Temple Key Ring", "Lightning Temple Key Ring", "Lightning Temple Key Ring" },
+        Text{ "Desert Palace Key Ring", "Desert Palace Key Ring", "Desert Palace Key Ring" },
+        Text{ "Stone Tower Keese Ring", "Stone Tower Keese Ring", "Stone Tower Keese Ring" },
+    };
+    trickNameTable[RG_SHADOW_TEMPLE_KEY_RING] = {
+        // TODO_TRANSALTE
+        Text{ "Palace of Darkness Key Ring", "Palace of Darkness Key Ring", "Palace of Darkness Key Ring" },
+        Text{ "Shrine of Illusion Koi Ray", "Shrine of Illusion Koi Ray", "Shrine of Illusion Koi Ray" },
+        Text{ "Palace of Twilight Key Ring", "Palace of Twilight Key Ring", "Palace of Twilight Key Ring" },
+    };
+    trickNameTable[RG_BOTTOM_OF_THE_WELL_KEY_RING] = {
+        // TODO_TRANSALTE
+        Text{ "Top of the Wall Key Ring", "Top of the Wall Key Ring", "Top of the Wall Key Ring" },
+        Text{ "Breath of the Wild Key Ring", "Breath of the Wild Key Ring", "Breath of the Wild Key Ring" },
+        Text{ "Beneath the Well Key Ring", "Beneath the Well Key Ring", "Beneath the Well Key Ring" },
+    };
+    trickNameTable[RG_GERUDO_TRAINING_GROUND_KEY_RING] = {
+        // TODO_TRANSALTE
+        Text{ "Gerudo Sanctum Key Ring", "Gerudo Sanctum Key Ring", "Gerudo Sanctum Key Ring" },
+        Text{ "Lady's Lair Keese Ring", "Lady's Lair Keese Ring", "Lady's Lair Keese Ring" },
+        Text{ "Knight Acadamy Key Ring", "Knight Acadamy Key Ring", "Knight Acadamy Key Ring" },
+    };
+    trickNameTable[RG_GERUDO_FORTRESS_KEY_RING] = {
+        // TODO_TRANSALTE
+        Text{ "Fortress of Winds Key Ring", "Fortress of Winds Key Ring", "Fortress of Winds Key Ring" },
+        Text{ "Thieve's Town Key Ring", "Thieve's Town Key Ring", "Thieve's Town Key Ring" },
+        Text{ "Fortress Centrum Key Ring", "Fortress Centrum Key Ring", "Fortress Centrum Key Ring" },
+        Text{ "Forsaken Fortress Key Ring", "Forsaken Fortress Key Ring", "Forsaken Fortresse Key Ring" },
+        Text{ "Pirate's Fortress Key Ring", "Pirate's Fortress Key Ring", "Pirate's Fortress Key Ring" },
+    };
+    trickNameTable[RG_GANONS_CASTLE_KEY_RING] = {
+        // TODO_TRANSALTE
+        Text{ "Hyrule Castle Koi Ray", "Hyrule Castle Koi Ray", "Hyrule Castle Koi Ray" },
+        Text{ "Onox's Castle Key Ring", "Onox's Castle Key Ring", "Onox's Castle Key Ring" },
+        Text{ "Vaati's Palace Key Ring", "Vaati's Palace Key Ring", "Vaati's Palace Key Ring" },
+    };
+
+    trickNameTable[RG_FOREST_TEMPLE_BOSS_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Wind Temple Boss Key", "Wind Temple Boss Key", "Wind Temple Boss Key" },
+        Text{ "Woodfall Temple Boss Key", "Woodfall Temple Boss Key", "Woodfall Temple Boss Key" },
+        Text{ "Skull Woods Boss Key", "Skull Woods Boss Key", "Skull Woods Boss Key" },
+        Text{ "Phantom Ganon's Key", "Phantom Ganon's Key", "Phantom Ganon's Key" },
+        Text{ "Deku Tree's Boss Key", "Deku Tree's Boss Key", "Deku Tree's Boss Key" },
+    };
+    trickNameTable[RG_FIRE_TEMPLE_BOSS_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Ice Cavern Boss Keese", "Ice Cavern Boss Keese", "Ice Cavern Boss Keese" },
+        Text{ "Goron Temple Boss Key", "Goron Temple Boss Key", "Goron Temple Boss Key" },
+        Text{ "Eldin Temple Boss Koi", "Eldin Temple Boss Koi", "Eldin Temple Boss Koi" },
+        Text{ "Volvagia's Key", "Volvagia's Key", "Volvagia's Key" },
+        Text{ "Dodongo's Cavern Boss Key", "Dodongo's Cavern Boss Key", "Dodongo's Cavern Boss Key" },
+    };
+    trickNameTable[RG_WATER_TEMPLE_BOSS_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Swamp Palace Boss Keese", "Swamp Palace Boss Keese", "Swamp Palace Boss Keese" },
+        Text{ "Great Bay Temple Boss Key", "Great Bay Temple Boss Key", "Great Bay Temple Boss Key" },
+        Text{ "Lakebed Temple Boss Key", "Lakebed Temple Boss Key", "Lakebed Temple Boss Key" },
+        Text{ "Morpha's Key", "Morpha's Key", "Morpha's Key" },
+        Text{ "Jabu Jabu's Belly Boss Key", "Jabu Jabu's Belly Boss Key", "Jabu Jabu's Belly Boss Key" },
+    };
+    trickNameTable[RG_SPIRIT_TEMPLE_BOSS_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Light Temple Boss Key", "Light Temple Boss Key", "Light Temple Boss Key" },
+        Text{ "Lightning Temple Boss Key", "Lightning Temple Boss Key", "Lightning Temple Boss Key" },
+        Text{ "Desert Palace Boss Key", "Desert Palace Boss Key", "Desert Palace Boss Key" },
+        Text{ "Stone Tower Boss Keese", "Stone Tower Boss Keese", "Stone Tower Boss Keese" },
+        Text{ "Twinrova's Key", "Twinrova's Key", "Twinrova's Key" },
+    };
+    trickNameTable[RG_SHADOW_TEMPLE_BOSS_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Palace of Darkness Boss Key", "Palace of Darkness Boss Key", "Palace of Darkness Boss Key" },
+        Text{ "Shrine of Illusion Bass Koi", "Shrine of Illusion Bass Koi", "Shrine of Illusion Bass Koi" },
+        Text{ "Palace of Twilight Boss Key", "Palace of Twilight Boss Key", "Palace of Twilight Boss Key" },
+        Text{ "Bongo Bongo's Key", "Bongo Bongo's Key", "Bongo Bongo's Key" },
+    };
+    trickNameTable[RG_GANONS_CASTLE_BOSS_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Hyrule Castle Bass Koi", "Hyrule Castle Bass Koi", "Hyrule Castle Bass Koi" },
+        Text{ "Onox's Castle Boss Key", "Onox's Castle Boss Key", "Onox's Castle Boss Key" },
+        Text{ "Vaati's Palace Boss Key", "Vaati's Palace Boss Key", "Vaati's Palace Boss Key" },
+        Text{ "Ganondorf's Key", "Ganondorf's Key", "Ganondorf's Key" },
+    };
+
+    trickNameTable[RG_GUARD_HOUSE_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Pot Room Key", "Pot Room Key", "Pot Room Key" },
+        Text{ "Poe Shop Keese", "Poe Shop Keese", "Poe Shop Keese" },
+        Text{ "Pot Collectors Club Key", "Pot Collectors Club Key", "Pot Collectors Club Key" },
+    };
+    trickNameTable[RG_MARKET_BAZAAR_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Malo Mart Key", "Malo Mart Key", "Malo Mart Key" },
+        Text{ "Zora Shop Key", "Zora Shop Key", "Zora Shop Key" },
+        Text{ "Goronu General Store Key", "Goronu General Store Key", "Goronu General Store Key" },
+        Text{ "Chudly's Fine Goods Key", "Chudly's Fine Goods Key", "Chudly's Fine Goods Key" },
+    };
+    trickNameTable[RG_MARKET_POTION_SHOP_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Market Medicine Shop Koi", "Market Medicine Shop Koi", "Market Medicine Shop Koi" },
+        Text{ "Market Pharmacy Key", "Market Pharmacy Key", "Market Pharmacy Key" },
+        Text{ "Market Drug Store Keese", "Market Drug Store Keese", "Market Drug Store Keese" },
+    };
+    trickNameTable[RG_MASK_SHOP_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Masked Ship Koi", "Masked Ship Koi", "Masked Ship Koi" },
+        Text{ "Madame Couture's Key", "Madame Couture's Key", "Madame Couture's Key" },
+        Text{ "South Clock Town Key", "South Clock Town Key", "South Clock Town Key" },
+    };
+    trickNameTable[RG_MARKET_SHOOTING_GALLERY_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Swamp Shooting Gallery Key", "Swamp Shooting Gallery Key", "Swamp Shooting Gallery Key" },
+        Text{ "Koume's Target Shooting Key", "Koume's Target Shooting Key", "Koume's Target Shooting Key" },
+        Text{ "Pumpkin Pull Key", "Pumpkin Pull Key", "Pumpkin Pull Key" },
+    };
+    trickNameTable[RG_BOMBCHU_BOWLING_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Bombchu Gallery Key", "Bombchu Gallery Key", "Bombchu Gallery Key" },
+        Text{ "Cucco Bowling Ally Key", "Cucco Bowling Ally Key", "Cucco Bowling Ally Key" },
+        Text{ "Snowball Bowling Key", "Snowball Bowling Key", "Snowball Bowling Key" },
+        Text{ "Bombsketball Key", "Bombsketball Key", "Bombsketball Key" },
+    };
+    trickNameTable[RG_TREASURE_CHEST_GAME_BUILDING_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Lucky Treasure Game Koi", "Lucky Treasure Game Koi", "Lucky Treasure Game Koi" },
+        Text{ "1 in 32 Key", "1 in 32 Key", "1 in 32 Key" },
+        Text{ "Fortune's Coice Key", "Fortune's Coice Key", "Fortune's Coice Key" },
+        Text{ "Money Making Game Key", "Money Making Game Key", "Money Making Game Key" },
+        Text{ "Trading Card Game Key", "Trading Card Game Key", "Trading Card Game Key" },
+    };
+    trickNameTable[RG_BOMBCHU_SHOP_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Curiosity Shop Key", "Curiosity Shop Key", "Curiosity Shop Key" },
+        Text{ "Barnes Bomb Shop Key", "Barnes Bomb Shop Key", "Barnes Bomb Shop Key" },
+        Text{ "Bomb Flower Shop Key", "Bomb Flower Shop Key", "Bomb Flower Shop Key" },
+    };
+    trickNameTable[RG_RICHARDS_HOUSE_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Stockwell's House Key", "Stockwell's House Key", "Stockwell's House Key" },
+        Text{ "Blue Dog's House Key", "Blue Dog's House Key", "Blue Dog's House Key" },
+        Text{ "Barkle's House Key", "Barkle's House Key", "Barkle's House Key" },
+        Text{ "Chimimi's House Key", "Chimimi's House Key", "Chimimi's House Key" },
+    };
+    trickNameTable[RG_ALLEY_HOUSE_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Mido's House Key", "Mido's House Key", "Mido's House Key" },
+        Text{ "Saria's House Key", "Saria's House Key", "Saria's House Key" },
+        Text{ "@'s House Key", "@'s House Key", "@'s House Key" },
+    };
+    trickNameTable[RG_KAK_BAZAAR_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Skyloft Bazaar Key", "Skyloft Bazaar Key", "Skyloft Bazaar Key" },
+        Text{ "Harlequin Bazaar Key", "Harlequin Bazaar Key", "Harlequin Bazaar Key" },
+        Text{ "Kokiri Shop Key", "Kokiri Shop Key", "Kokiri Shop Key" },
+        Text{ "Goron Shop Key", "Goron Shop Key", "Goron Shop Key" },
+    };
+    trickNameTable[RG_KAK_POTION_SHOP_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Kak Medicine Shop Keep", "Kak Medicine Shop Keep", "Kak Medicine Shop Keep" },
+        Text{ "Kak Pharmacy Key", "Kak Pharmacy Key", "Kak Pharmacy Key" },
+        Text{ "Kak Drug Store Keese", "Kak Drug Store Keese", "Kak Drug Store Keese" },
+    };
+    trickNameTable[RG_BOSS_HOUSE_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Kakariko Village Boss Key", "Kakariko Village Boss Key", "Kakariko Village Boss Key" },
+        Text{ "Lord Kohga's House Key", "Lord Kohga's House Key", "Lord Kohga's House Key" },
+        Text{ "Twinrova's House Key", "Twinrova's House Key", "Twinrova's House Key" },
+    };
+    trickNameTable[RG_GRANNYS_POTION_SHOP_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Grandpa's Potion Shop Key", "Grandpa's Potion Shop Key", "Grandpa's Potion Shop Key" },
+        Text{ "Witch's Hut Key", "Witch's Hut Key", "Witch's Hut Key" },
+        Text{ "Hags's Potion Shop Key", "Hags's Potion Shop Key", "Hags's Potion Shop Key" },
+        Text{ "Syrup's Potion Shop Key", "Syrup's Potion Shop Key", "Syrup's Potion Shop Key" },
+    };
+    trickNameTable[RG_SKULLTULA_HOUSE_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Town Spider House Key", "Town Spider House Key", "Town Spider House Key" },
+        Text{ "Jovani's House Key", "Jovani's House Key", "Jovani's House Key" },
+        Text{ "Maiamai House Key", "Maiamai House Key", "Maiamai House Key" },
+    };
+    trickNameTable[RG_IMPAS_HOUSE_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Zelda's House Key", "Zelda's House Key", "Zelda's House Key" },
+        Text{ "Sheik's House Key", "Sheik's House Key", "Sheik's House Key" },
+        Text{ "Purah's House Key", "Purah's House Key", "Purah's House Key" },
+    };
+    trickNameTable[RG_WINDMILL_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Wind Switch Key", "Wind Switch Key", "Wind Switch Key" },
+        Text{ "Weather Vane Key", "Weather Vane Key", "Weather Vane Key" },
+    };
+    trickNameTable[RG_KAK_SHOOTING_GALLERY_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Firing Range Key", "Firing Range Key", "Firing Range Key" },
+        Text{ "Crossbow Training Key", "Crossbow Training Key", "Crossbow Training Key" },
+        Text{ "Goron Target Range Key", "Goron Target Range Key", "Goron Target Range Key" },
+    };
+    trickNameTable[RG_DAMPES_HUT_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Dampe's Grave Key", "Dampe's Grave Key", "Dampe's Grave Key" },
+        Text{ "Dampe Studio Key", "Dampe Studio Key", "Dampe Studio Key" },
+        Text{ "Old Man's Cabin Key", "Old Man's Cabin Key", "Old Man's Cabin Key" },
+    };
+    trickNameTable[RG_TALONS_HOUSE_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Malon's House Koi", "Malon's House Koi", "Malon's House Koi" },
+        Text{ "Ingo's House Keese", "Ingo's House Keese", "Ingo's House Keese" },
+        Text{ "Mario's House Key", "Mario's House Key", "Mario's House Key" },
+    };
+    trickNameTable[RG_STABLES_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Corral Key", "Corral Key", "Corral Key" },
+        Text{ "Foothill Stable Key", "Foothill Stable Key", "Foothill Stable Key" },
+        Text{ "Goat Barn Key", "Goat Barn Key", "Goat Barn Key" },
+    };
+    trickNameTable[RG_BACK_TOWER_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Tower of Hera Key", "Tower of Hera Key", "Tower of Hera Key" },
+        Text{ "Clock Tower Key", "Clock Tower Key", "Clock Tower Key" },
+        Text{ "Tingle Tower Key", "Tingle Tower Key", "Tingle Tower Key" },
+        Text{ "Skyview Tower Key", "Skyview Tower Key", "Skyview Tower Key" },
+        Text{ "Sheikah Tower Key", "Sheikah Tower Key", "Sheikah Tower Key" },
+    };
+    trickNameTable[RG_HYLIA_LAB_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Marine Research Lab Key", "Marine Research Lab Key", "Marine Research Lab Key" },
+        Text{ "Hateno Tech Lab Key", "Hateno Tech Lab Key", "Hateno Tech Lab Key" },
+        Text{ "Tough Mango Lab Key", "Tough Mango Lab Key", "Tough Mango Lab Key" },
+    };
+    trickNameTable[RG_FISHING_HOLE_KEY] = {
+        // TODO_TRANSLATE
+        Text{ "Swamp Fishing Hole Key", "Swamp Fishing Hole Key", "Swamp Fishing Hole Key" },
+        Text{ "Beaver Race Key", "Beaver Race Key", "Beaver Race Key" },
+        Text{ "Squid-Hunt Key", "Squid-Hunt Key", "Squid-Hunt Key" },
     };
 
     /*
@@ -1159,11 +1539,15 @@ void InitTrickNames() {
 }
 
 // Generate a fake name for the ice trap based on the item it's displayed as
-Text GetIceTrapName(uint8_t id) {
+Text GetIceTrapName(int id) {
     // If the trick names table has not been initialized, do so
     if (!initTrickNames) {
         InitTrickNames();
         initTrickNames = true;
+    }
+    if (trickNameTable[id].empty()) {
+        assert(false);
+        return Text{ "not an Ice Trap" };
     }
     // Randomly get the easy, medium, or hard name for the given item id
     return RandomElement(trickNameTable[id]);

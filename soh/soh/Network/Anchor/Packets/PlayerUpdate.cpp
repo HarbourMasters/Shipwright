@@ -58,7 +58,7 @@ void Anchor::SendPacket_PlayerUpdate() {
     payload["currentShield"] = player->currentShield;
     payload["currentTunic"] = player->currentTunic;
     payload["stateFlags1"] = player->stateFlags1;
-    payload["stateFlags2"] = player->stateFlags2;
+    payload["stateFlags2"] = player->stateFlags2 & ~PLAYER_STATE2_DISABLE_DRAW;
     payload["buttonItem0"] = gSaveContext.equips.buttonItems[0];
     payload["itemAction"] = player->itemAction;
     payload["heldItemAction"] = player->heldItemAction;

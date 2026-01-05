@@ -36,50 +36,44 @@ static Gfx* D_80B3BF70[] = {
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 uint8_t EnWood02_RandomizerHoldsItem(EnWood02* treeActor, PlayState* play) {
-    const auto treeIdentity = ObjectExtension::GetInstance().Get<TreeIdentity>(&treeActor->actor);
-    if (treeIdentity == nullptr) {
-        return false;
-    }
-
     // Don't pull randomized item if tree isn't randomized or is already checked
-    return IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TREES).Get() &&
-           !Flags_GetRandomizerInf(treeIdentity->randomizerInf) && treeIdentity->randomizerCheck != RC_UNKNOWN_CHECK;
+    const auto treeIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&treeActor->actor);
+    return treeIdentity != nullptr && treeIdentity->randomizerCheck != RC_UNKNOWN_CHECK &&
+           treeIdentity->randomizerInf != RAND_INF_MAX && !Flags_GetRandomizerInf(treeIdentity->randomizerInf);
 }
 
 extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemCategory getItemCategory;
-    GetItemEntry smallCrateItem;
+    GetItemEntry treeItem;
     auto treeActor = (EnWood02*)thisx;
-    int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
-    int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    int isVanilla =
-        csmc == CSMC_DISABLED || csmc == CSMC_SIZE || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
-
-    const auto treeIdentity = ObjectExtension::GetInstance().Get<TreeIdentity>(&treeActor->actor);
-    if (treeIdentity == nullptr) {
+    const auto treeIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&treeActor->actor);
+    if (treeIdentity == nullptr || treeIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
         return;
     }
 
-    if (isVanilla || treeIdentity == nullptr || treeIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
+    bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
+    int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
+    int isVanilla = !csmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+
+    if (isVanilla) {
         getItemCategory = ITEM_CATEGORY_JUNK;
     } else {
-        smallCrateItem = Rando::Context::GetInstance()->GetFinalGIEntry(treeIdentity->randomizerCheck, true, GI_NONE);
-        getItemCategory = smallCrateItem.getItemCategory;
+        treeItem = Rando::Context::GetInstance()->GetFinalGIEntry(treeIdentity->randomizerCheck, true, GI_NONE);
+        getItemCategory = treeItem.getItemCategory;
 
         // If they have bombchus, don't consider the bombchu item major
         if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-            ((smallCrateItem.modIndex == MOD_RANDOMIZER && smallCrateItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
-             (smallCrateItem.modIndex == MOD_NONE &&
-              (smallCrateItem.getItemId == GI_BOMBCHUS_5 || smallCrateItem.getItemId == GI_BOMBCHUS_10 ||
-               smallCrateItem.getItemId == GI_BOMBCHUS_20)))) {
+            ((treeItem.modIndex == MOD_RANDOMIZER && treeItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
+             (treeItem.modIndex == MOD_NONE &&
+              (treeItem.getItemId == GI_BOMBCHUS_5 || treeItem.getItemId == GI_BOMBCHUS_10 ||
+               treeItem.getItemId == GI_BOMBCHUS_20)))) {
             getItemCategory = ITEM_CATEGORY_JUNK;
             // If it's a bottle and they already have one, consider the item lesser
-        } else if ((smallCrateItem.modIndex == MOD_RANDOMIZER &&
-                    smallCrateItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
-                    smallCrateItem.getItemId <= RG_BOTTLE_WITH_POE) ||
-                   (smallCrateItem.modIndex == MOD_NONE &&
-                    (smallCrateItem.getItemId == GI_BOTTLE || smallCrateItem.getItemId == GI_MILK_BOTTLE))) {
+        } else if ((treeItem.modIndex == MOD_RANDOMIZER && treeItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
+                    treeItem.getItemId <= RG_BOTTLE_WITH_POE) ||
+                   (treeItem.modIndex == MOD_NONE &&
+                    (treeItem.getItemId == GI_BOTTLE || treeItem.getItemId == GI_MILK_BOTTLE))) {
             if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
                 getItemCategory = ITEM_CATEGORY_LESSER;
             }
@@ -108,18 +102,14 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
             Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallBossKeyCrateDL);
             break;
+        case ITEM_CATEGORY_HEALTH:
+            Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
+            break;
         case ITEM_CATEGORY_LESSER:
             Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
-            switch (smallCrateItem.itemId) {
-                case ITEM_HEART_PIECE:
-                case ITEM_HEART_PIECE_2:
-                case ITEM_HEART_CONTAINER:
-                    Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
-                    break;
-                default:
-                    Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
-                    break;
-            }
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
+            break;
         case ITEM_CATEGORY_JUNK:
         default:
             Matrix_Scale(0.04, 0.02, 0.04, MTXMODE_APPLY);
@@ -132,8 +122,8 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
 }
 
 void EnWood02_RandomizerSpawnCollectible(EnWood02* treeActor, PlayState* play) {
-    const auto treeIdentity = ObjectExtension::GetInstance().Get<TreeIdentity>(&treeActor->actor);
-    if (treeIdentity == nullptr) {
+    const auto treeIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&treeActor->actor);
+    if (treeIdentity == nullptr || treeIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
         return;
     }
 
@@ -152,26 +142,33 @@ void EnWood02_RandomizerSpawnCollectible(EnWood02* treeActor, PlayState* play) {
 
 void EnWood02_RandomizerInit(void* actorRef) {
     EnWood02* treeActor = static_cast<EnWood02*>(actorRef);
-    if (treeActor->actor.params <= WOOD_TREE_KAKARIKO_ADULT) {
+    if ((treeActor->actor.params <= WOOD_TREE_KAKARIKO_ADULT &&
+         Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TREES).Get()) ||
+        (treeActor->actor.params > WOOD_TREE_KAKARIKO_ADULT &&
+         treeActor->actor.params <= WOOD_BUSH_BLACK_LARGE_SPAWNED &&
+         Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_BUSHES).Get())) {
         auto treeIdentity = OTRGlobals::Instance->gRandomizer->IdentifyTree(
             gPlayState->sceneNum, (s16)treeActor->actor.world.pos.x, (s16)treeActor->actor.world.pos.z);
-        ObjectExtension::GetInstance().Set<TreeIdentity>(actorRef, std::move(treeIdentity));
+        if (treeIdentity.randomizerInf != RAND_INF_MAX && treeIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
+            ObjectExtension::GetInstance().Set<CheckIdentity>(actorRef, std::move(treeIdentity));
+        }
     }
 }
 
 void RegisterShuffleTrees() {
-    bool shouldRegister = IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TREES).Get();
+    bool shouldRegisterTree = IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TREES).Get();
+    bool shouldRegisterBush = IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_BUSHES).Get();
 
-    COND_ID_HOOK(OnActorInit, ACTOR_EN_WOOD02, shouldRegister, EnWood02_RandomizerInit);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_WOOD02, shouldRegisterTree || shouldRegisterBush, EnWood02_RandomizerInit);
 
-    COND_VB_SHOULD(VB_TREE_SETUP_DRAW, shouldRegister, {
+    COND_VB_SHOULD(VB_TREE_SETUP_DRAW, shouldRegisterTree || shouldRegisterBush, {
         EnWood02* treeActor = va_arg(args, EnWood02*);
         if (EnWood02_RandomizerHoldsItem(treeActor, gPlayState)) {
             EnWood02_RandomizerDraw(&treeActor->actor, gPlayState);
         }
     });
 
-    COND_VB_SHOULD(VB_TREE_DROP_ITEM, shouldRegister, {
+    COND_VB_SHOULD(VB_TREE_DROP_ITEM, shouldRegisterTree, {
         EnWood02* treeActor = va_arg(args, EnWood02*);
         if (EnWood02_RandomizerHoldsItem(treeActor, gPlayState)) {
             EnWood02_RandomizerSpawnCollectible(treeActor, gPlayState);
@@ -188,6 +185,25 @@ void RegisterShuffleTrees() {
             *should = false;
         }
     });
+
+    COND_VB_SHOULD(VB_BUSH_DROP_ITEM, shouldRegisterBush, {
+        EnWood02* treeActor = va_arg(args, EnWood02*);
+        if (EnWood02_RandomizerHoldsItem(treeActor, gPlayState)) {
+            const auto treeIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&treeActor->actor);
+            if (treeIdentity == nullptr || treeIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
+                return;
+            }
+
+            EnItem00* item00 =
+                (EnItem00*)Item_DropCollectible2(gPlayState, &treeActor->actor.world.pos, ITEM00_SOH_DUMMY);
+            item00->randoInf = treeIdentity->randomizerInf;
+            item00->itemEntry =
+                Rando::Context::GetInstance()->GetFinalGIEntry(treeIdentity->randomizerCheck, true, GI_NONE);
+            item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
+            treeIdentity->randomizerCheck = RC_UNKNOWN_CHECK;
+            treeActor->unk_14C = -0x15;
+        }
+    });
 }
 
 void Rando::StaticData::RegisterTreeLocations() {
@@ -201,7 +217,7 @@ void Rando::StaticData::RegisterTreeLocations() {
     locationTable[RC_HC_NEAR_GUARDS_TREE_4]       = Location::Tree(RC_HC_NEAR_GUARDS_TREE_4,             RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(421, 1397),    "Tree Near Guards 4",                RHT_TREE_HYRULE_CASTLE,   RG_BLUE_RUPEE,  SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NEAR_GUARDS_TREE_4));
     locationTable[RC_HC_NEAR_GUARDS_TREE_5]       = Location::Tree(RC_HC_NEAR_GUARDS_TREE_5,             RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(-73, 1459),    "Tree Near Guards 5",                RHT_TREE_HYRULE_CASTLE,   RG_BLUE_RUPEE,  SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NEAR_GUARDS_TREE_5));
     locationTable[RC_HC_NEAR_GUARDS_TREE_6]       = Location::Tree(RC_HC_NEAR_GUARDS_TREE_6,             RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(1494, 2108),   "Tree Near Guards 6",                RHT_TREE_HYRULE_CASTLE,   RG_DEKU_NUTS_5, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NEAR_GUARDS_TREE_6));
-    locationTable[RC_HC_SKULLTULA_TREE]           = Location::Tree(RC_HC_SKULLTULA_TREE,                 RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(-145, 2961),   "HC GS Tree",                        RHT_TREE_HYRULE_CASTLE,   RG_DEKU_NUTS_5, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_SKULLTULA_TREE));
+    locationTable[RC_HC_SKULLTULA_TREE]           = Location::Tree(RC_HC_SKULLTULA_TREE,                 RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(-145, 2961),   "Tree with GS",                      RHT_TREE_HYRULE_CASTLE,   RG_DEKU_NUTS_5, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_SKULLTULA_TREE));
     locationTable[RC_HC_GROTTO_TREE]              = Location::Tree(RC_HC_GROTTO_TREE,                    RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(924, 872),     "Tree Near Storms Grotto",           RHT_TREE_HYRULE_CASTLE,   RG_DEKU_NUTS_5, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_GROTTO_TREE));
     locationTable[RC_HC_NL_TREE_1]                = Location::NLTree(RC_HC_NL_TREE_1,                    RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(-331, 1438),   "NL Tree Near Guards 1",             RHT_TREE_HYRULE_CASTLE,   RG_DEKU_NUTS_5, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NL_TREE_1));
     locationTable[RC_HC_NL_TREE_2]                = Location::NLTree(RC_HC_NL_TREE_2,                    RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(1022, 1444),   "NL Tree Near Guards 2",             RHT_TREE_HYRULE_CASTLE,   RG_DEKU_NUTS_5, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NL_TREE_2));
@@ -257,9 +273,73 @@ void Rando::StaticData::RegisterTreeLocations() {
     locationTable[RC_ZR_TREE]                     = Location::Tree(RC_ZR_TREE,                           RCQUEST_BOTH, RCAREA_ZORAS_RIVER,           SCENE_ZORAS_RIVER,                 TWO_ACTOR_PARAMS(-1690, 554),   "Tree in Zoras River",               RHT_TREE_ZORAS_RIVER,     RG_DEKU_NUTS_5, SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_TREE));
     locationTable[RC_KAK_TREE]                    = Location::Tree(RC_KAK_TREE,                          RCQUEST_BOTH, RCAREA_KAKARIKO_VILLAGE,      SCENE_KAKARIKO_VILLAGE,            TWO_ACTOR_PARAMS(-860, 522),    "Kakariko GS Tree",                  RHT_TREE_KAKARIKO,        RG_DEKU_NUTS_5, SpoilerCollectionCheck::RandomizerInf(RAND_INF_KAK_TREE));
     locationTable[RC_LLR_TREE]                    = Location::Tree(RC_LLR_TREE,                          RCQUEST_BOTH, RCAREA_LON_LON_RANCH,         SCENE_LON_LON_RANCH,               TWO_ACTOR_PARAMS(1309, -2241),  "Lon Lon Ranch GS Tree",             RHT_TREE_LON_LON_RANCH,   RG_DEKU_NUTS_5, SpoilerCollectionCheck::RandomizerInf(RAND_INF_LLR_TREE));
+
+    locationTable[RC_HF_BUSH_NEAR_LAKE_1]         = Location::Bush(RC_HF_BUSH_NEAR_LAKE_1,               RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-3506,13460),  "Bush Near Lake 1",                  RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_NEAR_LAKE_1));
+    locationTable[RC_HF_BUSH_NEAR_LAKE_2]         = Location::Bush(RC_HF_BUSH_NEAR_LAKE_2,               RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-3907,13119),  "Bush Near Lake 2",                  RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_NEAR_LAKE_2));
+    locationTable[RC_HF_BUSH_NEAR_LAKE_3]         = Location::Bush(RC_HF_BUSH_NEAR_LAKE_3,               RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-4106,13520),  "Bush Near Lake 3",                  RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_NEAR_LAKE_3));
+    locationTable[RC_HF_BUSH_NEAR_LAKE_4]         = Location::Bush(RC_HF_BUSH_NEAR_LAKE_4,               RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-4407,13320),  "Bush Near Lake 4",                  RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_NEAR_LAKE_4));
+    locationTable[RC_HF_BUSH_NEAR_LAKE_5]         = Location::Bush(RC_HF_BUSH_NEAR_LAKE_5,               RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-4486,13920),  "Bush Near Lake 5",                  RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_NEAR_LAKE_5));
+    locationTable[RC_HF_BUSH_NEAR_LAKE_6]         = Location::Bush(RC_HF_BUSH_NEAR_LAKE_6,               RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-4722,12732),  "Bush Near Lake 6",                  RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_NEAR_LAKE_6));
+    locationTable[RC_HF_BUSH_NEAR_LAKE_7]         = Location::Bush(RC_HF_BUSH_NEAR_LAKE_7,               RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-4723,13392),  "Bush Near Lake 7",                  RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_NEAR_LAKE_7));
+    locationTable[RC_HF_BUSH_NEAR_LAKE_8]         = Location::Bush(RC_HF_BUSH_NEAR_LAKE_8,               RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-5123,12391),  "Bush Near Lake 8",                  RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_NEAR_LAKE_8));
+    locationTable[RC_HF_BUSH_NEAR_LAKE_9]         = Location::Bush(RC_HF_BUSH_NEAR_LAKE_9,               RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-5322,12792),  "Bush Near Lake 9",                  RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_NEAR_LAKE_9));
+    locationTable[RC_HF_BUSH_NEAR_LAKE_10]        = Location::Bush(RC_HF_BUSH_NEAR_LAKE_10,              RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-5623,12592),  "Bush Near Lake 10",                 RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_NEAR_LAKE_10));
+    locationTable[RC_HF_BUSH_NEAR_LAKE_11]        = Location::Bush(RC_HF_BUSH_NEAR_LAKE_11,              RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-5702,13192),  "Bush Near Lake 11",                 RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_NEAR_LAKE_11));
+    locationTable[RC_HF_NORTHERN_BUSH_1]          = Location::Bush(RC_HF_NORTHERN_BUSH_1,                RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-4710,1381),   "Northern Bush 1",                   RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_NORTHERN_BUSH_1));
+    locationTable[RC_HF_NORTHERN_BUSH_2]          = Location::Bush(RC_HF_NORTHERN_BUSH_2,                RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-4711,2041),   "Northern Bush 2",                   RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_NORTHERN_BUSH_2));
+    locationTable[RC_HF_NORTHERN_BUSH_3]          = Location::Bush(RC_HF_NORTHERN_BUSH_3,                RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-5111,1040),   "Northern Bush 3",                   RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_NORTHERN_BUSH_3));
+    locationTable[RC_HF_NORTHERN_BUSH_4]          = Location::Bush(RC_HF_NORTHERN_BUSH_4,                RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-5310,1441),   "Northern Bush 4",                   RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_NORTHERN_BUSH_4));
+    locationTable[RC_HF_NORTHERN_BUSH_5]          = Location::Bush(RC_HF_NORTHERN_BUSH_5,                RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-5611,1241),   "Northern Bush 5",                   RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_NORTHERN_BUSH_5));
+    locationTable[RC_HF_NORTHERN_BUSH_6]          = Location::Bush(RC_HF_NORTHERN_BUSH_6,                RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-5690,1841),   "Northern Bush 6",                   RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_NORTHERN_BUSH_6));
+    locationTable[RC_HF_CHILD_NORTHERN_BUSH_1]    = Location::Bush(RC_HF_CHILD_NORTHERN_BUSH_1,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-3621,-303),   "Child Northern Bush 1",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_NORTHERN_BUSH_1));
+    locationTable[RC_HF_CHILD_NORTHERN_BUSH_2]    = Location::Bush(RC_HF_CHILD_NORTHERN_BUSH_2,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-3622,356),    "Child Northern Bush 2",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_NORTHERN_BUSH_2));
+    locationTable[RC_HF_CHILD_NORTHERN_BUSH_3]    = Location::Bush(RC_HF_CHILD_NORTHERN_BUSH_3,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-4022,-644),   "Child Northern Bush 3",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_NORTHERN_BUSH_3));
+    locationTable[RC_HF_CHILD_NORTHERN_BUSH_4]    = Location::Bush(RC_HF_CHILD_NORTHERN_BUSH_4,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-4221,-243),   "Child Northern Bush 4",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_NORTHERN_BUSH_4));
+    locationTable[RC_HF_CHILD_NORTHERN_BUSH_5]    = Location::Bush(RC_HF_CHILD_NORTHERN_BUSH_5,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-4522,-443),   "Child Northern Bush 5",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_NORTHERN_BUSH_5));
+    locationTable[RC_HF_CHILD_NORTHERN_BUSH_6]    = Location::Bush(RC_HF_CHILD_NORTHERN_BUSH_6,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-4601,156),    "Child Northern Bush 6",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_NORTHERN_BUSH_6));
+    locationTable[RC_HF_CHILD_NORTHERN_BUSH_7]    = Location::Bush(RC_HF_CHILD_NORTHERN_BUSH_7,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-4634,-284),   "Child Northern Bush 7",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_NORTHERN_BUSH_7));
+    locationTable[RC_HF_CHILD_NORTHERN_BUSH_8]    = Location::Bush(RC_HF_CHILD_NORTHERN_BUSH_8,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-4713,315),    "Child Northern Bush 8",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_NORTHERN_BUSH_8));
+    locationTable[RC_HF_CHILD_NORTHERN_BUSH_9]    = Location::Bush(RC_HF_CHILD_NORTHERN_BUSH_9,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-5014,115),    "Child Northern Bush 9",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_NORTHERN_BUSH_9));
+    locationTable[RC_HF_CHILD_NORTHERN_BUSH_10]   = Location::Bush(RC_HF_CHILD_NORTHERN_BUSH_10,         RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-5213,516),    "Child Northern Bush 10",            RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_NORTHERN_BUSH_10));
+    locationTable[RC_HF_CHILD_NORTHERN_BUSH_11]   = Location::Bush(RC_HF_CHILD_NORTHERN_BUSH_11,         RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-5614,175),    "Child Northern Bush 11",            RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_NORTHERN_BUSH_11));
+    locationTable[RC_HF_BUSH_BY_ROCKY_PATH_1]     = Location::Bush(RC_HF_BUSH_BY_ROCKY_PATH_1,           RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-5792,7022),   "Bush By Rocky Path 1",              RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_BY_ROCKY_PATH_1));
+    locationTable[RC_HF_BUSH_BY_ROCKY_PATH_2]     = Location::Bush(RC_HF_BUSH_BY_ROCKY_PATH_2,           RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-5793,7682),   "Bush By Rocky Path 2",              RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_BY_ROCKY_PATH_2));
+    locationTable[RC_HF_BUSH_BY_ROCKY_PATH_3]     = Location::Bush(RC_HF_BUSH_BY_ROCKY_PATH_3,           RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-6193,6681),   "Bush By Rocky Path 3",              RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_BY_ROCKY_PATH_3));
+    locationTable[RC_HF_BUSH_BY_ROCKY_PATH_4]     = Location::Bush(RC_HF_BUSH_BY_ROCKY_PATH_4,           RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-6392,7082),   "Bush By Rocky Path 4",              RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_BY_ROCKY_PATH_4));
+    locationTable[RC_HF_BUSH_BY_ROCKY_PATH_5]     = Location::Bush(RC_HF_BUSH_BY_ROCKY_PATH_5,           RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-6693,6882),   "Bush By Rocky Path 5",              RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_BY_ROCKY_PATH_5));
+    locationTable[RC_HF_BUSH_BY_ROCKY_PATH_6]     = Location::Bush(RC_HF_BUSH_BY_ROCKY_PATH_6,           RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-6772,7482),   "Bush By Rocky Path 6",              RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_BUSH_BY_ROCKY_PATH_6));
+    locationTable[RC_HF_SOUTHERN_BUSH_1]          = Location::Bush(RC_HF_SOUTHERN_BUSH_1,                RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-270,12633),   "Southern Bush 1",                   RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_SOUTHERN_BUSH_1));
+    locationTable[RC_HF_SOUTHERN_BUSH_2]          = Location::Bush(RC_HF_SOUTHERN_BUSH_2,                RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-349,13233),   "Southern Bush 2",                   RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_SOUTHERN_BUSH_2));
+    locationTable[RC_HF_SOUTHERN_BUSH_3]          = Location::Bush(RC_HF_SOUTHERN_BUSH_3,                RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(2,11473),      "Southern Bush 3",                   RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_SOUTHERN_BUSH_3));
+    locationTable[RC_HF_SOUTHERN_BUSH_4]          = Location::Bush(RC_HF_SOUTHERN_BUSH_4,                RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(229,12432),    "Southern Bush 4",                   RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_SOUTHERN_BUSH_4));
+    locationTable[RC_HF_SOUTHERN_BUSH_5]          = Location::Bush(RC_HF_SOUTHERN_BUSH_5,                RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(30,12833),     "Southern Bush 5",                   RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_SOUTHERN_BUSH_5));
+    locationTable[RC_HF_SOUTHERN_BUSH_6]          = Location::Bush(RC_HF_SOUTHERN_BUSH_6,                RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(382,11073),    "Southern Bush 6",                   RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_SOUTHERN_BUSH_6));
+    locationTable[RC_HF_SOUTHERN_BUSH_7]          = Location::Bush(RC_HF_SOUTHERN_BUSH_7,                RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(581,10672),    "Southern Bush 7",                   RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_SOUTHERN_BUSH_7));
+    locationTable[RC_HF_SOUTHERN_BUSH_8]          = Location::Bush(RC_HF_SOUTHERN_BUSH_8,                RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(629,13433),    "Southern Bush 8",                   RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_SOUTHERN_BUSH_8));
+    locationTable[RC_HF_SOUTHERN_BUSH_9]          = Location::Bush(RC_HF_SOUTHERN_BUSH_9,                RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(630,12773),    "Southern Bush 9",                   RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_SOUTHERN_BUSH_9));
+    locationTable[RC_HF_SOUTHERN_BUSH_10]         = Location::Bush(RC_HF_SOUTHERN_BUSH_10,               RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(81,10873),     "Southern Bush 10",                  RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_SOUTHERN_BUSH_10));
+    locationTable[RC_HF_SOUTHERN_BUSH_11]         = Location::Bush(RC_HF_SOUTHERN_BUSH_11,               RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(981,11673),    "Southern Bush 11",                  RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_SOUTHERN_BUSH_11));
+    locationTable[RC_HF_SOUTHERN_BUSH_12]         = Location::Bush(RC_HF_SOUTHERN_BUSH_12,               RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(982,11013),    "Southern Bush 12",                  RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_SOUTHERN_BUSH_12));
+    locationTable[RC_HF_CHILD_SOUTHERN_BUSH_1]    = Location::Bush(RC_HF_CHILD_SOUTHERN_BUSH_1,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-873,13221),   "Child Southern Bush 1",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_SOUTHERN_BUSH_1));
+    locationTable[RC_HF_CHILD_SOUTHERN_BUSH_2]    = Location::Bush(RC_HF_CHILD_SOUTHERN_BUSH_2,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-874,13881),   "Child Southern Bush 2",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_SOUTHERN_BUSH_2));
+    locationTable[RC_HF_CHILD_SOUTHERN_BUSH_3]    = Location::Bush(RC_HF_CHILD_SOUTHERN_BUSH_3,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(1009,11961),   "Child Southern Bush 3",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_SOUTHERN_BUSH_3));
+    locationTable[RC_HF_CHILD_SOUTHERN_BUSH_4]    = Location::Bush(RC_HF_CHILD_SOUTHERN_BUSH_4,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(1310,12161),   "Child Southern Bush 4",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_SOUTHERN_BUSH_4));
+    locationTable[RC_HF_CHILD_SOUTHERN_BUSH_5]    = Location::Bush(RC_HF_CHILD_SOUTHERN_BUSH_5,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(1509,11760),   "Child Southern Bush 5",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_SOUTHERN_BUSH_5));
+    locationTable[RC_HF_CHILD_SOUTHERN_BUSH_6]    = Location::Bush(RC_HF_CHILD_SOUTHERN_BUSH_6,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(1909,12761),   "Child Southern Bush 6",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_SOUTHERN_BUSH_6));
+    locationTable[RC_HF_CHILD_SOUTHERN_BUSH_7]    = Location::Bush(RC_HF_CHILD_SOUTHERN_BUSH_7,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(1910,12101),   "Child Southern Bush 7",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_SOUTHERN_BUSH_7));
+    locationTable[RC_HF_CHILD_SOUTHERN_BUSH_8]    = Location::Bush(RC_HF_CHILD_SOUTHERN_BUSH_8,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(930,12561),    "Child Southern Bush 8",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_SOUTHERN_BUSH_8));
+    locationTable[RC_HF_CHILD_SOUTHERN_BUSH_9]    = Location::Bush(RC_HF_CHILD_SOUTHERN_BUSH_9,          RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-1274,12880),  "Child Southern Bush 9",             RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_SOUTHERN_BUSH_9));
+    locationTable[RC_HF_CHILD_SOUTHERN_BUSH_10]   = Location::Bush(RC_HF_CHILD_SOUTHERN_BUSH_10,         RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-1473,13281),  "Child Southern Bush 10",            RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_SOUTHERN_BUSH_10));
+    locationTable[RC_HF_CHILD_SOUTHERN_BUSH_11]   = Location::Bush(RC_HF_CHILD_SOUTHERN_BUSH_11,         RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-1774,13081),  "Child Southern Bush 11",            RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_SOUTHERN_BUSH_11));
+    locationTable[RC_HF_CHILD_SOUTHERN_BUSH_12]   = Location::Bush(RC_HF_CHILD_SOUTHERN_BUSH_12,         RCQUEST_BOTH, RCAREA_HYRULE_FIELD,          SCENE_HYRULE_FIELD,                TWO_ACTOR_PARAMS(-1853,13681),  "Child Southern Bush 12",            RHT_BUSH_HYRULE_FIELD,     RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HF_CHILD_SOUTHERN_BUSH_12));
+    locationTable[RC_ZF_BUSH_1]                   = Location::Bush(RC_ZF_BUSH_1,                         RCQUEST_BOTH, RCAREA_ZORAS_FOUNTAIN,        SCENE_ZORAS_FOUNTAIN,              TWO_ACTOR_PARAMS(167,2514),     "Bush 1",                            RHT_BUSH_ZORAS_FOUNTAIN,   RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZF_BUSH_1));
+    locationTable[RC_ZF_BUSH_2]                   = Location::Bush(RC_ZF_BUSH_2,                         RCQUEST_BOTH, RCAREA_ZORAS_FOUNTAIN,        SCENE_ZORAS_FOUNTAIN,              TWO_ACTOR_PARAMS(394,2510),     "Bush 2",                            RHT_BUSH_ZORAS_FOUNTAIN,   RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZF_BUSH_2));
+    locationTable[RC_ZF_BUSH_3]                   = Location::Bush(RC_ZF_BUSH_3,                         RCQUEST_BOTH, RCAREA_ZORAS_FOUNTAIN,        SCENE_ZORAS_FOUNTAIN,              TWO_ACTOR_PARAMS(231,2406),     "Bush 3",                            RHT_BUSH_ZORAS_FOUNTAIN,   RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZF_BUSH_3));
+    locationTable[RC_ZF_BUSH_4]                   = Location::Bush(RC_ZF_BUSH_4,                         RCQUEST_BOTH, RCAREA_ZORAS_FOUNTAIN,        SCENE_ZORAS_FOUNTAIN,              TWO_ACTOR_PARAMS(544,2373),     "Bush 4",                            RHT_BUSH_ZORAS_FOUNTAIN,   RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZF_BUSH_4));
+    locationTable[RC_ZF_BUSH_5]                   = Location::Bush(RC_ZF_BUSH_5,                         RCQUEST_BOTH, RCAREA_ZORAS_FOUNTAIN,        SCENE_ZORAS_FOUNTAIN,              TWO_ACTOR_PARAMS(386,2265),     "Bush 5",                            RHT_BUSH_ZORAS_FOUNTAIN,   RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZF_BUSH_5));
+    locationTable[RC_ZF_BUSH_6]                   = Location::Bush(RC_ZF_BUSH_6,                         RCQUEST_BOTH, RCAREA_ZORAS_FOUNTAIN,        SCENE_ZORAS_FOUNTAIN,              TWO_ACTOR_PARAMS(551,2184),     "Bush 6",                            RHT_BUSH_ZORAS_FOUNTAIN,   RG_RECOVERY_HEART, SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZF_BUSH_6));
     // clang-format on
 }
 
-static ObjectExtension::Register<TreeIdentity> RegisterPotIdentity;
 static RegisterShipInitFunc registerShuffleTrees(RegisterShuffleTrees, { "IS_RANDO" });
 static RegisterShipInitFunc registerTreeLocations(Rando::StaticData::RegisterTreeLocations);

@@ -38,6 +38,42 @@ static const ALIGN_ASSET(2) char gSkullTreasureChestFrontTex[] = dgSkullTreasure
 #define dgSkullTreasureChestSideAndTopTex "__OTR__objects/object_box/gSkullTreasureChestSideAndTopTex"
 static const ALIGN_ASSET(2) char gSkullTreasureChestSideAndTopTex[] = dgSkullTreasureChestSideAndTopTex;
 
+#define dgChestBodyHeartDL "__OTR__objects/object_box/gChestBodyHeartDL"
+static const ALIGN_ASSET(2) char gChestBodyHeartDL[] = dgChestBodyHeartDL;
+
+#define dgChestLidHeartDL "__OTR__objects/object_box/gChestLidHeartDL"
+static const ALIGN_ASSET(2) char gChestLidHeartDL[] = dgChestLidHeartDL;
+
+#define dgChestBodyJunkDL "__OTR__objects/object_box/gChestBodyJunkDL"
+static const ALIGN_ASSET(2) char gChestBodyJunkDL[] = dgChestBodyJunkDL;
+
+#define dgChestLidJunkDL "__OTR__objects/object_box/gChestLidJunkDL"
+static const ALIGN_ASSET(2) char gChestLidJunkDL[] = dgChestLidJunkDL;
+
+#define dgChestBodyMajorDL "__OTR__objects/object_box/gChestBodyMajorDL"
+static const ALIGN_ASSET(2) char gChestBodyMajorDL[] = dgChestBodyMajorDL;
+
+#define dgChestLidMajorDL "__OTR__objects/object_box/gChestLidMajorDL"
+static const ALIGN_ASSET(2) char gChestLidMajorDL[] = dgChestLidMajorDL;
+
+#define dgChestBodyMinorDL "__OTR__objects/object_box/gChestBodyMinorDL"
+static const ALIGN_ASSET(2) char gChestBodyMinorDL[] = dgChestBodyMinorDL;
+
+#define dgChestLidMinorDL "__OTR__objects/object_box/gChestLidMinorDL"
+static const ALIGN_ASSET(2) char gChestLidMinorDL[] = dgChestLidMinorDL;
+
+#define dgChestBodySmallKeyDL "__OTR__objects/object_box/gChestBodySmallKeyDL"
+static const ALIGN_ASSET(2) char gChestBodySmallKeyDL[] = dgChestBodySmallKeyDL;
+
+#define dgChestLidSmallKeyDL "__OTR__objects/object_box/gChestLidSmallKeyDL"
+static const ALIGN_ASSET(2) char gChestLidSmallKeyDL[] = dgChestLidSmallKeyDL;
+
+#define dgChestBodyTokenDL "__OTR__objects/object_box/gChestBodyTokenDL"
+static const ALIGN_ASSET(2) char gChestBodyTokenDL[] = dgChestBodyTokenDL;
+
+#define dgChestLidTokenDL "__OTR__objects/object_box/gChestLidTokenDL"
+static const ALIGN_ASSET(2) char gChestLidTokenDL[] = dgChestLidTokenDL;
+
 #define dgTitleRandomizerSubtitleTex "__OTR__objects/object_mag/gTitleRandomizerSubtitleTex"
 static const ALIGN_ASSET(2) char gTitleRandomizerSubtitleTex[] = dgTitleRandomizerSubtitleTex;
 
