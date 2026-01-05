@@ -8297,15 +8297,15 @@ void Player_ChooseNextIdleAnim(PlayState* play, Player* this) {
                          (commonType + FIDGET_SWORD_SWING != FIDGET_ADJUST_SHIELD)) ||
                         ((this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
                          ((commonType + FIDGET_SWORD_SWING == FIDGET_ADJUST_SHIELD) ||
-                          (Player_GetMeleeWeaponHeld2(this) != 0)))) {
+                          (Player_GetMeleeWeaponHeld2(this) != 0))) ||
+                        CVarGetInteger(CVAR_ENHANCEMENT("TwoHandedIdle"), 0) == 1) {
                         //! @bug It is possible for `FIDGET_ADJUST_SHIELD` to be used even if
                         //! a shield is not currently equipped. This is because of how being shieldless
                         //! is implemented. There is no sword-only model type, only
                         //! `PLAYER_MODELGROUP_SWORD_AND_SHIELD` exists. Therefore, the right hand type will be
                         //! `PLAYER_MODELTYPE_RH_SHIELD` if sword is in hand, even if no shield is equipped.
                         if ((commonType + FIDGET_SWORD_SWING == FIDGET_SWORD_SWING) &&
-                            Player_HoldsTwoHandedWeapon(this) &&
-                            CVarGetInteger(CVAR_ENHANCEMENT("TwoHandedIdle"), 0) == 1) {
+                            Player_HoldsTwoHandedWeapon(this)) {
                             //! @bug This code is unreachable.
                             //! The check above groups the `Player_GetMeleeWeaponHeld2` check and
                             //! `PLAYER_MODELTYPE_RH_SHIELD` conditions together, meaning sword and shield must be
