@@ -142,6 +142,7 @@ typedef struct {
     Color_RGBA8 defaultColor;
     bool supportsAlpha;
     bool supportsRainbow;
+    bool hasStandaloneMaterial;
 } CustomModelCategoryOption;
 
 typedef struct {
@@ -596,34 +597,21 @@ static void ClearCustomModelCosmetics() {
 
 static std::vector<std::string> GetCustomModelSearchDirs() {
     std::vector<std::string> searchDirs;
-    auto maybeAddDir = [&searchDirs](const char* skeletonPath) {
-        if (skeletonPath == nullptr) {
-            return;
-        }
-
-        std::string stripped = StripOtrPrefix(skeletonPath);
-        size_t lastSlash = stripped.find_last_of('/');
-        if (lastSlash == std::string::npos) {
-            return;
-        }
-
-        std::string baseDir = stripped.substr(0, lastSlash + 1);
-
-        // Always search the direct directory, and if alt assets are in use, search the alt/ mirror as well.
-        searchDirs.push_back(baseDir);
-
+    auto addDir = [&searchDirs](const std::string& baseDir) {
         std::string altDirPrefix = Ship::IResource::gAltAssetPrefix;
-        if (altDirPrefix.back() != '/') {
+        if (!altDirPrefix.empty() && altDirPrefix.back() != '/') {
             altDirPrefix.push_back('/');
         }
-
-        if (baseDir.rfind(altDirPrefix, 0) != 0) {
+        // Mods are expected under alt/
+        if (!altDirPrefix.empty()) {
             searchDirs.push_back(altDirPrefix + baseDir);
         }
     };
 
-    maybeAddDir(gLinkAdultSkel);
-    maybeAddDir(gLinkChildSkel);
+    addDir("objects/object_link_boy/");
+    addDir("objects/object_link_child/");
+    addDir("objects/object_custom_equip/");
+    addDir("objects/gameplay_keep/");
 
     return searchDirs;
 }
@@ -645,6 +633,36 @@ static Color_RGBA8 ExtractPrimColor(const Gfx* gfx) {
 static Color_RGBA8 ExtractEnvColor(const Gfx* gfx) {
     return ColorRGBA8(_SHIFTR(gfx->words.w1, 24, 8), _SHIFTR(gfx->words.w1, 16, 8), _SHIFTR(gfx->words.w1, 8, 8),
                       _SHIFTR(gfx->words.w1, 0, 8));
+}
+
+struct CustomMaterialParseResult {
+    std::string option;
+    std::string subOption;
+    bool hasNameDefaultColor = false;
+    Color_RGBA8 nameDefaultColor = ColorRGBA8(255, 255, 255, 255);
+};
+
+static bool IsHexToken(const std::string& value) {
+    if (value.size() != 6 && value.size() != 8) {
+        return false;
+    }
+    for (char c : value) {
+        if (!std::isxdigit(static_cast<unsigned char>(c))) {
+            return false;
+        }
+    }
+    return true;
+}
+
+static std::string JoinParts(const std::vector<std::string>& parts, size_t startIndex, size_t endIndexExclusive) {
+    std::string result;
+    for (size_t i = startIndex; i < endIndexExclusive; ++i) {
+        if (!result.empty()) {
+            result.push_back('_');
+        }
+        result += parts[i];
+    }
+    return result;
 }
 
 static bool ParseHexColor(const std::string& hex, Color_RGBA8& outColor) {
@@ -688,8 +706,7 @@ static bool ParseHexColor(const std::string& hex, Color_RGBA8& outColor) {
     return true;
 }
 
-static bool ExtractCustomMaterialKeys(const std::string& path, std::string& outCategory, std::string& outIdentity,
-                                      bool& hasNameDefaultColor, Color_RGBA8& nameDefaultColor) {
+static bool ExtractCustomMaterialKeys(const std::string& path, CustomMaterialParseResult& out) {
     size_t cosmeticPos = path.rfind("cosmetic_");
     if (cosmeticPos == std::string::npos) {
         return false;
@@ -708,16 +725,20 @@ static bool ExtractCustomMaterialKeys(const std::string& path, std::string& outC
         token = token.substr(0, dotPos);
     }
 
-    hasNameDefaultColor = false;
     size_t hashPos = token.find('#');
     if (hashPos != std::string::npos) {
         std::string hexColor = token.substr(hashPos);
-        if (ParseHexColor(hexColor, nameDefaultColor)) {
-            hasNameDefaultColor = true;
+        if (ParseHexColor(hexColor, out.nameDefaultColor)) {
+            out.hasNameDefaultColor = true;
         }
         token = token.substr(0, hashPos);
     }
 
+    if (token.empty()) {
+        return false;
+    }
+
+    // Split on underscores
     std::vector<std::string> parts;
     size_t start = 0;
     while (start < token.size()) {
@@ -734,9 +755,35 @@ static bool ExtractCustomMaterialKeys(const std::string& path, std::string& outC
         return false;
     }
 
-    outCategory = parts[0];
-    outIdentity = parts.size() > 1 ? parts[1] : parts[0];
-    return !outCategory.empty() && !outIdentity.empty();
+    // Detect trailing hex token without a #
+    if (!out.hasNameDefaultColor && parts.size() > 1) {
+        for (size_t i = parts.size(); i-- > 1;) { // scan from the end, leave option intact
+            if (IsHexToken(parts[i])) {
+                ParseHexColor(parts[i], out.nameDefaultColor);
+                out.hasNameDefaultColor = true;
+                parts.erase(parts.begin() + i, parts.end()); // drop hex and anything after (like layerOpaque)
+                break;
+            }
+        }
+    }
+
+    if (parts.empty()) {
+        return false;
+    }
+
+    out.option = parts[0];
+    // Drop any trailing tokens beyond the first suboption (e.g., layerOpaque) once we've handled hex.
+    if (parts.size() > 2) {
+        parts.erase(parts.begin() + 2, parts.end());
+    }
+
+    if (parts.size() == 1) {
+        out.subOption = out.option;
+    } else {
+        out.subOption = JoinParts(parts, 1, parts.size());
+    }
+
+    return !out.option.empty() && !out.subOption.empty();
 }
 
 static void DiscoverCustomModelCosmetics() {
@@ -759,18 +806,16 @@ static void DiscoverCustomModelCosmetics() {
             continue;
         }
 
-        std::string categoryKey;
-        std::string identityKey;
-        bool hasNameDefaultColor = false;
-        Color_RGBA8 nameDefaultColor = ColorRGBA8(255, 255, 255, 255);
-        if (!ExtractCustomMaterialKeys(normalizedPath, categoryKey, identityKey, hasNameDefaultColor,
-                                       nameDefaultColor)) {
+        CustomMaterialParseResult materialInfo;
+        if (!ExtractCustomMaterialKeys(normalizedPath, materialInfo)) {
             continue;
         }
+        std::string optionKey = materialInfo.option;
+        std::string subOptionKey = materialInfo.subOption;
 
-        std::transform(categoryKey.begin(), categoryKey.end(), categoryKey.begin(),
+        std::transform(optionKey.begin(), optionKey.end(), optionKey.begin(),
                        [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
-        std::transform(identityKey.begin(), identityKey.end(), identityKey.begin(),
+        std::transform(subOptionKey.begin(), subOptionKey.end(), subOptionKey.begin(),
                        [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
 
         std::string resourcePath = EnsureOtrPrefix(normalizedPath);
@@ -807,17 +852,19 @@ static void DiscoverCustomModelCosmetics() {
         }
 
         Color_RGBA8 defaultColor = !primIndices.empty() ? primColor : envColor;
-        if (hasNameDefaultColor) {
-            defaultColor = nameDefaultColor;
+        if (materialInfo.hasNameDefaultColor) {
+            defaultColor = materialInfo.nameDefaultColor;
         }
 
-        std::string categoryLabel = ToTitleCase(categoryKey);
-        std::string identityLabel = ToTitleCase(identityKey);
-        std::string categoryBase = "CustomModel.Category." + categoryKey;
+        std::string categoryLabel = ToTitleCase(optionKey);
+        std::string identityLabel = ToTitleCase(subOptionKey);
+        std::string categoryBase = "CustomModel.Category." + optionKey;
 
-        if (customModelCategories.find(categoryKey) == customModelCategories.end()) {
+        bool isStandaloneOption = (optionKey == subOptionKey);
+
+        if (customModelCategories.find(optionKey) == customModelCategories.end()) {
             CustomModelCategoryOption categoryOption{
-                .key = categoryKey,
+                .key = optionKey,
                 .label = categoryLabel,
                 .valuesCvar = BuildCosmeticCvar(categoryBase, ".Value"),
                 .rainbowCvar = BuildCosmeticCvar(categoryBase, ".Rainbow"),
@@ -828,20 +875,23 @@ static void DiscoverCustomModelCosmetics() {
                 .defaultColor = defaultColor,
                 .supportsAlpha = true,
                 .supportsRainbow = true,
+                .hasStandaloneMaterial = isStandaloneOption,
             };
 
             Color_RGBA8 categoryColor = CVarGetColor(categoryOption.valuesCvar.c_str(), categoryOption.defaultColor);
             categoryOption.currentColor = ImVec4(categoryColor.r / 255.0f, categoryColor.g / 255.0f,
                                                  categoryColor.b / 255.0f, categoryColor.a / 255.0f);
 
-            customModelCategories[categoryKey] = categoryOption;
+            customModelCategories[optionKey] = categoryOption;
+        } else if (isStandaloneOption) {
+            customModelCategories[optionKey].hasStandaloneMaterial = true;
         }
 
-        std::string cosmeticBase = "CustomModel." + categoryKey + "." + identityKey;
+        std::string cosmeticBase = "CustomModel." + optionKey + "." + subOptionKey;
         CustomModelCosmeticOption cosmeticOption{
-            .key = categoryKey + "." + identityKey,
-            .categoryKey = categoryKey,
-            .identityKey = identityKey,
+            .key = optionKey + "." + subOptionKey,
+            .categoryKey = optionKey,
+            .identityKey = subOptionKey,
             .label = identityLabel,
             .valuesCvar = BuildCosmeticCvar(cosmeticBase, ".Value"),
             .rainbowCvar = BuildCosmeticCvar(cosmeticBase, ".Rainbow"),
@@ -858,19 +908,32 @@ static void DiscoverCustomModelCosmetics() {
         };
 
         for (size_t i = 0; i < cosmeticOption.primColorIndices.size(); ++i) {
-            cosmeticOption.primPatchNames.push_back("CustomModel_" + categoryKey + "_" + identityKey + "_Prim_" +
+            cosmeticOption.primPatchNames.push_back("CustomModel_" + optionKey + "_" + subOptionKey + "_Prim_" +
                                                     std::to_string(i));
         }
         for (size_t i = 0; i < cosmeticOption.envColorIndices.size(); ++i) {
-            cosmeticOption.envPatchNames.push_back("CustomModel_" + categoryKey + "_" + identityKey + "_Env_" +
+            cosmeticOption.envPatchNames.push_back("CustomModel_" + optionKey + "_" + subOptionKey + "_Env_" +
                                                    std::to_string(i));
         }
         Color_RGBA8 cvarColor = CVarGetColor(cosmeticOption.valuesCvar.c_str(), cosmeticOption.defaultColor);
         cosmeticOption.currentColor = { cvarColor.r / 255.0f, cvarColor.g / 255.0f, cvarColor.b / 255.0f,
                                         cvarColor.a / 255.0f };
 
+        // If option and suboption are the same, treat this as the standalone option entry and share CVars with the
+        // option row. Skip adding a separate suboption row in the UI.
+        if (optionKey == subOptionKey) {
+            CustomModelCategoryOption& category = customModelCategories[optionKey];
+            cosmeticOption.valuesCvar = category.valuesCvar;
+            cosmeticOption.rainbowCvar = category.rainbowCvar;
+            cosmeticOption.lockedCvar = category.lockedCvar;
+            cosmeticOption.changedCvar = category.changedCvar;
+            cosmeticOption.label = category.label;
+            category.hasStandaloneMaterial = true;
+        } else {
+            customModelCategoryMembers[optionKey].push_back(cosmeticOption.key);
+        }
+
         customModelCosmetics[cosmeticOption.key] = cosmeticOption;
-        customModelCategoryMembers[categoryKey].push_back(cosmeticOption.key);
     }
 
     for (auto& [category, members] : customModelCategoryMembers) {
@@ -912,31 +975,13 @@ static void ApplyCustomModelCosmetics(bool manualChange = true) {
             continue;
         }
 
-        CustomModelCategoryOption& category = categoryIter->second;
-        bool categoryChanged =
-            CVarGetInteger(category.changedCvar.c_str(), 0) || CVarGetInteger(category.rainbowCvar.c_str(), 0);
-        Color_RGBA8 categoryColor = { static_cast<uint8_t>(category.currentColor.x * 255.0f),
-                                      static_cast<uint8_t>(category.currentColor.y * 255.0f),
-                                      static_cast<uint8_t>(category.currentColor.z * 255.0f),
-                                      static_cast<uint8_t>(category.currentColor.w * 255.0f) };
+        (void)categoryIter; // category is still used for grouping but no longer overrides suboptions.
 
         bool cosmeticChanged =
             CVarGetInteger(cosmetic.changedCvar.c_str(), 0) || CVarGetInteger(cosmetic.rainbowCvar.c_str(), 0);
         Color_RGBA8 cosmeticColor = CVarGetColor(cosmetic.valuesCvar.c_str(), cosmetic.defaultColor);
 
-        // Category overrides all identities when it has a user-picked color (or rainbow).
-        // Identity colors apply only when the category is at its default (unchanged).
-        Color_RGBA8 finalColor;
-        if (categoryChanged) {
-            finalColor = categoryColor;
-            // Keep identity cvar in sync with the applied category color.
-            CVarSetColor(cosmetic.valuesCvar.c_str(), finalColor);
-        } else if (cosmeticChanged) {
-            finalColor = cosmeticColor;
-        } else {
-            // Both are default; use the identity's own default so identities don't get overridden by category defaults.
-            finalColor = cosmeticColor;
-        }
+        Color_RGBA8 finalColor = cosmeticColor;
 
         cosmetic.currentColor =
             ImVec4(finalColor.r / 255.0f, finalColor.g / 255.0f, finalColor.b / 255.0f, finalColor.a / 255.0f);
@@ -2996,7 +3041,7 @@ static void DrawCustomModelCategoryRow(CustomModelCategoryOption& category) {
     }
 }
 
-static void DrawCustomModelCosmeticRow(CustomModelCosmeticOption& cosmetic, bool optionOverrides = false) {
+static void DrawCustomModelCosmeticRow(CustomModelCosmeticOption& cosmetic) {
     std::string cosmeticBaseCvar = cosmetic.valuesCvar;
     constexpr const char* valueSuffixCosmetic = ".Value";
     if (cosmeticBaseCvar.size() > strlen(valueSuffixCosmetic) &&
@@ -3004,7 +3049,6 @@ static void DrawCustomModelCosmeticRow(CustomModelCosmeticOption& cosmetic, bool
         cosmeticBaseCvar = cosmeticBaseCvar.substr(0, cosmeticBaseCvar.size() - strlen(valueSuffixCosmetic));
     }
 
-    ImGui::BeginDisabled(optionOverrides);
     if (UIWidgets::CVarColorPicker(cosmetic.label.c_str(), cosmeticBaseCvar.c_str(), cosmetic.defaultColor,
                                    cosmetic.supportsAlpha, 0, THEME_COLOR)) {
         CVarSetInteger(cosmetic.rainbowCvar.c_str(), 0);
@@ -3012,7 +3056,6 @@ static void DrawCustomModelCosmeticRow(CustomModelCosmeticOption& cosmetic, bool
         ApplyCustomModelCosmetics();
         Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
-    ImGui::EndDisabled();
 
     ImGui::SameLine((ImGui::CalcTextSize("Message Light Blue (None No Shadow)").x * 1.0f) + 60.0f);
     if (UIWidgets::Button(
@@ -3076,34 +3119,39 @@ static void DrawCustomModelCategory(const std::string& categoryKey) {
     drawList->ChannelsSplit(2);
     drawList->ChannelsSetCurrent(1); // foreground for widgets
 
-    DrawCustomModelCategoryRow(category);
-
-    bool optionOverrides =
-        CVarGetInteger(category.changedCvar.c_str(), 0) || CVarGetInteger(category.rainbowCvar.c_str(), 0);
-    if (optionOverrides) {
-        ImGui::TextWrapped("    Option color overrides suboptions. Reset the option to edit suboptions.");
+    if (category.hasStandaloneMaterial) {
+        DrawCustomModelCategoryRow(category);
     }
 
     auto membersIt = customModelCategoryMembers.find(categoryKey);
     if (membersIt != customModelCategoryMembers.end()) {
         float indent = 20.0f;
         ImGui::Indent(indent);
+        size_t subIndex = 0;
         for (const auto& cosmeticKey : membersIt->second) {
             auto cosmeticIt = customModelCosmetics.find(cosmeticKey);
             if (cosmeticIt != customModelCosmetics.end()) {
+                // Skip standalone option entries to avoid duplicate rows when option == suboption
+                if (cosmeticIt->second.categoryKey == cosmeticIt->second.identityKey) {
+                    continue;
+                }
+
                 ImVec2 rowStart = ImGui::GetCursorScreenPos();
                 drawList->ChannelsSetCurrent(1); // foreground for the widgets
-                DrawCustomModelCosmeticRow(cosmeticIt->second, optionOverrides);
+                DrawCustomModelCosmeticRow(cosmeticIt->second);
                 ImVec2 rowEnd = ImGui::GetCursorScreenPos();
 
                 drawList->ChannelsSetCurrent(0); // background for the guide line
-                float lineX = rowStart.x - indent * 0.5f;
-                float topY = rowStart.y + ImGui::GetTextLineHeight() * -2.0f;
+                float lineX = rowStart.x - indent * 0.35f;
+                bool isFirstSubOption = (subIndex == 0);
+                float topYOffset = isFirstSubOption ? -0.3f : -1.3f;
+                float topY = rowStart.y + ImGui::GetTextLineHeight() * topYOffset;
                 float bottomY = rowEnd.y - ImGui::GetTextLineHeight() * 1.3f;
                 drawList->AddLine(ImVec2(lineX, topY), ImVec2(lineX, bottomY),
                                   ImGui::GetColorU32(ImGuiCol_TextDisabled), 1.0f);
                 drawList->AddLine(ImVec2(lineX, bottomY), ImVec2(lineX + indent * 0.35f, bottomY),
                                   ImGui::GetColorU32(ImGuiCol_TextDisabled), 1.0f);
+                subIndex++;
             }
         }
         ImGui::Unindent(indent);
@@ -3116,31 +3164,11 @@ static void DrawCustomModelCategory(const std::string& categoryKey) {
 
 static void DrawCustomModelTab() {
     UIWidgets::Separator(true, true, 2.0f, 2.0f);
-
-    if (UIWidgets::Button("Rescan Custom Model",
-                          UIWidgets::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
-        DiscoverCustomModelCosmetics();
-        ApplyCustomModelCosmetics(true);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-
-    ImGui::SameLine();
-    if (UIWidgets::Button("Randomize All##CustomModel",
-                          UIWidgets::ButtonOptions().Size(ImVec2(200.0f, 0.0f)).Color(THEME_COLOR))) {
-        CustomModel_RandomizeAll();
-    }
-
-    ImGui::SameLine();
-    if (UIWidgets::Button("Reset All##CustomModel",
-                          UIWidgets::ButtonOptions().Size(ImVec2(200.0f, 0.0f)).Color(THEME_COLOR))) {
-        CustomModel_ResetAll();
-    }
-
     if (!customModelCosmeticsDiscovered) {
         ImGui::Separator();
-        ImGui::TextWrapped(
-            "No custom player model materials using the prefix \"cosmetic_<option>_<suboption>#<defaulthexcolor>\" "
-            "were detected. If you have switched models, try rescanning.");
+        ImGui::TextWrapped("No custom model materials using the prefix \"cosmetic_<option>_<suboption>#<hexcolor>\" or "
+                           "\"cosmetic_<option>#<hexcolor>\" "
+                           "were detected. If you have switched models, try rescanning.");
         return;
     }
 
@@ -3291,6 +3319,12 @@ void CosmeticsEditorWindow::DrawElement() {
                     CVarSetInteger(cosmeticOption.lockedCvar, 1);
                 }
             }
+            for (auto& [key, category] : customModelCategories) {
+                CVarSetInteger(category.lockedCvar.c_str(), 1);
+            }
+            for (auto& [key, cosmetic] : customModelCosmetics) {
+                CVarSetInteger(cosmetic.lockedCvar.c_str(), 1);
+            }
         }
         ImGui::SameLine();
         if (UIWidgets::Button("Unlock All Advanced",
@@ -3299,6 +3333,12 @@ void CosmeticsEditorWindow::DrawElement() {
                 if (cosmeticOption.advancedOption) {
                     CVarSetInteger(cosmeticOption.lockedCvar, 0);
                 }
+            }
+            for (auto& [key, category] : customModelCategories) {
+                CVarSetInteger(category.lockedCvar.c_str(), 0);
+            }
+            for (auto& [key, cosmetic] : customModelCosmetics) {
+                CVarSetInteger(cosmetic.lockedCvar.c_str(), 0);
             }
         }
     }
@@ -3318,6 +3358,12 @@ void CosmeticsEditorWindow::DrawElement() {
                 CVarSetInteger(cosmeticOption.lockedCvar, 1);
             }
         }
+        for (auto& [key, category] : customModelCategories) {
+            CVarSetInteger(category.lockedCvar.c_str(), 1);
+        }
+        for (auto& [key, cosmetic] : customModelCosmetics) {
+            CVarSetInteger(cosmetic.lockedCvar.c_str(), 1);
+        }
     }
     ImGui::SameLine();
     if (UIWidgets::Button("Unlock All", UIWidgets::ButtonOptions().Size(ImVec2(250.0f, 0.0f)).Color(THEME_COLOR))) {
@@ -3325,6 +3371,12 @@ void CosmeticsEditorWindow::DrawElement() {
             if (!cosmeticOption.advancedOption || CVarGetInteger(CVAR_COSMETIC("AdvancedMode"), 0)) {
                 CVarSetInteger(cosmeticOption.lockedCvar, 0);
             }
+        }
+        for (auto& [key, category] : customModelCategories) {
+            CVarSetInteger(category.lockedCvar.c_str(), 0);
+        }
+        for (auto& [key, cosmetic] : customModelCosmetics) {
+            CVarSetInteger(cosmetic.lockedCvar.c_str(), 0);
         }
     }
 
@@ -3337,6 +3389,19 @@ void CosmeticsEditorWindow::DrawElement() {
                 CVarSetInteger(cosmeticOption.changedCvar, 1);
             }
         }
+        for (auto& [key, category] : customModelCategories) {
+            if (!CVarGetInteger(category.lockedCvar.c_str(), 0)) {
+                CVarSetInteger(category.rainbowCvar.c_str(), 1);
+                CVarSetInteger(category.changedCvar.c_str(), 1);
+            }
+        }
+        for (auto& [key, cosmetic] : customModelCosmetics) {
+            if (!CVarGetInteger(cosmetic.lockedCvar.c_str(), 0)) {
+                CVarSetInteger(cosmetic.rainbowCvar.c_str(), 1);
+                CVarSetInteger(cosmetic.changedCvar.c_str(), 1);
+            }
+        }
+        ApplyCustomModelCosmetics();
     }
     ImGui::EndDisabled();
 
@@ -3348,6 +3413,17 @@ void CosmeticsEditorWindow::DrawElement() {
                 CVarSetInteger(cosmeticOption.rainbowCvar, 0);
             }
         }
+        for (auto& [key, category] : customModelCategories) {
+            if (!CVarGetInteger(category.lockedCvar.c_str(), 0)) {
+                CVarSetInteger(category.rainbowCvar.c_str(), 0);
+            }
+        }
+        for (auto& [key, cosmetic] : customModelCosmetics) {
+            if (!CVarGetInteger(cosmetic.lockedCvar.c_str(), 0)) {
+                CVarSetInteger(cosmetic.rainbowCvar.c_str(), 0);
+            }
+        }
+        ApplyCustomModelCosmetics();
     }
 
     UIWidgets::Spacer(3.0f);
@@ -3500,7 +3576,10 @@ void CosmeticsEditor_RandomizeAll() {
         }
     }
 
+    CustomModel_RandomizeAll();
+
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    ApplyCustomModelCosmetics();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -3512,7 +3591,10 @@ void CosmeticsEditor_AutoRandomizeAll() {
         }
     }
 
+    CustomModel_RandomizeAll();
+
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    ApplyCustomModelCosmetics();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -3536,7 +3618,10 @@ void CosmeticsEditor_ResetAll() {
         }
     }
 
+    CustomModel_ResetAll();
+
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    ApplyCustomModelCosmetics();
     ApplyOrResetCustomGfxPatches();
 }
 
