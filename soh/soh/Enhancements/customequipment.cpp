@@ -374,11 +374,10 @@ static void ApplyCommonEquipmentPatches() {
     const char* fpsHand = isChild ? gCustomChildFPSHandDL : gCustomAdultFPSHandDL;
     const char* rightHandNear = isChild ? gLinkChildRightHandNearDL : gLinkAdultRightHandNearDL;
 
-    auto remapTunicHand = [](const char* path) { return CustomTunicDLs_RemapPath(path); };
-    rightHandClosed = remapTunicHand(rightHandClosed);
-    leftHandClosed = remapTunicHand(leftHandClosed);
-    fpsHand = remapTunicHand(fpsHand);
-    rightHandNear = remapTunicHand(rightHandNear);
+    rightHandClosed = CustomTunicDLs_RemapPath(rightHandClosed);
+    leftHandClosed = CustomTunicDLs_RemapPath(leftHandClosed);
+    fpsHand = CustomTunicDLs_RemapPath(fpsHand);
+    rightHandNear = CustomTunicDLs_RemapPath(rightHandNear);
 
     ApplyPatchEntries({
         { gLinkAdultLeftHandHoldingMasterSwordNearDL, gCustomMasterSwordDL, "customMasterSword1", "customMasterSword2",
