@@ -157,9 +157,6 @@ extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play) {
         sWaitForSceneChange = true;
         sSetNormalCam = play->sceneNum;
         sIsCamApplied = true;
-        sCheckItemCamState = -1;
-        sStoreLastCamType = -1;
-        return;
     }
     if (sWaitForSceneChange) {
         if (play->sceneNum == sSetNormalCam) {
