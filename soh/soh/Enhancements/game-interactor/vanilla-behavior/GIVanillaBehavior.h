@@ -2458,14 +2458,6 @@ typedef enum {
     // - `uint16_t` (cursorItem - promoted from `u16`)
     VB_EQUIP_ITEM_TO_C_BUTTON,
 
-    // #### `result`
-    // ```c
-    // (commonType + FIDGET_SWORD_SWING == FIDGET_SWORD_SWING) && Player_HoldsTwoHandedWeapon(player)
-    // ```
-    // #### `args`
-    // - `s32` (commonType)
-    VB_TWO_HANDED_FIDGET_IDLE,
-
 } GIVanillaBehavior;
 
 #endif
