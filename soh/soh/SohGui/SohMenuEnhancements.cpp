@@ -886,7 +886,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("BowArrowCycle"))
         .Options(CheckboxOptions().Tooltip(
             "Allows cycling between different arrow types (Normal, Fire, Ice, Light) while aiming the bow. "
-            "Press the configured button (default: R) to cycle to the next available arrow type. "
+            "Press the R button to cycle to the next available arrow type. "
             "Only works when aiming and only cycles to arrow types you own with sufficient magic."));
 
     path.column = SECTION_COLUMN_3;
