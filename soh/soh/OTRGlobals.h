@@ -66,6 +66,7 @@ class OTRGlobals {
     ImFont* fontMono;
     ImFont* fontMonoLarger;
     ImFont* fontMonoLargest;
+    ImFont* fontJapanese;
 
     OTRGlobals();
     ~OTRGlobals();
@@ -82,7 +83,7 @@ class OTRGlobals {
     bool hasMasterQuest;
     bool hasOriginal;
     ImFont* CreateDefaultFontWithSize(float size);
-    ImFont* CreateFontWithSize(float size, std::string fontPath);
+    ImFont* CreateFontWithSize(float size, std::string fontPath, bool isJapaneseFont);
 };
 #endif
 
@@ -131,11 +132,7 @@ Sprite* GetSeedTexture(uint8_t index);
 uint8_t GetSeedIconIndex(uint8_t index);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
-ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
-BeehiveIdentity Randomizer_IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData);
 ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex);
-CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
-FishIdentity Randomizer_IdentifyFish(s32 sceneNum, s32 actorParams);
 void Randomizer_ParseSpoiler(const char* fileLoc);
 void Randomizer_LoadHintMessages();
 void Randomizer_LoadMerchantMessages();

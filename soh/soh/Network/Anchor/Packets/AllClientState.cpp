@@ -62,7 +62,7 @@ void Anchor::HandlePacket_AllClientState(nlohmann::json payload) {
             clientsToRemove.push_back(clientId);
         }
     }
-    // (seperate loop to avoid iterator invalidation)
+    // (separate loop to avoid iterator invalidation)
     for (auto& clientId : clientsToRemove) {
         clients.erase(clientId);
     }

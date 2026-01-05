@@ -1259,7 +1259,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
                 case RG_DOUBLE_DEFENSE:
                     colorIndex = PARTICLE_WHITE;
                     break;
-                case RG_PROGRESSIVE_BOMBCHUS:
+                case RG_PROGRESSIVE_BOMBCHU_BAG:
                     colorIndex = PARTICLE_DARK_BLUE;
                     break;
                 case RG_BOTTLE_WITH_FAIRY:

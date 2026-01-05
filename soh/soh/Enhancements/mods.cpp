@@ -1,13 +1,10 @@
 #include "mods.h"
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
-#include "tts/tts.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
-#include "soh/Enhancements/timesaver_hook_handlers.h"
-#include "soh/Enhancements/randomizer/hook_handlers.h"
 
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
 #include "src/overlays/actors/ovl_En_Dekubaba/z_en_dekubaba.h"
@@ -26,7 +23,6 @@
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "soh_assets.h"
-#include "kaleido.h"
 
 extern "C" {
 #include <z64.h>
@@ -196,34 +192,6 @@ void RegisterHyperBosses() {
     UpdateHyperBossesState();
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(
         [](int16_t fileNum) { UpdateHyperBossesState(); });
-}
-
-void UpdateHyperEnemiesState() {
-    static uint32_t actorUpdateHookId = 0;
-    if (actorUpdateHookId != 0) {
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(actorUpdateHookId);
-        actorUpdateHookId = 0;
-    }
-
-    if (CVarGetInteger(CVAR_ENHANCEMENT("HyperEnemies"), 0)) {
-        actorUpdateHookId =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-                // Run the update function a second time to make enemies and minibosses move and act twice as fast.
-
-                Player* player = GET_PLAYER(gPlayState);
-                Actor* actor = static_cast<Actor*>(refActor);
-
-                // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
-                bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
-                bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
-
-                // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
-                if (CVarGetInteger(CVAR_ENHANCEMENT("HyperEnemies"), 0) && isEnemy && !isExcludedEnemy &&
-                    !Player_InBlockingCsMode(gPlayState, player)) {
-                    GameInteractor::RawAction::UpdateActor(actor);
-                }
-            });
-    }
 }
 
 // this map is used for enemies that can be uniquely identified by their id
@@ -471,13 +439,8 @@ void RegisterRandomizedEnemySizes() {
 }
 
 void InitMods() {
-    RandomizerRegisterHooks();
-    TimeSaverRegisterHooks();
-    RegisterTTS();
     RegisterOcarinaTimeTravel();
     RegisterHyperBosses();
-    UpdateHyperEnemiesState();
     RegisterEnemyDefeatCounts();
     RegisterRandomizedEnemySizes();
-    RandoKaleido_RegisterHooks();
 }

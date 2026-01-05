@@ -38,7 +38,7 @@ void RegisterShuffleCows() {
 
     COND_VB_SHOULD(VB_GIVE_ITEM_FROM_COW, shouldRegister, {
         EnCow* enCow = va_arg(args, EnCow*);
-        CowIdentity cowIdentity = OTRGlobals::Instance->gRandomizer->IdentifyCow(
+        CheckIdentity cowIdentity = OTRGlobals::Instance->gRandomizer->IdentifyCow(
             gPlayState->sceneNum, static_cast<int32_t>(enCow->actor.world.pos.x),
             static_cast<int32_t>(enCow->actor.world.pos.z));
         // Has this cow already rewarded an item?
