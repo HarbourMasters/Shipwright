@@ -1,5 +1,5 @@
 #include "debugconsole.h"
-#include <Utils.h>
+#include <ship/utils/Utils.h>
 #include "savestates.h"
 #include "soh/ActorDB.h"
 
@@ -15,10 +15,10 @@
 
 #define Path _Path
 #define PATH_HACK
-#include <utils/StringHelper.h>
+#include <ship/utils/StringHelper.h>
 
-#include <Window.h>
-#include <Context.h>
+#include <ship/window/Window.h>
+#include <ship/Context.h>
 #include <imgui.h>
 #include <imgui_internal.h>
 #undef PATH_HACK

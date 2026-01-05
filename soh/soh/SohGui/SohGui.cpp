@@ -13,7 +13,7 @@
 #include <libultraship/libultraship.h>
 
 #ifdef __APPLE__
-#include "graphic/Fast3D/backends/gfx_metal.h"
+#include <fast/backends/gfx_metal.h>
 #endif
 
 #ifdef __SWITCH__
@@ -33,6 +33,8 @@
 #include "soh/Enhancements/debugger/MessageViewer.h"
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
+#include "soh/Enhancements/mod_menu.h"
+#include "soh/Network/Anchor/Anchor.h"
 
 namespace SohGui {
 
@@ -70,9 +72,9 @@ std::shared_ptr<SohMenuBar> mSohMenuBar;
 std::shared_ptr<Ship::GuiWindow> mConsoleWindow;
 std::shared_ptr<SohStatsWindow> mStatsWindow;
 std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
-std::shared_ptr<Ship::GuiWindow> mInputEditorWindow;
 
 std::shared_ptr<SohMenu> mSohMenu;
+std::shared_ptr<ModMenuWindow> mModMenuWindow;
 std::shared_ptr<AudioEditor> mAudioEditorWindow;
 std::shared_ptr<InputViewer> mInputViewer;
 std::shared_ptr<InputViewerSettingsWindow> mInputViewerSettings;
@@ -93,10 +95,10 @@ std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
 std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
 std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
 std::shared_ptr<PlandomizerWindow> mPlandomizerWindow;
-std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 std::shared_ptr<SohModalWindow> mModalWindow;
 std::shared_ptr<Notification::Window> mNotificationWindow;
 std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
+std::shared_ptr<AnchorRoomWindow> mAnchorRoomWindow;
 
 UIWidgets::Colors GetMenuThemeColor() {
     return mSohMenu->GetMenuThemeColor();
@@ -130,11 +132,13 @@ void SetupGuiElements() {
     mStatsWindow = std::make_shared<SohStatsWindow>(CVAR_WINDOW("SohStats"), "Stats##Soh", ImVec2(400, 100));
     gui->AddGuiWindow(mStatsWindow);
 
-    mInputEditorWindow = gui->GetGuiWindow("Controller Configuration");
+    /*mInputEditorWindow = gui->GetGuiWindow("Controller Configuration");
     if (mInputEditorWindow == nullptr) {
         SPDLOG_ERROR("Could not find input editor window");
-    }
+    }*/
 
+    mModMenuWindow = std::make_shared<ModMenuWindow>(CVAR_WINDOW("ModMenu"), "Mod Menu", ImVec2(820, 630));
+    gui->AddGuiWindow(mModMenuWindow);
     mAudioEditorWindow = std::make_shared<AudioEditor>(CVAR_WINDOW("AudioEditor"), "Audio Editor", ImVec2(820, 630));
     gui->AddGuiWindow(mAudioEditorWindow);
     mInputViewer = std::make_shared<InputViewer>(CVAR_WINDOW("InputViewer"), "Input Viewer");
@@ -186,9 +190,6 @@ void SetupGuiElements() {
     mItemTrackerSettingsWindow = std::make_shared<ItemTrackerSettingsWindow>(CVAR_WINDOW("ItemTrackerSettings"),
                                                                              "Item Tracker Settings", ImVec2(733, 472));
     gui->AddGuiWindow(mItemTrackerSettingsWindow);
-    mRandomizerSettingsWindow = std::make_shared<RandomizerSettingsWindow>(CVAR_WINDOW("RandomizerSettings"),
-                                                                           "Randomizer Settings", ImVec2(920, 600));
-    gui->AddGuiWindow(mRandomizerSettingsWindow);
     mTimeSplitWindow = std::make_shared<TimeSplitWindow>(CVAR_WINDOW("TimeSplits"), "Time Splits", ImVec2(450, 660));
     gui->AddGuiWindow(mTimeSplitWindow);
     mPlandomizerWindow =
@@ -202,6 +203,8 @@ void SetupGuiElements() {
     mNotificationWindow->Show();
     mTimeDisplayWindow = std::make_shared<TimeDisplayWindow>(CVAR_WINDOW("TimeDisplayEnabled"), "Additional Timers");
     gui->AddGuiWindow(mTimeDisplayWindow);
+    mAnchorRoomWindow = std::make_shared<AnchorRoomWindow>(CVAR_WINDOW("AnchorRoom"), "Anchor Room");
+    gui->AddGuiWindow(mAnchorRoomWindow);
 }
 
 void Destroy() {
@@ -210,7 +213,6 @@ void Destroy() {
 
     mNotificationWindow = nullptr;
     mModalWindow = nullptr;
-    mRandomizerSettingsWindow = nullptr;
     mItemTrackerWindow = nullptr;
     mItemTrackerSettingsWindow = nullptr;
     mEntranceTrackerWindow = nullptr;
@@ -226,8 +228,8 @@ void Destroy() {
     mColViewerWindow = nullptr;
     mActorViewerWindow = nullptr;
     mCosmeticsEditorWindow = nullptr;
+    mModMenuWindow = nullptr;
     mAudioEditorWindow = nullptr;
-    mInputEditorWindow = nullptr;
     mStatsWindow = nullptr;
     mConsoleWindow = nullptr;
     mGfxDebuggerWindow = nullptr;
@@ -237,6 +239,7 @@ void Destroy() {
     mTimeSplitWindow = nullptr;
     mPlandomizerWindow = nullptr;
     mTimeDisplayWindow = nullptr;
+    mAnchorRoomWindow = nullptr;
 }
 
 void RegisterPopup(std::string title, std::string message, std::string button1, std::string button2,
@@ -245,6 +248,12 @@ void RegisterPopup(std::string title, std::string message, std::string button1, 
 }
 
 void ShowRandomizerSettingsMenu() {
-    mRandomizerSettingsWindow->Show();
+    CVarSetString(CVAR_SETTING("Menu.ActiveHeader"), "Randomizer");
+    CVarSetString(CVAR_SETTING("Menu.RandomizerSidebarSection"), "General");
+    mSohMenu->Show();
+}
+
+void ShowEscMenu() {
+    mSohMenu->Show();
 }
 } // namespace SohGui

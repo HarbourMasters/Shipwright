@@ -6,9 +6,12 @@ set(CMAKE_C_STANDARD 23 CACHE STRING "The C standard to use")
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
-project(Ship VERSION 9.0.2 LANGUAGES C CXX)
+project(Ship VERSION 9.1.1 LANGUAGES C CXX)
 include(CMake/soh-cvars.cmake)
 include(CMake/lus-cvars.cmake)
+set(SPDLOG_LEVEL_TRACE 0)
+set(SPDLOG_LEVEL_OFF 6)
+set(SPDLOG_MIN_CUTOFF SPDLOG_LEVEL_TRACE CACHE STRING "cutoff at trace")
 
 option(SUPPRESS_WARNINGS "Suppress warnings in LUS and src (decomp)" ON)
 if(SUPPRESS_WARNINGS)
@@ -35,7 +38,7 @@ math(EXPR PATCH_INDEX "${PROJECT_VERSION_PATCH}")
 # Use the patch number to select the correct word
 list(GET NATO_PHONETIC_ALPHABET ${PATCH_INDEX} PROJECT_PATCH_WORD)
 
-set(PROJECT_BUILD_NAME "Blair ${PROJECT_PATCH_WORD}" CACHE STRING "" FORCE)
+set(PROJECT_BUILD_NAME "Copper ${PROJECT_PATCH_WORD}" CACHE STRING "" FORCE)
 set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "" FORCE)
 
 execute_process(
@@ -155,6 +158,9 @@ set(GFX_DEBUG_DISASSEMBLER ON)
 set(GBI_UCODE F3DEX_GBI_2)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake")
 
+# Enable MPQ and OTR support
+set(INCLUDE_MPQ_SUPPORT ON)
+
 ################################################################################
 # Set CONTROLLERBUTTONS_T
 ################################################################################
@@ -165,6 +171,7 @@ add_compile_definitions(CONTROLLERBUTTONS_T=uint32_t)
 ################################################################################
 add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
 target_compile_options(libultraship PRIVATE "${WARNING_OVERRIDE}")
+target_compile_definitions(libultraship PUBLIC INCLUDE_MPQ_SUPPORT)
 add_subdirectory(ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
 add_subdirectory(OTRExporter)
 add_subdirectory(soh)
@@ -194,7 +201,7 @@ add_custom_target(
 
     # copy LUS default shaders into assets/custom
     COMMAND ${CMAKE_COMMAND} -E rm -r -f ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/graphic/Fast3D/shaders/ ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/fast/shaders/ ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
 
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>" --non-interactive --xml-root assets/xml --custom-otr-file soh.o2r "--custom-assets-path" ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom --port-ver "${CMAKE_PROJECT_VERSION}"
     COMMAND ${CMAKE_COMMAND} -DSYSTEM_NAME=${CMAKE_SYSTEM_NAME} -DTARGET_DIR="$<TARGET_FILE_DIR:ZAPD>" -DSOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DBINARY_DIR=${CMAKE_BINARY_DIR} -P ${CMAKE_CURRENT_SOURCE_DIR}/copy-existing-otrs.cmake
@@ -220,7 +227,7 @@ add_custom_target(
 
     # copy LUS default shaders into assets/custom
     COMMAND ${CMAKE_COMMAND} -E rm -r -f ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/graphic/Fast3D/shaders/ ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/fast/shaders/ ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
 
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>" --norom --custom-otr-file soh.o2r "--custom-assets-path" ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom --port-ver "${CMAKE_PROJECT_VERSION}"
     COMMAND ${CMAKE_COMMAND} -DSYSTEM_NAME=${CMAKE_SYSTEM_NAME} -DTARGET_DIR="$<TARGET_FILE_DIR:ZAPD>" -DSOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DBINARY_DIR=${CMAKE_BINARY_DIR} -DONLYSOHOTR=On -P ${CMAKE_CURRENT_SOURCE_DIR}/copy-existing-otrs.cmake

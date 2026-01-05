@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 #include <string>
-#include "Resource.h"
+#include <ship/resource/Resource.h>
 #include "SceneCommand.h"
 #include "soh/resource/type/Scene.h"
 #include "RomFile.h"

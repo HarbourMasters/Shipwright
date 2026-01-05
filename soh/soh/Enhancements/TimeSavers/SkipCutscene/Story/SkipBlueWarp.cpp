@@ -1,6 +1,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/randomizer/context.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -10,8 +10,12 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 }
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
 
+extern "C" PlayState* gPlayState;
 static bool sEnteredBlueWarp = false;
+
+extern void TimeSaverQueueItem(RandomizerGet randoGet);
 
 // Todo: Move item queueing here
 
@@ -64,7 +68,16 @@ void RegisterSkipBlueWarp() {
      * to the player instead.
      */
     COND_VB_SHOULD(VB_GIVE_ITEM_FROM_BLUE_WARP,
-                   CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO), { *should = false; });
+                   CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO), {
+                       if (IS_VANILLA) {
+                           if (gPlayState->sceneNum == SCENE_SHADOW_TEMPLE_BOSS) {
+                               TimeSaverQueueItem(RG_SHADOW_MEDALLION);
+                           } else if (gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE_BOSS) {
+                               TimeSaverQueueItem(RG_SPIRIT_MEDALLION);
+                           }
+                       }
+                       *should = false;
+                   });
 }
 
 void RegisterShouldPlayBlueWarp() {
@@ -156,8 +169,9 @@ void RegisterShouldPlayBlueWarp() {
             }
 
             // This is outside the above condition because we want to handle both first and following visits to the blue
-            // warp
-            if (sEnteredBlueWarp && overrideBlueWarpDestinations) {
+            // warp. Jabu's blue warp doesn't call VB_PLAY_BLUE_WARP_CS without Ruto
+            if ((sEnteredBlueWarp || gSaveContext.entranceIndex == ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP) &&
+                overrideBlueWarpDestinations) {
                 Entrance_OverrideBlueWarp();
             }
         }

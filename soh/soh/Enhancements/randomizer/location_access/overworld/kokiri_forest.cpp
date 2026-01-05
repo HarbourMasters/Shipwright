@@ -7,18 +7,17 @@ void RegionTable_Init_KokiriForest() {
     // clang-format off
     areaTable[RR_KOKIRI_FOREST] = Region("Kokiri Forest", SCENE_KOKIRI_FOREST, {
         //Events
-        EventAccess(&logic->BeanPlantFairy,           []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS);}),
-        EventAccess(&logic->GossipStoneFairy,         []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(&logic->ShowedMidoSwordAndShield, []{return logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD);}),
+        EventAccess(LOGIC_FAIRY_ACCESS,                 []{return logic->CallGossipFairyExceptSuns() || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_KOKIRI_FOREST_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS));}),
+        EventAccess(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD, []{return logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD);}),
     }, {
         //Locations
         LOCATION(RC_KF_KOKIRI_SWORD_CHEST,      logic->IsChild),
         LOCATION(RC_KF_GS_KNOW_IT_ALL_HOUSE,    logic->IsChild && logic->CanAttack() && logic->CanGetNightTimeGS()),
-        LOCATION(RC_KF_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull() && logic->CanAttack()),
+        LOCATION(RC_KF_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull(RG_KOKIRI_FOREST_BEAN_SOUL) && logic->CanAttack()),
         LOCATION(RC_KF_GS_HOUSE_OF_TWINS,       logic->IsAdult && (logic->HookshotOrBoomerang() || (ctx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS))) && logic->CanGetNightTimeGS()),
-        LOCATION(RC_KF_BEAN_SPROUT_FAIRY_1,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_KF_BEAN_SPROUT_FAIRY_2,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_KF_BEAN_SPROUT_FAIRY_3,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_KF_BEAN_SPROUT_FAIRY_1,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_KOKIRI_FOREST_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_KF_BEAN_SPROUT_FAIRY_2,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_KOKIRI_FOREST_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_KF_BEAN_SPROUT_FAIRY_3,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_KOKIRI_FOREST_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_KF_GOSSIP_STONE_FAIRY,      logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_KF_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_KF_BRIDGE_RUPEE,            logic->IsChild),
@@ -29,13 +28,13 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_NORTH_GRASS_EAST_RUPEE,  logic->IsChild),
         LOCATION(RC_KF_BOULDER_RUPEE_1,         logic->IsChild),
         LOCATION(RC_KF_BOULDER_RUPEE_2,         logic->IsChild),
-        LOCATION(RC_KF_BEAN_RUPEE_1,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_KF_BEAN_RUPEE_2,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_KF_BEAN_RUPEE_3,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_KF_BEAN_RUPEE_4,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_KF_BEAN_RUPEE_5,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_KF_BEAN_RUPEE_6,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_KF_BEAN_RED_RUPEE,          logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_KF_BEAN_RUPEE_1,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_KF_BEAN_RUPEE_2,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_KF_BEAN_RUPEE_3,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_KF_BEAN_RUPEE_4,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_KF_BEAN_RUPEE_5,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_KF_BEAN_RUPEE_6,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_KF_BEAN_RED_RUPEE,          logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_KF_SARIAS_ROOF_WEST_HEART,  logic->IsChild),
         LOCATION(RC_KF_SARIAS_ROOF_EAST_HEART,  logic->IsChild),
         LOCATION(RC_KF_SARIAS_ROOF_NORTH_HEART, logic->IsChild),
@@ -83,17 +82,18 @@ void RegionTable_Init_KokiriForest() {
         Entrance(RR_KF_HOUSE_OF_TWINS,     []{return true;}),
         Entrance(RR_KF_KNOW_IT_ALL_HOUSE,  []{return true;}),
         Entrance(RR_KF_KOKIRI_SHOP,        []{return true;}),
-        Entrance(RR_KF_OUTSIDE_DEKU_TREE,  []{return (logic->IsAdult && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->ForestTempleClear)) || ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) || logic->ShowedMidoSwordAndShield;}),
+        Entrance(RR_KF_OUTSIDE_DEKU_TREE,  []{return (logic->IsAdult && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->Get(LOGIC_FOREST_TEMPLE_CLEAR))) || ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) || logic->Get(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD);}),
         Entrance(RR_THE_LOST_WOODS,        []{return true;}),
-        Entrance(RR_LW_BRIDGE_FROM_FOREST, []{return logic->IsAdult || ctx->GetOption(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON) || logic->DekuTreeClear;}),
+        Entrance(RR_LW_BRIDGE_FROM_FOREST, []{return logic->IsAdult || ctx->GetOption(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON) || logic->Get(LOGIC_DEKU_TREE_CLEAR);}),
         Entrance(RR_KF_STORMS_GROTTO,      []{return logic->CanOpenStormsGrotto();}),
     });
 
     areaTable[RR_KF_OUTSIDE_DEKU_TREE] = Region("KF Outside Deku Tree", SCENE_KOKIRI_FOREST, {
         //Events
-        EventAccess(&logic->DekuBabaSticks,           []{return logic->CanGetDekuBabaSticks();}),
-        EventAccess(&logic->DekuBabaNuts,             []{return logic->CanGetDekuBabaNuts();}),
-        EventAccess(&logic->ShowedMidoSwordAndShield, []{return logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD);}),
+        EventAccess(LOGIC_STICK_ACCESS,                 []{return logic->CanGetDekuBabaSticks();}),
+        EventAccess(LOGIC_NUT_ACCESS,                   []{return logic->CanGetDekuBabaNuts();}),
+        EventAccess(LOGIC_FAIRY_ACCESS,                 []{return logic->CallGossipFairyExceptSuns();}),
+        EventAccess(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD, []{return logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD);}),
     }, {
         //Locations
         LOCATION(RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE_FAIRY,      logic->CallGossipFairyExceptSuns()),
@@ -104,13 +104,13 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE,           true),
     }, {
         //Exits
-        Entrance(RR_DEKU_TREE_ENTRYWAY, []{return logic->IsChild || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) && (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) || logic->ShowedMidoSwordAndShield));}),
-        Entrance(RR_KOKIRI_FOREST,      []{return (logic->IsAdult && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->ForestTempleClear)) || ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) || logic->ShowedMidoSwordAndShield;}),
+        Entrance(RR_DEKU_TREE_ENTRYWAY, []{return logic->IsChild || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) && (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) || logic->Get(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD)));}),
+        Entrance(RR_KOKIRI_FOREST,      []{return (logic->IsAdult && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->Get(LOGIC_DEKU_TREE_CLEAR))) || ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) || logic->Get(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD);}),
     });
 
     areaTable[RR_KF_LINKS_HOUSE] = Region("KF Link's House", SCENE_LINKS_HOUSE, {}, {
         //Locations
-        LOCATION(RC_KF_LINKS_HOUSE_COW, logic->IsAdult && logic->CanUse(RG_EPONAS_SONG) && logic->LinksCow),
+        LOCATION(RC_KF_LINKS_HOUSE_COW, logic->IsAdult && logic->CanUse(RG_EPONAS_SONG) && logic->Get(LOGIC_LINKS_COW)),
         LOCATION(RC_KF_LINKS_HOUSE_POT, logic->CanBreakPots()),
     }, {
         //Exits
@@ -159,14 +159,14 @@ void RegionTable_Init_KokiriForest() {
 
     areaTable[RR_KF_KOKIRI_SHOP] = Region("KF Kokiri Shop", SCENE_KOKIRI_SHOP, {}, {
         //Locations
-        LOCATION(RC_KF_SHOP_ITEM_1, true),
-        LOCATION(RC_KF_SHOP_ITEM_2, true),
-        LOCATION(RC_KF_SHOP_ITEM_3, true),
-        LOCATION(RC_KF_SHOP_ITEM_4, true),
-        LOCATION(RC_KF_SHOP_ITEM_5, true),
-        LOCATION(RC_KF_SHOP_ITEM_6, true),
-        LOCATION(RC_KF_SHOP_ITEM_7, true),
-        LOCATION(RC_KF_SHOP_ITEM_8, true),
+        LOCATION(RC_KF_SHOP_ITEM_1, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_2, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_3, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_4, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_5, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_6, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_7, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KF_SHOP_ITEM_8, GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
         Entrance(RR_KOKIRI_FOREST, []{return true;}),

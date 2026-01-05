@@ -1,4 +1,5 @@
 #pragma once
+
 #ifdef __cplusplus
 
 #include "randomizerTypes.h"
@@ -28,6 +29,8 @@ enum class EntranceType {
     Interior,
     InteriorReverse,
     SpecialInterior,
+    ThievesHideout,
+    ThievesHideoutReverse,
     GrottoGrave,
     GrottoGraveReverse,
     Overworld,

@@ -1,7 +1,7 @@
 #include "hint.h"
 #include "map"
 #include "string"
-#include "context.h"
+#include "SeedContext.h"
 #include <spdlog/spdlog.h>
 #include "static_data.h"
 
@@ -223,10 +223,7 @@ size_t Hint::GetNumberOfMessages() const {
     if (StaticData::staticHintInfoMap.contains(ownKey)) {
         numMessages = std::max(StaticData::staticHintInfoMap[ownKey].hintKeys.size(), numMessages);
     }
-    if (numMessages == 0) {
-        numMessages = 1; // RANDOTODO make std::max actually fucking work for 3 arguments
-    }
-    return numMessages;
+    return std::max(numMessages, (size_t)1);
 }
 
 const std::vector<std::string> Hint::GetAllMessageStrings(MessageFormat format) const {
@@ -251,7 +248,6 @@ const HintText Hint::GetHintText(size_t id) const {
     switch (hintType) {
         case HINT_TYPE_HINT_KEY:
             return StaticData::hintTextTable[0];
-            break;
         case HINT_TYPE_TRIAL:
             if (ctx->GetTrial(trials[0])->IsRequired()) {
                 return StaticData::hintTextTable[RHT_TRIAL_ON];
@@ -590,7 +586,7 @@ CustomMessage Hint::GetGanonBossKeyText() {
     auto ctx = Rando::Context::GetInstance();
     CustomMessage ganonBossKeyMessage;
 
-    if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
+    if (ctx->GetOption(RSK_TRIFORCE_HUNT).IsNot(RO_TRIFORCE_HUNT_OFF)) {
         return StaticData::hintTextTable[RHT_GANON_BK_TRIFORCE_HINT].GetHintMessage();
     }
 

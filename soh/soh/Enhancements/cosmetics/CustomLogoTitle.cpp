@@ -195,7 +195,7 @@ void RegisterCustomLogoTitle() {
     COND_HOOK(OnZTitleUpdate, true, OnZTitleUpdatePressButtonToSkip);
 }
 
-static RegisterShipInitFunc initFuncAlways(RegisterCustomLogoTitle);
+static RegisterShipInitFunc registerCustomLogo(RegisterCustomLogoTitle);
 
 // // // // // //
 // Bootsequence
@@ -213,10 +213,15 @@ void OnZTitleUpdateSkipToFileSelect(void* gameState) {
 }
 
 void RegisterCustomLogoTitleBootsequence() {
-    COND_HOOK(OnZTitleUpdate, CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_FILESELECT, OnZTitleUpdateSkipToFileSelect);
+    COND_HOOK(OnZTitleUpdate,
+              CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_FILESELECT &&
+                  CVarGetInteger(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"), 0) == 0,
+              OnZTitleUpdateSkipToFileSelect);
 }
 
-static RegisterShipInitFunc initFuncBootsequence(RegisterCustomLogoTitleBootsequence, { CVAR_BOOTSEQUENCE_NAME });
+static RegisterShipInitFunc registerTitleBootSequence(RegisterCustomLogoTitleBootsequence,
+                                                      { CVAR_BOOTSEQUENCE_NAME,
+                                                        CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen") });
 
 // // // // // //
 // Let it Snow
@@ -230,4 +235,4 @@ void RegisterCustomLogoTitleLetItSnow() {
     shouldDrawIceOnSpinningLogo = CVAR_LETITSNOW_VALUE != CVAR_LETITSNOW_DEFAULT;
 }
 
-static RegisterShipInitFunc initFuncLetItSnow(RegisterCustomLogoTitleLetItSnow, { CVAR_LETITSNOW_NAME });
+static RegisterShipInitFunc registerLetItSnow(RegisterCustomLogoTitleLetItSnow, { CVAR_LETITSNOW_NAME });

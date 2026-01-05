@@ -10,11 +10,11 @@ extern "C"
 {
 #endif
 
-#include "luslog.h"
+#include <libultraship/log/luslog.h>
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
-#if defined(INCLUDE_GAME_PRINTF) && defined(_DEBUG)
-#define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, ##__VA_ARGS__)
+#if (LOG_LEVEL_GAME_PRINTS >= SPDLOG_ACTIVE_LEVEL) && !(LOG_LEVEL_GAME_PRINTS >= 6)
+#define osSyncPrintf(...) lusprintf(__FILE__, __LINE__, LOG_LEVEL_GAME_PRINTS , __VA_ARGS__)
 #else
 #define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, ##__VA_ARGS__)
 #endif
@@ -2456,10 +2456,6 @@ void Font_LoadOrderedFontNTSC(Font* font);
 void Interface_RandoRestoreSwordless(void);
 s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projectedPos, f32 projectedW, bool* shouldDraw,
                                  bool* shouldUpdate);
-
-//Pause Warp
-void PauseWarp_HandleSelection();
-void PauseWarp_Execute();
 
 // #endregion
 

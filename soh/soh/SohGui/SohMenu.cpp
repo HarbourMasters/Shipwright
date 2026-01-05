@@ -1,10 +1,10 @@
 #include "SohMenu.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/controls/SohInputEditorWindow.h"
-#include "window/gui/GuiMenuBar.h"
-#include "window/gui/GuiElement.h"
+#include <ship/window/gui/GuiMenuBar.h>
+#include <ship/window/gui/GuiElement.h>
 #include <variant>
-#include "StringHelper.h"
+#include <ship/utils/StringHelper.h>
 #include <spdlog/fmt/fmt.h>
 #include <tuple>
 
@@ -61,8 +61,9 @@ WidgetInfo& SohMenu::AddWidget(WidgetPath& pathInfo, std::string widgetName, Wid
         case WIDGET_WINDOW_BUTTON:
             widget.options = std::make_shared<WindowButtonOptions>();
             break;
-        case WIDGET_COLOR_24:
-        case WIDGET_COLOR_32:
+        case WIDGET_CVAR_COLOR_PICKER:
+        case WIDGET_COLOR_PICKER:
+            widget.options = std::make_shared<ColorPickerOptions>();
             break;
         case WIDGET_SEPARATOR_TEXT:
         case WIDGET_TEXT:
@@ -85,9 +86,7 @@ void SohMenu::InitElement() {
     AddMenuSettings();
     AddMenuEnhancements();
     AddMenuRandomizer();
-#ifdef ENABLE_REMOTE_CONTROL
     AddMenuNetwork();
-#endif
     AddMenuDevTools();
 
     if (CVarGetInteger(CVAR_SETTING("Menu.SidebarSearch"), 0)) {

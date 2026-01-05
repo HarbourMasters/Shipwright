@@ -160,6 +160,68 @@ struct ButtonOptions : WidgetOptions {
         color = color_;
         return *this;
     }
+    ButtonOptions& DisabledTooltip(const char* disabledTooltip_) {
+        WidgetOptions::disabledTooltip = disabledTooltip_;
+        return *this;
+    }
+};
+
+struct ColorPickerOptions : WidgetOptions {
+    ImVec2 size = Sizes::Fill;
+    ImVec2 padding = ImVec2(10.0f, 8.0f);
+    Colors color = Colors::Gray;
+    Color_RGBA8 defaultValue = { 255, 255, 255, 255 };
+    bool useAlpha, showReset, showRandom, showRainbow, showLock;
+
+    ColorPickerOptions& Size(ImVec2 size_) {
+        size = size_;
+        return *this;
+    }
+
+    ColorPickerOptions& Padding(ImVec2 padding_) {
+        padding = padding_;
+        return *this;
+    }
+
+    ColorPickerOptions& Tooltip(const char* tooltip_) {
+        WidgetOptions::tooltip = tooltip_;
+        return *this;
+    }
+
+    ColorPickerOptions& ShowReset(bool showReset_ = true) {
+        showReset = showReset_;
+        return *this;
+    }
+
+    ColorPickerOptions& ShowRandom(bool showRandom_ = true) {
+        showRandom = showRandom_;
+        return *this;
+    }
+
+    ColorPickerOptions& ShowRainbow(bool showRainbow_ = true) {
+        showRainbow = showRainbow_;
+        return *this;
+    }
+
+    ColorPickerOptions& ShowLock(bool showLock_ = true) {
+        showLock = showLock_;
+        return *this;
+    }
+
+    ColorPickerOptions& UseAlpha(bool useAlpha_ = true) {
+        useAlpha = useAlpha_;
+        return *this;
+    }
+
+    ColorPickerOptions& Color(Colors color_) {
+        color = color_;
+        return *this;
+    }
+
+    ColorPickerOptions& DefaultValue(Color_RGBA8 defaultValue_) {
+        defaultValue = defaultValue_;
+        return *this;
+    }
 };
 
 struct WindowButtonOptions : WidgetOptions {
@@ -989,7 +1051,9 @@ void DrawFlagArray8Mask(const std::string& name, uint8_t& flags, Colors color = 
 void InsertHelpHoverText(const std::string& text);
 void InsertHelpHoverText(const char* text);
 } // namespace UIWidgets
+
 ImVec4 GetRandomValue();
+ImVec4 GetRandomValue(uint32_t seed);
 
 Color_RGBA8 RGBA8FromVec(ImVec4 vec);
 ImVec4 VecFromRGBA8(Color_RGBA8 color);
