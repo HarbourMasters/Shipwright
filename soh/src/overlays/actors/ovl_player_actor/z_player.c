@@ -8297,19 +8297,18 @@ void Player_ChooseNextIdleAnim(PlayState* play, Player* this) {
                          (commonType + FIDGET_SWORD_SWING != FIDGET_ADJUST_SHIELD)) ||
                         ((this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
                          ((commonType + FIDGET_SWORD_SWING == FIDGET_ADJUST_SHIELD) ||
-                          (Player_GetMeleeWeaponHeld2(this) != 0)))) {
+                          (Player_GetMeleeWeaponHeld2(this) != 0))) ||
+                        ((commonType + FIDGET_SWORD_SWING == FIDGET_SWORD_SWING) &&
+                         Player_HoldsTwoHandedWeapon(this))) {
                         //! @bug It is possible for `FIDGET_ADJUST_SHIELD` to be used even if
                         //! a shield is not currently equipped. This is because of how being shieldless
                         //! is implemented. There is no sword-only model type, only
                         //! `PLAYER_MODELGROUP_SWORD_AND_SHIELD` exists. Therefore, the right hand type will be
                         //! `PLAYER_MODELTYPE_RH_SHIELD` if sword is in hand, even if no shield is equipped.
-                        if ((commonType + FIDGET_SWORD_SWING == FIDGET_SWORD_SWING) &&
-                            Player_HoldsTwoHandedWeapon(this) &&
-                            CVarGetInteger(CVAR_ENHANCEMENT("TwoHandedIdle"), 0) == 1) {
-                            //! @bug This code is unreachable.
-                            //! The check above groups the `Player_GetMeleeWeaponHeld2` check and
-                            //! `PLAYER_MODELTYPE_RH_SHIELD` conditions together, meaning sword and shield must be
-                            //! in hand. However shield is not in hand when using a two handed melee weapon.
+                        if (GameInteractor_Should(VB_TWO_HANDED_FIDGET_IDLE,
+                                                  (commonType + FIDGET_SWORD_SWING == FIDGET_SWORD_SWING) &&
+                                                      Player_HoldsTwoHandedWeapon(this),
+                                                  commonType)) {
                             commonType = FIDGET_SWORD_SWING_TWO_HAND - FIDGET_SWORD_SWING;
                         }
 
@@ -8317,8 +8316,6 @@ void Player_ChooseNextIdleAnim(PlayState* play, Player* this) {
                     }
                 }
             }
-
-            GameInteractor_Should(VB_PLAYER_PICK_FIDGET, true, this, &fidgetType);
 
             fidgetAnimPtr = &sFidgetAnimations[fidgetType][0];
 

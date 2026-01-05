@@ -2460,12 +2460,11 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // true
+    // (commonType + FIDGET_SWORD_SWING == FIDGET_SWORD_SWING) && Player_HoldsTwoHandedWeapon(player)
     // ```
     // #### `args`
-    // - `*Player`
-    // - `s32*`
-    VB_PLAYER_PICK_FIDGET,
+    // - `s32` (commonType)
+    VB_TWO_HANDED_FIDGET_IDLE,
 
 } GIVanillaBehavior;
 
