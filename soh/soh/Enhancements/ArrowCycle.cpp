@@ -28,7 +28,6 @@ static const s16 BUTTON_HIGHLIGHT_ALPHA = 128;
 
 static s16 sButtonFlashTimer = 0;
 static s16 sButtonFlashCount = 0;
-static s8 sJustCycledFrames = 0;
 
 static const PlayerItemAction sArrowCycleOrder[] = {
     PLAYER_IA_BOW,
@@ -221,10 +220,6 @@ static void CycleToNextArrow(PlayState* play, Player* player) {
 }
 
 void ArrowCycleMain() {
-    if (sJustCycledFrames > 0) {
-        sJustCycledFrames--;
-    }
-
     if (gPlayState == nullptr || !CanCycleArrows()) {
         return;
     }
@@ -242,28 +237,21 @@ void ArrowCycleMain() {
         }
 
         // reset magic state to IDLE before cycling to prevent error sound
-        if (gSaveContext.magicState != MAGIC_STATE_IDLE) {
-            gSaveContext.magicState = MAGIC_STATE_IDLE;
-        }
+        gSaveContext.magicState = MAGIC_STATE_IDLE;
 
         CycleToNextArrow(gPlayState, player);
-        // prevent held R input from triggering shield action when arrow respawns in Z-target mode
-        sJustCycledFrames = 2;
     }
 }
 
 void RegisterArrowCycle() {
     COND_ID_HOOK(OnActorUpdate, ACTOR_PLAYER, CVAR_ARROW_CYCLE_VALUE, [](void* actor) { ArrowCycleMain(); });
 
-    // suppress shield input when aiming and R is pressed to allow arrow cycling
+    // suppress shield input when R is held while aiming to allow arrow cycling
     COND_VB_SHOULD(VB_EXECUTE_PLAYER_ACTION_FUNC, CVAR_ARROW_CYCLE_VALUE, {
         Player* player = (Player*)va_arg(args, void*);
         Input* input = (Input*)va_arg(args, void*);
-        if (IsAimingBow(player) && CHECK_BTN_ANY(input->press.button, BTN_R)) {
-            if ((player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON) ||
-                (sJustCycledFrames > 0 && (player->stateFlags1 & PLAYER_STATE1_Z_TARGETING))) {
-                *should = false;
-            }
+        if (IsAimingBow(player) && CHECK_BTN_ANY(input->cur.button, BTN_R)) {
+            *should = false;
         }
     });
 
