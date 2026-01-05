@@ -426,7 +426,7 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a tree killer", /*german*/"ein Baumtöter", /*french*/"un coupeur d'arbres")});
                                                 // /*spanish*/un destructor de árboles
 
-    hintTextTable[RHT_BROKEN_SWORD] = HintText(CustomMessage("the Broken Goron's Sword", /*german*/"das zerbrochene Goronen-Schwert", /*french*/"l'Épée Brisée de Goron"),
+    hintTextTable[RHT_BROKEN_SWORD] = HintText(CustomMessage("the Broken Goron's Sword", /*german*/"das Zerbr. Goronen-Schwert", /*french*/"l'Épée Brisée de Goron"),
                                                // /*spanish*/la espada goron rota
                                                {
                                                CustomMessage("a trade quest item", /*german*/"ein Handelsgegenstand", /*french*/"un objet de quête d'échanges"),
@@ -1963,6 +1963,8 @@ void StaticData::HintTable_Init_Item() {
                                                   // /*spanish*/un porción de queso
                                                  CustomMessage("a gold fragment", /*german*/"ein Goldfragment", /*french*/"un fragment d'or")});
                                                   // /*spanish*/un fragmento dorado
+
+    hintTextTable[RHT_BEAN_SOUL] = HintText(CustomMessage("a bean soul", /*german*/"eine bohnenseele", /*french*/"une âme de haricot"));
 
     hintTextTable[RHT_GOHMA_SOUL] = HintText(CustomMessage("the soul of Gohma", /*german*/"Gohmas Seele", /*french*/"l'Âme de Gohma"),
                                              {

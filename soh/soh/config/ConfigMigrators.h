@@ -1503,7 +1503,7 @@ std::vector<Migration> version3Migrations = {
     { MigrationAction::Rename, "gOpenMenuBar", "gSettings.OpenMenuBar" },
     { MigrationAction::Rename, "gRandomizeSkipChildStealth", "gRandoSettings.SkipChildStealth" },
     { MigrationAction::Rename, "gRandomizeExcludedLocations", "gRandoSettings.ExcludedLocations" },
-    { MigrationAction::Rename, "gAltAssets", "gEnhancements.AltAssets" },
+    { MigrationAction::Rename, "gAltAssets", "gSettings.AltAssets" },
     { MigrationAction::Rename, "gMSAAValue", "gSettings.MSAAValue" },
     { MigrationAction::Rename, "gInternalResolution", "gSettings.InternalResolution" },
     { MigrationAction::Rename, "gTextureFilter", "gSettings.TextureFilter" },
@@ -1519,5 +1519,10 @@ std::vector<Migration> version3Migrations = {
     { MigrationAction::Remove, "gGameControlEditorEnabled" },
     { MigrationAction::Remove, "gPreset0" },
     { MigrationAction::Remove, "gPreset1" },
+};
+
+std::vector<Migration> version4Migrations = {
+    { MigrationAction::Rename, "gAudioEditor.SeqNameOverlay", "gAudioEditor.SeqNameNotification" },
+    { MigrationAction::Rename, "gAudioEditor.SeqNameOverlayDuration", "gAudioEditor.SeqNameNotificationDuration" },
 };
 } // namespace SOH

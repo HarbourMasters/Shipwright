@@ -14,7 +14,7 @@ extern PlayState* gPlayState;
 
 static u16 sItemButtons[] = { BTN_B, BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT };
 
-void UseTunicBoots(Player* player, PlayState* play, Input* input) {
+static void UseTunicBoots(Player* player, PlayState* play, Input* input) {
     // Boots and tunics equip despite state
     if (player->stateFlags1 & (PLAYER_STATE1_INPUT_DISABLED | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE |
                                PLAYER_STATE1_TALKING | PLAYER_STATE1_DEAD) ||
@@ -30,7 +30,7 @@ void UseTunicBoots(Player* player, PlayState* play, Input* input) {
         }
     }
 
-    if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+    if (item >= ITEM_SHIELD_DEKU && item <= ITEM_BOOTS_HOVER) {
         if (item >= ITEM_BOOTS_KOKIRI) {
             u16 bootsValue = item - ITEM_BOOTS_KOKIRI + 1;
             if (CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == bootsValue) {
@@ -41,7 +41,7 @@ void UseTunicBoots(Player* player, PlayState* play, Input* input) {
             Player_SetEquipmentData(play, player);
             func_808328EC(player, CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) == EQUIP_VALUE_BOOTS_IRON ? NA_SE_PL_WALK_HEAVYBOOTS
                                                                                               : NA_SE_PL_CHANGE_ARMS);
-        } else {
+        } else if (item >= ITEM_TUNIC_KOKIRI) {
             u16 tunicValue = item - ITEM_TUNIC_KOKIRI + 1;
             if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == tunicValue) {
                 Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI);
@@ -50,16 +50,63 @@ void UseTunicBoots(Player* player, PlayState* play, Input* input) {
             }
             Player_SetEquipmentData(play, player);
             func_808328EC(player, NA_SE_PL_CHANGE_ARMS);
+        } else {
+            u16 shieldValue = item - ITEM_SHIELD_DEKU + 1;
+            if (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) != shieldValue) {
+                Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, shieldValue);
+                Player_SetEquipmentData(play, player);
+                func_808328EC(player, NA_SE_PL_CHANGE_ARMS);
+            }
         }
     }
 }
 
-void ClearAssignedTunicsBoots(int32_t unused = 0) {
+static void ClearAssignedTunicsBoots(int32_t unused = 0) {
     for (int32_t buttonIndex = 0; buttonIndex < 8; buttonIndex++) {
         int32_t item = gSaveContext.equips.buttonItems[buttonIndex];
 
-        if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+        if (item >= ITEM_SHIELD_DEKU && item <= ITEM_BOOTS_HOVER) {
             gSaveContext.equips.buttonItems[buttonIndex] = ITEM_NONE;
+        }
+    }
+}
+
+static void ClearDeletedAssignedEquipment(int16_t equipmentType, uint16_t equipValue) {
+    ItemID itemToRemove = ITEM_NONE;
+
+    if (equipmentType == EQUIP_TYPE_TUNIC) {
+        switch (equipValue) {
+            case EQUIP_VALUE_TUNIC_KOKIRI:
+                break;
+            case EQUIP_VALUE_TUNIC_GORON:
+                itemToRemove = ITEM_TUNIC_GORON;
+                break;
+            case EQUIP_VALUE_TUNIC_ZORA:
+                itemToRemove = ITEM_TUNIC_ZORA;
+                break;
+        }
+    } else if (equipmentType == EQUIP_TYPE_SHIELD) {
+        switch (equipValue) {
+            case EQUIP_VALUE_SHIELD_DEKU:
+                itemToRemove = ITEM_SHIELD_DEKU;
+                break;
+            case EQUIP_VALUE_SHIELD_HYLIAN:
+                itemToRemove = ITEM_SHIELD_HYLIAN;
+                break;
+            case EQUIP_VALUE_SHIELD_MIRROR:
+                itemToRemove = ITEM_SHIELD_MIRROR;
+                break;
+        }
+    }
+
+    if (itemToRemove == ITEM_NONE) {
+        return;
+    }
+
+    for (int i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+        if (gSaveContext.equips.buttonItems[i] == itemToRemove) {
+            gSaveContext.equips.buttonItems[i] = ITEM_NONE;
+            gSaveContext.equips.cButtonSlots[i - 1] = SLOT_NONE;
         }
     }
 }
@@ -67,28 +114,29 @@ void ClearAssignedTunicsBoots(int32_t unused = 0) {
 #define CVAR_TUNICBOOTS_NAME CVAR_ENHANCEMENT("AssignableTunicsAndBoots")
 #define CVAR_TUNICBOOTS_DEFAULT 0
 #define CVAR_TUNICBOOTS_VALUE CVarGetInteger(CVAR_TUNICBOOTS_NAME, CVAR_TUNICBOOTS_DEFAULT)
+#define CVAR_TUNICBOOTS_SET (CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT)
 
-void RegisterAssignableTunicsBoots() {
-    // make sure we don't change our held/equipped item when changing tunics/boots
-    COND_VB_SHOULD(VB_CHANGE_HELD_ITEM_AND_USE_ITEM, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
+static void RegisterAssignableTunicsBoots() {
+    // make sure we don't change our held/equipped item when changing shield/tunic/boots
+    COND_VB_SHOULD(VB_CHANGE_HELD_ITEM_AND_USE_ITEM, CVAR_TUNICBOOTS_SET, {
         int32_t item = va_arg(args, int32_t);
 
-        if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+        if (item >= ITEM_SHIELD_DEKU && item <= ITEM_BOOTS_HOVER) {
             *should = false;
         }
     });
 
     // make sure we don't crash because tunics/boots don't have assoicated item actions
-    COND_VB_SHOULD(VB_ITEM_ACTION_BE_NONE, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
+    COND_VB_SHOULD(VB_ITEM_ACTION_BE_NONE, CVAR_TUNICBOOTS_SET, {
         int32_t item = va_arg(args, int32_t);
 
-        if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+        if (item >= ITEM_SHIELD_DEKU && item <= ITEM_BOOTS_HOVER) {
             *should = true;
         }
     });
 
-    // don't throw items when the pressed button is a tunic or boots
-    COND_VB_SHOULD(VB_THROW_OR_PUT_DOWN_HELD_ITEM, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
+    // don't throw items when the pressed button is a shield, tunic or boots
+    COND_VB_SHOULD(VB_THROW_OR_PUT_DOWN_HELD_ITEM, CVAR_TUNICBOOTS_SET, {
         // if the vanilla condition doesn't want us to throw/put down the item, early return
         if (!*should) {
             return;
@@ -104,13 +152,13 @@ void RegisterAssignableTunicsBoots() {
             }
         }
 
-        if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+        if (item >= ITEM_SHIELD_DEKU && item <= ITEM_BOOTS_HOVER) {
             *should = false;
         }
     });
 
     // do something when the player presses a button to use the tunics/boots
-    COND_VB_SHOULD(VB_EXECUTE_PLAYER_ACTION_FUNC, CVAR_TUNICBOOTS_VALUE != CVAR_TUNICBOOTS_DEFAULT, {
+    COND_VB_SHOULD(VB_EXECUTE_PLAYER_ACTION_FUNC, CVAR_TUNICBOOTS_SET, {
         // if the vanilla condition doesn't want us to run the actionFunc, don't do any of this
         if (!*should) {
             return;
@@ -133,13 +181,16 @@ void RegisterAssignableTunicsBoots() {
         UseTunicBoots(player, gPlayState, input);
     });
 
+    // remove assigned equipment when it gets deleted
+    COND_HOOK(OnEquipmentDelete, CVAR_TUNICBOOTS_SET, ClearDeletedAssignedEquipment);
+
     // clear out assigned tunics/boots when the enhancement is toggled off
-    if (GameInteractor::IsSaveLoaded(true) && CVAR_TUNICBOOTS_VALUE == CVAR_TUNICBOOTS_DEFAULT) {
+    if (GameInteractor::IsSaveLoaded(true) && !CVAR_TUNICBOOTS_SET) {
         ClearAssignedTunicsBoots();
     }
 
     // clear out assigned tunics/boots when loading a save with enhancement turned off
-    COND_HOOK(OnLoadGame, CVAR_TUNICBOOTS_VALUE == CVAR_TUNICBOOTS_DEFAULT, ClearAssignedTunicsBoots);
+    COND_HOOK(OnLoadGame, !CVAR_TUNICBOOTS_SET, ClearAssignedTunicsBoots);
 }
 
 static RegisterShipInitFunc initFunc(RegisterAssignableTunicsBoots, { CVAR_TUNICBOOTS_NAME });

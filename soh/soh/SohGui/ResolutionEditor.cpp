@@ -3,8 +3,8 @@
 #include <libultraship/libultraship.h>
 
 #include "soh/SohGui/UIWidgets.hpp"
-#include <graphic/Fast3D/Fast3dWindow.h>
-#include <graphic/Fast3D/interpreter.h>
+#include <fast/Fast3dWindow.h>
+#include <fast/interpreter.h>
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
@@ -582,7 +582,6 @@ void UpdateResolutionVars() {
     verticalPixelCount =
         CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalPixelCount", pixelCountPresets[item_pixelCount]);
     // Additional settings
-    showHorizontalResField = false;
     horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
     // Disabling flags
     disabled_everything = !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 0);
@@ -598,6 +597,6 @@ bool IsDroppingFrames() {
 }
 
 static RegisterMenuUpdateFunc updateFunc(UpdateResolutionVars, "Settings", "Graphics");
-static RegisterMenuInitFunc initFunc(RegisterResolutionWidgets);
+static RegisterMenuInitFunc menuInitFunc(RegisterResolutionWidgets);
 
 } // namespace SohGui

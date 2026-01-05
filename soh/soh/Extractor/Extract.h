@@ -59,6 +59,7 @@ class Extractor {
     static void ShowErrorBox(const char* title, const char* text);
     bool IsMasterQuest() const;
 
+    bool RunFileStandalone(std::string file);
     bool Run(std::string searchPath, RomSearchMode searchMode = RomSearchMode::Both);
     bool CallZapd(std::string installPath, std::string exportdir);
     const char* GetZapdStr();

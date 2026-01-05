@@ -8,51 +8,6 @@
 extern const char* digitTextures[];
 
 void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
-    Color_RGB8 aButtonColor = { 80, 150, 255 };
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
-        aButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), aButtonColor);
-    } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
-        aButtonColor = (Color_RGB8){ 80, 255, 150 };
-    }
-    if (!GameInteractor_Should(VB_HAVE_OCARINA_NOTE_D4, true)) {
-        aButtonColor = (Color_RGB8){ 191, 191, 191 };
-    }
-
-    Color_RGB8 cButtonsColor = { 255, 255, 50 };
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.CButtons.Changed"), 0)) {
-        cButtonsColor = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), cButtonsColor);
-    }
-    Color_RGB8 cUpButtonColor = cButtonsColor;
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.CUpButton.Changed"), 0)) {
-        cUpButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CUpButton.Value"), cUpButtonColor);
-    }
-    if (!GameInteractor_Should(VB_HAVE_OCARINA_NOTE_D5, true)) {
-        cUpButtonColor = (Color_RGB8){ 191, 191, 191 };
-    }
-
-    Color_RGB8 cDownButtonColor = cButtonsColor;
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.Changed"), 0)) {
-        cDownButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CDownButton.Value"), cDownButtonColor);
-    }
-    if (!GameInteractor_Should(VB_HAVE_OCARINA_NOTE_F4, true)) {
-        cDownButtonColor = (Color_RGB8){ 191, 191, 191 };
-    }
-
-    Color_RGB8 cLeftButtonColor = cButtonsColor;
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.Changed"), 0)) {
-        cLeftButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CLeftButton.Value"), cLeftButtonColor);
-    }
-    if (!GameInteractor_Should(VB_HAVE_OCARINA_NOTE_B4, true)) {
-        cLeftButtonColor = (Color_RGB8){ 191, 191, 191 };
-    }
-
-    Color_RGB8 cRightButtonColor = cButtonsColor;
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.Changed"), 0)) {
-        cRightButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CRightButton.Value"), cRightButtonColor);
-    }
-    if (!GameInteractor_Should(VB_HAVE_OCARINA_NOTE_A4, true)) {
-        cRightButtonColor = (Color_RGB8){ 191, 191, 191 };
-    }
 
     static s16 D_8082A070[][4] = {
         { 255, 0, 0, 255 },
@@ -124,22 +79,22 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
     s16 pad2;
     s16 phi_s0_2;
     s16 sp208[3];
-    if (CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0)) {
-        if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
-            pauseCtx->stickRelX = -35;
-        } else if (CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
-            pauseCtx->stickRelX = 35;
-        } else if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
-            pauseCtx->stickRelY = -35;
-        } else if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
-            pauseCtx->stickRelY = 35;
-        }
-    }
 
     OPEN_DISPS(gfxCtx);
 
     if (((pauseCtx->unk_1E4 == 0) || (pauseCtx->unk_1E4 == 5) || (pauseCtx->unk_1E4 == 8)) &&
         (pauseCtx->pageIndex == PAUSE_QUEST)) {
+        if (CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0)) {
+            if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+                pauseCtx->stickRelX = -35;
+            } else if (CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+                pauseCtx->stickRelX = 35;
+            } else if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
+                pauseCtx->stickRelY = -35;
+            } else if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
+                pauseCtx->stickRelY = 35;
+            }
+        }
         pauseCtx->cursorColorSet = 0;
 
         if (pauseCtx->cursorSpecialPos == 0) {
@@ -516,6 +471,52 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
     }
 
     if (pauseCtx->state == 6) {
+        Color_RGB8 aButtonColor = { 80, 150, 255 };
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+            aButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), aButtonColor);
+        } else if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+            aButtonColor = (Color_RGB8){ 80, 255, 150 };
+        }
+        if (!GameInteractor_Should(VB_HAVE_OCARINA_NOTE_D4, true)) {
+            aButtonColor = (Color_RGB8){ 191, 191, 191 };
+        }
+
+        Color_RGB8 cButtonsColor = { 255, 255, 50 };
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CButtons.Changed"), 0)) {
+            cButtonsColor = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), cButtonsColor);
+        }
+        Color_RGB8 cUpButtonColor = cButtonsColor;
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CUpButton.Changed"), 0)) {
+            cUpButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CUpButton.Value"), cUpButtonColor);
+        }
+        if (!GameInteractor_Should(VB_HAVE_OCARINA_NOTE_D5, true)) {
+            cUpButtonColor = (Color_RGB8){ 191, 191, 191 };
+        }
+
+        Color_RGB8 cDownButtonColor = cButtonsColor;
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.Changed"), 0)) {
+            cDownButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CDownButton.Value"), cDownButtonColor);
+        }
+        if (!GameInteractor_Should(VB_HAVE_OCARINA_NOTE_F4, true)) {
+            cDownButtonColor = (Color_RGB8){ 191, 191, 191 };
+        }
+
+        Color_RGB8 cLeftButtonColor = cButtonsColor;
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.Changed"), 0)) {
+            cLeftButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CLeftButton.Value"), cLeftButtonColor);
+        }
+        if (!GameInteractor_Should(VB_HAVE_OCARINA_NOTE_B4, true)) {
+            cLeftButtonColor = (Color_RGB8){ 191, 191, 191 };
+        }
+
+        Color_RGB8 cRightButtonColor = cButtonsColor;
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.Changed"), 0)) {
+            cRightButtonColor = CVarGetColor24(CVAR_COSMETIC("HUD.CRightButton.Value"), cRightButtonColor);
+        }
+        if (!GameInteractor_Should(VB_HAVE_OCARINA_NOTE_A4, true)) {
+            cRightButtonColor = (Color_RGB8){ 191, 191, 191 };
+        }
+
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <filesystem>
 
+#include <ship/Context.h>
 #include "TimeSplits.h"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/SaveManager.h"
@@ -363,7 +364,7 @@ void TimeSplitsSkipSplit(uint32_t index) {
 }
 
 void TimeSplitsFileManagement(uint32_t action, const char* listEntry, std::vector<SplitObject> listData) {
-    std::string filename = "timesplitdata.json";
+    std::string filename = Ship::Context::GetPathRelativeToAppDirectory("timesplitdata.json");
     json saveFile;
     json listArray = nlohmann::json::array();
 
@@ -947,15 +948,6 @@ void TimeSplitsDrawManageList() {
     ImGui::EndChild();
 }
 
-void InitializeSplitDataFile() {
-    if (!std::filesystem::exists("timesplitdata.json")) {
-        json j;
-        std::ofstream file("timesplitdata.json");
-        file << j.dump(4);
-        file.close();
-    }
-}
-
 void TimeSplitWindow::Draw() {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, windowColor);
     GuiWindow::Draw();
@@ -995,7 +987,6 @@ void TimeSplitWindow::InitElement() {
                                                                         ImVec4(1, 1, 1, 1));
     Color_RGBA8 defaultColour = { 0, 0, 0, 255 };
     windowColor = VecFromRGBA8(CVarGetColor(CVAR_ENHANCEMENT("TimeSplits.WindowColor.Value"), defaultColour));
-    InitializeSplitDataFile();
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTimestamp>([](u8 item) {
         if (item != ITEM_SKULL_TOKEN) {

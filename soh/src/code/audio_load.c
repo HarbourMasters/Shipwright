@@ -8,6 +8,7 @@
 #include "soh/Enhancements/audio/AudioCollection.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <stdio.h>
 #ifdef _MSC_VER
 #define strdup _strdup
@@ -630,21 +631,7 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     AudioSeq_SkipForwardSequence(seqPlayer);
     //! @bug missing return (but the return value is not used so it's not UB)
 
-    // Keep track of the previous sequence/scene so we don't repeat notifications
-    static uint16_t previousSeqId = UINT16_MAX;
-    static int16_t previousSceneNum = INT16_MAX;
-    if (CVarGetInteger(CVAR_AUDIO("SeqNameOverlay"), 0) && playerIdx == SEQ_PLAYER_BGM_MAIN &&
-        (seqId != previousSeqId || (gPlayState != NULL && gPlayState->sceneNum != previousSceneNum))) {
-
-        previousSeqId = seqId;
-        if (gPlayState != NULL) {
-            previousSceneNum = gPlayState->sceneNum;
-        }
-        const char* sequenceName = AudioCollection_GetSequenceName(seqId);
-        if (sequenceName != NULL) {
-            Overlay_DisplayText_Seconds(CVarGetInteger(CVAR_AUDIO("SeqNameOverlayDuration"), 5), sequenceName);
-        }
-    }
+    GameInteractor_ExecuteOnSeqPlayerInit(playerIdx, seqId);
 }
 
 u8* AudioLoad_SyncLoadSeq(s32 seqId) {

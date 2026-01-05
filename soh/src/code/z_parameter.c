@@ -8,7 +8,6 @@
 
 #include "libultraship/bridge.h"
 #include "soh/Enhancements/gameplaystats.h"
-#include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageInterfaceAddon.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -2212,8 +2211,10 @@ u8 Item_Give(PlayState* play, u8 item) {
             AMMO(ITEM_BOMBCHU) = 10;
         } else {
             AMMO(ITEM_BOMBCHU) += 10;
-            if (AMMO(ITEM_BOMBCHU) > 50) {
-                AMMO(ITEM_BOMBCHU) = 50;
+            if (GameInteractor_Should(VB_CHECK_BOMBCHU_CAPACITY, true)) {
+                if (AMMO(ITEM_BOMBCHU) > 50) {
+                    AMMO(ITEM_BOMBCHU) = 50;
+                }
             }
         }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
@@ -2223,8 +2224,10 @@ u8 Item_Give(PlayState* play, u8 item) {
             AMMO(ITEM_BOMBCHU) += sAmmoRefillCounts[item - ITEM_BOMBCHUS_5 + 8];
         } else {
             AMMO(ITEM_BOMBCHU) += sAmmoRefillCounts[item - ITEM_BOMBCHUS_5 + 8];
-            if (AMMO(ITEM_BOMBCHU) > 50) {
-                AMMO(ITEM_BOMBCHU) = 50;
+            if (GameInteractor_Should(VB_CHECK_BOMBCHU_CAPACITY, true)) {
+                if (AMMO(ITEM_BOMBCHU) > 50) {
+                    AMMO(ITEM_BOMBCHU) = 50;
+                }
             }
         }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
@@ -2319,19 +2322,16 @@ u8 Item_Give(PlayState* play, u8 item) {
         gSaveContext.ship.stats.heartPieces++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART_CONTAINER) {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0)) {
-            gSaveContext.healthCapacity += 0x10;
-            gSaveContext.health += 0x10;
-        } else {
-            gSaveContext.healthCapacity -= 0x10;
-            gSaveContext.health -= 0x10;
+        if (GameInteractor_Should(VB_HEARTS_INCREASE_WITH_CONTAINERS, true)) {
+            gSaveContext.healthCapacity += FULL_HEART_HEALTH;
+            gSaveContext.health += FULL_HEART_HEALTH;
         }
         gSaveContext.ship.stats.heartContainers++;
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART) {
         osSyncPrintf("回復ハート回復ハート回復ハート\n"); // "Recovery Heart"
         if (play != NULL) {
-            Health_ChangeBy(play, 0x10);
+            Health_ChangeBy(play, FULL_HEART_HEALTH);
         }
         return Return_Item(item, MOD_NONE, item);
     } else if (item == ITEM_MAGIC_SMALL) {
@@ -2906,7 +2906,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
         gSaveContext.health = gSaveContext.healthCapacity;
     }
 
-    heartCount = gSaveContext.health % 0x10;
+    heartCount = gSaveContext.health % FULL_HEART_HEALTH;
 
     healthLevel = heartCount;
     if (heartCount != 0) {
@@ -3000,8 +3000,10 @@ void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {
     } else if (item == ITEM_BOMBCHU) {
         AMMO(ITEM_BOMBCHU) += ammoChange;
 
-        if (AMMO(ITEM_BOMBCHU) >= 50) {
-            AMMO(ITEM_BOMBCHU) = 50;
+        if (GameInteractor_Should(VB_CHECK_BOMBCHU_CAPACITY, true)) {
+            if (AMMO(ITEM_BOMBCHU) > 50) {
+                AMMO(ITEM_BOMBCHU) = 50;
+            }
         } else if (AMMO(ITEM_BOMBCHU) < 0) {
             AMMO(ITEM_BOMBCHU) = 0;
         }
@@ -3517,7 +3519,7 @@ void Interface_DrawMagicBar(PlayState* play) {
                               R_MAGIC_FILL_X - 1;
             }
         } else {
-            if ((gSaveContext.healthCapacity - 1) / 0x10 >= lineLength && lineLength != 0) {
+            if ((gSaveContext.healthCapacity - 1) / FULL_HEART_HEALTH >= lineLength && lineLength != 0) {
                 magicBarY =
                     magicBarY_original_l +
                     magicDrop * (lineLength == 0 ? 0 : ((gSaveContext.healthCapacity - 1) / (0x10 * lineLength) - 1));
@@ -4912,7 +4914,7 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
                    ((i == ITEM_SLINGSHOT) && (AMMO(i) == CUR_CAPACITY(UPG_BULLET_BAG))) ||
                    ((i == ITEM_STICK) && (AMMO(i) == CUR_CAPACITY(UPG_STICKS))) ||
                    ((i == ITEM_NUT) && (AMMO(i) == CUR_CAPACITY(UPG_NUTS))) || ((i == ITEM_BOMBCHU) && (ammo == 50)) ||
-                   ((i == ITEM_BEAN) && (ammo == 15))) {
+                   ((i == ITEM_BEAN) && (ammo == 15)) || GameInteractor_Should(VB_COLOR_AMMO_GREEN, false, i)) {
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, alpha);
         }
 
@@ -6374,11 +6376,10 @@ void Interface_Draw(PlayState* play) {
 
 void Interface_DrawTotalGameplayTimer(PlayState* play) {
     // Draw timer based on the Gameplay Stats total time.
-
-    if ((IS_BOSS_RUSH && gSaveContext.ship.quest.data.bossRush.options[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
-        (CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowIngameTimer"), 0) && gSaveContext.fileNum >= 0 &&
-         gSaveContext.fileNum <= 2)) {
-
+    if (GameInteractor_Should(VB_SHOW_GAMEPLAY_TIMER,
+                              CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowIngameTimer"), 0) && gSaveContext.fileNum >= 0 &&
+                                  gSaveContext.fileNum <= 2,
+                              play)) {
         s32 X_Margins_Timer = 0;
         if (CVarGetInteger(CVAR_COSMETIC("HUD.IGT.UseMargins"), 0) != 0) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.IGT.PosType"), 0) == ORIGINAL_LOCATION) {

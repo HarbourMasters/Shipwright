@@ -8,6 +8,7 @@
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "objects/object_hidan_objects/object_hidan_objects.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -303,7 +304,8 @@ void BgHidanKowarerukabe_Update(Actor* thisx, PlayState* play) {
     BgHidanKowarerukabe* this = (BgHidanKowarerukabe*)thisx;
     s32 pad;
 
-    if (Actor_GetCollidedExplosive(play, &this->collider.base) != NULL) {
+    if (GameInteractor_Should(VB_FIRE_TEMPLE_BOMBABLE_WALL_BREAK,
+                              Actor_GetCollidedExplosive(play, &this->collider.base) != NULL, this)) {
         BgHidanKowarerukabe_Break(this, play);
         Flags_SetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F);
 

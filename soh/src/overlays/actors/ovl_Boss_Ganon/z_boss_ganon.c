@@ -584,7 +584,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
                 this->unk_198 = 2;
                 this->timers[2] = 110;
                 if (GameInteractor_Should(VB_GANON_HEAL_BEFORE_FIGHT, true)) {
-                    gSaveContext.healthAccumulator = 0x140;
+                    gSaveContext.healthAccumulator = MAX_HEALTH;
                 }
                 Audio_QueueSeqCmd(NA_BGM_STOP);
             } else {
@@ -800,7 +800,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
             }
 
             if (this->csTimer == 25) {
-                gSaveContext.healthAccumulator = 0x140;
+                gSaveContext.healthAccumulator = MAX_HEALTH;
             }
 
             if (this->csTimer == 100) {

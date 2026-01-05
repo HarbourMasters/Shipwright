@@ -48,7 +48,10 @@ class StaticData {
     static std::vector<RandomizerCheck> GetStaticHintLocations();
     static std::vector<RandomizerCheck> GetPondFishLocations();
     static std::vector<RandomizerCheck> GetOverworldFishLocations();
-    static std::vector<RandomizerCheck> GetOverworldFairyLocations();
+    static std::vector<RandomizerCheck> GetFountainFairyLocations();
+    static std::vector<RandomizerCheck> GetStoneFairyLocations();
+    static std::vector<RandomizerCheck> GetBeanFairyLocations();
+    static std::vector<RandomizerCheck> GetSongFairyLocations();
     static void RegisterSongLocations();
     static void RegisterBeehiveLocations();
     static void RegisterCowLocations();
@@ -58,6 +61,7 @@ class StaticData {
     static void RegisterFreestandingLocations();
     static void RegisterGrassLocations();
     static void RegisterCrateLocations();
+    static void RegisterTreeLocations();
     static void InitHashMaps();
     static std::array<std::pair<RandomizerCheck, RandomizerCheck>, 17> randomizerFishingPondFish;
     static std::unordered_map<int8_t, RandomizerCheck> randomizerGrottoFishMap;
@@ -79,6 +83,9 @@ class StaticData {
     static std::unordered_map<u32, RandomizerHint> stoneParamsToHint;
     static std::unordered_map<u32, RandomizerHint> grottoChestParamsToHint;
     static std::array<HintText, RHT_MAX> hintTextTable;
+    static std::vector<RandomizerGet> normalBottles;
+    static std::vector<RandomizerGet> beanSouls;
+    static std::vector<RandomizerGet> overworldKeys;
 
     StaticData();
     ~StaticData();

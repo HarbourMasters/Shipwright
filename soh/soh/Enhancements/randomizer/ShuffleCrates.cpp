@@ -21,18 +21,17 @@ extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemCategory getItemCategory;
     auto crateActor = ((ObjKibako2*)thisx);
-    int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+    bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    int isVanilla =
-        csmc == CSMC_DISABLED || csmc == CSMC_SIZE || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+    int isVanilla = !csmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
     if (isVanilla) {
         Gfx_DrawDListOpa(play, (Gfx*)gLargeRandoCrateDL);
         return;
     }
 
-    const auto crateIdentity = ObjectExtension::GetInstance().Get<CrateIdentity>(thisx);
+    const auto crateIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(thisx);
     if (crateIdentity == nullptr) {
         Gfx_DrawDListOpa(play, (Gfx*)gLargeRandoCrateDL);
         return;
@@ -44,7 +43,7 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     // If they have bombchus, don't consider the bombchu item major
     if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-        ((crateItem.modIndex == MOD_RANDOMIZER && crateItem.getItemId == RG_PROGRESSIVE_BOMBCHUS) ||
+        ((crateItem.modIndex == MOD_RANDOMIZER && crateItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
          (crateItem.modIndex == MOD_NONE &&
           (crateItem.getItemId == GI_BOMBCHUS_5 || crateItem.getItemId == GI_BOMBCHUS_10 ||
            crateItem.getItemId == GI_BOMBCHUS_20)))) {
@@ -73,17 +72,11 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
         case ITEM_CATEGORY_BOSS_KEY:
             Gfx_DrawDListOpa(play, (Gfx*)gLargeBossKeyCrateDL);
             break;
+        case ITEM_CATEGORY_HEALTH:
+            Gfx_DrawDListOpa(play, (Gfx*)gLargeHeartCrateDL);
+            break;
         case ITEM_CATEGORY_LESSER:
-            switch (crateItem.itemId) {
-                case ITEM_HEART_PIECE:
-                case ITEM_HEART_PIECE_2:
-                case ITEM_HEART_CONTAINER:
-                    Gfx_DrawDListOpa(play, (Gfx*)gLargeHeartCrateDL);
-                    break;
-                default:
-                    Gfx_DrawDListOpa(play, (Gfx*)gLargeMinorCrateDL);
-                    break;
-            }
+            Gfx_DrawDListOpa(play, (Gfx*)gLargeMinorCrateDL);
             break;
         case ITEM_CATEGORY_JUNK:
         default:
@@ -95,18 +88,17 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
 extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemCategory getItemCategory;
     auto smallCrateActor = ((ObjKibako*)thisx);
-    int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+    bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    int isVanilla =
-        csmc == CSMC_DISABLED || csmc == CSMC_SIZE || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+    int isVanilla = !csmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
     if (isVanilla) {
         Gfx_DrawDListOpa(play, (Gfx*)gSmallRandoCrateDL);
         return;
     }
 
-    const auto crateIdentity = ObjectExtension::GetInstance().Get<SmallCrateIdentity>(thisx);
+    const auto crateIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(thisx);
     if (crateIdentity == nullptr) {
         Gfx_DrawDListOpa(play, (Gfx*)gSmallRandoCrateDL);
         return;
@@ -118,7 +110,7 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     // If they have bombchus, don't consider the bombchu item major
     if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-        ((smallCrateItem.modIndex == MOD_RANDOMIZER && smallCrateItem.getItemId == RG_PROGRESSIVE_BOMBCHUS) ||
+        ((smallCrateItem.modIndex == MOD_RANDOMIZER && smallCrateItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
          (smallCrateItem.modIndex == MOD_NONE &&
           (smallCrateItem.getItemId == GI_BOMBCHUS_5 || smallCrateItem.getItemId == GI_BOMBCHUS_10 ||
            smallCrateItem.getItemId == GI_BOMBCHUS_20)))) {
@@ -147,17 +139,11 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
         case ITEM_CATEGORY_BOSS_KEY:
             Gfx_DrawDListOpa(play, (Gfx*)gSmallBossKeyCrateDL);
             break;
+        case ITEM_CATEGORY_HEALTH:
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
+            break;
         case ITEM_CATEGORY_LESSER:
-            switch (smallCrateItem.itemId) {
-                case ITEM_HEART_PIECE:
-                case ITEM_HEART_PIECE_2:
-                case ITEM_HEART_CONTAINER:
-                    Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
-                    break;
-                default:
-                    Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
-                    break;
-            }
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
             break;
         case ITEM_CATEGORY_JUNK:
         default:
@@ -167,7 +153,7 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
 }
 
 uint8_t ObjKibako2_RandomizerHoldsItem(ObjKibako2* crateActor, PlayState* play) {
-    const auto crateIdentity = ObjectExtension::GetInstance().Get<CrateIdentity>(&crateActor->dyna.actor);
+    const auto crateIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&crateActor->dyna.actor);
     if (crateIdentity == nullptr) {
         return false;
     }
@@ -187,7 +173,7 @@ uint8_t ObjKibako2_RandomizerHoldsItem(ObjKibako2* crateActor, PlayState* play) 
 }
 
 uint8_t ObjKibako_RandomizerHoldsItem(ObjKibako* smallCrateActor, PlayState* play) {
-    const auto crateIdentity = ObjectExtension::GetInstance().Get<SmallCrateIdentity>(&smallCrateActor->actor);
+    const auto crateIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&smallCrateActor->actor);
     if (crateIdentity == nullptr) {
         return false;
     }
@@ -207,7 +193,7 @@ uint8_t ObjKibako_RandomizerHoldsItem(ObjKibako* smallCrateActor, PlayState* pla
 }
 
 void ObjKibako2_RandomizerSpawnCollectible(ObjKibako2* crateActor, PlayState* play) {
-    const auto crateIdentity = ObjectExtension::GetInstance().Get<CrateIdentity>(&crateActor->dyna.actor);
+    const auto crateIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&crateActor->dyna.actor);
     if (crateIdentity == nullptr) {
         return;
     }
@@ -222,7 +208,7 @@ void ObjKibako2_RandomizerSpawnCollectible(ObjKibako2* crateActor, PlayState* pl
 }
 
 void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallCrateActor, PlayState* play) {
-    const auto crateIdentity = ObjectExtension::GetInstance().Get<SmallCrateIdentity>(&smallCrateActor->actor);
+    const auto crateIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&smallCrateActor->actor);
     if (crateIdentity == nullptr) {
         return;
     }
@@ -262,7 +248,7 @@ void ObjKibako2_RandomizerInit(void* actorRef) {
 
     auto crateIdentity = OTRGlobals::Instance->gRandomizer->IdentifyCrate(gPlayState->sceneNum, (s16)actor->world.pos.x,
                                                                           (s16)actor->world.pos.z);
-    ObjectExtension::GetInstance().Set<CrateIdentity>(actor, std::move(crateIdentity));
+    ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(crateIdentity));
 }
 
 void ObjKibako_RandomizerInit(void* actorRef) {
@@ -275,7 +261,7 @@ void ObjKibako_RandomizerInit(void* actorRef) {
 
     auto crateIdentity = OTRGlobals::Instance->gRandomizer->IdentifySmallCrate(
         gPlayState->sceneNum, (s16)actor->home.pos.x, (s16)actor->home.pos.z);
-    ObjectExtension::GetInstance().Set<SmallCrateIdentity>(actor, std::move(crateIdentity));
+    ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(crateIdentity));
 }
 
 void RegisterShuffleCrates() {
@@ -336,7 +322,7 @@ void Rando::StaticData::RegisterCrateLocations() {
     locationTable[RC_GF_SOUTHMOST_CENTER_CRATE]                           = Location::Crate(RC_GF_SOUTHMOST_CENTER_CRATE,                           RCQUEST_BOTH,    RCAREA_GERUDO_FORTRESS,        SCENE_GERUDOS_FORTRESS,         TWO_ACTOR_PARAMS(315, -1534),       "Southmost Center Crate",                 RHT_CRATE_GERUDOS_FORTRESS,         RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_SOUTHMOST_CENTER_CRATE));
     locationTable[RC_GF_MID_SOUTH_CENTER_CRATE]                           = Location::Crate(RC_GF_MID_SOUTH_CENTER_CRATE,                           RCQUEST_BOTH,    RCAREA_GERUDO_FORTRESS,        SCENE_GERUDOS_FORTRESS,         TWO_ACTOR_PARAMS(315, -1594),       "Middle South Center Crate",              RHT_CRATE_GERUDOS_FORTRESS,         RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_MID_SOUTH_CENTER_CRATE));
     locationTable[RC_GF_MID_NORTH_CENTER_CRATE]                           = Location::Crate(RC_GF_MID_NORTH_CENTER_CRATE,                           RCQUEST_BOTH,    RCAREA_GERUDO_FORTRESS,        SCENE_GERUDOS_FORTRESS,         TWO_ACTOR_PARAMS(310, -1782),       "Middle North Center Crate",              RHT_CRATE_GERUDOS_FORTRESS,         RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_MID_NORTH_CENTER_CRATE));
-    locationTable[RR_GF_NORTHMOST_CENTER_CRATE]                           = Location::Crate(RR_GF_NORTHMOST_CENTER_CRATE,                           RCQUEST_BOTH,    RCAREA_GERUDO_FORTRESS,        SCENE_GERUDOS_FORTRESS,         TWO_ACTOR_PARAMS(310, -1842),       "Northmost Center Crate",                 RHT_CRATE_GERUDOS_FORTRESS,         RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_NORTHMOST_CENTER_CRATE));
+    locationTable[RC_GF_NORTHMOST_CENTER_CRATE]                           = Location::Crate(RC_GF_NORTHMOST_CENTER_CRATE,                           RCQUEST_BOTH,    RCAREA_GERUDO_FORTRESS,        SCENE_GERUDOS_FORTRESS,         TWO_ACTOR_PARAMS(310, -1842),       "Northmost Center Crate",                 RHT_CRATE_GERUDOS_FORTRESS,         RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_NORTHMOST_CENTER_CRATE));
     locationTable[RC_GF_OUTSKIRTS_NE_CRATE]                               = Location::Crate(RC_GF_OUTSKIRTS_NE_CRATE,                               RCQUEST_BOTH,    RCAREA_GERUDO_FORTRESS,        SCENE_GERUDOS_FORTRESS,         TWO_ACTOR_PARAMS(-60, -2210),       "Outskirts Northeast Crate",              RHT_CRATE_GERUDOS_FORTRESS,         RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_OUTSKIRTS_NE_CRATE));
     locationTable[RC_GF_OUTSKIRTS_NW_CRATE]                               = Location::Crate(RC_GF_OUTSKIRTS_NW_CRATE,                               RCQUEST_BOTH,    RCAREA_GERUDO_FORTRESS,        SCENE_GERUDOS_FORTRESS,         TWO_ACTOR_PARAMS(-120, -2210),      "Outskirts Northwest Crate",              RHT_CRATE_GERUDOS_FORTRESS,         RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_OUTSKIRTS_NW_CRATE));
     locationTable[RC_GF_HBA_RANGE_CRATE_2]                                = Location::Crate(RC_GF_HBA_RANGE_CRATE_2,                                RCQUEST_BOTH,    RCAREA_GERUDO_FORTRESS,        SCENE_GERUDOS_FORTRESS,         TWO_ACTOR_PARAMS(4090, -1780),      "Horseback Archery Range Crate 2",        RHT_CRATE_GERUDOS_FORTRESS,         RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_HBA_RANGE_CRATE_2));
@@ -595,7 +581,5 @@ void Rando::StaticData::RegisterCrateLocations() {
     // clang-format on
 }
 
-static ObjectExtension::Register<CrateIdentity> RegisterCrateIdentity;
-static ObjectExtension::Register<SmallCrateIdentity> RegisterSmallCrateIdentity;
-static RegisterShipInitFunc initFunc(RegisterShuffleCrates, { "IS_RANDO" });
-static RegisterShipInitFunc locFunc(Rando::StaticData::RegisterCrateLocations);
+static RegisterShipInitFunc registerShuffleCrates(RegisterShuffleCrates, { "IS_RANDO" });
+static RegisterShipInitFunc registerCrateLocations(Rando::StaticData::RegisterCrateLocations);

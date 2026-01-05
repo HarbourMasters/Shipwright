@@ -103,6 +103,8 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Random Number - A random number and set of trials will be required.";
     mOptionDescriptions[RSK_TRIAL_COUNT] = "Set the number of trials required to enter Ganon's Tower.";
+    mOptionDescriptions[RSK_MEDALLION_LOCKED_TRIALS] =
+        "Doors to trials will be barred until their corresponding medallion is acquired.";
     mOptionDescriptions[RSK_MQ_DUNGEON_RANDOM] =
         "Sets the number of Master Quest Dungeons that are shuffled into the pool.\n"
         "\n"
@@ -124,10 +126,11 @@ void Settings::CreateOptionDescriptions() {
         "set to either MQ or Random here, you will have fewer MQ Dungeons than the number you "
         "set.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT] =
-        "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n\n"
-        "When the required amount of pieces have been found, the game is saved and Ganon's Boss key is given "
-        "to you when you load back into the game if you desire to beat Ganon afterwards.\n\n"
-        "Keep in mind Ganon might not be logically beatable when \"All Locations Reachable\" is turned off.";
+        "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n"
+        "\n"
+        "If set to Win: the game is saved and the credits roll, though you can load back in to receive Ganon's "
+        "Castle Boss Key. Keep in mind that Ganon might not be logically reachable when \"All Locations Reachable\" "
+        "is disabled.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL] =
         "The amount of Triforce pieces that will be placed in the world. "
         "Keep in mind seed generation can fail if more pieces are placed than there are junk items in the item pool.";
@@ -166,6 +169,8 @@ void Settings::CreateOptionDescriptions() {
         "- Link's House\n"
         "- Temple of Time\n"
         "- Kakariko Potion Shop";
+    mOptionDescriptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES] =
+        "Shuffle the pool of entrances between Gerudo Fortress & Thieves' Hideout.";
     mOptionDescriptions[RSK_SHUFFLE_GROTTO_ENTRANCES] =
         "Shuffle the pool of grotto entrances, including all graves, small Fairy fountains and the Deku Theatre.";
     mOptionDescriptions[RSK_SHUFFLE_OWL_DROPS] = "Randomize where Kaepora Gaebora (the Owl) drops you at when you talk "
@@ -290,6 +295,13 @@ void Settings::CreateOptionDescriptions() {
         "Overworld - Only shuffle crates that are outside of dungeons.\n"
         "\n"
         "All Crates - Shuffle all crates.";
+    mOptionDescriptions[RSK_SHUFFLE_TREES] =
+        "Trees will contain randomized items which are dropped the first time the player rolls into one.\n"
+        "Trees will have a special appearance when carrying randomized items.\n"
+        "\nSome trees are dependant on Link's age, such as some trees in Hyrule Field.\nTwo trees at Hyrule Castle are "
+        "only shuffle with No Logic.";
+    mOptionDescriptions[RSK_SHUFFLE_BUSHES] =
+        "Bushes in Hyrule Field & Zora's Fountain will contain randomized items when first walked through.";
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
                                                     "\n"
                                                     "The fishing pole is required to play the fishing pond minigame.";
@@ -476,7 +488,15 @@ void Settings::CreateOptionDescriptions() {
         "Overworld - Only freestanding rupees & hearts that are outside of dungeons.\n"
         "\n"
         "All Items - Shuffle all freestanding rupees & hearts.";
-    mOptionDescriptions[RSK_SHUFFLE_FAIRIES] = "Shuffle fairy locations.";
+    mOptionDescriptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES] =
+        "Shuffle fairies in fountain locations. "
+        "This includes the sets of fairies found in Ganon's Castle and the Desert Oasis.";
+    mOptionDescriptions[RSK_SHUFFLE_STONE_FAIRIES] = "Shuffle fairies from gossip stone locations.";
+    mOptionDescriptions[RSK_SHUFFLE_BEAN_FAIRIES] = "Shuffle fairies from magic bean locations.";
+    mOptionDescriptions[RSK_SHUFFLE_SONG_FAIRIES] =
+        "Shuffle fairy spots. These are spots where a big fairy is revealed by a song."
+        "\n"
+        "This excludes gossip stones and magic bean locations.";
     mOptionDescriptions[RSK_SHUFFLE_GRASS] =
         "Grass/Bushes will drop a randomized item the first time they're cut and collected. "
         "Grass/Bushes will have a different appearance when they hold a randomized item.\n"
@@ -610,6 +630,8 @@ void Settings::CreateOptionDescriptions() {
         "Start with the ability to summon Pierre the Scarecrow. Pulling out an Ocarina in the usual locations will "
         "automatically summon him.\n"
         "With \"Shuffle Ocarina Buttons\" enabled, you'll need at least two Ocarina buttons to summon him.";
+    mOptionDescriptions[RSK_SKIP_PLANTING_BEANS] = "Beans will be planted once you find beans.\n"
+                                                   "If bean souls are shuffled, you must find soul still.";
     mOptionDescriptions[RSK_ITEM_POOL] = "Sets how many major items appear in the item pool.\n"
                                          "\n"
                                          "Plentiful - Extra major items are added to the pool.\n"
@@ -619,18 +641,18 @@ void Settings::CreateOptionDescriptions() {
                                          "Scarce - Some excess items are removed, including health upgrades.\n"
                                          "\n"
                                          "Minimal - Most excess items are removed.";
-    mOptionDescriptions[RSK_ICE_TRAPS] = "Sets how many items are replaced by ice traps.\n"
-                                         "\n"
-                                         "Off - No ice traps.\n"
-                                         "\n"
-                                         "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
-                                         "\n"
-                                         "Extra - Chance to replace added junk items with additional ice traps.\n"
-                                         "\n"
-                                         "Mayhem - All added junk items will be Ice Traps.\n"
-                                         "\n"
-                                         "Onslaught - All junk items will be replaced by Ice Traps, even those "
-                                         "in the base pool.";
+    mOptionDescriptions[RSK_BASE_ICE_TRAPS] =
+        "Sets if ice traps that exist in vanilla are shuffled into the item pool.\n"
+        "If this is on, 1 Trap will always be added to the pool,\n"
+        "an additional trap will be added if Gerudo Training Grounds\n"
+        "is NOT master quest,\n"
+        "and 4 more will be added if Ganon's Castle is NOT Master Quest.";
+    mOptionDescriptions[RSK_ADDITIONAL_ICE_TRAPS] =
+        "Sets how many more Ice Traps will be added to item pool,\n"
+        "assuming there is enough space after placing Progression Items.\n\n"
+        "You do not need to have base ice traps on for this setting to work.";
+    mOptionDescriptions[RSK_ICE_TRAP_PERCENT] =
+        "If set above 0, each Junk item has that chance of being replaced with an extra Ice Trap.";
     mOptionDescriptions[RSK_GOSSIP_STONE_HINTS] =
         "Allows Gossip Stones to provide hints on item locations. Hints mentioning "
         "\"Way of the Hero\" indicate a location that holds an item required to beat "
@@ -682,8 +704,10 @@ void Settings::CreateOptionDescriptions() {
         "Talking to the chest game owner after buying a key will tell you the location of Greg the Green Rupee.";
     mOptionDescriptions[RSK_LOACH_HINT] = "Talking to the fishing pond owner and asking to talk about something will "
                                           "tell you what's the reward for the Hyrule Loach.";
+    mOptionDescriptions[RSK_BOSS_KEY_HINT] = "Navi will tell where boss key can be found when prompted at boss door.";
     mOptionDescriptions[RSK_SARIA_HINT] = "Talking to Saria either in person or through Saria's Song will tell you the "
                                           "location of a progressive magic meter.";
+    mOptionDescriptions[RSK_MIDO_HINT] = "Talking to Mido as child will tell you the location of the Kokiri Sword.";
     mOptionDescriptions[RSK_FISHING_POLE_HINT] =
         "Talking to the fishing pond owner without the fishing pole will tell you its location.";
     mOptionDescriptions[RSK_OOT_HINT] =
@@ -722,13 +746,17 @@ void Settings::CreateOptionDescriptions() {
         "Reading the mask shop sign will tell you rewards from showing masks at the Deku Theatre.";
     mOptionDescriptions[RSK_FULL_WALLETS] = "Start with a full wallet. All wallet upgrades come filled with rupees.";
     mOptionDescriptions[RSK_BOMBCHU_BAG] =
-        "Bombchus require their own bag to be found before use. Without this setting, any Bombchu requirement "
-        "is filled by Bomb Bag + a renewable source of Bombchus.\n"
-        "\n"
-        "The first Bombchu you find be a Bag containing 20 chus, and subsequent packs will have 10."
-        "Once found, they can be replenished at shops selling refills, Bombchu Bowling and the carpet merchant.\n"
-        "\n"
-        "Bombchu Bowling is opened by obtaining the Bombchu Bag.";
+        "None - Bombchus have vanilla behavior, any Bombchu requirement is filled by Bomb Bag + a renewable source of "
+        "Bombchus.\n\n"
+        "Single Bag - Bombchus require their own bag to be found before use. 5 of them are added to the pool "
+        "(6 if the Carpet Merchant is shuffled). The first Bombchu Bag you find will be a Bag containing 20 chus, "
+        "and subsequent bags will be replaced with Bombchu Ammo refills. Once found, they can be replenished at "
+        "shops selling refills, Bombchu Bowling and the carpet merchant. Bombchu Bowling is opened by obtaining "
+        "the Bombchu Bag.\n\n"
+        "Progressive Bags - 3 Bombchu Bags are added to the pool, the first one will unlock Bombchus with a capacity "
+        "of 20. The second one will upgrade this capacity to 30, and the final one will upgrade the capacity to the "
+        "usual 50.\n\n"
+        "Bombchu Bowling is opened by obtaining the first Bombchu bag.";
     mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS] = "Once you obtain a Bombchu Bag, refills will sometimes replace "
                                                     "Bomb drops that would spawn."
                                                     "\n"
@@ -742,20 +770,20 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SUNLIGHT_ARROWS] =
         "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
+    mOptionDescriptions[RSK_SLINGBOW_BREAK_BEEHIVES] =
+        "Allows Slingshot and Bow to break beehives when Beehive Shuffle is turned on.";
     mOptionDescriptions[RSK_LOGIC_RULES] =
         "Glitchless - No glitches are required, but may require some minor tricks. Additional tricks may be enabled "
         "and disabled below.\n"
         "\n"
-        //"Glitched - Glitches may be required to beat the game. You can disable and enable glitches below.\n"
-        //"\n"
-        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.\n"
-        "\n"
-        "Vanilla - Places all items and dungeon rewards in their vanilla locations.";
+        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.";
     mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE] = "When this options is enabled, the randomizer will "
                                                        "guarantee that every item is obtainable and every "
                                                        "location is reachable. When disabled, only "
                                                        "required items and locations to beat the game "
                                                        "will be guaranteed reachable.";
+    mOptionDescriptions[RSK_SHUFFLE_BEAN_SOULS] =
+        "Shuffle 10 bean souls which must be found to spawn corresponding soil / plant.";
     mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS] =
         "Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its "
         "respective soul."
