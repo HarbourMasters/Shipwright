@@ -610,6 +610,12 @@ static std::vector<std::string> GetCustomModelSearchDirs() {
 
     addDir("objects/object_link_boy/");
     addDir("objects/object_link_child/");
+    addDir("objects/object_link_boy_kokiri/");
+    addDir("objects/object_link_child_kokiri/");
+    addDir("objects/object_link_boy_goron/");
+    addDir("objects/object_link_child_goron/");
+    addDir("objects/object_link_boy_zora/");
+    addDir("objects/object_link_child_zora/");
     addDir("objects/object_custom_equip/");
     addDir("objects/gameplay_keep/");
 
