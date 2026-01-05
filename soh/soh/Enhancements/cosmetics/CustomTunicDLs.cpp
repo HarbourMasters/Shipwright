@@ -7,7 +7,7 @@
 
 #include <string>
 #include <string_view>
-#include <unordered_map>
+#include <unordered_set>
 
 namespace {
 constexpr std::string_view kOtrPrefix = "__OTR__";
@@ -140,9 +140,9 @@ const char* MakeRemappedPath(std::string_view target, bool hasOtrPrefix) {
         fullPath.assign(target);
     }
 
-    static thread_local std::unordered_map<std::string, std::string> remappedCache;
-    auto [it, inserted] = remappedCache.emplace(fullPath, fullPath);
-    return it->second.c_str();
+    static thread_local std::unordered_set<std::string> remappedCache;
+    auto [it, inserted] = remappedCache.emplace(fullPath);
+    return it->c_str();
 }
 } // namespace
 
