@@ -17,27 +17,35 @@ namespace SohGui {
 
 static std::map<std::string, nlohmann::json> langs;
 
+#define DEFAULT_LANGUAGE "en_US"
+
 std::string Lang::Translate(const char* path) {
-    std::string currentLang = CVarGetString(CVAR_SETTING("Language"), "en_US");
+    std::string currentLang = CVarGetString(CVAR_SETTING("Language"), DEFAULT_LANGUAGE);
 
     if (!langs.contains(currentLang)) {
-        currentLang = "en_US";
-        CVarSetString(CVAR_SETTING("Language"), "en_US");
+        LUSLOG_WARN("Current language (%s) doesn't exist, trying to fall back to default language (%s)", currentLang.c_str(), DEFAULT_LANGUAGE);
+
+        currentLang = DEFAULT_LANGUAGE;
+        CVarSetString(CVAR_SETTING("Language"), DEFAULT_LANGUAGE);
 
         if (!langs.contains(currentLang)) {
+            LUSLOG_ERROR("Default language (%s) doesn't exist", DEFAULT_LANGUAGE);
             return "ERROR: Language data not found";
         }
+
+        LUSLOG_WARN("Fall back to default language (%s) was succesful", DEFAULT_LANGUAGE);
     }
 
     nlohmann::json currentLangData = langs[currentLang];
 
-    std::string path2 = path;
+    std::string path2 = std::string(path);
 
     std::replace(path2.begin(), path2.end(), '.', '/');
 
     path2 = "/" + path2;
 
     if (!currentLangData.contains(path2)) {
+        LUSLOG_WARN("Current language (%s) doesn't have data for the requested path (%s)", currentLang.c_str(), path2.c_str());
         return path;
     }
 
@@ -67,7 +75,7 @@ void Lang::LoadLangs() {
 void LanguageCustomWidget(WidgetInfo& info) {
     ImGui::Text("Avaliable Langs (%d):", langs.size());
     for (const auto& [name, data] : langs) {
-        ImGui::Text("    %s", data["/language_name"].get_ref<const std::string&>().c_str());
+        ImGui::Text("    %s [%s]", data["/language_name"].get_ref<const std::string&>().c_str(), name.c_str());
     }
 }
 
