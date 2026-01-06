@@ -5,7 +5,6 @@
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/enemyrandomizer.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
-#include "soh/Enhancements/Lang/Lang.h"
 
 #define CVAR_INT_SHIP_INIT(cvar, val) \
     CVarSetInteger(cvar, val);        \
@@ -332,14 +331,13 @@ void SohMenu::AddMenuEnhancements() {
                     "open permanently.\n"
                     "Never: Link never needs to play Zelda's Lullaby to open the waterfall. He only needs to have "
                     "learned it and have an Ocarina."));
-    AddWidget(path, Lang::Translate(std::string("cvars." CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish") ".name").c_str()), WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Skip Feeding Jabu-Jabu", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled = IS_RANDO;
-            info.options->disabledTooltip =
-                Lang::Translate(std::string("cvars." CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish") ".disabled_tooltip").c_str());
+            info.options->disabledTooltip = "This setting is disabled because a randomizer savefile with \"Jabu-Jabu: Open\" is loaded.";
         })
-        .Options(CheckboxOptions().Tooltip(Lang::Translate(std::string("cvars." CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish") ".tooltip").c_str())));
+        .Options(CheckboxOptions().Tooltip("Allow Link to enter Jabu-Jabu without feeding him a fish."));
 
     // Skips & Speed-ups
     path.sidebarName = "Skips & Speed-ups";
@@ -731,9 +729,9 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Equip items and equipment on the D-pad. If used with \"D-pad on Pause Screen\", you must "
             "hold C-Up to equip instead of navigate."));
-    AddWidget(path, Lang::Translate(std::string("cvars." CVAR_ENHANCEMENT("AssignableTunicsAndBoots") ".name").c_str()), WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Assignable Shields, Tunics and Boots", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"))
-        .Options(CheckboxOptions().Tooltip(Lang::Translate(std::string("cvars." CVAR_ENHANCEMENT("AssignableTunicsAndBoots") ".tooltip").c_str())));
+        .Options(CheckboxOptions().Tooltip("Allows equipping Shields, Tunics and Boots to C-Buttons/D-pad."));
     // TODO: Revist strength toggle, it's currently separate but should probably be locked behind the
     // Equipment toggle settings or be absorbed by it completely.
     AddWidget(path, "Equipment Toggle", WIDGET_CVAR_CHECKBOX)
