@@ -422,6 +422,8 @@ void OTRGlobals::Initialize() {
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryBackgroundV0>(), RESOURCE_FORMAT_BINARY,
                                     "Background", static_cast<uint32_t>(SOH::ResourceType::SOH_Background), 0);
 
+    Lang::LoadLangs();
+
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandoContext->InitStaticData();
     gRandoContext = Rando::Context::CreateInstance();
@@ -1279,8 +1281,6 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion4Updater>());
     conf->RunVersionUpdates();
-
-    Lang::LoadLangs();
 
     SohGui::SetupGuiElements();
     ShipInit::InitAll();
