@@ -2130,7 +2130,7 @@ extern "C" size_t GetEquipNowMessage(char* buffer, char* src, const size_t maxBu
     std::string postfix = customMessage.GetForCurrentLanguage();
     std::string str;
     std::string FixedBaseStr(src);
-    size_t RemoveControlChar = static_cast<int>(FixedBaseStr.find_first_of("\x02"));
+    size_t RemoveControlChar = FixedBaseStr.find_first_of("\x02");
 
     if (RemoveControlChar != std::string::npos) {
         FixedBaseStr = FixedBaseStr.substr(0, RemoveControlChar);
