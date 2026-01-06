@@ -294,7 +294,7 @@ void RegionTable_Init_WaterTemple() {
         //Exits
         Entrance(RR_WATER_TEMPLE_3_JETS_SWITCH, []{return true;}),
         Entrance(RR_WATER_TEMPLE_BOULDER_CANAL, []{return logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8);}),
-        Entrance(RR_WATER_TEMPLE_BEHIND_CANAL,  []{return logic->IsAdult && ctx->GetTrickOption(RT_WATER_BK_JUMP_DIVE) && logic->HasItem(RG_BRONZE_SCALE);}),
+        Entrance(RR_WATER_TEMPLE_BEHIND_CANAL,  []{return logic->IsAdult && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->HasItem(RG_BRONZE_SCALE);}),
     });
 
     areaTable[RR_WATER_TEMPLE_BOULDER_CANAL] = Region("Water Temple Boulder Canal", SCENE_WATER_TEMPLE, {}, {
@@ -1310,7 +1310,7 @@ void RegionTable_Init_WaterTemple() {
         //Exits
         Entrance(RR_WATER_TEMPLE_MQ_3_JETS_ROOM,       []{return logic->SmallKeys(SCENE_WATER_TEMPLE, 2);}),
         Entrance(RR_WATER_TEMPLE_MQ_SCARECROW_CANAL,   []{return logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8);}),
-        Entrance(RR_WATER_TEMPLE_MQ_BEHIND_CANAL,      []{return logic->IsAdult && ctx->GetTrickOption(RT_WATER_BK_JUMP_DIVE) && logic->HasItem(RG_BRONZE_SCALE);}),
+        Entrance(RR_WATER_TEMPLE_MQ_BEHIND_CANAL,      []{return logic->IsAdult && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->HasItem(RG_BRONZE_SCALE);}),
     });
 
     areaTable[RR_WATER_TEMPLE_MQ_BEHIND_CANAL] = Region("Water Temple MQ Behind Canal", SCENE_WATER_TEMPLE, {}, {}, {

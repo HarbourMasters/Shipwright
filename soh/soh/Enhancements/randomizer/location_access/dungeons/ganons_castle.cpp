@@ -71,7 +71,7 @@ void RegionTable_Init_GanonsCastle() {
     });
 
     areaTable[RR_GANONS_CASTLE_FOREST_TRIAL_BEAMOS_ROOM] = Region("Ganon's Castle Forest Trial Beamos Room", SCENE_INSIDE_GANONS_CASTLE, {
-        EventAccess(LOGIC_FOREST_TRIAL_SILVER_RUPEES, []{return logic->IsAdult || logic->CanUse(RG_HOOKSHOT);}),
+        EventAccess(LOGIC_FOREST_TRIAL_SILVER_RUPEES, []{return logic->IsAdult || logic->CanUse(RG_HOOKSHOT);}), // child can get these by voiding after switch
     }, {}, {
         //Exits
         Entrance(RR_GANONS_CASTLE_FOREST_TRIAL_WOLFOS_ROOM,     []{return true;}),
@@ -81,13 +81,13 @@ void RegionTable_Init_GanonsCastle() {
     areaTable[RR_GANONS_CASTLE_FOREST_TRIAL_BEAMOS_ROOM_END] = Region("Ganon's Castle Forest Trial Beamos Room End", SCENE_INSIDE_GANONS_CASTLE, {}, {}, {
         //Exits
         Entrance(RR_GANONS_CASTLE_FOREST_TRIAL_BEAMOS_ROOM,            []{return logic->CanUse(RG_LONGSHOT);}),
-        Entrance(RR_GANONS_CASTLE_FOREST_TRIAL_BEAMOS_ROOM_FINAL_DOOR, []{return logic->IsAdult || logic->CanGroundJump();}), // child can do unintuitive jump
+        Entrance(RR_GANONS_CASTLE_FOREST_TRIAL_BEAMOS_ROOM_FINAL_DOOR, []{return logic->IsAdult || logic->CanGroundJump() || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS);}),
     });
 
     areaTable[RR_GANONS_CASTLE_FOREST_TRIAL_BEAMOS_ROOM_FINAL_DOOR] = Region("Ganon's Castle Forest Trial Beamos Room Final Door", SCENE_INSIDE_GANONS_CASTLE, {}, {}, {
         //Exits
         Entrance(RR_GANONS_CASTLE_FOREST_TRIAL_BEAMOS_ROOM_END, []{return true;}),
-        Entrance(RR_GANONS_CASTLE_FOREST_TRIAL_FINAL_ROOM,      []{return logic->Get(LOGIC_FOREST_TRIAL_SILVER_RUPEES);}), // child needs to either ground jump or do unintuitive jump
+        Entrance(RR_GANONS_CASTLE_FOREST_TRIAL_FINAL_ROOM,      []{return logic->Get(LOGIC_FOREST_TRIAL_SILVER_RUPEES);}),
     });
 
     areaTable[RR_GANONS_CASTLE_FOREST_TRIAL_FINAL_ROOM] = Region("Ganon's Castle Forest Trial Final Room", SCENE_INSIDE_GANONS_CASTLE, {
@@ -416,7 +416,7 @@ void RegionTable_Init_GanonsCastle() {
     }, {
         //Exits
         Entrance(RR_GANONS_CASTLE_MQ_FOREST_TRIAL_BEAMOS_ROOM,     []{return logic->Get(LOGIC_FOREST_TRIAL_MQ_SPAWN_BEAMOS_CHEST) && (logic->CanAvoidEnemy(RE_BEAMOS) || logic->CanKillEnemy(RE_ARMOS)) && logic->CanUse(RG_LONGSHOT);}),
-        Entrance(RR_GANONS_CASTLE_MQ_FOREST_TRIAL_BEAMOS_ROOM_END, []{return logic->IsAdult || logic->CanGroundJump();}), // child can do unintuitive jump
+        Entrance(RR_GANONS_CASTLE_MQ_FOREST_TRIAL_BEAMOS_ROOM_END, []{return logic->IsAdult || logic->CanGroundJump() || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS);}),
     });
 
     areaTable[RR_GANONS_CASTLE_MQ_FOREST_TRIAL_BEAMOS_ROOM_END] = Region("Ganon's Castle MQ Forest Trial Beamos Room Final Door", SCENE_INSIDE_GANONS_CASTLE, {}, {}, {
