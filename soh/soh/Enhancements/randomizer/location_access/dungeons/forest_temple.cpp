@@ -96,7 +96,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_LOBBY,              []{return true;}),
-        Entrance(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER, []{return logic->CanUse(RG_HOVER_BOOTS) && ((ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()) || (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->IsAdult && logic->CanGroundJump()));}),
+        Entrance(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER, []{return logic->CanUse(RG_HOVER_BOOTS) && ((ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()))) || (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->IsAdult && logic->CanGroundJump()));}),
         Entrance(RR_FOREST_TEMPLE_MAP_ROOM,           []{return true;}),
         Entrance(RR_FOREST_TEMPLE_SEWER,              []{return logic->HasItem(RG_GOLDEN_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
         Entrance(RR_FOREST_TEMPLE_DRAINED_SEWER,      []{return logic->Get(LOGIC_FOREST_DRAINED_WELL);}),
@@ -140,7 +140,7 @@ void RegionTable_Init_ForestTemple() {
         //Events
         EventAccess(LOGIC_STICK_ACCESS,               []{return logic->CanGetDekuBabaSticks();}),
         EventAccess(LOGIC_NUT_ACCESS,                 []{return logic->CanGetDekuBabaNuts();}),
-        EventAccess(LOGIC_FOREST_SUMMON_NE_SCARECROW, []{return ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanJumpslash() && logic->CanUse(RG_HOVER_BOOTS) && logic->ScarecrowsSong();}),
+        EventAccess(LOGIC_FOREST_SUMMON_NE_SCARECROW, []{return logic->CanUse(RG_HOVER_BOOTS) && ((ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanJumpslash()) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_MEGATON_HAMMER))) && logic->ReachScarecrow();}),
         EventAccess(LOGIC_FOREST_DRAINED_WELL,        []{return true;}),
     }, {}, {
         //Exits
@@ -568,8 +568,9 @@ void RegionTable_Init_ForestTemple() {
         EventAccess(LOGIC_FOREST_MQ_BURNED_WEB, []{return logic->HasFireSource();}),
     }, {}, {
         //Exits
-        Entrance(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,  []{return logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->TakeDamage();}),
-        Entrance(RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE, []{return true;}),
+        Entrance(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,       []{return logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->TakeDamage();}),
+        Entrance(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_LEDGE, []{return ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER);}),
+        Entrance(RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE,      []{return true;}),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE] = Region("Forest Temple MQ North Passage", SCENE_FOREST_TEMPLE, {
@@ -607,7 +608,7 @@ void RegionTable_Init_ForestTemple() {
         //Locations
         LOCATION(RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_UPPER_CHEST, true),
         //Actually killing the skull from the doorframe with melee is annoying. Hammer swing hits low enough unaided, other swords need to crouch stab but the spot is precise based on range. kokiri sword doesn't reach at all for adult.
-        LOCATION(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD,         ((logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_FOREST_DOORFRAME))) && logic->CanJumpslash() && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || logic->CanUse(RG_FAIRY_BOW) || logic->HookshotOrBoomerang() || (logic->CanStandingShield() && (logic->CanUse(RG_STICKS) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MASTER_SWORD) || (logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD)))))),
+        LOCATION(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD,          ((logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_FOREST_DOORFRAME) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_MEGATON_HAMMER)))) && logic->CanJumpslash() && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || logic->CanUse(RG_FAIRY_BOW) || logic->HookshotOrBoomerang() || (logic->CanStandingShield() && (logic->CanUse(RG_STICKS) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MASTER_SWORD) || (logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD)))))),
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE,       []{return true;}),

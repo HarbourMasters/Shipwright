@@ -12,6 +12,7 @@
 #include <memory>
 #include <array>
 #include <map>
+#include <set>
 #include <nlohmann/json.hpp>
 
 #define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
@@ -125,13 +126,14 @@ class Context {
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
     std::vector<RandomizerCheck> everyPossibleLocation = {};
-    std::vector<RandomizerGet> possibleIceTrapModels = {};
+    std::set<RandomizerGet> possibleIceTrapModels = {};
     std::unordered_map<RandomizerCheck, RandomizerGet> iceTrapModels = {};
     std::vector<OptionValue*> VanillaLogicDefaults = {};
     std::array<uint8_t, 5> hashIconIndexes = {};
     bool playthroughBeatable = false;
     bool allLocationsReachable = false;
     RandomizerArea GetAreaFromString(std::string str);
+    int CountEmptyLocations(bool countShops);
 
     /**
      * @brief Get the hash for the current seed.

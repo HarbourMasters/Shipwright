@@ -20,7 +20,7 @@ extern PlayState* gPlayState;
 
 enum ColRenderSetting { ColRenderDisabled, ColRenderSolid, ColRenderTransparent };
 
-static std::unordered_map<int32_t, const char*> ColRenderSettingNames = {
+static std::map<int32_t, const char*> ColRenderSettingNames = {
     { ColRenderDisabled, "Disabled" },
     { ColRenderSolid, "Solid" },
     { ColRenderTransparent, "Transparent" },

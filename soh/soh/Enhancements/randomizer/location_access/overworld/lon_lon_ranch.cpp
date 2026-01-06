@@ -7,7 +7,7 @@ void RegionTable_Init_LonLonRanch() {
     // clang-format off
     areaTable[RR_LON_LON_RANCH] = Region("Lon Lon Ranch", SCENE_LON_LON_RANCH, {
         //Events
-        EventAccess(LOGIC_FREED_EPONA, []{return (logic->HasItem(RG_CHILD_WALLET) || ctx->GetOption(RSK_SKIP_EPONA_RACE)) && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay;}),
+        EventAccess(LOGIC_FREED_EPONA, []{return logic->HasItem(RG_CHILD_WALLET) && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay;}),
         EventAccess(LOGIC_LINKS_COW,   []{return logic->HasItem(RG_CHILD_WALLET) && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay;}),
     }, {
         //Locations

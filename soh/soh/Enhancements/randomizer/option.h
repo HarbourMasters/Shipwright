@@ -336,7 +336,7 @@ class Option {
     std::shared_ptr<UIWidgets::WidgetOptions> widgetOptions;
     struct WidgetInfo widgetInfo;
     WidgetFunc callback;
-    std::unordered_map<int32_t, const char*> optionsMap = {};
+    std::map<int32_t, const char*> optionsMap = {};
 };
 
 class LocationOption : public Option {

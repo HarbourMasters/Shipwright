@@ -631,7 +631,6 @@ void Play_Init(GameState* thisx) {
     } else {
         play->unk_1242B = 0;
     }
-
     Interface_SetSceneRestrictions(play);
     Environment_PlaySceneSequence(play);
     gSaveContext.seqId = play->sequenceCtx.seqId;
@@ -1302,6 +1301,8 @@ void Play_Update(PlayState* play) {
 
 skip:
     PLAY_LOG(3801);
+
+    GameInteractor_ExecuteOnCameraState(play);
 
     if (!isPaused || gDbgCamEnabled) {
         s32 i;

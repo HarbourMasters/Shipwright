@@ -1,4 +1,5 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ResourceManagerHelpers.h"
 
@@ -29,7 +30,7 @@ static Gfx grayscaleWhite = gsDPSetGrayscaleColor(255, 255, 255, 255);
 class ToTPatchSetup {
   public:
     ToTPatchSetup(Gfx ifColored, const char* patchName, int index, const char* patchName2 = "", int index2 = 0)
-        : patchName(patchName), index(index), ifColored(ifColored), patchName2(patchName2), index2(index2) {
+        : patchName(patchName), patchName2(patchName2), index(index), index2(index2), ifColored(ifColored) {
     }
 
     void ApplyPatch(bool colored = true) {

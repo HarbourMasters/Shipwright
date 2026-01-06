@@ -99,7 +99,7 @@ std::map<CosmeticGroup, const char*> groupLabels = {
     { COSMETICS_GROUP_MESSAGE, "Message" },
 };
 
-static const std::unordered_map<int32_t, const char*> cosmeticsRandomizerModes = {
+static const std::map<int32_t, const char*> cosmeticsRandomizerModes = {
     { RANDOMIZE_OFF, "Manual" },
     { RANDOMIZE_ON_NEW_SCENE, "On New Scene" },
     { RANDOMIZE_ON_RANDO_GEN_ONLY, "On Rando Gen Only" },

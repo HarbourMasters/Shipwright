@@ -386,6 +386,7 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
                     getItemEntry.modIndex == MOD_RANDOMIZER) &&
                   (getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
                    getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
+                   getItemEntry.getItemCategory == ITEM_CATEGORY_HEALTH ||
                    getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER ||
                    // Treat small keys as junk if Skeleton Key is obtained.
                    (getItemEntry.getItemCategory == ITEM_CATEGORY_SMALL_KEY &&
@@ -2315,6 +2316,46 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                     break;
                 case SCENE_LOST_WOODS:
                     if ((actor->params & 0x3F) == 4) {
+                        currentBeanSoulRandInf = RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL;
+                    } else {
+                        currentBeanSoulRandInf = RAND_INF_LOST_WOODS_BEAN_SOUL;
+                    }
+                    break;
+                case SCENE_ZORAS_RIVER:
+                    currentBeanSoulRandInf = RAND_INF_ZORAS_RIVER_BEAN_SOUL;
+                    break;
+            }
+            if (currentBeanSoulRandInf != RAND_INF_MAX && !Flags_GetRandomizerInf(currentBeanSoulRandInf)) {
+                Actor_Kill(actor);
+                return;
+            }
+        }
+        if (actor->id == ACTOR_OBJ_MAKEKINSUTA) {
+            RandomizerInf currentBeanSoulRandInf = RAND_INF_MAX;
+            switch (gPlayState->sceneNum) {
+                case SCENE_DEATH_MOUNTAIN_CRATER:
+                    currentBeanSoulRandInf = RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL;
+                    break;
+                case SCENE_DEATH_MOUNTAIN_TRAIL:
+                    currentBeanSoulRandInf = RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL;
+                    break;
+                case SCENE_DESERT_COLOSSUS:
+                    currentBeanSoulRandInf = RAND_INF_DESERT_COLOSSUS_BEAN_SOUL;
+                    break;
+                case SCENE_GERUDO_VALLEY:
+                    currentBeanSoulRandInf = RAND_INF_GERUDO_VALLEY_BEAN_SOUL;
+                    break;
+                case SCENE_GRAVEYARD:
+                    currentBeanSoulRandInf = RAND_INF_GRAVEYARD_BEAN_SOUL;
+                    break;
+                case SCENE_KOKIRI_FOREST:
+                    currentBeanSoulRandInf = RAND_INF_KOKIRI_FOREST_BEAN_SOUL;
+                    break;
+                case SCENE_LAKE_HYLIA:
+                    currentBeanSoulRandInf = RAND_INF_LAKE_HYLIA_BEAN_SOUL;
+                    break;
+                case SCENE_LOST_WOODS:
+                    if (actor->params == 0x4e01) {
                         currentBeanSoulRandInf = RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL;
                     } else {
                         currentBeanSoulRandInf = RAND_INF_LOST_WOODS_BEAN_SOUL;

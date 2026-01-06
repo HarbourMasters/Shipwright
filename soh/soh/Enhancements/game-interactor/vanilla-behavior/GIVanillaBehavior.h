@@ -452,6 +452,17 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (actorCategory == ACTORCAT_ENEMY) && CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_ATTENTION_ENABLED |
+    // ACTOR_FLAG_HOSTILE) && (actor->xyzDistToPlayerSq < SQ(500.0f)) && (actor->xyzDistToPlayerSq < sbgmEnemyDistSq)
+    // ```
+    // #### `args`
+    // - `*Actor`
+    // - `*f32` (sbgmEnemyDistSq)
+    // - `int32_t` (actorCategory)
+    VB_DETECT_BGM_ENEMY,
+
+    // #### `result`
+    // ```c
     // !Flags_GetSwitch(play, this->actor.params & 0x3F)
     // ```
     // #### `args`
@@ -509,6 +520,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_END_GERUDO_MEMBERSHIP_TALK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnArrow`
+    VB_EN_ARROW_MAGIC_CONSUMPTION,
 
     // #### `result`
     // ```c
@@ -1776,6 +1795,16 @@ typedef enum {
     // #### `args`
     // - `*DemoIm`
     VB_PLAY_ZELDAS_LULLABY_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `int32_t` (magicArrowType)
+    // - `*int32_t` (arrowType)
+    VB_PLAYER_ARROW_MAGIC_CONSUMPTION,
 
     // #### `result`
     // ```c

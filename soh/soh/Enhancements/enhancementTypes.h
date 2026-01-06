@@ -8,13 +8,6 @@ typedef enum {
 } BetterDebugWarpOverrideMQMode;
 
 typedef enum {
-    CSMC_DISABLED,
-    CSMC_BOTH,
-    CSMC_TEXTURE,
-    CSMC_SIZE,
-} ChestStyleMatchesContentsType;
-
-typedef enum {
     SGIA_DISABLED,
     SGIA_JUNK,
     SGIA_ALL,

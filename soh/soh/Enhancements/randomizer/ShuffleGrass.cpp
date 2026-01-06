@@ -34,11 +34,10 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     if (grassIdentity != nullptr && grassIdentity->randomizerCheck != RC_MAX &&
         Flags_GetRandomizerInf(grassIdentity->randomizerInf) == 0) {
-        int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+        bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
         int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-        if ((csmc == CSMC_BOTH || csmc == CSMC_TEXTURE) &&
-            (!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+        if (csmc && (!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
             auto itemEntry =
                 Rando::Context::GetInstance()->GetFinalGIEntry(grassIdentity->randomizerCheck, true, GI_NONE);
             GetItemCategory getItemCategory = itemEntry.getItemCategory;
@@ -48,18 +47,10 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
                     DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushJunkDL, (Gfx*)gRandoCuttableGrassJunkDL, play);
                     break;
                 case ITEM_CATEGORY_LESSER:
-                    switch (itemEntry.itemId) {
-                        case ITEM_HEART_PIECE:
-                        case ITEM_HEART_PIECE_2:
-                        case ITEM_HEART_CONTAINER:
-                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushHeartDL, (Gfx*)gRandoCuttableGrassHeartDL,
-                                            play);
-                            break;
-                        default:
-                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushMinorDL, (Gfx*)gRandoCuttableGrassMinorDL,
-                                            play);
-                            break;
-                    }
+                    DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushMinorDL, (Gfx*)gRandoCuttableGrassMinorDL, play);
+                    break;
+                case ITEM_CATEGORY_HEALTH:
+                    DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushHeartDL, (Gfx*)gRandoCuttableGrassHeartDL, play);
                     break;
                 case ITEM_CATEGORY_BOSS_KEY:
                     DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushBossKeyDL, (Gfx*)gRandoCuttableGrassBossKeyDL, play);

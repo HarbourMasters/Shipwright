@@ -1074,7 +1074,7 @@ static std::array<std::vector<Entrance*>, 2> SplitEntrancesByRequirements(std::v
     logic->Reset();
     // Apply the effects of all advancement items to search for entrance accessibility
     std::vector<RandomizerGet> items = FilterFromPool(
-        ItemPool, [](const RandomizerGet i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
+        itemPool, [](const RandomizerGet i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
     for (RandomizerGet unplacedItem : items) {
         Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
     }
@@ -1082,12 +1082,14 @@ static std::array<std::vector<Entrance*>, 2> SplitEntrancesByRequirements(std::v
     ReachabilitySearch({});
 
     for (Entrance* entrance : entrancesToSplit) {
+        logic->CurrentRegionKey = entrance->GetParentRegionKey();
         // if an entrance is accessible at all times of day by both ages, it's a soft entrance with no restrictions
         if (entrance->ConditionsMet(true)) {
             softEntrances.push_back(entrance);
         } else {
             restrictiveEntrances.push_back(entrance);
         }
+        logic->CurrentRegionKey = RR_NONE;
     }
 
     // Reconnect all disconnected entrances

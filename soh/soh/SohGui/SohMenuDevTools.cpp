@@ -1,6 +1,10 @@
 #include "SohMenu.h"
 #include "SohGui.hpp"
 
+extern "C" {
+extern PlayState* gPlayState;
+}
+
 void WarpPointsWidget(WidgetInfo& info);
 
 namespace SohGui {
@@ -8,12 +12,12 @@ namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
 using namespace UIWidgets;
 
-static const std::unordered_map<int32_t, const char*> logLevels = {
+static const std::map<int32_t, const char*> logLevels = {
     { DEBUG_LOG_TRACE, "Trace" }, { DEBUG_LOG_DEBUG, "Debug" }, { DEBUG_LOG_INFO, "Info" },
     { DEBUG_LOG_WARN, "Warn" },   { DEBUG_LOG_ERROR, "Error" }, { DEBUG_LOG_CRITICAL, "Critical" },
     { DEBUG_LOG_OFF, "Off" },
 };
-static std::unordered_map<int32_t, const char*> bootToOptions = {
+static std::map<int32_t, const char*> bootToOptions = {
     { 0, "Disabled" },
     { 1, "Debug Warp Screen" },
     { 2, "Warp Point" },
@@ -25,7 +29,7 @@ DebugLogOption defaultLogLevel = DEBUG_LOG_TRACE;
 DebugLogOption defaultLogLevel = DEBUG_LOG_INFO;
 #endif
 
-static const std::unordered_map<int32_t, const char*> debugSaveFileModes = {
+static const std::map<int32_t, const char*> debugSaveFileModes = {
     { 0, "Off" },
     { 1, "Vanilla" },
     { 2, "Maxed" },

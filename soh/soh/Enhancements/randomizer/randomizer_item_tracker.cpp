@@ -568,7 +568,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                             default:
                                 result.maxCapacity = 0;
                                 SPDLOG_ERROR(
-                                    "Invalid value for RSK_GERUDO_FORTRESS: " +
+                                    "Invalid value for RSK_GERUDO_FORTRESS: {}",
                                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS));
                                 assert(false);
                                 break;
@@ -1379,17 +1379,17 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
  * Loops over dungeons and creates vectors of items in the correct order
  * to then call DrawItemsInRows
  */
-std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeon> dungeons, int columns = 6) {
+std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeon> dungeons, size_t columns = 6) {
     std::vector<ItemTrackerItem> dungeonItems = {};
 
-    int rowCount = 0;
-    for (int i = 0; i < dungeons.size(); i++) {
+    size_t rowCount = 0;
+    for (size_t i = 0; i < dungeons.size(); i++) {
         if (dungeons[i].items.size() > rowCount)
             rowCount = static_cast<int32_t>(dungeons[i].items.size());
     }
 
-    for (int i = 0; i < rowCount; i++) {
-        for (int j = 0; j < MIN(dungeons.size(), columns); j++) {
+    for (size_t i = 0; i < rowCount; i++) {
+        for (size_t j = 0; j < MIN(dungeons.size(), columns); j++) {
             if (dungeons[j].items.size() > i) {
                 switch (dungeons[j].items[i]) {
                     case ITEM_KEY_SMALL:
@@ -1837,31 +1837,31 @@ void ItemTrackerWindow::DrawElement() {
     }
 }
 
-static std::unordered_map<int32_t, const char*> itemTrackerCapacityTrackOptions = {
+static std::map<int32_t, const char*> itemTrackerCapacityTrackOptions = {
     { ITEM_TRACKER_NUMBER_NONE, "No Numbers" },
     { ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY, "Current Capacity" },
     { ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY, "Current Ammo" },
     { ITEM_TRACKER_NUMBER_CAPACITY, "Current Capacity / Max Capacity" },
     { ITEM_TRACKER_NUMBER_AMMO, "Current Ammo / Current Capacity" },
 };
-static std::unordered_map<int32_t, const char*> itemTrackerKeyTrackOptions = {
+static std::map<int32_t, const char*> itemTrackerKeyTrackOptions = {
     { KEYS_COLLECTED_MAX, "Collected / Max" },
     { KEYS_CURRENT_COLLECTED_MAX, "Current / Collected / Max" },
     { KEYS_CURRENT_MAX, "Current / Max" },
 };
-static std::unordered_map<int32_t, const char*> itemTrackerTriforcePieceTrackOptions = {
+static std::map<int32_t, const char*> itemTrackerTriforcePieceTrackOptions = {
     { TRIFORCE_PIECE_COLLECTED_REQUIRED, "Collected / Required" },
     { TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX, "Collected / Required / Max" },
 };
-static std::unordered_map<int32_t, const char*> windowTypes = {
+static std::map<int32_t, const char*> windowTypes = {
     { TRACKER_WINDOW_FLOATING, "Floating" },
     { TRACKER_WINDOW_WINDOW, "Window" },
 };
-static std::unordered_map<int32_t, const char*> displayModes = {
+static std::map<int32_t, const char*> displayModes = {
     { TRACKER_DISPLAY_ALWAYS, "Always" },
     { TRACKER_DISPLAY_COMBO_BUTTON, "Combo Button Hold" },
 };
-static std::unordered_map<int32_t, const char*> buttons = {
+static std::map<int32_t, const char*> buttons = {
     { TRACKER_COMBO_BUTTON_A, "A" },           { TRACKER_COMBO_BUTTON_B, "B" },
     { TRACKER_COMBO_BUTTON_C_UP, "C-Up" },     { TRACKER_COMBO_BUTTON_C_DOWN, "C-Down" },
     { TRACKER_COMBO_BUTTON_C_LEFT, "C-Left" }, { TRACKER_COMBO_BUTTON_C_RIGHT, "C-Right" },
@@ -1870,20 +1870,19 @@ static std::unordered_map<int32_t, const char*> buttons = {
     { TRACKER_COMBO_BUTTON_D_UP, "D-Up" },     { TRACKER_COMBO_BUTTON_D_DOWN, "D-Down" },
     { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" },
 };
-static std::unordered_map<int32_t, const char*> displayTypes = {
+static std::map<int32_t, const char*> displayTypes = {
     { SECTION_DISPLAY_HIDDEN, "Hidden" },
     { SECTION_DISPLAY_MAIN_WINDOW, "Main Window" },
     { SECTION_DISPLAY_SEPARATE, "Separate" },
 };
-static std::unordered_map<int32_t, const char*> extendedDisplayTypes = {
+static std::map<int32_t, const char*> extendedDisplayTypes = {
     { SECTION_DISPLAY_EXTENDED_HIDDEN, "Hidden" },
     { SECTION_DISPLAY_EXTENDED_MAIN_WINDOW, "Main Window" },
     { SECTION_DISPLAY_EXTENDED_MISC_WINDOW, "Misc Window" },
     { SECTION_DISPLAY_EXTENDED_SEPARATE, "Separate" },
 };
-static std::unordered_map<int32_t, const char*> minimalDisplayTypes = {
-    { SECTION_DISPLAY_MINIMAL_HIDDEN, "Hidden" }, { SECTION_DISPLAY_MINIMAL_SEPARATE, "Separate" }
-};
+static std::map<int32_t, const char*> minimalDisplayTypes = { { SECTION_DISPLAY_MINIMAL_HIDDEN, "Hidden" },
+                                                              { SECTION_DISPLAY_MINIMAL_SEPARATE, "Separate" } };
 
 void ItemTrackerSettingsWindow::DrawElement() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });

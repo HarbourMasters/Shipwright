@@ -31,13 +31,13 @@ namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
 enum setting { UPDATE_aspectRatioX, UPDATE_aspectRatioY, UPDATE_verticalPixelCount };
 
-std::unordered_map<int32_t, const char*> aspectRatioPresetLabels = { { 0, "Off" },
-                                                                     { 1, "Custom" },
-                                                                     { 2, "Original (4:3)" },
-                                                                     { 3, "Widescreen (16:9)" },
-                                                                     { 4, "Nintendo 3DS (5:3)" },
-                                                                     { 5, "16:10 (8:5)" },
-                                                                     { 6, "Ultrawide (21:9)" } };
+std::map<int32_t, const char*> aspectRatioPresetLabels = { { 0, "Off" },
+                                                           { 1, "Custom" },
+                                                           { 2, "Original (4:3)" },
+                                                           { 3, "Widescreen (16:9)" },
+                                                           { 4, "Nintendo 3DS (5:3)" },
+                                                           { 5, "16:10 (8:5)" },
+                                                           { 6, "Ultrawide (21:9)" } };
 const float aspectRatioPresetsX[] = { 0.0f, 16.0f, 4.0f, 16.0f, 5.0f, 16.0f, 21.0f };
 const float aspectRatioPresetsY[] = { 0.0f, 9.0f, 3.0f, 9.0f, 3.0f, 10.0f, 9.0f };
 const int default_aspectRatio = 1; // Default combo list option
