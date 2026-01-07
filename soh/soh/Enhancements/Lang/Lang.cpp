@@ -15,11 +15,18 @@ namespace SohGui {
     extern std::shared_ptr<SohMenu> mSohMenu;
 }
 
+static bool initialized = false;
 static std::map<std::string, nlohmann::json> langs;
 
 #define DEFAULT_LANGUAGE "en_US"
 
 std::string Lang::Translate(const char* path) {
+    if (!initialized) {
+        LUSLOG_ERROR("Tried to obtain a translation before the translation data is initialized");
+        assert(false);
+        return "ERROR: Language data not initialized yet";
+    }
+
     std::string currentLang = CVarGetString(CVAR_SETTING("Language"), DEFAULT_LANGUAGE);
 
     if (!langs.contains(currentLang)) {
@@ -30,10 +37,11 @@ std::string Lang::Translate(const char* path) {
 
         if (!langs.contains(currentLang)) {
             LUSLOG_ERROR("Default language (%s) doesn't exist", DEFAULT_LANGUAGE);
+            assert(false);
             return "ERROR: Language data not found";
         }
 
-        LUSLOG_WARN("Fall back to default language (%s) was succesful", DEFAULT_LANGUAGE);
+        LUSLOG_WARN("Fallback to default language (%s) was succesful", DEFAULT_LANGUAGE);
     }
 
     nlohmann::json currentLangData = langs[currentLang];
@@ -70,6 +78,7 @@ void Lang::LoadLangs() {
         std::string fileName = filePath.substr(start, filePath.size() - start - 5); // 5 for length of ".json"
         langs.insert_or_assign(fileName, json->Data.flatten());
     }
+    initialized = true;
 }
 
 void LanguageCustomWidget(WidgetInfo& info) {
