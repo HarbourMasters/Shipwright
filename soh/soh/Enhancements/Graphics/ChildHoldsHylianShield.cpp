@@ -10,7 +10,6 @@ extern "C" {
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 
-extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
 
@@ -71,7 +70,11 @@ static void RegisterChildHoldsHylianShieldGraphics() {
               [](int16_t sceneNum) { UpdatePatchChildHylianShield(); });
 }
 
-static void RegisterChildHoldsHylianShieldReflect() {
+static void RegisterChildHoldsHylianShieldGameplay() {
+    // Skip vanilla check for making child Link have the Hylian Shield on his back, allowing for it to be used in hand
+    COND_VB_SHOULD(VB_BE_CHILD_WITH_HYLIAN_SHIELD, CVAR_CHILDHOLDSHYLIANSHIELD_VALUE, { *should = false; });
+
+    // Deku Scrub Projectile Reflection
     COND_VB_SHOULD(VB_REFLECT_NUTSBALL, CVAR_CHILDHOLDSHYLIANSHIELD_VALUE, {
         Player* player = GET_PLAYER(gPlayState);
 
@@ -80,6 +83,7 @@ static void RegisterChildHoldsHylianShieldReflect() {
         }
     });
 
+    // Octorok Projectile Reflection
     COND_VB_SHOULD(VB_REFLECT_OCTOROK_PROJECTILE, CVAR_CHILDHOLDSHYLIANSHIELD_VALUE, {
         Player* player = GET_PLAYER(gPlayState);
 
@@ -92,5 +96,5 @@ static void RegisterChildHoldsHylianShieldReflect() {
 static RegisterShipInitFunc initFunc_Graphics(RegisterChildHoldsHylianShieldGraphics,
                                               { CVAR_SCALEADULTEQUIPMENTASCHILD_NAME });
 
-static RegisterShipInitFunc initFunc_Reflect(RegisterChildHoldsHylianShieldReflect,
-                                             { CVAR_CHILDHOLDSHYLIANSHIELD_NAME });
+static RegisterShipInitFunc initFunc_Gameplay(RegisterChildHoldsHylianShieldGameplay,
+                                              { CVAR_CHILDHOLDSHYLIANSHIELD_NAME });

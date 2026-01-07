@@ -62,6 +62,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // ((gSaveContext.linkAge != 0) && (this->currentShield == PLAYER_SHIELD_HYLIAN))
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_BE_CHILD_WITH_HYLIAN_SHIELD,
+
+    // #### `result`
+    // ```c
     // this->currentReward == 3
     // ```
     // #### `args`

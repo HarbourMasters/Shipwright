@@ -526,12 +526,8 @@ s32 Player_CheckHostileLockOn(Player* this) {
 }
 
 s32 Player_IsChildWithHylianShield(Player* this) {
-    if (CVarGetInteger(CVAR_CHEAT("ChildHoldsHylianShield"), 0)) {
-        return false; // Skip vanilla check for making child Link have the Hylian Shield on his back, allowing for it to
-                      // be used in hand
-    } else {
-        return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
-    }
+    return GameInteractor_Should(VB_BE_CHILD_WITH_HYLIAN_SHIELD,
+                                 ((gSaveContext.linkAge != 0) && (this->currentShield == PLAYER_SHIELD_HYLIAN)), this);
 }
 
 s32 Player_ActionToModelGroup(Player* this, s32 actionParam) {
