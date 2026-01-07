@@ -69,7 +69,7 @@ void Lang::LoadLangs() {
     initData->Format = RESOURCE_FORMAT_BINARY;
     initData->Type = static_cast<uint32_t>(Ship::ResourceType::Json);
     initData->ResourceVersion = 0;
-    std::string folder = "lang/*";
+    const static std::string folder = "lang/*";
     auto langFiles = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(folder);
     size_t start = std::string(folder).size() - 1;
     for (size_t i = 0; i < langFiles->size(); i++) {
@@ -85,9 +85,9 @@ void Lang::LoadLangs() {
 
 void LanguageCustomWidget(WidgetInfo& info) {
     ImGui::Text("Select Language:");
-    for (const auto& [name, data] : langs) {
-        if (ImGui::Button(StringHelper::Sprintf("%s [%s]", data["/language_name"].get_ref<const std::string&>().c_str(), name.c_str()).c_str())) {
-            CVarSetString(LANGUAGE_CVAR, name.c_str());
+    for (const auto& [id, data] : langs) {
+        if (ImGui::Button(StringHelper::Sprintf("%s [%s]", data["/language_name"].get_ref<const std::string&>().c_str(), id.c_str()).c_str())) {
+            CVarSetString(LANGUAGE_CVAR, id.c_str());
         }
     }
 }
