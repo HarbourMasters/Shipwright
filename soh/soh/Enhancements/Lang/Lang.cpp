@@ -8,6 +8,7 @@
 #include "ship/resource/File.h"
 #include "ship/resource/ResourceManager.h"
 #include "ship/resource/type/Json.h"
+#include "ship/utils/StringHelper.h"
 
 #include <memory>
 
@@ -18,6 +19,7 @@ namespace SohGui {
 static bool initialized = false;
 static std::map<std::string, nlohmann::json> langs;
 
+#define LANGUAGE_CVAR CVAR_SETTING("Language")
 #define DEFAULT_LANGUAGE "en_US"
 
 std::string Lang::Translate(const char* path) {
@@ -27,13 +29,12 @@ std::string Lang::Translate(const char* path) {
         return "ERROR: Language data not initialized yet";
     }
 
-    std::string currentLang = CVarGetString(CVAR_SETTING("Language"), DEFAULT_LANGUAGE);
+    std::string currentLang = CVarGetString(LANGUAGE_CVAR, DEFAULT_LANGUAGE);
 
     if (!langs.contains(currentLang)) {
         LUSLOG_WARN("Current language (%s) doesn't exist, trying to fall back to default language (%s)", currentLang.c_str(), DEFAULT_LANGUAGE);
 
         currentLang = DEFAULT_LANGUAGE;
-        CVarSetString(CVAR_SETTING("Language"), DEFAULT_LANGUAGE);
 
         if (!langs.contains(currentLang)) {
             LUSLOG_ERROR("Default language (%s) doesn't exist", DEFAULT_LANGUAGE);
@@ -41,6 +42,7 @@ std::string Lang::Translate(const char* path) {
             return "ERROR: Language data not found";
         }
 
+        CVarSetString(LANGUAGE_CVAR, DEFAULT_LANGUAGE);
         LUSLOG_WARN("Fallback to default language (%s) was succesful", DEFAULT_LANGUAGE);
     }
 
@@ -82,9 +84,11 @@ void Lang::LoadLangs() {
 }
 
 void LanguageCustomWidget(WidgetInfo& info) {
-    ImGui::Text("Avaliable Langs (%d):", langs.size());
+    ImGui::Text("Select Language:");
     for (const auto& [name, data] : langs) {
-        ImGui::Text("    %s [%s]", data["/language_name"].get_ref<const std::string&>().c_str(), name.c_str());
+        if (ImGui::Button(StringHelper::Sprintf("%s [%s]", data["/language_name"].get_ref<const std::string&>().c_str(), name.c_str()).c_str())) {
+            CVarSetString(LANGUAGE_CVAR, name.c_str());
+        }
     }
 }
 
