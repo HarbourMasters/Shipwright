@@ -1,12 +1,12 @@
 #include "SohMenu.h"
-#include "soh/OTRGlobals.h"
-#include "soh/Enhancements/controls/SohInputEditorWindow.h"
 #include <ship/window/gui/GuiMenuBar.h>
 #include <ship/window/gui/GuiElement.h>
-#include <variant>
 #include <ship/utils/StringHelper.h>
 #include <spdlog/fmt/fmt.h>
-#include <tuple>
+
+extern "C" {
+extern PlayState* gPlayState;
+}
 
 extern std::unordered_map<s16, const char*> warpPointSceneList;
 

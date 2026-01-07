@@ -1,6 +1,6 @@
 #include "SohMenu.h"
 #include "soh/Notification/Notification.h"
-#include "soh/Enhancements/controls/SohInputEditorWindow.h"
+#include "soh/Enhancements/enhancementTypes.h"
 #include "SohModals.h"
 #include "soh/OTRGlobals.h"
 #include <soh/GameVersions.h>
@@ -19,14 +19,14 @@ extern std::shared_ptr<SohMenu> mSohMenu;
 extern std::shared_ptr<SohModalWindow> mModalWindow;
 using namespace UIWidgets;
 
-static std::unordered_map<int32_t, const char*> imguiScaleOptions = {
+static std::map<int32_t, const char*> imguiScaleOptions = {
     { 0, "Small" },
     { 1, "Normal" },
     { 2, "Large" },
     { 3, "X-Large" },
 };
 
-static const std::unordered_map<int32_t, const char*> menuThemeOptions = {
+static const std::map<int32_t, const char*> menuThemeOptions = {
     { UIWidgets::Colors::Red, "Red" },
     { UIWidgets::Colors::DarkRed, "Dark Red" },
     { UIWidgets::Colors::Orange, "Orange" },
@@ -43,17 +43,17 @@ static const std::unordered_map<int32_t, const char*> menuThemeOptions = {
     { UIWidgets::Colors::DarkGray, "Dark Gray" },
 };
 
-static const std::unordered_map<int32_t, const char*> textureFilteringMap = {
+static const std::map<int32_t, const char*> textureFilteringMap = {
     { Fast::FILTER_THREE_POINT, "Three-Point" },
     { Fast::FILTER_LINEAR, "Linear" },
     { Fast::FILTER_NONE, "None" },
 };
 
-static const std::unordered_map<int32_t, const char*> notificationPosition = {
+static const std::map<int32_t, const char*> notificationPosition = {
     { 0, "Top Left" }, { 1, "Top Right" }, { 2, "Bottom Left" }, { 3, "Bottom Right" }, { 4, "Hidden" },
 };
 
-static const std::unordered_map<int32_t, const char*> bootSequenceLabels = {
+static const std::map<int32_t, const char*> bootSequenceLabels = {
     { BOOTSEQUENCE_DEFAULT, "Default" },
     { BOOTSEQUENCE_AUTHENTIC, "Authentic" },
     { BOOTSEQUENCE_FILESELECT, "File Select" },
@@ -110,7 +110,7 @@ static const std::array<MessageTableEntry**, LANGUAGE_MAX> messageTables = {
     &sNesMessageEntryTablePtr, &sGerMessageEntryTablePtr, &sFraMessageEntryTablePtr, &sJpnMessageEntryTablePtr
 };
 
-void SohMenu::UpdateLanguageMap(std::unordered_map<int32_t, const char*>& languageMap) {
+void SohMenu::UpdateLanguageMap(std::map<int32_t, const char*>& languageMap) {
     for (int32_t i = LANGUAGE_ENG; i < LANGUAGE_MAX; i++) {
         if (*messageTables.at(i) != NULL) {
             if (!languageMap.contains(i)) {

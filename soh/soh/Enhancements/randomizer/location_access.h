@@ -6,8 +6,9 @@
 #include <set>
 
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include "soh/Enhancements/randomizer/context.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/logic.h"
+#include "soh/Enhancements/randomizer/dungeon.h"
 
 #define TIME_PASSES true
 #define TIME_DOESNT_PASS false
@@ -91,18 +92,36 @@ class LocationAccess {
     RandomizerCheck location;
     ConditionFn condition_function;
     std::string condition_str;
-
-    // Makes sure shop locations are buyable
-    bool CanBuy(bool calculatingAvailableChecks) const;
 };
 
-bool CanBuyAnother(uint16_t price);
-bool CanBuyAnother(RandomizerCheck rc);
+uint16_t GetCheckPrice(RandomizerCheck check = RC_UNKNOWN_CHECK);
+uint16_t GetWalletCapacity();
 
 namespace Rando {
 class Entrance;
 enum class EntranceType;
 } // namespace Rando
+
+struct SpiritLogicData {
+    // the minimum number of keys that guarantees Child can reach this region
+    uint8_t childKeys;
+    // The minimum number of keys that guarantees Child can reach this region if they have reverse access
+    uint8_t childRevKeys;
+    // the minimum number of keys that guarantees Adult can reach this region
+    uint8_t adultKeys;
+    // the minimum number of keys that guarantees Adult can reach this region with reverse entry
+    uint8_t adultRevKeys;
+    // The area access condition to reach this region as Child, from the first lock,
+    // including the minimum number of keys for ambiguous access
+    // 1 key is always assumed to be required
+    ConditionFn childAccess;
+    // The area access condition to reach this region as Adult, from the first lock
+    // including the minimum number of keys for ambiguous access
+    // 1 key is always assumed to be required on vanilla
+    ConditionFn adultAccess;
+    // The area access condition to reach this region from the boss door,
+    ConditionFn reverseAccess;
+};
 
 class Region {
   public:
@@ -132,6 +151,8 @@ class Region {
     bool adultDay = false;
     bool adultNight = false;
     bool addedToPool = false;
+
+    RandomizerRegion randomizerRegionKey = RR_NONE;
 
     bool TimePass();
 
@@ -191,7 +212,7 @@ class Region {
     // access to this area. For example: if there are rocks that block a path
     // which both child and adult can access, adult having hammer can give
     // both child and adult access to the path.
-    bool Here(ConditionFn condition) {
+    bool AnyAgeTime(ConditionFn condition) const {
         // store current age variables
         bool pastAdult = logic->IsAdult;
         bool pastChild = logic->IsChild;
@@ -210,24 +231,25 @@ class Region {
         return hereVal;
     }
 
-    bool CanPlantBeanCheck() const;
+    bool CanPlantBeanCheck(RandomizerGet bean) const;
     bool AllAccountedFor() const;
-    bool MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAge = false);
 
     void ResetVariables();
 
     void printAgeTimeAccess();
+    static std::map<RandomizerRegion, SpiritLogicData> spiritLogicData;
 };
 
 extern std::array<Region, RR_MAX> areaTable;
 extern std::vector<EventAccess> grottoEvents;
 
-bool Here(const RandomizerRegion region,
-          ConditionFn
-              condition); // RANDOTODO make a less stupid way to check own at either age than self referencing with this
-bool MQSpiritSharedStatueRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge = false);
-bool MQSpiritSharedBrokenWallRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge = false);
-bool CanPlantBean(const RandomizerRegion region);
+bool AnyAgeTime(ConditionFn condition);
+bool SpiritShared(
+    RandomizerRegion region, ConditionFn condition, bool anyAge = false, RandomizerRegion otherRegion = RR_NONE,
+    ConditionFn otherCondition = [] { return false; }, RandomizerRegion thirdRegion = RR_NONE,
+    ConditionFn thirdCondition = [] { return false; });
+bool SpiritCertainAccess(RandomizerRegion region);
+bool CanPlantBean(const RandomizerRegion region, RandomizerGet bean);
 bool BothAges(const RandomizerRegion region);
 bool ChildCanAccess(const RandomizerRegion region);
 bool AdultCanAccess(const RandomizerRegion region);
@@ -244,6 +266,7 @@ Region* RegionTable(const RandomizerRegion regionKey);
 std::vector<Rando::Entrance*> GetShuffleableEntrances(Rando::EntranceType type, bool onlyPrimary = true);
 Rando::Entrance* GetEntrance(RandomizerRegion source, RandomizerRegion destination);
 
+void RegionTable_Init_Root();
 // Overworld
 void RegionTable_Init_KokiriForest();
 void RegionTable_Init_LostWoods();

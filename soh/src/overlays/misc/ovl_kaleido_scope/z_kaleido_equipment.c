@@ -3,6 +3,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 static u8 sChildUpgrades[] = { UPG_BULLET_BAG, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
 static u8 sAdultUpgrades[] = { UPG_QUIVER, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
@@ -677,9 +678,11 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                                 default:
                                     break;
                             }
-                            KaleidoScope_SetupItemEquip(play, cursorItem, slot,
-                                                        pauseCtx->equipVtx[cursorSlot * 4].v.ob[0] * 10,
-                                                        pauseCtx->equipVtx[cursorSlot * 4].v.ob[1] * 10);
+                            if (GameInteractor_Should(VB_EQUIP_ITEM_TO_C_BUTTON, true, play, slot, cursorItem)) {
+                                KaleidoScope_SetupItemEquip(play, cursorItem, slot,
+                                                            pauseCtx->equipVtx[cursorSlot * 4].v.ob[0] * 10,
+                                                            pauseCtx->equipVtx[cursorSlot * 4].v.ob[1] * 10);
+                            }
                         } else {
                             Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);

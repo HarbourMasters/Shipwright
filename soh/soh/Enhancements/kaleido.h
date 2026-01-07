@@ -81,7 +81,7 @@ class KaleidoEntryIcon : public KaleidoEntry {
  * Class representing a Kaleido Entry that can be represented with an icon
  * that is either colored in or Grayscale according to a flag
  */
-class KaleidoEntryIconFlag : public KaleidoEntryIcon {
+class KaleidoEntryIconFlag final : public KaleidoEntryIcon {
   public:
     /**
      * @param iconResourceName resource name of the icon to draw
@@ -110,7 +110,7 @@ class KaleidoEntryIconFlag : public KaleidoEntryIcon {
  * The `required` and `total` values can be omitted from the constructor or set to 0 to only
  * render the count and not show progress towards a required amount or a total.
  */
-class KaleidoEntryIconCountRequired : public KaleidoEntryIcon {
+class KaleidoEntryIconCountRequired final : public KaleidoEntryIcon {
   public:
     /**
      * @param iconResourceName resource name of the icon to draw
@@ -141,7 +141,7 @@ class KaleidoEntryIconCountRequired : public KaleidoEntryIcon {
     void BuildText();
 };
 
-class KaleidoEntryOcarinaButtons : public KaleidoEntryIcon {
+class KaleidoEntryOcarinaButtons final : public KaleidoEntryIcon {
   public:
     KaleidoEntryOcarinaButtons();
     void Update(PlayState* play) override;
@@ -163,9 +163,9 @@ class Kaleido {
   private:
     std::vector<std::shared_ptr<KaleidoEntry>> mEntries;
     std::vector<Gfx> mEntryDl;
-    int mTopIndex = 0;
-    int mCursorPos = 0;
-    int mNumVisible = 14;
+    size_t mTopIndex = 0;
+    size_t mCursorPos = 0;
+    const size_t mNumVisible = 14;
 };
 } // namespace Rando
 
@@ -176,6 +176,5 @@ void RandoKaleido_UpdateMiscCollectibles(int16_t inDungeonScene);
 #ifdef __cplusplus
 }
 #endif
-void RandoKaleido_RegisterHooks();
 
 #endif // KALEIDO_H

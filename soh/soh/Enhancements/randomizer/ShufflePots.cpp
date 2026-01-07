@@ -26,7 +26,7 @@ extern "C" void ObjTsubo_RandomizerDraw(Actor* thisx, PlayState* play) {
 }
 
 uint8_t ObjTsubo_RandomizerHoldsItem(ObjTsubo* potActor, PlayState* play) {
-    const auto potIdentity = ObjectExtension::GetInstance().Get<PotIdentity>(&potActor->actor);
+    const auto potIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&potActor->actor);
     if (potIdentity == nullptr) {
         return false;
     }
@@ -46,7 +46,7 @@ uint8_t ObjTsubo_RandomizerHoldsItem(ObjTsubo* potActor, PlayState* play) {
 }
 
 void ObjTsubo_RandomizerSpawnCollectible(ObjTsubo* potActor, PlayState* play) {
-    const auto potIdentity = ObjectExtension::GetInstance().Get<PotIdentity>(&potActor->actor);
+    const auto potIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&potActor->actor);
     if (potIdentity == nullptr) {
         return;
     }
@@ -69,7 +69,7 @@ void RegisterShufflePots() {
 
         auto potIdentity = OTRGlobals::Instance->gRandomizer->IdentifyPot(gPlayState->sceneNum, (s16)actor->world.pos.x,
                                                                           (s16)actor->world.pos.z);
-        ObjectExtension::GetInstance().Set<PotIdentity>(actor, std::move(potIdentity));
+        ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(potIdentity));
     });
 
     // Draw custom model for pot to indicate it holding a randomized item.
@@ -659,6 +659,5 @@ void Rando::StaticData::RegisterPotLocations() {
     // clang-format on
 }
 
-static ObjectExtension::Register<PotIdentity> RegisterPotIdentity;
 static RegisterShipInitFunc registerShufflePots(RegisterShufflePots, { "IS_RANDO" });
 static RegisterShipInitFunc registerPotLocations(Rando::StaticData::RegisterPotLocations);

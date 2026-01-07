@@ -2692,9 +2692,13 @@ s32 func_8083442C(Player* this, PlayState* play) {
                 magicArrowType = arrowType - ARROW_FIRE;
 
                 if (this->unk_860 >= 0) {
-                    if ((magicArrowType >= 0) && (magicArrowType <= 2) &&
-                        !Magic_RequestChange(play, sMagicArrowCosts[magicArrowType], MAGIC_CONSUME_NOW)) {
-                        arrowType = ARROW_NORMAL;
+                    if ((magicArrowType >= 0) && (magicArrowType <= 2)) {
+                        if (GameInteractor_Should(VB_PLAYER_ARROW_MAGIC_CONSUMPTION, true, this, magicArrowType,
+                                                  &arrowType)) {
+                            if (!Magic_RequestChange(play, sMagicArrowCosts[magicArrowType], MAGIC_CONSUME_NOW)) {
+                                arrowType = ARROW_NORMAL;
+                            }
+                        }
                     }
 
                     this->heldActor = Actor_SpawnAsChild(
@@ -11599,7 +11603,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
             seqMode = SEQ_MODE_STILL;
         }
 
-        if (play->actorCtx.targetCtx.bgmEnemy != NULL && !CVarGetInteger(CVAR_AUDIO("EnemyBGMDisable"), 0)) {
+        if (play->actorCtx.targetCtx.bgmEnemy != NULL) {
             seqMode = SEQ_MODE_ENEMY;
             Audio_SetBgmEnemyVolume(sqrtf(play->actorCtx.targetCtx.bgmEnemy->xyzDistToPlayerSq));
         }

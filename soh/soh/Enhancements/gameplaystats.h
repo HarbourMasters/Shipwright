@@ -22,9 +22,9 @@ char* GameplayStats_GetCurrentTime();
 #define GAMEPLAYSTAT_TOTAL_TIME                                                                \
     (gSaveContext.ship.stats.rtaTiming                                                         \
          ? (!gSaveContext.ship.stats.gameComplete                                              \
-                ? (!gSaveContext.ship.stats.fileCreatedAt                                      \
+                ? (!gSaveContext.ship.stats.firstInput                                         \
                        ? 0                                                                     \
-                       : ((GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100)) \
+                       : ((GetUnixTimestamp() - gSaveContext.ship.stats.firstInput) / 100))    \
                 : (gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]               \
                        ? gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]         \
                        : gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED])) \
