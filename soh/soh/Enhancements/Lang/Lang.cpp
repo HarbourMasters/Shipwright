@@ -3,6 +3,7 @@
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/SohMenu.h"
+#include "soh/util.h"
 
 #include "ship/Context.h"
 #include "ship/resource/File.h"
@@ -48,20 +49,47 @@ std::string Lang::Translate(const char* path) {
 
     nlohmann::json currentLangData = langs[currentLang];
 
-    std::string path2 = std::string(path);
+    std::vector<std::string> segments = SohUtils::StringSplit(std::string(path), ".");
 
-    std::replace(path2.begin(), path2.end(), '.', '/');
+    std::string lastSegment = segments[segments.size() - 1];
 
-    path2 = "/" + path2;
+    segments.pop_back();
 
-    if (!currentLangData.contains(path2)) {
-        LUSLOG_WARN("Current language (%s) doesn't have data for the requested path (%s)", currentLang.c_str(), path2.c_str());
-        return path;
+    for (const auto& segment : segments) {
+        if (!currentLangData.contains(segment)) {
+            LUSLOG_WARN("Current language (%s) doesn't have data for the requested path (%s)", currentLang.c_str(), path);
+            return std::string(path);
+        }
+
+        currentLangData = currentLangData[segment];
     }
 
-    std::string translatedString = currentLangData[path2].get<std::string>();
+    if (!currentLangData.contains(lastSegment)) {
+        LUSLOG_WARN("Current language (%s) doesn't have data for the requested path (%s)", currentLang.c_str(), path);
+        return std::string(path);
+    }
 
-    return translatedString;
+    if (currentLangData[lastSegment].is_string()) {
+        return currentLangData[lastSegment].get<std::string>();
+    }
+
+    if (currentLangData[lastSegment].is_array()) {
+        std::string translatedString = "";
+
+        for (const auto& item : currentLangData[lastSegment]) {
+            if (!item.is_string()) {
+                LUSLOG_WARN("Current language (%s) has an array with a non-string at the requested path (%s)", currentLang.c_str(), path);
+                return std::string(path);
+            }
+
+            translatedString += item.get<std::string>();
+        }
+
+        return translatedString;
+    }
+
+    LUSLOG_WARN("Current language (%s) doesn't have either a string or an array at the requested path (%s)", currentLang.c_str(), path);
+    return std::string(path);
 }
 
 void Lang::LoadLangs() {
@@ -78,7 +106,7 @@ void Lang::LoadLangs() {
             Ship::Context::GetInstance()->GetResourceManager()->LoadResource(filePath, true, initData));
 
         std::string fileName = filePath.substr(start, filePath.size() - start - 5); // 5 for length of ".json"
-        langs.insert_or_assign(fileName, json->Data.flatten());
+        langs.insert_or_assign(fileName, json->Data);
     }
     initialized = true;
 }
@@ -86,7 +114,7 @@ void Lang::LoadLangs() {
 void LanguageCustomWidget(WidgetInfo& info) {
     ImGui::Text("Select Language:");
     for (const auto& [id, data] : langs) {
-        if (ImGui::Button(StringHelper::Sprintf("%s [%s]", data["/language_name"].get_ref<const std::string&>().c_str(), id.c_str()).c_str())) {
+        if (ImGui::Button(StringHelper::Sprintf("%s [%s]", data["language_name"].get_ref<const std::string&>().c_str(), id.c_str()).c_str())) {
             CVarSetString(LANGUAGE_CVAR, id.c_str());
         }
     }
