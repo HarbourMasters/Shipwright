@@ -24,7 +24,7 @@ static const char* ResolveCustomChain(std::initializer_list<const char*> paths) 
     for (auto path : paths) {
         if (path != nullptr) {
             fallback = path;
-            if (ResourceGetIsCustomByName(path) || ResourceMgr_FileExists(path)) {
+            if (ResourceMgr_FileExists(path) || ResourceGetIsCustomByName(path)) {
                 return path;
             }
         }
