@@ -1,6 +1,6 @@
 #pragma once
 
-#include "context.h"
+#include "SeedContext.h"
 #include "option.h"
 #include "randomizerTypes.h"
 #include "3drando/spoiler_log.hpp"
@@ -19,6 +19,16 @@ class Settings {
      * @brief Hides or Unhides the price UI of Shopsanity based on settings.
      */
     void HandleShopsanityPriceUI();
+
+    /**
+     * @brief Hides or Unhides the UI of Mixed Entrance Pools
+     */
+    void HandleMixedEntrancePoolsUI();
+
+    /**
+     * @brief UI Callback for handling UI state of Starting Age shuffle.
+     */
+    void HandleStartingAgeUI();
 
     /**
      * @brief Creates the `Option` and `OptionGroup` objects. This happens after construction because certain
@@ -97,16 +107,11 @@ class Settings {
     const OptionGroup& GetOptionGroup(RandomizerSettingGroupKey key);
 
     /**
-     * @brief Updates various properties of options based on the value of other options.
-     * Used to update visibility, whether or not interaction is disabled, and what the
-     * actual option values are. Actually changing option values should be handled in
-     * `FinalizeSettings`
-     *
-     * For example, this function handles setting the maximum possible keyring count to 9
-     * when Gerudo's Fortress options are set such that a keyring is possible for that
-     * dungeon.
+     * @brief Runs the Callback on every option, to ensure they are all
+     * hidden/unhidden and/or disabled/enabled properly after applying a
+     * preset or dropping a file.
      */
-    void UpdateOptionProperties();
+    void UpdateAllOptions();
 
     /**
      * @brief Parse Options from a JSON file.

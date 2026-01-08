@@ -230,7 +230,7 @@ void BgPoEvent_Destroy(Actor* thisx, PlayState* play) {
     } else {
         DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
         if ((this->type == 1) && (gSaveContext.timerSeconds > 0)) {
-            gSaveContext.timerState = 0xA;
+            gSaveContext.timerState = TIMER_STATE_STOP;
         }
     }
 }
@@ -319,7 +319,7 @@ void BgPoEvent_BlockFall(BgPoEvent* this, PlayState* play) {
         } else {
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_STONE_BOUND);
             func_80033E88(&this->dyna.actor, play, 5, 5);
-            func_80088B34(this->timer);
+            Interface_SetTimer(this->timer);
             if (firstFall == 0) {
                 firstFall = 1;
             } else {
@@ -345,7 +345,7 @@ void BgPoEvent_BlockIdle(BgPoEvent* this, PlayState* play) {
                 OnePointCutscene_Init(play, 3170, 30, amy, MAIN_CAM);
             }
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
-            gSaveContext.timerState = 0xA;
+            gSaveContext.timerState = TIMER_STATE_STOP;
         }
     } else {
         if ((gSaveContext.timerSeconds == 0) && (sBgPoEventBlocksAtRest == 5)) {

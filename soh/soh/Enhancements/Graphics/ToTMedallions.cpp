@@ -1,12 +1,11 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/mods.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "align_asset_macro.h"
 #include "macros.h"
 #include "variables.h"
-#include "soh/ResourceManagerHelpers.h"
 extern PlayState* gPlayState;
 }
 
@@ -30,7 +29,7 @@ static Gfx grayscaleWhite = gsDPSetGrayscaleColor(255, 255, 255, 255);
 class ToTPatchSetup {
   public:
     ToTPatchSetup(Gfx ifColored, const char* patchName, int index, const char* patchName2 = "", int index2 = 0)
-        : patchName(patchName), index(index), ifColored(ifColored), patchName2(patchName2), index2(index2) {
+        : patchName(patchName), patchName2(patchName2), index(index), index2(index2), ifColored(ifColored) {
     }
 
     void ApplyPatch(bool colored = true) {
@@ -102,14 +101,6 @@ static void ResetToTMedallions() {
     endGrayscale.RevertPatch();
 }
 
-void UpdateToTMedallions() {
-    if (CVAR_TOT_MEDALLION_COLORS_VALUE) {
-        PatchToTMedallions();
-    } else {
-        ResetToTMedallions();
-    }
-}
-
 static void CheckTempleOfTime(int16_t sceneNum) {
     if (sceneNum != SCENE_TEMPLE_OF_TIME) {
         return;
@@ -118,6 +109,12 @@ static void CheckTempleOfTime(int16_t sceneNum) {
 }
 
 static void RegisterToTMedallions() {
+    if (CVAR_TOT_MEDALLION_COLORS_VALUE) {
+        PatchToTMedallions();
+    } else {
+        ResetToTMedallions();
+    }
+
     COND_HOOK(OnItemReceive, CVAR_TOT_MEDALLION_COLORS_VALUE, [](GetItemEntry) {
         if (gPlayState) {
             CheckTempleOfTime(gPlayState->sceneNum);

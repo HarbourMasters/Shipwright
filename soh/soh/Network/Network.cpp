@@ -1,5 +1,3 @@
-#ifdef ENABLE_REMOTE_CONTROL
-
 #include "Network.h"
 #include <spdlog/spdlog.h>
 #include <libultraship/libultraship.h>
@@ -7,6 +5,7 @@
 // MARK: - Public
 
 void Network::Enable(const char* host, uint16_t port) {
+#ifdef ENABLE_REMOTE_CONTROL
     if (isEnabled) {
         return;
     }
@@ -23,6 +22,7 @@ void Network::Enable(const char* host, uint16_t port) {
     }
 
     receiveThread = std::thread(&Network::ReceiveFromServer, this);
+#endif
 }
 
 void Network::Disable() {
@@ -46,9 +46,14 @@ void Network::OnConnected() {
 void Network::OnDisconnected() {
 }
 
+void Network::ProcessOutgoingPackets() {
+}
+
 void Network::SendDataToRemote(const char* payload) {
+#ifdef ENABLE_REMOTE_CONTROL
     SPDLOG_DEBUG("[Network] Sending data: {}", payload);
     SDLNet_TCP_Send(networkSocket, payload, strlen(payload) + 1);
+#endif
 }
 
 void Network::SendJsonToRemote(nlohmann::json payload) {
@@ -58,6 +63,7 @@ void Network::SendJsonToRemote(nlohmann::json payload) {
 // MARK: - Private
 
 void Network::ReceiveFromServer() {
+#ifdef ENABLE_REMOTE_CONTROL
     while (isEnabled) {
         while (!isConnected && isEnabled) {
             SPDLOG_TRACE("[Network] Attempting to make connection to server...");
@@ -65,6 +71,7 @@ void Network::ReceiveFromServer() {
 
             if (networkSocket) {
                 isConnected = true;
+                receivedData.clear();
                 SPDLOG_INFO("[Network] Connection to server established!");
 
                 OnConnected();
@@ -87,7 +94,11 @@ void Network::ReceiveFromServer() {
                 break;
             }
 
+            // Always process outgoing packets
+            ProcessOutgoingPackets();
+
             if (socketsReady == 0) {
+                // No incoming data
                 continue;
             }
 
@@ -116,13 +127,20 @@ void Network::ReceiveFromServer() {
             }
         }
 
+        if (socketSet) {
+            SDLNet_FreeSocketSet(socketSet);
+        }
+
         if (isConnected) {
             SDLNet_TCP_Close(networkSocket);
+            networkSocket = nullptr;
             isConnected = false;
+            receivedData.clear();
             OnDisconnected();
             SPDLOG_INFO("[Network] Ending receiving thread...");
         }
     }
+#endif
 }
 
 void Network::HandleRemoteData(char payload[512]) {
@@ -141,5 +159,3 @@ void Network::HandleRemoteJson(std::string payload) {
 
     OnIncomingJson(jsonPayload);
 }
-
-#endif // ENABLE_REMOTE_CONTROL

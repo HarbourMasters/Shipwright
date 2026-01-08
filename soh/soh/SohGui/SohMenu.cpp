@@ -1,12 +1,12 @@
 #include "SohMenu.h"
-#include "soh/OTRGlobals.h"
-#include "soh/Enhancements/controls/SohInputEditorWindow.h"
 #include <ship/window/gui/GuiMenuBar.h>
 #include <ship/window/gui/GuiElement.h>
-#include <variant>
 #include <ship/utils/StringHelper.h>
 #include <spdlog/fmt/fmt.h>
-#include <tuple>
+
+extern "C" {
+extern PlayState* gPlayState;
+}
 
 extern std::unordered_map<s16, const char*> warpPointSceneList;
 
@@ -81,27 +81,6 @@ SohMenu::SohMenu(const std::string& consoleVariable, const std::string& name)
     : Menu(consoleVariable, name, 0, UIWidgets::Colors::LightBlue) {
 }
 
-#ifndef ENABLE_REMOTE_CONTROL
-void SohMenu::AddMenuNetwork() {
-#ifndef _DEBUG
-    // in release builds, the tab doesn't even show
-    return;
-#endif
-
-    // Add Network Menu
-    AddMenuEntry("Network", CVAR_SETTING("Menu.NetworkSidebarSection"));
-
-    WidgetPath path = { "Network", "Info", SECTION_COLUMN_1 };
-    AddSidebarEntry("Network", path.sidebarName, 2);
-
-    AddWidget(path,
-              ICON_FA_EXCLAMATION_TRIANGLE " The Network features are unavailable because SoH was compiled without "
-                                           "network support (\"ENABLE_REMOTE_CONTROL\" build flag).",
-              WIDGET_TEXT)
-        .Options(TextOptions().Color(Colors::Orange));
-}
-#endif
-
 void SohMenu::InitElement() {
     Ship::Menu::InitElement();
     AddMenuSettings();
@@ -175,12 +154,6 @@ void SohMenu::InitElement() {
                return !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0);
            },
             "Vertical Resolution Toggle is Off" } },
-        { DISABLE_FOR_BOOT_TO_DEBUG_WARP_SCREEN_ON,
-          { [](disabledInfo& info) -> bool {
-               return CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) &&
-                      CVarGetInteger(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"), 0);
-           },
-            "\"Boot To Debug Warp Screen\" Enabled (see Dev Tools -> General)" } },
     };
 }
 

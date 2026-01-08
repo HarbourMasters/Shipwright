@@ -4653,7 +4653,7 @@ void Message_Update(PlayState* play) {
             }
             if ((msgCtx->textId >= 0xC2 && msgCtx->textId < 0xC7) ||
                 (msgCtx->textId >= 0xFA && msgCtx->textId < 0xFE)) {
-                gSaveContext.healthAccumulator = 0x140; // Refill 20 hearts
+                gSaveContext.healthAccumulator = MAX_HEALTH; // Refill 20 hearts
             }
             if (msgCtx->textId == 0x301F || msgCtx->textId == 0xA || msgCtx->textId == 0xC || msgCtx->textId == 0xCF ||
                 msgCtx->textId == 0x21C || msgCtx->textId == 9 || msgCtx->textId == 0x4078 ||
@@ -4691,12 +4691,9 @@ void Message_Update(PlayState* play) {
             }
             if ((s32)(gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000) {
                 gSaveContext.inventory.questItems ^= 0x40000000;
-                if (!CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0)) {
-                    gSaveContext.healthCapacity += 0x10;
-                    gSaveContext.health += 0x10;
-                } else {
-                    gSaveContext.healthCapacity -= 0x10;
-                    gSaveContext.health -= 0x10;
+                if (GameInteractor_Should(VB_HEARTS_INCREASE_WITH_CONTAINERS, true)) {
+                    gSaveContext.healthCapacity += FULL_HEART_HEALTH;
+                    gSaveContext.health += FULL_HEART_HEALTH;
                 }
             }
             if (msgCtx->ocarinaAction != OCARINA_ACTION_CHECK_NOWARP_DONE) {

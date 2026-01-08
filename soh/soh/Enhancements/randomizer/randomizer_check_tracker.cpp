@@ -83,6 +83,7 @@ bool showDungeonGrass;
 bool showOverworldCrates;
 bool showDungeonCrates;
 bool showTrees;
+bool showBushes;
 bool showFrogSongRupees;
 bool showFountainFairies;
 bool showStoneFairies;
@@ -1031,27 +1032,23 @@ void CheckTrackerWindow::DrawElement() {
         RecalculateAvailableChecks();
     }
 
-    SceneID sceneId = SCENE_ID_MAX;
-    if (gPlayState != nullptr) {
-        sceneId = (SceneID)gPlayState->sceneNum;
-    }
-
     // Quick Options
 #ifdef __WIIU__
     float headerHeight = 40.0f;
 #else
     float headerHeight = 20.0f;
 #endif
-    ImVec2 size = ImGui::GetContentRegionMax();
-    size.y -= headerHeight;
-    if (!ImGui::BeginTable("Check Tracker", 1, 0, size)) {
+    if (!ImGui::BeginTable("Check Tracker", 1, 0)) {
         EndFloatWindows();
         return;
     }
 
-    ImGui::TableNextRow(0, headerHeight);
+    ImGui::SetWindowFontScale(CVarGetFloat(CVAR_TRACKER_CHECK("FontSize"), 1.0f));
+
+    ImGui::TableNextRow(0, 0);
     ImGui::TableNextColumn();
-    if (UIWidgets::CVarCheckbox(
+    if (CVarGetInteger(CVAR_TRACKER_CHECK("HiddenItemsToggleVisible"), 1) &&
+        UIWidgets::CVarCheckbox(
             "Show Hidden Items", CVAR_TRACKER_CHECK("ShowHidden"),
             UIWidgets::CheckboxOptions(
                 { { .tooltip = "When active, items will show hidden checks by default when updated to this state." } })
@@ -1060,7 +1057,7 @@ void CheckTrackerWindow::DrawElement() {
         showHidden = CVarGetInteger(CVAR_TRACKER_CHECK("ShowHidden"), 0);
         RecalculateAllAreaTotals();
     }
-    if (enableAvailableChecks) {
+    if (enableAvailableChecks && CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"), 1)) {
         if (UIWidgets::CVarCheckbox(
                 "Only Show Available Checks", CVAR_TRACKER_CHECK("OnlyShowAvailable"),
                 UIWidgets::CheckboxOptions({ { .tooltip = "When active, unavailable checks will be hidden." } })
@@ -1069,49 +1066,61 @@ void CheckTrackerWindow::DrawElement() {
             RecalculateAllAreaTotals();
         }
     }
-    UIWidgets::PaddedSeparator();
-    if (UIWidgets::Button("Expand All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
-        optCollapseAll = false;
-        optExpandAll = true;
-        doAreaScroll = true;
-    }
-    ImGui::SameLine();
-    if (UIWidgets::Button("Collapse All",
-                          UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
-        optExpandAll = false;
-        optCollapseAll = true;
-    }
-    ImGui::SameLine();
-    if (UIWidgets::Button("Clear", UIWidgets::ButtonOptions({ { .tooltip = "Clear the search field" } })
-                                       .Color(THEME_COLOR)
-                                       .Size(UIWidgets::Sizes::Inline))) {
-        checkSearch.Clear();
-        UpdateFilters();
-        doAreaScroll = true;
+    if (CVarGetInteger(CVAR_TRACKER_CHECK("ExpandCollapseButtonsVisible"), 0)) {
+        if (UIWidgets::Button(
+                "Expand All",
+                UIWidgets::ButtonOptions().Color(THEME_COLOR).Size({ ImGui::GetContentRegionAvail().x / 2 - 6, 0 }))) {
+            optCollapseAll = false;
+            optExpandAll = true;
+            doAreaScroll = true;
+        }
+        ImGui::SameLine();
+        if (UIWidgets::Button(
+                "Collapse All",
+                UIWidgets::ButtonOptions().Color(THEME_COLOR).Size({ ImGui::GetContentRegionAvail().x - 6, 0 }))) {
+            optExpandAll = false;
+            optCollapseAll = true;
+        }
     }
     UIWidgets::PushStyleCombobox(THEME_COLOR);
-    if (checkSearch.Draw()) {
-        UpdateFilters();
+    if (CVarGetInteger(CVAR_TRACKER_CHECK("SearchInputVisible"), 1)) {
+        if (checkSearch.Draw("", ImGui::GetContentRegionAvail().x - 6)) {
+            UpdateFilters();
+        }
+        std::string checkSearchText = "";
+        checkSearchText = checkSearch.InputBuf;
+        checkSearchText.erase(std::remove(checkSearchText.begin(), checkSearchText.end(), ' '), checkSearchText.end());
+        if (checkSearchText.length() < 1) {
+            ImGui::SameLine(20.0f);
+            ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Search...");
+        }
     }
     UIWidgets::PopStyleCombobox();
 
-    ImGui::Separator();
-
-    std::ostringstream totalChecksSS;
-    totalChecksSS << "Total Checks: ";
-    if (enableAvailableChecks) {
-        totalChecksSS << totalChecksAvailable << " Available / ";
+    if (CVarGetInteger(CVAR_TRACKER_CHECK("CheckTotalsVisible"), 1)) {
+        std::ostringstream totalChecksSS;
+        totalChecksSS << "";
+        if (enableAvailableChecks) {
+            totalChecksSS << totalChecksAvailable << " Available / ";
+        }
+        totalChecksSS << totalChecksGotten << " Checked / " << totalChecks << " Total";
+        ImGui::Text("%s", totalChecksSS.str().c_str());
     }
-    totalChecksSS << totalChecksGotten << " Checked / " << totalChecks << " Total";
-    ImGui::Text("%s", totalChecksSS.str().c_str());
 
-    UIWidgets::PaddedSeparator();
+    bool headerPresent =
+        CVarGetInteger(CVAR_TRACKER_CHECK("HiddenItemsToggleVisible"), 1) ||
+        (enableAvailableChecks && CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"), 1)) ||
+        CVarGetInteger(CVAR_TRACKER_CHECK("ExpandCollapseButtonsVisible"), 0) ||
+        CVarGetInteger(CVAR_TRACKER_CHECK("SearchInputVisible"), 1) ||
+        CVarGetInteger(CVAR_TRACKER_CHECK("CheckTotalsVisible"), 1);
+    if (headerPresent) {
+        ImGui::Separator();
+    }
 
     // Checks Section Lead-in
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
-    size = ImGui::GetContentRegionAvail();
-    if (!ImGui::BeginTable("CheckTracker##Checks", 1, ImGuiTableFlags_ScrollY, size)) {
+    if (!ImGui::BeginTable("CheckTracker##Checks", 1, ImGuiTableFlags_ScrollY)) {
         ImGui::EndTable();
         EndFloatWindows();
         return;
@@ -1181,7 +1190,7 @@ void CheckTrackerWindow::DrawElement() {
             } else {
                 ImGui::SetNextItemOpen(!thisAreaFullyChecked, ImGuiCond_Once);
             }
-            doDraw = ImGui::TreeNode(stemp.c_str());
+            doDraw = ImGui::TreeNodeEx(stemp.c_str(), ImGuiTreeNodeFlags_NoTreePushOnOpen);
             ImGui::PopStyleColor();
             ImGui::SameLine();
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(extraColor.r / 255.0f, extraColor.g / 255.0f,
@@ -1229,10 +1238,6 @@ void CheckTrackerWindow::DrawElement() {
                 if (doDraw && isThisAreaSpoiled && !filterChecksHidden[rc]) {
                     DrawLocation(rc);
                 }
-            }
-
-            if (doDraw) {
-                ImGui::TreePop();
             }
         }
     }
@@ -1485,6 +1490,7 @@ void LoadSettings() {
                 break;
         }
         showTrees = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TREES);
+        showBushes = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BUSHES);
     } else { // Vanilla
         showOverworldTokens = true;
         showDungeonTokens = true;
@@ -1495,6 +1501,7 @@ void LoadSettings() {
         showOverworldCrates = false;
         showDungeonCrates = false;
         showTrees = false;
+        showBushes = false;
     }
 
     fortressFast = false;
@@ -1611,7 +1618,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_NLTREE ||
                 (showTrees &&
                  OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) &&
-               (loc->GetRCType() != RCTYPE_COW || showCows) &&
+               (loc->GetRCType() != RCTYPE_BUSH || showBushes) && (loc->GetRCType() != RCTYPE_COW || showCows) &&
                (loc->GetRCType() != RCTYPE_FISH ||
                 OTRGlobals::Instance->gRandoContext->GetFishsanity()->GetFishLocationIncluded(loc)) &&
                (loc->GetRCType() != RCTYPE_FREESTANDING ||
@@ -2105,10 +2112,10 @@ void CheckTrackerWindow::Draw() {
     SyncVisibilityConsoleVariable();
 }
 
-static std::unordered_map<int32_t, const char*> windowType = { { TRACKER_WINDOW_FLOATING, "Floating" },
-                                                               { TRACKER_WINDOW_WINDOW, "Window" } };
-static std::unordered_map<int32_t, const char*> displayType = { { 0, "Always" }, { 1, "Combo Button Hold" } };
-static std::unordered_map<int32_t, const char*> buttonStrings = {
+static std::map<int32_t, const char*> windowType = { { TRACKER_WINDOW_FLOATING, "Floating" },
+                                                     { TRACKER_WINDOW_WINDOW, "Window" } };
+static std::map<int32_t, const char*> displayType = { { 0, "Always" }, { 1, "Combo Button Hold" } };
+static std::map<int32_t, const char*> buttonStrings = {
     { TRACKER_COMBO_BUTTON_A, "A Button" },    { TRACKER_COMBO_BUTTON_B, "B Button" },
     { TRACKER_COMBO_BUTTON_C_UP, "C-Up" },     { TRACKER_COMBO_BUTTON_C_DOWN, "C-Down" },
     { TRACKER_COMBO_BUTTON_C_LEFT, "C-Left" }, { TRACKER_COMBO_BUTTON_C_RIGHT, "C-Right" },
@@ -2129,6 +2136,16 @@ void CheckTrackerSettingsWindow::DrawElement() {
         SohGui::mSohMenu->MenuDrawItem(backgroundColorWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
 
         SohGui::mSohMenu->MenuDrawItem(windowTypeWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+
+        UIWidgets::CVarSliderFloat("Font Size", CVAR_TRACKER_CHECK("FontSize"),
+                                   UIWidgets::FloatSliderOptions()
+                                       .Tooltip("Sets the font size used in the check tracker.")
+                                       .Format("%.1f")
+                                       .Step(0.1f)
+                                       .Min(0.3f)
+                                       .Max(2.0f)
+                                       .Color(THEME_COLOR)
+                                       .DefaultValue(1.0f));
 
         if (CVarGetInteger(CVAR_TRACKER_CHECK("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
             UIWidgets::CVarCheckbox("Enable Dragging", CVAR_TRACKER_CHECK("Draggable"),
@@ -2172,13 +2189,24 @@ void CheckTrackerSettingsWindow::DrawElement() {
         ImGui::EndDisabled();
 
         // Filtering settings
-        UIWidgets::PaddedSeparator();
         UIWidgets::CVarCheckbox(
             "Filter Empty Areas", CVAR_TRACKER_CHECK("HideFilteredAreas"),
             UIWidgets::CheckboxOptions()
                 .Tooltip("If enabled, will hide area headers that have no locations matching filter")
                 .Color(THEME_COLOR)
                 .DefaultValue(true));
+
+        ImGui::SeparatorText("Tracker Header Visibility");
+        UIWidgets::CVarCheckbox("Hidden Items Toggle", CVAR_TRACKER_CHECK("HiddenItemsToggleVisible"),
+                                UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+        UIWidgets::CVarCheckbox("Available Checks Toggle", CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"),
+                                UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+        UIWidgets::CVarCheckbox("Expand/Collapse Buttons", CVAR_TRACKER_CHECK("ExpandCollapseButtonsVisible"),
+                                UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(false));
+        UIWidgets::CVarCheckbox("Search Input", CVAR_TRACKER_CHECK("SearchInputVisible"),
+                                UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+        UIWidgets::CVarCheckbox("Check Totals", CVAR_TRACKER_CHECK("CheckTotalsVisible"),
+                                UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
 
         ImGui::TableNextColumn();
 

@@ -61,7 +61,7 @@ static void PauseWarp_Execute() {
     for (int i = 0; i < ARRAY_COUNT(ocarinaSongMap); i++) {
         if (gPlayState->msgCtx.lastPlayedSong == ocarinaSongMap[i]) {
             gPlayState->nextEntranceIndex = entranceIndexMap[i];
-            func_80088AF0(gPlayState);
+            Interface_SetSubTimerToFinalSecond(gPlayState);
             return;
         }
     }

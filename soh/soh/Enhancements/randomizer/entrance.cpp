@@ -269,8 +269,8 @@ void SetAllEntrancesData() {
           { EntranceType::Dungeon,      RR_SPIRIT_TEMPLE_ENTRYWAY,           RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE,    ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE } },
         { { EntranceType::Dungeon,      RR_GRAVEYARD_WARP_PAD_REGION,        RR_SHADOW_TEMPLE_ENTRYWAY,            ENTR_SHADOW_TEMPLE_ENTRANCE },
           { EntranceType::Dungeon,      RR_SHADOW_TEMPLE_ENTRYWAY,           RR_GRAVEYARD_WARP_PAD_REGION,         ENTR_GRAVEYARD_OUTSIDE_TEMPLE } },
-        { { EntranceType::Dungeon,      RR_KAK_WELL,                         RR_BOTTOM_OF_THE_WELL_ENTRYWAY,       ENTR_BOTTOM_OF_THE_WELL_ENTRANCE },
-          { EntranceType::Dungeon,      RR_BOTTOM_OF_THE_WELL_ENTRYWAY,      RR_KAK_WELL,                          ENTR_KAKARIKO_VILLAGE_OUTSIDE_BOTTOM_OF_THE_WELL } },
+        { { EntranceType::Dungeon,      RR_KAK_WELL,                         RR_BOTW_ENTRYWAY,       ENTR_BOTTOM_OF_THE_WELL_ENTRANCE },
+          { EntranceType::Dungeon,      RR_BOTW_ENTRYWAY,      RR_KAK_WELL,                          ENTR_KAKARIKO_VILLAGE_OUTSIDE_BOTTOM_OF_THE_WELL } },
         { { EntranceType::Dungeon,      RR_ZF_LEDGE,                         RR_ICE_CAVERN_ENTRYWAY,               ENTR_ICE_CAVERN_ENTRANCE },
           { EntranceType::Dungeon,      RR_ICE_CAVERN_ENTRYWAY,              RR_ZF_LEDGE,                          ENTR_ZORAS_FOUNTAIN_OUTSIDE_ICE_CAVERN } },
         { { EntranceType::Dungeon,      RR_GF_TO_GTG,                        RR_GERUDO_TRAINING_GROUND_ENTRYWAY,   ENTR_GERUDO_TRAINING_GROUND_ENTRANCE },
@@ -357,8 +357,8 @@ void SetAllEntrancesData() {
           { EntranceType::SpecialInterior, RR_KF_LINKS_HOUSE,        RR_KOKIRI_FOREST,         ENTR_KOKIRI_FOREST_OUTSIDE_LINKS_HOUSE } },
         { { EntranceType::SpecialInterior, RR_TOT_ENTRANCE,          RR_TEMPLE_OF_TIME,        ENTR_TEMPLE_OF_TIME_ENTRANCE },
           { EntranceType::SpecialInterior, RR_TEMPLE_OF_TIME,        RR_TOT_ENTRANCE,          ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE } },
-        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,      RR_KAK_WINDMILL,          ENTR_WINDMILL_AND_DAMPES_GRAVE_WINDMILL },
-          { EntranceType::SpecialInterior, RR_KAK_WINDMILL,          RR_KAKARIKO_VILLAGE,      ENTR_KAKARIKO_VILLAGE_OUTSIDE_WINDMILL } },
+        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,      RR_KAK_WINDMILL_LOWER,    ENTR_WINDMILL_AND_DAMPES_GRAVE_WINDMILL },
+          { EntranceType::SpecialInterior, RR_KAK_WINDMILL_LOWER,    RR_KAKARIKO_VILLAGE,      ENTR_KAKARIKO_VILLAGE_OUTSIDE_WINDMILL } },
         { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,      RR_KAK_POTION_SHOP_FRONT, ENTR_POTION_SHOP_KAKARIKO_FRONT },
           { EntranceType::SpecialInterior, RR_KAK_POTION_SHOP_FRONT, RR_KAKARIKO_VILLAGE,      ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_FRONT } },
         { { EntranceType::SpecialInterior, RR_KAK_BACKYARD,          RR_KAK_POTION_SHOP_BACK,  ENTR_POTION_SHOP_KAKARIKO_BACK },
@@ -401,10 +401,10 @@ void SetAllEntrancesData() {
           { EntranceType::GrottoGrave, RR_LH_GROTTO,                RR_LAKE_HYLIA,               ENTRANCE_GROTTO_EXIT(GROTTO_LH_OFFSET) } },
         { { EntranceType::GrottoGrave, RR_ZORAS_RIVER,              RR_ZR_STORMS_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_ZR_STORMS_OFFSET) },
           { EntranceType::GrottoGrave, RR_ZR_STORMS_GROTTO,         RR_ZORAS_RIVER,              ENTRANCE_GROTTO_EXIT(GROTTO_ZR_STORMS_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_ZORAS_RIVER,              RR_ZR_FAIRY_GROTTO,          ENTRANCE_GROTTO_LOAD(GROTTO_ZR_FAIRY_OFFSET) },
-          { EntranceType::GrottoGrave, RR_ZR_FAIRY_GROTTO,          RR_ZORAS_RIVER,              ENTRANCE_GROTTO_EXIT(GROTTO_ZR_FAIRY_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_ZORAS_RIVER,              RR_ZR_OPEN_GROTTO,           ENTRANCE_GROTTO_LOAD(GROTTO_ZR_OPEN_OFFSET) },
-          { EntranceType::GrottoGrave, RR_ZR_OPEN_GROTTO,           RR_ZORAS_RIVER,              ENTRANCE_GROTTO_EXIT(GROTTO_ZR_OPEN_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_ZR_ATOP_LADDER,           RR_ZR_FAIRY_GROTTO,          ENTRANCE_GROTTO_LOAD(GROTTO_ZR_FAIRY_OFFSET) },
+          { EntranceType::GrottoGrave, RR_ZR_FAIRY_GROTTO,          RR_ZR_ATOP_LADDER,           ENTRANCE_GROTTO_EXIT(GROTTO_ZR_FAIRY_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_ZR_ATOP_LADDER,           RR_ZR_OPEN_GROTTO,           ENTRANCE_GROTTO_LOAD(GROTTO_ZR_OPEN_OFFSET) },
+          { EntranceType::GrottoGrave, RR_ZR_OPEN_GROTTO,           RR_ZR_ATOP_LADDER,           ENTRANCE_GROTTO_EXIT(GROTTO_ZR_OPEN_OFFSET) } },
         { { EntranceType::GrottoGrave, RR_DMC_LOWER_NEARBY,         RR_DMC_HAMMER_GROTTO,        ENTRANCE_GROTTO_LOAD(GROTTO_DMC_HAMMER_OFFSET) },
           { EntranceType::GrottoGrave, RR_DMC_HAMMER_GROTTO,        RR_DMC_LOWER_LOCAL,          ENTRANCE_GROTTO_EXIT(GROTTO_DMC_HAMMER_OFFSET) } },
         { { EntranceType::GrottoGrave, RR_DMC_UPPER_NEARBY,         RR_DMC_UPPER_GROTTO,         ENTRANCE_GROTTO_LOAD(GROTTO_DMC_UPPER_OFFSET) },
@@ -1074,7 +1074,7 @@ static std::array<std::vector<Entrance*>, 2> SplitEntrancesByRequirements(std::v
     logic->Reset();
     // Apply the effects of all advancement items to search for entrance accessibility
     std::vector<RandomizerGet> items = FilterFromPool(
-        ItemPool, [](const RandomizerGet i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
+        itemPool, [](const RandomizerGet i) { return Rando::StaticData::RetrieveItem(i).IsAdvancement(); });
     for (RandomizerGet unplacedItem : items) {
         Rando::StaticData::RetrieveItem(unplacedItem).ApplyEffect();
     }
@@ -1082,12 +1082,14 @@ static std::array<std::vector<Entrance*>, 2> SplitEntrancesByRequirements(std::v
     ReachabilitySearch({});
 
     for (Entrance* entrance : entrancesToSplit) {
+        logic->CurrentRegionKey = entrance->GetParentRegionKey();
         // if an entrance is accessible at all times of day by both ages, it's a soft entrance with no restrictions
         if (entrance->ConditionsMet(true)) {
             softEntrances.push_back(entrance);
         } else {
             restrictiveEntrances.push_back(entrance);
         }
+        logic->CurrentRegionKey = RR_NONE;
     }
 
     // Reconnect all disconnected entrances
