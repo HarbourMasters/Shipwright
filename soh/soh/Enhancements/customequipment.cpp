@@ -18,6 +18,7 @@ void DummyPlayer_Update(Actor* actor, PlayState* play);
 static void UpdatePatchCustomEquipmentDlists();
 static void RefreshCustomEquipment();
 static bool HasDummyPlayers();
+static u8 GetEquippedSwordItem();
 
 static const char* ResolveCustomChain(std::initializer_list<const char*> paths) {
     const char* fallback = nullptr;
@@ -108,6 +109,24 @@ static void RefreshCustomEquipment() {
     }
 
     UpdatePatchCustomEquipmentDlists();
+}
+
+static u8 GetEquippedSwordItem() {
+    switch (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD)) {
+        case EQUIP_VALUE_SWORD_NONE:
+            return ITEM_NONE;
+        case EQUIP_VALUE_SWORD_KOKIRI:
+            return ITEM_SWORD_KOKIRI;
+        case EQUIP_VALUE_SWORD_MASTER:
+            return ITEM_SWORD_MASTER;
+        case EQUIP_VALUE_SWORD_BIGGORON:
+            if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)) {
+                return ITEM_SWORD_KNIFE;
+            }
+            return ITEM_SWORD_BGS;
+        default:
+            return ITEM_NONE;
+    }
 }
 
 void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, const char* dlist2, const char* dlist3,
@@ -484,7 +503,7 @@ static void ApplyCommonEquipmentPatches() {
 }
 
 void UpdatePatchCustomEquipmentDlists() {
-    const u8 equippedSword = gSaveContext.equips.buttonItems[0];
+    const u8 equippedSword = GetEquippedSwordItem();
 
     if (equippedSword == ITEM_NONE) {
         if (LINK_IS_CHILD) {
