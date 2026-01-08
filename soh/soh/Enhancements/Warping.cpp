@@ -9,18 +9,14 @@
 extern "C" {
 #include "z64.h"
 #include "overlays/gamestates/ovl_file_choose/file_choose.h"
+#include "soh/Enhancements/enhancementTypes.h"
 void Sram_InitDebugSave(void);
 void Select_LoadGame(SelectContext* selectContext, s32 entranceIndex);
 }
 
-static constexpr int32_t CVAR_DEBUG_ENABLED_DEFAULT = 0;
-#define CVAR_DEBUG_ENABLED_NAME CVAR_DEVELOPER_TOOLS("DebugEnabled")
-#define CVAR_DEBUG_ENABLED_VALUE CVarGetInteger(CVAR_DEBUG_ENABLED_NAME, CVAR_DEBUG_ENABLED_DEFAULT)
-
-static constexpr int32_t CVAR_BOOT_TO_DEBUG_WARP_SCREEN_DEFAULT = 0;
-#define CVAR_BOOT_TO_DEBUG_WARP_SCREEN_NAME CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen")
-#define CVAR_BOOT_TO_DEBUG_WARP_SCREEN_VALUE \
-    CVarGetInteger(CVAR_BOOT_TO_DEBUG_WARP_SCREEN_NAME, CVAR_BOOT_TO_DEBUG_WARP_SCREEN_DEFAULT)
+#define CVAR_BOOTSEQUENCE_NAME CVAR_SETTING("BootSequence")
+#define CVAR_BOOTSEQUENCE_DEFAULT BOOTSEQUENCE_DEFAULT
+#define CVAR_BOOTSEQUENCE_VALUE CVarGetInteger(CVAR_BOOTSEQUENCE_NAME, CVAR_BOOTSEQUENCE_DEFAULT)
 
 typedef struct WarpPoint {
     s32 entranceId;
@@ -49,15 +45,21 @@ void SaveConfig() {
 }
 
 void Warp(WarpPoint& warpPoint) {
-    SPDLOG_INFO("PLAYSTATE IS NULL: {}", gPlayState == NULL);
     if (gPlayState == NULL) {
         // If gPlayState is NULL, it means the the user opted into BootToWarpPoint and the game is starting up.
         gSaveContext.gameMode = GAMEMODE_NORMAL;
         gSaveContext.fileNum = 0xFE; // temporary file so that this will respect debug save file option
         Sram_InitDebugSave();
+        gSaveContext.magicFillTarget = gSaveContext.magic;
+        gSaveContext.magic = 0;
+        gSaveContext.magicCapacity = 0;
+        gSaveContext.magicLevel = gSaveContext.magic;
         gSaveContext.fileNum = 0xFF;
         gSaveContext.sceneSetupIndex = 0;
         gSaveContext.cutsceneIndex = 0;
+        gSaveContext.linkAge = 0;
+        gSaveContext.nightFlag = 0;
+        gSaveContext.skyboxTime = gSaveContext.dayTime = 0x8000;
 
         // Copied from Select_LoadGame
         for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
@@ -182,26 +184,33 @@ void RegisterWarping() {
         loadedConfig = true;
     }
 
-    COND_HOOK(OnZTitleUpdate, CVAR_DEBUG_ENABLED_VALUE && CVAR_BOOT_TO_DEBUG_WARP_SCREEN_VALUE == 1,
-              [](void* gameState) {
-                  TitleContext* titleContext = (TitleContext*)gameState;
+    COND_HOOK(OnZTitleUpdate, CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_DEBUGWARPSCREEN, [](void* gameState) {
+        TitleContext* titleContext = (TitleContext*)gameState;
 
-                  gSaveContext.seqId = (u8)NA_BGM_DISABLED;
-                  gSaveContext.natureAmbienceId = 0xFF;
-                  gSaveContext.gameMode = GAMEMODE_NORMAL;
-                  titleContext->state.running = false;
-                  SET_NEXT_GAMESTATE(&titleContext->state, Select_Init, SelectContext);
-              });
+        gSaveContext.seqId = (u8)NA_BGM_DISABLED;
+        gSaveContext.natureAmbienceId = 0xFF;
+        gSaveContext.gameMode = GAMEMODE_NORMAL;
+        titleContext->state.running = false;
+        SET_NEXT_GAMESTATE(&titleContext->state, Select_Init, SelectContext);
+    });
 
-    COND_HOOK(OnZTitleUpdate, CVAR_DEBUG_ENABLED_VALUE && CVAR_BOOT_TO_DEBUG_WARP_SCREEN_VALUE == 2,
-              [](void* gameState) {
-                  for (auto& wp : warpPoints) {
-                      if (wp.second.bootToPoint) {
-                          Warp(wp.second);
-                          break;
-                      }
-                  }
-              });
+    COND_HOOK(OnZTitleUpdate, CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_WARPPOINT, [](void* gameState) {
+        for (auto& wp : warpPoints) {
+            if (wp.second.bootToPoint) {
+                Warp(wp.second);
+                return;
+            }
+        }
+
+        // Fallback to Debug Warp Screen if no warp point is set to boot to
+        TitleContext* titleContext = (TitleContext*)gameState;
+
+        gSaveContext.seqId = (u8)NA_BGM_DISABLED;
+        gSaveContext.natureAmbienceId = 0xFF;
+        gSaveContext.gameMode = GAMEMODE_NORMAL;
+        titleContext->state.running = false;
+        SET_NEXT_GAMESTATE(&titleContext->state, Select_Init, SelectContext);
+    });
 }
 
-static RegisterShipInitFunc initFunc(RegisterWarping, { CVAR_DEBUG_ENABLED_NAME, CVAR_BOOT_TO_DEBUG_WARP_SCREEN_NAME });
+static RegisterShipInitFunc initFunc(RegisterWarping, { CVAR_BOOTSEQUENCE_NAME });
