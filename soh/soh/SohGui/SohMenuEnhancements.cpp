@@ -545,7 +545,7 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Disables Grottos rotating with the Camera. To be used in conjuction with mods that want to "
             "replace grottos with 3D objects."));
-    AddWidget(path, "Disable Link Sword Trail", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Disable Link's Sword Trail", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableLinkSwordTrail"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Disables the sword trail effect when swinging Link's sword. Useful when "
