@@ -1352,6 +1352,9 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         seqCachePolicyMap[sDat.seqNumber] = sDat.cachePolicy;
     }
 
+    for (int i = 0; i < seqListSize; i++) {
+        free(seqList[i]);
+    }
     free(seqList);
 
     // 2S2H [Streamed Audio] We need to load the custom songs after the fonts because streamed songs will use a hash to
@@ -1369,6 +1372,9 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         fontMap[sf->fntIndex] = strdup(fntList[i]);
     }
 
+    for (int i = 0; i < fntListSize; i++) {
+        free(fntList[i]);
+    }
     free(fntList);
 
     int customFontStart = fntListSize;
@@ -1376,6 +1382,9 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         SoundFont* sf = ResourceMgr_LoadAudioSoundFontByName(customFntList[i - customFontStart]);
         sf->fntIndex = i;
         fontMap[i] = strdup(customFntList[i - customFontStart]);
+    }
+    for (int i = 0; i < customFntListSize; i++) {
+        free(customFntList[i]);
     }
     free(customFntList);
 
@@ -1432,6 +1441,9 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         seqNum++;
     }
 
+    for (int i = 0; i < customSeqListSize; i++) {
+        free(customSeqList[i]);
+    }
     free(customSeqList);
 
     numFonts = fntListSize;

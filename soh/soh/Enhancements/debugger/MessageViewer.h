@@ -34,7 +34,7 @@ class MessageViewer final : public Ship::GuiWindow {
     void DrawElement() override;
     void UpdateElement() override;
 
-    virtual ~MessageViewer() = default;
+    ~MessageViewer() override;
 
   private:
     void DisplayExistingMessage() const;

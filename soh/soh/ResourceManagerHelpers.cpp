@@ -143,7 +143,7 @@ extern "C" void ResourceMgr_UnloadResource(const char* resName) {
 }
 
 // OTRTODO: There is probably a more elegant way to go about this...
-// Kenix: This is definitely leaking memory when it's called.
+// Caller must free each string and the array itself when done.
 extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
     auto lst = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(searchMask);
     char** result = (char**)malloc(lst->size() * sizeof(char*));
