@@ -2492,7 +2492,7 @@ typedef enum {
     // #### `args`
     // - `*int16_t` // pauseCtx->namedItem
     VB_DRAW_CUSTOM_ITEM_NAME,
-    
+
     // #### `result`
     // ```c
     // true
