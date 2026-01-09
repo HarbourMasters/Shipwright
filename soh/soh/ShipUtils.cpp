@@ -122,7 +122,7 @@ uint32_t ShipUtils::next32(uint64_t* state) {
 #if !defined(__SWITCH__) && !defined(__WIIU__)
         uint64_t seed = static_cast<uint64_t>(std::random_device{}());
 #else
-        uint64_t seed = static_cast<uint64_t>(std::hash<std::string>{}(std::to_string(rand())));
+        uint64_t seed = static_cast<uint64_t>(rand());
 #endif
         ShipUtils::RandInit(seed, state);
     }
