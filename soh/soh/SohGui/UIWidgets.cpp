@@ -1161,18 +1161,14 @@ ImVec4 GetRandomValue() {
     return NewColor;
 }
 
-ImVec4 GetRandomValue(uint32_t seed) {
-#if !defined(__SWITCH__) && !defined(__WIIU__)
-    std::mt19937 rng(seed);
-#else
-    std::mt19937_64 rng(seed);
-#endif
-    std::uniform_int_distribution<int> dist(0, 255 - 1);
+static uint64_t uiwidgets_state = 0;
 
+ImVec4 GetRandomValue(uint32_t seed) {
+    ShipUtils::RandInit(seed, &uiwidgets_state);
     ImVec4 NewColor;
-    NewColor.x = (float)(dist(rng)) / 255.0f;
-    NewColor.y = (float)(dist(rng)) / 255.0f;
-    NewColor.z = (float)(dist(rng)) / 255.0f;
+    NewColor.x = (float)ShipUtils::RandomDouble(&uiwidgets_state);
+    NewColor.y = (float)ShipUtils::RandomDouble(&uiwidgets_state);
+    NewColor.z = (float)ShipUtils::RandomDouble(&uiwidgets_state);
     return NewColor;
 }
 
