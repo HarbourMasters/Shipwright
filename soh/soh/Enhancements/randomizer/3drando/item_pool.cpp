@@ -384,6 +384,10 @@ void GenerateItemPool() {
         AddFixedItemToPool(RG_SKELETON_KEY, 1);
     }
 
+    if (ctx->GetOption(RSK_ROCS_FEATHER)) {
+        AddItemToPool(RG_ROCS_FEATHER, 2, 1, 1, 1);
+    }
+
     int bronzeScale = ctx->GetOption(RSK_SHUFFLE_SWIM) ? 1 : 0;
     AddItemToPool(RG_PROGRESSIVE_SCALE, 3 + bronzeScale, 2 + bronzeScale, 2 + bronzeScale, 2 + bronzeScale);
 

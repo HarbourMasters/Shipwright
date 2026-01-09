@@ -2179,6 +2179,7 @@ void Settings::CreateOptions() {
                                                                       &mOptions[RSK_SKULLS_SUNS_SONG],
                                                                       &mOptions[RSK_BLUE_FIRE_ARROWS],
                                                                       &mOptions[RSK_SUNLIGHT_ARROWS],
+                                                                      &mOptions[RSK_ROCS_FEATHER],
                                                                       &mOptions[RSK_FULL_WALLETS],
                                                                       &mOptions[RSK_SLINGBOW_BREAK_BEEHIVES],
                                                                       &mOptions[RSK_SKIP_CHILD_ZELDA],

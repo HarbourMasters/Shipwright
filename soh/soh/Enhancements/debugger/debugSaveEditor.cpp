@@ -13,6 +13,7 @@
 #include <string>
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
+#include <soh_assets.h>
 
 extern "C" {
 #include <z64.h>
