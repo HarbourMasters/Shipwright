@@ -61,6 +61,17 @@ template <typename T> const T RandomElementFromSet(const std::set<T>& set, uint6
     auto test = *it;
     return *it;
 }
+
+template <typename T> void Shuffle(std::vector<T>& vector, uint64_t* state = nullptr) {
+    for (size_t i = 0; i + 1 < vector.size(); i++) {
+        std::swap(vector[i], vector[Random(static_cast<uint32_t>(i), static_cast<uint32_t>(vector.size()), state)]);
+    }
+}
+template <typename T, size_t size> void Shuffle(std::array<T, size>& arr, uint64_t* state = nullptr) {
+    for (size_t i = 0; i + 1 < arr.size(); i++) {
+        std::swap(arr[i], arr[Random(static_cast<uint32_t>(i), static_cast<uint32_t>(arr.size()), state)]);
+    }
+}
 } // namespace ShipUtils
 #endif
 

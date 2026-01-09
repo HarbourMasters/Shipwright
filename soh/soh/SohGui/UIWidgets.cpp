@@ -1161,14 +1161,12 @@ ImVec4 GetRandomValue() {
     return NewColor;
 }
 
-static uint64_t uiwidgets_state = 0;
-
-ImVec4 GetRandomValue(uint32_t seed) {
-    ShipUtils::RandInit(seed, &uiwidgets_state);
+ImVec4 GetRandomValue(uint32_t seed, uint64_t* state) {
+    ShipUtils::RandInit(seed, state);
     ImVec4 NewColor;
-    NewColor.x = (float)ShipUtils::RandomDouble(&uiwidgets_state);
-    NewColor.y = (float)ShipUtils::RandomDouble(&uiwidgets_state);
-    NewColor.z = (float)ShipUtils::RandomDouble(&uiwidgets_state);
+    NewColor.x = (float)ShipUtils::RandomDouble(state);
+    NewColor.y = (float)ShipUtils::RandomDouble(state);
+    NewColor.z = (float)ShipUtils::RandomDouble(state);
     return NewColor;
 }
 
