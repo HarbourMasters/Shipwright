@@ -19,7 +19,6 @@ typedef enum {
     DISABLE_FOR_FRAME_ADVANCE_OFF,
     DISABLE_FOR_ADVANCED_RESOLUTION_OFF,
     DISABLE_FOR_VERTICAL_RESOLUTION_OFF,
-    DISABLE_FOR_BOOT_TO_DEBUG_WARP_SCREEN_ON,
 } DisableOption;
 
 struct WidgetInfo;
@@ -260,13 +259,13 @@ struct MainMenuEntry {
     std::vector<std::string> sidebarOrder = {};
 };
 
-static const std::unordered_map<Ship::AudioBackend, const char*> audioBackendsMap = {
+static const std::map<Ship::AudioBackend, const char*> audioBackendsMap = {
     { Ship::AudioBackend::WASAPI, "Windows Audio Session API" },
     { Ship::AudioBackend::SDL, "SDL" },
     { Ship::AudioBackend::NUL, "Null" },
 };
 
-static const std::unordered_map<Ship::WindowBackend, const char*> windowBackendsMap = {
+static const std::map<Ship::WindowBackend, const char*> windowBackendsMap = {
     { Ship::WindowBackend::FAST3D_DXGI_DX11, "DirectX" },
     { Ship::WindowBackend::FAST3D_SDL_OPENGL, "OpenGL" },
     { Ship::WindowBackend::FAST3D_SDL_METAL, "Metal" },

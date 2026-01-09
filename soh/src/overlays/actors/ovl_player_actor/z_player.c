@@ -2636,7 +2636,7 @@ void Player_UpdateItems(Player* this, PlayState* play) {
         ((this->heldItemAction == this->itemAction) || (this->stateFlags1 & PLAYER_STATE1_SHIELDING)) &&
         (gSaveContext.health != 0) && (play->csCtx.state == CS_STATE_IDLE) && (this->csAction == 0) &&
         (play->shootingGalleryStatus == 0) && (play->activeCamera == MAIN_CAM) &&
-        (play->transitionTrigger != TRANS_TRIGGER_START) && (gSaveContext.timerState != 10)) {
+        (play->transitionTrigger != TRANS_TRIGGER_START) && (gSaveContext.timerState != TIMER_STATE_STOP)) {
         Player_ProcessItemButtons(this, play);
     }
 
@@ -2694,9 +2694,13 @@ s32 func_8083442C(Player* this, PlayState* play) {
                 magicArrowType = arrowType - ARROW_FIRE;
 
                 if (this->unk_860 >= 0) {
-                    if ((magicArrowType >= 0) && (magicArrowType <= 2) &&
-                        !Magic_RequestChange(play, sMagicArrowCosts[magicArrowType], MAGIC_CONSUME_NOW)) {
-                        arrowType = ARROW_NORMAL;
+                    if ((magicArrowType >= 0) && (magicArrowType <= 2)) {
+                        if (GameInteractor_Should(VB_PLAYER_ARROW_MAGIC_CONSUMPTION, true, this, magicArrowType,
+                                                  &arrowType)) {
+                            if (!Magic_RequestChange(play, sMagicArrowCosts[magicArrowType], MAGIC_CONSUME_NOW)) {
+                                arrowType = ARROW_NORMAL;
+                            }
+                        }
                     }
 
                     this->heldActor = Actor_SpawnAsChild(
@@ -11601,7 +11605,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
             seqMode = SEQ_MODE_STILL;
         }
 
-        if (play->actorCtx.targetCtx.bgmEnemy != NULL && !CVarGetInteger(CVAR_AUDIO("EnemyBGMDisable"), 0)) {
+        if (play->actorCtx.targetCtx.bgmEnemy != NULL) {
             seqMode = SEQ_MODE_ENEMY;
             Audio_SetBgmEnemyVolume(sqrtf(play->actorCtx.targetCtx.bgmEnemy->xyzDistToPlayerSq));
         }
@@ -15344,7 +15348,7 @@ void Player_Action_8085063C(Player* this, PlayState* play) {
             play->transitionTrigger = TRANS_TRIGGER_START;
             play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
             play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
-            func_80088AF0(play);
+            Interface_SetSubTimerToFinalSecond(play);
             return;
         }
 

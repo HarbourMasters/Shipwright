@@ -1,5 +1,4 @@
 #include <map>
-#include <ranges>
 #include <vector>
 
 #include <libultraship/classes.h>
@@ -214,7 +213,7 @@ void DrawMods(bool enabled) {
     int switchToIndex = -1;
     uint32_t index = 0;
 
-    for (int i = static_cast<int>(selectedModFiles.size()) - 1; i >= 0; i--) {
+    for (size_t i = selectedModFiles.size() - 1; i != SIZE_MAX; i--) {
         std::string file = selectedModFiles[i];
         if (enabled) {
             ImGui::BeginGroup();

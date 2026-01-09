@@ -14,7 +14,7 @@ void RegionTable_Init_SacredForestMeadow() {
 
     areaTable[RR_SACRED_FOREST_MEADOW] = Region("Sacred Forest Meadow", SCENE_SACRED_FOREST_MEADOW, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairyExceptSuns();}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairyExceptSuns();}),
     }, {
         //Locations
         LOCATION(RC_SONG_FROM_SARIA,                       logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER)),
@@ -39,7 +39,7 @@ void RegionTable_Init_SacredForestMeadow() {
 
     areaTable[RR_SFM_FAIRY_GROTTO] = Region("SFM Fairy Grotto", SCENE_GROTTOS, {
         //Events
-        EventAccess(LOGIC_FREE_FAIRIES, []{return true;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return true;}),
     }, {
         //Locations
         LOCATION(RC_SFM_FAIRY_GROTTO_FAIRY_1, true),
@@ -65,8 +65,8 @@ void RegionTable_Init_SacredForestMeadow() {
 
     areaTable[RR_SFM_STORMS_GROTTO] = Region("SFM Storms Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_SFM_DEKU_SCRUB_GROTTO_REAR,  logic->CanStunDeku()),
-        LOCATION(RC_SFM_DEKU_SCRUB_GROTTO_FRONT, logic->CanStunDeku()),
+        LOCATION(RC_SFM_DEKU_SCRUB_GROTTO_REAR,  logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_SFM_DEKU_SCRUB_GROTTO_FRONT, logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_SFM_STORMS_GROTTO_BEEHIVE,   logic->CanBreakUpperBeehives()),
     }, {
         //Exits

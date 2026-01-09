@@ -122,7 +122,7 @@ s16 func_80AA2BD4(PlayState* play, Actor* thisx) {
                 play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 gSaveContext.eventInf[0] |= 0x400;
-                gSaveContext.timerState = 0xF;
+                gSaveContext.timerState = TIMER_STATE_UP_FREEZE;
             }
             break;
         case TEXT_STATE_CHOICE:
@@ -156,7 +156,7 @@ s16 func_80AA2BD4(PlayState* play, Actor* thisx) {
                     gSaveContext.eventInf[0] &= ~0x400;
                     thisx->flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
                     ret = NPC_TALK_STATE_IDLE;
-                    gSaveContext.timerState = 0xA;
+                    gSaveContext.timerState = TIMER_STATE_STOP;
                     break;
                 case 0x2002:
                     Flags_SetInfTable(INFTABLE_B9);

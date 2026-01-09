@@ -1,4 +1,5 @@
 #pragma once
+
 #include <nlohmann/json.hpp>
 #include "randomizerTypes.h"
 #include "randomizer_check_objects.h"

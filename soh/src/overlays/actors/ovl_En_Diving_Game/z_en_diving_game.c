@@ -108,7 +108,7 @@ void EnDivingGame_Destroy(Actor* thisx, PlayState* play) {
 
     if (this->unk_31F == 0) {
         sHasSpawned = false;
-        gSaveContext.timerState = 0;
+        gSaveContext.timerState = TIMER_STATE_OFF;
     }
     Collider_DestroyCylinder(play, &this->collider);
 
@@ -132,9 +132,9 @@ void EnDivingGame_SpawnRuppy(EnDivingGame* this, PlayState* play) {
 }
 
 s32 EnDivingGame_HasMinigameFinished(EnDivingGame* this, PlayState* play) {
-    if (gSaveContext.timerState == 10 && !Play_InCsMode(play)) {
+    if (gSaveContext.timerState == TIMER_STATE_STOP && !Play_InCsMode(play)) {
         // Failed.
-        gSaveContext.timerState = 0;
+        gSaveContext.timerState = TIMER_STATE_OFF;
         func_800F5B58();
         Sfx_PlaySfxCentered(NA_SE_SY_FOUND);
         this->actor.textId = 0x71AD;
@@ -152,7 +152,7 @@ s32 EnDivingGame_HasMinigameFinished(EnDivingGame* this, PlayState* play) {
         }
         if (this->grabbedRupeesCounter >= rupeesNeeded) {
             // Won.
-            gSaveContext.timerState = 0;
+            gSaveContext.timerState = TIMER_STATE_OFF;
             this->allRupeesThrown = this->state = this->phase = this->unk_2A2 = this->grabbedRupeesCounter = 0;
             if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
                 this->actor.textId = 0x4055;
@@ -418,9 +418,9 @@ void func_809EE800(EnDivingGame* this, PlayState* play) {
     if (this->unk_292 == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
         if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
-            func_80088B34(BREG(2) + 50);
+            Interface_SetTimer(BREG(2) + 50);
         } else {
-            func_80088B34(BREG(2) + 50);
+            Interface_SetTimer(BREG(2) + 50);
         }
         func_800F5ACC(NA_BGM_TIMED_MINI_GAME);
         Player_SetCsActionWithHaltedActors(play, NULL, 7);

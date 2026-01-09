@@ -1,4 +1,3 @@
-#include "libultraship/bridge.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
