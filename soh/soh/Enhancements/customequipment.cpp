@@ -17,8 +17,8 @@ void DummyPlayer_Update(Actor* actor, PlayState* play);
 
 static void UpdatePatchCustomEquipmentDlists();
 static void RefreshCustomEquipment();
-static bool HasDummyPlayers();
 static u8 GetEquippedSwordItem();
+static bool IsDummyPlayer(const Player* player);
 
 static const char* ResolveCustomChain(std::initializer_list<const char*> paths) {
     const char* fallback = nullptr;
@@ -58,7 +58,7 @@ static const char* GetBrokenLongswordInSheathDL() {
 static void UpdateCustomEquipmentSetModel(Player* player, u8 ModelGroup) {
     (void)ModelGroup;
 
-    if (player == nullptr || gPlayState == nullptr || player != GET_PLAYER(gPlayState)) {
+    if (player == nullptr || gPlayState == nullptr || player != GET_PLAYER(gPlayState) || IsDummyPlayer(player)) {
         return;
     }
 
@@ -71,14 +71,7 @@ static void UpdateCustomEquipment() {
     }
 
     Player* player = GET_PLAYER(gPlayState);
-    if (player == nullptr || player->actor.update == DummyPlayer_Update) {
-        return;
-    }
-
-    const bool altAssetsRuntime = ResourceMgr_IsAltAssetsEnabled();
-
-    // If multiplayer dummy actors are present, skip patching shared resources to avoid corrupting them.
-    if (HasDummyPlayers() && altAssetsRuntime) {
+    if (player == nullptr || IsDummyPlayer(player)) {
         return;
     }
 
@@ -99,12 +92,7 @@ static void RefreshCustomEquipment() {
         return;
     }
 
-    const bool hasDummyPlayers = HasDummyPlayers();
-    const bool altAssetsRuntime = ResourceMgr_IsAltAssetsEnabled();
-
-    // Keep custom patches off dummy players, but still allow unpatching when alt assets are disabled so we can
-    // restore vanilla display lists.
-    if (hasDummyPlayers && altAssetsRuntime) {
+    if (IsDummyPlayer(GET_PLAYER(gPlayState))) {
         return;
     }
 
@@ -127,6 +115,10 @@ static u8 GetEquippedSwordItem() {
         default:
             return ITEM_NONE;
     }
+}
+
+static bool IsDummyPlayer(const Player* player) {
+    return player != nullptr && player->actor.update == DummyPlayer_Update;
 }
 
 void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, const char* dlist2, const char* dlist3,
@@ -520,20 +512,4 @@ void UpdatePatchCustomEquipmentDlists() {
     }
 
     ApplyCommonEquipmentPatches();
-}
-
-static bool HasDummyPlayers() {
-    if (gPlayState == nullptr) {
-        return false;
-    }
-
-    Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_NPC].head;
-    while (actor != nullptr) {
-        if (actor->id == ACTOR_EN_OE2 && actor->update == DummyPlayer_Update) {
-            return true;
-        }
-        actor = actor->next;
-    }
-
-    return false;
 }
