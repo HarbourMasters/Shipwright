@@ -57,6 +57,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_En_Mk/z_en_mk.h"
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
+#include "src/overlays/actors/ovl_En_Heishi2/z_en_heishi2.h"
 #include "draw.h"
 
 static ObjectExtension::Register<DnsItemEntry> RegisterDnsItemEntryOverride;
@@ -842,6 +843,8 @@ void RandomizerOnDialogMessageHandler() {
     }
 }
 
+extern "C" void func_80A5475C(EnHeishi2* CastleGuard, PlayState* play);
+
 void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
     va_list args;
     va_copy(args, originalArgs);
@@ -946,6 +949,15 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             } else if (RAND_GET_OPTION(RSK_SKIP_PLANTING_BEANS)) {
                 *should = gSaveContext.rupees >= 60;
             }
+            break;
+        }
+        case VB_CAN_BRIBE_HEISHI2: {
+            EnHeishi2* guard = va_arg(args, EnHeishi2*);
+            guard->actor.textId = 0x7072;
+            guard->unk_300 = TEXT_STATE_CHOICE;
+            guard->unk_30E = 1;
+            guard->actionFunc = func_80A5475C;
+            *should = false;
             break;
         }
         case VB_GIVE_ITEM_MASTER_SWORD:
