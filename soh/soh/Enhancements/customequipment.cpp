@@ -265,7 +265,6 @@ static void ApplyMasterSwordPatches() {
 }
 
 static void ApplyBiggoronSwordPatches() {
-
     const bool isChild = LINK_IS_CHILD;
     const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
 
@@ -307,7 +306,6 @@ static void ApplyBiggoronSwordPatches() {
 }
 
 static void ApplyBreakableLongswordPatches() {
-
     const bool isChild = LINK_IS_CHILD;
     const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
 
