@@ -484,7 +484,6 @@ static void ApplyCommonEquipmentPatches() {
         { gLinkChildRightArmStretchedSlingshotDL, gCustomSlingshotDL, "customSlingshotFPS1", "customSlingshotFPS2",
           "customSlingshotFPS3", fpsHand },
     });
-
 }
 
 void UpdatePatchCustomEquipmentDlists() {
