@@ -273,6 +273,10 @@ static void ApplyMasterSwordPatches() {
 }
 
 static void ApplyBiggoronSwordPatches() {
+
+    const bool isChild = LINK_IS_CHILD;
+    const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
+
     if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
         PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomLongswordSheathDL, "customDekuShieldBack1",
                        "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
@@ -287,7 +291,7 @@ static void ApplyBiggoronSwordPatches() {
         { gLinkChildDekuShieldAndSheathNearDL, gCustomLongswordSheathDL, "customDekuShieldSheath1",
           "customDekuShieldSheath2", "customDekuShieldSheath3", gCustomDekuShieldOnBackDL },
         { gLinkAdultLeftHandHoldingBgsNearDL, gCustomLongswordDL, "customBGS1", "customBGS2", "customBGS3",
-          gLinkAdultLeftHandClosedNearDL },
+          leftHandClosed },
         { gLinkAdultMasterSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customMasterSwordSheath1",
           "customMasterSwordSheath2", nullptr, nullptr },
         { gLinkChildSheathNearDL, gCustomLongswordSheathDL, "customKokiriSheath1", "customKokiriSheath2", nullptr,
@@ -311,6 +315,10 @@ static void ApplyBiggoronSwordPatches() {
 }
 
 static void ApplyBreakableLongswordPatches() {
+
+    const bool isChild = LINK_IS_CHILD;
+    const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
+
     if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
         PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, GetBreakableLongswordSheathDL(), "customDekuShieldBack1",
                        "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
@@ -325,7 +333,7 @@ static void ApplyBreakableLongswordPatches() {
         { gLinkChildDekuShieldAndSheathNearDL, GetBreakableLongswordSheathDL(), "customDekuShieldSheath1",
           "customDekuShieldSheath2", "customDekuShieldSheath3", gCustomDekuShieldOnBackDL },
         { gLinkAdultLeftHandHoldingBgsNearDL, GetBreakableLongswordDL(), "customGK1", "customGK2", "customGK3",
-          gLinkAdultLeftHandClosedNearDL },
+          leftHandClosed },
         { gLinkAdultMasterSwordAndSheathNearDL, GetBreakableLongswordInSheathDL(), "customMasterSwordSheath1",
           "customMasterSwordSheath2", nullptr, nullptr },
         { gLinkChildSheathNearDL, GetBreakableLongswordSheathDL(), "customKokiriSheath1", "customKokiriSheath2",
@@ -477,29 +485,6 @@ static void ApplyCommonEquipmentPatches() {
           "customSlingshotFPS3", fpsHand },
     });
 
-    const bool equipmentAlwaysVisible = CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0) != 0;
-
-    if (LINK_IS_CHILD && equipmentAlwaysVisible) {
-        ApplyPatchEntries({
-            { gCustomAdultFPSHandDL, gCustomChildFPSHandDL, "patchChildFPSHand1", "patchChildFPSHand2", nullptr,
-              nullptr },
-            { gLinkAdultRightHandClosedNearDL, gLinkChildRightHandClosedNearDL, "customChildRightHand1",
-              "customChildRightHand2", nullptr, nullptr },
-            { gLinkAdultLeftHandClosedNearDL, gLinkChildLeftFistNearDL, "customChildLeftHand1", "customChildLeftHand2",
-              nullptr, nullptr },
-        });
-    }
-
-    if (LINK_IS_ADULT && equipmentAlwaysVisible) {
-        ApplyPatchEntries({
-            { gCustomChildFPSHandDL, gCustomAdultFPSHandDL, "patchAdultFPSHand1", "patchAdultFPSHand2", nullptr,
-              nullptr },
-            { gLinkChildRightHandClosedNearDL, gLinkAdultRightHandClosedNearDL, "customAdultRightHand1",
-              "customAdultRightHand2", nullptr, nullptr },
-            { gLinkChildLeftFistNearDL, gLinkAdultLeftHandClosedNearDL, "customAdultLeftHand1", "customAdultLeftHand2",
-              nullptr, nullptr },
-        });
-    }
 }
 
 void UpdatePatchCustomEquipmentDlists() {
