@@ -397,7 +397,10 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
     Rando::ItemLocation* location = ctx->GetItemLocation(loc);
     RandomizerGet locItem = location->GetPlacedRandomizerGet();
 
-    if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion)) {
+    // Always evaluate the conditions for Age Availability
+    bool conditionsMet = locPair.ConditionsMet(parentRegion);
+
+    if (!location->IsAddedToPool() && conditionsMet) {
         location->AddToPool();
 
         if (locItem == RG_NONE || logic->CalculatingAvailableChecks) {
