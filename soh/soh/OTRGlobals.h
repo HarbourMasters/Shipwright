@@ -84,7 +84,7 @@ class OTRGlobals {
     bool hasMasterQuest;
     bool hasOriginal;
     ImFont* CreateDefaultFontWithSize(float size);
-    ImFont* CreateFontWithSize(float size, std::string fontPath, bool isJapaneseFont);
+    ImFont* CreateFontWithSize(float size, std::string fontPath, bool isJapaneseFont = false);
 };
 #endif
 

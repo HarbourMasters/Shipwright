@@ -299,7 +299,7 @@ OTRGlobals::OTRGlobals() {
         BTN_CUSTOM_OCARINA_PITCH_DOWN,
     }));
     context->InitControlDeck(controlDeck);
-    context->InitResourceManager({ portArchivePath }, {}, 3);
+    context->InitResourceManager({ portArchivePath }, {}, 3, true);
     context->InitConsole();
 
     auto sohInputEditorWindow =
