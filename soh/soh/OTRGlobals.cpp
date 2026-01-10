@@ -714,6 +714,9 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
         }
 
     render:
+        if (!WindowIsRunning()) {
+            exit(0);
+        }
         // Process window events for resize, mouse, keyboard events
         wnd->HandleEvents();
         UIWidgets::Colors themeColor =
