@@ -33,6 +33,7 @@
 namespace SohGui {
 void SetupHooks();
 void SetupMenu();
+void SetupMenuElements();
 void SetupGuiElements();
 void Draw();
 void Destroy();

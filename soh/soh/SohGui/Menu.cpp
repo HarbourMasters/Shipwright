@@ -559,6 +559,9 @@ void Menu::Draw() {
 
 static bool freshOpen = true;
 void Menu::DrawElement() {
+    if (OTRGlobals::Instance->fontStandardLargest == nullptr) {
+        return;
+    }
     for (auto& [reason, info] : disabledMap) {
         info.active = info.evaluation(info);
     }

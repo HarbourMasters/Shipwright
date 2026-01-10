@@ -545,7 +545,6 @@ void DrawTricksMenu(WidgetInfo& info) {
 }
 
 void SohMenu::AddMenuRandomizer() {
-    Randomizer::CreateCustomMessages();
     // Add Randomizer Menu
     AddMenuEntry("Randomizer", CVAR_SETTING("Menu.RandomizerSidebarSection"));
 

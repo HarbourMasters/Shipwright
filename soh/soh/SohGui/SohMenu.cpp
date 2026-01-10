@@ -81,14 +81,7 @@ SohMenu::SohMenu(const std::string& consoleVariable, const std::string& name)
     : Menu(consoleVariable, name, 0, UIWidgets::Colors::LightBlue) {
 }
 
-void SohMenu::InitElement() {
-    Ship::Menu::InitElement();
-    AddMenuSettings();
-    AddMenuEnhancements();
-    AddMenuRandomizer();
-    AddMenuNetwork();
-    AddMenuDevTools();
-
+void SohMenu::AddMenuElements() {
     if (CVarGetInteger(CVAR_SETTING("Menu.SidebarSearch"), 0)) {
         InsertSidebarSearch();
     }
@@ -96,6 +89,16 @@ void SohMenu::InitElement() {
     for (auto& initFunc : MenuInit::GetInitFuncs()) {
         initFunc();
     }
+
+    AddMenuSettings();
+    AddMenuEnhancements();
+    AddMenuRandomizer();
+    AddMenuNetwork();
+    AddMenuDevTools();
+}
+
+void SohMenu::InitElement() {
+    Ship::Menu::InitElement();
 
     disabledMap = {
         { DISABLE_FOR_NO_VSYNC,

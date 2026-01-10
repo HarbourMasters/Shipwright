@@ -275,14 +275,18 @@ typedef struct {
 } OTRVersion;
 
 std::shared_ptr<Fast::Fast3dWindow> sohFast3dWindow;
-OTRVersion DetectOTRVersion(std::string path, bool isMq);
-bool VerifyArchiveVersion(OTRVersion version);
-int32_t sohArchiveCheck = 0;
+static OTRVersion DetectOTRVersion(std::string path, bool isMq);
+static bool VerifyArchiveVersion(OTRVersion version);
+static bool sohArchiveVersionMatch = false;
 
 OTRGlobals::OTRGlobals() {
     context = Ship::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
 
     std::string portArchivePath = Ship::Context::LocateFileAcrossAppDirs("soh.o2r");
+    OTRVersion portArchiveVersion = DetectOTRVersion(portArchivePath, false);
+    sohArchiveVersionMatch = portArchiveVersion.major == gBuildVersionMajor && portArchiveVersion.minor == gBuildVersionMinor &&
+                             portArchiveVersion.patch == gBuildVersionPatch;
+
     context->InitConfiguration();
     context->InitConsoleVariables();
 
@@ -310,7 +314,8 @@ OTRGlobals::OTRGlobals() {
 
     SohGui::SetupMenu();
 
-    if (sohArchiveCheck == 0) {
+    if (sohArchiveVersionMatch) {
+
         auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
         overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
         overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
@@ -456,7 +461,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
         }
         switch (extractStep) {
             case ES_PORT_ARCHIVE: {
-                if (sohArchiveCheck == 0) {
+                if (sohArchiveVersionMatch) {
 #ifdef _WIN32
                     extractStep = ES_WINDOWS;
 #elif (defined(__WIIU__) || defined(__SWITCH__))
@@ -478,7 +483,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                     msg =
                         "Please extract the soh.o2r from the Ship of Harkinian download to your folder.\n\nExiting...";
 #endif
-                    std::string title = sohArchiveCheck == 1 ? "Missing soh.o2r" : "soh.o2r is outdated";
+                    std::string title = !sohArchiveVersionMatch ? "Missing soh.o2r" : "soh.o2r is outdated";
                     SohGui::RegisterPopup(title, msg, "OK", "", [&]() { exit(1); });
                 }
                 continue;
@@ -1471,6 +1476,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
 
     OTRGlobals::Instance->Initialize();
     CustomMessageManager::Instance = new CustomMessageManager();
+    Randomizer::CreateCustomMessages();
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();
     SaveManager::Instance = new SaveManager();
@@ -1483,6 +1489,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
+    SohGui::SetupMenuElements();
 
     Rando::StaticData::InitHashMaps();
     OTRGlobals::Instance->gRandoContext->AddExcludedOptions();

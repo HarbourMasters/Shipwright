@@ -114,6 +114,10 @@ void SetupMenu() {
     mModalWindow->Show();
 }
 
+void SetupMenuElements() {
+    mSohMenu->AddMenuElements();
+}
+
 void SetupGuiElements() {
     auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
 

@@ -59,14 +59,14 @@ class OTRGlobals {
     ImFont* defaultFontLarger;
     ImFont* defaultFontLargest;
 
-    ImFont* fontMonoSmall;
-    ImFont* fontStandard;
-    ImFont* fontStandardLarger;
-    ImFont* fontStandardLargest;
-    ImFont* fontMono;
-    ImFont* fontMonoLarger;
-    ImFont* fontMonoLargest;
-    ImFont* fontJapanese;
+    ImFont* fontMonoSmall = nullptr;
+    ImFont* fontStandard = nullptr;
+    ImFont* fontStandardLarger = nullptr;
+    ImFont* fontStandardLargest = nullptr;
+    ImFont* fontMono = nullptr;
+    ImFont* fontMonoLarger = nullptr;
+    ImFont* fontMonoLargest = nullptr;
+    ImFont* fontJapanese = nullptr;
 
     OTRGlobals();
     ~OTRGlobals();
