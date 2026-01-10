@@ -1,4 +1,5 @@
 #pragma once
+
 #ifdef __cplusplus
 #include <stdint.h>
 #endif
@@ -23,10 +24,11 @@ typedef enum GetItemFrom {
 typedef enum GetItemCategory {
     /* 0x00 */ ITEM_CATEGORY_JUNK,
     /* 0x01 */ ITEM_CATEGORY_LESSER,
-    /* 0x02 */ ITEM_CATEGORY_BOSS_KEY,
-    /* 0x03 */ ITEM_CATEGORY_SMALL_KEY,
-    /* 0x04 */ ITEM_CATEGORY_SKULLTULA_TOKEN,
-    /* 0x05 */ ITEM_CATEGORY_MAJOR,
+    /* 0x02 */ ITEM_CATEGORY_HEALTH,
+    /* 0x03 */ ITEM_CATEGORY_BOSS_KEY,
+    /* 0x04 */ ITEM_CATEGORY_SMALL_KEY,
+    /* 0x05 */ ITEM_CATEGORY_SKULLTULA_TOKEN,
+    /* 0x06 */ ITEM_CATEGORY_MAJOR,
 } GetItemCategory;
 
 #define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim, itemCategory, modIndex, getItemId)                \
@@ -63,7 +65,7 @@ typedef struct GetItemEntry {
     /* 0x0C */ uint16_t
         collectable; // determines whether the item can be collected on the overworld. Will be true in most cases.
     /* 0x0E */ GetItemFrom getItemFrom;
-    /* 0x0F */ GetItemCategory getItemCategory; // Primarily made and used for chest size/texture matches contents
+    /* 0x0F */ GetItemCategory getItemCategory; // Primarily made and used for container texture matches contents
     /* 0x10 */ uint16_t drawItemId; // Will be a copy of itemId unless the item is an ice trap. Needed for particles to
                                     // function on ice traps.
     /* 0x11 */ uint16_t drawModIndex; // Will be a copy of modIndex unless the item is an ice trap. Needed for particles

@@ -27,18 +27,17 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
     static Gfx* dLists[] = { (Gfx*)gRandoBushJunkDL, (Gfx*)gRandoCuttableGrassJunkDL, (Gfx*)gRandoCuttableGrassJunkDL };
     auto grassActor = ((EnKusa*)thisx);
 
-    const auto grassIdentity = ObjectExtension::GetInstance().Get<GrassIdentity>(thisx);
+    const auto grassIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(thisx);
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (grassIdentity != nullptr && grassIdentity->randomizerCheck != RC_MAX &&
         Flags_GetRandomizerInf(grassIdentity->randomizerInf) == 0) {
-        int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+        bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
         int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-        if ((csmc == CSMC_BOTH || csmc == CSMC_TEXTURE) &&
-            (!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+        if (csmc && (!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
             auto itemEntry =
                 Rando::Context::GetInstance()->GetFinalGIEntry(grassIdentity->randomizerCheck, true, GI_NONE);
             GetItemCategory getItemCategory = itemEntry.getItemCategory;
@@ -48,18 +47,10 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
                     DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushJunkDL, (Gfx*)gRandoCuttableGrassJunkDL, play);
                     break;
                 case ITEM_CATEGORY_LESSER:
-                    switch (itemEntry.itemId) {
-                        case ITEM_HEART_PIECE:
-                        case ITEM_HEART_PIECE_2:
-                        case ITEM_HEART_CONTAINER:
-                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushHeartDL, (Gfx*)gRandoCuttableGrassHeartDL,
-                                            play);
-                            break;
-                        default:
-                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushMinorDL, (Gfx*)gRandoCuttableGrassMinorDL,
-                                            play);
-                            break;
-                    }
+                    DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushMinorDL, (Gfx*)gRandoCuttableGrassMinorDL, play);
+                    break;
+                case ITEM_CATEGORY_HEALTH:
+                    DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushHeartDL, (Gfx*)gRandoCuttableGrassHeartDL, play);
                     break;
                 case ITEM_CATEGORY_BOSS_KEY:
                     DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushBossKeyDL, (Gfx*)gRandoCuttableGrassBossKeyDL, play);
@@ -90,7 +81,7 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
 }
 
 uint8_t EnKusa_RandomizerHoldsItem(EnKusa* grassActor, PlayState* play) {
-    const auto grassIdentity = ObjectExtension::GetInstance().Get<GrassIdentity>(&grassActor->actor);
+    const auto grassIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&grassActor->actor);
 
     if (grassIdentity == nullptr || grassIdentity->randomizerCheck == RC_MAX)
         return false;
@@ -110,7 +101,7 @@ uint8_t EnKusa_RandomizerHoldsItem(EnKusa* grassActor, PlayState* play) {
 }
 
 void EnKusa_RandomizerSpawnCollectible(EnKusa* grassActor, PlayState* play) {
-    const auto grassIdentity = ObjectExtension::GetInstance().Get<GrassIdentity>(&grassActor->actor);
+    const auto grassIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&grassActor->actor);
     if (grassIdentity == nullptr) {
         return;
     }
@@ -135,7 +126,7 @@ void EnKusa_RandomizerInit(void* actorRef) {
 
     auto grassIdentity = OTRGlobals::Instance->gRandomizer->IdentifyGrass(
         gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, respawnData, gPlayState->linkAgeOnLoad);
-    ObjectExtension::GetInstance().Set<GrassIdentity>(actor, std::move(grassIdentity));
+    ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(grassIdentity));
 }
 
 void RegisterShuffleGrass() {
@@ -157,7 +148,7 @@ void RegisterShuffleGrass() {
         EnKusa* grassActor = va_arg(args, EnKusa*);
         if (EnKusa_RandomizerHoldsItem(grassActor, gPlayState)) {
             EnKusa_RandomizerSpawnCollectible(grassActor, gPlayState);
-            ObjectExtension::GetInstance().Set<GrassIdentity>(&grassActor->actor, std::move(GrassIdentity{
+            ObjectExtension::GetInstance().Set<CheckIdentity>(&grassActor->actor, std::move(CheckIdentity{
                                                                                       .randomizerInf = RAND_INF_MAX,
                                                                                       .randomizerCheck = RC_MAX,
                                                                                   }));
@@ -528,6 +519,5 @@ void Rando::StaticData::RegisterGrassLocations() {
     // clang-format on
 }
 
-static ObjectExtension::Register<GrassIdentity> RegisterGrassIdentity;
 static RegisterShipInitFunc registerShuffleGrass(RegisterShuffleGrass, { "IS_RANDO" });
 static RegisterShipInitFunc registerGrassLocations(Rando::StaticData::RegisterGrassLocations);

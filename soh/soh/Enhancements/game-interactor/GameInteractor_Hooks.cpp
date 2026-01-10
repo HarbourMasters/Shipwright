@@ -29,6 +29,10 @@ void GameInteractor_ExecuteOnGameFrameUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGameFrameUpdate>();
 }
 
+void GameInteractor_ExecuteOnCameraState(PlayState* play) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnCameraState>(play);
+}
+
 void GameInteractor_ExecuteOnItemReceiveHooks(GetItemEntry itemEntry) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnItemReceive>(itemEntry);
     GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnItemReceive>(itemEntry);
@@ -84,6 +88,14 @@ void GameInteractor_ExecuteOnFlagUnset(int16_t flagType, int16_t flag) {
 
 void GameInteractor_ExecuteOnSceneSpawnActors() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneSpawnActors>();
+}
+
+void GameInteractor_ExecuteOnLinkSkeletonInit() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLinkSkeletonInit>();
+}
+
+void GameInteractor_ExecuteOnLinkEquipmentChange() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLinkEquipmentChange>();
 }
 
 void GameInteractor_ExecuteOnPlayerUpdate() {
@@ -191,6 +203,10 @@ void GameInteractor_ExecuteOnTimestamp(u8 item) {
 
 void GameInteractor_ExecuteOnPlayerBonk() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBonk>();
+}
+
+void GameInteractor_ExecuteOnPlayerSetModels(Player* player, u8 modelGroup) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerSetModels>(player, modelGroup);
 }
 
 void GameInteractor_ExecuteOnPlayerHealthChange(int16_t amount) {

@@ -2,7 +2,7 @@
 
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/static_data.h"
-#include "soh/Enhancements/randomizer/context.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/3drando/item_pool.hpp"
 #include "soh/Enhancements/randomizer/3drando/spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/trial.h"
@@ -58,7 +58,7 @@ bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailab
         conditionsMet = true;
     }
 
-    return conditionsMet && CanBuy(calculatingAvailableChecks);
+    return conditionsMet;
 }
 
 static uint16_t GetMinimumPrice(const Rando::Location* loc) {
@@ -102,38 +102,32 @@ static uint16_t GetMinimumPrice(const Rando::Location* loc) {
     }
 }
 
-bool LocationAccess::CanBuy(bool calculatingAvailableChecks) const {
-    const auto& loc = Rando::StaticData::GetLocation(location);
-    const auto& itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(location);
+uint16_t GetCheckPrice(RandomizerCheck check /* = RC_UNKNOWN_CHECK */) {
+    RandomizerCheck rc = check != RC_UNKNOWN_CHECK ? check : logic->CurrentCheckKey;
+    assert(rc != RC_UNKNOWN_CHECK);
+    const auto& loc = Rando::StaticData::GetLocation(rc);
+    assert(loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT);
+    const auto& itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
 
-    if (loc->GetRCType() == RCTYPE_SHOP || loc->GetRCType() == RCTYPE_SCRUB || loc->GetRCType() == RCTYPE_MERCHANT ||
-        location == RC_ZR_MAGIC_BEAN_SALESMAN) {
-        // Checks should only be identified while playing
-        if (calculatingAvailableChecks && itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
-            return CanBuyAnother(GetMinimumPrice(loc));
-        } else {
-            return CanBuyAnother(itemLoc->GetPrice());
-        }
+    // Checks should only be identified while playing
+    if (logic->CalculatingAvailableChecks && itemLoc->GetCheckStatus() != RCSHOW_IDENTIFIED) {
+        return GetMinimumPrice(loc);
     }
 
-    return true;
+    return itemLoc->GetPrice();
 }
 
-bool CanBuyAnother(RandomizerCheck rc) {
-    return CanBuyAnother(ctx->GetItemLocation(rc)->GetPrice());
-}
-
-bool CanBuyAnother(uint16_t price) {
-    if (price > 500) {
-        return logic->HasItem(RG_TYCOON_WALLET);
-    } else if (price > 200) {
-        return logic->HasItem(RG_GIANT_WALLET);
-    } else if (price > 99) {
-        return logic->HasItem(RG_ADULT_WALLET);
-    } else if (price > 0) {
-        return logic->HasItem(RG_CHILD_WALLET);
+uint16_t GetWalletCapacity() {
+    if (logic->HasItem(RG_TYCOON_WALLET)) {
+        return 999;
+    } else if (logic->HasItem(RG_GIANT_WALLET)) {
+        return 500;
+    } else if (logic->HasItem(RG_ADULT_WALLET)) {
+        return 200;
+    } else if (logic->HasItem(RG_CHILD_WALLET)) {
+        return 99;
     }
-    return true;
+    return 0;
 }
 
 std::set<RandomizerArea> CalculateAreas(SceneID scene) {
@@ -511,8 +505,11 @@ Rando::Entrance* Region::GetExit(RandomizerRegion exitToReturn) {
     return nullptr;
 }
 
-bool Region::CanPlantBeanCheck() const {
-    return Rando::Context::GetInstance()->GetLogic()->GetAmmo(ITEM_BEAN) > 0 && BothAgesCheck();
+bool Region::CanPlantBeanCheck(RandomizerGet bean) const {
+    auto ctx = Rando::Context::GetInstance();
+    auto logic = ctx->GetLogic();
+    return logic->HasItem(bean) && logic->GetAmmo(ITEM_BEAN) > 0 &&
+           (ctx->GetOption(RSK_SKIP_PLANTING_BEANS) || BothAgesCheck());
 }
 
 bool Region::AllAccountedFor() const {
@@ -564,96 +561,6 @@ void Region::ResetVariables() {
     }
 }
 
-/*
- * This logic covers checks that exist in the shared areas of MQ spirit from a glitchless standpoint.
- * This room has Quantum logic that I am currently handling with this function, however this is NOT suitable for
- glitch logic as it relies on specific ages
- * In this chunk there are 3 possibilities for passing a check, but first I have to talk about parallel universes.
-
- * In MQ Spirit key logic, we mostly care about 2 possibilities for how the player can spend keys, creating 2
- Parralel universes
- * In the first universe, the player did not enter spirit as adult until after climbing as child, thus child spends
- keys linearly, only needing 2 to reach statue room.
- * In the second universe, the player went in as adult, possibly out of logic, and started wasting the keys to lock
- child out.
- * These Universes converge when the player has 7 keys (meaning adult can no longer lock child out) and adult is
- known to be able to reach Statue room. This creates "Certain Access", which is tracked seperatly for each age.
- * Child Certain Access is simple, if we have 7 keys and child access, it's Certain Access.
- * Adult Certain Access is also simple, adult is not key locked, so if they make it to a location, it's Certain
- Access.
- * Things get complicated when we handle the overlap of the 2 universes,
- * though an important detail is that if we have Certain Access as either age, we don't need to checked the overlap
- because overlap logic is strictly stricter than either Certain Access.
-
- * In order to track the first universe, the logic allows technical child access with the minimum number of keys,
- and then checks in this function for if we have 7 keys to determine if that is Certain or not.
- * This is for technical reasons, as areas with no access at all will simply not be checked.
- * Normally we would need to do similar shenanigans to track the second universe, however adult must have go through
- statue room to waste keys,
- * so can go back there and get new keys for Child to use if they do, and the navigation logic for shared MQ spirit
- from Statue Room is very simple for Adult.
- * Additionally, we don't need to know if adult can actually reach spirit temple or climb to statue room, because if
- the player can't do that, then universe 2 can't happen anyway,
- * and if the player does so out of logic, they can do it again, as the only consumable used sets a permanent flag.
-
- * The Adult Navigation logic is as such:
- * - Broken Wall room is 6 key locked, because if the player tries to spend 6 keys in a way that would block adults
- access, they would have to give child access instead.
- * - The child side hammer switch for the time travelling chest is 7 key locked for adult
- * - Reaching gauntlets hand is 7 key locked
- * - Going back into big block room is complex, but the only check there is child only so not a concern
- * - Everything else is possible with basic adult movement, or is impossible for child to reach glitchlessly
- * Anything 7 key locked does not need to be checked as shared, as all child access is Certain and because of this
- workaround we don't need to fake Adult access, meaning that is also Certain.
- * All of this combined means that when checking if adult can reach a location in universe 2, we only have to ask if
- it is a 6 key locked location or not.
-
- * Knowing all of this this, we can confirm things are logical in 3 different ways:
- * - If we have Adult Access, we know it is Certain Access, so they can get checks alone.
- * - If we have 7 keys, child has Certain Access as we know they cannot be locked out, so can get checks alone,
- otherwise we check the logical overlap
- * - If Child and Adult can get the check (ignoring actual adult access to the location), and the location is either
- not 6 key locked or we have 6 keys, we can get the check with the overlap
- */
-bool Region::MQSpiritShared(ConditionFn condition, bool IsBrokenWall, bool anyAge) {
-    // if we have Certain Access as child, we can check anyAge and if true, resolve a condition with Here as if
-    // adult is here it's also Certain Access
-    if (logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7)) {
-        if (anyAge) {
-            return Here(condition);
-        }
-        return condition();
-        // else, if we are here as adult, we have Certain Access from that and don't need special handling for
-        // checking adult
-    } else if (Adult() && logic->IsAdult) {
-        return condition();
-        // if we do not have Certain Access, we need to check the overlap by seeing if we are both here as child and
-        // meet the adult universe's access condition. We only need to do it as child, as only child access matters
-        // for this check, as adult access is assumed based on keys
-    } else if (Child() && logic->IsChild && (!IsBrokenWall || logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 6))) {
-        // store current age variables
-        bool pastAdult = logic->IsAdult;
-        bool pastChild = logic->IsChild;
-
-        // First check if the check is possible as child
-        logic->IsChild = true;
-        logic->IsAdult = false;
-        bool result = condition();
-        // If so, check again as adult. both have to be true for result to be true
-        if (result) {
-            logic->IsChild = false;
-            logic->IsAdult = true;
-            result = condition();
-        }
-
-        // set back age variables
-        logic->IsChild = pastChild;
-        logic->IsAdult = pastAdult;
-        return result;
-    }
-    return false;
-}
-
 void Region::printAgeTimeAccess() {
     auto message = "Child Day:   " + std::to_string(childDay) +
                    "\t"
@@ -669,61 +576,262 @@ void Region::printAgeTimeAccess() {
 
 std::array<Region, RR_MAX> areaTable;
 
-bool Here(const RandomizerRegion region, ConditionFn condition) {
-    return areaTable[region].Here(condition);
+/*
+    * This logic covers checks that exist in the shared areas of Spirit
+    * This code will fail if any glitch allows Adult to go in the Child spirit door first or vice versa as it relies on
+    specific ages
+
+    * In order to pass a check, we must either determine that Access is certain,
+    or that it is always possible to get a check somehow.
+
+    * But first I have to talk about parallel universes.
+
+    * In the first universe, the player enters spirit as child, and spends as many keys as they can to lock adult out
+    * In the second, they enter as adult and spend as many keys as they can to lock child out.
+
+    * Additionally, if it is possible to enter spirit in reverse, there are 2 more universes:
+    * In the third universe, adult enters in reverse, and wastes all the keys so noone can enter through the front
+    * In the forth, child manages to do the same, and lock people out of the front
+    * However all access from the boss door in Statue Room and adjacent areas is Certain, so this is not usually
+   relevant
+
+    * While other universes exist, such as both ages entering in reverse or
+    child using their key, getting stuck, then coming back to do the dungeon as adult, these
+    are all sub-possibilities of these 4 universes
+
+    * As we do not know which universe we are in until the player chooses one in-game,
+    we must be able to collect the check in all universes
+
+    * When an Age can no longer be kept out in any universe, that age is said to have Certain Access to a
+   region
+    * If both ages have potential access to a region with a certain number of keys, but there is no Certain Access,
+    * then a check is only in logic if all possible universes can collect the check independently
+
+    * The universes converge when the player has all the keys, giving both ages Certain Access everywhere.
+
+    * We must check for these universes manually as we set access vairables to true with minimum keys for
+    * technical reasons as otherwise the logic code will never run
+
+    * The 1st and 3rd column list how many keys are needed for each age to have Certain Access from the front
+    * the 2nd and 4th column list how many keys are needed for each age to have Certain Access from the boss door
+    * Sometimes, we may check for a higher number of keys in the condition, this happens in cases where the number of
+   keys
+    * for Certain Access depends on a certain condition, the listed number is the lowest possible to make sure the
+   condition is checked.
+
+    * The 1st condition is the combined conditions needed to move from the 1F child lock to the area being checks
+    * the 2nd condition is the same for adult 1F lock, and the 3rd is the access from the boss door.
+*/
+
+// clang-format off
+std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
+    //Vanilla Child uses ExplosiveKeyLogic here because they need to exist for shared adult checks 
+    {RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_1F,       {5, 0, 3, 0, []{return true;},                                                                                          []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                               []{return true/*logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)*/;}}},
+    {RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_2F,       {5, 0, 3, 0, []{return true/*logic->CanClimbHigh()*/;},                                                                 []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                               []{return true/*logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)*/;}}},
+    {RR_SPIRIT_TEMPLE_2F_MIRROR_ROOM,        {5, 0, 3, 0, []{return logic->CanUse(RG_HOOKSHOT) && logic->SpiritSunOnFloorToStatue();},                               []{return true/*logic->CanClimbHigh()*/;},                                                                       []{return logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS);}}},
+    {RR_SPIRIT_TEMPLE_STATUE_ROOM_CHILD,     {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh()*/;},                                 []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                               []{return true/*logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)*/;}}},
+    {RR_SPIRIT_TEMPLE_INNER_WEST_HAND,       {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh()*/;},                                 []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                               []{return true/*logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)*/;}}},
+    {RR_SPIRIT_TEMPLE_GS_LEDGE,              {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->SpiritWestToSkull()/* && logic->CanClimbHigh()*/;},   []{return logic->SpiritExplosiveKeyLogic() && logic->SpiritWestToSkull()/* && logic->CanClimbHigh() && str0*/;}, []{return logic->SpiritWestToSkull()/* && (logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS))*/;}}},
+    {RR_SPIRIT_TEMPLE_STATUE_ROOM,           {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic();},                                                              []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                               []{return true;}}},
+    //Assumes SpiritSunBlockSouthLedge() for all access
+    {RR_SPIRIT_TEMPLE_SUN_BLOCK_CHEST_LEDGE, {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                         []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                               []{return true/*((logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)) && str0) || (logic->CanKillEnemy(RE_BEAMOS) && logic->CanUse(RG_LONGSHOT))*/;}}},
+    {RR_SPIRIT_TEMPLE_SKULLTULA_STAIRS,      {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                         []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                               []{return true/*((logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)) && str0) || (logic->CanKillEnemy(RE_BEAMOS) && logic->CanUse(RG_LONGSHOT))*/;}}},
+    {RR_SPIRIT_TEMPLE_OUTER_RIGHT_HAND,      {5, 5, 3, 3, []{return logic->OuterWestHandLogic();},                                                                   []{return logic->OuterWestHandLogic();},                                                                         []{return logic->OuterWestHandLogic();}}},
+    {RR_SPIRIT_TEMPLE_STATUE_ROOM_ADULT,     {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->CanUse(RG_HOOKSHOT)/* && logic->CanClimbHigh()*/;},   []{return true/*logic->CanClimbHigh() && str0*/;},                                                               []{return logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS);}}},
+    {RR_SPIRIT_TEMPLE_INNER_LEFT_HAND,       {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->CanUse(RG_HOOKSHOT)/* && logic->CanClimbHigh()*/;},   []{return true/*logic->CanClimbHigh() && str0*/;},                                                               []{return logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS);}}},
+    {RR_SPIRIT_TEMPLE_SHORTCUT_SWITCH,       {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->CanUse(RG_HOOKSHOT) && logic->SpiritEastToSwitch();}, []{return logic->SpiritEastToSwitch()/* && logic->CanClimbHigh() && str0*/;},                                    []{return logic->SpiritEastToSwitch() && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS));}}},
+    //MQ                                                              /*&& logic->CanClimbHigh()*/
+    {RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE,    {7, 6, 7, 7, []{return logic->StatueRoomMQKeyLogic();},                                                                 []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 6) && logic->CanHitSwitch()/* && logic->Climb*/;},               []{return logic->StatueRoomMQKeyLogic() && logic->CanHitSwitch()/* && (logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS))*/;}}},
+    {RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR,       {7, 6, 7, 7, []{return logic->StatueRoomMQKeyLogic() && logic->CanHitSwitch()/* && logic->CanClimbHigh()*/;},           []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 6)/* && logic->Climb*/;},                                        []{return logic->StatueRoomMQKeyLogic()/* && (logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS))*/;}}},
+    {RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_CHILD,  {7, 0, 0, 0, []{return logic->CanHitSwitch()/* && logic->CanClimbHigh()*/;},                                            []{return true/*logic->Climb*/;},                                                                                []{return true/*logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)*/;}}},
+    {RR_SPIRIT_TEMPLE_MQ_POT_LEDGE,          {7, 0, 0, 0, []{return logic->CanHitSwitch() && logic->MQSpiritWestToPots()/* && logic->CanClimbHigh()*/;},             []{return logic->MQSpiritWestToPots()/* && logic->Climb*/;},                                                     []{return /*logic->CanUse(RG_HOVER_BOOTS) || (logic->CanClimb() && */logic->MQSpiritWestToPots()/*)*/;}}},
+    {RR_SPIRIT_TEMPLE_MQ_INNER_RIGHT_HAND,   {7, 0, 0, 0, []{return logic->CanHitSwitch() && logic->MQSpiritWestToPots()/* && logic->CanClimbHigh()*/;},             []{return logic->MQSpiritWestToPots()/* && logic->Climb*/;},                                                     []{return /*logic->CanUse(RG_HOVER_BOOTS) || (logic->CanClimb() && */logic->MQSpiritWestToPots()/*)*/;}}},
+    {RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,        {7, 0, 0, 0, []{return logic->CanHitSwitch()/* && logic->CanClimbHigh()*/;},                                            []{return true;},                                                                                                []{return true;}}},
+    {RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM,     {7, 0, 0, 0, []{return logic->CanHitSwitch() && logic->MQSpiritStatueToSunBlock()/* && logic->CanClimbHigh()*/;},       []{return logic->MQSpiritStatueToSunBlock()/* && logic->Climb*/;},                                               []{return logic->MQSpiritStatueToSunBlock()/* && (logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS))*/;}}},
+    {RR_SPIRIT_TEMPLE_MQ_OUTER_RIGHT_HAND,   {7, 7, 4, 4, []{return logic->CanHitSwitch() && logic->OuterWestHandMQLogic()/* && logic->CanClimbHigh() && str0*/;},   []{return logic->OuterWestHandMQLogic();},                                                                       []{return logic->OuterWestHandMQLogic();}}},
+    {RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR,    {7, 0, 0, 0, []{return logic->CanHitSwitch() && /* logic->CanClimbHigh() &&*/
+                                                                    areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR].AnyAgeTime([]{return logic->MQSpiritStatueSouthDoor();});}, []{return true;},                                                                                      []{return areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR].AnyAgeTime([]{return logic->MQSpiritStatueSouthDoor();});}}},
+};
+// clang-format on
+
+bool SpiritCertainAccess(RandomizerRegion region) {
+    SpiritLogicData& curRegionData = Region::spiritLogicData[region];
+    if (logic->IsChild) {
+        uint8_t keys = curRegionData.childKeys;
+        uint8_t revKeys = curRegionData.childRevKeys;
+        bool knownFrontAccess = logic->Get(LOGIC_FORWARDS_SPIRIT_CHILD) || !logic->IsReverseAccessPossible();
+        // If we have enough keys that an age cannot be kept out, we have Certain Access
+        // otherwise if we have entered in reverse and can reach from the face, we have Certain Access
+        return ((knownFrontAccess && curRegionData.childAccess()) && logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys)) ||
+               ((logic->Get(LOGIC_REVERSE_SPIRIT_CHILD) && curRegionData.reverseAccess()) &&
+                logic->SmallKeys(SCENE_SPIRIT_TEMPLE, revKeys)) ||
+               (curRegionData.childAccess() && curRegionData.reverseAccess() &&
+                logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys > revKeys ? keys : revKeys));
+    } else {
+        uint8_t keys = curRegionData.adultKeys;
+        uint8_t revKeys = curRegionData.adultRevKeys;
+        bool knownFrontAccess = logic->Get(LOGIC_FORWARDS_SPIRIT_ADULT) || !logic->IsReverseAccessPossible();
+        // If we have enough keys that an age cannot be kept out, we have Certain Access
+        // otherwise if we have entered in reverse and can reach from the face, we have Certain Access
+        return ((knownFrontAccess && curRegionData.adultAccess()) && logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys)) ||
+               ((logic->Get(LOGIC_FORWARDS_SPIRIT_ADULT) && curRegionData.reverseAccess()) &&
+                logic->SmallKeys(SCENE_SPIRIT_TEMPLE, revKeys)) ||
+               (curRegionData.adultAccess() && curRegionData.reverseAccess() &&
+                logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys > revKeys ? keys : revKeys));
+    }
 }
 
-bool MQSpiritSharedStatueRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge) {
-    return areaTable[region].MQSpiritShared(condition, false, anyAge);
+/*
+    Spirit Shared can take up to 3 regions, this is because checks can exist in many regions at the same time
+    and the logic needs to be able to check the access logic from those regions to check the other universes properly.
+
+    anyAge is equivalent to a self referencing Here, used for events and any check where that is relevent.
+*/
+
+bool SpiritShared(RandomizerRegion region, ConditionFn condition, bool anyAge, RandomizerRegion otherRegion,
+                  ConditionFn otherCondition, RandomizerRegion thirdRegion, ConditionFn thirdCondition) {
+    SpiritLogicData& curRegionData = Region::spiritLogicData[region];
+    bool result = false;
+
+    // store current age variables
+    bool pastAdult = logic->IsAdult;
+    bool pastChild = logic->IsChild;
+
+    logic->IsChild = true;
+    logic->IsAdult = false;
+
+    bool ChildCertainAccess = SpiritCertainAccess(region);
+
+    // Switch back to adult to check adult access
+    logic->IsChild = false;
+    logic->IsAdult = true;
+
+    bool AdultCertainAccess = SpiritCertainAccess(region);
+    // If we are AnyAge and have any CertainAccess, then we can check those ages
+    // we don't need to check ambiguity here as if this fails, then 1 of the ages has failed
+    if (anyAge && (ChildCertainAccess || AdultCertainAccess)) {
+        // set age access to the Certain Access
+        logic->IsChild = ChildCertainAccess;
+        logic->IsAdult = AdultCertainAccess;
+
+        // check condition as well as having at least child or adult access
+        result = condition();
+
+        // otherwise, we have to check the current age and...
+    } else if (areaTable[region].Child() && pastChild) {
+        // Switch to Child
+        logic->IsChild = true;
+        logic->IsAdult = false;
+
+        result = condition();
+        // If we have Certain Access, we just run the condition.
+        // Otherwise, if we have the keys to know either age can reach, we need to see if we could reach as Adult
+        // and if needed, in reverse
+        if (!ChildCertainAccess && result) {
+            // Switch to Adult
+            logic->IsChild = false;
+            logic->IsAdult = true;
+
+            // If Adult can get there and get the check, we can get the check in logic
+            // If reverse spirit is also possible, we need to make sure Adult can get it via reverse entry too
+            result = (curRegionData.adultAccess() &&
+                      (!logic->IsReverseAccessPossible() || curRegionData.reverseAccess) && condition()) ||
+                     (otherRegion != RR_NONE &&
+                      (Region::spiritLogicData[otherRegion].adultAccess() &&
+                       (!logic->IsReverseAccessPossible() || Region::spiritLogicData[otherRegion].reverseAccess()) &&
+                       otherCondition())) ||
+                     (thirdRegion != RR_NONE &&
+                      (Region::spiritLogicData[thirdRegion].adultAccess() &&
+                       (!logic->IsReverseAccessPossible() || Region::spiritLogicData[thirdRegion].reverseAccess()) &&
+                       thirdCondition()));
+        }
+    } else if (areaTable[region].Adult() && pastAdult) {
+        result = condition();
+        // if we have enough keys to have Certain Access, we just run the condition
+        // Alternatively, if we have entered in reverse and can reach from the face, we have Certain Access
+        // Otherwise, if we have the keys to know either age can reach, we need to see if we could reach as Child
+        // and if needed, in reverse
+        if (!AdultCertainAccess && result) {
+            // Switch to Child
+            logic->IsChild = true;
+            logic->IsAdult = false;
+
+            // If Child can get there and get the check, we can get the check in logic
+            // If reverse spirit is also possible, we need to make sure Child can get it via reverse entry too
+            result = (curRegionData.childAccess() &&
+                      (!logic->IsReverseAccessPossible() || curRegionData.reverseAccess()) && condition()) ||
+                     (otherRegion != RR_NONE &&
+                      (Region::spiritLogicData[otherRegion].childAccess() &&
+                       (!logic->IsReverseAccessPossible() || Region::spiritLogicData[otherRegion].reverseAccess()) &&
+                       otherCondition())) ||
+                     (thirdRegion != RR_NONE &&
+                      (Region::spiritLogicData[thirdRegion].childAccess() &&
+                       (!logic->IsReverseAccessPossible() || Region::spiritLogicData[thirdRegion].reverseAccess()) &&
+                       thirdCondition()));
+        }
+    }
+    // set back age variables
+    logic->IsChild = pastChild;
+    logic->IsAdult = pastAdult;
+    return result;
 }
 
-bool MQSpiritSharedBrokenWallRoom(const RandomizerRegion region, ConditionFn condition, bool anyAge) {
-    return areaTable[region].MQSpiritShared(condition, true, anyAge);
+bool AnyAgeTime(ConditionFn condition) {
+    assert(logic->CurrentRegionKey != RR_NONE);
+    return areaTable[logic->CurrentRegionKey].AnyAgeTime(condition);
 }
 
-bool BeanPlanted(const RandomizerRegion region) {
+bool BeanPlanted(const RandomizerGet bean) {
+    auto logic = Rando::Context::GetInstance()->GetLogic();
+    // flag irrelevant if plant won't spawn
+    if (!logic->HasItem(bean)) {
+        return false;
+    } else if (ctx->GetOption(RSK_SKIP_PLANTING_BEANS) && ctx->GetOption(RSK_STARTING_BEANS)) {
+        return true;
+    }
+
     // swchFlag found using the Actor Viewer to get the Obj_Bean parameters & 0x3F
     // not tested with multiple OTRs, but can be automated similarly to GetDungeonSmallKeyDoors
     SceneID sceneID;
     uint8_t swchFlag;
-    switch (region) {
-        case RR_ZORAS_RIVER:
+    switch (bean) {
+        case RG_ZORAS_RIVER_BEAN_SOUL:
             sceneID = SceneID::SCENE_ZORAS_RIVER;
             swchFlag = 3;
             break;
-        case RR_THE_GRAVEYARD:
+        case RG_GRAVEYARD_BEAN_SOUL:
             sceneID = SceneID::SCENE_GRAVEYARD;
             swchFlag = 3;
             break;
-        case RR_KOKIRI_FOREST:
+        case RG_KOKIRI_FOREST_BEAN_SOUL:
             sceneID = SceneID::SCENE_KOKIRI_FOREST;
             swchFlag = 9;
             break;
-        case RR_THE_LOST_WOODS:
+        case RG_LOST_WOODS_BRIDGE_BEAN_SOUL:
             sceneID = SceneID::SCENE_LOST_WOODS;
             swchFlag = 4;
             break;
-        case RR_LW_BEYOND_MIDO:
+        case RG_LOST_WOODS_BEAN_SOUL:
             sceneID = SceneID::SCENE_LOST_WOODS;
             swchFlag = 18;
             break;
-        case RR_DEATH_MOUNTAIN_TRAIL:
+        case RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL:
             sceneID = SceneID::SCENE_DEATH_MOUNTAIN_TRAIL;
             swchFlag = 6;
             break;
-        case RR_LAKE_HYLIA:
+        case RG_LAKE_HYLIA_BEAN_SOUL:
             sceneID = SceneID::SCENE_LAKE_HYLIA;
             swchFlag = 1;
             break;
-        case RR_GERUDO_VALLEY:
+        case RG_GERUDO_VALLEY_BEAN_SOUL:
             sceneID = SceneID::SCENE_GERUDO_VALLEY;
             swchFlag = 3;
             break;
-        case RR_DMC_CENTRAL_LOCAL:
+        case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:
             sceneID = SceneID::SCENE_DEATH_MOUNTAIN_CRATER;
             swchFlag = 3;
             break;
-        case RR_DESERT_COLOSSUS:
+        case RG_DESERT_COLOSSUS_BEAN_SOUL:
             sceneID = SceneID::SCENE_DESERT_COLOSSUS;
             swchFlag = 24;
             break;
@@ -739,7 +847,7 @@ bool BeanPlanted(const RandomizerRegion region) {
     if (gPlayState != nullptr && gPlayState->sceneNum == sceneID) {
         swch = gPlayState->actorCtx.flags.swch;
     } else if (sceneID != SCENE_ID_MAX) {
-        swch = Rando::Context::GetInstance()->GetLogic()->GetSaveContext()->sceneFlags[sceneID].swch;
+        swch = logic->GetSaveContext()->sceneFlags[sceneID].swch;
     } else {
         swch = 0;
     }
@@ -747,8 +855,8 @@ bool BeanPlanted(const RandomizerRegion region) {
     return swch >> swchFlag & 1;
 }
 
-bool CanPlantBean(const RandomizerRegion region) {
-    return areaTable[region].CanPlantBeanCheck() || BeanPlanted(region);
+bool CanPlantBean(const RandomizerRegion region, const RandomizerGet bean) {
+    return areaTable[region].CanPlantBeanCheck(bean) || BeanPlanted(bean);
 }
 
 bool BothAges(const RandomizerRegion region) {
@@ -771,91 +879,15 @@ void RegionTable_Init() {
     ctx = Context::GetInstance().get();
     logic = ctx->GetLogic(); // RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
     grottoEvents = {
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, [] { return logic->CallGossipFairy(); }),
-        EventAccess(LOGIC_BUTTERFLY_FAIRY, [] { return logic->CanUse(RG_STICKS); }),
-        EventAccess(LOGIC_BUG_SHRUB, [] { return logic->CanCutShrubs(); }),
-        EventAccess(LOGIC_LONE_FISH, [] { return true; }),
+        EventAccess(LOGIC_FAIRY_ACCESS, [] { return logic->CallGossipFairy() || logic->CanUse(RG_STICKS); }),
+        EventAccess(LOGIC_BUG_ACCESS, [] { return logic->CanCutShrubs(); }),
+        EventAccess(LOGIC_FISH_ACCESS, [] { return true; }),
     };
     // Clear the array from any previous playthrough attempts. This is important so that
     // locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
     areaTable.fill(Region("Invalid Region", SCENE_ID_MAX, {}, {}, {}));
 
-    // clang-format off
-    areaTable[RR_ROOT] = Region("Root", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {
-        //Events
-        EventAccess(LOGIC_KAKARIKO_GATE_OPEN,                  []{return ctx->GetOption(RSK_KAK_GATE).Is(RO_KAK_GATE_OPEN);}),
-        EventAccess(LOGIC_TH_COULD_FREE_1_TORCH_CARPENTER,     []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);}),
-        EventAccess(LOGIC_TH_COULD_FREE_DOUBLE_CELL_CARPENTER, []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
-        EventAccess(LOGIC_TH_COULD_FREE_DEAD_END_CARPENTER,    []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
-        EventAccess(LOGIC_TH_COULD_FREE_SLOPE_CARPENTER,       []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST);}),
-        EventAccess(LOGIC_TH_RESCUED_ALL_CARPENTERS,           []{return ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE);}),
-        EventAccess(LOGIC_FREED_EPONA,                         []{return (bool)ctx->GetOption(RSK_SKIP_EPONA_RACE);}),
-    }, {
-        //Locations
-        LOCATION(RC_LINKS_POCKET,       true),
-        LOCATION(RC_TRIFORCE_COMPLETED, logic->GetSaveContext()->ship.quest.data.randomizer.triforcePiecesCollected >= ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1;),
-        LOCATION(RC_SARIA_SONG_HINT,    logic->CanUse(RG_SARIAS_SONG)),
-        LOCATION(RC_SONG_FROM_IMPA,     (bool)ctx->GetOption(RSK_SKIP_CHILD_ZELDA)),
-        LOCATION(RC_TOT_MASTER_SWORD,   (bool)ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT)),
-    }, {
-        //Exits
-        Entrance(RR_ROOT_EXITS, []{return true;}),
-    });
-
-    areaTable[RR_ROOT_EXITS] = Region("Root Exits", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_CHILD_SPAWN,             []{return logic->IsChild;}),
-        Entrance(RR_ADULT_SPAWN,             []{return logic->IsAdult;}),
-        Entrance(RR_MINUET_OF_FOREST_WARP,   []{return logic->CanUse(RG_MINUET_OF_FOREST);}),
-        Entrance(RR_BOLERO_OF_FIRE_WARP,     []{return logic->CanUse(RG_BOLERO_OF_FIRE);}),
-        Entrance(RR_SERENADE_OF_WATER_WARP,  []{return logic->CanUse(RG_SERENADE_OF_WATER);}),
-        Entrance(RR_NOCTURNE_OF_SHADOW_WARP, []{return logic->CanUse(RG_NOCTURNE_OF_SHADOW);}),
-        Entrance(RR_REQUIEM_OF_SPIRIT_WARP,  []{return logic->CanUse(RG_REQUIEM_OF_SPIRIT);}),
-        Entrance(RR_PRELUDE_OF_LIGHT_WARP,   []{return logic->CanUse(RG_PRELUDE_OF_LIGHT);}),
-    });
-
-    areaTable[RR_CHILD_SPAWN] = Region("Child Spawn", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_KF_LINKS_HOUSE, []{return true;}),
-    });
-
-    areaTable[RR_ADULT_SPAWN] = Region("Adult Spawn", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
-    });
-
-    areaTable[RR_MINUET_OF_FOREST_WARP] = Region("Minuet of Forest Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_SACRED_FOREST_MEADOW, []{return true;}),
-    });
-
-    areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_DMC_CENTRAL_LOCAL, []{return true;}),
-    });
-
-    areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_LAKE_HYLIA, []{return true;}),
-    });
-
-    areaTable[RR_REQUIEM_OF_SPIRIT_WARP] = Region("Requiem of Spirit Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_DESERT_COLOSSUS, []{return true;}),
-    });
-
-    areaTable[RR_NOCTURNE_OF_SHADOW_WARP] = Region("Nocturne of Shadow Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_GRAVEYARD_WARP_PAD_REGION, []{return true;}),
-    });
-
-    areaTable[RR_PRELUDE_OF_LIGHT_WARP] = Region("Prelude of Light Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
-        //Exits
-        Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
-    });
-
-    // clang-format on
-
+    RegionTable_Init_Root();
     // Overworld
     RegionTable_Init_KokiriForest();
     RegionTable_Init_LostWoods();
@@ -895,6 +927,7 @@ void RegionTable_Init() {
 
     // Set parent regions
     for (uint32_t i = RR_ROOT; i < RR_MAX; i++) {
+        areaTable[i].randomizerRegionKey = (RandomizerRegion)i;
         for (LocationAccess& locPair : areaTable[i].locations) {
             RandomizerCheck location = locPair.GetLocation();
             Rando::Context::GetInstance()->GetItemLocation(location)->SetParentRegion((RandomizerRegion)i);

@@ -26,7 +26,6 @@
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
-#include "soh/Enhancements/randomizer/randomizer_settings_window.h"
 #include "soh/Enhancements/timesplits/TimeSplits.h"
 #include "soh/Enhancements/randomizer/Plandomizer.h"
 #include "SohModals.h"
@@ -42,6 +41,7 @@ void RegisterPopup(std::string title, std::string message, std::string button1 =
 size_t PopupsQueued();
 bool DismissPopup(std::string title);
 void ShowRandomizerSettingsMenu();
+void ShowEscMenu();
 UIWidgets::Colors GetMenuThemeColor();
 } // namespace SohGui
 

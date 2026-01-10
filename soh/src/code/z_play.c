@@ -631,7 +631,6 @@ void Play_Init(GameState* thisx) {
     } else {
         play->unk_1242B = 0;
     }
-
     Interface_SetSceneRestrictions(play);
     Environment_PlaySceneSequence(play);
     gSaveContext.seqId = play->sequenceCtx.seqId;
@@ -781,10 +780,10 @@ void Play_Update(PlayState* play) {
             }
 
             // Start RTA timing on first non-c-up input after intro cutscene
-            if (!gSaveContext.ship.stats.fileCreatedAt && !Player_InCsMode(play) &&
+            if (!gSaveContext.ship.stats.firstInput && !Player_InCsMode(play) &&
                 ((input[0].press.button && input[0].press.button != 0x8) || input[0].rel.stick_x != 0 ||
                  input[0].rel.stick_y != 0)) {
-                gSaveContext.ship.stats.fileCreatedAt = GetUnixTimestamp();
+                gSaveContext.ship.stats.firstInput = GetUnixTimestamp();
             }
         }
         // #endregion
@@ -1180,15 +1179,17 @@ void Play_Update(PlayState* play) {
                 }
 
                 if (play->actorCtx.freezeFlashTimer && (play->actorCtx.freezeFlashTimer-- < 5)) {
-                    osSyncPrintf("FINISH=%d\n", play->actorCtx.freezeFlashTimer);
+                    if (GameInteractor_Should(VB_FLASH_SCREEN_FOR_FINISHING_BLOW, true)) {
+                        osSyncPrintf("FINISH=%d\n", play->actorCtx.freezeFlashTimer);
 
-                    if ((play->actorCtx.freezeFlashTimer > 0) && ((play->actorCtx.freezeFlashTimer % 2) != 0)) {
-                        play->envCtx.fillScreen = true;
-                        play->envCtx.screenFillColor[0] = play->envCtx.screenFillColor[1] =
-                            play->envCtx.screenFillColor[2] = 150;
-                        play->envCtx.screenFillColor[3] = 80;
-                    } else {
-                        play->envCtx.fillScreen = false;
+                        if ((play->actorCtx.freezeFlashTimer > 0) && ((play->actorCtx.freezeFlashTimer % 2) != 0)) {
+                            play->envCtx.fillScreen = true;
+                            play->envCtx.screenFillColor[0] = play->envCtx.screenFillColor[1] =
+                                play->envCtx.screenFillColor[2] = 150;
+                            play->envCtx.screenFillColor[3] = 80;
+                        } else {
+                            play->envCtx.fillScreen = false;
+                        }
                     }
                 } else {
                     PLAY_LOG(3606);
@@ -1300,6 +1301,8 @@ void Play_Update(PlayState* play) {
 
 skip:
     PLAY_LOG(3801);
+
+    GameInteractor_ExecuteOnCameraState(play);
 
     if (!isPaused || gDbgCamEnabled) {
         s32 i;

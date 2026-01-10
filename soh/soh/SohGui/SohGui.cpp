@@ -95,7 +95,6 @@ std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
 std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
 std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
 std::shared_ptr<PlandomizerWindow> mPlandomizerWindow;
-std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 std::shared_ptr<SohModalWindow> mModalWindow;
 std::shared_ptr<Notification::Window> mNotificationWindow;
 std::shared_ptr<TimeDisplayWindow> mTimeDisplayWindow;
@@ -186,9 +185,6 @@ void SetupGuiElements() {
     mItemTrackerSettingsWindow = std::make_shared<ItemTrackerSettingsWindow>(CVAR_WINDOW("ItemTrackerSettings"),
                                                                              "Item Tracker Settings", ImVec2(733, 472));
     gui->AddGuiWindow(mItemTrackerSettingsWindow);
-    mRandomizerSettingsWindow = std::make_shared<RandomizerSettingsWindow>(CVAR_WINDOW("RandomizerSettings"),
-                                                                           "Randomizer Settings", ImVec2(920, 600));
-    gui->AddGuiWindow(mRandomizerSettingsWindow);
     mTimeSplitWindow = std::make_shared<TimeSplitWindow>(CVAR_WINDOW("TimeSplits"), "Time Splits", ImVec2(450, 660));
     gui->AddGuiWindow(mTimeSplitWindow);
     mPlandomizerWindow =
@@ -209,7 +205,6 @@ void Destroy() {
 
     mNotificationWindow = nullptr;
     mModalWindow = nullptr;
-    mRandomizerSettingsWindow = nullptr;
     mItemTrackerWindow = nullptr;
     mItemTrackerSettingsWindow = nullptr;
     mEntranceTrackerWindow = nullptr;
@@ -257,6 +252,12 @@ bool DismissPopup(std::string title) {
 }
 
 void ShowRandomizerSettingsMenu() {
-    mRandomizerSettingsWindow->Show();
+    CVarSetString(CVAR_SETTING("Menu.ActiveHeader"), "Randomizer");
+    CVarSetString(CVAR_SETTING("Menu.RandomizerSidebarSection"), "General");
+    mSohMenu->Show();
+}
+
+void ShowEscMenu() {
+    mSohMenu->Show();
 }
 } // namespace SohGui

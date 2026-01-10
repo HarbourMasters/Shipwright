@@ -2211,8 +2211,10 @@ u8 Item_Give(PlayState* play, u8 item) {
             AMMO(ITEM_BOMBCHU) = 10;
         } else {
             AMMO(ITEM_BOMBCHU) += 10;
-            if (AMMO(ITEM_BOMBCHU) > 50) {
-                AMMO(ITEM_BOMBCHU) = 50;
+            if (GameInteractor_Should(VB_CHECK_BOMBCHU_CAPACITY, true)) {
+                if (AMMO(ITEM_BOMBCHU) > 50) {
+                    AMMO(ITEM_BOMBCHU) = 50;
+                }
             }
         }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
@@ -2222,8 +2224,10 @@ u8 Item_Give(PlayState* play, u8 item) {
             AMMO(ITEM_BOMBCHU) += sAmmoRefillCounts[item - ITEM_BOMBCHUS_5 + 8];
         } else {
             AMMO(ITEM_BOMBCHU) += sAmmoRefillCounts[item - ITEM_BOMBCHUS_5 + 8];
-            if (AMMO(ITEM_BOMBCHU) > 50) {
-                AMMO(ITEM_BOMBCHU) = 50;
+            if (GameInteractor_Should(VB_CHECK_BOMBCHU_CAPACITY, true)) {
+                if (AMMO(ITEM_BOMBCHU) > 50) {
+                    AMMO(ITEM_BOMBCHU) = 50;
+                }
             }
         }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
@@ -2996,8 +3000,10 @@ void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {
     } else if (item == ITEM_BOMBCHU) {
         AMMO(ITEM_BOMBCHU) += ammoChange;
 
-        if (AMMO(ITEM_BOMBCHU) >= 50) {
-            AMMO(ITEM_BOMBCHU) = 50;
+        if (GameInteractor_Should(VB_CHECK_BOMBCHU_CAPACITY, true)) {
+            if (AMMO(ITEM_BOMBCHU) > 50) {
+                AMMO(ITEM_BOMBCHU) = 50;
+            }
         } else if (AMMO(ITEM_BOMBCHU) < 0) {
             AMMO(ITEM_BOMBCHU) = 0;
         }
@@ -4908,7 +4914,7 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
                    ((i == ITEM_SLINGSHOT) && (AMMO(i) == CUR_CAPACITY(UPG_BULLET_BAG))) ||
                    ((i == ITEM_STICK) && (AMMO(i) == CUR_CAPACITY(UPG_STICKS))) ||
                    ((i == ITEM_NUT) && (AMMO(i) == CUR_CAPACITY(UPG_NUTS))) || ((i == ITEM_BOMBCHU) && (ammo == 50)) ||
-                   ((i == ITEM_BEAN) && (ammo == 15))) {
+                   ((i == ITEM_BEAN) && (ammo == 15)) || GameInteractor_Should(VB_COLOR_AMMO_GREEN, false, i)) {
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, alpha);
         }
 

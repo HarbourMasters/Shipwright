@@ -650,6 +650,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
 
     Player_SetModelsForHoldingShield(this);
+    GameInteractor_ExecuteOnPlayerSetModels(this, modelGroup);
 }
 
 void Player_SetModelGroup(Player* this, s32 modelGroup) {
@@ -1481,7 +1482,6 @@ s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, G
             *dList = NULL;
         }
     }
-
     return false;
 }
 
@@ -1564,7 +1564,8 @@ void func_800906D4(PlayState* play, Player* this, Vec3f* newTipPos) {
     Matrix_MultVec3f(&D_801260A4[2], &newBasePos[2]);
 
     if (func_80090480(play, NULL, &this->meleeWeaponInfo[0], &newTipPos[0], &newBasePos[0]) &&
-        !(this->stateFlags1 & PLAYER_STATE1_SHIELDING)) {
+        !(this->stateFlags1 & PLAYER_STATE1_SHIELDING) &&
+        !CVarGetInteger(CVAR_ENHANCEMENT("DisableLinkSwordTrail"), 0)) {
         EffectBlure_AddVertex(Effect_GetByIndex(this->meleeWeaponEffectIndex), &this->meleeWeaponInfo[0].tip,
                               &this->meleeWeaponInfo[0].base);
     }

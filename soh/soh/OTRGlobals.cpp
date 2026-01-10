@@ -24,7 +24,6 @@
 #include <ship/audio/AudioPlayer.h>
 #include "Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "Enhancements/controls/SohInputEditorWindow.h"
-#include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/audio/AudioCollection.h"
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/debugconsole.h"
@@ -36,8 +35,8 @@
 #include "Enhancements/randomizer/randomizer_check_tracker.h"
 #include "Enhancements/randomizer/3drando/random.hpp"
 #include "Enhancements/randomizer/static_data.h"
-#include "Enhancements/randomizer/dungeon.h"
 #include "Enhancements/gameplaystats.h"
+#include "ObjectExtension/ObjectExtension.h"
 #include "frame_interpolation.h"
 #include "SohGui/SohMenu.h"
 #include "SohGui/SohGui.hpp"
@@ -324,6 +323,7 @@ OTRGlobals::OTRGlobals() {
         fontStandard = CreateFontWithSize(16.0f, "fonts/Montserrat-Regular.ttf");
         fontStandardLarger = CreateFontWithSize(20.0f, "fonts/Montserrat-Regular.ttf");
         fontStandardLargest = CreateFontWithSize(24.0f, "fonts/Montserrat-Regular.ttf");
+        fontJapanese = CreateFontWithSize(24.0f, "fonts/NotoSansJP-Regular.ttf", true);
         ImGui::GetIO().FontDefault = fontStandardLarger;
     }
 
@@ -897,7 +897,6 @@ void OTRGlobals::Initialize() {
     Rando::Settings::GetInstance()->AssignContext(gRandoContext);
     Rando::StaticData::InitItemTable(); // RANDOTODO make this not rely on context's logic so it can be initialised in
                                         // InitStaticData
-    Rando::Settings::GetInstance()->CreateOptions();
     gRandomizer = std::make_shared<Randomizer>();
 
     hasMasterQuest = hasOriginal = false;
@@ -1161,8 +1160,8 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM(ITEM_GERUDO_CARD,      OBJECT_GI_GERUDO,        GID_GERUDO_CARD,      0x7B, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_GERUDO_CARD),
         GET_ITEM(ITEM_OCARINA_FAIRY,    OBJECT_GI_OCARINA_0,     GID_OCARINA_FAIRY,    0x4A, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_OCARINA_FAIRY),
         GET_ITEM(ITEM_SEEDS,            OBJECT_GI_SEED,          GID_SEEDS,            0xDC, 0x50, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_SEEDS_5),
-        GET_ITEM(ITEM_HEART_CONTAINER,  OBJECT_GI_HEARTS,        GID_HEART_CONTAINER,  0xC6, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_HEART_CONTAINER),
-        GET_ITEM(ITEM_HEART_PIECE_2,    OBJECT_GI_HEARTS,        GID_HEART_PIECE,      0xC2, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_HEART_PIECE),
+        GET_ITEM(ITEM_HEART_CONTAINER,  OBJECT_GI_HEARTS,        GID_HEART_CONTAINER,  0xC6, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_HEALTH,          MOD_NONE, GI_HEART_CONTAINER),
+        GET_ITEM(ITEM_HEART_PIECE_2,    OBJECT_GI_HEARTS,        GID_HEART_PIECE,      0xC2, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_HEALTH,          MOD_NONE, GI_HEART_PIECE),
         GET_ITEM(ITEM_KEY_BOSS,         OBJECT_GI_BOSSKEY,       GID_KEY_BOSS,         0xC7, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,        MOD_NONE, GI_KEY_BOSS),
         GET_ITEM(ITEM_COMPASS,          OBJECT_GI_COMPASS,       GID_COMPASS,          0x67, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_COMPASS),
         GET_ITEM(ITEM_DUNGEON_MAP,      OBJECT_GI_MAP,           GID_DUNGEON_MAP,      0x66, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_MAP),
@@ -1179,7 +1178,7 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM(ITEM_RUPEE_GREEN,      OBJECT_GI_RUPY,          GID_RUPEE_GREEN,      0x6F, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_GREEN),
         GET_ITEM(ITEM_RUPEE_BLUE,       OBJECT_GI_RUPY,          GID_RUPEE_BLUE,       0xCC, 0x01, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_BLUE),
         GET_ITEM(ITEM_RUPEE_RED,        OBJECT_GI_RUPY,          GID_RUPEE_RED,        0xF0, 0x02, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_RED),
-        GET_ITEM(ITEM_HEART_CONTAINER,  OBJECT_GI_HEARTS,        GID_HEART_CONTAINER,  0xC6, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_HEART_CONTAINER_2),
+        GET_ITEM(ITEM_HEART_CONTAINER,  OBJECT_GI_HEARTS,        GID_HEART_CONTAINER,  0xC6, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_HEALTH,          MOD_NONE, GI_HEART_CONTAINER_2),
         GET_ITEM(ITEM_MILK,             OBJECT_GI_MILK,          GID_MILK,             0x98, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_MILK),
         GET_ITEM(ITEM_MASK_GORON,       OBJECT_GI_GOLONMASK,     GID_MASK_GORON,       0x14, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_MASK_GORON),
         GET_ITEM(ITEM_MASK_ZORA,        OBJECT_GI_ZORAMASK,      GID_MASK_ZORA,        0x15, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_MASK_ZORA),
@@ -1218,7 +1217,7 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM(ITEM_RUPEE_BLUE,       OBJECT_GI_RUPY,          GID_RUPEE_BLUE,       0xF5, 0x01, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_BLUE_LOSE),
         GET_ITEM(ITEM_RUPEE_RED,        OBJECT_GI_RUPY,          GID_RUPEE_RED,        0xF6, 0x02, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_RED_LOSE),
         GET_ITEM(ITEM_RUPEE_PURPLE,     OBJECT_GI_RUPY,          GID_RUPEE_PURPLE,     0xF7, 0x14, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_PURPLE_LOSE),
-        GET_ITEM(ITEM_HEART_PIECE_2,    OBJECT_GI_HEARTS,        GID_HEART_PIECE,      0xFA, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_HEART_PIECE_WIN),
+        GET_ITEM(ITEM_HEART_PIECE_2,    OBJECT_GI_HEARTS,        GID_HEART_PIECE,      0xFA, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_HEALTH,          MOD_NONE, GI_HEART_PIECE_WIN),
         GET_ITEM(ITEM_STICK_UPGRADE_20, OBJECT_GI_STICK,         GID_STICK,            0x90, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_STICK_UPGRADE_20),
         GET_ITEM(ITEM_STICK_UPGRADE_30, OBJECT_GI_STICK,         GID_STICK,            0x91, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_STICK_UPGRADE_30),
         GET_ITEM(ITEM_NUT_UPGRADE_30,   OBJECT_GI_NUTS,          GID_NUTS,             0xA7, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_NUT_UPGRADE_30),
@@ -1891,7 +1890,7 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
     */
 }
 
-ImFont* OTRGlobals::CreateFontWithSize(float size, std::string fontPath) {
+ImFont* OTRGlobals::CreateFontWithSize(float size, std::string fontPath, bool isJapaneseFont) {
     auto mImGuiIo = &ImGui::GetIO();
     ImFont* font;
     if (fontPath == "") {
@@ -1910,7 +1909,8 @@ ImFont* OTRGlobals::CreateFontWithSize(float size, std::string fontPath) {
             Ship::Context::GetInstance()->GetResourceManager()->LoadResource(fontPath, false, initData));
         ImFontConfig fontConf;
         fontConf.FontDataOwnedByAtlas = false;
-        font = mImGuiIo->Fonts->AddFontFromMemoryTTF(fontData->Data, fontData->DataSize, size, &fontConf);
+        const ImWchar* glyph_ranges = isJapaneseFont ? mImGuiIo->Fonts->GetGlyphRangesJapanese() : nullptr;
+        font = mImGuiIo->Fonts->AddFontFromMemoryTTF(fontData->Data, fontData->DataSize, size, &fontConf, glyph_ranges);
     }
     // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
     float iconFontSize = size * 2.0f / 3.0f;
@@ -2329,7 +2329,7 @@ extern "C" size_t GetEquipNowMessage(char* buffer, char* src, const size_t maxBu
     std::string postfix = customMessage.GetForCurrentLanguage();
     std::string str;
     std::string FixedBaseStr(src);
-    int RemoveControlChar = FixedBaseStr.find_first_of("\x02");
+    size_t RemoveControlChar = FixedBaseStr.find_first_of("\x02");
 
     if (RemoveControlChar != std::string::npos) {
         FixedBaseStr = FixedBaseStr.substr(0, RemoveControlChar);
@@ -2373,24 +2373,8 @@ extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNu
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actorId, sceneNum, actorParams);
 }
 
-extern "C" ScrubIdentity Randomizer_IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData) {
-    return OTRGlobals::Instance->gRandomizer->IdentifyScrub(sceneNum, actorParams, respawnData);
-}
-
-extern "C" BeehiveIdentity Randomizer_IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
-    return OTRGlobals::Instance->gRandomizer->IdentifyBeehive(sceneNum, xPosition, respawnData);
-}
-
 extern "C" ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
     return OTRGlobals::Instance->gRandomizer->IdentifyShopItem(sceneNum, slotIndex);
-}
-
-extern "C" CowIdentity Randomizer_IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
-    return OTRGlobals::Instance->gRandomizer->IdentifyCow(sceneNum, posX, posZ);
-}
-
-extern "C" FishIdentity Randomizer_IdentifyFish(s32 sceneNum, s32 actorParams) {
-    return OTRGlobals::Instance->gRandomizer->IdentifyFish(sceneNum, actorParams);
 }
 
 extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
@@ -2671,6 +2655,31 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                     messageEntry = Randomizer_GetCustomGetItemMessage(player);
                 }
             }
+        } else if (textId == TEXT_NEED_SPECIAL_KEY && ctx->GetOption(RSK_BOSS_KEY_HINT)) {
+            auto rh = RH_NONE;
+            switch (gPlayState->sceneNum) {
+                case SCENE_FOREST_TEMPLE:
+                    rh = RH_FOREST_BOSS_KEY_HINT;
+                    break;
+                case SCENE_FIRE_TEMPLE:
+                    rh = RH_FIRE_BOSS_KEY_HINT;
+                    break;
+                case SCENE_WATER_TEMPLE:
+                    rh = RH_WATER_BOSS_KEY_HINT;
+                    break;
+                case SCENE_SHADOW_TEMPLE:
+                    rh = RH_SHADOW_BOSS_KEY_HINT;
+                    break;
+                case SCENE_SPIRIT_TEMPLE:
+                    rh = RH_SPIRIT_BOSS_KEY_HINT;
+                    break;
+                case SCENE_GANONS_TOWER:
+                    rh = RH_GANONS_BOSS_KEY_HINT;
+                    break;
+            }
+            if (rh != RH_NONE) {
+                messageEntry = ctx->GetHint(rh)->GetHintMessage(MF_AUTO_FORMAT);
+            }
         } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS &&
                    Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != RO_GOSSIP_STONES_NONE &&
                    (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_NOTHING ||
@@ -2737,12 +2746,14 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 (RandomizerInf)((textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(rc, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
         } else if (textId == TEXT_SCRUB_RANDOM) {
-            EnDns* enDns = (EnDns*)player->talkActor;
-            RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(
-                (RandomizerInf)enDns->sohScrubIdentity.randomizerInf);
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
-                rc, TEXT_SCRUB_RANDOM, TEXT_SCRUB_RANDOM_FREE,
-                Randomizer_GetSettingValue(RSK_SCRUB_TEXT_HINT) == RO_GENERIC_OFF);
+            auto scrubIdentity = ObjectExtension::GetInstance().Get<ScrubIdentity>(player->talkActor);
+            if (scrubIdentity != nullptr) {
+                RandomizerCheck rc =
+                    OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(scrubIdentity->identity.randomizerInf);
+                messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
+                    rc, TEXT_SCRUB_RANDOM, TEXT_SCRUB_RANDOM_FREE,
+                    Randomizer_GetSettingValue(RSK_SCRUB_TEXT_HINT) == RO_GENERIC_OFF);
+            }
         } else if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), 1) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
                     textId == TEXT_HUGE_RUPEE)) {
@@ -2753,12 +2764,18 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             u16 naviTextId = Random(0, NUM_NAVI_MESSAGES);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID,
                                                                            naviTextId, MF_FORMATTED);
-        } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_10 &&
-                   (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
-                    ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL))) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
-                RC_ZR_MAGIC_BEAN_SALESMAN, TEXT_BEAN_SALESMAN_BUY_FOR_10, TEXT_NONE,
-                Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
+        } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_10) {
+            if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
+                ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)) {
+                messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
+                    RC_ZR_MAGIC_BEAN_SALESMAN, TEXT_BEAN_SALESMAN_BUY_FOR_10, TEXT_NONE,
+                    Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
+            } else if (ctx->GetOption(RSK_SKIP_PLANTING_BEANS)) {
+                // TODO_TRANSLATE Translate into french and german
+                messageEntry =
+                    CustomMessage("For #60 rupees# I'll plant beans across Hyrule, deal?\x1B#Yes&No#", { QM_YELLOW });
+                messageEntry.AutoFormat();
+            }
         } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_100) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(
                 Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100, MF_AUTO_FORMAT);
@@ -3051,8 +3068,6 @@ bool SoH_HandleConfigDrop(char* filePath) {
             }
         }
 
-        Rando::Settings::GetInstance()->UpdateOptionProperties();
-
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         gui->GetGuiWindow("Console")->Hide();
         gui->GetGuiWindow("Actor Viewer")->Hide();
@@ -3064,6 +3079,7 @@ bool SoH_HandleConfigDrop(char* filePath) {
             Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
             ->ClearBindings();
 
+        Rando::Settings::GetInstance()->UpdateAllOptions();
         gui->SaveConsoleVariablesNextFrame();
         ShipInit::Init("*");
 

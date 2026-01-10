@@ -7,8 +7,7 @@ void RegionTable_Init_ZorasFountain() {
     // clang-format off
     areaTable[RR_ZORAS_FOUNTAIN] = Region("Zoras Fountain", SCENE_ZORAS_FOUNTAIN, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY, []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(LOGIC_BUTTERFLY_FAIRY,   []{return logic->CanUse(RG_STICKS) && logic->AtDay;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairyExceptSuns() || (logic->CanUse(RG_STICKS) && logic->AtDay);}),
     }, {
         //Locations
         LOCATION(RC_ZF_GS_TREE,                      logic->IsChild && logic->CanBonkTrees()),
@@ -24,6 +23,12 @@ void RegionTable_Init_ZorasFountain() {
         LOCATION(RC_ZF_NEAR_JABU_POT_3,              logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_ZF_NEAR_JABU_POT_4,              logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_ZF_TREE,                         logic->IsChild && logic->CanBonkTrees()),
+        LOCATION(RC_ZF_BUSH_1,                       logic->IsChild),
+        LOCATION(RC_ZF_BUSH_2,                       logic->IsChild),
+        LOCATION(RC_ZF_BUSH_3,                       logic->IsChild),
+        LOCATION(RC_ZF_BUSH_4,                       logic->IsChild),
+        LOCATION(RC_ZF_BUSH_5,                       logic->IsChild),
+        LOCATION(RC_ZF_BUSH_6,                       logic->IsChild),
     }, {
         //Exits
         Entrance(RR_ZD_BEHIND_KING_ZORA,       []{return true;}),
@@ -31,7 +36,7 @@ void RegionTable_Init_ZorasFountain() {
         Entrance(RR_ZF_LAKEBED,                []{return logic->CanUse(RG_IRON_BOOTS);}),
         //child can break the brown rock without lifting the silver rock and it stays gone for adult, but it's not intuitive and there's no reasonable case where it matters.
         Entrance(RR_ZF_HIDDEN_CAVE,            []{return logic->CanUse(RG_SILVER_GAUNTLETS) && logic->BlastOrSmash();}),
-        Entrance(RR_ZF_ROCK,                   []{return logic->IsAdult && logic->CanUse(RG_SCARECROW);}),
+        Entrance(RR_ZF_ROCK,                   []{return logic->IsAdult && logic->ReachScarecrow();}),
         Entrance(RR_JABU_JABUS_BELLY_ENTRYWAY, []{return logic->IsChild && (ctx->GetOption(RSK_JABU_OPEN).Is(RO_JABU_OPEN) || logic->CanUse(RG_BOTTLE_WITH_FISH));}),
         Entrance(RR_ZF_GREAT_FAIRY_FOUNTAIN,   []{return logic->HasExplosives() || (ctx->GetTrickOption(RT_ZF_GREAT_FAIRY_WITHOUT_EXPLOSIVES) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_SILVER_GAUNTLETS));}),
     });

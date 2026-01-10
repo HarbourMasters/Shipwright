@@ -78,6 +78,7 @@ class Skeleton : public Ship::Resource<SkeletonData> {
 struct SkeletonPatchInfo {
     SkelAnime* skelAnime;
     std::string vanillaSkeletonPath;
+    bool isLocalPlayer;
 };
 
 class SkeletonPatcher {
@@ -92,6 +93,8 @@ class SkeletonPatcher {
 
   private:
     inline static const std::string sOtr = "__OTR__";
+    static bool IsLinkSkeletonPath(const std::string& path);
+    static bool IsLocalPlayerSkelAnime(SkelAnime* skelAnime);
     static void UpdateTunicSkeletons(SkeletonPatchInfo& skel);
     static void UpdateCustomSkeletonFromPath(const std::string& skeletonPath, SkeletonPatchInfo& skel);
 };

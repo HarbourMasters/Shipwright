@@ -7,7 +7,7 @@ void RegionTable_Init_LonLonRanch() {
     // clang-format off
     areaTable[RR_LON_LON_RANCH] = Region("Lon Lon Ranch", SCENE_LON_LON_RANCH, {
         //Events
-        EventAccess(LOGIC_FREED_EPONA, []{return (logic->HasItem(RG_CHILD_WALLET) || ctx->GetOption(RSK_SKIP_EPONA_RACE)) && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay;}),
+        EventAccess(LOGIC_FREED_EPONA, []{return logic->HasItem(RG_CHILD_WALLET) && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay;}),
         EventAccess(LOGIC_LINKS_COW,   []{return logic->HasItem(RG_CHILD_WALLET) && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay;}),
     }, {
         //Locations
@@ -66,9 +66,9 @@ void RegionTable_Init_LonLonRanch() {
 
     areaTable[RR_LLR_GROTTO] = Region("LLR Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_LLR_DEKU_SCRUB_GROTTO_LEFT,   logic->CanStunDeku()),
-        LOCATION(RC_LLR_DEKU_SCRUB_GROTTO_RIGHT,  logic->CanStunDeku()),
-        LOCATION(RC_LLR_DEKU_SCRUB_GROTTO_CENTER, logic->CanStunDeku()),
+        LOCATION(RC_LLR_DEKU_SCRUB_GROTTO_LEFT,   logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_LLR_DEKU_SCRUB_GROTTO_RIGHT,  logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_LLR_DEKU_SCRUB_GROTTO_CENTER, logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_LLR_GROTTO_BEEHIVE,           logic->CanBreakUpperBeehives()),
     }, {
         //Exits
