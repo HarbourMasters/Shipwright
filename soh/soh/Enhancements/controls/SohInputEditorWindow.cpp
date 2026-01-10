@@ -1379,7 +1379,7 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
                      .Tooltip("Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming"));
     CVarCheckbox("Allow moving while in first-person mode", CVAR_SETTING("MoveInFirstPerson"),
                  CheckboxOptions({ { .disabled = !CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0),
-                                     .disabledTooltip = "Requires \"Right Stick Aiming\" to be enabled." } })
+                                     .disabledTooltip = "Forced off because Right Stick Aiming is disabled." } })
                      .Color(THEME_COLOR)
                      .Tooltip("Changes the left stick to move the player while in first-person mode"));
     CVarCheckbox("Invert Aiming X Axis", CVAR_SETTING("Controls.InvertAimingXAxis"),
