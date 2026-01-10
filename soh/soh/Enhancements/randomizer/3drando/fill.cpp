@@ -396,6 +396,10 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
     RandomizerCheck loc = locPair.GetLocation();
     Rando::ItemLocation* location = ctx->GetItemLocation(loc);
     RandomizerGet locItem = location->GetPlacedRandomizerGet();
+    RandomizerCheckQuest quest = Rando::StaticData::GetLocation(loc)->GetQuest();
+    assert(quest == RCQUEST_BOTH ||
+           (quest == RCQUEST_VANILLA && ctx->GetDungeons()->GetDungeonFromScene(parentRegion->scene)->IsVanilla()) ||
+           (quest == RCQUEST_MQ && ctx->GetDungeons()->GetDungeonFromScene(parentRegion->scene)->IsMQ()));
 
     if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion, logic->CalculatingAvailableChecks)) {
         location->AddToPool();

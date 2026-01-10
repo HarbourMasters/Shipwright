@@ -558,7 +558,7 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_CRATE_6, logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM,          []{return true;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM,       []{return true;}),
         Entrance(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM_UPPER, []{return logic->IsAdult || logic->CanUse(RG_HOOKSHOT);}),
     });
 

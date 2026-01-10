@@ -393,7 +393,7 @@ void RegionTable_Init_ShadowTemple() {
         LOCATION(RC_SHADOW_TEMPLE_MQ_WHISPERING_WALLS_POT_2, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_SHADOW_TEMPLE_WHISPERING_WALLS_START,        []{return ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
+        Entrance(RR_SHADOW_TEMPLE_MQ_WHISPERING_WALLS_START,        []{return ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
         Entrance(RR_SHADOW_TEMPLE_MQ_WHISPERING_WALLS_SIDE_ROOM, []{return true;}),
     });
 
@@ -519,8 +519,8 @@ void RegionTable_Init_ShadowTemple() {
     });
 
     areaTable[RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT_DOOR_LEDGE] = Region("Shadow Temple MQ Upper Huge Pit Door Ledge", SCENE_SHADOW_TEMPLE, {}, {}, {
-        Entrance(RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT,        []{return logic->CanUse(RG_HOVER_BOOTS) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ_PLATFORM) || logic->CanUse(RG_LENS_OF_TRUTH)) && ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH);}),
-        Entrance(RR_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_ROOM, []{return logic->SmallKeys(SCENE_SHADOW_TEMPLE, 3);}),
+        Entrance(RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT,    []{return logic->CanUse(RG_HOVER_BOOTS) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ_PLATFORM) || logic->CanUse(RG_LENS_OF_TRUTH)) && ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH);}),
+        Entrance(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM, []{return logic->SmallKeys(SCENE_SHADOW_TEMPLE, 3);}),
     });
 
     areaTable[RR_SHADOW_TEMPLE_MQ_STONE_UMBRELLA_ROOM] = Region("Shadow Temple MQ Stone Umbrella Room", SCENE_SHADOW_TEMPLE, {}, {
@@ -562,7 +562,7 @@ void RegionTable_Init_ShadowTemple() {
                                                                 (logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC));}),
     }, {
         //Locations
-        LOCATION(RC_SHADOW_TEMPLE_MQ_INVISIBLE_SPIKES_CHEST, logic->CanKillEnemy(RE_REDEAD) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->TakeDamage() || logic->CanUse(RG_LENS_OF_TRUTH))),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_INVISIBLE_SPIKES_CHEST, logic->CanKillEnemy(RE_REDEAD) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->TakeDamage() || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_GORON_TUNIC))),
     }, {
         //Exits
         Entrance(RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT,        []{return logic->SmallKeys(SCENE_SHADOW_TEMPLE, 3);}),
@@ -681,10 +681,10 @@ void RegionTable_Init_ShadowTemple() {
         Entrance(RR_SHADOW_TEMPLE_MQ_PRE_BOSS_ROOM,  []{return true;}),
     });
 
-    areaTable[RR_SHADOW_TEMPLE_PRE_BOSS_ROOM] = Region("Shadow Temple MQ Pre Boss Room", SCENE_SHADOW_TEMPLE, {}, {}, {
+    areaTable[RR_SHADOW_TEMPLE_MQ_PRE_BOSS_ROOM] = Region("Shadow Temple MQ Pre Boss Room", SCENE_SHADOW_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_SHADOW_TEMPLE_MQ_BEYOND_BOAT, []{return true;}),
-        Entrance(RR_SHADOW_TEMPLE_MQ_BOSS_DOOR,   []{return logic->CanUse(RG_HOVER_BOOTS) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH));}),
+        Entrance(RR_SHADOW_TEMPLE_MQ_ACROSS_CHASM, []{return true;}),
+        Entrance(RR_SHADOW_TEMPLE_MQ_BOSS_DOOR,    []{return logic->CanUse(RG_HOVER_BOOTS) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH));}),
     });
 
     areaTable[RR_SHADOW_TEMPLE_MQ_BOSS_DOOR] = Region("Shadow Temple MQ Boss Door", SCENE_SHADOW_TEMPLE, {}, {
@@ -739,9 +739,9 @@ void RegionTable_Init_ShadowTemple() {
     // Boss Room
     areaTable[RR_SHADOW_TEMPLE_BOSS_ENTRYWAY] = Region("Shadow Temple Boss Entryway", SCENE_SHADOW_TEMPLE, {}, {}, {
         // Exits
-        Entrance(RR_SHADOW_TEMPLE_BOSS_DOOR, []{return ctx->GetDungeon(SHADOW_TEMPLE)->IsVanilla() && false;}),
-        Entrance(RR_SHADOW_TEMPLE_MQ_BOSS_DOOR,  []{return ctx->GetDungeon(SHADOW_TEMPLE)->IsMQ() && false;}),
-        Entrance(RR_SHADOW_TEMPLE_BOSS_ROOM,     []{return logic->HasItem(RG_SHADOW_TEMPLE_BOSS_KEY);}),
+        Entrance(RR_SHADOW_TEMPLE_BOSS_DOOR,    []{return ctx->GetDungeon(SHADOW_TEMPLE)->IsVanilla() && false;}),
+        Entrance(RR_SHADOW_TEMPLE_MQ_BOSS_DOOR, []{return ctx->GetDungeon(SHADOW_TEMPLE)->IsMQ() && false;}),
+        Entrance(RR_SHADOW_TEMPLE_BOSS_ROOM,    []{return logic->HasItem(RG_SHADOW_TEMPLE_BOSS_KEY);}),
     });
 
     areaTable[RR_SHADOW_TEMPLE_BOSS_ROOM] = Region("Shadow Temple Boss Room", SCENE_SHADOW_TEMPLE_BOSS, {

@@ -336,7 +336,7 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_3,             logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_JABU_JABUS_BELLY_HOLES_ROOM,              []{return true /* logic->HasItem(RG_CLIMB) */;}),
+        Entrance(RR_JABU_JABUS_BELLY_MQ_HOLES_ROOM,           []{return true /* logic->HasItem(RG_CLIMB) */;}),
         Entrance(RR_JABU_JABUS_BELLY_MQ_TO_BIGOCTO,           []{return logic->Get(LOGIC_JABU_WEST_TENTACLE);}),
         Entrance(RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM,    []{return true;}),
         Entrance(RR_JABU_JABUS_BELLY_MQ_INVISIBLE_KEESE_ROOM, []{return logic->Get(LOGIC_JABU_NORTH_TENTACLE);}),

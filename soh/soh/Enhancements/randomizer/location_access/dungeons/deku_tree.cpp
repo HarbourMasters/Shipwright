@@ -183,7 +183,7 @@ void RegionTable_Init_DekuTree() {
     }, {
         //Exits
         Entrance(RR_DEKU_TREE_BASEMENT_UPPER, []{return logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOOKSHOT);}),
-        Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY,  []{return (logic->HasItem(RG_BRONZE_SCALE) || AnyAgeTime([]{return logic->CanUse(RG_IRON_BOOTS);})) && AnyAgeTime([]{return logic->CanReflectNuts();});}),
+        Entrance(RR_DEKU_TREE_BOSS_ENTRYWAY,  []{return AnyAgeTime([]{return logic->CanReflectNuts();});}),
     });
 
 #pragma endregion
