@@ -2482,14 +2482,6 @@ typedef enum {
     // true
     // ```
     // #### `args`
-    // - `*int32_t` // ItemID
-    VB_USE_ITEM,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
     // - `*int16_t` // pauseCtx->namedItem
     VB_DRAW_CUSTOM_ITEM_NAME,
 

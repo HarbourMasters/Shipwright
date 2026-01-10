@@ -38,16 +38,17 @@ void RegisterRocsFeather() {
         }
     });
 
-    COND_VB_SHOULD(VB_USE_ITEM, shouldRegister, {
-        int32_t* usedItem = va_arg(args, int32_t*);
-        Player* player = GET_PLAYER(gPlayState);
+    COND_VB_SHOULD(VB_CHANGE_HELD_ITEM_AND_USE_ITEM, shouldRegister, {
+        int32_t usedItem = va_arg(args, int32_t);
 
         // Roc's Feather behaviour
-        if (*usedItem == ITEM_ROCS_FEATHER) {
+        if (usedItem == ITEM_ROCS_FEATHER) {
             *should = false;
 
             if (rocsUseCount < MAX_ROCS_USES) {
                 rocsUseCount++;
+
+                Player* player = GET_PLAYER(gPlayState);
 
                 func_80838940(player, (LinkAnimationHeader*)&gPlayerAnim_link_rocs_feather_jump, 5.8f, gPlayState, 0);
 
