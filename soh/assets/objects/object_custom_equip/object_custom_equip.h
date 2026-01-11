@@ -114,6 +114,9 @@ static const ALIGN_ASSET(2) char gCustomAdultFPSHandDL[] = dgCustomAdultFPSHandD
 static const ALIGN_ASSET(2) char gCustomChildFPSHandDL[] = dgCustomChildFPSHandDL;
 
 // Custom Bottle Content Display Lists
+#define dgCustomBottleDL "__OTR__objects/object_custom_equip/gCustomBottleDL"
+static const ALIGN_ASSET(2) char gCustomBottleDL[] = dgCustomBottleDL;
+
 #define dgCustomBottleRedPotionContentsDL "__OTR__objects/object_custom_equip/gCustomBottleRedPotionContentsDL"
 static const ALIGN_ASSET(2) char gCustomBottleRedPotionContentsDL[] = dgCustomBottleRedPotionContentsDL;
 

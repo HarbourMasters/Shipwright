@@ -461,6 +461,8 @@ static void ApplyCommonEquipmentPatches() {
           "customSlingshot3", rightHandClosed },
         { gLinkChildRightArmStretchedSlingshotDL, gCustomSlingshotDL, "customSlingshotFPS1", "customSlingshotFPS2",
           "customSlingshotFPS3", fpsHand },
+        { gLinkAdultBottleDL, gCustomBottleDL, "customBottle1", "customBottle2", nullptr, nullptr },
+        { gLinkChildBottleDL, gCustomBottleDL, "customBottle1", "customBottle2", nullptr, nullptr },
     });
 
     const bool equipmentAlwaysVisible = CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0) != 0;
@@ -512,11 +514,9 @@ static void ApplyBottleContentPatches() {
     const bool altAssetsRuntime = ResourceMgr_IsAltAssetsEnabled();
 
     if (!altAssetsRuntime) {
-        // Unpatch both adult and child bottle DLs
-        ResourceMgr_UnpatchGfxByName(gLinkAdultBottleDL, "customBottleContent");
-        ResourceMgr_UnpatchGfxByName(gLinkChildBottleDL, "customBottleContent");
-        ResourceMgr_UnloadResource(gLinkAdultBottleDL);
-        ResourceMgr_UnloadResource(gLinkChildBottleDL);
+        // Unpatch the custom bottle DL
+        ResourceMgr_UnpatchGfxByName(gCustomBottleDL, "customBottleContent");
+        ResourceMgr_UnloadResource(gCustomBottleDL);
         sLastBottleContentIndex = -1;
         return;
     }
@@ -545,8 +545,7 @@ static void ApplyBottleContentPatches() {
     
     // If bottle content changed, unpatch the old content
     if (sLastBottleContentIndex != bottleIndex) {
-        ResourceMgr_UnpatchGfxByName(gLinkAdultBottleDL, "customBottleContent");
-        ResourceMgr_UnpatchGfxByName(gLinkChildBottleDL, "customBottleContent");
+        ResourceMgr_UnpatchGfxByName(gCustomBottleDL, "customBottleContent");
         sLastBottleContentIndex = -1;
     }
     
@@ -557,13 +556,16 @@ static void ApplyBottleContentPatches() {
 
     const char* contentDL = bottleContentDLs[bottleIndex];
     
+    // Only patch if the custom bottle DL exists (required for content to display)
+    if (!ResourceGetIsCustomByName(gCustomBottleDL) && !ResourceMgr_FileExists(gCustomBottleDL)) {
+        return;
+    }
+    
     // Only patch if the custom content DL exists and is custom
     if (contentDL != nullptr && (ResourceGetIsCustomByName(contentDL) || ResourceMgr_FileExists(contentDL))) {
-        const char* bottleDL = LINK_IS_CHILD ? gLinkChildBottleDL : gLinkAdultBottleDL;
-        
-        // Patch the bottle DL to include the custom content
-        // This appends the custom content DL after the bottle is drawn
-        ResourceMgr_PatchCustomGfxByName(bottleDL, "customBottleContent", 0, gsSPDisplayListOTRFilePath(contentDL));
+        // Patch the custom bottle DL to include the custom content
+        // Use index 1 so content appears after bottle material setup
+        ResourceMgr_PatchCustomGfxByName(gCustomBottleDL, "customBottleContent", 1, gsSPDisplayListOTRFilePath(contentDL));
     }
     
     // Always update the tracked index so we know what's currently active
