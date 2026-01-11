@@ -955,6 +955,7 @@ void RegionTable_Init() {
         std::ostringstream ss;
 
         for (uint32_t i = RR_ROOT; i < RR_MAX; i++) {
+            logic->CurrentRegionKey = static_cast<RandomizerRegion>(i);
             for (EventAccess& eventAccess : areaTable[i].events) {
                 try {
                     eval(LogicExpression::Parse(eventAccess.GetConditionStr()));
@@ -965,7 +966,9 @@ void RegionTable_Init() {
             }
             for (LocationAccess& locPair : areaTable[i].locations) {
                 try {
+                    logic->CurrentCheckKey = locPair.GetLocation();
                     eval(LogicExpression::Parse(locPair.GetConditionStr()));
+                    logic->CurrentCheckKey = RC_UNKNOWN_CHECK;
                 } catch (std::exception& ex) {
                     ss << locPair.GetConditionStr() << std::endl;
                     ss << ex.what() << std::endl << std::endl;
@@ -979,6 +982,7 @@ void RegionTable_Init() {
                     ss << ex.what() << std::endl << std::endl;
                 }
             }
+            logic->CurrentRegionKey = RR_NONE;
         }
 
         SPDLOG_INFO("Parse/Eval Failure Conditions:\n{}", ss.str());
