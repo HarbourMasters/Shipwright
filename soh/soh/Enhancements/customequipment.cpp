@@ -493,7 +493,7 @@ static s32 sLastBottleContentIndex = -1;
 static void ResetBottlePatch() {
     const bool isChild = LINK_IS_CHILD;
     const char* bottleDL = isChild ? gLinkChildBottleDL : gLinkAdultBottleDL;
-    
+
     UnpatchGroup(bottleDL, { "customBottle1", "customBottle2", "customBottle3" });
     sLastBottleContentIndex = -1;
 }
