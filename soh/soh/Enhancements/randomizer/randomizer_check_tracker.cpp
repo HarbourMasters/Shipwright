@@ -2336,13 +2336,11 @@ static std::string MapAvailableCheckIcon(std::string name) {
     return name;
 }
 
-static std::unordered_map<int32_t, const char*> availableChecksOnlyShowOptions = {
-    { AC_SHOW_ALL_CHECKS, "All Checks" },
-    { AC_SHOW_AVAILABLE_CHECKS, "Either Age" },
-    { AC_SHOW_CHILD_CHECKS, "Child Checks" },
-    { AC_SHOW_ADULT_CHECKS, "Adult Checks" },
-    { AC_SHOW_CURRENT_AGE, "Current Age" }
-};
+static std::map<int32_t, const char*> availableChecksOnlyShowOptions = { { AC_SHOW_ALL_CHECKS, "All Checks" },
+                                                                         { AC_SHOW_AVAILABLE_CHECKS, "Either Age" },
+                                                                         { AC_SHOW_CHILD_CHECKS, "Child Checks" },
+                                                                         { AC_SHOW_ADULT_CHECKS, "Adult Checks" },
+                                                                         { AC_SHOW_CURRENT_AGE, "Current Age" } };
 
 void CheckTrackerWindow::DrawElement() {
     Color_Background = CVarGetColor(CVAR_TRACKER_CHECK("BgColor.Value"), Color_Bg_Default);
@@ -3661,11 +3659,10 @@ static std::map<int32_t, const char*> buttonStrings = {
     { TRACKER_COMBO_BUTTON_D_UP, "D-Up" },     { TRACKER_COMBO_BUTTON_D_DOWN, "D-Down" },
     { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" }
 };
-static std::unordered_map<int32_t, const char*> availableChecksDisplayOptions = { { AC_DISABLED, "Disabled" },
-                                                                                  { AC_LOCKED_UNLOCKED,
-                                                                                    "Locked / Unlocked" },
-                                                                                  { AC_ONE_ICON, "One Age Icon" },
-                                                                                  { AC_TWO_ICONS, "Two Age Icons" } };
+static std::map<int32_t, const char*> availableChecksDisplayOptions = { { AC_DISABLED, "Disabled" },
+                                                                        { AC_LOCKED_UNLOCKED, "Locked / Unlocked" },
+                                                                        { AC_ONE_ICON, "One Age Icon" },
+                                                                        { AC_TWO_ICONS, "Two Age Icons" } };
 
 void CheckTrackerSettingsWindow::DrawElement() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
