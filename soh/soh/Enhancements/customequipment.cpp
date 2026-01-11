@@ -461,8 +461,6 @@ static void ApplyCommonEquipmentPatches() {
           "customSlingshot3", rightHandClosed },
         { gLinkChildRightArmStretchedSlingshotDL, gCustomSlingshotDL, "customSlingshotFPS1", "customSlingshotFPS2",
           "customSlingshotFPS3", fpsHand },
-        { gLinkAdultBottleDL, gCustomBottleDL, "customBottle1", "customBottle2", nullptr, nullptr },
-        { gLinkChildBottleDL, gCustomBottleDL, "customBottle1", "customBottle2", nullptr, nullptr },
     });
 
     const bool equipmentAlwaysVisible = CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0) != 0;
@@ -493,7 +491,10 @@ static void ApplyCommonEquipmentPatches() {
 static s32 sLastBottleContentIndex = -1;
 
 static void ResetBottlePatch() {
-    ResourceMgr_UnpatchGfxByName(gCustomBottleDL, "customBottleContent");
+    const bool isChild = LINK_IS_CHILD;
+    const char* bottleDL = isChild ? gLinkChildBottleDL : gLinkAdultBottleDL;
+    
+    UnpatchGroup(bottleDL, { "customBottle1", "customBottle2", "customBottle3" });
     sLastBottleContentIndex = -1;
 }
 
@@ -561,17 +562,15 @@ static void ApplyBottleContentPatches() {
         return;
     }
 
+    const bool isChild = LINK_IS_CHILD;
+    const char* bottleDL = isChild ? gLinkChildBottleDL : gLinkAdultBottleDL;
+
     const char* contentDL = bottleContentDLs[bottleIndex];
 
-    bool contentAvailable =
-        contentDL != nullptr && (ResourceGetIsCustomByName(contentDL) || ResourceMgr_FileExists(contentDL));
-
-    if (contentAvailable) {
-        ResourceMgr_PatchCustomGfxByName(gCustomBottleDL, "customBottleContent", 1,
-                                         gsSPDisplayListOTRFilePath(contentDL));
-    } else {
-        ResourceMgr_PatchCustomGfxByName(gCustomBottleDL, "customBottleContent", 1, gsSPNoOp());
-    }
+    ApplyPatchEntries({
+        { bottleDL, gCustomBottleDL, "customBottle1", "customBottle2", contentDL ? "customBottle3" : nullptr,
+          contentDL },
+    });
 
     sLastBottleContentIndex = bottleIndex;
 }
