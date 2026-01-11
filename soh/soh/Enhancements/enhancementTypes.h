@@ -8,13 +8,6 @@ typedef enum {
 } BetterDebugWarpOverrideMQMode;
 
 typedef enum {
-    CSMC_DISABLED,
-    CSMC_BOTH,
-    CSMC_TEXTURE,
-    CSMC_SIZE,
-} ChestStyleMatchesContentsType;
-
-typedef enum {
     SGIA_DISABLED,
     SGIA_JUNK,
     SGIA_ALL,
@@ -56,6 +49,8 @@ typedef enum {
     BOOTSEQUENCE_DEFAULT,
     BOOTSEQUENCE_AUTHENTIC,
     BOOTSEQUENCE_FILESELECT,
+    BOOTSEQUENCE_DEBUGWARPSCREEN,
+    BOOTSEQUENCE_WARPPOINT,
 } BootSequenceType;
 
 typedef enum {

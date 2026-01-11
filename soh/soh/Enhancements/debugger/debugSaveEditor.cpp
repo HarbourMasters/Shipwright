@@ -4,6 +4,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
+#include "soh/SaveManager.h"
 
 #include <spdlog/fmt/fmt.h>
 #include <array>
@@ -12,7 +13,7 @@
 #include <string>
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
-#include "soh_assets.h"
+#include <soh_assets.h>
 
 extern "C" {
 #include <z64.h>
@@ -21,11 +22,12 @@ extern "C" {
 #include "macros.h"
 #include "soh/cvar_prefixes.h"
 extern PlayState* gPlayState;
-
-#include "textures/icon_item_static/icon_item_static.h"
-#include "textures/icon_item_24_static/icon_item_24_static.h"
-#include "textures/parameter_static/parameter_static.h"
 }
+
+#include "message_data_static.h"
+extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
+extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
+extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
 
 // Maps entries in the GS flag array to the area name it represents
 std::vector<const char*> gsMapping = {
@@ -106,9 +108,51 @@ char z2ASCII(int code) {
     return char(ret);
 }
 
+std::string decodeNTSCPlayerNameChar(int code) {
+    const std::string charmap[] = {
+        "0",  "1",  "2",  "3",  "4",  "5",  "6",  "7",  "8",  "9",  // 10
+        "あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ", // 20
+        "さ", "し", "す", "せ", "そ", "た", "ち", "つ", "て", "と", // 30
+        "な", "に", "ぬ", "ね", "の", "は", "ひ", "ふ", "へ", "ほ", // 40
+        "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "ら", "り", // 50
+        "る", "れ", "ろ", "わ", "を", "ん", "ぁ", "ぃ", "ぅ", "ぇ", // 60
+        "ぉ", "っ", "ゃ", "ゅ", "ょ", "が", "ぎ", "ぐ", "げ", "ご", // 70
+        "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", // 80
+        "ば", "び", "ぶ", "べ", "ぼ", "ぱ", "ぴ", "ぷ", "ぺ", "ぽ", // 90
+        "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", // 100
+        "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト", // 110
+        "ナ", "ニ", "ヌ", "ネ", "ノ", "ハ", "ヒ", "フ", "ヘ", "ホ", // 120
+        "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ラ", "リ", // 130
+        "ル", "レ", "ロ", "ワ", "ヲ", "ン", "ァ", "ィ", "ゥ", "ェ", // 140
+        "ォ", "ッ", "ャ", "ュ", "ョ", "ガ", "ギ", "グ", "ゲ", "ゴ", // 150
+        "ザ", "ジ", "ズ", "ゼ", "ゾ", "ダ", "ヂ", "ヅ", "デ", "ド", // 160
+        "バ", "ビ", "ブ", "ベ", "ボ", "パ", "ピ", "プ", "ペ", "ポ", // 170
+        "ヴ",
+    };
+    std::string ret;
+
+    if (code < 171) { // Digits and Japanese
+        ret = charmap[code];
+    } else if (code >= 171 && code < 197) { // Uppercase letters
+        ret.assign(1, (char)(code - 171 + 65));
+    } else if (code >= 197 && code < 223) { // Lowercase letters
+        ret.assign(1, (char)(code - 197 + 97));
+    } else if (code == 223) { // Space
+        ret = " ";
+    } else if (code == 228) { // -
+        ret = "-";
+    } else if (code == 234) { // .
+        ret = ".";
+    } else {
+        ret = "?";
+    }
+
+    return ret;
+}
+
 enum MagicLevel { MAGIC_LEVEL_NONE, MAGIC_LEVEL_SINGLE, MAGIC_LEVEL_DOUBLE };
 
-std::unordered_map<int8_t, const char*> magicLevelMap = {
+std::map<int8_t, const char*> magicLevelMap = {
     { MAGIC_LEVEL_NONE, "None" },
     { MAGIC_LEVEL_SINGLE, "Single" },
     { MAGIC_LEVEL_DOUBLE, "Double" },
@@ -121,7 +165,7 @@ enum AudioOutput {
     AUDIO_SURROUND,
 };
 
-std::unordered_map<uint8_t, const char*> audioMap = {
+std::map<uint8_t, const char*> audioMap = {
     { AUDIO_STEREO, "Stereo" },
     { AUDIO_MONO, "Mono" },
     { AUDIO_HEADSET, "Headset" },
@@ -133,15 +177,26 @@ enum ZTarget {
     Z_TARGET_HOLD,
 };
 
-std::unordered_map<uint8_t, const char*> zTargetMap = {
+std::map<uint8_t, const char*> zTargetMap = {
     { Z_TARGET_SWITCH, "Switch" },
     { Z_TARGET_HOLD, "Hold" },
 };
 
-std::unordered_map<int32_t, const char*> fileNumMap = {
+std::map<int32_t, const char*> fileNumMap = {
     { 0, "File 1" },
     { 1, "File 2" },
     { 2, "File 3" },
+};
+
+std::map<uint8_t, const char*> filenameLanguageMap = {
+    { NAME_LANGUAGE_PAL, "PAL" },
+    { NAME_LANGUAGE_NTSC_JPN, "NTSC JPN" },
+    { NAME_LANGUAGE_NTSC_ENG, "NTSC ENG" },
+};
+
+std::map<uint8_t, const char*> filenameLanguageMapNTSCOnly = {
+    { NAME_LANGUAGE_NTSC_JPN, "NTSC JPN" },
+    { NAME_LANGUAGE_NTSC_ENG, "NTSC ENG" },
 };
 
 void DrawInfoTab() {
@@ -160,15 +215,30 @@ void DrawInfoTab() {
     // TODO Needs a better method for name changing but for now this will work.
     std::string name;
     ImU16 one = 1;
-    for (int i = 0; i < 8; i++) {
-        char letter = z2ASCII(gSaveContext.playerName[i]);
-        name += letter;
+
+    if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) {
+        for (int i = 0; i < 8; i++) {
+            char letter = z2ASCII(gSaveContext.playerName[i]);
+            name += letter;
+        }
+        name += '\0';
+    } else {
+        for (int i = 0; i < 8; i++) {
+            name += decodeNTSCPlayerNameChar(gSaveContext.playerName[i]);
+        }
+        name += '\0';
     }
-    name += '\0';
 
     ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
 
-    ImGui::Text("Name: %s", name.c_str());
+    if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) {
+        ImGui::Text("Name: %s", name.c_str());
+    } else {
+        ImGui::PushFont(OTRGlobals::Instance->fontJapanese);
+        ImGui::Text("Name: %s", name.c_str());
+        ImGui::PopFont();
+    }
+
     Tooltip("Player Name");
     std::string nameID;
     for (int i = 0; i < 8; i++) {
@@ -179,6 +249,25 @@ void DrawInfoTab() {
         PushStyleInput(THEME_COLOR);
         ImGui::InputScalar(nameID.c_str(), ImGuiDataType_U8, &gSaveContext.playerName[i], &one, NULL);
         PopStyleInput();
+    }
+
+    // Filename encoding
+    const bool hasPAL = (sGerMessageEntryTablePtr != nullptr) && (sFraMessageEntryTablePtr != nullptr);
+    const bool hasNTSC = (sJpnMessageEntryTablePtr != nullptr);
+    if (hasPAL && hasNTSC) {
+        // Full
+        Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMap,
+                 comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
+    } else if (hasNTSC && (gSaveContext.ship.filenameLanguage != NAME_LANGUAGE_PAL)) {
+        // NTSC only
+        Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMapNTSCOnly,
+                 comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
+    } else {
+        // PAL only (read only)
+        ImGui::BeginDisabled();
+        Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMap,
+                 comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
+        ImGui::EndDisabled();
     }
 
     // Use an intermediary to keep the health from updating (and potentially killing the player)
@@ -452,7 +541,16 @@ void DrawInventoryTab() {
 
             uint8_t item = gSaveContext.inventory.items[index];
             PushStyleButton(Colors::DarkGray);
-            if (item != ITEM_NONE) {
+            if (item == ITEM_ROCS_FEATHER) {
+                auto ret = ImGui::ImageButton(
+                    "ROCS_FEATHER",
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ROCS_FEATHER"),
+                    ImVec2(48.0f, 48.0f), ImVec2(0, 0), ImVec2(1, 1));
+                if (ret) {
+                    selectedIndex = index;
+                    ImGui::OpenPopup(itemPopupPicker);
+                }
+            } else if (item != ITEM_NONE) {
                 const ItemMapEntry& slotEntry = itemMapping.find(item)->second;
                 auto ret = ImGui::ImageButton(
                     slotEntry.name.c_str(),
@@ -499,7 +597,7 @@ void DrawInventoryTab() {
                     }
                 }
 
-                for (int32_t pickerIndex = 0; pickerIndex < possibleItems.size(); pickerIndex++) {
+                for (size_t pickerIndex = 0; pickerIndex < possibleItems.size(); pickerIndex++) {
                     if (((pickerIndex + 1) % 8) != 0) {
                         ImGui::SameLine();
                     }
@@ -941,14 +1039,14 @@ void DrawFlagsTab() {
         },
         "Gold Skulltulas");
 
-    for (int i = 0; i < flagTables.size(); i++) {
+    for (size_t i = 0; i < flagTables.size(); i++) {
         const FlagTable& flagTable = flagTables[i];
         if (flagTable.flagTableType == RANDOMIZER_INF && !IS_RANDO && !IS_BOSS_RUSH) {
             continue;
         }
 
         if (ImGui::TreeNode(flagTable.name)) {
-            for (int j = 0; j < flagTable.size + 1; j++) {
+            for (size_t j = 0; j < flagTable.size + 1; j++) {
                 DrawGroupWithBorder(
                     [&]() {
                         if (j == 0) {
@@ -1023,7 +1121,7 @@ void DrawUpgrade(const std::string& categoryName, int32_t categoryId, const std:
     PushStyleCombobox(THEME_COLOR);
     ImGui::AlignTextToFramePadding();
     if (ImGui::BeginCombo("##upgrade", names[CUR_UPG_VALUE(categoryId)].c_str())) {
-        for (int32_t i = 0; i < names.size(); i++) {
+        for (size_t i = 0; i < names.size(); i++) {
             if (ImGui::Selectable(names[i].c_str())) {
                 Inventory_ChangeUpgrade(categoryId, i);
             }
@@ -1060,7 +1158,7 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
     Tooltip(categoryName.c_str());
 
     if (ImGui::BeginPopup(upgradePopupPicker)) {
-        for (int32_t pickerIndex = 0; pickerIndex < items.size(); pickerIndex++) {
+        for (size_t pickerIndex = 0; pickerIndex < items.size(); pickerIndex++) {
             if ((pickerIndex % 8) != 0) {
                 ImGui::SameLine();
             }
@@ -1099,7 +1197,7 @@ void DrawEquipmentTab() {
         ITEM_TUNIC_KOKIRI, ITEM_TUNIC_GORON,   ITEM_TUNIC_ZORA,    ITEM_NONE,
         ITEM_BOOTS_KOKIRI, ITEM_BOOTS_IRON,    ITEM_BOOTS_HOVER,   ITEM_NONE,
     };
-    for (int32_t i = 0; i < equipmentValues.size(); i++) {
+    for (size_t i = 0; i < equipmentValues.size(); i++) {
         // Skip over unused 4th slots for shields, boots, and tunics
         if (equipmentValues[i] == ITEM_NONE) {
             continue;
@@ -1755,4 +1853,6 @@ void SaveEditorWindow::DrawElement() {
 }
 
 void SaveEditorWindow::InitElement() {
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("ROCS_FEATHER", gRocsFeatherTex,
+                                                                        ImVec4(1, 1, 1, 1));
 }

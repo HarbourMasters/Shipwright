@@ -137,6 +137,10 @@ std::vector<ItemTrackerItem> triforcePieces = {
     ITEM_TRACKER_ITEM(RG_TRIFORCE_PIECE, 0, DrawItem),
 };
 
+std::vector<ItemTrackerItem> rocsFeather = {
+    ITEM_TRACKER_ITEM(RG_ROCS_FEATHER, 0, DrawItem),
+};
+
 std::vector<ItemTrackerItem> beanSoulItems = {
     ITEM_TRACKER_ITEM_CUSTOM(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
@@ -838,6 +842,16 @@ void DrawItem(ItemTrackerItem item) {
                                    RO_TRIFORCE_HUNT_OFF);
             itemName = "Triforce Piece";
             break;
+        case ITEM_NAYRUS_LOVE:
+            if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ROCS_FEATHER)) {
+                hasItem = Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE);
+            }
+            break;
+        case RG_ROCS_FEATHER:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER);
+            itemName = "Roc's Feather";
+            break;
         case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:
             actualItemId = item.id;
             hasItem = Flags_GetRandomizerInf(RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL);
@@ -1493,6 +1507,9 @@ void UpdateVectors() {
         SECTION_DISPLAY_MAIN_WINDOW) {
         mainWindowItems.insert(mainWindowItems.end(), dungeonItems.begin(), dungeonItems.end());
     }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_ROCS_FEATHER)) {
+        mainWindowItems.insert(mainWindowItems.end(), rocsFeather.begin(), rocsFeather.end());
+    }
 
     // if we're adding greg to the misc window,
     // and misc isn't on the main window,
@@ -1837,31 +1854,31 @@ void ItemTrackerWindow::DrawElement() {
     }
 }
 
-static std::unordered_map<int32_t, const char*> itemTrackerCapacityTrackOptions = {
+static std::map<int32_t, const char*> itemTrackerCapacityTrackOptions = {
     { ITEM_TRACKER_NUMBER_NONE, "No Numbers" },
     { ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY, "Current Capacity" },
     { ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY, "Current Ammo" },
     { ITEM_TRACKER_NUMBER_CAPACITY, "Current Capacity / Max Capacity" },
     { ITEM_TRACKER_NUMBER_AMMO, "Current Ammo / Current Capacity" },
 };
-static std::unordered_map<int32_t, const char*> itemTrackerKeyTrackOptions = {
+static std::map<int32_t, const char*> itemTrackerKeyTrackOptions = {
     { KEYS_COLLECTED_MAX, "Collected / Max" },
     { KEYS_CURRENT_COLLECTED_MAX, "Current / Collected / Max" },
     { KEYS_CURRENT_MAX, "Current / Max" },
 };
-static std::unordered_map<int32_t, const char*> itemTrackerTriforcePieceTrackOptions = {
+static std::map<int32_t, const char*> itemTrackerTriforcePieceTrackOptions = {
     { TRIFORCE_PIECE_COLLECTED_REQUIRED, "Collected / Required" },
     { TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX, "Collected / Required / Max" },
 };
-static std::unordered_map<int32_t, const char*> windowTypes = {
+static std::map<int32_t, const char*> windowTypes = {
     { TRACKER_WINDOW_FLOATING, "Floating" },
     { TRACKER_WINDOW_WINDOW, "Window" },
 };
-static std::unordered_map<int32_t, const char*> displayModes = {
+static std::map<int32_t, const char*> displayModes = {
     { TRACKER_DISPLAY_ALWAYS, "Always" },
     { TRACKER_DISPLAY_COMBO_BUTTON, "Combo Button Hold" },
 };
-static std::unordered_map<int32_t, const char*> buttons = {
+static std::map<int32_t, const char*> buttons = {
     { TRACKER_COMBO_BUTTON_A, "A" },           { TRACKER_COMBO_BUTTON_B, "B" },
     { TRACKER_COMBO_BUTTON_C_UP, "C-Up" },     { TRACKER_COMBO_BUTTON_C_DOWN, "C-Down" },
     { TRACKER_COMBO_BUTTON_C_LEFT, "C-Left" }, { TRACKER_COMBO_BUTTON_C_RIGHT, "C-Right" },
@@ -1870,20 +1887,19 @@ static std::unordered_map<int32_t, const char*> buttons = {
     { TRACKER_COMBO_BUTTON_D_UP, "D-Up" },     { TRACKER_COMBO_BUTTON_D_DOWN, "D-Down" },
     { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" },
 };
-static std::unordered_map<int32_t, const char*> displayTypes = {
+static std::map<int32_t, const char*> displayTypes = {
     { SECTION_DISPLAY_HIDDEN, "Hidden" },
     { SECTION_DISPLAY_MAIN_WINDOW, "Main Window" },
     { SECTION_DISPLAY_SEPARATE, "Separate" },
 };
-static std::unordered_map<int32_t, const char*> extendedDisplayTypes = {
+static std::map<int32_t, const char*> extendedDisplayTypes = {
     { SECTION_DISPLAY_EXTENDED_HIDDEN, "Hidden" },
     { SECTION_DISPLAY_EXTENDED_MAIN_WINDOW, "Main Window" },
     { SECTION_DISPLAY_EXTENDED_MISC_WINDOW, "Misc Window" },
     { SECTION_DISPLAY_EXTENDED_SEPARATE, "Separate" },
 };
-static std::unordered_map<int32_t, const char*> minimalDisplayTypes = {
-    { SECTION_DISPLAY_MINIMAL_HIDDEN, "Hidden" }, { SECTION_DISPLAY_MINIMAL_SEPARATE, "Separate" }
-};
+static std::map<int32_t, const char*> minimalDisplayTypes = { { SECTION_DISPLAY_MINIMAL_HIDDEN, "Hidden" },
+                                                              { SECTION_DISPLAY_MINIMAL_SEPARATE, "Separate" } };
 
 void ItemTrackerSettingsWindow::DrawElement() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
@@ -2242,4 +2258,9 @@ void RegisterItemTrackerWidgets() {
     SohGui::mSohMenu->AddSearchWidget({ hookshotIdentWidget, "Randomizer", "Item Tracker", "General Settings" });
 }
 
+void RegisterItemTracker() {
+    COND_HOOK(OnLoadFile, true, [](int32_t fileNum) { shouldUpdateVectors = true; });
+}
+
+static RegisterShipInitFunc registerItemTracker(RegisterItemTracker);
 static RegisterMenuInitFunc menuInitFunc(RegisterItemTrackerWidgets);

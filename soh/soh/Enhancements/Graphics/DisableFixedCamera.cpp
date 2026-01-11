@@ -45,6 +45,8 @@ static int16_t sSetNormalCam = -1;
 static bool sIsCamApplied = false;
 static int sCheckItemCamState = -1;
 static s16 sStoreLastCamType = -1;
+static bool sWasEnabled = false;
+static bool sWaitForSceneChange = false;
 
 extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play);
 
@@ -62,6 +64,8 @@ static void DisableFixedCamera_ResetState() {
     sIsCamApplied = false;
     sCheckItemCamState = -1;
     sStoreLastCamType = -1;
+    sWasEnabled = false;
+    sWaitForSceneChange = false;
 }
 
 static void DisableFixedCamera_RestoreAllCameraData() {
@@ -144,9 +148,24 @@ extern "C" void DisableFixedCamera_SetNormalCamera(PlayState* play) {
 extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play) {
     const bool disableFixedCamEnabled = CVarGetInteger(CVAR_DISABLE_FIXED_CAMERA_NAME, 0) != 0;
     if (!disableFixedCamEnabled) {
-        CollisionHeader* colHeader = BgCheck_GetCollisionHeader(&play->colCtx, BGCHECK_SCENE);
-        DisableFixedCamera_RestoreCameraData(colHeader);
+        DisableFixedCamera_RestoreAllCameraData();
+        DisableFixedCamera_ResetState();
         return;
+    }
+    if (!sWasEnabled) {
+        sWasEnabled = true;
+        sWaitForSceneChange = true;
+        sSetNormalCam = play->sceneNum;
+        sIsCamApplied = true;
+    }
+    if (sWaitForSceneChange) {
+        if (play->sceneNum == sSetNormalCam) {
+            return;
+        }
+        sWaitForSceneChange = false;
+        sIsCamApplied = false;
+        sCheckItemCamState = -1;
+        sStoreLastCamType = -1;
     }
     // prevents normal cam from taking effect during open cutscene to avoid crash
     if (play->sceneNum == SCENE_LINKS_HOUSE && gSaveContext.cutsceneIndex == 0xFFF1) {
@@ -160,11 +179,8 @@ extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play) {
             sSetNormalCam = play->sceneNum;
             sIsCamApplied = false;
             sStoreLastCamType = -1;
-            // Clean up backups when leaving fixed camera scenes
-            for (auto& [key, backup] : sCamDataBackups) {
-                delete[] backup.copy;
-            }
-            sCamDataBackups.clear();
+            // Restore camera data when leaving fixed camera scenes
+            DisableFixedCamera_RestoreAllCameraData();
         }
         DisableFixedCamera_RestoreCameraData(BgCheck_GetCollisionHeader(&play->colCtx, BGCHECK_SCENE));
         return;

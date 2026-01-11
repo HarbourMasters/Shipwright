@@ -208,7 +208,7 @@ void RegionTable_Init_BottomOfTheWell() {
         Entrance(RR_BOTW_HIDDEN_POTS,      []{return true/*CanClimbHigh()*/;}),
         //It's possible to abuse boulder's limited range of collision detection to detonate the flowers through the boulder with bow, but this is a glitch
         //the exact range is just past the furthest away plank in the green goo section
-        Entrance(RR_BOTW_B3_BOMB_FLOWERS,  []{return AnyAgeTime([]{return logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || (logic->CanUse(RG_STICKS) && ctx->GetTrickOption(RT_BOTW_BASEMENT));});}),
+        Entrance(RR_BOTW_B3_BOMB_FLOWERS,  []{return AnyAgeTime([]{return logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_BOTW_BASEMENT) && logic->CanUse(RG_STICKS)) || (ctx->GetTrickOption(RT_DISTANT_BOULDER_COLLISION) && logic->CanUse(RG_FAIRY_BOW));});}),
         Entrance(RR_BOTW_B3_BLOCKED_GRASS, []{return AnyAgeTime([]{return logic->BlastOrSmash();});}),
         Entrance(RR_BOTW_B3_CHEST_AREA,    []{return AnyAgeTime([]{return logic->BlastOrSmash();});}),
     });

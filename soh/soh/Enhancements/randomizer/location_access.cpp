@@ -791,6 +791,8 @@ bool BeanPlanted(const RandomizerGet bean) {
     // flag irrelevant if plant won't spawn
     if (!logic->HasItem(bean)) {
         return false;
+    } else if (ctx->GetOption(RSK_SKIP_PLANTING_BEANS) && ctx->GetOption(RSK_STARTING_BEANS)) {
+        return true;
     }
 
     // swchFlag found using the Actor Viewer to get the Obj_Bean parameters & 0x3F

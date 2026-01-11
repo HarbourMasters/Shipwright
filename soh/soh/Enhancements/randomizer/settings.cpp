@@ -7,8 +7,6 @@
 
 #include <spdlog/spdlog.h>
 
-#include <utility>
-
 #include <libultraship/bridge/consolevariablebridge.h>
 
 namespace Rando {
@@ -1232,6 +1230,7 @@ void Settings::CreateOptions() {
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     OPT_BOOL(RSK_BLUE_FIRE_ARROWS, "Blue Fire Arrows", CVAR_RANDOMIZER_SETTING("BlueFireArrows"), mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
     OPT_BOOL(RSK_SUNLIGHT_ARROWS, "Sunlight Arrows", CVAR_RANDOMIZER_SETTING("SunlightArrows"), mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
+    OPT_BOOL(RSK_ROCS_FEATHER, "Roc's Feather", CVAR_RANDOMIZER_SETTING("RocsFeather"), mOptionDescriptions[RSK_ROCS_FEATHER]);
     OPT_U8(RSK_INFINITE_UPGRADES, "Infinite Upgrades", {"Off", "Progressive", "Condensed Progressive"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("InfiniteUpgrades"), mOptionDescriptions[RSK_INFINITE_UPGRADES]);
     OPT_BOOL(RSK_SKELETON_KEY, "Skeleton Key", CVAR_RANDOMIZER_SETTING("SkeletonKey"), mOptionDescriptions[RSK_SKELETON_KEY]);
     OPT_BOOL(RSK_SLINGBOW_BREAK_BEEHIVES, "Slingshot/Bow Can Break Beehives", CVAR_RANDOMIZER_SETTING("SlingBowBeehives"), mOptionDescriptions[RSK_SLINGBOW_BREAK_BEEHIVES]);
@@ -1347,6 +1346,10 @@ void Settings::CreateOptions() {
               "Allows the following possible without Tunics:\n- Enter Water Temple. The area below the center pillar "
               "still requires Zora Tunic. Applies to MQ also.\n- Enter Fire Temple. Volvagia still requires Goron "
               "Tunic. Applies to MQ also, and includes child access to first floor with dungeon shuffle.");
+    OPT_TRICK(RT_UNINTUITIVE_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Unintuitive Jumps",
+              "Many ledges can be overcome with particular jumps which are simple to execute without items.\n"
+              "This includes jumping from heights to dive deeper without scales,\n"
+              "though this trick doesn't cover Water Temple's Dragon Room.");
     OPT_TRICK(RT_RUSTED_SWITCHES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Hammer Through Collision",
               "Applies to:\n"
               "- Hitting Fire Temple Highest Goron Chest's Rusted Switch in the SoT Block without Song of Time.\n"
@@ -1366,10 +1369,10 @@ void Settings::CreateOptions() {
               "Simple damage boosts",
               "Allows damage boosts in order to reach further locations. Can be combined with \"Simple hover boosts\" "
               "for reaching far distances.");
-    OPT_TRICK(RT_HOVER_BOOST_SIMPLE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL },
+    OPT_TRICK(RT_HOVER_BOOST_SIMPLE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::GLITCH },
               "Simple hover boosts",
-              "Allows equipping of hover boots when link is moving at high speeds to extend distance covered. Can be "
-              "combined with \"Simple damage boosts\" for greater uses.");
+              "Allows equipping of hover boots when Link is moving at high speeds to extend distance covered, often "
+              "after recoil. Can be combined with \"Simple damage boosts\" for greater uses.");
     OPT_TRICK(RT_BOMBCHU_BEEHIVES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Bombchu Beehives",
               "Allows exploding beehives with Bombchus.");
     OPT_TRICK(RT_BLUE_FIRE_MUD_WALLS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Blue Fire Beyond Red Ice",
@@ -1380,6 +1383,9 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_OPEN_UNDERWATER_CHEST, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
               "Open Underwater Chests",
               "Underwater chests can be opened by wearing iron boots and hookshotting the chest.");
+    OPT_TRICK(RT_DISTANT_BOULDER_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
+              "Distant Boulder Collision",
+              "From afar boulder collision is disabled, allowing projectiles to pass through them.");
     OPT_TRICK(RT_HOOKSHOT_EXTENSION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE },
               "Hookshot/Projectile Extension",
               "Slightly extends range. Also allows clipping projectile past collision. Used for:\n"
@@ -1422,17 +1428,11 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_HF_BIG_POE_WITHOUT_EPONA, RCQUEST_BOTH, RA_HYRULE_FIELD, { Tricks::Tag::NOVICE },
               "Big Poe without Epona",
               "Big Poes have a chance of appearing without Epona, you can shoot them quickly with only bow.");
-    OPT_TRICK(RT_KAK_MAN_ON_ROOF, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::NOVICE },
-              "Man on Roof without Hookshot",
-              "Can be reached by side-hopping off the watchtower as either age, or by jumping onto the potion shop's "
-              "roof from the ledge as adult.");
     OPT_TRICK(RT_KAK_TOWER_GS, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::INTERMEDIATE },
               "Kakariko Tower GS with Jump Slash",
               "Climb the tower as high as you can without touching the Gold Skulltula, then let go and jump slash "
               "immediately. By jump-slashing from as low on the ladder as possible to still hit the Skulltula, this "
               "trick can be done without taking fall damage.");
-    OPT_TRICK(RT_KAK_ADULT_WINDMILL_POH, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::NOVICE },
-              "Windmill PoH as Adult with Nothing", "Can jump up to the spinning platform from below as adult.");
     OPT_TRICK(RT_KAK_CHILD_WINDMILL_POH, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::EXTREME },
               "Windmill PoH as Child with Precise Jump Slash",
               "Can jump up to the spinning platform from below as child with a precise jumpslash timed with the "
@@ -1483,7 +1483,7 @@ void Settings::CreateOptions() {
               "the top of Death Mountain.");
     OPT_TRICK(
         RT_DMT_UPPER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::NOVICE },
-        "Death Mountain Trail Upper Red Rock GS without Hammer",
+        "Death Mountain Trail Upper Red Rock GS with Backflip",
         "After killing the Skulltula, the token can be collected by backflipping into the rock at the correct angle.");
     // disabled for now, only applies when trade quest is not shuffled so there's a timer (currently not considered in
     // logic) OPT_TRICK(RT_DMT_BOLERO_BIGGORON, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, {Tricks::Tag::INTERMEDIATE},
@@ -1569,18 +1569,15 @@ void Settings::CreateOptions() {
               "Gerudo Valley Crate PoH as Adult with Hover Boots",
               "From the far side of Gerudo Valley, a precise Hover Boots movement and jump-slash recoil can allow "
               "adult to reach the ledge with the crate PoH without needing Longshot. You will take fall damage.");
-    OPT_TRICK(RT_GV_CHILD_CUCCO_JUMP, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE },
-              "Gerudo Valley Jump Fence with Cucco", "Using cucco as child, it's possible to jumpslash over the gate.");
     OPT_TRICK(RT_GV_CHILD_TENT, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::NOVICE },
               "Gerudo Valley Enter Carpenter's Tent as Child",
               "The loading zone for Carpenter's Tent is accessible to child.");
+    OPT_TRICK(RT_GV_CHILD_CUCCO_JUMP, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE },
+              "Gerudo Valley Jump Fence with Cucco", "Using cucco as child, it's possible to jumpslash over the gate.");
     OPT_TRICK(RT_PASS_GUARDS_WITH_NOTHING, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
               "Sneak Past Moving Gerudo Guards with No Items",
               "The logic normally guarantees Bow or Hookshot to stun them from a distance,"
               "but every moving guard can be passed with basic movement and AI manipulation");
-    OPT_TRICK(RT_GF_JUMP, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE }, "Gerudo\'s Fortress Ledge Jumps",
-              "It is possible to navigate the rooves of Fortress with unintuative jumps to reach additional areas "
-              "without going inside.");
     OPT_TRICK(RT_GF_CHILD_SKIP_WASTELAND_GATE, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
               "Gerudo\'s Fortress Skip Wasteland Gate as Child",
               "As child a sidehop out of bounds off the tower can be used to get past the gate.");
@@ -1661,9 +1658,6 @@ void Settings::CreateOptions() {
               "Dodongo\'s Cavern Two Scrub Room with Strength",
               "With help from a conveniently-positioned block, Adult can quickly carry a Bomb Flower over to destroy "
               "the mud wall blocking the room with two Deku Scrubs.");
-    OPT_TRICK(RT_DC_JUMP, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE },
-              "Dodongo\'s Cavern Spike Trap Room Jump without Hover Boots",
-              "The jump is Adult Link only. Applies to both Vanilla and MQ.");
     OPT_TRICK(RT_DC_HAMMER_FLOOR, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE },
               "Dodongo\'s Cavern Smash the Boss Lobby Floor",
               "The bombable floor before King Dodongo can be destroyed with Hammer if hit in the very center. This is "
@@ -1694,11 +1688,6 @@ void Settings::CreateOptions() {
         "Dodongo\'s Cavern Light the Eyes with Bombchus",
         "You can light the dodongo head's eyes with bombchus from the main room, allowing instant access to the end "
         "of the dungeon.");
-    OPT_TRICK(RT_JABU_ALCOVE_JUMP_DIVE, RCQUEST_BOTH, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE },
-              "Jabu Underwater Alcove as Adult with Jump Dive",
-              "Standing above the underwater tunnel leading to the scrub, jump down and swim through the tunnel. This "
-              "allows adult to access the alcove with no Scale or Iron Boots. In Vanilla Jabu, this alcove has a "
-              "business scrub. In MQ Jabu, it has the compass chest and a door switch for the main floor.");
     OPT_TRICK(RT_JABU_BOSS_HOVER, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE },
               "Jabu Near Boss Room with Hover Boots",
               "A box for the blue switch can be carried over by backwalking with one while the elevator is at its "
@@ -1729,6 +1718,8 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_JABU_MQ_SOT_GS, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE },
               "Jabu MQ Song of Time Block GS with Boomerang",
               "Allow the Boomerang to return to you through the Song of Time block to grab the token.");
+    OPT_TRICK(RT_JABU_BARINADE_POTS, RCQUEST_BOTH, RA_JABU_JABUS_BELLY, { Tricks::Tag::ADVANCED },
+              "Jabu Barinade with Pots", "Barinade can be damaged with pots, requiring only boomerang to defeat.");
     OPT_TRICK(RT_LENS_BOTW, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
               "Bottom of the Well without Lens of Truth",
               "Removes the requirements for the Lens of Truth in Bottom of the Well.");
@@ -1807,10 +1798,6 @@ void Settings::CreateOptions() {
               "The Boomerang can return to Link through walls, allowing child to hit the hallway switch. This can be "
               "used to allow adult to pass through later, or in conjunction with \"Forest Temple Outside Backdoor with "
               "Jump Slash\".");
-    OPT_TRICK(RT_FIRE_BOSS_DOOR_JUMP, RCQUEST_BOTH, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE },
-              "Fire Temple Boss Door without Hover Boots or Pillar",
-              "The Fire Temple Boss Door can be reached as adult with a precise jump. You must be touching the side "
-              "wall of the room so that Link will grab the ledge from farther away than is normally possible.");
     // Is also used in MQ logic, but has no practical effect there as of now
     OPT_TRICK(RT_FIRE_SOT, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE },
               "Fire Temple Song of Time Room GS without Song of Time",
@@ -1889,12 +1876,6 @@ void Settings::CreateOptions() {
               "In the northern basement there's a ledge from where, in Vanilla Water Temple, boulders roll out into "
               "the room. Normally to jump directly to this ledge logically requires the Hover Boots, but with precise "
               "jump, it can be done without them. This trick applies to both Vanilla and Master Quest.");
-    OPT_TRICK(
-        RT_WATER_BK_JUMP_DIVE, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
-        "Water Temple Boss Key Jump Dive",
-        "Stand on the very edge of the raised corridor leading from the push block room to the rolling boulder "
-        "corridor. Face the Gold Skulltula on the waterfall and jump over the boulder corridor floor into the pool of "
-        "water, swimming right once underwater. This allows access to the boss key room without Iron boots.");
     // Also used in MQ logic, but won't be relevent unless a way to enter tower without irons exists (likely a clip +
     // swim)
     OPT_TRICK(RT_WATER_FW_CENTRAL_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
@@ -1927,7 +1908,7 @@ void Settings::CreateOptions() {
               "to find some other way of killing it.");
     OPT_TRICK(RT_WATER_DRAGON_JUMP_DIVE, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
               "Water Temple Dragon Statue Jump Dive",
-              "If you come into the dragon statue room from the serpent river, you can jump down from above and get "
+              "If you come into the dragon statue room from the serpent river, you can sidehop down from above and get "
               "into the tunnel without needing either Iron Boots or a Scale. This trick applies to both Vanilla and "
               "Master Quest. In Vanilla, you must shoot the switch from above with the Bow, and then quickly get "
               "through the tunnel before the gate closes.");
@@ -2176,6 +2157,7 @@ void Settings::CreateOptions() {
                                                                           &mOptions[RSK_LOGIC_RULES],
                                                                           &mOptions[RSK_ALL_LOCATIONS_REACHABLE],
                                                                           &mOptions[RSK_SKULLS_SUNS_SONG],
+                                                                          &mOptions[RSK_BIG_POE_COUNT],
                                                                       });
     // TODO: Exclude Locations Menus
     mTricksByArea.clear();
@@ -2196,6 +2178,7 @@ void Settings::CreateOptions() {
                                                                       &mOptions[RSK_ALL_LOCATIONS_REACHABLE],
                                                                       &mOptions[RSK_STARTING_AGE],
                                                                       &mOptions[RSK_SKULLS_SUNS_SONG],
+                                                                      &mOptions[RSK_BIG_POE_COUNT],
                                                                       &mOptions[RSK_BLUE_FIRE_ARROWS],
                                                                       &mOptions[RSK_SUNLIGHT_ARROWS],
                                                                       &mOptions[RSK_FULL_WALLETS],
@@ -2399,6 +2382,7 @@ void Settings::CreateOptions() {
                                                                                  &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
                                                                                  &mOptions[RSK_SHUFFLE_SWIM],
                                                                                  &mOptions[RSK_SHUFFLE_BEAN_SOULS],
+                                                                                 &mOptions[RSK_ROCS_FEATHER],
                                                                                  &mOptions[RSK_BOMBCHU_BAG],
                                                                                  &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
                                                                                  &mOptions[RSK_INFINITE_UPGRADES],
@@ -2632,6 +2616,7 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_CHEST_MINIGAME],
                                             &mOptions[RSK_SHUFFLE_100_GS_REWARD],
                                             &mOptions[RSK_SHUFFLE_BEAN_SOULS],
+                                            &mOptions[RSK_ROCS_FEATHER],
                                             &mOptions[RSK_SHUFFLE_BOSS_SOULS],
                                             &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
                                             &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],

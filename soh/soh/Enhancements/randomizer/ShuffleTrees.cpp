@@ -52,10 +52,9 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
         return;
     }
 
-    int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+    bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
-    int isVanilla =
-        csmc == CSMC_DISABLED || csmc == CSMC_SIZE || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+    int isVanilla = !csmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
     if (isVanilla) {
         getItemCategory = ITEM_CATEGORY_JUNK;
@@ -103,18 +102,14 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
             Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallBossKeyCrateDL);
             break;
+        case ITEM_CATEGORY_HEALTH:
+            Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
+            break;
         case ITEM_CATEGORY_LESSER:
             Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
-            switch (treeItem.itemId) {
-                case ITEM_HEART_PIECE:
-                case ITEM_HEART_PIECE_2:
-                case ITEM_HEART_CONTAINER:
-                    Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
-                    break;
-                default:
-                    Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
-                    break;
-            }
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
+            break;
         case ITEM_CATEGORY_JUNK:
         default:
             Matrix_Scale(0.04, 0.02, 0.04, MTXMODE_APPLY);
@@ -222,7 +217,7 @@ void Rando::StaticData::RegisterTreeLocations() {
     locationTable[RC_HC_NEAR_GUARDS_TREE_4]       = Location::Tree(RC_HC_NEAR_GUARDS_TREE_4,             RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(421, 1397),    "Tree Near Guards 4",                RHT_TREE_HYRULE_CASTLE,   RG_BLUE_RUPEE,  SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NEAR_GUARDS_TREE_4));
     locationTable[RC_HC_NEAR_GUARDS_TREE_5]       = Location::Tree(RC_HC_NEAR_GUARDS_TREE_5,             RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(-73, 1459),    "Tree Near Guards 5",                RHT_TREE_HYRULE_CASTLE,   RG_BLUE_RUPEE,  SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NEAR_GUARDS_TREE_5));
     locationTable[RC_HC_NEAR_GUARDS_TREE_6]       = Location::Tree(RC_HC_NEAR_GUARDS_TREE_6,             RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(1494, 2108),   "Tree Near Guards 6",                RHT_TREE_HYRULE_CASTLE,   RG_DEKU_NUTS_5, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NEAR_GUARDS_TREE_6));
-    locationTable[RC_HC_SKULLTULA_TREE]           = Location::Tree(RC_HC_SKULLTULA_TREE,                 RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(-145, 2961),   "GS Tree",                           RHT_TREE_HYRULE_CASTLE,   RG_DEKU_NUTS_5, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_SKULLTULA_TREE));
+    locationTable[RC_HC_SKULLTULA_TREE]           = Location::Tree(RC_HC_SKULLTULA_TREE,                 RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(-145, 2961),   "Tree with GS",                      RHT_TREE_HYRULE_CASTLE,   RG_DEKU_NUTS_5, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_SKULLTULA_TREE));
     locationTable[RC_HC_GROTTO_TREE]              = Location::Tree(RC_HC_GROTTO_TREE,                    RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(924, 872),     "Tree Near Storms Grotto",           RHT_TREE_HYRULE_CASTLE,   RG_DEKU_NUTS_5, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_GROTTO_TREE));
     locationTable[RC_HC_NL_TREE_1]                = Location::NLTree(RC_HC_NL_TREE_1,                    RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(-331, 1438),   "NL Tree Near Guards 1",             RHT_TREE_HYRULE_CASTLE,   RG_DEKU_NUTS_5, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NL_TREE_1));
     locationTable[RC_HC_NL_TREE_2]                = Location::NLTree(RC_HC_NL_TREE_2,                    RCQUEST_BOTH, RCAREA_HYRULE_CASTLE,         SCENE_HYRULE_CASTLE,               TWO_ACTOR_PARAMS(1022, 1444),   "NL Tree Near Guards 2",             RHT_TREE_HYRULE_CASTLE,   RG_DEKU_NUTS_5, SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NL_TREE_2));

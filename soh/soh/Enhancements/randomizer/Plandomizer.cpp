@@ -894,7 +894,7 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
 
     ImGui::PopID();
 }
-static std::unordered_map<RandomizerCheckArea, const char*> rcAreaNameMap = {
+static std::map<RandomizerCheckArea, const char*> rcAreaNameMap = {
     { RCAREA_KOKIRI_FOREST, "Kokiri Forest" },
     { RCAREA_LOST_WOODS, "Lost Woods" },
     { RCAREA_SACRED_FOREST_MEADOW, "Sacred Forest Meadow" },

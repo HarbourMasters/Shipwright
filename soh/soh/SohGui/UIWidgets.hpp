@@ -1,14 +1,13 @@
 #ifndef UIWidgets2_hpp
 #define UIWidgets2_hpp
 
+#include <map>
 #include <string>
 #include <vector>
-#include <span>
 #include <stdint.h>
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui.h>
 #include <libultraship/libultraship.h>
-#include <unordered_map>
 #include "soh/ShipUtils.h"
 #include "soh/ShipInit.hpp"
 
@@ -306,14 +305,14 @@ struct CheckboxOptions : WidgetOptions {
 };
 
 struct ComboboxOptions : WidgetOptions {
-    std::unordered_map<int32_t, const char*> comboMap = {};
+    std::map<int32_t, const char*> comboMap = {};
     uint32_t defaultIndex = 0; // Only applicable to CVarCombobox
     ComponentAlignments alignment = ComponentAlignments::Left;
     LabelPositions labelPosition = LabelPositions::Above;
     ImGuiComboFlags flags = 0;
     Colors color = Colors::LightBlue;
 
-    ComboboxOptions& ComboMap(std::unordered_map<int32_t, const char*> comboMap_) {
+    ComboboxOptions& ComboMap(std::map<int32_t, const char*> comboMap_) {
         comboMap = comboMap_;
         return *this;
     }
@@ -504,11 +503,11 @@ struct FloatSliderOptions : WidgetOptions {
 };
 
 struct RadioButtonsOptions : WidgetOptions {
-    std::unordered_map<int32_t, const char*> buttonMap;
+    std::map<int32_t, const char*> buttonMap;
     int32_t defaultIndex = 0;
     Colors color = Colors::LightBlue;
 
-    RadioButtonsOptions& ButtonMap(std::unordered_map<int32_t, const char*> buttonMap_) {
+    RadioButtonsOptions& ButtonMap(std::map<int32_t, const char*> buttonMap_) {
         buttonMap = buttonMap_;
         return *this;
     }
@@ -650,7 +649,7 @@ void Separator(bool padTop = true, bool padBottom = true, float extraVerticalTop
 float CalcComboWidth(const char* preview_value, ImGuiComboFlags flags);
 
 template <typename T>
-bool Combobox(const char* label, T* value, const std::unordered_map<T, const char*>& comboMap,
+bool Combobox(const char* label, T* value, const std::map<T, const char*>& comboMap,
               const ComboboxOptions& options = {}) {
     bool dirty = false;
     float startX = ImGui::GetCursorPosX();
@@ -827,7 +826,7 @@ bool Combobox(const char* label, T* value, const std::vector<std::string>& combo
     ImGui::BeginDisabled(options.disabled);
     PushStyleCombobox(options.color);
 
-    const char* longest;
+    const char* longest = "";
     size_t length = 0;
     for (auto& string : comboVector) {
         size_t len = string.length();
@@ -986,7 +985,7 @@ bool Combobox(const char* label, T* value, const char* (&comboArray)[N], const C
 }
 
 template <typename T = int32_t>
-bool CVarCombobox(const char* label, const char* cvarName, const std::unordered_map<T, const char*>& comboMap,
+bool CVarCombobox(const char* label, const char* cvarName, const std::map<T, const char*>& comboMap,
                   const ComboboxOptions& options = {}) {
     bool dirty = false;
     int32_t value = CVarGetInteger(cvarName, options.defaultIndex);
@@ -1053,7 +1052,7 @@ void InsertHelpHoverText(const char* text);
 } // namespace UIWidgets
 
 ImVec4 GetRandomValue();
-ImVec4 GetRandomValue(uint32_t seed);
+ImVec4 GetRandomValue(uint32_t seed, uint64_t* state = nullptr);
 
 Color_RGBA8 RGBA8FromVec(ImVec4 vec);
 ImVec4 VecFromRGBA8(Color_RGBA8 color);

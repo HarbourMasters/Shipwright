@@ -386,6 +386,7 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
                     getItemEntry.modIndex == MOD_RANDOMIZER) &&
                   (getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
                    getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
+                   getItemEntry.getItemCategory == ITEM_CATEGORY_HEALTH ||
                    getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER ||
                    // Treat small keys as junk if Skeleton Key is obtained.
                    (getItemEntry.getItemCategory == ITEM_CATEGORY_SMALL_KEY &&

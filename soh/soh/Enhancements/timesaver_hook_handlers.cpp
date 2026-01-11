@@ -852,9 +852,6 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_PLAY_SLOW_CHEST_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("FastChests"), 0)) {
                 *should = false;
-            } else if (CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED) && *should) {
-                EnBox* enBox = va_arg(args, EnBox*);
-                *should = enBox->dyna.actor.scale.x != 0.005f;
             }
             break;
         }
