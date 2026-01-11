@@ -140,18 +140,25 @@ void RegionTable_Init_ForestTemple() {
         //Events
         EventAccess(LOGIC_STICK_ACCESS,               []{return logic->CanGetDekuBabaSticks();}),
         EventAccess(LOGIC_NUT_ACCESS,                 []{return logic->CanGetDekuBabaNuts();}),
-        EventAccess(LOGIC_FOREST_SUMMON_NE_SCARECROW, []{return logic->CanUse(RG_HOVER_BOOTS) && ((ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanJumpslash()) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_MEGATON_HAMMER))) && logic->ReachScarecrow();}),
         EventAccess(LOGIC_FOREST_DRAINED_WELL,        []{return true;}),
     }, {}, {
         //Exits
-        Entrance(RR_FOREST_TEMPLE_NE_COURTYARD_LOWER,  []{return true;}),
-        Entrance(RR_FOREST_TEMPLE_NE_COURTYARD_ISLAND, []{return logic->IsAdult && ctx->GetTrickOption(RT_FOREST_COURTYARD_LEDGE) && logic->CanUse(RG_HOVER_BOOTS);}),
-        Entrance(RR_FOREST_TEMPLE_MAP_ROOM,            []{return true;}),
+        Entrance(RR_FOREST_TEMPLE_NE_COURTYARD_LOWER,     []{return true;}),
+        Entrance(RR_FOREST_TEMPLE_NE_COURTYARD_ISLAND,    []{return logic->IsAdult && ctx->GetTrickOption(RT_FOREST_COURTYARD_LEDGE) && logic->CanUse(RG_HOVER_BOOTS);}),
+        Entrance(RR_FOREST_TEMPLE_NE_COURTYARD_DOORFRAME, []{return logic->CanHammerRecoilHover() || ((ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash()));}),
+        Entrance(RR_FOREST_TEMPLE_MAP_ROOM,               []{return true;}),
     });
 
-    areaTable[RR_FOREST_TEMPLE_NE_COURTYARD_ISLAND] = Region("Forest Temple NE Courtyard Island", SCENE_FOREST_TEMPLE, {
+    areaTable[RR_FOREST_TEMPLE_NE_COURTYARD_DOORFRAME] = Region("Forest Temple NE Courtyard Doorframe", SCENE_FOREST_TEMPLE, {
+        //Events
         EventAccess(LOGIC_FOREST_SUMMON_NE_SCARECROW, []{return logic->ScarecrowsSong();}),
-    }, {
+    }, {}, {
+        //Exits
+        Entrance(RR_FOREST_TEMPLE_NE_COURTYARD_LOWER,  []{return true;}),
+        Entrance(RR_FOREST_TEMPLE_NE_COURTYARD_ISLAND, []{return logic->CanHammerRecoilHover();}),
+    });
+
+    areaTable[RR_FOREST_TEMPLE_NE_COURTYARD_ISLAND] = Region("Forest Temple NE Courtyard Island", SCENE_FOREST_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST, true),
     }, {
@@ -160,9 +167,12 @@ void RegionTable_Init_ForestTemple() {
         Entrance(RR_FOREST_TEMPLE_NE_COURTYARD_SCARECROW_LEDGE, []{return logic->Get(LOGIC_FOREST_SUMMON_NE_SCARECROW) && logic->CanUse(RG_HOOKSHOT);}),
     });
 
-    areaTable[RR_FOREST_TEMPLE_NE_COURTYARD_SCARECROW_LEDGE] = Region("Forest Temple NE Courtyard Scarecrow Ledge", SCENE_FOREST_TEMPLE, {}, {
+    areaTable[RR_FOREST_TEMPLE_NE_COURTYARD_SCARECROW_LEDGE] = Region("Forest Temple NE Courtyard Scarecrow Ledge", SCENE_FOREST_TEMPLE, {
+        //Events
+        EventAccess(LOGIC_FOREST_SUMMON_NE_SCARECROW, []{return logic->ScarecrowsSong();}),
+    }, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_GS_RAISED_ISLAND_COURTYARD,    logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_DINS_FIRE) || logic->HasExplosives()),
+        LOCATION(RC_FOREST_TEMPLE_GS_RAISED_ISLAND_COURTYARD, logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_DINS_FIRE) || logic->HasExplosives()),
     }, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_NE_COURTYARD_ISLAND, []{return true;}),
@@ -367,10 +377,10 @@ void RegionTable_Init_ForestTemple() {
     areaTable[RR_FOREST_TEMPLE_BLUE_DOORMAT_HALLWAY] = Region("Forest Temple Blue Doormat Hallway", SCENE_FOREST_TEMPLE, {}, {}, {
         //Exits
         Entrance(RR_FOREST_TEMPLE_BLUE_DOORMAT_HALLWAY_DOORMAT, []{return logic->CanPassEnemy(RE_BIG_SKULLTULA);}),
-        Entrance(RR_FOREST_TEMPLE_LOBBY,              []{return true;}),
+        Entrance(RR_FOREST_TEMPLE_LOBBY,                        []{return true;}),
     });
 
-    areaTable[RR_FOREST_TEMPLE_BASEMENT] = Region("Forest Temple Boss Region", SCENE_FOREST_TEMPLE, {
+    areaTable[RR_FOREST_TEMPLE_BASEMENT] = Region("Forest Temple Basement", SCENE_FOREST_TEMPLE, {
         //Events
         EventAccess(LOGIC_FOREST_OPEN_BOSS_HALLWAY, []{return true;}),
     }, {
@@ -604,17 +614,29 @@ void RegionTable_Init_ForestTemple() {
         Entrance(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_ISLAND,  []{return logic->CanUse(RG_LONGSHOT);}),
     });
 
+    areaTable[RR_FOREST_TEMPLE_MQ_NE_COURTYARD_DOORFRAME] = Region("Forest Temple MQ NE Courtyard Doorframe", SCENE_FOREST_TEMPLE, {}, {
+        //Locations
+        //Actually killing the skull from the doorframe with melee is annoying. Hammer swing hits low enough unaided, other swords need to crouch stab but the spot is precise based on range. kokiri sword doesn't reach at all for adult.
+        LOCATION(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD, logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOMB_THROW) || logic->CanUse(RG_MEGATON_HAMMER) ||
+                                                                 (logic->CanStandingShield() && (logic->CanUse(RG_STICKS) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MASTER_SWORD) || (logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD))))),
+    }, {
+        //Exits
+        Entrance(RR_FOREST_TEMPLE_MQ_NE_COURTYARD,        []{return true;}),
+        Entrance(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_ISLAND, []{return logic->CanHammerRecoilHover();}),
+    });
+
     areaTable[RR_FOREST_TEMPLE_MQ_COURTYARD_TOP_LEDGES] = Region("Forest Temple MQ Courtyard Top Ledges", SCENE_FOREST_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_UPPER_CHEST, true),
-        //Actually killing the skull from the doorframe with melee is annoying. Hammer swing hits low enough unaided, other swords need to crouch stab but the spot is precise based on range. kokiri sword doesn't reach at all for adult.
-        LOCATION(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD,          ((logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_FOREST_DOORFRAME) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_MEGATON_HAMMER)))) && logic->CanJumpslash() && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || logic->CanUse(RG_FAIRY_BOW) || logic->HookshotOrBoomerang() || (logic->CanStandingShield() && (logic->CanUse(RG_STICKS) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MASTER_SWORD) || (logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD)))))),
     }, {
         //Exits
-        Entrance(RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE,       []{return true;}),
-        Entrance(RR_FOREST_TEMPLE_MQ_NE_COURTYARD,        []{return true;}),
+        Entrance(RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE,          []{return true;}),
+        Entrance(RR_FOREST_TEMPLE_MQ_NE_COURTYARD,           []{return true;}),
+        Entrance(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_DOORFRAME, []{return logic->CanHammerRecoilHover() || 
+                                                                       ((ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash())) ||
+                                                                       (logic->IsChild && (ctx->GetTrickOption(RT_FOREST_MQ_CHILD_DOORFRAME) || logic->CanMiddairGroundJump()));}),
         //N64 logic doesn't check damage but I always take some so I'm adding it
-        Entrance(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_ISLAND, []{return ctx->GetTrickOption(RT_FOREST_COURTYARD_LEDGE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash() && logic->TakeDamage();}),
+        Entrance(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_ISLAND,    []{return ctx->GetTrickOption(RT_FOREST_COURTYARD_LEDGE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash() && logic->TakeDamage();}),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_NE_COURTYARD_ISLAND] = Region("Forest Temple MQ NE Courtyard Island", SCENE_FOREST_TEMPLE, {}, {
