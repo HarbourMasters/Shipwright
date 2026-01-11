@@ -11,12 +11,13 @@
 // but the best location will probably be in the modding engine
 // which doesn't exist yet.
 typedef enum {
-    MOD_NONE,
-    MOD_RANDOMIZER,
+#define DEFINE_ModIndex(enum) enum,
+#include "randomizerEnums.h"
 } ModIndex;
+
 typedef enum {
-    TABLE_VANILLA = MOD_NONE,
-    TABLE_RANDOMIZER = MOD_RANDOMIZER,
+#define DEFINE_TableIndex(enum) enum,
+#include "randomizerEnums.h"
 } TableIndex;
 
 typedef struct {
@@ -438,6 +439,12 @@ typedef enum {
 #include "randomizerEnums.h"
 } RandoOptionMQDungeons;
 
+// Triforce Hunt settings (off, win, Ganon's Boss Key)
+typedef enum {
+#define DEFINE_RandoOptionTriforceHunt(enum) enum,
+#include "randomizerEnums.h"
+} RandoOptionTriforceHunt;
+
 typedef enum {
 #define DEFINE_RandoOptionLocationInclusion(enum) enum,
 #include "randomizerEnums.h"
@@ -458,66 +465,23 @@ typedef enum {
 #include "randomizerEnums.h"
 } ItemObtainability;
 
-typedef struct BeehiveIdentity {
+typedef struct CheckIdentity {
     RandomizerInf randomizerInf;
     RandomizerCheck randomizerCheck;
-} BeehiveIdentity;
+} CheckIdentity;
 
 typedef struct ScrubIdentity {
-    RandomizerInf randomizerInf;
-    RandomizerCheck randomizerCheck;
+    CheckIdentity identity;
     GetItemID getItemId;
     int32_t itemPrice;
-    uint8_t isShuffled;
 } ScrubIdentity;
 
 typedef struct ShopItemIdentity {
-    RandomizerInf randomizerInf;
-    RandomizerCheck randomizerCheck;
+    CheckIdentity identity;
     GetItemID ogItemId;
     int32_t enGirlAShopItem;
     int32_t itemPrice;
 } ShopItemIdentity;
-
-typedef struct CowIdentity {
-    RandomizerInf randomizerInf;
-    RandomizerCheck randomizerCheck;
-} CowIdentity;
-
-typedef struct PotIdentity {
-    RandomizerInf randomizerInf;
-    RandomizerCheck randomizerCheck;
-} PotIdentity;
-
-typedef struct FishIdentity {
-    RandomizerInf randomizerInf;
-    RandomizerCheck randomizerCheck;
-} FishIdentity;
-
-typedef struct FairyIdentity {
-    RandomizerInf randomizerInf;
-    RandomizerCheck randomizerCheck;
-} FairyIdentity;
-
-typedef struct GrassIdentity {
-    RandomizerInf randomizerInf;
-    RandomizerCheck randomizerCheck;
-} GrassIdentity;
-
-typedef struct CrateIdentity {
-    RandomizerInf randomizerInf;
-    RandomizerCheck randomizerCheck;
-} CrateIdentity;
-
-typedef struct SmallCrateIdentity {
-    RandomizerInf randomizerInf;
-    RandomizerCheck randomizerCheck;
-} SmallCrateIdentity;
-
-typedef struct TreeIdentity {
-    RandomizerInf randomizerInf;
-    RandomizerCheck randomizerCheck;
-} TreeIdentity;
 
 typedef enum {
 #define DEFINE_TrackerWindowType(enum) enum,

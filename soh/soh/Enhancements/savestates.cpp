@@ -364,7 +364,7 @@ SaveStateMgr::~SaveStateMgr() {
 }
 
 SaveState::SaveState(std::shared_ptr<SaveStateMgr> mgr, unsigned int slot)
-    : saveStateMgr(mgr), slot(slot), info(nullptr) {
+    : slot(slot), saveStateMgr(mgr), info(nullptr) {
     this->info = std::make_shared<SaveStateInfo>();
 }
 

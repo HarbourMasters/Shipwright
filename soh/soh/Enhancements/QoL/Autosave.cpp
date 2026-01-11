@@ -44,9 +44,11 @@ static void Autosave_PerformSave() {
     Play_PerformSave(gPlayState);
 
     // Send notification
-    Notification::Emit({
-        .message = "Game autosaved",
-    });
+    if (CVarGetInteger(CVAR_ENHANCEMENT("AutosaveNotification"), 1)) {
+        Notification::Emit({
+            .message = "Game autosaved",
+        });
+    }
 }
 
 static void Autosave_IntervalSave() {

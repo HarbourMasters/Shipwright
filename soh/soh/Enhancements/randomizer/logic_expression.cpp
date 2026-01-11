@@ -598,9 +598,7 @@ static bool RegionAgeTimeAccess(const RandomizerRegion region, const RegionAgeTi
 std::unordered_map<std::string, LogicExpression::Impl::FunctionAdapter> LogicExpression::Impl::functionAdapters;
 void LogicExpression::Impl::PopulateFunctionAdapters() {
     functionAdapters = {
-        REGISTER_FUNCTION(Here),
-        REGISTER_FUNCTION_WITH_DEFAULTS(MQSpiritSharedBrokenWallRoom, RandomizerRegion{}, ConditionFn{}, false),
-        REGISTER_FUNCTION_WITH_DEFAULTS(MQSpiritSharedStatueRoom, RandomizerRegion{}, ConditionFn{}, false),
+        REGISTER_FUNCTION(AnyAgeTime),
         REGISTER_FUNCTION_WITH_DEFAULTS(GetCheckPrice, RC_UNKNOWN_CHECK),
         REGISTER_FUNCTION(GetWalletCapacity),
         REGISTER_FUNCTION(GetOption),
@@ -634,7 +632,6 @@ void LogicExpression::Impl::PopulateFunctionAdapters() {
         REGISTER_LOGIC_FUNCTION(CanHitEyeTargets),
         REGISTER_LOGIC_FUNCTION(CanDetonateBombFlowers),
         REGISTER_LOGIC_FUNCTION(CanDetonateUprightBombFlower),
-        REGISTER_LOGIC_FUNCTION(MQWaterLevel),
         REGISTER_LOGIC_FUNCTION(BottleCount),
         REGISTER_LOGIC_FUNCTION(OcarinaButtons),
         REGISTER_LOGIC_FUNCTION(HasBottle),

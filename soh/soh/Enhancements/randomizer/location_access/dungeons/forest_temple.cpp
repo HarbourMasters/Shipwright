@@ -96,7 +96,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_LOBBY,              true),
-        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER, logic->CanUse(RG_HOVER_BOOTS) && ((ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()) || (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->IsAdult && logic->CanGroundJump()))),
+        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER, logic->CanUse(RG_HOVER_BOOTS) && ((ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()))) || (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->IsAdult && logic->CanGroundJump()))),
         ENTRANCE(RR_FOREST_TEMPLE_MAP_ROOM,           true),
         ENTRANCE(RR_FOREST_TEMPLE_SEWER,              logic->HasItem(RG_GOLDEN_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
         ENTRANCE(RR_FOREST_TEMPLE_DRAINED_SEWER,      logic->Get(LOGIC_FOREST_DRAINED_WELL)),
@@ -140,7 +140,7 @@ void RegionTable_Init_ForestTemple() {
         //Events
         EVENT_ACCESS(LOGIC_STICK_ACCESS,               logic->CanGetDekuBabaSticks()),
         EVENT_ACCESS(LOGIC_NUT_ACCESS,                 logic->CanGetDekuBabaNuts()),
-        EVENT_ACCESS(LOGIC_FOREST_SUMMON_NE_SCARECROW, ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanJumpslash() && logic->CanUse(RG_HOVER_BOOTS) && logic->ScarecrowsSong()),
+        EVENT_ACCESS(LOGIC_FOREST_SUMMON_NE_SCARECROW, logic->CanUse(RG_HOVER_BOOTS) && ((ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanJumpslash()) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_MEGATON_HAMMER))) && logic->ReachScarecrow()),
         EVENT_ACCESS(LOGIC_FOREST_DRAINED_WELL,        true),
     }, {}, {
         //Exits
@@ -174,8 +174,8 @@ void RegionTable_Init_ForestTemple() {
         LOCATION(RC_FOREST_TEMPLE_MAP_CHEST, logic->CanKillEnemy(RE_BLUE_BUBBLE)),
     }, {
         //Exits
-        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_LOWER, Here(RR_FOREST_TEMPLE_MAP_ROOM, []{return logic->CanKillEnemy(RE_BLUE_BUBBLE);})),
-        ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_UPPER, Here(RR_FOREST_TEMPLE_MAP_ROOM, []{return logic->CanKillEnemy(RE_BLUE_BUBBLE);})),
+        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_LOWER, AnyAgeTime([]{return logic->CanKillEnemy(RE_BLUE_BUBBLE);})),
+        ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_UPPER, AnyAgeTime([]{return logic->CanKillEnemy(RE_BLUE_BUBBLE);})),
     });
 
     areaTable[RR_FOREST_TEMPLE_SEWER] = Region("Forest Temple Sewer", SCENE_FOREST_TEMPLE, {}, {
@@ -202,7 +202,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_BELOW_BOSS_KEY_CHEST] = Region("Forest Temple Below Boss Key Chest", SCENE_FOREST_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER, Here(RR_FOREST_TEMPLE_BELOW_BOSS_KEY_CHEST, []{return logic->CanKillEnemy(RE_BLUE_BUBBLE);})),
+        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER, AnyAgeTime([]{return logic->CanKillEnemy(RE_BLUE_BUBBLE);})),
     });
 
     areaTable[RR_FOREST_TEMPLE_FLOORMASTER_ROOM] = Region("Forest Temple Floormaster Room", SCENE_FOREST_TEMPLE, {}, {
@@ -456,8 +456,8 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_MQ_RED_DOORMAT_HALLWAY] = Region("Forest Temple MQ Red Doormat Hallway", SCENE_FOREST_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_LOBBY,              Here(RR_FOREST_TEMPLE_MQ_RED_DOORMAT_HALLWAY, []{return logic->CanKillEnemy(RE_STALFOS);})),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_LOWER_BLOCK_PUZZLE, Here(RR_FOREST_TEMPLE_MQ_RED_DOORMAT_HALLWAY, []{return logic->CanKillEnemy(RE_STALFOS);})),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_LOBBY,              AnyAgeTime([]{return logic->CanKillEnemy(RE_STALFOS);})),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_LOWER_BLOCK_PUZZLE, AnyAgeTime([]{return logic->CanKillEnemy(RE_STALFOS);})),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_LOWER_BLOCK_PUZZLE] = Region("Forest Temple MQ Lower Block Puzzle", SCENE_FOREST_TEMPLE, {
@@ -470,7 +470,7 @@ void RegionTable_Init_ForestTemple() {
         LOCATION(RC_FOREST_TEMPLE_MQ_GS_BLOCK_PUSH_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
     }, {
         //Exits
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_RED_DOORMAT_HALLWAY, Here(RR_FOREST_TEMPLE_MQ_LOWER_BLOCK_PUZZLE, []{return logic->CanKillEnemy(RE_STALFOS);})),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_RED_DOORMAT_HALLWAY, AnyAgeTime([]{return logic->CanKillEnemy(RE_STALFOS);})),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_MIDDLE_BLOCK_PUZZLE, logic->HasItem(RG_GORONS_BRACELET) || (logic->Get(LOGIC_FOREST_MQ_BLOCK_ROOM_TARGETS) && logic->CanUse(RG_HOOKSHOT))),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_INDOOR_LEDGE,        logic->Get(LOGIC_FOREST_CAN_TWIST_HALLWAY) && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS))),
     });
@@ -496,7 +496,7 @@ void RegionTable_Init_ForestTemple() {
         //As there is no way in default logic to reach the other possible key use without going through RR_FOREST_TEMPLE_MQ_NW_COURTYARD, this is logically safe for now
         //Breaks if there's any other way to RR_FOREST_TEMPLE_MQ_FALLING_ROOM than going through the eye targets in RR_FOREST_TEMPLE_MQ_LOBBY
         //Requires a bow/sling ammo source once ammo logic is done, to avoid edge cases.
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,       logic->SmallKeys(SCENE_FOREST_TEMPLE, 2) && Here(RR_FOREST_TEMPLE_MQ_UPPER_BLOCK_PUZZLE, []{return logic->CanKillEnemy(RE_FLOORMASTER);})),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,       logic->SmallKeys(SCENE_FOREST_TEMPLE, 2) && AnyAgeTime([]{return logic->CanKillEnemy(RE_FLOORMASTER);})),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_STRAIGHT_HALLWAY] = Region("Forest Temple MQ Straight Hallway", SCENE_FOREST_TEMPLE, {}, {
@@ -509,7 +509,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_MQ_FLOORMASTER_ROOM] = Region("Forest Temple MQ Floormaster Room", SCENE_FOREST_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_LEDGE, Here(RR_FOREST_TEMPLE_MQ_FLOORMASTER_ROOM, []{return logic->CanKillEnemy(RE_FLOORMASTER);})),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_LEDGE, AnyAgeTime([]{return logic->CanKillEnemy(RE_FLOORMASTER);})),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_INDOOR_LEDGE] = Region("Forest Temple MQ Indoor Ledge", SCENE_FOREST_TEMPLE, {
@@ -539,7 +539,7 @@ void RegionTable_Init_ForestTemple() {
         LOCATION(RC_FOREST_TEMPLE_MQ_REDEAD_CHEST, logic->CanKillEnemy(RE_REDEAD)),
     }, {
         //Exits
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_LEDGE, Here(RR_FOREST_TEMPLE_MQ_REDEAD_ROOM, []{return logic->CanKillEnemy(RE_REDEAD);})),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_LEDGE, AnyAgeTime([]{return logic->CanKillEnemy(RE_REDEAD);})),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_NW_COURTYARD] = Region("Forest Temple MQ NW Courtyard", SCENE_FOREST_TEMPLE, {
@@ -568,8 +568,9 @@ void RegionTable_Init_ForestTemple() {
         EVENT_ACCESS(LOGIC_FOREST_MQ_BURNED_WEB, logic->HasFireSource()),
     }, {}, {
         //Exits
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,  logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->TakeDamage()),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE, true),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,       logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->TakeDamage()),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_LEDGE, ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER)),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE,      true),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE] = Region("Forest Temple MQ North Passage", SCENE_FOREST_TEMPLE, {
@@ -607,7 +608,7 @@ void RegionTable_Init_ForestTemple() {
         //Locations
         LOCATION(RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_UPPER_CHEST, true),
         //Actually killing the skull from the doorframe with melee is annoying. Hammer swing hits low enough unaided, other swords need to crouch stab but the spot is precise based on range. kokiri sword doesn't reach at all for adult.
-        LOCATION(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD,         ((logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_FOREST_DOORFRAME))) && logic->CanJumpslash() && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || logic->CanUse(RG_FAIRY_BOW) || logic->HookshotOrBoomerang() || (logic->CanStandingShield() && (logic->CanUse(RG_STICKS) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MASTER_SWORD) || (logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD)))))),
+        LOCATION(RC_FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD,          ((logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_FOREST_DOORFRAME) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_MEGATON_HAMMER)))) && logic->CanJumpslash() && (logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || logic->CanUse(RG_FAIRY_BOW) || logic->HookshotOrBoomerang() || (logic->CanStandingShield() && (logic->CanUse(RG_STICKS) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MASTER_SWORD) || (logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD)))))),
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE,       true),
@@ -674,7 +675,7 @@ void RegionTable_Init_ForestTemple() {
         //!QUANTUM LOGIC!
         //This key logic assumes that you can get to falling room either by spending the 5th key here, or by wasting a key in falling room itself.
         //While being the 5th key makes this simpler in theory, if a different age can waste the key compared to reaching this room it breaks
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_FALLING_ROOM,    logic->SmallKeys(SCENE_FOREST_TEMPLE, 5) && Here(RR_FOREST_TEMPLE_MQ_BETH_ROOM, []{return logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DINS_FIRE);})),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_FALLING_ROOM,    logic->SmallKeys(SCENE_FOREST_TEMPLE, 5) && AnyAgeTime([]{return logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_DINS_FIRE);})),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_TORCH_SHOT_ROOM, logic->SmallKeys(SCENE_FOREST_TEMPLE, 6)),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_3_STALFOS_ROOM,  true),
     });

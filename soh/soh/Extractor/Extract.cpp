@@ -7,6 +7,7 @@
 #include "Extract.h"
 #include "portable-file-dialogs.h"
 #include <ship/utils/binarytools/BitConverter.h>
+#include "soh/ShipUtils.h"
 #include "variables.h"
 
 #ifdef unix
@@ -46,7 +47,6 @@
 #include <fstream>
 #include <filesystem>
 #include <unordered_map>
-#include <random>
 #include <string>
 
 extern "C" uint32_t CRC32C(unsigned char* data, size_t dataSize);
@@ -619,13 +619,10 @@ std::string Extractor::Mkdtemp() {
 
     // create 6 random alphanumeric characters
     static const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(0, sizeof(charset) - 1);
 
     char randchr[7];
     for (int i = 0; i < 6; i++) {
-        randchr[i] = charset[dist(gen)];
+        randchr[i] = charset[ShipUtils::Random(0, sizeof(charset))];
     }
     randchr[6] = '\0';
 

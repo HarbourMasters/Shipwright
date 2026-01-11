@@ -74,7 +74,7 @@ void RegionTable_Init_Kakariko() {
         ENTRANCE(RR_KAK_REDEAD_GROTTO,        logic->CanOpenBombGrotto()),
         ENTRANCE(RR_KAK_IMPAS_LEDGE,          (logic->IsChild && logic->AtDay) || (logic->IsAdult && ctx->GetTrickOption(RT_VISIBLE_COLLISION))),
         ENTRANCE(RR_KAK_WATCHTOWER,           logic->IsAdult || logic->AtDay || logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer())),
-        ENTRANCE(RR_KAK_ROOFTOP,              logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_KAK_MAN_ON_ROOF) && logic->IsAdult)),
+        ENTRANCE(RR_KAK_ROOFTOP,              logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->IsAdult)),
         ENTRANCE(RR_KAK_IMPAS_ROOFTOP,        logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_KAK_ROOFTOP_GS) && logic->CanUse(RG_HOVER_BOOTS))),
         ENTRANCE(RR_THE_GRAVEYARD,            true),
         ENTRANCE(RR_KAK_BEHIND_GATE,          logic->IsAdult || logic->Get(LOGIC_KAKARIKO_GATE_OPEN)),
@@ -104,7 +104,7 @@ void RegionTable_Init_Kakariko() {
     }, {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE, true),
-        ENTRANCE(RR_KAK_ROOFTOP,      ctx->GetTrickOption(RT_KAK_MAN_ON_ROOF) && logic->IsChild),
+        ENTRANCE(RR_KAK_ROOFTOP,      ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->IsChild),
     });
 
     areaTable[RR_KAK_ROOFTOP] = Region("Kak Rooftop", SCENE_KAKARIKO_VILLAGE, {}, {
@@ -177,7 +177,7 @@ void RegionTable_Init_Kakariko() {
     }, {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE,   true),
-        ENTRANCE(RR_KAK_WINDMILL_UPPER, (logic->IsAdult && (ctx->GetTrickOption(RT_KAK_ADULT_WINDMILL_POH) || logic->CanGroundJump())) || (logic->IsChild && logic->CanJumpslash() && ctx->GetTrickOption(RT_KAK_CHILD_WINDMILL_POH))),
+        ENTRANCE(RR_KAK_WINDMILL_UPPER, (logic->IsAdult && (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->CanGroundJump())) || (logic->IsChild && logic->CanJumpslash() && ctx->GetTrickOption(RT_KAK_CHILD_WINDMILL_POH))),
     });
 
     areaTable[RR_KAK_WINDMILL_UPPER] = Region("Kak Windmill Upper", SCENE_WINDMILL_AND_DAMPES_GRAVE, {}, {

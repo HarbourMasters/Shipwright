@@ -1964,6 +1964,12 @@ void StaticData::HintTable_Init_Item() {
                                                  CustomMessage("a gold fragment", /*german*/"ein Goldfragment", /*french*/"un fragment d'or")});
                                                   // /*spanish*/un fragmento dorado
 
+    hintTextTable[RHT_ROCS_FEATHER] = HintText(CustomMessage("Roc's Feather", /*german*/"Roc's Feather", /*french*/"Roc's Feather"),
+                                                 {}, {
+                                                 CustomMessage("a feather", /*german*/"a feather", /*french*/"a feather"),
+                                                 CustomMessage("a chicken wing", /*german*/"a chicken wing", /*french*/"a chicken wing"),
+                                                 CustomMessage("a blue wing", /*german*/"a blue wing", /*french*/"a blue wing")});
+     
     hintTextTable[RHT_BEAN_SOUL] = HintText(CustomMessage("a bean soul", /*german*/"eine bohnenseele", /*french*/"une âme de haricot"));
 
     hintTextTable[RHT_GOHMA_SOUL] = HintText(CustomMessage("the soul of Gohma", /*german*/"Gohmas Seele", /*french*/"l'Âme de Gohma"),

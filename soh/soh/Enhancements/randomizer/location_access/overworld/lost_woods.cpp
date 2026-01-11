@@ -7,7 +7,7 @@ void RegionTable_Init_LostWoods() {
     // clang-format off
     areaTable[RR_LW_FOREST_EXIT] = Region("LW Forest Exit", SCENE_LOST_WOODS, {}, {}, {
         //Exits
-        ENTRANCE(RR_KOKIRI_FOREST, true),
+        ENTRANCE(RR_KOKIRI_FOREST, true)
     });
 
     areaTable[RR_THE_LOST_WOODS] = Region("Lost Woods", SCENE_LOST_WOODS, {
@@ -34,14 +34,14 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_DEKU_SCRUB_NEAR_BRIDGE,          logic->IsChild && logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE,       logic->CanSpawnSoilSkull(RG_LOST_WOODS_BRIDGE_BEAN_SOUL) && logic->CanAttack()),
         //RANDOTODO handle collecting some of these as you leave the shortcut from the other side
-        LOCATION(RC_LW_SHORTCUT_RUPEE_1,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-        LOCATION(RC_LW_SHORTCUT_RUPEE_2,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-        LOCATION(RC_LW_SHORTCUT_RUPEE_3,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-        LOCATION(RC_LW_SHORTCUT_RUPEE_4,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-        LOCATION(RC_LW_SHORTCUT_RUPEE_5,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-        LOCATION(RC_LW_SHORTCUT_RUPEE_6,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-        LOCATION(RC_LW_SHORTCUT_RUPEE_7,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-        LOCATION(RC_LW_SHORTCUT_RUPEE_8,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_LW_SHORTCUT_RUPEE_1,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_LW_SHORTCUT_RUPEE_2,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_LW_SHORTCUT_RUPEE_3,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_LW_SHORTCUT_RUPEE_4,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_LW_SHORTCUT_RUPEE_5,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_LW_SHORTCUT_RUPEE_6,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_LW_SHORTCUT_RUPEE_7,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_LW_SHORTCUT_RUPEE_8,                logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_LW_BEAN_SPROUT_NEAR_BRIDGE_FAIRY_1, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_LOST_WOODS_BRIDGE_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_LW_BEAN_SPROUT_NEAR_BRIDGE_FAIRY_2, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_LOST_WOODS_BRIDGE_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_LW_BEAN_SPROUT_NEAR_BRIDGE_FAIRY_3, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_LOST_WOODS_BRIDGE_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
@@ -59,7 +59,7 @@ void RegionTable_Init_LostWoods() {
         ENTRANCE(RR_LW_BRIDGE,                (logic->IsAdult && (CanPlantBean(RR_THE_LOST_WOODS, RG_LOST_WOODS_BRIDGE_BEAN_SOUL) || ctx->GetTrickOption(RT_LW_BRIDGE))) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_ZR_FROM_SHORTCUT,         logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_LOST_WOOD_NAVI_DIVE) && logic->IsChild && logic->HasItem(RG_BRONZE_SCALE) && logic->CanJumpslash())),
         ENTRANCE(RR_LW_BEYOND_MIDO,           logic->IsChild || logic->CanUse(RG_SARIAS_SONG) || ctx->GetTrickOption(RT_LW_MIDO_BACKFLIP)),
-        ENTRANCE(RR_LW_NEAR_SHORTCUTS_GROTTO, Here(RR_THE_LOST_WOODS, []{return logic->BlastOrSmash();})),
+        ENTRANCE(RR_LW_NEAR_SHORTCUTS_GROTTO, AnyAgeTime([]{return logic->BlastOrSmash();})),
     });
 
     areaTable[RR_LW_BEYOND_MIDO] = Region("LW Beyond Mido", SCENE_LOST_WOODS, {
@@ -87,7 +87,7 @@ void RegionTable_Init_LostWoods() {
         ENTRANCE(RR_THE_LOST_WOODS,   logic->IsChild || logic->CanUse(RG_SARIAS_SONG)),
         ENTRANCE(RR_SFM_ENTRYWAY,     true),
         ENTRANCE(RR_DEKU_THEATER,     true),
-        ENTRANCE(RR_LW_SCRUBS_GROTTO, Here(RR_LW_BEYOND_MIDO, []{return logic->BlastOrSmash();})),
+        ENTRANCE(RR_LW_SCRUBS_GROTTO, AnyAgeTime([]{return logic->BlastOrSmash();})),
     });
 
     areaTable[RR_LW_NEAR_SHORTCUTS_GROTTO] = Region("LW Near Shortcuts Grotto", SCENE_GROTTOS, grottoEvents, {

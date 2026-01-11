@@ -1,5 +1,5 @@
 #include "item_location.h"
-#include "context.h"
+#include "SeedContext.h"
 #include "logic.h"
 
 namespace Rando {

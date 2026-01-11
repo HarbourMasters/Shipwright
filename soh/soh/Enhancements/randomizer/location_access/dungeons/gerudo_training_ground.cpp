@@ -35,12 +35,12 @@ void RegionTable_Init_GerudoTrainingGround() {
     }, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_LOBBY,        true),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_BOULDER_ROOM, Here(RR_GERUDO_TRAINING_GROUND_SAND_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);})),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_BOULDER_ROOM, AnyAgeTime([]{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);})),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_BOULDER_ROOM] = Region("Gerudo Training Ground Boulder Room", SCENE_GERUDO_TRAINING_GROUND, {}, {}, {
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_SAND_ROOM,        true),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_ROOM, Here(RR_GERUDO_TRAINING_GROUND_BOULDER_ROOM, []{return logic->CanUse(logic->IsAdult ? RG_HOOKSHOT : RG_LONGSHOT) || ctx->GetTrickOption(RT_GTG_WITHOUT_HOOKSHOT);})),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_ROOM, AnyAgeTime([]{return logic->CanUse(logic->IsAdult ? RG_HOOKSHOT : RG_LONGSHOT) || ctx->GetTrickOption(RT_GTG_WITHOUT_HOOKSHOT);})),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_CENTRAL_MAZE] = Region("Gerudo Training Ground Central Maze", SCENE_GERUDO_TRAINING_GROUND, {}, {
@@ -175,7 +175,7 @@ void RegionTable_Init_GerudoTrainingGround() {
     }, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_LOBBY,     true),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_LAVA_ROOM, Here(RR_GERUDO_TRAINING_GROUND_DINALFOS, []{return logic->CanKillEnemy(RE_BEAMOS) && logic->CanKillEnemy(RE_DINOLFOS, ED_CLOSE, true, 2, true);})),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_LAVA_ROOM, AnyAgeTime([]{return logic->CanKillEnemy(RE_BEAMOS) && logic->CanKillEnemy(RE_DINOLFOS, ED_CLOSE, true, 2, true);})),
     });
 
 #pragma endregion
@@ -195,8 +195,8 @@ void RegionTable_Init_GerudoTrainingGround() {
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_ENTRYWAY,            true),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_BY_LOBBY,    true),
         //It's possible to use the torch in hidden room of maze with flame storage to light these
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_SAND_ROOM,        Here(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY, []{return logic->HasFireSource();})),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_ROOM,    Here(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY, []{return logic->CanHitEyeTargets();})),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_SAND_ROOM,        AnyAgeTime([]{return logic->HasFireSource();})),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_ROOM,    AnyAgeTime([]{return logic->CanHitEyeTargets();})),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_MAZE_BY_LOBBY] = Region("Gerudo Training Ground MQ Maze By Lobby", SCENE_GERUDO_TRAINING_GROUND, {}, {
@@ -237,19 +237,19 @@ void RegionTable_Init_GerudoTrainingGround() {
     }, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY,        true),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_BOULDER_ROOM, Here(RR_GERUDO_TRAINING_GROUND_MQ_SAND_ROOM, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE);})),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_BOULDER_ROOM, AnyAgeTime([]{return logic->CanKillEnemy(RE_IRON_KNUCKLE);})),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_BOULDER_ROOM] = Region("Gerudo Training Ground MQ Left Side", SCENE_GERUDO_TRAINING_GROUND, {}, {}, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_SAND_ROOM,    true),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM, Here(RR_GERUDO_TRAINING_GROUND_MQ_BOULDER_ROOM, []{return logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_GTG_MQ_WITHOUT_HOOKSHOT) || (ctx->GetTrickOption(RT_GTG_MQ_WITH_HOOKSHOT) && logic->IsAdult && logic->CanJumpslash() && logic->CanUse(RG_HOOKSHOT));})),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM, AnyAgeTime([]{return logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_GTG_MQ_WITHOUT_HOOKSHOT) || (ctx->GetTrickOption(RT_GTG_MQ_WITH_HOOKSHOT) && logic->IsAdult && logic->CanJumpslash() && logic->CanUse(RG_HOOKSHOT));})),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM] = Region("Gerudo Training Ground MQ Stalfos Room", SCENE_GERUDO_TRAINING_GROUND, {
         //Events
         EVENT_ACCESS(LOGIC_BLUE_FIRE_ACCESS,                     true),
-        EVENT_ACCESS(LOGIC_GTG_UNLOCKED_DOOR_BEHIND_HEAVY_BLOCK, Here(RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);})),
+        EVENT_ACCESS(LOGIC_GTG_UNLOCKED_DOOR_BEHIND_HEAVY_BLOCK, AnyAgeTime([]{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);})),
         EVENT_ACCESS(LOGIC_GTG_PUSHED_HEAVY_BLOCK,               logic->CanUse(RG_SILVER_GAUNTLETS) && logic->CanAvoidEnemy(RE_STALFOS, true, 2)),
     }, {
         //Locations
@@ -259,7 +259,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_BOULDER_ROOM,      true),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_BEHIND_BLOCK,      logic->Get(LOGIC_GTG_PUSHED_HEAVY_BLOCK)),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_STATUE_ROOM_LEDGE, logic->IsAdult && Here(RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM, []{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);}) && (ctx->GetTrickOption(RT_LENS_GTG_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->BlueFire() && (logic->CanUse(RG_SONG_OF_TIME) || (ctx->GetTrickOption(RT_GTG_FAKE_WALL) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)) || (logic->IsAdult && logic->CanGroundJump()))),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_STATUE_ROOM_LEDGE, logic->IsAdult && AnyAgeTime([]{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2, true);}) && (ctx->GetTrickOption(RT_LENS_GTG_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->BlueFire() && (logic->CanUse(RG_SONG_OF_TIME) || (ctx->GetTrickOption(RT_GTG_FAKE_WALL) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)) || (logic->IsAdult && logic->CanGroundJump()))),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_BEHIND_BLOCK] = Region("Gerudo Training Ground MQ Behind Block", SCENE_GERUDO_TRAINING_GROUND, {}, {}, {
@@ -279,7 +279,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM,      true),
         //implies dropping down to hit the switch. Using swords, especially master, is a bit awkward, may be trick worthy, but is only relevant with other tricks
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_MAGENTA_FIRE_ROOM, Here(RR_GERUDO_TRAINING_GROUND_MQ_STATUE_ROOM_LEDGE, []{return logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_STICKS) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG);})),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_MAGENTA_FIRE_ROOM, AnyAgeTime([]{return logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_STICKS) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOOMERANG);})),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_STATUE_ROOM,       true),
     });
 
@@ -307,8 +307,8 @@ void RegionTable_Init_GerudoTrainingGround() {
         LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST,        logic->CanHitSwitch(ED_BOMB_THROW)),
     }, {
         //Exits
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_STATUE_ROOM,  Here(RR_GERUDO_TRAINING_GROUND_MQ_TORCH_SLUG_ROOM, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE);})),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_SWITCH_LEDGE, Here(RR_GERUDO_TRAINING_GROUND_MQ_TORCH_SLUG_ROOM, []{return logic->CanKillEnemy(RE_IRON_KNUCKLE);})),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_STATUE_ROOM,  AnyAgeTime([]{return logic->CanKillEnemy(RE_IRON_KNUCKLE);})),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_SWITCH_LEDGE, AnyAgeTime([]{return logic->CanKillEnemy(RE_IRON_KNUCKLE);})),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_MQ_SWITCH_LEDGE] = Region("Gerudo Training Ground MQ Switch Ledge", SCENE_GERUDO_TRAINING_GROUND, {
@@ -349,7 +349,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_UNDERWATER,           logic->Get(LOGIC_GTG_PLATFORM_SILVER_RUPEES)),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LEDGE_SIDE_PLATFORMS, logic->HasFireSource() && logic->CanUse(RG_HOVER_BOOTS)),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_TORCH_SIDE_PLATFORMS, logic->HasFireSource() || logic->CanUse(RG_LONGSHOT)),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_TORCH_SIDE_PLATFORMS, logic->HasFireSource() || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER))),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT,           logic->Get(LOGIC_GTG_MQ_RIGHT_SIDE_SWITCH) && (logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_HOOKSHOT) && logic->HasFireSource()))),
     });
 
@@ -360,7 +360,7 @@ void RegionTable_Init_GerudoTrainingGround() {
     }, {}, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LEDGE_SIDE_PLATFORMS,  ((logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS)) && (logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && ctx->GetTrickOption(RT_GTG_LAVA_JUMP)) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->CanUse(RG_BOMB_BAG) && logic->TakeDamage()))),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_PLATFORMS_UNLIT_TORCH, (logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_LONGSHOT)),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_PLATFORMS_UNLIT_TORCH, (logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER))),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT,            logic->Get(LOGIC_GTG_MQ_RIGHT_SIDE_SWITCH) && ((logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_LONGSHOT))),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_ROOM,         true),
     });
@@ -385,8 +385,8 @@ void RegionTable_Init_GerudoTrainingGround() {
     }, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY,                 true),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_TORCH_SIDE_PLATFORMS,  logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_LONGSHOT)),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_PLATFORMS_UNLIT_TORCH, logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(logic->Get(LOGIC_GTG_PLATFORM_SILVER_RUPEES) ? RG_HOOKSHOT : RG_LONGSHOT)),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_TORCH_SIDE_PLATFORMS,  logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER))),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_PLATFORMS_UNLIT_TORCH, logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(logic->Get(LOGIC_GTG_PLATFORM_SILVER_RUPEES) ? RG_HOOKSHOT : RG_LONGSHOT) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->Get(LOGIC_GTG_MQ_RIGHT_SIDE_SWITCH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER))),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LEDGE_SIDE_PLATFORMS,  logic->CanUse(RG_FIRE_ARROWS)),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_FURTHEST_PLATFORM,     logic->CanUse(RG_FIRE_ARROWS)),
     });
@@ -404,7 +404,7 @@ void RegionTable_Init_GerudoTrainingGround() {
     }, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY,                true),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_TORCH_SIDE_PLATFORMS, Here(RR_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_ROOM, []{return logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_FAIRY_BOW) || ((logic->CanUse(RG_NUTS) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_BOOMERANG)) && (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_FAIRY_SLINGSHOT)));})),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_TORCH_SIDE_PLATFORMS, AnyAgeTime([]{return logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_FAIRY_BOW) || ((logic->CanUse(RG_NUTS) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_BOOMERANG)) && (logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_FAIRY_SLINGSHOT)));})),
     });
 
 #pragma endregion

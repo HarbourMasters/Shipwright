@@ -99,20 +99,20 @@ static void TimeDisplayGetTimer(uint32_t timeID) {
             timeDisplayTime = convertDayTime(gSaveContext.dayTime).c_str();
             break;
         case DISPLAY_CONDITIONAL_TIMER:
-            if (gSaveContext.timerState > 0) {
+            if (gSaveContext.timerState > TIMER_STATE_OFF) {
                 timeDisplayTime = formatHotWaterDisplay(gSaveContext.timerSeconds).c_str();
                 textColor =
-                    gSaveContext.timerState <= 4
+                    gSaveContext.timerState <= TIMER_STATE_ENV_HAZARD_TICK
                         ? (gPlayState->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3 ? COLOR_LIGHT_RED
                                                                                               : COLOR_LIGHT_BLUE)
                         : COLOR_WHITE;
-                if (gSaveContext.timerState <= 4) {
+                if (gSaveContext.timerState <= TIMER_STATE_ENV_HAZARD_TICK) {
                     textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
                         gPlayState->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3
                             ? itemMapping[ITEM_TUNIC_GORON].name
                             : itemMapping[ITEM_TUNIC_ZORA].name);
                 }
-                if (gSaveContext.timerState >= 6) {
+                if (gSaveContext.timerState >= TIMER_STATE_DOWN_PREVIEW) {
                     textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
                         itemMapping[ITEM_SWORD_MASTER].name);
                 }

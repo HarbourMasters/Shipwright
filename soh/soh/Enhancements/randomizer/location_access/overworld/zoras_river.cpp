@@ -63,7 +63,7 @@ void RegionTable_Init_ZoraRiver() {
         ENTRANCE(RR_ZR_PILLAR,           (logic->IsChild/* && str0*/) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && ctx->GetTrickOption(RT_ZR_LOWER))),
         ENTRANCE(RR_THE_LOST_WOODS,      logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
         ENTRANCE(RR_ZR_STORMS_GROTTO,    logic->CanOpenStormsGrotto()),
-        ENTRANCE(RR_ZR_BEHIND_WATERFALL, ctx->GetOption(RSK_SLEEPING_WATERFALL).Is(RO_WATERFALL_OPEN) || Here(RR_ZORAS_RIVER, []{return logic->CanUse(RG_ZELDAS_LULLABY);}) || (logic->IsChild && ctx->GetTrickOption(RT_ZR_CUCCO)) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_ZR_HOVERS))),
+        ENTRANCE(RR_ZR_BEHIND_WATERFALL, ctx->GetOption(RSK_SLEEPING_WATERFALL).Is(RO_WATERFALL_OPEN) || AnyAgeTime([]{return logic->CanUse(RG_ZELDAS_LULLABY);}) || (logic->IsChild && ctx->GetTrickOption(RT_ZR_CUCCO)) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_ZR_HOVERS))),
     });
 
     areaTable[RR_ZR_ATOP_LADDER] = Region("ZR Atop Ladder", SCENE_ZORAS_RIVER, {
@@ -80,7 +80,7 @@ void RegionTable_Init_ZoraRiver() {
         ENTRANCE(RR_ZORAS_RIVER,     true),
         ENTRANCE(RR_ZR_PILLAR,       (logic->IsChild/* && str0*/) || logic->CanUse(RG_HOVER_BOOTS)),
         ENTRANCE(RR_ZR_OPEN_GROTTO,  true),
-        ENTRANCE(RR_ZR_FAIRY_GROTTO, Here(RR_ZR_ATOP_LADDER, []{return logic->BlastOrSmash();})),
+        ENTRANCE(RR_ZR_FAIRY_GROTTO, AnyAgeTime([]{return logic->BlastOrSmash();})),
     });
 
     areaTable[RR_ZR_PILLAR] = Region("ZR Pillar", SCENE_ZORAS_RIVER, {

@@ -833,7 +833,7 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, PlayState* play) {
                         this->unk_150[i].unk_22++;
                     }
                 } else if (i + 1 == this->sparkleCounter && play->csCtx.state == CS_STATE_IDLE) {
-                    func_80088AF0(play);
+                    Interface_SetSubTimerToFinalSecond(play);
                     Actor_Kill(&this->actor);
                 }
                 break;

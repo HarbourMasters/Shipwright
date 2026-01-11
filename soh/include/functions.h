@@ -1089,9 +1089,9 @@ void Inventory_ChangeAmmo(s16 item, s16 ammoChange);
 void Magic_Fill(PlayState* play);
 void Magic_Reset(PlayState* play);
 s32 Magic_RequestChange(PlayState* play, s16 amount, s16 type);
-void func_80088AA0(s16 seconds);
-void func_80088AF0(PlayState* play);
-void func_80088B34(s16 arg0);
+void Interface_SetSubTimer(s16 seconds);
+void Interface_SetSubTimerToFinalSecond(PlayState* play);
+void Interface_SetTimer(s16 arg0);
 void Interface_Draw(PlayState* play);
 void Interface_DrawTotalGameplayTimer(PlayState* play);
 void Interface_Update(PlayState* play);
@@ -2452,10 +2452,12 @@ void Font_LoadOrderedFontNTSC(Font* font);
 // #endregion
 
 // #region SOH [General]
-
 void Interface_RandoRestoreSwordless(void);
 s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projectedPos, f32 projectedW, bool* shouldDraw,
                                  bool* shouldUpdate);
+
+// #region SOH [Rocs Feather]
+void func_80838940(Player* this, LinkAnimationHeader* anim, f32 arg2, PlayState* play, u16 sfxId);
 
 // #endregion
 

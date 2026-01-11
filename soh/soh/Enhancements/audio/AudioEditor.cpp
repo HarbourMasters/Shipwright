@@ -13,6 +13,7 @@
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "AudioCollection.h"
+#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
@@ -29,12 +30,12 @@ using namespace UIWidgets;
 static WidgetInfo lowHpAlarm;
 static WidgetInfo naviCall;
 static WidgetInfo enemyProx;
+static WidgetInfo leeverProx;
 static WidgetInfo leadingMusic;
 static WidgetInfo displaySeqName;
 static WidgetInfo ovlDuration;
 static WidgetInfo voicePitch;
-static WidgetInfo randoMusicOnSceneChange;
-static WidgetInfo randomAudioOnSeedGen;
+static WidgetInfo randomAudioGenModes;
 static WidgetInfo lowerOctaves;
 
 namespace SohGui {
@@ -78,6 +79,14 @@ size_t AuthenticCountBySequenceType(SeqType type) {
     }
 }
 
+static const std::map<int32_t, const char*> audioRandomizerModes = {
+    { RANDOMIZE_OFF, "Manual" },
+    { RANDOMIZE_ON_NEW_SCENE, "On New Scene" },
+    { RANDOMIZE_ON_RANDO_GEN_ONLY, "On Rando Gen Only" },
+    { RANDOMIZE_ON_FILE_LOAD, "On File Load" },
+    { RANDOMIZE_ON_FILE_LOAD_SEEDED, "On File Load (Seeded)" },
+};
+
 // Grabs the current BGM sequence ID and replays it
 // which will lookup the proper override, or reset back to vanilla
 void ReplayCurrentBGM() {
@@ -100,8 +109,20 @@ void UpdateCurrentBGM(u16 seqKey, SeqType seqType) {
     }
 }
 
-void RandomizeGroup(SeqType type) {
+static uint64_t seeded_audio_state = 0;
+
+void RandomizeGroup(SeqType type, bool manual = true) {
     std::vector<u16> values;
+
+    if (!manual) {
+        if (CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED ||
+            CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
+
+            uint32_t finalSeed = type + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
+                                                  : static_cast<uint32_t>(gSaveContext.ship.stats.fileCreatedAt));
+            ShipUtils::RandInit(finalSeed, &seeded_audio_state);
+        }
+    }
 
     // An empty IncludedSequences set means that the AudioEditor window has never been drawn
     if (AudioCollection::Instance->GetIncludedSequences().empty()) {
@@ -120,7 +141,7 @@ void RandomizeGroup(SeqType type) {
         if (!values.size())
             return;
     }
-    Shuffle(values);
+    ShipUtils::Shuffle(values, &seeded_audio_state);
     for (const auto& [seqId, seqData] : AudioCollection::Instance->GetAllSequences()) {
         const std::string cvarKey = AudioCollection::Instance->GetCvarKey(seqData.sfxKey);
         const std::string cvarLockKey = AudioCollection::Instance->GetCvarLockKey(seqData.sfxKey);
@@ -478,16 +499,29 @@ void DrawTypeChip(SeqType type, std::string sequenceName) {
 
 void AudioEditorRegisterOnSceneInitHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        if (gSaveContext.gameMode != GAMEMODE_END_CREDITS && CVarGetInteger(CVAR_AUDIO("RandomizeAllOnNewScene"), 0)) {
-            AudioEditor_RandomizeAll();
+        if (gSaveContext.gameMode != GAMEMODE_END_CREDITS &&
+            CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_NEW_SCENE) {
+
+            AudioEditor_AutoRandomizeAll();
         }
     });
 }
 
 void AudioEditorRegisterOnGenerationCompletionHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGenerationCompletion>([]() {
-        if (CVarGetInteger(CVAR_AUDIO("RandomizeAllOnRandoGen"), 0)) {
-            AudioEditor_RandomizeAll();
+        if (CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
+
+            AudioEditor_AutoRandomizeAll();
+        }
+    });
+}
+
+void AudioEditorRegisterOnLoadGameHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+        if (CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD ||
+            CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED) {
+
+            AudioEditor_AutoRandomizeAll();
         }
     });
 }
@@ -495,6 +529,7 @@ void AudioEditorRegisterOnGenerationCompletionHook() {
 void AudioEditor::InitElement() {
     AudioEditorRegisterOnSceneInitHook();
     AudioEditorRegisterOnGenerationCompletionHook();
+    AudioEditorRegisterOnLoadGameHook();
 }
 
 void AudioEditor::DrawElement() {
@@ -546,6 +581,9 @@ void AudioEditor::DrawElement() {
                 SohGui::mSohMenu->MenuDrawItem(lowHpAlarm, ImGui::GetContentRegionAvail().x, THEME_COLOR);
                 SohGui::mSohMenu->MenuDrawItem(naviCall, ImGui::GetContentRegionAvail().x, THEME_COLOR);
                 SohGui::mSohMenu->MenuDrawItem(enemyProx, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+                if (!CVarGetInteger(CVAR_AUDIO("EnemyBGMDisable"), 0)) {
+                    SohGui::mSohMenu->MenuDrawItem(leeverProx, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+                }
                 SohGui::mSohMenu->MenuDrawItem(leadingMusic, ImGui::GetContentRegionAvail().x, THEME_COLOR);
                 SohGui::mSohMenu->MenuDrawItem(displaySeqName, ImGui::GetContentRegionAvail().x, THEME_COLOR);
                 SohGui::mSohMenu->MenuDrawItem(ovlDuration, ImGui::GetContentRegionAvail().x, THEME_COLOR);
@@ -556,8 +594,7 @@ void AudioEditor::DrawElement() {
                                       UIWidgets::ButtonOptions().Size(ImVec2(80, 36)).Padding(ImVec2(5.0f, 0.0f)))) {
                     CVarSetFloat(CVAR_AUDIO("LinkVoiceFreqMultiplier"), 1.0f);
                 }
-                SohGui::mSohMenu->MenuDrawItem(randoMusicOnSceneChange, ImGui::GetContentRegionAvail().x, THEME_COLOR);
-                SohGui::mSohMenu->MenuDrawItem(randomAudioOnSeedGen, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+                SohGui::mSohMenu->MenuDrawItem(randomAudioGenModes, ImGui::GetContentRegionAvail().x, THEME_COLOR);
                 SohGui::mSohMenu->MenuDrawItem(lowerOctaves, ImGui::GetContentRegionAvail().x, THEME_COLOR);
             }
             ImGui::EndChild();
@@ -774,6 +811,15 @@ void AudioEditor_RandomizeAll() {
     ReplayCurrentBGM();
 }
 
+void AudioEditor_AutoRandomizeAll() {
+    for (auto type : allTypes) {
+        RandomizeGroup(type, false);
+    }
+
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    ReplayCurrentBGM();
+}
+
 void AudioEditor_RandomizeGroup(SeqType group) {
     RandomizeGroup(group);
 
@@ -831,6 +877,12 @@ void RegisterAudioWidgets() {
                      .Tooltip("Disables the music change when getting close to enemies. Useful for hearing "
                               "your custom music for each scene more often."));
 
+    leeverProx = { .name = "Enable Enemy Proximity Music for Leever", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    leeverProx.CVar(CVAR_AUDIO("LeeverEnemyBGM"))
+        .Options(CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("Plays the battle music when getting close to a Leever, like in Majora's Mask."));
+
     leadingMusic = { .name = "Disable Leading Music in Lost Woods", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     leadingMusic.CVar(CVAR_AUDIO("LostWoodsConsistentVolume"))
         .Options(CheckboxOptions()
@@ -865,22 +917,22 @@ void RegisterAudioWidgets() {
                      .Size(ImVec2(300.0f, 0.0f)));
     SohGui::mSohMenu->AddSearchWidget({ voicePitch, "Enhancements", "Audio Editor", "Audio Options" });
 
-    randoMusicOnSceneChange = { .name = "Randomize All Music and Sound Effects on New Scene",
-                                .type = WidgetType::WIDGET_CVAR_CHECKBOX };
-    randoMusicOnSceneChange.CVar(CVAR_AUDIO("RandomizeAllOnNewScene"))
-        .Options(CheckboxOptions()
-                     .Color(THEME_COLOR)
-                     .Tooltip("Enables randomizing all unlocked music and sound effects when you enter a new scene."));
-    SohGui::mSohMenu->AddSearchWidget({ randoMusicOnSceneChange, "Enhancements", "Audio Editor", "Audio Options" });
-
-    randomAudioOnSeedGen = { .name = "Randomize All Music and Sound Effects on Randomizer Generation",
-                             .type = WidgetType::WIDGET_CVAR_CHECKBOX };
-    randomAudioOnSeedGen.CVar(CVAR_AUDIO("RandomizeAllOnRandoGen"))
-        .Options(CheckboxOptions()
-                     .Color(THEME_COLOR)
-                     .Tooltip("Enables randomizing all unlocked music and sound effects when you generate a new "
-                              "randomizer. Respects locks already in place."));
-    SohGui::mSohMenu->AddSearchWidget({ randomAudioOnSeedGen, "Enhancements", "Audio Editor", "Audio Options" });
+    randomAudioGenModes = { .name = "Automatically Randomize All Music and Sound Effects",
+                            .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    randomAudioGenModes.CVar(CVAR_AUDIO("RandomizeAudioGenModes"))
+        .Options(
+            ComboboxOptions()
+                .DefaultIndex(RANDOMIZE_OFF)
+                .ComboMap(audioRandomizerModes)
+                .Tooltip(
+                    "Set when the music and sound effects is automaticly randomized:\n"
+                    "- Manual: Manually randomize music or sound effects by pressing the 'Randomize all Groups' "
+                    "button\n"
+                    "- On New Scene : Randomizes when you enter a new scene.\n"
+                    "- On Rando Gen Only: Randomizes only when you generate a new randomizer.\n"
+                    "- On File Load: Randomizes on File Load.\n"
+                    "- On File Load (Seeded): Randomizes on file load based on the current randomizer seed/file.\n"));
+    SohGui::mSohMenu->AddSearchWidget({ randomAudioGenModes, "Enhancements", "Audio Editor", "Audio Options" });
 
     lowerOctaves = { .name = "Lower Octaves of Unplayable High Notes", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     lowerOctaves.CVar(CVAR_AUDIO("ExperimentalOctaveDrop"))

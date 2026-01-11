@@ -1,7 +1,7 @@
 #pragma once
 
 #include "randomizerTypes.h"
-#include "context.h"
+#include "SeedContext.h"
 #include <cstdint>
 
 namespace Rando {
@@ -30,6 +30,7 @@ class Logic {
     uint8_t BaseHearts = 0;
     bool AtDay = false;
     bool AtNight = false;
+    RandomizerRegion CurrentRegionKey = RR_NONE;
     RandomizerCheck CurrentCheckKey = RC_UNKNOWN_CHECK;
 
     bool CalculatingAvailableChecks = false;
@@ -44,6 +45,7 @@ class Logic {
     bool CanOpenOverworldDoor(RandomizerGet itemName);
     bool SmallKeys(s16 scene, uint8_t requiredAmount);
     bool CanGroundJump(bool hasBombflower = false);
+    bool CanGroundJumpJumpSlash(bool hasBombflower = false);
     bool CanOpenUnderwaterChest();
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
@@ -58,7 +60,9 @@ class Logic {
     bool CanHitEyeTargets();
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
-    bool MQWaterLevel(RandoWaterLevel level);
+    bool Water3FCentralToHighEmblem();
+    bool WaterRisingTargetTo3FCentral();
+    bool WaterLevel(RandoWaterLevel level);
     uint8_t BottleCount();
     uint8_t OcarinaButtons();
     bool HasBottle();
@@ -95,12 +99,13 @@ class Logic {
     bool CanGetNightTimeGS();
     bool CanBreakUpperBeehives();
     bool CanBreakLowerBeehives();
-    bool CanBreakPots();
+    bool CanBreakPots(EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true, bool inWater = false);
     bool CanBreakCrates();
     bool CanBreakSmallCrates();
     bool CanBonkTrees();
     bool HasFireSource();
     bool HasFireSourceWithTorch();
+    bool SunlightArrows();
     bool TradeQuestStep(RandomizerGet rg);
     bool CanStandingShield();
     bool CanShield();
@@ -108,6 +113,9 @@ class Logic {
     bool CanBuildRainbowBridge();
     bool CanTriggerLACS();
     bool IsFireLoopLocked();
+    bool ReachScarecrow();
+    bool ReachDistantScarecrow();
+    bool SummonEpona();
     void Reset(bool resetSaveContext = true);
     void SetContext(std::shared_ptr<Context> _ctx);
     bool Get(LogicVal logicVal);
@@ -142,6 +150,21 @@ class Logic {
     static std::map<uint32_t, uint32_t> RandoGetToDungeonScene;
     static std::map<RandomizerGet, uint32_t> RandoGetToEquipFlag;
     static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
+    bool IsReverseAccessPossible();
+    bool SpiritSunOnFloorToStatue();
+    bool SpiritEastToSwitch();
+    bool SpiritWestToSkull();
+    bool SpiritSunBlockSouthLedge();
+    bool MQSpiritWestToPots();
+    bool MQSpiritStatueToSunBlock();
+    bool MQSpiritStatueSouthDoor();
+    bool MQSpirit4KeyColossus();
+    bool MQSpirit4KeyWestHand();
+    bool CouldMQSpirit4KeyWestHand();
+    bool OuterWestHandLogic();
+    bool OuterWestHandMQLogic();
+    bool SpiritExplosiveKeyLogic();
+    bool StatueRoomMQKeyLogic();
 
   private:
     std::shared_ptr<Context> ctx;
