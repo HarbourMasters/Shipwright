@@ -492,7 +492,17 @@ static void ApplyCommonEquipmentPatches() {
 
 static s32 sLastBottleContentIndex = -1;
 
+static void ResetBottlePatch() {
+    ResourceMgr_UnpatchGfxByName(gCustomBottleDL, "customBottleContent");
+    sLastBottleContentIndex = -1;
+}
+
 static void ApplyBottleContentPatches() {
+    constexpr s32 BOTTLE_EMPTY = 0;
+    constexpr s32 BOTTLE_MILK_FULL = PLAYER_IA_BOTTLE_MILK_FULL - PLAYER_IA_BOTTLE;
+    constexpr s32 BOTTLE_MILK_HALF = PLAYER_IA_BOTTLE_MILK_HALF - PLAYER_IA_BOTTLE;
+    constexpr s32 BOTTLE_FAIRY = PLAYER_IA_BOTTLE_FAIRY - PLAYER_IA_BOTTLE;
+    constexpr s32 BOTTLE_ACTION_COUNT = BOTTLE_FAIRY + 1;
 
     const char* bottleContentDLs[] = {
         nullptr,                            // 0: PLAYER_IA_BOTTLE (empty - no custom content needed)
@@ -510,49 +520,53 @@ static void ApplyBottleContentPatches() {
         gCustomBottleFairyContentsDL,       // 12: PLAYER_IA_BOTTLE_FAIRY
     };
 
-    const bool altAssetsRuntime = ResourceMgr_IsAltAssetsEnabled();
-
-    if (!altAssetsRuntime) {
-        ResourceMgr_UnpatchGfxByName(gCustomBottleDL, "customBottleContent");
+    if (!ResourceMgr_IsAltAssetsEnabled()) {
+        ResetBottlePatch();
         ResourceMgr_UnloadResource(gCustomBottleDL);
-        sLastBottleContentIndex = -1;
         return;
     }
 
-    if (gPlayState == nullptr || GET_PLAYER(gPlayState) == nullptr) {
+    bool bottleDLAvailable = ResourceGetIsCustomByName(gCustomBottleDL) || ResourceMgr_FileExists(gCustomBottleDL);
+
+    if (!bottleDLAvailable) {
+        return;
+    }
+
+    if (gPlayState == nullptr) {
         return;
     }
 
     Player* player = GET_PLAYER(gPlayState);
+    if (player == nullptr) {
+        return;
+    }
 
     s32 bottleIndex = player->itemAction - PLAYER_IA_BOTTLE;
 
-    bool isBottleAction = (bottleIndex >= 0 && bottleIndex < 13);
+    // Special case: when drinking milk, preserve the half-full visual instead of showing empty
+    if (sLastBottleContentIndex == BOTTLE_MILK_FULL && bottleIndex == BOTTLE_EMPTY) {
+        bottleIndex = BOTTLE_MILK_HALF;
+    }
+
+    bool isBottleAction = (bottleIndex >= 0 && bottleIndex < BOTTLE_ACTION_COUNT);
 
     if (!isBottleAction) {
-        bottleIndex = -1;
+        if (sLastBottleContentIndex != -1) {
+            ResetBottlePatch();
+        }
+        return;
     }
 
-    if (sLastBottleContentIndex == 10 && bottleIndex == 0) {
-        bottleIndex = 11;
-    }
-
-    if (sLastBottleContentIndex != bottleIndex) {
-        ResourceMgr_UnpatchGfxByName(gCustomBottleDL, "customBottleContent");
-        sLastBottleContentIndex = -1;
-    }
-
-    if (!isBottleAction) {
+    if (sLastBottleContentIndex == bottleIndex) {
         return;
     }
 
     const char* contentDL = bottleContentDLs[bottleIndex];
 
-    if (!ResourceGetIsCustomByName(gCustomBottleDL) && !ResourceMgr_FileExists(gCustomBottleDL)) {
-        return;
-    }
+    bool contentAvailable =
+        contentDL != nullptr && (ResourceGetIsCustomByName(contentDL) || ResourceMgr_FileExists(contentDL));
 
-    if (contentDL != nullptr && (ResourceGetIsCustomByName(contentDL) || ResourceMgr_FileExists(contentDL))) {
+    if (contentAvailable) {
         ResourceMgr_PatchCustomGfxByName(gCustomBottleDL, "customBottleContent", 1,
                                          gsSPDisplayListOTRFilePath(contentDL));
     } else {
