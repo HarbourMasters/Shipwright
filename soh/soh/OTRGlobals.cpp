@@ -277,12 +277,13 @@ typedef struct {
 std::shared_ptr<Fast::Fast3dWindow> sohFast3dWindow;
 static OTRVersion DetectOTRVersion(std::string path, bool isMq);
 static bool VerifyArchiveVersion(OTRVersion version);
+std::string portArchivePath = "";
 static bool sohArchiveVersionMatch = false;
 
 OTRGlobals::OTRGlobals() {
     context = Ship::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
 
-    std::string portArchivePath = Ship::Context::LocateFileAcrossAppDirs("soh.o2r");
+    portArchivePath = Ship::Context::LocateFileAcrossAppDirs("soh.o2r");
     OTRVersion portArchiveVersion = DetectOTRVersion(portArchivePath, false);
     sohArchiveVersionMatch = portArchiveVersion.major == gBuildVersionMajor &&
                              portArchiveVersion.minor == gBuildVersionMinor &&
@@ -421,7 +422,6 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
     Extractor extract;
     PromptSteps promptStep = PS_FILE_CHECK;
     bool generatedIsMQ = false, extracting = false;
-    ;
     size_t extractCount = 0, totalExtract = 0;
 
     std::string installPath = Ship::Context::GetAppDirectoryPath(appShortName);
@@ -484,7 +484,8 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                     msg =
                         "Please extract the soh.o2r from the Ship of Harkinian download to your folder.\n\nExiting...";
 #endif
-                    std::string title = !sohArchiveVersionMatch ? "Missing soh.o2r" : "soh.o2r is outdated";
+                    std::string title =
+                        !std::filesystem::exists(portArchivePath) ? "Missing soh.o2r" : "soh.o2r is outdated";
                     SohGui::RegisterPopup(title, msg, "OK", "", [&]() { exit(1); });
                 }
                 continue;

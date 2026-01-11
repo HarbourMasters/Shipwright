@@ -82,6 +82,12 @@ SohMenu::SohMenu(const std::string& consoleVariable, const std::string& name)
 }
 
 void SohMenu::AddMenuElements() {
+    AddMenuSettings();
+    AddMenuEnhancements();
+    AddMenuRandomizer();
+    AddMenuNetwork();
+    AddMenuDevTools();
+
     if (CVarGetInteger(CVAR_SETTING("Menu.SidebarSearch"), 0)) {
         InsertSidebarSearch();
     }
@@ -90,11 +96,7 @@ void SohMenu::AddMenuElements() {
         initFunc();
     }
 
-    AddMenuSettings();
-    AddMenuEnhancements();
-    AddMenuRandomizer();
-    AddMenuNetwork();
-    AddMenuDevTools();
+    mMenuElementsInitialized = true;
 }
 
 void SohMenu::InitElement() {
@@ -175,6 +177,8 @@ void SohMenu::Draw() {
 }
 
 void SohMenu::DrawElement() {
-    Ship::Menu::DrawElement();
+    if (mMenuElementsInitialized) {
+        Ship::Menu::DrawElement();
+    }
 }
 } // namespace SohGui
