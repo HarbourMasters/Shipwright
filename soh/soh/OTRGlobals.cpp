@@ -284,7 +284,8 @@ OTRGlobals::OTRGlobals() {
 
     std::string portArchivePath = Ship::Context::LocateFileAcrossAppDirs("soh.o2r");
     OTRVersion portArchiveVersion = DetectOTRVersion(portArchivePath, false);
-    sohArchiveVersionMatch = portArchiveVersion.major == gBuildVersionMajor && portArchiveVersion.minor == gBuildVersionMinor &&
+    sohArchiveVersionMatch = portArchiveVersion.major == gBuildVersionMajor &&
+                             portArchiveVersion.minor == gBuildVersionMinor &&
                              portArchiveVersion.patch == gBuildVersionPatch;
 
     context->InitConfiguration();
