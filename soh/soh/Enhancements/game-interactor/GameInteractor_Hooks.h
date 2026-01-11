@@ -29,6 +29,7 @@ void GameInteractor_ExecuteOnSceneSpawnActors();
 void GameInteractor_ExecuteOnLinkSkeletonInit();
 void GameInteractor_ExecuteOnLinkEquipmentChange();
 void GameInteractor_ExecuteOnPlayerUpdate();
+void GameInteractor_ExecuteOnPlayerBottleActionChange(s32 item, s32 actionParam);
 void GameInteractor_ExecuteOnSetDoAction(uint16_t action);
 void GameInteractor_ExecuteOnPlayerSfx(u16 sfxId);
 void GameInteractor_ExecuteOnOcarinaSongAction();

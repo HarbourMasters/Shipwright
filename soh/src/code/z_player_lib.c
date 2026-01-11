@@ -695,6 +695,7 @@ void Player_UpdateBottleHeld(PlayState* play, Player* this, s32 item, s32 action
     }
 
     this->itemAction = actionParam;
+    GameInteractor_ExecuteOnPlayerBottleActionChange(item, actionParam);
 }
 
 void Player_ReleaseLockOn(Player* this) {

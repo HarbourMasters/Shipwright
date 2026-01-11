@@ -84,11 +84,16 @@ static void UpdateCustomEquipment() {
     RefreshCustomEquipment();
 }
 
+static void UpdateCustomEquipmentOnBottleActionChange(s32 item, s32 actionParam) {
+    UpdateCustomEquipment();
+}
+
 static void PatchCustomEquipment() {
     COND_HOOK(OnPlayerSetModels, true, UpdateCustomEquipmentSetModel);
     COND_HOOK(OnLinkEquipmentChange, true, UpdateCustomEquipment);
     COND_HOOK(OnLinkSkeletonInit, true, UpdateCustomEquipment);
     COND_HOOK(OnAssetAltChange, true, UpdateCustomEquipment);
+    COND_HOOK(OnPlayerBottleActionChange, true, UpdateCustomEquipmentOnBottleActionChange);
 }
 
 static RegisterShipInitFunc initFunc(PatchCustomEquipment);
@@ -483,6 +488,88 @@ static void ApplyCommonEquipmentPatches() {
     }
 }
 
+static s32 sLastBottleContentIndex = -1;
+
+static void ApplyBottleContentPatches() {
+    // Array mapping bottle action indices to their custom content DLs
+    // Indices correspond to PLAYER_IA_BOTTLE_* - PLAYER_IA_BOTTLE
+    const char* bottleContentDLs[] = {
+        nullptr,                            // 0: PLAYER_IA_BOTTLE (empty - no custom content needed)
+        gCustomBottleFishContentsDL,        // 1: PLAYER_IA_BOTTLE_FISH
+        gCustomBottleBlueFireContentsDL,    // 2: PLAYER_IA_BOTTLE_FIRE
+        gCustomBottleBugContentsDL,         // 3: PLAYER_IA_BOTTLE_BUG
+        gCustomBottlePoeContentsDL,         // 4: PLAYER_IA_BOTTLE_POE
+        gCustomBottleBigPoeContentsDL,      // 5: PLAYER_IA_BOTTLE_BIG_POE
+        gCustomBottleLetterContentsDL,      // 6: PLAYER_IA_BOTTLE_RUTOS_LETTER
+        gCustomBottleRedPotionContentsDL,   // 7: PLAYER_IA_BOTTLE_POTION_RED
+        gCustomBottleBluePotionContentsDL,  // 8: PLAYER_IA_BOTTLE_POTION_BLUE
+        gCustomBottleGreenPotionContentsDL, // 9: PLAYER_IA_BOTTLE_POTION_GREEN
+        gCustomBottleMilkContentsDL,        // 10: PLAYER_IA_BOTTLE_MILK_FULL
+        gCustomBottleMilkHalfContentsDL,    // 11: PLAYER_IA_BOTTLE_MILK_HALF
+        gCustomBottleFairyContentsDL,       // 12: PLAYER_IA_BOTTLE_FAIRY
+    };
+
+    const bool altAssetsRuntime = ResourceMgr_IsAltAssetsEnabled();
+
+    if (!altAssetsRuntime) {
+        // Unpatch both adult and child bottle DLs
+        ResourceMgr_UnpatchGfxByName(gLinkAdultBottleDL, "customBottleContent");
+        ResourceMgr_UnpatchGfxByName(gLinkChildBottleDL, "customBottleContent");
+        ResourceMgr_UnloadResource(gLinkAdultBottleDL);
+        ResourceMgr_UnloadResource(gLinkChildBottleDL);
+        sLastBottleContentIndex = -1;
+        return;
+    }
+
+    // Only patch if we have a player
+    if (gPlayState == nullptr || GET_PLAYER(gPlayState) == nullptr) {
+        return;
+    }
+
+    Player* player = GET_PLAYER(gPlayState);
+    
+    // Get the bottle content index
+    s32 bottleIndex = player->itemAction - PLAYER_IA_BOTTLE;
+    
+    // Validate bottle index - if valid, this is a bottle action
+    bool isBottleAction = (bottleIndex >= 0 && bottleIndex < 13);
+    
+    if (!isBottleAction) {
+        bottleIndex = -1;
+    }
+    
+    // Special case: when drinking milk_full, keep showing milk_half content
+    if (sLastBottleContentIndex == 10 && bottleIndex == 0) { // milk_full -> empty
+        bottleIndex = 11; // show milk_half instead
+    }
+    
+    // If bottle content changed, unpatch the old content
+    if (sLastBottleContentIndex != bottleIndex) {
+        ResourceMgr_UnpatchGfxByName(gLinkAdultBottleDL, "customBottleContent");
+        ResourceMgr_UnpatchGfxByName(gLinkChildBottleDL, "customBottleContent");
+        sLastBottleContentIndex = -1;
+    }
+    
+    // Don't patch if not a bottle action
+    if (!isBottleAction) {
+        return;
+    }
+
+    const char* contentDL = bottleContentDLs[bottleIndex];
+    
+    // Only patch if the custom content DL exists and is custom
+    if (contentDL != nullptr && (ResourceGetIsCustomByName(contentDL) || ResourceMgr_FileExists(contentDL))) {
+        const char* bottleDL = LINK_IS_CHILD ? gLinkChildBottleDL : gLinkAdultBottleDL;
+        
+        // Patch the bottle DL to include the custom content
+        // This appends the custom content DL after the bottle is drawn
+        ResourceMgr_PatchCustomGfxByName(bottleDL, "customBottleContent", 0, gsSPDisplayListOTRFilePath(contentDL));
+    }
+    
+    // Always update the tracked index so we know what's currently active
+    sLastBottleContentIndex = bottleIndex;
+}
+
 void UpdatePatchCustomEquipmentDlists() {
     const u8 equippedSword = gSaveContext.equips.buttonItems[0];
 
@@ -517,6 +604,7 @@ void UpdatePatchCustomEquipmentDlists() {
     }
 
     ApplyCommonEquipmentPatches();
+    ApplyBottleContentPatches();
 }
 
 static bool HasDummyPlayers() {
