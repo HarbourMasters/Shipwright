@@ -493,7 +493,7 @@ static void ApplyCommonEquipmentPatches() {
 static s32 sLastBottleContentIndex = -1;
 
 static void ApplyBottleContentPatches() {
-  
+
     const char* bottleContentDLs[] = {
         nullptr,                            // 0: PLAYER_IA_BOTTLE (empty - no custom content needed)
         gCustomBottleFishContentsDL,        // 1: PLAYER_IA_BOTTLE_FISH
@@ -524,40 +524,41 @@ static void ApplyBottleContentPatches() {
     }
 
     Player* player = GET_PLAYER(gPlayState);
-    
+
     s32 bottleIndex = player->itemAction - PLAYER_IA_BOTTLE;
-    
+
     bool isBottleAction = (bottleIndex >= 0 && bottleIndex < 13);
-    
+
     if (!isBottleAction) {
         bottleIndex = -1;
     }
-    
+
     if (sLastBottleContentIndex == 10 && bottleIndex == 0) {
         bottleIndex = 11;
     }
-    
+
     if (sLastBottleContentIndex != bottleIndex) {
         ResourceMgr_UnpatchGfxByName(gCustomBottleDL, "customBottleContent");
         sLastBottleContentIndex = -1;
     }
-    
+
     if (!isBottleAction) {
         return;
     }
 
     const char* contentDL = bottleContentDLs[bottleIndex];
-    
+
     if (!ResourceGetIsCustomByName(gCustomBottleDL) && !ResourceMgr_FileExists(gCustomBottleDL)) {
         return;
     }
-    
+
     if (contentDL != nullptr && (ResourceGetIsCustomByName(contentDL) || ResourceMgr_FileExists(contentDL))) {
-        ResourceMgr_PatchCustomGfxByName(gCustomBottleDL, "customBottleContent", 1, gsSPDisplayListOTRFilePath(contentDL));
+        ResourceMgr_PatchCustomGfxByName(gCustomBottleDL, "customBottleContent", 1,
+                                         gsSPDisplayListOTRFilePath(contentDL));
     } else {
         ResourceMgr_PatchCustomGfxByName(gCustomBottleDL, "customBottleContent", 1, gsSPNoOp());
     }
-    
+
     sLastBottleContentIndex = bottleIndex;
 }
 
