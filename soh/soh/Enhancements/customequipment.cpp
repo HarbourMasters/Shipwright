@@ -84,8 +84,8 @@ static void UpdateCustomEquipment() {
     RefreshCustomEquipment();
 }
 
-static void UpdateCustomEquipmentOnBottleActionChange(s32 item, s32 actionParam) {
-    UpdateCustomEquipment();
+static void OnBottleHeldChanged(s32 item, s32 actionParam) {
+    RefreshCustomEquipment();
 }
 
 static void PatchCustomEquipment() {
@@ -93,7 +93,7 @@ static void PatchCustomEquipment() {
     COND_HOOK(OnLinkEquipmentChange, true, UpdateCustomEquipment);
     COND_HOOK(OnLinkSkeletonInit, true, UpdateCustomEquipment);
     COND_HOOK(OnAssetAltChange, true, UpdateCustomEquipment);
-    COND_HOOK(OnPlayerBottleActionChange, true, UpdateCustomEquipmentOnBottleActionChange);
+    COND_HOOK(OnPlayerBottleHeldChanged, true, OnBottleHeldChanged);
 }
 
 static RegisterShipInitFunc initFunc(PatchCustomEquipment);
