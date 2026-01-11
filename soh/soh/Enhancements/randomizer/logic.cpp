@@ -1047,7 +1047,8 @@ bool Logic::CanDetonateUprightBombFlower() {
 }
 
 bool Logic::CanHammerRecoilHover(bool needShield) {
-    return CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && CanUse(RG_MEGATON_HAMMER) && (!needShield || CanStandingShield());
+    return CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && CanUse(RG_MEGATON_HAMMER) &&
+           (!needShield || CanStandingShield());
 }
 
 bool Logic::Water3FCentralToHighEmblem() {
