@@ -493,8 +493,7 @@ static void ApplyCommonEquipmentPatches() {
 static s32 sLastBottleContentIndex = -1;
 
 static void ApplyBottleContentPatches() {
-    // Array mapping bottle action indices to their custom content DLs
-    // Indices correspond to PLAYER_IA_BOTTLE_* - PLAYER_IA_BOTTLE
+  
     const char* bottleContentDLs[] = {
         nullptr,                            // 0: PLAYER_IA_BOTTLE (empty - no custom content needed)
         gCustomBottleFishContentsDL,        // 1: PLAYER_IA_BOTTLE_FISH
@@ -514,61 +513,51 @@ static void ApplyBottleContentPatches() {
     const bool altAssetsRuntime = ResourceMgr_IsAltAssetsEnabled();
 
     if (!altAssetsRuntime) {
-        // Unpatch the custom bottle DL
         ResourceMgr_UnpatchGfxByName(gCustomBottleDL, "customBottleContent");
         ResourceMgr_UnloadResource(gCustomBottleDL);
         sLastBottleContentIndex = -1;
         return;
     }
 
-    // Only patch if we have a player
     if (gPlayState == nullptr || GET_PLAYER(gPlayState) == nullptr) {
         return;
     }
 
     Player* player = GET_PLAYER(gPlayState);
     
-    // Get the bottle content index
     s32 bottleIndex = player->itemAction - PLAYER_IA_BOTTLE;
     
-    // Validate bottle index - if valid, this is a bottle action
     bool isBottleAction = (bottleIndex >= 0 && bottleIndex < 13);
     
     if (!isBottleAction) {
         bottleIndex = -1;
     }
     
-    // Special case: when drinking milk_full, keep showing milk_half content
-    if (sLastBottleContentIndex == 10 && bottleIndex == 0) { // milk_full -> empty
-        bottleIndex = 11; // show milk_half instead
+    if (sLastBottleContentIndex == 10 && bottleIndex == 0) {
+        bottleIndex = 11;
     }
     
-    // If bottle content changed, unpatch the old content
     if (sLastBottleContentIndex != bottleIndex) {
         ResourceMgr_UnpatchGfxByName(gCustomBottleDL, "customBottleContent");
         sLastBottleContentIndex = -1;
     }
     
-    // Don't patch if not a bottle action
     if (!isBottleAction) {
         return;
     }
 
     const char* contentDL = bottleContentDLs[bottleIndex];
     
-    // Only patch if the custom bottle DL exists (required for content to display)
     if (!ResourceGetIsCustomByName(gCustomBottleDL) && !ResourceMgr_FileExists(gCustomBottleDL)) {
         return;
     }
     
-    // Only patch if the custom content DL exists and is custom
     if (contentDL != nullptr && (ResourceGetIsCustomByName(contentDL) || ResourceMgr_FileExists(contentDL))) {
-        // Patch the custom bottle DL to include the custom content
-        // Use index 1 so content appears after bottle material setup
         ResourceMgr_PatchCustomGfxByName(gCustomBottleDL, "customBottleContent", 1, gsSPDisplayListOTRFilePath(contentDL));
+    } else {
+        ResourceMgr_PatchCustomGfxByName(gCustomBottleDL, "customBottleContent", 1, gsSPNoOp());
     }
     
-    // Always update the tracked index so we know what's currently active
     sLastBottleContentIndex = bottleIndex;
 }
 
