@@ -633,10 +633,10 @@ std::string Extractor::Mkdtemp() {
     return tmppath;
 }
 
-extern "C" int zapd_report(int argc, char** argv, size_t* extractCount, size_t* totalExtract);
+extern "C" int zapd_report(int argc, char** argv, std::atomic<size_t>* extractCount, std::atomic<size_t>* totalExtract);
 static void MessageboxWorker();
 
-bool Extractor::CallZapd(std::string installPath, std::string exportdir, size_t* extractCount, size_t* totalExtract) {
+bool Extractor::CallZapd(std::string installPath, std::string exportdir, std::atomic<size_t>* extractCount, std::atomic<size_t>* totalExtract) {
     constexpr int argc = 22;
     char xmlPath[1024];
     char confPath[1024];

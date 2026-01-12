@@ -2,6 +2,7 @@
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
+#include <atomic>
 #include <filesystem>
 #include <fstream>
 #include <vector>
@@ -421,8 +422,9 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
     }
     Extractor extract;
     PromptSteps promptStep = PS_FILE_CHECK;
-    bool generatedIsMQ = false, extracting = false;
-    size_t extractCount = 0, totalExtract = 0;
+    bool generatedIsMQ = false;
+    std::atomic<bool> extracting = false;
+    std::atomic<size_t> extractCount = 0, totalExtract = 0;
 
     std::string installPath = Ship::Context::GetAppDirectoryPath(appShortName);
     std::string file;
