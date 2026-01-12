@@ -466,9 +466,9 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
 #ifdef _WIN32
                     extractStep = ES_WINDOWS;
 #elif (defined(__WIIU__) || defined(__SWITCH__))
-                    ExtractSteps extractStep = ES_VERIFY;
+                    extractStep = ES_VERIFY;
 #else
-                    ExtractSteps extractStep = ES_EXTRACT;
+                    extractStep = ES_EXTRACT;
 #endif
                 } else {
                     std::string msg;
@@ -616,7 +616,6 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                 } else {
                     bool open = true;
                     std::string msg = "File " + std::string(file) + " is not a ROM or does not match supported ROMs.";
-                    // extract.ShowErrorBox("Incompatible File", msg.c_str());
                     SohGui::RegisterPopup("SoH ROM Error", msg.c_str());
                 }
 #else
@@ -651,18 +650,14 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                                 "Yes", "No", [&]() { extractStep = ES_EXTRACT_ARGS; },
                                 [&]() { promptStep = PS_FIRST; });
                         } else {
-                            promptStep = PS_FILE_CHECK;
+                            promptStep = PS_FIRST;
                         }
                         continue;
                     }
                     case PS_FIRST: {
                         if (!extract.ManuallySearchForRomMatchingType(RomSearchMode::Both)) {
-                            // Extractor::ShowErrorBox("Error", "An error occured, no OTR file was
-                            // generated.\n\nExiting...");
                             promptStep = PS_FILE_CHECK;
                             continue;
-                            /*SohGui::RegisterPopup("No O2R Files", "No O2R files generated.\nExiting...",
-                                                    "OK", "", [&]() { exit(1); });*/
                         }
                         extracting = true;
                         threadPool->submit_task([&]() -> void {

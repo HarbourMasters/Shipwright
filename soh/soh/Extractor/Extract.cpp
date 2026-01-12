@@ -401,7 +401,6 @@ bool Extractor::ManuallySearchForRom() {
     std::ifstream inFile;
 
     if (!GetRomPathFromBox()) {
-        // ShowErrorBox("No rom selected", "No Rom selected. Exiting");
         return false;
     }
 
