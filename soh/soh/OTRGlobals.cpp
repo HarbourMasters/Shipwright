@@ -426,7 +426,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
     std::atomic<bool> extracting = false;
     std::atomic<size_t> extractCount = 0, totalExtract = 0;
 
-    std::string installPath = Ship::Context::GetAppDirectoryPath(appShortName);
+    std::string installPath = Ship::Context::GetAppBundlePath();
     std::string file;
 
 #if defined(__SWITCH__)
@@ -598,7 +598,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                         SohGui::RegisterPopup("Confirm Re-extract", msg.c_str(), "Yes", "No", [&]() {
                             extracting = true;
                             threadPool->submit_task([&]() -> void {
-                                extract.CallZapd(Ship::Context::GetAppDirectoryPath(appShortName),
+                                extract.CallZapd(installPath,
                                                  Ship::Context::GetAppDirectoryPath(appShortName), &extractCount,
                                                  &totalExtract);
                                 extracting = false;
@@ -608,7 +608,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                     } else {
                         extracting = true;
                         threadPool->submit_task([&]() -> void {
-                            extract.CallZapd(Ship::Context::GetAppDirectoryPath(appShortName),
+                            extract.CallZapd(installPath,
                                              Ship::Context::GetAppDirectoryPath(appShortName), &extractCount,
                                              &totalExtract);
                             extracting = false;
