@@ -598,9 +598,8 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                         SohGui::RegisterPopup("Confirm Re-extract", msg.c_str(), "Yes", "No", [&]() {
                             extracting = true;
                             threadPool->submit_task([&]() -> void {
-                                extract.CallZapd(installPath,
-                                                 Ship::Context::GetAppDirectoryPath(appShortName), &extractCount,
-                                                 &totalExtract);
+                                extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
+                                                 &extractCount, &totalExtract);
                                 extracting = false;
                                 extractCount = totalExtract = 0;
                             });
@@ -608,9 +607,8 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                     } else {
                         extracting = true;
                         threadPool->submit_task([&]() -> void {
-                            extract.CallZapd(installPath,
-                                             Ship::Context::GetAppDirectoryPath(appShortName), &extractCount,
-                                             &totalExtract);
+                            extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
+                                             &extractCount, &totalExtract);
                             extracting = false;
                             extractCount = totalExtract = 0;
                         });
