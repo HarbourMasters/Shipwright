@@ -62,7 +62,8 @@ class Extractor {
     void GetRoms(std::vector<std::string>& roms);
     bool RunFileStandalone(std::string file);
     bool Run(std::string searchPath, RomSearchMode searchMode = RomSearchMode::Both);
-    bool CallZapd(std::string installPath, std::string exportdir, std::atomic<size_t>* extractCount, std::atomic<size_t>* totalExtract);
+    bool CallZapd(std::string installPath, std::string exportdir, std::atomic<size_t>* extractCount,
+                  std::atomic<size_t>* totalExtract);
     const char* GetZapdStr();
     std::string Mkdtemp();
 };
