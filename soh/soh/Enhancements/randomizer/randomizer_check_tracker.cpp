@@ -56,6 +56,7 @@ static WidgetInfo dungeonSpoilerWidget;
 static WidgetInfo hideUnshuffledShopWidget;
 static WidgetInfo showGSWidget;
 static WidgetInfo showLogicWidget;
+static WidgetInfo ageChecksWidget;
 static WidgetInfo checkAvailabilityWidget;
 static WidgetInfo availableChecksNoneWidget;
 static WidgetInfo availableChecksChildWidget;
@@ -205,6 +206,7 @@ bool mystery = false;
 bool showLogicTooltip = false;
 
 typedef enum : int { AC_DISABLED, AC_LOCKED_UNLOCKED, AC_ONE_ICON, AC_TWO_ICONS } AvailableChecksDisplay;
+AvailableChecksDisplay ageChecksDisplay = AC_DISABLED;
 AvailableChecksDisplay availableChecksDisplay = AC_DISABLED;
 std::string availableChecksNoneAvailableIcon = ICON_FA_LOCK;
 std::string availableChecksChildAvailableIcon = ICON_FA_CHILD;
@@ -641,6 +643,8 @@ void CheckTrackerLoadGame(int32_t fileNum) {
     if (Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_ENTRANCES).Get()) {
         Rando::Context::GetInstance()->GetEntranceShuffler()->ApplyEntranceOverrides();
     }
+
+    CalculateCheckAges();
 
     recalculateAvailable = true;
 }
@@ -2375,6 +2379,7 @@ void CheckTrackerWindow::DrawElement() {
     showHidden = CVarGetInteger(CVAR_TRACKER_CHECK("ShowHidden"), 0);
     mystery = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0);
     showLogicTooltip = CVarGetInteger(CVAR_TRACKER_CHECK("ShowLogic"), 0);
+    ageChecksDisplay = (AvailableChecksDisplay)CVarGetInteger(CVAR_TRACKER_CHECK("AgeChecksDisplay"), 0);
     availableChecksDisplay = (AvailableChecksDisplay)CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksDisplay"), 0);
     availableChecksNoneAvailableIcon =
         MapAvailableCheckIcon(CVarGetString(CVAR_TRACKER_CHECK("AvailableChecksNoneIcon"), "ICON_FA_LOCK"));
@@ -3161,28 +3166,36 @@ bool IsHeartPiece(GetItemID giid) {
     return giid == GI_HEART_PIECE || giid == GI_HEART_PIECE_WIN;
 }
 
-void DrawAvailability(Rando::ItemLocation* itemLoc, ImVec4 styleColor) {
-    if (availableChecksDisplay == AC_DISABLED) {
+void DrawAvailability(ImVec4 styleColor, AvailableChecksDisplay display, bool child, bool adult, bool obtained) {
+    if (display == AC_DISABLED) {
         return;
     }
-
-    auto child = itemLoc->IsChildAvailable();
-    auto adult = itemLoc->IsAdultAvailable();
 
     auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
     auto textSize = ImGui::CalcTextSize(ICON_FA_LOCK);
     auto framePadding = ImGui::GetStyle().FramePadding;
     ImVec2 iconSize(textSize.y + framePadding.y * 2, textSize.y + framePadding.y * 2), zero(0.0f, 0.0f), one(1, 1);
 
-    if (availableChecksDisplay == AC_LOCKED_UNLOCKED) {
-        if (child || adult) {
+    if (display == AC_LOCKED_UNLOCKED) {
+        if (obtained) {
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 0));
+        } else {
+            ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
+        }
+
+        if (!obtained) {
+            auto texture = gui->GetTextureByName(availableChecksNoneAvailableIcon);
+            if (texture != nullptr) {
+                ImGui::ImageWithBg(texture, iconSize, zero, one, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 0));
+            } else {
+                ImGui::Text(availableChecksNoneAvailableIcon.c_str());
+            }
+        } else if (child || adult) {
             auto texture = gui->GetTextureByName(availableChecksBothAvailableIcon);
             if (texture != nullptr) {
                 ImGui::ImageWithBg(texture, iconSize, zero, one, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1));
             } else {
-                ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
                 ImGui::Text(availableChecksBothAvailableIcon.c_str());
-                ImGui::PopStyleColor();
             }
             UIWidgets::Tooltip("Available");
         } else {
@@ -3190,15 +3203,14 @@ void DrawAvailability(Rando::ItemLocation* itemLoc, ImVec4 styleColor) {
             if (texture != nullptr) {
                 ImGui::ImageWithBg(texture, iconSize, zero, one, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1));
             } else {
-                ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
                 ImGui::Text(availableChecksNoneAvailableIcon.c_str());
-                ImGui::PopStyleColor();
             }
             UIWidgets::Tooltip("Unavailable");
         }
         ImGui::SameLine();
-    } else if (availableChecksDisplay == AC_ONE_ICON) {
-        if (itemLoc->HasObtained()) {
+        ImGui::PopStyleColor();
+    } else if (display == AC_ONE_ICON) {
+        if (obtained) {
             ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 0));
         } else {
             ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
@@ -3243,9 +3255,9 @@ void DrawAvailability(Rando::ItemLocation* itemLoc, ImVec4 styleColor) {
         }
 
         ImGui::PopStyleColor();
-    } else if (availableChecksDisplay == AC_TWO_ICONS) {
+    } else if (display == AC_TWO_ICONS) {
         auto childTexture = gui->GetTextureByName(availableChecksChildAvailableIcon);
-        if (itemLoc->HasObtained()) {
+        if (obtained) {
             if (childTexture != nullptr) {
                 ImGui::ImageWithBg(childTexture, iconSize, zero, one, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 0));
             } else {
@@ -3279,7 +3291,7 @@ void DrawAvailability(Rando::ItemLocation* itemLoc, ImVec4 styleColor) {
         }
 
         auto adultTexture = gui->GetTextureByName(availableChecksAdultAvailableIcon);
-        if (itemLoc->HasObtained()) {
+        if (obtained) {
             if (adultTexture != nullptr) {
                 ImGui::ImageWithBg(adultTexture, iconSize, zero, one, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 0));
             } else {
@@ -3322,8 +3334,8 @@ void DrawLocation(RandomizerCheck rc) {
     Rando::ItemLocation* itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
     RandomizerCheckStatus status = itemLoc->GetCheckStatus();
     bool skipped = itemLoc->GetIsSkipped();
-    bool childAvailable = itemLoc->IsChildAvailable();
-    bool adultAvailable = itemLoc->IsAdultAvailable();
+    bool childAvailable = itemLoc->IsChildAvailable(false);
+    bool adultAvailable = itemLoc->IsAdultAvailable(false);
 
     if (availableChecksDisplay != AC_DISABLED) {
         if (availableChecksOnlyShow == AC_SHOW_AVAILABLE_CHECKS && !childAvailable && !adultAvailable) {
@@ -3449,7 +3461,13 @@ void DrawLocation(RandomizerCheck rc) {
 
     // Draw
     ImVec4 styleColor(mainColor.r / 255.0f, mainColor.g / 255.0f, mainColor.b / 255.0f, mainColor.a / 255.0f);
-    DrawAvailability(itemLoc, styleColor);
+
+    if (ageChecksDisplay != AC_DISABLED) {
+        DrawAvailability(styleColor, ageChecksDisplay, itemLoc->IsChildAvailable(true), itemLoc->IsAdultAvailable(true),
+                         itemLoc->HasObtained());
+    }
+    DrawAvailability(styleColor, availableChecksDisplay, itemLoc->IsChildAvailable(false),
+                     itemLoc->IsAdultAvailable(false), itemLoc->HasObtained());
 
     ImGui::PushStyleColor(ImGuiCol_Text, styleColor);
     ImGui::Text("%s", txt.c_str());
@@ -3659,6 +3677,9 @@ static std::map<int32_t, const char*> buttonStrings = {
     { TRACKER_COMBO_BUTTON_D_UP, "D-Up" },     { TRACKER_COMBO_BUTTON_D_DOWN, "D-Down" },
     { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" }
 };
+static std::map<int32_t, const char*> ageChecksDisplayOptions = { { AC_DISABLED, "Disabled" },
+                                                                  { AC_ONE_ICON, "One Age Icon" },
+                                                                  { AC_TWO_ICONS, "Two Age Icons" } };
 static std::map<int32_t, const char*> availableChecksDisplayOptions = { { AC_DISABLED, "Disabled" },
                                                                         { AC_LOCKED_UNLOCKED, "Locked / Unlocked" },
                                                                         { AC_ONE_ICON, "One Age Icon" },
@@ -3722,6 +3743,8 @@ void CheckTrackerSettingsWindow::DrawElement() {
         SohGui::mSohMenu->MenuDrawItem(showGSWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
 
         SohGui::mSohMenu->MenuDrawItem(showLogicWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+
+        SohGui::mSohMenu->MenuDrawItem(ageChecksWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
 
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         SohGui::mSohMenu->MenuDrawItem(checkAvailabilityWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
@@ -3872,6 +3895,16 @@ void RegisterCheckTrackerWidgets() {
                      .Color(THEME_COLOR)
                      .Tooltip("If enabled, will show a check's logic when hovering over it."));
     SohGui::mSohMenu->AddSearchWidget({ showLogicWidget, "Randomizer", "Check Tracker", "General Settings" });
+
+    ageChecksWidget = { .name = "Show Check Ages", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    ageChecksWidget.CVar(CVAR_TRACKER_CHECK("AgeChecksDisplay"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(AC_DISABLED)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Near)
+                     .Color(THEME_COLOR)
+                     .ComboMap(ageChecksDisplayOptions)
+                     .Tooltip("If enabled, will show the age for when a check can be collected."));
 
     checkAvailabilityWidget = { .name = "Enable Available Checks", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     checkAvailabilityWidget.CVar(CVAR_TRACKER_CHECK("AvailableChecksDisplay"))

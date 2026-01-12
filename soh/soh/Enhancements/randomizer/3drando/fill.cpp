@@ -1449,3 +1449,42 @@ int Fill() {
     // All retries failed
     return -1;
 }
+
+void CalculateCheckAges() {
+    SaveContext* previousSaveContext = logic->mSaveContext;
+
+    SaveContext* tempSaveContext = new SaveContext();
+    logic->mSaveContext = tempSaveContext;
+    logic->InitSaveContext();
+
+    std::array<RandomizerGet, RC_MAX> placedItems{};
+    for (int i = 0; i < RC_MAX; i++) {
+        auto rc = static_cast<RandomizerCheck>(i);
+        Rando::ItemLocation* itemLoc = ctx->GetItemLocation(rc);
+        placedItems[rc] = itemLoc->GetPlacedRandomizerGet();
+        itemLoc->SetPlacedItem(RG_NONE);
+    }
+
+    ctx->ItemReset();
+    ctx->GenerateLocationPool();
+    GenerateItemPool();
+
+    for (int i = 0; i < RC_MAX; i++) {
+        auto rc = static_cast<RandomizerCheck>(i);
+        Rando::ItemLocation* itemLoc = ctx->GetItemLocation(rc);
+        itemLoc->SetPlacedItem(placedItems[rc]);
+    }
+
+    ApplyAllAdvancmentItems();
+    ReachabilitySearch({}, RG_NONE, false);
+
+    for (int i = 0; i < RC_MAX; i++) {
+        auto rc = static_cast<RandomizerCheck>(i);
+        Rando::ItemLocation* itemLoc = ctx->GetItemLocation(rc);
+        itemLoc->SetChildAvailable(itemLoc->IsChildAvailable(), true);
+        itemLoc->SetAdultAvailable(itemLoc->IsAdultAvailable(), true);
+    }
+
+    logic->mSaveContext = previousSaveContext;
+    free(tempSaveContext);
+}

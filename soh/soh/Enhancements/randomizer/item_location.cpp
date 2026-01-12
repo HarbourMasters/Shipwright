@@ -233,22 +233,40 @@ void ItemLocation::ResetVariables() {
     status = RCSHOW_UNCHECKED;
     isSkipped = false;
     isChildAvailable = false;
+    isFinalChildAvailable = false;
     isAdultAvailable = false;
+    isFinalAdultAvailable = false;
 }
 
-bool ItemLocation::IsChildAvailable() const {
-    return isChildAvailable;
+bool ItemLocation::IsChildAvailable(bool final /*= false*/) const {
+    if (final) {
+        return isFinalChildAvailable;
+    } else {
+        return isChildAvailable;
+    }
 }
 
-void ItemLocation::SetChildAvailable(bool isChildAvailable_) {
-    isChildAvailable = isChildAvailable_;
+void ItemLocation::SetChildAvailable(bool isChildAvailable_, bool final /*= false*/) {
+    if (final) {
+        isFinalChildAvailable = isChildAvailable_;
+    } else {
+        isChildAvailable = isChildAvailable_;
+    }
 }
 
-bool ItemLocation::IsAdultAvailable() const {
-    return isAdultAvailable;
+bool ItemLocation::IsAdultAvailable(bool final /*= false*/) const {
+    if (final) {
+        return isFinalAdultAvailable;
+    } else {
+        return isAdultAvailable;
+    }
 }
 
-void ItemLocation::SetAdultAvailable(bool isAdultAvailable_) {
-    isAdultAvailable = isAdultAvailable_;
+void ItemLocation::SetAdultAvailable(bool isAdultAvailable_, bool final /*= false*/) {
+    if (final) {
+        isFinalAdultAvailable = isAdultAvailable_;
+    } else {
+        isAdultAvailable = isAdultAvailable_;
+    }
 }
 } // namespace Rando

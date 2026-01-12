@@ -76,3 +76,5 @@ bool CheckBeatable(RandomizerGet ignore = RG_NONE);
 void ValidateEntrances(bool checkOtherEntranceAccess);
 
 void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAccess);
+
+void CalculateCheckAges();
