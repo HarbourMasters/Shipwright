@@ -1,10 +1,10 @@
 #include <soh/OTRGlobals.h>
 
 extern "C" {
-    #include "variables.h"
-    #include "overlays/actors/ovl_En_Po_Field/z_en_po_field.h"
-    #include "overlays/actors/ovl_En_Gb/z_en_gb.h"
-    extern PlayState* gPlayState;
+#include "variables.h"
+#include "overlays/actors/ovl_En_Po_Field/z_en_po_field.h"
+#include "overlays/actors/ovl_En_Gb/z_en_gb.h"
+extern PlayState* gPlayState;
 }
 
 void BuildBigPoeCollectedMessage(uint16_t* textId, bool* loadFromMessageTable) {

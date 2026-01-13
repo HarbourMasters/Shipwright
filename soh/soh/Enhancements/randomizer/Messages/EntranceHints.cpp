@@ -3,12 +3,12 @@
 #include <soh/OTRGlobals.h>
 
 extern "C" {
-    #include <variables.h>
-    extern PlayState* gPlayState;
+#include <variables.h>
+extern PlayState* gPlayState;
 }
 
 #define ENTRANCES_SHUFFLED \
-    IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_ENTRANCES).Is(RO_GENERIC_ON)
+    IS_RANDO&& OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_ENTRANCES).Is(RO_GENERIC_ON)
 
 void BuildEntranceHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     auto ctx = OTRGlobals::Instance->gRandoContext;
