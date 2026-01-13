@@ -24,13 +24,11 @@ extern PlayState* gPlayState;
     (RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) || \
      RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL))
 
-void BuildMerchantMessage(CustomMessage& msg, RandomizerCheck rc) {
+void BuildMerchantMessage(CustomMessage& msg, RandomizerCheck rc, bool mysterious = true) {
     RandomizerGet rgid = RAND_GET_ITEM(rc)->GetPlacedRandomizerGet();
     uint16_t price = RAND_GET_ITEM(rc)->GetPrice();
     CustomMessage itemName;
     std::string color = Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetColor();
-    bool mysterious = RAND_GET_OPTION(RSK_MERCHANT_TEXT_HINT).Is(RO_GENERIC_OFF) ||
-                      CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0);
     if (mysterious) {
         itemName = Rando::StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM_CAPITAL].GetHintMessage();
         color = "%g";
@@ -59,7 +57,9 @@ void BuildBeanGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
         msg = CustomMessage("Want to buy [[color]][[1]]%w for %y[[2]] Rupees%w?\x1B%gYes&No%w",
                             "Möchten Sie [[color]][[1]]%w für %y[[2]] Rubin%w kaufen?\x1B%gJa&Nein%w",
                             "Voulez-vous acheter [[color]][[1]]%w pour %y[[2]] Rubis%w?\x1B%gOui&Non%w");
-        BuildMerchantMessage(msg, RC_ZR_MAGIC_BEAN_SALESMAN);
+        BuildMerchantMessage(msg, RC_ZR_MAGIC_BEAN_SALESMAN,
+                             RAND_GET_OPTION(RSK_MERCHANT_TEXT_HINT).Is(RO_GENERIC_OFF) ||
+                                 CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0));
         msg.AutoFormat();
     }
     msg.LoadIntoFont();
@@ -70,7 +70,9 @@ void BuildMedigoronMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = CustomMessage("Want to buy [[color]][[1]]%w for %y[[2]] Rupees%w?\x1B%gYes&No%w",
                                       "Möchten Sie [[color]][[1]]%w für %y[[2]] Rubin%w kaufen?\x1B%gJa&Nein%w",
                                       "Voulez-vous acheter [[color]][[1]]%w pour %y[[2]] Rubis%w?\x1B%gOui&Non%w");
-    BuildMerchantMessage(msg, RC_GC_MEDIGORON);
+    BuildMerchantMessage(msg, RC_GC_MEDIGORON,
+                         RAND_GET_OPTION(RSK_MERCHANT_TEXT_HINT).Is(RO_GENERIC_OFF) ||
+                             CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0));
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -83,7 +85,9 @@ void BuildGrannyMessage(uint16_t* textId, bool* loadFromMessageTable) {
         CustomMessage msg = CustomMessage("Want to buy [[color]][[1]]%w for %y[[2]] Rupees%w?\x1B%gYes&No%w",
                                           "Möchten Sie [[color]][[1]]%w für %y[[2]] Rubin%w kaufen?\x1B%gJa&Nein%w",
                                           "Voulez-vous acheter [[color]][[1]]%w pour %y[[2]] Rubis%w?\x1B%gOui&Non%w");
-        BuildMerchantMessage(msg, RC_KAK_GRANNYS_SHOP);
+        BuildMerchantMessage(msg, RC_KAK_GRANNYS_SHOP,
+                             RAND_GET_OPTION(RSK_MERCHANT_TEXT_HINT).Is(RO_GENERIC_OFF) ||
+                                 CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0));
         msg.AutoFormat();
         msg.LoadIntoFont();
         *loadFromMessageTable = false;
@@ -100,7 +104,9 @@ void BuildCarpetGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
         msg = CustomMessage("Want to buy [[color]][[1]]%w for %y[[2]] Rupees%w?\x1B%gYes&No%w",
                             "Möchten Sie [[color]][[1]]%w für %y[[2]] Rubin%w kaufen?\x1B%gJa&Nein%w",
                             "Voulez-vous acheter [[color]][[1]]%w pour %y[[2]] Rubis%w?\x1B%gOui&Non%w");
-        BuildMerchantMessage(msg, RC_WASTELAND_BOMBCHU_SALESMAN);
+        BuildMerchantMessage(msg, RC_WASTELAND_BOMBCHU_SALESMAN,
+                             RAND_GET_OPTION(RSK_MERCHANT_TEXT_HINT).Is(RO_GENERIC_OFF) ||
+                                 CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0));
     }
     msg.AutoFormat();
     msg.LoadIntoFont();
@@ -141,7 +147,9 @@ void BuildScrubMessage(uint16_t* textId, bool* loadFromMessageTable) {
             "\x12\x38\x82"
             "J'abandonne! Tu veux bien m'acheter un [[color]][[1]]%w? Ça fera %y[[2]] Rubis%w!\x07\x10\xA3");
     }
-    BuildMerchantMessage(msg, rc);
+    BuildMerchantMessage(msg, rc,
+                         RAND_GET_OPTION(RSK_MERCHANT_TEXT_HINT).Is(RO_GENERIC_OFF) ||
+                             CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0));
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -169,7 +177,7 @@ void BuildShopMessage(uint16_t* textId, bool* loadFromMessageTable) {
     } else {
         return;
     }
-    BuildMerchantMessage(msg, rc);
+    BuildMerchantMessage(msg, rc, CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0));
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
