@@ -1,4 +1,3 @@
-#ifdef ENABLE_REMOTE_CONTROL
 #ifndef NETWORK_CROWD_CONTROL_H
 #define NETWORK_CROWD_CONTROL_H
 #ifdef __cplusplus
@@ -56,6 +55,7 @@ class CrowdControl : public Network {
         uint32_t category = 0;
         long timeRemaining;
         GameInteractionEffectBase* giEffect;
+        std::string viewerName;
 
         // Metadata used while executing (only for timed effects)
         bool isPaused;
@@ -86,4 +86,3 @@ class CrowdControl : public Network {
 
 #endif // __cplusplus
 #endif // NETWORK_CROWD_CONTROL_H
-#endif // ENABLE_REMOTE_CONTROL

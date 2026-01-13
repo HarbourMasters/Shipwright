@@ -8,6 +8,8 @@
 #include "overlays/actors/ovl_En_Honotrap/z_en_honotrap.h"
 #include "objects/object_tk/object_tk.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS                                                                                  \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -144,7 +146,7 @@ void EnPoRelay_SetupRace(EnPoRelay* this) {
 
     EnPoRelay_Vec3sToVec3f(&vec, &D_80AD8C30[this->pathIndex]);
     this->actionTimer = ((s16)(this->actor.shape.rot.y - this->actor.world.rot.y - 0x8000) >> 0xB) % 32U;
-    func_80088B34(0);
+    Interface_SetTimer(0);
     this->hookshotSlotFull =
         (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE && !IS_RANDO) || (IS_RANDO && Flags_GetTreasure(gPlayState, 0x1E));
     this->unk_19A = Actor_WorldYawTowardPoint(&this->actor, &vec);
@@ -197,7 +199,7 @@ void EnPoRelay_Race(EnPoRelay* this, PlayState* play) {
     if (this->actionTimer != 0) {
         this->actionTimer--;
     }
-    if (this->actionTimer == 0 && Rand_ZeroOne() < 0.03f) {
+    if (GameInteractor_Should(VB_DAMPE_DROP_FLAME, this->actionTimer == 0 && Rand_ZeroOne() < 0.03f, this)) {
         this->actionTimer = 32;
         if (this->pathIndex < 23) {
             speed = Rand_ZeroOne() * 3.0f;
@@ -236,6 +238,11 @@ void EnPoRelay_Race(EnPoRelay* this, PlayState* play) {
         } else {
             speed = 3.5f;
         }
+
+        if (CVarGetInteger(CVAR_ENHANCEMENT("FixDampeGoingBackwards"), false)) {
+            speed = ABS(speed);
+        }
+
         multiplier = 250.0f - this->actor.xzDistToPlayer;
         multiplier = CLAMP_MIN(multiplier, 0.0f);
         speed += multiplier * 0.02f + 1.0f;
@@ -267,7 +274,7 @@ void EnPoRelay_EndRace(EnPoRelay* this, PlayState* play) {
         this->actionFunc = EnPoRelay_Talk2;
     } else if (play->roomCtx.curRoom.num == 5) {
         Actor_Kill(&this->actor);
-        gSaveContext.timerState = 0;
+        gSaveContext.timerState = TIMER_STATE_OFF;
     } else if (Actor_IsFacingAndNearPlayer(&this->actor, 150.0f, 0x3000)) {
         this->actor.textId = this->textId;
         func_8002F2CC(&this->actor, play, 250.0f);
@@ -288,7 +295,7 @@ void EnPoRelay_Talk2(EnPoRelay* this, PlayState* play) {
             Message_ContinueTextbox(play, this->actor.textId);
         }
     } else if (Actor_TextboxIsClosing(&this->actor, play)) {
-        gSaveContext.timerState = 0;
+        gSaveContext.timerState = TIMER_STATE_OFF;
         this->actionTimer = 0;
         this->actionFunc = EnPoRelay_DisappearAndReward;
     }

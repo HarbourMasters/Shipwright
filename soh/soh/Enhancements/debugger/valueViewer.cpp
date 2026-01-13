@@ -75,7 +75,7 @@ std::vector<ValueTableElement> valueTable = {
 // clang-format on
 
 extern "C" void ValueViewer_Draw(GfxPrint* printer) {
-    for (int i = 0; i < valueTable.size(); i++) {
+    for (size_t i = 0; i < valueTable.size(); i++) {
         ValueTableElement& element = valueTable[i];
         if (!element.isActive || !element.isPrinted || (gPlayState == NULL && element.requiresPlayState))
             continue;
@@ -151,7 +151,7 @@ void RegisterValueViewerHooks() {
     COND_HOOK(OnGameFrameUpdate, CVAR_VALUE, []() { ValueViewer_SetupDraw(); });
 }
 
-RegisterShipInitFunc initFunc(RegisterValueViewerHooks, { CVAR_NAME });
+static RegisterShipInitFunc initFunc(RegisterValueViewerHooks, { CVAR_NAME });
 
 void ValueViewerWindow::DrawElement() {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
@@ -164,7 +164,7 @@ void ValueViewerWindow::DrawElement() {
                                                                  std::string(valueTable[selectedElement].path) + ")");
     UIWidgets::PushStyleCombobox(THEME_COLOR);
     if (ImGui::BeginCombo("##valueViewerElement", selectedElementText.c_str())) {
-        for (int i = 0; i < valueTable.size(); i++) {
+        for (size_t i = 0; i < valueTable.size(); i++) {
             if (valueTable[i].isActive)
                 continue;
             bool isSelected = (selectedElement == i);
@@ -188,7 +188,7 @@ void ValueViewerWindow::DrawElement() {
     UIWidgets::PopStyleButton();
     ImGui::EndGroup();
 
-    for (int i = 0; i < valueTable.size(); i++) {
+    for (size_t i = 0; i < valueTable.size(); i++) {
         ValueTableElement& element = valueTable[i];
         if (!element.isActive || (gPlayState == NULL && element.requiresPlayState))
             continue;

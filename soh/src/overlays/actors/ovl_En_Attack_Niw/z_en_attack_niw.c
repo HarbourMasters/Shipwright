@@ -58,6 +58,11 @@ void EnAttackNiw_Init(Actor* thisx, PlayState* play) {
     this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.shape.rot.y = this->actor.world.rot.y = (Rand_ZeroOne() - 0.5f) * 60000.0f;
     this->actionFunc = func_809B5670;
+
+    if (CVarGetInteger("gCrowdControl", 0) &&
+        CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("SpawnedEnemiesIgnoredIngame"), 0)) {
+        Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, this, ACTORCAT_NPC);
+    }
 }
 
 void EnAttackNiw_Destroy(Actor* thisx, PlayState* play) {

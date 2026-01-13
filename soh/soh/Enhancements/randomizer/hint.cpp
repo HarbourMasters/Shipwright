@@ -1,7 +1,7 @@
 #include "hint.h"
 #include "map"
 #include "string"
-#include "context.h"
+#include "SeedContext.h"
 #include <spdlog/spdlog.h>
 #include "static_data.h"
 
@@ -174,8 +174,8 @@ void Hint::NamesChosen() {
     auto ctx = Rando::Context::GetInstance();
     std::vector<uint8_t> namesTemp = {};
     bool saveNames = false;
-    uint8_t numMessages = GetNumberOfMessages();
-    for (uint8_t c = 0; c < numMessages; c++) {
+    size_t numMessages = GetNumberOfMessages();
+    for (size_t c = 0; c < numMessages; c++) {
         uint8_t selection = GetRandomHintTextEntry(GetHintText(c));
         if (selection > 0) {
             saveNames = true;
@@ -187,7 +187,7 @@ void Hint::NamesChosen() {
     }
 
     if (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_ITEM_AREA) {
-        for (uint8_t c = 0; c < locations.size(); c++) {
+        for (size_t c = 0; c < locations.size(); c++) {
             namesTemp = {};
             saveNames = false;
             uint8_t selection = GetRandomHintTextEntry(GetItemHintText(c));
@@ -218,27 +218,24 @@ void Hint::NamesChosen() {
     }
 }
 
-uint8_t Hint::GetNumberOfMessages() const {
+size_t Hint::GetNumberOfMessages() const {
     size_t numMessages = std::max(messages.size(), hintKeys.size());
     if (StaticData::staticHintInfoMap.contains(ownKey)) {
         numMessages = std::max(StaticData::staticHintInfoMap[ownKey].hintKeys.size(), numMessages);
     }
-    if (numMessages == 0) {
-        numMessages = 1; // RANDOTODO make std::max actually fucking work for 3 arguments
-    }
-    return numMessages;
+    return std::max(numMessages, (size_t)1);
 }
 
 const std::vector<std::string> Hint::GetAllMessageStrings(MessageFormat format) const {
     std::vector<std::string> hintMessages = {};
-    uint8_t numMessages = GetNumberOfMessages();
-    for (int c = 0; c < numMessages; c++) {
+    size_t numMessages = GetNumberOfMessages();
+    for (size_t c = 0; c < numMessages; c++) {
         hintMessages.push_back(GetHintMessage(format, c).GetForCurrentLanguage(format));
     }
     return hintMessages;
 }
 
-const HintText Hint::GetHintText(uint8_t id) const {
+const HintText Hint::GetHintText(size_t id) const {
     auto ctx = Rando::Context::GetInstance();
     if (hintKeys.size() > id) {
         return StaticData::hintTextTable[hintKeys[id]];
@@ -251,7 +248,6 @@ const HintText Hint::GetHintText(uint8_t id) const {
     switch (hintType) {
         case HINT_TYPE_HINT_KEY:
             return StaticData::hintTextTable[0];
-            break;
         case HINT_TYPE_TRIAL:
             if (ctx->GetTrial(trials[0])->IsRequired()) {
                 return StaticData::hintTextTable[RHT_TRIAL_ON];
@@ -283,11 +279,11 @@ const HintText Hint::GetHintText(uint8_t id) const {
     }
 }
 
-const CustomMessage Hint::GetHintMessage(MessageFormat format, uint8_t id) const {
+const CustomMessage Hint::GetHintMessage(MessageFormat format, size_t id) const {
     auto ctx = Rando::Context::GetInstance();
     CustomMessage hintText = CustomMessage("");
 
-    uint8_t chosenMessage = 0;
+    size_t chosenMessage = 0;
     if (hintTextsChosen.size() > id) {
         chosenMessage = id;
     }
@@ -299,6 +295,8 @@ const CustomMessage Hint::GetHintMessage(MessageFormat format, uint8_t id) const
     } else if (hintType == HINT_TYPE_ALTAR_CHILD) {
         if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
             hintText = StaticData::hintTextTable[RHT_CHILD_ALTAR_STONES].GetHintMessage();
+        } else {
+            hintText.SetTextBoxType(TEXTBOX_TYPE_BLUE);
         }
         if (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_OPEN)) {
             hintText += CustomMessage(StaticData::hintTextTable[RHT_CHILD_ALTAR_TEXT_END_DOTOPEN].GetHintMessage());
@@ -310,6 +308,8 @@ const CustomMessage Hint::GetHintMessage(MessageFormat format, uint8_t id) const
     } else if (hintType == HINT_TYPE_ALTAR_ADULT) {
         if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
             hintText = StaticData::hintTextTable[RHT_ADULT_ALTAR_MEDALLIONS].GetHintMessage();
+        } else {
+            hintText.SetTextBoxType(TEXTBOX_TYPE_BLUE);
         }
         hintText += GetBridgeReqsText() + GetGanonBossKeyText() +
                     StaticData::hintTextTable[RHT_ADULT_ALTAR_TEXT_END].GetHintMessage();
@@ -358,6 +358,7 @@ const CustomMessage Hint::GetHintMessage(MessageFormat format, uint8_t id) const
     }
 
     hintText.InsertNames(toInsert);
+    hintText.SetSingularPlural();
 
     if (num != 0) {
         hintText.InsertNumber(num);
@@ -585,7 +586,7 @@ CustomMessage Hint::GetGanonBossKeyText() {
     auto ctx = Rando::Context::GetInstance();
     CustomMessage ganonBossKeyMessage;
 
-    if (ctx->GetOption(RSK_TRIFORCE_HUNT)) {
+    if (ctx->GetOption(RSK_TRIFORCE_HUNT).IsNot(RO_TRIFORCE_HUNT_OFF)) {
         return StaticData::hintTextTable[RHT_GANON_BK_TRIFORCE_HINT].GetHintMessage();
     }
 

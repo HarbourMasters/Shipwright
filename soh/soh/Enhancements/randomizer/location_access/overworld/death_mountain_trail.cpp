@@ -5,41 +5,42 @@ using namespace Rando;
 
 void RegionTable_Init_DeathMountainTrail() {
     // clang-format off
-    areaTable[RR_DEATH_MOUNTAIN_TRAIL] = Region("Death Mountain", "Death Mountain", {RA_DEATH_MOUNTAIN_TRAIL}, DAY_NIGHT_CYCLE, {
+    areaTable[RR_DEATH_MOUNTAIN_TRAIL] = Region("Death Mountain", SCENE_DEATH_MOUNTAIN_TRAIL, {
         //Events
-        EventAccess(&logic->BeanPlantFairy, []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET));}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET));}),
     }, {
         //Locations
         LOCATION(RC_DMT_CHEST,                    logic->BlastOrSmash() || (ctx->GetTrickOption(RT_DMT_BOMBABLE) && logic->IsChild && logic->HasItem(RG_GORONS_BRACELET))),
-        LOCATION(RC_DMT_FREESTANDING_POH,         logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET)))),
-        LOCATION(RC_DMT_GS_BEAN_PATCH,            logic->CanSpawnSoilSkull() && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET) || (ctx->GetTrickOption(RT_DMT_SOIL_GS) && (logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_BOOMERANG)))),
+        LOCATION(RC_DMT_FREESTANDING_POH,         logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL, RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET)))),
+        LOCATION(RC_DMT_GS_BEAN_PATCH,            logic->CanSpawnSoilSkull(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET) || (ctx->GetTrickOption(RT_DMT_SOIL_GS) && (logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_BOOMERANG)))),
         LOCATION(RC_DMT_GS_NEAR_KAK,              logic->BlastOrSmash()),
-        LOCATION(RC_DMT_GS_ABOVE_DODONGOS_CAVERN, logic->IsAdult && logic->AtNight && (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_DMT_HOOKSHOT_LOWER_GS) && logic->CanUse(RG_HOOKSHOT)) || (ctx->GetTrickOption(RT_DMT_BEAN_LOWER_GS) && CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL)) || (ctx->GetTrickOption(RT_DMT_HOVERS_LOWER_GS) && logic->CanUse(RG_HOVER_BOOTS)) || ctx->GetTrickOption(RT_DMT_JS_LOWER_GS)) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_DMT_GS_ABOVE_DODONGOS_CAVERN, logic->IsAdult && logic->CanGetNightTimeGS() && (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION) && logic->CanUse(RG_HOOKSHOT)) || (ctx->GetTrickOption(RT_DMT_BEAN_LOWER_GS) && CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL, RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL)) || (ctx->GetTrickOption(RT_DMT_HOVERS_LOWER_GS) && logic->CanUse(RG_HOVER_BOOTS)) || (ctx->GetTrickOption(RT_DMT_JS_LOWER_GS) && logic->CanJumpslash()) || (ctx->GetTrickOption(RT_DISTANT_BOULDER_COLLISION) && logic->CanUse(RG_LONGSHOT)))),
         LOCATION(RC_DMT_BLUE_RUPEE,               logic->IsChild && logic->BlastOrSmash()),
         LOCATION(RC_DMT_RED_RUPEE,                logic->IsChild && logic->BlastOrSmash()),
-        LOCATION(RC_DMT_BEAN_SPROUT_FAIRY_1,      logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
-        LOCATION(RC_DMT_BEAN_SPROUT_FAIRY_2,      logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
-        LOCATION(RC_DMT_BEAN_SPROUT_FAIRY_3,      logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
+        LOCATION(RC_DMT_BEAN_SPROUT_FAIRY_1,      logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
+        LOCATION(RC_DMT_BEAN_SPROUT_FAIRY_2,      logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
+        LOCATION(RC_DMT_BEAN_SPROUT_FAIRY_3,      logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
         LOCATION(RC_DMT_FLAG_SUN_FAIRY,           logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
         Entrance(RR_KAK_BEHIND_GATE,          []{return true;}),
         Entrance(RR_GORON_CITY,               []{return true;}),
-        Entrance(RR_DEATH_MOUNTAIN_SUMMIT,    []{return Here(RR_DEATH_MOUNTAIN_TRAIL, []{return logic->BlastOrSmash();}) || (logic->IsAdult && ((CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL) && logic->HasItem(RG_GORONS_BRACELET)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_DMT_CLIMB_HOVERS))));}),
+        Entrance(RR_DEATH_MOUNTAIN_SUMMIT,    []{return AnyAgeTime([]{return logic->BlastOrSmash();}) || (logic->IsAdult && ((CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL, RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && logic->HasItem(RG_GORONS_BRACELET)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_DMT_CLIMB_HOVERS))));}),
         Entrance(RR_DODONGOS_CAVERN_ENTRYWAY, []{return logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET) || logic->IsAdult;}),
         Entrance(RR_DMT_STORMS_GROTTO,        []{return logic->CanOpenStormsGrotto();}),
     });
 
-    areaTable[RR_DEATH_MOUNTAIN_SUMMIT] = Region("Death Mountain Summit", "Death Mountain", {RA_DEATH_MOUNTAIN_TRAIL}, DAY_NIGHT_CYCLE, {
+    areaTable[RR_DEATH_MOUNTAIN_SUMMIT] = Region("Death Mountain Summit", SCENE_DEATH_MOUNTAIN_TRAIL, {
         //Events
-        EventAccess(&logic->GossipStoneFairy, []{return logic->CallGossipFairy();}),
-        EventAccess(&logic->BugRock,          []{return logic->BugRock            || logic->IsChild;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy();}),
+        EventAccess(LOGIC_BUG_ACCESS,   []{return logic->IsChild;}),
     }, {
         //Locations
         LOCATION(RC_DMT_TRADE_BROKEN_SWORD,     logic->IsAdult && logic->CanUse(RG_BROKEN_SWORD)),
         LOCATION(RC_DMT_TRADE_EYEDROPS,         logic->IsAdult && logic->CanUse(RG_EYEDROPS)),
         LOCATION(RC_DMT_TRADE_CLAIM_CHECK,      logic->IsAdult && logic->CanUse(RG_CLAIM_CHECK)),
-        LOCATION(RC_DMT_GS_FALLING_ROCKS_PATH,  logic->IsAdult && logic->AtNight && (logic->CanUse(RG_MEGATON_HAMMER) || ctx->GetTrickOption(RT_DMT_UPPER_GS)) && logic->CanGetNightTimeGS()),
+        // backflip can collect token, allowing use of explosives (or bow from afar), but it's a trick
+        LOCATION(RC_DMT_GS_FALLING_ROCKS_PATH,  logic->IsAdult && logic->CanGetNightTimeGS() && (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_DMT_UPPER_GS) && (logic->CanJumpslash() || logic->HasExplosives() || ((ctx->GetTrickOption(RT_DISTANT_BOULDER_COLLISION) || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION)) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT))))) || (ctx->GetTrickOption(RT_DISTANT_BOULDER_COLLISION) && logic->CanUse(RG_LONGSHOT)))),
         LOCATION(RC_DMT_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
         LOCATION(RC_DMT_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_DMT_GOSSIP_STONE,           true),
@@ -48,16 +49,16 @@ void RegionTable_Init_DeathMountainTrail() {
         Entrance(RR_DEATH_MOUNTAIN_TRAIL,     []{return true;}),
         Entrance(RR_DMC_UPPER_LOCAL,          []{return true;}),
         Entrance(RR_DMT_OWL_FLIGHT,           []{return logic->IsChild;}, false),
-        Entrance(RR_DMT_COW_GROTTO,           []{return Here(RR_DEATH_MOUNTAIN_SUMMIT, []{return logic->BlastOrSmash();});}),
-        Entrance(RR_DMT_GREAT_FAIRY_FOUNTAIN, []{return Here(RR_DEATH_MOUNTAIN_SUMMIT, []{return logic->BlastOrSmash();});}),
+        Entrance(RR_DMT_COW_GROTTO,           []{return AnyAgeTime([]{return logic->BlastOrSmash();});}),
+        Entrance(RR_DMT_GREAT_FAIRY_FOUNTAIN, []{return AnyAgeTime([]{return logic->BlastOrSmash();});}),
     });
 
-    areaTable[RR_DMT_OWL_FLIGHT] = Region("DMT Owl Flight", "Death Mountain", {RA_DEATH_MOUNTAIN_TRAIL}, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    areaTable[RR_DMT_OWL_FLIGHT] = Region("DMT Owl Flight", SCENE_DEATH_MOUNTAIN_TRAIL, {}, {}, {
         //Exits
         Entrance(RR_KAK_IMPAS_ROOFTOP, []{return true;}),
     });
 
-    areaTable[RR_DMT_COW_GROTTO] = Region("DMT Cow Grotto", "DMT Cow Grotto", {}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_DMT_COW_GROTTO] = Region("DMT Cow Grotto", SCENE_GROTTOS, {}, {
         //Locations
         LOCATION(RC_DMT_COW_GROTTO_COW,                logic->CanUse(RG_EPONAS_SONG)),
         LOCATION(RC_DMT_COW_GROTTO_BEEHIVE,            logic->CanBreakLowerBeehives()),
@@ -80,7 +81,7 @@ void RegionTable_Init_DeathMountainTrail() {
         Entrance(RR_DEATH_MOUNTAIN_SUMMIT, []{return true;}),
     });
 
-    areaTable[RR_DMT_STORMS_GROTTO] = Region("DMT Storms Grotto", "DMT Storms Grotto", {}, NO_DAY_NIGHT_CYCLE, grottoEvents, {
+    areaTable[RR_DMT_STORMS_GROTTO] = Region("DMT Storms Grotto", SCENE_GROTTOS, grottoEvents, {
         //Locations
         LOCATION(RC_DMT_STORMS_GROTTO_CHEST,                  true),
         LOCATION(RC_DMT_STORMS_GROTTO_FISH,                   logic->HasBottle()),
@@ -98,7 +99,7 @@ void RegionTable_Init_DeathMountainTrail() {
         Entrance(RR_DEATH_MOUNTAIN_TRAIL, []{return true;}),
     });
 
-    areaTable[RR_DMT_GREAT_FAIRY_FOUNTAIN] = Region("DMT Great Fairy Fountain", "DMT Great Fairy Fountain", {}, NO_DAY_NIGHT_CYCLE, {}, {
+    areaTable[RR_DMT_GREAT_FAIRY_FOUNTAIN] = Region("DMT Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, {}, {
         //Locations
         LOCATION(RC_DMT_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {

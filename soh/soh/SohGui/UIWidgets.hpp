@@ -1,14 +1,13 @@
 #ifndef UIWidgets2_hpp
 #define UIWidgets2_hpp
 
+#include <map>
 #include <string>
 #include <vector>
-#include <span>
 #include <stdint.h>
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui.h>
 #include <libultraship/libultraship.h>
-#include <unordered_map>
 #include "soh/ShipUtils.h"
 #include "soh/ShipInit.hpp"
 
@@ -115,10 +114,12 @@ struct WidgetOptions {
         tooltip = tooltip_;
         return *this;
     }
+
     WidgetOptions& Disabled(bool disabled_) {
         disabled = disabled_;
         return *this;
     }
+
     WidgetOptions& DisabledTooltip(const char* disabledTooltip_) {
         disabledTooltip = disabledTooltip_;
         return *this;
@@ -143,16 +144,81 @@ struct ButtonOptions : WidgetOptions {
         size = size_;
         return *this;
     }
+
     ButtonOptions& Padding(ImVec2 padding_) {
         padding = padding_;
         return *this;
     }
+
     ButtonOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     ButtonOptions& Color(Colors color_) {
         color = color_;
+        return *this;
+    }
+    ButtonOptions& DisabledTooltip(const char* disabledTooltip_) {
+        WidgetOptions::disabledTooltip = disabledTooltip_;
+        return *this;
+    }
+};
+
+struct ColorPickerOptions : WidgetOptions {
+    ImVec2 size = Sizes::Fill;
+    ImVec2 padding = ImVec2(10.0f, 8.0f);
+    Colors color = Colors::Gray;
+    Color_RGBA8 defaultValue = { 255, 255, 255, 255 };
+    bool useAlpha, showReset, showRandom, showRainbow, showLock;
+
+    ColorPickerOptions& Size(ImVec2 size_) {
+        size = size_;
+        return *this;
+    }
+
+    ColorPickerOptions& Padding(ImVec2 padding_) {
+        padding = padding_;
+        return *this;
+    }
+
+    ColorPickerOptions& Tooltip(const char* tooltip_) {
+        WidgetOptions::tooltip = tooltip_;
+        return *this;
+    }
+
+    ColorPickerOptions& ShowReset(bool showReset_ = true) {
+        showReset = showReset_;
+        return *this;
+    }
+
+    ColorPickerOptions& ShowRandom(bool showRandom_ = true) {
+        showRandom = showRandom_;
+        return *this;
+    }
+
+    ColorPickerOptions& ShowRainbow(bool showRainbow_ = true) {
+        showRainbow = showRainbow_;
+        return *this;
+    }
+
+    ColorPickerOptions& ShowLock(bool showLock_ = true) {
+        showLock = showLock_;
+        return *this;
+    }
+
+    ColorPickerOptions& UseAlpha(bool useAlpha_ = true) {
+        useAlpha = useAlpha_;
+        return *this;
+    }
+
+    ColorPickerOptions& Color(Colors color_) {
+        color = color_;
+        return *this;
+    }
+
+    ColorPickerOptions& DefaultValue(Color_RGBA8 defaultValue_) {
+        defaultValue = defaultValue_;
         return *this;
     }
 };
@@ -168,22 +234,27 @@ struct WindowButtonOptions : WidgetOptions {
         size = size_;
         return *this;
     }
+
     WindowButtonOptions& Padding(ImVec2 padding_) {
         padding = padding_;
         return *this;
     }
+
     WindowButtonOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     WindowButtonOptions& Color(Colors color_) {
         color = color_;
         return *this;
     }
+
     WindowButtonOptions& ShowButton(bool showButton_) {
         showButton = showButton_;
         return *this;
     }
+
     WindowButtonOptions& EmbedWindow(bool embedWindow_) {
         embedWindow = embedWindow_;
         return *this;
@@ -194,62 +265,78 @@ struct CheckboxOptions : WidgetOptions {
     bool defaultValue = false; // Only applicable to CVarCheckbox
     ComponentAlignments alignment = ComponentAlignments::Left;
     LabelPositions labelPosition = LabelPositions::Near;
+    ImVec2 padding = ImVec2(10.0f, 8.0f);
     Colors color = Colors::LightBlue;
 
     CheckboxOptions& DefaultValue(bool defaultValue_) {
         defaultValue = defaultValue_;
         return *this;
     }
+
     CheckboxOptions& ComponentAlignment(ComponentAlignments alignment_) {
         alignment = alignment_;
         return *this;
     }
+
     CheckboxOptions& LabelPosition(LabelPositions labelPosition_) {
         labelPosition = labelPosition_;
         return *this;
     }
+
     CheckboxOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     CheckboxOptions& Color(Colors color_) {
         color = color_;
         return *this;
     }
+
     CheckboxOptions& DisabledTooltip(const char* disabledTooltip_) {
         WidgetOptions::disabledTooltip = disabledTooltip_;
+        return *this;
+    }
+
+    CheckboxOptions& Padding(ImVec2 padding_) {
+        padding = padding_;
         return *this;
     }
 };
 
 struct ComboboxOptions : WidgetOptions {
-    std::unordered_map<int32_t, const char*> comboMap = {};
+    std::map<int32_t, const char*> comboMap = {};
     uint32_t defaultIndex = 0; // Only applicable to CVarCombobox
     ComponentAlignments alignment = ComponentAlignments::Left;
     LabelPositions labelPosition = LabelPositions::Above;
     ImGuiComboFlags flags = 0;
     Colors color = Colors::LightBlue;
 
-    ComboboxOptions& ComboMap(std::unordered_map<int32_t, const char*> comboMap_) {
+    ComboboxOptions& ComboMap(std::map<int32_t, const char*> comboMap_) {
         comboMap = comboMap_;
         return *this;
     }
+
     ComboboxOptions& DefaultIndex(uint32_t defaultIndex_) {
         defaultIndex = defaultIndex_;
         return *this;
     }
+
     ComboboxOptions& ComponentAlignment(ComponentAlignments alignment_) {
         alignment = alignment_;
         return *this;
     }
+
     ComboboxOptions& LabelPosition(LabelPositions labelPosition_) {
         labelPosition = labelPosition_;
         return *this;
     }
+
     ComboboxOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     ComboboxOptions& Color(Colors color_) {
         color = color_;
         return *this;
@@ -274,46 +361,57 @@ struct IntSliderOptions : WidgetOptions {
         showButtons = showButtons_;
         return *this;
     }
+
     IntSliderOptions& Format(const char* format_) {
         format = format_;
         return *this;
     }
+
     IntSliderOptions& Step(int32_t step_) {
         step = step_;
         return *this;
     }
+
     IntSliderOptions& Min(int32_t min_) {
         min = min_;
         return *this;
     }
+
     IntSliderOptions& Max(int32_t max_) {
         max = max_;
         return *this;
     }
+
     IntSliderOptions& DefaultValue(int32_t defaultValue_) {
         defaultValue = defaultValue_;
         return *this;
     }
+
     IntSliderOptions& ComponentAlignment(ComponentAlignments alignment_) {
         alignment = alignment_;
         return *this;
     }
+
     IntSliderOptions& LabelPosition(LabelPositions labelPosition_) {
         labelPosition = labelPosition_;
         return *this;
     }
+
     IntSliderOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     IntSliderOptions& Color(Colors color_) {
         color = color_;
         return *this;
     }
+
     IntSliderOptions& Size(ImVec2 size_) {
         size = size_;
         return *this;
     }
+
     IntSliderOptions& Clamp(bool clamp_) {
         clamp = clamp_;
         return *this;
@@ -339,34 +437,42 @@ struct FloatSliderOptions : WidgetOptions {
         showButtons = showButtons_;
         return *this;
     }
+
     FloatSliderOptions& Format(const char* format_) {
         format = format_;
         return *this;
     }
+
     FloatSliderOptions& Step(float step_) {
         step = step_;
         return *this;
     }
+
     FloatSliderOptions& Min(float min_) {
         min = min_;
         return *this;
     }
+
     FloatSliderOptions& Max(float max_) {
         max = max_;
         return *this;
     }
+
     FloatSliderOptions& DefaultValue(float defaultValue_) {
         defaultValue = defaultValue_;
         return *this;
     }
+
     FloatSliderOptions& ComponentAlignment(ComponentAlignments alignment_) {
         alignment = alignment_;
         return *this;
     }
+
     FloatSliderOptions& LabelPosition(LabelPositions labelPosition_) {
         labelPosition = labelPosition_;
         return *this;
     }
+
     FloatSliderOptions& IsPercentage(bool isPercentage_ = true) {
         isPercentage = isPercentage_;
         format = "%.0f%%";
@@ -374,18 +480,22 @@ struct FloatSliderOptions : WidgetOptions {
         max = 1.0f;
         return *this;
     }
+
     FloatSliderOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     FloatSliderOptions& Color(Colors color_) {
         color = color_;
         return *this;
     }
+
     FloatSliderOptions& Size(ImVec2 size_) {
         size = size_;
         return *this;
     }
+
     FloatSliderOptions& Clamp(bool clamp_) {
         clamp = clamp_;
         return *this;
@@ -393,19 +503,27 @@ struct FloatSliderOptions : WidgetOptions {
 };
 
 struct RadioButtonsOptions : WidgetOptions {
-    std::unordered_map<int32_t, const char*> buttonMap;
+    std::map<int32_t, const char*> buttonMap;
+    int32_t defaultIndex = 0;
     Colors color = Colors::LightBlue;
 
-    RadioButtonsOptions& ButtonMap(std::unordered_map<int32_t, const char*> buttonMap_) {
+    RadioButtonsOptions& ButtonMap(std::map<int32_t, const char*> buttonMap_) {
         buttonMap = buttonMap_;
         return *this;
     }
+
     RadioButtonsOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     RadioButtonsOptions& Color(Colors color_) {
         color = color_;
+        return *this;
+    }
+
+    RadioButtonsOptions& DefaultIndex(int32_t defaultIndex_) {
+        defaultIndex = defaultIndex_;
         return *this;
     }
 };
@@ -420,15 +538,19 @@ struct InputOptions : WidgetOptions {
     std::string defaultValue = "";
     bool secret = false;
     ImGuiInputFlags addedFlags = 0;
+    bool hasError = false;
+    const char* errorText = "";
 
     InputOptions& Tooltip(const char* tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
+
     InputOptions& Color(Colors color_) {
         color = color_;
         return *this;
     }
+
     InputOptions& Size(ImVec2 size_) {
         size = size_;
         return *this;
@@ -454,6 +576,11 @@ struct InputOptions : WidgetOptions {
         return *this;
     }
 
+    InputOptions& ComponentAlignment(ComponentAlignments alignment_) {
+        alignment = alignment_;
+        return *this;
+    }
+
     InputOptions& DefaultValue(std::string defaultValue_) {
         defaultValue = defaultValue_;
         return *this;
@@ -461,6 +588,16 @@ struct InputOptions : WidgetOptions {
 
     InputOptions& IsSecret(bool secret_ = false) {
         secret = secret_;
+        return *this;
+    }
+
+    InputOptions& HasError(bool error_ = false) {
+        hasError = error_;
+        return *this;
+    }
+
+    InputOptions& ErrorText(const char* errorText_) {
+        errorText = errorText_;
         return *this;
     }
 };
@@ -482,8 +619,8 @@ bool Button(const char* label, const ButtonOptions& options = {});
 bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<Ship::GuiWindow> windowPtr,
                   const WindowButtonOptions& options = {});
 
-void PushStyleCheckbox(const ImVec4& color);
-void PushStyleCheckbox(Colors color = Colors::LightBlue);
+void PushStyleCheckbox(const ImVec4& color, ImVec2 padding = ImVec2(10.0f, 6.0f));
+void PushStyleCheckbox(Colors color = Colors::LightBlue, ImVec2 padding = ImVec2(10.0f, 6.0f));
 void PopStyleCheckbox();
 void RenderText(ImVec2 pos, const char* text, const char* text_end, bool hide_text_after_hash);
 bool Checkbox(const char* label, bool* v, const CheckboxOptions& options = {});
@@ -512,7 +649,7 @@ void Separator(bool padTop = true, bool padBottom = true, float extraVerticalTop
 float CalcComboWidth(const char* preview_value, ImGuiComboFlags flags);
 
 template <typename T>
-bool Combobox(const char* label, T* value, const std::unordered_map<T, const char*>& comboMap,
+bool Combobox(const char* label, T* value, const std::map<T, const char*>& comboMap,
               const ComboboxOptions& options = {}) {
     bool dirty = false;
     float startX = ImGui::GetCursorPosX();
@@ -606,9 +743,9 @@ bool Combobox(const char* label, T* value, const std::vector<const char*>& combo
     PushStyleCombobox(options.color);
 
     const char* longest;
-    int length = 0;
+    size_t length = 0;
     for (auto& string : comboVector) {
-        int len = strlen(string);
+        size_t len = strlen(string);
         if (len > length) {
             longest = string;
             length = len;
@@ -689,10 +826,10 @@ bool Combobox(const char* label, T* value, const std::vector<std::string>& combo
     ImGui::BeginDisabled(options.disabled);
     PushStyleCombobox(options.color);
 
-    const char* longest;
-    int length = 0;
+    const char* longest = "";
+    size_t length = 0;
     for (auto& string : comboVector) {
-        int len = string.length();
+        size_t len = string.length();
         if (len > length) {
             longest = string.c_str();
             length = len;
@@ -848,7 +985,7 @@ bool Combobox(const char* label, T* value, const char* (&comboArray)[N], const C
 }
 
 template <typename T = int32_t>
-bool CVarCombobox(const char* label, const char* cvarName, const std::unordered_map<T, const char*>& comboMap,
+bool CVarCombobox(const char* label, const char* cvarName, const std::map<T, const char*>& comboMap,
                   const ComboboxOptions& options = {}) {
     bool dirty = false;
     int32_t value = CVarGetInteger(cvarName, options.defaultIndex);
@@ -913,7 +1050,9 @@ void DrawFlagArray8Mask(const std::string& name, uint8_t& flags, Colors color = 
 void InsertHelpHoverText(const std::string& text);
 void InsertHelpHoverText(const char* text);
 } // namespace UIWidgets
+
 ImVec4 GetRandomValue();
+ImVec4 GetRandomValue(uint32_t seed, uint64_t* state = nullptr);
 
 Color_RGBA8 RGBA8FromVec(ImVec4 vec);
 ImVec4 VecFromRGBA8(Color_RGBA8 color);

@@ -26,10 +26,10 @@
 #include <filesystem>
 #include <variables.h>
 
-#include <Context.h>
+#include <ship/Context.h>
 #include <soh/OTRGlobals.h>
 
-#include "consolevariablebridge.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 using json = nlohmann::ordered_json;
 using namespace Rando;
@@ -78,6 +78,9 @@ static void WriteLocation(std::string sphere, const RandomizerCheck locationKey,
         case LANGUAGE_ENG:
         default:
             jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetEnglish();
+            break;
+        case LANGUAGE_GER:
+            jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetGerman();
             break;
         case LANGUAGE_FRA:
             jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetFrench();
@@ -128,6 +131,7 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
 
     switch (gSaveContext.language) {
         case LANGUAGE_ENG:
+        case LANGUAGE_GER:
         case LANGUAGE_FRA:
         default:
             jsonData["entrancesMap"][sphereString][name] = text;
@@ -156,7 +160,7 @@ std::string RemoveLineBreaks(std::string s) {
 static void WriteExcludedLocations() {
     auto ctx = Rando::Context::GetInstance();
 
-    for (size_t i = 1; i < Rando::Settings::GetInstance()->GetExcludeLocationsOptions().size(); i++) {
+    for (size_t i = 0; i < Rando::Settings::GetInstance()->GetExcludeLocationsOptions().size() - 1; i++) {
         for (const auto& location : Rando::Settings::GetInstance()->GetExcludeLocationsOptions()[i]) {
             if (ctx->GetLocationOption(static_cast<RandomizerCheck>(location->GetKey())).Get() == RO_LOCATION_INCLUDE) {
                 continue;
@@ -269,6 +273,9 @@ static void WriteAllLocations() {
             default:
                 placedItemName = location->GetPlacedItemName().GetEnglish();
                 break;
+            case 1:
+                placedItemName = location->GetPlacedItemName().GetGerman();
+                break;
             case 2:
                 placedItemName = location->GetPlacedItemName().GetFrench();
                 break;
@@ -307,6 +314,15 @@ static void WriteAllLocations() {
                     jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
                             ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetEnglish();
                     break;
+                case 1:
+                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
+                            ["model"] = Rando::StaticData::RetrieveItem(
+                                            ctx->overrides[location->GetRandomizerCheck()].LooksLike())
+                                            .GetName()
+                                            .GetGerman();
+                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
+                            ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetGerman();
+                    break;
                 case 2:
                     jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
                             ["model"] = Rando::StaticData::RetrieveItem(
@@ -327,6 +343,7 @@ const char* SpoilerLog_Write() {
     jsonData.clear();
 
     jsonData["version"] = (char*)gBuildVersion;
+    jsonData["fileType"] = FILE_TYPE_SPOILER;
     jsonData["git_branch"] = (char*)gGitBranch;
     jsonData["git_commit"] = (char*)gGitCommitHash;
     jsonData["seed"] = ctx->GetSeedString();

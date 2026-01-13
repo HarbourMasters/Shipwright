@@ -7,6 +7,8 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
+#include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/ObjectExtension/ActorListIndex.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enemyrandomizer.h"
@@ -1254,14 +1256,15 @@ void Actor_Init(Actor* actor, PlayState* play) {
     ActorShape_Init(&actor->shape, 0.0f, NULL, 0.0f);
     if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
         Actor_SetObjectDependency(play, actor);
-        actor->init(actor, play);
-        actor->init = NULL;
 
-        GameInteractor_ExecuteOnActorInit(actor);
+        if (GameInteractor_ShouldActorInit(actor)) {
+            actor->init(actor, play);
+            actor->init = NULL;
 
-        // For enemy health bar we need to know the max health during init
-        if (actor->category == ACTORCAT_ENEMY) {
-            actor->maximumHealth = actor->colChkInfo.health;
+            GameInteractor_ExecuteOnActorInit(actor);
+        } else {
+            actor->init = NULL;
+            Actor_Kill(actor);
         }
     }
 }
@@ -1287,8 +1290,16 @@ void Actor_UpdatePos(Actor* actor) {
 }
 
 void Actor_UpdateVelocityXZGravity(Actor* actor) {
-    actor->velocity.x = Math_SinS(actor->world.rot.y) * actor->speedXZ;
-    actor->velocity.z = Math_CosS(actor->world.rot.y) * actor->speedXZ;
+    Player* player = GET_PLAYER(gPlayState);
+    uint8_t inCutscene = player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER ||
+                         player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE ||
+                         player->stateFlags2 & PLAYER_STATE2_CRAWLING;
+    f32 speedModifier = 1.0f;
+    if (actor->id == ACTOR_PLAYER && !inCutscene) {
+        speedModifier = GameInteractor_MovementSpeedMultiplier();
+    }
+    actor->velocity.x = Math_SinS(actor->world.rot.y) * actor->speedXZ * speedModifier;
+    actor->velocity.z = Math_CosS(actor->world.rot.y) * actor->speedXZ * speedModifier;
 
     actor->velocity.y += actor->gravity;
     if (actor->velocity.y < actor->minVelocityY) {
@@ -2239,6 +2250,10 @@ void Player_PlaySfx(Actor* actor, u16 sfxId) {
         Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &freqMultiplier, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultReverb);
     }
+
+    if (actor->id == ACTOR_PLAYER) {
+        GameInteractor_ExecuteOnPlayerSfx(sfxId);
+    }
 }
 
 void Audio_PlayActorSound2(Actor* actor, u16 sfxId) {
@@ -2574,7 +2589,11 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
     if (play->numSetupActors != 0) {
         actorEntry = &play->setupActorList[0];
         for (i = 0; i < play->numSetupActors; i++) {
-            Actor_SpawnEntry(&play->actorCtx, actorEntry++, play);
+            Actor* spawnedActor = Actor_SpawnEntry(&play->actorCtx, actorEntry++, play);
+
+            // #region SOH [ObjectExtension] ActorListIndex tracking
+            SetActorListIndex(spawnedActor, (s16)i);
+            // #endregion
         }
         play->numSetupActors = 0;
         GameInteractor_ExecuteOnSceneSpawnActors();
@@ -2615,14 +2634,15 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
             if (actor->init != NULL) {
                 if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
                     Actor_SetObjectDependency(play, actor);
-                    actor->init(actor, play);
-                    actor->init = NULL;
 
-                    GameInteractor_ExecuteOnActorInit(actor);
+                    if (GameInteractor_ShouldActorInit(actor)) {
+                        actor->init(actor, play);
+                        actor->init = NULL;
 
-                    // For enemy health bar we need to know the max health during init
-                    if (actor->category == ACTORCAT_ENEMY) {
-                        actor->maximumHealth = actor->colChkInfo.health;
+                        GameInteractor_ExecuteOnActorInit(actor);
+                    } else {
+                        actor->init = NULL;
+                        Actor_Kill(actor);
                     }
                 }
                 actor = actor->next;
@@ -2666,8 +2686,10 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                     if (actor->colorFilterTimer != 0) {
                         actor->colorFilterTimer--;
                     }
-                    actor->update(actor, play);
-                    GameInteractor_ExecuteOnActorUpdate(actor);
+                    if (GameInteractor_ShouldActorUpdate(actor)) {
+                        actor->update(actor, play);
+                        GameInteractor_ExecuteOnActorUpdate(actor);
+                    }
                     func_8003F8EC(play, &play->colCtx.dyna, actor);
                 }
 
@@ -3299,8 +3321,9 @@ int gMapLoading = 0;
 Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ, s16 rotX,
                    s16 rotY, s16 rotZ, s16 params, s16 canRandomize) {
 
-    uint8_t tryRandomizeEnemy = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && gSaveContext.fileNum >= 0 &&
-                                gSaveContext.fileNum <= 2 && canRandomize;
+    uint8_t tryRandomizeEnemy = canRandomize && CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) &&
+                                ((gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2) ||
+                                 (gSaveContext.fileNum == 0xFF && gSaveContext.gameMode == GAMEMODE_NORMAL));
 
     if (tryRandomizeEnemy) {
         if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
@@ -3352,6 +3375,10 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         return NULL;
     }
 
+    // #region SOH [ObjectExtension]
+    SetActorListIndex(actor, -1);
+    // #endregion
+
     assert(dbEntry->numLoaded < 255);
 
     dbEntry->numLoaded++;
@@ -3390,6 +3417,8 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     temp = gSegments[6];
     Actor_Init(actor, play);
     gSegments[6] = temp;
+
+    GameInteractor_ExecuteOnActorSpawn(actor);
 
     return actor;
 }
@@ -3466,6 +3495,9 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
 
     player = GET_PLAYER(play);
 
+    // Execute before actor memory is freed
+    GameInteractor_ExecuteOnActorDestroy(actor);
+
     dbEntry = ActorDB_Retrieve(actor->id);
 
     if (HREG(20) != 0) {
@@ -3493,6 +3525,10 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
     Actor_Destroy(actor, play);
 
     newHead = Actor_RemoveFromCategory(play, actorCtx, actor);
+
+    // #region SOH [ObjectExtension]
+    ObjectExtension_Free(actor);
+    // #endregion
 
     ZELDA_ARENA_FREE_DEBUG(actor);
 
@@ -3535,9 +3571,12 @@ void func_800328D4(PlayState* play, ActorContext* actorCtx, Player* player, u32 
 
             // This block below is for determining the closest actor to player in determining the volume
             // used while playing enemy bgm music
-            if ((actorCategory == ACTORCAT_ENEMY) &&
-                CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE) &&
-                (actor->xyzDistToPlayerSq < SQ(500.0f)) && (actor->xyzDistToPlayerSq < sbgmEnemyDistSq)) {
+            if (GameInteractor_Should(
+                    VB_DETECT_BGM_ENEMY,
+                    (actorCategory == ACTORCAT_ENEMY) &&
+                        CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE) &&
+                        (actor->xyzDistToPlayerSq < SQ(500.0f)) && (actor->xyzDistToPlayerSq < sbgmEnemyDistSq),
+                    actor, &sbgmEnemyDistSq, (int32_t)actorCategory)) {
                 actorCtx->targetCtx.bgmEnemy = actor;
                 sbgmEnemyDistSq = actor->xyzDistToPlayerSq;
             }
@@ -5038,8 +5077,8 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
     */
 
     s32 previouslyOff = !Flags_GetRandomizerInf(flag);
-    gSaveContext.ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
     if (previouslyOff) {
+        gSaveContext.ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
         LUSLOG_INFO("RandomizerInf Flag Set - %#x", flag);
         GameInteractor_ExecuteOnFlagSet(FLAG_RANDOMIZER_INF, flag);
     }
@@ -5059,8 +5098,8 @@ void Flags_UnsetRandomizerInf(RandomizerInf flag) {
     */
 
     s32 previouslyOn = Flags_GetRandomizerInf(flag);
-    gSaveContext.ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
     if (previouslyOn) {
+        gSaveContext.ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
         LUSLOG_INFO("RandomizerInf Flag Unset - %#x", flag);
         GameInteractor_ExecuteOnFlagUnset(FLAG_RANDOMIZER_INF, flag);
     }

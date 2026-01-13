@@ -1,36 +1,24 @@
 #include "random.hpp"
 
-#include <random>
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_int_distribution.hpp>
-#include <boost/random/uniform_real_distribution.hpp>
-
-static bool init = false;
-static boost::random::mt19937 generator;
+uint64_t rando_state = 0;
+const uint64_t multiplier = 6364136223846793005ULL;
+const uint64_t increment = 11634580027462260723ULL;
 
 // Initialize with seed specified
-void Random_Init(uint32_t seed) {
-    init = true;
-    generator = boost::random::mt19937{ seed };
+void Random_Init(uint64_t seed) {
+    ShipUtils::RandInit(seed, &rando_state);
+}
+
+uint32_t next32() {
+    return ShipUtils::next32(&rando_state);
 }
 
 // Returns a random integer in range [min, max-1]
-uint32_t Random(int min, int max) {
-    if (!init) {
-        // No seed given, get a random number from device to seed
-#if !defined(__SWITCH__) && !defined(__WIIU__)
-        const auto seed = static_cast<uint32_t>(std::random_device{}());
-#else
-        uint32_t seed = static_cast<uint32_t>(std::hash<std::string>{}(std::to_string(rand())));
-#endif
-        Random_Init(seed);
-    }
-    boost::random::uniform_int_distribution<uint32_t> distribution(min, max - 1);
-    return distribution(generator);
+uint32_t Random(uint32_t min, uint32_t max) {
+    return ShipUtils::Random(min, max, &rando_state);
 }
 
-// Returns a random floating point number in [0.0, 1.0]
+// Returns a random floating point number in [0.0, 1.0)
 double RandomDouble() {
-    boost::random::uniform_real_distribution<double> distribution(0.0, 1.0);
-    return distribution(generator);
+    return ShipUtils::RandomDouble(&rando_state);
 }

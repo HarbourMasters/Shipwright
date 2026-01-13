@@ -145,7 +145,47 @@ void Audio_osWritebackDCache(void* mem, s32 size) {
 }
 
 s32 osAiSetFrequency(u32 freq) {
-    return 1;
+    // this is based off the math from the original method
+    /*
+
+    s32 osAiSetFrequency(u32 frequency) {
+        u8 bitrate;
+        f32 dacRateF = ((f32)osViClock / frequency) + 0.5f;
+        u32 dacRate = dacRateF;
+
+        if (dacRate < 132) {
+            return -1;
+        }
+
+        bitrate = (dacRate / 66);
+        if (bitrate > 16) {
+            bitrate = 16;
+        }
+
+        HW_REG(AI_DACRATE_REG, u32) = dacRate - 1;
+        HW_REG(AI_BITRATE_REG, u32) = bitrate - 1;
+        return osViClock / (s32)dacRate;
+    }
+
+    */
+
+    // bitrate is unused
+
+    // osViClock comes from
+    // #define VI_NTSC_CLOCK 48681812 /* Hz = 48.681812 MHz */
+    // s32 osViClock = VI_NTSC_CLOCK;
+
+    // frequency was originally 32000
+
+    // given all of that, dacRate is
+    // (u32)(((f32)48681812 / 32000) + 0.5f)
+    // which evaluates to 1521 (which is > 132)
+
+    // this leaves us with a final calculation of
+    // 48681812 / 1521
+    // which evaluates to 32006
+
+    return 32006;
 }
 
 void osInvalDCache(void* vaddr, s32 nbytes) {

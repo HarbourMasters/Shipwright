@@ -1,7 +1,7 @@
 #include "item.h"
 #include "item_location.h"
 
-#include "context.h"
+#include "SeedContext.h"
 #include "logic.h"
 #include "3drando/item_pool.hpp"
 #include "z64item.h"
@@ -21,8 +21,9 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
            const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_, Text article_,
            const std::string color_, const bool progressive_, const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), article(std::move(article_)),
+      advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), category(category_), article(std::move(article_)),
       color(std::move(color_)), progressive(progressive_), price(price_) {
+
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
         giEntry = std::make_shared<GetItemEntry>(GetItemEntry{
             itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_,
@@ -37,25 +38,29 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
 }
 
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
-           const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_, Text article_,
-           const std::string color_, const bool progressive_, const uint16_t price_)
+           const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const GetItemCategory category_,
+           Text article_, const std::string color_, const bool progressive_, const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), article(std::move(article_)),
+      advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), category(category_), article(std::move(article_)),
       color(std::move(color_)), progressive(progressive_), price(price_) {
 }
 
-Item::~Item() = default;
-
 void Item::ApplyEffect() const {
     auto ctx = Rando::Context::GetInstance();
-    ctx->GetLogic()->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
-    ctx->GetLogic()->SetInLogic(logicVal, true);
+    auto logic = ctx->GetLogic();
+    if (!logic->CalculatingAvailableChecks) {
+        logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
+    }
+    logic->Set(logicVal, true);
 }
 
 void Item::UndoEffect() const {
     auto ctx = Rando::Context::GetInstance();
-    ctx->GetLogic()->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
-    ctx->GetLogic()->SetInLogic(logicVal, false);
+    auto logic = ctx->GetLogic();
+    if (!logic->CalculatingAvailableChecks) {
+        logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
+    }
+    logic->Set(logicVal, false);
 }
 
 const Text& Item::GetName() const {
@@ -95,7 +100,7 @@ uint16_t Item::GetPrice() const {
 }
 
 std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursion)
-    if (giEntry != nullptr) {
+    if (giEntry != nullptr && giEntry->itemId != RG_PROGRESSIVE_BOMBCHU_BAG) {
         return giEntry;
     }
     std::shared_ptr<Rando::Context> ctx = Rando::Context::GetInstance();
@@ -357,18 +362,33 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_GORONSWORD: // todo progressive?
             actual = RG_BIGGORON_SWORD;
             break;
-        case RG_PROGRESSIVE_BOMBCHUS:
-            if (logic->CurrentInventory(ITEM_BOMBCHU) == ITEM_NONE) {
-                actual = RG_BOMBCHU_BAG;
-            } else if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
-                actual = RG_BOMBCHU_INF;
-            } else {
-                actual = RG_BOMBCHU_10;
+        case RG_PROGRESSIVE_BOMBCHU_BAG:
+            if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
+                if (logic->CurrentInventory(ITEM_BOMBCHU) != ITEM_NONE) {
+                    if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
+                        actual = RG_BOMBCHU_INF;
+                    } else {
+                        actual = RG_BOMBCHU_10;
+                    }
+                }
+            } else if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+                if (logic->CurrentInventory(ITEM_BOMBCHU) != ITEM_NONE) {
+                    if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
+                        actual = RG_BOMBCHU_INF;
+                    } else if (infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE) {
+                        if (logic->GetSaveContext()->ship.quest.data.randomizer.bombchuUpgradeLevel >= 3) {
+                            actual = RG_BOMBCHU_INF;
+                        }
+                    }
+                }
             }
             break;
         default:
             actual = RG_NONE;
             break;
+    }
+    if (giEntry != nullptr && actual == RG_NONE) {
+        return giEntry;
     }
     return StaticData::RetrieveItem(actual).GetGIEntry();
 }
@@ -416,7 +436,7 @@ bool Item::IsMajorItem() const {
     }
 
     if ((randomizerGet == RG_BOMBCHU_5 || randomizerGet == RG_BOMBCHU_10 || randomizerGet == RG_BOMBCHU_20) &&
-        !ctx->GetOption(RSK_BOMBCHU_BAG)) {
+        ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_NONE)) {
         return false;
     }
 
@@ -458,6 +478,10 @@ RandomizerHintTextKey Item::GetHintKey() const {
 
 const HintText& Item::GetHint() const {
     return StaticData::hintTextTable[hintKey];
+}
+
+GetItemCategory Item::GetCategory() {
+    return category;
 }
 
 bool Item::operator==(const Item& right) const {

@@ -9,8 +9,6 @@ extern PlayState* gPlayState;
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 }
 
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
-
 using SceneDoorParamsPair = std::pair<int, int>;
 std::map<SceneDoorParamsPair, RandomizerInf> lookupTable = {
     // clang-format off
@@ -62,7 +60,6 @@ std::map<SceneDoorParamsPair, RandomizerInf> lookupTable = {
     {{ SCENE_LON_LON_RANCH, 447 },               RAND_INF_BACK_TOWER_UNLOCKED },
     {{ SCENE_LAKE_HYLIA, 447 },                  RAND_INF_HYLIA_LAB_UNLOCKED },
     {{ SCENE_LAKE_HYLIA, 1471 },                 RAND_INF_FISHING_HOLE_UNLOCKED },
-
     // clang-format on
 };
 

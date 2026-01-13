@@ -1,17 +1,18 @@
 ﻿#include "FileSelectEnhancements.h"
 
 #include "soh/OTRGlobals.h"
+#include "soh/SohGui/SohModals.h"
+#include "soh/SohGui/SohGui.hpp"
 
 #include <array>
 #include <string>
-#include <vector>
 
 std::array<std::string, LANGUAGE_MAX> RandomizerSettingsMenuText[RSM_MAX] = {
     {
         // English
         "Start Randomizer",
         // German
-        "Start Randomizer",
+        "Randomizer starten",
         // French
         "Commencer le Randomizer",
     },
@@ -19,7 +20,7 @@ std::array<std::string, LANGUAGE_MAX> RandomizerSettingsMenuText[RSM_MAX] = {
         // English
         "Generate New Randomizer Seed",
         // German
-        "Generate New Randomizer Seed",
+        "Neuen Randomizer Seed generieren",
         // French
         "Générer une nouvelle seed pour le Randomizer",
     },
@@ -27,7 +28,7 @@ std::array<std::string, LANGUAGE_MAX> RandomizerSettingsMenuText[RSM_MAX] = {
         // English
         "Open Randomizer Settings",
         // German
-        "Open Randomizer Settings",
+        "Randomizer Optionen öffnen",
         // French
         "Ouvrir les paramètres du Randomizer",
     },
@@ -35,7 +36,7 @@ std::array<std::string, LANGUAGE_MAX> RandomizerSettingsMenuText[RSM_MAX] = {
         // English
         "Generating...",
         // German
-        "Generating...",
+        "Generiere...",
         // French
         "Génération en cours...",
     },
@@ -47,11 +48,11 @@ std::array<std::string, LANGUAGE_MAX> RandomizerSettingsMenuText[RSM_MAX] = {
       ",\nor drop a spoiler log on the game window.",
 #endif
       // German
-      "No randomizer seed loaded.\nPlease generate one first"
+      "Kein Randomizer Seed gefunden.\nBitte generiere zuerst einen"
 #if defined(__WIIU__) || defined(__SWITCH__)
       ".",
 #else
-      ",\nor drop a spoiler log on the game window.",
+      ",\noder ziehe ein Spoiler Log\nauf das Spielfenster.",
 #endif
       // French
       "Aucune Seed de Randomizer actuellement disponible.\nGénérez-en une dans les \"Randomizer Settings\""
@@ -65,4 +66,37 @@ std::array<std::string, LANGUAGE_MAX> RandomizerSettingsMenuText[RSM_MAX] = {
 
 const char* SohFileSelect_GetSettingText(uint8_t optionIndex, uint8_t language) {
     return RandomizerSettingsMenuText[optionIndex][language].c_str();
+}
+
+void SohFileSelect_ShowPresetMenu() {
+    SohGui::ShowEscMenu();
+    CVarSetString(CVAR_SETTING("Menu.ActiveHeader"), "Settings");
+    CVarSetString(CVAR_SETTING("Menu.SettingsSidebarSection"), "Presets");
+    CVarSetInteger(CVAR_GENERAL("HasSeenPresetModal"), 1);
+}
+
+void SohFileSelect_DismissPresetModal() {
+    CVarSetInteger(CVAR_GENERAL("HasSeenPresetModal"), 1);
+}
+
+void SohFileSelect_ShowPresetModal() {
+    if (CVarGetInteger(CVAR_GENERAL("HasSeenPresetModal"), 0)) {
+        return;
+    }
+    std::shared_ptr<SohModalWindow> modal = static_pointer_cast<SohModalWindow>(
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Modal Window"));
+    if (modal->IsPopupOpen("Take a look at our presets!")) {
+        modal->DismissPopup();
+    } else {
+        modal->RegisterPopup("Take a look at our presets!",
+                             "\nHey there! Ship comes with a ton of options, but none of them are on by default,\n"
+                             "even in randomizer. If you haven't already, we highly recommend applying the\n"
+                             "\"Enhancements - Curated Randomizer\" preset for a great, curated out of the\n"
+                             "box rando experience.\n"
+                             "\n"
+                             "Afterwards, consider taking a look at the rest of the ESC menu to further tweak\n"
+                             "the experience to your liking!\n",
+                             "Cool, show me the presets!", "Got it, just let me play!", SohFileSelect_ShowPresetMenu,
+                             SohFileSelect_DismissPresetModal);
+    }
 }

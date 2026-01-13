@@ -1,10 +1,10 @@
 #pragma once
 
 #include <libultraship/libultraship.h>
-#include "window/gui/GuiMenuBar.h"
-#include "window/gui/GuiElement.h"
+#include <ship/window/gui/GuiMenuBar.h>
+#include <ship/window/gui/GuiElement.h>
 
-class SohModalWindow : public Ship::GuiWindow {
+class SohModalWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
     void Draw() override;

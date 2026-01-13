@@ -14,24 +14,6 @@ uint8_t Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 }
 
-void StartingItemGive(GetItemEntry getItemEntry, RandomizerCheck randomizerCheck) {
-    if (randomizerCheck != RC_MAX) {
-        OTRGlobals::Instance->gRandoContext->GetItemLocation(randomizerCheck)->SetCheckStatus(RCSHOW_SAVED);
-    }
-    if (getItemEntry.modIndex == MOD_NONE) {
-        if (getItemEntry.getItemId == GI_SWORD_BGS) {
-            gSaveContext.bgsFlag = true;
-        }
-        Item_Give(NULL, getItemEntry.itemId);
-    } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
-        if (getItemEntry.getItemId == RG_ICE_TRAP) {
-            gSaveContext.ship.pendingIceTrapCount++;
-        } else {
-            Randomizer_Item_Give(NULL, getItemEntry);
-        }
-    }
-}
-
 // RANDOTODO: Replace most of these GiveLink functions with calls to
 // Item_Give in z_parameter, we'll need to update Item_Give to ensure
 // nothing breaks when calling it without a valid play first.
@@ -52,6 +34,36 @@ void GiveLinkRupees(int numOfRupees) {
         gSaveContext.rupees = maxRupeeCount;
     } else {
         gSaveContext.rupees = newRupeeCount;
+    }
+}
+
+static uint16_t rupeeCounts[] = {
+    1,   // ITEM_RUPEE_GREEN
+    5,   // ITEM_RUPEE_BLUE
+    20,  // ITEM_RUPEE_RED
+    50,  // ITEM_RUPEE_PURPLE
+    200, // ITEM_RUPEE_GOLD
+};
+
+void StartingItemGive(GetItemEntry getItemEntry, RandomizerCheck randomizerCheck) {
+    if (randomizerCheck != RC_MAX) {
+        OTRGlobals::Instance->gRandoContext->GetItemLocation(randomizerCheck)->SetCheckStatus(RCSHOW_SAVED);
+    }
+    if (getItemEntry.modIndex == MOD_NONE) {
+        if (getItemEntry.itemId >= ITEM_RUPEE_GREEN && getItemEntry.itemId <= ITEM_RUPEE_GOLD) {
+            GiveLinkRupees(rupeeCounts[getItemEntry.itemId - ITEM_RUPEE_GREEN]);
+        } else {
+            if (getItemEntry.getItemId == GI_SWORD_BGS) {
+                gSaveContext.bgsFlag = true;
+            }
+            Item_Give(NULL, static_cast<uint8_t>(getItemEntry.itemId));
+        }
+    } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
+        if (getItemEntry.getItemId == RG_ICE_TRAP) {
+            gSaveContext.ship.pendingIceTrapCount++;
+        } else {
+            Randomizer_Item_Give(NULL, getItemEntry);
+        }
     }
 }
 
@@ -232,6 +244,11 @@ extern "C" void Randomizer_InitSaveFile() {
     // Reset triforce pieces collected.
     gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected = 0;
 
+    // Reset Bombchu Bag Upgrade
+    gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel = 0;
+
+    SetStartingItems();
+
     // Set Cutscene flags and texts to skip them.
     Flags_SetEventChkInf(EVENTCHKINF_FIRST_SPOKE_TO_MIDO);
     Flags_SetInfTable(INFTABLE_SPOKE_TO_KAEPORA_IN_LAKE_HYLIA);
@@ -241,8 +258,48 @@ extern "C" void Randomizer_InitSaveFile() {
     Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
     Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE);
 
+    if (Randomizer_GetSettingValue(RSK_FOREST) == RO_CLOSED_FOREST_OFF) {
+        Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
+        Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH);
+    }
+
     // Go away Ruto (Water Temple first cutscene).
     gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x10);
+
+    if (Randomizer_GetSettingValue(RSK_STARTING_BEANS)) {
+        INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_BEANS_ONLY &&
+            Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_ALL) {
+            BEANS_BOUGHT = 10;
+        }
+        if (Randomizer_GetSettingValue(RSK_SKIP_PLANTING_BEANS)) {
+            AMMO(ITEM_BEAN) = 0;
+            gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_CRATER].swch |= (1 << 3);
+            gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_TRAIL].swch |= (1 << 6);
+            gSaveContext.sceneFlags[SCENE_DESERT_COLOSSUS].swch |= (1 << 24);
+            gSaveContext.sceneFlags[SCENE_GERUDO_VALLEY].swch |= (1 << 3);
+            gSaveContext.sceneFlags[SCENE_GRAVEYARD].swch |= (1 << 3);
+            gSaveContext.sceneFlags[SCENE_KOKIRI_FOREST].swch |= (1 << 9);
+            gSaveContext.sceneFlags[SCENE_LAKE_HYLIA].swch |= (1 << 1);
+            gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 4) | (1 << 18);
+            gSaveContext.sceneFlags[SCENE_ZORAS_RIVER].swch |= (1 << 3);
+        } else {
+            AMMO(ITEM_BEAN) = 10;
+        }
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BEAN_SOULS) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_DESERT_COLOSSUS_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_GERUDO_VALLEY_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_GRAVEYARD_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_KOKIRI_FOREST_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_LAKE_HYLIA_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_LOST_WOODS_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_ZORAS_RIVER_BEAN_SOUL);
+    }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_A);
@@ -269,21 +326,21 @@ extern "C" void Randomizer_InitSaveFile() {
 
     // Remove One Time Scrubs with Scrubsanity off
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_OFF) {
-        Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_NEAR_BRIDGE);
-        Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_LW_DEKU_SCRUB_GROTTO_FRONT);
-        Flags_SetRandomizerInf(RAND_INF_SCRUBS_PURCHASED_HF_DEKU_SCRUB_GROTTO);
+        Flags_SetItemGetInf(ITEMGETINF_DEKU_SCRUB_HEART_PIECE);
+        Flags_SetInfTable(INFTABLE_BOUGHT_STICK_UPGRADE);
+        Flags_SetInfTable(INFTABLE_BOUGHT_NUT_UPGRADE);
     }
 
     int startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
+    gSaveContext.savedSceneNum = -1;
     switch (startingAge) {
         case RO_AGE_ADULT: // Adult
             gSaveContext.linkAge = LINK_AGE_ADULT;
             gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_WARP_PAD;
-            gSaveContext.savedSceneNum = SCENE_LON_LON_RANCH; // Set scene num manually to ToT.
+            gSaveContext.cutsceneIndex = 0;
             break;
         case RO_AGE_CHILD: // Child
             gSaveContext.linkAge = LINK_AGE_CHILD;
-            gSaveContext.savedSceneNum = -1;
             break;
         default:
             break;
@@ -306,6 +363,10 @@ extern "C" void Randomizer_InitSaveFile() {
     if (Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_IMPA, (GetItemID)RG_ZELDAS_LULLABY);
         StartingItemGive(getItemEntry, RC_SONG_FROM_IMPA);
+        getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_MALON_EGG, (GetItemID)RG_WEIRD_EGG);
+        StartingItemGive(getItemEntry, RC_HC_ZELDAS_LETTER);
+        getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_ZELDAS_LETTER, (GetItemID)RG_ZELDAS_LETTER);
+        StartingItemGive(getItemEntry, RC_HC_MALON_EGG);
 
         // Malon/Talon back at ranch.
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
@@ -334,7 +395,7 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetRandomizerInf(RAND_INF_TOT_MASTER_SWORD);
     }
 
-    HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * (Randomizer_GetSettingValue(RSK_BIG_POE_COUNT) + 1));
+    HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * Randomizer_GetSettingValue(RSK_BIG_POE_COUNT));
 
     if (Randomizer_GetSettingValue(RSK_SKIP_EPONA_RACE)) {
         Flags_SetEventChkInf(EVENTCHKINF_EPONA_OBTAINED);
@@ -355,17 +416,6 @@ extern "C" void Randomizer_InitSaveFile() {
     if (!ResourceMgr_IsSceneMasterQuest(SCENE_WATER_TEMPLE)) {
         gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x15);
     }
-
-    // Now handled on the fly.
-    // int openForest = Randomizer_GetSettingValue(RSK_FOREST);
-    // switch (openForest) {
-    //     case RO_CLOSED_FOREST_OFF:
-    //         Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
-    //         // Fallthrough
-    //     case RO_CLOSED_FOREST_DEKU_ONLY:
-    //         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
-    //         break;
-    // }
 
     int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
     switch (doorOfTime) {
@@ -430,6 +480,4 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.itemGetInf[3] |= 0x800;  // Bunny Hood related
         gSaveContext.itemGetInf[3] |= 0x8000; // Obtained Mask of Truth
     }
-
-    SetStartingItems();
 }

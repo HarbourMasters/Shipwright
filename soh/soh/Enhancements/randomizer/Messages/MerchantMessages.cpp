@@ -7,6 +7,7 @@
  * and Carpet Salesman)
  */
 #include <soh/OTRGlobals.h>
+#include "soh/ObjectExtension/ObjectExtension.h"
 
 extern "C" {
 extern PlayState* gPlayState;
@@ -117,7 +118,7 @@ void BuildCarpetGuyFailToBuyMessage(uint16_t* textId, bool* loadFromMessageTable
 
 void BuildScrubMessage(uint16_t* textId, bool* loadFromMessageTable) {
     EnDns* enDns = reinterpret_cast<EnDns*>(GET_PLAYER(gPlayState)->talkActor);
-    RandomizerCheck rc = enDns->sohScrubIdentity.randomizerCheck;
+    RandomizerCheck rc = ObjectExtension::GetInstance().Get<ScrubIdentity>(enDns)->identity.randomizerCheck;
     uint16_t price = RAND_GET_ITEM(rc)->GetPrice();
     CustomMessage msg;
     if (price == 0) {

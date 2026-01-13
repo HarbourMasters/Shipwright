@@ -10,12 +10,11 @@ extern "C"
 {
 #endif
 
-#include "luslog.h"
+#include <libultraship/log/luslog.h>
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
-#include <soh/Enhancements/randomizer/randomizer_inf.h>
 
-#if defined(INCLUDE_GAME_PRINTF) && defined(_DEBUG)
-#define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, __VA_ARGS__)
+#if (LOG_LEVEL_GAME_PRINTS >= SPDLOG_ACTIVE_LEVEL) && !(LOG_LEVEL_GAME_PRINTS >= 6)
+#define osSyncPrintf(...) lusprintf(__FILE__, __LINE__, LOG_LEVEL_GAME_PRINTS , __VA_ARGS__)
 #else
 #define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, ##__VA_ARGS__)
 #endif
@@ -1044,6 +1043,7 @@ VecSph* OLib_Vec3fToVecSph(VecSph* dest, Vec3f* vec);
 VecSph* OLib_Vec3fToVecSphGeo(VecSph* arg0, Vec3f* arg1);
 VecSph* OLib_Vec3fDiffToVecSphGeo(VecSph* arg0, Vec3f* a, Vec3f* b);
 Vec3f* OLib_Vec3fDiffRad(Vec3f* dest, Vec3f* a, Vec3f* b);
+void OnePointCutscene_SetCsCamPoints(Camera* camera, s16 actionParameters, s16 initTimer, CutsceneCameraPoint* atPoints, CutsceneCameraPoint* eyePoints);
 s16 OnePointCutscene_Init(PlayState* play, s16 csId, s16 timer, Actor* actor, s16 camIdx);
 s16 OnePointCutscene_EndCutscene(PlayState* play, s16 camIdx);
 s32 OnePointCutscene_Attention(PlayState* play, Actor* actor);
@@ -1089,9 +1089,9 @@ void Inventory_ChangeAmmo(s16 item, s16 ammoChange);
 void Magic_Fill(PlayState* play);
 void Magic_Reset(PlayState* play);
 s32 Magic_RequestChange(PlayState* play, s16 amount, s16 type);
-void func_80088AA0(s16 seconds);
-void func_80088AF0(PlayState* play);
-void func_80088B34(s16 arg0);
+void Interface_SetSubTimer(s16 seconds);
+void Interface_SetSubTimerToFinalSecond(PlayState* play);
+void Interface_SetTimer(s16 arg0);
 void Interface_Draw(PlayState* play);
 void Interface_DrawTotalGameplayTimer(PlayState* play);
 void Interface_Update(PlayState* play);
@@ -1102,6 +1102,7 @@ void FrameAdvance_Init(FrameAdvanceContext* frameAdvCtx);
 s32 FrameAdvance_Update(FrameAdvanceContext* frameAdvCtx, Input* input);
 u8 PlayerGrounded(Player* player);
 void Player_SetBootData(PlayState* play, Player* player);
+void Player_StartAnimMovement(PlayState* play, Player* player, s32 flags);
 s32 Player_InBlockingCsMode(PlayState* play, Player* player);
 s32 Player_TryCsAction(PlayState* play, Actor* actor, s32 csAction);
 s32 Player_InCsMode(PlayState* play);
@@ -1376,7 +1377,7 @@ void func_800AA0B4();
 void func_800AA0F0(void);
 u32 func_800AA148();
 void func_800AA15C();
-void func_800AA16C();
+void Rumble_ClearRequests();
 void func_800AA178(u32);
 View* View_New(GraphicsContext* gfxCtx);
 void View_Free(View* view);
@@ -2451,14 +2452,12 @@ void Font_LoadOrderedFontNTSC(Font* font);
 // #endregion
 
 // #region SOH [General]
-
 void Interface_RandoRestoreSwordless(void);
 s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projectedPos, f32 projectedW, bool* shouldDraw,
                                  bool* shouldUpdate);
 
-//Pause Warp
-void PauseWarp_HandleSelection();
-void PauseWarp_Execute();
+// #region SOH [Rocs Feather]
+void func_80838940(Player* this, LinkAnimationHeader* anim, f32 arg2, PlayState* play, u16 sfxId);
 
 // #endregion
 

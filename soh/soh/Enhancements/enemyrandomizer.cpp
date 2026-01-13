@@ -2,7 +2,7 @@
 #include "functions.h"
 #include "macros.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
-#include "soh/Enhancements/randomizer/context.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "variables.h"
 #include "soh/OTRGlobals.h"
@@ -11,37 +11,91 @@
 
 extern "C" {
 #include <z64.h>
+#include "src/overlays/actors/ovl_En_Rr/z_en_rr.h"
+#include "src/overlays/actors/ovl_En_GeldB/z_en_geldb.h"
+
+extern PlayState* gPlayState;
 }
 
-const char* enemyCVarList[] = {
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Armos"),        CVAR_ENHANCEMENT("RandomizedEnemyList.Arwing"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.BabyDodongo"),  CVAR_ENHANCEMENT("RandomizedEnemyList.Bari"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Beamos"),       CVAR_ENHANCEMENT("RandomizedEnemyList.BigSkulltula"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.BigStalchild"), CVAR_ENHANCEMENT("RandomizedEnemyList.Biri"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.BlackKnuckle"), CVAR_ENHANCEMENT("RandomizedEnemyList.BlueTektite"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Bubble"),       CVAR_ENHANCEMENT("RandomizedEnemyList.ClubMoblin"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.DarkLink"),     CVAR_ENHANCEMENT("RandomizedEnemyList.Dinolfos"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Dodongo"),      CVAR_ENHANCEMENT("RandomizedEnemyList.FireKeese"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.FloorTile"),    CVAR_ENHANCEMENT("RandomizedEnemyList.Floormaster"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPeahat"), CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPot"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Freezard"),     CVAR_ENHANCEMENT("RandomizedEnemyList.Gibdo"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.GohmaLarva"),   CVAR_ENHANCEMENT("RandomizedEnemyList.Guay"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.IceKeese"),     CVAR_ENHANCEMENT("RandomizedEnemyList.InvisSkulltula"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Keese"),        CVAR_ENHANCEMENT("RandomizedEnemyList.LargeBaba"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.LikeLike"),     CVAR_ENHANCEMENT("RandomizedEnemyList.Lizalfos"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.MadScrub"),     CVAR_ENHANCEMENT("RandomizedEnemyList.NormalWolfos"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.PeahatLarva"),  CVAR_ENHANCEMENT("RandomizedEnemyList.Redead"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.RedTektite"),   CVAR_ENHANCEMENT("RandomizedEnemyList.Shabom"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.ShellBlade"),   CVAR_ENHANCEMENT("RandomizedEnemyList.Skulltula"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.SmallBaba"),    CVAR_ENHANCEMENT("RandomizedEnemyList.SmallStalchild"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Spike"),        CVAR_ENHANCEMENT("RandomizedEnemyList.Stalfos"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.Stinger"),      CVAR_ENHANCEMENT("RandomizedEnemyList.Tailparasan"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.TorchSlug"),    CVAR_ENHANCEMENT("RandomizedEnemyList.Wallmaster"),
-    CVAR_ENHANCEMENT("RandomizedEnemyList.WhiteKnuckle"), CVAR_ENHANCEMENT("RandomizedEnemyList.WhiteWolfos"),
+#define CVAR_ENEMY_RANDOMIZER_NAME CVAR_ENHANCEMENT("RandomizedEnemies")
+#define CVAR_ENEMY_RANDOMIZER_DEFAULT ENEMY_RANDOMIZER_OFF
+#define CVAR_ENEMY_RANDOMIZER_VALUE CVarGetInteger(CVAR_ENEMY_RANDOMIZER_NAME, CVAR_ENEMY_RANDOMIZER_DEFAULT)
+
+typedef struct EnemyEntry {
+    int16_t id;
+    int16_t params;
+} EnemyEntry;
+
+bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, int16_t params, float posX);
+bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy);
+EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play);
+
+const char* enemyCVarList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Anubis"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Armos"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Arwing"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.BabyDodongo"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Bari"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Beamos"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.BigSkulltula"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.BigStalchild"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Biri"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.BlackKnuckle"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.BlueTektite"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Bubble"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.ClubMoblin"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.DarkLink"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Dinolfos"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Dodongo"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.FireKeese"),
+    // CVAR_ENHANCEMENT("RandomizedEnemyList.FlareDancer"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.FloorTile"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Floormaster"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPeahat"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPot"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Freezard"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.GerudoFighter"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Gibdo"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.GohmaLarva"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Guay"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.IceKeese"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.InvisFireKeese"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.InvisFloormaster"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.InvisIceKeese"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.InvisKeese"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.InvisRedead"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.InvisSkulltula"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.InvisStalfos"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Keese"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.LargeBaba"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.LikeLike"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Lizalfos"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.MadScrub"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.NormalWolfos"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.PeahatLarva"),
+    // CVAR_ENHANCEMENT("RandomizedEnemyList.Poe"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Redead"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.RedTektite"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Shabom"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.ShellBlade"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Skulltula"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.SkullKid"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.SmallBaba"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.SmallStalchild"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.SpearMoblin"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Spike"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Stalfos"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Stinger"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Tailparasan"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.TorchSlug"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.Wallmaster"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.WhiteKnuckle"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.WhiteWolfos"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.WitheredBaba"),
 };
 
-const char* enemyNameList[] = {
+const char* enemyNameList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
+    "Anubis",
     "Armos",
     "Arwing",
     "Baby Dodongo",
@@ -58,16 +112,24 @@ const char* enemyNameList[] = {
     "Dinolfos",
     "Dodongo",
     "Fire Keese",
+    //"Flare Dancer",
     "Floor Tile",
     "Floormaster",
     "Flying Peahat",
     "Flying Pot",
     "Freezard",
+    "Gerudo Fighter",
     "Gibdo",
     "Gohma Larva",
     "Guay",
     "Ice Keese",
+    "Invisible Fire Keese",
+    "Invisible Floormaster",
+    "Invisible Ice Keese",
+    "Invisible Keese",
+    "Invisible Redead",
     "Invisible Skulltula",
+    "Invisible Stalfos",
     "Keese",
     "Large Deku Baba",
     "Like-Like",
@@ -75,13 +137,16 @@ const char* enemyNameList[] = {
     "Mad Scrub",
     "Wolfos (Normal)",
     "Peahat Larva",
+    //"Poe",
     "Redead",
     "Red Tektite",
     "Shabom",
     "Shell Blade",
     "Skulltula",
+    "Skull Kid",
     "Small Deku Baba",
     "Stalchild (Small)",
+    "Spear Moblin",
     "Spike",
     "Stalfos",
     "Stinger",
@@ -94,98 +159,112 @@ const char* enemyNameList[] = {
 };
 
 static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
-    { ACTOR_EN_AM, -1 },        // Armos
-    { ACTOR_EN_CLEAR_TAG, 1 },  // Arwing
-    { ACTOR_EN_DODOJR, 0 },     // Baby Dodongo
-    { ACTOR_EN_VALI, -1 },      // Bari (big jellyfish)
-    { ACTOR_EN_VM, 1280 },      // Beamos
-    { ACTOR_EN_ST, 1 },         // Skulltula (big)
-    { ACTOR_EN_SKB, 20 },       // Stalchild (big)
-    { ACTOR_EN_BILI, 0 },       // Biri (jellyfish)
-    { ACTOR_EN_IK, 2 },         // Iron Knuckle (black, standing)
-    { ACTOR_EN_TITE, -2 },      // Tektite (blue)
-    { ACTOR_EN_BB, -1 },        // Bubble (flying skull enemy) (blue)
-    { ACTOR_EN_MB, 0 },         // Moblins (Club)
-    { ACTOR_EN_TORCH2, 0 },     // Dark Link
-    { ACTOR_EN_ZF, -2 },        // Dinolfos
-    { ACTOR_EN_DODONGO, -1 },   // Dodongo
-    { ACTOR_EN_FIREFLY, 1 },    // Fire Keese
-    { ACTOR_EN_YUKABYUN, 0 },   // Flying Floor Tile
-    { ACTOR_EN_FLOORMAS, 0 },   // Floormaster
-    { ACTOR_EN_PEEHAT, -1 },    // Flying Peahat (big grounded, doesn't spawn larva)
-    { ACTOR_EN_TUBO_TRAP, 0 },  // Flying pot
-    { ACTOR_EN_FZ, 0 },         // Freezard
-    { ACTOR_EN_RD, 32766 },     // Gibdo (standing)
-    { ACTOR_EN_GOMA, 7 },       // Gohma Larva (Non-Gohma rooms)
-    { ACTOR_EN_CROW, 0 },       // Guay
-    { ACTOR_EN_FIREFLY, 4 },    // Ice Keese
-    { ACTOR_EN_ST, 2 },         // Skulltula (invisible)
-    { ACTOR_EN_FIREFLY, 2 },    // Regular Keese
-    { ACTOR_EN_DEKUBABA, 1 },   // Deku Baba (large)
+    { ACTOR_EN_ANUBICE_TAG, 1 }, // Anubis
+    { ACTOR_EN_AM, -1 },         // Armos
+    { ACTOR_EN_CLEAR_TAG, 1 },   // Arwing
+    { ACTOR_EN_DODOJR, 0 },      // Baby Dodongo
+    { ACTOR_EN_VALI, -1 },       // Bari (big jellyfish)
+    { ACTOR_EN_VM, 1280 },       // Beamos
+    { ACTOR_EN_ST, 1 },          // Skulltula (big)
+    { ACTOR_EN_SKB, 20 },        // Stalchild (big)
+    { ACTOR_EN_BILI, 0 },        // Biri (jellyfish)
+    { ACTOR_EN_IK, 2 },          // Iron Knuckle (black, standing)
+    { ACTOR_EN_TITE, -2 },       // Tektite (blue)
+    { ACTOR_EN_BB, -1 },         // Bubble (flying skull enemy) (blue)
+    { ACTOR_EN_MB, 0 },          // Club Moblin
+    { ACTOR_EN_TORCH2, 0 },      // Dark Link
+    { ACTOR_EN_ZF, -2 },         // Dinolfos
+    { ACTOR_EN_DODONGO, -1 },    // Dodongo
+    { ACTOR_EN_FIREFLY, 1 },     // Fire Keese
+    // { ACTOR_EN_FD, 0 },          // Flare Dancer (possible cause of crashes because of spawning flame actors on
+    // sloped ground)
+    { ACTOR_EN_YUKABYUN, 0 },      // Flying Floor Tile
+    { ACTOR_EN_FLOORMAS, 0 },      // Floormaster
+    { ACTOR_EN_PEEHAT, -1 },       // Flying Peahat (big grounded, doesn't spawn larva)
+    { ACTOR_EN_TUBO_TRAP, 0 },     // Flying pot
+    { ACTOR_EN_FZ, 0 },            // Freezard
+    { ACTOR_EN_GELDB, 0 },         // Gerudo Fighter
+    { ACTOR_EN_RD, 32766 },        // Gibdo (standing)
+    { ACTOR_EN_GOMA, 7 },          // Gohma Larva (Non-Gohma rooms)
+    { ACTOR_EN_CROW, 0 },          // Guay
+    { ACTOR_EN_FIREFLY, 4 },       // Ice Keese
+    { ACTOR_EN_FIREFLY, 0x8001 },  // Fire Keese (invisible)
+    { ACTOR_EN_FLOORMAS, 0x8000 }, // Floormaster (invisible)
+    { ACTOR_EN_FIREFLY, 0x8004 },  // Ice Keese (invisible)
+    { ACTOR_EN_FIREFLY, 0x8002 },  // Keese (invisible)
+    { ACTOR_EN_RD, 3 },            // Redead (invisible)
+    { ACTOR_EN_ST, 2 },            // Skulltula (invisible)
+    { ACTOR_EN_TEST, 0 },          // Stalfos (invisible)
+    { ACTOR_EN_FIREFLY, 2 },       // Regular Keese
+    { ACTOR_EN_DEKUBABA, 1 },      // Deku Baba (large)
+    // Doesn't work (reliant on surface, without a spawner it kills itself too quickly)
+    // { ACTOR_EN_REEBA, 0 },       // Leever
     { ACTOR_EN_RR, 0 },         // Like-Like
     { ACTOR_EN_ZF, -1 },        // Lizalfos
     { ACTOR_EN_DEKUNUTS, 768 }, // Mad Scrub (triple attack) (projectiles don't work)
     { ACTOR_EN_WF, 0 },         // Wolfos (normal)
-    { ACTOR_EN_PEEHAT, 1 },     // Flying Peahat Larva
-    { ACTOR_EN_RD, 1 },         // Redead (standing)
-    { ACTOR_EN_TITE, -1 },      // Tektite (red)
-    { ACTOR_EN_BUBBLE, 0 },     // Shabom (bubble)
-    { ACTOR_EN_SB, 0 },         // Shell Blade
-    { ACTOR_EN_ST, 0 },         // Skulltula (normal)
-    { ACTOR_EN_DEKUBABA, 0 },   // Deku Baba (small)
-    { ACTOR_EN_SKB, 1 },        // Stalchild (small)
-    { ACTOR_EN_NY, 0 },         // Spike (rolling enemy)
-    { ACTOR_EN_TEST, 2 },       // Stalfos
-    { ACTOR_EN_EIYER, 10 },     // Stinger (land) (One in formation, sink under floor and do not activate)
-    { ACTOR_EN_TP, -1 },        // Electric Tailpasaran
-    { ACTOR_EN_BW, 0 },         // Torch Slug
-    { ACTOR_EN_WALLMAS, 1 },    // Wallmaster
-    { ACTOR_EN_IK, 3 },         // Iron Knuckle (white, standing)
-    { ACTOR_EN_WF, 1 },         // Wolfos (white)
-    { ACTOR_EN_KAREBABA, 0 },   // Withered Deku Baba
-
-    // Doesn't work {ACTOR_EN_POH, 0}, // Poe (Seems to rely on other objects?)
-    // Doesn't work {ACTOR_EN_POH, 2}, // Poe (composer Sharp) (Seems to rely on other objects?)
-    // Doesn't work {ACTOR_EN_POH, 3}, // Poe (composer Flat) (Seems to rely on other objects?)
-    // Doesn't work {ACTOR_EN_OKUTA, 0}, // Octorok (actor directly uses water box collision to handle hiding/popping
-    // up) Doesn't work {ACTOR_EN_REEBA, 0}, // Leever (reliant on surface and also normally used in tandem with a
-    // leever spawner, kills itself too quickly otherwise) Kinda doesn't work { ACTOR_EN_FD, 0 }, // Flare Dancer (jumps
-    // out of bounds a lot, and possible cause of crashes because of spawning a ton of flame actors)
+    // Doesn't work (actor directly uses water box collision to handle hiding/popping up)
+    // { ACTOR_EN_OKUTA, 0 },       // Octorok
+    { ACTOR_EN_PEEHAT, 1 }, // Flying Peahat Larva
+    // Doesn't work (Seems to rely on other objects?)
+    // { ACTOR_EN_POH, 0 },         // Poe
+    // Doesn't work (Seems to rely on other objects?)
+    // { ACTOR_EN_POH, 2 },         // Poe (composer Sharp)
+    // Doesn't work (Seems to rely on other objects?)
+    // { ACTOR_EN_POH, 3 },         // Poe (composer Flat)
+    { ACTOR_EN_RD, 1 },       // Redead (standing)
+    { ACTOR_EN_TITE, -1 },    // Tektite (red)
+    { ACTOR_EN_BUBBLE, 0 },   // Shabom (bubble)
+    { ACTOR_EN_SB, 0 },       // Shell Blade
+    { ACTOR_EN_ST, 0 },       // Skulltula (normal)
+    { ACTOR_EN_SKJ, 4159 },   // Skull Kid
+    { ACTOR_EN_DEKUBABA, 0 }, // Deku Baba (small)
+    { ACTOR_EN_SKB, 1 },      // Stalchild (small)
+    { ACTOR_EN_MB, -1 },      // Spear Moblin
+    { ACTOR_EN_NY, 0 },       // Spike (rolling enemy)
+    { ACTOR_EN_TEST, 2 },     // Stalfos
+    { ACTOR_EN_EIYER, 10 },   // Stinger (land) (One in formation, sink under floor and do not activate)
+    { ACTOR_EN_TP, -1 },      // Electric Tailpasaran
+    { ACTOR_EN_BW, 0 },       // Torch Slug
+    { ACTOR_EN_WALLMAS, 1 },  // Wallmaster
+    { ACTOR_EN_IK, 3 },       // Iron Knuckle (white, standing)
+    { ACTOR_EN_WF, 1 },       // Wolfos (white)
+    { ACTOR_EN_KAREBABA, 0 }, // Withered Deku Baba
 };
 
 static int enemiesToRandomize[] = {
-    ACTOR_EN_FIREFLY, // Keese (including fire/ice)
-    ACTOR_EN_TEST,    // Stalfos
-    ACTOR_EN_TITE,    // Tektite
-    ACTOR_EN_POH,     // Poe (normal, blue rupee, composers)
-    ACTOR_EN_OKUTA,   // Octorok
-    ACTOR_EN_WALLMAS, // Wallmaster
-    ACTOR_EN_DODONGO, // Dodongo
-    // ACTOR_EN_REEBA,  // Leever (reliant on spawner (z_e_encount1.c)
-    ACTOR_EN_PEEHAT,   // Flying Peahat, big one spawning larva, larva
-    ACTOR_EN_ZF,       // Lizalfos, Dinolfos
-    ACTOR_EN_GOMA,     // Gohma Larva (normal, eggs, gohma eggs)
-    ACTOR_EN_BUBBLE,   // Shabom (bubble)
-    ACTOR_EN_DODOJR,   // Baby Dodongo
-    ACTOR_EN_TORCH2,   // Dark Link
-    ACTOR_EN_BILI,     // Biri (small jellyfish)
-    ACTOR_EN_TP,       // Electric Tailpasaran
-    ACTOR_EN_ST,       // Skulltula (normal, big, invisible)
-    ACTOR_EN_BW,       // Torch Slug
-    ACTOR_EN_EIYER,    // Stinger (land)
-    ACTOR_EN_MB,       // Moblins (Club, spear)
-    ACTOR_EN_DEKUBABA, // Deku Baba (small, large)
-    ACTOR_EN_AM,       // Armos (enemy variant)
-    ACTOR_EN_DEKUNUTS, // Mad Scrub (single attack, triple attack)
-    ACTOR_EN_VALI,     // Bari (big jellyfish) (spawns very high up)
-    ACTOR_EN_BB,       // Bubble (flying skull enemy) (all colors)
-    ACTOR_EN_YUKABYUN, // Flying Floor Tile
-    ACTOR_EN_VM,       // Beamos
-    ACTOR_EN_FLOORMAS, // Floormaster
-    ACTOR_EN_RD,       // Redead, Gibdo
-    ACTOR_EN_SW,       // Skullwalltula
-    // ACTOR_EN_FD,     // Flare Dancer (can be randomized, but not randomized to, so keeping it in vanilla locations
-    // means it at least shows up in the game)
+    ACTOR_EN_ANUBICE_TAG, // Anubis
+    ACTOR_EN_FIREFLY,     // Keese (including fire/ice)
+    ACTOR_EN_TEST,        // Stalfos
+    ACTOR_EN_TITE,        // Tektite
+    ACTOR_EN_POH,         // Poe (normal, blue rupee, composers)
+    ACTOR_EN_OKUTA,       // Octorok
+    ACTOR_EN_WALLMAS,     // Wallmaster
+    ACTOR_EN_DODONGO,     // Dodongo
+    // ACTOR_EN_REEBA,       // Leever (reliant on spawner (z_en_encount1.c))
+    ACTOR_EN_PEEHAT,    // Flying Peahat, big one spawning larva, larva
+    ACTOR_EN_ZF,        // Lizalfos, Dinolfos
+    ACTOR_EN_GOMA,      // Gohma Larva (normal, eggs, gohma eggs)
+    ACTOR_EN_BUBBLE,    // Shabom (bubble)
+    ACTOR_EN_DODOJR,    // Baby Dodongo
+    ACTOR_EN_TORCH2,    // Dark Link
+    ACTOR_EN_BILI,      // Biri (small jellyfish)
+    ACTOR_EN_TP,        // Electric Tailpasaran
+    ACTOR_EN_ST,        // Skulltula (normal, big, invisible)
+    ACTOR_EN_BW,        // Torch Slug
+    ACTOR_EN_EIYER,     // Stinger (land)
+    ACTOR_EN_MB,        // Moblins (Club, spear)
+    ACTOR_EN_DEKUBABA,  // Deku Baba (small, large)
+    ACTOR_EN_AM,        // Armos (enemy variant)
+    ACTOR_EN_DEKUNUTS,  // Mad Scrub (single attack, triple attack)
+    ACTOR_EN_VALI,      // Bari (big jellyfish) (spawns very high up)
+    ACTOR_EN_BB,        // Bubble (flying skull enemy) (all colors)
+    ACTOR_EN_YUKABYUN,  // Flying Floor Tile
+    ACTOR_EN_VM,        // Beamos
+    ACTOR_EN_FLOORMAS,  // Floormaster
+    ACTOR_EN_RD,        // Redead, Gibdo
+    ACTOR_EN_SW,        // Skullwalltula
+    ACTOR_EN_FD,        // Flare Dancer
     ACTOR_EN_SB,        // Shell Blade
     ACTOR_EN_KAREBABA,  // Withered Deku Baba
     ACTOR_EN_RR,        // Like-Like
@@ -198,6 +277,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_WF,        // Wolfos
     ACTOR_EN_SKB,       // Stalchild
     ACTOR_EN_CROW,      // Guay
+    ACTOR_EN_SKJ,       // Skull Kid
 };
 
 extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, f32* posX, f32* posY, f32* posZ, int16_t* rotX,
@@ -270,15 +350,7 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, f32* po
         // Get randomized enemy ID and parameter.
         uint32_t seed =
             play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params;
-        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed);
-
-        int8_t timesRandomized = 1;
-
-        // While randomized enemy isn't allowed in certain situations, randomize again.
-        while (!IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, randomEnemy)) {
-            randomEnemy = GetRandomizedEnemyEntry(seed + timesRandomized);
-            timesRandomized++;
-        }
+        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed, play);
 
         *actorId = randomEnemy.id;
         *params = randomEnemy.params;
@@ -322,7 +394,7 @@ static std::vector<EnemyEntry> selectedEnemyList;
 
 void GetSelectedEnemies() {
     selectedEnemyList.clear();
-    for (int i = 0; i < 49; i++) {
+    for (int i = 0; i < RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE; i++) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0)) {
             selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
         } else if (CVarGetInteger(enemyCVarList[i], 1)) {
@@ -334,19 +406,28 @@ void GetSelectedEnemies() {
     }
 }
 
-EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
+EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play) {
+    std::vector<EnemyEntry> filteredEnemyList = {};
     if (selectedEnemyList.size() == 0) {
         GetSelectedEnemies();
     }
-    if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), ENEMY_RANDOMIZER_OFF) == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
+    for (EnemyEntry enemy : selectedEnemyList) {
+        if (IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, enemy)) {
+            filteredEnemyList.push_back(enemy);
+        }
+    }
+    if (filteredEnemyList.size() == 0) {
+        filteredEnemyList = selectedEnemyList;
+    }
+    if (CVAR_ENEMY_RANDOMIZER_VALUE == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
         uint32_t finalSeed =
             seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
         Random_Init(finalSeed);
-        uint32_t randomNumber = Random(0, selectedEnemyList.size());
-        return selectedEnemyList[randomNumber];
+        uint32_t randomNumber = Random(0, filteredEnemyList.size());
+        return filteredEnemyList[randomNumber];
     } else {
-        uint32_t randomSelectedEnemy = Random(0, selectedEnemyList.size());
-        return selectedEnemyList[randomSelectedEnemy];
+        uint32_t randomSelectedEnemy = Random(0, filteredEnemyList.size());
+        return filteredEnemyList[randomSelectedEnemy];
     }
 }
 
@@ -408,6 +489,8 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                 case ACTOR_EN_SB:
                 case ACTOR_EN_NY:
                     return (!(!isMQ && sceneNum == SCENE_WATER_TEMPLE && roomNum == 2));
+                case ACTOR_EN_SKJ:
+                    return !(sceneNum == SCENE_LOST_WOODS && LINK_IS_CHILD);
                 default:
                     return 1;
             }
@@ -419,19 +502,19 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
 }
 
 bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
-
     uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(sceneNum);
 
     // Freezard - Child Link can only kill this with jump slash Deku Sticks or other equipment like bombs.
     // Beamos - Needs bombs.
+    // Anubis - Needs fire.
     // Shell Blade & Spike - Child Link can't kill these with sword or Deku Stick.
-    // Arwing & Dark Link - Both go out of bounds way too easily, softlocking the player.
+    // Flare dancer, Arwing & Dark Link - Both go out of bounds way too easily, softlocking the player.
     // Wallmaster - Not easily visible, often makes players think they're softlocked and that there's no enemies left.
     // Club Moblin - Many issues with them falling or placing out of bounds. Maybe fixable in the future?
-    bool enemiesToExcludeClearRooms = enemy.id == ACTOR_EN_FZ || enemy.id == ACTOR_EN_VM || enemy.id == ACTOR_EN_SB ||
-                                      enemy.id == ACTOR_EN_NY || enemy.id == ACTOR_EN_CLEAR_TAG ||
-                                      enemy.id == ACTOR_EN_WALLMAS || enemy.id == ACTOR_EN_TORCH2 ||
-                                      enemy.id == ACTOR_EN_MB;
+    bool enemiesToExcludeClearRooms =
+        enemy.id == ACTOR_EN_FZ || enemy.id == ACTOR_EN_VM || enemy.id == ACTOR_EN_SB || enemy.id == ACTOR_EN_NY ||
+        enemy.id == ACTOR_EN_CLEAR_TAG || enemy.id == ACTOR_EN_WALLMAS || enemy.id == ACTOR_EN_TORCH2 ||
+        (enemy.id == ACTOR_EN_MB && enemy.params == 0) || enemy.id == ACTOR_EN_FD || enemy.id == ACTOR_EN_ANUBICE_TAG;
 
     // Bari - Spawns 3 more enemies, potentially extremely difficult in timed rooms.
     bool enemiesToExcludeTimedRooms = enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI;
@@ -532,3 +615,116 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
             return 1;
     }
 }
+
+void FixClubMoblinScale(void* ptr) {
+    Actor* actor = (Actor*)ptr;
+    if (actor->params == -1) {
+        Actor_SetScale(actor, 0.014f);
+    }
+}
+
+static void OnGerudoFighterDefeat(void* refActor) {
+    EnGeldB* enGeldB = reinterpret_cast<EnGeldB*>(refActor);
+
+    if (enGeldB->keyFlag == 0) {
+        Item_DropCollectibleRandom(gPlayState, &enGeldB->actor, &enGeldB->actor.world.pos, 0xC0);
+    }
+}
+
+void RegisterEnemyRandomizer() {
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_MB, CVAR_ENEMY_RANDOMIZER_VALUE, FixClubMoblinScale);
+
+    // prevent dark link from triggering a voidout
+    COND_VB_SHOULD(VB_TRIGGER_VOIDOUT, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        Actor* actor = va_arg(args, Actor*);
+
+        if (actor->category != ACTORCAT_PLAYER) {
+            *should = false;
+            Actor_Kill(actor);
+        }
+    });
+
+    // prevent dark link dealing fall damage to the player
+    COND_VB_SHOULD(VB_RECIEVE_FALL_DAMAGE, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        Actor* actor = va_arg(args, Actor*);
+
+        if (actor->category != ACTORCAT_PLAYER) {
+            *should = false;
+        }
+    });
+
+    // prevent dark link from interfering with HESS/recoil/etc when at more than 100 away from him
+    COND_VB_SHOULD(VB_TORCH2_HANDLE_CLANKING, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        Actor* darkLink = va_arg(args, Actor*);
+
+        if (darkLink->xzDistToPlayer > 100.0f) {
+            *should = false;
+        }
+    });
+
+    // prevent dark link from interfering with ice floors
+    COND_VB_SHOULD(VB_SET_STATIC_PREV_FLOOR_TYPE, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        Player* playerOrDarkLink = va_arg(args, Player*);
+
+        if (playerOrDarkLink->actor.id != ACTOR_PLAYER) {
+            *should = false;
+        }
+    });
+
+    // prevent dark link from interfering with ice floors
+    COND_VB_SHOULD(VB_SET_STATIC_FLOOR_TYPE, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        Player* playerOrDarkLink = va_arg(args, Player*);
+
+        if (playerOrDarkLink->actor.id != ACTOR_PLAYER) {
+            *should = false;
+        }
+    });
+
+    // prevent dark link from being grabbed by like likes and therefore grabbing the player
+    COND_VB_SHOULD(VB_LIKE_LIKE_GRAB_PLAYER, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        EnRr* likeLike = va_arg(args, EnRr*);
+
+        if (!(likeLike->collider1.base.oc != NULL && likeLike->collider1.base.oc->category == ACTORCAT_PLAYER) &&
+            !(likeLike->collider2.base.oc != NULL && likeLike->collider2.base.oc->category == ACTORCAT_PLAYER)) {
+            *should = false;
+        }
+    });
+
+    // Allow Random Gerudo Fighters (contain no keys) to spawn without any switch flags
+    COND_VB_SHOULD(VB_GERUDO_FIGHTER_CONTINUE_WAITING, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        EnGeldB* enGeldB = va_arg(args, EnGeldB*);
+
+        if (enGeldB->keyFlag == 0) {
+            if (!enGeldB->invisible || enGeldB->actor.xzDistToPlayer <= 300.0f) {
+                *should = false;
+            }
+        }
+    });
+
+    // Don't play Miniboss music for Random Gerudo Fighters
+    COND_VB_SHOULD(VB_GERUDO_FIGHTER_PLAY_MINIBOSS_MUSIC, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT,
+                   {
+                       EnGeldB* enGeldB = va_arg(args, EnGeldB*);
+
+                       if (enGeldB->keyFlag == 0) {
+                           *should = false;
+                       }
+                   });
+
+    // If Random Gerudo Fighters knock Link down, void him out like Wallmasters
+    COND_VB_SHOULD(VB_GERUDO_FIGHTER_THROW_LINK_TO_JAIL, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        EnGeldB* enGeldB = va_arg(args, EnGeldB*);
+
+        if (enGeldB->keyFlag == 0) {
+            *should = false;
+            Sfx_PlaySfxCentered(NA_SE_OC_ABYSS);
+            Play_TriggerRespawn(gPlayState);
+        }
+    });
+
+    // If Random Gerudo Fighters are defeated, drop some items
+    COND_ID_HOOK(OnEnemyDefeat, ACTOR_EN_GELDB, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT,
+                 OnGerudoFighterDefeat);
+}
+
+static RegisterShipInitFunc initFunc(RegisterEnemyRandomizer, { CVAR_ENEMY_RANDOMIZER_NAME });

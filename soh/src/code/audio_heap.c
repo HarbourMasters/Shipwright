@@ -41,7 +41,7 @@ void func_800DDE3C(void) {
 void AudioHeap_ResetLoadStatus(void) {
     s32 i;
 
-    for (i = 0; i < 0x30; i++) {
+    for (i = 0; i < fontMapSize; i++) {
         if (gAudioContext.fontLoadStatus[i] != 5) {
             gAudioContext.fontLoadStatus[i] = 0;
         }
@@ -940,7 +940,7 @@ void AudioHeap_Init(void) {
         reverb->sample.sampleAddr = (u8*)reverb->leftRingBuf;
         reverb->loop.start = 0;
         reverb->loop.count = 1;
-        reverb->loop.end = reverb->windowSize;
+        reverb->loop.loopEnd = reverb->windowSize;
 
         if (reverb->downsampleRate != 1) {
             reverb->unk_0E = 0x8000 / reverb->downsampleRate;

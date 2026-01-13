@@ -1,5 +1,5 @@
 #include "debugconsole.h"
-#include <Utils.h>
+#include <ship/utils/Utils.h>
 #include "savestates.h"
 #include "soh/ActorDB.h"
 
@@ -11,13 +11,14 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/Enhancements/randomizer/logic.h"
 
 #define Path _Path
 #define PATH_HACK
-#include <utils/StringHelper.h>
+#include <ship/utils/StringHelper.h>
 
-#include <Window.h>
-#include <Context.h>
+#include <ship/window/Window.h>
+#include <ship/Context.h>
 #include <imgui.h>
 #include <imgui_internal.h>
 #undef PATH_HACK
@@ -393,7 +394,7 @@ static bool GiveItemHandler(std::shared_ptr<Ship::Console> Console, const std::v
     if (args[1].compare("vanilla") == 0) {
         getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, std::stoi(args[2]));
     } else if (args[1].compare("randomizer") == 0) {
-        getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, std::stoi(args[2]));
+        getItemEntry = Rando::StaticData::RetrieveItem((RandomizerGet)std::stoi(args[2])).GetGIEntry_Copy();
     } else {
         ERROR_MESSAGE("[SOH] Invalid argument passed, must be 'vanilla' or 'randomizer'");
         return 1;
@@ -1129,7 +1130,7 @@ static bool SpeedModifierHandler(std::shared_ptr<Ship::Console> Console, const s
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
-    GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyRunSpeedModifier();
+    GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyMovementSpeedMultiplier();
 
     try {
         dynamic_cast<ParameterizedGameInteractionEffect*>(effect)->parameters[0] = std::stoi(args[1], nullptr, 10);
@@ -1450,6 +1451,52 @@ static bool SfxHandler(std::shared_ptr<Ship::Console> Console, const std::vector
     return 0;
 }
 
+static bool AvailableChecksProcessUndiscoveredExitsHandler(std::shared_ptr<Ship::Console> Console,
+                                                           const std::vector<std::string>& args, std::string* output) {
+    const auto& logic = Rando::Context::GetInstance()->GetLogic();
+    bool enabled = false;
+
+    if (args.size() == 1) {
+        enabled = !logic->ACProcessUndiscoveredExits;
+    } else {
+        try {
+            enabled = std::stoi(args[1]);
+        } catch (std::invalid_argument const& ex) {
+            ERROR_MESSAGE("[SOH] Enable should be 0 or 1");
+            return 1;
+        }
+    }
+
+    logic->ACProcessUndiscoveredExits = enabled;
+    INFO_MESSAGE("[SOH] Available Checks - Process Undiscovered Exits %s",
+                 logic->ACProcessUndiscoveredExits ? "enabled" : "disabled");
+
+    CheckTracker::RecalculateAvailableChecks();
+    return 0;
+}
+
+static bool AvailableChecksRecalculateHandler(std::shared_ptr<Ship::Console> Console,
+                                              const std::vector<std::string>& args, std::string* output) {
+    RandomizerRegion startingRegion = RR_ROOT;
+
+    if (args.size() > 1) {
+        try {
+            startingRegion = static_cast<RandomizerRegion>(std::stoi(args[1]));
+        } catch (std::invalid_argument const& ex) {
+            ERROR_MESSAGE("[SOH] Region should be a number");
+            return 1;
+        }
+
+        if (startingRegion <= RR_NONE || startingRegion >= RR_MAX) {
+            ERROR_MESSAGE("[SOH] Region should be between 1 and %d", RR_MAX - 1);
+            return 1;
+        }
+    }
+
+    CheckTracker::RecalculateAvailableChecks(startingRegion);
+    return 0;
+}
+
 void DebugConsole_Init(void) {
     // Console
     CMD_REGISTER("file_select", { FileSelectHandler, "Returns to the file select." });
@@ -1706,6 +1753,16 @@ void DebugConsole_Init(void) {
                           {
                               { "reset|randomize", Ship::ArgumentType::TEXT },
                               { "group_name", Ship::ArgumentType::TEXT, true },
+                          } });
+
+    CMD_REGISTER("acpue", { AvailableChecksProcessUndiscoveredExitsHandler,
+                            "Available Checks - Process Undiscovered Exits",
+                            { { "enable", Ship::ArgumentType::NUMBER, true } } });
+
+    CMD_REGISTER("acr", { AvailableChecksRecalculateHandler,
+                          "Available Checks - Recalculate",
+                          {
+                              { "starting_region", Ship::ArgumentType::NUMBER, true },
                           } });
 
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();

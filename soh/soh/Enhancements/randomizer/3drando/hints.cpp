@@ -40,7 +40,7 @@ const CustomMessage& HintText::GetObscure() const {
     return obscureText.size() > 0 ? RandomElement(obscureText) : clearText;
 }
 
-const CustomMessage& HintText::GetObscure(uint8_t selection) const {
+const CustomMessage& HintText::GetObscure(size_t selection) const {
     if (obscureText.size() > selection) {
         return obscureText[selection];
     } else if (obscureText.size() > 0) {
@@ -53,7 +53,7 @@ const CustomMessage& HintText::GetAmbiguous() const {
     return ambiguousText.size() > 0 ? RandomElement(ambiguousText) : clearText;
 }
 
-const CustomMessage& HintText::GetAmbiguous(uint8_t selection) const {
+const CustomMessage& HintText::GetAmbiguous(size_t selection) const {
     if (ambiguousText.size() > selection) {
         return ambiguousText[selection];
     } else if (ambiguousText.size() > 0) {
@@ -62,15 +62,15 @@ const CustomMessage& HintText::GetAmbiguous(uint8_t selection) const {
     return clearText;
 }
 
-uint8_t HintText::GetAmbiguousSize() const {
+size_t HintText::GetAmbiguousSize() const {
     return ambiguousText.size();
 }
 
-uint8_t HintText::GetObscureSize() const {
+size_t HintText::GetObscureSize() const {
     return obscureText.size();
 }
 
-const CustomMessage& HintText::GetHintMessage(uint8_t selection) const {
+const CustomMessage& HintText::GetHintMessage(size_t selection) const {
     auto ctx = Rando::Context::GetInstance();
     if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)) {
         return GetObscure(selection);
@@ -227,9 +227,10 @@ uint8_t StonesRequiredBySettings() {
     }
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
         stones = std::max<uint8_t>({ stones, ctx->GetOption(RSK_LACS_STONE_COUNT).Get() });
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
         stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Get() - 6) });
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS)) {
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS) &&
+               ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
         stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get() - 6) });
     }
     return stones;
@@ -247,12 +248,12 @@ uint8_t MedallionsRequiredBySettings() {
         medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Get() - 3;
     }
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_MEDALLIONS)) {
-        medallions = std::max({ medallions, ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Get() });
+        medallions = std::max(medallions, ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Get());
     } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
-        medallions = std::max({ medallions, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Get() - 3) });
+        medallions = std::max(medallions, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Get() - 3));
     } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS) &&
                ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
-        medallions = std::max({ medallions, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get() - 3) });
+        medallions = std::max(medallions, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get() - 3));
     }
     return medallions;
 }
@@ -264,7 +265,7 @@ uint8_t TokensRequiredBySettings() {
         tokens = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Get();
     }
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
-        tokens = std::max<uint8_t>({ tokens, ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get() });
+        tokens = std::max<uint8_t>(tokens, ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get());
     }
     return tokens;
 }
@@ -273,8 +274,8 @@ std::vector<std::pair<RandomizerCheck, std::function<bool()>>> conditionalAlways
     std::make_pair(RC_MARKET_10_BIG_POES,
                    []() {
                        auto ctx = Rando::Context::GetInstance();
-                       return ctx->GetOption(RSK_BIG_POE_COUNT).Get() >= 3 && !ctx->GetOption(RSK_BIG_POES_HINT);
-                   }), // Remember, the option's value being 3 means 4 are required
+                       return ctx->GetOption(RSK_BIG_POE_COUNT).Get() > 3 && !ctx->GetOption(RSK_BIG_POES_HINT);
+                   }),
     std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH,
                    []() {
                        auto ctx = Rando::Context::GetInstance();
@@ -598,7 +599,7 @@ static void DistributeHints(std::vector<uint8_t>& selected, size_t stoneCount,
     }
     // if stones are left, assign junk to every remaining stone as a fallback.
     if (stoneCount > 0) {
-        selected[selected.size() - 1] += stoneCount;
+        selected[static_cast<uint8_t>(selected.size()) - 1] += static_cast<uint8_t>(stoneCount);
     }
 }
 
@@ -647,6 +648,9 @@ void CreateStoneHints() {
     // Apply impa's song exclusions when zelda is skipped
     if (ctx->GetOption(RSK_SKIP_CHILD_ZELDA)) {
         ctx->GetItemLocation(RC_SONG_FROM_IMPA)->SetHintAccesible();
+    }
+    if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT)) {
+        ctx->GetItemLocation(RC_TOT_MASTER_SWORD)->SetHintAccesible();
     }
 
     // Add 'always' location hints
@@ -728,20 +732,22 @@ std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> i
 
 void CreateChildAltarHint() {
     auto ctx = Rando::Context::GetInstance();
-    if (!ctx->GetHint(RH_ALTAR_CHILD)->IsEnabled() && ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
+    if (!ctx->GetHint(RH_ALTAR_CHILD)->IsEnabled()) {
         std::vector<RandomizerCheck> stoneLocs = {};
-        // force marking the rewards as hinted if they are at the end of dungeons as they can be inferred
-        if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) ||
-            ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
-            stoneLocs = FindItemsAndMarkHinted({ RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE }, {});
-        } else {
-            stoneLocs =
-                FindItemsAndMarkHinted({ RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE }, { RC_ALTAR_HINT_CHILD });
-        }
         std::vector<RandomizerArea> stoneAreas = {};
-        for (auto loc : stoneLocs) {
-            if (loc != RC_UNKNOWN_CHECK) {
-                stoneAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+        if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
+            // force marking the rewards as hinted if they are at the end of dungeons as they can be inferred
+            if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) ||
+                ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
+                stoneLocs = FindItemsAndMarkHinted({ RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE }, {});
+            } else {
+                stoneLocs = FindItemsAndMarkHinted({ RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE },
+                                                   { RC_ALTAR_HINT_CHILD });
+            }
+            for (auto loc : stoneLocs) {
+                if (loc != RC_UNKNOWN_CHECK) {
+                    stoneAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+                }
             }
         }
         ctx->AddHint(RH_ALTAR_CHILD, Hint(RH_ALTAR_CHILD, HINT_TYPE_ALTAR_CHILD, {}, stoneLocs, stoneAreas));
@@ -752,6 +758,7 @@ void CreateAdultAltarHint() {
     auto ctx = Rando::Context::GetInstance();
     if (!ctx->GetHint(RH_ALTAR_ADULT)->IsEnabled()) {
         std::vector<RandomizerCheck> medallionLocs = {};
+        std::vector<RandomizerArea> medallionAreas = {};
         if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
             // force marking the rewards as hinted if they are at the end of dungeons as they can be inferred
             if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) ||
@@ -764,11 +771,10 @@ void CreateAdultAltarHint() {
                                                          RG_WATER_MEDALLION, RG_SPIRIT_MEDALLION, RG_SHADOW_MEDALLION },
                                                        { RC_ALTAR_HINT_ADULT });
             }
-        }
-        std::vector<RandomizerArea> medallionAreas = {};
-        for (auto loc : medallionLocs) {
-            if (loc != RC_UNKNOWN_CHECK) {
-                medallionAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+            for (auto loc : medallionLocs) {
+                if (loc != RC_UNKNOWN_CHECK) {
+                    medallionAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+                }
             }
         }
         ctx->AddHint(RH_ALTAR_ADULT, Hint(RH_ALTAR_ADULT, HINT_TYPE_ALTAR_ADULT, {}, medallionLocs, medallionAreas));

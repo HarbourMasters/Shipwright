@@ -1,8 +1,11 @@
 #pragma once
 
-#include "resource/Resource.h"
+#include <ship/resource/Resource.h>
 
+namespace Fast {
 union F3DVtx;
+}
+
 namespace SOH {
 typedef union ScalarData {
     uint8_t u8;
@@ -80,6 +83,6 @@ class Array : public Ship::Resource<void> {
     size_t ArrayCount;
     // OTRTODO: Should be a vector of resource pointers...
     std::vector<ScalarData> Scalars;
-    std::vector<F3DVtx> Vertices;
+    std::vector<Fast::F3DVtx> Vertices;
 };
 } // namespace SOH

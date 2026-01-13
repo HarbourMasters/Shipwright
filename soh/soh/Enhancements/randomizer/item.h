@@ -35,9 +35,8 @@ class Item {
          uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_, uint16_t modIndex_,
          Text article_ = {}, std::string color_ = "%g", bool progressive_ = false, uint16_t price_ = 0);
     Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
-         LogicVal logicVal_, RandomizerHintTextKey hintKey_, Text article_ = {}, std::string color_ = "%g",
+         LogicVal logicVal_, RandomizerHintTextKey hintKey_, GetItemCategory category_, Text article_ = {}, std::string color_ = "%g",
          bool progressive_ = false, uint16_t price_ = 0);
-    ~Item();
 
     void ApplyEffect() const;
     void UndoEffect() const;
@@ -61,6 +60,7 @@ class Item {
     bool IsMajorItem() const;
     RandomizerHintTextKey GetHintKey() const;
     const HintText& GetHint() const;
+    GetItemCategory GetCategory();
     bool operator==(const Item& right) const;
     bool operator!=(const Item& right) const;
 
@@ -72,6 +72,7 @@ class Item {
     bool advancement;
     LogicVal logicVal;
     RandomizerHintTextKey hintKey;
+    GetItemCategory category;
     Text article;
     std::string color;
     bool progressive;

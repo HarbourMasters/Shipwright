@@ -4,8 +4,8 @@
 #include "overlays/effects/ovl_Effect_Ss_Dead_Sound/z_eff_ss_dead_sound.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/OTRGlobals.h"
 
 #define FLAGS 0
 
@@ -1259,7 +1259,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
                 case RG_DOUBLE_DEFENSE:
                     colorIndex = PARTICLE_WHITE;
                     break;
-                case RG_PROGRESSIVE_BOMBCHUS:
+                case RG_PROGRESSIVE_BOMBCHU_BAG:
                     colorIndex = PARTICLE_DARK_BLUE;
                     break;
                 case RG_BOTTLE_WITH_FAIRY:
@@ -1536,7 +1536,7 @@ s16 func_8001F404(s16 dropId) {
     if (LINK_IS_ADULT) {
         if (dropId == ITEM00_SEEDS) {
             dropId = ITEM00_ARROWS_SMALL;
-        } else if ((dropId == ITEM00_STICK) && !(CVarGetInteger(CVAR_ENHANCEMENT("TreesDropSticks"), 0))) {
+        } else if (GameInteractor_Should(VB_PREVENT_ADULT_STICK, dropId == ITEM00_STICK)) {
             dropId = ITEM00_RUPEE_GREEN;
         }
     } else {
@@ -1707,7 +1707,7 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
     }
 
     if (dropId == ITEM00_FLEXIBLE) {
-        if (gSaveContext.health <= 0x10) { // 1 heart or less
+        if (gSaveContext.health <= FULL_HEART_HEALTH) { // 1 heart or less
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, spawnPos->x, spawnPos->y + 40.0f, spawnPos->z, 0, 0, 0,
                         FAIRY_HEAL_TIMED, true);
             EffectSsDeadSound_SpawnStationary(play, spawnPos, NA_SE_EV_BUTTERFRY_TO_FAIRY, true,

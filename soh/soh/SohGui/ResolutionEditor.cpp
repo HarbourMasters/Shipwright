@@ -3,7 +3,8 @@
 #include <libultraship/libultraship.h>
 
 #include "soh/SohGui/UIWidgets.hpp"
-#include <graphic/Fast3D/gfx_pc.h>
+#include <fast/Fast3dWindow.h>
+#include <fast/interpreter.h>
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
@@ -30,13 +31,13 @@ namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
 enum setting { UPDATE_aspectRatioX, UPDATE_aspectRatioY, UPDATE_verticalPixelCount };
 
-std::unordered_map<int32_t, const char*> aspectRatioPresetLabels = { { 0, "Off" },
-                                                                     { 1, "Custom" },
-                                                                     { 2, "Original (4:3)" },
-                                                                     { 3, "Widescreen (16:9)" },
-                                                                     { 4, "Nintendo 3DS (5:3)" },
-                                                                     { 5, "16:10 (8:5)" },
-                                                                     { 6, "Ultrawide (21:9)" } };
+std::map<int32_t, const char*> aspectRatioPresetLabels = { { 0, "Off" },
+                                                           { 1, "Custom" },
+                                                           { 2, "Original (4:3)" },
+                                                           { 3, "Widescreen (16:9)" },
+                                                           { 4, "Nintendo 3DS (5:3)" },
+                                                           { 5, "16:10 (8:5)" },
+                                                           { 6, "Ultrawide (21:9)" } };
 const float aspectRatioPresetsX[] = { 0.0f, 16.0f, 4.0f, 16.0f, 5.0f, 16.0f, 21.0f };
 const float aspectRatioPresetsY[] = { 0.0f, 9.0f, 3.0f, 9.0f, 3.0f, 10.0f, 9.0f };
 const int default_aspectRatio = 1; // Default combo list option
@@ -85,6 +86,16 @@ static bool disabled_everything;
 static bool disabled_pixelCount;
 
 using namespace UIWidgets;
+
+static std::weak_ptr<Fast::Interpreter> mInterpreter;
+
+std::shared_ptr<Fast::Interpreter> GetInterpreter() {
+    auto intP = mInterpreter.lock();
+    if (!intP) {
+        assert(false && "Lost reference to Fast::Interpreter");
+    }
+    return intP;
+}
 
 void ResolutionCustomWidget(WidgetInfo& info) {
     ImGui::BeginDisabled(disabled_everything);
@@ -368,18 +379,23 @@ void ResolutionCustomWidget(WidgetInfo& info) {
 }
 
 void RegisterResolutionWidgets() {
+    auto fastWnd = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
+    mInterpreter = fastWnd->GetInterpreterWeak();
+
     WidgetPath path = { "Settings", "Graphics", SECTION_COLUMN_2 };
 
     // Resolution visualiser
     mSohMenu->AddWidget(path, "Viewport dimensions: {} x {}", WIDGET_TEXT)
         .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) {
+            auto gfx_current_game_window_viewport = GetInterpreter().get()->mGameWindowViewport;
             info.name = fmt::format("Viewport dimensions: {} x {}", gfx_current_game_window_viewport.width,
                                     gfx_current_game_window_viewport.height);
         });
     mSohMenu->AddWidget(path, "Internal resolution: {} x {}", WIDGET_TEXT)
         .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) {
+            auto gfx_current_dimensions = GetInterpreter().get()->mCurDimensions;
             info.name = fmt::format("Internal resolution: {} x {}", gfx_current_dimensions.width,
                                     gfx_current_dimensions.height);
         });
@@ -486,6 +502,7 @@ void RegisterResolutionWidgets() {
                 }
             } else if (showHorizontalResField) { // Show calculated aspect ratio
                 if (item_aspectRatio) {
+                    auto gfx_current_dimensions = GetInterpreter().get()->mCurDimensions;
                     ImGui::Dummy({ 0, 2 });
                     const float resolvedAspectRatio =
                         (float)gfx_current_dimensions.width / gfx_current_dimensions.height;
@@ -539,6 +556,8 @@ void UpdateResolutionVars() {
 
     short integerScale_maximumBounds = 1; // can change when window is resized
     // This is mostly just for UX purposes, as Fit Automatically logic is part of LUS.
+    auto gfx_current_game_window_viewport = GetInterpreter().get()->mGameWindowViewport;
+    auto gfx_current_dimensions = GetInterpreter().get()->mCurDimensions;
     if (((float)gfx_current_game_window_viewport.width / gfx_current_game_window_viewport.height) >
         ((float)gfx_current_dimensions.width / gfx_current_dimensions.height)) {
         // Scale to window height
@@ -563,7 +582,6 @@ void UpdateResolutionVars() {
     verticalPixelCount =
         CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalPixelCount", pixelCountPresets[item_pixelCount]);
     // Additional settings
-    showHorizontalResField = false;
     horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
     // Disabling flags
     disabled_everything = !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 0);
@@ -579,6 +597,6 @@ bool IsDroppingFrames() {
 }
 
 static RegisterMenuUpdateFunc updateFunc(UpdateResolutionVars, "Settings", "Graphics");
-static RegisterMenuInitFunc initFunc(RegisterResolutionWidgets);
+static RegisterMenuInitFunc menuInitFunc(RegisterResolutionWidgets);
 
 } // namespace SohGui

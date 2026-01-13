@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <vector>
 #include <memory>
-#include "Resource.h"
+#include <ship/resource/Resource.h>
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
@@ -19,7 +19,7 @@ typedef struct {
     /* 0x14 */ s16 fogFar;
 } EnvLightSettings; // size = 0x16
 
-class SetLightingSettings : public SceneCommand<EnvLightSettings> {
+class SetLightingSettings final : public SceneCommand<EnvLightSettings> {
   public:
     using SceneCommand::SceneCommand;
 

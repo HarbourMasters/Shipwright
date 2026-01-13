@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <vector>
 #include <memory>
-#include "Resource.h"
+#include <ship/resource/Resource.h>
 #include "SceneCommand.h"
 // #include <libultraship/libultra/types.h>
 #include "soh/resource/type/Path.h"

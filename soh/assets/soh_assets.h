@@ -8,35 +8,41 @@
 // On Mac, not using aligned resource names was causing crashes in release builds
 
 // objects
-#define dgChristmasGreenTreasureChestFrontTex "__OTR__objects/object_box/gChristmasGreenTreasureChestFrontTex"
-static const ALIGN_ASSET(2) char gChristmasGreenTreasureChestFrontTex[] = dgChristmasGreenTreasureChestFrontTex;
+#define dgChestBodyHeartDL "__OTR__objects/object_box/gChestBodyHeartDL"
+static const ALIGN_ASSET(2) char gChestBodyHeartDL[] = dgChestBodyHeartDL;
 
-#define dgChristmasGreenTreasureChestSideAndTopTex "__OTR__objects/object_box/gChristmasGreenTreasureChestSideAndTopTex"
-static const ALIGN_ASSET(2) char gChristmasGreenTreasureChestSideAndTopTex[] = dgChristmasGreenTreasureChestSideAndTopTex;
+#define dgChestLidHeartDL "__OTR__objects/object_box/gChestLidHeartDL"
+static const ALIGN_ASSET(2) char gChestLidHeartDL[] = dgChestLidHeartDL;
 
-#define dgChristmasRedTreasureChestFrontTex "__OTR__objects/object_box/gChristmasRedTreasureChestFrontTex"
-static const ALIGN_ASSET(2) char gChristmasRedTreasureChestFrontTex[] = dgChristmasRedTreasureChestFrontTex;
+#define dgChestBodyJunkDL "__OTR__objects/object_box/gChestBodyJunkDL"
+static const ALIGN_ASSET(2) char gChestBodyJunkDL[] = dgChestBodyJunkDL;
 
-#define dgChristmasRedTreasureChestSideAndTopTex "__OTR__objects/object_box/gChristmasRedTreasureChestSideAndTopTex"
-static const ALIGN_ASSET(2) char gChristmasRedTreasureChestSideAndTopTex[] = dgChristmasRedTreasureChestSideAndTopTex;
+#define dgChestLidJunkDL "__OTR__objects/object_box/gChestLidJunkDL"
+static const ALIGN_ASSET(2) char gChestLidJunkDL[] = dgChestLidJunkDL;
 
-#define dgGoldTreasureChestFrontTex "__OTR__objects/object_box/gGoldTreasureChestFrontTex"
-static const ALIGN_ASSET(2) char gGoldTreasureChestFrontTex[] = dgGoldTreasureChestFrontTex;
+#define dgChestBodyMajorDL "__OTR__objects/object_box/gChestBodyMajorDL"
+static const ALIGN_ASSET(2) char gChestBodyMajorDL[] = dgChestBodyMajorDL;
 
-#define dgGoldTreasureChestSideAndTopTex "__OTR__objects/object_box/gGoldTreasureChestSideAndTopTex"
-static const ALIGN_ASSET(2) char gGoldTreasureChestSideAndTopTex[] = dgGoldTreasureChestSideAndTopTex;
+#define dgChestLidMajorDL "__OTR__objects/object_box/gChestLidMajorDL"
+static const ALIGN_ASSET(2) char gChestLidMajorDL[] = dgChestLidMajorDL;
 
-#define dgKeyTreasureChestFrontTex "__OTR__objects/object_box/gKeyTreasureChestFrontTex"
-static const ALIGN_ASSET(2) char gKeyTreasureChestFrontTex[] = dgKeyTreasureChestFrontTex;
+#define dgChestBodyMinorDL "__OTR__objects/object_box/gChestBodyMinorDL"
+static const ALIGN_ASSET(2) char gChestBodyMinorDL[] = dgChestBodyMinorDL;
 
-#define dgKeyTreasureChestSideAndTopTex "__OTR__objects/object_box/gKeyTreasureChestSideAndTopTex"
-static const ALIGN_ASSET(2) char gKeyTreasureChestSideAndTopTex[] = dgKeyTreasureChestSideAndTopTex;
+#define dgChestLidMinorDL "__OTR__objects/object_box/gChestLidMinorDL"
+static const ALIGN_ASSET(2) char gChestLidMinorDL[] = dgChestLidMinorDL;
 
-#define dgSkullTreasureChestFrontTex "__OTR__objects/object_box/gSkullTreasureChestFrontTex"
-static const ALIGN_ASSET(2) char gSkullTreasureChestFrontTex[] = dgSkullTreasureChestFrontTex;
+#define dgChestBodySmallKeyDL "__OTR__objects/object_box/gChestBodySmallKeyDL"
+static const ALIGN_ASSET(2) char gChestBodySmallKeyDL[] = dgChestBodySmallKeyDL;
 
-#define dgSkullTreasureChestSideAndTopTex "__OTR__objects/object_box/gSkullTreasureChestSideAndTopTex"
-static const ALIGN_ASSET(2) char gSkullTreasureChestSideAndTopTex[] = dgSkullTreasureChestSideAndTopTex;
+#define dgChestLidSmallKeyDL "__OTR__objects/object_box/gChestLidSmallKeyDL"
+static const ALIGN_ASSET(2) char gChestLidSmallKeyDL[] = dgChestLidSmallKeyDL;
+
+#define dgChestBodyTokenDL "__OTR__objects/object_box/gChestBodyTokenDL"
+static const ALIGN_ASSET(2) char gChestBodyTokenDL[] = dgChestBodyTokenDL;
+
+#define dgChestLidTokenDL "__OTR__objects/object_box/gChestLidTokenDL"
+static const ALIGN_ASSET(2) char gChestLidTokenDL[] = dgChestLidTokenDL;
 
 #define dgTitleRandomizerSubtitleTex "__OTR__objects/object_mag/gTitleRandomizerSubtitleTex"
 static const ALIGN_ASSET(2) char gTitleRandomizerSubtitleTex[] = dgTitleRandomizerSubtitleTex;
@@ -348,6 +354,9 @@ static const ALIGN_ASSET(2) char gKeyringKeysGanonsCastleMQDL[] = dgKeyringKeysG
 #define dgHouseKeyDL "__OTR__objects/object_housekey/gHouseKeyDL"
 static const ALIGN_ASSET(2) char gHouseKeyDL[] = dgHouseKeyDL;
 
+#define dgGiRocsFeatherDL "__OTR__objects/object_rocs_feather/gGiRocsFeatherDL"
+static const ALIGN_ASSET(2) char gGiRocsFeatherDL[] = dgGiRocsFeatherDL;
+
 // overlays
 #define dgOptionsDividerChangeLangVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerChangeLangVtx"
 static const ALIGN_ASSET(2) char gOptionsDividerChangeLangVtx[] = dgOptionsDividerChangeLangVtx;
@@ -431,6 +440,18 @@ static const ALIGN_ASSET(2) char gFileSelLanguageFRATex[] = dgFileSelLanguageFRA
 #define dgFileSelLanguageGERTex "__OTR__textures/title_static/gFileSelLanguageGERTex"
 static const ALIGN_ASSET(2) char gFileSelLanguageGERTex[] = dgFileSelLanguageGERTex;
 
+#define dgRocsFeatherTex "__OTR__textures/icon_item_static/gRocsFeatherTex"
+static const ALIGN_ASSET(2) char gRocsFeatherTex[] = dgRocsFeatherTex;
+
+#define dgRocsFeatherItemNameENGTex "__OTR__textures/item_name_static/gRocsFeatherItemNameENGTex"
+static const ALIGN_ASSET(2) char gRocsFeatherItemNameENGTex[] = dgRocsFeatherItemNameENGTex;
+
+#define dgRocsFeatherItemNameGERTex "__OTR__textures/item_name_static/gRocsFeatherItemNameGERTex"
+static const ALIGN_ASSET(2) char gRocsFeatherItemNameGERTex[] = dgRocsFeatherItemNameGERTex;
+
+#define dgRocsFeatherItemNameFRATex "__OTR__textures/item_name_static/gRocsFeatherItemNameFRATex"
+static const ALIGN_ASSET(2) char gRocsFeatherItemNameFRATex[] = dgRocsFeatherItemNameFRATex;
+
 #define dgEmptyTexture "__OTR__textures/virtual/gEmptyTexture"
 static const ALIGN_ASSET(2) char gEmptyTexture[] = dgEmptyTexture;
 
@@ -452,6 +473,10 @@ static const ALIGN_ASSET(2) char gLinkAdultGoronTunicSkel[] = dgLinkAdultGoronTu
 
 #define dgLinkAdultZoraTunicSkel "__OTR__objects/object_link_boy_zora/gLinkAdultZoraTunicSkel"
 static const ALIGN_ASSET(2) char gLinkAdultZoraTunicSkel[] = dgLinkAdultZoraTunicSkel;
+
+// Animations
+#define dgPlayerAnim_link_rocs_feather_jump "__OTR__objects/gameplay_keep/gPlayerAnim_link_rocs_feather_jump"
+static const ALIGN_ASSET(2) char gPlayerAnim_link_rocs_feather_jump[] = dgPlayerAnim_link_rocs_feather_jump;
 
 // LUS Logo
 #define dgShipLogoDL "__OTR__textures/nintendo_rogo_static/gShipLogoDL"

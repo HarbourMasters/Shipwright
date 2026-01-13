@@ -3,12 +3,12 @@
 #include "soh/resource/type/Scene.h"
 #include "soh/resource/type/scenecommand/SceneCommand.h"
 #include "soh/resource/importer/scenecommand/SceneCommandFactory.h"
-#include "Resource.h"
-#include "ResourceFactoryBinary.h"
-#include "ResourceFactoryXML.h"
+#include <ship/resource/Resource.h>
+#include <ship/resource/ResourceFactoryBinary.h>
+#include <ship/resource/ResourceFactoryXML.h>
 
 namespace SOH {
-class ResourceFactoryBinarySceneV0 : public Ship::ResourceFactoryBinary {
+class ResourceFactoryBinarySceneV0 final : public Ship::ResourceFactoryBinary {
   public:
     ResourceFactoryBinarySceneV0();
 
@@ -28,7 +28,7 @@ class ResourceFactoryBinarySceneV0 : public Ship::ResourceFactoryBinary {
                                                      std::shared_ptr<Ship::BinaryReader> reader, uint32_t index);
 };
 
-class ResourceFactoryXMLSceneV0 : public Ship::ResourceFactoryXML {
+class ResourceFactoryXMLSceneV0 final : public Ship::ResourceFactoryXML {
   public:
     ResourceFactoryXMLSceneV0();
 

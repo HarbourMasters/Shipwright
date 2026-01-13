@@ -6,6 +6,7 @@
 
 #include "z_bg_hidan_curtain.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -191,7 +192,10 @@ void BgHidanCurtain_TurnOff(BgHidanCurtain* this, PlayState* play) {
 }
 
 void BgHidanCurtain_WaitForTimer(BgHidanCurtain* this, PlayState* play) {
-    DECR(this->timer);
+    if (GameInteractor_Should(VB_SWITCH_TIMER_TICK, true, this, &this->timer)) {
+        DECR(this->timer);
+    }
+
     if (this->timer == 0) {
         this->actionFunc = BgHidanCurtain_TurnOn;
     }

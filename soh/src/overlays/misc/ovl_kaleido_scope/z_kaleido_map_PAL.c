@@ -8,7 +8,7 @@
 #include "textures/icon_item_dungeon_static/icon_item_dungeon_static.h"
 #include "textures/icon_item_nes_static/icon_item_nes_static.h"
 
-#include "public/bridge/gfxbridge.h"
+#include <libultraship/bridge/gfxbridge.h>
 
 void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     static void* dungeonItemTexs[] = {
@@ -59,11 +59,11 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     s16 stepG;
     s16 stepB;
     u16 rgba16;
-    bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
 
     OPEN_DISPS(gfxCtx);
 
     if ((pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0) && (pauseCtx->pageIndex == PAUSE_MAP)) {
+        bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
         pauseCtx->cursorColorSet = 0;
         oldCursorPoint = pauseCtx->cursorPoint[PAUSE_MAP];
 

@@ -26,11 +26,11 @@
 #include <tuple>
 #include <functional>
 #include "draw.h"
+#include "soh/OTRGlobals.h"
+#include <ship/window/FileDropMgr.h>
 #include "soh/SohGui/UIWidgets.hpp"
 #include "static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include <boost_custom/container_hash/hash_32.hpp>
-#include "randomizer_settings_window.h"
 #include "savefile.h"
 #include "entrance.h"
 #include "dungeon.h"
@@ -40,6 +40,9 @@
 #include "fishsanity.h"
 #include "randomizerTypes.h"
 #include "soh/Notification/Notification.h"
+#include "soh/ObjectExtension/ObjectExtension.h"
+
+static ObjectExtension::Register<CheckIdentity> RegisterIdentity;
 
 extern std::map<RandomizerCheckArea, std::string> rcAreaNames;
 
@@ -55,6 +58,29 @@ std::set<RandomizerTrick> enabledGlitches;
 
 u8 generated;
 char* seedString;
+
+bool Rando_HandleSpoilerDrop(char* filePath) {
+    if (SohUtils::IsStringEmpty(filePath)) {
+        return false;
+    }
+
+    try {
+        std::ifstream stream(filePath);
+        if (!stream) {
+            return false;
+        }
+
+        nlohmann::json json;
+        stream >> json;
+
+        if (json.contains("version") && json.contains("finalSeed")) {
+            CVarSetString(CVAR_GENERAL("RandomizerDroppedFile"), filePath);
+            CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 1);
+            return true;
+        }
+    } catch (std::exception& e) {}
+    return false;
+}
 
 Randomizer::Randomizer() {
     Rando::StaticData::InitItemTable();
@@ -72,6 +98,8 @@ Randomizer::Randomizer() {
     for (size_t c = 0; c < Rando::StaticData::hintTypeNames.size(); c++) {
         SpoilerfileHintTypeNameToEnum[Rando::StaticData::hintTypeNames[(HintType)c].GetEnglish(MF_CLEAN)] = (HintType)c;
     }
+
+    Ship::Context::GetInstance()->GetFileDropMgr()->RegisterDropHandler(Rando_HandleSpoilerDrop);
 }
 
 Randomizer::~Randomizer() {
@@ -134,23 +162,87 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
     { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK },
 };
 
+#ifdef _MSC_VER
 #pragma optimize("", off)
+#else
 #pragma GCC push_options
 #pragma GCC optimize("O0")
+#endif
 bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
-    if (strcmp(spoilerFileName, "") != 0) {
-        std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
-        if (!spoilerFileStream) {
-            return false;
-        } else {
-            return true;
-        }
+    static std::unordered_map<std::string, bool> existsCache;
+    static std::unordered_map<std::string, std::filesystem::file_time_type> lastModifiedCache;
+
+    if (strcmp(spoilerFileName, "") == 0) {
+        return false;
     }
 
-    return false;
+    std::string sanitizedFileName = SohUtils::Sanitize(spoilerFileName);
+
+    try {
+        // Check if file exists and get last modified time
+        std::filesystem::path filePath(sanitizedFileName);
+        if (!std::filesystem::exists(filePath)) {
+            // Cache and return false if file doesn't exist
+            existsCache[sanitizedFileName] = false;
+            lastModifiedCache.erase(sanitizedFileName);
+            return false;
+        }
+
+        auto currentLastModified = std::filesystem::last_write_time(filePath);
+
+        // Check cache first
+        auto existsCacheIt = existsCache.find(sanitizedFileName);
+        auto lastModifiedCacheIt = lastModifiedCache.find(sanitizedFileName);
+
+        // If we have a valid cache entry and the file hasn't been modified
+        if (existsCacheIt != existsCache.end() && lastModifiedCacheIt != lastModifiedCache.end() &&
+            lastModifiedCacheIt->second == currentLastModified) {
+            return existsCacheIt->second;
+        }
+
+        // Cache miss or file modified - need to check contents
+        std::ifstream spoilerFileStream(sanitizedFileName);
+        if (spoilerFileStream) {
+            nlohmann::json contents;
+            spoilerFileStream >> contents;
+            spoilerFileStream.close();
+
+            bool isValid = contents.contains("version") &&
+                           strcmp(std::string(contents["version"]).c_str(), (char*)gBuildVersion) == 0;
+
+            if (!isValid) {
+                SohGui::RegisterPopup(
+                    "Old Spoiler Version",
+                    "The spoiler file located at\n" + std::string(spoilerFileName) +
+                        "\nwas made by a version that doesn't match the currently running version.\n" +
+                        "Loading for this file has been cancelled.");
+                CVarClear(CVAR_GENERAL("SpoilerLog"));
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            }
+
+            // Update cache
+            existsCache[sanitizedFileName] = isValid;
+            lastModifiedCache[sanitizedFileName] = currentLastModified;
+            return isValid;
+        }
+
+        // File couldn't be opened
+        existsCache[sanitizedFileName] = false;
+        lastModifiedCache.erase(sanitizedFileName);
+        return false;
+
+    } catch (const std::filesystem::filesystem_error&) {
+        // Handle filesystem errors by invalidating cache
+        existsCache[sanitizedFileName] = false;
+        lastModifiedCache.erase(sanitizedFileName);
+        return false;
+    }
 }
-#pragma GCC pop_options
+#ifdef _MSC_VER
 #pragma optimize("", on)
+#else
+#pragma GCC pop_options
+#endif
 
 // Reference soh/src/overlays/actors/ovl_En_GirlA/z_en_girla.h
 std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem = {
@@ -326,9 +418,36 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BOMBCHU_20:
         case RG_BUY_BOMBCHUS_10:
         case RG_BUY_BOMBCHUS_20:
-        case RG_PROGRESSIVE_BOMBCHUS: // RANDOTODO Do we want bombchu refills to exist seperatly from bombchu bags? If
-                                      // so, this needs changing.
-            return CAN_OBTAIN;
+            return OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_NONE)
+                       ? CAN_OBTAIN
+                       : (INV_CONTENT(ITEM_BOMBCHU) != ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE);
+        case RG_PROGRESSIVE_BOMBCHU_BAG: // RANDOTODO Do we want bombchu refills to exist separatly from bombchu bags?
+                                         // If so, this needs changing.
+            switch (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Get()) {
+                case RO_BOMBCHU_BAG_NONE:
+                    return CANT_OBTAIN_MISC;
+                case RO_BOMBCHU_BAG_SINGLE:
+                    return INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU
+                               ? (infiniteUpgrades != RO_INF_UPGRADES_OFF ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE)
+                               : CAN_OBTAIN;
+                case RO_BOMBCHU_BAG_PROGRESSIVE:
+                    if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS)) {
+                        return CANT_OBTAIN_ALREADY_HAVE;
+                    } else {
+                        switch (gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel) {
+                            case 0:
+                            case 1:
+                                return CAN_OBTAIN;
+                            case 2:
+                                return infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE
+                                           ? CANT_OBTAIN_ALREADY_HAVE
+                                           : CAN_OBTAIN;
+                            case 3:
+                                return infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE ? CAN_OBTAIN
+                                                                                       : CANT_OBTAIN_ALREADY_HAVE;
+                        }
+                    }
+            }
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {
                 case ITEM_NONE:
@@ -358,7 +477,13 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_FARORES_WIND:
             return INV_CONTENT(ITEM_FARORES_WIND) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_NAYRUS_LOVE:
-            return INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            if (!GetRandoSettingValue(RSK_ROCS_FEATHER)) {
+                return INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            } else {
+                return Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+            }
+        case RG_ROCS_FEATHER:
+            return Flags_GetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
 
         // Bottles
         case RG_EMPTY_BOTTLE:
@@ -1185,22 +1310,22 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_KF_TWINS_HOUSE_POT_2, RAND_INF_KF_TWINS_HOUSE_POT_2 },
     { RC_KF_BROTHERS_HOUSE_POT_1, RAND_INF_KF_BROTHERS_HOUSE_POT_1 },
     { RC_KF_BROTHERS_HOUSE_POT_2, RAND_INF_KF_BROTHERS_HOUSE_POT_2 },
-    { RC_GF_BREAK_ROOM_POT_1, RAND_INF_GF_BREAK_ROOM_POT_1 },
-    { RC_GF_BREAK_ROOM_POT_2, RAND_INF_GF_BREAK_ROOM_POT_2 },
-    { RC_GF_KITCHEN_POT_1, RAND_INF_GF_KITCHEN_POT_1 },
-    { RC_GF_KITCHEN_POT_2, RAND_INF_GF_KITCHEN_POT_2 },
-    { RC_GF_NORTH_F1_CARPENTER_POT_1, RAND_INF_GF_NORTH_F1_CARPENTER_POT_1 },
-    { RC_GF_NORTH_F1_CARPENTER_POT_2, RAND_INF_GF_NORTH_F1_CARPENTER_POT_2 },
-    { RC_GF_NORTH_F1_CARPENTER_POT_3, RAND_INF_GF_NORTH_F1_CARPENTER_POT_3 },
-    { RC_GF_NORTH_F2_CARPENTER_POT_1, RAND_INF_GF_NORTH_F2_CARPENTER_POT_1 },
-    { RC_GF_NORTH_F2_CARPENTER_POT_2, RAND_INF_GF_NORTH_F2_CARPENTER_POT_2 },
-    { RC_GF_SOUTH_F1_CARPENTER_POT_1, RAND_INF_GF_SOUTH_F1_CARPENTER_POT_1 },
-    { RC_GF_SOUTH_F1_CARPENTER_POT_2, RAND_INF_GF_SOUTH_F1_CARPENTER_POT_2 },
-    { RC_GF_SOUTH_F1_CARPENTER_POT_3, RAND_INF_GF_SOUTH_F1_CARPENTER_POT_3 },
-    { RC_GF_SOUTH_F1_CARPENTER_CELL_POT_1, RAND_INF_GF_SOUTH_F1_CARPENTER_CELL_POT_1 },
-    { RC_GF_SOUTH_F1_CARPENTER_CELL_POT_2, RAND_INF_GF_SOUTH_F1_CARPENTER_CELL_POT_2 },
-    { RC_GF_SOUTH_F1_CARPENTER_CELL_POT_3, RAND_INF_GF_SOUTH_F1_CARPENTER_CELL_POT_3 },
-    { RC_GF_SOUTH_F1_CARPENTER_CELL_POT_4, RAND_INF_GF_SOUTH_F1_CARPENTER_CELL_POT_4 },
+    { RC_TH_BREAK_ROOM_FRONT_POT, RAND_INF_TH_BREAK_ROOM_FRONT_POT },
+    { RC_TH_BREAK_ROOM_BACK_POT, RAND_INF_TH_BREAK_ROOM_BACK_POT },
+    { RC_TH_KITCHEN_POT_1, RAND_INF_TH_KITCHEN_POT_1 },
+    { RC_TH_KITCHEN_POT_2, RAND_INF_TH_KITCHEN_POT_2 },
+    { RC_TH_1_TORCH_CELL_RIGHT_POT, RAND_INF_TH_1_TORCH_CELL_RIGHT_POT },
+    { RC_TH_1_TORCH_CELL_MID_POT, RAND_INF_TH_1_TORCH_CELL_MID_POT },
+    { RC_TH_1_TORCH_CELL_LEFT_POT, RAND_INF_TH_1_TORCH_CELL_LEFT_POT },
+    { RC_TH_STEEP_SLOPE_RIGHT_POT, RAND_INF_TH_STEEP_SLOPE_RIGHT_POT },
+    { RC_TH_STEEP_SLOPE_LEFT_POT, RAND_INF_TH_STEEP_SLOPE_LEFT_POT },
+    { RC_TH_NEAR_DOUBLE_CELL_RIGHT_POT, RAND_INF_TH_NEAR_DOUBLE_CELL_RIGHT_POT },
+    { RC_TH_NEAR_DOUBLE_CELL_MID_POT, RAND_INF_TH_NEAR_DOUBLE_CELL_MID_POT },
+    { RC_TH_NEAR_DOUBLE_CELL_LEFT_POT, RAND_INF_NEAR_DOUBLE_CELL_LEFT_POT },
+    { RC_TH_RIGHTMOST_JAILED_POT, RAND_INF_TH_RIGHTMOST_JAILED_POT },
+    { RC_TH_RIGHT_MIDDLE_JAILED_POT, RAND_INF_TH_RIGHT_MIDDLE_JAILED_POT },
+    { RC_TH_LEFT_MIDDLE_JAILED_POT, RAND_INF_TH_LEFT_MIDDLE_JAILED_POT },
+    { RC_TH_LEFTMOST_JAILED_POT, RAND_INF_TH_LEFTMOST_JAILED_POT },
     { RC_WASTELAND_NEAR_GS_POT_1, RAND_INF_WASTELAND_NEAR_GS_POT_1 },
     { RC_WASTELAND_NEAR_GS_POT_2, RAND_INF_WASTELAND_NEAR_GS_POT_2 },
     { RC_WASTELAND_NEAR_GS_POT_3, RAND_INF_WASTELAND_NEAR_GS_POT_3 },
@@ -1751,136 +1876,136 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
         RAND_INF_GF_ABOVE_JAIL_CRATE,
     },
     {
-        RC_GF_OUTSIDE_CENTER_CRATE_1,
-        RAND_INF_GF_OUTSIDE_CENTER_CRATE_1,
+        RC_GF_SOUTHMOST_CENTER_CRATE,
+        RAND_INF_GF_SOUTHMOST_CENTER_CRATE,
     },
     {
-        RC_GF_OUTSIDE_CENTER_CRATE_2,
-        RAND_INF_GF_OUTSIDE_CENTER_CRATE_2,
+        RC_GF_MID_SOUTH_CENTER_CRATE,
+        RAND_INF_GF_MID_SOUTH_CENTER_CRATE,
     },
     {
-        RC_GF_OUTSIDE_CENTER_CRATE_3,
-        RAND_INF_GF_OUTSIDE_CENTER_CRATE_3,
+        RC_GF_MID_NORTH_CENTER_CRATE,
+        RAND_INF_GF_MID_NORTH_CENTER_CRATE,
     },
     {
-        RC_GF_OUTSIDE_CENTER_CRATE_4,
-        RAND_INF_GF_OUTSIDE_CENTER_CRATE_4,
+        RC_GF_NORTHMOST_CENTER_CRATE,
+        RAND_INF_GF_NORTHMOST_CENTER_CRATE,
     },
     {
-        RC_GF_OUTSIDE_LEFT_CRATE_1,
-        RAND_INF_GF_OUTSIDE_LEFT_CRATE_1,
+        RC_GF_OUTSKIRTS_NE_CRATE,
+        RAND_INF_GF_OUTSKIRTS_NE_CRATE,
     },
     {
-        RC_GF_OUTSIDE_LEFT_CRATE_2,
-        RAND_INF_GF_OUTSIDE_LEFT_CRATE_2,
+        RC_GF_OUTSKIRTS_NW_CRATE,
+        RAND_INF_GF_OUTSKIRTS_NW_CRATE,
     },
     {
-        RC_GF_ARCHERY_RANGE_CRATE_1,
-        RAND_INF_GF_ARCHERY_RANGE_CRATE_1,
+        RC_GF_HBA_RANGE_CRATE_1,
+        RAND_INF_GF_HBA_RANGE_CRATE_1,
     },
     {
-        RC_GF_ARCHERY_RANGE_CRATE_2,
-        RAND_INF_GF_ARCHERY_RANGE_CRATE_2,
+        RC_GF_HBA_RANGE_CRATE_2,
+        RAND_INF_GF_HBA_RANGE_CRATE_2,
     },
     {
-        RC_GF_ARCHERY_RANGE_CRATE_3,
-        RAND_INF_GF_ARCHERY_RANGE_CRATE_3,
+        RC_GF_HBA_RANGE_CRATE_3,
+        RAND_INF_GF_HBA_RANGE_CRATE_3,
     },
     {
-        RC_GF_ARCHERY_RANGE_CRATE_4,
-        RAND_INF_GF_ARCHERY_RANGE_CRATE_4,
+        RC_GF_HBA_RANGE_CRATE_4,
+        RAND_INF_GF_HBA_RANGE_CRATE_4,
     },
     {
-        RC_GF_ARCHERY_RANGE_CRATE_5,
-        RAND_INF_GF_ARCHERY_RANGE_CRATE_5,
+        RC_GF_HBA_RANGE_CRATE_5,
+        RAND_INF_GF_HBA_RANGE_CRATE_5,
     },
     {
-        RC_GF_ARCHERY_RANGE_CRATE_6,
-        RAND_INF_GF_ARCHERY_RANGE_CRATE_6,
+        RC_GF_HBA_RANGE_CRATE_6,
+        RAND_INF_GF_HBA_RANGE_CRATE_6,
     },
     {
-        RC_GF_ARCHERY_RANGE_CRATE_7,
-        RAND_INF_GF_ARCHERY_RANGE_CRATE_7,
+        RC_GF_HBA_RANGE_CRATE_7,
+        RAND_INF_GF_HBA_RANGE_CRATE_7,
     },
     {
-        RC_GF_ARCHERY_START_CRATE_1,
-        RAND_INF_GF_ARCHERY_START_CRATE_1,
+        RC_GF_HBA_CANOPY_EAST_CRATE,
+        RAND_INF_GF_HBA_CANOPY_EAST_CRATE,
     },
     {
-        RC_GF_ARCHERY_START_CRATE_2,
-        RAND_INF_GF_ARCHERY_START_CRATE_2,
+        RC_GF_HBA_CANOPY_WEST_CRATE,
+        RAND_INF_GF_HBA_CANOPY_WEST_CRATE,
     },
     {
-        RC_GF_ARCHERY_LEFT_END_CRATE_1,
-        RAND_INF_GF_ARCHERY_LEFT_END_CRATE_1,
+        RC_GF_NORTH_TARGET_EAST_CRATE,
+        RAND_INF_GF_NORTH_TARGET_EAST_CRATE,
     },
     {
-        RC_GF_ARCHERY_LEFT_END_CRATE_2,
-        RAND_INF_GF_ARCHERY_LEFT_END_CRATE_2,
+        RC_GF_NORTH_TARGET_WEST_CRATE,
+        RAND_INF_GF_NORTH_TARGET_WEST_CRATE,
     },
     {
-        RC_GF_ARCHERY_LEFT_END_CHILD_CRATE,
-        RAND_INF_GF_ARCHERY_LEFT_END_CHILD_CRATE,
+        RC_GF_NORTH_TARGET_CHILD_CRATE,
+        RAND_INF_GF_NORTH_TARGET_CHILD_CRATE,
     },
     {
-        RC_GF_ARCHERY_RIGHT_END_CRATE_1,
-        RAND_INF_GF_ARCHERY_RIGHT_END_CRATE_1,
+        RC_GF_SOUTH_TARGET_EAST_CRATE,
+        RAND_INF_GF_SOUTH_TARGET_EAST_CRATE,
     },
     {
-        RC_GF_ARCHERY_RIGHT_END_CRATE_2,
-        RAND_INF_GF_ARCHERY_RIGHT_END_CRATE_2,
+        RC_GF_SOUTH_TARGET_WEST_CRATE,
+        RAND_INF_GF_SOUTH_TARGET_WEST_CRATE,
     },
     {
-        RC_GF_KITCHEN_CRATE_1,
-        RAND_INF_GF_KITCHEN_CRATE_1,
+        RC_TH_NEAR_KITCHEN_LEFTMOST_CRATE,
+        RAND_INF_TH_NEAR_KITCHEN_LEFTMOST_CRATE,
     },
     {
-        RC_GF_KITCHEN_CRATE_2,
-        RAND_INF_GF_KITCHEN_CRATE_2,
+        RC_TH_NEAR_KITCHEN_MID_LEFT_CRATE,
+        RAND_INF_TH_NEAR_KITCHEN_MID_LEFT_CRATE,
     },
     {
-        RC_GF_KITCHEN_CRATE_3,
-        RAND_INF_GF_KITCHEN_CRATE_3,
+        RC_TH_NEAR_KITCHEN_MID_RIGHT_CRATE,
+        RAND_INF_TH_NEAR_KITCHEN_MID_RIGHT_CRATE,
     },
     {
-        RC_GF_KITCHEN_CRATE_4,
-        RAND_INF_GF_KITCHEN_CRATE_4,
+        RC_TH_NEAR_KITCHEN_RIGHTMOST_CRATE,
+        RAND_INF_TH_NEAR_KITCHEN_RIGHTMOST_CRATE,
     },
     {
-        RC_GF_KITCHEN_CRATE_5,
-        RAND_INF_GF_KITCHEN_CRATE_5,
+        RC_TH_KITCHEN_CRATE,
+        RAND_INF_TH_KITCHEN_CRATE,
     },
     {
-        RC_GF_BREAK_ROOM_CRATE_1,
-        RAND_INF_GF_BREAK_ROOM_CRATE_1,
+        RC_TH_BREAK_HALLWAY_OUTER_CRATE,
+        RAND_INF_TH_BREAK_HALLWAY_OUTER_CRATE,
     },
     {
-        RC_GF_BREAK_ROOM_CRATE_2,
-        RAND_INF_GF_BREAK_ROOM_CRATE_2,
+        RC_TH_BREAK_HALLWAY_INNER_CRATE,
+        RAND_INF_TH_BREAK_HALLWAY_INNER_CRATE,
     },
     {
-        RC_GF_BREAK_ROOM_CRATE_3,
-        RAND_INF_GF_BREAK_ROOM_CRATE_3,
+        RC_TH_BREAK_ROOM_RIGHT_CRATE,
+        RAND_INF_TH_BREAK_ROOM_RIGHT_CRATE,
     },
     {
-        RC_GF_BREAK_ROOM_CRATE_4,
-        RAND_INF_GF_BREAK_ROOM_CRATE_4,
+        RC_TH_BREAK_ROOM_LEFT_CRATE,
+        RAND_INF_TH_BREAK_ROOM_LEFT_CRATE,
     },
     {
-        RC_GF_NORTH_F1_CARPENTER_CRATE,
-        RAND_INF_GF_NORTH_F1_CARPENTER_CRATE,
+        RC_TH_1_TORCH_CELL_CRATE,
+        RAND_INF_TH_1_TORCH_CELL_CRATE,
     },
     {
-        RC_GF_NORTH_F3_CARPENTER_CRATE,
-        RAND_INF_GF_NORTH_F3_CARPENTER_CRATE,
+        RC_TH_DEAD_END_CELL_CRATE,
+        RAND_INF_TH_DEAD_END_CELL_CRATE,
     },
     {
-        RC_GF_SOUTH_F2_CARPENTER_CRATE_1,
-        RAND_INF_GF_SOUTH_F2_CARPENTER_CRATE_1,
+        RC_TH_DOUBLE_CELL_LEFT_CRATE,
+        RAND_INF_TH_DOUBLE_CELL_LEFT_CRATE,
     },
     {
-        RC_GF_SOUTH_F2_CARPENTER_CRATE_2,
-        RAND_INF_GF_SOUTH_F2_CARPENTER_CRATE_2,
+        RC_TH_DOUBLE_CELL_RIGHT_CRATE,
+        RAND_INF_TH_DOUBLE_CELL_RIGHT_CRATE,
     },
     {
         RC_HW_BEFORE_QUICKSAND_CRATE,
@@ -2737,10 +2862,137 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
         RC_SPIRIT_TEMPLE_MQ_BEAMOS_SMALL_CRATE,
         RAND_INF_SPIRIT_TEMPLE_MQ_BEAMOS_SMALL_CRATE,
     },
+    { RC_MARKET_TREE, RAND_INF_MARKET_TREE },
+    { RC_HC_NEAR_GUARDS_TREE_1, RAND_INF_HC_NEAR_GUARDS_TREE_1 },
+    { RC_HC_NEAR_GUARDS_TREE_2, RAND_INF_HC_NEAR_GUARDS_TREE_2 },
+    { RC_HC_NEAR_GUARDS_TREE_3, RAND_INF_HC_NEAR_GUARDS_TREE_3 },
+    { RC_HC_NEAR_GUARDS_TREE_4, RAND_INF_HC_NEAR_GUARDS_TREE_4 },
+    { RC_HC_NEAR_GUARDS_TREE_5, RAND_INF_HC_NEAR_GUARDS_TREE_5 },
+    { RC_HC_NEAR_GUARDS_TREE_6, RAND_INF_HC_NEAR_GUARDS_TREE_6 },
+    { RC_HC_SKULLTULA_TREE, RAND_INF_HC_SKULLTULA_TREE },
+    { RC_HC_GROTTO_TREE, RAND_INF_HC_GROTTO_TREE },
+    { RC_HC_NL_TREE_1, RAND_INF_HC_NL_TREE_1 },
+    { RC_HC_NL_TREE_2, RAND_INF_HC_NL_TREE_2 },
+    { RC_HF_NEAR_KAK_TREE, RAND_INF_HF_NEAR_KAK_TREE },
+    { RC_HF_NEAR_KAK_SMALL_TREE, RAND_INF_HF_NEAR_KAK_SMALL_TREE },
+    { RC_HF_NEAR_MARKET_TREE_1, RAND_INF_HF_NEAR_MARKET_TREE_1 },
+    { RC_HF_NEAR_MARKET_TREE_2, RAND_INF_HF_NEAR_MARKET_TREE_2 },
+    { RC_HF_NEAR_MARKET_TREE_3, RAND_INF_HF_NEAR_MARKET_TREE_3 },
+    { RC_HF_NEAR_LLR_TREE, RAND_INF_HF_NEAR_LLR_TREE },
+    { RC_HF_NEAR_LH_TREE, RAND_INF_HF_NEAR_LH_TREE },
+    { RC_HF_CHILD_NEAR_GV_TREE, RAND_INF_HF_CHILD_NEAR_GV_TREE },
+    { RC_HF_ADULT_NEAR_GV_TREE, RAND_INF_HF_ADULT_NEAR_GV_TREE },
+    { RC_HF_NEAR_ZR_TREE, RAND_INF_HF_NEAR_ZR_TREE },
+    { RC_HF_NORTHWEST_TREE_1, RAND_INF_HF_NORTHWEST_TREE_1 },
+    { RC_HF_NORTHWEST_TREE_2, RAND_INF_HF_NORTHWEST_TREE_2 },
+    { RC_HF_NORTHWEST_TREE_3, RAND_INF_HF_NORTHWEST_TREE_3 },
+    { RC_HF_NORTHWEST_TREE_4, RAND_INF_HF_NORTHWEST_TREE_4 },
+    { RC_HF_NORTHWEST_TREE_5, RAND_INF_HF_NORTHWEST_TREE_5 },
+    { RC_HF_NORTHWEST_TREE_6, RAND_INF_HF_NORTHWEST_TREE_6 },
+    { RC_HF_EAST_TREE_1, RAND_INF_HF_EAST_TREE_1 },
+    { RC_HF_EAST_TREE_2, RAND_INF_HF_EAST_TREE_2 },
+    { RC_HF_EAST_TREE_3, RAND_INF_HF_EAST_TREE_3 },
+    { RC_HF_EAST_TREE_4, RAND_INF_HF_EAST_TREE_4 },
+    { RC_HF_EAST_TREE_5, RAND_INF_HF_EAST_TREE_5 },
+    { RC_HF_EAST_TREE_6, RAND_INF_HF_EAST_TREE_6 },
+    { RC_HF_SOUTHEAST_TREE_1, RAND_INF_HF_SOUTHEAST_TREE_1 },
+    { RC_HF_SOUTHEAST_TREE_2, RAND_INF_HF_SOUTHEAST_TREE_2 },
+    { RC_HF_SOUTHEAST_TREE_3, RAND_INF_HF_SOUTHEAST_TREE_3 },
+    { RC_HF_SOUTHEAST_TREE_4, RAND_INF_HF_SOUTHEAST_TREE_4 },
+    { RC_HF_SOUTHEAST_TREE_5, RAND_INF_HF_SOUTHEAST_TREE_5 },
+    { RC_HF_SOUTHEAST_TREE_6, RAND_INF_HF_SOUTHEAST_TREE_6 },
+    { RC_HF_SOUTHEAST_TREE_7, RAND_INF_HF_SOUTHEAST_TREE_7 },
+    { RC_HF_SOUTHEAST_TREE_8, RAND_INF_HF_SOUTHEAST_TREE_8 },
+    { RC_HF_SOUTHEAST_TREE_9, RAND_INF_HF_SOUTHEAST_TREE_9 },
+    { RC_HF_SOUTHEAST_TREE_10, RAND_INF_HF_SOUTHEAST_TREE_10 },
+    { RC_HF_SOUTHEAST_TREE_11, RAND_INF_HF_SOUTHEAST_TREE_11 },
+    { RC_HF_SOUTHEAST_TREE_12, RAND_INF_HF_SOUTHEAST_TREE_12 },
+    { RC_HF_SOUTHEAST_TREE_13, RAND_INF_HF_SOUTHEAST_TREE_13 },
+    { RC_HF_SOUTHEAST_TREE_14, RAND_INF_HF_SOUTHEAST_TREE_14 },
+    { RC_HF_SOUTHEAST_TREE_15, RAND_INF_HF_SOUTHEAST_TREE_15 },
+    { RC_HF_SOUTHEAST_TREE_16, RAND_INF_HF_SOUTHEAST_TREE_16 },
+    { RC_HF_SOUTHEAST_TREE_17, RAND_INF_HF_SOUTHEAST_TREE_17 },
+    { RC_HF_SOUTHEAST_TREE_18, RAND_INF_HF_SOUTHEAST_TREE_18 },
+    { RC_HF_SOUTHEAST_TREE_19, RAND_INF_HF_SOUTHEAST_TREE_19 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_1, RAND_INF_HF_CHILD_SOUTHEAST_TREE_1 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_2, RAND_INF_HF_CHILD_SOUTHEAST_TREE_2 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_3, RAND_INF_HF_CHILD_SOUTHEAST_TREE_3 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_4, RAND_INF_HF_CHILD_SOUTHEAST_TREE_4 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_5, RAND_INF_HF_CHILD_SOUTHEAST_TREE_5 },
+    { RC_HF_CHILD_SOUTHEAST_TREE_6, RAND_INF_HF_CHILD_SOUTHEAST_TREE_6 },
+    { RC_HF_TEKTITE_GROTTO_TREE, RAND_INF_HF_TEKTITE_GROTTO_TREE },
+    { RC_ZF_TREE, RAND_INF_ZF_TREE },
+    { RC_ZR_TREE, RAND_INF_ZR_TREE },
+    { RC_KAK_TREE, RAND_INF_KAK_TREE },
+    { RC_LLR_TREE, RAND_INF_LLR_TREE },
+    { RC_HF_BUSH_NEAR_LAKE_1, RAND_INF_HF_BUSH_NEAR_LAKE_1 },
+    { RC_HF_BUSH_NEAR_LAKE_2, RAND_INF_HF_BUSH_NEAR_LAKE_2 },
+    { RC_HF_BUSH_NEAR_LAKE_3, RAND_INF_HF_BUSH_NEAR_LAKE_3 },
+    { RC_HF_BUSH_NEAR_LAKE_4, RAND_INF_HF_BUSH_NEAR_LAKE_4 },
+    { RC_HF_BUSH_NEAR_LAKE_5, RAND_INF_HF_BUSH_NEAR_LAKE_5 },
+    { RC_HF_BUSH_NEAR_LAKE_6, RAND_INF_HF_BUSH_NEAR_LAKE_6 },
+    { RC_HF_BUSH_NEAR_LAKE_7, RAND_INF_HF_BUSH_NEAR_LAKE_7 },
+    { RC_HF_BUSH_NEAR_LAKE_8, RAND_INF_HF_BUSH_NEAR_LAKE_8 },
+    { RC_HF_BUSH_NEAR_LAKE_9, RAND_INF_HF_BUSH_NEAR_LAKE_9 },
+    { RC_HF_BUSH_NEAR_LAKE_10, RAND_INF_HF_BUSH_NEAR_LAKE_10 },
+    { RC_HF_BUSH_NEAR_LAKE_11, RAND_INF_HF_BUSH_NEAR_LAKE_11 },
+    { RC_HF_NORTHERN_BUSH_1, RAND_INF_HF_NORTHERN_BUSH_1 },
+    { RC_HF_NORTHERN_BUSH_2, RAND_INF_HF_NORTHERN_BUSH_2 },
+    { RC_HF_NORTHERN_BUSH_3, RAND_INF_HF_NORTHERN_BUSH_3 },
+    { RC_HF_NORTHERN_BUSH_4, RAND_INF_HF_NORTHERN_BUSH_4 },
+    { RC_HF_NORTHERN_BUSH_5, RAND_INF_HF_NORTHERN_BUSH_5 },
+    { RC_HF_NORTHERN_BUSH_6, RAND_INF_HF_NORTHERN_BUSH_6 },
+    { RC_HF_CHILD_NORTHERN_BUSH_1, RAND_INF_HF_CHILD_NORTHERN_BUSH_1 },
+    { RC_HF_CHILD_NORTHERN_BUSH_2, RAND_INF_HF_CHILD_NORTHERN_BUSH_2 },
+    { RC_HF_CHILD_NORTHERN_BUSH_3, RAND_INF_HF_CHILD_NORTHERN_BUSH_3 },
+    { RC_HF_CHILD_NORTHERN_BUSH_4, RAND_INF_HF_CHILD_NORTHERN_BUSH_4 },
+    { RC_HF_CHILD_NORTHERN_BUSH_5, RAND_INF_HF_CHILD_NORTHERN_BUSH_5 },
+    { RC_HF_CHILD_NORTHERN_BUSH_6, RAND_INF_HF_CHILD_NORTHERN_BUSH_6 },
+    { RC_HF_CHILD_NORTHERN_BUSH_7, RAND_INF_HF_CHILD_NORTHERN_BUSH_7 },
+    { RC_HF_CHILD_NORTHERN_BUSH_8, RAND_INF_HF_CHILD_NORTHERN_BUSH_8 },
+    { RC_HF_CHILD_NORTHERN_BUSH_9, RAND_INF_HF_CHILD_NORTHERN_BUSH_9 },
+    { RC_HF_CHILD_NORTHERN_BUSH_10, RAND_INF_HF_CHILD_NORTHERN_BUSH_10 },
+    { RC_HF_CHILD_NORTHERN_BUSH_11, RAND_INF_HF_CHILD_NORTHERN_BUSH_11 },
+    { RC_HF_BUSH_BY_ROCKY_PATH_1, RAND_INF_HF_BUSH_BY_ROCKY_PATH_1 },
+    { RC_HF_BUSH_BY_ROCKY_PATH_2, RAND_INF_HF_BUSH_BY_ROCKY_PATH_2 },
+    { RC_HF_BUSH_BY_ROCKY_PATH_3, RAND_INF_HF_BUSH_BY_ROCKY_PATH_3 },
+    { RC_HF_BUSH_BY_ROCKY_PATH_4, RAND_INF_HF_BUSH_BY_ROCKY_PATH_4 },
+    { RC_HF_BUSH_BY_ROCKY_PATH_5, RAND_INF_HF_BUSH_BY_ROCKY_PATH_5 },
+    { RC_HF_BUSH_BY_ROCKY_PATH_6, RAND_INF_HF_BUSH_BY_ROCKY_PATH_6 },
+    { RC_HF_SOUTHERN_BUSH_1, RAND_INF_HF_SOUTHERN_BUSH_1 },
+    { RC_HF_SOUTHERN_BUSH_2, RAND_INF_HF_SOUTHERN_BUSH_2 },
+    { RC_HF_SOUTHERN_BUSH_3, RAND_INF_HF_SOUTHERN_BUSH_3 },
+    { RC_HF_SOUTHERN_BUSH_4, RAND_INF_HF_SOUTHERN_BUSH_4 },
+    { RC_HF_SOUTHERN_BUSH_5, RAND_INF_HF_SOUTHERN_BUSH_5 },
+    { RC_HF_SOUTHERN_BUSH_6, RAND_INF_HF_SOUTHERN_BUSH_6 },
+    { RC_HF_SOUTHERN_BUSH_7, RAND_INF_HF_SOUTHERN_BUSH_7 },
+    { RC_HF_SOUTHERN_BUSH_8, RAND_INF_HF_SOUTHERN_BUSH_8 },
+    { RC_HF_SOUTHERN_BUSH_9, RAND_INF_HF_SOUTHERN_BUSH_9 },
+    { RC_HF_SOUTHERN_BUSH_10, RAND_INF_HF_SOUTHERN_BUSH_10 },
+    { RC_HF_SOUTHERN_BUSH_11, RAND_INF_HF_SOUTHERN_BUSH_11 },
+    { RC_HF_SOUTHERN_BUSH_12, RAND_INF_HF_SOUTHERN_BUSH_12 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_1, RAND_INF_HF_CHILD_SOUTHERN_BUSH_1 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_2, RAND_INF_HF_CHILD_SOUTHERN_BUSH_2 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_3, RAND_INF_HF_CHILD_SOUTHERN_BUSH_3 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_4, RAND_INF_HF_CHILD_SOUTHERN_BUSH_4 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_5, RAND_INF_HF_CHILD_SOUTHERN_BUSH_5 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_6, RAND_INF_HF_CHILD_SOUTHERN_BUSH_6 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_7, RAND_INF_HF_CHILD_SOUTHERN_BUSH_7 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_8, RAND_INF_HF_CHILD_SOUTHERN_BUSH_8 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_9, RAND_INF_HF_CHILD_SOUTHERN_BUSH_9 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_10, RAND_INF_HF_CHILD_SOUTHERN_BUSH_10 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_11, RAND_INF_HF_CHILD_SOUTHERN_BUSH_11 },
+    { RC_HF_CHILD_SOUTHERN_BUSH_12, RAND_INF_HF_CHILD_SOUTHERN_BUSH_12 },
+    { RC_ZF_BUSH_1, RAND_INF_ZF_BUSH_1 },
+    { RC_ZF_BUSH_2, RAND_INF_ZF_BUSH_2 },
+    { RC_ZF_BUSH_3, RAND_INF_ZF_BUSH_3 },
+    { RC_ZF_BUSH_4, RAND_INF_ZF_BUSH_4 },
+    { RC_ZF_BUSH_5, RAND_INF_ZF_BUSH_5 },
+    { RC_ZF_BUSH_6, RAND_INF_ZF_BUSH_6 },
 };
 
-BeehiveIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
-    struct BeehiveIdentity beehiveIdentity;
+CheckIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
+    struct CheckIdentity beehiveIdentity;
 
     beehiveIdentity.randomizerInf = RAND_INF_MAX;
     beehiveIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
@@ -2901,11 +3153,10 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
 ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData) {
     struct ScrubIdentity scrubIdentity;
 
-    scrubIdentity.randomizerInf = RAND_INF_MAX;
-    scrubIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+    scrubIdentity.identity.randomizerInf = RAND_INF_MAX;
+    scrubIdentity.identity.randomizerCheck = RC_UNKNOWN_CHECK;
     scrubIdentity.getItemId = GI_NONE;
     scrubIdentity.itemPrice = -1;
-    scrubIdentity.isShuffled = false;
 
     // Scrubs that are 0x06 are loaded as 0x03 when child, switching from selling arrows to seeds
     if (actorParams == 0x06)
@@ -2918,19 +3169,21 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
     Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_DNS, sceneNum, actorParams);
 
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
-        scrubIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        scrubIdentity.randomizerCheck = location->GetRandomizerCheck();
-        scrubIdentity.getItemId = (GetItemID)Rando::StaticData::RetrieveItem(location->GetVanillaItem()).GetItemID();
-        scrubIdentity.isShuffled = GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_ALL;
-
         if (location->GetRandomizerCheck() == RC_HF_DEKU_SCRUB_GROTTO ||
             location->GetRandomizerCheck() == RC_LW_DEKU_SCRUB_GROTTO_FRONT ||
             location->GetRandomizerCheck() == RC_LW_DEKU_SCRUB_NEAR_BRIDGE) {
-            scrubIdentity.isShuffled = GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) != RO_SCRUBS_OFF;
+            if (GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_OFF) {
+                return scrubIdentity;
+            }
+        } else if (GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) != RO_SCRUBS_ALL) {
+            return scrubIdentity;
         }
 
+        scrubIdentity.identity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        scrubIdentity.identity.randomizerCheck = location->GetRandomizerCheck();
+        scrubIdentity.getItemId = (GetItemID)Rando::StaticData::RetrieveItem(location->GetVanillaItem()).GetItemID();
         scrubIdentity.itemPrice =
-            OTRGlobals::Instance->gRandoContext->GetItemLocation(scrubIdentity.randomizerCheck)->GetPrice();
+            OTRGlobals::Instance->gRandoContext->GetItemLocation(scrubIdentity.identity.randomizerCheck)->GetPrice();
     }
 
     return scrubIdentity;
@@ -2939,8 +3192,8 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
 ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
     ShopItemIdentity shopItemIdentity;
 
-    shopItemIdentity.randomizerInf = RAND_INF_MAX;
-    shopItemIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+    shopItemIdentity.identity.randomizerInf = RAND_INF_MAX;
+    shopItemIdentity.identity.randomizerCheck = RC_UNKNOWN_CHECK;
     shopItemIdentity.ogItemId = GI_NONE;
     shopItemIdentity.itemPrice = -1;
     shopItemIdentity.enGirlAShopItem = 0x32;
@@ -2956,25 +3209,26 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
         slotIndex - 1);
 
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
-        shopItemIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        shopItemIdentity.randomizerCheck = location->GetRandomizerCheck();
+        shopItemIdentity.identity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        shopItemIdentity.identity.randomizerCheck = location->GetRandomizerCheck();
         shopItemIdentity.ogItemId = (GetItemID)Rando::StaticData::RetrieveItem(location->GetVanillaItem()).GetItemID();
 
-        RandomizerGet randoGet =
-            Rando::Context::GetInstance()->GetItemLocation(shopItemIdentity.randomizerCheck)->GetPlacedRandomizerGet();
+        RandomizerGet randoGet = Rando::Context::GetInstance()
+                                     ->GetItemLocation(shopItemIdentity.identity.randomizerCheck)
+                                     ->GetPlacedRandomizerGet();
         if (randomizerGetToEnGirlShopItem.find(randoGet) != randomizerGetToEnGirlShopItem.end()) {
             shopItemIdentity.enGirlAShopItem = randomizerGetToEnGirlShopItem[randoGet];
         }
 
         shopItemIdentity.itemPrice =
-            OTRGlobals::Instance->gRandoContext->GetItemLocation(shopItemIdentity.randomizerCheck)->GetPrice();
+            OTRGlobals::Instance->gRandoContext->GetItemLocation(shopItemIdentity.identity.randomizerCheck)->GetPrice();
     }
 
     return shopItemIdentity;
 }
 
-CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
-    struct CowIdentity cowIdentity;
+CheckIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
+    struct CheckIdentity cowIdentity;
 
     cowIdentity.randomizerInf = RAND_INF_MAX;
     cowIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
@@ -2995,8 +3249,8 @@ CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
     return cowIdentity;
 }
 
-PotIdentity Randomizer::IdentifyPot(s32 sceneNum, s32 posX, s32 posZ) {
-    struct PotIdentity potIdentity;
+CheckIdentity Randomizer::IdentifyPot(s32 sceneNum, s32 posX, s32 posZ) {
+    struct CheckIdentity potIdentity;
     uint32_t potSceneNum = sceneNum;
 
     if (sceneNum == SCENE_GANONDORF_BOSS) {
@@ -3020,8 +3274,8 @@ PotIdentity Randomizer::IdentifyPot(s32 sceneNum, s32 posX, s32 posZ) {
     return potIdentity;
 }
 
-FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s32 actorParams) {
-    struct FishIdentity fishIdentity;
+CheckIdentity Randomizer::IdentifyFish(s32 sceneNum, s32 actorParams) {
+    struct CheckIdentity fishIdentity;
 
     fishIdentity.randomizerInf = RAND_INF_MAX;
     fishIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
@@ -3041,8 +3295,8 @@ FishIdentity Randomizer::IdentifyFish(s32 sceneNum, s32 actorParams) {
     return fishIdentity;
 }
 
-GrassIdentity Randomizer::IdentifyGrass(s32 sceneNum, s32 posX, s32 posZ, s32 respawnData, s32 linkAge) {
-    struct GrassIdentity grassIdentity;
+CheckIdentity Randomizer::IdentifyGrass(s32 sceneNum, s32 posX, s32 posZ, s32 respawnData, s32 linkAge) {
+    struct CheckIdentity grassIdentity;
 
     grassIdentity.randomizerInf = RAND_INF_MAX;
     grassIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
@@ -3103,8 +3357,8 @@ GrassIdentity Randomizer::IdentifyGrass(s32 sceneNum, s32 posX, s32 posZ, s32 re
     return grassIdentity;
 }
 
-CrateIdentity Randomizer::IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
-    struct CrateIdentity crateIdentity;
+CheckIdentity Randomizer::IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
+    struct CheckIdentity crateIdentity;
     uint32_t crateSceneNum = sceneNum;
 
     // pretend night is day to align crates in market and align GF child/adult crates
@@ -3112,9 +3366,9 @@ CrateIdentity Randomizer::IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
         crateSceneNum = SCENE_MARKET_DAY;
     } else if (sceneNum == SCENE_GERUDOS_FORTRESS && gPlayState->linkAgeOnLoad == 1 && posX == 310) {
         if (posZ == -1830) {
-            posZ = -1842.0f;
+            posZ = -1842;
         } else if (posZ == -1770) {
-            posZ = -1782.0f;
+            posZ = -1782;
         }
     }
 
@@ -3136,8 +3390,8 @@ CrateIdentity Randomizer::IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
     return crateIdentity;
 }
 
-SmallCrateIdentity Randomizer::IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ) {
-    struct SmallCrateIdentity smallCrateIdentity;
+CheckIdentity Randomizer::IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ) {
+    struct CheckIdentity smallCrateIdentity;
     uint32_t smallCrateSceneNum = sceneNum;
 
     smallCrateIdentity.randomizerInf = RAND_INF_MAX;
@@ -3156,6 +3410,27 @@ SmallCrateIdentity Randomizer::IdentifySmallCrate(s32 sceneNum, s32 posX, s32 po
     }
 
     return smallCrateIdentity;
+}
+
+CheckIdentity Randomizer::IdentifyTree(s32 sceneNum, s32 posX, s32 posZ) {
+    struct CheckIdentity treeIdentity;
+
+    if (sceneNum == SCENE_MARKET_NIGHT) {
+        sceneNum = SCENE_MARKET_DAY;
+    }
+
+    s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_WOOD02, sceneNum, actorParams);
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK &&
+        (location->GetRCType() != RCTYPE_NLTREE || GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) {
+        treeIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        treeIdentity.randomizerCheck = location->GetRandomizerCheck();
+        return treeIdentity;
+    }
+
+    treeIdentity.randomizerInf = RAND_INF_MAX;
+    treeIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+    return treeIdentity;
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
@@ -3192,7 +3467,7 @@ std::thread randoThread;
 
 void GenerateRandomizerImgui(std::string seed = "") {
     CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 1);
-    CVarSave();
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     auto ctx = Rando::Context::GetInstance();
     // RANDOTODO proper UI for selecting if a spoiler loaded should be used for settings
     Rando::Settings::GetInstance()->SetAllToContext();
@@ -3231,6 +3506,8 @@ void GenerateRandomizerImgui(std::string seed = "") {
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 
     generated = 1;
+
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGenerationCompletion>();
 }
 
 bool GenerateRandomizer(std::string seed /*= ""*/) {
@@ -3240,736 +3517,19 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
     }
     if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0) {
         randoThread = std::thread(&GenerateRandomizerImgui, seed);
+
         return true;
     }
     return false;
 }
 
-static const std::unordered_map<int32_t, const char*> randomizerPresetList = {
-    { RANDOMIZER_PRESET_DEFAULT, "Default" },
-    { RANDOMIZER_PRESET_BEGINNER, "Beginner" },
-    { RANDOMIZER_PRESET_STANDARD, "Standard" },
-    { RANDOMIZER_PRESET_ADVANCED, "Advanced" },
-    { RANDOMIZER_PRESET_HELL_MODE, "Hell Mode" }
-};
-static int32_t randomizerPresetSelected = RANDOMIZER_PRESET_DEFAULT;
+static bool locationsTabOpen = false;
+static bool tricksTabOpen = false;
 
-void RandomizerSettingsWindow::DrawElement() {
-    auto ctx = Rando::Context::GetInstance();
+void JoinRandoGenerationThread() {
     if (generated) {
         generated = 0;
         randoThread.join();
-    }
-    static bool locationsTabOpen = false;
-    static bool tricksTabOpen = false;
-    bool disableEditingRandoSettings =
-        CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
-    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
-    const PresetTypeDefinition presetTypeDef = presetTypes.at(PRESET_TYPE_RANDOMIZER);
-    std::string comboboxTooltip = "";
-    for (auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter) {
-        if (iter->first != 0)
-            comboboxTooltip += "\n\n";
-        comboboxTooltip += std::string(iter->second.label) + " - " + std::string(iter->second.description);
-    }
-    const std::string presetTypeCvar = CVAR_GENERAL("SelectedPresets.") + std::to_string(PRESET_TYPE_RANDOMIZER);
-    randomizerPresetSelected = CVarGetInteger(presetTypeCvar.c_str(), RANDOMIZER_PRESET_DEFAULT);
-
-    if (UIWidgets::Combobox("Randomizer Presets", &randomizerPresetSelected, randomizerPresetList,
-                            UIWidgets::ComboboxOptions()
-                                .DefaultIndex(RANDOMIZER_PRESET_DEFAULT)
-                                .Tooltip(comboboxTooltip.c_str())
-                                .Color(THEME_COLOR))) {
-        CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
-    }
-    ImGui::SameLine();
-    ImGui::SetCursorPosY(ImGui::GetCursorPos().y + 35.f);
-    if (UIWidgets::Button(
-            "Apply Preset##Randomizer",
-            UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline).Padding(ImVec2(10.f, 6.f)))) {
-        if (randomizerPresetSelected >= presetTypeDef.presets.size()) {
-            randomizerPresetSelected = 0;
-        }
-        const PresetDefinition selectedPresetDef = presetTypeDef.presets.at(randomizerPresetSelected);
-        for (const char* block : presetTypeDef.blocksToClear) {
-            CVarClearBlock(block);
-        }
-        if (randomizerPresetSelected != 0) {
-            applyPreset(selectedPresetDef.entries);
-        }
-        CVarSetInteger(presetTypeCvar.c_str(), randomizerPresetSelected);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-        mSettings->UpdateOptionProperties();
-        // force excluded location list and trick list update if tab is open.
-        locationsTabOpen = false;
-        tricksTabOpen = false;
-    }
-    ImGui::EndDisabled();
-
-    UIWidgets::Spacer(0);
-    UIWidgets::CVarCheckbox("Manual seed entry", CVAR_RANDOMIZER_SETTING("ManualSeedEntry"),
-                            UIWidgets::CheckboxOptions().Color(THEME_COLOR));
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0)) {
-        UIWidgets::PushStyleInput(THEME_COLOR);
-        ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter,
-                         UIWidgets::TextFilters::FilterAlphaNum);
-        UIWidgets::Tooltip("Characters from a-z, A-Z, and 0-9 are supported.\n"
-                           "Character limit is 1023, after which the seed will be truncated.\n");
-        ImGui::SameLine();
-        if (UIWidgets::Button(
-                ICON_FA_RANDOM,
-                UIWidgets::ButtonOptions()
-                    .Size(UIWidgets::Sizes::Inline)
-                    .Color(THEME_COLOR)
-                    .Padding(ImVec2(10.f, 6.f))
-                    .Tooltip("Creates a new random seed value to be used when generating a randomizer"))) {
-            SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
-        }
-        ImGui::SameLine();
-        if (UIWidgets::Button(ICON_FA_ERASER, UIWidgets::ButtonOptions()
-                                                  .Size(UIWidgets::Sizes::Inline)
-                                                  .Color(THEME_COLOR)
-                                                  .Padding(ImVec2(10.f, 6.f)))) {
-            memset(seedString, 0, MAX_SEED_STRING_SIZE);
-        }
-        if (strnlen(seedString, MAX_SEED_STRING_SIZE) == 0) {
-            ImGui::SameLine(17.0f);
-            ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Leave blank for random seed");
-        }
-        UIWidgets::PopStyleInput();
-    }
-
-    UIWidgets::Spacer(0);
-    ImGui::BeginDisabled((gSaveContext.gameMode != GAMEMODE_FILE_SELECT) || GameInteractor::IsSaveLoaded());
-    if (UIWidgets::Button("Generate Randomizer",
-                          UIWidgets::ButtonOptions().Size(ImVec2(250.f, 0.f)).Color(THEME_COLOR))) {
-        ctx->SetSpoilerLoaded(false);
-        GenerateRandomizer(CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0) ? seedString : "");
-    }
-    ImGui::EndDisabled();
-
-    ImGui::SameLine();
-    if (!CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
-        std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
-        ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
-    }
-
-    // RANDOTODO settings presets
-    // std::string presetfilepath = CVarGetString(CVAR_RANDOMIZER_SETTING("LoadedPreset"), "");
-    // ImGui::Text("Settings File: %s", presetfilepath.c_str());
-
-    UIWidgets::Separator(true, true, 0.f, 0.f);
-
-    ImGuiWindow* window = ImGui::GetCurrentWindow();
-    static ImVec2 cellPadding(8.0f, 8.0f);
-
-    UIWidgets::PushStyleTabs(THEME_COLOR);
-    if (ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-        if (ImGui::BeginTabItem("World")) {
-            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (mSettings->GetOptionGroup(RSG_WORLD_IMGUI_TABLE).RenderImGui()) {
-                mNeedsUpdate = true;
-            }
-            ImGui::PopStyleVar(1);
-            ImGui::EndTabItem();
-        }
-
-        if (ImGui::BeginTabItem("Items")) {
-            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                                 RO_LOGIC_VANILLA);
-            if (mSettings->GetOptionGroup(RSG_ITEMS_IMGUI_TABLE).RenderImGui()) {
-                mNeedsUpdate = true;
-            }
-            ImGui::EndDisabled();
-            ImGui::PopStyleVar(1);
-            ImGui::EndTabItem();
-        }
-
-        if (ImGui::BeginTabItem("Gameplay")) {
-            ImGui::BeginDisabled(CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                                 RO_LOGIC_VANILLA);
-            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (mSettings->GetOptionGroup(RSG_GAMEPLAY_IMGUI_TABLE).RenderImGui()) {
-                mNeedsUpdate = true;
-            }
-            ImGui::EndDisabled();
-            ImGui::PopStyleVar(1);
-            ImGui::EndTabItem();
-        }
-
-        if (ImGui::BeginTabItem("Locations")) {
-            ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings ||
-                                 CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                                     RO_LOGIC_VANILLA);
-            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (!locationsTabOpen) {
-                locationsTabOpen = true;
-                RandomizerCheckObjects::UpdateImGuiVisibility();
-                // todo: this efficently when we build out cvar array support
-                std::stringstream excludedLocationStringStream(
-                    CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
-                std::string excludedLocationString;
-                excludedLocations.clear();
-                while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
-                    excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
-                }
-            }
-
-            if (ImGui::BeginTable("tableRandoLocations", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("Included", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Excluded", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                ImGui::TableHeadersRow();
-                ImGui::PopItemFlag();
-                ImGui::TableNextRow();
-
-                // COLUMN 1 - INCLUDED LOCATIONS
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-
-                static ImGuiTextFilter locationSearch;
-                UIWidgets::PushStyleInput(THEME_COLOR);
-                locationSearch.Draw();
-                UIWidgets::PopStyleInput();
-
-                ImGui::BeginChild("ChildIncludedLocations", ImVec2(0, -8));
-                for (auto& [rcArea, locations] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
-                    bool hasItems = false;
-                    for (RandomizerCheck rc : locations) {
-                        if (ctx->GetItemLocation(rc)->IsVisible() && !excludedLocations.count(rc) &&
-                            locationSearch.PassFilter(Rando::StaticData::GetLocation(rc)->GetName().c_str())) {
-
-                            hasItems = true;
-                            break;
-                        }
-                    }
-
-                    if (hasItems) {
-                        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                        if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
-                            for (auto& location : locations) {
-                                if (ctx->GetItemLocation(location)->IsVisible() && !excludedLocations.count(location) &&
-                                    locationSearch.PassFilter(
-                                        Rando::StaticData::GetLocation(location)->GetName().c_str())) {
-                                    UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
-                                    if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Right)) {
-                                        excludedLocations.insert(location);
-                                        // todo: this efficently when we build out cvar array support
-                                        std::string excludedLocationString = "";
-                                        for (auto excludedLocationIt : excludedLocations) {
-                                            excludedLocationString += std::to_string(excludedLocationIt);
-                                            excludedLocationString += ",";
-                                        }
-                                        CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"),
-                                                      excludedLocationString.c_str());
-                                        Ship::Context::GetInstance()
-                                            ->GetWindow()
-                                            ->GetGui()
-                                            ->SaveConsoleVariablesNextFrame();
-                                    }
-                                    UIWidgets::PopStyleButton();
-                                    ImGui::SameLine();
-                                    ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
-                                }
-                            }
-                            ImGui::TreePop();
-                        }
-                    }
-                }
-                ImGui::EndChild();
-
-                // COLUMN 2 - EXCLUDED LOCATIONS
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-
-                ImGui::BeginChild("ChildExcludedLocations", ImVec2(0, -8));
-                for (auto& [rcArea, locations] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
-                    bool hasItems = false;
-                    for (RandomizerCheck rc : locations) {
-                        if (ctx->GetItemLocation(rc)->IsVisible() && excludedLocations.count(rc)) {
-                            hasItems = true;
-                            break;
-                        }
-                    }
-
-                    if (hasItems) {
-                        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                        if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
-                            for (auto& location : locations) {
-                                auto elfound = excludedLocations.find(location);
-                                if (ctx->GetItemLocation(location)->IsVisible() && elfound != excludedLocations.end()) {
-                                    UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
-                                    if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Left)) {
-                                        excludedLocations.erase(elfound);
-                                        // todo: this efficently when we build out cvar array support
-                                        std::string excludedLocationString = "";
-                                        for (auto excludedLocationIt : excludedLocations) {
-                                            excludedLocationString += std::to_string(excludedLocationIt);
-                                            excludedLocationString += ",";
-                                        }
-                                        if (excludedLocationString == "") {
-                                            CVarClear(CVAR_RANDOMIZER_SETTING("ExcludedLocations"));
-                                        } else {
-                                            CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"),
-                                                          excludedLocationString.c_str());
-                                        }
-                                        Ship::Context::GetInstance()
-                                            ->GetWindow()
-                                            ->GetGui()
-                                            ->SaveConsoleVariablesNextFrame();
-                                    }
-                                    UIWidgets::PopStyleButton();
-                                    ImGui::SameLine();
-                                    ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
-                                }
-                            }
-                            ImGui::TreePop();
-                        }
-                    }
-                }
-                ImGui::EndChild();
-
-                ImGui::EndTable();
-            }
-            ImGui::PopStyleVar(1);
-            ImGui::EndTabItem();
-            ImGui::EndDisabled();
-        } else {
-            locationsTabOpen = false;
-        }
-
-        if (ImGui::BeginTabItem("Tricks/Glitches")) {
-            if (!tricksTabOpen) {
-                tricksTabOpen = true;
-                // RandomizerTricks::UpdateImGuiVisibility();
-                //  todo: this efficently when we build out cvar array support
-                std::stringstream enabledTrickStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), ""));
-                std::string enabledTrickString;
-                enabledTricks.clear();
-                while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
-                    enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
-                }
-                std::stringstream enabledGlitchStringStream(
-                    CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledGlitches"), ""));
-                std::string enabledGlitchString;
-                enabledGlitches.clear();
-                while (getline(enabledGlitchStringStream, enabledGlitchString, ',')) {
-                    enabledGlitches.insert((RandomizerTrick)std::stoi(enabledGlitchString));
-                }
-            }
-
-            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ImGui::BeginTable("tableRandoLogic", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableNextRow();
-                ImGui::TableNextColumn();
-                ImGui::PushItemWidth(170.0);
-                if (mSettings->GetOption(RSK_LOGIC_RULES).RenderImGui()) {
-                    mNeedsUpdate = true;
-                }
-                // RANDOTODO: Implement Disalbling of Options for Vanilla Logic
-                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHLESS) {
-                    ImGui::SameLine();
-                    if (mSettings->GetOption(RSK_ALL_LOCATIONS_REACHABLE).RenderImGui()) {
-                        mNeedsUpdate = true;
-                    }
-                }
-                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) == RO_LOGIC_VANILLA) {
-                    ImGui::SameLine();
-                    ImGui::TextColored(
-                        ImVec4(1.0f, 0.0f, 0.0f, 1.0f),
-                        "Heads up! This will disable all rando settings except for entrance shuffle and starter items");
-                }
-                ImGui::PopItemWidth();
-                ImGui::EndTable();
-            }
-
-            ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings ||
-                                 CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) ==
-                                     RO_LOGIC_VANILLA);
-
-            // Tricks
-            static std::unordered_map<RandomizerArea, bool> areaTreeDisabled{
-                { RA_NONE, true },
-                { RA_KOKIRI_FOREST, true },
-                { RA_THE_LOST_WOODS, true },
-                { RA_SACRED_FOREST_MEADOW, true },
-                { RA_HYRULE_FIELD, true },
-                { RA_LAKE_HYLIA, true },
-                { RA_GERUDO_VALLEY, true },
-                { RA_GERUDO_FORTRESS, true },
-                { RA_HAUNTED_WASTELAND, true },
-                { RA_DESERT_COLOSSUS, true },
-                { RA_THE_MARKET, true },
-                { RA_HYRULE_CASTLE, true },
-                { RA_KAKARIKO_VILLAGE, true },
-                { RA_THE_GRAVEYARD, true },
-                { RA_DEATH_MOUNTAIN_TRAIL, true },
-                { RA_GORON_CITY, true },
-                { RA_DEATH_MOUNTAIN_CRATER, true },
-                { RA_ZORAS_RIVER, true },
-                { RA_ZORAS_DOMAIN, true },
-                { RA_ZORAS_FOUNTAIN, true },
-                { RA_LON_LON_RANCH, true },
-                { RA_DEKU_TREE, true },
-                { RA_DODONGOS_CAVERN, true },
-                { RA_JABU_JABUS_BELLY, true },
-                { RA_FOREST_TEMPLE, true },
-                { RA_FIRE_TEMPLE, true },
-                { RA_WATER_TEMPLE, true },
-                { RA_SPIRIT_TEMPLE, true },
-                { RA_SHADOW_TEMPLE, true },
-                { RA_BOTTOM_OF_THE_WELL, true },
-                { RA_ICE_CAVERN, true },
-                { RA_GERUDO_TRAINING_GROUND, true },
-                { RA_GANONS_CASTLE, true },
-            };
-            static std::unordered_map<RandomizerArea, bool> areaTreeEnabled{
-                { RA_NONE, true },
-                { RA_KOKIRI_FOREST, true },
-                { RA_THE_LOST_WOODS, true },
-                { RA_SACRED_FOREST_MEADOW, true },
-                { RA_HYRULE_FIELD, true },
-                { RA_LAKE_HYLIA, true },
-                { RA_GERUDO_VALLEY, true },
-                { RA_GERUDO_FORTRESS, true },
-                { RA_HAUNTED_WASTELAND, true },
-                { RA_DESERT_COLOSSUS, true },
-                { RA_THE_MARKET, true },
-                { RA_HYRULE_CASTLE, true },
-                { RA_KAKARIKO_VILLAGE, true },
-                { RA_THE_GRAVEYARD, true },
-                { RA_DEATH_MOUNTAIN_TRAIL, true },
-                { RA_GORON_CITY, true },
-                { RA_DEATH_MOUNTAIN_CRATER, true },
-                { RA_ZORAS_RIVER, true },
-                { RA_ZORAS_DOMAIN, true },
-                { RA_ZORAS_FOUNTAIN, true },
-                { RA_LON_LON_RANCH, true },
-                { RA_DEKU_TREE, true },
-                { RA_DODONGOS_CAVERN, true },
-                { RA_JABU_JABUS_BELLY, true },
-                { RA_FOREST_TEMPLE, true },
-                { RA_FIRE_TEMPLE, true },
-                { RA_WATER_TEMPLE, true },
-                { RA_SPIRIT_TEMPLE, true },
-                { RA_SHADOW_TEMPLE, true },
-                { RA_BOTTOM_OF_THE_WELL, true },
-                { RA_ICE_CAVERN, true },
-                { RA_GERUDO_TRAINING_GROUND, true },
-                { RA_GANONS_CASTLE, true },
-            };
-
-            static std::map<Rando::Tricks::Tag, bool> showTag{
-                { Rando::Tricks::Tag::NOVICE, true },   { Rando::Tricks::Tag::INTERMEDIATE, true },
-                { Rando::Tricks::Tag::ADVANCED, true }, { Rando::Tricks::Tag::EXPERT, true },
-                { Rando::Tricks::Tag::EXTREME, true },  { Rando::Tricks::Tag::EXPERIMENTAL, true },
-                //{ Rando::Tricks::Tag::GLITCH, false },
-            };
-            static ImGuiTextFilter trickSearch;
-            UIWidgets::PushStyleInput(THEME_COLOR);
-            trickSearch.Draw("Filter (inc,-exc)", 490.0f);
-            UIWidgets::PopStyleInput();
-            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
-                ImGui::SameLine();
-                if (UIWidgets::Button("Disable All",
-                                      UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(250.f, 0.f)))) {
-                    for (int i = 0; i < RT_MAX; i++) {
-                        auto etfound = enabledTricks.find(static_cast<RandomizerTrick>(i));
-                        if (etfound != enabledTricks.end()) {
-                            enabledTricks.erase(etfound);
-                        }
-                    }
-                    std::string enabledTrickString = "";
-                    for (auto enabledTrickIt : enabledTricks) {
-                        enabledTrickString += std::to_string(enabledTrickIt);
-                        enabledTrickString += ",";
-                    }
-                    CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-                }
-                ImGui::SameLine();
-                if (UIWidgets::Button("Enable All",
-                                      UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(250.f, 0.f)))) {
-                    for (int i = 0; i < RT_MAX; i++) {
-                        if (!enabledTricks.count(static_cast<RandomizerTrick>(i))) {
-                            enabledTricks.insert(static_cast<RandomizerTrick>(i));
-                        }
-                    }
-                    std::string enabledTrickString = "";
-                    for (auto enabledTrickIt : enabledTricks) {
-                        enabledTrickString += std::to_string(enabledTrickIt);
-                        enabledTrickString += ",";
-                    }
-                    CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-                }
-            }
-            if (ImGui::BeginTable("trickTags", showTag.size(),
-                                  ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings |
-                                      ImGuiTableFlags_Borders)) {
-                for (auto [rtTag, isShown] : showTag) {
-                    ImGui::TableNextColumn();
-                    if (isShown) {
-                        ImGui::PushStyleColor(ImGuiCol_Text, Rando::Tricks::GetTextColor(rtTag));
-                    } else {
-                        ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 1.0f, 1.0f, 1.0f });
-                    }
-                    ImGui::PushStyleColor(ImGuiCol_Header, Rando::Tricks::GetTagColor(rtTag));
-                    ImGui::Selectable(Rando::Tricks::GetTagName(rtTag).c_str(), &showTag[rtTag]);
-                    ImGui::PopStyleColor(2);
-                }
-                ImGui::EndTable();
-            }
-
-            if (ImGui::BeginTable("tableRandoTricks", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("Disabled Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Enabled Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                ImGui::TableHeadersRow();
-                ImGui::PopItemFlag();
-                ImGui::TableNextRow();
-
-                if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
-                    // COLUMN 1 - DISABLED TRICKS
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
-
-                    if (UIWidgets::Button("Collapse All##disabled",
-                                          UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
-                        for (int i = 0; i < RA_MAX; i++) {
-                            areaTreeDisabled[static_cast<RandomizerArea>(i)] = false;
-                        }
-                    }
-                    ImGui::SameLine();
-                    if (UIWidgets::Button("Open All##disabled",
-                                          UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
-                        for (int i = 0; i < RA_MAX; i++) {
-                            areaTreeDisabled[static_cast<RandomizerArea>(i)] = true;
-                        }
-                    }
-                    ImGui::SameLine();
-                    if (UIWidgets::Button("Enable Visible",
-                                          UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
-                        for (int i = 0; i < RT_MAX; i++) {
-                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
-                            if (!enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
-                                trickSearch.PassFilter(option.GetName().c_str()) &&
-                                areaTreeDisabled[option.GetArea()] &&
-                                Rando::Tricks::CheckTags(showTag, option.GetTags())) {
-                                enabledTricks.insert(static_cast<RandomizerTrick>(i));
-                            }
-                        }
-                        std::string enabledTrickString = "";
-                        for (auto enabledTrickIt : enabledTricks) {
-                            enabledTrickString += std::to_string(enabledTrickIt);
-                            enabledTrickString += ",";
-                        }
-                        CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-                    }
-
-                    ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false,
-                                      ImGuiWindowFlags_HorizontalScrollbar);
-
-                    for (auto [area, trickIds] : mSettings->mTricksByArea) {
-                        bool hasTricks = false;
-                        for (auto rt : trickIds) {
-                            auto option = mSettings->GetTrickOption(rt);
-                            if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
-                                hasTricks = true;
-                                break;
-                            }
-                        }
-                        if (hasTricks) {
-                            ImGui::TreeNodeSetOpen(
-                                ImGui::GetID((Rando::Tricks::GetAreaName(area) + "##disabled").c_str()),
-                                areaTreeDisabled[area]);
-                            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode((Rando::Tricks::GetAreaName(area) + "##disabled").c_str())) {
-                                for (auto rt : trickIds) {
-                                    auto option = mSettings->GetTrickOption(rt);
-                                    if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                        !enabledTricks.count(rt) &&
-                                        Rando::Tricks::CheckTags(showTag, option.GetTags())) {
-                                        ImGui::TreeNodeSetOpen(
-                                            ImGui::GetID(
-                                                (Rando::Tricks::GetAreaName(option.GetArea()) + "##disabled").c_str()),
-                                            areaTreeDisabled[option.GetArea()]);
-                                        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                                        UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
-                                        if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Right)) {
-                                            enabledTricks.insert(rt);
-                                            std::string enabledTrickString = "";
-                                            for (auto enabledTrickIt : enabledTricks) {
-                                                enabledTrickString += std::to_string(enabledTrickIt);
-                                                enabledTrickString += ",";
-                                            }
-                                            CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"),
-                                                          enabledTrickString.c_str());
-                                            Ship::Context::GetInstance()
-                                                ->GetWindow()
-                                                ->GetGui()
-                                                ->SaveConsoleVariablesNextFrame();
-                                        }
-                                        UIWidgets::PopStyleButton();
-                                        Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());
-                                        ImGui::SameLine();
-                                        ImGui::Text("%s", option.GetName().c_str());
-                                        UIWidgets::Tooltip(option.GetDescription().c_str());
-                                    }
-                                }
-                                areaTreeDisabled[area] = true;
-                                ImGui::TreePop();
-                            } else {
-                                areaTreeDisabled[area] = false;
-                            }
-                        }
-                    }
-                    ImGui::EndChild();
-
-                    // COLUMN 2 - ENABLED TRICKS
-                    ImGui::TableNextColumn();
-                    window->DC.CurrLineTextBaseOffset = 0.0f;
-
-                    if (UIWidgets::Button("Collapse All##enabled",
-                                          UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
-                        for (int i = 0; i < RA_MAX; i++) {
-                            areaTreeEnabled[static_cast<RandomizerArea>(i)] = false;
-                        }
-                    }
-                    ImGui::SameLine();
-                    if (UIWidgets::Button("Open All##enabled",
-                                          UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
-                        for (int i = 0; i < RA_MAX; i++) {
-                            areaTreeEnabled[static_cast<RandomizerArea>(i)] = true;
-                        }
-                    }
-                    ImGui::SameLine();
-                    if (UIWidgets::Button("Disable Visible",
-                                          UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
-                        for (int i = 0; i < RT_MAX; i++) {
-                            auto option = mSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
-                            if (enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
-                                trickSearch.PassFilter(option.GetName().c_str()) && areaTreeEnabled[option.GetArea()] &&
-                                Rando::Tricks::CheckTags(showTag, option.GetTags())) {
-                                enabledTricks.erase(static_cast<RandomizerTrick>(i));
-                            }
-                        }
-                        std::string enabledTrickString = "";
-                        for (auto enabledTrickIt : enabledTricks) {
-                            enabledTrickString += std::to_string(enabledTrickIt);
-                            enabledTrickString += ",";
-                        }
-                        if (enabledTricks.size() == 0) {
-                            CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
-                        } else {
-                            CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
-                        }
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-                    }
-
-                    ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
-
-                    for (auto [area, trickIds] : mSettings->mTricksByArea) {
-                        bool hasTricks = false;
-                        for (auto rt : trickIds) {
-                            auto option = mSettings->GetTrickOption(rt);
-                            if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
-                                hasTricks = true;
-                                break;
-                            }
-                        }
-                        if (hasTricks) {
-                            ImGui::TreeNodeSetOpen(
-                                ImGui::GetID((Rando::Tricks::GetAreaName(area) + "##enabled").c_str()),
-                                areaTreeEnabled[area]);
-                            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                            if (ImGui::TreeNode((Rando::Tricks::GetAreaName(area) + "##enabled").c_str())) {
-                                for (auto rt : trickIds) {
-                                    auto option = mSettings->GetTrickOption(rt);
-                                    if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
-                                        enabledTricks.count(rt) &&
-                                        Rando::Tricks::CheckTags(showTag, option.GetTags())) {
-                                        ImGui::TreeNodeSetOpen(
-                                            ImGui::GetID(
-                                                (Rando::Tricks::GetAreaName(option.GetArea()) + "##enabled").c_str()),
-                                            areaTreeEnabled[option.GetArea()]);
-                                        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                                        UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
-                                        if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Left)) {
-                                            enabledTricks.erase(rt);
-                                            std::string enabledTrickString = "";
-                                            for (auto enabledTrickIt : enabledTricks) {
-                                                enabledTrickString += std::to_string(enabledTrickIt);
-                                                enabledTrickString += ",";
-                                            }
-                                            if (enabledTrickString == "") {
-                                                CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
-                                            } else {
-                                                CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"),
-                                                              enabledTrickString.c_str());
-                                            }
-                                            Ship::Context::GetInstance()
-                                                ->GetWindow()
-                                                ->GetGui()
-                                                ->SaveConsoleVariablesNextFrame();
-                                        }
-                                        UIWidgets::PopStyleButton();
-                                        Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());
-                                        ImGui::SameLine();
-                                        ImGui::Text("%s", option.GetName().c_str());
-                                        UIWidgets::Tooltip(option.GetDescription().c_str());
-                                    }
-                                }
-                                areaTreeEnabled[area] = true;
-                                ImGui::TreePop();
-                            } else {
-                                areaTreeEnabled[area] = false;
-                            }
-                        }
-                    }
-
-                    ImGui::EndChild();
-                } else {
-                    ImGui::TableNextColumn();
-                    ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8));
-                    ImGui::Text("Requires Logic Turned On.");
-                    ImGui::EndChild();
-                    ImGui::TableNextColumn();
-                    ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8));
-                    ImGui::Text("Requires Logic Turned On.");
-                    ImGui::EndChild();
-                }
-                ImGui::EndTable();
-            }
-            ImGui::EndDisabled();
-            ImGui::PopStyleVar(1);
-            ImGui::EndTabItem();
-        } else {
-            tricksTabOpen = false;
-        }
-
-        if (ImGui::BeginTabItem("Starting Inventory")) {
-            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (mSettings->GetOptionGroup(RSG_STARTING_INVENTORY_IMGUI_TABLE).RenderImGui()) {
-                mNeedsUpdate = true;
-            }
-            ImGui::PopStyleVar(1);
-            ImGui::EndTabItem();
-        }
-
-        ImGui::EndTabBar();
-    }
-    UIWidgets::PopStyleTabs();
-}
-
-void RandomizerSettingsWindow::UpdateElement() {
-    if (mNeedsUpdate) {
-        mSettings->UpdateOptionProperties();
     }
 }
 
@@ -3986,17 +3546,58 @@ class ExtendedVanillaTableInvalidItemIdException : public std::exception {
     }
 };
 
-void RandomizerSettingsWindow::InitElement() {
-    mSettings = Rando::Settings::GetInstance();
-    seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
-    mSettings->UpdateOptionProperties();
-}
+static std::unordered_map<RandomizerGet, GameplayStatTimestamp> randomizerGetToStatsTimeStamp = {
+    { RG_GOHMA_SOUL, TIMESTAMP_FOUND_GOHMA_SOUL },
+    { RG_KING_DODONGO_SOUL, TIMESTAMP_FOUND_KING_DODONGO_SOUL },
+    { RG_BARINADE_SOUL, TIMESTAMP_FOUND_BARINADE_SOUL },
+    { RG_PHANTOM_GANON_SOUL, TIMESTAMP_FOUND_PHANTOM_GANON_SOUL },
+    { RG_VOLVAGIA_SOUL, TIMESTAMP_FOUND_VOLVAGIA_SOUL },
+    { RG_MORPHA_SOUL, TIMESTAMP_FOUND_MORPHA_SOUL },
+    { RG_BONGO_BONGO_SOUL, TIMESTAMP_FOUND_BONGO_BONGO_SOUL },
+    { RG_TWINROVA_SOUL, TIMESTAMP_FOUND_TWINROVA_SOUL },
+    { RG_GANON_SOUL, TIMESTAMP_FOUND_GANON_SOUL },
+
+    { RG_BRONZE_SCALE, TIMESTAMP_FOUND_BRONZE_SCALE },
+
+    { RG_OCARINA_A_BUTTON, TIMESTAMP_FOUND_OCARINA_A_BUTTON },
+    { RG_OCARINA_C_UP_BUTTON, TIMESTAMP_FOUND_OCARINA_C_UP_BUTTON },
+    { RG_OCARINA_C_DOWN_BUTTON, TIMESTAMP_FOUND_OCARINA_C_DOWN_BUTTON },
+    { RG_OCARINA_C_LEFT_BUTTON, TIMESTAMP_FOUND_OCARINA_C_LEFT_BUTTON },
+    { RG_OCARINA_C_RIGHT_BUTTON, TIMESTAMP_FOUND_OCARINA_C_RIGHT_BUTTON },
+
+    { RG_FISHING_POLE, TIMESTAMP_FOUND_FISHING_POLE },
+
+    { RG_GUARD_HOUSE_KEY, TIMESTAMP_FOUND_GUARD_HOUSE_KEY },
+    { RG_MARKET_BAZAAR_KEY, TIMESTAMP_FOUND_MARKET_BAZAAR_KEY },
+    { RG_MARKET_POTION_SHOP_KEY, TIMESTAMP_FOUND_MARKET_POTION_SHOP_KEY },
+    { RG_MASK_SHOP_KEY, TIMESTAMP_FOUND_MASK_SHOP_KEY },
+    { RG_MARKET_SHOOTING_GALLERY_KEY, TIMESTAMP_FOUND_MARKET_SHOOTING_GALLERY_KEY },
+    { RG_BOMBCHU_BOWLING_KEY, TIMESTAMP_FOUND_BOMBCHU_BOWLING_KEY },
+    { RG_TREASURE_CHEST_GAME_BUILDING_KEY, TIMESTAMP_FOUND_TREASURE_CHEST_GAME_BUILDING_KEY },
+    { RG_BOMBCHU_SHOP_KEY, TIMESTAMP_FOUND_BOMBCHU_SHOP_KEY },
+    { RG_RICHARDS_HOUSE_KEY, TIMESTAMP_FOUND_RICHARDS_HOUSE_KEY },
+    { RG_ALLEY_HOUSE_KEY, TIMESTAMP_FOUND_ALLEY_HOUSE_KEY },
+    { RG_KAK_BAZAAR_KEY, TIMESTAMP_FOUND_KAK_BAZAAR_KEY },
+    { RG_KAK_POTION_SHOP_KEY, TIMESTAMP_FOUND_KAK_POTION_SHOP_KEY },
+    { RG_BOSS_HOUSE_KEY, TIMESTAMP_FOUND_BOSS_HOUSE_KEY },
+    { RG_GRANNYS_POTION_SHOP_KEY, TIMESTAMP_FOUND_GRANNYS_POTION_SHOP_KEY },
+    { RG_SKULLTULA_HOUSE_KEY, TIMESTAMP_FOUND_SKULLTULA_HOUSE_KEY },
+    { RG_IMPAS_HOUSE_KEY, TIMESTAMP_FOUND_IMPAS_HOUSE_KEY },
+    { RG_WINDMILL_KEY, TIMESTAMP_FOUND_WINDMILL_KEY },
+    { RG_KAK_SHOOTING_GALLERY_KEY, TIMESTAMP_FOUND_KAK_SHOOTING_GALLERY_KEY },
+    { RG_DAMPES_HUT_KEY, TIMESTAMP_FOUND_DAMPES_HUT_KEY },
+    { RG_TALONS_HOUSE_KEY, TIMESTAMP_FOUND_TALONS_HOUSE_KEY },
+    { RG_STABLES_KEY, TIMESTAMP_FOUND_STABLES_KEY },
+    { RG_BACK_TOWER_KEY, TIMESTAMP_FOUND_BACK_TOWER_KEY },
+    { RG_HYLIA_LAB_KEY, TIMESTAMP_FOUND_HYLIA_LAB_KEY },
+    { RG_FISHING_HOLE_KEY, TIMESTAMP_FOUND_FISHING_HOLE_KEY },
+};
 
 // Gameplay stat tracking: Update time the item was acquired
 // (special cases for rando items)
 void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
 
-    u32 time = GAMEPLAYSTAT_TOTAL_TIME;
+    u32 time = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
 
     // Have items in Link's pocket shown as being obtained at 0.1 seconds
     if (time == 0) {
@@ -4006,6 +3607,12 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
     // Use ITEM_KEY_BOSS to timestamp Ganon's boss key
     if (item == RG_GANONS_CASTLE_BOSS_KEY) {
         gSaveContext.ship.stats.itemTimestamp[ITEM_KEY_BOSS] = time;
+        return;
+    }
+
+    if (randomizerGetToStatsTimeStamp.contains((RandomizerGet)item)) {
+        gSaveContext.ship.stats.itemTimestamp[randomizerGetToStatsTimeStamp[(RandomizerGet)item]] = time;
+        return;
     }
 
     // Count any bottled item as a bottle
@@ -4015,18 +3622,23 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
         }
         return;
     }
+
     // Count any bombchu pack as bombchus
-    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHUS) {
+    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHU_BAG) {
         if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = 0) {
             gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
+
     if (item == RG_MAGIC_SINGLE) {
         gSaveContext.ship.stats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
+        return;
     }
+
     if (item == RG_DOUBLE_DEFENSE) {
         gSaveContext.ship.stats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
+        return;
     }
 }
 
@@ -4044,12 +3656,21 @@ std::map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
     { RG_MAGIC_INF, RAND_INF_HAS_INFINITE_MAGIC_METER },
     { RG_BOMBCHU_INF, RAND_INF_HAS_INFINITE_BOMBCHUS },
     { RG_WALLET_INF, RAND_INF_HAS_INFINITE_MONEY },
-    { RG_SKELETON_KEY, RAND_INF_HAS_SKELETON_KEY },
     { RG_OCARINA_A_BUTTON, RAND_INF_HAS_OCARINA_A },
     { RG_OCARINA_C_UP_BUTTON, RAND_INF_HAS_OCARINA_C_UP },
     { RG_OCARINA_C_DOWN_BUTTON, RAND_INF_HAS_OCARINA_C_DOWN },
     { RG_OCARINA_C_LEFT_BUTTON, RAND_INF_HAS_OCARINA_C_LEFT },
     { RG_OCARINA_C_RIGHT_BUTTON, RAND_INF_HAS_OCARINA_C_RIGHT },
+    { RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL },
+    { RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL },
+    { RG_DESERT_COLOSSUS_BEAN_SOUL, RAND_INF_DESERT_COLOSSUS_BEAN_SOUL },
+    { RG_GERUDO_VALLEY_BEAN_SOUL, RAND_INF_GERUDO_VALLEY_BEAN_SOUL },
+    { RG_GRAVEYARD_BEAN_SOUL, RAND_INF_GRAVEYARD_BEAN_SOUL },
+    { RG_KOKIRI_FOREST_BEAN_SOUL, RAND_INF_KOKIRI_FOREST_BEAN_SOUL },
+    { RG_LAKE_HYLIA_BEAN_SOUL, RAND_INF_LAKE_HYLIA_BEAN_SOUL },
+    { RG_LOST_WOODS_BRIDGE_BEAN_SOUL, RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL },
+    { RG_LOST_WOODS_BEAN_SOUL, RAND_INF_LOST_WOODS_BEAN_SOUL },
+    { RG_ZORAS_RIVER_BEAN_SOUL, RAND_INF_ZORAS_RIVER_BEAN_SOUL },
     { RG_GOHMA_SOUL, RAND_INF_GOHMA_SOUL },
     { RG_KING_DODONGO_SOUL, RAND_INF_KING_DODONGO_SOUL },
     { RG_BARINADE_SOUL, RAND_INF_BARINADE_SOUL },
@@ -4245,6 +3866,21 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
         gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
         return Return_Item_Entry(giEntry, RG_NONE);
+    } else if (item == RG_SKELETON_KEY) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_SKELETON_KEY);
+        // This isn't technically necessary, because keys will no longer be consumed,
+        // but for the player's sanity we display that they _have_ keys.
+        gSaveContext.inventory.dungeonKeys[SCENE_FOREST_TEMPLE] = FOREST_TEMPLE_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_FIRE_TEMPLE] = FIRE_TEMPLE_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_WATER_TEMPLE] = WATER_TEMPLE_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_SPIRIT_TEMPLE] = SPIRIT_TEMPLE_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_SHADOW_TEMPLE] = SHADOW_TEMPLE_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_THIEVES_HIDEOUT] = GERUDO_FORTRESS_SMALL_KEY_MAX;
+        gSaveContext.inventory.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX;
+
+        return Return_Item_Entry(giEntry, RG_NONE);
     } else if (item >= RG_GUARD_HOUSE_KEY && item <= RG_FISHING_HOLE_KEY) {
         Flags_SetRandomizerInf(
             (RandomizerInf)((int)RAND_INF_GUARD_HOUSE_UNLOCKED + ((item - RG_GUARD_HOUSE_KEY) * 2) + 1));
@@ -4270,12 +3906,24 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             if (INV_CONTENT(ITEM_BEAN) == ITEM_NONE) {
                 INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
                 AMMO(ITEM_BEAN) = 10;
+                if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_PLANTING_BEANS)) {
+                    gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_CRATER].swch |= (1 << 3);
+                    gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_TRAIL].swch |= (1 << 6);
+                    gSaveContext.sceneFlags[SCENE_DESERT_COLOSSUS].swch |= (1 << 24);
+                    gSaveContext.sceneFlags[SCENE_GERUDO_VALLEY].swch |= (1 << 3);
+                    gSaveContext.sceneFlags[SCENE_GRAVEYARD].swch |= (1 << 3);
+                    gSaveContext.sceneFlags[SCENE_KOKIRI_FOREST].swch |= (1 << 9);
+                    gSaveContext.sceneFlags[SCENE_LAKE_HYLIA].swch |= (1 << 1);
+                    gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 4) | (1 << 18);
+                    gSaveContext.sceneFlags[SCENE_ZORAS_RIVER].swch |= (1 << 3);
+                    AMMO(ITEM_BEAN) = 0;
+                }
             }
             break;
         case RG_DOUBLE_DEFENSE:
             gSaveContext.isDoubleDefenseAcquired = true;
             gSaveContext.inventory.defenseHearts = 20;
-            gSaveContext.healthAccumulator = 0x140;
+            gSaveContext.healthAccumulator = MAX_HEALTH;
             break;
         case RG_TYCOON_WALLET:
             Inventory_ChangeUpgrade(UPG_WALLET, 3);
@@ -4292,39 +3940,33 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         case RG_GREG_RUPEE:
             Rupees_ChangeBy(1);
             Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
-            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
+            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
             break;
         case RG_TRIFORCE_PIECE:
             gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected++;
             GameInteractor_SetTriforceHuntPieceGiven(true);
 
-            // Teleport to credits when goal is reached.
+            // Give Ganon's Boss Key and teleport to credits if set to Win when goal is reached.
             if (gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected ==
                 (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
-                gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
-                gSaveContext.ship.stats.gameComplete = 1;
                 Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
-                Play_PerformSave(play);
-                Notification::Emit({
-                    .message = "Game autosaved",
-                });
-                GameInteractor_SetTriforceHuntCreditsWarpActive(true);
+
+                if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) ==
+                    RO_TRIFORCE_HUNT_WIN) {
+                    gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
+                        static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+                    gSaveContext.ship.stats.gameComplete = 1;
+                    Play_PerformSave(play);
+                    Notification::Emit({
+                        .message = "Game autosaved",
+                    });
+                    GameInteractor_SetTriforceHuntCreditsWarpActive(true);
+                }
             }
 
             break;
-        case RG_PROGRESSIVE_BOMBCHUS:
-        case RG_BOMBCHU_BAG:
-            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
-                INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
-                AMMO(ITEM_BOMBCHU) = 20;
-            } else if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INFINITE_UPGRADES)) {
-                Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
-            } else {
-                AMMO(ITEM_BOMBCHU) += 10;
-                if (AMMO(ITEM_BOMBCHU) > 50) {
-                    AMMO(ITEM_BOMBCHU) = 50;
-                }
-            }
+        case RG_PROGRESSIVE_BOMBCHU_BAG:
+            OTRGlobals::Instance->gRandoContext->HandleGetBombchuBag();
             break;
         case RG_MASTER_SWORD:
             if (!CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
@@ -4334,12 +3976,18 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         case RG_DEKU_STICK_BAG:
             Inventory_ChangeUpgrade(UPG_STICKS, 1);
             INV_CONTENT(ITEM_STICK) = ITEM_STICK;
-            AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
+            AMMO(ITEM_STICK) = static_cast<int8_t>(CUR_CAPACITY(UPG_STICKS));
             break;
         case RG_DEKU_NUT_BAG:
             Inventory_ChangeUpgrade(UPG_NUTS, 1);
             INV_CONTENT(ITEM_NUT) = ITEM_NUT;
-            AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
+            AMMO(ITEM_NUT) = static_cast<int8_t>(CUR_CAPACITY(UPG_NUTS));
+            break;
+        case RG_ROCS_FEATHER:
+            Flags_SetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER);
+            if (INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE) {
+                INV_CONTENT(ITEM_NAYRUS_LOVE) = ITEM_ROCS_FEATHER;
+            }
             break;
         default:
             LUSLOG_WARN("Randomizer_Item_Give didn't have behaviour specified for getItemId=%d", item);

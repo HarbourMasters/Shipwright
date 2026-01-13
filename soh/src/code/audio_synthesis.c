@@ -761,7 +761,7 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
         audioFontSample = noteSubEu->sound.soundFontSound->sample;
 
         loopInfo = audioFontSample->loop;
-        loopEndPos = loopInfo->end;
+        loopEndPos = loopInfo->loopEnd;
         sampleAddr = audioFontSample->sampleAddr;
         resampledTempLen = 0;
 
@@ -853,14 +853,27 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
                         s5 = samplesLenAdjusted;
                         goto skip;
                     case CODEC_S16:
-                        AudioSynth_ClearBuffer(cmd++, DMEM_UNCOMPRESSED_NOTE, (samplesLenAdjusted * 2) + 0x20);
-                        AudioSynth_LoadBuffer(cmd++, DMEM_UNCOMPRESSED_NOTE, ALIGN16(nSamplesToLoad * 2),
-                                              audioFontSample->sampleAddr + (synthState->samplePosInt * 2));
-
+                    case CODEC_OPUS:
+                        AudioSynth_ClearBuffer(cmd++, DMEM_UNCOMPRESSED_NOTE, (samplesLenAdjusted + 16) * 2);
                         flags = A_CONTINUE;
                         skipBytes = 0;
-                        nSamplesProcessed = samplesLenAdjusted;
-                        s5 = samplesLenAdjusted;
+                        size_t bytesToRead;
+                        nSamplesProcessed += samplesLenAdjusted;
+
+                        if (((synthState->samplePosInt * 2) + (samplesLenAdjusted)*2) < audioFontSample->size) {
+                            bytesToRead = (samplesLenAdjusted)*2;
+                        } else {
+                            bytesToRead = audioFontSample->size - (synthState->samplePosInt * 2);
+                        }
+                        // 2S2H [Port] [Custom audio] Handle decoding OPUS data
+                        if (audioFontSample->codec == CODEC_OPUS) {
+                            aOPUSdecImpl(sampleAddr, DMEM_UNCOMPRESSED_NOTE, bytesToRead, &synthState->opusFile,
+                                         synthState->samplePosInt, audioFontSample->fileSize);
+                        } else {
+                            aLoadBuffer(cmd++, sampleAddr + (synthState->samplePosInt * 2), DMEM_UNCOMPRESSED_NOTE,
+                                        bytesToRead);
+                        }
+
                         goto skip;
                     case CODEC_REVERB:
                         break;
@@ -886,6 +899,7 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
                     sampleDataStartPad = (uintptr_t)sampleData & 0xF;
                     aligned = ALIGN16((nFramesToDecode * frameSize) + 16);
                     addr = DMEM_COMPRESSED_ADPCM_DATA - aligned;
+
                     aLoadBuffer(cmd++, sampleData - sampleDataStartPad, addr, aligned);
                 } else {
                     nSamplesToDecode = 0;
@@ -893,7 +907,7 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
                 }
 
                 if (synthState->restart) {
-                    aSetLoop(cmd++, audioFontSample->loop->state);
+                    aSetLoop(cmd++, audioFontSample->loop->predictorState);
                     flags = A_LOOP;
                     synthState->restart = false;
                 }

@@ -30,8 +30,12 @@ typedef struct {
     s16 gsTokens;
     u8 isDoubleDefenseAcquired;
     s32 filenameLanguage;
-    s32 gregFound;
-    s32 hasWallet;
+    bool gregFound;
+    bool hasWallet;
+    u8 triforcePieces;
+    u8 maxTriforcePieces;
+    bool hasFishingRod;
+    bool fishingPoleShuffled;
 } SaveFileMetaInfo;
 
 typedef enum {
@@ -161,16 +165,13 @@ class SaveManager {
     void SaveFileThreaded(int fileNum, SaveContext* saveContext, int sectionID);
 
     void InitMeta(int slotNum);
+    void StartupCheckAndInitMeta(int slotNum);
     static void InitFileImpl(bool isDebug);
     static void InitFileNormal();
     static void InitFileDebug();
     static void InitFileMaxed();
 
-    static void LoadRandomizerVersion1();
-    static void LoadRandomizerVersion2();
-    static void LoadRandomizerVersion3();
-    static void LoadTrackerData();
-    static void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave);
+    static void LoadRandomizer();
     static void SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave);
 
     static void LoadBaseVersion1();

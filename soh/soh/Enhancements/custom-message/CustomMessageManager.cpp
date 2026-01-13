@@ -156,12 +156,12 @@ const std::string CustomMessage::GetFrench(MessageFormat format) const {
 }
 
 const std::string CustomMessage::GetForCurrentLanguage(MessageFormat format) const {
-    return GetForLanguage(((Language)gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language,
-                          format);
+    return GetForLanguage(
+        ((Language)gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : (Language)gSaveContext.language, format);
 }
 
 const std::string CustomMessage::GetForLanguage(uint8_t language, MessageFormat format) const {
-    std::string output = messages[language] != TODO_TRANSLATE ? messages[language] : messages[LANGUAGE_ENG];
+    std::string output = !messages[language].starts_with(TODO_TRANSLATE) ? messages[language] : messages[LANGUAGE_ENG];
     ProcessMessageFormat(output, format);
     return output;
 }
@@ -211,6 +211,10 @@ void CustomMessage::SetTextBoxType(TextBoxType boxType) {
 
 const TextBoxPosition& CustomMessage::GetTextBoxPosition() const {
     return position;
+}
+
+void CustomMessage::SetTextBoxPosition(TextBoxPosition boxPos) {
+    position = boxPos;
 }
 
 CustomMessage CustomMessage::operator+(const CustomMessage& right) const {
@@ -664,6 +668,29 @@ void CustomMessage::InsertNumber(uint8_t num) {
     // remove the remaining bar
     this->Replace("|", "");
     Replace("[[d]]", std::to_string(num));
+}
+
+void CustomMessage::SetSingularPlural() {
+    for (std::string& str : messages) {
+        size_t firstBar = str.find('|');
+        if (firstBar != std::string::npos) {
+            size_t euroSign = str.find("€");
+            size_t secondBar = str.find('|', firstBar + 1);
+            if (secondBar != std::string::npos) {
+                size_t thirdBar = str.find('|', secondBar + 1);
+                if (thirdBar != std::string::npos) {
+                    if (euroSign == std::string::npos) {
+                        str.erase(secondBar, thirdBar - secondBar);
+                    } else {
+                        str.erase(firstBar, secondBar - firstBar);
+                    }
+                }
+            }
+        }
+    }
+    // remove the remaining bar
+    this->Replace("|", "");
+    this->Replace("€", "");
 }
 
 void CustomMessage::Capitalize() {

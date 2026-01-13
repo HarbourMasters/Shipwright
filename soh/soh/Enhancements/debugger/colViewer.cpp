@@ -6,8 +6,6 @@
 #include <vector>
 #include <string>
 #include <cmath>
-#include <libultraship/bridge.h>
-#include <libultraship/libultraship.h>
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
@@ -20,9 +18,9 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-typedef enum ColRenderSetting { ColRenderDisabled, ColRenderSolid, ColRenderTransparent } ColRenderSetting;
+enum ColRenderSetting { ColRenderDisabled, ColRenderSolid, ColRenderTransparent };
 
-static std::unordered_map<int32_t, const char*> ColRenderSettingNames = {
+static std::map<int32_t, const char*> ColRenderSettingNames = {
     { ColRenderDisabled, "Disabled" },
     { ColRenderSolid, "Solid" },
     { ColRenderTransparent, "Transparent" },

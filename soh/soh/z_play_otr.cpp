@@ -2,11 +2,11 @@
 #include "ResourceManagerHelpers.h"
 #include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
-#include <utils/StringHelper.h>
+#include <ship/utils/StringHelper.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "global.h"
 #include "vt.h"
-#include <Vertex.h>
+#include <fast/resource/type/Vertex.h>
 
 extern "C" void Play_InitScene(PlayState* play, s32 spawn);
 extern "C" void Play_InitEnvironment(PlayState* play, s16 skyboxId);
@@ -79,6 +79,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     YREG(15) = 0;
     gSaveContext.worldMapArea = 0;
     OTRScene_ExecuteCommands(play, (SOH::Scene*)play->sceneSegment);
+
     GameInteractor_ExecuteAfterSceneCommands(play->sceneNum);
     Play_InitEnvironment(play, play->skyboxId);
     /* auto data = static_cast<LUS::Vertex*>(Ship::Context::GetInstance()
