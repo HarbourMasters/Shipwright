@@ -1798,6 +1798,13 @@ void Settings::CreateOptions() {
               "The Boomerang can return to Link through walls, allowing child to hit the hallway switch. This can be "
               "used to allow adult to pass through later, or in conjunction with \"Forest Temple Outside Backdoor with "
               "Jump Slash\".");
+    OPT_TRICK(RT_FOREST_MQ_CHILD_DOORFRAME, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
+              "Forest Temple MQ Doorframe GS as Child without Boomerang",
+              "If Adult burns the courtyard webbing with Fire Arrows (which is a permanent flag in Ship Rando) "
+              "then Child can climb up to the balconies and jump to the SoT block from the railing, "
+              "and from there either roll jump or jump against the wall to reach the doorframe.\n"
+              "From there, The GS can be killed with a crouchstab, explosives or other ranged weapon "
+              "and collected by climbing down.");
     // Is also used in MQ logic, but has no practical effect there as of now
     OPT_TRICK(RT_FIRE_SOT, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE },
               "Fire Temple Song of Time Room GS without Song of Time",

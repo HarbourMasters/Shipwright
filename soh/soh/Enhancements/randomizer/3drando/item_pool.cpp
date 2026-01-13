@@ -175,6 +175,7 @@ void GenerateItemPool() {
     AddItemToPool(RG_HYLIAN_SHIELD, 1, 1, 1, 1);
     AddItemToPool(RG_PROGRESSIVE_STRENGTH, 4, 3, 3, 3);
     AddItemToPool(RG_DOUBLE_DEFENSE, 2, 1, 0, 0);
+    AddItemToPool(RG_BIGGORON_SWORD, 2, 1, 1, 0);
     bool isScrubs = ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_ALL);
     AddFixedItemToPool(RG_DEKU_SHIELD, isScrubs ? 1 : 2);
     AddFixedItemToPool(RG_RECOVERY_HEART, isScrubs ? 6 : 11);

@@ -452,6 +452,11 @@ bool Logic::CanGroundJumpJumpSlash(bool hasBombflower) {
            (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
 }
 
+bool Logic::CanMiddairGroundJump(bool hasBombflower) {
+    return ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && CanStandingShield() && CanUse(RG_HOVER_BOOTS) &&
+           (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
+}
+
 bool Logic::CanOpenUnderwaterChest() {
     return ctx->GetTrickOption(RT_OPEN_UNDERWATER_CHEST) && CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT);
 }
@@ -1039,6 +1044,11 @@ bool Logic::CanDetonateUprightBombFlower() {
     return CanDetonateBombFlowers() || HasItem(RG_GORONS_BRACELET) ||
            (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && CanUse(RG_BOTTLE_WITH_BLUE_FIRE) &&
             (EffectiveHealth() != 1 || CanUse(RG_NAYRUS_LOVE)));
+}
+
+bool Logic::CanHammerRecoilHover(bool needShield) {
+    return CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && CanUse(RG_MEGATON_HAMMER) &&
+           (!needShield || CanStandingShield());
 }
 
 bool Logic::Water3FCentralToHighEmblem() {

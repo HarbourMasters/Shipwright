@@ -267,6 +267,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnHeishi2`
+    VB_CAN_BRIBE_HEISHI2,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `int32_t` (item)
     VB_CHANGE_HELD_ITEM_AND_USE_ITEM,
 
