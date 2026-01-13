@@ -480,11 +480,15 @@ bool Extractor::RunFileStandalone(std::string rom) {
     return true;
 }
 
+void Extractor::SetSearchPath(const std::string& path) {
+    mSearchPath = path;
+}
+
 bool Extractor::Run(std::string searchPath, RomSearchMode searchMode) {
     std::vector<std::string> roms;
     std::ifstream inFile;
 
-    mSearchPath = searchPath;
+    SetSearchPath(searchPath);
 
     GetRoms(roms);
     FilterRoms(roms, searchMode);

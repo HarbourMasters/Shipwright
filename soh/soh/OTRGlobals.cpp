@@ -446,8 +446,8 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
 
     if (!std::filesystem::exists(installPath + "/assets")) {
         SohGui::RegisterPopup("Extractor assets not found",
-                              "No O2R files found. Missing 'assets/' folder needed to generate OTR file. Please "
-                              "re-extract them from the download.\n\nExiting...",
+                              "No O2R files found. Missing 'assets/' folder needed to generate OTR file.\nPlease "
+                              "re-extract them from the download or.\n\nExiting...",
                               "OK", "", [&]() { exit(1); });
     } else if (shouldRegen) {
         SohGui::RegisterPopup("Outdated ROM Archives",
@@ -476,11 +476,11 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                     std::string msg;
 
 #if defined(__SWITCH__)
-                    msg = "\x1b[4;2HPlease re-extract it from the download."
+                    msg = "\x1b[4;2HPlease re-extract it from the download.\n"
                           "\x1b[6;2HPress the Home button to exit...";
 #elif defined(__WIIU__)
                     msg = "Please extract the soh.o2r from the Ship of Harkinian download\nto your folder.\n\nPress "
-                          "and hold the power "
+                          "and hold the power\n"
                           "button to shutdown...";
 #else
                     msg =
@@ -510,7 +510,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                         ownPath = std::filesystem::canonical(buffer).parent_path();
                         if (IsSubpath(ownPath, tempPath)) {
                             SohGui::RegisterPopup("SoH Path Error",
-                                                  "SoH is running in a temp folder. Extract the .zip and run again.",
+                                                  "SoH is running in a temp folder.\nExtract the .zip and run again.",
                                                   "OK", "", [&]() { exit(0); });
                         } else {
                             windowsStep = WS_PERMS;
@@ -527,7 +527,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                         } catch (std::filesystem::filesystem_error const& ex) { error = true; }
                         if (tfile == NULL || error) {
                             SohGui::RegisterPopup("SoH Permissions Error",
-                                                  "SoH does not have proper file permissions. Please move it to a "
+                                                  "SoH does not have proper file permissions.\nPlease move it to a "
                                                   "folder that does and run again.",
                                                   "OK", "", [&]() {
                                                       fclose(tfile);
@@ -538,7 +538,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                             fclose(tfile);
                             if (!PathTestCleanup(tfile)) {
                                 SohGui::RegisterPopup("SoH Permissions Error",
-                                                      "SoH does not have proper file permissions. Please move it to a "
+                                                      "SoH does not have proper file permissions.\nPlease move it to a "
                                                       "folder that does and run again.",
                                                       "OK", "", [&]() { exit(0); });
                             }
@@ -549,8 +549,8 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                     case WS_ONEDRIVE: {
                         if (ownPath.string().find("OneDrive") != std::string::npos) {
                             SohGui::RegisterPopup("SoH Path Error",
-                                                  "SoH appears to be in a OneDrive folder, which will cause issues. "
-                                                  "Please move it to a folder outside of OneDrive, like the root of a "
+                                                  "SoH appears to be in a OneDrive folder, which will cause issues.\n"
+                                                  "Please move it to a folder outside of OneDrive, like the root of a\n"
                                                   "drive (e.g. \"C:\\Games\\SoH\").",
                                                   "OK", "", [&]() { exit(0); });
                         } else {
@@ -594,7 +594,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                     bool doExtract = true;
                     std::string archive = (extract.IsMasterQuest() ? "oot-mq.o2r" : "oot.o2r");
                     if (std::filesystem::exists(Ship::Context::GetAppDirectoryPath(appShortName) + "/" + archive)) {
-                        std::string msg = "Archive for current ROM, " + archive + ", already exists. Extract again?";
+                        std::string msg = "Archive for current ROM, " + archive + ", already exists.\nExtract again?";
                         SohGui::RegisterPopup("Confirm Re-extract", msg.c_str(), "Yes", "No", [&]() {
                             extracting = true;
                             threadPool->submit_task([&]() -> void {
@@ -615,7 +615,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                     }
                 } else {
                     bool open = true;
-                    std::string msg = "File " + std::string(file) + " is not a ROM or does not match supported ROMs.";
+                    std::string msg = "File\n" + std::string(file) + "\nis not a ROM or does not match supported ROMs.";
                     SohGui::RegisterPopup("SoH ROM Error", msg.c_str());
                 }
 #else
@@ -642,6 +642,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                     }
                     case PS_LOCAL: {
                         extract = Extractor();
+                        extract.SetSearchPath(installPath);
                         extract.GetRoms(args);
                         if (!args.empty()) {
                             promptStep = PS_WAIT;
@@ -739,7 +740,6 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
         if (extracting) {
             ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 8.0f));
-            ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 5.0f);
             auto color = UIWidgets::ColorValues.at(THEME_COLOR);
             ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 0.6f));
             ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(color.x, color.y, color.z, 1.0f));
@@ -749,14 +749,15 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                                            ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
                                            ImGuiWindowFlags_NoSavedSettings)) {
                 float progress = (totalExtract > 0.0f ? (float)extractCount / (float)totalExtract : 0) * 100.0f;
-                ImGui::Text("Extracting %s...%s", file.c_str(),
+                auto filename = std::filesystem::path(file).filename().string();
+                ImGui::Text("Extracting %s...%s", filename.c_str(),
                             roundf(progress) == 100.0f ? " Done. Finishing up." : "");
                 std::string overlay = extractCount > 0 ? fmt::format("{:.0f}%", progress) : "Starting Up";
                 ImGui::ProgressBar(progress / 100.0f, ImVec2(600.0f, 50.0f), overlay.c_str());
                 ImGui::EndPopup();
             }
             ImGui::PopStyleColor(3);
-            ImGui::PopStyleVar(3);
+            ImGui::PopStyleVar(2);
         }
         gui->EndDraw();
         sohFast3dWindow->EndFrame();

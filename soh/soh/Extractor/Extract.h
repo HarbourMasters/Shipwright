@@ -59,6 +59,7 @@ class Extractor {
     bool IsMasterQuest() const;
     bool ManuallySearchForRomMatchingType(RomSearchMode searchMode);
 
+    void SetSearchPath(const std::string& path);
     void GetRoms(std::vector<std::string>& roms);
     bool RunFileStandalone(std::string file);
     bool Run(std::string searchPath, RomSearchMode searchMode = RomSearchMode::Both);
