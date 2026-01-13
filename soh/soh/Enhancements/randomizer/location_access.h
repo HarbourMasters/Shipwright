@@ -22,7 +22,7 @@ class Region;
 
 #define EVENT_ACCESS(event, condition) \
     EventAccess(                       \
-        event, #event, [] { return condition; }, CleanCheckConditionString(#condition))
+        event, #event, [] { return condition; }, CleanConditionString(#condition))
 
 class EventAccess {
   public:
@@ -64,11 +64,11 @@ class EventAccess {
     std::string condition_str;
 };
 
-std::string CleanCheckConditionString(std::string condition);
+std::string CleanConditionString(std::string condition);
 
 #define LOCATION(check, condition) \
     LocationAccess(                \
-        check, [] { return condition; }, CleanCheckConditionString(#condition))
+        check, [] { return condition; }, CleanConditionString(#condition))
 
 // this class is meant to hold an item location with a boolean function to determine its accessibility from a specific
 // area

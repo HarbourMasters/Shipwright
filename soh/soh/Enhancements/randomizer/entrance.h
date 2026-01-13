@@ -40,7 +40,7 @@ enum class EntranceType {
 
 #define ENTRANCE(check, condition, ...) \
     Entrance(                           \
-        RandomizerRegion::check, [] { return condition; }, CleanCheckConditionString(#condition), ##__VA_ARGS__)
+        RandomizerRegion::check, [] { return condition; }, CleanConditionString(#condition), ##__VA_ARGS__)
 
 class Entrance {
   public:

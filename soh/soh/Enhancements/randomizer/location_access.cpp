@@ -865,7 +865,7 @@ void ReplaceAllInString(std::string& s, std::string const& toReplace, std::strin
     s.swap(buf);
 }
 
-std::string CleanCheckConditionString(std::string condition) {
+std::string CleanConditionString(std::string condition) {
     ReplaceAllInString(condition, "logic->", "");
     ReplaceAllInString(condition, "ctx->", "");
     ReplaceAllInString(condition, ".Get()", "");
