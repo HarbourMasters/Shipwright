@@ -310,6 +310,16 @@ void ModMenuWindow::DrawElement() {
             UpdateModFiles(false, true);
         }
         ImGui::SameLine();
+        if (UIWidgets::Button("Clear List", UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline))) {
+            SohGui::RegisterPopup("Clear List",
+                                  "Clear the current mod list and force a rebuild on next boot.\nClick Apply & Close "
+                                  "to save this change on exit.",
+                                  "OK", "Cancel", [&]() {
+                                      enabledModFiles.clear();
+                                      AfterModChange();
+                                  });
+        }
+        ImGui::SameLine();
         if (UIWidgets::Button("Apply & Close",
                               UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
             SohGui::RegisterPopup("Apply & Close",
@@ -325,25 +335,6 @@ void ModMenuWindow::DrawElement() {
                                       Ship::Context::GetInstance()->GetConsoleVariables()->Save();
                                       Ship::Context::GetInstance()->GetWindow()->Close();
                                   });
-        }
-        ImGui::SameLine();
-        float clearButtonWidth =
-            ImGui::CalcTextSize("Clear List & Close").x + (ImGui::GetStyle().FramePadding.x * 2.0f);
-        float rightX = ImGui::GetContentRegionMax().x - clearButtonWidth - ImGui::GetStyle().WindowPadding.x - 4.0f;
-        if (rightX > ImGui::GetCursorPosX()) {
-            ImGui::SetCursorPosX(rightX);
-        }
-        if (UIWidgets::Button("Clear List & Close",
-                              UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
-            SohGui::RegisterPopup(
-                "Clear List & Close",
-                "Clear the current mod order and rebuilds it on next startup.\nThis action is not reversible.", "Close",
-                "Cancel", [&]() {
-                    enabledModFiles.clear();
-                    SetEnabledModsCVarValue();
-                    Ship::Context::GetInstance()->GetConsoleVariables()->Save();
-                    Ship::Context::GetInstance()->GetWindow()->Close();
-                });
         }
     }
     ImGui::BeginDisabled(!editing);
