@@ -7,8 +7,13 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#define ENTRANCES_SHUFFLED \
-    IS_RANDO&& OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_ENTRANCES).Is(RO_GENERIC_ON)
+// clang-format off
+// clang-format attempts to format this strangely for some reason, so temporarily turning it off
+#define ENTRANCES_SHUFFLED                                                                     \
+    IS_RANDO &&                                                                                \
+    OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_ENTRANCES).Is(RO_GENERIC_ON) && \
+    (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("EntrancesOnSigns"), 0) == 1)
+// clang-format on
 
 void BuildEntranceHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     auto ctx = OTRGlobals::Instance->gRandoContext;
@@ -154,8 +159,10 @@ void BuildEntranceHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
                 msg.Replace("[[name]]", data->destination);
                 msg.SetTextBoxType(TEXTBOX_TYPE_WOODEN);
                 msg.SetTextBoxPosition(TEXTBOX_POS_BOTTOM);
-                *loadFromMessageTable = true;
+                *loadFromMessageTable = false;
+                msg.AutoFormat();
                 msg.LoadIntoFont();
+                return;
             }
         }
     }
