@@ -326,6 +326,25 @@ void ModMenuWindow::DrawElement() {
                                       Ship::Context::GetInstance()->GetWindow()->Close();
                                   });
         }
+        ImGui::SameLine();
+        float clearButtonWidth =
+            ImGui::CalcTextSize("Clear List & Close").x + (ImGui::GetStyle().FramePadding.x * 2.0f);
+        float rightX = ImGui::GetContentRegionMax().x - clearButtonWidth - ImGui::GetStyle().WindowPadding.x - 4.0f;
+        if (rightX > ImGui::GetCursorPosX()) {
+            ImGui::SetCursorPosX(rightX);
+        }
+        if (UIWidgets::Button("Clear List & Close",
+                              UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
+            SohGui::RegisterPopup(
+                "Clear List & Close",
+                "Clear the current mod order and rebuilds it on next startup.\nThis action is not reversible.", "Close",
+                "Cancel", [&]() {
+                    enabledModFiles.clear();
+                    SetEnabledModsCVarValue();
+                    Ship::Context::GetInstance()->GetConsoleVariables()->Save();
+                    Ship::Context::GetInstance()->GetWindow()->Close();
+                });
+        }
     }
     ImGui::BeginDisabled(!editing);
     if (ImGui::BeginTable("tableMods", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
