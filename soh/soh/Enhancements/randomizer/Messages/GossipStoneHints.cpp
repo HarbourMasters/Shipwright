@@ -45,6 +45,11 @@ void BuildHintStoneMessage(uint16_t* textId, bool* loadFromMessageTable) {
     } else {
         msg = OTRGlobals::Instance->gRandoContext->GetHint(stoneHint)->GetHintMessage(MF_AUTO_FORMAT);
     }
+    // Remove "Buy " if present.
+    msg.Replace("Buy ", "");
+    msg.Replace("Acheter: ", "");
+    msg.Replace(" kaufen ", "");
+    msg.Replace(" kaufen", "");
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }
