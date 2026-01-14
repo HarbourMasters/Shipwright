@@ -314,7 +314,7 @@ void ModMenuWindow::DrawElement() {
             SohGui::RegisterPopup("Clear List",
                                   "Clear the current mod list and force a rebuild on next boot.\nClick Apply & Close "
                                   "to save this change.",
-                                  "OK", "", [&]() {
+                                  "Clear", "Cancel", [&]() {
                                       enabledModFiles.clear();
                                       AfterModChange();
                                   });
