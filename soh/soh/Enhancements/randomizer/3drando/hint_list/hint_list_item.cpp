@@ -2107,6 +2107,7 @@ void StaticData::HintTable_Init_Item() {
                                                },
                                                { CustomMessage("a master unlocker", /*german*/ "ein Meisterentsperrer", /*french*/ "un Kit de Déverrouillage") });
                                                 // /*spanish*/un desbloqueador maestro
+    hintTextTable[RHT_CRAWL] = HintText(CustomMessage("the ability to crawl", /*german*/TODO_TRANSLATE, /*french*/"la capacité de ramper"));
 
     //RANDOTODO if these are ever used for anything other than name, they want abscure and ambiguous hints
     hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("an infinite Quiver", /*german*/"der unendliche Köcher", /*french*/"un Carquois Infini"));

@@ -56,7 +56,7 @@ void RegionTable_Init_LonLonRanch() {
 
     areaTable[RR_LLR_TOWER] = Region("LLR Tower", SCENE_LON_LON_BUILDINGS, {}, {
         //Locations
-        LOCATION(RC_LLR_FREESTANDING_POH, logic->IsChild),
+        LOCATION(RC_LLR_FREESTANDING_POH, logic->IsChild && logic->HasItem(RG_CRAWL)),
         LOCATION(RC_LLR_TOWER_LEFT_COW,   logic->CanUse(RG_EPONAS_SONG)),
         LOCATION(RC_LLR_TOWER_RIGHT_COW,  logic->CanUse(RG_EPONAS_SONG)),
     }, {

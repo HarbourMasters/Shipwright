@@ -3648,6 +3648,7 @@ extern "C" u8 Return_Item_Entry(GetItemEntry itemEntry, u8 returnItem);
 std::map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
     { RG_FISHING_POLE, RAND_INF_FISHING_POLE_FOUND },
     { RG_BRONZE_SCALE, RAND_INF_CAN_SWIM },
+    { RG_CRAWL, RAND_INF_CAN_CRAWL },
     { RG_QUIVER_INF, RAND_INF_HAS_INFINITE_QUIVER },
     { RG_BOMB_BAG_INF, RAND_INF_HAS_INFINITE_BOMB_BAG },
     { RG_BULLET_BAG_INF, RAND_INF_HAS_INFINITE_BULLET_BAG },
