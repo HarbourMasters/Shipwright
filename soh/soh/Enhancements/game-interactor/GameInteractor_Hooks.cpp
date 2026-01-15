@@ -381,7 +381,6 @@ void GameInteractor_ExecuteOnKaleidoUpdate() {
 
 // MARK: Messages
 void GameInteractor_ExecuteOnOpenText(uint16_t* textId, bool* loadFromMessageTable) {
-    LUSLOG_DEBUG("OnOpenText: textId: {}", *textId);
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnOpenText>(textId, loadFromMessageTable);
     GameInteractor::Instance->ExecuteHooksForID<GameInteractor::OnOpenText>(*textId, textId, loadFromMessageTable);
     GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnOpenText>(textId, loadFromMessageTable);
