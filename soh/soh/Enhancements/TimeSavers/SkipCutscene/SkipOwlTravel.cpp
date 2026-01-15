@@ -11,7 +11,7 @@ extern SaveContext gSaveContext;
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
 
-#define CVAR_NAME CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story")
+#define CVAR_NAME CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint")
 #define CVAR_VALUE CVarGetInteger(CVAR_NAME, 0)
 
 static s16 GetEntranceIndex(s32 owlType) {
