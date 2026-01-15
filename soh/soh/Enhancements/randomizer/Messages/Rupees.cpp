@@ -199,7 +199,7 @@ static const char* englishRupeeNames[188] = {
     "Zorkmids",
 };
 
-static const char* germanRupeeNames[114] = { "Baht",
+static const char* germanRupeeNames[113] = { "Baht",
                                              "Baklava",
                                              "Bananen",
                                              "Bitcoin",
@@ -213,7 +213,6 @@ static const char* germanRupeeNames[114] = { "Baht",
                                              "Diamanten",
                                              "Dinar",
                                              "Diridari",
-                                             "Dogecoin",
                                              "Dollar",
                                              "Draken",
                                              "ECU",
