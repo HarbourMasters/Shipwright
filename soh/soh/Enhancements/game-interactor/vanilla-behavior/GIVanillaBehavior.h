@@ -1708,6 +1708,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `int32_t` (owl type)
+    VB_PLAY_OWL_TRAVEL_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - None
     VB_PLAY_PRELUDE_OF_LIGHT_CS,
 
