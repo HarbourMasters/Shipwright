@@ -567,6 +567,10 @@ static void ApplyBottleContentPatches() {
 
     const char* contentDL = bottleContentDLs[bottleIndex];
 
+    if (contentDL && !ResourceMgr_FileExists(contentDL) && !ResourceGetIsCustomByName(contentDL)) {
+        contentDL = nullptr;
+    }
+
     ApplyPatchEntries({
         { bottleDL, gCustomBottleDL, "customBottle1", "customBottle2", contentDL ? "customBottle3" : nullptr,
           contentDL },
