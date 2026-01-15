@@ -310,6 +310,16 @@ void ModMenuWindow::DrawElement() {
             UpdateModFiles(false, true);
         }
         ImGui::SameLine();
+        if (UIWidgets::Button("Clear List", UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline))) {
+            SohGui::RegisterPopup("Clear List",
+                                  "Clear the current mod list and force a rebuild on next boot.\nClick Apply & Close "
+                                  "to save this change.",
+                                  "Clear", "Cancel", [&]() {
+                                      enabledModFiles.clear();
+                                      AfterModChange();
+                                  });
+        }
+        ImGui::SameLine();
         if (UIWidgets::Button("Apply & Close",
                               UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
             SohGui::RegisterPopup("Apply & Close",

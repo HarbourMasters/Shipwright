@@ -997,6 +997,11 @@ void InitTrickNames() {
         Text{ "Stalfos Key" }, Text{ "Nightmare Key" }, Text{ "Graveyard Key" },
         Text{ "King's Key" },  Text{ "Hero's Key" },
     };
+    trickNameTable[RG_CRAWL] = {
+        // TODO_TRANSLATE
+        Text{ "Crouch" },
+    };
+
     trickNameTable[RG_OCARINA_A_BUTTON] = {
         Text{ "Ocarina J Button", "Touche Ha de l'Ocarina", "J-Taste der Okarina" },
         Text{ "Ocarina Ayy Button", "Touche Ah de l'Ocarina", "A-Taste der Flöte" },

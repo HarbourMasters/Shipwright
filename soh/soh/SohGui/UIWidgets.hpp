@@ -826,7 +826,7 @@ bool Combobox(const char* label, T* value, const std::vector<std::string>& combo
     ImGui::BeginDisabled(options.disabled);
     PushStyleCombobox(options.color);
 
-    const char* longest;
+    const char* longest = "";
     size_t length = 0;
     for (auto& string : comboVector) {
         size_t len = string.length();

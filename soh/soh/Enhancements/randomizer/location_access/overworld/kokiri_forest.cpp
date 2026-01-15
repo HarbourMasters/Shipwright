@@ -11,7 +11,6 @@ void RegionTable_Init_KokiriForest() {
         EventAccess(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD, []{return logic->IsChild && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD);}),
     }, {
         //Locations
-        LOCATION(RC_KF_KOKIRI_SWORD_CHEST,      logic->IsChild),
         LOCATION(RC_KF_GS_KNOW_IT_ALL_HOUSE,    logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE) && logic->CanGetNightTimeGS()),
         LOCATION(RC_KF_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull(RG_KOKIRI_FOREST_BEAN_SOUL) && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE)),
         LOCATION(RC_KF_GS_HOUSE_OF_TWINS,       logic->IsAdult && logic->CanGetNightTimeGS() && 
@@ -28,8 +27,6 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_SOUTH_GRASS_EAST_RUPEE,  logic->IsChild),
         LOCATION(RC_KF_NORTH_GRASS_WEST_RUPEE,  logic->IsChild),
         LOCATION(RC_KF_NORTH_GRASS_EAST_RUPEE,  logic->IsChild),
-        LOCATION(RC_KF_BOULDER_RUPEE_1,         logic->IsChild),
-        LOCATION(RC_KF_BOULDER_RUPEE_2,         logic->IsChild),
         LOCATION(RC_KF_BEAN_RUPEE_1,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_KF_BEAN_RUPEE_2,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_KF_BEAN_RUPEE_3,            logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_BOOMERANG))),
@@ -53,9 +50,6 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_CHILD_GRASS_10,          logic->IsChild && logic->CanCutShrubs()),
         LOCATION(RC_KF_CHILD_GRASS_11,          logic->IsChild && logic->CanCutShrubs()),
         LOCATION(RC_KF_CHILD_GRASS_12,          logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_KF_CHILD_GRASS_MAZE_1,      logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_KF_CHILD_GRASS_MAZE_2,      logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_KF_CHILD_GRASS_MAZE_3,      logic->IsChild && logic->CanCutShrubs()),
         LOCATION(RC_KF_ADULT_GRASS_1,           logic->IsAdult && logic->CanCutShrubs()),
         LOCATION(RC_KF_ADULT_GRASS_2,           logic->IsAdult && logic->CanCutShrubs()),
         LOCATION(RC_KF_ADULT_GRASS_3,           logic->IsAdult && logic->CanCutShrubs()),
@@ -78,6 +72,7 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_ADULT_GRASS_20,          logic->IsAdult && logic->CanCutShrubs()),
     }, {
         //Exits
+        Entrance(RR_KF_BOULDER_LOOP,       []{return logic->CanUse(RG_CRAWL);}),
         Entrance(RR_KF_LINKS_HOUSE,        []{return true;}),
         Entrance(RR_KF_MIDOS_HOUSE,        []{return true;}),
         Entrance(RR_KF_SARIAS_HOUSE,       []{return true;}),
@@ -88,6 +83,19 @@ void RegionTable_Init_KokiriForest() {
         Entrance(RR_THE_LOST_WOODS,        []{return true;}),
         Entrance(RR_LW_BRIDGE_FROM_FOREST, []{return logic->IsAdult || ctx->GetOption(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON) || logic->Get(LOGIC_DEKU_TREE_CLEAR);}),
         Entrance(RR_KF_STORMS_GROTTO,      []{return logic->CanOpenStormsGrotto();}),
+    });
+
+    areaTable[RR_KF_BOULDER_LOOP] = Region("KF Boulder Loop", SCENE_KOKIRI_FOREST, {}, {
+        //Locations
+        LOCATION(RC_KF_KOKIRI_SWORD_CHEST, logic->IsChild),
+        LOCATION(RC_KF_BOULDER_RUPEE_1,    logic->IsChild),
+        LOCATION(RC_KF_BOULDER_RUPEE_2,    logic->IsChild),
+        LOCATION(RC_KF_CHILD_GRASS_MAZE_1, logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_MAZE_2, logic->IsChild && logic->CanCutShrubs()),
+        LOCATION(RC_KF_CHILD_GRASS_MAZE_3, logic->IsChild && logic->CanCutShrubs()),
+    }, {
+        //Exits
+        Entrance(RR_KOKIRI_FOREST, []{return logic->CanUse(RG_CRAWL);}),
     });
 
     areaTable[RR_KF_OUTSIDE_DEKU_TREE] = Region("KF Outside Deku Tree", SCENE_KOKIRI_FOREST, {

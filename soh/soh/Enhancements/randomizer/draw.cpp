@@ -2,7 +2,6 @@
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "randomizerTypes.h"
-#include <array>
 #include "soh_assets.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
@@ -35,6 +34,7 @@ extern "C" {
 #include "overlays/ovl_Boss_Sst/ovl_Boss_Sst.h"
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
+#include "objects/object_gi_shield_1/object_gi_shield_1.h"
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
@@ -1132,6 +1132,23 @@ extern "C" void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getIte
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiScaleDL);
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBronzeScaleWaterColorDL);
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiScaleWaterDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawKneePads(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Translate(-35, -5, 0, MTXMODE_APPLY);
+    Matrix_Scale(0.4f, 0.8f, 1.2f, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiDekuShieldDL);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Translate(35, -7, 4, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiDekuShieldDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -28,7 +28,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY,        []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_CHILD_SIDE_HUB,  []{return logic->IsChild/*CanUse(RG_CRAWL)*/;}),
+        Entrance(RR_SPIRIT_TEMPLE_CHILD_SIDE_HUB,  []{return logic->CanUse(RG_CRAWL);}),
         Entrance(RR_SPIRIT_TEMPLE_ADULT_SIDE_HUB,  []{return logic->CanUse(RG_SILVER_GAUNTLETS);}),
     });
 
@@ -37,8 +37,8 @@ void RegionTable_Init_SpiritTemple() {
         EventAccess(LOGIC_NUT_ACCESS, []{return logic->CanBreakSmallCrates();}),
     }, {}, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_FOYER,               []{return logic->IsChild/*CanUse(RG_CRAWL)*/;}),
-        Entrance(RR_SPIRIT_TEMPLE_CHILD_BOXES,         []{return logic->IsChild/*CanUse(RG_CRAWL)*/;}),
+        Entrance(RR_SPIRIT_TEMPLE_FOYER,               []{return logic->CanUse(RG_CRAWL);}),
+        Entrance(RR_SPIRIT_TEMPLE_CHILD_BOXES,         []{return logic->CanUse(RG_CRAWL);}),
         //Implies logic->CanKillEnemy(RE_KEESE)
         Entrance(RR_SPIRIT_TEMPLE_SWITCH_BRIDGE_SOUTH, []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_ARMOS);});}),
         Entrance(RR_SPIRIT_TEMPLE_RUPEE_BRIDGE_SOUTH,  []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_ARMOS);});}),
@@ -109,7 +109,7 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_BEFORE_CHILD_CLIMB_SMALL_CRATE_2, logic->CanBreakSmallCrates()),
     }, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_CHILD_SIDE_HUB,  []{return logic->IsChild/*CanUse(RG_CRAWL)*/;}),
+        Entrance(RR_SPIRIT_TEMPLE_CHILD_SIDE_HUB,  []{return logic->CanUse(RG_CRAWL);}),
         Entrance(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_2F, []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 1);}),
     });
 
@@ -223,7 +223,7 @@ void RegionTable_Init_SpiritTemple() {
         //they will be able to exit the dungeon through the intended entrance and vice versa
         //for needing to open the west hand lock to block the intended child route
         Entrance(RR_DESERT_COLOSSUS,               []{return ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) && /*str0 &&*/
-                                                             logic->IsChild/*CanUse(RG_CRAWL)*/ && logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 4) && logic->CanKillEnemy(RE_IRON_KNUCKLE);}),
+                                                             logic->CanUse(RG_CRAWL) && logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 4) && logic->CanKillEnemy(RE_IRON_KNUCKLE);}),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_INNER_WEST_HAND] = Region("Spirit Temple Inner West Hand", SCENE_SPIRIT_TEMPLE, {}, {
@@ -564,7 +564,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY,           []{return true;}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_CHILD_SIDE_HUB,  []{return logic->IsChild/*logic->CanUse(RG_CRAWL) && logic->HasSoul(RG_NABOORU_SOUL)*/;}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_CHILD_SIDE_HUB,  []{return logic->CanUse(RG_CRAWL) /*&& logic->HasSoul(RG_NABOORU_SOUL)*/;}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_BEHIND_GEYSER,   []{return ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanUse(RG_MEGATON_HAMMER) || (logic->CanStandingShield() && (logic->CanUseSword() || logic->CanUse(RG_STICKS))));}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_HOLE, []{return logic->CanUse(RG_LONGSHOT) && logic->CanUse(RG_BOMBCHU_5);}),
     });
@@ -582,10 +582,10 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         //Nabooru's legs are technically visible one way collision here, but I'm not sure if this counts
-        Entrance(RR_SPIRIT_TEMPLE_MQ_FOYER,               []{return logic->IsChild/*logic->CanUse(RG_CRAWL)*/;}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_FOYER,               []{return logic->CanUse(RG_CRAWL);}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_GIBDO_GRAVES,        []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_TORCH_SLUG);});}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_ANUBIS_BRIDGE_CHEST, []{return AnyAgeTime([]{return logic->CanKillEnemy(RE_TORCH_SLUG);});}),
-        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_CHEST_SWITCH,     []{return logic->IsChild/*logic->CanUse(RG_CRAWL)*/ && logic->Get(LOGIC_SPIRIT_MQ_CRAWL_BOULDER);}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_1F_CHEST_SWITCH,     []{return logic->CanUse(RG_CRAWL) && logic->Get(LOGIC_SPIRIT_MQ_CRAWL_BOULDER);}),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_GIBDO_GRAVES] = Region("Spirit Temple MQ Gibdo Graves", SCENE_SPIRIT_TEMPLE, {
@@ -667,7 +667,7 @@ void RegionTable_Init_SpiritTemple() {
         EventAccess(LOGIC_SPIRIT_MQ_CRAWL_BOULDER,     []{return logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_RUSTED_SWITCHES) && logic->CanUse(RG_MEGATON_HAMMER));}),
     }, {}, {
         //Exits
-        Entrance(RR_SPIRIT_TEMPLE_MQ_CHILD_SIDE_HUB,  []{return logic->IsChild/*logic->CanUse(RG_CRAWL)*/ && logic->Get(LOGIC_SPIRIT_MQ_CRAWL_BOULDER);}),
+        Entrance(RR_SPIRIT_TEMPLE_MQ_CHILD_SIDE_HUB,  []{return logic->CanUse(RG_CRAWL) && logic->Get(LOGIC_SPIRIT_MQ_CRAWL_BOULDER);}),
         //This tracks possible child access, if adult has not entered STATUE_ROOM. Certain Child Access is checked for separately as 7 Keys
         Entrance(RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE, []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 1);}),
     });
@@ -706,7 +706,7 @@ void RegionTable_Init_SpiritTemple() {
         //This is because with 6 keys it becomes impossible to avoid opening either the west hand lock or the first child side lock
         //and either direction lets child reach colossus. CanHitSwitch and CanKillEnemy(RE_IRON_KNUCKLE) is implied.
         //Logic can then allow child back into spirit, putting 1F west in logic with only 6 keys without forwards entry
-        Entrance(RR_DESERT_COLOSSUS,                      []{return logic->IsChild/*CanUse(RG_CRAWL)*/ && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) &&
+        Entrance(RR_DESERT_COLOSSUS,                      []{return logic->CanUse(RG_CRAWL) && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) &&
                                                                     logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 6) && logic->MQSpiritStatueToSunBlock() &&
                                                                     (logic->CanUse(RG_BOMBCHU_5) || (ctx->GetTrickOption(RT_RUSTED_SWITCHES) && AnyAgeTime([]{return logic->CanUse(RG_MEGATON_HAMMER);})));}),
         Entrance(RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR,        []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 6);}),

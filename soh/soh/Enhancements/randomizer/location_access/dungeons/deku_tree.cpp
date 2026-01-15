@@ -149,7 +149,7 @@ void RegionTable_Init_DekuTree() {
         //Exits
         Entrance(RR_DEKU_TREE_BASEMENT_TORCH_ROOM, []{return true;}),
         Entrance(RR_DEKU_TREE_BASEMENT_BACK_ROOM,  []{return AnyAgeTime([]{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);}) && AnyAgeTime([]{return logic->BlastOrSmash();});}),
-        Entrance(RR_DEKU_TREE_BASEMENT_UPPER,      []{return AnyAgeTime([]{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);}) && logic->IsChild;}),
+        Entrance(RR_DEKU_TREE_BASEMENT_UPPER,      []{return AnyAgeTime([]{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);}) && logic->CanUse(RG_CRAWL);}),
     });
 
     areaTable[RR_DEKU_TREE_BASEMENT_BACK_ROOM] = Region("Deku Tree Basement Back Room", SCENE_DEKU_TREE, {}, {
@@ -168,7 +168,7 @@ void RegionTable_Init_DekuTree() {
     }, {}, {
         //Exits
         Entrance(RR_DEKU_TREE_BASEMENT_LOWER,      []{return true;}),
-        Entrance(RR_DEKU_TREE_BASEMENT_BACK_LOBBY, []{return logic->IsChild;}),
+        Entrance(RR_DEKU_TREE_BASEMENT_BACK_LOBBY, []{return logic->CanUse(RG_CRAWL);}),
         Entrance(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM,   []{return AnyAgeTime([]{return logic->HasFireSourceWithTorch() || (ctx->GetTrickOption(RT_DEKU_B1_BOW_WEBS) && logic->IsAdult && logic->CanUse(RG_FAIRY_BOW));}) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS));}),
     });
 
@@ -397,7 +397,7 @@ void RegionTable_Init_DekuTree() {
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_GRAVES_GRASS_5, logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE,          []{return logic->IsChild && AnyAgeTime([]{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);});}),
+        Entrance(RR_DEKU_TREE_MQ_BASEMENT_LEDGE,          []{return logic->CanUse(RG_CRAWL) && AnyAgeTime([]{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);});}),
         Entrance(RR_DEKU_TREE_MQ_BASEMENT_SOUTHWEST_ROOM, []{return true;}),
         //Using a bow to get past here as adult is a bit precise on standing position but simple, doing as as child requires a side-hop with the bow out to shoot through the torch and may be trick worthy
         Entrance(RR_DEKU_TREE_MQ_BASEMENT_BACK_ROOM,      []{return AnyAgeTime([]{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);});}),
@@ -425,7 +425,7 @@ void RegionTable_Init_DekuTree() {
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_UPPER_GRASS_3, logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_DEKU_TREE_MQ_BASEMENT_GRAVE_ROOM, []{return logic->IsChild;}),
+        Entrance(RR_DEKU_TREE_MQ_BASEMENT_GRAVE_ROOM, []{return logic->CanUse(RG_CRAWL);}),
         Entrance(RR_DEKU_TREE_MQ_BASEMENT,            []{return true;}),
         //If strength 0 is shuffled, add hovers or block push to the stick check
         //recoiling to skip swim is possible, but would be a trick

@@ -1364,7 +1364,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     char** fntList = ResourceMgr_ListFiles("audio/fonts*", &fntListSize);
     char** customFntList = ResourceMgr_ListFiles("custom/fonts/*", &customFntListSize);
 
-    gAudioContext.fontLoadStatus = malloc(customFntListSize + fntListSize);
+    gAudioContext.fontLoadStatus = calloc(customFntListSize + fntListSize, sizeof(u8));
     fontMap = calloc(customFntListSize + fntListSize, sizeof(char*));
     fontMapSize = customFntListSize + fntListSize;
     for (int i = 0; i < fntListSize; i++) {
