@@ -72,11 +72,14 @@ void InjectHeartPieceCounts_Register() {
     // Heart Pieces don't have documented text IDs after the first one, but
     // there are 3 more in between TEXT_HEART_PIECE and TEXT_HEART_CONTAINER.
     for (uint16_t i = 0; i < 4; i++) {
-        COND_ID_HOOK(OnOpenText, TEXT_HEART_PIECE + i, CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 0),
-                 BuildHeartPieceMessage);
+        COND_ID_HOOK(OnOpenText, TEXT_HEART_PIECE + i,
+                     CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 0), BuildHeartPieceMessage);
     }
 }
 
-static RegisterShipInitFunc initInjectSkulltulaCountFunc(InjectSkulltulaCounts_Register, { CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula") });
-static RegisterShipInitFunc initInjectHeartContainerCountFunc(InjectHeartContainerCounts_Register, { CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer") });
-static RegisterShipInitFunc initInjectHeartPieceCountFunc(InjectHeartPieceCounts_Register, { CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece") });
+static RegisterShipInitFunc initInjectSkulltulaCountFunc(InjectSkulltulaCounts_Register,
+                                                         { CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula") });
+static RegisterShipInitFunc initInjectHeartContainerCountFunc(InjectHeartContainerCounts_Register,
+                                                              { CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer") });
+static RegisterShipInitFunc initInjectHeartPieceCountFunc(InjectHeartPieceCounts_Register,
+                                                          { CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece") });
