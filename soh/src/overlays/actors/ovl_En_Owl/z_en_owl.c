@@ -942,21 +942,21 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
             osSyncPrintf(VT_RST);
             if (GameInteractor_Should(VB_PLAY_OWL_TRAVEL_CS, true, owlType)) {
                 switch (owlType) {
-                case 7:
-                    osSyncPrintf(VT_FGCOL(CYAN));
-                    osSyncPrintf("SPOT 06 の デモがはしった\n"); // "Demo of SPOT 06 has been completed"
-                    osSyncPrintf(VT_RST);
-                    play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaOwlCs);
-                    this->actor.draw = NULL;
-                    break;
-                case 8:
-                case 9:
-                    play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gDMTOwlCs);
-                    this->actor.draw = NULL;
-                    break;
-                default:
-                    assert(0);
-                    break;
+                    case 7:
+                        osSyncPrintf(VT_FGCOL(CYAN));
+                        osSyncPrintf("SPOT 06 の デモがはしった\n"); // "Demo of SPOT 06 has been completed"
+                        osSyncPrintf(VT_RST);
+                        play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaOwlCs);
+                        this->actor.draw = NULL;
+                        break;
+                    case 8:
+                    case 9:
+                        play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gDMTOwlCs);
+                        this->actor.draw = NULL;
+                        break;
+                    default:
+                        assert(0);
+                        break;
                 }
             }
 
