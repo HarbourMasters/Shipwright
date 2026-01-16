@@ -18,12 +18,16 @@ static void MakeLinkFocusOnPot() {
         return;
     }
 
-    BgSpot18Basket* bgSpot18 = (BgSpot18Basket*)Actor_FindNearby(gPlayState, &player->actor, ACTOR_BG_SPOT18_BASKET, ACTORCAT_PROP, 1000.0f);
+    BgSpot18Basket* bgSpot18 =
+        (BgSpot18Basket*)Actor_FindNearby(gPlayState, &player->actor, ACTOR_BG_SPOT18_BASKET, ACTORCAT_PROP, 1000.0f);
     func_8002DF38(gPlayState, &bgSpot18->dyna.actor, 1);
 }
 
 static void RegisterDisableLinkSpinWithGoronPot() {
-    COND_VB_SHOULD(VB_LINK_SPIN_WITH_GORON_POT, CVAR_LINK_SPIN_DISABLE_VALUE, { MakeLinkFocusOnPot(); *should = false; });
+    COND_VB_SHOULD(VB_LINK_SPIN_WITH_GORON_POT, CVAR_LINK_SPIN_DISABLE_VALUE, {
+        MakeLinkFocusOnPot();
+        *should = false;
+    });
 }
 
 static RegisterShipInitFunc initFunc(RegisterDisableLinkSpinWithGoronPot, { CVAR_LINK_SPIN_DISABLE_NAME });
