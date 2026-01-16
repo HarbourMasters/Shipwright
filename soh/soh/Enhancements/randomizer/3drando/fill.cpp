@@ -397,7 +397,7 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
     Rando::ItemLocation* location = ctx->GetItemLocation(loc);
     RandomizerGet locItem = location->GetPlacedRandomizerGet();
     RandomizerCheckQuest quest = Rando::StaticData::GetLocation(loc)->GetQuest();
-    assert(quest == RCQUEST_BOTH ||
+    assert(RAND_GET_OPTION(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC || quest == RCQUEST_BOTH ||
            (quest == RCQUEST_VANILLA && ctx->GetDungeons()->GetDungeonFromScene(parentRegion->scene)->IsVanilla()) ||
            (quest == RCQUEST_MQ && ctx->GetDungeons()->GetDungeonFromScene(parentRegion->scene)->IsMQ()));
 

@@ -2,8 +2,10 @@
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
+#include <atomic>
 #include <filesystem>
 #include <fstream>
+#include <vector>
 #include <chrono>
 
 #include "ResourceManagerHelpers.h"
@@ -37,6 +39,8 @@
 #include "Enhancements/gameplaystats.h"
 #include "ObjectExtension/ObjectExtension.h"
 #include "frame_interpolation.h"
+#include "SohGui/SohMenu.h"
+#include "SohGui/SohGui.hpp"
 #include "variables.h"
 #include "z64.h"
 #include "macros.h"
@@ -145,6 +149,8 @@ Sail* Sail::Instance;
 Anchor* Anchor::Instance;
 
 extern "C" char** cameraStrings;
+
+extern "C" void PadMgr_ThreadEntry(PadMgr* padMgr);
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
 
 Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
@@ -263,25 +269,520 @@ const char* constCameraStrings[] = {
     GFXP_KATAKANA "ｷ-     /   ",
 };
 
+typedef struct {
+    uint16_t major;
+    uint16_t minor;
+    uint16_t patch;
+} OTRVersion;
+
+std::shared_ptr<Fast::Fast3dWindow> sohFast3dWindow;
+static OTRVersion DetectOTRVersion(std::string path, bool isMq);
+static bool VerifyArchiveVersion(OTRVersion version);
+std::string portArchivePath = "";
+static bool sohArchiveVersionMatch = false;
+
 OTRGlobals::OTRGlobals() {
     context = Ship::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
+
+    portArchivePath = Ship::Context::LocateFileAcrossAppDirs("soh.o2r");
+    OTRVersion portArchiveVersion = DetectOTRVersion(portArchivePath, false);
+    sohArchiveVersionMatch = portArchiveVersion.major == gBuildVersionMajor &&
+                             portArchiveVersion.minor == gBuildVersionMinor &&
+                             portArchiveVersion.patch == gBuildVersionPatch;
+
+    context->InitConfiguration();
+    context->InitConsoleVariables();
+
+    auto controlDeck = std::make_shared<LUS::ControlDeck>(std::vector<CONTROLLERBUTTONS_T>({
+        BTN_CUSTOM_MODIFIER1,
+        BTN_CUSTOM_MODIFIER2,
+        BTN_CUSTOM_OCARINA_NOTE_D4,
+        BTN_CUSTOM_OCARINA_NOTE_F4,
+        BTN_CUSTOM_OCARINA_NOTE_A4,
+        BTN_CUSTOM_OCARINA_NOTE_B4,
+        BTN_CUSTOM_OCARINA_NOTE_D5,
+        BTN_CUSTOM_OCARINA_DISABLE_SONGS,
+        BTN_CUSTOM_OCARINA_PITCH_UP,
+        BTN_CUSTOM_OCARINA_PITCH_DOWN,
+    }));
+    context->InitControlDeck(controlDeck);
+    context->InitResourceManager({ portArchivePath }, {}, 3, true);
+    context->InitConsole();
+
+    auto sohInputEditorWindow =
+        std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Configure Controller");
+    sohFast3dWindow =
+        std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({ sohInputEditorWindow }));
+    context->InitWindow(sohFast3dWindow);
+
+    SohGui::SetupMenu();
+
+    if (sohArchiveVersionMatch) {
+
+        auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
+        overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
+        overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
+        overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
+
+        fontMonoSmall = CreateFontWithSize(14.0f, "fonts/Inconsolata-Regular.ttf");
+        fontMono = CreateFontWithSize(16.0f, "fonts/Inconsolata-Regular.ttf");
+        fontMonoLarger = CreateFontWithSize(20.0f, "fonts/Inconsolata-Regular.ttf");
+        fontMonoLargest = CreateFontWithSize(24.0f, "fonts/Inconsolata-Regular.ttf");
+        fontStandard = CreateFontWithSize(16.0f, "fonts/Montserrat-Regular.ttf");
+        fontStandardLarger = CreateFontWithSize(20.0f, "fonts/Montserrat-Regular.ttf");
+        fontStandardLargest = CreateFontWithSize(24.0f, "fonts/Montserrat-Regular.ttf");
+        fontJapanese = CreateFontWithSize(24.0f, "fonts/NotoSansJP-Regular.ttf", true);
+        ImGui::GetIO().FontDefault = fontStandardLarger;
+    }
+
+    previousImGuiScaleIndex = -1;
+    previousImGuiScale = defaultImGuiScale;
+    ScaleImGui();
+}
+
+typedef enum ExtractSteps {
+    ES_PORT_ARCHIVE,
+    ES_WINDOWS,
+    ES_EXTRACT_ARGS,
+    ES_EXTRACT,
+    ES_VERIFY,
+} ExtractSteps;
+
+typedef enum PromptSteps {
+    PS_FILE_CHECK,
+    PS_LOCAL,
+    PS_FIRST,
+    PS_SECOND,
+    PS_DUPE,
+    PS_WAIT,
+    PS_NONE,
+} PromptSteps;
+
+typedef enum WindowsSteps {
+    WS_TEMP,
+    WS_PERMS,
+    WS_ONEDRIVE,
+    WS_DONE,
+} WindowsSteps;
+
+bool IsSubpath(const std::filesystem::path& path, const std::filesystem::path& base) {
+    auto rel = std::filesystem::relative(path, base);
+    return !rel.empty() && rel.native()[0] != '.';
+}
+
+bool PathTestCleanup(FILE* tfile) {
+    try {
+        if (std::filesystem::exists("./text.txt"))
+            std::filesystem::remove("./text.txt");
+        if (std::filesystem::exists("./test/"))
+            std::filesystem::remove("./test/");
+    } catch (std::filesystem::filesystem_error const& ex) { return false; }
+    return true;
+}
+
+void CheckAndCreateModFolder() {
+    try {
+        std::string modsPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
+        if (!std::filesystem::exists(modsPath)) {
+            // Create mods folder relative to app dir
+            modsPath = Ship::Context::GetPathRelativeToAppDirectory("mods", appShortName);
+            std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
+            if (std::filesystem::create_directories(modsPath)) {
+                std::ofstream(filePath).close();
+            }
+        }
+    } catch (std::filesystem::filesystem_error const& ex) {
+        // Couldn't make the folder, continue silently
+        return;
+    }
+}
+
+namespace SohGui {
+extern std::shared_ptr<SohGui::SohMenu> mSohMenu;
+}
+
+void OTRGlobals::RunExtract(int argc, char* argv[]) {
+    bool extractDone = false;
+    ExtractSteps extractStep = ES_PORT_ARCHIVE;
+    WindowsSteps windowsStep = WS_TEMP;
+    auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(OTRGlobals::Instance->context->GetWindow());
+    auto gui = wnd->GetGui();
+
+    OTRVersion vanillaVersion = DetectOTRVersion("oot.o2r", false);
+    OTRVersion mqVersion = DetectOTRVersion("oot-mq.o2r", true);
+
+    bool shouldRegen = VerifyArchiveVersion(vanillaVersion) || VerifyArchiveVersion(mqVersion);
+
+    std::filesystem::path ownPath;
+    std::vector<std::string> args;
+    if (argc > 1) {
+        for (int i = 1; i < argc; i++) {
+            args.push_back(argv[argc]);
+        }
+    }
+    Extractor extract;
+    PromptSteps promptStep = PS_FILE_CHECK;
+    bool generatedIsMQ = false;
+    std::atomic<bool> extracting = false;
+    std::atomic<size_t> extractCount = 0, totalExtract = 0;
+
+    std::string installPath = Ship::Context::GetAppBundlePath();
+    std::string file;
+
+#if defined(__SWITCH__)
+    SohGui::RegisterPopup("Outdated ROM Archives",
+                          "\x1b[2;2HYou've launched the Ship with an old ROM O2R file."
+                          "\x1b[4;2HPlease regenerate a new ROM O2R and relaunch."
+                          "\x1b[6;2HPress the Home button to exit...",
+                          "OK", "", [&]() { exit(1); });
+#elif defined(__WIIU__)
+    SohGui::RegisterPopup("Outdated ROM Archives",
+                          "You've launched the Ship with an old a ROM O2R file.\n\n"
+                          "Please generate a ROM O2R and relaunch.\n\n"
+                          "Press and hold the Power button to shutdown...",
+                          "OK", "", [&]() { exit(1); });
+    OSFatal();
+#endif
+
+    if (!std::filesystem::exists(installPath + "/assets")) {
+        SohGui::RegisterPopup("Extractor assets not found",
+                              "No O2R files found. Missing 'assets/' folder needed to generate OTR file.\nPlease "
+                              "re-extract them from the download or.\n\nExiting...",
+                              "OK", "", [&]() { exit(1); });
+    } else if (shouldRegen) {
+        SohGui::RegisterPopup("Outdated ROM Archives",
+                              "Your oot.o2r or oot-mq.o2r were created with incompatible versions of SoH.\nYou will "
+                              "now be redirected to re-extract them.");
+        std::filesystem::remove("oot.o2r");
+        std::filesystem::remove("oot-mq.o2r");
+    }
+
+    std::shared_ptr<BS::thread_pool> threadPool = std::make_shared<BS::thread_pool>(1);
+    while (!extractDone) {
+        if (SohGui::PopupsQueued() > 0 || extracting) {
+            goto render;
+        }
+        switch (extractStep) {
+            case ES_PORT_ARCHIVE: {
+                if (sohArchiveVersionMatch) {
+#ifdef _WIN32
+                    extractStep = ES_WINDOWS;
+#elif (defined(__WIIU__) || defined(__SWITCH__))
+                    extractStep = ES_VERIFY;
+#else
+                    extractStep = ES_EXTRACT;
+#endif
+                } else {
+                    std::string msg;
+
+#if defined(__SWITCH__)
+                    msg = "\x1b[4;2HPlease re-extract it from the download.\n"
+                          "\x1b[6;2HPress the Home button to exit...";
+#elif defined(__WIIU__)
+                    msg = "Please extract the soh.o2r from the Ship of Harkinian download\nto your folder.\n\nPress "
+                          "and hold the power\n"
+                          "button to shutdown...";
+#else
+                    msg =
+                        "Please extract the soh.o2r from the Ship of Harkinian download to your folder.\n\nExiting...";
+#endif
+                    std::string title =
+                        !std::filesystem::exists(portArchivePath) ? "Missing soh.o2r" : "soh.o2r is outdated";
+                    SohGui::RegisterPopup(title, msg, "OK", "", [&]() { exit(1); });
+                }
+                continue;
+            }
+            case ES_WINDOWS: {
+                switch (windowsStep) {
+                    case WS_TEMP: {
+#ifdef _WIN32
+                        char* tempVar = getenv("TEMP");
+                        std::filesystem::path tempPath;
+                        try {
+                            tempPath = std::filesystem::canonical(tempVar);
+                        } catch (std::filesystem::filesystem_error const& ex) {
+                            std::string userPath = getenv("USERPROFILE");
+                            userPath.append("\\AppData\\Local\\Temp");
+                            tempPath = std::filesystem::canonical(userPath);
+                        }
+                        wchar_t buffer[MAX_PATH];
+                        GetModuleFileName(NULL, buffer, _countof(buffer));
+                        ownPath = std::filesystem::canonical(buffer).parent_path();
+                        if (IsSubpath(ownPath, tempPath)) {
+                            SohGui::RegisterPopup("SoH Path Error",
+                                                  "SoH is running in a temp folder.\nExtract the .zip and run again.",
+                                                  "OK", "", [&]() { exit(0); });
+                        } else {
+                            windowsStep = WS_PERMS;
+                        }
+#endif
+                        continue;
+                    }
+                    case WS_PERMS: {
+                        FILE* tfile = fopen("./text.txt", "w");
+                        std::filesystem::path tfolder = std::filesystem::path("./test/");
+                        bool error = false;
+                        try {
+                            create_directories(tfolder);
+                        } catch (std::filesystem::filesystem_error const& ex) { error = true; }
+                        if (tfile == NULL || error) {
+                            SohGui::RegisterPopup("SoH Permissions Error",
+                                                  "SoH does not have proper file permissions.\nPlease move it to a "
+                                                  "folder that does and run again.",
+                                                  "OK", "", [&]() {
+                                                      fclose(tfile);
+                                                      PathTestCleanup(tfile);
+                                                      exit(0);
+                                                  });
+                        } else {
+                            fclose(tfile);
+                            if (!PathTestCleanup(tfile)) {
+                                SohGui::RegisterPopup("SoH Permissions Error",
+                                                      "SoH does not have proper file permissions.\nPlease move it to a "
+                                                      "folder that does and run again.",
+                                                      "OK", "", [&]() { exit(0); });
+                            }
+                            windowsStep = WS_ONEDRIVE;
+                        }
+                        continue;
+                    }
+                    case WS_ONEDRIVE: {
+                        if (ownPath.string().find("OneDrive") != std::string::npos) {
+                            SohGui::RegisterPopup("SoH Path Error",
+                                                  "SoH appears to be in a OneDrive folder, which will cause issues.\n"
+                                                  "Please move it to a folder outside of OneDrive, like the root of a\n"
+                                                  "drive (e.g. \"C:\\Games\\SoH\").",
+                                                  "OK", "", [&]() { exit(0); });
+                        } else {
+                            windowsStep = WS_DONE;
+                            if (args.size() > 0) {
+                                extractStep = ES_EXTRACT_ARGS;
+                            } else {
+                                extractStep = ES_EXTRACT;
+                            }
+                        }
+                        continue;
+                    }
+                    default:
+                        continue;
+                }
+                break;
+            }
+            case ES_EXTRACT_ARGS: {
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+                if (args.size() == 0) {
+                    SohGui::RegisterPopup(
+                        "Run Ship of Harkinian", "All files have been processed. Run SoH?", "Yes", "No",
+                        [&]() {
+                            if (!std::filesystem::exists(Ship::Context::GetAppDirectoryPath(appShortName) +
+                                                         "/oot.o2r") &&
+                                !std::filesystem::exists(Ship::Context::GetAppDirectoryPath(appShortName) +
+                                                         "/oot-mq.o2r")) {
+                                extractStep = ES_EXTRACT;
+                                promptStep = PS_FILE_CHECK;
+                            } else {
+                                extractStep = ES_VERIFY;
+                            }
+                        },
+                        [&]() { exit(0); });
+                    break;
+                }
+                file = args.at(0);
+                args.erase(args.begin());
+                extract = Extractor();
+                if (extract.RunFileStandalone(file)) {
+                    bool doExtract = true;
+                    std::string archive = (extract.IsMasterQuest() ? "oot-mq.o2r" : "oot.o2r");
+                    if (std::filesystem::exists(Ship::Context::GetAppDirectoryPath(appShortName) + "/" + archive)) {
+                        std::string msg = "Archive for current ROM, " + archive + ", already exists.\nExtract again?";
+                        SohGui::RegisterPopup("Confirm Re-extract", msg.c_str(), "Yes", "No", [&]() {
+                            extracting = true;
+                            threadPool->submit_task([&]() -> void {
+                                extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
+                                                 &extractCount, &totalExtract);
+                                extracting = false;
+                                extractCount = totalExtract = 0;
+                            });
+                        });
+                    } else {
+                        extracting = true;
+                        threadPool->submit_task([&]() -> void {
+                            extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
+                                             &extractCount, &totalExtract);
+                            extracting = false;
+                            extractCount = totalExtract = 0;
+                        });
+                    }
+                } else {
+                    bool open = true;
+                    std::string msg = "File\n" + std::string(file) + "\nis not a ROM or does not match supported ROMs.";
+                    SohGui::RegisterPopup("SoH ROM Error", msg.c_str());
+                }
+#else
+                extractStep = ES_VERIFY;
+#endif
+                break;
+            }
+            case ES_EXTRACT: {
+                switch (promptStep) {
+                    case PS_FILE_CHECK: {
+                        const bool ootO2RExists =
+                            std::filesystem::exists(
+                                Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName)) ||
+                            std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.o2r", appShortName));
+
+                        if (!ootO2RExists) {
+                            SohGui::RegisterPopup(
+                                "No O2R Files", "No O2R files found. Generate one now?", "Yes", "No",
+                                [&]() { promptStep = PS_LOCAL; }, [&]() { exit(0); });
+                        } else {
+                            extractStep = ES_VERIFY;
+                        }
+                        continue;
+                    }
+                    case PS_LOCAL: {
+                        extract = Extractor();
+                        extract.SetSearchPath(installPath);
+                        extract.GetRoms(args);
+                        if (!args.empty()) {
+                            promptStep = PS_WAIT;
+                            SohGui::RegisterPopup(
+                                "ROMs found", "ROMs found in application directory. Would you like to process them?",
+                                "Yes", "No", [&]() { extractStep = ES_EXTRACT_ARGS; },
+                                [&]() { promptStep = PS_FIRST; });
+                        } else {
+                            promptStep = PS_FIRST;
+                        }
+                        continue;
+                    }
+                    case PS_FIRST: {
+                        if (!extract.ManuallySearchForRomMatchingType(RomSearchMode::Both)) {
+                            promptStep = PS_FILE_CHECK;
+                            continue;
+                        }
+                        extracting = true;
+                        threadPool->submit_task([&]() -> void {
+                            extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
+                                             &extractCount, &totalExtract);
+                            generatedIsMQ = extract.IsMasterQuest();
+                            extracting = false;
+                            promptStep = PS_SECOND;
+                            extractCount = 0;
+                            totalExtract = 0;
+                        });
+                        continue;
+                    }
+                    case PS_SECOND: {
+                        SohGui::RegisterPopup(
+                            "Extraction Complete", "ROM Extracted. Extract another?", "Yes", "No",
+                            [&]() {
+                                if (!extract.ManuallySearchForRomMatchingType(generatedIsMQ ? RomSearchMode::Vanilla
+                                                                                            : RomSearchMode::MQ)) {
+                                    extractStep = ES_VERIFY;
+                                } else {
+                                    extracting = true;
+                                    threadPool->submit_task([&]() -> void {
+                                        extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
+                                                         &extractCount, &totalExtract);
+                                        extracting = false;
+                                        extractStep = ES_VERIFY;
+                                        extractCount = 0;
+                                        totalExtract = 0;
+                                    });
+                                }
+                            },
+                            [&]() { extractStep = ES_VERIFY; });
+                        continue;
+                    }
+                    default:
+                        break;
+                }
+                break;
+            }
+            case ES_VERIFY: {
+                const bool ootO2RExists =
+                    std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName)) ||
+                    std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.o2r", appShortName));
+
+                if (!ootO2RExists) {
+                    SohGui::RegisterPopup("No ROM Archives",
+                                          "No ROM O2R files detected. Please generate a ROM O2R and relaunch.", "OK",
+                                          "", [&]() { exit(0); });
+                }
+                extractDone = true;
+                continue;
+            }
+            default:
+                break;
+        }
+
+    render:
+        if (!WindowIsRunning()) {
+            exit(0);
+        }
+        // Process window events for resize, mouse, keyboard events
+        wnd->HandleEvents();
+        UIWidgets::Colors themeColor =
+            static_cast<UIWidgets::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), UIWidgets::Colors::LightBlue));
+        ImGui::PushStyleColor(ImGuiCol_TitleBgActive, UIWidgets::ColorValues.at(themeColor));
+        ImGui::PushStyleColor(ImGuiCol_ModalWindowDimBg, UIWidgets::ColorValues.at(UIWidgets::Colors::DarkGray));
+
+        // Skip dropped frames
+        if (!wnd->IsFrameReady()) {
+            continue;
+        }
+        gui->StartDraw();
+        sohFast3dWindow->StartFrame();
+        sohFast3dWindow->RunGuiOnly();
+        if (extracting && !ImGui::IsPopupOpen("ROM Extraction")) {
+            ImGui::OpenPopup("ROM Extraction");
+        }
+        if (extracting) {
+            ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 8.0f));
+            auto color = UIWidgets::ColorValues.at(THEME_COLOR);
+            ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 0.6f));
+            ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(color.x, color.y, color.z, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
+            if (ImGui::BeginPopupModal("ROM Extraction", NULL,
+                                       ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
+                                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
+                                           ImGuiWindowFlags_NoSavedSettings)) {
+                float progress = (totalExtract > 0.0f ? (float)extractCount / (float)totalExtract : 0) * 100.0f;
+                auto filename = std::filesystem::path(file).filename().string();
+                ImGui::Text("Extracting %s...%s", filename.c_str(),
+                            roundf(progress) == 100.0f ? " Done. Finishing up." : "");
+                std::string overlay = extractCount > 0 ? fmt::format("{:.0f}%", progress) : "Starting Up";
+                ImGui::ProgressBar(progress / 100.0f, ImVec2(600.0f, 50.0f), overlay.c_str());
+                ImGui::EndPopup();
+            }
+            ImGui::PopStyleColor(3);
+            ImGui::PopStyleVar(2);
+        }
+        gui->EndDraw();
+        sohFast3dWindow->EndFrame();
+        ImGui::PopStyleColor(2);
+    }
+
+#ifdef __SWITCH__
+    Ship::Switch::Init(Ship::PreInitPhase);
+#elif defined(__WIIU__)
+    Ship::WiiU::Init(appShortName);
+#endif
+
+#if not defined(__SWITCH__) && not defined(__WIIU__)
+    CheckAndCreateModFolder();
+#endif
 }
 
 void OTRGlobals::Initialize() {
-    std::vector<std::string> OTRFiles;
     std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName);
     if (std::filesystem::exists(mqPath)) {
-        OTRFiles.push_back(mqPath);
+        context->GetResourceManager()->GetArchiveManager()->AddArchive(mqPath);
     }
     std::string ootPath = Ship::Context::LocateFileAcrossAppDirs("oot.o2r", appShortName);
     if (std::filesystem::exists(ootPath)) {
-        OTRFiles.push_back(ootPath);
-    }
-
-    std::string sohOtrPath = Ship::Context::LocateFileAcrossAppDirs("soh.o2r");
-
-    if (std::filesystem::exists(sohOtrPath)) {
-        OTRFiles.push_back(sohOtrPath);
+        context->GetResourceManager()->GetArchiveManager()->AddArchive(ootPath);
     }
 
     std::unordered_set<uint32_t> ValidHashes = {
@@ -306,41 +807,14 @@ void OTRGlobals::Initialize() {
     context->InitFileDropMgr();
 
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
-    context->InitResourceManager(OTRFiles, {}, 3);
     prevAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 1);
     context->GetResourceManager()->SetAltAssetsEnabled(prevAltAssets);
 
-    auto controlDeck = std::make_shared<LUS::ControlDeck>(std::vector<CONTROLLERBUTTONS_T>({
-        BTN_CUSTOM_MODIFIER1,
-        BTN_CUSTOM_MODIFIER2,
-        BTN_CUSTOM_OCARINA_NOTE_D4,
-        BTN_CUSTOM_OCARINA_NOTE_F4,
-        BTN_CUSTOM_OCARINA_NOTE_A4,
-        BTN_CUSTOM_OCARINA_NOTE_B4,
-        BTN_CUSTOM_OCARINA_NOTE_D5,
-        BTN_CUSTOM_OCARINA_DISABLE_SONGS,
-        BTN_CUSTOM_OCARINA_PITCH_UP,
-        BTN_CUSTOM_OCARINA_PITCH_DOWN,
-    }));
-    context->InitControlDeck(controlDeck);
-
     context->InitCrashHandler();
-    context->InitConsole();
-
-    auto sohInputEditorWindow =
-        std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Configure Controller");
-    auto sohFast3dWindow =
-        std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({ sohInputEditorWindow }));
-    context->InitWindow(sohFast3dWindow);
 
     context->GetWindow()->SetAutoCaptureMouse(CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) &&
                                               CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1));
     context->GetWindow()->SetForceCursorVisibility(CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
-
-    auto overlay = context->GetInstance()->GetWindow()->GetGui()->GetGameOverlay();
-    overlay->LoadFont("Press Start 2P", 12.0f, "fonts/PressStart2P-Regular.ttf");
-    overlay->LoadFont("Fipps", 32.0f, "fonts/Fipps-Regular.otf");
-    overlay->SetCurrentFont(CVarGetString(CVAR_GAME_OVERLAY_FONT, "Press Start 2P"));
 
     context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
 
@@ -429,20 +903,6 @@ void OTRGlobals::Initialize() {
     gRandomizer = std::make_shared<Randomizer>();
 
     hasMasterQuest = hasOriginal = false;
-
-    previousImGuiScaleIndex = -1;
-    previousImGuiScale = defaultImGuiScale;
-
-    fontMonoSmall = CreateFontWithSize(14.0f, "fonts/Inconsolata-Regular.ttf", false);
-    fontMono = CreateFontWithSize(16.0f, "fonts/Inconsolata-Regular.ttf", false);
-    fontMonoLarger = CreateFontWithSize(20.0f, "fonts/Inconsolata-Regular.ttf", false);
-    fontMonoLargest = CreateFontWithSize(24.0f, "fonts/Inconsolata-Regular.ttf", false);
-    fontStandard = CreateFontWithSize(16.0f, "fonts/Montserrat-Regular.ttf", false);
-    fontStandardLarger = CreateFontWithSize(20.0f, "fonts/Montserrat-Regular.ttf", false);
-    fontStandardLargest = CreateFontWithSize(24.0f, "fonts/Montserrat-Regular.ttf", false);
-    fontJapanese = CreateFontWithSize(24.0f, "fonts/NotoSansJP-Regular.ttf", true);
-    ImGui::GetIO().FontDefault = fontStandardLarger;
-    ScaleImGui();
 
     // Move the camera strings from read only memory onto the heap (writable memory)
     // This is in OTRGlobals right now because this is a place that will only ever be run once at the beginning of
@@ -961,12 +1421,6 @@ extern "C" void OTRExtScanner() {
     }
 }
 
-typedef struct {
-    uint16_t major;
-    uint16_t minor;
-    uint16_t patch;
-} OTRVersion;
-
 // Read the port version from an OTR file
 OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
     OTRVersion version = {};
@@ -989,281 +1443,34 @@ OTRVersion ReadPortVersionFromOTR(std::string otrPath) {
     return version;
 }
 
-// Check that a soh.o2r exists and matches the version of soh running
-// Otherwise show a message and exit
-void CheckSoHOTRVersion(std::string otrPath) {
-    std::string msg;
-
-#if defined(__SWITCH__)
-    msg = "\x1b[4;2HPlease re-extract it from the download."
-          "\x1b[6;2HPress the Home button to exit...";
-#elif defined(__WIIU__)
-    msg = "Please extract the soh.o2r from the Ship of Harkinian download\nto your folder.\n\nPress and hold the power "
-          "button to shutdown...";
-#else
-    msg = "Please extract the soh.o2r from the Ship of Harkinian download to your folder.\n\nExiting...";
-#endif
-
-    if (!std::filesystem::exists(otrPath)) {
-#if not defined(__SWITCH__) && not defined(__WIIU__)
-        Extractor::ShowErrorBox("soh.o2r file is missing", msg.c_str());
-        exit(1);
-#elif defined(__SWITCH__)
-        Ship::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou are missing the soh.o2r file." + msg).c_str());
-#elif defined(__WIIU__)
-        OSFatal(("You are missing the soh.o2r file\n\n" + msg).c_str());
-#endif
-    }
-
-    OTRVersion otrVersion = ReadPortVersionFromOTR(otrPath);
-
-    if (otrVersion.major != gBuildVersionMajor || otrVersion.minor != gBuildVersionMinor ||
-        otrVersion.patch != gBuildVersionPatch) {
-#if not defined(__SWITCH__) && not defined(__WIIU__)
-        Extractor::ShowErrorBox("soh.o2r file version does not match", msg.c_str());
-        exit(1);
-#elif defined(__SWITCH__)
-        Ship::Switch::PrintErrorMessageToScreen(("\x1b[2;2HYou have an old soh.o2r file." + msg).c_str());
-#elif defined(__WIIU__)
-        OSFatal(("You have an old soh.o2r file\n\n" + msg).c_str());
-#endif
-    }
-}
-
 // Checks the program version stored in the otr and compares the major value to soh
 // For Windows/Mac/Linux if the version doesn't match, offer to
-void DetectOTRVersion(std::string fileName, bool isMQ) {
+OTRVersion DetectOTRVersion(std::string fileName, bool isMQ) {
     bool isOtrOld = false;
     std::string otrPath = Ship::Context::LocateFileAcrossAppDirs(fileName, appShortName);
 
     // Doesn't exist so nothing to do here
     if (!std::filesystem::exists(otrPath)) {
-        return;
+        return { INT16_MAX, INT16_MAX, INT16_MAX };
     }
 
-    OTRVersion otrVersion = ReadPortVersionFromOTR(otrPath);
-
-    if (otrVersion.major != gBuildVersionMajor) {
-        isOtrOld = true;
-    }
-
-    if (isOtrOld) {
-#if not defined(__SWITCH__) && not defined(__WIIU__)
-        char msgBuf[250];
-        char version[18]; // 5 digits for int16_max (x3) + separators + terminator
-
-        if (otrVersion.major != 0 || otrVersion.minor != 0 || otrVersion.patch != 0) {
-            snprintf(version, 18, "%d.%d.%d", otrVersion.major, otrVersion.minor, otrVersion.patch);
-        } else {
-            snprintf(version, 18, "no version found");
-        }
-
-        snprintf(msgBuf, 250,
-                 "The %s file was generated with a different version of Ship of Harkinian.\nOTR version: %s\n\n"
-                 "You must regenerate to be able to play, otherwise the program will exit.\nWould you like to "
-                 "regenerate it now?",
-                 fileName.c_str(), version);
-
-        if (Extractor::ShowYesNoBox("Old OTR File Found", msgBuf) == IDYES) {
-            std::string installPath = Ship::Context::GetAppBundlePath();
-            if (!std::filesystem::exists(installPath + "/assets")) {
-                Extractor::ShowErrorBox(
-                    "Extractor assets not found",
-                    "Unable to regenerate. Missing assets/ folder needed to generate OTR file.\n\nExiting...");
-                exit(1);
-            }
-
-            Extractor extract;
-            if (!extract.Run(Ship::Context::GetAppDirectoryPath(appShortName),
-                             isMQ ? RomSearchMode::MQ : RomSearchMode::Vanilla)) {
-                Extractor::ShowErrorBox("Error", "An error occured, no OTR file was generated.\n\nExiting...");
-                exit(1);
-            }
-            extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName));
-        } else {
-            exit(1);
-        }
-
-#elif defined(__SWITCH__)
-        Ship::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship with an old game OTR file."
-                                                "\x1b[4;2HPlease regenerate a new game OTR and relaunch."
-                                                "\x1b[6;2HPress the Home button to exit...");
-#elif defined(__WIIU__)
-        OSFatal("You've launched the Ship with an old a game OTR file.\n\n"
-                "Please generate a game OTR and relaunch.\n\n"
-                "Press and hold the Power button to shutdown...");
-#endif
-    }
+    return ReadPortVersionFromOTR(otrPath);
 }
 
 extern "C" void Messagebox_ShowErrorBox(char* title, char* body) {
     Extractor::ShowErrorBox(title, body);
 }
 
-bool IsSubpath(const std::filesystem::path& path, const std::filesystem::path& base) {
-    auto rel = std::filesystem::relative(path, base);
-    return !rel.empty() && rel.native()[0] != '.';
-}
-
-bool PathTestCleanup(FILE* tfile) {
-    try {
-        if (std::filesystem::exists("./text.txt"))
-            std::filesystem::remove("./text.txt");
-        if (std::filesystem::exists("./test/"))
-            std::filesystem::remove("./test/");
-    } catch (std::filesystem::filesystem_error const& ex) { return false; }
-    return true;
-}
-
-void CheckAndCreateModFolder() {
-    try {
-        std::string modsPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
-        if (!std::filesystem::exists(modsPath)) {
-            // Create mods folder relative to app dir
-            modsPath = Ship::Context::GetPathRelativeToAppDirectory("mods", appShortName);
-            std::string filePath = modsPath + "/custom_mod_files_go_here.txt";
-            if (std::filesystem::create_directories(modsPath)) {
-                std::ofstream(filePath).close();
-            }
-        }
-    } catch (std::filesystem::filesystem_error const& ex) {
-        // Couldn't make the folder, continue silently
-        return;
+bool VerifyArchiveVersion(OTRVersion version) {
+    if (version.major != INT16_MAX && version.major != gBuildVersionMajor) {
+        return true;
     }
+    return false;
 }
 
 extern "C" void InitOTR(int argc, char* argv[]) {
-#if !defined(__SWITCH__) && !defined(__WIIU__)
-    if (argc > 1) {
-        for (int i = 1; i < argc; i++) {
-            std::string installPath = Ship::Context::GetAppBundlePath();
-            Extractor extract;
-            if (extract.RunFileStandalone(argv[i])) {
-                bool doExtract = true;
-                std::string archive = (extract.IsMasterQuest() ? "oot-mq.o2r" : "oot.o2r");
-                if (std::filesystem::exists(Ship::Context::GetAppBundlePath() + "/" + archive)) {
-                    std::string msg = "Archive for current ROM, " + archive + ", already exists. Extract again?";
-                    doExtract = extract.ShowYesNoBox("Confirm Re-extract", msg.c_str()) == IDYES;
-                }
-                if (doExtract) {
-                    extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName));
-                }
-            } else {
-                std::string msg = "File " + std::string(argv[i]) + " is not a ROM or does not match supported ROMs.";
-                extract.ShowErrorBox("Incompatible File", msg.c_str());
-            }
-        }
-        if (Extractor::ShowYesNoBox("Run Ship of Harkinian", "All files have been processed. Run SoH?") != IDYES) {
-            exit(0);
-        }
-    }
-#endif
     OTRGlobals::Instance = new OTRGlobals();
-#ifdef __SWITCH__
-    Ship::Switch::Init(Ship::PreInitPhase);
-#elif defined(__WIIU__)
-    Ship::WiiU::Init(appShortName);
-#endif
-
-#ifdef _WIN32
-    char* tempVar = getenv("TEMP");
-    std::filesystem::path tempPath;
-    try {
-        tempPath = std::filesystem::canonical(tempVar);
-    } catch (std::filesystem::filesystem_error const& ex) {
-        std::string userPath = getenv("USERPROFILE");
-        userPath.append("\\AppData\\Local\\Temp");
-        tempPath = std::filesystem::canonical(userPath);
-    }
-    wchar_t buffer[MAX_PATH];
-    GetModuleFileName(NULL, buffer, _countof(buffer));
-    auto ownPath = std::filesystem::canonical(buffer).parent_path();
-    if (IsSubpath(ownPath, tempPath)) {
-        Extractor::ShowErrorBox("Error", "SoH is running in a temp folder. Extract the .zip and run again.");
-        exit(1);
-    }
-    FILE* tfile = fopen("./text.txt", "w");
-    std::filesystem::path tfolder = std::filesystem::path("./test/");
-    bool error = false;
-    try {
-        create_directories(tfolder);
-    } catch (std::filesystem::filesystem_error const& ex) { error = true; }
-    if (tfile == NULL || error) {
-        Extractor::ShowErrorBox(
-            "Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
-        PathTestCleanup(tfile);
-        exit(1);
-    }
-    fclose(tfile);
-    if (!PathTestCleanup(tfile)) {
-        Extractor::ShowErrorBox(
-            "Error", "SoH does not have proper file permissions. Please move it to a folder that does and run again.");
-        exit(1);
-    }
-    if (ownPath.string().find("OneDrive") != std::string::npos) {
-        Extractor::ShowErrorBox(
-            "Error",
-            "SoH appears to be in a OneDrive folder, which will cause issues. "
-            "Please move it to a folder outside of OneDrive, like the root of a drive (e.g. \"C:\\Games\\SoH\").");
-        exit(1);
-    }
-#endif
-
-#if not defined(__SWITCH__) && not defined(__WIIU__)
-    CheckAndCreateModFolder();
-#endif
-    const bool ootO2RExists =
-        std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName)) ||
-        std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.o2r", appShortName));
-
-    if (!ootO2RExists) {
-
-#if not defined(__SWITCH__) && not defined(__WIIU__)
-        std::string installPath = Ship::Context::GetAppBundlePath();
-        if (!std::filesystem::exists(installPath + "/assets")) {
-            Extractor::ShowErrorBox(
-                "Extractor assets not found",
-                "No OTR files found. Missing assets/ folder needed to generate OTR file.\n\nExiting...");
-            exit(1);
-        }
-
-        bool generatedOtrIsMQ = false;
-        if (Extractor::ShowYesNoBox("No OTR Files", "No OTR files found. Generate one now?") == IDYES) {
-            Extractor extract;
-            if (!extract.Run(Ship::Context::GetAppDirectoryPath(appShortName))) {
-                Extractor::ShowErrorBox("Error", "An error occured, no OTR file was generated.\n\nExiting...");
-                exit(1);
-            }
-            extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName));
-            generatedOtrIsMQ = extract.IsMasterQuest();
-        } else {
-            exit(1);
-        }
-        if (Extractor::ShowYesNoBox("Extraction Complete", "ROM Extracted. Extract another?") == IDYES) {
-            Extractor extract;
-            if (!extract.Run(Ship::Context::GetAppDirectoryPath(appShortName),
-                             generatedOtrIsMQ ? RomSearchMode::Vanilla : RomSearchMode::MQ)) {
-                Extractor::ShowErrorBox(
-                    "Error",
-                    "An error occured, an OTR file may have been generated by a different step.\n\nContinuing...");
-            } else {
-                extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName));
-            }
-        }
-
-#elif defined(__SWITCH__)
-        Ship::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship without a game OTR file."
-                                                "\x1b[4;2HPlease generate a game OTR and relaunch."
-                                                "\x1b[6;2HPress the Home button to exit...");
-#elif defined(__WIIU__)
-        OSFatal("You've launched the Ship without a game OTR file.\n\n"
-                "Please generate a game OTR and relaunch.\n\n"
-                "Press and hold the Power button to shutdown...");
-#endif
-    }
-
-    DetectOTRVersion("oot.o2r", false);
-    DetectOTRVersion("oot-mq.o2r", true);
+    OTRGlobals::Instance->RunExtract(argc, argv);
 
     OTRGlobals::Instance->Initialize();
     CustomMessageManager::Instance = new CustomMessageManager();
@@ -1279,7 +1486,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
-    ShipInit::InitAll();
+    SohGui::SetupMenuElements();
 
     Rando::StaticData::InitHashMaps();
     OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
@@ -1338,6 +1545,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     if (CVarGetInteger(CVAR_REMOTE_ANCHOR("Enabled"), 0)) {
         Anchor::Instance->Enable();
     }
+    ShipInit::InitAll();
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {
@@ -2145,14 +2353,6 @@ extern "C" void Randomizer_ParseSpoiler(const char* fileLoc) {
     OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc);
 }
 
-extern "C" void Randomizer_LoadHintMessages() {
-    OTRGlobals::Instance->gRandomizer->LoadHintMessages();
-}
-
-extern "C" void Randomizer_LoadMerchantMessages() {
-    OTRGlobals::Instance->gRandomizer->LoadMerchantMessages();
-}
-
 extern "C" bool Randomizer_IsTrialRequired(s32 trialFlag) {
     return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trialFlag);
 }
@@ -2241,539 +2441,6 @@ extern "C" uint8_t Randomizer_GenerateRandomizer() {
 
 extern "C" void Randomizer_ShowRandomizerMenu() {
     SohGui::ShowRandomizerSettingsMenu();
-}
-
-CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
-    s16 giid;
-    if (player->getItemEntry.objectId != OBJECT_INVALID) {
-        giid = player->getItemEntry.getItemId;
-    } else {
-        giid = player->getItemId;
-    }
-    const CustomMessage getItemText =
-        CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
-    return getItemText;
-}
-
-extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
-    MessageContext* msgCtx = &play->msgCtx;
-    uint16_t textId = msgCtx->textId;
-    Font* font = &msgCtx->font;
-    char* buffer = font->msgBuf;
-    const size_t maxBufferSize = sizeof(font->msgBuf);
-    CustomMessage messageEntry;
-    s16 actorParams = 0;
-    if (IS_RANDO) {
-        auto ctx = Rando::Context::GetInstance();
-        if (ctx->GetOption(RSK_SHUFFLE_ENTRANCES)) {
-            s16 entrance = -1;
-            switch (textId) {
-                case TEXT_WATERFALL:
-                    entrance = ENTR_ZORAS_DOMAIN_ENTRANCE;
-                    break;
-                case TEXT_OUTSIDE_FISHING_POND:
-                    entrance = ENTR_FISHING_POND_0;
-                    break;
-                case TEXT_HF_SIGN:
-                    if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE) {
-                        entrance = ENTR_HYRULE_FIELD_STAIRS_EXIT;
-                    } else if (gPlayState->sceneNum == SCENE_GERUDO_VALLEY) {
-                        entrance = ENTR_HYRULE_FIELD_ROCKY_PATH;
-                    } else if (gPlayState->sceneNum == SCENE_LAKE_HYLIA) {
-                        entrance = ENTR_HYRULE_FIELD_FENCE_EXIT;
-                    }
-                    break;
-                case TEXT_HC_GREAT_FAIRY_SIGN:
-                    entrance = ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_DINS_HC;
-                    break;
-                case TEXT_DMT_KAK_SIGN:
-                    if (gPlayState->sceneNum == SCENE_HYRULE_FIELD) {
-                        entrance = ENTR_KAKARIKO_VILLAGE_FRONT_GATE;
-                    } else {
-                        entrance = ENTR_KAKARIKO_VILLAGE_GUARD_GATE;
-                    }
-                    break;
-                case TEXT_KAK_TO_GY_SIGN:
-                    entrance = ENTR_GRAVEYARD_ENTRANCE;
-                    break;
-                case TEXT_KAK_WELL_SIGN:
-                    entrance = ENTR_BOTTOM_OF_THE_WELL_ENTRANCE;
-                    break;
-                case TEXT_KAK_DMT_SIGN:
-                    entrance = ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT;
-                    break;
-                case TEXT_DMT_SIGN:
-                    entrance = ENTR_GROTTOS_13;
-                    break;
-                case TEXT_DMT_DC_SIGN:
-                    entrance = ENTR_DEATH_MOUNTAIN_TRAIL_OUTSIDE_DODONGOS_CAVERN;
-                    break;
-                case TEXT_DMT_GC_SIGN:
-                    entrance = ENTR_GORON_CITY_UPPER_EXIT;
-                    break;
-                case TEXT_GC_SIGN:
-                    if (gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL) {
-                        entrance = ENTR_GORON_CITY_UPPER_EXIT;
-                    } else {
-                        entrance = ENTR_GORON_CITY_DARUNIA_ROOM_EXIT;
-                    }
-                    break;
-                case TEXT_DMT_DMC_SIGN:
-                    entrance = ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT;
-                    break;
-                case TEXT_DMT_SUMMIT_SIGN:
-                    entrance = ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMT;
-                    break;
-                case TEXT_HF_ZR_SIGN:
-                    entrance = ENTR_ZORAS_RIVER_WEST_EXIT;
-                    break;
-                case TEXT_GF_GTG_SIGN:
-                    entrance = ENTR_GERUDO_TRAINING_GROUND_ENTRANCE;
-                    break;
-                case TEXT_KF_SHOP_SIGN:
-                    entrance = ENTR_KOKIRI_SHOP_0;
-                    break;
-                case TEXT_LINKS_HOUSE_SIGN:
-                    entrance = ENTR_LINKS_HOUSE_1;
-                    break;
-                case TEXT_KOKIRI_EXIT_SIGN:
-                    entrance = ENTR_LOST_WOODS_BRIDGE_EAST_EXIT;
-                    break;
-                case TEXT_ZD_SIGN:
-                    if (gPlayState->sceneNum == SCENE_ZORAS_DOMAIN) {
-                        entrance = ENTR_ZORAS_RIVER_WATERFALL_EXIT;
-                    } else {
-                        entrance = ENTR_ZORAS_DOMAIN_KING_ZORA_EXIT;
-                    }
-                    break;
-                case TEXT_ZF_JABU_SIGN:
-                    entrance = ENTR_JABU_JABU_ENTRANCE;
-                    break;
-                case TEXT_KF_LW_SIGN:
-                    entrance = ENTR_LOST_WOODS_SOUTH_EXIT;
-                    break;
-                case TEXT_HF_LON_LON_SIGN:
-                    entrance = ENTR_LON_LON_RANCH_ENTRANCE;
-                    break;
-                case TEXT_LA_SIGN:
-                    entrance = ENTR_LAKE_HYLIA_NORTH_EXIT;
-                    break;
-                case TEXT_LA_LAB_SIGN:
-                    entrance = ENTR_LAKESIDE_LABORATORY_0;
-                    break;
-                case TEXT_GV_SIGN:
-                    if (gPlayState->sceneNum == SCENE_HYRULE_FIELD) {
-                        entrance = ENTR_GERUDO_VALLEY_EAST_EXIT;
-                    } else {
-                        entrance = ENTR_GERUDO_VALLEY_WEST_EXIT;
-                    }
-                    break;
-                case TEXT_ZD_SHOP_SIGN:
-                    entrance = ENTR_ZORA_SHOP_0;
-                    break;
-                case TEXT_OUTSIDE_KOKIRI_SIGN:
-                    entrance = ENTR_MARKET_ENTRANCE_NEAR_GUARD_EXIT;
-                    break;
-                case TEXT_OUTSIDE_MARKET_SIGN:
-                    entrance = ENTR_LON_LON_RANCH_ENTRANCE;
-                    break;
-                case TEXT_MIDO_HOUSE_SIGN:
-                    entrance = ENTR_MIDOS_HOUSE_0;
-                    break;
-                case TEXT_KNOW_IT_ALL_HOUSE_SIGN:
-                    entrance = ENTR_KNOW_IT_ALL_BROS_HOUSE_0;
-                    break;
-                case TEXT_TWINS_HOUSE_SIGN:
-                    entrance = ENTR_TWINS_HOUSE_0;
-                    break;
-                case TEXT_SARIAS_HOUSE_SIGN:
-                    entrance = ENTR_SARIAS_HOUSE_0;
-                    break;
-                case TEXT_NO_DIVING_SIGN:
-                    entrance = ENTR_LAKE_HYLIA_RIVER_EXIT;
-                    break;
-            }
-            if (entrance != -1) {
-                auto entranceCtx = ctx->GetEntranceShuffler();
-                for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
-                    if (Entrance_EntranceIsNull(&entranceCtx->entranceOverrides[i])) {
-                        break;
-                    }
-                    if (entranceCtx->entranceOverrides[i].index == entrance) {
-                        s16 overrideIndex = entranceCtx->entranceOverrides[i].override;
-                        Entrance_SetEntranceDiscovered(entrance, false);
-                        auto data = GetEntranceData(overrideIndex);
-                        font->charTexBuf[0] = (TEXTBOX_TYPE_WOODEN << 4) | TEXTBOX_POS_BOTTOM;
-                        return msgCtx->msgLength = font->msgLength = SohUtils::CopyStringToCharBuffer(
-                                   buffer, data->destination + CustomMessage::MESSAGE_END(), maxBufferSize);
-                    }
-                }
-            }
-        }
-
-        bool nonBeanMerchants = ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) ||
-                                ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL);
-        Player* player = GET_PLAYER(play);
-        if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
-            if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
-                messageEntry = Randomizer::GetIceTrapMessage();
-            } else if (player->getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
-                messageEntry = Randomizer::GetTriforcePieceMessage();
-            } else if (player->getItemEntry.getItemId == RG_ROCS_FEATHER) {
-                messageEntry = Randomizer::GetRocsFeatherMessage();
-            } else {
-                messageEntry = Randomizer_GetCustomGetItemMessage(player);
-            }
-        } else if (textId == TEXT_ITEM_DUNGEON_MAP || textId == TEXT_ITEM_COMPASS) {
-            if (DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS)) {
-                if (textId == TEXT_ITEM_DUNGEON_MAP) {
-                    messageEntry =
-                        OTRGlobals::Instance->gRandomizer->GetMapGetItemMessageWithHint(player->getItemEntry);
-                } else {
-                    messageEntry = Randomizer_GetCustomGetItemMessage(player);
-                }
-            }
-        } else if (textId == TEXT_ITEM_KEY_BOSS) {
-            if (player->getItemEntry.getItemId == RG_GANONS_CASTLE_BOSS_KEY) {
-                if (DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_GANONS_BOSS_KEY)) {
-                    messageEntry = Randomizer_GetCustomGetItemMessage(player);
-                }
-            } else {
-                if (DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_BOSS_KEYSANITY)) {
-                    messageEntry = Randomizer_GetCustomGetItemMessage(player);
-                }
-            }
-        } else if (textId == TEXT_ITEM_KEY_SMALL) {
-            if (player->getItemEntry.getItemId == RG_GERUDO_FORTRESS_SMALL_KEY) {
-                if (Randomizer_GetSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA) {
-                    messageEntry = Randomizer_GetCustomGetItemMessage(player);
-                }
-            } else {
-                if (DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_KEYSANITY)) {
-                    messageEntry = Randomizer_GetCustomGetItemMessage(player);
-                }
-            }
-        } else if (textId == TEXT_NEED_SPECIAL_KEY && ctx->GetOption(RSK_BOSS_KEY_HINT)) {
-            auto rh = RH_NONE;
-            switch (gPlayState->sceneNum) {
-                case SCENE_FOREST_TEMPLE:
-                    rh = RH_FOREST_BOSS_KEY_HINT;
-                    break;
-                case SCENE_FIRE_TEMPLE:
-                    rh = RH_FIRE_BOSS_KEY_HINT;
-                    break;
-                case SCENE_WATER_TEMPLE:
-                    rh = RH_WATER_BOSS_KEY_HINT;
-                    break;
-                case SCENE_SHADOW_TEMPLE:
-                    rh = RH_SHADOW_BOSS_KEY_HINT;
-                    break;
-                case SCENE_SPIRIT_TEMPLE:
-                    rh = RH_SPIRIT_BOSS_KEY_HINT;
-                    break;
-                case SCENE_GANONS_TOWER:
-                    rh = RH_GANONS_BOSS_KEY_HINT;
-                    break;
-            }
-            if (rh != RH_NONE) {
-                messageEntry = ctx->GetHint(rh)->GetHintMessage(MF_AUTO_FORMAT);
-            }
-        } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS &&
-                   Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != RO_GOSSIP_STONES_NONE &&
-                   (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_NOTHING ||
-                    (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_TRUTH &&
-                     Player_GetMask(play) == PLAYER_MASK_TRUTH) ||
-                    (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_STONE &&
-                     CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
-
-            Actor* stone = player->talkActor;
-            RandomizerHint stoneHint = RH_NONE;
-            s16 hintParams = stone->params & 0xFF;
-
-            if (Rando::StaticData::stoneParamsToHint.contains(hintParams)) {
-                stoneHint = Rando::StaticData::stoneParamsToHint[hintParams];
-            } else if (hintParams == 0x18) {
-                // look for the chest in the actorlist to determine
-                // which grotto we're in
-                int numOfActorLists = sizeof(play->actorCtx.actorLists) / sizeof(play->actorCtx.actorLists[0]);
-                for (int i = 0; i < numOfActorLists; i++) {
-                    if (play->actorCtx.actorLists[i].length) {
-                        if (play->actorCtx.actorLists[i].head->id == 10 &&
-                            Rando::StaticData::grottoChestParamsToHint.contains(
-                                play->actorCtx.actorLists[i].head->params)) {
-                            // use the chest params to find the stone hint
-                            stoneHint =
-                                Rando::StaticData::grottoChestParamsToHint[play->actorCtx.actorLists[i].head->params];
-                        }
-                    }
-                }
-            }
-            if (stoneHint == RH_NONE) {
-                messageEntry = CustomMessage("INVALID STONE. PARAMS: " + std::to_string(hintParams));
-            } else {
-                messageEntry = ctx->GetHint(stoneHint)->GetHintMessage(MF_AUTO_FORMAT);
-            }
-        } else if (textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) {
-            // rando hints at altar
-            messageEntry = (LINK_IS_ADULT) ? ctx->GetHint(RH_ALTAR_ADULT)->GetHintMessage(MF_AUTO_FORMAT)
-                                           : ctx->GetHint(RH_ALTAR_CHILD)->GetHintMessage(MF_AUTO_FORMAT);
-        } else if (textId == TEXT_GANONDORF) {
-            if (ctx->GetOption(RSK_GANONDORF_HINT)) {
-                if (ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD) &&
-                    !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
-                    messageEntry = INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT
-                                       ? ctx->GetHint(RH_GANONDORF_HINT)->GetHintMessage(MF_AUTO_FORMAT, 1)
-                                       : ctx->GetHint(RH_GANONDORF_HINT)->GetHintMessage(MF_AUTO_FORMAT, 2);
-                } else {
-                    messageEntry = INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT
-                                       ? ctx->GetHint(RH_GANONDORF_JOKE)->GetHintMessage(MF_AUTO_FORMAT)
-                                       : ctx->GetHint(RH_GANONDORF_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);
-                }
-            }
-        } else if (textId == TEXT_SHEIK_NEED_HOOK || textId == TEXT_SHEIK_HAVE_HOOK) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetSheikMessage(gPlayState->sceneNum, textId);
-            // Shop items each have two message entries, second one offset by NUM_SHOP_ITEMS
-            // textId: TEXT_SHOP_ITEM_RANDOM + (randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1)
-            // textId: TEXT_SHOP_ITEM_RANDOM + ((randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS)
-        } else if (textId >= TEXT_SHOP_ITEM_RANDOM && textId < TEXT_SHOP_ITEM_RANDOM_CONFIRM) {
-            RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(
-                (RandomizerInf)((textId - TEXT_SHOP_ITEM_RANDOM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(rc, TEXT_SHOP_ITEM_RANDOM);
-        } else if (textId >= TEXT_SHOP_ITEM_RANDOM_CONFIRM && textId <= TEXT_SHOP_ITEM_RANDOM_CONFIRM_END) {
-            RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(
-                (RandomizerInf)((textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(rc, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
-        } else if (textId == TEXT_SCRUB_RANDOM) {
-            auto scrubIdentity = ObjectExtension::GetInstance().Get<ScrubIdentity>(player->talkActor);
-            if (scrubIdentity != nullptr) {
-                RandomizerCheck rc =
-                    OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(scrubIdentity->identity.randomizerInf);
-                messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
-                    rc, TEXT_SCRUB_RANDOM, TEXT_SCRUB_RANDOM_FREE,
-                    Randomizer_GetSettingValue(RSK_SCRUB_TEXT_HINT) == RO_GENERIC_OFF);
-            }
-        } else if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), 1) &&
-                   (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
-                    textId == TEXT_HUGE_RUPEE)) {
-            messageEntry = Randomizer::GetRupeeMessage(textId);
-            // In rando, replace Navi's general overworld hints with rando-related gameplay tips
-        } else if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"), 1) &&
-                   textId >= TEXT_NAVI_DEKU_TREE_SUMMONS && textId <= TEXT_NAVI_TRY_TO_KEEP_MOVING) {
-            u16 naviTextId = Random(0, NUM_NAVI_MESSAGES);
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID,
-                                                                           naviTextId, MF_FORMATTED);
-        } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_10) {
-            if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
-                ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)) {
-                messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
-                    RC_ZR_MAGIC_BEAN_SALESMAN, TEXT_BEAN_SALESMAN_BUY_FOR_10, TEXT_NONE,
-                    Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
-            } else if (ctx->GetOption(RSK_SKIP_PLANTING_BEANS)) {
-                // TODO_TRANSLATE Translate into french and german
-                messageEntry =
-                    CustomMessage("For #60 rupees# I'll plant beans across Hyrule, deal?\x1B#Yes&No#", { QM_YELLOW });
-                messageEntry.AutoFormat();
-            }
-        } else if (textId == TEXT_BEAN_SALESMAN_BUY_FOR_100) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(
-                Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN_BUY_FOR_100, MF_AUTO_FORMAT);
-        } else if (textId == TEXT_GRANNYS_SHOP && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) &&
-                   nonBeanMerchants &&
-                   (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
-                RC_KAK_GRANNYS_SHOP, TEXT_GRANNYS_SHOP, TEXT_NONE,
-                Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
-        } else if (textId == TEXT_MEDIGORON && nonBeanMerchants) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
-                RC_GC_MEDIGORON, TEXT_MEDIGORON, TEXT_NONE,
-                Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
-        } else if (textId == TEXT_CARPET_SALESMAN_1 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN) &&
-                   nonBeanMerchants) {
-            if (Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT)) {
-                messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
-                    RC_WASTELAND_BOMBCHU_SALESMAN, TEXT_CARPET_SALESMAN_1, TEXT_NONE,
-                    Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
-            } else {
-                messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
-                    RC_WASTELAND_BOMBCHU_SALESMAN, TEXT_CARPET_SALESMAN_MYSTERIOUS, TEXT_NONE,
-                    Randomizer_GetSettingValue(RSK_MERCHANT_TEXT_HINT) == RO_GENERIC_OFF);
-            }
-        } else if (textId == TEXT_CARPET_SALESMAN_ARMS_DEALER) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId,
-                                                                           MF_AUTO_FORMAT);
-        } else if (textId == TEXT_SKULLTULA_PEOPLE_IM_CURSED) {
-            actorParams = player->talkActor->params;
-            if (actorParams == 1 && ctx->GetOption(RSK_KAK_10_SKULLS_HINT)) {
-                messageEntry = ctx->GetHint(RH_KAK_10_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-            } else if (actorParams == 2 && ctx->GetOption(RSK_KAK_20_SKULLS_HINT)) {
-                messageEntry = ctx->GetHint(RH_KAK_20_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-            } else if (actorParams == 3 && ctx->GetOption(RSK_KAK_30_SKULLS_HINT)) {
-                messageEntry = ctx->GetHint(RH_KAK_30_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-            } else if (actorParams == 4 && ctx->GetOption(RSK_KAK_40_SKULLS_HINT)) {
-                messageEntry = ctx->GetHint(RH_KAK_40_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-            } else if (ctx->GetOption(RSK_KAK_50_SKULLS_HINT)) {
-                messageEntry = ctx->GetHint(RH_KAK_50_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-            }
-        } else if (textId == TEXT_DAMPES_DIARY && ctx->GetOption(RSK_DAMPES_DIARY_HINT)) {
-            messageEntry = ctx->GetHint(RH_DAMPES_DIARY)->GetHintMessage(MF_AUTO_FORMAT);
-        } else if ((textId == TEXT_CHEST_GAME_PROCEED || textId == TEXT_CHEST_GAME_REAL_GAMBLER ||
-                    textId == TEXT_CHEST_GAME_THANKS_A_LOT) &&
-                   play->sceneNum == SCENE_TREASURE_BOX_SHOP && ctx->GetOption(RSK_GREG_HINT)) {
-            messageEntry = ctx->GetHint(RH_GREG_RUPEE)->GetHintMessage(MF_AUTO_FORMAT);
-        } else if (textId == TEXT_WARP_MINUET_OF_FOREST && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
-            messageEntry = ctx->GetHint(RH_MINUET_WARP_LOC)->GetHintMessage(MF_FORMATTED);
-        } else if (textId == TEXT_WARP_BOLERO_OF_FIRE && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
-            messageEntry = ctx->GetHint(RH_BOLERO_WARP_LOC)->GetHintMessage(MF_FORMATTED);
-        } else if (textId == TEXT_WARP_SERENADE_OF_WATER && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
-            messageEntry = ctx->GetHint(RH_SERENADE_WARP_LOC)->GetHintMessage(MF_FORMATTED);
-        } else if (textId == TEXT_WARP_REQUIEM_OF_SPIRIT && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
-            messageEntry = ctx->GetHint(RH_REQUIEM_WARP_LOC)->GetHintMessage(MF_FORMATTED);
-        } else if (textId == TEXT_WARP_NOCTURNE_OF_SHADOW && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
-            messageEntry = ctx->GetHint(RH_NOCTURNE_WARP_LOC)->GetHintMessage(MF_FORMATTED);
-        } else if (textId == TEXT_WARP_PRELUDE_OF_LIGHT && ctx->GetOption(RSK_WARP_SONG_HINTS)) {
-            messageEntry = ctx->GetHint(RH_PRELUDE_WARP_LOC)->GetHintMessage(MF_FORMATTED);
-        } else if (textId >= TEXT_WARP_MINUET_OF_FOREST && textId <= TEXT_WARP_PRELUDE_OF_LIGHT &&
-                   ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID,
-                                                                           TEXT_WARP_MINUET_OF_FOREST, MF_FORMATTED);
-        } else if (textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI || textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
-            messageEntry =
-                CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, textId, MF_AUTO_FORMAT);
-        } else if (textId == TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(
-                Randomizer::hintMessageTableID, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW, MF_AUTO_FORMAT);
-        } else if (textId == TEXT_FIRE_TEMPLE_GORON_OWE_YOU_BIG_TIME ||
-                   (textId >= TEXT_FIRE_TEMPLE_GORON_FALLING_DOORS_SECRET &&
-                    textId <= TEXT_FIRE_TEMPLE_GORON_SOUNDS_DIFFERENT_SECRET)) {
-            u16 choice = Random(0, NUM_GORON_MESSAGES);
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
-        } else if (textId == TEXT_FROGS_UNDERWATER && ctx->GetOption(RSK_FROGS_HINT)) {
-            messageEntry = ctx->GetHint(RH_FROGS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-        } else if (Randomizer_GetSettingValue(RSK_LOACH_HINT) &&
-                   (textId == TEXT_FISHING_CLOUDY || textId == TEXT_FISHING_TRY_ANOTHER_LURE ||
-                    textId == TEXT_FISHING_SECRETS || textId == TEXT_FISHING_GOOD_FISHERMAN ||
-                    textId == TEXT_FISHING_DIFFERENT_POND || textId == TEXT_FISHING_SCRATCHING ||
-                    textId == TEXT_FISHING_TRY_ANOTHER_LURE_WITH_SINKING_LURE)) {
-            messageEntry = ctx->GetHint(RH_LOACH_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-        } else if ((textId == TEXT_FISHING_POND_START || textId == TEXT_FISHING_POND_START_MET) &&
-                   ctx->GetOption(RSK_SHUFFLE_FISHING_POLE) && !Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND)) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetFishingPondOwnerMessage(textId);
-        } else if (textId == TEXT_SARIA_SFM && gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW &&
-                   ctx->GetOption(RSK_SARIA_HINT)) {
-            messageEntry = ctx->GetHint(RH_SARIA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);
-        } else if ((textId >= TEXT_SARIAS_SONG_FACE_TO_FACE && textId <= TEXT_SARIAS_SONG_CHANNELING_POWER) &&
-                   ctx->GetOption(RSK_SARIA_HINT)) {
-            messageEntry = ctx->GetHint(RH_SARIA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 1);
-        } else if ((textId == TEXT_MIDO_SPEAK_TO_MIDO_FIRST_TIME || textId == TEXT_MIDO_SPEAK_TO_MIDO_AGAIN ||
-                    textId == TEXT_MIDO_HOME_AFTER_ZELDAS_LETTER || textId == TEXT_MIDO_HOME_BEFORE_ZELDAS_LETTER) &&
-                   ctx->GetOption(RSK_MIDO_HINT)) {
-            messageEntry = ctx->GetHint(RH_MIDO_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-        } else if (ctx->GetOption(RSK_BIGGORON_HINT) &&
-                   (textId == TEXT_BIGGORON_BETTER_AT_SMITHING || textId == TEXT_BIGGORON_WAITING_FOR_YOU ||
-                    textId == TEXT_BIGGORON_RETURN_AFTER_A_FEW_DAYS || textId == TEXT_BIGGORON_I_MAAAADE_THISSSS)) {
-            messageEntry = ctx->GetHint(RH_BIGGORON_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-        } else if (ctx->GetOption(RSK_BIG_POES_HINT) &&
-                   (textId == TEXT_GHOST_SHOP_EXPLAINATION || textId == TEXT_GHOST_SHOP_CARD_HAS_POINTS)) {
-            messageEntry = ctx->GetHint(RH_BIG_POES_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-        } else if (ctx->GetOption(RSK_CHICKENS_HINT) &&
-                   (textId >= TEXT_ANJU_PLEASE_BRING_MY_CUCCOS_BACK && textId <= TEXT_ANJU_PLEASE_BRING_1_CUCCO)) {
-            messageEntry = ctx->GetHint(RH_CHICKENS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-        } else if ((textId == TEXT_MALON_EVERYONE_TURNING_EVIL || textId == TEXT_MALON_I_SING_THIS_SONG) &&
-                   ctx->GetOption(RSK_MALON_HINT)) {
-            messageEntry = ctx->GetHint(RH_MALON_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);
-        } else if (textId == TEXT_MALON_HOW_IS_EPONA_DOING && ctx->GetOption(RSK_MALON_HINT)) {
-            messageEntry = ctx->GetHint(RH_MALON_HINT)->GetHintMessage(MF_AUTO_FORMAT, 1);
-        } else if (textId == TEXT_MALON_OBSTICLE_COURSE && ctx->GetOption(RSK_MALON_HINT)) {
-            messageEntry = ctx->GetHint(RH_MALON_HINT)->GetHintMessage(MF_AUTO_FORMAT, 2);
-        } else if (textId == TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED && ctx->GetOption(RSK_MALON_HINT)) {
-            messageEntry = ctx->GetHint(RH_MALON_HINT)->GetHintMessage(MF_AUTO_FORMAT, 3);
-        } else if (ctx->GetOption(RSK_KAK_100_SKULLS_HINT) && textId == TEXT_SKULLTULA_PEOPLE_MAKE_YOU_VERY_RICH) {
-            messageEntry = ctx->GetHint(RH_KAK_100_SKULLS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-        } else if (textId == TEXT_GF_HBA_SIGN && ctx->GetOption(RSK_HBA_HINT)) {
-            messageEntry = ctx->GetHint(RH_HBA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);
-        } else if (textId == TEXT_HBA_NOT_ON_HORSE && ctx->GetOption(RSK_HBA_HINT)) {
-            messageEntry = ctx->GetHint(RH_HBA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 1);
-        } else if (textId == TEXT_HBA_INITIAL_EXPLAINATION && ctx->GetOption(RSK_HBA_HINT)) {
-            messageEntry = ctx->GetHint(RH_HBA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 2);
-        } else if (textId == TEXT_HBA_ALREADY_HAVE_1000 && ctx->GetOption(RSK_HBA_HINT)) {
-            messageEntry = ctx->GetHint(RH_HBA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 3);
-        } else if (textId == TEXT_CARPET_SALESMAN_CUSTOM_FAIL_TO_BUY) {
-            messageEntry =
-                CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_AUTO_FORMAT);
-        } else if (textId == TEXT_MASK_SHOP_SIGN && ctx->GetOption(RSK_MASK_SHOP_HINT)) {
-            messageEntry = ctx->GetHint(RH_MASK_SHOP_HINT)->GetHintMessage(MF_AUTO_FORMAT);
-        } else if (textId == TEXT_BIG_POE_COLLECTED_RANDO) {
-            messageEntry =
-                CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_AUTO_FORMAT);
-        } else if (textId == TEXT_GERUDO_GUARD_FRIENDLY && player->talkActor->id == ACTOR_EN_GE2 &&
-                   gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS) {
-            // TODO_TRANSLATE Translate into french and german
-            messageEntry = CustomMessage("Want me to throw you in jail?&\x1B#Yes please&No thanks#", { QM_GREEN });
-            messageEntry.AutoFormat();
-        }
-    }
-    if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"), 0) != 0) {
-            // The freeze text cannot be manually dismissed and must be auto-dismissed.
-            // This is fine and even wanted when skull tokens are not shuffled, but when
-            // when they are shuffled we want to be able to manually dismiss the box.
-            // Otherwise if we get a token from a chest or an NPC we get stuck in the ItemGet
-            // animation until the text box auto-dismisses.
-            // RANDOTODO: Implement a way to determine if an item came from a skulltula and
-            // inject the auto-dismiss control code if it did.
-            bool gsTokensShuffled = Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF;
-            if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 && !(IS_RANDO && gsTokensShuffled)) {
-                textId = TEXT_GS_NO_FREEZE;
-            } else {
-                textId = TEXT_GS_FREEZE;
-            }
-            // In vanilla, GS token count is incremented prior to the text box displaying
-            // In rando we need to bump the token count by one to show the correct count
-            s16 gsCount = gSaveContext.inventory.gsTokens + ((IS_RANDO && gsTokensShuffled) ? 1 : 0);
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_FORMATTED);
-            messageEntry.Replace("[[gsCount]]", std::to_string(gsCount));
-        } else if (CVarGetInteger(CVAR_ENHANCEMENT("SkulltulaFreeze"), 0) != 0 &&
-                   (!IS_RANDO || Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) == RO_TOKENSANITY_OFF)) {
-            messageEntry = CustomMessage::LoadVanillaMessageTableEntry(TEXT_GS_FREEZE);
-            messageEntry.Replace(CustomMessage::MESSAGE_END(), "\x0E\x3C");
-            messageEntry += CustomMessage::MESSAGE_END();
-        }
-    } else if ((IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0)) &&
-               (textId == TEXT_BUY_BOMBCHUS_10_DESC || textId == TEXT_BUY_BOMBCHUS_10_PROMPT)) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId, MF_FORMATTED);
-    } else if (textId == TEXT_HEART_CONTAINER &&
-               CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartContainer"), 0)) {
-        messageEntry =
-            CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER, MF_FORMATTED);
-        messageEntry.Replace("[[heartContainerCount]]", std::to_string(gSaveContext.ship.stats.heartContainers + 1));
-    } else if (textId >= TEXT_HEART_PIECE && textId < TEXT_HEART_CONTAINER &&
-               CVarGetInteger(CVAR_ENHANCEMENT("InjectItemCounts.HeartPiece"), 0)) {
-        messageEntry =
-            CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE, MF_FORMATTED);
-        messageEntry.Replace("[[heartPieceCount]]", std::to_string(gSaveContext.ship.stats.heartPieces + 1));
-    } else if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger(CVAR_ENHANCEMENT("MarketSneak"), 0) &&
-               play->sceneNum == SCENE_MARKET_ENTRANCE_NIGHT) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT,
-                                                                       MF_FORMATTED);
-    }
-    if (textId == TEXT_FISHERMAN_LEAVE && CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0)) {
-        messageEntry =
-            CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_FISHERMAN_LEAVE, MF_FORMATTED);
-    }
-    font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
-    switch (gSaveContext.language) {
-        case LANGUAGE_FRA:
-            return msgCtx->msgLength = font->msgLength =
-                       SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetFrench(MF_RAW), maxBufferSize);
-        case LANGUAGE_GER:
-            return msgCtx->msgLength = font->msgLength =
-                       SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetGerman(MF_RAW), maxBufferSize);
-        case LANGUAGE_ENG:
-        default:
-            return msgCtx->msgLength = font->msgLength =
-                       SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetEnglish(MF_RAW), maxBufferSize);
-    }
-    return false;
 }
 
 extern "C" void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex) {

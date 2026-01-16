@@ -104,23 +104,22 @@ UIWidgets::Colors GetMenuThemeColor() {
     return mSohMenu->GetMenuThemeColor();
 }
 
-void SetupGuiElements() {
+void SetupMenu() {
     auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
-
-    /*mSohMenuBar = std::make_shared<SohMenuBar>(CVAR_MENU_BAR_OPEN, CVarGetInteger(CVAR_MENU_BAR_OPEN, 0));
-    gui->SetMenuBar(std::reinterpret_pointer_cast<Ship::GuiMenuBar>(mSohMenuBar));
-
-    if (!gui->GetMenuBar() && !CVarGetInteger("gSettings.DisableMenuShortcutNotify", 0)) {
-#if defined(__SWITCH__) || defined(__WIIU__)
-        gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Press - to access enhancements menu");
-#else
-        gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Press F1 to access enhancements menu");
-        gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Press F2 to enable the mouse cursor");
-#endif
-    }*/
-
     mSohMenu = std::make_shared<SohMenu>(CVAR_WINDOW("Menu"), "Port Menu");
     gui->SetMenu(mSohMenu);
+
+    mModalWindow = std::make_shared<SohModalWindow>(CVAR_WINDOW("ModalWindow"), "Modal Window");
+    gui->AddGuiWindow(mModalWindow);
+    mModalWindow->Show();
+}
+
+void SetupMenuElements() {
+    mSohMenu->AddMenuElements();
+}
+
+void SetupGuiElements() {
+    auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
 
     mConsoleWindow = std::make_shared<SohConsoleWindow>(CVAR_WINDOW("SohConsole"), "Console##SoH", ImVec2(820, 630));
     gui->AddGuiWindow(mConsoleWindow);
@@ -195,9 +194,6 @@ void SetupGuiElements() {
     mPlandomizerWindow =
         std::make_shared<PlandomizerWindow>(CVAR_WINDOW("PlandomizerEditor"), "Plandomizer Editor", ImVec2(850, 760));
     gui->AddGuiWindow(mPlandomizerWindow);
-    mModalWindow = std::make_shared<SohModalWindow>(CVAR_WINDOW("ModalWindow"), "Modal Window");
-    gui->AddGuiWindow(mModalWindow);
-    mModalWindow->Show();
     mNotificationWindow = std::make_shared<Notification::Window>(CVAR_WINDOW("Notifications"), "Notifications Window");
     gui->AddGuiWindow(mNotificationWindow);
     mNotificationWindow->Show();
@@ -245,6 +241,18 @@ void Destroy() {
 void RegisterPopup(std::string title, std::string message, std::string button1, std::string button2,
                    std::function<void()> button1callback, std::function<void()> button2callback) {
     mModalWindow->RegisterPopup(title, message, button1, button2, button1callback, button2callback);
+}
+
+size_t PopupsQueued() {
+    return mModalWindow->PopupsQueued();
+}
+
+bool DismissPopup(std::string title) {
+    if (mModalWindow->IsPopupOpen(title)) {
+        mModalWindow->DismissPopup();
+        return true;
+    }
+    return false;
 }
 
 void ShowRandomizerSettingsMenu() {

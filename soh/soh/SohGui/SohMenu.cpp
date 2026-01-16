@@ -81,8 +81,7 @@ SohMenu::SohMenu(const std::string& consoleVariable, const std::string& name)
     : Menu(consoleVariable, name, 0, UIWidgets::Colors::LightBlue) {
 }
 
-void SohMenu::InitElement() {
-    Ship::Menu::InitElement();
+void SohMenu::AddMenuElements() {
     AddMenuSettings();
     AddMenuEnhancements();
     AddMenuRandomizer();
@@ -96,6 +95,12 @@ void SohMenu::InitElement() {
     for (auto& initFunc : MenuInit::GetInitFuncs()) {
         initFunc();
     }
+
+    mMenuElementsInitialized = true;
+}
+
+void SohMenu::InitElement() {
+    Ship::Menu::InitElement();
 
     disabledMap = {
         { DISABLE_FOR_NO_VSYNC,
@@ -166,6 +171,8 @@ void SohMenu::Draw() {
 }
 
 void SohMenu::DrawElement() {
-    Ship::Menu::DrawElement();
+    if (mMenuElementsInitialized) {
+        Ship::Menu::DrawElement();
+    }
 }
 } // namespace SohGui

@@ -18,11 +18,12 @@ Item::Item()
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
            const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
            const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
-           const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_,
-           const bool progressive_, const uint16_t price_)
+           const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_, Text article_,
+           const std::string color_, const bool progressive_, const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), category(category_), progressive(progressive_),
-      price(price_) {
+      advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), category(category_),
+      article(std::move(article_)), color(std::move(color_)), progressive(progressive_), price(price_) {
+
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
         giEntry = std::make_shared<GetItemEntry>(GetItemEntry{
             itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_,
@@ -38,13 +39,12 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
 
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
            const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_,
-           const GetItemCategory category_, const bool progressive_, const uint16_t price_)
+           const GetItemCategory category_, Text article_, const std::string color_, const bool progressive_,
+           const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), category(category_), progressive(progressive_),
-      price(price_) {
+      advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), category(category_),
+      article(std::move(article_)), color(std::move(color_)), progressive(progressive_), price(price_) {
 }
-
-Item::~Item() = default;
 
 void Item::ApplyEffect() const {
     auto ctx = Rando::Context::GetInstance();
@@ -66,6 +66,14 @@ void Item::UndoEffect() const {
 
 const Text& Item::GetName() const {
     return name;
+}
+
+const Text& Item::GetArticle() const {
+    return article;
+}
+
+const std::string& Item::GetColor() const {
+    return color;
 }
 
 bool Item::IsAdvancement() const {

@@ -38,6 +38,7 @@ class SohMenu : public Ship::Menu {
 
     void AddSidebarEntry(std::string sectionName, std::string sidbarName, uint32_t columnCount);
     WidgetInfo& AddWidget(WidgetPath& pathInfo, std::string widgetName, WidgetType widgetType);
+    void AddMenuElements();
     void AddMenuSettings();
     void AddMenuEnhancements();
     void AddMenuDevTools();
@@ -48,6 +49,7 @@ class SohMenu : public Ship::Menu {
   private:
     char mGitCommitHashTruncated[8];
     bool mIsTaggedVersion;
+    bool mMenuElementsInitialized = false;
 };
 } // namespace SohGui
 
