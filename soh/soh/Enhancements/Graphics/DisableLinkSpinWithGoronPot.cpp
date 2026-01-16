@@ -3,7 +3,6 @@
 
 extern "C" {
 #include "functions.h"
-#include "macros.h"
 #include "src/overlays/actors/ovl_Bg_Spot18_Basket/z_bg_spot18_basket.h"
 extern PlayState* gPlayState;
 }
@@ -13,14 +12,11 @@ static constexpr int32_t CVAR_LINK_SPIN_DISABLE_DEFAULT = 0;
 #define CVAR_LINK_SPIN_DISABLE_VALUE CVarGetInteger(CVAR_LINK_SPIN_DISABLE_NAME, CVAR_LINK_SPIN_DISABLE_DEFAULT)
 
 static void MakeLinkFocusOnPot() {
-    Player* player = GET_PLAYER(gPlayState);
-    if (player == NULL) {
-        return;
-    }
-
     BgSpot18Basket* bgSpot18 =
-        (BgSpot18Basket*)Actor_FindNearby(gPlayState, &player->actor, ACTOR_BG_SPOT18_BASKET, ACTORCAT_PROP, 1000.0f);
-    func_8002DF38(gPlayState, &bgSpot18->dyna.actor, 1);
+        (BgSpot18Basket*)Actor_Find(&gPlayState->actorCtx, ACTOR_BG_SPOT18_BASKET, ACTORCAT_PROP);
+    if (bgSpot18 != NULL) {
+        func_8002DF38(gPlayState, &bgSpot18->dyna.actor, 1);
+    }
 }
 
 static void RegisterDisableLinkSpinWithGoronPot() {
