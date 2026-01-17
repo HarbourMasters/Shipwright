@@ -290,6 +290,7 @@ Color_RGBA8 Color_Saved_Extra = { 0, 185, 0, 255 };               // Green
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 static ImGuiTextFilter checkSearch;
+static s32 previousAge = 0;
 static bool recalculateAvailable = false;
 std::array<bool, RCAREA_INVALID> filterAreasHidden = { 0 };
 std::array<bool, RC_MAX> filterChecksHidden = { 0 };
@@ -2426,6 +2427,11 @@ void CheckTrackerWindow::DrawElement() {
         ImGui::Text("Waiting for file load..."); // TODO Language
         EndFloatWindows();
         return;
+    }
+
+    if (gSaveContext.linkAge != previousAge) {
+        previousAge = gSaveContext.linkAge;
+        recalculateAvailable = true;
     }
 
     if (recalculateAvailable) {
