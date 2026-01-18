@@ -5,7 +5,13 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-static void AllowThrowOnlyDrop(Actor* actor) {
+static int sDropThrowOnlyLastValue = -1;
+
+static void AllowThrowOnlyDrop(Actor* actor, int cvarValue) {
+    if (actor == nullptr) {
+        return;
+    }
+
     switch (actor->id) {
         case ACTOR_EN_ISHI:
         case ACTOR_EN_KUSA:
@@ -16,7 +22,7 @@ static void AllowThrowOnlyDrop(Actor* actor) {
             return;
     }
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("DropThrowOnlyObjects"), 0)) {
+    if (cvarValue) {
         actor->flags &= ~ACTOR_FLAG_THROW_ONLY;
     } else {
         actor->flags |= ACTOR_FLAG_THROW_ONLY;
@@ -24,38 +30,36 @@ static void AllowThrowOnlyDrop(Actor* actor) {
 }
 
 static void OnThrowOnlyActorInit(void* actorPtr) {
-    if (gPlayState == nullptr) {
+    if (gPlayState == nullptr || actorPtr == nullptr) {
         return;
     }
 
-    AllowThrowOnlyDrop((Actor*)actorPtr);
+    // Use current cvar state for newly spawned actors too
+    const int currentValue = CVarGetInteger(CVAR_ENHANCEMENT("DropThrowOnlyObjects"), 0);
+    AllowThrowOnlyDrop((Actor*)actorPtr, currentValue);
 }
 
-static int sDropThrowOnlyLastValue = -1;
-
-static void DropThrowOnlyCVarWatcher(void*) {
+static void DropThrowOnlyCVarWatcher() {
     if (gPlayState == nullptr) {
         return;
     }
 
-    int currentValue = CVarGetInteger(CVAR_ENHANCEMENT("DropThrowOnlyObjects"), 0);
-    if (currentValue == sDropThrowOnlyLastValue) {
-        return;
-    }
+    const int currentValue = CVarGetInteger(CVAR_ENHANCEMENT("DropThrowOnlyObjects"), 0);
+
     sDropThrowOnlyLastValue = currentValue;
 
     for (int category = 0; category < ACTORCAT_MAX; category++) {
-        Actor* actor = gPlayState->actorCtx.actorLists[category].head;
-        while (actor != nullptr) {
-            AllowThrowOnlyDrop(actor);
-            actor = actor->next;
+        for (Actor* actor = gPlayState->actorCtx.actorLists[category].head; actor != nullptr; actor = actor->next) {
+            AllowThrowOnlyDrop(actor, currentValue);
         }
     }
 }
 
 void RegisterAllowThrowOnlyDrop() {
-    COND_HOOK(OnActorInit, CVarGetInteger(CVAR_ENHANCEMENT("DropThrowOnlyObjects")), OnThrowOnlyActorInit);
-    COND_HOOK(OnActorUpdate, CVarGetInteger(CVAR_ENHANCEMENT("DropThrowOnlyObjects"), 0) != sDropThrowOnlyLastValue,
+    // Always enabled so newly spawned actors match the current cvar state.
+    COND_HOOK(OnActorInit, true, OnThrowOnlyActorInit);
+
+    COND_HOOK(OnGameFrameUpdate, CVarGetInteger(CVAR_ENHANCEMENT("DropThrowOnlyObjects"), 0) != sDropThrowOnlyLastValue,
               DropThrowOnlyCVarWatcher);
 }
 
