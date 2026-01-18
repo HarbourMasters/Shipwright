@@ -1,7 +1,7 @@
 #include "SaveManager.h"
 #include "OTRGlobals.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
-#include "Enhancements/randomizer/context.h"
+#include "Enhancements/randomizer/SeedContext.h"
 #include "Enhancements/randomizer/entrance.h"
 #include "Enhancements/randomizer/dungeon.h"
 #include "Enhancements/randomizer/trial.h"
@@ -466,6 +466,7 @@ void SaveManager::Init() {
         }
     }
     saveBlock = nlohmann::json::object();
+    OTRGlobals::Instance->gRandoContext->ClearItemLocations();
 }
 
 void SaveManager::StartupCheckAndInitMeta(int fileNum) {
@@ -601,9 +602,18 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].gregFound = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
     fileMetaInfo[fileNum].filenameLanguage = gSaveContext.ship.filenameLanguage;
     fileMetaInfo[fileNum].hasWallet = Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) || !IS_RANDO;
+    fileMetaInfo[fileNum].triforcePieces =
+        IS_RANDO ? gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected : 0;
+    fileMetaInfo[fileNum].hasFishingRod = Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND) || !IS_RANDO;
     fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
     fileMetaInfo[fileNum].health = gSaveContext.health;
     auto randoContext = Rando::Context::GetInstance();
+
+    fileMetaInfo[fileNum].maxTriforcePieces = IS_RANDO && (bool)randoContext->GetOption(RSK_TRIFORCE_HUNT)
+                                                  ? randoContext->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1
+                                                  : 0;
+    fileMetaInfo[fileNum].fishingPoleShuffled =
+        IS_RANDO ? (bool)randoContext->GetOption(RSK_SHUFFLE_FISHING_POLE) : false;
 
     for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].seedHash); i++) {
         fileMetaInfo[fileNum].seedHash[i] = randoContext->hashIconIndexes[i];
@@ -1084,6 +1094,9 @@ void SaveManager::InitFileMaxed() {
 
     gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
+
+    Flags_SetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE);
+    Flags_SetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER);
 }
 
 #if defined(__WIIU__) || defined(__SWITCH__)
@@ -1621,6 +1634,7 @@ void SaveManager::LoadBaseVersion2() {
             SaveManager::Instance->LoadData("", gSaveContext.ship.stats.dungeonKeys[i]);
         });
         SaveManager::Instance->LoadData("rtaTiming", gSaveContext.ship.stats.rtaTiming);
+        SaveManager::Instance->LoadData("firstInput", gSaveContext.ship.stats.firstInput);
         SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
         SaveManager::Instance->LoadData("playTimer", gSaveContext.ship.stats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.ship.stats.pauseTimer);
@@ -1838,6 +1852,7 @@ void SaveManager::LoadBaseVersion3() {
             SaveManager::Instance->LoadData("", gSaveContext.ship.stats.dungeonKeys[i]);
         });
         SaveManager::Instance->LoadData("rtaTiming", gSaveContext.ship.stats.rtaTiming);
+        SaveManager::Instance->LoadData("firstInput", gSaveContext.ship.stats.firstInput);
         SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
         SaveManager::Instance->LoadData("playTimer", gSaveContext.ship.stats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.ship.stats.pauseTimer);
@@ -2574,8 +2589,8 @@ typedef struct {
     /* 0x13D0 */ s16 timerSeconds;
     /* 0x13D2 */ s16 subTimerState;
     /* 0x13D4 */ s16 subTimerSeconds;
-    /* 0x13D6 */ s16 timerX[2];
-    /* 0x13DA */ s16 timerY[2];
+    /* 0x13D6 */ s16 timerX[TIMER_ID_MAX];
+    /* 0x13DA */ s16 timerY[TIMER_ID_MAX];
     /* 0x13DE */ char unk_13DE[0x0002];
     /* 0x13E0 */ u8 seqId;
     /* 0x13E1 */ u8 natureAmbienceId;

@@ -16,7 +16,7 @@ extern "C" {
 #define FAIRY_FLAG_TIMED (1 << 8)
 
 void ShuffleFairies_DrawRandomizedItem(EnElf* enElf, PlayState* play) {
-    const auto fairyIdentity = ObjectExtension::GetInstance().Get<FairyIdentity>(&enElf->actor);
+    const auto fairyIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&enElf->actor);
     if (fairyIdentity == nullptr) {
         return;
     }
@@ -35,14 +35,14 @@ void ShuffleFairies_DrawRandomizedItem(EnElf* enElf, PlayState* play) {
     Matrix_Pop();
 }
 
-bool ShuffleFairies_FairyExists(FairyIdentity fairyIdentity) {
+bool ShuffleFairies_FairyExists(CheckIdentity fairyIdentity) {
     Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_ITEMACTION].head;
 
     while (actor != NULL) {
         if (actor->id != ACTOR_EN_ELF) {
             actor = actor->next;
         } else {
-            const auto actorFairyIdentity = ObjectExtension::GetInstance().Get<FairyIdentity>(&actor);
+            const auto actorFairyIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&actor);
             if (actorFairyIdentity != nullptr && fairyIdentity.randomizerInf == actorFairyIdentity->randomizerInf) {
                 return true;
             }
@@ -53,8 +53,8 @@ bool ShuffleFairies_FairyExists(FairyIdentity fairyIdentity) {
     return false;
 }
 
-FairyIdentity ShuffleFairies_GetFairyIdentity(int32_t params) {
-    FairyIdentity fairyIdentity;
+CheckIdentity ShuffleFairies_GetFairyIdentity(int32_t params) {
+    CheckIdentity fairyIdentity;
     s16 sceneNum = gPlayState->sceneNum;
     fairyIdentity.randomizerInf = RAND_INF_MAX;
 
@@ -77,11 +77,11 @@ FairyIdentity ShuffleFairies_GetFairyIdentity(int32_t params) {
 }
 
 static bool SpawnFairy(f32 posX, f32 posY, f32 posZ, int32_t params, FairyType fairyType) {
-    FairyIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params);
+    CheckIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params);
     if (!Flags_GetRandomizerInf(fairyIdentity.randomizerInf)) {
         Actor* fairy = Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_ELF, posX, posY - 30.0f, posZ, 0, 0, 0,
                                    fairyType, true);
-        ObjectExtension::GetInstance().Set<FairyIdentity>(fairy, std::move(fairyIdentity));
+        ObjectExtension::GetInstance().Set<CheckIdentity>(fairy, std::move(fairyIdentity));
         fairy->draw = (ActorFunc)ShuffleFairies_DrawRandomizedItem;
         return true;
     }
@@ -98,14 +98,19 @@ void RegisterShuffleFairies() {
     // Grant item when picking up fairy.
     COND_VB_SHOULD(VB_FAIRY_HEAL, shouldRegister, {
         EnElf* enElf = va_arg(args, EnElf*);
-
-        const auto fairyIdentity = ObjectExtension::GetInstance().Get<FairyIdentity>(&enElf->actor);
-        if (fairyIdentity == nullptr) {
-            return;
-        }
-
-        if (fairyIdentity != nullptr && fairyIdentity->randomizerInf && fairyIdentity->randomizerInf != RAND_INF_MAX) {
+        const auto fairyIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&enElf->actor);
+        if (fairyIdentity != nullptr && fairyIdentity->randomizerInf != RAND_INF_MAX) {
             Flags_SetRandomizerInf(fairyIdentity->randomizerInf);
+        }
+    });
+
+    COND_VB_SHOULD(VB_BOTTLE_ACTOR, shouldRegister, {
+        Actor* actor = va_arg(args, Actor*);
+        const auto fairyIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(actor);
+        if (fairyIdentity != nullptr && fairyIdentity->randomizerInf != RAND_INF_MAX) {
+            Flags_SetRandomizerInf(fairyIdentity->randomizerInf);
+            actor->parent = &GET_PLAYER(gPlayState)->actor;
+            *should = false;
         }
     });
 
@@ -178,7 +183,7 @@ void RegisterShuffleFairies() {
             // stop spawning the vanilla fairy as well when these fairies exist, otherwise both
             // the randomized and the vanilla fairy will spawn. When the randomized fairy is already
             // collected, the vanilla code will handle that part automatically.
-            FairyIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params);
+            CheckIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params);
             if (!ShuffleFairies_FairyExists(fairyIdentity)) {
                 Player* player = GET_PLAYER(gPlayState);
                 if (SpawnFairy(player->actor.world.pos.x, (player->actor.world.pos.y + 20), player->actor.world.pos.z,
@@ -424,6 +429,5 @@ void Rando::StaticData::RegisterFairyLocations() {
     // clang-format on
 }
 
-static ObjectExtension::Register<FairyIdentity> RegisterFairyIdentity;
 static RegisterShipInitFunc registerShuffleFairies(RegisterShuffleFairies, { "IS_RANDO" });
 static RegisterShipInitFunc registerFairyLocations(Rando::StaticData::RegisterFairyLocations);

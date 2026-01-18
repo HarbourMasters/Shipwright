@@ -3,7 +3,7 @@
 #include "../item_location.h"
 #include "../location_access.h"
 #include "rando_main.hpp"
-#include "../context.h"
+#include "../SeedContext.h"
 #include <libultraship/bridge.h>
 #include <ship/Context.h>
 #include <libultraship/libultra/types.h>

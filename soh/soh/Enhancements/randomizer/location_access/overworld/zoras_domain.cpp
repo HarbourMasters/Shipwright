@@ -7,16 +7,16 @@ void RegionTable_Init_ZorasDomain() {
     // clang-format off
     areaTable[RR_ZORAS_DOMAIN] = Region("Zoras Domain", SCENE_ZORAS_DOMAIN, {
         //Events
-        EventAccess(LOGIC_GOSSIP_STONE_FAIRY,   []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(LOGIC_NUT_POT,              []{return true;}),
-        EventAccess(LOGIC_STICK_POT,            []{return logic->IsChild;}),
-        EventAccess(LOGIC_FISH_GROUP,           []{return logic->IsChild;}),
+        EventAccess(LOGIC_FAIRY_ACCESS,         []{return logic->CallGossipFairyExceptSuns();}),
+        EventAccess(LOGIC_NUT_ACCESS,           []{return logic->CanBreakPots();}),
+        EventAccess(LOGIC_STICK_ACCESS,         []{return logic->IsChild && logic->CanBreakPots();}),
+        EventAccess(LOGIC_FISH_ACCESS,          []{return logic->IsChild;}),
         EventAccess(LOGIC_KING_ZORA_THAWED,     []{return logic->IsAdult && logic->BlueFire();}),
         EventAccess(LOGIC_DELIVER_RUTOS_LETTER, []{return logic->CanUse(RG_RUTOS_LETTER) && logic->IsChild && ctx->GetOption(RSK_ZORAS_FOUNTAIN).IsNot(RO_ZF_OPEN);}),
     }, {
         //Locations
         LOCATION(RC_ZD_DIVING_MINIGAME,                     logic->HasItem(RG_BRONZE_SCALE) && logic->HasItem(RG_CHILD_WALLET) && logic->IsChild),
-        LOCATION(RC_ZD_CHEST,                               logic->IsChild && logic->CanUse(RG_STICKS)),
+        LOCATION(RC_ZD_CHEST,                               logic->IsChild && logic->CanUse(RG_STICKS) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_ZD_KING_ZORA_THAWED,                    logic->IsAdult && logic->Get(LOGIC_KING_ZORA_THAWED)),
         LOCATION(RC_ZD_TRADE_PRESCRIPTION,                  logic->IsAdult && logic->Get(LOGIC_KING_ZORA_THAWED) && logic->CanUse(RG_PRESCRIPTION)),
         LOCATION(RC_ZD_GS_FROZEN_WATERFALL,                 logic->IsAdult && (logic->HookshotOrBoomerang() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || (logic->CanUse(RG_MAGIC_SINGLE) && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))) || (ctx->GetTrickOption(RT_ZD_GS) && logic->CanJumpslashExceptHammer())) && logic->CanGetNightTimeGS()),
@@ -64,14 +64,14 @@ void RegionTable_Init_ZorasDomain() {
 
     areaTable[RR_ZD_SHOP] = Region("ZD Shop", SCENE_ZORA_SHOP, {}, {
         //Locations
-        LOCATION(RC_ZD_SHOP_ITEM_1, true),
-        LOCATION(RC_ZD_SHOP_ITEM_2, true),
-        LOCATION(RC_ZD_SHOP_ITEM_3, true),
-        LOCATION(RC_ZD_SHOP_ITEM_4, true),
-        LOCATION(RC_ZD_SHOP_ITEM_5, true),
-        LOCATION(RC_ZD_SHOP_ITEM_6, true),
-        LOCATION(RC_ZD_SHOP_ITEM_7, true),
-        LOCATION(RC_ZD_SHOP_ITEM_8, true),
+        LOCATION(RC_ZD_SHOP_ITEM_1, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZD_SHOP_ITEM_2, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZD_SHOP_ITEM_3, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZD_SHOP_ITEM_4, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZD_SHOP_ITEM_5, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZD_SHOP_ITEM_6, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZD_SHOP_ITEM_7, GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZD_SHOP_ITEM_8, GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
         Entrance(RR_ZORAS_DOMAIN, []{return true;}),
@@ -79,7 +79,7 @@ void RegionTable_Init_ZorasDomain() {
 
     areaTable[RR_ZD_STORMS_GROTTO] = Region("ZD Storms Grotto", SCENE_GROTTOS, {
         //Events
-        EventAccess(LOGIC_FREE_FAIRIES, []{return true;}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return true;}),
     }, {
         //Locations
         LOCATION(RC_ZD_FAIRY_GROTTO_FAIRY_1, true),

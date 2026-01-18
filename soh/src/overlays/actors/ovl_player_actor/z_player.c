@@ -2634,7 +2634,7 @@ void Player_UpdateItems(Player* this, PlayState* play) {
         ((this->heldItemAction == this->itemAction) || (this->stateFlags1 & PLAYER_STATE1_SHIELDING)) &&
         (gSaveContext.health != 0) && (play->csCtx.state == CS_STATE_IDLE) && (this->csAction == 0) &&
         (play->shootingGalleryStatus == 0) && (play->activeCamera == MAIN_CAM) &&
-        (play->transitionTrigger != TRANS_TRIGGER_START) && (gSaveContext.timerState != 10)) {
+        (play->transitionTrigger != TRANS_TRIGGER_START) && (gSaveContext.timerState != TIMER_STATE_STOP)) {
         Player_ProcessItemButtons(this, play);
     }
 
@@ -2692,9 +2692,13 @@ s32 func_8083442C(Player* this, PlayState* play) {
                 magicArrowType = arrowType - ARROW_FIRE;
 
                 if (this->unk_860 >= 0) {
-                    if ((magicArrowType >= 0) && (magicArrowType <= 2) &&
-                        !Magic_RequestChange(play, sMagicArrowCosts[magicArrowType], MAGIC_CONSUME_NOW)) {
-                        arrowType = ARROW_NORMAL;
+                    if ((magicArrowType >= 0) && (magicArrowType <= 2)) {
+                        if (GameInteractor_Should(VB_PLAYER_ARROW_MAGIC_CONSUMPTION, true, this, magicArrowType,
+                                                  &arrowType)) {
+                            if (!Magic_RequestChange(play, sMagicArrowCosts[magicArrowType], MAGIC_CONSUME_NOW)) {
+                                arrowType = ARROW_NORMAL;
+                            }
+                        }
                     }
 
                     this->heldActor = Actor_SpawnAsChild(
@@ -5574,8 +5578,9 @@ void func_8083A0F4(PlayState* play, Player* this) {
             } else if ((interactActorId == ACTOR_EN_ISHI) && ((interactRangeActor->params & 0xF) == 1)) {
                 Player_SetupAction(play, this, Player_Action_80846260, 0);
                 anim = &gPlayerAnim_link_silver_carry;
-            } else if (((interactActorId == ACTOR_EN_BOMBF) || (interactActorId == ACTOR_EN_KUSA)) &&
-                       (Player_GetStrength() <= PLAYER_STR_NONE)) {
+            } else if (GameInteractor_Should(VB_PREVENT_STRENGTH, ((interactActorId == ACTOR_EN_BOMBF) ||
+                                                                   (interactActorId == ACTOR_EN_KUSA)) &&
+                                                                      (Player_GetStrength() <= PLAYER_STR_NONE))) {
                 Player_SetupAction(play, this, Player_Action_80846408, 0);
                 this->actor.world.pos.x =
                     (Math_SinS(interactRangeActor->yawTowardsPlayer) * 20.0f) + interactRangeActor->world.pos.x;
@@ -7383,46 +7388,48 @@ s32 Player_ActionHandler_2(Player* this, PlayState* play) {
                    !(this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) &&
                    !(this->stateFlags2 & PLAYER_STATE2_UNDERWATER)) {
             if (this->getItemId != GI_NONE) {
-                GetItemEntry giEntry;
-                if (this->getItemEntry.objectId == OBJECT_INVALID) {
-                    giEntry = ItemTable_Retrieve(-this->getItemId);
-                } else {
-                    giEntry = this->getItemEntry;
-                }
-                EnBox* chest = (EnBox*)interactedActor;
-                if (giEntry.itemId != ITEM_NONE) {
-                    if (((Item_CheckObtainability(giEntry.itemId) == ITEM_NONE) && (giEntry.field & 0x40)) ||
-                        ((Item_CheckObtainability(giEntry.itemId) != ITEM_NONE) && (giEntry.field & 0x20))) {
-                        this->getItemId = -GI_RUPEE_BLUE;
-                        giEntry = ItemTable_Retrieve(GI_RUPEE_BLUE);
+                if (GameInteractor_Should(VB_OPEN_CHEST, true)) {
+                    GetItemEntry giEntry;
+                    if (this->getItemEntry.objectId == OBJECT_INVALID) {
+                        giEntry = ItemTable_Retrieve(-this->getItemId);
+                    } else {
+                        giEntry = this->getItemEntry;
                     }
-                }
+                    EnBox* chest = (EnBox*)interactedActor;
+                    if (giEntry.itemId != ITEM_NONE) {
+                        if (((Item_CheckObtainability(giEntry.itemId) == ITEM_NONE) && (giEntry.field & 0x40)) ||
+                            ((Item_CheckObtainability(giEntry.itemId) != ITEM_NONE) && (giEntry.field & 0x20))) {
+                            this->getItemId = -GI_RUPEE_BLUE;
+                            giEntry = ItemTable_Retrieve(GI_RUPEE_BLUE);
+                        }
+                    }
 
-                if (GameInteractor_Should(VB_GIVE_ITEM_FROM_CHEST, true, chest)) {
-                    Player_SetupWaitForPutAway(play, this, func_8083A434);
-                }
-                this->stateFlags1 |=
-                    PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE;
-                func_8083AE40(this, giEntry.objectId);
+                    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_CHEST, true, chest)) {
+                        Player_SetupWaitForPutAway(play, this, func_8083A434);
+                    }
+                    this->stateFlags1 |=
+                        PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE;
+                    func_8083AE40(this, giEntry.objectId);
 
-                this->actor.world.pos.x =
-                    chest->dyna.actor.world.pos.x - (Math_SinS(chest->dyna.actor.shape.rot.y) * 29.4343f);
-                this->actor.world.pos.z =
-                    chest->dyna.actor.world.pos.z - (Math_CosS(chest->dyna.actor.shape.rot.y) * 29.4343f);
-                this->yaw = this->actor.shape.rot.y = chest->dyna.actor.shape.rot.y;
-                func_80832224(this);
+                    this->actor.world.pos.x =
+                        chest->dyna.actor.world.pos.x - (Math_SinS(chest->dyna.actor.shape.rot.y) * 29.4343f);
+                    this->actor.world.pos.z =
+                        chest->dyna.actor.world.pos.z - (Math_CosS(chest->dyna.actor.shape.rot.y) * 29.4343f);
+                    this->yaw = this->actor.shape.rot.y = chest->dyna.actor.shape.rot.y;
+                    func_80832224(this);
 
-                bool vanillaPlaySlowChestCS = (giEntry.itemId != ITEM_NONE) && (giEntry.gi >= 0) &&
-                                              (Item_CheckObtainability(giEntry.itemId) == ITEM_NONE);
+                    bool vanillaPlaySlowChestCS = (giEntry.itemId != ITEM_NONE) && (giEntry.gi >= 0) &&
+                                                  (Item_CheckObtainability(giEntry.itemId) == ITEM_NONE);
 
-                if (GameInteractor_Should(VB_PLAY_SLOW_CHEST_CS, vanillaPlaySlowChestCS, chest)) {
-                    Player_AnimPlayOnceAdjusted(play, this, this->ageProperties->unk_98);
-                    Player_StartAnimMovement(play, this, 0x28F);
-                    chest->unk_1F4 = 1;
-                    Camera_ChangeSetting(Play_GetCamera(play, 0), CAM_SET_SLOW_CHEST_CS);
-                } else {
-                    Player_AnimPlayOnce(play, this, &gPlayerAnim_link_normal_box_kick);
-                    chest->unk_1F4 = -1;
+                    if (GameInteractor_Should(VB_PLAY_SLOW_CHEST_CS, vanillaPlaySlowChestCS, chest)) {
+                        Player_AnimPlayOnceAdjusted(play, this, this->ageProperties->unk_98);
+                        Player_StartAnimMovement(play, this, 0x28F);
+                        chest->unk_1F4 = 1;
+                        Camera_ChangeSetting(Play_GetCamera(play, 0), CAM_SET_SLOW_CHEST_CS);
+                    } else {
+                        Player_AnimPlayOnce(play, this, &gPlayerAnim_link_normal_box_kick);
+                        chest->unk_1F4 = -1;
+                    }
                 }
 
                 return 1;
@@ -7629,6 +7636,10 @@ s32 Player_TryEnteringCrawlspace(Player* this, PlayState* play, u32 interactWall
     s32 i;
 
     if (!LINK_IS_ADULT && !(this->stateFlags1 & PLAYER_STATE1_IN_WATER) && (interactWallFlags & 0x30)) {
+        if (!GameInteractor_Should(VB_CRAWL, true)) {
+            return false;
+        }
+
         wallPoly = this->actor.wallPoly;
         CollisionPoly_GetVerticesByBgId(wallPoly, this->actor.wallBgId, &play->colCtx, wallVertices);
 
@@ -11599,7 +11610,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
             seqMode = SEQ_MODE_STILL;
         }
 
-        if (play->actorCtx.targetCtx.bgmEnemy != NULL && !CVarGetInteger(CVAR_AUDIO("EnemyBGMDisable"), 0)) {
+        if (play->actorCtx.targetCtx.bgmEnemy != NULL) {
             seqMode = SEQ_MODE_ENEMY;
             Audio_SetBgmEnemyVolume(sqrtf(play->actorCtx.targetCtx.bgmEnemy->xyzDistToPlayerSq));
         }
@@ -13158,7 +13169,7 @@ void Player_Action_8084B78C(Player* this, PlayState* play) {
 }
 
 void func_8084B840(PlayState* play, Player* this, f32 arg2) {
-    if (this->actor.wallBgId != BGCHECK_SCENE) {
+    if (!GameInteractor_Should(VB_PREVENT_STRENGTH, false) && this->actor.wallBgId != BGCHECK_SCENE) {
         DynaPolyActor* dynaPolyActor = DynaPoly_GetActor(&play->colCtx, this->actor.wallBgId);
 
         if (dynaPolyActor != NULL) {
@@ -15342,7 +15353,7 @@ void Player_Action_8085063C(Player* this, PlayState* play) {
             play->transitionTrigger = TRANS_TRIGGER_START;
             play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
             play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
-            func_80088AF0(play);
+            Interface_SetSubTimerToFinalSecond(play);
             return;
         }
 

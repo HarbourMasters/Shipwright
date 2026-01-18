@@ -1,10 +1,8 @@
 #include "UIWidgets.hpp"
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui_internal.h>
-#include <sstream>
 #include <libultraship/libultraship.h>
 #include <string>
-#include <random>
 #include <math.h>
 #include <unordered_map>
 #include <libultraship/libultra/types.h>
@@ -1154,19 +1152,19 @@ void DrawFlagArray8Mask(const std::string& name, uint8_t& flags, Colors color) {
 } // namespace UIWidgets
 
 ImVec4 GetRandomValue() {
-#if !defined(__SWITCH__) && !defined(__WIIU__)
-    std::random_device rd;
-    std::mt19937 rng(rd());
-#else
-    size_t seed = std::hash<std::string>{}(std::to_string(rand()));
-    std::mt19937_64 rng(seed);
-#endif
-    std::uniform_int_distribution<int> dist(0, 255 - 1);
-
     ImVec4 NewColor;
-    NewColor.x = (float)(dist(rng)) / 255.0f;
-    NewColor.y = (float)(dist(rng)) / 255.0f;
-    NewColor.z = (float)(dist(rng)) / 255.0f;
+    NewColor.x = (float)ShipUtils::RandomDouble();
+    NewColor.y = (float)ShipUtils::RandomDouble();
+    NewColor.z = (float)ShipUtils::RandomDouble();
+    return NewColor;
+}
+
+ImVec4 GetRandomValue(uint32_t seed, uint64_t* state) {
+    ShipUtils::RandInit(seed, state);
+    ImVec4 NewColor;
+    NewColor.x = (float)ShipUtils::RandomDouble(state);
+    NewColor.y = (float)ShipUtils::RandomDouble(state);
+    NewColor.z = (float)ShipUtils::RandomDouble(state);
     return NewColor;
 }
 

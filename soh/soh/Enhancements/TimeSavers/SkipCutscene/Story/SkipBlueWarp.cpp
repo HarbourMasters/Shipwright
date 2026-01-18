@@ -1,8 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/randomizer/context.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/ShipInit.hpp"
-#include "soh/Enhancements/timesaver_hook_handlers.h"
 
 extern "C" {
 #include "macros.h"
@@ -11,10 +10,11 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 }
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
 
 extern "C" PlayState* gPlayState;
 static bool sEnteredBlueWarp = false;
+
+extern void TimeSaverQueueItem(RandomizerGet randoGet);
 
 // Todo: Move item queueing here
 
@@ -92,8 +92,7 @@ void RegisterShouldPlayBlueWarp() {
         }
 
         bool overrideBlueWarpDestinations =
-            IS_RANDO && (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
-                         RAND_GET_OPTION(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
+            IS_RANDO && (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) || RAND_GET_OPTION(RSK_SHUFFLE_BOSS_ENTRANCES));
 
         // Force blue warp skip on when ER needs to place Link somewhere else.
         // This is preferred over having story cutscenes play in the overworld and then reloading Link somewhere else

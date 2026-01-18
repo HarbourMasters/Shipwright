@@ -55,6 +55,7 @@ static ImGuiTableColumnFlags FlagsCell =
     ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort;
 
 void CosmeticsEditor_RandomizeAll();
+void CosmeticsEditor_AutoRandomizeAll();
 void CosmeticsEditor_RandomizeGroup(CosmeticGroup group);
 void CosmeticsEditor_ResetAll();
 void CosmeticsEditor_ResetGroup(CosmeticGroup group);

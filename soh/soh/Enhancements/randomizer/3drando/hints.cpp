@@ -279,7 +279,7 @@ std::vector<std::pair<RandomizerCheck, std::function<bool()>>> conditionalAlways
     std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH,
                    []() {
                        auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_MASK_SHOP_HINT) && !ctx->GetOption(RSK_COMPLETE_MASK_QUEST);
+                       return !ctx->GetOption(RSK_MASK_SHOP_HINT) && !ctx->GetOption(RSK_MASK_QUEST);
                    }),
     std::make_pair(RC_SONG_FROM_OCARINA_OF_TIME,
                    []() {

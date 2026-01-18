@@ -36,8 +36,8 @@ void SysCfb_Init(s32 n64dd) {
     osSyncPrintf("システムが使用する最終アドレスは %08x です\n", sSysCfbEnd);
     // sSysCfbFbPtr[0] = sSysCfbEnd - (screenSize * 4);
     // sSysCfbFbPtr[1] = sSysCfbEnd - (screenSize * 2);
-    sSysCfbFbPtr[0] = malloc(screenSize * 4);
-    sSysCfbFbPtr[1] = malloc(screenSize * 4);
+    sSysCfbFbPtr[0] = (uintptr_t)calloc(screenSize, 4);
+    sSysCfbFbPtr[1] = (uintptr_t)calloc(screenSize, 4);
 
     // "Frame buffer addresses are %08x and %08x"
     // osSyncPrintf("フレームバッファのアドレスは %08x と %08x です\n", sSysCfbFbPtr[0], sSysCfbFbPtr[1]);
