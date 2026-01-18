@@ -295,14 +295,18 @@ void Settings::CreateOptions() {
     OPT_CALLBACK(RSK_SHUFFLE_BOSS_ENTRANCES, {
         HandleMixedEntrancePoolsUI();
 
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
+            mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE].Hide();
+        } else {
+            mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE].Unhide();
+        }
+
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ==
             RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF ||
             CVarGetInteger(CVAR_RANDOMIZER_SETTING("MixedEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF) {
             mOptions[RSK_MIX_BOSS_ENTRANCES].Hide();
-            mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE].Hide();
         } else {
             mOptions[RSK_MIX_BOSS_ENTRANCES].Unhide();
-            mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE].Unhide();
         }
     });
     OPT_BOOL(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE, "Ganon's Tower Entrance", CVAR_RANDOMIZER_SETTING("ShuffleGanonTowerEntrance"), mOptionDescriptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE]);
@@ -2246,14 +2250,14 @@ void Settings::CreateOptions() {
         OptionGroup::SubGroup("", { &mOptionGroups[RSG_MENU_SECTION_AREA_ACCESS] }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_MENU_SECTION_ENTRANCES] = OptionGroup::SubGroup(
         "Entrances",
-        { &mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES], &mOptions[RSK_SHUFFLE_BOSS_ENTRANCES], &mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE],
-          &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES], &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES],
-          &mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES], &mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES],
-          &mOptions[RSK_SHUFFLE_OWL_DROPS], &mOptions[RSK_SHUFFLE_WARP_SONGS], &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS],
-          &mOptions[RSK_DECOUPLED_ENTRANCES], &mOptions[RSK_MIXED_ENTRANCE_POOLS], &mOptions[RSK_MIX_DUNGEON_ENTRANCES],
-          &mOptions[RSK_MIX_BOSS_ENTRANCES], &mOptions[RSK_MIX_OVERWORLD_ENTRANCES],
-          &mOptions[RSK_MIX_INTERIOR_ENTRANCES], &mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES],
-          &mOptions[RSK_MIX_GROTTO_ENTRANCES] },
+        { &mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES], &mOptions[RSK_SHUFFLE_BOSS_ENTRANCES],
+          &mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE], &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES],
+          &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES], &mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES],
+          &mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES], &mOptions[RSK_SHUFFLE_OWL_DROPS], &mOptions[RSK_SHUFFLE_WARP_SONGS],
+          &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS], &mOptions[RSK_DECOUPLED_ENTRANCES],
+          &mOptions[RSK_MIXED_ENTRANCE_POOLS], &mOptions[RSK_MIX_DUNGEON_ENTRANCES], &mOptions[RSK_MIX_BOSS_ENTRANCES],
+          &mOptions[RSK_MIX_OVERWORLD_ENTRANCES], &mOptions[RSK_MIX_INTERIOR_ENTRANCES],
+          &mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES], &mOptions[RSK_MIX_GROTTO_ENTRANCES] },
         WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_ENTRANCES] =
         OptionGroup::SubGroup("", { &mOptionGroups[RSG_MENU_SECTION_ENTRANCES] }, WidgetContainerType::COLUMN);
@@ -2953,7 +2957,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     // If any of the individual shuffle settings are on, turn on the main Shuffle Entrances option
     if (mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES].IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
         mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].IsNot(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ||
-        mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE] || mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES] ||
+        mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES] ||
         mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].IsNot(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) ||
         mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES] || mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] ||
         mOptions[RSK_SHUFFLE_OWL_DROPS] || mOptions[RSK_SHUFFLE_WARP_SONGS] || mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]) {
