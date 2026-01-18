@@ -1,8 +1,8 @@
 #ifndef SOH_GFX_DEBUGGER_H
 #define SOH_GFX_DEBUGGER_H
 
-#include "window/gui/GuiWindow.h"
-#include "window/gui/GfxDebuggerWindow.h"
+#include <ship/window/gui/GuiWindow.h>
+#include <libultraship/window/gui/GfxDebuggerWindow.h>
 
 class SohGfxDebuggerWindow : public LUS::GfxDebuggerWindow {
   public:

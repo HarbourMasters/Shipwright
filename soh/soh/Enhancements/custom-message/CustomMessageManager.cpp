@@ -6,6 +6,7 @@
 #include <map>
 #include <spdlog/spdlog.h>
 #include <variables.h>
+#include <soh/Enhancements/gameconsole.h>
 
 using namespace std::literals::string_literals;
 
@@ -212,6 +213,10 @@ const TextBoxPosition& CustomMessage::GetTextBoxPosition() const {
     return position;
 }
 
+void CustomMessage::SetTextBoxPosition(TextBoxPosition boxPos) {
+    position = boxPos;
+}
+
 CustomMessage CustomMessage::operator+(const CustomMessage& right) const {
     std::vector<std::string> newColors = colors;
     std::vector<std::string> rColors = right.GetColors();
@@ -259,6 +264,40 @@ bool CustomMessage::operator==(const std::string& operand) const {
 
 bool CustomMessage::operator!=(const CustomMessage& operand) const {
     return !operator==(operand);
+}
+
+int CopyStringToCharBuffer(const std::string& inputStr, char* buffer, const int maxBufferSize) {
+    if (!inputStr.empty()) {
+        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents
+        // negatives.
+        memset(buffer, 0, std::max<int>(0, maxBufferSize));
+        // Gaurentee that this value will be greater than 0, regardless of passed variables.
+        const int copiedCharLen = std::min<int>(std::max<int>(0, maxBufferSize - 1), inputStr.length());
+        memcpy(buffer, inputStr.c_str(), copiedCharLen);
+        return copiedCharLen;
+    }
+
+    return 0;
+}
+
+void CustomMessage::LoadIntoFont() {
+    MessageContext* msgCtx = &gPlayState->msgCtx;
+    Font* font = &msgCtx->font;
+    char* buffer = font->msgBuf;
+    const int maxBufferSize = sizeof(font->msgBuf);
+    font->charTexBuf[0] = (type << 4) | position;
+    switch (gSaveContext.language) {
+        case LANGUAGE_FRA:
+            msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(GetFrench(MF_RAW), buffer, maxBufferSize);
+            break;
+        case LANGUAGE_GER:
+            msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(GetGerman(MF_RAW), buffer, maxBufferSize);
+            break;
+        case LANGUAGE_ENG:
+        default:
+            msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(GetEnglish(MF_RAW), buffer, maxBufferSize);
+            break;
+    }
 }
 
 void CustomMessage::Replace(std::string&& oldStr, std::string&& newStr) {
@@ -312,6 +351,14 @@ void CustomMessage::AutoFormat() {
     for (std::string& str : messages) {
         AutoFormatString(str);
     }
+}
+
+void CustomMessage::AutoFormat(ItemID iid) {
+    for (std::string& str : messages) {
+        str.insert(0, ITEM_OBTAINED(iid));
+    }
+    AutoFormat();
+    Replace(WAIT_FOR_INPUT(), WAIT_FOR_INPUT() + ITEM_OBTAINED(iid));
 }
 
 void CustomMessage::Clean() {
@@ -369,7 +416,7 @@ static size_t NextLineLength(const std::string* textStr, const size_t lastNewlin
         // Skip over control codes
         if (textStr->at(currentPos) == '%') {
             nextPosJump = 2;
-        } else if (textStr->at(currentPos) == '$') {
+        } else if (textStr->at(currentPos) == '\x13') {
             nextPosJump = 2;
         } else if (textStr->at(currentPos) == '@') {
             nextPosJump = 1;
@@ -495,7 +542,7 @@ void CustomMessage::AutoFormatString(std::string& str) const {
     ReplaceColors(str);
     // insert newlines either manually or when encountering a '&'
     size_t lastNewline = 0;
-    const bool hasIcon = str.find('$', 0) != std::string::npos;
+    const bool hasIcon = str.find('\x13') != std::string::npos;
     size_t lineLength = NextLineLength(&str, lastNewline, hasIcon);
     size_t lineCount = 1;
     size_t yesNo = str.find("\x1B"s[0], lastNewline);
@@ -759,6 +806,10 @@ std::string CustomMessage::WAIT_FOR_INPUT() {
 
 std::string CustomMessage::PLAYER_NAME() {
     return "\x0F"s;
+}
+
+std::string CustomMessage::TWO_WAY_CHOICE() {
+    return "\x1B"s;
 }
 
 bool CustomMessageManager::InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessage messages) {

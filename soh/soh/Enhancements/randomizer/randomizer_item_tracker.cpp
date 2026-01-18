@@ -1,20 +1,23 @@
-#include "randomizer_item_tracker.h"
-#include "soh/util.h"
-#include "soh/OTRGlobals.h"
-#include "soh/cvar_prefixes.h"
-#include "soh/SaveManager.h"
-#include "soh/ResourceManagerHelpers.h"
-#include "soh/SohGui/UIWidgets.hpp"
-#include "soh/SohGui/SohGui.hpp"
-#include "randomizerTypes.h"
-
+#include <algorithm>
 #include <map>
 #include <string>
 #include <vector>
+
 #include <libultraship/libultraship.h>
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include <libultraship/controller/controldeck/ControlDeck.h>
+
 #include "randomizer_check_tracker.h"
-#include <algorithm>
+#include "randomizer_item_tracker.h"
+#include "randomizerTypes.h"
+#include "soh/cvar_prefixes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "soh/SaveManager.h"
+#include "soh/SohGui/SohGui.hpp"
+#include "soh/SohGui/SohMenu.h"
+#include "soh/SohGui/UIWidgets.hpp"
+#include "soh/util.h"
 
 extern "C" {
 #include <z64.h>
@@ -41,6 +44,28 @@ using namespace UIWidgets;
 bool shouldUpdateVectors = true;
 
 std::vector<ItemTrackerItem> mainWindowItems = {};
+
+static WidgetInfo backgroundColor;
+static WidgetInfo windowTypeWidget;
+static WidgetInfo enableDraggingWidget;
+static WidgetInfo onlyPausedWidget;
+static WidgetInfo ammoTracking;
+static WidgetInfo keyTracking;
+static WidgetInfo triforcePieceCount;
+static WidgetInfo dungeonItemTracking;
+static WidgetInfo gregTracking;
+static WidgetInfo triforcePieceTracking;
+static WidgetInfo beanSoulsTracking;
+static WidgetInfo bossSoulsTracking;
+static WidgetInfo ocarinaButtonTracking;
+static WidgetInfo overworldKeysTracking;
+static WidgetInfo fishingPoleTracking;
+static WidgetInfo personalNotesWiget;
+static WidgetInfo hookshotIdentWidget;
+
+namespace SohGui {
+extern std::shared_ptr<SohMenu> mSohMenu;
+}
 
 std::vector<ItemTrackerItem> inventoryItems = {
     ITEM_TRACKER_ITEM(ITEM_STICK, 0, DrawItem),       ITEM_TRACKER_ITEM(ITEM_NUT, 0, DrawItem),
@@ -110,6 +135,23 @@ std::vector<ItemTrackerItem> gregItems = {
 
 std::vector<ItemTrackerItem> triforcePieces = {
     ITEM_TRACKER_ITEM(RG_TRIFORCE_PIECE, 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> rocsFeather = {
+    ITEM_TRACKER_ITEM(RG_ROCS_FEATHER, 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> beanSoulItems = {
+    ITEM_TRACKER_ITEM_CUSTOM(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_DESERT_COLOSSUS_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_GERUDO_VALLEY_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_GRAVEYARD_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_KOKIRI_FOREST_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_LAKE_HYLIA_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_LOST_WOODS_BRIDGE_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_LOST_WOODS_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM_CUSTOM(RG_ZORAS_RIVER_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
 };
 
 std::vector<ItemTrackerItem> bossSoulItems = {
@@ -220,6 +262,19 @@ std::map<uint16_t, std::string> itemTrackerDungeonShortNames = {
     { SCENE_DEKU_TREE, "DEKU" },       { SCENE_DODONGOS_CAVERN, "DCVN" },       { SCENE_JABU_JABU, "JABU" },
     { SCENE_ICE_CAVERN, "ICE" },       { SCENE_INSIDE_GANONS_CASTLE, "GANON" }, { SCENE_GERUDO_TRAINING_GROUND, "GTG" },
     { SCENE_THIEVES_HIDEOUT, "HIDE" },
+};
+
+std::map<uint16_t, std::string> itemTrackerBeanShortNames = {
+    { RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, "DMC" },
+    { RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, "DMT" },
+    { RG_DESERT_COLOSSUS_BEAN_SOUL, "DC" },
+    { RG_GERUDO_VALLEY_BEAN_SOUL, "GV" },
+    { RG_GRAVEYARD_BEAN_SOUL, "GY" },
+    { RG_KOKIRI_FOREST_BEAN_SOUL, "KF" },
+    { RG_LAKE_HYLIA_BEAN_SOUL, "LA" },
+    { RG_LOST_WOODS_BRIDGE_BEAN_SOUL, "LWB" },
+    { RG_LOST_WOODS_BEAN_SOUL, "LWT" },
+    { RG_ZORAS_RIVER_BEAN_SOUL, "ZR" },
 };
 
 std::map<uint16_t, std::string> itemTrackerBossShortNames = {
@@ -517,7 +572,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                             default:
                                 result.maxCapacity = 0;
                                 SPDLOG_ERROR(
-                                    "Invalid value for RSK_GERUDO_FORTRESS: " +
+                                    "Invalid value for RSK_GERUDO_FORTRESS: {}",
                                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS));
                                 assert(false);
                                 break;
@@ -663,7 +718,8 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
     } else if (item.id == RG_TRIFORCE_PIECE && IS_RANDO &&
-               OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) && IsValidSaveFile()) {
+               (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) != RO_TRIFORCE_HUNT_OFF) &&
+               IsValidSaveFile()) {
         std::string currentString = "";
         std::string requiredString = "";
         std::string maxString = "";
@@ -782,8 +838,69 @@ void DrawItem(ItemTrackerItem item) {
             break;
         case RG_TRIFORCE_PIECE:
             actualItemId = item.id;
-            hasItem = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT);
+            hasItem = IS_RANDO && (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) !=
+                                   RO_TRIFORCE_HUNT_OFF);
             itemName = "Triforce Piece";
+            break;
+        case ITEM_NAYRUS_LOVE:
+            if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ROCS_FEATHER)) {
+                hasItem = Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE);
+            }
+            break;
+        case RG_ROCS_FEATHER:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER);
+            itemName = "Roc's Feather";
+            break;
+        case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL);
+            itemName = "Death Mountain Crater Bean Soul";
+            break;
+        case RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL);
+            itemName = "Death Mountain Trail Bean Soul";
+            break;
+        case RG_DESERT_COLOSSUS_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_DESERT_COLOSSUS_BEAN_SOUL);
+            itemName = "Desert Colossus Bean Soul";
+            break;
+        case RG_GERUDO_VALLEY_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_GERUDO_VALLEY_BEAN_SOUL);
+            itemName = "Gerudo Valley Bean Soul";
+            break;
+        case RG_GRAVEYARD_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_GRAVEYARD_BEAN_SOUL);
+            itemName = "Graveyard Bean Soul";
+            break;
+        case RG_KOKIRI_FOREST_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_KOKIRI_FOREST_BEAN_SOUL);
+            itemName = "Kokiri Forest Bean Soul";
+            break;
+        case RG_LAKE_HYLIA_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_LAKE_HYLIA_BEAN_SOUL);
+            itemName = "Lake Hylia Bean Soul";
+            break;
+        case RG_LOST_WOODS_BRIDGE_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL);
+            itemName = "Lost Woods Bridge Bean Soul";
+            break;
+        case RG_LOST_WOODS_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_LOST_WOODS_BEAN_SOUL);
+            itemName = "Lost Woods Theatre Bean Soul";
+            break;
+        case RG_ZORAS_RIVER_BEAN_SOUL:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_ZORAS_RIVER_BEAN_SOUL);
+            itemName = "Zora's River Bean Soul";
             break;
         case RG_GOHMA_SOUL:
             actualItemId = item.id;
@@ -1000,6 +1117,16 @@ void DrawItem(ItemTrackerItem item) {
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     DrawItemCount(item, false);
+
+    if (item.id >= RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL && item.id <= RG_ZORAS_RIVER_BEAN_SOUL) {
+        ImVec2 p = ImGui::GetCursorScreenPos();
+        std::string beanName = itemTrackerBeanShortNames[item.id];
+        ImGui::SetCursorScreenPos(
+            ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(beanName.c_str()).x / 2), p.y - (iconSize + 13)));
+        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL_WHITE);
+        ImGui::Text("%s", beanName.c_str());
+        ImGui::PopStyleColor();
+    }
 
     if (item.id >= RG_GOHMA_SOUL && item.id <= RG_GANON_SOUL) {
         ImVec2 p = ImGui::GetCursorScreenPos();
@@ -1266,17 +1393,17 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
  * Loops over dungeons and creates vectors of items in the correct order
  * to then call DrawItemsInRows
  */
-std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeon> dungeons, int columns = 6) {
+std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeon> dungeons, size_t columns = 6) {
     std::vector<ItemTrackerItem> dungeonItems = {};
 
-    int rowCount = 0;
-    for (int i = 0; i < dungeons.size(); i++) {
+    size_t rowCount = 0;
+    for (size_t i = 0; i < dungeons.size(); i++) {
         if (dungeons[i].items.size() > rowCount)
             rowCount = static_cast<int32_t>(dungeons[i].items.size());
     }
 
-    for (int i = 0; i < rowCount; i++) {
-        for (int j = 0; j < MIN(dungeons.size(), columns); j++) {
+    for (size_t i = 0; i < rowCount; i++) {
+        for (size_t j = 0; j < MIN(dungeons.size(), columns); j++) {
             if (dungeons[j].items.size() > i) {
                 switch (dungeons[j].items[i]) {
                     case ITEM_KEY_SMALL:
@@ -1380,6 +1507,9 @@ void UpdateVectors() {
         SECTION_DISPLAY_MAIN_WINDOW) {
         mainWindowItems.insert(mainWindowItems.end(), dungeonItems.begin(), dungeonItems.end());
     }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_ROCS_FEATHER)) {
+        mainWindowItems.insert(mainWindowItems.end(), rocsFeather.begin(), rocsFeather.end());
+    }
 
     // if we're adding greg to the misc window,
     // and misc isn't on the main window,
@@ -1452,6 +1582,19 @@ void UpdateVectors() {
         }
 
         mainWindowItems.insert(mainWindowItems.end(), fishingPoleItems.begin(), fishingPoleItems.end());
+    }
+
+    // If we're adding bean souls to the main window...
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BeanSouls"), SECTION_DISPLAY_HIDDEN) ==
+        SECTION_DISPLAY_MAIN_WINDOW) {
+        //...add empty items on the main window to get the souls on their own row. (Too many to sit with Greg/Triforce
+        // pieces)
+        while (mainWindowItems.size() % 6) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+        }
+
+        // Add bean souls
+        mainWindowItems.insert(mainWindowItems.end(), beanSoulItems.begin(), beanSoulItems.end());
     }
 
     // If we're adding boss souls to the main window...
@@ -1571,10 +1714,7 @@ void ItemTrackerWindow::DrawElement() {
             DrawItemsInRows(mainWindowItems, 6);
 
             if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Notes"), SECTION_DISPLAY_HIDDEN) ==
-                    SECTION_DISPLAY_MAIN_WINDOW &&
-                (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
-                 CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
-                     TRACKER_DISPLAY_ALWAYS)) {
+                SECTION_DISPLAY_MAIN_WINDOW) {
                 DrawNotes();
             }
             EndFloatingWindows();
@@ -1653,6 +1793,13 @@ void ItemTrackerWindow::DrawElement() {
             EndFloatingWindows();
         }
 
+        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BeanSouls"), SECTION_DISPLAY_HIDDEN) ==
+            SECTION_DISPLAY_SEPARATE) {
+            BeginFloatingWindows("Bean Soul Tracker");
+            DrawItemsInRows(beanSoulItems);
+            EndFloatingWindows();
+        }
+
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BossSouls"), SECTION_DISPLAY_HIDDEN) ==
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Boss Soul Tracker");
@@ -1707,31 +1854,31 @@ void ItemTrackerWindow::DrawElement() {
     }
 }
 
-static std::unordered_map<int32_t, const char*> itemTrackerCapacityTrackOptions = {
+static std::map<int32_t, const char*> itemTrackerCapacityTrackOptions = {
     { ITEM_TRACKER_NUMBER_NONE, "No Numbers" },
     { ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY, "Current Capacity" },
     { ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY, "Current Ammo" },
     { ITEM_TRACKER_NUMBER_CAPACITY, "Current Capacity / Max Capacity" },
     { ITEM_TRACKER_NUMBER_AMMO, "Current Ammo / Current Capacity" },
 };
-static std::unordered_map<int32_t, const char*> itemTrackerKeyTrackOptions = {
+static std::map<int32_t, const char*> itemTrackerKeyTrackOptions = {
     { KEYS_COLLECTED_MAX, "Collected / Max" },
     { KEYS_CURRENT_COLLECTED_MAX, "Current / Collected / Max" },
     { KEYS_CURRENT_MAX, "Current / Max" },
 };
-static std::unordered_map<int32_t, const char*> itemTrackerTriforcePieceTrackOptions = {
+static std::map<int32_t, const char*> itemTrackerTriforcePieceTrackOptions = {
     { TRIFORCE_PIECE_COLLECTED_REQUIRED, "Collected / Required" },
     { TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX, "Collected / Required / Max" },
 };
-static std::unordered_map<int32_t, const char*> windowTypes = {
+static std::map<int32_t, const char*> windowTypes = {
     { TRACKER_WINDOW_FLOATING, "Floating" },
     { TRACKER_WINDOW_WINDOW, "Window" },
 };
-static std::unordered_map<int32_t, const char*> displayModes = {
+static std::map<int32_t, const char*> displayModes = {
     { TRACKER_DISPLAY_ALWAYS, "Always" },
     { TRACKER_DISPLAY_COMBO_BUTTON, "Combo Button Hold" },
 };
-static std::unordered_map<int32_t, const char*> buttons = {
+static std::map<int32_t, const char*> buttons = {
     { TRACKER_COMBO_BUTTON_A, "A" },           { TRACKER_COMBO_BUTTON_B, "B" },
     { TRACKER_COMBO_BUTTON_C_UP, "C-Up" },     { TRACKER_COMBO_BUTTON_C_DOWN, "C-Down" },
     { TRACKER_COMBO_BUTTON_C_LEFT, "C-Left" }, { TRACKER_COMBO_BUTTON_C_RIGHT, "C-Right" },
@@ -1740,20 +1887,19 @@ static std::unordered_map<int32_t, const char*> buttons = {
     { TRACKER_COMBO_BUTTON_D_UP, "D-Up" },     { TRACKER_COMBO_BUTTON_D_DOWN, "D-Down" },
     { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" },
 };
-static std::unordered_map<int32_t, const char*> displayTypes = {
+static std::map<int32_t, const char*> displayTypes = {
     { SECTION_DISPLAY_HIDDEN, "Hidden" },
     { SECTION_DISPLAY_MAIN_WINDOW, "Main Window" },
     { SECTION_DISPLAY_SEPARATE, "Separate" },
 };
-static std::unordered_map<int32_t, const char*> extendedDisplayTypes = {
+static std::map<int32_t, const char*> extendedDisplayTypes = {
     { SECTION_DISPLAY_EXTENDED_HIDDEN, "Hidden" },
     { SECTION_DISPLAY_EXTENDED_MAIN_WINDOW, "Main Window" },
     { SECTION_DISPLAY_EXTENDED_MISC_WINDOW, "Misc Window" },
     { SECTION_DISPLAY_EXTENDED_SEPARATE, "Separate" },
 };
-static std::unordered_map<int32_t, const char*> minimalDisplayTypes = {
-    { SECTION_DISPLAY_MINIMAL_HIDDEN, "Hidden" }, { SECTION_DISPLAY_MINIMAL_SEPARATE, "Separate" }
-};
+static std::map<int32_t, const char*> minimalDisplayTypes = { { SECTION_DISPLAY_MINIMAL_HIDDEN, "Hidden" },
+                                                              { SECTION_DISPLAY_MINIMAL_SEPARATE, "Separate" } };
 
 void ItemTrackerSettingsWindow::DrawElement() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
@@ -1764,24 +1910,15 @@ void ItemTrackerSettingsWindow::DrawElement() {
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-        CVarColorPicker("Background Color##gItemTrackerBgColor", CVAR_TRACKER_ITEM("BgColor"), { 0, 0, 0, 0 }, true,
-                        ColorPickerRandomButton | ColorPickerResetButton, THEME_COLOR);
-
+        SohGui::mSohMenu->MenuDrawItem(backgroundColor, 250, THEME_COLOR);
         ImGui::PopItemWidth();
-        if (CVarCombobox("Window Type", CVAR_TRACKER_ITEM("WindowType"), windowTypes,
-                         ComboboxOptions()
-                             .DefaultIndex(TRACKER_WINDOW_FLOATING)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .LabelPosition(LabelPositions::Far)
-                             .Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
-        }
+        SohGui::mSohMenu->MenuDrawItem(windowTypeWidget, 250, THEME_COLOR);
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
             if (CVarCheckbox("Enable Dragging", CVAR_TRACKER_ITEM("Draggable"), CheckboxOptions().Color(THEME_COLOR))) {
                 shouldUpdateVectors = true;
             }
-            if (CVarCheckbox("Only enable while paused", CVAR_TRACKER_ITEM("ShowOnlyPaused"),
+            if (CVarCheckbox("Only Enable While Paused", CVAR_TRACKER_ITEM("ShowOnlyPaused"),
                              CheckboxOptions().Color(THEME_COLOR))) {
                 shouldUpdateVectors = true;
             }
@@ -1822,14 +1959,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
                       IntSliderOptions().Min(1).Max(30).DefaultValue(13).Color(THEME_COLOR));
 
         ImGui::NewLine();
-        CVarCombobox("Ammo/Capacity Tracking", CVAR_TRACKER_ITEM("ItemCountType"), itemTrackerCapacityTrackOptions,
-                     ComboboxOptions()
-                         .DefaultIndex(ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY)
-                         .ComponentAlignment(ComponentAlignments::Left)
-                         .LabelPosition(LabelPositions::Above)
-                         .Color(THEME_COLOR)
-                         .Tooltip("Customize what the numbers under each item are tracking."
-                                  "\n\nNote: items without capacity upgrades will track ammo even in capacity mode"));
+        SohGui::mSohMenu->MenuDrawItem(ammoTracking, 250, THEME_COLOR);
         if (CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) ==
                 ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY ||
             CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) ==
@@ -1840,22 +1970,8 @@ void ItemTrackerSettingsWindow::DrawElement() {
             }
         }
 
-        CVarCombobox("Key Count Tracking", CVAR_TRACKER_ITEM("KeyCounts"), itemTrackerKeyTrackOptions,
-                     ComboboxOptions()
-                         .DefaultIndex(KEYS_COLLECTED_MAX)
-                         .ComponentAlignment(ComponentAlignments::Left)
-                         .LabelPosition(LabelPositions::Above)
-                         .Color(THEME_COLOR)
-                         .Tooltip("Customize what numbers are shown for key tracking."));
-
-        CVarCombobox("Triforce Piece Count Tracking", CVAR_TRACKER_ITEM("TriforcePieceCounts"),
-                     itemTrackerTriforcePieceTrackOptions,
-                     ComboboxOptions()
-                         .DefaultIndex(TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX)
-                         .ComponentAlignment(ComponentAlignments::Left)
-                         .LabelPosition(LabelPositions::Above)
-                         .Color(THEME_COLOR)
-                         .Tooltip("Customize what numbers are shown for triforce piece tracking."));
+        SohGui::mSohMenu->MenuDrawItem(keyTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(triforcePieceCount, 250, THEME_COLOR);
 
         ImGui::TableNextColumn();
 
@@ -1906,14 +2022,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
                              .Color(THEME_COLOR))) {
             shouldUpdateVectors = true;
         }
-        if (CVarCombobox("Dungeon Items", CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), displayTypes,
-                         ComboboxOptions()
-                             .DefaultIndex(SECTION_DISPLAY_HIDDEN)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .LabelPosition(LabelPositions::Far)
-                             .Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
-        }
+        SohGui::mSohMenu->MenuDrawItem(dungeonItemTracking, 250, THEME_COLOR);
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) !=
             SECTION_DISPLAY_HIDDEN) {
             if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) ==
@@ -1928,61 +2037,15 @@ void ItemTrackerSettingsWindow::DrawElement() {
                 shouldUpdateVectors = true;
             }
         }
-        if (CVarCombobox("Greg", CVAR_TRACKER_ITEM("DisplayType.Greg"), extendedDisplayTypes,
-                         ComboboxOptions()
-                             .DefaultIndex(SECTION_DISPLAY_EXTENDED_HIDDEN)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .LabelPosition(LabelPositions::Far)
-                             .Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
-        }
+        SohGui::mSohMenu->MenuDrawItem(gregTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(triforcePieceTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(beanSoulsTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(bossSoulsTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(ocarinaButtonTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(overworldKeysTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(fishingPoleTracking, 250, THEME_COLOR);
 
-        if (CVarCombobox("Triforce Pieces", CVAR_TRACKER_ITEM("DisplayType.TriforcePieces"), displayTypes,
-                         ComboboxOptions()
-                             .DefaultIndex(SECTION_DISPLAY_HIDDEN)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .LabelPosition(LabelPositions::Far)
-                             .Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
-        }
-
-        if (CVarCombobox("Boss Souls", CVAR_TRACKER_ITEM("DisplayType.BossSouls"), displayTypes,
-                         ComboboxOptions()
-                             .DefaultIndex(SECTION_DISPLAY_HIDDEN)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .LabelPosition(LabelPositions::Far)
-                             .Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
-        }
-
-        if (CVarCombobox("Ocarina Buttons", CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"), displayTypes,
-                         ComboboxOptions()
-                             .DefaultIndex(SECTION_DISPLAY_HIDDEN)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .LabelPosition(LabelPositions::Far)
-                             .Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
-        }
-
-        if (CVarCombobox("Overworld Keys", CVAR_TRACKER_ITEM("DisplayType.OverworldKeys"), displayTypes,
-                         ComboboxOptions()
-                             .DefaultIndex(SECTION_DISPLAY_HIDDEN)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .LabelPosition(LabelPositions::Far)
-                             .Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
-        }
-
-        if (CVarCombobox("Fishing Pole", CVAR_TRACKER_ITEM("DisplayType.FishingPole"), extendedDisplayTypes,
-                         ComboboxOptions()
-                             .DefaultIndex(SECTION_DISPLAY_EXTENDED_HIDDEN)
-                             .ComponentAlignment(ComponentAlignments::Right)
-                             .LabelPosition(LabelPositions::Far)
-                             .Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
-        }
-
-        if (CVarCombobox("Total Checks", "gTrackers.ItemTracker.TotalChecks.DisplayType", minimalDisplayTypes,
+        if (CVarCombobox("Total Checks", CVAR_TRACKER_ITEM("TotalChecks.DisplayType"), minimalDisplayTypes,
                          ComboboxOptions()
                              .DefaultIndex(SECTION_DISPLAY_MINIMAL_HIDDEN)
                              .ComponentAlignment(ComponentAlignments::Right)
@@ -1991,23 +2054,8 @@ void ItemTrackerSettingsWindow::DrawElement() {
             shouldUpdateVectors = true;
         }
 
-        if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW ||
-            (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
-             CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) !=
-                 TRACKER_DISPLAY_COMBO_BUTTON)) {
-            if (CVarCombobox("Personal notes", CVAR_TRACKER_ITEM("DisplayType.Notes"), displayTypes,
-                             ComboboxOptions()
-                                 .DefaultIndex(SECTION_DISPLAY_HIDDEN)
-                                 .ComponentAlignment(ComponentAlignments::Right)
-                                 .LabelPosition(LabelPositions::Far)
-                                 .Color(THEME_COLOR))) {
-                shouldUpdateVectors = true;
-            }
-        }
-        CVarCheckbox("Show Hookshot Identifiers", CVAR_TRACKER_ITEM("HookshotIdentifier"),
-                     CheckboxOptions()
-                         .Tooltip("Shows an 'H' or an 'L' to more easiely distinguish between Hookshot and Longshot.")
-                         .Color(THEME_COLOR));
+        SohGui::mSohMenu->MenuDrawItem(personalNotesWiget, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(hookshotIdentWidget, 250, THEME_COLOR);
 
         ImGui::PopStyleVar(1);
         ImGui::EndTable();
@@ -2026,3 +2074,193 @@ void ItemTrackerWindow::InitElement() {
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(ItemTrackerOnFrame);
 }
+
+void RegisterItemTrackerWidgets() {
+    backgroundColor = { .name = "Background Color##gItemTrackerBgColor", .type = WidgetType::WIDGET_CVAR_COLOR_PICKER };
+    backgroundColor.CVar(CVAR_TRACKER_ITEM("BgColor"))
+        .Options(
+            ColorPickerOptions().Color(THEME_COLOR).DefaultValue({ 0, 0, 0, 0 }).UseAlpha().ShowReset().ShowRandom());
+    SohGui::mSohMenu->AddSearchWidget({ backgroundColor, "Randomizer", "Item Tracker", "General Settings" });
+
+    windowTypeWidget = { .name = "Window Type", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    windowTypeWidget.CVar(CVAR_TRACKER_ITEM("WindowType"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(TRACKER_WINDOW_FLOATING)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(windowTypes))
+        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+    SohGui::mSohMenu->AddSearchWidget({ windowTypeWidget, "Randomizer", "Item Tracker", "General Settings" });
+    enableDraggingWidget;
+    onlyPausedWidget;
+
+    ammoTracking = { .name = "Ammo/Capacity Tracking", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    ammoTracking.CVar(CVAR_TRACKER_ITEM("ItemCountType"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(itemTrackerCapacityTrackOptions)
+                     .Tooltip("Customize what the numbers under each item are tracking."
+                              "\n\nNote: items without capacity upgrades will track ammo even in capacity mode"));
+    SohGui::mSohMenu->AddSearchWidget({ ammoTracking, "Randomizer", "Item Tracker", "General Settings" });
+
+    keyTracking = { .name = "Key Count Tracking", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    keyTracking.CVar(CVAR_TRACKER_ITEM("KeyCounts"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(KEYS_COLLECTED_MAX)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(itemTrackerKeyTrackOptions)
+                     .Tooltip("Customize what numbers are shown for key tracking."));
+    SohGui::mSohMenu->AddSearchWidget({ keyTracking, "Randomizer", "Item Tracker", "General Settings" });
+
+    triforcePieceTracking = { .name = "Triforce Pieces", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    triforcePieceTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.TriforcePieces"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(displayTypes))
+        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+    SohGui::mSohMenu->AddSearchWidget({ triforcePieceTracking, "Randomizer", "Item Tracker", "General Settings" });
+
+    dungeonItemTracking = { .name = "Dungeon Items", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    dungeonItemTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(displayTypes))
+        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+    ;
+    SohGui::mSohMenu->AddSearchWidget(
+        { dungeonItemTracking, "Randomizer", "Item Tracker", "General Settings", "keys maps compasses icon" });
+
+    gregTracking = { .name = "Greg", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    gregTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.Greg"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_EXTENDED_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(extendedDisplayTypes))
+        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+    ;
+    SohGui::mSohMenu->AddSearchWidget({ gregTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
+
+    beanSoulsTracking = { .name = "Bean Souls", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    beanSoulsTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.BeanSouls"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(displayTypes))
+        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+    ;
+    SohGui::mSohMenu->AddSearchWidget({ beanSoulsTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
+
+    bossSoulsTracking = { .name = "Boss Souls", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    bossSoulsTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.BossSouls"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(displayTypes))
+        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+    ;
+    SohGui::mSohMenu->AddSearchWidget({ bossSoulsTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
+
+    triforcePieceCount = { .name = "Triforce Piece Count Tracking", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    triforcePieceCount.CVar(CVAR_TRACKER_ITEM("TriforcePieceCounts"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(itemTrackerTriforcePieceTrackOptions)
+                     .Tooltip("Customize what numbers are shown for triforce piece tracking."));
+    SohGui::mSohMenu->AddSearchWidget({ triforcePieceCount, "Randomizer", "Item Tracker", "General Settings" });
+
+    ocarinaButtonTracking = { .name = "Ocarina Buttons", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    ocarinaButtonTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(displayTypes))
+        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+    ;
+    SohGui::mSohMenu->AddSearchWidget(
+        { ocarinaButtonTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
+
+    overworldKeysTracking = { .name = "Overworld Keys", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    overworldKeysTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.OverworldKeys"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(displayTypes))
+        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+    ;
+    SohGui::mSohMenu->AddSearchWidget(
+        { overworldKeysTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
+
+    fishingPoleTracking = { .name = "Fishing Pole", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    fishingPoleTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.FishingPole"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_EXTENDED_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(extendedDisplayTypes))
+        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+    ;
+    SohGui::mSohMenu->AddSearchWidget(
+        { fishingPoleTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
+
+    personalNotesWiget = { .name = "Personal notes", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    static const char* notesDisabledTooltip =
+        "Disabled because tracker is set to floating and display combo is enabled.";
+    personalNotesWiget.CVar(CVAR_TRACKER_ITEM("DisplayType.Notes"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(displayTypes))
+        .PreFunc([&](WidgetInfo& info) {
+            if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
+                CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
+                    TRACKER_DISPLAY_COMBO_BUTTON) {
+                info.options.get()->disabled = true;
+                info.options.get()->disabledTooltip = notesDisabledTooltip;
+            }
+        })
+        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+    ;
+    SohGui::mSohMenu->AddSearchWidget({ personalNotesWiget, "Randomizer", "Item Tracker", "General Settings" });
+
+    hookshotIdentWidget = { .name = "Show Hookshot Identifiers", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    hookshotIdentWidget.CVar(CVAR_TRACKER_ITEM("HookshotIdentifier"))
+        .Options(CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("Shows an 'H' or an 'L' to more easily distinguish between Hookshot and Longshot."));
+    SohGui::mSohMenu->AddSearchWidget({ hookshotIdentWidget, "Randomizer", "Item Tracker", "General Settings" });
+}
+
+void RegisterItemTracker() {
+    COND_HOOK(OnLoadFile, true, [](int32_t fileNum) { shouldUpdateVectors = true; });
+}
+
+static RegisterShipInitFunc registerItemTracker(RegisterItemTracker);
+static RegisterMenuInitFunc menuInitFunc(RegisterItemTrackerWidgets);

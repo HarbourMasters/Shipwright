@@ -319,31 +319,7 @@ endif()
 target_include_directories(${PROJECT_NAME} PRIVATE assets
 	${CMAKE_CURRENT_SOURCE_DIR}/include/
 	${CMAKE_CURRENT_SOURCE_DIR}/src/
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/include
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/log
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/debug
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/menu
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/utils
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/utils/binarytools
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/config
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource/type
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource/factory
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/audio
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/window
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/window/gui
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/config
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/public
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/public/libultra
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/public/bridge
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern/tinyxml2
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/libjpeg/include/
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/graphic/Fast3D/U64/PR
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/graphic
     ${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD/resource/type
 	${SDL2-INCLUDE}
     ${SDL2-NET-INCLUDE}
@@ -361,13 +337,15 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 				"ENABLE_DX11;"
 			">"
 			"$<$<CONFIG:Release>:"
-				"NDEBUG"
+				"NDEBUG;"
 			">"
             "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:ENABLE_REMOTE_CONTROL>"
 			"INCLUDE_GAME_PRINTF;"
             "F3DEX_GBI_2"
 			"UNICODE;"
 			"_UNICODE"
+            SPDLOG_ACTIVE_LEVEL=${SPDLOG_MIN_CUTOFF}
+            LOG_LEVEL_GAME_PRINTS=${SPDLOG_LEVEL_OFF}
 			STORMLIB_NO_AUTO_LINK
 			"_CRT_SECURE_NO_WARNINGS;"
             NOMINMAX
@@ -378,7 +356,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 				"NOINCLUDE_GAME_PRINTF;"
 				"_DEBUG;"
 				"_CRT_SECURE_NO_WARNINGS;"
-				"ENABLE_OPENGL"
+				"ENABLE_OPENGL;"
 			">"
 			"$<$<CONFIG:Release>:"
 				"NDEBUG;"
@@ -387,7 +365,9 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             "F3DEX_GBI_2"
 			"WIN32;"
 			"UNICODE;"
-			"_UNICODE"
+			"_UNICODE;"
+            SPDLOG_ACTIVE_LEVEL=${SPDLOG_MIN_CUTOFF}
+            LOG_LEVEL_GAME_PRINTS=${SPDLOG_LEVEL_OFF}
 			STORMLIB_NO_AUTO_LINK
             NOMINMAX
 		)
@@ -395,33 +375,35 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 elseif (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		"$<$<CONFIG:Debug>:"
-			"_DEBUG"
+			"_DEBUG;"
 		">"
 		"$<$<CONFIG:Release>:"
-			"NDEBUG"
+			"NDEBUG;"
 		">"
-        "F3DEX_GBI_2"
-        "SPDLOG_ACTIVE_LEVEL=3;"
+        "F3DEX_GBI_2;"
 		"SPDLOG_NO_THREAD_ID;"
         "SPDLOG_NO_TLS;"
 		"STBI_NO_THREAD_LOCALS;"
+        SPDLOG_ACTIVE_LEVEL=${SPDLOG_MIN_CUTOFF}
+        LOG_LEVEL_GAME_PRINTS=${SPDLOG_LEVEL_OFF}
 	)
 elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		"$<$<CONFIG:Debug>:"
-			"_DEBUG"
+			"_DEBUG;"
 		">"
 		"$<$<CONFIG:Release>:"
-			"NDEBUG"
+			"NDEBUG;"
 		">"
-        "F3DEX_GBI_2"
-        "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:ENABLE_REMOTE_CONTROL>"
-		"SPDLOG_ACTIVE_LEVEL=0;"
+        "F3DEX_GBI_2;"
+        "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:ENABLE_REMOTE_CONTROL>;"
 		"_CONSOLE;"
 		"_CRT_SECURE_NO_WARNINGS;"
 		"ENABLE_OPENGL;"
 		"UNICODE;"
-		"_UNICODE"
+		"_UNICODE;"
+        SPDLOG_ACTIVE_LEVEL=${SPDLOG_MIN_CUTOFF}
+        LOG_LEVEL_GAME_PRINTS=${SPDLOG_LEVEL_OFF}
 	)
 endif()
 ################################################################################

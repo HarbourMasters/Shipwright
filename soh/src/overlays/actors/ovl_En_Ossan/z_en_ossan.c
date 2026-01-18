@@ -434,10 +434,10 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, PlayState* play, ShopItem* shopI
             itemParams = sShopItemReplaceFunc[shopItems->shopItemIndex](shopItems->shopItemIndex);
             if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF) {
                 ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, i + 1);
-                if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
+                if (shopItemIdentity.identity.randomizerCheck != RC_UNKNOWN_CHECK) {
                     itemParams = shopItemIdentity.enGirlAShopItem;
 
-                    if (Flags_GetRandomizerInf(shopItemIdentity.randomizerInf)) {
+                    if (Flags_GetRandomizerInf(shopItemIdentity.identity.randomizerInf)) {
                         itemParams = SI_SOLD_OUT;
                     }
                 }

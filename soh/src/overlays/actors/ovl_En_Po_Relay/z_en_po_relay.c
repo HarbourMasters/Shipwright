@@ -146,7 +146,7 @@ void EnPoRelay_SetupRace(EnPoRelay* this) {
 
     EnPoRelay_Vec3sToVec3f(&vec, &D_80AD8C30[this->pathIndex]);
     this->actionTimer = ((s16)(this->actor.shape.rot.y - this->actor.world.rot.y - 0x8000) >> 0xB) % 32U;
-    func_80088B34(0);
+    Interface_SetTimer(0);
     this->hookshotSlotFull =
         (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE && !IS_RANDO) || (IS_RANDO && Flags_GetTreasure(gPlayState, 0x1E));
     this->unk_19A = Actor_WorldYawTowardPoint(&this->actor, &vec);
@@ -274,7 +274,7 @@ void EnPoRelay_EndRace(EnPoRelay* this, PlayState* play) {
         this->actionFunc = EnPoRelay_Talk2;
     } else if (play->roomCtx.curRoom.num == 5) {
         Actor_Kill(&this->actor);
-        gSaveContext.timerState = 0;
+        gSaveContext.timerState = TIMER_STATE_OFF;
     } else if (Actor_IsFacingAndNearPlayer(&this->actor, 150.0f, 0x3000)) {
         this->actor.textId = this->textId;
         func_8002F2CC(&this->actor, play, 250.0f);
@@ -295,7 +295,7 @@ void EnPoRelay_Talk2(EnPoRelay* this, PlayState* play) {
             Message_ContinueTextbox(play, this->actor.textId);
         }
     } else if (Actor_TextboxIsClosing(&this->actor, play)) {
-        gSaveContext.timerState = 0;
+        gSaveContext.timerState = TIMER_STATE_OFF;
         this->actionTimer = 0;
         this->actionFunc = EnPoRelay_DisappearAndReward;
     }

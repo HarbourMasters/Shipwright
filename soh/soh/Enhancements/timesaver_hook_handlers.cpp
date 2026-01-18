@@ -8,9 +8,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Wonder_Talk2/z_en_wonder_talk2.h"
 #include "src/overlays/actors/ovl_Elf_Msg/z_elf_msg.h"
 #include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
-#include "src/overlays/actors/ovl_Obj_Lightswitch/z_obj_lightswitch.h"
 #include "src/overlays/actors/ovl_Bg_Bdan_Switch/z_bg_bdan_switch.h"
-#include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
 #include "src/overlays/actors/ovl_En_Owl/z_en_owl.h"
 #include "src/overlays/actors/ovl_En_Go2/z_en_go2.h"
 #include "src/overlays/actors/ovl_En_Heishi2/z_en_heishi2.h"
@@ -29,9 +27,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Daiku/z_en_daiku.h"
 #include "src/overlays/actors/ovl_Bg_Spot02_Objects/z_bg_spot02_objects.h"
 #include "src/overlays/actors/ovl_Bg_Spot03_Taki/z_bg_spot03_taki.h"
-#include "src/overlays/actors/ovl_Bg_Spot06_Objects/z_bg_spot06_objects.h"
 #include "src/overlays/actors/ovl_Bg_Hidan_Kousi/z_bg_hidan_kousi.h"
-#include "src/overlays/actors/ovl_Bg_Jya_Bombchuiwa/z_bg_jya_bombchuiwa.h"
 #include "src/overlays/actors/ovl_Bg_Dy_Yoseizo/z_bg_dy_yoseizo.h"
 #include "src/overlays/actors/ovl_En_Dnt_Demo/z_en_dnt_demo.h"
 #include "src/overlays/actors/ovl_En_Po_Sisters/z_en_po_sisters.h"
@@ -709,20 +705,15 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 *should = false;
             }
             break;
-        case VB_DAMPE_IN_GRAVEYARD_DESPAWN:
-            if (CVarGetInteger(CVAR_ENHANCEMENT("DampeAllNight"), 0)) {
-                *should = LINK_IS_ADULT || gPlayState->sceneNum != SCENE_GRAVEYARD;
-            }
-            break;
         case VB_BE_VALID_GRAVEDIGGING_SPOT:
-            if (CVarGetInteger(CVAR_ENHANCEMENT("DampeWin"), 0)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("DampeWin"), IS_RANDO)) {
                 EnTk* enTk = va_arg(args, EnTk*);
                 enTk->validDigHere = true;
                 *should = true;
             }
             break;
         case VB_BE_DAMPE_GRAVEDIGGING_GRAND_PRIZE:
-            if (CVarGetInteger(CVAR_ENHANCEMENT("DampeWin"), 0)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("DampeWin"), IS_RANDO)) {
                 EnTk* enTk = va_arg(args, EnTk*);
                 enTk->currentReward = 3;
                 *should = true;
@@ -778,7 +769,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO))) {
                 if (IS_RANDO || *should) {
                     Flags_SetRandomizerInf(flag);
-                    gSaveContext.healthAccumulator = 0x140;
+                    gSaveContext.healthAccumulator = MAX_HEALTH;
                     Magic_Fill(gPlayState);
                 }
                 *should = false;
@@ -860,9 +851,6 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_PLAY_SLOW_CHEST_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("FastChests"), 0)) {
                 *should = false;
-            } else if (CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED) && *should) {
-                EnBox* enBox = va_arg(args, EnBox*);
-                *should = enBox->dyna.actor.scale.x != 0.005f;
             }
             break;
         }
@@ -960,7 +948,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
                     return;
                 }
 
-                bool shouldOpen = IS_RANDO ? RAND_GET_OPTION(RSK_JABU_OPEN)
+                bool shouldOpen = IS_RANDO ? RAND_GET_OPTION(RSK_JABU_OPEN).Get()
                                            : CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"), 0);
                 if (!shouldOpen) {
                     return;
@@ -1209,7 +1197,7 @@ void TimeSaverOnSceneInitHandler(int16_t sceneNum) {
 
 static GetItemEntry vanillaQueuedItemEntry = GET_ITEM_NONE;
 
-void TimeSaverQueueItem(RandomizerGet randoGet) {
+extern void TimeSaverQueueItem(RandomizerGet randoGet) {
     vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(randoGet).GetGIEntry_Copy();
 }
 
@@ -1292,15 +1280,13 @@ void TimeSaverOnFlagSetHandler(int16_t flagType, int16_t flag) {
             case FLAG_ITEM_GET_INF:
                 switch (flag) {
                     case ITEMGETINF_OBTAINED_STICK_UPGRADE_FROM_STAGE: {
-                        RandomizerGet stickUpgrade =
-                            CUR_UPG_VALUE(UPG_STICKS) == 2 ? RG_DEKU_STICK_CAPACITY_30 : RG_DEKU_STICK_CAPACITY_20;
-                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(stickUpgrade).GetGIEntry_Copy();
+                        TimeSaverQueueItem(CUR_UPG_VALUE(UPG_STICKS) == 2 ? RG_DEKU_STICK_CAPACITY_30
+                                                                          : RG_DEKU_STICK_CAPACITY_20);
                         break;
                     }
                     case ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE: {
-                        RandomizerGet nutUpgrade =
-                            CUR_UPG_VALUE(UPG_NUTS) == 2 ? RG_DEKU_NUT_CAPACITY_40 : RG_DEKU_NUT_CAPACITY_30;
-                        vanillaQueuedItemEntry = Rando::StaticData::RetrieveItem(nutUpgrade).GetGIEntry_Copy();
+                        TimeSaverQueueItem(CUR_UPG_VALUE(UPG_NUTS) == 2 ? RG_DEKU_NUT_CAPACITY_40
+                                                                        : RG_DEKU_NUT_CAPACITY_30);
                         break;
                     }
                 }
@@ -1400,7 +1386,7 @@ static uint32_t onGameFrameUpdate = 0;
 static uint32_t onFlagSetHook = 0;
 static uint32_t onPlayerUpdateHook = 0;
 static uint32_t onItemReceiveHook = 0;
-void TimeSaverRegisterHooks() {
+static void TimeSaverRegisterHooks() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) mutable {
         vanillaQueuedItemEntry = GET_ITEM_NONE;
 
@@ -1441,35 +1427,4 @@ void TimeSaverRegisterHooks() {
     });
 }
 
-void RegisterSkipTimerDelay() {
-    // Skip Water Temple gate delay
-    COND_ID_HOOK(OnActorUpdate, ACTOR_BG_SPOT06_OBJECTS,
-                 CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO), [](void* actor) {
-                     auto spot06 = static_cast<BgSpot06Objects*>(actor);
-                     if (spot06->dyna.actor.params == 0) {
-                         spot06->timer = 0;
-                     }
-                 });
-
-    // Skip Spirit Sun on Floor activation delay
-    COND_ID_HOOK(OnActorUpdate, ACTOR_BG_JYA_BOMBCHUIWA,
-                 CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO), [](void* actor) {
-                     auto jya = static_cast<BgJyaBombchuiwa*>(actor);
-                     if (!(jya->drawFlags & 4) && jya->timer > 0 && jya->timer < 9) {
-                         jya->timer = 9;
-                     }
-                 });
-
-    // Skip Spirit Sun on Floor & Sun on Block activation delay
-    COND_ID_HOOK(OnActorUpdate, ACTOR_OBJ_LIGHTSWITCH,
-                 CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO), [](void* actor) {
-                     if (gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE &&
-                         (gPlayState->roomCtx.curRoom.num == 4 || gPlayState->roomCtx.curRoom.num == 8)) {
-                         auto sun = static_cast<ObjLightswitch*>(actor);
-                         sun->toggleDelay = 0;
-                     }
-                 });
-}
-
-static RegisterShipInitFunc skipTimerDelay(RegisterSkipTimerDelay,
-                                           { CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), "IS_RANDO" });
+static RegisterShipInitFunc initFunc_RegisterHooks(TimeSaverRegisterHooks);

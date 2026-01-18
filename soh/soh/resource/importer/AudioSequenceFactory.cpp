@@ -2,12 +2,12 @@
 #include "soh/resource/importer/AudioSoundFontFactory.h"
 #include "soh/resource/type/AudioSequence.h"
 #include "spdlog/spdlog.h"
-#include "resource/ResourceManager.h"
+#include <ship/resource/ResourceManager.h>
 #include <tinyxml2.h>
 
-#include "Context.h"
-#include "resource/archive/Archive.h"
-#include "BinaryWriter.h"
+#include <ship/Context.h>
+#include <ship/resource/archive/Archive.h>
+#include <ship/utils/binarytools/BinaryWriter.h>
 #include <type_traits>
 
 namespace SOH {

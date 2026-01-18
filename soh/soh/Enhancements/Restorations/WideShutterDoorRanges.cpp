@@ -1,4 +1,4 @@
-#include "public/bridge/consolevariablebridge.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
@@ -27,5 +27,4 @@ void RegisterWideShutterDoorRange() {
     });
 }
 
-static RegisterShipInitFunc initFunc_WideShutterDoorRange(RegisterWideShutterDoorRange,
-                                                          { CVAR_WIDE_SHUTTER_DOOR_RANGE });
+static RegisterShipInitFunc initFunc(RegisterWideShutterDoorRange, { CVAR_WIDE_SHUTTER_DOOR_RANGE });

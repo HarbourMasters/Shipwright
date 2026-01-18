@@ -11,7 +11,7 @@ extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 void ObjComb_RandomizerChooseItemDrop(ObjComb* objComb, PlayState* play) {
     s16 params = objComb->actor.params & 0x1F;
-    const auto beehiveIdentity = ObjectExtension::GetInstance().Get<BeehiveIdentity>(&objComb->actor);
+    const auto beehiveIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&objComb->actor);
 
     if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && beehiveIdentity != nullptr &&
         !Flags_GetRandomizerInf(beehiveIdentity->randomizerInf)) {
@@ -42,8 +42,8 @@ void ObjComb_RandomizerChooseItemDrop(ObjComb* objComb, PlayState* play) {
 void ObjComb_RandomizerWait(ObjComb* objComb, PlayState* play) {
     objComb->unk_1B0 -= 50;
 
-    const auto beehiveIdentity = ObjectExtension::GetInstance().Get<BeehiveIdentity>(&objComb->actor);
-    if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && beehiveIdentity == nullptr &&
+    const auto beehiveIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&objComb->actor);
+    if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && beehiveIdentity != nullptr &&
         !Flags_GetRandomizerInf(beehiveIdentity->randomizerInf)) {
         if (objComb->unk_1B0 <= -5000) {
             objComb->unk_1B0 = 1500;
@@ -55,7 +55,10 @@ void ObjComb_RandomizerWait(ObjComb* objComb, PlayState* play) {
     if ((objComb->collider.base.acFlags & AC_HIT) != 0) {
         objComb->collider.base.acFlags &= ~AC_HIT;
         s32 dmgFlags = objComb->collider.elements[0].info.acHitInfo->toucher.dmgFlags;
-        if (dmgFlags & 0x4001F866) {
+
+        bool slingBowDmg = RAND_GET_OPTION(RSK_SLINGBOW_BREAK_BEEHIVES) && (dmgFlags & (DMG_ARROW | DMG_SLINGSHOT));
+
+        if ((dmgFlags & 0x4001F866) && !slingBowDmg) {
             objComb->unk_1B0 = 1500;
         } else {
             ObjComb_Break(objComb, play);
@@ -76,15 +79,17 @@ void ObjComb_RandomizerInit(void* actor) {
     s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
     auto beehiveIdentity = OTRGlobals::Instance->gRandomizer->IdentifyBeehive(
         gPlayState->sceneNum, (s16)objComb->actor.world.pos.x, respawnData);
-    ObjectExtension::GetInstance().Set<BeehiveIdentity>(actor, std::move(beehiveIdentity));
+    ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(beehiveIdentity));
     objComb->actionFunc = (ObjCombActionFunc)ObjComb_RandomizerWait;
 }
 
 void ObjComb_RandomizerUpdate(void* actor) {
     ObjComb* combActor = reinterpret_cast<ObjComb*>(actor);
+    PlayState* play = gPlayState;
+    combActor->unk_1B2 += 0x2EE0;
+    combActor->actionFunc(combActor, play);
     combActor->actor.shape.rot.x =
-        static_cast<int16_t>(Math_SinS(combActor->unk_1B2)) * CLAMP_MIN(combActor->unk_1B0, 0) +
-        combActor->actor.home.rot.x;
+        Math_SinS(combActor->unk_1B2) * CLAMP_MIN(combActor->unk_1B0, 0) + combActor->actor.home.rot.x;
 }
 
 void RegisterShuffleBeehives() {
@@ -94,7 +99,7 @@ void RegisterShuffleBeehives() {
     COND_ID_HOOK(OnActorUpdate, ACTOR_OBJ_COMB, shouldRegister, ObjComb_RandomizerUpdate);
 }
 
-static RegisterShipInitFunc initFunc(RegisterShuffleBeehives, { "IS_RANDO" });
+static RegisterShipInitFunc registerShuffleBeehives(RegisterShuffleBeehives, { "IS_RANDO" });
 
 void Rando::StaticData::RegisterBeehiveLocations() {
     static bool registered = false;
@@ -137,5 +142,4 @@ void Rando::StaticData::RegisterBeehiveLocations() {
     // clang-format-on
 }
 
-static ObjectExtension::Register<BeehiveIdentity> RegisterBeehiveIdentity;
-static RegisterShipInitFunc registerFunc(Rando::StaticData::RegisterBeehiveLocations);
+static RegisterShipInitFunc registerBeehiveLocations(Rando::StaticData::RegisterBeehiveLocations);

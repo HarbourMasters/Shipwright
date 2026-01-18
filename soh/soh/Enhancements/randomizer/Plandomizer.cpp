@@ -135,7 +135,7 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_PROGRESSIVE_SCALE, "ITEM_SCALE_SILVER" },
     { RG_PROGRESSIVE_NUT_UPGRADE, "ITEM_NUT" },
     { RG_PROGRESSIVE_STICK_UPGRADE, "ITEM_STICK" },
-    { RG_PROGRESSIVE_BOMBCHUS, "ITEM_BOMBCHU" },
+    { RG_PROGRESSIVE_BOMBCHU_BAG, "ITEM_BOMBCHU" },
     { RG_PROGRESSIVE_MAGIC_METER, "ITEM_MAGIC_SMALL" },
     { RG_MAGIC_SINGLE, "ITEM_MAGIC_SMALL" },
     { RG_MAGIC_DOUBLE, "ITEM_MAGIC_LARGE" },
@@ -894,7 +894,7 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
 
     ImGui::PopID();
 }
-static std::unordered_map<RandomizerCheckArea, const char*> rcAreaNameMap = {
+static std::map<RandomizerCheckArea, const char*> rcAreaNameMap = {
     { RCAREA_KOKIRI_FOREST, "Kokiri Forest" },
     { RCAREA_LOST_WOODS, "Lost Woods" },
     { RCAREA_SACRED_FOREST_MEADOW, "Sacred Forest Meadow" },

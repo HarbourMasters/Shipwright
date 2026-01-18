@@ -8,6 +8,7 @@
 #include "soh/Enhancements/audio/AudioCollection.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <stdio.h>
 #ifdef _MSC_VER
 #define strdup _strdup
@@ -630,19 +631,7 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     AudioSeq_SkipForwardSequence(seqPlayer);
     //! @bug missing return (but the return value is not used so it's not UB)
 
-    // Keep track of the previous sequence/scene so we don't repeat notifications
-    static uint16_t previousSeqId = UINT16_MAX;
-    static int16_t previousSceneNum = INT16_MAX;
-    if (CVarGetInteger(CVAR_AUDIO("SeqNameOverlay"), 0) && playerIdx == SEQ_PLAYER_BGM_MAIN &&
-        (seqId != previousSeqId || (gPlayState != NULL && gPlayState->sceneNum != previousSceneNum))) {
-
-        previousSeqId = seqId;
-        if (gPlayState != NULL) {
-            previousSceneNum = gPlayState->sceneNum;
-        }
-
-        AudioCollection_EmitSongNameNotification(seqId);
-    }
+    GameInteractor_ExecuteOnSeqPlayerInit(playerIdx, seqId);
 }
 
 u8* AudioLoad_SyncLoadSeq(s32 seqId) {
@@ -1363,6 +1352,9 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         seqCachePolicyMap[sDat.seqNumber] = sDat.cachePolicy;
     }
 
+    for (int i = 0; i < seqListSize; i++) {
+        free(seqList[i]);
+    }
     free(seqList);
 
     // 2S2H [Streamed Audio] We need to load the custom songs after the fonts because streamed songs will use a hash to
@@ -1372,7 +1364,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     char** fntList = ResourceMgr_ListFiles("audio/fonts*", &fntListSize);
     char** customFntList = ResourceMgr_ListFiles("custom/fonts/*", &customFntListSize);
 
-    gAudioContext.fontLoadStatus = malloc(customFntListSize + fntListSize);
+    gAudioContext.fontLoadStatus = calloc(customFntListSize + fntListSize, sizeof(u8));
     fontMap = calloc(customFntListSize + fntListSize, sizeof(char*));
     fontMapSize = customFntListSize + fntListSize;
     for (int i = 0; i < fntListSize; i++) {
@@ -1380,6 +1372,9 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         fontMap[sf->fntIndex] = strdup(fntList[i]);
     }
 
+    for (int i = 0; i < fntListSize; i++) {
+        free(fntList[i]);
+    }
     free(fntList);
 
     int customFontStart = fntListSize;
@@ -1387,6 +1382,9 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         SoundFont* sf = ResourceMgr_LoadAudioSoundFontByName(customFntList[i - customFontStart]);
         sf->fntIndex = i;
         fontMap[i] = strdup(customFntList[i - customFontStart]);
+    }
+    for (int i = 0; i < customFntListSize; i++) {
+        free(customFntList[i]);
     }
     free(customFntList);
 
@@ -1443,6 +1441,9 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         seqNum++;
     }
 
+    for (int i = 0; i < customSeqListSize; i++) {
+        free(customSeqList[i]);
+    }
     free(customSeqList);
 
     numFonts = fntListSize;

@@ -3,7 +3,7 @@
 // OTRTODO - this is awful
 
 extern "C" {
-void InitOTR();
+void InitOTR(int argc, char* argv[]);
 void Graph_ProcessFrame(void (*run_one_game_iter)(void));
 void Graph_StartFrame();
 void Graph_ProcessGfxCommands(Gfx* commands);
@@ -45,7 +45,7 @@ extern "C" void gSPSegment(void* value, int segNum, uintptr_t target) {
     if (res) {
         uintptr_t desiredTarget = (uintptr_t)ResourceMgr_LoadIfDListByName(imgData);
 
-        if (desiredTarget != NULL)
+        if (desiredTarget)
             target = desiredTarget;
     }
 

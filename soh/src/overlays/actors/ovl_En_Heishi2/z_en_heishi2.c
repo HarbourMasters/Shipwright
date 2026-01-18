@@ -189,52 +189,54 @@ void func_80A531E4(EnHeishi2* this, PlayState* play) {
 void func_80A53278(EnHeishi2* this, PlayState* play) {
     this->unk_30B = 0;
     this->unk_30E = 0;
-    if (Text_GetFaceReaction(play, 5) != 0) {
-        this->actor.textId = Text_GetFaceReaction(play, 5);
-        this->unk_30B = 1;
-        this->unk_300 = TEXT_STATE_DONE;
-        this->actionFunc = func_80A5475C;
-    } else if ((Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) &&
-               (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) &&
-               (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP))) {
-        // "Get all spiritual stones!"
-        osSyncPrintf(VT_FGCOL(GREEN) " ☆☆☆☆☆ 全部の精霊石GET！ ☆☆☆☆☆ \n" VT_RST);
-        this->unk_300 = TEXT_STATE_DONE;
-        this->actor.textId = 0x7006;
-        this->actionFunc = func_80A5475C;
-    } else if (!IS_DAY) {
-        // "Sleep early for children!"
-        osSyncPrintf(VT_FGCOL(YELLOW) " ☆☆☆☆☆ 子供ははやくネロ！ ☆☆☆☆☆ \n" VT_RST);
-        this->unk_300 = TEXT_STATE_DONE;
-        this->actor.textId = 0x7002;
-        this->actionFunc = func_80A5475C;
+    if (GameInteractor_Should(VB_CAN_BRIBE_HEISHI2, true, this)) {
+        if (Text_GetFaceReaction(play, 5) != 0) {
+            this->actor.textId = Text_GetFaceReaction(play, 5);
+            this->unk_30B = 1;
+            this->unk_300 = TEXT_STATE_DONE;
+            this->actionFunc = func_80A5475C;
+        } else if ((Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) &&
+                   (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) &&
+                   (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP))) {
+            // "Get all spiritual stones!"
+            osSyncPrintf(VT_FGCOL(GREEN) " ☆☆☆☆☆ 全部の精霊石GET！ ☆☆☆☆☆ \n" VT_RST);
+            this->unk_300 = TEXT_STATE_DONE;
+            this->actor.textId = 0x7006;
+            this->actionFunc = func_80A5475C;
+        } else if (!IS_DAY) {
+            // "Sleep early for children!"
+            osSyncPrintf(VT_FGCOL(YELLOW) " ☆☆☆☆☆ 子供ははやくネロ！ ☆☆☆☆☆ \n" VT_RST);
+            this->unk_300 = TEXT_STATE_DONE;
+            this->actor.textId = 0x7002;
+            this->actionFunc = func_80A5475C;
 
-    } else if (this->unk_30C != 0) {
-        // "Anything passes"
-        osSyncPrintf(VT_FGCOL(BLUE) " ☆☆☆☆☆ なんでも通るよ ☆☆☆☆☆ \n" VT_RST);
-        this->unk_300 = TEXT_STATE_DONE;
-        this->actor.textId = 0x7099;
-        this->actionFunc = func_80A5475C;
-    } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG)) {
-        if (this->unk_30E == 0) {
-            // "Start under the first sleeve!"
-            osSyncPrintf(VT_FGCOL(PURPLE) " ☆☆☆☆☆ １回目袖の下開始！ ☆☆☆☆☆ \n" VT_RST);
-            this->actor.textId = 0x7071;
-            this->unk_30E = 1;
+        } else if (this->unk_30C != 0) {
+            // "Anything passes"
+            osSyncPrintf(VT_FGCOL(BLUE) " ☆☆☆☆☆ なんでも通るよ ☆☆☆☆☆ \n" VT_RST);
+            this->unk_300 = TEXT_STATE_DONE;
+            this->actor.textId = 0x7099;
+            this->actionFunc = func_80A5475C;
+        } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG)) {
+            if (this->unk_30E == 0) {
+                // "Start under the first sleeve!"
+                osSyncPrintf(VT_FGCOL(PURPLE) " ☆☆☆☆☆ １回目袖の下開始！ ☆☆☆☆☆ \n" VT_RST);
+                this->actor.textId = 0x7071;
+                this->unk_30E = 1;
+            } else {
+                // "Start under the second sleeve!"
+                osSyncPrintf(VT_FGCOL(PURPLE) " ☆☆☆☆☆ ２回目袖の下開始！ ☆☆☆☆☆ \n" VT_RST);
+                this->actor.textId = 0x7072;
+            }
+            this->unk_300 = TEXT_STATE_CHOICE;
+            this->actionFunc = func_80A5475C;
+
         } else {
-            // "Start under the second sleeve!"
-            osSyncPrintf(VT_FGCOL(PURPLE) " ☆☆☆☆☆ ２回目袖の下開始！ ☆☆☆☆☆ \n" VT_RST);
-            this->actor.textId = 0x7072;
+            // "That's okay"
+            osSyncPrintf(VT_FGCOL(CYAN) " ☆☆☆☆☆ それはとおらんよぉ ☆☆☆☆☆ \n" VT_RST);
+            this->unk_300 = TEXT_STATE_DONE;
+            this->actor.textId = 0x7029;
+            this->actionFunc = func_80A5475C;
         }
-        this->unk_300 = TEXT_STATE_CHOICE;
-        this->actionFunc = func_80A5475C;
-
-    } else {
-        // "That's okay"
-        osSyncPrintf(VT_FGCOL(CYAN) " ☆☆☆☆☆ それはとおらんよぉ ☆☆☆☆☆ \n" VT_RST);
-        this->unk_300 = TEXT_STATE_DONE;
-        this->actor.textId = 0x7029;
-        this->actionFunc = func_80A5475C;
     }
 }
 

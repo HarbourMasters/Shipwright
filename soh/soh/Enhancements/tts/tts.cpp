@@ -2,13 +2,14 @@
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 
 #include <cassert>
-#include <File.h>
-#include <Json.h>
+#include <ship/resource/File.h>
+#include <ship/resource/type/Json.h>
 #include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
 #include <spdlog/fmt/fmt.h>
 
 #include "soh/OTRGlobals.h"
+#include "soh/ShipInit.hpp"
 #include "message_data_static.h"
 #include "overlays/gamestates/ovl_file_choose/file_choose.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
@@ -142,9 +143,9 @@ void RegisterOnInterfaceUpdateHook() {
         static char ttsAnnounceBuf[32];
 
         uint32_t timer = 0;
-        if (gSaveContext.timerState != 0) {
+        if (gSaveContext.timerState != TIMER_STATE_OFF) {
             timer = gSaveContext.timerSeconds;
-        } else if (gSaveContext.subTimerState != 0) {
+        } else if (gSaveContext.subTimerState != SUBTIMER_STATE_OFF) {
             timer = gSaveContext.subTimerSeconds;
         }
 
@@ -1199,7 +1200,7 @@ void RegisterOnSetDoAction() {
     });
 }
 
-void RegisterTTSModHooks() {
+static void RegisterTTSModHooks() {
     RegisterOnSetGameLanguageHook();
     RegisterOnDialogMessageHook();
     RegisterOnSceneInitHook();
@@ -1210,7 +1211,9 @@ void RegisterTTSModHooks() {
     RegisterOnSetDoAction();
 }
 
-void RegisterTTS() {
+static void RegisterTTS() {
     InitTTSBank();
     RegisterTTSModHooks();
 }
+
+static RegisterShipInitFunc initFunc(RegisterTTS);

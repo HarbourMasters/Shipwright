@@ -3,6 +3,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 static u8 sChildUpgrades[] = { UPG_BULLET_BAG, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
 static u8 sAdultUpgrades[] = { UPG_QUIVER, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
@@ -642,8 +643,8 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                     pauseCtx->unk_1E4 = 7;
                     sEquipTimer = 10;
                 } else if (CVarGetInteger(CVAR_ENHANCEMENT("AssignableTunicsAndBoots"), 0) != 0) {
-                    // Only allow assigning tunic and boots to c-buttons
-                    if (pauseCtx->cursorY[PAUSE_EQUIP] > 1) {
+                    // Only allow assigning shield, tunic and boots to c-buttons
+                    if (pauseCtx->cursorY[PAUSE_EQUIP] > 0) {
                         if (CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) {
                             u16 slot = 0;
                             switch (cursorItem) {
@@ -665,12 +666,23 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                                 case ITEM_BOOTS_HOVER:
                                     slot = SLOT_BOOTS_HOVER;
                                     break;
+                                case ITEM_SHIELD_DEKU:
+                                    slot = SLOT_SHIELD_DEKU;
+                                    break;
+                                case ITEM_SHIELD_HYLIAN:
+                                    slot = SLOT_SHIELD_HYLIAN;
+                                    break;
+                                case ITEM_SHIELD_MIRROR:
+                                    slot = SLOT_SHIELD_MIRROR;
+                                    break;
                                 default:
                                     break;
                             }
-                            KaleidoScope_SetupItemEquip(play, cursorItem, slot,
-                                                        pauseCtx->equipVtx[cursorSlot * 4].v.ob[0] * 10,
-                                                        pauseCtx->equipVtx[cursorSlot * 4].v.ob[1] * 10);
+                            if (GameInteractor_Should(VB_EQUIP_ITEM_TO_C_BUTTON, true, play, slot, cursorItem)) {
+                                KaleidoScope_SetupItemEquip(play, cursorItem, slot,
+                                                            pauseCtx->equipVtx[cursorSlot * 4].v.ob[0] * 10,
+                                                            pauseCtx->equipVtx[cursorSlot * 4].v.ob[1] * 10);
+                            }
                         } else {
                             Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);

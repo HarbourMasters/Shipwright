@@ -2,6 +2,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "soh/Enhancements/randomizer/ShuffleTradeItems.h"
+#include "soh/Enhancements/randomizer/RocsFeatherCycle.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
@@ -61,7 +62,7 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
                    (item == ITEM_SLINGSHOT && AMMO(item) == CUR_CAPACITY(UPG_BULLET_BAG)) ||
                    (item == ITEM_STICK && AMMO(item) == CUR_CAPACITY(UPG_STICKS)) ||
                    (item == ITEM_NUT && AMMO(item) == CUR_CAPACITY(UPG_NUTS)) || (item == ITEM_BOMBCHU && ammo == 50) ||
-                   (item == ITEM_BEAN && ammo == 15)) {
+                   (item == ITEM_BEAN && ammo == 15) || GameInteractor_Should(VB_COLOR_AMMO_GREEN, false, item)) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 120, 255, 0, pauseCtx->alpha);
         }
     }
@@ -323,9 +324,9 @@ void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle,
 
 bool CanMaskSelect() {
     if (IS_RANDO) {
-        return CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) &&
-               Flags_GetRandomizerInf(
-                   RAND_INF_ZELDAS_LETTER); /* || Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_TRADE) */
+        return (CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) && Flags_GetRandomizerInf(RAND_INF_ZELDAS_LETTER) &&
+                Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) ||
+               Randomizer_GetSettingValue(RSK_MASK_QUEST) == RO_MASK_QUEST_SHUFFLE;
     }
 
     // only allow mask select when:
@@ -374,6 +375,10 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
     KaleidoScope_HandleItemCycleExtras(play, SLOT_TRADE_ADULT,
                                        IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
                                        Randomizer_GetPrevAdultTradeItem(), Randomizer_GetNextAdultTradeItem(), true);
+
+    // Handle Nayru's Love/Roc's Feather
+    KaleidoScope_HandleItemCycleExtras(play, SLOT_NAYRUS_LOVE, Randomizer_GetSettingValue(RSK_ROCS_FEATHER),
+                                       Enhancement_GetPrevNayrusItem(), Enhancement_GetNextNayrusItem(), true);
 }
 
 void KaleidoScope_DrawItemCycles(PlayState* play) {
@@ -393,6 +398,10 @@ void KaleidoScope_DrawItemCycles(PlayState* play) {
     KaleidoScope_DrawItemCycleExtras(play, SLOT_TRADE_ADULT,
                                      IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
                                      Randomizer_GetPrevAdultTradeItem(), Randomizer_GetNextAdultTradeItem());
+
+    // Draw Nayru's Love/Roc's Feather
+    KaleidoScope_DrawItemCycleExtras(play, SLOT_NAYRUS_LOVE, Randomizer_GetSettingValue(RSK_ROCS_FEATHER),
+                                     Enhancement_GetPrevNayrusItem(), Enhancement_GetNextNayrusItem());
 }
 
 bool IsItemCycling() {
@@ -692,9 +701,11 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                     if (CHECK_BTN_ANY(input->press.button, buttonsToCheck)) {
                         if (CHECK_AGE_REQ_SLOT(cursorSlot) && (cursorItem != ITEM_SOLD_OUT) &&
                             (cursorItem != ITEM_NONE)) {
-                            KaleidoScope_SetupItemEquip(play, cursorItem, cursorSlot,
-                                                        pauseCtx->itemVtx[index].v.ob[0] * 10,
-                                                        pauseCtx->itemVtx[index].v.ob[1] * 10);
+                            if (GameInteractor_Should(VB_EQUIP_ITEM_TO_C_BUTTON, true, play, cursorSlot, cursorItem)) {
+                                KaleidoScope_SetupItemEquip(play, cursorItem, cursorSlot,
+                                                            pauseCtx->itemVtx[index].v.ob[0] * 10,
+                                                            pauseCtx->itemVtx[index].v.ob[1] * 10);
+                            }
                         } else {
                             Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);

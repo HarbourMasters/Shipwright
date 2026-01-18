@@ -2,6 +2,7 @@
 __pycache__/
 .pyc
 .DS_Store
+.cache/*
 
 # Text editor remnants
 .vscode/*
@@ -417,6 +418,7 @@ tags
 shipofharkinian.ini
 shipofharkinian.json
 imgui.ini
+timesplitdata.json
 
 # Switch Stuff
 

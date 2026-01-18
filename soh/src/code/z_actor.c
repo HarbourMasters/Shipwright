@@ -1256,10 +1256,16 @@ void Actor_Init(Actor* actor, PlayState* play) {
     ActorShape_Init(&actor->shape, 0.0f, NULL, 0.0f);
     if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
         Actor_SetObjectDependency(play, actor);
-        actor->init(actor, play);
-        actor->init = NULL;
 
-        GameInteractor_ExecuteOnActorInit(actor);
+        if (GameInteractor_ShouldActorInit(actor)) {
+            actor->init(actor, play);
+            actor->init = NULL;
+
+            GameInteractor_ExecuteOnActorInit(actor);
+        } else {
+            actor->init = NULL;
+            Actor_Kill(actor);
+        }
     }
 }
 
@@ -2244,6 +2250,10 @@ void Player_PlaySfx(Actor* actor, u16 sfxId) {
         Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &freqMultiplier, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultReverb);
     }
+
+    if (actor->id == ACTOR_PLAYER) {
+        GameInteractor_ExecuteOnPlayerSfx(sfxId);
+    }
 }
 
 void Audio_PlayActorSound2(Actor* actor, u16 sfxId) {
@@ -2624,10 +2634,16 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
             if (actor->init != NULL) {
                 if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
                     Actor_SetObjectDependency(play, actor);
-                    actor->init(actor, play);
-                    actor->init = NULL;
 
-                    GameInteractor_ExecuteOnActorInit(actor);
+                    if (GameInteractor_ShouldActorInit(actor)) {
+                        actor->init(actor, play);
+                        actor->init = NULL;
+
+                        GameInteractor_ExecuteOnActorInit(actor);
+                    } else {
+                        actor->init = NULL;
+                        Actor_Kill(actor);
+                    }
                 }
                 actor = actor->next;
             } else if (!Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
@@ -2670,8 +2686,10 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                     if (actor->colorFilterTimer != 0) {
                         actor->colorFilterTimer--;
                     }
-                    actor->update(actor, play);
-                    GameInteractor_ExecuteOnActorUpdate(actor);
+                    if (GameInteractor_ShouldActorUpdate(actor)) {
+                        actor->update(actor, play);
+                        GameInteractor_ExecuteOnActorUpdate(actor);
+                    }
                     func_8003F8EC(play, &play->colCtx.dyna, actor);
                 }
 
@@ -3303,8 +3321,9 @@ int gMapLoading = 0;
 Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ, s16 rotX,
                    s16 rotY, s16 rotZ, s16 params, s16 canRandomize) {
 
-    uint8_t tryRandomizeEnemy = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) && gSaveContext.fileNum >= 0 &&
-                                gSaveContext.fileNum <= 2 && canRandomize;
+    uint8_t tryRandomizeEnemy = canRandomize && CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) &&
+                                ((gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2) ||
+                                 (gSaveContext.fileNum == 0xFF && gSaveContext.gameMode == GAMEMODE_NORMAL));
 
     if (tryRandomizeEnemy) {
         if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
@@ -3552,9 +3571,12 @@ void func_800328D4(PlayState* play, ActorContext* actorCtx, Player* player, u32 
 
             // This block below is for determining the closest actor to player in determining the volume
             // used while playing enemy bgm music
-            if ((actorCategory == ACTORCAT_ENEMY) &&
-                CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE) &&
-                (actor->xyzDistToPlayerSq < SQ(500.0f)) && (actor->xyzDistToPlayerSq < sbgmEnemyDistSq)) {
+            if (GameInteractor_Should(
+                    VB_DETECT_BGM_ENEMY,
+                    (actorCategory == ACTORCAT_ENEMY) &&
+                        CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE) &&
+                        (actor->xyzDistToPlayerSq < SQ(500.0f)) && (actor->xyzDistToPlayerSq < sbgmEnemyDistSq),
+                    actor, &sbgmEnemyDistSq, (int32_t)actorCategory)) {
                 actorCtx->targetCtx.bgmEnemy = actor;
                 sbgmEnemyDistSq = actor->xyzDistToPlayerSq;
             }
