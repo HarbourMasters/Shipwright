@@ -1609,6 +1609,25 @@ void SohInputEditorWindow::DrawLinkTab() {
                              .Color(THEME_COLOR)
                              .Tooltip("Hold the assigned button to change the maximum walking or swimming speed"));
             if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0)) {
+                CVarBtnSelector(
+                    "Speed Modifier 1 Button Combo", CVAR_SETTING("WalkModifier.Mod1Btn"),
+                    BtnSelectorOptions()
+                        .DefaultValue(BTN_CUSTOM_MODIFIER1)
+                        .Color(THEME_COLOR)
+                        .Tooltip(
+                            "Buttons that activate Speed Modifier 1.\n\n"
+                            "If \"Toggle modifier instead of holding\" is off, hold this combo to apply the modifier.\n"
+                            "If it is on, tap this combo to toggle the modifier on/off."));
+
+                CVarBtnSelector(
+                    "Speed Modifier 2 Button Combo", CVAR_SETTING("WalkModifier.Mod2Btn"),
+                    BtnSelectorOptions()
+                        .DefaultValue(BTN_CUSTOM_MODIFIER2)
+                        .Color(THEME_COLOR)
+                        .Tooltip(
+                            "Buttons that activate Speed Modifier 2.\n\n"
+                            "If \"Toggle modifier instead of holding\" is off, hold this combo to apply the modifier.\n"
+                            "If it is on, tap this combo to toggle the modifier on/off."));
                 UIWidgets::Spacer(5);
                 Ship::GuiWindow::BeginGroupPanel("Speed Modifier", ImGui::GetContentRegionAvail());
                 CVarCheckbox("Toggle modifier instead of holding", CVAR_SETTING("WalkModifier.SpeedToggle"),

@@ -37,6 +37,7 @@ typedef enum {
     WIDGET_CVAR_COMBOBOX,
     WIDGET_CVAR_SLIDER_INT,
     WIDGET_CVAR_SLIDER_FLOAT,
+    WIDGET_CVAR_BTN_SELECTOR,
     WIDGET_BUTTON,
     WIDGET_INPUT,
     WIDGET_CVAR_INPUT,
@@ -71,10 +72,10 @@ typedef enum {
 // holds the widget values for a widget, contains all CVar types available from LUS. int32_t is used for boolean
 // evaluation
 using CVarVariant = std::variant<int32_t, const char*, float, Color_RGBA8, Color_RGB8>;
-using OptionsVariant =
-    std::variant<UIWidgets::ButtonOptions, UIWidgets::CheckboxOptions, UIWidgets::ComboboxOptions,
-                 UIWidgets::FloatSliderOptions, UIWidgets::IntSliderOptions, UIWidgets::TextOptions,
-                 UIWidgets::WidgetOptions, UIWidgets::WindowButtonOptions, UIWidgets::ColorPickerOptions>;
+using OptionsVariant = std::variant<UIWidgets::ButtonOptions, UIWidgets::CheckboxOptions, UIWidgets::ComboboxOptions,
+                                    UIWidgets::FloatSliderOptions, UIWidgets::IntSliderOptions, UIWidgets::TextOptions,
+                                    UIWidgets::WidgetOptions, UIWidgets::WindowButtonOptions,
+                                    UIWidgets::ColorPickerOptions, UIWidgets::BtnSelectorOptions>;
 
 // All the info needed for display and search of all widgets in the menu.
 // `name` is the label displayed,
@@ -134,6 +135,10 @@ struct WidgetInfo {
             case WIDGET_CVAR_SLIDER_FLOAT:
                 options =
                     std::make_shared<UIWidgets::FloatSliderOptions>(std::get<UIWidgets::FloatSliderOptions>(options_));
+                break;
+            case WIDGET_CVAR_BTN_SELECTOR:
+                options =
+                    std::make_shared<UIWidgets::BtnSelectorOptions>(std::get<UIWidgets::BtnSelectorOptions>(options_));
                 break;
             case WIDGET_SLIDER_INT:
             case WIDGET_CVAR_SLIDER_INT:

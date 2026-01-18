@@ -45,6 +45,9 @@ WidgetInfo& SohMenu::AddWidget(WidgetPath& pathInfo, std::string widgetName, Wid
         case WIDGET_CVAR_SLIDER_FLOAT:
             widget.options = std::make_shared<FloatSliderOptions>();
             break;
+        case WIDGET_CVAR_BTN_SELECTOR:
+            widget.options = std::make_shared<BtnSelectorOptions>();
+            break;
         case WIDGET_SLIDER_INT:
         case WIDGET_CVAR_SLIDER_INT:
             widget.options = std::make_shared<IntSliderOptions>();

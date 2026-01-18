@@ -7146,9 +7146,12 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
                     maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                 }
             } else {
-                if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER1)) {
+                const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
+                const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+
+                if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask)) {
                     maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
-                } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER2)) {
+                } else if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask)) {
                     maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                 }
             }
@@ -8892,9 +8895,12 @@ void Player_Action_80842180(Player* this, PlayState* play) {
                         sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                     }
                 } else {
-                    if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER1)) {
+                    const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
+                    const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+
+                    if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask)) {
                         sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
-                    } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER2)) {
+                    } else if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask)) {
                         sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                     }
                 }
@@ -12411,10 +12417,15 @@ void Player_Update(Actor* thisx, PlayState* play) {
 
         if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0) &&
             CVarGetInteger(CVAR_SETTING("WalkModifier.SpeedToggle"), 0)) {
-            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_CUSTOM_MODIFIER1)) {
+            const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
+            const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+
+            if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask) &&
+                CHECK_BTN_ANY(sControlInput->press.button, mod1Mask)) {
                 gWalkSpeedToggle1 = !gWalkSpeedToggle1;
             }
-            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_CUSTOM_MODIFIER2)) {
+            if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask) &&
+                CHECK_BTN_ANY(sControlInput->press.button, mod2Mask)) {
                 gWalkSpeedToggle2 = !gWalkSpeedToggle2;
             }
         }
@@ -12876,9 +12887,12 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
             // sControlInput is NULL to prevent inputs while surfacing after obtaining an underwater item so we want to
             // ignore it for that case
         } else if (sControlInput != NULL) {
-            if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER1)) {
+            const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
+            const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+
+            if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask)) {
                 swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping1"), 1.0f);
-            } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER2)) {
+            } else if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask)) {
                 swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping2"), 1.0f);
             }
         }
@@ -15104,11 +15118,10 @@ void Player_Action_8084FBF4(Player* this, PlayState* play) {
  */
 s32 Player_UpdateNoclip(Player* this, PlayState* play) {
     sControlInput = &play->state.input[0];
+    s32 mask = CVarGetInteger("gDeveloperTools.NoClipBtn", BTN_L | BTN_DRIGHT);
 
     if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) &&
-        ((CHECK_BTN_ALL(sControlInput->cur.button, BTN_A | BTN_L | BTN_R) &&
-          CHECK_BTN_ALL(sControlInput->press.button, BTN_B)) ||
-         (CHECK_BTN_ALL(sControlInput->cur.button, BTN_L) && CHECK_BTN_ALL(sControlInput->press.button, BTN_DRIGHT)))) {
+        (CHECK_BTN_ALL(sControlInput->cur.button, mask) && CHECK_BTN_ANY(sControlInput->press.button, mask))) {
 
         sNoclipEnabled ^= 1;
 
