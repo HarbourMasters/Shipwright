@@ -109,12 +109,6 @@ struct WidgetOptions {
     const char* tooltip = "";
     bool disabled = false;
     const char* disabledTooltip = "";
-    Colors color = Colors::NoColor;
-
-    WidgetOptions& Color(Colors color_) {
-        color = color = color_;
-        return *this;
-    }
 
     WidgetOptions& Tooltip(const char* tooltip_) {
         tooltip = tooltip_;
@@ -535,7 +529,7 @@ struct BtnSelectorOptions : WidgetOptions {
     }
 
     BtnSelectorOptions& Color(Colors color_) {
-        WidgetOptions::color = color = color_;
+        color = color_;
         return *this;
     }
 };
