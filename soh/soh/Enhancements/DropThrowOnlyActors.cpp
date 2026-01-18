@@ -24,6 +24,10 @@ static void AllowThrowOnlyDrop(Actor* actor) {
 }
 
 static void OnThrowOnlyActorInit(void* actorPtr) {
+    if (gPlayState == nullptr) {
+        return;
+    }
+
     AllowThrowOnlyDrop((Actor*)actorPtr);
 }
 
@@ -51,9 +55,7 @@ static void DropThrowOnlyCVarWatcher(void*) {
 
 void RegisterAllowThrowOnlyDrop() {
     COND_HOOK(OnActorInit, true, OnThrowOnlyActorInit);
-    COND_HOOK(OnActorUpdate,
-              (gPlayState != nullptr) &&
-                  (CVarGetInteger(CVAR_ENHANCEMENT("DropThrowOnlyObjects"), 0) != sDropThrowOnlyLastValue),
+    COND_HOOK(OnActorUpdate, CVarGetInteger(CVAR_ENHANCEMENT("DropThrowOnlyObjects"), 0) != sDropThrowOnlyLastValue,
               DropThrowOnlyCVarWatcher);
 }
 
