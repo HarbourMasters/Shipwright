@@ -27,18 +27,18 @@ static void OnThrowOnlyActorInit(void* actorPtr) {
     AllowThrowOnlyDrop((Actor*)actorPtr);
 }
 
-static void DropThrowOnlyCVarWatcher(void*) {
-    static int lastValue = -1;
+static int sDropThrowOnlyLastValue = -1;
 
+static void DropThrowOnlyCVarWatcher(void*) {
     if (gPlayState == nullptr) {
         return;
     }
 
     int currentValue = CVarGetInteger(CVAR_ENHANCEMENT("DropThrowOnlyObjects"), 0);
-    if (currentValue == lastValue) {
+    if (currentValue == sDropThrowOnlyLastValue) {
         return;
     }
-    lastValue = currentValue;
+    sDropThrowOnlyLastValue = currentValue;
 
     for (int category = 0; category < ACTORCAT_MAX; category++) {
         Actor* actor = gPlayState->actorCtx.actorLists[category].head;
@@ -51,7 +51,10 @@ static void DropThrowOnlyCVarWatcher(void*) {
 
 void RegisterAllowThrowOnlyDrop() {
     COND_HOOK(OnActorInit, true, OnThrowOnlyActorInit);
-    COND_HOOK(OnActorUpdate, true, DropThrowOnlyCVarWatcher);
+    COND_HOOK(OnActorUpdate,
+              (gPlayState != nullptr) &&
+                  (CVarGetInteger(CVAR_ENHANCEMENT("DropThrowOnlyObjects"), 0) != sDropThrowOnlyLastValue),
+              DropThrowOnlyCVarWatcher);
 }
 
 static RegisterShipInitFunc initFunc(RegisterAllowThrowOnlyDrop, { CVAR_ENHANCEMENT("DropThrowOnlyObjects") });
