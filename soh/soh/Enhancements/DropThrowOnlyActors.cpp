@@ -54,7 +54,7 @@ static void DropThrowOnlyCVarWatcher(void*) {
 }
 
 void RegisterAllowThrowOnlyDrop() {
-    COND_HOOK(OnActorInit, true, OnThrowOnlyActorInit);
+    COND_HOOK(OnActorInit, CVarGetInteger(CVAR_ENHANCEMENT("DropThrowOnlyObjects")), OnThrowOnlyActorInit);
     COND_HOOK(OnActorUpdate, CVarGetInteger(CVAR_ENHANCEMENT("DropThrowOnlyObjects"), 0) != sDropThrowOnlyLastValue,
               DropThrowOnlyCVarWatcher);
 }
