@@ -137,6 +137,10 @@
                 "name": "Open Underwater Chests",
                 "description": "Underwater chests can be opened by wearing iron boots and hookshotting the chest."
             },
+            "distant_boulder_collision": {
+                "name": "Distant Boulder Collision",
+                "description": "From afar boulder collision is disabled, allowing projectiles to pass through them."
+            },
             "hookshot_extension": {
                 "name": "Hookshot/Projectile Extension",
                 "description": [
@@ -164,6 +168,10 @@
                     "- While using Hover Boots in Shadow Temple invisible spike room to reach door\n",
                     "- Jumping past second step in Ice Cavern"
                 ]
+            },
+            "kf_slide_jump": {
+                "name": "Sliding Jumps",
+                "description": "Running forward while sliding sideways on ice can be used to jump on platforms."
             },
             "kf_adult_gs": {
                 "name": "Adult Kokiri Forest GS with Hover Boots",
@@ -246,7 +254,7 @@
                 "description": "It is possible to use the Hover Boots to bypass needing to destroy the boulders blocking the path to the top of Death Mountain."
             },
             "dmt_upper_gs": {
-                "name": "Death Mountain Trail Upper Red Rock GS without Hammer",
+                "name": "Death Mountain Trail Upper Red Rock GS with Backflip",
                 "description": "After killing the Skulltula, the token can be collected by backflipping into the rock at the correct angle."
             },
             "dmt_bolero_biggoron": {
@@ -596,6 +604,15 @@
                 "name": "Forest Temple MQ Twisted Hallway Switch with Boomerang",
                 "description": "The Boomerang can return to Link through walls, allowing child to hit the hallway switch. This can be used to allow adult to pass through later, or in conjunction with \"Forest Temple Outside Backdoor with Jump Slash\"."
             },
+            "forest_mq_child_doorframe": {
+                "name": "Forest Temple MQ Doorframe GS as Child without Boomerang",
+                "description": [
+                    "If Adult burns the courtyard webbing with Fire Arrows (which is a permanent flag in Ship Rando) ",
+                    "then Child can climb up to the balconies and jump to the SoT block from the railing, ",
+                    "and from there either roll jump or jump against the wall to reach the doorframe.\n",
+                    "From there, The GS can be killed with a crouchstab, explosives or other ranged weapon and collected by climbing down."
+                ]
+            },
             "fire_sot": {
                 "name": "Fire Temple Song of Time Room GS without Song of Time",
                 "description": "A precise jump can be used to reach this room."
@@ -849,7 +866,11 @@
             },
             "spirit_sun_chest": {
                 "name": "Spirit Temple Sun Block Room Chest with Bow",
-                "description": "Using the blocks in the room as platforms you can get lines of sight to all three torches. The timer on the torches is quite short so you must move quickly in order to light all three."
+                "description": [
+                    "Using the blocks in the room as platforms you can get lines of sight to all three torches. ",
+                    "The timer on the torches is quite short so you must move quickly in order to light all three.\n",
+                    "A backflip can be used instead to light torches without pushing blocks."
+                ]
             },
             "spirit_wall": {
                 "name": "Spirit Temple Shifting Wall with No Additional Items",
