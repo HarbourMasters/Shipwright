@@ -93,20 +93,14 @@ void Anchor::OnIncomingJson(nlohmann::json payload) {
 
     std::string packetType = payload["type"].get<std::string>();
 
-    // Ignore packets from mismatched clients, except for ALL_CLIENT_STATE or UPDATE_CLIENT_STATE
-    if (packetType != ALL_CLIENT_STATE && packetType != UPDATE_CLIENT_STATE) {
+    // Ignore packets from mismatched clients, except for ALL_CLIENT_STATE, UPDATE_CLIENT_STATE, and PLAYER_UPDATE
+    if (packetType != ALL_CLIENT_STATE && packetType != UPDATE_CLIENT_STATE && packetType != PLAYER_UPDATE) {
         if (payload.contains("clientId")) {
             uint32_t clientId = payload["clientId"].get<uint32_t>();
             if (clients.contains(clientId) && clients[clientId].clientVersion != clientVersion) {
                 return;
             }
         }
-    }
-
-    // Handle PLAYER_UPDATE packets immediately, no need to queue
-    if (packetType == PLAYER_UPDATE) {
-        HandlePacket_PlayerUpdate(payload);
-        return;
     }
 
     // Queue all packets to be processed on the game thread
@@ -131,47 +125,54 @@ void Anchor::ProcessIncomingPacketQueue() {
 
         isProcessingIncomingPacket = true;
 
-        // packetType here is a string so we can't use a switch statement
-        if (packetType == ALL_CLIENT_STATE)
-            HandlePacket_AllClientState(payload);
-        else if (packetType == DAMAGE_PLAYER)
-            HandlePacket_DamagePlayer(payload);
-        else if (packetType == DISABLE_ANCHOR)
-            HandlePacket_DisableAnchor(payload);
-        else if (packetType == ENTRANCE_DISCOVERED)
-            HandlePacket_EntranceDiscovered(payload);
-        else if (packetType == GAME_COMPLETE)
-            HandlePacket_GameComplete(payload);
-        else if (packetType == GIVE_ITEM)
-            HandlePacket_GiveItem(payload);
-        else if (packetType == OCARINA_SFX)
-            HandlePacket_OcarinaSfx(payload);
-        else if (packetType == PLAYER_SFX)
-            HandlePacket_PlayerSfx(payload);
-        else if (packetType == UPDATE_TEAM_STATE)
-            HandlePacket_UpdateTeamState(payload);
-        else if (packetType == REQUEST_TEAM_STATE)
-            HandlePacket_RequestTeamState(payload);
-        else if (packetType == REQUEST_TELEPORT)
-            HandlePacket_RequestTeleport(payload);
-        else if (packetType == SERVER_MESSAGE)
-            HandlePacket_ServerMessage(payload);
-        else if (packetType == SET_CHECK_STATUS)
-            HandlePacket_SetCheckStatus(payload);
-        else if (packetType == SET_FLAG)
-            HandlePacket_SetFlag(payload);
-        else if (packetType == TELEPORT_TO)
-            HandlePacket_TeleportTo(payload);
-        else if (packetType == UNSET_FLAG)
-            HandlePacket_UnsetFlag(payload);
-        else if (packetType == UPDATE_BEANS_COUNT)
-            HandlePacket_UpdateBeansCount(payload);
-        else if (packetType == UPDATE_CLIENT_STATE)
-            HandlePacket_UpdateClientState(payload);
-        else if (packetType == UPDATE_ROOM_STATE)
-            HandlePacket_UpdateRoomState(payload);
-        else if (packetType == UPDATE_DUNGEON_ITEMS)
-            HandlePacket_UpdateDungeonItems(payload);
+        try {
+            // packetType here is a string so we can't use a switch statement
+            if (packetType == ALL_CLIENT_STATE)
+                HandlePacket_AllClientState(payload);
+            else if (packetType == DAMAGE_PLAYER)
+                HandlePacket_DamagePlayer(payload);
+            else if (packetType == DISABLE_ANCHOR)
+                HandlePacket_DisableAnchor(payload);
+            else if (packetType == ENTRANCE_DISCOVERED)
+                HandlePacket_EntranceDiscovered(payload);
+            else if (packetType == GAME_COMPLETE)
+                HandlePacket_GameComplete(payload);
+            else if (packetType == GIVE_ITEM)
+                HandlePacket_GiveItem(payload);
+            else if (packetType == OCARINA_SFX)
+                HandlePacket_OcarinaSfx(payload);
+            else if (packetType == PLAYER_UPDATE)
+                HandlePacket_PlayerUpdate(payload);
+            else if (packetType == PLAYER_SFX)
+                HandlePacket_PlayerSfx(payload);
+            else if (packetType == UPDATE_TEAM_STATE)
+                HandlePacket_UpdateTeamState(payload);
+            else if (packetType == REQUEST_TEAM_STATE)
+                HandlePacket_RequestTeamState(payload);
+            else if (packetType == REQUEST_TELEPORT)
+                HandlePacket_RequestTeleport(payload);
+            else if (packetType == SERVER_MESSAGE)
+                HandlePacket_ServerMessage(payload);
+            else if (packetType == SET_CHECK_STATUS)
+                HandlePacket_SetCheckStatus(payload);
+            else if (packetType == SET_FLAG)
+                HandlePacket_SetFlag(payload);
+            else if (packetType == TELEPORT_TO)
+                HandlePacket_TeleportTo(payload);
+            else if (packetType == UNSET_FLAG)
+                HandlePacket_UnsetFlag(payload);
+            else if (packetType == UPDATE_BEANS_COUNT)
+                HandlePacket_UpdateBeansCount(payload);
+            else if (packetType == UPDATE_CLIENT_STATE)
+                HandlePacket_UpdateClientState(payload);
+            else if (packetType == UPDATE_ROOM_STATE)
+                HandlePacket_UpdateRoomState(payload);
+            else if (packetType == UPDATE_DUNGEON_ITEMS)
+                HandlePacket_UpdateDungeonItems(payload);
+        } catch (const std::exception& e) {
+            SPDLOG_ERROR("[Anchor] Exception while processing incoming packet {}", e.what());
+            SPDLOG_ERROR("[Anchor] Packet: {}", payload.dump());
+        }
 
         isProcessingIncomingPacket = false;
     }

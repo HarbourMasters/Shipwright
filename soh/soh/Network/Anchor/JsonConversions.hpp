@@ -52,18 +52,18 @@ inline void from_json(const json& j, PosRot& posRot) {
 }
 
 inline void from_json(const json& j, AnchorClient& client) {
-    j.contains("clientId") ? j.at("clientId").get_to(client.clientId) : client.clientId = 0;
-    j.contains("name") ? j.at("name").get_to(client.name) : client.name = "???";
-    j.contains("color") ? j.at("color").get_to(client.color) : client.color = { 255, 255, 255 };
-    j.contains("clientVersion") ? j.at("clientVersion").get_to(client.clientVersion) : client.clientVersion = "???";
-    j.contains("teamId") ? j.at("teamId").get_to(client.teamId) : client.teamId = "default";
-    j.contains("online") ? j.at("online").get_to(client.online) : client.online = false;
-    j.contains("seed") ? j.at("seed").get_to(client.seed) : client.seed = 0;
-    j.contains("isSaveLoaded") ? j.at("isSaveLoaded").get_to(client.isSaveLoaded) : client.isSaveLoaded = false;
-    j.contains("isGameComplete") ? j.at("isGameComplete").get_to(client.isGameComplete) : client.isGameComplete = false;
-    j.contains("sceneNum") ? j.at("sceneNum").get_to(client.sceneNum) : client.sceneNum = SCENE_ID_MAX;
-    j.contains("entranceIndex") ? j.at("entranceIndex").get_to(client.entranceIndex) : client.entranceIndex = 0;
-    j.contains("self") ? j.at("self").get_to(client.self) : client.self = false;
+    client.clientId = j.value("clientId", (u32)0);
+    client.name = j.value("name", "???");
+    client.color = j.value("color", Color_RGB8{ 255, 255, 255 });
+    client.clientVersion = j.value("clientVersion", "???");
+    client.teamId = j.value("teamId", "default");
+    client.online = j.value("online", false);
+    client.seed = j.value("seed", (u32)0);
+    client.isSaveLoaded = j.value("isSaveLoaded", false);
+    client.isGameComplete = j.value("isGameComplete", false);
+    client.sceneNum = j.value("sceneNum", (s16)SCENE_ID_MAX);
+    client.entranceIndex = j.value("entranceIndex", (s32)0);
+    client.self = j.value("self", false);
 }
 
 inline void to_json(json& j, const Inventory& inventory) {
