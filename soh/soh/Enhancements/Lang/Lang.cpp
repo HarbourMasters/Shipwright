@@ -11,6 +11,8 @@
 #include "ship/resource/type/Json.h"
 #include "ship/utils/StringHelper.h"
 
+#include "spdlog/spdlog.h"
+
 #include <memory>
 
 namespace SohGui {
@@ -25,7 +27,7 @@ static std::map<std::string, nlohmann::json> langs;
 
 std::string Lang::Translate(const char* path) {
     if (!initialized) {
-        LUSLOG_ERROR("Tried to obtain a translation before the translation data is initialized");
+        SPDLOG_ERROR("Tried to obtain a translation before the translation data is initialized");
         assert(false);
         return "ERROR: Language data not initialized yet";
     }
@@ -33,19 +35,19 @@ std::string Lang::Translate(const char* path) {
     std::string currentLang = CVarGetString(LANGUAGE_CVAR, DEFAULT_LANGUAGE);
 
     if (!langs.contains(currentLang)) {
-        LUSLOG_WARN("Current language (%s) doesn't exist, trying to fall back to default language (%s)",
+        SPDLOG_WARN("Current language ({}) doesn't exist, trying to fall back to default language ({})",
                     currentLang.c_str(), DEFAULT_LANGUAGE);
 
         currentLang = DEFAULT_LANGUAGE;
 
         if (!langs.contains(currentLang)) {
-            LUSLOG_ERROR("Default language (%s) doesn't exist", DEFAULT_LANGUAGE);
+            SPDLOG_ERROR("Default language ({}) doesn't exist", DEFAULT_LANGUAGE);
             assert(false);
             return "ERROR: Language data not found";
         }
 
         CVarSetString(LANGUAGE_CVAR, DEFAULT_LANGUAGE);
-        LUSLOG_WARN("Fallback to default language (%s) was succesful", DEFAULT_LANGUAGE);
+        SPDLOG_WARN("Fallback to default language ({}) was succesful", DEFAULT_LANGUAGE);
     }
 
     nlohmann::json currentLangData = langs[currentLang];
@@ -58,7 +60,7 @@ std::string Lang::Translate(const char* path) {
 
     for (const auto& segment : segments) {
         if (!currentLangData.contains(segment)) {
-            LUSLOG_WARN("Current language (%s) doesn't have data for the requested path (%s)", currentLang.c_str(),
+            SPDLOG_WARN("Current language ({}) doesn't have data for the requested path ({})", currentLang.c_str(),
                         path);
             return std::string(path);
         }
@@ -67,7 +69,7 @@ std::string Lang::Translate(const char* path) {
     }
 
     if (!currentLangData.contains(lastSegment)) {
-        LUSLOG_WARN("Current language (%s) doesn't have data for the requested path (%s)", currentLang.c_str(), path);
+        SPDLOG_WARN("Current language ({}) doesn't have data for the requested path ({})", currentLang.c_str(), path);
         return std::string(path);
     }
 
@@ -80,7 +82,7 @@ std::string Lang::Translate(const char* path) {
 
         for (const auto& item : currentLangData[lastSegment]) {
             if (!item.is_string()) {
-                LUSLOG_WARN("Current language (%s) has an array with a non-string at the requested path (%s)",
+                SPDLOG_WARN("Current language ({}) has an array with a non-string at the requested path ({})",
                             currentLang.c_str(), path);
                 return std::string(path);
             }
@@ -91,7 +93,7 @@ std::string Lang::Translate(const char* path) {
         return translatedString;
     }
 
-    LUSLOG_WARN("Current language (%s) doesn't have either a string or an array at the requested path (%s)",
+    SPDLOG_WARN("Current language ({}) doesn't have either a string or an array at the requested path ({})",
                 currentLang.c_str(), path);
     return std::string(path);
 }
