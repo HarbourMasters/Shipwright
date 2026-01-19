@@ -10,7 +10,7 @@ void RegionTable_Init_DeathMountainTrail() {
         EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET));}),
     }, {
         //Locations
-        LOCATION(RC_DMT_CHEST,                    logic->BlastOrSmash() || (ctx->GetTrickOption(RT_DMT_BOMBABLE) && logic->IsChild && logic->HasItem(RG_GORONS_BRACELET))),
+        LOCATION(RC_DMT_CHEST,                    (logic->BlastOrSmash() || (ctx->GetTrickOption(RT_DMT_BOMBABLE) && logic->IsChild && logic->HasItem(RG_GORONS_BRACELET))) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DMT_FREESTANDING_POH,         logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL, RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET)))),
         LOCATION(RC_DMT_GS_BEAN_PATCH,            logic->CanSpawnSoilSkull(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET) || (ctx->GetTrickOption(RT_DMT_SOIL_GS) && (logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_BOOMERANG)))),
         LOCATION(RC_DMT_GS_NEAR_KAK,              logic->BlastOrSmash()),
@@ -33,7 +33,7 @@ void RegionTable_Init_DeathMountainTrail() {
     areaTable[RR_DEATH_MOUNTAIN_SUMMIT] = Region("Death Mountain Summit", SCENE_DEATH_MOUNTAIN_TRAIL, {
         //Events
         EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy();}),
-        EventAccess(LOGIC_BUG_ACCESS,   []{return logic->IsChild;}),
+        EventAccess(LOGIC_BUG_ACCESS,   []{return logic->IsChild && logic->HasItem(RG_POWER_BRACELET);}),
     }, {
         //Locations
         LOCATION(RC_DMT_TRADE_BROKEN_SWORD,     logic->IsAdult && logic->CanUse(RG_BROKEN_SWORD)),
@@ -83,7 +83,7 @@ void RegionTable_Init_DeathMountainTrail() {
 
     areaTable[RR_DMT_STORMS_GROTTO] = Region("DMT Storms Grotto", SCENE_GROTTOS, grottoEvents, {
         //Locations
-        LOCATION(RC_DMT_STORMS_GROTTO_CHEST,                  true),
+        LOCATION(RC_DMT_STORMS_GROTTO_CHEST,                  logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DMT_STORMS_GROTTO_FISH,                   logic->HasBottle()),
         LOCATION(RC_DMT_STORMS_GROTTO_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
         LOCATION(RC_DMT_STORMS_GROTTO_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),

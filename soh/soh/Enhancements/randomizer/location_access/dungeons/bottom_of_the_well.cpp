@@ -31,12 +31,12 @@ void RegionTable_Init_BottomOfTheWell() {
         EventAccess(LOGIC_BOTW_LOWERED_WATER, []{return logic->CanUse(RG_ZELDAS_LULLABY);}),
     }, {
         //Locations
-        LOCATION(RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST,   ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST, ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST,  logic->HasExplosives()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST,     logic->HasExplosives() && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH))),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST,       logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->CanOpenUnderwaterChest()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST,        logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->CanOpenUnderwaterChest()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST,   ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST, ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST,  logic->HasExplosives() && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST,     logic->HasExplosives() && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST,       (logic->Get(LOGIC_BOTW_LOWERED_WATER) && logic->HasItem(RG_OPEN_CHEST)) || logic->CanOpenUnderwaterChest()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST,        (logic->Get(LOGIC_BOTW_LOWERED_WATER) && logic->HasItem(RG_OPEN_CHEST)) || logic->CanOpenUnderwaterChest()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_NEAR_ENTRANCE_POT_1,          logic->CanBreakPots()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_NEAR_ENTRANCE_POT_2,          logic->CanBreakPots()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_POT,               (logic->CanBreakPots() && logic->Get(LOGIC_BOTW_LOWERED_WATER)) || logic->CanUse(RG_BOOMERANG)),
@@ -61,7 +61,7 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTW_MIDDLE] = Region("Bottom of the Well Middle", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
         //You can just barely pass the spider on the right side without damage or items, but it's probably tight enough to count as as a trick
-        LOCATION(RC_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST, logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->TakeDamage()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST, (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->TakeDamage()) && logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         Entrance(RR_BOTW_PERIMETER,       []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
@@ -91,7 +91,7 @@ void RegionTable_Init_BottomOfTheWell() {
     //Passing through this area needs lens, but entering doesn't, so that the fire keese can be killed without crossing the pits if enemy drops are ever shuffled
     areaTable[RR_BOTW_HIDDEN_PITS_ROOM] = Region("Bottom of the Well Hidden Pits Room", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
-        LOCATION(RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST, ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST, (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_POT_1, logic->CanBreakPots() && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH))),
     }, {
         //Exits
@@ -103,7 +103,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_LOCKED_CAGE] = Region("Bottom of the Well Locked Cage", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
-        LOCATION(RC_BOTTOM_OF_THE_WELL_LIKE_LIKE_CHEST,   true),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_LIKE_LIKE_CHEST,   logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
     }, {
         //Exits
@@ -112,7 +112,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_PIT_CAGE] = Region("Bottom of the Well Pit Cage", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
-        LOCATION(RC_BOTTOM_OF_THE_WELL_COMPASS_CHEST, true),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_COMPASS_CHEST, logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         Entrance(RR_BOTW_PERIMETER, []{return ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH);}),
@@ -143,7 +143,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_BEHIND_MOAT] = Region("Bottom of the Well Behind Moat", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
-        LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST, logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->CanOpenUnderwaterChest()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST, (logic->Get(LOGIC_BOTW_LOWERED_WATER)  && logic->HasItem(RG_OPEN_CHEST)) || logic->CanOpenUnderwaterChest()),
     }, {
         //Exits
         //Climb always needed in case water is lowered out of logic
@@ -178,8 +178,8 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_DEAD_HAND_ROOM] = Region("Bottom of the Well Dead Hand Room", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
-        LOCATION(RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST, logic->CanKillEnemy(RE_DEAD_HAND)),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST,     (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH))),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST, logic->CanKillEnemy(RE_DEAD_HAND) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST,     (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         Entrance(RR_BOTW_NEAR_BOSS_UPPER, []{return logic->CanKillEnemy(RE_DEAD_HAND);}),
@@ -238,7 +238,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_B3_CHEST_AREA] = Region("Bottom of the Well B3 Chest Area", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
-        LOCATION(RC_BOTTOM_OF_THE_WELL_MAP_CHEST, true),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MAP_CHEST, logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         Entrance(RR_BOTW_B3_OOZE, []{return AnyAgeTime([]{return logic->BlastOrSmash();});}),
@@ -288,12 +288,12 @@ void RegionTable_Init_BottomOfTheWell() {
                                                           (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))/*&& CanClimb()*/);}),
         Entrance(RR_BOTW_MQ_CORNER_CRAWLSPACE, []{return logic->CanUse(RG_CRAWL);}),
         Entrance(RR_BOTW_MQ_NEAR_BOSS_LOWER,   []{return logic->CanUse(RG_CRAWL) && logic->Get(LOGIC_BOTW_LOWERED_WATER);}),
-        Entrance(RR_BOTW_MQ_B3,           []{return true;}),
+        Entrance(RR_BOTW_MQ_B3,                []{return true;}),
     });
 
     areaTable[RR_BOTW_MQ_MIDDLE] = Region("Bottom of the Well MQ Middle", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
-        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_MAP_CHEST,         true),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_MAP_CHEST,         logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_1, logic->CanBreakPots()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_2, logic->CanBreakPots()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_INNER_LOBBY_POT_3, logic->CanBreakPots()),
@@ -303,8 +303,8 @@ void RegionTable_Init_BottomOfTheWell() {
         Entrance(RR_BOTW_MQ_PERIMETER,      []{return logic->Get(LOGIC_BOTW_MQ_OPENED_GATES);}),
         Entrance(RR_BOTW_MQ_PIT_CAGE,       []{return (bool)ctx->GetTrickOption(RT_BOTW_PITS);}),
         Entrance(RR_BOTW_MQ_B3_PLATFORM,    []{return logic->Get(LOGIC_BOTW_MQ_OPENED_MIDDLE_HOLE);}),
-        Entrance(RR_BOTW_MQ_B3,        []{return true;}),
-        Entrance(RR_BOTW_MQ_INVISIBLE_PATH, []{return true/*str0 or CanHitSwitch(ED_BOMB_THROW)*/;}),
+        Entrance(RR_BOTW_MQ_B3,             []{return true;}),
+        Entrance(RR_BOTW_MQ_INVISIBLE_PATH, []{return AnyAgeTime([]{return logic->HasItem(RG_POWER_BRACELET) || logic->CanHitSwitch(ED_BOMB_THROW);});}),
         Entrance(RR_BOTW_MQ_GRAVE_ROOM,     []{return logic->Get(LOGIC_BOTW_MQ_OPENED_WEST_ROOM);}),
     });
 
@@ -317,8 +317,8 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_3, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_BOTW_MQ_MIDDLE,  []{return true;}),
-        Entrance(RR_BOTW_MQ_B3, []{return true;}),
+        Entrance(RR_BOTW_MQ_MIDDLE, []{return true;}),
+        Entrance(RR_BOTW_MQ_B3,     []{return true;}),
     });
 
     areaTable[RR_BOTW_MQ_GRAVE_ROOM] = Region("Bottom of the Well Grave Room", SCENE_BOTTOM_OF_THE_WELL, {}, {
@@ -330,7 +330,12 @@ void RegionTable_Init_BottomOfTheWell() {
         //Also you get cheap shotted on entry sometimes.
         //An MQ lens trick is recommended here, and a review of this room for OHKO logic when that is added is advised.
         //In the meantime I assume damage taken or the easy answer (nuts)
-        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM, (logic->TakeDamage() || logic->CanUse(RG_NUTS)) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
+
+        //Without power bracelet, the skull can be killed through the Grave with any valid weapon.
+        //Bow, Sling and Hammer should aim for the left side (from the door's perspective) ot eh grave, hookshot should get close to the grave and aim inside it (no extension needed).
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM, (logic->TakeDamage() || logic->CanUse(RG_NUTS)) && 
+                                                              (logic->HasItem(RG_POWER_BRACELET) || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) &&
+                                                              logic->CanKillEnemy(RE_GOLD_SKULLTULA)),
     }, {
         //Exits
         Entrance(RR_BOTW_MQ_MIDDLE, []{return true;}),
@@ -398,7 +403,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_MQ_DEAD_HAND_ROOM] = Region("Bottom of the Well MQ Dead Hand Room", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
-        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_COMPASS_CHEST,              logic->CanKillEnemy(RE_DEAD_HAND)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_COMPASS_CHEST,              logic->CanKillEnemy(RE_DEAD_HAND) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_FREESTANDING_KEY, logic->HasExplosives() || (ctx->GetTrickOption(RT_BOTW_MQ_DEADHAND_KEY) && logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_GRASS_1,          logic->CanCutShrubs()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_GRASS_2,          logic->CanCutShrubs()),
@@ -425,7 +430,7 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTW_MQ_B3_PLATFORM] = Region("Bottom of the Well MQ B3 Platform", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
         //Assumes RR_BOTW_MQ_B3 access
-        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST, logic->CanPassEnemy(RE_REDEAD)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST, logic->CanPassEnemy(RE_REDEAD) && logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         Entrance(RR_BOTW_MQ_B3, []{return true;}),

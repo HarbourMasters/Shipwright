@@ -8,7 +8,7 @@
 
 extern "C" {
 #include "z64.h"
-#include "overlays/gamestates/ovl_file_choose/file_choose.h"
+#include "global.h"
 #include "soh/Enhancements/enhancementTypes.h"
 void Sram_InitDebugSave(void);
 void Select_LoadGame(SelectContext* selectContext, s32 entranceIndex);
@@ -76,7 +76,6 @@ void Warp(WarpPoint& warpPoint) {
         gWeatherMode = 0;
         gGameState->running = false;
         SET_NEXT_GAMESTATE(gGameState, Play_Init, PlayState);
-
         GameInteractor_ExecuteOnLoadGame(gSaveContext.fileNum);
     } else {
         gPlayState->nextEntranceIndex = warpPoint.entranceId;

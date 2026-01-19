@@ -548,7 +548,7 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
     fileMetaInfo[fileNum].gsTokens = baseBlock["inventory"]["gsTokens"];
     fileMetaInfo[fileNum].isDoubleDefenseAcquired = baseBlock["isDoubleDefenseAcquired"];
     fileMetaInfo[fileNum].gregFound = false;
-    fileMetaInfo[fileNum].filenameLanguage = baseBlock["filenameLanguage"];
+    fileMetaInfo[fileNum].filenameLanguage = baseBlock.value("filenameLanguage", 0);
     fileMetaInfo[fileNum].hasWallet = !isRando;
     fileMetaInfo[fileNum].defense = baseBlock["inventory"]["defenseHearts"];
     fileMetaInfo[fileNum].health = baseBlock["health"];

@@ -87,7 +87,7 @@ void RegionTable_Init_KokiriForest() {
 
     areaTable[RR_KF_BOULDER_LOOP] = Region("KF Boulder Loop", SCENE_KOKIRI_FOREST, {}, {
         //Locations
-        LOCATION(RC_KF_KOKIRI_SWORD_CHEST, logic->IsChild),
+        LOCATION(RC_KF_KOKIRI_SWORD_CHEST, logic->IsChild && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_KF_BOULDER_RUPEE_1,    logic->IsChild),
         LOCATION(RC_KF_BOULDER_RUPEE_2,    logic->IsChild),
         LOCATION(RC_KF_CHILD_GRASS_MAZE_1, logic->IsChild && logic->CanCutShrubs()),
@@ -129,10 +129,10 @@ void RegionTable_Init_KokiriForest() {
 
     areaTable[RR_KF_MIDOS_HOUSE] = Region("KF Mido's House", SCENE_MIDOS_HOUSE, {}, {
         //Locations
-        LOCATION(RC_KF_MIDOS_TOP_LEFT_CHEST,     true),
-        LOCATION(RC_KF_MIDOS_TOP_RIGHT_CHEST,    true),
-        LOCATION(RC_KF_MIDOS_BOTTOM_LEFT_CHEST,  true),
-        LOCATION(RC_KF_MIDOS_BOTTOM_RIGHT_CHEST, true),
+        LOCATION(RC_KF_MIDOS_TOP_LEFT_CHEST,     logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_KF_MIDOS_TOP_RIGHT_CHEST,    logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_KF_MIDOS_BOTTOM_LEFT_CHEST,  logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_KF_MIDOS_BOTTOM_RIGHT_CHEST, logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
         Entrance(RR_KOKIRI_FOREST, []{return true;}),
@@ -184,7 +184,7 @@ void RegionTable_Init_KokiriForest() {
 
     areaTable[RR_KF_STORMS_GROTTO] = Region("KF Storms Grotto", SCENE_GROTTOS, grottoEvents, {
         //Locations
-        LOCATION(RC_KF_STORMS_GROTTO_CHEST,                  true),
+        LOCATION(RC_KF_STORMS_GROTTO_CHEST,                  logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_KF_STORMS_GROTTO_FISH,                   logic->HasBottle()),
         LOCATION(RC_KF_STORMS_GROTTO_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
         LOCATION(RC_KF_STORMS_GROTTO_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),

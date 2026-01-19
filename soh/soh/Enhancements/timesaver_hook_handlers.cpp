@@ -9,7 +9,6 @@ extern "C" {
 #include "src/overlays/actors/ovl_Elf_Msg/z_elf_msg.h"
 #include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
 #include "src/overlays/actors/ovl_Bg_Bdan_Switch/z_bg_bdan_switch.h"
-#include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
 #include "src/overlays/actors/ovl_En_Owl/z_en_owl.h"
 #include "src/overlays/actors/ovl_En_Go2/z_en_go2.h"
 #include "src/overlays/actors/ovl_En_Heishi2/z_en_heishi2.h"
@@ -949,7 +948,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
                     return;
                 }
 
-                bool shouldOpen = IS_RANDO ? RAND_GET_OPTION(RSK_JABU_OPEN)
+                bool shouldOpen = IS_RANDO ? RAND_GET_OPTION(RSK_JABU_OPEN).Get()
                                            : CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"), 0);
                 if (!shouldOpen) {
                     return;

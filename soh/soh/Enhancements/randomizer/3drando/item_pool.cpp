@@ -173,7 +173,6 @@ void GenerateItemPool() {
     AddItemToPool(RG_GREG_RUPEE, 1, 1, 1, 1);
     AddItemToPool(RG_PROGRESSIVE_HOOKSHOT, 2, 2, 2, 2);
     AddItemToPool(RG_HYLIAN_SHIELD, 1, 1, 1, 1);
-    AddItemToPool(RG_PROGRESSIVE_STRENGTH, 4, 3, 3, 3);
     AddItemToPool(RG_DOUBLE_DEFENSE, 2, 1, 0, 0);
     AddItemToPool(RG_BIGGORON_SWORD, 2, 1, 1, 0);
     bool isScrubs = ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_ALL);
@@ -385,6 +384,17 @@ void GenerateItemPool() {
         AddFixedItemToPool(RG_SKELETON_KEY, 1);
     }
 
+    if (ctx->GetOption(RSK_MASK_QUEST).Is(RO_MASK_QUEST_SHUFFLE)) {
+        AddItemToPool(RG_KEATON_MASK, 2, 1, 1, 1);
+        AddItemToPool(RG_SKULL_MASK, 2, 1, 1, 1);
+        AddItemToPool(RG_SPOOKY_MASK, 2, 1, 1, 1);
+        AddItemToPool(RG_BUNNY_HOOD, 2, 1, 1, 1);
+        AddItemToPool(RG_GORON_MASK, 2, 1, 1, 1);
+        AddItemToPool(RG_ZORA_MASK, 2, 1, 1, 1);
+        AddItemToPool(RG_GERUDO_MASK, 2, 1, 1, 1);
+        AddItemToPool(RG_MASK_OF_TRUTH, 2, 1, 1, 1);
+    }
+
     if (ctx->GetOption(RSK_ROCS_FEATHER)) {
         AddItemToPool(RG_ROCS_FEATHER, 2, 1, 1, 1);
     }
@@ -395,6 +405,12 @@ void GenerateItemPool() {
     if (ctx->GetOption(RSK_SHUFFLE_CRAWL)) {
         AddItemToPool(RG_CRAWL, 2, 1, 1, 1);
     }
+    if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST)) {
+        AddItemToPool(RG_OPEN_CHEST, 2, 1, 1, 1);
+    }
+
+    int powerBracelet = ctx->GetOption(RSK_SHUFFLE_GRAB) ? 1 : 0;
+    AddItemToPool(RG_PROGRESSIVE_STRENGTH, 4 + powerBracelet, 3 + powerBracelet, 3 + powerBracelet, 3 + powerBracelet);
 
     if (ctx->GetOption(RSK_SHUFFLE_BEEHIVES)) {
         PlaceItemsForType(RCTYPE_BEEHIVE, true, true);
@@ -897,7 +913,7 @@ void GenerateItemPool() {
         if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Is(100)) {
             iceTrapstoAdd = junkToAdd;
         } else if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get() >= 0) {
-            for (int count = 0; count < junkToAdd; count++) {
+            for (size_t count = 0; count < junkToAdd; count++) {
                 if (Random(0, 101) < ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get()) {
                     iceTrapstoAdd++;
                 }

@@ -7,19 +7,19 @@ void RegionTable_Init_GerudoValley() {
     // clang-format off
     areaTable[RR_GERUDO_VALLEY] = Region("Gerudo Valley", SCENE_GERUDO_VALLEY, {
         //Events
-        EventAccess(LOGIC_BUG_ACCESS, []{return logic->IsChild;}),
+        EventAccess(LOGIC_BUG_ACCESS, []{return logic->IsChild && logic->HasItem(RG_POWER_BRACELET);}),
     }, {
         //Locations
         LOCATION(RC_GV_GS_SMALL_BRIDGE, logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
     }, {
         //Exits
         Entrance(RR_HYRULE_FIELD,     []{return true;}),
-        Entrance(RR_GV_UPPER_STREAM,  []{return logic->IsChild || logic->HasItem(RG_BRONZE_SCALE) || logic->TakeDamage();}),
-        Entrance(RR_GV_CRATE_LEDGE,   []{return logic->IsChild || logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_GV_UPPER_STREAM,  []{return (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->HasItem(RG_BRONZE_SCALE) || logic->TakeDamage();}),
+        Entrance(RR_GV_CRATE_LEDGE,   []{return (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_LONGSHOT);}),
         Entrance(RR_GV_GROTTO_LEDGE,  []{return true;}),
         Entrance(RR_GV_FORTRESS_SIDE, []{return (logic->IsAdult && (logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS))) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOVER_BOOTS)) ||
-                                                ((logic->IsChild || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION)) && logic->CanUse(RG_HOOKSHOT)) || (logic->IsChild && ctx->GetTrickOption(RT_GV_CHILD_CUCCO_JUMP) && logic->CanJumpslash());}),
-        Entrance(RR_GV_LOWER_STREAM,  []{return logic->IsChild;}), //can use cucco as child
+                                                ((logic->IsChild || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION)) && logic->CanUse(RG_HOOKSHOT)) || (logic->IsChild && ctx->GetTrickOption(RT_GV_CHILD_CUCCO_JUMP) && logic->HasItem(RG_POWER_BRACELET) && logic->CanJumpslash());}),
+        Entrance(RR_GV_LOWER_STREAM,  []{return logic->IsChild && logic->HasItem(RG_POWER_BRACELET);}),
     });
 
     areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", SCENE_GERUDO_VALLEY, {
@@ -27,7 +27,7 @@ void RegionTable_Init_GerudoValley() {
         EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy() || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS));}),
     }, {
         //Locations
-        LOCATION(RC_GV_WATERFALL_FREESTANDING_POH, logic->IsChild || logic->HasItem(RG_BRONZE_SCALE) || CanPlantBean(RR_GV_UPPER_STREAM, RG_GERUDO_VALLEY_BEAN_SOUL)),//can use cucco as child
+        LOCATION(RC_GV_WATERFALL_FREESTANDING_POH, (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->HasItem(RG_BRONZE_SCALE) || CanPlantBean(RR_GV_UPPER_STREAM, RG_GERUDO_VALLEY_BEAN_SOUL)),
         LOCATION(RC_GV_GS_BEAN_PATCH,              logic->CanSpawnSoilSkull(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanAttack()),
         LOCATION(RC_GV_COW,                        logic->IsChild && logic->CanUse(RG_EPONAS_SONG)),
         LOCATION(RC_GV_BEAN_SPROUT_FAIRY_1,        logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
@@ -68,7 +68,7 @@ void RegionTable_Init_GerudoValley() {
 
     areaTable[RR_GV_FORTRESS_SIDE] = Region("GV Fortress Side", SCENE_GERUDO_VALLEY, {}, {
         //Locations
-        LOCATION(RC_GV_CHEST,          logic->IsAdult && (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_DISTANT_BOULDER_COLLISION) && logic->CanUse(RG_LONGSHOT)))),
+        LOCATION(RC_GV_CHEST,          logic->IsAdult && (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_DISTANT_BOULDER_COLLISION) && logic->CanUse(RG_LONGSHOT))) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_GV_TRADE_SAW,      logic->IsAdult && logic->CanUse(RG_POACHERS_SAW)),
         LOCATION(RC_GV_GS_BEHIND_TENT, logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
         LOCATION(RC_GV_GS_PILLAR,      logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),

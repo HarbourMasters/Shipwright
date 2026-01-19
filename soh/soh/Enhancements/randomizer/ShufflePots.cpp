@@ -4,7 +4,6 @@
 #include "soh/ObjectExtension/ObjectExtension.h"
 
 extern "C" {
-#include "variables.h"
 #include "overlays/actors/ovl_Obj_Tsubo/z_obj_tsubo.h"
 #include "overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 extern PlayState* gPlayState;
@@ -33,11 +32,11 @@ uint8_t ObjTsubo_RandomizerHoldsItem(ObjTsubo* potActor, PlayState* play) {
 
     RandomizerCheck rc = potIdentity->randomizerCheck;
     uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
-    uint8_t potSetting = RAND_GET_OPTION(RSK_SHUFFLE_POTS);
+    auto potSetting = RAND_GET_OPTION(RSK_SHUFFLE_POTS);
 
     // Don't pull randomized item if pot isn't randomized or is already checked
-    if (!IS_RANDO || (potSetting == RO_SHUFFLE_POTS_OVERWORLD && isDungeon) ||
-        (potSetting == RO_SHUFFLE_POTS_DUNGEONS && !isDungeon) || Flags_GetRandomizerInf(potIdentity->randomizerInf) ||
+    if (!IS_RANDO || (potSetting.Is(RO_SHUFFLE_POTS_OVERWORLD) && isDungeon) ||
+        (potSetting.Is(RO_SHUFFLE_POTS_DUNGEONS) && !isDungeon) || Flags_GetRandomizerInf(potIdentity->randomizerInf) ||
         potIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
         return false;
     } else {
@@ -93,9 +92,9 @@ void RegisterShufflePots() {
     // Unlock early Ganon's Boss Key doors to allow access to the pots there when pots are shuffled in dungeon
     COND_VB_SHOULD(VB_LOCK_BOSS_DOOR, shouldRegister, {
         DoorShutter* doorActor = va_arg(args, DoorShutter*);
-        uint8_t shufflePotSetting = RAND_GET_OPTION(RSK_SHUFFLE_POTS);
+        auto shufflePotSetting = RAND_GET_OPTION(RSK_SHUFFLE_POTS);
         if (gPlayState->sceneNum == SCENE_GANONS_TOWER && doorActor->dyna.actor.world.pos.y == 800 &&
-            (shufflePotSetting == RO_SHUFFLE_POTS_DUNGEONS || shufflePotSetting == RO_SHUFFLE_POTS_ALL)) {
+            (shufflePotSetting.Is(RO_SHUFFLE_POTS_DUNGEONS) || shufflePotSetting.Is(RO_SHUFFLE_POTS_ALL))) {
             *should = false;
         }
     });

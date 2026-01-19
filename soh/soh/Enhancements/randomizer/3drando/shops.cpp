@@ -1001,6 +1001,10 @@ void InitTrickNames() {
         // TODO_TRANSLATE
         Text{ "Crouch" },
     };
+    trickNameTable[RG_OPEN_CHEST] = {
+        // TODO_TRANSLATE
+        Text{ "Open Cheats" },
+    };
 
     trickNameTable[RG_OCARINA_A_BUTTON] = {
         Text{ "Ocarina J Button", "Touche Ha de l'Ocarina", "J-Taste der Okarina" },
@@ -1200,6 +1204,56 @@ void InitTrickNames() {
         Text{ "Onox's Castle Boss Key", "Onox's Castle Boss Key", "Onox's Castle Boss Key" },
         Text{ "Vaati's Palace Boss Key", "Vaati's Palace Boss Key", "Vaati's Palace Boss Key" },
         Text{ "Ganondorf's Key", "Ganondorf's Key", "Ganondorf's Key" },
+    };
+
+    trickNameTable[RG_KEATON_MASK] = {
+        // TODO_TRANSLATE
+        Text{ "Korok Mask" },
+        Text{ "Lynel Mask" },
+        Text{ "Cucco Mask" },
+        Text{ "Remlit Mask" },
+    };
+    trickNameTable[RG_SKULL_MASK] = {
+        // TODO_TRANSLATE
+        Text{ "Darknut Mask" },
+        Text{ "Stalfos Mask" },
+        Text{ "Captain's Hat" },
+    };
+    trickNameTable[RG_SPOOKY_MASK] = {
+        // TODO_TRANSLATE
+        Text{ "Gibdo Mask" },
+        Text{ "Garo's Mask" },
+        Text{ "Redead mask" },
+    };
+    trickNameTable[RG_BUNNY_HOOD] = {
+        // TODO_TRANSLATE
+        Text{ "Bunny Mask" },
+        Text{ "Bremen Mask" },
+        Text{ "Rabbit Hood" },
+    };
+    trickNameTable[RG_MASK_OF_TRUTH] = {
+        // TODO_TRANSLATE
+        Text{ "Feirce Diety Mask" },
+        Text{ "Majora's Mask" },
+        Text{ "Hero's Charm" },
+    };
+    trickNameTable[RG_GORON_MASK] = {
+        // TODO_TRANSLATE
+        Text{ "Stone Mask" },
+        Text{ "Darmani's Mask" },
+        Text{ "Goron Garb" },
+    };
+    trickNameTable[RG_ZORA_MASK] = {
+        // TODO_TRANSLATE
+        Text{ "Zora Costume" },
+        Text{ "Don Gero's Mask" },
+        Text{ "Mikau's Mask" },
+    };
+    trickNameTable[RG_GERUDO_MASK] = {
+        // TODO_TRANSLATE
+        Text{ "Great Fairy Mask" },
+        Text{ "Romani's Mask" },
+        Text{ "Gerudo Veil" },
     };
 
     trickNameTable[RG_GUARD_HOUSE_KEY] = {

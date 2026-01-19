@@ -3,7 +3,7 @@
 #include "align_asset_macro.h"
 
 // This file is manually made
-// When new assets are added to the soh.otr file
+// When new assets are added to the soh.o2r file
 // We need to add the aligned version of the resource names here and use in code
 // On Mac, not using aligned resource names was causing crashes in release builds
 

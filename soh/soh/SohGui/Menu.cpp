@@ -460,6 +460,15 @@ void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors me
                     }
                 }
             } break;
+            case WIDGET_CVAR_BTN_SELECTOR: {
+                auto options = std::static_pointer_cast<UIWidgets::BtnSelectorOptions>(widget.options);
+                options->color = menuThemeIndex;
+                if (UIWidgets::CVarBtnSelector(widget.name.c_str(), widget.cVar, *options)) {
+                    if (widget.callback != nullptr) {
+                        widget.callback(widget);
+                    }
+                }
+            } break;
             case WIDGET_BUTTON: {
                 auto options = std::static_pointer_cast<UIWidgets::ButtonOptions>(widget.options);
                 options->color = menuThemeIndex;
@@ -559,6 +568,9 @@ void Menu::Draw() {
 
 static bool freshOpen = true;
 void Menu::DrawElement() {
+    if (OTRGlobals::Instance->fontStandardLargest == nullptr) {
+        return;
+    }
     for (auto& [reason, info] : disabledMap) {
         info.active = info.evaluation(info);
     }
@@ -647,18 +659,15 @@ void Menu::DrawElement() {
     ImVec2 pos = window->DC.CursorPos;
     float centerX = pos.x + windowWidth / 2 - (style.ItemSpacing.x * (menuEntries.size() + 1));
     std::vector<ImVec2> headerSizes;
-    float headerWidth = style.ItemSpacing.x + 20;
+    float headerWidth = 0.0f;
     bool headerSearch = !CVarGetInteger(CVAR_SETTING("Menu.SidebarSearch"), 0);
     if (headerSearch) {
-        headerWidth += 200.0f + style.ItemSpacing.x + style.FramePadding.x;
+        headerWidth += 200.0f;
     }
     for (auto& label : menuOrder) {
         ImVec2 size = ImGui::CalcTextSize(label.c_str());
         headerSizes.push_back(size);
-        headerWidth += size.x + style.FramePadding.x * 2;
-        if (label == headerIndex) {
-            headerWidth += style.ItemSpacing.x;
-        }
+        headerWidth += size.x + style.FramePadding.x * 2 + style.ItemSpacing.x;
     }
 
     // Full screen menu with widths below 1280, heights below 800.

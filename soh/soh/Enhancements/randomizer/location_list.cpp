@@ -1011,7 +1011,7 @@ void Rando::StaticData::InitHashMaps() {
 }
 
 Location* Rando::StaticData::GetLocation(RandomizerCheck locKey) {
-    return &(locationTable[locKey]);
+    return &locationTable[locKey];
 }
 
 std::array<Location, RC_MAX>& Rando::StaticData::GetLocationTable() {

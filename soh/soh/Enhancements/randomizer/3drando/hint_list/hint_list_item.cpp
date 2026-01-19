@@ -2081,6 +2081,15 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("a rightward tone", /*german*/"ein rechtsseitiger Ton", /*french*/"une tonalité vers la droite")});
                                                           // /*spanish*/un tono hacia la derecha
 
+    hintTextTable[RHT_MASK_KEATON] = HintText(CustomMessage("a keaton mask", /*german*/"!!!", /*french*/"le Masque du Renard"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"un masque")});
+    hintTextTable[RHT_MASK_SKULL] = HintText(CustomMessage("a skull mask", /*german*/"!!!", /*french*/"le Masque de Mort"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"un masque")});
+    hintTextTable[RHT_MASK_SPOOKY] = HintText(CustomMessage("a spooky mask", /*german*/"!!!", /*french*/"le Masque d'Effroi"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"un masque")});
+    hintTextTable[RHT_MASK_BUNNY] = HintText(CustomMessage("a bunny hood", /*german*/"!!!", /*french*/"le Masque du Lapin"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"un masque")});
+    hintTextTable[RHT_MASK_GORON] = HintText(CustomMessage("a goron mask", /*german*/"!!!", /*french*/"le Masque de Goron"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"un masque")});
+    hintTextTable[RHT_MASK_ZORA] = HintText(CustomMessage("a zora mask", /*german*/"!!!", /*french*/"le Masque de Zora"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"un masque")});
+    hintTextTable[RHT_MASK_GERUDO] = HintText(CustomMessage("a gerudo mask", /*german*/"!!!", /*french*/"le Masque de Gerudo"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"un masque")});
+    hintTextTable[RHT_MASK_TRUTH] = HintText(CustomMessage("a mask of truth", /*german*/"!!!", /*french*/"le Masque de Vérité"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"un masque")});
+
     hintTextTable[RHT_FISHING_POLE] = HintText(CustomMessage("a fishing pole", /*german*/"eine Angelrute", /*french*/"une canne à pêche"),
                                                // /*spanish*/caña de pescar
                                                {
@@ -2107,7 +2116,9 @@ void StaticData::HintTable_Init_Item() {
                                                },
                                                { CustomMessage("a master unlocker", /*german*/ "ein Meisterentsperrer", /*french*/ "un Kit de Déverrouillage") });
                                                 // /*spanish*/un desbloqueador maestro
+
     hintTextTable[RHT_CRAWL] = HintText(CustomMessage("the ability to crawl", /*german*/TODO_TRANSLATE, /*french*/"la capacité de ramper"));
+    hintTextTable[RHT_OPEN_CHEST] = HintText(CustomMessage("the ability to open chests", /*german*/TODO_TRANSLATE, /*french*/TODO_TRANSLATE));
 
     //RANDOTODO if these are ever used for anything other than name, they want abscure and ambiguous hints
     hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("an infinite Quiver", /*german*/"der unendliche Köcher", /*french*/"un Carquois Infini"));

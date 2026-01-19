@@ -19,7 +19,7 @@ void RegionTable_Init_CastleGrounds() {
     areaTable[RR_HYRULE_CASTLE_GROUNDS] = Region("Hyrule Castle Grounds", SCENE_HYRULE_CASTLE, {
         //Events
         EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy() || logic->CanUse(RG_STICKS);}),
-        EventAccess(LOGIC_BUG_ACCESS,   []{return true;}),
+        EventAccess(LOGIC_BUG_ACCESS,   []{return logic->HasItem(RG_POWER_BRACELET);}),
     }, {
         //Locations
         LOCATION(RC_HC_MALON_EGG,                        true),
@@ -45,7 +45,7 @@ void RegionTable_Init_CastleGrounds() {
     }, {
         //Exits
         Entrance(RR_CASTLE_GROUNDS,          []{return true;}),
-        Entrance(RR_HC_LEDGE,                []{return logic->CanUse(RG_WEIRD_EGG) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanJumpslash());}),
+        Entrance(RR_HC_LEDGE,                []{return (logic->CanUse(RG_WEIRD_EGG) && logic->HasItem(RG_POWER_BRACELET)) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanJumpslash());}),
         Entrance(RR_HC_GREAT_FAIRY_FOUNTAIN, []{return logic->CanUse(RG_CRAWL) && logic->BlastOrSmash();}),
         Entrance(RR_HC_STORMS_GROTTO,        []{return logic->CanOpenStormsGrotto();}),
     });
