@@ -117,40 +117,40 @@ static const ALIGN_ASSET(2) char gCustomChildFPSHandDL[] = dgCustomChildFPSHandD
 #define dgCustomBottleDL "__OTR__objects/object_custom_equip/gCustomBottleDL"
 static const ALIGN_ASSET(2) char gCustomBottleDL[] = dgCustomBottleDL;
 
-#define dgCustomBottleRedPotionContentsDL "__OTR__objects/object_custom_equip/gCustomBottleRedPotionContentsDL"
-static const ALIGN_ASSET(2) char gCustomBottleRedPotionContentsDL[] = dgCustomBottleRedPotionContentsDL;
+#define dgCustomBottleRedPotionDL "__OTR__objects/object_custom_equip/gCustomBottleRedPotionDL"
+static const ALIGN_ASSET(2) char gCustomBottleRedPotionDL[] = dgCustomBottleRedPotionDL;
 
-#define dgCustomBottleGreenPotionContentsDL "__OTR__objects/object_custom_equip/gCustomBottleGreenPotionContentsDL"
-static const ALIGN_ASSET(2) char gCustomBottleGreenPotionContentsDL[] = dgCustomBottleGreenPotionContentsDL;
+#define dgCustomBottleGreenPotionDL "__OTR__objects/object_custom_equip/gCustomBottleGreenPotionDL"
+static const ALIGN_ASSET(2) char gCustomBottleGreenPotionDL[] = dgCustomBottleGreenPotionDL;
 
-#define dgCustomBottleBluePotionContentsDL "__OTR__objects/object_custom_equip/gCustomBottleBluePotionContentsDL"
-static const ALIGN_ASSET(2) char gCustomBottleBluePotionContentsDL[] = dgCustomBottleBluePotionContentsDL;
+#define dgCustomBottleBluePotionDL "__OTR__objects/object_custom_equip/gCustomBottleBluePotionDL"
+static const ALIGN_ASSET(2) char gCustomBottleBluePotionDL[] = dgCustomBottleBluePotionDL;
 
-#define dgCustomBottleFairyContentsDL "__OTR__objects/object_custom_equip/gCustomBottleFairyContentsDL"
-static const ALIGN_ASSET(2) char gCustomBottleFairyContentsDL[] = dgCustomBottleFairyContentsDL;
+#define dgCustomBottleFairyDL "__OTR__objects/object_custom_equip/gCustomBottleFairyDL"
+static const ALIGN_ASSET(2) char gCustomBottleFairyDL[] = dgCustomBottleFairyDL;
 
-#define dgCustomBottleFishContentsDL "__OTR__objects/object_custom_equip/gCustomBottleFishContentsDL"
-static const ALIGN_ASSET(2) char gCustomBottleFishContentsDL[] = dgCustomBottleFishContentsDL;
+#define dgCustomBottleFishDL "__OTR__objects/object_custom_equip/gCustomBottleFishDL"
+static const ALIGN_ASSET(2) char gCustomBottleFishDL[] = dgCustomBottleFishDL;
 
-#define dgCustomBottleMilkContentsDL "__OTR__objects/object_custom_equip/gCustomBottleMilkContentsDL"
-static const ALIGN_ASSET(2) char gCustomBottleMilkContentsDL[] = dgCustomBottleMilkContentsDL;
+#define dgCustomBottleMilkDL "__OTR__objects/object_custom_equip/gCustomBottleMilkDL"
+static const ALIGN_ASSET(2) char gCustomBottleMilkDL[] = dgCustomBottleMilkDL;
 
-#define dgCustomBottleMilkHalfContentsDL "__OTR__objects/object_custom_equip/gCustomBottleMilkHalfContentsDL"
-static const ALIGN_ASSET(2) char gCustomBottleMilkHalfContentsDL[] = dgCustomBottleMilkHalfContentsDL;
+#define dgCustomBottleMilkHalfDL "__OTR__objects/object_custom_equip/gCustomBottleMilkHalfDL"
+static const ALIGN_ASSET(2) char gCustomBottleMilkHalfDL[] = dgCustomBottleMilkHalfDL;
 
-#define dgCustomBottleLetterContentsDL "__OTR__objects/object_custom_equip/gCustomBottleLetterContentsDL"
-static const ALIGN_ASSET(2) char gCustomBottleLetterContentsDL[] = dgCustomBottleLetterContentsDL;
+#define dgCustomBottleLetterDL "__OTR__objects/object_custom_equip/gCustomBottleLetterDL"
+static const ALIGN_ASSET(2) char gCustomBottleLetterDL[] = dgCustomBottleLetterDL;
 
-#define dgCustomBottleBlueFireContentsDL "__OTR__objects/object_custom_equip/gCustomBottleBlueFireContentsDL"
-static const ALIGN_ASSET(2) char gCustomBottleBlueFireContentsDL[] = dgCustomBottleBlueFireContentsDL;
+#define dgCustomBottleBlueFireDL "__OTR__objects/object_custom_equip/gCustomBottleBlueFireDL"
+static const ALIGN_ASSET(2) char gCustomBottleBlueFireDL[] = dgCustomBottleBlueFireDL;
 
-#define dgCustomBottleBugContentsDL "__OTR__objects/object_custom_equip/gCustomBottleBugContentsDL"
-static const ALIGN_ASSET(2) char gCustomBottleBugContentsDL[] = dgCustomBottleBugContentsDL;
+#define dgCustomBottleBugDL "__OTR__objects/object_custom_equip/gCustomBottleBugDL"
+static const ALIGN_ASSET(2) char gCustomBottleBugDL[] = dgCustomBottleBugDL;
 
-#define dgCustomBottleBigPoeContentsDL "__OTR__objects/object_custom_equip/gCustomBottleBigPoeContentsDL"
-static const ALIGN_ASSET(2) char gCustomBottleBigPoeContentsDL[] = dgCustomBottleBigPoeContentsDL;
+#define dgCustomBottleBigPoeDL "__OTR__objects/object_custom_equip/gCustomBottleBigPoeDL"
+static const ALIGN_ASSET(2) char gCustomBottleBigPoeDL[] = dgCustomBottleBigPoeDL;
 
-#define dgCustomBottlePoeContentsDL "__OTR__objects/object_custom_equip/gCustomBottlePoeContentsDL"
-static const ALIGN_ASSET(2) char gCustomBottlePoeContentsDL[] = dgCustomBottlePoeContentsDL;
+#define dgCustomBottlePoeDL "__OTR__objects/object_custom_equip/gCustomBottlePoeDL"
+static const ALIGN_ASSET(2) char gCustomBottlePoeDL[] = dgCustomBottlePoeDL;
 
 #endif // OBJECTS_OBJECT_CUSTOM_EQUIP_H

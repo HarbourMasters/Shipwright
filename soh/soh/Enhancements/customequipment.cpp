@@ -506,19 +506,19 @@ static void ApplyBottleContentPatches() {
     constexpr s32 BOTTLE_ACTION_COUNT = BOTTLE_FAIRY + 1;
 
     const char* bottleContentDLs[] = {
-        nullptr,                            // 0: PLAYER_IA_BOTTLE (empty - no custom content needed)
-        gCustomBottleFishContentsDL,        // 1: PLAYER_IA_BOTTLE_FISH
-        gCustomBottleBlueFireContentsDL,    // 2: PLAYER_IA_BOTTLE_FIRE
-        gCustomBottleBugContentsDL,         // 3: PLAYER_IA_BOTTLE_BUG
-        gCustomBottlePoeContentsDL,         // 4: PLAYER_IA_BOTTLE_POE
-        gCustomBottleBigPoeContentsDL,      // 5: PLAYER_IA_BOTTLE_BIG_POE
-        gCustomBottleLetterContentsDL,      // 6: PLAYER_IA_BOTTLE_RUTOS_LETTER
-        gCustomBottleRedPotionContentsDL,   // 7: PLAYER_IA_BOTTLE_POTION_RED
-        gCustomBottleBluePotionContentsDL,  // 8: PLAYER_IA_BOTTLE_POTION_BLUE
-        gCustomBottleGreenPotionContentsDL, // 9: PLAYER_IA_BOTTLE_POTION_GREEN
-        gCustomBottleMilkContentsDL,        // 10: PLAYER_IA_BOTTLE_MILK_FULL
-        gCustomBottleMilkHalfContentsDL,    // 11: PLAYER_IA_BOTTLE_MILK_HALF
-        gCustomBottleFairyContentsDL,       // 12: PLAYER_IA_BOTTLE_FAIRY
+        nullptr,                    // 0: PLAYER_IA_BOTTLE (empty - no custom content needed)
+        gCustomBottleFishDL,        // 1: PLAYER_IA_BOTTLE_FISH
+        gCustomBottleBlueFireDL,    // 2: PLAYER_IA_BOTTLE_FIRE
+        gCustomBottleBugDL,         // 3: PLAYER_IA_BOTTLE_BUG
+        gCustomBottlePoeDL,         // 4: PLAYER_IA_BOTTLE_POE
+        gCustomBottleBigPoeDL,      // 5: PLAYER_IA_BOTTLE_BIG_POE
+        gCustomBottleLetterDL,      // 6: PLAYER_IA_BOTTLE_RUTOS_LETTER
+        gCustomBottleRedPotionDL,   // 7: PLAYER_IA_BOTTLE_POTION_RED
+        gCustomBottleBluePotionDL,  // 8: PLAYER_IA_BOTTLE_POTION_BLUE
+        gCustomBottleGreenPotionDL, // 9: PLAYER_IA_BOTTLE_POTION_GREEN
+        gCustomBottleMilkDL,        // 10: PLAYER_IA_BOTTLE_MILK_FULL
+        gCustomBottleMilkHalfDL,    // 11: PLAYER_IA_BOTTLE_MILK_HALF
+        gCustomBottleFairyDL,       // 12: PLAYER_IA_BOTTLE_FAIRY
     };
 
     if (!ResourceMgr_IsAltAssetsEnabled()) {
