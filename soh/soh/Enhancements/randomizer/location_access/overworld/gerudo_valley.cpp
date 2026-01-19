@@ -10,16 +10,18 @@ void RegionTable_Init_GerudoValley() {
         EventAccess(LOGIC_BUG_ACCESS, []{return logic->IsChild && logic->HasItem(RG_POWER_BRACELET);}),
     }, {
         //Locations
-        LOCATION(RC_GV_GS_SMALL_BRIDGE, logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
+        LOCATION(RC_GV_GS_SMALL_BRIDGE,            logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD,     []{return true;}),
-        Entrance(RR_GV_UPPER_STREAM,  []{return (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->HasItem(RG_BRONZE_SCALE) || logic->TakeDamage();}),
-        Entrance(RR_GV_CRATE_LEDGE,   []{return (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_LONGSHOT);}),
-        Entrance(RR_GV_GROTTO_LEDGE,  []{return true;}),
-        Entrance(RR_GV_FORTRESS_SIDE, []{return (logic->IsAdult && (logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS))) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOVER_BOOTS)) ||
-                                                ((logic->IsChild || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION)) && logic->CanUse(RG_HOOKSHOT)) || (logic->IsChild && ctx->GetTrickOption(RT_GV_CHILD_CUCCO_JUMP) && logic->HasItem(RG_POWER_BRACELET) && logic->CanJumpslash());}),
-        Entrance(RR_GV_LOWER_STREAM,  []{return logic->IsChild && logic->HasItem(RG_POWER_BRACELET);}),
+        Entrance(RR_HYRULE_FIELD,          []{return true;}),
+        Entrance(RR_GV_UPPER_STREAM,       []{return (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->TakeDamage();}),
+        Entrance(RR_GV_UPPER_STREAM_WATER, []{return true;}),
+        Entrance(RR_GV_CRATE_LEDGE,        []{return (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_LONGSHOT);}),
+        Entrance(RR_GV_GROTTO_LEDGE,       []{return true;}),
+        Entrance(RR_GV_FORTRESS_SIDE,      []{return (logic->IsAdult && (logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS))) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOVER_BOOTS)) ||
+                                                     ((logic->IsChild || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION)) && logic->CanUse(RG_HOOKSHOT)) || (logic->IsChild && ctx->GetTrickOption(RT_GV_CHILD_CUCCO_JUMP) && logic->HasItem(RG_POWER_BRACELET) && logic->CanJumpslash());}),
+        Entrance(RR_GV_WATERFALL_ALCOVE,   []{return logic->IsChild && logic->HasItem(RG_POWER_BRACELET);}),
+        Entrance(RR_GV_LOWER_STREAM,       []{return logic->IsChild && logic->HasItem(RG_POWER_BRACELET);}),
     });
 
     areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", SCENE_GERUDO_VALLEY, {
@@ -27,19 +29,26 @@ void RegionTable_Init_GerudoValley() {
         EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy() || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS));}),
     }, {
         //Locations
-        LOCATION(RC_GV_WATERFALL_FREESTANDING_POH, (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->HasItem(RG_BRONZE_SCALE) || CanPlantBean(RR_GV_UPPER_STREAM, RG_GERUDO_VALLEY_BEAN_SOUL)),
-        LOCATION(RC_GV_GS_BEAN_PATCH,              logic->CanSpawnSoilSkull(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanAttack()),
-        LOCATION(RC_GV_COW,                        logic->IsChild && logic->CanUse(RG_EPONAS_SONG)),
-        LOCATION(RC_GV_BEAN_SPROUT_FAIRY_1,        logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_GV_BEAN_SPROUT_FAIRY_2,        logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_GV_BEAN_SPROUT_FAIRY_3,        logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_GV_GOSSIP_STONE_FAIRY,         logic->CallGossipFairy()),
-        LOCATION(RC_GV_GOSSIP_STONE_FAIRY_BIG,     logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_GV_GOSSIP_STONE,               true),
-        LOCATION(RC_GV_NEAR_COW_CRATE,             logic->IsChild && logic->CanBreakCrates()),
+        LOCATION(RC_GV_GS_BEAN_PATCH,          logic->CanSpawnSoilSkull(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanAttack()),
+        LOCATION(RC_GV_COW,                    logic->IsChild && logic->CanUse(RG_EPONAS_SONG)),
+        LOCATION(RC_GV_BEAN_SPROUT_FAIRY_1,    logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_GV_BEAN_SPROUT_FAIRY_2,    logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_GV_BEAN_SPROUT_FAIRY_3,    logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_GV_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
+        LOCATION(RC_GV_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_GV_GOSSIP_STONE,           true),
+        LOCATION(RC_GV_NEAR_COW_CRATE,         logic->IsChild && logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_GV_LOWER_STREAM, []{return logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
+        Entrance(RR_GV_UPPER_STREAM_WATER, []{return true;}),
+        Entrance(RR_GV_WATERFALL_ALCOVE,   []{return (logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_CLIMB)) || logic->CanUse(RG_LONGSHOT) || CanPlantBean(RR_GV_UPPER_STREAM, RG_GERUDO_VALLEY_BEAN_SOUL);}),
+    });
+
+    areaTable[RR_GV_UPPER_STREAM_WATER] = Region("GV Upper Stream Water", SCENE_GERUDO_VALLEY, {}, {}, {
+        //Exits
+        Entrance(RR_GV_UPPER_STREAM,     []{return logic->HasItem(RG_BRONZE_SCALE);}),
+        Entrance(RR_GV_LOWER_STREAM,     []{return logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
+        Entrance(RR_GV_WATERFALL_ALCOVE, []{return (logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))) && logic->HasItem(RG_CLIMB);}),
     });
 
     // scale/boots logic is outside lower stream, as lower stream combines access to lake hylia for entrance randomizer's sake
@@ -48,9 +57,18 @@ void RegionTable_Init_GerudoValley() {
         Entrance(RR_LAKE_HYLIA, []{return true;}),
     });
 
+    areaTable[RR_GV_WATERFALL_ALCOVE] = Region("GV Waterfall Alcove", SCENE_GERUDO_VALLEY, {}, {
+        //Locations
+        LOCATION(RC_GV_WATERFALL_FREESTANDING_POH, true),
+    }, {
+        //Exits
+        Entrance(RR_GV_UPPER_STREAM,       []{return logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS);}),
+        Entrance(RR_GV_UPPER_STREAM_WATER, []{return true;}),
+    });
+
     areaTable[RR_GV_GROTTO_LEDGE] = Region("GV Grotto Ledge", SCENE_GERUDO_VALLEY, {}, {}, {
         //Exits
-        Entrance(RR_GV_UPPER_STREAM,   []{return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives();}),
+        Entrance(RR_GV_UPPER_STREAM,   []{return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->TakeDamage();}),
         Entrance(RR_GV_LOWER_STREAM,   []{return logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
         Entrance(RR_GV_OCTOROK_GROTTO, []{return logic->CanUse(RG_SILVER_GAUNTLETS);}),
         Entrance(RR_GV_CRATE_LEDGE,    []{return logic->CanUse(RG_LONGSHOT);}),
@@ -62,7 +80,7 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_FREESTANDING_POH_CRATE, logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_GV_UPPER_STREAM, []{return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives();}),
+        Entrance(RR_GV_UPPER_STREAM, []{return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->TakeDamage();}),
         Entrance(RR_GV_LOWER_STREAM, []{return logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS);}),
     });
 
@@ -78,12 +96,13 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_CRATE_BRIDGE_4, logic->IsChild && logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_GF_OUTSKIRTS,      []{return true;}),
-        Entrance(RR_GV_UPPER_STREAM,   []{return true;}),
-        Entrance(RR_GERUDO_VALLEY,     []{return logic->IsChild || logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOVER_BOOTS));}),
-        Entrance(RR_GV_CARPENTER_TENT, []{return logic->IsAdult || ctx->GetTrickOption(RT_GV_CHILD_TENT);}),
-        Entrance(RR_GV_STORMS_GROTTO,  []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
-        Entrance(RR_GV_CRATE_LEDGE,    []{return (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()) || (ctx->GetTrickOption(RT_GV_CRATE_HOVERS) && logic->TakeDamage() && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)));}),
+        Entrance(RR_GF_OUTSKIRTS,          []{return true;}),
+        Entrance(RR_GV_UPPER_STREAM,       []{return logic->TakeDamage();}),
+        Entrance(RR_GV_UPPER_STREAM_WATER, []{return true;}),
+        Entrance(RR_GERUDO_VALLEY,         []{return logic->IsChild || logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOVER_BOOTS));}),
+        Entrance(RR_GV_CARPENTER_TENT,     []{return logic->IsAdult || ctx->GetTrickOption(RT_GV_CHILD_TENT);}),
+        Entrance(RR_GV_STORMS_GROTTO,      []{return logic->IsAdult && logic->CanOpenStormsGrotto();}),
+        Entrance(RR_GV_CRATE_LEDGE,        []{return (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()) || (ctx->GetTrickOption(RT_GV_CRATE_HOVERS) && logic->TakeDamage() && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)));}),
     });
 
     areaTable[RR_GV_CARPENTER_TENT] = Region("GV Carpenter Tent", SCENE_CARPENTERS_TENT, {}, {}, {

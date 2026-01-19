@@ -134,7 +134,7 @@ void RegionTable_Init_DodongosCavern() {
     areaTable[RR_DODONGOS_CAVERN_STAIRS_UPPER] = Region("Dodongos Cavern Stairs Upper", SCENE_DODONGOS_CAVERN, {}, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_GS_ALCOVE_ABOVE_STAIRS, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, logic->Get(LOGIC_DC_LIFT_PLATFORM) ? ED_BOOMERANG : ED_LONGSHOT)),
-        LOCATION(RC_DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS,  logic->HasItem(RG_POWER_BRACELET) || logic->CanKillEnemy(RE_GOLD_SKULLTULA, logic->IsAdult ? ED_LONG_JUMPSLASH : ED_BOMB_THROW)),
+        LOCATION(RC_DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS,  (logic->HasItem(RG_CLIMB) && logic->HasItem(RG_POWER_BRACELET)) || logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
         LOCATION(RC_DODONGOS_CAVERN_STAIRCASE_POT_1,        logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_STAIRCASE_POT_2,        logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_STAIRCASE_POT_3,        logic->CanBreakPots()),
@@ -167,7 +167,7 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_DODONGOS_CAVERN_BLADE_GRASS,                logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_DODONGOS_CAVERN_ARMOS_ROOM,           []{return true;}),
+        Entrance(RR_DODONGOS_CAVERN_ARMOS_ROOM,           []{return logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT);}),
         Entrance(RR_DODONGOS_CAVERN_2F_SIDE_ROOM,         []{return AnyAgeTime([]{return logic->CanBreakMudWalls() || (ctx->GetTrickOption(RT_DC_SCRUB_ROOM) && logic->HasItem(RG_GORONS_BRACELET));});}),
         Entrance(RR_DODONGOS_CAVERN_FIRST_SLINGSHOT_ROOM, []{return AnyAgeTime([]{return logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET);});}),
         Entrance(RR_DODONGOS_CAVERN_BOMB_ROOM_UPPER,      []{return (logic->IsAdult && (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->CanGroundJump())) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanJumpslash());}),
@@ -367,7 +367,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_STAIRS_UPPER] = Region("Dodongos Cavern MQ Stairs Upper", SCENE_DODONGOS_CAVERN, {
         //Events
-        EventAccess(LOGIC_DC_MQ_STAIRS_SILVER_RUPEES, []{return true;}),
+        EventAccess(LOGIC_DC_MQ_STAIRS_SILVER_RUPEES, []{return logic->HasItem(RG_CLIMB);}),
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE,    logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
@@ -533,7 +533,7 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_6, logic->HasItem(RG_GORONS_BRACELET) || logic->CanBreakCrates()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_7, logic->HasItem(RG_GORONS_BRACELET) || logic->CanBreakCrates()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_POE_ROOM_CRATE_8, logic->HasItem(RG_GORONS_BRACELET) || logic->CanBreakCrates()),
-        }, {
+    }, {
         //Exits
         Entrance(RR_DODONGOS_CAVERN_MQ_OUTSIDE_POES_ROOM, []{return AnyAgeTime([]{return logic->CanDetonateBombFlowers() || logic->HasItem(RG_GORONS_BRACELET);});}),
         Entrance(RR_DODONGOS_CAVERN_MQ_LOWER_LIZALFOS,    []{return true;}),

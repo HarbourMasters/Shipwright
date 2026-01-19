@@ -785,8 +785,9 @@ void Settings::CreateOptions() {
     });
     OPT_BOOL(RSK_SHUFFLE_OCARINA_BUTTONS, "Shuffle Ocarina Buttons", CVAR_RANDOMIZER_SETTING("ShuffleOcarinaButtons"), mOptionDescriptions[RSK_SHUFFLE_OCARINA_BUTTONS]);
     OPT_BOOL(RSK_SHUFFLE_SWIM, "Shuffle Swim", CVAR_RANDOMIZER_SETTING("ShuffleSwim"), mOptionDescriptions[RSK_SHUFFLE_SWIM]);
-    OPT_BOOL(RSK_SHUFFLE_GRAB, "Shuffle Grab", CVAR_RANDOMIZER_SETTING("ShuffleGrab"), mOptionDescriptions[RSK_SHUFFLE_GRAB]);
+    OPT_BOOL(RSK_SHUFFLE_CLIMB, "Shuffle Climb", CVAR_RANDOMIZER_SETTING("ShuffleClimb"), mOptionDescriptions[RSK_SHUFFLE_CLIMB]);
     OPT_BOOL(RSK_SHUFFLE_CRAWL, "Shuffle Crawl", CVAR_RANDOMIZER_SETTING("ShuffleCrawl"), mOptionDescriptions[RSK_SHUFFLE_CRAWL]);
+    OPT_BOOL(RSK_SHUFFLE_GRAB, "Shuffle Grab", CVAR_RANDOMIZER_SETTING("ShuffleGrab"), mOptionDescriptions[RSK_SHUFFLE_GRAB]);
     OPT_BOOL(RSK_SHUFFLE_OPEN_CHEST, "Shuffle Open Chest", CVAR_RANDOMIZER_SETTING("ShuffleOpenChest"), mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST]);
     OPT_BOOL(RSK_SHUFFLE_WEIRD_EGG, "Shuffle Weird Egg", CVAR_RANDOMIZER_SETTING("ShuffleWeirdEgg"), mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG]);
     OPT_BOOL(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD, "Shuffle Gerudo Membership Card", CVAR_RANDOMIZER_SETTING("ShuffleGerudoToken"), mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
@@ -1814,6 +1815,7 @@ void Settings::CreateOptions() {
                                                                                  &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
                                                                                  &mOptions[RSK_SHUFFLE_SWIM],
                                                                                  &mOptions[RSK_SHUFFLE_GRAB],
+                                                                                 &mOptions[RSK_SHUFFLE_CLIMB],
                                                                                  &mOptions[RSK_SHUFFLE_CRAWL],
                                                                                  &mOptions[RSK_SHUFFLE_OPEN_CHEST],
                                                                                  &mOptions[RSK_SHUFFLE_BEAN_SOULS],
@@ -2035,6 +2037,7 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
                                             &mOptions[RSK_SHUFFLE_SWIM],
                                             &mOptions[RSK_SHUFFLE_GRAB],
+                                            &mOptions[RSK_SHUFFLE_CLIMB],
                                             &mOptions[RSK_SHUFFLE_CRAWL],
                                             &mOptions[RSK_SHUFFLE_OPEN_CHEST],
                                             &mOptions[RSK_SHUFFLE_WEIRD_EGG],

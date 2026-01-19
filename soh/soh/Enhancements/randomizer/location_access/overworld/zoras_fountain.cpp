@@ -95,7 +95,7 @@ void RegionTable_Init_ZorasFountain() {
         //Exits
         //There are invisible big skultullas here as adult but they do not block the path and can be "seen" with Z-target
         //Lens is not currently needed for this either, implying they are not considered blocking, but it's open for discussion long-term
-        Entrance(RR_ZF_HIDDEN_LEDGE, []{return true;}),
+        Entrance(RR_ZF_HIDDEN_LEDGE, []{return logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT);}),
     });
 
     areaTable[RR_ZF_HIDDEN_LEDGE] = Region("ZF Hidden Ledge", SCENE_ZORAS_FOUNTAIN, {}, {

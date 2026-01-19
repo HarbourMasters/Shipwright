@@ -997,6 +997,10 @@ void InitTrickNames() {
         Text{ "Stalfos Key" }, Text{ "Nightmare Key" }, Text{ "Graveyard Key" },
         Text{ "King's Key" },  Text{ "Hero's Key" },
     };
+    trickNameTable[RG_CLIMB] = {
+        // TODO_TRANSLATE
+        Text{ "Cling" },
+    };
     trickNameTable[RG_CRAWL] = {
         // TODO_TRANSLATE
         Text{ "Crouch" },

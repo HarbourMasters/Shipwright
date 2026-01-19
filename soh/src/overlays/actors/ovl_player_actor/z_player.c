@@ -13401,6 +13401,10 @@ void Player_Action_8084BF1C(Player* this, PlayState* play) {
     this->fallStartHeight = this->actor.world.pos.y;
     this->stateFlags2 |= PLAYER_STATE2_DISABLE_ROTATION_ALWAYS;
 
+    if (!GameInteractor_Should(VB_CLIMB, true, &sp80, &sp84)) {
+        return;
+    }
+
     if ((this->av1.actionVar1 != 0) && (ABS(sp84) < ABS(sp80))) {
         phi_f0 = ABS(sp80) * 0.0325f;
         sp84 = 0;
