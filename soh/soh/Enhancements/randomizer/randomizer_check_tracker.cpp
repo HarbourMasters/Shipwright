@@ -270,6 +270,7 @@ std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 static ImGuiTextFilter checkSearch;
 static bool recalculateAvailable = false;
+static RandomizerRegion availableChecksStartingRegion = RR_ROOT;
 std::array<bool, RCAREA_INVALID> filterAreasHidden = { 0 };
 std::array<bool, RC_MAX> filterChecksHidden = { 0 };
 
@@ -954,6 +955,8 @@ void SetAreaSpoiled(RandomizerCheckArea rcArea) {
     SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
 }
 
+void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion);
+
 void CheckTrackerWindow::DrawElement() {
     Color_Background = CVarGetColor(CVAR_TRACKER_CHECK("BgColor.Value"), Color_Bg_Default);
     Color_Area_Incomplete_Main = CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.MainColor.Value"), Color_Main_Default);
@@ -1029,7 +1032,8 @@ void CheckTrackerWindow::DrawElement() {
 
     if (recalculateAvailable) {
         recalculateAvailable = false;
-        RecalculateAvailableChecks();
+        InternalRecalculateAvailableChecks(availableChecksStartingRegion);
+        availableChecksStartingRegion = RR_ROOT;
     }
 
     // Quick Options
@@ -2052,7 +2056,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
     UIWidgets::PopStyleCombobox();
 }
 
-void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */) {
+void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion) {
     if (!enableAvailableChecks || !GameInteractor::IsSaveLoaded()) {
         return;
     }
@@ -2062,6 +2066,14 @@ void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */)
 
     const auto& ctx = Rando::Context::GetInstance();
     logic = ctx->GetLogic();
+
+    if (startingRegion == RR_ROOT) {
+        const auto entranceIndex = GetLastEntranceOverride();
+        const auto entrance = Rando::EntranceShuffler::GetEntranceByIndex(entranceIndex);
+        if (entrance != nullptr) {
+            startingRegion = entrance->GetConnectedRegionKey();
+        }
+    }
 
     std::vector<RandomizerCheck> targetLocations;
     targetLocations.reserve(RC_MAX);
@@ -2095,6 +2107,11 @@ void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */)
     StopPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
     SPDLOG_INFO("Recalculate Available Checks Time: {}ms",
                 GetPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS).count());
+}
+
+void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */) {
+    recalculateAvailable = true;
+    availableChecksStartingRegion = startingRegion;
 }
 
 void CheckTracker_LoadFromPreset(nlohmann::json info) {

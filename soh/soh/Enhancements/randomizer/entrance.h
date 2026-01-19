@@ -133,6 +133,8 @@ class EntranceShuffler {
     void ParseJson(nlohmann::json spoilerFileJson);
     void ApplyEntranceOverrides();
 
+    static const Entrance* GetEntranceByIndex(int16_t index);
+
   private:
     std::vector<Entrance*> AssumeEntrancePool(std::vector<Entrance*>& entrancePool);
     bool ShuffleOneWayPriorityEntrances(std::map<std::string, PriorityEntrance>& oneWayPriorities,

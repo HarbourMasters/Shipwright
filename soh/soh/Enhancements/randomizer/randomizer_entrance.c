@@ -292,12 +292,14 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
 
     Entrance_SetEntranceDiscovered(nextEntranceIndex, false);
     EntranceTracker_SetLastEntranceOverride(nextEntranceIndex);
+    CheckTracker_RecalculateAvailableChecks();
     return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(nextEntranceIndex));
 }
 
 s16 Entrance_OverrideDynamicExit(s16 dynamicExitIndex) {
     Entrance_SetEntranceDiscovered(dynamicExitList[dynamicExitIndex], false);
     EntranceTracker_SetLastEntranceOverride(dynamicExitList[dynamicExitIndex]);
+    CheckTracker_RecalculateAvailableChecks();
     return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(dynamicExitList[dynamicExitIndex]));
 }
 
