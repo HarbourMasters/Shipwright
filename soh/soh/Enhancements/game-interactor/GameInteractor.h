@@ -5,6 +5,7 @@
 
 #include "libultraship/libultraship.h"
 #include "vanilla-behavior/GIVanillaBehavior.h"
+#include "GameInteractionEffect.h"
 #include <z64.h>
 
 typedef enum {
@@ -95,7 +96,21 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 #pragma message("Compiling without <source_location> support, the Hook Debugger will not be available")
 #endif
 
-#include "GameInteractionEffect.h"
+struct GIEventNone {};
+
+struct GIEventGiveItem {
+    // Whether or not to show the get item cutscene. If true and the player is in the air, the
+    // player will instead be frozen for a few seconds. If this is true you _must_ call
+    // CustomMessage::SetActiveCustomMessage in the giveItem function otherwise you'll just see a blank message.
+    bool showGetItemCutscene;
+    // Arbitrary s16 that can be accessed from within the give/draw functions with CUSTOM_ITEM_PARAM
+    s16 param;
+    // These are run in the context of an item00 actor. This isn't super important but can be useful in some cases
+    ActorFunc giveItem;
+    ActorFunc drawItem;
+};
+
+typedef std::variant<GIEventNone, GIEventGiveItem> GIEvent;
 
 typedef uint32_t HOOK_ID;
 
@@ -213,6 +228,10 @@ class GameInteractor {
     static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase& effect);
     static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase& effect);
     static GameInteractionEffectQueryResult RemoveEffect(RemovableGameInteractionEffect& effect);
+
+    // EventQueue
+    std::vector<GIEvent> events = {};
+    GIEvent currentEvent = GIEventNone();
 
     // Game Hooks
     //
