@@ -1,20 +1,5 @@
 {
     "language_name": "English (US)",
-    "cvars": {
-        "gEnhancements": {
-            "AssignableTunicsAndBoots": {
-                "name": "Assignable Shields, Tunics and Boots",
-                "tooltip": "Allows equipping Shields, Tunics and Boots to C-Buttons/D-pad."
-            },
-            "TimeSavers": {
-                "SkipJabuJabuFish": {
-                    "name": "Skip Feeding Jabu-Jabu",
-                    "tooltip": "Allow Link to enter Jabu-Jabu without feeding him a fish.",
-                    "disabled_tooltip": "This setting is disabled because a randomizer savefile with \"Jabu-Jabu: Open\" is loaded."
-                }
-            }
-        }
-    },
     "randomizer": {
         "tricks": {
             "acute_angle_clip": {
@@ -977,13 +962,6 @@
             "ganon_mq_light_trial": {
                 "name": "Light Trial MQ without Hookshot",
                 "description": "If you move quickly you can sneak past the edge of a flame wall before it can rise up to block you. In this case to do it without taking damage is especially precise."
-            }
-        }
-    },
-    "others": {
-        "menu": {
-            "tabs": {
-                "enhancements": "Enhancements"
             }
         }
     }

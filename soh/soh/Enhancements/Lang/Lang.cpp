@@ -121,6 +121,10 @@ void LanguageCustomWidget(WidgetInfo& info) {
 }
 
 void RegisterLangWidgets() {
+    return;
+
+    // TODO: Improve & enable this when everything is set up
+
     SohGui::mSohMenu->AddSidebarEntry("Settings", "Language", 1);
     WidgetPath path = { "Settings", "Language", SECTION_COLUMN_1 };
     SohGui::mSohMenu->AddWidget(path, "LanguageWidget", WIDGET_CUSTOM)
