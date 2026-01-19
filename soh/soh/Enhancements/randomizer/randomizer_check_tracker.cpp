@@ -2112,10 +2112,10 @@ void CheckTrackerWindow::Draw() {
     SyncVisibilityConsoleVariable();
 }
 
-static std::unordered_map<int32_t, const char*> windowType = { { TRACKER_WINDOW_FLOATING, "Floating" },
-                                                               { TRACKER_WINDOW_WINDOW, "Window" } };
-static std::unordered_map<int32_t, const char*> displayType = { { 0, "Always" }, { 1, "Combo Button Hold" } };
-static std::unordered_map<int32_t, const char*> buttonStrings = {
+static std::map<int32_t, const char*> windowType = { { TRACKER_WINDOW_FLOATING, "Floating" },
+                                                     { TRACKER_WINDOW_WINDOW, "Window" } };
+static std::map<int32_t, const char*> displayType = { { 0, "Always" }, { 1, "Combo Button Hold" } };
+static std::map<int32_t, const char*> buttonStrings = {
     { TRACKER_COMBO_BUTTON_A, "A Button" },    { TRACKER_COMBO_BUTTON_B, "B Button" },
     { TRACKER_COMBO_BUTTON_C_UP, "C-Up" },     { TRACKER_COMBO_BUTTON_C_DOWN, "C-Down" },
     { TRACKER_COMBO_BUTTON_C_LEFT, "C-Left" }, { TRACKER_COMBO_BUTTON_C_RIGHT, "C-Right" },

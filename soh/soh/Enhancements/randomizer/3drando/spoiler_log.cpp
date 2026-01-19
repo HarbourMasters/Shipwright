@@ -4,11 +4,8 @@
 #include "../static_data.h"
 #include "../settings.h"
 #include "../entrance.h"
-#include "random.hpp"
 #include "../trial.h"
-#include "hints.hpp"
 #include "pool_functions.hpp"
-#include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include <nlohmann/json.hpp>
 
@@ -16,10 +13,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <map>
-#include <set>
 #include <string>
 #include <sstream>
-#include <unordered_map>
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -235,7 +230,9 @@ static void WritePlaythrough() {
             sphereString += "0";
         sphereString += sphereNum;
         for (const RandomizerCheck key : ctx->playthroughLocations[i]) {
-            WriteLocation(sphereString, key, true);
+            if (!ctx->GetItemLocation(key)->IsHidden()) {
+                WriteLocation(sphereString, key, true);
+            }
         }
     }
 }
@@ -337,7 +334,7 @@ static void WriteAllLocations() {
     }
 }
 
-const char* SpoilerLog_Write() {
+void SpoilerLog_Write() {
     auto ctx = Rando::Context::GetInstance();
 
     jsonData.clear();
@@ -393,12 +390,6 @@ const char* SpoilerLog_Write() {
     jsonFile.close();
 
     CVarSetString(CVAR_GENERAL("SpoilerLog"), (std::string("./Randomizer/") + fileName + std::string(".json")).c_str());
-
-    // Note: probably shouldn't return this without making sure this string is stored somewhere, but
-    // this return value is currently only used in playthrough.cpp as a true/false. Even if the pointer
-    // is no longer valid it would still not be nullptr if the spoilerfile was written, so it works but
-    // should probably be changed for correctness later on.
-    return fileName.c_str();
 }
 
 void PlacementLog_Msg(std::string_view msg) {

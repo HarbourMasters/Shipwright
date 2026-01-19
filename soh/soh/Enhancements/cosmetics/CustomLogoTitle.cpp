@@ -213,15 +213,10 @@ void OnZTitleUpdateSkipToFileSelect(void* gameState) {
 }
 
 void RegisterCustomLogoTitleBootsequence() {
-    COND_HOOK(OnZTitleUpdate,
-              CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_FILESELECT &&
-                  CVarGetInteger(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"), 0) == 0,
-              OnZTitleUpdateSkipToFileSelect);
+    COND_HOOK(OnZTitleUpdate, CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_FILESELECT, OnZTitleUpdateSkipToFileSelect);
 }
 
-static RegisterShipInitFunc registerTitleBootSequence(RegisterCustomLogoTitleBootsequence,
-                                                      { CVAR_BOOTSEQUENCE_NAME,
-                                                        CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen") });
+static RegisterShipInitFunc registerTitleBootSequence(RegisterCustomLogoTitleBootsequence, { CVAR_BOOTSEQUENCE_NAME });
 
 // // // // // //
 // Let it Snow

@@ -11,6 +11,7 @@ DEFINE_HOOK(OnLoadGame, (int32_t fileNum));
 DEFINE_HOOK(OnExitGame, (int32_t fileNum));
 DEFINE_HOOK(OnGameStateMainStart, ());
 DEFINE_HOOK(OnGameFrameUpdate, ());
+DEFINE_HOOK(OnCameraState, (PlayState * play));
 DEFINE_HOOK(OnItemReceive, (GetItemEntry itemEntry));
 DEFINE_HOOK(OnEquipmentDelete, (int16_t equipmentType, uint16_t equipValue));
 DEFINE_HOOK(OnSaleEnd, (GetItemEntry itemEntry));
@@ -83,6 +84,9 @@ DEFINE_HOOK(OnGenerationCompletion, ());
 DEFINE_HOOK(OnSetGameLanguage, ());
 DEFINE_HOOK(OnAssetAltChange, ());
 DEFINE_HOOK(OnKaleidoUpdate, ());
+
+// Messages
+DEFINE_HOOK(OnOpenText, (uint16_t * textId, bool* loadFromMessageTable));
 
 // Audio
 DEFINE_HOOK(OnSeqPlayerInit, (int32_t playerIdx, int32_t seqId));

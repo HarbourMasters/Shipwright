@@ -10,7 +10,7 @@
 #include "soh/OTRGlobals.h"
 
 #include <libultraship/bridge.h>
-#include "soh/CrashHandlerExp.h"
+#include "soh/CrashHandlerExt.h"
 
 s32 gScreenWidth = SCREEN_WIDTH;
 s32 gScreenHeight = SCREEN_HEIGHT;

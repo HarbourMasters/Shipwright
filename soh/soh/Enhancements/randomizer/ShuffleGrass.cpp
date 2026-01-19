@@ -2,12 +2,10 @@
 #include "soh_assets.h"
 #include "static_data.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
-#include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
 #include "variables.h"
 #include "overlays/actors/ovl_En_Kusa/z_en_kusa.h"
-#include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "objects/object_kusa/object_kusa.h"
 extern PlayState* gPlayState;
 }
@@ -34,11 +32,10 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     if (grassIdentity != nullptr && grassIdentity->randomizerCheck != RC_MAX &&
         Flags_GetRandomizerInf(grassIdentity->randomizerInf) == 0) {
-        int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+        bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
         int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-        if ((csmc == CSMC_BOTH || csmc == CSMC_TEXTURE) &&
-            (!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+        if (csmc && (!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
             auto itemEntry =
                 Rando::Context::GetInstance()->GetFinalGIEntry(grassIdentity->randomizerCheck, true, GI_NONE);
             GetItemCategory getItemCategory = itemEntry.getItemCategory;
@@ -48,18 +45,10 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
                     DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushJunkDL, (Gfx*)gRandoCuttableGrassJunkDL, play);
                     break;
                 case ITEM_CATEGORY_LESSER:
-                    switch (itemEntry.itemId) {
-                        case ITEM_HEART_PIECE:
-                        case ITEM_HEART_PIECE_2:
-                        case ITEM_HEART_CONTAINER:
-                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushHeartDL, (Gfx*)gRandoCuttableGrassHeartDL,
-                                            play);
-                            break;
-                        default:
-                            DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushMinorDL, (Gfx*)gRandoCuttableGrassMinorDL,
-                                            play);
-                            break;
-                    }
+                    DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushMinorDL, (Gfx*)gRandoCuttableGrassMinorDL, play);
+                    break;
+                case ITEM_CATEGORY_HEALTH:
+                    DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushHeartDL, (Gfx*)gRandoCuttableGrassHeartDL, play);
                     break;
                 case ITEM_CATEGORY_BOSS_KEY:
                     DrawTypeOfGrass(grassActor, (Gfx*)gRandoBushBossKeyDL, (Gfx*)gRandoCuttableGrassBossKeyDL, play);
@@ -97,11 +86,11 @@ uint8_t EnKusa_RandomizerHoldsItem(EnKusa* grassActor, PlayState* play) {
 
     RandomizerCheck rc = grassIdentity->randomizerCheck;
     uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
-    uint8_t grassSetting = RAND_GET_OPTION(RSK_SHUFFLE_GRASS);
+    auto grassSetting = RAND_GET_OPTION(RSK_SHUFFLE_GRASS);
 
     // Don't pull randomized item if grass isn't randomized or is already checked
-    if (!IS_RANDO || (grassSetting == RO_SHUFFLE_GRASS_OVERWORLD && isDungeon) ||
-        (grassSetting == RO_SHUFFLE_GRASS_DUNGEONS && !isDungeon) ||
+    if (!IS_RANDO || (grassSetting.Is(RO_SHUFFLE_GRASS_OVERWORLD) && isDungeon) ||
+        (grassSetting.Is(RO_SHUFFLE_GRASS_DUNGEONS) && !isDungeon) ||
         Flags_GetRandomizerInf(grassIdentity->randomizerInf) || rc == RC_UNKNOWN_CHECK) {
         return false;
     } else {

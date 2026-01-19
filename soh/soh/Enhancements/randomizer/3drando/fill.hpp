@@ -5,7 +5,6 @@
 #include "../entrance.h"
 
 #include <vector>
-#include <string>
 
 // RANDOTODO merge into Logic once Logic is a class passed to logic funtions
 struct GetAccessibleLocationsStruct {

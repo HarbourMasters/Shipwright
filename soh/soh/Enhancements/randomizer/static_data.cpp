@@ -93,12 +93,6 @@ std::unordered_map<uint32_t, CustomMessage> StaticData::hintNames = {
     { RH_BIGGORON_HINT, CustomMessage("Biggoron Claim Check Hint") },
     { RH_FROGS_HINT, CustomMessage("Final Frogs in River Hint") },
     { RH_OOT_HINT, CustomMessage("Sheik in Temple of Time Hint") },
-    { RH_KAK_10_SKULLS_HINT, CustomMessage("10 Skulls Hint") },
-    { RH_KAK_20_SKULLS_HINT, CustomMessage("20 Skulls Hint") },
-    { RH_KAK_30_SKULLS_HINT, CustomMessage("30 Skulls Hint") },
-    { RH_KAK_40_SKULLS_HINT, CustomMessage("40 Skulls Hint") },
-    { RH_KAK_50_SKULLS_HINT, CustomMessage("50 Skulls Hint") },
-    { RH_KAK_100_SKULLS_HINT, CustomMessage("100 Skulls Hint") },
     { RH_MASK_SHOP_HINT, CustomMessage("Mask Shop Hint") },
 };
 
@@ -217,12 +211,6 @@ std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap
   {RH_BIGGORON_HINT,        StaticHintInfo(HINT_TYPE_ITEM,     {RHT_BIGGORON_HINT},                 RSK_BIGGORON_HINT,       true, {RC_DMT_TRADE_CLAIM_CHECK})},
   {RH_FROGS_HINT,           StaticHintInfo(HINT_TYPE_ITEM,     {RHT_FROGS_HINT},                    RSK_FROGS_HINT,          true, {RC_ZR_FROGS_OCARINA_GAME})},
   {RH_OOT_HINT,             StaticHintInfo(HINT_TYPE_ITEM,     {RHT_OOT_HINT},                      RSK_OOT_HINT,            true, {RC_HF_OCARINA_OF_TIME_ITEM, RC_SONG_FROM_OCARINA_OF_TIME}, {}, {RC_TOT_SHEIK_HINT})},
-  {RH_KAK_10_SKULLS_HINT,   StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_10_SKULLS_HINT,  true, {RC_KAK_10_GOLD_SKULLTULA_REWARD},  {}, {}, false, 10)},
-  {RH_KAK_20_SKULLS_HINT,   StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_20_SKULLS_HINT,  true, {RC_KAK_20_GOLD_SKULLTULA_REWARD},  {}, {}, false, 20)},
-  {RH_KAK_30_SKULLS_HINT,   StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_30_SKULLS_HINT,  true, {RC_KAK_30_GOLD_SKULLTULA_REWARD},  {}, {}, false, 30)},
-  {RH_KAK_40_SKULLS_HINT,   StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_40_SKULLS_HINT,  true, {RC_KAK_40_GOLD_SKULLTULA_REWARD},  {}, {}, false, 40)},
-  {RH_KAK_50_SKULLS_HINT,   StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_50_SKULLS_HINT,  true, {RC_KAK_50_GOLD_SKULLTULA_REWARD},  {}, {}, false, 50)},
-  {RH_KAK_100_SKULLS_HINT,  StaticHintInfo(HINT_TYPE_ITEM,     {RHT_SKULLS_HINT},                   RSK_KAK_100_SKULLS_HINT, true, {RC_KAK_100_GOLD_SKULLTULA_REWARD}, {}, {}, false, 100)},
   {RH_MASK_SHOP_HINT,       StaticHintInfo(HINT_TYPE_ITEM,     {RHT_MASK_SHOP_HINT},                RSK_MASK_SHOP_HINT,      true, {RC_DEKU_THEATER_SKULL_MASK, RC_DEKU_THEATER_MASK_OF_TRUTH}, {}, {RC_MASK_SHOP_HINT})},
     // clang-format on
 };
@@ -317,4 +305,58 @@ std::unordered_map<u32, RandomizerHint> StaticData::grottoChestParamsToHint{
 };
 
 std::array<HintText, RHT_MAX> StaticData::hintTextTable = {};
+
+std::vector<RandomizerGet> StaticData::normalBottles = {
+    RG_EMPTY_BOTTLE,
+    RG_BOTTLE_WITH_MILK,
+    RG_BOTTLE_WITH_RED_POTION,
+    RG_BOTTLE_WITH_GREEN_POTION,
+    RG_BOTTLE_WITH_BLUE_POTION,
+    RG_BOTTLE_WITH_FAIRY,
+    RG_BOTTLE_WITH_FISH,
+    RG_BOTTLE_WITH_BUGS,
+    RG_BOTTLE_WITH_POE,
+    RG_BOTTLE_WITH_BIG_POE,
+    RG_BOTTLE_WITH_BLUE_FIRE,
+};
+
+std::vector<RandomizerGet> StaticData::beanSouls = {
+    RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL,
+    RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL,
+    RG_DESERT_COLOSSUS_BEAN_SOUL,
+    RG_GERUDO_VALLEY_BEAN_SOUL,
+    RG_GRAVEYARD_BEAN_SOUL,
+    RG_KOKIRI_FOREST_BEAN_SOUL,
+    RG_LAKE_HYLIA_BEAN_SOUL,
+    RG_LOST_WOODS_BRIDGE_BEAN_SOUL,
+    RG_LOST_WOODS_BEAN_SOUL,
+    RG_ZORAS_RIVER_BEAN_SOUL,
+};
+
+std::vector<RandomizerGet> StaticData::overworldKeys = {
+    RG_GUARD_HOUSE_KEY,
+    RG_MARKET_BAZAAR_KEY,
+    RG_MARKET_POTION_SHOP_KEY,
+    RG_MASK_SHOP_KEY,
+    RG_MARKET_SHOOTING_GALLERY_KEY,
+    RG_BOMBCHU_BOWLING_KEY,
+    RG_TREASURE_CHEST_GAME_BUILDING_KEY,
+    RG_BOMBCHU_SHOP_KEY,
+    RG_RICHARDS_HOUSE_KEY,
+    RG_ALLEY_HOUSE_KEY,
+    RG_KAK_BAZAAR_KEY,
+    RG_KAK_POTION_SHOP_KEY,
+    RG_BOSS_HOUSE_KEY,
+    RG_GRANNYS_POTION_SHOP_KEY,
+    RG_SKULLTULA_HOUSE_KEY,
+    RG_IMPAS_HOUSE_KEY,
+    RG_WINDMILL_KEY,
+    RG_KAK_SHOOTING_GALLERY_KEY,
+    RG_DAMPES_HUT_KEY,
+    RG_TALONS_HOUSE_KEY,
+    RG_STABLES_KEY,
+    RG_BACK_TOWER_KEY,
+    RG_HYLIA_LAB_KEY,
+    RG_FISHING_HOLE_KEY,
+};
 } // namespace Rando

@@ -87,7 +87,7 @@ void RegionTable_Init_LakeHylia() {
         Entrance(RR_LH_FISHING_ISLAND,     []{return ((logic->IsChild || logic->Get(LOGIC_WATER_TEMPLE_CLEAR)) && logic->HasItem(RG_BRONZE_SCALE)) || (logic->IsAdult && (logic->ReachScarecrow() || CanPlantBean(RR_LAKE_HYLIA, RG_LAKE_HYLIA_BEAN_SOUL)));}),
         Entrance(RR_LH_LAB,                []{return logic->CanOpenOverworldDoor(RG_HYLIA_LAB_KEY);}),
         Entrance(RR_LH_FROM_WATER_TEMPLE,  []{return true;}),
-        Entrance(RR_LH_GROTTO,             []{return true;}),
+        Entrance(RR_LH_GROTTO,             []{return logic->HasItem(RG_POWER_BRACELET);}),
     });
 
     areaTable[RR_LH_FROM_SHORTCUT] = Region("LH From Shortcut", SCENE_LAKE_HYLIA, TIME_DOESNT_PASS, {RA_LAKE_HYLIA}, {}, {}, {

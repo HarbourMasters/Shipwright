@@ -19,7 +19,7 @@ void RegionTable_Init_CastleGrounds() {
     areaTable[RR_HYRULE_CASTLE_GROUNDS] = Region("Hyrule Castle Grounds", SCENE_HYRULE_CASTLE, {
         //Events
         EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy() || logic->CanUse(RG_STICKS);}),
-        EventAccess(LOGIC_BUG_ACCESS,   []{return true;}),
+        EventAccess(LOGIC_BUG_ACCESS,   []{return logic->HasItem(RG_POWER_BRACELET);}),
     }, {
         //Locations
         LOCATION(RC_HC_MALON_EGG,                        true),
@@ -45,9 +45,15 @@ void RegionTable_Init_CastleGrounds() {
     }, {
         //Exits
         Entrance(RR_CASTLE_GROUNDS,          []{return true;}),
-        Entrance(RR_HC_GARDEN,               []{return logic->CanUse(RG_WEIRD_EGG) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanJumpslash());}),
-        Entrance(RR_HC_GREAT_FAIRY_FOUNTAIN, []{return logic->BlastOrSmash();}),
+        Entrance(RR_HC_LEDGE,                []{return (logic->CanUse(RG_WEIRD_EGG) && logic->HasItem(RG_POWER_BRACELET)) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanJumpslash());}),
+        Entrance(RR_HC_GREAT_FAIRY_FOUNTAIN, []{return logic->CanUse(RG_CRAWL) && logic->BlastOrSmash();}),
         Entrance(RR_HC_STORMS_GROTTO,        []{return logic->CanOpenStormsGrotto();}),
+    });
+
+    areaTable[RR_HC_LEDGE] = Region("HC Ledge", SCENE_HYRULE_CASTLE, {}, {}, {
+        //Exits
+        Entrance(RR_HYRULE_CASTLE_GROUNDS, []{return true;}),
+        Entrance(RR_HC_GARDEN,             []{return logic->CanUse(RG_CRAWL);}),
     });
 
     areaTable[RR_HC_GARDEN] = Region("HC Garden", SCENE_CASTLE_COURTYARD_ZELDA, {}, {
@@ -56,7 +62,7 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_SONG_FROM_IMPA,   true),
     }, {
         //Exits
-        Entrance(RR_HYRULE_CASTLE_GROUNDS, []{return true;}),
+        Entrance(RR_HC_LEDGE, []{return true;}), // if this ever gets shuffled leaving garden area should come out crawlspace
     });
 
     areaTable[RR_HC_GREAT_FAIRY_FOUNTAIN] = Region("HC Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, {}, {

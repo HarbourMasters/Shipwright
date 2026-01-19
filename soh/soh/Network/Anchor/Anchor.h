@@ -110,7 +110,7 @@ class Anchor : public Network {
 
   public:
     uint32_t ownClientId;
-    inline static const std::string clientVersion = (char*)gBuildVersion;
+    inline static const std::string clientVersion = (char*)gGitCommitHash;
 
     // Packet types //
     inline static const std::string ALL_CLIENT_STATE = "ALL_CLIENT_STATE";

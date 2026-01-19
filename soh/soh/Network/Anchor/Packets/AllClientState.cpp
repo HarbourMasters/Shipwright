@@ -67,5 +67,5 @@ void Anchor::HandlePacket_AllClientState(nlohmann::json payload) {
         clients.erase(clientId);
     }
 
-    RefreshClientActors();
+    shouldRefreshActors = true;
 }

@@ -313,6 +313,18 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetRandomizerInf(RAND_INF_CAN_SWIM);
     }
 
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_CRAWL) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_CRAWL);
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_GRAB) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_GRAB);
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OPEN_CHEST) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_OPEN_CHEST);
+    }
+
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_WALLET) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
     }
@@ -363,6 +375,10 @@ extern "C" void Randomizer_InitSaveFile() {
     if (Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_IMPA, (GetItemID)RG_ZELDAS_LULLABY);
         StartingItemGive(getItemEntry, RC_SONG_FROM_IMPA);
+        getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_MALON_EGG, (GetItemID)RG_WEIRD_EGG);
+        StartingItemGive(getItemEntry, RC_HC_ZELDAS_LETTER);
+        getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_ZELDAS_LETTER, (GetItemID)RG_ZELDAS_LETTER);
+        StartingItemGive(getItemEntry, RC_HC_MALON_EGG);
 
         // Malon/Talon back at ranch.
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
@@ -457,7 +473,7 @@ extern "C" void Randomizer_InitSaveFile() {
     }
 
     // complete mask quest
-    if (Randomizer_GetSettingValue(RSK_COMPLETE_MASK_QUEST)) {
+    if (Randomizer_GetSettingValue(RSK_MASK_QUEST) == RO_MASK_QUEST_COMPLETED) {
         Flags_SetInfTable(INFTABLE_GATE_GUARD_PUT_ON_KEATON_MASK);
         Flags_SetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE);
 

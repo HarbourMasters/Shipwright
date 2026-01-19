@@ -1,15 +1,20 @@
 #include "SohMenu.h"
+#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohGui.hpp"
+
+extern "C" {
+#include "variables.h"
+}
 
 namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;
 using namespace UIWidgets;
 
-static const std::unordered_map<int32_t, const char*> skipGetItemAnimationOptions = {
+static const std::map<int32_t, const char*> skipGetItemAnimationOptions = {
     { SGIA_DISABLED, "Disabled" },
     { SGIA_JUNK, "Junk Items" },
     { SGIA_ALL, "All Items" },
@@ -185,7 +190,7 @@ void DrawTricksMenu(WidgetInfo& info) {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
 
     // Tricks
-    static std::unordered_map<RandomizerArea, bool> areaTreeDisabled{
+    static std::map<RandomizerArea, bool> areaTreeDisabled{
         { RA_NONE, true },
         { RA_KOKIRI_FOREST, true },
         { RA_THE_LOST_WOODS, true },
@@ -220,7 +225,7 @@ void DrawTricksMenu(WidgetInfo& info) {
         { RA_GERUDO_TRAINING_GROUND, true },
         { RA_GANONS_CASTLE, true },
     };
-    static std::unordered_map<RandomizerArea, bool> areaTreeEnabled{
+    static std::map<RandomizerArea, bool> areaTreeEnabled{
         { RA_NONE, true },
         { RA_KOKIRI_FOREST, true },
         { RA_THE_LOST_WOODS, true },
@@ -540,7 +545,6 @@ void DrawTricksMenu(WidgetInfo& info) {
 }
 
 void SohMenu::AddMenuRandomizer() {
-    Randomizer::CreateCustomMessages();
     // Add Randomizer Menu
     AddMenuEntry("Randomizer", CVAR_SETTING("Menu.RandomizerSidebarSection"));
 
@@ -680,6 +684,9 @@ void SohMenu::AddMenuRandomizer() {
         })
         .Options(FloatSliderOptions().Min(5.0f).Max(15.0f).Format("%.2f").DefaultValue(10.0f).Tooltip(
             "The size of the item when it is picked up."));
+    AddWidget(path, "Signs Hint Entrances", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("EntrancesOnSigns"))
+        .Options(CheckboxOptions().Tooltip("If enabled, signs near loading zones will tell you where they lead to."));
 
     auto randoSettings = Rando::Settings::GetInstance();
     randoSettings->CreateOptions();

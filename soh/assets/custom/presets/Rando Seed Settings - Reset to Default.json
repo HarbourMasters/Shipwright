@@ -1,0 +1,9 @@
+{
+    "blocks": {
+        "rando": {
+            "gRandoSettings": null
+        }
+    },
+    "presetName": "Rando Seed Settings - Reset to Default",
+	"isBuiltIn": true
+}

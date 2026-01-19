@@ -3,16 +3,12 @@
 #include "static_data.h"
 #include <libultraship/libultra.h>
 #include "global.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 
 extern "C" {
 #include "variables.h"
 #include "overlays/actors/ovl_Obj_Kibako2/z_obj_kibako2.h"
-#include "objects/object_kibako2/object_kibako2.h"
 #include "overlays/actors/ovl_Obj_Kibako/z_obj_kibako.h"
-#include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
-#include "soh/Enhancements/enhancementTypes.h"
 extern PlayState* gPlayState;
 }
 
@@ -21,11 +17,10 @@ extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemCategory getItemCategory;
     auto crateActor = ((ObjKibako2*)thisx);
-    int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+    bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    int isVanilla =
-        csmc == CSMC_DISABLED || csmc == CSMC_SIZE || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+    int isVanilla = !csmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
     if (isVanilla) {
         Gfx_DrawDListOpa(play, (Gfx*)gLargeRandoCrateDL);
@@ -73,17 +68,11 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
         case ITEM_CATEGORY_BOSS_KEY:
             Gfx_DrawDListOpa(play, (Gfx*)gLargeBossKeyCrateDL);
             break;
+        case ITEM_CATEGORY_HEALTH:
+            Gfx_DrawDListOpa(play, (Gfx*)gLargeHeartCrateDL);
+            break;
         case ITEM_CATEGORY_LESSER:
-            switch (crateItem.itemId) {
-                case ITEM_HEART_PIECE:
-                case ITEM_HEART_PIECE_2:
-                case ITEM_HEART_CONTAINER:
-                    Gfx_DrawDListOpa(play, (Gfx*)gLargeHeartCrateDL);
-                    break;
-                default:
-                    Gfx_DrawDListOpa(play, (Gfx*)gLargeMinorCrateDL);
-                    break;
-            }
+            Gfx_DrawDListOpa(play, (Gfx*)gLargeMinorCrateDL);
             break;
         case ITEM_CATEGORY_JUNK:
         default:
@@ -95,11 +84,10 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
 extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemCategory getItemCategory;
     auto smallCrateActor = ((ObjKibako*)thisx);
-    int csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_DISABLED);
+    bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    int isVanilla =
-        csmc == CSMC_DISABLED || csmc == CSMC_SIZE || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+    int isVanilla = !csmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
     if (isVanilla) {
         Gfx_DrawDListOpa(play, (Gfx*)gSmallRandoCrateDL);
@@ -147,17 +135,11 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
         case ITEM_CATEGORY_BOSS_KEY:
             Gfx_DrawDListOpa(play, (Gfx*)gSmallBossKeyCrateDL);
             break;
+        case ITEM_CATEGORY_HEALTH:
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
+            break;
         case ITEM_CATEGORY_LESSER:
-            switch (smallCrateItem.itemId) {
-                case ITEM_HEART_PIECE:
-                case ITEM_HEART_PIECE_2:
-                case ITEM_HEART_CONTAINER:
-                    Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
-                    break;
-                default:
-                    Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
-                    break;
-            }
+            Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
             break;
         case ITEM_CATEGORY_JUNK:
         default:
@@ -174,11 +156,11 @@ uint8_t ObjKibako2_RandomizerHoldsItem(ObjKibako2* crateActor, PlayState* play) 
 
     RandomizerCheck rc = crateIdentity->randomizerCheck;
     uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
-    uint8_t crateSetting = RAND_GET_OPTION(RSK_SHUFFLE_CRATES);
+    auto crateSetting = RAND_GET_OPTION(RSK_SHUFFLE_CRATES);
 
     // Don't pull randomized item if crate isn't randomized or is already checked
-    if (!IS_RANDO || (crateSetting == RO_SHUFFLE_CRATES_OVERWORLD && isDungeon) ||
-        (crateSetting == RO_SHUFFLE_CRATES_DUNGEONS && !isDungeon) ||
+    if (!IS_RANDO || (crateSetting.Is(RO_SHUFFLE_CRATES_OVERWORLD) && isDungeon) ||
+        (crateSetting.Is(RO_SHUFFLE_CRATES_DUNGEONS) && !isDungeon) ||
         Flags_GetRandomizerInf(crateIdentity->randomizerInf) || crateIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
         return false;
     } else {
@@ -194,11 +176,11 @@ uint8_t ObjKibako_RandomizerHoldsItem(ObjKibako* smallCrateActor, PlayState* pla
 
     RandomizerCheck rc = crateIdentity->randomizerCheck;
     uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
-    uint8_t crateSetting = RAND_GET_OPTION(RSK_SHUFFLE_CRATES);
+    auto crateSetting = RAND_GET_OPTION(RSK_SHUFFLE_CRATES);
 
     // Don't pull randomized item if crate isn't randomized or is already checked
-    if (!IS_RANDO || (crateSetting == RO_SHUFFLE_CRATES_OVERWORLD && isDungeon) ||
-        (crateSetting == RO_SHUFFLE_CRATES_DUNGEONS && !isDungeon) ||
+    if (!IS_RANDO || (crateSetting.Is(RO_SHUFFLE_CRATES_OVERWORLD) && isDungeon) ||
+        (crateSetting.Is(RO_SHUFFLE_CRATES_DUNGEONS) && !isDungeon) ||
         Flags_GetRandomizerInf(crateIdentity->randomizerInf) || crateIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
         return false;
     } else {
@@ -238,7 +220,7 @@ void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallCrateActor, PlayState*
 
 void ObjKibako2_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
-    uint8_t logicSetting = RAND_GET_OPTION(RSK_LOGIC_RULES);
+    auto logicSetting = RAND_GET_OPTION(RSK_LOGIC_RULES);
 
     // don't shuffle two OOB crates in GF and don't shuffle child GV/GF crates when not in no logic
     if (actor->id != ACTOR_OBJ_KIBAKO2 ||
@@ -246,16 +228,17 @@ void ObjKibako2_RandomizerInit(void* actorRef) {
          (s16)actor->world.pos.z == -3429) ||
         (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4571 &&
          (s16)actor->world.pos.z == -3429) ||
-        (logicSetting != RO_LOGIC_NO_LOGIC && ((gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
-                                                (s16)actor->world.pos.x == 3443 && (s16)actor->world.pos.z == -4876) ||
-                                               (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                                (s16)actor->world.pos.x == -764 && (s16)actor->world.pos.z == 148) ||
-                                               (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                                (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -125) ||
-                                               (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                                (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -150) ||
-                                               (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                                (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -90))))
+        (logicSetting.IsNot(RO_LOGIC_NO_LOGIC) &&
+         ((gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == 3443 &&
+           (s16)actor->world.pos.z == -4876) ||
+          (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -764 &&
+           (s16)actor->world.pos.z == 148) ||
+          (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 &&
+           (s16)actor->world.pos.z == -125) ||
+          (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 &&
+           (s16)actor->world.pos.z == -150) ||
+          (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 &&
+           (s16)actor->world.pos.z == -90))))
         return;
 
     ObjKibako2* crateActor = static_cast<ObjKibako2*>(actorRef);

@@ -366,6 +366,7 @@ bool GetTimePassFromScene(SceneID scene) {
         case SCENE_POTION_SHOP_GRANNY:
         case SCENE_GANON_BOSS:
         case SCENE_HOUSE_OF_SKULLTULA:
+        case SCENE_KAKARIKO_VILLAGE:
         case SCENE_KOKIRI_FOREST:
         case SCENE_SACRED_FOREST_MEADOW:
         case SCENE_LOST_WOODS:
@@ -377,6 +378,7 @@ bool GetTimePassFromScene(SceneID scene) {
         case SCENE_GERUDOS_FORTRESS:
         case SCENE_HAUNTED_WASTELAND:
         case SCENE_DEATH_MOUNTAIN_CRATER:
+        case SCENE_LON_LON_RANCH:
         case SCENE_ID_MAX:
             return false;
 
@@ -387,14 +389,12 @@ bool GetTimePassFromScene(SceneID scene) {
             return false;
 
         case SCENE_HYRULE_FIELD:
-        case SCENE_KAKARIKO_VILLAGE:
         case SCENE_ZORAS_RIVER:
         case SCENE_LAKE_HYLIA:
         case SCENE_GERUDO_VALLEY:
         case SCENE_DESERT_COLOSSUS:
         case SCENE_HYRULE_CASTLE:
         case SCENE_DEATH_MOUNTAIN_TRAIL:
-        case SCENE_LON_LON_RANCH:
             return true;
 
         case SCENE_TEST01:
@@ -626,20 +626,20 @@ std::array<Region, RR_MAX> areaTable;
 // clang-format off
 std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
     //Vanilla Child uses ExplosiveKeyLogic here because they need to exist for shared adult checks 
-    {RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_1F,       {5, 0, 3, 0, []{return true;},                                                                                          []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                               []{return true/*logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)*/;}}},
-    {RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_2F,       {5, 0, 3, 0, []{return true/*logic->CanClimbHigh()*/;},                                                                 []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                               []{return true/*logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)*/;}}},
-    {RR_SPIRIT_TEMPLE_2F_MIRROR_ROOM,        {5, 0, 3, 0, []{return logic->CanUse(RG_HOOKSHOT) && logic->SpiritSunOnFloorToStatue();},                               []{return true/*logic->CanClimbHigh()*/;},                                                                       []{return logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS);}}},
-    {RR_SPIRIT_TEMPLE_STATUE_ROOM_CHILD,     {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh()*/;},                                 []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                               []{return true/*logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)*/;}}},
-    {RR_SPIRIT_TEMPLE_INNER_WEST_HAND,       {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh()*/;},                                 []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                               []{return true/*logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)*/;}}},
-    {RR_SPIRIT_TEMPLE_GS_LEDGE,              {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->SpiritWestToSkull()/* && logic->CanClimbHigh()*/;},   []{return logic->SpiritExplosiveKeyLogic() && logic->SpiritWestToSkull()/* && logic->CanClimbHigh() && str0*/;}, []{return logic->SpiritWestToSkull()/* && (logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS))*/;}}},
-    {RR_SPIRIT_TEMPLE_STATUE_ROOM,           {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic();},                                                              []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                               []{return true;}}},
+    {RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_1F,       {5, 0, 3, 0, []{return true;},                                                                                          []{return logic->SpiritExplosiveKeyLogic() && logic->HasItem(RG_POWER_BRACELET)/* && logic->CanClimbHigh() */;},                               []{return true/*logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)*/;}}},
+    {RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_2F,       {5, 0, 3, 0, []{return true/*logic->CanClimbHigh()*/;},                                                                 []{return logic->SpiritExplosiveKeyLogic() && logic->HasItem(RG_POWER_BRACELET)/* && logic->CanClimbHigh() */;},                               []{return true/*logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)*/;}}},
+    {RR_SPIRIT_TEMPLE_2F_MIRROR_ROOM,        {5, 0, 3, 0, []{return logic->CanUse(RG_HOOKSHOT) && logic->SpiritSunOnFloorToStatue();},                               []{return true/*logic->CanClimbHigh()*/;},                                                                                                     []{return logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS);}}},
+    {RR_SPIRIT_TEMPLE_STATUE_ROOM_CHILD,     {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh()*/;},                                 []{return logic->SpiritExplosiveKeyLogic() && logic->HasItem(RG_POWER_BRACELET)/* && logic->CanClimbHigh()*/;},                               []{return true/*logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)*/;}}},
+    {RR_SPIRIT_TEMPLE_INNER_WEST_HAND,       {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh()*/;},                                 []{return logic->SpiritExplosiveKeyLogic() && logic->HasItem(RG_POWER_BRACELET)/* && logic->CanClimbHigh()*/;},                               []{return true/*logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)*/;}}},
+    {RR_SPIRIT_TEMPLE_GS_LEDGE,              {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->SpiritWestToSkull()/* && logic->CanClimbHigh()*/;},   []{return logic->SpiritExplosiveKeyLogic() && logic->HasItem(RG_POWER_BRACELET) && logic->SpiritWestToSkull()/* && logic->CanClimbHigh()*/;}, []{return logic->SpiritWestToSkull()/* && (logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS))*/;}}},
+    {RR_SPIRIT_TEMPLE_STATUE_ROOM,           {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic();},                                                              []{return logic->SpiritExplosiveKeyLogic() && logic->HasItem(RG_POWER_BRACELET)/* && logic->CanClimbHigh()*/;},                               []{return true;}}},
     //Assumes SpiritSunBlockSouthLedge() for all access
-    {RR_SPIRIT_TEMPLE_SUN_BLOCK_CHEST_LEDGE, {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                         []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                               []{return true/*((logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)) && str0) || (logic->CanKillEnemy(RE_BEAMOS) && logic->CanUse(RG_LONGSHOT))*/;}}},
-    {RR_SPIRIT_TEMPLE_SKULLTULA_STAIRS,      {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                         []{return logic->SpiritExplosiveKeyLogic()/* && logic->CanClimbHigh() && str0*/;},                               []{return true/*((logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)) && str0) || (logic->CanKillEnemy(RE_BEAMOS) && logic->CanUse(RG_LONGSHOT))*/;}}},
+    {RR_SPIRIT_TEMPLE_SUN_BLOCK_CHEST_LEDGE, {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->HasItem(RG_POWER_BRACELET)/* && logic->CanClimbHigh()*/;}, []{return logic->SpiritExplosiveKeyLogic() && logic->HasItem(RG_POWER_BRACELET)/* && logic->CanClimbHigh()*/;},                               []{return logic->HasItem(RG_POWER_BRACELET)/*((logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)) && logic->HasItem(RG_POWER_BRACELET)) || (logic->CanKillEnemy(RE_BEAMOS) && logic->CanUse(RG_LONGSHOT))*/;}}},
+    {RR_SPIRIT_TEMPLE_SKULLTULA_STAIRS,      {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->HasItem(RG_POWER_BRACELET)/* && logic->CanClimbHigh()*/;}, []{return logic->SpiritExplosiveKeyLogic() && logic->HasItem(RG_POWER_BRACELET)/* && logic->CanClimbHigh()*/;},                               []{return logic->HasItem(RG_POWER_BRACELET)/*((logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS)) && logic->HasItem(RG_POWER_BRACELET)) || (logic->CanKillEnemy(RE_BEAMOS) && logic->CanUse(RG_LONGSHOT))*/;}}},
     {RR_SPIRIT_TEMPLE_OUTER_RIGHT_HAND,      {5, 5, 3, 3, []{return logic->OuterWestHandLogic();},                                                                   []{return logic->OuterWestHandLogic();},                                                                         []{return logic->OuterWestHandLogic();}}},
-    {RR_SPIRIT_TEMPLE_STATUE_ROOM_ADULT,     {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->CanUse(RG_HOOKSHOT)/* && logic->CanClimbHigh()*/;},   []{return true/*logic->CanClimbHigh() && str0*/;},                                                               []{return logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS);}}},
-    {RR_SPIRIT_TEMPLE_INNER_LEFT_HAND,       {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->CanUse(RG_HOOKSHOT)/* && logic->CanClimbHigh()*/;},   []{return true/*logic->CanClimbHigh() && str0*/;},                                                               []{return logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS);}}},
-    {RR_SPIRIT_TEMPLE_SHORTCUT_SWITCH,       {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->CanUse(RG_HOOKSHOT) && logic->SpiritEastToSwitch();}, []{return logic->SpiritEastToSwitch()/* && logic->CanClimbHigh() && str0*/;},                                    []{return logic->SpiritEastToSwitch() && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS));}}},
+    {RR_SPIRIT_TEMPLE_STATUE_ROOM_ADULT,     {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->CanUse(RG_HOOKSHOT)/* && logic->CanClimbHigh()*/;},   []{return logic->HasItem(RG_POWER_BRACELET)/* && logic->CanClimbHigh()*/;},                                                               []{return logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS);}}},
+    {RR_SPIRIT_TEMPLE_INNER_LEFT_HAND,       {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->CanUse(RG_HOOKSHOT)/* && logic->CanClimbHigh()*/;},   []{return logic->HasItem(RG_POWER_BRACELET)/* && logic->CanClimbHigh()*/;},                                                               []{return logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS);}}},
+    {RR_SPIRIT_TEMPLE_SHORTCUT_SWITCH,       {5, 0, 3, 0, []{return logic->SpiritExplosiveKeyLogic() && logic->CanUse(RG_HOOKSHOT) && logic->SpiritEastToSwitch();}, []{return logic->SpiritEastToSwitch() && logic->HasItem(RG_POWER_BRACELET)/* && logic->CanClimbHigh()*/;},                                    []{return logic->SpiritEastToSwitch() && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS));}}},
     //MQ                                                              /*&& logic->CanClimbHigh()*/
     {RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE,    {7, 6, 7, 7, []{return logic->StatueRoomMQKeyLogic();},                                                                 []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 6) && logic->CanHitSwitch()/* && logic->Climb*/;},               []{return logic->StatueRoomMQKeyLogic() && logic->CanHitSwitch()/* && (logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS))*/;}}},
     {RR_SPIRIT_TEMPLE_MQ_SUN_ON_FLOOR,       {7, 6, 7, 7, []{return logic->StatueRoomMQKeyLogic() && logic->CanHitSwitch()/* && logic->CanClimbHigh()*/;},           []{return logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 6)/* && logic->Climb*/;},                                        []{return logic->StatueRoomMQKeyLogic()/* && (logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS))*/;}}},
@@ -648,7 +648,7 @@ std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
     {RR_SPIRIT_TEMPLE_MQ_INNER_RIGHT_HAND,   {7, 0, 0, 0, []{return logic->CanHitSwitch() && logic->MQSpiritWestToPots()/* && logic->CanClimbHigh()*/;},             []{return logic->MQSpiritWestToPots()/* && logic->Climb*/;},                                                     []{return /*logic->CanUse(RG_HOVER_BOOTS) || (logic->CanClimb() && */logic->MQSpiritWestToPots()/*)*/;}}},
     {RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,        {7, 0, 0, 0, []{return logic->CanHitSwitch()/* && logic->CanClimbHigh()*/;},                                            []{return true;},                                                                                                []{return true;}}},
     {RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM,     {7, 0, 0, 0, []{return logic->CanHitSwitch() && logic->MQSpiritStatueToSunBlock()/* && logic->CanClimbHigh()*/;},       []{return logic->MQSpiritStatueToSunBlock()/* && logic->Climb*/;},                                               []{return logic->MQSpiritStatueToSunBlock()/* && (logic->CanClimb() || logic->CanUse(RG_HOVER_BOOTS))*/;}}},
-    {RR_SPIRIT_TEMPLE_MQ_OUTER_RIGHT_HAND,   {7, 7, 4, 4, []{return logic->CanHitSwitch() && logic->OuterWestHandMQLogic()/* && logic->CanClimbHigh() && str0*/;},   []{return logic->OuterWestHandMQLogic();},                                                                       []{return logic->OuterWestHandMQLogic();}}},
+    {RR_SPIRIT_TEMPLE_MQ_OUTER_RIGHT_HAND,   {7, 7, 4, 4, []{return logic->CanHitSwitch() && logic->OuterWestHandMQLogic() && logic->HasItem(RG_POWER_BRACELET)/* && logic->CanClimbHigh()*/;},   []{return logic->OuterWestHandMQLogic();},                                                                       []{return logic->OuterWestHandMQLogic();}}},
     {RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR,    {7, 0, 0, 0, []{return logic->CanHitSwitch() && /* logic->CanClimbHigh() &&*/
                                                                     areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR].AnyAgeTime([]{return logic->MQSpiritStatueSouthDoor();});}, []{return true;},                                                                                      []{return areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR].AnyAgeTime([]{return logic->MQSpiritStatueSouthDoor();});}}},
 };
@@ -786,6 +786,8 @@ bool BeanPlanted(const RandomizerGet bean) {
     // flag irrelevant if plant won't spawn
     if (!logic->HasItem(bean)) {
         return false;
+    } else if (ctx->GetOption(RSK_SKIP_PLANTING_BEANS) && ctx->GetOption(RSK_STARTING_BEANS)) {
+        return true;
     }
 
     // swchFlag found using the Actor Viewer to get the Obj_Bean parameters & 0x3F
