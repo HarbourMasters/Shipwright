@@ -7,6 +7,7 @@
 #include <libultraship/libultraship.h>
 #include <ship/Context.h>
 #include <ship/resource/ResourceManager.h>
+#include <ship/resource/Resource.h>
 #include <ship/resource/archive/O2rArchive.h>
 #include <ship/utils/StringHelper.h>
 #include "soh/OTRGlobals.h"
@@ -14,14 +15,23 @@
 #include "soh/cvar_prefixes.h"
 #include <objects/object_link_child/object_link_child.h>
 #include <objects/object_link_boy/object_link_boy.h>
+#include <fast/resource/ResourceType.h>
+#include <fast/resource/type/DisplayList.h>
 
 #ifdef INCLUDE_MPQ_SUPPORT
 #include <ship/resource/archive/OtrArchive.h>
 #endif
 
 extern "C" {
+#include "macros.h"
 #include "z64.h"
 #include "variables.h"
+#include "functions.h"
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
+extern void* sEyeTextures[2][8];
+extern void* sMouthTextures[2][4];
+#endif
+extern u8 sEyeMouthIndexes[][2];
 }
 
 namespace {
@@ -40,6 +50,93 @@ struct AnchorModelEntry {
 std::unordered_map<std::string, AnchorModelEntry> sAnchorModelsById;
 std::string sLocalModelId;
 bool sInitialized = false;
+
+struct AnchorModelOverrideState {
+    bool active = false;
+    std::string modelId;
+    int32_t linkAge = LINK_AGE_CHILD;
+};
+
+AnchorModelOverrideState sAnchorModelOverride;
+
+constexpr const char* kAdultEyeTextureNames[] = { "gLinkAdultEyesOpenTex", "gLinkAdultEyesHalfTex",
+                                                  "gLinkAdultEyesClosedfTex", "gLinkAdultEyesRollLeftTex",
+                                                  "gLinkAdultEyesRollRightTex", "gLinkAdultEyesShockTex",
+                                                  "gLinkAdultEyesUnk1Tex", "gLinkAdultEyesUnk2Tex" };
+constexpr const char* kChildEyeTextureNames[] = { "gLinkChildEyesOpenTex", "gLinkChildEyesHalfTex",
+                                                  "gLinkChildEyesClosedfTex", "gLinkChildEyesRollLeftTex",
+                                                  "gLinkChildEyesRollRightTex", "gLinkChildEyesShockTex",
+                                                  "gLinkChildEyesUnk1Tex", "gLinkChildEyesUnk2Tex" };
+constexpr const char* kAdultMouthTextureNames[] = { "gLinkAdultMouth1Tex", "gLinkAdultMouth2Tex", "gLinkAdultMouth3Tex",
+                                                    "gLinkAdultMouth4Tex" };
+constexpr const char* kChildMouthTextureNames[] = { "gLinkChildMouth1Tex", "gLinkChildMouth2Tex", "gLinkChildMouth3Tex",
+                                                    "gLinkChildMouth4Tex" };
+
+std::unordered_map<std::string, std::shared_ptr<Ship::IResource>> sCustomTextureCache;
+
+std::string StripOtrPrefix(const std::string& path) {
+    if (path.starts_with("__OTR__")) {
+        return path.substr(7);
+    }
+    return path;
+}
+
+std::string GetBaseName(const std::string& path) {
+    size_t slashPos = path.find_last_of('/');
+    if (slashPos == std::string::npos) {
+        return path;
+    }
+    return path.substr(slashPos + 1);
+}
+
+bool IsAnchorFlipbookTextureName(const std::string& baseName) {
+    return baseName.starts_with("gLinkAdultEyes") || baseName.starts_with("gLinkChildEyes") ||
+           baseName.starts_with("gLinkAdultMouth") || baseName.starts_with("gLinkChildMouth");
+}
+
+int ClampIndex(int value, int maxValue) {
+    if (value < 0) {
+        return 0;
+    }
+    if (value > maxValue) {
+        return maxValue;
+    }
+    return value;
+}
+
+void* LoadCustomTexture(const std::string& modelId, int32_t linkAge, const char* baseName) {
+    if (modelId.empty() || baseName == nullptr) {
+        return nullptr;
+    }
+
+    auto archive = AnchorModRegistry::FindArchiveById(modelId);
+    if (archive == nullptr) {
+        return nullptr;
+    }
+
+    std::string folder = linkAge == LINK_AGE_ADULT ? (modelId + "_adult") : (modelId + "_child");
+    std::string path = "objects/object_anchor_models/" + folder + "/" + baseName;
+    std::string cacheKey = archive->GetPath() + "|" + path;
+
+    auto cached = sCustomTextureCache.find(cacheKey);
+    if (cached != sCustomTextureCache.end()) {
+        return cached->second ? cached->second->GetRawPointer() : nullptr;
+    }
+
+    auto context = Ship::Context::GetInstance();
+    if (context == nullptr || context->GetResourceManager() == nullptr) {
+        return nullptr;
+    }
+
+    auto resource = context->GetResourceManager()->LoadResource(Ship::ResourceIdentifier(path.c_str(), 0, archive), true);
+    if (resource == nullptr) {
+        sCustomTextureCache.emplace(cacheKey, nullptr);
+        return nullptr;
+    }
+
+    sCustomTextureCache.emplace(cacheKey, resource);
+    return resource->GetRawPointer();
+}
 
 bool HasValidModExtension(const std::filesystem::path& path) {
     std::string extension = path.extension().generic_string();
@@ -367,6 +464,138 @@ std::shared_ptr<Ship::Archive> AnchorModRegistry::FindArchiveById(const std::str
     }
 
     return it->second.archive;
+}
+
+void AnchorModRegistry::SetAnchorModelOverride(const std::string& modelId, int32_t linkAge) {
+    sAnchorModelOverride.active = !modelId.empty();
+    sAnchorModelOverride.modelId = modelId;
+    sAnchorModelOverride.linkAge = linkAge;
+}
+
+void AnchorModRegistry::ClearAnchorModelOverride() {
+    sAnchorModelOverride.active = false;
+    sAnchorModelOverride.modelId.clear();
+}
+
+void* AnchorModRegistry::TryLoadAnchorOverride(const char* path) {
+    if (path == nullptr || !sAnchorModelOverride.active || sAnchorModelOverride.modelId.empty()) {
+        return nullptr;
+    }
+
+    std::string pathStr = StripOtrPrefix(path);
+    if (pathStr.find("objects/object_link_") == std::string::npos) {
+        return nullptr;
+    }
+
+    std::string baseName = GetBaseName(pathStr);
+    if (!baseName.starts_with("gLink")) {
+        return nullptr;
+    }
+
+    auto archive = FindArchiveById(sAnchorModelOverride.modelId);
+    if (archive == nullptr) {
+        return nullptr;
+    }
+
+    std::string folder = sAnchorModelOverride.linkAge == LINK_AGE_ADULT ? (sAnchorModelOverride.modelId + "_adult")
+                                                                        : (sAnchorModelOverride.modelId + "_child");
+    std::string customPath = "objects/object_anchor_models/" + folder + "/" + baseName;
+
+    auto context = Ship::Context::GetInstance();
+    if (context == nullptr || context->GetResourceManager() == nullptr) {
+        return nullptr;
+    }
+
+    auto resource = context->GetResourceManager()->LoadResource(Ship::ResourceIdentifier(customPath.c_str(), 0, archive),
+                                                                true);
+    if (resource == nullptr) {
+        return nullptr;
+    }
+
+    if (resource->GetInitData()->Type != static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
+        return nullptr;
+    }
+
+    auto displayList = std::static_pointer_cast<Fast::DisplayList>(resource);
+    return (void*)&displayList->Instructions[0];
+}
+
+void* AnchorModRegistry::TryLoadAnchorTextureOverride(const char* path) {
+    if (path == nullptr || !sAnchorModelOverride.active || sAnchorModelOverride.modelId.empty()) {
+        return nullptr;
+    }
+
+    std::string pathStr = StripOtrPrefix(path);
+    if (pathStr.find("objects/object_link_") == std::string::npos) {
+        return nullptr;
+    }
+
+    std::string baseName = GetBaseName(pathStr);
+    if (!IsAnchorFlipbookTextureName(baseName)) {
+        return nullptr;
+    }
+
+    return LoadCustomTexture(sAnchorModelOverride.modelId, sAnchorModelOverride.linkAge, baseName.c_str());
+}
+
+AnchorTextureOverrides AnchorModRegistry::ApplyAnchorFlipbookTextures(Player* player,
+                                                                      const std::string& modelId,
+                                                                      int32_t linkAge) {
+    AnchorTextureOverrides overrides = {};
+    overrides.eyeIndex = -1;
+    overrides.mouthIndex = -1;
+
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
+    if (player == nullptr) {
+        return overrides;
+    }
+
+    int eyeIndex = (player->skelAnime.jointTable[22].x & 0xF) - 1;
+    int mouthIndex = (player->skelAnime.jointTable[22].x >> 4) - 1;
+    if (eyeIndex < 0) {
+        eyeIndex = sEyeMouthIndexes[player->actor.shape.face][0];
+    }
+    if (mouthIndex < 0) {
+        mouthIndex = sEyeMouthIndexes[player->actor.shape.face][1];
+    }
+
+    eyeIndex = ClampIndex(eyeIndex, 7);
+    mouthIndex = ClampIndex(mouthIndex, 3);
+
+    const char* eyeName = linkAge == LINK_AGE_ADULT ? kAdultEyeTextureNames[eyeIndex]
+                                                    : kChildEyeTextureNames[eyeIndex];
+    const char* mouthName = linkAge == LINK_AGE_ADULT ? kAdultMouthTextureNames[mouthIndex]
+                                                      : kChildMouthTextureNames[mouthIndex];
+    void* eyeTexture = LoadCustomTexture(modelId, linkAge, eyeName);
+    void* mouthTexture = LoadCustomTexture(modelId, linkAge, mouthName);
+
+    if (eyeTexture != nullptr) {
+        overrides.eyeIndex = eyeIndex;
+        overrides.originalEye = sEyeTextures[linkAge][eyeIndex];
+        sEyeTextures[linkAge][eyeIndex] = eyeTexture;
+        overrides.hasEye = true;
+    }
+
+    if (mouthTexture != nullptr) {
+        overrides.mouthIndex = mouthIndex;
+        overrides.originalMouth = sMouthTextures[linkAge][mouthIndex];
+        sMouthTextures[linkAge][mouthIndex] = mouthTexture;
+        overrides.hasMouth = true;
+    }
+#endif
+
+    return overrides;
+}
+
+void AnchorModRegistry::RestoreAnchorFlipbookTextures(const AnchorTextureOverrides& overrides, int32_t linkAge) {
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
+    if (overrides.hasEye && overrides.eyeIndex >= 0) {
+        sEyeTextures[linkAge][overrides.eyeIndex] = overrides.originalEye;
+    }
+    if (overrides.hasMouth && overrides.mouthIndex >= 0) {
+        sMouthTextures[linkAge][overrides.mouthIndex] = overrides.originalMouth;
+    }
+#endif
 }
 
 bool AnchorModRegistry::ApplyModelToPlayer(const std::string& id, int32_t linkAge, Player* player) {
