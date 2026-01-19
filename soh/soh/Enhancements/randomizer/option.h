@@ -358,7 +358,8 @@ class TrickOption : public Option {
      * @param tags_ The set of RandomizerTrickTags for this trick.
      * @return Option
      */
-    static TrickOption LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_);
+    static TrickOption LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
+                                  std::set<Tricks::Tag> tags_);
 
     RandomizerTrick GetKey() const;
 

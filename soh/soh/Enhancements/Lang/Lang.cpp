@@ -14,7 +14,7 @@
 #include <memory>
 
 namespace SohGui {
-    extern std::shared_ptr<SohMenu> mSohMenu;
+extern std::shared_ptr<SohMenu> mSohMenu;
 }
 
 static bool initialized = false;
@@ -33,7 +33,8 @@ std::string Lang::Translate(const char* path) {
     std::string currentLang = CVarGetString(LANGUAGE_CVAR, DEFAULT_LANGUAGE);
 
     if (!langs.contains(currentLang)) {
-        LUSLOG_WARN("Current language (%s) doesn't exist, trying to fall back to default language (%s)", currentLang.c_str(), DEFAULT_LANGUAGE);
+        LUSLOG_WARN("Current language (%s) doesn't exist, trying to fall back to default language (%s)",
+                    currentLang.c_str(), DEFAULT_LANGUAGE);
 
         currentLang = DEFAULT_LANGUAGE;
 
@@ -57,7 +58,8 @@ std::string Lang::Translate(const char* path) {
 
     for (const auto& segment : segments) {
         if (!currentLangData.contains(segment)) {
-            LUSLOG_WARN("Current language (%s) doesn't have data for the requested path (%s)", currentLang.c_str(), path);
+            LUSLOG_WARN("Current language (%s) doesn't have data for the requested path (%s)", currentLang.c_str(),
+                        path);
             return std::string(path);
         }
 
@@ -78,7 +80,8 @@ std::string Lang::Translate(const char* path) {
 
         for (const auto& item : currentLangData[lastSegment]) {
             if (!item.is_string()) {
-                LUSLOG_WARN("Current language (%s) has an array with a non-string at the requested path (%s)", currentLang.c_str(), path);
+                LUSLOG_WARN("Current language (%s) has an array with a non-string at the requested path (%s)",
+                            currentLang.c_str(), path);
                 return std::string(path);
             }
 
@@ -88,7 +91,8 @@ std::string Lang::Translate(const char* path) {
         return translatedString;
     }
 
-    LUSLOG_WARN("Current language (%s) doesn't have either a string or an array at the requested path (%s)", currentLang.c_str(), path);
+    LUSLOG_WARN("Current language (%s) doesn't have either a string or an array at the requested path (%s)",
+                currentLang.c_str(), path);
     return std::string(path);
 }
 
@@ -114,7 +118,9 @@ void Lang::LoadLangs() {
 void LanguageCustomWidget(WidgetInfo& info) {
     ImGui::Text("Select Language:");
     for (const auto& [id, data] : langs) {
-        if (ImGui::Button(StringHelper::Sprintf("%s [%s]", data["language_name"].get_ref<const std::string&>().c_str(), id.c_str()).c_str())) {
+        if (ImGui::Button(StringHelper::Sprintf("%s [%s]", data["language_name"].get_ref<const std::string&>().c_str(),
+                                                id.c_str())
+                              .c_str())) {
             CVarSetString(LANGUAGE_CVAR, id.c_str());
         }
     }

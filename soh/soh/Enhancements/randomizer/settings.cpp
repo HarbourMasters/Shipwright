@@ -1321,31 +1321,44 @@ void Settings::CreateOptions() {
 
     // the following are glitches and are currently disabled
 
-    // OPT_TRICK(RT_ACUTE_ANGLE_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_ACUTE_ANGLE_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_ADVANCED_CLIPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_ADVANCED_CLIPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_BLANK_A, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_BLANK_A, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_DOOM_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_DOOM_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_EPG, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_EPG, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH
+    // });
 
-    // OPT_TRICK(RT_EQUIP_SWAP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_EQUIP_SWAP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_EQUIP_SWAP_EXPECTS_DINS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_EQUIP_SWAP_EXPECTS_DINS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_FLAME_STORAGE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_FLAME_STORAGE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_GROUND_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_GROUND_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_HESS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_HESS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH
+    // });
 
-    // OPT_TRICK(RT_HOOKSHOT_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_HOOKSHOT_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_HOOKSHOT_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_HOOKSHOT_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_ISG, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_ISG, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH
+    // });
 
     OPT_TRICK(RT_VISIBLE_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE });
     OPT_TRICK(RT_GROTTOS_WITHOUT_AGONY, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE });
@@ -1354,7 +1367,8 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_RUSTED_SWITCHES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE });
     OPT_TRICK(RT_FLAMING_CHESTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE });
 
-    // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely decoupled from rando
+    // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely
+    // decoupled from rando
 
     // OPT_TRICK(RT_BUNNY_HOOD_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED });
 
@@ -1390,7 +1404,8 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_DMT_CLIMB_HOVERS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::ADVANCED });
     OPT_TRICK(RT_DMT_UPPER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::NOVICE });
 
-    // disabled for now, only applies when trade quest is not shuffled so there's a timer (currently not considered in logic)
+    // disabled for now, only applies when trade quest is not shuffled so there's a timer (currently not considered in
+    // logic)
 
     // OPT_TRICK(RT_DMT_BOLERO_BIGGORON, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE });
 
@@ -1421,9 +1436,11 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_GF_CHILD_SKIP_WASTELAND_GATE, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE });
     OPT_TRICK(RT_GF_ADULT_SKIP_WASTELAND_GATE, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::INTERMEDIATE });
     OPT_TRICK(RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_GF_LEDGE_CLIP_INTO_GTG, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH });
+    OPT_TRICK(RT_GF_LEDGE_CLIP_INTO_GTG, RCQUEST_BOTH, RA_GERUDO_FORTRESS,
+              { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH });
 
-    // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely decoupled from rando
+    // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely
+    // decoupled from rando
 
     // OPT_TRICK(RT_HW_BUNNY_CROSSING, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::NOVICE });
 
@@ -1458,7 +1475,8 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_JABU_MQ_SOT_GS, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE });
     OPT_TRICK(RT_JABU_BARINADE_POTS, RCQUEST_BOTH, RA_JABU_JABUS_BELLY, { Tricks::Tag::ADVANCED });
     OPT_TRICK(RT_LENS_BOTW, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_BOTTOM_OF_THE_WELL_NAVI_DIVE, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL,{ Tricks::Tag::NOVICE, Tricks::Tag::GLITCH });
+    OPT_TRICK(RT_BOTTOM_OF_THE_WELL_NAVI_DIVE, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL,
+              { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH });
     OPT_TRICK(RT_BOTW_CHILD_DEADHAND, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE });
     OPT_TRICK(RT_BOTW_BASEMENT, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE });
     // RANDOTODO with doorsanity, this can be relevant in Vanilla
@@ -1497,7 +1515,8 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_WATER_CRACKED_WALL, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE });
     OPT_TRICK(RT_WATER_BK_REGION, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE });
     OPT_TRICK(RT_WATER_NORTH_BASEMENT_LEDGE_JUMP, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    // Also used in MQ logic, but won't be relevent unless a way to enter tower without irons exists (likely a clip + swim)
+    // Also used in MQ logic, but won't be relevent unless a way to enter tower without irons exists (likely a clip +
+    // swim)
     OPT_TRICK(RT_WATER_FW_CENTRAL_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE });
     OPT_TRICK(RT_WATER_IRONS_CENTRAL_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE });
     OPT_TRICK(RT_WATER_CENTRAL_BOW, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::ADVANCED });
@@ -1508,7 +1527,8 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_WATER_ADULT_DRAGON, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE });
     OPT_TRICK(RT_WATER_CHILD_DRAGON, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::ADVANCED });
     OPT_TRICK(RT_WATER_MQ_CENTRAL_PILLAR, RCQUEST_MQ, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_WATER_IRON_BOOTS_LEDGE_GRAB, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH });
+    OPT_TRICK(RT_WATER_IRON_BOOTS_LEDGE_GRAB, RCQUEST_BOTH, RA_WATER_TEMPLE,
+              { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH });
     OPT_TRICK(RT_WATER_INVISIBLE_HOOKSHOT_TARGET, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE });
     OPT_TRICK(RT_WATER_MORPHA_WITHOUT_HOOKSHOT, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::EXTREME });
     OPT_TRICK(RT_LENS_SHADOW, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE });
@@ -1534,7 +1554,8 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_SPIRIT_LOWER_ADULT_SWITCH, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::ADVANCED });
     OPT_TRICK(RT_SPIRIT_STATUE_JUMP, RCQUEST_BOTH, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE });
 
-    // disabled since "Spirit Temple boss shortcuts" (pre-lowers the platform where you break the statues face) isn't a setting in ship
+    // disabled since "Spirit Temple boss shortcuts" (pre-lowers the platform where you break the statues face) isn't a
+    // setting in ship
 
     // OPT_TRICK(RT_SPIRIT_PLATFORM_HOOKSHOT, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE });
 

@@ -384,25 +384,15 @@ static std::string MakeTrickDescription(RandomizerTrick key) {
     return Lang::Translate((trickPrefix + trickNamePart + descriptionPostfix).c_str());
 }
 
-TrickOption::TrickOption(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_, std::set<Tricks::Tag> tags_)
-    : Option(
-        key_,
-        std::move(MakeTrickName(key_)),
-        { "Disabled", "Enabled" },
-        OptionCategory::Setting,
-        "",
-        std::move(MakeTrickDescription(key_)),
-        WIDGET_CVAR_CHECKBOX,
-        0,
-        false,
-        nullptr,
-        IMFLAG_NONE
-    ),
-    mQuest(quest_),
-    mArea(area_),
-    mTags(std::move(tags_)) {}
+TrickOption::TrickOption(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_,
+                         std::set<Tricks::Tag> tags_)
+    : Option(key_, std::move(MakeTrickName(key_)), { "Disabled", "Enabled" }, OptionCategory::Setting, "",
+             std::move(MakeTrickDescription(key_)), WIDGET_CVAR_CHECKBOX, 0, false, nullptr, IMFLAG_NONE),
+      mQuest(quest_), mArea(area_), mTags(std::move(tags_)) {
+}
 
-TrickOption TrickOption::LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_) {
+TrickOption TrickOption::LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
+                                    std::set<Tricks::Tag> tags_) {
     return { key_, quest_, area_, std::move(tags_) };
 }
 
