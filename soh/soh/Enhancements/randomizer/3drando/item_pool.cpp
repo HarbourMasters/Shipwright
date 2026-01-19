@@ -169,6 +169,7 @@ void GenerateItemPool() {
     AddItemToPool(RG_ICE_ARROWS, 2, 1, 1, 1);
     AddItemToPool(RG_LIGHT_ARROWS, 2, 1, 1, 1);
     AddItemToPool(RG_DINS_FIRE, 2, 1, 1, 1);
+    AddItemToPool(RG_FARORES_WIND, 2, 1, 0, 0);
     AddItemToPool(RG_NAYRUS_LOVE, 2, 1, 0, 0);
     AddItemToPool(RG_GREG_RUPEE, 1, 1, 1, 1);
     AddItemToPool(RG_PROGRESSIVE_HOOKSHOT, 2, 2, 2, 2);
