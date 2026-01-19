@@ -125,6 +125,11 @@ void CustomItem_Update(Actor* actor, PlayState* play) {
         Math_Vec3f_Copy(&actor->world.pos, &GET_PLAYER(play)->actor.world.pos);
     }
 
+    if (CUSTOM_ITEM_FLAGS & CustomItem::FREEZE_PLAYER_TILL_MESSAGE && CUSTOM_ITEM_FLAGS & CustomItem::CALLED_ACTION) {
+        Player* player = GET_PLAYER(play);
+        player->actor.freezeTimer = 10;
+    }
+
     // Player range check accounting for goron rolling behavior. Matches EnItem00 range check.
     bool playerInRangeOfPickup = (actor->xzDistToPlayer <= 30.0f) && (fabsf(actor->yDistToPlayer) <= fabsf(50.0f));
 
@@ -172,7 +177,10 @@ void CustomItem_Update(Actor* actor, PlayState* play) {
 
         // Finally, once the bobbing animation is done, kill the actor
         if (enItem00->unk_15A == 0) {
-            Actor_Kill(actor);
+            if (!(CUSTOM_ITEM_FLAGS & CustomItem::FREEZE_PLAYER_TILL_MESSAGE) ||
+                Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
+                Actor_Kill(actor);
+            }
         }
     } else if (CUSTOM_ITEM_FLAGS & CustomItem::GIVE_ITEM_CUTSCENE) {
         // If the item hasn't been picked up and the player is within range

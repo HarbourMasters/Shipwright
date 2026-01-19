@@ -382,6 +382,7 @@ void RandomizerQueueCheck(RandomizerCheck rc) {
                     message += "\x11\x02\x10";
                     message.AutoFormat();
                     CustomMessageManager::Instance->StartTextbox(message);
+                    CUSTOM_ITEM_FLAGS |= CustomItem::FREEZE_PLAYER_TILL_MESSAGE;
                 } else {
                     if (getItemEntry.getItemCategory != ITEM_CATEGORY_JUNK) {
                         Notification::Emit({
@@ -1912,9 +1913,22 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_CHEST_USE_ICE_EFFECT:
             *should = false;
             break;
-        case VB_GIVE_ITEM_SKULL_TOKEN:
+        case VB_GIVE_ITEM_SKULL_TOKEN: {
+            EnSi* enSi = va_arg(args, EnSi*);
+            Player* player = GET_PLAYER(gPlayState);
+
             *should = (Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TOKENS).Is(RO_TOKENSANITY_OFF));
+            if (!*should) {
+                RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(
+                    ACTOR_EN_SI, gPlayState->sceneNum, enSi->actor.params);
+                // Specifically freeze player when getting this RC to preserve hookshot jump glitch behavior
+                if (rc == RC_LH_GS_TREE) {
+                    Player* player = GET_PLAYER(gPlayState);
+                    player->actor.freezeTimer = 10;
+                }
+            }
             break;
+        }
         default:
             break;
     }

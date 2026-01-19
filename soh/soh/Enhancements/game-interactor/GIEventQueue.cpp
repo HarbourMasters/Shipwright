@@ -12,7 +12,15 @@ extern PlayState* gPlayState;
 }
 
 void ProcessEvents() {
+    if (!gPlayState) {
+        return;
+    }
+
     Player* player = GET_PLAYER(gPlayState);
+
+    if (!player) {
+        return;
+    }
 
     // If the player has a message active, stop
     if (gPlayState->msgCtx.msgMode != 0) {
@@ -64,13 +72,9 @@ void ProcessEvents() {
         enItem00 = CustomItem::Spawn(
             player->actor.world.pos.x, player->actor.world.pos.y, player->actor.world.pos.z, 0, flags, e->param,
             [](Actor* actor, PlayState* play) {
-                Player* player = GET_PLAYER(gPlayState);
                 const auto& nextEvent = GameInteractor::Instance->currentEvent;
                 if (auto e = std::get_if<GIEventGiveItem>(&nextEvent)) {
                     e->giveItem(actor, play);
-                    if (e->showGetItemCutscene && !(CUSTOM_ITEM_FLAGS & CustomItem::GIVE_ITEM_CUTSCENE)) {
-                        player->actor.freezeTimer = 30;
-                    }
                     GameInteractor::Instance->currentEvent = GIEventNone{};
                 }
             },
@@ -91,13 +95,12 @@ static RegisterShipInitFunc initFunc(
         COND_HOOK(OnGameStateMainStart, true, []() {
             // Cleanup all hooks at the start of each frame
             GameInteractor::Instance->RemoveAllQueuedHooks();
+            ProcessEvents();
         });
 
         COND_HOOK(OnLoadGame, true, [](int32_t fileNum) {
             GameInteractor::Instance->currentEvent = GIEventNone{};
             GameInteractor::Instance->events.clear();
         });
-
-        COND_HOOK(OnPlayerUpdate, true, ProcessEvents);
     },
     {});
