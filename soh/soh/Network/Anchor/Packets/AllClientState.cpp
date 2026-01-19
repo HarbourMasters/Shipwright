@@ -52,6 +52,7 @@ void Anchor::HandlePacket_AllClientState(nlohmann::json payload) {
         clients[client.clientId].isGameComplete = client.isGameComplete;
         clients[client.clientId].sceneNum = client.sceneNum;
         clients[client.clientId].entranceIndex = client.entranceIndex;
+        clients[client.clientId].modelId = client.modelId;
     }
 
     // remove clients that are no longer in the list

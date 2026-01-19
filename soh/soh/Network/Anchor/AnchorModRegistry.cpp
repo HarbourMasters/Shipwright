@@ -1,0 +1,423 @@
+#include "soh/Network/Anchor/AnchorModRegistry.h"
+#include <filesystem>
+#include <cstring>
+#include <unordered_map>
+#include <vector>
+#include <nlohmann/json.hpp>
+#include <libultraship/libultraship.h>
+#include <ship/Context.h>
+#include <ship/resource/ResourceManager.h>
+#include <ship/resource/archive/O2rArchive.h>
+#include <ship/utils/StringHelper.h>
+#include "soh/OTRGlobals.h"
+#include "soh/resource/type/Skeleton.h"
+#include "soh/cvar_prefixes.h"
+#include <objects/object_link_child/object_link_child.h>
+#include <objects/object_link_boy/object_link_boy.h>
+
+#ifdef INCLUDE_MPQ_SUPPORT
+#include <ship/resource/archive/OtrArchive.h>
+#endif
+
+extern "C" {
+#include "z64.h"
+#include "variables.h"
+}
+
+namespace {
+constexpr const char* kAnchorModMetadataPath = "mod.json";
+constexpr const char* kEnabledModsCvarName = CVAR_SETTING("EnabledMods");
+constexpr const char* kEnabledModsSeparator = "|";
+
+struct AnchorModelEntry {
+    std::shared_ptr<Ship::Archive> archive;
+    std::shared_ptr<SOH::Skeleton> adultSkeleton;
+    std::shared_ptr<SOH::Skeleton> childSkeleton;
+    std::string resolvedAdultPath;
+    std::string resolvedChildPath;
+};
+
+std::unordered_map<std::string, AnchorModelEntry> sAnchorModelsById;
+std::string sLocalModelId;
+bool sInitialized = false;
+
+bool HasValidModExtension(const std::filesystem::path& path) {
+    std::string extension = path.extension().generic_string();
+    if (StringHelper::IEquals(extension, ".o2r")) {
+        return true;
+    }
+#ifdef INCLUDE_MPQ_SUPPORT
+    if (StringHelper::IEquals(extension, ".otr")) {
+        return true;
+    }
+#endif
+    return false;
+}
+
+std::string ResolveModsFolder() {
+    std::string path = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
+    if (path.empty()) {
+        path = Ship::Context::GetPathRelativeToAppDirectory("mods", appShortName);
+    }
+
+    return path;
+}
+
+std::shared_ptr<Ship::Archive> CreateArchiveForPath(const std::filesystem::path& path) {
+    if (!HasValidModExtension(path)) {
+        return nullptr;
+    }
+
+    std::shared_ptr<Ship::Archive> archive;
+    std::string extension = path.extension().generic_string();
+    if (StringHelper::IEquals(extension, ".o2r")) {
+        archive = std::make_shared<Ship::O2rArchive>(path.generic_string());
+    }
+#ifdef INCLUDE_MPQ_SUPPORT
+    else if (StringHelper::IEquals(extension, ".otr")) {
+        archive = std::make_shared<Ship::OtrArchive>(path.generic_string());
+    }
+#endif
+
+    if (archive == nullptr) {
+        return nullptr;
+    }
+
+    if (!archive->Open()) {
+        return nullptr;
+    }
+
+    return archive;
+}
+
+std::string ReadAnchorModId(const std::shared_ptr<Ship::Archive>& archive) {
+    if (archive == nullptr) {
+        return "";
+    }
+
+    auto file = archive->LoadFile(kAnchorModMetadataPath);
+    if (file == nullptr || !file->IsLoaded || file->Buffer == nullptr) {
+        return "";
+    }
+
+    std::string jsonText(file->Buffer->begin(), file->Buffer->end());
+    auto parsed = nlohmann::json::parse(jsonText, nullptr, false);
+    if (parsed.is_discarded() || !parsed.contains("id") || !parsed["id"].is_string()) {
+        return "";
+    }
+
+    return parsed["id"].get<std::string>();
+}
+
+void ScanAnchorMods() {
+    sAnchorModelsById.clear();
+
+    std::string modsPath = ResolveModsFolder();
+    if (modsPath.empty() || !std::filesystem::exists(modsPath)) {
+        return;
+    }
+
+    for (const std::filesystem::directory_entry& entry : std::filesystem::recursive_directory_iterator(
+             modsPath, std::filesystem::directory_options::follow_directory_symlink |
+                           std::filesystem::directory_options::skip_permission_denied)) {
+        if (!entry.is_regular_file()) {
+            continue;
+        }
+
+        const std::filesystem::path& path = entry.path();
+        if (!HasValidModExtension(path)) {
+            continue;
+        }
+
+        auto archive = CreateArchiveForPath(path);
+        if (archive == nullptr) {
+            continue;
+        }
+
+        std::string id = ReadAnchorModId(archive);
+        if (id.empty() || sAnchorModelsById.contains(id)) {
+            continue;
+        }
+
+        AnchorModelEntry entryData;
+        entryData.archive = archive;
+        sAnchorModelsById.emplace(id, std::move(entryData));
+    }
+}
+
+std::unordered_map<std::string, std::filesystem::path> BuildModPathMap(const std::string& modsPath) {
+    std::unordered_map<std::string, std::filesystem::path> modPaths;
+    if (modsPath.empty() || !std::filesystem::exists(modsPath)) {
+        return modPaths;
+    }
+
+    for (const std::filesystem::directory_entry& entry : std::filesystem::recursive_directory_iterator(
+             modsPath, std::filesystem::directory_options::follow_directory_symlink |
+                           std::filesystem::directory_options::skip_permission_denied)) {
+        if (!entry.is_regular_file()) {
+            continue;
+        }
+
+        const std::filesystem::path& path = entry.path();
+        if (!HasValidModExtension(path)) {
+            continue;
+        }
+
+        std::string fileName = path.filename().generic_string();
+        auto dotPos = fileName.rfind(".");
+        if (dotPos == std::string::npos) {
+            continue;
+        }
+
+        std::string modName = fileName.substr(0, dotPos);
+        if (!modName.empty() && !modPaths.contains(modName)) {
+            modPaths.emplace(modName, path);
+        }
+    }
+
+    return modPaths;
+}
+
+std::string FindLocalModelId() {
+    std::string enabledMods = CVarGetString(kEnabledModsCvarName, "");
+    if (enabledMods.empty()) {
+        return "";
+    }
+
+    std::vector<std::string> enabledList = StringHelper::Split(enabledMods, kEnabledModsSeparator);
+    if (enabledList.empty()) {
+        return "";
+    }
+
+    std::string modsPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
+    if (modsPath.empty()) {
+        modsPath = Ship::Context::GetPathRelativeToAppDirectory("mods", appShortName);
+    }
+    auto modPaths = BuildModPathMap(modsPath);
+    if (modPaths.empty()) {
+        return "";
+    }
+
+    for (const std::string& modName : enabledList) {
+        auto it = modPaths.find(modName);
+        if (it == modPaths.end()) {
+            continue;
+        }
+
+        auto archive = CreateArchiveForPath(it->second);
+        if (archive == nullptr) {
+            continue;
+        }
+
+        std::string id = ReadAnchorModId(archive);
+        if (!id.empty()) {
+            return id;
+        }
+    }
+
+    return "";
+}
+
+std::string BuildAnchorSkeletonPath(const std::string& id, int32_t linkAge) {
+    std::string folder = linkAge == LINK_AGE_ADULT ? (id + "_adult") : (id + "_child");
+    std::string path = "objects/object_anchor_models/" + folder + "/";
+    path += linkAge == LINK_AGE_ADULT ? "gLinkAdultSkel" : "gLinkChildSkel";
+    return path;
+}
+
+std::string FindSkeletonPathInArchive(const std::shared_ptr<Ship::Archive>& archive, int32_t linkAge) {
+    if (archive == nullptr) {
+        return "";
+    }
+
+    const char* filter = linkAge == LINK_AGE_ADULT
+                             ? "objects/object_anchor_models/*_adult/gLinkAdultSkel"
+                             : "objects/object_anchor_models/*_child/gLinkChildSkel";
+    auto matches = archive->ListFiles(filter);
+    if (matches == nullptr || matches->empty()) {
+        return "";
+    }
+
+    return matches->begin()->second;
+}
+
+std::shared_ptr<SOH::Skeleton> LoadSkeletonFromArchive(AnchorModelEntry& entry, const std::string& basePath) {
+    auto context = Ship::Context::GetInstance();
+    if (context == nullptr || context->GetResourceManager() == nullptr) {
+        return nullptr;
+    }
+
+    std::vector<std::string> candidates;
+    candidates.push_back(basePath);
+    candidates.push_back("__OTR__" + basePath);
+
+    for (const std::string& candidate : candidates) {
+        auto resource = context->GetResourceManager()->LoadResource(
+            Ship::ResourceIdentifier(candidate.c_str(), 0, entry.archive), true);
+        auto skeleton = std::dynamic_pointer_cast<SOH::Skeleton>(resource);
+        if (skeleton != nullptr) {
+            return skeleton;
+        }
+    }
+
+    return nullptr;
+}
+
+std::shared_ptr<SOH::Skeleton> GetModelSkeleton(const std::string& id, int32_t linkAge) {
+    if (id.empty()) {
+        return nullptr;
+    }
+
+    auto it = sAnchorModelsById.find(id);
+    if (it == sAnchorModelsById.end()) {
+        return nullptr;
+    }
+
+    AnchorModelEntry& entry = it->second;
+    if (linkAge == LINK_AGE_ADULT) {
+        if (entry.adultSkeleton == nullptr) {
+            if (!entry.resolvedAdultPath.empty()) {
+                entry.adultSkeleton = LoadSkeletonFromArchive(entry, entry.resolvedAdultPath);
+            }
+            if (entry.adultSkeleton == nullptr) {
+                entry.adultSkeleton = LoadSkeletonFromArchive(entry, BuildAnchorSkeletonPath(id, linkAge));
+            }
+            if (entry.adultSkeleton == nullptr) {
+                entry.resolvedAdultPath = FindSkeletonPathInArchive(entry.archive, linkAge);
+                if (!entry.resolvedAdultPath.empty()) {
+                    entry.adultSkeleton = LoadSkeletonFromArchive(entry, entry.resolvedAdultPath);
+                }
+            }
+        }
+        return entry.adultSkeleton;
+    }
+
+    if (entry.childSkeleton == nullptr) {
+        if (!entry.resolvedChildPath.empty()) {
+            entry.childSkeleton = LoadSkeletonFromArchive(entry, entry.resolvedChildPath);
+        }
+        if (entry.childSkeleton == nullptr) {
+            entry.childSkeleton = LoadSkeletonFromArchive(entry, BuildAnchorSkeletonPath(id, linkAge));
+        }
+        if (entry.childSkeleton == nullptr) {
+            entry.resolvedChildPath = FindSkeletonPathInArchive(entry.archive, linkAge);
+            if (!entry.resolvedChildPath.empty()) {
+                entry.childSkeleton = LoadSkeletonFromArchive(entry, entry.resolvedChildPath);
+            }
+        }
+    }
+    return entry.childSkeleton;
+}
+
+const char* GetLinkSkeletonPath(int32_t linkAge) {
+    if (linkAge == LINK_AGE_ADULT) {
+        return gLinkAdultSkel;
+    }
+
+    return gLinkChildSkel;
+}
+
+bool ApplySkeletonToSkelAnime(SkelAnime* skelAnime, SOH::Skeleton* newSkel) {
+    if (skelAnime == nullptr || newSkel == nullptr) {
+        return false;
+    }
+
+    int32_t newLimbCount = newSkel->limbCount + 1;
+    if (skelAnime->limbCount != 0 && skelAnime->limbCount != newLimbCount) {
+        return false;
+    }
+
+    skelAnime->limbCount = newLimbCount;
+    skelAnime->skeleton = newSkel->skeletonData.skeletonHeader.segment;
+    uintptr_t skelPtr = (uintptr_t)newSkel->GetPointer();
+    memcpy(&skelAnime->skeletonHeader, &skelPtr, sizeof(uintptr_t));
+    return true;
+}
+} // namespace
+
+void AnchorModRegistry::Init() {
+    if (sInitialized) {
+        return;
+    }
+
+    auto context = Ship::Context::GetInstance();
+    if (context == nullptr || context->GetConsoleVariables() == nullptr) {
+        return;
+    }
+
+    sLocalModelId = FindLocalModelId();
+    ScanAnchorMods();
+    sInitialized = true;
+}
+
+const std::string& AnchorModRegistry::GetLocalModelId() {
+    Init();
+    return sLocalModelId;
+}
+
+std::shared_ptr<Ship::Archive> AnchorModRegistry::FindArchiveById(const std::string& id) {
+    Init();
+    if (id.empty()) {
+        return nullptr;
+    }
+
+    auto it = sAnchorModelsById.find(id);
+    if (it == sAnchorModelsById.end()) {
+        return nullptr;
+    }
+
+    return it->second.archive;
+}
+
+bool AnchorModRegistry::ApplyModelToPlayer(const std::string& id, int32_t linkAge, Player* player) {
+    if (player == nullptr) {
+        return false;
+    }
+
+    Init();
+
+    auto context = Ship::Context::GetInstance();
+    if (context == nullptr || context->GetResourceManager() == nullptr) {
+        return false;
+    }
+
+    auto customSkel = GetModelSkeleton(id, linkAge);
+    if (customSkel != nullptr) {
+        bool applied = ApplySkeletonToSkelAnime(&player->skelAnime, customSkel.get());
+        applied = ApplySkeletonToSkelAnime(&player->upperSkelAnime, customSkel.get()) && applied;
+        if (applied) {
+            return true;
+        }
+    }
+
+    const char* skeletonPath = GetLinkSkeletonPath(linkAge);
+    if (skeletonPath == nullptr) {
+        return false;
+    }
+
+    auto resource = context->GetResourceManager()->LoadResource(skeletonPath);
+    auto vanillaSkel = std::dynamic_pointer_cast<SOH::Skeleton>(resource);
+    if (vanillaSkel == nullptr) {
+        return false;
+    }
+
+    bool applied = ApplySkeletonToSkelAnime(&player->skelAnime, vanillaSkel.get());
+    applied = ApplySkeletonToSkelAnime(&player->upperSkelAnime, vanillaSkel.get()) && applied;
+    return applied;
+}
+
+bool AnchorModRegistry::HasCustomModel(const std::string& id, int32_t linkAge, int32_t expectedLimbCount) {
+    Init();
+
+    auto customSkel = GetModelSkeleton(id, linkAge);
+    if (customSkel == nullptr) {
+        return false;
+    }
+
+    int32_t newLimbCount = customSkel->limbCount + 1;
+    if (expectedLimbCount != 0 && expectedLimbCount != newLimbCount) {
+        return false;
+    }
+
+    return true;
+}

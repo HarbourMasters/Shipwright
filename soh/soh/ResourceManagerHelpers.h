@@ -10,9 +10,12 @@
 
 #ifdef __cplusplus
 #include <memory>
+#include <string>
 #include <ship/resource/Resource.h>
 
 std::shared_ptr<Ship::IResource> ResourceMgr_GetResourceByNameHandlingMQ(const char* path);
+void ResourceMgr_SetAnchorModelOverride(const std::string& modelId, int32_t linkAge);
+void ResourceMgr_ClearAnchorModelOverride();
 
 extern "C" {
 #endif // __cplusplus

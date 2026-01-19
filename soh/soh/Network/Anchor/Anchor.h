@@ -47,6 +47,7 @@ typedef struct {
     s8 itemAction;
     s8 heldItemAction;
     u8 modelGroup;
+    std::string modelId;
     s8 invincibilityTimer;
     f32 unk_85C;
     s16 unk_862;
@@ -54,6 +55,7 @@ typedef struct {
     u8 ocarinaNote;
     f32 ocarinaModulator;
     s8 ocarinaBend;
+    std::string appliedModelId;
 
     // Ptr to the dummy player
     Player* player;

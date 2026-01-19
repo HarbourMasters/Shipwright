@@ -1,6 +1,12 @@
 #include "Anchor.h"
+#include "soh/Network/Anchor/AnchorModRegistry.h"
 #include "soh/Enhancements/nametag.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/frame_interpolation.h"
+#include <unordered_map>
+#include <ship/Context.h>
+#include <ship/resource/Resource.h>
+#include <ship/resource/ResourceManager.h>
 
 extern "C" {
 #include "macros.h"
@@ -10,7 +16,140 @@ extern PlayState* gPlayState;
 
 void Player_UseItem(PlayState* play, Player* player, s32 item);
 void Player_Draw(Actor* actor, PlayState* play);
+
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
+extern void* sEyeTextures[2][8];
+extern void* sMouthTextures[2][4];
+#endif
+
+extern u8 sEyeMouthIndexes[][2];
 }
+
+namespace {
+struct AnchorTextureOverrides {
+    bool hasEye;
+    bool hasMouth;
+    int eyeIndex;
+    int mouthIndex;
+    void* originalEye;
+    void* originalMouth;
+};
+
+const char* kAdultEyeTextureNames[] = { "gLinkAdultEyesOpenTex", "gLinkAdultEyesHalfTex", "gLinkAdultEyesClosedfTex",
+                                        "gLinkAdultEyesRollLeftTex", "gLinkAdultEyesRollRightTex",
+                                        "gLinkAdultEyesShockTex", "gLinkAdultEyesUnk1Tex", "gLinkAdultEyesUnk2Tex" };
+const char* kChildEyeTextureNames[] = { "gLinkChildEyesOpenTex", "gLinkChildEyesHalfTex", "gLinkChildEyesClosedfTex",
+                                        "gLinkChildEyesRollLeftTex", "gLinkChildEyesRollRightTex",
+                                        "gLinkChildEyesShockTex", "gLinkChildEyesUnk1Tex", "gLinkChildEyesUnk2Tex" };
+const char* kAdultMouthTextureNames[] = { "gLinkAdultMouth1Tex", "gLinkAdultMouth2Tex", "gLinkAdultMouth3Tex",
+                                          "gLinkAdultMouth4Tex" };
+const char* kChildMouthTextureNames[] = { "gLinkChildMouth1Tex", "gLinkChildMouth2Tex", "gLinkChildMouth3Tex",
+                                          "gLinkChildMouth4Tex" };
+
+std::unordered_map<std::string, std::shared_ptr<Ship::IResource>> sCustomTextureCache;
+
+int ClampIndex(int value, int maxValue) {
+    if (value < 0) {
+        return 0;
+    }
+    if (value > maxValue) {
+        return maxValue;
+    }
+    return value;
+}
+
+void* LoadCustomTexture(const std::string& modelId, int32_t linkAge, const char* baseName) {
+    if (modelId.empty() || baseName == nullptr) {
+        return nullptr;
+    }
+
+    auto archive = AnchorModRegistry::FindArchiveById(modelId);
+    if (archive == nullptr) {
+        return nullptr;
+    }
+
+    std::string folder = linkAge == LINK_AGE_ADULT ? (modelId + "_adult") : (modelId + "_child");
+    std::string path = "objects/object_anchor_models/" + folder + "/" + baseName;
+    std::string cacheKey = archive->GetPath() + "|" + path;
+
+    auto cached = sCustomTextureCache.find(cacheKey);
+    if (cached != sCustomTextureCache.end()) {
+        return cached->second ? cached->second->GetRawPointer() : nullptr;
+    }
+
+    auto context = Ship::Context::GetInstance();
+    if (context == nullptr || context->GetResourceManager() == nullptr) {
+        return nullptr;
+    }
+
+    auto resource = context->GetResourceManager()->LoadResource(Ship::ResourceIdentifier(path.c_str(), 0, archive), true);
+    if (resource == nullptr) {
+        sCustomTextureCache.emplace(cacheKey, nullptr);
+        return nullptr;
+    }
+
+    sCustomTextureCache.emplace(cacheKey, resource);
+    return resource->GetRawPointer();
+}
+
+AnchorTextureOverrides ApplyAnchorFlipbookTextures(Player* player, const std::string& modelId, int32_t linkAge) {
+    AnchorTextureOverrides overrides = {};
+    overrides.eyeIndex = -1;
+    overrides.mouthIndex = -1;
+
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
+    if (player == nullptr) {
+        return overrides;
+    }
+
+    int eyeIndex = (player->skelAnime.jointTable[22].x & 0xF) - 1;
+    int mouthIndex = (player->skelAnime.jointTable[22].x >> 4) - 1;
+    if (eyeIndex < 0) {
+        eyeIndex = sEyeMouthIndexes[player->actor.shape.face][0];
+    }
+    if (mouthIndex < 0) {
+        mouthIndex = sEyeMouthIndexes[player->actor.shape.face][1];
+    }
+
+    eyeIndex = ClampIndex(eyeIndex, 7);
+    mouthIndex = ClampIndex(mouthIndex, 3);
+
+    const char* eyeName = linkAge == LINK_AGE_ADULT ? kAdultEyeTextureNames[eyeIndex]
+                                                    : kChildEyeTextureNames[eyeIndex];
+    const char* mouthName = linkAge == LINK_AGE_ADULT ? kAdultMouthTextureNames[mouthIndex]
+                                                      : kChildMouthTextureNames[mouthIndex];
+    void* eyeTexture = LoadCustomTexture(modelId, linkAge, eyeName);
+    void* mouthTexture = LoadCustomTexture(modelId, linkAge, mouthName);
+
+    if (eyeTexture != nullptr) {
+        overrides.eyeIndex = eyeIndex;
+        overrides.originalEye = sEyeTextures[linkAge][eyeIndex];
+        sEyeTextures[linkAge][eyeIndex] = eyeTexture;
+        overrides.hasEye = true;
+    }
+
+    if (mouthTexture != nullptr) {
+        overrides.mouthIndex = mouthIndex;
+        overrides.originalMouth = sMouthTextures[linkAge][mouthIndex];
+        sMouthTextures[linkAge][mouthIndex] = mouthTexture;
+        overrides.hasMouth = true;
+    }
+#endif
+
+    return overrides;
+}
+
+void RestoreAnchorFlipbookTextures(const AnchorTextureOverrides& overrides, int32_t linkAge) {
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
+    if (overrides.hasEye && overrides.eyeIndex >= 0) {
+        sEyeTextures[linkAge][overrides.eyeIndex] = overrides.originalEye;
+    }
+    if (overrides.hasMouth && overrides.mouthIndex >= 0) {
+        sMouthTextures[linkAge][overrides.mouthIndex] = overrides.originalMouth;
+    }
+#endif
+}
+} // namespace
 
 static DamageTable DummyPlayerDamageTable = {
     /* Deku nut      */ DMG_ENTRY(0, DUMMY_PLAYER_HIT_RESPONSE_STUN),
@@ -88,6 +227,9 @@ void DummyPlayer_Init(Actor* actor, PlayState* play) {
     if (!isGlobalRoom) {
         NameTag_RegisterForActorWithOptions(actor, client.name.c_str(), {});
     }
+
+    AnchorModRegistry::ApplyModelToPlayer(client.modelId, client.linkAge, player);
+    client.appliedModelId = client.modelId;
 }
 
 void Math_Vec3s_Copy(Vec3s* dest, Vec3s* src) {
@@ -169,6 +311,11 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
         gSaveContext.equips.buttonItems[0] = originalButtonItem0;
     }
 
+    if (client.modelId != client.appliedModelId) {
+        AnchorModRegistry::ApplyModelToPlayer(client.modelId, client.linkAge, player);
+        client.appliedModelId = client.modelId;
+    }
+
     if (Anchor::Instance->roomState.pvpMode == 0 ||
         (Anchor::Instance->roomState.pvpMode == 1 &&
          client.teamId == CVarGetString(CVAR_REMOTE_ANCHOR("TeamId"), "default"))) {
@@ -237,7 +384,22 @@ void DummyPlayer_Draw(Actor* actor, PlayState* play) {
     u8 originalButtonItem0 = gSaveContext.equips.buttonItems[0];
     gSaveContext.equips.buttonItems[0] = client.buttonItem0;
 
+    AnchorTextureOverrides textureOverrides = {};
+    bool hasCustomModel = AnchorModRegistry::HasCustomModel(client.modelId, client.linkAge, player->skelAnime.limbCount);
+    if (hasCustomModel) {
+        ResourceMgr_SetAnchorModelOverride(client.modelId, client.linkAge);
+        textureOverrides = ApplyAnchorFlipbookTextures(player, client.modelId, client.linkAge);
+    }
+
     Player_Draw((Actor*)player, play);
+
+    if (textureOverrides.hasEye || textureOverrides.hasMouth) {
+        RestoreAnchorFlipbookTextures(textureOverrides, client.linkAge);
+    }
+    if (hasCustomModel) {
+        ResourceMgr_ClearAnchorModelOverride();
+    }
+
     gSaveContext.linkAge = originalAge;
     gSaveContext.equips.buttonItems[0] = originalButtonItem0;
 }

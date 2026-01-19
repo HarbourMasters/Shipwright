@@ -63,6 +63,7 @@ inline void from_json(const json& j, AnchorClient& client) {
     client.isGameComplete = j.value("isGameComplete", false);
     client.sceneNum = j.value("sceneNum", (s16)SCENE_ID_MAX);
     client.entranceIndex = j.value("entranceIndex", (s32)0);
+    client.modelId = j.value("modelId", "");
     client.self = j.value("self", false);
 }
 

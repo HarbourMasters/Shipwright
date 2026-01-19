@@ -7,6 +7,7 @@
 #include "Enhancements/randomizer/dungeon.h"
 #include <libultraship/libultraship.h>
 #include <soh/GameVersions.h>
+#include <soh/Network/Anchor/AnchorModRegistry.h>
 #include "resource/type/SohResourceType.h"
 #include "resource/type/Array.h"
 #include "resource/type/Skeleton.h"
@@ -16,6 +17,86 @@
 #include <fast/resource/type/DisplayList.h>
 
 extern "C" PlayState* gPlayState;
+
+namespace {
+struct AnchorModelOverrideState {
+    bool active = false;
+    std::string modelId;
+    int32_t linkAge = LINK_AGE_CHILD;
+};
+
+AnchorModelOverrideState sAnchorModelOverride;
+
+std::string StripOtrPrefix(const std::string& path) {
+    if (path.starts_with("__OTR__")) {
+        return path.substr(7);
+    }
+    return path;
+}
+
+std::string GetBaseName(const std::string& path) {
+    size_t slashPos = path.find_last_of('/');
+    if (slashPos == std::string::npos) {
+        return path;
+    }
+    return path.substr(slashPos + 1);
+}
+
+Gfx* LoadAnchorOverrideGfx(const char* path) {
+    if (path == nullptr || !sAnchorModelOverride.active || sAnchorModelOverride.modelId.empty()) {
+        return nullptr;
+    }
+
+    std::string pathStr = StripOtrPrefix(path);
+    if (pathStr.find("objects/object_link_") == std::string::npos) {
+        return nullptr;
+    }
+
+    std::string baseName = GetBaseName(pathStr);
+    if (!baseName.starts_with("gLink")) {
+        return nullptr;
+    }
+
+    auto archive = AnchorModRegistry::FindArchiveById(sAnchorModelOverride.modelId);
+    if (archive == nullptr) {
+        return nullptr;
+    }
+
+    std::string folder = sAnchorModelOverride.linkAge == LINK_AGE_ADULT
+                             ? (sAnchorModelOverride.modelId + "_adult")
+                             : (sAnchorModelOverride.modelId + "_child");
+    std::string customPath = "objects/object_anchor_models/" + folder + "/" + baseName;
+
+    auto context = Ship::Context::GetInstance();
+    if (context == nullptr || context->GetResourceManager() == nullptr) {
+        return nullptr;
+    }
+
+    auto resource = context->GetResourceManager()->LoadResource(Ship::ResourceIdentifier(customPath.c_str(), 0, archive),
+                                                                true);
+    if (resource == nullptr) {
+        return nullptr;
+    }
+
+    if (resource->GetInitData()->Type != static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
+        return nullptr;
+    }
+
+    auto displayList = std::static_pointer_cast<Fast::DisplayList>(resource);
+    return (Gfx*)&displayList->Instructions[0];
+}
+} // namespace
+
+void ResourceMgr_SetAnchorModelOverride(const std::string& modelId, int32_t linkAge) {
+    sAnchorModelOverride.active = !modelId.empty();
+    sAnchorModelOverride.modelId = modelId;
+    sAnchorModelOverride.linkAge = linkAge;
+}
+
+void ResourceMgr_ClearAnchorModelOverride() {
+    sAnchorModelOverride.active = false;
+    sAnchorModelOverride.modelId.clear();
+}
 
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
     return Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions().size();
@@ -301,6 +382,13 @@ extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path) {
     // to clear the cache so the alt asset will be loaded instead
     // OTRTODO: If Alt loading over original cache is fixed, this line can most likely be removed
     ResourceMgr_UnloadOriginalWhenAltExists(path);
+
+    if (sAnchorModelOverride.active) {
+        Gfx* customGfx = LoadAnchorOverrideGfx(path);
+        if (customGfx != nullptr) {
+            return customGfx;
+        }
+    }
 
     auto res = std::static_pointer_cast<Fast::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
     return (Gfx*)&res->Instructions[0];
