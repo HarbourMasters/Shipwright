@@ -8307,19 +8307,20 @@ void Player_ChooseNextIdleAnim(PlayState* play, Player* this) {
                     //
                     // Note that `FIDGET_SWORD_SWING` is the first common fidget type, which is why
                     // all operations are done relative to this type.
-                    if (((commonType + FIDGET_SWORD_SWING != FIDGET_SWORD_SWING) &&
-                         (commonType + FIDGET_SWORD_SWING != FIDGET_ADJUST_SHIELD)) ||
-                        ((this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
-                         ((commonType + FIDGET_SWORD_SWING == FIDGET_ADJUST_SHIELD) ||
-                          (Player_GetMeleeWeaponHeld2(this) != 0)))) {
+                    if (GameInteractor_Should(VB_SET_IDLE_ANIM,
+                                              (((commonType + FIDGET_SWORD_SWING != FIDGET_SWORD_SWING) &&
+                                                (commonType + FIDGET_SWORD_SWING != FIDGET_ADJUST_SHIELD)) ||
+                                               ((this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
+                                                ((commonType + FIDGET_SWORD_SWING == FIDGET_ADJUST_SHIELD) ||
+                                                 (Player_GetMeleeWeaponHeld2(this) != 0)))),
+                                              this, commonType)) {
                         //! @bug It is possible for `FIDGET_ADJUST_SHIELD` to be used even if
                         //! a shield is not currently equipped. This is because of how being shieldless
                         //! is implemented. There is no sword-only model type, only
                         //! `PLAYER_MODELGROUP_SWORD_AND_SHIELD` exists. Therefore, the right hand type will be
                         //! `PLAYER_MODELTYPE_RH_SHIELD` if sword is in hand, even if no shield is equipped.
                         if ((commonType + FIDGET_SWORD_SWING == FIDGET_SWORD_SWING) &&
-                            Player_HoldsTwoHandedWeapon(this) &&
-                            CVarGetInteger(CVAR_ENHANCEMENT("TwoHandedIdle"), 0) == 1) {
+                            Player_HoldsTwoHandedWeapon(this)) {
                             //! @bug This code is unreachable.
                             //! The check above groups the `Player_GetMeleeWeaponHeld2` check and
                             //! `PLAYER_MODELTYPE_RH_SHIELD` conditions together, meaning sword and shield must be
@@ -12767,7 +12768,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
 
     if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) { // First person without weapon
         // Y Axis
-        if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
+        if (!(CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
+              CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0))) {
             temp2 += sControlInput->rel.stick_y * 240.0f * invertYAxisMulti * yAxisMulti;
         }
         if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
@@ -12785,7 +12787,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
 
         // X Axis
         temp2 = 0;
-        if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
+        if (!(CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
+              CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0))) {
             temp2 += sControlInput->rel.stick_x * -16.0f * invertXAxisMulti * xAxisMulti;
         }
         if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
@@ -12800,7 +12803,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         // Y Axis
         temp1 = (this->stateFlags1 & PLAYER_STATE1_ON_HORSE) ? 3500 : 14000;
 
-        if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
+        if (!(CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
+              CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0))) {
             temp3 += ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
                      (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f) * invertYAxisMulti *
                      yAxisMulti;
@@ -12820,7 +12824,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         temp1 = 19114;
         temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
         temp3 = 0;
-        if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
+        if (!(CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
+              CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0))) {
             temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
                     (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f) * invertXAxisMulti *
                     xAxisMulti;
@@ -12837,7 +12842,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
     }
 
-    if (CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
+    if (CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
+        CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
         f32 movementSpeed = LINK_IS_ADULT ? 9.0f : 8.25f;
         if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA &&
             this->currentMask == PLAYER_MASK_BUNNY) {

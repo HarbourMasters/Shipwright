@@ -750,7 +750,9 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONDORF_HINT, logic->HasBossSoul(RG_GANON_SOUL)),
     }, {
         //Exits
-        Entrance(RR_GANONS_CASTLE_ESCAPE, []{return logic->CanKillEnemy(RE_GANONDORF);}),
+        Entrance(RR_GANONS_CASTLE_ESCAPE,               []{return logic->CanKillEnemy(RE_GANONDORF);}),
+        Entrance(RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR, []{return false;}),
+        Entrance(RR_GANONS_TOWER_STAIRS_1,              []{return false;}),
     });
 
     areaTable[RR_GANONS_CASTLE_ESCAPE] = Region("Ganon's Castle Escape", SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR, {}, {

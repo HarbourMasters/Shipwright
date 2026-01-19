@@ -95,6 +95,8 @@ void ModsHandleDragAndDrop(std::vector<std::string>& objectList, int targetIndex
 
 std::vector<std::string> GetEnabledModsFromCVar() {
     std::string enabledModsCVarValue = CVAR_ENABLED_MODS_VALUE;
+    if (enabledModsCVarValue.empty())
+        return {};
     return StringHelper::Split(enabledModsCVarValue, SEPARATOR);
 }
 

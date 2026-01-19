@@ -153,6 +153,8 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Full - Shuffle the entrances of all boss rooms together. Child may be expected to defeat Phantom Ganon and/or "
         "Bongo Bongo.";
+    mOptionDescriptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE] =
+        "Shuffle the entrance from Ganon's Castle to Ganon's Tower into the pool of boss entrances.";
     mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES] =
         "Shuffle the pool of Overworld entrances, which corresponds to almost all loading zones between overworld "
         "areas.\n"

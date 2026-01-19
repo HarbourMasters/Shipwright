@@ -366,6 +366,7 @@ bool GetTimePassFromScene(SceneID scene) {
         case SCENE_POTION_SHOP_GRANNY:
         case SCENE_GANON_BOSS:
         case SCENE_HOUSE_OF_SKULLTULA:
+        case SCENE_KAKARIKO_VILLAGE:
         case SCENE_KOKIRI_FOREST:
         case SCENE_SACRED_FOREST_MEADOW:
         case SCENE_LOST_WOODS:
@@ -377,6 +378,7 @@ bool GetTimePassFromScene(SceneID scene) {
         case SCENE_GERUDOS_FORTRESS:
         case SCENE_HAUNTED_WASTELAND:
         case SCENE_DEATH_MOUNTAIN_CRATER:
+        case SCENE_LON_LON_RANCH:
         case SCENE_ID_MAX:
             return false;
 
@@ -387,14 +389,12 @@ bool GetTimePassFromScene(SceneID scene) {
             return false;
 
         case SCENE_HYRULE_FIELD:
-        case SCENE_KAKARIKO_VILLAGE:
         case SCENE_ZORAS_RIVER:
         case SCENE_LAKE_HYLIA:
         case SCENE_GERUDO_VALLEY:
         case SCENE_DESERT_COLOSSUS:
         case SCENE_HYRULE_CASTLE:
         case SCENE_DEATH_MOUNTAIN_TRAIL:
-        case SCENE_LON_LON_RANCH:
             return true;
 
         case SCENE_TEST01:

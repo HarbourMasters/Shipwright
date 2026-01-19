@@ -26,18 +26,12 @@
 #include "Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "Enhancements/controls/SohInputEditorWindow.h"
 #include "Enhancements/audio/AudioCollection.h"
-#include "Enhancements/enhancementTypes.h"
 #include "Enhancements/debugconsole.h"
-#include "Enhancements/randomizer/entrance.h"
-#include "Enhancements/randomizer/location_access.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
-#include "Enhancements/randomizer/randomizer_item_tracker.h"
 #include "Enhancements/randomizer/randomizer_check_tracker.h"
-#include "Enhancements/randomizer/3drando/random.hpp"
 #include "Enhancements/randomizer/static_data.h"
 #include "Enhancements/gameplaystats.h"
-#include "ObjectExtension/ObjectExtension.h"
 #include "frame_interpolation.h"
 #include "SohGui/SohMenu.h"
 #include "SohGui/SohGui.hpp"
@@ -49,7 +43,6 @@
 #include <ship/window/gui/resource/Font.h>
 #include <ship/utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
-#include "Enhancements/Presets/Presets.h"
 #include "util.h"
 
 #if not defined(__SWITCH__) && not defined(__WIIU__)
@@ -1474,6 +1467,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion4Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion5Updater>());
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
@@ -2165,7 +2159,7 @@ Color_RGB8 GetColorForControllerLED() {
             if (HealthMeter_IsCritical()) {
                 color = { 0xFF, 0, 0 };
             } else if (gSaveContext.healthCapacity != 0 && source == LED_SOURCE_HEALTH) {
-                if (gSaveContext.health / gSaveContext.healthCapacity <= 0.4f) {
+                if (gSaveContext.health / (float)gSaveContext.healthCapacity <= 0.4f) {
                     color = { 0xFF, 0xFF, 0 };
                 } else {
                     color = { 0, 0xFF, 0 };
