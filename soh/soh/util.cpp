@@ -803,11 +803,11 @@ std::vector<std::string> SohUtils::StringSplit(const std::string& str, const std
     while (pos != std::string::npos) {
         std::string token = str.substr(prevpos, pos - prevpos);
         tokens.push_back(token);
-        prevpos = pos;
-        pos = str.find(delimiter, pos);
+        prevpos = pos+1;
+        pos = str.find(delimiter, prevpos);
     }
 
-    tokens.push_back(str.substr(pos));
+    tokens.push_back(str.substr(prevpos));
 
     return tokens;
 }
