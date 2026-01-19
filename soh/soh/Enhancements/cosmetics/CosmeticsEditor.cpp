@@ -2104,6 +2104,8 @@ void ApplySideEffects(CosmeticOption& cosmeticOption) {
     }
 }
 
+static uint64_t seeded_cosmetics_state = 0;
+
 void RandomizeColor(CosmeticOption& cosmeticOption, bool manual = true) {
     ImVec4 randomColor;
 
@@ -2115,7 +2117,7 @@ void RandomizeColor(CosmeticOption& cosmeticOption, bool manual = true) {
                              (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
                                        : static_cast<uint32_t>(gSaveContext.ship.stats.fileCreatedAt));
 
-        randomColor = GetRandomValue(finalSeed);
+        randomColor = GetRandomValue(finalSeed, &seeded_cosmetics_state);
     } else {
         randomColor = GetRandomValue();
     }

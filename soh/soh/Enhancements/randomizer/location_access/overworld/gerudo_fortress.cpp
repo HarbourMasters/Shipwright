@@ -152,7 +152,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_NEAR_CHEST] = Region("GF Near Chest", SCENE_GERUDOS_FORTRESS, {}, {
         //Locations
-        LOCATION(RC_GF_CHEST,        true),
+        LOCATION(RC_GF_CHEST,        logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_GF_GS_TOP_FLOOR, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) && logic->CanGetNightTimeGS()),
     }, {
         //Exits

@@ -10,7 +10,6 @@
 #include "scenes/overworld/spot16/spot16_scene.h"
 #include "vt.h"
 #include <assert.h>
-#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -941,42 +940,24 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
             osSyncPrintf(VT_FGCOL(CYAN));
             osSyncPrintf("%dのフクロウ\n", owlType); // "%d owl"
             osSyncPrintf(VT_RST);
-            switch (owlType) {
-                case 7:
-                    osSyncPrintf(VT_FGCOL(CYAN));
-                    osSyncPrintf("SPOT 06 の デモがはしった\n"); // "Demo of SPOT 06 has been completed"
-                    osSyncPrintf(VT_RST);
-                    if (IS_RANDO) {
-                        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
-                            play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_OWL_DROP);
-                        } else {
-                            play->nextEntranceIndex = ENTR_HYRULE_FIELD_OWL_DROP;
-                        }
-                        play->transitionTrigger = TRANS_TRIGGER_START;
-                        play->transitionType = TRANS_TYPE_FADE_BLACK;
+            if (GameInteractor_Should(VB_PLAY_OWL_TRAVEL_CS, true, owlType)) {
+                switch (owlType) {
+                    case 7:
+                        osSyncPrintf(VT_FGCOL(CYAN));
+                        osSyncPrintf("SPOT 06 の デモがはしった\n"); // "Demo of SPOT 06 has been completed"
+                        osSyncPrintf(VT_RST);
+                        play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaOwlCs);
+                        this->actor.draw = NULL;
                         break;
-                    }
-                    play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaOwlCs);
-                    this->actor.draw = NULL;
-                    break;
-                case 8:
-                case 9:
-                    if (IS_RANDO) {
-                        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
-                            play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_KAKARIKO_VILLAGE_OWL_DROP);
-                        } else {
-                            play->nextEntranceIndex = ENTR_KAKARIKO_VILLAGE_OWL_DROP;
-                        }
-                        play->transitionTrigger = TRANS_TRIGGER_START;
-                        play->transitionType = TRANS_TYPE_FADE_BLACK;
+                    case 8:
+                    case 9:
+                        play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gDMTOwlCs);
+                        this->actor.draw = NULL;
                         break;
-                    }
-                    play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gDMTOwlCs);
-                    this->actor.draw = NULL;
-                    break;
-                default:
-                    assert(0);
-                    break;
+                    default:
+                        assert(0);
+                        break;
+                }
             }
 
             Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);

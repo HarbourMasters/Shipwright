@@ -45,7 +45,7 @@ extern "C" void gSPSegment(void* value, int segNum, uintptr_t target) {
     if (res) {
         uintptr_t desiredTarget = (uintptr_t)ResourceMgr_LoadIfDListByName(imgData);
 
-        if (desiredTarget != NULL)
+        if (desiredTarget)
             target = desiredTarget;
     }
 

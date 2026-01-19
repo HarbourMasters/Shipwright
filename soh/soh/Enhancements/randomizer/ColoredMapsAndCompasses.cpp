@@ -5,6 +5,7 @@
 #include "z64save.h"
 #include "objects/object_gi_compass/object_gi_compass.h"
 #include "objects/object_gi_map/object_gi_map.h"
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 extern SaveContext gSaveContext;

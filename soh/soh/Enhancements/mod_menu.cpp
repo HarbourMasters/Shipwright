@@ -95,6 +95,8 @@ void ModsHandleDragAndDrop(std::vector<std::string>& objectList, int targetIndex
 
 std::vector<std::string> GetEnabledModsFromCVar() {
     std::string enabledModsCVarValue = CVAR_ENABLED_MODS_VALUE;
+    if (enabledModsCVarValue.empty())
+        return {};
     return StringHelper::Split(enabledModsCVarValue, SEPARATOR);
 }
 
@@ -308,6 +310,16 @@ void ModMenuWindow::DrawElement() {
         if (UIWidgets::Button("Cancel", UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline))) {
             editing = false;
             UpdateModFiles(false, true);
+        }
+        ImGui::SameLine();
+        if (UIWidgets::Button("Clear List", UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline))) {
+            SohGui::RegisterPopup("Clear List",
+                                  "Clear the current mod list and force a rebuild on next boot.\nClick Apply & Close "
+                                  "to save this change.",
+                                  "Clear", "Cancel", [&]() {
+                                      enabledModFiles.clear();
+                                      AfterModChange();
+                                  });
         }
         ImGui::SameLine();
         if (UIWidgets::Button("Apply & Close",

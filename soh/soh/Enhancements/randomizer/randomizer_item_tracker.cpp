@@ -137,6 +137,10 @@ std::vector<ItemTrackerItem> triforcePieces = {
     ITEM_TRACKER_ITEM(RG_TRIFORCE_PIECE, 0, DrawItem),
 };
 
+std::vector<ItemTrackerItem> rocsFeather = {
+    ITEM_TRACKER_ITEM(RG_ROCS_FEATHER, 0, DrawItem),
+};
+
 std::vector<ItemTrackerItem> beanSoulItems = {
     ITEM_TRACKER_ITEM_CUSTOM(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
     ITEM_TRACKER_ITEM_CUSTOM(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, ITEM_BEAN, ITEM_BEAN, 0, DrawItem),
@@ -783,6 +787,14 @@ void DrawQuest(ItemTrackerItem item) {
     Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 };
 
+bool HasBossSoul(RandomizerInf bossSoul) {
+    uint8_t soulSetting = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS);
+    bool isSoulRandomized = IS_RANDO && (soulSetting == RO_BOSS_SOULS_ON_PLUS_GANON ||
+                                         (soulSetting == RO_BOSS_SOULS_ON && bossSoul != RAND_INF_GANON_SOUL));
+
+    return isSoulRandomized ? Flags_GetRandomizerInf(bossSoul) : true;
+}
+
 void DrawItem(ItemTrackerItem item) {
 
     uint32_t actualItemId = GameInteractor::IsSaveLoaded() ? INV_CONTENT(item.id) : ITEM_NONE;
@@ -838,6 +850,16 @@ void DrawItem(ItemTrackerItem item) {
                                    RO_TRIFORCE_HUNT_OFF);
             itemName = "Triforce Piece";
             break;
+        case ITEM_NAYRUS_LOVE:
+            if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ROCS_FEATHER)) {
+                hasItem = Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE);
+            }
+            break;
+        case RG_ROCS_FEATHER:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER);
+            itemName = "Roc's Feather";
+            break;
         case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:
             actualItemId = item.id;
             hasItem = Flags_GetRandomizerInf(RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL);
@@ -890,50 +912,47 @@ void DrawItem(ItemTrackerItem item) {
             break;
         case RG_GOHMA_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_GOHMA_SOUL);
+            hasItem = HasBossSoul(RAND_INF_GOHMA_SOUL);
             itemName = "Gohma's Soul";
             break;
         case RG_KING_DODONGO_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_KING_DODONGO_SOUL);
+            hasItem = HasBossSoul(RAND_INF_KING_DODONGO_SOUL);
             itemName = "King Dodongo's Soul";
             break;
         case RG_BARINADE_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_BARINADE_SOUL);
+            hasItem = HasBossSoul(RAND_INF_BARINADE_SOUL);
             itemName = "Barinade's Soul";
             break;
         case RG_PHANTOM_GANON_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_PHANTOM_GANON_SOUL);
+            hasItem = HasBossSoul(RAND_INF_PHANTOM_GANON_SOUL);
             itemName = "Phantom Ganon's Soul";
             break;
         case RG_VOLVAGIA_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_VOLVAGIA_SOUL);
+            hasItem = HasBossSoul(RAND_INF_VOLVAGIA_SOUL);
             itemName = "Volvagia's Soul";
             break;
         case RG_MORPHA_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_MORPHA_SOUL);
+            hasItem = HasBossSoul(RAND_INF_MORPHA_SOUL);
             itemName = "Morpha's Soul";
             break;
         case RG_BONGO_BONGO_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_BONGO_BONGO_SOUL);
+            hasItem = HasBossSoul(RAND_INF_BONGO_BONGO_SOUL);
             itemName = "Bongo Bongo's Soul";
             break;
         case RG_TWINROVA_SOUL:
             actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_TWINROVA_SOUL);
+            hasItem = HasBossSoul(RAND_INF_TWINROVA_SOUL);
             itemName = "Twinrova's Soul";
             break;
         case RG_GANON_SOUL:
             actualItemId = item.id;
-            hasItem = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS) ==
-                              RO_BOSS_SOULS_ON_PLUS_GANON
-                          ? Flags_GetRandomizerInf(RAND_INF_GANON_SOUL)
-                          : true;
+            hasItem = HasBossSoul(RAND_INF_GANON_SOUL);
             itemName = "Ganon's Soul";
             break;
 
@@ -1492,6 +1511,9 @@ void UpdateVectors() {
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) ==
         SECTION_DISPLAY_MAIN_WINDOW) {
         mainWindowItems.insert(mainWindowItems.end(), dungeonItems.begin(), dungeonItems.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_ROCS_FEATHER)) {
+        mainWindowItems.insert(mainWindowItems.end(), rocsFeather.begin(), rocsFeather.end());
     }
 
     // if we're adding greg to the misc window,
@@ -2241,4 +2263,9 @@ void RegisterItemTrackerWidgets() {
     SohGui::mSohMenu->AddSearchWidget({ hookshotIdentWidget, "Randomizer", "Item Tracker", "General Settings" });
 }
 
+void RegisterItemTracker() {
+    COND_HOOK(OnLoadFile, true, [](int32_t fileNum) { shouldUpdateVectors = true; });
+}
+
+static RegisterShipInitFunc registerItemTracker(RegisterItemTracker);
 static RegisterMenuInitFunc menuInitFunc(RegisterItemTrackerWidgets);

@@ -502,6 +502,38 @@ struct FloatSliderOptions : WidgetOptions {
     }
 };
 
+struct BtnSelectorOptions : WidgetOptions {
+    s32 defaultValue = 0;
+    ComponentAlignments alignment = ComponentAlignments::Left;
+    LabelPositions labelPosition = LabelPositions::Above;
+    Colors color = Colors::Gray;
+
+    BtnSelectorOptions& DefaultValue(int32_t defaultValue_) {
+        defaultValue = defaultValue_;
+        return *this;
+    }
+
+    BtnSelectorOptions& ComponentAlignment(ComponentAlignments alignment_) {
+        alignment = alignment_;
+        return *this;
+    }
+
+    BtnSelectorOptions& LabelPosition(LabelPositions labelPosition_) {
+        labelPosition = labelPosition_;
+        return *this;
+    }
+
+    BtnSelectorOptions& Tooltip(const char* tooltip_) {
+        WidgetOptions::tooltip = tooltip_;
+        return *this;
+    }
+
+    BtnSelectorOptions& Color(Colors color_) {
+        color = color_;
+        return *this;
+    }
+};
+
 struct RadioButtonsOptions : WidgetOptions {
     std::map<int32_t, const char*> buttonMap;
     int32_t defaultIndex = 0;
@@ -826,7 +858,7 @@ bool Combobox(const char* label, T* value, const std::vector<std::string>& combo
     ImGui::BeginDisabled(options.disabled);
     PushStyleCombobox(options.color);
 
-    const char* longest;
+    const char* longest = "";
     size_t length = 0;
     for (auto& string : comboVector) {
         size_t len = string.length();
@@ -1046,13 +1078,15 @@ void DrawFlagArray32(const std::string& name, uint32_t& flags, Colors color = Co
 void DrawFlagArray16(const std::string& name, uint16_t& flags, Colors color = Colors::LightBlue);
 void DrawFlagArray8(const std::string& name, uint8_t& flags, Colors color = Colors::LightBlue);
 void DrawFlagArray8Mask(const std::string& name, uint8_t& flags, Colors color = Colors::LightBlue);
+bool BtnSelector(const char* label, int32_t* value, const BtnSelectorOptions& options);
+bool CVarBtnSelector(const char* label, const char* cvarName, const BtnSelectorOptions& options);
 
 void InsertHelpHoverText(const std::string& text);
 void InsertHelpHoverText(const char* text);
 } // namespace UIWidgets
 
 ImVec4 GetRandomValue();
-ImVec4 GetRandomValue(uint32_t seed);
+ImVec4 GetRandomValue(uint32_t seed, uint64_t* state = nullptr);
 
 Color_RGBA8 RGBA8FromVec(ImVec4 vec);
 ImVec4 VecFromRGBA8(Color_RGBA8 color);

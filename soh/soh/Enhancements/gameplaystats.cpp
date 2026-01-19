@@ -137,97 +137,97 @@ const char* const sceneMappings[] = {
 };
 
 const char* const countMappings[] = {
-    "Anubis:",
-    "Armos:",
-    "Arwing:",
-    "Bari:",
-    "Biri:",
-    "Beamos:",
-    "Big Octo:",
-    "Bubble (Blue):",
-    "Bubble (Green):",
-    "Bubble (Red):",
-    "Bubble (White):",
-    "Business Scrub:",
-    "Dark Link:",
-    "Dead Hand:",
-    "Deku Baba:",
-    "Deku Baba (Big):",
-    "Deku Scrub:",
-    "Dinolfos:",
-    "Dodongo:",
-    "Dodongo (Baby):",
-    "Door Mimic:",
-    "Flare Dancer:",
-    "Floormaster:",
-    "Flying Floor Tile:",
-    "Flying Pot:",
-    "Freezard:",
-    "Gerudo Thief:",
-    "Gibdo:",
-    "Gohma Larva:",
-    "Guay:",
-    "Iron Knuckle:",
-    "Iron Knuckle (Nab):",
-    "Keese:",
-    "Keese (Fire):",
-    "Keese (Ice):",
-    "Leever:",
-    "Leever (Big):",
-    "Like-Like:",
-    "Lizalfos:",
-    "Mad Scrub:",
-    "Moblin:",
-    "Moblin (Club):",
-    "Octorok:",
-    "Parasitic Tentacle:",
-    "Peahat:",
-    "Peahat Larva:",
-    "Poe:",
-    "Poe (Big):",
-    "Poe (Composer):",
-    "Poe Sisters:",
-    "Redead:",
-    "Shabom:",
-    "Shell Blade:",
-    "Skull Kid:",
-    "Skulltula:",
-    "Skulltula (Big):",
-    "Skulltula (Gold):",
-    "Skullwalltula:",
-    "Spike:",
-    "Stalchild:",
-    "Stalfos:",
-    "Stinger:",
-    "Tailpasaran:",
-    "Tektite (Blue):",
-    "Tektite (Red):",
-    "Torch Slug:",
-    "Wallmaster:",
-    "Withered Deku Baba:",
-    "Wolfos:",
-    "Wolfos (White):",
-    "Deku Sticks:",
-    "Deku Nuts:",
-    "Bombs:",
-    "Arrows:",
-    "Deku Seeds:",
-    "Bombchus:",
-    "Beans:",
-    "A:",
-    "B:",
-    "L:",
-    "R:",
-    "Z:",
-    "C-Up:",
-    "C-Right:",
-    "C-Down:",
-    "C-Left:",
-    "D-Up:",
-    "D-Right:",
-    "D-Down:",
-    "D-Left:",
-    "Start:",
+    "Anubis:",             // COUNT_ENEMIES_DEFEATED_ANUBIS
+    "Armos:",              // COUNT_ENEMIES_DEFEATED_ARMOS
+    "Arwing:",             // COUNT_ENEMIES_DEFEATED_ARWING
+    "Bari:",               // COUNT_ENEMIES_DEFEATED_BARI
+    "Beamos:",             // COUNT_ENEMIES_DEFEATED_BEAMOS
+    "Big Octo:",           // COUNT_ENEMIES_DEFEATED_BIG_OCTO
+    "Biri:",               // COUNT_ENEMIES_DEFEATED_BIRI
+    "Bubble (Green):",     // COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN
+    "Bubble (Blue):",      // COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE
+    "Bubble (White):",     // COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE
+    "Bubble (Red):",       // COUNT_ENEMIES_DEFEATED_BUBBLE_RED
+    "Business Scrub:",     // COUNT_ENEMIES_DEFEATED_BUSINESS_SCRUB
+    "Dark Link:",          // COUNT_ENEMIES_DEFEATED_DARK_LINK
+    "Dead Hand:",          // COUNT_ENEMIES_DEFEATED_DEAD_HAND
+    "Deku Baba:",          // COUNT_ENEMIES_DEFEATED_DEKU_BABA
+    "Deku Baba (Big):",    // COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG
+    "Deku Scrub:",         // COUNT_ENEMIES_DEFEATED_DEKU_SCRUB
+    "Dinolfos:",           // COUNT_ENEMIES_DEFEATED_DINOLFOS
+    "Dodongo:",            // COUNT_ENEMIES_DEFEATED_DODONGO
+    "Dodongo (Baby):",     // COUNT_ENEMIES_DEFEATED_DODONGO_BABY
+    "Door Mimic:",         // COUNT_ENEMIES_DEFEATED_DOOR_TRAP
+    "Flare Dancer:",       // COUNT_ENEMIES_DEFEATED_FLARE_DANCER
+    "Floormaster:",        // COUNT_ENEMIES_DEFEATED_FLOORMASTER
+    "Flying Pot:",         // COUNT_ENEMIES_DEFEATED_FLYING_POT
+    "Flying Floor Tile:",  // COUNT_ENEMIES_DEFEATED_FLOOR_TILE
+    "Freezard:",           // COUNT_ENEMIES_DEFEATED_FREEZARD
+    "Gerudo Thief:",       // COUNT_ENEMIES_DEFEATED_GERUDO_THIEF
+    "Gibdo:",              // COUNT_ENEMIES_DEFEATED_GIBDO
+    "Gohma Larva:",        // COUNT_ENEMIES_DEFEATED_GOHMA_LARVA
+    "Guay:",               // COUNT_ENEMIES_DEFEATED_GUAY
+    "Iron Knuckle:",       // COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE
+    "Iron Knuckle (Nab):", // COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU
+    "Keese:",              // COUNT_ENEMIES_DEFEATED_KEESE
+    "Keese (Fire):",       // COUNT_ENEMIES_DEFEATED_KEESE_FIRE
+    "Keese (Ice):",        // COUNT_ENEMIES_DEFEATED_KEESE_ICE
+    "Leever:",             // COUNT_ENEMIES_DEFEATED_LEEVER
+    "Leever (Big):",       // COUNT_ENEMIES_DEFEATED_LEEVER_BIG
+    "Like-Like:",          // COUNT_ENEMIES_DEFEATED_LIKE_LIKE
+    "Lizalfos:",           // COUNT_ENEMIES_DEFEATED_LIZALFOS
+    "Mad Scrub:",          // COUNT_ENEMIES_DEFEATED_MAD_SCRUB
+    "Moblin:",             // COUNT_ENEMIES_DEFEATED_MOBLIN
+    "Moblin (Club):",      // COUNT_ENEMIES_DEFEATED_MOBLIN_CLUB
+    "Octorok:",            // COUNT_ENEMIES_DEFEATED_OCTOROK
+    "Parasitic Tentacle:", // COUNT_ENEMIES_DEFEATED_PARASITIC_TENTACLE
+    "Peahat:",             // COUNT_ENEMIES_DEFEATED_PEAHAT
+    "Peahat Larva:",       // COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA
+    "Poe:",                // COUNT_ENEMIES_DEFEATED_POE
+    "Poe (Big):",          // COUNT_ENEMIES_DEFEATED_POE_BIG
+    "Poe (Composer):",     // COUNT_ENEMIES_DEFEATED_POE_COMPOSER
+    "Poe Sisters:",        // COUNT_ENEMIES_DEFEATED_POE_SISTERS
+    "Redead:",             // COUNT_ENEMIES_DEFEATED_REDEAD
+    "Shabom:",             // COUNT_ENEMIES_DEFEATED_SHABOM
+    "Shell Blade:",        // COUNT_ENEMIES_DEFEATED_SHELLBLADE
+    "Skulltula:",          // COUNT_ENEMIES_DEFEATED_SKULLTULA
+    "Skulltula (Big):",    // COUNT_ENEMIES_DEFEATED_SKULLTULA_BIG
+    "Skulltula (Gold):",   // COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD
+    "Skullwalltula:",      // COUNT_ENEMIES_DEFEATED_SKULLWALLTULA
+    "Skull Kid:",          // COUNT_ENEMIES_DEFEATED_SKULL_KID
+    "Spike:",              // COUNT_ENEMIES_DEFEATED_SPIKE
+    "Stalchild:",          // COUNT_ENEMIES_DEFEATED_STALCHILD
+    "Stalfos:",            // COUNT_ENEMIES_DEFEATED_STALFOS
+    "Stinger:",            // COUNT_ENEMIES_DEFEATED_STINGER
+    "Tailpasaran:",        // COUNT_ENEMIES_DEFEATED_TAILPASARAN
+    "Tektite (Blue):",     // COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE
+    "Tektite (Red):",      // COUNT_ENEMIES_DEFEATED_TEKTITE_RED
+    "Torch Slug:",         // COUNT_ENEMIES_DEFEATED_TORCH_SLUG
+    "Wallmaster:",         // COUNT_ENEMIES_DEFEATED_WALLMASTER
+    "Withered Deku Baba:", // COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA
+    "Wolfos:",             // COUNT_ENEMIES_DEFEATED_WOLFOS
+    "Wolfos (White):",     // COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE
+    "Deku Sticks:",        // COUNT_AMMO_USED_STICK
+    "Deku Nuts:",          // COUNT_AMMO_USED_NUT
+    "Bombs:",              // COUNT_AMMO_USED_BOMB
+    "Arrows:",             // COUNT_AMMO_USED_ARROW
+    "Deku Seeds:",         // COUNT_AMMO_USED_SEED
+    "Bombchus:",           // COUNT_AMMO_USED_BOMBCHU
+    "Beans:",              // COUNT_AMMO_USED_BEAN
+    "A:",                  // COUNT_BUTTON_PRESSES_A
+    "B:",                  // COUNT_BUTTON_PRESSES_B
+    "L:",                  // COUNT_BUTTON_PRESSES_L
+    "R:",                  // COUNT_BUTTON_PRESSES_R
+    "Z:",                  // COUNT_BUTTON_PRESSES_Z
+    "C-Up:",               // COUNT_BUTTON_PRESSES_CUP
+    "C-Right:",            // COUNT_BUTTON_PRESSES_CRIGHT
+    "C-Down:",             // COUNT_BUTTON_PRESSES_CDOWN
+    "C-Left:",             // COUNT_BUTTON_PRESSES_CLEFT
+    "D-Up:",               // COUNT_BUTTON_PRESSES_DUP
+    "D-Right:",            // COUNT_BUTTON_PRESSES_DRIGHT
+    "D-Down:",             // COUNT_BUTTON_PRESSES_DDOWN
+    "D-Left:",             // COUNT_BUTTON_PRESSES_DLEFT
+    "Start:",              // COUNT_BUTTON_PRESSES_START
 };
 
 #define COLOR_WHITE ImVec4(1.00f, 1.00f, 1.00f, 1.00f)

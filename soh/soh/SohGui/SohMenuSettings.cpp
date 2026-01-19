@@ -54,9 +54,9 @@ static const std::map<int32_t, const char*> notificationPosition = {
 };
 
 static const std::map<int32_t, const char*> bootSequenceLabels = {
-    { BOOTSEQUENCE_DEFAULT, "Default" },
-    { BOOTSEQUENCE_AUTHENTIC, "Authentic" },
-    { BOOTSEQUENCE_FILESELECT, "File Select" },
+    { BOOTSEQUENCE_DEFAULT, "Default" },        { BOOTSEQUENCE_AUTHENTIC, "Authentic" },
+    { BOOTSEQUENCE_FILESELECT, "File Select" }, { BOOTSEQUENCE_DEBUGWARPSCREEN, "Debug Warp Screen" },
+    { BOOTSEQUENCE_WARPPOINT, "Warp Point" },
 };
 
 const char* GetGameVersionString(uint32_t index) {
@@ -125,7 +125,7 @@ void SohMenu::UpdateLanguageMap(std::map<int32_t, const char*>& languageMap) {
 void SohMenu::AddMenuSettings() {
     // Add Settings Menu
     AddMenuEntry("Settings", CVAR_SETTING("Menu.SettingsSidebarSection"));
-    AddSidebarEntry("Settings", "General", 3);
+    AddSidebarEntry("Settings", "General", 2);
     WidgetPath path = { "Settings", "General", SECTION_COLUMN_1 };
 
     // General - Settings
@@ -178,6 +178,9 @@ void SohMenu::AddMenuSettings() {
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Search input box gets autofocus when visible. Does not affect using other widgets."));
+    AddWidget(path, "Reset Button Combination:", WIDGET_CVAR_BTN_SELECTOR)
+        .CVar("gSettings.ResetBtn")
+        .Options(BtnSelectorOptions().DefaultValue(BTN_CUSTOM_MODIFIER2));
     AddWidget(path, "Open App Files Folder", WIDGET_BUTTON)
         .RaceDisable(false)
         .Callback([](WidgetInfo& info) {
@@ -190,10 +193,6 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Boot Sequence", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("BootSequence"))
         .RaceDisable(false)
-        .PreFunc([](WidgetInfo& info) {
-            if (mSohMenu->disabledMap.at(DISABLE_FOR_BOOT_TO_DEBUG_WARP_SCREEN_ON).active)
-                info.activeDisables.push_back(DISABLE_FOR_BOOT_TO_DEBUG_WARP_SCREEN_ON);
-        })
         .Options(ComboboxOptions()
                      .DefaultIndex(BOOTSEQUENCE_DEFAULT)
                      .LabelPosition(LabelPositions::Far)
@@ -202,7 +201,9 @@ void SohMenu::AddMenuSettings() {
                      .Tooltip("Configure what happens when starting or resetting the game.\n\n"
                               "Default: LUS logo -> N64 logo\n"
                               "Authentic: N64 logo only\n"
-                              "File Select: Skip to file select menu"));
+                              "File Select: Skip to file select menu\n"
+                              "Debug Warp Screen: Skip to the debug warp screen\n"
+                              "Warp Point: Skip to active warp point (if set), see Dev Tools -> General"));
 
     AddWidget(path, "Languages", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Translate Title Screen", WIDGET_CVAR_CHECKBOX)
