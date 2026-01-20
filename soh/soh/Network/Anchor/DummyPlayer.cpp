@@ -228,6 +228,7 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
 
 void DummyPlayer_Draw(Actor* actor, PlayState* play) {
     Player* player = (Player*)actor;
+    static bool sLastAltAssetsEnabled = ResourceMgr_IsAltAssetsEnabled();
 
     uint32_t clientId = Anchor::Instance->GetDummyPlayerClientId(actor);
 
@@ -242,6 +243,16 @@ void DummyPlayer_Draw(Actor* actor, PlayState* play) {
         return;
     }
 
+    bool altAssetsEnabled = ResourceMgr_IsAltAssetsEnabled();
+    if (altAssetsEnabled != sLastAltAssetsEnabled) {
+        if (altAssetsEnabled) {
+            AnchorModRegistry::ApplyModelToPlayer(client.modelId, client.linkAge, player);
+        } else {
+            AnchorModRegistry::ApplyModelToPlayer("", client.linkAge, player);
+        }
+        sLastAltAssetsEnabled = altAssetsEnabled;
+    }
+
     // Hack to account for usage of gSaveContext in Player_Draw
     s32 originalAge = gSaveContext.linkAge;
     gSaveContext.linkAge = client.linkAge;
@@ -249,11 +260,6 @@ void DummyPlayer_Draw(Actor* actor, PlayState* play) {
     gSaveContext.equips.buttonItems[0] = client.buttonItem0;
 
     AnchorTextureOverrides textureOverrides = {};
-    bool altAssetsEnabled = ResourceMgr_IsAltAssetsEnabled();
-    if (!altAssetsEnabled) {
-        AnchorModRegistry::ApplyModelToPlayer("", client.linkAge, player);
-    }
-
     bool hasCustomModel = altAssetsEnabled &&
                           AnchorModRegistry::HasCustomModel(client.modelId, client.linkAge, player->skelAnime.limbCount);
     if (hasCustomModel) {
