@@ -219,8 +219,8 @@ static const ALIGN_ASSET(2) char gLinkChildDL_18580[] = dgLinkChildDL_18580;
 #define dgLinkChildBottle2DL "__OTR__objects/object_link_child/gLinkChildBottle2DL"
 static const ALIGN_ASSET(2) char gLinkChildBottle2DL[] = dgLinkChildBottle2DL;
 
-#define dgLinkChildSlinghotStringDL "__OTR__objects/object_link_child/gLinkChildSlinghotStringDL"
-static const ALIGN_ASSET(2) char gLinkChildSlingshotStringDL[] = dgLinkChildSlinghotStringDL;
+#define dgLinkChildSlingshotStringDL "__OTR__objects/object_link_child/gLinkChildSlingshotStringDL"
+static const ALIGN_ASSET(2) char gLinkChildSlingshotStringDL[] = dgLinkChildSlingshotStringDL;
 
 #define dgLinkChildDekuShieldDL "__OTR__objects/object_link_child/gLinkChildDekuShieldDL"
 static const ALIGN_ASSET(2) char gLinkChildDekuShieldDL[] = dgLinkChildDekuShieldDL;
