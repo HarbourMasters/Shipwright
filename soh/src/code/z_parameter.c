@@ -1872,6 +1872,10 @@ u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
  * @return u8
  */
 u8 Item_Give(PlayState* play, u8 item) {
+    // SoH [Enhancements] Ignore ITEM_SHIP, used for CustomItem
+    if (item == ITEM_SHIP)
+        return ITEM_NONE;
+
     // prevents getting sticks without the bag in case something got missed
     if (IS_RANDO && (item == ITEM_STICK || item == ITEM_STICKS_5 || item == ITEM_STICKS_10) &&
         Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG) && CUR_UPG_VALUE(UPG_STICKS) == 0) {
@@ -2481,6 +2485,10 @@ u8 Item_CheckObtainability(u8 item) {
     s16 i;
     s16 slot = SLOT(item);
     s32 temp;
+
+    // SoH [Enhancements] Ignore ITEM_SHIP, used for CustomItem
+    if (item == ITEM_SHIP)
+        return ITEM_NONE;
 
     if (item >= ITEM_STICKS_5) {
         slot = SLOT(sExtraItemBases[item - ITEM_STICKS_5]);

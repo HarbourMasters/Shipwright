@@ -789,7 +789,7 @@ void OTRGlobals::Initialize() {
     auto logLevel =
         static_cast<spdlog::level::level_enum>(CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), defaultLogLevel));
     context->InitLogging(logLevel, logLevel);
-    Ship::Context::GetInstance()->GetLogger()->set_pattern("[%H:%M:%S.%e] [%s:%#] [%l] %v");
+    Ship::Context::GetInstance()->GetLogger()->set_pattern("[%H:%M:%S.%e] [%s:%#] [%^%l%$] %v");
 
     context->InitGfxDebugger();
     context->InitFileDropMgr();
@@ -1215,6 +1215,7 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM(ITEM_BULLET_BAG_50,    OBJECT_GI_DEKUPOUCH,     GID_BULLET_BAG_50,    0x6C, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_BULLET_BAG_50),
         GET_ITEM_NONE,
         GET_ITEM_NONE,
+        GET_ITEM(ITEM_SHIP,             OBJECT_GAMEPLAY_KEEP,GID_MAXIMUM,TEXT_CUSTOM_MESSAGE,0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_SHIP),
         GET_ITEM_NONE // GI_MAX - if you need to add to this table insert it before this entry.
         // clang-format on
     };

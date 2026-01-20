@@ -6,6 +6,7 @@ extern PlayState* gPlayState;
 }
 
 void WarpPointsWidget(WidgetInfo& info);
+void InputPlaybacksWidget(WidgetInfo& info);
 
 namespace SohGui {
 
@@ -138,6 +139,7 @@ void SohMenu::AddMenuDevTools() {
                      .Tooltip("Translate the Debug Warp Screen based on the game language.")
                      .DefaultValue(true));
     AddWidget(path, "Warp Points", WIDGET_CUSTOM).CustomFunction(WarpPointsWidget).HideInSearch(true);
+    AddWidget(path, "Input Playbacks", WIDGET_CUSTOM).CustomFunction(InputPlaybacksWidget).HideInSearch(true);
 
     // Stats
     path.sidebarName = "Stats";

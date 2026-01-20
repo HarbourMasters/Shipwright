@@ -62,6 +62,7 @@ class CustomMessage {
     static std::string WAIT_FOR_INPUT();
     static std::string PLAYER_NAME();
     static std::string TWO_WAY_CHOICE();
+    static std::string SKULLS_DESTROYED();
 
     const std::string GetEnglish(MessageFormat format = MF_FORMATTED) const;
     const std::string GetFrench(MessageFormat format = MF_FORMATTED) const;
@@ -251,6 +252,7 @@ class CustomMessageManager {
 
   public:
     static CustomMessageManager* Instance;
+    CustomMessage activeCustomMessage;
 
     CustomMessageManager() = default;
 
@@ -312,6 +314,22 @@ class CustomMessageManager {
      * already exists.)
      */
     bool AddCustomMessageTable(std::string tableID);
+
+    /**
+     * @brief Sets the active custom message, which will be used the next time
+     * TEXT_CUSTOM_MESSAGE is used for a text box.
+     *
+     * @param message the message to set as active
+     */
+    void SetActiveCustomMessage(CustomMessage message);
+
+    /**
+     * @brief Displays a custom message in a textbox. This is the same as calling
+     * SetActiveCustomMessage and then beginning a textbox with TEXT_CUSTOM_MESSAGE.
+     *
+     * @param message the message to set as active
+     */
+    void StartTextbox(CustomMessage message);
 };
 
 class MessageNotFoundException : public std::exception {

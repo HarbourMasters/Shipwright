@@ -1,5 +1,7 @@
 #include "CustomMessageManager.h"
 #include "CustomMessageInterfaceAddon.h"
+#include "CustomMessageTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <algorithm>
 #include <stdint.h>
 #include <cstring>
@@ -7,6 +9,15 @@
 #include <spdlog/spdlog.h>
 #include <variables.h>
 #include <soh/Enhancements/gameconsole.h>
+#include "soh/ShipInit.hpp"
+
+#include "soh/util.h"
+
+extern "C" {
+#include "functions.h"
+
+extern PlayState* gPlayState;
+}
 
 using namespace std::literals::string_literals;
 
@@ -286,18 +297,9 @@ void CustomMessage::LoadIntoFont() {
     char* buffer = font->msgBuf;
     const int maxBufferSize = sizeof(font->msgBuf);
     font->charTexBuf[0] = (type << 4) | position;
-    switch (gSaveContext.language) {
-        case LANGUAGE_FRA:
-            msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(GetFrench(MF_RAW), buffer, maxBufferSize);
-            break;
-        case LANGUAGE_GER:
-            msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(GetGerman(MF_RAW), buffer, maxBufferSize);
-            break;
-        case LANGUAGE_ENG:
-        default:
-            msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(GetEnglish(MF_RAW), buffer, maxBufferSize);
-            break;
-    }
+
+    std::string content = GetForCurrentLanguage(MF_RAW);
+    msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(content, buffer, maxBufferSize);
 }
 
 void CustomMessage::Replace(std::string&& oldStr, std::string&& newStr) {
@@ -812,6 +814,10 @@ std::string CustomMessage::TWO_WAY_CHOICE() {
     return "\x1B"s;
 }
 
+std::string CustomMessage::SKULLS_DESTROYED() {
+    return "\x19"s;
+}
+
 bool CustomMessageManager::InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessage messages) {
     auto foundMessageTable = messageTables.find(tableID);
     if (foundMessageTable == messageTables.end()) {
@@ -872,3 +878,22 @@ bool CustomMessageManager::AddCustomMessageTable(std::string tableID) {
     CustomMessageTable newMessageTable;
     return messageTables.emplace(tableID, newMessageTable).second;
 }
+
+void CustomMessageManager::SetActiveCustomMessage(CustomMessage message) {
+    activeCustomMessage = message;
+}
+
+void CustomMessageManager::StartTextbox(CustomMessage message) {
+    activeCustomMessage = message;
+
+    Message_StartTextbox(gPlayState, TEXT_CUSTOM_MESSAGE, &GET_PLAYER(gPlayState)->actor);
+}
+
+static RegisterShipInitFunc initFunc(
+    []() {
+        COND_ID_HOOK(OnOpenText, TEXT_CUSTOM_MESSAGE, true, [](u16* textId, bool* loadFromMessageTable) {
+            *loadFromMessageTable = false;
+            CustomMessageManager::Instance->activeCustomMessage.LoadIntoFont();
+        });
+    },
+    {});
