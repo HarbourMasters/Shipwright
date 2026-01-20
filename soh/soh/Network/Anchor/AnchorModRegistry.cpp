@@ -4,7 +4,6 @@
 #include <unordered_map>
 #include <vector>
 #include <nlohmann/json.hpp>
-#include <libultraship/libultraship.h>
 #include <ship/Context.h>
 #include <ship/resource/ResourceManager.h>
 #include <ship/resource/Resource.h>
@@ -24,8 +23,6 @@
 
 extern "C" {
 #include "macros.h"
-#include "z64.h"
-#include "variables.h"
 #include "functions.h"
 #if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
 extern void* sEyeTextures[2][8];
@@ -286,11 +283,7 @@ std::string FindLocalModelId() {
         return "";
     }
 
-    std::string modsPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
-    if (modsPath.empty()) {
-        modsPath = Ship::Context::GetPathRelativeToAppDirectory("mods", appShortName);
-    }
-    auto modPaths = BuildModPathMap(modsPath);
+    auto modPaths = BuildModPathMap(ResolveModsFolder());
     if (modPaths.empty()) {
         return "";
     }

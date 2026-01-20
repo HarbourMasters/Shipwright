@@ -2,6 +2,7 @@
 #include "soh/Network/Anchor/AnchorModRegistry.h"
 #include "soh/Enhancements/nametag.h"
 #include "soh/frame_interpolation.h"
+#include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
 #include "macros.h"
@@ -248,7 +249,13 @@ void DummyPlayer_Draw(Actor* actor, PlayState* play) {
     gSaveContext.equips.buttonItems[0] = client.buttonItem0;
 
     AnchorTextureOverrides textureOverrides = {};
-    bool hasCustomModel = AnchorModRegistry::HasCustomModel(client.modelId, client.linkAge, player->skelAnime.limbCount);
+    bool altAssetsEnabled = ResourceMgr_IsAltAssetsEnabled();
+    if (!altAssetsEnabled) {
+        AnchorModRegistry::ApplyModelToPlayer("", client.linkAge, player);
+    }
+
+    bool hasCustomModel = altAssetsEnabled &&
+                          AnchorModRegistry::HasCustomModel(client.modelId, client.linkAge, player->skelAnime.limbCount);
     if (hasCustomModel) {
         AnchorModRegistry::SetAnchorModelOverride(client.modelId, client.linkAge);
         textureOverrides = AnchorModRegistry::ApplyAnchorFlipbookTextures(player, client.modelId, client.linkAge);
