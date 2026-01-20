@@ -827,11 +827,11 @@ void GenerateItemPool() {
     } else if (ctx->GetOption(RSK_SHUFFLE_MAPANDCOMPASS).IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH)) {
         for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
             if (dungeon->GetMap() != RG_NONE) {
-                AddFixedItemToPool(dungeon->GetMap(), false);
+                AddFixedItemToPool(dungeon->GetMap(), 1, false);
             }
 
             if (dungeon->GetCompass() != RG_NONE) {
-                AddFixedItemToPool(dungeon->GetCompass(), false);
+                AddFixedItemToPool(dungeon->GetCompass(), 1, false);
             }
         }
     }
