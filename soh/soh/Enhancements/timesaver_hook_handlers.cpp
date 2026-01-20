@@ -357,7 +357,15 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         break;
                     }
                     case ACTOR_EN_TA:
-                    case ACTOR_DOOR_SHUTTER:
+                    case ACTOR_DOOR_SHUTTER: {
+                        // The switch in jabu that you are intended to press with a box to reach barinade
+                        // can be skipped by either a frame perfect roll open or with OI
+                        // The One Point for the door is also required for common setups to work
+                        if (actor->params == 9402 && gPlayState->sceneNum == SCENE_JABU_JABU &&
+                            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
+                            break;
+                        }
+                    }
                     case ACTOR_BG_ICE_SHUTTER:
                     case ACTOR_OBJ_LIGHTSWITCH:
                     case ACTOR_OBJ_SYOKUDAI:
