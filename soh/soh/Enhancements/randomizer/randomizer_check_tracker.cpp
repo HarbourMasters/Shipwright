@@ -2068,10 +2068,11 @@ void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion) {
     logic = ctx->GetLogic();
 
     if (startingRegion == RR_ROOT) {
-        const auto entranceIndex = GetLastEntranceOverride();
+        // debug warping sets gSaveContext.entranceIndex in Select_LoadGame
+        int32_t entranceIndex = gPlayState->nextEntranceIndex;
         const auto entrance = Rando::EntranceShuffler::GetEntranceByIndex(entranceIndex);
         if (entrance != nullptr) {
-            startingRegion = entrance->GetConnectedRegionKey();
+            startingRegion = entrance->GetOriginalConnectedRegionKey();
         }
     }
 
