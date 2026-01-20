@@ -1,5 +1,5 @@
 #include "item_location.h"
-#include "context.h"
+#include "SeedContext.h"
 #include "logic.h"
 
 namespace Rando {
@@ -151,7 +151,7 @@ bool ItemLocation::GetIsSkipped() {
 }
 
 bool ItemLocation::IsHintable() const {
-    return isHintable;
+    return isHintable && !hidden;
 }
 
 void ItemLocation::SetAsHintable() {

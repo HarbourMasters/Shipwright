@@ -1,13 +1,12 @@
 #include "logic.h"
 #include "../debugger/performanceTimer.h"
 
-#include <algorithm>
 #include <string>
 #include <vector>
 
 #include "soh/OTRGlobals.h"
 #include "dungeon.h"
-#include "context.h"
+#include "SeedContext.h"
 #include "macros.h"
 #include "variables.h"
 #include <spdlog/spdlog.h>
@@ -64,11 +63,6 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_PROGRESSIVE_NUT_UPGRADE:
         case RG_NUTS:
             return CurrentUpgrade(UPG_NUTS);
-        // RANDOTODO handle cases where the scarecrow is persistent between age better when OI is added
-        case RG_SCARECROW:
-            return ScarecrowsSong() && CanUse(RG_HOOKSHOT);
-        case RG_DISTANT_SCARECROW:
-            return ScarecrowsSong() && CanUse(RG_LONGSHOT);
         case RG_MAGIC_BEAN:
             return GetAmmo(ITEM_BEAN) > 0 || CheckInventory(ITEM_BEAN, true);
         case RG_KOKIRI_SWORD:
@@ -85,6 +79,8 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CheckEquipment(RandoGetToEquipFlag.at(itemName)) || Get(LOGIC_MEDIGORON);
         case RG_BIGGORON_SWORD:
             return CheckEquipment(RandoGetToEquipFlag.at(itemName)) && mSaveContext->bgsFlag;
+        case RG_POWER_BRACELET:
+            return CheckRandoInf(RAND_INF_CAN_GRAB);
         case RG_GORONS_BRACELET:
             return CurrentUpgrade(UPG_STRENGTH);
         case RG_SILVER_GAUNTLETS:
@@ -125,6 +121,31 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CheckQuestItem(RandoGetToQuestItem.at(itemName));
         case RG_DOUBLE_DEFENSE:
             return GetSaveContext()->isDoubleDefenseAcquired;
+            // Masks
+        case RG_SKULL_MASK:
+            switch (ctx->GetOption(RSK_MASK_QUEST).Get()) {
+                case RO_MASK_QUEST_VANILLA:
+                    return Get(LOGIC_BORROW_SKULL_MASK);
+                case RO_MASK_QUEST_COMPLETED:
+                    return HasItem(RG_ZELDAS_LETTER) && Get(LOGIC_KAKARIKO_GATE_OPEN);
+                case RO_MASK_QUEST_SHUFFLE:
+                    return CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_SKULL);
+                default:
+                    assert(false);
+                    return false;
+            }
+        case RG_MASK_OF_TRUTH:
+            switch (ctx->GetOption(RSK_MASK_QUEST).Get()) {
+                case RO_MASK_QUEST_VANILLA:
+                    return Get(LOGIC_BORROW_RIGHT_MASKS);
+                case RO_MASK_QUEST_COMPLETED:
+                    return HasItem(RG_ZELDAS_LETTER) && Get(LOGIC_KAKARIKO_GATE_OPEN);
+                case RO_MASK_QUEST_SHUFFLE:
+                    return CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH);
+                default:
+                    assert(false);
+                    return false;
+            }
         case RG_FISHING_POLE:
         case RG_ZELDAS_LETTER:
         case RG_WEIRD_EGG:
@@ -185,8 +206,6 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_RUTOS_LETTER:
             return CheckRandoInf(RandoGetToRandInf.at(itemName));
             // Boss Keys
-        case RG_EPONA:
-            return Get(LOGIC_FREED_EPONA);
         case RG_FOREST_TEMPLE_BOSS_KEY:
         case RG_FIRE_TEMPLE_BOSS_KEY:
         case RG_WATER_TEMPLE_BOSS_KEY:
@@ -234,8 +253,15 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CurrentUpgrade(UPG_SCALE) >= 1;
         case RG_GOLDEN_SCALE:
             return CurrentUpgrade(UPG_SCALE) >= 2;
+        case RG_CLIMB:
+            return CheckRandoInf(RAND_INF_CAN_CLIMB);
+        case RG_CRAWL:
+            return CheckRandoInf(RAND_INF_CAN_CRAWL);
+        case RG_OPEN_CHEST:
+            return CheckRandoInf(RAND_INF_CAN_OPEN_CHEST);
         case RG_POCKET_EGG:
-            return CheckRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
+            return CheckRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG) ||
+                   CheckRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_CUCCO);
         case RG_COJIRO:
         case RG_ODD_MUSHROOM:
         case RG_ODD_POTION:
@@ -299,8 +325,6 @@ bool Logic::CanUse(RandomizerGet itemName) {
             return IsAdult; // || HoverBootsAsChild;
         case RG_HOOKSHOT:
         case RG_LONGSHOT:
-        case RG_SCARECROW:
-        case RG_DISTANT_SCARECROW:
             return IsAdult; // || HookshotAsChild;
         case RG_GORON_TUNIC:
             return IsAdult; // || GoronTunicAsChild;
@@ -354,6 +378,9 @@ bool Logic::CanUse(RandomizerGet itemName) {
             return IsChild;
         case RG_MAGIC_BEAN:
             return IsChild;
+        case RG_SKULL_MASK:
+        case RG_MASK_OF_TRUTH:
+            return IsChild;
 
         // Songs
         case RG_ZELDAS_LULLABY:
@@ -386,8 +413,8 @@ bool Logic::CanUse(RandomizerGet itemName) {
         // Misc. Items
         case RG_FISHING_POLE:
             return HasItem(RG_CHILD_WALLET); // as long as you have enough rubies
-        case RG_EPONA:
-            return IsAdult && CanUse(RG_EPONAS_SONG);
+        case RG_CRAWL:
+            return IsChild;
 
         // Bottle Items
         case RG_BOTTLE_WITH_BUGS:
@@ -400,10 +427,8 @@ bool Logic::CanUse(RandomizerGet itemName) {
             return Get(LOGIC_FAIRY_ACCESS);
 
         default:
-            SPDLOG_ERROR("CanUse reached `default` for {}. Assuming intention is no extra requirements for use so "
-                         "returning true, but HasItem should be used instead.",
-                         static_cast<uint32_t>(itemName));
-            assert(false);
+            SPDLOG_INFO("CanUse reached `default` for {}. using HasItem is a minor Optimisation.",
+                        static_cast<uint32_t>(itemName));
             return true;
     }
 }
@@ -458,8 +483,19 @@ bool Logic::CanGroundJump(bool hasBombflower) {
            (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
 }
 
+bool Logic::CanGroundJumpJumpSlash(bool hasBombflower) {
+    return ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && CanStandingShield() && CanJumpslash() &&
+           (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
+}
+
+bool Logic::CanMiddairGroundJump(bool hasBombflower) {
+    return ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && CanStandingShield() && CanUse(RG_HOVER_BOOTS) &&
+           (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
+}
+
 bool Logic::CanOpenUnderwaterChest() {
-    return ctx->GetTrickOption(RT_OPEN_UNDERWATER_CHEST) && CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT);
+    return ctx->GetTrickOption(RT_OPEN_UNDERWATER_CHEST) && CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT) &&
+           HasItem(RG_OPEN_CHEST);
 }
 
 uint8_t GetDifficultyValueFromString(Rando::Option& glitchOption) {
@@ -499,7 +535,7 @@ bool Logic::CanDoGlitch(GlitchType glitch) {
 }
 
 // RANDOTODO quantity is a placeholder for proper ammo use calculation logic. in time will want updating to account for
-// ammo capacity Can we kill this enemy
+// ammo capacity
 bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wallOrFloor, uint8_t quantity, bool timer,
                          bool inWater) {
     bool killed = false;
@@ -561,14 +597,11 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
                     killed = killed || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
                     [[fallthrough]];
                 case ED_BOMB_THROW:
-                    killed = killed || CanUse(RG_BOMB_BAG);
+                    killed = killed || CanUse(RG_BOMB_BAG) || CanUse(RG_DINS_FIRE);
                     [[fallthrough]];
                 case ED_BOOMERANG:
-                    // RANDOTODO test dins and chu range in a practical example
-                    killed = killed || CanUse(RG_DINS_FIRE);
-                    [[fallthrough]];
                 case ED_HOOKSHOT:
-                    // RANDOTODO test dins and chu range in a practical example
+                    // RANDOTODO test chu range in a practical example
                     killed = killed || CanUse(RG_HOOKSHOT) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
                     [[fallthrough]];
                 case ED_LONGSHOT:
@@ -652,7 +685,7 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
                     [[fallthrough]];
                 case ED_BOOMERANG:
                 case ED_HOOKSHOT:
-                    // RANDOTODO test dins and chu range in a practical example
+                    // RANDOTODO test chu range in a practical example
                     killed = killed || (wallOrFloor && CanUse(RG_BOMBCHU_5));
                     [[fallthrough]];
                 case ED_LONGSHOT:
@@ -733,12 +766,11 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
                     killed = killed || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
                     [[fallthrough]];
                 case ED_BOMB_THROW:
-                    // RANDOTODO test dins and chu range in a practical example
                     killed = killed || (!inWater && CanUse(RG_BOMB_BAG));
                     [[fallthrough]];
                 case ED_BOOMERANG:
                 case ED_HOOKSHOT:
-                    // RANDOTODO test dins, bomb and chu range in a practical example
+                    // RANDOTODO test chu range in a practical example
                     killed = killed || CanUse(RG_HOOKSHOT) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
                     [[fallthrough]];
                 case ED_LONGSHOT:
@@ -761,7 +793,9 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
                    (CanUse(RG_BOMB_BAG) || HasItem(RG_GORONS_BRACELET) ||
                     (ctx->GetTrickOption(RT_DC_DODONGO_CHU) && IsAdult && CanUse(RG_BOMBCHU_5)));
         case RE_BARINADE:
-            return HasBossSoul(RG_BARINADE_SOUL) && CanUse(RG_BOOMERANG) && CanJumpslashExceptHammer();
+            return HasBossSoul(RG_BARINADE_SOUL) && CanUse(RG_BOOMERANG) &&
+                   (CanJumpslashExceptHammer() ||
+                    (ctx->GetTrickOption(RT_JABU_BARINADE_POTS) && HasItem(RG_POWER_BRACELET)));
         case RE_PHANTOM_GANON:
             return HasBossSoul(RG_PHANTOM_GANON_SOUL) && CanUseSword() &&
                    (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT));
@@ -792,8 +826,19 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
         case RE_GANON:
             return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_MASTER_SWORD);
         case RE_DARK_LINK:
-            // RANDOTODO Dark link is buggy right now, retest when he is not
-            return CanJumpslash() || CanUse(RG_FAIRY_BOW);
+            // RANDOTODO make a function to track our ammo vs his HP when ammo capacity is taken into account in logic
+            //  all swords can at least trade blows with dark link, and even with 1 damage a slash it works out
+            return CanUseSword() ||
+                   // Boomerang is a relaible, infinite ammo stun, so it enables any way to get enough damage with the
+                   // ammo we have Max HP dark link has 40 HP, bows and bombs do 2 so 20 ammo, stick jumpslash does 4 so
+                   // 10 sticks
+                   (CanUse(RG_BOOMERANG) &&
+                    (CanUse(RG_FAIRY_BOW) || CanUse(RG_STICKS) || CanUse(RG_MEGATON_HAMMER) || HasExplosives())) ||
+                   // By using deku nuts against the wall, you can stun him roughly half the time, which makes 4 damage
+                   // attacks reliable on base nuts
+                   (CanUse(RG_NUTS) && (CanUse(RG_STICKS) || CanUse(RG_MEGATON_HAMMER)));
+            // Dins does 2 damage, but is reliable, so would need 20 casts for max HP dark link. normal magic gives 4
+            // casts, double 8, and then potions can add more
         case RE_ANUBIS:
             // there's a restoration that allows beating them with mirror shield + some way to trigger their attack
             return HasFireSource();
@@ -810,12 +855,40 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             return HookshotOrBoomerang() || CanUse(RG_FAIRY_BOW) || HasExplosives() || CanUse(RG_MEGATON_HAMMER) ||
                    CanUse(RG_STICKS) || CanUse(RG_DINS_FIRE) || (TakeDamage() && CanUseSword());
         case RE_SHABOM:
-            // RANDOTODO when you add better damage logic, you can kill this by taking hits
             return CanUse(RG_BOOMERANG) || CanUse(RG_NUTS) || CanJumpslash() || CanUse(RG_DINS_FIRE) ||
-                   CanUse(RG_ICE_ARROWS);
+                   CanUse(RG_ICE_ARROWS) || EffectiveHealth() * 2 > quantity;
         case RE_OCTOROK:
             return CanReflectNuts() || HookshotOrBoomerang() || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) ||
                    CanUse(RG_BOMB_BAG) || (wallOrFloor && CanUse(RG_BOMBCHU_5));
+        case RE_WALLTULA:
+            switch (distance) {
+                case ED_CLOSE:
+                case ED_SHORT_JUMPSLASH:
+                    killed = CanUse(RG_KOKIRI_SWORD);
+                    [[fallthrough]];
+                case ED_MASTER_SWORD_JUMPSLASH:
+                    killed = killed || CanUse(RG_MASTER_SWORD);
+                    [[fallthrough]];
+                case ED_LONG_JUMPSLASH:
+                    killed = killed || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
+                    [[fallthrough]];
+                case ED_BOMB_THROW:
+                    killed = killed || (!inWater && CanUse(RG_BOMB_BAG)) || CanUse(RG_DINS_FIRE);
+                    [[fallthrough]];
+                case ED_BOOMERANG:
+                    killed = killed || CanUse(RG_BOOMERANG);
+                    [[fallthrough]];
+                case ED_HOOKSHOT:
+                    killed = killed || CanUse(RG_HOOKSHOT) || CanUse(RG_BOMBCHU_5) || CanUse(RG_MEGATON_HAMMER);
+                    [[fallthrough]];
+                case ED_LONGSHOT:
+                    killed = killed || CanUse(RG_LONGSHOT);
+                    [[fallthrough]];
+                case ED_FAR:
+                    killed = killed || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
+                    break;
+            }
+            return killed;
         default:
             SPDLOG_ERROR("CanKillEnemy reached `default`.");
             assert(false);
@@ -874,6 +947,7 @@ bool Logic::CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             return true; // CanUse(RG_HOOKSHOT) || CanUse(RG_SUNS_SONG);
         case RE_IRON_KNUCKLE:
         case RE_BIG_OCTO:
+        case RE_WALLTULA: // consistent with RT_SPIRIT_WALL
             return false;
         case RE_GREEN_BUBBLE:
             return TakeDamage() || CanUse(RG_NUTS) || CanUse(RG_BOOMERANG) || CanUse(RG_HOOKSHOT);
@@ -920,21 +994,24 @@ bool Logic::CanAvoidEnemy(RandomizerEnemy enemy, bool grounded, uint8_t quantity
         case RE_WALLMASTER:
         case RE_ANUBIS:
         case RE_PURPLE_LEEVER:
+        case RE_WALLTULA:
             return true;
         case RE_BEAMOS:
-            return !grounded || CanUse(RG_NUTS) ||
+            return !grounded || CanUse(RG_NUTS) || CanUse(RG_DINS_FIRE) ||
                    (quantity == 1 && (CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT)));
         case RE_MAD_SCRUB:
             return !grounded || CanUse(RG_NUTS);
         case RE_KEESE:
         case RE_FIRE_KEESE:
         case RE_GUAY:
-            return CanUse(RG_NUTS);
+            return CanUse(RG_NUTS) || CanUse(RG_SKULL_MASK);
         case RE_BLUE_BUBBLE:
             // RANDOTODO Trick to use shield hylian shield as child to stun these guys
             return !grounded || CanUse(RG_NUTS) || HookshotOrBoomerang() || CanStandingShield();
+        case RE_TORCH_SLUG:
+            return !grounded || CanUse(RG_NUTS) || CanUse(RG_HOOKSHOT) || CanUse(RG_DINS_FIRE);
         default:
-            SPDLOG_ERROR("CanPassEnemy reached `default`.");
+            SPDLOG_ERROR("CanAvoidEnemy reached `default`.");
             assert(false);
             return false;
     }
@@ -944,6 +1021,7 @@ bool Logic::CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance, bool 
     if (!CanKillEnemy(enemy, distance)) {
         return false;
     }
+    // RANDOTODO assumption broke with RC_WATER_TEMPLE_GS_BEHIND_GATE, redesign GS helpers
     if (distance <= ED_MASTER_SWORD_JUMPSLASH) {
         return true;
     }
@@ -1007,41 +1085,79 @@ bool Logic::CanDetonateUprightBombFlower() {
             (EffectiveHealth() != 1 || CanUse(RG_NAYRUS_LOVE)));
 }
 
-bool Logic::MQWaterLevel(RandoWaterLevel level) {
-    // For ease of reading, I will call the triforce emblem that sets the water to WL_LOW the "Low Emblem", the one that
-    // sets it to WL_MID the "Mid Emblem", and the one that sets it to WL_HIGH the "High Emblem"
+bool Logic::CanHammerRecoilHover(bool needShield) {
+    return CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && CanUse(RG_MEGATON_HAMMER) &&
+           (!needShield || CanStandingShield());
+}
+
+bool Logic::Water3FCentralToHighEmblem() {
+    return (IsAdult && (CanUse(RG_HOVER_BOOTS) ||
+                        (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && CanUse(RG_BOMB_BAG) && TakeDamage()))) ||
+           (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && CanGroundJump() && CanUse(RG_HOVER_BOOTS)) ||
+           (Get(LOGIC_WATER_SCARECROW) && CanUse(RG_HOOKSHOT));
+}
+
+bool Logic::WaterRisingTargetTo3FCentral() {
+    return CanUse(RG_LONGSHOT) ||
+           (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) &&
+            HasExplosives() && CanUse(RG_HOVER_BOOTS));
+}
+
+/* Water level has 7 events that govern it's logic.
+ * LOGIC_WATER_LOW, LOGIC_WATER_MIDDLE say that the player for sure can set the water to this level
+ * the COULD varients of these 2, as well as LOGIC_WATER_HIGH instead check for if using those emblems would be possible
+ * if the player had a specific water level and ZL
+ * - LOGIC_WATER_COULD_LOW checks if the water level could be set low with water agnostic access
+ * - LOGIC_WATER_COULD_MIDDLE checks if the water level could be set mid if it was set to low
+ * - LOGIC_WATER_HIGH checks if the water level could be set high with water agnostic access,
+ *   HIGH is the default, so we don't need to check if we can really set it, only that we could reset it if it was
+ * changed out of logic
+ *
+ * Extending from these 3, LOGIC_WATER_COULD_LOW_FROM_HIGH and LOGIC_WATER_COULD_HIGH_FROM_MID tell us if we can move
+ * from 1 level to the next, without us first having to confirm we can always do the preceeding level first. These allow
+ * us to check for conditions where we can complete a water level loop and reach any level from any level before we know
+ * for sure we have real access. MIDDLE_EMBLEM always requires low water, so FROM_LOW is implied in
+ * LOGIC_WATER_COULD_MIDDLE.
+ *
+ * These exist because we can deduce we have access from knowing we always have access to a water level, and can then
+ * change it as needed
+ */
+bool Logic::WaterLevel(RandoWaterLevel level) {
     switch (level) {
-        // While you have to go through WL_LOW to get to Mid, the requirements for WL_LOW are stricter than WL_MID
-        // because you can always go up to WL_MID and then could need to go back to WL_HIGH to reach the Low Emblem
-        // again Thanks to this caveat you need to be able to reach and play ZL to both the High and Low Emblems to have
-        // WL_LOW in logic. Alternativly a way to reach WL_LOW from WL_MID could exist, but all glitchless methods need
-        // you to do a Low-locked action
         case WL_LOW:
-            return (Get(LOGIC_WATER_HIGH) && Get(LOGIC_WATER_LOW_FROM_HIGH)) ||
-                   (Get(LOGIC_WATER_LOW_FROM_MID) && Get(LOGIC_WATER_LOW_FROM_HIGH));
+            return Get(LOGIC_WATER_LOW) ||
+                   // if we could get LOW from HIGH and HIGH from MID, then we can move to LOW from any water level
+                   (Get(LOGIC_WATER_COULD_LOW_FROM_HIGH) &&
+                    (Get(LOGIC_WATER_COULD_HIGH_FROM_MID) || Get(LOGIC_WATER_HIGH)) && CanUse(RG_ZELDAS_LULLABY));
         case WL_LOW_OR_MID:
-            return (Get(LOGIC_WATER_HIGH) && Get(LOGIC_WATER_LOW_FROM_HIGH)) ||
-                   (Get(LOGIC_WATER_LOW_FROM_HIGH) && Get(LOGIC_WATER_MIDDLE)) ||
-                   (Get(LOGIC_WATER_LOW_FROM_MID) && Get(LOGIC_WATER_LOW_FROM_HIGH));
-        // If we can set it to High out of logic we can just repeat what we did to lower the water in the first place as
-        // High is the default. Because of this you only need to be able to use the Low and Mid Emblems, WL_LOW could be
-        // skipped if it was ever possible to play ZL underwater.
+            return Get(LOGIC_WATER_LOW) || Get(LOGIC_WATER_MIDDLE) ||
+                   // The water level is either at HIGH, in which case we can set it to LOW, LOW, or MID, so we only
+                   // have to check COULD_LOW and ZL
+                   ((Get(LOGIC_WATER_COULD_LOW_FROM_HIGH) || Get(LOGIC_WATER_LOW)) && CanUse(RG_ZELDAS_LULLABY));
         case WL_MID:
-            return Get(LOGIC_WATER_LOW_FROM_HIGH) && Get(LOGIC_WATER_MIDDLE);
-        // Despite being the initial state of water temple, WL_HIGH has the extra requirement of making sure that, if we
-        // were to lower the water out of logic, we could put it back to WL_HIGH However because it is the default
-        // state, we do not need to check if we can actually change the water level, only to make sure we can return to
-        // WL_HIGH if we found the means to play ZL out of logic. There are 2 methods to lock yourself out after playing
-        // ZL already: Not being able to reach the High Emblem and being unable to replay ZL. (I will be ignoring
-        // other-age-access shenanigains) The former check would simply be a check to see if we can reach High Emblem,
-        // but we assume the water is WL_MID (as if we can set it to WL_LOW, we can set it to WL_MID, as Mid Emblem has
-        // no requirements) The latter check can be assumed for now but will want a revisit once OI tricks are added.
+            return Get(LOGIC_WATER_MIDDLE) ||
+                   // LOGIC_WATER_COULD_MIDDLE is LOGIC_WATER_COULD_MIDDLE_FROM_LOW in practice, due to WL_LOW being a
+                   // hard requirement for WL_MID
+                   (Get(LOGIC_WATER_LOW) && Get(LOGIC_WATER_COULD_MIDDLE)) ||
+                   // If we have COULD_MIDDLE, we know we could move to LOW from HIGH,
+                   // we're either already MID, on LOW can set MID, or on HIGH so you can set LOW and thus MID.
+                   ((Get(LOGIC_WATER_COULD_LOW_FROM_HIGH) || Get(LOGIC_WATER_COULD_LOW)) &&
+                    Get(LOGIC_WATER_COULD_MIDDLE) && CanUse(RG_ZELDAS_LULLABY));
         case WL_HIGH:
-            return Get(LOGIC_WATER_REACHED_HIGH_EMBLEM);
+            // If we don't have ZL, we're stuck on high anyway, so we only need to check for if we can reset it to high
+            return Get(LOGIC_WATER_HIGH) ||
+                   // If water is MID and we COULD_HIGH_FROM_MID, then if water is MID we can set it HIGH
+                   // so we only need to check if we could make it MID from LOW
+                   (Get(LOGIC_WATER_COULD_HIGH_FROM_MID) && Get(LOGIC_WATER_COULD_MIDDLE));
         case WL_HIGH_OR_MID:
-            return Get(LOGIC_WATER_REACHED_HIGH_EMBLEM) || (Get(LOGIC_WATER_LOW_FROM_HIGH) && Get(LOGIC_WATER_MIDDLE));
+            // If we don't have ZL, we're stuck on high anyway, so we only need to check for if we can reset it to high
+            return Get(LOGIC_WATER_MIDDLE) || Get(LOGIC_WATER_HIGH) ||
+                   // The water level is either at LOW, in which case COULD_MIDDLE can set it to MID, MID, or HIGH, so
+                   // we only have to check COULD_MIDDLE if we don't have ZL, then we are at high, so we can skip that
+                   // too
+                   (Get(LOGIC_WATER_COULD_MIDDLE));
     }
-    SPDLOG_ERROR("MQWaterLevel reached `return false;`. Missing case for a Water Level");
+    SPDLOG_ERROR("WaterLevel reached `return false;`. Missing case for a Water Level");
     assert(false);
     return false;
 }
@@ -1167,8 +1283,38 @@ bool Logic::BlueFire() {
     return CanUse(RG_BOTTLE_WITH_BLUE_FIRE) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
 }
 
-bool Logic::CanBreakPots() {
-    return true;
+bool Logic::CanBreakPots(EnemyDistance distance, bool wallOrFloor, bool inWater) {
+    bool hit = false;
+    switch (distance) {
+        case ED_CLOSE:
+            hit = HasItem(RG_POWER_BRACELET);
+            [[fallthrough]];
+        case ED_SHORT_JUMPSLASH:
+            hit = hit || CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_GIANTS_KNIFE);
+            [[fallthrough]];
+        case ED_MASTER_SWORD_JUMPSLASH:
+            hit = hit || CanUse(RG_MASTER_SWORD);
+            [[fallthrough]];
+        case ED_LONG_JUMPSLASH:
+            hit = hit || CanUse(RG_BIGGORON_SWORD) || CanUse(RG_STICKS);
+            [[fallthrough]];
+        case ED_BOMB_THROW:
+            hit = hit || (!inWater && CanUse(RG_BOMB_BAG));
+            [[fallthrough]];
+        case ED_BOOMERANG:
+            hit = hit || CanUse(RG_BOOMERANG);
+            [[fallthrough]];
+        case ED_HOOKSHOT:
+            hit = hit || CanUse(RG_HOOKSHOT);
+            [[fallthrough]];
+        case ED_LONGSHOT:
+            hit = hit || CanUse(RG_LONGSHOT);
+            [[fallthrough]];
+        case ED_FAR:
+            hit = hit || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
+            break;
+    }
+    return hit || (wallOrFloor && CanUse(RG_BOMBCHU_5));
 }
 
 bool Logic::CanBreakCrates() {
@@ -1176,7 +1322,7 @@ bool Logic::CanBreakCrates() {
 }
 
 bool Logic::CanBreakSmallCrates() {
-    return true;
+    return CanJumpslash() || HasExplosives() || HasItem(RG_POWER_BRACELET);
 }
 
 bool Logic::CanBonkTrees() {
@@ -1300,6 +1446,10 @@ bool Logic::HasFireSource() {
 
 bool Logic::HasFireSourceWithTorch() {
     return HasFireSource() || CanUse(RG_STICKS);
+}
+
+bool Logic::SunlightArrows() {
+    return ctx->GetOption(RSK_SUNLIGHT_ARROWS) && CanUse(RG_LIGHT_ARROWS);
 }
 
 // Is this best off signaling what you have already traded, or what step you are currently on?
@@ -1446,6 +1596,14 @@ std::map<RandomizerGet, uint32_t> Logic::RandoGetToRandInf = {
     { RG_OCARINA_C_DOWN_BUTTON, RAND_INF_HAS_OCARINA_C_DOWN },
     { RG_OCARINA_C_LEFT_BUTTON, RAND_INF_HAS_OCARINA_C_LEFT },
     { RG_OCARINA_C_RIGHT_BUTTON, RAND_INF_HAS_OCARINA_C_RIGHT },
+    { RG_KEATON_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_KEATON },
+    { RG_SKULL_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_SKULL },
+    { RG_SPOOKY_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_SPOOKY },
+    { RG_BUNNY_HOOD, RAND_INF_CHILD_TRADES_HAS_MASK_BUNNY },
+    { RG_GORON_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_GORON },
+    { RG_ZORA_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_ZORA },
+    { RG_GERUDO_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_GERUDO },
+    { RG_MASK_OF_TRUTH, RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH },
     { RG_SKELETON_KEY, RAND_INF_HAS_SKELETON_KEY },
     { RG_GREG_RUPEE, RAND_INF_GREG_FOUND },
     { RG_FISHING_POLE, RAND_INF_FISHING_POLE_FOUND },
@@ -1602,6 +1760,15 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_CLAIM_CHECK:
                     SetRandoInf(randoGet - RG_COJIRO + RAND_INF_ADULT_TRADES_HAS_COJIRO, state);
                     break;
+                case RG_CLIMB:
+                    SetRandoInf(RAND_INF_CAN_CLIMB, state);
+                    break;
+                case RG_CRAWL:
+                    SetRandoInf(RAND_INF_CAN_CRAWL, state);
+                    break;
+                case RG_OPEN_CHEST:
+                    SetRandoInf(RAND_INF_CAN_OPEN_CHEST, state);
+                    break;
                 case RG_PROGRESSIVE_HOOKSHOT: {
                     uint8_t i;
                     for (i = 0; i < 3; i++) {
@@ -1619,8 +1786,14 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 } break;
                 case RG_PROGRESSIVE_STRENGTH: {
                     auto currentLevel = CurrentUpgrade(UPG_STRENGTH);
-                    auto newLevel = currentLevel + (!state ? -1 : 1);
-                    SetUpgrade(UPG_STRENGTH, newLevel);
+                    if (!CheckRandoInf(RAND_INF_CAN_GRAB) && state) {
+                        SetRandoInf(RAND_INF_CAN_GRAB, true);
+                    } else if (currentLevel == 0 && !state) {
+                        SetRandoInf(RAND_INF_CAN_GRAB, false);
+                    } else {
+                        auto newLevel = currentLevel + (!state ? -1 : 1);
+                        SetUpgrade(UPG_STRENGTH, newLevel);
+                    }
                 } break;
                 case RG_PROGRESSIVE_BOMB_BAG: {
                     auto realGI = item.GetGIEntry();
@@ -1822,6 +1995,14 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_OCARINA_C_DOWN_BUTTON:
                 case RG_OCARINA_C_LEFT_BUTTON:
                 case RG_OCARINA_C_RIGHT_BUTTON:
+                case RG_KEATON_MASK:
+                case RG_SKULL_MASK:
+                case RG_SPOOKY_MASK:
+                case RG_BUNNY_HOOD:
+                case RG_GORON_MASK:
+                case RG_ZORA_MASK:
+                case RG_GERUDO_MASK:
+                case RG_MASK_OF_TRUTH:
                 case RG_GREG_RUPEE:
                 case RG_FISHING_POLE:
                 case RG_GUARD_HOUSE_KEY:
@@ -2159,6 +2340,21 @@ void Logic::SetQuestItem(uint32_t item, bool state) {
     }
 }
 
+const std::vector<uint8_t>& GetThievesHideoutSmallKeyDoors() {
+    // Retrieved from scenes/shared/gerudoway_scene/gerudoway_room_%d
+    // SOH::SceneCommandID::SetActorList, actor.id == ACTOR_DOOR_GERUDO, actor.params & 0x3F
+    static const std::vector<uint8_t> normalSmallKeyDoors{ 1, 2, 3, 4 };
+    static const std::vector<uint8_t> fastSmallKeyDoors{ 1 };
+    static const std::vector<uint8_t> freeSmallKeyDoors{};
+
+    if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL)) {
+        return normalSmallKeyDoors;
+    } else if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
+        return fastSmallKeyDoors;
+    }
+    return freeSmallKeyDoors;
+}
+
 // Get the swch bit positions for the dungeon
 const std::vector<uint8_t>& GetDungeonSmallKeyDoors(SceneID sceneId) {
     static const std::vector<uint8_t> emptyVector;
@@ -2224,7 +2420,8 @@ const std::vector<uint8_t>& GetDungeonSmallKeyDoors(SceneID sceneId) {
 }
 
 int8_t Logic::GetUsedSmallKeyCount(SceneID sceneId) {
-    const auto& smallKeyDoors = GetDungeonSmallKeyDoors(sceneId);
+    const auto& smallKeyDoors =
+        (sceneId == SCENE_THIEVES_HIDEOUT) ? GetThievesHideoutSmallKeyDoors() : GetDungeonSmallKeyDoors(sceneId);
 
     // Get the swch value for the scene
     uint32_t swch;
@@ -2324,6 +2521,120 @@ bool Logic::IsFireLoopLocked() {
            ctx->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON);
 }
 
+bool Logic::ReachScarecrow() {
+    return ScarecrowsSong() && CanUse(RG_HOOKSHOT);
+}
+
+bool Logic::ReachDistantScarecrow() {
+    return ScarecrowsSong() && CanUse(RG_LONGSHOT);
+}
+
+bool Logic::SummonEpona() {
+    return IsAdult && Get(LOGIC_FREED_EPONA) && CanUse(RG_EPONAS_SONG);
+}
+
+bool Logic::IsReverseAccessPossible() {
+    // If we ever allow dungeon entrances to connect to boss rooms directly in dungeon chains, or for 1 boss door to
+    // lead to another dungeons boss door, add RSK_MIX_DUNGEON_ENTRANCES to the final condition
+    // RANDOTODO Check for Age-Locked Boss entrances + decoupled + Ganon's tower when it is shuffled
+    return !ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) &&
+           ((ctx->GetOption(RSK_DECOUPLED_ENTRANCES) &&
+             ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL)) ||
+            (ctx->GetOption(RSK_MIX_BOSS_ENTRANCES) &&
+             (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES))));
+}
+
+bool Logic::SpiritExplosiveKeyLogic() {
+    return SmallKeys(SCENE_SPIRIT_TEMPLE, HasExplosives() ? 1 : 2);
+}
+
+bool Logic::SpiritWestToSkull() {
+    return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || CanUse(RG_HOVER_BOOTS) || ReachScarecrow();
+}
+
+bool Logic::SpiritSunBlockSouthLedge() {
+    // also possible to do a backwalk hover + backflip if you equip hovers as you start backwalk to accelerate faster
+    return HasItem(RG_POWER_BRACELET) || IsAdult || CanKillEnemy(RE_BEAMOS) /*|| BunnyHovers()*/ ||
+           (CanUse(RG_HOOKSHOT) &&
+            (HasFireSource() ||
+             (Get(LOGIC_SPIRIT_SUN_BLOCK_TORCH) &&
+              (CanUse(RG_STICKS) || (ctx->GetTrickOption(RT_SPIRIT_SUN_CHEST) && CanUse(RG_FAIRY_BOW))))));
+}
+
+bool Logic::SpiritEastToSwitch() {
+    return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || CanUse(RG_HOVER_BOOTS) ||
+           (CanUse(RG_ZELDAS_LULLABY) && CanUse(RG_HOOKSHOT));
+}
+
+// Combines crossing the ledge directly and the jump from the hand
+bool Logic::MQSpiritWestToPots() {
+    return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || CanUse(RG_HOVER_BOOTS) || CanUse(RG_SONG_OF_TIME);
+}
+
+bool Logic::MQSpiritStatueToSunBlock() {
+    return (IsAdult || ctx->GetTrickOption(RT_SPIRIT_MQ_SUN_BLOCK_SOT) ||
+            CanUse(RG_SONG_OF_TIME) /* || CanBunnyJump()*/) &&
+           HasItem(RG_POWER_BRACELET);
+}
+
+bool Logic::MQSpiritStatueSouthDoor() {
+    return HasFireSource() || (ctx->GetTrickOption(RT_SPIRIT_MQ_FROZEN_EYE) && CanUse(RG_FAIRY_BOW) &&
+                               CanUse(RG_SONG_OF_TIME) && (HasItem(RG_CLIMB) || CanUse(RG_HOOKSHOT)));
+}
+
+bool Logic::MQSpirit4KeyColossus() {
+    // !QUANTUM LOGIC!
+    // We only need 4 keys and the ability to reach both hands for adult to logically be able to drop down onto Desert
+    // Colossus This is because there are only 3 keys that can be wasted without opening up either this lock to East
+    // hand, or the West Hand lock through Sun Block Room and both directions allow you to drop onto colossus
+    // logic->CanKillEnemy(RE_FLOORMASTER) is implied
+    return CanAvoidEnemy(RE_BEAMOS, true, 4) && CanUse(RG_SONG_OF_TIME) && CanJumpslash() &&
+           (HasItem(RG_POWER_BRACELET) || SunlightArrows()) &&
+           (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || CanUse(RG_LENS_OF_TRUTH)) && CanKillEnemy(RE_IRON_KNUCKLE) &&
+           CanUse(RG_HOOKSHOT);
+}
+
+bool Logic::MQSpirit4KeyWestHand() {
+    // !QUANTUM LOGIC!
+    // Continuing from MQSpirit4KeyColossus, if we also have a longshot, we can go from the East hand to the West hand,
+    // meaning we always have access to East Hand
+    return CanUse(RG_LONGSHOT) && MQSpirit4KeyColossus();
+}
+// This version of the function handles Shared Access for child, based on what adult could do if they existed
+bool Logic::CouldMQSpirit4KeyWestHand() {
+    return CanAvoidEnemy(RE_BEAMOS, true, 4) && CanUse(RG_SONG_OF_TIME) &&
+           (HasItem(RG_MASTER_SWORD) || HasItem(RG_BIGGORON_SWORD) || HasItem(RG_MEGATON_HAMMER)) &&
+           (HasItem(RG_POWER_BRACELET) || SunlightArrows()) &&
+           (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || CanUse(RG_LENS_OF_TRUTH)) && HasItem(RG_LONGSHOT);
+}
+
+// !QUANTUM LOGIC!
+// With 3 keys, you cannot lock adult out of leaving spirit onto the hands and jumping down, as you would have to
+// open the west hand door and then adult could climb through sun block room to jump down from there
+// This requires that adult can complete both routes
+// If we have the longshot, we can also guarantee access to the outer west hand as you can longshot from the east hand
+// to the west Implies CanKillEnemy(RE_IRON_KNUCKLE)
+bool Logic::OuterWestHandLogic() {
+    return HasExplosives() && (HasItem(RG_CLIMB) || CanUse(RG_LONGSHOT)) && HasItem(RG_POWER_BRACELET) &&
+           SmallKeys(SCENE_SPIRIT_TEMPLE, HasItem(RG_LONGSHOT) ? 3 : 5);
+}
+
+bool Logic::OuterWestHandMQLogic() {
+    return MQSpiritStatueToSunBlock() && SmallKeys(SCENE_SPIRIT_TEMPLE, CouldMQSpirit4KeyWestHand() ? 4 : 7);
+}
+
+bool Logic::StatueRoomMQKeyLogic() {
+    // !QUANTUM LOGIC!
+    // If child enters in reverse, then they have access to Certain Access to Broken Wall room in 6 keys,
+    // the ability to hit switches and the ability to climb because only child can reach the initial child lock
+    // without opening the Statue room to Broken Wall Room lock first
+    // if adult can ever cross crawlspaces this becomes more complicated.
+    return SmallKeys(SCENE_SPIRIT_TEMPLE, IsChild && Get(LOGIC_REVERSE_SPIRIT_CHILD) && CanHitSwitch() &&
+                                                  (HasItem(RG_CLIMB) || CanUse(RG_LONGSHOT))
+                                              ? 6
+                                              : 7);
+}
+
 void Logic::Reset(bool resetSaveContext /*= true*/) {
     if (resetSaveContext) {
         NewSaveContext();
@@ -2347,6 +2658,26 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         // If we're not shuffling swim, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_SWIM).Is(false)) {
             SetRandoInf(RAND_INF_CAN_SWIM, true);
+        }
+
+        // If we're not shuffling grab, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_GRAB).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_GRAB, true);
+        }
+
+        // If we're not shuffling climb, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_CLIMB).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_CLIMB, true);
+        }
+
+        // If we're not shuffling crawl, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_CRAWL).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_CRAWL, true);
+        }
+
+        // If we're not shuffling open chest, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_OPEN_CHEST, true);
         }
 
         // If we're not shuffling child's wallet, we start with it

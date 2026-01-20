@@ -9,18 +9,18 @@ void RegionTable_Init_GoronCity() {
         //Events
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                           logic->CallGossipFairyExceptSuns()),
         EVENT_ACCESS(LOGIC_STICK_ACCESS,                           logic->IsChild && logic->CanBreakPots()),
-        EVENT_ACCESS(LOGIC_BUG_ACCESS,                             logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)),
+        EVENT_ACCESS(LOGIC_BUG_ACCESS,                             (logic->BlastOrSmash() && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_SILVER_GAUNTLETS)),
         EVENT_ACCESS(LOGIC_GORON_CITY_CHILD_FIRE,                  logic->IsChild && logic->CanUse(RG_DINS_FIRE)),
         EVENT_ACCESS(LOGIC_GORON_CITY_WOODS_WARP_OPEN,             logic->CanDetonateUprightBombFlower() || logic->CanUse(RG_MEGATON_HAMMER) || logic->Get(LOGIC_GORON_CITY_CHILD_FIRE)),
         EVENT_ACCESS(LOGIC_GORON_CITY_DARUNIAS_DOOR_OPEN_CHILD,    logic->IsChild && logic->CanUse(RG_ZELDAS_LULLABY)),
         // bottle animation causes similar complications as stopping goron with Din's Fire, only put in logic when both din's & blue fire tricks enabled
         EVENT_ACCESS(LOGIC_GORON_CITY_STOP_ROLLING_GORON_AS_ADULT, logic->IsAdult && (logic->HasItem(RG_GORONS_BRACELET) || logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) ||
-                                                                          (ctx->GetTrickOption(RT_GC_LINK_GORON_DINS) && (logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)))))),
+                                                                         (ctx->GetTrickOption(RT_GC_LINK_GORON_DINS) && (logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)))))),
     }, {
         //Locations
-        LOCATION(RC_GC_MAZE_LEFT_CHEST,             logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_SILVER_GAUNTLETS) || (ctx->GetTrickOption(RT_GC_LEFTMOST) && logic->HasExplosives() && logic->CanUse(RG_HOVER_BOOTS))),
-        LOCATION(RC_GC_MAZE_CENTER_CHEST,           logic->BlastOrSmash()  || logic->CanUse(RG_SILVER_GAUNTLETS)),
-        LOCATION(RC_GC_MAZE_RIGHT_CHEST,            logic->BlastOrSmash()  || logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_LEFT_CHEST,             (logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_SILVER_GAUNTLETS) || (ctx->GetTrickOption(RT_GC_LEFTMOST) && logic->HasExplosives() && logic->CanUse(RG_HOVER_BOOTS))) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_GC_MAZE_CENTER_CHEST,           (logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_GC_MAZE_RIGHT_CHEST,            (logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_GC_POT_FREESTANDING_POH,        logic->IsChild && logic->Get(LOGIC_GORON_CITY_CHILD_FIRE) && (logic->CanUse(RG_BOMB_BAG) || (logic->HasItem(RG_GORONS_BRACELET) && ctx->GetTrickOption(RT_GC_POT_STRENGTH)) || (logic->CanUse(RG_BOMBCHU_5) && ctx->GetTrickOption(RT_GC_POT)))),
         LOCATION(RC_GC_ROLLING_GORON_AS_CHILD,      logic->IsChild && (logic->HasExplosives() || (logic->HasItem(RG_GORONS_BRACELET) && ctx->GetTrickOption(RT_GC_ROLLING_STRENGTH)))),
         LOCATION(RC_GC_ROLLING_GORON_AS_ADULT,      logic->Get(LOGIC_GORON_CITY_STOP_ROLLING_GORON_AS_ADULT)),
@@ -82,7 +82,7 @@ void RegionTable_Init_GoronCity() {
     }, {
         //Exits
         ENTRANCE(RR_GORON_CITY,      true),
-        ENTRANCE(RR_DMC_LOWER_LOCAL, logic->IsAdult),
+        ENTRANCE(RR_DMC_LOWER_LOCAL, logic->IsAdult && logic->HasItem(RG_POWER_BRACELET)),
     });
 
     areaTable[RR_GC_GROTTO_PLATFORM] = Region("GC Grotto Platform", SCENE_GORON_CITY, {}, {}, {

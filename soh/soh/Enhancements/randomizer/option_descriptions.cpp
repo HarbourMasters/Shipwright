@@ -103,6 +103,8 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Random Number - A random number and set of trials will be required.";
     mOptionDescriptions[RSK_TRIAL_COUNT] = "Set the number of trials required to enter Ganon's Tower.";
+    mOptionDescriptions[RSK_MEDALLION_LOCKED_TRIALS] =
+        "Doors to trials will be barred until their corresponding medallion is acquired.";
     mOptionDescriptions[RSK_MQ_DUNGEON_RANDOM] =
         "Sets the number of Master Quest Dungeons that are shuffled into the pool.\n"
         "\n"
@@ -124,10 +126,11 @@ void Settings::CreateOptionDescriptions() {
         "set to either MQ or Random here, you will have fewer MQ Dungeons than the number you "
         "set.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT] =
-        "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n\n"
-        "When the required amount of pieces have been found, the game is saved and Ganon's Boss key is given "
-        "to you when you load back into the game if you desire to beat Ganon afterwards.\n\n"
-        "Keep in mind Ganon might not be logically beatable when \"All Locations Reachable\" is turned off.";
+        "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n"
+        "\n"
+        "If set to Win: the game is saved and the credits roll, though you can load back in to receive Ganon's "
+        "Castle Boss Key. Keep in mind that Ganon might not be logically reachable when \"All Locations Reachable\" "
+        "is disabled.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL] =
         "The amount of Triforce pieces that will be placed in the world. "
         "Keep in mind seed generation can fail if more pieces are placed than there are junk items in the item pool.";
@@ -150,6 +153,8 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Full - Shuffle the entrances of all boss rooms together. Child may be expected to defeat Phantom Ganon and/or "
         "Bongo Bongo.";
+    mOptionDescriptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE] =
+        "Shuffle the entrance from Ganon's Castle to Ganon's Tower into the pool of boss entrances.";
     mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES] =
         "Shuffle the pool of Overworld entrances, which corresponds to almost all loading zones between overworld "
         "areas.\n"
@@ -248,11 +253,16 @@ void Settings::CreateOptionDescriptions() {
         "This will require finding the buttons before being able to use them in songs.";
 
     mOptionDescriptions[RSK_SHUFFLE_SWIM] =
-        "Shuffles the ability to Swim into the item pool.\n"
-        "The ability to swim has to be found as an item (you can still be underwater if you use iron boots).\n"
+        "Shuffles the ability to Swim into the item pool as a progressive upgrade before Silver Scale.\n"
+        "The ability to swim has to be found as an item (you can still be underwater with iron boots).\n"
         "\n"
         "If you enter a water entrance without swim you will be respawned on land to prevent infinite death loops.\n"
         "If you void out in Water Temple you will immediately be kicked out to prevent a softlock.";
+    mOptionDescriptions[RSK_SHUFFLE_GRAB] =
+        "Shuffle the ability to grab as a progressive upgrade before Goron Bracelet.";
+    mOptionDescriptions[RSK_SHUFFLE_CLIMB] = "Shuffle the ability to climb ladders into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_CRAWL] = "Shuffles the ability to use crawlspaces into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST] = "Shuffles the ability to open chests into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG] = "Shuffles the Weird Egg from Malon in to the item pool. Enabling "
                                                  "\"Skip Child Zelda\" disables this feature.\n"
                                                  "\n"
@@ -621,8 +631,13 @@ void Settings::CreateOptionDescriptions() {
         "Start with Zelda's Letter and the item Impa would normally give you and skip the sequence up "
         "until after meeting Zelda. Disables the ability to shuffle Weird Egg.";
     mOptionDescriptions[RSK_SKIP_EPONA_RACE] = "Epona can be summoned with Epona's Song without needing to race Ingo.";
-    mOptionDescriptions[RSK_COMPLETE_MASK_QUEST] =
-        "Once the Happy Mask Shop is opened, all masks will be available to be borrowed.";
+    mOptionDescriptions[RSK_MASK_QUEST] =
+        "How masks are acquired.\n"
+        "Vanilla - Mask trade quest.\n"
+        "\n"
+        "Completed - Once the Happy Mask Shop is opened, all masks will be available to be borrowed.\n"
+        "\n"
+        "Shuffle - Happy Mask Shop never opens, masks are shuffled with rest of items.";
     mOptionDescriptions[RSK_SKIP_SCARECROWS_SONG] =
         "Start with the ability to summon Pierre the Scarecrow. Pulling out an Ocarina in the usual locations will "
         "automatically summon him.\n"
@@ -638,18 +653,18 @@ void Settings::CreateOptionDescriptions() {
                                          "Scarce - Some excess items are removed, including health upgrades.\n"
                                          "\n"
                                          "Minimal - Most excess items are removed.";
-    mOptionDescriptions[RSK_ICE_TRAPS] = "Sets how many items are replaced by ice traps.\n"
-                                         "\n"
-                                         "Off - No ice traps.\n"
-                                         "\n"
-                                         "Normal - Only Ice Traps from the base item pool are shuffled in.\n"
-                                         "\n"
-                                         "Extra - Chance to replace added junk items with additional ice traps.\n"
-                                         "\n"
-                                         "Mayhem - All added junk items will be Ice Traps.\n"
-                                         "\n"
-                                         "Onslaught - All junk items will be replaced by Ice Traps, even those "
-                                         "in the base pool.";
+    mOptionDescriptions[RSK_BASE_ICE_TRAPS] =
+        "Sets if ice traps that exist in vanilla are shuffled into the item pool.\n"
+        "If this is on, 1 Trap will always be added to the pool,\n"
+        "an additional trap will be added if Gerudo Training Grounds\n"
+        "is NOT master quest,\n"
+        "and 4 more will be added if Ganon's Castle is NOT Master Quest.";
+    mOptionDescriptions[RSK_ADDITIONAL_ICE_TRAPS] =
+        "Sets how many more Ice Traps will be added to item pool,\n"
+        "assuming there is enough space after placing Progression Items.\n\n"
+        "You do not need to have base ice traps on for this setting to work.";
+    mOptionDescriptions[RSK_ICE_TRAP_PERCENT] =
+        "If set above 0, each Junk item has that chance of being replaced with an extra Ice Trap.";
     mOptionDescriptions[RSK_GOSSIP_STONE_HINTS] =
         "Allows Gossip Stones to provide hints on item locations. Hints mentioning "
         "\"Way of the Hero\" indicate a location that holds an item required to beat "
@@ -701,6 +716,7 @@ void Settings::CreateOptionDescriptions() {
         "Talking to the chest game owner after buying a key will tell you the location of Greg the Green Rupee.";
     mOptionDescriptions[RSK_LOACH_HINT] = "Talking to the fishing pond owner and asking to talk about something will "
                                           "tell you what's the reward for the Hyrule Loach.";
+    mOptionDescriptions[RSK_BOSS_KEY_HINT] = "Navi will tell where boss key can be found when prompted at boss door.";
     mOptionDescriptions[RSK_SARIA_HINT] = "Talking to Saria either in person or through Saria's Song will tell you the "
                                           "location of a progressive magic meter.";
     mOptionDescriptions[RSK_MIDO_HINT] = "Talking to Mido as child will tell you the location of the Kokiri Sword.";
@@ -766,6 +782,9 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SUNLIGHT_ARROWS] =
         "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
+    mOptionDescriptions[RSK_ROCS_FEATHER] =
+        "Adds Roc's Feather to the item pool. Roc's Feather is a custom item granting the player a jump on demand. "
+        "The jump can also be used when already in mid-air. Roc's Feather is not considered by logic.";
     mOptionDescriptions[RSK_SLINGBOW_BREAK_BEEHIVES] =
         "Allows Slingshot and Bow to break beehives when Beehive Shuffle is turned on.";
     mOptionDescriptions[RSK_LOGIC_RULES] =

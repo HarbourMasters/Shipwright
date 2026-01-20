@@ -7,7 +7,7 @@ void RegionTable_Init_DesertColossus() {
     // clang-format off
     areaTable[RR_DESERT_COLOSSUS] = Region("Desert Colossus", SCENE_DESERT_COLOSSUS, {
         //Events
-        EVENT_ACCESS(LOGIC_BUG_ACCESS, true),
+        EVENT_ACCESS(LOGIC_BUG_ACCESS, logic->HasItem(RG_POWER_BRACELET)),
     }, {
         //Locations
         LOCATION(RC_COLOSSUS_FREESTANDING_POH,       logic->IsAdult && CanPlantBean(RR_DESERT_COLOSSUS, RG_DESERT_COLOSSUS_BEAN_SOUL)),
@@ -23,7 +23,7 @@ void RegionTable_Init_DesertColossus() {
     }, {
         //Exits
         //You can kinda get the fairies without entering the water, but it relies on them cooperating and leevers are jerks. should be a trick
-        ENTRANCE(RR_DESERT_COLOSSUS_OASIS,         logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_EMPTY_BOTTLE))),
+        ENTRANCE(RR_DESERT_COLOSSUS_OASIS,         logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->HasBottle())),
         ENTRANCE(RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN, logic->HasExplosives()),
         ENTRANCE(RR_SPIRIT_TEMPLE_ENTRYWAY,        true),
         ENTRANCE(RR_WASTELAND_NEAR_COLOSSUS,       true),

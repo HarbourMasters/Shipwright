@@ -26,19 +26,23 @@
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
-#include "soh/Enhancements/randomizer/randomizer_settings_window.h"
 #include "soh/Enhancements/timesplits/TimeSplits.h"
 #include "soh/Enhancements/randomizer/Plandomizer.h"
 #include "SohModals.h"
 
 namespace SohGui {
 void SetupHooks();
+void SetupMenu();
+void SetupMenuElements();
 void SetupGuiElements();
 void Draw();
 void Destroy();
 void RegisterPopup(std::string title, std::string message, std::string button1 = "OK", std::string button2 = "",
                    std::function<void()> button1callback = nullptr, std::function<void()> button2callback = nullptr);
+size_t PopupsQueued();
+bool DismissPopup(std::string title);
 void ShowRandomizerSettingsMenu();
+void ShowEscMenu();
 UIWidgets::Colors GetMenuThemeColor();
 } // namespace SohGui
 

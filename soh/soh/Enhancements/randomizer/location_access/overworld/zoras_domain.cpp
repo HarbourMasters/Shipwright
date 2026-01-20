@@ -8,15 +8,15 @@ void RegionTable_Init_ZorasDomain() {
     areaTable[RR_ZORAS_DOMAIN] = Region("Zoras Domain", SCENE_ZORAS_DOMAIN, {
         //Events
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,         logic->CallGossipFairyExceptSuns()),
-        EVENT_ACCESS(LOGIC_NUT_ACCESS,           true),
-        EVENT_ACCESS(LOGIC_STICK_ACCESS,         logic->IsChild),
+        EVENT_ACCESS(LOGIC_NUT_ACCESS,           logic->CanBreakPots()),
+        EVENT_ACCESS(LOGIC_STICK_ACCESS,         logic->IsChild && logic->CanBreakPots()),
         EVENT_ACCESS(LOGIC_FISH_ACCESS,          logic->IsChild),
         EVENT_ACCESS(LOGIC_KING_ZORA_THAWED,     logic->IsAdult && logic->BlueFire()),
         EVENT_ACCESS(LOGIC_DELIVER_RUTOS_LETTER, logic->CanUse(RG_RUTOS_LETTER) && logic->IsChild && ctx->GetOption(RSK_ZORAS_FOUNTAIN).IsNot(RO_ZF_OPEN)),
     }, {
         //Locations
         LOCATION(RC_ZD_DIVING_MINIGAME,                     logic->HasItem(RG_BRONZE_SCALE) && logic->HasItem(RG_CHILD_WALLET) && logic->IsChild),
-        LOCATION(RC_ZD_CHEST,                               logic->IsChild && logic->CanUse(RG_STICKS)),
+        LOCATION(RC_ZD_CHEST,                               logic->IsChild && logic->CanUse(RG_STICKS) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_ZD_KING_ZORA_THAWED,                    logic->IsAdult && logic->Get(LOGIC_KING_ZORA_THAWED)),
         LOCATION(RC_ZD_TRADE_PRESCRIPTION,                  logic->IsAdult && logic->Get(LOGIC_KING_ZORA_THAWED) && logic->CanUse(RG_PRESCRIPTION)),
         LOCATION(RC_ZD_GS_FROZEN_WATERFALL,                 logic->IsAdult && (logic->HookshotOrBoomerang() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || (logic->CanUse(RG_MAGIC_SINGLE) && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))) || (ctx->GetTrickOption(RT_ZD_GS) && logic->CanJumpslashExceptHammer())) && logic->CanGetNightTimeGS()),

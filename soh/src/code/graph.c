@@ -408,9 +408,11 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
         sGraphUpdateTime = time;
     }
 
+    s32 mask = CVarGetInteger("gDeveloperTools.MapSelectBtn", BTN_Z | BTN_L | BTN_R);
+
     if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) {
-        if (CHECK_BTN_ALL(gameState->input[0].press.button, BTN_Z) &&
-            CHECK_BTN_ALL(gameState->input[0].cur.button, BTN_L | BTN_R)) {
+        if (CHECK_BTN_ANY(gameState->input[0].press.button, mask) &&
+            CHECK_BTN_ALL(gameState->input[0].cur.button, mask)) {
             gSaveContext.gameMode = GAMEMODE_NORMAL;
             SET_NEXT_GAMESTATE(gameState, Select_Init, SelectContext);
             gameState->running = false;

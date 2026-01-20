@@ -158,13 +158,13 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
         player->actor.world.pos.y += diff.y * player->actor.scale.y;
     }
 
-    if (player->modelGroup != Player_ActionToModelGroup(player, player->itemAction)) {
+    if (player->modelGroup != client.modelGroup) {
         // Hack to account for usage of gSaveContext
         s32 originalAge = gSaveContext.linkAge;
         gSaveContext.linkAge = client.linkAge;
         u8 originalButtonItem0 = gSaveContext.equips.buttonItems[0];
         gSaveContext.equips.buttonItems[0] = client.buttonItem0;
-        Player_SetModelGroup(player, Player_ActionToModelGroup(player, player->itemAction));
+        Player_SetModelGroup(player, client.modelGroup);
         gSaveContext.linkAge = originalAge;
         gSaveContext.equips.buttonItems[0] = originalButtonItem0;
     }

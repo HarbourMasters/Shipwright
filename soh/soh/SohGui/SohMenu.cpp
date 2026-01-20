@@ -1,12 +1,12 @@
 #include "SohMenu.h"
-#include "soh/OTRGlobals.h"
-#include "soh/Enhancements/controls/SohInputEditorWindow.h"
 #include <ship/window/gui/GuiMenuBar.h>
 #include <ship/window/gui/GuiElement.h>
-#include <variant>
 #include <ship/utils/StringHelper.h>
 #include <spdlog/fmt/fmt.h>
-#include <tuple>
+
+extern "C" {
+extern PlayState* gPlayState;
+}
 
 extern std::unordered_map<s16, const char*> warpPointSceneList;
 
@@ -45,6 +45,9 @@ WidgetInfo& SohMenu::AddWidget(WidgetPath& pathInfo, std::string widgetName, Wid
         case WIDGET_CVAR_SLIDER_FLOAT:
             widget.options = std::make_shared<FloatSliderOptions>();
             break;
+        case WIDGET_CVAR_BTN_SELECTOR:
+            widget.options = std::make_shared<BtnSelectorOptions>();
+            break;
         case WIDGET_SLIDER_INT:
         case WIDGET_CVAR_SLIDER_INT:
             widget.options = std::make_shared<IntSliderOptions>();
@@ -81,8 +84,7 @@ SohMenu::SohMenu(const std::string& consoleVariable, const std::string& name)
     : Menu(consoleVariable, name, 0, UIWidgets::Colors::LightBlue) {
 }
 
-void SohMenu::InitElement() {
-    Ship::Menu::InitElement();
+void SohMenu::AddMenuElements() {
     AddMenuSettings();
     AddMenuEnhancements();
     AddMenuRandomizer();
@@ -96,6 +98,12 @@ void SohMenu::InitElement() {
     for (auto& initFunc : MenuInit::GetInitFuncs()) {
         initFunc();
     }
+
+    mMenuElementsInitialized = true;
+}
+
+void SohMenu::InitElement() {
+    Ship::Menu::InitElement();
 
     disabledMap = {
         { DISABLE_FOR_NO_VSYNC,
@@ -154,12 +162,6 @@ void SohMenu::InitElement() {
                return !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0);
            },
             "Vertical Resolution Toggle is Off" } },
-        { DISABLE_FOR_BOOT_TO_DEBUG_WARP_SCREEN_ON,
-          { [](disabledInfo& info) -> bool {
-               return CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) &&
-                      CVarGetInteger(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"), 0);
-           },
-            "\"Boot To Debug Warp Screen\" Enabled (see Dev Tools -> General)" } },
     };
 }
 
@@ -172,6 +174,8 @@ void SohMenu::Draw() {
 }
 
 void SohMenu::DrawElement() {
-    Ship::Menu::DrawElement();
+    if (mMenuElementsInitialized) {
+        Ship::Menu::DrawElement();
+    }
 }
 } // namespace SohGui

@@ -14,6 +14,7 @@ void GameInteractor_ExecuteOnLoadGame(int32_t fileNum);
 void GameInteractor_ExecuteOnExitGame(int32_t fileNum);
 void GameInteractor_ExecuteOnGameStateMainStart();
 void GameInteractor_ExecuteOnGameFrameUpdate();
+void GameInteractor_ExecuteOnCameraState(PlayState* play);
 void GameInteractor_ExecuteOnItemReceiveHooks(GetItemEntry itemEntry);
 void GameInteractor_ExecuteOnEquipmentDelete(int16_t equipmentType, uint16_t equipValue);
 void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry itemEntry);
@@ -44,6 +45,7 @@ void GameInteractor_ExecuteOnEnemyDefeat(void* actor);
 void GameInteractor_ExecuteOnBossDefeat(void* actor);
 void GameInteractor_ExecuteOnTimestamp(u8 item);
 void GameInteractor_ExecuteOnPlayerBonk();
+void GameInteractor_ExecuteOnPlayerSetModels(Player* player, u8 modelGroup);
 void GameInteractor_ExecuteOnPlayerHealthChange(int16_t amount);
 void GameInteractor_ExecuteOnPlayerBottleUpdate(int16_t contents);
 void GameInteractor_ExecuteOnPlayerHoldUpShield();
@@ -93,6 +95,9 @@ void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void));
 
 // Mark: - Pause Menu
 void GameInteractor_ExecuteOnKaleidoUpdate();
+
+// MARK: - Messages
+void GameInteractor_ExecuteOnOpenText(uint16_t* textId, bool* loadFromMessageTable);
 
 // Mark: - Audio
 void GameInteractor_ExecuteOnSeqPlayerInit(int32_t playerIdx, int32_t seqId);

@@ -1,4 +1,5 @@
 #pragma once
+
 #ifdef __cplusplus
 
 #include "randomizerTypes.h"
@@ -25,6 +26,7 @@ enum class EntranceType {
     ChildBossReverse,
     AdultBoss,
     AdultBossReverse,
+    GanonTower,
     Interior,
     InteriorReverse,
     SpecialInterior,

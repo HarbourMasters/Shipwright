@@ -76,6 +76,8 @@ class Anchor : public Network {
     bool isProcessingIncomingPacket = false;
     std::queue<nlohmann::json> incomingPacketQueue;
     std::mutex incomingPacketQueueMutex;
+    std::queue<nlohmann::json> outgoingPacketQueue;
+    std::mutex outgoingPacketQueueMutex;
 
     nlohmann::json PrepClientState();
     nlohmann::json PrepRoomState();
@@ -108,7 +110,7 @@ class Anchor : public Network {
 
   public:
     uint32_t ownClientId;
-    inline static const std::string clientVersion = (char*)gBuildVersion;
+    inline static const std::string clientVersion = (char*)gGitCommitHash;
 
     // Packet types //
     inline static const std::string ALL_CLIENT_STATE = "ALL_CLIENT_STATE";
@@ -143,6 +145,7 @@ class Anchor : public Network {
     void OnIncomingJson(nlohmann::json payload);
     void OnConnected();
     void OnDisconnected();
+    void ProcessOutgoingPackets();
     void DrawMenu();
     void ProcessIncomingPacketQueue();
     void SendJsonToRemote(nlohmann::json packet);

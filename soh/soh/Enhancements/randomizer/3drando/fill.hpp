@@ -5,7 +5,6 @@
 #include "../entrance.h"
 
 #include <vector>
-#include <string>
 
 // RANDOTODO merge into Logic once Logic is a class passed to logic funtions
 struct GetAccessibleLocationsStruct {
@@ -74,3 +73,5 @@ void GeneratePlaythrough();
 bool CheckBeatable(RandomizerGet ignore = RG_NONE);
 
 void ValidateEntrances(bool checkOtherEntranceAccess);
+
+void ValidateEntrances(bool checkPoeCollectorAccess, bool checkOtherEntranceAccess);

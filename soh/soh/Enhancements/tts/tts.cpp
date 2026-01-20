@@ -143,9 +143,9 @@ void RegisterOnInterfaceUpdateHook() {
         static char ttsAnnounceBuf[32];
 
         uint32_t timer = 0;
-        if (gSaveContext.timerState != 0) {
+        if (gSaveContext.timerState != TIMER_STATE_OFF) {
             timer = gSaveContext.timerSeconds;
-        } else if (gSaveContext.subTimerState != 0) {
+        } else if (gSaveContext.subTimerState != SUBTIMER_STATE_OFF) {
             timer = gSaveContext.subTimerSeconds;
         }
 

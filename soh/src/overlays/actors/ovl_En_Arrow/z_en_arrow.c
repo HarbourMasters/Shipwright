@@ -8,6 +8,8 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_gi_nuts/object_gi_nuts.h"
 
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
 void EnArrow_Init(Actor* thisx, PlayState* play);
@@ -227,6 +229,7 @@ void EnArrow_Shoot(EnArrow* this, PlayState* play) {
             case ARROW_FIRE:
             case ARROW_ICE:
             case ARROW_LIGHT:
+                GameInteractor_Should(VB_EN_ARROW_MAGIC_CONSUMPTION, true, this);
                 Player_PlaySfx(&player->actor, NA_SE_IT_MAGIC_ARROW_SHOT);
                 break;
         }

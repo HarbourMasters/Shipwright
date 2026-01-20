@@ -4,40 +4,78 @@
 #include "soh/ObjectExtension/ObjectExtension.h"
 
 extern "C" {
-#include "variables.h"
 #include "overlays/actors/ovl_Obj_Tsubo/z_obj_tsubo.h"
 #include "overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
+#include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 extern PlayState* gPlayState;
 }
 
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 extern "C" void ObjTsubo_RandomizerDraw(Actor* thisx, PlayState* play) {
-    float potSize = 1.0f;
-
     OPEN_DISPS(play->state.gfxCtx);
-    Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    Matrix_Scale(potSize, potSize, potSize, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gRandoPotDL);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    const auto potIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(thisx);
+
+    if (potIdentity != nullptr && potIdentity->randomizerCheck != RC_MAX &&
+        Flags_GetRandomizerInf(potIdentity->randomizerInf) == 0) {
+        bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
+        int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
+
+        if (csmc && (!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+            auto itemEntry =
+                Rando::Context::GetInstance()->GetFinalGIEntry(potIdentity->randomizerCheck, true, GI_NONE);
+            GetItemCategory getItemCategory = itemEntry.getItemCategory;
+
+            switch (getItemCategory) {
+                case ITEM_CATEGORY_LESSER:
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotMinorDL);
+                    break;
+                case ITEM_CATEGORY_HEALTH:
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotHeartDL);
+                    break;
+                case ITEM_CATEGORY_BOSS_KEY:
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotBossKeyDL);
+                    break;
+                case ITEM_CATEGORY_SMALL_KEY:
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotSmallKeyDL);
+                    break;
+                case ITEM_CATEGORY_SKULLTULA_TOKEN:
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotTokenDL);
+                    break;
+                case ITEM_CATEGORY_MAJOR:
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotMajorDL);
+                    break;
+                default:
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotStandardDL);
+                    break;
+            }
+        } else {
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotStandardDL);
+        }
+    } else {
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotDL);
+    }
+
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
 uint8_t ObjTsubo_RandomizerHoldsItem(ObjTsubo* potActor, PlayState* play) {
-    const auto potIdentity = ObjectExtension::GetInstance().Get<PotIdentity>(&potActor->actor);
+    const auto potIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&potActor->actor);
     if (potIdentity == nullptr) {
         return false;
     }
 
     RandomizerCheck rc = potIdentity->randomizerCheck;
     uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
-    uint8_t potSetting = RAND_GET_OPTION(RSK_SHUFFLE_POTS);
+    auto potSetting = RAND_GET_OPTION(RSK_SHUFFLE_POTS);
 
     // Don't pull randomized item if pot isn't randomized or is already checked
-    if (!IS_RANDO || (potSetting == RO_SHUFFLE_POTS_OVERWORLD && isDungeon) ||
-        (potSetting == RO_SHUFFLE_POTS_DUNGEONS && !isDungeon) || Flags_GetRandomizerInf(potIdentity->randomizerInf) ||
+    if (!IS_RANDO || (potSetting.Is(RO_SHUFFLE_POTS_OVERWORLD) && isDungeon) ||
+        (potSetting.Is(RO_SHUFFLE_POTS_DUNGEONS) && !isDungeon) || Flags_GetRandomizerInf(potIdentity->randomizerInf) ||
         potIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
         return false;
     } else {
@@ -46,7 +84,7 @@ uint8_t ObjTsubo_RandomizerHoldsItem(ObjTsubo* potActor, PlayState* play) {
 }
 
 void ObjTsubo_RandomizerSpawnCollectible(ObjTsubo* potActor, PlayState* play) {
-    const auto potIdentity = ObjectExtension::GetInstance().Get<PotIdentity>(&potActor->actor);
+    const auto potIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&potActor->actor);
     if (potIdentity == nullptr) {
         return;
     }
@@ -69,7 +107,7 @@ void RegisterShufflePots() {
 
         auto potIdentity = OTRGlobals::Instance->gRandomizer->IdentifyPot(gPlayState->sceneNum, (s16)actor->world.pos.x,
                                                                           (s16)actor->world.pos.z);
-        ObjectExtension::GetInstance().Set<PotIdentity>(actor, std::move(potIdentity));
+        ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(potIdentity));
     });
 
     // Draw custom model for pot to indicate it holding a randomized item.
@@ -93,9 +131,9 @@ void RegisterShufflePots() {
     // Unlock early Ganon's Boss Key doors to allow access to the pots there when pots are shuffled in dungeon
     COND_VB_SHOULD(VB_LOCK_BOSS_DOOR, shouldRegister, {
         DoorShutter* doorActor = va_arg(args, DoorShutter*);
-        uint8_t shufflePotSetting = RAND_GET_OPTION(RSK_SHUFFLE_POTS);
+        auto shufflePotSetting = RAND_GET_OPTION(RSK_SHUFFLE_POTS);
         if (gPlayState->sceneNum == SCENE_GANONS_TOWER && doorActor->dyna.actor.world.pos.y == 800 &&
-            (shufflePotSetting == RO_SHUFFLE_POTS_DUNGEONS || shufflePotSetting == RO_SHUFFLE_POTS_ALL)) {
+            (shufflePotSetting.Is(RO_SHUFFLE_POTS_DUNGEONS) || shufflePotSetting.Is(RO_SHUFFLE_POTS_ALL))) {
             *should = false;
         }
     });
@@ -659,6 +697,5 @@ void Rando::StaticData::RegisterPotLocations() {
     // clang-format on
 }
 
-static ObjectExtension::Register<PotIdentity> RegisterPotIdentity;
 static RegisterShipInitFunc registerShufflePots(RegisterShufflePots, { "IS_RANDO" });
 static RegisterShipInitFunc registerPotLocations(Rando::StaticData::RegisterPotLocations);
