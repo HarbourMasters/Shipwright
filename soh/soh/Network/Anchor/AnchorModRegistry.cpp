@@ -56,14 +56,14 @@ struct AnchorModelOverrideState {
 
 AnchorModelOverrideState sAnchorModelOverride;
 
-constexpr const char* kAdultEyeTextureNames[] = { "gLinkAdultEyesOpenTex", "gLinkAdultEyesHalfTex",
-                                                  "gLinkAdultEyesClosedfTex", "gLinkAdultEyesRollLeftTex",
+constexpr const char* kAdultEyeTextureNames[] = { "gLinkAdultEyesOpenTex",      "gLinkAdultEyesHalfTex",
+                                                  "gLinkAdultEyesClosedfTex",   "gLinkAdultEyesRollLeftTex",
                                                   "gLinkAdultEyesRollRightTex", "gLinkAdultEyesShockTex",
-                                                  "gLinkAdultEyesUnk1Tex", "gLinkAdultEyesUnk2Tex" };
-constexpr const char* kChildEyeTextureNames[] = { "gLinkChildEyesOpenTex", "gLinkChildEyesHalfTex",
-                                                  "gLinkChildEyesClosedfTex", "gLinkChildEyesRollLeftTex",
+                                                  "gLinkAdultEyesUnk1Tex",      "gLinkAdultEyesUnk2Tex" };
+constexpr const char* kChildEyeTextureNames[] = { "gLinkChildEyesOpenTex",      "gLinkChildEyesHalfTex",
+                                                  "gLinkChildEyesClosedfTex",   "gLinkChildEyesRollLeftTex",
                                                   "gLinkChildEyesRollRightTex", "gLinkChildEyesShockTex",
-                                                  "gLinkChildEyesUnk1Tex", "gLinkChildEyesUnk2Tex" };
+                                                  "gLinkChildEyesUnk1Tex",      "gLinkChildEyesUnk2Tex" };
 constexpr const char* kAdultMouthTextureNames[] = { "gLinkAdultMouth1Tex", "gLinkAdultMouth2Tex", "gLinkAdultMouth3Tex",
                                                     "gLinkAdultMouth4Tex" };
 constexpr const char* kChildMouthTextureNames[] = { "gLinkChildMouth1Tex", "gLinkChildMouth2Tex", "gLinkChildMouth3Tex",
@@ -125,7 +125,8 @@ void* LoadCustomTexture(const std::string& modelId, int32_t linkAge, const char*
         return nullptr;
     }
 
-    auto resource = context->GetResourceManager()->LoadResource(Ship::ResourceIdentifier(path.c_str(), 0, archive), true);
+    auto resource =
+        context->GetResourceManager()->LoadResource(Ship::ResourceIdentifier(path.c_str(), 0, archive), true);
     if (resource == nullptr) {
         sCustomTextureCache.emplace(cacheKey, nullptr);
         return nullptr;
@@ -320,9 +321,8 @@ std::string FindSkeletonPathInArchive(const std::shared_ptr<Ship::Archive>& arch
         return "";
     }
 
-    const char* filter = linkAge == LINK_AGE_ADULT
-                             ? "objects/object_anchor_models/*_adult/gLinkAdultSkel"
-                             : "objects/object_anchor_models/*_child/gLinkChildSkel";
+    const char* filter = linkAge == LINK_AGE_ADULT ? "objects/object_anchor_models/*_adult/gLinkAdultSkel"
+                                                   : "objects/object_anchor_models/*_child/gLinkChildSkel";
     auto matches = archive->ListFiles(filter);
     if (matches == nullptr || matches->empty()) {
         return "";
@@ -499,8 +499,8 @@ void* AnchorModRegistry::TryLoadAnchorOverride(const char* path) {
         return nullptr;
     }
 
-    auto resource = context->GetResourceManager()->LoadResource(Ship::ResourceIdentifier(customPath.c_str(), 0, archive),
-                                                                true);
+    auto resource =
+        context->GetResourceManager()->LoadResource(Ship::ResourceIdentifier(customPath.c_str(), 0, archive), true);
     if (resource == nullptr) {
         return nullptr;
     }
@@ -531,8 +531,7 @@ void* AnchorModRegistry::TryLoadAnchorTextureOverride(const char* path) {
     return LoadCustomTexture(sAnchorModelOverride.modelId, sAnchorModelOverride.linkAge, baseName.c_str());
 }
 
-AnchorTextureOverrides AnchorModRegistry::ApplyAnchorFlipbookTextures(Player* player,
-                                                                      const std::string& modelId,
+AnchorTextureOverrides AnchorModRegistry::ApplyAnchorFlipbookTextures(Player* player, const std::string& modelId,
                                                                       int32_t linkAge) {
     AnchorTextureOverrides overrides = {};
     overrides.eyeIndex = -1;
@@ -555,10 +554,9 @@ AnchorTextureOverrides AnchorModRegistry::ApplyAnchorFlipbookTextures(Player* pl
     eyeIndex = ClampIndex(eyeIndex, 7);
     mouthIndex = ClampIndex(mouthIndex, 3);
 
-    const char* eyeName = linkAge == LINK_AGE_ADULT ? kAdultEyeTextureNames[eyeIndex]
-                                                    : kChildEyeTextureNames[eyeIndex];
-    const char* mouthName = linkAge == LINK_AGE_ADULT ? kAdultMouthTextureNames[mouthIndex]
-                                                      : kChildMouthTextureNames[mouthIndex];
+    const char* eyeName = linkAge == LINK_AGE_ADULT ? kAdultEyeTextureNames[eyeIndex] : kChildEyeTextureNames[eyeIndex];
+    const char* mouthName =
+        linkAge == LINK_AGE_ADULT ? kAdultMouthTextureNames[mouthIndex] : kChildMouthTextureNames[mouthIndex];
     void* eyeTexture = LoadCustomTexture(modelId, linkAge, eyeName);
     void* mouthTexture = LoadCustomTexture(modelId, linkAge, mouthName);
 

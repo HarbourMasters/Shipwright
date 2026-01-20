@@ -30,7 +30,8 @@ class AnchorModRegistry {
     static void ClearAnchorModelOverride();
     static void* TryLoadAnchorOverride(const char* path);
     static void* TryLoadAnchorTextureOverride(const char* path);
-    static AnchorTextureOverrides ApplyAnchorFlipbookTextures(Player* player, const std::string& modelId, int32_t linkAge);
+    static AnchorTextureOverrides ApplyAnchorFlipbookTextures(Player* player, const std::string& modelId,
+                                                              int32_t linkAge);
     static void RestoreAnchorFlipbookTextures(const AnchorTextureOverrides& overrides, int32_t linkAge);
 
   private:

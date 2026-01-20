@@ -12,7 +12,6 @@ extern PlayState* gPlayState;
 
 void Player_UseItem(PlayState* play, Player* player, s32 item);
 void Player_Draw(Actor* actor, PlayState* play);
-
 }
 
 static DamageTable DummyPlayerDamageTable = {
@@ -260,8 +259,8 @@ void DummyPlayer_Draw(Actor* actor, PlayState* play) {
     gSaveContext.equips.buttonItems[0] = client.buttonItem0;
 
     AnchorTextureOverrides textureOverrides = {};
-    bool hasCustomModel = altAssetsEnabled &&
-                          AnchorModRegistry::HasCustomModel(client.modelId, client.linkAge, player->skelAnime.limbCount);
+    bool hasCustomModel = altAssetsEnabled && AnchorModRegistry::HasCustomModel(client.modelId, client.linkAge,
+                                                                                player->skelAnime.limbCount);
     if (hasCustomModel) {
         AnchorModRegistry::SetAnchorModelOverride(client.modelId, client.linkAge);
         textureOverrides = AnchorModRegistry::ApplyAnchorFlipbookTextures(player, client.modelId, client.linkAge);
