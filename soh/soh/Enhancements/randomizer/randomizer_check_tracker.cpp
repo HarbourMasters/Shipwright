@@ -271,6 +271,7 @@ std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT,
 static ImGuiTextFilter checkSearch;
 static bool recalculateAvailable = false;
 static RandomizerRegion availableChecksStartingRegion = RR_ROOT;
+static int16_t previousEntrance = 0;
 std::array<bool, RCAREA_INVALID> filterAreasHidden = { 0 };
 std::array<bool, RC_MAX> filterChecksHidden = { 0 };
 
@@ -1028,6 +1029,11 @@ void CheckTrackerWindow::DrawElement() {
         ImGui::Text("Waiting for file load..."); // TODO Language
         EndFloatWindows();
         return;
+    }
+
+    if (gPlayState->nextEntranceIndex != previousEntrance) {
+        previousEntrance = gPlayState->nextEntranceIndex;
+        recalculateAvailable = true;
     }
 
     if (recalculateAvailable) {

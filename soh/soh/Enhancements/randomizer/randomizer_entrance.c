@@ -292,14 +292,12 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
 
     Entrance_SetEntranceDiscovered(nextEntranceIndex, false);
     EntranceTracker_SetLastEntranceOverride(nextEntranceIndex);
-    CheckTracker_RecalculateAvailableChecks();
     return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(nextEntranceIndex));
 }
 
 s16 Entrance_OverrideDynamicExit(s16 dynamicExitIndex) {
     Entrance_SetEntranceDiscovered(dynamicExitList[dynamicExitIndex], false);
     EntranceTracker_SetLastEntranceOverride(dynamicExitList[dynamicExitIndex]);
-    CheckTracker_RecalculateAvailableChecks();
     return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(dynamicExitList[dynamicExitIndex]));
 }
 
@@ -822,7 +820,6 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance) {
     if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
         u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
         gSaveContext.ship.stats.entrancesDiscovered[idx] |= entranceBit;
-        CheckTracker_RecalculateAvailableChecks();
 
         // Set reverse entrance when not decoupled
         if (!Randomizer_GetSettingValue(RSK_DECOUPLED_ENTRANCES) && !isReversedEntrance) {
