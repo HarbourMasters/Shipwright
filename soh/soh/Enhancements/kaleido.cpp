@@ -1,6 +1,7 @@
 #include "kaleido.h"
 
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "ship/utils/StringHelper.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/frame_interpolation.h"
 #include "soh/ShipInit.hpp"
@@ -42,6 +43,11 @@ void KaleidoEntryIcon::LoadIconTex(std::vector<Gfx>* mEntryDl) {
         if (mIconSize == G_IM_SIZ_32b) {
             Gfx iconTexture[] = { gsDPLoadTextureBlock(
                 mIconResourceName, G_IM_FMT_RGBA, G_IM_SIZ_32b, mIconWidth, mIconHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD) };
+            mEntryDl->insert(mEntryDl->end(), std::begin(iconTexture), std::end(iconTexture));
+        } else if (mIconSize == G_IM_SIZ_16b) {
+            Gfx iconTexture[] = { gsDPLoadTextureBlock(
+                mIconResourceName, G_IM_FMT_RGBA, G_IM_SIZ_16b, mIconWidth, mIconHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD) };
             mEntryDl->insert(mEntryDl->end(), std::begin(iconTexture), std::end(iconTexture));
         }
@@ -178,6 +184,50 @@ Kaleido::Kaleido() {
                 FlagType::FLAG_RANDOMIZER_INF, i,
                 Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rg)).GetName().english));
         }
+    }
+    // Default A button color stored for action shuffle (crawl, climb, etc.)
+    // TODO: find a way to update this so we can match Cosmetics Editor color, or just replace these icons
+    Color_RGBA8 aButtonColor = { 90, 90, 255, 255 };
+    if (ctx->GetOption(RSK_SHUFFLE_CRAWL)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(gButtonBackgroundTex, G_IM_FMT_IA, G_IM_SIZ_8b, 32,
+                                                                  32, aButtonColor, FlagType::FLAG_RANDOMIZER_INF,
+                                                                  RAND_INF_CAN_CRAWL, "Crawl"));
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_CLIMB)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(gButtonBackgroundTex, G_IM_FMT_IA, G_IM_SIZ_8b, 32,
+                                                                  32, aButtonColor, FlagType::FLAG_RANDOMIZER_INF,
+                                                                  RAND_INF_CAN_CLIMB, "Climb"));
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_GRAB)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(gButtonBackgroundTex, G_IM_FMT_IA, G_IM_SIZ_8b, 32,
+                                                                  32, aButtonColor, FlagType::FLAG_RANDOMIZER_INF,
+                                                                  RAND_INF_CAN_GRAB, "Grab"));
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
+            gMapChestIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, Color_RGBA8{ 255, 255, 255, 255 },
+            FlagType::FLAG_RANDOMIZER_INF, RAND_INF_CAN_OPEN_CHEST, "Open Chests"));
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_SWIM)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
+            gItemIconScaleSilverTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
+            FlagType::FLAG_RANDOMIZER_INF, RAND_INF_CAN_SWIM, "Swim"));
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_BEAN_SOULS)) {
+        int rg = RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL;
+        for (int i = RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL; i <= RAND_INF_ZORAS_RIVER_BEAN_SOUL; i++, rg++) {
+            std::string beanSoulName =
+                Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rg)).GetName().english;
+            StringHelper::ReplaceOriginal(beanSoulName, " Bean Soul", "");
+            mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
+                gItemIconMagicBeanTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
+                FlagType::FLAG_RANDOMIZER_INF, i, std::move(beanSoulName)));
+        }
+    }
+    if (ctx->GetOption(RSK_ROCS_FEATHER)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
+            gRocsFeatherTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
+            FlagType::FLAG_RANDOMIZER_INF, RAND_INF_OBTAINED_ROCS_FEATHER, "Roc's Feather"));
     }
 }
 
