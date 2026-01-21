@@ -44,6 +44,36 @@ static const ALIGN_ASSET(2) char gChestBodyTokenDL[] = dgChestBodyTokenDL;
 #define dgChestLidTokenDL "__OTR__objects/object_box/gChestLidTokenDL"
 static const ALIGN_ASSET(2) char gChestLidTokenDL[] = dgChestLidTokenDL;
 
+#define dgPotBossKeyDL "__OTR__objects/object_tsubo/gPotBossKeyDL"
+static const ALIGN_ASSET(2) char gPotBossKeyDL[] = dgPotBossKeyDL;
+
+#define dgPotFairyDL "__OTR__objects/object_tsubo/gPotFairyDL"
+static const ALIGN_ASSET(2) char gPotFairyDL[] = dgPotFairyDL;
+
+#define dgPotHeartDL "__OTR__objects/object_tsubo/gPotHeartDL"
+static const ALIGN_ASSET(2) char gPotHeartDL[] = dgPotHeartDL;
+
+#define dgPotMajorDL "__OTR__objects/object_tsubo/gPotMajorDL"
+static const ALIGN_ASSET(2) char gPotMajorDL[] = dgPotMajorDL;
+
+#define dgPotMaskDL "__OTR__objects/object_tsubo/gPotMaskDL"
+static const ALIGN_ASSET(2) char gPotMaskDL[] = dgPotMaskDL;
+
+#define dgPotMinorDL "__OTR__objects/object_tsubo/gPotMinorDL"
+static const ALIGN_ASSET(2) char gPotMinorDL[] = dgPotMinorDL;
+
+#define dgPotRandomDL "__OTR__objects/object_tsubo/gPotRandomDL"
+static const ALIGN_ASSET(2) char gPotRandomDL[] = dgPotRandomDL;
+
+#define dgPotSmallKeyDL "__OTR__objects/object_tsubo/gPotSmallKeyDL"
+static const ALIGN_ASSET(2) char gPotSmallKeyDL[] = dgPotSmallKeyDL;
+
+#define dgPotStandardDL "__OTR__objects/object_tsubo/gPotStandardDL"
+static const ALIGN_ASSET(2) char gPotStandardDL[] = dgPotStandardDL;
+
+#define dgPotTokenDL "__OTR__objects/object_tsubo/gPotTokenDL"
+static const ALIGN_ASSET(2) char gPotTokenDL[] = dgPotTokenDL;
+
 #define dgTitleRandomizerSubtitleTex "__OTR__objects/object_mag/gTitleRandomizerSubtitleTex"
 static const ALIGN_ASSET(2) char gTitleRandomizerSubtitleTex[] = dgTitleRandomizerSubtitleTex;
 
@@ -79,9 +109,6 @@ static const ALIGN_ASSET(2) char gTriforcePieceCompletedDL[] = dgTriforcePieceCo
 
 #define dgBossSoulSkullDL "__OTR__objects/object_boss_soul/gGIBossSoulSkullDL"
 static const ALIGN_ASSET(2) char gBossSoulSkullDL[] = dgBossSoulSkullDL;
-
-#define dgRandoPotDL "__OTR__objects/gameplay_dangeon_keep/gRandoPotDL"
-static const ALIGN_ASSET(2) char gRandoPotDL[] = dgRandoPotDL;
 
 #define dgRandoBushDL "__OTR__objects/gameplay_field_keep/gFieldBushRandomDL"
 static const ALIGN_ASSET(2) char gRandoBushDL[] = dgRandoBushDL;

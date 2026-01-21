@@ -7,7 +7,7 @@ void RegionTable_Init_LostWoods() {
     // clang-format off
     areaTable[RR_LW_FOREST_EXIT] = Region("LW Forest Exit", SCENE_LOST_WOODS, {}, {}, {
         //Exits
-        Entrance(RR_KOKIRI_FOREST, []{return true;})
+        Entrance(RR_KF_OUTSIDE_LOST_WOODS, []{return true;})
     });
 
     areaTable[RR_THE_LOST_WOODS] = Region("Lost Woods", SCENE_LOST_WOODS, {

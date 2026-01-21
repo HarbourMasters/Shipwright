@@ -15,7 +15,7 @@ void RegionTable_Init_LakeHylia() {
         //Locations
         LOCATION(RC_LH_UNDERWATER_ITEM,                  logic->IsChild && logic->HasItem(RG_SILVER_SCALE)),
         LOCATION(RC_LH_SUN,                              logic->IsAdult && ((logic->Get(LOGIC_WATER_TEMPLE_CLEAR) && logic->HasItem(RG_BRONZE_SCALE)) || logic->ReachDistantScarecrow()) && logic->CanUse(RG_FAIRY_BOW)),
-        LOCATION(RC_LH_FREESTANDING_POH,                 logic->IsAdult && (logic->ReachScarecrow() || CanPlantBean(RR_LAKE_HYLIA, RG_LAKE_HYLIA_BEAN_SOUL)) && logic->CanAvoidEnemy(RE_GUAY, false)),
+        LOCATION(RC_LH_FREESTANDING_POH,                 logic->IsAdult && (logic->ReachScarecrow() || CanPlantBean(RR_LAKE_HYLIA, RG_LAKE_HYLIA_BEAN_SOUL)) && logic->CanAvoidEnemy(RE_GUAY, false) && logic->HasItem(RG_CLIMB)),
         LOCATION(RC_LH_GS_BEAN_PATCH,                    logic->CanSpawnSoilSkull(RG_LAKE_HYLIA_BEAN_SOUL) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
         LOCATION(RC_LH_GS_LAB_WALL,                      logic->IsChild && (logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || (ctx->GetTrickOption(RT_LH_LAB_WALL_GS) && logic->CanJumpslashExceptHammer())) && logic->CanGetNightTimeGS()),
         LOCATION(RC_LH_GS_SMALL_ISLAND,                  logic->IsChild && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA) && logic->CanGetNightTimeGS() && logic->HasItem(RG_BRONZE_SCALE)),
@@ -81,7 +81,7 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_WARP_PAD_GRASS_2,                 logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_HYRULE_FIELD,          []{return true;}),
+        Entrance(RR_HF_TO_LAKE_HYLIA,      []{return true;}),
         Entrance(RR_LH_FROM_SHORTCUT,      []{return true;}),
         Entrance(RR_LH_OWL_FLIGHT,         []{return logic->IsChild;}),
         Entrance(RR_LH_FISHING_ISLAND,     []{return ((logic->IsChild || logic->Get(LOGIC_WATER_TEMPLE_CLEAR)) && logic->HasItem(RG_BRONZE_SCALE)) || (logic->IsAdult && (logic->ReachScarecrow() || CanPlantBean(RR_LAKE_HYLIA, RG_LAKE_HYLIA_BEAN_SOUL)));}),

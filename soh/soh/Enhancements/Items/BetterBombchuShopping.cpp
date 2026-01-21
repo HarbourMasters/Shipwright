@@ -20,9 +20,9 @@ void BuildShopDescMessage(uint16_t* textId, bool* loadFromMessageTable) {
 }
 
 void BuildShopPromptMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    CustomMessage msg = CustomMessage("\x08Bombchu  10 pieces   99 Rupees\x09&&\x1B%gBuy&Don't buy%w",
-                                      "\x08Krabbelmine  10 Stück  99 Rubine\x09&&\x1B%gKaufen!&Nicht kaufen!%w",
-                                      "\x08Missiles  10 unités   99 Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w");
+    CustomMessage msg = CustomMessage("\010Bombchu  10 pieces   99 Rupees\x09&&\x1B%gBuy&Don't buy%w",
+                                      "\010Krabbelmine  10 Stück  99 Rubine\x09&&\x1B%gKaufen!&Nicht kaufen!%w",
+                                      "\010Missiles  10 unités   99 Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w");
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;

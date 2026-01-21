@@ -1,6 +1,5 @@
 /**
- * This file is for handling the Randomize Rupee Names
- * enhancement
+ * This file is for handling the Randomize Rupee Names enhancement
  */
 #include <soh/OTRGlobals.h>
 
@@ -8,7 +7,7 @@ extern "C" {
 #include "variables.h"
 }
 
-static const char* englishRupeeNames[188] = {
+static const char* englishRupeeNames[] = {
     "[P]",
     "Bad RNG Rolls",
     "Baht",
@@ -199,129 +198,129 @@ static const char* englishRupeeNames[188] = {
     "Zorkmids",
 };
 
-static const char* germanRupeeNames[113] = { "Baht",
-                                             "Baklava",
-                                             "Bananen",
-                                             "Bitcoin",
-                                             "Bonbons",
-                                             "Bonschen",
-                                             "Brause UFOs",
-                                             "Bucks",
-                                             "Burek",
-                                             "Cent",
-                                             "Chickenwing",
-                                             "Diamanten",
-                                             "Dinar",
-                                             "Diridari",
-                                             "Dollar",
-                                             "Draken",
-                                             "ECU",
-                                             "Eis",
-                                             "Elexit",
-                                             "Erz",
-                                             "Erzbrocken",
-                                             "Ethereum",
-                                             "Euro",
-                                             "EXP",
-                                             "Fartcoin",
-                                             "Forint",
-                                             "Franken",
-                                             "Freunde",
-                                             "Geister",
-                                             "Gil",
-                                             "Gold",
-                                             "Groschen",
-                                             "Gulden",
-                                             "Haribo",
-                                             "Heller",
-                                             "Juwelen",
-                                             "Kapseln",
-                                             "Karolin",
-                                             "Kartoffeln",
-                                             "Keks",
-                                             "Kies",
-                                             "Knete",
-                                             "Knochen",
-                                             "Knuspertaler",
-                                             "Kohle",
-                                             "Kraniche",
-                                             "Kreuzer",
-                                             "Kronen",
-                                             "Kronkorken",
-                                             "Lauchcoins",
-                                             "Lira",
-                                             "Mana",
-                                             "Mark",
-                                             "Monde",
-                                             "Moos",
-                                             "Naira",
-                                             "Nugget",
-                                             "Penunze",
-                                             "Pesa",
-                                             "Peso",
-                                             "Pfandflaschen",
-                                             "Pfennig",
-                                             "Pfund",
-                                             "Pillen",
-                                             "Pilze",
-                                             "Plastiks",
-                                             "Pok\x96"
-                                             "dollar",
-                                             "Poster",
-                                             "Puzzle",
-                                             "Radieschen",
-                                             "Rand",
-                                             "Rappen",
-                                             "Real",
-                                             "Rial",
-                                             "Riesennugget",
-                                             "Riyal",
-                                             "Rubine",
-                                             "Rupien",
-                                             "Saphire",
-                                             "Schilling",
-                                             "Schokobon",
-                                             "Seelen",
-                                             "Septime",
-                                             "Shitcoin",
-                                             "Smaragde",
-                                             "Solana",
-                                             "Sosis",
-                                             "Steine",
-                                             "Sterne",
-                                             "Sternis",
-                                             "Tael",
-                                             "Taler",
-                                             "Tokens",
-                                             "Wagenchips",
-                                             "Won",
-                                             "Wumpas",
-                                             "Yen",
-                                             "Yuan",
-                                             "Zenny",
-                                             "M\x93use",
-                                             "M\x9Enzen",
-                                             "Kr\x9Bten",
-                                             "D\x9Bner",
-                                             "W\x9Erstchen",
-                                             "Kn\x9B"
-                                             "del",
-                                             "R\x9Bsti",
-                                             "H\x9Brnli",
-                                             "R\x9E"
-                                             "ebli",
-                                             "K\x9B"
-                                             "fte",
-                                             "Bratw\x9E"
-                                             "rste",
-                                             "Br\x98"
-                                             "tchen",
-                                             "Gummib\x93"
-                                             "ren",
-                                             "Moorh\x9E"
-                                             "hner" };
+static const char* germanRupeeNames[] = { "Baht",
+                                          "Baklava",
+                                          "Bananen",
+                                          "Bitcoin",
+                                          "Bonbons",
+                                          "Bonschen",
+                                          "Brause UFOs",
+                                          "Bucks",
+                                          "Burek",
+                                          "Cent",
+                                          "Chickenwing",
+                                          "Diamanten",
+                                          "Dinar",
+                                          "Diridari",
+                                          "Dollar",
+                                          "Draken",
+                                          "ECU",
+                                          "Eis",
+                                          "Elexit",
+                                          "Erz",
+                                          "Erzbrocken",
+                                          "Ethereum",
+                                          "Euro",
+                                          "EXP",
+                                          "Fartcoin",
+                                          "Forint",
+                                          "Franken",
+                                          "Freunde",
+                                          "Geister",
+                                          "Gil",
+                                          "Gold",
+                                          "Groschen",
+                                          "Gulden",
+                                          "Haribo",
+                                          "Heller",
+                                          "Juwelen",
+                                          "Kapseln",
+                                          "Karolin",
+                                          "Kartoffeln",
+                                          "Keks",
+                                          "Kies",
+                                          "Knete",
+                                          "Knochen",
+                                          "Knuspertaler",
+                                          "Kohle",
+                                          "Kraniche",
+                                          "Kreuzer",
+                                          "Kronen",
+                                          "Kronkorken",
+                                          "Lauchcoins",
+                                          "Lira",
+                                          "Mana",
+                                          "Mark",
+                                          "Monde",
+                                          "Moos",
+                                          "Naira",
+                                          "Nugget",
+                                          "Penunze",
+                                          "Pesa",
+                                          "Peso",
+                                          "Pfandflaschen",
+                                          "Pfennig",
+                                          "Pfund",
+                                          "Pillen",
+                                          "Pilze",
+                                          "Plastiks",
+                                          "Pok\x96"
+                                          "dollar",
+                                          "Poster",
+                                          "Puzzle",
+                                          "Radieschen",
+                                          "Rand",
+                                          "Rappen",
+                                          "Real",
+                                          "Rial",
+                                          "Riesennugget",
+                                          "Riyal",
+                                          "Rubine",
+                                          "Rupien",
+                                          "Saphire",
+                                          "Schilling",
+                                          "Schokobon",
+                                          "Seelen",
+                                          "Septime",
+                                          "Shitcoin",
+                                          "Smaragde",
+                                          "Solana",
+                                          "Sosis",
+                                          "Steine",
+                                          "Sterne",
+                                          "Sternis",
+                                          "Tael",
+                                          "Taler",
+                                          "Tokens",
+                                          "Wagenchips",
+                                          "Won",
+                                          "Wumpas",
+                                          "Yen",
+                                          "Yuan",
+                                          "Zenny",
+                                          "M\x93use",
+                                          "M\x9Enzen",
+                                          "Kr\x9Bten",
+                                          "D\x9Bner",
+                                          "W\x9Erstchen",
+                                          "Kn\x9B"
+                                          "del",
+                                          "R\x9Bsti",
+                                          "H\x9Brnli",
+                                          "R\x9E"
+                                          "ebli",
+                                          "K\x9B"
+                                          "fte",
+                                          "Bratw\x9E"
+                                          "rste",
+                                          "Br\x98"
+                                          "tchen",
+                                          "Gummib\x93"
+                                          "ren",
+                                          "Moorh\x9E"
+                                          "hner" };
 
-static const char* frenchRupeeNames[39] = {
+static const char* frenchRupeeNames[] = {
     "Anneaux",  "Baguettes",   "Balles",      "Bananes", "Bitcoin",    "Blés",     "Bling",   "Capsules",
     "Centimes", "Champignons", "Clochettes",  "Crédits", "Croissants", "Diamants", "Dollars", "Émeraudes",
     "Éthers",   "Étoiles",     "Euros",       "Florens", "Francs",     "Galds",    "Gils",    "Grouses",
@@ -330,32 +329,33 @@ static const char* frenchRupeeNames[39] = {
 };
 
 void BuildRupeeMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    CustomMessage msg = CustomMessage(
-        "You found [[color]][[amount]] [[rupee]]\x05\x00!", "Du hast [[color]][[amount]] [[rupee]]\x05\x00 gefunden!",
-        "Vous obtenez [[color]][[amount]] [[rupee]]\x05\x00!", TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM);
+    CustomMessage msg =
+        CustomMessage("You found [[color]][[amount]] [[rupee]]%w!", "Du hast [[color]][[amount]] [[rupee]]%w gefunden!",
+                      "Vous obtenez [[color]][[amount]] [[rupee]]%w!");
     std::string color;
     std::string amount;
-    CustomMessage rupee = CustomMessage(RandomElement(englishRupeeNames), RandomElement(germanRupeeNames),
-                                        RandomElement(frenchRupeeNames));
+    CustomMessage rupee =
+        CustomMessage(ShipUtils::RandomElement(englishRupeeNames), ShipUtils::RandomElement(germanRupeeNames),
+                      ShipUtils::RandomElement(frenchRupeeNames));
     switch (*textId) {
         case TEXT_BLUE_RUPEE:
-            color = "\x05\x03";
+            color = "%b";
             amount = "5";
             break;
         case TEXT_RED_RUPEE:
-            color = "\x05\x01";
+            color = "%r";
             amount = "20";
             break;
         case TEXT_PURPLE_RUPEE:
-            color = "\x05\x05";
+            color = "%p";
             amount = "50";
             break;
         case TEXT_HUGE_RUPEE:
-            color = "\x05\x06";
+            color = "%y";
             amount = "200";
             break;
         default:
-            assert(!"This should not be reachable");
+            assert(false);
             return;
     }
     msg.Replace("[[color]]", color);
@@ -377,4 +377,5 @@ void RegisterRandomRupeeNames() {
                  IS_RANDO && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), 1), BuildRupeeMessage);
 }
 
-static RegisterShipInitFunc initFunc(RegisterRandomRupeeNames, { CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames") });
+static RegisterShipInitFunc initFunc(RegisterRandomRupeeNames,
+                                     { CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), "IS_RANDO" });

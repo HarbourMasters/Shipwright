@@ -12,7 +12,6 @@
 #include "3drando/random.hpp"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/SohGui.hpp"
-#include "3drando/custom_messages.hpp"
 #include <imgui.h>
 #include <imgui_internal.h>
 #include "../custom-message/CustomMessageTypes.h"
@@ -125,6 +124,7 @@ std::map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
     { RG_FISHING_POLE, RAND_INF_FISHING_POLE_FOUND },
     { RG_BRONZE_SCALE, RAND_INF_CAN_SWIM },
     { RG_POWER_BRACELET, RAND_INF_CAN_GRAB },
+    { RG_CLIMB, RAND_INF_CAN_CLIMB },
     { RG_CRAWL, RAND_INF_CAN_CRAWL },
     { RG_OPEN_CHEST, RAND_INF_CAN_OPEN_CHEST },
     { RG_QUIVER_INF, RAND_INF_HAS_INFINITE_QUIVER },

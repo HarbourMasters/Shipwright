@@ -430,7 +430,7 @@ void DrawInfoTab() {
                     gSaveContext.highScores[i] |= fishSize & 0x7F;
                 }
                 char fishMsg[64];
-                std::sprintf(fishMsg, "Weight: %2.0f lbs", ((SQ(fishSize) * .0036) + .5));
+                std::snprintf(fishMsg, 64, "Weight: %2.0f lbs", ((SQ(fishSize) * .0036) + .5));
                 Tooltip(fishMsg);
                 PopStyleInput();
                 bool FishBool = gSaveContext.highScores[i] & 0x80;
@@ -445,7 +445,7 @@ void DrawInfoTab() {
                     gSaveContext.highScores[i] &= ~0x7F000000;
                     gSaveContext.highScores[i] |= (fishSize & 0x7F) << 0x18;
                 }
-                std::sprintf(fishMsg, "Weight: %2.0f lbs", ((SQ(fishSize) * .0036) + .5));
+                std::snprintf(fishMsg, 64, "Weight: %2.0f lbs", ((SQ(fishSize) * .0036) + .5));
                 Tooltip(fishMsg);
                 PopStyleInput();
                 FishBool = gSaveContext.highScores[i] & 0x80000000;

@@ -25,7 +25,7 @@ void BuildSkulltulaMessage(uint16_t* textId, bool* loadFromMessageTable) {
         msg = msg + "\x0E\x3C";
     }
     int16_t gsCount = gSaveContext.inventory.gsTokens + (IS_RANDO ? 1 : 0);
-    msg.Replace("[[gscount]]", std::to_string(gsCount));
+    msg.Replace("[[gsCount]]", std::to_string(gsCount));
     msg.AutoFormat(ITEM_SKULL_TOKEN);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;

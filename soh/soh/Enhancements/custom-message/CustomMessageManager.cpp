@@ -7,6 +7,7 @@
 #include <spdlog/spdlog.h>
 #include <variables.h>
 #include <soh/Enhancements/gameconsole.h>
+#include <soh/util.h>
 
 using namespace std::literals::string_literals;
 
@@ -266,36 +267,25 @@ bool CustomMessage::operator!=(const CustomMessage& operand) const {
     return !operator==(operand);
 }
 
-int CopyStringToCharBuffer(const std::string& inputStr, char* buffer, const int maxBufferSize) {
-    if (!inputStr.empty()) {
-        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents
-        // negatives.
-        memset(buffer, 0, std::max<int>(0, maxBufferSize));
-        // Gaurentee that this value will be greater than 0, regardless of passed variables.
-        const int copiedCharLen = std::min<int>(std::max<int>(0, maxBufferSize - 1), inputStr.length());
-        memcpy(buffer, inputStr.c_str(), copiedCharLen);
-        return copiedCharLen;
-    }
-
-    return 0;
-}
-
 void CustomMessage::LoadIntoFont() {
     MessageContext* msgCtx = &gPlayState->msgCtx;
     Font* font = &msgCtx->font;
     char* buffer = font->msgBuf;
-    const int maxBufferSize = sizeof(font->msgBuf);
+    const size_t maxBufferSize = sizeof(font->msgBuf);
     font->charTexBuf[0] = (type << 4) | position;
     switch (gSaveContext.language) {
         case LANGUAGE_FRA:
-            msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(GetFrench(MF_RAW), buffer, maxBufferSize);
+            msgCtx->msgLength = font->msgLength =
+                SohUtils::CopyStringToCharBuffer(buffer, GetFrench(MF_RAW), maxBufferSize);
             break;
         case LANGUAGE_GER:
-            msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(GetGerman(MF_RAW), buffer, maxBufferSize);
+            msgCtx->msgLength = font->msgLength =
+                SohUtils::CopyStringToCharBuffer(buffer, GetGerman(MF_RAW), maxBufferSize);
             break;
         case LANGUAGE_ENG:
         default:
-            msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(GetEnglish(MF_RAW), buffer, maxBufferSize);
+            msgCtx->msgLength = font->msgLength =
+                SohUtils::CopyStringToCharBuffer(buffer, GetEnglish(MF_RAW), maxBufferSize);
             break;
     }
 }
@@ -545,7 +535,7 @@ void CustomMessage::AutoFormatString(std::string& str) const {
     const bool hasIcon = str.find('\x13') != std::string::npos;
     size_t lineLength = NextLineLength(&str, lastNewline, hasIcon);
     size_t lineCount = 1;
-    size_t yesNo = str.find("\x1B"s[0], lastNewline);
+    size_t yesNo = str.find('\x1B', lastNewline);
     while (lastNewline + lineLength < str.length() || yesNo != std::string::npos) {
         const size_t carrot = str.find('^', lastNewline);
         const size_t ampersand = str.find('&', lastNewline);
@@ -581,11 +571,10 @@ void CustomMessage::AutoFormatString(std::string& str) const {
                     lineCount = 0;
                     // some lines need to be split but don't have spaces, look for periods instead
                 } else {
-                    const size_t lastBreak =
-                        str.find_last_of(static_cast<std::string>(".,!?- "), lastNewline + lineLength);
+                    const size_t lastBreak = str.find_last_of(".,!?- ", lastNewline + lineLength);
                     // if none exist or we go backwards, we look forward for a something and allow the overflow
                     if (lastBreak == std::string::npos || lastBreak < lastNewline) {
-                        const size_t nextBreak = str.find_first_of(static_cast<std::string>(".,!?- &^"), lastNewline);
+                        const size_t nextBreak = str.find_first_of(".,!?- &^", lastNewline);
                         if (str[nextBreak] == '^') {
                             lastNewline = nextBreak + 1;
                             lineCount = 0; // increments to 1 at the end
@@ -617,11 +606,10 @@ void CustomMessage::AutoFormatString(std::string& str) const {
                     lastNewline = carrot + 1;
                     // some lines need to be split but don't have spaces, look for punctuation instead
                 } else {
-                    const size_t lastBreak =
-                        str.find_last_of(static_cast<std::string>(".,!?- &"), lastNewline + lineLength);
+                    const size_t lastBreak = str.find_last_of(".,!?- &", lastNewline + lineLength);
                     // if none exist or we go backwards, we look forward for a something and allow the overflow
                     if (lastBreak == std::string::npos || lastBreak < lastNewline) {
-                        const size_t nextBreak = str.find_first_of(static_cast<std::string>(".,!?- &^"), lastNewline);
+                        const size_t nextBreak = str.find_first_of(".,!?- &^", lastNewline);
                         if (str[nextBreak] == '^') {
                             lastNewline = nextBreak + 1;
                         } else {
@@ -637,14 +625,14 @@ void CustomMessage::AutoFormatString(std::string& str) const {
             }
             lineLength = NextLineLength(&str, lastNewline, hasIcon);
         }
-        yesNo = str.find("\x1B"s[0], lastNewline);
+        yesNo = str.find('\x1B', lastNewline);
     }
     ReplaceSpecialCharacters(str);
     ReplaceAltarIcons(str);
     std::replace(str.begin(), str.end(), '&', NEWLINE()[0]);
     std::replace(str.begin(), str.end(), '^', WAIT_FOR_INPUT()[0]);
     std::replace(str.begin(), str.end(), '@', PLAYER_NAME()[0]);
-    std::replace(str.begin(), str.end(), '_', " "[0]);
+    std::replace(str.begin(), str.end(), '_', ' ');
     str += MESSAGE_END();
 }
 
@@ -666,7 +654,7 @@ void CustomMessage::InsertNumber(uint8_t num) {
         }
     }
     // remove the remaining bar
-    this->Replace("|", "");
+    Replace("|", "");
     Replace("[[d]]", std::to_string(num));
 }
 
@@ -689,8 +677,8 @@ void CustomMessage::SetSingularPlural() {
         }
     }
     // remove the remaining bar
-    this->Replace("|", "");
-    this->Replace("€", "");
+    Replace("|", "");
+    Replace("€", "");
 }
 
 void CustomMessage::Capitalize() {
@@ -773,7 +761,7 @@ void CustomMessage::ReplaceAltarIcons(std::string& str) const {
 void CustomMessage::InsertNames(std::vector<CustomMessage> toInsert) {
     for (uint8_t a = 0; a < toInsert.size(); a++) {
         CustomMessage temp = toInsert[a];
-        if ((capital.size() > a) && (capital[a] = true)) {
+        if (capital.size() > a && capital[a]) {
             temp.Capitalize();
         }
         Replace("[[" + std::to_string(a + 1) + "]]", temp);

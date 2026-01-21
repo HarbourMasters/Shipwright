@@ -12,29 +12,48 @@ void RegionTable_Init_SacredForestMeadow() {
         Entrance(RR_SFM_WOLFOS_GROTTO,    []{return logic->CanOpenBombGrotto();}),
     });
 
-    areaTable[RR_SACRED_FOREST_MEADOW] = Region("Sacred Forest Meadow", SCENE_SACRED_FOREST_MEADOW, {
+    areaTable[RR_SFM_ABOVE_MAZE] = Region("SFM Maze", SCENE_SACRED_FOREST_MEADOW, {
         //Events
         EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairyExceptSuns();}),
     }, {
         //Locations
-        LOCATION(RC_SONG_FROM_SARIA,                       logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER)),
-        LOCATION(RC_SHEIK_IN_FOREST,                       logic->IsAdult),
         LOCATION(RC_SFM_GS,                                logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
         LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_SFM_MAZE_UPPER_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_SFM_MAZE_UPPER_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_SFM_SARIA_GOSSIP_STONE_FAIRY,          logic->CallGossipFairyExceptSuns()),
-        LOCATION(RC_SFM_SARIA_GOSSIP_STONE_FAIRY_BIG,      logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE,           true),
         LOCATION(RC_SFM_MAZE_UPPER_GOSSIP_STONE,           true),
-        LOCATION(RC_SFM_SARIA_GOSSIP_STONE,                true),
     }, {
         //Exits
-        Entrance(RR_SFM_ENTRYWAY,           []{return true;}),
+        Entrance(RR_SFM_ENTRYWAY,             []{return true;}),
+        Entrance(RR_SFM_OUTSIDE_FAIRY_GROTTO, []{return true;}),
+        Entrance(RR_SACRED_FOREST_MEADOW,     []{return true;}),
+    });
+
+    areaTable[RR_SACRED_FOREST_MEADOW] = Region("Sacred Forest Meadow", SCENE_SACRED_FOREST_MEADOW, {
+        //Events
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairyExceptSuns();}),
+    }, {
+        //Locations
+        LOCATION(RC_SONG_FROM_SARIA,                  logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER)),
+        LOCATION(RC_SHEIK_IN_FOREST,                  logic->IsAdult),
+        LOCATION(RC_SFM_SARIA_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
+        LOCATION(RC_SFM_SARIA_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_SFM_SARIA_GOSSIP_STONE,           true),
+    }, {
+        //Exits
         Entrance(RR_FOREST_TEMPLE_ENTRYWAY, []{return logic->CanUse(RG_HOOKSHOT);}),
-        Entrance(RR_SFM_FAIRY_GROTTO,       []{return true;}),
+        Entrance(RR_SFM_ENTRYWAY,           []{return true;}),
+        // adult can jump up, but it's a trick. being hit directly by club moblin while wearing hover boots also works, but relies on coming from LW
+        Entrance(RR_SFM_ABOVE_MAZE,         []{return logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanGroundJump());}),
         Entrance(RR_SFM_STORMS_GROTTO,      []{return logic->CanOpenStormsGrotto();}),
+    });
+
+    areaTable[RR_SFM_OUTSIDE_FAIRY_GROTTO] = Region("SFM Outside Fairy Grotto", SCENE_SACRED_FOREST_MEADOW, {}, {}, {
+        //Exits
+        Entrance(RR_SFM_FAIRY_GROTTO, []{return true;}),
+        Entrance(RR_SFM_ABOVE_MAZE,   []{return logic->HasItem(RG_CLIMB) || logic->HasItem(RG_HOOKSHOT);}),
     });
 
     areaTable[RR_SFM_FAIRY_GROTTO] = Region("SFM Fairy Grotto", SCENE_GROTTOS, {
@@ -52,7 +71,7 @@ void RegionTable_Init_SacredForestMeadow() {
         LOCATION(RC_SFM_FAIRY_GROTTO_FAIRY_8, true),
     }, {
         //Exits
-        Entrance(RR_SACRED_FOREST_MEADOW, []{return true;}),
+        Entrance(RR_SFM_OUTSIDE_FAIRY_GROTTO, []{return true;}),
     });
 
     areaTable[RR_SFM_WOLFOS_GROTTO] = Region("SFM Wolfos Grotto", SCENE_GROTTOS, {}, {

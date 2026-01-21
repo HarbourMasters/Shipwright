@@ -11,7 +11,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         Entrance(RR_FIRE_TEMPLE_FOYER,          []{return ctx->GetDungeon(FIRE_TEMPLE)->IsVanilla();}),
         Entrance(RR_FIRE_TEMPLE_MQ_FOYER_LOWER, []{return ctx->GetDungeon(FIRE_TEMPLE)->IsMQ();}),
-        Entrance(RR_DMC_CENTRAL_LOCAL,          []{return true;}),
+        Entrance(RR_DMC_OUTSIDE_FIRE_TEMPLE,    []{return true;}),
     });
 
 #pragma region Vanilla
@@ -143,7 +143,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_LAVA_GEYSER_1F] = Region("Fire Temple Lava Geyser 1F", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_BIG_LAVA_ROOM,     []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 3);}),
-        Entrance(RR_FIRE_TEMPLE_LAVA_GEYSER_GRATE, []{return logic->FireTimer() >= 40/* && CanClimbHigh()*/;}),
+        Entrance(RR_FIRE_TEMPLE_LAVA_GEYSER_GRATE, []{return logic->FireTimer() >= 40 && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT));}),
         Entrance(RR_FIRE_TEMPLE_LAVA_GEYSER_TORCH, []{return logic->CanUse(RG_LONGSHOT) && logic->FireTimer() >= 40;}),
     });
 
@@ -176,7 +176,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         Entrance(RR_FIRE_TEMPLE_LAVA_GEYSER_1F,     []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 4);}),
         Entrance(RR_FIRE_TEMPLE_SHORTCUT_CLIMB,     []{return logic->Get(LOGIC_FIRE_OPENED_UPPER_SHORTCUT);}),
-        Entrance(RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER, []{return logic->IsAdult && (((logic->HasItem(RG_GORONS_BRACELET) || ctx->GetTrickOption(RT_FIRE_STRENGTH))/*CanUse(RG_CLIMB)*/) || logic->CanGroundJump()) && logic->CanHitSwitch(ED_BOMB_THROW);}),
+        Entrance(RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER, []{return logic->IsAdult && logic->HasItem(RG_CLIMB) && ((logic->HasItem(RG_GORONS_BRACELET) || ctx->GetTrickOption(RT_FIRE_STRENGTH)) || logic->CanGroundJump()) && logic->CanHitSwitch(ED_BOMB_THROW);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_SHORTCUT_CLIMB] = Region("Fire Temple Shortcut Climb", SCENE_FIRE_TEMPLE, {
@@ -188,7 +188,7 @@ void RegionTable_Init_FireTemple() {
     }, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_SHORTCUT_ROOM,      []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_BOULDER_MAZE_UPPER, []{return true/*CanUse(RG_CLIMB)*/;}),
+        Entrance(RR_FIRE_TEMPLE_BOULDER_MAZE_UPPER, []{return logic->HasItem(RG_CLIMB);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER] = Region("Fire Temple Boulder Maze Lower", SCENE_FIRE_TEMPLE, {}, {
@@ -258,15 +258,18 @@ void RegionTable_Init_FireTemple() {
         Entrance(RR_FIRE_TEMPLE_GS_CLIMB_4F,        []{return logic->ReachScarecrow() || (ctx->GetTrickOption(RT_FIRE_SCARECROW) && logic->IsAdult && logic->CanUse(RG_LONGSHOT));}),
     });
 
-    areaTable[RR_FIRE_TEMPLE_GS_CLIMB_4F] = Region("Fire Temple GS Climb 4F", SCENE_FIRE_TEMPLE, {}, {}, {
+    areaTable[RR_FIRE_TEMPLE_GS_CLIMB_4F] = Region("Fire Temple GS Climb 4F", SCENE_FIRE_TEMPLE, {}, {
+        //Locations
+        LOCATION(RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_LONGSHOT)),
+    }, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_BOULDER_MAZE_UPPER, []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_GS_CLIMB_5F,        []{return true/*CanUse(RG_CLIMB)*/;}),
+        Entrance(RR_FIRE_TEMPLE_GS_CLIMB_5F,        []{return logic->HasItem(RG_CLIMB);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_GS_CLIMB_5F] = Region("Fire Temple GS Climb 5F", SCENE_FIRE_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB, logic->CanKillEnemy(RE_GOLD_SKULLTULA, /*CanUse(RG_CLIMB) ?*/ED_SHORT_JUMPSLASH/*: ED_BOMB_THROW*/)),
+        LOCATION(RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB, logic->CanKillEnemy(RE_GOLD_SKULLTULA, logic->HasItem(RG_CLIMB) ? ED_SHORT_JUMPSLASH : ED_BOMB_THROW)),
     }, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_GS_CLIMB_4F,    []{return true;}),
@@ -384,7 +387,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_SWITCH_CLIMB] = Region("Fire Temple Switch Climb", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_ABOVE_3F_FLARE_DANCER, []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_NARROW_STAIRS,         []{return logic->CanHitSwitch(ED_BOMB_THROW)/* && CanUse(RG_CLIMB)*/;}),
+        Entrance(RR_FIRE_TEMPLE_NARROW_STAIRS,         []{return logic->CanHitSwitch(ED_BOMB_THROW) && logic->HasItem(RG_CLIMB);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_NARROW_STAIRS] = Region("Fire Temple Narrow Stairs", SCENE_FIRE_TEMPLE, {}, {
@@ -630,15 +633,10 @@ void RegionTable_Init_FireTemple() {
         Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM, []{return true;}),
     });
 
-    areaTable[RR_FIRE_TEMPLE_MQ_LAVA_GEYSER_1F] = Region("Fire Temple MQ Lava Geyser 1F", SCENE_FIRE_TEMPLE, {}, {
-        //Locations
-        LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_LEFT_HEART,  true),
-        LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_RIGHT_HEART, true),
-        LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_LOWER_HEART, true),
-    }, {
+    areaTable[RR_FIRE_TEMPLE_MQ_LAVA_GEYSER_1F] = Region("Fire Temple MQ Lava Geyser 1F", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM,       []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_LAVA_GEYSER_GRATE,   []{return logic->FireTimer() >= 40/* && CanClimbHigh()*/;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_LAVA_GEYSER_GRATE,   []{return logic->FireTimer() >= 40 && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT));}),
         //this technically only reaches torch pillar, but the heart pillar can be reached from there with longshot
         Entrance(RR_FIRE_TEMPLE_MQ_LAVA_GEYSER_PILLARS, []{return logic->FireTimer() >= 40 && logic->CanUse(RG_LONGSHOT);}),
     });
@@ -658,6 +656,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_MQ_LAVA_GEYSER_PILLARS] = Region("Fire Temple MQ Lava Geyser Pillars", SCENE_FIRE_TEMPLE, {}, {
         //Locations
         //rang can get the other 2 hearts from here but it's an awkward shot so a trick
+        //similarly rang from 1f can get this lower heart
         LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_PILLAR_LOWER_HEART, true),
     }, {
         //Exits
@@ -678,8 +677,8 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_LOWER] = Region("Fire Temple MQ Shortcut Room Lower", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_MID, []{return (logic->HasFireSource() && (logic->IsAdult || (logic->CanUse(RG_HOOKSHOT)/* && (CanUse(RG_CLIMB)*/))) || 
-                                                                 (ctx->GetTrickOption(RT_FIRE_MQ_CLIMB) && logic->CanUse(RG_HOVER_BOOTS)/*&& CanUse(RG_CLIMB)*/);}),
+        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_MID, []{return (logic->HasFireSource() && (logic->IsAdult || (logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_CLIMB)))) || 
+                                                                 (ctx->GetTrickOption(RT_FIRE_MQ_CLIMB) && logic->CanUse(RG_HOVER_BOOTS) && logic->HasItem(RG_CLIMB));}),
         Entrance(RR_FIRE_TEMPLE_MQ_LAVA_GEYSER_2F,    []{return true;}),
         Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_CAGE,     []{return logic->Get(LOGIC_FIRE_OPENED_UPPER_SHORTCUT);}),
     });
@@ -688,7 +687,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_MID] = Region("Fire Temple MQ Shortcut Room Middle", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_LOWER, []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_3F,    []{return true/*(logic->CanUse(RG_HOOKSHOT) || (CanUse(RG_CLIMB))*/;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_3F,    []{return logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_3F] = Region("Fire Temple MQ Shortcut Room 3F", SCENE_FIRE_TEMPLE, {}, {}, {
@@ -782,7 +781,7 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_MQ_SHORTCUT_CRATE_6, logic->CanBreakCrates()),
     }, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_MQ_UPPER_LIZALFOS_MAZE, []{return true/*CanUse(RG_CLIMB)*/;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_UPPER_LIZALFOS_MAZE, []{return logic->HasItem(RG_CLIMB);}),
         Entrance(RR_FIRE_TEMPLE_MQ_SHORTCUT_CAGE,       []{return logic->Get(LOGIC_FIRE_OPENED_UPPER_SHORTCUT);}),
     });
 
@@ -801,7 +800,7 @@ void RegionTable_Init_FireTemple() {
     }, {}, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_ABOVE_MAZE,    []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_BURNING_BLOCK, []{return logic->CanUse(RG_HOOKSHOT)/*&& CanUse(RG_CLIMB)*/;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_BURNING_BLOCK, []{return logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_CLIMB);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_BURNING_BLOCK] = Region("Fire Temple MQ Burning Block", SCENE_FIRE_TEMPLE, {}, {
@@ -996,7 +995,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_MQ_LOCKED_CLIMB] = Region("Fire Temple MQ Locked Climb", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
         Entrance(RR_FIRE_TEMPLE_MQ_3F_FLARE_DANCER,    []{return true;}),
-        Entrance(RR_FIRE_TEMPLE_MQ_NARROW_STAIRS_ROOM, []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 4)/* && CanUse(RG_CLIMB)*/;}),
+        Entrance(RR_FIRE_TEMPLE_MQ_NARROW_STAIRS_ROOM, []{return logic->SmallKeys(SCENE_FIRE_TEMPLE, 4) && logic->HasItem(RG_CLIMB);}),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_NARROW_STAIRS_ROOM] = Region("Fire Temple MQ Narrow Stairs Room", SCENE_FIRE_TEMPLE, {

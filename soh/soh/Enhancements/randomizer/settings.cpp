@@ -785,8 +785,9 @@ void Settings::CreateOptions() {
     });
     OPT_BOOL(RSK_SHUFFLE_OCARINA_BUTTONS, "Shuffle Ocarina Buttons", CVAR_RANDOMIZER_SETTING("ShuffleOcarinaButtons"), mOptionDescriptions[RSK_SHUFFLE_OCARINA_BUTTONS]);
     OPT_BOOL(RSK_SHUFFLE_SWIM, "Shuffle Swim", CVAR_RANDOMIZER_SETTING("ShuffleSwim"), mOptionDescriptions[RSK_SHUFFLE_SWIM]);
-    OPT_BOOL(RSK_SHUFFLE_GRAB, "Shuffle Grab", CVAR_RANDOMIZER_SETTING("ShuffleGrab"), mOptionDescriptions[RSK_SHUFFLE_GRAB]);
+    OPT_BOOL(RSK_SHUFFLE_CLIMB, "Shuffle Climb", CVAR_RANDOMIZER_SETTING("ShuffleClimb"), mOptionDescriptions[RSK_SHUFFLE_CLIMB]);
     OPT_BOOL(RSK_SHUFFLE_CRAWL, "Shuffle Crawl", CVAR_RANDOMIZER_SETTING("ShuffleCrawl"), mOptionDescriptions[RSK_SHUFFLE_CRAWL]);
+    OPT_BOOL(RSK_SHUFFLE_GRAB, "Shuffle Grab", CVAR_RANDOMIZER_SETTING("ShuffleGrab"), mOptionDescriptions[RSK_SHUFFLE_GRAB]);
     OPT_BOOL(RSK_SHUFFLE_OPEN_CHEST, "Shuffle Open Chest", CVAR_RANDOMIZER_SETTING("ShuffleOpenChest"), mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST]);
     OPT_BOOL(RSK_SHUFFLE_WEIRD_EGG, "Shuffle Weird Egg", CVAR_RANDOMIZER_SETTING("ShuffleWeirdEgg"), mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG]);
     OPT_BOOL(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD, "Shuffle Gerudo Membership Card", CVAR_RANDOMIZER_SETTING("ShuffleGerudoToken"), mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
@@ -1352,10 +1353,7 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_GROTTOS_WITHOUT_AGONY, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE },
               "Hidden Grottos without Stone of Agony", "Allows entering hidden grottos without the Stone of Agony.");
     OPT_TRICK(RT_FEWER_TUNIC_REQUIREMENTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE },
-              "Fewer Tunic Requirements",
-              "Allows the following possible without Tunics:\n- Enter Water Temple. The area below the center pillar "
-              "still requires Zora Tunic. Applies to MQ also.\n- Enter Fire Temple. Volvagia still requires Goron "
-              "Tunic. Applies to MQ also, and includes child access to first floor with dungeon shuffle.");
+              "Fewer Tunic Requirements", "Logic may require getting through areas with timers without tunics.");
     OPT_TRICK(RT_UNINTUITIVE_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Unintuitive Jumps",
               "Many ledges can be overcome with particular jumps which are simple to execute without items.\n"
               "This includes jumping from heights to dive deeper without scales,\n"
@@ -1712,8 +1710,8 @@ void Settings::CreateOptions() {
         "room using a precisely-aimed use of the Slingshot, Bow, or Longshot. As well, if you climb to the top of the "
         "vines you can stand on the right edge of the platform and shoot around the glass. From this distance, even "
         "the Hookshot can reach the switch. This trick is only relevant if \"Shuffle Boss Entrances\" is enabled. MQ "
-        "Jabu: A Gold Skulltula Token can be collected with the Hookshot or Longshot using the same methods as hitting "
-        "the switch in Vanilla. This MQ trick is not currently relevant in logic.");
+        "Jabu: A Gold Skulltula Token can be collected with Longshot using the same methods as hitting the switch in "
+        "Vanilla.");
     OPT_TRICK(RT_JABU_NEAR_BOSS_EXPLOSIVES, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE },
               "Jabu Near Boss Ceiling Switch with Explosives",
               "You can hit the switch that opens the door to the boss room using a precisely-aimed Bombchu. Also, "
@@ -2400,6 +2398,7 @@ void Settings::CreateOptions() {
                                                                                  &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
                                                                                  &mOptions[RSK_SHUFFLE_SWIM],
                                                                                  &mOptions[RSK_SHUFFLE_GRAB],
+                                                                                 &mOptions[RSK_SHUFFLE_CLIMB],
                                                                                  &mOptions[RSK_SHUFFLE_CRAWL],
                                                                                  &mOptions[RSK_SHUFFLE_OPEN_CHEST],
                                                                                  &mOptions[RSK_SHUFFLE_BEAN_SOULS],
@@ -2621,6 +2620,7 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
                                             &mOptions[RSK_SHUFFLE_SWIM],
                                             &mOptions[RSK_SHUFFLE_GRAB],
+                                            &mOptions[RSK_SHUFFLE_CLIMB],
                                             &mOptions[RSK_SHUFFLE_CRAWL],
                                             &mOptions[RSK_SHUFFLE_OPEN_CHEST],
                                             &mOptions[RSK_SHUFFLE_WEIRD_EGG],
