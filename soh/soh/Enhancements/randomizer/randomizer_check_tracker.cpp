@@ -2067,12 +2067,17 @@ void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion) {
     const auto& ctx = Rando::Context::GetInstance();
     logic = ctx->GetLogic();
 
-    if (startingRegion == RR_ROOT) {
-        // debug warping sets gSaveContext.entranceIndex in Select_LoadGame
-        int32_t entranceIndex = gPlayState->nextEntranceIndex;
-        const auto entrance = Rando::EntranceShuffler::GetEntranceByIndex(entranceIndex);
-        if (entrance != nullptr) {
-            startingRegion = entrance->GetOriginalConnectedRegionKey();
+    int16_t entranceIndex = gPlayState->nextEntranceIndex;
+    if (startingRegion == RR_ROOT && entranceIndex >= 0 && entranceIndex < ENTR_MAX) {
+        // Try to find a mapped entrance
+        // e.g. ENTR_DEKU_TREE_0_1 (index 1) is not mapped, but ENTR_DEKU_TREE_ENTRANCE (index 0) is mapped
+        const int8_t scene = gEntranceTable[entranceIndex].scene;
+        for (; entranceIndex >= 0 && gEntranceTable[entranceIndex].scene == scene; entranceIndex--) {
+            const auto entrance = Rando::EntranceShuffler::GetEntranceByIndex(entranceIndex);
+            if (entrance != nullptr) {
+                startingRegion = entrance->GetOriginalConnectedRegionKey();
+                break;
+            }
         }
     }
 
