@@ -358,7 +358,8 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     }
                     case ACTOR_EN_TA:
                     case ACTOR_DOOR_SHUTTER: {
-                        if (actor->params == 9402 && gPlayState->sceneNum == SCENE_JABU_JABU &&
+                        if (((actor->params == 9402 && gPlayState->sceneNum == SCENE_JABU_JABU) ||
+                             (actor->params == 20460 && gPlayState->sceneNum == SCENE_DODONGOS_CAVERN)) &&
                             CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
                             break;
                         }
