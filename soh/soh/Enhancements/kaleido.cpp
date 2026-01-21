@@ -277,7 +277,8 @@ void Kaleido::Draw(PlayState* play) {
                         Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     }
-                    if (mCursorPos >= mTopIndex + mNumVisible && mTopIndex + mNumVisible < static_cast<int>(mEntries.size())) {
+                    if (mCursorPos >= mTopIndex + mNumVisible &&
+                        mTopIndex + mNumVisible < static_cast<int>(mEntries.size())) {
                         mTopIndex = mCursorPos - mNumVisible + 1;
                     }
                 } else if (CHECK_BTN_ALL(input->press.button, BTN_CLEFT)) {
@@ -301,7 +302,8 @@ void Kaleido::Draw(PlayState* play) {
                         Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     }
-                    if (mCursorPos >= mTopIndex + mNumVisible && mTopIndex + mNumVisible < static_cast<int>(mEntries.size())) {
+                    if (mCursorPos >= mTopIndex + mNumVisible &&
+                        mTopIndex + mNumVisible < static_cast<int>(mEntries.size())) {
                         mTopIndex = mCursorPos - mNumVisible + 1;
                     }
                 } else if ((pauseCtx->stickRelX < -30) || CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
