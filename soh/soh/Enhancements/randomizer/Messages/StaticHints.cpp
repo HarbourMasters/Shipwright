@@ -304,7 +304,7 @@ void BuildSariaMessage(uint16_t* textId, bool* loadFromMessageTable) {
     *loadFromMessageTable = false;
 }
 
-void BuildMidoMessage(uint16_t* textId, bool *loadFromMessageTable) {
+void BuildMidoMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_MIDO_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -376,7 +376,7 @@ void BuildMaskShopSignMessage(uint16_t* textId, bool* loadFromMessageTable) {
 
 void BuildBossKeyHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     RandomizerHint rh = RH_NONE;
-    switch(gPlayState->sceneNum) {
+    switch (gPlayState->sceneNum) {
         case SCENE_FOREST_TEMPLE:
             rh = RH_FOREST_BOSS_KEY_HINT;
             break;
