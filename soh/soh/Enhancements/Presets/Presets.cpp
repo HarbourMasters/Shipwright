@@ -90,7 +90,7 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
                         info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Check Tracker"]);
                 }
                 if (info.presetValues["blocks"][blockInfo[i].names[1]]["windows"].contains("Entrance Tracker")) {
-                    EntranceTracker_LoadFromPreset(
+                    EntranceTracker::EntranceTracker_LoadFromPreset(
                         info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Entrance Tracker"]);
                 }
             }
