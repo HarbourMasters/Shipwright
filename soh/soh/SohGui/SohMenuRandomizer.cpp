@@ -3,6 +3,7 @@
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/OTRGlobals.h"
+#include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohGui.hpp"
 
 extern "C" {
@@ -771,6 +772,16 @@ void SohMenu::AddMenuRandomizer() {
         .WindowName("Check Tracker Settings")
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Check Tracker Settings Window."));
+    path.sidebarName = "Hint Tracker";
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+    AddWidget(path, "Hint Tracker", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Toggle Hint Tracker", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("HintTracker"))
+        .RaceDisable(false)
+        .WindowName("Hint Tracker")
+        .HideInSearch(true)
+        .Options(WindowButtonOptions().Tooltip("Toggles the Hint Tracker.").EmbedWindow(false));
+    AddWidget(path, "Hint Tracker Settings", WIDGET_SEPARATOR_TEXT);
 }
 
 } // namespace SohGui

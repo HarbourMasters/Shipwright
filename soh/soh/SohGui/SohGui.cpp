@@ -6,6 +6,7 @@
 //
 
 #include "SohGui.hpp"
+#include "soh/Enhancements/randomizer/HintTracker.h"
 
 #include <spdlog/spdlog.h>
 #include <imgui.h>
@@ -89,6 +90,7 @@ std::shared_ptr<MessageViewer> mMessageViewerWindow;
 std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
 std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
+std::shared_ptr<HintTracker::HintTrackerWindow> mHintTrackerWindow;
 std::shared_ptr<EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
 std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
 std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
@@ -177,6 +179,9 @@ void SetupGuiElements() {
     mCheckTrackerSettingsWindow = std::make_shared<CheckTracker::CheckTrackerSettingsWindow>(
         CVAR_WINDOW("CheckTrackerSettings"), "Check Tracker Settings", ImVec2(600, 375));
     gui->AddGuiWindow(mCheckTrackerSettingsWindow);
+    mHintTrackerWindow =
+        std::make_shared<HintTracker::HintTrackerWindow>(CVAR_WINDOW("HintTracker"), "Hint Tracker", ImVec2(600, 375));
+    gui->AddGuiWindow(mHintTrackerWindow);
     mEntranceTrackerWindow =
         std::make_shared<EntranceTrackerWindow>(CVAR_WINDOW("EntranceTracker"), "Entrance Tracker", ImVec2(500, 750));
     gui->AddGuiWindow(mEntranceTrackerWindow);
@@ -215,6 +220,7 @@ void Destroy() {
     mEntranceTrackerSettingsWindow = nullptr;
     mCheckTrackerWindow = nullptr;
     mCheckTrackerSettingsWindow = nullptr;
+    mHintTrackerWindow = nullptr;
     mGameplayStatsWindow = nullptr;
     mDLViewerWindow = nullptr;
     mValueViewerWindow = nullptr;
