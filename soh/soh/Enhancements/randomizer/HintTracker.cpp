@@ -79,8 +79,30 @@ void HintTrackerWindow::DrawElement() {
         return;
     }
     for (auto& hint : *mHintTable) {
-        if (hint.IsEnabled() && hint.IsDiscovered()) {
-            ImGui::BulletText("%s", hint.GetHintMessage(MF_CLEAN).GetForCurrentLanguage(MF_CLEAN).c_str());
+        if (hint.IsEnabled() && hint.GetDistribution() != "Junk"/* && hint.IsDiscovered()*/) {
+            switch(hint.GetHintType()) {
+                case HINT_TYPE_AREA:
+                case HINT_TYPE_ITEM_AREA:
+                    ImGui::BulletText("%s is in %s", hint.GetItemName(0).GetEnglish(MF_CLEAN).c_str(), hint.GetAreaName(0).GetEnglish(MF_CLEAN).c_str());
+                    break;
+                case HINT_TYPE_ITEM:
+                    ImGui::BulletText("%s is at %s", hint.GetItemName(0).GetEnglish(MF_CLEAN).c_str(), Rando::StaticData::GetLocation(hint.GetHintedLocations()[0])->GetName().c_str());
+                    break;
+                case HINT_TYPE_FOOLISH:
+                    ImGui::BulletText("%s is Foolish", hint.GetAreaName(0).GetEnglish(MF_CLEAN).c_str());
+                    break;
+                case HINT_TYPE_WOTH:
+                    ImGui::BulletText("%s is Way of the Hero", hint.GetAreaName(0).GetEnglish(MF_CLEAN).c_str());
+                    break;
+                case HINT_TYPE_ALTAR_CHILD:
+                case HINT_TYPE_ALTAR_ADULT:
+                case HINT_TYPE_MESSAGE:
+                case HINT_TYPE_TRIAL:
+                    ImGui::BulletText("%s", hint.GetHintMessage(MF_CLEAN).GetForCurrentLanguage(MF_CLEAN).c_str());
+                    break;
+                default:
+                    break;
+            }
         }
     }
     EndFloatWindows();
