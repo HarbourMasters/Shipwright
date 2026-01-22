@@ -26,8 +26,7 @@ void BuildHintStoneMessage(uint16_t* textId, bool* loadFromMessageTable) {
     if (Rando::StaticData::stoneParamsToHint.contains(hintParams)) {
         stoneHint = Rando::StaticData::stoneParamsToHint[hintParams];
     } else if (hintParams == 0x18) {
-        int numOfActorLists = sizeof(gPlayState->actorCtx.actorLists) / sizeof(gPlayState->actorCtx.actorLists[0]);
-        for (int i = 0; i < numOfActorLists; i++) {
+        for (size_t i = 0; i < ACTORCAT_MAX; i++) {
             if (gPlayState->actorCtx.actorLists[i].length) {
                 if (gPlayState->actorCtx.actorLists[i].head->id == 10 &&
                     Rando::StaticData::grottoChestParamsToHint.contains(

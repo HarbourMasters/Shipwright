@@ -481,7 +481,7 @@ void Region::RemoveExit(Rando::Entrance* exitToRemove) {
 
 void Region::SetAsPrimary(RandomizerRegion exitToBePrimary) {
     for (auto& exit : exits) {
-        if (exit.Getuint32_t() == exitToBePrimary) {
+        if (exit.GetConnectedRegionKey() == exitToBePrimary) {
             exit.SetAsPrimary();
             return;
         }
@@ -490,7 +490,7 @@ void Region::SetAsPrimary(RandomizerRegion exitToBePrimary) {
 
 Rando::Entrance* Region::GetExit(RandomizerRegion exitToReturn) {
     for (auto& exit : exits) {
-        if (exit.Getuint32_t() == exitToReturn) {
+        if (exit.GetConnectedRegionKey() == exitToReturn) {
             return &exit;
         }
     }
