@@ -317,7 +317,8 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         // can be skipped with OI
                         // The One Point for that switch is used in common setups for the former and is required for the
                         // latter to work
-                        if ((actor->params == 14848 || actor-> params == 14336) && gPlayState->sceneNum == SCENE_JABU_JABU &&
+                        if ((actor->params == 14848 || actor->params == 14336) &&
+                            gPlayState->sceneNum == SCENE_JABU_JABU &&
                             CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
                             break;
                         }
@@ -355,7 +356,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     case ACTOR_EN_SIOFUKI: {
                         // The Spirit Temple MQ water jet cutscene is required for an actor glitch
                         // setup that skips the grate
-                        if (actor->params == 6359 && gPlayState-> sceneNum == SCENE_SPIRIT_TEMPLE &&
+                        if (actor->params == 6359 && gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE &&
                             CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
                             *should = true;
                             break;
