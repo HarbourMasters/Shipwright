@@ -72,10 +72,6 @@ bool Rando::Location::IsVanillaCompletion() const {
     return isVanillaCompletion;
 }
 
-uint32_t Rando::Location::Getuint32_t() const {
-    return hintKey;
-}
-
 const HintText& Rando::Location::GetHint() const {
     return StaticData::hintTextTable[hintKey];
 }

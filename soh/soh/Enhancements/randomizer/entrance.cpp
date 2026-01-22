@@ -78,10 +78,6 @@ bool Entrance::ConditionsMet(bool allAgeTimes) const {
     return conditionsMet && (!allAgeTimes || conditionsMet == 4);
 }
 
-uint32_t Entrance::Getuint32_t() const {
-    return connectedRegion;
-}
-
 // set the logic to be a specific age and time of day and see if the condition still holds
 bool Entrance::CheckConditionAtAgeTime(bool& age, bool& time, bool passAnyway) const {
 
