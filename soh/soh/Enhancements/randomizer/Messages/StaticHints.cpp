@@ -5,7 +5,6 @@
  * File for registering hooks for "Static" hints, i.e. hints that
  * are always given by a specific NPC and/or for a specific item.
  */
-#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "z64scene.h"
 #include <soh/OTRGlobals.h>
