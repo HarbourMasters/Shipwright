@@ -5,6 +5,7 @@
  * File for registering hooks for "Static" hints, i.e. hints that
  * are always given by a specific NPC and/or for a specific item.
  */
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include <soh/OTRGlobals.h>
 
 extern "C" {
@@ -39,6 +40,7 @@ void BuildGanondorfHint(uint16_t* textId, bool* loadFromMessageTable) {
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_GANONDORF_HINT)->SetDiscovered();
 }
 
 void BuildSheikMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -47,6 +49,7 @@ void BuildSheikMessage(uint16_t* textId, bool* loadFromMessageTable) {
         case SCENE_TEMPLE_OF_TIME:
             if (RAND_GET_OPTION(RSK_OOT_HINT) && !RAND_GET_ITEM_LOC(RC_SONG_FROM_OCARINA_OF_TIME)->HasObtained()) {
                 msg = RAND_GET_HINT(RH_OOT_HINT)->GetHintMessage(MF_RAW);
+                RAND_GET_HINT(RH_OOT_HINT)->SetDiscovered();
             } else if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER)) {
                 msg = CustomMessage(
                     "@, meet me at %gGanon's Castle%w once you obtain the %rkey to his lair%w.",
@@ -60,6 +63,7 @@ void BuildSheikMessage(uint16_t* textId, bool* loadFromMessageTable) {
         case SCENE_INSIDE_GANONS_CASTLE:
             if (RAND_GET_OPTION(RSK_SHEIK_LA_HINT) && INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
                 msg = RAND_GET_HINT(RH_SHEIK_HINT)->GetHintMessage(MF_RAW);
+                RAND_GET_HINT(RH_SHEIK_HINT)->SetDiscovered();
             } else if (!(CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER) &&
                          INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT && CUR_CAPACITY(UPG_QUIVER) >= 30 &&
                          gSaveContext.isMagicAcquired)) {
@@ -99,6 +103,7 @@ void BuildChildAltarMessage(uint16_t* textId, bool* loadFromMessageTable) {
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_ALTAR_CHILD)->SetDiscovered();
 }
 
 void BuildAdultAltarMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -106,6 +111,7 @@ void BuildAdultAltarMessage(uint16_t* textId, bool* loadFromMessageTable) {
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_ALTAR_ADULT)->SetDiscovered();
 }
 
 void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -171,6 +177,7 @@ void BuildDampesDiaryMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_DAMPES_DIARY)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_DAMPES_DIARY)->SetDiscovered();
 }
 
 void BuildGregHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -178,6 +185,7 @@ void BuildGregHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
         CustomMessage msg = RAND_GET_HINT(RH_GREG_RUPEE)->GetHintMessage(MF_AUTO_FORMAT);
         msg.LoadIntoFont();
         *loadFromMessageTable = false;
+        RAND_GET_HINT(RH_GREG_RUPEE)->SetDiscovered();
     }
 }
 
@@ -198,6 +206,7 @@ void BuildMinuetWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_MINUET_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_MINUET_WARP_LOC)->SetDiscovered();
 }
 
 void BuildBoleroWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -209,6 +218,7 @@ void BuildBoleroWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_BOLERO_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_BOLERO_WARP_LOC)->SetDiscovered();
 }
 
 void BuildSerenadeWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -220,6 +230,7 @@ void BuildSerenadeWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_SERENADE_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_SERENADE_WARP_LOC)->SetDiscovered();
 }
 
 void BuildRequiemWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -231,6 +242,7 @@ void BuildRequiemWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_REQUIEM_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_REQUIEM_WARP_LOC)->SetDiscovered();
 }
 
 void BuildNocturneWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -242,6 +254,7 @@ void BuildNocturneWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_NOCTURNE_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_NOCTURNE_WARP_LOC)->SetDiscovered();
 }
 
 void BuildPreludeWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -253,18 +266,21 @@ void BuildPreludeWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_PRELUDE_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_PRELUDE_WARP_LOC)->SetDiscovered();
 }
 
 void BuildFrogsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_FROGS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_FROGS_HINT)->SetDiscovered();
 }
 
 void BuildLoachHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_LOACH_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_LOACH_HINT)->SetDiscovered();
 }
 
 void BuildFishingPoleHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -288,6 +304,7 @@ void BuildFishingPoleHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_FISHING_POLE)->SetDiscovered();
 }
 
 void BuildSariaMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -299,24 +316,28 @@ void BuildSariaMessage(uint16_t* textId, bool* loadFromMessageTable) {
     }
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_SARIA_HINT)->SetDiscovered();
 }
 
 void BuildBiggoronHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_BIGGORON_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_BIGGORON_HINT)->SetDiscovered();
 }
 
 void BuildBigPoesHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_BIGGORON_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_BIG_POES_HINT)->SetDiscovered();
 }
 
 void BuildChickensHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_CHICKENS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_CHICKENS_HINT)->SetDiscovered();
 }
 
 void BuildMalonHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -337,6 +358,7 @@ void BuildMalonHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     msg = RAND_GET_HINT(RH_MALON_HINT)->GetHintMessage(MF_AUTO_FORMAT, id);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_MALON_HINT)->SetDiscovered();
 }
 
 void BuildHorsebackArcheryMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -357,12 +379,14 @@ void BuildHorsebackArcheryMessage(uint16_t* textId, bool* loadFromMessageTable) 
     msg = RAND_GET_HINT(RH_HBA_HINT)->GetHintMessage(MF_AUTO_FORMAT, id);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_MALON_HINT)->SetDiscovered();
 }
 
 void BuildMaskShopSignMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_MASK_SHOP_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_MASK_SHOP_HINT)->SetDiscovered();
 }
 
 void RegisterStaticHints() {
