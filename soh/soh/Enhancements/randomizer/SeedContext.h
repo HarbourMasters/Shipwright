@@ -130,6 +130,7 @@ class Context {
     std::unordered_map<RandomizerCheck, RandomizerGet> iceTrapModels = {};
     std::vector<OptionValue*> VanillaLogicDefaults = {};
     std::array<uint8_t, 5> hashIconIndexes = {};
+    std::array<Hint, RH_MAX> hintTable = {};
     bool playthroughBeatable = false;
     bool allLocationsReachable = false;
     RandomizerArea GetAreaFromString(std::string str);
@@ -181,7 +182,6 @@ class Context {
 
   private:
     static std::weak_ptr<Context> mContext;
-    std::array<Hint, RH_MAX> hintTable = {};
     std::array<ItemLocation, RC_MAX> itemLocationTable = {};
     std::array<OptionValue, RSK_MAX> mOptions;
     std::array<OptionValue, RT_MAX> mTrickOptions;

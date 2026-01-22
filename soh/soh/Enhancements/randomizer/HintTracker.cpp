@@ -1,7 +1,12 @@
 #include "HintTracker.h"
 
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/SohGui/UIWidgets.hpp"
+
+extern "C" {
+    #include "variables.h"
+}
 
 namespace HintTracker {
 Color_RGBA8 Color_Background = { 0, 0, 0, 255 };
@@ -42,6 +47,14 @@ void EndFloatWindows() {
     ImGui::End();
 }
 
+// Hook Handlers
+void HintTrackerWindow::LoadHintTable(int32_t fileNum) {
+    if (!IS_RANDO) {
+        return;
+    }
+    mHintTable = &OTRGlobals::Instance->gRandoContext->hintTable;
+}
+
 void HintTrackerWindow::Draw() {
     if (!IsVisible()) {
         return;
@@ -51,6 +64,7 @@ void HintTrackerWindow::Draw() {
 }
 
 void HintTrackerWindow::InitElement() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([this](int32_t fileNum) { LoadHintTable(fileNum); });
 }
 
 void HintTrackerWindow::UpdateElement() {
@@ -58,12 +72,17 @@ void HintTrackerWindow::UpdateElement() {
 
 void HintTrackerWindow::DrawElement() {
     BeginFloatWindows("Hint Tracker", mIsVisible, ImGuiWindowFlags_NoScrollbar);
-    if (!GameInteractor::IsSaveLoaded()) {
+    if (!GameInteractor::IsSaveLoaded() || mHintTable == nullptr) {
         ImGui::Text("Waiting for file load..."); // TODO Language
         EndFloatWindows();
         return;
     }
-    ImGui::Text("Coming Soon...");
+    for (auto& hint : *mHintTable) {
+        if (!hint.IsEnabled()) {
+            continue;
+        }
+        ImGui::BulletText("%s", hint.GetHintMessage(MF_CLEAN).GetForCurrentLanguage(MF_CLEAN).c_str());
+    }
     EndFloatWindows();
 }
 } // namespace HintTracker

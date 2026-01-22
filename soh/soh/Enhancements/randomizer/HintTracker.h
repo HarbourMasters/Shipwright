@@ -14,5 +14,9 @@ class HintTrackerWindow final : public Ship::GuiWindow {
     void InitElement() override;
     void DrawElement() override;
     void UpdateElement() override;
+    void LoadHintTable(int32_t fileNum);
+
+  private:
+    std::array<Rando::Hint, RH_MAX>* mHintTable = nullptr;
 };
 } // namespace HintTracker
