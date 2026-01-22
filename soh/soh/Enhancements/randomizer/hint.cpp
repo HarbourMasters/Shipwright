@@ -664,6 +664,14 @@ bool Hint::IsEnabled() const {
     return enabled;
 }
 
+bool Hint::IsDiscovered() const {
+    return discovered;
+}
+
+void Hint::SetDiscovered(bool discovered) {
+    this->discovered = discovered;
+}
+
 std::vector<RandomizerHintTextKey> Hint::GetHintTextKeys() const {
     return hintKeys;
 }

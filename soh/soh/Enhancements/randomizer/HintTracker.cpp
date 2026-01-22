@@ -5,7 +5,7 @@
 #include "soh/SohGui/UIWidgets.hpp"
 
 extern "C" {
-    #include "variables.h"
+#include "variables.h"
 }
 
 namespace HintTracker {
@@ -64,7 +64,8 @@ void HintTrackerWindow::Draw() {
 }
 
 void HintTrackerWindow::InitElement() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([this](int32_t fileNum) { LoadHintTable(fileNum); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(
+        [this](int32_t fileNum) { LoadHintTable(fileNum); });
 }
 
 void HintTrackerWindow::UpdateElement() {
@@ -78,10 +79,9 @@ void HintTrackerWindow::DrawElement() {
         return;
     }
     for (auto& hint : *mHintTable) {
-        if (!hint.IsEnabled()) {
-            continue;
+        if (hint.IsEnabled() && hint.IsDiscovered()) {
+            ImGui::BulletText("%s", hint.GetHintMessage(MF_CLEAN).GetForCurrentLanguage(MF_CLEAN).c_str());
         }
-        ImGui::BulletText("%s", hint.GetHintMessage(MF_CLEAN).GetForCurrentLanguage(MF_CLEAN).c_str());
     }
     EndFloatWindows();
 }

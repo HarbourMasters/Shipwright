@@ -49,6 +49,7 @@ void BuildHintStoneMessage(uint16_t* textId, bool* loadFromMessageTable) {
     msg.Replace(" kaufen", "");
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    OTRGlobals::Instance->gRandoContext->GetHint(stoneHint)->SetDiscovered();
 }
 
 void RegisterGossipStoneHints() {

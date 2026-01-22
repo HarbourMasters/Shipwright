@@ -44,6 +44,8 @@ class Hint {
     void SetDistribution(std::string distribution);
     const std::string& GetDistribution() const;
     bool IsEnabled() const;
+    bool IsDiscovered() const;
+    void SetDiscovered(bool discovered = true);
     std::vector<RandomizerHintTextKey> GetHintTextKeys() const;
     std::vector<RandomizerGet> GetHintedItems() const;
     std::vector<uint8_t> GetItemNamesChosen() const;
@@ -66,6 +68,7 @@ class Hint {
     std::vector<CustomMessage> messages = {};
     std::vector<RandomizerGet> items = {};
     bool enabled = false;
+    bool discovered = false;
     std::vector<uint8_t> itemNamesChosen = {};
     std::vector<uint8_t> hintTextsChosen = {};
     std::vector<uint8_t> areaNamesChosen = {};
