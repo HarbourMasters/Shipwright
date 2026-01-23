@@ -4995,7 +4995,7 @@ void func_800F6700(s8 arg0) {
             break;
     }
 
-    SetAudioChannelsSetting(channelsSetting);
+    SetAudioChannels(channelsSetting);
 
     Audio_SeqCmdE0(SEQ_PLAYER_BGM_MAIN, sp1F);
 }
