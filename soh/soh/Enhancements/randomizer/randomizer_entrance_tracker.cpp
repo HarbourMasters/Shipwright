@@ -718,16 +718,6 @@ void EntranceTrackerSettingsWindow::DrawElement() {
 
     SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
 
-    // CVarSliderFloat("Font Size", CVAR_TRACKER_CHECK("FontSize"),
-    //     FloatSliderOptions()
-    //     .Tooltip("Sets the font size used in the check tracker.")
-    //     .Format("%.1f")
-    //     .Step(0.1f)
-    //     .Min(0.3f)
-    //     .Max(2.0f)
-    //     .Color(THEME_COLOR)
-    //     .DefaultValue(1.0f));
-
     if (CVarGetInteger(CVAR_TRACKER_ENTRANCE("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
         CVarCheckbox("Enable Dragging", CVAR_TRACKER_ENTRANCE("Draggable"), CheckboxOptions().Color(THEME_COLOR));
         CVarCheckbox("Only Enable While Paused", CVAR_TRACKER_ENTRANCE("ShowOnlyPaused"),
