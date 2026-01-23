@@ -3877,11 +3877,6 @@ s8 AudioSfx_ComputeSurroundEffectIndex(f32 arg0, u16 sfxParams) {
         }
     }
     
-    // Ensure we don't return 0 (which disables the effect)
-    if (ret == 0) {
-        ret = 1;
-    }
-    
     return ret;
 }
 
