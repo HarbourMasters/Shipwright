@@ -264,6 +264,41 @@ static void ApplyMasterSwordPatches() {
     });
 }
 
+static void ResetBiggoronSheathPatches() {
+    ResourceMgr_UnpatchGfxByName(gLinkChildHylianShieldAndSheathNearDL, "customChildHylianShieldSheath1");
+    ResourceMgr_UnpatchGfxByName(gLinkChildHylianShieldAndSheathNearDL, "customChildHylianShieldSheath2");
+    ResourceMgr_UnpatchGfxByName(gLinkChildHylianShieldAndSheathNearDL, "customChildHylianShieldSheath3");
+    ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDekuShieldSheath1");
+    ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDekuShieldSheath2");
+    ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldAndSheathNearDL, "customDekuShieldSheath3");
+    ResourceMgr_UnpatchGfxByName(gLinkChildSheathNearDL, "customKokiriSheath1");
+    ResourceMgr_UnpatchGfxByName(gLinkChildSheathNearDL, "customKokiriSheath2");
+    ResourceMgr_UnpatchGfxByName(gLinkChildSwordAndSheathNearDL, "customKokiriSwordSheath1");
+    ResourceMgr_UnpatchGfxByName(gLinkChildSwordAndSheathNearDL, "customKokiriSwordSheath2");
+    ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDekuShieldSword1");
+    ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDekuShieldSword2");
+    ResourceMgr_UnpatchGfxByName(gLinkChildDekuShieldSwordAndSheathNearDL, "customDekuShieldSword3");
+    ResourceMgr_UnpatchGfxByName(gLinkChildHylianShieldSwordAndSheathNearDL, "customChildHylianShieldSword1");
+    ResourceMgr_UnpatchGfxByName(gLinkChildHylianShieldSwordAndSheathNearDL, "customChildHylianShieldSword2");
+    ResourceMgr_UnpatchGfxByName(gLinkChildHylianShieldSwordAndSheathNearDL, "customChildHylianShieldSword3");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultSheathNearDL, "customSheath1");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultSheathNearDL, "customSheath2");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customMasterSwordSheath1");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultMasterSwordAndSheathNearDL, "customMasterSwordSheath2");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customHylianShieldSword1");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customHylianShieldSword2");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldSwordAndSheathNearDL, "customHylianShieldSword3");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customHylianShieldSheath1");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customHylianShieldSheath2");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultHylianShieldAndSheathNearDL, "customHylianShieldSheath3");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customMirrorShieldSword1");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customMirrorShieldSword2");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldSwordAndSheathNearDL, "customMirrorShieldSword3");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customMirrorShieldSheath1");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customMirrorShieldSheath2");
+    ResourceMgr_UnpatchGfxByName(gLinkAdultMirrorShieldAndSheathNearDL, "customMirrorShieldSheath3");
+}
+
 static void ApplyBiggoronSwordPatches() {
     const bool isChild = LINK_IS_CHILD;
     const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
@@ -478,6 +513,10 @@ static void ApplyCommonEquipmentPatches() {
 
 void UpdatePatchCustomEquipmentDlists() {
     const u8 equippedSword = GetEquippedSwordItem();
+
+    if (equippedSword != ITEM_SWORD_BGS) {
+        ResetBiggoronSheathPatches();
+    }
 
     if (equippedSword == ITEM_NONE) {
         if (LINK_IS_CHILD) {
