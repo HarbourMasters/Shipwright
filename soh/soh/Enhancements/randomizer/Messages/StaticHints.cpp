@@ -324,6 +324,7 @@ void BuildMidoMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_MIDO_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_MIDO_HINT)->SetDiscovered();
 }
 
 void BuildBiggoronHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -424,6 +425,7 @@ void BuildBossKeyHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
         CustomMessage msg = RAND_GET_HINT(rh)->GetHintMessage(MF_AUTO_FORMAT);
         msg.LoadIntoFont();
         *loadFromMessageTable = false;
+        RAND_GET_HINT(rh)->SetDiscovered();
     }
 }
 
