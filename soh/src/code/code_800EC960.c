@@ -3857,17 +3857,33 @@ u8 func_800F37B8(f32 behindScreenZ, SoundBankEntry* arg1, s8 arg2) {
     return (phi_v1 * 0x10) + (u8)((phi_f0 * phi_f12) / (10000.0f / 5.2f));
 }
 
-s8 func_800F3990(f32 arg0, u16 sfxParams) {
+s8 AudioSfx_ComputeSurroundEffectIndex(f32 arg0, u16 sfxParams) {
     s8 ret = 0;
 
-    if (arg0 >= 0.0f) {
-        if (arg0 > 625.0f) {
+    // Enhanced surround effect calculation for better RL/RR separation
+    // Similar to 2ship2harkinian's Audio_SetSequenceProperties logic
+    if (arg0 > 0.0f) {
+        // Front of screen: map 0-100 range to 0-64 for rear left bias
+        if (arg0 > 100.0f) {
+            ret = 0;
+        } else {
+            ret = (s8)(((100.0f - arg0) / 100.0f) * 64.0f);
+        }
+    } else {
+        // Behind screen: map -100-0 range to 63-127 for rear right bias
+        if (arg0 < -100.0f) {
             ret = 127;
         } else {
-            ret = (arg0 / 625.0f) * 126.0f;
+            ret = (s8)((-arg0 / 100.0f) * 64.0f) + 63;
         }
     }
-    return ret | 1;
+    
+    // Ensure we don't return 0 (which disables the effect)
+    if (ret == 0) {
+        ret = 1;
+    }
+    
+    return ret;
 }
 
 void Audio_SetSoundProperties(u8 bankId, u8 entryIdx, u8 channelIdx) {
@@ -3890,7 +3906,9 @@ void Audio_SetSoundProperties(u8 bankId, u8 entryIdx, u8 channelIdx) {
         case BANK_ENEMY:
         case BANK_VOICE:
             if (D_80130604 == 2) {
-                sp38 = func_800F3990(*entry->posY, entry->sfxParams);
+                // Use Z position for depth-based surround effect (front/back)
+                // This provides better RL/RR separation
+                sp38 = AudioSfx_ComputeSurroundEffectIndex(*entry->posZ, entry->sfxParams);
             }
             // fallthrough
         case BANK_OCARINA:

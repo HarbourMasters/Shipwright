@@ -46,6 +46,14 @@ typedef enum {
 } AdsrStatus;
 
 typedef enum {
+    /* 0 */ SOUNDMODE_STEREO,
+    /* 1 */ SOUNDMODE_HEADSET,
+    /* 2 */ SOUNDMODE_SURROUND_EXTERNAL,
+    /* 3 */ SOUNDMODE_MONO,
+    /* 4 */ SOUNDMODE_SURROUND
+} SoundMode;
+
+typedef enum {
     /* 0 */ MEDIUM_RAM,
     /* 1 */ MEDIUM_UNK,
     /* 2 */ MEDIUM_CART,
@@ -545,7 +553,7 @@ typedef struct {
     /* 0x03 */ u8 headsetPanRight;
     /* 0x04 */ u8 headsetPanLeft;
     /* 0x05 */ u8 reverbVol;
-    /* 0x06 */ u8 unk_06;
+    /* 0x06 */ u8 surroundEffectIndex;
     /* 0x07 */ u8 unk_07;
     /* 0x08 */ u16 targetVolLeft;
     /* 0x0A */ u16 targetVolRight;

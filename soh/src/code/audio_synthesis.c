@@ -16,6 +16,7 @@
 #define DMEM_WET_SCRATCH 0x720 // = DMEM_WET_TEMP + DEFAULT_LEN_2CH
 #define DMEM_WET_LEFT_CH 0xC80
 #define DMEM_WET_RIGHT_CH 0xE20 // = DMEM_WET_LEFT_CH + DEFAULT_LEN_1CH
+#define DMEM_SURROUND_TEMP 0x4B0
 
 Acmd* AudioSynth_LoadRingBufferPart(Acmd* cmd, u16 dmem, u16 startPos, s32 length, SynthesisReverb* reverb);
 Acmd* AudioSynth_SaveBufferOffset(Acmd* cmd, u16 dmem, u16 offset, s32 length, s16* buf);
@@ -30,6 +31,8 @@ Acmd* AudioSynth_ProcessEnvelope(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthesisS
                                  u16 inBuf, s32 headsetPanSettings, s32 flags);
 Acmd* AudioSynth_FinalResample(Acmd* cmd, NoteSynthesisState* synthState, s32 count, u16 pitch, u16 inpDmem,
                                s32 resampleFlags);
+Acmd* AudioSynth_ApplySurroundEffect(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthesisState* synthState,
+                                     s32 aiBufLen, s32 inputDmem, s32 flags);
 
 u32 D_801304A0 = 0x13000000;
 u32 D_801304A4 = 0x5CAEC8E2;
@@ -127,7 +130,7 @@ void func_800DB03C(s32 arg0) {
             subEu2->bitField0.enabled = false;
         }
 
-        subEu->unk_06 = 0;
+        subEu->surroundEffectIndex = 0;
     }
 }
 
@@ -1070,6 +1073,16 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
     } else {
         side = 0;
     }
+
+    // Apply surround effect for rear speakers when in surround mode
+    if (gAudioContext.soundMode == SOUNDMODE_SURROUND) {
+        noteSubEu->targetVolLeft = noteSubEu->targetVolLeft >> 1;
+        noteSubEu->targetVolRight = noteSubEu->targetVolRight >> 1;
+        if (noteSubEu->surroundEffectIndex != 0xFF) {
+            cmd = AudioSynth_ApplySurroundEffect(cmd, noteSubEu, synthState, aiBufLen, DMEM_TEMP, flags);
+        }
+    }
+
     cmd = AudioSynth_ProcessEnvelope(cmd, noteSubEu, synthState, aiBufLen, DMEM_TEMP, side, flags);
     if (noteSubEu->bitField1.usesHeadsetPanEffects2) {
         if (!(flags & A_INIT)) {
@@ -1167,7 +1180,7 @@ Acmd* AudioSynth_ProcessEnvelope(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthesisS
 
 Acmd* AudioSynth_LoadWaveSamples(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthesisState* synthState, s32 nSamplesToLoad) {
     s32 temp_v0;
-    s32 unk6 = noteSubEu->unk_06;
+    s32 unk6 = noteSubEu->surroundEffectIndex;
     s32 samplePosInt = synthState->samplePosInt;
     s32 repeats;
 
@@ -1249,5 +1262,69 @@ Acmd* AudioSynth_NoteApplyHeadsetPanEffects(Acmd* cmd, NoteSubEu* noteSubEu, Not
                     ALIGN16(panShift));
     }
     aAddMixer(cmd++, ALIGN64(bufLen), DMEM_NOTE_PAN_TEMP, dest);
+    return cmd;
+}
+
+Acmd* AudioSynth_ApplySurroundEffect(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthesisState* synthState,
+                                     s32 aiBufLen, s32 inputDmem, s32 flags) {
+    s32 wetGain;
+    u16 dryGain;
+    s64 dmem = DMEM_SURROUND_TEMP;
+    f32 decayGain;
+
+    AudioSynth_DMemMove(cmd++, inputDmem, DMEM_NOTE_PAN_TEMP, aiBufLen * 2);
+    dryGain = synthState->unk_1C; // surroundEffectGain equivalent
+
+    if (flags == A_INIT) {
+        aClearBuffer(cmd++, dmem, sizeof(synthState->synthesisBuffers->panSamplesBuffer));
+        synthState->unk_1C = 0;
+    } else {
+        aLoadBuffer(cmd++, synthState->synthesisBuffers->panSamplesBuffer, dmem,
+                    sizeof(synthState->synthesisBuffers->panSamplesBuffer));
+
+        // === Pro Logic II encoding: steer surround to RL or RR based on pan ===
+        // Calculate pan position: 0.0 = full left, 0.5 = center, 1.0 = full right
+        f32 sumVol = noteSubEu->targetVolLeft + noteSubEu->targetVolRight;
+        f32 panPosition = 0.5f; // default: center (mono surround)
+        if (sumVol > 0.0f) {
+            panPosition = (f32)noteSubEu->targetVolRight / sumVol;
+        }
+
+        // For PLII decoding, the L/R balance determines RL vs RR steering:
+        // - L dominant (leftGain > rightGain): surround goes more to Rear Left
+        // - R dominant (rightGain > leftGain): surround goes more to Rear Right
+        // - Equal: mono surround to both (like Pro Logic I)
+        s16 leftGain = (s16)(dryGain * (1.0f - panPosition));
+        s16 rightGain = (s16)(dryGain * panPosition);
+
+        aMix(cmd++, (aiBufLen * 2) >> 4, leftGain, dmem, DMEM_LEFT_CH);
+        aMix(cmd++, (aiBufLen * 2) >> 4, (rightGain ^ 0xFFFF), dmem, DMEM_RIGHT_CH);
+
+        wetGain = (dryGain * synthState->reverbVol) >> 7;
+        s16 wetLeftGain = (s16)(wetGain * (1.0f - panPosition));
+        s16 wetRightGain = (s16)(wetGain * panPosition);
+
+        aMix(cmd++, (aiBufLen * 2) >> 4, wetLeftGain, dmem, DMEM_WET_LEFT_CH);
+        aMix(cmd++, (aiBufLen * 2) >> 4, (wetRightGain ^ 0xFFFF), dmem, DMEM_WET_RIGHT_CH);
+        // === End Pro Logic II encoding ===
+    }
+
+    aSaveBuffer(cmd++, DMEM_SURROUND_TEMP + (aiBufLen * 2),
+                synthState->synthesisBuffers->panSamplesBuffer,
+                sizeof(synthState->synthesisBuffers->panSamplesBuffer));
+
+    decayGain = (noteSubEu->targetVolLeft + noteSubEu->targetVolRight) * (1.0f / 0x2000);
+
+    if (decayGain > 1.0f) {
+        decayGain = 1.0f;
+    }
+
+    // Use a default pan volume table or create a simple calculation
+    f32 surroundIndex = noteSubEu->surroundEffectIndex;
+    decayGain = decayGain * (1.0f - (surroundIndex / 127.0f));
+    synthState->unk_1C = ((decayGain * 0x7FFF) + synthState->unk_1C) / 2;
+
+    AudioSynth_DMemMove(cmd++, DMEM_NOTE_PAN_TEMP, inputDmem, aiBufLen * 2);
+
     return cmd;
 }
