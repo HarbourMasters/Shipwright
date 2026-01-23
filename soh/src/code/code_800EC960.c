@@ -3861,7 +3861,6 @@ s8 AudioSfx_ComputeSurroundEffectIndex(f32 arg0, u16 sfxParams) {
     s8 ret = 0;
 
     // Enhanced surround effect calculation for better RL/RR separation
-    // Similar to 2ship2harkinian's Audio_SetSequenceProperties logic
     if (arg0 > 0.0f) {
         // Front of screen: map 0-100 range to 0-64 for rear left bias
         if (arg0 > 100.0f) {
