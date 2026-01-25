@@ -1396,9 +1396,13 @@ uint8_t Logic::Hearts() {
 }
 
 uint8_t Logic::DungeonCount() {
-    return Get(LOGIC_DEKU_TREE_CLEAR) + Get(LOGIC_DODONGOS_CAVERN_CLEAR) + Get(LOGIC_JABU_JABUS_BELLY_CLEAR) +
-           Get(LOGIC_FOREST_TEMPLE_CLEAR) + Get(LOGIC_FIRE_TEMPLE_CLEAR) + Get(LOGIC_WATER_TEMPLE_CLEAR) +
-           Get(LOGIC_SPIRIT_TEMPLE_CLEAR) + Get(LOGIC_SHADOW_TEMPLE_CLEAR);
+    return CheckEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) +
+           CheckEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) +
+           CheckEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP) +
+           CheckEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) +
+           CheckEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) +
+           CheckEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP) +
+           CheckRandoInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE) + CheckRandoInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
 }
 
 uint8_t Logic::StoneCount() {
@@ -2530,6 +2534,35 @@ bool Logic::Get(LogicVal logicVal) {
 
 void Logic::Set(LogicVal logicVal, bool value) {
     inLogic[logicVal] = value;
+
+    if (!CalculatingAvailableChecks) {
+        switch (logicVal) {
+            case LOGIC_DEKU_TREE_CLEAR:
+                SetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP, value);
+                break;
+            case LOGIC_DODONGOS_CAVERN_CLEAR:
+                SetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP, value);
+                break;
+            case LOGIC_JABU_JABUS_BELLY_CLEAR:
+                SetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP, value);
+                break;
+            case LOGIC_FOREST_TEMPLE_CLEAR:
+                SetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP, value);
+                break;
+            case LOGIC_FIRE_TEMPLE_CLEAR:
+                SetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP, value);
+                break;
+            case LOGIC_WATER_TEMPLE_CLEAR:
+                SetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP, value);
+                break;
+            case LOGIC_SPIRIT_TEMPLE_CLEAR:
+                SetRandoInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE, value);
+                break;
+            case LOGIC_SHADOW_TEMPLE_CLEAR:
+                SetRandoInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE, value);
+                break;
+        }
+    }
 }
 
 bool Logic::IsFireLoopLocked() {
