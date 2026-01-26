@@ -1282,7 +1282,7 @@ Acmd* AudioSynth_ApplySurroundEffect(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthe
         aLoadBuffer(cmd++, synthState->synthesisBuffers->panSamplesBuffer, dmem,
                     sizeof(synthState->synthesisBuffers->panSamplesBuffer));
 
-        // === Pro Logic II encoding: steer surround to RL or RR based on pan ===
+        // === Matrix surround encoding: steer surround to RL or RR based on pan ===
         // Calculate pan position: 0.0 = full left, 0.5 = center, 1.0 = full right
         f32 sumVol = noteSubEu->targetVolLeft + noteSubEu->targetVolRight;
         f32 panPosition = 0.5f; // default: center (mono surround)
@@ -1290,10 +1290,10 @@ Acmd* AudioSynth_ApplySurroundEffect(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthe
             panPosition = (f32)noteSubEu->targetVolRight / sumVol;
         }
 
-        // For PLII decoding, the L/R balance determines RL vs RR steering:
+        // The L/R balance determines RL vs RR steering:
         // - L dominant (leftGain > rightGain): surround goes more to Rear Left
         // - R dominant (rightGain > leftGain): surround goes more to Rear Right
-        // - Equal: mono surround to both (like Pro Logic I)
+        // - Equal: mono surround to both
         s16 leftGain = (s16)(dryGain * (1.0f - panPosition));
         s16 rightGain = (s16)(dryGain * panPosition);
 
@@ -1306,7 +1306,7 @@ Acmd* AudioSynth_ApplySurroundEffect(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthe
 
         aMix(cmd++, (aiBufLen * 2) >> 4, wetLeftGain, dmem, DMEM_WET_LEFT_CH);
         aMix(cmd++, (aiBufLen * 2) >> 4, (wetRightGain ^ 0xFFFF), dmem, DMEM_WET_RIGHT_CH);
-        // === End Pro Logic II encoding ===
+        // === End matrix surround encoding ===
     }
 
     aSaveBuffer(cmd++, DMEM_SURROUND_TEMP + (aiBufLen * 2),
