@@ -4987,11 +4987,11 @@ void func_800F6700(s8 arg0) {
         case 3:
             sp1F = 0;
             D_80130604 = 2;
-            channelsSetting = audioSurround51;
+            channelsSetting = audioMatrix51;
             break;
     }
 
-    SetAudioChannelsSetting(channelsSetting);
+    SetAudioChannels(channelsSetting);
 
     Audio_SeqCmdE0(SEQ_PLAYER_BGM_MAIN, sp1F);
 }
