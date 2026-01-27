@@ -230,8 +230,8 @@ void HintTrackerWindow::DrawElement() {
                     "Prelude of Light - %s",
                     (*mHintTable)[RH_PRELUDE_WARP_LOC].GetAreaName(0).GetForCurrentLanguage(MF_CLEAN).c_str());
             }
+            ImGui::TreePop();
         }
-        ImGui::TreePop();
     }
     ImGui::EndChild();
 
