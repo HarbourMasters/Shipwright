@@ -55,6 +55,11 @@ void HintTrackerWindow::LoadHintTable(int32_t fileNum) {
         return;
     }
     mHintTable = &OTRGlobals::Instance->gRandoContext->hintTable;
+    mItemAreaHints.clear();
+    mItemLocationHints.clear();
+    mFoolishHints.clear();
+    mWothHints.clear();
+    mTrialHints.clear();
 
     for (auto& hint : *mHintTable) {
         if (hint.IsEnabled() && hint.GetDistribution() != "Junk") {

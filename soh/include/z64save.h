@@ -205,6 +205,7 @@ typedef struct {
 typedef struct ShipRandomizerSaveContextData {
     u8 triforcePiecesCollected;
     u8 bombchuUpgradeLevel;
+    u16 hintDiscoveryFlags[(RH_MAX + 15) / 16];
 } ShipRandomizerSaveContextData;
 
 typedef struct ShipBossRushSaveContextData {

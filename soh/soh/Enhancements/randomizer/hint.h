@@ -69,7 +69,6 @@ class Hint {
     std::vector<CustomMessage> messages = {};
     std::vector<RandomizerGet> items = {};
     bool enabled = false;
-    bool discovered = false;
     std::vector<uint8_t> itemNamesChosen = {};
     std::vector<uint8_t> hintTextsChosen = {};
     std::vector<uint8_t> areaNamesChosen = {};

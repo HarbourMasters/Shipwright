@@ -1,9 +1,11 @@
 #include "hint.h"
+#include "libultraship/log/luslog.h"
 #include "map"
 #include "string"
 #include "SeedContext.h"
 #include <spdlog/spdlog.h>
 #include "static_data.h"
+#include "variables.h"
 
 namespace Rando {
 Hint::Hint() {
@@ -665,11 +667,25 @@ bool Hint::IsEnabled() const {
 }
 
 bool Hint::IsDiscovered() const {
-    return discovered;
+    return gSaveContext.ship.quest.data.randomizer.hintDiscoveryFlags[ownKey >> 4] & (1 << (ownKey & 0xF));
 }
 
 void Hint::SetDiscovered(bool discovered) {
-    this->discovered = discovered;
+    if (discovered) {
+        int32_t previouslyUndiscovered = !IsDiscovered();
+        if (previouslyUndiscovered) {
+            gSaveContext.ship.quest.data.randomizer.hintDiscoveryFlags[ownKey >> 4] |= (1 << (ownKey & 0xF));
+            LUSLOG_INFO("Hint Discovered - %#x", ownKey);
+            // GameInteractor_ExecuteOnFlagSet(FLAG_HINT_DISCOVERED, ownKey);
+        }
+    } else {
+        int32_t previouslyDiscovered = IsDiscovered();
+        if (previouslyDiscovered) {
+            gSaveContext.ship.quest.data.randomizer.hintDiscoveryFlags[ownKey >> 4] &= ~(1 << (ownKey & 0xF));
+            LUSLOG_INFO("Hint UnDiscovered - %#x", ownKey);
+            // GameInteractor_ExecuteOnFlagUnset(FLAG_HINT_DISCOVERED, ownKey);
+        }
+    }
 }
 
 std::vector<RandomizerHintTextKey> Hint::GetHintTextKeys() const {
