@@ -713,6 +713,8 @@ static uint16_t& GetFlagTableEntry(const FlagTable& flagTable, size_t row) {
             return gSaveContext.eventInf[row];
         case RANDOMIZER_INF:
             return gSaveContext.ship.randomizerInf[row];
+        case HINT_DISCOVERY:
+            return gSaveContext.ship.quest.data.randomizer.hintDiscoveryFlags[row];
         default: // Shouldn't be hit
             assert(false);
             return gSaveContext.eventChkInf[row];
@@ -1153,6 +1155,8 @@ void DrawFlagsTab() {
                                     break;
                                 case RANDOMIZER_INF:
                                     DrawFlagTableArray16(flagTable, j, gSaveContext.ship.randomizerInf[j]);
+                                    break;
+                                default:
                                     break;
                             }
                         },
@@ -1876,6 +1880,56 @@ void DrawPlayerTab() {
     }
 }
 
+void DrawRandoTab() {
+    // Don't need a gPlayState == nullptr check, there's already
+    // one around the callsite.
+    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+    if (ImGui::TreeNode("Flags")) {
+        for (size_t i = 0; i < randoFlagTables.size(); i++) {
+            const FlagTable& flagTable = randoFlagTables[i];
+            if (ImGui::TreeNode(flagTable.name)) {
+                ImGui::PushID(flagTable.name);
+                ImGuiTextFilter& flagFilter = flagTableFilters[flagTable.name];
+                ImGui::SetNextItemWidth(ImGui::GetFontSize() * 16);
+                PushStyleInput(THEME_COLOR);
+                flagFilter.Draw();
+                PopStyleInput();
+                ImGui::Spacing();
+
+                if (!flagFilter.IsActive()) {
+                    for (size_t j = 0; j < flagTable.size + 1; j++) {
+                        DrawGroupWithBorder(
+                            [&]() {
+                                if (j == 0) {
+                                    for (int k = 0xF; k >= 0; k--) {
+                                        ImGui::SameLine(37.5 + ((0xF - k) * 33.8));
+                                        ImGui::Text("%X", k);
+                                    }
+                                }
+
+                                ImGui::Text("%s", fmt::format("{:<2X}", j).c_str());
+
+                                switch (flagTable.flagTableType) {
+                                    case HINT_DISCOVERY:
+                                        DrawFlagTableArray16(flagTable, j, gSaveContext.ship.quest.data.randomizer.hintDiscoveryFlags[j]);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            },
+                            flagTable.name);
+                    }
+                } else {
+                    DrawFlagTableSearchResults(flagTable, flagFilter);
+                }
+                ImGui::PopID();
+                ImGui::TreePop();
+            }
+        }
+        ImGui::TreePop();
+    }
+}
+
 void ResetBaseOptions() {
     intSliderOptionsBase.Color(THEME_COLOR).Size({ 320.0f, 0.0f }).Tooltip("");
     buttonOptionsBase.Color(THEME_COLOR).Size(Sizes::Inline).Tooltip("");
@@ -1926,6 +1980,14 @@ void SaveEditorWindow::DrawElement() {
         if (ImGui::BeginTabItem("Player")) {
             DrawPlayerTab();
             ImGui::EndTabItem();
+        }
+
+        if (gPlayState != nullptr && IS_RANDO) {
+            ResetBaseOptions();
+            if (ImGui::BeginTabItem("Rando")) {
+                DrawRandoTab();
+                ImGui::EndTabItem();
+            }
         }
 
         ImGui::EndTabBar();

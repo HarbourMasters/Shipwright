@@ -14,6 +14,7 @@ typedef enum {
     INF_TABLE,
     EVENT_INF,
     RANDOMIZER_INF,
+    HINT_DISCOVERY,
 } FlagTableType;
 
 typedef struct {
@@ -371,6 +372,21 @@ const std::vector<FlagTable> flagTables = {
 };
 
 #undef DEFINE_RAND_INF
+
+#define DEFINE_RAND_HINT(hint) { hint, #hint },
+
+const std::vector<FlagTable> randoFlagTables = {
+    {
+        "Hint Discovery Flags",
+        HINT_DISCOVERY,
+        (RH_MAX + 15) / 16,
+        {
+#include "soh/Enhancements/randomizer/HintKeys.inc"
+        }
+    },
+};
+
+#undef DEFINE_RAND_HINT
 
 const std::vector<std::string> state1 = {
     "Loading",
