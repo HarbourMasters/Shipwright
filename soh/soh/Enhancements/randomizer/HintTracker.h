@@ -18,5 +18,10 @@ class HintTrackerWindow final : public Ship::GuiWindow {
 
   private:
     std::array<Rando::Hint, RH_MAX>* mHintTable = nullptr;
+    std::vector<Rando::Hint*> mItemAreaHints = {};
+    std::vector<Rando::Hint*> mFoolishHints = {};
+    std::vector<Rando::Hint*> mItemLocationHints = {};
+    std::vector<Rando::Hint*> mWothHints = {};
+    std::vector<Rando::Hint*> mTrialHints = {};
 };
 } // namespace HintTracker

@@ -699,6 +699,10 @@ int Hint::GetNum() {
     return num;
 }
 
+RandomizerHint Hint::GetKey() {
+    return ownKey;
+}
+
 void Hint::ResetVariables() {
     ownKey = RH_NONE;
     num = 0;

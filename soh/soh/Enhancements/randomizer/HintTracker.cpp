@@ -1,5 +1,7 @@
 #include "HintTracker.h"
 
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/SohGui/UIWidgets.hpp"
@@ -53,6 +55,24 @@ void HintTrackerWindow::LoadHintTable(int32_t fileNum) {
         return;
     }
     mHintTable = &OTRGlobals::Instance->gRandoContext->hintTable;
+
+    for (auto& hint : *mHintTable) {
+        if (hint.IsEnabled() && hint.GetDistribution() != "Junk") {
+            if (hint.GetKey() >= RH_MINUET_WARP_LOC && hint.GetKey() <= RH_PRELUDE_WARP_LOC) {
+                continue;
+            } else if (hint.GetHintType() == HINT_TYPE_AREA || hint.GetHintType() == HINT_TYPE_ITEM_AREA) {
+                mItemAreaHints.push_back(&hint);
+            } else if (hint.GetHintType() == HINT_TYPE_ITEM) {
+                mItemLocationHints.push_back(&hint);
+            } else if (hint.GetHintType() == HINT_TYPE_FOOLISH) {
+                mFoolishHints.push_back(&hint);
+            } else if (hint.GetHintType() == HINT_TYPE_WOTH) {
+                mWothHints.push_back(&hint);
+            } else if (hint.GetHintType() == HINT_TYPE_TRIAL) {
+                mTrialHints.push_back(&hint);
+            }
+        }
+    }
 }
 
 void HintTrackerWindow::Draw() {
@@ -78,33 +98,138 @@ void HintTrackerWindow::DrawElement() {
         EndFloatWindows();
         return;
     }
-    for (auto& hint : *mHintTable) {
-        if (hint.IsEnabled() && hint.GetDistribution() != "Junk"/* && hint.IsDiscovered()*/) {
-            switch(hint.GetHintType()) {
-                case HINT_TYPE_AREA:
-                case HINT_TYPE_ITEM_AREA:
-                    ImGui::BulletText("%s is in %s", hint.GetItemName(0).GetEnglish(MF_CLEAN).c_str(), hint.GetAreaName(0).GetEnglish(MF_CLEAN).c_str());
-                    break;
-                case HINT_TYPE_ITEM:
-                    ImGui::BulletText("%s is at %s", hint.GetItemName(0).GetEnglish(MF_CLEAN).c_str(), Rando::StaticData::GetLocation(hint.GetHintedLocations()[0])->GetName().c_str());
-                    break;
-                case HINT_TYPE_FOOLISH:
-                    ImGui::BulletText("%s is Foolish", hint.GetAreaName(0).GetEnglish(MF_CLEAN).c_str());
-                    break;
-                case HINT_TYPE_WOTH:
-                    ImGui::BulletText("%s is Way of the Hero", hint.GetAreaName(0).GetEnglish(MF_CLEAN).c_str());
-                    break;
-                case HINT_TYPE_ALTAR_CHILD:
-                case HINT_TYPE_ALTAR_ADULT:
-                case HINT_TYPE_MESSAGE:
-                case HINT_TYPE_TRIAL:
-                    ImGui::BulletText("%s", hint.GetHintMessage(MF_CLEAN).GetForCurrentLanguage(MF_CLEAN).c_str());
-                    break;
-                default:
-                    break;
+    ImGui::BeginChild("HintData");
+    if (RAND_GET_OPTION(RSK_TOT_ALTAR_HINT).Is(RO_GENERIC_ON)) {
+        if (ImGui::TreeNode("Altar Hints")) {
+            Rando::Hint& childAltarHint = (*mHintTable)[RH_ALTAR_CHILD];
+            if (childAltarHint.IsDiscovered()) {
+                ImGui::BulletText("Kokiri Emerald - %s",
+                                  childAltarHint.GetAreaName(0).GetForCurrentLanguage(MF_CLEAN).c_str());
+                ImGui::BulletText("Goron Ruby - %s",
+                                  childAltarHint.GetAreaName(1).GetForCurrentLanguage(MF_CLEAN).c_str());
+                ImGui::BulletText("Zora Sapphire - %s",
+                                  childAltarHint.GetAreaName(2).GetForCurrentLanguage(MF_CLEAN).c_str());
             }
+            Rando::Hint& adultAltarHint = (*mHintTable)[RH_ALTAR_ADULT];
+            if (adultAltarHint.IsDiscovered()) {
+                ImGui::BulletText("Light Medallion - %s",
+                                  adultAltarHint.GetAreaName(0).GetForCurrentLanguage(MF_CLEAN).c_str());
+                ImGui::BulletText("Forest Medallion - %s",
+                                  adultAltarHint.GetAreaName(1).GetForCurrentLanguage(MF_CLEAN).c_str());
+                ImGui::BulletText("Fire Medallion - %s",
+                                  adultAltarHint.GetAreaName(2).GetForCurrentLanguage(MF_CLEAN).c_str());
+                ImGui::BulletText("Water Medallion - %s",
+                                  adultAltarHint.GetAreaName(3).GetForCurrentLanguage(MF_CLEAN).c_str());
+                ImGui::BulletText("Spirit Medallion - %s",
+                                  adultAltarHint.GetAreaName(4).GetForCurrentLanguage(MF_CLEAN).c_str());
+                ImGui::BulletText("Shadow Medallion - %s",
+                                  adultAltarHint.GetAreaName(5).GetForCurrentLanguage(MF_CLEAN).c_str());
+            }
+            ImGui::TreePop();
         }
     }
+    if (ImGui::TreeNode("Area Hints")) {
+        for (auto hint : mItemAreaHints) {
+            if (hint->IsDiscovered()) {
+                for (size_t i = 0; i < hint->GetNumberOfMessages(); i++) {
+                    ImGui::BulletText("%s - %s", hint->GetItemName(i).GetForCurrentLanguage(MF_CLEAN).c_str(),
+                                      hint->GetAreaName(i).GetForCurrentLanguage(MF_CLEAN).c_str());
+                }
+            }
+        }
+        ImGui::TreePop();
+    }
+    if (ImGui::TreeNode("Location Hints")) {
+        for (auto hint : mItemLocationHints) {
+            if (hint->IsDiscovered()) {
+                for (size_t i = 0; i < hint->GetNumberOfMessages(); i++) {
+                    ImGui::BulletText("%s - %s", hint->GetItemName(i).GetForCurrentLanguage(MF_CLEAN).c_str(),
+                                      Rando::StaticData::GetLocation(hint->GetHintedLocations()[i])->GetName().c_str());
+                }
+            }
+        }
+        ImGui::TreePop();
+    }
+    if (ImGui::TreeNode("Foolish Hints")) {
+        for (auto hint : mFoolishHints) {
+            if (hint->IsDiscovered()) {
+                for (size_t i = 0; i < hint->GetNumberOfMessages(); i++) {
+                    ImGui::BulletText("%s", hint->GetAreaName(i).GetForCurrentLanguage(MF_CLEAN).c_str());
+                }
+            }
+        }
+        ImGui::TreePop();
+    }
+    if (RAND_GET_OPTION(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
+        if (ImGui::TreeNode("Way of the Hero Hints")) {
+            for (auto hint : mWothHints) {
+                if (hint->IsDiscovered()) {
+                    for (size_t i = 0; i < hint->GetNumberOfMessages(); i++) {
+                        ImGui::BulletText("%s", hint->GetAreaName(i).GetForCurrentLanguage(MF_CLEAN).c_str());
+                    }
+                }
+            }
+            ImGui::TreePop();
+        }
+    }
+    if (RAND_GET_OPTION(RSK_GANONS_TRIALS).IsNot(RO_GANONS_TRIALS_SKIP)) {
+        if (ImGui::TreeNode("Trial Hints")) {
+            for (auto hint : mTrialHints) {
+                if (hint->IsDiscovered()) {
+                    for (size_t i = 0; i < hint->GetHintedTrials().size(); i++) {
+                        ImGui::BulletText(
+                            "%s - %s",
+                            OTRGlobals::Instance->gRandoContext->GetTrial(hint->GetHintedTrials()[i])
+                                ->GetName()
+                                .GetForCurrentLanguage(MF_CLEAN)
+                                .c_str(),
+                            OTRGlobals::Instance->gRandoContext->GetTrial(hint->GetHintedTrials()[i])->IsRequired()
+                                ? "Required"
+                                : "Skipped");
+                    }
+                }
+            }
+            ImGui::TreePop();
+        }
+    }
+    if (RAND_GET_OPTION(RSK_SHUFFLE_WARP_SONGS).Is(RO_GENERIC_ON) &&
+        RAND_GET_OPTION(RSK_WARP_SONG_HINTS).Is(RO_GENERIC_ON)) {
+        if (ImGui::TreeNode("Warp Song Hints")) {
+            if ((*mHintTable)[RH_MINUET_WARP_LOC].IsDiscovered()) {
+                ImGui::BulletText(
+                    "Minuet of Forest - %s",
+                    (*mHintTable)[RH_MINUET_WARP_LOC].GetAreaName(0).GetForCurrentLanguage(MF_CLEAN).c_str());
+            }
+            if ((*mHintTable)[RH_BOLERO_WARP_LOC].IsDiscovered()) {
+                ImGui::BulletText(
+                    "Bolero of Fire - %s",
+                    (*mHintTable)[RH_BOLERO_WARP_LOC].GetAreaName(0).GetForCurrentLanguage(MF_CLEAN).c_str());
+            }
+            if ((*mHintTable)[RH_SERENADE_WARP_LOC].IsDiscovered()) {
+                ImGui::BulletText(
+                    "Serenade of Water - %s",
+                    (*mHintTable)[RH_SERENADE_WARP_LOC].GetAreaName(0).GetForCurrentLanguage(MF_CLEAN).c_str());
+            }
+            if ((*mHintTable)[RH_REQUIEM_WARP_LOC].IsDiscovered()) {
+                ImGui::BulletText(
+                    "Requiem of Spirit - %s",
+                    (*mHintTable)[RH_REQUIEM_WARP_LOC].GetAreaName(0).GetForCurrentLanguage(MF_CLEAN).c_str());
+            }
+            if ((*mHintTable)[RH_NOCTURNE_WARP_LOC].IsDiscovered()) {
+                ImGui::BulletText(
+                    "Nocturne of Shadow - %s",
+                    (*mHintTable)[RH_NOCTURNE_WARP_LOC].GetAreaName(0).GetForCurrentLanguage(MF_CLEAN).c_str());
+            }
+            if ((*mHintTable)[RH_PRELUDE_WARP_LOC].IsDiscovered()) {
+                ImGui::BulletText(
+                    "Prelude of Light - %s",
+                    (*mHintTable)[RH_PRELUDE_WARP_LOC].GetAreaName(0).GetForCurrentLanguage(MF_CLEAN).c_str());
+            }
+        }
+        ImGui::TreePop();
+    }
+    ImGui::EndChild();
+
     EndFloatWindows();
 }
 } // namespace HintTracker
