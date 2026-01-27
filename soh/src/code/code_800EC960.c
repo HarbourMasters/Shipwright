@@ -4966,32 +4966,33 @@ void Audio_SetCodeReverb(s8 reverb) {
 
 void func_800F6700(s8 arg0) {
     s8 sp1F = 0;
-    AudioChannelsSetting channelsSetting = audioStereo;
 
     switch (arg0) {
         case 0:
             sp1F = 0;
             D_80130604 = 0;
-            channelsSetting = audioStereo;
+            // SOH [Port] Inform LUS of audio setting change
+            SetAudioChannels(audioStereo);
             break;
         case 1:
             sp1F = 3;
             D_80130604 = 3;
-            channelsSetting = audioStereo;
+            // SOH [Port] Inform LUS of audio setting change
+            SetAudioChannels(audioStereo);
             break;
         case 2:
             sp1F = 1;
             D_80130604 = 1;
-            channelsSetting = audioStereo;
+            // SOH [Port] Inform LUS of audio setting change
+            SetAudioChannels(audioStereo);
             break;
         case 3:
             sp1F = 0;
             D_80130604 = 2;
-            channelsSetting = audioMatrix51;
+            // SOH [Port] Inform LUS of audio setting change
+            SetAudioChannels(audioMatrix51);
             break;
     }
-
-    SetAudioChannels(channelsSetting);
 
     Audio_SeqCmdE0(SEQ_PLAYER_BGM_MAIN, sp1F);
 }
