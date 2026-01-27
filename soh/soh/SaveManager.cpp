@@ -227,9 +227,10 @@ void SaveManager::LoadRandomizer() {
         randoContext->AddHint(hint, Rando::Hint(hint, json));
     });
 
-    SaveManager::Instance->LoadArray("hintDiscoveryFlags", ARRAY_COUNT(gSaveContext.ship.quest.data.randomizer.hintDiscoveryFlags), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.ship.quest.data.randomizer.hintDiscoveryFlags[i]);
-    });
+    SaveManager::Instance->LoadArray(
+        "hintDiscoveryFlags", ARRAY_COUNT(gSaveContext.ship.quest.data.randomizer.hintDiscoveryFlags), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.ship.quest.data.randomizer.hintDiscoveryFlags[i]);
+        });
 
     SaveManager::Instance->LoadData("triforcePiecesCollected",
                                     gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
@@ -385,9 +386,10 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
         });
     });
 
-    SaveManager::Instance->SaveArray("hintDiscoveryFlags", ARRAY_COUNT(saveContext->ship.quest.data.randomizer.hintDiscoveryFlags), [&](size_t i) {
-        SaveManager::Instance->SaveData("", saveContext->ship.quest.data.randomizer.hintDiscoveryFlags[i]);
-    });
+    SaveManager::Instance->SaveArray(
+        "hintDiscoveryFlags", ARRAY_COUNT(saveContext->ship.quest.data.randomizer.hintDiscoveryFlags), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->ship.quest.data.randomizer.hintDiscoveryFlags[i]);
+        });
 
     SaveManager::Instance->SaveData("triforcePiecesCollected",
                                     saveContext->ship.quest.data.randomizer.triforcePiecesCollected);

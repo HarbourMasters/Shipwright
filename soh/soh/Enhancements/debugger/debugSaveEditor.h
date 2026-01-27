@@ -376,14 +376,12 @@ const std::vector<FlagTable> flagTables = {
 #define DEFINE_RAND_HINT(hint) { hint, #hint },
 
 const std::vector<FlagTable> randoFlagTables = {
-    {
-        "Hint Discovery Flags",
-        HINT_DISCOVERY,
-        (RH_MAX + 15) / 16,
-        {
+    { "Hint Discovery Flags",
+      HINT_DISCOVERY,
+      (RH_MAX + 15) / 16,
+      {
 #include "soh/Enhancements/randomizer/HintKeys.inc"
-        }
-    },
+      } },
 };
 
 #undef DEFINE_RAND_HINT

@@ -1911,7 +1911,9 @@ void DrawRandoTab() {
 
                                 switch (flagTable.flagTableType) {
                                     case HINT_DISCOVERY:
-                                        DrawFlagTableArray16(flagTable, j, gSaveContext.ship.quest.data.randomizer.hintDiscoveryFlags[j]);
+                                        DrawFlagTableArray16(
+                                            flagTable, j,
+                                            gSaveContext.ship.quest.data.randomizer.hintDiscoveryFlags[j]);
                                         break;
                                     default:
                                         break;
