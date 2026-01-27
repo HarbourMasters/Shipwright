@@ -297,9 +297,10 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 }
                 switch (actor->id) {
                     case ACTOR_OBJ_SWITCH: {
+                        // The DC boss door can be unlocked with OI; One Point is required for it
+                        // The Water Temple Dragon Room chest can be obtained with a cutscene dive
                         if (((actor->params == 8224 && gPlayState->sceneNum == SCENE_DODONGOS_CAVERN) ||
-                             (actor->params == 6979 && gPlayState->sceneNum == SCENE_WATER_TEMPLE) ||
-                             (actor->params == 8961 && gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE)) &&
+                             (actor->params == 6979 && gPlayState->sceneNum == SCENE_WATER_TEMPLE)) &&
                             CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
                             break;
                         }
@@ -312,9 +313,12 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     case ACTOR_BG_BDAN_SWITCH: {
                         // The switch in jabu that you are intended to press with a box to reach barinade
                         // can be skipped by either a frame perfect roll open or with OI
+                        // Additionally, the blue switch that you are intended to press with Ruto
+                        // can be skipped with OI
                         // The One Point for that switch is used in common setups for the former and is required for the
                         // latter to work
-                        if (actor->params == 14848 && gPlayState->sceneNum == SCENE_JABU_JABU &&
+                        if ((actor->params == 14848 || actor->params == 14336) &&
+                            gPlayState->sceneNum == SCENE_JABU_JABU &&
                             CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
                             break;
                         }
@@ -339,6 +343,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         break;
                     }
                     case ACTOR_EN_BOX: {
+                        // The chest that drops in MQ Jabu allowing unintended door entry
                         if (actor->params == -30457 && gPlayState->sceneNum == SCENE_JABU_JABU &&
                             CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
                             break;
@@ -346,6 +351,17 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         EnBox* boxActor = (EnBox*)actor;
                         *should = false;
                         RateLimitedSuccessChime();
+                        break;
+                    }
+                    case ACTOR_EN_SIOFUKI: {
+                        // The Spirit Temple MQ water jet cutscene is required for an actor glitch
+                        // setup that skips the grate
+                        if (actor->params == 6359 && gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE &&
+                            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
+                            *should = true;
+                            break;
+                        }
+                        *should = false;
                         break;
                     }
                     case ACTOR_BG_HIDAN_FWBIG:
@@ -357,7 +373,17 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         break;
                     }
                     case ACTOR_EN_TA:
-                    case ACTOR_DOOR_SHUTTER:
+                    case ACTOR_DOOR_SHUTTER: {
+                        // The shutter cutscene occurs post-switch cutscene to focus Link on the unlocked doors
+                        if (((actor->params == 9402 && gPlayState->sceneNum == SCENE_JABU_JABU) ||
+                             (actor->params == 20460 && gPlayState->sceneNum == SCENE_DODONGOS_CAVERN)) &&
+                            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
+                            break;
+                        }
+                        *should = false;
+                        RateLimitedSuccessChime();
+                        break;
+                    }
                     case ACTOR_BG_ICE_SHUTTER:
                     case ACTOR_OBJ_LIGHTSWITCH:
                     case ACTOR_OBJ_SYOKUDAI:
@@ -1059,8 +1085,8 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     // This is a bit of a hack, we can't effectively override the behavior of the torches
     // or poes from which the cutscene is triggered until we can have a "BeforeActorInit" hook.
     // So for now we're just going to set the flag before they get to the room the cutscene is in
-    if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE && actor->id == ACTOR_EN_ST && !Flags_GetSwitch(gPlayState, 0x1B) &&
-        !Flags_GetSwitch(gPlayState, 0x1C)) {
+    if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE && actor->id == ACTOR_EN_DOOR &&
+        !Flags_GetSwitch(gPlayState, 0x1B) && !Flags_GetSwitch(gPlayState, 0x1C)) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO) &&
             !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
             Flags_SetSwitch(gPlayState, 0x1B);

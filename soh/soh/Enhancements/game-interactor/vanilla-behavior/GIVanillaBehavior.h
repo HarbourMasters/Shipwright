@@ -296,6 +296,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_CLIMB,
+
+    // #### `result`
+    // ```c
     // CHECK_BTN_ALL(input->press.button, BTN_START)
     // ```
     // #### `args`

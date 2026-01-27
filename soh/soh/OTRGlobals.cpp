@@ -273,7 +273,7 @@ OTRGlobals::OTRGlobals() {
     context = Ship::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
 
     portArchivePath = Ship::Context::LocateFileAcrossAppDirs("soh.o2r");
-    OTRVersion portArchiveVersion = DetectOTRVersion(portArchivePath, false);
+    OTRVersion portArchiveVersion = DetectOTRVersion("soh.o2r", false);
     sohArchiveVersionMatch = portArchiveVersion.major == gBuildVersionMajor &&
                              portArchiveVersion.minor == gBuildVersionMinor &&
                              portArchiveVersion.patch == gBuildVersionPatch;

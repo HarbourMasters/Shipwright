@@ -8,13 +8,11 @@
 #include <nlohmann/json.hpp>
 #include <spdlog/fmt/fmt.h>
 
-#include "soh/OTRGlobals.h"
 #include "soh/ShipInit.hpp"
 #include "message_data_static.h"
 #include "overlays/gamestates/ovl_file_choose/file_choose.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/FileSelectEnhancements.h"
-#include "soh/resource/type/SohResourceType.h"
 
 extern "C" {
 extern MapData* gMapData;
@@ -862,16 +860,16 @@ void RegisterOnUpdateMainMenuSelection() {
         if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0))
             return;
 
-        char charVal[2];
+        char charVal[2] = {};
         std::string translation;
 
         if (charCode < 10) { // Digits
-            sprintf(charVal, "%c", charCode + 0x30);
+            charVal[0] = charCode + 0x30;
         } else if (charCode >= 10 && charCode < 36) { // Uppercase letters
-            sprintf(charVal, "%c", charCode + 0x37);
+            charVal[0] = charCode + 0x37;
             translation = GetParameritizedText("capital_letter", TEXT_BANK_FILECHOOSE, charVal);
         } else if (charCode >= 36 && charCode < 62) { // Lowercase letters
-            sprintf(charVal, "%c", charCode + 0x3D);
+            charVal[0] = charCode + 0x3D;
         } else if (charCode == 62) { // Space
             translation = GetParameritizedText("space", TEXT_BANK_FILECHOOSE, nullptr);
         } else if (charCode == 63) { // -
@@ -883,7 +881,7 @@ void RegisterOnUpdateMainMenuSelection() {
         } else if (charCode == 0xF0 + FS_KBD_BTN_END) {
             translation = GetParameritizedText("end", TEXT_BANK_FILECHOOSE, nullptr);
         } else {
-            sprintf(charVal, "%c", charCode);
+            charVal[0] = charCode;
         }
 
         if (translation.empty()) {
