@@ -118,21 +118,27 @@ void BuildAdultAltarMessage(uint16_t* textId, bool* loadFromMessageTable) {
 void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
     uint8_t count = 0;
     RandomizerCheck rc = RC_UNKNOWN_CHECK;
+    RandomizerHint rh = RH_NONE;
     int16_t actorParams = GET_PLAYER(gPlayState)->talkActor->params;
     if (actorParams == 1 && RAND_GET_OPTION(RSK_KAK_10_SKULLS_HINT)) {
         rc = RC_KAK_10_GOLD_SKULLTULA_REWARD;
+        rh = RH_10_SKULLS_HINT;
         count = 10;
     } else if (actorParams == 2 && RAND_GET_OPTION(RSK_KAK_20_SKULLS_HINT)) {
         rc = RC_KAK_20_GOLD_SKULLTULA_REWARD;
+        rh = RH_20_SKULLS_HINT;
         count = 20;
     } else if (actorParams == 3 && RAND_GET_OPTION(RSK_KAK_30_SKULLS_HINT)) {
         rc = RC_KAK_30_GOLD_SKULLTULA_REWARD;
+        rh = RH_30_SKULLS_HINT;
         count = 30;
     } else if (actorParams == 4 && RAND_GET_OPTION(RSK_KAK_40_SKULLS_HINT)) {
         rc = RC_KAK_40_GOLD_SKULLTULA_REWARD;
+        rh = RH_40_SKULLS_HINT;
         count = 40;
     } else if (actorParams == 5 && RAND_GET_OPTION(RSK_KAK_50_SKULLS_HINT)) {
         rc = RC_KAK_50_GOLD_SKULLTULA_REWARD;
+        rh = RH_50_SKULLS_HINT;
         count = 50;
     } else {
         return;
@@ -152,6 +158,9 @@ void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    if (rh != RH_NONE) {
+        RAND_GET_HINT(rh)->SetDiscovered();
+    }
 }
 
 void Build100SkullsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -172,6 +181,7 @@ void Build100SkullsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
+    RAND_GET_HINT(RH_100_SKULLS_HINT)->SetDiscovered();
 }
 
 void BuildDampesDiaryMessage(uint16_t* textId, bool* loadFromMessageTable) {
