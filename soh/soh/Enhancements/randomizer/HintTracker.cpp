@@ -126,12 +126,16 @@ void HintTrackerWindow::DrawElement() {
     hintSearch.Draw();
     UIWidgets::PopStyleInput();
     ImGui::Spacing();
-    if (UIWidgets::Button("Expand All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size({ ImGui::GetContentRegionAvail().x / 2 - 6, 0 }))) {
+    if (UIWidgets::Button(
+            "Expand All",
+            UIWidgets::ButtonOptions().Color(THEME_COLOR).Size({ ImGui::GetContentRegionAvail().x / 2 - 6, 0 }))) {
         mDoCollapseOrExpand = true;
         mExpand = true;
     }
     ImGui::SameLine();
-    if (UIWidgets::Button("Collapse All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size({ ImGui::GetContentRegionAvail().x - 6, 0 }))) {
+    if (UIWidgets::Button(
+            "Collapse All",
+            UIWidgets::ButtonOptions().Color(THEME_COLOR).Size({ ImGui::GetContentRegionAvail().x - 6, 0 }))) {
         mDoCollapseOrExpand = true;
         mExpand = false;
     }
