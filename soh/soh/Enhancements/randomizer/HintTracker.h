@@ -23,5 +23,7 @@ class HintTrackerWindow final : public Ship::GuiWindow {
     std::vector<Rando::Hint*> mItemLocationHints = {};
     std::vector<Rando::Hint*> mWothHints = {};
     std::vector<Rando::Hint*> mTrialHints = {};
+    bool mDoCollapseOrExpand = false;
+    bool mExpand = false;
 };
 } // namespace HintTracker

@@ -121,12 +121,24 @@ void HintTrackerWindow::DrawElement() {
         return;
     }
     ImGui::BeginChild("HintData");
-    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+    ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - 130);
     UIWidgets::PushStyleInput(THEME_COLOR);
     hintSearch.Draw();
     UIWidgets::PopStyleInput();
     ImGui::Spacing();
+    if (UIWidgets::Button("Expand All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size({ ImGui::GetContentRegionAvail().x / 2 - 6, 0 }))) {
+        mDoCollapseOrExpand = true;
+        mExpand = true;
+    }
+    ImGui::SameLine();
+    if (UIWidgets::Button("Collapse All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size({ ImGui::GetContentRegionAvail().x - 6, 0 }))) {
+        mDoCollapseOrExpand = true;
+        mExpand = false;
+    }
     if (RAND_GET_OPTION(RSK_TOT_ALTAR_HINT).Is(RO_GENERIC_ON)) {
+        if (mDoCollapseOrExpand) {
+            ImGui::SetNextItemOpen(mExpand, ImGuiCond_Always);
+        }
         if (ImGui::TreeNode("Altar Hints")) {
             Rando::Hint& childAltarHint = (*mHintTable)[RH_ALTAR_CHILD];
             if (childAltarHint.IsDiscovered()) {
@@ -155,6 +167,9 @@ void HintTrackerWindow::DrawElement() {
             ImGui::TreePop();
         }
     }
+    if (mDoCollapseOrExpand) {
+        ImGui::SetNextItemOpen(mExpand, ImGuiCond_Always);
+    }
     if (ImGui::TreeNode("Area Hints")) {
         for (auto hint : mItemAreaHints) {
             if (hint->IsDiscovered()) {
@@ -165,6 +180,9 @@ void HintTrackerWindow::DrawElement() {
             }
         }
         ImGui::TreePop();
+    }
+    if (mDoCollapseOrExpand) {
+        ImGui::SetNextItemOpen(mExpand, ImGuiCond_Always);
     }
     if (ImGui::TreeNode("Location Hints")) {
         for (auto hint : mItemLocationHints) {
@@ -178,6 +196,9 @@ void HintTrackerWindow::DrawElement() {
         }
         ImGui::TreePop();
     }
+    if (mDoCollapseOrExpand) {
+        ImGui::SetNextItemOpen(mExpand, ImGuiCond_Always);
+    }
     if (ImGui::TreeNode("Foolish Hints")) {
         for (auto hint : mFoolishHints) {
             if (hint->IsDiscovered()) {
@@ -189,6 +210,9 @@ void HintTrackerWindow::DrawElement() {
         ImGui::TreePop();
     }
     if (RAND_GET_OPTION(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
+        if (mDoCollapseOrExpand) {
+            ImGui::SetNextItemOpen(mExpand, ImGuiCond_Always);
+        }
         if (ImGui::TreeNode("Way of the Hero Hints")) {
             for (auto hint : mWothHints) {
                 if (hint->IsDiscovered()) {
@@ -201,6 +225,9 @@ void HintTrackerWindow::DrawElement() {
         }
     }
     if (RAND_GET_OPTION(RSK_GANONS_TRIALS).IsNot(RO_GANONS_TRIALS_SKIP)) {
+        if (mDoCollapseOrExpand) {
+            ImGui::SetNextItemOpen(mExpand, ImGuiCond_Always);
+        }
         if (ImGui::TreeNode("Trial Hints")) {
             for (auto hint : mTrialHints) {
                 if (hint->IsDiscovered()) {
@@ -221,6 +248,9 @@ void HintTrackerWindow::DrawElement() {
     }
     if (RAND_GET_OPTION(RSK_SHUFFLE_WARP_SONGS).Is(RO_GENERIC_ON) &&
         RAND_GET_OPTION(RSK_WARP_SONG_HINTS).Is(RO_GENERIC_ON)) {
+        if (mDoCollapseOrExpand) {
+            ImGui::SetNextItemOpen(mExpand, ImGuiCond_Always);
+        }
         if (ImGui::TreeNode("Warp Song Hints")) {
             if ((*mHintTable)[RH_MINUET_WARP_LOC].IsDiscovered()) {
                 DrawHint("Minuet of Forest",
@@ -254,6 +284,9 @@ void HintTrackerWindow::DrawElement() {
             }
             ImGui::TreePop();
         }
+    }
+    if (mDoCollapseOrExpand) {
+        mDoCollapseOrExpand = false;
     }
     ImGui::EndChild();
 
