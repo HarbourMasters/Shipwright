@@ -1273,11 +1273,11 @@ Acmd* AudioSynth_ApplySurroundEffect(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthe
     f32 decayGain;
 
     AudioSynth_DMemMove(cmd++, inputDmem, DMEM_NOTE_PAN_TEMP, aiBufLen * 2);
-    dryGain = synthState->unk_1C; // surroundEffectGain equivalent
+    dryGain = synthState->surroundEffectGain;
 
     if (flags == A_INIT) {
         aClearBuffer(cmd++, dmem, sizeof(synthState->synthesisBuffers->panSamplesBuffer));
-        synthState->unk_1C = 0;
+        synthState->surroundEffectGain = 0;
     } else {
         aLoadBuffer(cmd++, synthState->synthesisBuffers->panSamplesBuffer, dmem,
                     sizeof(synthState->synthesisBuffers->panSamplesBuffer));
@@ -1322,7 +1322,7 @@ Acmd* AudioSynth_ApplySurroundEffect(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthe
     // Use a default pan volume table or create a simple calculation
     f32 surroundIndex = noteSubEu->surroundEffectIndex;
     decayGain = decayGain * (1.0f - (surroundIndex / 127.0f));
-    synthState->unk_1C = ((decayGain * 0x7FFF) + synthState->unk_1C) / 2;
+    synthState->surroundEffectGain = ((decayGain * 0x7FFF) + synthState->surroundEffectGain) / 2;
 
     AudioSynth_DMemMove(cmd++, DMEM_NOTE_PAN_TEMP, inputDmem, aiBufLen * 2);
 

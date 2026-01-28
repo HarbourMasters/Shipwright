@@ -496,7 +496,7 @@ typedef struct {
     /* 0x16 */ u16 unk_16;
     /* 0x18 */ u16 unk_18;
     /* 0x1A */ u8 unk_1A;
-    /* 0x1C */ u16 unk_1C;
+    /* 0x1C */ u16 surroundEffectGain;
     /* 0x1E */ u16 unk_1E;
     struct OggOpusFile* opusFile; // Only for streamed opus audio
 } NoteSynthesisState; // size = 0x20
