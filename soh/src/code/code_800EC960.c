@@ -3857,23 +3857,23 @@ u8 func_800F37B8(f32 behindScreenZ, SoundBankEntry* arg1, s8 arg2) {
     return (phi_v1 * 0x10) + (u8)((phi_f0 * phi_f12) / (10000.0f / 5.2f));
 }
 
-s8 AudioSfx_ComputeSurroundEffectIndex(f32 arg0, u16 sfxParams) {
+s8 AudioSfx_ComputeSurroundEffectIndex(f32 projectedPosZ, u16 sfxParams) {
     s8 ret = 0;
 
     // Enhanced surround effect calculation for better RL/RR separation
-    if (arg0 > 0.0f) {
+    if (projectedPosZ > 0.0f) {
         // Front of screen: map 0-100 range to 0-64 for rear left bias
-        if (arg0 > 100.0f) {
+        if (projectedPosZ > 100.0f) {
             ret = 0;
         } else {
-            ret = (s8)(((100.0f - arg0) / 100.0f) * 64.0f);
+            ret = (s8)(((100.0f - projectedPosZ) / 100.0f) * 64.0f);
         }
     } else {
         // Behind screen: map -100-0 range to 63-127 for rear right bias
-        if (arg0 < -100.0f) {
+        if (projectedPosZ < -100.0f) {
             ret = 127;
         } else {
-            ret = (s8)((-arg0 / 100.0f) * 64.0f) + 63;
+            ret = (s8)((-projectedPosZ / 100.0f) * 64.0f) + 63;
         }
     }
     
