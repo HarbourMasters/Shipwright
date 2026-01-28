@@ -4978,7 +4978,6 @@ void Audio_SetCodeReverb(s8 reverb) {
 
 void func_800F6700(s8 arg0) {
     s8 sp1F = 0;
-    AudioChannelsSetting channelsSetting = audioStereo;
 
     switch (arg0) {
         case 0:
@@ -5006,8 +5005,6 @@ void func_800F6700(s8 arg0) {
             SetAudioChannels(audioMatrix51);
             break;
     }
-
-    SetAudioChannels(channelsSetting);
 
     Audio_SeqCmdE0(SEQ_PLAYER_BGM_MAIN, sp1F);
 }
