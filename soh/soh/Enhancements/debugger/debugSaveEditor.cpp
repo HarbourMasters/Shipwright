@@ -1120,7 +1120,9 @@ void DrawFlagsTab() {
             ImGui::PushID(flagTable.name);
             ImGuiTextFilter& flagFilter = flagTableFilters[flagTable.name];
             ImGui::SetNextItemWidth(ImGui::GetFontSize() * 16);
+            PushStyleInput(THEME_COLOR);
             flagFilter.Draw();
+            PopStyleInput();
             ImGui::Spacing();
 
             if (!flagFilter.IsActive()) {

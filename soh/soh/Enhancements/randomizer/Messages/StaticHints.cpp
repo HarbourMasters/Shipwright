@@ -5,6 +5,8 @@
  * File for registering hooks for "Static" hints, i.e. hints that
  * are always given by a specific NPC and/or for a specific item.
  */
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "z64scene.h"
 #include <soh/OTRGlobals.h>
 
 extern "C" {
@@ -301,6 +303,12 @@ void BuildSariaMessage(uint16_t* textId, bool* loadFromMessageTable) {
     *loadFromMessageTable = false;
 }
 
+void BuildMidoMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    CustomMessage msg = RAND_GET_HINT(RH_MIDO_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+    msg.LoadIntoFont();
+    *loadFromMessageTable = false;
+}
+
 void BuildBiggoronHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_BIGGORON_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
@@ -365,6 +373,37 @@ void BuildMaskShopSignMessage(uint16_t* textId, bool* loadFromMessageTable) {
     *loadFromMessageTable = false;
 }
 
+void BuildBossKeyHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    RandomizerHint rh = RH_NONE;
+    switch (gPlayState->sceneNum) {
+        case SCENE_FOREST_TEMPLE:
+            rh = RH_FOREST_BOSS_KEY_HINT;
+            break;
+        case SCENE_FIRE_TEMPLE:
+            rh = RH_FIRE_BOSS_KEY_HINT;
+            break;
+        case SCENE_WATER_TEMPLE:
+            rh = RH_WATER_BOSS_KEY_HINT;
+            break;
+        case SCENE_SHADOW_TEMPLE:
+            rh = RH_SHADOW_BOSS_KEY_HINT;
+            break;
+        case SCENE_SPIRIT_TEMPLE:
+            rh = RH_SPIRIT_BOSS_KEY_HINT;
+            break;
+        case SCENE_GANONS_TOWER:
+            rh = RH_GANONS_BOSS_KEY_HINT;
+            break;
+        default:
+            break;
+    }
+    if (rh != RH_NONE) {
+        CustomMessage msg = RAND_GET_HINT(rh)->GetHintMessage(MF_AUTO_FORMAT);
+        msg.LoadIntoFont();
+        *loadFromMessageTable = false;
+    }
+}
+
 void RegisterStaticHints() {
     // Ganondorf
     COND_ID_HOOK(OnOpenText, TEXT_GANONDORF, RAND_GET_OPTION(RSK_GANONDORF_HINT), BuildGanondorfHint);
@@ -426,6 +465,11 @@ void RegisterStaticHints() {
     COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_GLAD_NOW, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
     COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_IMPRISON_GANONDORF, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
     COND_ID_HOOK(OnOpenText, TEXT_SARIAS_SONG_CHANNELING_POWER, RAND_GET_OPTION(RSK_SARIA_HINT), BuildSariaMessage);
+    // Mido
+    COND_ID_HOOK(OnOpenText, TEXT_MIDO_SPEAK_TO_MIDO_FIRST_TIME, RAND_GET_OPTION(RSK_MIDO_HINT), BuildMidoMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_MIDO_SPEAK_TO_MIDO_AGAIN, RAND_GET_OPTION(RSK_MIDO_HINT), BuildMidoMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_MIDO_HOME_AFTER_ZELDAS_LETTER, RAND_GET_OPTION(RSK_MIDO_HINT), BuildMidoMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_MIDO_HOME_BEFORE_ZELDAS_LETTER, RAND_GET_OPTION(RSK_MIDO_HINT), BuildMidoMessage);
     // Biggoron
     COND_ID_HOOK(OnOpenText, TEXT_BIGGORON_BETTER_AT_SMITHING, RAND_GET_OPTION(RSK_BIGGORON_HINT),
                  BuildBiggoronHintMessage);
@@ -465,6 +509,8 @@ void RegisterStaticHints() {
     COND_ID_HOOK(OnOpenText, TEXT_HBA_ALREADY_HAVE_1000, RAND_GET_OPTION(RSK_HBA_HINT), BuildHorsebackArcheryMessage);
     // Mask Shop Sign
     COND_ID_HOOK(OnOpenText, TEXT_MASK_SHOP_SIGN, RAND_GET_OPTION(RSK_MASK_SHOP_HINT), BuildMaskShopSignMessage);
+    // Boss Key Hints
+    COND_ID_HOOK(OnOpenText, TEXT_NEED_SPECIAL_KEY, RAND_GET_OPTION(RSK_BOSS_KEY_HINT), BuildBossKeyHintMessage);
 }
 
 static RegisterShipInitFunc initFunc(RegisterStaticHints, { "IS_RANDO" });

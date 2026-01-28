@@ -2209,6 +2209,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (talkOfferActor != NULL) || (cUpTalkActor != NULL)
+    // ```
+    // #### `args`
+    // - None
+    VB_SPEAK,
+
+    // #### `result`
+    // ```c
     // varies, never set should to true
     // ```
     // #### `args`

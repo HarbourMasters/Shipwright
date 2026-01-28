@@ -7,7 +7,7 @@ void RegionTable_Init_DesertColossus() {
     // clang-format off
     areaTable[RR_DESERT_COLOSSUS] = Region("Desert Colossus", SCENE_DESERT_COLOSSUS, {
         //Events
-        EventAccess(LOGIC_BUG_ACCESS, []{return logic->HasItem(RG_POWER_BRACELET);}),
+        EVENT_ACCESS(LOGIC_BUG_ACCESS, logic->HasItem(RG_POWER_BRACELET)),
     }, {
         //Locations
         LOCATION(RC_COLOSSUS_FREESTANDING_POH,       logic->IsAdult && CanPlantBean(RR_DESERT_COLOSSUS, RG_DESERT_COLOSSUS_BEAN_SOUL)),
@@ -23,17 +23,17 @@ void RegionTable_Init_DesertColossus() {
     }, {
         //Exits
         //You can kinda get the fairies without entering the water, but it relies on them cooperating and leevers are jerks. should be a trick
-        Entrance(RR_DESERT_COLOSSUS_OASIS,         []{return logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->HasBottle());}),
-        Entrance(RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN, []{return logic->HasExplosives();}),
-        Entrance(RR_SPIRIT_TEMPLE_ENTRYWAY,        []{return true;}),
-        Entrance(RR_WASTELAND_NEAR_COLOSSUS,       []{return true;}),
-        Entrance(RR_COLOSSUS_GROTTO,               []{return logic->CanUse(RG_SILVER_GAUNTLETS);}),
+        ENTRANCE(RR_DESERT_COLOSSUS_OASIS,         logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->HasBottle())),
+        ENTRANCE(RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN, logic->HasExplosives()),
+        ENTRANCE(RR_SPIRIT_TEMPLE_ENTRYWAY,        true),
+        ENTRANCE(RR_WASTELAND_NEAR_COLOSSUS,       true),
+        ENTRANCE(RR_COLOSSUS_GROTTO,               logic->CanUse(RG_SILVER_GAUNTLETS)),
     });
 
     //specifically the full oasis, after the fairies have spawned
     areaTable[RR_DESERT_COLOSSUS_OASIS] = Region("Desert Colossus Oasis", SCENE_DESERT_COLOSSUS, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return true;}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, true),
     }, {
         //Locations
         LOCATION(RC_COLOSSUS_OASIS_FAIRY_1, true),
@@ -46,7 +46,7 @@ void RegionTable_Init_DesertColossus() {
         LOCATION(RC_COLOSSUS_OASIS_FAIRY_8, true),
     }, {
         //Exits
-        Entrance(RR_DESERT_COLOSSUS, []{return true;}),
+        ENTRANCE(RR_DESERT_COLOSSUS, true),
     });
 
     areaTable[RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE] = Region("Desert Colossus From Spirit Entryway", SCENE_DESERT_COLOSSUS, {}, {
@@ -54,7 +54,7 @@ void RegionTable_Init_DesertColossus() {
         LOCATION(RC_SHEIK_AT_COLOSSUS, true),
     }, {
         //Exist
-        Entrance(RR_DESERT_COLOSSUS, []{return true;}),
+        ENTRANCE(RR_DESERT_COLOSSUS, true),
     });
 
     areaTable[RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN] = Region("Colossus Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, {}, {
@@ -62,17 +62,17 @@ void RegionTable_Init_DesertColossus() {
         LOCATION(RC_COLOSSUS_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
-        Entrance(RR_DESERT_COLOSSUS, []{return true;}),
+        ENTRANCE(RR_DESERT_COLOSSUS, true),
     });
 
     areaTable[RR_COLOSSUS_GROTTO] = Region("Colossus Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR,  logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT, logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR,  logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT, logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_COLOSSUS_GROTTO_BEEHIVE,          logic->CanBreakUpperBeehives()),
     }, {
         //Exits
-        Entrance(RR_DESERT_COLOSSUS, []{return true;}),
+        ENTRANCE(RR_DESERT_COLOSSUS, true),
     });
 
     // clang-format on

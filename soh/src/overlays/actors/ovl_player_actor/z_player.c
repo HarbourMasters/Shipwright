@@ -6175,7 +6175,7 @@ s32 Player_ActionHandler_Talk(Player* this, PlayState* play) {
         }
     }
 
-    if ((talkOfferActor != NULL) || (cUpTalkActor != NULL)) {
+    if (GameInteractor_Should(VB_SPEAK, (talkOfferActor != NULL) || (cUpTalkActor != NULL))) {
         if ((lockOnActor == NULL) || (lockOnActor == talkOfferActor) || (lockOnActor == cUpTalkActor)) {
             if (!(this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) ||
                 ((this->heldActor != NULL) &&

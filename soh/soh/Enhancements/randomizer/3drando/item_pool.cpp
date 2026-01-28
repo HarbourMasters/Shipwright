@@ -415,6 +415,15 @@ void GenerateItemPool() {
         AddItemToPool(RG_OPEN_CHEST, 2, 1, 1, 1);
     }
 
+    if (ctx->GetOption(RSK_SHUFFLE_SPEAK)) {
+        AddItemToPool(RG_SPEAK_DEKU, 2, 1, 1, 1);
+        AddItemToPool(RG_SPEAK_GERUDO, 2, 1, 1, 1);
+        AddItemToPool(RG_SPEAK_GORON, 2, 1, 1, 1);
+        AddItemToPool(RG_SPEAK_HYLIAN, 2, 1, 1, 1);
+        AddItemToPool(RG_SPEAK_KOKIRI, 2, 1, 1, 1);
+        AddItemToPool(RG_SPEAK_ZORA, 2, 1, 1, 1);
+    }
+
     if (ctx->GetOption(RSK_SHUFFLE_BEEHIVES)) {
         PlaceItemsForType(RCTYPE_BEEHIVE, true, true);
     }

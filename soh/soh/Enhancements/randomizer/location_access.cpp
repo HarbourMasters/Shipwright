@@ -468,8 +468,9 @@ bool Region::UpdateEvents() {
     return eventsUpdated;
 }
 
-void Region::AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition) {
-    Rando::Entrance newExit = Rando::Entrance(newExitKey, condition);
+void Region::AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition,
+                     std::string conditionStr) {
+    Rando::Entrance newExit = Rando::Entrance(newExitKey, condition, conditionStr);
     newExit.SetParentRegion(parentKey);
     exits.push_front(newExit);
 }
@@ -960,9 +961,9 @@ void RegionTable_Init() {
     ctx = Context::GetInstance().get();
     logic = ctx->GetLogic(); // RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
     grottoEvents = {
-        EventAccess(LOGIC_FAIRY_ACCESS, [] { return logic->CallGossipFairy() || logic->CanUse(RG_STICKS); }),
-        EventAccess(LOGIC_BUG_ACCESS, [] { return logic->CanCutShrubs(); }),
-        EventAccess(LOGIC_FISH_ACCESS, [] { return true; }),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy() || logic->CanUse(RG_STICKS)),
+        EVENT_ACCESS(LOGIC_BUG_ACCESS, logic->CanCutShrubs()),
+        EVENT_ACCESS(LOGIC_FISH_ACCESS, true),
     };
     // Clear the array from any previous playthrough attempts. This is important so that
     // locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
@@ -1051,7 +1052,7 @@ void ReplaceAllInString(std::string& s, std::string const& toReplace, std::strin
     s.swap(buf);
 }
 
-std::string CleanCheckConditionString(std::string condition) {
+std::string CleanConditionString(std::string condition) {
     ReplaceAllInString(condition, "logic->", "");
     ReplaceAllInString(condition, "ctx->", "");
     ReplaceAllInString(condition, ".Get()", "");
