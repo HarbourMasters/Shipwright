@@ -3810,7 +3810,7 @@ f32 Audio_ComputeSoundFreqScale(u8 bankId, u8 entryIdx) {
     return freq;
 }
 
-u8 func_800F37B8(f32 behindScreenZ, SoundBankEntry* arg1, s8 arg2) {
+u8 AudioSfx_ComputeSurroundSoundFilter(f32 behindScreenZ, SoundBankEntry* arg1, s8 arg2) {
     s8 phi_v0;
     u8 phi_v1;
     f32 phi_f0;
@@ -3938,7 +3938,7 @@ void Audio_SetSoundProperties(u8 bankId, u8 entryIdx, u8 channelIdx) {
             if ((baseFilter | sAudioExtraFilter) != 0) {
                 filter = (baseFilter | sAudioExtraFilter);
             } else if (D_80130604 == 2 && (entry->sfxParams & 0x2000) == 0) {
-                filter = func_800F37B8(behindScreenZ, entry, panSigned);
+                filter = AudioSfx_ComputeSurroundSoundFilter(behindScreenZ, entry, panSigned);
             }
             break;
         case BANK_SYSTEM:
