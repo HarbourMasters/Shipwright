@@ -3876,7 +3876,7 @@ s8 AudioSfx_ComputeSurroundEffectIndex(f32 projectedPosZ, u16 sfxParams) {
             ret = (s8)((-projectedPosZ / 100.0f) * 64.0f) + 63;
         }
     }
-    
+
     return ret;
 }
 

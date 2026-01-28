@@ -31,8 +31,8 @@ Acmd* AudioSynth_ProcessEnvelope(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthesisS
                                  u16 inBuf, s32 headsetPanSettings, s32 flags);
 Acmd* AudioSynth_FinalResample(Acmd* cmd, NoteSynthesisState* synthState, s32 count, u16 pitch, u16 inpDmem,
                                s32 resampleFlags);
-Acmd* AudioSynth_ApplySurroundEffect(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthesisState* synthState,
-                                     s32 aiBufLen, s32 inputDmem, s32 flags);
+Acmd* AudioSynth_ApplySurroundEffect(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthesisState* synthState, s32 aiBufLen,
+                                     s32 inputDmem, s32 flags);
 
 u32 D_801304A0 = 0x13000000;
 u32 D_801304A4 = 0x5CAEC8E2;
@@ -863,8 +863,8 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
                         size_t bytesToRead;
                         nSamplesProcessed += samplesLenAdjusted;
 
-                        if (((synthState->samplePosInt * 2) + (samplesLenAdjusted)*2) < audioFontSample->size) {
-                            bytesToRead = (samplesLenAdjusted)*2;
+                        if (((synthState->samplePosInt * 2) + (samplesLenAdjusted) * 2) < audioFontSample->size) {
+                            bytesToRead = (samplesLenAdjusted) * 2;
                         } else {
                             bytesToRead = audioFontSample->size - (synthState->samplePosInt * 2);
                         }
@@ -1265,8 +1265,8 @@ Acmd* AudioSynth_NoteApplyHeadsetPanEffects(Acmd* cmd, NoteSubEu* noteSubEu, Not
     return cmd;
 }
 
-Acmd* AudioSynth_ApplySurroundEffect(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthesisState* synthState,
-                                     s32 aiBufLen, s32 inputDmem, s32 flags) {
+Acmd* AudioSynth_ApplySurroundEffect(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthesisState* synthState, s32 aiBufLen,
+                                     s32 inputDmem, s32 flags) {
     s32 wetGain;
     u16 dryGain;
     s64 dmem = DMEM_SURROUND_TEMP;
@@ -1309,8 +1309,7 @@ Acmd* AudioSynth_ApplySurroundEffect(Acmd* cmd, NoteSubEu* noteSubEu, NoteSynthe
         // === End matrix surround encoding ===
     }
 
-    aSaveBuffer(cmd++, DMEM_SURROUND_TEMP + (aiBufLen * 2),
-                synthState->synthesisBuffers->panSamplesBuffer,
+    aSaveBuffer(cmd++, DMEM_SURROUND_TEMP + (aiBufLen * 2), synthState->synthesisBuffers->panSamplesBuffer,
                 sizeof(synthState->synthesisBuffers->panSamplesBuffer));
 
     decayGain = (noteSubEu->targetVolLeft + noteSubEu->targetVolRight) * (1.0f / 0x2000);
