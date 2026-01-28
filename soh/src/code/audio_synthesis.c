@@ -862,7 +862,7 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
                         skipBytes = 0;
                         size_t bytesToRead;
                         nSamplesProcessed += samplesLenAdjusted;
-                        
+
                         if (((synthState->samplePosInt * 2) + (samplesLenAdjusted)*2) < audioFontSample->size) {
                             bytesToRead = (samplesLenAdjusted)*2;
                         } else {
