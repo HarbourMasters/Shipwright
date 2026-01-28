@@ -1075,7 +1075,7 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
     }
 
     // Apply surround effect for rear speakers when in surround mode
-    if (gAudioContext.soundMode == SOUNDMODE_SURROUND) {
+    if (gAudioContext.soundMode == 4) {
         noteSubEu->targetVolLeft = noteSubEu->targetVolLeft >> 1;
         noteSubEu->targetVolRight = noteSubEu->targetVolRight >> 1;
         if (noteSubEu->surroundEffectIndex != 0xFF) {

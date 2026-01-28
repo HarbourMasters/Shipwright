@@ -46,14 +46,6 @@ typedef enum {
 } AdsrStatus;
 
 typedef enum {
-    /* 0 */ SOUNDMODE_STEREO,
-    /* 1 */ SOUNDMODE_HEADSET,
-    /* 2 */ SOUNDMODE_SURROUND_EXTERNAL,
-    /* 3 */ SOUNDMODE_MONO,
-    /* 4 */ SOUNDMODE_SURROUND
-} SoundMode;
-
-typedef enum {
     /* 0 */ MEDIUM_RAM,
     /* 1 */ MEDIUM_UNK,
     /* 2 */ MEDIUM_CART,
