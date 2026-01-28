@@ -1,8 +1,8 @@
 #include <libultraship/bridge.h>
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Wonder_Talk2/z_en_wonder_talk2.h"
@@ -12,10 +12,8 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Owl/z_en_owl.h"
 #include "src/overlays/actors/ovl_En_Go2/z_en_go2.h"
 #include "src/overlays/actors/ovl_En_Heishi2/z_en_heishi2.h"
-#include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
 #include "src/overlays/actors/ovl_En_Ma1/z_en_ma1.h"
 #include "src/overlays/actors/ovl_En_Ru2/z_en_ru2.h"
-#include "src/overlays/actors/ovl_En_Zl4/z_en_zl4.h"
 #include "src/overlays/actors/ovl_En_Box/z_en_box.h"
 #include "src/overlays/actors/ovl_Demo_Im/z_demo_im.h"
 #include "src/overlays/actors/ovl_Demo_Kekkai/z_demo_kekkai.h"
@@ -81,12 +79,8 @@ void EnFu_EndTeachSong(EnFu* enFu, PlayState* play) {
 void EnDntDemo_JudgeSkipToReward(EnDntDemo* enDntDemo, PlayState* play) {
     // todo: figure out a better way to handle toggling so we don't
     //       need to double check cvars like this
-    if (!(IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO))) {
-        EnDntDemo_Judge(enDntDemo, play);
-        return;
-    }
-
-    if (enDntDemo->actor.xzDistToPlayer > 30.0f) {
+    if (!(IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) ||
+        (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SPEAK)) || enDntDemo->actor.xzDistToPlayer > 30.0f) {
         EnDntDemo_Judge(enDntDemo, play);
         return;
     }
@@ -1147,7 +1141,9 @@ void TimeSaverOnSceneInitHandler(int16_t sceneNum) {
         case SCENE_LON_LON_RANCH:
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO) &&
                 GameInteractor_Should(VB_MALON_RETURN_FROM_CASTLE,
-                                      Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE))) {
+                                      Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) &&
+                (!IS_RANDO || !RAND_GET_OPTION(RSK_SHUFFLE_SPEAK) ||
+                 Flags_GetRandomizerInf(RAND_INF_CAN_SPEAK_HYLIAN))) {
                 Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_RANCH);
                 Flags_SetInfTable(INFTABLE_CHILD_MALON_SAID_EPONA_WAS_AFRAID_OF_YOU);
                 Flags_SetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON);
