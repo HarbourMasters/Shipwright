@@ -7,14 +7,14 @@ void RegionTable_Init_DeathMountainCrater() {
     // clang-format off
     areaTable[RR_DMC_UPPER_NEARBY] = Region("DMC Upper Nearby", SCENE_DEATH_MOUNTAIN_CRATER, {}, {}, {
         //Exits
-        Entrance(RR_DMC_UPPER_LOCAL,       []{return logic->FireTimer() >= 48;}),
-        Entrance(RR_DEATH_MOUNTAIN_SUMMIT, []{return true;}),
-        Entrance(RR_DMC_UPPER_GROTTO,      []{return AnyAgeTime([]{return logic->BlastOrSmash() && (logic->FireTimer() >= 8 || logic->Hearts() >= 3);});})
+        ENTRANCE(RR_DMC_UPPER_LOCAL,       logic->FireTimer() >= 48),
+        ENTRANCE(RR_DEATH_MOUNTAIN_SUMMIT, true),
+        ENTRANCE(RR_DMC_UPPER_GROTTO,      AnyAgeTime([]{return logic->BlastOrSmash() && (logic->FireTimer() >= 8 || logic->Hearts() >= 3);}))
     });
 
     areaTable[RR_DMC_UPPER_LOCAL] = Region("DMC Upper Local", SCENE_DEATH_MOUNTAIN_CRATER, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->HasExplosives() && logic->CallGossipFairyExceptSuns() && (logic->FireTimer() >= 16 || logic->Hearts() >= 3);}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->HasExplosives() && logic->CallGossipFairyExceptSuns() && (logic->FireTimer() >= 16 || logic->Hearts() >= 3)),
     }, {
         //Locations
         LOCATION(RC_DMC_WALL_FREESTANDING_POH,  logic->FireTimer() >= 16 || logic->Hearts() >= 3),
@@ -26,20 +26,20 @@ void RegionTable_Init_DeathMountainCrater() {
 
     }, {
         //Exits
-        Entrance(RR_DMC_UPPER_NEARBY,       []{return true;}),
-        Entrance(RR_DMC_LADDER_AREA_NEARBY, []{return logic->FireTimer() >= 16 || logic->Hearts() >= 3;}),
-        Entrance(RR_DMC_CENTRAL_NEARBY,     []{return logic->IsAdult && logic->CanUse(RG_GORON_TUNIC) && logic->ReachDistantScarecrow() && ((logic->EffectiveHealth() > 2) || (logic->CanUse(RG_BOTTLE_WITH_FAIRY) && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || logic->CanUse(RG_NAYRUS_LOVE));}),
-        Entrance(RR_DMC_LOWER_NEARBY,       []{return false;}),
-        Entrance(RR_DMC_DISTANT_PLATFORM,   []{return (logic->FireTimer() >= 48 && logic->Hearts() >= 2) || logic->Hearts() >= 3;}),
+        ENTRANCE(RR_DMC_UPPER_NEARBY,       true),
+        ENTRANCE(RR_DMC_LADDER_AREA_NEARBY, logic->FireTimer() >= 16 || logic->Hearts() >= 3),
+        ENTRANCE(RR_DMC_CENTRAL_NEARBY,     logic->IsAdult && logic->CanUse(RG_GORON_TUNIC) && logic->ReachDistantScarecrow() && ((logic->EffectiveHealth() > 2) || (logic->CanUse(RG_BOTTLE_WITH_FAIRY) && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || logic->CanUse(RG_NAYRUS_LOVE))),
+        ENTRANCE(RR_DMC_LOWER_NEARBY,       false),
+        ENTRANCE(RR_DMC_DISTANT_PLATFORM,   (logic->FireTimer() >= 48 && logic->Hearts() >= 2) || logic->Hearts() >= 3),
     });
 
     areaTable[RR_DMC_LADDER_AREA_NEARBY] = Region("DMC Ladder Region Nearby", SCENE_DEATH_MOUNTAIN_CRATER, {}, {
         //Locations
-        LOCATION(RC_DMC_DEKU_SCRUB, logic->IsChild && logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_DMC_DEKU_SCRUB, logic->IsChild && logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
-        Entrance(RR_DMC_UPPER_NEARBY, []{return (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) && logic->Hearts() >= 3;}),
-        Entrance(RR_DMC_LOWER_NEARBY, []{return logic->Hearts() >= 3 && (logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_DMC_BOULDER_JS) && logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)) || (ctx->GetTrickOption(RT_DMC_BOULDER_SKIP) && logic->IsAdult));}),
+        ENTRANCE(RR_DMC_UPPER_NEARBY, (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) && logic->Hearts() >= 3),
+        ENTRANCE(RR_DMC_LOWER_NEARBY, logic->Hearts() >= 3 && (logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_DMC_BOULDER_JS) && logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)) || (ctx->GetTrickOption(RT_DMC_BOULDER_SKIP) && logic->IsAdult))),
     });
 
     areaTable[RR_DMC_LOWER_NEARBY] = Region("DMC Lower Nearby", SCENE_DEATH_MOUNTAIN_CRATER, {}, {
@@ -50,18 +50,18 @@ void RegionTable_Init_DeathMountainCrater() {
         LOCATION(RC_DMC_NEAR_GC_POT_4, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_DMC_LOWER_LOCAL,          []{return logic->FireTimer() >= 48;}),
-        Entrance(RR_GC_DARUNIAS_CHAMBER,      []{return true;}),
-        Entrance(RR_DMC_GREAT_FAIRY_FOUNTAIN, []{return logic->CanUse(RG_MEGATON_HAMMER);}),
-        Entrance(RR_DMC_HAMMER_GROTTO,        []{return logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER);}),
+        ENTRANCE(RR_DMC_LOWER_LOCAL,          logic->FireTimer() >= 48),
+        ENTRANCE(RR_GC_DARUNIAS_CHAMBER,      true),
+        ENTRANCE(RR_DMC_GREAT_FAIRY_FOUNTAIN, logic->CanUse(RG_MEGATON_HAMMER)),
+        ENTRANCE(RR_DMC_HAMMER_GROTTO,        logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
     });
 
     areaTable[RR_DMC_LOWER_LOCAL] = Region("DMC Lower Local", SCENE_DEATH_MOUNTAIN_CRATER, {}, {}, {
         //Exits
-        Entrance(RR_DMC_LOWER_NEARBY,       []{return true;}),
-        Entrance(RR_DMC_LADDER_AREA_NEARBY, []{return logic->FireTimer() >= 8 || logic->Hearts() >= 3;}),
-        Entrance(RR_DMC_CENTRAL_NEARBY,     []{return (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT)) && (logic->FireTimer() >= 8 || logic->Hearts() >= 3);}),
-        Entrance(RR_DMC_CENTRAL_LOCAL,      []{return (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanShield() && ctx->GetTrickOption(RT_DMC_BOLERO_JUMP))) && logic->FireTimer() >= 24;}),
+        ENTRANCE(RR_DMC_LOWER_NEARBY,       true),
+        ENTRANCE(RR_DMC_LADDER_AREA_NEARBY, logic->FireTimer() >= 8 || logic->Hearts() >= 3),
+        ENTRANCE(RR_DMC_CENTRAL_NEARBY,     (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT)) && (logic->FireTimer() >= 8 || logic->Hearts() >= 3)),
+        ENTRANCE(RR_DMC_CENTRAL_LOCAL,      (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanShield() && ctx->GetTrickOption(RT_DMC_BOLERO_JUMP))) && logic->FireTimer() >= 24),
     });
 
     areaTable[RR_DMC_CENTRAL_NEARBY] = Region("DMC Central Nearby", SCENE_DEATH_MOUNTAIN_CRATER, {}, {
@@ -70,12 +70,12 @@ void RegionTable_Init_DeathMountainCrater() {
         LOCATION(RC_SHEIK_IN_CRATER,              logic->IsAdult && (logic->FireTimer() >= 8 || logic->Hearts() >= 3)),
     }, {
         //Exits
-    Entrance(RR_DMC_CENTRAL_LOCAL, []{return logic->FireTimer() >= 48;}),
+    ENTRANCE(RR_DMC_CENTRAL_LOCAL, logic->FireTimer() >= 48),
     });
 
     areaTable[RR_DMC_CENTRAL_LOCAL] = Region("DMC Central Local", SCENE_DEATH_MOUNTAIN_CRATER, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->FireTimer() >= 8 || logic->Hearts() >= 3);}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->FireTimer() >= 8 || logic->Hearts() >= 3)),
     }, {
         //Locations
         LOCATION(RC_DMC_GS_BEAN_PATCH,                (logic->FireTimer() >= 8 || logic->Hearts() >= 3) && logic->CanSpawnSoilSkull(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanAttack()),
@@ -92,11 +92,11 @@ void RegionTable_Init_DeathMountainCrater() {
         LOCATION(RC_DMC_BEAN_SPROUT_FAIRY_3,          logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->FireTimer() >= 8 || logic->Hearts() >= 3)),
     }, {
         //Exits
-        Entrance(RR_DMC_CENTRAL_NEARBY,      []{return true;}),
-        Entrance(RR_DMC_LOWER_NEARBY,        []{return (logic->IsAdult && CanPlantBean(RR_DMC_CENTRAL_LOCAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL)) || (logic->CanUse(RG_HOVER_BOOTS) && (logic->IsAdult || logic->HasItem(RG_CLIMB))) || logic->CanUse(RG_HOOKSHOT);}),
-        Entrance(RR_DMC_UPPER_NEARBY,        []{return logic->IsAdult && CanPlantBean(RR_DMC_CENTRAL_LOCAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL);}),
-        Entrance(RR_DMC_OUTSIDE_FIRE_TEMPLE, []{return (logic->IsChild && logic->Hearts() >= 3 && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || (logic->IsAdult && logic->FireTimer() >= 24);}),
-        Entrance(RR_DMC_DISTANT_PLATFORM,    []{return logic->FireTimer() >= 48 && logic->IsAdult && logic->ReachDistantScarecrow();}),
+        ENTRANCE(RR_DMC_CENTRAL_NEARBY,      true),
+        ENTRANCE(RR_DMC_LOWER_NEARBY,        (logic->IsAdult && CanPlantBean(RR_DMC_CENTRAL_LOCAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL)) || (logic->CanUse(RG_HOVER_BOOTS) && (logic->IsAdult || logic->HasItem(RG_CLIMB))) || logic->CanUse(RG_HOOKSHOT)),
+        ENTRANCE(RR_DMC_UPPER_NEARBY,        logic->IsAdult && CanPlantBean(RR_DMC_CENTRAL_LOCAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL)),
+        ENTRANCE(RR_DMC_OUTSIDE_FIRE_TEMPLE, (logic->IsChild && logic->Hearts() >= 3 && ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF)) || (logic->IsAdult && logic->FireTimer() >= 24)),
+        ENTRANCE(RR_DMC_DISTANT_PLATFORM,    logic->FireTimer() >= 48 && logic->IsAdult && logic->ReachDistantScarecrow()),
     });
 
     areaTable[RR_DMC_GREAT_FAIRY_FOUNTAIN] = Region("DMC Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, {}, {
@@ -104,7 +104,7 @@ void RegionTable_Init_DeathMountainCrater() {
         LOCATION(RC_DMC_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
-        Entrance(RR_DMC_LOWER_LOCAL, []{return true;}),
+        ENTRANCE(RR_DMC_LOWER_LOCAL, true),
     });
 
     areaTable[RR_DMC_UPPER_GROTTO] = Region("DMC Upper Grotto", SCENE_GROTTOS, grottoEvents, {
@@ -122,18 +122,18 @@ void RegionTable_Init_DeathMountainCrater() {
         LOCATION(RC_DMC_UPPER_GROTTO_GRASS_4,                logic->CanCutShrubs()),
     }, {
         //Exits
-        Entrance(RR_DMC_UPPER_LOCAL, []{return true;}),
+        ENTRANCE(RR_DMC_UPPER_LOCAL, true),
     });
 
     areaTable[RR_DMC_HAMMER_GROTTO] = Region("DMC Hammer Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_DMC_DEKU_SCRUB_GROTTO_LEFT,   logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_DMC_DEKU_SCRUB_GROTTO_RIGHT,  logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_DMC_DEKU_SCRUB_GROTTO_CENTER, logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_DMC_DEKU_SCRUB_GROTTO_LEFT,   logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_DMC_DEKU_SCRUB_GROTTO_RIGHT,  logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_DMC_DEKU_SCRUB_GROTTO_CENTER, logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_DMC_HAMMER_GROTTO_BEEHIVE,    logic->CanBreakUpperBeehives()),
     }, {
         //Exits
-        Entrance(RR_DMC_LOWER_LOCAL, []{return true;}),
+        ENTRANCE(RR_DMC_LOWER_LOCAL, true),
     });
 
     areaTable[RR_DMC_DISTANT_PLATFORM] = Region("DMC Distant Platform", SCENE_DEATH_MOUNTAIN_CRATER, {}, {
@@ -147,13 +147,13 @@ void RegionTable_Init_DeathMountainCrater() {
         LOCATION(RC_DMC_DISTANT_PLATFORM_RED_RUPEE,     logic->IsAdult),
     }, {
         //Exits
-        Entrance(RR_DMC_CENTRAL_LOCAL, []{return logic->FireTimer() >= 48 && logic->IsAdult && logic->ReachDistantScarecrow();}),
+        ENTRANCE(RR_DMC_CENTRAL_LOCAL, logic->FireTimer() >= 48 && logic->IsAdult && logic->ReachDistantScarecrow()),
     });
 
     areaTable[RR_DMC_OUTSIDE_FIRE_TEMPLE] = Region("DMC Outside Fire Temple", SCENE_DEATH_MOUNTAIN_CRATER, {}, {}, {
         //Exits
-        Entrance(RR_FIRE_TEMPLE_ENTRYWAY, []{return true;}),
-        Entrance(RR_DMC_CENTRAL_LOCAL,    []{return logic->FireTimer() >= 48 && logic->HasItem(RG_CLIMB);}),
+        ENTRANCE(RR_FIRE_TEMPLE_ENTRYWAY, true),
+        ENTRANCE(RR_DMC_CENTRAL_LOCAL,    logic->FireTimer() >= 48 && logic->HasItem(RG_CLIMB)),
     });
 
     // clang-format on
