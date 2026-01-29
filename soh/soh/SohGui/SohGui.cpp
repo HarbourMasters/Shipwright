@@ -184,8 +184,8 @@ void SetupGuiElements() {
     mHintTrackerWindow =
         std::make_shared<HintTracker::HintTrackerWindow>(CVAR_WINDOW("HintTracker"), "Hint Tracker", ImVec2(600, 375));
     gui->AddGuiWindow(mHintTrackerWindow);
-    mHintTrackerSettingsWindow =
-        std::make_shared<HintTracker::HintTrackerSettingsWindow>(CVAR_WINDOW("HintTrackerSettings"), "Hint Tracker Settings", ImVec2(600, 375));
+    mHintTrackerSettingsWindow = std::make_shared<HintTracker::HintTrackerSettingsWindow>(
+        CVAR_WINDOW("HintTrackerSettings"), "Hint Tracker Settings", ImVec2(600, 375));
     gui->AddGuiWindow(mHintTrackerSettingsWindow);
     mEntranceTrackerWindow = std::make_shared<EntranceTracker::EntranceTrackerWindow>(
         CVAR_WINDOW("EntranceTracker"), "Entrance Tracker", ImVec2(500, 750));

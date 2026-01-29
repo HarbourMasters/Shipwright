@@ -33,10 +33,8 @@ void RegisterHintTrackerWidgets() {
 
     windowTypeWidget = { .name = "Window Type##HintTracker", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     windowTypeWidget.CVar(CVAR_TRACKER_HINT("WindowType"))
-        .Options(UIWidgets::ComboboxOptions()
-                     .DefaultIndex(TRACKER_WINDOW_WINDOW)
-                     .Color(THEME_COLOR)
-                     .ComboMap(windowType));
+        .Options(
+            UIWidgets::ComboboxOptions().DefaultIndex(TRACKER_WINDOW_WINDOW).Color(THEME_COLOR).ComboMap(windowType));
     SohGui::GetSohMenu()->AddSearchWidget({ windowTypeWidget, "Randomizer", "Hint Tracker", "General Settings" });
 }
 
@@ -49,15 +47,10 @@ void HintTrackerSettingsWindow::DrawElement() {
         UIWidgets::CVarCheckbox("Only Enable While Paused", CVAR_TRACKER_HINT("ShowOnlyPaused"),
                                 UIWidgets::CheckboxOptions().Color(THEME_COLOR));
         UIWidgets::CVarCombobox("Display mode", CVAR_TRACKER_HINT("DisplayType"), showMode,
-                                UIWidgets::ComboboxOptions()
-                                    .Color(THEME_COLOR)
-                                    .DefaultIndex(0));
-        if (CVarGetInteger(CVAR_TRACKER_HINT("DisplayType"), TRACKER_DISPLAY_ALWAYS) ==
-            TRACKER_DISPLAY_COMBO_BUTTON) {
+                                UIWidgets::ComboboxOptions().Color(THEME_COLOR).DefaultIndex(0));
+        if (CVarGetInteger(CVAR_TRACKER_HINT("DisplayType"), TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
             UIWidgets::CVarBtnSelector("Button Combo", CVAR_TRACKER_HINT("DisplayBtn"),
-                                    UIWidgets::BtnSelectorOptions()
-                                        .Color(THEME_COLOR)
-                                        .DefaultValue(BTN_L | BTN_R));
+                                       UIWidgets::BtnSelectorOptions().Color(THEME_COLOR).DefaultValue(BTN_L | BTN_R));
         }
     }
 }
