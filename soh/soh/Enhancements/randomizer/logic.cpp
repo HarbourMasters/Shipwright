@@ -2673,32 +2673,35 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         SetUpgrade(UPG_STICKS, ctx->GetOption(RSK_SHUFFLE_DEKU_STICK_BAG).Is(true) ? 0 : 1);
         SetUpgrade(UPG_NUTS, ctx->GetOption(RSK_SHUFFLE_DEKU_NUT_BAG).Is(true) ? 0 : 1);
 
-        // If we're not shuffling swim, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_SWIM).Is(false)) {
             SetRandoInf(RAND_INF_CAN_SWIM, true);
         }
 
-        // If we're not shuffling grab, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_GRAB).Is(false)) {
             SetRandoInf(RAND_INF_CAN_GRAB, true);
         }
 
-        // If we're not shuffling climb, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_CLIMB).Is(false)) {
             SetRandoInf(RAND_INF_CAN_CLIMB, true);
         }
 
-        // If we're not shuffling crawl, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_CRAWL).Is(false)) {
             SetRandoInf(RAND_INF_CAN_CRAWL, true);
         }
 
-        // If we're not shuffling open chest, we start with it
         if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(false)) {
             SetRandoInf(RAND_INF_CAN_OPEN_CHEST, true);
         }
 
-        // If we're not shuffling child's wallet, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_SPEAK).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_SPEAK_DEKU, true);
+            SetRandoInf(RAND_INF_CAN_SPEAK_GERUDO, true);
+            SetRandoInf(RAND_INF_CAN_SPEAK_GORON, true);
+            SetRandoInf(RAND_INF_CAN_SPEAK_HYLIAN, true);
+            SetRandoInf(RAND_INF_CAN_SPEAK_KOKIRI, true);
+            SetRandoInf(RAND_INF_CAN_SPEAK_ZORA, true);
+        }
+
         if (ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET).Is(false)) {
             SetRandoInf(RAND_INF_HAS_WALLET, true);
         }

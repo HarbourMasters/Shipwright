@@ -2016,23 +2016,6 @@ static std::map<int32_t, const char*> itemTrackerTriforcePieceTrackOptions = {
     { TRIFORCE_PIECE_COLLECTED_REQUIRED, "Collected / Required" },
     { TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX, "Collected / Required / Max" },
 };
-static std::map<int32_t, const char*> windowTypes = {
-    { TRACKER_WINDOW_FLOATING, "Floating" },
-    { TRACKER_WINDOW_WINDOW, "Window" },
-};
-static std::map<int32_t, const char*> displayModes = {
-    { TRACKER_DISPLAY_ALWAYS, "Always" },
-    { TRACKER_DISPLAY_COMBO_BUTTON, "Combo Button Hold" },
-};
-static std::map<int32_t, const char*> buttons = {
-    { TRACKER_COMBO_BUTTON_A, "A" },           { TRACKER_COMBO_BUTTON_B, "B" },
-    { TRACKER_COMBO_BUTTON_C_UP, "C-Up" },     { TRACKER_COMBO_BUTTON_C_DOWN, "C-Down" },
-    { TRACKER_COMBO_BUTTON_C_LEFT, "C-Left" }, { TRACKER_COMBO_BUTTON_C_RIGHT, "C-Right" },
-    { TRACKER_COMBO_BUTTON_L, "L" },           { TRACKER_COMBO_BUTTON_Z, "Z" },
-    { TRACKER_COMBO_BUTTON_R, "R" },           { TRACKER_COMBO_BUTTON_START, "Start" },
-    { TRACKER_COMBO_BUTTON_D_UP, "D-Up" },     { TRACKER_COMBO_BUTTON_D_DOWN, "D-Down" },
-    { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" },
-};
 static std::map<int32_t, const char*> displayTypes = {
     { SECTION_DISPLAY_HIDDEN, "Hidden" },
     { SECTION_DISPLAY_MAIN_WINDOW, "Main Window" },
@@ -2068,7 +2051,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
                              CheckboxOptions().Color(THEME_COLOR))) {
                 shouldUpdateVectors = true;
             }
-            if (CVarCombobox("Display Mode", CVAR_TRACKER_ITEM("DisplayType.Main"), displayModes,
+            if (CVarCombobox("Display Mode", CVAR_TRACKER_ITEM("DisplayType.Main"), showMode,
                              ComboboxOptions()
                                  .DefaultIndex(TRACKER_DISPLAY_ALWAYS)
                                  .ComponentAlignment(ComponentAlignments::Right)
@@ -2078,7 +2061,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
             }
             if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
                 TRACKER_DISPLAY_COMBO_BUTTON) {
-                if (CVarCombobox("Combo Button 1", CVAR_TRACKER_ITEM("ComboButton1"), buttons,
+                if (CVarCombobox("Combo Button 1", CVAR_TRACKER_ITEM("ComboButton1"), buttonStrings,
                                  ComboboxOptions()
                                      .DefaultIndex(TRACKER_COMBO_BUTTON_L)
                                      .ComponentAlignment(ComponentAlignments::Right)
@@ -2086,7 +2069,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
                                      .Color(THEME_COLOR))) {
                     shouldUpdateVectors = true;
                 }
-                if (CVarCombobox("Combo Button 2", CVAR_TRACKER_ITEM("ComboButton2"), buttons,
+                if (CVarCombobox("Combo Button 2", CVAR_TRACKER_ITEM("ComboButton2"), buttonStrings,
                                  ComboboxOptions()
                                      .DefaultIndex(TRACKER_COMBO_BUTTON_R)
                                      .ComponentAlignment(ComponentAlignments::Right)
@@ -2223,20 +2206,20 @@ void ItemTrackerWindow::InitElement() {
 }
 
 void RegisterItemTrackerWidgets() {
-    backgroundColor = { .name = "Background Color##gItemTrackerBgColor", .type = WidgetType::WIDGET_CVAR_COLOR_PICKER };
+    backgroundColor = { .name = "Background Color##ItemTracker", .type = WidgetType::WIDGET_CVAR_COLOR_PICKER };
     backgroundColor.CVar(CVAR_TRACKER_ITEM("BgColor"))
         .Options(
             ColorPickerOptions().Color(THEME_COLOR).DefaultValue({ 0, 0, 0, 0 }).UseAlpha().ShowReset().ShowRandom());
     SohGui::mSohMenu->AddSearchWidget({ backgroundColor, "Randomizer", "Item Tracker", "General Settings" });
 
-    windowTypeWidget = { .name = "Window Type", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    windowTypeWidget = { .name = "Window Type##ItemTracker", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     windowTypeWidget.CVar(CVAR_TRACKER_ITEM("WindowType"))
         .Options(ComboboxOptions()
                      .DefaultIndex(TRACKER_WINDOW_FLOATING)
                      .ComponentAlignment(ComponentAlignments::Right)
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
-                     .ComboMap(windowTypes))
+                     .ComboMap(windowType))
         .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
     SohGui::mSohMenu->AddSearchWidget({ windowTypeWidget, "Randomizer", "Item Tracker", "General Settings" });
     enableDraggingWidget;

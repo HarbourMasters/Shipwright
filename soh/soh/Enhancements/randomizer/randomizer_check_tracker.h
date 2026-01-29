@@ -63,5 +63,5 @@ void UpdateAllAreas();
 void RecalculateAllAreaTotals();
 void SpoilAreaFromCheck(RandomizerCheck rc);
 void RecalculateAvailableChecks(RandomizerRegion startingRegion = RR_ROOT);
-void CheckTracker_LoadFromPreset(nlohmann::json info);
+void LoadFromPreset(nlohmann::json info);
 } // namespace CheckTracker
