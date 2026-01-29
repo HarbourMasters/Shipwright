@@ -380,7 +380,7 @@ const std::vector<FlagTable> randoFlagTables = {
       HINT_DISCOVERY,
       (RH_MAX + 15) / 16,
       {
-#include "soh/Enhancements/randomizer/HintKeys.inc"
+#include "soh/Enhancements/randomizer/HintKeys.h"
       } },
 };
 

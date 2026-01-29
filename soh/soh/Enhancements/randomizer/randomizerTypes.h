@@ -4725,7 +4725,7 @@ typedef enum {
 #define DEFINE_RAND_HINT(enum) enum,
 
 typedef enum {
-#include "./HintKeys.inc"
+#include "./HintKeys.h"
     RH_MAX,
 } RandomizerHint;
 
