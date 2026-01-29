@@ -540,23 +540,18 @@ std::string LogicExpression::Impl::GetExprErrorContext() const {
 // This macro simplifies the insertion of functions into the functionAdapters map by
 // automatically converting the function pointer or lambda into a FunctionAdapter.
 // Usage: REGISTER_FUNCTION(functionName)
-#define REGISTER_FUNCTION(fn) \
-    { #fn, LogicExpression::Impl::RegisterFunction(#fn, fn) }
+#define REGISTER_FUNCTION(fn) { #fn, LogicExpression::Impl::RegisterFunction(#fn, fn) }
 
 #define REGISTER_FUNCTION_WITH_DEFAULTS(fn, ...) \
     { #fn, LogicExpression::Impl::RegisterFunctionWithDefaults(#fn, fn, std::make_tuple(__VA_ARGS__)) }
 
-#define REGISTER_LOGIC_FUNCTION(fn) \
-    { #fn, LogicExpression::Impl::RegisterLogicFunction(#fn, &Rando::Logic::fn) }
+#define REGISTER_LOGIC_FUNCTION(fn) { #fn, LogicExpression::Impl::RegisterLogicFunction(#fn, &Rando::Logic::fn) }
 
-#define REGISTER_LOGIC_FUNCTION_WITH_DEFAULTS(fn, ...)                                              \
-    {                                                                                               \
-#fn, LogicExpression::Impl::RegisterLogicFunctionWithDefaults(#fn, &Rando::Logic::fn,       \
-                                                                      std::make_tuple(__VA_ARGS__)) \
-    }
+#define REGISTER_LOGIC_FUNCTION_WITH_DEFAULTS(fn, ...) \
+    { #fn,                                             \
+      LogicExpression::Impl::RegisterLogicFunctionWithDefaults(#fn, &Rando::Logic::fn, std::make_tuple(__VA_ARGS__)) }
 
-#define REGISTER_LOGIC_VARIABLE(var) \
-    { #var, LogicExpression::Impl::RegisterLogicVariable(#var, &Rando::Logic::var) }
+#define REGISTER_LOGIC_VARIABLE(var) { #var, LogicExpression::Impl::RegisterLogicVariable(#var, &Rando::Logic::var) }
 
 #pragma region Forwarding Functions
 static uint8_t GetOption(const RandomizerSettingKey key) {
@@ -610,6 +605,9 @@ void LogicExpression::Impl::PopulateFunctionAdapters() {
         REGISTER_FUNCTION(TriforcePiecesCollected),
         REGISTER_FUNCTION(RegionAgeTimeAccess),
         REGISTER_FUNCTION(CanPlantBean),
+        REGISTER_FUNCTION_WITH_DEFAULTS(SpiritShared, RandomizerRegion{}, ConditionFn{}, false, RR_NONE, ConditionFn{},
+                                        RR_NONE, ConditionFn{}),
+        REGISTER_FUNCTION(SpiritCertainAccess),
 
         REGISTER_LOGIC_FUNCTION(CanUse),
         REGISTER_LOGIC_FUNCTION(HasProjectile),
@@ -667,7 +665,7 @@ void LogicExpression::Impl::PopulateFunctionAdapters() {
         REGISTER_LOGIC_FUNCTION(CanGetNightTimeGS),
         REGISTER_LOGIC_FUNCTION(CanBreakUpperBeehives),
         REGISTER_LOGIC_FUNCTION(CanBreakLowerBeehives),
-        REGISTER_LOGIC_FUNCTION(CanBreakPots),
+        REGISTER_LOGIC_FUNCTION_WITH_DEFAULTS(CanBreakPots, ED_CLOSE, true, false),
         REGISTER_LOGIC_FUNCTION(CanBreakCrates),
         REGISTER_LOGIC_FUNCTION(CanBreakSmallCrates),
         REGISTER_LOGIC_FUNCTION(CanBonkTrees),
@@ -683,6 +681,21 @@ void LogicExpression::Impl::PopulateFunctionAdapters() {
         REGISTER_LOGIC_FUNCTION(Get),
         REGISTER_LOGIC_FUNCTION(GetGSCount),
         REGISTER_LOGIC_FUNCTION(CanClearStalagmite),
+        REGISTER_LOGIC_FUNCTION(ReachScarecrow),
+        REGISTER_LOGIC_FUNCTION(ReachDistantScarecrow),
+        REGISTER_LOGIC_FUNCTION(SummonEpona),
+        REGISTER_LOGIC_FUNCTION(Water3FCentralToHighEmblem),
+        REGISTER_LOGIC_FUNCTION(WaterRisingTargetTo3FCentral),
+        REGISTER_LOGIC_FUNCTION(WaterLevel),
+        REGISTER_LOGIC_FUNCTION_WITH_DEFAULTS(CanHammerRecoilHover, false),
+        REGISTER_LOGIC_FUNCTION_WITH_DEFAULTS(CanGroundJumpJumpSlash, false),
+        REGISTER_LOGIC_FUNCTION_WITH_DEFAULTS(CanMiddairGroundJump, false),
+        REGISTER_LOGIC_FUNCTION(SunlightArrows),
+        REGISTER_LOGIC_FUNCTION(SpiritEastToSwitch),
+        REGISTER_LOGIC_FUNCTION(SpiritSunBlockSouthLedge),
+        REGISTER_LOGIC_FUNCTION(MQSpiritStatueToSunBlock),
+        REGISTER_LOGIC_FUNCTION(MQSpirit4KeyColossus),
+        REGISTER_LOGIC_FUNCTION(MQSpirit4KeyWestHand),
     };
 }
 
@@ -712,6 +725,8 @@ LogicExpression::ValueVariant LogicExpression::Impl::EvaluateFunction(const std:
 std::unordered_map<std::string, int> LogicExpression::Impl::enumMap;
 void LogicExpression::Impl::PopulateEnumMap() {
 #define DEFINE_DungeonKey(value) { #value, Rando::value },
+#define DEFINE_ModIndex(value) { #value, value },
+#define DEFINE_TableIndex(value) { #value, value },
 #define DEFINE_HintType(value) { #value, value },
 #define DEFINE_LogicVal(value) { #value, value },
 #define DEFINE_RAND_INF(value) { #value, value },
@@ -765,6 +780,7 @@ void LogicExpression::Impl::PopulateEnumMap() {
 #define DEFINE_RandoOptionSongShuffle(value) { #value, value },
 #define DEFINE_RandoOptionShuffleMerchants(value) { #value, value },
 #define DEFINE_RandoOptionStartingOcarina(value) { #value, value },
+#define DEFINE_RandoOptionMaskQuest(value) { #value, value },
 #define DEFINE_RandoOptionItemPool(value) { #value, value },
 #define DEFINE_RandoOptionIceTraps(value) { #value, value },
 #define DEFINE_RandoOptionGossipStones(value) { #value, value },
@@ -780,6 +796,7 @@ void LogicExpression::Impl::PopulateEnumMap() {
 #define DEFINE_RandoOptionLogic(value) { #value, value },
 #define DEFINE_RandoOptionDamageMultiplier(value) { #value, value },
 #define DEFINE_RandoOptionMQDungeons(value) { #value, value },
+#define DEFINE_RandoOptionTriforceHunt(value) { #value, value },
 #define DEFINE_RandoOptionLocationInclusion(value) { #value, value },
 #define DEFINE_RandoOptionChestGame(value) { #value, value },
 #define DEFINE_RandoOptionMQSet(value) { #value, value },

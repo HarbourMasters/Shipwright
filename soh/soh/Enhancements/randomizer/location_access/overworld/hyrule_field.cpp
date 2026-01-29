@@ -8,7 +8,7 @@ void RegionTable_Init_HyruleField() {
     areaTable[RR_HYRULE_FIELD] = Region("Hyrule Field", SCENE_HYRULE_FIELD, {
         //Events
         EVENT_ACCESS(LOGIC_BIG_POE_KILL,       logic->HasBottle() && logic->CanUse(RG_FAIRY_BOW) && (logic->SummonEpona() || ctx->GetTrickOption(RT_HF_BIG_POE_WITHOUT_EPONA))),
-        EVENT_ACCESS(LOGIC_BORROW_RIGHT_MASKS, logic->IsChild && logic->Get(LOGIC_BORROW_BUNNY_HOOD) && logic->HasItem(RG_KOKIRI_EMERALD) && logic->HasItem(RG_GORON_RUBY) && logic->HasItem(RG_ZORA_SAPPHIRE) && logic->HasItem(RG_CHILD_WALLET)),
+        EVENT_ACCESS(LOGIC_BORROW_RIGHT_MASKS, logic->IsChild && logic->Get(LOGIC_BORROW_BUNNY_HOOD) && logic->HasItem(RG_KOKIRI_EMERALD) && logic->HasItem(RG_GORON_RUBY) && logic->HasItem(RG_ZORA_SAPPHIRE) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN)),
     }, {
         //Locations
         LOCATION(RC_HF_OCARINA_OF_TIME_ITEM,   logic->IsChild && logic->StoneCount() == 3 && logic->HasItem(RG_BRONZE_SCALE)),
@@ -171,13 +171,13 @@ void RegionTable_Init_HyruleField() {
     }, {
         //Exits
         ENTRANCE(RR_LW_BRIDGE,              true),
-        ENTRANCE(RR_LAKE_HYLIA,             true),
         ENTRANCE(RR_GERUDO_VALLEY,          true),
         ENTRANCE(RR_MARKET_ENTRANCE,        true),
         ENTRANCE(RR_KAKARIKO_VILLAGE,       true),
         ENTRANCE(RR_ZR_FRONT,               true),
         ENTRANCE(RR_LON_LON_RANCH,          true),
         ENTRANCE(RR_HF_SOUTHEAST_GROTTO,    AnyAgeTime([]{return logic->BlastOrSmash();})),
+        ENTRANCE(RR_HF_TO_LAKE_HYLIA,       logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || logic->SummonEpona()),
         ENTRANCE(RR_HF_OPEN_GROTTO,         true),
         ENTRANCE(RR_HF_INSIDE_FENCE_GROTTO, logic->CanOpenBombGrotto()),
         ENTRANCE(RR_HF_COW_GROTTO,          (logic->CanUse(RG_MEGATON_HAMMER) || logic->IsChild) && logic->CanOpenBombGrotto()),
@@ -187,9 +187,15 @@ void RegionTable_Init_HyruleField() {
         ENTRANCE(RR_HF_TEKTITE_GROTTO,      logic->CanOpenBombGrotto()),
     });
 
+    areaTable[RR_HF_TO_LAKE_HYLIA] = Region("HF to Lake Hylia", SCENE_HYRULE_FIELD, {}, {}, {
+        //Exits
+        ENTRANCE(RR_LAKE_HYLIA,   true),
+        ENTRANCE(RR_HYRULE_FIELD, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || logic->SummonEpona()),
+    });
+
     areaTable[RR_HF_SOUTHEAST_GROTTO] = Region("HF Southeast Grotto", SCENE_GROTTOS, grottoEvents, {
         //Locations
-        LOCATION(RC_HF_SOUTHEAST_GROTTO_CHEST,                  true),
+        LOCATION(RC_HF_SOUTHEAST_GROTTO_CHEST,                  logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_HF_SOUTHEAST_GROTTO_FISH,                   logic->HasBottle()),
         LOCATION(RC_HF_SOUTHEAST_GROTTO_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
         LOCATION(RC_HF_SOUTHEAST_GROTTO_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
@@ -207,7 +213,7 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_OPEN_GROTTO] = Region("HF Open Grotto", SCENE_GROTTOS, grottoEvents, {
         //Locations
-        LOCATION(RC_HF_OPEN_GROTTO_CHEST,                   true),
+        LOCATION(RC_HF_OPEN_GROTTO_CHEST,                   logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_HF_OPEN_GROTTO_FISH,                    logic->HasBottle()),
         LOCATION(RC_HF_OPEN_GROTTO_GOSSIP_STONE_FAIRY,      logic->CallGossipFairy()),
         LOCATION(RC_HF_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
@@ -225,7 +231,7 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_INSIDE_FENCE_GROTTO] = Region("HF Inside Fence Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_HF_DEKU_SCRUB_GROTTO,           logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_HF_DEKU_SCRUB_GROTTO,           logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_HF_INSIDE_FENCE_GROTTO_BEEHIVE, logic->CanBreakLowerBeehives()),
         LOCATION(RC_HF_FENCE_GROTTO_STORMS_FAIRY,   logic->CanUse(RG_SONG_OF_STORMS)),
     }, {
@@ -261,7 +267,7 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_NEAR_MARKET_GROTTO] = Region("HF Near Market Grotto", SCENE_GROTTOS, grottoEvents, {
         //Locations
-        LOCATION(RC_HF_NEAR_MARKET_GROTTO_CHEST,                  true),
+        LOCATION(RC_HF_NEAR_MARKET_GROTTO_CHEST,                  logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_HF_NEAR_MARKET_GROTTO_FISH,                   logic->HasBottle()),
         LOCATION(RC_HF_NEAR_MARKET_GROTTO_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
         LOCATION(RC_HF_NEAR_MARKET_GROTTO_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),

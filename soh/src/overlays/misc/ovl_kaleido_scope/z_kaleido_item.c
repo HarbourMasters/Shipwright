@@ -324,9 +324,9 @@ void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle,
 
 bool CanMaskSelect() {
     if (IS_RANDO) {
-        return CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) &&
-               Flags_GetRandomizerInf(
-                   RAND_INF_ZELDAS_LETTER); /* || Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_TRADE) */
+        return (CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) && Flags_GetRandomizerInf(RAND_INF_ZELDAS_LETTER) &&
+                Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) ||
+               Randomizer_GetSettingValue(RSK_MASK_QUEST) == RO_MASK_QUEST_SHUFFLE;
     }
 
     // only allow mask select when:

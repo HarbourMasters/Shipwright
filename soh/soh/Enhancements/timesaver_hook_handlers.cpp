@@ -1,22 +1,19 @@
 #include <libultraship/bridge.h>
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Wonder_Talk2/z_en_wonder_talk2.h"
 #include "src/overlays/actors/ovl_Elf_Msg/z_elf_msg.h"
 #include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
 #include "src/overlays/actors/ovl_Bg_Bdan_Switch/z_bg_bdan_switch.h"
-#include "src/overlays/actors/ovl_Bg_Treemouth/z_bg_treemouth.h"
 #include "src/overlays/actors/ovl_En_Owl/z_en_owl.h"
 #include "src/overlays/actors/ovl_En_Go2/z_en_go2.h"
 #include "src/overlays/actors/ovl_En_Heishi2/z_en_heishi2.h"
-#include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
 #include "src/overlays/actors/ovl_En_Ma1/z_en_ma1.h"
 #include "src/overlays/actors/ovl_En_Ru2/z_en_ru2.h"
-#include "src/overlays/actors/ovl_En_Zl4/z_en_zl4.h"
 #include "src/overlays/actors/ovl_En_Box/z_en_box.h"
 #include "src/overlays/actors/ovl_Demo_Im/z_demo_im.h"
 #include "src/overlays/actors/ovl_Demo_Kekkai/z_demo_kekkai.h"
@@ -82,12 +79,8 @@ void EnFu_EndTeachSong(EnFu* enFu, PlayState* play) {
 void EnDntDemo_JudgeSkipToReward(EnDntDemo* enDntDemo, PlayState* play) {
     // todo: figure out a better way to handle toggling so we don't
     //       need to double check cvars like this
-    if (!(IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO))) {
-        EnDntDemo_Judge(enDntDemo, play);
-        return;
-    }
-
-    if (enDntDemo->actor.xzDistToPlayer > 30.0f) {
+    if (!(IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) ||
+        (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SPEAK)) || enDntDemo->actor.xzDistToPlayer > 30.0f) {
         EnDntDemo_Judge(enDntDemo, play);
         return;
     }
@@ -298,9 +291,10 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 }
                 switch (actor->id) {
                     case ACTOR_OBJ_SWITCH: {
+                        // The DC boss door can be unlocked with OI; One Point is required for it
+                        // The Water Temple Dragon Room chest can be obtained with a cutscene dive
                         if (((actor->params == 8224 && gPlayState->sceneNum == SCENE_DODONGOS_CAVERN) ||
-                             (actor->params == 6979 && gPlayState->sceneNum == SCENE_WATER_TEMPLE) ||
-                             (actor->params == 8961 && gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE)) &&
+                             (actor->params == 6979 && gPlayState->sceneNum == SCENE_WATER_TEMPLE)) &&
                             CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
                             break;
                         }
@@ -313,9 +307,12 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     case ACTOR_BG_BDAN_SWITCH: {
                         // The switch in jabu that you are intended to press with a box to reach barinade
                         // can be skipped by either a frame perfect roll open or with OI
+                        // Additionally, the blue switch that you are intended to press with Ruto
+                        // can be skipped with OI
                         // The One Point for that switch is used in common setups for the former and is required for the
                         // latter to work
-                        if (actor->params == 14848 && gPlayState->sceneNum == SCENE_JABU_JABU &&
+                        if ((actor->params == 14848 || actor->params == 14336) &&
+                            gPlayState->sceneNum == SCENE_JABU_JABU &&
                             CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
                             break;
                         }
@@ -340,6 +337,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         break;
                     }
                     case ACTOR_EN_BOX: {
+                        // The chest that drops in MQ Jabu allowing unintended door entry
                         if (actor->params == -30457 && gPlayState->sceneNum == SCENE_JABU_JABU &&
                             CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
                             break;
@@ -347,6 +345,17 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         EnBox* boxActor = (EnBox*)actor;
                         *should = false;
                         RateLimitedSuccessChime();
+                        break;
+                    }
+                    case ACTOR_EN_SIOFUKI: {
+                        // The Spirit Temple MQ water jet cutscene is required for an actor glitch
+                        // setup that skips the grate
+                        if (actor->params == 6359 && gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE &&
+                            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
+                            *should = true;
+                            break;
+                        }
+                        *should = false;
                         break;
                     }
                     case ACTOR_BG_HIDAN_FWBIG:
@@ -358,7 +367,17 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         break;
                     }
                     case ACTOR_EN_TA:
-                    case ACTOR_DOOR_SHUTTER:
+                    case ACTOR_DOOR_SHUTTER: {
+                        // The shutter cutscene occurs post-switch cutscene to focus Link on the unlocked doors
+                        if (((actor->params == 9402 && gPlayState->sceneNum == SCENE_JABU_JABU) ||
+                             (actor->params == 20460 && gPlayState->sceneNum == SCENE_DODONGOS_CAVERN)) &&
+                            CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
+                            break;
+                        }
+                        *should = false;
+                        RateLimitedSuccessChime();
+                        break;
+                    }
                     case ACTOR_BG_ICE_SHUTTER:
                     case ACTOR_OBJ_LIGHTSWITCH:
                     case ACTOR_OBJ_SYOKUDAI:
@@ -949,7 +968,7 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
                     return;
                 }
 
-                bool shouldOpen = IS_RANDO ? RAND_GET_OPTION(RSK_JABU_OPEN)
+                bool shouldOpen = IS_RANDO ? RAND_GET_OPTION(RSK_JABU_OPEN).Get()
                                            : CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"), 0);
                 if (!shouldOpen) {
                     return;
@@ -1060,8 +1079,8 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     // This is a bit of a hack, we can't effectively override the behavior of the torches
     // or poes from which the cutscene is triggered until we can have a "BeforeActorInit" hook.
     // So for now we're just going to set the flag before they get to the room the cutscene is in
-    if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE && actor->id == ACTOR_EN_ST && !Flags_GetSwitch(gPlayState, 0x1B) &&
-        !Flags_GetSwitch(gPlayState, 0x1C)) {
+    if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE && actor->id == ACTOR_EN_DOOR &&
+        !Flags_GetSwitch(gPlayState, 0x1B) && !Flags_GetSwitch(gPlayState, 0x1C)) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO) &&
             !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
             Flags_SetSwitch(gPlayState, 0x1B);
@@ -1122,7 +1141,9 @@ void TimeSaverOnSceneInitHandler(int16_t sceneNum) {
         case SCENE_LON_LON_RANCH:
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO) &&
                 GameInteractor_Should(VB_MALON_RETURN_FROM_CASTLE,
-                                      Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE))) {
+                                      Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) &&
+                (!IS_RANDO || !RAND_GET_OPTION(RSK_SHUFFLE_SPEAK) ||
+                 Flags_GetRandomizerInf(RAND_INF_CAN_SPEAK_HYLIAN))) {
                 Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_RANCH);
                 Flags_SetInfTable(INFTABLE_CHILD_MALON_SAID_EPONA_WAS_AFRAID_OF_YOU);
                 Flags_SetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON);

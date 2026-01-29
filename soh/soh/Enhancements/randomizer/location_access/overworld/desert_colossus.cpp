@@ -7,7 +7,7 @@ void RegionTable_Init_DesertColossus() {
     // clang-format off
     areaTable[RR_DESERT_COLOSSUS] = Region("Desert Colossus", SCENE_DESERT_COLOSSUS, {
         //Events
-        EVENT_ACCESS(LOGIC_BUG_ACCESS, true),
+        EVENT_ACCESS(LOGIC_BUG_ACCESS, logic->HasItem(RG_POWER_BRACELET)),
     }, {
         //Locations
         LOCATION(RC_COLOSSUS_FREESTANDING_POH,       logic->IsAdult && CanPlantBean(RR_DESERT_COLOSSUS, RG_DESERT_COLOSSUS_BEAN_SOUL)),
@@ -67,8 +67,8 @@ void RegionTable_Init_DesertColossus() {
 
     areaTable[RR_COLOSSUS_GROTTO] = Region("Colossus Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR,  logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT, logic->CanStunDeku() && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR,  logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT, logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_COLOSSUS_GROTTO_BEEHIVE,          logic->CanBreakUpperBeehives()),
     }, {
         //Exits

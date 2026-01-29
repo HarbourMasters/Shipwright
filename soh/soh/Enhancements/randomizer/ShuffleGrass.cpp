@@ -2,12 +2,10 @@
 #include "soh_assets.h"
 #include "static_data.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
-#include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
 #include "variables.h"
 #include "overlays/actors/ovl_En_Kusa/z_en_kusa.h"
-#include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "objects/object_kusa/object_kusa.h"
 extern PlayState* gPlayState;
 }
@@ -88,11 +86,11 @@ uint8_t EnKusa_RandomizerHoldsItem(EnKusa* grassActor, PlayState* play) {
 
     RandomizerCheck rc = grassIdentity->randomizerCheck;
     uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
-    uint8_t grassSetting = RAND_GET_OPTION(RSK_SHUFFLE_GRASS);
+    auto grassSetting = RAND_GET_OPTION(RSK_SHUFFLE_GRASS);
 
     // Don't pull randomized item if grass isn't randomized or is already checked
-    if (!IS_RANDO || (grassSetting == RO_SHUFFLE_GRASS_OVERWORLD && isDungeon) ||
-        (grassSetting == RO_SHUFFLE_GRASS_DUNGEONS && !isDungeon) ||
+    if (!IS_RANDO || (grassSetting.Is(RO_SHUFFLE_GRASS_OVERWORLD) && isDungeon) ||
+        (grassSetting.Is(RO_SHUFFLE_GRASS_DUNGEONS) && !isDungeon) ||
         Flags_GetRandomizerInf(grassIdentity->randomizerInf) || rc == RC_UNKNOWN_CHECK) {
         return false;
     } else {

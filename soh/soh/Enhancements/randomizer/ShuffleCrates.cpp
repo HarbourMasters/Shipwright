@@ -3,16 +3,12 @@
 #include "static_data.h"
 #include <libultraship/libultra.h>
 #include "global.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 
 extern "C" {
 #include "variables.h"
 #include "overlays/actors/ovl_Obj_Kibako2/z_obj_kibako2.h"
-#include "objects/object_kibako2/object_kibako2.h"
 #include "overlays/actors/ovl_Obj_Kibako/z_obj_kibako.h"
-#include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
-#include "soh/Enhancements/enhancementTypes.h"
 extern PlayState* gPlayState;
 }
 
@@ -160,11 +156,11 @@ uint8_t ObjKibako2_RandomizerHoldsItem(ObjKibako2* crateActor, PlayState* play) 
 
     RandomizerCheck rc = crateIdentity->randomizerCheck;
     uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
-    uint8_t crateSetting = RAND_GET_OPTION(RSK_SHUFFLE_CRATES);
+    auto crateSetting = RAND_GET_OPTION(RSK_SHUFFLE_CRATES);
 
     // Don't pull randomized item if crate isn't randomized or is already checked
-    if (!IS_RANDO || (crateSetting == RO_SHUFFLE_CRATES_OVERWORLD && isDungeon) ||
-        (crateSetting == RO_SHUFFLE_CRATES_DUNGEONS && !isDungeon) ||
+    if (!IS_RANDO || (crateSetting.Is(RO_SHUFFLE_CRATES_OVERWORLD) && isDungeon) ||
+        (crateSetting.Is(RO_SHUFFLE_CRATES_DUNGEONS) && !isDungeon) ||
         Flags_GetRandomizerInf(crateIdentity->randomizerInf) || crateIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
         return false;
     } else {
@@ -180,11 +176,11 @@ uint8_t ObjKibako_RandomizerHoldsItem(ObjKibako* smallCrateActor, PlayState* pla
 
     RandomizerCheck rc = crateIdentity->randomizerCheck;
     uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
-    uint8_t crateSetting = RAND_GET_OPTION(RSK_SHUFFLE_CRATES);
+    auto crateSetting = RAND_GET_OPTION(RSK_SHUFFLE_CRATES);
 
     // Don't pull randomized item if crate isn't randomized or is already checked
-    if (!IS_RANDO || (crateSetting == RO_SHUFFLE_CRATES_OVERWORLD && isDungeon) ||
-        (crateSetting == RO_SHUFFLE_CRATES_DUNGEONS && !isDungeon) ||
+    if (!IS_RANDO || (crateSetting.Is(RO_SHUFFLE_CRATES_OVERWORLD) && isDungeon) ||
+        (crateSetting.Is(RO_SHUFFLE_CRATES_DUNGEONS) && !isDungeon) ||
         Flags_GetRandomizerInf(crateIdentity->randomizerInf) || crateIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
         return false;
     } else {
@@ -224,7 +220,7 @@ void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallCrateActor, PlayState*
 
 void ObjKibako2_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
-    uint8_t logicSetting = RAND_GET_OPTION(RSK_LOGIC_RULES);
+    auto logicSetting = RAND_GET_OPTION(RSK_LOGIC_RULES);
 
     // don't shuffle two OOB crates in GF and don't shuffle child GV/GF crates when not in no logic
     if (actor->id != ACTOR_OBJ_KIBAKO2 ||
@@ -232,16 +228,17 @@ void ObjKibako2_RandomizerInit(void* actorRef) {
          (s16)actor->world.pos.z == -3429) ||
         (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == -4571 &&
          (s16)actor->world.pos.z == -3429) ||
-        (logicSetting != RO_LOGIC_NO_LOGIC && ((gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
-                                                (s16)actor->world.pos.x == 3443 && (s16)actor->world.pos.z == -4876) ||
-                                               (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                                (s16)actor->world.pos.x == -764 && (s16)actor->world.pos.z == 148) ||
-                                               (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                                (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -125) ||
-                                               (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                                (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -150) ||
-                                               (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                                (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -90))))
+        (logicSetting.IsNot(RO_LOGIC_NO_LOGIC) &&
+         ((gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS && (s16)actor->world.pos.x == 3443 &&
+           (s16)actor->world.pos.z == -4876) ||
+          (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -764 &&
+           (s16)actor->world.pos.z == 148) ||
+          (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 &&
+           (s16)actor->world.pos.z == -125) ||
+          (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 &&
+           (s16)actor->world.pos.z == -150) ||
+          (gPlayState->sceneNum == SCENE_GERUDO_VALLEY && (s16)actor->world.pos.x == -860 &&
+           (s16)actor->world.pos.z == -90))))
         return;
 
     ObjKibako2* crateActor = static_cast<ObjKibako2*>(actorRef);

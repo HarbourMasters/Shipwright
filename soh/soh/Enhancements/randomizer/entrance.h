@@ -26,6 +26,7 @@ enum class EntranceType {
     ChildBossReverse,
     AdultBoss,
     AdultBossReverse,
+    GanonTower,
     Interior,
     InteriorReverse,
     SpecialInterior,
@@ -41,7 +42,7 @@ enum class EntranceType {
 
 #define ENTRANCE(check, condition, ...) \
     Entrance(                           \
-        RandomizerRegion::check, [] { return condition; }, CleanCheckConditionString(#condition), ##__VA_ARGS__)
+        RandomizerRegion::check, [] { return condition; }, CleanConditionString(#condition), ##__VA_ARGS__)
 
 class Entrance {
   public:
@@ -54,7 +55,6 @@ class Entrance {
     std::string GetName() const;
     void printAgeTimeAccess();
     bool ConditionsMet(bool allAgeTimes = false) const;
-    uint32_t Getuint32_t() const;
     bool CheckConditionAtAgeTime(bool& age, bool& time, bool passAnyway = false) const;
     RandomizerRegion GetConnectedRegionKey() const;
     RandomizerRegion GetOriginalConnectedRegionKey() const;
@@ -86,7 +86,7 @@ class Entrance {
     Entrance* GetNewTarget();
     Entrance* AssumeReachable();
     bool DoesSpreadAreas();
-    std::string GetConditionStr() const;
+    const std::string& GetConditionStr() const;
 
   private:
     RandomizerRegion parentRegion;
@@ -139,6 +139,8 @@ class EntranceShuffler {
     void UnshuffleAllEntrances();
     void ParseJson(nlohmann::json spoilerFileJson);
     void ApplyEntranceOverrides();
+
+    static const Entrance* GetEntranceByIndex(int16_t index);
 
   private:
     std::vector<Entrance*> AssumeEntrancePool(std::vector<Entrance*>& entrancePool);

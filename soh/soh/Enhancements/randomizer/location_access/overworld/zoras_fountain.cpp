@@ -10,7 +10,7 @@ void RegionTable_Init_ZorasFountain() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairyExceptSuns() || (logic->CanUse(RG_STICKS) && logic->AtDay)),
     }, {
         //Locations
-        LOCATION(RC_ZF_GS_TREE,                      logic->IsChild && logic->CanBonkTrees()),
+        LOCATION(RC_ZF_GS_TREE,                      logic->IsChild && logic->CanBonkTrees() && (logic->HasItem(RG_POWER_BRACELET) || logic->CanKillEnemy(RE_GOLD_SKULLTULA))),
         LOCATION(RC_ZF_GS_ABOVE_THE_LOG,             logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
         LOCATION(RC_ZF_FAIRY_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_ZF_FAIRY_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
@@ -95,7 +95,7 @@ void RegionTable_Init_ZorasFountain() {
         //Exits
         //There are invisible big skultullas here as adult but they do not block the path and can be "seen" with Z-target
         //Lens is not currently needed for this either, implying they are not considered blocking, but it's open for discussion long-term
-        ENTRANCE(RR_ZF_HIDDEN_LEDGE, true),
+        ENTRANCE(RR_ZF_HIDDEN_LEDGE, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)),
     });
 
     areaTable[RR_ZF_HIDDEN_LEDGE] = Region("ZF Hidden Ledge", SCENE_ZORAS_FOUNTAIN, {}, {

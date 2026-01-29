@@ -385,7 +385,7 @@ void Fishsanity::OnActorInitHandler(void* refActor) {
         fish = OTRGlobals::Instance->gRandomizer->IdentifyFish(gPlayState->sceneNum, actor->params);
 
         // With every pond fish shuffled, caught fish will not spawn unless all fish have been caught.
-        if (RAND_GET_OPTION(RSK_FISHSANITY_POND_COUNT) > 16 && !fs->GetPondCleared()) {
+        if (RAND_GET_OPTION(RSK_FISHSANITY_POND_COUNT).Get() > 16 && !fs->GetPondCleared()) {
             // Create effect for uncaught fish
             if (!Flags_GetRandomizerInf(fish.randomizerInf)) {
                 actor->shape.shadowDraw = Fishsanity_DrawEffShadow;
@@ -545,7 +545,7 @@ void Fishsanity_CloseGreyscaleColor(PlayState* play) {
 }
 
 void RegisterShuffleFish() {
-    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_FISHSANITY) != RO_FISHSANITY_OFF;
+    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_FISHSANITY).IsNot(RO_FISHSANITY_OFF);
     COND_HOOK(OnSceneInit, shouldRegister, [](int16_t sceneNum) {
         if (sceneNum == SCENE_ZORAS_DOMAIN) {
             fishGroupCounter = 0;

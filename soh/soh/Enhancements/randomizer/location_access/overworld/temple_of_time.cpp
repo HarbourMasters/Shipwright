@@ -33,7 +33,7 @@ void RegionTable_Init_TempleOfTime() {
         LOCATION(RC_TOT_LIGHT_ARROWS_CUTSCENE, logic->IsAdult && logic->CanTriggerLACS()),
         LOCATION(RC_ALTAR_HINT_CHILD,          logic->IsChild),
         LOCATION(RC_ALTAR_HINT_ADULT,          logic->IsAdult),
-        LOCATION(RC_TOT_SHEIK_HINT,            logic->IsAdult),
+        LOCATION(RC_TOT_SHEIK_HINT,            logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN)),
     }, {
         //Exits
         ENTRANCE(RR_TOT_ENTRANCE,            true),

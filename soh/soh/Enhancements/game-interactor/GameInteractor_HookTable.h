@@ -85,6 +85,9 @@ DEFINE_HOOK(OnSetGameLanguage, ());
 DEFINE_HOOK(OnAssetAltChange, ());
 DEFINE_HOOK(OnKaleidoUpdate, ());
 
+// Messages
+DEFINE_HOOK(OnOpenText, (uint16_t * textId, bool* loadFromMessageTable));
+
 // Audio
 DEFINE_HOOK(OnSeqPlayerInit, (int32_t playerIdx, int32_t seqId));
 

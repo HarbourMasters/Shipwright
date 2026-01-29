@@ -5,7 +5,7 @@
 
 #define MAX_TRICK_NAME_SIZE 50
 
-#define TWO_ACTOR_PARAMS(a, b) ((((a)&0xFFFF) << 16) | ((b)&0xFFFF))
+#define TWO_ACTOR_PARAMS(a, b) ((((a) & 0xFFFF) << 16) | ((b) & 0xFFFF))
 
 // This should probably go in a less rando-specific location
 // but the best location will probably be in the modding engine
@@ -14,7 +14,6 @@ typedef enum {
 #define DEFINE_ModIndex(enum) enum,
 #include "randomizerEnums.h"
 } ModIndex;
-
 typedef enum {
 #define DEFINE_TableIndex(enum) enum,
 #include "randomizerEnums.h"
@@ -346,6 +345,12 @@ typedef enum {
 #define DEFINE_RandoOptionStartingOcarina(enum) enum,
 #include "randomizerEnums.h"
 } RandoOptionStartingOcarina;
+
+// Mask Quest Settings (vanilla, completed, shuffle)
+typedef enum {
+#define DEFINE_RandoOptionMaskQuest(enum) enum,
+#include "randomizerEnums.h"
+} RandoOptionMaskQuest;
 
 // Item Pool Settings
 typedef enum {

@@ -45,6 +45,9 @@ WidgetInfo& SohMenu::AddWidget(WidgetPath& pathInfo, std::string widgetName, Wid
         case WIDGET_CVAR_SLIDER_FLOAT:
             widget.options = std::make_shared<FloatSliderOptions>();
             break;
+        case WIDGET_CVAR_BTN_SELECTOR:
+            widget.options = std::make_shared<BtnSelectorOptions>();
+            break;
         case WIDGET_SLIDER_INT:
         case WIDGET_CVAR_SLIDER_INT:
             widget.options = std::make_shared<IntSliderOptions>();
@@ -81,8 +84,7 @@ SohMenu::SohMenu(const std::string& consoleVariable, const std::string& name)
     : Menu(consoleVariable, name, 0, UIWidgets::Colors::LightBlue) {
 }
 
-void SohMenu::InitElement() {
-    Ship::Menu::InitElement();
+void SohMenu::AddMenuElements() {
     AddMenuSettings();
     AddMenuEnhancements();
     AddMenuRandomizer();
@@ -96,6 +98,12 @@ void SohMenu::InitElement() {
     for (auto& initFunc : MenuInit::GetInitFuncs()) {
         initFunc();
     }
+
+    mMenuElementsInitialized = true;
+}
+
+void SohMenu::InitElement() {
+    Ship::Menu::InitElement();
 
     disabledMap = {
         { DISABLE_FOR_NO_VSYNC,
@@ -166,6 +174,8 @@ void SohMenu::Draw() {
 }
 
 void SohMenu::DrawElement() {
-    Ship::Menu::DrawElement();
+    if (mMenuElementsInitialized) {
+        Ship::Menu::DrawElement();
+    }
 }
 } // namespace SohGui

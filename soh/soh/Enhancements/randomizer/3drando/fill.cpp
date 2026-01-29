@@ -4,7 +4,6 @@
 #include "../SeedContext.h"
 #include "item_pool.hpp"
 #include "random.hpp"
-#include "spoiler_log.hpp"
 #include "starting_inventory.hpp"
 #include "hints.hpp"
 #include "shops.hpp"
@@ -397,7 +396,7 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
     Rando::ItemLocation* location = ctx->GetItemLocation(loc);
     RandomizerGet locItem = location->GetPlacedRandomizerGet();
     RandomizerCheckQuest quest = Rando::StaticData::GetLocation(loc)->GetQuest();
-    assert(quest == RCQUEST_BOTH ||
+    assert(ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || quest == RCQUEST_BOTH ||
            (quest == RCQUEST_VANILLA && ctx->GetDungeons()->GetDungeonFromScene(parentRegion->scene)->IsVanilla()) ||
            (quest == RCQUEST_MQ && ctx->GetDungeons()->GetDungeonFromScene(parentRegion->scene)->IsMQ()));
 
@@ -757,7 +756,7 @@ static void CalculateWotH() {
             // necessary, so add it unless it is in Links Pocket or an isolated place.
             auto itemLoc = ctx->GetItemLocation(ctx->playthroughLocations[i][j]);
             if (itemLoc->IsHintable() && itemLoc->GetFirstArea() > RA_LINKS_POCKET &&
-                !(IsBeatableWithout(ctx->playthroughLocations[i][j], true))) {
+                !IsBeatableWithout(ctx->playthroughLocations[i][j], true)) {
                 itemLoc->SetWothCandidate();
             }
         }
