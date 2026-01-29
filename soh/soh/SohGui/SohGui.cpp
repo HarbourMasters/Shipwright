@@ -88,6 +88,7 @@ std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
 std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
 std::shared_ptr<HintTracker::HintTrackerWindow> mHintTrackerWindow;
+std::shared_ptr<HintTracker::HintTrackerSettingsWindow> mHintTrackerSettingsWindow;
 std::shared_ptr<EntranceTracker::EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
 std::shared_ptr<EntranceTracker::EntranceTrackerWindow> mEntranceTrackerWindow;
 std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
@@ -183,6 +184,9 @@ void SetupGuiElements() {
     mHintTrackerWindow =
         std::make_shared<HintTracker::HintTrackerWindow>(CVAR_WINDOW("HintTracker"), "Hint Tracker", ImVec2(600, 375));
     gui->AddGuiWindow(mHintTrackerWindow);
+    mHintTrackerSettingsWindow =
+        std::make_shared<HintTracker::HintTrackerSettingsWindow>(CVAR_WINDOW("HintTrackerSettings"), "Hint Tracker Settings", ImVec2(600, 375));
+    gui->AddGuiWindow(mHintTrackerSettingsWindow);
     mEntranceTrackerWindow = std::make_shared<EntranceTracker::EntranceTrackerWindow>(
         CVAR_WINDOW("EntranceTracker"), "Entrance Tracker", ImVec2(500, 750));
     gui->AddGuiWindow(mEntranceTrackerWindow);
@@ -222,6 +226,7 @@ void Destroy() {
     mCheckTrackerWindow = nullptr;
     mCheckTrackerSettingsWindow = nullptr;
     mHintTrackerWindow = nullptr;
+    mHintTrackerSettingsWindow = nullptr;
     mGameplayStatsWindow = nullptr;
     mDLViewerWindow = nullptr;
     mValueViewerWindow = nullptr;

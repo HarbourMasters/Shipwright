@@ -4,6 +4,18 @@
 #include <libultraship/libultraship.h>
 
 namespace HintTracker {
+
+class HintTrackerSettingsWindow final : public Ship::GuiWindow {
+  public:
+    using GuiWindow::GuiWindow;
+    ~HintTrackerSettingsWindow(){};
+
+  protected:
+    void InitElement() override{};
+    void DrawElement() override;
+    void UpdateElement() override{};
+};
+
 class HintTrackerWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
