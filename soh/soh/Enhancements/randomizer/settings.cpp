@@ -2997,10 +2997,6 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
         mOptions[RSK_LINKS_POCKET].Set(RO_LINKS_POCKET_DUNGEON_REWARD);
     }
 
-    if (mOptions[RSK_SHUFFLE_DUNGEON_REWARDS].Is(RO_DUNGEON_REWARDS_VANILLA)) {
-        mOptions[RSK_LINKS_POCKET_REWARD].Set(RO_LINKS_POCKET_REWARD);
-    }
-
     for (const auto locationKey : this->everyPossibleLocation) {
         if (const auto location = this->GetItemLocation(locationKey);
             excludedLocations.contains(location->GetRandomizerCheck())) {
