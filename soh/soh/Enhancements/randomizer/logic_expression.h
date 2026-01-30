@@ -36,15 +36,6 @@ class LogicExpression {
     // Helper for producing dependent false in static_assert to show T in error
     template <typename> struct always_false : std::false_type {};
 
-// Helper macro to include the instantiated function signature in static_assert message
-#if defined(_MSC_VER)
-#  define LE_TYPE_NAME __FUNCSIG__
-#elif defined(__clang__) || defined(__GNUC__)
-#  define LE_TYPE_NAME __PRETTY_FUNCTION__
-#else
-#  define LE_TYPE_NAME __func__
-#endif
-
     template <typename T> static T GetValue(const ValueVariant& value) {
         if constexpr (std::is_same_v<T, bool>) {
             // Accept any integral variant alternative as boolean
@@ -78,10 +69,7 @@ class LogicExpression {
         } else if constexpr (std::is_same_v<T, ValueVariant>) {
             return value;
         } else {
-            // Produce a dependent-false static assertion so the compiler error
-            // shows the instantiated type T. MSVC/GCC/Clang will report the
-            // actual type that caused the instantiation in the error output.
-            static_assert(always_false<T>::value, LE_TYPE_NAME);
+            static_assert(always_false<T>::value, "Unsupported type for LogicExpression::GetValue");
         }
     }
 
