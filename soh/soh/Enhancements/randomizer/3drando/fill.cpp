@@ -957,7 +957,7 @@ static void RandomizeDungeonRewards() {
     // End of Dungeons includes Link's Pocket
     if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) ||
         ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
-        // get stones and medallions
+        // make temporary pools of stones and medallions, get rewards
         std::vector<RandomizerGet> stones = FilterFromPool(itemPool, [](const auto i) {
             return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD &&
                    Rando::StaticData::RetrieveItem(i).GetRandomizerGet() >= RG_KOKIRI_SWORD &&
@@ -986,13 +986,13 @@ static void RandomizeDungeonRewards() {
             } else {
                 if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).IsNot(RO_LINKS_POCKET_REWARD)) {
                     if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).Is(RO_LINKS_POCKET_STONE)) {
-                        // make a temporary pool of stones
+                        // get one stone
                         RandomizerGet startingStone = RandomElement(stones, true);
                         // erase from rewards so remaining are placed
                         erase_if(rewards, [&](RandomizerGet r) { return r == startingStone; });
                         ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingStone);
                     } else {
-                        // make a temporary pool of medallions
+                        // get one medallion
                         RandomizerGet startingMedallion = RandomElement(medallions, true);
                         // erase from rewards so remaining are placed
                         erase_if(rewards, [&](RandomizerGet r) { return r == startingMedallion; });
@@ -1028,11 +1028,13 @@ static void RandomizeDungeonRewards() {
             // get one stone
             RandomizerGet startingStone = RandomElement(stones, true);
             ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingStone);
+            // erase stone from item pool
             FilterAndEraseFromPool(itemPool, [startingStone](const RandomizerGet i) { return i == startingStone; });
         } else if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).Is(RO_LINKS_POCKET_MEDALLION)) {
             // get one medallion
             RandomizerGet startingMedallion = RandomElement(medallions, true);
             ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingMedallion);
+            // erase medallion from item pool
             FilterAndEraseFromPool(itemPool,
                                    [startingMedallion](const RandomizerGet i) { return i == startingMedallion; });
         } else {
