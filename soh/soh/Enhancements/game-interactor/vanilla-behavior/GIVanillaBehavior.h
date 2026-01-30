@@ -2356,6 +2356,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (this->modelAnimType != PLAYER_ANIMTYPE_3) && (play->shootingGalleryStatus == 0)
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_USE_HELD_ITEM_AFTER_CHANGE,
+
+    // #### `result`
+    // ```c
     // (shapeRotY < -0x2E93) || (shapeRotY >= 0x7C19)
     // ```
     // #### `args`
