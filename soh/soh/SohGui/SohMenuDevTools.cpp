@@ -6,6 +6,7 @@ extern PlayState* gPlayState;
 }
 
 void WarpPointsWidget(WidgetInfo& info);
+void DebugSpawnLink_Trigger();
 
 namespace SohGui {
 
@@ -55,7 +56,7 @@ void SohMenu::AddMenuDevTools() {
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
         .Options(BtnSelectorOptions().DefaultValue(BTN_L | BTN_DRIGHT));
     AddWidget(path, "Enable Spawn Player Actor", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_SPAWN_LINK_ENABLED)
+        .CVar(CVAR_DEVELOPER_TOOLS("SpawnLink.Enabled"))
         .Options(CheckboxOptions()
                      .Tooltip("Enables the Spawn Player Actor function, including its hotkey.")
                      .DefaultValue(true))
@@ -71,11 +72,11 @@ void SohMenu::AddMenuDevTools() {
             info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) || (gPlayState == nullptr);
         });
     AddWidget(path, "Spawn Player Actor Hotkey", WIDGET_CVAR_BTN_SELECTOR)
-        .CVar(CVAR_SPAWN_LINK_BTN)
+        .CVar(CVAR_DEVELOPER_TOOLS("SpawnLink.Btn"))
         .Options(BtnSelectorOptions().DefaultValue(BTN_L | BTN_R | BTN_A))
         .PreFunc([](WidgetInfo& info) {
             info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) ||
-                            !CVarGetInteger(CVAR_SPAWN_LINK_ENABLED, 1);
+                            !CVarGetInteger(CVAR_DEVELOPER_TOOLS("SpawnLink.Enabled"), 1);
         });
     AddWidget(path, "OoT Registry Editor", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("RegEditEnabled"))
