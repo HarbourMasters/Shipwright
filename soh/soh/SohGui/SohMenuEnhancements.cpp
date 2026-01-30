@@ -1697,7 +1697,7 @@ void SohMenu::AddMenuEnhancements() {
             info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
         })
         .Options(CheckboxOptions().Tooltip("Dogs will be randomized and can replace enemies."))
-        .Callback([](WidgetInfo& info) { GetSelectedEnemies();});
+        .Callback([](WidgetInfo& info) { GetSelectedEnemies(); });
     AddWidget(path, "Enemy List", WIDGET_SEPARATOR).PreFunc([](WidgetInfo& info) {
         info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
     });
