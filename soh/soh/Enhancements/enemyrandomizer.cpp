@@ -18,8 +18,10 @@ extern PlayState* gPlayState;
 }
 
 #define CVAR_ENEMY_RANDOMIZER_NAME CVAR_ENHANCEMENT("RandomizedEnemies")
+#define CVAR_RANDOMIZE_DOGS_NAME CVAR_ENHANCEMENT("RandomizeDogs")
 #define CVAR_ENEMY_RANDOMIZER_DEFAULT ENEMY_RANDOMIZER_OFF
 #define CVAR_ENEMY_RANDOMIZER_VALUE CVarGetInteger(CVAR_ENEMY_RANDOMIZER_NAME, CVAR_ENEMY_RANDOMIZER_DEFAULT)
+#define CVAR_RANDOMIZE_DOGS_VALUE CVarGetInteger(CVAR_RANDOMIZE_DOGS_NAME, 0)
 
 typedef struct EnemyEntry {
     int16_t id;
@@ -241,6 +243,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_OKUTA,       // Octorok
     ACTOR_EN_WALLMAS,     // Wallmaster
     ACTOR_EN_DODONGO,     // Dodongo
+    ACTOR_EN_DOG,         // Dog
     // ACTOR_EN_REEBA,       // Leever (reliant on spawner (z_en_encount1.c))
     ACTOR_EN_PEEHAT,    // Flying Peahat, big one spawning larva, larva
     ACTOR_EN_ZF,        // Lizalfos, Dinolfos
@@ -381,6 +384,15 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, f32* po
             case ACTOR_EN_CROW:
                 *posY = *posY + 75;
                 break;
+            // Spawn dog with an ID different than the one following, if there is one, and randomize color
+            // Dog Actors will destroy themselves if the following dog has the same ID as the one trying to spawn
+            case ACTOR_EN_DOG:
+                if ((gSaveContext.dogParams & 0x0F00)) {
+                    *params = ((gSaveContext.dogParams & 0x0F00) ^ 0x0F00);
+                } else {
+                    *params = 0x0100;
+                }
+                *params |= Random(0, 2); // Random color 0 = white | 1 = brown
             default:
                 break;
         }
@@ -401,6 +413,9 @@ void GetSelectedEnemies() {
             selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
         }
     }
+    if (CVAR_RANDOMIZE_DOGS_VALUE) {
+        selectedEnemyList.push_back({ ACTOR_EN_DOG, 0 });
+    }
     if (selectedEnemyList.size() == 0) {
         selectedEnemyList.push_back(randomizedEnemySpawnTable[0]);
     }
@@ -417,7 +432,12 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play) {
         }
     }
     if (filteredEnemyList.size() == 0) {
-        filteredEnemyList = selectedEnemyList;
+        // Fail-safe for soft-locks if only selected "enemy" is dogs -- replace with Withered Deku Baba
+        if (selectedEnemyList.size() == 1 && selectedEnemyList[0].id == ACTOR_EN_DOG) {
+            filteredEnemyList.push_back({ ACTOR_EN_KAREBABA, 0 });
+        } else {
+            filteredEnemyList = selectedEnemyList;
+        }
     }
     if (CVAR_ENEMY_RANDOMIZER_VALUE == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
         uint32_t finalSeed =
@@ -491,6 +511,9 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                     return (!(!isMQ && sceneNum == SCENE_WATER_TEMPLE && roomNum == 2));
                 case ACTOR_EN_SKJ:
                     return !(sceneNum == SCENE_LOST_WOODS && LINK_IS_CHILD);
+                // If the dog is Richard or is following the player, we do not want to randomize it
+                case ACTOR_EN_DOG:
+                    return CVAR_RANDOMIZE_DOGS_VALUE && (params & 0x0F00) >> 8 != 0 && (params & 0x8000) == 0;
                 default:
                     return 1;
             }
@@ -514,10 +537,11 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
     bool enemiesToExcludeClearRooms =
         enemy.id == ACTOR_EN_FZ || enemy.id == ACTOR_EN_VM || enemy.id == ACTOR_EN_SB || enemy.id == ACTOR_EN_NY ||
         enemy.id == ACTOR_EN_CLEAR_TAG || enemy.id == ACTOR_EN_WALLMAS || enemy.id == ACTOR_EN_TORCH2 ||
-        (enemy.id == ACTOR_EN_MB && enemy.params == 0) || enemy.id == ACTOR_EN_FD || enemy.id == ACTOR_EN_ANUBICE_TAG;
+        (enemy.id == ACTOR_EN_MB && enemy.params == 0) || enemy.id == ACTOR_EN_FD || enemy.id == ACTOR_EN_ANUBICE_TAG
+        || enemy.id == ACTOR_EN_DOG;
 
     // Bari - Spawns 3 more enemies, potentially extremely difficult in timed rooms.
-    bool enemiesToExcludeTimedRooms = enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI;
+    bool enemiesToExcludeTimedRooms = enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI || enemy.id == ACTOR_EN_DOG;
 
     switch (sceneNum) {
         // Deku Tree
