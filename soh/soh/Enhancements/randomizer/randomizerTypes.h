@@ -6588,6 +6588,7 @@ typedef enum {
     RSK_ENABLE_BOMBCHU_DROPS,
     RSK_BOMBCHU_BAG,
     RSK_LINKS_POCKET,
+    RSK_LINKS_POCKET_REWARD,
     RSK_MQ_DUNGEON_RANDOM,
     RSK_MQ_DUNGEON_COUNT,
     RSK_MQ_DUNGEON_SET,
@@ -7044,6 +7045,13 @@ typedef enum {
     RO_LINKS_POCKET_ANYTHING,
     RO_LINKS_POCKET_NOTHING,
 } RandoOptionLinksPocket;
+
+// Link's Pocket Dungeon Reward Settings (dungeon reward, stone, medallion)
+typedef enum {
+    RO_LINKS_POCKET_REWARD,
+    RO_LINKS_POCKET_STONE,
+    RO_LINKS_POCKET_MEDALLION,
+} RandoOptionLinksPocketReward;
 
 // Logic (glitchless/no logic)
 typedef enum {
