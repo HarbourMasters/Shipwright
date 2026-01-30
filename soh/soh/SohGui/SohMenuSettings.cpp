@@ -145,6 +145,17 @@ void SohMenu::AddMenuSettings() {
             "Allows controller navigation of the port menu (Settings, Enhancements,...)\nCAUTION: "
             "This will disable game inputs while the menu is visible.\n\nD-pad to move between "
             "items, A to select, B to move up in scope."));
+    AddWidget(path, "Allow background inputs", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ALLOW_BACKGROUND_INPUTS)
+        .RaceDisable(false)
+        .Callback([](WidgetInfo& info) {
+            SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS,
+                        CVarGetInteger(CVAR_ALLOW_BACKGROUND_INPUTS, 1) ? "1" : "0");
+        })
+        .Options(CheckboxOptions()
+                     .Tooltip("Allows controller inputs to be picked up by the game even when the game window isn't "
+                              "the focused window.")
+                     .DefaultValue(1));
     AddWidget(path, "Menu Background Opacity", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_SETTING("Menu.BackgroundOpacity"))
         .RaceDisable(false)
