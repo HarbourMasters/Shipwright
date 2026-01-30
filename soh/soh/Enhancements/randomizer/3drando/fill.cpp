@@ -998,8 +998,7 @@ static void RandomizeDungeonRewards() {
                         erase_if(rewards, [&](RandomizerGet r) { return r == startingMedallion; });
                         ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingMedallion);
                     }
-                }
-                else {
+                } else {
                     rewardLocations.push_back(RC_LINKS_POCKET);
                 }
             }
@@ -1026,26 +1025,25 @@ static void RandomizeDungeonRewards() {
             return;
         }
         if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).Is(RO_LINKS_POCKET_STONE)) {
-            // get one stone    
+            // get one stone
             RandomizerGet startingStone = RandomElement(stones, true);
-                ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingStone);
-                FilterAndEraseFromPool(itemPool, [startingStone](const RandomizerGet i) { return i == startingStone; });
+            ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingStone);
+            FilterAndEraseFromPool(itemPool, [startingStone](const RandomizerGet i) { return i == startingStone; });
         } else if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).Is(RO_LINKS_POCKET_MEDALLION)) {
-                // get one medallion
-                RandomizerGet startingMedallion = RandomElement(medallions, true);
-                ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingMedallion);
-                FilterAndEraseFromPool(itemPool,
-                                       [startingMedallion](const RandomizerGet i) { return i == startingMedallion; });
+            // get one medallion
+            RandomizerGet startingMedallion = RandomElement(medallions, true);
+            ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingMedallion);
+            FilterAndEraseFromPool(itemPool,
+                                   [startingMedallion](const RandomizerGet i) { return i == startingMedallion; });
         } else {
-            // get one reward    
+            // get one reward
             RandomizerGet startingReward = RandomElement(rewards, true);
 
-                // LinksPocketRewardBitMask = bitMaskTable[Rando::StaticData::RetrieveItem(startingReward).GetItemID() -
-                // baseOffset];
-                ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingReward);
-                // erase the stone/medallion from the Item Pool
-                FilterAndEraseFromPool(itemPool,
-                                       [startingReward](const RandomizerGet i) { return i == startingReward; });
+            // LinksPocketRewardBitMask = bitMaskTable[Rando::StaticData::RetrieveItem(startingReward).GetItemID() -
+            // baseOffset];
+            ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingReward);
+            // erase the stone/medallion from the Item Pool
+            FilterAndEraseFromPool(itemPool, [startingReward](const RandomizerGet i) { return i == startingReward; });
         }
     }
 }
