@@ -21,7 +21,7 @@ void DebugSpawnLink_Trigger();
 namespace {
 
 #define CVAR_SPAWN_LINK_ENABLED CVAR_DEVELOPER_TOOLS("SpawnLink.Enabled")
-#define CVAR_SPAWN_LINK_BTN     CVAR_DEVELOPER_TOOLS("SpawnLink.Btn")
+#define CVAR_SPAWN_LINK_BTN CVAR_DEVELOPER_TOOLS("SpawnLink.Btn")
 
 constexpr int32_t kSpawnLinkBtnDefault = (BTN_L | BTN_R | BTN_A);
 
@@ -205,9 +205,8 @@ static void RegisterSpawnLinkAfterCutsceneCancel() {
 }
 
 static RegisterShipInitFunc initFunc(RegisterSpawnLinkAfterCutsceneCancel,
-                                    { CVAR_DEVELOPER_TOOLS("DebugEnabled"),
-                                      CVAR_SPAWN_LINK_ENABLED,
-                                      CVAR_SPAWN_LINK_BTN });
+                                     { CVAR_DEVELOPER_TOOLS("DebugEnabled"), CVAR_SPAWN_LINK_ENABLED,
+                                       CVAR_SPAWN_LINK_BTN });
 
 } // namespace
 
