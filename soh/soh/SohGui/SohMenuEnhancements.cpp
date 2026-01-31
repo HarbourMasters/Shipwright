@@ -695,6 +695,10 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("RemoveSpinAttackDarkness"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Remove the Darkness that appears when charging a Spin Attack."));
+    AddWidget(path, "Disable Link Spinning With Goron Pot", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DisableLinkSpinWithGoronPot"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip("Link will not spin when the Goron Pot starts to spin."));
     AddWidget(path, "Draw Distance", WIDGET_SEPARATOR_TEXT).RaceDisable(false);
     AddWidget(path, "Increase Actor Draw Distance: %dx", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("DisableDrawDistance"))
@@ -748,7 +752,7 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Equip items and equipment on the D-pad. If used with \"D-pad on Pause Screen\", you must "
             "hold C-Up to equip instead of navigate."));
-    AddWidget(path, "Unequip C-Items on Re-press", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Allow unequipping Items", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ItemUnequip"))
         .Options(CheckboxOptions().Tooltip("Allows unequipping items from C-Buttons/D-pad by hovering over an equipped "
                                            "item and pressing the button it's equipped to."));
@@ -842,6 +846,12 @@ void SohMenu::AddMenuEnhancements() {
 
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Explosives", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Remote Bombchu", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RemoteBombchu"))
+        .Options(CheckboxOptions().Tooltip("Allows you to control a Bombchu after dropping it.\n"
+                                           "Control Stick: Steer\n"
+                                           "B: Detonate\n"
+                                           "A: Quit Control"));
     AddWidget(path, "Deku Nuts Explode Bombs", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("NutsExplodeBombs"))
         .Options(CheckboxOptions().Tooltip("Make Deku Nuts explode Bombs, similar to how they interact with Bombchus. "
@@ -1545,6 +1555,11 @@ void SohMenu::AddMenuEnhancements() {
     AddSidebarEntry("Enhancements", path.sidebarName, 3);
     path.column = SECTION_COLUMN_1;
 
+    AddWidget(path, "Bounce off Walls", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("BounceOffWalls"))
+        .Options(
+            CheckboxOptions().Tooltip("Allows Link to bounce off walls when linear velocity is high enough, this is "
+                                      "relevant when frequently being knocked back by traps, CC, or in Anchor."));
     AddWidget(path, "Mirrored World", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("MirroredWorldMode"))
         .Options(

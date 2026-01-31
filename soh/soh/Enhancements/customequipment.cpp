@@ -17,14 +17,15 @@ void DummyPlayer_Update(Actor* actor, PlayState* play);
 
 static void UpdatePatchCustomEquipmentDlists();
 static void RefreshCustomEquipment();
-static bool HasDummyPlayers();
+static u8 GetEquippedSwordItem();
+static bool IsDummyPlayer(const Player* player);
 
 static const char* ResolveCustomChain(std::initializer_list<const char*> paths) {
     const char* fallback = nullptr;
     for (auto path : paths) {
         if (path != nullptr) {
             fallback = path;
-            if (ResourceMgr_FileExists(path)) {
+            if (ResourceMgr_FileExists(path) || ResourceGetIsCustomByName(path)) {
                 return path;
             }
         }
@@ -57,7 +58,7 @@ static const char* GetBrokenLongswordInSheathDL() {
 static void UpdateCustomEquipmentSetModel(Player* player, u8 ModelGroup) {
     (void)ModelGroup;
 
-    if (player == nullptr || gPlayState == nullptr || player != GET_PLAYER(gPlayState)) {
+    if (player == nullptr || gPlayState == nullptr || player != GET_PLAYER(gPlayState) || IsDummyPlayer(player)) {
         return;
     }
 
@@ -70,14 +71,7 @@ static void UpdateCustomEquipment() {
     }
 
     Player* player = GET_PLAYER(gPlayState);
-    if (player == nullptr || player->actor.update == DummyPlayer_Update) {
-        return;
-    }
-
-    const bool altAssetsRuntime = ResourceMgr_IsAltAssetsEnabled();
-
-    // If multiplayer dummy actors are present, skip patching shared resources to avoid corrupting them.
-    if (HasDummyPlayers() && altAssetsRuntime) {
+    if (player == nullptr || IsDummyPlayer(player)) {
         return;
     }
 
@@ -98,16 +92,33 @@ static void RefreshCustomEquipment() {
         return;
     }
 
-    const bool hasDummyPlayers = HasDummyPlayers();
-    const bool altAssetsRuntime = ResourceMgr_IsAltAssetsEnabled();
-
-    // Keep custom patches off dummy players, but still allow unpatching when alt assets are disabled so we can
-    // restore vanilla display lists.
-    if (hasDummyPlayers && altAssetsRuntime) {
+    if (IsDummyPlayer(GET_PLAYER(gPlayState))) {
         return;
     }
 
     UpdatePatchCustomEquipmentDlists();
+}
+
+static u8 GetEquippedSwordItem() {
+    switch (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD)) {
+        case EQUIP_VALUE_SWORD_NONE:
+            return ITEM_NONE;
+        case EQUIP_VALUE_SWORD_KOKIRI:
+            return ITEM_SWORD_KOKIRI;
+        case EQUIP_VALUE_SWORD_MASTER:
+            return ITEM_SWORD_MASTER;
+        case EQUIP_VALUE_SWORD_BIGGORON:
+            if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)) {
+                return ITEM_SWORD_KNIFE;
+            }
+            return ITEM_SWORD_BGS;
+        default:
+            return ITEM_NONE;
+    }
+}
+
+static bool IsDummyPlayer(const Player* player) {
+    return player != nullptr && player->actor.update == DummyPlayer_Update;
 }
 
 void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, const char* dlist2, const char* dlist3,
@@ -254,6 +265,9 @@ static void ApplyMasterSwordPatches() {
 }
 
 static void ApplyBiggoronSwordPatches() {
+    const bool isChild = LINK_IS_CHILD;
+    const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
+
     if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
         PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomLongswordSheathDL, "customDekuShieldBack1",
                        "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
@@ -268,7 +282,7 @@ static void ApplyBiggoronSwordPatches() {
         { gLinkChildDekuShieldAndSheathNearDL, gCustomLongswordSheathDL, "customDekuShieldSheath1",
           "customDekuShieldSheath2", "customDekuShieldSheath3", gCustomDekuShieldOnBackDL },
         { gLinkAdultLeftHandHoldingBgsNearDL, gCustomLongswordDL, "customBGS1", "customBGS2", "customBGS3",
-          gLinkAdultLeftHandClosedNearDL },
+          leftHandClosed },
         { gLinkAdultMasterSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customMasterSwordSheath1",
           "customMasterSwordSheath2", nullptr, nullptr },
         { gLinkChildSheathNearDL, gCustomLongswordSheathDL, "customKokiriSheath1", "customKokiriSheath2", nullptr,
@@ -292,6 +306,9 @@ static void ApplyBiggoronSwordPatches() {
 }
 
 static void ApplyBreakableLongswordPatches() {
+    const bool isChild = LINK_IS_CHILD;
+    const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
+
     if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
         PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, GetBreakableLongswordSheathDL(), "customDekuShieldBack1",
                        "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
@@ -306,7 +323,7 @@ static void ApplyBreakableLongswordPatches() {
         { gLinkChildDekuShieldAndSheathNearDL, GetBreakableLongswordSheathDL(), "customDekuShieldSheath1",
           "customDekuShieldSheath2", "customDekuShieldSheath3", gCustomDekuShieldOnBackDL },
         { gLinkAdultLeftHandHoldingBgsNearDL, GetBreakableLongswordDL(), "customGK1", "customGK2", "customGK3",
-          gLinkAdultLeftHandClosedNearDL },
+          leftHandClosed },
         { gLinkAdultMasterSwordAndSheathNearDL, GetBreakableLongswordInSheathDL(), "customMasterSwordSheath1",
           "customMasterSwordSheath2", nullptr, nullptr },
         { gLinkChildSheathNearDL, GetBreakableLongswordSheathDL(), "customKokiriSheath1", "customKokiriSheath2",
@@ -457,34 +474,10 @@ static void ApplyCommonEquipmentPatches() {
         { gLinkChildRightArmStretchedSlingshotDL, gCustomSlingshotDL, "customSlingshotFPS1", "customSlingshotFPS2",
           "customSlingshotFPS3", fpsHand },
     });
-
-    const bool equipmentAlwaysVisible = CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0) != 0;
-
-    if (LINK_IS_CHILD && equipmentAlwaysVisible) {
-        ApplyPatchEntries({
-            { gCustomAdultFPSHandDL, gCustomChildFPSHandDL, "patchChildFPSHand1", "patchChildFPSHand2", nullptr,
-              nullptr },
-            { gLinkAdultRightHandClosedNearDL, gLinkChildRightHandClosedNearDL, "customChildRightHand1",
-              "customChildRightHand2", nullptr, nullptr },
-            { gLinkAdultLeftHandClosedNearDL, gLinkChildLeftFistNearDL, "customChildLeftHand1", "customChildLeftHand2",
-              nullptr, nullptr },
-        });
-    }
-
-    if (LINK_IS_ADULT && equipmentAlwaysVisible) {
-        ApplyPatchEntries({
-            { gCustomChildFPSHandDL, gCustomAdultFPSHandDL, "patchAdultFPSHand1", "patchAdultFPSHand2", nullptr,
-              nullptr },
-            { gLinkChildRightHandClosedNearDL, gLinkAdultRightHandClosedNearDL, "customAdultRightHand1",
-              "customAdultRightHand2", nullptr, nullptr },
-            { gLinkChildLeftFistNearDL, gLinkAdultLeftHandClosedNearDL, "customAdultLeftHand1", "customAdultLeftHand2",
-              nullptr, nullptr },
-        });
-    }
 }
 
 void UpdatePatchCustomEquipmentDlists() {
-    const u8 equippedSword = gSaveContext.equips.buttonItems[0];
+    const u8 equippedSword = GetEquippedSwordItem();
 
     if (equippedSword == ITEM_NONE) {
         if (LINK_IS_CHILD) {
@@ -517,20 +510,4 @@ void UpdatePatchCustomEquipmentDlists() {
     }
 
     ApplyCommonEquipmentPatches();
-}
-
-static bool HasDummyPlayers() {
-    if (gPlayState == nullptr) {
-        return false;
-    }
-
-    Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_NPC].head;
-    while (actor != nullptr) {
-        if (actor->id == ACTOR_EN_OE2 && actor->update == DummyPlayer_Update) {
-            return true;
-        }
-        actor = actor->next;
-    }
-
-    return false;
 }

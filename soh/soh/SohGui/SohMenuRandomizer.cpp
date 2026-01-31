@@ -545,7 +545,6 @@ void DrawTricksMenu(WidgetInfo& info) {
 }
 
 void SohMenu::AddMenuRandomizer() {
-    Randomizer::CreateCustomMessages();
     // Add Randomizer Menu
     AddMenuEntry("Randomizer", CVAR_SETTING("Menu.RandomizerSidebarSection"));
 
@@ -654,6 +653,17 @@ void SohMenu::AddMenuRandomizer() {
                          "applies to seeds with maps & compasses shuffled to \"Any Dungeon\", \"Overworld\", or "
                          "\"Anywhere\".")
                 .DefaultValue(true));
+    AddWidget(path, "Jabber Nut Colors Match Kind", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("GenericJabberNutModel"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_SPEAK);
+            info.options->disabledTooltip =
+                "This setting is disabled because a savefile is loaded without Shuffle Speak.";
+        })
+        .RaceDisable(false)
+        .Options(CheckboxOptions()
+                     .Tooltip("With Shuffle Speak, jabber nut model & color will be generic.")
+                     .DefaultValue(true));
     AddWidget(path, "Quest Item Fanfares", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("QuestItemFanfares"))
         .RaceDisable(false)
@@ -685,6 +695,9 @@ void SohMenu::AddMenuRandomizer() {
         })
         .Options(FloatSliderOptions().Min(5.0f).Max(15.0f).Format("%.2f").DefaultValue(10.0f).Tooltip(
             "The size of the item when it is picked up."));
+    AddWidget(path, "Signs Hint Entrances", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("EntrancesOnSigns"))
+        .Options(CheckboxOptions().Tooltip("If enabled, signs near loading zones will tell you where they lead to."));
 
     auto randoSettings = Rando::Settings::GetInstance();
     randoSettings->CreateOptions();

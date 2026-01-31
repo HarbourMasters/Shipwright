@@ -42,6 +42,7 @@ void SohModalWindow::DrawElement() {
             modals.erase(modals.begin());
             closePopup = false;
         }
+        ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_Always, ImVec2(0.5f, 0.5f));
         if (ImGui::BeginPopupModal(curModal.title_.c_str(), NULL,
                                    ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
                                        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
@@ -68,14 +69,18 @@ void SohModalWindow::DrawElement() {
                 }
                 UIWidgets::PopStyleButton();
             }
+            ImGui::EndPopup();
         }
-        ImGui::EndPopup();
     }
 }
 
 void SohModalWindow::RegisterPopup(std::string title, std::string message, std::string button1, std::string button2,
                                    std::function<void()> button1callback, std::function<void()> button2callback) {
     modals.push_back({ title, message, button1, button2, button1callback, button2callback });
+}
+
+size_t SohModalWindow::PopupsQueued() {
+    return modals.size();
 }
 
 bool SohModalWindow::IsPopupOpen(std::string title) {

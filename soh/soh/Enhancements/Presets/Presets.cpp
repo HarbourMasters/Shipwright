@@ -86,11 +86,11 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
             if (i == PRESET_SECTION_TRACKERS) {
                 ItemTracker_LoadFromPreset(info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]);
                 if (info.presetValues["blocks"][blockInfo[i].names[1]]["windows"].contains("Check Tracker")) {
-                    CheckTracker::CheckTracker_LoadFromPreset(
+                    CheckTracker::LoadFromPreset(
                         info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Check Tracker"]);
                 }
                 if (info.presetValues["blocks"][blockInfo[i].names[1]]["windows"].contains("Entrance Tracker")) {
-                    EntranceTracker_LoadFromPreset(
+                    EntranceTracker::LoadFromPreset(
                         info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Entrance Tracker"]);
                 }
             }

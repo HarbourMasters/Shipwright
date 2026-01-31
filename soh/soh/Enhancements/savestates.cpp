@@ -2,8 +2,6 @@
 
 #include <soh/GameVersions.h>
 
-#include <cstdio> // std::sprintf
-
 #include <spdlog/spdlog.h>
 
 #include <soh/OTRGlobals.h>

@@ -1,4 +1,5 @@
 #include <libultraship/libultra.h>
+#include <libultraship/bridge/audiobridge.h>
 #include "global.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
@@ -4970,18 +4971,26 @@ void func_800F6700(s8 arg0) {
         case 0:
             sp1F = 0;
             D_80130604 = 0;
+            // SOH [Port] Inform LUS of audio setting change
+            SetAudioChannels(audioStereo);
             break;
         case 1:
             sp1F = 3;
             D_80130604 = 3;
+            // SOH [Port] Inform LUS of audio setting change
+            SetAudioChannels(audioStereo);
             break;
         case 2:
             sp1F = 1;
             D_80130604 = 1;
+            // SOH [Port] Inform LUS of audio setting change
+            SetAudioChannels(audioStereo);
             break;
         case 3:
             sp1F = 0;
             D_80130604 = 2;
+            // SOH [Port] Inform LUS of audio setting change
+            SetAudioChannels(audioMatrix51);
             break;
     }
 

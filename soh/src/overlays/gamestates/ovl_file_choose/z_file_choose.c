@@ -15,11 +15,8 @@
 #include "objects/object_mag/object_mag.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh_assets.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/FileSelectEnhancements.h"
-#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
-#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <assert.h>
 #include "z64save.h"
@@ -2530,9 +2527,6 @@ void FileChoose_LoadGame(GameState* thisx) {
     }
 
     this->state.running = false;
-
-    Randomizer_LoadHintMessages();
-    Randomizer_LoadMerchantMessages();
 
     gSaveContext.respawn[0].entranceIndex = ENTR_LOAD_OPENING;
     gSaveContext.respawnFlag = 0;

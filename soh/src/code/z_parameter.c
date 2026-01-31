@@ -2120,7 +2120,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                 }
             }
         }
-        // update the adult/child equips when rando'd (accounting for equp swapped hookshot as child)
+        // update the adult/child equips when rando'd (accounting for equip swapped hookshot as child)
         if (IS_RANDO && LINK_IS_CHILD) {
             for (i = 1; i < ARRAY_COUNT(gSaveContext.adultEquips.buttonItems); i++) {
                 if (gSaveContext.adultEquips.buttonItems[i] == ITEM_HOOKSHOT) {

@@ -6,8 +6,8 @@
 #include "random.hpp"
 #include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/settings.h"
 #include "variables.h"
-#include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "../option.h"
 #include "soh/Enhancements/debugger/performanceTimer.h"
@@ -16,7 +16,7 @@ namespace Playthrough {
 
 int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
                      std::set<RandomizerTrick> enabledTricks) {
-    // initialize the RNG with just the seed incase any settings need to be
+    // initialize the RNG with just the seed in case any settings need to be
     // resolved to something random
     Random_Init(seed);
 
@@ -73,17 +73,12 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     GenerateHash();
 
     if (true) {
-        // TODO: Handle different types of file output (i.e. Spoiler Log, Plando Template, Patch Files, Race Files,
-        // etc.)
-        //  write logs
+        // TODO: Handle different types of file output (Spoiler Log, Plando Template, Patch Files, Race Files, etc.)
         SPDLOG_INFO("Writing Spoiler Log...");
         StartPerformanceTimer(PT_SPOILER_LOG);
-        if (SpoilerLog_Write()) {
-            SPDLOG_INFO("Writing Spoiler Log Done");
-        } else {
-            SPDLOG_ERROR("Writing Spoiler Log Failed");
-        }
+        SpoilerLog_Write();
         StopPerformanceTimer(PT_SPOILER_LOG);
+        SPDLOG_INFO("Writing Spoiler Log Done");
     }
 
     ctx->playthroughLocations.clear();
