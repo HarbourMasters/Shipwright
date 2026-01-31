@@ -2424,16 +2424,16 @@ void CheckTrackerWindow::DrawElement() {
             return;
         }
 
-    if (gSaveContext.linkAge != previousAge) {
-        previousAge = gSaveContext.linkAge;
-        recalculateAvailable = true;
-    }
+        if (gSaveContext.linkAge != previousAge) {
+            previousAge = gSaveContext.linkAge;
+            recalculateAvailable = true;
+        }
 
-    if (recalculateAvailable) {
-        recalculateAvailable = false;
-        InternalRecalculateAvailableChecks(availableChecksStartingRegion);
-        availableChecksStartingRegion = RR_ROOT;
-    }
+        if (recalculateAvailable) {
+            recalculateAvailable = false;
+            InternalRecalculateAvailableChecks(availableChecksStartingRegion);
+            availableChecksStartingRegion = RR_ROOT;
+        }
 
         // Quick Options
 #ifdef __WIIU__
@@ -2464,12 +2464,12 @@ void CheckTrackerWindow::DrawElement() {
         if (availableChecksDisplay != AC_DISABLED &&
             CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"), 1)) {
             if (UIWidgets::CVarCombobox("Only Show Available Checks", CVAR_TRACKER_CHECK("AvailableChecksOnlyShow"),
-                availableChecksOnlyShowOptions,
-                UIWidgets::ComboboxOptions()
-                .LabelPosition(UIWidgets::LabelPositions::Near)
-                .ComponentAlignment(UIWidgets::ComponentAlignments::Right)
-                .Color(THEME_COLOR)
-                .DefaultIndex(AC_SHOW_ALL_CHECKS))) {
+                                        availableChecksOnlyShowOptions,
+                                        UIWidgets::ComboboxOptions()
+                                            .LabelPosition(UIWidgets::LabelPositions::Near)
+                                            .ComponentAlignment(UIWidgets::ComponentAlignments::Right)
+                                            .Color(THEME_COLOR)
+                                            .DefaultIndex(AC_SHOW_ALL_CHECKS))) {
                 availableChecksOnlyShow = (AvailableChecksOnlyShow)CVarGetInteger(
                     CVAR_TRACKER_CHECK("AvailableChecksOnlyShow"), AC_SHOW_ALL_CHECKS);
                 doAreaScroll = true;
@@ -2508,25 +2508,25 @@ void CheckTrackerWindow::DrawElement() {
         }
         UIWidgets::PopStyleCombobox();
 
-    if (CVarGetInteger(CVAR_TRACKER_CHECK("CheckTotalsVisible"), 1)) {
-        std::ostringstream totalChecksSS;
-        totalChecksSS << "";
-        if (availableChecksDisplay != AC_DISABLED) {
-            totalChecksSS << totalChecksAvailable << " Available / ";
+        if (CVarGetInteger(CVAR_TRACKER_CHECK("CheckTotalsVisible"), 1)) {
+            std::ostringstream totalChecksSS;
+            totalChecksSS << "";
+            if (availableChecksDisplay != AC_DISABLED) {
+                totalChecksSS << totalChecksAvailable << " Available / ";
+            }
+            totalChecksSS << totalChecksGotten << " Checked / " << totalChecks << " Total";
+            ImGui::Text("%s", totalChecksSS.str().c_str());
         }
-        totalChecksSS << totalChecksGotten << " Checked / " << totalChecks << " Total";
-        ImGui::Text("%s", totalChecksSS.str().c_str());
-    }
 
-    bool headerPresent = CVarGetInteger(CVAR_TRACKER_CHECK("HiddenItemsToggleVisible"), 1) ||
-                         (availableChecksDisplay != AC_DISABLED &&
-                          CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"), 1)) ||
-                         CVarGetInteger(CVAR_TRACKER_CHECK("ExpandCollapseButtonsVisible"), 0) ||
-                         CVarGetInteger(CVAR_TRACKER_CHECK("SearchInputVisible"), 1) ||
-                         CVarGetInteger(CVAR_TRACKER_CHECK("CheckTotalsVisible"), 1);
-    if (headerPresent) {
-        ImGui::Separator();
-    }
+        bool headerPresent = CVarGetInteger(CVAR_TRACKER_CHECK("HiddenItemsToggleVisible"), 1) ||
+                             (availableChecksDisplay != AC_DISABLED &&
+                              CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"), 1)) ||
+                             CVarGetInteger(CVAR_TRACKER_CHECK("ExpandCollapseButtonsVisible"), 0) ||
+                             CVarGetInteger(CVAR_TRACKER_CHECK("SearchInputVisible"), 1) ||
+                             CVarGetInteger(CVAR_TRACKER_CHECK("CheckTotalsVisible"), 1);
+        if (headerPresent) {
+            ImGui::Separator();
+        }
 
         // Checks Section Lead-in
         ImGui::TableNextRow();
@@ -2571,18 +2571,17 @@ void CheckTrackerWindow::DrawElement() {
                 doAreaScroll = true;
             }
             if ((shouldHideFilteredAreas && filterAreasHidden[rcArea]) ||
-                (!showHidden && ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked))) ||
+                (!showHidden &&
+                 ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked))) ||
                 (availableChecksDisplay != AC_DISABLED && availableChecksOnlyShow != AC_SHOW_ALL_CHECKS &&
-                    areaChecksAvailable[rcArea] == 0)) {
+                 areaChecksAvailable[rcArea] == 0)) {
                 doDraw = false;
-            }
-            else {
+            } else {
                 // Get the colour for the area
                 if (thisAreaFullyChecked) {
                     mainColor = Color_Area_Complete_Main;
                     extraColor = Color_Area_Complete_Extra;
-                }
-                else {
+                } else {
                     mainColor = Color_Area_Incomplete_Main;
                     extraColor = Color_Area_Incomplete_Extra;
                 }
@@ -2616,14 +2615,14 @@ void CheckTrackerWindow::DrawElement() {
                     std::ostringstream areaTotalsSS;
                     std::ostringstream areaTotalsTooltipSS;
 
-                areaTotalsSS << "(";
-                if (availableChecksDisplay != AC_DISABLED) {
-                    areaTotalsSS << static_cast<uint16_t>(areaChecksAvailable[rcArea]) << " / ";
-                    areaTotalsTooltipSS << "Available / ";
-                }
-                areaTotalsSS << static_cast<uint16_t>(areaChecksGotten[rcArea]) << " / "
-                             << static_cast<uint16_t>(areaCheckTotals[rcArea]) << ")";
-                areaTotalsTooltipSS << "Checked / Total";
+                    areaTotalsSS << "(";
+                    if (availableChecksDisplay != AC_DISABLED) {
+                        areaTotalsSS << static_cast<uint16_t>(areaChecksAvailable[rcArea]) << " / ";
+                        areaTotalsTooltipSS << "Available / ";
+                    }
+                    areaTotalsSS << static_cast<uint16_t>(areaChecksGotten[rcArea]) << " / "
+                                 << static_cast<uint16_t>(areaCheckTotals[rcArea]) << ")";
+                    areaTotalsTooltipSS << "Checked / Total";
 
                     if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(rcArea)) {
                         if (OTRGlobals::Instance->gRandoContext->GetDungeons()
