@@ -513,7 +513,7 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                     return !(sceneNum == SCENE_LOST_WOODS && LINK_IS_CHILD);
                 // If the dog is Richard or is following the player, we do not want to randomize it
                 case ACTOR_EN_DOG:
-                    return CVAR_RANDOMIZE_DOGS_VALUE && (params & 0x0F00) >> 8 != 0 && (params & 0x8000) == 0;
+                    return CVAR_RANDOMIZE_DOGS_VALUE && (params & 0x0F00) != 0 && (params & 0x8000) == 0;
                 default:
                     return 1;
             }
