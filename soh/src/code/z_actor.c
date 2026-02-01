@@ -1909,7 +1909,8 @@ typedef struct {
     /* 0x4 */ f32 leashScale;
 } TargetRangeParams; // size = 0x8
 
-#define TARGET_RANGE(range, leash) { SQ(range), (f32)range / leash }
+#define TARGET_RANGE(range, leash) \
+    { SQ(range), (f32)range / leash }
 
 TargetRangeParams D_80115FF8[] = {
     TARGET_RANGE(70, 140),   TARGET_RANGE(170, 255),    TARGET_RANGE(280, 5600),      TARGET_RANGE(350, 525),
