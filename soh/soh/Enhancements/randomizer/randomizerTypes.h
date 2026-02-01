@@ -19,15 +19,6 @@ typedef struct {
     uint8_t id;
 } Sprite;
 
-#define DEFINE_RAND_INF(enum) enum,
-
-typedef enum {
-#include "randomizer_inf.h"
-    RAND_INF_MAX,
-} RandomizerInf;
-
-#undef DEFINE_RAND_INF
-
 typedef struct {
     RandomizerGet rgID;
     RandomizerGet fakeRgID;

@@ -1,3 +1,16 @@
+#ifndef RANDO_ENUM_BEGIN
+#define RANDO_ENUM_BEGIN(...)
+#define RANDO_ENUM_BEGIN_CLEANUP
+#endif
+#ifndef RANDO_ENUM_ITEM
+#define RANDO_ENUM_ITEM(...)
+#define RANDO_ENUM_ITEM_CLEANUP
+#endif
+#ifndef RANDO_ENUM_END
+#define RANDO_ENUM_END(...)
+#define RANDO_ENUM_END_CLEANUP
+#endif
+
 // Generic Settings (any binary option can use this)
 //  off/on
 RANDO_ENUM_BEGIN(RandoOptionGenericOffOn)
@@ -432,3 +445,16 @@ RANDO_ENUM_ITEM(RO_MQ_SET_VANILLA)
 RANDO_ENUM_ITEM(RO_MQ_SET_MQ)
 RANDO_ENUM_ITEM(RO_MQ_SET_RANDOM)
 RANDO_ENUM_END(RandoOptionMQSet)
+
+#ifdef RANDO_ENUM_BEGIN_CLEANUP
+#undef RANDO_ENUM_BEGIN
+#undef RANDO_ENUM_BEGIN_CLEANUP
+#endif
+#ifdef RANDO_ENUM_ITEM_CLEANUP
+#undef RANDO_ENUM_ITEM
+#undef RANDO_ENUM_ITEM_CLEANUP
+#endif
+#ifdef RANDO_ENUM_END_CLEANUP
+#undef RANDO_ENUM_END
+#undef RANDO_ENUM_END_CLEANUP
+#endif

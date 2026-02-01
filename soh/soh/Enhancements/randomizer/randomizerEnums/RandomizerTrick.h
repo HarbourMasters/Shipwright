@@ -1,3 +1,16 @@
+#ifndef RANDO_ENUM_BEGIN
+#define RANDO_ENUM_BEGIN(...)
+#define RANDO_ENUM_BEGIN_CLEANUP
+#endif
+#ifndef RANDO_ENUM_ITEM
+#define RANDO_ENUM_ITEM(...)
+#define RANDO_ENUM_ITEM_CLEANUP
+#endif
+#ifndef RANDO_ENUM_END
+#define RANDO_ENUM_END(...)
+#define RANDO_ENUM_END_CLEANUP
+#endif
+
 // Randomizer tricks and glitches (beta) based on knowledge of what is achievable in Ship of Harkinian randomizer,
 // excludes Item manipulation (e.g. RBA/GIM/SRM) and Wrong Warping and Ganon BK Skip
 // TODO Fill and alphabetize (area based tricks must have area in name and come alphetized after general tricks)
@@ -278,3 +291,16 @@ RANDO_ENUM_ITEM(RT_GANONS_CASTLE_BARRIER_SKIP_HOVER)
 RANDO_ENUM_ITEM(RT_GANONS_CASTLE_GOLD_GAUNTLET_SKIP)
 RANDO_ENUM_ITEM(RT_MAX)
 RANDO_ENUM_END(RandomizerTrick)
+
+#ifdef RANDO_ENUM_BEGIN_CLEANUP
+#undef RANDO_ENUM_BEGIN
+#undef RANDO_ENUM_BEGIN_CLEANUP
+#endif
+#ifdef RANDO_ENUM_ITEM_CLEANUP
+#undef RANDO_ENUM_ITEM
+#undef RANDO_ENUM_ITEM_CLEANUP
+#endif
+#ifdef RANDO_ENUM_END_CLEANUP
+#undef RANDO_ENUM_END
+#undef RANDO_ENUM_END_CLEANUP
+#endif

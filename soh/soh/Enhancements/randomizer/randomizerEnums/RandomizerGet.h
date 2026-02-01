@@ -1,3 +1,16 @@
+#ifndef RANDO_ENUM_BEGIN
+#define RANDO_ENUM_BEGIN(...)
+#define RANDO_ENUM_BEGIN_CLEANUP
+#endif
+#ifndef RANDO_ENUM_ITEM
+#define RANDO_ENUM_ITEM(...)
+#define RANDO_ENUM_ITEM_CLEANUP
+#endif
+#ifndef RANDO_ENUM_END
+#define RANDO_ENUM_END(...)
+#define RANDO_ENUM_END_CLEANUP
+#endif
+
 // based on https://github.com/TestRunnerSRL/OoT-Randomizer/blob/e337d7f603b91a6bacb618fb32cc7fd70ed9ffca/ItemList.py
 RANDO_ENUM_BEGIN(RandomizerGet)
 RANDO_ENUM_ITEM(RG_NONE)
@@ -312,3 +325,16 @@ RANDO_ENUM_ITEM(RG_STICKS)
 RANDO_ENUM_ITEM(RG_NUTS)
 RANDO_ENUM_ITEM(RG_MAX)
 RANDO_ENUM_END(RandomizerGet)
+
+#ifdef RANDO_ENUM_BEGIN_CLEANUP
+#undef RANDO_ENUM_BEGIN
+#undef RANDO_ENUM_BEGIN_CLEANUP
+#endif
+#ifdef RANDO_ENUM_ITEM_CLEANUP
+#undef RANDO_ENUM_ITEM
+#undef RANDO_ENUM_ITEM_CLEANUP
+#endif
+#ifdef RANDO_ENUM_END_CLEANUP
+#undef RANDO_ENUM_END
+#undef RANDO_ENUM_END_CLEANUP
+#endif

@@ -1,3 +1,16 @@
+#ifndef RANDO_ENUM_BEGIN
+#define RANDO_ENUM_BEGIN(...)
+#define RANDO_ENUM_BEGIN_CLEANUP
+#endif
+#ifndef RANDO_ENUM_ITEM
+#define RANDO_ENUM_ITEM(...)
+#define RANDO_ENUM_ITEM_CLEANUP
+#endif
+#ifndef RANDO_ENUM_END
+#define RANDO_ENUM_END(...)
+#define RANDO_ENUM_END_CLEANUP
+#endif
+
 // This should probably go in a less rando-specific location
 // but the best location will probably be in the modding engine
 // which doesn't exist yet.
@@ -79,25 +92,25 @@ RANDO_ENUM_END(TrialKey)
 
 // Check types based on main settings
 RANDO_ENUM_BEGIN(RandomizerCheckType)
-RANDO_ENUM_ITEM(RCTYPE_STANDARD)                   // Base set of rando checks
-RANDO_ENUM_ITEM(RCTYPE_SKULL_TOKEN)                // Gold Skulltulas
-RANDO_ENUM_ITEM(RCTYPE_COW)                        // Cows
-RANDO_ENUM_ITEM(RCTYPE_ADULT_TRADE)                // Adult trade quest checks
-RANDO_ENUM_ITEM(RCTYPE_FROG_SONG)                  // Frog song purple rupee checks
-RANDO_ENUM_ITEM(RCTYPE_MAP)                        // Maps
-RANDO_ENUM_ITEM(RCTYPE_COMPASS)                    // Compasses
-RANDO_ENUM_ITEM(RCTYPE_SMALL_KEY)                  // Small Keys
-RANDO_ENUM_ITEM(RCTYPE_GF_KEY)                     // Gerudo Fortress Keys
-RANDO_ENUM_ITEM(RCTYPE_BOSS_KEY)                   // Boss Keys
-RANDO_ENUM_ITEM(RCTYPE_GANON_BOSS_KEY)             // Ganon's boss key
-RANDO_ENUM_ITEM(RCTYPE_SHOP)                       // Shops
-RANDO_ENUM_ITEM(RCTYPE_SCRUB)                      // Scrubs
-RANDO_ENUM_ITEM(RCTYPE_MERCHANT)                   // Merchants
-RANDO_ENUM_ITEM(RCTYPE_CHEST_GAME)                 // RANDOTODO replace this once we implement it, just using it to exclude for now
-RANDO_ENUM_ITEM(RCTYPE_LINKS_POCKET)               // RANDOTODO this feels hacky, replace with better starting items
-RANDO_ENUM_ITEM(RCTYPE_GOSSIP_STONE)               // RANDOTODO make these into event access
-RANDO_ENUM_ITEM(RCTYPE_STATIC_HINT)                // RANDOTODO make these into event access
-RANDO_ENUM_ITEM(RCTYPE_SONG_LOCATION)              // Song locations
+RANDO_ENUM_ITEM(RCTYPE_STANDARD)       // Base set of rando checks
+RANDO_ENUM_ITEM(RCTYPE_SKULL_TOKEN)    // Gold Skulltulas
+RANDO_ENUM_ITEM(RCTYPE_COW)            // Cows
+RANDO_ENUM_ITEM(RCTYPE_ADULT_TRADE)    // Adult trade quest checks
+RANDO_ENUM_ITEM(RCTYPE_FROG_SONG)      // Frog song purple rupee checks
+RANDO_ENUM_ITEM(RCTYPE_MAP)            // Maps
+RANDO_ENUM_ITEM(RCTYPE_COMPASS)        // Compasses
+RANDO_ENUM_ITEM(RCTYPE_SMALL_KEY)      // Small Keys
+RANDO_ENUM_ITEM(RCTYPE_GF_KEY)         // Gerudo Fortress Keys
+RANDO_ENUM_ITEM(RCTYPE_BOSS_KEY)       // Boss Keys
+RANDO_ENUM_ITEM(RCTYPE_GANON_BOSS_KEY) // Ganon's boss key
+RANDO_ENUM_ITEM(RCTYPE_SHOP)           // Shops
+RANDO_ENUM_ITEM(RCTYPE_SCRUB)          // Scrubs
+RANDO_ENUM_ITEM(RCTYPE_MERCHANT)       // Merchants
+RANDO_ENUM_ITEM(RCTYPE_CHEST_GAME)     // RANDOTODO replace this once we implement it, just using it to exclude for now
+RANDO_ENUM_ITEM(RCTYPE_LINKS_POCKET)   // RANDOTODO this feels hacky, replace with better starting items
+RANDO_ENUM_ITEM(RCTYPE_GOSSIP_STONE)   // RANDOTODO make these into event access
+RANDO_ENUM_ITEM(RCTYPE_STATIC_HINT)    // RANDOTODO make these into event access
+RANDO_ENUM_ITEM(RCTYPE_SONG_LOCATION)  // Song locations
 RANDO_ENUM_ITEM(RCTYPE_BOSS_HEART_OR_OTHER_REWARD) // Boss heart container or lesser dungeon rewards (lens, ice arrow)
 RANDO_ENUM_ITEM(RCTYPE_POT)                        // Pots
 RANDO_ENUM_ITEM(RCTYPE_CRATE)                      // Crates
@@ -498,3 +511,16 @@ RANDO_ENUM_BEGIN(GrottoEntranceOffsets)
 /* 0x20 */ RANDO_ENUM_ITEM(GROTTO_LW_DEKU_THEATRE_OFFSET)
 /* 0x21 */ RANDO_ENUM_ITEM(GROTTO_OFFSET_MAX)
 RANDO_ENUM_END(GrottoEntranceOffsets)
+
+#ifdef RANDO_ENUM_BEGIN_CLEANUP
+#undef RANDO_ENUM_BEGIN
+#undef RANDO_ENUM_BEGIN_CLEANUP
+#endif
+#ifdef RANDO_ENUM_ITEM_CLEANUP
+#undef RANDO_ENUM_ITEM
+#undef RANDO_ENUM_ITEM_CLEANUP
+#endif
+#ifdef RANDO_ENUM_END_CLEANUP
+#undef RANDO_ENUM_END
+#undef RANDO_ENUM_END_CLEANUP
+#endif
