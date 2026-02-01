@@ -2029,6 +2029,11 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                 if (!isVanilla && Flags_GetRandomizerInf(RAND_INF_DODONGOS_CAVERN_MQ_SILVER_RUPEES)) {
                     Flags_SetSwitch(gPlayState, 0x25);
                 }
+                if (isVanilla) { // make gossip stone fairy respawn (temp flag)
+                    Flags_UnsetSwitch(gPlayState, 0x11);
+                } else {
+                    Flags_UnsetSwitch(gPlayState, 0x3E);
+                }
                 break;
             case SCENE_JABU_JABU:
                 if (isVanilla && Flags_GetRandomizerInf(RAND_INF_JABU_JABUS_BELLY_FIRST_SWITCH)) {
