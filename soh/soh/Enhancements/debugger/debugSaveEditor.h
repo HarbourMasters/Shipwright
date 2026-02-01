@@ -370,7 +370,6 @@ const std::vector<FlagTable> flagTables = {
       } },
 };
 
-
 const std::vector<std::string> state1 = {
     "Loading",
     "Swinging Bottle",
