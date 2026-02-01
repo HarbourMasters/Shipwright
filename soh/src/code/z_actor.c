@@ -1909,8 +1909,7 @@ typedef struct {
     /* 0x4 */ f32 leashScale;
 } TargetRangeParams; // size = 0x8
 
-#define TARGET_RANGE(range, leash) \
-    { SQ(range), (f32)range / leash }
+#define TARGET_RANGE(range, leash) { SQ(range), (f32)range / leash }
 
 TargetRangeParams D_80115FF8[] = {
     TARGET_RANGE(70, 140),   TARGET_RANGE(170, 255),    TARGET_RANGE(280, 5600),      TARGET_RANGE(350, 525),
@@ -3436,8 +3435,12 @@ Actor* Actor_SpawnAsChild(ActorContext* actorCtx, Actor* parent, PlayState* play
     // Gohma (z_boss_goma.c), the Stalchildren spawner (z_en_encount1.c) and the falling platform spawning Stalfos in
     // Forest Temple (z_bg_mori_bigst.c) that normally rely on this behaviour are changed when
     // Enemy Rando is on so they still work properly even without assigning a parent.
+    //
+    // Also, if the parent actor is a Cucco, and it is not spawning an Attacking Cucco, then we don't want the
+    // actor's parent to be this Cucco
     if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) &&
-        (spawnedActor->id == ACTOR_EN_FLOORMAS || spawnedActor->id == ACTOR_EN_PEEHAT)) {
+        ((spawnedActor->id == ACTOR_EN_FLOORMAS || spawnedActor->id == ACTOR_EN_PEEHAT) ||
+         (parent->id == ACTOR_EN_NIW && spawnedActor->id != ACTOR_EN_ATTACK_NIW))) {
         return spawnedActor;
     }
 

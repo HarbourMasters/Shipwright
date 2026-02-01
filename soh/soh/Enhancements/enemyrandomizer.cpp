@@ -34,6 +34,7 @@ const char* enemyCVarList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     CVAR_ENHANCEMENT("RandomizedEnemyList.Anubis"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.Armos"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.Arwing"),
+    CVAR_ENHANCEMENT("RandomizedEnemyList.AttackingCucco"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.BabyDodongo"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.Bari"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.Beamos"),
@@ -98,6 +99,7 @@ const char* enemyNameList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     "Anubis",
     "Armos",
     "Arwing",
+    "Cucco (Attacking)",
     "Baby Dodongo",
     "Bari",
     "Beamos",
@@ -159,23 +161,24 @@ const char* enemyNameList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
 };
 
 static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
-    { ACTOR_EN_ANUBICE_TAG, 1 }, // Anubis
-    { ACTOR_EN_AM, -1 },         // Armos
-    { ACTOR_EN_CLEAR_TAG, 1 },   // Arwing
-    { ACTOR_EN_DODOJR, 0 },      // Baby Dodongo
-    { ACTOR_EN_VALI, -1 },       // Bari (big jellyfish)
-    { ACTOR_EN_VM, 1280 },       // Beamos
-    { ACTOR_EN_ST, 1 },          // Skulltula (big)
-    { ACTOR_EN_SKB, 20 },        // Stalchild (big)
-    { ACTOR_EN_BILI, 0 },        // Biri (jellyfish)
-    { ACTOR_EN_IK, 2 },          // Iron Knuckle (black, standing)
-    { ACTOR_EN_TITE, -2 },       // Tektite (blue)
-    { ACTOR_EN_BB, -1 },         // Bubble (flying skull enemy) (blue)
-    { ACTOR_EN_MB, 0 },          // Club Moblin
-    { ACTOR_EN_TORCH2, 0 },      // Dark Link
-    { ACTOR_EN_ZF, -2 },         // Dinolfos
-    { ACTOR_EN_DODONGO, -1 },    // Dodongo
-    { ACTOR_EN_FIREFLY, 1 },     // Fire Keese
+    { ACTOR_EN_ANUBICE_TAG, 1 },  // Anubis
+    { ACTOR_EN_AM, -1 },          // Armos
+    { ACTOR_EN_CLEAR_TAG, 1 },    // Arwing
+    { ACTOR_EN_ATTACK_NIW, 777 }, // Cucco (Attacking)
+    { ACTOR_EN_DODOJR, 0 },       // Baby Dodongo
+    { ACTOR_EN_VALI, -1 },        // Bari (big jellyfish)
+    { ACTOR_EN_VM, 1280 },        // Beamos
+    { ACTOR_EN_ST, 1 },           // Skulltula (big)
+    { ACTOR_EN_SKB, 20 },         // Stalchild (big)
+    { ACTOR_EN_BILI, 0 },         // Biri (jellyfish)
+    { ACTOR_EN_IK, 2 },           // Iron Knuckle (black, standing)
+    { ACTOR_EN_TITE, -2 },        // Tektite (blue)
+    { ACTOR_EN_BB, -1 },          // Bubble (flying skull enemy) (blue)
+    { ACTOR_EN_MB, 0 },           // Club Moblin
+    { ACTOR_EN_TORCH2, 0 },       // Dark Link
+    { ACTOR_EN_ZF, -2 },          // Dinolfos
+    { ACTOR_EN_DODONGO, -1 },     // Dodongo
+    { ACTOR_EN_FIREFLY, 1 },      // Fire Keese
     // { ACTOR_EN_FD, 0 },          // Flare Dancer (possible cause of crashes because of spawning flame actors on
     // sloped ground)
     { ACTOR_EN_YUKABYUN, 0 },      // Flying Floor Tile
@@ -242,42 +245,43 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_WALLMAS,     // Wallmaster
     ACTOR_EN_DODONGO,     // Dodongo
     // ACTOR_EN_REEBA,       // Leever (reliant on spawner (z_en_encount1.c))
-    ACTOR_EN_PEEHAT,    // Flying Peahat, big one spawning larva, larva
-    ACTOR_EN_ZF,        // Lizalfos, Dinolfos
-    ACTOR_EN_GOMA,      // Gohma Larva (normal, eggs, gohma eggs)
-    ACTOR_EN_BUBBLE,    // Shabom (bubble)
-    ACTOR_EN_DODOJR,    // Baby Dodongo
-    ACTOR_EN_TORCH2,    // Dark Link
-    ACTOR_EN_BILI,      // Biri (small jellyfish)
-    ACTOR_EN_TP,        // Electric Tailpasaran
-    ACTOR_EN_ST,        // Skulltula (normal, big, invisible)
-    ACTOR_EN_BW,        // Torch Slug
-    ACTOR_EN_EIYER,     // Stinger (land)
-    ACTOR_EN_MB,        // Moblins (Club, spear)
-    ACTOR_EN_DEKUBABA,  // Deku Baba (small, large)
-    ACTOR_EN_AM,        // Armos (enemy variant)
-    ACTOR_EN_DEKUNUTS,  // Mad Scrub (single attack, triple attack)
-    ACTOR_EN_VALI,      // Bari (big jellyfish) (spawns very high up)
-    ACTOR_EN_BB,        // Bubble (flying skull enemy) (all colors)
-    ACTOR_EN_YUKABYUN,  // Flying Floor Tile
-    ACTOR_EN_VM,        // Beamos
-    ACTOR_EN_FLOORMAS,  // Floormaster
-    ACTOR_EN_RD,        // Redead, Gibdo
-    ACTOR_EN_SW,        // Skullwalltula
-    ACTOR_EN_FD,        // Flare Dancer
-    ACTOR_EN_SB,        // Shell Blade
-    ACTOR_EN_KAREBABA,  // Withered Deku Baba
-    ACTOR_EN_RR,        // Like-Like
-    ACTOR_EN_NY,        // Spike (rolling enemy)
-    ACTOR_EN_IK,        // Iron Knuckle
-    ACTOR_EN_TUBO_TRAP, // Flying pot
-    ACTOR_EN_FZ,        // Freezard
-    ACTOR_EN_WEIYER,    // Stinger (Water)
-    ACTOR_EN_HINTNUTS,  // Hint Deku Scrubs
-    ACTOR_EN_WF,        // Wolfos
-    ACTOR_EN_SKB,       // Stalchild
-    ACTOR_EN_CROW,      // Guay
-    ACTOR_EN_SKJ,       // Skull Kid
+    ACTOR_EN_PEEHAT,     // Flying Peahat, big one spawning larva, larva
+    ACTOR_EN_ZF,         // Lizalfos, Dinolfos
+    ACTOR_EN_GOMA,       // Gohma Larva (normal, eggs, gohma eggs)
+    ACTOR_EN_BUBBLE,     // Shabom (bubble)
+    ACTOR_EN_DODOJR,     // Baby Dodongo
+    ACTOR_EN_TORCH2,     // Dark Link
+    ACTOR_EN_BILI,       // Biri (small jellyfish)
+    ACTOR_EN_TP,         // Electric Tailpasaran
+    ACTOR_EN_ST,         // Skulltula (normal, big, invisible)
+    ACTOR_EN_BW,         // Torch Slug
+    ACTOR_EN_EIYER,      // Stinger (land)
+    ACTOR_EN_MB,         // Moblins (Club, spear)
+    ACTOR_EN_DEKUBABA,   // Deku Baba (small, large)
+    ACTOR_EN_AM,         // Armos (enemy variant)
+    ACTOR_EN_DEKUNUTS,   // Mad Scrub (single attack, triple attack)
+    ACTOR_EN_VALI,       // Bari (big jellyfish) (spawns very high up)
+    ACTOR_EN_BB,         // Bubble (flying skull enemy) (all colors)
+    ACTOR_EN_YUKABYUN,   // Flying Floor Tile
+    ACTOR_EN_VM,         // Beamos
+    ACTOR_EN_FLOORMAS,   // Floormaster
+    ACTOR_EN_RD,         // Redead, Gibdo
+    ACTOR_EN_SW,         // Skullwalltula
+    ACTOR_EN_FD,         // Flare Dancer
+    ACTOR_EN_SB,         // Shell Blade
+    ACTOR_EN_KAREBABA,   // Withered Deku Baba
+    ACTOR_EN_RR,         // Like-Like
+    ACTOR_EN_NY,         // Spike (rolling enemy)
+    ACTOR_EN_IK,         // Iron Knuckle
+    ACTOR_EN_TUBO_TRAP,  // Flying pot
+    ACTOR_EN_FZ,         // Freezard
+    ACTOR_EN_WEIYER,     // Stinger (Water)
+    ACTOR_EN_HINTNUTS,   // Hint Deku Scrubs
+    ACTOR_EN_WF,         // Wolfos
+    ACTOR_EN_SKB,        // Stalchild
+    ACTOR_EN_CROW,       // Guay
+    ACTOR_EN_SKJ,        // Skull Kid
+    ACTOR_EN_ATTACK_NIW, // Cucco (Attacking)
 };
 
 extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, f32* posX, f32* posY, f32* posZ, int16_t* rotX,
@@ -352,6 +356,7 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, f32* po
             play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params;
         EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed, play);
 
+        int16_t prevActorId = *actorId;
         *actorId = randomEnemy.id;
         *params = randomEnemy.params;
 
@@ -380,6 +385,14 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, f32* po
             case ACTOR_EN_CLEAR_TAG:
             case ACTOR_EN_CROW:
                 *posY = *posY + 75;
+                break;
+            // Reset params on a randomized Attacking Cucco if it is replacing one
+            case ACTOR_EN_ATTACK_NIW:
+                if (prevActorId == ACTOR_EN_ATTACK_NIW) {
+                    *params = 0;
+                }
+                *posY = *posY + 75;
+                *rotY = Random(0, 65537) - 32768;
                 break;
             default:
                 break;
@@ -417,7 +430,12 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play) {
         }
     }
     if (filteredEnemyList.size() == 0) {
-        filteredEnemyList = selectedEnemyList;
+        // Fail-safe for soft-locks if only selected enemy is attacking cuccos -- replace with Withered Deku Baba
+        if (selectedEnemyList.size() == 1 && selectedEnemyList[0].id == ACTOR_EN_ATTACK_NIW) {
+            filteredEnemyList.push_back({ ACTOR_EN_KAREBABA, 0 });
+        } else {
+            filteredEnemyList = selectedEnemyList;
+        }
     }
     if (CVAR_ENEMY_RANDOMIZER_VALUE == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
         uint32_t finalSeed =
@@ -511,13 +529,15 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
     // Flare dancer, Arwing & Dark Link - Both go out of bounds way too easily, softlocking the player.
     // Wallmaster - Not easily visible, often makes players think they're softlocked and that there's no enemies left.
     // Club Moblin - Many issues with them falling or placing out of bounds. Maybe fixable in the future?
-    bool enemiesToExcludeClearRooms =
-        enemy.id == ACTOR_EN_FZ || enemy.id == ACTOR_EN_VM || enemy.id == ACTOR_EN_SB || enemy.id == ACTOR_EN_NY ||
-        enemy.id == ACTOR_EN_CLEAR_TAG || enemy.id == ACTOR_EN_WALLMAS || enemy.id == ACTOR_EN_TORCH2 ||
-        (enemy.id == ACTOR_EN_MB && enemy.params == 0) || enemy.id == ACTOR_EN_FD || enemy.id == ACTOR_EN_ANUBICE_TAG;
+    bool enemiesToExcludeClearRooms = enemy.id == ACTOR_EN_FZ || enemy.id == ACTOR_EN_VM || enemy.id == ACTOR_EN_SB ||
+                                      enemy.id == ACTOR_EN_NY || enemy.id == ACTOR_EN_CLEAR_TAG ||
+                                      enemy.id == ACTOR_EN_WALLMAS || enemy.id == ACTOR_EN_TORCH2 ||
+                                      (enemy.id == ACTOR_EN_MB && enemy.params == 0) || enemy.id == ACTOR_EN_FD ||
+                                      enemy.id == ACTOR_EN_ANUBICE_TAG || enemy.id == ACTOR_EN_ATTACK_NIW;
 
     // Bari - Spawns 3 more enemies, potentially extremely difficult in timed rooms.
-    bool enemiesToExcludeTimedRooms = enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI;
+    bool enemiesToExcludeTimedRooms =
+        enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI || enemy.id == ACTOR_EN_ATTACK_NIW;
 
     switch (sceneNum) {
         // Deku Tree

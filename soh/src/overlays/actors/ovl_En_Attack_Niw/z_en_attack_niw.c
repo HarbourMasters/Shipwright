@@ -176,6 +176,11 @@ s32 func_809B55EC(EnAttackNiw* this, PlayState* play) {
     s16 sp1E;
     s16 sp1C;
 
+    // Params == 777 means that this is a randomized Attacking Cucco, and we don't despawn them when they go off-screen
+    if (this->actor.params == 777) {
+        return 1;
+    }
+
     Actor_SetFocus(&this->actor, this->unk_2E4);
     Actor_GetScreenPos(play, &this->actor, &sp1E, &sp1C);
     if ((this->actor.projectedPos.z < -20.0f) || (sp1E < 0) || (sp1E > SCREEN_WIDTH) || (sp1C < 0) ||
@@ -255,6 +260,14 @@ void func_809B59B0(EnAttackNiw* this, PlayState* play) {
         return;
     }
 
+    // Params == 777 means that this is a randomized Attacking Cucco, and we want them attacking indefinitely
+    // So here we randomize the targeting timing and continuously have the Cucco face the player
+    if (this->actor.params == 777) {
+        if (Rand_ZeroOne() * 20.0f <= 1) {
+            this->unk_2D4 = Rand_CenteredFloat(200.0f) + this->actor.yawTowardsPlayer;
+        }
+    }
+
     if (this->actor.bgCheckFlags & 1) {
         if (this->unk_25A == 0) {
             this->unk_25A = 3;
@@ -277,7 +290,9 @@ void func_809B59B0(EnAttackNiw* this, PlayState* play) {
     Math_ApproachF(&this->unk_2DC, 10000.0f, 1.0f, 1000.0f);
     Math_ApproachF(&this->actor.speedXZ, this->unk_2E0, 0.9f, 1.0f);
     if ((this->actor.gravity == -2.0f) && (this->unk_262 == 0) &&
-        ((this->actor.bgCheckFlags & 8) || (this->unk_25C == 0))) {
+        ((this->actor.bgCheckFlags & 8) || (this->unk_25C == 0)) && (this->actor.params != 777)) {
+        // Handles flying away for attacking Cucco after some time
+        // Not triggered for randomized Cuccos (params == 777)
         this->unk_2E0 = 0.0f;
         this->actor.gravity = 0.0f;
         this->unk_2DC = 0.0f;
@@ -363,11 +378,18 @@ void EnAttackNiw_Update(Actor* thisx, PlayState* play) {
 
     tmpf1 = 20.0f;
     if (this->actor.xyzDistToPlayerSq < SQ(tmpf1)) {
-        cucco = (EnNiw*)this->actor.parent;
-        if ((this->actor.parent->update != NULL) && (this->actor.parent != NULL) && (cucco != NULL) &&
-            (cucco->timer9 == 0) && (player->invincibilityTimer == 0)) {
-            func_8002F6D4(play, &this->actor, 2.0f, this->actor.world.rot.y, 0.0f, 0x10);
-            cucco->timer9 = 0x46;
+        // Params == 777 means that this is a randomized Attacking Cucco, and they have no parent Cucco
+        if (this->actor.params == 777) {
+            if ((player->invincibilityTimer == 0)) {
+                func_8002F6D4(play, &this->actor, 2.0f, this->actor.world.rot.y, 0.0f, 0x10);
+            }
+        } else {
+            cucco = (EnNiw*)this->actor.parent;
+            if ((this->actor.parent->update != NULL) && (this->actor.parent != NULL) && (cucco != NULL) &&
+                (cucco->timer9 == 0) && (player->invincibilityTimer == 0)) {
+                func_8002F6D4(play, &this->actor, 2.0f, this->actor.world.rot.y, 0.0f, 0x10);
+                cucco->timer9 = 0x46;
+            }
         }
     }
     if (this->unk_25E == 0) {
