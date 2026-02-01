@@ -268,6 +268,7 @@ static void ApplyMasterSwordPatches() {
 static void ApplyBiggoronSwordPatches() {
     const bool isChild = LINK_IS_CHILD;
     const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
+    leftHandClosed = CustomTunicDLs_RemapPath(leftHandClosed);
 
     if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
         PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomLongswordSheathDL, "customDekuShieldBack1",
@@ -309,6 +310,7 @@ static void ApplyBiggoronSwordPatches() {
 static void ApplyBreakableLongswordPatches() {
     const bool isChild = LINK_IS_CHILD;
     const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
+    leftHandClosed = CustomTunicDLs_RemapPath(leftHandClosed);
 
     if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
         PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, GetBreakableLongswordSheathDL(), "customDekuShieldBack1",
