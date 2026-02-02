@@ -894,8 +894,8 @@ extern "C" void DrawKotake(PlayState* play) {
     gSPSegment(POLY_XLU_DISP++, 10, (uintptr_t)gTwinrovaKotakeKoumeEyeOpenTex);
     gSPSegment(POLY_XLU_DISP++, 8,
                (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0 & 0x7F, 0 & 0x7F, 0x20, 0x20, 1,
-                                             play->state.frames & 0x7F, (play->state.frames * -7) & 0xFF, 0x20, 0x40, 1,
-                                             1, 1, -7));
+                                             play->state.frames & 0x7F, (play->state.frames * -7) & 0xFF, 0x20, 0x40, 0,
+                                             0, 1, -7));
 
     gSPSegment(POLY_XLU_DISP++, 9,
                (uintptr_t)Gfx_TexScrollEx(play->state.gfxCtx, 0 & 0x7F, play->state.frames & 0xFF, 0x20, 0x40, 0, 1));
