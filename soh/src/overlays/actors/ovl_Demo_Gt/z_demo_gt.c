@@ -670,10 +670,12 @@ void DemoGt_Draw1(DemoGt* this, PlayState* play) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08,
                Gfx_TwoTexScrollEnvColorEx(gfxCtx, 0, 0, unk198[0], 0x20, 0x40, 1, 0, unk198[1], 0x20, 0x40, unk178[0],
-                                        unk178[1], unk178[2], 0x80, 0, unk198[0] < 0 ? -1 : 1, 0, unk198[1] < 0 ? -1 : 1));
+                                          unk178[1], unk178[2], 0x80, 0, unk198[0] < 0 ? -1 : 1, 0,
+                                          unk198[1] < 0 ? -1 : 1));
     gSPSegment(POLY_OPA_DISP++, 0x0A,
                Gfx_TwoTexScrollEnvColorEx(gfxCtx, 0, 0, unk198[0], 0x20, 0x40, 1, 0, unk198[1], 0x20, 0x40, unk188[0],
-                                        unk188[1], unk188[2], 0x80, 0, unk198[0] < 0 ? -1 : 1, 0, unk198[1] < 0 ? -1 : 1));
+                                          unk188[1], unk188[2], 0x80, 0, unk198[0] < 0 ? -1 : 1, 0,
+                                          unk198[1] < 0 ? -1 : 1));
     gSPMatrix(POLY_OPA_DISP++, spB4, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsExteriorStructureDL);
     Gfx_SetupDL_25Xlu(gfxCtx);
@@ -856,7 +858,8 @@ void DemoGt_Draw2(DemoGt* this, PlayState* play) {
     unk178 = this->unk_178;
     gSPSegment(POLY_OPA_DISP++, 0x08,
                Gfx_TwoTexScrollEnvColorEx(gfxCtx, 0, 0, unk198[0], 0x20, 0x40, 1, 0, unk198[1], 0x20, 0x40, unk178[0],
-                                        unk178[1], unk178[2], 128, 0, unk198[0] < 0 ? -1 : 1, 0, unk198[1] < 0 ? -1 : 1));
+                                          unk178[1], unk178[2], 128, 0, unk198[0] < 0 ? -1 : 1, 0,
+                                          unk198[1] < 0 ? -1 : 1));
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsCollapsedStructureInnerDL);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
