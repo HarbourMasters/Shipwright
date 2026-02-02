@@ -1842,8 +1842,9 @@ void BossFd_DrawBody(PlayState* play, BossFd* this) {
     }
     gSPSegment(POLY_OPA_DISP++, 0x08,
                Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (s16)this->fwork[BFD_TEX1_SCROLL_X],
-                                (s16)this->fwork[BFD_TEX1_SCROLL_Y], 0x20, 0x20, 1, (s16)this->fwork[BFD_TEX2_SCROLL_X],
-                                (s16)this->fwork[BFD_TEX2_SCROLL_Y], 0x20, 0x20, 1, 1, 1, 1));
+                                  (s16)this->fwork[BFD_TEX1_SCROLL_Y], 0x20, 0x20, 1,
+                                  (s16)this->fwork[BFD_TEX2_SCROLL_X], (s16)this->fwork[BFD_TEX2_SCROLL_Y], 0x20, 0x20,
+                                  1, 1, 1, 1));
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
     gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, (s8)this->fwork[BFD_BODY_TEX2_ALPHA]);
 

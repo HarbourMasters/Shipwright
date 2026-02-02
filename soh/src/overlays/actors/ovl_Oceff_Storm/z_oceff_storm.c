@@ -139,7 +139,7 @@ void OceffStorm_Draw2(Actor* thisx, PlayState* play) {
     gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 200, 200, 150, this->primColorAlpha);
     gSPDisplayList(POLY_XLU_DISP++, sMaterialDL);
     gSPDisplayList(POLY_XLU_DISP++, Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, scroll * 8, scroll * 4, 64, 64, 1,
-                                                     scroll * 4, scroll * 4, 64, 64, 8, 4, 4, 4));
+                                                       scroll * 4, scroll * 4, 64, 64, 8, 4, 4, 4));
     gSPWideTextureRectangle(POLY_XLU_DISP++, OTRGetRectDimensionFromLeftEdge(0) << 2, 0,
                             OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH) << 2, 0x03C0, G_TX_RENDERTILE, 0, 0, 0x008C,
                             -0x008C);
@@ -168,7 +168,7 @@ void OceffStorm_Draw(Actor* thisx, PlayState* play) {
 
     gSPDisplayList(POLY_XLU_DISP++, sCylinderMaterialDL);
     gSPDisplayList(POLY_XLU_DISP++, Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, scroll * 4, (0 - scroll) * 8, 32, 32, 1,
-                                                     scroll * 8, (0 - scroll) * 12, 32, 32, 4, -8, 8, -12));
+                                                       scroll * 8, (0 - scroll) * 12, 32, 32, 4, -8, 8, -12));
     gSPDisplayList(POLY_XLU_DISP++, sCylinderModelDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

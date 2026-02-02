@@ -678,9 +678,9 @@ void DemoGt_Draw1(DemoGt* this, PlayState* play) {
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsExteriorStructureDL);
     Gfx_SetupDL_25Xlu(gfxCtx);
     gDPSetEnvColor(POLY_XLU_DISP++, 128, 128, 128, 128);
-    gSPSegment(
-        POLY_XLU_DISP++, 0x09,
-        Gfx_TwoTexScrollEx(gfxCtx, 0, 0, gameplayFrames * 0x14, 0x10, 0x200, 1, 0, gameplayFrames * 0x1E, 0x10, 0x200, 0, 0x14, 0, 0x1E));
+    gSPSegment(POLY_XLU_DISP++, 0x09,
+               Gfx_TwoTexScrollEx(gfxCtx, 0, 0, gameplayFrames * 0x14, 0x10, 0x200, 1, 0, gameplayFrames * 0x1E, 0x10,
+                                  0x200, 0, 0x14, 0, 0x1E));
     gSPMatrix(POLY_XLU_DISP++, spB4, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gTowerCollapseCsFlameSmokeDL);
 

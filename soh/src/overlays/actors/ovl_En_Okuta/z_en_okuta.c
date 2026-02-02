@@ -768,8 +768,8 @@ void EnOkuta_Draw(Actor* thisx, PlayState* play) {
             Gfx_SetupDL_25Opa(play->state.gfxCtx);
             gSPSegment(POLY_OPA_DISP++, 0x08,
                        Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 1 * (play->state.frames * 6),
-                                        1 * (play->state.frames * 6), 32, 32, 1, 1 * (play->state.frames * 6),
-                                        1 * (play->state.frames * 6), 32, 32, 6, 6, 6, 6));
+                                          1 * (play->state.frames * 6), 32, 32, 1, 1 * (play->state.frames * 6),
+                                          1 * (play->state.frames * 6), 32, 32, 6, 6, 6, 6));
             Matrix_Scale(7.0f, 7.0f, 7.0f, MTXMODE_APPLY);
             Matrix_RotateX(thisx->home.rot.z * (M_PI / 0x8000), MTXMODE_APPLY);
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);

@@ -720,7 +720,8 @@ void DemoKankyo_DrawLightPlane(Actor* thisx, PlayState* play) {
     if (play->csCtx.state == CS_STATE_IDLE || gSaveContext.sceneSetupIndex >= 4) {
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-        gSPSegment(POLY_XLU_DISP++, 0x08, Gfx_TexScrollEx(play->state.gfxCtx, 0, play->state.frames & 0x7F, 64, 32, 0, 1));
+        gSPSegment(POLY_XLU_DISP++, 0x08,
+                   Gfx_TexScrollEx(play->state.gfxCtx, 0, play->state.frames & 0x7F, 64, 32, 0, 1));
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, object_toki_objects_DL_008390);
     }

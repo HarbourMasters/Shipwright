@@ -123,7 +123,7 @@ void EffectSsEnIce_Draw(PlayState* play, u32 index, EffectSs* this) {
     func_8002EB44(&this->pos, &play->view.eye, &hiliteLightDir, play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, gameplayFrames & 0xFF, 0x20, 0x10, 1, 0,
-                                (gameplayFrames * 2) & 0xFF, 0x40, 0x20, 0, 1, 0, 2));
+                                  (gameplayFrames * 2) & 0xFF, 0x40, 0x20, 0, 1, 0, 2));
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, this->rPrimColorR, this->rPrimColorG, this->rPrimColorB,
                     this->rPrimColorA);
     gDPSetEnvColor(POLY_XLU_DISP++, this->rEnvColorR, this->rEnvColorG, this->rEnvColorB, (u32)alpha);

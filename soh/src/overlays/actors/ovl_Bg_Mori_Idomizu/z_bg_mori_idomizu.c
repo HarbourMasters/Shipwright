@@ -174,7 +174,7 @@ void BgMoriIdomizu_Draw(Actor* thisx, PlayState* play) {
 
     gSPSegment(POLY_XLU_DISP++, 0x09,
                Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0x7F - (gameplayFrames & 0x7F), gameplayFrames % 0x80, 0x20,
-                                0x20, 1, gameplayFrames & 0x7F, gameplayFrames % 0x80, 0x20, 0x20, -1, 1, 1, 1));
+                                  0x20, 1, gameplayFrames & 0x7F, gameplayFrames % 0x80, 0x20, 0x20, -1, 1, 1, 1));
 
     gSPDisplayList(POLY_XLU_DISP++, gMoriIdomizuWaterDL);
 

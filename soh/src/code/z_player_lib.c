@@ -1604,7 +1604,7 @@ void Player_DrawGetItemIceTrap(PlayState* play, Player* this, Vec3f* refPos, s32
         }
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, (0 - play->gameplayFrames) % 128, 32, 32, 1, 0,
-                                    (play->gameplayFrames * -2) % 128, 32, 32, 0, -1, 0, -2));
+                                      (play->gameplayFrames * -2) % 128, 32, 32, 0, -1, 0, -2));
 
         Matrix_Translate(0.0f, -40.0f, 0.0f, MTXMODE_APPLY);
         Matrix_Scale(iceTrapScale, iceTrapScale, iceTrapScale, MTXMODE_APPLY);

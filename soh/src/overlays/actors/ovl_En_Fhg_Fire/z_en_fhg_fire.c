@@ -736,9 +736,9 @@ void EnFhgFire_Draw(Actor* thisx, PlayState* play) {
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (s16)this->fwork[FHGFIRE_WARP_TEX_1_X],
-                                    (s16)this->fwork[FHGFIRE_WARP_TEX_1_Y], 0x40, 0x40, 1,
-                                    (s16)this->fwork[FHGFIRE_WARP_TEX_2_X], (s16)this->fwork[FHGFIRE_WARP_TEX_2_Y],
-                                    0x40, 0x40, 1, 1, 1, 1));
+                                      (s16)this->fwork[FHGFIRE_WARP_TEX_1_Y], 0x40, 0x40, 1,
+                                      (s16)this->fwork[FHGFIRE_WARP_TEX_2_X], (s16)this->fwork[FHGFIRE_WARP_TEX_2_Y],
+                                      0x40, 0x40, 1, 1, 1, 1));
         gSPDisplayList(POLY_XLU_DISP++, gPhantomWarpDL);
     } else {
         osSyncPrintf("FF DRAW 1\n");
