@@ -764,7 +764,7 @@ extern "C" void DrawVolvagia(PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x09, (uintptr_t)gVolvagiaEyeOpenTex);
     gSPSegment(POLY_OPA_DISP++, 0x08,
                (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, play->state.frames * 4, 120, 0x20, 0x20, 1,
-                                             play->state.frames * 3, play->state.frames * -2, 0x20, 0x20, 4, 1, 3, -2));
+                                             play->state.frames * 3, play->state.frames * -2, 0x20, 0x20, 4, 0, 3, -2));
 
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
     gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, 255);
@@ -986,7 +986,7 @@ extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEn
     gSPSegment(POLY_XLU_DISP++, 8,
                (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0 * (play->state.frames * 0),
                                              0 * (play->state.frames * 0), 16, 32, 1, 1 * (play->state.frames * 1),
-                                             -1 * (play->state.frames * 8), 16, 32, 0, 0, 1, -1));
+                                             -1 * (play->state.frames * 8), 16, 32, 0, 0, 1, -8));
     Matrix_Push();
     Matrix_Translate(0.0f, -70.0f, 0.0f, MTXMODE_APPLY);
     Matrix_Scale(5.0f, 5.0f, 5.0f, MTXMODE_APPLY);
