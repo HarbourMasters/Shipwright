@@ -89,8 +89,8 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
     int16_t destinationIndex = -1;
     int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
     int16_t replacementDestinationIndex = -1;
-    std::string name = GetEntranceData(originalIndex)->source;
-    std::string text = GetEntranceData(replacementIndex)->destination;
+    std::string name = EntranceTracker::GetEntranceData(originalIndex)->source;
+    std::string text = EntranceTracker::GetEntranceData(replacementIndex)->destination;
 
     // Track the reverse destination, useful for savewarp handling
     if (entrance->GetReverse() != nullptr) {

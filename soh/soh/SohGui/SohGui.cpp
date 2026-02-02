@@ -19,7 +19,6 @@
 #ifdef __SWITCH__
 #include <port/switch/SwitchImpl.h>
 #endif
-#include "SohMenu.h"
 #include "include/global.h"
 #include "include/z64audio.h"
 #include "soh/SaveManager.h"
@@ -67,8 +66,6 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
 
 // MARK: - Delegates
 
-std::shared_ptr<SohMenuBar> mSohMenuBar;
-
 std::shared_ptr<Ship::GuiWindow> mConsoleWindow;
 std::shared_ptr<SohStatsWindow> mStatsWindow;
 std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
@@ -89,8 +86,8 @@ std::shared_ptr<MessageViewer> mMessageViewerWindow;
 std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
 std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
-std::shared_ptr<EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
-std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
+std::shared_ptr<EntranceTracker::EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
+std::shared_ptr<EntranceTracker::EntranceTrackerWindow> mEntranceTrackerWindow;
 std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
 std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
 std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
@@ -102,6 +99,10 @@ std::shared_ptr<AnchorRoomWindow> mAnchorRoomWindow;
 
 UIWidgets::Colors GetMenuThemeColor() {
     return mSohMenu->GetMenuThemeColor();
+}
+
+std::shared_ptr<SohMenu> GetSohMenu() {
+    return mSohMenu;
 }
 
 void SetupMenu() {
@@ -177,10 +178,10 @@ void SetupGuiElements() {
     mCheckTrackerSettingsWindow = std::make_shared<CheckTracker::CheckTrackerSettingsWindow>(
         CVAR_WINDOW("CheckTrackerSettings"), "Check Tracker Settings", ImVec2(600, 375));
     gui->AddGuiWindow(mCheckTrackerSettingsWindow);
-    mEntranceTrackerWindow =
-        std::make_shared<EntranceTrackerWindow>(CVAR_WINDOW("EntranceTracker"), "Entrance Tracker", ImVec2(500, 750));
+    mEntranceTrackerWindow = std::make_shared<EntranceTracker::EntranceTrackerWindow>(
+        CVAR_WINDOW("EntranceTracker"), "Entrance Tracker", ImVec2(500, 750));
     gui->AddGuiWindow(mEntranceTrackerWindow);
-    mEntranceTrackerSettingsWindow = std::make_shared<EntranceTrackerSettingsWindow>(
+    mEntranceTrackerSettingsWindow = std::make_shared<EntranceTracker::EntranceTrackerSettingsWindow>(
         CVAR_WINDOW("EntranceTrackerSettings"), "Entrance Tracker Settings", ImVec2(600, 375));
     gui->AddGuiWindow(mEntranceTrackerSettingsWindow);
     mItemTrackerWindow =
@@ -229,7 +230,6 @@ void Destroy() {
     mStatsWindow = nullptr;
     mConsoleWindow = nullptr;
     mGfxDebuggerWindow = nullptr;
-    mSohMenuBar = nullptr;
     mInputViewer = nullptr;
     mInputViewerSettings = nullptr;
     mTimeSplitWindow = nullptr;

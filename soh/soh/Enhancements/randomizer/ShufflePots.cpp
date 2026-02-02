@@ -6,21 +6,60 @@
 extern "C" {
 #include "overlays/actors/ovl_Obj_Tsubo/z_obj_tsubo.h"
 #include "overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
+#include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 extern PlayState* gPlayState;
 }
 
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 extern "C" void ObjTsubo_RandomizerDraw(Actor* thisx, PlayState* play) {
-    float potSize = 1.0f;
-
     OPEN_DISPS(play->state.gfxCtx);
-    Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    Matrix_Scale(potSize, potSize, potSize, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gRandoPotDL);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    const auto potIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(thisx);
+
+    if (potIdentity != nullptr && potIdentity->randomizerCheck != RC_MAX &&
+        Flags_GetRandomizerInf(potIdentity->randomizerInf) == 0) {
+        bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
+        int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
+
+        if (csmc && (!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+            auto itemEntry =
+                Rando::Context::GetInstance()->GetFinalGIEntry(potIdentity->randomizerCheck, true, GI_NONE);
+            GetItemCategory getItemCategory = itemEntry.getItemCategory;
+
+            switch (getItemCategory) {
+                case ITEM_CATEGORY_LESSER:
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotMinorDL);
+                    break;
+                case ITEM_CATEGORY_HEALTH:
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotHeartDL);
+                    break;
+                case ITEM_CATEGORY_BOSS_KEY:
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotBossKeyDL);
+                    break;
+                case ITEM_CATEGORY_SMALL_KEY:
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotSmallKeyDL);
+                    break;
+                case ITEM_CATEGORY_SKULLTULA_TOKEN:
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotTokenDL);
+                    break;
+                case ITEM_CATEGORY_MAJOR:
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotMajorDL);
+                    break;
+                default:
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotStandardDL);
+                    break;
+            }
+        } else {
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotStandardDL);
+        }
+    } else {
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotDL);
+    }
+
     CLOSE_DISPS(play->state.gfxCtx);
 }
 

@@ -6175,7 +6175,7 @@ s32 Player_ActionHandler_Talk(Player* this, PlayState* play) {
         }
     }
 
-    if ((talkOfferActor != NULL) || (cUpTalkActor != NULL)) {
+    if (GameInteractor_Should(VB_SPEAK, (talkOfferActor != NULL) || (cUpTalkActor != NULL))) {
         if ((lockOnActor == NULL) || (lockOnActor == talkOfferActor) || (lockOnActor == cUpTalkActor)) {
             if (!(this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) ||
                 ((this->heldActor != NULL) &&
@@ -13400,6 +13400,10 @@ void Player_Action_8084BF1C(Player* this, PlayState* play) {
 
     this->fallStartHeight = this->actor.world.pos.y;
     this->stateFlags2 |= PLAYER_STATE2_DISABLE_ROTATION_ALWAYS;
+
+    if (!GameInteractor_Should(VB_CLIMB, true, &sp80, &sp84)) {
+        return;
+    }
 
     if ((this->av1.actionVar1 != 0) && (ABS(sp84) < ABS(sp80))) {
         phi_f0 = ABS(sp80) * 0.0325f;

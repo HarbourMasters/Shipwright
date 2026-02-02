@@ -3,6 +3,7 @@
 #include <ship/window/Window.h>
 #include "assets/soh_assets.h"
 #include "soh/Enhancements/randomizer/rando_hash.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 std::map<uint32_t, ItemMapEntry> itemMapping = {
     ITEM_MAP_ENTRY(ITEM_STICK),
@@ -147,6 +148,22 @@ std::map<uint32_t, ItemMapEntry> customItemsMapping = {
     { RG_BONGO_BONGO_SOUL, { RG_BONGO_BONGO_SOUL, "RG_BONGO_BONGO_SOUL", "RG_BONGO_BONGO_SOUL_Faded", gBossSoulTex } },
     { RG_TWINROVA_SOUL, { RG_TWINROVA_SOUL, "RG_TWINROVA_SOUL", "RG_TWINROVA_SOUL_Faded", gBossSoulTex } },
     { RG_GANON_SOUL, { RG_GANON_SOUL, "RG_GANON_SOUL", "RG_GANON_SOUL_Faded", gBossSoulTex } },
+    { RG_OPEN_CHEST, { RG_OPEN_CHEST, "RG_OPEN_CHEST", "RG_OPEN_CHEST_Faded", gMapChestIconTex } }
+};
+
+std::map<uint32_t, ItemMapEntry> actionShuffleMapping = {
+    { RG_CRAWL, { RG_CRAWL, "RG_CRAWL", "RG_CRAWL_Faded", gButtonBackgroundTex } },
+    { RG_CLIMB, { RG_CLIMB, "RG_CLIMB", "RG_CLIMB_Faded", gButtonBackgroundTex } },
+    { RG_POWER_BRACELET, { RG_POWER_BRACELET, "RG_POWER_BRACELET", "RG_POWER_BRACELET_Faded", gButtonBackgroundTex } },
+};
+
+std::map<uint32_t, ItemMapEntry> jabbernutMapping = {
+    { RG_SPEAK_DEKU, { RG_SPEAK_DEKU, "RG_SPEAK_DEKU", "RG_SPEAK_DEKU_Faded", (char*)gItemIcons[ITEM_NUT] } },
+    { RG_SPEAK_GERUDO, { RG_SPEAK_GERUDO, "RG_SPEAK_GERUDO", "RG_SPEAK_GERUDO_Faded", (char*)gItemIcons[ITEM_NUT] } },
+    { RG_SPEAK_GORON, { RG_SPEAK_GORON, "RG_SPEAK_GORON", "RG_SPEAK_GORON_Faded", (char*)gItemIcons[ITEM_NUT] } },
+    { RG_SPEAK_HYLIAN, { RG_SPEAK_HYLIAN, "RG_SPEAK_HYLIAN", "RG_SPEAK_HYLIAN_Faded", (char*)gItemIcons[ITEM_NUT] } },
+    { RG_SPEAK_KOKIRI, { RG_SPEAK_KOKIRI, "RG_SPEAK_KOKIRI", "RG_SPEAK_KOKIRI_Faded", (char*)gItemIcons[ITEM_NUT] } },
+    { RG_SPEAK_ZORA, { RG_SPEAK_ZORA, "RG_SPEAK_ZORA", "RG_SPEAK_ZORA_Faded", (char*)gItemIcons[ITEM_NUT] } },
 };
 
 std::map<uint32_t, QuestMapEntry> questMapping = {
@@ -214,7 +231,24 @@ void RegisterImGuiItemIcons() {
                                                                             entry.second.texturePath, gregFadedGreen);
     }
 
+    for (const auto& entry : actionShuffleMapping) {
+        ImVec4 aButtonBlue = ImVec4(90.f / 255.f, 90.f / 250.f, 255.f / 255.f, 255.f / 255.f);
+        ImVec4 aButtonBlueFaded = aButtonBlue;
+        aButtonBlueFaded.w = 0.3f;
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath,
+                                                                            aButtonBlue);
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded,
+                                                                            entry.second.texturePath, aButtonBlueFaded);
+    }
+
     for (const auto& entry : customItemsMapping) {
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath,
+                                                                            ImVec4(1, 1, 1, 1));
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
+    }
+
+    for (const auto& entry : jabbernutMapping) {
         Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath,
                                                                             ImVec4(1, 1, 1, 1));
         Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(

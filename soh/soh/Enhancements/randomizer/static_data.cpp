@@ -208,9 +208,9 @@ std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap
   {RH_MALON_HINT,           StaticHintInfo(HINT_TYPE_ITEM,     {RHT_MALON_HINT_TURNING_EVIL, RHT_MALON_HINT_HOW_IS_EPONA, RHT_MALON_HINT_OBSTICLE_COURSE, RHT_MALON_HINT_INGO_TEMPTED}, RSK_MALON_HINT, true, {RC_KF_LINKS_HOUSE_COW})},
   {RH_BIG_POES_HINT,        StaticHintInfo(HINT_TYPE_ITEM,     {RHT_BIG_POES_HINT},                 RSK_BIG_POES_HINT,       true, {RC_MARKET_10_BIG_POES})},
   {RH_CHICKENS_HINT,        StaticHintInfo(HINT_TYPE_ITEM,     {RHT_CHICKENS_HINT},                 RSK_CHICKENS_HINT,       true, {RC_KAK_ANJU_AS_CHILD})},
-  {RH_BIGGORON_HINT,        StaticHintInfo(HINT_TYPE_ITEM,     {RHT_BIGGORON_HINT},                 RSK_BIGGORON_HINT,       true, {RC_DMT_TRADE_CLAIM_CHECK})},
+  {RH_BIGGORON_HINT,        StaticHintInfo(HINT_TYPE_ITEM,     {RHT_BIGGORON_HINT},                 RSK_BIGGORON_HINT,       true, {RC_DMT_TRADE_CLAIM_CHECK},                                  {}, {RC_BIGGORON_HINT})},
   {RH_FROGS_HINT,           StaticHintInfo(HINT_TYPE_ITEM,     {RHT_FROGS_HINT},                    RSK_FROGS_HINT,          true, {RC_ZR_FROGS_OCARINA_GAME})},
-  {RH_OOT_HINT,             StaticHintInfo(HINT_TYPE_ITEM,     {RHT_OOT_HINT},                      RSK_OOT_HINT,            true, {RC_HF_OCARINA_OF_TIME_ITEM, RC_SONG_FROM_OCARINA_OF_TIME}, {}, {RC_TOT_SHEIK_HINT})},
+  {RH_OOT_HINT,             StaticHintInfo(HINT_TYPE_ITEM,     {RHT_OOT_HINT},                      RSK_OOT_HINT,            true, {RC_HF_OCARINA_OF_TIME_ITEM, RC_SONG_FROM_OCARINA_OF_TIME},  {}, {RC_TOT_SHEIK_HINT})},
   {RH_MASK_SHOP_HINT,       StaticHintInfo(HINT_TYPE_ITEM,     {RHT_MASK_SHOP_HINT},                RSK_MASK_SHOP_HINT,      true, {RC_DEKU_THEATER_SKULL_MASK, RC_DEKU_THEATER_MASK_OF_TRUTH}, {}, {RC_MASK_SHOP_HINT})},
     // clang-format on
 };

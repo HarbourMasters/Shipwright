@@ -163,9 +163,9 @@ class Kaleido {
   private:
     std::vector<std::shared_ptr<KaleidoEntry>> mEntries;
     std::vector<Gfx> mEntryDl;
-    size_t mTopIndex = 0;
-    size_t mCursorPos = 0;
-    const size_t mNumVisible = 14;
+    int mTopIndex = 0;
+    int mCursorPos = 0;
+    const int mNumVisible = 14;
 };
 } // namespace Rando
 
