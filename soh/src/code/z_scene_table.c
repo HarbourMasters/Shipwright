@@ -1165,7 +1165,8 @@ void func_8009E0B8(PlayState* play) {
 
     gSPSegment(POLY_OPA_DISP++, 0x0C,
                Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, (s16)(-play->roomCtx.unk_74[0] * 0.02f), 32, 16, 1, 0,
-                                  (s16)(-play->roomCtx.unk_74[0] * 0.02f), 32, 16, 0, -1, 0, 1));
+                                  (s16)(-play->roomCtx.unk_74[0] * 0.02f), 32, 16, 0,
+                                  play->roomCtx.unk_74[0] == 0 ? 0 : -1, 0, play->roomCtx.unk_74[0] == 0 ? 0 : 1));
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
