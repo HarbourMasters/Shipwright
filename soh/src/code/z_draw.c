@@ -477,7 +477,7 @@ void GetItem_DrawJewel(PlayState* play, s16 drawId) {
 
     gSPSegment(POLY_XLU_DISP++, 9,
                Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0 % 256, (256 - (0 % 256)) - 1, 64, 64, 1, 0 % 256,
-                                  (256 - (0 % 256)) - 1, 16, 16, 1, -1, 1, -1));
+                                  (256 - (0 % 256)) - 1, 16, 16, 0, 0, 0, 0));
 
     gSPSegment(POLY_OPA_DISP++, 8, Gfx_TexScrollEx(play->state.gfxCtx, (u8)0, (u8)0, 16, 16, 0, 0));
 
