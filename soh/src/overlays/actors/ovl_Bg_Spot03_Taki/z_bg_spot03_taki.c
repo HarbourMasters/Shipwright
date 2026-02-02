@@ -132,7 +132,7 @@ void BgSpot03Taki_Draw(Actor* thisx, PlayState* play) {
 
     gSPSegment(
         POLY_XLU_DISP++, 0x08,
-        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, gameplayFrames * 5, 64, 64, 1, 0, gameplayFrames * 5, 64, 64));
+        Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, gameplayFrames * 5, 64, 64, 1, 0, gameplayFrames * 5, 64, 64, 0, 5, 0, 5));
 
     gSPDisplayList(POLY_XLU_DISP++, object_spot03_object_DL_000B20);
 
@@ -145,8 +145,8 @@ void BgSpot03Taki_Draw(Actor* thisx, PlayState* play) {
     gSPDisplayList(POLY_XLU_DISP++, object_spot03_object_DL_000BC0);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, gameplayFrames * 1, gameplayFrames * 3, 64, 64, 1,
-                                -gameplayFrames, gameplayFrames * 3, 64, 64));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, gameplayFrames * 1, gameplayFrames * 3, 64, 64, 1,
+                                -gameplayFrames, gameplayFrames * 3, 64, 64, 1, 3, -1, 3));
 
     gSPDisplayList(POLY_XLU_DISP++, object_spot03_object_DL_001580);
 

@@ -91,7 +91,7 @@ void EffectSsEnFire_Draw(PlayState* play, u32 index, EffectSs* this) {
     gDPSetPrimColor(POLY_XLU_DISP++, 0x0, 0x80, redGreen * 12.7f, redGreen * 12.7f, 0, 255);
     gSPSegment(
         POLY_XLU_DISP++, 0x08,
-        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0, (this->rScroll * -0x14) & 0x1FF, 0x20, 0x80));
+        Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0, (this->rScroll * -0x14) & 0x1FF, 0x20, 0x80, 0, 0, 0, -0x14));
 
     if (((this->rFlags & 0x7FFF) != 0) || (this->life < 18)) {
         gSPDisplayList(POLY_XLU_DISP++, gEffFire2DL);

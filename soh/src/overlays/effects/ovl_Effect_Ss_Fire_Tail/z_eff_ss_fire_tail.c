@@ -125,7 +125,7 @@ void EffectSsFireTail_Draw(PlayState* play, u32 index, EffectSs* this) {
     gDPSetEnvColor(POLY_XLU_DISP++, this->rEnvColorR, this->rEnvColorG, this->rEnvColorB, 0);
     gSPSegment(
         POLY_XLU_DISP++, 0x08,
-        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0, (play->state.frames * -0x14) & 0x1FF, 32, 128));
+        Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0, (play->state.frames * -0x14) & 0x1FF, 32, 128, 0, 0, 0, -0x14));
 
     if (this->rType != 0) {
         gSPDisplayList(POLY_XLU_DISP++, gEffFire2DL);
