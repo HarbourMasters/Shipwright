@@ -871,9 +871,13 @@ void GenerateItemPool() {
                     break;
                 case RO_ITEM_POOL_BALANCED: {
                     int heartsToPlace = maxHearts - startingHearts;
-                    int halfHearts = maxHearts >> 2;
+                    int halfHearts = heartsToPlace / 2;
                     AddFixedItemToPool(RG_HEART_CONTAINER, heartsToPlace - halfHearts, false);
                     AddFixedItemToPool(RG_PIECE_OF_HEART, halfHearts * 4, false);
+                    if (halfHearts % 2 == 1) {
+                        // If startingHearts was odd, we only have enough for 19 hearts at this point, add 4 extra heart pieces
+                        AddFixedItemToPool(RG_PIECE_OF_HEART, 4, false);
+                    }
                     break;
                 }
                 case RO_ITEM_POOL_SCARCE:
