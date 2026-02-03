@@ -79,8 +79,10 @@
 #ifdef ENABLE_REMOTE_CONTROL
 #include "soh/Network/CrowdControl/CrowdControl.h"
 #include "soh/Network/Sail/Sail.h"
+#include "soh/Network/Anchor/Anchor.h"
 CrowdControl* CrowdControl::Instance;
 Sail* Sail::Instance;
+Anchor* Anchor::Instance;
 #endif
 
 #include "Enhancements/mods.h"
@@ -934,6 +936,31 @@ std::unordered_map<ItemID, RandomizerGet> ItemIDtoRandomizerGetMap{
     { ITEM_GORON_RUBY, RG_GORON_RUBY },
     { ITEM_ZORA_SAPPHIRE, RG_ZORA_SAPPHIRE },
     { ITEM_SWORD_MASTER, RG_MASTER_SWORD },
+    // Custom Items
+    { ITEM_ROCS_FEATHER, RG_ROCS_FEATHER },
+    { ITEM_ROCS_CAPE, RG_ROCS_CAPE },
+    { ITEM_HYLIAS_GRACE, RG_HYLIAS_GRACE },
+    { ITEM_ZONAI_PERMAFROST, RG_ZONAI_PERMAFROST },
+    { ITEM_DEMISE_DESTRUCTION, RG_DEMISE_DESTRUCTION },
+    { ITEM_DEKU_LEAF, RG_DEKU_LEAF },
+    { ITEM_SWITCH_HOOK, RG_SWITCH_HOOK },
+    { ITEM_MOGMA_MITTS, RG_MOGMA_MITTS },
+    { ITEM_GUST_JAR, RG_GUST_JAR },
+    { ITEM_BALL_AND_CHAIN, RG_BALL_AND_CHAIN },
+    { ITEM_WHIP, RG_WHIP },
+    { ITEM_SPINNER, RG_SPINNER },
+    { ITEM_CANE_OF_SOMARIA, RG_CANE_OF_SOMARIA },
+    { ITEM_DOMINION_ROD, RG_DOMINION_ROD },
+    { ITEM_TIME_GATE, RG_TIME_GATE },
+    { ITEM_BOMB_ARROWS, RG_BOMB_ARROWS },
+    { ITEM_ROD_FIRE, RG_FIRE_ROD },
+    { ITEM_ROD_ICE, RG_ICE_ROD },
+    { ITEM_ROD_LIGHT, RG_LIGHT_ROD },
+    { ITEM_BEETLE, RG_BEETLE },
+    { ITEM_SHOVEL, RG_SHOVEL },
+    { ITEM_PENDING_1, RG_PENDING_1 },
+    { ITEM_PENDING_2, RG_PENDING_2 },
+    { ITEM_PENDING_3, RG_PENDING_3 },
 };
 
 extern "C" RandomizerGet RetrieveRandomizerGetFromItemID(ItemID itemID) {
@@ -1294,6 +1321,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
 #ifdef ENABLE_REMOTE_CONTROL
     CrowdControl::Instance = new CrowdControl();
     Sail::Instance = new Sail();
+    Anchor::Instance = new Anchor();
 #endif
 
     OTRMessage_Init();
@@ -2248,6 +2276,40 @@ extern "C" void Randomizer_ShowRandomizerMenu() {
     SohGui::ShowRandomizerSettingsMenu();
 }
 
+extern "C" u8 Randomizer_SceneHasMajorItem(s16 sceneNum) {
+    auto ctx = Rando::Context::GetInstance();
+    if (!ctx) {
+        return 0;
+    }
+
+    auto& locationTable = Rando::StaticData::GetLocationTable();
+    for (size_t i = 0; i < RC_MAX; i++) {
+        RandomizerCheck rc = static_cast<RandomizerCheck>(i);
+        Rando::Location& loc = locationTable[rc];
+        if (loc.GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
+            continue;
+        }
+        if (loc.GetScene() != static_cast<SceneID>(sceneNum)) {
+            continue;
+        }
+
+        Rando::ItemLocation* itemLoc = ctx->GetItemLocation(rc);
+        if (itemLoc == nullptr) {
+            continue;
+        }
+
+        RandomizerCheckStatus status = itemLoc->GetCheckStatus();
+        if (status == RCSHOW_COLLECTED || status == RCSHOW_SAVED) {
+            continue;
+        }
+
+        if (itemLoc->GetPlacedItem().IsMajorItem()) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
     s16 giid;
     if (player->getItemEntry.objectId != OBJECT_INVALID) {
@@ -2729,6 +2791,14 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     if (textId == TEXT_FISHERMAN_LEAVE && CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0)) {
         messageEntry =
             CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_FISHERMAN_LEAVE, MF_FORMATTED);
+    }
+    // Time Gate custom item - "Travel through time?" Yes/No prompt
+    if (textId == 0x9213) {
+        messageEntry = CustomMessage("Travel through time?&\x1B#Yes&No#",
+                                     "Durch die Zeit reisen?&\x1B#Ja!&Nein!#",
+                                     "Voyager dans le temps?&\x1B#Oui&Non#",
+                                     { QM_GREEN });
+        messageEntry.AutoFormat();
     }
     font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
     switch (gSaveContext.language) {

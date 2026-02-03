@@ -1,0 +1,1 @@
+extern Gfx rocs_feather_dl[];

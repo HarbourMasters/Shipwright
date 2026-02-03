@@ -146,6 +146,28 @@ typedef enum {
     /* 0x1B */ SLOT_BOOTS_KOKIRI,
     /* 0x1C */ SLOT_BOOTS_IRON,
     /* 0x1D */ SLOT_BOOTS_HOVER,
+    // Custom item slots (Page 2 of inventory menu)
+    /* 0x1E */ SLOT_ROCS_FEATHER,
+    /* 0x1F */ SLOT_ROCS_CAPE,
+    /* 0x21 */ SLOT_HYLIAS_GRACE,
+    /* 0x22 */ SLOT_ZONAI_PERMAFROST,
+    /* 0x23 */ SLOT_DEMISE_DESTRUCTION,
+    /* 0x24 */ SLOT_DEKU_LEAF,
+    /* 0x25 */ SLOT_SWITCH_HOOK,
+    /* 0x26 */ SLOT_MOGMA_MITTS,
+    /* 0x27 */ SLOT_GUST_JAR,
+    /* 0x28 */ SLOT_BALL_AND_CHAIN,
+    /* 0x29 */ SLOT_WHIP,
+    /* 0x2A */ SLOT_SPINNER,
+    /* 0x2B */ SLOT_CANE_OF_SOMARIA,
+    /* 0x2C */ SLOT_DOMINION_ROD,
+    /* 0x2D */ SLOT_TIME_GATE,
+    /* 0x2E */ SLOT_BOW_AND_BOMBS,
+    /* 0x2F */ SLOT_ROD_FIRE,
+    /* 0x30 */ SLOT_ROD_ICE,
+    /* 0x31 */ SLOT_ROD_LIGHT,
+    /* 0x32 */ SLOT_BEETLE,
+    /* 0x33 */ SLOT_SHOVEL,
     /* 0xFF */ SLOT_NONE = 0xFF
 } InventorySlot;
 
@@ -306,6 +328,33 @@ typedef enum {
     /* 0x99 */ ITEM_STICK_UPGRADE_30,
     /* 0x9A */ ITEM_NUT_UPGRADE_30,
     /* 0x9B */ ITEM_NUT_UPGRADE_40,
+    // Custom items (for second inventory page)
+    /* 0x9C */ ITEM_ROCS_FEATHER,
+    /* 0x9D */ ITEM_ROCS_CAPE,
+    /* 0x9E */ ITEM_DESIRE_SENSOR,
+    /* 0x9F */ ITEM_HYLIAS_GRACE,
+    /* 0xA0 */ ITEM_ZONAI_PERMAFROST,
+    /* 0xA1 */ ITEM_DEMISE_DESTRUCTION,
+    /* 0xA2 */ ITEM_DEKU_LEAF,
+    /* 0xA3 */ ITEM_SWITCH_HOOK,
+    /* 0xA4 */ ITEM_MOGMA_MITTS,
+    /* 0xA5 */ ITEM_GUST_JAR,
+    /* 0xA6 */ ITEM_BALL_AND_CHAIN,
+    /* 0xA7 */ ITEM_WHIP,
+    /* 0xA8 */ ITEM_SPINNER,
+    /* 0xA9 */ ITEM_CANE_OF_SOMARIA,
+    /* 0xAA */ ITEM_DOMINION_ROD,
+    /* 0xAB */ ITEM_TIME_GATE,
+    /* 0xAC */ ITEM_BOMB_ARROWS,
+    /* 0xAD */ ITEM_ROD_FIRE,
+    /* 0xAE */ ITEM_ROD_ICE,
+    /* 0xAF */ ITEM_ROD_LIGHT,
+    /* 0xB0 */ ITEM_BEETLE,
+    /* 0xB1 */ ITEM_SHOVEL,
+    /* 0xB2 */ ITEM_PENDING_1,
+    /* 0xB3 */ ITEM_PENDING_2,
+    /* 0xB4 */ ITEM_UNUSED_B4,
+    /* 0xB5 */ ITEM_PENDING_3,
     /* 0xFC */ ITEM_LAST_USED = 0xFC,
     /* 0xFE */ ITEM_NONE_FE = 0xFE,
     /* 0xFF */ ITEM_NONE = 0xFF
@@ -457,7 +506,7 @@ typedef enum {
     /* 0x7B */ GI_BULLET_BAG_50,
     /* 0x7C */ GI_ICE_TRAP, // freezes link when opened from a chest
     /* 0x7D */ GI_TEXT_0,   // no model appears over Link, shows text id 0 (pocket egg)
-    /* 0x84 */ GI_MAX
+    /* 0x7E */ GI_MAX
 } GetItemID;
 
 typedef enum {

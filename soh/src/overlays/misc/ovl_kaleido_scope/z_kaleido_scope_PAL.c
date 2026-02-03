@@ -23,6 +23,9 @@
 #include "soh/SaveManager.h"
 #include "soh/Enhancements/kaleido.h"
 
+#include "mods/extended_inventory.h"
+#include "mods/items/custom_names.c"
+
 static void* sEquipmentFRATexs[] = {
     gPauseEquipment00FRATex, gPauseEquipment01Tex, gPauseEquipment02Tex, gPauseEquipment03Tex, gPauseEquipment04Tex,
     gPauseEquipment10FRATex, gPauseEquipment11Tex, gPauseEquipment12Tex, gPauseEquipment13Tex, gPauseEquipment14Tex,
@@ -372,6 +375,8 @@ static void* iconNameTextures[] = {
     gUnusedBossKeyItemName6JPNTex,
     gUnusedBossKeyItemName7JPNTex,
     gBiggoronsSwordItemNameENGTex,
+    // Custom items (>= 0x9C) are now handled by ExtInv_GetCustomItemNameTex()
+    // No placeholders needed - vanilla array ends here (123 items total)
     // LANGUAGE_GER
     gDekuStickItemNameGERTex,
     gDekuNutItemNameGERTex,
@@ -496,6 +501,7 @@ static void* iconNameTextures[] = {
     gUnusedBossKeyItemName13JPNTex,
     gUnusedBossKeyItemName14JPNTex,
     gBiggoronsSwordItemNameGERTex,
+    // Custom items (>= 0x9C) handled by ExtInv_GetCustomItemNameTex()
     // LANGUAGE_FRA
     gDekuStickItemNameFRATex,
     gDekuNutItemNameFRATex,
@@ -620,6 +626,7 @@ static void* iconNameTextures[] = {
     gUnusedBossKeyItemName20JPNTex,
     gUnusedBossKeyItemName21JPNTex,
     gBiggoronsSwordItemNameFRATex,
+    // Custom items (>= 0x9C) handled by ExtInv_GetCustomItemNameTex()
     // LANGUAGE_JPN
     gDekuStickItemNameJPNTex,
     gDekuNutItemNameJPNTex,
@@ -744,6 +751,7 @@ static void* iconNameTextures[] = {
     gUnusedBossKeyItemName6JPNTex,
     gUnusedBossKeyItemName7JPNTex,
     gBiggoronsSwordItemNameJPNTex,
+    // Custom items (>= 0x9C) handled by ExtInv_GetCustomItemNameTex()
 };
 
 // SOH [NTSC] - Fit in JPN textures, resulting in changes to offsets when indexed
@@ -940,6 +948,8 @@ static u16 D_8082ABEC[] = {
     PAUSE_MAP, PAUSE_EQUIP, PAUSE_QUEST, PAUSE_ITEM, PAUSE_EQUIP, PAUSE_MAP, PAUSE_ITEM, PAUSE_QUEST,
 };
 
+// Vanilla slot age requirements only (24 entries)
+// Custom slots (24-47) are handled by ExtInv_GetSlotAgeReq() via gPage2ItemAgeReqs
 u8 gSlotAgeReqs[] = {
     AGE_REQ_CHILD, // SLOT_DEKU_STICK
     AGE_REQ_NONE,  // SLOT_DEKU_NUT
@@ -1082,6 +1092,8 @@ u8 gItemAgeReqs[] = {
     AGE_REQ_NONE,  // ITEM_SCALE_SILVER
     AGE_REQ_NONE,  // ITEM_SCALE_GOLDEN
     AGE_REQ_ADULT, // ITEM_GIANTS_KNIFE
+    // Custom items (>= 0x9C) are now handled by ExtInv_GetItemAgeReq()
+    // No need for a gap or custom item entries here - CHECK_AGE_REQ_ITEM macro handles it
 };
 
 u8 gAreaGsFlags[] = {
@@ -1634,7 +1646,7 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
 
             if (pauseCtx->randoQuestMode) {
                 POLY_OPA_DISP =
-                    KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->saveVtx, sSaveTexs[gSaveContext.language]);
+                    KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->saveVtx, sGameOverTexs);
                 RandoKaleido_DrawMiscCollectibles(play);
             } else {
                 POLY_OPA_DISP = KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->questPageVtx,
@@ -1730,7 +1742,7 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
 
                 if (pauseCtx->randoQuestMode) {
                     POLY_OPA_DISP = KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->saveVtx,
-                                                                  sSaveTexs[gSaveContext.language]);
+                                                                  sGameOverTexs);
                     RandoKaleido_DrawMiscCollectibles(play);
                 } else {
                     POLY_OPA_DISP = KaleidoScope_DrawPageSections(POLY_OPA_DISP, pauseCtx->questPageVtx,
@@ -2453,7 +2465,7 @@ void KaleidoScope_UpdateNamePanel(PlayState* play) {
             ((pauseCtx->pageIndex == PAUSE_EQUIP && pauseCtx->cursorX[PAUSE_EQUIP] != 0 &&
               !CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) ||
              (pauseCtx->pageIndex == PAUSE_ITEM &&
-              gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] == ITEM_NONE))) {
+              gSaveContext.inventory.items[ExtInv_GetInventorySlot(pauseCtx->cursorPoint[PAUSE_ITEM])] == ITEM_NONE))) {
             pauseCtx->namedItem = PAUSE_ITEM_NONE;
         }
 
@@ -2476,26 +2488,49 @@ void KaleidoScope_UpdateNamePanel(PlayState* play) {
                 const char* textureName = mapNameTextures[sp2A];
                 memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
             } else {
-                // #region SOH [NTSC] - There's a lot of OOB/Incorrect accesses that can occur so make sure sp2A selects
-                // something valid
-                sp2A %= 123;
-                // #endregion
-                osSyncPrintf("zoom_name=%d\n", pauseCtx->namedItem);
 
-                if (gSaveContext.language >= LANGUAGE_GER) {
-                    sp2A += 123;
-                }
-                if (gSaveContext.language >= LANGUAGE_FRA) {
-                    sp2A += 123;
-                }
-                if (gSaveContext.language >= LANGUAGE_JPN) {
-                    sp2A += 123;
+                const char* textureName;
+                bool isCustomItem = false;
+
+                // Save original item ID before any modulo/offset operations
+                u16 originalItemId = sp2A;
+
+                // Custom items (0x9C-0xB5) use ExtInv_GetCustomItemNameTex()
+                // Check original ID, not the modified sp2A
+                if (originalItemId >= 0x9C && originalItemId <= 0xB5) {
+                    textureName = (const char*)ExtInv_GetCustomItemNameTex(originalItemId, gSaveContext.language);
+                    // If texture not found, use placeholder
+                    if (textureName == NULL) {
+                        textureName = iconNameTextures[0]; // Deku Stick as fallback
+                    } else {
+                        isCustomItem = true; // Custom texture data, not a string path
+                    }
                 }
 
-                osSyncPrintf("J_N=%d  point=%d\n", gSaveContext.language, sp2A);
+                if (!isCustomItem) {
+                    // Vanilla items: modulo 123 and add language offset
+                    sp2A %= 123;
 
-                const char* textureName = iconNameTextures[sp2A];
-                memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
+                    // Add language offset (123 entries per language)
+                    if (gSaveContext.language >= LANGUAGE_GER) {
+                        sp2A += 123;
+                    }
+                    if (gSaveContext.language >= LANGUAGE_FRA) {
+                        sp2A += 123;
+                    }
+                    if (gSaveContext.language >= LANGUAGE_JPN) {
+                        sp2A += 123;
+                    }
+
+                    textureName = iconNameTextures[sp2A];
+                }
+
+                // Custom items have direct texture data (0x400 bytes), vanilla items have string paths
+                if (isCustomItem) {
+                    memcpy(pauseCtx->nameSegment, textureName, 0x400);
+                } else {
+                    memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
+                }
             }
 
             pauseCtx->nameDisplayTimer = 0;
@@ -3142,7 +3177,17 @@ void KaleidoScope_InitVertices(PlayState* play, GraphicsContext* gfxCtx) {
     for (phi_t3 = 1; phi_t3 < ARRAY_COUNT(gSaveContext.equips.buttonItems); phi_t3++, phi_t2 += 4) {
         if (gSaveContext.equips.cButtonSlots[phi_t3 - 1] != ITEM_NONE &&
             ((phi_t3 < 4) || CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0))) {
-            phi_t4 = gSaveContext.equips.cButtonSlots[phi_t3 - 1] * 4;
+            // Get the equipped slot and check if it's on the current page using modular system
+            u8 equippedSlot = gSaveContext.equips.cButtonSlots[phi_t3 - 1];
+
+            // Only draw the box if the equipped item is visible on the current page
+            if (!ExtInv_IsSlotOnCurrentPage(equippedSlot)) {
+                continue;
+            }
+
+            // Calculate screen position (visual slot 0-23)
+            u8 currentPageStart = ExtInv_GetCurrentPage() * 24;
+            phi_t4 = (equippedSlot - currentPageStart) * 4;
 
             pauseCtx->itemVtx[phi_t2 + 0].v.ob[0] = pauseCtx->itemVtx[phi_t2 + 2].v.ob[0] =
                 pauseCtx->itemVtx[phi_t4].v.ob[0] - 2;

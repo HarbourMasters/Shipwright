@@ -28,6 +28,32 @@ void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* getItemEntr
 void Randomizer_DrawBombchuBag(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawOverworldKey(PlayState* play, GetItemEntry* getItemEntry);
 
+// Custom 24 Items - Draw functions
+void Randomizer_DrawRocsFeather(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawRocsCape(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawWhip(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawSpinner(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawBombArrows(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawFireRod(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawIceRod(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawLightRod(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawDekuLeaf(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawSwitchHook(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawMogmaMitts(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawGustJar(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawBallAndChain(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawCaneOfSomaria(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawDominionRod(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawTimeGate(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawBeetle(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawShovel(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawHyliaGrace(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawZonaiPermafrost(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawDemiseDestruction(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawMagnesis(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawStasis(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawCryonis(PlayState* play, GetItemEntry* getItemEntry);
+
 #define GET_ITEM_MYSTERY                                                                                 \
     {                                                                                                    \
         ITEM_NONE_FE, 0, 0, 0, 0, MOD_RANDOMIZER, MOD_RANDOMIZER, ITEM_NONE_FE, 0, false, ITEM_FROM_NPC, \

@@ -19,6 +19,11 @@
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 
+// Extended Inventory for Custom Items (Page 2)
+extern "C" {
+#include "mods/items/custom_items.h"
+#include "mods/extended_inventory.h"
+}
 namespace Rando {
 
 bool Logic::HasItem(RandomizerGet itemName) {
@@ -1536,6 +1541,7 @@ std::map<uint32_t, uint32_t> BottleRandomizerGetToItemID = {
 
 uint32_t HookshotLookup[3] = { ITEM_NONE, ITEM_HOOKSHOT, ITEM_LONGSHOT };
 uint32_t OcarinaLookup[3] = { ITEM_NONE, ITEM_OCARINA_FAIRY, ITEM_OCARINA_TIME };
+uint32_t RocsLookup[3] = { ITEM_NONE, ITEM_ROCS_FEATHER, ITEM_ROCS_CAPE };
 
 void Logic::ApplyItemEffect(Item& item, bool state) {
     auto randoGet = item.GetRandomizerGet();
@@ -1717,6 +1723,21 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                         i = 2;
                     }
                     SetInventory(ITEM_OCARINA_FAIRY, OcarinaLookup[i]);
+                } break;
+                case RG_PROGRESSIVE_ROCS: {
+                    uint8_t i;
+                    for (i = 0; i < 3; i++) {
+                        if (CurrentInventory(ITEM_ROCS_FEATHER) == RocsLookup[i]) {
+                            break;
+                        }
+                    }
+                    i += (!state ? -1 : 1);
+                    if (i < 0) {
+                        i = 0;
+                    } else if (i > 2) {
+                        i = 2;
+                    }
+                    SetInventory(ITEM_ROCS_FEATHER, RocsLookup[i]);
                 } break;
                 case RG_HEART_CONTAINER:
                     mSaveContext->healthCapacity += (!state ? -16 : 16);
@@ -2081,6 +2102,10 @@ void Logic::NewSaveContext() {
 }
 
 uint8_t Logic::InventorySlot(uint32_t item) {
+    // Custom items (>= ITEM_ROCS_FEATHER) use extended inventory slots
+    if (item >= ITEM_ROCS_FEATHER) {
+        return ExtInv_GetItemSlot(item);
+    }
     return gItemSlots[item];
 }
 

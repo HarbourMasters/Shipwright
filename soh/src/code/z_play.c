@@ -15,7 +15,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SaveManager.h"
 #include "soh/framebuffer_effects.h"
-
+#include "mods/items/custom_items.h"
 #include <libultraship/libultraship.h>
 
 #include <time.h>

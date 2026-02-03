@@ -14,4 +14,7 @@ typedef struct BgJyaIronobj {
     /* 0x0168 */ ColliderCylinder colCylinder;
 } BgJyaIronobj; // size = 0x01B4
 
+// Public function for Ball and Chain destruction
+void BgJyaIronobj_DestroyInstantly(Actor* thisx, PlayState* play);
+
 #endif

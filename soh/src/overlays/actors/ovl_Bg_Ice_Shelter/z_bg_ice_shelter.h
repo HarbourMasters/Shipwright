@@ -16,4 +16,7 @@ typedef struct BgIceShelter {
     /* 0x0200 */ s16 alpha;
 } BgIceShelter; // size = 0x0204
 
+// Public function for custom items to instantly break red ice
+void BgIceShelter_BreakInstantly(Actor* thisx, PlayState* play);
+
 #endif

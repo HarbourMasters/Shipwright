@@ -9,6 +9,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/draw.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "mods/items/custom_items.h"
+#include "mods/extended_player.h"
 
 #include <stdlib.h>
 
@@ -101,7 +103,8 @@ u8 sActionModelGroups[] = {
     PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_MASK_ZORA
     PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_MASK_GERUDO
     PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_MASK_TRUTH
-    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_LENS_OF_TRUTH
+    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_LENS_OF_TRUTH (0x42 = 66)
+    // Custom items (0x43+) are handled by ExtPlayer_GetActionModelGroup() in extended_player.c
 };
 
 TextTriggerEntry sTextTriggers[] = {
@@ -529,7 +532,7 @@ s32 Player_IsChildWithHylianShield(Player* this) {
 }
 
 s32 Player_ActionToModelGroup(Player* this, s32 actionParam) {
-    s32 modelGroup = sActionModelGroups[actionParam];
+    s32 modelGroup = ExtPlayer_GetActionModelGroup(actionParam);
 
     if ((modelGroup == PLAYER_MODELGROUP_SWORD_AND_SHIELD) && Player_IsChildWithHylianShield(this)) {
         // child, using kokiri sword with hylian shield equipped
@@ -578,6 +581,15 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     // Left hand
     this->leftHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_LEFT_HAND];
     this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
+
+    // Custom rods: Override left hand to use closed fist instead of BGS sword model
+    // The rod visual is drawn separately in CustomItems_Draw functions
+    if (this->heldItemAction == PLAYER_IA_ROD_FIRE ||
+        this->heldItemAction == PLAYER_IA_ROD_ICE ||
+        this->heldItemAction == PLAYER_IA_ROD_LIGHT) {
+        this->leftHandType = PLAYER_MODELTYPE_LH_CLOSED;
+        this->leftHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_LH_CLOSED][gSaveContext.linkAge];
+    }
 
     if (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) {
         if (LINK_IS_CHILD &&
@@ -862,9 +874,15 @@ s32 Player_ActionToMeleeWeapon(s32 actionParam) {
 
     if ((sword > 0) && (sword < 6)) {
         return sword;
-    } else {
-        return 0;
     }
+
+    // Custom melee weapons (Fire Rod, Ice Rod, Light Rod) - treated as Deku Stick (4)
+    if (actionParam == PLAYER_IA_ROD_FIRE || actionParam == PLAYER_IA_ROD_ICE ||
+        actionParam == PLAYER_IA_ROD_LIGHT) {
+        return 4; // Same as PLAYER_IA_DEKU_STICK
+    }
+
+    return 0;
 }
 
 s32 Player_GetMeleeWeaponHeld(Player* this) {
@@ -874,9 +892,14 @@ s32 Player_GetMeleeWeaponHeld(Player* this) {
 s32 Player_HoldsTwoHandedWeapon(Player* this) {
     if ((this->heldItemAction >= PLAYER_IA_SWORD_BIGGORON) && (this->heldItemAction <= PLAYER_IA_HAMMER)) {
         return 1;
-    } else {
-        return 0;
     }
+    // Custom rods use two-handed weapon mechanics (BGS-style spin attack)
+    if (this->heldItemAction == PLAYER_IA_ROD_FIRE ||
+        this->heldItemAction == PLAYER_IA_ROD_ICE ||
+        this->heldItemAction == PLAYER_IA_ROD_LIGHT) {
+        return 1;
+    }
+    return 0;
 }
 
 s32 Player_HoldsBrokenKnife(Player* this) {
@@ -1794,8 +1817,14 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
         Math_Vec3f_Copy(&this->leftHandPos, D_80160000);
 
-        if (this->itemAction == PLAYER_IA_DEKU_STICK) {
+        if (this->itemAction == PLAYER_IA_DEKU_STICK ||
+            this->itemAction == PLAYER_IA_ROD_FIRE ||
+            this->itemAction == PLAYER_IA_ROD_ICE ||
+            this->itemAction == PLAYER_IA_ROD_LIGHT) {
             Vec3f sp124[3];
+            u8 isCustomRod = (this->itemAction == PLAYER_IA_ROD_FIRE ||
+                              this->itemAction == PLAYER_IA_ROD_ICE ||
+                              this->itemAction == PLAYER_IA_ROD_LIGHT);
 
             OPEN_DISPS(play->state.gfxCtx);
 
@@ -1815,7 +1844,14 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             Matrix_Scale(1.0f, this->unk_85C, 1.0f, MTXMODE_APPLY);
 
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_OPA_DISP++, gLinkChildLinkDekuStickDL);
+
+            if (isCustomRod) {
+                // Custom rod - don't draw Deku Stick here
+                // Fire Rod is drawn in CustomItems_DrawFireRod following leftHandPos
+            } else {
+                // Normal Deku Stick
+                gSPDisplayList(POLY_OPA_DISP++, gLinkChildLinkDekuStickDL);
+            }
 
             CLOSE_DISPS(play->state.gfxCtx);
         } else if ((this->actor.scale.y >= 0.0f) && (this->meleeWeaponState != 0)) {

@@ -4,6 +4,7 @@
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "mods/extended_inventory.h"
 
 extern const char* digitTextures[];
 
@@ -351,7 +352,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
             gDPSetEnvColor(POLY_OPA_DISP++, D_8082A0D8[sp218], D_8082A0E4[sp218], D_8082A0F0[sp218], 0);
             gSPVertex(POLY_OPA_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
 
-            KaleidoScope_DrawQuadTextureRGBA32(gfxCtx, gItemIcons[ITEM_MEDALLION_FOREST + sp218], 24, 24, 0);
+            KaleidoScope_DrawQuadTextureRGBA32(gfxCtx, ExtInv_GetItemIcon(ITEM_MEDALLION_FOREST + sp218), 24, 24, 0);
         }
     }
 
@@ -399,7 +400,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
     for (sp218 = 0; sp218 < 3; sp218++, sp21A += 4) {
         if (CHECK_QUEST_ITEM(sp218 + 0x12)) {
             gSPVertex(POLY_OPA_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
-            KaleidoScope_DrawQuadTextureRGBA32(gfxCtx, gItemIcons[ITEM_KOKIRI_EMERALD + sp218], 24, 24, 0);
+            KaleidoScope_DrawQuadTextureRGBA32(gfxCtx, ExtInv_GetItemIcon(ITEM_KOKIRI_EMERALD + sp218), 24, 24, 0);
         }
     }
 
@@ -410,7 +411,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
         if (CHECK_QUEST_ITEM(sp218 + 0x15)) {
             gSPVertex(POLY_OPA_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
-            KaleidoScope_DrawQuadTextureRGBA32(gfxCtx, gItemIcons[ITEM_STONE_OF_AGONY + sp218], 24, 24, 0);
+            KaleidoScope_DrawQuadTextureRGBA32(gfxCtx, ExtInv_GetItemIcon(ITEM_STONE_OF_AGONY + sp218), 24, 24, 0);
         }
     }
 
@@ -466,7 +467,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
         gSPVertex(POLY_OPA_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
 
         POLY_OPA_DISP = KaleidoScope_QuadTextureIA8(
-            POLY_OPA_DISP, gItemIcons[0x79 + (((gSaveContext.inventory.questItems & 0xF0000000) & 0xF0000000) >> 0x1C)],
+            POLY_OPA_DISP, ExtInv_GetItemIcon(0x79 + (((gSaveContext.inventory.questItems & 0xF0000000) & 0xF0000000) >> 0x1C)),
             48, 48, 0);
     }
 

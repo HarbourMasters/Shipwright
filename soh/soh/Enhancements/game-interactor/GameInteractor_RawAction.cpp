@@ -4,6 +4,8 @@
 #include <math.h>
 #include "soh/Enhancements/debugger/colViewer.h"
 #include "soh/Enhancements/nametag.h"
+#include "soh/Enhancements/item-tables/ItemTableManager.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "variables.h"
@@ -616,4 +618,119 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t 
     }
 
     return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+}
+
+void GameInteractor::RawAction::GiveItem(uint16_t modId, uint16_t itemId) {
+    GetItemEntry getItemEntry;
+    if (modId == MOD_NONE) {
+        getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, itemId);
+    } else {
+        getItemEntry = Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(itemId)).GetGIEntry_Copy();
+    }
+
+    if (getItemEntry.modIndex == MOD_NONE) {
+        if (getItemEntry.getItemId == GI_SWORD_BGS) {
+            gSaveContext.bgsFlag = true;
+        }
+        Item_Give(gPlayState, getItemEntry.itemId);
+    } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
+        if (getItemEntry.getItemId == RG_ICE_TRAP) {
+            gSaveContext.ship.pendingIceTrapCount++;
+        } else {
+            Randomizer_Item_Give(gPlayState, getItemEntry);
+        }
+    }
+}
+
+void GameInteractor::RawAction::SetCosmeticsColor(uint8_t cosmeticCategory, uint8_t colorValue) {
+    Color_RGBA8 newColor;
+    newColor.r = 255;
+    newColor.g = 255;
+    newColor.b = 255;
+    newColor.a = 255;
+
+    switch (colorValue) {
+        case GI_COLOR_RED:
+            newColor.r = 200;
+            newColor.g = 30;
+            newColor.b = 30;
+            break;
+        case GI_COLOR_GREEN:
+            newColor.r = 50;
+            newColor.g = 200;
+            newColor.b = 50;
+            break;
+        case GI_COLOR_BLUE:
+            newColor.r = 50;
+            newColor.g = 50;
+            newColor.b = 200;
+            break;
+        case GI_COLOR_ORANGE:
+            newColor.r = 200;
+            newColor.g = 120;
+            newColor.b = 0;
+            break;
+        case GI_COLOR_YELLOW:
+            newColor.r = 234;
+            newColor.g = 240;
+            newColor.b = 33;
+            break;
+        case GI_COLOR_PURPLE:
+            newColor.r = 144;
+            newColor.g = 13;
+            newColor.b = 178;
+            break;
+        case GI_COLOR_PINK:
+            newColor.r = 215;
+            newColor.g = 93;
+            newColor.b = 246;
+            break;
+        case GI_COLOR_BROWN:
+            newColor.r = 108;
+            newColor.g = 72;
+            newColor.b = 15;
+            break;
+        case GI_COLOR_BLACK:
+            newColor.r = 0;
+            newColor.g = 0;
+            newColor.b = 0;
+            break;
+        default:
+            break;
+    }
+
+    switch (cosmeticCategory) {
+        case GI_COSMETICS_TUNICS:
+            CVarSetColor("gCosmetics.Link_KokiriTunic.Value", newColor);
+            CVarSetInteger("gCosmetics.Link_KokiriTunic.Changed", 1);
+            CVarSetColor("gCosmetics.Link_GoronTunic.Value", newColor);
+            CVarSetInteger("gCosmetics.Link_GoronTunic.Changed", 1);
+            CVarSetColor("gCosmetics.Link_ZoraTunic.Value", newColor);
+            CVarSetInteger("gCosmetics.Link_ZoraTunic.Changed", 1);
+            break;
+        case GI_COSMETICS_NAVI:
+            CVarSetColor("gCosmetics.Navi_EnemyPrimary.Value", newColor);
+            CVarSetInteger("gCosmetics.Navi_EnemyPrimary.Changed", 1);
+            CVarSetColor("gCosmetics.Navi_EnemySecondary.Value", newColor);
+            CVarSetInteger("gCosmetics.Navi_EnemySecondary.Changed", 1);
+            CVarSetColor("gCosmetics.Navi_IdlePrimary.Value", newColor);
+            CVarSetInteger("gCosmetics.Navi_IdlePrimary.Changed", 1);
+            CVarSetColor("gCosmetics.Navi_IdleSecondary.Value", newColor);
+            CVarSetInteger("gCosmetics.Navi_IdleSecondary.Changed", 1);
+            CVarSetColor("gCosmetics.Navi_NPCPrimary.Value", newColor);
+            CVarSetInteger("gCosmetics.Navi_NPCPrimary.Changed", 1);
+            CVarSetColor("gCosmetics.Navi_NPCSecondary.Value", newColor);
+            CVarSetInteger("gCosmetics.Navi_NPCSecondary.Changed", 1);
+            CVarSetColor("gCosmetics.Navi_PropsPrimary.Value", newColor);
+            CVarSetInteger("gCosmetics.Navi_PropsPrimary.Changed", 1);
+            CVarSetColor("gCosmetics.Navi_PropsSecondary.Value", newColor);
+            CVarSetInteger("gCosmetics.Navi_PropsSecondary.Changed", 1);
+            break;
+        case GI_COSMETICS_HAIR:
+            CVarSetColor("gCosmetics.Link_Hair.Value", newColor);
+            CVarSetInteger("gCosmetics.Link_Hair.Changed", 1);
+            break;
+    }
+
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }

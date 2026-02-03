@@ -9,6 +9,8 @@
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "mods/extended_inventory.h"
+#include "mods/extended_inventory.c"
 
 u8 gAmmoItems[] = {
     ITEM_STICK,   ITEM_NUT,  ITEM_BOMB, ITEM_BOW,  ITEM_NONE, ITEM_NONE, ITEM_SLINGSHOT, ITEM_NONE,
@@ -245,7 +247,7 @@ void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 canCycle, u8 
                 gDPSetGrayscaleColor(POLY_OPA_DISP++, 109, 109, 109, 255);
                 gSPGrayscale(POLY_OPA_DISP++, true);
             }
-            KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[leftItem], 32, 32, 0);
+            KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, ExtInv_GetItemIcon(leftItem), 32, 32, 0);
             gSPGrayscale(POLY_OPA_DISP++, false);
         }
         if (showRightItem) {
@@ -253,7 +255,7 @@ void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 canCycle, u8 
                 gDPSetGrayscaleColor(POLY_OPA_DISP++, 109, 109, 109, 255);
                 gSPGrayscale(POLY_OPA_DISP++, true);
             }
-            KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[rightItem], 32, 32, 4);
+            KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, ExtInv_GetItemIcon(rightItem), 32, 32, 4);
             gSPGrayscale(POLY_OPA_DISP++, false);
         }
 
@@ -431,6 +433,9 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
     pauseCtx->cursorColorSet = 0;
     pauseCtx->nameColorSet = 0;
 
+    // Update extended inventory pagination timer
+    ExtInv_Update();
+
     if ((pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0) && (pauseCtx->pageIndex == PAUSE_ITEM)) {
         bool dpad = (CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
         bool pauseAnyCursor =
@@ -446,6 +451,21 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
 
         if (pauseCtx->cursorSpecialPos == 0) {
             pauseCtx->cursorColorSet = 4;
+
+            // Page switching logic - Method 1: Press UP on first row (D-pad or Joystick)
+            // Method 2: Press L button anywhere on the inventory page
+            bool inputUp = CHECK_BTN_ALL(input->press.button, BTN_DUP) ||
+                          (pauseCtx->stickRelY > 30 && !dpad);  // Joystick UP when D-pad mode is OFF
+            bool inputL = CHECK_BTN_ALL(input->press.button, BTN_L);
+
+            // Switch page if: (UP pressed on first row) OR (L button pressed anywhere)
+            if (ExtInv_CanSwitchPage() && ((inputUp && pauseCtx->cursorY[PAUSE_ITEM] == 0) || inputL)) {
+                // Switch to next/previous page using modular system
+                ExtInv_SwitchPage();
+                Audio_PlaySoundGeneral(NA_SE_SY_HP_RECOVER, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                      &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                moveCursorResult = 2;
+            }
 
             if (cursorItem == PAUSE_ITEM_NONE) {
                 pauseCtx->stickRelX = 40;
@@ -664,16 +684,19 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
 
             pauseCtx->cursorColorSet = 4;
 
+            // Calculate inventory slot with page offset using modular system
+            int inventorySlot = ExtInv_GetInventorySlot(pauseCtx->cursorPoint[PAUSE_ITEM]);
+
             if (moveCursorResult == 1) {
-                cursorItem = gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]];
+                cursorItem = gSaveContext.inventory.items[inventorySlot];
             } else if (moveCursorResult != 2) {
-                cursorItem = gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]];
+                cursorItem = gSaveContext.inventory.items[inventorySlot];
             }
 
             pauseCtx->cursorItem[PAUSE_ITEM] = cursorItem;
             pauseCtx->cursorSlot[PAUSE_ITEM] = cursorSlot;
 
-            if (!CHECK_AGE_REQ_SLOT(cursorSlot)) {
+            if (!CHECK_AGE_REQ_SLOT(inventorySlot)) {
                 pauseCtx->nameColorSet = 1;
             }
 
@@ -690,9 +713,9 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
                     }
                     if (CHECK_BTN_ANY(input->press.button, buttonsToCheck)) {
-                        if (CHECK_AGE_REQ_SLOT(cursorSlot) && (cursorItem != ITEM_SOLD_OUT) &&
+                        if (CHECK_AGE_REQ_SLOT(inventorySlot) && (cursorItem != ITEM_SOLD_OUT) &&
                             (cursorItem != ITEM_NONE)) {
-                            KaleidoScope_SetupItemEquip(play, cursorItem, cursorSlot,
+                            KaleidoScope_SetupItemEquip(play, cursorItem, inventorySlot,
                                                         pauseCtx->itemVtx[index].v.ob[0] * 10,
                                                         pauseCtx->itemVtx[index].v.ob[1] * 10);
                         } else {
@@ -741,9 +764,10 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
     for (i = j = 0; i < 24; i++, j += 4) {
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
-        if (gSaveContext.inventory.items[i] != ITEM_NONE) {
+        int drawSlot = ExtInv_GetInventorySlot(i);
+        if (gSaveContext.inventory.items[drawSlot] != ITEM_NONE) {
             if ((pauseCtx->unk_1E4 == 0) && (pauseCtx->pageIndex == PAUSE_ITEM) && (pauseCtx->cursorSpecialPos == 0)) {
-                if (CHECK_AGE_REQ_SLOT(i)) {
+                if (CHECK_AGE_REQ_SLOT(drawSlot)) {
                     if ((sEquipState == 2) && (i == 3)) {
                         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, magicArrowEffectsR[pauseCtx->equipTargetItem - 0xBF],
                                         magicArrowEffectsG[pauseCtx->equipTargetItem - 0xBF],
@@ -777,13 +801,13 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
             }
 
             gSPVertex(POLY_OPA_DISP++, &pauseCtx->itemVtx[j + 0], 4, 0);
-            int itemId = gSaveContext.inventory.items[i];
+            int itemId = gSaveContext.inventory.items[drawSlot];
             bool not_acquired = !CHECK_AGE_REQ_ITEM(itemId);
             if (not_acquired) {
                 gDPSetGrayscaleColor(POLY_OPA_DISP++, 109, 109, 109, 255);
                 gSPGrayscale(POLY_OPA_DISP++, true);
             }
-            KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[itemId], 32, 32, 0);
+            KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, ExtInv_GetItemIcon(itemId), 32, 32, 0);
             gSPGrayscale(POLY_OPA_DISP++, false);
         }
     }
@@ -798,10 +822,12 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
 
     u8 gBetterAmmoRendering = CVarGetInteger(CVAR_ENHANCEMENT("BetterAmmoRendering"), 0);
 
-    for (i = 0; i < (gBetterAmmoRendering ? 24 : 15); i++) {
-        if ((gBetterAmmoRendering ? ItemInSlotUsesAmmo(i) : gAmmoItems[i] != ITEM_NONE) &&
-            (gSaveContext.inventory.items[i] != ITEM_NONE)) {
-            KaleidoScope_DrawAmmoCount(pauseCtx, play->state.gfxCtx, gSaveContext.inventory.items[i], i);
+    if (ExtInv_GetCurrentPage() == 0) {
+        for (i = 0; i < (gBetterAmmoRendering ? 24 : 15); i++) {
+            if ((gBetterAmmoRendering ? ItemInSlotUsesAmmo(i) : gAmmoItems[i] != ITEM_NONE) &&
+                (gSaveContext.inventory.items[i] != ITEM_NONE)) {
+                KaleidoScope_DrawAmmoCount(pauseCtx, play->state.gfxCtx, gSaveContext.inventory.items[i], i);
+            }
         }
     }
 

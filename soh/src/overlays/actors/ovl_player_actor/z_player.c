@@ -38,6 +38,18 @@
 #include <stdlib.h>
 #include <assert.h>
 
+// Forward declarations needed by custom items
+BAD_RETURN(s32) Player_ZeroSpeedXZ(Player* this);
+
+// ============================================================================
+// CUSTOM ITEMS IMPLEMENTATION
+// ============================================================================
+#include "mods/items/custom_items.h"
+#include "mods/extended_player.h"
+#include "mods/extended_player.c"
+#include "mods/items/logic/custom_items.c"
+// Note: custom_items_common.c is already included by logic/custom_items.c
+
 // Some player animations are played at this reduced speed, for reasons yet unclear.
 // This is called "adjusted" for now.
 #define PLAYER_ANIM_ADJUSTED_SPEED (2.0f / 3.0f)
@@ -567,6 +579,8 @@ static s32 sWorldYawToTouchedWall = 0;
 static s16 sFloorShapePitch = 0;
 static s32 sUseHeldItem = false; // When true, the current held item is used. Is reset to false every frame.
 static s32 sHeldItemButtonIsHeldDown = false; // Indicates if the button for the current held item is held down.
+
+extern u8 gMogmaMittsClimbActive; // Mogma Mitts climb-any-wall flag (defined in item_mitts.c)
 
 static u16 D_8085361C[] = {
     NA_SE_VO_LI_SWEAT,
@@ -1173,70 +1187,65 @@ static u8 sFidgetAnimSfxTypes[] = {
     FIDGET_ANIMSFX_NONE,              // unused, doesnt correspond to any animation
 };
 
-// Used to map item IDs to item actions
+// Used to map item IDs to item actions (vanilla items only)
+// Custom items are handled by ExtPlayer_GetItemAction() in extended_player.c
 static s8 sItemActions[] = {
-    PLAYER_IA_DEKU_STICK,          // ITEM_DEKU_STICK
-    PLAYER_IA_DEKU_NUT,            // ITEM_DEKU_NUT
-    PLAYER_IA_BOMB,                // ITEM_BOMB
-    PLAYER_IA_BOW,                 // ITEM_BOW
-    PLAYER_IA_BOW_FIRE,            // ITEM_ARROW_FIRE
-    PLAYER_IA_DINS_FIRE,           // ITEM_DINS_FIRE
-    PLAYER_IA_SLINGSHOT,           // ITEM_SLINGSHOT
-    PLAYER_IA_OCARINA_FAIRY,       // ITEM_OCARINA_FAIRY
-    PLAYER_IA_OCARINA_OF_TIME,     // ITEM_OCARINA_OF_TIME
-    PLAYER_IA_BOMBCHU,             // ITEM_BOMBCHU
-    PLAYER_IA_HOOKSHOT,            // ITEM_HOOKSHOT
-    PLAYER_IA_LONGSHOT,            // ITEM_LONGSHOT
-    PLAYER_IA_BOW_ICE,             // ITEM_ARROW_ICE
-    PLAYER_IA_FARORES_WIND,        // ITEM_FARORES_WIND
-    PLAYER_IA_BOOMERANG,           // ITEM_BOOMERANG
-    PLAYER_IA_LENS_OF_TRUTH,       // ITEM_LENS_OF_TRUTH
-    PLAYER_IA_MAGIC_BEAN,          // ITEM_MAGIC_BEAN
-    PLAYER_IA_HAMMER,              // ITEM_HAMMER
-    PLAYER_IA_BOW_LIGHT,           // ITEM_ARROW_LIGHT
-    PLAYER_IA_NAYRUS_LOVE,         // ITEM_NAYRUS_LOVE
-    PLAYER_IA_BOTTLE,              // ITEM_BOTTLE_EMPTY
-    PLAYER_IA_BOTTLE_POTION_RED,   // ITEM_BOTTLE_POTION_RED
-    PLAYER_IA_BOTTLE_POTION_GREEN, // ITEM_BOTTLE_POTION_GREEN
-    PLAYER_IA_BOTTLE_POTION_BLUE,  // ITEM_BOTTLE_POTION_BLUE
-    PLAYER_IA_BOTTLE_FAIRY,        // ITEM_BOTTLE_FAIRY
-    PLAYER_IA_BOTTLE_FISH,         // ITEM_BOTTLE_FISH
-    PLAYER_IA_BOTTLE_MILK_FULL,    // ITEM_BOTTLE_MILK_FULL
-    PLAYER_IA_BOTTLE_RUTOS_LETTER, // ITEM_BOTTLE_RUTOS_LETTER
-    PLAYER_IA_BOTTLE_FIRE,         // ITEM_BOTTLE_BLUE_FIRE
-    PLAYER_IA_BOTTLE_BUG,          // ITEM_BOTTLE_BUG
-    PLAYER_IA_BOTTLE_BIG_POE,      // ITEM_BOTTLE_BIG_POE
-    PLAYER_IA_BOTTLE_MILK_HALF,    // ITEM_BOTTLE_MILK_HALF
-    PLAYER_IA_BOTTLE_POE,          // ITEM_BOTTLE_POE
-    PLAYER_IA_WEIRD_EGG,           // ITEM_WEIRD_EGG
-    PLAYER_IA_CHICKEN,             // ITEM_CHICKEN
-    PLAYER_IA_ZELDAS_LETTER,       // ITEM_ZELDAS_LETTER
-    PLAYER_IA_MASK_KEATON,         // ITEM_MASK_KEATON
-    PLAYER_IA_MASK_SKULL,          // ITEM_MASK_SKULL
-    PLAYER_IA_MASK_SPOOKY,         // ITEM_MASK_SPOOKY
-    PLAYER_IA_MASK_BUNNY_HOOD,     // ITEM_MASK_BUNNY_HOOD
-    PLAYER_IA_MASK_GORON,          // ITEM_MASK_GORON
-    PLAYER_IA_MASK_ZORA,           // ITEM_MASK_ZORA
-    PLAYER_IA_MASK_GERUDO,         // ITEM_MASK_GERUDO
-    PLAYER_IA_MASK_TRUTH,          // ITEM_MASK_TRUTH
-    PLAYER_IA_SWORD_MASTER,        // ITEM_SOLD_OUT
-    PLAYER_IA_POCKET_EGG,          // ITEM_POCKET_EGG
-    PLAYER_IA_POCKET_CUCCO,        // ITEM_POCKET_CUCCO
-    PLAYER_IA_COJIRO,              // ITEM_COJIRO
-    PLAYER_IA_ODD_MUSHROOM,        // ITEM_ODD_MUSHROOM
-    PLAYER_IA_ODD_POTION,          // ITEM_ODD_POTION
-    PLAYER_IA_POACHERS_SAW,        // ITEM_POACHERS_SAW
-    PLAYER_IA_BROKEN_GORONS_SWORD, // ITEM_BROKEN_GORONS_SWORD
-    PLAYER_IA_PRESCRIPTION,        // ITEM_PRESCRIPTION
-    PLAYER_IA_FROG,                // ITEM_EYEBALL_FROG
-    PLAYER_IA_EYEDROPS,            // ITEM_EYE_DROPS
-    PLAYER_IA_CLAIM_CHECK,         // ITEM_CLAIM_CHECK
-    PLAYER_IA_BOW_FIRE,            // ITEM_BOW_FIRE
-    PLAYER_IA_BOW_ICE,             // ITEM_BOW_ICE
-    PLAYER_IA_BOW_LIGHT,           // ITEM_BOW_LIGHT
-    PLAYER_IA_SWORD_KOKIRI,        // ITEM_SWORD_KOKIRI
-    PLAYER_IA_SWORD_MASTER,        // ITEM_SWORD_MASTER
-    PLAYER_IA_SWORD_BIGGORON,      // ITEM_SWORD_BIGGORON
+    PLAYER_IA_DEKU_STICK,          // ITEM_DEKU_STICK (0)
+    PLAYER_IA_DEKU_NUT,            // ITEM_DEKU_NUT (1)
+    PLAYER_IA_BOMB,                // ITEM_BOMB (2)
+    PLAYER_IA_BOW,                 // ITEM_BOW (3)
+    PLAYER_IA_BOW_FIRE,            // ITEM_ARROW_FIRE (4)
+    PLAYER_IA_DINS_FIRE,           // ITEM_DINS_FIRE (5)
+    PLAYER_IA_SLINGSHOT,           // ITEM_SLINGSHOT (6)
+    PLAYER_IA_OCARINA_FAIRY,       // ITEM_OCARINA_FAIRY (7)
+    PLAYER_IA_OCARINA_OF_TIME,     // ITEM_OCARINA_OF_TIME (8)
+    PLAYER_IA_BOMBCHU,             // ITEM_BOMBCHU (9)
+    PLAYER_IA_HOOKSHOT,            // ITEM_HOOKSHOT (10)
+    PLAYER_IA_LONGSHOT,            // ITEM_LONGSHOT (11)
+    PLAYER_IA_BOW_ICE,             // ITEM_ARROW_ICE (12)
+    PLAYER_IA_FARORES_WIND,        // ITEM_FARORES_WIND (13)
+    PLAYER_IA_BOOMERANG,           // ITEM_BOOMERANG (14)
+    PLAYER_IA_LENS_OF_TRUTH,       // ITEM_LENS_OF_TRUTH (15)
+    PLAYER_IA_MAGIC_BEAN,          // ITEM_MAGIC_BEAN (16)
+    PLAYER_IA_HAMMER,              // ITEM_HAMMER (17)
+    PLAYER_IA_BOW_LIGHT,           // ITEM_ARROW_LIGHT (18)
+    PLAYER_IA_NAYRUS_LOVE,         // ITEM_NAYRUS_LOVE (19)
+    PLAYER_IA_BOTTLE,              // ITEM_BOTTLE_EMPTY (20)
+    PLAYER_IA_BOTTLE_POTION_RED,   // ITEM_BOTTLE_POTION_RED (21)
+    PLAYER_IA_BOTTLE_POTION_GREEN, // ITEM_BOTTLE_POTION_GREEN (22)
+    PLAYER_IA_BOTTLE_POTION_BLUE,  // ITEM_BOTTLE_POTION_BLUE (23)
+    PLAYER_IA_BOTTLE_FAIRY,        // ITEM_BOTTLE_FAIRY (24)
+    PLAYER_IA_BOTTLE_FISH,         // ITEM_BOTTLE_FISH (25)
+    PLAYER_IA_BOTTLE_MILK_FULL,    // ITEM_BOTTLE_MILK_FULL (26)
+    PLAYER_IA_BOTTLE_RUTOS_LETTER, // ITEM_BOTTLE_RUTOS_LETTER (27)
+    PLAYER_IA_BOTTLE_FIRE,         // ITEM_BOTTLE_BLUE_FIRE (28)
+    PLAYER_IA_BOTTLE_BUG,          // ITEM_BOTTLE_BUG (29)
+    PLAYER_IA_BOTTLE_BIG_POE,      // ITEM_BOTTLE_BIG_POE (30)
+    PLAYER_IA_BOTTLE_MILK_HALF,    // ITEM_BOTTLE_MILK_HALF (31)
+    PLAYER_IA_BOTTLE_POE,          // ITEM_BOTTLE_POE (32)
+    PLAYER_IA_WEIRD_EGG,           // ITEM_WEIRD_EGG (33)
+    PLAYER_IA_CHICKEN,             // ITEM_CHICKEN (34)
+    PLAYER_IA_ZELDAS_LETTER,       // ITEM_ZELDAS_LETTER (35)
+    PLAYER_IA_MASK_KEATON,         // ITEM_MASK_KEATON (36)
+    PLAYER_IA_MASK_SKULL,          // ITEM_MASK_SKULL (37)
+    PLAYER_IA_MASK_SPOOKY,         // ITEM_MASK_SPOOKY (38)
+    PLAYER_IA_MASK_BUNNY_HOOD,     // ITEM_MASK_BUNNY_HOOD (39)
+    PLAYER_IA_MASK_GORON,          // ITEM_MASK_GORON (40)
+    PLAYER_IA_MASK_ZORA,           // ITEM_MASK_ZORA (41)
+    PLAYER_IA_MASK_GERUDO,         // ITEM_MASK_GERUDO (42)
+    PLAYER_IA_MASK_TRUTH,          // ITEM_MASK_TRUTH (43)
+    PLAYER_IA_SWORD_MASTER,        // ITEM_SOLD_OUT (44)
+    PLAYER_IA_POCKET_EGG,          // ITEM_POCKET_EGG (45)
+    PLAYER_IA_POCKET_CUCCO,        // ITEM_POCKET_CUCCO (46)
+    PLAYER_IA_COJIRO,              // ITEM_COJIRO (47)
+    PLAYER_IA_ODD_MUSHROOM,        // ITEM_ODD_MUSHROOM (48)
+    PLAYER_IA_ODD_POTION,          // ITEM_ODD_POTION (49)
+    PLAYER_IA_POACHERS_SAW,        // ITEM_POACHERS_SAW (50)
+    PLAYER_IA_BROKEN_GORONS_SWORD, // ITEM_BROKEN_GORONS_SWORD (51)
+    PLAYER_IA_PRESCRIPTION,        // ITEM_PRESCRIPTION (52)
+    PLAYER_IA_FROG,                // ITEM_EYEBALL_FROG (53)
+    PLAYER_IA_EYEDROPS,            // ITEM_EYE_DROPS (54)
+    PLAYER_IA_CLAIM_CHECK,         // ITEM_CLAIM_CHECK (55)
 };
 
 static s32 (*sItemActionUpdateFuncs[])(Player* this, PlayState* play) = {
@@ -1306,7 +1315,7 @@ static s32 (*sItemActionUpdateFuncs[])(Player* this, PlayState* play) = {
     func_8083485C,                 // PLAYER_IA_MASK_ZORA
     func_8083485C,                 // PLAYER_IA_MASK_GERUDO
     func_8083485C,                 // PLAYER_IA_MASK_TRUTH
-    func_8083485C,                 // PLAYER_IA_LENS_OF_TRUTH
+    func_8083485C,                 // PLAYER_IA_LENS_OF_TRUTH (0x42)
 };
 
 static void (*sItemActionInitFuncs[])(PlayState* play, Player* this) = {
@@ -1376,7 +1385,7 @@ static void (*sItemActionInitFuncs[])(PlayState* play, Player* this) = {
     Player_InitDefaultIA,        // PLAYER_IA_MASK_ZORA
     Player_InitDefaultIA,        // PLAYER_IA_MASK_GERUDO
     Player_InitDefaultIA,        // PLAYER_IA_MASK_TRUTH
-    Player_InitDefaultIA,        // PLAYER_IA_LENS_OF_TRUTH
+    Player_InitDefaultIA,        // PLAYER_IA_LENS_OF_TRUTH (0x42)
 };
 
 typedef enum ItemChangeType {
@@ -2248,13 +2257,9 @@ void Player_InitItemActionWithAnim(PlayState* play, Player* this, s8 itemAction)
 s8 Player_ItemToItemAction(s32 item) {
     if (GameInteractor_Should(VB_ITEM_ACTION_BE_NONE, item >= ITEM_NONE_FE, item)) {
         return PLAYER_IA_NONE;
-    } else if (item == ITEM_LAST_USED) {
-        return PLAYER_IA_SWORD_CS;
-    } else if (item == ITEM_FISHING_POLE) {
-        return PLAYER_IA_FISHING_POLE;
-    } else {
-        return sItemActions[item];
     }
+    // Use extended player helper for item action lookup (handles custom items)
+    return ExtPlayer_GetItemAction(item);
 }
 
 void Player_InitDefaultIA(PlayState* play, Player* this) {
@@ -2339,7 +2344,7 @@ void Player_InitItemAction(PlayState* play, Player* this, s8 itemAction) {
 
     this->stateFlags1 &= ~(PLAYER_STATE1_ITEM_IN_HAND | PLAYER_STATE1_USING_BOOMERANG);
 
-    sItemActionInitFuncs[itemAction](play, this);
+    ExtPlayer_GetItemActionInitFunc(itemAction)(play, this);
 
     Player_SetModelGroup(this, this->modelGroup);
 }
@@ -2733,7 +2738,7 @@ void func_80834644(PlayState* play, Player* this) {
         Player_FinishItemChange(play, this);
     }
 
-    Player_SetUpperActionFunc(this, sItemActionUpdateFuncs[this->heldItemAction]);
+    Player_SetUpperActionFunc(this, ExtPlayer_GetItemActionUpdateFunc(this->heldItemAction));
     this->unk_834 = 0;
     this->idleType = PLAYER_IDLE_DEFAULT;
     Player_DetachHeldActor(play, this);
@@ -2833,7 +2838,7 @@ s32 Player_UpperAction_ChangeHeldItem(Player* this, PlayState* play) {
         ((Player_ItemToItemAction(this->heldItemId) == this->heldItemAction) &&
          (sUseHeldItem =
               (sUseHeldItem || ((this->modelAnimType != PLAYER_ANIMTYPE_3) && (play->shootingGalleryStatus == 0)))))) {
-        Player_SetUpperActionFunc(this, sItemActionUpdateFuncs[this->heldItemAction]);
+        Player_SetUpperActionFunc(this, ExtPlayer_GetItemActionUpdateFunc(this->heldItemAction));
         this->unk_834 = 0;
         this->idleType = PLAYER_IDLE_DEFAULT;
         sHeldItemButtonIsHeldDown = sUseHeldItem;
@@ -2885,7 +2890,7 @@ s32 func_80834C74(Player* this, PlayState* play) {
     sUseHeldItem = sHeldItemButtonIsHeldDown;
 
     if (sUseHeldItem || LinkAnimation_Update(play, &this->upperSkelAnime)) {
-        Player_SetUpperActionFunc(this, sItemActionUpdateFuncs[this->heldItemAction]);
+        Player_SetUpperActionFunc(this, ExtPlayer_GetItemActionUpdateFunc(this->heldItemAction));
         LinkAnimation_PlayLoop(play, &this->upperSkelAnime,
                                GET_PLAYER_ANIM(PLAYER_ANIMGROUP_wait, this->modelAnimType));
         this->idleType = PLAYER_IDLE_DEFAULT;
@@ -3476,8 +3481,8 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
                 } else {
                     Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
                 }
-            } else if (itemAction >= PLAYER_IA_MASK_KEATON) {
-                // Handle wearable masks
+            } else if (itemAction >= PLAYER_IA_MASK_KEATON && itemAction <= PLAYER_IA_MASK_TRUTH) {
+                // Handle wearable masks (ONLY actual masks, not Lens or custom items)
                 if (this->currentMask != PLAYER_MASK_NONE) {
                     this->currentMask = PLAYER_MASK_NONE;
                 } else {
@@ -3487,8 +3492,14 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
                 gSaveContext.ship.maskMemory = this->currentMask;
 
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
-            } else if (((itemAction >= PLAYER_IA_OCARINA_FAIRY) && (itemAction <= PLAYER_IA_OCARINA_OF_TIME)) ||
-                       (itemAction >= PLAYER_IA_BOTTLE_FISH)) {
+            } else if (itemAction == PLAYER_IA_ROCS_FEATHER || itemAction == PLAYER_IA_ROCS_CAPE ||
+                       itemAction == PLAYER_IA_DEMISE_DESTRUCTION || itemAction == PLAYER_IA_HYLIAS_GRACE||
+                       itemAction == PLAYER_IA_ZONAI_PERMAFROST || itemAction == PLAYER_IA_TIME_GATE) {
+                // CUSTOM ITEMS: Instant-activation items spell-like
+            } else if ((((itemAction >= PLAYER_IA_OCARINA_FAIRY) && (itemAction <= PLAYER_IA_OCARINA_OF_TIME)) ||
+                       (itemAction >= PLAYER_IA_BOTTLE_FISH)) &&
+                       // Exclude ALL custom items - they use held item system for equip/unequip animations
+                       itemAction < PLAYER_IA_ROCS_FEATHER) {
                 // Handle "cutscene items"
                 if (!Player_CheckHostileLockOn(this) ||
                     ((itemAction >= PLAYER_IA_BOTTLE_POTION_RED) && (itemAction <= PLAYER_IA_BOTTLE_FAIRY))) {
@@ -5716,7 +5727,7 @@ s32 func_8083A6AC(Player* this, PlayState* play) {
 
         if (BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &sp74, &sp68, &sp84, true, false, false,
                                     true, &sp80) &&
-            ((ABS(sp84->normal.y) < 600) || (CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0) != 0))) {
+            ((ABS(sp84->normal.y) < 600) || (CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0) != 0) || gMogmaMittsClimbActive)) {
             f32 nx = COLPOLY_GET_NORMAL(sp84->normal.x);
             f32 ny = COLPOLY_GET_NORMAL(sp84->normal.y);
             f32 nz = COLPOLY_GET_NORMAL(sp84->normal.z);
@@ -10662,7 +10673,7 @@ static u8 D_808546F0[] = { ITEM_SWORD_MASTER, ITEM_SWORD_KOKIRI };
 
 void func_80846720(PlayState* play, Player* this, s32 arg2) {
     s32 item = D_808546F0[(void)0, gSaveContext.linkAge];
-    s32 itemAction = sItemActions[item];
+    s32 itemAction = ExtPlayer_GetItemAction(item);
 
     Player_DestroyHookshot(this);
     Player_DetachHeldActor(play, this);
@@ -11312,7 +11323,7 @@ void Player_ProcessSceneCollision(PlayState* play, Player* this) {
 
         // conflicts arise from these two being enabled at once, and with ClimbEverything on, FixVineFall is redundant
         // anyway
-        if (CVarGetInteger(CVAR_ENHANCEMENT("FixVineFall"), 0) && !CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0)) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("FixVineFall"), 0) && !CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0) && !gMogmaMittsClimbActive) {
             /* This fixes the "started climbing a wall and then immediately fell off" bug.
              * The main idea is if a climbing wall is detected, double-check that it will
              * still be valid once climbing begins by doing a second raycast with a small
@@ -11385,7 +11396,7 @@ void Player_ProcessSceneCollision(PlayState* play, Player* this) {
         if ((this->actor.bgCheckFlags & 0x200) && (sShapeYawToTouchedWall < 0x3000)) {
             CollisionPoly* wallPoly = this->actor.wallPoly;
 
-            if (ABS(wallPoly->normal.y) < 600 || (CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0) != 0)) {
+            if (ABS(wallPoly->normal.y) < 600 || (CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0) != 0) || gMogmaMittsClimbActive) {
                 f32 wallPolyNormalX = COLPOLY_GET_NORMAL(wallPoly->normal.x);
                 f32 wallPolyNormalY = COLPOLY_GET_NORMAL(wallPoly->normal.y);
                 f32 wallPolyNormalZ = COLPOLY_GET_NORMAL(wallPoly->normal.z);
@@ -12409,6 +12420,9 @@ void Player_Update(Actor* thisx, PlayState* play) {
         }
 
         Player_UpdateCommon(this, play, &sp44);
+
+        // CUSTOM ITEMS: Update standalone system (completely separate from vanilla)
+        CustomItems_Update(this, play);
     }
 
     MREG(52) = this->actor.world.pos.x;
@@ -12508,7 +12522,9 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
                     this->currentTunic, this->currentBoots, this->actor.shape.face, overrideLimbDraw,
                     Player_PostLimbDrawGameplay, this);
 
-    if ((overrideLimbDraw == Player_OverrideLimbDrawGameplayDefault) && (this->currentMask != PLAYER_MASK_NONE)) {
+    // FIX: Validate mask range to prevent crashes with custom items (masks are 1-8)
+    if ((overrideLimbDraw == Player_OverrideLimbDrawGameplayDefault) &&
+        (this->currentMask >= PLAYER_MASK_KEATON && this->currentMask <= PLAYER_MASK_TRUTH)) {
         // Fixes a bug in vanilla where ice traps are rendered extremely large while wearing a bunny hood
         if (CVarGetInteger(CVAR_GENERAL("FixIceTrapWithBunnyHood"), 1))
             Matrix_Push();
@@ -12703,6 +12719,9 @@ void Player_Draw(Actor* thisx, PlayState* play2) {
         if (this->unk_862 > 0) {
             Player_DrawGetItem(play, this);
         }
+        
+        // CUSTOM ITEMS: Draw all
+        CustomItems_OverrideDraw(this, play);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

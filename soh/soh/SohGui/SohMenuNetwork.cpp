@@ -6,6 +6,7 @@
 #include "soh/OTRGlobals.h"
 #include <soh/Network/Sail/Sail.h>
 #include <soh/Network/CrowdControl/CrowdControl.h>
+#include <soh/Network/Anchor/Anchor.h>
 
 namespace SohGui {
 
@@ -16,8 +17,12 @@ void SohMenu::AddMenuNetwork() {
     // Add Network Menu
     AddMenuEntry("Network", CVAR_SETTING("Menu.NetworkSidebarSection"));
 
+    // Anchor
+    WidgetPath path = { "Network", "Anchor", SECTION_COLUMN_1 };
+    AddSidebarEntry("Network", path.sidebarName, 3);
+
     // Sail
-    WidgetPath path = { "Network", "Sail", SECTION_COLUMN_1 };
+    path.sidebarName = "Sail";
     AddSidebarEntry("Network", path.sidebarName, 3);
 
     AddWidget(path,

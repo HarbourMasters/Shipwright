@@ -766,7 +766,11 @@ void SaveManager::InitFileDebug() {
         ITEM_BOTTLE,    ITEM_POTION_RED,    ITEM_POTION_GREEN, ITEM_POTION_BLUE, ITEM_POCKET_EGG,  ITEM_WEIRD_EGG,
     };
     for (int item = 0; item < ARRAY_COUNT(gSaveContext.inventory.items); item++) {
-        gSaveContext.inventory.items[item] = sItems[item];
+        if (item < sItems.size()) {
+            gSaveContext.inventory.items[item] = sItems[item];
+        } else {
+            gSaveContext.inventory.items[item] = ITEM_NONE;
+        }
     }
     static std::array<s8, 16> sAmmo = { 50, 50, 10, 30, 1, 1, 30, 1, 50, 1, 1, 1, 1, 1, 1, 1 };
     for (int ammo = 0; ammo < ARRAY_COUNT(gSaveContext.inventory.ammo); ammo++) {
@@ -887,7 +891,11 @@ void SaveManager::InitFileMaxed() {
         ITEM_FAIRY,     ITEM_FAIRY,        ITEM_BUG,     ITEM_FISH,     ITEM_CLAIM_CHECK, ITEM_MASK_BUNNY,
     };
     for (int item = 0; item < ARRAY_COUNT(gSaveContext.inventory.items); item++) {
-        gSaveContext.inventory.items[item] = sItems[item];
+        if (item < sItems.size()) {
+            gSaveContext.inventory.items[item] = sItems[item];
+        } else {
+            gSaveContext.inventory.items[item] = ITEM_NONE;
+        }
     }
     static std::array<s8, 16> sAmmo = { 30, 40, 40, 50, 0, 0, 50, 0, 50, 0, 0, 0, 0, 0, 15, 0 };
     for (int ammo = 0; ammo < ARRAY_COUNT(gSaveContext.inventory.ammo); ammo++) {

@@ -21,7 +21,7 @@ const std::array<RandomizerGet, 16> JunkPoolItems = {
     RG_RECOVERY_HEART, RG_ARROWS_5,   RG_ARROWS_10,    RG_ARROWS_30,   RG_BLUE_RUPEE,   RG_RED_RUPEE,
     RG_PURPLE_RUPEE,   RG_HUGE_RUPEE, RG_DEKU_NUTS_10, RG_ICE_TRAP,
 };
-const std::array<RandomizerGet, 59> alwaysItems = {
+const std::array<RandomizerGet, 83> alwaysItems = {
     RG_BIGGORON_SWORD,
     RG_BOOMERANG,
     RG_LENS_OF_TRUTH,
@@ -81,6 +81,31 @@ const std::array<RandomizerGet, 59> alwaysItems = {
     RG_ARROWS_10,
     RG_ARROWS_10,
     RG_TREASURE_GAME_HEART,
+    // Custom Items (24 items for second inventory page)
+    RG_PROGRESSIVE_ROCS,  // First gives Feather, second gives Cape
+    RG_WHIP,
+    RG_SPINNER,
+    RG_BOMB_ARROWS,
+    RG_FIRE_ROD,
+    RG_DEMISE_DESTRUCTION,
+    RG_DEKU_LEAF,
+    RG_TIME_GATE,
+    RG_BEETLE,
+    RG_SWITCH_HOOK,
+    RG_ICE_ROD,
+    RG_ZONAI_PERMAFROST,
+    RG_MOGMA_MITTS,
+    RG_GUST_JAR,
+    RG_BALL_AND_CHAIN,
+    RG_PROGRESSIVE_ROCS,  // Second progressive Roc's item
+    RG_LIGHT_ROD,
+    RG_HYLIAS_GRACE,
+    RG_PENDING_2,
+    RG_PENDING_1,
+    RG_PENDING_3,
+    RG_CANE_OF_SOMARIA,
+    RG_SHOVEL,
+    RG_DOMINION_ROD,
 };
 const std::array<RandomizerGet, 44> easyItems = {
     RG_BIGGORON_SWORD,

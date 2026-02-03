@@ -34,6 +34,30 @@ extern "C" {
 #include "overlays/ovl_Boss_Sst/ovl_Boss_Sst.h"
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
+
+#include "mods/items/objects/rocs_cape_giveDL/header.h"
+#include "mods/items/objects/rocs_cape_giveDL/model.inc.c"
+#include "mods/items/objects/rocs_feather_giveDL/header.h"
+#include "mods/items/objects/rocs_feather_giveDL/model.inc.c"
+#include "mods/items/objects/gust_jar_giveDL/header.h"
+#include "mods/items/objects/gust_jar_giveDL/model.inc.c"
+#include "mods/items/objects/deku_leaf_giveDL/header.h"
+#include "mods/items/objects/deku_leaf_giveDL/model.inc.c"
+#include "mods/items/objects/ball_and_chainDL/header.h"
+#include "mods/items/objects/ball_and_chainDL/model.inc.c"
+#include "mods/items/objects/spinner_giveDL/header.h"
+#include "mods/items/objects/spinner_giveDL/model.inc.c"
+#include "mods/items/objects/beetle_giveDL/header.h"
+#include "mods/items/objects/beetle_giveDL/model.inc.c"
+#include "mods/items/objects/somaria_cane_DL/header.h"
+#include "mods/items/objects/somaria_cane_DL/model.inc.c"
+#include "mods/items/objects/mogma_mittsDL/header.h"
+#include "mods/items/objects/mogma_mittsDL/model.inc.c"
+#include "mods/items/objects/magic_spell_giveDL/header.h"
+#include "mods/items/objects/magic_spell_giveDL/model.inc.c"
+#include "mods/items/objects/bombarrows_giveDL/header.h"
+#include "mods/items/objects/bombarrows_giveDL/model.inc.c"
+
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
@@ -1222,3 +1246,270 @@ extern "C" void Randomizer_DrawOverworldKey(PlayState* play, GetItemEntry* getIt
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
+
+// ============================================================================
+// Custom 24 Items - 3D Models and Draw Functions
+// ============================================================================
+
+// Embedded object models - Green cubes for all items except Ice Rod (blue)
+static Vtx object_rando_rocsfeatherVtx[] = {
+    VTX(-10, -10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX( 10, -10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF),
+    VTX( 10,  10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX(-10,  10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF),
+    VTX(-10, -10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX( 10, -10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF),
+    VTX( 10,  10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX(-10,  10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF),
+    VTX(-10, -10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX(-10, -10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF),
+    VTX(-10,  10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX(-10,  10, -10, 0, 0x00, 0xFF, 0x00, 0xFF),
+    VTX( 10, -10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX( 10, -10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF),
+    VTX( 10,  10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX( 10,  10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF),
+    VTX(-10,  10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX( 10,  10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF),
+    VTX( 10,  10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX(-10,  10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF),
+    VTX(-10, -10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX( 10, -10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF),
+    VTX( 10, -10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX(-10, -10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF),
+};
+
+Gfx gRandoRocsfeatherDL[] = {
+    gsDPPipeSync(),
+    gsDPSetCombineLERP(PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0),
+    gsDPSetPrimColor(0, 0, 0x00, 0xFF, 0x00, 0xFF),
+    gsSPClearGeometryMode(G_CULL_BACK | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR),
+    gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_SHADING_SMOOTH),
+    gsSPVertex(object_rando_rocsfeatherVtx, 24, 0),
+    gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0), gsSP2Triangles(4, 6, 5, 0, 4, 7, 6, 0),
+    gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0), gsSP2Triangles(12, 14, 13, 0, 12, 15, 14, 0),
+    gsSP2Triangles(16, 17, 18, 0, 16, 18, 19, 0), gsSP2Triangles(20, 22, 21, 0, 20, 23, 22, 0),
+    gsSPEndDisplayList(),
+};
+
+// Copy the same structure for all other items (I'll create a macro to reduce repetition)
+#define DEFINE_GREEN_CUBE_ITEM(name) \
+static Vtx object_rando_##name##Vtx[] = { \
+    VTX(-10, -10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX( 10, -10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), \
+    VTX( 10,  10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX(-10,  10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), \
+    VTX(-10, -10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX( 10, -10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), \
+    VTX( 10,  10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX(-10,  10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), \
+    VTX(-10, -10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX(-10, -10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), \
+    VTX(-10,  10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX(-10,  10, -10, 0, 0x00, 0xFF, 0x00, 0xFF), \
+    VTX( 10, -10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX( 10, -10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), \
+    VTX( 10,  10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX( 10,  10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), \
+    VTX(-10,  10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX( 10,  10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), \
+    VTX( 10,  10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX(-10,  10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), \
+    VTX(-10, -10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX( 10, -10, -10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), \
+    VTX( 10, -10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), VTX(-10, -10,  10, 0, 0, 0x00, 0xFF, 0x00, 0xFF), \
+}; \
+Gfx gRando##name##DL[] = { \
+    gsDPPipeSync(), \
+    gsDPSetCombineLERP(PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0), \
+    gsDPSetPrimColor(0, 0, 0x00, 0xFF, 0x00, 0xFF), \
+    gsSPClearGeometryMode(G_CULL_BACK | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR), \
+    gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_SHADING_SMOOTH), \
+    gsSPVertex(object_rando_##name##Vtx, 24, 0), \
+    gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0), gsSP2Triangles(4, 6, 5, 0, 4, 7, 6, 0), \
+    gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0), gsSP2Triangles(12, 14, 13, 0, 12, 15, 14, 0), \
+    gsSP2Triangles(16, 17, 18, 0, 16, 18, 19, 0), gsSP2Triangles(20, 22, 21, 0, 20, 23, 22, 0), \
+    gsSPEndDisplayList(), \
+};
+
+Gfx gRandoRocsCapeDL[] = {
+    gsSPDisplayList(rocs_cape_mesh_dl),
+    gsSPEndDisplayList(),
+};
+Gfx gRandoRocsFeatherDL[] = {
+    gsSPDisplayList(rocs_feather_dl),
+    gsSPEndDisplayList(),
+};
+Gfx gRandoGustjarDL[] = {
+    gsSPDisplayList(jar_model_dl),
+    gsSPEndDisplayList(),
+};
+Gfx gRandoDekuLeafDL[] = {
+    gsSPDisplayList(g_dekuleaf_dl),
+    gsSPEndDisplayList(),
+};
+Gfx gRandoBallandChainDL[] = {
+    gsSPDisplayList(g_ball_and_chain_dl),
+    gsSPEndDisplayList(),
+};
+Gfx gRandoSpinnerDL[] = {
+    gsSPDisplayList(g_spinner_dl),
+    gsSPEndDisplayList(),
+};
+Gfx gRandoBeetleDL[] = {
+    gsSPDisplayList(g_beetle_dl),
+    gsSPEndDisplayList(),
+};
+Gfx gRandoSomariaCaneDL[] = {
+    gsSPDisplayList(g_somaria_cane_give_dl),
+    gsSPEndDisplayList(),
+};
+Gfx gRandoMogmamittsDL[] = {
+    gsSPDisplayList(gMogmaMittsGiveDL),
+    gsSPEndDisplayList(),
+};
+Gfx gRandoHyliagraceDL[] = {
+    gsSPDisplayList(gHyliaGraceGiveDL),
+    gsSPEndDisplayList(),
+};
+Gfx gRandoZonaipermafrostDL[] = {
+    gsSPDisplayList(gZonaiPermafrostGiveDL),
+    gsSPEndDisplayList(),
+};
+Gfx gRandoDemisedestructionDL[] = {
+    gsSPDisplayList(gDemiseDestructionGiveDL),
+    gsSPEndDisplayList(),
+};
+Gfx gRandoBombarrowsDL[] = {
+    gsSPDisplayList(gBombarrowsGiveDL),
+    gsSPEndDisplayList(),
+};
+
+DEFINE_GREEN_CUBE_ITEM(Whip)
+DEFINE_GREEN_CUBE_ITEM(Firerod)
+DEFINE_GREEN_CUBE_ITEM(Icerod)
+DEFINE_GREEN_CUBE_ITEM(Lightrod)
+DEFINE_GREEN_CUBE_ITEM(SwitchHook)
+DEFINE_GREEN_CUBE_ITEM(Dominionrod)
+DEFINE_GREEN_CUBE_ITEM(Timegate)
+DEFINE_GREEN_CUBE_ITEM(Shovel)
+DEFINE_GREEN_CUBE_ITEM(Magnesis)
+DEFINE_GREEN_CUBE_ITEM(Stasis)
+DEFINE_GREEN_CUBE_ITEM(Cryonis)
+
+// All draw functions must be in extern "C" to work with OPEN_DISPS/CLOSE_DISPS macros
+extern "C" {
+
+// Helper: Generic rotating diamond renderer
+static void DrawCustomItemDiamond(PlayState* play, Gfx* displayList, f32 scale) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
+
+    // Rotating animation
+    s16 rotation = play->gameplayFrames * 0x2;
+    Matrix_RotateY(rotation * 0.01f, MTXMODE_APPLY);
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, displayList);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+// All 24 draw functions
+void Randomizer_DrawRocsFeather(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoRocsFeatherDL, 0.5f);
+}
+
+void Randomizer_DrawRocsCape(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoRocsCapeDL, 0.6f);
+}
+
+void Randomizer_DrawWhip(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoWhipDL, 2.5f);
+}
+
+void Randomizer_DrawSpinner(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoSpinnerDL, 0.3f);
+}
+
+void Randomizer_DrawBombArrows(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Scale(0.5f, 0.5f, 0.5f, MTXMODE_APPLY);
+
+    // Rotate 180 deg Z so arrowhead tip (with bomb bag) points UP
+    Matrix_RotateZ(M_PI, MTXMODE_APPLY);
+
+    // Spinning animation
+    s16 rotation = play->gameplayFrames * 0x2;
+    Matrix_RotateY(rotation * 0.01f, MTXMODE_APPLY);
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, gRandoBombarrowsDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+void Randomizer_DrawFireRod(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoFirerodDL, 2.5f);
+}
+
+void Randomizer_DrawIceRod(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoIcerodDL, 2.5f);
+}
+
+void Randomizer_DrawLightRod(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoLightrodDL, 2.5f);
+}
+
+void Randomizer_DrawDekuLeaf(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoDekuLeafDL, 2.5f);
+}
+
+void Randomizer_DrawSwitchHook(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoSwitchHookDL, 2.5f);
+}
+
+void Randomizer_DrawMogmaMitts(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoMogmamittsDL, 0.5f);
+}
+
+void Randomizer_DrawGustJar(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoGustjarDL, 5.0f);
+}
+/*
+void Randomizer_DrawBallAndChain(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoBallandChainDL, 0.25f);
+}*/
+
+void Randomizer_DrawBallAndChain(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoBallandChainDL, 0.25f);
+}
+
+void Randomizer_DrawCaneOfSomaria(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoSomariaCaneDL, 0.25f);
+}
+
+void Randomizer_DrawDominionRod(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoDominionrodDL, 2.5f);
+}
+
+void Randomizer_DrawTimeGate(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoTimegateDL, 2.5f);
+}
+
+void Randomizer_DrawBeetle(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoBeetleDL, 0.3f);
+}
+
+void Randomizer_DrawShovel(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoShovelDL, 2.5f);
+}
+
+void Randomizer_DrawHyliaGrace(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoHyliagraceDL, 1.0f);
+}
+
+void Randomizer_DrawZonaiPermafrost(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoZonaipermafrostDL, 1.0f);
+}
+
+void Randomizer_DrawDemiseDestruction(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoDemisedestructionDL, 1.0f);
+}
+
+void Randomizer_DrawMagnesis(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoMagnesisDL, 2.5f);
+}
+
+void Randomizer_DrawStasis(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoStasisDL, 2.5f);
+}
+
+void Randomizer_DrawCryonis(PlayState* play, GetItemEntry* getItemEntry) {
+    DrawCustomItemDiamond(play, gRandoCryonisDL, 2.5f);
+}
+
+} // extern "C"

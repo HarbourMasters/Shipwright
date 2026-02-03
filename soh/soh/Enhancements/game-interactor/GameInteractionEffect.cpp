@@ -113,6 +113,19 @@ void ModifyHeartContainers::_Apply() {
     GameInteractor::RawAction::AddOrRemoveHealthContainers(parameters[0]);
 }
 
+// MARK: - GiveItem
+GameInteractionEffectQueryResult GiveItem::CanBeApplied() {
+    if (!GameInteractor::IsSaveLoaded()) {
+        return GameInteractionEffectQueryResult::NotPossible;
+    }
+
+    return GameInteractionEffectQueryResult::Possible;
+}
+
+void GiveItem::_Apply() {
+    GameInteractor::RawAction::GiveItem(parameters[0], parameters[1]);
+}
+
 // MARK: - FillMagic
 GameInteractionEffectQueryResult FillMagic::CanBeApplied() {
     if (!GameInteractor::IsSaveLoaded(true)) {
@@ -391,6 +404,21 @@ void ModifyMovementSpeedMultiplier::_Remove() {
     GameInteractor::State::MovementSpeedMultiplier = 1.0f;
 }
 
+// MARK: - ModifyRunSpeedModifier
+GameInteractionEffectQueryResult ModifyRunSpeedModifier::CanBeApplied() {
+    if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+        return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    } else {
+        return GameInteractionEffectQueryResult::Possible;
+    }
+}
+void ModifyRunSpeedModifier::_Apply() {
+    GameInteractor::State::RunSpeedModifier = parameters[0];
+}
+void ModifyRunSpeedModifier::_Remove() {
+    GameInteractor::State::RunSpeedModifier = 0;
+}
+
 // MARK: - OneHitKO
 GameInteractionEffectQueryResult OneHitKO::CanBeApplied() {
     if (!GameInteractor::IsSaveLoaded(true) || GameInteractor::IsGameplayPaused()) {
@@ -488,6 +516,18 @@ void SetCollisionViewer::_Apply() {
 }
 void SetCollisionViewer::_Remove() {
     GameInteractor::RawAction::SetCollisionViewer(false);
+}
+
+// MARK: - SetCosmeticsColor
+GameInteractionEffectQueryResult SetCosmeticsColor::CanBeApplied() {
+    if (!GameInteractor::IsSaveLoaded()) {
+        return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    } else {
+        return GameInteractionEffectQueryResult::Possible;
+    }
+}
+void SetCosmeticsColor::_Apply() {
+    GameInteractor::RawAction::SetCosmeticsColor(parameters[0], parameters[1]);
 }
 
 // MARK: - RandomizeCosmetics

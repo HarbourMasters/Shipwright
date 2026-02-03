@@ -3,6 +3,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "mods/extended_inventory.h"
 
 static u8 sChildUpgrades[] = { UPG_BULLET_BAG, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
 static u8 sAdultUpgrades[] = { UPG_QUIVER, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
@@ -776,7 +777,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                     gSPGrayscale(POLY_OPA_DISP++, true);
                 }
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx,
-                                                   gItemIcons[sChildUpgradeItemBases[i] + point - 1], 32, 32, 0);
+                                                   ExtInv_GetItemIcon(sChildUpgradeItemBases[i] + point - 1), 32, 32, 0);
                 gSPGrayscale(POLY_OPA_DISP++, false);
             }
         } else {
@@ -788,7 +789,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                     gSPGrayscale(POLY_OPA_DISP++, true);
                 }
                 KaleidoScope_DrawQuadTextureRGBA32(
-                    play->state.gfxCtx, gItemIcons[sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1],
+                    play->state.gfxCtx, ExtInv_GetItemIcon(sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1),
                     32, 32, 0);
                 gSPGrayscale(POLY_OPA_DISP++, false);
             } else if (CUR_UPG_VALUE(sAdultUpgrades[i]) != 0) {
@@ -803,7 +804,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                     gSPGrayscale(POLY_OPA_DISP++, true);
                 }
                 KaleidoScope_DrawQuadTextureRGBA32(
-                    play->state.gfxCtx, gItemIcons[sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1],
+                    play->state.gfxCtx, ExtInv_GetItemIcon(sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1),
                     32, 32, 0);
                 gSPGrayscale(POLY_OPA_DISP++, false);
             }
@@ -822,7 +823,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             } else if ((i == 0) && (k == 2) && (gBitFlags[bit + 1] & gSaveContext.inventory.equipment)) {
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIconBrokenGiantsKnifeTex, 32, 32, point);
             } else if (gBitFlags[bit] & gSaveContext.inventory.equipment) {
-                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[itemId], 32, 32, point);
+                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, ExtInv_GetItemIcon(itemId), 32, 32, point);
             }
             gSPGrayscale(POLY_OPA_DISP++, false);
         }

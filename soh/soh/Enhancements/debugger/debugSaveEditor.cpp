@@ -25,6 +25,7 @@ extern PlayState* gPlayState;
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/parameter_static/parameter_static.h"
+#include "mods/extended_inventory.h"
 }
 
 // Maps entries in the GS flag array to the area name it represents
@@ -419,6 +420,12 @@ void DrawInventoryTab() {
         "Restrict to valid items", &restrictToValid,
         checkboxOptionsBase.Tooltip("Restricts items and ammo to only what is possible to legally acquire in-game"));
 
+    // ============================================================================
+    // VANILLA INVENTORY (Page 1 - Slots 0-23)
+    // ============================================================================
+    ImGui::Text("Vanilla Inventory (Page 1)");
+    ImGui::Separator();
+
     for (int32_t y = 0; y < 4; y++) {
         for (int32_t x = 0; x < 6; x++) {
             int32_t index = x + y * 6;
@@ -506,6 +513,156 @@ void DrawInventoryTab() {
         }
     }
 
+    ImGui::Spacing();
+    ImGui::Spacing();
+
+    // ============================================================================
+    // CUSTOM ITEMS INVENTORY (Page 2 - Slots 24-47)
+    // ============================================================================
+    if (ImGui::CollapsingHeader("Custom Items Inventory (Page 2)", ImGuiTreeNodeFlags_DefaultOpen)) {
+        // Quick action buttons
+        if (ImGui::Button("Give All Custom Items (Max)")) {
+            for (int i = 0; i < 24; i++) {
+                // Give max upgrade for progressive items
+                if (i == 0) {
+                    // Slot 24: Give Roc's Cape (max upgrade) instead of Roc's Feather
+                    gSaveContext.inventory.items[24 + i] = ITEM_ROCS_CAPE;
+                } else {
+                    gSaveContext.inventory.items[24 + i] = gPage2Items[i];
+                }
+            }
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Clear All Custom Items")) {
+            for (int i = 24; i < 48; i++) {
+                gSaveContext.inventory.items[i] = ITEM_NONE;
+            }
+        }
+
+        ImGui::Spacing();
+
+        // Draw custom items grid (4 rows x 6 columns = 24 items)
+        for (int32_t y = 0; y < 4; y++) {
+            for (int32_t x = 0; x < 6; x++) {
+                int32_t visualIndex = x + y * 6;  // 0-23 visual position
+                int32_t slotIndex = 24 + visualIndex;  // 24-47 actual slot
+                static int32_t selectedCustomIndex = -1;
+                static const char* customItemPopupPicker = "customItemPopupPicker";
+
+                ImGui::PushID(1000 + slotIndex);  // Unique ID offset to avoid conflicts
+
+                if (x != 0) {
+                    ImGui::SameLine();
+                }
+
+                uint8_t item = gSaveContext.inventory.items[slotIndex];
+
+                bool clicked = false;
+                if (item != ITEM_NONE) {
+                    // Use text button for custom items (raw textures not compatible with LoadGuiTexture)
+                    auto it = customItemMapping.find(item);
+                    const char* itemName = (it != customItemMapping.end()) ? it->second.name.c_str() : "???";
+                    char buttonLabel[64];
+                    snprintf(buttonLabel, sizeof(buttonLabel), "%s##customslot%d", itemName, slotIndex);
+                    PushStyleButton(Colors::DarkGray);
+                    clicked = ImGui::Button(buttonLabel, ImVec2(IMAGE_SIZE + 20, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2);
+                    PopStyleButton();
+                } else {
+                    // Empty slot
+                    PushStyleButton(Colors::DarkGray);
+                    clicked = ImGui::Button("##customItemNone", ImVec2(IMAGE_SIZE, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2);
+                    PopStyleButton();
+                }
+                if (clicked) {
+                    selectedCustomIndex = slotIndex;
+                    ImGui::OpenPopup(customItemPopupPicker);
+                }
+
+                // Tooltip showing slot number and item ID
+                if (ImGui::IsItemHovered()) {
+                    ImGui::BeginTooltip();
+                    ImGui::Text("Slot %d", slotIndex);
+                    if (item != ITEM_NONE) {
+                        ImGui::Text("Item ID: 0x%02X", item);
+                    }
+                    ImGui::EndTooltip();
+                }
+
+                // Item picker popup for custom items
+                ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+                if (ImGui::BeginPopup(customItemPopupPicker)) {
+                    // None button
+                    PushStyleButton(Colors::DarkGray);
+                    if (ImGui::Button("##customItemNonePicker",
+                                      ImVec2(IMAGE_SIZE, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2)) {
+                        gSaveContext.inventory.items[selectedCustomIndex] = ITEM_NONE;
+                        ImGui::CloseCurrentPopup();
+                    }
+                    PopStyleButton();
+                    UIWidgets::Tooltip("None");
+
+                    // Show all 24 custom items from gPage2Items
+                    for (int32_t pickerIndex = 0; pickerIndex < 24; pickerIndex++) {
+                        if (((pickerIndex + 1) % 8) != 0) {
+                            ImGui::SameLine();
+                        }
+
+                        uint8_t customItemId = gPage2Items[pickerIndex];
+
+                        // Use text button for custom items (raw textures not compatible with LoadGuiTexture)
+                        bool ret = false;
+                        auto it = customItemMapping.find(customItemId);
+                        const char* itemName = (it != customItemMapping.end()) ? it->second.name.c_str() : "???";
+                        char pickerLabel[64];
+                        snprintf(pickerLabel, sizeof(pickerLabel), "%s##picker%d", itemName, pickerIndex);
+                        PushStyleButton(Colors::DarkGray);
+                        ret = ImGui::Button(pickerLabel, ImVec2(IMAGE_SIZE + 20, IMAGE_SIZE));
+                        PopStyleButton();
+
+                        if (ret) {
+                            gSaveContext.inventory.items[selectedCustomIndex] = customItemId;
+                            ImGui::CloseCurrentPopup();
+                        }
+
+                        // Tooltip with item name
+                        if (it != customItemMapping.end()) {
+                            UIWidgets::Tooltip(it->second.name.c_str());
+                        }
+                    }
+
+                    // Add progressive upgrade items (not in gPage2Items but shareable in same slots)
+                    ImGui::Spacing();
+                    ImGui::Text("Upgrades:");
+
+                    // Roc's Cape (upgrade of Roc's Feather, shares slot 24)
+                    {
+                        bool ret = false;
+                        PushStyleButton(Colors::DarkGray);
+                        ret = ImGui::Button("ITEM_ROCS_CAPE##pickerCape", ImVec2(IMAGE_SIZE + 20, IMAGE_SIZE));
+                        PopStyleButton();
+
+                        if (ret) {
+                            gSaveContext.inventory.items[selectedCustomIndex] = ITEM_ROCS_CAPE;
+                            ImGui::CloseCurrentPopup();
+                        }
+                        UIWidgets::Tooltip("Roc's Cape (upgrade)\nShares slot 24 with Roc's Feather");
+                    }
+
+                    ImGui::EndPopup();
+                }
+                ImGui::PopStyleVar();
+
+                ImGui::PopID();
+            }
+        }
+    }
+
+    ImGui::Spacing();
+    ImGui::Spacing();
+
+    // ============================================================================
+    // AMMO SECTION
+    // ============================================================================
     ImGui::Text("Ammo");
     for (uint32_t ammoIndex = 0, drawnAmmoItems = 0; ammoIndex < 16; ammoIndex++) {
         uint8_t item = (restrictToValid) ? gAmmoItems[ammoIndex] : gAllAmmoItems[ammoIndex];

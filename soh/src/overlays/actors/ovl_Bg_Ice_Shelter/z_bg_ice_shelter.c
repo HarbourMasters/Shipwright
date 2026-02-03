@@ -385,6 +385,20 @@ void func_808911BC(BgIceShelter* this) {
     this->alpha = 255;
 }
 
+// Public function for Ball and Chain to instantly break red ice
+void BgIceShelter_BreakInstantly(Actor* thisx, PlayState* play) {
+    BgIceShelter* this = (BgIceShelter*)thisx;
+
+    // Play breaking sound instead of melting sound
+    Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_WALL_BROKEN);
+
+    // Set alpha to very low to destroy almost instantly (5 frames instead of 51)
+    this->alpha = 25;
+
+    // Call the melt function to start the destruction process
+    func_808911BC(this);
+}
+
 static f32 D_808917BC[] = { -0.0015f, -0.0009f, -0.0016f, -0.0016f, -0.00375f };
 static f32 D_808917D0[] = { 1.0f, 0.6f, 1.2f, 1.0f, 1.8f };
 

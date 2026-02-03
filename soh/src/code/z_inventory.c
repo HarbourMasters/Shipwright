@@ -1,4 +1,5 @@
 #include "global.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/parameter_static/parameter_static.h"
@@ -169,7 +170,6 @@ void* gItemIcons[] = {
     gOcarinaBtnIconATex,
 };
 
-// Used to map item IDs to inventory slots
 u8 gItemSlots[] = {
     SLOT_STICK,       SLOT_NUT,          SLOT_BOMB,        SLOT_BOW,         SLOT_ARROW_FIRE,  SLOT_DINS_FIRE,
     SLOT_SLINGSHOT,   SLOT_OCARINA,      SLOT_OCARINA,     SLOT_BOMBCHU,     SLOT_HOOKSHOT,    SLOT_HOOKSHOT,

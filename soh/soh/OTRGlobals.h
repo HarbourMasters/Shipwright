@@ -151,6 +151,7 @@ GetItemEntry GetItemMystery();
 ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
 uint8_t Randomizer_IsSeedGenerated();
 void Randomizer_SetSeedGenerated(bool seedGenerated);
+u8 Randomizer_SceneHasMajorItem(s16 sceneNum);
 uint8_t Randomizer_IsSpoilerLoaded();
 void Randomizer_SetSpoilerLoaded(bool spoilerLoaded);
 uint8_t Randomizer_GenerateRandomizer();

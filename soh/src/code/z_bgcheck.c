@@ -4020,8 +4020,9 @@ u32 func_80041D94(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
 /**
  * SurfaceType Get Wall Flags
  */
+extern u8 gMogmaMittsClimbActive;
 s32 func_80041DB8(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
-    if (CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0) != 0) {
+    if (CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0) != 0 || gMogmaMittsClimbActive) {
         return (1 << 3) | D_80119D90[func_80041D94(colCtx, poly, bgId)];
     } else {
         return D_80119D90[func_80041D94(colCtx, poly, bgId)];

@@ -10,6 +10,7 @@ bool GameInteractor::State::PacifistModeActive = 0;
 bool GameInteractor::State::DisableZTargetingActive = 0;
 bool GameInteractor::State::ReverseControlsActive = 0;
 int32_t GameInteractor::State::DefenseModifier = 0;
+int32_t GameInteractor::State::RunSpeedModifier = 0;
 float GameInteractor::State::MovementSpeedMultiplier = 1.0f;
 GIGravityLevel GameInteractor::State::GravityLevel = GI_GRAVITY_LEVEL_NORMAL;
 uint32_t GameInteractor::State::EmulatedButtons = 0;

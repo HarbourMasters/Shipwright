@@ -10,6 +10,12 @@
 #include <z64.h>
 
 typedef enum {
+    GI_SCHEME_SAIL,
+    GI_SCHEME_CROWD_CONTROL,
+    GI_SCHEME_ANCHOR,
+} GIScheme;
+
+typedef enum {
     /* 0x00 */ GI_LINK_SIZE_NORMAL,
     /* 0x01 */ GI_LINK_SIZE_GIANT,
     /* 0x02 */ GI_LINK_SIZE_MINISH,
@@ -205,6 +211,7 @@ class GameInteractor {
         static bool ReverseControlsActive;
         static int32_t DefenseModifier;
         static float MovementSpeedMultiplier;
+        static int32_t RunSpeedModifier;
         static GIGravityLevel GravityLevel;
         static uint32_t EmulatedButtons;
         static uint8_t RandomBombFuseTimerActive;
@@ -572,6 +579,8 @@ class GameInteractor {
         static void SetRandomWind(bool active);
         static void SetPlayerInvincibility(bool active);
         static void ClearCutscenePointer();
+        static void GiveItem(uint16_t modId, uint16_t itemId);
+        static void SetCosmeticsColor(uint8_t cosmeticCategory, uint8_t colorValue);
 
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams,
                                                                      std::string nameTag = "");

@@ -103,10 +103,10 @@ extern "C"
 	extern u16 gUpgradeCapacities[8][4];
 	extern u32 gGsFlagsMasks[4];
 	extern u32 gGsFlagsShifts[4];
-	extern void* gItemIcons[0x82];
+	extern void* gItemIcons[];
 	extern u8 gItemAgeReqs[];
 	extern u8 gSlotAgeReqs[];
-	extern u8 gItemSlots[56];
+	extern u8 gItemSlots[];
 	extern void (*gSceneCmdHandlers[SCENE_CMD_ID_MAX])(PlayState*, SceneCmd*);
 	extern s16 gLinkObjectIds[2];
 	extern u32 gObjectTableSize;

@@ -10,6 +10,12 @@
 #include "functions.h"
 #include "../../OTRGlobals.h"
 
+
+// Extended Inventory for Custom Items (Page 2)
+extern "C" {
+#include "mods/items/custom_items.h"
+}
+
 namespace Rando {
 Item::Item()
     : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE),
@@ -264,6 +270,19 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                 case ITEM_HOOKSHOT:
                 case ITEM_LONGSHOT:
                     actual = RG_LONGSHOT;
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case RG_PROGRESSIVE_ROCS:
+            switch (logic->CurrentInventory(ITEM_ROCS_FEATHER)) {
+                case ITEM_NONE:
+                    actual = RG_ROCS_FEATHER;
+                    break;
+                case ITEM_ROCS_FEATHER:
+                case ITEM_ROCS_CAPE:
+                    actual = RG_ROCS_CAPE;
                     break;
                 default:
                     break;

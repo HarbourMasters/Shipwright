@@ -274,3 +274,81 @@ void BgJyaIronobj_Update(Actor* thisx, PlayState* play) {
 void BgJyaIronobj_Draw(Actor* thisx, PlayState* play) {
     Gfx_DrawDListOpa(play, sOpaDL[thisx->params & 1]);
 }
+
+// Public function for Ball and Chain to destroy iron objects instantly
+void BgJyaIronobj_DestroyInstantly(Actor* thisx, PlayState* play) {
+    BgJyaIronobj* this = (BgJyaIronobj*)thisx;
+    Vec3f dropPos;
+    s32 i;
+    s32 j;
+    s16 rotY = Rand_S16Offset(0, 0xFFFF);  // Random direction
+    f32 sins = Math_SinS(rotY);
+    f32 coss = Math_CosS(rotY);
+
+    // Spawn debris actors
+    for (i = 0; i < 8; i++) {
+        Actor* actor = Actor_Spawn(&play->actorCtx, play, ACTOR_BG_JYA_HAHENIRON,
+            this->dyna.actor.world.pos.x,
+            Rand_ZeroOne() * 80.0f + this->dyna.actor.world.pos.y + 20.0f,
+            this->dyna.actor.world.pos.z, 0,
+            (s16)(Rand_ZeroOne() * 0x4000) + rotY - 0x2000, 0, 0, true);
+        if (actor != NULL) {
+            actor->speedXZ = Rand_ZeroOne() * 8.0f + 9.0f;
+            actor->velocity.y = Rand_ZeroOne() * 10.0f + 6.0f;
+        }
+    }
+
+    // Top/bottom debris for pillar
+    if ((this->dyna.actor.params & 1) == 0) {
+        Actor_Spawn(&play->actorCtx, play, ACTOR_BG_JYA_HAHENIRON,
+            this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y + 150.0f,
+            this->dyna.actor.world.pos.z, 0, 0, 0, 1, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_BG_JYA_HAHENIRON,
+            this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y,
+            this->dyna.actor.world.pos.z, 0, 0, 0, 2, true);
+    }
+
+    // Spawn kakera particles with random direction
+    for (j = 0; j < 32; j++) {
+        s16 unkArg5;
+        Vec3f pos, vel;
+        f32 rand = Rand_ZeroOne();
+
+        if (rand < 0.1f) unkArg5 = 0x60;
+        else if (rand < 0.8f) unkArg5 = 0x40;
+        else unkArg5 = 0x20;
+
+        pos.x = this->dyna.actor.world.pos.x + (Rand_ZeroOne() * 40 - 20);
+        pos.y = this->dyna.actor.world.pos.y + ((4.0f * j) + 10.0f);
+        pos.z = this->dyna.actor.world.pos.z + (Rand_ZeroOne() * 40 - 20);
+
+        vel.x = (Rand_ZeroOne() * 12.0f) - 6.0f + (sins * 4.0f);
+        vel.y = (Rand_ZeroOne() * 8.0f) - 3.0f;
+        vel.z = (Rand_ZeroOne() * 12.0f) - 6.0f + (coss * 4.0f);
+
+        EffectSsKakera_Spawn(play, &pos, &vel, &pos, -350, unkArg5,
+            D_80899500[j & 7], 4, 0, D_808994E0[j & 7], 0, 5,
+            D_808994F0[j & 7], -1, OBJECT_JYA_IRON, gObjectJyaIronDL_000880);
+
+        if (Rand_ZeroOne() < 0.26f) {
+            func_80033480(play, &pos, 200.0f, 1,
+                D_808994E0[j & 7] * 4 + 60, D_808994E0[j & 7] * 4 + 80, 1);
+        }
+    }
+
+    // Play destruction sound
+    SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 80,
+        NA_SE_EN_IRONNACK_BREAK_PILLAR);
+
+    // Drop hearts
+    dropPos.x = this->dyna.actor.world.pos.x;
+    dropPos.y = this->dyna.actor.world.pos.y + 20.0f;
+    dropPos.z = this->dyna.actor.world.pos.z;
+    for (i = 0; i < 3; i++) {
+        Item_DropCollectible(play, &dropPos, ITEM00_HEART);
+        dropPos.y += 18.0f;
+    }
+
+    // Kill the actor
+    Actor_Kill(&this->dyna.actor);
+}

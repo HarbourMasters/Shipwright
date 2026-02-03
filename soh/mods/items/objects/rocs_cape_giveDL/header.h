@@ -1,0 +1,1 @@
+extern Gfx rocs_cape_mesh_dl[];

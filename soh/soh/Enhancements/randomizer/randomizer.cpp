@@ -42,6 +42,12 @@
 #include "randomizerTypes.h"
 #include "soh/Notification/Notification.h"
 
+// Extended Inventory for Custom Items (Page 2)
+extern "C" {
+#include "mods/extended_inventory.h"
+#include "mods/items/custom_items.h"
+}
+
 extern std::map<RandomizerCheckArea, std::string> rcAreaNames;
 
 using json = nlohmann::json;
@@ -429,6 +435,29 @@ Randomizer::Randomizer() {
     }
 
     Ship::Context::GetInstance()->GetFileDropMgr()->RegisterDropHandler(Rando_HandleSpoilerDrop);
+
+    // Fix texture cache coherency for file select menu
+    // This ensures UI textures are properly loaded after randomizer initialization
+    // to prevent pink glitches/static artifacts on the file select screen
+    auto resMgr = Ship::Context::GetInstance()->GetResourceManager();
+    if (resMgr != nullptr) {
+        // Unload and reload critical UI textures to ensure cache coherency
+        // These textures are used in the file select menu and can have cache issues
+        // if loaded before the randomizer finishes initializing
+        const std::vector<std::string> criticalTextures = {
+            "textures/parameter_static/*",
+            "textures/title_static/*",
+            "textures/icon_item_static/*",
+            "textures/icon_item_24_static/*"
+        };
+
+        for (const auto& texturePath : criticalTextures) {
+            // First unload to clear any stale cache entries
+            resMgr->UnloadResources(texturePath);
+            // Then immediately reload to ensure fresh, properly initialized textures
+            resMgr->LoadResources(texturePath);
+        }
+    }
 }
 
 Randomizer::~Randomizer() {
@@ -930,6 +959,15 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
                 case ITEM_HOOKSHOT:
                     return CAN_OBTAIN;
                 case ITEM_LONGSHOT:
+                default:
+                    return CANT_OBTAIN_ALREADY_HAVE;
+            }
+        case RG_PROGRESSIVE_ROCS:
+            switch (gSaveContext.inventory.items[SLOT_ROCS]) {
+                case ITEM_NONE:
+                case ITEM_ROCS_FEATHER:
+                    return CAN_OBTAIN;
+                case ITEM_ROCS_CAPE:
                 default:
                     return CANT_OBTAIN_ALREADY_HAVE;
             }
@@ -5485,6 +5523,152 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
     return messageEntry;
 }
 
+// ============================================================================
+// CUSTOM ITEMS RANDOMIZER MESSAGES
+// ============================================================================
+// Helper structure for custom item messages (defined inline to avoid linker issues)
+struct CustomItemMessageEntry {
+    s16 rgId;
+    ItemID itemId;
+    const char* english;
+    const char* german;
+    const char* french;
+};
+
+// Array of all 26 custom item messages
+/* * Custom Item Messages
+ * Descriptions, Lore, and Translations provided by Gemini 3.0 
+ */
+static const CustomItemMessageEntry customItemMessages[] = {
+    // Movement Items
+    { RG_ROCS_FEATHER, static_cast<ItemID>(ITEM_ROCS_FEATHER),
+      "You got %rRoc's Feather%w!&This magical feather lets you&jump higher than normal.^Assign it to %y[C]%w and press&to perform a high jump.&It even works in water!",
+      "Du hast %rRocs Feder%w erhalten!&Diese magische Feder lässt&dich höher springen.^Weise sie %y[C]%w zu und drücke&um hoch zu springen.&Funktioniert auch im Wasser!",
+      "Vous obtenez la %rPlume de Roc%w!&Cette plume magique vous&permet de sauter plus haut.^Assignez-la à %y[C]%w et appuyez&pour faire un grand saut.&Fonctionne même dans l'eau!" },
+
+    { RG_ROCS_CAPE, static_cast<ItemID>(ITEM_ROCS_CAPE),
+      "You got %rRoc's Cape%w!&This magical cape enhances&your jumping ability.^Now you can perform a&%gdouble jump%w in midair.&Press %y[C]%w again while&jumping to go higher!",
+      "Du hast %rRocs Umhang%w erhalten!&Dieser magische Umhang&verbessert deine Sprungkraft.^Du kannst nun einen&%gDoppelsprung%w in der Luft&ausführen. Drücke %y[C]%w&erneut während du springst!",
+      "Vous obtenez la %rCape de Roc%w!&Cette cape magique améliore&vos capacités de saut.^Vous pouvez maintenant effectuer&un %gdouble saut%w en l'air.&Appuyez sur %y[C]%w en sautant&pour aller plus haut!" },
+
+    { RG_DEKU_LEAF, static_cast<ItemID>(ITEM_DEKU_LEAF),
+      "You got the %gDeku Leaf%w!&A giant leaf with powers&of the wind.^%yIn the air%w: Use it to glide&slowly and cover great&distances. Consumes magic.^%yOn the ground%w: Creates a gust&of wind that pushes objects&and enemies forward.",
+      "Du hast das %gDeku-Blatt%w erhalten!&Ein Riesenblatt mit der&Kraft des Windes.^%yIn der Luft%w: Gleite langsam&und überbrücke große&Distanzen. Verbraucht Magie.^%yAm Boden%w: Erzeugt einen&Windstoß der Objekte und&Feinde nach vorne schiebt.",
+      "Vous obtenez la %gFeuille Mojo%w!&Une feuille géante dotée&des pouvoirs du vent.^%yDans les airs%w: Planez&lentement sur de grandes&distances. Consomme de la magie.^%yAu sol%w: Crée une rafale&qui pousse les objets&et ennemis vers l'avant." },
+
+    // Spell Items
+    { RG_HYLIAS_GRACE, static_cast<ItemID>(ITEM_HYLIAS_GRACE), 
+      "You got %pHylia's Grace%w!&A divine protective spell.&Become invulnerable! Uses %gMagic%w.", 
+      "Du hast %pHylias Gnade%w erhalten!&Ein göttlicher Schutzzauber.&Werde unverwundbar! Verbraucht %gMagie%w.", 
+      "Vous obtenez la %pGrâce d'Hylia%w!&Un sort de protection divin.&Devenez invulnérable! Utilise de la %gMagie%w." },
+
+    { RG_ZONAI_PERMAFROST, static_cast<ItemID>(ITEM_ZONAI_PERMAFROST), 
+      "You got %cZonai Permafrost%w!&An ancient time-stopping device.&Halts everything! Uses %gMagic%w.", 
+      "Du hast %cSonau Permafrost%w erhalten!&Hält die Zeit an.&Stoppt alles! Verbraucht %gMagie%w.", 
+      "Vous obtenez %cPermafrost Soneau%w!&Arrête le temps.&Figez tout! Utilise de la %gMagie%w." },
+
+    { RG_DEMISE_DESTRUCTION, static_cast<ItemID>(ITEM_DEMISE_DESTRUCTION), 
+      "You got %rDemise Destruction%w!&Dark magic of the Demon King.&Summons earthquakes! Uses %gMagic%w.", 
+      "Du hast %rTodbringer Zerstörung%w!&Dunkle Magie des Dämonenkönigs.&Erzeugt Erdbeben! Verbraucht %gMagie%w.", 
+      "Vous obtenez %rDestruction de l'Avatar%w!&Magie noire du Roi Démon.&Invoquez un séisme! Utilise de la %gMagie%w." },
+
+    { RG_TIME_GATE, static_cast<ItemID>(ITEM_TIME_GATE), 
+      "You got the %cTime Gate%w!&A door through the ages.&Switch age anywhere! Uses %gMagic%w.", 
+      "Du hast das %cZeittor%w erhalten!&Eine Tür durch die Zeit.&Wechsle dein Alter! Verbraucht %gMagie%w.", 
+      "Vous obtenez la %cPorte du Temps%w!&Une porte à travers les âges.&Changez d'âge ici! Utilise de la %gMagie%w." },
+
+    // Tool Items
+    { RG_SWITCH_HOOK, static_cast<ItemID>(ITEM_SWITCH_HOOK),
+      "You got the %ySwitch Hook%w!&Swap places with objects.&Pull yourself or swap targets!",
+      "Du hast den %yWechselhaken%w!&Tausche mit Objekten den Platz.&Ziehe dich heran oder tausche!",
+      "Vous obtenez le %yCrochet Echange%w!&Echangez de place avec les objets.&Tirez ou échangez!" },
+
+    { RG_MOGMA_MITTS, static_cast<ItemID>(ITEM_MOGMA_MITTS), 
+      "You got the %yMogma Mitts%w!&Claws of the underground.&Climb any wall! Uses %gMagic%w.", 
+      "Du hast die %yMogma-Klauen%w erhalten!&Klauen aus dem Untergrund.&Klettere überall! Verbraucht %gMagie%w.", 
+      "Vous obtenez les %yGants Mogma%w!&Griffes souterraines.&Grimpez partout! Utilise de la %gMagie%w." },
+
+    { RG_GUST_JAR, static_cast<ItemID>(ITEM_GUST_JAR),
+      "You got the %gGust Jar%w!&A vessel containing&ancient winds.^%ySuction mode%w: Hold %y[C]%w&to absorb objects, enemies&and environmental elements.^%yCapture mode%w: Absorb fire,&ice or electricity to store&special ammunition.^%yShoot mode%w: Release %y[C]%w to&fire what you captured.&%cC-Up%w = First-person mode",
+      "Du hast den %gMagischen Krug%w!&Ein Gefäß mit uralten&Winden.^%yAnsaugmodus%w: Halte %y[C]%w&um Objekte, Feinde und&Umgebungselemente anzusaugen.^%yFangmodus%w: Sauge Feuer,&Eis oder Elektrizität auf&als spezielle Munition.^%ySchussmodus%w: Lass %y[C]%w los&um das Gefangene zu feuern.&%cC-Oben%w = Erste-Person",
+      "Vous obtenez le %gPot Magique%w!&Un récipient contenant&des vents anciens.^%yMode aspiration%w: Maintenez %y[C]%w&pour absorber objets, ennemis&et éléments environnementaux.^%yMode capture%w: Absorbez feu,&glace ou électricité comme&munition spéciale.^%yMode tir%w: Relâchez %y[C]%w pour&tirer ce que vous avez capturé.&%cC-Haut%w = Première personne" },
+
+    { RG_SHOVEL, static_cast<ItemID>(ITEM_SHOVEL),
+      "You got the %yShovel%w!&A reliable tool for&excavation.^Use %y[C]%w on soft soil&to dig and find hidden&treasures.^It can also reveal secret&%gGrottos%w and damage&buried enemies!",
+      "Du hast die %ySchaufel%w!&Ein zuverlässiges Werkzeug&zum Graben.^Benutze %y[C]%w auf weichem&Boden um zu graben und&verborgene Schätze zu finden.^Sie kann auch geheime&%gGrotten%w aufdecken und&vergrabene Feinde verletzen!",
+      "Vous obtenez la %yPelle%w!&Un outil fiable pour&l'excavation.^Utilisez %y[C]%w sur terre&meuble pour creuser et&trouver des trésors cachés.^Elle peut aussi révéler des&%gGrottes secrètes%w et blesser&les ennemis enterrés!" },
+
+    // Weapon Items
+    { RG_BALL_AND_CHAIN, static_cast<ItemID>(ITEM_BALL_AND_CHAIN),
+      "You got the %yBall and Chain%w!&A heavy weapon from the&snow palace.^Hold %y[C]%w to charge,&release to throw.&Crush ice and enemies!^With %gZ-Target%w it homes in&on the enemy automatically.&Breaks %rRed Ice%w!^%rNote%w: Your speed is reduced&while it's equipped.",
+      "Du hast die %yKettenkugel%w!&Eine schwere Waffe aus dem&Schneepalast.^Halte %y[C]%w zum Aufladen,&lass los zum Werfen.&Zerschmettere Eis und Feinde!^Mit %gZ-Ziel%w verfolgt sie&automatisch den Feind.&Zerbricht %rRotes Eis%w!^%rHinweis%w: Deine Geschwindigkeit&ist reduziert während sie&ausgerüstet ist.",
+      "Vous obtenez le %yBoulet%w!&Une arme lourde du palais&des neiges.^Maintenez %y[C]%w pour charger,&relâchez pour lancer.&Écrasez glace et ennemis!^Avec %gZ-Cible%w il suit&automatiquement l'ennemi.&Brise la %rGlace Rouge%w!^%rNote%w: Votre vitesse est réduite&tant qu'il est équipé." },
+
+    { RG_WHIP, static_cast<ItemID>(ITEM_WHIP),
+      "You got the %yWhip%w!&A long lash for combat.&Snag items and stun foes!",
+      "Du hast die %yPeitsche%w erhalten!&Ein langer Riemen.&Schnapp dir Items und betäube!",
+      "Vous obtenez le %yFouet%w!&Une lanière de combat.&Prenez des objets et étourdissez!" },
+
+    { RG_SPINNER, static_cast<ItemID>(ITEM_SPINNER),
+      "You got the %ySpinner%w!&Ancient technology from the&desert sands.^Press %y[C]%w to ride it&and glide around. Use it to&cross great distances.^With %gZ-Target%w you perform&a homing attack towards&the enemy. Breaks rocks!",
+      "Du hast den %yKreisel%w!&Uralte Technologie aus dem&Wüstensand.^Drücke %y[C]%w um aufzusteigen&und zu gleiten. Überbrücke&große Distanzen damit.^Mit %gZ-Ziel%w führst du einen&Verfolgungs-Angriff auf&den Feind aus. Zerbricht Felsen!",
+      "Vous obtenez la %yToupie%w!&Technologie ancienne des&sables du désert.^Appuyez sur %y[C]%w pour monter&et glisser. Utilisez-la pour&traverser de grandes distances.^Avec %gZ-Cible%w vous effectuez&une attaque guidée vers&l'ennemi. Brise les rochers!" },
+
+    { RG_BOMB_ARROWS, static_cast<ItemID>(ITEM_BOMB_ARROWS),
+      "You got %rBomb Arrows%w!&An explosive combination.^Requires %yArrows%w and %rBombs%w.&Use %y[C]%w to enter first-person&mode and aim.^The arrow explodes on impact.&Consumes %y1 arrow%w + %r1 bomb%w&per shot.",
+      "Du hast %rBombenpfeile%w!&Eine explosive Kombination.^Benötigt %yPfeile%w und %rBomben%w.&Benutze %y[C]%w für Erste-Person&Modus und zielen.^Der Pfeil explodiert beim&Aufprall. Verbraucht %y1 Pfeil%w&+ %r1 Bombe%w pro Schuss.",
+      "Vous obtenez les %rFlèches-Bombes%w!&Une combinaison explosive.^Nécessite des %yFlèches%w et %rBombes%w.&Utilisez %y[C]%w pour entrer en&première personne et viser.^La flèche explose à l'impact.&Consomme %y1 flèche%w + %r1 bombe%w&par tir." },
+
+    // Elemental Rods
+    { RG_FIRE_ROD, static_cast<ItemID>(ITEM_ROD_FIRE),
+      "You got the %rFire Rod%w!&A magical weapon that channels&the power of fire.^%yBasic attacks%w:&Slash = 3 fireballs&Stab = 1 fireball&Jump = Flamethrower down^%ySpecial attacks%w:&Spin = Expanding fire wave&Hold %y[C]%w = Charge attack&%cC-Up%w = First-person mode^%rWarning%w: Without magic, the&fire will burn YOU. Make sure&you have enough magic!",
+      "Du hast den %rFeuerstab%w!&Eine magische Waffe mit der&Kraft des Feuers.^%yBasisangriffe%w:&Hieb = 3 Feuerbälle&Stoß = 1 Feuerball&Sprung = Flammenwerfer^%ySpezialangriffe%w:&Wirbelattacke = Feuerwelle&Halte %y[C]%w = Aufladen&%cC-Oben%w = Erste-Person^%rWarnung%w: Ohne Magie verbrennt&das Feuer DICH. Achte auf&genug Magie!",
+      "Vous obtenez la %rBaguette de Feu%w!&Une arme magique qui canalise&le pouvoir du feu.^%yAttaques de base%w:&Taille = 3 boules de feu&Estoc = 1 boule de feu&Saut = Lance-flammes^%yAttaques spéciales%w:&Tourbillon = Vague de feu&Maintenez %y[C]%w = Charge&%cC-Haut%w = Première personne^%rAttention%w: Sans magie, le feu&VOUS brûlera. Assurez-vous&d'avoir assez de magie!" },
+
+    { RG_ICE_ROD, static_cast<ItemID>(ITEM_ROD_ICE),
+      "You got the %bIce Rod%w!&A magical weapon that channels&the power of ice.^%yBasic attacks%w:&Slash = 3 ice projectiles&Stab = 1 ice projectile&Jump = Freezing blast down^%ySpecial attacks%w:&Spin = Expanding ice wave&Hold %y[C]%w = Charge attack&%cC-Up%w = First-person mode^%rWarning%w: Without magic, the&ice will freeze YOU. Make sure&you have enough magic!",
+      "Du hast den %bEisstab%w!&Eine magische Waffe mit der&Kraft des Eises.^%yBasisangriffe%w:&Hieb = 3 Eisprojektile&Stoß = 1 Eisprojektil&Sprung = Eisstrahl^%ySpezialangriffe%w:&Wirbelattacke = Eiswelle&Halte %y[C]%w = Aufladen&%cC-Oben%w = Erste-Person^%rWarnung%w: Ohne Magie friert&das Eis DICH ein. Achte auf&genug Magie!",
+      "Vous obtenez la %bBaguette de Glace%w!&Une arme magique qui canalise&le pouvoir de la glace.^%yAttaques de base%w:&Taille = 3 projectiles de glace&Estoc = 1 projectile de glace&Saut = Souffle glacial^%yAttaques spéciales%w:&Tourbillon = Vague de glace&Maintenez %y[C]%w = Charge&%cC-Haut%w = Première personne^%rAttention%w: Sans magie, la glace&VOUS gèlera. Assurez-vous&d'avoir assez de magie!" },
+
+    { RG_LIGHT_ROD, static_cast<ItemID>(ITEM_ROD_LIGHT),
+      "You got the %yLight Rod%w!&A magical weapon that channels&the power of lightning.^%yBasic attacks%w:&Slash = 3 lightning bolts&Stab = 1 lightning bolt&Jump = Electric discharge^%ySpecial attacks%w:&Spin = Expanding electric wave&Hold %y[C]%w = Charge attack&%cC-Up%w = First-person mode^%rWarning%w: Without magic, the&lightning will shock YOU.&Make sure you have enough magic!",
+      "Du hast den %yLichtstab%w!&Eine magische Waffe mit der&Kraft des Blitzes.^%yBasisangriffe%w:&Hieb = 3 Blitze im Bogen&Stoß = 1 direkter Blitz&Sprung = Elektrische Entladung^%ySpezialangriffe%w:&Wirbelattacke = Elektrowelle&Halte %y[C]%w = Aufladen&%cC-Oben%w = Erste-Person^%rWarnung%w: Ohne Magie trifft&der Blitz DICH. Achte auf&genug Magie!",
+      "Vous obtenez la %yBaguette de Lumière%w!&Une arme magique qui canalise&le pouvoir de la foudre.^%yAttaques de base%w:&Taille = 3 éclairs en éventail&Estoc = 1 éclair direct&Saut = Décharge électrique^%yAttaques spéciales%w:&Tourbillon = Vague électrique&Maintenez %y[C]%w = Charge&%cC-Haut%w = Première personne^%rAttention%w: Sans magie, la foudre&VOUS électrocutera. Assurez-vous&d'avoir assez de magie!" },
+
+    // Device Items
+    { RG_CANE_OF_SOMARIA, static_cast<ItemID>(ITEM_CANE_OF_SOMARIA),
+      "You got the %rCane of Somaria%w!&A wand that creates magical&blocks out of thin air.^Press %y[C]%w to create a&%rmagical block%w. Only one&can exist at a time.^Use it to activate switches,&block enemies, or as a&platform to reach heights.",
+      "Du hast den %rStab von Somaria%w!&Ein Stab der magische Blöcke&aus dem Nichts erschafft.^Drücke %y[C]%w um einen&%rmagischen Block%w zu erschaffen.&Nur einer kann gleichzeitig existieren.^Nutze ihn für Schalter,&um Feinde zu blockieren,&oder als Plattform.",
+      "Vous obtenez la %rCanne de Somaria%w!&Une baguette qui crée des&blocs magiques de nulle part.^Appuyez sur %y[C]%w pour créer&un %rbloc magique%w. Un seul&peut exister à la fois.^Utilisez-le pour activer des&interrupteurs, bloquer des ennemis,&ou comme plateforme." },
+
+    { RG_DOMINION_ROD, static_cast<ItemID>(ITEM_DOMINION_ROD), 
+      "You got the %pDominion Rod%w!&It breathes life into statues.&Control machines! Uses %gMagic%w.", 
+      "Du hast den %pKopierstab%w erhalten!&Er haucht Statuen Leben ein.&Kontrolliere Maschinen! Verbraucht %gMagie%w.", 
+      "Vous obtenez la %pBaguette des Animes%w!&Elle donne vie aux statues.&Contrôlez les machines! Utilise de la %gMagie%w." },
+
+    { RG_BEETLE, static_cast<ItemID>(ITEM_BEETLE), 
+      "You got the %gBeetle%w!&A remote mechanical insect.&Fly to grab items!", 
+      "Du hast den %gKäfer%w erhalten!&Ein mechanisches Insekt.&Flieg und hol Items!", 
+      "Vous obtenez le %gScarabée%w!&Un insecte mécanique.&Volez pour prendre des objets!" },
+
+    // Placeholder items (pending implementation)
+    { RG_PENDING_1, static_cast<ItemID>(ITEM_PENDING_1),
+      "You got %pPending Item 1%w!&This item is not yet implemented.",
+      "Du hast %pPending Item 1%w!&Dieses Item ist noch nicht implementiert.",
+      "Vous obtenez %pPending Item 1%w!&Cet objet n'est pas encore implémenté." },
+
+    { RG_PENDING_2, static_cast<ItemID>(ITEM_PENDING_2),
+      "You got %yPending Item 2%w!&This item is not yet implemented.",
+      "Du hast %yPending Item 2%w!&Dieses Item ist noch nicht implementiert.",
+      "Vous obtenez %yPending Item 2%w!&Cet objet n'est pas encore implémenté." },
+
+    { RG_PENDING_3, static_cast<ItemID>(ITEM_PENDING_3),
+      "You got %cPending Item 3%w!&This item is not yet implemented.",
+      "Du hast %cPending Item 3%w!&Dieses Item ist noch nicht implementiert.",
+      "Vous obtenez %cPending Item 3%w!&Cet objet n'est pas encore implémenté." },
+};
+static constexpr size_t customItemMessageCount = sizeof(customItemMessages) / sizeof(customItemMessages[0]);
+
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
@@ -5854,6 +6038,24 @@ void Randomizer::CreateCustomMessages() {
                   "Vous avez trouvé le %rSac de Noix& Mojo%w!&Vous pouvez maintenant porter des&Noix Mojo!"),
     } };
     CreateGetItemMessages(getItemMessages);
+
+    // Register custom item messages (array defined at top of this function)
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    for (size_t i = 0; i < customItemMessageCount; i++) {
+        customMessageManager->CreateGetItemMessage(
+            Randomizer::getItemMessageTableID,
+            customItemMessages[i].rgId,
+            customItemMessages[i].itemId,
+            CustomMessage(
+                customItemMessages[i].english,
+                customItemMessages[i].german,
+                customItemMessages[i].french,
+                TEXTBOX_TYPE_BLUE,
+                TEXTBOX_POS_BOTTOM
+            )
+        );
+    }
+
     CreateRupeeMessages();
     CreateTriforcePieceMessages();
     CreateNaviRandoMessages();
@@ -6287,6 +6489,93 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             Inventory_ChangeUpgrade(UPG_NUTS, 1);
             INV_CONTENT(ITEM_NUT) = ITEM_NUT;
             AMMO(ITEM_NUT) = static_cast<int8_t>(CUR_CAPACITY(UPG_NUTS));
+            break;
+        // Custom Items (Second Inventory Page)
+        // IMPORTANT: Use ExtInv_SetItemById() instead of INV_CONTENT() for custom items
+        // to avoid buffer overflow on gItemSlots[] array (which only has 54 elements)
+        case RG_ROCS_FEATHER:
+            ExtInv_SetItemById(ITEM_ROCS_FEATHER);
+            break;
+        case RG_ROCS_CAPE:
+            ExtInv_SetItemById(ITEM_ROCS_CAPE);
+            break;
+        case RG_PROGRESSIVE_ROCS:
+            // Progressive Roc's: Give Feather first, then Cape as upgrade
+            switch (gSaveContext.inventory.items[SLOT_ROCS]) {
+                case ITEM_NONE:
+                    ExtInv_SetItemById(ITEM_ROCS_FEATHER);
+                    break;
+                case ITEM_ROCS_FEATHER:
+                default:
+                    ExtInv_SetItemById(ITEM_ROCS_CAPE);
+                    break;
+            }
+            break;
+        case RG_WHIP:
+            ExtInv_SetItemById(ITEM_WHIP);
+            break;
+        case RG_SPINNER:
+            ExtInv_SetItemById(ITEM_SPINNER);
+            break;
+        case RG_BOMB_ARROWS:
+            ExtInv_SetItemById(ITEM_BOMB_ARROWS);
+            break;
+        case RG_FIRE_ROD:
+            ExtInv_SetItemById(ITEM_ROD_FIRE);
+            break;
+        case RG_DEMISE_DESTRUCTION:
+            ExtInv_SetItemById(ITEM_DEMISE_DESTRUCTION);
+            break;
+        case RG_DEKU_LEAF:
+            ExtInv_SetItemById(ITEM_DEKU_LEAF);
+            break;
+        case RG_TIME_GATE:
+            ExtInv_SetItemById(ITEM_TIME_GATE);
+            break;
+        case RG_BEETLE:
+            ExtInv_SetItemById(ITEM_BEETLE);
+            break;
+        case RG_SWITCH_HOOK:
+            ExtInv_SetItemById(ITEM_SWITCH_HOOK);
+            break;
+        case RG_ICE_ROD:
+            ExtInv_SetItemById(ITEM_ROD_ICE);
+            break;
+        case RG_ZONAI_PERMAFROST:
+            ExtInv_SetItemById(ITEM_ZONAI_PERMAFROST);
+            break;
+        case RG_MOGMA_MITTS:
+            ExtInv_SetItemById(ITEM_MOGMA_MITTS);
+            break;
+        case RG_GUST_JAR:
+            ExtInv_SetItemById(ITEM_GUST_JAR);
+            break;
+        case RG_BALL_AND_CHAIN:
+            ExtInv_SetItemById(ITEM_BALL_AND_CHAIN);
+            break;
+        case RG_LIGHT_ROD:
+            ExtInv_SetItemById(ITEM_ROD_LIGHT);
+            break;
+        case RG_HYLIAS_GRACE:
+            ExtInv_SetItemById(ITEM_HYLIAS_GRACE);
+            break;
+        case RG_PENDING_2:
+            ExtInv_SetItemById(ITEM_PENDING_2);
+            break;
+        case RG_PENDING_1:
+            ExtInv_SetItemById(ITEM_PENDING_1);
+            break;
+        case RG_PENDING_3:
+            ExtInv_SetItemById(ITEM_PENDING_3);
+            break;
+        case RG_CANE_OF_SOMARIA:
+            ExtInv_SetItemById(ITEM_CANE_OF_SOMARIA);
+            break;
+        case RG_SHOVEL:
+            ExtInv_SetItemById(ITEM_SHOVEL);
+            break;
+        case RG_DOMINION_ROD:
+            ExtInv_SetItemById(ITEM_DOMINION_ROD);
             break;
         default:
             LUSLOG_WARN("Randomizer_Item_Give didn't have behaviour specified for getItemId=%d", item);
