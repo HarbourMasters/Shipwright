@@ -874,6 +874,7 @@ void GenerateItemPool() {
                     int halfHearts = heartsToPlace / 2;
                     AddFixedItemToPool(RG_HEART_CONTAINER, heartsToPlace - halfHearts, false);
                     AddFixedItemToPool(RG_PIECE_OF_HEART, halfHearts * 4, false);
+                    break;
                 }
                 case RO_ITEM_POOL_SCARCE:
                     AddFixedItemToPool(RG_PIECE_OF_HEART, (maxHearts - startingHearts) * 4, false);
