@@ -3485,18 +3485,21 @@ void BossTw_Draw(Actor* thisx, PlayState* play2) {
                    Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (s16)this->workf[OUTR_CRWN_TX_X1] & 0x7F,
                                       (s16)this->workf[OUTR_CRWN_TX_Y1] & 0x7F, 0x20, 0x20, 1,
                                       (s16)this->workf[OUTR_CRWN_TX_X2] & 0x7F,
-                                      (s16)this->workf[OUTR_CRWN_TX_Y2] & 0xFF, 0x20, 0x40, 0, 0, this->actor.params == 0 ? 1 : 0, this->actor.params == 0 ? -7 : -15));
+                                      (s16)this->workf[OUTR_CRWN_TX_Y2] & 0xFF, 0x20, 0x40, 0, 0,
+                                      this->actor.params == 0 ? 1 : 0, this->actor.params == 0 ? -7 : -15));
 
         if (this->actor.params == TW_KOTAKE) {
             gSPSegment(POLY_XLU_DISP++, 9,
                        Gfx_TexScrollEx(play->state.gfxCtx, (s16)this->workf[INNR_CRWN_TX_X1] & 0x7F,
-                                       (s16)this->workf[INNR_CRWN_TX_Y1] & 0xFF, 0x20, 0x40, 0, this->actor.params == 0 ? 1 : 0));
+                                       (s16)this->workf[INNR_CRWN_TX_Y1] & 0xFF, 0x20, 0x40, 0,
+                                       this->actor.params == 0 ? 1 : 0));
         } else {
             gSPSegment(POLY_XLU_DISP++, 9,
                        Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (s16)this->workf[INNR_CRWN_TX_X1] & 0x7F,
                                           (s16)this->workf[INNR_CRWN_TX_Y1] & 0x7F, 0x20, 0x20, 1,
                                           (s16)this->workf[INNR_CRWN_TX_X2] & 0x7F,
-                                          (s16)this->workf[INNR_CRWN_TX_Y2] & 0xFF, 0x20, 0x40, 0, 0, 0, this->actor.params == 0 ? 0 : -10));
+                                          (s16)this->workf[INNR_CRWN_TX_Y2] & 0xFF, 0x20, 0x40, 0, 0, 0,
+                                          this->actor.params == 0 ? 0 : -10));
         }
 
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
