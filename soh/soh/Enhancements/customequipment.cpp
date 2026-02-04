@@ -56,6 +56,10 @@ static const char* GetBrokenLongswordInSheathDL() {
         { gCustomBrokenLongswordInSheathDL, gCustomBreakableLongswordInSheathDL, gCustomLongswordInSheathDL });
 }
 
+static const char* GetCustomFPSSlingshotDL() {
+    return ResolveCustomChain({ gCustomFPSSlingshotDL, gCustomSlingshotDL });
+}
+
 static const char* GetCustomFPSBowDL() {
     return ResolveCustomChain({ gCustomFPSBowDL, gCustomBowDL });
 }
@@ -478,7 +482,7 @@ static void ApplyCommonEquipmentPatches() {
           "customBoomerang3", leftHandClosed },
         { gLinkChildRightHandHoldingSlingshotNearDL, gCustomSlingshotDL, "customSlingshot1", "customSlingshot2",
           "customSlingshot3", rightHandClosed },
-        { gLinkChildRightArmStretchedSlingshotDL, gCustomSlingshotDL, "customSlingshotFPS1", "customSlingshotFPS2",
+        { gLinkChildRightArmStretchedSlingshotDL, GetCustomFPSSlingshotDL(), "customSlingshotFPS1", "customSlingshotFPS2",
           "customSlingshotFPS3", fpsHand },
     });
 
@@ -491,7 +495,7 @@ static void ApplyCommonEquipmentPatches() {
           "customBoomerang3", leftHandClosed },
         { gLinkChildRightHandHoldingSlingshotNearDL, gCustomSlingshotDL, "customSlingshot1", "customSlingshot2",
           "customSlingshot3", rightHandClosed },
-        { gLinkChildRightArmStretchedSlingshotDL, gCustomSlingshotDL, "customSlingshotFPS1", "customSlingshotFPS2",
+        { gLinkChildRightArmStretchedSlingshotDL, GetCustomFPSSlingshotDL(), "customSlingshotFPS1", "customSlingshotFPS2",
           "customSlingshotFPS3", fpsHand },
     });
 }

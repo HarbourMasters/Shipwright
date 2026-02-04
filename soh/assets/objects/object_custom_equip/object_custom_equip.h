@@ -19,6 +19,9 @@ static const ALIGN_ASSET(2) char gCustomHookshotDL[] = dgCustomHookshotDL;
 #define dgCustomLongshotDL "__OTR__objects/object_custom_equip/gCustomLongshotDL"
 static const ALIGN_ASSET(2) char gCustomLongshotDL[] = dgCustomLongshotDL;
 
+#define dgCustomFPSSlingshotDL "__OTR__objects/object_custom_equip/gCustomFPSSlingshotDL"
+static const ALIGN_ASSET(2) char gCustomFPSSlingshotDL[] = dgCustomFPSSlingshotDL;
+
 #define dgCustomFPSHookshotDL "__OTR__objects/object_custom_equip/gCustomFPSHookshotDL"
 static const ALIGN_ASSET(2) char gCustomFPSHookshotDL[] = dgCustomFPSHookshotDL;
 
