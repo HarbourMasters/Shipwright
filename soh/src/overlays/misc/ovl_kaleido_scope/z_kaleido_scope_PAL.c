@@ -4278,7 +4278,8 @@ void KaleidoScope_Update(PlayState* play) {
                         Interface_ChangeAlpha(50);
                         pauseCtx->unk_1EC = 0;
                         pauseCtx->state = 7;
-                    } else if (CHECK_BTN_ALL(input->press.button, BTN_CUP) && pauseCtx->pageIndex == PAUSE_QUEST) {
+                    } else if (IS_RANDO && CHECK_BTN_ALL(input->press.button, BTN_CUP) &&
+                               pauseCtx->pageIndex == PAUSE_QUEST) {
                         Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         pauseCtx->randoQuestMode ^= 1;
