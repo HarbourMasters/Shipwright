@@ -5,6 +5,7 @@
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "variables.h"
+#include "overlays/actors/ovl_En_Attack_Niw/z_en_attack_niw.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -386,13 +387,18 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, f32* po
             case ACTOR_EN_CROW:
                 *posY = *posY + 75;
                 break;
-            // Reset params on a randomized Attacking Cucco if it is replacing one
+            // Restore Vanilla Behavior on Attacking Cucco if it is replacing a vanilla one
+            // Otherwise spawn it in the air and rotate randomly
             case ACTOR_EN_ATTACK_NIW:
                 if (prevActorId == ACTOR_EN_ATTACK_NIW) {
                     *params = 0;
+                    // Vanilla spawn height
+                    f32 viewY = play->view.lookAt.y - play->view.eye.y;
+                    *posY = Rand_CenteredFloat(0.3f) + ((play->view.eye.y + 50.0f) + (viewY * 0.5f));
+                } else {
+                    *posY = *posY + 75;
+                    *rotY = Random(0, 65537) - 32768;
                 }
-                *posY = *posY + 75;
-                *rotY = Random(0, 65537) - 32768;
                 break;
             default:
                 break;
@@ -651,6 +657,28 @@ static void OnGerudoFighterDefeat(void* refActor) {
     }
 }
 
+static void HandleAttackCuccoUpdate(void* refActor) {
+    EnAttackNiw* enAttackNiw = reinterpret_cast<EnAttackNiw*>(refActor);
+
+    // params == 777 means this Attacking Cucco was randomized, and we want these to behave differently
+    if (enAttackNiw->actor.params == 777) {
+        // if the cucco is within striking distance, handle the damage here
+        // because vanilla code expects having a normal cucco parent
+        Player* player = GET_PLAYER(gPlayState);
+        if (enAttackNiw->actor.xyzDistToPlayerSq < SQ(20.0f) && player->invincibilityTimer == 0) {
+            func_8002F6D4(gPlayState, &enAttackNiw->actor, 2.0f, enAttackNiw->actor.world.rot.y, 0.0f, 0x10);
+        }
+
+        // keep cucco from flying away
+        enAttackNiw->unk_262 = 0xFF;
+
+        // we want the cucco to face toward the player on random intervals
+        if (Random(0, 20) == 0) {
+            enAttackNiw->unk_2D4 = Rand_CenteredFloat(200.0f) + enAttackNiw->actor.yawTowardsPlayer;
+        }
+    }
+}
+
 void RegisterEnemyRandomizer() {
     COND_ID_HOOK(OnActorInit, ACTOR_EN_MB, CVAR_ENEMY_RANDOMIZER_VALUE, FixClubMoblinScale);
 
@@ -745,6 +773,9 @@ void RegisterEnemyRandomizer() {
     // If Random Gerudo Fighters are defeated, drop some items
     COND_ID_HOOK(OnEnemyDefeat, ACTOR_EN_GELDB, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT,
                  OnGerudoFighterDefeat);
+
+    // Handle Cucco updates for randomized Attacking Cuccos
+    COND_ID_HOOK(OnActorUpdate, ACTOR_EN_ATTACK_NIW, CVAR_ENEMY_RANDOMIZER_VALUE, HandleAttackCuccoUpdate);
 }
 
 static RegisterShipInitFunc initFunc(RegisterEnemyRandomizer, { CVAR_ENEMY_RANDOMIZER_NAME });
