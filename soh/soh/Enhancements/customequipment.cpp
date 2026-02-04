@@ -482,8 +482,8 @@ static void ApplyCommonEquipmentPatches() {
           "customBoomerang3", leftHandClosed },
         { gLinkChildRightHandHoldingSlingshotNearDL, gCustomSlingshotDL, "customSlingshot1", "customSlingshot2",
           "customSlingshot3", rightHandClosed },
-        { gLinkChildRightArmStretchedSlingshotDL, GetCustomFPSSlingshotDL(), "customSlingshotFPS1", "customSlingshotFPS2",
-          "customSlingshotFPS3", fpsHand },
+        { gLinkChildRightArmStretchedSlingshotDL, GetCustomFPSSlingshotDL(), "customSlingshotFPS1",
+          "customSlingshotFPS2", "customSlingshotFPS3", fpsHand },
     });
 
     ApplyPatchEntries({
@@ -495,8 +495,8 @@ static void ApplyCommonEquipmentPatches() {
           "customBoomerang3", leftHandClosed },
         { gLinkChildRightHandHoldingSlingshotNearDL, gCustomSlingshotDL, "customSlingshot1", "customSlingshot2",
           "customSlingshot3", rightHandClosed },
-        { gLinkChildRightArmStretchedSlingshotDL, GetCustomFPSSlingshotDL(), "customSlingshotFPS1", "customSlingshotFPS2",
-          "customSlingshotFPS3", fpsHand },
+        { gLinkChildRightArmStretchedSlingshotDL, GetCustomFPSSlingshotDL(), "customSlingshotFPS1",
+          "customSlingshotFPS2", "customSlingshotFPS3", fpsHand },
     });
 }
 
