@@ -30,8 +30,8 @@ static std::set<RandomizerTrick> enabledGlitches;
 
 void DrawLocationsMenu(WidgetInfo& info) {
     auto ctx = OTRGlobals::Instance->gRandoContext;
-    int32_t currMQDungeonSetting = CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), 0) +
-                                   CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), 0);
+    int32_t currMQDungeonSetting = CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), 0) |
+                                   CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), 0) << 8;
     static ImVec2 cellPadding(8.0f, 8.0f);
     bool generating = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0);
     bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
