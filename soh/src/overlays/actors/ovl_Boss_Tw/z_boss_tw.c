@@ -3268,7 +3268,7 @@ void func_80941BC0(BossTw* this, PlayState* play) {
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, 128);
     gSPSegment(POLY_XLU_DISP++, 8,
                Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, (u32)this->workf[UNK_F16] & 0x3F,
-                                  (this->work[CS_TIMER_2] * 4) & 0x3F, 0x10, 0x10, 0, 0, 1, 4));
+                                  (this->work[CS_TIMER_2] * 4) & 0x3F, 0x10, 0x10, 0, 0, 5, 4));
     Matrix_Push();
     Matrix_RotateY(this->workf[UNK_F15], MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD | G_MTX_MODELVIEW | G_MTX_NOPUSH);
@@ -3317,7 +3317,7 @@ void func_80942180(BossTw* this, PlayState* play) {
                Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, this->work[CS_TIMER_1] & 0x7F,
                                   (-this->work[CS_TIMER_1] * 6) & 0xFF, 0x20, 0x40, 1,
                                   (this->work[CS_TIMER_1] * 2) & 0x7F, (-this->work[CS_TIMER_1] * 6) & 0xFF, 0x20, 0x40,
-                                  1, 6, 2, -6));
+                                  1, -6, 2, -6));
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 80, 0, 0, (s16)this->workf[KM_GD_SMOKE_A]);
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, 100);
@@ -3325,7 +3325,7 @@ void func_80942180(BossTw* this, PlayState* play) {
 
     gSPSegment(POLY_XLU_DISP++, 8,
                Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (-this->work[CS_TIMER_1] * 3) & 0x7F, 0, 0x20, 0x20, 1, 0,
-                                  (-this->work[CS_TIMER_1] * 10) & 0xFF, 0x20, 0x40, 3, 0, 0, 10));
+                                  (-this->work[CS_TIMER_1] * 10) & 0xFF, 0x20, 0x40, -3, 0, 0, -10));
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 100, 50, 0, (s16)(this->workf[KM_GD_FLM_A] * 0.7f));
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetEnvColor(POLY_XLU_DISP++, 200, 235, 240, 128);
@@ -3485,18 +3485,18 @@ void BossTw_Draw(Actor* thisx, PlayState* play2) {
                    Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (s16)this->workf[OUTR_CRWN_TX_X1] & 0x7F,
                                       (s16)this->workf[OUTR_CRWN_TX_Y1] & 0x7F, 0x20, 0x20, 1,
                                       (s16)this->workf[OUTR_CRWN_TX_X2] & 0x7F,
-                                      (s16)this->workf[OUTR_CRWN_TX_Y2] & 0xFF, 0x20, 0x40, 1, 1, 1, 1));
+                                      (s16)this->workf[OUTR_CRWN_TX_Y2] & 0xFF, 0x20, 0x40, 0, 0, this->actor.params == 0 ? 1 : 0, this->actor.params == 0 ? -7 : -15));
 
         if (this->actor.params == TW_KOTAKE) {
             gSPSegment(POLY_XLU_DISP++, 9,
                        Gfx_TexScrollEx(play->state.gfxCtx, (s16)this->workf[INNR_CRWN_TX_X1] & 0x7F,
-                                       (s16)this->workf[INNR_CRWN_TX_Y1] & 0xFF, 0x20, 0x40, 1, 1));
+                                       (s16)this->workf[INNR_CRWN_TX_Y1] & 0xFF, 0x20, 0x40, 0, this->actor.params == 0 ? 1 : 0));
         } else {
             gSPSegment(POLY_XLU_DISP++, 9,
                        Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (s16)this->workf[INNR_CRWN_TX_X1] & 0x7F,
                                           (s16)this->workf[INNR_CRWN_TX_Y1] & 0x7F, 0x20, 0x20, 1,
                                           (s16)this->workf[INNR_CRWN_TX_X2] & 0x7F,
-                                          (s16)this->workf[INNR_CRWN_TX_Y2] & 0xFF, 0x20, 0x40, 1, 1, 1, 1));
+                                          (s16)this->workf[INNR_CRWN_TX_Y2] & 0xFF, 0x20, 0x40, 0, 0, 0, this->actor.params == 0 ? 0 : -10));
         }
 
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
@@ -3588,7 +3588,7 @@ s32 BossTw_TwinrovaOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList,
             *dList = NULL;
             gSPSegment(POLY_XLU_DISP++, 8,
                        Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 0x20, 0x20, 1, this->work[CS_TIMER_1],
-                                          -this->work[CS_TIMER_1] * 7, 0x20, 0x40, 0, 0, 1, 7));
+                                          -this->work[CS_TIMER_1] * 7, 0x20, 0x40, 0, 0, 1, -7));
             break;
         case 15:
         case 31:
