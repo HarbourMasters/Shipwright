@@ -484,7 +484,7 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
         case 2:
             gSPSegment(POLY_XLU_DISP++, 0x08,
                        Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, play->gameplayFrames & 0xFF, 0x40, 0x40, 1, 0,
-                                          -play->gameplayFrames & 0xFF, 0x40, 0x40, 0, 1, 0, 1));
+                                          -play->gameplayFrames & 0xFF, 0x40, 0x40, 0, 1, 0, -1));
             gSPSegment(POLY_XLU_DISP++, 0x09,
                        Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, -play->gameplayFrames & 0xFF,
                                           play->gameplayFrames & 0xFF, 0x40, 0x40, 1, play->gameplayFrames & 0xFF,

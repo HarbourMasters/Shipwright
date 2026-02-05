@@ -2602,7 +2602,7 @@ void BossMo_DrawWater(BossMo* this, PlayState* play) {
 
     gSPSegment(POLY_XLU_DISP++, 0x0D,
                Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (s16)this->waterTex1x, (s16)this->waterTex1y, 32, 32, 1,
-                                  (s16)this->waterTex2x, (s16)this->waterTex2y, 32, 32, 1, 1, 1, 1));
+                                  (s16)this->waterTex2x, (s16)this->waterTex2y, 32, 32, -1, -1, 0, 1));
 
     gDPPipeSync(POLY_XLU_DISP++);
 
@@ -2706,7 +2706,7 @@ void BossMo_DrawCore(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_XLU_DISP++, 0x0D,
                    Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (s16)sMorphaTent1->waterTex1x,
                                       (s16)sMorphaTent1->waterTex1y, 32, 32, 1, (s16)sMorphaTent1->waterTex2x,
-                                      (s16)sMorphaTent1->waterTex2y, 32, 32, 1, 1, 1, 1));
+                                      (s16)sMorphaTent1->waterTex2y, 32, 32, 0, 0, 0, 0));
 
         sp8C = this->cameraAt.x - this->cameraEye.x;
         sp88 = this->cameraAt.y - this->cameraEye.y;

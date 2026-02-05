@@ -320,7 +320,7 @@ void DemoKekkai_DrawTrialBarrier(Actor* thisx, PlayState* play2) {
                        sEnergyColors[colorIndex + 5], 128);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, frames * 5, frames * -10, 0x20, 0x20, 1, frames * 5,
-                                      frames * -10, 0x20, 0x40, 4, -10, 5, -10));
+                                      frames * -10, 0x20, 0x40, 5, -10, 5, -10));
         gSPDisplayList(POLY_XLU_DISP++, gTrialBarrierEnergyDL);
         CLOSE_DISPS(play->state.gfxCtx);
     }
