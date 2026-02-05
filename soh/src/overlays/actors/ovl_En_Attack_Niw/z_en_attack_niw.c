@@ -177,11 +177,6 @@ s32 func_809B55EC(EnAttackNiw* this, PlayState* play) {
     s16 sp1E;
     s16 sp1C;
 
-    // Params == 777 means that this is a randomized Attacking Cucco, and we don't despawn them when they go off-screen
-    if (this->actor.params == 777) {
-        return 1;
-    }
-
     Actor_SetFocus(&this->actor, this->unk_2E4);
     Actor_GetScreenPos(play, &this->actor, &sp1E, &sp1C);
     if (GameInteractor_Should(VB_DESTROY_OFFSCREEN_EN_ATTACK_NIW, true, this->actor) &&

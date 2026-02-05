@@ -531,6 +531,7 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
     // Freezard - Child Link can only kill this with jump slash Deku Sticks or other equipment like bombs.
     // Beamos - Needs bombs.
     // Anubis - Needs fire.
+    // Cucco (Attacking) - unkillable without water
     // Shell Blade & Spike - Child Link can't kill these with sword or Deku Stick.
     // Flare dancer, Arwing & Dark Link - Both go out of bounds way too easily, softlocking the player.
     // Wallmaster - Not easily visible, often makes players think they're softlocked and that there's no enemies left.
@@ -542,6 +543,7 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
                                       enemy.id == ACTOR_EN_ANUBICE_TAG || enemy.id == ACTOR_EN_ATTACK_NIW;
 
     // Bari - Spawns 3 more enemies, potentially extremely difficult in timed rooms.
+    // Cucco (Attacking) - unkillable without water
     bool enemiesToExcludeTimedRooms =
         enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI || enemy.id == ACTOR_EN_ATTACK_NIW;
 
