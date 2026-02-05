@@ -776,6 +776,14 @@ void RegisterEnemyRandomizer() {
 
     // Handle Cucco updates for randomized Attacking Cuccos
     COND_ID_HOOK(OnActorUpdate, ACTOR_EN_ATTACK_NIW, CVAR_ENEMY_RANDOMIZER_VALUE, HandleAttackCuccoUpdate);
+    // Prevent randomized Attack Cuccos from being culled offscreen
+    COND_VB_SHOULD(VB_DESTROY_OFFSCREEN_EN_ATTACK_NIW, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        Actor* actor = va_arg(args, Actor*);
+
+        if (actor->params == 777) {
+            *should = false;
+        }
+    });
 }
 
 static RegisterShipInitFunc initFunc(RegisterEnemyRandomizer, { CVAR_ENEMY_RANDOMIZER_NAME });
