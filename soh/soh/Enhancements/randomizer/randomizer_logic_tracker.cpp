@@ -253,6 +253,7 @@ static void CalculateShowRandomizerRegion() {
         if (entrance->GetParentRegionKey() == showFromRandomizerRegion) {
             continue;
         }
+        logic->CurrentRegionKey = entrance->GetParentRegionKey();
 
         const auto& parentRegion = entrance->GetParentRegion();
 
@@ -272,6 +273,7 @@ static void CalculateShowRandomizerRegion() {
         PopulateConnectionExpression(connection, entrance->GetConditionStr());
 
         node.Connections.emplace_back(std::move(connection));
+        logic->CurrentRegionKey = RR_NONE;
     }
 
     nodes.emplace_back(std::move(node));
@@ -303,6 +305,7 @@ static void CalculateShowRandomizerEvent() {
     node.NodeId = nodes.size();
 
     for (const auto& eventInfo : events->second) {
+        logic->CurrentRegionKey = eventInfo.RandomizerRegion;
         const auto& region = areaTable[eventInfo.RandomizerRegion];
 
         LogicTrackerNode::Connection connection;
@@ -316,6 +319,7 @@ static void CalculateShowRandomizerEvent() {
         PopulateConnectionExpression(connection, eventInfo.ConditionStr);
 
         node.Connections.emplace_back(std::move(connection));
+        logic->CurrentRegionKey = RR_NONE;
     }
 
     nodes.emplace_back(std::move(node));
