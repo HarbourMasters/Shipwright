@@ -205,6 +205,8 @@ static void CalculateShowRandomizerCheck() {
         const auto& region = areaTable[randomizerRegion];
         for (const auto& locationAccess : region.locations) {
             if (locationAccess.GetLocation() == showRandomizerCheck) {
+                logic->CurrentRegionKey = RandomizerRegion(randomizerRegion);
+
                 LogicTrackerNode::Connection connection;
                 connection.ParentName = "Region: " + region.regionName;
                 connection.ParentRandomizerRegion = RandomizerRegion(randomizerRegion);
@@ -216,6 +218,7 @@ static void CalculateShowRandomizerCheck() {
                 PopulateConnectionExpression(connection, locationAccess.GetConditionStr());
 
                 node.Connections.emplace_back(std::move(connection));
+                logic->CurrentRegionKey = RR_NONE;
             }
         }
     }
