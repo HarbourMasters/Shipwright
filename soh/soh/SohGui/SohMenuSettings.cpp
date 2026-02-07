@@ -7,6 +7,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "UIWidgets.hpp"
 #include <spdlog/fmt/fmt.h>
+#include "fast/Fast3dWindow.h"
 
 extern "C" {
 #include "include/z64audio.h"
@@ -47,6 +48,11 @@ static const std::map<int32_t, const char*> textureFilteringMap = {
     { Fast::FILTER_THREE_POINT, "Three-Point" },
     { Fast::FILTER_LINEAR, "Linear" },
     { Fast::FILTER_NONE, "None" },
+};
+
+static const std::map<int32_t, const char*> upscalingFilterMap = {
+    { Fast::FILTER_LINEAR, "Linear" },
+    { Fast::FILTER_NONE, "Nearest" },
 };
 
 static const std::map<int32_t, const char*> notificationPosition = {
@@ -407,6 +413,21 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_TEXTURE_FILTER)
         .RaceDisable(false)
         .Options(ComboboxOptions().Tooltip("Sets the applied Texture Filtering.").ComboMap(textureFilteringMap));
+    
+    AddWidget(path, "Upscaling Method", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_UPSCALE_FILTER)
+        .RaceDisable(false)
+        .Callback([](WidgetInfo& info) {
+            int val = CVarGetInteger(CVAR_UPSCALE_FILTER, Fast::FILTER_LINEAR);
+            auto wnd = Ship::Context::GetInstance()->GetWindow();
+            if (auto fastWnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(wnd)) {
+                fastWnd->SetUpscaleFilter(static_cast<Fast::FilteringMode>(val));
+            }
+        })
+        .Options(ComboboxOptions()
+            .Tooltip("Sets the method used when upscaling from internal resolution to viewport.")
+            .ComboMap(upscalingFilterMap)
+            .DefaultIndex(Fast::FILTER_LINEAR));
 
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Advanced Graphics Options", WIDGET_SEPARATOR_TEXT);
