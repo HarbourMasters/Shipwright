@@ -262,6 +262,7 @@ Color_RGBA8 Color_Saved_Extra = { 0, 185, 0, 255 };               // Green
 static ImGuiTextFilter checkSearch;
 static bool recalculateAvailable = false;
 static RandomizerRegion availableChecksStartingRegion = RR_ROOT;
+static RandoAgeTime availableChecksStartingAgeTime = RAT_NONE;
 static int16_t previousEntrance = 0;
 std::array<bool, RCAREA_INVALID> filterAreasHidden = { 0 };
 std::array<bool, RC_MAX> filterChecksHidden = { 0 };
@@ -945,7 +946,7 @@ void SetAreaSpoiled(RandomizerCheckArea rcArea) {
     SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
 }
 
-void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion);
+void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion, RandoAgeTime startingAgeTime);
 
 void CheckTrackerWindow::DrawElement() {
     Color_Background = CVarGetColor(CVAR_TRACKER_CHECK("BgColor.Value"), Color_Bg_Default);
@@ -1024,8 +1025,9 @@ void CheckTrackerWindow::DrawElement() {
 
         if (recalculateAvailable) {
             recalculateAvailable = false;
-            InternalRecalculateAvailableChecks(availableChecksStartingRegion);
+            InternalRecalculateAvailableChecks(availableChecksStartingRegion, availableChecksStartingAgeTime);
             availableChecksStartingRegion = RR_ROOT;
+            availableChecksStartingAgeTime = RAT_NONE;
         }
 
         // Quick Options
@@ -2017,7 +2019,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
     UIWidgets::PopStyleCombobox();
 }
 
-void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion) {
+void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion, RandoAgeTime startingAgeTime) {
     if (!enableAvailableChecks || !GameInteractor::IsSaveLoaded()) {
         return;
     }
@@ -2042,6 +2044,18 @@ void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion) {
         }
     }
 
+    if (startingAgeTime == RAT_NONE) {
+        if (LINK_IS_CHILD && IS_DAY) {
+            startingAgeTime = RAT_CHILD_DAY;
+        } else if (LINK_IS_CHILD && IS_NIGHT) {
+            startingAgeTime = RAT_CHILD_NIGHT;
+        } else if (LINK_IS_ADULT && IS_DAY) {
+            startingAgeTime = RAT_ADULT_DAY;
+        } else if (LINK_IS_ADULT && IS_NIGHT) {
+            startingAgeTime = RAT_ADULT_NIGHT;
+        }
+    }
+
     std::vector<RandomizerCheck> targetLocations;
     targetLocations.reserve(RC_MAX);
     for (auto& location : Rando::StaticData::GetLocationTable()) {
@@ -2053,7 +2067,8 @@ void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion) {
         }
     }
 
-    std::vector<RandomizerCheck> availableChecks = ReachabilitySearch(targetLocations, RG_NONE, true, startingRegion);
+    std::vector<RandomizerCheck> availableChecks =
+        ReachabilitySearch(targetLocations, RG_NONE, true, startingRegion, startingAgeTime);
     for (auto& rc : availableChecks) {
         const auto& itemLocation = ctx->GetItemLocation(rc);
         itemLocation->SetAvailable(true);
@@ -2076,9 +2091,11 @@ void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion) {
                 GetPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS).count());
 }
 
-void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */) {
+void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */,
+                                RandoAgeTime startingAgeTime /* = RAT_NONE */) {
     recalculateAvailable = true;
     availableChecksStartingRegion = startingRegion;
+    availableChecksStartingAgeTime = startingAgeTime;
 }
 
 void LoadFromPreset(nlohmann::json info) {
