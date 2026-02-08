@@ -265,7 +265,8 @@ static void CalculateShowRandomizerRegion() {
         if (entrance->IsShuffled()) {
             const auto& originalConnectedRegion = RegionTable(entrance->GetOriginalConnectedRegionKey());
             connection.ParentName += ",    Originally to: " + originalConnectedRegion->regionName;
-            connection.IsDiscovered = Entrance_GetIsEntranceDiscovered(entrance->GetIndex());
+            connection.IsDiscovered =
+                Entrance_GetIsEntranceDiscovered(entrance->GetIndex()) || logic->ACProcessUndiscoveredExits;
         }
         connection.ParentRandomizerRegion = entrance->GetParentRegionKey();
         connection.ChildDayAccess = parentRegion->childDay;
