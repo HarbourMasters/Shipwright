@@ -256,7 +256,6 @@ extern "C" void Randomizer_InitSaveFile() {
     Flags_SetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO);
     Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
     Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
-    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE);
 
     if (Randomizer_GetSettingValue(RSK_FOREST) == RO_CLOSED_FOREST_OFF) {
         Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
@@ -323,6 +322,16 @@ extern "C" void Randomizer_InitSaveFile() {
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_CRAWL) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_CAN_CRAWL);
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_SPEAK) == RO_GENERIC_OFF) {
+        Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE);
+        Flags_SetRandomizerInf(RAND_INF_CAN_SPEAK_DEKU);
+        Flags_SetRandomizerInf(RAND_INF_CAN_SPEAK_GERUDO);
+        Flags_SetRandomizerInf(RAND_INF_CAN_SPEAK_GORON);
+        Flags_SetRandomizerInf(RAND_INF_CAN_SPEAK_HYLIAN);
+        Flags_SetRandomizerInf(RAND_INF_CAN_SPEAK_KOKIRI);
+        Flags_SetRandomizerInf(RAND_INF_CAN_SPEAK_ZORA);
     }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_OPEN_CHEST) == RO_GENERIC_OFF) {

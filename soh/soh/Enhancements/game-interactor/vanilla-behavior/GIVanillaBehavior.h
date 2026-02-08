@@ -2209,6 +2209,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (talkOfferActor != NULL) || (cUpTalkActor != NULL)
+    // ```
+    // #### `args`
+    // - None
+    VB_SPEAK,
+
+    // #### `result`
+    // ```c
     // varies, never set should to true
     // ```
     // #### `args`
@@ -2345,6 +2353,14 @@ typedef enum {
     // #### `args`
     // - `*EnMk`
     VB_USE_EYEDROP_DIALOGUE,
+
+    // #### `result`
+    // ```c
+    // (shapeRotY < -0x2E93) || (shapeRotY >= 0x7C19)
+    // ```
+    // #### `args`
+    // - None
+    VB_WIN_GORON_POT,
 
     // #### `result`
     // ```c

@@ -250,8 +250,8 @@ void RegionTable_Init_WaterTemple() {
         //Events
         //Implies CanAvoid(RE_STINGER)
         //the full logic for the puzzle, as it is cut down here for optimisation
-        //EventAccess(LOGIC_WATER_PUSHED_B1_BLOCK, []{return logic->HasItem(RG_GORONS_BRACELET) && logic->HasExplosives() &&
-        //                                                   (logic->CanUse(RG_HOOKSHOT) || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOVER_BOOTS));}),
+        //EVENT_ACCESS(LOGIC_WATER_PUSHED_B1_BLOCK, logic->HasItem(RG_GORONS_BRACELET) && logic->HasExplosives() &&
+        //                                                   (logic->CanUse(RG_HOOKSHOT) || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOVER_BOOTS))),
     }, {
         //Locations                                           //we can always get the pots by shooting them from afar and diving for the item...
         LOCATION(RC_WATER_TEMPLE_BASEMENT_BLOCK_PUZZLE_POT_1, (logic->CanBreakPots(ED_LONGSHOT, true, true) && logic->HasItem(RG_BRONZE_SCALE)) ||

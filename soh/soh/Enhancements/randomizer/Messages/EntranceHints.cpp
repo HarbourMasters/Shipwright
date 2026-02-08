@@ -154,7 +154,7 @@ void BuildEntranceHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
             if (entranceCtx->entranceOverrides[i].index == entrance) {
                 s16 overrideIndex = entranceCtx->entranceOverrides[i].override;
                 Entrance_SetEntranceDiscovered(entrance, false);
-                auto data = GetEntranceData(overrideIndex);
+                auto data = EntranceTracker::GetEntranceData(overrideIndex);
                 CustomMessage msg = CustomMessage("[[name]]");
                 msg.Replace("[[name]]", data->destination);
                 msg.SetTextBoxType(TEXTBOX_TYPE_WOODEN);
