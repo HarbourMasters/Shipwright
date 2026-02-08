@@ -1397,63 +1397,6 @@ constexpr void ReplaceOptionIsNot(std::string& s) {
     s = std::move(buf);
 }
 
-constexpr void ReplaceRegionAgeTime(std::string& s) {
-    std::string const pattern = "RegionTable(";
-    std::string buf;
-    buf.reserve(s.size());
-
-    size_t pos = 0;
-    while (pos < s.size()) {
-        size_t start = s.find(pattern, pos);
-        if (start == std::string::npos) {
-            buf.append(s, pos, s.size() - pos);
-            break;
-        }
-
-        // Append everything up to the pattern
-        buf.append(s, pos, start - pos);
-
-        // Find closing parenthesis
-        size_t closeParen = s.find(')', start + pattern.length());
-        if (closeParen == std::string::npos) {
-            // Not well-formed; copy remainder and stop
-            buf.append(s, start, s.size() - start);
-            break;
-        }
-
-        // Expect immediate arrow after ')'
-        size_t arrow = s.find("->", closeParen);
-        if (arrow != closeParen + 1) {
-            // Not the pattern we want; copy through ')' and continue scanning
-            buf.append(s, start, closeParen + 1 - start);
-            pos = closeParen + 1;
-            continue;
-        }
-
-        // Extract region identifier
-        std::string region = s.substr(start + pattern.length(), closeParen - (start + pattern.length()));
-
-        // Extract property name
-        size_t propStart = arrow + 2;
-        size_t propEnd = propStart;
-        while (propEnd < s.length() && isIdentifierChar(s[propEnd])) {
-            ++propEnd;
-        }
-        if (propEnd <= propStart) {
-            // No property; copy through '->' and continue
-            buf.append(s, start, propStart - start);
-            pos = propStart;
-            continue;
-        }
-
-        std::string property = s.substr(propStart, propEnd - propStart);
-        buf += "RegionAgeTimeAccess(" + region + ", RegionAgeTime::" + property + ")";
-        pos = propEnd;
-    }
-
-    s = std::move(buf);
-}
-
 constexpr std::string CleanConditionString(std::string condition) {
     ReplaceAllInString(condition, "logic->", "");
     ReplaceAllInString(condition, "ctx->", "");
@@ -1466,7 +1409,6 @@ constexpr std::string CleanConditionString(std::string condition) {
     UpdateIsTrialCondition(condition);
     ReplaceOptionIs(condition);
     ReplaceOptionIsNot(condition);
-    ReplaceRegionAgeTime(condition);
     return condition;
 }
 

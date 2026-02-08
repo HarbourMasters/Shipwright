@@ -582,17 +582,6 @@ static bool IsTrialSkipped(const TrialKey trial) {
 static uint8_t TriforcePiecesCollected() {
     return gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected;
 }
-
-static bool RegionAgeTimeAccess(const RandomizerRegion region, const RegionAgeTime ageTime) {
-    if (ageTime == RegionAgeTime::childDay)
-        return RegionTable(region)->childDay;
-    if (ageTime == RegionAgeTime::childNight)
-        return RegionTable(region)->childNight;
-    if (ageTime == RegionAgeTime::adultDay)
-        return RegionTable(region)->adultDay;
-    if (ageTime == RegionAgeTime::adultNight)
-        return RegionTable(region)->adultNight;
-}
 #pragma endregion
 
 std::unordered_map<std::string, LogicExpression::Impl::FunctionAdapter> LogicExpression::Impl::functionAdapters;
@@ -608,7 +597,6 @@ void LogicExpression::Impl::PopulateFunctionAdapters() {
         REGISTER_FUNCTION(IsDungeonMQ),
         REGISTER_FUNCTION(IsTrialSkipped),
         REGISTER_FUNCTION(TriforcePiecesCollected),
-        REGISTER_FUNCTION(RegionAgeTimeAccess),
         REGISTER_FUNCTION(CanPlantBean),
         REGISTER_FUNCTION_WITH_DEFAULTS(SpiritShared, RandomizerRegion{}, ConditionFn{}, false, RR_NONE, ConditionFn{},
                                         RR_NONE, ConditionFn{}),
@@ -828,10 +816,6 @@ void LogicExpression::Impl::PopulateEnumMap() {
         { "HasProjectileAge::Either", (int)Rando::HasProjectileAge::Either },
         { "GlitchType::EquipSwapDins", (int)Rando::GlitchType::EquipSwapDins },
         { "GlitchType::EquipSwap", (int)Rando::GlitchType::EquipSwap },
-        { "RegionAgeTime::childDay", (int)RegionAgeTime::childDay },
-        { "RegionAgeTime::childNight", (int)RegionAgeTime::childNight },
-        { "RegionAgeTime::adultDay", (int)RegionAgeTime::adultDay },
-        { "RegionAgeTime::adultNight", (int)RegionAgeTime::adultNight },
 #define DEFINE_SCENE(_0, _1, value, _3, _4, _5) { #value, value },
 #include "tables/scene_table.h"
 #undef DEFINE_SCENE

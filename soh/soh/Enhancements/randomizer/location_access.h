@@ -138,13 +138,6 @@ struct SpiritLogicData {
     ConditionFn reverseAccess;
 };
 
-enum class RegionAgeTime {
-    childDay,
-    childNight,
-    adultDay,
-    adultNight,
-};
-
 class Region {
   public:
     Region();
