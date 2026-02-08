@@ -2,7 +2,7 @@
 
 #include "location_access.h"
 #include "entrance.h"
-#include "logic_expression.h"
+#include "logic_expression/logic_expression.h"
 #include "../../OTRGlobals.h"
 
 struct ExpressionTable {

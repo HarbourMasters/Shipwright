@@ -9,7 +9,7 @@
 #include <soh/OTRGlobals.h>
 
 #include "3drando/shops.hpp"
-#include "logic_expression.h"
+#include "logic_expression/logic_expression.h"
 extern "C" {
 extern PlayState* gPlayState;
 }
