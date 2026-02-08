@@ -1067,8 +1067,8 @@ void EntranceTrackerWindow::DrawElement() {
             }
         }
         ImGui::EndChild();
-        Trackers::EndFloatWindows();
     }
+    Trackers::EndFloatWindows();
 }
 
 void EntranceTrackerWindow::InitElement() {
