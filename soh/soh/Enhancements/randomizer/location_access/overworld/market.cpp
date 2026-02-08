@@ -235,9 +235,9 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_MAN_IN_GREEN_HOUSE] = Region("Market Man in Green House", SCENE_BACK_ALLEY_HOUSE, {}, {
         // Locations
-        LOCATION(RC_MK_BACK_ALLEY_HOUSE_POT_1, logic->CanBreakPots()),
-        LOCATION(RC_MK_BACK_ALLEY_HOUSE_POT_2, logic->CanBreakPots()),
-        LOCATION(RC_MK_BACK_ALLEY_HOUSE_POT_3, logic->CanBreakPots()),
+        LOCATION(RC_MK_BACK_ALLEY_HOUSE_POT_1, logic->HasItem(RG_POWER_BRACELET)), // TODO: CanBreakPots() restricted
+        LOCATION(RC_MK_BACK_ALLEY_HOUSE_POT_2, logic->HasItem(RG_POWER_BRACELET)), // TODO: CanBreakPots() restricted
+        LOCATION(RC_MK_BACK_ALLEY_HOUSE_POT_3, logic->HasItem(RG_POWER_BRACELET)), // TODO: CanBreakPots() restricted
     }, {
         //Exits
         ENTRANCE(RR_MARKET_BACK_ALLEY, true),

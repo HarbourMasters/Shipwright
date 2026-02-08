@@ -1675,7 +1675,7 @@ void Settings::CreateOptions() {
               "only relevant with Shuffle Boss Entrances or if Dodongo's Cavern is MQ and either variant of "
               "\"Dodongo's Cavern MQ Light the Eyes with Strength\" is on.");
     OPT_TRICK(RT_DC_DODONGO_CHU, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED },
-              "Dodongo\'s Cavern Dodongo without Bombchus",
+              "Dodongo\'s Cavern Dodongo with Only Bombchus",
               "With precise timing you can feed King Dodongo a bombchu during a backflip");
     OPT_TRICK(RT_DC_MQ_STAIRS_WITH_ONLY_STRENGTH, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE },
               "Dodongo\'s Cavern MQ Stairs With Only Strength",

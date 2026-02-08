@@ -1689,7 +1689,8 @@ void SohMenu::AddMenuEnhancements() {
     });
     AddWidget(path, "Select all Enemies", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RandomizedEnemyList.All"))
-        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0); });
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0); })
+        .Callback([](WidgetInfo& info) { GetSelectedEnemies(); });
     AddWidget(path, "Enemy List", WIDGET_SEPARATOR).PreFunc([](WidgetInfo& info) {
         info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
     });
