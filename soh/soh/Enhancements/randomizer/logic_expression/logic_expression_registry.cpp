@@ -11,16 +11,19 @@
 
 extern SaveContext gSaveContext;
 
-#define REGISTER_FUNCTION(fn) { #fn, LogicExpression::Impl::RegisterFunction(#fn, fn) }
+#define REGISTER_FUNCTION(fn) \
+    { #fn, LogicExpression::Impl::RegisterFunction(#fn, fn) }
 #define REGISTER_FUNCTION_WITH_DEFAULTS(fn, ...) \
     { #fn, LogicExpression::Impl::RegisterFunctionWithDefaults(#fn, fn, std::make_tuple(__VA_ARGS__)) }
-#define REGISTER_LOGIC_FUNCTION(fn) { #fn, LogicExpression::Impl::RegisterLogicFunction(#fn, &Rando::Logic::fn) }
+#define REGISTER_LOGIC_FUNCTION(fn) \
+    { #fn, LogicExpression::Impl::RegisterLogicFunction(#fn, &Rando::Logic::fn) }
 #define REGISTER_LOGIC_FUNCTION_WITH_DEFAULTS(fn, ...)                                              \
     {                                                                                               \
-        #fn, LogicExpression::Impl::RegisterLogicFunctionWithDefaults(#fn, &Rando::Logic::fn,        \
+#fn, LogicExpression::Impl::RegisterLogicFunctionWithDefaults(#fn, &Rando::Logic::fn,       \
                                                                       std::make_tuple(__VA_ARGS__)) \
     }
-#define REGISTER_LOGIC_VARIABLE(var) { #var, LogicExpression::Impl::RegisterLogicVariable(#var, &Rando::Logic::var) }
+#define REGISTER_LOGIC_VARIABLE(var) \
+    { #var, LogicExpression::Impl::RegisterLogicVariable(#var, &Rando::Logic::var) }
 
 #pragma region Forwarding Functions
 static uint8_t GetOption(const RandomizerSettingKey key) {

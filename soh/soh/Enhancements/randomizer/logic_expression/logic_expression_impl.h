@@ -17,7 +17,7 @@
 #include "../SeedContext.h"
 
 namespace Rando {
-    class Logic;
+class Logic;
 }
 
 struct LogicExpression::Impl {
@@ -33,19 +33,21 @@ struct LogicExpression::Impl {
     size_t endIndex = 0;
     std::weak_ptr<LogicExpression> expression;
 
-    ValueVariant Evaluate(const std::string& path = "0", int depth = 0, const EvaluationCallback& callback = nullptr) const;
+    ValueVariant Evaluate(const std::string& path = "0", int depth = 0,
+                          const EvaluationCallback& callback = nullptr) const;
     std::string GetTypeString() const;
 
   private:
     std::string GetExprErrorContext() const;
-    ValueVariant EvaluateFunction(const std::string& path = "0", int depth = 0, const EvaluationCallback& callback = nullptr) const;
+    ValueVariant EvaluateFunction(const std::string& path = "0", int depth = 0,
+                                  const EvaluationCallback& callback = nullptr) const;
     ValueVariant EvaluateEnum() const;
     ValueVariant EvaluateVariable() const;
     ValueVariant EvaluateArithmetic(char op, const std::string& path = "0", int depth = 0,
-                                   const EvaluationCallback& callback = nullptr) const;
+                                    const EvaluationCallback& callback = nullptr) const;
 
-    using FunctionAdapter = std::function<ValueVariant(const std::vector<std::shared_ptr<Impl>>&, const std::string&, int,
-                                                       const EvaluationCallback&)>;
+    using FunctionAdapter = std::function<ValueVariant(const std::vector<std::shared_ptr<Impl>>&, const std::string&,
+                                                       int, const EvaluationCallback&)>;
 
     static std::unordered_map<std::string, FunctionAdapter> functionAdapters;
     static void PopulateFunctionAdapters();
@@ -141,15 +143,13 @@ struct LogicExpression::Impl {
         constexpr size_t expectedArgCount = sizeof...(Is);
 
         if (args.size() > expectedArgCount) {
-            throw std::runtime_error("Function " + functionName + " expects up to " +
-                                     std::to_string(expectedArgCount) + " arguments, but got " +
-                                     std::to_string(args.size()));
+            throw std::runtime_error("Function " + functionName + " expects up to " + std::to_string(expectedArgCount) +
+                                     " arguments, but got " + std::to_string(args.size()));
         }
 
-        return function(
-            (Is < args.size() ? EvaluateArg<std::tuple_element_t<Is, std::decay_t<Tuple>>>(
-                                   args[Is], path + "." + std::to_string(Is), depth, callback)
-                             : std::get<Is>(defaults))...);
+        return function((Is < args.size() ? EvaluateArg<std::tuple_element_t<Is, std::decay_t<Tuple>>>(
+                                                args[Is], path + "." + std::to_string(Is), depth, callback)
+                                          : std::get<Is>(defaults))...);
     }
 
     template <typename Function, typename... Args>
@@ -165,10 +165,10 @@ struct LogicExpression::Impl {
     }
 
     template <typename MemberFunction, typename... Args, size_t... Is>
-    static ValueVariant CallMemberFunctionImpl(Rando::Logic* logic, const std::string& functionName, MemberFunction function,
-                                               const std::vector<std::shared_ptr<LogicExpression::Impl>>& args,
-                                               const std::string& path, int depth, const EvaluationCallback& callback,
-                                               std::index_sequence<Is...>) {
+    static ValueVariant
+    CallMemberFunctionImpl(Rando::Logic* logic, const std::string& functionName, MemberFunction function,
+                           const std::vector<std::shared_ptr<LogicExpression::Impl>>& args, const std::string& path,
+                           int depth, const EvaluationCallback& callback, std::index_sequence<Is...>) {
         (void)functionName;
         return ((*logic).*function)(EvaluateArg<Args>(args[Is], path + "." + std::to_string(Is), depth, callback)...);
     }
@@ -198,23 +198,21 @@ struct LogicExpression::Impl {
     }
 
     template <typename Function, typename Tuple, size_t... Is>
-    static ValueVariant CallMemberFunctionWithDefaultsImpl(Rando::Logic* logic, const std::string& functionName, Function function,
-                                                           const std::vector<std::shared_ptr<LogicExpression::Impl>>& args,
-                                                           const std::string& path, int depth,
-                                                           const EvaluationCallback& callback, Tuple&& defaults,
-                                                           std::index_sequence<Is...>) {
+    static ValueVariant
+    CallMemberFunctionWithDefaultsImpl(Rando::Logic* logic, const std::string& functionName, Function function,
+                                       const std::vector<std::shared_ptr<LogicExpression::Impl>>& args,
+                                       const std::string& path, int depth, const EvaluationCallback& callback,
+                                       Tuple&& defaults, std::index_sequence<Is...>) {
         constexpr size_t expectedArgCount = sizeof...(Is);
 
         if (args.size() > expectedArgCount) {
-            throw std::runtime_error("Function " + functionName + " expects up to " +
-                                     std::to_string(expectedArgCount) + " arguments, but got " +
-                                     std::to_string(args.size()));
+            throw std::runtime_error("Function " + functionName + " expects up to " + std::to_string(expectedArgCount) +
+                                     " arguments, but got " + std::to_string(args.size()));
         }
 
-        return ((*logic).*function)(
-            (Is < args.size() ? EvaluateArg<std::tuple_element_t<Is, std::decay_t<Tuple>>>(
-                                   args[Is], path + "." + std::to_string(Is), depth, callback)
-                             : std::get<Is>(defaults))...);
+        return ((*logic).*function)((Is < args.size() ? EvaluateArg<std::tuple_element_t<Is, std::decay_t<Tuple>>>(
+                                                            args[Is], path + "." + std::to_string(Is), depth, callback)
+                                                      : std::get<Is>(defaults))...);
     }
 
     template <typename Function, typename... Args>
@@ -225,13 +223,13 @@ struct LogicExpression::Impl {
                                                   const EvaluationCallback& callback) -> ValueVariant {
             auto* logic = Rando::Context::GetInstance()->GetLogic().get();
             constexpr size_t expectedArgCount = sizeof...(Args);
-            return CallMemberFunctionWithDefaultsImpl(logic, functionName, function, args, path, depth, callback, defaults,
-                                                      std::make_index_sequence<expectedArgCount>{});
+            return CallMemberFunctionWithDefaultsImpl(logic, functionName, function, args, path, depth, callback,
+                                                      defaults, std::make_index_sequence<expectedArgCount>{});
         };
     }
 
     template <typename T>
-    static FunctionAdapter RegisterLogicVariable(const std::string& varName, T Rando::Logic::* var) {
+    static FunctionAdapter RegisterLogicVariable(const std::string& varName, T Rando::Logic::*var) {
         return [varName, var](const std::vector<std::shared_ptr<LogicExpression::Impl>>& args, const std::string& path,
                               int depth, const EvaluationCallback& callback) -> ValueVariant {
             (void)path;

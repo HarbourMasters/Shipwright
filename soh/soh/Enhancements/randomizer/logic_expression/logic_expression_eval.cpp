@@ -327,8 +327,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
 
             if (callback) {
                 callback(expression.lock(), path, depth,
-                         GetTypeString() + (cond ? " (true branch)" : " (false branch)"),
-                         result);
+                         GetTypeString() + (cond ? " (true branch)" : " (false branch)"), result);
             }
             return result;
         }

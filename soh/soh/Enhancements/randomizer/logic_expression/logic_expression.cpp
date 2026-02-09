@@ -68,7 +68,8 @@ ExpressionEvaluation EvaluateExpression(std::shared_ptr<LogicExpression> express
         throw std::runtime_error("EvaluateExpression called with null expression");
     }
 
-    std::vector<std::tuple<std::shared_ptr<LogicExpression>, std::string, int, std::string, LogicExpression::ValueVariant>>
+    std::vector<
+        std::tuple<std::shared_ptr<LogicExpression>, std::string, int, std::string, LogicExpression::ValueVariant>>
         evaluationSequence;
 
     auto recordCallback = [&evaluationSequence](const std::shared_ptr<LogicExpression>& expr, const std::string& path,
