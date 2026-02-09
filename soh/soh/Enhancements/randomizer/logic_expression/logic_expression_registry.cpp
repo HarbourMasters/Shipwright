@@ -8,7 +8,6 @@
 
 #include <stdexcept>
 #include <unordered_map>
-#include <mutex>
 
 extern SaveContext gSaveContext;
 
@@ -158,28 +157,6 @@ void LogicExpression::Impl::PopulateFunctionAdapters() {
     };
 }
 
-LogicExpression::ValueVariant LogicExpression::Impl::EvaluateFunction(const std::string& path, int depth,
-                                                                      const EvaluationCallback& callback) const {
-    static std::once_flag sInit;
-    std::call_once(sInit, []() { PopulateFunctionAdapters(); });
-
-    try {
-        auto it = functionAdapters.find(functionName);
-        if (it != functionAdapters.end()) {
-            auto result = it->second(children, path, depth, callback);
-
-            if (callback) {
-                callback(expression.lock(), path, depth, GetTypeString(), result);
-            }
-
-            return result;
-        }
-        throw std::runtime_error("Unknown function: " + functionName + GetExprErrorContext());
-    } catch (const std::out_of_range&) {
-        throw std::runtime_error("Insufficient arguments for function: " + functionName + GetExprErrorContext());
-    }
-}
-
 std::unordered_map<std::string, int> LogicExpression::Impl::enumMap;
 
 void LogicExpression::Impl::PopulateEnumMap() {
@@ -293,16 +270,6 @@ void LogicExpression::Impl::PopulateEnumMap() {
     }
 }
 
-LogicExpression::ValueVariant LogicExpression::Impl::EvaluateEnum() const {
-    static std::once_flag sInit;
-    std::call_once(sInit, []() { PopulateEnumMap(); });
-    auto it = enumMap.find(value);
-    if (it != enumMap.end()) {
-        return it->second;
-    }
-    throw std::runtime_error("Unknown enum constant: " + value + GetExprErrorContext());
-}
-
 std::unordered_map<std::string, LogicExpression::Impl::FunctionAdapter> LogicExpression::Impl::variableAdapters;
 
 void LogicExpression::Impl::PopulateVariableAdapters() {
@@ -313,17 +280,4 @@ void LogicExpression::Impl::PopulateVariableAdapters() {
         REGISTER_LOGIC_VARIABLE(BigPoes),      REGISTER_LOGIC_VARIABLE(BaseHearts),
         REGISTER_LOGIC_VARIABLE(AtDay),        REGISTER_LOGIC_VARIABLE(AtNight),
     };
-}
-
-LogicExpression::ValueVariant LogicExpression::Impl::EvaluateVariable() const {
-    static std::once_flag sInit;
-    std::call_once(sInit, []() { PopulateVariableAdapters(); });
-
-    auto it = variableAdapters.find(value);
-    if (it != variableAdapters.end()) {
-        std::vector<std::shared_ptr<LogicExpression::Impl>> emptyArgs;
-        return it->second(emptyArgs, "var", 0, nullptr);
-    }
-
-    throw std::runtime_error("Unknown variable: '" + value + "'" + GetExprErrorContext());
 }

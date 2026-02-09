@@ -1,6 +1,7 @@
 #include "logic_expression_impl.h"
 
 #include <algorithm>
+#include <mutex>
 #include <stdexcept>
 #include <string>
 #include <variant>
@@ -61,6 +62,51 @@ std::string LogicExpression::Impl::GetExprErrorContext() const {
     std::string pointerLine(pointerOffset, ' ');
     pointerLine.append(std::string(pointerLength, '^'));
     return "\n" + contextLine + "\n" + pointerLine;
+}
+
+LogicExpression::ValueVariant LogicExpression::Impl::EvaluateFunction(const std::string& path, int depth,
+                                                                      const EvaluationCallback& callback) const {
+    static std::once_flag sInit;
+    std::call_once(sInit, []() { PopulateFunctionAdapters(); });
+
+    try {
+        auto it = functionAdapters.find(functionName);
+        if (it != functionAdapters.end()) {
+            auto result = it->second(children, path, depth, callback);
+
+            if (callback) {
+                callback(expression.lock(), path, depth, GetTypeString(), result);
+            }
+
+            return result;
+        }
+        throw std::runtime_error("Unknown function: " + functionName + GetExprErrorContext());
+    } catch (const std::out_of_range&) {
+        throw std::runtime_error("Insufficient arguments for function: " + functionName + GetExprErrorContext());
+    }
+}
+
+LogicExpression::ValueVariant LogicExpression::Impl::EvaluateEnum() const {
+    static std::once_flag sInit;
+    std::call_once(sInit, []() { PopulateEnumMap(); });
+    auto it = enumMap.find(value);
+    if (it != enumMap.end()) {
+        return it->second;
+    }
+    throw std::runtime_error("Unknown enum constant: " + value + GetExprErrorContext());
+}
+
+LogicExpression::ValueVariant LogicExpression::Impl::EvaluateVariable() const {
+    static std::once_flag sInit;
+    std::call_once(sInit, []() { PopulateVariableAdapters(); });
+
+    auto it = variableAdapters.find(value);
+    if (it != variableAdapters.end()) {
+        std::vector<std::shared_ptr<LogicExpression::Impl>> emptyArgs;
+        return it->second(emptyArgs, "var", 0, nullptr);
+    }
+
+    throw std::runtime_error("Unknown variable: '" + value + "'" + GetExprErrorContext());
 }
 
 LogicExpression::ValueVariant LogicExpression::Impl::EvaluateArithmetic(char op, const std::string& path, int depth,
