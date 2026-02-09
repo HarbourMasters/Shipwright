@@ -413,7 +413,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_TEXTURE_FILTER)
         .RaceDisable(false)
         .Options(ComboboxOptions().Tooltip("Sets the applied Texture Filtering.").ComboMap(textureFilteringMap));
-    
+
     AddWidget(path, "Upscaling Method", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_UPSCALE_FILTER)
         .RaceDisable(false)
@@ -425,9 +425,9 @@ void SohMenu::AddMenuSettings() {
             }
         })
         .Options(ComboboxOptions()
-            .Tooltip("Sets the method used when upscaling from internal resolution to viewport.")
-            .ComboMap(upscalingFilterMap)
-            .DefaultIndex(Fast::FILTER_LINEAR));
+                     .Tooltip("Sets the method used when upscaling from internal resolution to viewport.")
+                     .ComboMap(upscalingFilterMap)
+                     .DefaultIndex(Fast::FILTER_LINEAR));
 
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Advanced Graphics Options", WIDGET_SEPARATOR_TEXT);
