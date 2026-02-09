@@ -8,6 +8,7 @@
 #include "objects/object_niw/object_niw.h"
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -178,8 +179,9 @@ s32 func_809B55EC(EnAttackNiw* this, PlayState* play) {
 
     Actor_SetFocus(&this->actor, this->unk_2E4);
     Actor_GetScreenPos(play, &this->actor, &sp1E, &sp1C);
-    if ((this->actor.projectedPos.z < -20.0f) || (sp1E < 0) || (sp1E > SCREEN_WIDTH) || (sp1C < 0) ||
-        (sp1C > SCREEN_HEIGHT)) {
+    if (GameInteractor_Should(VB_DESTROY_OFFSCREEN_EN_ATTACK_NIW, true, this->actor) &&
+        ((this->actor.projectedPos.z < -20.0f) || (sp1E < 0) || (sp1E > SCREEN_WIDTH) || (sp1C < 0) ||
+         (sp1C > SCREEN_HEIGHT))) {
         return 0;
     } else {
         return 1;
@@ -364,7 +366,8 @@ void EnAttackNiw_Update(Actor* thisx, PlayState* play) {
     tmpf1 = 20.0f;
     if (this->actor.xyzDistToPlayerSq < SQ(tmpf1)) {
         cucco = (EnNiw*)this->actor.parent;
-        if ((this->actor.parent->update != NULL) && (this->actor.parent != NULL) && (cucco != NULL) &&
+        // reordered checks to prevent null pointer dereference
+        if ((this->actor.parent != NULL) && (this->actor.parent->update != NULL) && (cucco != NULL) &&
             (cucco->timer9 == 0) && (player->invincibilityTimer == 0)) {
             func_8002F6D4(play, &this->actor, 2.0f, this->actor.world.rot.y, 0.0f, 0x10);
             cucco->timer9 = 0x46;

@@ -3436,8 +3436,12 @@ Actor* Actor_SpawnAsChild(ActorContext* actorCtx, Actor* parent, PlayState* play
     // Gohma (z_boss_goma.c), the Stalchildren spawner (z_en_encount1.c) and the falling platform spawning Stalfos in
     // Forest Temple (z_bg_mori_bigst.c) that normally rely on this behaviour are changed when
     // Enemy Rando is on so they still work properly even without assigning a parent.
+    //
+    // Also, if the parent actor is a Cucco, and it is not spawning an Attacking Cucco, then we don't want the
+    // actor's parent to be this Cucco
     if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) &&
-        (spawnedActor->id == ACTOR_EN_FLOORMAS || spawnedActor->id == ACTOR_EN_PEEHAT)) {
+        ((spawnedActor->id == ACTOR_EN_FLOORMAS || spawnedActor->id == ACTOR_EN_PEEHAT) ||
+         (parent->id == ACTOR_EN_NIW && spawnedActor->id != ACTOR_EN_ATTACK_NIW))) {
         return spawnedActor;
     }
 
