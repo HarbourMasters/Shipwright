@@ -5,6 +5,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/enhancementTypes.h"
 
 #define FLAGS 0
 
@@ -570,16 +571,16 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
 }
 
 void EnBox_UpdateTexture(EnBox* this, PlayState* play) {
-    bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
+    int csmcSetting = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
     GetItemCategory getItemCategory;
     GetItemEntry chestItem = this->getItemEntry;
 
-    int isVanilla = !csmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) ||
-                    (play->sceneNum == SCENE_TREASURE_BOX_SHOP &&
-                     this->dyna.actor.room != 6); // Exclude treasure game chests except for the final room
+    int useMatchContents = csmcSetting == CONTAINER_MATCH_CONTENTS_ON &&
+                           !(requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) &&
+                           !(play->sceneNum == SCENE_TREASURE_BOX_SHOP && this->dyna.actor.room != 6);
 
-    if (!isVanilla) {
+    if (useMatchContents) {
         getItemCategory = chestItem.getItemCategory;
         // If they have bombchus, don't consider the bombchu item major
         if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
@@ -613,7 +614,7 @@ void EnBox_UpdateTexture(EnBox* this, PlayState* play) {
     }
 
     // Change model/texture
-    if (!isVanilla) {
+    if (useMatchContents) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_MAJOR:
                 this->boxBodyDL = EnBox_LoadChestDL(gChestBodyMajorDL, gTreasureChestChestFrontDL);

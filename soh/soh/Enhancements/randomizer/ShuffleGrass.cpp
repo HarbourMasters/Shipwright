@@ -7,6 +7,7 @@ extern "C" {
 #include "variables.h"
 #include "overlays/actors/ovl_En_Kusa/z_en_kusa.h"
 #include "objects/object_kusa/object_kusa.h"
+#include "soh/Enhancements/enhancementTypes.h"
 extern PlayState* gPlayState;
 }
 
@@ -32,10 +33,15 @@ extern "C" void EnKusa_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     if (grassIdentity != nullptr && grassIdentity->randomizerCheck != RC_MAX &&
         Flags_GetRandomizerInf(grassIdentity->randomizerInf) == 0) {
-        bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
+        int csmcSetting = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
         int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-        if (csmc && (!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+        int useMatchContents = csmcSetting == CONTAINER_MATCH_CONTENTS_ON &&
+                               !(requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+
+        if (csmcSetting == CONTAINER_MATCH_CONTENTS_OFF) {
+            DrawTypeOfGrass(grassActor, (Gfx*)dLists[0], (Gfx*)dLists[1], play);
+        } else if (useMatchContents) {
             auto itemEntry =
                 Rando::Context::GetInstance()->GetFinalGIEntry(grassIdentity->randomizerCheck, true, GI_NONE);
             GetItemCategory getItemCategory = itemEntry.getItemCategory;

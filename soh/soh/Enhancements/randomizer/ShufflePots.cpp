@@ -7,6 +7,7 @@ extern "C" {
 #include "overlays/actors/ovl_Obj_Tsubo/z_obj_tsubo.h"
 #include "overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
+#include "soh/Enhancements/enhancementTypes.h"
 extern PlayState* gPlayState;
 }
 
@@ -22,10 +23,17 @@ extern "C" void ObjTsubo_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     if (potIdentity != nullptr && potIdentity->randomizerCheck != RC_MAX &&
         Flags_GetRandomizerInf(potIdentity->randomizerInf) == 0) {
-        bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
+        int csmcSetting = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
         int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-        if (csmc && (!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+        int useMatchContents = csmcSetting == CONTAINER_MATCH_CONTENTS_ON &&
+                               !(requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+
+        if (csmcSetting == CONTAINER_MATCH_CONTENTS_OFF) {
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotDL);
+        } else if (csmcSetting == CONTAINER_MATCH_CONTENTS_UNCHECKED) {
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotStandardDL);
+        } else if (useMatchContents) {
             auto itemEntry =
                 Rando::Context::GetInstance()->GetFinalGIEntry(potIdentity->randomizerCheck, true, GI_NONE);
             GetItemCategory getItemCategory = itemEntry.getItemCategory;

@@ -5,10 +5,14 @@
 #include "global.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 
+#include "assets/objects/object_kibako2/object_kibako2.h"
+#include "assets/objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
+
 extern "C" {
 #include "variables.h"
 #include "overlays/actors/ovl_Obj_Kibako2/z_obj_kibako2.h"
 #include "overlays/actors/ovl_Obj_Kibako/z_obj_kibako.h"
+#include "soh/Enhancements/enhancementTypes.h"
 extern PlayState* gPlayState;
 }
 
@@ -17,12 +21,18 @@ extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemCategory getItemCategory;
     auto crateActor = ((ObjKibako2*)thisx);
-    bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
+    int csmcSetting = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    int isVanilla = !csmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+    int useMatchContents =
+        csmcSetting == CONTAINER_MATCH_CONTENTS_ON && !(requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
-    if (isVanilla) {
+    if (csmcSetting == CONTAINER_MATCH_CONTENTS_OFF) {
+        Gfx_DrawDListOpa(play, (Gfx*)gLargeCrateDL);
+        return;
+    }
+
+    if (csmcSetting == CONTAINER_MATCH_CONTENTS_UNCHECKED) {
         Gfx_DrawDListOpa(play, (Gfx*)gLargeRandoCrateDL);
         return;
     }
@@ -84,12 +94,18 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
 extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
     GetItemCategory getItemCategory;
     auto smallCrateActor = ((ObjKibako*)thisx);
-    bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
+    int csmcSetting = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    int isVanilla = !csmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+    int useMatchContents =
+        csmcSetting == CONTAINER_MATCH_CONTENTS_ON && !(requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
-    if (isVanilla) {
+    if (csmcSetting == CONTAINER_MATCH_CONTENTS_OFF) {
+        Gfx_DrawDListOpa(play, (Gfx*)gSmallWoodenBoxDL);
+        return;
+    }
+
+    if (csmcSetting == CONTAINER_MATCH_CONTENTS_UNCHECKED) {
         Gfx_DrawDListOpa(play, (Gfx*)gSmallRandoCrateDL);
         return;
     }

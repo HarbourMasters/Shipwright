@@ -52,13 +52,20 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
         return;
     }
 
-    bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
+    int csmcSetting =
+        CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CONTAINER_MATCH_CONTENTS_OFF);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
-    int isVanilla = !csmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
-    if (isVanilla) {
+    if (csmcSetting == CONTAINER_MATCH_CONTENTS_OFF) {
+        return;
+    }
+
+    int useMatchContents =
+        csmcSetting == CONTAINER_MATCH_CONTENTS_ON && !(requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+
+    if (csmcSetting == CONTAINER_MATCH_CONTENTS_UNCHECKED) {
         getItemCategory = ITEM_CATEGORY_JUNK;
-    } else {
+    } else if (useMatchContents) {
         treeItem = Rando::Context::GetInstance()->GetFinalGIEntry(treeIdentity->randomizerCheck, true, GI_NONE);
         getItemCategory = treeItem.getItemCategory;
 
