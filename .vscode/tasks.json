@@ -48,7 +48,8 @@
                     "--build",
                     "build-cmake",
                     "--target",
-                    "GenerateSohOtr"
+                    "GenerateSohOtr",
+                    "--parallel"
                 ]
             },
             "group": "build",
@@ -69,8 +70,8 @@
                 "args": [
                     "--build",
                     "build-cmake",
-                    "--",
-                    "-j12"
+                    "--parallel",
+                    "8"
                 ]
             },
             "group": {
