@@ -1,51 +1,73 @@
 #include "logic_expression_impl.h"
 
 #include <algorithm>
-#include <sstream>
+#include <charconv>
+#include <stdexcept>
 #include <stack>
 #include <tuple>
 #include <vector>
 
-const std::vector<std::shared_ptr<LogicExpression>>& LogicExpression::GetChildren() const {
+const std::vector<std::shared_ptr<LogicExpression>>& LogicExpression::GetChildren() const noexcept {
     return children;
 }
 
-LogicExpression::Type LogicExpression::GetType() const {
+LogicExpression::Type LogicExpression::GetType() const noexcept {
     return impl->type;
 }
 
-LogicExpression::ValueType LogicExpression::GetValueType() const {
+LogicExpression::ValueType LogicExpression::GetValueType() const noexcept {
     return impl->valueType;
 }
 
-std::string LogicExpression::GetOperation() const {
+const std::string& LogicExpression::GetOperation() const noexcept {
     return impl->operation;
 }
 
-std::string LogicExpression::GetFunctionName() const {
+const std::string& LogicExpression::GetFunctionName() const noexcept {
     return impl->functionName;
 }
 
 std::string LogicExpression::ToString() const {
-    if (impl->expressionString != nullptr) {
+    if (!impl) {
+        return "";
+    }
+
+    if (impl->expressionString) {
         return *impl->expressionString;
     }
 
-    const Impl* root = impl->parent;
+    const Impl* root = impl.get();
     while (root->parent)
         root = root->parent;
-    return (*root->expressionString).substr(impl->startIndex, impl->endIndex - impl->startIndex);
+
+    if (!root->expressionString) {
+        return "";
+    }
+
+    const auto& str = *root->expressionString;
+    if (impl->startIndex > str.size() || impl->endIndex > str.size() || impl->endIndex < impl->startIndex) {
+        return str;
+    }
+
+    return str.substr(impl->startIndex, impl->endIndex - impl->startIndex);
 }
 
 LogicExpression::ValueVariant LogicExpression::EvaluateVariant(const EvaluationCallback& callback) const {
+    if (!impl) {
+        throw std::runtime_error("LogicExpression::EvaluateVariant called with null impl");
+    }
     return impl->Evaluate("0", 0, callback);
 }
 
-ExpressionEvaluation EvaluateExpression(std::string condition) {
+ExpressionEvaluation EvaluateExpression(const std::string& condition) {
     return EvaluateExpression(LogicExpression::Parse(condition));
 }
 
 ExpressionEvaluation EvaluateExpression(std::shared_ptr<LogicExpression> expression) {
+    if (!expression) {
+        throw std::runtime_error("EvaluateExpression called with null expression");
+    }
+
     std::vector<std::tuple<std::shared_ptr<LogicExpression>, std::string, int, std::string, LogicExpression::ValueVariant>>
         evaluationSequence;
 
@@ -57,39 +79,51 @@ ExpressionEvaluation EvaluateExpression(std::shared_ptr<LogicExpression> express
 
     (void)expression->Evaluate<LogicExpression::ValueVariant>(recordCallback);
 
-    auto pathToVector = [](const std::string& path) {
-        std::vector<int> result;
-        std::stringstream ss(path);
-        std::string segment;
+    auto parseNextSegment = [](const std::string& path, size_t& pos) -> int {
+        if (pos > path.size()) {
+            return 0;
+        }
 
-        while (std::getline(ss, segment, '.')) {
-            try {
-                result.push_back(std::stoi(segment));
-            } catch (const std::exception&) {
-                result.push_back(0);
+        size_t end = path.find('.', pos);
+        if (end == std::string::npos) {
+            end = path.size();
+        }
+
+        int v = 0;
+        if (end > pos) {
+            const char* first = path.data() + pos;
+            const char* last = path.data() + end;
+            auto [ptr, ec] = std::from_chars(first, last, v);
+            if (ec != std::errc{} || ptr != last) {
+                v = 0;
             }
         }
 
-        return result;
+        pos = (end < path.size()) ? (end + 1) : (path.size() + 1);
+        return v;
     };
 
-    std::sort(evaluationSequence.begin(), evaluationSequence.end(), [&pathToVector](const auto& a, const auto& b) {
+    std::sort(evaluationSequence.begin(), evaluationSequence.end(), [&parseNextSegment](const auto& a, const auto& b) {
         const auto& pathA = std::get<1>(a);
         const auto& pathB = std::get<1>(b);
 
-        auto vecA = pathToVector(pathA);
-        auto vecB = pathToVector(pathB);
-
-        size_t i = 0;
-        while (i < vecA.size() && i < vecB.size()) {
-            if (vecA[i] != vecB[i]) {
-                return vecA[i] < vecB[i];
+        size_t posA = 0;
+        size_t posB = 0;
+        while (posA <= pathA.size() && posB <= pathB.size()) {
+            int segA = parseNextSegment(pathA, posA);
+            int segB = parseNextSegment(pathB, posB);
+            if (segA != segB) {
+                return segA < segB;
             }
-            i++;
         }
 
-        return vecA.size() < vecB.size();
+        // If one path has fewer segments and all previous segments matched, shorter path comes first.
+        return posA > pathA.size() && posB <= pathB.size();
     });
+
+    if (evaluationSequence.empty()) {
+        throw std::runtime_error("Expression evaluation produced no results");
+    }
 
     ExpressionEvaluation evaluation;
     evaluation.Expression = std::get<0>(evaluationSequence[0]);
@@ -121,21 +155,14 @@ ExpressionEvaluation EvaluateExpression(std::shared_ptr<LogicExpression> express
 }
 
 std::string ToString(const LogicExpression::ValueVariant& value) {
-    if (std::holds_alternative<bool>(value)) {
-        return std::get<bool>(value) ? "true" : "false";
-    } else if (std::holds_alternative<int8_t>(value)) {
-        return std::to_string(std::get<int8_t>(value));
-    } else if (std::holds_alternative<int16_t>(value)) {
-        return std::to_string(std::get<int16_t>(value));
-    } else if (std::holds_alternative<int32_t>(value)) {
-        return std::to_string(std::get<int32_t>(value));
-    } else if (std::holds_alternative<uint8_t>(value)) {
-        return std::to_string(std::get<uint8_t>(value));
-    } else if (std::holds_alternative<uint16_t>(value)) {
-        return std::to_string(std::get<uint16_t>(value));
-    } else if (std::holds_alternative<uint32_t>(value)) {
-        return std::to_string(std::get<uint32_t>(value));
-    }
-
-    return "unknown";
+    return std::visit(
+        [](auto v) -> std::string {
+            using V = std::decay_t<decltype(v)>;
+            if constexpr (std::is_same_v<V, bool>) {
+                return v ? "true" : "false";
+            } else {
+                return std::to_string(v);
+            }
+        },
+        value);
 }

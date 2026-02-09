@@ -8,6 +8,7 @@
 
 #include <stdexcept>
 #include <unordered_map>
+#include <mutex>
 
 extern SaveContext gSaveContext;
 
@@ -159,9 +160,8 @@ void LogicExpression::Impl::PopulateFunctionAdapters() {
 
 LogicExpression::ValueVariant LogicExpression::Impl::EvaluateFunction(const std::string& path, int depth,
                                                                       const EvaluationCallback& callback) const {
-    if (functionAdapters.empty()) {
-        PopulateFunctionAdapters();
-    }
+    static std::once_flag sInit;
+    std::call_once(sInit, []() { PopulateFunctionAdapters(); });
 
     try {
         auto it = functionAdapters.find(functionName);
@@ -169,7 +169,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::EvaluateFunction(const std:
             auto result = it->second(children, path, depth, callback);
 
             if (callback) {
-                callback(expression, path, depth, GetTypeString(), result);
+                callback(expression.lock(), path, depth, GetTypeString(), result);
             }
 
             return result;
@@ -294,9 +294,8 @@ void LogicExpression::Impl::PopulateEnumMap() {
 }
 
 LogicExpression::ValueVariant LogicExpression::Impl::EvaluateEnum() const {
-    if (enumMap.empty()) {
-        PopulateEnumMap();
-    }
+    static std::once_flag sInit;
+    std::call_once(sInit, []() { PopulateEnumMap(); });
     auto it = enumMap.find(value);
     if (it != enumMap.end()) {
         return it->second;
@@ -317,9 +316,8 @@ void LogicExpression::Impl::PopulateVariableAdapters() {
 }
 
 LogicExpression::ValueVariant LogicExpression::Impl::EvaluateVariable() const {
-    if (variableAdapters.empty()) {
-        PopulateVariableAdapters();
-    }
+    static std::once_flag sInit;
+    std::call_once(sInit, []() { PopulateVariableAdapters(); });
 
     auto it = variableAdapters.find(value);
     if (it != variableAdapters.end()) {

@@ -31,7 +31,7 @@ struct LogicExpression::Impl {
     Impl* parent = nullptr;
     size_t startIndex = 0;
     size_t endIndex = 0;
-    std::shared_ptr<LogicExpression> expression;
+    std::weak_ptr<LogicExpression> expression;
 
     ValueVariant Evaluate(const std::string& path = "0", int depth = 0, const EvaluationCallback& callback = nullptr) const;
     std::string GetTypeString() const;

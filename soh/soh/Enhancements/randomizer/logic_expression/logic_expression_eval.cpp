@@ -139,7 +139,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::EvaluateArithmetic(char op,
                 opStr = "Unknown";
                 break;
         }
-        callback(expression, path, depth, opStr, accum);
+        callback(expression.lock(), path, depth, opStr, accum);
     }
 
     return accum;
@@ -148,23 +148,6 @@ LogicExpression::ValueVariant LogicExpression::Impl::EvaluateArithmetic(char op,
 LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string& path, int depth,
                                                               const EvaluationCallback& callback) const {
     ValueVariant result;
-
-    std::string exprText;
-    if (expressionString) {
-        exprText = *expressionString;
-    } else if (parent) {
-        const Impl* root = this;
-        while (root->parent)
-            root = root->parent;
-
-        if (root->expressionString) {
-            exprText = root->expressionString->substr(startIndex, endIndex - startIndex);
-        }
-    }
-
-    if (exprText.empty()) {
-        exprText = "Unknown expression";
-    }
 
     switch (type) {
         case Type::Value:
@@ -181,7 +164,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
             }
 
             if (callback) {
-                callback(expression, path, depth, GetTypeString(), result);
+                callback(expression.lock(), path, depth, GetTypeString(), result);
             }
             return result;
 
@@ -192,7 +175,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
             auto childResult = children[0]->Evaluate(path + ".0", depth + 1, callback);
             result = !LogicExpression::GetValue<bool>(childResult);
             if (callback) {
-                callback(expression, path, depth, GetTypeString(), result);
+                callback(expression.lock(), path, depth, GetTypeString(), result);
             }
             return result;
         }
@@ -208,7 +191,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
             }
             result = accum;
             if (callback) {
-                callback(expression, path, depth,
+                callback(expression.lock(), path, depth,
                          GetTypeString() + (LogicExpression::GetValue<bool>(result) ? "" : " (short-circuit)"), result);
             }
             return result;
@@ -225,7 +208,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
             }
             result = accum;
             if (callback) {
-                callback(expression, path, depth,
+                callback(expression.lock(), path, depth,
                          GetTypeString() + (LogicExpression::GetValue<bool>(result) ? " (short-circuit)" : ""), result);
             }
             return result;
@@ -269,7 +252,7 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
             try {
                 result = std::visit(compare, leftResult, rightResult);
                 if (callback) {
-                    callback(expression, path, depth, GetTypeString(), result);
+                    callback(expression.lock(), path, depth, GetTypeString(), result);
                 }
                 return result;
             } catch (const std::bad_variant_access&) {
@@ -297,7 +280,8 @@ LogicExpression::ValueVariant LogicExpression::Impl::Evaluate(const std::string&
             }
 
             if (callback) {
-                callback(expression, path, depth, GetTypeString() + (cond ? " (true branch)" : " (false branch)"),
+                callback(expression.lock(), path, depth,
+                         GetTypeString() + (cond ? " (true branch)" : " (false branch)"),
                          result);
             }
             return result;

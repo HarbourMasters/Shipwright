@@ -17,11 +17,11 @@ class LogicExpression {
 
     static std::shared_ptr<LogicExpression> Parse(const std::string& exprStr);
     std::string ToString() const;
-    const std::vector<std::shared_ptr<LogicExpression>>& GetChildren() const;
-    Type GetType() const;
-    ValueType GetValueType() const;
-    std::string GetOperation() const;
-    std::string GetFunctionName() const;
+    const std::vector<std::shared_ptr<LogicExpression>>& GetChildren() const noexcept;
+    Type GetType() const noexcept;
+    ValueType GetValueType() const noexcept;
+    const std::string& GetOperation() const noexcept;
+    const std::string& GetFunctionName() const noexcept;
 
     ValueVariant EvaluateVariant(const EvaluationCallback& callback = nullptr) const;
 
@@ -83,7 +83,7 @@ struct ExpressionEvaluation {
     std::vector<ExpressionEvaluation> Children;
 };
 
-ExpressionEvaluation EvaluateExpression(std::string condition);
+ExpressionEvaluation EvaluateExpression(const std::string& condition);
 ExpressionEvaluation EvaluateExpression(std::shared_ptr<LogicExpression> expression);
 
 std::string ToString(const LogicExpression::ValueVariant& value);
