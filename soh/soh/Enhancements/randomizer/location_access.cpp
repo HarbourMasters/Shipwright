@@ -425,7 +425,7 @@ Region::Region(std::string regionName_, SceneID scene_, std::vector<EventAccess>
 
 Region::~Region() = default;
 
-bool Region::TimePass() {
+bool Region::TimePass() const {
     return timePass;
 }
 

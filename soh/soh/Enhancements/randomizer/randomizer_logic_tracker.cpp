@@ -5,6 +5,8 @@
 #include "logic_expression/logic_expression.h"
 #include "../../OTRGlobals.h"
 
+#include <deque>
+
 struct ExpressionTable {
     struct ExpressionRow {
         std::shared_ptr<LogicExpression> Expression;
@@ -46,6 +48,107 @@ struct RandomizerEventInfo {
     std::string ConditionStr;
     RandomizerRegion RandomizerRegion = RR_NONE;
 };
+
+struct RegionAccessFlags {
+    bool ChildDay = false;
+    bool ChildNight = false;
+    bool AdultDay = false;
+    bool AdultNight = false;
+};
+
+static bool ApplyTimePassAccess(const Region* region, RegionAccessFlags& access) {
+    if (!region->TimePass()) {
+        return false;
+    }
+
+    bool updated = false;
+    if ((access.ChildDay || access.ChildNight) && !(access.ChildDay && access.ChildNight)) {
+        access.ChildDay = true;
+        access.ChildNight = true;
+        updated = true;
+    }
+
+    if ((access.AdultDay || access.AdultNight) && !(access.AdultDay && access.AdultNight)) {
+        access.AdultDay = true;
+        access.AdultNight = true;
+        updated = true;
+    }
+
+    return updated;
+}
+
+static std::vector<RegionAccessFlags> CalculateAccessFromRoot(RandomizerRegion excludedRegion) {
+    std::vector<RegionAccessFlags> access(RR_MAX);
+    if (excludedRegion == RR_ROOT) {
+        return access;
+    }
+
+    bool previousIsChild = logic->IsChild;
+    bool previousIsAdult = logic->IsAdult;
+    bool previousAtDay = logic->AtDay;
+    bool previousAtNight = logic->AtNight;
+    RandomizerRegion previousRegionKey = logic->CurrentRegionKey;
+
+    std::deque<RandomizerRegion> queue;
+    const Region* root = RegionTable(RR_ROOT);
+    access[RR_ROOT] = { root->childDay, root->childNight, root->adultDay, root->adultNight };
+    queue.push_back(RR_ROOT);
+
+    while (!queue.empty()) {
+        RandomizerRegion regionKey = queue.front();
+        queue.pop_front();
+
+        Region* region = RegionTable(regionKey);
+        logic->CurrentRegionKey = regionKey;
+        const RegionAccessFlags currentAccess = access[regionKey];
+
+        for (auto& exit : region->exits) {
+            RandomizerRegion connectedKey = exit.GetConnectedRegionKey();
+            if (connectedKey == RR_NONE || connectedKey == excludedRegion) {
+                continue;
+            }
+
+            Region* connectedRegion = RegionTable(connectedKey);
+            RegionAccessFlags& targetAccess = access[connectedKey];
+            bool updated = false;
+
+            if (currentAccess.ChildDay && exit.CheckConditionAtAgeTime(logic->IsChild, logic->AtDay) &&
+                !targetAccess.ChildDay) {
+                targetAccess.ChildDay = true;
+                updated = true;
+            }
+            if (currentAccess.ChildNight && exit.CheckConditionAtAgeTime(logic->IsChild, logic->AtNight) &&
+                !targetAccess.ChildNight) {
+                targetAccess.ChildNight = true;
+                updated = true;
+            }
+            if (currentAccess.AdultDay && exit.CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay) &&
+                !targetAccess.AdultDay) {
+                targetAccess.AdultDay = true;
+                updated = true;
+            }
+            if (currentAccess.AdultNight && exit.CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight) &&
+                !targetAccess.AdultNight) {
+                targetAccess.AdultNight = true;
+                updated = true;
+            }
+
+            updated |= ApplyTimePassAccess(connectedRegion, targetAccess);
+
+            if (updated) {
+                queue.push_back(connectedKey);
+            }
+        }
+    }
+
+    logic->IsChild = previousIsChild;
+    logic->IsAdult = previousIsAdult;
+    logic->AtDay = previousAtDay;
+    logic->AtNight = previousAtNight;
+    logic->CurrentRegionKey = previousRegionKey;
+
+    return access;
+}
 
 std::unordered_map<std::string, std::vector<RandomizerEventInfo>> randomizerEventMap;
 
@@ -252,6 +355,8 @@ static void CalculateShowRandomizerRegion() {
     node.NodeId = nodes.size();
     node.RandomizerRegion = showToRandomizerRegion;
 
+    const auto accessFromRoot = CalculateAccessFromRoot(showToRandomizerRegion);
+
     for (const auto& entrance : region->entrances) {
         if (entrance->GetParentRegionKey() == showFromRandomizerRegion) {
             continue;
@@ -269,10 +374,12 @@ static void CalculateShowRandomizerRegion() {
                 Entrance_GetIsEntranceDiscovered(entrance->GetIndex()) || logic->ACProcessUndiscoveredExits;
         }
         connection.ParentRandomizerRegion = entrance->GetParentRegionKey();
-        connection.ChildDayAccess = parentRegion->childDay;
-        connection.ChildNightAccess = parentRegion->childNight;
-        connection.AdultDayAccess = parentRegion->adultDay;
-        connection.AdultNightAccess = parentRegion->adultNight;
+
+        const auto& parentAccess = accessFromRoot[connection.ParentRandomizerRegion];
+        connection.ChildDayAccess = parentAccess.ChildDay;
+        connection.ChildNightAccess = parentAccess.ChildNight;
+        connection.AdultDayAccess = parentAccess.AdultDay;
+        connection.AdultNightAccess = parentAccess.AdultNight;
 
         PopulateConnectionExpression(connection, entrance->GetConditionStr());
 
@@ -608,7 +715,7 @@ static std::string GetAvailableString(const LogicTrackerNode::Connection& connec
 
     std::string available = "";
     if (childDay && childNight && adultDay && adultNight) {
-        available += "All";
+        available = "All";
     } else if (childDay || childNight || adultDay || adultNight) {
         std::vector<std::string> availableParts;
         if (childDay && childNight) {

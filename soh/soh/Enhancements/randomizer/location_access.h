@@ -169,7 +169,7 @@ class Region {
 
     RandomizerRegion randomizerRegionKey = RR_NONE;
 
-    bool TimePass();
+    bool TimePass() const;
 
     void ApplyTimePass();
 
