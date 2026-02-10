@@ -4,7 +4,6 @@
 #include "../SeedContext.h"
 #include "item_pool.hpp"
 #include "random.hpp"
-#include "spoiler_log.hpp"
 #include "starting_inventory.hpp"
 #include "hints.hpp"
 #include "shops.hpp"
@@ -396,6 +395,10 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
     RandomizerCheck loc = locPair.GetLocation();
     Rando::ItemLocation* location = ctx->GetItemLocation(loc);
     RandomizerGet locItem = location->GetPlacedRandomizerGet();
+    RandomizerCheckQuest quest = Rando::StaticData::GetLocation(loc)->GetQuest();
+    assert(ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || quest == RCQUEST_BOTH ||
+           (quest == RCQUEST_VANILLA && ctx->GetDungeons()->GetDungeonFromScene(parentRegion->scene)->IsVanilla()) ||
+           (quest == RCQUEST_MQ && ctx->GetDungeons()->GetDungeonFromScene(parentRegion->scene)->IsMQ()));
 
     if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion, logic->CalculatingAvailableChecks)) {
         location->AddToPool();
@@ -507,7 +510,8 @@ void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, Randomize
 std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& targetLocations,
                                                 RandomizerGet ignore /* = RG_NONE*/,
                                                 bool calculatingAvailableChecks /* = false */,
-                                                RandomizerRegion startingRegion /* = RR_ROOT */) {
+                                                RandomizerRegion startingRegion /* = RR_ROOT */,
+                                                RandoAgeTime startingAgeTime /* = RAT_NONE*/) {
     auto ctx = Rando::Context::GetInstance();
     GetAccessibleLocationsStruct gals(0);
     ResetLogic(ctx, gals, !calculatingAvailableChecks);
@@ -515,17 +519,18 @@ std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerChec
         gals.regionPool.insert(gals.regionPool.begin(), startingRegion);
 
         const auto& region = RegionTable(startingRegion);
-        if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
+        if (startingAgeTime == RAT_CHILD_DAY) {
             region->childDay = true;
-        } else {
+            region->childNight = region->timePass;
+        } else if (startingAgeTime == RAT_CHILD_NIGHT) {
+            region->childNight = true;
+            region->childDay = region->timePass;
+        } else if (startingAgeTime == RAT_ADULT_DAY) {
             region->adultDay = true;
-        }
-        if (region->timePass) {
-            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
-                region->childNight = true;
-            } else {
-                region->adultNight = true;
-            }
+            region->adultNight = region->timePass;
+        } else if (startingAgeTime == RAT_ADULT_NIGHT) {
+            region->adultNight = true;
+            region->adultDay = region->timePass;
         }
     }
     if (calculatingAvailableChecks) {
@@ -753,7 +758,7 @@ static void CalculateWotH() {
             // necessary, so add it unless it is in Links Pocket or an isolated place.
             auto itemLoc = ctx->GetItemLocation(ctx->playthroughLocations[i][j]);
             if (itemLoc->IsHintable() && itemLoc->GetFirstArea() > RA_LINKS_POCKET &&
-                !(IsBeatableWithout(ctx->playthroughLocations[i][j], true))) {
+                !IsBeatableWithout(ctx->playthroughLocations[i][j], true)) {
                 itemLoc->SetWothCandidate();
             }
         }

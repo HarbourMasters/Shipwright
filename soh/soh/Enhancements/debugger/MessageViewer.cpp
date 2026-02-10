@@ -26,6 +26,12 @@ void MessageViewer::InitElement() {
     mCustomMessageBuf = static_cast<char*>(calloc(MAX_STRING_SIZE, sizeof(char)));
 }
 
+MessageViewer::~MessageViewer() {
+    free(mTableIdBuf);
+    free(mTextIdBuf);
+    free(mCustomMessageBuf);
+}
+
 void MessageViewer::DrawElement() {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
     ImGui::Text("Table ID");

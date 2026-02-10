@@ -883,7 +883,9 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             csInfo->keyFrameCnt = 1;
 
             func_800C0808(play, camIdx, player, CAM_SET_CS_C);
-            func_8002DF38(play, &player->actor, 1);
+            if (GameInteractor_Should(VB_LINK_SPIN_WITH_GORON_POT, true)) {
+                func_8002DF38(play, &player->actor, 1);
+            }
 
             i = Quake_Add(csCam, 3);
             Quake_SetSpeed(i, 12000);

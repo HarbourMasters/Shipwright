@@ -20,7 +20,6 @@
 #include "overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_link_child/object_link_child.h"
-#include "textures/icon_item_24_static/icon_item_24_static.h"
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -2634,7 +2633,7 @@ void Player_UpdateItems(Player* this, PlayState* play) {
         ((this->heldItemAction == this->itemAction) || (this->stateFlags1 & PLAYER_STATE1_SHIELDING)) &&
         (gSaveContext.health != 0) && (play->csCtx.state == CS_STATE_IDLE) && (this->csAction == 0) &&
         (play->shootingGalleryStatus == 0) && (play->activeCamera == MAIN_CAM) &&
-        (play->transitionTrigger != TRANS_TRIGGER_START) && (gSaveContext.timerState != 10)) {
+        (play->transitionTrigger != TRANS_TRIGGER_START) && (gSaveContext.timerState != TIMER_STATE_STOP)) {
         Player_ProcessItemButtons(this, play);
     }
 
@@ -5578,8 +5577,9 @@ void func_8083A0F4(PlayState* play, Player* this) {
             } else if ((interactActorId == ACTOR_EN_ISHI) && ((interactRangeActor->params & 0xF) == 1)) {
                 Player_SetupAction(play, this, Player_Action_80846260, 0);
                 anim = &gPlayerAnim_link_silver_carry;
-            } else if (((interactActorId == ACTOR_EN_BOMBF) || (interactActorId == ACTOR_EN_KUSA)) &&
-                       (Player_GetStrength() <= PLAYER_STR_NONE)) {
+            } else if (GameInteractor_Should(VB_PREVENT_STRENGTH, ((interactActorId == ACTOR_EN_BOMBF) ||
+                                                                   (interactActorId == ACTOR_EN_KUSA)) &&
+                                                                      (Player_GetStrength() <= PLAYER_STR_NONE))) {
                 Player_SetupAction(play, this, Player_Action_80846408, 0);
                 this->actor.world.pos.x =
                     (Math_SinS(interactRangeActor->yawTowardsPlayer) * 20.0f) + interactRangeActor->world.pos.x;
@@ -6174,7 +6174,7 @@ s32 Player_ActionHandler_Talk(Player* this, PlayState* play) {
         }
     }
 
-    if ((talkOfferActor != NULL) || (cUpTalkActor != NULL)) {
+    if (GameInteractor_Should(VB_SPEAK, (talkOfferActor != NULL) || (cUpTalkActor != NULL))) {
         if ((lockOnActor == NULL) || (lockOnActor == talkOfferActor) || (lockOnActor == cUpTalkActor)) {
             if (!(this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) ||
                 ((this->heldActor != NULL) &&
@@ -7145,9 +7145,12 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
                     maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                 }
             } else {
-                if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER1)) {
+                const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
+                const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+
+                if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask)) {
                     maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
-                } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER2)) {
+                } else if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask)) {
                     maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                 }
             }
@@ -7387,46 +7390,48 @@ s32 Player_ActionHandler_2(Player* this, PlayState* play) {
                    !(this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) &&
                    !(this->stateFlags2 & PLAYER_STATE2_UNDERWATER)) {
             if (this->getItemId != GI_NONE) {
-                GetItemEntry giEntry;
-                if (this->getItemEntry.objectId == OBJECT_INVALID) {
-                    giEntry = ItemTable_Retrieve(-this->getItemId);
-                } else {
-                    giEntry = this->getItemEntry;
-                }
-                EnBox* chest = (EnBox*)interactedActor;
-                if (giEntry.itemId != ITEM_NONE) {
-                    if (((Item_CheckObtainability(giEntry.itemId) == ITEM_NONE) && (giEntry.field & 0x40)) ||
-                        ((Item_CheckObtainability(giEntry.itemId) != ITEM_NONE) && (giEntry.field & 0x20))) {
-                        this->getItemId = -GI_RUPEE_BLUE;
-                        giEntry = ItemTable_Retrieve(GI_RUPEE_BLUE);
+                if (GameInteractor_Should(VB_OPEN_CHEST, true)) {
+                    GetItemEntry giEntry;
+                    if (this->getItemEntry.objectId == OBJECT_INVALID) {
+                        giEntry = ItemTable_Retrieve(-this->getItemId);
+                    } else {
+                        giEntry = this->getItemEntry;
                     }
-                }
+                    EnBox* chest = (EnBox*)interactedActor;
+                    if (giEntry.itemId != ITEM_NONE) {
+                        if (((Item_CheckObtainability(giEntry.itemId) == ITEM_NONE) && (giEntry.field & 0x40)) ||
+                            ((Item_CheckObtainability(giEntry.itemId) != ITEM_NONE) && (giEntry.field & 0x20))) {
+                            this->getItemId = -GI_RUPEE_BLUE;
+                            giEntry = ItemTable_Retrieve(GI_RUPEE_BLUE);
+                        }
+                    }
 
-                if (GameInteractor_Should(VB_GIVE_ITEM_FROM_CHEST, true, chest)) {
-                    Player_SetupWaitForPutAway(play, this, func_8083A434);
-                }
-                this->stateFlags1 |=
-                    PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE;
-                func_8083AE40(this, giEntry.objectId);
+                    if (GameInteractor_Should(VB_GIVE_ITEM_FROM_CHEST, true, chest)) {
+                        Player_SetupWaitForPutAway(play, this, func_8083A434);
+                    }
+                    this->stateFlags1 |=
+                        PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE;
+                    func_8083AE40(this, giEntry.objectId);
 
-                this->actor.world.pos.x =
-                    chest->dyna.actor.world.pos.x - (Math_SinS(chest->dyna.actor.shape.rot.y) * 29.4343f);
-                this->actor.world.pos.z =
-                    chest->dyna.actor.world.pos.z - (Math_CosS(chest->dyna.actor.shape.rot.y) * 29.4343f);
-                this->yaw = this->actor.shape.rot.y = chest->dyna.actor.shape.rot.y;
-                func_80832224(this);
+                    this->actor.world.pos.x =
+                        chest->dyna.actor.world.pos.x - (Math_SinS(chest->dyna.actor.shape.rot.y) * 29.4343f);
+                    this->actor.world.pos.z =
+                        chest->dyna.actor.world.pos.z - (Math_CosS(chest->dyna.actor.shape.rot.y) * 29.4343f);
+                    this->yaw = this->actor.shape.rot.y = chest->dyna.actor.shape.rot.y;
+                    func_80832224(this);
 
-                bool vanillaPlaySlowChestCS = (giEntry.itemId != ITEM_NONE) && (giEntry.gi >= 0) &&
-                                              (Item_CheckObtainability(giEntry.itemId) == ITEM_NONE);
+                    bool vanillaPlaySlowChestCS = (giEntry.itemId != ITEM_NONE) && (giEntry.gi >= 0) &&
+                                                  (Item_CheckObtainability(giEntry.itemId) == ITEM_NONE);
 
-                if (GameInteractor_Should(VB_PLAY_SLOW_CHEST_CS, vanillaPlaySlowChestCS, chest)) {
-                    Player_AnimPlayOnceAdjusted(play, this, this->ageProperties->unk_98);
-                    Player_StartAnimMovement(play, this, 0x28F);
-                    chest->unk_1F4 = 1;
-                    Camera_ChangeSetting(Play_GetCamera(play, 0), CAM_SET_SLOW_CHEST_CS);
-                } else {
-                    Player_AnimPlayOnce(play, this, &gPlayerAnim_link_normal_box_kick);
-                    chest->unk_1F4 = -1;
+                    if (GameInteractor_Should(VB_PLAY_SLOW_CHEST_CS, vanillaPlaySlowChestCS, chest)) {
+                        Player_AnimPlayOnceAdjusted(play, this, this->ageProperties->unk_98);
+                        Player_StartAnimMovement(play, this, 0x28F);
+                        chest->unk_1F4 = 1;
+                        Camera_ChangeSetting(Play_GetCamera(play, 0), CAM_SET_SLOW_CHEST_CS);
+                    } else {
+                        Player_AnimPlayOnce(play, this, &gPlayerAnim_link_normal_box_kick);
+                        chest->unk_1F4 = -1;
+                    }
                 }
 
                 return 1;
@@ -7633,6 +7638,10 @@ s32 Player_TryEnteringCrawlspace(Player* this, PlayState* play, u32 interactWall
     s32 i;
 
     if (!LINK_IS_ADULT && !(this->stateFlags1 & PLAYER_STATE1_IN_WATER) && (interactWallFlags & 0x30)) {
+        if (!GameInteractor_Should(VB_CRAWL, true)) {
+            return false;
+        }
+
         wallPoly = this->actor.wallPoly;
         CollisionPoly_GetVerticesByBgId(wallPoly, this->actor.wallBgId, &play->colCtx, wallVertices);
 
@@ -8297,19 +8306,20 @@ void Player_ChooseNextIdleAnim(PlayState* play, Player* this) {
                     //
                     // Note that `FIDGET_SWORD_SWING` is the first common fidget type, which is why
                     // all operations are done relative to this type.
-                    if (((commonType + FIDGET_SWORD_SWING != FIDGET_SWORD_SWING) &&
-                         (commonType + FIDGET_SWORD_SWING != FIDGET_ADJUST_SHIELD)) ||
-                        ((this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
-                         ((commonType + FIDGET_SWORD_SWING == FIDGET_ADJUST_SHIELD) ||
-                          (Player_GetMeleeWeaponHeld2(this) != 0)))) {
+                    if (GameInteractor_Should(VB_SET_IDLE_ANIM,
+                                              (((commonType + FIDGET_SWORD_SWING != FIDGET_SWORD_SWING) &&
+                                                (commonType + FIDGET_SWORD_SWING != FIDGET_ADJUST_SHIELD)) ||
+                                               ((this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
+                                                ((commonType + FIDGET_SWORD_SWING == FIDGET_ADJUST_SHIELD) ||
+                                                 (Player_GetMeleeWeaponHeld2(this) != 0)))),
+                                              this, commonType)) {
                         //! @bug It is possible for `FIDGET_ADJUST_SHIELD` to be used even if
                         //! a shield is not currently equipped. This is because of how being shieldless
                         //! is implemented. There is no sword-only model type, only
                         //! `PLAYER_MODELGROUP_SWORD_AND_SHIELD` exists. Therefore, the right hand type will be
                         //! `PLAYER_MODELTYPE_RH_SHIELD` if sword is in hand, even if no shield is equipped.
                         if ((commonType + FIDGET_SWORD_SWING == FIDGET_SWORD_SWING) &&
-                            Player_HoldsTwoHandedWeapon(this) &&
-                            CVarGetInteger(CVAR_ENHANCEMENT("TwoHandedIdle"), 0) == 1) {
+                            Player_HoldsTwoHandedWeapon(this)) {
                             //! @bug This code is unreachable.
                             //! The check above groups the `Player_GetMeleeWeaponHeld2` check and
                             //! `PLAYER_MODELTYPE_RH_SHIELD` conditions together, meaning sword and shield must be
@@ -8885,9 +8895,12 @@ void Player_Action_80842180(Player* this, PlayState* play) {
                         sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                     }
                 } else {
-                    if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER1)) {
+                    const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
+                    const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+
+                    if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask)) {
                         sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
-                    } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER2)) {
+                    } else if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask)) {
                         sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
                     }
                 }
@@ -11749,108 +11762,8 @@ void Player_DetectRumbleSecrets(Player* this) {
 
         this->unk_6A0 += temp;
 
-        /*Prevent it on horse, while jumping and on title screen.
-        If you fly around no stone of agony for you! */
-        Color_RGB8 stoneOfAgonyColor = { 255, 255, 255 };
-        if (CVarGetInteger(CVAR_COSMETIC("HUD.StoneOfAgony.Changed"), 0)) {
-            stoneOfAgonyColor = CVarGetColor24(CVAR_COSMETIC("HUD.StoneOfAgony.Value"), stoneOfAgonyColor);
-        }
-        if (CVarGetInteger(CVAR_ENHANCEMENT("VisualAgony"), 0) && !this->stateFlags1 && !GameInteractor_NoUIActive()) {
-            s16 Top_Margins = (CVarGetInteger(CVAR_COSMETIC("HUD.Margin.T"), 0) * -1);
-            s16 Left_Margins = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.L"), 0);
-            s16 Right_Margins = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.R"), 0);
-            s16 X_Margins_VSOA;
-            s16 Y_Margins_VSOA;
-            if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.UseMargins"), 0) != 0) {
-                if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == ORIGINAL_LOCATION) {
-                    X_Margins_VSOA = Left_Margins;
-                };
-                Y_Margins_VSOA = Top_Margins;
-            } else {
-                X_Margins_VSOA = 0;
-                Y_Margins_VSOA = 0;
-            }
-            s16 PosX_VSOA_ori = OTRGetRectDimensionFromLeftEdge(26) + X_Margins_VSOA;
-            s16 PosY_VSOA_ori = 60 + Y_Margins_VSOA;
-            s16 PosX_VSOA;
-            s16 PosY_VSOA;
-            if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) != 0) {
-                PosY_VSOA = CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosY"), 0) + Y_Margins_VSOA;
-                if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == ANCHOR_LEFT) {
-                    if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.UseMargins"), 0) != 0) {
-                        X_Margins_VSOA = Left_Margins;
-                    };
-                    PosX_VSOA = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0) +
-                                                            X_Margins_VSOA);
-                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == ANCHOR_RIGHT) {
-                    if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.UseMargins"), 0) != 0) {
-                        X_Margins_VSOA = Right_Margins;
-                    };
-                    PosX_VSOA = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0) +
-                                                             X_Margins_VSOA);
-                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == ANCHOR_NONE) {
-                    PosX_VSOA = CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0);
-                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == HIDDEN) {
-                    PosX_VSOA = -9999;
-                }
-            } else {
-                PosY_VSOA = PosY_VSOA_ori;
-                PosX_VSOA = PosX_VSOA_ori;
-            }
-
-            int rectLeft = PosX_VSOA; // Left X Pos
-            int rectTop = PosY_VSOA;  // Top Y Pos
-            int rectWidth = 24;       // Texture Width
-            int rectHeight = 24;      // Texture Heigh
-            int DefaultIconA = 50;    // Default icon alpha (55 on 255)
-
-            OPEN_DISPS(gPlayState->state.gfxCtx);
-            gDPPipeSync(OVERLAY_DISP++);
-
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, stoneOfAgonyColor.r, stoneOfAgonyColor.g, stoneOfAgonyColor.b,
-                            DefaultIconA);
-
-            gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
-                              PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-            if (this->unk_6A0 > 4000000.0f) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, stoneOfAgonyColor.r, stoneOfAgonyColor.g, stoneOfAgonyColor.b,
-                                255);
-            } else {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, stoneOfAgonyColor.r, stoneOfAgonyColor.g, stoneOfAgonyColor.b,
-                                DefaultIconA);
-            }
-            if (temp == 0 || temp <= 0.1f) {
-                /*Fail check, it is used to draw off the icon when
-                link is standing out range but do not refresh unk_6A0.
-                Also used to make a default value in my case.*/
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, stoneOfAgonyColor.r, stoneOfAgonyColor.g, stoneOfAgonyColor.b,
-                                DefaultIconA);
-            }
-            gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
-            gDPSetOtherMode(OVERLAY_DISP++,
-                            G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_POINT | G_TT_IA16 | G_TL_TILE |
-                                G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
-                            G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
-            gDPLoadTextureBlock(OVERLAY_DISP++, gQuestIconStoneOfAgonyTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 24, 0,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                                G_TX_NOLOD, G_TX_NOLOD);
-            gDPSetOtherMode(OVERLAY_DISP++,
-                            G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_IA16 | G_TL_TILE |
-                                G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
-                            G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
-            gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2,
-                                    (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-            CLOSE_DISPS(gPlayState->state.gfxCtx);
-        }
-
-        if (this->unk_6A0 > 4000000.0f) {
+        if (GameInteractor_Should(VB_RUMBLE_FOR_SECRET, this->unk_6A0 > 4000000.0f, this, temp)) {
             this->unk_6A0 = 0.0f;
-            if (CVarGetInteger(CVAR_ENHANCEMENT("VisualAgony"), 0) && !this->stateFlags1 &&
-                !GameInteractor_NoUIActive()) {
-                // This audio is placed here and not in previous CVar check to prevent ears ra.. :)
-                Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale);
-            }
             Player_RequestRumble(this, 120, 20, 10, 0);
         }
     }
@@ -12404,10 +12317,15 @@ void Player_Update(Actor* thisx, PlayState* play) {
 
         if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0) &&
             CVarGetInteger(CVAR_SETTING("WalkModifier.SpeedToggle"), 0)) {
-            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_CUSTOM_MODIFIER1)) {
+            const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
+            const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+
+            if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask) &&
+                CHECK_BTN_ANY(sControlInput->press.button, mod1Mask)) {
                 gWalkSpeedToggle1 = !gWalkSpeedToggle1;
             }
-            if (CHECK_BTN_ALL(sControlInput->press.button, BTN_CUSTOM_MODIFIER2)) {
+            if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask) &&
+                CHECK_BTN_ANY(sControlInput->press.button, mod2Mask)) {
                 gWalkSpeedToggle2 = !gWalkSpeedToggle2;
             }
         }
@@ -12749,7 +12667,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
 
     if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) { // First person without weapon
         // Y Axis
-        if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
+        if (!(CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
+              CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0))) {
             temp2 += sControlInput->rel.stick_y * 240.0f * invertYAxisMulti * yAxisMulti;
         }
         if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
@@ -12767,7 +12686,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
 
         // X Axis
         temp2 = 0;
-        if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
+        if (!(CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
+              CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0))) {
             temp2 += sControlInput->rel.stick_x * -16.0f * invertXAxisMulti * xAxisMulti;
         }
         if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
@@ -12782,7 +12702,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         // Y Axis
         temp1 = (this->stateFlags1 & PLAYER_STATE1_ON_HORSE) ? 3500 : 14000;
 
-        if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
+        if (!(CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
+              CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0))) {
             temp3 += ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
                      (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f) * invertYAxisMulti *
                      yAxisMulti;
@@ -12802,7 +12723,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         temp1 = 19114;
         temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
         temp3 = 0;
-        if (!CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
+        if (!(CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
+              CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0))) {
             temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
                     (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f) * invertXAxisMulti *
                     xAxisMulti;
@@ -12819,7 +12741,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
     }
 
-    if (CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0)) {
+    if (CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
+        CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
         f32 movementSpeed = LINK_IS_ADULT ? 9.0f : 8.25f;
         if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA &&
             this->currentMask == PLAYER_MASK_BUNNY) {
@@ -12869,9 +12792,12 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
             // sControlInput is NULL to prevent inputs while surfacing after obtaining an underwater item so we want to
             // ignore it for that case
         } else if (sControlInput != NULL) {
-            if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER1)) {
+            const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
+            const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+
+            if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask)) {
                 swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping1"), 1.0f);
-            } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_CUSTOM_MODIFIER2)) {
+            } else if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask)) {
                 swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping2"), 1.0f);
             }
         }
@@ -13162,7 +13088,7 @@ void Player_Action_8084B78C(Player* this, PlayState* play) {
 }
 
 void func_8084B840(PlayState* play, Player* this, f32 arg2) {
-    if (this->actor.wallBgId != BGCHECK_SCENE) {
+    if (!GameInteractor_Should(VB_PREVENT_STRENGTH, false) && this->actor.wallBgId != BGCHECK_SCENE) {
         DynaPolyActor* dynaPolyActor = DynaPoly_GetActor(&play->colCtx, this->actor.wallBgId);
 
         if (dynaPolyActor != NULL) {
@@ -13373,6 +13299,10 @@ void Player_Action_8084BF1C(Player* this, PlayState* play) {
 
     this->fallStartHeight = this->actor.world.pos.y;
     this->stateFlags2 |= PLAYER_STATE2_DISABLE_ROTATION_ALWAYS;
+
+    if (!GameInteractor_Should(VB_CLIMB, true, &sp80, &sp84)) {
+        return;
+    }
 
     if ((this->av1.actionVar1 != 0) && (ABS(sp84) < ABS(sp80))) {
         phi_f0 = ABS(sp80) * 0.0325f;
@@ -15097,11 +15027,10 @@ void Player_Action_8084FBF4(Player* this, PlayState* play) {
  */
 s32 Player_UpdateNoclip(Player* this, PlayState* play) {
     sControlInput = &play->state.input[0];
+    s32 mask = CVarGetInteger("gDeveloperTools.NoClipBtn", BTN_L | BTN_DRIGHT);
 
     if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) &&
-        ((CHECK_BTN_ALL(sControlInput->cur.button, BTN_A | BTN_L | BTN_R) &&
-          CHECK_BTN_ALL(sControlInput->press.button, BTN_B)) ||
-         (CHECK_BTN_ALL(sControlInput->cur.button, BTN_L) && CHECK_BTN_ALL(sControlInput->press.button, BTN_DRIGHT)))) {
+        (CHECK_BTN_ALL(sControlInput->cur.button, mask) && CHECK_BTN_ANY(sControlInput->press.button, mask))) {
 
         sNoclipEnabled ^= 1;
 
@@ -15346,7 +15275,7 @@ void Player_Action_8085063C(Player* this, PlayState* play) {
             play->transitionTrigger = TRANS_TRIGGER_START;
             play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
             play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
-            func_80088AF0(play);
+            Interface_SetSubTimerToFinalSecond(play);
             return;
         }
 

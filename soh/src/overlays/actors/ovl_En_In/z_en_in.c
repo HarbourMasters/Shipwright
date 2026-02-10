@@ -440,7 +440,7 @@ void func_80A79BAC(EnIn* this, PlayState* play, s32 index, u32 transitionType) {
     if (index == 0) {
         AREG(6) = 0;
     }
-    gSaveContext.timerState = 0;
+    gSaveContext.timerState = TIMER_STATE_OFF;
 }
 
 void func_80A79C78(EnIn* this, PlayState* play) {
@@ -585,7 +585,7 @@ void func_80A79FB0(EnIn* this, PlayState* play) {
                         this->actor.targetMode = 3;
                         EnIn_ChangeAnim(this, ENIN_ANIM_2);
                         this->actionFunc = func_80A7A568;
-                        func_80088B34(0x3C);
+                        Interface_SetTimer(0x3C);
                         break;
                     case 3:
                         EnIn_ChangeAnim(this, ENIN_ANIM_4);
@@ -662,12 +662,12 @@ void func_80A7A568(EnIn* this, PlayState* play) {
     if (!Flags_GetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO) && (player->stateFlags1 & PLAYER_STATE1_ON_HORSE)) {
         Flags_SetInfTable(INFTABLE_AB);
     }
-    if (gSaveContext.timerState == 10) {
+    if (gSaveContext.timerState == TIMER_STATE_STOP) {
         Audio_PlaySoundGeneral(NA_SE_SY_FOUND, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         func_80A79C78(this, play);
         this->actionFunc = func_80A7B024;
-        gSaveContext.timerState = 0;
+        gSaveContext.timerState = TIMER_STATE_OFF;
     } else if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         if (play->msgCtx.choiceIndex == 0) {
             if (gSaveContext.rupees < 50) {
@@ -931,7 +931,7 @@ void EnIn_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
     if (this->actionFunc != func_80A7A304) {
         func_80A79AB4(this, play);
-        if (gSaveContext.subTimerSeconds < 6 && gSaveContext.subTimerState != 0 &&
+        if (gSaveContext.subTimerSeconds < 6 && gSaveContext.subTimerState != SUBTIMER_STATE_OFF &&
             this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
             if (Actor_ProcessTalkRequest(&this->actor, play)) {}
         } else {

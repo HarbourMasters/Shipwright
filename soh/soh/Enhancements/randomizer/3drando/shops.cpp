@@ -887,6 +887,11 @@ void InitTrickNames() {
         Text{ "Triforce Shard", "Éclat de Triforce", "Triforce-Fragment" }, // "Triforce Shard"
         Text{ "Shiny Rock", "Caillou Brillant", "glänzender Stein" },       // "Shiny Rock"
     };
+    trickNameTable[RG_ROCS_FEATHER] = {
+        Text{ "Chicken Wing", "Chicken Wing", "Chicken Wing" }, // "Chicken Wing"
+        Text{ "Roc's Leg", "Roc's Leg", "Roc's Leg" },          // "Roc's Leg"
+        Text{ "Roc's Fapper", "Roc's Fapper", "Roc's Fapper" }, // "Roc's Fapper"
+    };
     trickNameTable[RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL] = {
         // TODO_TRANSLATE
         Text{ "Volcano Seed Spirit" },
@@ -992,6 +997,19 @@ void InitTrickNames() {
         Text{ "Stalfos Key" }, Text{ "Nightmare Key" }, Text{ "Graveyard Key" },
         Text{ "King's Key" },  Text{ "Hero's Key" },
     };
+    trickNameTable[RG_CLIMB] = {
+        // TODO_TRANSLATE
+        Text{ "Cling" },
+    };
+    trickNameTable[RG_CRAWL] = {
+        // TODO_TRANSLATE
+        Text{ "Crouch" },
+    };
+    trickNameTable[RG_OPEN_CHEST] = {
+        // TODO_TRANSLATE
+        Text{ "Open Cheats" },
+    };
+
     trickNameTable[RG_OCARINA_A_BUTTON] = {
         Text{ "Ocarina J Button", "Touche Ha de l'Ocarina", "J-Taste der Okarina" },
         Text{ "Ocarina Ayy Button", "Touche Ah de l'Ocarina", "A-Taste der Flöte" },
@@ -1190,6 +1208,94 @@ void InitTrickNames() {
         Text{ "Onox's Castle Boss Key", "Onox's Castle Boss Key", "Onox's Castle Boss Key" },
         Text{ "Vaati's Palace Boss Key", "Vaati's Palace Boss Key", "Vaati's Palace Boss Key" },
         Text{ "Ganondorf's Key", "Ganondorf's Key", "Ganondorf's Key" },
+    };
+
+    trickNameTable[RG_KEATON_MASK] = {
+        // TODO_TRANSLATE
+        Text{ "Korok Mask" },
+        Text{ "Lynel Mask" },
+        Text{ "Cucco Mask" },
+        Text{ "Remlit Mask" },
+    };
+    trickNameTable[RG_SKULL_MASK] = {
+        // TODO_TRANSLATE
+        Text{ "Darknut Mask" },
+        Text{ "Stalfos Mask" },
+        Text{ "Captain's Hat" },
+    };
+    trickNameTable[RG_SPOOKY_MASK] = {
+        // TODO_TRANSLATE
+        Text{ "Gibdo Mask" },
+        Text{ "Garo's Mask" },
+        Text{ "Redead mask" },
+    };
+    trickNameTable[RG_BUNNY_HOOD] = {
+        // TODO_TRANSLATE
+        Text{ "Bunny Mask" },
+        Text{ "Bremen Mask" },
+        Text{ "Rabbit Hood" },
+    };
+    trickNameTable[RG_MASK_OF_TRUTH] = {
+        // TODO_TRANSLATE
+        Text{ "Feirce Diety Mask" },
+        Text{ "Majora's Mask" },
+        Text{ "Hero's Charm" },
+    };
+    trickNameTable[RG_GORON_MASK] = {
+        // TODO_TRANSLATE
+        Text{ "Stone Mask" },
+        Text{ "Darmani's Mask" },
+        Text{ "Goron Garb" },
+    };
+    trickNameTable[RG_ZORA_MASK] = {
+        // TODO_TRANSLATE
+        Text{ "Zora Costume" },
+        Text{ "Don Gero's Mask" },
+        Text{ "Mikau's Mask" },
+    };
+    trickNameTable[RG_GERUDO_MASK] = {
+        // TODO_TRANSLATE
+        Text{ "Great Fairy Mask" },
+        Text{ "Romani's Mask" },
+        Text{ "Gerudo Veil" },
+    };
+
+    trickNameTable[RG_SPEAK_DEKU] = {
+        // TODO_TRANSLATE
+        Text{ "Picori Jabber Nut" },
+        Text{ "Kikwi Blabber Nut" },
+        Text{ "Talking Deku Nut" },
+    };
+    trickNameTable[RG_SPEAK_GERUDO] = {
+        // TODO_TRANSLATE
+        Text{ "Gerudo Tuni Nut" },
+        Text{ "Twili Jabber Nut" },
+        Text{ "Zuna Blabber Nut" },
+    };
+    trickNameTable[RG_SPEAK_GORON] = {
+        // TODO_TRANSLATE
+        Text{ "Cobble Jabber Nut" },
+        Text{ "Mogma Blabber Nut" },
+        Text{ "Goron Speak Stone" },
+    };
+    trickNameTable[RG_SPEAK_HYLIAN] = {
+        // TODO_TRANSLATE
+        Text{ "Human Jingle Nut" },
+        Text{ "Sheikah Jabber nut" },
+        Text{ "Lorulean Blabber Nut" },
+    };
+    trickNameTable[RG_SPEAK_KOKIRI] = {
+        // TODO_TRANSLATE
+        Text{ "Korok Blabber Nut" },
+        Text{ "Minish Jabber Nut" },
+        Text{ "Fairy Jingle Nut" },
+    };
+    trickNameTable[RG_SPEAK_ZORA] = {
+        // TODO_TRANSLATE
+        Text{ "Parella Jabber Nut" },
+        Text{ "Fishman Jabber Nut" },
+        Text{ "Zora Jabu Nut" },
+        Text{ "Rito Jingle Nut" },
     };
 
     trickNameTable[RG_GUARD_HOUSE_KEY] = {
@@ -1539,7 +1645,7 @@ void InitTrickNames() {
 }
 
 // Generate a fake name for the ice trap based on the item it's displayed as
-Text GetIceTrapName(int id) {
+Text GetIceTrapName(uint16_t id) {
     // If the trick names table has not been initialized, do so
     if (!initTrickNames) {
         InitTrickNames();

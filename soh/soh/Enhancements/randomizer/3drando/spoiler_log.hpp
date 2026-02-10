@@ -23,4 +23,4 @@ typedef enum {
 
 void GenerateHash();
 
-const char* SpoilerLog_Write();
+void SpoilerLog_Write();

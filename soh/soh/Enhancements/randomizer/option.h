@@ -85,7 +85,7 @@ class OptionValue {
     explicit operator bool() const;
 
   private:
-    uint8_t mVal;
+    uint8_t mVal = 0;
 };
 
 /**

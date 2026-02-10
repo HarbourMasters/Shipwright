@@ -2,8 +2,8 @@
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "randomizerTypes.h"
-#include <array>
 #include "soh_assets.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
 extern "C" {
@@ -12,8 +12,10 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 #include "dungeon.h"
+#include "objects/object_box/object_box.h"
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
+#include "objects/object_gi_bracelet/object_gi_bracelet.h"
 #include "objects/object_gi_compass/object_gi_compass.h"
 #include "objects/object_gi_map/object_gi_map.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
@@ -22,7 +24,6 @@ extern "C" {
 #include "objects/object_fish/object_fish.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "objects/object_gi_bomb_2/object_gi_bomb_2.h"
-#include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "objects/object_goma/object_goma.h"
 #include "objects/object_kingdodongo/object_kingdodongo.h"
 #include "objects/object_bv/object_bv.h"
@@ -30,11 +31,12 @@ extern "C" {
 #include "objects/object_fd/object_fd.h"
 #include "objects/object_mamenoki/object_mamenoki.h"
 #include "objects/object_mo/object_mo.h"
+#include "objects/object_mori_objects/object_mori_objects.h"
 #include "objects/object_sst/object_sst.h"
 #include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
-#include "overlays/ovl_Boss_Sst/ovl_Boss_Sst.h"
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
+#include "objects/object_gi_shield_1/object_gi_shield_1.h"
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
@@ -184,7 +186,7 @@ extern "C" void Randomizer_DrawCompass(PlayState* play, GetItemEntry* getItemEnt
 
 extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEntry) {
     s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
-    s16 slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_BOSS_KEY;
+    s16 slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_BOSS_KEY;
 
     std::string CvarValue[6] = {
         "gCosmetics.Key.ForestBoss", "gCosmetics.Key.FireBoss",   "gCosmetics.Key.WaterBoss",
@@ -486,6 +488,21 @@ extern "C" void Randomizer_DrawMysteryItem(PlayState* play, GetItemEntry* getIte
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gMysteryItemDL);
 
     gSPGrayscale(POLY_XLU_DISP++, false);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawRocsFeather(PlayState* play, GetItemEntry* getItemEntry) {
+    Color_RGB8 color = { 0, 60, 100 };
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiRocsFeatherDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1117,6 +1134,159 @@ extern "C" void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getIte
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiScaleDL);
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBronzeScaleWaterColorDL);
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiScaleWaterDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawPowerBracelet(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPGrayscale(POLY_OPA_DISP++, true);
+    gDPSetGrayscaleColor(POLY_OPA_DISP++, 80, 80, 80, 255);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiGoronBraceletDL);
+    gSPGrayscale(POLY_OPA_DISP++, false);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawLadder(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)gMoriHashiraTex);
+    Matrix_Translate(0, -30, 0, MTXMODE_APPLY);
+    Matrix_Scale(1.0f, 0.25f, 1.0f, MTXMODE_APPLY);
+
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gMoriHashigoLadderDL);
+
+    Matrix_RotateY(M_PIf, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gMoriHashigoLadderDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawKneePads(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Translate(-35, -5, 0, MTXMODE_APPLY);
+    Matrix_Scale(0.4f, 0.8f, 1.2f, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiDekuShieldDL);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Matrix_Translate(35, -7, 4, MTXMODE_APPLY);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiDekuShieldDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawJabberNut(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_26Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    Color_RGB8 bodyColor;
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("GenericJabberNutModel"), 0)) {
+        bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.JabberNut.Value"), Color_RGB8{ 255, 0, 216 });
+        gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiJabbernutDL);
+    } else {
+        switch (getItemEntry->drawItemId) {
+            case RG_SPEAK_DEKU:
+                bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.DekuJabberNut.Value"), Color_RGB8{ 255, 160, 32 });
+                gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiDekuJabbernutDL);
+                break;
+            case RG_SPEAK_GERUDO:
+                bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.GerudoJabberNut.Value"), Color_RGB8{ 128, 64, 0 });
+                gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiGerudoJabbernutDL);
+                break;
+            case RG_SPEAK_GORON:
+                bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.GoronJabberNut.Value"), Color_RGB8{ 255, 32, 0 });
+                gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiGoronJabbernutDL);
+                break;
+            case RG_SPEAK_HYLIAN:
+                bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.HylianJabberNut.Value"), Color_RGB8{ 255, 255, 0 });
+                gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiHylianJabbernutDL);
+                break;
+            case RG_SPEAK_KOKIRI:
+                bodyColor =
+                    CVarGetColor24(CVAR_COSMETIC("Equipment.KokiriJabberNut.Value"), Color_RGB8{ 128, 216, 48 });
+                gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiKokiriJabbernutDL);
+                break;
+            case RG_SPEAK_ZORA:
+                bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.ZoraJabberNut.Value"), Color_RGB8{ 96, 240, 255 });
+                gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiZoraJabbernutDL);
+                break;
+        }
+    }
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+static Gfx* boxLidDL;
+static Gfx* boxBodyDL;
+extern "C" void EnBox_PostLimbDrawOverride(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+    Gfx** gfx = (Gfx**)thisx;
+    if (limbIndex == 1) {
+        gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPDisplayList((*gfx)++, boxBodyDL);
+    } else if (limbIndex == 3) {
+        gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPDisplayList((*gfx)++, boxLidDL);
+    }
+}
+
+extern "C" Gfx* EnBox_EmptyDList(GraphicsContext* gfxCtx);
+#define LIMB_COUNT_CHEST 5
+extern "C" void Randomizer_DrawOpenChest(PlayState* play, GetItemEntry* getItemEntry) {
+    static bool initialized = false;
+    static SkelAnime skelAnime;
+    static Vec3s jointTable[LIMB_COUNT_CHEST];
+    static Vec3s otherTable[LIMB_COUNT_CHEST];
+    static u32 lastUpdate = 0;
+
+    if (!initialized) {
+        initialized = true;
+        boxBodyDL = ResourceMgr_LoadGfxByName((const char*)gTreasureChestChestFrontDL);
+        boxLidDL = ResourceMgr_LoadGfxByName((const char*)gTreasureChestChestSideAndLidDL);
+        SkelAnime_Init(play, &skelAnime, (SkeletonHeader*)&gTreasureChestSkel,
+                       (AnimationHeader*)&gTreasureChestAnim_00024C, jointTable, otherTable, LIMB_COUNT_CHEST);
+
+        // no closing animation to loop, so play animation back & forth for smooth loop
+        Animation_PlayOnce(&skelAnime, (AnimationHeader*)&gTreasureChestAnim_00043C);
+    }
+
+    if (lastUpdate != play->state.frames) {
+        lastUpdate = play->state.frames;
+        if (SkelAnime_Update(&skelAnime)) {
+            Animation_Reverse(&skelAnime);
+        }
+    }
+
+    OPEN_DISPS(play->state.gfxCtx);
+    Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
+
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
+    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)EnBox_EmptyDList(play->state.gfxCtx));
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    SkelAnime_DrawSkeletonOpa(play, &skelAnime, nullptr, (PostLimbDrawOpa)EnBox_PostLimbDrawOverride, &POLY_OPA_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

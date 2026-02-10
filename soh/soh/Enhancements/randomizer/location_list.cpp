@@ -942,7 +942,7 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_DMC_GOSSIP_STONE] =                                          Location::HintStone(RC_DMC_GOSSIP_STONE,                                 RCQUEST_BOTH,                                                                      SCENE_DEATH_MOUNTAIN_CRATER,        14341,                              "Gossip Stone");
     locationTable[RC_DMT_GOSSIP_STONE] =                                          Location::HintStone(RC_DMT_GOSSIP_STONE,                                 RCQUEST_BOTH,                                                                      SCENE_DEATH_MOUNTAIN_TRAIL,         14340,                              "Gossip Stone");
     locationTable[RC_COLOSSUS_GOSSIP_STONE] =                                     Location::HintStone(RC_COLOSSUS_GOSSIP_STONE,                            RCQUEST_BOTH,                                                                      SCENE_DESERT_COLOSSUS,              14362,                              "Gossip Stone");
-    locationTable[RC_DODONGOS_CAVERN_GOSSIP_STONE] =                              Location::HintStone(RC_DODONGOS_CAVERN_GOSSIP_STONE,                     RCQUEST_VANILLA,                                                                   SCENE_DODONGOS_CAVERN,              4372,                               "Gossip Stone");
+    locationTable[RC_DODONGOS_CAVERN_GOSSIP_STONE] =                              Location::HintStone(RC_DODONGOS_CAVERN_GOSSIP_STONE,                     RCQUEST_BOTH,                                                                      SCENE_DODONGOS_CAVERN,              4372,                               "Gossip Stone");
     locationTable[RC_GV_GOSSIP_STONE] =                                           Location::HintStone(RC_GV_GOSSIP_STONE,                                  RCQUEST_BOTH,                                                                      SCENE_GERUDO_VALLEY,                14353,                              "Gossip Stone");
     locationTable[RC_GC_MAZE_GOSSIP_STONE] =                                      Location::HintStone(RC_GC_MAZE_GOSSIP_STONE,                             RCQUEST_BOTH,                                                                      SCENE_GORON_CITY,                   14357,                              "Maze Gossip Stone");
     locationTable[RC_GC_MEDIGORON_GOSSIP_STONE] =                                 Location::HintStone(RC_GC_MEDIGORON_GOSSIP_STONE,                        RCQUEST_BOTH,                                                                      SCENE_GORON_CITY,                   14873,                              "Medigoron Gossip Stone");
@@ -991,6 +991,7 @@ void Rando::StaticData::InitLocationTable() {
     locationTable[RC_ALTAR_HINT_ADULT]  =                                         Location::OtherHint(RC_ALTAR_HINT_ADULT,                                 RCQUEST_BOTH,                                                                             ACTOR_ID_MAX,         SCENE_TEMPLE_OF_TIME,       "ToT Adult Altar Hint");
     locationTable[RC_FISHING_POLE_HINT] =                                         Location::OtherHint(RC_FISHING_POLE_HINT,                                RCQUEST_BOTH,                                                                             ACTOR_FISHING,        SCENE_FISHING_POND,         "Fishing Pole Hint");
     locationTable[RC_TOT_SHEIK_HINT] =                                            Location::OtherHint(RC_TOT_SHEIK_HINT,                                   RCQUEST_BOTH,                                                                             ACTOR_EN_XC,          SCENE_TEMPLE_OF_TIME,       "Ocarina of Time Hint");
+    locationTable[RC_BIGGORON_HINT] =                                             Location::OtherHint(RC_BIGGORON_HINT,                                    RCQUEST_BOTH,                                                                             ACTOR_EN_GO2,         SCENE_DEATH_MOUNTAIN_TRAIL, "Biggoron Hint");
     locationTable[RC_MASK_SHOP_HINT] =                                            Location::OtherHint(RC_MASK_SHOP_HINT,                                   RCQUEST_BOTH,                                                                             ACTOR_ID_MAX,         SCENE_HAPPY_MASK_SHOP,      "Mask Shop Hint");
 
     locationTable[RC_TRIFORCE_COMPLETED] =                                        Location::Base(RC_TRIFORCE_COMPLETED,                                    RCQUEST_BOTH,    RCTYPE_STANDARD,                    RCAREA_MARKET,                       ACTOR_ID_MAX,         SCENE_ID_MAX,                       0x00,                               "Completed Triforce", "Completed Triforce",    RHT_NONE,                                                        RG_NONE);
@@ -1011,7 +1012,7 @@ void Rando::StaticData::InitHashMaps() {
 }
 
 Location* Rando::StaticData::GetLocation(RandomizerCheck locKey) {
-    return &(locationTable[locKey]);
+    return &locationTable[locKey];
 }
 
 std::array<Location, RC_MAX>& Rando::StaticData::GetLocationTable() {

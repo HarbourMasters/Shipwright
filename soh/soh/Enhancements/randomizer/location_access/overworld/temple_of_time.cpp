@@ -7,7 +7,7 @@ void RegionTable_Init_TempleOfTime() {
     // clang-format off
     areaTable[RR_TOT_ENTRANCE] = Region("ToT Entrance", SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY, {
         //Events
-        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairyExceptSuns();}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairyExceptSuns()),
     }, {
         //Locations
         LOCATION(RC_TOT_LEFTMOST_GOSSIP_STONE_FAIRY,         logic->CallGossipFairyExceptSuns() || (logic->CanUse(RG_SUNS_SONG) && logic->IsAdult)),
@@ -24,8 +24,8 @@ void RegionTable_Init_TempleOfTime() {
         LOCATION(RC_TOT_RIGHTMOST_GOSSIP_STONE,              true),
     }, {
         //Exits
-        Entrance(RR_THE_MARKET,     []{return true;}),
-        Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
+        ENTRANCE(RR_THE_MARKET,     true),
+        ENTRANCE(RR_TEMPLE_OF_TIME, true),
     });
 
     areaTable[RR_TEMPLE_OF_TIME] = Region("Temple of Time", SCENE_TEMPLE_OF_TIME, {}, {
@@ -33,11 +33,11 @@ void RegionTable_Init_TempleOfTime() {
         LOCATION(RC_TOT_LIGHT_ARROWS_CUTSCENE, logic->IsAdult && logic->CanTriggerLACS()),
         LOCATION(RC_ALTAR_HINT_CHILD,          logic->IsChild),
         LOCATION(RC_ALTAR_HINT_ADULT,          logic->IsAdult),
-        LOCATION(RC_TOT_SHEIK_HINT,            logic->IsAdult),
+        LOCATION(RC_TOT_SHEIK_HINT,            logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN)),
     }, {
         //Exits
-        Entrance(RR_TOT_ENTRANCE,            []{return true;}),
-        Entrance(RR_TOT_BEYOND_DOOR_OF_TIME, []{return ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_OPEN) || (logic->CanUse(RG_SONG_OF_TIME) && (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_SONGONLY) || (logic->StoneCount() == 3 && logic->HasItem(RG_OCARINA_OF_TIME))));}),
+        ENTRANCE(RR_TOT_ENTRANCE,            true),
+        ENTRANCE(RR_TOT_BEYOND_DOOR_OF_TIME, ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_OPEN) || (logic->CanUse(RG_SONG_OF_TIME) && (ctx->GetOption(RSK_DOOR_OF_TIME).Is(RO_DOOROFTIME_SONGONLY) || (logic->StoneCount() == 3 && logic->HasItem(RG_OCARINA_OF_TIME))))),
     });
 
     areaTable[RR_TOT_BEYOND_DOOR_OF_TIME] = Region("Beyond Door of Time", SCENE_TEMPLE_OF_TIME, {}, {
@@ -47,7 +47,7 @@ void RegionTable_Init_TempleOfTime() {
         LOCATION(RC_SHEIK_AT_TEMPLE,  logic->HasItem(RG_FOREST_MEDALLION) && logic->IsAdult),
     }, {
         //Exits
-        Entrance(RR_TEMPLE_OF_TIME, []{return true;}),
+        ENTRANCE(RR_TEMPLE_OF_TIME, true),
     });
 
     // clang-format on

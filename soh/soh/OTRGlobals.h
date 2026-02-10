@@ -35,7 +35,6 @@ struct ExtensionEntry {
 extern std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 #include "Enhancements/randomizer/settings.h"
 
-const std::string customMessageTableID = "BaseGameOverrides";
 const std::string appShortName = "soh";
 
 #ifdef __WIIU__
@@ -59,20 +58,21 @@ class OTRGlobals {
     ImFont* defaultFontLarger;
     ImFont* defaultFontLargest;
 
-    ImFont* fontMonoSmall;
-    ImFont* fontStandard;
-    ImFont* fontStandardLarger;
-    ImFont* fontStandardLargest;
-    ImFont* fontMono;
-    ImFont* fontMonoLarger;
-    ImFont* fontMonoLargest;
-    ImFont* fontJapanese;
+    ImFont* fontMonoSmall = nullptr;
+    ImFont* fontStandard = nullptr;
+    ImFont* fontStandardLarger = nullptr;
+    ImFont* fontStandardLargest = nullptr;
+    ImFont* fontMono = nullptr;
+    ImFont* fontMonoLarger = nullptr;
+    ImFont* fontMonoLargest = nullptr;
+    ImFont* fontJapanese = nullptr;
 
     OTRGlobals();
     ~OTRGlobals();
 
     void ScaleImGui();
     void Initialize();
+    void RunExtract(int argc, char* argv[]);
     bool HasMasterQuest();
     bool HasOriginal();
     uint32_t GetInterpolationFPS();
@@ -83,7 +83,7 @@ class OTRGlobals {
     bool hasMasterQuest;
     bool hasOriginal;
     ImFont* CreateDefaultFontWithSize(float size);
-    ImFont* CreateFontWithSize(float size, std::string fontPath, bool isJapaneseFont);
+    ImFont* CreateFontWithSize(float size, std::string fontPath, bool isJapaneseFont = false);
 };
 #endif
 
@@ -134,8 +134,6 @@ u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
 ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotIndex);
 void Randomizer_ParseSpoiler(const char* fileLoc);
-void Randomizer_LoadHintMessages();
-void Randomizer_LoadMerchantMessages();
 bool Randomizer_IsTrialRequired(s32 trialFlag);
 GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams,
@@ -152,7 +150,6 @@ uint8_t Randomizer_IsSpoilerLoaded();
 void Randomizer_SetSpoilerLoaded(bool spoilerLoaded);
 uint8_t Randomizer_GenerateRandomizer();
 void Randomizer_ShowRandomizerMenu();
-int CustomMessage_RetrieveIfExists(PlayState* play);
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);

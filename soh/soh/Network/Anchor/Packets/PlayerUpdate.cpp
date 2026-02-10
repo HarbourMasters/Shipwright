@@ -83,35 +83,36 @@ void Anchor::HandlePacket_PlayerUpdate(nlohmann::json payload) {
     if (clients.contains(clientId)) {
         auto& client = clients[clientId];
 
-        if (client.linkAge != payload["linkAge"].get<s32>()) {
+        if (client.linkAge != payload.value("linkAge", (s32)LINK_AGE_ADULT)) {
             shouldRefreshActors = true;
         }
 
-        client.sceneNum = payload["sceneNum"].get<s16>();
-        client.entranceIndex = payload["entranceIndex"].get<s32>();
-        client.linkAge = payload["linkAge"].get<s32>();
-        client.posRot = payload["posRot"].get<PosRot>();
-        std::vector<int> jointArray = payload["jointTable"];
+        client.sceneNum = payload.value("sceneNum", (s16)SCENE_ID_MAX);
+        client.entranceIndex = payload.value("entranceIndex", (s32)0);
+        client.linkAge = payload.value("linkAge", (s32)LINK_AGE_ADULT);
+        client.posRot = payload.value("posRot", PosRot{ 0 });
+        std::vector<int> jointArray = payload.value("jointTable", std::vector<int>{});
+        jointArray.resize(24 * 3); // Ensure it has enough elements, in case of missing data
         for (int i = 0; i < 24; i++) {
             client.jointTable[i].x = jointArray[i * 3];
             client.jointTable[i].y = jointArray[i * 3 + 1];
             client.jointTable[i].z = jointArray[i * 3 + 2];
         }
-        client.movementFlags = payload["movementFlags"].get<u8>();
-        client.prevTransl = payload["prevTransl"].get<Vec3s>();
-        client.upperLimbRot = payload["upperLimbRot"].get<Vec3s>();
-        client.currentBoots = payload["currentBoots"].get<s8>();
-        client.currentShield = payload["currentShield"].get<s8>();
-        client.currentTunic = payload["currentTunic"].get<s8>();
-        client.stateFlags1 = payload["stateFlags1"].get<u32>();
-        client.stateFlags2 = payload["stateFlags2"].get<u32>();
-        client.buttonItem0 = payload["buttonItem0"].get<u8>();
-        client.itemAction = payload["itemAction"].get<s8>();
-        client.heldItemAction = payload["heldItemAction"].get<s8>();
-        client.modelGroup = payload["modelGroup"].get<u8>();
-        client.invincibilityTimer = payload["invincibilityTimer"].get<s8>();
-        client.unk_862 = payload["unk_862"].get<s16>();
-        client.unk_85C = payload["unk_85C"].get<f32>();
-        client.actionVar1 = payload["actionVar1"].get<s8>();
+        client.movementFlags = payload.value("movementFlags", (u8)0);
+        client.prevTransl = payload.value("prevTransl", Vec3s{ 0 });
+        client.upperLimbRot = payload.value("upperLimbRot", Vec3s{ 0 });
+        client.currentBoots = payload.value("currentBoots", (s8)0);
+        client.currentShield = payload.value("currentShield", (s8)0);
+        client.currentTunic = payload.value("currentTunic", (s8)0);
+        client.stateFlags1 = payload.value("stateFlags1", (u32)0);
+        client.stateFlags2 = payload.value("stateFlags2", (u32)0);
+        client.buttonItem0 = payload.value("buttonItem0", (u8)0);
+        client.itemAction = payload.value("itemAction", (s8)0);
+        client.heldItemAction = payload.value("heldItemAction", (s8)0);
+        client.modelGroup = payload.value("modelGroup", (u8)0);
+        client.invincibilityTimer = payload.value("invincibilityTimer", (s8)0);
+        client.unk_862 = payload.value("unk_862", (s16)0);
+        client.unk_85C = payload.value("unk_85C", (f32)0);
+        client.actionVar1 = payload.value("actionVar1", (s8)0);
     }
 }

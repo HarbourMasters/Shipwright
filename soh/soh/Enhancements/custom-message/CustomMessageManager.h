@@ -61,6 +61,7 @@ class CustomMessage {
     static std::string POINTS(std::string x); // HIGH_SCORE is also a macro
     static std::string WAIT_FOR_INPUT();
     static std::string PLAYER_NAME();
+    static std::string TWO_WAY_CHOICE();
 
     const std::string GetEnglish(MessageFormat format = MF_FORMATTED) const;
     const std::string GetFrench(MessageFormat format = MF_FORMATTED) const;
@@ -76,6 +77,7 @@ class CustomMessage {
     const TextBoxType& GetTextBoxType() const;
     void SetTextBoxType(TextBoxType boxType);
     const TextBoxPosition& GetTextBoxPosition() const;
+    void SetTextBoxPosition(TextBoxPosition boxPos);
 
     CustomMessage operator+(const CustomMessage& right) const;
     CustomMessage operator+(const std::string& right) const;
@@ -84,6 +86,8 @@ class CustomMessage {
     bool operator==(const CustomMessage& operand) const;
     bool operator==(const std::string& operand) const;
     bool operator!=(const CustomMessage& right) const;
+
+    void LoadIntoFont();
 
     /**
      * @brief Finds an instance of oldStr in each language of the CustomMessage
@@ -173,6 +177,7 @@ class CustomMessage {
      * textboxes, and use it's formatting.
      */
     void AutoFormat();
+    void AutoFormat(ItemID iid);
 
     /**
      * @brief Removes all OoT formatting from the message,
@@ -323,7 +328,7 @@ class MessageNotFoundException : public std::exception {
     }
     virtual const char* what() const noexcept {
         static char message[500];
-        sprintf(message, "Message from table %s with textId %u was not found", messageTableId.c_str(), textId);
+        snprintf(message, 500, "Message from table %s with textId %u was not found", messageTableId.c_str(), textId);
         return message;
     }
 };

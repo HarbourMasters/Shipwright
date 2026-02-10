@@ -28,6 +28,7 @@ static const s16 BUTTON_HIGHLIGHT_ALPHA = 128;
 
 static s16 sButtonFlashTimer = 0;
 static s16 sButtonFlashCount = 0;
+static s16 sJustCycledFrames = 0;
 
 static const PlayerItemAction sArrowCycleOrder[] = {
     PLAYER_IA_BOW,
@@ -217,11 +218,16 @@ static void CycleToNextArrow(PlayState* play, Player* player) {
     UpdateEquippedBow(play, nextArrow);
     Audio_PlaySoundGeneral(NA_SE_PL_CHANGE_ARMS, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                            &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    sJustCycledFrames = 2;
 }
 
 void ArrowCycleMain() {
     if (gPlayState == nullptr || !CanCycleArrows()) {
         return;
+    }
+
+    if (sJustCycledFrames > 0) {
+        sJustCycledFrames--;
     }
 
     UpdateFlashEffect(gPlayState);
@@ -250,8 +256,9 @@ void RegisterArrowCycle() {
     COND_VB_SHOULD(VB_EXECUTE_PLAYER_ACTION_FUNC, CVAR_ARROW_CYCLE_VALUE, {
         Player* player = (Player*)va_arg(args, void*);
         Input* input = (Input*)va_arg(args, void*);
-        if (IsAimingBow(player) && CHECK_BTN_ANY(input->cur.button, BTN_R)) {
-            *should = false;
+        if ((IsAimingBow(player) || sJustCycledFrames > 0) && CHECK_BTN_ANY(input->cur.button, BTN_R)) {
+            input->cur.button &= ~BTN_R;
+            input->press.button &= ~BTN_R;
         }
     });
 
