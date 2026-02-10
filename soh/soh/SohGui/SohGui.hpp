@@ -9,7 +9,7 @@
 #define SohGui_hpp
 
 #include <stdio.h>
-#include "SohMenuBar.h"
+#include "SohMenu.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/Enhancements/controls/InputViewer.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
@@ -44,6 +44,7 @@ bool DismissPopup(std::string title);
 void ShowRandomizerSettingsMenu();
 void ShowEscMenu();
 UIWidgets::Colors GetMenuThemeColor();
+std::shared_ptr<SohMenu> GetSohMenu();
 } // namespace SohGui
 
 #define THEME_COLOR SohGui::GetMenuThemeColor()

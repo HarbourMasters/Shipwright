@@ -8,8 +8,7 @@ extern "C" {
 #include <variables.h>
 }
 
-#define NUM_NAVI_MESSAGES 18
-CustomMessage NaviMessages[NUM_NAVI_MESSAGES] = {
+static CustomMessage NaviMessages[] = {
 
     { "%cMissing a small key in a dungeon?&Maybe the %rboss %chas it!",
       "%cFehlt Dir ein kleiner Schlüssel in &einem Labyrinth? Vielleicht hat ihn&ja der %rEndgegner%c!",
@@ -113,7 +112,7 @@ CustomMessage NaviMessages[NUM_NAVI_MESSAGES] = {
 };
 
 void BuildNaviMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    CustomMessage msg = NaviMessages[Random(0, NUM_NAVI_MESSAGES)];
+    CustomMessage msg = ShipUtils::RandomElement(NaviMessages);
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -178,4 +177,5 @@ void RegisterNaviMessages() {
                  IS_RANDO && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"), 1), BuildNaviMessage);
 }
 
-static RegisterShipInitFunc initFunc(RegisterNaviMessages, { CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi") });
+static RegisterShipInitFunc initFunc(RegisterNaviMessages,
+                                     { CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"), "IS_RANDO" });

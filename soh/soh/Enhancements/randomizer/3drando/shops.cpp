@@ -1260,6 +1260,44 @@ void InitTrickNames() {
         Text{ "Gerudo Veil" },
     };
 
+    trickNameTable[RG_SPEAK_DEKU] = {
+        // TODO_TRANSLATE
+        Text{ "Picori Jabber Nut" },
+        Text{ "Kikwi Blabber Nut" },
+        Text{ "Talking Deku Nut" },
+    };
+    trickNameTable[RG_SPEAK_GERUDO] = {
+        // TODO_TRANSLATE
+        Text{ "Gerudo Tuni Nut" },
+        Text{ "Twili Jabber Nut" },
+        Text{ "Zuna Blabber Nut" },
+    };
+    trickNameTable[RG_SPEAK_GORON] = {
+        // TODO_TRANSLATE
+        Text{ "Cobble Jabber Nut" },
+        Text{ "Mogma Blabber Nut" },
+        Text{ "Goron Speak Stone" },
+    };
+    trickNameTable[RG_SPEAK_HYLIAN] = {
+        // TODO_TRANSLATE
+        Text{ "Human Jingle Nut" },
+        Text{ "Sheikah Jabber nut" },
+        Text{ "Lorulean Blabber Nut" },
+    };
+    trickNameTable[RG_SPEAK_KOKIRI] = {
+        // TODO_TRANSLATE
+        Text{ "Korok Blabber Nut" },
+        Text{ "Minish Jabber Nut" },
+        Text{ "Fairy Jingle Nut" },
+    };
+    trickNameTable[RG_SPEAK_ZORA] = {
+        // TODO_TRANSLATE
+        Text{ "Parella Jabber Nut" },
+        Text{ "Fishman Jabber Nut" },
+        Text{ "Zora Jabu Nut" },
+        Text{ "Rito Jingle Nut" },
+    };
+
     trickNameTable[RG_GUARD_HOUSE_KEY] = {
         // TODO_TRANSLATE
         Text{ "Pot Room Key", "Pot Room Key", "Pot Room Key" },

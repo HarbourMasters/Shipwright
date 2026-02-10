@@ -30,6 +30,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Item_B_Heart/z_item_b_heart.h"
 #include "src/overlays/actors/ovl_En_Ko/z_en_ko.h"
 #include "src/overlays/actors/ovl_En_Mk/z_en_mk.h"
+#include "src/overlays/actors/ovl_En_Nb/z_en_nb.h"
 #include "src/overlays/actors/ovl_En_Niw_Lady/z_en_niw_lady.h"
 #include "src/overlays/actors/ovl_En_Kz/z_en_kz.h"
 #include "src/overlays/actors/ovl_En_Ms/z_en_ms.h"
@@ -2393,6 +2394,11 @@ void RandomizerOnActorInitHandler(void* actorRef) {
           Entrance_SceneAndSpawnAre(SCENE_SHOOTING_GALLERY, 0x01)))) {
         Actor_Kill(actor);
         return;
+    }
+
+    if (actor->id == ACTOR_EN_NB && (actor->params & 0xFF) == NB_TYPE_CRAWLSPACE &&
+        !RAND_GET_OPTION(RSK_SHUFFLE_SPEAK)) {
+        Actor_Kill(actor);
     }
 
     // Turn MQ switch into toggle

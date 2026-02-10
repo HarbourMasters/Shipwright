@@ -9,6 +9,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/ShipInit.hpp"
+#include "z64item.h"
 #include <soh/ResourceManagerHelpers.h>
 
 extern "C" {
@@ -17,7 +18,7 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-static const char* const englishIceTrapMessages[169] = {
+static const char* const englishIceTrapMessages[] = {
     "You are a #FOOL#!",
     "You are a #FOWL#!",
     "#FOOL#!",
@@ -193,7 +194,7 @@ static const char* const englishIceTrapMessages[169] = {
     "#Titanic's revenge#.",
 };
 
-static const char* const germanIceTrapMessages[23] = {
+static const char* const germanIceTrapMessages[] = {
     "Du bist ein #DUMMKOPF#!",
     "Du bist eine #Frostbeule#!",
     "#DUMMKOPF#!",
@@ -219,7 +220,7 @@ static const char* const germanIceTrapMessages[23] = {
     "Kalt. Kalt. Kälter. #EISKALT#!",
 };
 
-static const char* const frenchIceTrapMessages[83] = {
+static const char* const frenchIceTrapMessages[] = {
     "#Pauvre fou#...",
     "Tu es un #glaçon#, Harry!",
     "#Sot# que tu es.",
@@ -319,8 +320,9 @@ void BuildIceTrapMessage(CustomMessage& msg) {
             /*german*/ "This year for Christmas, all you get is #COAL#!",
             /*french*/ "Pour Noël, cette année, tu n'auras que du #CHARBON#! %rJoyeux Noël%w!", { QM_BLUE });
     } else {
-        msg = CustomMessage(RandomElement(englishIceTrapMessages), RandomElement(germanIceTrapMessages),
-                            RandomElement(frenchIceTrapMessages), { QM_BLUE, QM_BLUE, QM_BLUE });
+        msg = CustomMessage(ShipUtils::RandomElement(englishIceTrapMessages),
+                            ShipUtils::RandomElement(germanIceTrapMessages),
+                            ShipUtils::RandomElement(frenchIceTrapMessages), { QM_BLUE, QM_BLUE, QM_BLUE });
     }
 
     msg.AutoFormat();
@@ -445,6 +447,9 @@ void BuildMapMessage(uint16_t* textId, bool* loadFromMessageTable) {
             sceneNum = SCENE_ICE_CAVERN;
             break;
     }
+    CustomMessage name =
+        CustomMessage(Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(itemEntry.getItemId)).GetName());
+    msg.Replace("[[name]]", name);
     if (ctx->GetOption(RSK_MQ_DUNGEON_RANDOM).Is(RO_MQ_DUNGEONS_NONE) ||
         (ctx->GetOption(RSK_MQ_DUNGEON_RANDOM).Is(RO_MQ_DUNGEONS_SET_NUMBER) &&
          ctx->GetOption(RSK_MQ_DUNGEON_COUNT).Is(12))) {
@@ -455,6 +460,7 @@ void BuildMapMessage(uint16_t* textId, bool* loadFromMessageTable) {
         msg.Replace("[[typeHint]]", Rando::StaticData::hintTextTable[RHT_DUNGEON_ORDINARY].GetHintMessage());
     }
     *loadFromMessageTable = false;
+    msg.AutoFormat(ITEM_DUNGEON_MAP);
     msg.LoadIntoFont();
 }
 

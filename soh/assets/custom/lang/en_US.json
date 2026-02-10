@@ -64,11 +64,7 @@
             },
             "fewer_tunic_requirements": {
                 "name": "Fewer Tunic Requirements",
-                "description": [
-                    "Allows the following possible without Tunics:\n",
-                    "- Enter Water Temple. The area below the center pillar still requires Zora Tunic. Applies to MQ also.\n",
-                    "- Enter Fire Temple. Volvagia still requires Goron Tunic. Applies to MQ also, and includes child access to first floor with dungeon shuffle."
-                ]
+                "description": "Logic may require getting through areas with timers without tunics."
             },
             "unintuitive_jumps": {
                 "name": "Unintuitive Jumps",
@@ -445,7 +441,7 @@
                 "description": "The bombable floor before King Dodongo can be destroyed with Hammer if hit in the very center. This is only relevant with Shuffle Boss Entrances or if Dodongo's Cavern is MQ and either variant of \"Dodongo's Cavern MQ Light the Eyes with Strength\" is on."
             },
             "dc_dodongo_chu": {
-                "name": "Dodongo's Cavern Dodongo without Bombchus",
+                "name": "Dodongo's Cavern Dodongo with Only Bombchus",
                 "description": "With precise timing you can feed King Dodongo a bombchu during a backflip"
             },
             "dc_mq_stairs_with_only_strength": {
