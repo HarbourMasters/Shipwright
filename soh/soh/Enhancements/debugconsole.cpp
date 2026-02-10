@@ -1478,6 +1478,7 @@ static bool AvailableChecksProcessUndiscoveredExitsHandler(std::shared_ptr<Ship:
 static bool AvailableChecksRecalculateHandler(std::shared_ptr<Ship::Console> Console,
                                               const std::vector<std::string>& args, std::string* output) {
     RandomizerRegion startingRegion = RR_ROOT;
+    RandoAgeTime startingAgeTime = RAT_NONE;
 
     if (args.size() > 1) {
         try {
@@ -1493,7 +1494,21 @@ static bool AvailableChecksRecalculateHandler(std::shared_ptr<Ship::Console> Con
         }
     }
 
-    CheckTracker::RecalculateAvailableChecks(startingRegion);
+    if (args.size() > 2) {
+        if (args[2] == "ChildDay") {
+            startingAgeTime = RAT_CHILD_DAY;
+        } else if (args[2] == "ChildNight") {
+            startingAgeTime = RAT_CHILD_NIGHT;
+        } else if (args[2] == "AdultDay") {
+            startingAgeTime = RAT_ADULT_DAY;
+        } else if (args[2] == "AdultNight") {
+            startingAgeTime = RAT_ADULT_NIGHT;
+        } else {
+            ERROR_MESSAGE("[SOH] Age Time should be ChildDay, ChildNight, AdultDay, or AdultNight");
+        }
+    }
+
+    CheckTracker::RecalculateAvailableChecks(startingRegion, startingAgeTime);
     return 0;
 }
 
@@ -1759,11 +1774,13 @@ void DebugConsole_Init(void) {
                             "Available Checks - Process Undiscovered Exits",
                             { { "enable", Ship::ArgumentType::NUMBER, true } } });
 
-    CMD_REGISTER("acr", { AvailableChecksRecalculateHandler,
-                          "Available Checks - Recalculate",
-                          {
-                              { "starting_region", Ship::ArgumentType::NUMBER, true },
-                          } });
+    Ship::Context::GetInstance()->GetConsole()->AddCommand(
+        "acr", { AvailableChecksRecalculateHandler,
+                 "Available Checks - Recalculate",
+                 {
+                     { "starting_region", Ship::ArgumentType::NUMBER, true },
+                     { "ChildDay|ChildNight|AdultDay|AdultNight", Ship::ArgumentType::TEXT, true },
+                 } });
 
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }

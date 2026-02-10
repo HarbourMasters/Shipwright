@@ -2597,6 +2597,15 @@ typedef enum {
     // - `s32` commonType
     VB_SET_IDLE_ANIM,
 
+    // #### `result`
+    // ```c
+    // player->unk_6A0 > 4000000.0f
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `double` (temp - promoted from `f32`)
+    VB_RUMBLE_FOR_SECRET
+
 } GIVanillaBehavior;
 
 #endif

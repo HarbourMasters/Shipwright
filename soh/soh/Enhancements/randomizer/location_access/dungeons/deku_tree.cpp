@@ -23,7 +23,6 @@ void RegionTable_Init_DekuTree() {
         EVENT_ACCESS(LOGIC_DEKU_TREE_1F_BROKE_WEB, logic->HasFireSource()),
     }, {
         //Locations
-        LOCATION(RC_DEKU_TREE_MAP_CHEST,         logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DEKU_TREE_LOBBY_LOWER_HEART, logic->CanUse(RG_BOOMERANG)),
         LOCATION(RC_DEKU_TREE_LOBBY_GRASS_1,     logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_LOBBY_GRASS_2,     logic->CanCutShrubs()),
@@ -41,7 +40,7 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_LOBBY_2F] = Region("Deku Tree Lobby 2F", SCENE_DEKU_TREE, {}, {
         //Locations
-        LOCATION(RC_DEKU_TREE_MAP_CHEST,         true),
+        LOCATION(RC_DEKU_TREE_MAP_CHEST,         logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DEKU_TREE_LOBBY_LOWER_HEART, true),
     }, {
         //Exits
