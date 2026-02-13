@@ -40,6 +40,9 @@ void RegionTable_Init_WaterTemple() {
         EVENT_ACCESS(LOGIC_WATER_PUSHED_1F_BLOCK, logic->WaterLevel(WL_LOW) && logic->HasItem(RG_GORONS_BRACELET)),
         EVENT_ACCESS(LOGIC_WATER_COULD_MIDDLE,    (logic->CanUse(RG_LONGSHOT) && (logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW))) ||
                                                   (logic->CanUse(RG_HOOKSHOT) && logic->SmallKeys(SCENE_WATER_TEMPLE, 5))),
+        //Assumes RR_WATER_TEMPLE_JET_LIFT and RR_WATER_TEMPLE_HIGH_EMBLEM access
+        EVENT_ACCESS(LOGIC_WATER_COULD_HIGH_FROM_MID, (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->HasItem(RG_BRONZE_SCALE)) &&
+                                                      logic->CanHitSwitch(ED_BOMB_THROW)),
     }, {}, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_ENTRANCE_LEDGE, logic->HasItem(RG_BRONZE_SCALE) && logic->WaterLevel(WL_HIGH)),
@@ -110,13 +113,7 @@ void RegionTable_Init_WaterTemple() {
     });
 
     //assumes checking for WL_LOW_OR_MID on entry
-    areaTable[RR_WATER_TEMPLE_2F_CENTRAL_LM] = Region("Water Temple 2F Central Low Or Mid Water", SCENE_WATER_TEMPLE, {
-        //Events
-        //Assumes RR_WATER_TEMPLE_JET_LIFT and RR_WATER_TEMPLE_HIGH_EMBLEM access
-        EVENT_ACCESS(LOGIC_WATER_COULD_HIGH_FROM_MID, logic->WaterLevel(WL_MID) &&
-                                                      (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->HasItem(RG_BRONZE_SCALE)) &&
-                                                      logic->CanHitSwitch(ED_BOMB_THROW)),
-    }, {
+    areaTable[RR_WATER_TEMPLE_2F_CENTRAL_LM] = Region("Water Temple 2F Central Low Or Mid Water", SCENE_WATER_TEMPLE, {}, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_MAIN_LEVEL_2_POT_1, logic->CanBreakPots()),
         LOCATION(RC_WATER_TEMPLE_MAIN_LEVEL_2_POT_2, logic->CanBreakPots()),

@@ -524,6 +524,15 @@ typedef enum {
 #include "randomizerEnums.h"
 } RandoWaterLevel;
 
+typedef enum {
+    RAT_NONE,
+    RAT_CHILD_DAY,
+    RAT_CHILD_NIGHT,
+    RAT_ADULT_DAY,
+    RAT_ADULT_NIGHT,
+    RAT_MAX,
+} RandoAgeTime;
+
 #define ENTRANCE_GROTTO_LOAD_START 0x0700
 #define ENTRANCE_GROTTO_EXIT_START 0x0800
 
