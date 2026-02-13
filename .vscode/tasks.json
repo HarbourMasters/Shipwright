@@ -4,8 +4,16 @@
         {
             "label": "Setup CMake Project",
             "type": "shell",
-            "windows":{
-                "command": "cmake",
+            "command": "cmake",
+            "args": [
+                "-S",
+                ".",
+                "-B",
+                "build-cmake",
+                "-G",
+                "Ninja"
+            ],
+            "windows": {
                 "args": [
                     "-S",
                     ".",
@@ -17,14 +25,6 @@
                     "v143",
                     "-A",
                     "x64"
-                ],
-            },
-            "linux": {
-                "command": "cmake",
-                "args": [
-                    "-H.",
-                    "-Bbuild-cmake",
-                    "-GNinja"
                 ]
             },
             "group": "build",
@@ -33,20 +33,17 @@
         {
             "label": "Generate SOH OTR",
             "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build-cmake",
+                "--target",
+                "GenerateSohOtr"
+            ],
             "windows": {
-                "command": "cmake",
                 "args": [
                     "--build",
                     "./build/x64",
-                    "--target",
-                    "GenerateSohOtr"
-                ],
-            },
-            "linux": {
-                "command": "cmake",
-                "args": [
-                    "--build",
-                    "build-cmake",
                     "--target",
                     "GenerateSohOtr",
                     "--parallel"
@@ -58,20 +55,17 @@
         {
             "label": "Build Project",
             "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build-cmake",
+                "--parallel",
+                "8"
+            ],
             "windows": {
-                "command": "cmake",
                 "args": [
                     "--build",
                     "./build/x64"
-                ],
-            },
-            "linux": {
-                "command": "cmake",
-                "args": [
-                    "--build",
-                    "build-cmake",
-                    "--parallel",
-                    "8"
                 ]
             },
             "group": {
