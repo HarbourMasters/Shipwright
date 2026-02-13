@@ -1188,10 +1188,8 @@ void DumpWorldGraph(std::string str) {
 } // namespace Regions
 
 Region* RegionTable(const RandomizerRegion regionKey) {
-    if (regionKey > RR_MAX) {
-        printf("\x1b[1;1HERROR: AREAKEY TOO BIG");
-    }
-    return &(areaTable[regionKey]);
+    assert(regionKey < RR_MAX);
+    return &areaTable[regionKey];
 }
 
 // Retrieve all the shuffable entrances of a specific type
