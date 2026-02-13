@@ -66,7 +66,8 @@ void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, Randomize
 
 std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& allowedLocations,
                                                 RandomizerGet ignore = RG_NONE, bool calculatingAvailableChecks = false,
-                                                RandomizerRegion startingRegion = RR_ROOT);
+                                                RandomizerRegion startingRegion = RR_ROOT,
+                                                RandoAgeTime startingAgeTime = RAT_NONE);
 
 void GeneratePlaythrough();
 

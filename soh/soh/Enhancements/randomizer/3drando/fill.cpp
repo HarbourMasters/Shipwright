@@ -211,6 +211,8 @@ void ProcessExits(Region* region, GetAccessibleLocationsStruct& gals, Randomizer
             // Include bluewarps when unshuffled but dungeon or boss shuffle is on
             if ((exit.IsShuffled() ||
                  (exit.GetType() == Rando::EntranceType::BlueWarp &&
+                  (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE) ||
+                   exit.GetParentRegionKey() != RR_GANONS_TOWER_STAIRS_1) &&
                   (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES)))) &&
                 !exit.IsAddedToPool() && !ctx->GetEntranceShuffler()->HasNoRandomEntrances()) {
                 gals.entranceSphere.push_back(&exit);
@@ -513,7 +515,8 @@ void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, Randomize
 std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& targetLocations,
                                                 RandomizerGet ignore /* = RG_NONE*/,
                                                 bool calculatingAvailableChecks /* = false */,
-                                                RandomizerRegion startingRegion /* = RR_ROOT */) {
+                                                RandomizerRegion startingRegion /* = RR_ROOT */,
+                                                RandoAgeTime startingAgeTime /* = RAT_NONE*/) {
     auto ctx = Rando::Context::GetInstance();
     GetAccessibleLocationsStruct gals(0);
     ResetLogic(ctx, gals, !calculatingAvailableChecks);
@@ -521,17 +524,18 @@ std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerChec
         gals.regionPool.insert(gals.regionPool.begin(), startingRegion);
 
         const auto& region = RegionTable(startingRegion);
-        if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
+        if (startingAgeTime == RAT_CHILD_DAY) {
             region->childDay = true;
-        } else {
+            region->childNight = region->timePass;
+        } else if (startingAgeTime == RAT_CHILD_NIGHT) {
+            region->childNight = true;
+            region->childDay = region->timePass;
+        } else if (startingAgeTime == RAT_ADULT_DAY) {
             region->adultDay = true;
-        }
-        if (region->timePass) {
-            if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD)) {
-                region->childNight = true;
-            } else {
-                region->adultNight = true;
-            }
+            region->adultNight = region->timePass;
+        } else if (startingAgeTime == RAT_ADULT_NIGHT) {
+            region->adultNight = true;
+            region->adultDay = region->timePass;
         }
     }
     if (calculatingAvailableChecks) {

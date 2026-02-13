@@ -284,6 +284,7 @@ static ImGuiTextFilter checkSearch;
 static s32 previousAge = 0;
 static bool recalculateAvailable = false;
 static RandomizerRegion availableChecksStartingRegion = RR_ROOT;
+static RandoAgeTime availableChecksStartingAgeTime = RAT_NONE;
 static int16_t previousEntrance = 0;
 std::array<bool, RCAREA_INVALID> filterAreasHidden = { 0 };
 std::array<bool, RC_MAX> filterChecksHidden = { 0 };
@@ -2338,7 +2339,7 @@ static std::map<int32_t, const char*> availableChecksOnlyShowOptions = { { AC_SH
                                                                          { AC_SHOW_ADULT_CHECKS, "Adult Checks" },
                                                                          { AC_SHOW_CURRENT_AGE, "Current Age" } };
 
-void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion);
+void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion, RandoAgeTime startingAgeTime);
 
 void CheckTrackerWindow::DrawElement() {
     Color_Background = CVarGetColor(CVAR_TRACKER_CHECK("BgColor.Value"), Color_Bg_Default);
@@ -2431,8 +2432,9 @@ void CheckTrackerWindow::DrawElement() {
 
         if (recalculateAvailable) {
             recalculateAvailable = false;
-            InternalRecalculateAvailableChecks(availableChecksStartingRegion);
+            InternalRecalculateAvailableChecks(availableChecksStartingRegion, availableChecksStartingAgeTime);
             availableChecksStartingRegion = RR_ROOT;
+            availableChecksStartingAgeTime = RAT_NONE;
         }
 
         // Quick Options
@@ -2658,12 +2660,12 @@ void CheckTrackerWindow::DrawElement() {
 
         ImGui::EndTable(); // Checks Lead-out
         ImGui::EndTable(); // Quick Options Lead-out
-        Trackers::EndFloatWindows();
         if (doingCollapseOrExpand) {
             optCollapseAll = false;
             optExpandAll = false;
         }
     }
+    Trackers::EndFloatWindows();
 }
 
 bool UpdateFilters() {
@@ -3605,7 +3607,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
     UIWidgets::PopStyleCombobox();
 }
 
-void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion) {
+void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion, RandoAgeTime startingAgeTime) {
     if (availableChecksDisplay == AC_DISABLED || !GameInteractor::IsSaveLoaded()) {
         return;
     }
@@ -3627,7 +3629,22 @@ void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion) {
         }
     }
 
-    ReachabilitySearch({}, RG_NONE, true, startingRegion);
+    if (startingAgeTime == RAT_NONE) {
+        if (LINK_IS_CHILD && IS_DAY) {
+            startingAgeTime = RAT_CHILD_DAY;
+        }
+        else if (LINK_IS_CHILD && IS_NIGHT) {
+            startingAgeTime = RAT_CHILD_NIGHT;
+        }
+        else if (LINK_IS_ADULT && IS_DAY) {
+            startingAgeTime = RAT_ADULT_DAY;
+        }
+        else if (LINK_IS_ADULT && IS_NIGHT) {
+            startingAgeTime = RAT_ADULT_NIGHT;
+        }
+    }
+
+    ReachabilitySearch({}, RG_NONE, true, startingRegion, startingAgeTime);
     RecalculateAllAreaTotals();
 
     StopPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
@@ -3635,9 +3652,11 @@ void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion) {
                 GetPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS).count());
 }
 
-void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */) {
+void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */,
+                                RandoAgeTime startingAgeTime /* = RAT_NONE */) {
     recalculateAvailable = true;
     availableChecksStartingRegion = startingRegion;
+    availableChecksStartingAgeTime = startingAgeTime;
 }
 
 void LoadFromPreset(nlohmann::json info) {
