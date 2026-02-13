@@ -356,12 +356,13 @@ class TrickOption : public Option {
      * @param quest_ MQ, Vanilla, or Both.
      * @param area_ The area the trick is relevant for.
      * @param tags_ The set of RandomizerTrickTags for this trick.
-     * @param name_ The name of the trick. Appears in the spoiler/patch file.
+     * @param name_ The name of the trick. Appears in the menus and spoiler
+     * @param nameTag_ The 4-5 long name tag of the trick. Appears in the settings and presets file.
      * @param description_ A brief description of the trick.
      * @return Option
      */
     static TrickOption LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
-                                  std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_);
+                                  std::set<Tricks::Tag> tags_, const std::string& name_, const std::string nameTag_, std::string description_);
 
     RandomizerTrick GetKey() const;
 
@@ -391,10 +392,11 @@ class TrickOption : public Option {
 
   private:
     TrickOption(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_,
-                const std::string& name_, std::string description_);
+                const std::string& name_, const std::string nameTag_, std::string description_);
     RandomizerCheckQuest mQuest;
     RandomizerArea mArea;
     std::set<Tricks::Tag> mTags;
+    std::string mNameTag;
 };
 
 enum class OptionGroupType {
