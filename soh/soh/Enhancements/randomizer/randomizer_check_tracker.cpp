@@ -3632,14 +3632,11 @@ void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion, RandoAg
     if (startingAgeTime == RAT_NONE) {
         if (LINK_IS_CHILD && IS_DAY) {
             startingAgeTime = RAT_CHILD_DAY;
-        }
-        else if (LINK_IS_CHILD && IS_NIGHT) {
+        } else if (LINK_IS_CHILD && IS_NIGHT) {
             startingAgeTime = RAT_CHILD_NIGHT;
-        }
-        else if (LINK_IS_ADULT && IS_DAY) {
+        } else if (LINK_IS_ADULT && IS_DAY) {
             startingAgeTime = RAT_ADULT_DAY;
-        }
-        else if (LINK_IS_ADULT && IS_NIGHT) {
+        } else if (LINK_IS_ADULT && IS_NIGHT) {
             startingAgeTime = RAT_ADULT_NIGHT;
         }
     }
