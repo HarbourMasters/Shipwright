@@ -28,7 +28,7 @@ static std::set<RandomizerCheck> excludedLocations;
 static std::set<RandomizerTrick> enabledTricks;
 static std::set<RandomizerTrick> enabledGlitches;
 
-void SaveEnabledTricks(){
+void SaveEnabledTricks() {
     std::string enabledTrickString = "";
     for (auto enabledTrickIt : enabledTricks) {
         enabledTrickString += Rando::Settings::GetInstance()->GetTrickSetting(enabledTrickIt).GetNameTag();
@@ -193,9 +193,9 @@ void UpdateMenuTricks() {
     std::string enabledTrickString;
     enabledTricks.clear();
     while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
-            if (Rando::StaticData::trickToEnum.contains(enabledTrickString)){
+        if (Rando::StaticData::trickToEnum.contains(enabledTrickString)) {
             enabledTricks.insert(Rando::StaticData::trickToEnum[enabledTrickString]);
-            }
+        }
     }
     std::stringstream enabledGlitchStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledGlitches"), ""));
     std::string enabledGlitchString;

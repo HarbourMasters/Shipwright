@@ -1347,7 +1347,6 @@ void Settings::CreateOptions() {
     // RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH}, "ISG", "Enables
     // locations requiring use of the infinite sword glitch.");
 
-
     /* Common abbreviations in name tags
     - A: Adult
     - Blk: Block
@@ -1374,12 +1373,13 @@ void Settings::CreateOptions() {
     Try to keep Name Tags less than 8 chars.
     */
 
-    OPT_TRICK(RT_VISIBLE_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, 
+    OPT_TRICK(RT_VISIBLE_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE },
               "Pass Through Visible One-Way Collision", "VisCol",
               "Allows climbing through the platform to reach Impa's House Back as adult with no items and going "
               "through the Kakariko Village Gate as child when coming from the Mountain Trail side.");
     OPT_TRICK(RT_GROTTOS_WITHOUT_AGONY, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE },
-              "Hidden Grottos without Stone of Agony", "NoSoA", "Allows entering hidden grottos without the Stone of Agony.");
+              "Hidden Grottos without Stone of Agony", "NoSoA",
+              "Allows entering hidden grottos without the Stone of Agony.");
     OPT_TRICK(RT_FEWER_TUNIC_REQUIREMENTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE },
               "Fewer Tunic Requirements", "FTR", "Logic may require getting through areas with timers without tunics.");
     OPT_TRICK(RT_UNINTUITIVE_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Unintuitive Jumps", "UnJmp",
@@ -1411,7 +1411,8 @@ void Settings::CreateOptions() {
               "after recoil. Can be combined with \"Simple damage boosts\" for greater uses.");
     OPT_TRICK(RT_BOMBCHU_BEEHIVES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Bombchu Beehives", "ChuBee",
               "Allows exploding beehives with Bombchus.");
-    OPT_TRICK(RT_BLUE_FIRE_MUD_WALLS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Blue Fire Beyond Red Ice", "BluFire",
+    OPT_TRICK(RT_BLUE_FIRE_MUD_WALLS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Blue Fire Beyond Red Ice",
+              "BluFire",
               "Use Blue Fire to break mud walls, detonate bomb flowers, and break floor to King Dodongo.\nDoes not "
               "apply to MQ Dead Hand bomb flowers.\nUsing blue fire on bombflower to stop rolling goron also requires "
               "\"Stop Link the Goron with Din's Fire\".\nUsing blue fire arrows to break floor in King Dodongo's "
@@ -1434,8 +1435,8 @@ void Settings::CreateOptions() {
               "Lift Big Skulltulas with Pausing", "SkulPaus",
               "Pausing while a big skulltula is bobbing upwards slightly lifts it,\n"
               "eventually allowing passage without any items.");
-    OPT_TRICK(RT_GROUND_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "Ground Jump", "GrdJmp",
-              "Enables requiring ground jumps.");
+    OPT_TRICK(RT_GROUND_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "Ground Jump",
+              "GrdJmp", "Enables requiring ground jumps.");
     OPT_TRICK(RT_GROUND_JUMP_HARD, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE, Tricks::Tag::GLITCH },
               "Hard Ground Jumps", "HGrdJmp",
               "Enables ground jumps which require some precision outside of setting up jump:\n- While using Hover "
@@ -1451,7 +1452,8 @@ void Settings::CreateOptions() {
               "With very precise movement it's possible for adult to jump onto the bridge without needing Longshot, "
               "Hover Boots, or Bean.");
     OPT_TRICK(RT_LW_MIDO_BACKFLIP, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE },
-              "Backflip over Mido as Adult", "MidoSkip", "With a specific position and angle, you can backflip over Mido.");
+              "Backflip over Mido as Adult", "MidoSkip",
+              "With a specific position and angle, you can backflip over Mido.");
     OPT_TRICK(RT_LOST_WOOD_NAVI_DIVE, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
               "Lost Woods Navi dive", "LWNaviD",
               "You need Deku Sticks or Kokiri Sword to dive with Navi for entering Zora's River.");
@@ -1577,8 +1579,8 @@ void Settings::CreateOptions() {
               "Adult can reach this PoH with a precise jump, no Hover Boots required.");
     OPT_TRICK(RT_ZR_HOVERS, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::NOVICE },
               "Zora\'s Domain Entry with Hover Boots", "ZRZDHB", "Can hover behind the waterfall as adult.");
-    OPT_TRICK(RT_ZR_CUCCO, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::NOVICE }, "Zora\'s Domain Entry with Cucco", "ZRZDCuc",
-              "You can fly behind the waterfall with a Cucco as child.");
+    OPT_TRICK(RT_ZR_CUCCO, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::NOVICE }, "Zora\'s Domain Entry with Cucco",
+              "ZRZDCuc", "You can fly behind the waterfall with a Cucco as child.");
     OPT_TRICK(RT_ZD_KING_ZORA_SKIP, RCQUEST_BOTH, RA_ZORAS_DOMAIN, { Tricks::Tag::INTERMEDIATE },
               "Skip King Zora as Adult with Nothing", "Mweep",
               "With a precise jump as adult, it is possible to get on the fence next to King Zora from the front to "
@@ -1611,7 +1613,8 @@ void Settings::CreateOptions() {
               "Gerudo Valley Enter Carpenter's Tent as Child", "GVTent",
               "The loading zone for Carpenter's Tent is accessible to child.");
     OPT_TRICK(RT_GV_CHILD_CUCCO_JUMP, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE },
-              "Gerudo Valley Jump Fence with Cucco", "GVCUC", "Using cucco as child, it's possible to jumpslash over the gate.");
+              "Gerudo Valley Jump Fence with Cucco", "GVCUC",
+              "Using cucco as child, it's possible to jumpslash over the gate.");
     OPT_TRICK(RT_PASS_GUARDS_WITH_NOTHING, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
               "Sneak Past Moving Gerudo Guards with No Items", "Guards",
               "The logic normally guarantees Bow or Hookshot to stun them from a distance,"
@@ -1636,7 +1639,8 @@ void Settings::CreateOptions() {
               "Wasteland Crossing without Hover Boots or Longshot", "RvrSand",
               "You can beat the quicksand by backwalking across it in a specific way. Note that jumping to the carpet "
               "merchant as child typically requires a fairly precise jump slash.");
-    OPT_TRICK(RT_LENS_HW, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE }, "Lensless Wasteland", "HWNoLoT",
+    OPT_TRICK(RT_LENS_HW, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE }, "Lensless Wasteland",
+              "HWNoLoT",
               "By memorizing the path, you can travel through the Wasteland without using the Lens of Truth to see the "
               "Poe. The equivalent trick for going in reverse through the Wasteland is \"Reverse Wasteland\".");
     OPT_TRICK(
@@ -1651,7 +1655,8 @@ void Settings::CreateOptions() {
               "Somewhat precise. If you kill enough Leevers you can get enough of a break to take some time to aim "
               "more carefully.");
     OPT_TRICK(RT_DEKU_BASEMENT_GS, RCQUEST_VANILLA, RA_DEKU_TREE, { Tricks::Tag::NOVICE },
-              "Deku Tree Basement Vines GS with Jump Slash", "DTGSJS", "Can be defeated by doing a precise jump slash.");
+              "Deku Tree Basement Vines GS with Jump Slash", "DTGSJS",
+              "Can be defeated by doing a precise jump slash.");
     OPT_TRICK(RT_DEKU_B1_SKIP, RCQUEST_BOTH, RA_DEKU_TREE, { Tricks::Tag::INTERMEDIATE },
               "Deku Tree Basement without Slingshot", "B1Skip",
               "A precise jump can be used to skip needing to use the Slingshot to go around B1 of the Deku Tree. If "
@@ -1746,7 +1751,8 @@ void Settings::CreateOptions() {
               "using the Hover Boots, adult can throw a Bomb at the switch. This trick is only relevant if \"Shuffle "
               "Boss Entrances\" is enabled.");
     OPT_TRICK(RT_JABU_B1_CUBE_HOVER, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE },
-              "Jabu B1 Pass Cube with Hover Boots", "JbuJigHB","It's possible reach pots past cube with only hover boots.");
+              "Jabu B1 Pass Cube with Hover Boots", "JbuJigHB",
+              "It's possible reach pots past cube with only hover boots.");
     OPT_TRICK(RT_LENS_JABU_MQ, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE },
               "Jabu MQ without Lens of Truth", "JbuLoT", "Removes the requirements for the Lens of Truth in Jabu MQ.");
     OPT_TRICK(RT_JABU_MQ_RANG_JUMP, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::ADVANCED },
@@ -1757,7 +1763,8 @@ void Settings::CreateOptions() {
               "Jabu MQ Song of Time Block GS with Boomerang", "JbuSoTRng",
               "Allow the Boomerang to return to you through the Song of Time block to grab the token.");
     OPT_TRICK(RT_JABU_BARINADE_POTS, RCQUEST_BOTH, RA_JABU_JABUS_BELLY, { Tricks::Tag::ADVANCED },
-              "Jabu Barinade with Pots", "BariPot", "Barinade can be damaged with pots, requiring only boomerang to defeat.");
+              "Jabu Barinade with Pots", "BariPot",
+              "Barinade can be damaged with pots, requiring only boomerang to defeat.");
     OPT_TRICK(RT_LENS_BOTW, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
               "Bottom of the Well without Lens of Truth", "BWLoT",
               "Removes the requirements for the Lens of Truth in Bottom of the Well.");
@@ -1848,7 +1855,8 @@ void Settings::CreateOptions() {
               "Fire Temple Song of Time Room GS without Song of Time", "FISoTSkp",
               "A precise jump can be used to reach this room.");
     OPT_TRICK(RT_FIRE_STRENGTH, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Fire Temple Climb without Strength", "FIStrSkp", "A precise jump can be used to skip pushing the block.");
+              "Fire Temple Climb without Strength", "FIStrSkp",
+              "A precise jump can be used to skip pushing the block.");
     OPT_TRICK(RT_FIRE_SCARECROW, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::EXPERT },
               "Fire Temple East Tower without Scarecrow\'s Song", "PixelShot",
               "Also known as \"Pixelshot\". The Longshot can reach the target on the elevator itself, allowing you to "
@@ -1989,7 +1997,8 @@ void Settings::CreateOptions() {
               "Skulltula early, skipping a small key as well as needing Hovers or Scarecrow to reach the locked door.\n"
               "In vanilla this can be used to get past without bronze scale.");
     OPT_TRICK(RT_WATER_MORPHA_WITHOUT_HOOKSHOT, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::EXTREME },
-              "Water Temple Morpha without Hookshot", "MorphDiff", "It is possible to slash at Morpha without hookshot.");
+              "Water Temple Morpha without Hookshot", "MorphDiff",
+              "It is possible to slash at Morpha without hookshot.");
     OPT_TRICK(RT_LENS_SHADOW, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },
               "Shadow Temple Stationary Objects without Lens of Truth", "STStLoT",
               "Removes the requirements for the Lens of Truth in Shadow Temple for most areas in the dungeon except "
@@ -2068,7 +2077,8 @@ void Settings::CreateOptions() {
               "Spirit Temple without Lens of Truth", "SPLoT",
               "Removes the requirements for the Lens of Truth in Spirit Temple.");
     OPT_TRICK(RT_SPIRIT_CHILD_CHU, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE },
-              "Spirit Temple Child Side Bridge with Bombchu", "SPBrgChu", "A carefully-timed Bombchu can hit the switch.");
+              "Spirit Temple Child Side Bridge with Bombchu", "SPBrgChu",
+              "A carefully-timed Bombchu can hit the switch.");
     OPT_TRICK(RT_SPIRIT_WEST_LEDGE, RCQUEST_BOTH, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE },
               "Spirit Temple Statue Room West Ledge Checks with Boomerang", "SPWeRng",
               "By carefully walking onto the upper arm of the statue, it's possible to get a good angle on the "
@@ -2197,7 +2207,7 @@ void Settings::CreateOptions() {
               "If you move quickly you can sneak past the edge of a flame wall before it can rise up to block you. In "
               "this case to do it without taking damage is especially precise.");
 
-    for (auto trick: mTrickSettings){
+    for (auto trick : mTrickSettings) {
         if (StaticData::trickToEnum.contains(trick.GetNameTag())) {
             SPDLOG_DEBUG("REPEATED TRICK NAME TAG " + trick.GetName());
         } else {

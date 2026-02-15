@@ -358,14 +358,16 @@ RandomizerCheck LocationOption::GetKey() const {
 }
 
 TrickSetting::TrickSetting(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_,
-                         std::set<Tricks::Tag> tags_, const std::string& name_, const std::string nameTag_, std::string description_)
+                           std::set<Tricks::Tag> tags_, const std::string& name_, const std::string nameTag_,
+                           std::string description_)
     : Option(key_, name_, { "Disabled", "Enabled" }, OptionCategory::Setting, "", std::move(description_),
              WIDGET_CVAR_CHECKBOX, 0, false, nullptr, IMFLAG_NONE),
       mQuest(quest_), mArea(area_), mNameTag(nameTag_), mTags(std::move(tags_)) {
 }
 
 TrickSetting TrickSetting::LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
-                                    std::set<Tricks::Tag> tags_, const std::string& name_, const std::string nameTag_, std::string description_) {
+                                      std::set<Tricks::Tag> tags_, const std::string& name_, const std::string nameTag_,
+                                      std::string description_) {
     return { key_, quest_, area_, std::move(tags_), name_, nameTag_, std::move(description_) };
 }
 

@@ -3481,7 +3481,9 @@ void GenerateRandomizerImgui(std::string seed = "") {
     std::stringstream enabledTrickStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), ""));
     std::string enabledTrickString;
     while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
-        enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
+        if (Rando::StaticData::trickToEnum.contains(enabledTrickString)) {
+            enabledTricks.insert(Rando::StaticData::trickToEnum[enabledTrickString]);
+        }
     }
 
     // Update the visibilitiy before removing conflicting excludes (in case the locations tab wasn't viewed)
