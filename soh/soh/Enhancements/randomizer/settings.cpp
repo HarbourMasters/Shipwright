@@ -2209,7 +2209,7 @@ void Settings::CreateOptions() {
 
     for (auto trick : mTrickSettings) {
         if (StaticData::trickToEnum.contains(trick.GetNameTag())) {
-            SPDLOG_DEBUG("REPEATED TRICK NAME TAG " + trick.GetName());
+            SPDLOG_ERROR("REPEATED TRICK NAME TAG " + trick.GetName());
         } else {
             StaticData::trickToEnum[trick.GetNameTag()] = trick.GetKey();
         }
