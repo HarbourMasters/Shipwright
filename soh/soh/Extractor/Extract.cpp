@@ -6,7 +6,8 @@
 #endif
 #include "Extract.h"
 #include "portable-file-dialogs.h"
-#include <utils/binarytools/BitConverter.h>
+#include <ship/utils/binarytools/BitConverter.h>
+#include "soh/ShipUtils.h"
 #include "variables.h"
 
 #ifdef unix
@@ -46,7 +47,6 @@
 #include <fstream>
 #include <filesystem>
 #include <unordered_map>
-#include <random>
 #include <string>
 
 extern "C" uint32_t CRC32C(unsigned char* data, size_t dataSize);
@@ -229,7 +229,8 @@ void Extractor::FilterRoms(std::vector<std::string>& roms, RomSearchMode searchM
 void Extractor::GetRoms(std::vector<std::string>& roms) {
 #ifdef _WIN32
     WIN32_FIND_DATAA ffd;
-    HANDLE h = FindFirstFileA(".\\*", &ffd);
+    std::string search = std::string(mSearchPath + "\\*");
+    HANDLE h = FindFirstFileA(search.c_str(), &ffd);
 
     do {
         if (!(ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
@@ -237,7 +238,7 @@ void Extractor::GetRoms(std::vector<std::string>& roms) {
 
             // Check for any standard N64 rom file extensions.
             if ((strcmp(ext, ".z64") == 0) || (strcmp(ext, ".n64") == 0) || (strcmp(ext, ".v64") == 0))
-                roms.push_back(ffd.cFileName);
+                roms.push_back(mSearchPath + "\\" + ffd.cFileName);
         }
     } while (FindNextFileA(h, &ffd) != 0);
     // if (h != nullptr) {
@@ -401,7 +402,6 @@ bool Extractor::ManuallySearchForRom() {
     std::ifstream inFile;
 
     if (!GetRomPathFromBox()) {
-        ShowErrorBox("No rom selected", "No Rom selected. Exiting");
         return false;
     }
 
@@ -453,11 +453,43 @@ bool Extractor::ManuallySearchForRomMatchingType(RomSearchMode searchMode) {
     return true;
 }
 
+bool Extractor::RunFileStandalone(std::string rom) {
+    if (std::filesystem::is_directory(rom)) {
+        return false;
+    }
+    auto file = std::filesystem::path(rom);
+    if ((file.extension() != ".n64") && (file.extension() != ".z64") && (file.extension() != ".v64")) {
+        return false;
+    }
+    SetRomInfo(rom);
+
+    if (!ValidateRomSize()) {
+        return false;
+    }
+    std::ifstream inFile;
+
+    inFile.open(rom, std::ios::in | std::ios::binary);
+    inFile.read((char*)mRomData.get(), mCurRomSize);
+    inFile.clear();
+    inFile.close();
+    BitConverter::RomToBigEndian(mRomData.get(), mCurRomSize);
+
+    if (!ValidateRom(true)) {
+        return false;
+    }
+
+    return true;
+}
+
+void Extractor::SetSearchPath(const std::string& path) {
+    mSearchPath = path;
+}
+
 bool Extractor::Run(std::string searchPath, RomSearchMode searchMode) {
     std::vector<std::string> roms;
     std::ifstream inFile;
 
-    mSearchPath = searchPath;
+    SetSearchPath(searchPath);
 
     GetRoms(roms);
     FilterRoms(roms, searchMode);
@@ -591,13 +623,10 @@ std::string Extractor::Mkdtemp() {
 
     // create 6 random alphanumeric characters
     static const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(0, sizeof(charset) - 1);
 
     char randchr[7];
     for (int i = 0; i < 6; i++) {
-        randchr[i] = charset[dist(gen)];
+        randchr[i] = charset[ShipUtils::Random(0, sizeof(charset))];
     }
     randchr[6] = '\0';
 
@@ -606,10 +635,11 @@ std::string Extractor::Mkdtemp() {
     return tmppath;
 }
 
-extern "C" int zapd_main(int argc, char** argv);
+extern "C" int zapd_report(int argc, char** argv, std::atomic<size_t>* extractCount, std::atomic<size_t>* totalExtract);
 static void MessageboxWorker();
 
-bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
+bool Extractor::CallZapd(std::string installPath, std::string exportdir, std::atomic<size_t>* extractCount,
+                         std::atomic<size_t>* totalExtract) {
     constexpr int argc = 22;
     char xmlPath[1024];
     char confPath[1024];
@@ -660,26 +690,7 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     argv[20] = "-osf";
     argv[21] = "placeholder";
 
-#ifdef _WIN32
-    // Grab a handle to the command window.
-    HWND cmdWindow = GetConsoleWindow();
-
-    // Normally the command window is hidden. We want the window to be shown here so the user can see the progess of the
-    // extraction.
-    ShowWindow(cmdWindow, SW_SHOW);
-    SetWindowPos(cmdWindow, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
-#else
-    // Show extraction in background message until linux/mac can have visual progress
-    std::thread mbThread(MessageboxWorker);
-    mbThread.detach();
-#endif
-
-    zapd_main(argc, (char**)argv.data());
-
-#ifdef _WIN32
-    // Hide the command window again.
-    ShowWindow(cmdWindow, SW_HIDE);
-#endif
+    zapd_report(argc, (char**)argv.data(), extractCount, totalExtract);
 
     std::filesystem::copy(otrFile, exportdir + "/" + otrFile, std::filesystem::copy_options::overwrite_existing);
 

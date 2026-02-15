@@ -14,24 +14,6 @@ uint8_t Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 }
 
-void StartingItemGive(GetItemEntry getItemEntry, RandomizerCheck randomizerCheck) {
-    if (randomizerCheck != RC_MAX) {
-        OTRGlobals::Instance->gRandoContext->GetItemLocation(randomizerCheck)->SetCheckStatus(RCSHOW_SAVED);
-    }
-    if (getItemEntry.modIndex == MOD_NONE) {
-        if (getItemEntry.getItemId == GI_SWORD_BGS) {
-            gSaveContext.bgsFlag = true;
-        }
-        Item_Give(NULL, static_cast<uint8_t>(getItemEntry.itemId));
-    } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
-        if (getItemEntry.getItemId == RG_ICE_TRAP) {
-            gSaveContext.ship.pendingIceTrapCount++;
-        } else {
-            Randomizer_Item_Give(NULL, getItemEntry);
-        }
-    }
-}
-
 // RANDOTODO: Replace most of these GiveLink functions with calls to
 // Item_Give in z_parameter, we'll need to update Item_Give to ensure
 // nothing breaks when calling it without a valid play first.
@@ -52,6 +34,36 @@ void GiveLinkRupees(int numOfRupees) {
         gSaveContext.rupees = maxRupeeCount;
     } else {
         gSaveContext.rupees = newRupeeCount;
+    }
+}
+
+static uint16_t rupeeCounts[] = {
+    1,   // ITEM_RUPEE_GREEN
+    5,   // ITEM_RUPEE_BLUE
+    20,  // ITEM_RUPEE_RED
+    50,  // ITEM_RUPEE_PURPLE
+    200, // ITEM_RUPEE_GOLD
+};
+
+void StartingItemGive(GetItemEntry getItemEntry, RandomizerCheck randomizerCheck) {
+    if (randomizerCheck != RC_MAX) {
+        OTRGlobals::Instance->gRandoContext->GetItemLocation(randomizerCheck)->SetCheckStatus(RCSHOW_SAVED);
+    }
+    if (getItemEntry.modIndex == MOD_NONE) {
+        if (getItemEntry.itemId >= ITEM_RUPEE_GREEN && getItemEntry.itemId <= ITEM_RUPEE_GOLD) {
+            GiveLinkRupees(rupeeCounts[getItemEntry.itemId - ITEM_RUPEE_GREEN]);
+        } else {
+            if (getItemEntry.getItemId == GI_SWORD_BGS) {
+                gSaveContext.bgsFlag = true;
+            }
+            Item_Give(NULL, static_cast<uint8_t>(getItemEntry.itemId));
+        }
+    } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
+        if (getItemEntry.getItemId == RG_ICE_TRAP) {
+            gSaveContext.ship.pendingIceTrapCount++;
+        } else {
+            Randomizer_Item_Give(NULL, getItemEntry);
+        }
     }
 }
 
@@ -150,7 +162,9 @@ void SetStartingItems() {
     }
 
     if (Randomizer_GetSettingValue(RSK_STARTING_OCARINA)) {
-        INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
+        INV_CONTENT(ITEM_OCARINA_FAIRY) = Randomizer_GetSettingValue(RSK_STARTING_OCARINA) == RO_STARTING_OCARINA_FAIRY
+                                              ? ITEM_OCARINA_FAIRY
+                                              : ITEM_OCARINA_TIME;
     }
 
     if (Randomizer_GetSettingValue(RSK_STARTING_STICKS) && !Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG)) {
@@ -232,6 +246,9 @@ extern "C" void Randomizer_InitSaveFile() {
     // Reset triforce pieces collected.
     gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected = 0;
 
+    // Reset Bombchu Bag Upgrade
+    gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel = 0;
+
     SetStartingItems();
 
     // Set Cutscene flags and texts to skip them.
@@ -241,10 +258,49 @@ extern "C" void Randomizer_InitSaveFile() {
     Flags_SetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO);
     Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
     Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
-    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE);
+
+    if (Randomizer_GetSettingValue(RSK_FOREST) == RO_CLOSED_FOREST_OFF) {
+        Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
+        Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH);
+    }
 
     // Go away Ruto (Water Temple first cutscene).
     gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x10);
+
+    if (Randomizer_GetSettingValue(RSK_STARTING_BEANS)) {
+        INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_BEANS_ONLY &&
+            Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_ALL) {
+            BEANS_BOUGHT = 10;
+        }
+        if (Randomizer_GetSettingValue(RSK_SKIP_PLANTING_BEANS)) {
+            AMMO(ITEM_BEAN) = 0;
+            gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_CRATER].swch |= (1 << 3);
+            gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_TRAIL].swch |= (1 << 6);
+            gSaveContext.sceneFlags[SCENE_DESERT_COLOSSUS].swch |= (1 << 24);
+            gSaveContext.sceneFlags[SCENE_GERUDO_VALLEY].swch |= (1 << 3);
+            gSaveContext.sceneFlags[SCENE_GRAVEYARD].swch |= (1 << 3);
+            gSaveContext.sceneFlags[SCENE_KOKIRI_FOREST].swch |= (1 << 9);
+            gSaveContext.sceneFlags[SCENE_LAKE_HYLIA].swch |= (1 << 1);
+            gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 4) | (1 << 18);
+            gSaveContext.sceneFlags[SCENE_ZORAS_RIVER].swch |= (1 << 3);
+        } else {
+            AMMO(ITEM_BEAN) = 10;
+        }
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BEAN_SOULS) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_DESERT_COLOSSUS_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_GERUDO_VALLEY_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_GRAVEYARD_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_KOKIRI_FOREST_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_LAKE_HYLIA_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_LOST_WOODS_BEAN_SOUL);
+        Flags_SetRandomizerInf(RAND_INF_ZORAS_RIVER_BEAN_SOUL);
+    }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_A);
@@ -256,6 +312,32 @@ extern "C" void Randomizer_InitSaveFile() {
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_SWIM) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_CAN_SWIM);
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_GRAB) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_GRAB);
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_CLIMB) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_CLIMB);
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_CRAWL) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_CRAWL);
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_SPEAK) == RO_GENERIC_OFF) {
+        Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE);
+        Flags_SetRandomizerInf(RAND_INF_CAN_SPEAK_DEKU);
+        Flags_SetRandomizerInf(RAND_INF_CAN_SPEAK_GERUDO);
+        Flags_SetRandomizerInf(RAND_INF_CAN_SPEAK_GORON);
+        Flags_SetRandomizerInf(RAND_INF_CAN_SPEAK_HYLIAN);
+        Flags_SetRandomizerInf(RAND_INF_CAN_SPEAK_KOKIRI);
+        Flags_SetRandomizerInf(RAND_INF_CAN_SPEAK_ZORA);
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OPEN_CHEST) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_OPEN_CHEST);
     }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_WALLET) == RO_GENERIC_OFF) {
@@ -277,15 +359,15 @@ extern "C" void Randomizer_InitSaveFile() {
     }
 
     int startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
+    gSaveContext.savedSceneNum = -1;
     switch (startingAge) {
         case RO_AGE_ADULT: // Adult
             gSaveContext.linkAge = LINK_AGE_ADULT;
             gSaveContext.entranceIndex = ENTR_TEMPLE_OF_TIME_WARP_PAD;
-            gSaveContext.savedSceneNum = SCENE_LON_LON_RANCH; // Set scene num manually to ToT.
+            gSaveContext.cutsceneIndex = 0;
             break;
         case RO_AGE_CHILD: // Child
             gSaveContext.linkAge = LINK_AGE_CHILD;
-            gSaveContext.savedSceneNum = -1;
             break;
         default:
             break;
@@ -308,6 +390,10 @@ extern "C" void Randomizer_InitSaveFile() {
     if (Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_IMPA, (GetItemID)RG_ZELDAS_LULLABY);
         StartingItemGive(getItemEntry, RC_SONG_FROM_IMPA);
+        getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_MALON_EGG, (GetItemID)RG_WEIRD_EGG);
+        StartingItemGive(getItemEntry, RC_HC_ZELDAS_LETTER);
+        getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HC_ZELDAS_LETTER, (GetItemID)RG_ZELDAS_LETTER);
+        StartingItemGive(getItemEntry, RC_HC_MALON_EGG);
 
         // Malon/Talon back at ranch.
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
@@ -402,7 +488,7 @@ extern "C" void Randomizer_InitSaveFile() {
     }
 
     // complete mask quest
-    if (Randomizer_GetSettingValue(RSK_COMPLETE_MASK_QUEST)) {
+    if (Randomizer_GetSettingValue(RSK_MASK_QUEST) == RO_MASK_QUEST_COMPLETED) {
         Flags_SetInfTable(INFTABLE_GATE_GUARD_PUT_ON_KEATON_MASK);
         Flags_SetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE);
 

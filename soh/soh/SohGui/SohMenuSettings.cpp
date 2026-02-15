@@ -1,5 +1,7 @@
 #include "SohMenu.h"
 #include "soh/Notification/Notification.h"
+#include "soh/Enhancements/enhancementTypes.h"
+#include "SohModals.h"
 #include "soh/OTRGlobals.h"
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
@@ -14,16 +16,17 @@ extern "C" {
 namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;
+extern std::shared_ptr<SohModalWindow> mModalWindow;
 using namespace UIWidgets;
 
-static std::unordered_map<int32_t, const char*> imguiScaleOptions = {
+static std::map<int32_t, const char*> imguiScaleOptions = {
     { 0, "Small" },
     { 1, "Normal" },
     { 2, "Large" },
     { 3, "X-Large" },
 };
 
-static const std::unordered_map<int32_t, const char*> menuThemeOptions = {
+static const std::map<int32_t, const char*> menuThemeOptions = {
     { UIWidgets::Colors::Red, "Red" },
     { UIWidgets::Colors::DarkRed, "Dark Red" },
     { UIWidgets::Colors::Orange, "Orange" },
@@ -40,20 +43,20 @@ static const std::unordered_map<int32_t, const char*> menuThemeOptions = {
     { UIWidgets::Colors::DarkGray, "Dark Gray" },
 };
 
-static const std::unordered_map<int32_t, const char*> textureFilteringMap = {
+static const std::map<int32_t, const char*> textureFilteringMap = {
     { Fast::FILTER_THREE_POINT, "Three-Point" },
     { Fast::FILTER_LINEAR, "Linear" },
     { Fast::FILTER_NONE, "None" },
 };
 
-static const std::unordered_map<int32_t, const char*> notificationPosition = {
+static const std::map<int32_t, const char*> notificationPosition = {
     { 0, "Top Left" }, { 1, "Top Right" }, { 2, "Bottom Left" }, { 3, "Bottom Right" }, { 4, "Hidden" },
 };
 
-static const std::unordered_map<int32_t, const char*> bootSequenceLabels = {
-    { BOOTSEQUENCE_DEFAULT, "Default" },
-    { BOOTSEQUENCE_AUTHENTIC, "Authentic" },
-    { BOOTSEQUENCE_FILESELECT, "File Select" },
+static const std::map<int32_t, const char*> bootSequenceLabels = {
+    { BOOTSEQUENCE_DEFAULT, "Default" },        { BOOTSEQUENCE_AUTHENTIC, "Authentic" },
+    { BOOTSEQUENCE_FILESELECT, "File Select" }, { BOOTSEQUENCE_DEBUGWARPSCREEN, "Debug Warp Screen" },
+    { BOOTSEQUENCE_WARPPOINT, "Warp Point" },
 };
 
 const char* GetGameVersionString(uint32_t index) {
@@ -107,7 +110,7 @@ static const std::array<MessageTableEntry**, LANGUAGE_MAX> messageTables = {
     &sNesMessageEntryTablePtr, &sGerMessageEntryTablePtr, &sFraMessageEntryTablePtr, &sJpnMessageEntryTablePtr
 };
 
-void SohMenu::UpdateLanguageMap(std::unordered_map<int32_t, const char*>& languageMap) {
+void SohMenu::UpdateLanguageMap(std::map<int32_t, const char*>& languageMap) {
     for (int32_t i = LANGUAGE_ENG; i < LANGUAGE_MAX; i++) {
         if (*messageTables.at(i) != NULL) {
             if (!languageMap.contains(i)) {
@@ -122,7 +125,7 @@ void SohMenu::UpdateLanguageMap(std::unordered_map<int32_t, const char*>& langua
 void SohMenu::AddMenuSettings() {
     // Add Settings Menu
     AddMenuEntry("Settings", CVAR_SETTING("Menu.SettingsSidebarSection"));
-    AddSidebarEntry("Settings", "General", 3);
+    AddSidebarEntry("Settings", "General", 2);
     WidgetPath path = { "Settings", "General", SECTION_COLUMN_1 };
 
     // General - Settings
@@ -175,11 +178,9 @@ void SohMenu::AddMenuSettings() {
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Search input box gets autofocus when visible. Does not affect using other widgets."));
-    AddWidget(path, "Alt Assets Tab hotkey", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_SETTING("Mods.AlternateAssetsHotkey"))
-        .RaceDisable(false)
-        .Options(
-            CheckboxOptions().Tooltip("Allows pressing the Tab key to toggle alternate assets").DefaultValue(true));
+    AddWidget(path, "Reset Button Combination:", WIDGET_CVAR_BTN_SELECTOR)
+        .CVar("gSettings.ResetBtn")
+        .Options(BtnSelectorOptions().DefaultValue(BTN_CUSTOM_MODIFIER2));
     AddWidget(path, "Open App Files Folder", WIDGET_BUTTON)
         .RaceDisable(false)
         .Callback([](WidgetInfo& info) {
@@ -192,10 +193,6 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Boot Sequence", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("BootSequence"))
         .RaceDisable(false)
-        .PreFunc([](WidgetInfo& info) {
-            if (mSohMenu->disabledMap.at(DISABLE_FOR_BOOT_TO_DEBUG_WARP_SCREEN_ON).active)
-                info.activeDisables.push_back(DISABLE_FOR_BOOT_TO_DEBUG_WARP_SCREEN_ON);
-        })
         .Options(ComboboxOptions()
                      .DefaultIndex(BOOTSEQUENCE_DEFAULT)
                      .LabelPosition(LabelPositions::Far)
@@ -204,7 +201,9 @@ void SohMenu::AddMenuSettings() {
                      .Tooltip("Configure what happens when starting or resetting the game.\n\n"
                               "Default: LUS logo -> N64 logo\n"
                               "Authentic: N64 logo only\n"
-                              "File Select: Skip to file select menu"));
+                              "File Select: Skip to file select menu\n"
+                              "Debug Warp Screen: Skip to the debug warp screen\n"
+                              "Warp Point: Skip to active warp point (if set), see Dev Tools -> General"));
 
     AddWidget(path, "Languages", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Translate Title Screen", WIDGET_CVAR_CHECKBOX)
@@ -233,6 +232,10 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("A11yDisableIdleCam"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Disables the automatic re-centering of the camera when idle."));
+    AddWidget(path, "Disable Screen Flash for Finishing Blow", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("A11yNoScreenFlashForFinishingBlow"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip("Disables the white screen flash on enemy kill."));
     AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT).Options(TextOptions().Color(Colors::Orange));
     AddWidget(path, "ImGui Menu Scaling", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("ImGuiScale"))
@@ -397,8 +400,9 @@ void SohMenu::AddMenuSettings() {
         .RaceDisable(false)
         .PreFunc(
             [](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_NO_MULTI_VIEWPORT).active; })
-        .Options(CheckboxOptions().Tooltip(
-            "Allows multiple windows to be opened at once. Requires a reload to take effect."));
+        .Options(CheckboxOptions()
+                     .Tooltip("Allows multiple windows to be opened at once. Requires a reload to take effect.")
+                     .DefaultValue(true));
     AddWidget(path, "Texture Filter (Needs reload)", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_TEXTURE_FILTER)
         .RaceDisable(false)
@@ -411,11 +415,26 @@ void SohMenu::AddMenuSettings() {
     path.sidebarName = "Controls";
     path.column = SECTION_COLUMN_1;
     AddSidebarEntry("Settings", "Controls", 2);
+    AddWidget(path, "Clear Devices", WIDGET_BUTTON)
+        .Callback([](WidgetInfo& info) {
+            SohGui::mModalWindow->RegisterPopup(
+                "Clear Config",
+                "This will completely erase the controls config, including registered devices.\nContinue?", "Clear",
+                "Cancel",
+                []() {
+                    Ship::Context::GetInstance()->GetConsoleVariables()->ClearBlock(CVAR_PREFIX_SETTING ".Controllers");
+                    uint8_t bits = 0;
+                    Ship::Context::GetInstance()->GetControlDeck()->Init(&bits);
+                },
+                nullptr);
+        })
+        .Options(ButtonOptions().Size(Sizes::Inline));
     AddWidget(path, "Controller Bindings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Bindings Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("ControllerConfiguration"))
         .RaceDisable(false)
         .WindowName("Configure Controller")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Bindings Window."));
 
     // Input Viewer
@@ -426,6 +445,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_WINDOW("InputViewer"))
         .RaceDisable(false)
         .WindowName("Input Viewer")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Toggles the Input Viewer.").EmbedWindow(false));
 
     AddWidget(path, "Input Viewer Settings", WIDGET_SEPARATOR_TEXT);
@@ -433,6 +453,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_WINDOW("InputViewerSettings"))
         .RaceDisable(false)
         .WindowName("Input Viewer Settings")
+        .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Input Viewer Settings Window."));
 
     // Notifications
@@ -484,6 +505,15 @@ void SohMenu::AddMenuSettings() {
             });
         })
         .Options(ButtonOptions().Tooltip("Displays a test notification."));
+
+    // Mod Menu
+    path.sidebarName = "Mod Menu";
+    AddSidebarEntry("Settings", path.sidebarName, 1);
+    AddWidget(path, "Popout Mod Menu Window", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("ModMenu"))
+        .WindowName("Mod Menu")
+        .HideInSearch(true)
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Mod Menu Window."));
 }
 
 } // namespace SohGui

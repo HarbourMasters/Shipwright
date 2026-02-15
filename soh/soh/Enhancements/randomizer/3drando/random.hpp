@@ -1,5 +1,6 @@
 #pragma once
 
+#include "soh/ShipUtils.h"
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -7,37 +8,25 @@
 #include <vector>
 #include <set>
 
+extern uint64_t rando_state;
+
 void Random_Init(uint64_t seed);
 uint32_t Random(uint32_t min, uint32_t max);
 double RandomDouble();
 
 // Get a random element from a vector or array
 template <typename T> T RandomElement(std::vector<T>& vector, bool erase) {
-    const auto idx = Random(0, static_cast<uint32_t>(vector.size()));
-    const T selected = vector[idx];
-    if (erase) {
-        vector.erase(vector.begin() + idx);
-    }
-    return selected;
+    return ShipUtils::RandomElement(vector, erase, &rando_state);
 }
 template <typename Container> auto& RandomElement(Container& container) {
-    return container[Random(0, static_cast<uint32_t>(std::size(container)))];
+    return ShipUtils::RandomElement(container, &rando_state);
 }
 template <typename Container> const auto& RandomElement(const Container& container) {
-    return container[Random(0, static_cast<uint32_t>(std::size(container)))];
+    return ShipUtils::RandomElement(container, &rando_state);
 }
 
 template <typename T> const T RandomElementFromSet(const std::set<T>& set) {
-    if (set.size() == 1) {
-        return *set.begin();
-    }
-    uint32_t rand = Random(0, static_cast<uint32_t>(set.size()));
-    auto it = set.begin();
-    for (uint32_t i = 0; i < rand; i++) {
-        it++;
-    }
-    auto test = *it;
-    return *it;
+    return ShipUtils::RandomElementFromSet(set, &rando_state);
 }
 
 // Shuffle items within a vector or array

@@ -1,5 +1,5 @@
 #include "debugconsole.h"
-#include <Utils.h>
+#include <ship/utils/Utils.h>
 #include "savestates.h"
 #include "soh/ActorDB.h"
 
@@ -15,10 +15,10 @@
 
 #define Path _Path
 #define PATH_HACK
-#include <utils/StringHelper.h>
+#include <ship/utils/StringHelper.h>
 
-#include <Window.h>
-#include <Context.h>
+#include <ship/window/Window.h>
+#include <ship/Context.h>
 #include <imgui.h>
 #include <imgui_internal.h>
 #undef PATH_HACK
@@ -394,7 +394,7 @@ static bool GiveItemHandler(std::shared_ptr<Ship::Console> Console, const std::v
     if (args[1].compare("vanilla") == 0) {
         getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, std::stoi(args[2]));
     } else if (args[1].compare("randomizer") == 0) {
-        getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, std::stoi(args[2]));
+        getItemEntry = Rando::StaticData::RetrieveItem((RandomizerGet)std::stoi(args[2])).GetGIEntry_Copy();
     } else {
         ERROR_MESSAGE("[SOH] Invalid argument passed, must be 'vanilla' or 'randomizer'");
         return 1;
@@ -1478,6 +1478,7 @@ static bool AvailableChecksProcessUndiscoveredExitsHandler(std::shared_ptr<Ship:
 static bool AvailableChecksRecalculateHandler(std::shared_ptr<Ship::Console> Console,
                                               const std::vector<std::string>& args, std::string* output) {
     RandomizerRegion startingRegion = RR_ROOT;
+    RandoAgeTime startingAgeTime = RAT_NONE;
 
     if (args.size() > 1) {
         try {
@@ -1493,7 +1494,21 @@ static bool AvailableChecksRecalculateHandler(std::shared_ptr<Ship::Console> Con
         }
     }
 
-    CheckTracker::RecalculateAvailableChecks(startingRegion);
+    if (args.size() > 2) {
+        if (args[2] == "ChildDay") {
+            startingAgeTime = RAT_CHILD_DAY;
+        } else if (args[2] == "ChildNight") {
+            startingAgeTime = RAT_CHILD_NIGHT;
+        } else if (args[2] == "AdultDay") {
+            startingAgeTime = RAT_ADULT_DAY;
+        } else if (args[2] == "AdultNight") {
+            startingAgeTime = RAT_ADULT_NIGHT;
+        } else {
+            ERROR_MESSAGE("[SOH] Age Time should be ChildDay, ChildNight, AdultDay, or AdultNight");
+        }
+    }
+
+    CheckTracker::RecalculateAvailableChecks(startingRegion, startingAgeTime);
     return 0;
 }
 
@@ -1759,11 +1774,13 @@ void DebugConsole_Init(void) {
                             "Available Checks - Process Undiscovered Exits",
                             { { "enable", Ship::ArgumentType::NUMBER, true } } });
 
-    CMD_REGISTER("acr", { AvailableChecksRecalculateHandler,
-                          "Available Checks - Recalculate",
-                          {
-                              { "starting_region", Ship::ArgumentType::NUMBER, true },
-                          } });
+    Ship::Context::GetInstance()->GetConsole()->AddCommand(
+        "acr", { AvailableChecksRecalculateHandler,
+                 "Available Checks - Recalculate",
+                 {
+                     { "starting_region", Ship::ArgumentType::NUMBER, true },
+                     { "ChildDay|ChildNight|AdultDay|AdultNight", Ship::ArgumentType::TEXT, true },
+                 } });
 
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }

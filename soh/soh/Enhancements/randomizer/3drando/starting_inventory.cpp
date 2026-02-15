@@ -1,7 +1,7 @@
 #include "starting_inventory.hpp"
 
 #include "../dungeon.h"
-#include "../context.h"
+#include "../SeedContext.h"
 #include "../logic.h"
 #include "pool_functions.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
@@ -22,7 +22,6 @@ void GenerateStartingInventory() {
             if (dungeon->GetMap() != RG_NONE) {
                 AddItemToInventory(dungeon->GetMap());
             }
-
             if (dungeon->GetCompass() != RG_NONE) {
                 AddItemToInventory(dungeon->GetCompass());
             }
@@ -54,9 +53,10 @@ void GenerateStartingInventory() {
         AddItemToInventory(RG_SHADOW_TEMPLE_BOSS_KEY);
     }
 
-    // Add Ganon's Boss key with Triforce Hunt so the game thinks it's obtainable from the start.
+    // Add Ganon's Boss key with Triforce Hunt's Win setting so the game thinks it's obtainable from the start.
     // During save init, the boss key isn't actually given and it's instead given when completing the triforce.
-    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_STARTWITH) || ctx->GetOption(RSK_TRIFORCE_HUNT)) {
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_STARTWITH) ||
+        ctx->GetOption(RSK_TRIFORCE_HUNT).Is(RO_TRIFORCE_HUNT_WIN)) {
         AddItemToInventory(RG_GANONS_CASTLE_BOSS_KEY);
     }
 
@@ -73,8 +73,8 @@ void GenerateStartingInventory() {
     //  AddItemToInventory(RG_PROGRESSIVE_STICK_UPGRADE, StartingStickCapacity.Value<uint8_t>());
     //  AddItemToInventory(RG_PROGRESSIVE_NUT_UPGRADE, StartingNutCapacity.Value<uint8_t>());
     //  AddItemToInventory(RG_PROGRESSIVE_BOMB_BAG, StartingBombBag.Value<uint8_t>());
-    //  AddItemToInventory((BombchuBag ? RG_PROGRESSIVE_BOMBCHUS : RG_BOMBCHU_20), StartingBombchus.Value<uint8_t>());
-    //  AddItemToInventory(RG_PROGRESSIVE_BOW, StartingBow.Value<uint8_t>());
+    //  AddItemToInventory((BombchuBag ? RG_PROGRESSIVE_BOMBCHU_BAG : RG_BOMBCHU_20),
+    //  StartingBombchus.Value<uint8_t>()); AddItemToInventory(RG_PROGRESSIVE_BOW, StartingBow.Value<uint8_t>());
     //  AddItemToInventory(RG_FIRE_ARROWS, StartingFireArrows.Value<uint8_t>());
     //  AddItemToInventory(RG_ICE_ARROWS, StartingIceArrows.Value<uint8_t>());
     //  AddItemToInventory(RG_LIGHT_ARROWS, StartingLightArrows.Value<uint8_t>());
@@ -154,32 +154,6 @@ void GenerateStartingInventory() {
     // AddItemToInventory(RG_SHADOW_MEDALLION,          StartingShadowMedallion.Value<uint8_t>());
     // AddItemToInventory(RG_LIGHT_MEDALLION,           StartingLightMedallion.Value<uint8_t>());
     AddItemToInventory(RG_GOLD_SKULLTULA_TOKEN, ctx->GetOption(RSK_STARTING_SKULLTULA_TOKEN).Get());
-
-    int8_t hearts = ctx->GetOption(RSK_STARTING_HEARTS).Get() - 2;
-    AdditionalHeartContainers = 0;
-    if (hearts < 0) {
-        AddItemToInventory(RG_PIECE_OF_HEART, 4);
-        // Plentiful and minimal have less than 4 standard pieces of heart so also replace the winner heart
-        if (ctx->GetOption(RSK_ITEM_POOL).Get() == 0 || ctx->GetOption(RSK_ITEM_POOL).Get() == 3) {
-            AddItemToInventory(RG_TREASURE_GAME_HEART);
-        }
-
-        AdditionalHeartContainers = 1 - hearts;
-    } else if (hearts > 0) {
-        // 16 containers in plentiful, 8 in balanced and 0 in the others
-        uint8_t maxContainers = 8 * std::max(0, 2 - ctx->GetOption(RSK_ITEM_POOL).Get());
-
-        if (hearts <= maxContainers) {
-            AddItemToInventory(RG_HEART_CONTAINER, hearts);
-        } else {
-            AddItemToInventory(RG_HEART_CONTAINER, maxContainers);
-            AddItemToInventory(RG_PIECE_OF_HEART, (hearts - maxContainers) * 4);
-        }
-
-        if (hearts == 17) {
-            AddItemToInventory(RG_TREASURE_GAME_HEART);
-        }
-    }
 }
 
 bool StartingInventoryHasBottle() {

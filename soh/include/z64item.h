@@ -146,6 +146,9 @@ typedef enum {
     /* 0x1B */ SLOT_BOOTS_KOKIRI,
     /* 0x1C */ SLOT_BOOTS_IRON,
     /* 0x1D */ SLOT_BOOTS_HOVER,
+    /* 0x1E */ SLOT_SHIELD_DEKU,
+    /* 0x1F */ SLOT_SHIELD_HYLIAN,
+    /* 0x20 */ SLOT_SHIELD_MIRROR,
     /* 0xFF */ SLOT_NONE = 0xFF
 } InventorySlot;
 
@@ -306,6 +309,7 @@ typedef enum {
     /* 0x99 */ ITEM_STICK_UPGRADE_30,
     /* 0x9A */ ITEM_NUT_UPGRADE_30,
     /* 0x9B */ ITEM_NUT_UPGRADE_40,
+    /*      */ ITEM_ROCS_FEATHER,
     /* 0xFC */ ITEM_LAST_USED = 0xFC,
     /* 0xFE */ ITEM_NONE_FE = 0xFE,
     /* 0xFF */ ITEM_NONE = 0xFF
@@ -589,8 +593,9 @@ typedef enum {
     /* 0x7A */ GID_SONG_TIME,
     /* 0x7B */ GID_SONG_STORM,
     /* 0x7C */ GID_TRIFORCE_PIECE,
-    /*      */ GID_FISHING_POLE,
-    /* 0x7C */ GID_MAXIMUM
+    /* 0x7D */ GID_ROCS_FEATHER,
+    /* 0x7E */ GID_FISHING_POLE,
+    /* 0x7F */ GID_MAXIMUM
 
 } GetItemDrawID;
 

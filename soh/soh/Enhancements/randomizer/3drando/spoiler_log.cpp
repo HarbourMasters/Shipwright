@@ -4,32 +4,28 @@
 #include "../static_data.h"
 #include "../settings.h"
 #include "../entrance.h"
-#include "random.hpp"
 #include "../trial.h"
-#include "hints.hpp"
 #include "pool_functions.hpp"
-#include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include <nlohmann/json.hpp>
+#include <spdlog/fmt/fmt.h>
 
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <map>
-#include <set>
 #include <string>
 #include <sstream>
-#include <unordered_map>
 #include <vector>
 #include <iostream>
 #include <fstream>
 #include <filesystem>
 #include <variables.h>
 
-#include <Context.h>
+#include <ship/Context.h>
 #include <soh/OTRGlobals.h>
 
-#include "consolevariablebridge.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 using json = nlohmann::ordered_json;
 using namespace Rando;
@@ -94,8 +90,8 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
     int16_t destinationIndex = -1;
     int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
     int16_t replacementDestinationIndex = -1;
-    std::string name = GetEntranceData(originalIndex)->source;
-    std::string text = GetEntranceData(replacementIndex)->destination;
+    std::string name = EntranceTracker::GetEntranceData(originalIndex)->source;
+    std::string text = EntranceTracker::GetEntranceData(replacementIndex)->destination;
 
     // Track the reverse destination, useful for savewarp handling
     if (entrance->GetReverse() != nullptr) {
@@ -160,7 +156,7 @@ std::string RemoveLineBreaks(std::string s) {
 static void WriteExcludedLocations() {
     auto ctx = Rando::Context::GetInstance();
 
-    for (size_t i = 1; i < Rando::Settings::GetInstance()->GetExcludeLocationsOptions().size(); i++) {
+    for (size_t i = 0; i < Rando::Settings::GetInstance()->GetExcludeLocationsOptions().size() - 1; i++) {
         for (const auto& location : Rando::Settings::GetInstance()->GetExcludeLocationsOptions()[i]) {
             if (ctx->GetLocationOption(static_cast<RandomizerCheck>(location->GetKey())).Get() == RO_LOCATION_INCLUDE) {
                 continue;
@@ -228,14 +224,12 @@ static void WriteChosenOptions() {
 static void WritePlaythrough() {
     auto ctx = Rando::Context::GetInstance();
 
-    for (uint32_t i = 0; i < ctx->playthroughLocations.size(); ++i) {
-        auto sphereNum = std::to_string(i);
-        std::string sphereString = "sphere ";
-        if (i < 10)
-            sphereString += "0";
-        sphereString += sphereNum;
+    for (size_t i = 0; i < ctx->playthroughLocations.size(); i++) {
+        std::string sphereString = fmt::format("sphere {:0>2}", i);
         for (const RandomizerCheck key : ctx->playthroughLocations[i]) {
-            WriteLocation(sphereString, key, true);
+            if (!ctx->GetItemLocation(key)->IsHidden()) {
+                WriteLocation(sphereString, key, true);
+            }
         }
     }
 }
@@ -243,12 +237,8 @@ static void WritePlaythrough() {
 // Write the randomized entrance playthrough to the spoiler log, if applicable
 static void WriteShuffledEntrances() {
     auto ctx = Rando::Context::GetInstance();
-    for (uint32_t i = 0; i < ctx->GetEntranceShuffler()->playthroughEntrances.size(); ++i) {
-        auto sphereNum = std::to_string(i);
-        std::string sphereString = "sphere ";
-        if (i < 10)
-            sphereString += "0";
-        sphereString += sphereNum;
+    for (size_t i = 0; i < ctx->GetEntranceShuffler()->playthroughEntrances.size(); i++) {
+        std::string sphereString = fmt::format("sphere {:0>2}", i);
         for (Entrance* entrance : ctx->GetEntranceShuffler()->playthroughEntrances[i]) {
             WriteShuffledEntrance(sphereString, entrance);
         }
@@ -337,12 +327,13 @@ static void WriteAllLocations() {
     }
 }
 
-const char* SpoilerLog_Write() {
+void SpoilerLog_Write() {
     auto ctx = Rando::Context::GetInstance();
 
     jsonData.clear();
 
     jsonData["version"] = (char*)gBuildVersion;
+    jsonData["fileType"] = FILE_TYPE_SPOILER;
     jsonData["git_branch"] = (char*)gGitBranch;
     jsonData["git_commit"] = (char*)gGitCommitHash;
     jsonData["seed"] = ctx->GetSeedString();
@@ -392,12 +383,6 @@ const char* SpoilerLog_Write() {
     jsonFile.close();
 
     CVarSetString(CVAR_GENERAL("SpoilerLog"), (std::string("./Randomizer/") + fileName + std::string(".json")).c_str());
-
-    // Note: probably shouldn't return this without making sure this string is stored somewhere, but
-    // this return value is currently only used in playthrough.cpp as a true/false. Even if the pointer
-    // is no longer valid it would still not be nullptr if the spoilerfile was written, so it works but
-    // should probably be changed for correctness later on.
-    return fileName.c_str();
 }
 
 void PlacementLog_Msg(std::string_view msg) {

@@ -1,9 +1,7 @@
-#include "libultraship/bridge.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Notification/Notification.h"
-#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include "variables.h"
@@ -60,12 +58,13 @@ std::vector<AltTrapType> getEnabledAddTraps() {
     return enabledAddTraps;
 };
 
-static void RollRandomTrap(uint32_t seed) {
-    uint32_t finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
-                                          : static_cast<uint32_t>(gSaveContext.ship.stats.fileCreatedAt));
-    Random_Init(finalSeed);
+static void RollRandomTrap(uint64_t seed) {
+    uint64_t finalSeed = seed + (IS_RANDO ? static_cast<uint64_t>(Rando::Context::GetInstance()->GetSeed())
+                                          : gSaveContext.ship.stats.fileCreatedAt);
+    uint64_t state;
+    ShipUtils::RandInit(finalSeed, &state);
 
-    roll = RandomElement(getEnabledAddTraps());
+    roll = ShipUtils::RandomElement(getEnabledAddTraps(), &state);
     switch (roll) {
         case ADD_ICE_TRAP:
             GameInteractor::RawAction::FreezePlayer();

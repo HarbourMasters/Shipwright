@@ -5,8 +5,6 @@
 
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/debugconsole.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
@@ -594,6 +592,10 @@ void Play_Init(GameState* thisx) {
         gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_CHILD;
     }
 
+    // Handle Rocs Feather requiement
+    gItemAgeReqs[ITEM_ROCS_FEATHER] = AGE_REQ_NONE;
+    gSlotAgeReqs[SLOT_NAYRUS_LOVE] = AGE_REQ_NONE;
+
     func_800304DC(play, &play->actorCtx, play->linkActorEntry);
 
     while (!func_800973FC(play, &play->roomCtx)) {
@@ -631,7 +633,6 @@ void Play_Init(GameState* thisx) {
     } else {
         play->unk_1242B = 0;
     }
-
     Interface_SetSceneRestrictions(play);
     Environment_PlaySceneSequence(play);
     gSaveContext.seqId = play->sequenceCtx.seqId;
@@ -687,6 +688,9 @@ void Play_Init(GameState* thisx) {
                     GET_PLAYER(play)->actor.world.pos.y + Player_GetHeight(GET_PLAYER(play)) + 5.0f,
                     GET_PLAYER(play)->actor.world.pos.z, 0, 0, 0, 1, true);
     }
+
+    // nextEntranceIndex was not initialized, so the previous value was carried over during soft resets.
+    gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
 }
 
 void Play_Update(PlayState* play) {
@@ -781,10 +785,10 @@ void Play_Update(PlayState* play) {
             }
 
             // Start RTA timing on first non-c-up input after intro cutscene
-            if (!gSaveContext.ship.stats.fileCreatedAt && !Player_InCsMode(play) &&
+            if (!gSaveContext.ship.stats.firstInput && !Player_InCsMode(play) &&
                 ((input[0].press.button && input[0].press.button != 0x8) || input[0].rel.stick_x != 0 ||
                  input[0].rel.stick_y != 0)) {
-                gSaveContext.ship.stats.fileCreatedAt = GetUnixTimestamp();
+                gSaveContext.ship.stats.firstInput = GetUnixTimestamp();
             }
         }
         // #endregion
@@ -1180,15 +1184,17 @@ void Play_Update(PlayState* play) {
                 }
 
                 if (play->actorCtx.freezeFlashTimer && (play->actorCtx.freezeFlashTimer-- < 5)) {
-                    osSyncPrintf("FINISH=%d\n", play->actorCtx.freezeFlashTimer);
+                    if (GameInteractor_Should(VB_FLASH_SCREEN_FOR_FINISHING_BLOW, true)) {
+                        osSyncPrintf("FINISH=%d\n", play->actorCtx.freezeFlashTimer);
 
-                    if ((play->actorCtx.freezeFlashTimer > 0) && ((play->actorCtx.freezeFlashTimer % 2) != 0)) {
-                        play->envCtx.fillScreen = true;
-                        play->envCtx.screenFillColor[0] = play->envCtx.screenFillColor[1] =
-                            play->envCtx.screenFillColor[2] = 150;
-                        play->envCtx.screenFillColor[3] = 80;
-                    } else {
-                        play->envCtx.fillScreen = false;
+                        if ((play->actorCtx.freezeFlashTimer > 0) && ((play->actorCtx.freezeFlashTimer % 2) != 0)) {
+                            play->envCtx.fillScreen = true;
+                            play->envCtx.screenFillColor[0] = play->envCtx.screenFillColor[1] =
+                                play->envCtx.screenFillColor[2] = 150;
+                            play->envCtx.screenFillColor[3] = 80;
+                        } else {
+                            play->envCtx.fillScreen = false;
+                        }
                     }
                 } else {
                     PLAY_LOG(3606);
@@ -1301,6 +1307,8 @@ void Play_Update(PlayState* play) {
 skip:
     PLAY_LOG(3801);
 
+    GameInteractor_ExecuteOnCameraState(play);
+
     if (!isPaused || gDbgCamEnabled) {
         s32 i;
 
@@ -1390,6 +1398,8 @@ void Play_Draw(PlayState* play) {
     Gfx_SetupFrame(gfxCtx, 0, 0, 0);
 
     if ((HREG(80) != 10) || (HREG(82) != 0)) {
+        GameInteractor_ExecuteOnPlayDrawBegin();
+
         POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
         POLY_XLU_DISP = Play_SetFog(play, POLY_XLU_DISP);
 

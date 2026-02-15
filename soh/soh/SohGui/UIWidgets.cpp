@@ -1,14 +1,13 @@
 #include "UIWidgets.hpp"
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui_internal.h>
-#include <sstream>
 #include <libultraship/libultraship.h>
 #include <string>
-#include <random>
 #include <math.h>
 #include <unordered_map>
 #include <libultraship/libultra/types.h>
 #include <spdlog/fmt/fmt.h>
+#include "soh/OTRGlobals.h"
 
 namespace UIWidgets {
 
@@ -767,15 +766,18 @@ bool InputString(const char* label, std::string* value, const InputOptions& opti
         ImGui::PushStyleColor(ImGuiCol_Border, ColorValues.at(Colors::Red));
     }
     float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
-    if (options.alignment == ComponentAlignments::Left) {
-        if (options.labelPosition == LabelPositions::Above) {
-            ImGui::Text(label, *value->c_str());
-        }
-    } else if (options.alignment == ComponentAlignments::Right) {
-        if (options.labelPosition == LabelPositions::Above) {
-            ImGui::NewLine();
-            ImGui::SameLine(width - ImGui::CalcTextSize(label).x);
-            ImGui::Text(label, *value->c_str());
+    ImVec2 labelSize = ImGui::CalcTextSize(label, NULL, true);
+    if (labelSize.x != 0) {
+        if (options.alignment == ComponentAlignments::Left) {
+            if (options.labelPosition == LabelPositions::Above) {
+                ImGui::Text(label, *value->c_str());
+            }
+        } else if (options.alignment == ComponentAlignments::Right) {
+            if (options.labelPosition == LabelPositions::Above) {
+                ImGui::NewLine();
+                ImGui::SameLine(width - ImGui::CalcTextSize(label).x);
+                ImGui::Text(label, *value->c_str());
+            }
         }
     }
     ImGui::SetNextItemWidth(width);
@@ -1148,22 +1150,120 @@ void DrawFlagArray8Mask(const std::string& name, uint8_t& flags, Colors color) {
     }
     ImGui::PopID();
 }
+
+std::map<std::string, int32_t> buttonMap = {
+    { "A", BTN_A },
+    { "B", BTN_B },
+    { "Z", BTN_Z },
+    { "START", BTN_START },
+    { "D-Up", BTN_DUP },
+    { "D-Down", BTN_DDOWN },
+    { "D-Left", BTN_DLEFT },
+    { "D-Right", BTN_DRIGHT },
+    { "L", BTN_L },
+    { "R", BTN_R },
+    { "C-Up", BTN_CUP },
+    { "C-Down", BTN_CDOWN },
+    { "C-Left", BTN_CLEFT },
+    { "C-Right", BTN_CRIGHT },
+    { "Modifier 1", BTN_CUSTOM_MODIFIER1 },
+    { "Modifier 2", BTN_CUSTOM_MODIFIER2 },
+};
+
+bool BtnSelector(const char* label, int32_t* value, const BtnSelectorOptions& options) {
+    bool dirty = false;
+    ImGui::PushID(label);
+    ImGui::BeginGroup();
+    ImGui::AlignTextToFramePadding();
+    ImGui::Text("%s", label);
+    ImGui::BeginDisabled(false);
+    PushStyleCombobox(options.color);
+    ImGui::BeginChild("ButtonCombo", ImVec2(0, ImGui::GetFrameHeightWithSpacing() + 14.0f), ImGuiChildFlags_None,
+                      ImGuiWindowFlags_HorizontalScrollbar);
+    int32_t currentValue = *value;
+    int index = 0;
+    for (const auto& [buttonName, buttonMask] : buttonMap) {
+        if (currentValue & buttonMask) {
+            ImGui::PushID(buttonName.c_str());
+            if (index++ > 0) {
+                ImGui::Text("+");
+                ImGui::SameLine();
+            }
+            if (UIWidgets::Button(buttonName.c_str(), UIWidgets::ButtonOptions()
+                                                          .Tooltip("Remove this button from the combination")
+                                                          .Color(UIWidgets::Colors::Gray)
+                                                          .Size(UIWidgets::Sizes::Inline))) {
+                currentValue &= ~buttonMask;
+                dirty = true;
+            }
+            ImGui::PopID();
+            ImGui::SameLine();
+        }
+    }
+    if (UIWidgets::Button("+", UIWidgets::ButtonOptions({ { .tooltip = "Add a button to the combination" } })
+                                   .Size(UIWidgets::Sizes::Inline)
+                                   .Color(options.color))) {
+        ImGui::OpenPopup("Add Button");
+    }
+    if (ImGui::BeginPopup("Add Button")) {
+        UIWidgets::PushStyleMenuItem();
+        for (const auto& [buttonName, buttonMask] : buttonMap) {
+            if (!(currentValue & buttonMask)) {
+                if (ImGui::MenuItem(buttonName.c_str())) {
+                    currentValue |= buttonMask;
+                    dirty = true;
+                }
+            }
+        }
+        UIWidgets::PopStyleMenuItem();
+        ImGui::EndPopup();
+    }
+    ImGui::SameLine();
+    if (UIWidgets::Button(ICON_FA_UNDO,
+                          UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(options.color))) {
+        currentValue = options.defaultValue;
+        dirty = true;
+    }
+    ImGui::EndChild();
+    PopStyleCombobox();
+    ImGui::EndDisabled();
+    ImGui::EndGroup();
+    ImGui::PopID();
+    if (dirty) {
+        *value = currentValue;
+    }
+    return dirty;
+}
+
+bool CVarBtnSelector(const char* label, const char* cvarName, const BtnSelectorOptions& options) {
+    bool dirty = false;
+
+    int32_t value = CVarGetInteger(cvarName, options.defaultValue);
+    if (BtnSelector(label, &value, options)) {
+        CVarSetInteger(cvarName, value);
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        ShipInit::Init(cvarName);
+        dirty = true;
+    }
+
+    return dirty;
+}
 } // namespace UIWidgets
 
 ImVec4 GetRandomValue() {
-#if !defined(__SWITCH__) && !defined(__WIIU__)
-    std::random_device rd;
-    std::mt19937 rng(rd());
-#else
-    size_t seed = std::hash<std::string>{}(std::to_string(rand()));
-    std::mt19937_64 rng(seed);
-#endif
-    std::uniform_int_distribution<int> dist(0, 255 - 1);
-
     ImVec4 NewColor;
-    NewColor.x = (float)(dist(rng)) / 255.0f;
-    NewColor.y = (float)(dist(rng)) / 255.0f;
-    NewColor.z = (float)(dist(rng)) / 255.0f;
+    NewColor.x = (float)ShipUtils::RandomDouble();
+    NewColor.y = (float)ShipUtils::RandomDouble();
+    NewColor.z = (float)ShipUtils::RandomDouble();
+    return NewColor;
+}
+
+ImVec4 GetRandomValue(uint32_t seed, uint64_t* state) {
+    ShipUtils::RandInit(seed, state);
+    ImVec4 NewColor;
+    NewColor.x = (float)ShipUtils::RandomDouble(state);
+    NewColor.y = (float)ShipUtils::RandomDouble(state);
+    NewColor.z = (float)ShipUtils::RandomDouble(state);
     return NewColor;
 }
 
