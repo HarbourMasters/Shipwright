@@ -515,6 +515,14 @@ typedef enum {
     VB_HEISHI2_ACCEPT_ITEM_AS_ZELDAS_LETTER,
 
     // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_DRAW_ADDITIONAL_RETICLES,
+
+    // #### `result`
     // In `Interface_DrawAmmoCount`:
     // ```c
     // (i == ITEM_STICK) ||

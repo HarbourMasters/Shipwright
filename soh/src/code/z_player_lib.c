@@ -845,16 +845,6 @@ s32 Player_HoldsSlingshot(Player* this) {
     return this->heldItemAction == PLAYER_IA_SLINGSHOT;
 }
 
-// #region SOH [Enhancement]
-s32 Player_HoldsBoomerang(Player* this) {
-    return this->heldItemAction == PLAYER_IA_BOOMERANG;
-}
-
-s32 Player_AimsBoomerang(Player* this) {
-    return Player_HoldsBoomerang(this) && (this->unk_834 != 0);
-}
-// #endregion
-
 s32 func_8008F128(Player* this) {
     return Player_HoldsHookshot(this) && (this->heldActor == NULL);
 }
@@ -1781,16 +1771,8 @@ Vec3f sLeftRightFootLimbModelFootPos[] = {
     { 200.0f, 200.0f, 0.0f },
 };
 
-// OTRTODO: Figure out why this value works/what this value should be
-// This was originally obtained by working down from FLT_MAX until the math
-// started working out properly
-#define RETICLE_MAX 3.402823466e+12f
-
 void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
-
-    const Vec3s BoomerangViewAdult = { -31200, -9200, 17000 };
-    const Vec3s BoomerangViewChild = { -31200, -8700, 17000 };
 
     if (*dList != NULL) {
         Matrix_MultVec3f(&sZeroVec, D_80160000);
@@ -1933,7 +1915,8 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         }
 
         if (this->actor.scale.y >= 0.0f) {
-            if ((this->heldItemAction == PLAYER_IA_HOOKSHOT) || (this->heldItemAction == PLAYER_IA_LONGSHOT)) {
+            if (GameInteractor_Should(VB_DRAW_ADDITIONAL_RETICLES, (this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
+                                                                       (this->heldItemAction == PLAYER_IA_LONGSHOT))) {
                 Matrix_MultVec3f(&D_80126184, &this->unk_3C8);
 
                 if (heldActor != NULL) {
@@ -1954,41 +1937,6 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                                 CVarGetFloat(CVAR_CHEAT("HookshotReachMultiplier"), 1.0f));
                     }
                 }
-
-                // #region SOH [Enhancement]
-            } else if (CVarGetInteger(CVAR_ENHANCEMENT("BowReticle"), 0) &&
-                       ((this->heldItemAction == PLAYER_IA_BOW_FIRE) || (this->heldItemAction == PLAYER_IA_BOW_ICE) ||
-                        (this->heldItemAction == PLAYER_IA_BOW_LIGHT) || (this->heldItemAction == PLAYER_IA_BOW) ||
-                        (this->heldItemAction == PLAYER_IA_SLINGSHOT))) {
-                if (heldActor != NULL) {
-                    MtxF sp44;
-                    s32 pad;
-
-                    Matrix_RotateZYX(0, -15216, -17496, MTXMODE_APPLY);
-                    Matrix_Get(&sp44);
-
-                    if (func_8002DD78(this) != 0) {
-                        Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
-                        Player_DrawHookshotReticle(play, this, RETICLE_MAX);
-                    }
-                }
-            } else if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangReticle"), 0) &&
-                       (this->heldItemAction == PLAYER_IA_BOOMERANG)) {
-                if (Player_HoldsBoomerang(this)) {
-                    if (LINK_IS_ADULT) {
-                        Matrix_RotateZYX(BoomerangViewAdult.x, BoomerangViewAdult.y, BoomerangViewAdult.z,
-                                         MTXMODE_APPLY);
-                    } else {
-                        Matrix_RotateZYX(BoomerangViewChild.x, BoomerangViewChild.y, BoomerangViewChild.z,
-                                         MTXMODE_APPLY);
-                    }
-
-                    if (Player_AimsBoomerang(this)) {
-                        Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
-                        Player_DrawHookshotReticle(play, this, RETICLE_MAX);
-                    }
-                }
-                // #endregion
             }
 
             if ((this->unk_862 != 0) || ((func_8002DD6C(this) == 0) && (heldActor != NULL))) {
