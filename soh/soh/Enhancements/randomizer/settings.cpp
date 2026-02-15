@@ -109,7 +109,7 @@ Settings::Settings() : mExcludeLocationsOptionsAreas(RCAREA_INVALID) {
 
 #define OPT_U8(rsk, ...) mOptions[rsk] = Option::U8(rsk, __VA_ARGS__)
 #define OPT_BOOL(rsk, ...) mOptions[rsk] = Option::Bool(rsk, __VA_ARGS__)
-#define OPT_TRICK(rsk, ...) mTrickOptions[rsk] = TrickOption::LogicTrick(rsk, __VA_ARGS__)
+#define OPT_TRICK(rsk, ...) mTrickSettings[rsk] = TrickSetting::LogicTrick(rsk, __VA_ARGS__)
 // All callbacks will be called once when the widget is Added (on boot, essentially) and
 // once when the widget is interacted with such that the value was changed.
 #define OPT_CALLBACK(rsk, body) mOptions[rsk].SetCallback([this](WidgetInfo & info) body)
@@ -1374,7 +1374,7 @@ void Settings::CreateOptions() {
     Try to keep Name Tags less than 8 chars.
     */
 
-    OPT_TRICK(RT_VISIBLE_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE },
+    OPT_TRICK(RT_VISIBLE_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, 
               "Pass Through Visible One-Way Collision", "VisCol",
               "Allows climbing through the platform to reach Impa's House Back as adult with no items and going "
               "through the Kakariko Village Gate as child when coming from the Mountain Trail side.");
@@ -2197,6 +2197,14 @@ void Settings::CreateOptions() {
               "If you move quickly you can sneak past the edge of a flame wall before it can rise up to block you. In "
               "this case to do it without taking damage is especially precise.");
 
+    for (auto trick: mTrickSettings){
+        if (StaticData::trickToEnum.contains(trick.GetNameTag())) {
+            SPDLOG_DEBUG("REPEATED TRICK NAME TAG " + trick.GetName());
+        } else {
+            StaticData::trickToEnum[trick.GetNameTag()] = trick.GetKey();
+        }
+    }
+
     mOptionGroups[RSG_LOGIC] = OptionGroup::SubGroup("Logic Options", {
                                                                           &mOptions[RSK_LOGIC_RULES],
                                                                           &mOptions[RSK_ALL_LOCATIONS_REACHABLE],
@@ -2206,9 +2214,9 @@ void Settings::CreateOptions() {
     // TODO: Exclude Locations Menus
     mTricksByArea.clear();
     std::vector<Option*> tricksOption;
-    tricksOption.reserve(mTrickOptions.size());
+    tricksOption.reserve(mTrickSettings.size());
     for (int i = 0; i < RT_MAX; i++) {
-        auto trick = &mTrickOptions[i];
+        auto trick = &mTrickSettings[i];
         if (!trick->GetName().empty()) {
             tricksOption.push_back(trick);
             mTrickNameToEnum[std::string(trick->GetName())] = static_cast<RandomizerTrick>(i);
@@ -2905,8 +2913,8 @@ Option& Settings::GetOption(const RandomizerSettingKey key) {
     return mOptions[key];
 }
 
-TrickOption& Settings::GetTrickOption(const RandomizerTrick key) {
-    return mTrickOptions[key];
+TrickSetting& Settings::GetTrickSetting(const RandomizerTrick key) {
+    return mTrickSettings[key];
 }
 
 int Settings::GetRandomizerTrickByName(const std::string& name) {
@@ -3352,7 +3360,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
     nlohmann::json enabledTricksJson = spoilerFileJson["enabledTricks"];
     for (auto it = enabledTricksJson.begin(); it != enabledTricksJson.end(); ++it) {
         const RandomizerTrick rt = mTrickNameToEnum[it.value()];
-        GetTrickOption(rt).SetContextIndex(RO_GENERIC_ON);
+        GetTrickSetting(rt).SetContextIndex(RO_GENERIC_ON);
     }
 }
 
@@ -3369,7 +3377,7 @@ void Settings::SetAllToContext() {
         mContext->GetOption(static_cast<RandomizerSettingKey>(i)).Set(mOptions[i].GetOptionIndex());
     }
     for (int i = 0; i < RT_MAX; i++) {
-        mContext->GetTrickOption(static_cast<RandomizerTrick>(i)).Set(mTrickOptions[i].GetOptionIndex());
+        mContext->GetTrickOption(static_cast<RandomizerTrick>(i)).Set(mTrickSettings[i].GetOptionIndex());
     }
     for (int i = 0; i < RC_MAX; i++) {
         mContext->GetItemLocation(i)->SetExcludedOption(

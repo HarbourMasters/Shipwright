@@ -346,9 +346,9 @@ class LocationOption : public Option {
     RandomizerCheck GetKey() const;
 };
 
-class TrickOption : public Option {
+class TrickSetting : public Option {
   public:
-    TrickOption() = default;
+    TrickSetting() = default;
     /**
      * @brief A convenience function for constructing the Option for a trick.
      *
@@ -357,11 +357,11 @@ class TrickOption : public Option {
      * @param area_ The area the trick is relevant for.
      * @param tags_ The set of RandomizerTrickTags for this trick.
      * @param name_ The name of the trick. Appears in the menus and spoiler
-     * @param nameTag_ The 4-5 long name tag of the trick. Appears in the settings and presets file.
+     * @param nameTag_ The 3-8 long name tag of the trick. Appears in the settings and presets file.
      * @param description_ A brief description of the trick.
      * @return Option
      */
-    static TrickOption LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
+    static TrickSetting LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
                                   std::set<Tricks::Tag> tags_, const std::string& name_, const std::string nameTag_, std::string description_);
 
     RandomizerTrick GetKey() const;
@@ -381,6 +381,13 @@ class TrickOption : public Option {
     RandomizerArea GetArea() const;
 
     /**
+     * @brief Get the NameTag of the trick
+     *
+     * @return std::string
+     */
+    std::string GetNameTag() const;
+
+    /**
      * @brief Check if this Trick has the given tag
      *
      * @param tag the RandomizerTrickTag to check for
@@ -391,7 +398,7 @@ class TrickOption : public Option {
     const std::set<Tricks::Tag>& GetTags() const;
 
   private:
-    TrickOption(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_,
+    TrickSetting(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_,
                 const std::string& name_, const std::string nameTag_, std::string description_);
     RandomizerCheckQuest mQuest;
     RandomizerArea mArea;

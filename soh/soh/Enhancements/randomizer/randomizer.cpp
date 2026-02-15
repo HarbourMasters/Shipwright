@@ -52,8 +52,6 @@ std::unordered_map<std::string, RandomizerCheckArea> SpoilerfileAreaNameToEnum;
 std::unordered_map<std::string, HintType> SpoilerfileHintTypeNameToEnum;
 std::set<RandomizerCheck> excludedLocations;
 std::set<RandomizerCheck> spoilerExcludedLocations;
-std::set<RandomizerTrick> enabledTricks;
-std::set<RandomizerTrick> enabledGlitches;
 
 u8 generated;
 char* seedString;
