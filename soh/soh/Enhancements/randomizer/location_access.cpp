@@ -756,7 +756,7 @@ bool SpiritCertainAccess(RandomizerRegion region) {
         // If we have enough keys that an age cannot be kept out, we have Certain Access
         // otherwise if we have entered in reverse and can reach from the face, we have Certain Access
         return ((knownFrontAccess && curRegionData.adultAccess()) && logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys)) ||
-               ((logic->Get(LOGIC_FORWARDS_SPIRIT_ADULT) && curRegionData.reverseAccess()) &&
+               ((logic->Get(LOGIC_REVERSE_SPIRIT_ADULT) && curRegionData.reverseAccess()) &&
                 logic->SmallKeys(SCENE_SPIRIT_TEMPLE, revKeys)) ||
                (curRegionData.adultAccess() && curRegionData.reverseAccess() &&
                 logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys > revKeys ? keys : revKeys));

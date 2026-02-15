@@ -6941,7 +6941,7 @@ typedef enum {
     RO_SHUFFLE_MERCHANTS_ALL
 } RandoOptionShuffleMerchants;
 
-// Starting Ocarina Settings (off, fairy)
+// Starting Ocarina Settings (off, fairy, oot)
 typedef enum {
     RO_STARTING_OCARINA_OFF,
     RO_STARTING_OCARINA_FAIRY,
