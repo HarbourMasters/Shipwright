@@ -229,7 +229,8 @@ void Extractor::FilterRoms(std::vector<std::string>& roms, RomSearchMode searchM
 void Extractor::GetRoms(std::vector<std::string>& roms) {
 #ifdef _WIN32
     WIN32_FIND_DATAA ffd;
-    HANDLE h = FindFirstFileA(".\\*", &ffd);
+    std::string search = std::string(mSearchPath + "\\*");
+    HANDLE h = FindFirstFileA(search.c_str(), &ffd);
 
     do {
         if (!(ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
@@ -237,7 +238,7 @@ void Extractor::GetRoms(std::vector<std::string>& roms) {
 
             // Check for any standard N64 rom file extensions.
             if ((strcmp(ext, ".z64") == 0) || (strcmp(ext, ".n64") == 0) || (strcmp(ext, ".v64") == 0))
-                roms.push_back(ffd.cFileName);
+                roms.push_back(mSearchPath + "\\" + ffd.cFileName);
         }
     } while (FindNextFileA(h, &ffd) != 0);
     // if (h != nullptr) {

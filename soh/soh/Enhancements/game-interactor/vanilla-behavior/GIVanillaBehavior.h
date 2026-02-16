@@ -264,6 +264,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->actor.xzDistToPlayer < 130.0f
+    // ```
+    // #### `args`
+    // - None
+    VB_BUSINESS_SCRUB_SPEAK,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -2596,6 +2604,15 @@ typedef enum {
     // - `Player*`
     // - `s32` commonType
     VB_SET_IDLE_ANIM,
+
+    // #### `result`
+    // ```c
+    // player->unk_6A0 > 4000000.0f
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `double` (temp - promoted from `f32`)
+    VB_RUMBLE_FOR_SECRET
 
 } GIVanillaBehavior;
 

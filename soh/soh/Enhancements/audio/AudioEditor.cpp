@@ -619,6 +619,10 @@ void AudioEditor::DrawElement() {
             Draw_SfxTab("battleMusic", SEQ_BGM_BATTLE, "Battle Music");
             ImGui::EndTabItem();
         }
+        if (ImGui::BeginTabItem("Ending")) {
+            Draw_SfxTab("ending", SEQ_ENDING, "Ending");
+            ImGui::EndTabItem();
+        }
         if (ImGui::BeginTabItem("Ocarina")) {
             Draw_SfxTab("instrument", SEQ_INSTRUMENT, "Instruments");
             Draw_SfxTab("ocarina", SEQ_OCARINA, "Ocarina");
