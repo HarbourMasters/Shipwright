@@ -815,6 +815,12 @@ s32 Player_HasMirrorShieldSetToDraw(PlayState* play) {
     return (this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) && (this->currentShield == PLAYER_SHIELD_MIRROR);
 }
 
+/// <summary>
+/// Check magicspell value for Din's Fire, Nayru's Love or Farore's Wind
+/// </summary>
+/// <param name="">state of player</param>
+/// <param name="actionParam">item action to check its magicspell value</param>
+/// <returns>Return a value beetween 0 and 6 if Din's Fire, Nayru's Love or Farore's Wind. This value can be used with sMagicSpellCosts to know the cost of the spell</returns>
 s32 Player_ActionToMagicSpell(Player* this, s32 actionParam) {
     s32 magicSpell = actionParam - PLAYER_IA_MAGIC_SPELL_15;
 

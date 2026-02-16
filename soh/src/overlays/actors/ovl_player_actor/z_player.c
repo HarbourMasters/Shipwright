@@ -3398,8 +3398,13 @@ void Player_SetupActionPreserveItemAction(PlayState* play, Player* this, PlayerA
     }
 }
 
-void func_80835E44(PlayState* play, s16 camSetting) {
-    if (!func_800C0CB8(play)) {
+/// <summary>
+/// Change the state of the camera
+/// </summary>
+/// <param name="play">state of play</param>
+/// <param name="camSetting">camera state to set</param>
+void Camera_ChangeFocus(PlayState* play, s16 camSetting) {
+    if (!func_800C0CB8(play)) { //Seems like a specific condition for when the camera is fixed in certain locations (HyruleCity)
         if (camSetting == CAM_SET_SCENE_TRANSITION) {
             Interface_ChangeAlpha(2);
         }
@@ -3408,8 +3413,8 @@ void func_80835E44(PlayState* play, s16 camSetting) {
     }
 }
 
-void func_80835EA4(PlayState* play, s32 arg1) {
-    func_80835E44(play, CAM_SET_TURN_AROUND);
+void Camera_FocusOnPlayer(PlayState* play, s32 arg1) {
+    Camera_ChangeFocus(play, CAM_SET_TURN_AROUND);
     Camera_SetCameraData(Play_GetCamera(play, 0), 4, NULL, NULL, arg1, 0, 0);
 }
 
@@ -5221,7 +5226,7 @@ s32 Player_HandleExitsAndVoids(PlayState* play, Player* this, CollisionPoly* pol
 
             this->stateFlags1 |= PLAYER_STATE1_LOADING | PLAYER_STATE1_IN_CUTSCENE;
 
-            func_80835E44(play, 0x2F);
+            Camera_ChangeFocus(play, CAM_SET_SCENE_TRANSITION);
 
             return 1;
         } else {
@@ -5918,6 +5923,22 @@ void func_8083AE40(Player* this, s16 objectId) {
     }
 }
 
+/// <summary>
+/// Check if the current item used has its cutscene skipped in the settings of soh
+/// Enhancements => Items
+/// </summary>
+/// <param name="itemAction">item used</param>
+/// <returns>True: cutscene is skipped</returns>
+bool IsCutsceneSkipped(s8 itemAction) {
+    bool isCutsceneSkipped = false;
+    switch (itemAction) {
+        case PLAYER_IA_DINS_FIRE:
+            isCutsceneSkipped = CVarGetInteger(CVAR_ENHANCEMENT("SkipDinCutscene"), 0);
+            break;
+    }
+    return isCutsceneSkipped;
+}
+
 void func_8083AF44(PlayState* play, Player* this, s32 magicSpell) {
     Player_SetupActionPreserveItemAction(play, this, Player_Action_808507F4, 0);
 
@@ -5941,10 +5962,13 @@ void func_8083AF44(PlayState* play, Player* this, s32 magicSpell) {
         LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, &gPlayerAnim_link_magic_tame, 0.83f);
     }
 
+    if (IsCutsceneSkipped(this->itemAction))
+        return;
+
     if (magicSpell == 5) {
         this->subCamId = OnePointCutscene_Init(play, 1100, -101, NULL, MAIN_CAM);
     } else {
-        func_80835EA4(play, 10);
+        Camera_FocusOnPlayer(play, 10);
     }
 }
 
@@ -6012,7 +6036,7 @@ s32 Player_ActionHandler_13(Player* this, PlayState* play) {
                         Player_SetupAction(play, this, Player_Action_8085063C, 1);
                         this->stateFlags1 |= PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE;
                         Player_AnimPlayOnce(play, this, Player_GetIdleAnim(this));
-                        func_80835EA4(play, 4);
+                        Camera_FocusOnPlayer(play, 4);
                     }
 
                     func_80832224(this);
@@ -6070,11 +6094,11 @@ s32 Player_ActionHandler_13(Player* this, PlayState* play) {
                         } else if (sp2C == EXCH_ITEM_LETTER_RUTO) {
                             this->av1.actionVar1 = 1;
                             this->actor.textId = 0x4005;
-                            func_80835EA4(play, 1);
+                            Camera_FocusOnPlayer(play, 1);
                         } else {
                             this->av1.actionVar1 = 2;
                             this->actor.textId = 0xCF;
-                            func_80835EA4(play, 4);
+                            Camera_FocusOnPlayer(play, 4);
                         }
 
                         this->actor.flags |= ACTOR_FLAG_TALK;
@@ -6097,21 +6121,21 @@ s32 Player_ActionHandler_13(Player* this, PlayState* play) {
                     if (sp2C == 0xC) {
                         Player_SetupActionPreserveItemAction(play, this, Player_Action_8084EED8, 0);
                         Player_AnimPlayOnceAdjusted(play, this, &gPlayerAnim_link_bottle_bug_out);
-                        func_80835EA4(play, 3);
+                        Camera_FocusOnPlayer(play, 3);
                     } else if ((sp2C > 0) && (sp2C < 4)) {
                         Player_SetupActionPreserveItemAction(play, this, Player_Action_8084EFC0, 0);
                         Player_AnimPlayOnceAdjusted(play, this, &gPlayerAnim_link_bottle_fish_out);
-                        func_80835EA4(play, (sp2C == 1) ? 1 : 5);
+                        Camera_FocusOnPlayer(play, (sp2C == 1) ? 1 : 5);
                     } else {
                         Player_SetupActionPreserveItemAction(play, this, Player_Action_8084EAC0, 0);
                         Player_AnimChangeOnceMorphAdjusted(play, this, &gPlayerAnim_link_bottle_drink_demo_start);
-                        func_80835EA4(play, 2);
+                        Camera_FocusOnPlayer(play, 2);
                     }
                 } else {
                     Player_SetupActionPreserveItemAction(play, this, Player_Action_8084E3C4, 0);
                     Player_AnimPlayOnceAdjusted(play, this, &gPlayerAnim_link_normal_okarina_start);
                     this->stateFlags2 |= PLAYER_STATE2_OCARINA_PLAYING;
-                    func_80835EA4(play, (this->unk_6A8 != NULL) ? 0x5B : 0x5A);
+                    Camera_FocusOnPlayer(play, (this->unk_6A8 != NULL) ? 0x5B : 0x5A);
                     if (this->unk_6A8 != NULL) {
                         this->stateFlags2 |= PLAYER_STATE2_PLAY_FOR_ACTOR;
                         Camera_SetParam(Play_GetCamera(play, 0), 8, this->unk_6A8);
@@ -7373,7 +7397,7 @@ s32 Player_ActionHandler_2(Player* this, PlayState* play) {
                     if (!(this->stateFlags2 & PLAYER_STATE2_UNDERWATER) || (this->currentBoots == PLAYER_BOOTS_IRON)) {
                         Player_SetupWaitForPutAway(play, this, func_8083A434);
                         Player_AnimPlayOnceAdjusted(play, this, &gPlayerAnim_link_demo_get_itemB);
-                        func_80835EA4(play, 9);
+                        Camera_FocusOnPlayer(play, 9);
                     }
 
                     this->stateFlags1 |=
@@ -14375,7 +14399,7 @@ void Player_Action_8084E1EC(Player* this, PlayState* play) {
         if ((this->stateFlags1 & PLAYER_STATE1_GETTING_ITEM) && LinkAnimation_OnFrame(&this->skelAnime, 10.0f)) {
             func_808332F4(this, play);
             func_80832340(play, this);
-            func_80835EA4(play, 8);
+            Camera_FocusOnPlayer(play, 8);
         } else if (LinkAnimation_OnFrame(&this->skelAnime, 5.0f)) {
             Player_PlayVoiceSfx(this, NA_SE_VO_LI_BREATH_DRINK);
         }
@@ -14545,7 +14569,7 @@ void Player_Action_8084E6D4(Player* this, PlayState* play) {
             }
 
             this->av2.actionVar2 = 2;
-            func_80835EA4(play, 9);
+            Camera_FocusOnPlayer(play, 9);
         }
     } else {
         if (this->av2.actionVar2 == 0) {
@@ -14743,7 +14767,7 @@ void Player_Action_SwingBottle(Player* this, PlayState* play) {
                     Player_UpdateBottleHeld(play, this, catchInfo->itemId, ABS(catchInfo->itemAction));
                     if (!CVarGetInteger(CVAR_ENHANCEMENT("FastBottles"), 0)) {
                         Player_AnimPlayOnceAdjusted(play, this, swingEntry->catchAnimation);
-                        func_80835EA4(play, 4);
+                        Camera_FocusOnPlayer(play, 4);
                     }
                 }
             }
@@ -16821,6 +16845,6 @@ void Player_StartTalking(PlayState* play, Actor* actor) {
 
     if ((this->naviActor == this->talkActor) && ((this->talkActor->textId & 0xFF00) != 0x200)) {
         this->naviActor->flags |= ACTOR_FLAG_TALK;
-        func_80835EA4(play, 0xB);
+        Camera_FocusOnPlayer(play, 0xB);
     }
 }
