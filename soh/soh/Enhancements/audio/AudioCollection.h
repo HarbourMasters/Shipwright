@@ -16,6 +16,7 @@ enum SeqType {
     SEQ_SFX = 1 << 6,
     SEQ_INSTRUMENT = 1 << 7,
     SEQ_VOICE = 1 << 8,
+    SEQ_ENDING = 1 << 9,
     SEQ_BGM_CUSTOM = SEQ_BGM_WORLD | SEQ_BGM_EVENT | SEQ_BGM_BATTLE,
 };
 

@@ -9,37 +9,31 @@
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
 #include "3drando/rando_main.hpp"
-#include "3drando/random.hpp"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/SohGui.hpp"
 #include <imgui.h>
 #include <imgui_internal.h>
-#include "../custom-message/CustomMessageTypes.h"
-#include "../item-tables/ItemTableManager.h"
-#include "../Presets/Presets.h"
 #include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
-#include <stdexcept>
 #include "randomizer_check_objects.h"
-#include "randomizer_check_tracker.h"
 #include <sstream>
 #include <tuple>
-#include <functional>
 #include "draw.h"
 #include "soh/OTRGlobals.h"
 #include <ship/window/FileDropMgr.h>
-#include "soh/SohGui/UIWidgets.hpp"
 #include "static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "savefile.h"
-#include "entrance.h"
-#include "dungeon.h"
 #include "trial.h"
 #include "settings.h"
 #include "soh/util.h"
-#include "fishsanity.h"
 #include "randomizerTypes.h"
 #include "soh/Notification/Notification.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+
+extern "C" {
+#include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
+
+extern void func_80B8FE00(ObjBean*); // trigger planting
+}
 
 static ObjectExtension::Register<CheckIdentity> RegisterIdentity;
 
@@ -120,7 +114,7 @@ std::unordered_map<std::string, SceneID> spoilerFileDungeonToScene = {
 };
 
 // used for items that only set a rand inf when obtained
-std::map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
+std::unordered_map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
     { RG_FISHING_POLE, RAND_INF_FISHING_POLE_FOUND },
     { RG_BRONZE_SCALE, RAND_INF_CAN_SWIM },
     { RG_POWER_BRACELET, RAND_INF_CAN_GRAB },
@@ -3873,14 +3867,47 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
                 AMMO(ITEM_BEAN) = 10;
                 if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_PLANTING_BEANS)) {
                     gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_CRATER].swch |= (1 << 3);
+                    if (gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_CRATER) {
+                        Flags_SetSwitch(gPlayState, 3);
+                    }
                     gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_TRAIL].swch |= (1 << 6);
+                    if (gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL) {
+                        Flags_SetSwitch(gPlayState, 6);
+                    }
                     gSaveContext.sceneFlags[SCENE_DESERT_COLOSSUS].swch |= (1 << 24);
+                    if (gPlayState->sceneNum == SCENE_DESERT_COLOSSUS) {
+                        Flags_SetSwitch(gPlayState, 24);
+                    }
                     gSaveContext.sceneFlags[SCENE_GERUDO_VALLEY].swch |= (1 << 3);
+                    if (gPlayState->sceneNum == SCENE_GERUDO_VALLEY) {
+                        Flags_SetSwitch(gPlayState, 3);
+                    }
                     gSaveContext.sceneFlags[SCENE_GRAVEYARD].swch |= (1 << 3);
+                    if (gPlayState->sceneNum == SCENE_GRAVEYARD) {
+                        Flags_SetSwitch(gPlayState, 3);
+                    }
                     gSaveContext.sceneFlags[SCENE_KOKIRI_FOREST].swch |= (1 << 9);
+                    if (gPlayState->sceneNum == SCENE_KOKIRI_FOREST) {
+                        Flags_SetSwitch(gPlayState, 9);
+                    }
                     gSaveContext.sceneFlags[SCENE_LAKE_HYLIA].swch |= (1 << 1);
+                    if (gPlayState->sceneNum == SCENE_LAKE_HYLIA) {
+                        Flags_SetSwitch(gPlayState, 1);
+                    }
                     gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 4) | (1 << 18);
+                    if (gPlayState->sceneNum == SCENE_LOST_WOODS) {
+                        Flags_SetSwitch(gPlayState, 4);
+                        Flags_SetSwitch(gPlayState, 18);
+                    }
                     gSaveContext.sceneFlags[SCENE_ZORAS_RIVER].swch |= (1 << 3);
+                    if (gPlayState->sceneNum == SCENE_ZORAS_RIVER) {
+                        Flags_SetSwitch(gPlayState, 3);
+                    }
+                    ObjBean* bean = (ObjBean*)Actor_Find(&gPlayState->actorCtx, ACTOR_OBJ_BEAN, ACTORCAT_BG);
+                    if (bean != nullptr) {
+                        Flags_SetSwitch(gPlayState, bean->dyna.actor.params & 0x3F);
+                        func_80B8FE00(bean);
+                    }
                     AMMO(ITEM_BEAN) = 0;
                 }
             }

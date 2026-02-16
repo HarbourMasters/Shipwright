@@ -22,6 +22,7 @@ static const std::map<int32_t, const char*> skipGetItemAnimationOptions = {
 
 static bool locationsDirty = true;
 static bool tricksDirty = true;
+static int32_t prevMQDungeonSetting;
 static char seedString[MAX_SEED_STRING_SIZE];
 static std::set<RandomizerCheck> excludedLocations;
 static std::set<RandomizerTrick> enabledTricks;
@@ -29,22 +30,18 @@ static std::set<RandomizerTrick> enabledGlitches;
 
 void DrawLocationsMenu(WidgetInfo& info) {
     auto ctx = OTRGlobals::Instance->gRandoContext;
+    int32_t currMQDungeonSetting = CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), 0) |
+                                   CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), 0) << 8;
     static ImVec2 cellPadding(8.0f, 8.0f);
     bool generating = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0);
     bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-    if (locationsDirty) {
-        RandomizerCheckObjects::UpdateImGuiVisibility();
-        // todo: this efficently when we build out cvar array support
-        std::stringstream excludedLocationStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
-        std::string excludedLocationString;
-        excludedLocations.clear();
-        while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
-            excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
-        }
+    if (locationsDirty || currMQDungeonSetting != prevMQDungeonSetting) {
         locationsDirty = false;
+        UpdateMenuLocations();
     }
+    prevMQDungeonSetting = currMQDungeonSetting;
 
     if (ImGui::BeginTable("tableRandoLocations", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Included", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -162,6 +159,34 @@ void DrawLocationsMenu(WidgetInfo& info) {
     ImGui::EndDisabled();
 }
 
+void UpdateMenuLocations() {
+    RandomizerCheckObjects::UpdateImGuiVisibility();
+    // todo: this efficently when we build out cvar array support
+    std::stringstream excludedLocationStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
+    std::string excludedLocationString;
+    excludedLocations.clear();
+    while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
+        excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
+    }
+}
+
+void UpdateMenuTricks() {
+    // RandomizerTricks::UpdateImGuiVisibility();
+    //  todo: this efficently when we build out cvar array support
+    std::stringstream enabledTrickStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), ""));
+    std::string enabledTrickString;
+    enabledTricks.clear();
+    while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
+        enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
+    }
+    std::stringstream enabledGlitchStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledGlitches"), ""));
+    std::string enabledGlitchString;
+    enabledGlitches.clear();
+    while (getline(enabledGlitchStringStream, enabledGlitchString, ',')) {
+        enabledGlitches.insert((RandomizerTrick)std::stoi(enabledGlitchString));
+    }
+}
+
 void DrawTricksMenu(WidgetInfo& info) {
     auto ctx = OTRGlobals::Instance->gRandoContext;
     auto randoSettings = Rando::Settings::GetInstance();
@@ -170,20 +195,7 @@ void DrawTricksMenu(WidgetInfo& info) {
     bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     if (tricksDirty) {
         tricksDirty = false;
-        // RandomizerTricks::UpdateImGuiVisibility();
-        //  todo: this efficently when we build out cvar array support
-        std::stringstream enabledTrickStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), ""));
-        std::string enabledTrickString;
-        enabledTricks.clear();
-        while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
-            enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
-        }
-        std::stringstream enabledGlitchStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledGlitches"), ""));
-        std::string enabledGlitchString;
-        enabledGlitches.clear();
-        while (getline(enabledGlitchStringStream, enabledGlitchString, ',')) {
-            enabledGlitches.insert((RandomizerTrick)std::stoi(enabledGlitchString));
-        }
+        UpdateMenuTricks();
     }
 
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);

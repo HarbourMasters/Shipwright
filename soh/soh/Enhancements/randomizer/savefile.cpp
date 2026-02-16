@@ -162,7 +162,9 @@ void SetStartingItems() {
     }
 
     if (Randomizer_GetSettingValue(RSK_STARTING_OCARINA)) {
-        INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
+        INV_CONTENT(ITEM_OCARINA_FAIRY) = Randomizer_GetSettingValue(RSK_STARTING_OCARINA) == RO_STARTING_OCARINA_FAIRY
+                                              ? ITEM_OCARINA_FAIRY
+                                              : ITEM_OCARINA_TIME;
     }
 
     if (Randomizer_GetSettingValue(RSK_STARTING_STICKS) && !Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG)) {

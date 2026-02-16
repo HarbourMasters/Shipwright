@@ -589,14 +589,13 @@ void SetAllEntrancesData() {
           NO_RETURN_ENTRANCE },
         { { EntranceType::BlueWarp, RR_SHADOW_TEMPLE_BOSS_ROOM,    RR_GRAVEYARD_WARP_PAD_REGION, ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP },
           NO_RETURN_ENTRANCE },
-        { { EntranceType::BlueWarp, RR_GANONS_TOWER_GANONDORF_LAIR, RR_GANONS_TOWER_STAIRS_1,    ENTR_GANONS_TOWER_0 },
+        { { EntranceType::BlueWarp, RR_GANONS_TOWER_STAIRS_1,      RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE, ENTR_OUTSIDE_GANONS_CASTLE_1_2 },
           NO_RETURN_ENTRANCE },
         // clang-format on
     };
 
     auto ctx = Rando::Context::GetInstance();
     for (auto& entrancePair : entranceShuffleTable) {
-
         auto& forwardEntry = entrancePair.first;
         auto& returnEntry = entrancePair.second;
 
@@ -695,7 +694,6 @@ std::vector<Entrance*> EntranceShuffler::AssumeEntrancePool(std::vector<Entrance
 }
 
 static bool AreEntrancesCompatible(Entrance* entrance, Entrance* target, std::vector<EntrancePair>& rollbacks) {
-
     // Entrances shouldn't connect to their own scene, fail in this situation
     if (
         // allow "special" areas to connect to eachother
@@ -712,21 +710,19 @@ static bool AreEntrancesCompatible(Entrance* entrance, Entrance* target, std::ve
           target->GetConnectedRegion()->scene == SCENE_OUTSIDE_GANONS_CASTLE) ||
          (entrance->GetParentRegion()->scene == SCENE_OUTSIDE_GANONS_CASTLE &&
           target->GetConnectedRegion()->scene == SCENE_HYRULE_CASTLE))) {
-        auto message = "Entrance " + entrance->GetName() + " attempted to connect with own scene target " +
-                       target->to_string() + ". Connection failed.\n";
-        SPDLOG_DEBUG(message);
+        SPDLOG_DEBUG("Entrance {} attempted to connect with own scene target {}. Connection failed.",
+                     entrance->GetName(), target->to_string());
         return false;
     }
 
     // One way entrances shouldn't lead to the same scene as other already chosen one way entrances
     auto type = entrance->GetType();
-    const std::vector<EntranceType> oneWayTypes = { EntranceType::OwlDrop, EntranceType::Spawn,
-                                                    EntranceType::WarpSong };
+    const std::array<EntranceType, 3> oneWayTypes = { EntranceType::OwlDrop, EntranceType::Spawn,
+                                                      EntranceType::WarpSong };
     if (ElementInContainer(type, oneWayTypes)) {
         for (auto& rollback : rollbacks) {
             if (rollback.first->GetConnectedRegion()->scene == target->GetConnectedRegion()->scene) {
-                auto message = "A one way entrance already leads to " + target->to_string() + ". Connection failed.\n";
-                SPDLOG_DEBUG(message);
+                SPDLOG_DEBUG("A one way entrance already leads to {}. Connection failed.", target->to_string());
                 return false;
             }
         }
@@ -738,8 +734,7 @@ static bool AreEntrancesCompatible(Entrance* entrance, Entrance* target, std::ve
 // Change connections between an entrance and a target assumed entrance, in order to test the connections afterwards if
 // necessary
 static void ChangeConnections(Entrance* entrance, Entrance* targetEntrance) {
-    auto message = "Attempting to connect " + entrance->GetName() + " to " + targetEntrance->to_string() + "\n";
-    SPDLOG_DEBUG(message);
+    SPDLOG_DEBUG("Attempting to connect {} to {}", entrance->GetName(), targetEntrance->to_string());
     entrance->Connect(targetEntrance->Disconnect());
     entrance->SetReplacement(targetEntrance->GetReplacement());
     if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
@@ -791,7 +786,7 @@ static bool EntranceUnreachableAs(Entrance* entrance, uint8_t age, std::vector<E
 
 static bool ValidateWorld(Entrance* entrancePlaced) {
     auto ctx = Rando::Context::GetInstance();
-    SPDLOG_DEBUG("Validating world\n");
+    SPDLOG_DEBUG("Validating world");
 
     // check certain conditions when certain types of ER are enabled
     EntranceType type = EntranceType::None;
@@ -839,13 +834,11 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
 
                     if (ElementInContainer(replacementName, childForbidden) &&
                         !EntranceUnreachableAs(entrance, RO_AGE_CHILD, alreadyChecked)) {
-                        auto message = replacementName + " is replaced by an entrance with a potential child access\n";
-                        SPDLOG_DEBUG(message);
+                        SPDLOG_DEBUG("{} is replaced by an entrance with a potential child access", replacementName);
                         return false;
                     } else if (ElementInContainer(replacementName, adultForbidden) &&
                                !EntranceUnreachableAs(entrance, RO_AGE_ADULT, alreadyChecked)) {
-                        auto message = replacementName + " is replaced by an entrance with a potential adult access\n";
-                        SPDLOG_DEBUG(message);
+                        SPDLOG_DEBUG("{} is replaced by an entrance with a potential adult access", replacementName);
                         return false;
                     }
                 }
@@ -855,13 +848,11 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
 
                 if (ElementInContainer(name, childForbidden) &&
                     !EntranceUnreachableAs(entrance, RO_AGE_CHILD, alreadyChecked)) {
-                    auto message = name + " is potentially accessible as child\n";
-                    SPDLOG_DEBUG(message);
+                    SPDLOG_DEBUG("{} is potentially accessible as child", name);
                     return false;
                 } else if (ElementInContainer(name, adultForbidden) &&
                            !EntranceUnreachableAs(entrance, RO_AGE_ADULT, alreadyChecked)) {
-                    auto message = name + " is potentially accessible as adult\n";
-                    SPDLOG_DEBUG(message);
+                    SPDLOG_DEBUG("{} is potentially accessible as adult");
                     return false;
                 }
             }
@@ -874,13 +865,13 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
             // At least one valid starting region with all basic refills should be reachable without using any items at
             // the beginning of the seed
             if (!RegionTable(RR_KOKIRI_FOREST)->HasAccess() && !RegionTable(RR_KAKARIKO_VILLAGE)->HasAccess()) {
-                SPDLOG_DEBUG("Invalid starting area\n");
+                SPDLOG_DEBUG("Invalid starting area");
                 return false;
             }
 
             // Check that a region where time passes is always reachable as both ages without having collected any items
             if (!Regions::HasTimePassAccess(RO_AGE_CHILD) || !Regions::HasTimePassAccess(RO_AGE_ADULT)) {
-                SPDLOG_DEBUG("Time passing is not guaranteed as both ages\n");
+                SPDLOG_DEBUG("Time passing is not guaranteed as both ages");
                 return false;
             }
 
@@ -888,16 +879,16 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
             // This is important to ensure that the player never loses access to the pedestal after going through time
             if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD) &&
                 !RegionTable(RR_TEMPLE_OF_TIME)->Adult()) {
-                SPDLOG_DEBUG("Path to Temple of Time as adult is not guaranteed\n");
+                SPDLOG_DEBUG("Path to Temple of Time as adult is not guaranteed");
                 return false;
             } else if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT) &&
                        !RegionTable(RR_TEMPLE_OF_TIME)->Child()) {
-                SPDLOG_DEBUG("Path to Temple of Time as child is not guaranteed\n");
+                SPDLOG_DEBUG("Path to Temple of Time as child is not guaranteed");
                 return false;
             }
         }
 
-        SPDLOG_DEBUG("All Locations NOT REACHABLE\n");
+        SPDLOG_DEBUG("All Locations NOT REACHABLE");
         return false;
     }
     return true;
@@ -933,7 +924,6 @@ static void ConfirmReplacement(Entrance* entrance, Entrance* targetEntrance) {
 }
 
 bool EntranceShuffler::ReplaceEntrance(Entrance* entrance, Entrance* target, std::vector<EntrancePair>& rollbacks) {
-
     if (!AreEntrancesCompatible(entrance, target, rollbacks)) {
         return false;
     }
@@ -941,8 +931,7 @@ bool EntranceShuffler::ReplaceEntrance(Entrance* entrance, Entrance* target, std
     if (ValidateWorld(entrance)) {
 #ifdef ENABLE_DEBUG
         std::string ticks = std::to_string(svcGetSystemTick());
-        auto message = "Dumping World Graph at " + ticks + "\n";
-        // SPDLOG_DEBUG(message);
+        // SPDLOG_DEBUG("Dumping World Graph at {}", ticks);
         // Regions::DumpWorldGraph(ticks);
 #endif
         rollbacks.push_back(EntrancePair{ entrance, target });
@@ -951,8 +940,7 @@ bool EntranceShuffler::ReplaceEntrance(Entrance* entrance, Entrance* target, std
     } else {
 #ifdef ENABLE_DEBUG
         std::string ticks = std::to_string(svcGetSystemTick());
-        auto message = "Dumping World Graph at " + ticks + "\n";
-        // SPDLOG_DEBUG(message);
+        // SPDLOG_DEBUG("Dumping World Graph at {}", ticks);
         // Regions::DumpWorldGraph(ticks);
 #endif
         if (entrance->GetConnectedRegionKey() != RR_NONE) {
@@ -1006,7 +994,7 @@ bool EntranceShuffler::PlaceOneWayPriorityEntrance(
             }
         }
     }
-    SPDLOG_DEBUG("ERROR: Unable to place priority one-way entrance for " + priorityName + "\n");
+    SPDLOG_DEBUG("ERROR: Unable to place priority one-way entrance for {}", priorityName);
     assert(false);
     return false;
 }
@@ -1044,7 +1032,7 @@ bool EntranceShuffler::ShuffleOneWayPriorityEntrances(std::map<std::string, Prio
 
     if (retryCount <= 0) {
         SPDLOG_DEBUG(
-            "Entrance placement attempt count for one way priorities exceeded. Restarting randomization completely\n");
+            "Entrance placement attempt count for one way priorities exceeded. Restarting randomization completely");
         mEntranceShuffleFailure = true;
         return false;
     }
@@ -1154,9 +1142,8 @@ void EntranceShuffler::ShuffleEntrancePool(std::vector<Entrance*>& entrancePool,
         if (retries != retryCount) {
 #ifdef ENABLE_DEBUG
             std::string ticks = std::to_string(svcGetSystemTick());
-            auto message = "Failed to connect entrances. Retrying " + std::to_string(retries) +
-                           " more times.\nDumping World Graph at " + ticks + "\n";
-            SPDLOG_DEBUG(message);
+            SPDLOG_DEBUG("Failed to connect entrances. Retrying {} more times.", retries);
+            SPDLOG_DEBUG("Dumping World Graph at {}", ticks);
             // Regions::DumpWorldGraph(ticks);
 #endif
         }
@@ -1248,39 +1235,29 @@ int EntranceShuffler::ShuffleAllEntrances() {
         if (ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL)) {
             entrancePools[EntranceType::Boss] = GetShuffleableEntrances(EntranceType::ChildBoss);
             AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::AdultBoss));
+            if (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE)) {
+                AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::GanonTower));
+            }
+
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 for (Entrance* entrance : entrancePools[EntranceType::Boss]) {
                     entrancePools[EntranceType::BossReverse].push_back(entrance->GetReverse());
                 }
             }
-
-            if (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE).IsNot(RO_GENERIC_OFF)) {
-                AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::GanonTower));
-                if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
-                    for (Entrance* entrance : GetShuffleableEntrances(EntranceType::GanonTower)) {
-                        entrancePools[EntranceType::BossReverse].push_back(entrance->GetReverse());
-                    }
-                }
-            }
         } else {
             entrancePools[EntranceType::ChildBoss] = GetShuffleableEntrances(EntranceType::ChildBoss);
             entrancePools[EntranceType::AdultBoss] = GetShuffleableEntrances(EntranceType::AdultBoss);
+            if (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE)) {
+                AddElementsToPool(entrancePools[EntranceType::AdultBoss],
+                                  GetShuffleableEntrances(EntranceType::GanonTower));
+            }
+
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 for (Entrance* entrance : entrancePools[EntranceType::ChildBoss]) {
                     entrancePools[EntranceType::ChildBossReverse].push_back(entrance->GetReverse());
                 }
                 for (Entrance* entrance : entrancePools[EntranceType::AdultBoss]) {
                     entrancePools[EntranceType::AdultBossReverse].push_back(entrance->GetReverse());
-                }
-            }
-
-            if (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE).IsNot(RO_GENERIC_OFF)) {
-                AddElementsToPool(entrancePools[EntranceType::AdultBoss],
-                                  GetShuffleableEntrances(EntranceType::GanonTower));
-                if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
-                    for (Entrance* entrance : GetShuffleableEntrances(EntranceType::GanonTower)) {
-                        entrancePools[EntranceType::AdultBossReverse].push_back(entrance->GetReverse());
-                    }
                 }
             }
         }
@@ -1376,7 +1353,6 @@ int EntranceShuffler::ShuffleAllEntrances() {
         std::set<EntranceType> poolsToMix = {};
         if (ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES)) {
             poolsToMix.insert(EntranceType::Dungeon);
-            // Insert reverse entrances when decoupled entrances is on
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 poolsToMix.insert(EntranceType::DungeonReverse);
             }
@@ -1553,8 +1529,8 @@ int EntranceShuffler::ShuffleAllEntrances() {
               GetEntrance(RR_SPIRIT_TEMPLE_ENTRYWAY, RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE) },
             { EntranceNameByRegions(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY),
               GetEntrance(RR_SHADOW_TEMPLE_ENTRYWAY, RR_GRAVEYARD_WARP_PAD_REGION) },
-            { EntranceNameByRegions(RR_GANONS_TOWER_GANONDORF_LAIR, RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR),
-              GetEntrance(RR_GANONS_TOWER_ENTRYWAY, RR_GANONS_TOWER_STAIRS_1) },
+            { EntranceNameByRegions(RR_GANONS_TOWER_STAIRS_1, RR_GANONS_TOWER_ENTRYWAY),
+              GetEntrance(RR_GANONS_CASTLE_ENTRYWAY, RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE) }
         };
 
         // If a boss room is inside a dungeon entrance (or inside a dungeon which is inside a dungeon entrance), make
@@ -1576,8 +1552,8 @@ int EntranceShuffler::ShuffleAllEntrances() {
               GetEntrance(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_DESERT_COLOSSUS) },
             { EntranceNameByRegions(RR_SHADOW_TEMPLE_ENTRYWAY, RR_GRAVEYARD_WARP_PAD_REGION),
               GetEntrance(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_GRAVEYARD_WARP_PAD_REGION) },
-            { EntranceNameByRegions(RR_GANONS_TOWER_ENTRYWAY, RR_GANONS_TOWER_STAIRS_1),
-              GetEntrance(RR_GANONS_TOWER_GANONDORF_LAIR, RR_GANONS_TOWER_STAIRS_1) },
+            { EntranceNameByRegions(RR_GANONS_CASTLE_ENTRYWAY, RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE),
+              GetEntrance(RR_GANONS_TOWER_STAIRS_1, RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE) }
         };
 
         // Pair <BlueWarp exit, BossRoom reverse exit>
@@ -1598,8 +1574,8 @@ int EntranceShuffler::ShuffleAllEntrances() {
               GetEntrance(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY) },
             { GetEntrance(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_GRAVEYARD_WARP_PAD_REGION),
               GetEntrance(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY) },
-            { GetEntrance(RR_GANONS_TOWER_GANONDORF_LAIR, RR_GANONS_TOWER_STAIRS_1),
-              GetEntrance(RR_GANONS_TOWER_GANONDORF_LAIR, RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR) },
+            { GetEntrance(RR_GANONS_TOWER_STAIRS_1, RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE),
+              GetEntrance(RR_GANONS_TOWER_STAIRS_1, RR_GANONS_TOWER_ENTRYWAY) }
         };
 
         for (EntrancePair pair : bossRoomExitPairs) {
@@ -1635,7 +1611,7 @@ void EntranceShuffler::CreateEntranceOverrides() {
     if (mNoRandomEntrances) {
         return;
     }
-    SPDLOG_DEBUG("\nCREATING ENTRANCE OVERRIDES\n");
+    SPDLOG_DEBUG("CREATING ENTRANCE OVERRIDES");
     auto allShuffleableEntrances = GetShuffleableEntrances(EntranceType::All, false);
 
     int i = 0;
@@ -1644,6 +1620,8 @@ void EntranceShuffler::CreateEntranceOverrides() {
         // Include blue warps when dungeons or bosses are shuffled
         bool includeBluewarps =
             entrance->GetType() == Rando::EntranceType::BlueWarp &&
+            (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE) ||
+             entrance->GetParentRegionKey() != RR_GANONS_TOWER_STAIRS_1) &&
             (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES));
 
         // Double-check to make sure the entrance is actually shuffled
@@ -1651,8 +1629,7 @@ void EntranceShuffler::CreateEntranceOverrides() {
             continue;
         }
 
-        auto message = "Setting " + entrance->to_string() + "\n";
-        SPDLOG_DEBUG(message);
+        SPDLOG_DEBUG("Setting {}", entrance->to_string());
 
         uint8_t type = (uint8_t)entrance->GetType();
         int16_t originalIndex = entrance->GetIndex();
@@ -1661,8 +1638,7 @@ void EntranceShuffler::CreateEntranceOverrides() {
         int16_t destinationIndex = -1;
         int16_t replacementDestinationIndex = -1;
 
-        // Only set destination indices for two way entrances and when decouple entrances
-        // is off
+        // Only set destination indices for two way entrances and when decouple entrances is off
         if (entrance->GetReverse() != nullptr && !ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
             replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
             destinationIndex = entrance->GetReverse()->GetIndex();
@@ -1676,10 +1652,8 @@ void EntranceShuffler::CreateEntranceOverrides() {
             .overrideDestination = replacementDestinationIndex,
         };
 
-        message = "\tOriginal: " + std::to_string(originalIndex) + "\n";
-        SPDLOG_DEBUG(message);
-        message = "\tReplacement " + std::to_string(replacementIndex) + "\n";
-        SPDLOG_DEBUG(message);
+        SPDLOG_DEBUG("\tOriginal {}", originalIndex);
+        SPDLOG_DEBUG("\tReplacement {}", replacementIndex);
         i++;
     }
 }
