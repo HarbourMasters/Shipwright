@@ -958,6 +958,8 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Faster Farore's Wind", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FastFarores"))
         .Options(CheckboxOptions().Tooltip("Greatly decreases cast time of Farore's Wind magic spell."));
+    AddWidget(path, "Skip Din's Fire Cuscene", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("SkipDinCutscene"));
 
     AddWidget(path, "Bottles", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Rebottle Blue Fire", WIDGET_CVAR_CHECKBOX)
