@@ -1246,12 +1246,12 @@ void CheckTrackerWindow::DrawElement() {
 
         ImGui::EndTable(); // Checks Lead-out
         ImGui::EndTable(); // Quick Options Lead-out
-        Trackers::EndFloatWindows();
         if (doingCollapseOrExpand) {
             optCollapseAll = false;
             optExpandAll = false;
         }
     }
+    Trackers::EndFloatWindows();
 }
 
 bool UpdateFilters() {

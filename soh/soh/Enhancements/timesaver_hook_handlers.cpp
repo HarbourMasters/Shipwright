@@ -79,13 +79,17 @@ void EnFu_EndTeachSong(EnFu* enFu, PlayState* play) {
 void EnDntDemo_JudgeSkipToReward(EnDntDemo* enDntDemo, PlayState* play) {
     // todo: figure out a better way to handle toggling so we don't
     //       need to double check cvars like this
-    if (!(IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) ||
-        (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SPEAK)) || enDntDemo->actor.xzDistToPlayer > 30.0f) {
+    if (!(IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO))) {
+        EnDntDemo_Judge(enDntDemo, play);
+        return;
+    } else if ((IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SPEAK)) || enDntDemo->actor.xzDistToPlayer > 30.0f) {
+        if (enDntDemo->judgeTimer > 0 && enDntDemo->judgeTimer < 40) {
+            enDntDemo->judgeTimer = 40;
+        }
         EnDntDemo_Judge(enDntDemo, play);
         return;
     }
 
-    Player* player = GET_PLAYER(play);
     switch (Player_GetMask(play)) {
         case PLAYER_MASK_SKULL: {
             Flags_SetItemGetInf(ITEMGETINF_OBTAINED_STICK_UPGRADE_FROM_STAGE);
