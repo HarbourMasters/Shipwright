@@ -403,8 +403,8 @@ class TrickSetting : public Option {
                  const std::string& name_, const std::string nameTag_, std::string description_);
     RandomizerCheckQuest mQuest;
     RandomizerArea mArea;
-    std::set<Tricks::Tag> mTags;
     std::string mNameTag;
+    std::set<Tricks::Tag> mTags;
 };
 
 enum class OptionGroupType {
