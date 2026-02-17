@@ -74,6 +74,7 @@
 #include "soh/Network/Sail/Sail.h"
 #include "soh/Network/Anchor/Anchor.h"
 #include "Enhancements/mods.h"
+#include "Enhancements/external-mods/ExternalModManager.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/randomizer/draw.h"
 #include <libultraship/libultraship.h>
@@ -1496,6 +1497,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     OTRMessage_Init();
     OTRAudio_Init();
     OTRExtScanner();
+    SOH::ExternalModManager::Instance().DiscoverPackages();
     VanillaItemTable_Init();
     DebugConsole_Init();
 
