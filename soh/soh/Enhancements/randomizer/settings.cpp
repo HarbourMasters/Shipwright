@@ -2208,7 +2208,7 @@ void Settings::CreateOptions() {
               "this case to do it without taking damage is especially precise.");
 
     for (auto trick : mTrickSettings) {
-        if (trick.GetNameTag() != ""){
+        if (trick.GetNameTag() != "") {
             if (StaticData::trickToEnum.contains(trick.GetNameTag())) {
                 SPDLOG_ERROR("REPEATED TRICK NAME TAG " + trick.GetName());
                 assert(false);
