@@ -2208,11 +2208,13 @@ void Settings::CreateOptions() {
               "this case to do it without taking damage is especially precise.");
 
     for (auto trick : mTrickSettings) {
-        if (StaticData::trickToEnum.contains(trick.GetNameTag())) {
-            SPDLOG_ERROR("REPEATED TRICK NAME TAG " + trick.GetName());
-            assert(false);
-        } else {
-            StaticData::trickToEnum[trick.GetNameTag()] = trick.GetKey();
+        if (trick.GetNameTag() != ""){
+            if (StaticData::trickToEnum.contains(trick.GetNameTag())) {
+                SPDLOG_ERROR("REPEATED TRICK NAME TAG " + trick.GetName());
+                assert(false);
+            } else {
+                StaticData::trickToEnum[trick.GetNameTag()] = trick.GetKey();
+            }
         }
     }
 
