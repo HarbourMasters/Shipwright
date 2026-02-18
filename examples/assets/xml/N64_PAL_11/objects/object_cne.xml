@@ -1,0 +1,53 @@
+<Root>
+    <File Name="object_cne" Segment="6">
+        <!-- The textures used by these limbs aren't 64-bit aligned -->
+        <Limb Name="gCnePelvisLimb" LimbType="Standard" Offset="0x0"/>
+        <Limb Name="gCneLeftThighLimb" LimbType="Standard" Offset="0xC"/>
+        <Limb Name="gCneLeftShinLimb" LimbType="Standard" Offset="0x18"/>
+        <Limb Name="gCneLeftFootLimb" LimbType="Standard" Offset="0x24"/>
+        <Limb Name="gCneRightThighLimb" LimbType="Standard" Offset="0x30"/>
+        <Limb Name="gCneRightShinLimb" LimbType="Standard" Offset="0x3C"/>
+        <Limb Name="gCneRightFootLimb" LimbType="Standard" Offset="0x48"/>
+        <Limb Name="gCneTorsoLimb" LimbType="Standard" Offset="0x54"/>
+        <Limb Name="gCneLeftUpperArmLimb" LimbType="Standard" Offset="0x60"/>
+        <Limb Name="gCneLeftForearmLimb" LimbType="Standard" Offset="0x6C"/>
+        <Limb Name="gCneLeftHandLimb" LimbType="Standard" Offset="0x78"/>
+        <Limb Name="gCneRightUpperArmLimb" LimbType="Standard" Offset="0x84"/>
+        <Limb Name="gCneRightForearmLimb" LimbType="Standard" Offset="0x90"/>
+        <Limb Name="gCneRightHandLimb" LimbType="Standard" Offset="0x9C"/>
+        <Limb Name="gCneHeadLimb" LimbType="Standard" Offset="0xA8"/>
+
+        <Skeleton Name="gCneSkel" Type="Flex" LimbType="Standard" Offset="0xF0"/>
+
+        <!-- 32-bit aligned textures. -->
+        <Texture Name="gCneTLUT" OutName="cne_tlut" Format="rgba16" Width="16" Height="16" Offset="0xFC"/>
+        <Texture Name="gCneSkinTex" OutName="cne_skin" Format="ci8" Width="8" Height="8" Offset="0x2FC" TlutOffset="0xFC"/>
+        <Texture Name="gCneBrownHairTex" OutName="cne_brown_hair" Format="ci8" Width="8" Height="8" Offset="0x33C" TlutOffset="0xFC"/>
+        <Texture Name="gCneHandTex" OutName="cne_hand" Format="ci8" Width="8" Height="8" Offset="0x37C" TlutOffset="0xFC"/>
+        <Texture Name="gCneBrownHairSkinTex" OutName="cne_brown_hair_skin" Format="ci8" Width="8" Height="8" Offset="0x3BC" TlutOffset="0xFC"/>
+        <Texture Name="gCneBrownHairFaceTex" OutName="cne_brown_hair_face" Format="ci8" Width="8" Height="16" Offset="0x3FC" TlutOffset="0xFC"/>
+        <Texture Name="gCneDressTex" OutName="cne_dress" Format="i8" Width="8" Height="8" Offset="0x47C"/>
+        <Texture Name="gCneDressNeckTex" OutName="cne_dress_neck" Format="ci8" Width="8" Height="8" Offset="0x4BC" TlutOffset="0xFC"/>
+
+        <DList Name="gCneHeadBrownHairDL" Offset="0x1300"/>
+        <DList Name="gCneRightHandDL" Offset="0x1608"/>
+        <DList Name="gCneRightForearmDL" Offset="0x16E8"/>
+        <DList Name="gCneRightUpperArmDL" Offset="0x1808"/>
+        <DList Name="gCneLeftHandDL" Offset="0x18C8"/>
+        <DList Name="gCneLeftForearmDL" Offset="0x19A8"/>
+        <DList Name="gCneLeftUpperArmDL" Offset="0x1AC8"/>
+        <DList Name="gCneTorsoDL" Offset="0x1B88"/>
+        <DList Name="gCneRightFootDL" Offset="0x1E50"/>
+        <DList Name="gCneRightShinDL" Offset="0x1F18"/>
+        <DList Name="gCneRightThighDL" Offset="0x1FE0"/>
+        <DList Name="gCneLeftFootDL" Offset="0x20A8"/>
+        <DList Name="gCneLeftShinDL" Offset="0x2170"/>
+        <DList Name="gCneLeftThighDL" Offset="0x2238"/>
+        <DList Name="gCnePelvisDL" Offset="0x2300"/>
+
+        <Texture Name="gCneOrangeHairFaceTex" OutName="cne_orange_hair_face" Format="rgba16" Width="8" Height="16" Offset="0x23D0"/>
+        <Texture Name="gCneOrangeHairSkinTex" OutName="cne_orange_hair_skin" Format="rgba16" Width="8" Height="8" Offset="0x24D0"/>
+
+        <DList Name="gCneHeadOrangeHairDL" Offset="0x2860"/>
+    </File>
+</Root>

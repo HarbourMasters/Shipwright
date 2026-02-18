@@ -1,0 +1,32 @@
+﻿{
+  "apiVersion": 2,
+  "onGameLoaded": [
+    {
+      "action": "grantModItem",
+      "itemId": "skyhook_v2"
+    },
+    {
+      "action": "invokeWasm",
+      "export": "on_mod_loaded",
+      "args": [2]
+    },
+    {
+      "action": "showNotification",
+      "text": "Skyhook ativo. Use Hookshot para impulso e M1 para pulo."
+    }
+  ],
+  "onInput": [
+    {
+      "id": "jump_button",
+      "binding": "jump_action",
+      "trigger": "pressed",
+      "cooldownFrames": 2,
+      "actions": [
+        {
+          "action": "pressButton",
+          "button": "BTN_A"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+<Root>
+    <File Name="code" OutName="z_fbdemo_circle" RangeStart="0xE90A8" RangeEnd="0x106F10">
+      <Texture Name="sTransCircleNormalTex" Format="i8" Width="16" Height="64" Offset="0xE90A8"/>
+        <Texture Name="sTransCircleWaveTex" Format="i8" Width="16" Height="64" Offset="0xE94A8"/>
+        <Texture Name="sTransCircleRippleTex" Format="i8" Width="16" Height="64" Offset="0xE98A8"/>
+        <Texture Name="sTransCircleStarburstTex" Format="i8" Width="16" Height="64" Offset="0xE9CA8"/>
+        <Array Name="sTransCircleVtx" Count="34" Offset="0xEA0A8">
+            <Vtx/>
+        </Array>
+        <!-- ZAPD isn't finding symbols correctly, instead finding them much later in `code`-->
+        <!--<DList Name="sCircleWipeDL" Offset="0x10FF68"/>-->
+      <DList Name="sCircleDList" Offset="0xEA2C8"/>
+    </File>
+</Root>

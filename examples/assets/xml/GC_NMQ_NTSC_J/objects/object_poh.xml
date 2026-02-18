@@ -1,0 +1,25 @@
+<Root>
+    <File Name="object_poh" Segment="6">
+        <Texture Name="object_pohTex_003010" OutName="object_pohTex_003010" Format="i8" Width="32" Height="64" Offset="0x3010" AddedByScript="true"/>
+        <Texture Name="object_pohTex_003910" OutName="object_pohTex_003910" Format="rgba16" Width="32" Height="16" Offset="0x3910" AddedByScript="true"/>
+        <Texture Name="object_pohTex_003D10" OutName="object_pohTex_003D10" Format="rgba16" Width="32" Height="32" Offset="0x3D10" AddedByScript="true"/>
+        <Texture Name="object_pohTex_004510" OutName="object_pohTex_004510" Format="rgba16" Width="16" Height="16" Offset="0x4510" AddedByScript="true"/>
+        <Texture Name="object_pohTex_004710" OutName="object_pohTex_004710" Format="rgba16" Width="8" Height="8" Offset="0x4710" AddedByScript="true"/>
+        <Texture Name="object_pohTex_004790" OutName="object_pohTex_004790" Format="rgba16" Width="16" Height="16" Offset="0x4790" AddedByScript="true"/>
+        <Texture Name="object_pohTex_004990" OutName="object_pohTex_004990" Format="rgba16" Width="8" Height="8" Offset="0x4990" AddedByScript="true"/>
+        <Texture Name="object_pohTex_004A10" OutName="object_pohTex_004A10" Format="rgba16" Width="8" Height="16" Offset="0x4A10" AddedByScript="true"/>
+        <Texture Name="object_pohTex_004B10" OutName="object_pohTex_004B10" Format="rgba16" Width="16" Height="16" Offset="0x4B10" AddedByScript="true"/>
+        <Texture Name="object_pohTex_004D10" OutName="object_pohTex_004D10" Format="rgba16" Width="16" Height="16" Offset="0x4D10" AddedByScript="true"/>
+        <Texture Name="object_pohTex_004F10" OutName="object_pohTex_004F10" Format="rgba16" Width="8" Height="8" Offset="0x4F10" AddedByScript="true"/>
+        <Animation Name="gPoeAttackAnim" Offset="0x01A8"/>
+        <Animation Name="gPoeDamagedAnim" Offset="0x04EC"/>
+        <Animation Name="gPoeFleeAnim" Offset="0x06E0"/>
+        <Animation Name="gPoeFloatAnim" Offset="0x0A60"/>
+        <Animation Name="gPoeAppearAnim" Offset="0x11C4"/>
+        <Animation Name="gPoeDisappearAnim" Offset="0x15B0"/>
+        <DList Name="gPoeBurnDL" Offset="0x2608"/>
+        <DList Name="gPoeLanternDL" Offset="0x2D28"/>
+        <DList Name="gPoeSoulDL" Offset="0x3850"/>
+        <Skeleton Name="gPoeSkel" Type="Normal" LimbType="Standard" Offset="0x50D0"/>
+    </File>
+</Root>

@@ -1,0 +1,8 @@
+<Root>
+    <File Name="depth_test_scene" Segment="2">
+        <Scene Name="depth_test_scene" Offset="0x0"/>
+    </File>
+    <File Name="depth_test_room_0" Segment="3">
+        <Room Name="depth_test_room_0" Offset="0x0"/>
+    </File>
+</Root>

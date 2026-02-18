@@ -1497,7 +1497,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     OTRMessage_Init();
     OTRAudio_Init();
     OTRExtScanner();
-    SOH::ExternalModManager::Instance().DiscoverPackages();
+    SOH::ExternalModManager::Instance().Initialize();
     VanillaItemTable_Init();
     DebugConsole_Init();
 

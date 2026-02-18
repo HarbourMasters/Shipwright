@@ -1,0 +1,10 @@
+﻿{
+  "bindings": [
+    {
+      "id": "jump_action",
+      "defaultMask": "BTN_CUSTOM_MODIFIER1",
+      "trigger": "pressed",
+      "allowUserRemap": true
+    }
+  ]
+}

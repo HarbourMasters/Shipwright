@@ -1,0 +1,8 @@
+<Root>
+    
+    <File Name="object_siofuki" Segment="6">
+        <Texture Name="object_siofuki_Tex_000000" OutName="tex_00000000" Format="i4" Width="64" Height="64" Offset="0x0"/>
+        <DList Name="object_siofuki_DL_000B70" Offset="0xB70"/>
+        <Collision Name="object_siofuki_Col_000D78" Offset="0xD78"/>
+    </File>
+</Root>

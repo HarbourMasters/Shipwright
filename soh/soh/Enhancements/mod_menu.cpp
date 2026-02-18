@@ -1,10 +1,11 @@
-#include <map>
+﻿#include <map>
 #include <vector>
 
 #include <libultraship/classes.h>
 #include <ship/utils/StringHelper.h>
 
 #include "mod_menu.h"
+#include "soh/Enhancements/external-mods/ExternalModUi.h"
 #include "soh/OTRGlobals.h"
 #include "soh/resource/type/Skeleton.h"
 #include "soh/SohGui/MenuTypes.h"
@@ -367,6 +368,8 @@ void ModMenuWindow::DrawElement() {
         ImGui::EndTable();
     }
     ImGui::EndDisabled();
+
+    SOH::DrawExternalModControlsSection();
 }
 
 void ModMenuWindow::InitElement() {
@@ -399,3 +402,5 @@ void RegisterModMenuWidgets() {
 }
 
 static RegisterMenuInitFunc menuInitFunc(RegisterModMenuWidgets);
+
+

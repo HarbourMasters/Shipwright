@@ -3429,6 +3429,13 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
     s32 temp;
     s32 nextAnimType;
 
+    bool allowVanillaItemUse = true;
+
+    GameInteractor_ExecuteOnPlayerUseItem(this, item, &allowVanillaItemUse);
+    if (!allowVanillaItemUse) {
+        return;
+    }
+
     itemAction = Player_ItemToItemAction(item);
 
     if (((this->heldItemAction == this->itemAction) &&
@@ -16723,3 +16730,5 @@ void Player_StartTalking(PlayState* play, Actor* actor) {
         func_80835EA4(play, 0xB);
     }
 }
+
+

@@ -102,6 +102,10 @@ void GameInteractor_ExecuteOnPlayerUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerUpdate>();
 }
 
+void GameInteractor_ExecuteOnPlayerUseItem(void* player, int32_t itemId, bool* allowVanilla) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerUseItem>(player, itemId, allowVanilla);
+}
+
 void GameInteractor_ExecuteOnSetDoAction(uint16_t action) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetDoAction>(action);
 }
@@ -396,3 +400,5 @@ void GameInteractor_ExecuteOnRandoEntranceDiscovered(u16 entranceIndex, u8 isRev
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnRandoEntranceDiscovered>(entranceIndex,
                                                                                       isReversedEntrance);
 }
+
+

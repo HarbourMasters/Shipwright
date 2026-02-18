@@ -1,0 +1,10 @@
+<Root>
+    
+    <File Name="object_god_lgt" Segment="6">
+        <DList Name="gGoldenGoddessAuraDL" Offset="0x0330"/>
+        <Texture Name="gGoldenGoddessAuraHTailTex" OutName="golden_goddess_aura_tail" Format="i8" Width="32" Height="32" Offset="0x0530"/>
+        <Texture Name="gGoldenGoddessAuraHeadTex" OutName="golden_goddess_aura_head" Format="i8" Width="64" Height="64" Offset="0x0930"/>
+        <Texture Name="gGoldenGoddessAuraMaskTex" OutName="golden_goddess_aura_mask" Format="i8" Width="16" Height="96" Offset="0x1930"/>
+        <DList Name="gGoldenGoddessBodyDL" Offset="0x3C50"/>
+    </File>
+</Root>

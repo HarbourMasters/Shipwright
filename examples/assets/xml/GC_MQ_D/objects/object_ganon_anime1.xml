@@ -1,0 +1,30 @@
+<Root>
+    <!-- Animations used during the Ganondorf fight. -->
+    <File Name="object_ganon_anime1" Segment="6">
+        <Animation Name="gGanondorfBigMagicWindupAnim" Offset="0x0540"/> <!-- Original name is "gn1_BAatack01" -->
+        <Animation Name="gGanondorfBigMagicThrowAnim" Offset="0x0FE8"/> <!-- Original name is "gn1_BAatack02" -->
+        <Animation Name="gGanondorfBigMagicThrowEndAnim" Offset="0x1440"/> <!-- Original name is "gn1_BAhukki" ("return, comeback") -->
+        <Animation Name="gGanondorfBigMagicChargeStartAnim" Offset="0x1B0C"/> <!-- Original name is "gn1_BAjunbi" ("preparation") -->
+        <Animation Name="gGanondorfBigMagicChargeHoldAnim" Offset="0x1FF8"/> <!-- Original name is "gn1_BAtame" ("to amass, to accumulate") -->
+        <Animation Name="gGanondorfPoundAnim" Offset="0x2D2C"/> <!-- Original name is "gn1_Patack" -->
+        <Animation Name="gGanondorfPoundEndAnim" Offset="0x343C"/> <!-- Original name is "gn1_Phukki" -->
+        <Animation Name="gGanondorfDownedAnim" Offset="0x3D40"/> <!-- Original name is "gn1_YAdown" -->
+        <Animation Name="gGanondorfLightArrowHitAnim" Offset="0x4884"/> <!-- Original name is "gn1_YAhit01" -->
+        <Animation Name="gGanondorfLightEnergyHitAnim" Offset="0x4DA8"/> <!-- Original name is "gn1_YAhit02" -->
+        <Animation Name="gGanondorfGetUp1Anim" Offset="0x58C4"/> <!-- Original name is "gn1_YAhukki01" -->
+        <Animation Name="gGanondorfGetUp2Anim" Offset="0x6028"/> <!-- Original name is "gn1_YAhukki02" -->
+        <Animation Name="gGanondorfLandAnim" Offset="0x63CC"/> <!-- Original name is "gn1_YAlanding" -->
+        <Animation Name="gGanondorfVulnerableAnim" Offset="0x69A0"/> <!-- Original name is "gn1_YAmahi" ("paralysis, stupor") -->
+        <Animation Name="gGanondorfThrowAnim" Offset="0x738C"/> <!-- Original name is "gn1_atack" -->
+        <Animation Name="gGanondorfBigMagicHitAnim" Offset="0x8128"/> <!-- Original name is "gn1_ballhit" -->
+        <Animation Name="gGanondorfGetUp3Anim" Offset="0x8A88"/> <!-- Original name is "gn1_ballhukki" -->
+        <Animation Name="gGanondorfLightArrowWaitAnim" Offset="0x8F44"/> <!-- Original name is "gn1_ballmahi" -->
+        <Animation Name="gGanondorfDamageAnim" Offset="0x96B0"/> <!-- Original name is "gn1_damage" -->
+        <Animation Name="gGanondorfFloatAnim" Offset="0x9A14"/> <!-- Original name is "gn1_fly" -->
+        <Animation Name="gGanondorfBlockAnim" Offset="0x9D5C"/> <!-- Original name is "gn1_guard01" -->
+        <Animation Name="gGanondorfBlockReleaseAnim" Offset="0xA598"/> <!-- Original name is "gn1_guard02" -->
+        <Animation Name="gGanondorfChargeLightBallAnim" Offset="0xAA24"/> <!-- Original name is "gn1_preatack" -->
+        <Animation Name="gGanondorfVolleyLeftAnim" Offset="0xB4AC"/> <!-- Original name is "gn1_resieve01" -->
+        <Animation Name="gGanondorfVolleyRightAnim" Offset="0xBC28"/> <!-- Original name is "gn1_resieve02" -->
+    </File>
+</Root>

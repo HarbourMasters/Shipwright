@@ -1,0 +1,13 @@
+<Root>
+    <File Name="object_spot00_break" Segment="6">
+        <DList Name="gBrokenDrawbridgeDL" Offset="0x440"/>
+        <Texture Name="gBrokenDrawbridgeBoltTex" OutName="broken_drawbridge_bolt" Format="rgba16" Width="32" Height="32" Offset="0xB20"/>
+        <Texture Name="gBrokenDrawbridgeDirtTex" OutName="broken_drawbridge_dirt" Format="rgba16" Width="16" Height="16" Offset="0x1320"/>
+        <Texture Name="gBrokenDrawbridgeChainTex" OutName="broken_drawbridge_chain" Format="rgba16" Width="8" Height="16" Offset="0x1520"/>
+        <Collision Name="gBrokenDrawbridgeCol" Offset="0x908"/>
+
+        <DList Name="gBarbedWireFenceDL" Offset="0x980"/>
+        <Texture Name="gBarbedWireFenceTex" OutName="barbed_wire_fence" Format="rgba16" Width="32" Height="32" Offset="0x1620"/>
+        <Collision Name="gBarbedWireFenceCol" Offset="0xAF0"/>
+    </File>
+</Root>

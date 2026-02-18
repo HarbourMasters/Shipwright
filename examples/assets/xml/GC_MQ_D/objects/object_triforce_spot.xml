@@ -1,0 +1,14 @@
+<Root>
+    <File Name="object_triforce_spot" Segment="6">
+        <Array Name="gTriforceVtx" Count="32" Offset="0x0000">
+            <Vtx/>
+        </Array>
+
+        <DList Name="gTriforceDL" Offset="0x0600"/>
+        <DList Name="gTriforceLightColumnDL" Offset="0x0840"/>
+
+        <Texture Name="gTriforceTex" OutName="triforce" Format="i8" Width="64" Height="64" Offset="0x0910"/>
+        <Texture Name="gTriforceColumnSide1Tex" OutName="triforce_light_column_side_1" Format="i8" Width="64" Height="32" Offset="0x1910"/>
+        <Texture Name="gTriforceColumnSide2Tex" OutName="triforce_light_column_side_2" Format="i8" Width="64" Height="32" Offset="0x2110"/>
+    </File>
+</Root>

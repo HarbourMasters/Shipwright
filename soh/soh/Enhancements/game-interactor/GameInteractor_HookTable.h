@@ -26,6 +26,7 @@ DEFINE_HOOK(OnSceneSpawnActors, ());
 DEFINE_HOOK(OnLinkSkeletonInit, ());
 DEFINE_HOOK(OnLinkEquipmentChange, ());
 DEFINE_HOOK(OnPlayerUpdate, ());
+DEFINE_HOOK(OnPlayerUseItem, (void* player, int32_t itemId, bool* allowVanilla));
 DEFINE_HOOK(OnSetDoAction, (uint16_t action));
 DEFINE_HOOK(OnPlayerSfx, (u16 sfxId));
 DEFINE_HOOK(OnOcarinaSongAction, ());
@@ -95,3 +96,4 @@ DEFINE_HOOK(OnSeqPlayerInit, (int32_t playerIdx, int32_t seqId));
 DEFINE_HOOK(OnRandoSetCheckStatus, (RandomizerCheck rc, RandomizerCheckStatus status));
 DEFINE_HOOK(OnRandoSetIsSkipped, (RandomizerCheck rc, bool isSkipped));
 DEFINE_HOOK(OnRandoEntranceDiscovered, (u16 entranceIndex, u8 isReversedEntrance));
+

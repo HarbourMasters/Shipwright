@@ -1,0 +1,66 @@
+<Root>
+    <File Name="object_oA11" Segment="6">
+        <!-- The commented limbs references dlists past this object size, making ZAPD crash. -->
+        <!-- This object is not used in-game. -->
+
+        <Limb Name="object_oA11_Limb_000000" LimbType="Standard" Offset="0x0"/>
+        <Limb Name="object_oA11_Limb_00000C" LimbType="Standard" Offset="0xC"/>
+        <Limb Name="object_oA11_Limb_000018" LimbType="Standard" Offset="0x18"/>
+        <Limb Name="object_oA11_Limb_000024" LimbType="Standard" Offset="0x24"/>
+        <Limb Name="object_oA11_Limb_000030" LimbType="Standard" Offset="0x30"/>
+        <Limb Name="object_oA11_Limb_00003C" LimbType="Standard" Offset="0x3C"/>
+        <Limb Name="object_oA11_Limb_000048" LimbType="Standard" Offset="0x48"/>
+        <Limb Name="object_oA11_Limb_000054" LimbType="Standard" Offset="0x54"/>
+        <!--
+        <Limb Name="object_oA11_Limb_000060" LimbType="Standard" Offset="0x60"/>
+        <Limb Name="object_oA11_Limb_00006C" LimbType="Standard" Offset="0x6C"/>
+        <Limb Name="object_oA11_Limb_00006C" LimbType="Standard" Offset="0x6C"/>
+        <Limb Name="object_oA11_Limb_000078" LimbType="Standard" Offset="0x78"/>
+        -->
+        <Limb Name="object_oA11_Limb_000084" LimbType="Standard" Offset="0x84"/>
+        <Limb Name="object_oA11_Limb_000090" LimbType="Standard" Offset="0x90"/>
+        <Limb Name="object_oA11_Limb_00009C" LimbType="Standard" Offset="0x9C"/>
+        <Limb Name="object_oA11_Limb_0000A8" LimbType="Standard" Offset="0xA8"/>
+        <!--
+        <Limb Name="object_oA11_Limb_0000B4" LimbType="Standard" Offset="0xB4"/>
+        <Limb Name="object_oA11_Limb_0000C0" LimbType="Standard" Offset="0xC0"/>
+        <Limb Name="object_oA11_Limb_0000CC" LimbType="Standard" Offset="0xCC"/>
+        <Limb Name="object_oA11_Limb_0000D8" LimbType="Standard" Offset="0xD8"/>
+        -->
+        <Limb Name="object_oA11_Limb_0000E4" LimbType="Standard" Offset="0xE4"/>
+        <Limb Name="object_oA11_Limb_0000F0" LimbType="Standard" Offset="0xF0"/>
+        <Limb Name="object_oA11_Limb_0000FC" LimbType="Standard" Offset="0xFC"/>
+        <!--
+        <Limb Name="object_oA11_Limb_000108" LimbType="Standard" Offset="0x108"/>
+        -->
+        <Limb Name="object_oA11_Limb_000114" LimbType="Standard" Offset="0x114"/>
+        <Limb Name="object_oA11_Limb_000120" LimbType="Standard" Offset="0x120"/>
+        <Limb Name="object_oA11_Limb_00012C" LimbType="Standard" Offset="0x12C"/>
+        <Limb Name="object_oA11_Limb_000138" LimbType="Standard" Offset="0x138"/>
+        <Limb Name="object_oA11_Limb_000144" LimbType="Standard" Offset="0x144"/>
+        <Limb Name="object_oA11_Limb_000150" LimbType="Standard" Offset="0x150"/>
+        <Limb Name="object_oA11_Limb_00015C" LimbType="Standard" Offset="0x15C"/>
+        <Limb Name="object_oA11_Limb_000168" LimbType="Standard" Offset="0x168"/>
+        <Limb Name="object_oA11_Limb_000174" LimbType="Standard" Offset="0x174"/>
+        <Limb Name="object_oA11_Limb_000180" LimbType="Standard" Offset="0x180"/>
+        <Limb Name="object_oA11_Limb_00018C" LimbType="Standard" Offset="0x18C"/>
+        <Limb Name="object_oA11_Limb_000198" LimbType="Standard" Offset="0x198"/>
+        <Limb Name="object_oA11_Limb_0001A4" LimbType="Standard" Offset="0x1A4"/>
+        <Limb Name="object_oA11_Limb_0001B0" LimbType="Standard" Offset="0x1B0"/>
+        <Limb Name="object_oA11_Limb_0001BC" LimbType="Standard" Offset="0x1BC"/>
+        <!--
+        <Skeleton Name="object_oA11_Skel_000260" Type="Normal" LimbType="Standard" Offset="0x260"/>
+        -->
+        <DList Name="object_oA11_DL_000A58" Offset="0xA58"/>
+        <DList Name="object_oA11_DL_000BA8" Offset="0xBA8"/>
+        <DList Name="object_oA11_DL_000C40" Offset="0xC40"/>
+        <DList Name="object_oA11_DL_000D28" Offset="0xD28"/>
+        <DList Name="object_oA11_DL_000DD0" Offset="0xDD0"/>
+        <DList Name="object_oA11_DL_000EF0" Offset="0xEF0"/>
+        <DList Name="object_oA11_DL_000FD8" Offset="0xFD8"/>
+        <Texture Name="object_oA11_Tex_001080" OutName="tex_00001080" Format="rgba16" Width="8" Height="8" Offset="0x1080"/>
+        <Texture Name="object_oA11_Tex_001100" OutName="tex_00001100" Format="i4" Width="16" Height="8" Offset="0x1100"/>
+        <Texture Name="object_oA11_Tex_001140" OutName="tex_00001140" Format="rgba16" Width="16" Height="32" Offset="0x1140"/>
+        <Texture Name="object_oA11_Tex_001540" OutName="tex_00001540" Format="rgba16" Width="8" Height="8" Offset="0x1540"/>
+    </File>
+</Root>

@@ -1,0 +1,22 @@
+<Root>
+    <File Name="ovl_En_Ganon_Mant" BaseAddress="0x80AE9730" RangeStart="0x11E8" RangeEnd="0x4118">
+        <Texture Name="gMantTex" OutName="mant" Format="rgba16" Width="32" Height="64" Offset="0x11E8"/>
+
+        <Texture Name="gMantUnusedTex" OutName="mant_unused" Format="rgba16" Width="32" Height="32" Offset="0x21E8"/>
+
+        <Array Name="gMant1Vtx" Count="144" Offset="0x29E8">
+            <Vtx/>
+        </Array>
+
+        <DList Name="gMantMaterialDL" Offset="0x32E8"/>
+
+        <!-- ! @bug gMantUnusedTex is 32x32 not 32x64, however this dlist is unused -->
+        <DList Name="gMantUnusedMaterialDL" Offset="0x3340"/>
+
+        <DList Name="gMantDL" Offset="0x3398"/>
+
+        <Array Name="gMant2Vtx" Count="144" Offset="0x37E8">
+            <Vtx/>
+        </Array>
+    </File>
+</Root>

@@ -1,0 +1,8 @@
+<Root>
+    <File Name="ovl_En_Kanban" BaseAddress="0x80AA2A00" RangeStart="0x2E70" RangeEnd="0x3040">
+        <Array Name="sShadowVtx" Count="4" Offset="0x2E70">
+            <Vtx/>
+        </Array>
+        <DList Name="sShadowDL" Offset="0x2EB0"/>
+    </File>
+</Root>

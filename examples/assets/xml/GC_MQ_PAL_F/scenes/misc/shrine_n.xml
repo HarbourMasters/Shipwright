@@ -1,0 +1,9 @@
+<Root>
+    <File Name="shrine_n_scene" Segment="2">
+        <Path Name="shrine_n_scenePathList_000100" Offset="0x0100" NumPaths="2"/>
+        <Scene Name="shrine_n_scene" Offset="0x0"/>
+    </File>
+    <File Name="shrine_n_room_0" Segment="3">
+        <Room Name="shrine_n_room_0" Offset="0x0"/>
+    </File>
+</Root>

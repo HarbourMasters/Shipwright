@@ -1,0 +1,19 @@
+﻿{
+  "items": [
+    {
+      "id": "skyhook_v2",
+      "displayName": "Skyhook Mk2",
+      "slot": "SLOT_HOOKSHOT",
+      "behavior": {
+        "exportOnUse": "on_use",
+        "exportOnUpdate": "on_update"
+      },
+      "params": {
+        "range": 18.0,
+        "speed": 12.0,
+        "cooldown": 20,
+        "pullForce": 9.0
+      }
+    }
+  ]
+}

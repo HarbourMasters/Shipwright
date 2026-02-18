@@ -1,0 +1,10 @@
+<Root>
+    <File Name="market_alley_n_scene" Segment="2">
+        <Path Name="market_alley_n_scenePathList_00019C" Offset="0x019C" NumPaths="3"/>
+        <Scene Name="market_alley_n_scene" Offset="0x0"/>
+    </File>
+    <File Name="market_alley_n_room_0" Segment="3">
+        <Room Name="market_alley_n_room_0" Offset="0x0"/>
+        <DList Name="market_alley_n_room_0DL_0756E0" Offset="0x756E0"/>
+    </File>
+</Root>
