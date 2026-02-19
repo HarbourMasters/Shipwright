@@ -1,8 +1,9 @@
-
 #include "ExternalModManager.h"
 
 #include <algorithm>
 #include <array>
+#include <chrono>
+#include <cmath>
 #include <cctype>
 #include <cstring>
 #include <fstream>
@@ -19,6 +20,7 @@
 #include <ship/Context.h>
 
 #include "ExternalModItemRuntime.h"
+#include "ExternalModWatCompiler.h"
 #include "ExternalModWasmRuntime.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Notification/Notification.h"
@@ -44,13 +46,17 @@ constexpr uint64_t kMaxManifestBytes = 256 * 1024;
 constexpr uint64_t kMaxScriptBytes = 1024 * 1024;
 constexpr uint64_t kMaxAssetBytes = 512ull * 1024ull * 1024ull;
 constexpr uint64_t kMaxWasmBytes = 4ull * 1024ull * 1024ull;
+constexpr uint64_t kMaxWatSourceBytes = 4ull * 1024ull * 1024ull;
 constexpr uint64_t kMaxItemDefinitionBytes = 256 * 1024;
 constexpr uint64_t kMaxInputDefinitionBytes = 256 * 1024;
 constexpr uint64_t kMaxActorDefinitionBytes = 256 * 1024;
 constexpr uint64_t kMaxHookDefinitionBytes = 256 * 1024;
 constexpr uint64_t kMaxItemIconBytes = 4ull * 1024ull * 1024ull;
+constexpr uint64_t kMaxItemModelBytes = 8ull * 1024ull * 1024ull;
 constexpr int32_t kItemIconSize = 32;
+constexpr int32_t kItemModelTextureSize = 32;
 constexpr int32_t kMaxDecodedIconDimension = 2048;
+constexpr size_t kMaxItemModelTriangles = 4096;
 constexpr int32_t kDefaultTriggerCooldownFrames = 90;
 constexpr int32_t kDefaultRuntimeMemoryKb = 1024;
 constexpr int32_t kDefaultRuntimeCallMs = 2;
@@ -61,6 +67,7 @@ constexpr u8 kAgeReqAdult = LINK_AGE_ADULT;
 constexpr u8 kAgeReqChild = LINK_AGE_CHILD;
 constexpr u8 kAgeReqNone = 9;
 constexpr size_t kItemIconTableSize = sizeof(gItemIcons) / sizeof(gItemIcons[0]);
+constexpr size_t kExternalModExtraInventoryCellCount = 40;
 std::array<void*, kItemIconTableSize> gVanillaItemIcons{};
 bool gVanillaItemIconsCaptured = false;
 
@@ -96,6 +103,20 @@ const std::unordered_map<std::string, int32_t> kButtonAliases = {
     { "BTN_CRIGHT", BTN_CRIGHT },
     { "BTN_CUSTOM_MODIFIER1", BTN_CUSTOM_MODIFIER1 },
     { "BTN_CUSTOM_MODIFIER2", BTN_CUSTOM_MODIFIER2 },
+    { "BTN_CUSTOM_MOD_ACTION1", BTN_CUSTOM_MOD_ACTION1 },
+    { "BTN_CUSTOM_MOD_ACTION2", BTN_CUSTOM_MOD_ACTION2 },
+    { "BTN_CUSTOM_MOD_ACTION3", BTN_CUSTOM_MOD_ACTION3 },
+    { "BTN_CUSTOM_MOD_ACTION4", BTN_CUSTOM_MOD_ACTION4 },
+    { "BTN_CUSTOM_MOD_ACTION5", BTN_CUSTOM_MOD_ACTION5 },
+    { "BTN_CUSTOM_MOD_ACTION6", BTN_CUSTOM_MOD_ACTION6 },
+    { "BTN_CUSTOM_MOD_ACTION7", BTN_CUSTOM_MOD_ACTION7 },
+    { "MOD_ACTION1", BTN_CUSTOM_MOD_ACTION1 },
+    { "MOD_ACTION2", BTN_CUSTOM_MOD_ACTION2 },
+    { "MOD_ACTION3", BTN_CUSTOM_MOD_ACTION3 },
+    { "MOD_ACTION4", BTN_CUSTOM_MOD_ACTION4 },
+    { "MOD_ACTION5", BTN_CUSTOM_MOD_ACTION5 },
+    { "MOD_ACTION6", BTN_CUSTOM_MOD_ACTION6 },
+    { "MOD_ACTION7", BTN_CUSTOM_MOD_ACTION7 },
     { "A", BTN_A },
     { "B", BTN_B },
     { "Z", BTN_Z },
@@ -122,6 +143,22 @@ std::string ToUpper(std::string value) {
     std::transform(value.begin(), value.end(), value.begin(),
                    [](unsigned char c) { return static_cast<char>(std::toupper(c)); });
     return value;
+}
+
+ExternalModRuntimeModuleFormat ResolveRuntimeModuleFormat(const std::filesystem::path& modulePath) {
+    const auto extension = ToLower(modulePath.extension().string());
+    if (extension == ".wasm") {
+        return ExternalModRuntimeModuleFormat::WasmBinary;
+    }
+    if (extension == ".wat") {
+        return ExternalModRuntimeModuleFormat::WatText;
+    }
+    return ExternalModRuntimeModuleFormat::WasmBinary;
+}
+
+bool IsSupportedRuntimeModuleExtension(const std::filesystem::path& modulePath) {
+    const auto extension = ToLower(modulePath.extension().string());
+    return extension == ".wasm" || extension == ".wat";
 }
 
 const std::unordered_set<std::string> kSupportedCapabilities = {
@@ -369,23 +406,8 @@ bool ParseAliasedInt16(const nlohmann::json& json, const std::unordered_map<std:
     return false;
 }
 
-bool ParseButtonMask(const nlohmann::json& json, int32_t& outMask, std::string& outError) {
-    if (json.is_number_integer()) {
-        const auto raw = json.get<long long>();
-        if (raw < 0 || raw > std::numeric_limits<int32_t>::max()) {
-            outError = "button mask out of range";
-            return false;
-        }
-        outMask = static_cast<int32_t>(raw);
-        return true;
-    }
-
-    if (!json.is_string()) {
-        outError = "button mask must be integer or alias string";
-        return false;
-    }
-
-    const auto value = ToUpper(json.get<std::string>());
+bool ParseSingleButtonMaskToken(const std::string& rawValue, int32_t& outMask, std::string& outError) {
+    const auto value = ToUpper(rawValue);
     const auto aliasIt = kButtonAliases.find(value);
     if (aliasIt != kButtonAliases.end()) {
         outMask = aliasIt->second;
@@ -399,6 +421,107 @@ bool ParseButtonMask(const nlohmann::json& json, int32_t& outMask, std::string& 
     outError = "unknown button alias: " + value;
     return false;
 }
+
+bool ParseButtonMask(const nlohmann::json& json, int32_t& outMask, std::string& outError) {
+    if (json.is_array()) {
+        if (json.empty()) {
+            outError = "button mask array must not be empty";
+            return false;
+        }
+
+        int64_t combinedMask = 0;
+        for (size_t i = 0; i < json.size(); ++i) {
+            int32_t entryMask = 0;
+            if (!ParseButtonMask(json[i], entryMask, outError)) {
+                outError = "button mask entry[" + std::to_string(i) + "]: " + outError;
+                return false;
+            }
+            combinedMask |= static_cast<uint32_t>(entryMask);
+        }
+
+        if (combinedMask < 0 || combinedMask > std::numeric_limits<int32_t>::max()) {
+            outError = "button mask out of range";
+            return false;
+        }
+
+        outMask = static_cast<int32_t>(combinedMask);
+        return true;
+    }
+
+    if (json.is_number_integer()) {
+        const auto raw = json.get<long long>();
+        if (raw < 0 || raw > std::numeric_limits<int32_t>::max()) {
+            outError = "button mask out of range";
+            return false;
+        }
+        outMask = static_cast<int32_t>(raw);
+        return true;
+    }
+
+    if (!json.is_string()) {
+        outError = "button mask must be integer, alias string, or array";
+        return false;
+    }
+
+    const auto trim = [](const std::string& value) {
+        size_t start = 0;
+        while (start < value.size() && std::isspace(static_cast<unsigned char>(value[start]))) {
+            ++start;
+        }
+
+        size_t end = value.size();
+        while (end > start && std::isspace(static_cast<unsigned char>(value[end - 1]))) {
+            --end;
+        }
+
+        return value.substr(start, end - start);
+    };
+
+    const auto value = json.get<std::string>();
+    std::vector<std::string> tokens;
+    std::string current;
+    for (const char c : value) {
+        if (c == '|' || c == '+') {
+            const auto token = trim(current);
+            if (!token.empty()) {
+                tokens.push_back(token);
+            }
+            current.clear();
+            continue;
+        }
+        current.push_back(c);
+    }
+
+    const auto trailingToken = trim(current);
+    if (!trailingToken.empty()) {
+        tokens.push_back(trailingToken);
+    }
+
+    if (tokens.empty()) {
+        outError = "button mask alias is empty";
+        return false;
+    }
+
+    int64_t combinedMask = 0;
+    for (size_t i = 0; i < tokens.size(); ++i) {
+        int32_t tokenMask = 0;
+        if (!ParseSingleButtonMaskToken(tokens[i], tokenMask, outError)) {
+            outError = "button mask token[" + std::to_string(i) + "]: " + outError;
+            return false;
+        }
+
+        combinedMask |= static_cast<uint32_t>(tokenMask);
+    }
+
+    if (combinedMask < 0 || combinedMask > std::numeric_limits<int32_t>::max()) {
+        outError = "button mask out of range";
+        return false;
+    }
+
+    outMask = static_cast<int32_t>(combinedMask);
+    return true;
+}
+
 bool ParseInputTriggerType(const nlohmann::json& json, ExternalModInputTriggerType& outType, std::string& outError) {
     if (!json.is_string()) {
         outError = "trigger must be a string";
@@ -532,6 +655,28 @@ bool ParseAction(const nlohmann::json& json, int32_t apiVersion, ExternalModActi
 
     if (actionType == "spawnKusa") {
         outAction.type = ExternalModActionType::SpawnKusa;
+        return true;
+    }
+
+    if (actionType == "lanternLight") {
+        outAction.type = ExternalModActionType::LanternLight;
+        if (json.contains("itemId")) {
+            return ValidateRequiredString(json, "itemId", outAction.itemId, outError);
+        }
+        if (json.contains("requiresItemId")) {
+            return ValidateRequiredString(json, "requiresItemId", outAction.itemId, outError);
+        }
+        return true;
+    }
+
+    if (actionType == "igniteFrontTarget") {
+        outAction.type = ExternalModActionType::IgniteFrontTarget;
+        if (json.contains("itemId")) {
+            return ValidateRequiredString(json, "itemId", outAction.itemId, outError);
+        }
+        if (json.contains("requiresItemId")) {
+            return ValidateRequiredString(json, "requiresItemId", outAction.itemId, outError);
+        }
         return true;
     }
 
@@ -719,6 +864,24 @@ bool MatchButtonMask(int32_t buttons, int32_t mask) {
     return (mask != 0) && ((buttons & mask) == mask);
 }
 
+bool MatchPressedButtonMask(int32_t currentButtons, int32_t previousButtons, int32_t mask) {
+    if (mask == 0) {
+        return false;
+    }
+
+    const int32_t newlyPressed = currentButtons & ~previousButtons;
+    return ((currentButtons & mask) == mask) && ((newlyPressed & mask) != 0);
+}
+
+bool MatchReleasedButtonMask(int32_t currentButtons, int32_t previousButtons, int32_t mask) {
+    if (mask == 0) {
+        return false;
+    }
+
+    const int32_t newlyReleased = previousButtons & ~currentButtons;
+    return ((previousButtons & mask) == mask) && ((newlyReleased & mask) != 0);
+}
+
 float GetParamOrDefault(const std::unordered_map<std::string, float>& params, const char* key, float defaultValue) {
     const auto it = params.find(key);
     if (it == params.end()) {
@@ -737,9 +900,11 @@ struct ExternalModItemSlotConfig {
     u8 vanillaAgeReq;
 };
 
-constexpr std::array<ExternalModItemSlotConfig, 6> kSupportedItemSlotConfigs = {{
+constexpr std::array<ExternalModItemSlotConfig, 7> kSupportedItemSlotConfigs = {{
     { ExternalModItemSlot::Hookshot, "SLOT_HOOKSHOT", SLOT_HOOKSHOT, ITEM_HOOKSHOT, ITEM_NONE,
       { ITEM_HOOKSHOT, ITEM_LONGSHOT, ITEM_NONE }, kAgeReqAdult },
+    { ExternalModItemSlot::Stick, "SLOT_STICK", SLOT_STICK, ITEM_STICK, ITEM_STICK,
+      { ITEM_STICK, ITEM_NONE, ITEM_NONE }, kAgeReqChild },
     { ExternalModItemSlot::Bow, "SLOT_BOW", SLOT_BOW, ITEM_BOW, ITEM_BOW,
       { ITEM_BOW, ITEM_NONE, ITEM_NONE }, kAgeReqAdult },
     { ExternalModItemSlot::FireArrow, "SLOT_ARROW_FIRE", SLOT_ARROW_FIRE, ITEM_ARROW_FIRE, ITEM_BOW,
@@ -931,6 +1096,352 @@ bool TryDecodeItemIconPng(const std::vector<uint8_t>& iconBytes, std::vector<uin
     return true;
 }
 
+std::string TrimWhitespace(const std::string& value) {
+    size_t start = 0;
+    while (start < value.size() && std::isspace(static_cast<unsigned char>(value[start]))) {
+        ++start;
+    }
+
+    size_t end = value.size();
+    while (end > start && std::isspace(static_cast<unsigned char>(value[end - 1]))) {
+        --end;
+    }
+
+    return value.substr(start, end - start);
+}
+
+bool TryParseObjIndex(const std::string& value, size_t count, int32_t& outIndex) {
+    if (value.empty()) {
+        return false;
+    }
+
+    try {
+        const auto raw = std::stoll(value);
+        if (raw == 0) {
+            return false;
+        }
+
+        int64_t resolved = 0;
+        if (raw > 0) {
+            resolved = raw - 1;
+        } else {
+            resolved = static_cast<int64_t>(count) + raw;
+        }
+
+        if (resolved < 0 || resolved >= static_cast<int64_t>(count)) {
+            return false;
+        }
+
+        outIndex = static_cast<int32_t>(resolved);
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
+
+bool TryParseObjFaceVertexToken(const std::string& token, size_t positionCount, size_t texCoordCount,
+                                int32_t& outPositionIndex, int32_t& outTexCoordIndex, std::string& outError) {
+    outPositionIndex = -1;
+    outTexCoordIndex = -1;
+
+    std::vector<std::string> parts;
+    std::string current;
+    for (char c : token) {
+        if (c == '/') {
+            parts.push_back(current);
+            current.clear();
+            continue;
+        }
+        current.push_back(c);
+    }
+    parts.push_back(current);
+
+    if (parts.empty()) {
+        outError = "empty face vertex token";
+        return false;
+    }
+
+    if (!TryParseObjIndex(parts[0], positionCount, outPositionIndex)) {
+        outError = "invalid vertex index: " + token;
+        return false;
+    }
+
+    if (parts.size() >= 2 && !parts[1].empty()) {
+        if (!TryParseObjIndex(parts[1], texCoordCount, outTexCoordIndex)) {
+            outError = "invalid texcoord index: " + token;
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool TryParseObjCustomModel(const std::string& objContent, float modelScale,
+                            std::vector<ExternalModItemDefinition::CustomModelTriangle>& outTriangles,
+                            std::string& outError) {
+    outTriangles.clear();
+
+    struct TempPos {
+        float x = 0.0f;
+        float y = 0.0f;
+        float z = 0.0f;
+    };
+    struct TempUv {
+        float u = 0.0f;
+        float v = 0.0f;
+    };
+    struct TempFaceVertex {
+        int32_t pos = -1;
+        int32_t uv = -1;
+    };
+
+    std::vector<TempPos> positions;
+    std::vector<TempUv> texCoords;
+    std::vector<std::array<TempFaceVertex, 3>> triangles;
+
+    std::istringstream stream(objContent);
+    std::string line;
+    size_t lineNumber = 0;
+    while (std::getline(stream, line)) {
+        ++lineNumber;
+
+        const auto commentPos = line.find('#');
+        if (commentPos != std::string::npos) {
+            line = line.substr(0, commentPos);
+        }
+
+        line = TrimWhitespace(line);
+        if (line.empty()) {
+            continue;
+        }
+
+        if (line.rfind("v ", 0) == 0) {
+            std::istringstream lineStream(line.substr(2));
+            TempPos pos;
+            if (!(lineStream >> pos.x >> pos.y >> pos.z)) {
+                outError = "OBJ parse error line " + std::to_string(lineNumber) + ": invalid vertex format";
+                return false;
+            }
+            positions.push_back(pos);
+            continue;
+        }
+
+        if (line.rfind("vt ", 0) == 0) {
+            std::istringstream lineStream(line.substr(3));
+            TempUv uv;
+            if (!(lineStream >> uv.u >> uv.v)) {
+                outError = "OBJ parse error line " + std::to_string(lineNumber) + ": invalid texcoord format";
+                return false;
+            }
+            texCoords.push_back(uv);
+            continue;
+        }
+
+        if (line.rfind("f ", 0) == 0) {
+            std::istringstream lineStream(line.substr(2));
+            std::vector<TempFaceVertex> faceVertices;
+            std::string token;
+            while (lineStream >> token) {
+                TempFaceVertex faceVertex;
+                std::string parseError;
+                if (!TryParseObjFaceVertexToken(token, positions.size(), texCoords.size(), faceVertex.pos, faceVertex.uv,
+                                                parseError)) {
+                    outError =
+                        "OBJ parse error line " + std::to_string(lineNumber) + ": " + parseError;
+                    return false;
+                }
+                faceVertices.push_back(faceVertex);
+            }
+
+            if (faceVertices.size() < 3) {
+                outError = "OBJ parse error line " + std::to_string(lineNumber) + ": face must have at least 3 vertices";
+                return false;
+            }
+
+            for (size_t i = 1; i + 1 < faceVertices.size(); ++i) {
+                if (triangles.size() >= kMaxItemModelTriangles) {
+                    outError = "OBJ exceeds max triangle count (" + std::to_string(kMaxItemModelTriangles) + ")";
+                    return false;
+                }
+                triangles.push_back({ faceVertices[0], faceVertices[i], faceVertices[i + 1] });
+            }
+        }
+    }
+
+    if (positions.empty()) {
+        outError = "OBJ has no vertices";
+        return false;
+    }
+
+    if (triangles.empty()) {
+        outError = "OBJ has no faces";
+        return false;
+    }
+
+    float minX = std::numeric_limits<float>::max();
+    float minY = std::numeric_limits<float>::max();
+    float minZ = std::numeric_limits<float>::max();
+    float maxX = std::numeric_limits<float>::lowest();
+    float maxY = std::numeric_limits<float>::lowest();
+    float maxZ = std::numeric_limits<float>::lowest();
+
+    for (const auto& pos : positions) {
+        minX = std::min(minX, pos.x);
+        minY = std::min(minY, pos.y);
+        minZ = std::min(minZ, pos.z);
+        maxX = std::max(maxX, pos.x);
+        maxY = std::max(maxY, pos.y);
+        maxZ = std::max(maxZ, pos.z);
+    }
+
+    const float extentX = maxX - minX;
+    const float extentY = maxY - minY;
+    const float extentZ = maxZ - minZ;
+    const float maxExtent = std::max(extentX, std::max(extentY, extentZ));
+    if (maxExtent <= std::numeric_limits<float>::epsilon()) {
+        outError = "OBJ has invalid bounds (zero size)";
+        return false;
+    }
+
+    const float centerX = (minX + maxX) * 0.5f;
+    const float centerY = (minY + maxY) * 0.5f;
+    const float centerZ = (minZ + maxZ) * 0.5f;
+    const float clampedModelScale = std::clamp(modelScale, 0.05f, 20.0f);
+    const float normalizationScale = (2000.0f / maxExtent) * clampedModelScale;
+    const float uvScale = static_cast<float>(kItemModelTextureSize << 5);
+
+    outTriangles.reserve(triangles.size());
+    for (const auto& tri : triangles) {
+        ExternalModItemDefinition::CustomModelTriangle convertedTriangle;
+        for (size_t i = 0; i < 3; ++i) {
+            const auto& faceVertex = tri[i];
+            const auto& sourcePos = positions[faceVertex.pos];
+
+            const auto toS16 = [](float value) {
+                return static_cast<int16_t>(std::clamp<int32_t>(static_cast<int32_t>(std::lround(value)),
+                                                                std::numeric_limits<int16_t>::min(),
+                                                                std::numeric_limits<int16_t>::max()));
+            };
+
+            convertedTriangle.vertices[i].x = toS16((sourcePos.x - centerX) * normalizationScale);
+            convertedTriangle.vertices[i].y = toS16((sourcePos.y - centerY) * normalizationScale);
+            convertedTriangle.vertices[i].z = toS16((sourcePos.z - centerZ) * normalizationScale);
+
+            float u = 0.0f;
+            float v = 0.0f;
+            if (faceVertex.uv >= 0 && faceVertex.uv < static_cast<int32_t>(texCoords.size())) {
+                u = texCoords[faceVertex.uv].u;
+                v = texCoords[faceVertex.uv].v;
+            }
+            convertedTriangle.vertices[i].s = toS16(u * uvScale);
+            convertedTriangle.vertices[i].t = toS16((1.0f - v) * uvScale);
+        }
+        outTriangles.push_back(convertedTriangle);
+    }
+
+    return true;
+}
+
+const ExternalModItemDefinition* FindCustomModelDefinitionForItem(const std::vector<ExternalModPackage>& packages,
+                                                                  int32_t itemId) {
+    const ExternalModItemDefinition* selectedDefinition = nullptr;
+    int32_t selectedLoadOrder = std::numeric_limits<int32_t>::max();
+    std::string selectedModId;
+
+    for (const auto& package : packages) {
+        if (!package.valid || !package.runtime.enabled) {
+            continue;
+        }
+
+        for (const auto& definition : package.runtime.itemDefinitions) {
+            if (definition.customModelTriangles.empty()) {
+                continue;
+            }
+            if (!ItemDefinitionMatchesUseItem(definition, itemId)) {
+                continue;
+            }
+
+            if (selectedDefinition == nullptr || package.manifest.loadOrder < selectedLoadOrder ||
+                (package.manifest.loadOrder == selectedLoadOrder && package.manifest.id < selectedModId)) {
+                selectedDefinition = &definition;
+                selectedLoadOrder = package.manifest.loadOrder;
+                selectedModId = package.manifest.id;
+            }
+        }
+    }
+
+    return selectedDefinition;
+}
+
+extern "C" void ExternalMods_DrawCustomGetItemModel(PlayState* play, GetItemEntry* getItemEntry) {
+    if (play == nullptr || getItemEntry == nullptr) {
+        return;
+    }
+
+    const auto* definition =
+        FindCustomModelDefinitionForItem(ExternalModManager::Instance().GetPackages(), getItemEntry->itemId);
+    if (definition == nullptr || definition->customModelTriangles.empty()) {
+        GetItem_Draw(play, getItemEntry->gid);
+        return;
+    }
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPClearGeometryMode(POLY_OPA_DISP++, G_CULL_BACK | G_LIGHTING);
+
+    if (!definition->modelTextureRgba32.empty()) {
+        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
+        gSPTexture(POLY_OPA_DISP++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
+        gDPLoadTextureBlock(POLY_OPA_DISP++, definition->modelTextureRgba32.data(), G_IM_FMT_RGBA, G_IM_SIZ_32b,
+                            definition->modelTextureWidth, definition->modelTextureHeight, 0,
+                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                            G_TX_NOLOD, G_TX_NOLOD);
+    } else {
+        gSPTexture(POLY_OPA_DISP++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
+        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_SHADE, G_CC_SHADE);
+    }
+
+    constexpr size_t kTrianglesPerBatch = 10;
+    for (size_t triangleStart = 0; triangleStart < definition->customModelTriangles.size();
+         triangleStart += kTrianglesPerBatch) {
+        const size_t triangleCount = std::min(kTrianglesPerBatch, definition->customModelTriangles.size() - triangleStart);
+        const size_t vertexCount = triangleCount * 3;
+
+        auto* vertices = static_cast<Vtx*>(Graph_Alloc(play->state.gfxCtx, sizeof(Vtx) * vertexCount));
+        if (vertices == nullptr) {
+            break;
+        }
+
+        for (size_t i = 0; i < triangleCount; ++i) {
+            const auto& triangle = definition->customModelTriangles[triangleStart + i];
+            for (size_t j = 0; j < 3; ++j) {
+                const size_t index = i * 3 + j;
+                vertices[index].v.ob[0] = triangle.vertices[j].x;
+                vertices[index].v.ob[1] = triangle.vertices[j].y;
+                vertices[index].v.ob[2] = triangle.vertices[j].z;
+                vertices[index].v.flag = 0;
+                vertices[index].v.tc[0] = triangle.vertices[j].s;
+                vertices[index].v.tc[1] = triangle.vertices[j].t;
+                vertices[index].v.cn[0] = 255;
+                vertices[index].v.cn[1] = 255;
+                vertices[index].v.cn[2] = 255;
+                vertices[index].v.cn[3] = 255;
+            }
+        }
+
+        gSPVertex(POLY_OPA_DISP++, vertices, static_cast<int32_t>(vertexCount), 0);
+        for (size_t i = 0; i < triangleCount; ++i) {
+            const int32_t base = static_cast<int32_t>(i * 3);
+            gSP1Triangle(POLY_OPA_DISP++, base + 0, base + 1, base + 2, 0);
+        }
+    }
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
 void ApplyModItemIconOverrides(const std::vector<ExternalModPackage>& packages) {
     CaptureVanillaItemIconsIfNeeded();
     RestoreVanillaItemIcons();
@@ -1025,6 +1536,130 @@ void GrantItemForDefinitionIfMissing(const ExternalModItemDefinition& definition
             }
         }
     }
+}
+const ExternalModItemDefinition* FindItemDefinitionById(const ExternalModRuntime& runtime, const std::string& itemId) {
+    const auto it = std::find_if(runtime.itemDefinitions.begin(), runtime.itemDefinitions.end(),
+                                 [&itemId](const ExternalModItemDefinition& definition) {
+                                     return definition.id == itemId;
+                                 });
+    if (it == runtime.itemDefinitions.end()) {
+        return nullptr;
+    }
+    return &(*it);
+}
+
+bool IsModItemHeld(const ExternalModItemDefinition& definition, const Player* player) {
+    if (player == nullptr) {
+        return false;
+    }
+
+    const int32_t heldItemId = player->heldItemId;
+    return heldItemId >= 0 && heldItemId < ITEM_NONE_FE && ItemDefinitionMatchesUseItem(definition, heldItemId);
+}
+
+bool IsActionItemRequirementSatisfied(const ExternalModPackage& package, const ExternalModAction& action,
+                                      const Player* player) {
+    if (action.itemId.empty()) {
+        return true;
+    }
+
+    const auto* definition = FindItemDefinitionById(package.runtime, action.itemId);
+    if (definition == nullptr || !definition->granted) {
+        return false;
+    }
+
+    return IsModItemHeld(*definition, player);
+}
+
+void SpawnLanternLightAtPlayer(PlayState* play, Player* player) {
+    if (play == nullptr || player == nullptr) {
+        return;
+    }
+
+    Vec3f glowPos = player->actor.world.pos;
+    glowPos.y += 22.0f;
+    EffectSsGFire_Spawn(play, &glowPos);
+
+    Vec3f flamePos = player->actor.world.pos;
+    flamePos.y += 34.0f;
+    Vec3f flameVelocity = { 0.0f, 0.2f, 0.0f };
+    Vec3f flameAccel = { 0.0f, 0.02f, 0.0f };
+    EffectSsDFire_SpawnFixedScale(play, &flamePos, &flameVelocity, &flameAccel, 180, 4);
+}
+
+Actor* FindIgniteTargetInFront(PlayState* play, Player* player) {
+    if (play == nullptr || player == nullptr) {
+        return nullptr;
+    }
+
+    constexpr float kMaxDistance = 180.0f;
+    constexpr float kMaxVerticalDelta = 120.0f;
+    constexpr int32_t kMaxYawDelta = 0x3000;
+    const std::array<int32_t, 4> categories = { ACTORCAT_ENEMY, ACTORCAT_BOSS, ACTORCAT_PROP, ACTORCAT_BG };
+
+    Actor* bestActor = nullptr;
+    float bestScore = std::numeric_limits<float>::max();
+
+    for (const auto category : categories) {
+        for (Actor* actor = play->actorCtx.actorLists[category].head; actor != nullptr; actor = actor->next) {
+            if (actor == &player->actor || actor->update == nullptr) {
+                continue;
+            }
+
+            const float distance = Math_Vec3f_DistXYZ(&player->actor.world.pos, &actor->world.pos);
+            if (distance > kMaxDistance) {
+                continue;
+            }
+
+            const float verticalDelta = fabsf(actor->world.pos.y - player->actor.world.pos.y);
+            if (verticalDelta > kMaxVerticalDelta) {
+                continue;
+            }
+
+            const s16 yawToActor = Math_Vec3f_Yaw(&player->actor.world.pos, &actor->world.pos);
+            const s16 yawDelta = yawToActor - player->actor.shape.rot.y;
+            const int32_t absYawDelta = std::abs(static_cast<int32_t>(yawDelta));
+            if (absYawDelta > kMaxYawDelta) {
+                continue;
+            }
+
+            const float score = distance + (static_cast<float>(absYawDelta) * 0.0015f);
+            if (score < bestScore) {
+                bestScore = score;
+                bestActor = actor;
+            }
+        }
+    }
+
+    return bestActor;
+}
+
+void IgniteActor(PlayState* play, Actor* actor) {
+    if (play == nullptr || actor == nullptr) {
+        return;
+    }
+
+    Vec3f flamePos = actor->world.pos;
+    flamePos.y += 20.0f;
+    EffectSsEnFire_SpawnVec3f(play, actor, &flamePos, 80, 0, 0, -1);
+    Actor_SetColorFilter(actor, 0x4000, 0xFF, 0, 16);
+
+    if ((actor->category == ACTORCAT_ENEMY || actor->category == ACTORCAT_BOSS) && actor->colChkInfo.health > 0) {
+        actor->colChkInfo.damage = std::max<uint8_t>(actor->colChkInfo.damage, 2);
+        Actor_ApplyDamage(actor);
+    }
+}
+
+void SpawnIgniteMissEffect(PlayState* play, Player* player) {
+    if (play == nullptr || player == nullptr) {
+        return;
+    }
+
+    Vec3f missPos = player->actor.world.pos;
+    missPos.x += Math_SinS(player->actor.shape.rot.y) * 95.0f;
+    missPos.z += Math_CosS(player->actor.shape.rot.y) * 95.0f;
+    missPos.y += 24.0f;
+    EffectSsGFire_Spawn(play, &missPos);
 }
 bool MatchesHookFilter(const ExternalModHookFilter& filter, const ExternalModHookEventContext& context) {
     if (filter.hasScene && context.scene != filter.scene) {
@@ -1185,6 +1820,23 @@ const std::vector<ExternalModPackage>& ExternalModManager::GetPackages() const {
     return mPackages;
 }
 
+void ExternalModManager::ApplyGetItemVisualOverrides(GetItemEntry& entry) const {
+    if (entry.modIndex != MOD_NONE) {
+        return;
+    }
+
+    if (entry.drawFunc != nullptr) {
+        return;
+    }
+
+    const auto* definition = FindCustomModelDefinitionForItem(mPackages, entry.itemId);
+    if (definition == nullptr) {
+        return;
+    }
+
+    entry.drawFunc = ExternalMods_DrawCustomGetItemModel;
+}
+
 std::string ExternalModManager::BuildEnabledCVarName(const std::string& modId) {
     return "gExternalMods.Enabled." + SanitizeCVarSegment(modId);
 }
@@ -1193,9 +1845,227 @@ std::string ExternalModManager::BuildBindingCVarName(const std::string& modId, c
     return "gExternalMods.Input." + SanitizeCVarSegment(modId) + "." + SanitizeCVarSegment(bindingId);
 }
 
+std::vector<ExternalModInventoryCellView> ExternalModManager::GetExtraInventoryGrid() const {
+    std::vector<ExternalModInventoryCellView> outCells;
+    outCells.reserve(mExtraInventoryCells.size());
+
+    for (size_t i = 0; i < mExtraInventoryCells.size(); ++i) {
+        ExternalModInventoryCellView view;
+        view.index = i;
+
+        const auto& cell = mExtraInventoryCells[i];
+        if (cell.modId.empty() || cell.itemId.empty()) {
+            outCells.push_back(std::move(view));
+            continue;
+        }
+
+        const auto packageIt = std::find_if(mPackages.begin(), mPackages.end(), [&cell](const ExternalModPackage& package) {
+            return package.manifest.id == cell.modId;
+        });
+        if (packageIt == mPackages.end() || !packageIt->runtime.enabled) {
+            outCells.push_back(std::move(view));
+            continue;
+        }
+
+        const auto* definition = FindItemDefinitionById(packageIt->runtime, cell.itemId);
+        if (definition == nullptr || !definition->granted) {
+            outCells.push_back(std::move(view));
+            continue;
+        }
+
+        view.occupied = true;
+        view.modId = cell.modId;
+        view.modName = packageIt->manifest.name;
+        view.itemId = definition->id;
+        view.displayName = definition->displayName;
+        view.slot = definition->slot;
+        view.granted = definition->granted;
+        outCells.push_back(std::move(view));
+    }
+
+    return outCells;
+}
+
+bool ExternalModManager::MoveExtraInventoryCell(size_t fromIndex, size_t toIndex, std::string& outError) {
+    outError.clear();
+
+    if (fromIndex >= mExtraInventoryCells.size() || toIndex >= mExtraInventoryCells.size()) {
+        outError = "cell index out of range";
+        return false;
+    }
+
+    if (fromIndex == toIndex) {
+        return true;
+    }
+
+    if (mExtraInventoryCells[fromIndex].modId.empty() || mExtraInventoryCells[fromIndex].itemId.empty()) {
+        outError = "source cell is empty";
+        return false;
+    }
+
+    std::swap(mExtraInventoryCells[fromIndex], mExtraInventoryCells[toIndex]);
+    return true;
+}
+
+bool ExternalModManager::EquipExtraInventoryCellToButton(size_t cellIndex, int32_t cButtonIndex, std::string& outError) {
+    outError.clear();
+
+    if (cellIndex >= mExtraInventoryCells.size()) {
+        outError = "cell index out of range";
+        return false;
+    }
+
+    if (cButtonIndex < 0 || cButtonIndex >= static_cast<int32_t>(ARRAY_COUNT(gSaveContext.equips.cButtonSlots))) {
+        outError = "c-button index out of range";
+        return false;
+    }
+
+    const auto& cell = mExtraInventoryCells[cellIndex];
+    if (cell.modId.empty() || cell.itemId.empty()) {
+        outError = "cell is empty";
+        return false;
+    }
+
+    const auto packageIt = std::find_if(mPackages.begin(), mPackages.end(), [&cell](const ExternalModPackage& package) {
+        return package.manifest.id == cell.modId;
+    });
+    if (packageIt == mPackages.end() || !packageIt->runtime.enabled) {
+        outError = "mod is not enabled";
+        return false;
+    }
+
+    auto itemIt = std::find_if(packageIt->runtime.itemDefinitions.begin(), packageIt->runtime.itemDefinitions.end(),
+                               [&cell](const ExternalModItemDefinition& itemDefinition) {
+                                   return itemDefinition.id == cell.itemId;
+                               });
+    if (itemIt == packageIt->runtime.itemDefinitions.end() || !itemIt->granted) {
+        outError = "item is not granted";
+        return false;
+    }
+
+    const auto* slotConfig = FindItemSlotConfig(itemIt->slot);
+    if (slotConfig == nullptr) {
+        outError = "unsupported item slot";
+        return false;
+    }
+
+    if (slotConfig->slotIndex < 0 || slotConfig->slotIndex >= static_cast<int32_t>(ARRAY_COUNT(gSaveContext.inventory.items))) {
+        outError = "inventory slot index out of range";
+        return false;
+    }
+
+    const int32_t grantedItemId = ResolveGrantedItemId(*itemIt);
+    if (gSaveContext.inventory.items[slotConfig->slotIndex] == ITEM_NONE && grantedItemId != ITEM_NONE &&
+        grantedItemId >= std::numeric_limits<int8_t>::min() && grantedItemId <= std::numeric_limits<int8_t>::max()) {
+        gSaveContext.inventory.items[slotConfig->slotIndex] = static_cast<int8_t>(grantedItemId);
+    }
+
+    const int32_t equippedItem = gSaveContext.inventory.items[slotConfig->slotIndex];
+    if (equippedItem == ITEM_NONE) {
+        outError = "inventory slot is empty";
+        return false;
+    }
+
+    if (equippedItem < std::numeric_limits<int8_t>::min() || equippedItem > std::numeric_limits<int8_t>::max()) {
+        outError = "equipped item id out of range";
+        return false;
+    }
+
+    gSaveContext.equips.cButtonSlots[cButtonIndex] = static_cast<int8_t>(slotConfig->slotIndex);
+    gSaveContext.equips.buttonItems[cButtonIndex + 1] = static_cast<int8_t>(equippedItem);
+
+    if (gSaveContext.linkAge == LINK_AGE_ADULT) {
+        gSaveContext.adultEquips.cButtonSlots[cButtonIndex] = static_cast<int8_t>(slotConfig->slotIndex);
+        gSaveContext.adultEquips.buttonItems[cButtonIndex + 1] = static_cast<int8_t>(equippedItem);
+    } else {
+        gSaveContext.childEquips.cButtonSlots[cButtonIndex] = static_cast<int8_t>(slotConfig->slotIndex);
+        gSaveContext.childEquips.buttonItems[cButtonIndex + 1] = static_cast<int8_t>(equippedItem);
+    }
+
+    if (gPlayState != nullptr) {
+        Interface_LoadItemIcon1(gPlayState, static_cast<uint16_t>(cButtonIndex + 1));
+    }
+
+    SPDLOG_INFO("[ExternalMods] Equipped extra inventory item {} from mod {} to C-button {}", itemIt->id,
+                packageIt->manifest.id, cButtonIndex);
+    return true;
+}
+
+void ExternalModManager::SyncExtraInventoryGrid() {
+    if (mExtraInventoryCells.size() != kExternalModExtraInventoryCellCount) {
+        mExtraInventoryCells.assign(kExternalModExtraInventoryCellCount, ExtraInventoryCell{});
+    }
+
+    const auto buildCellKey = [](const std::string& modId, const std::string& itemId) {
+        return modId + "\x1F" + itemId;
+    };
+
+    std::unordered_set<std::string> grantedKeys;
+    for (const auto& package : mPackages) {
+        if (!package.runtime.enabled) {
+            continue;
+        }
+
+        for (const auto& item : package.runtime.itemDefinitions) {
+            if (!item.granted) {
+                continue;
+            }
+            grantedKeys.insert(buildCellKey(package.manifest.id, item.id));
+        }
+    }
+
+    std::unordered_set<std::string> placedKeys;
+    for (auto& cell : mExtraInventoryCells) {
+        if (cell.modId.empty() || cell.itemId.empty()) {
+            continue;
+        }
+
+        const auto key = buildCellKey(cell.modId, cell.itemId);
+        if (!grantedKeys.contains(key) || !placedKeys.insert(key).second) {
+            cell = ExtraInventoryCell{};
+        }
+    }
+
+    bool warnedNoFreeCell = false;
+    for (const auto& package : mPackages) {
+        if (!package.runtime.enabled) {
+            continue;
+        }
+
+        for (const auto& item : package.runtime.itemDefinitions) {
+            if (!item.granted) {
+                continue;
+            }
+
+            const auto key = buildCellKey(package.manifest.id, item.id);
+            if (placedKeys.contains(key)) {
+                continue;
+            }
+
+            const auto emptyCellIt = std::find_if(mExtraInventoryCells.begin(), mExtraInventoryCells.end(),
+                                                  [](const ExtraInventoryCell& cell) {
+                                                      return cell.modId.empty() || cell.itemId.empty();
+                                                  });
+            if (emptyCellIt == mExtraInventoryCells.end()) {
+                if (!warnedNoFreeCell) {
+                    SPDLOG_WARN("[ExternalMods] Extra inventory grid is full ({} cells)",
+                                mExtraInventoryCells.size());
+                    warnedNoFreeCell = true;
+                }
+                break;
+            }
+
+            emptyCellIt->modId = package.manifest.id;
+            emptyCellIt->itemId = item.id;
+            placedKeys.insert(key);
+        }
+    }
+}
+
 void ExternalModManager::Shutdown() {
     UnregisterHooks();
     for (auto& package : mPackages) {
+        UnmountAssetsForPackage(package);
         package.runtime.enabled = false;
         package.runtime.onGameLoadedActions.clear();
         package.runtime.onSceneInitActions.clear();
@@ -1208,11 +2078,35 @@ void ExternalModManager::Shutdown() {
         package.runtime.actorInstances.clear();
         package.runtime.nextActorHandle = 1;
         package.runtime.hookCallsThisFrame = 0;
+        package.runtime.moduleSourcePath.clear();
+        package.runtime.compiledModuleSizeBytes = 0;
+        package.runtime.moduleCompileTimeMs = 0;
+        package.runtime.moduleCompileDiagnostics.clear();
         package.runtime.wasmRuntime.reset();
     }
 
+    mPackages.clear();
+    mExtraInventoryCells.clear();
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
+}
+
+bool ExternalModManager::ReloadPackages(std::string& outError) {
+    outError.clear();
+    Initialize();
+
+    size_t invalidCount = 0;
+    for (const auto& package : mPackages) {
+        if (!package.valid) {
+            invalidCount++;
+        }
+    }
+
+    if (invalidCount > 0) {
+        outError = std::to_string(invalidCount) + " external mod(s) failed to load; check package details for errors.";
+    }
+
+    return true;
 }
 
 void ExternalModManager::DiscoverPackages() {
@@ -1280,6 +2174,15 @@ void ExternalModManager::DiscoverPackages() {
 
 void ExternalModManager::Initialize() {
     UnregisterHooks();
+
+    for (auto& package : mPackages) {
+        UnmountAssetsForPackage(package);
+    }
+
+    mPackages.clear();
+    ApplyModItemAgeRequirementOverrides(mPackages);
+    ApplyModItemIconOverrides(mPackages);
+
     DiscoverPackages();
 
     std::vector<size_t> validIndices;
@@ -1345,6 +2248,7 @@ void ExternalModManager::Initialize() {
         RegisterHooks();
     }
 
+    SyncExtraInventoryGrid();
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
 
@@ -1485,6 +2389,10 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
         std::filesystem::path normalizedRuntimeModule;
         if (!IsSafePackageRelativePath(outManifest.runtimeModule, normalizedRuntimeModule, outError)) {
             outError = "Invalid runtime.module: " + outError;
+            return false;
+        }
+        if (!IsSupportedRuntimeModuleExtension(normalizedRuntimeModule)) {
+            outError = "Invalid runtime.module: extension must be .wasm or .wat";
             return false;
         }
         outManifest.runtimeModule = normalizedRuntimeModule.generic_string();
@@ -1898,6 +2806,65 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
                 return false;
             }
             definition.iconAsset = item["iconAsset"].get<std::string>();
+        }
+
+        if (item.contains("modelAsset")) {
+            if (!item["modelAsset"].is_string()) {
+                outError = "items[" + std::to_string(i) + "].modelAsset must be string";
+                return false;
+            }
+            definition.modelAsset = item["modelAsset"].get<std::string>();
+        }
+
+        if (item.contains("modelTextureAsset")) {
+            if (!item["modelTextureAsset"].is_string()) {
+                outError = "items[" + std::to_string(i) + "].modelTextureAsset must be string";
+                return false;
+            }
+            definition.modelTextureAsset = item["modelTextureAsset"].get<std::string>();
+        }
+
+        if (item.contains("modelScale")) {
+            if (!item["modelScale"].is_number()) {
+                outError = "items[" + std::to_string(i) + "].modelScale must be numeric";
+                return false;
+            }
+            definition.modelScale = item["modelScale"].get<float>();
+        }
+
+        if (item.contains("model")) {
+            if (!item["model"].is_object()) {
+                outError = "items[" + std::to_string(i) + "].model must be object";
+                return false;
+            }
+
+            const auto& model = item["model"];
+            if (model.contains("asset")) {
+                if (!model["asset"].is_string()) {
+                    outError = "items[" + std::to_string(i) + "].model.asset must be string";
+                    return false;
+                }
+                definition.modelAsset = model["asset"].get<std::string>();
+            }
+            if (model.contains("texture")) {
+                if (!model["texture"].is_string()) {
+                    outError = "items[" + std::to_string(i) + "].model.texture must be string";
+                    return false;
+                }
+                definition.modelTextureAsset = model["texture"].get<std::string>();
+            }
+            if (model.contains("scale")) {
+                if (!model["scale"].is_number()) {
+                    outError = "items[" + std::to_string(i) + "].model.scale must be numeric";
+                    return false;
+                }
+                definition.modelScale = model["scale"].get<float>();
+            }
+        }
+
+        if (definition.modelAsset.empty() && !definition.modelTextureAsset.empty()) {
+            outError = "items[" + std::to_string(i) + "].modelTextureAsset requires modelAsset";
+            return false;
         }
 
         if (item.contains("ui")) {
@@ -2615,30 +3582,81 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
 
         for (size_t i = 0; i < runtime.itemDefinitions.size(); ++i) {
             auto& definition = runtime.itemDefinitions[i];
-            if (definition.iconAsset.empty()) {
+            if (!definition.iconAsset.empty()) {
+                std::filesystem::path iconPath;
+                if (!IsSafePackageRelativePath(definition.iconAsset, iconPath, outError)) {
+                    outError = "items[" + std::to_string(i) + "].iconAsset " + outError;
+                    return false;
+                }
+
+                if (ToLower(iconPath.extension().string()) != ".png") {
+                    outError = "items[" + std::to_string(i) + "].iconAsset must point to a .png file";
+                    return false;
+                }
+
+                std::vector<uint8_t> iconBytes;
+                if (!ReadBinaryFromPackage(package, iconPath, kMaxItemIconBytes, iconBytes, outError)) {
+                    outError = "items[" + std::to_string(i) + "].iconAsset read failed: " + outError;
+                    return false;
+                }
+
+                if (!TryDecodeItemIconPng(iconBytes, definition.iconRgba32, outError)) {
+                    outError = "items[" + std::to_string(i) + "].iconAsset decode failed: " + outError;
+                    return false;
+                }
+            }
+
+            if (definition.modelAsset.empty()) {
                 continue;
             }
 
-            std::filesystem::path iconPath;
-            if (!IsSafePackageRelativePath(definition.iconAsset, iconPath, outError)) {
-                outError = "items[" + std::to_string(i) + "].iconAsset " + outError;
+            std::filesystem::path modelPath;
+            if (!IsSafePackageRelativePath(definition.modelAsset, modelPath, outError)) {
+                outError = "items[" + std::to_string(i) + "].modelAsset " + outError;
                 return false;
             }
 
-            if (ToLower(iconPath.extension().string()) != ".png") {
-                outError = "items[" + std::to_string(i) + "].iconAsset must point to a .png file";
+            if (ToLower(modelPath.extension().string()) != ".obj") {
+                outError = "items[" + std::to_string(i) + "].modelAsset must point to a .obj file";
                 return false;
             }
 
-            std::vector<uint8_t> iconBytes;
-            if (!ReadBinaryFromPackage(package, iconPath, kMaxItemIconBytes, iconBytes, outError)) {
-                outError = "items[" + std::to_string(i) + "].iconAsset read failed: " + outError;
+            std::string modelContent;
+            if (!ReadFileFromPackage(package, modelPath, kMaxItemModelBytes, modelContent, outError)) {
+                outError = "items[" + std::to_string(i) + "].modelAsset read failed: " + outError;
                 return false;
             }
 
-            if (!TryDecodeItemIconPng(iconBytes, definition.iconRgba32, outError)) {
-                outError = "items[" + std::to_string(i) + "].iconAsset decode failed: " + outError;
+            if (!TryParseObjCustomModel(modelContent, definition.modelScale, definition.customModelTriangles, outError)) {
+                outError = "items[" + std::to_string(i) + "].modelAsset parse failed: " + outError;
                 return false;
+            }
+
+            if (!definition.modelTextureAsset.empty()) {
+                std::filesystem::path modelTexturePath;
+                if (!IsSafePackageRelativePath(definition.modelTextureAsset, modelTexturePath, outError)) {
+                    outError = "items[" + std::to_string(i) + "].modelTextureAsset " + outError;
+                    return false;
+                }
+
+                if (ToLower(modelTexturePath.extension().string()) != ".png") {
+                    outError = "items[" + std::to_string(i) + "].modelTextureAsset must point to a .png file";
+                    return false;
+                }
+
+                std::vector<uint8_t> modelTextureBytes;
+                if (!ReadBinaryFromPackage(package, modelTexturePath, kMaxItemIconBytes, modelTextureBytes, outError)) {
+                    outError = "items[" + std::to_string(i) + "].modelTextureAsset read failed: " + outError;
+                    return false;
+                }
+
+                if (!TryDecodeItemIconPng(modelTextureBytes, definition.modelTextureRgba32, outError)) {
+                    outError = "items[" + std::to_string(i) + "].modelTextureAsset decode failed: " + outError;
+                    return false;
+                }
+
+                definition.modelTextureWidth = kItemModelTextureSize;
+                definition.modelTextureHeight = kItemModelTextureSize;
             }
         }
 
@@ -2705,17 +3723,54 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
             outError = "Unsupported runtime.type for apiVersion 2: " + package.manifest.runtimeType;
             return false;
         }
-        std::filesystem::path wasmPath;
-        if (!IsSafePackageRelativePath(package.manifest.runtimeModule, wasmPath, outError)) {
+
+        std::filesystem::path runtimeModulePath;
+        if (!IsSafePackageRelativePath(package.manifest.runtimeModule, runtimeModulePath, outError)) {
             outError = "Invalid runtime.module: " + outError;
             return false;
         }
-
-        std::vector<uint8_t> wasmBytes;
-        if (!ReadBinaryFromPackage(package, wasmPath, kMaxWasmBytes, wasmBytes, outError)) {
-            outError = "Failed to read runtime.module: " + outError;
+        if (!IsSupportedRuntimeModuleExtension(runtimeModulePath)) {
+            outError = "Invalid runtime.module extension (expected .wasm or .wat)";
             return false;
         }
+
+        runtime.moduleSourcePath = runtimeModulePath.generic_string();
+        runtime.moduleFormat = ResolveRuntimeModuleFormat(runtimeModulePath);
+        runtime.moduleCompileTimeMs = 0;
+        runtime.moduleCompileDiagnostics.clear();
+        runtime.compiledModuleSizeBytes = 0;
+
+        std::vector<uint8_t> wasmBytes;
+        if (runtime.moduleFormat == ExternalModRuntimeModuleFormat::WatText) {
+            std::string watContent;
+            if (!ReadFileFromPackage(package, runtimeModulePath, kMaxWatSourceBytes, watContent, outError)) {
+                outError = "Failed to read runtime.module: " + outError;
+                return false;
+            }
+
+            int32_t compileMs = 0;
+            std::string compileDiagnostics;
+            if (!CompileWatToWasm(watContent, runtime.moduleSourcePath, wasmBytes, compileMs, compileDiagnostics)) {
+                runtime.moduleCompileDiagnostics = compileDiagnostics;
+                outError = "Failed to compile runtime.module (.wat): " + compileDiagnostics;
+                return false;
+            }
+
+            if (wasmBytes.size() > kMaxWasmBytes) {
+                outError = "Compiled wasm exceeds max module size";
+                return false;
+            }
+
+            runtime.moduleCompileTimeMs = compileMs;
+            runtime.moduleCompileDiagnostics = compileDiagnostics;
+        } else {
+            if (!ReadBinaryFromPackage(package, runtimeModulePath, kMaxWasmBytes, wasmBytes, outError)) {
+                outError = "Failed to read runtime.module: " + outError;
+                return false;
+            }
+        }
+
+        runtime.compiledModuleSizeBytes = wasmBytes.size();
 
         runtime.wasmRuntime = std::make_unique<ExternalModWasmRuntime>();
         ExternalModWasmConfig config;
@@ -2724,6 +3779,7 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
         config.maxCallMs = package.manifest.runtimeMaxCallMs;
 
         if (!runtime.wasmRuntime->Initialize(wasmBytes, config, outError)) {
+            runtime.moduleCompileDiagnostics = outError;
             return false;
         }
     }
@@ -2758,6 +3814,38 @@ bool ExternalModManager::IsSafePackageRelativePath(const std::string& pathValue,
     }
     outNormalizedPath = normalized;
     return true;
+}
+
+void ExternalModManager::UnmountAssetsForPackage(ExternalModPackage& package) {
+    if (package.mountedAssets.empty()) {
+        return;
+    }
+
+    auto context = Ship::Context::GetInstance();
+    if (context == nullptr || context->GetResourceManager() == nullptr ||
+        context->GetResourceManager()->GetArchiveManager() == nullptr) {
+        package.mountedAssets.clear();
+        return;
+    }
+
+    auto* archiveManager = context->GetResourceManager()->GetArchiveManager();
+    for (const auto& mountedPath : package.mountedAssets) {
+        const auto removedCount = archiveManager->RemoveArchive(mountedPath.generic_string());
+        if (removedCount == 0) {
+            SPDLOG_WARN("[ExternalMods] Attempted to unmount archive not present: {}", mountedPath.string());
+        }
+    }
+
+    if (package.isZip) {
+        std::error_code ec;
+        const auto cacheRoot = std::filesystem::path(Ship::Context::GetPathRelativeToAppDirectory("mods/.external-mod-cache", "soh"));
+        std::filesystem::remove_all(cacheRoot / SanitizeModIdForPath(package.manifest.id), ec);
+        if (ec) {
+            SPDLOG_WARN("[ExternalMods] Failed to remove extracted cache for {}: {}", package.manifest.id, ec.message());
+        }
+    }
+
+    package.mountedAssets.clear();
 }
 
 bool ExternalModManager::MountAssetsForPackage(ExternalModPackage& package, std::string& outError) {
@@ -2901,6 +3989,27 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                     }
                 }
                 break;
+            case ExternalModActionType::LanternLight:
+                if (gPlayState != nullptr) {
+                    auto* lanternPlayer = GET_PLAYER(gPlayState);
+                    if (lanternPlayer != nullptr && IsActionItemRequirementSatisfied(package, action, lanternPlayer)) {
+                        SpawnLanternLightAtPlayer(gPlayState, lanternPlayer);
+                    }
+                }
+                break;
+            case ExternalModActionType::IgniteFrontTarget:
+                if (gPlayState != nullptr) {
+                    auto* lanternPlayer = GET_PLAYER(gPlayState);
+                    if (lanternPlayer != nullptr && IsActionItemRequirementSatisfied(package, action, lanternPlayer)) {
+                        Actor* igniteTarget = FindIgniteTargetInFront(gPlayState, lanternPlayer);
+                        if (igniteTarget != nullptr) {
+                            IgniteActor(gPlayState, igniteTarget);
+                        } else {
+                            SpawnIgniteMissEffect(gPlayState, lanternPlayer);
+                        }
+                    }
+                }
+                break;
             case ExternalModActionType::SpawnActor: {
                 if (!ManifestHasCapability(package.manifest, "actors.vm.v1")) {
                     DisableRuntime(package, "spawnActor requires capability actors.vm.v1");
@@ -2983,6 +4092,7 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                 itemIt->granted = true;
                 itemIt->cooldownRemaining = 0;
                 GrantItemForDefinitionIfMissing(*itemIt);
+                SyncExtraInventoryGrid();
                 break;
             }
             case ExternalModActionType::RevokeModItem: {
@@ -2996,6 +4106,7 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                 }
                 itemIt->granted = false;
                 itemIt->cooldownRemaining = 0;
+                SyncExtraInventoryGrid();
                 break;
             }
             case ExternalModActionType::InvokeWasm: {
@@ -3228,6 +4339,7 @@ void ExternalModManager::OnLoadGame(int32_t fileNum) {
     }
     DispatchExtendedHook(ExternalModHookType::OnLoadGame, context, "OnLoadGame");
 
+    SyncExtraInventoryGrid();
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
 }
@@ -3283,6 +4395,7 @@ void ExternalModManager::OnSceneInit(int16_t sceneNum) {
     context.scene = sceneNum;
     DispatchExtendedHook(ExternalModHookType::OnSceneInit, context, "OnSceneInit");
 
+    SyncExtraInventoryGrid();
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
 }
@@ -3411,14 +4524,13 @@ void ExternalModManager::OnGameFrameUpdate() {
                 bool active = false;
                 switch (inputTrigger.trigger) {
                     case ExternalModInputTriggerType::Pressed:
-                        active = MatchButtonMask(input->press.button, effectiveMask) &&
-                                 MatchButtonMask(input->cur.button, effectiveMask);
+                        active = MatchPressedButtonMask(input->cur.button, input->prev.button, effectiveMask);
                         break;
                     case ExternalModInputTriggerType::Held:
                         active = MatchButtonMask(input->cur.button, effectiveMask);
                         break;
                     case ExternalModInputTriggerType::Released:
-                        active = MatchButtonMask(input->rel.button, effectiveMask);
+                        active = MatchReleasedButtonMask(input->cur.button, input->prev.button, effectiveMask);
                         break;
                     default:
                         break;
@@ -3494,6 +4606,7 @@ void ExternalModManager::OnGameFrameUpdate() {
     context.scene = sceneNum;
     DispatchExtendedHook(ExternalModHookType::OnGameFrameUpdate, context, "OnGameFrameUpdate");
 
+    SyncExtraInventoryGrid();
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
 }
@@ -3601,15 +4714,8 @@ void ExternalModManager::OnPlayDestroy() {
         package.runtime.actorInstances.clear();
         package.runtime.nextActorHandle = 1;
     }
+    SyncExtraInventoryGrid();
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
 }
 } // namespace SOH
-
-
-
-
-
-
-
-

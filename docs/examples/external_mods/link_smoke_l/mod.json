@@ -1,6 +1,6 @@
 {
     "id":  "com.example.link_smoke_l",
-    "name":  "Link Smoke (L)",
+    "name":  "Link Smoke (Action Key)",
     "version":  "0.1.0",
     "apiVersion":  2,
     "loadOrder":  150,
@@ -18,7 +18,7 @@
     "hookDefinitions":  "hooks/hooks.json",
     "runtime":  {
                     "type":  "wasm3-v1",
-                    "module":  "scripts/noop.wasm",
+                    "module":  "scripts/noop.wat",
                     "maxMemoryKb":  1024,
                     "maxCallMs":  2,
                     "maxFrameBudgetMs":  2,

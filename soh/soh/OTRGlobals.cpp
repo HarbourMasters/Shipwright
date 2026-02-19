@@ -293,6 +293,13 @@ OTRGlobals::OTRGlobals() {
         BTN_CUSTOM_OCARINA_DISABLE_SONGS,
         BTN_CUSTOM_OCARINA_PITCH_UP,
         BTN_CUSTOM_OCARINA_PITCH_DOWN,
+        BTN_CUSTOM_MOD_ACTION1,
+        BTN_CUSTOM_MOD_ACTION2,
+        BTN_CUSTOM_MOD_ACTION3,
+        BTN_CUSTOM_MOD_ACTION4,
+        BTN_CUSTOM_MOD_ACTION5,
+        BTN_CUSTOM_MOD_ACTION6,
+        BTN_CUSTOM_MOD_ACTION7,
     }));
     context->InitControlDeck(controlDeck);
     context->InitResourceManager({ portArchivePath }, {}, 3, true);
@@ -1701,6 +1708,17 @@ extern "C" void Graph_StartFrame() {
             }
             break;
         }
+        case KbScancode::LUS_KB_I: {
+            auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
+            if (gui != nullptr) {
+                auto inventoryWindow = gui->GetGuiWindow("External Mod Inventory");
+                if (inventoryWindow != nullptr) {
+                    inventoryWindow->ToggleVisibility();
+                    gui->SaveConsoleVariablesNextFrame();
+                }
+            }
+            break;
+        }
     }
 #endif
 }
@@ -2366,6 +2384,7 @@ extern "C" ShopItemIdentity Randomizer_IdentifyShopItem(s32 sceneNum, u8 slotInd
 
 extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
     GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, getItemID);
+    SOH::ExternalModManager::Instance().ApplyGetItemVisualOverrides(giEntry);
     return giEntry;
 }
 
@@ -2373,7 +2392,9 @@ extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 tableID, s16 getItemID) {
     if (tableID == MOD_RANDOMIZER) {
         return Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(getItemID)).GetGIEntry_Copy();
     }
-    return ItemTableManager::Instance->RetrieveItemEntry(tableID, getItemID);
+    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(tableID, getItemID);
+    SOH::ExternalModManager::Instance().ApplyGetItemVisualOverrides(giEntry);
+    return giEntry;
 }
 
 extern "C" GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId) {

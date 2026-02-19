@@ -1,11 +1,15 @@
 #pragma once
 
+#include <array>
+#include <cstddef>
 #include <cstdint>
 #include <filesystem>
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+struct GetItemEntry;
 
 namespace SOH {
 
@@ -19,6 +23,7 @@ enum class ExternalModInputTriggerType {
 
 enum class ExternalModItemSlot {
     Hookshot,
+    Stick,
     Bow,
     FireArrow,
     IceArrow,
@@ -42,6 +47,11 @@ enum class ExternalModActorArchetype {
     Npc,
     Prop,
     Trigger,
+};
+
+enum class ExternalModRuntimeModuleFormat {
+    WasmBinary,
+    WatText,
 };
 
 struct ExternalModManifest {
@@ -75,6 +85,8 @@ enum class ExternalModActionType {
     PressButton,
     SpawnSmoke,
     SpawnKusa,
+    LanternLight,
+    IgniteFrontTarget,
     SpawnActor,
     DespawnActor,
     SetActorState,
@@ -144,6 +156,23 @@ struct ExternalModItemDefinition {
     ExternalModItemSlot slot = ExternalModItemSlot::Hookshot;
     std::string iconAsset;
     std::vector<uint8_t> iconRgba32;
+    std::string modelAsset;
+    std::string modelTextureAsset;
+    float modelScale = 1.0f;
+    struct CustomModelVertex {
+        int16_t x = 0;
+        int16_t y = 0;
+        int16_t z = 0;
+        int16_t s = 0;
+        int16_t t = 0;
+    };
+    struct CustomModelTriangle {
+        std::array<CustomModelVertex, 3> vertices{};
+    };
+    std::vector<CustomModelTriangle> customModelTriangles;
+    std::vector<uint8_t> modelTextureRgba32;
+    int32_t modelTextureWidth = 0;
+    int32_t modelTextureHeight = 0;
     std::string description;
     std::string onUseExport;
     std::string onUpdateExport;
@@ -269,6 +298,11 @@ struct ExternalModRuntime {
     int32_t maxHookCallsPerFrame = 256;
     int32_t hookCallsThisFrame = 0;
     int32_t maxActorInstances = 64;
+    ExternalModRuntimeModuleFormat moduleFormat = ExternalModRuntimeModuleFormat::WasmBinary;
+    std::string moduleSourcePath;
+    size_t compiledModuleSizeBytes = 0;
+    int32_t moduleCompileTimeMs = 0;
+    std::string moduleCompileDiagnostics;
     std::unique_ptr<ExternalModWasmRuntime> wasmRuntime;
 };
 
@@ -292,20 +326,42 @@ struct ExternalModHookEventContext {
     int16_t healthDelta = 0;
 };
 
+struct ExternalModInventoryCellView {
+    size_t index = 0;
+    bool occupied = false;
+    std::string modId;
+    std::string modName;
+    std::string itemId;
+    std::string displayName;
+    ExternalModItemSlot slot = ExternalModItemSlot::Hookshot;
+    bool granted = false;
+};
+
 class ExternalModManager {
   public:
     static ExternalModManager& Instance();
 
     void Initialize();
     void Shutdown();
+    bool ReloadPackages(std::string& outError);
     void DiscoverPackages();
     std::vector<ExternalModPackage>& GetPackages();
     const std::vector<ExternalModPackage>& GetPackages() const;
+    void ApplyGetItemVisualOverrides(::GetItemEntry& entry) const;
+    std::vector<ExternalModInventoryCellView> GetExtraInventoryGrid() const;
+    bool MoveExtraInventoryCell(size_t fromIndex, size_t toIndex, std::string& outError);
+    bool EquipExtraInventoryCellToButton(size_t cellIndex, int32_t cButtonIndex, std::string& outError);
     static std::string BuildEnabledCVarName(const std::string& modId);
     static std::string BuildBindingCVarName(const std::string& modId, const std::string& bindingId);
 
   private:
+    struct ExtraInventoryCell {
+        std::string modId;
+        std::string itemId;
+    };
+
     std::vector<ExternalModPackage> mPackages;
+    std::vector<ExtraInventoryCell> mExtraInventoryCells;
     uint32_t mOnLoadGameHook = 0;
     uint32_t mOnExitGameHook = 0;
     uint32_t mOnSceneInitHook = 0;
@@ -356,6 +412,7 @@ class ExternalModManager {
     static bool ReadBinaryFromPackage(const ExternalModPackage& package, const std::filesystem::path& packageRelativePath,
                                       uint64_t maxBytes, std::vector<uint8_t>& outBytes, std::string& outError);
 
+    static void UnmountAssetsForPackage(ExternalModPackage& package);
     static bool MountAssetsForPackage(ExternalModPackage& package, std::string& outError);
     static bool LoadRuntimeForPackage(ExternalModPackage& package, std::string& outError);
     static bool IsSafePackageRelativePath(const std::string& pathValue, std::filesystem::path& outNormalizedPath,
@@ -363,6 +420,7 @@ class ExternalModManager {
     static void ExecuteActions(ExternalModPackage& package, const std::vector<ExternalModAction>& actions,
                                const char* triggerName);
     static void DisableRuntime(ExternalModPackage& package, const std::string& reason);
+    void SyncExtraInventoryGrid();
 
     void DispatchExtendedHook(ExternalModHookType hookType, const ExternalModHookEventContext& context,
                               const char* triggerName);
@@ -388,4 +446,3 @@ class ExternalModManager {
 };
 
 } // namespace SOH
-

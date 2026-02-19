@@ -5,6 +5,9 @@
       "displayName": "Bananza",
       "slot": "SLOT_HOOKSHOT",
       "iconAsset": "assets/skyhook_placeholder.png",
+      "modelAsset": "assets/bananza_hookshot.obj",
+      "modelTextureAsset": "assets/skyhook_placeholder.png",
+      "modelScale": 1.0,
       "agePolicy": "allowChild",
       "useMode": "override",
       "grant": {

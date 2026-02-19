@@ -5,6 +5,7 @@
 #include <ship/Context.h>
 
 #include "ExternalModManager.h"
+#include "soh/Notification/Notification.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/UIWidgets.hpp"
 
@@ -14,6 +15,8 @@ const char* GetExternalModItemSlotName(ExternalModItemSlot slot) {
     switch (slot) {
         case ExternalModItemSlot::Hookshot:
             return "SLOT_HOOKSHOT";
+        case ExternalModItemSlot::Stick:
+            return "SLOT_STICK";
         case ExternalModItemSlot::Bow:
             return "SLOT_BOW";
         case ExternalModItemSlot::FireArrow:
@@ -129,6 +132,17 @@ const char* GetExternalModHookDispatchName(ExternalModHookDispatchType dispatchT
     }
 }
 
+const char* GetExternalModRuntimeModuleFormatName(ExternalModRuntimeModuleFormat moduleFormat) {
+    switch (moduleFormat) {
+        case ExternalModRuntimeModuleFormat::WasmBinary:
+            return "wasm";
+        case ExternalModRuntimeModuleFormat::WatText:
+            return "wat";
+        default:
+            return "unknown";
+    }
+}
+
 void DrawExternalModControlsSection() {
     if (!ImGui::CollapsingHeader("External Mods (ZIP)", ImGuiTreeNodeFlags_DefaultOpen)) {
         return;
@@ -136,11 +150,33 @@ void DrawExternalModControlsSection() {
 
     auto& packages = ExternalModManager::Instance().GetPackages();
     if (packages.empty()) {
-        ImGui::TextDisabled("No external ZIP mods discovered in mods/.");
+        ImGui::TextDisabled("No external mods discovered in mods/.");
         return;
     }
 
-    ImGui::TextDisabled("Toggle and bindings are saved. Restart SoH if a mod has archive asset changes.");
+    ImGui::TextDisabled("Toggle and bindings are saved. Use Reload External Mods after editing ZIP/pasta manifests or scripts.");
+
+    if (ImGui::Button("Open Extra Inventory (I)")) {
+        if (auto context = Ship::Context::GetInstance(); context != nullptr && context->GetWindow() != nullptr &&
+                                                     context->GetWindow()->GetGui() != nullptr) {
+            if (auto window = context->GetWindow()->GetGui()->GetGuiWindow("External Mod Inventory"); window != nullptr) {
+                window->ToggleVisibility();
+                context->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            }
+        }
+    }
+    ImGui::SameLine();
+    ImGui::TextDisabled("Grid livre para itens concedidos por mods e equip rapido nos slots comuns.");
+
+    ImGui::SameLine();
+    if (ImGui::Button("Reload External Mods")) {
+        std::string reloadMessage;
+        ExternalModManager::Instance().ReloadPackages(reloadMessage);
+        Notification::Emit({
+            .message = reloadMessage.empty() ? "[ExternalMods] Reload completed." : ("[ExternalMods] Reload completed with warnings: " + reloadMessage),
+            .remainingTime = 8.0f,
+        });
+    }
 
     for (auto& package : packages) {
         ImGui::Separator();
@@ -171,6 +207,18 @@ void DrawExternalModControlsSection() {
             ImGui::TextDisabled("Capabilities: %s", capabilitiesLine.c_str());
         } else {
             ImGui::TextDisabled("Capabilities: none");
+        }
+
+        if (!package.runtime.moduleSourcePath.empty()) {
+            ImGui::TextDisabled("Runtime module: %s (%s)", package.runtime.moduleSourcePath.c_str(),
+                                GetExternalModRuntimeModuleFormatName(package.runtime.moduleFormat));
+            ImGui::TextDisabled("Compiled wasm size: %zu bytes", package.runtime.compiledModuleSizeBytes);
+            if (package.runtime.moduleFormat == ExternalModRuntimeModuleFormat::WatText) {
+                ImGui::TextDisabled("WAT compile time: %d ms", package.runtime.moduleCompileTimeMs);
+            }
+            if (!package.runtime.moduleCompileDiagnostics.empty()) {
+                ImGui::TextWrapped("Runtime diagnostics: %s", package.runtime.moduleCompileDiagnostics.c_str());
+            }
         }
 
         const auto enabledCVar = ExternalModManager::BuildEnabledCVarName(package.manifest.id);
@@ -229,6 +277,13 @@ void DrawExternalModControlsSection() {
                 if (!item.iconAsset.empty()) {
                     ImGui::TextDisabled("icon: %s", item.iconAsset.c_str());
                 }
+                if (!item.modelAsset.empty()) {
+                    ImGui::TextDisabled("model: %s (triangles=%zu)", item.modelAsset.c_str(),
+                                        item.customModelTriangles.size());
+                }
+                if (!item.modelTextureAsset.empty()) {
+                    ImGui::TextDisabled("model texture: %s", item.modelTextureAsset.c_str());
+                }
                 if (item.hasGrantItemId || item.hasGrantAmmo) {
                     const std::string grantItemText = item.hasGrantItemId ? std::to_string(item.grantItemId) : "<slot-default>";
                     const std::string grantAmmoText = item.hasGrantAmmo ? std::to_string(item.grantAmmo) : "<unchanged>";
@@ -241,6 +296,7 @@ void DrawExternalModControlsSection() {
 
         if (!package.runtime.inputBindings.empty()) {
             ImGui::Text("Bindings:");
+            ImGui::TextDisabled("Tip: map to Mod Action buttons, then bind any keyboard/gamepad key in Settings > Controls > Modifier Buttons.");
             for (const auto& binding : package.runtime.inputBindings) {
                 const auto cvarName = ExternalModManager::BuildBindingCVarName(package.manifest.id, binding.id);
                 const auto label = std::string("Binding: ") + binding.id;
@@ -248,7 +304,7 @@ void DrawExternalModControlsSection() {
                                            UIWidgets::BtnSelectorOptions()
                                                .DefaultValue(binding.defaultMask)
                                                .Color(UIWidgets::Colors::LightBlue)
-                                               .Tooltip("External mod action binding"));
+                                               .Tooltip("External mod action binding (supports combinations)"));
             }
         } else {
             ImGui::TextDisabled("No input bindings for this mod.");
@@ -257,5 +313,3 @@ void DrawExternalModControlsSection() {
 }
 
 } // namespace SOH
-
-

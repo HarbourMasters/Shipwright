@@ -1,6 +1,6 @@
 param(
-    [string]$ExampleRoot = "docs/examples/external_mods/link_smoke_l",
-    [string]$OutputZip = "mods/link_smoke_l.zip"
+    [string]$ExampleRoot = "docs/examples/external_mods/lanterna_test",
+    [string]$OutputZip = "mods/lanterna_test.zip"
 )
 
 $ErrorActionPreference = "Stop"
@@ -18,9 +18,11 @@ $manifestPath = Join-Path $ExampleRoot "mod.json"
 $scriptPath = Join-Path $ExampleRoot "scripts/init.json"
 $itemsPath = Join-Path $ExampleRoot "items/items.json"
 $inputPath = Join-Path $ExampleRoot "config/input.json"
+$hooksPath = Join-Path $ExampleRoot "hooks/hooks.json"
 
 $manifest = Get-Content $manifestPath -Raw | ConvertFrom-Json
 $script = Get-Content $scriptPath -Raw | ConvertFrom-Json
+$items = Get-Content $itemsPath -Raw | ConvertFrom-Json
 
 if ($manifest.apiVersion -ne 2) { throw "mod.json apiVersion must be 2" }
 if ([string]::IsNullOrWhiteSpace($manifest.entryScript)) { throw "mod.json entryScript is required" }
@@ -32,6 +34,7 @@ if ([string]::IsNullOrWhiteSpace($manifest.itemDefinitions) -or [string]::IsNull
 if ($script.apiVersion -ne 2) { throw "entry script apiVersion must be 2" }
 if (!(Test-Path $itemsPath)) { throw "Missing item definitions: $itemsPath" }
 if (!(Test-Path $inputPath)) { throw "Missing input definitions: $inputPath" }
+if (!(Test-Path $hooksPath)) { throw "Missing hook definitions: $hooksPath" }
 
 $runtimeModulePath = Join-Path $ExampleRoot $manifest.runtime.module
 if (!(Test-Path $runtimeModulePath)) { throw "Missing runtime module: $runtimeModulePath" }
@@ -41,45 +44,16 @@ if ($runtimeModuleExt -notin @('.wasm', '.wat')) {
 }
 $runtimeModuleEntry = ($manifest.runtime.module -replace '\\', '/')
 
-$capabilities = @()
-if ($manifest.PSObject.Properties.Name -contains 'capabilities' -and $null -ne $manifest.capabilities) {
-    $capabilities = @($manifest.capabilities)
-}
-
-$required = @(
-    'mod.json',
-    'scripts/init.json',
-    $runtimeModuleEntry,
-    'items/items.json',
-    'config/input.json'
-)
-
-$hasExtendedHooks = $capabilities -contains 'hooks.extended.v1'
-if ($hasExtendedHooks) {
-    if (-not ($manifest.PSObject.Properties.Name -contains 'hookDefinitions') -or
-        [string]::IsNullOrWhiteSpace($manifest.hookDefinitions)) {
-        throw "hooks.extended.v1 capability requires hookDefinitions"
+foreach ($item in $items.items) {
+    if ([string]::IsNullOrWhiteSpace($item.id)) { throw "items[].id is required" }
+    if ([string]::IsNullOrWhiteSpace($item.displayName)) { throw "items[].displayName is required" }
+    if ([string]::IsNullOrWhiteSpace($item.slot)) { throw "items[].slot is required" }
+    if (![string]::IsNullOrWhiteSpace($item.iconAsset)) {
+        $iconPath = Join-Path $ExampleRoot $item.iconAsset
+        if (!(Test-Path $iconPath)) {
+            throw "Missing icon asset: $iconPath"
+        }
     }
-
-    $hooksPath = Join-Path $ExampleRoot $manifest.hookDefinitions
-    if (!(Test-Path $hooksPath)) {
-        throw "Missing hook definitions: $hooksPath"
-    }
-    $required += (($manifest.hookDefinitions -replace '\\', '/'))
-}
-
-$hasActorVm = $capabilities -contains 'actors.vm.v1'
-if ($hasActorVm) {
-    if (-not ($manifest.PSObject.Properties.Name -contains 'actorDefinitions') -or
-        [string]::IsNullOrWhiteSpace($manifest.actorDefinitions)) {
-        throw "actors.vm.v1 capability requires actorDefinitions"
-    }
-
-    $actorsPath = Join-Path $ExampleRoot $manifest.actorDefinitions
-    if (!(Test-Path $actorsPath)) {
-        throw "Missing actor definitions: $actorsPath"
-    }
-    $required += (($manifest.actorDefinitions -replace '\\', '/'))
 }
 
 $outputDir = Split-Path $OutputZip -Parent
@@ -96,6 +70,15 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 $zip = [IO.Compression.ZipFile]::OpenRead((Resolve-Path $OutputZip))
 try {
     $entries = $zip.Entries.FullName | ForEach-Object { ($_ -replace '\\', '/') }
+    $required = @(
+        'mod.json',
+        'scripts/init.json',
+        $runtimeModuleEntry,
+        'items/items.json',
+        'config/input.json',
+        'hooks/hooks.json',
+        'assets/lanterna_placeholder.png'
+    )
 
     foreach ($entry in $required) {
         if (($entries | Where-Object { $_ -eq $entry }).Count -eq 0) {
@@ -106,4 +89,4 @@ try {
     $zip.Dispose()
 }
 
-Write-Step "Generated package: $OutputZip"
+Write-Step "Generated API v2 package: $OutputZip"

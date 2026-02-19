@@ -275,6 +275,11 @@ Enable API v2 external mods (`.zip`) with:
   - `soh/soh/Enhancements/external-mods/ExternalModUi.cpp`
 - Mod menu integration:
   - new section `External Mod Controls` to remap loaded v2 mod bindings.
+  - binding selector now supports dedicated `Mod Action 1..7` virtual buttons for external mods.
+- Input flexibility update (2026-02-19):
+  - Added `BTN_CUSTOM_MOD_ACTION1..7` channels so mods can bind actions without stealing vanilla controls.
+  - `input.json` `defaultMask` now accepts combinations as string (`"BTN_CUSTOM_MOD_ACTION1|BTN_R"`) or array (`["BTN_CUSTOM_MOD_ACTION1", "BTN_R"]`).
+  - Physical key/controller remap is done in `Settings > Controls > Modifier Buttons` (map any keyboard key or gamepad button to `Mod Action N`).
 - Official v2 example mod added:
   - `docs/examples/external_mods/skyhook_jump/mod.json`
   - `docs/examples/external_mods/skyhook_jump/items/items.json`
@@ -547,3 +552,193 @@ Allow external mod ZIP items to load custom PNG icon textures directly from `ite
 - Full in-game visual validation of icon rendering and inventory/message paths still depends on local runtime verification.
 - Custom icon format is currently restricted to PNG and normalized to 32x32 RGBA.
 - If multiple enabled mods override the same item icon, precedence follows mod load order and id.
+
+## Stage AD - Extra Mod Inventory Grid + C-Slot Equip (2026-02-19)
+
+### Goal
+Provide an extra free-form inventory grid for granted ZIP mod items, openable with `I`, and allow equipping those items directly to common usable C-slots.
+
+### Implemented
+- `ExternalModManager`
+  - Added runtime extra inventory grid model (`40` cells) with sync from granted mod items.
+  - Added public API:
+    - `GetExtraInventoryGrid()`
+    - `MoveExtraInventoryCell(...)`
+    - `EquipExtraInventoryCellToButton(...)`
+  - Grid sync is refreshed at lifecycle/runtime points (`Initialize`, `OnLoadGame`, `OnSceneInit`, `OnGameFrameUpdate`, `OnPlayDestroy`) and on `grantModItem`/`revokeModItem` actions.
+  - Equipping from grid updates `gSaveContext.equips` (and age-specific equips) and refreshes C-button icon.
+- New window: `ExternalModInventoryWindow`
+  - Popout ImGui window with free grid drag/drop organization.
+  - Item selection panel with one-click equip for `C-Left`, `C-Down`, `C-Right`.
+- UI integration
+  - `SohGui` registers the new window (`CVAR_WINDOW("ExternalModInventory")`).
+  - `External Mods (ZIP)` section adds `Open Extra Inventory (I)` shortcut button.
+- Hotkey integration
+  - `OTRGlobals` toggles `External Mod Inventory` window on keyboard `I`.
+
+### Usage
+1. Enable your ZIP mod in `Settings > Mod Menu > External Mods (ZIP)`.
+2. Press `I` to open `External Mod Inventory`.
+3. Reorder items via drag/drop (free grid).
+4. Select an item and click `Equipar C-Left/C-Down/C-Right`.
+
+### Remaining Risks
+- Full in-game validation (visual behavior + equip flow in all ages/scenes) still depends on local runtime testing after build.
+- Grid position persistence across full app restarts is not yet stored in dedicated CVars/file.
+
+### Commands Executed
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_v2.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_example.ps1`
+
+### Test Results
+- `smoke_validate_v2.ps1`: pass.
+- `smoke_validate_example.ps1`: pass.
+
+### Manual Validation Log (with timestamp)
+- 2026-02-19 09:06:40 -03:00: `smoke_validate_v2.ps1` passou.
+- 2026-02-19 09:06:49 -03:00: `smoke_validate_example.ps1` passou.
+- 2026-02-19 09:06:49 -03:00: build C++ completo ainda pendente (executar localmente para validar runtime in-game com tecla `I`).
+
+## Stage AE - Native WAT Runtime Loader + External Mod Reload (2026-02-19)
+
+### Goal
+Enable API v2 external mods to use `runtime.module` as `.wat` or `.wasm` with internal `.wat -> .wasm` compilation, and provide runtime reload in Mod Menu without restarting the process.
+
+### Implemented
+- Build system updates:
+  - Root `CMakeLists.txt` now installs `wabt` via vcpkg automation on Windows.
+  - `soh/CMakeLists.txt` now resolves `wabt` and links `wabt::wabt` into `soh` (Windows), with compile definition `SOH_HAS_WABT=1`.
+- New internal compiler service:
+  - `soh/soh/Enhancements/external-mods/ExternalModWatCompiler.h`
+  - `soh/soh/Enhancements/external-mods/ExternalModWatCompiler.cpp`
+  - Compiles text WAT source in-memory using WABT (`ParseWatModule`, `ResolveNamesModule`, `ValidateModule`, `WriteBinaryModule`).
+  - Handles UTF-8 BOM stripping and emits line/column diagnostics from parser/validator errors.
+- `ExternalModManager` runtime/module integration:
+  - `runtime.module` now accepts `.wasm` and `.wat`.
+  - Manifest validation rejects unsupported `runtime.module` extensions.
+  - Runtime loader compiles `.wat` in-memory before initializing `ExternalModWasmRuntime`.
+  - Runtime metadata added per package:
+    - module format (`wasm`/`wat`)
+    - source path
+    - compiled wasm size
+    - compile time ms
+    - compile diagnostics
+- Runtime reload support:
+  - New API: `ExternalModManager::ReloadPackages(std::string& outError)`.
+  - Unmount/mount cycle added with safe archive removal (`ArchiveManager::RemoveArchive`) and extracted cache cleanup for ZIP packages.
+  - Initialization path now clears previous runtime state, restores vanilla icon/age overrides, rediscovers and remounts packages.
+- Mod Menu UX:
+  - Added `Reload External Mods` button in `External Mods (ZIP)` section.
+  - Added runtime module diagnostics display (format/path/bytes/compile ms/errors).
+  - Reload result emits notification in-game.
+- Script and examples migration:
+  - Updated scripts to validate dynamic `runtime.module` path from manifest (extension `.wat|.wasm`):
+    - `scripts/external-mods/build_skyhook_jump_zip.ps1`
+    - `scripts/external-mods/build_link_smoke_l_zip.ps1`
+    - `scripts/external-mods/build_lanterna_test_zip.ps1`
+    - `scripts/external-mods/smoke_validate_v2.ps1`
+  - Example manifests now reference `.wat` runtime modules:
+    - `docs/examples/external_mods/skyhook_jump/mod.json`
+    - `docs/examples/external_mods/link_smoke_l/mod.json`
+    - `docs/examples/external_mods/lanterna_test/mod.json`
+  - Added WAT source files:
+    - `docs/examples/external_mods/skyhook_jump/scripts/skyhook.wat`
+    - `docs/examples/external_mods/link_smoke_l/scripts/noop.wat`
+    - `docs/examples/external_mods/lanterna_test/scripts/noop.wat`
+
+### Commands Executed
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_v2.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_example.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_skyhook_jump_zip.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_link_smoke_l_zip.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_lanterna_test_zip.ps1`
+
+### Test Results
+- `smoke_validate_v2.ps1`: success (after rerun; first attempt failed due transient file lock during parallel archive operations).
+- `smoke_validate_example.ps1`: success.
+- `build_skyhook_jump_zip.ps1`: success (`mods/skyhook_jump.zip` generated).
+- `build_link_smoke_l_zip.ps1`: success (`mods/link_smoke_l.zip` generated).
+- `build_lanterna_test_zip.ps1`: success (`mods/lanterna_test.zip` generated).
+- Full C++ build (`cmake --build ... --target soh`) not executed in-agent by request; to be run manually in local terminal.
+
+### Manual Validation Log (with timestamp)
+- 2026-02-19 09:47:40 -03:00: `smoke_validate_example.ps1` succeeded.
+- 2026-02-19 09:47:40 -03:00: `build_skyhook_jump_zip.ps1` succeeded.
+- 2026-02-19 09:47:50 -03:00: `smoke_validate_v2.ps1` succeeded (re-run after transient file lock).
+- 2026-02-19 09:47:50 -03:00: `build_link_smoke_l_zip.ps1` succeeded.
+- 2026-02-19 09:47:50 -03:00: `build_lanterna_test_zip.ps1` succeeded.
+
+### Remaining Risks
+- Runtime execution is still the current scaffold-level WASM runtime contract (loading/budget surface); this stage focused on native WAT ingestion and reload lifecycle.
+- In-game E2E confirmation of hot reload behavior and runtime diagnostics still depends on local binary run after manual build.
+- Parallel zip creation commands can transiently lock files on Windows; CI/local scripts should run ZIP builders sequentially when targeting same example trees.
+
+### Stage AE Update (2026-02-19 09:56:38 -03:00)
+- `scripts/external-mods/smoke_validate_v2.ps1` now validates required ZIP entries for `iconAsset` dynamically from `items/items.json` (removed hardcoded `assets/skyhook_placeholder.png`).
+- Validation rerun:
+  - `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_v2.ps1` -> success.
+
+## Stage AF - Custom Item 3D Model Override via ZIP OBJ (2026-02-19)
+
+### Goal
+Allow external ZIP mods to override the **Get-Item 3D model** and texture for mod-defined items using common source assets (`.obj` + `.png`) directly from `items/items.json`.
+
+### Implemented
+- `ExternalModItemDefinition` expanded with model fields:
+  - `modelAsset` (`.obj`)
+  - `modelTextureAsset` (`.png`, optional)
+  - `modelScale` (float)
+  - runtime buffers for parsed triangles and decoded texture.
+- `ExternalModManager` new safe OBJ runtime path:
+  - parses Wavefront `.obj` (`v`, `vt`, `f`) with triangulation and bounds normalization.
+  - validates limits (`kMaxItemModelBytes`, `kMaxItemModelTriangles`).
+  - loads texture PNG (optional) and normalizes to 32x32 RGBA32 for stable rendering budget.
+- Added custom Get-Item draw callback:
+  - `ExternalMods_DrawCustomGetItemModel(...)`
+  - renders parsed triangles through current item draw pipeline.
+- Hooked runtime draw override into item retrieval:
+  - `OTRGlobals.cpp` now calls `ExternalModManager::ApplyGetItemVisualOverrides(...)` in `ItemTable_Retrieve` and `ItemTable_RetrieveEntry`.
+- Example updated:
+  - `docs/examples/external_mods/skyhook_jump/items/items.json` now includes:
+    - `modelAsset: assets/bananza_hookshot.obj`
+    - `modelTextureAsset: assets/skyhook_placeholder.png`
+    - `modelScale`
+  - Added `docs/examples/external_mods/skyhook_jump/assets/bananza_hookshot.obj`.
+- Script validation updated for model assets:
+  - `scripts/external-mods/smoke_validate_v2.ps1`
+  - `scripts/external-mods/build_skyhook_jump_zip.ps1`
+
+### Commands Executed
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_v2.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_skyhook_jump_zip.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_link_smoke_l_zip.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_lanterna_test_zip.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_example.ps1`
+
+### Test Results
+- `smoke_validate_v2.ps1`: success.
+- `build_skyhook_jump_zip.ps1`: success.
+- `build_link_smoke_l_zip.ps1`: success.
+- `build_lanterna_test_zip.ps1`: success.
+- `smoke_validate_example.ps1`: success.
+
+### Manual Validation Log (with timestamp)
+- 2026-02-19 10:11:07 -03:00: `smoke_validate_v2.ps1` passou com `modelAsset` OBJ no `skyhook_jump`.
+- 2026-02-19 10:11:08 -03:00: ZIP `mods/skyhook_jump.zip` gerado com OBJ + PNG.
+- 2026-02-19 10:11:10 -03:00: `smoke_validate_example.ps1` passou após integração.
+
+### Remaining Risks
+- Este bloco renderiza o modelo custom no **Get-Item 3D**. A troca de malha do item diretamente na mão do Link adulto/criança ainda depende de pipeline adicional de override de recursos `object_link_boy`.
+- Formato suportado nesta etapa: `.obj` (sem `.glb/.gltf` ainda), priorizando simplicidade e estabilidade no runtime.
+- Build C++ completo e validação visual in-game continuam dependentes da execução local do usuário.
+
+### Stage AF Update (2026-02-19 10:12:52 -03:00)
+- Revalidado após ajuste de draw pipeline (disable culling/lighting no custom draw):
+  - `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_v2.ps1` -> success.
+  - `powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_skyhook_jump_zip.ps1` -> success.
+
+### Stage AF Update (2026-02-19 10:15:21 -03:00)
+- `build_skyhook_jump_zip.ps1` agora valida `iconAsset` dinamicamente (sem hardcode de `assets/skyhook_placeholder.png`).
+- Revalidação:
+  - `powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_skyhook_jump_zip.ps1` -> success.
+  - `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_v2.ps1` -> success.

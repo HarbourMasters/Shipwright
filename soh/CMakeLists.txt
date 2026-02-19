@@ -628,6 +628,8 @@ endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     find_package(glfw3 REQUIRED)
+    find_package(wabt CONFIG REQUIRED)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE SOH_HAS_WABT=1)
 	find_package(Ogg CONFIG REQUIRED)
 	link_libraries(Ogg::ogg)
 
@@ -656,6 +658,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"Vorbis::vorbisenc"
 			"Vorbis::vorbisfile"
 			"OpusFile::opusfile"
+            "wabt::wabt"
 		)
 	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
@@ -669,6 +672,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"imm32;"
 			"version;"
 			"setupapi"
+            "wabt::wabt"
 		)
 	endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")

@@ -16,7 +16,6 @@ if (!(Test-Path $ExampleRoot)) {
 
 $manifestPath = Join-Path $ExampleRoot "mod.json"
 $scriptPath = Join-Path $ExampleRoot "scripts/init.json"
-$wasmPath = Join-Path $ExampleRoot "scripts/skyhook.wasm"
 $itemsPath = Join-Path $ExampleRoot "items/items.json"
 $inputPath = Join-Path $ExampleRoot "config/input.json"
 
@@ -42,9 +41,6 @@ if ([string]::IsNullOrWhiteSpace($manifest.itemDefinitions) -or [string]::IsNull
 if ($script.apiVersion -ne 2) {
     throw "entry script apiVersion must be 2"
 }
-if (!(Test-Path $wasmPath)) {
-    throw "Missing wasm module: $wasmPath"
-}
 if (!(Test-Path $itemsPath)) {
     throw "Missing item definitions: $itemsPath"
 }
@@ -52,11 +48,66 @@ if (!(Test-Path $inputPath)) {
     throw "Missing input definitions: $inputPath"
 }
 
+$runtimeModulePath = Join-Path $ExampleRoot $manifest.runtime.module
+if (!(Test-Path $runtimeModulePath)) {
+    throw "Missing runtime module: $runtimeModulePath"
+}
+$runtimeModuleExt = [IO.Path]::GetExtension($runtimeModulePath).ToLowerInvariant()
+if ($runtimeModuleExt -notin @('.wasm', '.wat')) {
+    throw "runtime.module must use .wasm or .wat: $($manifest.runtime.module)"
+}
+$runtimeModuleEntry = ($manifest.runtime.module -replace '\\', '/')
+
+$iconEntries = @()
 foreach ($item in $items.items) {
     if (![string]::IsNullOrWhiteSpace($item.iconAsset)) {
         $iconPath = Join-Path $ExampleRoot $item.iconAsset
         if (!(Test-Path $iconPath)) {
             throw "Missing icon asset: $iconPath"
+        }
+        $iconEntries += ($item.iconAsset -replace '\\', '/')
+    }
+
+    $modelAssetValue = $null
+    $modelTextureValue = $null
+    if ($item.PSObject.Properties.Name -contains 'modelAsset' -and ![string]::IsNullOrWhiteSpace($item.modelAsset)) {
+        $modelAssetValue = [string]$item.modelAsset
+    }
+    if ($item.PSObject.Properties.Name -contains 'modelTextureAsset' -and ![string]::IsNullOrWhiteSpace($item.modelTextureAsset)) {
+        $modelTextureValue = [string]$item.modelTextureAsset
+    }
+    if ($item.PSObject.Properties.Name -contains 'model' -and $null -ne $item.model) {
+        if (-not ($item.model -is [pscustomobject])) {
+            throw "item.model must be object for $($item.id)"
+        }
+        if ($item.model.PSObject.Properties.Name -contains 'asset' -and ![string]::IsNullOrWhiteSpace($item.model.asset)) {
+            $modelAssetValue = [string]$item.model.asset
+        }
+        if ($item.model.PSObject.Properties.Name -contains 'texture' -and ![string]::IsNullOrWhiteSpace($item.model.texture)) {
+            $modelTextureValue = [string]$item.model.texture
+        }
+    }
+
+    if ($null -ne $modelAssetValue) {
+        $modelPath = Join-Path $ExampleRoot $modelAssetValue
+        if (!(Test-Path $modelPath)) {
+            throw "Missing model asset: $modelPath"
+        }
+        if ([IO.Path]::GetExtension($modelPath).ToLowerInvariant() -ne '.obj') {
+            throw "model asset must use .obj for $($item.id): $modelAssetValue"
+        }
+    }
+
+    if ($null -ne $modelTextureValue) {
+        if ($null -eq $modelAssetValue) {
+            throw "modelTextureAsset requires modelAsset for $($item.id)"
+        }
+        $modelTexPath = Join-Path $ExampleRoot $modelTextureValue
+        if (!(Test-Path $modelTexPath)) {
+            throw "Missing model texture asset: $modelTexPath"
+        }
+        if ([IO.Path]::GetExtension($modelTexPath).ToLowerInvariant() -ne '.png') {
+            throw "model texture must use .png for $($item.id): $modelTextureValue"
         }
     }
 
@@ -81,6 +132,7 @@ foreach ($item in $items.items) {
         }
     }
 }
+$iconEntries = $iconEntries | Sort-Object -Unique
 
 $outputDir = Split-Path $OutputZip -Parent
 if (![string]::IsNullOrWhiteSpace($outputDir)) {
@@ -99,15 +151,44 @@ try {
     $required = @(
         'mod.json',
         'scripts/init.json',
-        'scripts/skyhook.wasm',
+        $runtimeModuleEntry,
         'items/items.json',
-        'config/input.json',
-        'assets/skyhook_placeholder.png'
+        'config/input.json'
     )
+    $required += $iconEntries
 
     foreach ($entry in $required) {
         if (($entries | Where-Object { $_ -eq $entry }).Count -eq 0) {
             throw "Zip missing required entry: $entry"
+        }
+    }
+
+    foreach ($item in $items.items) {
+        if ($item.PSObject.Properties.Name -contains 'modelAsset' -and ![string]::IsNullOrWhiteSpace($item.modelAsset)) {
+            $entry = ([string]$item.modelAsset -replace '\\', '/')
+            if (($entries | Where-Object { $_ -eq $entry }).Count -eq 0) {
+                throw "Zip missing model entry: $entry"
+            }
+        }
+        if ($item.PSObject.Properties.Name -contains 'modelTextureAsset' -and ![string]::IsNullOrWhiteSpace($item.modelTextureAsset)) {
+            $entry = ([string]$item.modelTextureAsset -replace '\\', '/')
+            if (($entries | Where-Object { $_ -eq $entry }).Count -eq 0) {
+                throw "Zip missing model texture entry: $entry"
+            }
+        }
+        if ($item.PSObject.Properties.Name -contains 'model' -and $null -ne $item.model) {
+            if ($item.model.PSObject.Properties.Name -contains 'asset' -and ![string]::IsNullOrWhiteSpace($item.model.asset)) {
+                $entry = ([string]$item.model.asset -replace '\\', '/')
+                if (($entries | Where-Object { $_ -eq $entry }).Count -eq 0) {
+                    throw "Zip missing model entry: $entry"
+                }
+            }
+            if ($item.model.PSObject.Properties.Name -contains 'texture' -and ![string]::IsNullOrWhiteSpace($item.model.texture)) {
+                $entry = ([string]$item.model.texture -replace '\\', '/')
+                if (($entries | Where-Object { $_ -eq $entry }).Count -eq 0) {
+                    throw "Zip missing model texture entry: $entry"
+                }
+            }
         }
     }
 } finally {
@@ -115,4 +196,3 @@ try {
 }
 
 Write-Step "Generated API v2 package: $OutputZip"
-

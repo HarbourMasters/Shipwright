@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "id": "lanterna_item",
+      "displayName": "Lanterna",
+      "slot": "SLOT_STICK",
+      "iconAsset": "assets/lanterna_placeholder.png",
+      "agePolicy": "allowChild",
+      "useMode": "vanilla",
+      "grant": {
+        "ammo": 20
+      },
+      "params": {
+        "cooldown": 0
+      }
+    }
+  ]
+}
