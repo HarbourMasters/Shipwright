@@ -38,15 +38,15 @@
                 "--build",
                 "build-cmake",
                 "--target",
-                "GenerateSohOtr"
+                "GenerateSohOtr",
+                "--parallel"
             ],
             "windows": {
                 "args": [
                     "--build",
                     "./build/x64",
                     "--target",
-                    "GenerateSohOtr",
-                    "--parallel"
+                    "GenerateSohOtr"
                 ]
             },
             "group": "build",
