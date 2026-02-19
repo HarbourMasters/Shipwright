@@ -56,5 +56,5 @@ void RegisterTargetableHookshotReticle() {
 }
 
 static RegisterShipInitFunc initFunc(RegisterTargetableHookshotReticle,
-                                     { CVAR_ENHANCEMENT("HookshotableReticle"),
+                                     { CVAR_TARGETABLE_HOOKSHOT_NAME,
                                        CVAR_COSMETIC("HookshotReticle.NonTarget.Value") });
