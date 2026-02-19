@@ -298,7 +298,7 @@ std::map<uint16_t, std::string> itemTrackerBeanShortNames = {
     { RG_GERUDO_VALLEY_BEAN_SOUL, "GV" },
     { RG_GRAVEYARD_BEAN_SOUL, "GY" },
     { RG_KOKIRI_FOREST_BEAN_SOUL, "KF" },
-    { RG_LAKE_HYLIA_BEAN_SOUL, "LA" },
+    { RG_LAKE_HYLIA_BEAN_SOUL, "LH" },
     { RG_LOST_WOODS_BRIDGE_BEAN_SOUL, "LWB" },
     { RG_LOST_WOODS_BEAN_SOUL, "LWT" },
     { RG_ZORAS_RIVER_BEAN_SOUL, "ZR" },

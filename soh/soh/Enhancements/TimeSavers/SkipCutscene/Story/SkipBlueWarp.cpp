@@ -168,8 +168,7 @@ void RegisterShouldPlayBlueWarp() {
 
             // This is outside the above condition because we want to handle both first and following visits to the blue
             // warp. Jabu's blue warp doesn't call VB_PLAY_BLUE_WARP_CS without Ruto
-            if ((sEnteredBlueWarp || gSaveContext.entranceIndex == ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP) &&
-                overrideBlueWarpDestinations) {
+            if (sEnteredBlueWarp && overrideBlueWarpDestinations) {
                 Entrance_OverrideBlueWarp();
             }
         }

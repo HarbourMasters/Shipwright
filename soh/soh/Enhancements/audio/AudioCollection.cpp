@@ -64,6 +64,7 @@ AudioCollection::AudioCollection() {
         SEQUENCE_MAP_ENTRY(NA_BGM_FIRE_BOSS,                    "King Dodongo & Volvagia Boss Battle",      "NA_BGM_FIRE_BOSS",               SEQ_BGM_BATTLE,   true,     true),
 
         // SEQ_BGM_FANFARE
+        SEQUENCE_MAP_ENTRY(NA_BGM_FIELD_MORNING,                "Hyrule Field Morning Theme",               "NA_BGM_FIELD_MORNING",           SEQ_FANFARE,      true,     true),
         SEQUENCE_MAP_ENTRY(NA_BGM_GAME_OVER,                    "Game Over",                                "NA_BGM_GAME_OVER",               SEQ_FANFARE,      true,     true),
         SEQUENCE_MAP_ENTRY(NA_BGM_BOSS_CLEAR,                   "Boss Clear",                               "NA_BGM_BOSS_CLEAR",              SEQ_FANFARE,      true,     true),
         SEQUENCE_MAP_ENTRY(NA_BGM_ITEM_GET,                     "Obtain Item",                              "NA_BGM_ITEM_GET",                SEQ_FANFARE,      true,     true),
@@ -78,7 +79,7 @@ AudioCollection::AudioCollection() {
         SEQUENCE_MAP_ENTRY(NA_BGM_MEDALLION_GET,                "Obtain Medallion",                         "NA_BGM_MEDALLION_GET",           SEQ_FANFARE,      true,     true),
         SEQUENCE_MAP_ENTRY(NA_BGM_APPEAR,                       "Enter Zelda",                              "NA_BGM_APPEAR",                  SEQ_FANFARE,      true,     true),
         SEQUENCE_MAP_ENTRY(NA_BGM_MASTER_SWORD,                 "Master Sword",                             "NA_BGM_MASTER_SWORD",            SEQ_FANFARE,      true,     true),
-        SEQUENCE_MAP_ENTRY(NA_BGM_OCARINA_OF_TIME,              "Ocarina of Time",                          "NA_BGM_OCARINA_OF_TIME",         SEQ_FANFARE,      true,     true),
+        SEQUENCE_MAP_ENTRY(NA_BGM_SEAL_OF_SAGES,                "Seal of Six Sages",                        "NA_BGM_SEAL_OF_SAGES",           SEQ_FANFARE,      true,     true),
 
         // SEQ_OCARINA
         SEQUENCE_MAP_ENTRY(NA_BGM_OCA_LIGHT,                    "Prelude of Light",                         "NA_BGM_OCA_LIGHT",               SEQ_OCARINA,      true,     true),
@@ -112,15 +113,7 @@ AudioCollection::AudioCollection() {
         SEQUENCE_MAP_ENTRY(NA_BGM_KOTAKE_KOUME,                 "Kotake & Koume's Theme",                   "NA_BGM_KOTAKE_KOUME",            SEQ_BGM_EVENT,    true,     true),
         SEQUENCE_MAP_ENTRY(NA_BGM_ESCAPE,                       "Escape from Ganon's Castle",               "NA_BGM_ESCAPE",                  SEQ_BGM_EVENT,    true,     true),
         SEQUENCE_MAP_ENTRY(NA_BGM_TIMED_MINI_GAME,              "Mini-Game",                                "NA_BGM_TIMED_MINI_GAME",         SEQ_BGM_EVENT,    true,     true),
-
-        // Previously SEQ_NOSHUFFLE
-        SEQUENCE_MAP_ENTRY(NA_BGM_FIELD_MORNING,                "Hyrule Field Morning Theme",               "NA_BGM_FIELD_MORNING",           SEQ_BGM_EVENT,    false,    false), // Previously SEQ_UNUSED, so not shown anywhere?
-        SEQUENCE_MAP_ENTRY(NA_BGM_END_DEMO,                     "Seal of Six Sages",                        "NA_BGM_END_DEMO",                SEQ_BGM_EVENT,    false,    false), // Previously SEQ_UNUSED, so not shown anywhere?
-        SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_1,                      "End Credits I",                            "NA_BGM_STAFF_1",                 SEQ_BGM_EVENT,    false,    false), // Previously SEQ_UNUSED, so not shown anywhere?
-        SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_2,                      "End Credits II",                           "NA_BGM_STAFF_2",                 SEQ_BGM_EVENT,    false,    false), // Previously SEQ_UNUSED, so not shown anywhere?
-        SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_3,                      "End Credits III",                          "NA_BGM_STAFF_3",                 SEQ_BGM_EVENT,    false,    false), // Previously SEQ_UNUSED, so not shown anywhere?
-        SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_4,                      "End Credits IV",                           "NA_BGM_STAFF_4",                 SEQ_BGM_EVENT,    false,    false), // Previously SEQ_UNUSED, so not shown anywhere?
-
+        
         // SEQ_INSTRUMENT
         SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 1,               "Ocarina",                                  "OCARINA_INSTRUMENT_DEFAULT",     SEQ_INSTRUMENT,   true,     true),
         SEQUENCE_MAP_ENTRY(INSTRUMENT_OFFSET + 2,               "Malon",                                    "OCARINA_INSTRUMENT_MALON",       SEQ_INSTRUMENT,   true,     true),
@@ -298,6 +291,13 @@ AudioCollection::AudioCollection() {
         SEQUENCE_MAP_ENTRY(NA_SE_VO_KZ_MOVE,                    "King Zora - Mweep!",                       "NA_SE_VO_KZ_MOVE",               SEQ_VOICE,        true,     true),
         SEQUENCE_MAP_ENTRY(NA_SE_VO_NB_LAUGH,                   "Navi - Hello!",                            "NA_SE_VO_NB_LAUGH",              SEQ_VOICE,        true,     true),
         SEQUENCE_MAP_ENTRY(NA_SE_VO_LI_DRINK - SFX_FLAG,        "Adult Link - Drinking",                    "NA_SE_VO_LI_DRINK",              SEQ_VOICE,        true,     false),
+
+        // SEQ_ENDING
+        SEQUENCE_MAP_ENTRY(NA_BGM_OCARINA_OF_TIME,              "Ocarina of Time",                          "NA_BGM_OCARINA_OF_TIME",         SEQ_ENDING,       true,     true),
+        SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_1,                      "End Credits I",                            "NA_BGM_STAFF_1",                 SEQ_ENDING,       true,     true),
+        SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_2,                      "End Credits II",                           "NA_BGM_STAFF_2",                 SEQ_ENDING,       true,     true),
+        SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_3,                      "End Credits III",                          "NA_BGM_STAFF_3",                 SEQ_ENDING,       true,     true),
+        SEQUENCE_MAP_ENTRY(NA_BGM_STAFF_4,                      "End Credits IV",                           "NA_BGM_STAFF_4",                 SEQ_ENDING,       true,     true),
 
         //SEQUENCE_MAP_ENTRY(NA_SE_VO_LI_DRINK, "Adult Link - Drinking",                        "NA_SE_VO_LI_DRINK",                    SEQ_VOICE, true, false), // Doesn't work due to SFX_FLAG
         //SEQUENCE_MAP_ENTRY(NA_SE_VO_LI_DRINK_KID, "Child Link - Drinking",                    "NA_SE_VO_LI_DRINK_KID",                SEQ_VOICE, true, false), // Doesn't work due to SFX_FLAG

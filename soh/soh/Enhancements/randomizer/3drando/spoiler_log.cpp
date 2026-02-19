@@ -8,6 +8,7 @@
 #include "pool_functions.hpp"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include <nlohmann/json.hpp>
+#include <spdlog/fmt/fmt.h>
 
 #include <cstdio>
 #include <cstdlib>
@@ -223,12 +224,8 @@ static void WriteChosenOptions() {
 static void WritePlaythrough() {
     auto ctx = Rando::Context::GetInstance();
 
-    for (uint32_t i = 0; i < ctx->playthroughLocations.size(); ++i) {
-        auto sphereNum = std::to_string(i);
-        std::string sphereString = "sphere ";
-        if (i < 10)
-            sphereString += "0";
-        sphereString += sphereNum;
+    for (size_t i = 0; i < ctx->playthroughLocations.size(); i++) {
+        std::string sphereString = fmt::format("sphere {:0>2}", i);
         for (const RandomizerCheck key : ctx->playthroughLocations[i]) {
             if (!ctx->GetItemLocation(key)->IsHidden()) {
                 WriteLocation(sphereString, key, true);
@@ -240,12 +237,8 @@ static void WritePlaythrough() {
 // Write the randomized entrance playthrough to the spoiler log, if applicable
 static void WriteShuffledEntrances() {
     auto ctx = Rando::Context::GetInstance();
-    for (uint32_t i = 0; i < ctx->GetEntranceShuffler()->playthroughEntrances.size(); ++i) {
-        auto sphereNum = std::to_string(i);
-        std::string sphereString = "sphere ";
-        if (i < 10)
-            sphereString += "0";
-        sphereString += sphereNum;
+    for (size_t i = 0; i < ctx->GetEntranceShuffler()->playthroughEntrances.size(); i++) {
+        std::string sphereString = fmt::format("sphere {:0>2}", i);
         for (Entrance* entrance : ctx->GetEntranceShuffler()->playthroughEntrances[i]) {
             WriteShuffledEntrance(sphereString, entrance);
         }
