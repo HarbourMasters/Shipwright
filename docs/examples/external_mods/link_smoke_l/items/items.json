@@ -1,0 +1,15 @@
+{
+  "items": [
+    {
+      "id": "smoke_runtime_stub",
+      "displayName": "Smoke Runtime Stub",
+      "slot": "SLOT_HOOKSHOT",
+      "behavior": {
+        "exportOnUse": "noop"
+      },
+      "params": {
+        "cooldown": 0
+      }
+    }
+  ]
+}

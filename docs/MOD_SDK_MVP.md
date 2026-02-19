@@ -1,4 +1,4 @@
-﻿# External Mod SDK MVP (Zip + OTR + Script)
+# External Mod SDK MVP (Zip + OTR + Script)
 
 ## Goal
 Deliver a minimum viable external mod workflow thatellows creates to ship:
@@ -315,3 +315,235 @@ Enable API v2 external mods (`.zip`) with:
 - In-game E2E behavior validation (new hookshot behavior + jump remap via menu) remains pending until full project build succeeds in this environment.
 - Build environment currently unstable due MSVC PDB lock (`C1041`), preventing final binary confirmation.
 
+
+## Stage Z - Extended Hook Subscriptions + Capability Surface (2026-02-18)
+
+### Goal
+Continue the closed plan by implementing the advanced hook subscription surface for ZIP mods (`hooks.extended.v1`) with safe parsing, dispatch filtering, and runtime diagnostics in Mod Menu.
+
+### Implemented
+- `ExternalModManager` manifest/runtime expanded with:
+  - `capabilities`
+  - `hookDefinitions`
+  - runtime budgets (`maxFrameBudgetMs`, `maxHookCallsPerFrame`, `maxActorInstances`)
+- Added `hooks/hooks.json` parser:
+  - `subscriptions[].id`
+  - `subscriptions[].hook`
+  - `subscriptions[].dispatch` (`actions|wasmExport`)
+  - `subscriptions[].actions` or `subscriptions[].wasmExport`
+  - `subscriptions[].cooldownFrames`
+  - `subscriptions[].filters` (`scene`, `actorId`, `category`, `itemId`, `flagType`, `flagId`, `healthDeltaRange`)
+- Added extended hook dispatcher and registrations for:
+  - `OnLoadGame`, `OnExitGame`, `OnSceneInit`, `AfterSceneCommands`, `OnTransitionEnd`
+  - `OnFlagSet`, `OnFlagUnset`, `OnSceneFlagSet`, `OnSceneFlagUnset`
+  - `OnPlayerUpdate`, `OnPlayerUseItem`, `OnPlayerHealthChange`, `OnItemReceive`
+  - `OnActorInit`, `OnActorSpawn`, `OnActorUpdate`, `OnActorKill`, `OnActorDestroy`
+  - `OnEnemyDefeat`, `OnBossDefeat`, `OnPlayDestroy`, `OnGameFrameUpdate`
+- Added runtime guardrails:
+  - per-subscription cooldown tracking
+  - per-frame hook call budget (`maxHookCallsPerFrame`) with per-mod isolation
+- Updated `ExternalModUi` to display:
+  - mod capabilities
+  - hook subscription list
+  - hook budget usage per frame
+- Updated `link_smoke_l` example to include `hooks.extended.v1` and `hookDefinitions`:
+  - `docs/examples/external_mods/link_smoke_l/mod.json`
+  - `docs/examples/external_mods/link_smoke_l/hooks/hooks.json`
+- Updated `scripts/external-mods/build_link_smoke_l_zip.ps1` to validate optional `hookDefinitions` when `hooks.extended.v1` is enabled.
+
+### Commands Executed
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_link_smoke_l_zip.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_v2.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_example.ps1`
+- `Copy-Item mods/link_smoke_l.zip x64/Release/mods/link_smoke_l.zip -Force`
+
+### Test Results
+- `build_link_smoke_l_zip.ps1`: success (`mods/link_smoke_l.zip` generated and validated).
+- `smoke_validate_v2.ps1`: success.
+- `smoke_validate_example.ps1`: success.
+- Hook-aware ZIP packaging validation: success (`hookDefinitions` required when `hooks.extended.v1` is declared).
+
+### Manual Validation Log (with timestamp)
+- 2026-02-18 23:10:25 -03:00: rebuilt `mods/link_smoke_l.zip` with `hooks.extended.v1` + `hookDefinitions` validation enabled.
+- 2026-02-18 23:10:26 -03:00: copied package to `x64/Release/mods/link_smoke_l.zip` for in-game smoke test.
+- 2026-02-18 23:12:12 -03:00: `smoke_validate_v2.ps1` executed with success.
+- 2026-02-18 23:12:20 -03:00: `smoke_validate_example.ps1` executed with success.
+
+### Remaining Risks
+- Stage still does not include full WASM execution engine (runtime is contract/budget scaffold).
+- `actors.vm.v1` lifecycle/runtime is not yet implemented.
+- Full binary verification still depends on local C++ build execution.
+## Stage AA - Actor VM v1 Runtime Actions (2026-02-18)
+
+### Goal
+Continue Stage Z and close the first functional slice of `actors.vm.v1` in runtime ZIP mods: parse actor definitions, execute actor actions from scripts, auto-spawn by scene, and expose runtime status in Mod Menu.
+
+### Implemented
+- `ExternalModManager`:
+  - Added actor action parsing in `entryScript` for:
+    - `spawnActor`
+    - `despawnActor`
+    - `setActorState`
+    - `moveActorToPathNode`
+    - `openDialog`
+  - Added `TryParseActorDefinitions(...)` implementation for `actors/actors.json` contract.
+  - Added actor runtime helpers:
+    - definition lookup
+    - instance lookup
+    - per-definition instance limits
+    - actor spawn/despawn lifecycle
+  - Added `actors.vm.v1` runtime loading in `LoadRuntimeForPackage(...)`.
+  - Added runtime budget field `maxActorInstances` into `ExternalModRuntime` and enforced on spawn.
+  - Added scene auto-spawn of actor definitions in `OnSceneInit`.
+  - Added actor VM per-frame tick/update dispatch in `OnGameFrameUpdate`.
+  - Added actor runtime cleanup in `Shutdown` and `OnPlayDestroy`.
+- `ExternalModUi`:
+  - Added actor VM section in `External Mods (ZIP)` showing definition count, active instances, max budget, and per-definition summary.
+- Example/package pipeline:
+  - Added `docs/examples/external_mods/link_smoke_l/actors/actors.json`.
+  - Updated `docs/examples/external_mods/link_smoke_l/mod.json` with capability `actors.vm.v1` and `actorDefinitions` path.
+  - Updated `scripts/external-mods/build_link_smoke_l_zip.ps1` to validate `actorDefinitions` when `actors.vm.v1` is enabled.
+  - Updated `scripts/external-mods/smoke_validate_v2.ps1` to validate optional `hookDefinitions`/`actorDefinitions` contracts and ZIP entries by capabilities.
+
+### Commands Executed
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_link_smoke_l_zip.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_v2.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_example.ps1`
+- `Copy-Item mods/link_smoke_l.zip x64/Release/mods/link_smoke_l.zip -Force`
+
+### Test Results
+- `build_link_smoke_l_zip.ps1`: success (`mods/link_smoke_l.zip` generated with `actors/actors.json`).
+- `smoke_validate_v2.ps1`: success.
+- `smoke_validate_example.ps1`: success.
+- Release mods copy: success.
+
+### Manual Validation Log (with timestamp)
+- 2026-02-18 23:38:07 -03:00: `build_link_smoke_l_zip.ps1` executed successfully with actor capability validation.
+- 2026-02-18 23:38:15 -03:00: `smoke_validate_v2.ps1` executed successfully after actor VM contract changes.
+- 2026-02-18 23:38:15 -03:00: `smoke_validate_example.ps1` executed successfully (legacy v1 regression check).
+- 2026-02-18 23:40:52 -03:00: `build_link_smoke_l_zip.ps1` re-executed after actor lifecycle reset adjustment (`OnLoadGame`) and completed successfully.
+- 2026-02-18 23:40:52 -03:00: `smoke_validate_v2.ps1` and `smoke_validate_example.ps1` re-executed successfully after actor VM changes.
+
+### Remaining Risks
+- WASM runtime is still scaffold-level (budget/contract); no full wasm bytecode engine execution yet.
+- Actor VM is logical/runtime-level only (no native visual actor renderer integration for custom meshes yet).
+- Full binary/in-game confirmation still depends on local C++ build execution on your machine.
+
+## Stage AB - Item Data v2 Policies + Grant Overrides (2026-02-19)
+
+### Goal
+Implement the next closed-plan block for `items.data.v2`: add robust item policy fields (`agePolicy`, `useMode`, `grant`) and enforce them in runtime without breaking existing ZIP v1/v2 and `.otr/.o2r` mod flows.
+
+### Implemented
+- `ExternalModManager.h`
+  - Added `ExternalModItemAgePolicy` (`respectVanilla|allowChild|allowAdult`).
+  - Added `ExternalModItemUseMode` (`vanilla|override|augment`).
+  - Extended `ExternalModItemDefinition` with:
+    - `description`
+    - `agePolicy`
+    - `useMode`
+    - `grant` fields (`hasGrantItemId`, `grantItemId`, `hasGrantAmmo`, `grantAmmo`).
+- `ExternalModManager.cpp`
+  - Added parsers for `agePolicy`, `useMode`, and `grant.itemId` (int or alias string).
+  - Added supported item aliases for grant parsing (`ITEM_HOOKSHOT`, `ITEM_BOW`, `ITEM_HAMMER`, `ITEM_ARROW_*`, `ITEM_BOW_ARROW_*`).
+  - Refactored slot config metadata to include:
+    - runtime use item ids
+    - ammo source item id
+    - vanilla age requirement
+  - Added `GrantItemForDefinitionIfMissing(...)`:
+    - grants configured/default item into slot
+    - optionally grants ammo (`grant.ammo`) for compatible slots.
+  - Upgraded age requirement override logic:
+    - evaluates granted items by `agePolicy`
+    - keeps vanilla requirement unless policy explicitly unlocks age.
+  - Upgraded item-use runtime dispatch:
+    - item match no longer hardcoded to hookshot-only
+    - supports `useMode` behavior (`vanilla`, `augment`, `override`)
+    - keeps hookshot impulse path for non-vanilla hookshot mode.
+- `ExternalModUi.cpp`
+  - Added visualization for item `useMode`, `agePolicy`, `grant`, and runtime state (`granted`, cooldown).
+- Example/package updates
+  - Updated `docs/examples/external_mods/skyhook_jump/items/items.json` to use `agePolicy`, `useMode`, `grant`, and `ui.description`.
+  - Updated validation scripts:
+    - `scripts/external-mods/build_skyhook_jump_zip.ps1`
+    - `scripts/external-mods/smoke_validate_v2.ps1`
+  - Added checks for `agePolicy`, `useMode`, and `grant.ammo` validity.
+
+### Commands Executed
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_skyhook_jump_zip.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_v2.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_example.ps1`
+- `Copy-Item mods/skyhook_jump.zip x64/Release/mods/skyhook_jump.zip -Force`
+
+### Test Results
+- `build_skyhook_jump_zip.ps1`: success.
+- `smoke_validate_v2.ps1`: success.
+- `smoke_validate_example.ps1`: success.
+- `x64/Release/mods/skyhook_jump.zip` updated successfully.
+
+### Manual Validation Log (with timestamp)
+- 2026-02-18 23:59:59 -03:00: `build_skyhook_jump_zip.ps1` executed successfully after `items.data.v2` policy/grant changes.
+- 2026-02-19 00:00:00 -03:00: `smoke_validate_v2.ps1` executed successfully with new item policy fields.
+- 2026-02-19 00:00:00 -03:00: `smoke_validate_example.ps1` executed successfully (legacy regression check).
+- 2026-02-19 00:00:08 -03:00: updated package copied to `x64/Release/mods/skyhook_jump.zip`.
+
+### Remaining Risks
+- Full C++ compile/in-game confirmation for this block still depends on local build execution in your environment.
+- WASM runtime remains scaffold/budget-contract level (no full wasm bytecode engine execution yet).
+- `grant.upgrades` support is not included in this block (only `grant.itemId` and `grant.ammo`).
+### Revalidation (post-encoding normalization)
+- 2026-02-19 00:01:30 -03:00: rebuilt `mods/skyhook_jump.zip` after UTF-8 normalization.
+- 2026-02-19 00:01:30 -03:00: `smoke_validate_v2.ps1` passed after re-serialization.
+- 2026-02-19 00:01:37 -03:00: copied updated ZIP to `x64/Release/mods/skyhook_jump.zip`.
+- 2026-02-19 00:01:38 -03:00: `smoke_validate_example.ps1` passed (legacy regression).
+- 2026-02-19 00:03:18 -03:00: rebuilt `mods/skyhook_jump.zip` after updating `scripts/init.json` grants for bow/hammer/fire/ice/light arrow unlock items.
+- 2026-02-19 00:03:18 -03:00: `smoke_validate_v2.ps1` and `smoke_validate_example.ps1` passed after grant-list update.
+- 2026-02-19 00:03:18 -03:00: copied updated ZIP to `x64/Release/mods/skyhook_jump.zip`.
+
+## Stage AC - ZIP PNG Item Icons (2026-02-19)
+
+### Goal
+Allow external mod ZIP items to load custom PNG icon textures directly from `items/items.json` using `iconAsset` paths.
+
+### Implemented
+- `ExternalModManager.h`
+  - Extended `ExternalModItemDefinition` with decoded icon buffer storage (`iconRgba32`).
+- `ExternalModManager.cpp`
+  - Added secure `iconAsset` loading in `LoadRuntimeForPackage(...)`:
+    - validates safe relative path
+    - enforces `.png` extension
+    - reads binary from directory/zip package with size limits
+    - decodes PNG via `stb_image` and converts to 32x32 RGBA.
+  - Added runtime icon override pipeline:
+    - captures vanilla `gItemIcons` table once
+    - restores vanilla table each refresh
+    - applies deterministic mod overrides for granted items.
+  - Hooked icon refresh into lifecycle points (`Initialize`, `Shutdown`, `OnLoadGame`, `OnSceneInit`, `OnGameFrameUpdate`, `OnPlayDestroy`).
+- `z_message_PAL.c`
+  - Hardened textbox item icon path handling:
+    - if `gItemIcons[itemId]` is not an OTR signature string, fallback to `ITEM_NONE` icon path before `strlen/memcpy`.
+  - Prevents crashes when an icon is a raw decoded PNG pointer.
+
+### Commands Executed
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_skyhook_jump_zip.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_v2.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_example.ps1`
+- `Copy-Item mods/skyhook_jump.zip x64/Release/mods/skyhook_jump.zip -Force`
+
+### Test Results
+- `build_skyhook_jump_zip.ps1`: success.
+- `smoke_validate_v2.ps1`: success.
+- `smoke_validate_example.ps1`: success.
+- ZIP copy to `x64/Release/mods/skyhook_jump.zip`: success.
+
+### Manual Validation Log (with timestamp)
+- 2026-02-19 00:24:20 -03:00: rebuilt `mods/skyhook_jump.zip` after PNG icon runtime integration.
+- 2026-02-19 00:24:28 -03:00: `smoke_validate_v2.ps1` passed.
+- 2026-02-19 00:24:28 -03:00: `smoke_validate_example.ps1` passed.
+- 2026-02-19 00:25:07 -03:00: copied updated ZIP to `x64/Release/mods/skyhook_jump.zip`.
+- 2026-02-19 00:25:45 -03:00: re-ran `smoke_validate_v2.ps1` after adding `.png` extension validation for `iconAsset`.
+
+### Remaining Risks
+- Full in-game visual validation of icon rendering and inventory/message paths still depends on local runtime verification.
+- Custom icon format is currently restricted to PNG and normalized to 32x32 RGBA.
+- If multiple enabled mods override the same item icon, precedence follows mod load order and id.

@@ -1,4 +1,4 @@
-﻿#include <map>
+#include <map>
 #include <vector>
 
 #include <libultraship/classes.h>
@@ -340,6 +340,9 @@ void ModMenuWindow::DrawElement() {
                                   });
         }
     }
+    SOH::DrawExternalModControlsSection();
+    ImGui::Separator();
+
     ImGui::BeginDisabled(!editing);
     if (ImGui::BeginTable("tableMods", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Enabled Mods", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -368,8 +371,6 @@ void ModMenuWindow::DrawElement() {
         ImGui::EndTable();
     }
     ImGui::EndDisabled();
-
-    SOH::DrawExternalModControlsSection();
 }
 
 void ModMenuWindow::InitElement() {

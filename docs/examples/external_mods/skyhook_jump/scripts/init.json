@@ -1,9 +1,29 @@
-﻿{
+{
   "apiVersion": 2,
   "onGameLoaded": [
     {
       "action": "grantModItem",
       "itemId": "skyhook_v2"
+    },
+    {
+      "action": "grantModItem",
+      "itemId": "child_bow_unlock"
+    },
+    {
+      "action": "grantModItem",
+      "itemId": "child_hammer_unlock"
+    },
+    {
+      "action": "grantModItem",
+      "itemId": "child_fire_arrow_unlock"
+    },
+    {
+      "action": "grantModItem",
+      "itemId": "child_ice_arrow_unlock"
+    },
+    {
+      "action": "grantModItem",
+      "itemId": "child_light_arrow_unlock"
     },
     {
       "action": "invokeWasm",
@@ -12,7 +32,7 @@
     },
     {
       "action": "showNotification",
-      "text": "Skyhook ativo. Use Hookshot para impulso e M1 para pulo."
+      "text": "Bananza ativo. Bow/Hammer/Arrows liberados para Child."
     }
   ],
   "onInput": [

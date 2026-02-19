@@ -1,15 +1,15 @@
 {
-  "id": "com.example.skyhook_jump",
-  "name": "Skyhook + Mod Jump",
-  "version": "0.2.0",
+  "id": "com.example.link_smoke_l",
+  "name": "Link Smoke (L)",
+  "version": "0.1.0",
   "apiVersion": 2,
-  "loadOrder": 130,
+  "loadOrder": 150,
   "entryScript": "scripts/init.json",
   "assets": [],
   "dependencies": [],
   "runtime": {
     "type": "wasm3-v1",
-    "module": "scripts/skyhook.wasm",
+    "module": "scripts/noop.wasm",
     "maxMemoryKb": 1024,
     "maxCallMs": 2
   },

@@ -1,0 +1,22 @@
+{
+  "apiVersion": 2,
+  "onGameLoaded": [
+    {
+      "action": "showNotification",
+      "text": "Link Smoke ativo: aperte L para spawnar mato (En_Kusa)."
+    }
+  ],
+  "onInput": [
+    {
+      "id": "smoke_on_l",
+      "binding": "smoke_key",
+      "trigger": "pressed",
+      "cooldownFrames": 2,
+      "actions": [
+        {
+          "action": "spawnKusa"
+        }
+      ]
+    }
+  ]
+}

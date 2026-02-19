@@ -19,6 +19,29 @@ enum class ExternalModInputTriggerType {
 
 enum class ExternalModItemSlot {
     Hookshot,
+    Bow,
+    FireArrow,
+    IceArrow,
+    LightArrow,
+    Hammer,
+};
+
+enum class ExternalModItemAgePolicy {
+    RespectVanilla,
+    AllowChild,
+    AllowAdult,
+};
+
+enum class ExternalModItemUseMode {
+    Vanilla,
+    Override,
+    Augment,
+};
+
+enum class ExternalModActorArchetype {
+    Npc,
+    Prop,
+    Trigger,
 };
 
 struct ExternalModManifest {
@@ -36,14 +59,27 @@ struct ExternalModManifest {
     std::string runtimeModule;
     int32_t runtimeMaxMemoryKb = 1024;
     int32_t runtimeMaxCallMs = 2;
+    int32_t runtimeMaxFrameBudgetMs = 2;
+    int32_t runtimeMaxHookCallsPerFrame = 256;
+    int32_t runtimeMaxActorInstances = 64;
     std::string itemDefinitions;
     std::string inputDefinitions;
+    std::string hookDefinitions;
+    std::string actorDefinitions;
+    std::vector<std::string> capabilities;
 };
 
 enum class ExternalModActionType {
     ShowNotification,
     TeleportToEntrance,
     PressButton,
+    SpawnSmoke,
+    SpawnKusa,
+    SpawnActor,
+    DespawnActor,
+    SetActorState,
+    MoveActorToPathNode,
+    OpenDialog,
     GrantModItem,
     RevokeModItem,
     InvokeWasm,
@@ -57,6 +93,13 @@ struct ExternalModAction {
     std::string itemId;
     std::string exportName;
     std::vector<int32_t> args;
+
+    std::string actorDefinitionId;
+    uint32_t actorHandle = 0;
+    std::string actorStateKey;
+    std::string actorStateValue;
+    int32_t pathNodeIndex = 0;
+    int32_t dialogId = 0;
 };
 
 struct ExternalModSceneAction {
@@ -100,12 +143,113 @@ struct ExternalModItemDefinition {
     std::string displayName;
     ExternalModItemSlot slot = ExternalModItemSlot::Hookshot;
     std::string iconAsset;
+    std::vector<uint8_t> iconRgba32;
+    std::string description;
     std::string onUseExport;
     std::string onUpdateExport;
+    ExternalModItemAgePolicy agePolicy = ExternalModItemAgePolicy::AllowChild;
+    ExternalModItemUseMode useMode = ExternalModItemUseMode::Vanilla;
+    bool hasGrantItemId = false;
+    int32_t grantItemId = -1;
+    bool hasGrantAmmo = false;
+    int32_t grantAmmo = 0;
     std::unordered_map<std::string, float> params;
     bool granted = false;
     int32_t cooldownFrames = 0;
     int32_t cooldownRemaining = 0;
+};
+
+struct ExternalModActorDefinition {
+    std::string id;
+    ExternalModActorArchetype archetype = ExternalModActorArchetype::Npc;
+    int16_t sceneId = -1;
+    float posX = 0.0f;
+    float posY = 0.0f;
+    float posZ = 0.0f;
+    float rotX = 0.0f;
+    float rotY = 0.0f;
+    float rotZ = 0.0f;
+    int32_t maxInstances = 1;
+    int32_t tickRate = 1;
+    float lodDistance = 5000.0f;
+    std::string exportOnInit;
+    std::string exportOnUpdate;
+    std::string exportOnInteract;
+    std::string exportOnDestroy;
+};
+
+struct ExternalModActorInstance {
+    uint32_t handle = 0;
+    std::string definitionId;
+    bool active = false;
+    int16_t sceneId = -1;
+    float posX = 0.0f;
+    float posY = 0.0f;
+    float posZ = 0.0f;
+    float rotX = 0.0f;
+    float rotY = 0.0f;
+    float rotZ = 0.0f;
+    int32_t tickCounter = 0;
+    std::unordered_map<std::string, std::string> state;
+};
+
+enum class ExternalModHookDispatchType {
+    Actions,
+    WasmExport,
+};
+
+enum class ExternalModHookType {
+    OnLoadGame,
+    OnExitGame,
+    OnSceneInit,
+    AfterSceneCommands,
+    OnTransitionEnd,
+    OnFlagSet,
+    OnFlagUnset,
+    OnSceneFlagSet,
+    OnSceneFlagUnset,
+    OnPlayerUpdate,
+    OnPlayerUseItem,
+    OnPlayerHealthChange,
+    OnItemReceive,
+    OnActorInit,
+    OnActorSpawn,
+    OnActorUpdate,
+    OnActorKill,
+    OnActorDestroy,
+    OnEnemyDefeat,
+    OnBossDefeat,
+    OnPlayDestroy,
+    OnGameFrameUpdate,
+};
+
+struct ExternalModHookFilter {
+    bool hasScene = false;
+    int16_t scene = 0;
+    bool hasActorId = false;
+    int16_t actorId = 0;
+    bool hasCategory = false;
+    int16_t category = 0;
+    bool hasItemId = false;
+    int16_t itemId = 0;
+    bool hasFlagType = false;
+    int16_t flagType = 0;
+    bool hasFlagId = false;
+    int16_t flagId = 0;
+    bool hasHealthDeltaRange = false;
+    int16_t healthDeltaMin = 0;
+    int16_t healthDeltaMax = 0;
+};
+
+struct ExternalModHookSubscription {
+    std::string id;
+    ExternalModHookType hook = ExternalModHookType::OnGameFrameUpdate;
+    ExternalModHookDispatchType dispatch = ExternalModHookDispatchType::Actions;
+    std::vector<ExternalModAction> actions;
+    std::string wasmExport;
+    int32_t cooldownFrames = 0;
+    int32_t cooldownRemaining = 0;
+    ExternalModHookFilter filters;
 };
 
 struct ExternalModRuntime {
@@ -117,6 +261,14 @@ struct ExternalModRuntime {
     std::vector<ExternalModInputBinding> inputBindings;
     std::vector<ExternalModInputActionTrigger> inputTriggers;
     std::vector<ExternalModItemDefinition> itemDefinitions;
+    std::vector<ExternalModHookSubscription> hookSubscriptions;
+    std::vector<ExternalModActorDefinition> actorDefinitions;
+    std::vector<ExternalModActorInstance> actorInstances;
+    uint32_t nextActorHandle = 1;
+    int32_t frameBudgetMs = 2;
+    int32_t maxHookCallsPerFrame = 256;
+    int32_t hookCallsThisFrame = 0;
+    int32_t maxActorInstances = 64;
     std::unique_ptr<ExternalModWasmRuntime> wasmRuntime;
 };
 
@@ -130,6 +282,16 @@ struct ExternalModPackage {
     ExternalModRuntime runtime;
 };
 
+struct ExternalModHookEventContext {
+    int16_t scene = -1;
+    int16_t actorId = -1;
+    int16_t actorCategory = -1;
+    int16_t itemId = -1;
+    int16_t flagType = -1;
+    int16_t flagId = -1;
+    int16_t healthDelta = 0;
+};
+
 class ExternalModManager {
   public:
     static ExternalModManager& Instance();
@@ -137,15 +299,35 @@ class ExternalModManager {
     void Initialize();
     void Shutdown();
     void DiscoverPackages();
+    std::vector<ExternalModPackage>& GetPackages();
     const std::vector<ExternalModPackage>& GetPackages() const;
+    static std::string BuildEnabledCVarName(const std::string& modId);
     static std::string BuildBindingCVarName(const std::string& modId, const std::string& bindingId);
 
   private:
     std::vector<ExternalModPackage> mPackages;
     uint32_t mOnLoadGameHook = 0;
+    uint32_t mOnExitGameHook = 0;
     uint32_t mOnSceneInitHook = 0;
+    uint32_t mAfterSceneCommandsHook = 0;
+    uint32_t mOnTransitionEndHook = 0;
+    uint32_t mOnFlagSetHook = 0;
+    uint32_t mOnFlagUnsetHook = 0;
+    uint32_t mOnSceneFlagSetHook = 0;
+    uint32_t mOnSceneFlagUnsetHook = 0;
+    uint32_t mOnPlayerUpdateHook = 0;
     uint32_t mOnGameFrameHook = 0;
     uint32_t mOnPlayerUseItemHook = 0;
+    uint32_t mOnPlayerHealthChangeHook = 0;
+    uint32_t mOnItemReceiveHook = 0;
+    uint32_t mOnActorInitHook = 0;
+    uint32_t mOnActorSpawnHook = 0;
+    uint32_t mOnActorUpdateHook = 0;
+    uint32_t mOnActorKillHook = 0;
+    uint32_t mOnActorDestroyHook = 0;
+    uint32_t mOnEnemyDefeatHook = 0;
+    uint32_t mOnBossDefeatHook = 0;
+    uint32_t mOnPlayDestroyHook = 0;
 
     static bool TryParseManifest(const std::string& content, ExternalModManifest& outManifest, std::string& outError);
     static bool TryParseEntryScript(const std::string& content, int32_t apiVersion, ExternalModRuntime& outRuntime,
@@ -153,6 +335,12 @@ class ExternalModManager {
     static bool TryParseItemDefinitions(const std::string& content, std::vector<ExternalModItemDefinition>& outItems,
                                         std::string& outError);
     static bool TryParseInputDefinitions(const std::string& content, std::vector<ExternalModInputBinding>& outBindings,
+                                         std::string& outError);
+    static bool TryParseHookDefinitions(const std::string& content, int32_t apiVersion,
+                                        std::vector<ExternalModHookSubscription>& outSubscriptions,
+                                        std::string& outError);
+    static bool TryParseActorDefinitions(const std::string& content, int32_t apiVersion,
+                                         std::vector<ExternalModActorDefinition>& outDefinitions,
                                          std::string& outError);
 
     static bool ReadManifestFromDirectory(const std::filesystem::path& dirPath, std::string& outContent,
@@ -176,12 +364,28 @@ class ExternalModManager {
                                const char* triggerName);
     static void DisableRuntime(ExternalModPackage& package, const std::string& reason);
 
+    void DispatchExtendedHook(ExternalModHookType hookType, const ExternalModHookEventContext& context,
+                              const char* triggerName);
+
     void RegisterHooks();
     void UnregisterHooks();
     void OnLoadGame(int32_t fileNum);
+    void OnExitGame(int32_t fileNum);
     void OnSceneInit(int16_t sceneNum);
+    void OnAfterSceneCommands(int16_t sceneNum);
+    void OnTransitionEnd(int16_t sceneNum);
+    void OnFlagSet(int16_t flagType, int16_t flag);
+    void OnFlagUnset(int16_t flagType, int16_t flag);
+    void OnSceneFlagSet(int16_t sceneNum, int16_t flagType, int16_t flag);
+    void OnSceneFlagUnset(int16_t sceneNum, int16_t flagType, int16_t flag);
+    void OnPlayerUpdate();
     void OnGameFrameUpdate();
     void OnPlayerUseItem(void* player, int32_t itemId, bool* allowVanilla);
+    void OnPlayerHealthChange(int16_t amount);
+    void OnItemReceive(int16_t itemId);
+    void OnActorHook(ExternalModHookType hookType, void* actor, const char* hookName);
+    void OnPlayDestroy();
 };
 
 } // namespace SOH
+

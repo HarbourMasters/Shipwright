@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <array>
 #include <cctype>
+#include <cstring>
 #include <fstream>
 #include <limits>
 #include <sstream>
@@ -13,6 +14,7 @@
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
 #include <zip.h>
+#include <stb_image.h>
 
 #include <ship/Context.h>
 
@@ -26,6 +28,7 @@ extern "C" {
 #include <z64.h>
 #include "macros.h"
 #include "variables.h"
+#include "functions.h"
 
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
@@ -43,9 +46,23 @@ constexpr uint64_t kMaxAssetBytes = 512ull * 1024ull * 1024ull;
 constexpr uint64_t kMaxWasmBytes = 4ull * 1024ull * 1024ull;
 constexpr uint64_t kMaxItemDefinitionBytes = 256 * 1024;
 constexpr uint64_t kMaxInputDefinitionBytes = 256 * 1024;
+constexpr uint64_t kMaxActorDefinitionBytes = 256 * 1024;
+constexpr uint64_t kMaxHookDefinitionBytes = 256 * 1024;
+constexpr uint64_t kMaxItemIconBytes = 4ull * 1024ull * 1024ull;
+constexpr int32_t kItemIconSize = 32;
+constexpr int32_t kMaxDecodedIconDimension = 2048;
 constexpr int32_t kDefaultTriggerCooldownFrames = 90;
 constexpr int32_t kDefaultRuntimeMemoryKb = 1024;
 constexpr int32_t kDefaultRuntimeCallMs = 2;
+constexpr int32_t kDefaultRuntimeFrameBudgetMs = 2;
+constexpr int32_t kDefaultRuntimeHookCallsPerFrame = 256;
+constexpr int32_t kDefaultRuntimeActorInstances = 64;
+constexpr u8 kAgeReqAdult = LINK_AGE_ADULT;
+constexpr u8 kAgeReqChild = LINK_AGE_CHILD;
+constexpr u8 kAgeReqNone = 9;
+constexpr size_t kItemIconTableSize = sizeof(gItemIcons) / sizeof(gItemIcons[0]);
+std::array<void*, kItemIconTableSize> gVanillaItemIcons{};
+bool gVanillaItemIconsCaptured = false;
 
 const std::unordered_map<std::string, int16_t> kSceneAliases = {
     { "SCENE_KOKIRI_FOREST", SCENE_KOKIRI_FOREST },
@@ -105,6 +122,143 @@ std::string ToUpper(std::string value) {
     std::transform(value.begin(), value.end(), value.begin(),
                    [](unsigned char c) { return static_cast<char>(std::toupper(c)); });
     return value;
+}
+
+const std::unordered_set<std::string> kSupportedCapabilities = {
+    "hooks.extended.v1",
+    "items.data.v2",
+    "actors.vm.v1",
+};
+
+const std::unordered_map<std::string, ExternalModHookType> kHookAliases = {
+    { "onloadgame", ExternalModHookType::OnLoadGame },
+    { "onexitgame", ExternalModHookType::OnExitGame },
+    { "onsceneinit", ExternalModHookType::OnSceneInit },
+    { "afterscenecommands", ExternalModHookType::AfterSceneCommands },
+    { "ontransitionend", ExternalModHookType::OnTransitionEnd },
+    { "onflagset", ExternalModHookType::OnFlagSet },
+    { "onflagunset", ExternalModHookType::OnFlagUnset },
+    { "onsceneflagset", ExternalModHookType::OnSceneFlagSet },
+    { "onsceneflagunset", ExternalModHookType::OnSceneFlagUnset },
+    { "onplayerupdate", ExternalModHookType::OnPlayerUpdate },
+    { "onplayeruseitem", ExternalModHookType::OnPlayerUseItem },
+    { "onplayerhealthchange", ExternalModHookType::OnPlayerHealthChange },
+    { "onitemreceive", ExternalModHookType::OnItemReceive },
+    { "onactorinit", ExternalModHookType::OnActorInit },
+    { "onactorspawn", ExternalModHookType::OnActorSpawn },
+    { "onactorupdate", ExternalModHookType::OnActorUpdate },
+    { "onactorkill", ExternalModHookType::OnActorKill },
+    { "onactordestroy", ExternalModHookType::OnActorDestroy },
+    { "onenemydefeat", ExternalModHookType::OnEnemyDefeat },
+    { "onbossdefeat", ExternalModHookType::OnBossDefeat },
+    { "onplaydestroy", ExternalModHookType::OnPlayDestroy },
+    { "ongameframeupdate", ExternalModHookType::OnGameFrameUpdate },
+};
+const std::unordered_map<std::string, ExternalModItemAgePolicy> kItemAgePolicyAliases = {
+    { "respectvanilla", ExternalModItemAgePolicy::RespectVanilla },
+    { "allowchild", ExternalModItemAgePolicy::AllowChild },
+    { "allowadult", ExternalModItemAgePolicy::AllowAdult },
+};
+
+const std::unordered_map<std::string, ExternalModItemUseMode> kItemUseModeAliases = {
+    { "vanilla", ExternalModItemUseMode::Vanilla },
+    { "override", ExternalModItemUseMode::Override },
+    { "augment", ExternalModItemUseMode::Augment },
+};
+
+const std::unordered_map<std::string, int32_t> kItemIdAliases = {
+    { "ITEM_NONE", ITEM_NONE },
+    { "ITEM_HOOKSHOT", ITEM_HOOKSHOT },
+    { "ITEM_LONGSHOT", ITEM_LONGSHOT },
+    { "ITEM_BOW", ITEM_BOW },
+    { "ITEM_HAMMER", ITEM_HAMMER },
+    { "ITEM_ARROW_FIRE", ITEM_ARROW_FIRE },
+    { "ITEM_ARROW_ICE", ITEM_ARROW_ICE },
+    { "ITEM_ARROW_LIGHT", ITEM_ARROW_LIGHT },
+    { "ITEM_BOW_ARROW_FIRE", ITEM_BOW_ARROW_FIRE },
+    { "ITEM_BOW_ARROW_ICE", ITEM_BOW_ARROW_ICE },
+    { "ITEM_BOW_ARROW_LIGHT", ITEM_BOW_ARROW_LIGHT },
+};
+
+bool ManifestHasCapability(const ExternalModManifest& manifest, const char* capability) {
+    return std::find(manifest.capabilities.begin(), manifest.capabilities.end(), capability) != manifest.capabilities.end();
+}
+
+bool ParseHookTypeAlias(const std::string& value, ExternalModHookType& outHookType) {
+    const auto normalized = ToLower(value);
+    const auto it = kHookAliases.find(normalized);
+    if (it == kHookAliases.end()) {
+        return false;
+    }
+    outHookType = it->second;
+    return true;
+}
+
+bool ParseItemAgePolicy(const nlohmann::json& value, ExternalModItemAgePolicy& outPolicy, std::string& outError) {
+    if (!value.is_string()) {
+        outError = "must be string";
+        return false;
+    }
+
+    const auto normalized = ToLower(value.get<std::string>());
+    const auto it = kItemAgePolicyAliases.find(normalized);
+    if (it == kItemAgePolicyAliases.end()) {
+        outError = "unsupported value: " + value.get<std::string>() + " (expected respectVanilla|allowChild|allowAdult)";
+        return false;
+    }
+
+    outPolicy = it->second;
+    return true;
+}
+
+bool ParseItemUseMode(const nlohmann::json& value, ExternalModItemUseMode& outMode, std::string& outError) {
+    if (!value.is_string()) {
+        outError = "must be string";
+        return false;
+    }
+
+    const auto normalized = ToLower(value.get<std::string>());
+    const auto it = kItemUseModeAliases.find(normalized);
+    if (it == kItemUseModeAliases.end()) {
+        outError = "unsupported value: " + value.get<std::string>() + " (expected vanilla|override|augment)";
+        return false;
+    }
+
+    outMode = it->second;
+    return true;
+}
+
+bool ParseItemIdValue(const nlohmann::json& value, int32_t& outItemId, std::string& outError) {
+    if (value.is_number_integer()) {
+        outItemId = value.get<int32_t>();
+        return true;
+    }
+
+    if (!value.is_string()) {
+        outError = "must be integer or string alias";
+        return false;
+    }
+
+    const auto stringValue = value.get<std::string>();
+    const auto aliasIt = kItemIdAliases.find(ToUpper(stringValue));
+    if (aliasIt != kItemIdAliases.end()) {
+        outItemId = aliasIt->second;
+        return true;
+    }
+
+    try {
+        size_t parsedLength = 0;
+        const auto parsed = std::stoll(stringValue, &parsedLength, 0);
+        if (parsedLength == stringValue.size() && parsed >= std::numeric_limits<int32_t>::min() &&
+            parsed <= std::numeric_limits<int32_t>::max()) {
+            outItemId = static_cast<int32_t>(parsed);
+            return true;
+        }
+    } catch (...) {
+    }
+
+    outError = "unsupported item id alias: " + stringValue;
+    return false;
 }
 
 std::string SanitizeModIdForPath(const std::string& modId) {
@@ -269,6 +423,49 @@ bool ParseInputTriggerType(const nlohmann::json& json, ExternalModInputTriggerTy
     return false;
 }
 
+bool ParseHookDispatchType(const nlohmann::json& json, ExternalModHookDispatchType& outType, std::string& outError) {
+    if (!json.is_string()) {
+        outError = "dispatch must be string";
+        return false;
+    }
+
+    const auto dispatch = ToLower(json.get<std::string>());
+    if (dispatch == "actions") {
+        outType = ExternalModHookDispatchType::Actions;
+        return true;
+    }
+    if (dispatch == "wasmexport") {
+        outType = ExternalModHookDispatchType::WasmExport;
+        return true;
+    }
+
+    outError = "dispatch must be one of: actions|wasmExport";
+    return false;
+}
+
+bool ParseOptionalFilterInt16(const nlohmann::json& filters, const char* key, bool& hasValue, int16_t& outValue,
+                              std::string& outError) {
+    hasValue = false;
+    if (!filters.contains(key)) {
+        return true;
+    }
+
+    if (!filters[key].is_number_integer()) {
+        outError = std::string("filters.") + key + " must be integer";
+        return false;
+    }
+
+    const auto raw = filters[key].get<long long>();
+    if (raw < std::numeric_limits<int16_t>::min() || raw > std::numeric_limits<int16_t>::max()) {
+        outError = std::string("filters.") + key + " out of range";
+        return false;
+    }
+
+    hasValue = true;
+    outValue = static_cast<int16_t>(raw);
+    return true;
+}
+
 bool ParseAction(const nlohmann::json& json, int32_t apiVersion, ExternalModAction& outAction, std::string& outError) {
     if (!json.is_object()) {
         outError = "Action must be an object";
@@ -299,6 +496,25 @@ bool ParseAction(const nlohmann::json& json, int32_t apiVersion, ExternalModActi
         return false;
     }
 
+    auto parseActorHandle = [&](uint32_t& outHandle) {
+        const char* key = json.contains("actorHandle") ? "actorHandle" : (json.contains("handle") ? "handle" : nullptr);
+        if (key == nullptr) {
+            outError = "action requires actorHandle";
+            return false;
+        }
+        if (!json[key].is_number_integer()) {
+            outError = std::string(key) + " must be integer";
+            return false;
+        }
+        const auto raw = json[key].get<long long>();
+        if (raw <= 0 || raw > std::numeric_limits<uint32_t>::max()) {
+            outError = std::string(key) + " out of range";
+            return false;
+        }
+        outHandle = static_cast<uint32_t>(raw);
+        return true;
+    };
+
     if (actionType == "pressButton") {
         const char* key = json.contains("button") ? "button" : (json.contains("mask") ? "mask" : nullptr);
         if (key == nullptr) {
@@ -307,6 +523,100 @@ bool ParseAction(const nlohmann::json& json, int32_t apiVersion, ExternalModActi
         }
         outAction.type = ExternalModActionType::PressButton;
         return ParseButtonMask(json[key], outAction.buttonMask, outError);
+    }
+
+    if (actionType == "spawnSmoke") {
+        outAction.type = ExternalModActionType::SpawnSmoke;
+        return true;
+    }
+
+    if (actionType == "spawnKusa") {
+        outAction.type = ExternalModActionType::SpawnKusa;
+        return true;
+    }
+
+    if (actionType == "spawnActor") {
+        outAction.type = ExternalModActionType::SpawnActor;
+        if (json.contains("actorDefinitionId")) {
+            return ValidateRequiredString(json, "actorDefinitionId", outAction.actorDefinitionId, outError);
+        }
+        if (json.contains("definitionId")) {
+            return ValidateRequiredString(json, "definitionId", outAction.actorDefinitionId, outError);
+        }
+        if (json.contains("id")) {
+            return ValidateRequiredString(json, "id", outAction.actorDefinitionId, outError);
+        }
+        outError = "spawnActor requires actorDefinitionId";
+        return false;
+    }
+
+    if (actionType == "despawnActor") {
+        outAction.type = ExternalModActionType::DespawnActor;
+        return parseActorHandle(outAction.actorHandle);
+    }
+
+    if (actionType == "setActorState") {
+        outAction.type = ExternalModActionType::SetActorState;
+        if (!parseActorHandle(outAction.actorHandle)) {
+            return false;
+        }
+        const char* keyName = json.contains("stateKey") ? "stateKey" : (json.contains("key") ? "key" : nullptr);
+        if (keyName == nullptr || !ValidateRequiredString(json, keyName, outAction.actorStateKey, outError)) {
+            outError = "setActorState requires key";
+            return false;
+        }
+
+        const char* valueName = json.contains("stateValue") ? "stateValue" : (json.contains("value") ? "value" : nullptr);
+        if (valueName == nullptr) {
+            outError = "setActorState requires value";
+            return false;
+        }
+        if (json[valueName].is_string()) {
+            outAction.actorStateValue = json[valueName].get<std::string>();
+            return true;
+        }
+        if (json[valueName].is_number_integer()) {
+            outAction.actorStateValue = std::to_string(json[valueName].get<long long>());
+            return true;
+        }
+        if (json[valueName].is_number_float()) {
+            outAction.actorStateValue = std::to_string(json[valueName].get<double>());
+            return true;
+        }
+        if (json[valueName].is_boolean()) {
+            outAction.actorStateValue = json[valueName].get<bool>() ? "true" : "false";
+            return true;
+        }
+        outError = "setActorState value must be string|number|boolean";
+        return false;
+    }
+
+    if (actionType == "moveActorToPathNode") {
+        outAction.type = ExternalModActionType::MoveActorToPathNode;
+        if (!parseActorHandle(outAction.actorHandle)) {
+            return false;
+        }
+        const char* nodeKey = json.contains("pathNodeIndex") ? "pathNodeIndex" : (json.contains("node") ? "node" : nullptr);
+        if (nodeKey == nullptr || !json[nodeKey].is_number_integer()) {
+            outError = "moveActorToPathNode requires integer pathNodeIndex";
+            return false;
+        }
+        outAction.pathNodeIndex = json[nodeKey].get<int32_t>();
+        return true;
+    }
+
+    if (actionType == "openDialog") {
+        outAction.type = ExternalModActionType::OpenDialog;
+        const char* textKey = json.contains("dialogId") ? "dialogId" : (json.contains("textId") ? "textId" : nullptr);
+        if (textKey == nullptr || !json[textKey].is_number_integer()) {
+            outError = "openDialog requires integer dialogId";
+            return false;
+        }
+        outAction.dialogId = json[textKey].get<int32_t>();
+        if (json.contains("actorHandle") || json.contains("handle")) {
+            return parseActorHandle(outAction.actorHandle);
+        }
+        return true;
     }
 
     if (actionType == "grantModItem") {
@@ -417,6 +727,449 @@ float GetParamOrDefault(const std::unordered_map<std::string, float>& params, co
     return it->second;
 }
 
+struct ExternalModItemSlotConfig {
+    ExternalModItemSlot slot;
+    const char* slotName;
+    int32_t slotIndex;
+    int32_t grantItemId;
+    int32_t ammoItemId;
+    std::array<int32_t, 3> useItemIds;
+    u8 vanillaAgeReq;
+};
+
+constexpr std::array<ExternalModItemSlotConfig, 6> kSupportedItemSlotConfigs = {{
+    { ExternalModItemSlot::Hookshot, "SLOT_HOOKSHOT", SLOT_HOOKSHOT, ITEM_HOOKSHOT, ITEM_NONE,
+      { ITEM_HOOKSHOT, ITEM_LONGSHOT, ITEM_NONE }, kAgeReqAdult },
+    { ExternalModItemSlot::Bow, "SLOT_BOW", SLOT_BOW, ITEM_BOW, ITEM_BOW,
+      { ITEM_BOW, ITEM_NONE, ITEM_NONE }, kAgeReqAdult },
+    { ExternalModItemSlot::FireArrow, "SLOT_ARROW_FIRE", SLOT_ARROW_FIRE, ITEM_ARROW_FIRE, ITEM_BOW,
+      { ITEM_ARROW_FIRE, ITEM_BOW_ARROW_FIRE, ITEM_NONE }, kAgeReqAdult },
+    { ExternalModItemSlot::IceArrow, "SLOT_ARROW_ICE", SLOT_ARROW_ICE, ITEM_ARROW_ICE, ITEM_BOW,
+      { ITEM_ARROW_ICE, ITEM_BOW_ARROW_ICE, ITEM_NONE }, kAgeReqAdult },
+    { ExternalModItemSlot::LightArrow, "SLOT_ARROW_LIGHT", SLOT_ARROW_LIGHT, ITEM_ARROW_LIGHT, ITEM_BOW,
+      { ITEM_ARROW_LIGHT, ITEM_BOW_ARROW_LIGHT, ITEM_NONE }, kAgeReqAdult },
+    { ExternalModItemSlot::Hammer, "SLOT_HAMMER", SLOT_HAMMER, ITEM_HAMMER, ITEM_NONE,
+      { ITEM_HAMMER, ITEM_NONE, ITEM_NONE }, kAgeReqAdult },
+}};
+
+const ExternalModItemSlotConfig* FindItemSlotConfig(ExternalModItemSlot slot) {
+    for (const auto& config : kSupportedItemSlotConfigs) {
+        if (config.slot == slot) {
+            return &config;
+        }
+    }
+    return nullptr;
+}
+
+const ExternalModItemSlotConfig* FindItemSlotConfigByName(const std::string& slotName) {
+    for (const auto& config : kSupportedItemSlotConfigs) {
+        if (slotName == config.slotName) {
+            return &config;
+        }
+    }
+    return nullptr;
+}
+
+std::string BuildSupportedItemSlotList() {
+    std::string out;
+    for (size_t i = 0; i < kSupportedItemSlotConfigs.size(); ++i) {
+        if (!out.empty()) {
+            out += ", ";
+        }
+        out += kSupportedItemSlotConfigs[i].slotName;
+    }
+    return out;
+}
+
+bool ItemIdMatchesSlotConfig(const ExternalModItemSlotConfig& config, int32_t itemId) {
+    if (itemId == config.grantItemId) {
+        return true;
+    }
+
+    for (const auto candidate : config.useItemIds) {
+        if (candidate != ITEM_NONE && candidate == itemId) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool ItemDefinitionMatchesUseItem(const ExternalModItemDefinition& definition, int32_t itemId) {
+    const auto* config = FindItemSlotConfig(definition.slot);
+    if (config == nullptr) {
+        return false;
+    }
+
+    if (definition.hasGrantItemId && definition.grantItemId == itemId) {
+        return true;
+    }
+
+    return ItemIdMatchesSlotConfig(*config, itemId);
+}
+
+int32_t ResolveGrantedItemId(const ExternalModItemDefinition& definition) {
+    if (definition.hasGrantItemId) {
+        return definition.grantItemId;
+    }
+
+    const auto* config = FindItemSlotConfig(definition.slot);
+    if (config == nullptr) {
+        return ITEM_NONE;
+    }
+
+    return config->grantItemId;
+}
+
+int32_t ResolveGrantedAmmoItemId(const ExternalModItemDefinition& definition) {
+    const auto* config = FindItemSlotConfig(definition.slot);
+    if (config == nullptr) {
+        return ITEM_NONE;
+    }
+
+    return config->ammoItemId;
+}
+
+bool IsItemIconIndexValid(int32_t itemId) {
+    return itemId >= 0 && itemId < static_cast<int32_t>(kItemIconTableSize);
+}
+
+void CaptureVanillaItemIconsIfNeeded() {
+    if (gVanillaItemIconsCaptured) {
+        return;
+    }
+
+    for (size_t i = 0; i < kItemIconTableSize; ++i) {
+        gVanillaItemIcons[i] = gItemIcons[i];
+    }
+    gVanillaItemIconsCaptured = true;
+}
+
+void RestoreVanillaItemIcons() {
+    if (!gVanillaItemIconsCaptured) {
+        return;
+    }
+
+    for (size_t i = 0; i < kItemIconTableSize; ++i) {
+        gItemIcons[i] = gVanillaItemIcons[i];
+    }
+}
+
+void ApplyIconOverrideForItemId(int32_t itemId, const ExternalModItemDefinition& definition) {
+    if (!IsItemIconIndexValid(itemId) || definition.iconRgba32.empty()) {
+        return;
+    }
+
+    gItemIcons[itemId] = const_cast<uint8_t*>(definition.iconRgba32.data());
+}
+
+void ApplyIconOverrideForDefinition(const ExternalModItemDefinition& definition) {
+    if (!definition.granted || definition.iconRgba32.empty()) {
+        return;
+    }
+
+    const auto* config = FindItemSlotConfig(definition.slot);
+    if (config == nullptr) {
+        return;
+    }
+
+    ApplyIconOverrideForItemId(ResolveGrantedItemId(definition), definition);
+    for (const auto itemId : config->useItemIds) {
+        if (itemId != ITEM_NONE) {
+            ApplyIconOverrideForItemId(itemId, definition);
+        }
+    }
+}
+
+bool TryDecodeItemIconPng(const std::vector<uint8_t>& iconBytes, std::vector<uint8_t>& outRgba32, std::string& outError) {
+    outRgba32.clear();
+    if (iconBytes.empty()) {
+        outError = "icon file is empty";
+        return false;
+    }
+
+    if (iconBytes.size() > static_cast<size_t>(std::numeric_limits<int>::max())) {
+        outError = "icon file is too large for decoder";
+        return false;
+    }
+
+    int32_t width = 0;
+    int32_t height = 0;
+    int32_t channels = 0;
+    stbi_uc* decoded = stbi_load_from_memory(reinterpret_cast<const stbi_uc*>(iconBytes.data()),
+                                             static_cast<int32_t>(iconBytes.size()), &width, &height, &channels,
+                                             STBI_rgb_alpha);
+    if (decoded == nullptr) {
+        outError = "png decode failed";
+        return false;
+    }
+
+    if (width <= 0 || height <= 0 || width > kMaxDecodedIconDimension || height > kMaxDecodedIconDimension) {
+        stbi_image_free(decoded);
+        outError = "decoded icon has invalid dimensions";
+        return false;
+    }
+
+    outRgba32.assign(static_cast<size_t>(kItemIconSize * kItemIconSize * 4), 0);
+    if (width == kItemIconSize && height == kItemIconSize) {
+        std::memcpy(outRgba32.data(), decoded, outRgba32.size());
+        stbi_image_free(decoded);
+        return true;
+    }
+
+    for (int32_t y = 0; y < kItemIconSize; ++y) {
+        const int32_t srcY = std::clamp((y * height) / kItemIconSize, 0, height - 1);
+        for (int32_t x = 0; x < kItemIconSize; ++x) {
+            const int32_t srcX = std::clamp((x * width) / kItemIconSize, 0, width - 1);
+            const size_t srcOffset = static_cast<size_t>((srcY * width + srcX) * 4);
+            const size_t dstOffset = static_cast<size_t>((y * kItemIconSize + x) * 4);
+            std::memcpy(outRgba32.data() + dstOffset, decoded + srcOffset, 4);
+        }
+    }
+
+    stbi_image_free(decoded);
+    return true;
+}
+
+void ApplyModItemIconOverrides(const std::vector<ExternalModPackage>& packages) {
+    CaptureVanillaItemIconsIfNeeded();
+    RestoreVanillaItemIcons();
+
+    std::vector<const ExternalModPackage*> orderedPackages;
+    orderedPackages.reserve(packages.size());
+
+    for (const auto& package : packages) {
+        if (package.runtime.enabled) {
+            orderedPackages.push_back(&package);
+        }
+    }
+
+    std::stable_sort(orderedPackages.begin(), orderedPackages.end(),
+                     [](const ExternalModPackage* lhs, const ExternalModPackage* rhs) {
+                         if (lhs->manifest.loadOrder != rhs->manifest.loadOrder) {
+                             return lhs->manifest.loadOrder < rhs->manifest.loadOrder;
+                         }
+                         return lhs->manifest.id < rhs->manifest.id;
+                     });
+
+    for (const auto* package : orderedPackages) {
+        for (const auto& item : package->runtime.itemDefinitions) {
+            ApplyIconOverrideForDefinition(item);
+        }
+    }
+}
+
+bool HasGrantedModItemForSlotByAgePolicy(const std::vector<ExternalModPackage>& packages, ExternalModItemSlot slot,
+                                         ExternalModItemAgePolicy policy) {
+    for (const auto& package : packages) {
+        if (!package.runtime.enabled) {
+            continue;
+        }
+
+        for (const auto& item : package.runtime.itemDefinitions) {
+            if (item.granted && item.slot == slot && item.agePolicy == policy) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+void ApplyModItemAgeRequirementOverrides(const std::vector<ExternalModPackage>& packages) {
+    for (const auto& config : kSupportedItemSlotConfigs) {
+        const bool allowChild =
+            HasGrantedModItemForSlotByAgePolicy(packages, config.slot, ExternalModItemAgePolicy::AllowChild);
+        const bool allowAdult =
+            HasGrantedModItemForSlotByAgePolicy(packages, config.slot, ExternalModItemAgePolicy::AllowAdult);
+
+        u8 ageRequirement = config.vanillaAgeReq;
+        if ((config.vanillaAgeReq == kAgeReqAdult && allowChild) ||
+            (config.vanillaAgeReq == kAgeReqChild && allowAdult)) {
+            ageRequirement = kAgeReqNone;
+        }
+
+        gSlotAgeReqs[config.slotIndex] = ageRequirement;
+
+        if (config.grantItemId != ITEM_NONE) {
+            gItemAgeReqs[config.grantItemId] = ageRequirement;
+        }
+
+        for (const auto itemId : config.useItemIds) {
+            if (itemId == ITEM_NONE) {
+                continue;
+            }
+            gItemAgeReqs[itemId] = ageRequirement;
+        }
+    }
+}
+
+void GrantItemForDefinitionIfMissing(const ExternalModItemDefinition& definition) {
+    const auto* config = FindItemSlotConfig(definition.slot);
+    if (config == nullptr) {
+        return;
+    }
+
+    const int32_t grantItemId = ResolveGrantedItemId(definition);
+    if (grantItemId != ITEM_NONE && grantItemId >= std::numeric_limits<int8_t>::min() &&
+        grantItemId <= std::numeric_limits<int8_t>::max() && gSaveContext.inventory.items[config->slotIndex] == ITEM_NONE) {
+        gSaveContext.inventory.items[config->slotIndex] = static_cast<int8_t>(grantItemId);
+    }
+
+    if (definition.hasGrantAmmo) {
+        const int32_t ammoItemId = ResolveGrantedAmmoItemId(definition);
+        if (ammoItemId != ITEM_NONE) {
+            const auto clampedAmmo = static_cast<int8_t>(std::clamp(definition.grantAmmo, 0, 99));
+            if (AMMO(ammoItemId) < clampedAmmo) {
+                AMMO(ammoItemId) = clampedAmmo;
+            }
+        }
+    }
+}
+bool MatchesHookFilter(const ExternalModHookFilter& filter, const ExternalModHookEventContext& context) {
+    if (filter.hasScene && context.scene != filter.scene) {
+        return false;
+    }
+    if (filter.hasActorId && context.actorId != filter.actorId) {
+        return false;
+    }
+    if (filter.hasCategory && context.actorCategory != filter.category) {
+        return false;
+    }
+    if (filter.hasItemId && context.itemId != filter.itemId) {
+        return false;
+    }
+    if (filter.hasFlagType && context.flagType != filter.flagType) {
+        return false;
+    }
+    if (filter.hasFlagId && context.flagId != filter.flagId) {
+        return false;
+    }
+    if (filter.hasHealthDeltaRange &&
+        (context.healthDelta < filter.healthDeltaMin || context.healthDelta > filter.healthDeltaMax)) {
+        return false;
+    }
+    return true;
+}
+
+std::vector<int32_t> BuildHookWasmArgs(const ExternalModHookEventContext& context) {
+    return {
+        context.scene,
+        context.actorId,
+        context.actorCategory,
+        context.itemId,
+        context.flagType,
+        context.flagId,
+        context.healthDelta,
+    };
+}
+
+const ExternalModActorDefinition* FindActorDefinition(const ExternalModRuntime& runtime, const std::string& definitionId) {
+    const auto it = std::find_if(runtime.actorDefinitions.begin(), runtime.actorDefinitions.end(),
+                                 [&definitionId](const ExternalModActorDefinition& definition) {
+                                     return definition.id == definitionId;
+                                 });
+    if (it == runtime.actorDefinitions.end()) {
+        return nullptr;
+    }
+    return &(*it);
+}
+
+ExternalModActorInstance* FindActorInstance(ExternalModRuntime& runtime, uint32_t handle) {
+    const auto it = std::find_if(runtime.actorInstances.begin(), runtime.actorInstances.end(),
+                                 [handle](const ExternalModActorInstance& instance) {
+                                     return instance.handle == handle;
+                                 });
+    if (it == runtime.actorInstances.end()) {
+        return nullptr;
+    }
+    return &(*it);
+}
+
+int32_t CountActiveActorInstances(const ExternalModRuntime& runtime, const std::string& definitionId) {
+    return static_cast<int32_t>(std::count_if(runtime.actorInstances.begin(), runtime.actorInstances.end(),
+                                              [&definitionId](const ExternalModActorInstance& instance) {
+                                                  return instance.active && instance.definitionId == definitionId;
+                                              }));
+}
+
+bool SpawnActorInstance(ExternalModPackage& package, const ExternalModActorDefinition& definition, uint32_t& outHandle,
+                        std::string& outError) {
+    auto& runtime = package.runtime;
+    if (runtime.actorInstances.size() >= static_cast<size_t>(std::max(1, runtime.maxActorInstances))) {
+        outError = "Actor instance budget exceeded for mod";
+        return false;
+    }
+
+    if (CountActiveActorInstances(runtime, definition.id) >= std::max(1, definition.maxInstances)) {
+        outError = "Actor definition instance limit reached: " + definition.id;
+        return false;
+    }
+
+    ExternalModActorInstance instance;
+    instance.handle = runtime.nextActorHandle++;
+    instance.definitionId = definition.id;
+    instance.active = true;
+    instance.sceneId = definition.sceneId;
+    instance.posX = definition.posX;
+    instance.posY = definition.posY;
+    instance.posZ = definition.posZ;
+    instance.rotX = definition.rotX;
+    instance.rotY = definition.rotY;
+    instance.rotZ = definition.rotZ;
+
+    runtime.actorInstances.push_back(instance);
+    outHandle = instance.handle;
+
+    if (!definition.exportOnInit.empty()) {
+        if (!runtime.wasmRuntime) {
+            outError = "Actor exportOnInit requires wasm runtime";
+            runtime.actorInstances.pop_back();
+            return false;
+        }
+
+        std::string wasmError;
+        const std::vector<int32_t> args = { static_cast<int32_t>(instance.handle), instance.sceneId };
+        if (!runtime.wasmRuntime->InvokeExport(definition.exportOnInit, args, wasmError)) {
+            outError = "Actor exportOnInit failed: " + wasmError;
+            runtime.actorInstances.pop_back();
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool DespawnActorInstance(ExternalModPackage& package, uint32_t handle, std::string& outError) {
+    auto& runtime = package.runtime;
+    const auto it = std::find_if(runtime.actorInstances.begin(), runtime.actorInstances.end(),
+                                 [handle](const ExternalModActorInstance& instance) {
+                                     return instance.handle == handle;
+                                 });
+    if (it == runtime.actorInstances.end()) {
+        outError = "Actor handle not found: " + std::to_string(handle);
+        return false;
+    }
+
+    const auto* definition = FindActorDefinition(runtime, it->definitionId);
+    if (definition != nullptr && !definition->exportOnDestroy.empty()) {
+        if (!runtime.wasmRuntime) {
+            outError = "Actor exportOnDestroy requires wasm runtime";
+            return false;
+        }
+
+        std::string wasmError;
+        const std::vector<int32_t> args = { static_cast<int32_t>(it->handle), it->sceneId };
+        if (!runtime.wasmRuntime->InvokeExport(definition->exportOnDestroy, args, wasmError)) {
+            outError = "Actor exportOnDestroy failed: " + wasmError;
+            return false;
+        }
+    }
+
+    runtime.actorInstances.erase(it);
+    return true;
+}
+
 } // namespace
 
 ExternalModManager& ExternalModManager::Instance() {
@@ -424,8 +1177,16 @@ ExternalModManager& ExternalModManager::Instance() {
     return instance;
 }
 
+std::vector<ExternalModPackage>& ExternalModManager::GetPackages() {
+    return mPackages;
+}
+
 const std::vector<ExternalModPackage>& ExternalModManager::GetPackages() const {
     return mPackages;
+}
+
+std::string ExternalModManager::BuildEnabledCVarName(const std::string& modId) {
+    return "gExternalMods.Enabled." + SanitizeCVarSegment(modId);
 }
 
 std::string ExternalModManager::BuildBindingCVarName(const std::string& modId, const std::string& bindingId) {
@@ -442,8 +1203,16 @@ void ExternalModManager::Shutdown() {
         package.runtime.inputBindings.clear();
         package.runtime.inputTriggers.clear();
         package.runtime.itemDefinitions.clear();
+        package.runtime.hookSubscriptions.clear();
+        package.runtime.actorDefinitions.clear();
+        package.runtime.actorInstances.clear();
+        package.runtime.nextActorHandle = 1;
+        package.runtime.hookCallsThisFrame = 0;
         package.runtime.wasmRuntime.reset();
     }
+
+    ApplyModItemAgeRequirementOverrides(mPackages);
+    ApplyModItemIconOverrides(mPackages);
 }
 
 void ExternalModManager::DiscoverPackages() {
@@ -558,14 +1327,26 @@ void ExternalModManager::Initialize() {
             }
         }
 
-        package.runtime.enabled = true;
-        runtimeCount++;
-        SPDLOG_INFO("[ExternalMods] Runtime enabled: {} ({})", package.manifest.name, package.manifest.id);
+        const auto enabledCVarName = BuildEnabledCVarName(package.manifest.id);
+        int32_t enabledValue = CVarGetInteger(enabledCVarName.c_str(), 1);
+        enabledValue = enabledValue != 0 ? 1 : 0;
+        CVarSetInteger(enabledCVarName.c_str(), enabledValue);
+
+        package.runtime.enabled = enabledValue != 0;
+        if (package.runtime.enabled) {
+            runtimeCount++;
+            SPDLOG_INFO("[ExternalMods] Runtime enabled: {} ({})", package.manifest.name, package.manifest.id);
+        } else {
+            SPDLOG_INFO("[ExternalMods] Runtime disabled by user: {} ({})", package.manifest.name, package.manifest.id);
+        }
     }
 
     if (runtimeCount > 0) {
         RegisterHooks();
     }
+
+    ApplyModItemAgeRequirementOverrides(mPackages);
+    ApplyModItemIconOverrides(mPackages);
 
     SPDLOG_INFO("[ExternalMods] Initialization complete: {} runtime(s)", runtimeCount);
 }
@@ -661,6 +1442,30 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
         }
     }
 
+    if (json.contains("capabilities")) {
+        if (!json["capabilities"].is_array()) {
+            outError = "Invalid field: capabilities must be an array";
+            return false;
+        }
+
+        std::unordered_set<std::string> seenCapabilities;
+        for (size_t i = 0; i < json["capabilities"].size(); ++i) {
+            const auto& cap = json["capabilities"][i];
+            if (!cap.is_string()) {
+                outError = "Invalid capabilities[" + std::to_string(i) + "]: expected string";
+                return false;
+            }
+            const auto normalizedCap = ToLower(cap.get<std::string>());
+            if (!kSupportedCapabilities.contains(normalizedCap)) {
+                outError = "Unsupported capability: " + normalizedCap;
+                return false;
+            }
+            if (seenCapabilities.insert(normalizedCap).second) {
+                outManifest.capabilities.push_back(normalizedCap);
+            }
+        }
+    }
+
     if (outManifest.apiVersion >= kExternalModApiVersionV2) {
         if (!json.contains("runtime") || !json["runtime"].is_object()) {
             outError = "Missing or invalid field: runtime";
@@ -686,6 +1491,10 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
 
         outManifest.runtimeMaxMemoryKb = kDefaultRuntimeMemoryKb;
         outManifest.runtimeMaxCallMs = kDefaultRuntimeCallMs;
+        outManifest.runtimeMaxFrameBudgetMs = kDefaultRuntimeFrameBudgetMs;
+        outManifest.runtimeMaxHookCallsPerFrame = kDefaultRuntimeHookCallsPerFrame;
+        outManifest.runtimeMaxActorInstances = kDefaultRuntimeActorInstances;
+
         if (runtime.contains("maxMemoryKb")) {
             if (!runtime["maxMemoryKb"].is_number_integer()) {
                 outError = "runtime.maxMemoryKb must be integer";
@@ -700,6 +1509,27 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
             }
             outManifest.runtimeMaxCallMs = runtime["maxCallMs"].get<int32_t>();
         }
+        if (runtime.contains("maxFrameBudgetMs")) {
+            if (!runtime["maxFrameBudgetMs"].is_number_integer()) {
+                outError = "runtime.maxFrameBudgetMs must be integer";
+                return false;
+            }
+            outManifest.runtimeMaxFrameBudgetMs = runtime["maxFrameBudgetMs"].get<int32_t>();
+        }
+        if (runtime.contains("maxHookCallsPerFrame")) {
+            if (!runtime["maxHookCallsPerFrame"].is_number_integer()) {
+                outError = "runtime.maxHookCallsPerFrame must be integer";
+                return false;
+            }
+            outManifest.runtimeMaxHookCallsPerFrame = runtime["maxHookCallsPerFrame"].get<int32_t>();
+        }
+        if (runtime.contains("maxActorInstances")) {
+            if (!runtime["maxActorInstances"].is_number_integer()) {
+                outError = "runtime.maxActorInstances must be integer";
+                return false;
+            }
+            outManifest.runtimeMaxActorInstances = runtime["maxActorInstances"].get<int32_t>();
+        }
 
         if (outManifest.runtimeMaxMemoryKb < 64 || outManifest.runtimeMaxMemoryKb > 4096) {
             outError = "runtime.maxMemoryKb must be in [64, 4096]";
@@ -707,6 +1537,18 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
         }
         if (outManifest.runtimeMaxCallMs < 1 || outManifest.runtimeMaxCallMs > 4) {
             outError = "runtime.maxCallMs must be in [1, 4]";
+            return false;
+        }
+        if (outManifest.runtimeMaxFrameBudgetMs < 1 || outManifest.runtimeMaxFrameBudgetMs > 4) {
+            outError = "runtime.maxFrameBudgetMs must be in [1, 4]";
+            return false;
+        }
+        if (outManifest.runtimeMaxHookCallsPerFrame < 1 || outManifest.runtimeMaxHookCallsPerFrame > 2048) {
+            outError = "runtime.maxHookCallsPerFrame must be in [1, 2048]";
+            return false;
+        }
+        if (outManifest.runtimeMaxActorInstances < 1 || outManifest.runtimeMaxActorInstances > 512) {
+            outError = "runtime.maxActorInstances must be in [1, 512]";
             return false;
         }
 
@@ -732,6 +1574,49 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
             return false;
         }
         outManifest.inputDefinitions = normalizedInputPath.generic_string();
+
+        const bool hasExtendedHooksCapability = ManifestHasCapability(outManifest, "hooks.extended.v1");
+        const bool hasActorVmCapability = ManifestHasCapability(outManifest, "actors.vm.v1");
+
+        if (json.contains("hookDefinitions")) {
+            if (!hasExtendedHooksCapability) {
+                outError = "hookDefinitions requires capability hooks.extended.v1";
+                return false;
+            }
+            if (!ValidateRequiredString(json, "hookDefinitions", outManifest.hookDefinitions, outError)) {
+                outError = "Missing or invalid field: hookDefinitions";
+                return false;
+            }
+            std::filesystem::path normalizedHooksPath;
+            if (!IsSafePackageRelativePath(outManifest.hookDefinitions, normalizedHooksPath, outError)) {
+                outError = "Invalid hookDefinitions: " + outError;
+                return false;
+            }
+            outManifest.hookDefinitions = normalizedHooksPath.generic_string();
+        } else if (hasExtendedHooksCapability) {
+            outError = "Missing required field for hooks.extended.v1: hookDefinitions";
+            return false;
+        }
+
+        if (json.contains("actorDefinitions")) {
+            if (!hasActorVmCapability) {
+                outError = "actorDefinitions requires capability actors.vm.v1";
+                return false;
+            }
+            if (!ValidateRequiredString(json, "actorDefinitions", outManifest.actorDefinitions, outError)) {
+                outError = "Missing or invalid field: actorDefinitions";
+                return false;
+            }
+            std::filesystem::path normalizedActorsPath;
+            if (!IsSafePackageRelativePath(outManifest.actorDefinitions, normalizedActorsPath, outError)) {
+                outError = "Invalid actorDefinitions: " + outError;
+                return false;
+            }
+            outManifest.actorDefinitions = normalizedActorsPath.generic_string();
+        } else if (hasActorVmCapability) {
+            outError = "Missing required field for actors.vm.v1: actorDefinitions";
+            return false;
+        }
     }
 
     return true;
@@ -973,6 +1858,7 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
         outError = "items.json must be an array or object with items[]";
         return false;
     }
+
     const std::unordered_set<std::string> kAllowedParams = { "range", "speed", "cooldown", "pullForce" };
 
     for (size_t i = 0; i < items->size(); ++i) {
@@ -994,11 +1880,17 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
             outError = "items[" + std::to_string(i) + "]: " + outError;
             return false;
         }
-        if (slot != "SLOT_HOOKSHOT") {
-            outError = "items[" + std::to_string(i) + "]: only SLOT_HOOKSHOT is supported in MVP";
+
+        const auto* slotConfig = FindItemSlotConfigByName(slot);
+        if (slotConfig == nullptr) {
+            outError = "items[" + std::to_string(i) + "].slot unsupported: " + slot +
+                       ". Supported slots: " + BuildSupportedItemSlotList();
             return false;
         }
-        definition.slot = ExternalModItemSlot::Hookshot;
+        definition.slot = slotConfig->slot;
+        definition.agePolicy = ExternalModItemAgePolicy::AllowChild;
+        definition.useMode = definition.slot == ExternalModItemSlot::Hookshot ? ExternalModItemUseMode::Override
+                                                                              : ExternalModItemUseMode::Vanilla;
 
         if (item.contains("iconAsset")) {
             if (!item["iconAsset"].is_string()) {
@@ -1008,22 +1900,103 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
             definition.iconAsset = item["iconAsset"].get<std::string>();
         }
 
-        if (!item.contains("behavior") || !item["behavior"].is_object()) {
-            outError = "items[" + std::to_string(i) + "] requires behavior object";
+        if (item.contains("ui")) {
+            if (!item["ui"].is_object()) {
+                outError = "items[" + std::to_string(i) + "].ui must be object";
+                return false;
+            }
+            const auto& ui = item["ui"];
+            if (ui.contains("displayName")) {
+                if (!ui["displayName"].is_string()) {
+                    outError = "items[" + std::to_string(i) + "].ui.displayName must be string";
+                    return false;
+                }
+                definition.displayName = ui["displayName"].get<std::string>();
+            }
+            if (ui.contains("description")) {
+                if (!ui["description"].is_string()) {
+                    outError = "items[" + std::to_string(i) + "].ui.description must be string";
+                    return false;
+                }
+                definition.description = ui["description"].get<std::string>();
+            }
+        }
+
+        if (item.contains("agePolicy")) {
+            if (!ParseItemAgePolicy(item["agePolicy"], definition.agePolicy, outError)) {
+                outError = "items[" + std::to_string(i) + "].agePolicy " + outError;
+                return false;
+            }
+        }
+
+        if (item.contains("useMode")) {
+            if (!ParseItemUseMode(item["useMode"], definition.useMode, outError)) {
+                outError = "items[" + std::to_string(i) + "].useMode " + outError;
+                return false;
+            }
+        }
+
+        if (item.contains("behavior")) {
+            if (!item["behavior"].is_object()) {
+                outError = "items[" + std::to_string(i) + "].behavior must be object";
+                return false;
+            }
+
+            const auto& behavior = item["behavior"];
+            if (behavior.contains("exportOnUse")) {
+                if (!behavior["exportOnUse"].is_string()) {
+                    outError = "items[" + std::to_string(i) + "].behavior.exportOnUse must be string";
+                    return false;
+                }
+                definition.onUseExport = behavior["exportOnUse"].get<std::string>();
+            }
+
+            if (behavior.contains("exportOnUpdate")) {
+                if (!behavior["exportOnUpdate"].is_string()) {
+                    outError = "items[" + std::to_string(i) + "].behavior.exportOnUpdate must be string";
+                    return false;
+                }
+                definition.onUpdateExport = behavior["exportOnUpdate"].get<std::string>();
+            }
+        }
+
+        if (item.contains("grant")) {
+            if (!item["grant"].is_object()) {
+                outError = "items[" + std::to_string(i) + "].grant must be object";
+                return false;
+            }
+
+            const auto& grant = item["grant"];
+            if (grant.contains("itemId")) {
+                int32_t itemId = ITEM_NONE;
+                if (!ParseItemIdValue(grant["itemId"], itemId, outError)) {
+                    outError = "items[" + std::to_string(i) + "].grant.itemId " + outError;
+                    return false;
+                }
+                definition.hasGrantItemId = true;
+                definition.grantItemId = itemId;
+            }
+
+            if (grant.contains("ammo")) {
+                if (!grant["ammo"].is_number_integer()) {
+                    outError = "items[" + std::to_string(i) + "].grant.ammo must be integer";
+                    return false;
+                }
+                definition.hasGrantAmmo = true;
+                definition.grantAmmo = std::max(0, grant["ammo"].get<int32_t>());
+            }
+        }
+
+        if (definition.slot == ExternalModItemSlot::Hookshot && definition.useMode != ExternalModItemUseMode::Vanilla &&
+            definition.onUseExport.empty()) {
+            outError = "items[" + std::to_string(i) + "].behavior.exportOnUse is required for SLOT_HOOKSHOT when useMode is override/augment";
             return false;
         }
 
-        const auto& behavior = item["behavior"];
-        if (!ValidateRequiredString(behavior, "exportOnUse", definition.onUseExport, outError)) {
-            outError = "items[" + std::to_string(i) + "].behavior.exportOnUse is required";
+        if (definition.slot != ExternalModItemSlot::Hookshot && definition.useMode == ExternalModItemUseMode::Override &&
+            definition.onUseExport.empty()) {
+            outError = "items[" + std::to_string(i) + "].behavior.exportOnUse is required for non-hookshot override useMode";
             return false;
-        }
-        if (behavior.contains("exportOnUpdate")) {
-            if (!behavior["exportOnUpdate"].is_string()) {
-                outError = "items[" + std::to_string(i) + "].behavior.exportOnUpdate must be string";
-                return false;
-            }
-            definition.onUpdateExport = behavior["exportOnUpdate"].get<std::string>();
         }
 
         if (item.contains("params")) {
@@ -1130,6 +2103,323 @@ bool ExternalModManager::TryParseInputDefinitions(const std::string& content,
     return true;
 }
 
+bool ExternalModManager::TryParseHookDefinitions(const std::string& content, int32_t apiVersion,
+                                                 std::vector<ExternalModHookSubscription>& outSubscriptions,
+                                                 std::string& outError) {
+    outSubscriptions.clear();
+
+    if (apiVersion < kExternalModApiVersionV2) {
+        outError = "hookDefinitions requires apiVersion 2";
+        return false;
+    }
+
+    nlohmann::json json;
+    try {
+        json = nlohmann::json::parse(content);
+    } catch (const std::exception& ex) {
+        outError = std::string("hooks.json parse error: ") + ex.what();
+        return false;
+    }
+
+    const nlohmann::json* subscriptions = nullptr;
+    if (json.is_array()) {
+        subscriptions = &json;
+    } else if (json.is_object() && json.contains("subscriptions") && json["subscriptions"].is_array()) {
+        subscriptions = &json["subscriptions"];
+    }
+
+    if (subscriptions == nullptr) {
+        outError = "hooks.json must be an array or object with subscriptions[]";
+        return false;
+    }
+
+    std::unordered_set<std::string> seenIds;
+
+    for (size_t i = 0; i < subscriptions->size(); ++i) {
+        const auto& entry = (*subscriptions)[i];
+        if (!entry.is_object()) {
+            outError = "subscriptions[" + std::to_string(i) + "] must be object";
+            return false;
+        }
+
+        ExternalModHookSubscription subscription;
+        if (!ValidateRequiredString(entry, "id", subscription.id, outError)) {
+            outError = "subscriptions[" + std::to_string(i) + "].id: " + outError;
+            return false;
+        }
+
+        if (!seenIds.insert(subscription.id).second) {
+            outError = "Duplicate hook subscription id: " + subscription.id;
+            return false;
+        }
+
+        std::string hookName;
+        if (!ValidateRequiredString(entry, "hook", hookName, outError)) {
+            outError = "subscriptions[" + std::to_string(i) + "].hook: " + outError;
+            return false;
+        }
+        if (!ParseHookTypeAlias(hookName, subscription.hook)) {
+            outError = "subscriptions[" + std::to_string(i) + "].hook unsupported: " + hookName;
+            return false;
+        }
+
+        if (entry.contains("dispatch")) {
+            if (!ParseHookDispatchType(entry["dispatch"], subscription.dispatch, outError)) {
+                outError = "subscriptions[" + std::to_string(i) + "].dispatch: " + outError;
+                return false;
+            }
+        }
+
+        subscription.cooldownFrames = 0;
+        subscription.cooldownRemaining = 0;
+        if (entry.contains("cooldownFrames")) {
+            if (!entry["cooldownFrames"].is_number_integer()) {
+                outError = "subscriptions[" + std::to_string(i) + "].cooldownFrames must be integer";
+                return false;
+            }
+            subscription.cooldownFrames = std::max(0, entry["cooldownFrames"].get<int32_t>());
+        }
+
+        if (entry.contains("filters")) {
+            if (!entry["filters"].is_object()) {
+                outError = "subscriptions[" + std::to_string(i) + "].filters must be object";
+                return false;
+            }
+            const auto& filters = entry["filters"];
+
+            if (filters.contains("scene")) {
+                if (!ParseAliasedInt16(filters["scene"], kSceneAliases, "filters.scene", subscription.filters.scene,
+                                       outError)) {
+                    outError = "subscriptions[" + std::to_string(i) + "]: " + outError;
+                    return false;
+                }
+                subscription.filters.hasScene = true;
+            }
+
+            if (!ParseOptionalFilterInt16(filters, "actorId", subscription.filters.hasActorId, subscription.filters.actorId,
+                                          outError) ||
+                !ParseOptionalFilterInt16(filters, "category", subscription.filters.hasCategory,
+                                          subscription.filters.category, outError) ||
+                !ParseOptionalFilterInt16(filters, "itemId", subscription.filters.hasItemId, subscription.filters.itemId,
+                                          outError) ||
+                !ParseOptionalFilterInt16(filters, "flagType", subscription.filters.hasFlagType,
+                                          subscription.filters.flagType, outError) ||
+                !ParseOptionalFilterInt16(filters, "flagId", subscription.filters.hasFlagId, subscription.filters.flagId,
+                                          outError)) {
+                outError = "subscriptions[" + std::to_string(i) + "]: " + outError;
+                return false;
+            }
+
+            if (filters.contains("healthDeltaRange")) {
+                const auto& healthDeltaRange = filters["healthDeltaRange"];
+                if (!healthDeltaRange.is_array() || healthDeltaRange.size() != 2 ||
+                    !healthDeltaRange[0].is_number_integer() || !healthDeltaRange[1].is_number_integer()) {
+                    outError = "subscriptions[" + std::to_string(i) + "].filters.healthDeltaRange must be [min,max] integers";
+                    return false;
+                }
+
+                const auto minValue = healthDeltaRange[0].get<long long>();
+                const auto maxValue = healthDeltaRange[1].get<long long>();
+                if (minValue < std::numeric_limits<int16_t>::min() || minValue > std::numeric_limits<int16_t>::max() ||
+                    maxValue < std::numeric_limits<int16_t>::min() || maxValue > std::numeric_limits<int16_t>::max() ||
+                    minValue > maxValue) {
+                    outError = "subscriptions[" + std::to_string(i) + "].filters.healthDeltaRange has invalid bounds";
+                    return false;
+                }
+
+                subscription.filters.hasHealthDeltaRange = true;
+                subscription.filters.healthDeltaMin = static_cast<int16_t>(minValue);
+                subscription.filters.healthDeltaMax = static_cast<int16_t>(maxValue);
+            }
+        }
+
+        if (subscription.dispatch == ExternalModHookDispatchType::Actions) {
+            if (!entry.contains("actions")) {
+                outError = "subscriptions[" + std::to_string(i) + "] requires actions for dispatch=actions";
+                return false;
+            }
+            if (!ParseActionArray(entry["actions"], apiVersion, "actions", subscription.actions, outError)) {
+                outError = "subscriptions[" + std::to_string(i) + "]: " + outError;
+                return false;
+            }
+        } else {
+            if (!ValidateRequiredString(entry, "wasmExport", subscription.wasmExport, outError)) {
+                outError = "subscriptions[" + std::to_string(i) + "].wasmExport: " + outError;
+                return false;
+            }
+        }
+
+        outSubscriptions.push_back(std::move(subscription));
+    }
+
+    return true;
+}
+bool ExternalModManager::TryParseActorDefinitions(const std::string& content, int32_t apiVersion,
+                                                  std::vector<ExternalModActorDefinition>& outDefinitions,
+                                                  std::string& outError) {
+    outDefinitions.clear();
+
+    if (apiVersion < kExternalModApiVersionV2) {
+        outError = "actorDefinitions requires apiVersion 2";
+        return false;
+    }
+
+    nlohmann::json json;
+    try {
+        json = nlohmann::json::parse(content);
+    } catch (const std::exception& ex) {
+        outError = std::string("actors.json parse error: ") + ex.what();
+        return false;
+    }
+
+    const nlohmann::json* actors = nullptr;
+    if (json.is_array()) {
+        actors = &json;
+    } else if (json.is_object() && json.contains("actors") && json["actors"].is_array()) {
+        actors = &json["actors"];
+    }
+
+    if (actors == nullptr) {
+        outError = "actors.json must be an array or object with actors[]";
+        return false;
+    }
+
+    std::unordered_set<std::string> seenIds;
+    for (size_t i = 0; i < actors->size(); ++i) {
+        const auto& actor = (*actors)[i];
+        if (!actor.is_object()) {
+            outError = "actors[" + std::to_string(i) + "] must be an object";
+            return false;
+        }
+
+        ExternalModActorDefinition definition;
+        if (!ValidateRequiredString(actor, "id", definition.id, outError)) {
+            outError = "actors[" + std::to_string(i) + "]: " + outError;
+            return false;
+        }
+        if (!seenIds.insert(definition.id).second) {
+            outError = "Duplicate actor id: " + definition.id;
+            return false;
+        }
+
+        std::string archetype;
+        if (!ValidateRequiredString(actor, "archetype", archetype, outError)) {
+            outError = "actors[" + std::to_string(i) + "]: " + outError;
+            return false;
+        }
+        const auto archetypeNormalized = ToLower(archetype);
+        if (archetypeNormalized == "npc") {
+            definition.archetype = ExternalModActorArchetype::Npc;
+        } else if (archetypeNormalized == "prop") {
+            definition.archetype = ExternalModActorArchetype::Prop;
+        } else if (archetypeNormalized == "trigger") {
+            definition.archetype = ExternalModActorArchetype::Trigger;
+        } else {
+            outError = "actors[" + std::to_string(i) + "].archetype must be npc|prop|trigger";
+            return false;
+        }
+
+        if (!actor.contains("spawn") || !actor["spawn"].is_object()) {
+            outError = "actors[" + std::to_string(i) + "].spawn must be object";
+            return false;
+        }
+        const auto& spawn = actor["spawn"];
+        if (!spawn.contains("scene") ||
+            !ParseAliasedInt16(spawn["scene"], kSceneAliases, "spawn.scene", definition.sceneId, outError)) {
+            outError = "actors[" + std::to_string(i) + "].spawn.scene: " + outError;
+            return false;
+        }
+        if (!spawn.contains("position") ||
+            !ParseVec3(spawn["position"], definition.posX, definition.posY, definition.posZ, "spawn.position", outError)) {
+            outError = "actors[" + std::to_string(i) + "].spawn.position: " + outError;
+            return false;
+        }
+        if (spawn.contains("rotation") &&
+            !ParseVec3(spawn["rotation"], definition.rotX, definition.rotY, definition.rotZ, "spawn.rotation", outError)) {
+            outError = "actors[" + std::to_string(i) + "].spawn.rotation: " + outError;
+            return false;
+        }
+
+        if (actor.contains("limits")) {
+            if (!actor["limits"].is_object()) {
+                outError = "actors[" + std::to_string(i) + "].limits must be object";
+                return false;
+            }
+            const auto& limits = actor["limits"];
+            if (limits.contains("maxInstances")) {
+                if (!limits["maxInstances"].is_number_integer()) {
+                    outError = "actors[" + std::to_string(i) + "].limits.maxInstances must be integer";
+                    return false;
+                }
+                definition.maxInstances = limits["maxInstances"].get<int32_t>();
+            }
+            if (limits.contains("tickRate")) {
+                if (!limits["tickRate"].is_number_integer()) {
+                    outError = "actors[" + std::to_string(i) + "].limits.tickRate must be integer";
+                    return false;
+                }
+                definition.tickRate = limits["tickRate"].get<int32_t>();
+            }
+            if (limits.contains("lodDistance")) {
+                if (!limits["lodDistance"].is_number()) {
+                    outError = "actors[" + std::to_string(i) + "].limits.lodDistance must be numeric";
+                    return false;
+                }
+                definition.lodDistance = limits["lodDistance"].get<float>();
+            }
+        }
+
+        if (definition.maxInstances < 1 || definition.maxInstances > 512) {
+            outError = "actors[" + std::to_string(i) + "].limits.maxInstances must be in [1, 512]";
+            return false;
+        }
+        if (definition.tickRate < 1 || definition.tickRate > 600) {
+            outError = "actors[" + std::to_string(i) + "].limits.tickRate must be in [1, 600]";
+            return false;
+        }
+        if (definition.lodDistance <= 0.0f || definition.lodDistance > 100000.0f) {
+            outError = "actors[" + std::to_string(i) + "].limits.lodDistance must be in (0, 100000]";
+            return false;
+        }
+
+        if (actor.contains("behavior")) {
+            if (!actor["behavior"].is_object()) {
+                outError = "actors[" + std::to_string(i) + "].behavior must be object";
+                return false;
+            }
+            const auto& behavior = actor["behavior"];
+            if (behavior.contains("exportOnInit") &&
+                !ValidateRequiredString(behavior, "exportOnInit", definition.exportOnInit, outError)) {
+                outError = "actors[" + std::to_string(i) + "].behavior.exportOnInit: " + outError;
+                return false;
+            }
+            if (behavior.contains("exportOnUpdate") &&
+                !ValidateRequiredString(behavior, "exportOnUpdate", definition.exportOnUpdate, outError)) {
+                outError = "actors[" + std::to_string(i) + "].behavior.exportOnUpdate: " + outError;
+                return false;
+            }
+            if (behavior.contains("exportOnInteract") &&
+                !ValidateRequiredString(behavior, "exportOnInteract", definition.exportOnInteract, outError)) {
+                outError = "actors[" + std::to_string(i) + "].behavior.exportOnInteract: " + outError;
+                return false;
+            }
+            if (behavior.contains("exportOnDestroy") &&
+                !ValidateRequiredString(behavior, "exportOnDestroy", definition.exportOnDestroy, outError)) {
+                outError = "actors[" + std::to_string(i) + "].behavior.exportOnDestroy: " + outError;
+                return false;
+            }
+        }
+
+        outDefinitions.push_back(std::move(definition));
+    }
+
+    if (outDefinitions.empty()) {
+        outError = "actors.json must define at least one actor";
+        return false;
+    }
+
+    return true;
+}
 bool ExternalModManager::ReadManifestFromDirectory(const std::filesystem::path& dirPath, std::string& outContent,
                                                    std::string& outError) {
     return ReadFileFromDirectory(dirPath / "mod.json", kMaxManifestBytes, outContent, outError);
@@ -1305,6 +2595,10 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
         return false;
     }
     runtime.apiVersion = package.manifest.apiVersion;
+    runtime.frameBudgetMs = package.manifest.runtimeMaxFrameBudgetMs;
+    runtime.maxHookCallsPerFrame = package.manifest.runtimeMaxHookCallsPerFrame;
+    runtime.hookCallsThisFrame = 0;
+    runtime.maxActorInstances = package.manifest.runtimeMaxActorInstances;
 
     if (package.manifest.apiVersion >= kExternalModApiVersionV2) {
         std::filesystem::path itemsPath;
@@ -1317,6 +2611,35 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
         }
         if (!TryParseItemDefinitions(itemContent, runtime.itemDefinitions, outError)) {
             return false;
+        }
+
+        for (size_t i = 0; i < runtime.itemDefinitions.size(); ++i) {
+            auto& definition = runtime.itemDefinitions[i];
+            if (definition.iconAsset.empty()) {
+                continue;
+            }
+
+            std::filesystem::path iconPath;
+            if (!IsSafePackageRelativePath(definition.iconAsset, iconPath, outError)) {
+                outError = "items[" + std::to_string(i) + "].iconAsset " + outError;
+                return false;
+            }
+
+            if (ToLower(iconPath.extension().string()) != ".png") {
+                outError = "items[" + std::to_string(i) + "].iconAsset must point to a .png file";
+                return false;
+            }
+
+            std::vector<uint8_t> iconBytes;
+            if (!ReadBinaryFromPackage(package, iconPath, kMaxItemIconBytes, iconBytes, outError)) {
+                outError = "items[" + std::to_string(i) + "].iconAsset read failed: " + outError;
+                return false;
+            }
+
+            if (!TryDecodeItemIconPng(iconBytes, definition.iconRgba32, outError)) {
+                outError = "items[" + std::to_string(i) + "].iconAsset decode failed: " + outError;
+                return false;
+            }
         }
 
         std::filesystem::path inputPath;
@@ -1338,6 +2661,42 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
                                                 });
             if (bindingIt == runtime.inputBindings.end()) {
                 outError = "onInput references unknown binding: " + inputTrigger.bindingId;
+                return false;
+            }
+        }
+
+        if (ManifestHasCapability(package.manifest, "hooks.extended.v1")) {
+            std::filesystem::path hooksPath;
+            if (!IsSafePackageRelativePath(package.manifest.hookDefinitions, hooksPath, outError)) {
+                outError = "Invalid hookDefinitions: " + outError;
+                return false;
+            }
+
+            std::string hooksContent;
+            if (!ReadFileFromPackage(package, hooksPath, kMaxHookDefinitionBytes, hooksContent, outError)) {
+                outError = "Failed to read hookDefinitions: " + outError;
+                return false;
+            }
+
+            if (!TryParseHookDefinitions(hooksContent, runtime.apiVersion, runtime.hookSubscriptions, outError)) {
+                return false;
+            }
+        }
+
+        if (ManifestHasCapability(package.manifest, "actors.vm.v1")) {
+            std::filesystem::path actorsPath;
+            if (!IsSafePackageRelativePath(package.manifest.actorDefinitions, actorsPath, outError)) {
+                outError = "Invalid actorDefinitions: " + outError;
+                return false;
+            }
+
+            std::string actorsContent;
+            if (!ReadFileFromPackage(package, actorsPath, kMaxActorDefinitionBytes, actorsContent, outError)) {
+                outError = "Failed to read actorDefinitions: " + outError;
+                return false;
+            }
+
+            if (!TryParseActorDefinitions(actorsContent, runtime.apiVersion, runtime.actorDefinitions, outError)) {
                 return false;
             }
         }
@@ -1520,6 +2879,98 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                     input->cur.button |= mask;
                 }
                 break;
+            case ExternalModActionType::SpawnSmoke:
+                if (gPlayState != nullptr) {
+                    auto* smokePlayer = GET_PLAYER(gPlayState);
+                    if (smokePlayer != nullptr) {
+                        Vec3f smokePos = smokePlayer->actor.world.pos;
+                        smokePos.y += 25.0f;
+                        Vec3f smokeVel = { 0.0f, 0.8f, 0.0f };
+                        Vec3f smokeAccel = { 0.0f, 0.05f, 0.0f };
+                        EffectSsIceSmoke_Spawn(gPlayState, &smokePos, &smokeVel, &smokeAccel, 120);
+                    }
+                }
+                break;
+            case ExternalModActionType::SpawnKusa:
+                if (gPlayState != nullptr) {
+                    auto* kusaPlayer = GET_PLAYER(gPlayState);
+                    if (kusaPlayer != nullptr) {
+                        const Vec3f kusaPos = kusaPlayer->actor.world.pos;
+                        Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_KUSA, kusaPos.x, kusaPos.y, kusaPos.z, 0,
+                                    kusaPlayer->actor.shape.rot.y, 0, 0, true);
+                    }
+                }
+                break;
+            case ExternalModActionType::SpawnActor: {
+                if (!ManifestHasCapability(package.manifest, "actors.vm.v1")) {
+                    DisableRuntime(package, "spawnActor requires capability actors.vm.v1");
+                    return;
+                }
+                const auto* definition = FindActorDefinition(package.runtime, action.actorDefinitionId);
+                if (definition == nullptr) {
+                    DisableRuntime(package, "spawnActor references unknown actorDefinitionId: " + action.actorDefinitionId);
+                    return;
+                }
+                std::string actorError;
+                uint32_t spawnedHandle = 0;
+                if (!SpawnActorInstance(package, *definition, spawnedHandle, actorError)) {
+                    DisableRuntime(package, "spawnActor failed: " + actorError);
+                    return;
+                }
+                SPDLOG_INFO("[ExternalMods] {} spawned virtual actor '{}' handle={} via {}", package.manifest.id,
+                            definition->id, spawnedHandle, triggerName);
+                break;
+            }
+            case ExternalModActionType::DespawnActor: {
+                if (!ManifestHasCapability(package.manifest, "actors.vm.v1")) {
+                    DisableRuntime(package, "despawnActor requires capability actors.vm.v1");
+                    return;
+                }
+                std::string actorError;
+                if (!DespawnActorInstance(package, action.actorHandle, actorError)) {
+                    DisableRuntime(package, "despawnActor failed: " + actorError);
+                    return;
+                }
+                break;
+            }
+            case ExternalModActionType::SetActorState: {
+                if (!ManifestHasCapability(package.manifest, "actors.vm.v1")) {
+                    DisableRuntime(package, "setActorState requires capability actors.vm.v1");
+                    return;
+                }
+                auto* instance = FindActorInstance(package.runtime, action.actorHandle);
+                if (instance == nullptr) {
+                    DisableRuntime(package,
+                                   "setActorState references unknown actor handle: " + std::to_string(action.actorHandle));
+                    return;
+                }
+                instance->state[action.actorStateKey] = action.actorStateValue;
+                break;
+            }
+            case ExternalModActionType::MoveActorToPathNode: {
+                if (!ManifestHasCapability(package.manifest, "actors.vm.v1")) {
+                    DisableRuntime(package, "moveActorToPathNode requires capability actors.vm.v1");
+                    return;
+                }
+                auto* instance = FindActorInstance(package.runtime, action.actorHandle);
+                if (instance == nullptr) {
+                    DisableRuntime(package, "moveActorToPathNode references unknown actor handle: " +
+                                                std::to_string(action.actorHandle));
+                    return;
+                }
+                instance->state["pathNodeIndex"] = std::to_string(action.pathNodeIndex);
+                break;
+            }
+            case ExternalModActionType::OpenDialog:
+                if (gPlayState != nullptr) {
+                    if (action.actorHandle != 0 && FindActorInstance(package.runtime, action.actorHandle) == nullptr) {
+                        DisableRuntime(package,
+                                       "openDialog references unknown actor handle: " + std::to_string(action.actorHandle));
+                        return;
+                    }
+                    Message_StartTextbox(gPlayState, static_cast<uint16_t>(action.dialogId & 0xFFFF), nullptr);
+                }
+                break;
             case ExternalModActionType::GrantModItem: {
                 auto itemIt = std::find_if(package.runtime.itemDefinitions.begin(), package.runtime.itemDefinitions.end(),
                                            [&action](const ExternalModItemDefinition& item) {
@@ -1531,6 +2982,7 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                 }
                 itemIt->granted = true;
                 itemIt->cooldownRemaining = 0;
+                GrantItemForDefinitionIfMissing(*itemIt);
                 break;
             }
             case ExternalModActionType::RevokeModItem: {
@@ -1571,6 +3023,53 @@ void ExternalModManager::DisableRuntime(ExternalModPackage& package, const std::
     SPDLOG_ERROR("[ExternalMods] Disabled runtime for {}: {}", package.manifest.id, reason);
 }
 
+void ExternalModManager::DispatchExtendedHook(ExternalModHookType hookType, const ExternalModHookEventContext& context,
+                                              const char* triggerName) {
+    const char* resolvedTriggerName = triggerName != nullptr ? triggerName : "extendedHook";
+
+    for (auto& package : mPackages) {
+        if (!package.runtime.enabled || !ManifestHasCapability(package.manifest, "hooks.extended.v1")) {
+            continue;
+        }
+
+        for (auto& subscription : package.runtime.hookSubscriptions) {
+            if (!package.runtime.enabled) {
+                break;
+            }
+            if (subscription.hook != hookType || subscription.cooldownRemaining > 0) {
+                continue;
+            }
+            if (!MatchesHookFilter(subscription.filters, context)) {
+                continue;
+            }
+
+            if (package.runtime.hookCallsThisFrame >= package.runtime.maxHookCallsPerFrame) {
+                DisableRuntime(package, "Hook call budget exceeded in current frame");
+                break;
+            }
+
+            if (subscription.dispatch == ExternalModHookDispatchType::Actions) {
+                ExecuteActions(package, subscription.actions, subscription.id.empty() ? resolvedTriggerName : subscription.id.c_str());
+            } else {
+                if (!package.runtime.wasmRuntime) {
+                    DisableRuntime(package, "Hook subscription requires wasm runtime: " + subscription.id);
+                    break;
+                }
+
+                std::string wasmError;
+                const auto args = BuildHookWasmArgs(context);
+                if (!package.runtime.wasmRuntime->InvokeExport(subscription.wasmExport, args, wasmError)) {
+                    DisableRuntime(package,
+                                   "Hook wasm export failed for subscription '" + subscription.id + "': " + wasmError);
+                    break;
+                }
+            }
+
+            subscription.cooldownRemaining = subscription.cooldownFrames;
+            package.runtime.hookCallsThisFrame++;
+        }
+    }
+}
 void ExternalModManager::RegisterHooks() {
     if (GameInteractor::Instance == nullptr) {
         SPDLOG_WARN("[ExternalMods] GameInteractor is unavailable; hooks were not registered");
@@ -1581,35 +3080,122 @@ void ExternalModManager::RegisterHooks() {
 
     mOnLoadGameHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(
         [](int32_t fileNum) { ExternalModManager::Instance().OnLoadGame(fileNum); });
+    mOnExitGameHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>(
+        [](int32_t fileNum) { ExternalModManager::Instance().OnExitGame(fileNum); });
     mOnSceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
         [](int16_t sceneNum) { ExternalModManager::Instance().OnSceneInit(sceneNum); });
+    mAfterSceneCommandsHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::AfterSceneCommands>(
+        [](int16_t sceneNum) { ExternalModManager::Instance().OnAfterSceneCommands(sceneNum); });
+    mOnTransitionEndHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(
+        [](int16_t sceneNum) { ExternalModManager::Instance().OnTransitionEnd(sceneNum); });
+    mOnFlagSetHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(
+        [](int16_t flagType, int16_t flag) { ExternalModManager::Instance().OnFlagSet(flagType, flag); });
+    mOnFlagUnsetHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagUnset>(
+        [](int16_t flagType, int16_t flag) { ExternalModManager::Instance().OnFlagUnset(flagType, flag); });
+    mOnSceneFlagSetHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneFlagSet>(
+        [](int16_t sceneNum, int16_t flagType, int16_t flag) {
+            ExternalModManager::Instance().OnSceneFlagSet(sceneNum, flagType, flag);
+        });
+    mOnSceneFlagUnsetHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneFlagUnset>(
+        [](int16_t sceneNum, int16_t flagType, int16_t flag) {
+            ExternalModManager::Instance().OnSceneFlagUnset(sceneNum, flagType, flag);
+        });
+    mOnPlayerUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>(
+        []() { ExternalModManager::Instance().OnPlayerUpdate(); });
     mOnGameFrameHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(
         []() { ExternalModManager::Instance().OnGameFrameUpdate(); });
     mOnPlayerUseItemHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUseItem>(
         [](void* player, int32_t itemId, bool* allowVanilla) {
             ExternalModManager::Instance().OnPlayerUseItem(player, itemId, allowVanilla);
         });
+    mOnPlayerHealthChangeHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerHealthChange>(
+        [](int16_t amount) { ExternalModManager::Instance().OnPlayerHealthChange(amount); });
+    mOnItemReceiveHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(
+        [](GetItemEntry itemEntry) { ExternalModManager::Instance().OnItemReceive(static_cast<int16_t>(itemEntry.itemId)); });
+    mOnActorInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(
+        [](void* actor) { ExternalModManager::Instance().OnActorHook(ExternalModHookType::OnActorInit, actor, "OnActorInit"); });
+    mOnActorSpawnHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorSpawn>(
+        [](void* actor) { ExternalModManager::Instance().OnActorHook(ExternalModHookType::OnActorSpawn, actor, "OnActorSpawn"); });
+    mOnActorUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(
+        [](void* actor) { ExternalModManager::Instance().OnActorHook(ExternalModHookType::OnActorUpdate, actor, "OnActorUpdate"); });
+    mOnActorKillHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorKill>(
+        [](void* actor) { ExternalModManager::Instance().OnActorHook(ExternalModHookType::OnActorKill, actor, "OnActorKill"); });
+    mOnActorDestroyHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorDestroy>(
+        [](void* actor) {
+            ExternalModManager::Instance().OnActorHook(ExternalModHookType::OnActorDestroy, actor, "OnActorDestroy");
+        });
+    mOnEnemyDefeatHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnEnemyDefeat>(
+        [](void* actor) {
+            ExternalModManager::Instance().OnActorHook(ExternalModHookType::OnEnemyDefeat, actor, "OnEnemyDefeat");
+        });
+    mOnBossDefeatHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>(
+        [](void* actor) {
+            ExternalModManager::Instance().OnActorHook(ExternalModHookType::OnBossDefeat, actor, "OnBossDefeat");
+        });
+    mOnPlayDestroyHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayDestroy>(
+        []() { ExternalModManager::Instance().OnPlayDestroy(); });
 }
 
 void ExternalModManager::UnregisterHooks() {
     if (GameInteractor::Instance != nullptr) {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnLoadGame>(mOnLoadGameHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnExitGame>(mOnExitGameHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(mOnSceneInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::AfterSceneCommands>(mAfterSceneCommandsHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnTransitionEnd>(mOnTransitionEndHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnFlagSet>(mOnFlagSetHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnFlagUnset>(mOnFlagUnsetHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneFlagSet>(mOnSceneFlagSetHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneFlagUnset>(mOnSceneFlagUnsetHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(mOnPlayerUpdateHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(mOnGameFrameHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUseItem>(mOnPlayerUseItemHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerHealthChange>(mOnPlayerHealthChangeHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnItemReceive>(mOnItemReceiveHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(mOnActorInitHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorSpawn>(mOnActorSpawnHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(mOnActorUpdateHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorKill>(mOnActorKillHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorDestroy>(mOnActorDestroyHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnEnemyDefeat>(mOnEnemyDefeatHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnBossDefeat>(mOnBossDefeatHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayDestroy>(mOnPlayDestroyHook);
     }
+
     mOnLoadGameHook = 0;
+    mOnExitGameHook = 0;
     mOnSceneInitHook = 0;
+    mAfterSceneCommandsHook = 0;
+    mOnTransitionEndHook = 0;
+    mOnFlagSetHook = 0;
+    mOnFlagUnsetHook = 0;
+    mOnSceneFlagSetHook = 0;
+    mOnSceneFlagUnsetHook = 0;
+    mOnPlayerUpdateHook = 0;
     mOnGameFrameHook = 0;
     mOnPlayerUseItemHook = 0;
+    mOnPlayerHealthChangeHook = 0;
+    mOnItemReceiveHook = 0;
+    mOnActorInitHook = 0;
+    mOnActorSpawnHook = 0;
+    mOnActorUpdateHook = 0;
+    mOnActorKillHook = 0;
+    mOnActorDestroyHook = 0;
+    mOnEnemyDefeatHook = 0;
+    mOnBossDefeatHook = 0;
+    mOnPlayDestroyHook = 0;
 }
 
 void ExternalModManager::OnLoadGame(int32_t fileNum) {
     (void)fileNum;
+
     for (auto& package : mPackages) {
         if (!package.runtime.enabled) {
             continue;
         }
+
+        package.runtime.hookCallsThisFrame = 0;
+
         try {
             for (auto& trigger : package.runtime.frameTriggers) {
                 trigger.wasInside = false;
@@ -1622,6 +3208,11 @@ void ExternalModManager::OnLoadGame(int32_t fileNum) {
                 item.granted = false;
                 item.cooldownRemaining = 0;
             }
+            for (auto& hookSubscription : package.runtime.hookSubscriptions) {
+                hookSubscription.cooldownRemaining = 0;
+            }
+            package.runtime.actorInstances.clear();
+            package.runtime.nextActorHandle = 1;
 
             ExecuteActions(package, package.runtime.onGameLoadedActions, "onGameLoaded");
         } catch (const std::exception& ex) {
@@ -1630,6 +3221,25 @@ void ExternalModManager::OnLoadGame(int32_t fileNum) {
             DisableRuntime(package, "Unhandled exception on onGameLoaded");
         }
     }
+
+    ExternalModHookEventContext context;
+    if (gPlayState != nullptr) {
+        context.scene = static_cast<int16_t>(gPlayState->sceneNum);
+    }
+    DispatchExtendedHook(ExternalModHookType::OnLoadGame, context, "OnLoadGame");
+
+    ApplyModItemAgeRequirementOverrides(mPackages);
+    ApplyModItemIconOverrides(mPackages);
+}
+
+void ExternalModManager::OnExitGame(int32_t fileNum) {
+    (void)fileNum;
+
+    ExternalModHookEventContext context;
+    if (gPlayState != nullptr) {
+        context.scene = static_cast<int16_t>(gPlayState->sceneNum);
+    }
+    DispatchExtendedHook(ExternalModHookType::OnExitGame, context, "OnExitGame");
 }
 
 void ExternalModManager::OnSceneInit(int16_t sceneNum) {
@@ -1638,6 +3248,21 @@ void ExternalModManager::OnSceneInit(int16_t sceneNum) {
             continue;
         }
         try {
+            package.runtime.actorInstances.clear();
+            package.runtime.nextActorHandle = 1;
+
+            for (const auto& actorDefinition : package.runtime.actorDefinitions) {
+                if (actorDefinition.sceneId != sceneNum) {
+                    continue;
+                }
+                std::string actorError;
+                uint32_t spawnedHandle = 0;
+                if (!SpawnActorInstance(package, actorDefinition, spawnedHandle, actorError)) {
+                    DisableRuntime(package, "Scene actor spawn failed: " + actorError);
+                    break;
+                }
+            }
+
             for (auto& trigger : package.runtime.frameTriggers) {
                 trigger.wasInside = false;
                 trigger.cooldownRemaining = 0;
@@ -1653,11 +3278,76 @@ void ExternalModManager::OnSceneInit(int16_t sceneNum) {
             DisableRuntime(package, "Unhandled exception on onSceneInit");
         }
     }
+
+    ExternalModHookEventContext context;
+    context.scene = sceneNum;
+    DispatchExtendedHook(ExternalModHookType::OnSceneInit, context, "OnSceneInit");
+
+    ApplyModItemAgeRequirementOverrides(mPackages);
+    ApplyModItemIconOverrides(mPackages);
 }
+
+void ExternalModManager::OnAfterSceneCommands(int16_t sceneNum) {
+    ExternalModHookEventContext context;
+    context.scene = sceneNum;
+    DispatchExtendedHook(ExternalModHookType::AfterSceneCommands, context, "AfterSceneCommands");
+}
+
+void ExternalModManager::OnTransitionEnd(int16_t sceneNum) {
+    ExternalModHookEventContext context;
+    context.scene = sceneNum;
+    DispatchExtendedHook(ExternalModHookType::OnTransitionEnd, context, "OnTransitionEnd");
+}
+
+void ExternalModManager::OnFlagSet(int16_t flagType, int16_t flag) {
+    ExternalModHookEventContext context;
+    if (gPlayState != nullptr) {
+        context.scene = static_cast<int16_t>(gPlayState->sceneNum);
+    }
+    context.flagType = flagType;
+    context.flagId = flag;
+    DispatchExtendedHook(ExternalModHookType::OnFlagSet, context, "OnFlagSet");
+}
+
+void ExternalModManager::OnFlagUnset(int16_t flagType, int16_t flag) {
+    ExternalModHookEventContext context;
+    if (gPlayState != nullptr) {
+        context.scene = static_cast<int16_t>(gPlayState->sceneNum);
+    }
+    context.flagType = flagType;
+    context.flagId = flag;
+    DispatchExtendedHook(ExternalModHookType::OnFlagUnset, context, "OnFlagUnset");
+}
+
+void ExternalModManager::OnSceneFlagSet(int16_t sceneNum, int16_t flagType, int16_t flag) {
+    ExternalModHookEventContext context;
+    context.scene = sceneNum;
+    context.flagType = flagType;
+    context.flagId = flag;
+    DispatchExtendedHook(ExternalModHookType::OnSceneFlagSet, context, "OnSceneFlagSet");
+}
+
+void ExternalModManager::OnSceneFlagUnset(int16_t sceneNum, int16_t flagType, int16_t flag) {
+    ExternalModHookEventContext context;
+    context.scene = sceneNum;
+    context.flagType = flagType;
+    context.flagId = flag;
+    DispatchExtendedHook(ExternalModHookType::OnSceneFlagUnset, context, "OnSceneFlagUnset");
+}
+
+void ExternalModManager::OnPlayerUpdate() {
+    ExternalModHookEventContext context;
+    if (gPlayState != nullptr) {
+        context.scene = static_cast<int16_t>(gPlayState->sceneNum);
+    }
+    DispatchExtendedHook(ExternalModHookType::OnPlayerUpdate, context, "OnPlayerUpdate");
+}
+
 void ExternalModManager::OnGameFrameUpdate() {
     if (gPlayState == nullptr) {
         return;
     }
+
     auto* player = GET_PLAYER(gPlayState);
     if (player == nullptr) {
         return;
@@ -1671,6 +3361,14 @@ void ExternalModManager::OnGameFrameUpdate() {
         if (!package.runtime.enabled) {
             continue;
         }
+
+        package.runtime.hookCallsThisFrame = 0;
+        for (auto& hookSubscription : package.runtime.hookSubscriptions) {
+            if (hookSubscription.cooldownRemaining > 0) {
+                hookSubscription.cooldownRemaining--;
+            }
+        }
+
         try {
             for (auto& trigger : package.runtime.frameTriggers) {
                 if (trigger.sceneId != sceneNum) {
@@ -1694,8 +3392,7 @@ void ExternalModManager::OnGameFrameUpdate() {
                     inputTrigger.cooldownRemaining--;
                 }
 
-                const auto bindingIt = std::find_if(package.runtime.inputBindings.begin(),
-                                                    package.runtime.inputBindings.end(),
+                const auto bindingIt = std::find_if(package.runtime.inputBindings.begin(), package.runtime.inputBindings.end(),
                                                     [&inputTrigger](const ExternalModInputBinding& binding) {
                                                         return binding.id == inputTrigger.bindingId;
                                                     });
@@ -1750,19 +3447,66 @@ void ExternalModManager::OnGameFrameUpdate() {
                     break;
                 }
             }
+
+            if (!package.runtime.enabled) {
+                continue;
+            }
+
+            for (auto& instance : package.runtime.actorInstances) {
+                if (!instance.active || instance.sceneId != sceneNum) {
+                    continue;
+                }
+
+                const auto* definition = FindActorDefinition(package.runtime, instance.definitionId);
+                if (definition == nullptr) {
+                    DisableRuntime(package, "Actor instance references missing definition: " + instance.definitionId);
+                    break;
+                }
+
+                instance.tickCounter++;
+                if (instance.tickCounter < std::max(1, definition->tickRate)) {
+                    continue;
+                }
+                instance.tickCounter = 0;
+
+                if (!definition->exportOnUpdate.empty()) {
+                    if (!package.runtime.wasmRuntime) {
+                        DisableRuntime(package, "Actor exportOnUpdate requires wasm runtime");
+                        break;
+                    }
+                    std::string wasmError;
+                    const std::vector<int32_t> args = { static_cast<int32_t>(instance.handle), instance.sceneId };
+                    if (!package.runtime.wasmRuntime->InvokeExport(definition->exportOnUpdate, args, wasmError)) {
+                        DisableRuntime(package,
+                                       "Actor exportOnUpdate failed for '" + definition->id + "': " + wasmError);
+                        break;
+                    }
+                }
+            }
         } catch (const std::exception& ex) {
             DisableRuntime(package, std::string("Unhandled exception on onFrame: ") + ex.what());
         } catch (...) {
             DisableRuntime(package, "Unhandled exception on onFrame");
         }
     }
+
+    ExternalModHookEventContext context;
+    context.scene = sceneNum;
+    DispatchExtendedHook(ExternalModHookType::OnGameFrameUpdate, context, "OnGameFrameUpdate");
+
+    ApplyModItemAgeRequirementOverrides(mPackages);
+    ApplyModItemIconOverrides(mPackages);
 }
 
 void ExternalModManager::OnPlayerUseItem(void* player, int32_t itemId, bool* allowVanilla) {
-    if (allowVanilla == nullptr || !*allowVanilla) {
-        return;
+    ExternalModHookEventContext hookContext;
+    if (gPlayState != nullptr) {
+        hookContext.scene = static_cast<int16_t>(gPlayState->sceneNum);
     }
-    if (!ExternalModItemRuntime::IsHookshotItemId(itemId)) {
+    hookContext.itemId = static_cast<int16_t>(itemId);
+    DispatchExtendedHook(ExternalModHookType::OnPlayerUseItem, hookContext, "OnPlayerUseItem");
+
+    if (allowVanilla == nullptr || !*allowVanilla) {
         return;
     }
 
@@ -1772,16 +3516,20 @@ void ExternalModManager::OnPlayerUseItem(void* player, int32_t itemId, bool* all
         }
 
         for (auto& item : package.runtime.itemDefinitions) {
-            if (!item.granted || item.slot != ExternalModItemSlot::Hookshot) {
+            if (!item.granted || !ItemDefinitionMatchesUseItem(item, itemId)) {
                 continue;
             }
 
             if (item.cooldownRemaining > 0) {
-                *allowVanilla = false;
-                return;
+                if (item.useMode == ExternalModItemUseMode::Override) {
+                    *allowVanilla = false;
+                    return;
+                }
+                continue;
             }
 
-            if (package.runtime.wasmRuntime && !item.onUseExport.empty()) {
+            if ((item.useMode == ExternalModItemUseMode::Override || item.useMode == ExternalModItemUseMode::Augment) &&
+                package.runtime.wasmRuntime && !item.onUseExport.empty()) {
                 std::vector<int32_t> args = { itemId };
                 std::string wasmError;
                 if (!package.runtime.wasmRuntime->InvokeExport(item.onUseExport, args, wasmError)) {
@@ -1791,19 +3539,77 @@ void ExternalModManager::OnPlayerUseItem(void* player, int32_t itemId, bool* all
                 }
             }
 
-            const float pullForce = GetParamOrDefault(item.params, "pullForce", 8.0f);
-            const float speed = GetParamOrDefault(item.params, "speed", 12.0f);
-            ExternalModItemRuntime::ApplySkyhookImpulse(player, pullForce, speed);
+            if (item.slot == ExternalModItemSlot::Hookshot && item.useMode != ExternalModItemUseMode::Vanilla) {
+                const float pullForce = GetParamOrDefault(item.params, "pullForce", 8.0f);
+                const float speed = GetParamOrDefault(item.params, "speed", 12.0f);
+                ExternalModItemRuntime::ApplySkyhookImpulse(player, pullForce, speed);
+            }
 
             const auto cooldown = static_cast<int32_t>(
                 std::max(0.0f, GetParamOrDefault(item.params, "cooldown", static_cast<float>(item.cooldownFrames))));
             item.cooldownFrames = cooldown;
             item.cooldownRemaining = cooldown;
 
-            *allowVanilla = false;
-            return;
+            if (item.useMode == ExternalModItemUseMode::Override) {
+                *allowVanilla = false;
+                return;
+            }
         }
     }
 }
 
+void ExternalModManager::OnPlayerHealthChange(int16_t amount) {
+    ExternalModHookEventContext context;
+    if (gPlayState != nullptr) {
+        context.scene = static_cast<int16_t>(gPlayState->sceneNum);
+    }
+    context.healthDelta = amount;
+    DispatchExtendedHook(ExternalModHookType::OnPlayerHealthChange, context, "OnPlayerHealthChange");
+}
+
+void ExternalModManager::OnItemReceive(int16_t itemId) {
+    ExternalModHookEventContext context;
+    if (gPlayState != nullptr) {
+        context.scene = static_cast<int16_t>(gPlayState->sceneNum);
+    }
+    context.itemId = itemId;
+    DispatchExtendedHook(ExternalModHookType::OnItemReceive, context, "OnItemReceive");
+}
+
+void ExternalModManager::OnActorHook(ExternalModHookType hookType, void* actor, const char* hookName) {
+    ExternalModHookEventContext context;
+    if (gPlayState != nullptr) {
+        context.scene = static_cast<int16_t>(gPlayState->sceneNum);
+    }
+
+    if (actor != nullptr) {
+        auto* actorPtr = static_cast<Actor*>(actor);
+        context.actorId = static_cast<int16_t>(actorPtr->id);
+        context.actorCategory = static_cast<int16_t>(actorPtr->category);
+    }
+
+    DispatchExtendedHook(hookType, context, hookName);
+}
+
+void ExternalModManager::OnPlayDestroy() {
+    ExternalModHookEventContext context;
+    if (gPlayState != nullptr) {
+        context.scene = static_cast<int16_t>(gPlayState->sceneNum);
+    }
+    DispatchExtendedHook(ExternalModHookType::OnPlayDestroy, context, "OnPlayDestroy");
+    for (auto& package : mPackages) {
+        package.runtime.actorInstances.clear();
+        package.runtime.nextActorHandle = 1;
+    }
+    ApplyModItemAgeRequirementOverrides(mPackages);
+    ApplyModItemIconOverrides(mPackages);
+}
 } // namespace SOH
+
+
+
+
+
+
+
+

@@ -1,9 +1,18 @@
-﻿{
+{
   "items": [
     {
       "id": "skyhook_v2",
-      "displayName": "Skyhook Mk2",
+      "displayName": "Bananza",
       "slot": "SLOT_HOOKSHOT",
+      "iconAsset": "assets/skyhook_placeholder.png",
+      "agePolicy": "allowChild",
+      "useMode": "override",
+      "grant": {
+        "itemId": "ITEM_HOOKSHOT"
+      },
+      "ui": {
+        "description": "Hookshot customizado com impulso vertical e controle via WASM."
+      },
       "behavior": {
         "exportOnUse": "on_use",
         "exportOnUpdate": "on_update"
@@ -13,6 +22,63 @@
         "speed": 12.0,
         "cooldown": 20,
         "pullForce": 9.0
+      }
+    },
+    {
+      "id": "child_bow_unlock",
+      "displayName": "Child Bow Unlock",
+      "slot": "SLOT_BOW",
+      "agePolicy": "allowChild",
+      "useMode": "vanilla",
+      "grant": {
+        "itemId": "ITEM_BOW",
+        "ammo": 30
+      },
+      "ui": {
+        "description": "Libera o uso do arco por Link criança."
+      }
+    },
+    {
+      "id": "child_hammer_unlock",
+      "displayName": "Child Hammer Unlock",
+      "slot": "SLOT_HAMMER",
+      "agePolicy": "allowChild",
+      "useMode": "vanilla",
+      "grant": {
+        "itemId": "ITEM_HAMMER"
+      }
+    },
+    {
+      "id": "child_fire_arrow_unlock",
+      "displayName": "Child Fire Arrow Unlock",
+      "slot": "SLOT_ARROW_FIRE",
+      "agePolicy": "allowChild",
+      "useMode": "vanilla",
+      "grant": {
+        "itemId": "ITEM_ARROW_FIRE",
+        "ammo": 30
+      }
+    },
+    {
+      "id": "child_ice_arrow_unlock",
+      "displayName": "Child Ice Arrow Unlock",
+      "slot": "SLOT_ARROW_ICE",
+      "agePolicy": "allowChild",
+      "useMode": "vanilla",
+      "grant": {
+        "itemId": "ITEM_ARROW_ICE",
+        "ammo": 30
+      }
+    },
+    {
+      "id": "child_light_arrow_unlock",
+      "displayName": "Child Light Arrow Unlock",
+      "slot": "SLOT_ARROW_LIGHT",
+      "agePolicy": "allowChild",
+      "useMode": "vanilla",
+      "grant": {
+        "itemId": "ITEM_ARROW_LIGHT",
+        "ammo": 30
       }
     }
   ]

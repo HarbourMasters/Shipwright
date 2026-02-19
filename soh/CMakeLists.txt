@@ -424,7 +424,7 @@ if(MSVC)
             /bigobj;
             /sdl-;
             /permissive-;
-            /MP1;
+            /MP;
             /FS;
             ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
             ${DEFAULT_CXX_EXCEPTION_HANDLING}
@@ -441,7 +441,7 @@ if(MSVC)
                 /Gy
             >
             /permissive-;
-            /MP1;
+            /MP;
             /FS;
             /sdl-;
             /w;

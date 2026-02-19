@@ -1,0 +1,26 @@
+﻿{
+  "actors": [
+    {
+      "id": "kokiri_smoke_guide",
+      "archetype": "npc",
+      "spawn": {
+        "scene": "SCENE_KOKIRI_FOREST",
+        "position": [
+          48.0,
+          0.0,
+          -35.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "limits": {
+        "maxInstances": 1,
+        "tickRate": 30,
+        "lodDistance": 2500.0
+      }
+    }
+  ]
+}
