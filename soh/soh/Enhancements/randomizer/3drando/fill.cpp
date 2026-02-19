@@ -211,6 +211,8 @@ void ProcessExits(Region* region, GetAccessibleLocationsStruct& gals, Randomizer
             // Include bluewarps when unshuffled but dungeon or boss shuffle is on
             if ((exit.IsShuffled() ||
                  (exit.GetType() == Rando::EntranceType::BlueWarp &&
+                  (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE) ||
+                   exit.GetParentRegionKey() != RR_GANONS_TOWER_STAIRS_1) &&
                   (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES)))) &&
                 !exit.IsAddedToPool() && !ctx->GetEntranceShuffler()->HasNoRandomEntrances()) {
                 gals.entranceSphere.push_back(&exit);

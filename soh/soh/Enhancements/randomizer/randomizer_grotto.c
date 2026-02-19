@@ -186,7 +186,6 @@ s16 Grotto_GetEntranceValueHandlingGrottoRando(s16 nextEntranceIndex) {
 // Translates and overrides the passed in entrance index if it corresponds to a
 // special grotto entrance (grotto load or return point) and updates player respawn data correctly.
 s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
-
     // Don't change anything unless grotto shuffle has been enabled
     if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) &&
         !Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) &&
@@ -233,7 +232,6 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
         lastEntranceType = GROTTO_RETURN;
         // Grotto Loads
     } else if (nextEntranceIndex >= ENTRANCE_GROTTO_LOAD_START && nextEntranceIndex < ENTRANCE_GROTTO_EXIT_START) {
-
         // Set the respawn data to load the correct grotto
         GrottoLoadInfo grotto = grottoLoadTable[grottoId];
         gSaveContext.respawn[RESPAWN_MODE_RETURN].data = grotto.content;
@@ -255,7 +253,6 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
 // Override the entrance index when entering into a grotto actor
 // thisx - pointer to the grotto actor
 void Grotto_OverrideActorEntrance(Actor* thisx) {
-
     // Vanilla Behavior if there's no possibility of ending up in a grotto randomly
     if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) &&
         !Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) &&
