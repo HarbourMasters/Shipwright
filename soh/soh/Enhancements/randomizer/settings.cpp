@@ -136,11 +136,20 @@ void Settings::HandleMixedEntrancePoolsUI() {
 }
 
 void Settings::HandleStartingAgeUI() {
-    // Starting Age - Disabled under very specific conditions
-    // RANDOTODO: Fix so this is not disabled for No Logic.
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
-        CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_OFF) ==
-            RO_GENERIC_OFF) /* closed door of time with ocarina shuffle off */ {
+    // Starting Age - Disabled under very specific conditions unless it's No Logic
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC &&
+    //If Closed DoT requires OoT then we can only start as child
+        ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
+          CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_OFF) == RO_GENERIC_OFF) || 
+    //If Forest is Closed, we cannot start as Adult unless there's a sphere 0 entrance shuffle in Kokiri forest,
+    //or there's random spawns, as the player may saveload as child and get stuck.
+    //Grottos only lead somewhere if decoupled 
+         (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ClosedForest"), RO_CLOSED_FOREST_ON) == RO_CLOSED_FOREST_ON &&
+          CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldSpawns"), RO_GENERIC_OFF) == RO_GENERIC_OFF &&
+          (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF ||
+          CVarGetInteger(CVAR_RANDOMIZER_SETTING("DecoupleEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF) &&
+          CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF &&
+          CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF))){
         mOptions[RSK_STARTING_AGE].Disable("This option is disabled due to other options making the game unbeatable.");
     } else {
         mOptions[RSK_STARTING_AGE].Enable();
@@ -151,6 +160,9 @@ void Settings::CreateOptions() {
     CreateOptionDescriptions();
     // clang-format off
     OPT_U8(RSK_FOREST, "Closed Forest", {"On", "Deku Only", "Off"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ClosedForest"), mOptionDescriptions[RSK_FOREST], WIDGET_CVAR_COMBOBOX, RO_CLOSED_FOREST_ON);
+    OPT_CALLBACK(RSK_FOREST, {
+        HandleStartingAgeUI();
+    });
     OPT_U8(RSK_KAK_GATE, "Kakariko Gate", {"Closed", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("KakarikoGate"), mOptionDescriptions[RSK_KAK_GATE]);
     OPT_U8(RSK_DOOR_OF_TIME, "Door of Time", {"Closed", "Song only", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("DoorOfTime"), mOptionDescriptions[RSK_DOOR_OF_TIME], WIDGET_CVAR_COMBOBOX);
     OPT_CALLBACK(RSK_DOOR_OF_TIME, {
@@ -320,6 +332,8 @@ void Settings::CreateOptions() {
         } else {
             mOptions[RSK_MIX_OVERWORLD_ENTRANCES].Unhide();
         }
+        
+        HandleStartingAgeUI();
     });
     OPT_U8(RSK_SHUFFLE_INTERIOR_ENTRANCES, "Interior Entrances", {"Off", "Simple", "All"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), mOptionDescriptions[RSK_SHUFFLE_INTERIOR_ENTRANCES], WIDGET_CVAR_COMBOBOX, RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
     OPT_CALLBACK(RSK_SHUFFLE_INTERIOR_ENTRANCES, {
@@ -331,6 +345,8 @@ void Settings::CreateOptions() {
         } else {
             mOptions[RSK_MIX_INTERIOR_ENTRANCES].Unhide();
         }
+        
+        HandleStartingAgeUI();
     });
     OPT_BOOL(RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES, "Thieves' Hideout Entrances", CVAR_RANDOMIZER_SETTING("ShuffleThievesHideoutEntrances"), mOptionDescriptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES]);
     OPT_CALLBACK(RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES, {
@@ -354,6 +370,8 @@ void Settings::CreateOptions() {
         } else {
             mOptions[RSK_MIX_GROTTO_ENTRANCES].Unhide();
         }
+        
+        HandleStartingAgeUI();
     });
     OPT_BOOL(RSK_SHUFFLE_OWL_DROPS, "Owl Drops", CVAR_RANDOMIZER_SETTING("ShuffleOwlDrops"), mOptionDescriptions[RSK_SHUFFLE_OWL_DROPS]);
     OPT_BOOL(RSK_SHUFFLE_WARP_SONGS, "Warp Songs", CVAR_RANDOMIZER_SETTING("ShuffleWarpSongs"), mOptionDescriptions[RSK_SHUFFLE_WARP_SONGS]);
@@ -365,6 +383,9 @@ void Settings::CreateOptions() {
         }
     });
     OPT_BOOL(RSK_SHUFFLE_OVERWORLD_SPAWNS, "Overworld Spawns", CVAR_RANDOMIZER_SETTING("ShuffleOverworldSpawns"), mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]);
+    OPT_CALLBACK(RSK_SHUFFLE_OVERWORLD_SPAWNS, {
+        HandleStartingAgeUI();
+    });
     OPT_BOOL(RSK_MIXED_ENTRANCE_POOLS, "Mixed Entrance Pools", CVAR_RANDOMIZER_SETTING("MixedEntrances"), mOptionDescriptions[RSK_MIXED_ENTRANCE_POOLS]);
     OPT_CALLBACK(RSK_MIXED_ENTRANCE_POOLS, {
         // Show mixed entrance pool options if mixed entrance pools are enabled, but only the ones that aren't off
@@ -407,6 +428,9 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_MIX_THIEVES_HIDEOUT_ENTRANCES, "Mix Thieves' Hideout", CVAR_RANDOMIZER_SETTING("MixThievesHideout"), mOptionDescriptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES]);
     OPT_BOOL(RSK_MIX_GROTTO_ENTRANCES, "Mix Grottos", CVAR_RANDOMIZER_SETTING("MixGrottos"), mOptionDescriptions[RSK_MIX_GROTTO_ENTRANCES]);
     OPT_BOOL(RSK_DECOUPLED_ENTRANCES, "Decouple Entrances", CVAR_RANDOMIZER_SETTING("DecoupleEntrances"), mOptionDescriptions[RSK_DECOUPLED_ENTRANCES]);
+    OPT_CALLBACK(RSK_DECOUPLED_ENTRANCES, {
+        HandleStartingAgeUI();
+    });
     OPT_U8(RSK_BOMBCHU_BAG, "Bombchu Bag", {"None", "Single Bag", "Progressive Bags"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("BombchuBag"), mOptionDescriptions[RSK_BOMBCHU_BAG], WIDGET_CVAR_COMBOBOX, RO_BOMBCHU_BAG_NONE);
     OPT_U8(RSK_ENABLE_BOMBCHU_DROPS, "Bombchu Drops", {"No", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("EnableBombchuDrops"), mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS], WIDGET_CVAR_COMBOBOX, RO_AMMO_DROPS_ON);
     // TODO: AmmoDrops and/or HeartDropRefill, combine with/separate Ammo Drops from Bombchu Drops?
@@ -1275,6 +1299,9 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_STARTING_HEARTS, "Starting Hearts", {NumOpts(1, 20)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingHearts"), "", WIDGET_CVAR_SLIDER_INT, 2);
     // TODO: Remainder of Starting Items
     OPT_U8(RSK_LOGIC_RULES, "Logic", {"Glitchless", "No Logic"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LogicRules"), mOptionDescriptions[RSK_LOGIC_RULES], WIDGET_CVAR_COMBOBOX, RO_LOGIC_GLITCHLESS, false, nullptr, IMFLAG_LABEL_INLINE);
+    OPT_CALLBACK(RSK_LOGIC_RULES, {
+        HandleStartingAgeUI();
+    });
     OPT_BOOL(RSK_ALL_LOCATIONS_REACHABLE, "All Locations Reachable", {"Off", "On"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("AllLocationsReachable"), mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE], WIDGET_CVAR_CHECKBOX, RO_GENERIC_ON, false, nullptr, IMFLAG_SAME_LINE);
     OPT_BOOL(RSK_SKULLS_SUNS_SONG, "Night Skulltula's Expect Sun's Song", CVAR_RANDOMIZER_SETTING("GsExpectSunsSong"), mOptionDescriptions[RSK_SKULLS_SUNS_SONG]);
     OPT_U8(RSK_DAMAGE_MULTIPLIER, "Damage Multiplier", {"x1/2", "x1", "x2", "x4", "x8", "x16", "OHKO"}, OptionCategory::Setting, "", "", WIDGET_CVAR_SLIDER_INT, RO_DAMAGE_MULTIPLIER_DEFAULT);
@@ -2979,7 +3006,14 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     }
 
     // With certain access settings, the seed is only beatable if Starting Age is set to Child.
-    if (mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) && !mOptions[RSK_SHUFFLE_OCARINA]) {
+    if (mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC) && 
+        ((mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) && !mOptions[RSK_SHUFFLE_OCARINA]) || 
+         (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) && 
+          mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS].Is(RO_GENERIC_OFF) &&
+          mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES].Is(RO_GENERIC_OFF) &&
+          mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].Is(RO_GENERIC_OFF) &&
+          (mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES].Is(RO_GENERIC_OFF) && mOptions[RSK_DECOUPLED_ENTRANCES].Is(RO_GENERIC_OFF))
+       ))) {
         mOptions[RSK_STARTING_AGE].Set(RO_AGE_CHILD);
     }
 

@@ -795,7 +795,8 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
     }
 
     bool checkOtherEntranceAccess =
-        (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
+        (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || 
+         (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_ON) && ctx->GetOption(RSK_SHUFFLE_GROTTO_ENTRANCES)) ||
          ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL) ||
          ctx->GetOption(RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_SPAWNS)) &&
         (entrancePlaced == nullptr || ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS) ||
