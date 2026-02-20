@@ -937,6 +937,14 @@ bool BeanPlanted(const RandomizerGet bean) {
     return swch >> swchFlag & 1;
 }
 
+//RANDOTODO move to logic.cpp when beans can be handled there
+bool DMCPadToPots(){
+    logic = ctx->GetLogic();
+    return (logic->IsAdult && CanPlantBean(RR_DMC_CENTRAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL)) || 
+           (logic->CanUse(RG_HOVER_BOOTS) && (logic->IsAdult || logic->HasItem(RG_CLIMB)))
+           || logic->CanUse(RG_HOOKSHOT);
+}
+
 bool CanPlantBean(const RandomizerRegion region, const RandomizerGet bean) {
     return areaTable[region].CanPlantBeanCheck(bean) || BeanPlanted(bean);
 }

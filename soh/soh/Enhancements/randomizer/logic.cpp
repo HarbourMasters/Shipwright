@@ -2562,6 +2562,15 @@ bool Logic::IsReverseAccessPossible() {
              (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES))));
 }
 
+bool Logic::DMCUpperToPots() {
+    return (CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_DMC_BOULDER_JS) && IsAdult && CanUse(RG_MEGATON_HAMMER)) || (ctx->GetTrickOption(RT_DMC_BOULDER_SKIP) && IsAdult));
+}
+
+bool Logic::DMCPotsToPad(){
+    return (CanUse(RG_HOVER_BOOTS) || CanUse(RG_HOOKSHOT) || 
+           (IsAdult && CanShield() && ctx->GetTrickOption(RT_DMC_BOLERO_JUMP) && CanUse(RG_POWER_BRACELET)));
+}
+
 bool Logic::SpiritExplosiveKeyLogic() {
     return SmallKeys(SCENE_SPIRIT_TEMPLE, HasExplosives() ? 1 : 2);
 }
