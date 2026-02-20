@@ -282,6 +282,27 @@ struct ExternalModSceneDefinition {
     std::string id;
     bool hasEntrance = false;
     int16_t entranceIndex = 0;
+    bool useNamespacedScene = false;
+    std::string sceneResourcePath;
+    bool hasHostEntrance = false;
+    int16_t hostEntranceIndex = 0;
+    bool hasFallbackEntrance = false;
+    int16_t fallbackEntranceIndex = 0;
+    bool fallbackPlayable = true;
+};
+
+struct ExternalModPendingSceneLoadRequest {
+    bool pending = false;
+    std::string modId;
+    std::string sceneId;
+    std::string sceneResourcePath;
+    int16_t expectedHostSceneId = -1;
+    bool hasHostEntrance = false;
+    int16_t hostEntranceIndex = 0;
+    bool hasFallbackEntrance = false;
+    int16_t fallbackEntranceIndex = 0;
+    bool fallbackPlayable = true;
+    int32_t spawnId = 0;
 };
 
 struct ExternalModActorDefinition {
@@ -472,6 +493,9 @@ class ExternalModManager {
     bool EquipExtraInventoryCellToButton(size_t cellIndex, int32_t cButtonIndex, std::string& outError);
     static std::string BuildEnabledCVarName(const std::string& modId);
     static std::string BuildBindingCVarName(const std::string& modId, const std::string& bindingId);
+    bool TryConsumePendingSceneLoadRequest(int16_t sceneId, ExternalModPendingSceneLoadRequest& outRequest);
+    void HandlePendingSceneLoadSuccess(const ExternalModPendingSceneLoadRequest& request);
+    void HandlePendingSceneLoadFailure(const ExternalModPendingSceneLoadRequest& request, const std::string& error);
 
   private:
     struct ExtraInventoryCell {
@@ -480,6 +504,7 @@ class ExternalModManager {
     };
 
     std::vector<ExternalModPackage> mPackages;
+    ExternalModPendingSceneLoadRequest mPendingSceneLoadRequest;
     std::vector<ExtraInventoryCell> mExtraInventoryCells;
     uint32_t mOnLoadGameHook = 0;
     uint32_t mOnExitGameHook = 0;

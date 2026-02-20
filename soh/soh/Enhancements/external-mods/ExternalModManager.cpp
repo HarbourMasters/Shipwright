@@ -125,6 +125,24 @@ const std::unordered_map<std::string, int16_t> kEntranceAliases = {
     { "ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_BACK", ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_BACK },
 };
 
+int16_t ResolveSceneIdForEntranceIndex(int16_t entranceIndex) {
+    const auto isValidEntranceIndex = [](int32_t index) {
+        return index >= 0 && index < static_cast<int32_t>(ARRAY_COUNT(gEntranceTable));
+    };
+
+    const int32_t setupAdjustedIndex = static_cast<int32_t>(entranceIndex) + static_cast<int32_t>(gSaveContext.sceneSetupIndex);
+    if (isValidEntranceIndex(setupAdjustedIndex)) {
+        return gEntranceTable[setupAdjustedIndex].scene;
+    }
+
+    const int32_t directIndex = static_cast<int32_t>(entranceIndex);
+    if (isValidEntranceIndex(directIndex)) {
+        return gEntranceTable[directIndex].scene;
+    }
+
+    return static_cast<int16_t>(-1);
+}
+
 const std::unordered_map<std::string, int32_t> kButtonAliases = {
     { "BTN_A", BTN_A },
     { "BTN_B", BTN_B },
@@ -5742,6 +5760,47 @@ const std::vector<ExternalModPackage>& ExternalModManager::GetPackages() const {
     return mPackages;
 }
 
+bool ExternalModManager::TryConsumePendingSceneLoadRequest(int16_t sceneId, ExternalModPendingSceneLoadRequest& outRequest) {
+    if (!mPendingSceneLoadRequest.pending) {
+        return false;
+    }
+
+    if (mPendingSceneLoadRequest.expectedHostSceneId >= 0 && sceneId != mPendingSceneLoadRequest.expectedHostSceneId) {
+        return false;
+    }
+
+    outRequest = mPendingSceneLoadRequest;
+    mPendingSceneLoadRequest = ExternalModPendingSceneLoadRequest{};
+    return true;
+}
+
+void ExternalModManager::HandlePendingSceneLoadSuccess(const ExternalModPendingSceneLoadRequest& request) {
+    SPDLOG_INFO("[ExternalMods] Loaded namespaced scene for {}.{}: resource={} spawn={}", request.modId, request.sceneId,
+                request.sceneResourcePath, request.spawnId);
+}
+
+void ExternalModManager::HandlePendingSceneLoadFailure(const ExternalModPendingSceneLoadRequest& request,
+                                                       const std::string& error) {
+    if (request.fallbackPlayable) {
+        SPDLOG_WARN(
+            "[ExternalMods] Namespaced scene load failed for {}.{} (resource={}): {}. Falling back to host entrance.",
+            request.modId, request.sceneId, request.sceneResourcePath, error);
+        return;
+    }
+
+    auto packageIt = std::find_if(mPackages.begin(), mPackages.end(), [&request](const ExternalModPackage& package) {
+        return package.manifest.id == request.modId;
+    });
+    if (packageIt == mPackages.end()) {
+        SPDLOG_WARN(
+            "[ExternalMods] Namespaced scene load failed for {}.{} (resource={}): {}. Runtime package not found.",
+            request.modId, request.sceneId, request.sceneResourcePath, error);
+        return;
+    }
+
+    DisableRuntime(*packageIt, "namespaced scene load failed for " + request.sceneId + ": " + error);
+}
+
 void ExternalModManager::ApplyGetItemVisualOverrides(GetItemEntry& entry) const {
     if (entry.modIndex != MOD_NONE) {
         return;
@@ -5986,6 +6045,7 @@ void ExternalModManager::SyncExtraInventoryGrid() {
 
 void ExternalModManager::Shutdown() {
     UnregisterHooks();
+    mPendingSceneLoadRequest = ExternalModPendingSceneLoadRequest{};
     for (auto& package : mPackages) {
         UnmountAssetsForPackage(package);
         package.runtime.enabled = false;
@@ -6109,6 +6169,7 @@ void ExternalModManager::DiscoverPackages() {
 
 void ExternalModManager::Initialize() {
     UnregisterHooks();
+    mPendingSceneLoadRequest = ExternalModPendingSceneLoadRequest{};
 
     for (auto& package : mPackages) {
         UnmountAssetsForPackage(package);
@@ -7970,14 +8031,62 @@ bool ExternalModManager::TryParseSceneDefinitions(const std::string& content, in
             return false;
         }
 
-        const char* entranceKey =
-            scene.contains("entrance") ? "entrance" : (scene.contains("fallbackEntrance") ? "fallbackEntrance" : nullptr);
-        if (entranceKey != nullptr) {
-            if (!ParseAliasedInt16(scene[entranceKey], kEntranceAliases, entranceKey, definition.entranceIndex, outError)) {
-                outError = "scenes[" + std::to_string(i) + "]." + entranceKey + ": " + outError;
+        if (scene.contains("sceneResource")) {
+            if (!ValidateRequiredString(scene, "sceneResource", definition.sceneResourcePath, outError)) {
+                outError = "scenes[" + std::to_string(i) + "].sceneResource: " + outError;
                 return false;
             }
+
+            std::filesystem::path normalizedSceneResource;
+            if (!IsSafePackageRelativePath(definition.sceneResourcePath, normalizedSceneResource, outError)) {
+                outError = "scenes[" + std::to_string(i) + "].sceneResource: " + outError;
+                return false;
+            }
+            definition.sceneResourcePath = normalizedSceneResource.generic_string();
+            definition.useNamespacedScene = true;
+
+            if (!scene.contains("hostEntrance")) {
+                outError = "scenes[" + std::to_string(i) + "].hostEntrance is required when sceneResource is set";
+                return false;
+            }
+
+            if (!ParseAliasedInt16(scene["hostEntrance"], kEntranceAliases, "hostEntrance", definition.hostEntranceIndex,
+                                   outError)) {
+                outError = "scenes[" + std::to_string(i) + "].hostEntrance: " + outError;
+                return false;
+            }
+            definition.hasHostEntrance = true;
             definition.hasEntrance = true;
+            definition.entranceIndex = definition.hostEntranceIndex;
+
+            if (scene.contains("fallbackEntrance")) {
+                if (!ParseAliasedInt16(scene["fallbackEntrance"], kEntranceAliases, "fallbackEntrance",
+                                       definition.fallbackEntranceIndex, outError)) {
+                    outError = "scenes[" + std::to_string(i) + "].fallbackEntrance: " + outError;
+                    return false;
+                }
+            } else {
+                definition.fallbackEntranceIndex = definition.hostEntranceIndex;
+            }
+            definition.hasFallbackEntrance = true;
+
+            if (scene.contains("fallbackPlayable")) {
+                if (!scene["fallbackPlayable"].is_boolean()) {
+                    outError = "scenes[" + std::to_string(i) + "].fallbackPlayable must be boolean";
+                    return false;
+                }
+                definition.fallbackPlayable = scene["fallbackPlayable"].get<bool>();
+            }
+        } else {
+            const char* entranceKey =
+                scene.contains("entrance") ? "entrance" : (scene.contains("fallbackEntrance") ? "fallbackEntrance" : nullptr);
+            if (entranceKey != nullptr) {
+                if (!ParseAliasedInt16(scene[entranceKey], kEntranceAliases, entranceKey, definition.entranceIndex, outError)) {
+                    outError = "scenes[" + std::to_string(i) + "]." + entranceKey + ": " + outError;
+                    return false;
+                }
+                definition.hasEntrance = true;
+            }
         }
 
         outDefinitions.push_back(std::move(definition));
@@ -9050,13 +9159,58 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                 break;
             case ExternalModActionType::LoadModScene: {
                 const auto* sceneDefinition = FindSceneDefinition(package.runtime, action.modSceneId);
-                if (sceneDefinition == nullptr || !sceneDefinition->hasEntrance) {
-                    DisableRuntime(package, "loadModScene references unknown sceneId or scene without entrance: " +
-                                                action.modSceneId);
+                if (sceneDefinition == nullptr) {
+                    DisableRuntime(package, "loadModScene references unknown sceneId: " + action.modSceneId);
                     return;
                 }
+
+                int16_t transitionEntrance = 0;
+                if (sceneDefinition->useNamespacedScene) {
+                    if (!sceneDefinition->hasHostEntrance) {
+                        DisableRuntime(package, "loadModScene namespaced scene missing hostEntrance: " + action.modSceneId);
+                        return;
+                    }
+
+                    transitionEntrance = sceneDefinition->hostEntranceIndex;
+
+                    auto& manager = ExternalModManager::Instance();
+                    auto& pendingRequest = manager.mPendingSceneLoadRequest;
+                    if (pendingRequest.pending) {
+                        SPDLOG_WARN(
+                            "[ExternalMods] Overwriting pending namespaced scene request {}.{} with {}.{}",
+                            pendingRequest.modId, pendingRequest.sceneId, package.manifest.id, sceneDefinition->id);
+                    }
+
+                    pendingRequest = ExternalModPendingSceneLoadRequest{};
+                    pendingRequest.pending = true;
+                    pendingRequest.modId = package.manifest.id;
+                    pendingRequest.sceneId = sceneDefinition->id;
+                    pendingRequest.sceneResourcePath = sceneDefinition->sceneResourcePath;
+                    pendingRequest.expectedHostSceneId = ResolveSceneIdForEntranceIndex(sceneDefinition->hostEntranceIndex);
+                    pendingRequest.hasHostEntrance = sceneDefinition->hasHostEntrance;
+                    pendingRequest.hostEntranceIndex = sceneDefinition->hostEntranceIndex;
+                    pendingRequest.hasFallbackEntrance = sceneDefinition->hasFallbackEntrance;
+                    pendingRequest.fallbackEntranceIndex = sceneDefinition->fallbackEntranceIndex;
+                    pendingRequest.fallbackPlayable = sceneDefinition->fallbackPlayable;
+                    pendingRequest.spawnId = action.sceneSpawnId;
+
+                    SPDLOG_INFO(
+                        "[ExternalMods] Queued namespaced scene request for {}.{}: resource={} hostEntrance={} "
+                        "fallbackEntrance={} fallbackPlayable={} spawnId={} expectedHostScene={}",
+                        package.manifest.id, sceneDefinition->id, pendingRequest.sceneResourcePath,
+                        pendingRequest.hostEntranceIndex, pendingRequest.fallbackEntranceIndex,
+                        pendingRequest.fallbackPlayable ? "true" : "false", pendingRequest.spawnId,
+                        pendingRequest.expectedHostSceneId);
+                } else {
+                    if (!sceneDefinition->hasEntrance) {
+                        DisableRuntime(package, "loadModScene references scene without entrance: " + action.modSceneId);
+                        return;
+                    }
+                    transitionEntrance = sceneDefinition->entranceIndex;
+                }
+
                 if (gPlayState != nullptr) {
-                    gPlayState->nextEntranceIndex = sceneDefinition->entranceIndex;
+                    gPlayState->nextEntranceIndex = transitionEntrance;
                     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
                     gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
                     gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK_FAST;
