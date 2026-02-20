@@ -138,18 +138,18 @@ void Settings::HandleMixedEntrancePoolsUI() {
 void Settings::HandleStartingAgeUI() {
     // Starting Age - Disabled under very specific conditions unless it's No Logic
     if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC &&
-    //If Closed DoT requires OoT then we can only start as child
+        // If Closed DoT requires OoT then we can only start as child
         ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
-          CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_OFF) == RO_GENERIC_OFF) || 
-    //If Forest is Closed, we cannot start as Adult unless there's a sphere 0 entrance shuffle in Kokiri forest,
-    //or there's random spawns, as the player may saveload as child and get stuck.
-    //Grottos only lead somewhere if decoupled 
+          CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_OFF) == RO_GENERIC_OFF) ||
+         // If Forest is Closed, we cannot start as Adult unless there's a sphere 0 entrance shuffle in Kokiri forest,
+         // or there's random spawns, as the player may saveload as child and get stuck.
+         // Grottos only lead somewhere if decoupled
          (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ClosedForest"), RO_CLOSED_FOREST_ON) == RO_CLOSED_FOREST_ON &&
           CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldSpawns"), RO_GENERIC_OFF) == RO_GENERIC_OFF &&
           (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF ||
-          CVarGetInteger(CVAR_RANDOMIZER_SETTING("DecoupleEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF) &&
+           CVarGetInteger(CVAR_RANDOMIZER_SETTING("DecoupleEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF) &&
           CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF &&
-          CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF))){
+          CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF))) {
         mOptions[RSK_STARTING_AGE].Disable("This option is disabled due to other options making the game unbeatable.");
     } else {
         mOptions[RSK_STARTING_AGE].Enable();
@@ -3006,14 +3006,13 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     }
 
     // With certain access settings, the seed is only beatable if Starting Age is set to Child.
-    if (mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC) && 
-        ((mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) && !mOptions[RSK_SHUFFLE_OCARINA]) || 
-         (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) && 
-          mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS].Is(RO_GENERIC_OFF) &&
+    if (mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC) &&
+        ((mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) && !mOptions[RSK_SHUFFLE_OCARINA]) ||
+         (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) && mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS].Is(RO_GENERIC_OFF) &&
           mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES].Is(RO_GENERIC_OFF) &&
           mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].Is(RO_GENERIC_OFF) &&
-          (mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES].Is(RO_GENERIC_OFF) && mOptions[RSK_DECOUPLED_ENTRANCES].Is(RO_GENERIC_OFF))
-       ))) {
+          (mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES].Is(RO_GENERIC_OFF) &&
+           mOptions[RSK_DECOUPLED_ENTRANCES].Is(RO_GENERIC_OFF))))) {
         mOptions[RSK_STARTING_AGE].Set(RO_AGE_CHILD);
     }
 
