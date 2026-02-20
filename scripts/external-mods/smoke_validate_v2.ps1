@@ -10,6 +10,31 @@ function Write-Step([string]$Message) {
     Write-Output "[$timestamp] $Message"
 }
 
+Add-Type -AssemblyName System.Drawing
+
+function Get-PngAlphaStats([string]$Path) {
+    $bitmap = [System.Drawing.Bitmap]::FromFile((Resolve-Path $Path))
+    try {
+        $transparentPixels = 0
+        for ($y = 0; $y -lt $bitmap.Height; $y++) {
+            for ($x = 0; $x -lt $bitmap.Width; $x++) {
+                if ($bitmap.GetPixel($x, $y).A -eq 0) {
+                    $transparentPixels++
+                }
+            }
+        }
+
+        return [pscustomobject]@{
+            Width             = [int]$bitmap.Width
+            Height            = [int]$bitmap.Height
+            PixelCount        = [int]($bitmap.Width * $bitmap.Height)
+            TransparentPixels = [int]$transparentPixels
+        }
+    } finally {
+        $bitmap.Dispose()
+    }
+}
+
 if (!(Test-Path $ExampleRoot)) {
     throw "Example root not found: $ExampleRoot"
 }
@@ -55,11 +80,41 @@ foreach ($item in $items.items) {
 
     $modelAssetValue = $null
     $modelTextureValue = $null
+    $modelDisplayListValue = $null
+    $modelUvOriginValue = $null
+    $modelTextureFilterValue = $null
+    $modelTextureWidthValue = 0
+    $modelTextureHeightValue = 0
+    $modelTextureWidthSpecified = $false
+    $modelTextureHeightSpecified = $false
     if ($item.PSObject.Properties.Name -contains 'modelAsset' -and ![string]::IsNullOrWhiteSpace($item.modelAsset)) {
         $modelAssetValue = [string]$item.modelAsset
     }
     if ($item.PSObject.Properties.Name -contains 'modelTextureAsset' -and ![string]::IsNullOrWhiteSpace($item.modelTextureAsset)) {
         $modelTextureValue = [string]$item.modelTextureAsset
+    }
+    if ($item.PSObject.Properties.Name -contains 'modelDisplayList' -and ![string]::IsNullOrWhiteSpace($item.modelDisplayList)) {
+        $modelDisplayListValue = [string]$item.modelDisplayList
+    }
+    if ($item.PSObject.Properties.Name -contains 'modelUvOrigin' -and ![string]::IsNullOrWhiteSpace($item.modelUvOrigin)) {
+        $modelUvOriginValue = [string]$item.modelUvOrigin
+    }
+    if ($item.PSObject.Properties.Name -contains 'modelTextureFilter' -and ![string]::IsNullOrWhiteSpace($item.modelTextureFilter)) {
+        $modelTextureFilterValue = [string]$item.modelTextureFilter
+    }
+    if ($item.PSObject.Properties.Name -contains 'modelTextureWidth') {
+        if ($item.modelTextureWidth -isnot [int] -and $item.modelTextureWidth -isnot [long]) {
+            throw "modelTextureWidth must be integer for $($item.id)"
+        }
+        $modelTextureWidthValue = [int]$item.modelTextureWidth
+        $modelTextureWidthSpecified = $true
+    }
+    if ($item.PSObject.Properties.Name -contains 'modelTextureHeight') {
+        if ($item.modelTextureHeight -isnot [int] -and $item.modelTextureHeight -isnot [long]) {
+            throw "modelTextureHeight must be integer for $($item.id)"
+        }
+        $modelTextureHeightValue = [int]$item.modelTextureHeight
+        $modelTextureHeightSpecified = $true
     }
     if ($item.PSObject.Properties.Name -contains 'model' -and $null -ne $item.model) {
         if (-not ($item.model -is [pscustomobject])) {
@@ -71,20 +126,73 @@ foreach ($item in $items.items) {
         if ($item.model.PSObject.Properties.Name -contains 'texture' -and ![string]::IsNullOrWhiteSpace($item.model.texture)) {
             $modelTextureValue = [string]$item.model.texture
         }
+        if ($item.model.PSObject.Properties.Name -contains 'displayList' -and ![string]::IsNullOrWhiteSpace($item.model.displayList)) {
+            $modelDisplayListValue = [string]$item.model.displayList
+        }
+        if ($item.model.PSObject.Properties.Name -contains 'uvOrigin' -and ![string]::IsNullOrWhiteSpace($item.model.uvOrigin)) {
+            $modelUvOriginValue = [string]$item.model.uvOrigin
+        }
+        if ($item.model.PSObject.Properties.Name -contains 'textureFilter' -and ![string]::IsNullOrWhiteSpace($item.model.textureFilter)) {
+            $modelTextureFilterValue = [string]$item.model.textureFilter
+        }
+        if ($item.model.PSObject.Properties.Name -contains 'textureWidth') {
+            if ($item.model.textureWidth -isnot [int] -and $item.model.textureWidth -isnot [long]) {
+                throw "model.textureWidth must be integer for $($item.id)"
+            }
+            $modelTextureWidthValue = [int]$item.model.textureWidth
+            $modelTextureWidthSpecified = $true
+        }
+        if ($item.model.PSObject.Properties.Name -contains 'textureHeight') {
+            if ($item.model.textureHeight -isnot [int] -and $item.model.textureHeight -isnot [long]) {
+                throw "model.textureHeight must be integer for $($item.id)"
+            }
+            $modelTextureHeightValue = [int]$item.model.textureHeight
+            $modelTextureHeightSpecified = $true
+        }
     }
 
+    if ($null -ne $modelUvOriginValue) {
+        $normalizedModelUvOrigin = $modelUvOriginValue.ToLowerInvariant()
+        if ($normalizedModelUvOrigin -notin @('auto', 'bottom_left', 'top_left')) {
+            throw "Invalid modelUvOrigin for $($item.id): $modelUvOriginValue (expected auto|bottom_left|top_left)"
+        }
+    }
+    if ($null -ne $modelTextureFilterValue) {
+        $normalizedModelTextureFilter = $modelTextureFilterValue.ToLowerInvariant()
+        if ($normalizedModelTextureFilter -notin @('auto', 'point', 'bilerp')) {
+            throw "Invalid modelTextureFilter for $($item.id): $modelTextureFilterValue (expected auto|point|bilerp)"
+        }
+    }
+    if ($modelTextureWidthSpecified -ne $modelTextureHeightSpecified) {
+        throw "modelTextureWidth/modelTextureHeight must be provided together for $($item.id)"
+    }
+    if ($modelTextureWidthSpecified) {
+        if ($modelTextureWidthValue -lt 1 -or $modelTextureWidthValue -gt 1024 -or
+            $modelTextureHeightValue -lt 1 -or $modelTextureHeightValue -gt 1024) {
+            throw "modelTextureWidth/modelTextureHeight must be in range 1..1024 for $($item.id)"
+        }
+    }
+
+    $modelAssetExt = $null
     if ($null -ne $modelAssetValue) {
         $modelPath = Join-Path $ExampleRoot $modelAssetValue
         if (!(Test-Path $modelPath)) {
             throw "Missing model asset: $modelPath"
         }
-        if ([IO.Path]::GetExtension($modelPath).ToLowerInvariant() -ne '.obj') {
-            throw "model asset must be .obj for $($item.id): $modelAssetValue"
+        $modelAssetExt = [IO.Path]::GetExtension($modelPath).ToLowerInvariant()
+        if ($modelAssetExt -notin @('.obj', '.otr', '.o2r')) {
+            throw "model asset must be .obj, .otr, or .o2r for $($item.id): $modelAssetValue"
+        }
+        if ($modelAssetExt -in @('.otr', '.o2r') -and [string]::IsNullOrWhiteSpace($modelDisplayListValue)) {
+            throw "modelDisplayList is required when modelAsset uses .otr/.o2r for $($item.id)"
         }
     }
     if ($null -ne $modelTextureValue) {
         if ($null -eq $modelAssetValue) {
             throw "modelTextureAsset requires modelAsset for $($item.id)"
+        }
+        if ($modelAssetExt -ne '.obj') {
+            throw "modelTextureAsset is only supported with .obj modelAsset for $($item.id)"
         }
         $modelTexPath = Join-Path $ExampleRoot $modelTextureValue
         if (!(Test-Path $modelTexPath)) {
@@ -92,6 +200,71 @@ foreach ($item in $items.items) {
         }
         if ([IO.Path]::GetExtension($modelTexPath).ToLowerInvariant() -ne '.png') {
             throw "model texture must be .png for $($item.id): $modelTextureValue"
+        }
+
+        $modelTextureStats = $null
+        try {
+            $modelTextureStats = Get-PngAlphaStats $modelTexPath
+        } catch {
+            throw "model texture decode failed for $($item.id): $modelTextureValue ($($_.Exception.Message))"
+        }
+
+        $effectiveModelTextureWidth = $modelTextureStats.Width
+        $effectiveModelTextureHeight = $modelTextureStats.Height
+        if ($modelTextureWidthSpecified) {
+            $effectiveModelTextureWidth = $modelTextureWidthValue
+            $effectiveModelTextureHeight = $modelTextureHeightValue
+        }
+        if ($effectiveModelTextureWidth -lt 1 -or $effectiveModelTextureHeight -lt 1) {
+            throw "Invalid effective model texture size for $($item.id): ${effectiveModelTextureWidth}x${effectiveModelTextureHeight}"
+        }
+
+        if ($modelTextureStats.TransparentPixels -gt 0) {
+            throw "model texture must be fully opaque for $($item.id): $modelTextureValue has $($modelTextureStats.TransparentPixels)/$($modelTextureStats.PixelCount) transparent pixels"
+        }
+    }
+    if ($modelTextureWidthSpecified) {
+        if ($null -eq $modelTextureValue) {
+            throw "modelTextureWidth/modelTextureHeight requires modelTextureAsset for $($item.id)"
+        }
+        if ($null -eq $modelAssetValue -or $modelAssetExt -ne '.obj') {
+            throw "modelTextureWidth/modelTextureHeight is only supported with .obj modelAsset for $($item.id)"
+        }
+    }
+
+    $hookshotTextureObject = $null
+    if ($item.PSObject.Properties.Name -contains 'hookshotTextures' -and $null -ne $item.hookshotTextures) {
+        if (-not ($item.hookshotTextures -is [pscustomobject])) {
+            throw "hookshotTextures must be object for $($item.id)"
+        }
+        $hookshotTextureObject = $item.hookshotTextures
+    }
+
+    $hookshotTextureFieldMap = @{
+        metal   = 'hookshotMetalTextureAsset'
+        handle  = 'hookshotHandleTextureAsset'
+        design  = 'hookshotDesignTextureAsset'
+        chain   = 'hookshotChainTextureAsset'
+        reticle = 'hookshotReticleTextureAsset'
+    }
+    foreach ($kv in $hookshotTextureFieldMap.GetEnumerator()) {
+        $assetValue = $null
+        if ($item.PSObject.Properties.Name -contains $kv.Value -and ![string]::IsNullOrWhiteSpace($item.($kv.Value))) {
+            $assetValue = [string]$item.($kv.Value)
+        }
+        if ($null -ne $hookshotTextureObject -and
+            $hookshotTextureObject.PSObject.Properties.Name -contains $kv.Key -and
+            ![string]::IsNullOrWhiteSpace($hookshotTextureObject.($kv.Key))) {
+            $assetValue = [string]$hookshotTextureObject.($kv.Key)
+        }
+        if ($null -ne $assetValue) {
+            $hookshotTexturePath = Join-Path $ExampleRoot $assetValue
+            if (!(Test-Path $hookshotTexturePath)) {
+                throw "Missing hookshot texture asset for $($item.id) [$($kv.Key)]: $hookshotTexturePath"
+            }
+            if ([IO.Path]::GetExtension($hookshotTexturePath).ToLowerInvariant() -ne '.png') {
+                throw "Hookshot texture must be .png for $($item.id) [$($kv.Key)]: $assetValue"
+            }
         }
     }
 
@@ -119,6 +292,7 @@ foreach ($item in $items.items) {
 
 $iconEntries = @()
 $modelEntries = @()
+$hookshotTextureEntries = @()
 foreach ($item in $items.items) {
     if (![string]::IsNullOrWhiteSpace($item.iconAsset)) {
         $iconEntries += ($item.iconAsset -replace '\\', '/')
@@ -146,9 +320,36 @@ foreach ($item in $items.items) {
     if ($null -ne $modelTextureValue) {
         $modelEntries += ($modelTextureValue -replace '\\', '/')
     }
+
+    $hookshotTextureObject = $null
+    if ($item.PSObject.Properties.Name -contains 'hookshotTextures' -and $null -ne $item.hookshotTextures) {
+        $hookshotTextureObject = $item.hookshotTextures
+    }
+    $hookshotTextureFieldMap = @{
+        metal   = 'hookshotMetalTextureAsset'
+        handle  = 'hookshotHandleTextureAsset'
+        design  = 'hookshotDesignTextureAsset'
+        chain   = 'hookshotChainTextureAsset'
+        reticle = 'hookshotReticleTextureAsset'
+    }
+    foreach ($kv in $hookshotTextureFieldMap.GetEnumerator()) {
+        $assetValue = $null
+        if ($item.PSObject.Properties.Name -contains $kv.Value -and ![string]::IsNullOrWhiteSpace($item.($kv.Value))) {
+            $assetValue = [string]$item.($kv.Value)
+        }
+        if ($null -ne $hookshotTextureObject -and
+            $hookshotTextureObject.PSObject.Properties.Name -contains $kv.Key -and
+            ![string]::IsNullOrWhiteSpace($hookshotTextureObject.($kv.Key))) {
+            $assetValue = [string]$hookshotTextureObject.($kv.Key)
+        }
+        if ($null -ne $assetValue) {
+            $hookshotTextureEntries += ($assetValue -replace '\\', '/')
+        }
+    }
 }
 $iconEntries = $iconEntries | Sort-Object -Unique
 $modelEntries = $modelEntries | Sort-Object -Unique
+$hookshotTextureEntries = $hookshotTextureEntries | Sort-Object -Unique
 
 if ($capabilities -contains 'hooks.extended.v1') {
     if (-not ($manifest.PSObject.Properties.Name -contains 'hookDefinitions') -or
@@ -190,6 +391,7 @@ try {
     )
     $required += $iconEntries
     $required += $modelEntries
+    $required += $hookshotTextureEntries
     if ($capabilities -contains 'hooks.extended.v1') {
         $required += (($manifest.hookDefinitions -replace '\\', '/'))
     }

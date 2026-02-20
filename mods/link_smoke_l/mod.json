@@ -1,18 +1,31 @@
 {
-  "id": "com.example.link_smoke_l",
-  "name": "Link Smoke (L)",
-  "version": "0.1.0",
-  "apiVersion": 2,
-  "loadOrder": 150,
-  "entryScript": "scripts/init.json",
-  "assets": [],
-  "dependencies": [],
-  "runtime": {
-    "type": "wasm3-v1",
-    "module": "scripts/noop.wasm",
-    "maxMemoryKb": 1024,
-    "maxCallMs": 2
-  },
-  "itemDefinitions": "items/items.json",
-  "inputDefinitions": "config/input.json"
+    "id":  "com.example.link_smoke_l",
+    "name":  "Link Smoke (Action Key)",
+    "version":  "0.1.0",
+    "apiVersion":  2,
+    "loadOrder":  150,
+    "entryScript":  "scripts/init.json",
+    "assets":  [
+
+               ],
+    "dependencies":  [
+
+                     ],
+    "capabilities":  [
+                         "hooks.extended.v1",
+                         "actors.vm.v1"
+                     ],
+    "hookDefinitions":  "hooks/hooks.json",
+    "runtime":  {
+                    "type":  "wasm3-v1",
+                    "module":  "scripts/noop.wat",
+                    "maxMemoryKb":  1024,
+                    "maxCallMs":  2,
+                    "maxFrameBudgetMs":  2,
+                    "maxHookCallsPerFrame":  256,
+                    "maxActorInstances":  64
+                },
+    "itemDefinitions":  "items/items.json",
+    "inputDefinitions":  "config/input.json",
+    "actorDefinitions":  "actors/actors.json"
 }

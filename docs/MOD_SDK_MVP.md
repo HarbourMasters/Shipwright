@@ -742,3 +742,46 @@ Allow external ZIP mods to override the **Get-Item 3D model** and texture for mo
 - Revalidação:
   - `powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_skyhook_jump_zip.ps1` -> success.
   - `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_v2.ps1` -> success.
+
+### Stage AF Update (2026-02-19 10:44:05 -03:00)
+- Added Hookshot gameplay texture override path for object_link_boy resources in ZIP mods.
+- items/items.json now accepts:
+  - flat fields: hookshotMetalTextureAsset, hookshotHandleTextureAsset, hookshotDesignTextureAsset, hookshotChainTextureAsset, hookshotReticleTextureAsset
+  - grouped object: hookshotTextures.{metal,handle,design,chain,reticle}
+- Runtime decode/convert:
+  - metal/chain -> RGBA16
+  - handle/design -> CI8 + TLUT RGBA16
+  - reticle -> I8
+- Updated docs/examples/external_mods/skyhook_jump/items/items.json with hookshotTextures placeholders.
+- Updated scripts/external-mods/smoke_validate_v2.ps1 to validate hookshot texture assets and ZIP entries.
+- Validation rerun:
+  - powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_v2.ps1 -> success.
+  - powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_skyhook_jump_zip.ps1 -> success.
+  - powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_example.ps1 -> success.
+
+### Stage AF Update (2026-02-19 19:45:00 -03:00)
+- OBJ item model schema now accepts:
+  - modelUvOrigin: auto|bottom_left|top_left
+  - model.uvOrigin: auto|bottom_left|top_left
+- Default is auto.
+- In auto, UV V orientation uses alpha-coverage heuristic and falls back to legacy bottom_left on tie/indeterminate.
+- Custom OBJ textures keep source dimensions and are normalized for opaque RGBA16 rendering.
+
+### Stage AF Update (2026-02-19 20:30:00 -03:00)
+- Practical UV troubleshooting guideline for OBJ custom models:
+  - If texture looks shifted/smeared, test `modelUvOrigin: "auto"` first.
+  - If needed, test `modelUvOrigin: "bottom_left"` before forcing `top_left`.
+  - Avoid locking `top_left` without validating in runtime logs/visual output.
+### Stage AF Update (2026-02-20 21:20:00 -03:00)
+- OBJ item model schema now also accepts texture sampling/size controls:
+  - `modelTextureFilter: auto|point|bilerp`
+  - `model.textureFilter: auto|point|bilerp`
+  - `modelTextureWidth` + `modelTextureHeight` (optional pair, 1..1024)
+  - `model.textureWidth` + `model.textureHeight` (optional pair, 1..1024)
+- Defaults and behavior:
+  - `modelTextureFilter` default is `auto`.
+  - In `auto`, mixed-alpha textures resolve to `point` to reduce UV island bleeding; otherwise `bilerp`.
+  - Width/height overrides are valid only for `.obj` with `modelTextureAsset`.
+- Practical texture troubleshooting guideline:
+  - If texture shows color bleeding between UV islands, set `modelTextureFilter: "point"`.
+  - Keep `modelUvOrigin: "auto"` unless runtime logs/visual checks prove otherwise.

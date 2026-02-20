@@ -1,0 +1,16 @@
+{
+  "subscriptions": [
+    {
+      "id": "lanterna_light_loop",
+      "hook": "OnGameFrameUpdate",
+      "dispatch": "actions",
+      "cooldownFrames": 2,
+      "actions": [
+        {
+          "action": "lanternLight",
+          "itemId": "lanterna_item"
+        }
+      ]
+    }
+  ]
+}

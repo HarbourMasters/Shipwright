@@ -70,11 +70,15 @@ foreach ($item in $items.items) {
 
     $modelAssetValue = $null
     $modelTextureValue = $null
+    $modelDisplayListValue = $null
     if ($item.PSObject.Properties.Name -contains 'modelAsset' -and ![string]::IsNullOrWhiteSpace($item.modelAsset)) {
         $modelAssetValue = [string]$item.modelAsset
     }
     if ($item.PSObject.Properties.Name -contains 'modelTextureAsset' -and ![string]::IsNullOrWhiteSpace($item.modelTextureAsset)) {
         $modelTextureValue = [string]$item.modelTextureAsset
+    }
+    if ($item.PSObject.Properties.Name -contains 'modelDisplayList' -and ![string]::IsNullOrWhiteSpace($item.modelDisplayList)) {
+        $modelDisplayListValue = [string]$item.modelDisplayList
     }
     if ($item.PSObject.Properties.Name -contains 'model' -and $null -ne $item.model) {
         if (-not ($item.model -is [pscustomobject])) {
@@ -86,21 +90,32 @@ foreach ($item in $items.items) {
         if ($item.model.PSObject.Properties.Name -contains 'texture' -and ![string]::IsNullOrWhiteSpace($item.model.texture)) {
             $modelTextureValue = [string]$item.model.texture
         }
+        if ($item.model.PSObject.Properties.Name -contains 'displayList' -and ![string]::IsNullOrWhiteSpace($item.model.displayList)) {
+            $modelDisplayListValue = [string]$item.model.displayList
+        }
     }
 
+    $modelAssetExt = $null
     if ($null -ne $modelAssetValue) {
         $modelPath = Join-Path $ExampleRoot $modelAssetValue
         if (!(Test-Path $modelPath)) {
             throw "Missing model asset: $modelPath"
         }
-        if ([IO.Path]::GetExtension($modelPath).ToLowerInvariant() -ne '.obj') {
-            throw "model asset must use .obj for $($item.id): $modelAssetValue"
+        $modelAssetExt = [IO.Path]::GetExtension($modelPath).ToLowerInvariant()
+        if ($modelAssetExt -notin @('.obj', '.otr', '.o2r')) {
+            throw "model asset must use .obj, .otr, or .o2r for $($item.id): $modelAssetValue"
+        }
+        if ($modelAssetExt -in @('.otr', '.o2r') -and [string]::IsNullOrWhiteSpace($modelDisplayListValue)) {
+            throw "modelDisplayList is required when modelAsset uses .otr/.o2r for $($item.id)"
         }
     }
 
     if ($null -ne $modelTextureValue) {
         if ($null -eq $modelAssetValue) {
             throw "modelTextureAsset requires modelAsset for $($item.id)"
+        }
+        if ($modelAssetExt -ne '.obj') {
+            throw "modelTextureAsset is only supported with .obj modelAsset for $($item.id)"
         }
         $modelTexPath = Join-Path $ExampleRoot $modelTextureValue
         if (!(Test-Path $modelTexPath)) {

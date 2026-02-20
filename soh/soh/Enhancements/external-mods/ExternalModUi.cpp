@@ -281,8 +281,31 @@ void DrawExternalModControlsSection() {
                     ImGui::TextDisabled("model: %s (triangles=%zu)", item.modelAsset.c_str(),
                                         item.customModelTriangles.size());
                 }
+                if (!item.modelDisplayList.empty()) {
+                    ImGui::TextDisabled("model dlist: %s", item.modelDisplayList.c_str());
+                }
                 if (!item.modelTextureAsset.empty()) {
                     ImGui::TextDisabled("model texture: %s", item.modelTextureAsset.c_str());
+                }
+                if (!item.hookshotMetalTextureAsset.empty() || !item.hookshotHandleTextureAsset.empty() ||
+                    !item.hookshotDesignTextureAsset.empty() || !item.hookshotChainTextureAsset.empty() ||
+                    !item.hookshotReticleTextureAsset.empty()) {
+                    ImGui::TextDisabled("hookshot gameplay textures:");
+                    if (!item.hookshotMetalTextureAsset.empty()) {
+                        ImGui::TextDisabled("  metal: %s", item.hookshotMetalTextureAsset.c_str());
+                    }
+                    if (!item.hookshotHandleTextureAsset.empty()) {
+                        ImGui::TextDisabled("  handle: %s", item.hookshotHandleTextureAsset.c_str());
+                    }
+                    if (!item.hookshotDesignTextureAsset.empty()) {
+                        ImGui::TextDisabled("  design: %s", item.hookshotDesignTextureAsset.c_str());
+                    }
+                    if (!item.hookshotChainTextureAsset.empty()) {
+                        ImGui::TextDisabled("  chain: %s", item.hookshotChainTextureAsset.c_str());
+                    }
+                    if (!item.hookshotReticleTextureAsset.empty()) {
+                        ImGui::TextDisabled("  reticle: %s", item.hookshotReticleTextureAsset.c_str());
+                    }
                 }
                 if (item.hasGrantItemId || item.hasGrantAmmo) {
                     const std::string grantItemText = item.hasGrantItemId ? std::to_string(item.grantItemId) : "<slot-default>";

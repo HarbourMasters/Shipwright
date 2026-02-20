@@ -1,0 +1,21 @@
+{
+  "id": "com.example.equipped_item_reget",
+  "name": "Equipped Item Re-Get",
+  "version": "0.1.0",
+  "apiVersion": 2,
+  "loadOrder": 170,
+  "entryScript": "scripts/init.json",
+  "assets": [],
+  "dependencies": [],
+  "runtime": {
+    "type": "wasm3-v1",
+    "module": "scripts/noop.wat",
+    "maxMemoryKb": 1024,
+    "maxCallMs": 2,
+    "maxFrameBudgetMs": 2,
+    "maxHookCallsPerFrame": 256,
+    "maxActorInstances": 64
+  },
+  "itemDefinitions": "items/items.json",
+  "inputDefinitions": "config/input.json"
+}

@@ -1,0 +1,13 @@
+﻿{
+  "apiVersion": 2,
+  "onGameLoaded": [
+    {
+      "action": "grantModItem",
+      "itemId": "lanterna_item"
+    },
+    {
+      "action": "showNotification",
+      "text": "Lanterna F3D: item concedido. Ajuste modelDisplayList para o nome exato do DL no OTR."
+    }
+  ]
+}

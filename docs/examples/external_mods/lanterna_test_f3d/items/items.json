@@ -1,14 +1,12 @@
-{
+﻿{
   "items": [
     {
       "id": "lanterna_item",
       "displayName": "Lanterna",
       "slot": "SLOT_STICK",
       "iconAsset": "assets/lanterna_placeholder.png",
-      "modelAsset": "assets/lanterna_square.obj",
-      "modelTextureAsset": "assets/lanterna_placeholder.png",
-      "modelUvOrigin": "auto",
-      "modelTextureFilter": "point",
+      "modelAsset": "assets/lantern.o2r",
+      "modelDisplayList": "objects/lanterna/lantern_cylinder_mesh",
       "modelScale": 1.0,
       "agePolicy": "allowChild",
       "useMode": "vanilla",

@@ -10,6 +10,9 @@
 #include <vector>
 
 struct GetItemEntry;
+namespace Ship {
+class Archive;
+}
 
 namespace SOH {
 
@@ -41,6 +44,18 @@ enum class ExternalModItemUseMode {
     Vanilla,
     Override,
     Augment,
+};
+
+enum class ExternalModModelUvOrigin {
+    Auto,
+    BottomLeft,
+    TopLeft,
+};
+
+enum class ExternalModModelTextureFilter {
+    Auto,
+    Point,
+    Bilerp,
 };
 
 enum class ExternalModActorArchetype {
@@ -76,13 +91,17 @@ struct ExternalModManifest {
     std::string inputDefinitions;
     std::string hookDefinitions;
     std::string actorDefinitions;
+    std::string behaviorDefinitions;
+    std::string sceneDefinitions;
     std::vector<std::string> capabilities;
 };
 
 enum class ExternalModActionType {
     ShowNotification,
     TeleportToEntrance,
+    LoadModScene,
     PressButton,
+    ShowEquippedItemGet,
     SpawnSmoke,
     SpawnKusa,
     LanternLight,
@@ -92,8 +111,21 @@ enum class ExternalModActionType {
     SetActorState,
     MoveActorToPathNode,
     OpenDialog,
+    SetSwitchFlag,
+    ClearSwitchFlag,
+    SetEventChkInf,
+    ClearEventChkInf,
+    SetInfTable,
+    ClearInfTable,
+    GiveRupees,
+    TakeRupees,
     GrantModItem,
     RevokeModItem,
+    SetVar,
+    AddVar,
+    ClampVar,
+    EmitSignal,
+    CallBehavior,
     InvokeWasm,
 };
 
@@ -101,6 +133,8 @@ struct ExternalModAction {
     ExternalModActionType type = ExternalModActionType::ShowNotification;
     std::string text;
     int16_t entranceIndex = 0;
+    std::string modSceneId;
+    int32_t sceneSpawnId = 0;
     int32_t buttonMask = 0;
     std::string itemId;
     std::string exportName;
@@ -112,6 +146,18 @@ struct ExternalModAction {
     std::string actorStateValue;
     int32_t pathNodeIndex = 0;
     int32_t dialogId = 0;
+    int32_t intValue = 0;
+
+    std::string variableScope;
+    std::string variableKey;
+    std::string variableValue;
+    float variableNumber = 0.0f;
+    float variableMin = 0.0f;
+    float variableMax = 0.0f;
+    bool variableHasNumber = false;
+    bool variableHasRange = false;
+    std::string signalName;
+    std::string behaviorId;
 };
 
 struct ExternalModSceneAction {
@@ -152,13 +198,24 @@ struct ExternalModInputActionTrigger {
 
 struct ExternalModItemDefinition {
     std::string id;
+    std::string sourceModId;
     std::string displayName;
     ExternalModItemSlot slot = ExternalModItemSlot::Hookshot;
     std::string iconAsset;
     std::vector<uint8_t> iconRgba32;
     std::string modelAsset;
     std::string modelTextureAsset;
+    std::string modelDisplayList;
+    std::string hookshotMetalTextureAsset;
+    std::string hookshotHandleTextureAsset;
+    std::string hookshotDesignTextureAsset;
+    std::string hookshotChainTextureAsset;
+    std::string hookshotReticleTextureAsset;
     float modelScale = 1.0f;
+    ExternalModModelUvOrigin modelUvOrigin = ExternalModModelUvOrigin::Auto;
+    ExternalModModelTextureFilter modelTextureFilter = ExternalModModelTextureFilter::Auto;
+    int32_t modelTextureTargetWidth = 0;
+    int32_t modelTextureTargetHeight = 0;
     struct CustomModelVertex {
         int16_t x = 0;
         int16_t y = 0;
@@ -173,9 +230,21 @@ struct ExternalModItemDefinition {
     std::vector<uint8_t> modelTextureRgba32;
     int32_t modelTextureWidth = 0;
     int32_t modelTextureHeight = 0;
+    bool modelTextureHasTransparency = false;
+    std::vector<uint8_t> hookshotMetalTextureRgba16;
+    std::vector<uint8_t> hookshotHandleTextureCi8;
+    std::vector<uint8_t> hookshotHandleTextureTlutRgba16;
+    std::vector<uint8_t> hookshotDesignTextureCi8;
+    std::vector<uint8_t> hookshotDesignTextureTlutRgba16;
+    std::vector<uint8_t> hookshotChainTextureRgba16;
+    std::vector<uint8_t> hookshotReticleTextureI8;
     std::string description;
     std::string onUseExport;
     std::string onUpdateExport;
+    std::string onUseBehavior;
+    std::string onEquipBehavior;
+    int32_t acquireTextId = 0;
+    std::string persistentStateKey;
     ExternalModItemAgePolicy agePolicy = ExternalModItemAgePolicy::AllowChild;
     ExternalModItemUseMode useMode = ExternalModItemUseMode::Vanilla;
     bool hasGrantItemId = false;
@@ -186,6 +255,33 @@ struct ExternalModItemDefinition {
     bool granted = false;
     int32_t cooldownFrames = 0;
     int32_t cooldownRemaining = 0;
+};
+
+struct ExternalModBehaviorCondition {
+    std::string type;
+    std::string scope;
+    std::string key;
+    std::string op;
+    std::string value;
+    float numberValue = 0.0f;
+    bool hasNumberValue = false;
+};
+
+struct ExternalModBehaviorRule {
+    std::vector<ExternalModBehaviorCondition> conditions;
+    std::vector<ExternalModAction> actions;
+    float randomChance = 1.0f;
+};
+
+struct ExternalModBehaviorDefinition {
+    std::string id;
+    std::unordered_map<std::string, std::vector<ExternalModBehaviorRule>> events;
+};
+
+struct ExternalModSceneDefinition {
+    std::string id;
+    bool hasEntrance = false;
+    int16_t entranceIndex = 0;
 };
 
 struct ExternalModActorDefinition {
@@ -201,6 +297,10 @@ struct ExternalModActorDefinition {
     int32_t maxInstances = 1;
     int32_t tickRate = 1;
     float lodDistance = 5000.0f;
+    bool interactable = false;
+    float interactDistance = 80.0f;
+    std::string behaviorId;
+    std::vector<std::string> components;
     std::string exportOnInit;
     std::string exportOnUpdate;
     std::string exportOnInteract;
@@ -219,6 +319,9 @@ struct ExternalModActorInstance {
     float rotY = 0.0f;
     float rotZ = 0.0f;
     int32_t tickCounter = 0;
+    bool wasNearPlayer = false;
+    bool wasInteracting = false;
+    int32_t timerFrames = 0;
     std::unordered_map<std::string, std::string> state;
 };
 
@@ -293,16 +396,32 @@ struct ExternalModRuntime {
     std::vector<ExternalModHookSubscription> hookSubscriptions;
     std::vector<ExternalModActorDefinition> actorDefinitions;
     std::vector<ExternalModActorInstance> actorInstances;
+    std::vector<ExternalModBehaviorDefinition> behaviorDefinitions;
+    std::vector<ExternalModSceneDefinition> sceneDefinitions;
+    std::unordered_map<std::string, std::string> globalBlackboard;
+    std::unordered_map<int16_t, std::unordered_map<std::string, std::string>> sceneBlackboard;
+    std::vector<std::pair<uint32_t, std::string>> pendingSignals;
+    int16_t lastSceneSeen = -1;
+    int16_t lastRoomSeen = -1;
+    bool hasLastDayNight = false;
+    bool lastIsNight = false;
+    bool switchSnapshotInitialized = false;
+    std::array<uint8_t, 64> switchSnapshot{};
     uint32_t nextActorHandle = 1;
     int32_t frameBudgetMs = 2;
     int32_t maxHookCallsPerFrame = 256;
     int32_t hookCallsThisFrame = 0;
     int32_t maxActorInstances = 64;
+    int32_t behaviorMaxStepsPerActorPerFrame = 64;
+    int32_t behaviorMaxStepsPerModPerFrame = 5000;
+    int32_t behaviorStepsThisFrame = 0;
     ExternalModRuntimeModuleFormat moduleFormat = ExternalModRuntimeModuleFormat::WasmBinary;
     std::string moduleSourcePath;
     size_t compiledModuleSizeBytes = 0;
     int32_t moduleCompileTimeMs = 0;
     std::string moduleCompileDiagnostics;
+    std::vector<std::filesystem::path> generatedAssetPaths;
+    std::vector<std::shared_ptr<Ship::Archive>> generatedAssetArchives;
     std::unique_ptr<ExternalModWasmRuntime> wasmRuntime;
 };
 
@@ -397,6 +516,12 @@ class ExternalModManager {
                                         std::string& outError);
     static bool TryParseActorDefinitions(const std::string& content, int32_t apiVersion,
                                          std::vector<ExternalModActorDefinition>& outDefinitions,
+                                         std::string& outError);
+    static bool TryParseBehaviorDefinitions(const std::string& content, int32_t apiVersion,
+                                            std::vector<ExternalModBehaviorDefinition>& outDefinitions,
+                                            std::string& outError);
+    static bool TryParseSceneDefinitions(const std::string& content, int32_t apiVersion,
+                                         std::vector<ExternalModSceneDefinition>& outDefinitions,
                                          std::string& outError);
 
     static bool ReadManifestFromDirectory(const std::filesystem::path& dirPath, std::string& outContent,

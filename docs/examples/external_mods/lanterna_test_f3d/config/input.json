@@ -1,8 +1,8 @@
-{
+﻿{
   "bindings": [
     {
-      "id": "smoke_key",
-      "defaultMask": "BTN_CUSTOM_MOD_ACTION1",
+      "id": "lantern_attack",
+      "defaultMask": "BTN_B",
       "trigger": "pressed",
       "allowUserRemap": true
     }

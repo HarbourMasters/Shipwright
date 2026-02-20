@@ -1,0 +1,10 @@
+{
+  "items": [
+    {
+      "id": "_placeholder_required_item",
+      "displayName": "Placeholder",
+      "slot": "SLOT_STICK",
+      "useMode": "vanilla"
+    }
+  ]
+}

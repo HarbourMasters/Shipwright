@@ -13,6 +13,8 @@
 
 #include <stdlib.h>
 
+extern s32 ExternalMods_DrawCustomEquippedStickModel(PlayState* play);
+
 typedef struct {
     /* 0x00 */ u8 flag;
     /* 0x02 */ u16 textId;
@@ -1805,7 +1807,9 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             Matrix_Scale(1.0f, this->unk_85C, 1.0f, MTXMODE_APPLY);
 
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_OPA_DISP++, gLinkChildLinkDekuStickDL);
+            if (!ExternalMods_DrawCustomEquippedStickModel(play)) {
+                gSPDisplayList(POLY_OPA_DISP++, gLinkChildLinkDekuStickDL);
+            }
 
             CLOSE_DISPS(play->state.gfxCtx);
         } else if ((this->actor.scale.y >= 0.0f) && (this->meleeWeaponState != 0)) {

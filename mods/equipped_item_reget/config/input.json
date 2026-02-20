@@ -1,0 +1,46 @@
+{
+  "bindings": [
+    {
+      "id": "reget_c_left",
+      "defaultMask": "BTN_CUSTOM_MOD_ACTION3|BTN_CLEFT",
+      "trigger": "pressed",
+      "allowUserRemap": true
+    },
+    {
+      "id": "reget_c_down",
+      "defaultMask": "BTN_CUSTOM_MOD_ACTION3|BTN_CDOWN",
+      "trigger": "pressed",
+      "allowUserRemap": true
+    },
+    {
+      "id": "reget_c_right",
+      "defaultMask": "BTN_CUSTOM_MOD_ACTION3|BTN_CRIGHT",
+      "trigger": "pressed",
+      "allowUserRemap": true
+    },
+    {
+      "id": "reget_d_up",
+      "defaultMask": "BTN_CUSTOM_MOD_ACTION3|BTN_DUP",
+      "trigger": "pressed",
+      "allowUserRemap": true
+    },
+    {
+      "id": "reget_d_down",
+      "defaultMask": "BTN_CUSTOM_MOD_ACTION3|BTN_DDOWN",
+      "trigger": "pressed",
+      "allowUserRemap": true
+    },
+    {
+      "id": "reget_d_left",
+      "defaultMask": "BTN_CUSTOM_MOD_ACTION3|BTN_DLEFT",
+      "trigger": "pressed",
+      "allowUserRemap": true
+    },
+    {
+      "id": "reget_d_right",
+      "defaultMask": "BTN_CUSTOM_MOD_ACTION3|BTN_DRIGHT",
+      "trigger": "pressed",
+      "allowUserRemap": true
+    }
+  ]
+}

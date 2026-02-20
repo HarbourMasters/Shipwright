@@ -6,9 +6,14 @@
 #include <cmath>
 #include <cctype>
 #include <cstring>
+#include <functional>
 #include <fstream>
 #include <limits>
+#include <map>
+#include <queue>
+#include <regex>
 #include <sstream>
+#include <set>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -18,6 +23,10 @@
 #include <stb_image.h>
 
 #include <ship/Context.h>
+#include <ship/resource/File.h>
+#include <ship/resource/archive/Archive.h>
+#include <fast/resource/type/DisplayList.h>
+#include <fast/resource/ResourceType.h>
 
 #include "ExternalModItemRuntime.h"
 #include "ExternalModWatCompiler.h"
@@ -25,12 +34,17 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Notification/Notification.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
+#include "objects/object_link_boy/object_link_boy.h"
 
 extern "C" {
 #include <z64.h>
 #include "macros.h"
 #include "variables.h"
 #include "functions.h"
+
+GetItemEntry ItemTable_Retrieve(int16_t getItemID);
+GetItemID RetrieveGetItemIDFromItemID(ItemID itemID);
 
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
@@ -53,10 +67,25 @@ constexpr uint64_t kMaxActorDefinitionBytes = 256 * 1024;
 constexpr uint64_t kMaxHookDefinitionBytes = 256 * 1024;
 constexpr uint64_t kMaxItemIconBytes = 4ull * 1024ull * 1024ull;
 constexpr uint64_t kMaxItemModelBytes = 8ull * 1024ull * 1024ull;
+constexpr uint64_t kMaxItemModelTextureBytes = 16ull * 1024ull * 1024ull;
+constexpr uint64_t kMaxObjMaterialBytes = 512 * 1024;
+constexpr uint64_t kMaxHookshotTextureBytes = 4ull * 1024ull * 1024ull;
 constexpr int32_t kItemIconSize = 32;
 constexpr int32_t kItemModelTextureSize = 32;
 constexpr int32_t kMaxDecodedIconDimension = 2048;
+constexpr int32_t kHookshotMetalTextureWidth = 8;
+constexpr int32_t kHookshotMetalTextureHeight = 8;
+constexpr int32_t kHookshotHandleTextureWidth = 16;
+constexpr int32_t kHookshotHandleTextureHeight = 8;
+constexpr int32_t kHookshotDesignTextureWidth = 16;
+constexpr int32_t kHookshotDesignTextureHeight = 32;
+constexpr int32_t kHookshotChainTextureWidth = 16;
+constexpr int32_t kHookshotChainTextureHeight = 32;
+constexpr int32_t kHookshotReticleTextureWidth = 64;
+constexpr int32_t kHookshotReticleTextureHeight = 64;
 constexpr size_t kMaxItemModelTriangles = 4096;
+constexpr float kMinDisplayListModelScale = 0.05f;
+constexpr float kMaxDisplayListModelScale = 2000.0f;
 constexpr int32_t kDefaultTriggerCooldownFrames = 90;
 constexpr int32_t kDefaultRuntimeMemoryKb = 1024;
 constexpr int32_t kDefaultRuntimeCallMs = 2;
@@ -70,6 +99,16 @@ constexpr size_t kItemIconTableSize = sizeof(gItemIcons) / sizeof(gItemIcons[0])
 constexpr size_t kExternalModExtraInventoryCellCount = 40;
 std::array<void*, kItemIconTableSize> gVanillaItemIcons{};
 bool gVanillaItemIconsCaptured = false;
+
+struct ExternalModHookshotTexturePatchRecord {
+    std::string displayListPath;
+    std::string patchName;
+};
+
+std::vector<ExternalModHookshotTexturePatchRecord> gExternalModHookshotTexturePatches{};
+std::string gExternalModHookshotTextureOverrideKey;
+std::unordered_set<std::string> gExternalModMissingDisplayListWarnings{};
+std::unordered_set<std::string> gExternalModDisplayListDrawDebugLogs{};
 
 const std::unordered_map<std::string, int16_t> kSceneAliases = {
     { "SCENE_KOKIRI_FOREST", SCENE_KOKIRI_FOREST },
@@ -133,6 +172,50 @@ const std::unordered_map<std::string, int32_t> kButtonAliases = {
     { "CRIGHT", BTN_CRIGHT },
 };
 
+struct EquippedActionButtonMapping {
+    int32_t mask;
+    int32_t slotIndex;
+    const char* alias;
+};
+
+constexpr std::array<EquippedActionButtonMapping, 7> kEquippedActionButtonMappings = {{
+    { BTN_CLEFT, 1, "BTN_CLEFT" },
+    { BTN_CDOWN, 2, "BTN_CDOWN" },
+    { BTN_CRIGHT, 3, "BTN_CRIGHT" },
+    { BTN_DUP, 4, "BTN_DUP" },
+    { BTN_DDOWN, 5, "BTN_DDOWN" },
+    { BTN_DLEFT, 6, "BTN_DLEFT" },
+    { BTN_DRIGHT, 7, "BTN_DRIGHT" },
+}};
+
+bool TryResolveEquippedActionButtonMask(int32_t inputMask, int32_t& outResolvedMask, int32_t& outSlotIndex) {
+    outResolvedMask = 0;
+    outSlotIndex = 0;
+
+    int32_t matches = 0;
+    const auto normalizedMask = static_cast<uint32_t>(inputMask);
+    for (const auto& mapping : kEquippedActionButtonMappings) {
+        if ((normalizedMask & static_cast<uint32_t>(mapping.mask)) != 0) {
+            outResolvedMask = mapping.mask;
+            outSlotIndex = mapping.slotIndex;
+            ++matches;
+        }
+    }
+
+    return matches == 1;
+}
+
+std::string BuildSupportedEquippedActionButtonList() {
+    std::stringstream ss;
+    for (size_t i = 0; i < kEquippedActionButtonMappings.size(); ++i) {
+        if (i > 0) {
+            ss << '|';
+        }
+        ss << kEquippedActionButtonMappings[i].alias;
+    }
+    return ss.str();
+}
+
 std::string ToLower(std::string value) {
     std::transform(value.begin(), value.end(), value.begin(),
                    [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
@@ -165,6 +248,11 @@ const std::unordered_set<std::string> kSupportedCapabilities = {
     "hooks.extended.v1",
     "items.data.v2",
     "actors.vm.v1",
+    "behaviors.graph.v1",
+    "actors.generic.v1",
+    "items.catalog.v1",
+    "scenes.bundle.v1",
+    "render.filter_override.v1",
 };
 
 const std::unordered_map<std::string, ExternalModHookType> kHookAliases = {
@@ -201,6 +289,21 @@ const std::unordered_map<std::string, ExternalModItemUseMode> kItemUseModeAliase
     { "vanilla", ExternalModItemUseMode::Vanilla },
     { "override", ExternalModItemUseMode::Override },
     { "augment", ExternalModItemUseMode::Augment },
+};
+
+const std::unordered_map<std::string, ExternalModModelUvOrigin> kModelUvOriginAliases = {
+    { "auto", ExternalModModelUvOrigin::Auto },
+    { "bottomleft", ExternalModModelUvOrigin::BottomLeft },
+    { "bottom_left", ExternalModModelUvOrigin::BottomLeft },
+    { "topleft", ExternalModModelUvOrigin::TopLeft },
+    { "top_left", ExternalModModelUvOrigin::TopLeft },
+};
+
+const std::unordered_map<std::string, ExternalModModelTextureFilter> kModelTextureFilterAliases = {
+    { "auto", ExternalModModelTextureFilter::Auto },
+    { "point", ExternalModModelTextureFilter::Point },
+    { "bilerp", ExternalModModelTextureFilter::Bilerp },
+    { "bilinear", ExternalModModelTextureFilter::Bilerp },
 };
 
 const std::unordered_map<std::string, int32_t> kItemIdAliases = {
@@ -262,6 +365,42 @@ bool ParseItemUseMode(const nlohmann::json& value, ExternalModItemUseMode& outMo
     }
 
     outMode = it->second;
+    return true;
+}
+
+bool ParseModelUvOrigin(const nlohmann::json& value, ExternalModModelUvOrigin& outOrigin, std::string& outError) {
+    if (!value.is_string()) {
+        outError = "must be string";
+        return false;
+    }
+
+    const auto normalized = ToLower(value.get<std::string>());
+    const auto it = kModelUvOriginAliases.find(normalized);
+    if (it == kModelUvOriginAliases.end()) {
+        outError = "unsupported value: " + value.get<std::string>() +
+                   " (expected auto|bottom_left|top_left)";
+        return false;
+    }
+
+    outOrigin = it->second;
+    return true;
+}
+
+bool ParseModelTextureFilter(const nlohmann::json& value, ExternalModModelTextureFilter& outFilter,
+                             std::string& outError) {
+    if (!value.is_string()) {
+        outError = "must be string";
+        return false;
+    }
+
+    const auto normalized = ToLower(value.get<std::string>());
+    const auto it = kModelTextureFilterAliases.find(normalized);
+    if (it == kModelTextureFilterAliases.end()) {
+        outError = "unsupported value: " + value.get<std::string>() + " (expected auto|point|bilerp|bilinear)";
+        return false;
+    }
+
+    outFilter = it->second;
     return true;
 }
 
@@ -372,6 +511,2294 @@ bool ParseInt32FromString(const std::string& value, int32_t& outValue) {
     } catch (...) {
         return false;
     }
+}
+
+std::string TrimStringCopy(const std::string& value) {
+    size_t start = 0;
+    while (start < value.size() && std::isspace(static_cast<unsigned char>(value[start]))) {
+        ++start;
+    }
+    size_t end = value.size();
+    while (end > start && std::isspace(static_cast<unsigned char>(value[end - 1]))) {
+        --end;
+    }
+    return value.substr(start, end - start);
+}
+
+bool EndsWithString(const std::string& value, const std::string& suffix) {
+    if (suffix.size() > value.size()) {
+        return false;
+    }
+    return std::equal(suffix.rbegin(), suffix.rend(), value.rbegin());
+}
+
+std::string NormalizeZipEntryPath(std::string path) {
+    std::replace(path.begin(), path.end(), '\\', '/');
+    while (!path.empty() && path.front() == '/') {
+        path.erase(path.begin());
+    }
+    return path;
+}
+
+std::vector<std::string> SplitTopLevelCommas(const std::string& text) {
+    std::vector<std::string> args;
+    std::string chunk;
+    int32_t depth = 0;
+
+    for (const char ch : text) {
+        if (ch == '(') {
+            depth++;
+        } else if (ch == ')' && depth > 0) {
+            depth--;
+        }
+
+        if (ch == ',' && depth == 0) {
+            args.push_back(TrimStringCopy(chunk));
+            chunk.clear();
+            continue;
+        }
+
+        chunk.push_back(ch);
+    }
+
+    if (!chunk.empty()) {
+        args.push_back(TrimStringCopy(chunk));
+    }
+
+    return args;
+}
+
+std::vector<std::string> ParseOrTokens(const std::string& expression) {
+    std::string raw = expression;
+    raw.erase(std::remove(raw.begin(), raw.end(), '('), raw.end());
+    raw.erase(std::remove(raw.begin(), raw.end(), ')'), raw.end());
+
+    std::vector<std::string> tokens;
+    std::stringstream ss(raw);
+    std::string part;
+    while (std::getline(ss, part, '|')) {
+        part = TrimStringCopy(part);
+        if (!part.empty()) {
+            tokens.push_back(part);
+        }
+    }
+    return tokens;
+}
+
+bool TryParseIntToken(const std::string& token, int32_t& outValue) {
+    static const std::unordered_map<std::string, int32_t> kAliases = {
+        { "G_TX_RENDERTILE", 0 },
+        { "G_TX_LOADTILE", 7 },
+        { "G_ON", 1 },
+        { "G_OFF", 0 },
+        { "G_TX_NOMASK", 0 },
+        { "G_TX_NOLOD", 0 },
+        { "G_IM_FMT_RGBA", G_IM_FMT_RGBA },
+        { "G_IM_FMT_YUV", G_IM_FMT_YUV },
+        { "G_IM_FMT_CI", G_IM_FMT_CI },
+        { "G_IM_FMT_IA", G_IM_FMT_IA },
+        { "G_IM_FMT_I", G_IM_FMT_I },
+        { "G_IM_SIZ_4b", G_IM_SIZ_4b },
+        { "G_IM_SIZ_8b", G_IM_SIZ_8b },
+        { "G_IM_SIZ_16b", G_IM_SIZ_16b },
+        { "G_IM_SIZ_32b", G_IM_SIZ_32b },
+        { "G_TL_TILE", G_TL_TILE },
+        { "G_TL_LOD", G_TL_LOD },
+        { "G_CYC_1CYCLE", G_CYC_1CYCLE },
+        { "G_CYC_2CYCLE", G_CYC_2CYCLE },
+        { "G_CYC_COPY", G_CYC_COPY },
+        { "G_CYC_FILL", G_CYC_FILL },
+        { "G_PM_1PRIMITIVE", G_PM_1PRIMITIVE },
+        { "G_PM_NPRIMITIVE", G_PM_NPRIMITIVE },
+        { "G_TD_CLAMP", G_TD_CLAMP },
+        { "G_TD_SHARPEN", G_TD_SHARPEN },
+        { "G_TD_DETAIL", G_TD_DETAIL },
+        { "G_TP_NONE", G_TP_NONE },
+        { "G_TP_PERSP", G_TP_PERSP },
+        { "G_CK_NONE", G_CK_NONE },
+        { "G_CK_KEY", G_CK_KEY },
+        { "G_CD_MAGICSQ", G_CD_MAGICSQ },
+        { "G_CD_BAYER", G_CD_BAYER },
+        { "G_CD_NOISE", G_CD_NOISE },
+        { "G_CD_DISABLE", G_CD_DISABLE },
+        { "G_AC_NONE", G_AC_NONE },
+        { "G_AC_THRESHOLD", G_AC_THRESHOLD },
+        { "G_AC_DITHER", G_AC_DITHER },
+        { "G_ZS_PIXEL", G_ZS_PIXEL },
+        { "G_ZS_PRIM", G_ZS_PRIM },
+    };
+
+    const auto trimmed = TrimStringCopy(token);
+    if (trimmed.empty()) {
+        return false;
+    }
+
+    const auto aliasIt = kAliases.find(trimmed);
+    if (aliasIt != kAliases.end()) {
+        outValue = aliasIt->second;
+        return true;
+    }
+
+    try {
+        size_t parsedLength = 0;
+        const auto parsed = std::stoll(trimmed, &parsedLength, 0);
+        if (parsedLength != trimmed.size() || parsed < std::numeric_limits<int32_t>::min() ||
+            parsed > std::numeric_limits<int32_t>::max()) {
+            return false;
+        }
+        outValue = static_cast<int32_t>(parsed);
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
+
+bool TryParseAlphaDitherModeToken(const std::string& token, int32_t& outValue) {
+    static const std::unordered_map<std::string, int32_t> kAlphaDitherAliases = {
+        { "G_AD_PATTERN", G_AD_PATTERN },
+        { "G_AD_NOTPATTERN", G_AD_NOTPATTERN },
+        { "G_AD_NOISE", G_AD_NOISE },
+        { "G_AD_DISABLE", G_AD_DISABLE },
+    };
+
+    const auto normalized = TrimStringCopy(token);
+    const auto it = kAlphaDitherAliases.find(normalized);
+    if (it != kAlphaDitherAliases.end()) {
+        outValue = it->second;
+        return true;
+    }
+
+    return TryParseIntToken(normalized, outValue);
+}
+
+bool ParseMacroInvocation(const std::string& line, std::string& outMacro, std::vector<std::string>& outArgs) {
+    const size_t openParen = line.find('(');
+    const size_t closeParen = line.rfind(')');
+    if (openParen == std::string::npos || closeParen == std::string::npos || closeParen <= openParen) {
+        return false;
+    }
+
+    outMacro = TrimStringCopy(line.substr(0, openParen));
+    if (outMacro.empty()) {
+        return false;
+    }
+
+    const std::string argsRaw = line.substr(openParen + 1, closeParen - openParen - 1);
+    outArgs = SplitTopLevelCommas(argsRaw);
+    return true;
+}
+
+std::string XmlNode(const std::string& tag, const std::vector<std::pair<std::string, std::string>>& attrs = {}) {
+    if (attrs.empty()) {
+        return "\t<" + tag + "/>";
+    }
+    std::stringstream ss;
+    ss << "\t<" << tag;
+    for (const auto& [key, value] : attrs) {
+        ss << " " << key << "=\"" << value << "\"";
+    }
+    ss << "/>";
+    return ss.str();
+}
+
+std::string NormalizeTextureSizeToken(const std::string& value) {
+    std::string normalized = value;
+    const std::string suffix = "_LOAD_BLOCK";
+    size_t index = std::string::npos;
+    while ((index = normalized.find(suffix)) != std::string::npos) {
+        normalized.erase(index, suffix.size());
+    }
+    return normalized;
+}
+
+std::string NormalizeCombineToken(const std::string& token, bool alphaSlot) {
+    const auto t = TrimStringCopy(token);
+    if (t.rfind("G_CCMUX_", 0) == 0 || t.rfind("G_ACMUX_", 0) == 0) {
+        return t;
+    }
+
+    if (alphaSlot) {
+        if (t == "COMBINED_ALPHA" || t == "COMBINED") {
+            return "G_ACMUX_COMBINED";
+        }
+        if (t == "TEXEL0_ALPHA" || t == "TEXEL0") {
+            return "G_ACMUX_TEXEL0";
+        }
+        if (t == "TEXEL1_ALPHA" || t == "TEXEL1") {
+            return "G_ACMUX_TEXEL1";
+        }
+        if (t == "PRIMITIVE_ALPHA" || t == "PRIMITIVE") {
+            return "G_ACMUX_PRIMITIVE";
+        }
+        if (t == "SHADE_ALPHA" || t == "SHADE") {
+            return "G_ACMUX_SHADE";
+        }
+        if (t == "ENV_ALPHA" || t == "ENVIRONMENT") {
+            return "G_ACMUX_ENVIRONMENT";
+        }
+        if (t == "LOD_FRACTION") {
+            return "G_ACMUX_LOD_FRACTION";
+        }
+        if (t == "PRIM_LOD_FRAC") {
+            return "G_ACMUX_PRIM_LOD_FRAC";
+        }
+        if (t == "0" || t == "1") {
+            return "G_ACMUX_" + t;
+        }
+        return "G_ACMUX_" + t;
+    }
+
+    if (t == "0" || t == "1") {
+        return "G_CCMUX_" + t;
+    }
+    return "G_CCMUX_" + t;
+}
+
+struct Fast64ArrayBlock {
+    std::string name;
+    std::string body;
+};
+
+struct Fast64VertexEntry {
+    int16_t x = 0;
+    int16_t y = 0;
+    int16_t z = 0;
+    int16_t s = 0;
+    int16_t t = 0;
+    int16_t r = 0;
+    int16_t g = 0;
+    int16_t b = 0;
+    int16_t a = 0;
+};
+
+struct Fast64TextureMeta {
+    std::string format;
+    std::string size;
+    int32_t widthArg = 0;
+    int32_t line = -1;
+    int32_t loadBlockLrs = -1;
+    bool hasTileSize = false;
+    int32_t tileLrs = 0;
+    int32_t tileLrt = 0;
+    int32_t tileWidthHint = 0;
+    int32_t tileHeightHint = 0;
+    int32_t maxObservedLrs = -1;
+    int32_t maxObservedLrt = -1;
+    bool hasDecodedDimensions = false;
+    int32_t decodedWidth = 0;
+    int32_t decodedHeight = 0;
+};
+
+struct Fast64DisplayListCommand {
+    std::string tag;
+    std::vector<std::pair<std::string, std::string>> attrs;
+    std::string textureSymbol;
+};
+
+enum class Fast64UnsupportedSeverity {
+    Hard,
+    Soft,
+};
+
+struct Fast64ConversionOutput {
+    std::map<std::string, std::vector<uint8_t>> resources;
+    std::string rootDisplayListPath;
+    size_t vertexArrayCount = 0;
+    size_t displayListArrayCount = 0;
+    size_t textureCount = 0;
+};
+
+struct Fast64ArchiveInspection {
+    bool isZipArchive = false;
+    bool hasDisplayListResources = false;
+    bool hasFast64Source = false;
+    std::string rootDisplayListPath;
+    std::string modelIncContent;
+    std::string headerContent;
+    std::string objectNameHint;
+};
+
+using Fast64TextureIncludeResolver =
+    std::function<bool(const std::string&, const Fast64TextureMeta&, std::vector<uint8_t>&, int32_t&, int32_t&,
+                       std::string&)>;
+
+class ExternalModsInMemoryArchive final : public Ship::Archive {
+  public:
+    ExternalModsInMemoryArchive(std::string archivePath, std::map<std::string, std::vector<uint8_t>> resources)
+        : Ship::Archive(std::move(archivePath)), mResources(std::move(resources)) {
+    }
+
+    bool Open() override {
+        for (const auto& [path, data] : mResources) {
+            (void)data;
+            IndexFile(path);
+        }
+        return true;
+    }
+
+    bool Close() override {
+        return true;
+    }
+
+    bool WriteFile([[maybe_unused]] const std::string& filename,
+                   [[maybe_unused]] const std::vector<uint8_t>& data) override {
+        return false;
+    }
+
+    std::shared_ptr<Ship::File> LoadFile(uint64_t hash) override {
+        auto* path = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->HashToString(hash);
+        if (path == nullptr) {
+            return nullptr;
+        }
+        return LoadFile(*path);
+    }
+
+    std::shared_ptr<Ship::File> LoadFile(const std::string& filePath) override {
+        const auto it = mResources.find(filePath);
+        if (it == mResources.end()) {
+            return nullptr;
+        }
+
+        auto file = std::make_shared<Ship::File>();
+        file->Buffer = std::make_shared<std::vector<char>>();
+        file->Buffer->resize(it->second.size());
+        if (!it->second.empty()) {
+            std::memcpy(file->Buffer->data(), it->second.data(), it->second.size());
+        }
+        file->IsLoaded = true;
+        return file;
+    }
+
+  private:
+    std::map<std::string, std::vector<uint8_t>> mResources;
+};
+
+bool ParseArrayBlocks(const std::string& text, const std::string& typeName, std::vector<Fast64ArrayBlock>& outBlocks) {
+    outBlocks.clear();
+
+    auto isIdentifierStart = [](char ch) {
+        return std::isalpha(static_cast<unsigned char>(ch)) || ch == '_';
+    };
+    auto isIdentifier = [&](char ch) {
+        return isIdentifierStart(ch) || std::isdigit(static_cast<unsigned char>(ch));
+    };
+    auto skipWhitespace = [&](size_t index) {
+        while (index < text.size() && std::isspace(static_cast<unsigned char>(text[index]))) {
+            ++index;
+        }
+        return index;
+    };
+
+    size_t searchPos = 0;
+    while (searchPos < text.size()) {
+        const size_t typePos = text.find(typeName, searchPos);
+        if (typePos == std::string::npos) {
+            break;
+        }
+
+        if ((typePos > 0 && isIdentifier(text[typePos - 1])) ||
+            (typePos + typeName.size() < text.size() && isIdentifier(text[typePos + typeName.size()]))) {
+            searchPos = typePos + 1;
+            continue;
+        }
+
+        size_t cursor = typePos + typeName.size();
+        if (cursor >= text.size() || !std::isspace(static_cast<unsigned char>(text[cursor]))) {
+            searchPos = typePos + 1;
+            continue;
+        }
+
+        cursor = skipWhitespace(cursor);
+        if (cursor >= text.size() || !isIdentifierStart(text[cursor])) {
+            searchPos = typePos + 1;
+            continue;
+        }
+
+        const size_t nameStart = cursor;
+        ++cursor;
+        while (cursor < text.size() && isIdentifier(text[cursor])) {
+            ++cursor;
+        }
+        const std::string name = text.substr(nameStart, cursor - nameStart);
+
+        cursor = skipWhitespace(cursor);
+        if (cursor >= text.size() || text[cursor] != '[') {
+            searchPos = typePos + 1;
+            continue;
+        }
+
+        int32_t bracketDepth = 0;
+        do {
+            if (text[cursor] == '[') {
+                bracketDepth++;
+            } else if (text[cursor] == ']') {
+                bracketDepth--;
+            }
+            cursor++;
+        } while (cursor < text.size() && bracketDepth > 0);
+
+        if (bracketDepth != 0) {
+            break;
+        }
+
+        cursor = skipWhitespace(cursor);
+        if (cursor >= text.size() || text[cursor] != '=') {
+            searchPos = typePos + 1;
+            continue;
+        }
+        cursor++;
+        cursor = skipWhitespace(cursor);
+        if (cursor >= text.size() || text[cursor] != '{') {
+            searchPos = typePos + 1;
+            continue;
+        }
+
+        const size_t bodyStart = cursor + 1;
+        int32_t braceDepth = 1;
+        cursor++;
+        while (cursor < text.size() && braceDepth > 0) {
+            if (text[cursor] == '{') {
+                braceDepth++;
+            } else if (text[cursor] == '}') {
+                braceDepth--;
+            }
+            cursor++;
+        }
+
+        if (braceDepth != 0) {
+            break;
+        }
+
+        const size_t bodyEnd = cursor - 1;
+        outBlocks.push_back({ name, text.substr(bodyStart, bodyEnd - bodyStart) });
+        searchPos = cursor;
+    }
+
+    return !outBlocks.empty();
+}
+
+bool ParseVertices(const std::string& body, std::vector<Fast64VertexEntry>& outVertices, std::string& outError) {
+    outVertices.clear();
+    const std::regex vtxPattern(
+        "\\{\\{\\s*\\{([^{}]+)\\}\\s*,\\s*[^,]+,\\s*\\{([^{}]+)\\}\\s*,\\s*\\{([^{}]+)\\}\\s*\\}\\s*\\}",
+        std::regex::ECMAScript);
+
+    std::stringstream bodyStream(body);
+    std::string line;
+    while (std::getline(bodyStream, line)) {
+        if (line.find('{') == std::string::npos) {
+            continue;
+        }
+
+        std::smatch match;
+        if (!std::regex_search(line, match, vtxPattern)) {
+            continue;
+        }
+
+        std::vector<int32_t> xyz;
+        std::vector<int32_t> st;
+        std::vector<int32_t> rgba;
+        for (const auto& listAndOut : { std::pair<std::string, std::vector<int32_t>*>(match[1].str(), &xyz),
+                                        std::pair<std::string, std::vector<int32_t>*>(match[2].str(), &st),
+                                        std::pair<std::string, std::vector<int32_t>*>(match[3].str(), &rgba) }) {
+            std::stringstream ss(listAndOut.first);
+            std::string token;
+            while (std::getline(ss, token, ',')) {
+                int32_t value = 0;
+                if (!TryParseIntToken(token, value)) {
+                    outError = "invalid numeric token in Vtx array: " + TrimStringCopy(token);
+                    return false;
+                }
+                listAndOut.second->push_back(value);
+            }
+        }
+
+        if (xyz.size() != 3 || st.size() != 2 || rgba.size() != 4) {
+            outError = "invalid Vtx entry layout in model.inc.c";
+            return false;
+        }
+
+        Fast64VertexEntry vertex;
+        vertex.x = static_cast<int16_t>(xyz[0]);
+        vertex.y = static_cast<int16_t>(xyz[1]);
+        vertex.z = static_cast<int16_t>(xyz[2]);
+        vertex.s = static_cast<int16_t>(st[0]);
+        vertex.t = static_cast<int16_t>(st[1]);
+        vertex.r = static_cast<int16_t>(rgba[0]);
+        vertex.g = static_cast<int16_t>(rgba[1]);
+        vertex.b = static_cast<int16_t>(rgba[2]);
+        vertex.a = static_cast<int16_t>(rgba[3]);
+        outVertices.push_back(vertex);
+    }
+
+    if (outVertices.empty()) {
+        outError = "empty or invalid Vtx array";
+        return false;
+    }
+    return true;
+}
+
+bool TryParseSymbolAndOffset(const std::string& expression, std::string& outSymbol, int32_t& outOffset) {
+    outSymbol.clear();
+    outOffset = 0;
+    const std::string trimmed = TrimStringCopy(expression);
+    const std::regex pattern("^([A-Za-z_]\\w*)\\s*(?:\\+\\s*([0-9]+))?$");
+    std::smatch match;
+    if (!std::regex_match(trimmed, match, pattern)) {
+        return false;
+    }
+    outSymbol = match[1].str();
+    if (match.size() > 2 && match[2].matched) {
+        int32_t offset = 0;
+        if (!TryParseIntToken(match[2].str(), offset)) {
+            return false;
+        }
+        outOffset = offset;
+    }
+    return true;
+}
+
+std::pair<std::string, std::string> ParseReferencePath(const std::string& expression, const std::string& objectName) {
+    std::string token = TrimStringCopy(expression);
+    if (token.size() >= 2 && token.front() == '"' && token.back() == '"') {
+        token = token.substr(1, token.size() - 2);
+    }
+
+    std::string symbol;
+    int32_t offset = 0;
+    if (TryParseSymbolAndOffset(token, symbol, offset)) {
+        (void)offset;
+        return { "objects/" + objectName + "/" + symbol, symbol };
+    }
+
+    if (token.rfind("0x", 0) == 0) {
+        return { ">" + token, "" };
+    }
+
+    if (token.rfind(">0x", 0) == 0) {
+        return { token, "" };
+    }
+
+    return { token, "" };
+}
+
+int32_t FindCommandAttrIndex(const Fast64DisplayListCommand& command, const std::string& key) {
+    for (size_t i = 0; i < command.attrs.size(); ++i) {
+        if (command.attrs[i].first == key) {
+            return static_cast<int32_t>(i);
+        }
+    }
+    return -1;
+}
+
+bool TryGetCommandIntAttr(const Fast64DisplayListCommand& command, const std::string& key, int32_t& outValue) {
+    const int32_t index = FindCommandAttrIndex(command, key);
+    if (index < 0) {
+        return false;
+    }
+    return TryParseIntToken(command.attrs[static_cast<size_t>(index)].second, outValue);
+}
+
+bool SetCommandIntAttr(Fast64DisplayListCommand& command, const std::string& key, int32_t value) {
+    const int32_t index = FindCommandAttrIndex(command, key);
+    if (index < 0) {
+        return false;
+    }
+    command.attrs[static_cast<size_t>(index)].second = std::to_string(value);
+    return true;
+}
+
+std::string SerializeFast64DisplayListXml(const std::vector<Fast64DisplayListCommand>& commands) {
+    std::stringstream xml;
+    xml << "<DisplayList Version=\"0\">\n";
+    for (const auto& command : commands) {
+        xml << XmlNode(command.tag, command.attrs) << "\n";
+    }
+    xml << "</DisplayList>\n\n";
+    return xml.str();
+}
+
+bool TryParseXmlNodeLine(const std::string& line, std::string& outTag,
+                         std::vector<std::pair<std::string, std::string>>& outAttrs) {
+    outTag.clear();
+    outAttrs.clear();
+
+    const std::regex nodePattern(R"(^\s*<([A-Za-z0-9_]+)\s*(.*)/>\s*$)");
+    std::smatch nodeMatch;
+    if (!std::regex_match(line, nodeMatch, nodePattern) || nodeMatch.size() < 2) {
+        return false;
+    }
+
+    outTag = nodeMatch[1].str();
+    std::string attrsRaw;
+    if (nodeMatch.size() >= 3) {
+        attrsRaw = nodeMatch[2].str();
+    }
+
+    const std::regex attrPattern("([A-Za-z0-9_]+)\\s*=\\s*\"([^\"]*)\"");
+    for (std::sregex_iterator it(attrsRaw.begin(), attrsRaw.end(), attrPattern), end; it != end; ++it) {
+        outAttrs.push_back({ (*it)[1].str(), (*it)[2].str() });
+    }
+
+    return true;
+}
+
+bool IsHardUnsupportedFast64Macro(const std::string& macroName) {
+    static const std::unordered_set<std::string> kHardUnsupported = {
+        "gsSPVertex",
+        "gsSPModifyVertex",
+        "gsSP1Triangle",
+        "gsSP2Triangles",
+        "gsSP1Quadrangle",
+        "gsSPLine3D",
+        "gsSPDisplayList",
+        "gsSPBranchList",
+        "gsSPCullDisplayList",
+        "gsSPEndDisplayList",
+        "gsDPSetTextureImage",
+        "gsDPSetTile",
+        "gsDPSetTileSize",
+        "gsDPLoadBlock",
+        "gsDPLoadTile",
+        "gsDPLoadTLUTCmd",
+        "gsDPLoadTextureBlock",
+        "gsDPLoadTextureBlock_4b",
+        "gsDPLoadMultiBlock",
+        "gsDPLoadMultiBlock_4b",
+    };
+    if (kHardUnsupported.find(macroName) != kHardUnsupported.end()) {
+        return true;
+    }
+
+    if ((macroName.rfind("gsSP", 0) == 0) &&
+        (macroName.find("Triangle") != std::string::npos || macroName.find("Vertex") != std::string::npos ||
+         macroName.find("DisplayList") != std::string::npos || macroName.find("Branch") != std::string::npos ||
+         macroName.find("Cull") != std::string::npos)) {
+        return true;
+    }
+    if ((macroName.rfind("gsDP", 0) == 0) &&
+        (macroName.find("TextureImage") != std::string::npos || macroName.find("SetTile") != std::string::npos ||
+         macroName.find("LoadTile") != std::string::npos || macroName.find("LoadBlock") != std::string::npos ||
+         macroName.find("LoadTLUT") != std::string::npos)) {
+        return true;
+    }
+
+    return false;
+}
+
+std::string BuildUnsupportedFast64Summary(const std::vector<std::string>& entries, const std::string& title) {
+    if (entries.empty()) {
+        return "";
+    }
+    std::vector<std::string> sortedEntries = entries;
+    std::sort(sortedEntries.begin(), sortedEntries.end());
+    sortedEntries.erase(std::unique(sortedEntries.begin(), sortedEntries.end()), sortedEntries.end());
+    std::stringstream ss;
+    ss << title;
+    const size_t limit = std::min<size_t>(sortedEntries.size(), 20);
+    for (size_t i = 0; i < limit; ++i) {
+        ss << "\n" << sortedEntries[i];
+    }
+    if (sortedEntries.size() > limit) {
+        ss << "\n... +" << (sortedEntries.size() - limit) << " macro(s)";
+    }
+    return ss.str();
+}
+
+bool TryParseLightIndexToken(const std::string& token, int32_t& outIndex) {
+    static const std::unordered_map<std::string, int32_t> kLightIndexAliases = {
+        { "LIGHT_1", 1 }, { "LIGHT_2", 2 }, { "LIGHT_3", 3 }, { "LIGHT_4", 4 },
+        { "LIGHT_5", 5 }, { "LIGHT_6", 6 }, { "LIGHT_7", 7 }, { "LIGHT_8", 8 },
+    };
+    const std::string normalized = TrimStringCopy(token);
+    if (auto it = kLightIndexAliases.find(normalized); it != kLightIndexAliases.end()) {
+        outIndex = it->second;
+        return true;
+    }
+
+    int32_t numeric = 0;
+    if (!TryParseIntToken(normalized, numeric)) {
+        return false;
+    }
+    outIndex = std::clamp(numeric, 1, 8);
+    return true;
+}
+
+void ApplyForcedTextureFilterToDisplayLists(std::map<std::string, std::vector<Fast64DisplayListCommand>>& displayLists,
+                                            ExternalModModelTextureFilter configuredFilter, size_t& outReplacedCount,
+                                            size_t& outInjectedCount) {
+    outReplacedCount = 0;
+    outInjectedCount = 0;
+    if (configuredFilter == ExternalModModelTextureFilter::Auto) {
+        return;
+    }
+
+    const int32_t forcedMode = configuredFilter == ExternalModModelTextureFilter::Point ? G_TF_POINT : G_TF_BILERP;
+    const std::vector<std::pair<std::string, std::string>> attrs = { { "Mode", std::to_string(forcedMode) } };
+
+    for (auto& [path, commands] : displayLists) {
+        (void)path;
+        bool hasFilter = false;
+        for (auto& command : commands) {
+            if (command.tag != "SetTextureFilter") {
+                continue;
+            }
+            command.attrs = attrs;
+            hasFilter = true;
+            ++outReplacedCount;
+        }
+
+        if (!hasFilter) {
+            size_t insertIndex = 0;
+            while (insertIndex < commands.size() &&
+                   (commands[insertIndex].tag == "PipeSync" || commands[insertIndex].tag == "TileSync" ||
+                    commands[insertIndex].tag == "LoadSync")) {
+                ++insertIndex;
+            }
+
+            Fast64DisplayListCommand injected;
+            injected.tag = "SetTextureFilter";
+            injected.attrs = attrs;
+            commands.insert(commands.begin() + static_cast<std::ptrdiff_t>(insertIndex), std::move(injected));
+            ++outInjectedCount;
+        }
+    }
+}
+
+int32_t DetectConservativeTileScaleFactor(const Fast64TextureMeta& meta, int32_t textureWidth, int32_t textureHeight) {
+    if (textureWidth <= 0 || textureHeight <= 0) {
+        return 1;
+    }
+
+    const int32_t observedWidth =
+        std::max(meta.tileWidthHint, meta.maxObservedLrs >= 0 ? std::max(1, (meta.maxObservedLrs / 4) + 1) : 0);
+    const int32_t observedHeight =
+        std::max(meta.tileHeightHint, meta.maxObservedLrt >= 0 ? std::max(1, (meta.maxObservedLrt / 4) + 1) : 0);
+
+    if (observedWidth <= textureWidth || observedHeight <= textureHeight) {
+        return 1;
+    }
+    if (observedWidth % textureWidth != 0 || observedHeight % textureHeight != 0) {
+        return 1;
+    }
+
+    const int32_t factorS = observedWidth / textureWidth;
+    const int32_t factorT = observedHeight / textureHeight;
+    if (factorS != factorT) {
+        return 1;
+    }
+
+    if (factorS == 2 || factorS == 4 || factorS == 8 || factorS == 16) {
+        return factorS;
+    }
+
+    return 1;
+}
+
+size_t ApplyConservativeTileScaleAdjustment(
+    std::map<std::string, std::vector<Fast64DisplayListCommand>>& displayLists, const std::string& textureSymbol,
+    int32_t factor) {
+    if (factor <= 1) {
+        return 0;
+    }
+
+    size_t updatedCommands = 0;
+    for (auto& [path, commands] : displayLists) {
+        (void)path;
+        for (auto& command : commands) {
+            if (command.textureSymbol != textureSymbol) {
+                continue;
+            }
+
+            if (command.tag == "SetTileSize" || command.tag == "LoadTile") {
+                int32_t uls = 0;
+                int32_t ult = 0;
+                int32_t lrs = 0;
+                int32_t lrt = 0;
+                if (!TryGetCommandIntAttr(command, "Uls", uls) || !TryGetCommandIntAttr(command, "Ult", ult) ||
+                    !TryGetCommandIntAttr(command, "Lrs", lrs) || !TryGetCommandIntAttr(command, "Lrt", lrt)) {
+                    continue;
+                }
+                if ((uls % factor) != 0 || (ult % factor) != 0 || (lrs % factor) != 0 || (lrt % factor) != 0) {
+                    continue;
+                }
+
+                const bool updated = SetCommandIntAttr(command, "Uls", uls / factor) &&
+                                     SetCommandIntAttr(command, "Ult", ult / factor) &&
+                                     SetCommandIntAttr(command, "Lrs", lrs / factor) &&
+                                     SetCommandIntAttr(command, "Lrt", lrt / factor);
+                if (updated) {
+                    ++updatedCommands;
+                }
+            } else if (command.tag == "SetTile") {
+                int32_t line = 0;
+                if (!TryGetCommandIntAttr(command, "Line", line) || line <= 0 || (line % factor) != 0) {
+                    continue;
+                }
+                if (SetCommandIntAttr(command, "Line", line / factor)) {
+                    ++updatedCommands;
+                }
+            }
+        }
+    }
+
+    return updatedCommands;
+}
+
+bool ConvertFast64DisplayLists(const std::vector<Fast64ArrayBlock>& gfxArrays, const std::string& objectName,
+                               std::map<std::string, std::vector<Fast64DisplayListCommand>>& outDisplayLists,
+                               std::unordered_map<std::string, Fast64TextureMeta>& outTextureUsage,
+                               std::unordered_set<std::string>& outCalledDisplayLists,
+                               std::vector<std::string>& outHardUnsupported,
+                               std::vector<std::string>& outSoftIgnored, std::string& outError) {
+    outDisplayLists.clear();
+    outTextureUsage.clear();
+    outCalledDisplayLists.clear();
+    outHardUnsupported.clear();
+    outSoftIgnored.clear();
+
+    static const std::vector<std::string> kGeometryFlags = {
+        "G_SHADE", "G_LIGHTING", "G_SHADING_SMOOTH", "G_ZBUFFER", "G_TEXTURE_GEN", "G_TEXTURE_GEN_LINEAR",
+        "G_CULL_BACK", "G_CULL_FRONT", "G_CULL_BOTH", "G_FOG", "G_CLIPPING",
+    };
+
+    for (const auto& gfxArray : gfxArrays) {
+        std::vector<std::string> lines;
+        lines.emplace_back("<DisplayList Version=\"0\">");
+        std::unordered_map<size_t, std::string> commandTextureSymbols;
+        std::string currentTextureSymbol;
+
+        std::stringstream bodyStream(gfxArray.body);
+        std::string rawLine;
+        while (std::getline(bodyStream, rawLine)) {
+            const size_t commentIndex = rawLine.find("//");
+            std::string line = TrimStringCopy(commentIndex == std::string::npos ? rawLine : rawLine.substr(0, commentIndex));
+            if (line.empty() || line.rfind("gs", 0) != 0) {
+                continue;
+            }
+
+            while (!line.empty() && (line.back() == ',' || line.back() == ';')) {
+                line.pop_back();
+                line = TrimStringCopy(line);
+            }
+
+            std::string macro;
+            std::vector<std::string> args;
+            if (!ParseMacroInvocation(line, macro, args)) {
+                continue;
+            }
+
+            auto parseArgInt = [&](size_t index, int32_t& outValue) -> bool {
+                if (index >= args.size()) {
+                    outError = "invalid macro argument index while converting " + gfxArray.name + ": " + macro;
+                    return false;
+                }
+                if (!TryParseIntToken(args[index], outValue)) {
+                    outError = "invalid numeric token in " + gfxArray.name + ": " + args[index];
+                    return false;
+                }
+                return true;
+            };
+
+            if (macro == "gsDPPipeSync") {
+                lines.push_back(XmlNode("PipeSync"));
+            } else if (macro == "gsDPTileSync") {
+                lines.push_back(XmlNode("TileSync"));
+            } else if (macro == "gsDPLoadSync") {
+                lines.push_back(XmlNode("LoadSync"));
+            } else if (macro == "gsSPEndDisplayList") {
+                lines.push_back(XmlNode("EndDisplayList"));
+            } else if (macro == "gsSPDisplayList") {
+                const auto [path, symbol] = ParseReferencePath(args.at(0), objectName);
+                if (!symbol.empty()) {
+                    outCalledDisplayLists.insert(symbol);
+                }
+                lines.push_back(XmlNode("CallDisplayList", { { "Path", path } }));
+            } else if (macro == "gsSPVertex") {
+                std::string symbol;
+                int32_t offset = 0;
+                if (!TryParseSymbolAndOffset(args.at(0), symbol, offset)) {
+                    outError = "gsSPVertex expects symbol + optional offset in " + gfxArray.name + ": " + args.at(0);
+                    return false;
+                }
+                int32_t count = 0;
+                int32_t vbIndex = 0;
+                if (!parseArgInt(1, count) || !parseArgInt(2, vbIndex)) {
+                    return false;
+                }
+                lines.push_back(XmlNode("LoadVertices",
+                                        { { "Path", "objects/" + objectName + "/" + symbol },
+                                          { "VertexBufferIndex", std::to_string(vbIndex) },
+                                          { "VertexOffset", std::to_string(offset) },
+                                          { "Count", std::to_string(count) } }));
+            } else if (macro == "gsSP2Triangles") {
+                int32_t values[8] = {};
+                for (size_t i = 0; i < 8; ++i) {
+                    if (!parseArgInt(i, values[i])) {
+                        return false;
+                    }
+                }
+                lines.push_back(XmlNode("Triangle1",
+                                        { { "V00", std::to_string(values[0]) },
+                                          { "V01", std::to_string(values[1]) },
+                                          { "V02", std::to_string(values[2]) },
+                                          { "Flag0", std::to_string(values[3]) } }));
+                lines.push_back(XmlNode("Triangle1",
+                                        { { "V00", std::to_string(values[4]) },
+                                          { "V01", std::to_string(values[5]) },
+                                          { "V02", std::to_string(values[6]) },
+                                          { "Flag0", std::to_string(values[7]) } }));
+            } else if (macro == "gsSP1Triangle") {
+                int32_t values[4] = {};
+                for (size_t i = 0; i < 4; ++i) {
+                    if (!parseArgInt(i, values[i])) {
+                        return false;
+                    }
+                }
+                lines.push_back(XmlNode("Triangle1",
+                                        { { "V00", std::to_string(values[0]) },
+                                          { "V01", std::to_string(values[1]) },
+                                          { "V02", std::to_string(values[2]) },
+                                          { "Flag0", std::to_string(values[3]) } }));
+            } else if (macro == "gsSP1Quadrangle") {
+                int32_t values[5] = {};
+                for (size_t i = 0; i < 5; ++i) {
+                    if (!parseArgInt(i, values[i])) {
+                        return false;
+                    }
+                }
+                lines.push_back(XmlNode("Triangle1",
+                                        { { "V00", std::to_string(values[0]) },
+                                          { "V01", std::to_string(values[1]) },
+                                          { "V02", std::to_string(values[2]) },
+                                          { "Flag0", std::to_string(values[4]) } }));
+                lines.push_back(XmlNode("Triangle1",
+                                        { { "V00", std::to_string(values[0]) },
+                                          { "V01", std::to_string(values[2]) },
+                                          { "V02", std::to_string(values[3]) },
+                                          { "Flag0", std::to_string(values[4]) } }));
+            } else if (macro == "gsSPCullDisplayList") {
+                int32_t start = 0;
+                int32_t end = 0;
+                if (!parseArgInt(0, start) || !parseArgInt(1, end)) {
+                    return false;
+                }
+                lines.push_back(XmlNode(
+                    "CullDisplayList", { { "Start", std::to_string(start) }, { "End", std::to_string(end) } }));
+            } else if (macro == "gsSPSetGeometryMode" || macro == "gsSPClearGeometryMode") {
+                const auto tokens = ParseOrTokens(args.at(0));
+                std::unordered_set<std::string> tokenSet(tokens.begin(), tokens.end());
+                std::vector<std::pair<std::string, std::string>> attrs;
+                for (const auto& flag : kGeometryFlags) {
+                    if (tokenSet.find(flag) != tokenSet.end()) {
+                        attrs.push_back({ flag, "1" });
+                    }
+                }
+                lines.push_back(XmlNode(macro == "gsSPSetGeometryMode" ? "SetGeometryMode" : "ClearGeometryMode", attrs));
+            } else if (macro == "gsSPGeometryMode") {
+                if (args.size() < 2) {
+                    outError = "gsSPGeometryMode argument count mismatch in " + gfxArray.name;
+                    return false;
+                }
+                const auto clearTokens = ParseOrTokens(args.at(0));
+                const auto setTokens = ParseOrTokens(args.at(1));
+                std::unordered_set<std::string> clearTokenSet(clearTokens.begin(), clearTokens.end());
+                std::unordered_set<std::string> setTokenSet(setTokens.begin(), setTokens.end());
+                std::vector<std::pair<std::string, std::string>> clearAttrs;
+                std::vector<std::pair<std::string, std::string>> setAttrs;
+                for (const auto& flag : kGeometryFlags) {
+                    if (clearTokenSet.find(flag) != clearTokenSet.end()) {
+                        clearAttrs.push_back({ flag, "1" });
+                    }
+                    if (setTokenSet.find(flag) != setTokenSet.end()) {
+                        setAttrs.push_back({ flag, "1" });
+                    }
+                }
+                lines.push_back(XmlNode("ClearGeometryMode", clearAttrs));
+                lines.push_back(XmlNode("SetGeometryMode", setAttrs));
+            } else if (macro == "gsSPLoadGeometryMode") {
+                const auto tokens = ParseOrTokens(args.at(0));
+                std::unordered_set<std::string> tokenSet(tokens.begin(), tokens.end());
+                std::vector<std::pair<std::string, std::string>> clearAttrs;
+                std::vector<std::pair<std::string, std::string>> setAttrs;
+                for (const auto& flag : kGeometryFlags) {
+                    clearAttrs.push_back({ flag, "1" });
+                    if (tokenSet.find(flag) != tokenSet.end()) {
+                        setAttrs.push_back({ flag, "1" });
+                    }
+                }
+                lines.push_back(XmlNode("ClearGeometryMode", clearAttrs));
+                lines.push_back(XmlNode("SetGeometryMode", setAttrs));
+            } else if (macro == "gsSPTexture") {
+                int32_t s = 0;
+                int32_t t = 0;
+                int32_t level = 0;
+                int32_t tile = 0;
+                int32_t on = 0;
+                if (!parseArgInt(0, s) || !parseArgInt(1, t) || !parseArgInt(2, level) || !parseArgInt(3, tile) ||
+                    !parseArgInt(4, on)) {
+                    return false;
+                }
+                lines.push_back(XmlNode("Texture",
+                                        { { "S", std::to_string(s) }, { "T", std::to_string(t) },
+                                          { "Level", std::to_string(level) }, { "Tile", std::to_string(tile) },
+                                          { "On", std::to_string(on) } }));
+            } else if (macro == "gsSPLightColor") {
+                int32_t lightIndex = 0;
+                if (!TryParseLightIndexToken(args.at(0), lightIndex)) {
+                    outError = "invalid light index in " + gfxArray.name + ": " + args.at(0);
+                    return false;
+                }
+
+                uint32_t packedColor = 0;
+                const std::string colorToken = TrimStringCopy(args.at(1));
+                try {
+                    size_t parsedLength = 0;
+                    packedColor = static_cast<uint32_t>(std::stoull(colorToken, &parsedLength, 0));
+                    if (parsedLength != colorToken.size()) {
+                        outError = "invalid light color in " + gfxArray.name + ": " + colorToken;
+                        return false;
+                    }
+                } catch (...) {
+                    int32_t signedColor = 0;
+                    if (!TryParseIntToken(colorToken, signedColor)) {
+                        outError = "invalid light color in " + gfxArray.name + ": " + colorToken;
+                        return false;
+                    }
+                    packedColor = static_cast<uint32_t>(signedColor);
+                }
+
+                lines.push_back(XmlNode("LightColor",
+                                        { { "N", std::to_string(lightIndex) },
+                                          { "Col", std::to_string(static_cast<int32_t>(packedColor)) } }));
+            } else if (macro == "gsDPSetPrimDepth") {
+                int32_t z = 0;
+                int32_t dz = 0;
+                if (!parseArgInt(0, z) || !parseArgInt(1, dz)) {
+                    return false;
+                }
+                lines.push_back(
+                    XmlNode("SetPrimDepth", { { "Z", std::to_string(z) }, { "DZ", std::to_string(dz) } }));
+            } else if (macro == "gsDPSetFillColor") {
+                int32_t color = 0;
+                if (!parseArgInt(0, color)) {
+                    return false;
+                }
+                lines.push_back(XmlNode("SetFillColor", { { "C", std::to_string(color) } }));
+            } else if (macro == "gsDPSetFogColor") {
+                int32_t values[4] = {};
+                for (size_t i = 0; i < 4; ++i) {
+                    if (!parseArgInt(i, values[i])) {
+                        return false;
+                    }
+                }
+                lines.push_back(XmlNode("SetFogColor",
+                                        { { "R", std::to_string(values[0]) }, { "G", std::to_string(values[1]) },
+                                          { "B", std::to_string(values[2]) }, { "A", std::to_string(values[3]) } }));
+            } else if (macro == "gsDPSetBlendColor") {
+                int32_t values[4] = {};
+                for (size_t i = 0; i < 4; ++i) {
+                    if (!parseArgInt(i, values[i])) {
+                        return false;
+                    }
+                }
+                lines.push_back(XmlNode("SetBlendColor",
+                                        { { "R", std::to_string(values[0]) }, { "G", std::to_string(values[1]) },
+                                          { "B", std::to_string(values[2]) }, { "A", std::to_string(values[3]) } }));
+            } else if (macro == "gsDPSetEnvColor") {
+                int32_t values[4] = {};
+                for (size_t i = 0; i < 4; ++i) {
+                    if (!parseArgInt(i, values[i])) {
+                        return false;
+                    }
+                }
+                lines.push_back(XmlNode("SetEnvColor",
+                                        { { "R", std::to_string(values[0]) }, { "G", std::to_string(values[1]) },
+                                          { "B", std::to_string(values[2]) }, { "A", std::to_string(values[3]) } }));
+            } else if (macro == "gsDPSetPrimColor") {
+                int32_t values[6] = {};
+                for (size_t i = 0; i < 6; ++i) {
+                    if (!parseArgInt(i, values[i])) {
+                        return false;
+                    }
+                }
+                lines.push_back(XmlNode("SetPrimColor",
+                                        { { "M", std::to_string(values[0]) }, { "L", std::to_string(values[1]) },
+                                          { "R", std::to_string(values[2]) }, { "G", std::to_string(values[3]) },
+                                          { "B", std::to_string(values[4]) }, { "A", std::to_string(values[5]) } }));
+            } else if (macro == "gsDPSetRenderMode") {
+                if (args.size() != 2) {
+                    outError = "gsDPSetRenderMode argument count mismatch in " + gfxArray.name;
+                    return false;
+                }
+                const std::string mode1 = TrimStringCopy(args[0]);
+                const std::string mode2 = TrimStringCopy(args[1]);
+                if (mode1.empty() || mode2.empty()) {
+                    outError = "gsDPSetRenderMode has empty mode token in " + gfxArray.name;
+                    return false;
+                }
+                lines.push_back(XmlNode("SetRenderMode", { { "Mode1", mode1 }, { "Mode2", mode2 } }));
+            } else if (macro == "gsDPSetCycleType") {
+                int32_t mode = 0;
+                if (!parseArgInt(0, mode)) {
+                    return false;
+                }
+                std::vector<std::pair<std::string, std::string>> attrs;
+                if (mode == G_CYC_1CYCLE) {
+                    attrs.push_back({ "G_CYC_1CYCLE", "1" });
+                } else if (mode == G_CYC_2CYCLE) {
+                    attrs.push_back({ "G_CYC_2CYCLE", "1" });
+                } else if (mode == G_CYC_COPY) {
+                    attrs.push_back({ "G_CYC_COPY", "1" });
+                } else if (mode == G_CYC_FILL) {
+                    attrs.push_back({ "G_CYC_FILL", "1" });
+                } else {
+                    outError = "unsupported cycle mode value in " + gfxArray.name + ": " + std::to_string(mode);
+                    return false;
+                }
+                lines.push_back(XmlNode("SetCycleType", attrs));
+            } else if (macro == "gsDPPipelineMode") {
+                int32_t mode = 0;
+                if (!parseArgInt(0, mode)) {
+                    return false;
+                }
+                std::vector<std::pair<std::string, std::string>> attrs;
+                if (mode == G_PM_1PRIMITIVE) {
+                    attrs.push_back({ "G_PM_1PRIMITIVE", "1" });
+                } else if (mode == G_PM_NPRIMITIVE) {
+                    attrs.push_back({ "G_PM_NPRIMITIVE", "1" });
+                } else {
+                    outError = "unsupported pipeline mode value in " + gfxArray.name + ": " + std::to_string(mode);
+                    return false;
+                }
+                lines.push_back(XmlNode("PipelineMode", attrs));
+            } else if (macro == "gsDPSetTextureLUT") {
+                lines.push_back(XmlNode("SetTextureLUT", { { "Mode", TrimStringCopy(args.at(0)) } }));
+            } else if (macro == "gsDPLoadTLUTCmd") {
+                int32_t tile = 0;
+                int32_t count = 0;
+                if (!parseArgInt(0, tile) || !parseArgInt(1, count)) {
+                    return false;
+                }
+                lines.push_back(XmlNode("LoadTLUTCmd",
+                                        { { "Tile", std::to_string(tile) }, { "Count", std::to_string(count) } }));
+            } else if (macro == "gsDPSetTextureFilter") {
+                static const std::unordered_map<std::string, int32_t> kTextureFilterModes = {
+                    { "G_TF_POINT", G_TF_POINT },
+                    { "G_TF_AVERAGE", G_TF_AVERAGE },
+                    { "G_TF_BILERP", G_TF_BILERP },
+                };
+                const std::string modeToken = TrimStringCopy(args.at(0));
+                int32_t mode = 0;
+                if (auto it = kTextureFilterModes.find(modeToken); it != kTextureFilterModes.end()) {
+                    mode = it->second;
+                } else if (!TryParseIntToken(modeToken, mode)) {
+                    outError = "invalid texture filter mode in " + gfxArray.name + ": " + modeToken;
+                    return false;
+                }
+                lines.push_back(XmlNode("SetTextureFilter", { { "Mode", std::to_string(mode) } }));
+            } else if (macro == "gsDPSetTextureLOD") {
+                int32_t mode = 0;
+                if (!parseArgInt(0, mode)) {
+                    return false;
+                }
+                lines.push_back(XmlNode("SetTextureLOD", { { "Mode", std::to_string(mode) } }));
+            } else if (macro == "gsDPSetTextureDetail") {
+                int32_t type = 0;
+                if (!parseArgInt(0, type)) {
+                    return false;
+                }
+                lines.push_back(XmlNode("SetTextureDetail", { { "Type", std::to_string(type) } }));
+            } else if (macro == "gsDPSetTexturePersp") {
+                int32_t enable = 0;
+                if (!parseArgInt(0, enable)) {
+                    return false;
+                }
+                lines.push_back(XmlNode("SetTexturePersp", { { "Enable", std::to_string(enable) } }));
+            } else if (macro == "gsDPSetColorDither") {
+                int32_t type = 0;
+                if (!parseArgInt(0, type)) {
+                    return false;
+                }
+                lines.push_back(XmlNode("SetColorDither", { { "Type", std::to_string(type) } }));
+            } else if (macro == "gsDPSetCombineKey") {
+                int32_t type = 0;
+                if (!parseArgInt(0, type)) {
+                    return false;
+                }
+                lines.push_back(XmlNode("SetCombineKey", { { "Type", std::to_string(type) } }));
+            } else if (macro == "gsDPSetDepthSource") {
+                int32_t mode = 0;
+                if (!parseArgInt(0, mode)) {
+                    return false;
+                }
+                lines.push_back(XmlNode("SetDepthSource", { { "Mode", std::to_string(mode) } }));
+            } else if (macro == "gsDPSetAlphaCompare") {
+                int32_t mode = 0;
+                if (!parseArgInt(0, mode)) {
+                    return false;
+                }
+                lines.push_back(XmlNode("SetAlphaCompare", { { "Mode", std::to_string(mode) } }));
+            } else if (macro == "gsDPSetAlphaDither") {
+                int32_t mode = 0;
+                if (!TryParseAlphaDitherModeToken(args.at(0), mode)) {
+                    outError = "invalid alpha dither mode in " + gfxArray.name + ": " + args.at(0);
+                    return false;
+                }
+                lines.push_back(XmlNode("SetAlphaDither", { { "Type", std::to_string(mode) } }));
+            } else if (macro == "gsSPPerspNormalize") {
+                int32_t value = 0;
+                if (!parseArgInt(0, value)) {
+                    return false;
+                }
+                lines.push_back(XmlNode("PerspNormalize", { { "S", std::to_string(value) } }));
+            } else if (macro == "gsSPFogPosition") {
+                int32_t min = 0;
+                int32_t max = 0;
+                if (!parseArgInt(0, min) || !parseArgInt(1, max)) {
+                    return false;
+                }
+                lines.push_back(
+                    XmlNode("FogPosition", { { "Min", std::to_string(min) }, { "Max", std::to_string(max) } }));
+            } else if (macro == "gsSPFogFactor") {
+                int32_t fm = 0;
+                int32_t fo = 0;
+                if (!parseArgInt(0, fm) || !parseArgInt(1, fo)) {
+                    return false;
+                }
+                lines.push_back(XmlNode("FogFactor", { { "FM", std::to_string(fm) }, { "FO", std::to_string(fo) } }));
+            } else if (macro == "gsSPNumLights") {
+                int32_t lites = 0;
+                if (!parseArgInt(0, lites)) {
+                    return false;
+                }
+                lines.push_back(XmlNode("NumLites", { { "Lites", std::to_string(lites) } }));
+            } else if (macro == "gsDPSetCombineLERP") {
+                if (args.size() != 16) {
+                    outError = "gsDPSetCombineLERP argument count mismatch in " + gfxArray.name;
+                    return false;
+                }
+                static const std::array<const char*, 16> kAttrNames = {
+                    "A0",  "B0",  "C0",  "D0",  "Aa0", "Ab0", "Ac0", "Ad0",
+                    "A1",  "B1",  "C1",  "D1",  "Aa1", "Ab1", "Ac1", "Ad1",
+                };
+                const std::unordered_set<size_t> alphaSlots = { 4, 5, 6, 7, 12, 13, 14, 15 };
+                std::vector<std::pair<std::string, std::string>> attrs;
+                for (size_t i = 0; i < args.size(); ++i) {
+                    attrs.push_back({ kAttrNames[i], NormalizeCombineToken(args[i], alphaSlots.find(i) != alphaSlots.end()) });
+                }
+                lines.push_back(XmlNode("SetCombineLERP", attrs));
+            } else if (macro == "gsSPSetOtherMode") {
+                if (args.size() < 4) {
+                    outError = "gsSPSetOtherMode argument count mismatch in " + gfxArray.name;
+                    return false;
+                }
+                int32_t cmd = 0;
+                int32_t sft = 0;
+                int32_t length = 0;
+                if (!parseArgInt(0, cmd) || !parseArgInt(1, sft) || !parseArgInt(2, length)) {
+                    return false;
+                }
+                auto tokens = ParseOrTokens(args[3]);
+                tokens.erase(std::remove(tokens.begin(), tokens.end(), "0"), tokens.end());
+                std::string alphaToken;
+                std::string textureLutToken;
+                std::vector<std::string> filteredTokens;
+                for (const auto& token : tokens) {
+                    if (token == "G_AC_NONE" || token == "G_AC_THRESHOLD" || token == "G_AC_DITHER") {
+                        alphaToken = token;
+                        continue;
+                    }
+                    if (token == "G_TT_NONE" || token == "G_TT_RGBA16" || token == "G_TT_IA16") {
+                        textureLutToken = token;
+                        continue;
+                    }
+                    filteredTokens.push_back(token);
+                }
+
+                std::vector<std::pair<std::string, std::string>> attrs = {
+                    { "Cmd", std::to_string(cmd) },
+                    { "Sft", std::to_string(sft) },
+                    { "Length", std::to_string(length) },
+                };
+                for (const auto& token : filteredTokens) {
+                    attrs.push_back({ token, "1" });
+                }
+                lines.push_back(XmlNode("SetOtherMode", attrs));
+
+                if (!textureLutToken.empty()) {
+                    lines.push_back(XmlNode("SetTextureLUT", { { "Mode", textureLutToken } }));
+                }
+                if (!alphaToken.empty()) {
+                    const int32_t alphaMode =
+                        alphaToken == "G_AC_THRESHOLD" ? 1 : (alphaToken == "G_AC_DITHER" ? 3 : 0);
+                    lines.push_back(XmlNode("SetAlphaCompare", { { "Mode", std::to_string(alphaMode) } }));
+                }
+            } else if (macro == "gsDPSetTextureImage") {
+                int32_t width = 0;
+                if (!parseArgInt(2, width)) {
+                    return false;
+                }
+                const std::string fmt = TrimStringCopy(args.at(0));
+                const std::string size = TrimStringCopy(args.at(1));
+                const auto [path, symbol] = ParseReferencePath(args.at(3), objectName);
+                lines.push_back(XmlNode("SetTextureImage",
+                                        { { "Path", path }, { "Format", fmt }, { "Size", size },
+                                          { "Width", std::to_string(width) } }));
+                currentTextureSymbol = symbol;
+                if (!symbol.empty()) {
+                    auto& meta = outTextureUsage[symbol];
+                    meta.format = fmt;
+                    meta.size = size;
+                    meta.widthArg = width;
+                }
+            } else if (macro == "gsDPSetTile") {
+                int32_t values[12] = {};
+                for (size_t i = 0; i < 12; ++i) {
+                    // fmt/siz are symbolic tokens; cms/cmt are symbolic OR'd flags.
+                    if (i == 0 || i == 1 || i == 6 || i == 9) {
+                        continue;
+                    }
+                    if (!parseArgInt(i, values[i])) {
+                        return false;
+                    }
+                }
+                const auto cmtTokens = ParseOrTokens(args.at(6));
+                const auto cmsTokens = ParseOrTokens(args.at(9));
+                std::vector<std::pair<std::string, std::string>> attrs = {
+                    { "Format", TrimStringCopy(args.at(0)) },
+                    { "Size", TrimStringCopy(args.at(1)) },
+                    { "Line", std::to_string(values[2]) },
+                    { "TMem", std::to_string(values[3]) },
+                    { "Tile", std::to_string(values[4]) },
+                    { "Palette", std::to_string(values[5]) },
+                    { "Cms0", cmsTokens.size() >= 1 ? cmsTokens[0] : "0" },
+                    { "Cms1", cmsTokens.size() >= 2 ? cmsTokens[1] : "0" },
+                    { "Cmt0", cmtTokens.size() >= 1 ? cmtTokens[0] : "0" },
+                    { "Cmt1", cmtTokens.size() >= 2 ? cmtTokens[1] : "0" },
+                    { "MaskS", std::to_string(values[10]) },
+                    { "ShiftS", std::to_string(values[11]) },
+                    { "MaskT", std::to_string(values[7]) },
+                    { "ShiftT", std::to_string(values[8]) },
+                };
+                const size_t commandIndex = lines.size();
+                lines.push_back(XmlNode("SetTile", attrs));
+                if (!currentTextureSymbol.empty()) {
+                    commandTextureSymbols[commandIndex] = currentTextureSymbol;
+                }
+
+                if (!currentTextureSymbol.empty() && values[4] == 0 &&
+                    TrimStringCopy(args.at(1)).find("_LOAD_BLOCK") == std::string::npos) {
+                    outTextureUsage[currentTextureSymbol].line = values[2];
+                }
+            } else if (macro == "gsDPLoadBlock") {
+                int32_t values[5] = {};
+                for (size_t i = 0; i < 5; ++i) {
+                    if (!parseArgInt(i, values[i])) {
+                        return false;
+                    }
+                }
+                const size_t commandIndex = lines.size();
+                lines.push_back(XmlNode("LoadBlock",
+                                        { { "Tile", std::to_string(values[0]) }, { "Uls", std::to_string(values[1]) },
+                                          { "Ult", std::to_string(values[2]) }, { "Lrs", std::to_string(values[3]) },
+                                          { "Dxt", std::to_string(values[4]) } }));
+                if (!currentTextureSymbol.empty()) {
+                    commandTextureSymbols[commandIndex] = currentTextureSymbol;
+                }
+                if (!currentTextureSymbol.empty()) {
+                    outTextureUsage[currentTextureSymbol].loadBlockLrs = values[3];
+                }
+            } else if (macro == "gsDPLoadTile") {
+                int32_t values[5] = {};
+                for (size_t i = 0; i < 5; ++i) {
+                    if (!parseArgInt(i, values[i])) {
+                        return false;
+                    }
+                }
+                const size_t commandIndex = lines.size();
+                lines.push_back(XmlNode("LoadTile",
+                                        { { "T", std::to_string(values[0]) }, { "Uls", std::to_string(values[1]) },
+                                          { "Ult", std::to_string(values[2]) }, { "Lrs", std::to_string(values[3]) },
+                                          { "Lrt", std::to_string(values[4]) } }));
+                if (!currentTextureSymbol.empty()) {
+                    commandTextureSymbols[commandIndex] = currentTextureSymbol;
+                }
+                if (!currentTextureSymbol.empty()) {
+                    auto& meta = outTextureUsage[currentTextureSymbol];
+                    const int32_t tileWidth = std::max(1, ((values[3] - values[1]) / 4) + 1);
+                    const int32_t tileHeight = std::max(1, ((values[4] - values[2]) / 4) + 1);
+                    meta.tileWidthHint = std::max(meta.tileWidthHint, tileWidth);
+                    meta.tileHeightHint = std::max(meta.tileHeightHint, tileHeight);
+                    meta.maxObservedLrs = std::max(meta.maxObservedLrs, values[3]);
+                    meta.maxObservedLrt = std::max(meta.maxObservedLrt, values[4]);
+                }
+            } else if (macro == "gsDPSetTileSize") {
+                int32_t values[5] = {};
+                for (size_t i = 0; i < 5; ++i) {
+                    if (!parseArgInt(i, values[i])) {
+                        return false;
+                    }
+                }
+                const size_t commandIndex = lines.size();
+                lines.push_back(XmlNode("SetTileSize",
+                                        { { "T", std::to_string(values[0]) }, { "Uls", std::to_string(values[1]) },
+                                          { "Ult", std::to_string(values[2]) }, { "Lrs", std::to_string(values[3]) },
+                                          { "Lrt", std::to_string(values[4]) } }));
+                if (!currentTextureSymbol.empty()) {
+                    commandTextureSymbols[commandIndex] = currentTextureSymbol;
+                }
+                if (!currentTextureSymbol.empty()) {
+                    auto& meta = outTextureUsage[currentTextureSymbol];
+                    meta.hasTileSize = true;
+                    meta.tileLrs = values[3];
+                    meta.tileLrt = values[4];
+                    const int32_t tileWidth = std::max(1, ((values[3] - values[1]) / 4) + 1);
+                    const int32_t tileHeight = std::max(1, ((values[4] - values[2]) / 4) + 1);
+                    meta.tileWidthHint = std::max(meta.tileWidthHint, tileWidth);
+                    meta.tileHeightHint = std::max(meta.tileHeightHint, tileHeight);
+                    meta.maxObservedLrs = std::max(meta.maxObservedLrs, values[3]);
+                    meta.maxObservedLrt = std::max(meta.maxObservedLrt, values[4]);
+                }
+            } else if (macro.rfind("gsSPSetLights", 0) == 0) {
+                const auto suffix = macro.substr(std::string("gsSPSetLights").size());
+                int32_t lites = 0;
+                if (!suffix.empty()) {
+                    if (!TryParseIntToken(suffix, lites)) {
+                        outError = "unsupported lights macro suffix in " + gfxArray.name + ": " + macro;
+                        return false;
+                    }
+                }
+                lites = std::clamp(lites, 0, 7);
+                lines.push_back(XmlNode("NumLites", { { "Lites", std::to_string(lites) } }));
+            } else {
+                const std::string unsupportedEntry = gfxArray.name + ": " + macro;
+                if (IsHardUnsupportedFast64Macro(macro)) {
+                    outHardUnsupported.push_back(unsupportedEntry);
+                } else {
+                    outSoftIgnored.push_back(unsupportedEntry);
+                }
+            }
+        }
+
+        lines.emplace_back("</DisplayList>");
+        lines.emplace_back("");
+        std::vector<Fast64DisplayListCommand> parsedCommands;
+        parsedCommands.reserve(lines.size());
+        for (size_t lineIndex = 0; lineIndex < lines.size(); ++lineIndex) {
+            std::string tag;
+            std::vector<std::pair<std::string, std::string>> attrs;
+            if (!TryParseXmlNodeLine(lines[lineIndex], tag, attrs)) {
+                continue;
+            }
+
+            if (tag == "DisplayList") {
+                continue;
+            }
+
+            Fast64DisplayListCommand command;
+            command.tag = std::move(tag);
+            command.attrs = std::move(attrs);
+            if (const auto symbolIt = commandTextureSymbols.find(lineIndex); symbolIt != commandTextureSymbols.end()) {
+                command.textureSymbol = symbolIt->second;
+            }
+            parsedCommands.push_back(std::move(command));
+        }
+        outDisplayLists["objects/" + objectName + "/" + gfxArray.name] = std::move(parsedCommands);
+    }
+
+    return true;
+}
+
+void AppendU32LE(std::vector<uint8_t>& outBytes, uint32_t value) {
+    outBytes.push_back(static_cast<uint8_t>(value & 0xFF));
+    outBytes.push_back(static_cast<uint8_t>((value >> 8) & 0xFF));
+    outBytes.push_back(static_cast<uint8_t>((value >> 16) & 0xFF));
+    outBytes.push_back(static_cast<uint8_t>((value >> 24) & 0xFF));
+}
+
+void AppendU64LE(std::vector<uint8_t>& outBytes, uint64_t value) {
+    for (size_t i = 0; i < 8; ++i) {
+        outBytes.push_back(static_cast<uint8_t>((value >> (i * 8)) & 0xFF));
+    }
+}
+
+std::vector<uint8_t> BuildOtexHeader(uint32_t resourceType, uint32_t version = 0, uint8_t isCustom = 0) {
+    std::vector<uint8_t> header;
+    header.reserve(0x40);
+    header.push_back(0);
+    header.push_back(isCustom);
+    header.push_back(0);
+    header.push_back(0);
+    AppendU32LE(header, resourceType);
+    AppendU32LE(header, version);
+    AppendU64LE(header, 0xDEADBEEFDEADBEEFULL);
+    AppendU32LE(header, 0);
+    AppendU64LE(header, 0);
+    AppendU32LE(header, 0);
+    if (header.size() < 0x40) {
+        header.resize(0x40, 0);
+    }
+    return header;
+}
+
+bool ParseU64ArrayBytes(const std::string& body, std::vector<uint8_t>& outBytes, std::string& outError) {
+    outBytes.clear();
+    const std::regex hexWord("0x[0-9A-Fa-f]+");
+    for (std::sregex_iterator it(body.begin(), body.end(), hexWord), end; it != end; ++it) {
+        try {
+            uint64_t value = std::stoull(it->str(), nullptr, 16);
+            for (int shift = 56; shift >= 0; shift -= 8) {
+                outBytes.push_back(static_cast<uint8_t>((value >> shift) & 0xFF));
+            }
+        } catch (...) {
+            outError = "failed parsing u64 texture word: " + it->str();
+            return false;
+        }
+    }
+    return true;
+}
+
+bool TryExtractIncludePathFromArrayBody(const std::string& body, std::string& outIncludePath) {
+    outIncludePath.clear();
+    const std::regex includePattern(R"re(#include\s*"([^"]+)")re", std::regex::ECMAScript);
+    std::smatch match;
+    if (!std::regex_search(body, match, includePattern) || match.size() < 2) {
+        return false;
+    }
+    outIncludePath = TrimStringCopy(match[1].str());
+    return !outIncludePath.empty();
+}
+
+std::pair<int32_t, int32_t> InferTextureDimensions(const Fast64TextureMeta& meta, size_t dataSize, int32_t bitsPerPixel) {
+    auto isConsistentWithData = [&](int32_t width, int32_t height) -> bool {
+        if (width <= 0 || height <= 0 || bitsPerPixel <= 0) {
+            return false;
+        }
+        const int64_t expectedBits = static_cast<int64_t>(width) * static_cast<int64_t>(height) * bitsPerPixel;
+        const int64_t actualBits = static_cast<int64_t>(dataSize) * 8;
+        return expectedBits == actualBits;
+    };
+
+    auto isPowerOfTwo = [](int32_t value) -> bool {
+        return value > 0 && (value & (value - 1)) == 0;
+    };
+
+    if (meta.hasDecodedDimensions && isConsistentWithData(meta.decodedWidth, meta.decodedHeight)) {
+        return { meta.decodedWidth, meta.decodedHeight };
+    }
+
+    if (meta.hasTileSize) {
+        const int32_t width = (meta.tileLrs / 4) + 1;
+        const int32_t height = (meta.tileLrt / 4) + 1;
+        if (isConsistentWithData(width, height)) {
+            return { width, height };
+        }
+    }
+
+    const int32_t tileWidthHint =
+        std::max(meta.tileWidthHint, meta.hasTileSize ? std::max(1, (meta.tileLrs / 4) + 1) : 0);
+    const int32_t tileHeightHint =
+        std::max(meta.tileHeightHint, meta.hasTileSize ? std::max(1, (meta.tileLrt / 4) + 1) : 0);
+    const int32_t minWidthFromObservedCoords = meta.maxObservedLrs >= 0 ? std::max(1, (meta.maxObservedLrs / 4) + 1) : 0;
+    const int32_t minHeightFromObservedCoords =
+        meta.maxObservedLrt >= 0 ? std::max(1, (meta.maxObservedLrt / 4) + 1) : 0;
+
+    struct TextureDimCandidate {
+        int32_t width = 0;
+        int32_t height = 0;
+        int32_t score = std::numeric_limits<int32_t>::min();
+    };
+    std::vector<TextureDimCandidate> candidates;
+
+    auto addCandidate = [&](int32_t width, int32_t height, int32_t baseScore) {
+        if (!isConsistentWithData(width, height)) {
+            return;
+        }
+        if (minWidthFromObservedCoords > 0 && width < minWidthFromObservedCoords) {
+            return;
+        }
+        if (minHeightFromObservedCoords > 0 && height < minHeightFromObservedCoords) {
+            return;
+        }
+
+        int32_t score = baseScore;
+
+        if (meta.widthArg > 1) {
+            if (width == meta.widthArg) {
+                score += 60;
+            } else if (width > meta.widthArg && width % meta.widthArg == 0) {
+                score += 24;
+            } else if (meta.widthArg % std::max(width, 1) == 0) {
+                score += 8;
+            }
+        }
+
+        if (tileWidthHint > 0) {
+            if (width == tileWidthHint) {
+                score += 64;
+            } else if (width > tileWidthHint && width % tileWidthHint == 0) {
+                score += 40;
+            } else if (width >= tileWidthHint) {
+                score += 12;
+            } else {
+                score -= 64;
+            }
+        }
+
+        if (tileHeightHint > 0) {
+            if (height == tileHeightHint) {
+                score += 64;
+            } else if (height > tileHeightHint && height % tileHeightHint == 0) {
+                score += 40;
+            } else if (height >= tileHeightHint) {
+                score += 12;
+            } else {
+                score -= 64;
+            }
+        }
+
+        if (isPowerOfTwo(width)) {
+            score += 12;
+        }
+        if (isPowerOfTwo(height)) {
+            score += 12;
+        }
+
+        const int32_t major = std::max(width, height);
+        const int32_t minor = std::max(1, std::min(width, height));
+        score -= (major - minor) * 6 / minor;
+        if (width >= height) {
+            score += 1;
+        }
+
+        candidates.push_back({ width, height, score });
+    };
+
+    const bool hasLoadBlockSize = meta.size.find("_LOAD_BLOCK") != std::string::npos;
+    const bool widthArgLooksPlaceholder = hasLoadBlockSize && meta.widthArg <= 1;
+    if (meta.widthArg > 0 && bitsPerPixel > 0 && !widthArgLooksPlaceholder) {
+        const int64_t totalBits = static_cast<int64_t>(dataSize) * 8;
+        const int64_t rowBits = static_cast<int64_t>(meta.widthArg) * bitsPerPixel;
+        if (rowBits > 0 && totalBits >= rowBits && totalBits % rowBits == 0) {
+            const int32_t height = static_cast<int32_t>(totalBits / rowBits);
+            addCandidate(meta.widthArg, height, 180);
+        }
+    }
+
+    if (meta.line > 0 && meta.loadBlockLrs >= 0 && bitsPerPixel > 0) {
+        const int32_t width = (meta.line * 64) / bitsPerPixel;
+        const int32_t totalTexels = meta.loadBlockLrs + 1;
+        if (width > 0 && totalTexels > 0) {
+            const int32_t height = totalTexels / width;
+            addCandidate(width, height, 160);
+        }
+    }
+
+    if (bitsPerPixel <= 0) {
+        return { static_cast<int32_t>(std::max<size_t>(1, dataSize)), 1 };
+    }
+
+    const int64_t totalPixels = (static_cast<int64_t>(dataSize) * 8) / bitsPerPixel;
+    if (totalPixels <= 0) {
+        return { 1, 1 };
+    }
+
+    for (int64_t width = 1; width * width <= totalPixels; ++width) {
+        if (totalPixels % width != 0) {
+            continue;
+        }
+        const int64_t height = totalPixels / width;
+        if (width <= std::numeric_limits<int32_t>::max() && height <= std::numeric_limits<int32_t>::max()) {
+            addCandidate(static_cast<int32_t>(width), static_cast<int32_t>(height), 0);
+            if (width != height) {
+                addCandidate(static_cast<int32_t>(height), static_cast<int32_t>(width), 0);
+            }
+        }
+    }
+
+    if (!candidates.empty()) {
+        const auto best = std::max_element(candidates.begin(), candidates.end(),
+                                           [](const TextureDimCandidate& a, const TextureDimCandidate& b) {
+                                               if (a.score != b.score) {
+                                                   return a.score < b.score;
+                                               }
+                                               const int32_t aDiff = std::abs(a.width - a.height);
+                                               const int32_t bDiff = std::abs(b.width - b.height);
+                                               if (aDiff != bDiff) {
+                                                   return aDiff > bDiff;
+                                               }
+                                               return a.width < b.width;
+                                           });
+        return { best->width, best->height };
+    }
+
+    const int32_t side = static_cast<int32_t>(std::sqrt(static_cast<double>(totalPixels)));
+    if (static_cast<int64_t>(side) * side == totalPixels) {
+        return { side, side };
+    }
+
+    return { static_cast<int32_t>(totalPixels), 1 };
+}
+
+std::string DetermineRootDisplayListName(const std::vector<std::string>& gfxNames,
+                                         const std::unordered_set<std::string>& calledDisplayLists) {
+    std::vector<std::string> roots;
+    roots.reserve(gfxNames.size());
+    for (const auto& name : gfxNames) {
+        if (calledDisplayLists.find(name) == calledDisplayLists.end()) {
+            roots.push_back(name);
+        }
+    }
+
+    std::vector<std::string> preferred;
+    preferred.reserve(roots.size());
+    for (const auto& root : roots) {
+        if (root.rfind("mat_", 0) == 0 || root.find("_tri_") != std::string::npos) {
+            continue;
+        }
+        preferred.push_back(root);
+    }
+
+    if (!preferred.empty()) {
+        return preferred.back();
+    }
+    if (!roots.empty()) {
+        return roots.back();
+    }
+    if (!gfxNames.empty()) {
+        return gfxNames.back();
+    }
+    return "";
+}
+
+bool ConvertFast64SourceToResources(const std::string& modelContent, const std::string& objectName,
+                                    const Fast64TextureIncludeResolver& includeResolver,
+                                    ExternalModModelTextureFilter configuredTextureFilter,
+                                    const std::string& debugLabel, Fast64ConversionOutput& outConversion,
+                                    std::string& outError) {
+    outConversion = Fast64ConversionOutput{};
+
+    std::vector<Fast64ArrayBlock> u64Arrays;
+    ParseArrayBlocks(modelContent, "u64", u64Arrays);
+
+    std::vector<Fast64ArrayBlock> vtxArrays;
+    if (!ParseArrayBlocks(modelContent, "Vtx", vtxArrays) || vtxArrays.empty()) {
+        outError = "no Vtx arrays found in model.inc.c";
+        return false;
+    }
+
+    std::vector<Fast64ArrayBlock> gfxArrays;
+    if (!ParseArrayBlocks(modelContent, "Gfx", gfxArrays) || gfxArrays.empty()) {
+        outError = "no Gfx arrays found in model.inc.c";
+        return false;
+    }
+
+    outConversion.vertexArrayCount = vtxArrays.size();
+    outConversion.displayListArrayCount = gfxArrays.size();
+
+    for (const auto& vtxArray : vtxArrays) {
+        std::vector<Fast64VertexEntry> vertices;
+        if (!ParseVertices(vtxArray.body, vertices, outError)) {
+            outError = "invalid vertex array " + vtxArray.name + ": " + outError;
+            return false;
+        }
+
+        std::stringstream xml;
+        xml << "<Vertex Version=\"0\">\n";
+        for (const auto& vertex : vertices) {
+            xml << XmlNode("Vtx",
+                           { { "X", std::to_string(vertex.x) }, { "Y", std::to_string(vertex.y) },
+                             { "Z", std::to_string(vertex.z) }, { "S", std::to_string(vertex.s) },
+                             { "T", std::to_string(vertex.t) }, { "R", std::to_string(vertex.r) },
+                             { "G", std::to_string(vertex.g) }, { "B", std::to_string(vertex.b) },
+                             { "A", std::to_string(vertex.a) } })
+                << "\n";
+        }
+        xml << "</Vertex>\n\n";
+        const std::string path = "objects/" + objectName + "/" + vtxArray.name;
+        const auto xmlText = xml.str();
+        outConversion.resources[path] = std::vector<uint8_t>(xmlText.begin(), xmlText.end());
+    }
+
+    std::map<std::string, std::vector<Fast64DisplayListCommand>> displayListCommands;
+    std::unordered_map<std::string, Fast64TextureMeta> textureUsage;
+    std::unordered_set<std::string> calledDisplayLists;
+    std::vector<std::string> hardUnsupportedMacros;
+    std::vector<std::string> softIgnoredMacros;
+    if (!ConvertFast64DisplayLists(gfxArrays, objectName, displayListCommands, textureUsage, calledDisplayLists,
+                                   hardUnsupportedMacros, softIgnoredMacros, outError)) {
+        return false;
+    }
+
+    if (!hardUnsupportedMacros.empty()) {
+        outError = BuildUnsupportedFast64Summary(hardUnsupportedMacros, "unsupported macros while converting Fast64 model:");
+        return false;
+    }
+
+    if (!softIgnoredMacros.empty()) {
+        const std::string summary = BuildUnsupportedFast64Summary(
+            softIgnoredMacros, "ignored non-critical macros while converting Fast64 model:");
+        SPDLOG_WARN("[ExternalMods] {} [{}]{}", debugLabel.empty() ? objectName : debugLabel, objectName, "\n" + summary);
+    }
+
+    std::unordered_map<std::string, std::vector<uint8_t>> u64Map;
+    std::unordered_map<std::string, std::string> includePathBySymbol;
+    for (const auto& array : u64Arrays) {
+        std::vector<uint8_t> bytes;
+        if (!ParseU64ArrayBytes(array.body, bytes, outError)) {
+            outError = "invalid u64 texture array " + array.name + ": " + outError;
+            return false;
+        }
+        if (bytes.empty()) {
+            std::string includePath;
+            if (TryExtractIncludePathFromArrayBody(array.body, includePath)) {
+                includePathBySymbol[array.name] = std::move(includePath);
+            }
+        }
+        u64Map[array.name] = std::move(bytes);
+    }
+
+    static const std::unordered_map<std::string, int32_t> kTextureTypeByFormatSize = {
+        { "G_IM_FMT_RGBA|G_IM_SIZ_32b", 1 }, { "G_IM_FMT_RGBA|G_IM_SIZ_16b", 2 }, { "G_IM_FMT_CI|G_IM_SIZ_4b", 3 },
+        { "G_IM_FMT_CI|G_IM_SIZ_8b", 4 },    { "G_IM_FMT_I|G_IM_SIZ_4b", 5 },      { "G_IM_FMT_I|G_IM_SIZ_8b", 6 },
+        { "G_IM_FMT_IA|G_IM_SIZ_4b", 7 },    { "G_IM_FMT_IA|G_IM_SIZ_8b", 8 },      { "G_IM_FMT_IA|G_IM_SIZ_16b", 9 },
+    };
+    static const std::unordered_map<int32_t, int32_t> kBitsPerPixelByTextureType = {
+        { 1, 32 }, { 2, 16 }, { 3, 4 }, { 4, 8 }, { 5, 4 }, { 6, 8 }, { 7, 4 }, { 8, 8 }, { 9, 16 },
+    };
+
+    std::unordered_map<std::string, std::pair<int32_t, int32_t>> inferredDimensionsByTexture;
+    for (auto& [symbol, meta] : textureUsage) {
+        auto u64It = u64Map.find(symbol);
+        if (u64It == u64Map.end()) {
+            outError = "referenced texture array not found in model.inc.c: " + symbol;
+            return false;
+        }
+        if (u64It->second.empty()) {
+            const auto includeIt = includePathBySymbol.find(symbol);
+            if (includeIt != includePathBySymbol.end() && includeResolver) {
+                std::vector<uint8_t> resolvedBytes;
+                int32_t decodedWidth = 0;
+                int32_t decodedHeight = 0;
+                std::string resolveError;
+                if (!includeResolver(includeIt->second, meta, resolvedBytes, decodedWidth, decodedHeight,
+                                    resolveError)) {
+                    outError = "failed to resolve Fast64 include for " + symbol + ": " + resolveError;
+                    return false;
+                }
+                u64It->second = std::move(resolvedBytes);
+                if (decodedWidth > 0 && decodedHeight > 0) {
+                    meta.hasDecodedDimensions = true;
+                    meta.decodedWidth = decodedWidth;
+                    meta.decodedHeight = decodedHeight;
+                }
+            }
+        }
+        if (u64It->second.empty()) {
+            const auto includeIt = includePathBySymbol.find(symbol);
+            if (includeIt != includePathBySymbol.end()) {
+                outError = "texture array " + symbol + " resolved from include but produced no bytes: " + includeIt->second;
+            } else {
+                outError = "texture array " + symbol + " has no inline data and no resolvable include";
+            }
+            return false;
+        }
+
+        const std::string normalizedSize = NormalizeTextureSizeToken(meta.size);
+        const std::string textureKey = meta.format + "|" + normalizedSize;
+        const auto textureTypeIt = kTextureTypeByFormatSize.find(textureKey);
+        if (textureTypeIt == kTextureTypeByFormatSize.end()) {
+            outError = "unsupported texture format/size: " + textureKey + " (" + symbol + ")";
+            return false;
+        }
+        const int32_t textureType = textureTypeIt->second;
+        const int32_t bitsPerPixel =
+            kBitsPerPixelByTextureType.count(textureType) != 0 ? kBitsPerPixelByTextureType.at(textureType) : 0;
+        const auto [width, height] = InferTextureDimensions(meta, u64It->second.size(), bitsPerPixel);
+
+        std::vector<uint8_t> textureData = BuildOtexHeader(0x4F544558, 0, 0);
+        AppendU32LE(textureData, static_cast<uint32_t>(textureType));
+        AppendU32LE(textureData, static_cast<uint32_t>(std::max(width, 1)));
+        AppendU32LE(textureData, static_cast<uint32_t>(std::max(height, 1)));
+        AppendU32LE(textureData, static_cast<uint32_t>(u64It->second.size()));
+        textureData.insert(textureData.end(), u64It->second.begin(), u64It->second.end());
+
+        outConversion.resources["objects/" + objectName + "/" + symbol] = std::move(textureData);
+        inferredDimensionsByTexture[symbol] = { std::max(width, 1), std::max(height, 1) };
+        outConversion.textureCount++;
+    }
+
+    for (const auto& [symbol, dims] : inferredDimensionsByTexture) {
+        const auto metaIt = textureUsage.find(symbol);
+        if (metaIt == textureUsage.end()) {
+            continue;
+        }
+        const int32_t factor = DetectConservativeTileScaleFactor(metaIt->second, dims.first, dims.second);
+        if (factor <= 1) {
+            continue;
+        }
+
+        const size_t adjustedCommands = ApplyConservativeTileScaleAdjustment(displayListCommands, symbol, factor);
+        if (adjustedCommands > 0) {
+            SPDLOG_INFO(
+                "[ExternalMods] Applied conservative texture tile auto-adjust for {} [{}]: texture={} factor={} commands={}",
+                debugLabel.empty() ? objectName : debugLabel, objectName, symbol, factor, adjustedCommands);
+        }
+    }
+
+    size_t replacedFilterCommands = 0;
+    size_t injectedFilterCommands = 0;
+    ApplyForcedTextureFilterToDisplayLists(displayListCommands, configuredTextureFilter, replacedFilterCommands,
+                                           injectedFilterCommands);
+    if (configuredTextureFilter != ExternalModModelTextureFilter::Auto &&
+        (replacedFilterCommands > 0 || injectedFilterCommands > 0)) {
+        const char* configuredFilterName =
+            configuredTextureFilter == ExternalModModelTextureFilter::Point ? "point" : "bilerp";
+        SPDLOG_INFO("[ExternalMods] Applied modelTextureFilter override for {} [{}]: configured={} replaced={} injected={}",
+                    debugLabel.empty() ? objectName : debugLabel, objectName, configuredFilterName,
+                    replacedFilterCommands, injectedFilterCommands);
+    }
+
+    for (const auto& [path, commands] : displayListCommands) {
+        const std::string xmlText = SerializeFast64DisplayListXml(commands);
+        outConversion.resources[path] = std::vector<uint8_t>(xmlText.begin(), xmlText.end());
+    }
+
+    std::vector<std::string> gfxNames;
+    gfxNames.reserve(gfxArrays.size());
+    for (const auto& gfxArray : gfxArrays) {
+        gfxNames.push_back(gfxArray.name);
+    }
+    const std::string rootName = DetermineRootDisplayListName(gfxNames, calledDisplayLists);
+    if (rootName.empty()) {
+        outError = "unable to determine root display list";
+        return false;
+    }
+
+    outConversion.rootDisplayListPath = "objects/" + objectName + "/" + rootName;
+    return true;
+}
+
+std::string DeriveObjectNameFromPath(const std::filesystem::path& path, const std::string& fallback = "external_model") {
+    std::string candidate;
+    if (!path.empty()) {
+        candidate = path.filename().generic_string();
+        if (candidate.empty()) {
+            candidate = path.stem().generic_string();
+        }
+    }
+    if (candidate.empty()) {
+        candidate = fallback;
+    }
+
+    std::string sanitized;
+    sanitized.reserve(candidate.size());
+    for (const unsigned char ch : candidate) {
+        if (std::isalnum(ch) || ch == '_') {
+            sanitized.push_back(static_cast<char>(std::tolower(ch)));
+        } else if (ch == '.' || ch == '-' || ch == ' ') {
+            sanitized.push_back('_');
+        }
+    }
+    if (sanitized.empty()) {
+        sanitized = "external_model";
+    }
+    return sanitized;
+}
+
+std::filesystem::path BuildGeneratedFast64ArchivePath(const std::string& modId, const std::string& itemId,
+                                                      const std::string& objectName) {
+    const std::string fileName =
+        SanitizeModIdForPath(itemId.empty() ? objectName : itemId) + "_" + SanitizeModIdForPath(objectName) + ".o2r";
+    return std::filesystem::path("__external_mods_generated__") / SanitizeModIdForPath(modId) / fileName;
+}
+
+std::shared_ptr<Ship::Archive> CreateGeneratedFast64Archive(const std::filesystem::path& virtualArchivePath,
+                                                            std::map<std::string, std::vector<uint8_t>> resources,
+                                                            std::string& outError) {
+    if (resources.empty()) {
+        outError = "empty resource set";
+        return nullptr;
+    }
+
+    auto archive = std::make_shared<ExternalModsInMemoryArchive>(virtualArchivePath.generic_string(), std::move(resources));
+    archive->Load();
+    if (!archive->IsLoaded()) {
+        outError = "failed to initialize in-memory archive";
+        return nullptr;
+    }
+
+    return archive;
+}
+
+std::filesystem::path GetExternalModsCacheRootPath() {
+    return std::filesystem::path(Ship::Context::GetPathRelativeToAppDirectory("cache/external-mod-cache", "soh"));
+}
+
+std::filesystem::path GetExternalModsLegacyCacheRootPath() {
+    return std::filesystem::path(Ship::Context::GetPathRelativeToAppDirectory("mods/.external-mod-cache", "soh"));
+}
+
+bool ReadZipEntryBytesByIndex(zip_t* archive, zip_uint64_t index, uint64_t maxBytes, std::vector<uint8_t>& outBytes,
+                              std::string& outError) {
+    outBytes.clear();
+
+    zip_stat_t stat;
+    zip_stat_init(&stat);
+    if (zip_stat_index(archive, index, ZIP_FL_ENC_GUESS, &stat) != 0) {
+        outError = "failed to stat zip entry";
+        return false;
+    }
+
+    if (stat.size > maxBytes) {
+        outError = "zip entry exceeds max size";
+        return false;
+    }
+
+    zip_file_t* file = zip_fopen_index(archive, index, ZIP_FL_ENC_GUESS);
+    if (file == nullptr) {
+        outError = "failed to open zip entry";
+        return false;
+    }
+
+    outBytes.resize(static_cast<size_t>(stat.size));
+    uint64_t totalRead = 0;
+    while (totalRead < stat.size) {
+        const auto toRead = static_cast<zip_uint64_t>(stat.size - totalRead);
+        const auto readCount = zip_fread(file, outBytes.data() + totalRead, toRead);
+        if (readCount < 0) {
+            outError = "failed to read zip entry";
+            zip_fclose(file);
+            return false;
+        }
+        if (readCount == 0) {
+            break;
+        }
+        totalRead += static_cast<uint64_t>(readCount);
+    }
+
+    zip_fclose(file);
+    outBytes.resize(static_cast<size_t>(totalRead));
+    return true;
+}
+
+bool IsDisplayListXml(const std::vector<uint8_t>& bytes) {
+    size_t index = 0;
+    while (index < bytes.size() && std::isspace(static_cast<unsigned char>(bytes[index]))) {
+        ++index;
+    }
+    if (index >= bytes.size()) {
+        return false;
+    }
+
+    static const std::string kPrefix = "<DisplayList";
+    if (index + kPrefix.size() > bytes.size()) {
+        return false;
+    }
+    for (size_t i = 0; i < kPrefix.size(); ++i) {
+        if (static_cast<char>(bytes[index + i]) != kPrefix[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool ParseObjectAndSymbolFromResourcePath(const std::string& path, std::string& outObjectName, std::string& outSymbol) {
+    outObjectName.clear();
+    outSymbol.clear();
+
+    const std::string normalized = NormalizeZipEntryPath(path);
+    if (normalized.rfind("objects/", 0) != 0) {
+        return false;
+    }
+
+    const size_t objectStart = std::string("objects/").size();
+    const size_t objectEnd = normalized.find('/', objectStart);
+    if (objectEnd == std::string::npos || objectEnd + 1 >= normalized.size()) {
+        return false;
+    }
+
+    outObjectName = normalized.substr(objectStart, objectEnd - objectStart);
+    outSymbol = normalized.substr(objectEnd + 1);
+    return !outObjectName.empty() && !outSymbol.empty();
+}
+
+bool InspectFast64ArchiveBytes(const std::vector<uint8_t>& archiveBytes, Fast64ArchiveInspection& outInspection,
+                               std::string& outError) {
+    outInspection = Fast64ArchiveInspection{};
+
+    if (archiveBytes.empty()) {
+        outError = "archive is empty";
+        return false;
+    }
+
+    zip_error_t zipError;
+    zip_error_init(&zipError);
+    zip_source_t* source = zip_source_buffer_create(archiveBytes.data(), archiveBytes.size(), 0, &zipError);
+    if (source == nullptr) {
+        outError = "failed to open archive source";
+        zip_error_fini(&zipError);
+        return false;
+    }
+
+    zip_t* archive = zip_open_from_source(source, ZIP_RDONLY, &zipError);
+    if (archive == nullptr) {
+        outError = "failed to parse archive as zip";
+        zip_source_free(source);
+        zip_error_fini(&zipError);
+        return false;
+    }
+    zip_error_fini(&zipError);
+
+    outInspection.isZipArchive = true;
+
+    std::string modelIncPath;
+    zip_uint64_t modelIncIndex = 0;
+    bool hasModelInc = false;
+    std::string headerPath;
+    zip_uint64_t headerIndex = 0;
+    bool hasHeader = false;
+    std::vector<std::pair<std::string, zip_uint64_t>> displayListEntries;
+
+    const zip_int64_t totalEntries = zip_get_num_entries(archive, ZIP_FL_UNCHANGED);
+    if (totalEntries < 0) {
+        outError = "failed to enumerate archive entries";
+        zip_close(archive);
+        return false;
+    }
+
+    for (zip_uint64_t index = 0; index < static_cast<zip_uint64_t>(totalEntries); ++index) {
+        const char* rawName = zip_get_name(archive, index, ZIP_FL_ENC_GUESS);
+        if (rawName == nullptr) {
+            continue;
+        }
+        const std::string normalizedName = NormalizeZipEntryPath(rawName);
+        if (normalizedName.empty() || normalizedName.back() == '/') {
+            continue;
+        }
+
+        if (EndsWithString(normalizedName, "/model.inc.c") || normalizedName == "model.inc.c") {
+            if (!hasModelInc) {
+                hasModelInc = true;
+                modelIncPath = normalizedName;
+                modelIncIndex = index;
+            }
+            continue;
+        }
+        if (EndsWithString(normalizedName, "/header.h") || normalizedName == "header.h") {
+            if (!hasHeader) {
+                hasHeader = true;
+                headerPath = normalizedName;
+                headerIndex = index;
+            }
+            continue;
+        }
+
+        if (normalizedName.rfind("objects/", 0) != 0) {
+            continue;
+        }
+
+        std::vector<uint8_t> entryBytes;
+        std::string readError;
+        if (!ReadZipEntryBytesByIndex(archive, index, kMaxItemModelBytes, entryBytes, readError)) {
+            continue;
+        }
+        if (IsDisplayListXml(entryBytes)) {
+            displayListEntries.emplace_back(normalizedName, index);
+        }
+    }
+
+    if (hasModelInc) {
+        std::vector<uint8_t> bytes;
+        if (!ReadZipEntryBytesByIndex(archive, modelIncIndex, kMaxItemModelBytes, bytes, outError)) {
+            zip_close(archive);
+            return false;
+        }
+        outInspection.modelIncContent.assign(bytes.begin(), bytes.end());
+    }
+
+    if (hasHeader) {
+        std::vector<uint8_t> bytes;
+        if (!ReadZipEntryBytesByIndex(archive, headerIndex, kMaxItemModelBytes, bytes, outError)) {
+            zip_close(archive);
+            return false;
+        }
+        outInspection.headerContent.assign(bytes.begin(), bytes.end());
+    }
+
+    if (!modelIncPath.empty()) {
+        const std::filesystem::path path(modelIncPath);
+        const auto parent = path.parent_path().filename().generic_string();
+        if (!parent.empty()) {
+            outInspection.objectNameHint = parent;
+        }
+    } else if (!headerPath.empty()) {
+        const std::filesystem::path path(headerPath);
+        const auto parent = path.parent_path().filename().generic_string();
+        if (!parent.empty()) {
+            outInspection.objectNameHint = parent;
+        }
+    }
+
+    outInspection.hasFast64Source = !outInspection.modelIncContent.empty() && !outInspection.headerContent.empty();
+    outInspection.hasDisplayListResources = !displayListEntries.empty();
+
+    if (!displayListEntries.empty()) {
+        std::unordered_map<std::string, std::vector<std::string>> displayListsByObject;
+        std::unordered_map<std::string, std::unordered_set<std::string>> calledByObject;
+
+        static const std::regex callPattern(R"regex(<CallDisplayList[^>]*Path="([^"]+)")regex");
+        for (const auto& [path, index] : displayListEntries) {
+            std::string objectName;
+            std::string symbol;
+            if (!ParseObjectAndSymbolFromResourcePath(path, objectName, symbol)) {
+                continue;
+            }
+            displayListsByObject[objectName].push_back(symbol);
+
+            std::vector<uint8_t> entryBytes;
+            std::string readError;
+            if (!ReadZipEntryBytesByIndex(archive, index, kMaxItemModelBytes, entryBytes, readError)) {
+                continue;
+            }
+            std::string xmlText(entryBytes.begin(), entryBytes.end());
+            for (std::sregex_iterator it(xmlText.begin(), xmlText.end(), callPattern), end; it != end; ++it) {
+                std::string calledObjectName;
+                std::string calledSymbol;
+                if (ParseObjectAndSymbolFromResourcePath((*it)[1].str(), calledObjectName, calledSymbol) &&
+                    calledObjectName == objectName) {
+                    calledByObject[objectName].insert(calledSymbol);
+                }
+            }
+        }
+
+        std::string selectedObject;
+        size_t selectedCount = 0;
+        for (const auto& [objectName, entries] : displayListsByObject) {
+            if (entries.size() > selectedCount) {
+                selectedObject = objectName;
+                selectedCount = entries.size();
+            }
+        }
+
+        if (!selectedObject.empty()) {
+            const auto& names = displayListsByObject[selectedObject];
+            const auto calledIt = calledByObject.find(selectedObject);
+            const std::unordered_set<std::string> emptyCalled;
+            const auto& called = calledIt != calledByObject.end() ? calledIt->second : emptyCalled;
+            const std::string rootName = DetermineRootDisplayListName(names, called);
+            if (!rootName.empty()) {
+                outInspection.rootDisplayListPath = "objects/" + selectedObject + "/" + rootName;
+                if (outInspection.objectNameHint.empty()) {
+                    outInspection.objectNameHint = selectedObject;
+                }
+            }
+        }
+    }
+
+    zip_close(archive);
+    return true;
 }
 
 bool ParseAliasedInt16(const nlohmann::json& json, const std::unordered_map<std::string, int16_t>& aliases,
@@ -648,6 +3075,41 @@ bool ParseAction(const nlohmann::json& json, int32_t apiVersion, ExternalModActi
         return ParseButtonMask(json[key], outAction.buttonMask, outError);
     }
 
+    if (actionType == "loadModScene") {
+        outAction.type = ExternalModActionType::LoadModScene;
+        if (!ValidateRequiredString(json, "sceneId", outAction.modSceneId, outError)) {
+            return false;
+        }
+        if (json.contains("spawnId")) {
+            if (!json["spawnId"].is_number_integer()) {
+                outError = "loadModScene spawnId must be integer";
+                return false;
+            }
+            outAction.sceneSpawnId = json["spawnId"].get<int32_t>();
+        }
+        return true;
+    }
+
+    if (actionType == "showEquippedItemGet" || actionType == "showEquippedItemPickup") {
+        const char* key = json.contains("button") ? "button" : (json.contains("slotButton") ? "slotButton" : nullptr);
+        if (key == nullptr) {
+            outError = "showEquippedItemGet requires button";
+            return false;
+        }
+        outAction.type = ExternalModActionType::ShowEquippedItemGet;
+        if (!ParseButtonMask(json[key], outAction.buttonMask, outError)) {
+            return false;
+        }
+
+        int32_t resolvedMask = 0;
+        int32_t slotIndex = 0;
+        if (!TryResolveEquippedActionButtonMask(outAction.buttonMask, resolvedMask, slotIndex)) {
+            outError = "showEquippedItemGet button must include exactly one of " + BuildSupportedEquippedActionButtonList();
+            return false;
+        }
+        return true;
+    }
+
     if (actionType == "spawnSmoke") {
         outAction.type = ExternalModActionType::SpawnSmoke;
         return true;
@@ -764,6 +3226,86 @@ bool ParseAction(const nlohmann::json& json, int32_t apiVersion, ExternalModActi
         return true;
     }
 
+    if (actionType == "setSwitchFlag") {
+        outAction.type = ExternalModActionType::SetSwitchFlag;
+        if (!json.contains("flag") || !json["flag"].is_number_integer()) {
+            outError = "setSwitchFlag requires integer flag";
+            return false;
+        }
+        outAction.intValue = json["flag"].get<int32_t>();
+        return true;
+    }
+
+    if (actionType == "clearSwitchFlag") {
+        outAction.type = ExternalModActionType::ClearSwitchFlag;
+        if (!json.contains("flag") || !json["flag"].is_number_integer()) {
+            outError = "clearSwitchFlag requires integer flag";
+            return false;
+        }
+        outAction.intValue = json["flag"].get<int32_t>();
+        return true;
+    }
+
+    if (actionType == "setEventChkInf") {
+        outAction.type = ExternalModActionType::SetEventChkInf;
+        if (!json.contains("flag") || !json["flag"].is_number_integer()) {
+            outError = "setEventChkInf requires integer flag";
+            return false;
+        }
+        outAction.intValue = json["flag"].get<int32_t>();
+        return true;
+    }
+
+    if (actionType == "clearEventChkInf") {
+        outAction.type = ExternalModActionType::ClearEventChkInf;
+        if (!json.contains("flag") || !json["flag"].is_number_integer()) {
+            outError = "clearEventChkInf requires integer flag";
+            return false;
+        }
+        outAction.intValue = json["flag"].get<int32_t>();
+        return true;
+    }
+
+    if (actionType == "setInfTable") {
+        outAction.type = ExternalModActionType::SetInfTable;
+        if (!json.contains("flag") || !json["flag"].is_number_integer()) {
+            outError = "setInfTable requires integer flag";
+            return false;
+        }
+        outAction.intValue = json["flag"].get<int32_t>();
+        return true;
+    }
+
+    if (actionType == "clearInfTable") {
+        outAction.type = ExternalModActionType::ClearInfTable;
+        if (!json.contains("flag") || !json["flag"].is_number_integer()) {
+            outError = "clearInfTable requires integer flag";
+            return false;
+        }
+        outAction.intValue = json["flag"].get<int32_t>();
+        return true;
+    }
+
+    if (actionType == "giveRupees") {
+        outAction.type = ExternalModActionType::GiveRupees;
+        if (!json.contains("amount") || !json["amount"].is_number_integer()) {
+            outError = "giveRupees requires integer amount";
+            return false;
+        }
+        outAction.intValue = std::abs(json["amount"].get<int32_t>());
+        return true;
+    }
+
+    if (actionType == "takeRupees") {
+        outAction.type = ExternalModActionType::TakeRupees;
+        if (!json.contains("amount") || !json["amount"].is_number_integer()) {
+            outError = "takeRupees requires integer amount";
+            return false;
+        }
+        outAction.intValue = std::abs(json["amount"].get<int32_t>());
+        return true;
+    }
+
     if (actionType == "grantModItem") {
         outAction.type = ExternalModActionType::GrantModItem;
         if (json.contains("itemId")) {
@@ -786,6 +3328,106 @@ bool ParseAction(const nlohmann::json& json, int32_t apiVersion, ExternalModActi
         }
         outError = "revokeModItem requires itemId";
         return false;
+    }
+
+    if (actionType == "setVar") {
+        outAction.type = ExternalModActionType::SetVar;
+        if (!ValidateRequiredString(json, "scope", outAction.variableScope, outError)) {
+            return false;
+        }
+        if (!ValidateRequiredString(json, "key", outAction.variableKey, outError)) {
+            return false;
+        }
+        if ((json.contains("actorHandle") || json.contains("handle")) && !parseActorHandle(outAction.actorHandle)) {
+            return false;
+        }
+        if (!json.contains("value")) {
+            outError = "setVar requires value";
+            return false;
+        }
+        if (json["value"].is_string()) {
+            outAction.variableValue = json["value"].get<std::string>();
+            return true;
+        }
+        if (json["value"].is_boolean()) {
+            outAction.variableValue = json["value"].get<bool>() ? "true" : "false";
+            return true;
+        }
+        if (json["value"].is_number()) {
+            outAction.variableNumber = json["value"].get<float>();
+            outAction.variableValue = std::to_string(outAction.variableNumber);
+            outAction.variableHasNumber = true;
+            return true;
+        }
+        outError = "setVar value must be string|number|boolean";
+        return false;
+    }
+
+    if (actionType == "addVar") {
+        outAction.type = ExternalModActionType::AddVar;
+        if (!ValidateRequiredString(json, "scope", outAction.variableScope, outError)) {
+            return false;
+        }
+        if (!ValidateRequiredString(json, "key", outAction.variableKey, outError)) {
+            return false;
+        }
+        if ((json.contains("actorHandle") || json.contains("handle")) && !parseActorHandle(outAction.actorHandle)) {
+            return false;
+        }
+        if (!json.contains("value") || !json["value"].is_number()) {
+            outError = "addVar requires numeric value";
+            return false;
+        }
+        outAction.variableNumber = json["value"].get<float>();
+        outAction.variableHasNumber = true;
+        return true;
+    }
+
+    if (actionType == "clampVar") {
+        outAction.type = ExternalModActionType::ClampVar;
+        if (!ValidateRequiredString(json, "scope", outAction.variableScope, outError)) {
+            return false;
+        }
+        if (!ValidateRequiredString(json, "key", outAction.variableKey, outError)) {
+            return false;
+        }
+        if ((json.contains("actorHandle") || json.contains("handle")) && !parseActorHandle(outAction.actorHandle)) {
+            return false;
+        }
+        if (!json.contains("min") || !json["min"].is_number() || !json.contains("max") || !json["max"].is_number()) {
+            outError = "clampVar requires numeric min and max";
+            return false;
+        }
+        outAction.variableMin = json["min"].get<float>();
+        outAction.variableMax = json["max"].get<float>();
+        if (outAction.variableMin > outAction.variableMax) {
+            outError = "clampVar requires min <= max";
+            return false;
+        }
+        outAction.variableHasRange = true;
+        return true;
+    }
+
+    if (actionType == "emitSignal") {
+        outAction.type = ExternalModActionType::EmitSignal;
+        if (!ValidateRequiredString(json, "name", outAction.signalName, outError)) {
+            return false;
+        }
+        if (json.contains("actorHandle") || json.contains("handle")) {
+            return parseActorHandle(outAction.actorHandle);
+        }
+        return true;
+    }
+
+    if (actionType == "callBehavior") {
+        outAction.type = ExternalModActionType::CallBehavior;
+        if (!ValidateRequiredString(json, "behaviorId", outAction.behaviorId, outError)) {
+            return false;
+        }
+        if (json.contains("actorHandle") || json.contains("handle")) {
+            return parseActorHandle(outAction.actorHandle);
+        }
+        return true;
     }
 
     if (actionType == "invokeWasm") {
@@ -1096,6 +3738,336 @@ bool TryDecodeItemIconPng(const std::vector<uint8_t>& iconBytes, std::vector<uin
     return true;
 }
 
+bool TryDecodePngToRgba32(const std::vector<uint8_t>& imageBytes, std::vector<uint8_t>& outRgba32, int32_t& outWidth,
+                          int32_t& outHeight, std::string& outError) {
+    outRgba32.clear();
+    outWidth = 0;
+    outHeight = 0;
+
+    if (imageBytes.empty()) {
+        outError = "image file is empty";
+        return false;
+    }
+
+    if (imageBytes.size() > static_cast<size_t>(std::numeric_limits<int32_t>::max())) {
+        outError = "image file is too large for decoder";
+        return false;
+    }
+
+    int32_t channels = 0;
+    stbi_uc* decoded = stbi_load_from_memory(reinterpret_cast<const stbi_uc*>(imageBytes.data()),
+                                             static_cast<int32_t>(imageBytes.size()), &outWidth, &outHeight, &channels,
+                                             STBI_rgb_alpha);
+    if (decoded == nullptr) {
+        outError = "png decode failed";
+        return false;
+    }
+
+    if (outWidth <= 0 || outHeight <= 0 || outWidth > kMaxDecodedIconDimension || outHeight > kMaxDecodedIconDimension) {
+        stbi_image_free(decoded);
+        outError = "decoded image has invalid dimensions";
+        return false;
+    }
+
+    outRgba32.assign(static_cast<size_t>(outWidth * outHeight * 4), 0);
+    std::memcpy(outRgba32.data(), decoded, outRgba32.size());
+    stbi_image_free(decoded);
+    return true;
+}
+
+void ResizeRgba32Nearest(const std::vector<uint8_t>& sourceRgba32, int32_t sourceWidth, int32_t sourceHeight,
+                         int32_t targetWidth, int32_t targetHeight, std::vector<uint8_t>& outRgba32) {
+    outRgba32.assign(static_cast<size_t>(targetWidth * targetHeight * 4), 0);
+    if (targetWidth <= 0 || targetHeight <= 0 || sourceWidth <= 0 || sourceHeight <= 0) {
+        return;
+    }
+
+    for (int32_t y = 0; y < targetHeight; ++y) {
+        const int32_t srcY = std::clamp((y * sourceHeight) / targetHeight, 0, sourceHeight - 1);
+        for (int32_t x = 0; x < targetWidth; ++x) {
+            const int32_t srcX = std::clamp((x * sourceWidth) / targetWidth, 0, sourceWidth - 1);
+            const size_t srcOffset = static_cast<size_t>((srcY * sourceWidth + srcX) * 4);
+            const size_t dstOffset = static_cast<size_t>((y * targetWidth + x) * 4);
+            std::memcpy(outRgba32.data() + dstOffset, sourceRgba32.data() + srcOffset, 4);
+        }
+    }
+}
+
+void NormalizeModelTextureForOpaqueRendering(std::vector<uint8_t>& rgba32, int32_t width, int32_t height,
+                                             bool fillAllTransparentPixels) {
+    if (width <= 0 || height <= 0) {
+        return;
+    }
+
+    const size_t pixelCount = static_cast<size_t>(width) * static_cast<size_t>(height);
+    if (rgba32.size() < pixelCount * 4) {
+        return;
+    }
+
+    constexpr int32_t kLocalPaddingRadius = 4;
+    const auto source = rgba32;
+
+    uint64_t sumR = 0;
+    uint64_t sumG = 0;
+    uint64_t sumB = 0;
+    uint32_t opaqueCount = 0;
+
+    for (size_t i = 0; i < pixelCount; ++i) {
+        const size_t offset = i * 4;
+        if (source[offset + 3] > 0) {
+            sumR += source[offset + 0];
+            sumG += source[offset + 1];
+            sumB += source[offset + 2];
+            ++opaqueCount;
+        }
+    }
+
+    if (opaqueCount == 0) {
+        for (size_t i = 0; i < pixelCount; ++i) {
+            const size_t offset = i * 4;
+            rgba32[offset + 0] = 255;
+            rgba32[offset + 1] = 0;
+            rgba32[offset + 2] = 255;
+            rgba32[offset + 3] = 255;
+        }
+        return;
+    }
+
+    const uint8_t fallbackR = static_cast<uint8_t>(sumR / opaqueCount);
+    const uint8_t fallbackG = static_cast<uint8_t>(sumG / opaqueCount);
+    const uint8_t fallbackB = static_cast<uint8_t>(sumB / opaqueCount);
+
+    if (fillAllTransparentPixels) {
+        std::vector<int32_t> nearestOpaque(pixelCount, -1);
+        std::queue<size_t> floodQueue;
+
+        for (size_t i = 0; i < pixelCount; ++i) {
+            const size_t alphaOffset = i * 4 + 3;
+            if (source[alphaOffset] > 0) {
+                nearestOpaque[i] = static_cast<int32_t>(i);
+                floodQueue.push(i);
+            }
+        }
+
+        auto tryVisitNeighbor = [&](size_t fromIndex, int32_t nx, int32_t ny) {
+            if (nx < 0 || ny < 0 || nx >= width || ny >= height) {
+                return;
+            }
+
+            const size_t neighborIndex = static_cast<size_t>(ny * width + nx);
+            if (nearestOpaque[neighborIndex] >= 0) {
+                return;
+            }
+
+            nearestOpaque[neighborIndex] = nearestOpaque[fromIndex];
+            floodQueue.push(neighborIndex);
+        };
+
+        while (!floodQueue.empty()) {
+            const size_t index = floodQueue.front();
+            floodQueue.pop();
+
+            const int32_t x = static_cast<int32_t>(index % static_cast<size_t>(width));
+            const int32_t y = static_cast<int32_t>(index / static_cast<size_t>(width));
+            tryVisitNeighbor(index, x - 1, y);
+            tryVisitNeighbor(index, x + 1, y);
+            tryVisitNeighbor(index, x, y - 1);
+            tryVisitNeighbor(index, x, y + 1);
+        }
+
+        for (size_t i = 0; i < pixelCount; ++i) {
+            const size_t offset = i * 4;
+            if (source[offset + 3] == 0) {
+                const int32_t sourceIndex = nearestOpaque[i];
+                if (sourceIndex >= 0) {
+                    const size_t sourceOffset = static_cast<size_t>(sourceIndex) * 4;
+                    rgba32[offset + 0] = source[sourceOffset + 0];
+                    rgba32[offset + 1] = source[sourceOffset + 1];
+                    rgba32[offset + 2] = source[sourceOffset + 2];
+                } else {
+                    rgba32[offset + 0] = fallbackR;
+                    rgba32[offset + 1] = fallbackG;
+                    rgba32[offset + 2] = fallbackB;
+                }
+            } else {
+                rgba32[offset + 0] = source[offset + 0];
+                rgba32[offset + 1] = source[offset + 1];
+                rgba32[offset + 2] = source[offset + 2];
+            }
+            rgba32[offset + 3] = 255;
+        }
+
+        return;
+    }
+
+    for (size_t i = 0; i < pixelCount; ++i) {
+        const size_t offset = i * 4;
+        if (source[offset + 3] == 0) {
+            const int32_t x = static_cast<int32_t>(i % static_cast<size_t>(width));
+            const int32_t y = static_cast<int32_t>(i / static_cast<size_t>(width));
+
+            bool foundNeighbor = false;
+            int32_t bestDistanceSq = std::numeric_limits<int32_t>::max();
+            size_t bestNeighborOffset = 0;
+
+            const int32_t minX = std::max(0, x - kLocalPaddingRadius);
+            const int32_t maxX = std::min(width - 1, x + kLocalPaddingRadius);
+            const int32_t minY = std::max(0, y - kLocalPaddingRadius);
+            const int32_t maxY = std::min(height - 1, y + kLocalPaddingRadius);
+
+            for (int32_t ny = minY; ny <= maxY; ++ny) {
+                for (int32_t nx = minX; nx <= maxX; ++nx) {
+                    const int32_t dx = nx - x;
+                    const int32_t dy = ny - y;
+                    const int32_t distanceSq = dx * dx + dy * dy;
+                    if (distanceSq == 0 || distanceSq > (kLocalPaddingRadius * kLocalPaddingRadius)) {
+                        continue;
+                    }
+
+                    const size_t neighborOffset =
+                        static_cast<size_t>(ny * width + nx) * 4;
+                    if (source[neighborOffset + 3] == 0) {
+                        continue;
+                    }
+
+                    if (distanceSq < bestDistanceSq) {
+                        bestDistanceSq = distanceSq;
+                        bestNeighborOffset = neighborOffset;
+                        foundNeighbor = true;
+                    }
+                }
+            }
+
+            if (foundNeighbor) {
+                rgba32[offset + 0] = source[bestNeighborOffset + 0];
+                rgba32[offset + 1] = source[bestNeighborOffset + 1];
+                rgba32[offset + 2] = source[bestNeighborOffset + 2];
+            } else {
+                rgba32[offset + 0] = fallbackR;
+                rgba32[offset + 1] = fallbackG;
+                rgba32[offset + 2] = fallbackB;
+            }
+        }
+        rgba32[offset + 3] = 255;
+    }
+}
+
+bool TryDecodePngToRgba32FixedSize(const std::vector<uint8_t>& imageBytes, int32_t targetWidth, int32_t targetHeight,
+                                   std::vector<uint8_t>& outRgba32, std::string& outError) {
+    int32_t sourceWidth = 0;
+    int32_t sourceHeight = 0;
+    std::vector<uint8_t> sourceRgba32;
+    if (!TryDecodePngToRgba32(imageBytes, sourceRgba32, sourceWidth, sourceHeight, outError)) {
+        return false;
+    }
+
+    if (sourceWidth == targetWidth && sourceHeight == targetHeight) {
+        outRgba32 = std::move(sourceRgba32);
+        return true;
+    }
+
+    ResizeRgba32Nearest(sourceRgba32, sourceWidth, sourceHeight, targetWidth, targetHeight, outRgba32);
+    return true;
+}
+
+void ConvertRgba32ToRgba16(const std::vector<uint8_t>& rgba32, std::vector<uint8_t>& outRgba16) {
+    outRgba16.assign((rgba32.size() / 4) * 2, 0);
+    for (size_t i = 0, j = 0; i + 3 < rgba32.size(); i += 4, j += 2) {
+        const uint8_t r = rgba32[i + 0];
+        const uint8_t g = rgba32[i + 1];
+        const uint8_t b = rgba32[i + 2];
+        const uint8_t a = rgba32[i + 3];
+        const uint16_t rgba16 =
+            static_cast<uint16_t>(((r >> 3) << 11) | ((g >> 3) << 6) | ((b >> 3) << 1) | (a > 0 ? 1 : 0));
+        outRgba16[j + 0] = static_cast<uint8_t>((rgba16 >> 8) & 0xFF);
+        outRgba16[j + 1] = static_cast<uint8_t>(rgba16 & 0xFF);
+    }
+}
+
+void ConvertRgba32ToI8(const std::vector<uint8_t>& rgba32, std::vector<uint8_t>& outI8) {
+    outI8.assign(rgba32.size() / 4, 0);
+    for (size_t i = 0, j = 0; i + 3 < rgba32.size(); i += 4, ++j) {
+        const uint8_t r = rgba32[i + 0];
+        const uint8_t g = rgba32[i + 1];
+        const uint8_t b = rgba32[i + 2];
+        const uint8_t a = rgba32[i + 3];
+        const uint8_t luminance =
+            static_cast<uint8_t>((static_cast<uint32_t>(r) + static_cast<uint32_t>(g) + static_cast<uint32_t>(b)) / 3);
+        outI8[j] = (a == 0) ? 0 : luminance;
+    }
+}
+
+void ConvertRgba32ToCi8AndTlut(const std::vector<uint8_t>& rgba32, std::vector<uint8_t>& outCi8,
+                               std::vector<uint8_t>& outTlutRgba16) {
+    outCi8.assign(rgba32.size() / 4, 0);
+    std::array<uint64_t, 256> sumR{};
+    std::array<uint64_t, 256> sumG{};
+    std::array<uint64_t, 256> sumB{};
+    std::array<uint64_t, 256> sumA{};
+    std::array<uint32_t, 256> count{};
+
+    for (size_t i = 0, j = 0; i + 3 < rgba32.size(); i += 4, ++j) {
+        const uint8_t r = rgba32[i + 0];
+        const uint8_t g = rgba32[i + 1];
+        const uint8_t b = rgba32[i + 2];
+        const uint8_t a = rgba32[i + 3];
+
+        const uint8_t index =
+            static_cast<uint8_t>(((r >> 5) << 5) | ((g >> 5) << 2) | ((b >> 6) << 0));
+        outCi8[j] = index;
+
+        sumR[index] += r;
+        sumG[index] += g;
+        sumB[index] += b;
+        sumA[index] += a;
+        count[index]++;
+    }
+
+    outTlutRgba16.assign(256 * 2, 0);
+    for (size_t i = 0; i < 256; ++i) {
+        uint8_t r = 0;
+        uint8_t g = 0;
+        uint8_t b = 0;
+        uint8_t a = 255;
+
+        if (count[i] > 0) {
+            r = static_cast<uint8_t>(sumR[i] / count[i]);
+            g = static_cast<uint8_t>(sumG[i] / count[i]);
+            b = static_cast<uint8_t>(sumB[i] / count[i]);
+            a = static_cast<uint8_t>(sumA[i] / count[i]);
+        } else {
+            const uint8_t rBucket = static_cast<uint8_t>((i >> 5) & 0x7);
+            const uint8_t gBucket = static_cast<uint8_t>((i >> 2) & 0x7);
+            const uint8_t bBucket = static_cast<uint8_t>(i & 0x3);
+            r = static_cast<uint8_t>((rBucket * 255) / 7);
+            g = static_cast<uint8_t>((gBucket * 255) / 7);
+            b = static_cast<uint8_t>((bBucket * 255) / 3);
+            a = 255;
+        }
+
+        const uint16_t rgba16 =
+            static_cast<uint16_t>(((r >> 3) << 11) | ((g >> 3) << 6) | ((b >> 3) << 1) | (a > 0 ? 1 : 0));
+        outTlutRgba16[i * 2 + 0] = static_cast<uint8_t>((rgba16 >> 8) & 0xFF);
+        outTlutRgba16[i * 2 + 1] = static_cast<uint8_t>(rgba16 & 0xFF);
+    }
+}
+
+bool HasHookshotTextureAssetOverrides(const ExternalModItemDefinition& definition) {
+    return !definition.hookshotMetalTextureAsset.empty() || !definition.hookshotHandleTextureAsset.empty() ||
+           !definition.hookshotDesignTextureAsset.empty() || !definition.hookshotChainTextureAsset.empty() ||
+           !definition.hookshotReticleTextureAsset.empty();
+}
+
+bool HasCustomGetItemModel(const ExternalModItemDefinition& definition) {
+    return !definition.customModelTriangles.empty() || !definition.modelDisplayList.empty();
+}
+
+bool HasHookshotTextureDataOverrides(const ExternalModItemDefinition& definition) {
+    return !definition.hookshotMetalTextureRgba16.empty() || !definition.hookshotHandleTextureCi8.empty() ||
+           !definition.hookshotDesignTextureCi8.empty() || !definition.hookshotChainTextureRgba16.empty() ||
+           !definition.hookshotReticleTextureI8.empty();
+}
+
 std::string TrimWhitespace(const std::string& value) {
     size_t start = 0;
     while (start < value.size() && std::isspace(static_cast<unsigned char>(value[start]))) {
@@ -1108,6 +4080,82 @@ std::string TrimWhitespace(const std::string& value) {
     }
 
     return value.substr(start, end - start);
+}
+
+bool TryExtractObjMaterialLibraryPath(const std::string& objContent, std::string& outMtlPath) {
+    outMtlPath.clear();
+
+    std::istringstream stream(objContent);
+    std::string line;
+    while (std::getline(stream, line)) {
+        const auto commentPos = line.find('#');
+        if (commentPos != std::string::npos) {
+            line = line.substr(0, commentPos);
+        }
+
+        line = TrimWhitespace(line);
+        if (line.empty()) {
+            continue;
+        }
+
+        if (line.rfind("mtllib ", 0) == 0) {
+            outMtlPath = TrimWhitespace(line.substr(7));
+            return !outMtlPath.empty();
+        }
+    }
+
+    return false;
+}
+
+bool TryExtractMtlDiffuseTexturePath(const std::string& mtlContent, std::string& outTexturePath) {
+    outTexturePath.clear();
+
+    std::istringstream stream(mtlContent);
+    std::string line;
+    while (std::getline(stream, line)) {
+        const auto commentPos = line.find('#');
+        if (commentPos != std::string::npos) {
+            line = line.substr(0, commentPos);
+        }
+
+        line = TrimWhitespace(line);
+        if (line.empty()) {
+            continue;
+        }
+
+        const auto lowerLine = ToLower(line);
+        if (lowerLine.rfind("map_kd ", 0) != 0) {
+            continue;
+        }
+
+        const auto value = TrimWhitespace(line.substr(7));
+        if (value.empty()) {
+            continue;
+        }
+
+        // Basic MTL parser: prefer quoted path if present; fallback to last token.
+        const auto quoteStart = value.find('"');
+        if (quoteStart != std::string::npos) {
+            const auto quoteEnd = value.find('"', quoteStart + 1);
+            if (quoteEnd != std::string::npos && quoteEnd > quoteStart + 1) {
+                outTexturePath = value.substr(quoteStart + 1, quoteEnd - quoteStart - 1);
+                return true;
+            }
+        }
+
+        std::istringstream valueStream(value);
+        std::string token;
+        std::string lastToken;
+        while (valueStream >> token) {
+            lastToken = token;
+        }
+        if (!lastToken.empty()) {
+            outTexturePath = lastToken;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 bool TryParseObjIndex(const std::string& value, size_t count, int32_t& outIndex) {
@@ -1176,7 +4224,149 @@ bool TryParseObjFaceVertexToken(const std::string& token, size_t positionCount, 
     return true;
 }
 
-bool TryParseObjCustomModel(const std::string& objContent, float modelScale,
+const char* GetModelUvOriginName(ExternalModModelUvOrigin origin) {
+    switch (origin) {
+        case ExternalModModelUvOrigin::Auto:
+            return "auto";
+        case ExternalModModelUvOrigin::BottomLeft:
+            return "bottom_left";
+        case ExternalModModelUvOrigin::TopLeft:
+            return "top_left";
+        default:
+            return "bottom_left";
+    }
+}
+
+const char* GetModelTextureFilterName(ExternalModModelTextureFilter filter) {
+    switch (filter) {
+        case ExternalModModelTextureFilter::Auto:
+            return "auto";
+        case ExternalModModelTextureFilter::Point:
+            return "point";
+        case ExternalModModelTextureFilter::Bilerp:
+            return "bilerp";
+        default:
+            return "auto";
+    }
+}
+
+ExternalModModelTextureFilter ResolveModelTextureFilter(ExternalModModelTextureFilter configuredFilter,
+                                                        bool textureHasTransparency) {
+    if (configuredFilter == ExternalModModelTextureFilter::Auto) {
+        return textureHasTransparency ? ExternalModModelTextureFilter::Point : ExternalModModelTextureFilter::Bilerp;
+    }
+    return configuredFilter;
+}
+
+bool TextureHasMixedAlphaCoverage(const std::vector<uint8_t>& rgba32, int32_t width, int32_t height) {
+    if (width <= 0 || height <= 0) {
+        return false;
+    }
+
+    const size_t pixelCount = static_cast<size_t>(width) * static_cast<size_t>(height);
+    if (rgba32.size() < pixelCount * 4) {
+        return false;
+    }
+
+    bool sawTransparent = false;
+    bool sawOpaque = false;
+    for (size_t i = 0; i < pixelCount; ++i) {
+        const uint8_t alpha = rgba32[i * 4 + 3];
+        sawTransparent = sawTransparent || alpha == 0;
+        sawOpaque = sawOpaque || alpha > 0;
+        if (sawTransparent && sawOpaque) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool HasUsefulAlphaCoverageForUvHeuristic(const std::vector<uint8_t>* rgba32, int32_t width, int32_t height) {
+    if (rgba32 == nullptr || width <= 0 || height <= 0) {
+        return false;
+    }
+
+    const size_t pixelCount = static_cast<size_t>(width) * static_cast<size_t>(height);
+    if (rgba32->size() < pixelCount * 4) {
+        return false;
+    }
+
+    bool sawTransparent = false;
+    bool sawOpaque = false;
+    for (size_t i = 0; i < pixelCount; ++i) {
+        const uint8_t alpha = (*rgba32)[i * 4 + 3];
+        sawTransparent = sawTransparent || alpha == 0;
+        sawOpaque = sawOpaque || alpha > 0;
+        if (sawTransparent && sawOpaque) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+uint8_t SampleAlphaForUv(const std::vector<uint8_t>& rgba32, int32_t width, int32_t height, float u, float v,
+                         bool invertV) {
+    if (width <= 0 || height <= 0) {
+        return 0;
+    }
+
+    const float clampedU = std::clamp(u, 0.0f, 1.0f);
+    const float clampedV = std::clamp(v, 0.0f, 1.0f);
+    const float orientedV = invertV ? (1.0f - clampedV) : clampedV;
+
+    const int32_t maxX = std::max(width - 1, 0);
+    const int32_t maxY = std::max(height - 1, 0);
+    const int32_t x = std::clamp(static_cast<int32_t>(std::lround(clampedU * static_cast<float>(maxX))), 0, maxX);
+    const int32_t y = std::clamp(static_cast<int32_t>(std::lround(orientedV * static_cast<float>(maxY))), 0, maxY);
+
+    const size_t pixelIndex = static_cast<size_t>(y) * static_cast<size_t>(width) + static_cast<size_t>(x);
+    const size_t alphaOffset = pixelIndex * 4 + 3;
+    if (alphaOffset >= rgba32.size()) {
+        return 0;
+    }
+    return rgba32[alphaOffset];
+}
+
+bool IsAlphaEdgeForUv(const std::vector<uint8_t>& rgba32, int32_t width, int32_t height, float u, float v, bool invertV) {
+    if (width <= 0 || height <= 0) {
+        return false;
+    }
+
+    const float clampedU = std::clamp(u, 0.0f, 1.0f);
+    const float clampedV = std::clamp(v, 0.0f, 1.0f);
+    const float orientedV = invertV ? (1.0f - clampedV) : clampedV;
+
+    const int32_t maxX = std::max(width - 1, 0);
+    const int32_t maxY = std::max(height - 1, 0);
+    const int32_t x = std::clamp(static_cast<int32_t>(std::lround(clampedU * static_cast<float>(maxX))), 0, maxX);
+    const int32_t y = std::clamp(static_cast<int32_t>(std::lround(orientedV * static_cast<float>(maxY))), 0, maxY);
+
+    const auto getAlphaAt = [&](int32_t sampleX, int32_t sampleY) {
+        if (sampleX < 0 || sampleX >= width || sampleY < 0 || sampleY >= height) {
+            return static_cast<uint8_t>(0);
+        }
+        const size_t pixelIndex = static_cast<size_t>(sampleY) * static_cast<size_t>(width) + static_cast<size_t>(sampleX);
+        const size_t alphaOffset = pixelIndex * 4 + 3;
+        if (alphaOffset >= rgba32.size()) {
+            return static_cast<uint8_t>(0);
+        }
+        return rgba32[alphaOffset];
+    };
+
+    if (getAlphaAt(x, y) == 0) {
+        return false;
+    }
+
+    return getAlphaAt(x - 1, y) == 0 || getAlphaAt(x + 1, y) == 0 || getAlphaAt(x, y - 1) == 0 ||
+           getAlphaAt(x, y + 1) == 0;
+}
+
+bool TryParseObjCustomModel(const std::string& objContent, float modelScale, int32_t textureWidth,
+                            int32_t textureHeight, ExternalModModelUvOrigin modelUvOrigin,
+                            const std::vector<uint8_t>* uvHeuristicTextureRgba32, const std::string& modId,
+                            const std::string& itemId,
                             std::vector<ExternalModItemDefinition::CustomModelTriangle>& outTriangles,
                             std::string& outError) {
     outTriangles.clear();
@@ -1308,7 +4498,112 @@ bool TryParseObjCustomModel(const std::string& objContent, float modelScale,
     const float centerZ = (minZ + maxZ) * 0.5f;
     const float clampedModelScale = std::clamp(modelScale, 0.05f, 20.0f);
     const float normalizationScale = (2000.0f / maxExtent) * clampedModelScale;
-    const float uvScale = static_cast<float>(kItemModelTextureSize << 5);
+    const int32_t effectiveTextureWidth = std::max(textureWidth, 1);
+    const int32_t effectiveTextureHeight = std::max(textureHeight, 1);
+    const int32_t effectiveTextureWidthForUv = std::max(effectiveTextureWidth - 1, 0);
+    const int32_t effectiveTextureHeightForUv = std::max(effectiveTextureHeight - 1, 0);
+    const float uvScaleS = static_cast<float>(effectiveTextureWidthForUv << 5);
+    const float uvScaleT = static_cast<float>(effectiveTextureHeightForUv << 5);
+    ExternalModModelUvOrigin resolvedUvOrigin = modelUvOrigin;
+    uint64_t topLeftScore = 0;
+    uint64_t bottomLeftScore = 0;
+    size_t uvSampleCount = 0;
+    const bool canUseHeuristic =
+        HasUsefulAlphaCoverageForUvHeuristic(uvHeuristicTextureRgba32, effectiveTextureWidth, effectiveTextureHeight);
+    if (canUseHeuristic && uvHeuristicTextureRgba32 != nullptr) {
+        for (const auto& tri : triangles) {
+            for (size_t i = 0; i < 3; ++i) {
+                const auto& faceVertex = tri[i];
+                if (faceVertex.uv < 0 || faceVertex.uv >= static_cast<int32_t>(texCoords.size())) {
+                    continue;
+                }
+
+                const float u = texCoords[faceVertex.uv].u;
+                const float v = texCoords[faceVertex.uv].v;
+                topLeftScore +=
+                    SampleAlphaForUv(*uvHeuristicTextureRgba32, effectiveTextureWidth, effectiveTextureHeight, u, v, false);
+                bottomLeftScore +=
+                    SampleAlphaForUv(*uvHeuristicTextureRgba32, effectiveTextureWidth, effectiveTextureHeight, u, v, true);
+                ++uvSampleCount;
+            }
+        }
+    }
+
+    const bool hasHeuristicScores = uvSampleCount > 0;
+    if (resolvedUvOrigin == ExternalModModelUvOrigin::Auto) {
+        if (hasHeuristicScores && topLeftScore != bottomLeftScore) {
+            resolvedUvOrigin =
+                topLeftScore > bottomLeftScore ? ExternalModModelUvOrigin::TopLeft : ExternalModModelUvOrigin::BottomLeft;
+        } else {
+            resolvedUvOrigin = ExternalModModelUvOrigin::BottomLeft;
+        }
+
+        SPDLOG_INFO("[ExternalMods] OBJ UV orientation for {}.{} resolved to {} (auto score top_left={}, "
+                    "bottom_left={}, samples={})",
+                    modId, itemId, GetModelUvOriginName(resolvedUvOrigin), topLeftScore, bottomLeftScore, uvSampleCount);
+    } else if (hasHeuristicScores) {
+        const uint64_t configuredScore =
+            resolvedUvOrigin == ExternalModModelUvOrigin::TopLeft ? topLeftScore : bottomLeftScore;
+        const uint64_t oppositeScore =
+            resolvedUvOrigin == ExternalModModelUvOrigin::TopLeft ? bottomLeftScore : topLeftScore;
+        const ExternalModModelUvOrigin recommendedOrigin =
+            topLeftScore >= bottomLeftScore ? ExternalModModelUvOrigin::TopLeft : ExternalModModelUvOrigin::BottomLeft;
+
+        // Warn only when explicit orientation is substantially worse than the opposite score.
+        if (oppositeScore > 0 && uvSampleCount >= 16 &&
+            static_cast<double>(configuredScore) < static_cast<double>(oppositeScore) * 0.6) {
+            SPDLOG_WARN(
+                "[ExternalMods] OBJ UV orientation for {}.{} explicitly set to {} but heuristic score favors {} "
+                "(configured={}, opposite={}, samples={}); consider modelUvOrigin=\"{}\" or \"auto\"",
+                modId, itemId, GetModelUvOriginName(resolvedUvOrigin), GetModelUvOriginName(recommendedOrigin),
+                configuredScore, oppositeScore, uvSampleCount, GetModelUvOriginName(recommendedOrigin));
+        }
+    }
+
+    size_t uvOpaqueHits = 0;
+    size_t uvTransparentHits = 0;
+    size_t uvEdgeHits = 0;
+    if (canUseHeuristic && uvHeuristicTextureRgba32 != nullptr) {
+        const bool invertV = resolvedUvOrigin != ExternalModModelUvOrigin::TopLeft;
+        for (const auto& tri : triangles) {
+            for (size_t i = 0; i < 3; ++i) {
+                const auto& faceVertex = tri[i];
+                if (faceVertex.uv < 0 || faceVertex.uv >= static_cast<int32_t>(texCoords.size())) {
+                    continue;
+                }
+
+                const float u = texCoords[faceVertex.uv].u;
+                const float v = texCoords[faceVertex.uv].v;
+                const uint8_t alpha = SampleAlphaForUv(*uvHeuristicTextureRgba32, effectiveTextureWidth,
+                                                       effectiveTextureHeight, u, v, invertV);
+                if (alpha > 0) {
+                    ++uvOpaqueHits;
+                    if (IsAlphaEdgeForUv(*uvHeuristicTextureRgba32, effectiveTextureWidth, effectiveTextureHeight, u, v,
+                                         invertV)) {
+                        ++uvEdgeHits;
+                    }
+                } else {
+                    ++uvTransparentHits;
+                }
+            }
+        }
+    }
+    const size_t uvCoverageSamples = uvOpaqueHits + uvTransparentHits;
+    if (uvCoverageSamples > 0) {
+        const double uvTransparentRate = static_cast<double>(uvTransparentHits) / static_cast<double>(uvCoverageSamples);
+        const double uvEdgeRate = static_cast<double>(uvEdgeHits) / static_cast<double>(uvCoverageSamples);
+        SPDLOG_INFO(
+            "[ExternalMods] OBJ UV coverage for {}.{} using {}: opaqueHits={}, transparentHits={}, edgeHits={}, "
+            "transparentRate={:.3f}, edgeRate={:.3f}, samples={}",
+            modId, itemId, GetModelUvOriginName(resolvedUvOrigin), uvOpaqueHits, uvTransparentHits, uvEdgeHits,
+            uvTransparentRate, uvEdgeRate, uvCoverageSamples);
+        if (uvTransparentRate >= 0.10) {
+            SPDLOG_WARN(
+                "[ExternalMods] OBJ UV coverage indicates atlas transparency mismatch for {}.{} (transparentRate={:.3f}, "
+                "samples={}); use an opaque atlas (alpha=255) and verify UV islands",
+                modId, itemId, uvTransparentRate, uvCoverageSamples);
+        }
+    }
 
     outTriangles.reserve(triangles.size());
     for (const auto& tri : triangles) {
@@ -1333,8 +4628,11 @@ bool TryParseObjCustomModel(const std::string& objContent, float modelScale,
                 u = texCoords[faceVertex.uv].u;
                 v = texCoords[faceVertex.uv].v;
             }
-            convertedTriangle.vertices[i].s = toS16(u * uvScale);
-            convertedTriangle.vertices[i].t = toS16((1.0f - v) * uvScale);
+            u = std::clamp(u, 0.0f, 1.0f);
+            v = std::clamp(v, 0.0f, 1.0f);
+            convertedTriangle.vertices[i].s = toS16(u * uvScaleS);
+            const float orientedV = resolvedUvOrigin == ExternalModModelUvOrigin::TopLeft ? v : (1.0f - v);
+            convertedTriangle.vertices[i].t = toS16(orientedV * uvScaleT);
         }
         outTriangles.push_back(convertedTriangle);
     }
@@ -1354,7 +4652,7 @@ const ExternalModItemDefinition* FindCustomModelDefinitionForItem(const std::vec
         }
 
         for (const auto& definition : package.runtime.itemDefinitions) {
-            if (definition.customModelTriangles.empty()) {
+            if (!HasCustomGetItemModel(definition)) {
                 continue;
             }
             if (!ItemDefinitionMatchesUseItem(definition, itemId)) {
@@ -1373,6 +4671,144 @@ const ExternalModItemDefinition* FindCustomModelDefinitionForItem(const std::vec
     return selectedDefinition;
 }
 
+bool DrawCustomItemDefinitionModel(PlayState* play, const ExternalModItemDefinition& definition, bool loadModelViewMatrix) {
+    if (play == nullptr) {
+        return false;
+    }
+
+    GraphicsContext* __gfxCtx = play->state.gfxCtx;
+    (void)__gfxCtx;
+
+    bool drewCustomModel = false;
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    if (loadModelViewMatrix) {
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+    }
+
+    if (!definition.customModelTriangles.empty()) {
+        gSPClearGeometryMode(POLY_OPA_DISP++, G_CULL_BACK | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR);
+
+        if (!definition.modelTextureRgba32.empty()) {
+            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
+            gDPSetTextureLUT(POLY_OPA_DISP++, G_TT_NONE);
+            const ExternalModModelTextureFilter resolvedFilter =
+                ResolveModelTextureFilter(definition.modelTextureFilter, definition.modelTextureHasTransparency);
+            gDPSetTextureFilter(POLY_OPA_DISP++,
+                               resolvedFilter == ExternalModModelTextureFilter::Point ? G_TF_POINT : G_TF_BILERP);
+            gSPTexture(POLY_OPA_DISP++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
+        } else {
+            gSPTexture(POLY_OPA_DISP++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
+            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_SHADE, G_CC_SHADE);
+        }
+
+        bool drewAnyTriangle = false;
+        if (!definition.modelTextureRgba32.empty()) {
+            const int32_t textureWidth = std::max(definition.modelTextureWidth, 1);
+            const int32_t textureHeight = std::max(definition.modelTextureHeight, 1);
+            gDPLoadTextureTile(POLY_OPA_DISP++, definition.modelTextureRgba32.data(), G_IM_FMT_RGBA, G_IM_SIZ_16b, textureWidth,
+                               textureHeight, 0, 0, textureWidth - 1, textureHeight - 1, 0,
+                               G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                               G_TX_NOLOD, G_TX_NOLOD);
+        }
+
+        constexpr size_t kTrianglesPerBatch = 10;
+        for (size_t triangleStart = 0; triangleStart < definition.customModelTriangles.size();
+             triangleStart += kTrianglesPerBatch) {
+            const size_t triangleCount = std::min(kTrianglesPerBatch, definition.customModelTriangles.size() - triangleStart);
+            const size_t vertexCount = triangleCount * 3;
+
+            auto* vertices = static_cast<Vtx*>(Graph_Alloc(play->state.gfxCtx, sizeof(Vtx) * vertexCount));
+            if (vertices == nullptr) {
+                break;
+            }
+
+            for (size_t i = 0; i < triangleCount; ++i) {
+                const auto& triangle = definition.customModelTriangles[triangleStart + i];
+                for (size_t j = 0; j < 3; ++j) {
+                    const size_t index = i * 3 + j;
+                    vertices[index].v.ob[0] = triangle.vertices[j].x;
+                    vertices[index].v.ob[1] = triangle.vertices[j].y;
+                    vertices[index].v.ob[2] = triangle.vertices[j].z;
+                    vertices[index].v.flag = 0;
+                    vertices[index].v.tc[0] = triangle.vertices[j].s;
+                    vertices[index].v.tc[1] = triangle.vertices[j].t;
+                    vertices[index].v.cn[0] = 255;
+                    vertices[index].v.cn[1] = 255;
+                    vertices[index].v.cn[2] = 255;
+                    vertices[index].v.cn[3] = 255;
+                }
+            }
+
+            gSPVertex(POLY_OPA_DISP++, reinterpret_cast<uintptr_t>(vertices), static_cast<int32_t>(vertexCount), 0);
+            for (size_t i = 0; i < triangleCount; ++i) {
+                const int32_t base = static_cast<int32_t>(i * 3);
+                gSP1Triangle(POLY_OPA_DISP++, base + 0, base + 1, base + 2, 0);
+            }
+            drewAnyTriangle = true;
+        }
+
+        drewCustomModel = drewAnyTriangle;
+    } else if (!definition.modelDisplayList.empty()) {
+        auto* dlist = ResourceMgr_LoadGfxByName(definition.modelDisplayList.c_str());
+        if (dlist != nullptr) {
+            const ExternalModModelTextureFilter resolvedFilter =
+                ResolveModelTextureFilter(definition.modelTextureFilter, definition.modelTextureHasTransparency);
+            gDPSetTextureFilter(POLY_OPA_DISP++,
+                               resolvedFilter == ExternalModModelTextureFilter::Point ? G_TF_POINT : G_TF_BILERP);
+            const std::string debugKey = definition.sourceModId + "|" + definition.id + "|" + definition.modelDisplayList;
+            if (gExternalModDisplayListDrawDebugLogs.insert(debugKey).second) {
+                auto displayListResource = Ship::Context::GetInstance()->GetResourceManager()->LoadResource(
+                    definition.modelDisplayList.c_str());
+                if (displayListResource != nullptr && displayListResource->GetInitData() != nullptr &&
+                    displayListResource->GetInitData()->Type == static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
+                    auto displayList = std::static_pointer_cast<Fast::DisplayList>(displayListResource);
+                    const size_t instructionCount = displayList != nullptr ? displayList->Instructions.size() : 0;
+                    SPDLOG_INFO(
+                        "[ExternalMods] Drawing model display list for {}.{}: path={} instructions={} ptr={} "
+                        "custom={} modelScale={} filterConfigured={} filterEffective={}",
+                        definition.sourceModId.empty() ? "<unknown>" : definition.sourceModId,
+                        definition.id.empty() ? "<unknown>" : definition.id,
+                        definition.modelDisplayList.empty() ? "<empty>" : definition.modelDisplayList,
+                        instructionCount, static_cast<void*>(dlist),
+                        displayListResource->GetInitData()->IsCustom ? 1 : 0, definition.modelScale,
+                        GetModelTextureFilterName(definition.modelTextureFilter),
+                        GetModelTextureFilterName(resolvedFilter));
+                } else {
+                    SPDLOG_WARN(
+                        "[ExternalMods] Model display list pointer resolved but metadata lookup failed for {}.{}: "
+                        "path={}",
+                        definition.sourceModId.empty() ? "<unknown>" : definition.sourceModId,
+                        definition.id.empty() ? "<unknown>" : definition.id,
+                        definition.modelDisplayList.empty() ? "<empty>" : definition.modelDisplayList);
+                }
+            }
+            const float clampedScale =
+                std::clamp(definition.modelScale, kMinDisplayListModelScale, kMaxDisplayListModelScale);
+            if (std::abs(clampedScale - 1.0f) > 0.0001f) {
+                Matrix_Push();
+                Matrix_Scale(clampedScale, clampedScale, clampedScale, MTXMODE_APPLY);
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPDisplayList(POLY_OPA_DISP++, dlist);
+                Matrix_Pop();
+            } else {
+                gSPDisplayList(POLY_OPA_DISP++, dlist);
+            }
+            drewCustomModel = true;
+        } else {
+            const std::string warningKey = definition.sourceModId + "|" + definition.id + "|" + definition.modelDisplayList;
+            if (gExternalModMissingDisplayListWarnings.insert(warningKey).second) {
+                SPDLOG_WARN("[ExternalMods] Missing model display list for {}.{}: {}", definition.sourceModId.empty() ? "<unknown>" : definition.sourceModId,
+                            definition.id.empty() ? "<unknown>" : definition.id,
+                            definition.modelDisplayList.empty() ? "<empty>" : definition.modelDisplayList);
+            }
+        }
+    }
+
+    return drewCustomModel;
+}
+
 extern "C" void ExternalMods_DrawCustomGetItemModel(PlayState* play, GetItemEntry* getItemEntry) {
     if (play == nullptr || getItemEntry == nullptr) {
         return;
@@ -1380,66 +4816,47 @@ extern "C" void ExternalMods_DrawCustomGetItemModel(PlayState* play, GetItemEntr
 
     const auto* definition =
         FindCustomModelDefinitionForItem(ExternalModManager::Instance().GetPackages(), getItemEntry->itemId);
-    if (definition == nullptr || definition->customModelTriangles.empty()) {
+    if (definition == nullptr) {
         GetItem_Draw(play, getItemEntry->gid);
         return;
     }
 
-    OPEN_DISPS(play->state.gfxCtx);
-
-    Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPClearGeometryMode(POLY_OPA_DISP++, G_CULL_BACK | G_LIGHTING);
-
-    if (!definition->modelTextureRgba32.empty()) {
-        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
-        gSPTexture(POLY_OPA_DISP++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, definition->modelTextureRgba32.data(), G_IM_FMT_RGBA, G_IM_SIZ_32b,
-                            definition->modelTextureWidth, definition->modelTextureHeight, 0,
-                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
-                            G_TX_NOLOD, G_TX_NOLOD);
-    } else {
-        gSPTexture(POLY_OPA_DISP++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
-        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_SHADE, G_CC_SHADE);
+    if (DrawCustomItemDefinitionModel(play, *definition, true)) {
+        return;
     }
 
-    constexpr size_t kTrianglesPerBatch = 10;
-    for (size_t triangleStart = 0; triangleStart < definition->customModelTriangles.size();
-         triangleStart += kTrianglesPerBatch) {
-        const size_t triangleCount = std::min(kTrianglesPerBatch, definition->customModelTriangles.size() - triangleStart);
-        const size_t vertexCount = triangleCount * 3;
+    GetItem_Draw(play, getItemEntry->gid);
+}
 
-        auto* vertices = static_cast<Vtx*>(Graph_Alloc(play->state.gfxCtx, sizeof(Vtx) * vertexCount));
-        if (vertices == nullptr) {
-            break;
-        }
-
-        for (size_t i = 0; i < triangleCount; ++i) {
-            const auto& triangle = definition->customModelTriangles[triangleStart + i];
-            for (size_t j = 0; j < 3; ++j) {
-                const size_t index = i * 3 + j;
-                vertices[index].v.ob[0] = triangle.vertices[j].x;
-                vertices[index].v.ob[1] = triangle.vertices[j].y;
-                vertices[index].v.ob[2] = triangle.vertices[j].z;
-                vertices[index].v.flag = 0;
-                vertices[index].v.tc[0] = triangle.vertices[j].s;
-                vertices[index].v.tc[1] = triangle.vertices[j].t;
-                vertices[index].v.cn[0] = 255;
-                vertices[index].v.cn[1] = 255;
-                vertices[index].v.cn[2] = 255;
-                vertices[index].v.cn[3] = 255;
-            }
-        }
-
-        gSPVertex(POLY_OPA_DISP++, vertices, static_cast<int32_t>(vertexCount), 0);
-        for (size_t i = 0; i < triangleCount; ++i) {
-            const int32_t base = static_cast<int32_t>(i * 3);
-            gSP1Triangle(POLY_OPA_DISP++, base + 0, base + 1, base + 2, 0);
-        }
+extern "C" int32_t ExternalMods_DrawCustomEquippedStickModel(PlayState* play) {
+    if (play == nullptr) {
+        return 0;
     }
 
-    CLOSE_DISPS(play->state.gfxCtx);
+    const auto* definition = FindCustomModelDefinitionForItem(ExternalModManager::Instance().GetPackages(), ITEM_STICK);
+    if (definition == nullptr) {
+        return 0;
+    }
+
+    float stickLengthScale = 1.0f;
+    Player* player = GET_PLAYER(play);
+    if (player != nullptr && std::isfinite(player->unk_85C) && std::abs(player->unk_85C) > 0.0001f) {
+        stickLengthScale = player->unk_85C;
+    }
+
+    const bool undoStickLengthScale = std::abs(stickLengthScale - 1.0f) > 0.0001f;
+    if (undoStickLengthScale) {
+        Matrix_Push();
+        Matrix_Scale(1.0f, 1.0f / stickLengthScale, 1.0f, MTXMODE_APPLY);
+    }
+
+    const bool drew = DrawCustomItemDefinitionModel(play, *definition, true);
+
+    if (undoStickLengthScale) {
+        Matrix_Pop();
+    }
+
+    return drew ? 1 : 0;
 }
 
 void ApplyModItemIconOverrides(const std::vector<ExternalModPackage>& packages) {
@@ -1467,6 +4884,139 @@ void ApplyModItemIconOverrides(const std::vector<ExternalModPackage>& packages) 
         for (const auto& item : package->runtime.itemDefinitions) {
             ApplyIconOverrideForDefinition(item);
         }
+    }
+}
+
+void RestoreModHookshotTextureOverrides() {
+    for (const auto& patch : gExternalModHookshotTexturePatches) {
+        ResourceMgr_UnpatchGfxByName(patch.displayListPath.c_str(), patch.patchName.c_str());
+    }
+    gExternalModHookshotTexturePatches.clear();
+    gExternalModHookshotTextureOverrideKey.clear();
+}
+
+struct HookshotDisplayListTarget {
+    const char* displayListPath;
+    const char* id;
+};
+
+constexpr std::array<HookshotDisplayListTarget, 5> kHookshotDisplayListTargets = {{
+    { gLinkAdultRightHandHoldingHookshotNearDL, "near" },
+    { gLinkAdultRightHandHoldingHookshotFarDL, "far" },
+    { gLinkAdultHookshotChainDL, "chain" },
+    { gLinkAdultHookshotTipDL, "tip" },
+    { gLinkAdultHookshotReticleDL, "reticle" },
+}};
+
+bool PatchHookshotTextureInDisplayList(const HookshotDisplayListTarget& target, const char* sourceTexturePath,
+                                       const void* replacementData, const std::string& patchPrefix) {
+    if (target.displayListPath == nullptr || sourceTexturePath == nullptr || replacementData == nullptr) {
+        return false;
+    }
+
+    auto resource = std::static_pointer_cast<Fast::DisplayList>(
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResource(target.displayListPath));
+    if (resource == nullptr) {
+        return false;
+    }
+
+    const uintptr_t sourcePointer = reinterpret_cast<uintptr_t>(sourceTexturePath);
+    bool patchedAtLeastOne = false;
+
+    for (size_t instructionIndex = 0; instructionIndex < resource->Instructions.size(); ++instructionIndex) {
+        const auto& instruction = resource->Instructions[instructionIndex];
+        const uint8_t command = static_cast<uint8_t>(_SHIFTR(instruction.words.w0, 24, 8));
+        if (command != G_SETTIMG_OTR_FILEPATH) {
+            continue;
+        }
+
+        if (instruction.words.w1 != sourcePointer) {
+            continue;
+        }
+
+        const int32_t format = _SHIFTR(instruction.words.w0, 21, 3);
+        const int32_t size = _SHIFTR(instruction.words.w0, 19, 2);
+        const int32_t width = _SHIFTR(instruction.words.w0, 0, 12) + 1;
+        const Gfx patchedInstruction = gsSetImage(G_SETTIMG, format, size, width, replacementData);
+        const auto patchName = patchPrefix + "_" + target.id + "_" + std::to_string(instructionIndex);
+
+        ResourceMgr_PatchCustomGfxByName(target.displayListPath, patchName.c_str(), static_cast<int>(instructionIndex),
+                                         patchedInstruction);
+        gExternalModHookshotTexturePatches.push_back({ target.displayListPath, patchName });
+        patchedAtLeastOne = true;
+    }
+
+    return patchedAtLeastOne;
+}
+
+void ApplyModHookshotTextureOverrides(const std::vector<ExternalModPackage>& packages) {
+    const ExternalModItemDefinition* selectedDefinition = nullptr;
+    const ExternalModPackage* selectedPackage = nullptr;
+    int32_t selectedLoadOrder = std::numeric_limits<int32_t>::max();
+    std::string selectedModId;
+
+    for (const auto& package : packages) {
+        if (!package.valid || !package.runtime.enabled) {
+            continue;
+        }
+
+        for (const auto& definition : package.runtime.itemDefinitions) {
+            if (!definition.granted || definition.slot != ExternalModItemSlot::Hookshot ||
+                !HasHookshotTextureDataOverrides(definition)) {
+                continue;
+            }
+
+            if (selectedDefinition == nullptr || package.manifest.loadOrder < selectedLoadOrder ||
+                (package.manifest.loadOrder == selectedLoadOrder && package.manifest.id < selectedModId)) {
+                selectedDefinition = &definition;
+                selectedPackage = &package;
+                selectedLoadOrder = package.manifest.loadOrder;
+                selectedModId = package.manifest.id;
+            }
+        }
+    }
+
+    if (selectedDefinition == nullptr || selectedPackage == nullptr) {
+        if (!gExternalModHookshotTexturePatches.empty()) {
+            RestoreModHookshotTextureOverrides();
+        }
+        return;
+    }
+
+    const std::string selectedKey = selectedPackage->manifest.id + ":" + selectedDefinition->id;
+    if (!gExternalModHookshotTexturePatches.empty() && gExternalModHookshotTextureOverrideKey == selectedKey) {
+        return;
+    }
+
+    RestoreModHookshotTextureOverrides();
+
+    const auto patchPrefix = "ExternalMods_HookshotTexture_" + SanitizeCVarSegment(selectedKey);
+    bool patchedAny = false;
+    auto applyTextureOverride = [&](const char* sourcePath, const std::vector<uint8_t>& data) {
+        if (sourcePath == nullptr || data.empty()) {
+            return;
+        }
+        for (const auto& target : kHookshotDisplayListTargets) {
+            patchedAny |= PatchHookshotTextureInDisplayList(target, sourcePath, data.data(), patchPrefix);
+        }
+    };
+
+    applyTextureOverride(gLinkAdultHookshotMetalTex, selectedDefinition->hookshotMetalTextureRgba16);
+    applyTextureOverride(gLinkAdultHookshotHandleTex, selectedDefinition->hookshotHandleTextureCi8);
+    applyTextureOverride(object_link_boyTLUT_00CD48, selectedDefinition->hookshotHandleTextureTlutRgba16);
+    applyTextureOverride(gLinkAdultHookshotDesignTex, selectedDefinition->hookshotDesignTextureCi8);
+    applyTextureOverride(object_link_boyTLUT_00CB40, selectedDefinition->hookshotDesignTextureTlutRgba16);
+    applyTextureOverride(gLinkAdultHookshotChainTex, selectedDefinition->hookshotChainTextureRgba16);
+    applyTextureOverride(gLinkAdultHookshotReticleTex, selectedDefinition->hookshotReticleTextureI8);
+
+    if (patchedAny) {
+        gExternalModHookshotTextureOverrideKey = selectedKey;
+        SPDLOG_INFO("[ExternalMods] Applied hookshot gameplay texture override from {} ({})", selectedPackage->manifest.id,
+                    selectedDefinition->id);
+    } else {
+        RestoreModHookshotTextureOverrides();
+        SPDLOG_WARN("[ExternalMods] Hookshot texture override from {} ({}) had no patchable commands",
+                    selectedPackage->manifest.id, selectedDefinition->id);
     }
 }
 
@@ -1805,6 +5355,378 @@ bool DespawnActorInstance(ExternalModPackage& package, uint32_t handle, std::str
     return true;
 }
 
+const ExternalModBehaviorDefinition* FindBehaviorDefinition(const ExternalModRuntime& runtime, const std::string& behaviorId) {
+    const auto it =
+        std::find_if(runtime.behaviorDefinitions.begin(), runtime.behaviorDefinitions.end(),
+                     [&behaviorId](const ExternalModBehaviorDefinition& definition) { return definition.id == behaviorId; });
+    if (it == runtime.behaviorDefinitions.end()) {
+        return nullptr;
+    }
+    return &(*it);
+}
+
+const ExternalModSceneDefinition* FindSceneDefinition(const ExternalModRuntime& runtime, const std::string& sceneId) {
+    const auto it = std::find_if(runtime.sceneDefinitions.begin(), runtime.sceneDefinitions.end(),
+                                 [&sceneId](const ExternalModSceneDefinition& definition) {
+                                     return definition.id == sceneId;
+                                 });
+    if (it == runtime.sceneDefinitions.end()) {
+        return nullptr;
+    }
+    return &(*it);
+}
+
+std::string NormalizeBlackboardScope(const std::string& scope) {
+    const auto normalized = ToLower(scope);
+    if (normalized == "global" || normalized == "global_mod" || normalized == "globalmod") {
+        return "global_mod";
+    }
+    if (normalized == "scene" || normalized == "scene_mod" || normalized == "scene_mod_local") {
+        return "scene";
+    }
+    if (normalized == "mod_save" || normalized == "modsave" || normalized == "save") {
+        return "mod_save";
+    }
+    if (normalized == "actor") {
+        return "actor";
+    }
+    return "";
+}
+
+bool TryParseFloatString(const std::string& value, float& outNumber) {
+    try {
+        size_t parsed = 0;
+        const float parsedValue = std::stof(value, &parsed);
+        if (parsed != value.size()) {
+            return false;
+        }
+        outNumber = parsedValue;
+        return std::isfinite(outNumber);
+    } catch (...) {
+        return false;
+    }
+}
+
+std::unordered_map<std::string, std::string>* GetBlackboardScopeForAction(ExternalModPackage& package,
+                                                                           ExternalModActorInstance* actorInstance,
+                                                                           const std::string& rawScope) {
+    const auto scope = NormalizeBlackboardScope(rawScope);
+    if (scope.empty()) {
+        return nullptr;
+    }
+
+    if (scope == "global_mod") {
+        return &package.runtime.globalBlackboard;
+    }
+    if (scope == "scene" || scope == "mod_save") {
+        int16_t sceneId = -1;
+        if (gPlayState != nullptr) {
+            sceneId = static_cast<int16_t>(gPlayState->sceneNum);
+        } else if (actorInstance != nullptr) {
+            sceneId = actorInstance->sceneId;
+        }
+        if (sceneId < 0) {
+            sceneId = 0;
+        }
+        return &package.runtime.sceneBlackboard[sceneId];
+    }
+    if (scope == "actor" && actorInstance != nullptr) {
+        return &actorInstance->state;
+    }
+
+    return nullptr;
+}
+
+bool EvaluateBehaviorCondition(const ExternalModPackage& package, const ExternalModBehaviorCondition& condition,
+                               const ExternalModActorInstance* actorInstance) {
+    const auto type = ToLower(condition.type);
+    if (type.empty()) {
+        return true;
+    }
+
+    auto resolveIntValue = [&](int32_t& outValue) -> bool {
+        if (condition.hasNumberValue) {
+            outValue = static_cast<int32_t>(std::lround(condition.numberValue));
+            return true;
+        }
+        return TryParseIntToken(condition.value, outValue);
+    };
+
+    if (type == "ischild") {
+        return gSaveContext.linkAge == LINK_AGE_CHILD;
+    }
+    if (type == "isadult") {
+        return gSaveContext.linkAge == LINK_AGE_ADULT;
+    }
+    if (type == "isday") {
+        return gSaveContext.dayTime >= 0x4555 && gSaveContext.dayTime < 0xC000;
+    }
+    if (type == "isnight") {
+        return gSaveContext.dayTime >= 0xC000 || gSaveContext.dayTime < 0x4555;
+    }
+    if (type == "randomchance") {
+        const float chance = std::clamp(condition.numberValue, 0.0f, 1.0f);
+        return (Rand_ZeroOne() <= chance);
+    }
+    if (type == "hasitem") {
+        if (condition.value.empty()) {
+            return false;
+        }
+        const auto it =
+            std::find_if(package.runtime.itemDefinitions.begin(), package.runtime.itemDefinitions.end(),
+                         [&condition](const ExternalModItemDefinition& item) { return item.id == condition.value; });
+        return it != package.runtime.itemDefinitions.end() && it->granted;
+    }
+    if (type == "distancetoplayer") {
+        if (gPlayState == nullptr || actorInstance == nullptr) {
+            return false;
+        }
+        auto* player = GET_PLAYER(gPlayState);
+        if (player == nullptr) {
+            return false;
+        }
+
+        const float dx = player->actor.world.pos.x - actorInstance->posX;
+        const float dy = player->actor.world.pos.y - actorInstance->posY;
+        const float dz = player->actor.world.pos.z - actorInstance->posZ;
+        const float distance = std::sqrt(dx * dx + dy * dy + dz * dz);
+        const std::string op = condition.op.empty() ? "<=" : condition.op;
+        if (op == "<") {
+            return distance < condition.numberValue;
+        }
+        if (op == "<=") {
+            return distance <= condition.numberValue;
+        }
+        if (op == ">") {
+            return distance > condition.numberValue;
+        }
+        if (op == ">=") {
+            return distance >= condition.numberValue;
+        }
+        if (op == "==" || op == "=") {
+            return std::abs(distance - condition.numberValue) <= 0.0001f;
+        }
+        if (op == "!=") {
+            return std::abs(distance - condition.numberValue) > 0.0001f;
+        }
+        return false;
+    }
+
+    if (type == "sceneis") {
+        if (gPlayState == nullptr) {
+            return false;
+        }
+        int32_t expected = 0;
+        if (!resolveIntValue(expected)) {
+            return false;
+        }
+        const int32_t current = static_cast<int32_t>(gPlayState->sceneNum);
+        const std::string op = condition.op.empty() ? "==" : condition.op;
+        if (op == "==" || op == "=") {
+            return current == expected;
+        }
+        if (op == "!=") {
+            return current != expected;
+        }
+        if (op == "<") {
+            return current < expected;
+        }
+        if (op == "<=") {
+            return current <= expected;
+        }
+        if (op == ">") {
+            return current > expected;
+        }
+        if (op == ">=") {
+            return current >= expected;
+        }
+        return false;
+    }
+
+    if (type == "roomis") {
+        if (gPlayState == nullptr) {
+            return false;
+        }
+        int32_t expected = 0;
+        if (!resolveIntValue(expected)) {
+            return false;
+        }
+        const int32_t current = static_cast<int32_t>(gPlayState->roomCtx.curRoom.num);
+        const std::string op = condition.op.empty() ? "==" : condition.op;
+        if (op == "==" || op == "=") {
+            return current == expected;
+        }
+        if (op == "!=") {
+            return current != expected;
+        }
+        if (op == "<") {
+            return current < expected;
+        }
+        if (op == "<=") {
+            return current <= expected;
+        }
+        if (op == ">") {
+            return current > expected;
+        }
+        if (op == ">=") {
+            return current >= expected;
+        }
+        return false;
+    }
+
+    if (type == "hasswitchflag" || type == "switchison") {
+        if (gPlayState == nullptr) {
+            return false;
+        }
+        int32_t flag = 0;
+        if (!resolveIntValue(flag)) {
+            return false;
+        }
+        const bool isSet = Flags_GetSwitch(gPlayState, flag & 0x3F);
+        const std::string op = condition.op.empty() ? "==" : condition.op;
+        if (op == "==" || op == "=") {
+            return isSet;
+        }
+        if (op == "!=") {
+            return !isSet;
+        }
+        return isSet;
+    }
+
+    if (type == "var" || type == "varequals" || type == "varcompare") {
+        if (condition.key.empty()) {
+            return false;
+        }
+        const auto scope = NormalizeBlackboardScope(condition.scope);
+        const auto* actorState = actorInstance != nullptr ? &actorInstance->state : nullptr;
+        const std::unordered_map<std::string, std::string>* map = nullptr;
+        if (scope == "actor") {
+            map = actorState;
+        } else if (scope == "global_mod") {
+            map = &package.runtime.globalBlackboard;
+        } else if (scope == "scene" || scope == "mod_save") {
+            int16_t sceneId = -1;
+            if (gPlayState != nullptr) {
+                sceneId = static_cast<int16_t>(gPlayState->sceneNum);
+            } else if (actorInstance != nullptr) {
+                sceneId = actorInstance->sceneId;
+            }
+            if (sceneId < 0) {
+                return false;
+            }
+            auto sceneIt = package.runtime.sceneBlackboard.find(sceneId);
+            if (sceneIt != package.runtime.sceneBlackboard.end()) {
+                map = &sceneIt->second;
+            }
+        }
+
+        if (map == nullptr) {
+            return false;
+        }
+        const auto valueIt = map->find(condition.key);
+        if (valueIt == map->end()) {
+            return false;
+        }
+
+        const std::string op = condition.op.empty() ? "==" : condition.op;
+        if (op == "==" || op == "=") {
+            return valueIt->second == condition.value;
+        }
+        if (op == "!=") {
+            return valueIt->second != condition.value;
+        }
+
+        float lhs = 0.0f;
+        float rhs = 0.0f;
+        if (!TryParseFloatString(valueIt->second, lhs) || !TryParseFloatString(condition.value, rhs)) {
+            return false;
+        }
+        if (op == "<") {
+            return lhs < rhs;
+        }
+        if (op == "<=") {
+            return lhs <= rhs;
+        }
+        if (op == ">") {
+            return lhs > rhs;
+        }
+        if (op == ">=") {
+            return lhs >= rhs;
+        }
+    }
+
+    return false;
+}
+
+bool BehaviorRuleMatches(const ExternalModPackage& package, const ExternalModBehaviorRule& rule,
+                         const ExternalModActorInstance* actorInstance) {
+    if (rule.randomChance < 1.0f && Rand_ZeroOne() > std::clamp(rule.randomChance, 0.0f, 1.0f)) {
+        return false;
+    }
+
+    for (const auto& condition : rule.conditions) {
+        if (!EvaluateBehaviorCondition(package, condition, actorInstance)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool CollectBehaviorEventActions(const ExternalModPackage& package, const std::string& behaviorId, const std::string& eventName,
+                                 const ExternalModActorInstance* actorInstance, int32_t maxSteps, int32_t& ioSteps,
+                                 std::vector<ExternalModAction>& outActions, std::string& outError) {
+    outActions.clear();
+    outError.clear();
+
+    const auto* behavior = FindBehaviorDefinition(package.runtime, behaviorId);
+    if (behavior == nullptr) {
+        outError = "unknown behaviorId: " + behaviorId;
+        return false;
+    }
+
+    std::vector<std::string> candidateEvents;
+    const std::string normalizedEvent = ToLower(eventName);
+    candidateEvents.push_back(normalizedEvent);
+    auto addAlias = [&](const std::string& alias) {
+        if (!alias.empty() &&
+            std::find(candidateEvents.begin(), candidateEvents.end(), alias) == candidateEvents.end()) {
+            candidateEvents.push_back(alias);
+        }
+    };
+
+    if (normalizedEvent == "onspawn") {
+        addAlias("oninit");
+    } else if (normalizedEvent == "ondestroy") {
+        addAlias("ondespawn");
+    } else if (normalizedEvent == "onitemgranted") {
+        addAlias("onitemequipped");
+    } else if (normalizedEvent == "onitemequipped") {
+        addAlias("onitemgranted");
+    }
+
+    for (const auto& candidateEvent : candidateEvents) {
+        const auto eventIt = behavior->events.find(candidateEvent);
+        if (eventIt == behavior->events.end()) {
+            continue;
+        }
+
+        for (const auto& rule : eventIt->second) {
+            if (!BehaviorRuleMatches(package, rule, actorInstance)) {
+                continue;
+            }
+            for (const auto& action : rule.actions) {
+                if (ioSteps >= maxSteps) {
+                    outError = "behavior action budget exceeded";
+                    return false;
+                }
+                outActions.push_back(action);
+                ++ioSteps;
+            }
+        }
+    }
+    return true;
+}
+
 } // namespace
 
 ExternalModManager& ExternalModManager::Instance() {
@@ -2087,13 +6009,22 @@ void ExternalModManager::Shutdown() {
 
     mPackages.clear();
     mExtraInventoryCells.clear();
+    gExternalModMissingDisplayListWarnings.clear();
+    gExternalModDisplayListDrawDebugLogs.clear();
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
+    ApplyModHookshotTextureOverrides(mPackages);
 }
 
 bool ExternalModManager::ReloadPackages(std::string& outError) {
     outError.clear();
     Initialize();
+
+    // During in-game reload, replay onLoadGame actions so granted-state-dependent overrides
+    // (icons, age requirements, hookshot textures, etc.) are restored immediately.
+    if (gPlayState != nullptr) {
+        OnLoadGame(gSaveContext.fileNum);
+    }
 
     size_t invalidCount = 0;
     for (const auto& package : mPackages) {
@@ -2120,6 +6051,10 @@ void ExternalModManager::DiscoverPackages() {
     std::unordered_set<std::string> seenIds;
     for (const auto& entry : std::filesystem::directory_iterator(modsPath)) {
         if (!entry.is_directory() && !entry.is_regular_file()) {
+            continue;
+        }
+        const auto entryName = entry.path().filename().generic_string();
+        if (!entryName.empty() && entryName[0] == '.') {
             continue;
         }
 
@@ -2180,8 +6115,41 @@ void ExternalModManager::Initialize() {
     }
 
     mPackages.clear();
+    gExternalModMissingDisplayListWarnings.clear();
+    gExternalModDisplayListDrawDebugLogs.clear();
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
+    ApplyModHookshotTextureOverrides(mPackages);
+
+    {
+        auto context = Ship::Context::GetInstance();
+        if (context != nullptr && context->GetResourceManager() != nullptr &&
+            context->GetResourceManager()->GetArchiveManager() != nullptr) {
+            auto archiveManager = context->GetResourceManager()->GetArchiveManager();
+            auto loadedArchives = archiveManager->GetArchives();
+            const auto legacyRoot = ToLower(GetExternalModsLegacyCacheRootPath().lexically_normal().generic_string());
+            const auto cacheRoot = ToLower(GetExternalModsCacheRootPath().lexically_normal().generic_string());
+
+            for (const auto& archive : *loadedArchives) {
+                if (archive == nullptr) {
+                    continue;
+                }
+                const auto archivePath = ToLower(std::filesystem::path(archive->GetPath()).lexically_normal().generic_string());
+                if ((!legacyRoot.empty() && archivePath.rfind(legacyRoot, 0) == 0) ||
+                    (!cacheRoot.empty() && archivePath.rfind(cacheRoot, 0) == 0)) {
+                    archiveManager->RemoveArchive(archive->GetPath());
+                }
+            }
+        }
+    }
+
+    {
+        std::error_code ec;
+        std::filesystem::remove_all(GetExternalModsLegacyCacheRootPath(), ec);
+        if (ec) {
+            SPDLOG_WARN("[ExternalMods] Failed to remove legacy cache folder: {}", ec.message());
+        }
+    }
 
     DiscoverPackages();
 
@@ -2251,6 +6219,7 @@ void ExternalModManager::Initialize() {
     SyncExtraInventoryGrid();
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
+    ApplyModHookshotTextureOverrides(mPackages);
 
     SPDLOG_INFO("[ExternalMods] Initialization complete: {} runtime(s)", runtimeCount);
 }
@@ -2485,6 +6454,9 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
 
         const bool hasExtendedHooksCapability = ManifestHasCapability(outManifest, "hooks.extended.v1");
         const bool hasActorVmCapability = ManifestHasCapability(outManifest, "actors.vm.v1");
+        const bool hasActorGenericCapability = ManifestHasCapability(outManifest, "actors.generic.v1");
+        const bool hasBehaviorCapability = ManifestHasCapability(outManifest, "behaviors.graph.v1");
+        const bool hasSceneBundleCapability = ManifestHasCapability(outManifest, "scenes.bundle.v1");
 
         if (json.contains("hookDefinitions")) {
             if (!hasExtendedHooksCapability) {
@@ -2507,8 +6479,8 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
         }
 
         if (json.contains("actorDefinitions")) {
-            if (!hasActorVmCapability) {
-                outError = "actorDefinitions requires capability actors.vm.v1";
+            if (!hasActorVmCapability && !hasActorGenericCapability) {
+                outError = "actorDefinitions requires capability actors.vm.v1 or actors.generic.v1";
                 return false;
             }
             if (!ValidateRequiredString(json, "actorDefinitions", outManifest.actorDefinitions, outError)) {
@@ -2521,8 +6493,48 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
                 return false;
             }
             outManifest.actorDefinitions = normalizedActorsPath.generic_string();
-        } else if (hasActorVmCapability) {
-            outError = "Missing required field for actors.vm.v1: actorDefinitions";
+        } else if (hasActorVmCapability || hasActorGenericCapability) {
+            outError = "Missing required field for actors.vm.v1/actors.generic.v1: actorDefinitions";
+            return false;
+        }
+
+        if (json.contains("behaviorDefinitions")) {
+            if (!hasBehaviorCapability) {
+                outError = "behaviorDefinitions requires capability behaviors.graph.v1";
+                return false;
+            }
+            if (!ValidateRequiredString(json, "behaviorDefinitions", outManifest.behaviorDefinitions, outError)) {
+                outError = "Missing or invalid field: behaviorDefinitions";
+                return false;
+            }
+            std::filesystem::path normalizedBehaviorPath;
+            if (!IsSafePackageRelativePath(outManifest.behaviorDefinitions, normalizedBehaviorPath, outError)) {
+                outError = "Invalid behaviorDefinitions: " + outError;
+                return false;
+            }
+            outManifest.behaviorDefinitions = normalizedBehaviorPath.generic_string();
+        } else if (hasBehaviorCapability) {
+            outError = "Missing required field for behaviors.graph.v1: behaviorDefinitions";
+            return false;
+        }
+
+        if (json.contains("sceneDefinitions")) {
+            if (!hasSceneBundleCapability) {
+                outError = "sceneDefinitions requires capability scenes.bundle.v1";
+                return false;
+            }
+            if (!ValidateRequiredString(json, "sceneDefinitions", outManifest.sceneDefinitions, outError)) {
+                outError = "Missing or invalid field: sceneDefinitions";
+                return false;
+            }
+            std::filesystem::path normalizedScenePath;
+            if (!IsSafePackageRelativePath(outManifest.sceneDefinitions, normalizedScenePath, outError)) {
+                outError = "Invalid sceneDefinitions: " + outError;
+                return false;
+            }
+            outManifest.sceneDefinitions = normalizedScenePath.generic_string();
+        } else if (hasSceneBundleCapability) {
+            outError = "Missing required field for scenes.bundle.v1: sceneDefinitions";
             return false;
         }
     }
@@ -2739,6 +6751,31 @@ bool ExternalModManager::TryParseEntryScript(const std::string& content, int32_t
         }
     }
 
+    if (json.contains("behaviorRuntime")) {
+        if (!json["behaviorRuntime"].is_object()) {
+            outError = "behaviorRuntime must be object";
+            return false;
+        }
+
+        const auto& behaviorRuntime = json["behaviorRuntime"];
+        if (behaviorRuntime.contains("maxStepsPerActorPerFrame")) {
+            if (!behaviorRuntime["maxStepsPerActorPerFrame"].is_number_integer()) {
+                outError = "behaviorRuntime.maxStepsPerActorPerFrame must be integer";
+                return false;
+            }
+            outRuntime.behaviorMaxStepsPerActorPerFrame =
+                std::clamp(behaviorRuntime["maxStepsPerActorPerFrame"].get<int32_t>(), 1, 1024);
+        }
+        if (behaviorRuntime.contains("maxStepsPerModPerFrame")) {
+            if (!behaviorRuntime["maxStepsPerModPerFrame"].is_number_integer()) {
+                outError = "behaviorRuntime.maxStepsPerModPerFrame must be integer";
+                return false;
+            }
+            outRuntime.behaviorMaxStepsPerModPerFrame =
+                std::clamp(behaviorRuntime["maxStepsPerModPerFrame"].get<int32_t>(), 1, 50000);
+        }
+    }
+
     return true;
 }
 
@@ -2777,6 +6814,8 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
         }
 
         ExternalModItemDefinition definition;
+        bool modelTextureWidthSpecified = false;
+        bool modelTextureHeightSpecified = false;
         if (!ValidateRequiredString(item, "id", definition.id, outError) ||
             !ValidateRequiredString(item, "displayName", definition.displayName, outError)) {
             outError = "items[" + std::to_string(i) + "]: " + outError;
@@ -2824,12 +6863,52 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
             definition.modelTextureAsset = item["modelTextureAsset"].get<std::string>();
         }
 
+        if (item.contains("modelDisplayList")) {
+            if (!item["modelDisplayList"].is_string()) {
+                outError = "items[" + std::to_string(i) + "].modelDisplayList must be string";
+                return false;
+            }
+            definition.modelDisplayList = item["modelDisplayList"].get<std::string>();
+        }
+
         if (item.contains("modelScale")) {
             if (!item["modelScale"].is_number()) {
                 outError = "items[" + std::to_string(i) + "].modelScale must be numeric";
                 return false;
             }
             definition.modelScale = item["modelScale"].get<float>();
+        }
+
+        if (item.contains("modelUvOrigin")) {
+            if (!ParseModelUvOrigin(item["modelUvOrigin"], definition.modelUvOrigin, outError)) {
+                outError = "items[" + std::to_string(i) + "].modelUvOrigin " + outError;
+                return false;
+            }
+        }
+
+        if (item.contains("modelTextureFilter")) {
+            if (!ParseModelTextureFilter(item["modelTextureFilter"], definition.modelTextureFilter, outError)) {
+                outError = "items[" + std::to_string(i) + "].modelTextureFilter " + outError;
+                return false;
+            }
+        }
+
+        if (item.contains("modelTextureWidth")) {
+            if (!item["modelTextureWidth"].is_number_integer()) {
+                outError = "items[" + std::to_string(i) + "].modelTextureWidth must be integer";
+                return false;
+            }
+            definition.modelTextureTargetWidth = item["modelTextureWidth"].get<int32_t>();
+            modelTextureWidthSpecified = true;
+        }
+
+        if (item.contains("modelTextureHeight")) {
+            if (!item["modelTextureHeight"].is_number_integer()) {
+                outError = "items[" + std::to_string(i) + "].modelTextureHeight must be integer";
+                return false;
+            }
+            definition.modelTextureTargetHeight = item["modelTextureHeight"].get<int32_t>();
+            modelTextureHeightSpecified = true;
         }
 
         if (item.contains("model")) {
@@ -2853,6 +6932,13 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
                 }
                 definition.modelTextureAsset = model["texture"].get<std::string>();
             }
+            if (model.contains("displayList")) {
+                if (!model["displayList"].is_string()) {
+                    outError = "items[" + std::to_string(i) + "].model.displayList must be string";
+                    return false;
+                }
+                definition.modelDisplayList = model["displayList"].get<std::string>();
+            }
             if (model.contains("scale")) {
                 if (!model["scale"].is_number()) {
                     outError = "items[" + std::to_string(i) + "].model.scale must be numeric";
@@ -2860,10 +6946,137 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
                 }
                 definition.modelScale = model["scale"].get<float>();
             }
+            if (model.contains("uvOrigin")) {
+                if (!ParseModelUvOrigin(model["uvOrigin"], definition.modelUvOrigin, outError)) {
+                    outError = "items[" + std::to_string(i) + "].model.uvOrigin " + outError;
+                    return false;
+                }
+            }
+            if (model.contains("textureFilter")) {
+                if (!ParseModelTextureFilter(model["textureFilter"], definition.modelTextureFilter, outError)) {
+                    outError = "items[" + std::to_string(i) + "].model.textureFilter " + outError;
+                    return false;
+                }
+            }
+            if (model.contains("textureWidth")) {
+                if (!model["textureWidth"].is_number_integer()) {
+                    outError = "items[" + std::to_string(i) + "].model.textureWidth must be integer";
+                    return false;
+                }
+                definition.modelTextureTargetWidth = model["textureWidth"].get<int32_t>();
+                modelTextureWidthSpecified = true;
+            }
+            if (model.contains("textureHeight")) {
+                if (!model["textureHeight"].is_number_integer()) {
+                    outError = "items[" + std::to_string(i) + "].model.textureHeight must be integer";
+                    return false;
+                }
+                definition.modelTextureTargetHeight = model["textureHeight"].get<int32_t>();
+                modelTextureHeightSpecified = true;
+            }
+        }
+
+        const bool hasModelTextureWidth = modelTextureWidthSpecified;
+        const bool hasModelTextureHeight = modelTextureHeightSpecified;
+        if (hasModelTextureWidth != hasModelTextureHeight) {
+            outError = "items[" + std::to_string(i) +
+                       "].modelTextureWidth/modelTextureHeight must be provided together";
+            return false;
+        }
+
+        if (hasModelTextureWidth) {
+            if (definition.modelTextureTargetWidth < 1 || definition.modelTextureTargetWidth > 1024 ||
+                definition.modelTextureTargetHeight < 1 || definition.modelTextureTargetHeight > 1024) {
+                outError = "items[" + std::to_string(i) +
+                           "].modelTextureWidth/modelTextureHeight must be in range 1..1024";
+                return false;
+            }
+        }
+
+        const auto parseOptionalHookshotTextureField = [&](const nlohmann::json& object, const char* key,
+                                                           std::string& outputPath) -> bool {
+            if (!object.contains(key)) {
+                return true;
+            }
+            if (!object[key].is_string()) {
+                outError = "items[" + std::to_string(i) + "]." + key + " must be string";
+                return false;
+            }
+            outputPath = object[key].get<std::string>();
+            return true;
+        };
+
+        if (!parseOptionalHookshotTextureField(item, "hookshotMetalTextureAsset", definition.hookshotMetalTextureAsset) ||
+            !parseOptionalHookshotTextureField(item, "hookshotHandleTextureAsset", definition.hookshotHandleTextureAsset) ||
+            !parseOptionalHookshotTextureField(item, "hookshotDesignTextureAsset", definition.hookshotDesignTextureAsset) ||
+            !parseOptionalHookshotTextureField(item, "hookshotChainTextureAsset", definition.hookshotChainTextureAsset) ||
+            !parseOptionalHookshotTextureField(item, "hookshotReticleTextureAsset",
+                                               definition.hookshotReticleTextureAsset)) {
+            return false;
+        }
+
+        if (item.contains("hookshotTextures")) {
+            if (!item["hookshotTextures"].is_object()) {
+                outError = "items[" + std::to_string(i) + "].hookshotTextures must be object";
+                return false;
+            }
+
+            const auto& hookshotTextures = item["hookshotTextures"];
+            if (!parseOptionalHookshotTextureField(hookshotTextures, "metal", definition.hookshotMetalTextureAsset) ||
+                !parseOptionalHookshotTextureField(hookshotTextures, "handle", definition.hookshotHandleTextureAsset) ||
+                !parseOptionalHookshotTextureField(hookshotTextures, "design", definition.hookshotDesignTextureAsset) ||
+                !parseOptionalHookshotTextureField(hookshotTextures, "chain", definition.hookshotChainTextureAsset) ||
+                !parseOptionalHookshotTextureField(hookshotTextures, "reticle",
+                                                   definition.hookshotReticleTextureAsset)) {
+                if (outError.rfind("items[", 0) != 0) {
+                    outError = "items[" + std::to_string(i) + "].hookshotTextures." + outError;
+                }
+                return false;
+            }
         }
 
         if (definition.modelAsset.empty() && !definition.modelTextureAsset.empty()) {
             outError = "items[" + std::to_string(i) + "].modelTextureAsset requires modelAsset";
+            return false;
+        }
+
+        if (hasModelTextureWidth && definition.modelTextureAsset.empty()) {
+            outError = "items[" + std::to_string(i) +
+                       "].modelTextureWidth/modelTextureHeight requires modelTextureAsset";
+            return false;
+        }
+
+        if (!definition.modelAsset.empty()) {
+            const auto modelExtension = ToLower(std::filesystem::path(definition.modelAsset).extension().string());
+            if (!modelExtension.empty() && modelExtension != ".obj" && modelExtension != ".otr" &&
+                modelExtension != ".o2r") {
+                outError =
+                    "items[" + std::to_string(i) +
+                    "].modelAsset extension must be .obj, .otr, .o2r, or a folder path without extension";
+                return false;
+            }
+
+            if (modelExtension != ".obj" && !definition.modelTextureAsset.empty()) {
+                outError = "items[" + std::to_string(i) + "].modelTextureAsset is only supported for .obj modelAsset";
+                return false;
+            }
+
+            if (modelExtension != ".obj" && hasModelTextureWidth) {
+                outError = "items[" + std::to_string(i) +
+                           "].modelTextureWidth/modelTextureHeight is only supported for .obj modelAsset";
+                return false;
+            }
+        }
+
+        if (!definition.modelDisplayList.empty()) {
+            if (definition.modelDisplayList.find('\0') != std::string::npos) {
+                outError = "items[" + std::to_string(i) + "].modelDisplayList contains invalid characters";
+                return false;
+            }
+        }
+
+        if (HasHookshotTextureAssetOverrides(definition) && definition.slot != ExternalModItemSlot::Hookshot) {
+            outError = "items[" + std::to_string(i) + "].hookshotTextures requires slot SLOT_HOOKSHOT";
             return false;
         }
 
@@ -2925,6 +7138,51 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
                 }
                 definition.onUpdateExport = behavior["exportOnUpdate"].get<std::string>();
             }
+
+            if (behavior.contains("onUseBehavior")) {
+                if (!behavior["onUseBehavior"].is_string()) {
+                    outError = "items[" + std::to_string(i) + "].behavior.onUseBehavior must be string";
+                    return false;
+                }
+                definition.onUseBehavior = behavior["onUseBehavior"].get<std::string>();
+            }
+
+            if (behavior.contains("onEquipBehavior")) {
+                if (!behavior["onEquipBehavior"].is_string()) {
+                    outError = "items[" + std::to_string(i) + "].behavior.onEquipBehavior must be string";
+                    return false;
+                }
+                definition.onEquipBehavior = behavior["onEquipBehavior"].get<std::string>();
+            }
+        }
+
+        if (item.contains("onUseBehavior")) {
+            if (!item["onUseBehavior"].is_string()) {
+                outError = "items[" + std::to_string(i) + "].onUseBehavior must be string";
+                return false;
+            }
+            definition.onUseBehavior = item["onUseBehavior"].get<std::string>();
+        }
+        if (item.contains("onEquipBehavior")) {
+            if (!item["onEquipBehavior"].is_string()) {
+                outError = "items[" + std::to_string(i) + "].onEquipBehavior must be string";
+                return false;
+            }
+            definition.onEquipBehavior = item["onEquipBehavior"].get<std::string>();
+        }
+        if (item.contains("acquireTextId")) {
+            if (!item["acquireTextId"].is_number_integer()) {
+                outError = "items[" + std::to_string(i) + "].acquireTextId must be integer";
+                return false;
+            }
+            definition.acquireTextId = item["acquireTextId"].get<int32_t>();
+        }
+        if (item.contains("persistentStateKey")) {
+            if (!item["persistentStateKey"].is_string()) {
+                outError = "items[" + std::to_string(i) + "].persistentStateKey must be string";
+                return false;
+            }
+            definition.persistentStateKey = item["persistentStateKey"].get<std::string>();
         }
 
         if (item.contains("grant")) {
@@ -3277,6 +7535,8 @@ bool ExternalModManager::TryParseActorDefinitions(const std::string& content, in
         const auto archetypeNormalized = ToLower(archetype);
         if (archetypeNormalized == "npc") {
             definition.archetype = ExternalModActorArchetype::Npc;
+            definition.interactable = true;
+            definition.interactDistance = 120.0f;
         } else if (archetypeNormalized == "prop") {
             definition.archetype = ExternalModActorArchetype::Prop;
         } else if (archetypeNormalized == "trigger") {
@@ -3349,6 +7609,33 @@ bool ExternalModManager::TryParseActorDefinitions(const std::string& content, in
             return false;
         }
 
+        if (actor.contains("behaviorId")) {
+            if (!actor["behaviorId"].is_string()) {
+                outError = "actors[" + std::to_string(i) + "].behaviorId must be string";
+                return false;
+            }
+            definition.behaviorId = actor["behaviorId"].get<std::string>();
+        }
+
+        if (actor.contains("components")) {
+            if (!actor["components"].is_array()) {
+                outError = "actors[" + std::to_string(i) + "].components must be array";
+                return false;
+            }
+            for (size_t componentIndex = 0; componentIndex < actor["components"].size(); ++componentIndex) {
+                if (!actor["components"][componentIndex].is_string()) {
+                    outError = "actors[" + std::to_string(i) + "].components[" + std::to_string(componentIndex) +
+                               "] must be string";
+                    return false;
+                }
+                const std::string component = actor["components"][componentIndex].get<std::string>();
+                definition.components.push_back(component);
+                if (ToLower(component) == "interactable") {
+                    definition.interactable = true;
+                }
+            }
+        }
+
         if (actor.contains("behavior")) {
             if (!actor["behavior"].is_object()) {
                 outError = "actors[" + std::to_string(i) + "].behavior must be object";
@@ -3375,6 +7662,33 @@ bool ExternalModManager::TryParseActorDefinitions(const std::string& content, in
                 outError = "actors[" + std::to_string(i) + "].behavior.exportOnDestroy: " + outError;
                 return false;
             }
+
+            if (behavior.contains("id")) {
+                if (!behavior["id"].is_string()) {
+                    outError = "actors[" + std::to_string(i) + "].behavior.id must be string";
+                    return false;
+                }
+                definition.behaviorId = behavior["id"].get<std::string>();
+            }
+            if (behavior.contains("interactable")) {
+                if (!behavior["interactable"].is_boolean()) {
+                    outError = "actors[" + std::to_string(i) + "].behavior.interactable must be boolean";
+                    return false;
+                }
+                definition.interactable = behavior["interactable"].get<bool>();
+            }
+            if (behavior.contains("interactDistance")) {
+                if (!behavior["interactDistance"].is_number()) {
+                    outError = "actors[" + std::to_string(i) + "].behavior.interactDistance must be number";
+                    return false;
+                }
+                definition.interactDistance = behavior["interactDistance"].get<float>();
+            }
+        }
+
+        if (definition.interactDistance <= 0.0f || definition.interactDistance > 5000.0f) {
+            outError = "actors[" + std::to_string(i) + "].behavior.interactDistance must be in (0, 5000]";
+            return false;
         }
 
         outDefinitions.push_back(std::move(definition));
@@ -3387,6 +7701,291 @@ bool ExternalModManager::TryParseActorDefinitions(const std::string& content, in
 
     return true;
 }
+
+bool ExternalModManager::TryParseBehaviorDefinitions(const std::string& content, int32_t apiVersion,
+                                                     std::vector<ExternalModBehaviorDefinition>& outDefinitions,
+                                                     std::string& outError) {
+    outDefinitions.clear();
+
+    if (apiVersion < kExternalModApiVersionV2) {
+        outError = "behaviorDefinitions requires apiVersion 2";
+        return false;
+    }
+
+    nlohmann::json json;
+    try {
+        json = nlohmann::json::parse(content);
+    } catch (const std::exception& ex) {
+        outError = std::string("behaviors.json parse error: ") + ex.what();
+        return false;
+    }
+
+    const nlohmann::json* behaviors = nullptr;
+    if (json.is_array()) {
+        behaviors = &json;
+    } else if (json.is_object() && json.contains("behaviors") && json["behaviors"].is_array()) {
+        behaviors = &json["behaviors"];
+    }
+
+    if (behaviors == nullptr) {
+        outError = "behaviors.json must be an array or object with behaviors[]";
+        return false;
+    }
+
+    std::unordered_set<std::string> seenIds;
+    for (size_t i = 0; i < behaviors->size(); ++i) {
+        const auto& behavior = (*behaviors)[i];
+        if (!behavior.is_object()) {
+            outError = "behaviors[" + std::to_string(i) + "] must be object";
+            return false;
+        }
+
+        ExternalModBehaviorDefinition definition;
+        if (!ValidateRequiredString(behavior, "id", definition.id, outError)) {
+            outError = "behaviors[" + std::to_string(i) + "].id: " + outError;
+            return false;
+        }
+        if (!seenIds.insert(definition.id).second) {
+            outError = "Duplicate behavior id: " + definition.id;
+            return false;
+        }
+
+        if (!behavior.contains("events") || !behavior["events"].is_object()) {
+            outError = "behaviors[" + std::to_string(i) + "].events must be object";
+            return false;
+        }
+
+        for (const auto& [eventNameRaw, eventBody] : behavior["events"].items()) {
+            if (!eventBody.is_array()) {
+                outError = "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + " must be array";
+                return false;
+            }
+
+            const std::string eventName = ToLower(eventNameRaw);
+            std::vector<ExternalModBehaviorRule> rules;
+
+            const bool looksLikeRuleArray =
+                !eventBody.empty() && eventBody[0].is_object() &&
+                (eventBody[0].contains("actions") || eventBody[0].contains("conditions") || eventBody[0].contains("chance"));
+
+            if (looksLikeRuleArray) {
+                for (size_t j = 0; j < eventBody.size(); ++j) {
+                    const auto& ruleJson = eventBody[j];
+                    if (!ruleJson.is_object()) {
+                        outError = "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + "[" +
+                                   std::to_string(j) + "] must be object";
+                        return false;
+                    }
+
+                    ExternalModBehaviorRule rule;
+                    if (ruleJson.contains("chance")) {
+                        if (!ruleJson["chance"].is_number()) {
+                            outError = "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + "[" +
+                                       std::to_string(j) + "].chance must be number";
+                            return false;
+                        }
+                        rule.randomChance = std::clamp(ruleJson["chance"].get<float>(), 0.0f, 1.0f);
+                    }
+
+                    if (ruleJson.contains("conditions")) {
+                        if (!ruleJson["conditions"].is_array()) {
+                            outError = "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + "[" +
+                                       std::to_string(j) + "].conditions must be array";
+                            return false;
+                        }
+                        for (size_t k = 0; k < ruleJson["conditions"].size(); ++k) {
+                            const auto& conditionJson = ruleJson["conditions"][k];
+                            if (!conditionJson.is_object()) {
+                                outError = "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + "[" +
+                                           std::to_string(j) + "].conditions[" + std::to_string(k) + "] must be object";
+                                return false;
+                            }
+
+                            ExternalModBehaviorCondition condition;
+                            if (conditionJson.contains("condition")) {
+                                if (!conditionJson["condition"].is_string()) {
+                                    outError = "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + "[" +
+                                               std::to_string(j) + "].conditions[" + std::to_string(k) +
+                                               "].condition must be string";
+                                    return false;
+                                }
+                                condition.type = conditionJson["condition"].get<std::string>();
+                            } else if (conditionJson.contains("type")) {
+                                if (!conditionJson["type"].is_string()) {
+                                    outError = "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + "[" +
+                                               std::to_string(j) + "].conditions[" + std::to_string(k) +
+                                               "].type must be string";
+                                    return false;
+                                }
+                                condition.type = conditionJson["type"].get<std::string>();
+                            } else {
+                                outError = "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + "[" +
+                                           std::to_string(j) + "].conditions[" + std::to_string(k) +
+                                           "] requires condition";
+                                return false;
+                            }
+
+                            if (conditionJson.contains("scope")) {
+                                if (!conditionJson["scope"].is_string()) {
+                                    outError = "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + "[" +
+                                               std::to_string(j) + "].conditions[" + std::to_string(k) +
+                                               "].scope must be string";
+                                    return false;
+                                }
+                                condition.scope = conditionJson["scope"].get<std::string>();
+                            }
+                            if (conditionJson.contains("key")) {
+                                if (!conditionJson["key"].is_string()) {
+                                    outError = "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + "[" +
+                                               std::to_string(j) + "].conditions[" + std::to_string(k) +
+                                               "].key must be string";
+                                    return false;
+                                }
+                                condition.key = conditionJson["key"].get<std::string>();
+                            }
+                            if (conditionJson.contains("op")) {
+                                if (!conditionJson["op"].is_string()) {
+                                    outError = "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + "[" +
+                                               std::to_string(j) + "].conditions[" + std::to_string(k) +
+                                               "].op must be string";
+                                    return false;
+                                }
+                                condition.op = conditionJson["op"].get<std::string>();
+                            }
+                            if (conditionJson.contains("value")) {
+                                if (conditionJson["value"].is_string()) {
+                                    condition.value = conditionJson["value"].get<std::string>();
+                                } else if (conditionJson["value"].is_boolean()) {
+                                    condition.value = conditionJson["value"].get<bool>() ? "true" : "false";
+                                } else if (conditionJson["value"].is_number()) {
+                                    condition.numberValue = conditionJson["value"].get<float>();
+                                    condition.hasNumberValue = true;
+                                    condition.value = std::to_string(condition.numberValue);
+                                } else {
+                                    outError = "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + "[" +
+                                               std::to_string(j) + "].conditions[" + std::to_string(k) +
+                                               "].value must be string|number|boolean";
+                                    return false;
+                                }
+                            }
+                            if (conditionJson.contains("number")) {
+                                if (!conditionJson["number"].is_number()) {
+                                    outError = "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + "[" +
+                                               std::to_string(j) + "].conditions[" + std::to_string(k) +
+                                               "].number must be number";
+                                    return false;
+                                }
+                                condition.numberValue = conditionJson["number"].get<float>();
+                                condition.hasNumberValue = true;
+                            }
+                            if (condition.hasNumberValue && condition.value.empty()) {
+                                condition.value = std::to_string(condition.numberValue);
+                            }
+
+                            rule.conditions.push_back(std::move(condition));
+                        }
+                    }
+
+                    if (!ruleJson.contains("actions")) {
+                        outError = "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + "[" +
+                                   std::to_string(j) + "] requires actions";
+                        return false;
+                    }
+                    if (!ParseActionArray(ruleJson["actions"], apiVersion, "actions", rule.actions, outError)) {
+                        outError = "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + "[" +
+                                   std::to_string(j) + "]: " + outError;
+                        return false;
+                    }
+                    rules.push_back(std::move(rule));
+                }
+            } else {
+                ExternalModBehaviorRule singleRule;
+                if (!ParseActionArray(eventBody, apiVersion, "actions", singleRule.actions, outError)) {
+                    outError =
+                        "behaviors[" + std::to_string(i) + "].events." + eventNameRaw + ": " + outError;
+                    return false;
+                }
+                rules.push_back(std::move(singleRule));
+            }
+
+            if (!rules.empty()) {
+                definition.events[eventName] = std::move(rules);
+            }
+        }
+
+        if (definition.events.empty()) {
+            outError = "behaviors[" + std::to_string(i) + "] must define at least one event";
+            return false;
+        }
+        outDefinitions.push_back(std::move(definition));
+    }
+
+    return true;
+}
+
+bool ExternalModManager::TryParseSceneDefinitions(const std::string& content, int32_t apiVersion,
+                                                  std::vector<ExternalModSceneDefinition>& outDefinitions,
+                                                  std::string& outError) {
+    outDefinitions.clear();
+
+    if (apiVersion < kExternalModApiVersionV2) {
+        outError = "sceneDefinitions requires apiVersion 2";
+        return false;
+    }
+
+    nlohmann::json json;
+    try {
+        json = nlohmann::json::parse(content);
+    } catch (const std::exception& ex) {
+        outError = std::string("scenes.json parse error: ") + ex.what();
+        return false;
+    }
+
+    const nlohmann::json* scenes = nullptr;
+    if (json.is_array()) {
+        scenes = &json;
+    } else if (json.is_object() && json.contains("scenes") && json["scenes"].is_array()) {
+        scenes = &json["scenes"];
+    }
+    if (scenes == nullptr) {
+        outError = "scenes.json must be an array or object with scenes[]";
+        return false;
+    }
+
+    std::unordered_set<std::string> seenIds;
+    for (size_t i = 0; i < scenes->size(); ++i) {
+        const auto& scene = (*scenes)[i];
+        if (!scene.is_object()) {
+            outError = "scenes[" + std::to_string(i) + "] must be object";
+            return false;
+        }
+
+        ExternalModSceneDefinition definition;
+        if (!ValidateRequiredString(scene, "id", definition.id, outError)) {
+            outError = "scenes[" + std::to_string(i) + "].id: " + outError;
+            return false;
+        }
+        if (!seenIds.insert(definition.id).second) {
+            outError = "Duplicate scene id: " + definition.id;
+            return false;
+        }
+
+        const char* entranceKey =
+            scene.contains("entrance") ? "entrance" : (scene.contains("fallbackEntrance") ? "fallbackEntrance" : nullptr);
+        if (entranceKey != nullptr) {
+            if (!ParseAliasedInt16(scene[entranceKey], kEntranceAliases, entranceKey, definition.entranceIndex, outError)) {
+                outError = "scenes[" + std::to_string(i) + "]." + entranceKey + ": " + outError;
+                return false;
+            }
+            definition.hasEntrance = true;
+        }
+
+        outDefinitions.push_back(std::move(definition));
+    }
+
+    return true;
+}
+
 bool ExternalModManager::ReadManifestFromDirectory(const std::filesystem::path& dirPath, std::string& outContent,
                                                    std::string& outError) {
     return ReadFileFromDirectory(dirPath / "mod.json", kMaxManifestBytes, outContent, outError);
@@ -3582,6 +8181,7 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
 
         for (size_t i = 0; i < runtime.itemDefinitions.size(); ++i) {
             auto& definition = runtime.itemDefinitions[i];
+            definition.sourceModId = package.manifest.id;
             if (!definition.iconAsset.empty()) {
                 std::filesystem::path iconPath;
                 if (!IsSafePackageRelativePath(definition.iconAsset, iconPath, outError)) {
@@ -3606,57 +8206,448 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
                 }
             }
 
-            if (definition.modelAsset.empty()) {
-                continue;
-            }
-
-            std::filesystem::path modelPath;
-            if (!IsSafePackageRelativePath(definition.modelAsset, modelPath, outError)) {
-                outError = "items[" + std::to_string(i) + "].modelAsset " + outError;
-                return false;
-            }
-
-            if (ToLower(modelPath.extension().string()) != ".obj") {
-                outError = "items[" + std::to_string(i) + "].modelAsset must point to a .obj file";
-                return false;
-            }
-
-            std::string modelContent;
-            if (!ReadFileFromPackage(package, modelPath, kMaxItemModelBytes, modelContent, outError)) {
-                outError = "items[" + std::to_string(i) + "].modelAsset read failed: " + outError;
-                return false;
-            }
-
-            if (!TryParseObjCustomModel(modelContent, definition.modelScale, definition.customModelTriangles, outError)) {
-                outError = "items[" + std::to_string(i) + "].modelAsset parse failed: " + outError;
-                return false;
-            }
-
-            if (!definition.modelTextureAsset.empty()) {
-                std::filesystem::path modelTexturePath;
-                if (!IsSafePackageRelativePath(definition.modelTextureAsset, modelTexturePath, outError)) {
-                    outError = "items[" + std::to_string(i) + "].modelTextureAsset " + outError;
+            if (!definition.modelAsset.empty()) {
+                std::filesystem::path modelPath;
+                if (!IsSafePackageRelativePath(definition.modelAsset, modelPath, outError)) {
+                    outError = "items[" + std::to_string(i) + "].modelAsset " + outError;
                     return false;
                 }
 
-                if (ToLower(modelTexturePath.extension().string()) != ".png") {
-                    outError = "items[" + std::to_string(i) + "].modelTextureAsset must point to a .png file";
+                auto convertFast64SourceModel = [&](const std::string& modelIncContent,
+                                                    const std::filesystem::path& objectPathHint) -> bool {
+                    std::string conversionError;
+                    Fast64ConversionOutput conversion;
+                    const std::string objectName =
+                        DeriveObjectNameFromPath(objectPathHint, definition.id.empty() ? "external_model" : definition.id);
+                    auto resolveFast64TextureInclude = [&](const std::string& includePath, const Fast64TextureMeta& meta,
+                                                           std::vector<uint8_t>& outBytes,
+                                                           int32_t& outDecodedWidth, int32_t& outDecodedHeight,
+                                                           std::string& resolveError) -> bool {
+                        outBytes.clear();
+                        outDecodedWidth = 0;
+                        outDecodedHeight = 0;
+                        std::vector<std::filesystem::path> candidates;
+                        std::unordered_set<std::string> seen;
+
+                        auto addCandidate = [&](const std::filesystem::path& candidate) {
+                            if (candidate.empty()) {
+                                return;
+                            }
+                            const auto normalized = candidate.lexically_normal();
+                            const auto key = normalized.generic_string();
+                            if (!key.empty() && seen.insert(key).second) {
+                                candidates.push_back(normalized);
+                            }
+                        };
+                        auto addPngVariants = [&](const std::filesystem::path& candidate) {
+                            addCandidate(candidate);
+                            std::string raw = candidate.generic_string();
+                            if (EndsWithString(raw, ".inc.c")) {
+                                addCandidate(std::filesystem::path(raw.substr(0, raw.size() - 6) + ".png"));
+                            }
+                        };
+
+                        const std::filesystem::path includeRelativePath(includePath);
+                        addPngVariants(includeRelativePath);
+                        addPngVariants(objectPathHint / includeRelativePath);
+                        addPngVariants(objectPathHint / includeRelativePath.filename());
+
+                        std::string lastReadError;
+                        for (const auto& candidate : candidates) {
+                            if (ToLower(candidate.extension().string()) != ".png") {
+                                continue;
+                            }
+
+                            std::filesystem::path safeCandidate;
+                            std::string safeError;
+                            if (!IsSafePackageRelativePath(candidate.generic_string(), safeCandidate, safeError)) {
+                                continue;
+                            }
+
+                            std::vector<uint8_t> pngBytes;
+                            std::string readError;
+                            if (!ReadBinaryFromPackage(package, safeCandidate, kMaxItemModelTextureBytes, pngBytes,
+                                                       readError)) {
+                                lastReadError = readError;
+                                continue;
+                            }
+
+                            std::vector<uint8_t> decodedRgba32;
+                            int32_t decodedWidth = 0;
+                            int32_t decodedHeight = 0;
+                            if (!TryDecodePngToRgba32(pngBytes, decodedRgba32, decodedWidth, decodedHeight, resolveError)) {
+                                resolveError = "failed decoding " + safeCandidate.generic_string() + ": " + resolveError;
+                                return false;
+                            }
+
+                            const std::string normalizedSize = NormalizeTextureSizeToken(meta.size);
+                            if (meta.format == "G_IM_FMT_RGBA" && normalizedSize == "G_IM_SIZ_32b") {
+                                outDecodedWidth = decodedWidth;
+                                outDecodedHeight = decodedHeight;
+                                outBytes = std::move(decodedRgba32);
+                                return true;
+                            }
+                            if (meta.format == "G_IM_FMT_RGBA" && normalizedSize == "G_IM_SIZ_16b") {
+                                outDecodedWidth = decodedWidth;
+                                outDecodedHeight = decodedHeight;
+                                ConvertRgba32ToRgba16(decodedRgba32, outBytes);
+                                return true;
+                            }
+                            if (meta.format == "G_IM_FMT_I" && normalizedSize == "G_IM_SIZ_8b") {
+                                outDecodedWidth = decodedWidth;
+                                outDecodedHeight = decodedHeight;
+                                ConvertRgba32ToI8(decodedRgba32, outBytes);
+                                return true;
+                            }
+
+                            resolveError =
+                                "unsupported include texture format/size: " + meta.format + "|" + normalizedSize;
+                            return false;
+                        }
+
+                        resolveError = "png not found for include " + includePath;
+                        if (!lastReadError.empty()) {
+                            resolveError += " (" + lastReadError + ")";
+                        }
+                        return false;
+                    };
+                    SPDLOG_INFO("[ExternalMods] Converting Fast64 source for {}.{} (object={}, bytes={})",
+                                package.manifest.id, definition.id, objectName, modelIncContent.size());
+                    if (!ConvertFast64SourceToResources(modelIncContent, objectName, resolveFast64TextureInclude,
+                                                        definition.modelTextureFilter,
+                                                        package.manifest.id + "." + definition.id, conversion,
+                                                        conversionError)) {
+                        outError = "items[" + std::to_string(i) + "].modelAsset conversion failed: " + conversionError;
+                        return false;
+                    }
+
+                    const auto generatedArchivePath =
+                        BuildGeneratedFast64ArchivePath(package.manifest.id, definition.id, objectName).lexically_normal();
+                    auto generatedArchive =
+                        CreateGeneratedFast64Archive(generatedArchivePath, std::move(conversion.resources), conversionError);
+                    if (generatedArchive == nullptr) {
+                        outError =
+                            "items[" + std::to_string(i) + "].modelAsset conversion archive failed: " + conversionError;
+                        return false;
+                    }
+
+                    runtime.generatedAssetArchives.push_back(generatedArchive);
+                    if (definition.modelDisplayList.empty()) {
+                        definition.modelDisplayList = conversion.rootDisplayListPath;
+                    }
+                    SPDLOG_INFO(
+                        "[ExternalMods] Converted Fast64 model for {}.{} -> {} (memory archive, rootDL={}, vtxArrays={}, dlArrays={}, textures={})",
+                        package.manifest.id, definition.id, generatedArchivePath.generic_string(),
+                        conversion.rootDisplayListPath, conversion.vertexArrayCount, conversion.displayListArrayCount,
+                        conversion.textureCount);
+                    return true;
+                };
+
+                const auto modelExtension = ToLower(modelPath.extension().string());
+                if (modelExtension == ".obj") {
+                    std::string modelContent;
+                    if (!ReadFileFromPackage(package, modelPath, kMaxItemModelBytes, modelContent, outError)) {
+                        outError = "items[" + std::to_string(i) + "].modelAsset read failed: " + outError;
+                        return false;
+                    }
+                    int32_t modelTextureWidth = kItemModelTextureSize;
+                    int32_t modelTextureHeight = kItemModelTextureSize;
+                    definition.modelTextureWidth = 0;
+                    definition.modelTextureHeight = 0;
+                    definition.modelTextureHasTransparency = false;
+                    std::string resolvedModelTextureAsset = definition.modelTextureAsset;
+                    std::vector<uint8_t> modelTextureRgba32ForUvHeuristic;
+
+                    if (resolvedModelTextureAsset.empty()) {
+                        std::string mtlPathFromObj;
+                        if (TryExtractObjMaterialLibraryPath(modelContent, mtlPathFromObj)) {
+                            const std::filesystem::path unresolvedMtlPath = modelPath.parent_path() / mtlPathFromObj;
+                            std::filesystem::path mtlPath;
+                            std::string resolveError;
+                            if (IsSafePackageRelativePath(unresolvedMtlPath.generic_string(), mtlPath, resolveError)) {
+                                std::string mtlContent;
+                                if (ReadFileFromPackage(package, mtlPath, kMaxObjMaterialBytes, mtlContent, resolveError)) {
+                                    std::string mapKdTexturePath;
+                                    if (TryExtractMtlDiffuseTexturePath(mtlContent, mapKdTexturePath)) {
+                                        const std::filesystem::path unresolvedTexturePath = mtlPath.parent_path() / mapKdTexturePath;
+                                        std::filesystem::path texturePath;
+                                        if (IsSafePackageRelativePath(unresolvedTexturePath.generic_string(), texturePath,
+                                                                      resolveError) &&
+                                            ToLower(texturePath.extension().string()) == ".png") {
+                                            resolvedModelTextureAsset = texturePath.generic_string();
+                                            definition.modelTextureAsset = resolvedModelTextureAsset;
+                                            SPDLOG_INFO(
+                                                "[ExternalMods] Resolved OBJ material texture for {}.{}: {}",
+                                                package.manifest.id, definition.id, resolvedModelTextureAsset);
+                                        } else {
+                                            SPDLOG_WARN(
+                                                "[ExternalMods] Ignored OBJ material texture for {}.{}: {}",
+                                                package.manifest.id, definition.id,
+                                                resolveError.empty() ? "unsupported extension (expected .png)" :
+                                                                       resolveError);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (!resolvedModelTextureAsset.empty()) {
+                        std::filesystem::path modelTexturePath;
+                        if (!IsSafePackageRelativePath(resolvedModelTextureAsset, modelTexturePath, outError)) {
+                            outError = "items[" + std::to_string(i) + "].modelTextureAsset " + outError;
+                            return false;
+                        }
+
+                        if (ToLower(modelTexturePath.extension().string()) != ".png") {
+                            outError = "items[" + std::to_string(i) + "].modelTextureAsset must point to a .png file";
+                            return false;
+                        }
+
+                        std::vector<uint8_t> modelTextureBytes;
+                        if (!ReadBinaryFromPackage(package, modelTexturePath, kMaxItemModelTextureBytes, modelTextureBytes,
+                                                   outError)) {
+                            outError = "items[" + std::to_string(i) + "].modelTextureAsset read failed: " + outError;
+                            return false;
+                        }
+
+                        std::vector<uint8_t> decodedModelTextureRgba32;
+                        int32_t decodedModelTextureWidth = 0;
+                        int32_t decodedModelTextureHeight = 0;
+                        if (!TryDecodePngToRgba32(modelTextureBytes, decodedModelTextureRgba32, decodedModelTextureWidth,
+                                                  decodedModelTextureHeight, outError)) {
+                            outError = "items[" + std::to_string(i) + "].modelTextureAsset decode failed: " + outError;
+                            return false;
+                        }
+
+                        bool resizedTexture = false;
+                        int32_t effectiveModelTextureWidth = decodedModelTextureWidth;
+                        int32_t effectiveModelTextureHeight = decodedModelTextureHeight;
+                        if (definition.modelTextureTargetWidth > 0 && definition.modelTextureTargetHeight > 0 &&
+                            (definition.modelTextureTargetWidth != decodedModelTextureWidth ||
+                             definition.modelTextureTargetHeight != decodedModelTextureHeight)) {
+                            std::vector<uint8_t> resizedRgba32;
+                            ResizeRgba32Nearest(decodedModelTextureRgba32, decodedModelTextureWidth,
+                                                decodedModelTextureHeight, definition.modelTextureTargetWidth,
+                                                definition.modelTextureTargetHeight, resizedRgba32);
+                            decodedModelTextureRgba32 = std::move(resizedRgba32);
+                            effectiveModelTextureWidth = definition.modelTextureTargetWidth;
+                            effectiveModelTextureHeight = definition.modelTextureTargetHeight;
+                            resizedTexture = true;
+                        }
+
+                        modelTextureRgba32ForUvHeuristic = decodedModelTextureRgba32;
+                        definition.modelTextureHasTransparency =
+                            TextureHasMixedAlphaCoverage(modelTextureRgba32ForUvHeuristic, effectiveModelTextureWidth,
+                                                         effectiveModelTextureHeight);
+                        const auto effectiveFilter =
+                            ResolveModelTextureFilter(definition.modelTextureFilter, definition.modelTextureHasTransparency);
+                        const bool useAggressiveOpaqueFill = false;
+                        NormalizeModelTextureForOpaqueRendering(decodedModelTextureRgba32, effectiveModelTextureWidth,
+                                                                effectiveModelTextureHeight, useAggressiveOpaqueFill);
+                        ConvertRgba32ToRgba16(decodedModelTextureRgba32, definition.modelTextureRgba32);
+
+                        definition.modelTextureWidth = effectiveModelTextureWidth;
+                        definition.modelTextureHeight = effectiveModelTextureHeight;
+                        modelTextureWidth = effectiveModelTextureWidth;
+                        modelTextureHeight = effectiveModelTextureHeight;
+                        SPDLOG_INFO("[ExternalMods] Loaded custom model texture for {}.{}: {}x{} from {}", package.manifest.id,
+                                    definition.id, definition.modelTextureWidth, definition.modelTextureHeight,
+                                    modelTexturePath.generic_string());
+                        SPDLOG_INFO(
+                            "[ExternalMods] Custom model texture settings for {}.{}: filter={} (configured={}, mixedAlpha={}), "
+                            "effectiveSize={}x{}, resized={}, opaqueFill={}",
+                            package.manifest.id, definition.id, GetModelTextureFilterName(effectiveFilter),
+                            GetModelTextureFilterName(definition.modelTextureFilter),
+                            definition.modelTextureHasTransparency ? "true" : "false", definition.modelTextureWidth,
+                            definition.modelTextureHeight, resizedTexture ? "true" : "false",
+                            useAggressiveOpaqueFill ? "aggressive" : "local");
+                    }
+
+                    if (!TryParseObjCustomModel(modelContent, definition.modelScale, modelTextureWidth,
+                                                modelTextureHeight, definition.modelUvOrigin,
+                                                modelTextureRgba32ForUvHeuristic.empty() ? nullptr :
+                                                                                            &modelTextureRgba32ForUvHeuristic,
+                                                package.manifest.id, definition.id, definition.customModelTriangles,
+                                                outError)) {
+                        outError = "items[" + std::to_string(i) + "].modelAsset parse failed: " + outError;
+                        return false;
+                    }
+                } else if (modelExtension.empty()) {
+                    if (!definition.modelTextureAsset.empty()) {
+                        outError = "items[" + std::to_string(i) +
+                                   "].modelTextureAsset is only supported for .obj modelAsset";
+                        return false;
+                    }
+
+                    std::filesystem::path modelIncPath;
+                    if (!IsSafePackageRelativePath((modelPath / "model.inc.c").generic_string(), modelIncPath, outError)) {
+                        outError = "items[" + std::to_string(i) + "].modelAsset invalid model.inc.c path: " + outError;
+                        return false;
+                    }
+
+                    std::filesystem::path headerPath;
+                    if (!IsSafePackageRelativePath((modelPath / "header.h").generic_string(), headerPath, outError)) {
+                        outError = "items[" + std::to_string(i) + "].modelAsset invalid header.h path: " + outError;
+                        return false;
+                    }
+
+                    std::string modelIncContent;
+                    if (!ReadFileFromPackage(package, modelIncPath, kMaxItemModelBytes, modelIncContent, outError)) {
+                        outError = "items[" + std::to_string(i) + "].modelAsset missing model.inc.c: " + outError;
+                        return false;
+                    }
+
+                    std::string headerContent;
+                    if (!ReadFileFromPackage(package, headerPath, kMaxItemModelBytes, headerContent, outError)) {
+                        outError = "items[" + std::to_string(i) + "].modelAsset missing header.h: " + outError;
+                        return false;
+                    }
+                    (void)headerContent;
+
+                    if (!convertFast64SourceModel(modelIncContent, modelPath)) {
+                        return false;
+                    }
+                } else if (HasSupportedArchiveExtension(modelPath)) {
+                    if (!definition.modelTextureAsset.empty()) {
+                        outError = "items[" + std::to_string(i) +
+                                   "].modelTextureAsset is only supported for .obj modelAsset";
+                        return false;
+                    }
+
+                    std::vector<uint8_t> archiveBytes;
+                    std::string archiveReadError;
+                    if (!ReadBinaryFromPackage(package, modelPath, kMaxAssetBytes, archiveBytes, archiveReadError)) {
+                        outError = "items[" + std::to_string(i) + "].modelAsset read failed: " + archiveReadError;
+                        return false;
+                    }
+
+                    Fast64ArchiveInspection inspection;
+                    std::string inspectError;
+                    const bool inspected = InspectFast64ArchiveBytes(archiveBytes, inspection, inspectError);
+                    if (!inspected && definition.modelDisplayList.empty()) {
+                        outError = "items[" + std::to_string(i) +
+                                   "].modelAsset inspection failed (set modelDisplayList or use Fast64 source folder): " +
+                                   inspectError;
+                        return false;
+                    }
+
+                    bool convertedFromSourceArchive = false;
+                    if (inspected) {
+                        if (definition.modelDisplayList.empty() && !inspection.rootDisplayListPath.empty()) {
+                            definition.modelDisplayList = inspection.rootDisplayListPath;
+                        }
+
+                        if (inspection.hasFast64Source && !inspection.hasDisplayListResources) {
+                            std::filesystem::path objectHint =
+                                inspection.objectNameHint.empty() ? modelPath.stem() : std::filesystem::path(inspection.objectNameHint);
+                            if (!convertFast64SourceModel(inspection.modelIncContent, objectHint)) {
+                                return false;
+                            }
+                            convertedFromSourceArchive = true;
+                        }
+                    } else {
+                        SPDLOG_WARN("[ExternalMods] Failed to inspect model archive for {}.{} ({}). Falling back to "
+                                    "configured modelDisplayList",
+                                    package.manifest.id, definition.id, inspectError);
+                    }
+
+                    if (!convertedFromSourceArchive) {
+                        if (definition.modelDisplayList.empty()) {
+                            outError = "items[" + std::to_string(i) +
+                                       "].modelDisplayList is required when modelAsset archive has no detectable display list";
+                            return false;
+                        }
+
+                        const auto normalizedArchivePath = modelPath.generic_string();
+                        const auto alreadyListed =
+                            std::find(package.manifest.assets.begin(), package.manifest.assets.end(), normalizedArchivePath) !=
+                            package.manifest.assets.end();
+                        if (!alreadyListed) {
+                            package.manifest.assets.push_back(normalizedArchivePath);
+                        }
+                    }
+                } else {
+                    outError = "items[" + std::to_string(i) +
+                               "].modelAsset must point to .obj, .otr/.o2r, or a folder with model.inc.c + header.h";
                     return false;
                 }
+            }
 
-                std::vector<uint8_t> modelTextureBytes;
-                if (!ReadBinaryFromPackage(package, modelTexturePath, kMaxItemIconBytes, modelTextureBytes, outError)) {
-                    outError = "items[" + std::to_string(i) + "].modelTextureAsset read failed: " + outError;
-                    return false;
+            if (HasHookshotTextureAssetOverrides(definition)) {
+                auto decodeHookshotTexture = [&](const std::string& assetPath, const char* fieldName, int32_t targetWidth,
+                                                 int32_t targetHeight, std::vector<uint8_t>& outRgba32) -> bool {
+                    std::filesystem::path texturePath;
+                    if (!IsSafePackageRelativePath(assetPath, texturePath, outError)) {
+                        outError = "items[" + std::to_string(i) + "]." + fieldName + " " + outError;
+                        return false;
+                    }
+
+                    if (ToLower(texturePath.extension().string()) != ".png") {
+                        outError = "items[" + std::to_string(i) + "]." + fieldName + " must point to a .png file";
+                        return false;
+                    }
+
+                    std::vector<uint8_t> textureBytes;
+                    if (!ReadBinaryFromPackage(package, texturePath, kMaxHookshotTextureBytes, textureBytes, outError)) {
+                        outError = "items[" + std::to_string(i) + "]." + fieldName + " read failed: " + outError;
+                        return false;
+                    }
+
+                    if (!TryDecodePngToRgba32FixedSize(textureBytes, targetWidth, targetHeight, outRgba32, outError)) {
+                        outError = "items[" + std::to_string(i) + "]." + fieldName + " decode failed: " + outError;
+                        return false;
+                    }
+
+                    return true;
+                };
+
+                if (!definition.hookshotMetalTextureAsset.empty()) {
+                    std::vector<uint8_t> rgba32;
+                    if (!decodeHookshotTexture(definition.hookshotMetalTextureAsset, "hookshotMetalTextureAsset",
+                                               kHookshotMetalTextureWidth, kHookshotMetalTextureHeight, rgba32)) {
+                        return false;
+                    }
+                    ConvertRgba32ToRgba16(rgba32, definition.hookshotMetalTextureRgba16);
                 }
 
-                if (!TryDecodeItemIconPng(modelTextureBytes, definition.modelTextureRgba32, outError)) {
-                    outError = "items[" + std::to_string(i) + "].modelTextureAsset decode failed: " + outError;
-                    return false;
+                if (!definition.hookshotHandleTextureAsset.empty()) {
+                    std::vector<uint8_t> rgba32;
+                    if (!decodeHookshotTexture(definition.hookshotHandleTextureAsset, "hookshotHandleTextureAsset",
+                                               kHookshotHandleTextureWidth, kHookshotHandleTextureHeight, rgba32)) {
+                        return false;
+                    }
+                    ConvertRgba32ToCi8AndTlut(rgba32, definition.hookshotHandleTextureCi8,
+                                              definition.hookshotHandleTextureTlutRgba16);
                 }
 
-                definition.modelTextureWidth = kItemModelTextureSize;
-                definition.modelTextureHeight = kItemModelTextureSize;
+                if (!definition.hookshotDesignTextureAsset.empty()) {
+                    std::vector<uint8_t> rgba32;
+                    if (!decodeHookshotTexture(definition.hookshotDesignTextureAsset, "hookshotDesignTextureAsset",
+                                               kHookshotDesignTextureWidth, kHookshotDesignTextureHeight, rgba32)) {
+                        return false;
+                    }
+                    ConvertRgba32ToCi8AndTlut(rgba32, definition.hookshotDesignTextureCi8,
+                                              definition.hookshotDesignTextureTlutRgba16);
+                }
+
+                if (!definition.hookshotChainTextureAsset.empty()) {
+                    std::vector<uint8_t> rgba32;
+                    if (!decodeHookshotTexture(definition.hookshotChainTextureAsset, "hookshotChainTextureAsset",
+                                               kHookshotChainTextureWidth, kHookshotChainTextureHeight, rgba32)) {
+                        return false;
+                    }
+                    ConvertRgba32ToRgba16(rgba32, definition.hookshotChainTextureRgba16);
+                }
+
+                if (!definition.hookshotReticleTextureAsset.empty()) {
+                    std::vector<uint8_t> rgba32;
+                    if (!decodeHookshotTexture(definition.hookshotReticleTextureAsset, "hookshotReticleTextureAsset",
+                                               kHookshotReticleTextureWidth, kHookshotReticleTextureHeight, rgba32)) {
+                        return false;
+                    }
+                    ConvertRgba32ToI8(rgba32, definition.hookshotReticleTextureI8);
+                }
             }
         }
 
@@ -3701,7 +8692,8 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
             }
         }
 
-        if (ManifestHasCapability(package.manifest, "actors.vm.v1")) {
+        if (ManifestHasCapability(package.manifest, "actors.vm.v1") ||
+            ManifestHasCapability(package.manifest, "actors.generic.v1")) {
             std::filesystem::path actorsPath;
             if (!IsSafePackageRelativePath(package.manifest.actorDefinitions, actorsPath, outError)) {
                 outError = "Invalid actorDefinitions: " + outError;
@@ -3715,6 +8707,42 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
             }
 
             if (!TryParseActorDefinitions(actorsContent, runtime.apiVersion, runtime.actorDefinitions, outError)) {
+                return false;
+            }
+        }
+
+        if (ManifestHasCapability(package.manifest, "behaviors.graph.v1")) {
+            std::filesystem::path behaviorPath;
+            if (!IsSafePackageRelativePath(package.manifest.behaviorDefinitions, behaviorPath, outError)) {
+                outError = "Invalid behaviorDefinitions: " + outError;
+                return false;
+            }
+
+            std::string behaviorContent;
+            if (!ReadFileFromPackage(package, behaviorPath, kMaxScriptBytes, behaviorContent, outError)) {
+                outError = "Failed to read behaviorDefinitions: " + outError;
+                return false;
+            }
+
+            if (!TryParseBehaviorDefinitions(behaviorContent, runtime.apiVersion, runtime.behaviorDefinitions, outError)) {
+                return false;
+            }
+        }
+
+        if (ManifestHasCapability(package.manifest, "scenes.bundle.v1")) {
+            std::filesystem::path scenePath;
+            if (!IsSafePackageRelativePath(package.manifest.sceneDefinitions, scenePath, outError)) {
+                outError = "Invalid sceneDefinitions: " + outError;
+                return false;
+            }
+
+            std::string sceneContent;
+            if (!ReadFileFromPackage(package, scenePath, kMaxScriptBytes, sceneContent, outError)) {
+                outError = "Failed to read sceneDefinitions: " + outError;
+                return false;
+            }
+
+            if (!TryParseSceneDefinitions(sceneContent, runtime.apiVersion, runtime.sceneDefinitions, outError)) {
                 return false;
             }
         }
@@ -3817,44 +8845,72 @@ bool ExternalModManager::IsSafePackageRelativePath(const std::string& pathValue,
 }
 
 void ExternalModManager::UnmountAssetsForPackage(ExternalModPackage& package) {
-    if (package.mountedAssets.empty()) {
-        return;
-    }
-
-    auto context = Ship::Context::GetInstance();
-    if (context == nullptr || context->GetResourceManager() == nullptr ||
-        context->GetResourceManager()->GetArchiveManager() == nullptr) {
+    if (!package.mountedAssets.empty()) {
+        auto context = Ship::Context::GetInstance();
+        if (context != nullptr && context->GetResourceManager() != nullptr &&
+            context->GetResourceManager()->GetArchiveManager() != nullptr) {
+            auto archiveManager = context->GetResourceManager()->GetArchiveManager();
+            for (const auto& mountedPath : package.mountedAssets) {
+                const auto removedCount = archiveManager->RemoveArchive(mountedPath.generic_string());
+                if (removedCount == 0) {
+                    SPDLOG_WARN("[ExternalMods] Attempted to unmount archive not present: {}", mountedPath.string());
+                }
+            }
+        }
         package.mountedAssets.clear();
-        return;
     }
 
-    auto* archiveManager = context->GetResourceManager()->GetArchiveManager();
-    for (const auto& mountedPath : package.mountedAssets) {
-        const auto removedCount = archiveManager->RemoveArchive(mountedPath.generic_string());
-        if (removedCount == 0) {
-            SPDLOG_WARN("[ExternalMods] Attempted to unmount archive not present: {}", mountedPath.string());
+    if (package.isZip || !package.runtime.generatedAssetPaths.empty()) {
+        const std::array<std::filesystem::path, 2> cacheRoots = {
+            GetExternalModsCacheRootPath(),
+            GetExternalModsLegacyCacheRootPath(),
+        };
+        for (const auto& cacheRoot : cacheRoots) {
+            std::error_code ec;
+            std::filesystem::remove_all(cacheRoot / SanitizeModIdForPath(package.manifest.id), ec);
+            if (ec) {
+                SPDLOG_WARN("[ExternalMods] Failed to remove extracted cache for {}: {}", package.manifest.id,
+                            ec.message());
+            }
+            ec.clear();
+            std::filesystem::remove_all(cacheRoot / "_generated" / SanitizeModIdForPath(package.manifest.id), ec);
+            if (ec) {
+                SPDLOG_WARN("[ExternalMods] Failed to remove generated cache for {}: {}", package.manifest.id,
+                            ec.message());
+            }
         }
     }
-
-    if (package.isZip) {
-        std::error_code ec;
-        const auto cacheRoot = std::filesystem::path(Ship::Context::GetPathRelativeToAppDirectory("mods/.external-mod-cache", "soh"));
-        std::filesystem::remove_all(cacheRoot / SanitizeModIdForPath(package.manifest.id), ec);
-        if (ec) {
-            SPDLOG_WARN("[ExternalMods] Failed to remove extracted cache for {}: {}", package.manifest.id, ec.message());
-        }
-    }
-
-    package.mountedAssets.clear();
+    package.runtime.generatedAssetPaths.clear();
+    package.runtime.generatedAssetArchives.clear();
 }
 
 bool ExternalModManager::MountAssetsForPackage(ExternalModPackage& package, std::string& outError) {
-    if (package.manifest.assets.empty()) {
+    if (package.manifest.assets.empty() && package.runtime.generatedAssetPaths.empty() &&
+        package.runtime.generatedAssetArchives.empty()) {
         return true;
     }
 
     std::vector<std::filesystem::path> preparedAssets;
-    preparedAssets.reserve(package.manifest.assets.size());
+    std::vector<std::shared_ptr<Ship::Archive>> preparedGeneratedAssets;
+    preparedAssets.reserve(package.manifest.assets.size() + package.runtime.generatedAssetPaths.size());
+    preparedGeneratedAssets.reserve(package.runtime.generatedAssetArchives.size());
+    std::unordered_set<std::string> preparedAssetSet;
+
+    auto addPreparedAsset = [&](const std::filesystem::path& assetPath) {
+        const auto normalized = assetPath.lexically_normal();
+        if (preparedAssetSet.insert(normalized.generic_string()).second) {
+            preparedAssets.push_back(normalized);
+        }
+    };
+    auto addPreparedGeneratedAsset = [&](const std::shared_ptr<Ship::Archive>& archive) {
+        if (archive == nullptr) {
+            return;
+        }
+        const auto key = archive->GetPath();
+        if (preparedAssetSet.insert(key).second) {
+            preparedGeneratedAssets.push_back(archive);
+        }
+    };
 
     if (!package.isZip) {
         for (size_t i = 0; i < package.manifest.assets.size(); ++i) {
@@ -3872,11 +8928,10 @@ bool ExternalModManager::MountAssetsForPackage(ExternalModPackage& package, std:
                 outError = "Asset escapes package directory: " + assetRelativePath.generic_string();
                 return false;
             }
-            preparedAssets.push_back(fullAssetPath.lexically_normal());
+            addPreparedAsset(fullAssetPath);
         }
     } else {
-        const auto cacheRoot = std::filesystem::path(
-            Ship::Context::GetPathRelativeToAppDirectory("mods/.external-mod-cache", "soh"));
+        const auto cacheRoot = GetExternalModsCacheRootPath();
         const auto packageCacheRoot = cacheRoot / SanitizeModIdForPath(package.manifest.id);
         std::error_code ec;
         std::filesystem::remove_all(packageCacheRoot, ec);
@@ -3918,8 +8973,23 @@ bool ExternalModManager::MountAssetsForPackage(ExternalModPackage& package, std:
                 outError = "Failed writing extracted asset: " + extractedPath.generic_string();
                 return false;
             }
-            preparedAssets.push_back(extractedPath.lexically_normal());
+            addPreparedAsset(extractedPath);
         }
+    }
+
+    for (const auto& generatedAssetPath : package.runtime.generatedAssetPaths) {
+        if (!std::filesystem::exists(generatedAssetPath) || !std::filesystem::is_regular_file(generatedAssetPath)) {
+            outError = "Generated asset not found: " + generatedAssetPath.generic_string();
+            return false;
+        }
+        addPreparedAsset(generatedAssetPath);
+    }
+    for (const auto& generatedArchive : package.runtime.generatedAssetArchives) {
+        if (generatedArchive == nullptr) {
+            outError = "Generated in-memory asset is null";
+            return false;
+        }
+        addPreparedGeneratedAsset(generatedArchive);
     }
 
     auto context = Ship::Context::GetInstance();
@@ -3933,6 +9003,17 @@ bool ExternalModManager::MountAssetsForPackage(ExternalModPackage& package, std:
         context->GetResourceManager()->GetArchiveManager()->AddArchive(assetPath.generic_string());
         package.mountedAssets.push_back(assetPath);
     }
+    for (const auto& archive : preparedGeneratedAssets) {
+        if (!archive->IsLoaded()) {
+            archive->Load();
+        }
+        const auto mountedArchive = context->GetResourceManager()->GetArchiveManager()->AddArchive(archive);
+        if (mountedArchive == nullptr) {
+            outError = "Failed to mount generated in-memory asset: " + archive->GetPath();
+            return false;
+        }
+        package.mountedAssets.push_back(std::filesystem::path(archive->GetPath()));
+    }
 
     return true;
 }
@@ -3942,6 +9023,14 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
         if (!package.runtime.enabled) {
             return;
         }
+
+        ExternalModActorInstance* actionActorInstance = nullptr;
+        if (action.actorHandle != 0) {
+            actionActorInstance = FindActorInstance(package.runtime, action.actorHandle);
+        }
+        const bool hasActorCapability =
+            ManifestHasCapability(package.manifest, "actors.vm.v1") ||
+            ManifestHasCapability(package.manifest, "actors.generic.v1");
 
         switch (action.type) {
             case ExternalModActionType::ShowNotification:
@@ -3959,12 +9048,54 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                     SPDLOG_INFO("[ExternalMods] {} triggered teleport via {}", package.manifest.id, triggerName);
                 }
                 break;
+            case ExternalModActionType::LoadModScene: {
+                const auto* sceneDefinition = FindSceneDefinition(package.runtime, action.modSceneId);
+                if (sceneDefinition == nullptr || !sceneDefinition->hasEntrance) {
+                    DisableRuntime(package, "loadModScene references unknown sceneId or scene without entrance: " +
+                                                action.modSceneId);
+                    return;
+                }
+                if (gPlayState != nullptr) {
+                    gPlayState->nextEntranceIndex = sceneDefinition->entranceIndex;
+                    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+                    gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
+                    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK_FAST;
+                }
+                break;
+            }
             case ExternalModActionType::PressButton:
                 if (gPlayState != nullptr && action.buttonMask != 0) {
                     auto* input = &gPlayState->state.input[0];
                     const auto mask = static_cast<uint16_t>(action.buttonMask & 0xFFFF);
                     input->press.button |= mask;
                     input->cur.button |= mask;
+                }
+                break;
+            case ExternalModActionType::ShowEquippedItemGet:
+                if (gPlayState != nullptr) {
+                    int32_t resolvedButtonMask = 0;
+                    int32_t slotIndex = 0;
+                    if (!TryResolveEquippedActionButtonMask(action.buttonMask, resolvedButtonMask, slotIndex)) {
+                        break;
+                    }
+
+                    if (slotIndex < 0 || slotIndex >= static_cast<int32_t>(ARRAY_COUNT(gSaveContext.equips.buttonItems))) {
+                        break;
+                    }
+
+                    const int32_t equippedItemId = gSaveContext.equips.buttonItems[slotIndex];
+                    if (equippedItemId == ITEM_NONE) {
+                        break;
+                    }
+
+                    const auto getItemId = RetrieveGetItemIDFromItemID(static_cast<ItemID>(equippedItemId));
+                    const int32_t getItemIdValue = static_cast<int32_t>(getItemId);
+                    if (getItemIdValue <= GI_NONE || getItemIdValue >= GI_MAX) {
+                        break;
+                    }
+
+                    GetItemEntry entry = ItemTable_Retrieve(static_cast<int16_t>(getItemIdValue));
+                    GiveItemEntryWithoutActor(gPlayState, entry);
                 }
                 break;
             case ExternalModActionType::SpawnSmoke:
@@ -4011,8 +9142,8 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                 }
                 break;
             case ExternalModActionType::SpawnActor: {
-                if (!ManifestHasCapability(package.manifest, "actors.vm.v1")) {
-                    DisableRuntime(package, "spawnActor requires capability actors.vm.v1");
+                if (!hasActorCapability) {
+                    DisableRuntime(package, "spawnActor requires capability actors.vm.v1 or actors.generic.v1");
                     return;
                 }
                 const auto* definition = FindActorDefinition(package.runtime, action.actorDefinitionId);
@@ -4026,25 +9157,61 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                     DisableRuntime(package, "spawnActor failed: " + actorError);
                     return;
                 }
+                if (!definition->behaviorId.empty()) {
+                    auto* spawnedInstance = FindActorInstance(package.runtime, spawnedHandle);
+                    if (spawnedInstance != nullptr) {
+                        int32_t stepCount = package.runtime.behaviorStepsThisFrame;
+                        std::vector<ExternalModAction> onSpawnActions;
+                        std::string behaviorError;
+                        if (!CollectBehaviorEventActions(package, definition->behaviorId, "onspawn", spawnedInstance,
+                                                         package.runtime.behaviorMaxStepsPerModPerFrame, stepCount,
+                                                         onSpawnActions, behaviorError)) {
+                            DisableRuntime(package, "spawnActor behavior failed: " + behaviorError);
+                            return;
+                        }
+                        package.runtime.behaviorStepsThisFrame = stepCount;
+                        if (!onSpawnActions.empty()) {
+                            ExecuteActions(package, onSpawnActions, "actorOnSpawn");
+                        }
+                    }
+                }
                 SPDLOG_INFO("[ExternalMods] {} spawned virtual actor '{}' handle={} via {}", package.manifest.id,
                             definition->id, spawnedHandle, triggerName);
                 break;
             }
             case ExternalModActionType::DespawnActor: {
-                if (!ManifestHasCapability(package.manifest, "actors.vm.v1")) {
-                    DisableRuntime(package, "despawnActor requires capability actors.vm.v1");
+                if (!hasActorCapability) {
+                    DisableRuntime(package, "despawnActor requires capability actors.vm.v1 or actors.generic.v1");
                     return;
+                }
+                std::vector<ExternalModAction> onDestroyActions;
+                if (actionActorInstance != nullptr) {
+                    const auto* definition = FindActorDefinition(package.runtime, actionActorInstance->definitionId);
+                    if (definition != nullptr && !definition->behaviorId.empty()) {
+                        int32_t stepCount = package.runtime.behaviorStepsThisFrame;
+                        std::string behaviorError;
+                        if (!CollectBehaviorEventActions(package, definition->behaviorId, "ondestroy", actionActorInstance,
+                                                         package.runtime.behaviorMaxStepsPerModPerFrame, stepCount,
+                                                         onDestroyActions, behaviorError)) {
+                            DisableRuntime(package, "despawnActor behavior failed: " + behaviorError);
+                            return;
+                        }
+                        package.runtime.behaviorStepsThisFrame = stepCount;
+                    }
                 }
                 std::string actorError;
                 if (!DespawnActorInstance(package, action.actorHandle, actorError)) {
                     DisableRuntime(package, "despawnActor failed: " + actorError);
                     return;
                 }
+                if (!onDestroyActions.empty()) {
+                    ExecuteActions(package, onDestroyActions, "actorOnDestroy");
+                }
                 break;
             }
             case ExternalModActionType::SetActorState: {
-                if (!ManifestHasCapability(package.manifest, "actors.vm.v1")) {
-                    DisableRuntime(package, "setActorState requires capability actors.vm.v1");
+                if (!hasActorCapability) {
+                    DisableRuntime(package, "setActorState requires capability actors.vm.v1 or actors.generic.v1");
                     return;
                 }
                 auto* instance = FindActorInstance(package.runtime, action.actorHandle);
@@ -4054,11 +9221,17 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                     return;
                 }
                 instance->state[action.actorStateKey] = action.actorStateValue;
+                if (ToLower(action.actorStateKey) == "timerframes") {
+                    float parsedValue = 0.0f;
+                    if (TryParseFloatString(action.actorStateValue, parsedValue)) {
+                        instance->timerFrames = std::max(0, static_cast<int32_t>(std::lround(parsedValue)));
+                    }
+                }
                 break;
             }
             case ExternalModActionType::MoveActorToPathNode: {
-                if (!ManifestHasCapability(package.manifest, "actors.vm.v1")) {
-                    DisableRuntime(package, "moveActorToPathNode requires capability actors.vm.v1");
+                if (!hasActorCapability) {
+                    DisableRuntime(package, "moveActorToPathNode requires capability actors.vm.v1 or actors.generic.v1");
                     return;
                 }
                 auto* instance = FindActorInstance(package.runtime, action.actorHandle);
@@ -4080,6 +9253,34 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                     Message_StartTextbox(gPlayState, static_cast<uint16_t>(action.dialogId & 0xFFFF), nullptr);
                 }
                 break;
+            case ExternalModActionType::SetSwitchFlag:
+                if (gPlayState != nullptr) {
+                    Flags_SetSwitch(gPlayState, action.intValue & 0x3F);
+                }
+                break;
+            case ExternalModActionType::ClearSwitchFlag:
+                if (gPlayState != nullptr) {
+                    Flags_UnsetSwitch(gPlayState, action.intValue & 0x3F);
+                }
+                break;
+            case ExternalModActionType::SetEventChkInf:
+                Flags_SetEventChkInf(action.intValue);
+                break;
+            case ExternalModActionType::ClearEventChkInf:
+                Flags_UnsetEventChkInf(action.intValue);
+                break;
+            case ExternalModActionType::SetInfTable:
+                Flags_SetInfTable(action.intValue);
+                break;
+            case ExternalModActionType::ClearInfTable:
+                Flags_UnsetInfTable(action.intValue);
+                break;
+            case ExternalModActionType::GiveRupees:
+                Rupees_ChangeBy(std::max(0, action.intValue));
+                break;
+            case ExternalModActionType::TakeRupees:
+                Rupees_ChangeBy(-std::max(0, action.intValue));
+                break;
             case ExternalModActionType::GrantModItem: {
                 auto itemIt = std::find_if(package.runtime.itemDefinitions.begin(), package.runtime.itemDefinitions.end(),
                                            [&action](const ExternalModItemDefinition& item) {
@@ -4092,7 +9293,40 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                 itemIt->granted = true;
                 itemIt->cooldownRemaining = 0;
                 GrantItemForDefinitionIfMissing(*itemIt);
-                SyncExtraInventoryGrid();
+                if (gPlayState != nullptr && itemIt->acquireTextId > 0) {
+                    Message_StartTextbox(gPlayState, static_cast<uint16_t>(itemIt->acquireTextId & 0xFFFF), nullptr);
+                }
+                if (!itemIt->onEquipBehavior.empty()) {
+                    auto runItemEvent = [&](const std::string& eventName, const char* source) {
+                        int32_t stepCount = package.runtime.behaviorStepsThisFrame;
+                        std::vector<ExternalModAction> behaviorActions;
+                        std::string behaviorError;
+                        if (!CollectBehaviorEventActions(package, itemIt->onEquipBehavior, eventName, nullptr,
+                                                         package.runtime.behaviorMaxStepsPerModPerFrame, stepCount,
+                                                         behaviorActions, behaviorError)) {
+                            DisableRuntime(package, std::string(source) + " failed: " + behaviorError);
+                            return;
+                        }
+                        package.runtime.behaviorStepsThisFrame = stepCount;
+                        if (!behaviorActions.empty()) {
+                            ExecuteActions(package, behaviorActions, source);
+                        }
+                    };
+                    runItemEvent("onitemgranted", "onItemGrantedBehavior");
+                    if (!package.runtime.enabled) {
+                        return;
+                    }
+                    runItemEvent("onitemequipped", "onItemEquippedBehavior");
+                    if (!package.runtime.enabled) {
+                        return;
+                    }
+                }
+                auto& manager = ExternalModManager::Instance();
+                manager.SyncExtraInventoryGrid();
+                auto& packages = manager.GetPackages();
+                ApplyModItemAgeRequirementOverrides(packages);
+                ApplyModItemIconOverrides(packages);
+                ApplyModHookshotTextureOverrides(packages);
                 break;
             }
             case ExternalModActionType::RevokeModItem: {
@@ -4106,7 +9340,68 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                 }
                 itemIt->granted = false;
                 itemIt->cooldownRemaining = 0;
-                SyncExtraInventoryGrid();
+                auto& manager = ExternalModManager::Instance();
+                manager.SyncExtraInventoryGrid();
+                auto& packages = manager.GetPackages();
+                ApplyModItemAgeRequirementOverrides(packages);
+                ApplyModItemIconOverrides(packages);
+                ApplyModHookshotTextureOverrides(packages);
+                break;
+            }
+            case ExternalModActionType::SetVar: {
+                auto* blackboard = GetBlackboardScopeForAction(package, actionActorInstance, action.variableScope);
+                if (blackboard == nullptr) {
+                    DisableRuntime(package, "setVar uses invalid scope or actor context: " + action.variableScope);
+                    return;
+                }
+                (*blackboard)[action.variableKey] = action.variableValue;
+                break;
+            }
+            case ExternalModActionType::AddVar: {
+                auto* blackboard = GetBlackboardScopeForAction(package, actionActorInstance, action.variableScope);
+                if (blackboard == nullptr) {
+                    DisableRuntime(package, "addVar uses invalid scope or actor context: " + action.variableScope);
+                    return;
+                }
+                float currentValue = 0.0f;
+                if (const auto it = blackboard->find(action.variableKey); it != blackboard->end()) {
+                    TryParseFloatString(it->second, currentValue);
+                }
+                currentValue += action.variableNumber;
+                (*blackboard)[action.variableKey] = std::to_string(currentValue);
+                break;
+            }
+            case ExternalModActionType::ClampVar: {
+                auto* blackboard = GetBlackboardScopeForAction(package, actionActorInstance, action.variableScope);
+                if (blackboard == nullptr) {
+                    DisableRuntime(package, "clampVar uses invalid scope or actor context: " + action.variableScope);
+                    return;
+                }
+                float currentValue = 0.0f;
+                if (const auto it = blackboard->find(action.variableKey); it != blackboard->end()) {
+                    TryParseFloatString(it->second, currentValue);
+                }
+                currentValue = std::clamp(currentValue, action.variableMin, action.variableMax);
+                (*blackboard)[action.variableKey] = std::to_string(currentValue);
+                break;
+            }
+            case ExternalModActionType::EmitSignal:
+                package.runtime.pendingSignals.emplace_back(action.actorHandle, action.signalName);
+                break;
+            case ExternalModActionType::CallBehavior: {
+                int32_t stepCount = package.runtime.behaviorStepsThisFrame;
+                std::vector<ExternalModAction> behaviorActions;
+                std::string behaviorError;
+                if (!CollectBehaviorEventActions(package, action.behaviorId, "manual", actionActorInstance,
+                                                 package.runtime.behaviorMaxStepsPerModPerFrame, stepCount, behaviorActions,
+                                                 behaviorError)) {
+                    DisableRuntime(package, "callBehavior failed: " + behaviorError);
+                    return;
+                }
+                package.runtime.behaviorStepsThisFrame = stepCount;
+                if (!behaviorActions.empty()) {
+                    ExecuteActions(package, behaviorActions, "callBehavior");
+                }
                 break;
             }
             case ExternalModActionType::InvokeWasm: {
@@ -4306,6 +9601,7 @@ void ExternalModManager::OnLoadGame(int32_t fileNum) {
         }
 
         package.runtime.hookCallsThisFrame = 0;
+        package.runtime.behaviorStepsThisFrame = 0;
 
         try {
             for (auto& trigger : package.runtime.frameTriggers) {
@@ -4324,6 +9620,14 @@ void ExternalModManager::OnLoadGame(int32_t fileNum) {
             }
             package.runtime.actorInstances.clear();
             package.runtime.nextActorHandle = 1;
+            package.runtime.pendingSignals.clear();
+            package.runtime.sceneBlackboard.clear();
+            package.runtime.lastSceneSeen = -1;
+            package.runtime.lastRoomSeen = -1;
+            package.runtime.hasLastDayNight = false;
+            package.runtime.lastIsNight = false;
+            package.runtime.switchSnapshotInitialized = false;
+            package.runtime.switchSnapshot.fill(0);
 
             ExecuteActions(package, package.runtime.onGameLoadedActions, "onGameLoaded");
         } catch (const std::exception& ex) {
@@ -4342,6 +9646,7 @@ void ExternalModManager::OnLoadGame(int32_t fileNum) {
     SyncExtraInventoryGrid();
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
+    ApplyModHookshotTextureOverrides(mPackages);
 }
 
 void ExternalModManager::OnExitGame(int32_t fileNum) {
@@ -4360,8 +9665,17 @@ void ExternalModManager::OnSceneInit(int16_t sceneNum) {
             continue;
         }
         try {
+            package.runtime.behaviorStepsThisFrame = 0;
+            package.runtime.pendingSignals.clear();
             package.runtime.actorInstances.clear();
             package.runtime.nextActorHandle = 1;
+            package.runtime.lastSceneSeen = sceneNum;
+            package.runtime.lastRoomSeen =
+                gPlayState != nullptr ? static_cast<int16_t>(gPlayState->roomCtx.curRoom.num) : static_cast<int16_t>(-1);
+            package.runtime.hasLastDayNight = false;
+            package.runtime.lastIsNight = false;
+            package.runtime.switchSnapshotInitialized = false;
+            package.runtime.switchSnapshot.fill(0);
 
             for (const auto& actorDefinition : package.runtime.actorDefinitions) {
                 if (actorDefinition.sceneId != sceneNum) {
@@ -4373,6 +9687,24 @@ void ExternalModManager::OnSceneInit(int16_t sceneNum) {
                     DisableRuntime(package, "Scene actor spawn failed: " + actorError);
                     break;
                 }
+                if (!actorDefinition.behaviorId.empty()) {
+                    auto* spawnedInstance = FindActorInstance(package.runtime, spawnedHandle);
+                    if (spawnedInstance != nullptr) {
+                        int32_t stepCount = package.runtime.behaviorStepsThisFrame;
+                        std::vector<ExternalModAction> onSpawnActions;
+                        std::string behaviorError;
+                        if (!CollectBehaviorEventActions(package, actorDefinition.behaviorId, "onspawn", spawnedInstance,
+                                                         package.runtime.behaviorMaxStepsPerModPerFrame, stepCount,
+                                                         onSpawnActions, behaviorError)) {
+                            DisableRuntime(package, "Scene actor onSpawn behavior failed: " + behaviorError);
+                            break;
+                        }
+                        package.runtime.behaviorStepsThisFrame = stepCount;
+                        if (!onSpawnActions.empty()) {
+                            ExecuteActions(package, onSpawnActions, "sceneActorOnSpawn");
+                        }
+                    }
+                }
             }
 
             for (auto& trigger : package.runtime.frameTriggers) {
@@ -4382,6 +9714,34 @@ void ExternalModManager::OnSceneInit(int16_t sceneNum) {
             for (const auto& sceneAction : package.runtime.onSceneInitActions) {
                 if (sceneAction.sceneId == sceneNum) {
                     ExecuteActions(package, sceneAction.actions, "onSceneInit");
+                }
+            }
+
+            if (!package.runtime.enabled) {
+                continue;
+            }
+
+            for (auto& instance : package.runtime.actorInstances) {
+                if (!instance.active || instance.sceneId != sceneNum) {
+                    continue;
+                }
+                const auto* actorDefinition = FindActorDefinition(package.runtime, instance.definitionId);
+                if (actorDefinition == nullptr || actorDefinition->behaviorId.empty()) {
+                    continue;
+                }
+
+                int32_t stepCount = package.runtime.behaviorStepsThisFrame;
+                std::vector<ExternalModAction> onSceneEnterActions;
+                std::string behaviorError;
+                if (!CollectBehaviorEventActions(package, actorDefinition->behaviorId, "onsceneenter", &instance,
+                                                 package.runtime.behaviorMaxStepsPerModPerFrame, stepCount,
+                                                 onSceneEnterActions, behaviorError)) {
+                    DisableRuntime(package, "onSceneEnter behavior failed: " + behaviorError);
+                    break;
+                }
+                package.runtime.behaviorStepsThisFrame = stepCount;
+                if (!onSceneEnterActions.empty()) {
+                    ExecuteActions(package, onSceneEnterActions, "onSceneEnter");
                 }
             }
         } catch (const std::exception& ex) {
@@ -4398,6 +9758,7 @@ void ExternalModManager::OnSceneInit(int16_t sceneNum) {
     SyncExtraInventoryGrid();
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
+    ApplyModHookshotTextureOverrides(mPackages);
 }
 
 void ExternalModManager::OnAfterSceneCommands(int16_t sceneNum) {
@@ -4469,6 +9830,7 @@ void ExternalModManager::OnGameFrameUpdate() {
     const auto sceneNum = static_cast<int16_t>(gPlayState->sceneNum);
     const auto playerPos = player->actor.world.pos;
     auto* input = &gPlayState->state.input[0];
+    const bool interactPressed = MatchPressedButtonMask(input->cur.button, input->prev.button, BTN_A);
 
     for (auto& package : mPackages) {
         if (!package.runtime.enabled) {
@@ -4476,6 +9838,7 @@ void ExternalModManager::OnGameFrameUpdate() {
         }
 
         package.runtime.hookCallsThisFrame = 0;
+        package.runtime.behaviorStepsThisFrame = 0;
         for (auto& hookSubscription : package.runtime.hookSubscriptions) {
             if (hookSubscription.cooldownRemaining > 0) {
                 hookSubscription.cooldownRemaining--;
@@ -4543,9 +9906,41 @@ void ExternalModManager::OnGameFrameUpdate() {
             }
 
             for (auto& item : package.runtime.itemDefinitions) {
+                const bool cooldownWasActive = item.cooldownRemaining > 0;
                 if (item.cooldownRemaining > 0) {
                     item.cooldownRemaining--;
                 }
+
+                if (cooldownWasActive && item.cooldownRemaining == 0) {
+                    std::unordered_set<std::string> behaviorIds;
+                    if (!item.onUseBehavior.empty()) {
+                        behaviorIds.insert(item.onUseBehavior);
+                    }
+                    if (!item.onEquipBehavior.empty()) {
+                        behaviorIds.insert(item.onEquipBehavior);
+                    }
+
+                    for (const auto& behaviorId : behaviorIds) {
+                        int32_t stepCount = package.runtime.behaviorStepsThisFrame;
+                        std::vector<ExternalModAction> cooldownActions;
+                        std::string behaviorError;
+                        if (!CollectBehaviorEventActions(package, behaviorId, "oncooldownready", nullptr,
+                                                         package.runtime.behaviorMaxStepsPerModPerFrame, stepCount,
+                                                         cooldownActions, behaviorError)) {
+                            DisableRuntime(package, "onCooldownReady behavior failed for item '" + item.id +
+                                                        "': " + behaviorError);
+                            break;
+                        }
+                        package.runtime.behaviorStepsThisFrame = stepCount;
+                        if (!cooldownActions.empty()) {
+                            ExecuteActions(package, cooldownActions, "itemOnCooldownReady");
+                        }
+                    }
+                    if (!package.runtime.enabled) {
+                        break;
+                    }
+                }
+
                 if (!item.granted || item.onUpdateExport.empty()) {
                     continue;
                 }
@@ -4562,6 +9957,45 @@ void ExternalModManager::OnGameFrameUpdate() {
 
             if (!package.runtime.enabled) {
                 continue;
+            }
+
+            const int16_t currentRoomNum = static_cast<int16_t>(gPlayState->roomCtx.curRoom.num);
+            const bool roomChanged = package.runtime.lastSceneSeen != sceneNum || package.runtime.lastRoomSeen != currentRoomNum;
+            package.runtime.lastSceneSeen = sceneNum;
+            package.runtime.lastRoomSeen = currentRoomNum;
+
+            const bool isNight = gSaveContext.dayTime >= 0xC000 || gSaveContext.dayTime < 0x4555;
+            bool timeOfDayChanged = false;
+            if (!package.runtime.hasLastDayNight) {
+                package.runtime.lastIsNight = isNight;
+                package.runtime.hasLastDayNight = true;
+            } else if (package.runtime.lastIsNight != isNight) {
+                package.runtime.lastIsNight = isNight;
+                timeOfDayChanged = true;
+            }
+
+            bool switchFlagChanged = false;
+            int32_t changedSwitchFlag = -1;
+            bool changedSwitchValue = false;
+            if (!package.runtime.switchSnapshotInitialized) {
+                for (size_t flag = 0; flag < package.runtime.switchSnapshot.size(); ++flag) {
+                    package.runtime.switchSnapshot[flag] = Flags_GetSwitch(gPlayState, static_cast<int32_t>(flag)) ? 1 : 0;
+                }
+                package.runtime.switchSnapshotInitialized = true;
+            } else {
+                for (size_t flag = 0; flag < package.runtime.switchSnapshot.size(); ++flag) {
+                    const uint8_t current = Flags_GetSwitch(gPlayState, static_cast<int32_t>(flag)) ? 1 : 0;
+                    if (current != package.runtime.switchSnapshot[flag]) {
+                        switchFlagChanged = true;
+                        changedSwitchFlag = static_cast<int32_t>(flag);
+                        changedSwitchValue = current != 0;
+                    }
+                    package.runtime.switchSnapshot[flag] = current;
+                }
+            }
+            if (switchFlagChanged && changedSwitchFlag >= 0) {
+                package.runtime.globalBlackboard["__switchFlag"] = std::to_string(changedSwitchFlag);
+                package.runtime.globalBlackboard["__switchValue"] = changedSwitchValue ? "1" : "0";
             }
 
             for (auto& instance : package.runtime.actorInstances) {
@@ -4594,6 +10028,138 @@ void ExternalModManager::OnGameFrameUpdate() {
                         break;
                     }
                 }
+
+                const float dx = playerPos.x - instance.posX;
+                const float dy = playerPos.y - instance.posY;
+                const float dz = playerPos.z - instance.posZ;
+                const float distanceToPlayer = std::sqrt(dx * dx + dy * dy + dz * dz);
+                const bool nearPlayer = distanceToPlayer <= definition->interactDistance;
+
+                int32_t actorBehaviorSteps = 0;
+                auto runBehaviorEvent = [&](const std::string& eventName, const char* source) -> bool {
+                    if (definition->behaviorId.empty()) {
+                        return true;
+                    }
+                    int32_t stepCount = package.runtime.behaviorStepsThisFrame;
+                    std::vector<ExternalModAction> behaviorActions;
+                    std::string behaviorError;
+                    if (!CollectBehaviorEventActions(package, definition->behaviorId, eventName, &instance,
+                                                     package.runtime.behaviorMaxStepsPerModPerFrame, stepCount,
+                                                     behaviorActions, behaviorError)) {
+                        DisableRuntime(package, std::string(source) + " behavior failed for actor '" + definition->id +
+                                                "': " + behaviorError);
+                        return false;
+                    }
+
+                    const int32_t stepDelta = stepCount - package.runtime.behaviorStepsThisFrame;
+                    actorBehaviorSteps += std::max(stepDelta, 0);
+                    package.runtime.behaviorStepsThisFrame = stepCount;
+                    if (actorBehaviorSteps > package.runtime.behaviorMaxStepsPerActorPerFrame) {
+                        DisableRuntime(package, "behavior step budget exceeded for actor '" + definition->id + "'");
+                        return false;
+                    }
+                    if (!behaviorActions.empty()) {
+                        ExecuteActions(package, behaviorActions, source);
+                    }
+                    return package.runtime.enabled;
+                };
+
+                if (!runBehaviorEvent("onupdate", "actorOnUpdate")) {
+                    break;
+                }
+                if (!runBehaviorEvent("onrandomtick", "actorOnRandomTick")) {
+                    break;
+                }
+                if (roomChanged && !runBehaviorEvent("onroomenter", "actorOnRoomEnter")) {
+                    break;
+                }
+                if (timeOfDayChanged && !runBehaviorEvent("ontimeofdaychanged", "actorOnTimeOfDayChanged")) {
+                    break;
+                }
+                if (switchFlagChanged && !runBehaviorEvent("onswitchflagchanged", "actorOnSwitchFlagChanged")) {
+                    break;
+                }
+
+                if (nearPlayer && !instance.wasNearPlayer) {
+                    if (!runBehaviorEvent("onplayernear", "actorOnPlayerNear")) {
+                        break;
+                    }
+                } else if (!nearPlayer && instance.wasNearPlayer) {
+                    if (!runBehaviorEvent("onplayerfar", "actorOnPlayerFar")) {
+                        break;
+                    }
+                }
+                instance.wasNearPlayer = nearPlayer;
+
+                if (instance.timerFrames > 0) {
+                    instance.timerFrames--;
+                    if (instance.timerFrames == 0) {
+                        if (!runBehaviorEvent("ontimer", "actorOnTimer")) {
+                            break;
+                        }
+                    }
+                }
+
+                if (interactPressed && definition->interactable && nearPlayer) {
+                    if (package.runtime.wasmRuntime && !definition->exportOnInteract.empty()) {
+                        std::string wasmError;
+                        const std::vector<int32_t> args = { static_cast<int32_t>(instance.handle), instance.sceneId };
+                        if (!package.runtime.wasmRuntime->InvokeExport(definition->exportOnInteract, args, wasmError)) {
+                            DisableRuntime(package,
+                                           "Actor exportOnInteract failed for '" + definition->id + "': " + wasmError);
+                            break;
+                        }
+                    }
+                    if (!runBehaviorEvent("oninteract", "actorOnInteract")) {
+                        break;
+                    }
+                }
+            }
+
+            if (!package.runtime.enabled) {
+                continue;
+            }
+
+            if (!package.runtime.pendingSignals.empty()) {
+                const auto pendingSignals = package.runtime.pendingSignals;
+                package.runtime.pendingSignals.clear();
+                for (const auto& signal : pendingSignals) {
+                    package.runtime.globalBlackboard["__lastSignal"] = signal.second;
+                    for (auto& instance : package.runtime.actorInstances) {
+                        if (!instance.active || instance.sceneId != sceneNum) {
+                            continue;
+                        }
+                        if (signal.first != 0 && signal.first != instance.handle) {
+                            continue;
+                        }
+                        const auto* definition = FindActorDefinition(package.runtime, instance.definitionId);
+                        if (definition == nullptr || definition->behaviorId.empty()) {
+                            continue;
+                        }
+
+                        int32_t stepCount = package.runtime.behaviorStepsThisFrame;
+                        std::vector<ExternalModAction> signalActions;
+                        std::string behaviorError;
+                        if (!CollectBehaviorEventActions(package, definition->behaviorId, "onsignal", &instance,
+                                                         package.runtime.behaviorMaxStepsPerModPerFrame, stepCount,
+                                                         signalActions, behaviorError)) {
+                            DisableRuntime(package, "onSignal behavior failed for actor '" + definition->id +
+                                                        "': " + behaviorError);
+                            break;
+                        }
+                        package.runtime.behaviorStepsThisFrame = stepCount;
+                        if (package.runtime.behaviorStepsThisFrame > package.runtime.behaviorMaxStepsPerModPerFrame) {
+                            DisableRuntime(package, "behavior mod budget exceeded while dispatching signals");
+                            break;
+                        }
+                        if (!signalActions.empty()) {
+                            ExecuteActions(package, signalActions, "onSignal");
+                        }
+                    }
+                    if (!package.runtime.enabled) {
+                        break;
+                    }
+                }
             }
         } catch (const std::exception& ex) {
             DisableRuntime(package, std::string("Unhandled exception on onFrame: ") + ex.what());
@@ -4609,6 +10175,7 @@ void ExternalModManager::OnGameFrameUpdate() {
     SyncExtraInventoryGrid();
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
+    ApplyModHookshotTextureOverrides(mPackages);
 }
 
 void ExternalModManager::OnPlayerUseItem(void* player, int32_t itemId, bool* allowVanilla) {
@@ -4649,6 +10216,27 @@ void ExternalModManager::OnPlayerUseItem(void* player, int32_t itemId, bool* all
                     DisableRuntime(package, "WASM onUse failed for item '" + item.id + "': " + wasmError);
                     *allowVanilla = true;
                     return;
+                }
+            }
+
+            if (!item.onUseBehavior.empty()) {
+                int32_t stepCount = package.runtime.behaviorStepsThisFrame;
+                std::vector<ExternalModAction> behaviorActions;
+                std::string behaviorError;
+                if (!CollectBehaviorEventActions(package, item.onUseBehavior, "onitemused", nullptr,
+                                                 package.runtime.behaviorMaxStepsPerModPerFrame, stepCount,
+                                                 behaviorActions, behaviorError)) {
+                    DisableRuntime(package, "onUseBehavior failed for item '" + item.id + "': " + behaviorError);
+                    *allowVanilla = true;
+                    return;
+                }
+                package.runtime.behaviorStepsThisFrame = stepCount;
+                if (!behaviorActions.empty()) {
+                    ExecuteActions(package, behaviorActions, "itemOnUseBehavior");
+                    if (!package.runtime.enabled) {
+                        *allowVanilla = true;
+                        return;
+                    }
                 }
             }
 
@@ -4713,9 +10301,17 @@ void ExternalModManager::OnPlayDestroy() {
     for (auto& package : mPackages) {
         package.runtime.actorInstances.clear();
         package.runtime.nextActorHandle = 1;
+        package.runtime.pendingSignals.clear();
+        package.runtime.lastSceneSeen = -1;
+        package.runtime.lastRoomSeen = -1;
+        package.runtime.hasLastDayNight = false;
+        package.runtime.lastIsNight = false;
+        package.runtime.switchSnapshotInitialized = false;
+        package.runtime.switchSnapshot.fill(0);
     }
     SyncExtraInventoryGrid();
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
+    ApplyModHookshotTextureOverrides(mPackages);
 }
 } // namespace SOH
