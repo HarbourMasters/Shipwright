@@ -279,6 +279,13 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_TRIAL_COUNT, "Ganon's Trials Count", {NumOpts(0, 6)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GanonTrialCount"), mOptionDescriptions[RSK_TRIAL_COUNT], WIDGET_CVAR_SLIDER_INT, 6, true);
     OPT_BOOL(RSK_MEDALLION_LOCKED_TRIALS, "Medallion Locked Trials", CVAR_RANDOMIZER_SETTING("MedallionLockedTrials"), mOptionDescriptions[RSK_MEDALLION_LOCKED_TRIALS]);
     OPT_U8(RSK_STARTING_AGE, "Starting Age", {"Child", "Adult", "Random"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingAge"), mOptionDescriptions[RSK_STARTING_AGE], WIDGET_CVAR_COMBOBOX, RO_AGE_CHILD);
+    OPT_U8(RSK_RANDOMIZE_SETTINGS, "Randomize Settings Per Seed",
+           {"Off", "On", "On + Entrance Rando", "On + Entrance Rando + Decoupled"},
+           OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("RandomizeSettings"),
+           mOptionDescriptions[RSK_RANDOMIZE_SETTINGS], WIDGET_CVAR_COMBOBOX, RO_RANDOMIZE_SETTINGS_OFF);
+    OPT_BOOL(RSK_RANDOMIZE_SETTINGS_INCLUDE_MQ, "Include MQ Dungeon Settings",
+             CVAR_RANDOMIZER_SETTING("RandomizeSettingsIncludeMQ"),
+             mOptionDescriptions[RSK_RANDOMIZE_SETTINGS_INCLUDE_MQ], IMFLAG_NONE, WIDGET_CVAR_CHECKBOX, false);
     OPT_U8(RSK_SELECTED_STARTING_AGE, "Selected Starting Age", {"Child", "Adult"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SelectedStartingAge"), mOptionDescriptions[RSK_STARTING_AGE], WIDGET_CVAR_COMBOBOX, RO_AGE_CHILD);
     OPT_BOOL(RSK_SHUFFLE_ENTRANCES, "Shuffle Entrances");
     OPT_U8(RSK_SHUFFLE_DUNGEON_ENTRANCES, "Dungeon Entrances", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleDungeonsEntrances"), mOptionDescriptions[RSK_SHUFFLE_DUNGEON_ENTRANCES], WIDGET_CVAR_COMBOBOX, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
@@ -1280,6 +1287,7 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_DAMAGE_MULTIPLIER, "Damage Multiplier", {"x1/2", "x1", "x2", "x4", "x8", "x16", "OHKO"}, OptionCategory::Setting, "", "", WIDGET_CVAR_SLIDER_INT, RO_DAMAGE_MULTIPLIER_DEFAULT);
     // Don't show any MQ options if both quests aren't available
     if (!(OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal())) {
+        mOptions[RSK_RANDOMIZE_SETTINGS_INCLUDE_MQ].Disable("This Options has been disabled because only one type of OTR has been loaded");
         mOptions[RSK_MQ_DUNGEON_RANDOM].Disable("This Options has been disabled because only one type of OTR has been loaded");
         mOptions[RSK_MQ_DUNGEON_COUNT].Disable("This Options has been disabled because only one type of OTR has been loaded");
         mOptions[RSK_MQ_DUNGEON_SET].Disable("This Options has been disabled because only one type of OTR has been loaded");
@@ -1297,6 +1305,7 @@ void Settings::CreateOptions() {
         mOptions[RSK_MQ_GANONS_CASTLE].Disable("This Options has been disabled because only one type of OTR has been loaded");
     } else {
         // If any MQ Options are available, show the MQ Dungeon Randomization Combobox
+        mOptions[RSK_RANDOMIZE_SETTINGS_INCLUDE_MQ].Enable();
         mOptions[RSK_MQ_DUNGEON_RANDOM].Enable();
         mOptions[RSK_MQ_DUNGEON_COUNT].Enable();
         mOptions[RSK_MQ_DUNGEON_SET].Enable();
@@ -2972,6 +2981,95 @@ void Settings::UpdateAllOptions() {
 
 void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocations,
                                const std::set<RandomizerTrick>& enabledTricks) {
+
+    // Randomize settings based on selected mode.
+    const uint8_t randomizeSettingsMode = mOptions[RSK_RANDOMIZE_SETTINGS].Get();
+    if (randomizeSettingsMode != RO_RANDOMIZE_SETTINGS_OFF) {
+        const bool includeEntranceSettings = randomizeSettingsMode >= RO_RANDOMIZE_SETTINGS_INCLUDE_ENTRANCES;
+        const bool includeDecoupledEntrances =
+            randomizeSettingsMode == RO_RANDOMIZE_SETTINGS_INCLUDE_ENTRANCES_DECOUPLED;
+        const bool includeMqSettings = mOptions[RSK_RANDOMIZE_SETTINGS_INCLUDE_MQ] &&
+                                       OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal();
+
+        auto settings = Rando::Settings::GetInstance();
+        const auto addGroupKeys = [settings](std::set<RandomizerSettingKey>& keySet,
+                                             const RandomizerSettingGroupKey groupKey) {
+            for (const auto* option : settings->GetOptionGroup(groupKey).GetOptions()) {
+                keySet.insert(option->GetKey());
+            }
+        };
+
+        std::set<RandomizerSettingKey> alwaysRandomizedSettingKeys;
+        const std::array<RandomizerSettingGroupKey, 7> alwaysRandomizedGroups = {
+            RSG_MENU_SECTION_WINCON,          RSG_MENU_SECTION_AREA_ACCESS,    RSG_MENU_SECTION_DUNGEON_ITEMS,
+            RSG_MENU_SECTION_KEYRINGS,        RSG_MENU_SECTION_BASIC_SHUFFLES, RSG_MENU_SECTION_SHOP_SHUFFLES,
+            RSG_MENU_SECTION_ADDITIONAL_ITEMS
+        };
+        for (const auto groupKey : alwaysRandomizedGroups) {
+            addGroupKeys(alwaysRandomizedSettingKeys, groupKey);
+        }
+        alwaysRandomizedSettingKeys.insert(RSK_STARTING_AGE);
+
+        std::set<RandomizerSettingKey> mqSettingKeys;
+        addGroupKeys(mqSettingKeys, RSG_MENU_SECTION_MQ);
+
+        std::set<RandomizerSettingKey> entranceSettingKeys;
+        addGroupKeys(entranceSettingKeys, RSG_MENU_SECTION_ENTRANCES);
+        if (!includeDecoupledEntrances) {
+            entranceSettingKeys.erase(RSK_DECOUPLED_ENTRANCES);
+            mOptions[RSK_DECOUPLED_ENTRANCES].Set(RO_GENERIC_OFF); // Prevents setting leak if decoupled is not in use
+        }
+
+        if (!includeEntranceSettings) { // Prevents setting leak if entrance rando is not in use
+            mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES].Set(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
+            mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].Set(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
+            mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE].Set(RO_GENERIC_OFF);
+            mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES].Set(RO_GENERIC_OFF);
+            mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].Set(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
+            mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES].Set(RO_GENERIC_OFF);
+            mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES].Set(RO_GENERIC_OFF);
+            mOptions[RSK_SHUFFLE_OWL_DROPS].Set(RO_GENERIC_OFF);
+            mOptions[RSK_SHUFFLE_WARP_SONGS].Set(RO_GENERIC_OFF);
+            mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS].Set(RO_GENERIC_OFF);
+            mOptions[RSK_MIXED_ENTRANCE_POOLS].Set(RO_GENERIC_OFF);
+            mOptions[RSK_MIX_DUNGEON_ENTRANCES].Set(RO_GENERIC_OFF);
+            mOptions[RSK_MIX_BOSS_ENTRANCES].Set(RO_GENERIC_OFF);
+            mOptions[RSK_MIX_OVERWORLD_ENTRANCES].Set(RO_GENERIC_OFF);
+            mOptions[RSK_MIX_INTERIOR_ENTRANCES].Set(RO_GENERIC_OFF);
+            mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES].Set(RO_GENERIC_OFF);
+            mOptions[RSK_MIX_GROTTO_ENTRANCES].Set(RO_GENERIC_OFF);
+            mOptions[RSK_DECOUPLED_ENTRANCES].Set(RO_GENERIC_OFF);
+        }
+
+        for (size_t i = 0; i < RSK_MAX; i++) {
+            const auto key = static_cast<RandomizerSettingKey>(i);
+
+            const bool isEntranceSetting = entranceSettingKeys.contains(key);
+            if (isEntranceSetting && !includeEntranceSettings) {
+                continue;
+            }
+
+            const bool shouldRandomizeThisSetting = alwaysRandomizedSettingKeys.contains(key) ||
+                                                    (isEntranceSetting && includeEntranceSettings) ||
+                                                    (includeMqSettings && mqSettingKeys.contains(key));
+            if (!shouldRandomizeThisSetting) {
+                continue;
+            }
+
+            auto& setting = settings->GetOption(key);
+            if (!setting.IsCategory(OptionCategory::Setting)) {
+                continue;
+            }
+
+            const size_t optionCount = setting.GetOptionCount();
+            if (optionCount <= 1) {
+                continue;
+            }
+
+            mOptions[i].Set(Random(0, static_cast<uint32_t>(optionCount)));
+        }
+    }
+
     // if we skip child zelda, we start with zelda's letter, and malon starts
     // at the ranch, so we should *not* shuffle the weird egg
     if (mOptions[RSK_SKIP_CHILD_ZELDA]) {

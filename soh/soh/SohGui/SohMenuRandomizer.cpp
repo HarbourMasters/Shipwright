@@ -20,6 +20,13 @@ static const std::map<int32_t, const char*> skipGetItemAnimationOptions = {
     { SGIA_ALL, "All Items" },
 };
 
+static const std::map<int32_t, const char*> randomizeSettingsModeOptions = {
+    { RO_RANDOMIZE_SETTINGS_OFF, "Off" },
+    { RO_RANDOMIZE_SETTINGS_EXCLUDE_ENTRANCES, "On" },
+    { RO_RANDOMIZE_SETTINGS_INCLUDE_ENTRANCES, "On + Entrance Rando" },
+    { RO_RANDOMIZE_SETTINGS_INCLUDE_ENTRANCES_DECOUPLED, "On + Entrance Rando + Decoupled" },
+};
+
 static bool locationsDirty = true;
 static bool tricksDirty = true;
 static int32_t prevMQDungeonSetting;
@@ -530,6 +537,33 @@ void SohMenu::AddMenuRandomizer() {
               WIDGET_TEXT)
         .Options(TextOptions().Color(UIWidgets::Colors::Gray));
     AddWidget(path, "Seed Entry", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Randomize Settings Per Seed", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_RANDOMIZER_SETTING("RandomizeSettings"))
+        .Options(
+            ComboboxOptions()
+                .ComboMap(randomizeSettingsModeOptions)
+                .DefaultIndex(RO_RANDOMIZE_SETTINGS_OFF)
+                .Tooltip(
+                    "Randomize settings each time a seed is generated.\n\n"
+                    "Off - Settings are not randomized.\n"
+                    "On - Randomize settings.\n"
+                    "On + Entrance Rando - Randomize settings + entrances.\n"
+                    "On + Entrance Rando + Decoupled - Same as above, plus Decoupled Entrances can be randomized.\n\n"
+                    "Logic, Excluded Locations, Starting Items and Tricks are never randomized.\n"
+                    "Starting age is always randomized."));
+    AddWidget(path, "Include MQ Dungeon Settings", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_SETTING("RandomizeSettingsIncludeMQ"))
+        .PreFunc([](WidgetInfo& info) {
+            const bool hasBothOtrs = OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal();
+            const bool randomizeSettingsEnabled =
+                CVarGetInteger(CVAR_RANDOMIZER_SETTING("RandomizeSettings"), RO_RANDOMIZE_SETTINGS_OFF) !=
+                RO_RANDOMIZE_SETTINGS_OFF;
+            info.isHidden = !hasBothOtrs || !randomizeSettingsEnabled;
+            if (info.isHidden) {
+                CVarSetInteger(CVAR_RANDOMIZER_SETTING("RandomizeSettingsIncludeMQ"), 0);
+            }
+        })
+        .Options(CheckboxOptions().DefaultValue(false).Tooltip("If enabled, MQ dungeon settings are also randomized."));
     AddWidget(path, "Manual seed entry", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"))
         .Options(CheckboxOptions().DefaultValue(true));

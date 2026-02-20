@@ -6667,6 +6667,8 @@ typedef enum {
     RSK_LOCK_OVERWORLD_DOORS,
     RSK_SHUFFLE_GRASS,
     RSK_ROCS_FEATHER,
+    RSK_RANDOMIZE_SETTINGS,
+    RSK_RANDOMIZE_SETTINGS_INCLUDE_MQ,
     RSK_MAX
 } RandomizerSettingKey;
 
@@ -6728,6 +6730,14 @@ typedef enum {
     RO_AGE_ADULT,
     RO_AGE_RANDOM,
 } RandoOptionStartingAge;
+
+// Randomize Settings settings (off, on with entrance handling modes)
+typedef enum {
+    RO_RANDOMIZE_SETTINGS_OFF,
+    RO_RANDOMIZE_SETTINGS_EXCLUDE_ENTRANCES,
+    RO_RANDOMIZE_SETTINGS_INCLUDE_ENTRANCES,
+    RO_RANDOMIZE_SETTINGS_INCLUDE_ENTRANCES_DECOUPLED,
+} RandoOptionRandomizeSettings;
 
 // Fortress Carpenters settings (normal, fast, free)
 typedef enum {

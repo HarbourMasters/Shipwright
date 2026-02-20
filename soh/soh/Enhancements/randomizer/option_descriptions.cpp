@@ -50,6 +50,16 @@ void Settings::CreateOptionDescriptions() {
         "Choose which age Link will start as.\n\n"
         "Starting as adult means you start with the Master Sword in your inventory.\n"
         "The child option is forcefully set if it would conflict with other options.";
+    mOptionDescriptions[RSK_RANDOMIZE_SETTINGS] =
+        "Randomize settings each time a seed is generated using the seed RNG.\n\n"
+        "Off - Use the exact settings you selected.\n"
+        "On (No Entrance Rando) - Randomize settings, excluding entrance shuffle settings.\n"
+        "On (Entrance Rando) - Also randomize entrance shuffle settings.\n"
+        "On (Entrance Rando + Decoupled) - Same as above but Decouple Entrance Setting is also randomized.\n\n"
+        "Logic, Excluded Locations, Starting Items and Tricks are never randomized. Starting Age is always randomized";
+    mOptionDescriptions[RSK_RANDOMIZE_SETTINGS_INCLUDE_MQ] =
+        "When Randomize Settings Per Seed is enabled, this also includes MQ dungeon-related settings in that "
+        "randomization.";
     mOptionDescriptions[RSK_GERUDO_FORTRESS] =
         "Sets the state of the carpenters captured by Gerudo "
         "in Gerudo Fortress, and with it the number of guards that spawn.\n"
