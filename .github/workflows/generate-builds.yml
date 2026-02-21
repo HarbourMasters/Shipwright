@@ -139,7 +139,7 @@ jobs:
     - name: Upload build
       uses: actions/upload-artifact@v4
       with:
-        name: soh-mac
+        name: soh-mac.zip
         path: |
           SoH.dmg
           readme.txt
@@ -253,7 +253,7 @@ jobs:
     - name: Upload build
       uses: actions/upload-artifact@v4
       with:
-        name: soh-linux
+        name: soh-linux.zip
         path: |
           soh.appimage
           readme.txt
@@ -319,7 +319,7 @@ jobs:
     - name: Upload build
       uses: actions/upload-artifact@v4
       with:
-        name: soh-windows
+        name: soh-windows.zip
         path: soh-windows
     - name: Save Cache VCPKG folder
       if: ${{ github.ref_name == github.event.repository.default_branch }}
