@@ -136,13 +136,12 @@ jobs:
 
         mv _packages/*.dmg SoH.dmg
         mv README.md readme.txt
+        zip -9 soh-mac.zip SoH.dmg readme.txt
     - name: Upload build
       uses: actions/upload-artifact@v4
       with:
-        name: soh-mac.zip
-        path: |
-          SoH.dmg
-          readme.txt
+        name: soh-mac
+        path: soh-mac.zip
     - name: Save Cache MacPorts
       if: ${{ github.ref_name == github.event.repository.default_branch }}
       uses: actions/cache/save@v4
@@ -247,16 +246,15 @@ jobs:
 
         mv README.md readme.txt
         mv build-cmake/*.appimage soh.appimage
+        zip -9 soh-linux.zip soh.appimage readme.txt
       env:
         CC: gcc-12
         CXX: g++-12
     - name: Upload build
       uses: actions/upload-artifact@v4
       with:
-        name: soh-linux.zip
-        path: |
-          soh.appimage
-          readme.txt
+        name: soh-linux
+        path: soh-linux.zip
     - name: Save Cache deps folder
       if: ${{ github.ref_name == github.event.repository.default_branch }}
       uses: actions/cache/save@v4
@@ -314,13 +312,11 @@ jobs:
         (cd build-windows && cpack)
         cd ..
         mv _packages/*.zip _packages/soh-windows.zip
-    - name: Unzip package
-      run: Expand-Archive -Path _packages/soh-windows.zip -DestinationPath soh-windows
     - name: Upload build
       uses: actions/upload-artifact@v4
       with:
-        name: soh-windows.zip
-        path: soh-windows
+        name: soh-windows
+        path: _packages/soh-windows.zip
     - name: Save Cache VCPKG folder
       if: ${{ github.ref_name == github.event.repository.default_branch }}
       uses: actions/cache/save@v4
