@@ -12,6 +12,15 @@ No `mod.json`:
     "behaviors.graph.v1",
     "actors.generic.v1",
     "items.catalog.v1",
+    "items.use_profiles.v1",
+    "statuses.catalog.v1",
+    "combat.damage.v1",
+    "combat.targeting.v1",
+    "combat.projectiles.v1",
+    "combat.aoe.v1",
+    "movement.profiles.v1",
+    "world.queries.v1",
+    "patches.vanilla_items.v1",
     "scenes.bundle.v1",
     "render.filter_override.v1"
   ]
@@ -21,6 +30,13 @@ No `mod.json`:
 ## Arquivos opcionais de conteúdo
 
 - `items/items.json`
+- `items/use_profiles.json`
+- `statuses/statuses.json`
+- `combat/damage_profiles.json`
+- `combat/targeting_profiles.json`
+- `combat/projectiles.json`
+- `combat/aoe_profiles.json`
+- `movement/movement_profiles.json`
 - `actors/actors.json`
 - `behaviors/behaviors.json`
 - `scenes/scenes.json`
@@ -75,12 +91,18 @@ Também aceita:
 - `roomIs`
 - `hasSwitchFlag` / `switchIsOn`
 - `var` / `varEquals` / `varCompare`
+- `hasStatus`
+- `statusRemaining`
 
 ## Actions suportadas (resumo)
 
 - UI/fluxo: `showNotification`, `openDialog`, `loadModScene`, `teleportToEntrance`
 - input/sinais: `pressButton`, `emitSignal`, `callBehavior`, `invokeWasm`
-- item: `grantModItem`, `revokeModItem`, `showEquippedItemGet`
+- item: `grantModItem`, `revokeModItem`, `showEquippedItemGet`, `useItemProfile`
+- combate por catalogo: `dealDamage`, `spawnProjectile`, `spawnAoE`
+- movimento por catalogo: `applyMovementProfile`, `applyImpulse`
+- queries de mundo: `getGroundInfo`, `raycast`, `raycastAll`
+- status: `applyStatus`, `clearStatus`, `clearAllStatuses`
 - atores: `spawnActor`, `despawnActor`, `setActorState`, `moveActorToPathNode`
 - estado/flags/economia:
   - `setSwitchFlag`, `clearSwitchFlag`
@@ -88,6 +110,56 @@ Também aceita:
   - `setInfTable`, `clearInfTable`
   - `giveRupees`, `takeRupees`
   - `setVar`, `addVar`, `clampVar`
+
+Compatibilidade:
+
+- `igniteFrontTarget` continua suportado (alias interno de `applyStatus` com `status=fire`).
+- `freezeFrontTarget` continua suportado (alias interno de `applyStatus` com `status=freeze`).
+
+Obs:
+
+- `applyStatus.status` aceita IDs namespaced (`modid:status_id`) e `core:*`.
+- `dealDamage` usa `damageProfileId` quando informado.
+- `useItemProfile` executa pipeline de targeting + efeitos + cooldown por ID.
+
+## applyStatus (novo)
+
+Exemplo completo:
+
+```json
+{
+  "action": "applyStatus",
+  "status": "freeze",
+  "target": "frontTarget",
+  "itemId": "freeze_staff_item",
+  "durationFrames": 90,
+  "shakeFrames": 12,
+  "range": 180,
+  "intensity": 255
+}
+```
+
+Campos suportados:
+
+- `status`: `core:*` ou `modid:status_id` (aceita built-ins e status custom)
+- `target`: `frontTarget|self|player|actorHandle`
+- `actorHandle`: obrigatÃ³rio quando `target=actorHandle`
+- `itemId`/`requiresItemId`: gate opcional por item do mod
+- `durationFrames`, `tickFrames`, `damagePerTick`, `range`, `intensity`, `shakeFrames`
+- `speedMultiplier`, `jumpMultiplier`, `strengthMultiplier`, `weaknessMultiplier`
+- `blindSkipChance`, `blindYawJitterDeg`
+
+## clearStatus / clearAllStatuses
+
+Exemplos:
+
+```json
+{ "action": "clearStatus", "status": "freeze", "target": "self" }
+```
+
+```json
+{ "action": "clearAllStatuses", "target": "self" }
+```
 
 ## Exemplo mínimo (mod.json)
 
@@ -106,10 +178,18 @@ Também aceita:
   "actorDefinitions": "actors/actors.json",
   "behaviorDefinitions": "behaviors/behaviors.json",
   "sceneDefinitions": "scenes/scenes.json",
+  "statusDefinitions": "statuses/statuses.json",
+  "damageDefinitions": "combat/damage_profiles.json",
+  "targetingDefinitions": "combat/targeting_profiles.json",
+  "itemUseProfiles": "items/use_profiles.json",
   "capabilities": [
     "behaviors.graph.v1",
     "actors.generic.v1",
     "items.catalog.v1",
+    "items.use_profiles.v1",
+    "statuses.catalog.v1",
+    "combat.damage.v1",
+    "combat.targeting.v1",
     "scenes.bundle.v1",
     "render.filter_override.v1"
   ]
@@ -186,4 +266,3 @@ Também aceita:
   ]
 }
 ```
-
