@@ -785,3 +785,37 @@ Allow external ZIP mods to override the **Get-Item 3D model** and texture for mo
 - Practical texture troubleshooting guideline:
   - If texture shows color bleeding between UV islands, set `modelTextureFilter: "point"`.
   - Keep `modelUvOrigin: "auto"` unless runtime logs/visual checks prove otherwise.
+
+## Phase 1 Data-Driven Catalog Runtime (apiVersion 2.x)
+
+This phase adds catalog-driven runtime wiring for external mods without breaking legacy packs.
+
+### New capabilities
+
+- statuses.catalog.v1
+- combat.damage.v1
+- combat.targeting.v1
+- combat.projectiles.v1
+- combat.aoe.v1
+- movement.profiles.v1
+- world.queries.v1
+- items.use_profiles.v1
+- patches.vanilla_items.v1
+
+### New optional manifest paths
+
+- statusDefinitions
+- damageDefinitions
+- targetingDefinitions
+- projectileDefinitions
+- aoeDefinitions
+- movementDefinitions
+- itemUseProfiles
+- vanillaItemPatches
+
+### Runtime guarantees
+
+- Capabilities gate parsing and loading per file.
+- Invalid catalog data disables only the owning mod runtime.
+- Legacy actions remain available via bridge aliases.
+- Item params freezeOnMeleeHit stays supported and routes into status runtime.

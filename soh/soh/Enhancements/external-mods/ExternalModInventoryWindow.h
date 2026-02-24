@@ -19,6 +19,7 @@ class ExternalModInventoryWindow final : public Ship::GuiWindow {
 
   private:
     int32_t mSelectedCell = -1;
+    int32_t mCurrentPage = 0;
     std::string mStatusMessage;
     bool mStatusIsError = false;
 };

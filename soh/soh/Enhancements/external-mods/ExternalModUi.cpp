@@ -13,20 +13,54 @@ namespace SOH {
 
 const char* GetExternalModItemSlotName(ExternalModItemSlot slot) {
     switch (slot) {
-        case ExternalModItemSlot::Hookshot:
-            return "SLOT_HOOKSHOT";
         case ExternalModItemSlot::Stick:
             return "SLOT_STICK";
+        case ExternalModItemSlot::Nut:
+            return "SLOT_NUT";
+        case ExternalModItemSlot::Bomb:
+            return "SLOT_BOMB";
         case ExternalModItemSlot::Bow:
             return "SLOT_BOW";
         case ExternalModItemSlot::FireArrow:
             return "SLOT_ARROW_FIRE";
+        case ExternalModItemSlot::DinsFire:
+            return "SLOT_DINS_FIRE";
+        case ExternalModItemSlot::Slingshot:
+            return "SLOT_SLINGSHOT";
+        case ExternalModItemSlot::Ocarina:
+            return "SLOT_OCARINA";
+        case ExternalModItemSlot::Bombchu:
+            return "SLOT_BOMBCHU";
+        case ExternalModItemSlot::Hookshot:
+            return "SLOT_HOOKSHOT";
         case ExternalModItemSlot::IceArrow:
             return "SLOT_ARROW_ICE";
+        case ExternalModItemSlot::FaroresWind:
+            return "SLOT_FARORES_WIND";
+        case ExternalModItemSlot::Boomerang:
+            return "SLOT_BOOMERANG";
+        case ExternalModItemSlot::Lens:
+            return "SLOT_LENS";
+        case ExternalModItemSlot::Bean:
+            return "SLOT_BEAN";
         case ExternalModItemSlot::LightArrow:
             return "SLOT_ARROW_LIGHT";
         case ExternalModItemSlot::Hammer:
             return "SLOT_HAMMER";
+        case ExternalModItemSlot::NayrusLove:
+            return "SLOT_NAYRUS_LOVE";
+        case ExternalModItemSlot::Bottle1:
+            return "SLOT_BOTTLE_1";
+        case ExternalModItemSlot::Bottle2:
+            return "SLOT_BOTTLE_2";
+        case ExternalModItemSlot::Bottle3:
+            return "SLOT_BOTTLE_3";
+        case ExternalModItemSlot::Bottle4:
+            return "SLOT_BOTTLE_4";
+        case ExternalModItemSlot::TradeAdult:
+            return "SLOT_TRADE_ADULT";
+        case ExternalModItemSlot::TradeChild:
+            return "SLOT_TRADE_CHILD";
         default:
             return "UNKNOWN";
     }
