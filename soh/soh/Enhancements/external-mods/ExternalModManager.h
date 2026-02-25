@@ -44,6 +44,8 @@ class ExternalModManager {
                                  ExternalModAimCameraContext context) const;
     bool HandleCameraHotkeyScancode(int32_t scancode);
     bool IsAimMouseFireHeld(::PlayState* play, ::Player* player, int32_t heldItemAction) const;
+    int32_t HandleAimSelectSlotPress(::PlayState* play, ::Player* player, int32_t buttonIndex, int32_t itemId);
+    bool IsAimAttackButtonFireEnabled(::PlayState* play, ::Player* player) const;
     bool IsAimOverShoulderEnabled() const;
     bool HasCustomEquippedSlingshotModel() const;
     bool DrawCustomEquippedSlingshotModel(::PlayState* play) const;
@@ -73,6 +75,20 @@ class ExternalModManager {
         std::string itemId;
     };
 
+    enum class AimSelectSlotPressResult {
+        None = 0,
+        Activated = 1,
+        DeactivatedConsumed = 2,
+    };
+
+    struct AimSelectState {
+        bool active = false;
+        std::string modId;
+        std::string itemId;
+        int32_t buttonIndex = -1;
+        int32_t resolvedItemId = -1;
+    };
+
     std::vector<ExternalModPackage> mPackages;
     ExternalModPendingSceneLoadRequest mPendingSceneLoadRequest;
     std::vector<ExtraInventoryCell> mExtraInventoryCells;
@@ -83,6 +99,7 @@ class ExternalModManager {
     bool mSaveSectionRegistered = false;
     int32_t mPersistentInventorySectionId = -1;
     ExternalModAimCameraState mAimCameraState{};
+    AimSelectState mAimSelectState{};
     uint32_t mOnLoadGameHook = 0;
     uint32_t mOnExitGameHook = 0;
     uint32_t mOnSceneInitHook = 0;
@@ -180,6 +197,9 @@ class ExternalModManager {
     const ExternalModAimCameraProfile* ResolveAimCameraProfileForContext(ExternalModAimCameraContext context,
                                                                          bool requireMouseFire) const;
     void PruneAimCameraStateForUnavailableProfiles();
+    void ClearAimSelectState(bool disableOverShoulder);
+    const ExternalModItemDefinition* FindAimSelectItemDefinition(const std::string& modId,
+                                                                 const std::string& itemId) const;
     bool TryInvokeAssignedModItem(int32_t buttonIndex, ::PlayState* play, ::Player* player);
     const ExternalModPackage* FindPackageByModId(const std::string& modId) const;
     ExternalModPackage* FindPackageByModId(const std::string& modId);

@@ -10,7 +10,8 @@
   "capabilities": [
     "combat.damage.v1",
     "combat.targeting.v1",
-    "items.use_profiles.v1"
+    "items.use_profiles.v1",
+    "camera.aim_profiles.v1"
   ],
   "runtime": {
     "type": "wasm3-v1",
@@ -25,5 +26,6 @@
   "inputDefinitions": "config/input.json",
   "damageDefinitions": "combat/damage_profiles.json",
   "targetingDefinitions": "combat/targeting_profiles.json",
-  "itemUseProfiles": "items/use_profiles.json"
+  "itemUseProfiles": "items/use_profiles.json",
+  "cameraDefinitions": "camera/camera_profiles.json"
 }

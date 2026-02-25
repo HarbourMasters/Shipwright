@@ -567,7 +567,7 @@ static s32 sWorldYawToTouchedWall = 0;
 static s16 sFloorShapePitch = 0;
 static s32 sUseHeldItem = false; // When true, the current held item is used. Is reset to false every frame.
 static s32 sHeldItemButtonIsHeldDown = false; // Indicates if the button for the current held item is held down.
-static s32 sExternalModsAimMouseFireHeldPrev = false;
+static s32 sExternalModsAimVirtualFireHeldPrev = false;
 
 static u16 D_8085361C[] = {
     NA_SE_VO_LI_SWEAT,
@@ -2518,19 +2518,36 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
     s32 maskItemAction;
     s32 item;
     s32 i;
+    u16 rawCurButtons = 0;
+    u16 rawPressButtons = 0;
+
+    if (sControlInput != NULL) {
+        rawCurButtons = sControlInput->cur.button;
+        rawPressButtons = sControlInput->press.button;
+    }
+
     if ((this->heldItemButton >= 0) && (this->heldItemButton < ARRAY_COUNT(sItemButtons)) && (sControlInput != NULL)) {
         const u16 virtualMask = sItemButtons[this->heldItemButton];
         const bool mouseFireHeld = ExternalMods_IsAimMouseFireHeld(play, this, this->heldItemAction) != 0;
-        const bool mouseFirePressed = mouseFireHeld && !sExternalModsAimMouseFireHeldPrev;
-        sExternalModsAimMouseFireHeldPrev = mouseFireHeld;
-        if (mouseFireHeld) {
+        const bool attackButtonFireEnabled = ExternalMods_IsAimAttackButtonFireEnabled(play, this) != 0;
+        const bool attackButtonFireHeld = attackButtonFireEnabled && CHECK_BTN_ALL(rawCurButtons, BTN_B);
+        const bool virtualFireHeld = mouseFireHeld || attackButtonFireHeld;
+        const bool virtualFirePressed = virtualFireHeld && !sExternalModsAimVirtualFireHeldPrev;
+
+        sExternalModsAimVirtualFireHeldPrev = virtualFireHeld;
+        if (virtualFireHeld) {
             sControlInput->cur.button |= virtualMask;
         }
-        if (mouseFirePressed) {
+        if (virtualFirePressed) {
             sControlInput->press.button |= virtualMask;
         }
+
+        if (attackButtonFireHeld && virtualMask != BTN_B) {
+            sControlInput->cur.button &= ~BTN_B;
+            sControlInput->press.button &= ~BTN_B;
+        }
     } else {
-        sExternalModsAimMouseFireHeldPrev = false;
+        sExternalModsAimVirtualFireHeldPrev = false;
     }
 
     u16 activeButtons = sControlInput->cur.button;
@@ -2574,6 +2591,20 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
         }
 
         item = Player_GetItemOnButton(play, i);
+
+        if ((item < ITEM_NONE_FE) && (i > 0) && CHECK_BTN_ALL(rawPressButtons, sItemButtons[i])) {
+            const s32 aimSelectResult = ExternalMods_HandleAimSelectSlotPress(play, this, i, item);
+            if (aimSelectResult == EXTERNAL_MODS_AIM_SELECT_SLOT_DEACTIVATED_CONSUMED) {
+                if (sControlInput != NULL) {
+                    sControlInput->cur.button &= ~sItemButtons[i];
+                    sControlInput->press.button &= ~sItemButtons[i];
+                }
+                this->heldItemButton = -1;
+                sHeldItemButtonIsHeldDown = false;
+                Player_UseItem(play, this, ITEM_NONE);
+                return;
+            }
+        }
 
         if (item >= ITEM_NONE_FE) {
             for (i = 0; i < ARRAY_COUNT(sItemButtons); i++) {

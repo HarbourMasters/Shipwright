@@ -247,3 +247,21 @@ This file is the fixed, append-only plan ledger for this repository.
   - docs/EXTERNAL_MOD_DATA_DRIVEN_REFERENCE.md
   - docs/MODDING.md
   - tools/external_mods/sync_examples_to_runtime.ps1
+
+## [PLN-20260225-0011] Pistol select-to-aim + slot toggle + LMB/B fire
+- createdUtc: 2026-02-25T15:48:21Z
+- status: in_progress
+- scope: engine
+- summary: Implement PLANpistol.md by adding item opt-in fields, slot press toggle state, BTN_B fire gating, and pistol demo camera profile/runtime integration.
+- milestones:
+  1. Add item fields+parser
+  2. Add aim select runtime+interop
+  3. Patch Player_ProcessItemButtons slot toggle and LMB/B fire
+  4. Update pistol demo docs/runtime and docs refs
+  5. Build + smoke + close plan
+- tags: external-mods, aim, pistol, input, api-v3
+- refs:
+  - soh/soh/Enhancements/external-mods/ExternalModTypes.h
+  - soh/soh/Enhancements/external-mods/ExternalModManager.cpp
+  - soh/src/overlays/actors/ovl_player_actor/z_player.c
+  - docs/examples/external_mods/pistol_hitscan_demo/mod.json

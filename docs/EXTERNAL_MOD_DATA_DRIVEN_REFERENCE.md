@@ -211,6 +211,8 @@ Accepted patch formats:
 
 Item and damage extensions:
 - `items/items.json` supports optional `aimReticleTextureAsset` (`.png`, decoded as 64x64 and converted to I8).
+- `items/items.json` supports optional `aimSelectToggle` (`bool`, default `false`) to enable slot-select aim toggle flow for that item.
+- `items/items.json` supports optional `aimAttackButtonFire` (`bool`, default `false`) to allow BTN_B as additional fire input while aim-select is active.
 - `items/items.json` supports optional `useTrigger`:
   - `onUse` (default)
   - `hammerGroundImpact` (requires `slot: SLOT_HAMMER` + `useProfile`)
@@ -282,3 +284,8 @@ Camera profile additions:
 - `mouseFireMode` (`both|firstPerson|overShoulder`, default `both`)
 
 Mouse fire is resolved from held item action (bow/hookshot/slingshot/boomerang and compatible mod items) and injected through the same vanilla item-button flow.
+
+Aim select toggle behavior (item opt-in):
+- first slot press equips item normally and enables OTS aim
+- second press on the same slot deactivates aim and triggers put-away
+- BTN_B fire (if enabled by item) is only active while aim-select state is active for that item

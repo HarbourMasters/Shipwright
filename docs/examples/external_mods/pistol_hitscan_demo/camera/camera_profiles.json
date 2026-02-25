@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    {
+      "id": "com.example.pistol_hitscan_demo:pistol_aim",
+      "contexts": ["slingshot"],
+      "firstPersonModeByContext": {
+        "slingshot": "slingshot"
+      },
+      "overShoulderModeByContext": {
+        "slingshot": "bowarrowz"
+      },
+      "shoulder": "right",
+      "aimRay": "camera_center",
+      "reticle": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "mouseFireEnabled": true,
+      "mouseFireButton": "left",
+      "mouseFireMode": "both",
+      "reticleVisibility": "selected"
+    }
+  ]
+}

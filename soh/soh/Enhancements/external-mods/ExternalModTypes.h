@@ -396,6 +396,8 @@ struct ExternalModItemDefinition {
     std::string onUseBehavior;
     std::string onEquipBehavior;
     std::string useProfile;
+    bool aimSelectToggle = false;
+    bool aimAttackButtonFire = false;
     ExternalModItemUseTrigger useTrigger = ExternalModItemUseTrigger::OnUse;
     int32_t acquireTextId = 0;
     std::string persistentStateKey;

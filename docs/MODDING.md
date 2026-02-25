@@ -18,6 +18,7 @@ Runtime contract note:
 - Aim camera is moddable through `camera.aim_profiles.v1` + `cameraDefinitions`.
 - `input.json` supports `defaultKeyboardKeys` for default keyboard mappings of single `MOD_ACTIONx` bindings.
 - `items/items.json` supports `aimReticleTextureAsset` for item-specific aim reticles.
+- `items/items.json` supports `aimSelectToggle` + `aimAttackButtonFire` for slot-select aim flow (1st press enter aim, 2nd press put-away, optional BTN_B fire).
 - `items/items.json` supports `useTrigger` (`onUse|hammerGroundImpact`) for impact-driven item profiles.
 - `items/use_profiles.json` supports `spawnShockwave` as a data-driven effect action.
 - `combat/aoe_profiles.json` supports `targetScope` to restrict AoE categories (`enemies_bosses`, etc.).
@@ -238,3 +239,5 @@ Aim camera toggle can be bound directly with `cameraHotkeys` in `config/input.js
 - `mouseFireMode`
 
 When enabled, LMB fire is routed through the same vanilla item-button flow for bow/hookshot/slingshot/boomerang and compatible mod items.
+
+Per-item `aimSelectToggle` + `aimAttackButtonFire` can be used to make slot-selection itself toggle aim mode and allow BTN_B fire while that aim-select state is active.

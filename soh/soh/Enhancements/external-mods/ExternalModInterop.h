@@ -22,6 +22,12 @@ typedef enum ExternalModsAimCameraContext {
     EXTERNAL_MODS_AIM_CONTEXT_BOOMERANG = 4,
 } ExternalModsAimCameraContext;
 
+typedef enum ExternalModsAimSelectSlotPressResult {
+    EXTERNAL_MODS_AIM_SELECT_SLOT_NONE = 0,
+    EXTERNAL_MODS_AIM_SELECT_SLOT_ACTIVATED = 1,
+    EXTERNAL_MODS_AIM_SELECT_SLOT_DEACTIVATED_CONSUMED = 2,
+} ExternalModsAimSelectSlotPressResult;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -41,6 +47,9 @@ int32_t ExternalMods_DrawAimReticleIfActive(struct PlayState* play, struct Playe
 int32_t ExternalMods_ResolveAimCameraMode(struct PlayState* play, struct Player* player, int32_t defaultMode,
                                           int32_t context);
 int32_t ExternalMods_IsAimMouseFireHeld(struct PlayState* play, struct Player* player, int32_t heldItemAction);
+int32_t ExternalMods_HandleAimSelectSlotPress(struct PlayState* play, struct Player* player, int32_t buttonIndex,
+                                              int32_t itemId);
+int32_t ExternalMods_IsAimAttackButtonFireEnabled(struct PlayState* play, struct Player* player);
 int32_t ExternalMods_IsAimOverShoulderEnabled(void);
 int32_t ExternalMods_HasCustomEquippedSlingshotModel(void);
 int32_t ExternalMods_DrawCustomEquippedSlingshotModel(struct PlayState* play);

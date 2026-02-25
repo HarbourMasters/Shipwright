@@ -8571,6 +8571,38 @@ void ExternalModManager::ApplyDefaultKeyboardMappingsForPackage(const ExternalMo
     }
 }
 
+void ExternalModManager::ClearAimSelectState(bool disableOverShoulder) {
+    if (disableOverShoulder && mAimCameraState.overShoulderEnabled) {
+        mAimCameraState.overShoulderEnabled = false;
+        CVarSetInteger(kAimCameraOverShoulderCVar, 0);
+    }
+
+    mAimSelectState.active = false;
+    mAimSelectState.modId.clear();
+    mAimSelectState.itemId.clear();
+    mAimSelectState.buttonIndex = -1;
+    mAimSelectState.resolvedItemId = ITEM_NONE;
+}
+
+const ExternalModItemDefinition* ExternalModManager::FindAimSelectItemDefinition(const std::string& modId,
+                                                                                  const std::string& itemId) const {
+    if (modId.empty() || itemId.empty()) {
+        return nullptr;
+    }
+
+    const auto* package = FindPackageByModId(modId);
+    if (package == nullptr || !package->runtime.enabled) {
+        return nullptr;
+    }
+
+    const auto* definition = ExternalModContentRegistry::FindItemDefinitionById(package->runtime, itemId);
+    if (definition == nullptr || !definition->granted || !definition->aimSelectToggle) {
+        return nullptr;
+    }
+
+    return definition;
+}
+
 const ExternalModAimCameraProfile* ExternalModManager::FindAimCameraProfileById(const std::string& modId,
                                                                                  const std::string& profileId) const {
     if (profileId.empty()) {
@@ -8812,6 +8844,92 @@ bool ExternalModManager::IsAimMouseFireHeld(::PlayState* play, ::Player* player,
     return held;
 }
 
+int32_t ExternalModManager::HandleAimSelectSlotPress(::PlayState* play, ::Player* player, int32_t buttonIndex,
+                                                     int32_t itemId) {
+    (void)play;
+    (void)player;
+
+    if (buttonIndex <= 0 || buttonIndex >= 8) {
+        return static_cast<int32_t>(AimSelectSlotPressResult::None);
+    }
+
+    if (itemId < ITEM_NONE || itemId >= ITEM_NONE_FE) {
+        return static_cast<int32_t>(AimSelectSlotPressResult::None);
+    }
+
+    if (mAimSelectState.active && mAimSelectState.buttonIndex == buttonIndex && mAimSelectState.resolvedItemId == itemId) {
+        SPDLOG_INFO("[ExternalMods] Aim select toggle deactivated for button={} mod={} item={}", buttonIndex,
+                    mAimSelectState.modId, mAimSelectState.itemId);
+        ClearAimSelectState(true);
+        return static_cast<int32_t>(AimSelectSlotPressResult::DeactivatedConsumed);
+    }
+
+    const ExternalModPackage* selectedPackage = nullptr;
+    const ExternalModItemDefinition* selectedDefinition = nullptr;
+    for (const auto& package : mPackages) {
+        if (!package.runtime.enabled) {
+            continue;
+        }
+
+        for (const auto& definition : package.runtime.itemDefinitions) {
+            if (!definition.granted || !definition.aimSelectToggle || !ItemDefinitionMatchesUseItem(definition, itemId)) {
+                continue;
+            }
+
+            if (selectedPackage == nullptr || package.manifest.loadPriority > selectedPackage->manifest.loadPriority ||
+                (package.manifest.loadPriority == selectedPackage->manifest.loadPriority &&
+                 package.manifest.id < selectedPackage->manifest.id)) {
+                selectedPackage = &package;
+                selectedDefinition = &definition;
+            }
+        }
+    }
+
+    if (selectedPackage == nullptr || selectedDefinition == nullptr) {
+        if (mAimSelectState.active && !FindAimSelectItemDefinition(mAimSelectState.modId, mAimSelectState.itemId)) {
+            ClearAimSelectState(false);
+        }
+        return static_cast<int32_t>(AimSelectSlotPressResult::None);
+    }
+
+    mAimSelectState.active = true;
+    mAimSelectState.modId = selectedPackage->manifest.id;
+    mAimSelectState.itemId = selectedDefinition->id;
+    mAimSelectState.buttonIndex = buttonIndex;
+    mAimSelectState.resolvedItemId = itemId;
+
+    if (!mAimCameraState.overShoulderEnabled) {
+        mAimCameraState.overShoulderEnabled = true;
+        CVarSetInteger(kAimCameraOverShoulderCVar, 1);
+    }
+
+    SPDLOG_INFO("[ExternalMods] Aim select toggle activated for button={} mod={} item={}", buttonIndex,
+                mAimSelectState.modId, mAimSelectState.itemId);
+    return static_cast<int32_t>(AimSelectSlotPressResult::Activated);
+}
+
+bool ExternalModManager::IsAimAttackButtonFireEnabled(::PlayState* play, ::Player* player) const {
+    (void)play;
+    if (player == nullptr) {
+        return false;
+    }
+
+    if (!mAimSelectState.active) {
+        return false;
+    }
+
+    if (!Player_HoldsSlingshot(player) || player->heldItemButton != mAimSelectState.buttonIndex) {
+        return false;
+    }
+
+    const auto* definition = FindAimSelectItemDefinition(mAimSelectState.modId, mAimSelectState.itemId);
+    if (definition == nullptr) {
+        return false;
+    }
+
+    return definition->aimAttackButtonFire;
+}
+
 bool ExternalModManager::IsAimOverShoulderEnabled() const {
     return mAimCameraState.overShoulderEnabled;
 }
@@ -8829,21 +8947,31 @@ bool ExternalModManager::DrawAimReticleIfActive(::PlayState* play, ::Player* pla
     const ExternalModItemDefinition* selectedDefinition = nullptr;
     int32_t selectedLoadPriority = std::numeric_limits<int32_t>::min();
     std::string selectedModId;
-    for (const auto& package : mPackages) {
-        if (!package.valid || !package.runtime.enabled) {
-            continue;
+    if (mAimSelectState.active) {
+        if (const auto* definition = FindAimSelectItemDefinition(mAimSelectState.modId, mAimSelectState.itemId);
+            definition != nullptr && definition->slot == ExternalModItemSlot::Slingshot &&
+            !definition->aimReticleTextureI8.empty()) {
+            selectedDefinition = definition;
+            selectedModId = mAimSelectState.modId;
         }
-        for (const auto& definition : package.runtime.itemDefinitions) {
-            if (!definition.granted || definition.slot != ExternalModItemSlot::Slingshot ||
-                definition.aimReticleTextureI8.empty()) {
+    }
+    if (selectedDefinition == nullptr) {
+        for (const auto& package : mPackages) {
+            if (!package.valid || !package.runtime.enabled) {
                 continue;
             }
+            for (const auto& definition : package.runtime.itemDefinitions) {
+                if (!definition.granted || definition.slot != ExternalModItemSlot::Slingshot ||
+                    definition.aimReticleTextureI8.empty()) {
+                    continue;
+                }
 
-            if (selectedDefinition == nullptr || package.manifest.loadPriority > selectedLoadPriority ||
-                (package.manifest.loadPriority == selectedLoadPriority && package.manifest.id < selectedModId)) {
-                selectedDefinition = &definition;
-                selectedLoadPriority = package.manifest.loadPriority;
-                selectedModId = package.manifest.id;
+                if (selectedDefinition == nullptr || package.manifest.loadPriority > selectedLoadPriority ||
+                    (package.manifest.loadPriority == selectedLoadPriority && package.manifest.id < selectedModId)) {
+                    selectedDefinition = &definition;
+                    selectedLoadPriority = package.manifest.loadPriority;
+                    selectedModId = package.manifest.id;
+                }
             }
         }
     }
@@ -8875,7 +9003,13 @@ bool ExternalModManager::DrawAimReticleIfActive(::PlayState* play, ::Player* pla
             break;
         }
         case ExternalModAimReticleVisibility::Selected:
-            shouldDraw = slingshotInHand && IsItemIdEquippedOnActionButtons(ITEM_SLINGSHOT);
+            if (selectedDefinition->aimSelectToggle) {
+                shouldDraw =
+                    slingshotInHand && mAimSelectState.active && selectedModId == mAimSelectState.modId &&
+                    selectedDefinition->id == mAimSelectState.itemId && player->heldItemButton == mAimSelectState.buttonIndex;
+            } else {
+                shouldDraw = slingshotInHand && IsItemIdEquippedOnActionButtons(ITEM_SLINGSHOT);
+            }
             break;
         default:
             break;
@@ -9068,6 +9202,10 @@ bool ExternalModManager::MoveExtraInventoryCell(size_t fromIndex, size_t toIndex
 void ExternalModManager::OnVanillaButtonEquipped(int32_t buttonIndex) {
     if (buttonIndex < 1 || buttonIndex > 7) {
         return;
+    }
+
+    if (mAimSelectState.active && mAimSelectState.buttonIndex == buttonIndex) {
+        ClearAimSelectState(true);
     }
 
     auto& assignment = mActionButtonAssignments[buttonIndex];
@@ -9927,6 +10065,10 @@ bool ExternalModManager::EquipExtraInventoryCellToButton(size_t cellIndex, int32
         return false;
     }
 
+    if (mAimSelectState.active && mAimSelectState.buttonIndex == buttonIndex) {
+        ClearAimSelectState(true);
+    }
+
     const auto& cell = mExtraInventoryCells[cellIndex];
     if (cell.modId.empty() || cell.itemId.empty()) {
         outError = "cell is empty";
@@ -10111,6 +10253,7 @@ void ExternalModManager::SyncExtraInventoryGrid() {
 void ExternalModManager::Shutdown() {
     UnregisterHooks();
     mPendingSceneLoadRequest = ExternalModPendingSceneLoadRequest{};
+    ClearAimSelectState(true);
     Player* player = gPlayState != nullptr ? GET_PLAYER(gPlayState) : nullptr;
     for (auto& package : mPackages) {
         ClearStatusEffects(package.runtime, gPlayState, false);
@@ -10238,6 +10381,7 @@ void ExternalModManager::DiscoverPackages() {
 void ExternalModManager::Initialize() {
     UnregisterHooks();
     mPendingSceneLoadRequest = ExternalModPendingSceneLoadRequest{};
+    ClearAimSelectState(false);
     mAimCameraState.overShoulderEnabled =
         CVarGetInteger(kAimCameraOverShoulderCVar, mAimCameraState.overShoulderEnabled ? 1 : 0) != 0;
 
@@ -11425,6 +11569,22 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
                 outError = "items[" + std::to_string(i) + "].useTrigger " + outError;
                 return false;
             }
+        }
+
+        if (item.contains("aimSelectToggle")) {
+            if (!item["aimSelectToggle"].is_boolean()) {
+                outError = "items[" + std::to_string(i) + "].aimSelectToggle must be boolean";
+                return false;
+            }
+            definition.aimSelectToggle = item["aimSelectToggle"].get<bool>();
+        }
+
+        if (item.contains("aimAttackButtonFire")) {
+            if (!item["aimAttackButtonFire"].is_boolean()) {
+                outError = "items[" + std::to_string(i) + "].aimAttackButtonFire must be boolean";
+                return false;
+            }
+            definition.aimAttackButtonFire = item["aimAttackButtonFire"].get<bool>();
         }
 
         if (item.contains("behavior")) {
@@ -15949,7 +16109,11 @@ void ExternalModManager::DisableRuntime(ExternalModPackage& package, const std::
     package.runtime.enabled = false;
     package.valid = false;
     package.error = reason;
-    ExternalModManager::Instance().PruneAimCameraStateForUnavailableProfiles();
+    auto& manager = ExternalModManager::Instance();
+    if (manager.mAimSelectState.active && manager.mAimSelectState.modId == package.manifest.id) {
+        manager.ClearAimSelectState(true);
+    }
+    manager.PruneAimCameraStateForUnavailableProfiles();
     SPDLOG_ERROR("[ExternalMods] Disabled runtime for {}: {}", package.manifest.id, reason);
 }
 
@@ -17012,6 +17176,7 @@ void ExternalModManager::OnPlayDestroy() {
         package.runtime.switchSnapshotInitialized = false;
         package.runtime.switchSnapshot.fill(0);
     }
+    ClearAimSelectState(true);
     SyncExtraInventoryGrid();
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
@@ -17137,6 +17302,14 @@ int32_t ExternalMods_DrawAimReticleIfActive(PlayState* play, Player* player, int
 
 int32_t ExternalMods_IsAimMouseFireHeld(PlayState* play, Player* player, int32_t heldItemAction) {
     return SOH::ExternalModManager::Instance().IsAimMouseFireHeld(play, player, heldItemAction) ? 1 : 0;
+}
+
+int32_t ExternalMods_HandleAimSelectSlotPress(PlayState* play, Player* player, int32_t buttonIndex, int32_t itemId) {
+    return SOH::ExternalModManager::Instance().HandleAimSelectSlotPress(play, player, buttonIndex, itemId);
+}
+
+int32_t ExternalMods_IsAimAttackButtonFireEnabled(PlayState* play, Player* player) {
+    return SOH::ExternalModManager::Instance().IsAimAttackButtonFireEnabled(play, player) ? 1 : 0;
 }
 
 int32_t ExternalMods_HasCustomEquippedSlingshotModel(void) {
