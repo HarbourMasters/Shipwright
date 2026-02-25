@@ -351,3 +351,11 @@ This file is the fixed, append-only plan ledger for this repository.
   - soh/src/overlays/actors/ovl_player_actor/z_player.c
   - soh/soh/Enhancements/external-mods/ExternalModManager.cpp
   - x64/Release/logs/Ship of Harkinian.log
+
+## [PLN-20260225-0013][UPDATE] 2026-02-25T17:16:56Z
+- status: done
+- note: finalize-plan-merge gate attempted and blocked because working tree is not clean (dirty libultraship submodule). Implementation is complete and committed locally.
+- refs:
+  - docs/agents/skills/soh-git-checkpoint-merge/scripts/finalize-plan-merge.ps1
+  - libultraship
+  - docs/agents/Plans.md
