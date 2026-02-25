@@ -235,3 +235,15 @@ This file is the fixed, append-only plan ledger for this repository.
 - refs:
   - docs/agents/project_state.md
   - docs/examples/external_mods
+
+## [PLN-20260225-0010][UPDATE] 2026-02-25T14:40:36Z
+- status: done
+- note: Implemented hammerGroundImpact trigger, spawnShockwave effect, AoE targetScope filtering, z_player hammer impact hook, and freeze_dome_staff_demo with docs/runtime sync; Release build passed.
+- refs:
+  - soh/soh/Enhancements/external-mods/ExternalModTypes.h
+  - soh/soh/Enhancements/external-mods/ExternalModManager.cpp
+  - soh/src/overlays/actors/ovl_player_actor/z_player.c
+  - docs/examples/external_mods/freeze_dome_staff_demo
+  - docs/EXTERNAL_MOD_DATA_DRIVEN_REFERENCE.md
+  - docs/MODDING.md
+  - tools/external_mods/sync_examples_to_runtime.ps1
