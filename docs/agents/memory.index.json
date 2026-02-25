@@ -1,6 +1,6 @@
 ﻿{
     "version":  1,
-    "lastUpdatedUtc":  "2026-02-25T16:01:19Z",
+    "lastUpdatedUtc":  "2026-02-25T16:02:16Z",
     "byId":  {
                  "mem-20260225-000001":  {
                                              "topic":  "external-mods-phase1",
@@ -114,6 +114,12 @@
                                              "topic":  "agent-memory",
                                              "status":  "done",
                                              "line":  2,
+                                             "source":  "memory.log"
+                                         },
+                 "mem-20260225-000036":  {
+                                             "topic":  "plan:PLN-20260225-0011-finalize",
+                                             "status":  "open",
+                                             "line":  36,
                                              "source":  "memory.log"
                                          },
                  "mem-20260225-000029":  {
@@ -270,7 +276,8 @@
                                 "mem-20260225-000016"
                             ],
                   "git":  [
-                              "mem-20260225-000033"
+                              "mem-20260225-000033",
+                              "mem-20260225-000036"
                           ],
                   "docs":  [
                                "mem-20260225-000002",
@@ -352,7 +359,8 @@
                                 "mem-20260225-000032",
                                 "mem-20260225-000033",
                                 "mem-20260225-000034",
-                                "mem-20260225-000035"
+                                "mem-20260225-000035",
+                                "mem-20260225-000036"
                             ],
                   "skills":  [
                                  "mem-20260225-000006"
@@ -376,33 +384,87 @@
                                     "mem-20260225-000005"
                                 ],
                   "submodule":  [
-                                    "mem-20260225-000033"
+                                    "mem-20260225-000033",
+                                    "mem-20260225-000036"
                                 ]
               },
     "byTopic":  {
-                    "docs-runtime-drift-backlog":  [
-                                                       "mem-20260225-000023"
-                                                   ],
+                    "external-mod-v3-gap-closure":  [
+                                                        "mem-20260225-000010"
+                                                    ],
+                    "external-mods:aim-ots-pitch-reticle-fix":  [
+                                                                    "mem-20260225-000026"
+                                                                ],
+                    "external-mods-pistol-reticle-axe-prop":  [
+                                                                  "mem-20260225-000015"
+                                                              ],
+                    "external-mods-aim-ots-direct-hotkey-lmb":  [
+                                                                    "mem-20260225-000016"
+                                                                ],
+                    "memory-operations":  [
+                                              "mem-20260225-000004"
+                                          ],
+                    "external-mods:reticle-selected-in-hand-gate":  [
+                                                                        "mem-20260225-000029"
+                                                                    ],
+                    "plan:PLN-20260225-0011-finalize":  [
+                                                            "mem-20260225-000036"
+                                                        ],
+                    "shield-skate-demo":  [
+                                              "mem-20260225-000003"
+                                          ],
+                    "external-mods:aim-ots-reticle-lmb":  [
+                                                              "mem-20260225-000020"
+                                                          ],
+                    "docs-consistency":  [
+                                             "mem-20260225-000005"
+                                         ],
+                    "plan:PLN-20260225-0007":  [
+                                                   "mem-20260225-000021",
+                                                   "mem-20260225-000024"
+                                               ],
+                    "skills-pack-v1":  [
+                                           "mem-20260225-000006"
+                                       ],
+                    "external-mods-v3-gap-closure":  [
+                                                         "mem-20260225-000011"
+                                                     ],
                     "plan:PLN-20260225-0004":  [
                                                    "mem-20260225-000012",
                                                    "mem-20260225-000013",
                                                    "mem-20260225-000014"
                                                ],
-                    "external-mods-v3-gap-closure":  [
-                                                         "mem-20260225-000011"
-                                                     ],
-                    "docs-consistency":  [
-                                             "mem-20260225-000005"
-                                         ],
+                    "plan:PLN-20260225-0009":  [
+                                                   "mem-20260225-000028",
+                                                   "mem-20260225-000030"
+                                               ],
+                    "external-mods-phase1":  [
+                                                 "mem-20260225-000001"
+                                             ],
+                    "plan:PLN-20260225-0006":  [
+                                                   "mem-20260225-000018",
+                                                   "mem-20260225-000019"
+                                               ],
+                    "git-finalize-blocked":  [
+                                                 "mem-20260225-000033"
+                                             ],
+                    "docs-runtime-drift-backlog":  [
+                                                       "mem-20260225-000023"
+                                                   ],
+                    "plan:PLN-20260225-0005":  [
+                                                   "mem-20260225-000017"
+                                               ],
+                    "plan:PLN-20260225-0008":  [
+                                                   "mem-20260225-000025",
+                                                   "mem-20260225-000027"
+                                               ],
                     "agents-governance-protocol":  [
                                                        "mem-20260225-000022"
                                                    ],
-                    "external-mods-pistol-reticle-axe-prop":  [
-                                                                  "mem-20260225-000015"
-                                                              ],
-                    "shield-skate-demo":  [
-                                              "mem-20260225-000003"
-                                          ],
+                    "plan:PLN-20260225-0011":  [
+                                                   "mem-20260225-000034",
+                                                   "mem-20260225-000035"
+                                               ],
                     "plan:PLN-20260225-0010":  [
                                                    "mem-20260225-000031",
                                                    "mem-20260225-000032"
@@ -411,62 +473,12 @@
                                                    "mem-20260225-000007",
                                                    "mem-20260225-000008"
                                                ],
-                    "external-mods-aim-ots-direct-hotkey-lmb":  [
-                                                                    "mem-20260225-000016"
-                                                                ],
-                    "skills-pack-v1":  [
-                                           "mem-20260225-000006"
-                                       ],
-                    "git-finalize-blocked":  [
-                                                 "mem-20260225-000033"
-                                             ],
-                    "plan:PLN-20260225-0006":  [
-                                                   "mem-20260225-000018",
-                                                   "mem-20260225-000019"
-                                               ],
-                    "plan:PLN-20260225-0011":  [
-                                                   "mem-20260225-000034",
-                                                   "mem-20260225-000035"
-                                               ],
-                    "plan:PLN-20260225-0009":  [
-                                                   "mem-20260225-000028",
-                                                   "mem-20260225-000030"
-                                               ],
-                    "external-mods:aim-ots-pitch-reticle-fix":  [
-                                                                    "mem-20260225-000026"
-                                                                ],
-                    "memory-operations":  [
-                                              "mem-20260225-000004"
-                                          ],
-                    "plan:PLN-20260225-0002":  [
-                                                   "mem-20260225-000009"
-                                               ],
-                    "external-mods:reticle-selected-in-hand-gate":  [
-                                                                        "mem-20260225-000029"
-                                                                    ],
-                    "plan:PLN-20260225-0005":  [
-                                                   "mem-20260225-000017"
-                                               ],
-                    "plan:PLN-20260225-0007":  [
-                                                   "mem-20260225-000021",
-                                                   "mem-20260225-000024"
-                                               ],
-                    "plan:PLN-20260225-0008":  [
-                                                   "mem-20260225-000025",
-                                                   "mem-20260225-000027"
-                                               ],
-                    "external-mod-v3-gap-closure":  [
-                                                        "mem-20260225-000010"
-                                                    ],
-                    "external-mods-phase1":  [
-                                                 "mem-20260225-000001"
-                                             ],
-                    "external-mods:aim-ots-reticle-lmb":  [
-                                                              "mem-20260225-000020"
-                                                          ],
                     "agent-memory":  [
                                          "mem-20260225-000002"
-                                     ]
+                                     ],
+                    "plan:PLN-20260225-0002":  [
+                                                   "mem-20260225-000009"
+                                               ]
                 },
     "byStatus":  {
                      "deprecated":  [
@@ -509,7 +521,8 @@
                                   "mem-20260225-000028",
                                   "mem-20260225-000031",
                                   "mem-20260225-000033",
-                                  "mem-20260225-000034"
+                                  "mem-20260225-000034",
+                                  "mem-20260225-000036"
                               ]
                  },
     "ranges":  [
