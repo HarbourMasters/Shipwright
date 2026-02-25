@@ -453,3 +453,11 @@ This file is the fixed, append-only plan ledger for this repository.
   - x64/Release/mods/aim_ots_toggle_demo/scripts/init.json
   - tools/external_mods/migrate_mods_v3_to_v4.ps1
   - tools/external_mods/validate_mod.ps1
+
+## [PLN-20260225-0016][UPDATE] 2026-02-25T19:34:53Z
+- status: done
+- note: Post-completion finalize-plan-merge attempted and blocked because working tree is not clean (dirty libultraship submodule). Fix commit is complete locally.
+- refs:
+  - docs/agents/skills/soh-git-checkpoint-merge/scripts/finalize-plan-merge.ps1
+  - libultraship
+  - docs/agents/Plans.md
