@@ -487,3 +487,11 @@ This file is the fixed, append-only plan ledger for this repository.
   - x64/Release/mods/freeze_dome_staff_demo/scripts/init.json
   - tools/external_mods/sync_examples_to_runtime.ps1
   - tools/external_mods/validate_mod.ps1
+
+## [PLN-20260225-0017][UPDATE] 2026-02-25T19:37:49Z
+- status: done
+- note: Post-completion finalize-plan-merge attempted and blocked because working tree is not clean (dirty libultraship submodule). Fix commit is complete locally.
+- refs:
+  - docs/agents/skills/soh-git-checkpoint-merge/scripts/finalize-plan-merge.ps1
+  - libultraship
+  - docs/agents/Plans.md
