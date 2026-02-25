@@ -265,3 +265,18 @@ This file is the fixed, append-only plan ledger for this repository.
   - soh/soh/Enhancements/external-mods/ExternalModManager.cpp
   - soh/src/overlays/actors/ovl_player_actor/z_player.c
   - docs/examples/external_mods/pistol_hitscan_demo/mod.json
+
+## [PLN-20260225-0011][UPDATE] 2026-02-25T16:01:19Z
+- status: done
+- note: Implemented PLANpistol: added aimSelectToggle/aimAttackButtonFire parsing, slot-select aim toggle runtime+interop, BTN_B virtual fire routing in Player_ProcessItemButtons, reticle gating tied to active select state, pistol demo camera profile/capability updates, docs updates, demo sync and Release build.
+- refs:
+  - soh/soh/Enhancements/external-mods/ExternalModTypes.h
+  - soh/soh/Enhancements/external-mods/ExternalModManager.h
+  - soh/soh/Enhancements/external-mods/ExternalModManager.cpp
+  - soh/soh/Enhancements/external-mods/ExternalModInterop.h
+  - soh/src/overlays/actors/ovl_player_actor/z_player.c
+  - docs/examples/external_mods/pistol_hitscan_demo/mod.json
+  - docs/examples/external_mods/pistol_hitscan_demo/items/items.json
+  - docs/examples/external_mods/pistol_hitscan_demo/camera/camera_profiles.json
+  - docs/EXTERNAL_MOD_DATA_DRIVEN_REFERENCE.md
+  - docs/MODDING.md
