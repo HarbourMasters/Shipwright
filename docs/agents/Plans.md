@@ -280,3 +280,41 @@ This file is the fixed, append-only plan ledger for this repository.
   - docs/examples/external_mods/pistol_hitscan_demo/camera/camera_profiles.json
   - docs/EXTERNAL_MOD_DATA_DRIVEN_REFERENCE.md
   - docs/MODDING.md
+
+## [PLN-20260225-0012] Sylian Foundry modloader docs refresh and governance alignment
+- createdUtc: 2026-02-25T16:13:46Z
+- status: in_progress
+- scope: docs
+- summary: Create canonical Sylian Foundry Modloader doc, archive legacy MVP history, reorganize modding references for API v3, run drift/runtime reference validation, and close governance records.
+- milestones:
+  1. Create canonical SYLIAN_FOUNDRY_MODLOADER.md and archive legacy MVP history
+  2. Rewrite MOD_SDK_MVP.md and MODDING.md to v3-aligned structure
+  3. Refresh EXTERNAL_MOD_* references and README modloader navigation
+  4. Run drift guard and runtime reference export validations
+  5. Append plan update + memory decision and run git checkpoints
+- tags: docs, modloader, api-v3, governance
+- refs:
+  - docs/SYLIAN_FOUNDRY_MODLOADER.md
+  - docs/MOD_SDK_MVP.md
+  - docs/MODDING.md
+  - docs/EXTERNAL_MOD_DATA_DRIVEN_REFERENCE.md
+  - docs/EXTERNAL_MOD_MANAGER_REFERENCE.md
+  - docs/EXTERNAL_MOD_BEHAVIOR_GRAPH_V1.md
+  - README.md
+
+## [PLN-20260225-0012][UPDATE] 2026-02-25T16:20:55Z
+- status: done
+- note: Completed full docs refresh for Sylian Foundry Modloader: canonical doc added, MVP history archived, references reorganized, README apiVersion note added, runtime refs exported, and drift guard now passes.
+- refs:
+  - docs/SYLIAN_FOUNDRY_MODLOADER.md
+  - docs/archive/MOD_SDK_MVP_LEGACY_HISTORY.md
+  - docs/MOD_SDK_MVP.md
+  - docs/MODDING.md
+  - docs/EXTERNAL_MOD_BEHAVIOR_GRAPH_V1.md
+  - docs/EXTERNAL_MOD_MANAGER_REFERENCE.md
+  - docs/EXTERNAL_MOD_DATA_DRIVEN_REFERENCE.md
+  - README.md
+  - docs/actions.json
+  - docs/events.json
+  - docs/catalogs.json
+  - docs/agents/project_state.md

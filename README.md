@@ -11,6 +11,19 @@ Official Discord: https://discord.com/invite/shipofharkinian
 
 If you're having any trouble after reading through this `README`, feel free to ask for help in the Support text channels. Please keep in mind that we do not condone piracy.
 
+
+## Sylian Foundry Modloader (External Mods)
+
+For data-driven external mods, use the **Sylian Foundry Modloader** documentation set.
+
+- Canonical doc: `docs/SYLIAN_FOUNDRY_MODLOADER.md`
+- Data-driven reference: `docs/EXTERNAL_MOD_DATA_DRIVEN_REFERENCE.md`
+- Manager/runtime reference: `docs/EXTERNAL_MOD_MANAGER_REFERENCE.md`
+- Behavior graph reference: `docs/EXTERNAL_MOD_BEHAVIOR_GRAPH_V1.md`
+- Examples: `docs/examples/external_mods/`
+
+External mod contract baseline: `apiVersion: 3`.
+
 # Quick Start
 
 The Ship does not include any copyrighted assets.  You are required to provide a supported copy of the game.
