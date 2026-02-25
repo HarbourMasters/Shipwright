@@ -495,3 +495,37 @@ This file is the fixed, append-only plan ledger for this repository.
   - docs/agents/skills/soh-git-checkpoint-merge/scripts/finalize-plan-merge.ps1
   - libultraship
   - docs/agents/Plans.md
+
+## [PLN-20260225-0018] Fix cameraDefinitions v4 capability validation and load path
+- createdUtc: 2026-02-25T20:18:53Z
+- status: in_progress
+- scope: engine
+- summary: Eliminate duplicate cameraDefinitions parse gates (v1+v2), enforce v4 camera.aim_profiles.v2-only contract, align runtime camera loading, and validate aim/pistol demos.
+- milestones:
+  1. Patch TryParseManifest cameraDefinitions rules for apiVersion 4
+  2. Align camera catalog runtime load path to v4 v2-only behavior
+  3. Update validator/docs references and re-export runtime refs
+  4. Sync and validate aim_ots_toggle_demo and pistol_hitscan_demo; build and drift checks
+- tags: external-mods, camera, api-v4, parser, runtime
+- refs:
+  - soh/soh/Enhancements/external-mods/ExternalModManager.cpp
+  - tools/external_mods/validate_mod.ps1
+  - tools/external_mods/export_runtime_reference.ps1
+  - docs/examples/external_mods/aim_ots_toggle_demo/mod.json
+  - docs/examples/external_mods/pistol_hitscan_demo/mod.json
+
+## [PLN-20260225-0018][UPDATE] 2026-02-25T20:24:01Z
+- status: done
+- note: Fixed cameraDefinitions v4 contract: removed duplicate v1/v2 parser gate, enforced v4 camera.aim_profiles.v2-only with explicit legacy error for v1, aligned runtime camera loading to v2, updated validator/export/sync tooling, synced demos, and validated build+drift+mod checks.
+- refs:
+  - soh/soh/Enhancements/external-mods/ExternalModManager.cpp
+  - tools/external_mods/validate_mod.ps1
+  - tools/external_mods/export_runtime_reference.ps1
+  - tools/external_mods/sync_examples_to_runtime.ps1
+  - docs/examples/external_mods/aim_ots_toggle_demo/mod.json
+  - docs/examples/external_mods/pistol_hitscan_demo/mod.json
+  - x64/Release/mods/aim_ots_toggle_demo/mod.json
+  - x64/Release/mods/pistol_hitscan_demo/mod.json
+  - docs/catalogs.json
+  - docs/actions.json
+  - docs/events.json

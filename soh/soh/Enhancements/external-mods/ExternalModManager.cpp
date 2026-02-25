@@ -11397,6 +11397,11 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
         const bool hasDialogNodesCapability = ManifestHasCapability(outManifest, "dialog.nodes.v1");
         const bool hasSdkGeneratorsCapability = ManifestHasCapability(outManifest, "sdk.generators.v1");
 
+        if (outManifest.apiVersion >= 4 && hasAimCameraCatalogCapability) {
+            outError = "camera.aim_profiles.v1 is legacy; use camera.aim_profiles.v2";
+            return false;
+        }
+
         if (json.contains("hookDefinitions")) {
             if (!hasExtendedHooksCapability) {
                 outError = "hookDefinitions requires capability hooks.extended.v1";
@@ -11516,8 +11521,6 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
                                  outManifest.aoeDefinitions) ||
             !parseCapabilityPath("movementDefinitions", "movement.profiles.v1", hasMovementCatalogCapability,
                                  outManifest.movementDefinitions) ||
-            !parseCapabilityPath("cameraDefinitions", "camera.aim_profiles.v1", hasAimCameraCatalogCapability,
-                                 outManifest.cameraDefinitions) ||
             !parseCapabilityPath("itemUseProfiles", "items.use_profiles.v1", hasUseProfilesCapability,
                                  outManifest.itemUseProfiles) ||
             !parseCapabilityPath("vanillaItemPatches", "patches.vanilla_items.v1", hasVanillaPatchesCapability,
@@ -15677,8 +15680,7 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
             }
         }
 
-        if (ManifestHasCapability(package.manifest, "camera.aim_profiles.v1") ||
-            ManifestHasCapability(package.manifest, "camera.aim_profiles.v2")) {
+        if (ManifestHasCapability(package.manifest, "camera.aim_profiles.v2")) {
             std::filesystem::path cameraPath;
             if (!IsSafePackageRelativePath(package.manifest.cameraDefinitions, cameraPath, outError)) {
                 outError = "Invalid cameraDefinitions: " + outError;

@@ -1,5 +1,5 @@
 ﻿{
-    "generatedUtc":  "2026-02-25T18:59:38Z",
+    "generatedUtc":  "2026-02-25T20:21:27Z",
     "apiVersion":  4,
     "runtime":  {
                     "budgetDefaults":  {
@@ -72,12 +72,6 @@
                              "schemaVersion":  1,
                              "fileField":  "movementDefinitions",
                              "id":  "movement.profiles.v1"
-                         },
-                         {
-                             "fileDefault":  "camera/camera_profiles.json",
-                             "schemaVersion":  1,
-                             "fileField":  "cameraDefinitions",
-                             "id":  "camera.aim_profiles.v1"
                          },
                          {
                              "fileDefault":  "items/use_profiles.json",

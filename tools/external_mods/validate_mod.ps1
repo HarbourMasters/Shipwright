@@ -29,7 +29,6 @@ function Resolve-CapabilityPathMap {
         "movement.profiles.v1" = "movementDefinitions"
         "items.use_profiles.v1" = "itemUseProfiles"
         "patches.vanilla_items.v1" = "vanillaItemPatches"
-        "camera.aim_profiles.v1" = "cameraDefinitions"
         "camera.aim_profiles.v2" = "cameraDefinitions"
         "input.bindings.v2" = "inputDefinitions"
         "items.state_machine.v1" = "itemStateDefinitions"
@@ -152,6 +151,20 @@ foreach ($modDir in $mods) {
                 $caps += "$cap".ToLowerInvariant()
             }
         }
+    }
+
+    $hasCameraV1 = $caps -contains "camera.aim_profiles.v1"
+    $hasCameraV2 = $caps -contains "camera.aim_profiles.v2"
+    $hasCameraDefinitions = $manifest.PSObject.Properties.Name -contains "cameraDefinitions"
+    if ($manifest.apiVersion -eq 4 -and $hasCameraV1) {
+        Write-Error "[validate_mod] $modId capability camera.aim_profiles.v1 is legacy in apiVersion 4; use camera.aim_profiles.v2"
+        $failed++
+        continue
+    }
+    if ($manifest.apiVersion -eq 4 -and $hasCameraDefinitions -and -not $hasCameraV2) {
+        Write-Error "[validate_mod] $modId cameraDefinitions requires capability camera.aim_profiles.v2"
+        $failed++
+        continue
     }
 
     foreach ($cap in $caps) {
