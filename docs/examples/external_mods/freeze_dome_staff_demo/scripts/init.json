@@ -1,7 +1,7 @@
 ﻿{
-  "apiVersion": 3,
+  "apiVersion": 4,
   "onGameLoaded": [
     { "action": "grantModItem", "itemId": "freeze_dome_staff_item" },
-    { "action": "showNotification", "text": "Freeze Dome Staff: impacte o hammer no chão para soltar domo azul que congela inimigos" }
+    { "action": "showNotification", "text": "Freeze Dome Staff: impacto no chão cria domo azul com freeze sem dano (player+enemies+boss)" }
   ]
 }

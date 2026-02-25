@@ -60,6 +60,14 @@ Use `docs/catalogs.json` as machine-readable source of truth. Common capabilitie
 4. **Run** actions/effects/WASM with budgets
 5. **Reload/Shutdown** with deterministic cleanup
 
+### Freeze no-damage preset (data-driven)
+
+For Ice Trap-like freeze without periodic damage, use:
+
+- `core:freeze_ice_trap_no_damage`
+
+Or define a custom status with `baseStatus: core:freeze` + `freezeProfile.mode: ice_trap_no_damage`.
+
 ## Safety and failure model
 
 - Invalid mod data disables only the failing mod.

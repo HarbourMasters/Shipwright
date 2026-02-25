@@ -455,6 +455,30 @@ enum class ExternalModAoETargetScope {
     AllNonPlayer,
     EnemiesBosses,
     EnemiesBossesProps,
+    PlayerEnemiesBosses,
+    AllWithPlayer,
+};
+
+enum class ExternalModFreezeMode {
+    LegacyTimer,
+    IceTrapNoDamage,
+};
+
+enum class ExternalModFreezeShellSize {
+    Auto,
+    Small,
+    Medium,
+    Large,
+};
+
+struct ExternalModFreezeProfile {
+    ExternalModFreezeMode mode = ExternalModFreezeMode::LegacyTimer;
+    bool spawnIceShell = false;
+    ExternalModFreezeShellSize iceShellSize = ExternalModFreezeShellSize::Auto;
+    bool lockPosition = true;
+    bool lockRotation = false;
+    bool playerInputLock = false;
+    bool breakEffectOnExpire = true;
 };
 
 struct ExternalModStatusDefinition {
@@ -469,6 +493,8 @@ struct ExternalModStatusDefinition {
     int32_t damagePerTick = 0;
     int32_t intensity = 255;
     int32_t shakeFrames = 0;
+    bool hasFreezeProfile = false;
+    ExternalModFreezeProfile freezeProfile;
     std::vector<ExternalModAction> onApply;
     std::vector<ExternalModAction> onTick;
     std::vector<ExternalModAction> onExpire;
@@ -809,9 +835,26 @@ struct ExternalModRuntime {
         float baseX = 0.0f;
         float baseY = 0.0f;
         float baseZ = 0.0f;
+        int16_t baseRotX = 0;
         int16_t baseRotY = 0;
+        int16_t baseRotZ = 0;
         bool fallbackLogged = false;
         int32_t stacks = 1;
+        bool justApplied = true;
+        std::string stackingMode = "refresh";
+        int32_t maxStacks = 1;
+        ExternalModFreezeProfile freezeProfile;
+        uintptr_t freezeShellActorAddress = 0;
+    };
+    struct ActiveAoEState {
+        std::string profileId;
+        std::string sourceItemId;
+        int32_t framesRemaining = 0;
+        int32_t tickFrames = 1;
+        int32_t tickCountdown = 1;
+        float originX = 0.0f;
+        float originY = 0.0f;
+        float originZ = 0.0f;
     };
     struct SurfState {
         bool active = false;
@@ -832,6 +875,7 @@ struct ExternalModRuntime {
         bool idle = false;
     };
     std::vector<StatusEffectState> statusEffects;
+    std::vector<ActiveAoEState> activeAoEs;
     SurfState surfState;
     std::unordered_map<std::string, std::string> globalBlackboard;
     std::unordered_map<int16_t, std::unordered_map<std::string, std::string>> sceneBlackboard;

@@ -12,6 +12,7 @@
 
                      ],
     "capabilities":  [
+                         "statuses.catalog.v1",
                          "combat.targeting.v1",
                          "items.use_profiles.v1",
                          "combat.aoe.v1"
@@ -28,6 +29,7 @@
                 },
     "itemDefinitions":  "items/items.json",
     "inputDefinitions":  "config/input.json",
+    "statusDefinitions":  "statuses/statuses.json",
     "targetingDefinitions":  "combat/targeting_profiles.json",
     "itemUseProfiles":  "items/use_profiles.json",
     "aoeDefinitions":  "combat/aoe_profiles.json",

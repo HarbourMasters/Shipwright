@@ -46,6 +46,7 @@ class ExternalModManager {
     bool IsAimMouseFireHeld(::PlayState* play, ::Player* player, int32_t heldItemAction) const;
     int32_t HandleAimSelectSlotPress(::PlayState* play, ::Player* player, int32_t buttonIndex, int32_t itemId);
     bool IsAimAttackButtonFireEnabled(::PlayState* play, ::Player* player) const;
+    bool IsPlayerFreezeNoDamageActive(::Player* player) const;
     bool IsAimOverShoulderEnabled() const;
     bool HasCustomEquippedSlingshotModel() const;
     bool DrawCustomEquippedSlingshotModel(::PlayState* play) const;

@@ -21,6 +21,7 @@ Operational references:
 - Runtime exports: `docs/actions.json`, `docs/events.json`, `docs/catalogs.json`
 - Demo sync: `tools/external_mods/sync_examples_to_runtime.ps1`
 - Runtime export generation: `tools/external_mods/export_runtime_reference.ps1`
+- Validation/lint: `tools/external_mods/validate_mod.ps1`
 
 ## Path B ? Engine/C++ Modding
 

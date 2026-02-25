@@ -1,5 +1,5 @@
-{
-    "apiVersion":  3,
+﻿{
+    "apiVersion":  4,
     "onGameLoaded":  [
                          {
                              "action":  "grantModItem",

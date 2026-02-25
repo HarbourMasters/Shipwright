@@ -383,3 +383,37 @@ This file is the fixed, append-only plan ledger for this repository.
 - note: Completed v4 foundation checkpoint: apiVersion hard-break + manifest v4 fields/capability wiring, validator+migrator+CLI scripts, runtime contract registries export, docs/runtime mod manifests migrated to v4, and Release build/validation passed.
 - refs:
   - soh/soh/Enhancements/external-mods/ExternalModManager.cpp,soh/soh/Enhancements/external-mods/ExternalModTypes.h,tools/external_mods/validate_mod.ps1,tools/external_mods/migrate_mods_v3_to_v4.ps1,tools/external_mods/foundry-cli.ps1,tools/external_mods/export_runtime_reference.ps1,docs/runtime_contract/actions.registry.json,docs/runtime_contract/conditions.registry.json,plan.md
+
+## [PLN-20260225-0015] Freeze ice-trap no-damage data-driven + freeze dome demo uplift
+- createdUtc: 2026-02-25T18:34:43Z
+- status: in_progress
+- scope: mixed
+- summary: Implement freezeProfile + AoE player-inclusive scopes + freeze_dome_staff_demo updates + status runtime callbacks/stacking groundwork for higher data-driven freedom in API v4.
+- milestones:
+  1. Add freezeProfile and AoE target scope parser/type support
+  2. Implement runtime freeze no-damage mode for player/enemy with ice shell lifecycle
+  3. Update freeze_dome_staff_demo to use statusDefinitions and player_enemies_bosses scope
+  4. Add status callbacks/stacking execution + persistent AoE ticking runtime state
+  5. Update validator/migrator/docs/runtime references and run build/sync validations
+- tags: external-mods, freeze, api-v4, data-driven
+- refs:
+  - soh/soh/Enhancements/external-mods/ExternalModManager.cpp
+  - soh/soh/Enhancements/external-mods/ExternalModTypes.h
+  - docs/examples/external_mods/freeze_dome_staff_demo
+  - tools/external_mods/validate_mod.ps1
+
+## [PLN-20260225-0015][UPDATE] 2026-02-25T19:02:56Z
+- status: done
+- note: Implemented freezeProfile no-damage mode, new AoE scopes with player inclusion, persistent AoE ticking, status callback/stacking execution, freeze_dome_staff_demo status catalog uplift, validator/migrator/runtime reference updates, and validated Release build + sync/validate scripts.
+- refs:
+  - soh/soh/Enhancements/external-mods/ExternalModTypes.h
+  - soh/soh/Enhancements/external-mods/ExternalModManager.cpp
+  - soh/src/overlays/actors/ovl_player_actor/z_player.c
+  - docs/examples/external_mods/freeze_dome_staff_demo
+  - tools/external_mods/validate_mod.ps1
+  - tools/external_mods/migrate_mods_v3_to_v4.ps1
+  - tools/external_mods/export_runtime_reference.ps1
+  - docs/EXTERNAL_MOD_DATA_DRIVEN_REFERENCE.md
+  - docs/actions.json
+  - docs/events.json
+  - docs/catalogs.json

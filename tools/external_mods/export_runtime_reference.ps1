@@ -60,6 +60,15 @@ $catalogs = [ordered]@{
         @{ id = "dialog.nodes.v1"; fileField = "dialogDefinitions"; fileDefault = "dialog/dialogs.json"; schemaVersion = 1 },
         @{ id = "sdk.generators.v1"; fileField = "sdkGeneratorDefinitions"; fileDefault = "sdk/generators.json"; schemaVersion = 1 }
     )
+    contracts = @{
+        statuses = @{
+            freezeProfileMode = @("legacy_timer", "ice_trap_no_damage")
+            coreStatusPresets = @("core:freeze_ice_trap_no_damage")
+        }
+        aoe = @{
+            targetScope = @("all_non_player", "enemies_bosses", "enemies_bosses_props", "player_enemies_bosses", "all_with_player")
+        }
+    }
 }
 
 $actions = [ordered]@{

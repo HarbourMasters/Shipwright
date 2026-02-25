@@ -53,6 +53,7 @@ int32_t ExternalMods_IsAimAttackButtonFireEnabled(struct PlayState* play, struct
 int32_t ExternalMods_IsAimOverShoulderEnabled(void);
 int32_t ExternalMods_HasCustomEquippedSlingshotModel(void);
 int32_t ExternalMods_DrawCustomEquippedSlingshotModel(struct PlayState* play);
+int32_t ExternalMods_IsPlayerFreezeNoDamageActive(struct Player* player);
 
 #ifdef __cplusplus
 }

@@ -6,12 +6,12 @@
       "shape": "sphere",
       "radius": 260,
       "durationFrames": 1,
-      "targetScope": "enemies_bosses",
+      "targetScope": "player_enemies_bosses",
       "effects": {
         "onEnter": [
           {
             "action": "applyStatus",
-            "status": "core:freeze",
+            "status": "com.example.freeze_dome_staff_demo:freeze_lock_no_damage",
             "durationFrames": 120,
             "tickFrames": 20,
             "intensity": 220

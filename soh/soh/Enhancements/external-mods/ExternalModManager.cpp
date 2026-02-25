@@ -151,6 +151,10 @@ std::string gExternalModHookshotTextureOverrideKey;
 std::unordered_set<std::string> gExternalModMissingDisplayListWarnings{};
 std::unordered_set<std::string> gExternalModDisplayListDrawDebugLogs{};
 bool gExternalModPlayerStatusOverridesApplied = false;
+constexpr const char* kCoreFreezeNoDamageStatusId = "core:freeze_ice_trap_no_damage";
+constexpr uint8_t kObjIcePolySizeSmall = 0;
+constexpr uint8_t kObjIcePolySizeMedium = 1;
+constexpr uint8_t kObjIcePolySizeLarge = 2;
 
 void LoadExternalModsInventorySection() {
     ExternalModManager::Instance().LoadPersistentInventoryState();
@@ -773,6 +777,10 @@ const std::unordered_map<std::string, ExternalModAoETargetScope> kAoETargetScope
     { "enemiesbosses", ExternalModAoETargetScope::EnemiesBosses },
     { "enemies_bosses_props", ExternalModAoETargetScope::EnemiesBossesProps },
     { "enemiesbossesprops", ExternalModAoETargetScope::EnemiesBossesProps },
+    { "player_enemies_bosses", ExternalModAoETargetScope::PlayerEnemiesBosses },
+    { "playerenemiesbosses", ExternalModAoETargetScope::PlayerEnemiesBosses },
+    { "all_with_player", ExternalModAoETargetScope::AllWithPlayer },
+    { "allwithplayer", ExternalModAoETargetScope::AllWithPlayer },
 };
 
 const std::unordered_map<std::string, int32_t> kAssignableButtonAliases = {
@@ -908,6 +916,44 @@ bool ParseAoETargetScopeToken(const std::string& value, ExternalModAoETargetScop
 
     outScope = it->second;
     return true;
+}
+
+bool ParseFreezeModeToken(const std::string& value, ExternalModFreezeMode& outMode) {
+    const auto normalized = ToLower(value);
+    if (normalized == "legacy_timer" || normalized == "legacytimer") {
+        outMode = ExternalModFreezeMode::LegacyTimer;
+        return true;
+    }
+    if (normalized == "ice_trap_no_damage" || normalized == "icetrapnodamage") {
+        outMode = ExternalModFreezeMode::IceTrapNoDamage;
+        return true;
+    }
+    return false;
+}
+
+bool ParseFreezeShellSizeToken(const std::string& value, ExternalModFreezeShellSize& outSize) {
+    const auto normalized = ToLower(value);
+    if (normalized == "auto") {
+        outSize = ExternalModFreezeShellSize::Auto;
+        return true;
+    }
+    if (normalized == "small") {
+        outSize = ExternalModFreezeShellSize::Small;
+        return true;
+    }
+    if (normalized == "medium") {
+        outSize = ExternalModFreezeShellSize::Medium;
+        return true;
+    }
+    if (normalized == "large") {
+        outSize = ExternalModFreezeShellSize::Large;
+        return true;
+    }
+    return false;
+}
+
+bool IsCoreFreezeNoDamageStatusId(const std::string& statusId) {
+    return ToLower(statusId) == kCoreFreezeNoDamageStatusId;
 }
 
 uint8_t MakeButtonMask(int32_t buttonIndex) {
@@ -3729,7 +3775,8 @@ bool ParseStatusIdToken(const std::string& value, ExternalModStatusType& outStat
         outStatusType = ExternalModStatusType::Fire;
         return true;
     }
-    if (normalized == "core:freeze" || normalized == "freeze" || normalized == "core:frozen") {
+    if (normalized == "core:freeze" || normalized == "freeze" || normalized == "core:frozen" ||
+        normalized == "core:freeze_ice_trap_no_damage") {
         outStatusType = ExternalModStatusType::Freeze;
         return true;
     }
@@ -6544,11 +6591,14 @@ bool IsImportantNpcForStatus(int16_t actorId) {
     }
 }
 
-bool ShouldProtectStatusTarget(const Actor* actor, ExternalModStatusType statusType) {
+bool ShouldProtectStatusTarget(const Actor* actor, ExternalModStatusType statusType, bool allowPlayerTarget = false) {
     if (actor == nullptr) {
         return true;
     }
-    if (actor->category == ACTORCAT_PLAYER || actor->category == ACTORCAT_BG) {
+    if (actor->category == ACTORCAT_PLAYER) {
+        return !allowPlayerTarget;
+    }
+    if (actor->category == ACTORCAT_BG) {
         return true;
     }
 
@@ -6664,6 +6714,76 @@ ExternalModRuntime::StatusEffectState* FindStatusStateByActor(ExternalModRuntime
     return &(*it);
 }
 
+ExternalModFreezeProfile ResolveFreezeProfileForStatus(const ExternalModRuntime& runtime, const std::string& statusId,
+                                                       ExternalModStatusType statusType) {
+    ExternalModFreezeProfile profile;
+    if (statusType != ExternalModStatusType::Freeze) {
+        return profile;
+    }
+
+    if (IsCoreFreezeNoDamageStatusId(statusId)) {
+        profile.mode = ExternalModFreezeMode::IceTrapNoDamage;
+        profile.spawnIceShell = true;
+        profile.iceShellSize = ExternalModFreezeShellSize::Auto;
+        profile.lockPosition = true;
+        profile.lockRotation = true;
+        profile.playerInputLock = true;
+        profile.breakEffectOnExpire = true;
+        return profile;
+    }
+
+    const auto* statusDefinition = ExternalModContentRegistry::FindStatusDefinitionById(runtime, statusId);
+    if (statusDefinition != nullptr && statusDefinition->hasFreezeProfile) {
+        return statusDefinition->freezeProfile;
+    }
+
+    return profile;
+}
+
+uint8_t ResolveFreezeShellSizeParam(const Actor* actor, ExternalModFreezeShellSize size) {
+    if (size == ExternalModFreezeShellSize::Small) {
+        return kObjIcePolySizeSmall;
+    }
+    if (size == ExternalModFreezeShellSize::Medium) {
+        return kObjIcePolySizeMedium;
+    }
+    if (size == ExternalModFreezeShellSize::Large) {
+        return kObjIcePolySizeLarge;
+    }
+
+    if (actor == nullptr) {
+        return kObjIcePolySizeMedium;
+    }
+
+    const float scale = std::max(actor->scale.y, 0.0f);
+    if (scale < 0.02f) {
+        return kObjIcePolySizeSmall;
+    }
+    if (scale < 0.25f) {
+        return kObjIcePolySizeMedium;
+    }
+    return kObjIcePolySizeLarge;
+}
+
+void EnsureFreezeShell(PlayState* play, Actor* actor, ExternalModRuntime::StatusEffectState& statusState) {
+    if (play == nullptr || actor == nullptr || !statusState.freezeProfile.spawnIceShell) {
+        return;
+    }
+
+    Actor* shell = FindActorByAddress(play, statusState.freezeShellActorAddress, ACTOR_OBJ_ICE_POLY);
+    if (shell != nullptr && shell->update != nullptr) {
+        return;
+    }
+
+    const uint8_t sizeParam = ResolveFreezeShellSizeParam(actor, statusState.freezeProfile.iceShellSize);
+    Actor* spawned = Actor_SpawnAsChild(&play->actorCtx, actor, play, ACTOR_OBJ_ICE_POLY, actor->world.pos.x,
+                                        actor->world.pos.y, actor->world.pos.z, actor->world.rot.x, actor->world.rot.y,
+                                        actor->world.rot.z, sizeParam);
+    if (spawned != nullptr) {
+        statusState.freezeShellActorAddress = reinterpret_cast<uintptr_t>(spawned);
+    }
+}
+
 void BeginStatusOnActor(ExternalModRuntime& runtime, PlayState* play, Actor* actor, const ExternalModAction& action,
                         ExternalModStatusType statusType, bool isPlayerTarget, const std::string& statusId,
                         const std::string& sourceModId) {
@@ -6675,7 +6795,21 @@ void BeginStatusOnActor(ExternalModRuntime& runtime, PlayState* play, Actor* act
     const int32_t shakeFrames = std::clamp(action.shakeFrames, 0, durationFrames);
     const int32_t intensity = std::clamp(action.intensity, 0, 255);
 
+    const auto* statusDefinition = ExternalModContentRegistry::FindStatusDefinitionById(runtime, statusId);
+    std::string stackingMode = "refresh";
+    int32_t maxStacks = 1;
+    if (statusDefinition != nullptr) {
+        stackingMode = ToLower(statusDefinition->stackingMode);
+        if (stackingMode != "refresh" && stackingMode != "stack" && stackingMode != "replace" && stackingMode != "ignore") {
+            stackingMode = "refresh";
+        }
+        maxStacks = std::clamp(statusDefinition->maxStacks, 1, 32);
+    }
+
     auto* state = FindStatusStateByActor(runtime, actor, statusType, isPlayerTarget, statusId, sourceModId);
+    if (state != nullptr && stackingMode == "ignore") {
+        return;
+    }
     if (state == nullptr) {
         if (runtime.statusEffects.size() >= static_cast<size_t>(std::max(1, runtime.maxActiveStatusEffects))) {
             SPDLOG_WARN("[ExternalMods] status effect cap reached ({}). Ignoring status {}", runtime.maxActiveStatusEffects,
@@ -6693,18 +6827,36 @@ void BeginStatusOnActor(ExternalModRuntime& runtime, PlayState* play, Actor* act
         statusState.baseX = actor->world.pos.x;
         statusState.baseY = actor->world.pos.y;
         statusState.baseZ = actor->world.pos.z;
+        statusState.baseRotX = actor->shape.rot.x;
         statusState.baseRotY = actor->shape.rot.y;
+        statusState.baseRotZ = actor->shape.rot.z;
+        statusState.stacks = 1;
         runtime.statusEffects.push_back(statusState);
         state = &runtime.statusEffects.back();
     }
+
+    if (state != nullptr) {
+        if (stackingMode == "stack") {
+            state->stacks = std::clamp(state->stacks + 1, 1, maxStacks);
+        } else if (stackingMode == "replace") {
+            state->stacks = 1;
+        } else if (state->stacks <= 0) {
+            state->stacks = 1;
+        }
+    }
+
     state->statusId = statusId;
     state->sourceModId = sourceModId;
+    state->stackingMode = stackingMode;
+    state->maxStacks = maxStacks;
+    state->justApplied = true;
 
     state->framesRemaining = durationFrames;
     state->totalDurationFrames = durationFrames;
     state->tickFrames = std::clamp(action.tickFrames, 1, 36000);
     state->tickCountdown = state->tickFrames;
-    state->damagePerTick = std::clamp(action.damagePerTick, 0, 255);
+    const int32_t baseDamagePerTick = std::clamp(action.damagePerTick, 0, 255);
+    state->damagePerTick = std::clamp(baseDamagePerTick * std::max(1, state->stacks), 0, 255);
     state->shakeFrames = shakeFrames;
     state->intensity = intensity;
     state->speedMultiplier = std::clamp(action.speedMultiplier, 0.05f, 8.0f);
@@ -6716,11 +6868,25 @@ void BeginStatusOnActor(ExternalModRuntime& runtime, PlayState* play, Actor* act
     state->baseX = actor->world.pos.x;
     state->baseY = actor->world.pos.y;
     state->baseZ = actor->world.pos.z;
+    state->baseRotX = actor->shape.rot.x;
     state->baseRotY = actor->shape.rot.y;
+    state->baseRotZ = actor->shape.rot.z;
     state->fallbackLogged = false;
+    state->freezeProfile = ResolveFreezeProfileForStatus(runtime, statusId, statusType);
+    if (statusType == ExternalModStatusType::Freeze && state->freezeProfile.mode == ExternalModFreezeMode::IceTrapNoDamage) {
+        state->damagePerTick = 0;
+    }
 
     if (statusType == ExternalModStatusType::Freeze) {
         actor->freezeTimer = static_cast<uint16_t>(std::clamp(durationFrames, 1, 0xFFFF));
+        EnsureFreezeShell(play, actor, *state);
+        if (isPlayerTarget && state->freezeProfile.mode == ExternalModFreezeMode::IceTrapNoDamage &&
+            state->freezeProfile.playerInputLock) {
+            auto* player = GET_PLAYER(play);
+            if (player != nullptr && &player->actor == actor) {
+                func_80837C0C(play, player, PLAYER_HIT_RESPONSE_ICE_TRAP, 0.0f, 0.0f, player->actor.shape.rot.y, 20);
+            }
+        }
     }
     if (statusType == ExternalModStatusType::Stun) {
         actor->freezeTimer = static_cast<uint16_t>(std::clamp(std::min(durationFrames, 8), 1, 0xFFFF));
@@ -6746,22 +6912,35 @@ void ApplyStatusDamage(PlayState* play, Actor* actor, int32_t damagePerTick) {
 }
 
 void RestoreStatusState(ExternalModRuntime::StatusEffectState& statusState, Actor* actor, PlayState* play, bool spawnEndEffect) {
-    if (actor == nullptr) {
-        return;
-    }
-
     if (statusState.statusType == ExternalModStatusType::Freeze) {
-        actor->world.pos.x = statusState.baseX;
-        actor->world.pos.y = statusState.baseY;
-        actor->world.pos.z = statusState.baseZ;
-        actor->freezeTimer = 0;
-        actor->colorFilterTimer = 0;
-        actor->colorFilterParams = 0;
-        if (spawnEndEffect && play != nullptr) {
+        if (play != nullptr && statusState.freezeShellActorAddress != 0) {
+            Actor* shell = FindActorByAddress(play, statusState.freezeShellActorAddress, ACTOR_OBJ_ICE_POLY);
+            if (shell != nullptr && shell->update != nullptr) {
+                Actor_Kill(shell);
+            }
+            statusState.freezeShellActorAddress = 0;
+        }
+
+        if (actor != nullptr) {
+            if (statusState.freezeProfile.lockPosition) {
+                actor->world.pos.x = statusState.baseX;
+                actor->world.pos.y = statusState.baseY;
+                actor->world.pos.z = statusState.baseZ;
+            }
+            actor->freezeTimer = 0;
+            actor->colorFilterTimer = 0;
+            actor->colorFilterParams = 0;
+        }
+
+        if (spawnEndEffect && statusState.freezeProfile.breakEffectOnExpire && play != nullptr && actor != nullptr) {
             Vec3f burstPos = actor->world.pos;
             EffectSsIcePiece_SpawnBurst(play, &burstPos, std::max(actor->scale.x, 0.01f));
             Audio_PlayActorSound2(actor, NA_SE_EV_ICE_BROKEN);
         }
+        return;
+    }
+
+    if (actor == nullptr) {
         return;
     }
 
@@ -6786,6 +6965,7 @@ void ClearStatusEffects(ExternalModRuntime& runtime, PlayState* play, bool spawn
         RestoreStatusState(statusState, actor, play, spawnEndEffects);
     }
     runtime.statusEffects.clear();
+    runtime.activeAoEs.clear();
 }
 
 void ClearStatusEffectsOnActor(ExternalModRuntime& runtime, PlayState* play, Actor* actor, bool hasStatusFilter,
@@ -6892,10 +7072,18 @@ int32_t GetStatusRemainingOnTarget(const ExternalModRuntime& runtime, uintptr_t 
     return bestRemaining;
 }
 
-void TickStatusEffects(ExternalModRuntime& runtime, PlayState* play) {
+struct DeferredStatusCallback {
+    std::vector<ExternalModAction> actions;
+    std::string triggerName;
+};
+
+void TickStatusEffects(ExternalModPackage& package, PlayState* play,
+                       std::vector<DeferredStatusCallback>& outDeferredCallbacks) {
+    auto& runtime = package.runtime;
     if (play == nullptr || runtime.statusEffects.empty()) {
         return;
     }
+    outDeferredCallbacks.reserve(outDeferredCallbacks.size() + runtime.statusEffects.size());
 
     for (size_t i = 0; i < runtime.statusEffects.size();) {
         auto& statusState = runtime.statusEffects[i];
@@ -6905,27 +7093,74 @@ void TickStatusEffects(ExternalModRuntime& runtime, PlayState* play) {
             continue;
         }
 
+        const ExternalModStatusDefinition* statusDefinition =
+            ExternalModContentRegistry::FindStatusDefinitionById(runtime, statusState.statusId);
+
+        if (statusState.justApplied) {
+            statusState.justApplied = false;
+            if (statusDefinition != nullptr && !statusDefinition->onApply.empty()) {
+                outDeferredCallbacks.push_back({ statusDefinition->onApply, "statusOnApply" });
+            }
+        }
+
         statusState.framesRemaining = std::max(statusState.framesRemaining - 1, 0);
         if (statusState.framesRemaining <= 0) {
+            if (statusDefinition != nullptr && !statusDefinition->onExpire.empty()) {
+                outDeferredCallbacks.push_back({ statusDefinition->onExpire, "statusOnExpire" });
+            }
             RestoreStatusState(statusState, actor, play, true);
             runtime.statusEffects.erase(runtime.statusEffects.begin() + static_cast<std::ptrdiff_t>(i));
             continue;
+        }
+
+        statusState.tickCountdown = std::max(0, statusState.tickCountdown - 1);
+        const bool tickTriggered = statusState.tickCountdown <= 0;
+        if (tickTriggered) {
+            statusState.tickCountdown = std::max(1, statusState.tickFrames);
+            if (statusDefinition != nullptr && !statusDefinition->onTick.empty()) {
+                outDeferredCallbacks.push_back({ statusDefinition->onTick, "statusOnTick" });
+            }
         }
 
         switch (statusState.statusType) {
             case ExternalModStatusType::Freeze: {
                 actor->freezeTimer = static_cast<uint16_t>(std::clamp(statusState.framesRemaining, 1, 0xFFFF));
                 ApplyStatusColorFilter(actor, statusState.statusType, statusState.intensity);
-                actor->world.pos.x = statusState.baseX;
-                actor->world.pos.y = statusState.baseY;
-                actor->world.pos.z = statusState.baseZ;
-                if (statusState.shakeFrames > 0 && statusState.framesRemaining <= statusState.shakeFrames) {
-                    const int32_t shakeFrameIndex = statusState.shakeFrames - statusState.framesRemaining;
-                    const float shakeProgress =
-                        1.0f - (static_cast<float>(statusState.framesRemaining) / static_cast<float>(std::max(statusState.shakeFrames, 1)));
-                    const float amplitude = 0.6f + (2.2f * std::clamp(shakeProgress, 0.0f, 1.0f));
-                    actor->world.pos.x = statusState.baseX + (sinf(static_cast<float>(shakeFrameIndex) * 1.9f) * amplitude);
-                    actor->world.pos.z = statusState.baseZ + (cosf(static_cast<float>(shakeFrameIndex) * 2.5f) * amplitude);
+                EnsureFreezeShell(play, actor, statusState);
+
+                if (statusState.freezeProfile.lockPosition) {
+                    actor->world.pos.x = statusState.baseX;
+                    actor->world.pos.y = statusState.baseY;
+                    actor->world.pos.z = statusState.baseZ;
+                    if (statusState.shakeFrames > 0 && statusState.framesRemaining <= statusState.shakeFrames) {
+                        const int32_t shakeFrameIndex = statusState.shakeFrames - statusState.framesRemaining;
+                        const float shakeProgress =
+                            1.0f - (static_cast<float>(statusState.framesRemaining) /
+                                    static_cast<float>(std::max(statusState.shakeFrames, 1)));
+                        const float amplitude = 0.6f + (2.2f * std::clamp(shakeProgress, 0.0f, 1.0f));
+                        actor->world.pos.x =
+                            statusState.baseX + (sinf(static_cast<float>(shakeFrameIndex) * 1.9f) * amplitude);
+                        actor->world.pos.z =
+                            statusState.baseZ + (cosf(static_cast<float>(shakeFrameIndex) * 2.5f) * amplitude);
+                    }
+                }
+                if (statusState.freezeProfile.lockRotation) {
+                    actor->shape.rot.x = statusState.baseRotX;
+                    actor->shape.rot.y = statusState.baseRotY;
+                    actor->shape.rot.z = statusState.baseRotZ;
+                    actor->world.rot.x = statusState.baseRotX;
+                    actor->world.rot.y = statusState.baseRotY;
+                    actor->world.rot.z = statusState.baseRotZ;
+                }
+
+                if (statusState.isPlayerTarget && statusState.freezeProfile.mode == ExternalModFreezeMode::IceTrapNoDamage &&
+                    statusState.freezeProfile.playerInputLock) {
+                    auto* freezePlayer = GET_PLAYER(play);
+                    if (freezePlayer != nullptr && &freezePlayer->actor == actor &&
+                        !(freezePlayer->stateFlags2 & PLAYER_STATE2_FROZEN)) {
+                        func_80837C0C(play, freezePlayer, PLAYER_HIT_RESPONSE_ICE_TRAP, 0.0f, 0.0f,
+                                      freezePlayer->actor.shape.rot.y, 20);
+                    }
                 }
                 break;
             }
@@ -6936,9 +7171,7 @@ void TickStatusEffects(ExternalModRuntime& runtime, PlayState* play) {
             case ExternalModStatusType::Fire:
             case ExternalModStatusType::Poison:
                 ApplyStatusColorFilter(actor, statusState.statusType, statusState.intensity);
-                statusState.tickCountdown = std::max(0, statusState.tickCountdown - 1);
-                if (statusState.tickCountdown <= 0) {
-                    statusState.tickCountdown = std::max(1, statusState.tickFrames);
+                if (tickTriggered) {
                     if (statusState.statusType == ExternalModStatusType::Fire) {
                         Vec3f flamePos = actor->world.pos;
                         flamePos.y += 20.0f;
@@ -7132,6 +7365,64 @@ void ApplyGlobalPlayerStatusModifiers(std::vector<ExternalModPackage>& packages,
         player->actor.freezeTimer = static_cast<uint16_t>(std::clamp(freezeFramesRemaining, 1, 0xFFFF));
         ApplyStatusColorFilter(&player->actor, ExternalModStatusType::Freeze, std::clamp(freezeIntensity, 0, 255));
     }
+}
+
+void CollectAoETargetsForProfile(const ExternalModAoEProfile& aoeProfile, PlayState* play, Player* player,
+                                 const Vec3f& origin, std::vector<Actor*>& outTargets);
+bool ExecuteUseProfileEffects(ExternalModPackage& package, const std::vector<ExternalModUseProfileEffect>& effects,
+                              const std::vector<Actor*>& targets, PlayState* play, Player* player,
+                              const ExternalModItemDefinition* sourceItem, std::string& outError);
+
+bool TickActiveAoEs(ExternalModPackage& package, PlayState* play, Player* player, std::string& outError) {
+    if (play == nullptr || player == nullptr || !package.runtime.enabled || package.runtime.activeAoEs.empty()) {
+        return true;
+    }
+
+    for (size_t i = 0; i < package.runtime.activeAoEs.size();) {
+        auto& activeAoE = package.runtime.activeAoEs[i];
+        const auto* aoeProfile = ExternalModContentRegistry::FindAoEProfileById(package.runtime, activeAoE.profileId);
+        if (aoeProfile == nullptr) {
+            package.runtime.activeAoEs.erase(package.runtime.activeAoEs.begin() + static_cast<std::ptrdiff_t>(i));
+            continue;
+        }
+
+        Vec3f origin = { activeAoE.originX, activeAoE.originY, activeAoE.originZ };
+        std::vector<Actor*> aoeTargets;
+        CollectAoETargetsForProfile(*aoeProfile, play, player, origin, aoeTargets);
+
+        activeAoE.framesRemaining = std::max(0, activeAoE.framesRemaining - 1);
+        activeAoE.tickCountdown = std::max(0, activeAoE.tickCountdown - 1);
+
+        const ExternalModItemDefinition* sourceItem = nullptr;
+        if (!activeAoE.sourceItemId.empty()) {
+            sourceItem = ExternalModContentRegistry::FindItemDefinitionById(package.runtime, activeAoE.sourceItemId);
+        }
+
+        if (activeAoE.tickCountdown <= 0 && !aoeProfile->onTick.empty()) {
+            activeAoE.tickCountdown = std::max(1, activeAoE.tickFrames);
+            std::string tickError;
+            if (!ExecuteUseProfileEffects(package, aoeProfile->onTick, aoeTargets, play, player, sourceItem, tickError)) {
+                outError = "aoe onTick failed for profile '" + aoeProfile->id + "': " + tickError;
+                return false;
+            }
+        }
+
+        if (activeAoE.framesRemaining <= 0) {
+            if (!aoeProfile->onExit.empty()) {
+                std::string exitError;
+                if (!ExecuteUseProfileEffects(package, aoeProfile->onExit, aoeTargets, play, player, sourceItem, exitError)) {
+                    outError = "aoe onExit failed for profile '" + aoeProfile->id + "': " + exitError;
+                    return false;
+                }
+            }
+            package.runtime.activeAoEs.erase(package.runtime.activeAoEs.begin() + static_cast<std::ptrdiff_t>(i));
+            continue;
+        }
+
+        ++i;
+    }
+
+    return true;
 }
 
 void ClearSurfState(ExternalModRuntime& runtime) {
@@ -7638,23 +7929,74 @@ bool ResolveStatusActionData(ExternalModPackage& package, const ExternalModActio
         }
     }
 
+    if (outResolvedType == ExternalModStatusType::Freeze) {
+        const bool noDamageFreeze =
+            IsCoreFreezeNoDamageStatusId(outResolvedAction.statusId) ||
+            (statusDefinition != nullptr && statusDefinition->hasFreezeProfile &&
+             statusDefinition->freezeProfile.mode == ExternalModFreezeMode::IceTrapNoDamage);
+        if (noDamageFreeze) {
+            outResolvedAction.damagePerTick = 0;
+        }
+    }
+
     return true;
 }
 
 bool ShouldIncludeAoEActorCategory(ExternalModAoETargetScope scope, size_t category) {
-    if (category == ACTORCAT_PLAYER || category == ACTORCAT_BG) {
+    if (category == ACTORCAT_BG) {
         return false;
     }
 
     switch (scope) {
         case ExternalModAoETargetScope::AllNonPlayer:
-            return true;
+            return category != ACTORCAT_PLAYER;
         case ExternalModAoETargetScope::EnemiesBosses:
             return category == ACTORCAT_ENEMY || category == ACTORCAT_BOSS;
         case ExternalModAoETargetScope::EnemiesBossesProps:
             return category == ACTORCAT_ENEMY || category == ACTORCAT_BOSS || category == ACTORCAT_PROP;
+        case ExternalModAoETargetScope::PlayerEnemiesBosses:
+            return category == ACTORCAT_ENEMY || category == ACTORCAT_BOSS;
+        case ExternalModAoETargetScope::AllWithPlayer:
+            return category != ACTORCAT_PLAYER;
         default:
-            return true;
+            return category != ACTORCAT_PLAYER;
+    }
+}
+
+bool ShouldIncludeAoEPlayer(ExternalModAoETargetScope scope) {
+    return scope == ExternalModAoETargetScope::PlayerEnemiesBosses ||
+           scope == ExternalModAoETargetScope::AllWithPlayer;
+}
+
+void CollectAoETargetsForProfile(const ExternalModAoEProfile& aoeProfile, PlayState* play, Player* player,
+                                 const Vec3f& origin, std::vector<Actor*>& outTargets) {
+    outTargets.clear();
+    if (play == nullptr || player == nullptr) {
+        return;
+    }
+
+    Vec3f originMutable = origin;
+    const float radius = std::max(aoeProfile.radius, aoeProfile.range);
+    for (size_t category = 0; category < ARRAY_COUNT(play->actorCtx.actorLists); ++category) {
+        if (!ShouldIncludeAoEActorCategory(aoeProfile.targetScope, category)) {
+            continue;
+        }
+        for (Actor* actor = play->actorCtx.actorLists[category].head; actor != nullptr; actor = actor->next) {
+            if (actor == nullptr || actor->update == nullptr) {
+                continue;
+            }
+            const float distance = Math_Vec3f_DistXYZ(&originMutable, &actor->world.pos);
+            if (distance <= radius) {
+                outTargets.push_back(actor);
+            }
+        }
+    }
+
+    if (ShouldIncludeAoEPlayer(aoeProfile.targetScope)) {
+        const float playerDistance = Math_Vec3f_DistXYZ(&originMutable, &player->actor.world.pos);
+        if (playerDistance <= radius) {
+            outTargets.push_back(&player->actor);
+        }
     }
 }
 
@@ -7716,7 +8058,7 @@ bool ExecuteUseProfileEffects(ExternalModPackage& package, const std::vector<Ext
             ExternalModStatusType statusType = ExternalModStatusType::Custom;
             ResolveStatusActionData(package, statusAction, statusAction, statusType);
             for (Actor* target : targets) {
-                if (target == nullptr || ShouldProtectStatusTarget(target, statusType)) {
+                if (target == nullptr || ShouldProtectStatusTarget(target, statusType, target->id == ACTOR_PLAYER)) {
                     continue;
                 }
                 const bool isPlayerTarget = target->id == ACTOR_PLAYER;
@@ -7763,7 +8105,7 @@ bool ExecuteUseProfileEffects(ExternalModPackage& package, const std::vector<Ext
                     statusAction.intensity = std::clamp(effect.intensity, 0, 255);
                     ExternalModStatusType statusType = ExternalModStatusType::Custom;
                     ResolveStatusActionData(package, statusAction, statusAction, statusType);
-                    if (!ShouldProtectStatusTarget(target, statusType)) {
+                    if (!ShouldProtectStatusTarget(target, statusType, target->id == ACTOR_PLAYER)) {
                         const bool isPlayerTarget = target->id == ACTOR_PLAYER;
                         BeginStatusOnActor(package.runtime, play, target, statusAction, statusType, isPlayerTarget,
                                            statusAction.statusId, package.manifest.id);
@@ -7823,31 +8165,34 @@ bool ExecuteUseProfileEffects(ExternalModPackage& package, const std::vector<Ext
                 return false;
             }
 
-            std::vector<Actor*> aoeTargets;
-            const float radius = std::max(aoeProfile->radius, aoeProfile->range);
-            for (size_t category = 0; category < ARRAY_COUNT(play->actorCtx.actorLists); ++category) {
-                if (!ShouldIncludeAoEActorCategory(aoeProfile->targetScope, category)) {
-                    continue;
-                }
-                for (Actor* actor = play->actorCtx.actorLists[category].head; actor != nullptr; actor = actor->next) {
-                    if (actor == nullptr || actor->update == nullptr) {
-                        continue;
-                    }
-                    const float distance = Math_Vec3f_DistXYZ(&player->actor.world.pos, &actor->world.pos);
-                    if (distance <= radius) {
-                        aoeTargets.push_back(actor);
-                    }
-                }
+            Vec3f aoeOrigin = player->actor.world.pos;
+            if (package.runtime.hasEffectImpactPosition) {
+                aoeOrigin.x = package.runtime.effectImpactPosX;
+                aoeOrigin.y = package.runtime.effectImpactPosY;
+                aoeOrigin.z = package.runtime.effectImpactPosZ;
             }
+
+            std::vector<Actor*> aoeTargets;
+            CollectAoETargetsForProfile(*aoeProfile, play, player, aoeOrigin, aoeTargets);
 
             if (!ExecuteUseProfileEffects(package, aoeProfile->onEnter, aoeTargets, play, player, sourceItem, outError)) {
                 return false;
             }
-            if (aoeProfile->durationFrames > 1 && !aoeProfile->onTick.empty()) {
-                if (!ExecuteUseProfileEffects(package, aoeProfile->onTick, aoeTargets, play, player, sourceItem, outError)) {
-                    return false;
-                }
+
+            if (aoeProfile->durationFrames > 1) {
+                ExternalModRuntime::ActiveAoEState activeAoE;
+                activeAoE.profileId = aoeProfile->id;
+                activeAoE.sourceItemId = sourceItem == nullptr ? std::string{} : sourceItem->id;
+                activeAoE.framesRemaining = std::max(1, aoeProfile->durationFrames);
+                activeAoE.tickFrames = std::max(1, aoeProfile->tickFrames > 0 ? aoeProfile->tickFrames : 1);
+                activeAoE.tickCountdown = activeAoE.tickFrames;
+                activeAoE.originX = aoeOrigin.x;
+                activeAoE.originY = aoeOrigin.y;
+                activeAoE.originZ = aoeOrigin.z;
+                package.runtime.activeAoEs.push_back(std::move(activeAoE));
+                continue;
             }
+
             if (!aoeProfile->onExit.empty()) {
                 if (!ExecuteUseProfileEffects(package, aoeProfile->onExit, aoeTargets, play, player, sourceItem, outError)) {
                     return false;
@@ -9007,6 +9352,30 @@ bool ExternalModManager::IsAimAttackButtonFireEnabled(::PlayState* play, ::Playe
     return definition->aimAttackButtonFire;
 }
 
+bool ExternalModManager::IsPlayerFreezeNoDamageActive(::Player* player) const {
+    if (player == nullptr) {
+        return false;
+    }
+
+    const auto playerAddress = reinterpret_cast<uintptr_t>(&player->actor);
+    for (const auto& package : mPackages) {
+        if (!package.runtime.enabled) {
+            continue;
+        }
+        for (const auto& statusState : package.runtime.statusEffects) {
+            if (statusState.actorAddress != playerAddress || statusState.statusType != ExternalModStatusType::Freeze ||
+                statusState.framesRemaining <= 0 || !statusState.isPlayerTarget) {
+                continue;
+            }
+            if (statusState.freezeProfile.mode == ExternalModFreezeMode::IceTrapNoDamage) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 bool ExternalModManager::IsAimOverShoulderEnabled() const {
     return mAimCameraState.overShoulderEnabled;
 }
@@ -9746,7 +10115,7 @@ int32_t ExternalModManager::WasmHostApplyStatus(const std::string& modId, int32_
     if (!ResolveStatusActionData(*package, action, resolvedAction, resolvedType)) {
         return -5;
     }
-    if (ShouldProtectStatusTarget(target, resolvedType)) {
+    if (ShouldProtectStatusTarget(target, resolvedType, target == &player->actor)) {
         return -6;
     }
 
@@ -10386,6 +10755,7 @@ void ExternalModManager::Shutdown() {
     Player* player = gPlayState != nullptr ? GET_PLAYER(gPlayState) : nullptr;
     for (auto& package : mPackages) {
         ClearStatusEffects(package.runtime, gPlayState, false);
+        package.runtime.activeAoEs.clear();
         ClearSurfState(package.runtime);
         UnmountAssetsForPackage(package);
         package.runtime.enabled = false;
@@ -13092,6 +13462,72 @@ bool ExternalModManager::TryParseStatusDefinitions(const std::string& content, i
             }
             definition.shakeFrames = std::clamp(status["shakeFrames"].get<int32_t>(), 0, 36000);
         }
+        if (status.contains("freezeProfile")) {
+            if (!status["freezeProfile"].is_object()) {
+                outError = "statuses[" + std::to_string(i) + "].freezeProfile must be object";
+                return false;
+            }
+            definition.hasFreezeProfile = true;
+            const auto& freezeProfile = status["freezeProfile"];
+            if (freezeProfile.contains("mode")) {
+                if (!freezeProfile["mode"].is_string()) {
+                    outError = "statuses[" + std::to_string(i) + "].freezeProfile.mode must be string";
+                    return false;
+                }
+                if (!ParseFreezeModeToken(freezeProfile["mode"].get<std::string>(), definition.freezeProfile.mode)) {
+                    outError =
+                        "statuses[" + std::to_string(i) + "].freezeProfile.mode must be legacy_timer|ice_trap_no_damage";
+                    return false;
+                }
+            }
+            if (freezeProfile.contains("spawnIceShell")) {
+                if (!freezeProfile["spawnIceShell"].is_boolean()) {
+                    outError = "statuses[" + std::to_string(i) + "].freezeProfile.spawnIceShell must be boolean";
+                    return false;
+                }
+                definition.freezeProfile.spawnIceShell = freezeProfile["spawnIceShell"].get<bool>();
+            }
+            if (freezeProfile.contains("iceShellSize")) {
+                if (!freezeProfile["iceShellSize"].is_string()) {
+                    outError = "statuses[" + std::to_string(i) + "].freezeProfile.iceShellSize must be string";
+                    return false;
+                }
+                if (!ParseFreezeShellSizeToken(freezeProfile["iceShellSize"].get<std::string>(),
+                                               definition.freezeProfile.iceShellSize)) {
+                    outError = "statuses[" + std::to_string(i) +
+                               "].freezeProfile.iceShellSize must be auto|small|medium|large";
+                    return false;
+                }
+            }
+            if (freezeProfile.contains("lockPosition")) {
+                if (!freezeProfile["lockPosition"].is_boolean()) {
+                    outError = "statuses[" + std::to_string(i) + "].freezeProfile.lockPosition must be boolean";
+                    return false;
+                }
+                definition.freezeProfile.lockPosition = freezeProfile["lockPosition"].get<bool>();
+            }
+            if (freezeProfile.contains("lockRotation")) {
+                if (!freezeProfile["lockRotation"].is_boolean()) {
+                    outError = "statuses[" + std::to_string(i) + "].freezeProfile.lockRotation must be boolean";
+                    return false;
+                }
+                definition.freezeProfile.lockRotation = freezeProfile["lockRotation"].get<bool>();
+            }
+            if (freezeProfile.contains("playerInputLock")) {
+                if (!freezeProfile["playerInputLock"].is_boolean()) {
+                    outError = "statuses[" + std::to_string(i) + "].freezeProfile.playerInputLock must be boolean";
+                    return false;
+                }
+                definition.freezeProfile.playerInputLock = freezeProfile["playerInputLock"].get<bool>();
+            }
+            if (freezeProfile.contains("breakEffectOnExpire")) {
+                if (!freezeProfile["breakEffectOnExpire"].is_boolean()) {
+                    outError = "statuses[" + std::to_string(i) + "].freezeProfile.breakEffectOnExpire must be boolean";
+                    return false;
+                }
+                definition.freezeProfile.breakEffectOnExpire = freezeProfile["breakEffectOnExpire"].get<bool>();
+            }
+        }
         if (status.contains("stacking")) {
             if (!status["stacking"].is_object()) {
                 outError = "statuses[" + std::to_string(i) + "].stacking must be object";
@@ -13104,6 +13540,11 @@ bool ExternalModManager::TryParseStatusDefinitions(const std::string& content, i
                     return false;
                 }
                 definition.stackingMode = ToLower(stacking["mode"].get<std::string>());
+                if (definition.stackingMode != "refresh" && definition.stackingMode != "stack" &&
+                    definition.stackingMode != "replace" && definition.stackingMode != "ignore") {
+                    outError = "statuses[" + std::to_string(i) + "].stacking.mode must be refresh|stack|replace|ignore";
+                    return false;
+                }
             }
             if (stacking.contains("maxStacks")) {
                 if (!stacking["maxStacks"].is_number_integer()) {
@@ -13646,12 +14087,12 @@ bool ExternalModManager::TryParseAoEDefinitions(const std::string& content, int3
                 return false;
             }
 
-            if (!ParseAoETargetScopeToken(aoe["targetScope"].get<std::string>(), definition.targetScope)) {
-                outError = "aoe[" + std::to_string(i) +
-                           "].targetScope unsupported (expected all_non_player|enemies_bosses|enemies_bosses_props)";
-                return false;
+                if (!ParseAoETargetScopeToken(aoe["targetScope"].get<std::string>(), definition.targetScope)) {
+                    outError = "aoe[" + std::to_string(i) +
+                           "].targetScope unsupported (expected all_non_player|enemies_bosses|enemies_bosses_props|player_enemies_bosses|all_with_player)";
+                    return false;
+                }
             }
-        }
         if (aoe.contains("range")) {
             if (!aoe["range"].is_number()) {
                 outError = "aoe[" + std::to_string(i) + "].range must be numeric";
@@ -15898,7 +16339,7 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                     break;
                 }
 
-                if (ShouldProtectStatusTarget(target, resolvedStatusType)) {
+                if (ShouldProtectStatusTarget(target, resolvedStatusType, target->id == ACTOR_PLAYER)) {
                     break;
                 }
 
@@ -16437,6 +16878,7 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
 
 void ExternalModManager::DisableRuntime(ExternalModPackage& package, const std::string& reason) {
     ClearStatusEffects(package.runtime, gPlayState, false);
+    package.runtime.activeAoEs.clear();
     ClearSurfState(package.runtime);
     package.runtime.wasmTargetHandles.clear();
     package.runtime.wasmNextTargetHandle = 1;
@@ -16971,7 +17413,25 @@ void ExternalModManager::OnGameFrameUpdate() {
                 }
             }
 
-            TickStatusEffects(package.runtime, gPlayState);
+            std::string aoeTickError;
+            if (!TickActiveAoEs(package, gPlayState, player, aoeTickError)) {
+                DisableRuntime(package, aoeTickError);
+                break;
+            }
+            if (!package.runtime.enabled) {
+                break;
+            }
+
+            std::vector<DeferredStatusCallback> deferredStatusCallbacks;
+            TickStatusEffects(package, gPlayState, deferredStatusCallbacks);
+            for (const auto& callback : deferredStatusCallbacks) {
+                if (!package.runtime.enabled) {
+                    break;
+                }
+                if (!callback.actions.empty()) {
+                    ExecuteActions(package, callback.actions, callback.triggerName.c_str());
+                }
+            }
             if (!package.runtime.enabled) {
                 break;
             }
@@ -17644,6 +18104,10 @@ int32_t ExternalMods_HandleAimSelectSlotPress(PlayState* play, Player* player, i
 
 int32_t ExternalMods_IsAimAttackButtonFireEnabled(PlayState* play, Player* player) {
     return SOH::ExternalModManager::Instance().IsAimAttackButtonFireEnabled(play, player) ? 1 : 0;
+}
+
+int32_t ExternalMods_IsPlayerFreezeNoDamageActive(Player* player) {
+    return SOH::ExternalModManager::Instance().IsPlayerFreezeNoDamageActive(player) ? 1 : 0;
 }
 
 int32_t ExternalMods_HasCustomEquippedSlingshotModel(void) {

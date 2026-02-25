@@ -142,7 +142,28 @@ function Update-ModManifest {
     $shouldWriteModulePlaceholder = -not [string]::IsNullOrWhiteSpace($runtimeModule) -and
         $runtimeModule.ToLowerInvariant().EndsWith(".wat")
 
-    if (-not $changed -and -not $shouldWriteModulePlaceholder) {
+    $entryScript = ""
+    $entryScriptValue = Get-ObjectPropertyValue -Object $manifest -Name "entryScript"
+    if ($null -ne $entryScriptValue) {
+        $entryScript = "$entryScriptValue"
+    }
+    $shouldUpdateEntryScriptApi = $false
+    if (-not [string]::IsNullOrWhiteSpace($entryScript)) {
+        $entryScriptPath = Join-Path $manifestDir $entryScript
+        if (Test-Path $entryScriptPath) {
+            try {
+                $entryScriptJson = Get-Content -Path $entryScriptPath -Raw | ConvertFrom-Json
+                if ($entryScriptJson.apiVersion -ne 4) {
+                    $entryScriptJson.apiVersion = 4
+                    $shouldUpdateEntryScriptApi = $true
+                }
+            } catch {
+                # ignore malformed entry script here; validate_mod.ps1 will report it explicitly
+            }
+        }
+    }
+
+    if (-not $changed -and -not $shouldWriteModulePlaceholder -and -not $shouldUpdateEntryScriptApi) {
         return
     }
 
@@ -153,6 +174,9 @@ function Update-ModManifest {
             if (-not (Test-Path $placeholderPath)) {
                 Write-Host "[DryRun] Would create placeholder WAT module at $placeholderPath"
             }
+        }
+        if ($shouldUpdateEntryScriptApi -and -not [string]::IsNullOrWhiteSpace($entryScript)) {
+            Write-Host "[DryRun] Would update entryScript apiVersion=4 at $entryScript"
         }
         return
     }
@@ -173,6 +197,13 @@ function Update-ModManifest {
             Set-Content -Path $placeholderPath -Value "(module)" -Encoding UTF8
             Write-Host "Created placeholder runtime module: $placeholderPath"
         }
+    }
+
+    if ($shouldUpdateEntryScriptApi -and -not [string]::IsNullOrWhiteSpace($entryScript)) {
+        $entryScriptPath = Join-Path $manifestDir $entryScript
+        $entryJson = $entryScriptJson | ConvertTo-Json -Depth 100
+        Set-Content -Path $entryScriptPath -Value $entryJson -Encoding UTF8
+        Write-Host "Updated entryScript apiVersion: $entryScriptPath"
     }
 }
 

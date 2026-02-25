@@ -15081,7 +15081,9 @@ void Player_Action_8084FB10(Player* this, PlayState* play) {
         }
 
         if ((play->gameplayFrames % 4) == 0) {
-            Player_InflictDamage(play, -1);
+            if (!ExternalMods_IsPlayerFreezeNoDamageActive(this)) {
+                Player_InflictDamage(play, -1);
+            }
         }
     } else {
         if (LinkAnimation_Update(play, &this->skelAnime)) {

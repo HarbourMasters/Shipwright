@@ -105,6 +105,42 @@ foreach ($modDir in $mods) {
         continue
     }
 
+    $entryScript = ""
+    if ($manifest.PSObject.Properties.Name -contains "entryScript") {
+        $entryScript = "$($manifest.entryScript)"
+    }
+    if ([string]::IsNullOrWhiteSpace($entryScript)) {
+        Write-Error "[validate_mod] $modId missing entryScript"
+        $failed++
+        continue
+    }
+
+    $entryScriptPath = Join-Path $modDir $entryScript
+    if (-not (Test-Path $entryScriptPath)) {
+        Write-Error "[validate_mod] $modId missing entryScript file: $entryScript"
+        $failed++
+        continue
+    }
+
+    try {
+        $entryJson = Get-Content -Path $entryScriptPath -Raw | ConvertFrom-Json
+    } catch {
+        Write-Error "[validate_mod] $modId invalid json in entryScript ${entryScript}: $($_.Exception.Message)"
+        $failed++
+        continue
+    }
+
+    if (-not ($entryJson.PSObject.Properties.Name -contains "apiVersion")) {
+        Write-Error "[validate_mod] $modId entryScript missing apiVersion"
+        $failed++
+        continue
+    }
+    if ($entryJson.apiVersion -ne $manifest.apiVersion) {
+        Write-Error "[validate_mod] $modId entryScript apiVersion mismatch (manifest=$($manifest.apiVersion), script=$($entryJson.apiVersion))"
+        $failed++
+        continue
+    }
+
     $caps = @()
     $capabilitiesValue = $null
     if ($manifest.PSObject.Properties.Name -contains "capabilities") {
