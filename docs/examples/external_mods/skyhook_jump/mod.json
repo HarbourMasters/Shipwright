@@ -1,8 +1,8 @@
-{
+﻿{
     "id":  "com.example.skyhook_jump",
     "name":  "Skyhook + Mod Jump",
     "version":  "0.2.0",
-    "apiVersion":  3,
+    "apiVersion":  4,
     "loadOrder":  130,
     "entryScript":  "scripts/init.json",
     "assets":  [
@@ -15,8 +15,26 @@
                     "type":  "wasm3-v1",
                     "module":  "scripts/skyhook.wat",
                     "maxMemoryKb":  1024,
-                    "maxCallMs":  2
+                    "maxCallMs":  2,
+                    "maxFrameBudgetMs":  2,
+                    "maxHookCallsPerFrame":  256,
+                    "maxActorInstances":  64,
+                    "maxActiveStatuses":  256
                 },
     "itemDefinitions":  "items/items.json",
-    "inputDefinitions":  "config/input.json"
+    "inputDefinitions":  "config/input.json",
+    "engineVersionRange":  "\u003e=9.1.2 \u003c10.0.0",
+    "permissions":  [
+
+                    ],
+    "entrypoints":  {
+                        "items":  "items/items.json",
+                        "combat":  "combat",
+                        "movement":  "movement",
+                        "camera":  "camera/camera_profiles.json",
+                        "ui":  "ui",
+                        "actors":  "actors/actors.json",
+                        "quests":  "quests/quests.json",
+                        "wasm":  "scripts/skyhook.wat"
+                    }
 }

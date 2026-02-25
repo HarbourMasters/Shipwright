@@ -1,8 +1,8 @@
-# MOD SDK MVP (Current Snapshot)
+﻿# MOD SDK MVP (Current Snapshot)
 
 This document is intentionally short and tracks the current operational baseline for external mods.
 
-> Runtime contract: `apiVersion: 3`
+> Runtime contract: `apiVersion: 4`
 
 ## Current status
 
@@ -35,3 +35,4 @@ The former MVP implementation has evolved into the **Sylian Foundry Modloader** 
 Long historical MVP notes were moved to:
 
 - `docs/archive/MOD_SDK_MVP_LEGACY_HISTORY.md`
+

@@ -1,8 +1,8 @@
-# External Mods Data-Driven Reference (API v3)
+﻿# External Mods Data-Driven Reference (API v4)
 
 Reference for JSON-driven mod content used by the Sylian Foundry Modloader.
 
-> External mod contract baseline: `apiVersion: 3`
+> External mod contract baseline: `apiVersion: 4`
 
 ## 1) Core rules
 
@@ -88,3 +88,4 @@ tools/external_mods/export_runtime_reference.ps1
 ## 10) Example packs
 
 See `docs/examples/external_mods/` for runnable reference mods.
+

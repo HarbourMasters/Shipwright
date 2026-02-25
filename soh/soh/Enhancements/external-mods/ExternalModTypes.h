@@ -138,11 +138,27 @@ struct ExternalModManifest {
     std::string version;
     int32_t apiVersion = 0;
     std::string gameVersionMin;
+    std::string engineVersionRange;
     std::string entryScript;
     std::vector<std::string> assets;
-    std::vector<std::string> dependencies;
+    struct Dependency {
+        std::string modId;
+        std::string versionRange;
+    };
+    std::vector<Dependency> dependencies;
+    std::vector<std::string> permissions;
     int32_t loadOrder = 0;
     int32_t loadPriority = 0;
+    struct Entrypoints {
+        std::string items;
+        std::string combat;
+        std::string movement;
+        std::string camera;
+        std::string ui;
+        std::string actors;
+        std::string quests;
+        std::string wasm;
+    } entrypoints;
 
     std::string runtimeType;
     std::string runtimeModule;
@@ -167,6 +183,18 @@ struct ExternalModManifest {
     std::string itemUseProfiles;
     std::string vanillaItemPatches;
     std::string cameraDefinitions;
+    std::string itemStateDefinitions;
+    std::string equippedModelDefinitions;
+    std::string hudWidgetDefinitions;
+    std::string hudReticleDefinitions;
+    std::string effectGraphDefinitions;
+    std::string combatHitRuleDefinitions;
+    std::string surfDefinitions;
+    std::string actorTagDefinitions;
+    std::string worldPatchDefinitions;
+    std::string questDefinitions;
+    std::string dialogDefinitions;
+    std::string sdkGeneratorDefinitions;
     std::vector<std::string> capabilities;
 };
 

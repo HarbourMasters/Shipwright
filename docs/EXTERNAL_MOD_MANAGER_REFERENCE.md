@@ -2,7 +2,7 @@
 
 Technical reference for runtime behavior in `ExternalModManager` and related modules.
 
-> Contract baseline: `apiVersion: 3`
+> Contract baseline: `apiVersion: 4`
 
 ## Source locations
 
@@ -72,4 +72,5 @@ Use runtime logs and external-mod UI diagnostics for triage.
 
 - Invalid/over-budget mod -> disable that mod, not the whole system.
 - Reload must clear mod-owned runtime state deterministically.
+
 

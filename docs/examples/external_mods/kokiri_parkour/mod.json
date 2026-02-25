@@ -1,8 +1,8 @@
-{
+﻿{
     "id":  "com.example.kokiri_parkour",
     "name":  "Kokiri Parkour Door",
     "version":  "0.1.0",
-    "apiVersion":  3,
+    "apiVersion":  4,
     "loadOrder":  120,
     "entryScript":  "scripts/init.json",
     "assets":  [
@@ -10,5 +10,29 @@
                ],
     "dependencies":  [
 
-                     ]
+                     ],
+    "engineVersionRange":  "\u003e=9.1.2 \u003c10.0.0",
+    "permissions":  [
+
+                    ],
+    "entrypoints":  {
+                        "items":  "items/items.json",
+                        "combat":  "combat",
+                        "movement":  "movement",
+                        "camera":  "camera/camera_profiles.json",
+                        "ui":  "ui",
+                        "actors":  "actors/actors.json",
+                        "quests":  "quests/quests.json",
+                        "wasm":  ""
+                    },
+    "runtime":  {
+                    "type":  "wasm3-v1",
+                    "module":  "scripts/noop.wat",
+                    "maxMemoryKb":  1024,
+                    "maxCallMs":  2,
+                    "maxFrameBudgetMs":  2,
+                    "maxHookCallsPerFrame":  256,
+                    "maxActorInstances":  64,
+                    "maxActiveStatuses":  256
+                }
 }

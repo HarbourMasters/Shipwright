@@ -1,6 +1,6 @@
 ﻿{
-    "generatedUtc":  "2026-02-25T16:18:53Z",
-    "apiVersion":  3,
+    "generatedUtc":  "2026-02-25T18:01:57Z",
+    "apiVersion":  4,
     "runtime":  {
                     "budgetDefaults":  {
                                            "maxFrameBudgetMs":  2,
@@ -74,6 +74,12 @@
                              "id":  "movement.profiles.v1"
                          },
                          {
+                             "fileDefault":  "camera/camera_profiles.json",
+                             "schemaVersion":  1,
+                             "fileField":  "cameraDefinitions",
+                             "id":  "camera.aim_profiles.v1"
+                         },
+                         {
                              "fileDefault":  "items/use_profiles.json",
                              "schemaVersion":  1,
                              "fileField":  "itemUseProfiles",
@@ -89,6 +95,90 @@
                              "fileField":  "",
                              "id":  "world.queries.v1",
                              "note":  "No file required; enables world query actions."
+                         },
+                         {
+                             "fileDefault":  "config/input.json",
+                             "schemaVersion":  1,
+                             "fileField":  "inputDefinitions",
+                             "id":  "input.bindings.v2"
+                         },
+                         {
+                             "fileDefault":  "items/item_states.json",
+                             "schemaVersion":  1,
+                             "fileField":  "itemStateDefinitions",
+                             "id":  "items.state_machine.v1"
+                         },
+                         {
+                             "fileDefault":  "render/equipped_models.json",
+                             "schemaVersion":  1,
+                             "fileField":  "equippedModelDefinitions",
+                             "id":  "render.equipped_models.v1"
+                         },
+                         {
+                             "fileDefault":  "ui/widgets.json",
+                             "schemaVersion":  1,
+                             "fileField":  "hudWidgetDefinitions",
+                             "id":  "hud.widgets.v1"
+                         },
+                         {
+                             "fileDefault":  "ui/reticles.json",
+                             "schemaVersion":  1,
+                             "fileField":  "hudReticleDefinitions",
+                             "id":  "hud.reticles.v2"
+                         },
+                         {
+                             "fileDefault":  "camera/camera_profiles.json",
+                             "schemaVersion":  1,
+                             "fileField":  "cameraDefinitions",
+                             "id":  "camera.aim_profiles.v2"
+                         },
+                         {
+                             "fileDefault":  "effects/effect_graphs.json",
+                             "schemaVersion":  1,
+                             "fileField":  "effectGraphDefinitions",
+                             "id":  "effects.graph.v2"
+                         },
+                         {
+                             "fileDefault":  "combat/hit_rules.json",
+                             "schemaVersion":  1,
+                             "fileField":  "combatHitRuleDefinitions",
+                             "id":  "combat.hit_rules.v2"
+                         },
+                         {
+                             "fileDefault":  "movement/surf_profiles.json",
+                             "schemaVersion":  1,
+                             "fileField":  "surfDefinitions",
+                             "id":  "movement.surf.v2"
+                         },
+                         {
+                             "fileDefault":  "actors/actor_tags.json",
+                             "schemaVersion":  1,
+                             "fileField":  "actorTagDefinitions",
+                             "id":  "actors.tags.v1"
+                         },
+                         {
+                             "fileDefault":  "world/patchsets.json",
+                             "schemaVersion":  1,
+                             "fileField":  "worldPatchDefinitions",
+                             "id":  "world.patchsets.v1"
+                         },
+                         {
+                             "fileDefault":  "quests/quests.json",
+                             "schemaVersion":  1,
+                             "fileField":  "questDefinitions",
+                             "id":  "quests.graph.v1"
+                         },
+                         {
+                             "fileDefault":  "dialog/dialogs.json",
+                             "schemaVersion":  1,
+                             "fileField":  "dialogDefinitions",
+                             "id":  "dialog.nodes.v1"
+                         },
+                         {
+                             "fileDefault":  "sdk/generators.json",
+                             "schemaVersion":  1,
+                             "fileField":  "sdkGeneratorDefinitions",
+                             "id":  "sdk.generators.v1"
                          }
                      ]
 }

@@ -1,8 +1,8 @@
-{
+﻿{
     "id":  "com.example.freeze_staff_demo",
     "name":  "Freeze Staff Demo",
     "version":  "0.1.0",
-    "apiVersion": 3,
+    "apiVersion":  4,
     "loadOrder":  190,
     "entryScript":  "scripts/init.json",
     "assets":  [
@@ -21,10 +21,25 @@
                     "maxCallMs":  2,
                     "maxFrameBudgetMs":  2,
                     "maxHookCallsPerFrame":  256,
-                    "maxActorInstances":  64
+                    "maxActorInstances":  64,
+                    "maxActiveStatuses":  256
                 },
     "itemDefinitions":  "items/items.json",
     "inputDefinitions":  "config/input.json",
     "behaviorDefinitions":  "behaviors/behaviors.json",
-    "loadPriority":  190
+    "loadPriority":  190,
+    "engineVersionRange":  "\u003e=9.1.2 \u003c10.0.0",
+    "permissions":  [
+
+                    ],
+    "entrypoints":  {
+                        "items":  "items/items.json",
+                        "combat":  "combat",
+                        "movement":  "movement",
+                        "camera":  "camera/camera_profiles.json",
+                        "ui":  "ui",
+                        "actors":  "actors/actors.json",
+                        "quests":  "quests/quests.json",
+                        "wasm":  "scripts/noop.wat"
+                    }
 }

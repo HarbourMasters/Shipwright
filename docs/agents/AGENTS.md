@@ -8,7 +8,7 @@ This directory is the long-term operational memory and governance layer for agen
 2. `docs/agents/Plans.md` is the append-only execution ledger and must be updated before implementation starts.
 3. `docs/agents/memory.log` is append-only historical memory (decisions/incidents/tasks/notes).
 4. `docs/agents/memory.index.json` and `docs/agents/archive.manifest.json` are retrieval/integrity metadata.
-5. For external mods contract work, baseline is API v3 (`apiVersion: 3`) and current runtime references under `docs/*.json`.
+5. For external mods contract work, baseline is API v4 (`apiVersion: 4`) and current runtime references under `docs/*.json` plus `docs/runtime_contract/*.json`.
 
 ## 2) Skill Pack Integration
 
@@ -34,6 +34,8 @@ Current mirror baseline: **14 skills**.
   - `docs/actions.json`
   - `docs/events.json`
   - `docs/catalogs.json`
+  - `docs/runtime_contract/actions.registry.json`
+  - `docs/runtime_contract/conditions.registry.json`
   - `docs/EXTERNAL_MOD_BEHAVIOR_GRAPH_V1.md`
   - `docs/EXTERNAL_MOD_MANAGER_REFERENCE.md`
   - `docs/EXTERNAL_MOD_DATA_DRIVEN_REFERENCE.md`
@@ -138,6 +140,9 @@ JSONL entry contract:
 ### 9.2 `tools/external_mods`
 - `export_runtime_reference.ps1` - regenerate `docs/catalogs.json`, `docs/actions.json`, `docs/events.json`.
 - `sync_examples_to_runtime.ps1` - sync demos from `docs/examples/external_mods` to runtime mods folder.
+- `validate_mod.ps1` - capability/path/json lint for API v4 mods.
+- `migrate_mods_v3_to_v4.ps1` - migrate legacy v3 manifests to v4 contract scaffolding.
+- `foundry-cli.ps1` - wrapper CLI for validate/sync/migrate/export flows.
 
 ## 10) Safety Rules
 

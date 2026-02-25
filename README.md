@@ -1,4 +1,4 @@
-![Hylian Foundry](docs/foundrytitle.darkmode.png#gh-dark-mode-only)
+﻿![Hylian Foundry](docs/foundrytitle.darkmode.png#gh-dark-mode-only)
 ![Hylian Foundry](docs/foundrytitle.lightmode.png#gh-light-mode-only)
 
 ## Website
@@ -22,7 +22,7 @@ For data-driven external mods, use the **Sylian Foundry Modloader** documentatio
 - Behavior graph reference: `docs/EXTERNAL_MOD_BEHAVIOR_GRAPH_V1.md`
 - Examples: `docs/examples/external_mods/`
 
-External mod contract baseline: `apiVersion: 3`.
+External mod contract baseline: `apiVersion: 4`.
 
 # Quick Start
 
@@ -51,12 +51,12 @@ You can verify you have dumped a supported copy of the game by using the compati
 * Copy the files to your sd card
 ```
 sdcard
-└── switch
-    └── soh
-        ├── oot-mq.o2r
-        ├── oot.o2r
-        ├── soh.nro
-        └── soh.o2r
+â””â”€â”€ switch
+    â””â”€â”€ soh
+        â”œâ”€â”€ oot-mq.o2r
+        â”œâ”€â”€ oot.o2r
+        â”œâ”€â”€ soh.nro
+        â””â”€â”€ soh.o2r
 ```
 * Launch via Atmosphere's `Game+R` launcher method.
 
@@ -148,3 +148,4 @@ More detailed documentation can be found in the 'docs' directory, including the 
     <img alt="Powered by libultraship" src="./docs/poweredbylus.lightmode.png">
   </picture>
 </a>
+

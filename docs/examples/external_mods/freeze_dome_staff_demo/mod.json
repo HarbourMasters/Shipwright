@@ -1,29 +1,48 @@
 ﻿{
-  "id": "com.example.freeze_dome_staff_demo",
-  "name": "Freeze Dome Staff Demo",
-  "version": "0.1.0",
-  "apiVersion": 3,
-  "loadPriority": 252,
-  "entryScript": "scripts/init.json",
-  "assets": [],
-  "dependencies": [],
-  "capabilities": [
-    "combat.targeting.v1",
-    "items.use_profiles.v1",
-    "combat.aoe.v1"
-  ],
-  "runtime": {
-    "type": "wasm3-v1",
-    "module": "scripts/noop.wat",
-    "maxMemoryKb": 1024,
-    "maxCallMs": 2,
-    "maxFrameBudgetMs": 2,
-    "maxHookCallsPerFrame": 256,
-    "maxActorInstances": 64
-  },
-  "itemDefinitions": "items/items.json",
-  "inputDefinitions": "config/input.json",
-  "targetingDefinitions": "combat/targeting_profiles.json",
-  "itemUseProfiles": "items/use_profiles.json",
-  "aoeDefinitions": "combat/aoe_profiles.json"
+    "id":  "com.example.freeze_dome_staff_demo",
+    "name":  "Freeze Dome Staff Demo",
+    "version":  "0.1.0",
+    "apiVersion":  4,
+    "loadPriority":  252,
+    "entryScript":  "scripts/init.json",
+    "assets":  [
+
+               ],
+    "dependencies":  [
+
+                     ],
+    "capabilities":  [
+                         "combat.targeting.v1",
+                         "items.use_profiles.v1",
+                         "combat.aoe.v1"
+                     ],
+    "runtime":  {
+                    "type":  "wasm3-v1",
+                    "module":  "scripts/noop.wat",
+                    "maxMemoryKb":  1024,
+                    "maxCallMs":  2,
+                    "maxFrameBudgetMs":  2,
+                    "maxHookCallsPerFrame":  256,
+                    "maxActorInstances":  64,
+                    "maxActiveStatuses":  256
+                },
+    "itemDefinitions":  "items/items.json",
+    "inputDefinitions":  "config/input.json",
+    "targetingDefinitions":  "combat/targeting_profiles.json",
+    "itemUseProfiles":  "items/use_profiles.json",
+    "aoeDefinitions":  "combat/aoe_profiles.json",
+    "engineVersionRange":  "\u003e=9.1.2 \u003c10.0.0",
+    "permissions":  [
+
+                    ],
+    "entrypoints":  {
+                        "items":  "items/items.json",
+                        "combat":  "combat",
+                        "movement":  "movement",
+                        "camera":  "camera/camera_profiles.json",
+                        "ui":  "ui",
+                        "actors":  "actors/actors.json",
+                        "quests":  "quests/quests.json",
+                        "wasm":  "scripts/noop.wat"
+                    }
 }

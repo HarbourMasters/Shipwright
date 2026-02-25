@@ -1,0 +1,102 @@
+﻿{
+    "generatedUtc":  "2026-02-25T18:01:57Z",
+    "apiVersion":  4,
+    "description":  "Declarative registry for action validation/dispatch contracts.",
+    "actions":  [
+                    {
+                        "params":  [
+                                       "status",
+                                       "target?",
+                                       "actorHandle?",
+                                       "durationFrames?"
+                                   ],
+                        "name":  "applyStatus"
+                    },
+                    {
+                        "params":  [
+                                       "profile|useProfile|profileId"
+                                   ],
+                        "name":  "useItemProfile"
+                    },
+                    {
+                        "params":  [
+                                       "profile|damageProfileId",
+                                       "target?",
+                                       "actorHandle?"
+                                   ],
+                        "name":  "dealDamage"
+                    },
+                    {
+                        "params":  [
+                                       "projectile|profile|projectileProfileId"
+                                   ],
+                        "name":  "spawnProjectile"
+                    },
+                    {
+                        "params":  [
+                                       "aoe|profile|aoeProfileId"
+                                   ],
+                        "name":  "spawnAoE"
+                    },
+                    {
+                        "params":  [
+                                       "movement|profile|movementProfileId",
+                                       "durationFrames?"
+                                   ],
+                        "name":  "applyMovementProfile"
+                    },
+                    {
+                        "params":  [
+                                       "mode?",
+                                       "strength?"
+                                   ],
+                        "name":  "applyImpulse"
+                    },
+                    {
+                        "params":  [
+
+                                   ],
+                        "name":  "getGroundInfo"
+                    },
+                    {
+                        "params":  [
+                                       "range?"
+                                   ],
+                        "name":  "raycast"
+                    },
+                    {
+                        "params":  [
+                                       "range?"
+                                   ],
+                        "name":  "raycastAll"
+                    },
+                    {
+                        "params":  [
+                                       "profileId?",
+                                       "itemId?"
+                                   ],
+                        "name":  "toggleAimCameraMode"
+                    },
+                    {
+                        "params":  [
+                                       "mode",
+                                       "profileId?",
+                                       "itemId?"
+                                   ],
+                        "name":  "setAimCameraMode"
+                    },
+                    {
+                        "params":  [
+                                       "profileId"
+                                   ],
+                        "name":  "setAimCameraProfile"
+                    },
+                    {
+                        "params":  [
+                                       "export",
+                                       "args?"
+                                   ],
+                        "name":  "invokeWasm"
+                    }
+                ]
+}

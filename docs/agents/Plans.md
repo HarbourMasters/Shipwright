@@ -359,3 +359,27 @@ This file is the fixed, append-only plan ledger for this repository.
   - docs/agents/skills/soh-git-checkpoint-merge/scripts/finalize-plan-merge.ps1
   - libultraship
   - docs/agents/Plans.md
+
+## [PLN-20260225-0014] Sylian Foundry Modloader v4 content-only master rollout
+- createdUtc: 2026-02-25T17:44:20Z
+- status: in_progress
+- scope: mixed
+- summary: Start implementing the v4 hard-break foundation for content-only mods: manifest v4 contract fields, expanded capability map, runtime contract registries, v4 reference exports, and migration scaffolding for examples/tools.
+- milestones:
+  1. Implement M0 governance baseline + frozen gap matrix artifacts
+  2. Implement M1 kernel: apiVersion 4 hard-break and manifest v4 fields/capability wiring
+  3. Implement M2 foundations: public action/condition registries and mod validator tool scaffold
+  4. Implement M10 scaffolding: foundry CLI-style scripts (validate/migrate/sync) and migrate official examples to v4
+  5. Run build + reference exports + docs sync + ledger/memory updates
+- tags: external-mods, sylian-foundry, api-v4, content-only, tooling, docs
+- refs:
+  - soh/soh/Enhancements/external-mods/ExternalModManager.cpp
+  - soh/soh/Enhancements/external-mods/ExternalModTypes.h
+  - tools/external_mods/export_runtime_reference.ps1
+  - docs/SYLIAN_FOUNDRY_MODLOADER.md
+
+## [PLN-20260225-0014][UPDATE] 2026-02-25T18:10:17Z
+- status: in_progress
+- note: Completed v4 foundation checkpoint: apiVersion hard-break + manifest v4 fields/capability wiring, validator+migrator+CLI scripts, runtime contract registries export, docs/runtime mod manifests migrated to v4, and Release build/validation passed.
+- refs:
+  - soh/soh/Enhancements/external-mods/ExternalModManager.cpp,soh/soh/Enhancements/external-mods/ExternalModTypes.h,tools/external_mods/validate_mod.ps1,tools/external_mods/migrate_mods_v3_to_v4.ps1,tools/external_mods/foundry-cli.ps1,tools/external_mods/export_runtime_reference.ps1,docs/runtime_contract/actions.registry.json,docs/runtime_contract/conditions.registry.json,plan.md

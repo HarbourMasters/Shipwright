@@ -1,4 +1,4 @@
-# Modding
+﻿# Modding
 
 This repository supports two modding paths.
 
@@ -6,7 +6,7 @@ This repository supports two modding paths.
 
 If you want content mods without editing C++ runtime code, use the modloader path.
 
-> External mod contract baseline: `apiVersion: 3`
+> External mod contract baseline: `apiVersion: 4`
 
 Start here:
 
@@ -48,3 +48,4 @@ git checkout -b feature/my-change
 
 - Keep docs aligned with runtime behavior.
 - For agent-governed workflows, see `docs/agents/AGENTS.md`.
+

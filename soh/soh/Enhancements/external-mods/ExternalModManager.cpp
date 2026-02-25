@@ -1,4 +1,4 @@
-#include "ExternalModManager.h"
+﻿#include "ExternalModManager.h"
 
 #include <algorithm>
 #include <array>
@@ -67,9 +67,9 @@ void Player_StartMode_Idle(PlayState* play, Player* thisx);
 namespace SOH {
 
 namespace {
-constexpr int32_t kExternalModApiVersionMin = 3;
-constexpr int32_t kExternalModApiVersionMax = 3;
-constexpr int32_t kExternalModApiVersionV3 = 3;
+constexpr int32_t kExternalModApiVersionMin = 4;
+constexpr int32_t kExternalModApiVersionMax = 4;
+constexpr int32_t kExternalModApiVersionV4 = 4;
 constexpr uint64_t kMaxManifestBytes = 256 * 1024;
 constexpr uint64_t kMaxScriptBytes = 1024 * 1024;
 constexpr uint64_t kMaxAssetBytes = 512ull * 1024ull * 1024ull;
@@ -88,6 +88,18 @@ constexpr uint64_t kMaxAoEDefinitionBytes = 256 * 1024;
 constexpr uint64_t kMaxMovementDefinitionBytes = 256 * 1024;
 constexpr uint64_t kMaxCameraDefinitionBytes = 256 * 1024;
 constexpr uint64_t kMaxVanillaPatchDefinitionBytes = 256 * 1024;
+constexpr uint64_t kMaxItemStateDefinitionBytes = 512 * 1024;
+constexpr uint64_t kMaxEquippedModelDefinitionBytes = 512 * 1024;
+constexpr uint64_t kMaxHudWidgetDefinitionBytes = 512 * 1024;
+constexpr uint64_t kMaxReticleDefinitionBytes = 512 * 1024;
+constexpr uint64_t kMaxEffectGraphDefinitionBytes = 1024 * 1024;
+constexpr uint64_t kMaxCombatHitRulesBytes = 512 * 1024;
+constexpr uint64_t kMaxSurfDefinitionBytes = 512 * 1024;
+constexpr uint64_t kMaxActorTagDefinitionBytes = 256 * 1024;
+constexpr uint64_t kMaxWorldPatchDefinitionBytes = 1024 * 1024;
+constexpr uint64_t kMaxQuestDefinitionBytes = 1024 * 1024;
+constexpr uint64_t kMaxDialogDefinitionBytes = 1024 * 1024;
+constexpr uint64_t kMaxSdkGeneratorDefinitionBytes = 512 * 1024;
 constexpr uint64_t kMaxItemIconBytes = 4ull * 1024ull * 1024ull;
 constexpr uint64_t kMaxItemModelBytes = 8ull * 1024ull * 1024ull;
 constexpr uint64_t kMaxItemModelTextureBytes = 16ull * 1024ull * 1024ull;
@@ -683,6 +695,27 @@ const std::unordered_set<std::string> kSupportedCapabilities = {
     "world.queries.v1",
     "items.use_profiles.v1",
     "patches.vanilla_items.v1",
+    "input.bindings.v2",
+    "items.state_machine.v1",
+    "render.equipped_models.v1",
+    "hud.widgets.v1",
+    "hud.reticles.v2",
+    "camera.aim_profiles.v2",
+    "effects.graph.v2",
+    "combat.hit_rules.v2",
+    "movement.surf.v2",
+    "actors.tags.v1",
+    "world.patchsets.v1",
+    "quests.graph.v1",
+    "dialog.nodes.v1",
+    "sdk.generators.v1",
+};
+
+const std::unordered_set<std::string> kSupportedRuntimePermissions = {
+    "filesystem",
+    "network",
+    "process",
+    "nativeinterop",
 };
 
 const std::unordered_map<std::string, ExternalModHookType> kHookAliases = {
@@ -3839,8 +3872,8 @@ bool ParseAction(const nlohmann::json& json, int32_t apiVersion, ExternalModActi
         return ParseAliasedInt16(json["entrance"], kEntranceAliases, "entrance", outAction.entranceIndex, outError);
     }
 
-    if (apiVersion < kExternalModApiVersionV3) {
-        outError = "Unsupported action for apiVersion 3: " + actionType;
+    if (apiVersion < kExternalModApiVersionV4) {
+        outError = "Unsupported action for apiVersion 4: " + actionType;
         return false;
     }
 
@@ -3930,7 +3963,7 @@ bool ParseAction(const nlohmann::json& json, int32_t apiVersion, ExternalModActi
     }
 
     if (actionType == "igniteFrontTarget" || actionType == "freezeFrontTarget") {
-        outError = actionType + " was removed in apiVersion 3; use applyStatus with statusId";
+        outError = actionType + " was removed in apiVersion 4; use applyStatus with statusId";
         return false;
     }
 
@@ -10663,6 +10696,13 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
         }
         outManifest.gameVersionMin = json["gameVersionMin"].get<std::string>();
     }
+    if (json.contains("engineVersionRange")) {
+        if (!json["engineVersionRange"].is_string()) {
+            outError = "Invalid field: engineVersionRange must be string";
+            return false;
+        }
+        outManifest.engineVersionRange = json["engineVersionRange"].get<std::string>();
+    }
 
     const bool hasLoadOrder = json.contains("loadOrder");
     const bool hasLoadPriority = json.contains("loadPriority");
@@ -10715,11 +10755,98 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
             return false;
         }
         for (const auto& dep : json["dependencies"]) {
-            if (!dep.is_string()) {
-                outError = "Invalid field: dependencies entries must be strings";
+            ExternalModManifest::Dependency dependency;
+            if (dep.is_string()) {
+                dependency.modId = dep.get<std::string>();
+            } else if (dep.is_object()) {
+                const auto idIt = dep.find("id");
+                const auto modIdIt = dep.find("modId");
+                const auto* source = idIt != dep.end() ? &(*idIt) : (modIdIt != dep.end() ? &(*modIdIt) : nullptr);
+                if (source == nullptr || !source->is_string()) {
+                    outError = "Invalid field: dependency entry requires string id/modId";
+                    return false;
+                }
+                dependency.modId = source->get<std::string>();
+
+                const auto rangeIt = dep.find("versionRange");
+                const auto versionIt = dep.find("version");
+                const auto* versionSource =
+                    rangeIt != dep.end() ? &(*rangeIt) : (versionIt != dep.end() ? &(*versionIt) : nullptr);
+                if (versionSource != nullptr) {
+                    if (!versionSource->is_string()) {
+                        outError = "Invalid field: dependency.version/versionRange must be string";
+                        return false;
+                    }
+                    dependency.versionRange = versionSource->get<std::string>();
+                }
+            } else {
+                outError = "Invalid field: dependencies entries must be string or object";
                 return false;
             }
-            outManifest.dependencies.push_back(dep.get<std::string>());
+
+            if (dependency.modId.empty()) {
+                outError = "Invalid field: dependency modId must not be empty";
+                return false;
+            }
+            outManifest.dependencies.push_back(std::move(dependency));
+        }
+    }
+
+    if (json.contains("permissions")) {
+        if (!json["permissions"].is_array()) {
+            outError = "Invalid field: permissions must be an array";
+            return false;
+        }
+        for (size_t i = 0; i < json["permissions"].size(); ++i) {
+            const auto& permission = json["permissions"][i];
+            if (!permission.is_string()) {
+                outError = "Invalid permissions[" + std::to_string(i) + "]: expected string";
+                return false;
+            }
+            const auto normalizedPermission = ToLower(permission.get<std::string>());
+            if (!kSupportedRuntimePermissions.contains(normalizedPermission)) {
+                outError = "Unsupported permission: " + normalizedPermission;
+                return false;
+            }
+            if (std::find(outManifest.permissions.begin(), outManifest.permissions.end(), normalizedPermission) ==
+                outManifest.permissions.end()) {
+                outManifest.permissions.push_back(normalizedPermission);
+            }
+        }
+    }
+
+    if (json.contains("entrypoints")) {
+        if (!json["entrypoints"].is_object()) {
+            outError = "Invalid field: entrypoints must be object";
+            return false;
+        }
+        const auto& entrypoints = json["entrypoints"];
+        auto parseEntrypointPath = [&](const char* fieldName, std::string& outPathValue) -> bool {
+            if (!entrypoints.contains(fieldName)) {
+                return true;
+            }
+            if (!entrypoints[fieldName].is_string()) {
+                outError = std::string("Invalid entrypoints.") + fieldName + ": expected string";
+                return false;
+            }
+            std::filesystem::path normalizedPath;
+            if (!IsSafePackageRelativePath(entrypoints[fieldName].get<std::string>(), normalizedPath, outError)) {
+                outError = std::string("Invalid entrypoints.") + fieldName + ": " + outError;
+                return false;
+            }
+            outPathValue = normalizedPath.generic_string();
+            return true;
+        };
+
+        if (!parseEntrypointPath("items", outManifest.entrypoints.items) ||
+            !parseEntrypointPath("combat", outManifest.entrypoints.combat) ||
+            !parseEntrypointPath("movement", outManifest.entrypoints.movement) ||
+            !parseEntrypointPath("camera", outManifest.entrypoints.camera) ||
+            !parseEntrypointPath("ui", outManifest.entrypoints.ui) ||
+            !parseEntrypointPath("actors", outManifest.entrypoints.actors) ||
+            !parseEntrypointPath("quests", outManifest.entrypoints.quests) ||
+            !parseEntrypointPath("wasm", outManifest.entrypoints.wasm)) {
+            return false;
         }
     }
 
@@ -10747,7 +10874,7 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
         }
     }
 
-    if (outManifest.apiVersion >= kExternalModApiVersionV3) {
+    if (outManifest.apiVersion >= kExternalModApiVersionV4) {
         if (!json.contains("runtime") || !json["runtime"].is_object()) {
             outError = "Missing or invalid field: runtime";
             return false;
@@ -10886,6 +11013,19 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
         const bool hasAimCameraCatalogCapability = ManifestHasCapability(outManifest, "camera.aim_profiles.v1");
         const bool hasUseProfilesCapability = ManifestHasCapability(outManifest, "items.use_profiles.v1");
         const bool hasVanillaPatchesCapability = ManifestHasCapability(outManifest, "patches.vanilla_items.v1");
+        const bool hasItemStateMachineCapability = ManifestHasCapability(outManifest, "items.state_machine.v1");
+        const bool hasEquippedModelsCapability = ManifestHasCapability(outManifest, "render.equipped_models.v1");
+        const bool hasHudWidgetsCapability = ManifestHasCapability(outManifest, "hud.widgets.v1");
+        const bool hasHudReticlesCapability = ManifestHasCapability(outManifest, "hud.reticles.v2");
+        const bool hasAimCameraV2Capability = ManifestHasCapability(outManifest, "camera.aim_profiles.v2");
+        const bool hasEffectsGraphCapability = ManifestHasCapability(outManifest, "effects.graph.v2");
+        const bool hasCombatHitRulesCapability = ManifestHasCapability(outManifest, "combat.hit_rules.v2");
+        const bool hasSurfV2Capability = ManifestHasCapability(outManifest, "movement.surf.v2");
+        const bool hasActorTagsCapability = ManifestHasCapability(outManifest, "actors.tags.v1");
+        const bool hasWorldPatchsetsCapability = ManifestHasCapability(outManifest, "world.patchsets.v1");
+        const bool hasQuestGraphCapability = ManifestHasCapability(outManifest, "quests.graph.v1");
+        const bool hasDialogNodesCapability = ManifestHasCapability(outManifest, "dialog.nodes.v1");
+        const bool hasSdkGeneratorsCapability = ManifestHasCapability(outManifest, "sdk.generators.v1");
 
         if (json.contains("hookDefinitions")) {
             if (!hasExtendedHooksCapability) {
@@ -11011,7 +11151,32 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
             !parseCapabilityPath("itemUseProfiles", "items.use_profiles.v1", hasUseProfilesCapability,
                                  outManifest.itemUseProfiles) ||
             !parseCapabilityPath("vanillaItemPatches", "patches.vanilla_items.v1", hasVanillaPatchesCapability,
-                                 outManifest.vanillaItemPatches)) {
+                                 outManifest.vanillaItemPatches) ||
+            !parseCapabilityPath("itemStateDefinitions", "items.state_machine.v1", hasItemStateMachineCapability,
+                                 outManifest.itemStateDefinitions) ||
+            !parseCapabilityPath("equippedModelDefinitions", "render.equipped_models.v1", hasEquippedModelsCapability,
+                                 outManifest.equippedModelDefinitions) ||
+            !parseCapabilityPath("hudWidgetDefinitions", "hud.widgets.v1", hasHudWidgetsCapability,
+                                 outManifest.hudWidgetDefinitions) ||
+            !parseCapabilityPath("hudReticleDefinitions", "hud.reticles.v2", hasHudReticlesCapability,
+                                 outManifest.hudReticleDefinitions) ||
+            !parseCapabilityPath("cameraDefinitions", "camera.aim_profiles.v2", hasAimCameraV2Capability,
+                                 outManifest.cameraDefinitions) ||
+            !parseCapabilityPath("effectGraphDefinitions", "effects.graph.v2", hasEffectsGraphCapability,
+                                 outManifest.effectGraphDefinitions) ||
+            !parseCapabilityPath("combatHitRuleDefinitions", "combat.hit_rules.v2", hasCombatHitRulesCapability,
+                                 outManifest.combatHitRuleDefinitions) ||
+            !parseCapabilityPath("surfDefinitions", "movement.surf.v2", hasSurfV2Capability, outManifest.surfDefinitions) ||
+            !parseCapabilityPath("actorTagDefinitions", "actors.tags.v1", hasActorTagsCapability,
+                                 outManifest.actorTagDefinitions) ||
+            !parseCapabilityPath("worldPatchDefinitions", "world.patchsets.v1", hasWorldPatchsetsCapability,
+                                 outManifest.worldPatchDefinitions) ||
+            !parseCapabilityPath("questDefinitions", "quests.graph.v1", hasQuestGraphCapability,
+                                 outManifest.questDefinitions) ||
+            !parseCapabilityPath("dialogDefinitions", "dialog.nodes.v1", hasDialogNodesCapability,
+                                 outManifest.dialogDefinitions) ||
+            !parseCapabilityPath("sdkGeneratorDefinitions", "sdk.generators.v1", hasSdkGeneratorsCapability,
+                                 outManifest.sdkGeneratorDefinitions)) {
             return false;
         }
     }
@@ -11160,8 +11325,8 @@ bool ExternalModManager::TryParseEntryScript(const std::string& content, int32_t
     }
 
     if (root->contains("onInput")) {
-        if (apiVersion < kExternalModApiVersionV3) {
-            outError = "onInput requires apiVersion 3";
+        if (apiVersion < kExternalModApiVersionV4) {
+            outError = "onInput requires apiVersion 4";
             return false;
         }
 
@@ -11819,7 +11984,7 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
             for (const auto& [key, value] : item["params"].items()) {
                 if (kRemovedLegacyParams.contains(key)) {
                     outError = "items[" + std::to_string(i) + "].params." + key +
-                               " was removed in apiVersion 3; migrate to items/use_profiles.json + applyStatus(core:freeze)";
+                               " was removed in apiVersion 4; migrate to items/use_profiles.json + applyStatus(core:freeze)";
                     return false;
                 }
                 if (!kAllowedParams.contains(key)) {
@@ -11992,7 +12157,7 @@ bool ExternalModManager::TryParseInputDefinitions(const std::string& content,
             }
 
             std::string actionError;
-            if (!ParseAction(hotkey, kExternalModApiVersionV3, definition.action, actionError)) {
+            if (!ParseAction(hotkey, kExternalModApiVersionV4, definition.action, actionError)) {
                 outError = "cameraHotkeys[" + std::to_string(i) + "]: " + actionError;
                 return false;
             }
@@ -12014,8 +12179,8 @@ bool ExternalModManager::TryParseHookDefinitions(const std::string& content, int
                                                  std::string& outError) {
     outSubscriptions.clear();
 
-    if (apiVersion < kExternalModApiVersionV3) {
-        outError = "hookDefinitions requires apiVersion 3";
+    if (apiVersion < kExternalModApiVersionV4) {
+        outError = "hookDefinitions requires apiVersion 4";
         return false;
     }
 
@@ -12165,8 +12330,8 @@ bool ExternalModManager::TryParseActorDefinitions(const std::string& content, in
                                                   std::string& outError) {
     outDefinitions.clear();
 
-    if (apiVersion < kExternalModApiVersionV3) {
-        outError = "actorDefinitions requires apiVersion 3";
+    if (apiVersion < kExternalModApiVersionV4) {
+        outError = "actorDefinitions requires apiVersion 4";
         return false;
     }
 
@@ -12388,8 +12553,8 @@ bool ExternalModManager::TryParseBehaviorDefinitions(const std::string& content,
                                                      std::string& outError) {
     outDefinitions.clear();
 
-    if (apiVersion < kExternalModApiVersionV3) {
-        outError = "behaviorDefinitions requires apiVersion 3";
+    if (apiVersion < kExternalModApiVersionV4) {
+        outError = "behaviorDefinitions requires apiVersion 4";
         return false;
     }
 
@@ -12609,8 +12774,8 @@ bool ExternalModManager::TryParseSceneDefinitions(const std::string& content, in
                                                   std::string& outError) {
     outDefinitions.clear();
 
-    if (apiVersion < kExternalModApiVersionV3) {
-        outError = "sceneDefinitions requires apiVersion 3";
+    if (apiVersion < kExternalModApiVersionV4) {
+        outError = "sceneDefinitions requires apiVersion 4";
         return false;
     }
 
@@ -12821,8 +12986,8 @@ bool ExternalModManager::TryParseStatusDefinitions(const std::string& content, i
                                                    std::vector<ExternalModStatusDefinition>& outDefinitions,
                                                    std::string& outError) {
     outDefinitions.clear();
-    if (apiVersion < kExternalModApiVersionV3) {
-        outError = "statusDefinitions requires apiVersion 3";
+    if (apiVersion < kExternalModApiVersionV4) {
+        outError = "statusDefinitions requires apiVersion 4";
         return false;
     }
 
@@ -12981,8 +13146,8 @@ bool ExternalModManager::TryParseDamageDefinitions(const std::string& content, i
                                                    std::vector<ExternalModDamageProfile>& outDefinitions,
                                                    std::string& outError) {
     outDefinitions.clear();
-    if (apiVersion < kExternalModApiVersionV3) {
-        outError = "damageDefinitions requires apiVersion 3";
+    if (apiVersion < kExternalModApiVersionV4) {
+        outError = "damageDefinitions requires apiVersion 4";
         return false;
     }
 
@@ -13078,8 +13243,8 @@ bool ExternalModManager::TryParseTargetingDefinitions(const std::string& content
                                                       std::vector<ExternalModTargetingProfile>& outDefinitions,
                                                       std::string& outError) {
     outDefinitions.clear();
-    if (apiVersion < kExternalModApiVersionV3) {
-        outError = "targetingDefinitions requires apiVersion 3";
+    if (apiVersion < kExternalModApiVersionV4) {
+        outError = "targetingDefinitions requires apiVersion 4";
         return false;
     }
 
@@ -13192,8 +13357,8 @@ bool ExternalModManager::TryParseItemUseProfiles(const std::string& content, int
                                                  std::vector<ExternalModItemUseProfile>& outDefinitions,
                                                  std::string& outError) {
     outDefinitions.clear();
-    if (apiVersion < kExternalModApiVersionV3) {
-        outError = "itemUseProfiles requires apiVersion 3";
+    if (apiVersion < kExternalModApiVersionV4) {
+        outError = "itemUseProfiles requires apiVersion 4";
         return false;
     }
 
@@ -13274,8 +13439,8 @@ bool ExternalModManager::TryParseProjectileDefinitions(const std::string& conten
                                                        std::vector<ExternalModProjectileProfile>& outDefinitions,
                                                        std::string& outError) {
     outDefinitions.clear();
-    if (apiVersion < kExternalModApiVersionV3) {
-        outError = "projectileDefinitions requires apiVersion 3";
+    if (apiVersion < kExternalModApiVersionV4) {
+        outError = "projectileDefinitions requires apiVersion 4";
         return false;
     }
 
@@ -13422,8 +13587,8 @@ bool ExternalModManager::TryParseAoEDefinitions(const std::string& content, int3
                                                 std::vector<ExternalModAoEProfile>& outDefinitions,
                                                 std::string& outError) {
     outDefinitions.clear();
-    if (apiVersion < kExternalModApiVersionV3) {
-        outError = "aoeDefinitions requires apiVersion 3";
+    if (apiVersion < kExternalModApiVersionV4) {
+        outError = "aoeDefinitions requires apiVersion 4";
         return false;
     }
 
@@ -13564,8 +13729,8 @@ bool ExternalModManager::TryParseMovementDefinitions(const std::string& content,
                                                      std::vector<ExternalModMovementProfile>& outDefinitions,
                                                      std::string& outError) {
     outDefinitions.clear();
-    if (apiVersion < kExternalModApiVersionV3) {
-        outError = "movementDefinitions requires apiVersion 3";
+    if (apiVersion < kExternalModApiVersionV4) {
+        outError = "movementDefinitions requires apiVersion 4";
         return false;
     }
 
@@ -13859,8 +14024,8 @@ bool ExternalModManager::TryParseCameraDefinitions(const std::string& content, i
                                                    std::vector<ExternalModAimCameraProfile>& outDefinitions,
                                                    std::string& outError) {
     outDefinitions.clear();
-    if (apiVersion < kExternalModApiVersionV3) {
-        outError = "cameraDefinitions requires apiVersion 3";
+    if (apiVersion < kExternalModApiVersionV4) {
+        outError = "cameraDefinitions requires apiVersion 4";
         return false;
     }
 
@@ -14304,7 +14469,7 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
     runtime.maxActorInstances = package.manifest.runtimeMaxActorInstances;
     runtime.maxActiveStatusEffects = package.manifest.runtimeMaxActiveStatuses;
 
-    if (package.manifest.apiVersion >= kExternalModApiVersionV3) {
+    if (package.manifest.apiVersion >= kExternalModApiVersionV4) {
         std::filesystem::path itemsPath;
         if (!IsSafePackageRelativePath(package.manifest.itemDefinitions, itemsPath, outError)) {
             return false;
@@ -15071,7 +15236,8 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
             }
         }
 
-        if (ManifestHasCapability(package.manifest, "camera.aim_profiles.v1")) {
+        if (ManifestHasCapability(package.manifest, "camera.aim_profiles.v1") ||
+            ManifestHasCapability(package.manifest, "camera.aim_profiles.v2")) {
             std::filesystem::path cameraPath;
             if (!IsSafePackageRelativePath(package.manifest.cameraDefinitions, cameraPath, outError)) {
                 outError = "Invalid cameraDefinitions: " + outError;
@@ -15086,6 +15252,78 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
             if (!TryParseCameraDefinitions(cameraContent, runtime.apiVersion, runtime.cameraProfiles, outError)) {
                 return false;
             }
+        }
+
+        const auto validateV4CapabilityJsonFile = [&](const char* fieldName, const char* capabilityId,
+                                                      const std::string& manifestPathValue, uint64_t maxBytes,
+                                                      bool requireSchemaV1) -> bool {
+            if (!ManifestHasCapability(package.manifest, capabilityId)) {
+                return true;
+            }
+            std::filesystem::path relativePath;
+            if (!IsSafePackageRelativePath(manifestPathValue, relativePath, outError)) {
+                outError = std::string("Invalid ") + fieldName + ": " + outError;
+                return false;
+            }
+
+            std::string fileContent;
+            if (!ReadFileFromPackage(package, relativePath, maxBytes, fileContent, outError)) {
+                outError = std::string("Failed to read ") + fieldName + ": " + outError;
+                return false;
+            }
+
+            nlohmann::json document;
+            try {
+                document = nlohmann::json::parse(fileContent);
+            } catch (const std::exception& ex) {
+                outError = std::string(fieldName) + " parse error: " + ex.what();
+                return false;
+            }
+
+            if (!document.is_object()) {
+                outError = std::string(fieldName) + " must be a JSON object";
+                return false;
+            }
+            if (requireSchemaV1) {
+                if (!document.contains("schemaVersion") || !document["schemaVersion"].is_number_integer()) {
+                    outError = std::string(fieldName) + ".schemaVersion must be integer 1";
+                    return false;
+                }
+                if (document["schemaVersion"].get<int32_t>() != 1) {
+                    outError = std::string(fieldName) + ".schemaVersion must be 1";
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        if (!validateV4CapabilityJsonFile("itemStateDefinitions", "items.state_machine.v1",
+                                          package.manifest.itemStateDefinitions, kMaxItemStateDefinitionBytes, true) ||
+            !validateV4CapabilityJsonFile("equippedModelDefinitions", "render.equipped_models.v1",
+                                          package.manifest.equippedModelDefinitions, kMaxEquippedModelDefinitionBytes,
+                                          true) ||
+            !validateV4CapabilityJsonFile("hudWidgetDefinitions", "hud.widgets.v1",
+                                          package.manifest.hudWidgetDefinitions, kMaxHudWidgetDefinitionBytes, true) ||
+            !validateV4CapabilityJsonFile("hudReticleDefinitions", "hud.reticles.v2",
+                                          package.manifest.hudReticleDefinitions, kMaxReticleDefinitionBytes, true) ||
+            !validateV4CapabilityJsonFile("effectGraphDefinitions", "effects.graph.v2",
+                                          package.manifest.effectGraphDefinitions, kMaxEffectGraphDefinitionBytes, true) ||
+            !validateV4CapabilityJsonFile("combatHitRuleDefinitions", "combat.hit_rules.v2",
+                                          package.manifest.combatHitRuleDefinitions, kMaxCombatHitRulesBytes, true) ||
+            !validateV4CapabilityJsonFile("surfDefinitions", "movement.surf.v2", package.manifest.surfDefinitions,
+                                          kMaxSurfDefinitionBytes, true) ||
+            !validateV4CapabilityJsonFile("actorTagDefinitions", "actors.tags.v1",
+                                          package.manifest.actorTagDefinitions, kMaxActorTagDefinitionBytes, true) ||
+            !validateV4CapabilityJsonFile("worldPatchDefinitions", "world.patchsets.v1",
+                                          package.manifest.worldPatchDefinitions, kMaxWorldPatchDefinitionBytes, true) ||
+            !validateV4CapabilityJsonFile("questDefinitions", "quests.graph.v1", package.manifest.questDefinitions,
+                                          kMaxQuestDefinitionBytes, true) ||
+            !validateV4CapabilityJsonFile("dialogDefinitions", "dialog.nodes.v1", package.manifest.dialogDefinitions,
+                                          kMaxDialogDefinitionBytes, true) ||
+            !validateV4CapabilityJsonFile("sdkGeneratorDefinitions", "sdk.generators.v1",
+                                          package.manifest.sdkGeneratorDefinitions, kMaxSdkGeneratorDefinitionBytes,
+                                          true)) {
+            return false;
         }
 
         const auto hasStatusRef = [&](const std::string& statusId) -> bool {
@@ -15168,7 +15406,7 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
         }
 
         if (package.manifest.runtimeType != "wasm3-v1") {
-            outError = "Unsupported runtime.type for apiVersion 3: " + package.manifest.runtimeType;
+            outError = "Unsupported runtime.type for apiVersion 4: " + package.manifest.runtimeType;
             return false;
         }
 
@@ -17416,4 +17654,5 @@ int32_t ExternalMods_DrawCustomEquippedSlingshotModel(PlayState* play) {
     return SOH::ExternalModManager::Instance().DrawCustomEquippedSlingshotModel(play) ? 1 : 0;
 }
 }
+
 

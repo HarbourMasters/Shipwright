@@ -1,8 +1,8 @@
-# Sylian Foundry Modloader (API v3)
+# Sylian Foundry Modloader (API v4)
 
 This is the canonical entry point for data-driven external mods in Ship of Harkinian / Hylian Foundry.
 
-> Contract baseline: `apiVersion: 3`
+> Contract baseline: `apiVersion: 4`
 
 ## What it is
 
@@ -12,13 +12,13 @@ The **Sylian Foundry Modloader** loads external mod packages (folder/zip), valid
 
 1. Read this file first.
 2. Pick a demo under `docs/examples/external_mods/`.
-3. Confirm your `mod.json` uses `apiVersion: 3`.
+3. Confirm your `mod.json` uses `apiVersion: 4`.
 4. Implement item/effect logic with catalogs + behaviors.
 5. Test in runtime and inspect logs (`x64/Release/logs/Ship of Harkinian.log`).
 
 ## Runtime contract baseline
 
-- Required for new mods: `mod.json.apiVersion = 3`
+- Required for new mods: `mod.json.apiVersion = 4`
 - Runtime type: `wasm3-v1`
 - Namespaced IDs required (`modId:*`, with `core:*` reserved for built-ins)
 - Capability-gated files: if capability is declared, required file/path must be valid
@@ -38,6 +38,19 @@ Use `docs/catalogs.json` as machine-readable source of truth. Common capabilitie
 - `items.use_profiles.v1` -> `itemUseProfiles` (`items/use_profiles.json`)
 - `patches.vanilla_items.v1` -> `vanillaItemPatches` (`patches/vanilla_items.patch.json`)
 - `world.queries.v1` -> no file required (enables world query actions)
+- `items.state_machine.v1` -> `itemStateDefinitions` (`items/item_states.json`)
+- `render.equipped_models.v1` -> `equippedModelDefinitions` (`render/equipped_models.json`)
+- `hud.widgets.v1` -> `hudWidgetDefinitions` (`ui/widgets.json`)
+- `hud.reticles.v2` -> `hudReticleDefinitions` (`ui/reticles.json`)
+- `camera.aim_profiles.v2` -> `cameraDefinitions` (`camera/camera_profiles.json`)
+- `effects.graph.v2` -> `effectGraphDefinitions` (`effects/effect_graphs.json`)
+- `combat.hit_rules.v2` -> `combatHitRuleDefinitions` (`combat/hit_rules.json`)
+- `movement.surf.v2` -> `surfDefinitions` (`movement/surf_profiles.json`)
+- `actors.tags.v1` -> `actorTagDefinitions` (`actors/actor_tags.json`)
+- `world.patchsets.v1` -> `worldPatchDefinitions` (`world/patchsets.json`)
+- `quests.graph.v1` -> `questDefinitions` (`quests/quests.json`)
+- `dialog.nodes.v1` -> `dialogDefinitions` (`dialog/dialogs.json`)
+- `sdk.generators.v1` -> `sdkGeneratorDefinitions` (`sdk/generators.json`)
 
 ## Runtime lifecycle
 
@@ -59,6 +72,8 @@ Use `docs/catalogs.json` as machine-readable source of truth. Common capabilitie
 - Actions reference: `docs/actions.json`
 - Events reference: `docs/events.json`
 - Catalog/runtime capabilities: `docs/catalogs.json`
+- Declarative action registry: `docs/runtime_contract/actions.registry.json`
+- Declarative condition registry: `docs/runtime_contract/conditions.registry.json`
 
 ## Detailed references
 

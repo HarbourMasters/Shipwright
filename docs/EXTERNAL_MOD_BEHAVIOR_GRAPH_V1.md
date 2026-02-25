@@ -1,8 +1,8 @@
-# External Mods Behavior Graph v1 (API v3 Runtime)
+﻿# External Mods Behavior Graph v1 (API v4 Runtime)
 
 This reference describes the behavior graph surface currently used by the Sylian Foundry Modloader runtime.
 
-> Contract baseline: `apiVersion: 3`
+> Contract baseline: `apiVersion: 4`
 
 ## File and capability
 
@@ -81,3 +81,4 @@ Use `docs/actions.json` as source of truth for currently exported action names.
 ## Practical tip (PT-BR)
 
 - Comece pequeno: um evento + uma action; valide log e s? depois encadeie sinais/condi??es.
+
