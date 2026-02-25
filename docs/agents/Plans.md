@@ -425,3 +425,31 @@ This file is the fixed, append-only plan ledger for this repository.
   - docs/agents/skills/soh-git-checkpoint-merge/scripts/finalize-plan-merge.ps1
   - libultraship
   - docs/agents/Plans.md
+
+## [PLN-20260225-0016] Fix camera capability mismatch for aim/pistol demos
+- createdUtc: 2026-02-25T19:32:31Z
+- status: in_progress
+- scope: mod
+- summary: Resolve runtime disable error requiring camera.aim_profiles.v2 by updating demo manifest capabilities and syncing runtime mods.
+- milestones:
+  1. Update aim_ots_toggle_demo and pistol_hitscan_demo capabilities to camera.aim_profiles.v2
+  2. Sync docs examples to runtime mods
+  3. Validate mod manifests and confirm no capability mismatch warnings
+- tags: external-mods, camera, demos, api-v4
+- refs:
+  - docs/examples/external_mods/aim_ots_toggle_demo/mod.json
+  - docs/examples/external_mods/pistol_hitscan_demo/mod.json
+  - x64/Release/mods/aim_ots_toggle_demo/mod.json
+  - x64/Release/mods/pistol_hitscan_demo/mod.json
+
+## [PLN-20260225-0016][UPDATE] 2026-02-25T19:34:08Z
+- status: done
+- note: Fixed camera capability contract mismatch by updating aim_ots_toggle_demo and pistol_hitscan_demo to camera.aim_profiles.v2 (docs+runtime) and migrated runtime aim_ots entryScript to apiVersion 4; validator now passes for both mods.
+- refs:
+  - docs/examples/external_mods/aim_ots_toggle_demo/mod.json
+  - docs/examples/external_mods/pistol_hitscan_demo/mod.json
+  - x64/Release/mods/aim_ots_toggle_demo/mod.json
+  - x64/Release/mods/pistol_hitscan_demo/mod.json
+  - x64/Release/mods/aim_ots_toggle_demo/scripts/init.json
+  - tools/external_mods/migrate_mods_v3_to_v4.ps1
+  - tools/external_mods/validate_mod.ps1

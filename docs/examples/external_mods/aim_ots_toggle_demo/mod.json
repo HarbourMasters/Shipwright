@@ -12,7 +12,7 @@
 
                      ],
     "capabilities":  [
-                         "camera.aim_profiles.v1",
+                         "camera.aim_profiles.v2",
                          "behaviors.graph.v1"
                      ],
     "runtime":  {

@@ -15,7 +15,7 @@
                          "combat.damage.v1",
                          "combat.targeting.v1",
                          "items.use_profiles.v1",
-                         "camera.aim_profiles.v1"
+                         "camera.aim_profiles.v2"
                      ],
     "runtime":  {
                     "type":  "wasm3-v1",
