@@ -529,3 +529,11 @@ This file is the fixed, append-only plan ledger for this repository.
   - docs/catalogs.json
   - docs/actions.json
   - docs/events.json
+
+## [PLN-20260225-0018][UPDATE] 2026-02-25T20:24:58Z
+- status: done
+- note: Post-completion finalize-plan-merge attempted and blocked because working tree is not clean (dirty libultraship submodule). Implementation is complete and committed locally.
+- refs:
+  - docs/agents/skills/soh-git-checkpoint-merge/scripts/finalize-plan-merge.ps1
+  - libultraship
+  - docs/agents/Plans.md
