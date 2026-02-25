@@ -2526,6 +2526,35 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
         rawPressButtons = sControlInput->press.button;
     }
 
+    if ((sControlInput != NULL) && !(this->stateFlags1 & (PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE)) &&
+        !func_8008F128(this)) {
+        s32 pressedSlotIndex = -1;
+
+        for (i = 1; i < ARRAY_COUNT(sItemButtons); i++) {
+            if (CHECK_BTN_ALL(rawPressButtons, sItemButtons[i])) {
+                pressedSlotIndex = i;
+                break;
+            }
+        }
+
+        if (pressedSlotIndex > 0) {
+            const s32 pressedSlotItem = Player_GetItemOnButton(play, pressedSlotIndex);
+            if (pressedSlotItem < ITEM_NONE_FE) {
+                const s32 aimSelectResult =
+                    ExternalMods_HandleAimSelectSlotPress(play, this, pressedSlotIndex, pressedSlotItem);
+                if (aimSelectResult == EXTERNAL_MODS_AIM_SELECT_SLOT_DEACTIVATED_CONSUMED) {
+                    sControlInput->cur.button &= ~sItemButtons[pressedSlotIndex];
+                    sControlInput->press.button &= ~sItemButtons[pressedSlotIndex];
+                    this->heldItemButton = -1;
+                    sHeldItemButtonIsHeldDown = false;
+                    sExternalModsAimVirtualFireHeldPrev = false;
+                    Player_UseItem(play, this, ITEM_NONE);
+                    return;
+                }
+            }
+        }
+    }
+
     if ((this->heldItemButton >= 0) && (this->heldItemButton < ARRAY_COUNT(sItemButtons)) && (sControlInput != NULL)) {
         const u16 virtualMask = sItemButtons[this->heldItemButton];
         const bool mouseFireHeld = ExternalMods_IsAimMouseFireHeld(play, this, this->heldItemAction) != 0;
@@ -2591,20 +2620,6 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
         }
 
         item = Player_GetItemOnButton(play, i);
-
-        if ((item < ITEM_NONE_FE) && (i > 0) && CHECK_BTN_ALL(rawPressButtons, sItemButtons[i])) {
-            const s32 aimSelectResult = ExternalMods_HandleAimSelectSlotPress(play, this, i, item);
-            if (aimSelectResult == EXTERNAL_MODS_AIM_SELECT_SLOT_DEACTIVATED_CONSUMED) {
-                if (sControlInput != NULL) {
-                    sControlInput->cur.button &= ~sItemButtons[i];
-                    sControlInput->press.button &= ~sItemButtons[i];
-                }
-                this->heldItemButton = -1;
-                sHeldItemButtonIsHeldDown = false;
-                Player_UseItem(play, this, ITEM_NONE);
-                return;
-            }
-        }
 
         if (item >= ITEM_NONE_FE) {
             for (i = 0; i < ARRAY_COUNT(sItemButtons); i++) {

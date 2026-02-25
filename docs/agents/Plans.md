@@ -326,3 +326,28 @@ This file is the fixed, append-only plan ledger for this repository.
   - docs/agents/skills/soh-git-checkpoint-merge/scripts/finalize-plan-merge.ps1
   - libultraship
   - docs/agents/memory.log
+
+## [PLN-20260225-0013] Fix pistol C-down toggle exit and restore reticle/custom model visibility
+- createdUtc: 2026-02-25T16:53:43Z
+- status: in_progress
+- scope: engine
+- summary: Prioritize slot-toggle deactivation over virtual fire injection and remove granted-only gating for pistol aim-select reticle/custom model paths.
+- milestones:
+  1. Patch Player_ProcessItemButtons to process slot-toggle press before virtual fire injection and consume deactivation frame
+  2. Patch ExternalModManager aim-select candidate availability to not depend only on granted
+  3. Patch reticle/model selection to use availability helper and add targeted debug logs
+  4. Build Release and validate pistol toggle/reticle/model behavior in-game
+- tags: external-mods, aim-select, pistol, input, reticle, model, api-v3
+- refs:
+  - soh/src/overlays/actors/ovl_player_actor/z_player.c
+  - soh/soh/Enhancements/external-mods/ExternalModManager.cpp
+  - x64/Release/mods/pistol_hitscan_demo/items/items.json
+  - x64/Release/logs/Ship of Harkinian.log
+
+## [PLN-20260225-0013][UPDATE] 2026-02-25T17:15:04Z
+- status: done
+- note: Patched Player_ProcessItemButtons to prioritize C/D slot-toggle deactivation before virtual fire injection, removed granted-only aim availability gating, restored slingshot reticle/model candidate resolution via availability helper, and validated Release build.
+- refs:
+  - soh/src/overlays/actors/ovl_player_actor/z_player.c
+  - soh/soh/Enhancements/external-mods/ExternalModManager.cpp
+  - x64/Release/logs/Ship of Harkinian.log

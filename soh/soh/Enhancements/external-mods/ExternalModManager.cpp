@@ -4831,6 +4831,30 @@ int32_t ResolveGrantedItemId(const ExternalModItemDefinition& definition) {
     return config->grantItemId;
 }
 
+bool IsItemDefinitionAvailableForAim(const ExternalModItemDefinition& definition) {
+    if (definition.granted) {
+        return true;
+    }
+
+    if (!definition.hasSlot) {
+        return false;
+    }
+
+    const auto* config = FindItemSlotConfig(definition.slot);
+    if (config == nullptr || config->slotIndex < 0 ||
+        config->slotIndex >= static_cast<int32_t>(ARRAY_COUNT(gSaveContext.inventory.items))) {
+        return false;
+    }
+
+    const int32_t resolvedItemId = ResolveGrantedItemId(definition);
+    if (resolvedItemId == ITEM_NONE || resolvedItemId < std::numeric_limits<int8_t>::min() ||
+        resolvedItemId > std::numeric_limits<int8_t>::max()) {
+        return false;
+    }
+
+    return gSaveContext.inventory.items[config->slotIndex] == static_cast<int8_t>(resolvedItemId);
+}
+
 int32_t ResolveGrantedAmmoItemId(const ExternalModItemDefinition& definition) {
     const auto* config = FindItemSlotConfig(definition.slot);
     if (config == nullptr) {
@@ -8596,7 +8620,7 @@ const ExternalModItemDefinition* ExternalModManager::FindAimSelectItemDefinition
     }
 
     const auto* definition = ExternalModContentRegistry::FindItemDefinitionById(package->runtime, itemId);
-    if (definition == nullptr || !definition->granted || !definition->aimSelectToggle) {
+    if (definition == nullptr || !definition->aimSelectToggle || !IsItemDefinitionAvailableForAim(*definition)) {
         return nullptr;
     }
 
@@ -8848,6 +8872,7 @@ int32_t ExternalModManager::HandleAimSelectSlotPress(::PlayState* play, ::Player
                                                      int32_t itemId) {
     (void)play;
     (void)player;
+    const bool debugLogs = CVarGetInteger("gExternalMods.AimSelectDebug", 0) != 0;
 
     if (buttonIndex <= 0 || buttonIndex >= 8) {
         return static_cast<int32_t>(AimSelectSlotPressResult::None);
@@ -8857,7 +8882,7 @@ int32_t ExternalModManager::HandleAimSelectSlotPress(::PlayState* play, ::Player
         return static_cast<int32_t>(AimSelectSlotPressResult::None);
     }
 
-    if (mAimSelectState.active && mAimSelectState.buttonIndex == buttonIndex && mAimSelectState.resolvedItemId == itemId) {
+    if (mAimSelectState.active && mAimSelectState.buttonIndex == buttonIndex) {
         SPDLOG_INFO("[ExternalMods] Aim select toggle deactivated for button={} mod={} item={}", buttonIndex,
                     mAimSelectState.modId, mAimSelectState.itemId);
         ClearAimSelectState(true);
@@ -8866,15 +8891,29 @@ int32_t ExternalModManager::HandleAimSelectSlotPress(::PlayState* play, ::Player
 
     const ExternalModPackage* selectedPackage = nullptr;
     const ExternalModItemDefinition* selectedDefinition = nullptr;
+    int32_t inspectedDefinitions = 0;
+    int32_t matchingItemDefinitions = 0;
+    int32_t availableDefinitions = 0;
     for (const auto& package : mPackages) {
         if (!package.runtime.enabled) {
             continue;
         }
 
         for (const auto& definition : package.runtime.itemDefinitions) {
-            if (!definition.granted || !definition.aimSelectToggle || !ItemDefinitionMatchesUseItem(definition, itemId)) {
+            if (!definition.aimSelectToggle) {
                 continue;
             }
+            inspectedDefinitions++;
+
+            if (!ItemDefinitionMatchesUseItem(definition, itemId)) {
+                continue;
+            }
+            matchingItemDefinitions++;
+
+            if (!IsItemDefinitionAvailableForAim(definition)) {
+                continue;
+            }
+            availableDefinitions++;
 
             if (selectedPackage == nullptr || package.manifest.loadPriority > selectedPackage->manifest.loadPriority ||
                 (package.manifest.loadPriority == selectedPackage->manifest.loadPriority &&
@@ -8886,6 +8925,11 @@ int32_t ExternalModManager::HandleAimSelectSlotPress(::PlayState* play, ::Player
     }
 
     if (selectedPackage == nullptr || selectedDefinition == nullptr) {
+        if (debugLogs) {
+            SPDLOG_DEBUG(
+                "[ExternalMods] Aim select no candidate for button={} item={} (inspect={}, matching={}, available={})",
+                buttonIndex, itemId, inspectedDefinitions, matchingItemDefinitions, availableDefinitions);
+        }
         if (mAimSelectState.active && !FindAimSelectItemDefinition(mAimSelectState.modId, mAimSelectState.itemId)) {
             ClearAimSelectState(false);
         }
@@ -8949,8 +8993,7 @@ bool ExternalModManager::DrawAimReticleIfActive(::PlayState* play, ::Player* pla
     std::string selectedModId;
     if (mAimSelectState.active) {
         if (const auto* definition = FindAimSelectItemDefinition(mAimSelectState.modId, mAimSelectState.itemId);
-            definition != nullptr && definition->slot == ExternalModItemSlot::Slingshot &&
-            !definition->aimReticleTextureI8.empty()) {
+            definition != nullptr && definition->slot == ExternalModItemSlot::Slingshot) {
             selectedDefinition = definition;
             selectedModId = mAimSelectState.modId;
         }
@@ -8961,8 +9004,9 @@ bool ExternalModManager::DrawAimReticleIfActive(::PlayState* play, ::Player* pla
                 continue;
             }
             for (const auto& definition : package.runtime.itemDefinitions) {
-                if (!definition.granted || definition.slot != ExternalModItemSlot::Slingshot ||
-                    definition.aimReticleTextureI8.empty()) {
+                if (definition.slot != ExternalModItemSlot::Slingshot ||
+                    (!definition.aimSelectToggle && definition.aimReticleTextureI8.empty()) ||
+                    !IsItemDefinitionAvailableForAim(definition)) {
                     continue;
                 }
 
@@ -8977,6 +9021,9 @@ bool ExternalModManager::DrawAimReticleIfActive(::PlayState* play, ::Player* pla
     }
 
     if (selectedDefinition == nullptr) {
+        if (CVarGetInteger("gExternalMods.AimSelectDebug", 0) != 0) {
+            SPDLOG_DEBUG("[ExternalMods] Aim reticle skipped: no slingshot definition candidate");
+        }
         return false;
     }
 
@@ -9015,6 +9062,11 @@ bool ExternalModManager::DrawAimReticleIfActive(::PlayState* play, ::Player* pla
             break;
     }
     if (!shouldDraw) {
+        if (CVarGetInteger("gExternalMods.AimSelectDebug", 0) != 0) {
+            SPDLOG_DEBUG("[ExternalMods] Aim reticle skipped: visibility gate rejected (mode={} inHand={} active={})",
+                         static_cast<int32_t>(profile->reticleVisibility), slingshotInHand ? 1 : 0,
+                         mAimSelectState.active ? 1 : 0);
+        }
         return false;
     }
 
@@ -9061,8 +9113,30 @@ bool ExternalModManager::HasCustomEquippedSlingshotModel() const {
         return false;
     }
 
-    const auto* definition = FindCustomModelDefinitionForItem(mPackages, ITEM_SLINGSHOT);
-    return definition != nullptr && definition->granted;
+    const ExternalModItemDefinition* selectedDefinition = nullptr;
+    int32_t selectedLoadPriority = std::numeric_limits<int32_t>::min();
+    std::string selectedModId;
+    for (const auto& package : mPackages) {
+        if (!package.valid || !package.runtime.enabled) {
+            continue;
+        }
+
+        for (const auto& definition : package.runtime.itemDefinitions) {
+            if (!HasCustomGetItemModel(definition) || !ItemDefinitionMatchesUseItem(definition, ITEM_SLINGSHOT) ||
+                !IsItemDefinitionAvailableForAim(definition)) {
+                continue;
+            }
+
+            if (selectedDefinition == nullptr || package.manifest.loadPriority > selectedLoadPriority ||
+                (package.manifest.loadPriority == selectedLoadPriority && package.manifest.id < selectedModId)) {
+                selectedDefinition = &definition;
+                selectedLoadPriority = package.manifest.loadPriority;
+                selectedModId = package.manifest.id;
+            }
+        }
+    }
+
+    return selectedDefinition != nullptr;
 }
 
 bool ExternalModManager::DrawCustomEquippedSlingshotModel(::PlayState* play) const {
@@ -9075,12 +9149,34 @@ bool ExternalModManager::DrawCustomEquippedSlingshotModel(::PlayState* play) con
         return false;
     }
 
-    const auto* definition = FindCustomModelDefinitionForItem(mPackages, ITEM_SLINGSHOT);
-    if (definition == nullptr || !definition->granted) {
+    const ExternalModItemDefinition* selectedDefinition = nullptr;
+    int32_t selectedLoadPriority = std::numeric_limits<int32_t>::min();
+    std::string selectedModId;
+    for (const auto& package : mPackages) {
+        if (!package.valid || !package.runtime.enabled) {
+            continue;
+        }
+
+        for (const auto& definition : package.runtime.itemDefinitions) {
+            if (!HasCustomGetItemModel(definition) || !ItemDefinitionMatchesUseItem(definition, ITEM_SLINGSHOT) ||
+                !IsItemDefinitionAvailableForAim(definition)) {
+                continue;
+            }
+
+            if (selectedDefinition == nullptr || package.manifest.loadPriority > selectedLoadPriority ||
+                (package.manifest.loadPriority == selectedLoadPriority && package.manifest.id < selectedModId)) {
+                selectedDefinition = &definition;
+                selectedLoadPriority = package.manifest.loadPriority;
+                selectedModId = package.manifest.id;
+            }
+        }
+    }
+
+    if (selectedDefinition == nullptr) {
         return false;
     }
 
-    return DrawCustomItemDefinitionModel(play, *definition, true);
+    return DrawCustomItemDefinitionModel(play, *selectedDefinition, true);
 }
 
 std::vector<ExternalModInventoryCellView> ExternalModManager::GetExtraInventoryGrid() const {
