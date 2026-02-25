@@ -6,7 +6,7 @@
       "shape": "sphere",
       "radius": 260,
       "durationFrames": 1,
-      "targetScope": "player_enemies_bosses",
+      "targetScope": "enemies_bosses",
       "effects": {
         "onEnter": [
           {

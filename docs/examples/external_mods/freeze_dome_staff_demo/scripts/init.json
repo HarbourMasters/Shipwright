@@ -2,6 +2,6 @@
   "apiVersion": 4,
   "onGameLoaded": [
     { "action": "grantModItem", "itemId": "freeze_dome_staff_item" },
-    { "action": "showNotification", "text": "Freeze Dome Staff: impacto no chão cria domo azul com freeze sem dano (player+enemies+boss)" }
+    { "action": "showNotification", "text": "Freeze Dome Staff: impacto no chão cria domo azul com freeze sem dano (enemies+boss only)" }
   ]
 }

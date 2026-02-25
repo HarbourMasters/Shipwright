@@ -461,3 +461,29 @@ This file is the fixed, append-only plan ledger for this repository.
   - docs/agents/skills/soh-git-checkpoint-merge/scripts/finalize-plan-merge.ps1
   - libultraship
   - docs/agents/Plans.md
+
+## [PLN-20260225-0017] Freeze dome staff should not affect player
+- createdUtc: 2026-02-25T19:36:05Z
+- status: in_progress
+- scope: mod
+- summary: Adjust freeze_dome_staff_demo AoE scope to exclude player and sync runtime/demo messaging.
+- milestones:
+  1. Update demo AoE targetScope to enemies_bosses
+  2. Update demo notification text to reflect enemy-only freeze
+  3. Sync docs examples to runtime and validate mod
+- tags: external-mods, freeze, demo, aoe
+- refs:
+  - docs/examples/external_mods/freeze_dome_staff_demo/combat/aoe_profiles.json
+  - docs/examples/external_mods/freeze_dome_staff_demo/scripts/init.json
+  - x64/Release/mods/freeze_dome_staff_demo/combat/aoe_profiles.json
+
+## [PLN-20260225-0017][UPDATE] 2026-02-25T19:37:14Z
+- status: done
+- note: Updated freeze_dome_staff_demo to enemy-only freeze by switching AoE targetScope to enemies_bosses and refreshed notification text; synced runtime mirror and validated both docs/runtime mods.
+- refs:
+  - docs/examples/external_mods/freeze_dome_staff_demo/combat/aoe_profiles.json
+  - docs/examples/external_mods/freeze_dome_staff_demo/scripts/init.json
+  - x64/Release/mods/freeze_dome_staff_demo/combat/aoe_profiles.json
+  - x64/Release/mods/freeze_dome_staff_demo/scripts/init.json
+  - tools/external_mods/sync_examples_to_runtime.ps1
+  - tools/external_mods/validate_mod.ps1
