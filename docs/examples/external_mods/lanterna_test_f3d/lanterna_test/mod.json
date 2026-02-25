@@ -1,25 +1,29 @@
 {
-  "id": "com.example.lanterna_test",
-  "name": "Lanterna Test",
-  "version": "0.1.0",
-  "apiVersion": 2,
-  "loadOrder": 170,
-  "entryScript": "scripts/init.json",
-  "assets": [],
-  "dependencies": [],
-  "capabilities": [
-    "hooks.extended.v1"
-  ],
-  "hookDefinitions": "hooks/hooks.json",
-  "runtime": {
-    "type": "wasm3-v1",
-    "module": "scripts/noop.wat",
-    "maxMemoryKb": 1024,
-    "maxCallMs": 2,
-    "maxFrameBudgetMs": 2,
-    "maxHookCallsPerFrame": 256,
-    "maxActorInstances": 64
-  },
-  "itemDefinitions": "items/items.json",
-  "inputDefinitions": "config/input.json"
+    "id":  "com.example.lanterna_test",
+    "name":  "Lanterna Test",
+    "version":  "0.1.0",
+    "apiVersion":  3,
+    "loadOrder":  170,
+    "entryScript":  "scripts/init.json",
+    "assets":  [
+
+               ],
+    "dependencies":  [
+
+                     ],
+    "capabilities":  [
+                         "hooks.extended.v1"
+                     ],
+    "hookDefinitions":  "hooks/hooks.json",
+    "runtime":  {
+                    "type":  "wasm3-v1",
+                    "module":  "scripts/noop.wat",
+                    "maxMemoryKb":  1024,
+                    "maxCallMs":  2,
+                    "maxFrameBudgetMs":  2,
+                    "maxHookCallsPerFrame":  256,
+                    "maxActorInstances":  64
+                },
+    "itemDefinitions":  "items/items.json",
+    "inputDefinitions":  "config/input.json"
 }

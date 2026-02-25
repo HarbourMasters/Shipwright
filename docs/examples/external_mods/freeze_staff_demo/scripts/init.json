@@ -1,0 +1,13 @@
+{
+  "apiVersion": 3,
+  "onGameLoaded": [
+    {
+      "action": "grantModItem",
+      "itemId": "freeze_staff_item"
+    },
+    {
+      "action": "showNotification",
+      "text": "ice staff ativo"
+    }
+  ]
+}

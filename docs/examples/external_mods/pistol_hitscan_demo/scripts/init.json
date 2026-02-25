@@ -1,0 +1,7 @@
+{
+  "apiVersion": 3,
+  "onGameLoaded": [
+    { "action": "grantModItem", "itemId": "pistol_item" },
+    { "action": "showNotification", "text": "Pistol Hitscan Demo: equipado no SLOT_SLINGSHOT, tiro livre + hitscan." }
+  ]
+}

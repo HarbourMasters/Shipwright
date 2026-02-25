@@ -1,0 +1,14 @@
+{
+  "items": [
+    {
+      "id": "status_staff_item",
+      "displayName": "Status Staff",
+      "slot": "SLOT_STICK",
+      "useMode": "augment",
+      "agePolicy": "allowAdult",
+      "useProfile": "com.example.status_catalog_demo:status_staff_use",
+      "grant": { "ammo": 30 },
+      "params": { "cooldown": 18 }
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+﻿{
+    "generatedUtc":  "2026-02-25T14:36:42Z",
+    "apiVersion":  3,
+    "hooks":  [
+                  "onLoadGame",
+                  "onExitGame",
+                  "onSceneInit",
+                  "afterSceneCommands",
+                  "onTransitionEnd",
+                  "onFlagSet",
+                  "onFlagUnset",
+                  "onSceneFlagSet",
+                  "onSceneFlagUnset",
+                  "onPlayerUpdate",
+                  "onPlayerUseItem",
+                  "onPlayerHealthChange",
+                  "onItemReceive",
+                  "onActorInit",
+                  "onActorSpawn",
+                  "onActorUpdate",
+                  "onActorKill",
+                  "onActorDestroy",
+                  "onEnemyDefeat",
+                  "onBossDefeat",
+                  "onPlayDestroy",
+                  "onGameFrameUpdate"
+              ],
+    "behaviorEvents":  [
+                           "manual",
+                           "onInit",
+                           "onSpawn",
+                           "onDespawn",
+                           "onDestroy",
+                           "onUpdate",
+                           "onRandomTick",
+                           "onRoomEnter",
+                           "onTimeOfDayChanged",
+                           "onSwitchFlagChanged",
+                           "onPlayerNear",
+                           "onPlayerFar",
+                           "onTimer",
+                           "onInteract",
+                           "onSignal",
+                           "onSceneEnter",
+                           "onItemUsed",
+                           "onItemGranted",
+                           "onItemEquipped",
+                           "onCooldownReady"
+                       ],
+    "aliases":  [
+                    {
+                        "to":  "onspawn",
+                        "from":  "oninit"
+                    },
+                    {
+                        "to":  "ondestroy",
+                        "from":  "ondespawn"
+                    },
+                    {
+                        "to":  "onitemgranted",
+                        "from":  "onitemequipped"
+                    }
+                ]
+}

@@ -1,4 +1,4 @@
-# External Mod SDK MVP (Zip + OTR + Script)
+ï»¿# External Mod SDK MVP (Zip + OTR + Script)
 
 ## Goal
 Deliver a minimum viable external mod workflow thatellows creates to ship:
@@ -35,6 +35,14 @@ This MVP should be additive and must not break the current content pipeline wher
 - Script API must be permissioned/sandboxed by default.
 - API surface must be versioned from day one.
 
+## Agent Memory and Continuity
+
+- Persistent engineering memory for this project is maintained under `docs/agents`.
+- Operational protocol: `docs/agents/AGENTS.md`.
+- Active snapshot: `docs/agents/project_state.md`.
+- Append-only history: `docs/agents/memory.log`.
+- Tooling: `tools/agents` (`append-memory.ps1`, `query-memory.ps1`, `compact-memory.ps1`, `rebuild-index.ps1`, `validate-memory.ps1`).
+
 ## Proposed Package Layout
 ```text
 mods/
@@ -54,7 +62,7 @@ mods/
   "version": "0.1.0",
   "apiVersion": 1,
   "gameVersionMin": "9.1.2",
-  "loadOrder": 100,
+  "loadPriority": 100,
   "entryScript": "scripts/init.json",
   "assets": ["assets/main.otr"],
   "dependencies": []
@@ -90,7 +98,7 @@ mods/
 2. **Performance regressions on frame events**
    - Mitigaten: script time budget + instrumentaten.
 3. **Load-order conflicts for asset overrides**
-   - Mitigaten: explicit `loadOrder`, deterministic resolver logs.
+   - Mitigaten: explicit `loadPriority` (higher wins), deterministic resolver logs.
 4. **API drift with engine changes**
    - Mitigaten: strict `apiVersion` gateand deprecaten policy.
 
@@ -114,7 +122,7 @@ mods/
 ## Stage 2 Delivery Checklist (runtime + assets + hooks)
 - [x] Current MVP runtime is declaratee JSON (`entryScript`) to keep API sandboxed; Lua VM remains a follow-up step.
 - [x] `ExternalModManager::Initialize()` integrate in startup flow.
-- [x] Deterministic package boot by `loadOrder`.
+- [x] Deterministic package boot by `loadPriority` (with `loadOrder` backward compatibility).
 - [x] Asset mount for directory and `.zip` packages using manifest `assets`.
 - [x] Safe patevalidacaon (`entryScript`/`assets` are relatee, no traversal, no unrestricted filesystem access).
 - [x] Per-mod runtime boot from `entryScript` (JSON script contract v1).
@@ -725,21 +733,21 @@ Allow external ZIP mods to override the **Get-Item 3D model** and texture for mo
 ### Manual Validation Log (with timestamp)
 - 2026-02-19 10:11:07 -03:00: `smoke_validate_v2.ps1` passou com `modelAsset` OBJ no `skyhook_jump`.
 - 2026-02-19 10:11:08 -03:00: ZIP `mods/skyhook_jump.zip` gerado com OBJ + PNG.
-- 2026-02-19 10:11:10 -03:00: `smoke_validate_example.ps1` passou após integração.
+- 2026-02-19 10:11:10 -03:00: `smoke_validate_example.ps1` passou apÃ³s integraÃ§Ã£o.
 
 ### Remaining Risks
-- Este bloco renderiza o modelo custom no **Get-Item 3D**. A troca de malha do item diretamente na mão do Link adulto/criança ainda depende de pipeline adicional de override de recursos `object_link_boy`.
+- Este bloco renderiza o modelo custom no **Get-Item 3D**. A troca de malha do item diretamente na mÃ£o do Link adulto/crianÃ§a ainda depende de pipeline adicional de override de recursos `object_link_boy`.
 - Formato suportado nesta etapa: `.obj` (sem `.glb/.gltf` ainda), priorizando simplicidade e estabilidade no runtime.
-- Build C++ completo e validação visual in-game continuam dependentes da execução local do usuário.
+- Build C++ completo e validaÃ§Ã£o visual in-game continuam dependentes da execuÃ§Ã£o local do usuÃ¡rio.
 
 ### Stage AF Update (2026-02-19 10:12:52 -03:00)
-- Revalidado após ajuste de draw pipeline (disable culling/lighting no custom draw):
+- Revalidado apÃ³s ajuste de draw pipeline (disable culling/lighting no custom draw):
   - `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_v2.ps1` -> success.
   - `powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_skyhook_jump_zip.ps1` -> success.
 
 ### Stage AF Update (2026-02-19 10:15:21 -03:00)
 - `build_skyhook_jump_zip.ps1` agora valida `iconAsset` dinamicamente (sem hardcode de `assets/skyhook_placeholder.png`).
-- Revalidação:
+- RevalidaÃ§Ã£o:
   - `powershell -ExecutionPolicy Bypass -File scripts/external-mods/build_skyhook_jump_zip.ps1` -> success.
   - `powershell -ExecutionPolicy Bypass -File scripts/external-mods/smoke_validate_v2.ps1` -> success.
 
@@ -786,9 +794,9 @@ Allow external ZIP mods to override the **Get-Item 3D model** and texture for mo
   - If texture shows color bleeding between UV islands, set `modelTextureFilter: "point"`.
   - Keep `modelUvOrigin: "auto"` unless runtime logs/visual checks prove otherwise.
 
-## Phase 1 Data-Driven Catalog Runtime (apiVersion 2.x)
+## Phase 1 Data-Driven Catalog Runtime (apiVersion 3)
 
-This phase adds catalog-driven runtime wiring for external mods without breaking legacy packs.
+This phase delivers catalog-driven runtime wiring for external mods with a single v3 contract (legacy paths removed).
 
 ### New capabilities
 
@@ -817,5 +825,8 @@ This phase adds catalog-driven runtime wiring for external mods without breaking
 
 - Capabilities gate parsing and loading per file.
 - Invalid catalog data disables only the owning mod runtime.
-- Legacy actions remain available via bridge aliases.
-- Item params freezeOnMeleeHit stays supported and routes into status runtime.
+- Legacy aliases were removed (`igniteFrontTarget`, `freezeFrontTarget`).
+- Legacy item params were removed (`freezeOnMeleeHit`, `freezeOnHit*`).
+- patches.vanilla_items.v1 executes patch operations (add|replace|remove|merge) before item parsing.
+
+

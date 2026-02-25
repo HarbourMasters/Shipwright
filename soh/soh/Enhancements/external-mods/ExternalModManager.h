@@ -16,6 +16,9 @@ struct Player;
 
 namespace SOH {
 
+struct ExternalModWasmGroundInfo;
+struct ExternalModWasmRaycastHit;
+
 class ExternalModManager {
   public:
     static ExternalModManager& Instance();
@@ -34,8 +37,19 @@ class ExternalModManager {
     bool EquipExtraInventoryCellToButton(size_t cellIndex, int32_t buttonIndex, std::string& outError);
     void OnVanillaButtonEquipped(int32_t buttonIndex);
     bool TryDrawButtonOverrideIcon(::PlayState* play, int32_t buttonIndex, int32_t alpha) const;
+    bool DrawSurfBoardIfActive(::PlayState* play, ::Player* player);
+    bool OnHammerGroundImpact(::PlayState* play, ::Player* player, float impactX, float impactY, float impactZ);
+    bool DrawAimReticleIfActive(::PlayState* play, ::Player* player, ExternalModAimCameraContext context) const;
+    int16_t ResolveAimCameraMode(::PlayState* play, ::Player* player, int16_t defaultMode,
+                                 ExternalModAimCameraContext context) const;
+    bool HandleCameraHotkeyScancode(int32_t scancode);
+    bool IsAimMouseFireHeld(::PlayState* play, ::Player* player, int32_t heldItemAction) const;
+    bool IsAimOverShoulderEnabled() const;
+    bool HasCustomEquippedSlingshotModel() const;
+    bool DrawCustomEquippedSlingshotModel(::PlayState* play) const;
     static std::string BuildEnabledCVarName(const std::string& modId);
     static std::string BuildBindingCVarName(const std::string& modId, const std::string& bindingId);
+    static std::string BuildCameraHotkeyScancodeCVarName(const std::string& modId, const std::string& hotkeyId);
     bool TryConsumePendingSceneLoadRequest(int16_t sceneId, ExternalModPendingSceneLoadRequest& outRequest);
     void HandlePendingSceneLoadSuccess(const ExternalModPendingSceneLoadRequest& request);
     void HandlePendingSceneLoadFailure(const ExternalModPendingSceneLoadRequest& request, const std::string& error);
@@ -68,6 +82,7 @@ class ExternalModManager {
     bool mPersistentInventoryDirty = false;
     bool mSaveSectionRegistered = false;
     int32_t mPersistentInventorySectionId = -1;
+    ExternalModAimCameraState mAimCameraState{};
     uint32_t mOnLoadGameHook = 0;
     uint32_t mOnExitGameHook = 0;
     uint32_t mOnSceneInitHook = 0;
@@ -97,6 +112,7 @@ class ExternalModManager {
     static bool TryParseItemDefinitions(const std::string& content, std::vector<ExternalModItemDefinition>& outItems,
                                         std::string& outError);
     static bool TryParseInputDefinitions(const std::string& content, std::vector<ExternalModInputBinding>& outBindings,
+                                         std::vector<ExternalModCameraHotkeyDefinition>& outCameraHotkeys,
                                          std::string& outError);
     static bool TryParseHookDefinitions(const std::string& content, int32_t apiVersion,
                                         std::vector<ExternalModHookSubscription>& outSubscriptions,
@@ -130,6 +146,9 @@ class ExternalModManager {
     static bool TryParseMovementDefinitions(const std::string& content, int32_t apiVersion,
                                             std::vector<ExternalModMovementProfile>& outDefinitions,
                                             std::string& outError);
+    static bool TryParseCameraDefinitions(const std::string& content, int32_t apiVersion,
+                                          std::vector<ExternalModAimCameraProfile>& outDefinitions,
+                                          std::string& outError);
 
     static bool ReadManifestFromDirectory(const std::filesystem::path& dirPath, std::string& outContent,
                                           std::string& outError);
@@ -154,6 +173,13 @@ class ExternalModManager {
     static void DisableRuntime(ExternalModPackage& package, const std::string& reason);
     void SyncExtraInventoryGrid();
     void SyncButtonAssignments();
+    void ApplyDefaultKeyboardMappingsForPackage(const ExternalModPackage& package) const;
+    const ExternalModAimCameraProfile* FindAimCameraProfileById(const std::string& modId,
+                                                                const std::string& profileId) const;
+    const ExternalModAimCameraProfile* ResolveActiveAimCameraProfile() const;
+    const ExternalModAimCameraProfile* ResolveAimCameraProfileForContext(ExternalModAimCameraContext context,
+                                                                         bool requireMouseFire) const;
+    void PruneAimCameraStateForUnavailableProfiles();
     bool TryInvokeAssignedModItem(int32_t buttonIndex, ::PlayState* play, ::Player* player);
     const ExternalModPackage* FindPackageByModId(const std::string& modId) const;
     ExternalModPackage* FindPackageByModId(const std::string& modId);
@@ -162,6 +188,21 @@ class ExternalModManager {
     bool IsAssignmentValid(const ActionButtonAssignment& assignment) const;
     void MarkPersistentInventoryDirty();
     void ProcessAssignedActionButtons(::PlayState* play, ::Player* player, void* input);
+    int32_t WasmHostUseItemProfile(const std::string& modId, const std::string& itemOrProfileId);
+    int32_t WasmHostResolveTarget(const std::string& modId, const std::string& profileId,
+                                  std::vector<int32_t>& outHandles);
+    int32_t WasmHostDealDamage(const std::string& modId, int32_t targetHandle, const std::string& damageProfileId);
+    int32_t WasmHostApplyStatus(const std::string& modId, int32_t targetHandle, const std::string& statusId,
+                                int32_t durationOverrideFrames);
+    int32_t WasmHostSpawnProjectile(const std::string& modId, const std::string& profileId,
+                                    const std::string& overridesJson);
+    int32_t WasmHostSpawnAoE(const std::string& modId, const std::string& profileId, const std::string& originJson);
+    int32_t WasmHostApplyMovementProfile(const std::string& modId, const std::string& profileId, int32_t durationFrames);
+    int32_t WasmHostApplyImpulse(const std::string& modId, int32_t mode, float strength, float x, float y, float z);
+    int32_t WasmHostGetGroundInfo(const std::string& modId, ExternalModWasmGroundInfo& outInfo);
+    int32_t WasmHostRaycast(const std::string& modId, const std::string& queryJson, ExternalModWasmRaycastHit& outHit);
+    int32_t WasmHostRaycastAll(const std::string& modId, const std::string& queryJson, int32_t outCapacity,
+                               std::vector<ExternalModWasmRaycastHit>& outHits);
 
     void DispatchExtendedHook(ExternalModHookType hookType, const ExternalModHookEventContext& context,
                               const char* triggerName);
@@ -184,6 +225,8 @@ class ExternalModManager {
     void OnItemReceive(int16_t itemId);
     void OnActorHook(ExternalModHookType hookType, void* actor, const char* hookName);
     void OnPlayDestroy();
+
+    friend class ExternalModParser;
 };
 
 } // namespace SOH

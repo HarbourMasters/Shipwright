@@ -1,4 +1,4 @@
-e #pragma once
+#pragma once
 
 #include "ExternalModTypes.h"
 #include <string>
@@ -14,6 +14,7 @@ public:
     static bool TryParseItemDefinitions(const std::string& content, std::vector<ExternalModItemDefinition>& outItems,
                                         std::string& outError);
     static bool TryParseInputDefinitions(const std::string& content, std::vector<ExternalModInputBinding>& outBindings,
+                                         std::vector<ExternalModCameraHotkeyDefinition>& outCameraHotkeys,
                                          std::string& outError);
     static bool TryParseHookDefinitions(const std::string& content, int32_t apiVersion,
                                         std::vector<ExternalModHookSubscription>& outSubscriptions,

@@ -1,0 +1,10 @@
+﻿{
+  "schemaVersion": 1,
+  "profiles": [
+    {
+      "id": "com.example.freeze_dome_staff_demo:self_target",
+      "mode": "self",
+      "range": 1
+    }
+  ]
+}

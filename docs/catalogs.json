@@ -1,0 +1,94 @@
+﻿{
+    "generatedUtc":  "2026-02-25T14:36:42Z",
+    "apiVersion":  3,
+    "runtime":  {
+                    "budgetDefaults":  {
+                                           "maxFrameBudgetMs":  2,
+                                           "maxActorInstances":  64,
+                                           "maxHookCallsPerFrame":  256,
+                                           "maxActiveStatuses":  256,
+                                           "maxCallMs":  2
+                                       },
+                    "type":  "wasm3-v1"
+                },
+    "capabilities":  [
+                         {
+                             "fileDefault":  "hooks/hooks.json",
+                             "fileField":  "hookDefinitions",
+                             "id":  "hooks.extended.v1"
+                         },
+                         {
+                             "fileDefault":  "actors/actors.json",
+                             "fileField":  "actorDefinitions",
+                             "id":  "actors.vm.v1"
+                         },
+                         {
+                             "fileDefault":  "actors/actors.json",
+                             "fileField":  "actorDefinitions",
+                             "id":  "actors.generic.v1"
+                         },
+                         {
+                             "fileDefault":  "behaviors/behaviors.json",
+                             "fileField":  "behaviorDefinitions",
+                             "id":  "behaviors.graph.v1"
+                         },
+                         {
+                             "fileDefault":  "scenes/scenes.json",
+                             "fileField":  "sceneDefinitions",
+                             "id":  "scenes.bundle.v1"
+                         },
+                         {
+                             "fileDefault":  "statuses/statuses.json",
+                             "schemaVersion":  1,
+                             "fileField":  "statusDefinitions",
+                             "id":  "statuses.catalog.v1"
+                         },
+                         {
+                             "fileDefault":  "combat/damage_profiles.json",
+                             "schemaVersion":  1,
+                             "fileField":  "damageDefinitions",
+                             "id":  "combat.damage.v1"
+                         },
+                         {
+                             "fileDefault":  "combat/targeting_profiles.json",
+                             "schemaVersion":  1,
+                             "fileField":  "targetingDefinitions",
+                             "id":  "combat.targeting.v1"
+                         },
+                         {
+                             "fileDefault":  "combat/projectiles.json",
+                             "schemaVersion":  1,
+                             "fileField":  "projectileDefinitions",
+                             "id":  "combat.projectiles.v1"
+                         },
+                         {
+                             "fileDefault":  "combat/aoe_profiles.json",
+                             "schemaVersion":  1,
+                             "fileField":  "aoeDefinitions",
+                             "id":  "combat.aoe.v1"
+                         },
+                         {
+                             "fileDefault":  "movement/movement_profiles.json",
+                             "schemaVersion":  1,
+                             "fileField":  "movementDefinitions",
+                             "id":  "movement.profiles.v1"
+                         },
+                         {
+                             "fileDefault":  "items/use_profiles.json",
+                             "schemaVersion":  1,
+                             "fileField":  "itemUseProfiles",
+                             "id":  "items.use_profiles.v1"
+                         },
+                         {
+                             "fileDefault":  "patches/vanilla_items.patch.json",
+                             "fileField":  "vanillaItemPatches",
+                             "id":  "patches.vanilla_items.v1"
+                         },
+                         {
+                             "fileDefault":  "",
+                             "fileField":  "",
+                             "id":  "world.queries.v1",
+                             "note":  "No file required; enables world query actions."
+                         }
+                     ]
+}

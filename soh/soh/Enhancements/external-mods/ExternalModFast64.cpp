@@ -15,7 +15,7 @@
 #include <ship/resource/File.h>
 #include <ship/Context.h>
 #include <ship/resource/ResourceManager.h>
-#include <ship/resource/ArchiveManager.h>
+#include <ship/resource/archive/ArchiveManager.h>
 
 extern "C" {
 #include <z64.h>

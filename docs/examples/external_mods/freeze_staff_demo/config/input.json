@@ -1,0 +1,10 @@
+﻿{
+  "bindings": [
+    {
+      "id": "freeze_staff_dummy",
+      "defaultMask": "MOD_ACTION3|CDOWN",
+      "trigger": "pressed",
+      "allowUserRemap": true
+    }
+  ]
+}

@@ -23,20 +23,30 @@
 #include <stb_image.h>
 
 #include <ship/Context.h>
+#include <ship/controller/controldeck/ControlDeck.h>
+#include <ship/controller/controldevice/controller/Controller.h>
+#include <ship/controller/controldevice/controller/ControllerButton.h>
+#include <ship/controller/controldevice/controller/mapping/keyboard/KeyboardKeyToButtonMapping.h>
+#include <ship/controller/controldevice/controller/mapping/keyboard/KeyboardScancodes.h>
 #include <ship/resource/File.h>
 #include <ship/resource/archive/Archive.h>
 #include <fast/resource/type/DisplayList.h>
 #include <fast/resource/ResourceType.h>
 
 #include "ExternalModItemRuntime.h"
+#include "ExternalModContentRegistry.h"
 #include "ExternalModInterop.h"
 #include "ExternalModWatCompiler.h"
 #include "ExternalModWasmRuntime.h"
+#include "soh/SaveManager.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Notification/Notification.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "objects/object_link_boy/object_link_boy.h"
+#include "objects/object_gi_shield_2/object_gi_shield_2.h"
+#include "src/overlays/actors/ovl_En_Kusa/z_en_kusa.h"
+#include "src/overlays/actors/ovl_En_Wood02/z_en_wood02.h"
 
 extern "C" {
 #include <z64.h>
@@ -49,14 +59,17 @@ GetItemID RetrieveGetItemIDFromItemID(ItemID itemID);
 
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
+void Interface_DrawItemIconTexture(PlayState* play, void* texture, s16 button);
+void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha);
+void Player_StartMode_Idle(PlayState* play, Player* thisx);
 }
 
 namespace SOH {
 
 namespace {
-constexpr int32_t kExternalModApiVersionMin = 1;
-constexpr int32_t kExternalModApiVersionMax = 2;
-constexpr int32_t kExternalModApiVersionV2 = 2;
+constexpr int32_t kExternalModApiVersionMin = 3;
+constexpr int32_t kExternalModApiVersionMax = 3;
+constexpr int32_t kExternalModApiVersionV3 = 3;
 constexpr uint64_t kMaxManifestBytes = 256 * 1024;
 constexpr uint64_t kMaxScriptBytes = 1024 * 1024;
 constexpr uint64_t kMaxAssetBytes = 512ull * 1024ull * 1024ull;
@@ -73,6 +86,7 @@ constexpr uint64_t kMaxUseProfileDefinitionBytes = 512 * 1024;
 constexpr uint64_t kMaxProjectileDefinitionBytes = 256 * 1024;
 constexpr uint64_t kMaxAoEDefinitionBytes = 256 * 1024;
 constexpr uint64_t kMaxMovementDefinitionBytes = 256 * 1024;
+constexpr uint64_t kMaxCameraDefinitionBytes = 256 * 1024;
 constexpr uint64_t kMaxVanillaPatchDefinitionBytes = 256 * 1024;
 constexpr uint64_t kMaxItemIconBytes = 4ull * 1024ull * 1024ull;
 constexpr uint64_t kMaxItemModelBytes = 8ull * 1024ull * 1024ull;
@@ -92,6 +106,8 @@ constexpr int32_t kHookshotChainTextureWidth = 16;
 constexpr int32_t kHookshotChainTextureHeight = 32;
 constexpr int32_t kHookshotReticleTextureWidth = 64;
 constexpr int32_t kHookshotReticleTextureHeight = 64;
+constexpr int32_t kAimReticleTextureWidth = 64;
+constexpr int32_t kAimReticleTextureHeight = 64;
 constexpr size_t kMaxItemModelTriangles = 4096;
 constexpr float kMinDisplayListModelScale = 0.05f;
 constexpr float kMaxDisplayListModelScale = 2000.0f;
@@ -101,12 +117,15 @@ constexpr int32_t kDefaultRuntimeCallMs = 2;
 constexpr int32_t kDefaultRuntimeFrameBudgetMs = 2;
 constexpr int32_t kDefaultRuntimeHookCallsPerFrame = 256;
 constexpr int32_t kDefaultRuntimeActorInstances = 64;
+constexpr int32_t kDefaultRuntimeActiveStatuses = 256;
 constexpr u8 kAgeReqAdult = LINK_AGE_ADULT;
 constexpr u8 kAgeReqChild = LINK_AGE_CHILD;
 constexpr u8 kAgeReqNone = 9;
 constexpr size_t kItemIconTableSize = sizeof(gItemIcons) / sizeof(gItemIcons[0]);
-constexpr size_t kExternalModExtraInventoryCellCount = 40;
 constexpr size_t kExternalModInventoryCellsPerPage = 24;
+constexpr size_t kExternalModInventoryMaxCellCount = 4096;
+constexpr const char* kExternalModsInventorySaveSectionName = "externalModsInventory";
+constexpr int32_t kExternalModsInventorySaveVersion = 1;
 std::array<void*, kItemIconTableSize> gVanillaItemIcons{};
 bool gVanillaItemIconsCaptured = false;
 
@@ -120,6 +139,17 @@ std::string gExternalModHookshotTextureOverrideKey;
 std::unordered_set<std::string> gExternalModMissingDisplayListWarnings{};
 std::unordered_set<std::string> gExternalModDisplayListDrawDebugLogs{};
 bool gExternalModPlayerStatusOverridesApplied = false;
+
+void LoadExternalModsInventorySection() {
+    ExternalModManager::Instance().LoadPersistentInventoryState();
+}
+
+void SaveExternalModsInventorySection(SaveContext* saveContext, int sectionID, bool fullSave) {
+    (void)saveContext;
+    (void)sectionID;
+    (void)fullSave;
+    ExternalModManager::Instance().SavePersistentInventoryState();
+}
 
 const std::unordered_map<std::string, int16_t> kSceneAliases = {
     { "SCENE_KOKIRI_FOREST", SCENE_KOKIRI_FOREST },
@@ -201,6 +231,96 @@ const std::unordered_map<std::string, int32_t> kButtonAliases = {
     { "CRIGHT", BTN_CRIGHT },
 };
 
+const std::unordered_map<std::string, Ship::KbScancode> kKeyboardKeyAliases = {
+    { "A", Ship::LUS_KB_A },   { "B", Ship::LUS_KB_B },   { "C", Ship::LUS_KB_C },   { "D", Ship::LUS_KB_D },
+    { "E", Ship::LUS_KB_E },   { "F", Ship::LUS_KB_F },   { "G", Ship::LUS_KB_G },   { "H", Ship::LUS_KB_H },
+    { "I", Ship::LUS_KB_I },   { "J", Ship::LUS_KB_J },   { "K", Ship::LUS_KB_K },   { "L", Ship::LUS_KB_L },
+    { "M", Ship::LUS_KB_M },   { "N", Ship::LUS_KB_N },   { "O", Ship::LUS_KB_O },   { "P", Ship::LUS_KB_P },
+    { "Q", Ship::LUS_KB_Q },   { "R", Ship::LUS_KB_R },   { "S", Ship::LUS_KB_S },   { "T", Ship::LUS_KB_T },
+    { "U", Ship::LUS_KB_U },   { "V", Ship::LUS_KB_V },   { "W", Ship::LUS_KB_W },   { "X", Ship::LUS_KB_X },
+    { "Y", Ship::LUS_KB_Y },   { "Z", Ship::LUS_KB_Z },   { "TAB", Ship::LUS_KB_TAB },
+    { "F1", Ship::LUS_KB_F1 }, { "F2", Ship::LUS_KB_F2 }, { "F3", Ship::LUS_KB_F3 }, { "F4", Ship::LUS_KB_F4 },
+    { "F5", Ship::LUS_KB_F5 }, { "F6", Ship::LUS_KB_F6 }, { "F7", Ship::LUS_KB_F7 }, { "F8", Ship::LUS_KB_F8 },
+    { "F9", Ship::LUS_KB_F9 }, { "F10", Ship::LUS_KB_F10 }, { "F11", Ship::LUS_KB_F11 }, { "F12", Ship::LUS_KB_F12 },
+};
+
+const std::unordered_set<Ship::KbScancode> kReservedDefaultKeyboardScancodes = {
+    Ship::LUS_KB_F1, Ship::LUS_KB_F5, Ship::LUS_KB_F6, Ship::LUS_KB_F7, Ship::LUS_KB_F9, Ship::LUS_KB_TAB, Ship::LUS_KB_I,
+};
+const std::unordered_map<std::string, ExternalModAimMouseButton> kAimMouseButtonAliases = {
+    { "left", ExternalModAimMouseButton::Left },
+    { "middle", ExternalModAimMouseButton::Middle },
+    { "right", ExternalModAimMouseButton::Right },
+    { "backward", ExternalModAimMouseButton::Backward },
+    { "forward", ExternalModAimMouseButton::Forward },
+};
+
+const std::unordered_map<std::string, ExternalModAimMouseFireMode> kAimMouseFireModeAliases = {
+    { "both", ExternalModAimMouseFireMode::Both },
+    { "firstperson", ExternalModAimMouseFireMode::FirstPerson },
+    { "first_person", ExternalModAimMouseFireMode::FirstPerson },
+    { "overshoulder", ExternalModAimMouseFireMode::OverShoulder },
+    { "over_shoulder", ExternalModAimMouseFireMode::OverShoulder },
+};
+
+const std::unordered_map<std::string, ExternalModAimReticleVisibility> kAimReticleVisibilityAliases = {
+    { "aim_only", ExternalModAimReticleVisibility::AimOnly },
+    { "aimonly", ExternalModAimReticleVisibility::AimOnly },
+    { "button_hold", ExternalModAimReticleVisibility::ButtonHold },
+    { "buttonhold", ExternalModAimReticleVisibility::ButtonHold },
+    { "selected", ExternalModAimReticleVisibility::Selected },
+};
+
+const std::unordered_set<ExternalModActionType> kSupportedCameraHotkeyActions = {
+    ExternalModActionType::ToggleAimCameraMode,
+    ExternalModActionType::SetAimCameraMode,
+    ExternalModActionType::SetAimCameraProfile,
+};
+constexpr const char* kAimCameraOverShoulderCVar = "gExternalMods.AimCamera.OverShoulderEnabled";
+constexpr const char* kCoreDefaultAimCameraProfileId = "core:ots_default";
+
+const ExternalModAimCameraProfile& GetCoreDefaultAimCameraProfile() {
+    static ExternalModAimCameraProfile profile = [] {
+        ExternalModAimCameraProfile p;
+        p.id = kCoreDefaultAimCameraProfileId;
+        p.contextsMask = 0x1F;
+        p.cUpFirstPersonMode = CAM_MODE_FIRSTPERSON;
+        p.bowFirstPersonMode = CAM_MODE_BOWARROW;
+        p.hookshotFirstPersonMode = CAM_MODE_HOOKSHOT;
+        p.slingshotFirstPersonMode = CAM_MODE_SLINGSHOT;
+        p.boomerangFirstPersonMode = CAM_MODE_BOWARROW;
+        p.cUpOverShoulderMode = CAM_MODE_BOWARROWZ;
+        p.bowOverShoulderMode = CAM_MODE_BOWARROWZ;
+        p.hookshotOverShoulderMode = CAM_MODE_BOWARROWZ;
+        p.slingshotOverShoulderMode = CAM_MODE_BOWARROWZ;
+        p.boomerangOverShoulderMode = CAM_MODE_BOWARROWZ;
+        p.shoulder = "right";
+        p.aimRay = "camera_center";
+        p.reticleX = 0.5f;
+        p.reticleY = 0.5f;
+        return p;
+    }();
+    return profile;
+}
+
+std::string ResolveProfileIdForMod(const std::string& modId, const std::string& profileId) {
+    if (profileId.empty()) {
+        return {};
+    }
+    if (profileId.find(':') != std::string::npos || modId.empty()) {
+        return profileId;
+    }
+    return modId + ":" + profileId;
+}
+
+std::string GetProfileOwnerModId(const std::string& profileId, const std::string& fallbackModId) {
+    const auto separator = profileId.find(':');
+    if (separator == std::string::npos || separator == 0) {
+        return fallbackModId;
+    }
+    return profileId.substr(0, separator);
+}
+
 struct EquippedActionButtonMapping {
     int32_t mask;
     int32_t slotIndex;
@@ -257,6 +377,277 @@ std::string ToUpper(std::string value) {
     return value;
 }
 
+std::string NormalizeKeyboardKeyToken(std::string value) {
+    value = ToUpper(value);
+    value.erase(std::remove_if(value.begin(), value.end(),
+                               [](unsigned char c) { return c == '_' || c == '-' || std::isspace(c) != 0; }),
+                value.end());
+    return value;
+}
+
+bool ParseKeyboardKeyToken(const std::string& value, int32_t& outScancode, std::string& outError) {
+    if (value.empty()) {
+        outError = "keyboard key token must not be empty";
+        return false;
+    }
+
+    auto token = NormalizeKeyboardKeyToken(value);
+    if (token.rfind("LUSKB", 0) == 0) {
+        token = token.substr(5);
+    } else if (token.rfind("KB", 0) == 0) {
+        token = token.substr(2);
+    }
+
+    const auto it = kKeyboardKeyAliases.find(token);
+    if (it == kKeyboardKeyAliases.end()) {
+        outError = "unsupported keyboard key token: " + value;
+        return false;
+    }
+
+    outScancode = static_cast<int32_t>(it->second);
+    return true;
+}
+
+bool IsReservedDefaultKeyboardScancode(int32_t scancode) {
+    return kReservedDefaultKeyboardScancodes.contains(static_cast<Ship::KbScancode>(scancode));
+}
+
+bool ParseAimCameraContextToken(const std::string& value, ExternalModAimCameraContext& outContext) {
+    const auto normalized = ToLower(value);
+    if (normalized == "cup" || normalized == "c_up" || normalized == "c-up" || normalized == "firstperson") {
+        outContext = ExternalModAimCameraContext::CUp;
+        return true;
+    }
+    if (normalized == "bow" || normalized == "bowarrow") {
+        outContext = ExternalModAimCameraContext::Bow;
+        return true;
+    }
+    if (normalized == "hookshot" || normalized == "longshot") {
+        outContext = ExternalModAimCameraContext::Hookshot;
+        return true;
+    }
+    if (normalized == "slingshot") {
+        outContext = ExternalModAimCameraContext::Slingshot;
+        return true;
+    }
+    if (normalized == "boomerang") {
+        outContext = ExternalModAimCameraContext::Boomerang;
+        return true;
+    }
+    return false;
+}
+
+uint8_t AimCameraContextToMask(ExternalModAimCameraContext context) {
+    switch (context) {
+        case ExternalModAimCameraContext::CUp:
+            return 1 << 0;
+        case ExternalModAimCameraContext::Bow:
+            return 1 << 1;
+        case ExternalModAimCameraContext::Hookshot:
+            return 1 << 2;
+        case ExternalModAimCameraContext::Slingshot:
+            return 1 << 3;
+        case ExternalModAimCameraContext::Boomerang:
+            return 1 << 4;
+        default:
+            return 0;
+    }
+}
+
+bool ParseAimCameraModeToken(const std::string& value, ExternalModAimCameraMode& outMode) {
+    const auto normalized = ToLower(value);
+    if (normalized == "firstperson" || normalized == "first_person") {
+        outMode = ExternalModAimCameraMode::FirstPerson;
+        return true;
+    }
+    if (normalized == "overshoulder" || normalized == "over_shoulder" || normalized == "thirdperson" ||
+        normalized == "third_person") {
+        outMode = ExternalModAimCameraMode::OverShoulder;
+        return true;
+    }
+    return false;
+}
+
+bool ParseCameraModeTypeToken(const std::string& value, int16_t& outMode) {
+    const auto normalized = ToLower(value);
+    if (normalized == "firstperson" || normalized == "first_person") {
+        outMode = CAM_MODE_FIRSTPERSON;
+        return true;
+    }
+    if (normalized == "bowarrow" || normalized == "bow_arrow") {
+        outMode = CAM_MODE_BOWARROW;
+        return true;
+    }
+    if (normalized == "bowarrowz" || normalized == "bow_arrow_z" || normalized == "bowarrow_z") {
+        outMode = CAM_MODE_BOWARROWZ;
+        return true;
+    }
+    if (normalized == "hookshot") {
+        outMode = CAM_MODE_HOOKSHOT;
+        return true;
+    }
+    if (normalized == "slingshot") {
+        outMode = CAM_MODE_SLINGSHOT;
+        return true;
+    }
+    if (normalized == "boomerang") {
+        outMode = CAM_MODE_BOWARROW;
+        return true;
+    }
+    return false;
+}
+
+int16_t GetCameraModeForContext(const ExternalModAimCameraProfile& profile, ExternalModAimCameraContext context,
+                                bool overShoulder) {
+    if (overShoulder) {
+        switch (context) {
+            case ExternalModAimCameraContext::CUp:
+                return profile.cUpOverShoulderMode;
+            case ExternalModAimCameraContext::Bow:
+                return profile.bowOverShoulderMode;
+            case ExternalModAimCameraContext::Hookshot:
+                return profile.hookshotOverShoulderMode;
+            case ExternalModAimCameraContext::Slingshot:
+                return profile.slingshotOverShoulderMode;
+            case ExternalModAimCameraContext::Boomerang:
+                return profile.boomerangOverShoulderMode;
+            default:
+                return CAM_MODE_BOWARROWZ;
+        }
+    }
+
+    switch (context) {
+        case ExternalModAimCameraContext::CUp:
+            return profile.cUpFirstPersonMode;
+        case ExternalModAimCameraContext::Bow:
+            return profile.bowFirstPersonMode;
+        case ExternalModAimCameraContext::Hookshot:
+            return profile.hookshotFirstPersonMode;
+        case ExternalModAimCameraContext::Slingshot:
+            return profile.slingshotFirstPersonMode;
+        case ExternalModAimCameraContext::Boomerang:
+            return profile.boomerangFirstPersonMode;
+        default:
+            return CAM_MODE_FIRSTPERSON;
+    }
+}
+
+bool TryResolveAimContextFromHeldItemAction(int32_t heldItemAction, ExternalModAimCameraContext& outContext) {
+    switch (heldItemAction) {
+        case PLAYER_IA_BOW:
+        case PLAYER_IA_BOW_FIRE:
+        case PLAYER_IA_BOW_ICE:
+        case PLAYER_IA_BOW_LIGHT:
+        case PLAYER_IA_BOW_0C:
+        case PLAYER_IA_BOW_0D:
+        case PLAYER_IA_BOW_0E:
+            outContext = ExternalModAimCameraContext::Bow;
+            return true;
+        case PLAYER_IA_HOOKSHOT:
+        case PLAYER_IA_LONGSHOT:
+            outContext = ExternalModAimCameraContext::Hookshot;
+            return true;
+        case PLAYER_IA_SLINGSHOT:
+            outContext = ExternalModAimCameraContext::Slingshot;
+            return true;
+        case PLAYER_IA_BOOMERANG:
+            outContext = ExternalModAimCameraContext::Boomerang;
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool ParseAimMouseButtonToken(const std::string& value, ExternalModAimMouseButton& outButton) {
+    const auto normalized = ToLower(value);
+    const auto it = kAimMouseButtonAliases.find(normalized);
+    if (it == kAimMouseButtonAliases.end()) {
+        return false;
+    }
+    outButton = it->second;
+    return true;
+}
+
+bool ParseAimMouseFireModeToken(const std::string& value, ExternalModAimMouseFireMode& outMode) {
+    const auto normalized = ToLower(value);
+    const auto it = kAimMouseFireModeAliases.find(normalized);
+    if (it == kAimMouseFireModeAliases.end()) {
+        return false;
+    }
+    outMode = it->second;
+    return true;
+}
+
+bool ParseAimReticleVisibilityToken(const std::string& value, ExternalModAimReticleVisibility& outVisibility) {
+    const auto normalized = ToLower(value);
+    const auto it = kAimReticleVisibilityAliases.find(normalized);
+    if (it == kAimReticleVisibilityAliases.end()) {
+        return false;
+    }
+    outVisibility = it->second;
+    return true;
+}
+
+Ship::MouseBtn ToShipMouseButton(ExternalModAimMouseButton button) {
+    switch (button) {
+        case ExternalModAimMouseButton::Left:
+            return Ship::LUS_MOUSE_BTN_LEFT;
+        case ExternalModAimMouseButton::Middle:
+            return Ship::LUS_MOUSE_BTN_MIDDLE;
+        case ExternalModAimMouseButton::Right:
+            return Ship::LUS_MOUSE_BTN_RIGHT;
+        case ExternalModAimMouseButton::Backward:
+            return Ship::LUS_MOUSE_BTN_BACKWARD;
+        case ExternalModAimMouseButton::Forward:
+            return Ship::LUS_MOUSE_BTN_FORWARD;
+        default:
+            return Ship::LUS_MOUSE_BTN_LEFT;
+    }
+}
+
+bool IsItemIdEquippedOnActionButtons(int16_t itemId) {
+    if (itemId == ITEM_NONE || itemId == ITEM_NONE_FE) {
+        return false;
+    }
+
+    if (B_BTN_ITEM == itemId) {
+        return true;
+    }
+    for (int32_t i = 0; i < 3; ++i) {
+        if (C_BTN_ITEM(i) == itemId) {
+            return true;
+        }
+    }
+    if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
+        for (int32_t i = 0; i < 4; ++i) {
+            if (DPAD_ITEM(i) == itemId) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool IsSingleModActionMask(int32_t inputMask, int32_t& outResolvedMask) {
+    constexpr int32_t kModActionMask = BTN_CUSTOM_MOD_ACTION1 | BTN_CUSTOM_MOD_ACTION2 | BTN_CUSTOM_MOD_ACTION3 |
+                                       BTN_CUSTOM_MOD_ACTION4 | BTN_CUSTOM_MOD_ACTION5 | BTN_CUSTOM_MOD_ACTION6 |
+                                       BTN_CUSTOM_MOD_ACTION7;
+
+    const int32_t masked = inputMask & kModActionMask;
+    if (masked == 0 || (inputMask & ~kModActionMask) != 0) {
+        return false;
+    }
+
+    const uint32_t bits = static_cast<uint32_t>(masked);
+    if ((bits & (bits - 1u)) != 0u) {
+        return false;
+    }
+
+    outResolvedMask = masked;
+    return true;
+}
+
 ExternalModRuntimeModuleFormat ResolveRuntimeModuleFormat(const std::filesystem::path& modulePath) {
     const auto extension = ToLower(modulePath.extension().string());
     if (extension == ".wasm") {
@@ -288,6 +679,7 @@ const std::unordered_set<std::string> kSupportedCapabilities = {
     "combat.projectiles.v1",
     "combat.aoe.v1",
     "movement.profiles.v1",
+    "camera.aim_profiles.v1",
     "world.queries.v1",
     "items.use_profiles.v1",
     "patches.vanilla_items.v1",
@@ -329,9 +721,25 @@ const std::unordered_map<std::string, ExternalModItemUseMode> kItemUseModeAliase
     { "augment", ExternalModItemUseMode::Augment },
 };
 
+const std::unordered_map<std::string, ExternalModItemUseTrigger> kItemUseTriggerAliases = {
+    { "onuse", ExternalModItemUseTrigger::OnUse },
+    { "on_use", ExternalModItemUseTrigger::OnUse },
+    { "hammergroundimpact", ExternalModItemUseTrigger::HammerGroundImpact },
+    { "hammer_ground_impact", ExternalModItemUseTrigger::HammerGroundImpact },
+};
+
 const std::unordered_map<std::string, ExternalModItemPlacement> kItemPlacementAliases = {
     { "legacy", ExternalModItemPlacement::Legacy },
     { "virtual", ExternalModItemPlacement::Virtual },
+};
+
+const std::unordered_map<std::string, ExternalModAoETargetScope> kAoETargetScopeAliases = {
+    { "all_non_player", ExternalModAoETargetScope::AllNonPlayer },
+    { "allnonplayer", ExternalModAoETargetScope::AllNonPlayer },
+    { "enemies_bosses", ExternalModAoETargetScope::EnemiesBosses },
+    { "enemiesbosses", ExternalModAoETargetScope::EnemiesBosses },
+    { "enemies_bosses_props", ExternalModAoETargetScope::EnemiesBossesProps },
+    { "enemiesbossesprops", ExternalModAoETargetScope::EnemiesBossesProps },
 };
 
 const std::unordered_map<std::string, int32_t> kAssignableButtonAliases = {
@@ -360,6 +768,10 @@ const std::unordered_map<std::string, ExternalModModelTextureFilter> kModelTextu
 
 const std::unordered_map<std::string, int32_t> kItemIdAliases = {
     { "ITEM_NONE", ITEM_NONE },
+    { "ITEM_STICK", ITEM_STICK },
+    { "ITEM_DEKU_STICK", ITEM_STICK },
+    { "ITEM_SLINGSHOT", ITEM_SLINGSHOT },
+    { "ITEM_FAIRY_SLINGSHOT", ITEM_SLINGSHOT },
     { "ITEM_HOOKSHOT", ITEM_HOOKSHOT },
     { "ITEM_LONGSHOT", ITEM_LONGSHOT },
     { "ITEM_BOW", ITEM_BOW },
@@ -420,6 +832,23 @@ bool ParseItemUseMode(const nlohmann::json& value, ExternalModItemUseMode& outMo
     return true;
 }
 
+bool ParseItemUseTrigger(const nlohmann::json& value, ExternalModItemUseTrigger& outTrigger, std::string& outError) {
+    if (!value.is_string()) {
+        outError = "must be string";
+        return false;
+    }
+
+    const auto normalized = ToLower(value.get<std::string>());
+    const auto it = kItemUseTriggerAliases.find(normalized);
+    if (it == kItemUseTriggerAliases.end()) {
+        outError = "unsupported value: " + value.get<std::string>() + " (expected onUse|hammerGroundImpact)";
+        return false;
+    }
+
+    outTrigger = it->second;
+    return true;
+}
+
 bool ParseItemPlacement(const nlohmann::json& value, ExternalModItemPlacement& outPlacement, std::string& outError) {
     if (!value.is_string()) {
         outError = "must be string";
@@ -434,6 +863,17 @@ bool ParseItemPlacement(const nlohmann::json& value, ExternalModItemPlacement& o
     }
 
     outPlacement = it->second;
+    return true;
+}
+
+bool ParseAoETargetScopeToken(const std::string& value, ExternalModAoETargetScope& outScope) {
+    const auto normalized = ToLower(value);
+    const auto it = kAoETargetScopeAliases.find(normalized);
+    if (it == kAoETargetScopeAliases.end()) {
+        return false;
+    }
+
+    outScope = it->second;
     return true;
 }
 
@@ -455,6 +895,116 @@ bool ParseAssignableButtonName(const std::string& buttonName, int32_t& outButton
 
 std::string BuildAssignableButtonsList() {
     return "C_LEFT,C_DOWN,C_RIGHT,D_UP,D_DOWN,D_LEFT,D_RIGHT";
+}
+
+bool ApplySingleJsonPatchOp(nlohmann::json& target, const nlohmann::json& op, std::string& outError) {
+    try {
+        nlohmann::json patchArray = nlohmann::json::array();
+        patchArray.push_back(op);
+        target = target.patch(patchArray);
+        return true;
+    } catch (const std::exception& ex) {
+        outError = ex.what();
+        return false;
+    }
+}
+
+bool ApplyVanillaPatchMergeOp(nlohmann::json& target, const nlohmann::json& op, std::string& outError) {
+    if (!op.contains("path") || !op["path"].is_string()) {
+        outError = "merge operation requires string path";
+        return false;
+    }
+    if (!op.contains("value") || !op["value"].is_object()) {
+        outError = "merge operation requires object value";
+        return false;
+    }
+
+    const std::string pointerPath = op["path"].get<std::string>();
+    const nlohmann::json patchValue = op["value"];
+    const nlohmann::json::json_pointer pointer(pointerPath);
+
+    if (pointerPath.empty() || pointerPath == "/") {
+        if (!target.is_object()) {
+            outError = "merge at root requires object target";
+            return false;
+        }
+        target.merge_patch(patchValue);
+        return true;
+    }
+
+    if (target.contains(pointer)) {
+        auto& node = target[pointer];
+        if (!node.is_object()) {
+            node = nlohmann::json::object();
+        }
+        node.merge_patch(patchValue);
+    } else {
+        target[pointer] = patchValue;
+    }
+
+    return true;
+}
+
+bool TryApplyVanillaItemPatchesToJson(nlohmann::json& itemsJson, const nlohmann::json& patchJson, std::string& outError) {
+    nlohmann::json operations;
+    if (patchJson.is_array()) {
+        operations = patchJson;
+    } else if (patchJson.is_object()) {
+        if (patchJson.contains("ops")) {
+            operations = patchJson["ops"];
+        } else if (patchJson.contains("operations")) {
+            operations = patchJson["operations"];
+        } else if (patchJson.contains("op")) {
+            operations = nlohmann::json::array({ patchJson });
+        } else {
+            outError = "patch object must define ops/operations array";
+            return false;
+        }
+    } else {
+        outError = "patch document must be object or array";
+        return false;
+    }
+
+    if (!operations.is_array()) {
+        outError = "patch operations must be array";
+        return false;
+    }
+
+    for (size_t i = 0; i < operations.size(); ++i) {
+        const auto& operation = operations[i];
+        if (!operation.is_object()) {
+            outError = "patch op[" + std::to_string(i) + "] must be object";
+            return false;
+        }
+        if (!operation.contains("op") || !operation["op"].is_string()) {
+            outError = "patch op[" + std::to_string(i) + "] missing string field: op";
+            return false;
+        }
+
+        const std::string opName = ToLower(operation["op"].get<std::string>());
+        std::string applyError;
+        if (opName == "merge") {
+            if (!ApplyVanillaPatchMergeOp(itemsJson, operation, applyError)) {
+                outError = "patch op[" + std::to_string(i) + "] merge failed: " + applyError;
+                return false;
+            }
+            continue;
+        }
+
+        if (opName != "add" && opName != "remove" && opName != "replace") {
+            outError = "patch op[" + std::to_string(i) + "] unsupported operation: " + opName;
+            return false;
+        }
+
+        nlohmann::json normalized = operation;
+        normalized["op"] = opName;
+        if (!ApplySingleJsonPatchOp(itemsJson, normalized, applyError)) {
+            outError = "patch op[" + std::to_string(i) + "] failed: " + applyError;
+            return false;
+        }
+    }
+
+    return true;
 }
 
 bool ParseModelUvOrigin(const nlohmann::json& value, ExternalModModelUvOrigin& outOrigin, std::string& outError) {
@@ -504,7 +1054,42 @@ bool ParseItemIdValue(const nlohmann::json& value, int32_t& outItemId, std::stri
         return false;
     }
 
-    const auto stringValue = value.get<std::string>();
+    std::string stringValue = value.get<std::string>();
+    auto trimWhitespace = [](std::string& text) {
+        size_t start = 0;
+        while (start < text.size() && std::isspace(static_cast<unsigned char>(text[start]))) {
+            ++start;
+        }
+        size_t end = text.size();
+        while (end > start && std::isspace(static_cast<unsigned char>(text[end - 1]))) {
+            --end;
+        }
+        text = text.substr(start, end - start);
+    };
+
+    trimWhitespace(stringValue);
+
+    while (!stringValue.empty()) {
+        const auto* bytes = reinterpret_cast<const uint8_t*>(stringValue.data());
+        const size_t size = stringValue.size();
+
+        if (size >= 3 && bytes[0] == 0xEF && bytes[1] == 0xBB && bytes[2] == 0xBF) {
+            stringValue.erase(0, 3);
+            continue;
+        }
+        if (size >= 2 && ((bytes[0] == 0xFF && bytes[1] == 0xFE) || (bytes[0] == 0xFE && bytes[1] == 0xFF))) {
+            stringValue.erase(0, 2);
+            continue;
+        }
+        if (bytes[0] == 0x00) {
+            stringValue.erase(0, 1);
+            continue;
+        }
+        break;
+    }
+
+    trimWhitespace(stringValue);
+
     const auto aliasIt = kItemIdAliases.find(ToUpper(stringValue));
     if (aliasIt != kItemIdAliases.end()) {
         outItemId = aliasIt->second;
@@ -3216,6 +3801,19 @@ bool ParseTargetingModeToken(const std::string& value, ExternalModTargetingMode&
     return false;
 }
 
+bool ParseMovementModeToken(const std::string& value, ExternalModMovementMode& outMode) {
+    const auto normalized = ToLower(value);
+    if (normalized == "modifier") {
+        outMode = ExternalModMovementMode::Modifier;
+        return true;
+    }
+    if (normalized == "surf") {
+        outMode = ExternalModMovementMode::Surf;
+        return true;
+    }
+    return false;
+}
+
 bool ParseAction(const nlohmann::json& json, int32_t apiVersion, ExternalModAction& outAction, std::string& outError) {
     if (!json.is_object()) {
         outError = "Action must be an object";
@@ -3241,8 +3839,8 @@ bool ParseAction(const nlohmann::json& json, int32_t apiVersion, ExternalModActi
         return ParseAliasedInt16(json["entrance"], kEntranceAliases, "entrance", outAction.entranceIndex, outError);
     }
 
-    if (apiVersion < kExternalModApiVersionV2) {
-        outError = "Unsupported action for apiVersion 1: " + actionType;
+    if (apiVersion < kExternalModApiVersionV3) {
+        outError = "Unsupported action for apiVersion 3: " + actionType;
         return false;
     }
 
@@ -3331,61 +3929,9 @@ bool ParseAction(const nlohmann::json& json, int32_t apiVersion, ExternalModActi
         return true;
     }
 
-    if (actionType == "igniteFrontTarget") {
-        outAction.type = ExternalModActionType::IgniteFrontTarget;
-        if (json.contains("itemId")) {
-            return ValidateRequiredString(json, "itemId", outAction.itemId, outError);
-        }
-        if (json.contains("requiresItemId")) {
-            return ValidateRequiredString(json, "requiresItemId", outAction.itemId, outError);
-        }
-        return true;
-    }
-
-    if (actionType == "freezeFrontTarget") {
-        outAction.type = ExternalModActionType::FreezeFrontTarget;
-        outAction.statusType = ExternalModStatusType::Freeze;
-        outAction.statusTarget = ExternalModStatusTarget::FrontTarget;
-        outAction.hasStatusTarget = true;
-        outAction.statusId = "core:freeze";
-        if (json.contains("itemId") && !ValidateRequiredString(json, "itemId", outAction.itemId, outError)) {
-            return false;
-        }
-        if (json.contains("requiresItemId") &&
-            !ValidateRequiredString(json, "requiresItemId", outAction.itemId, outError)) {
-            return false;
-        }
-        if (json.contains("durationFrames")) {
-            if (!json["durationFrames"].is_number_integer()) {
-                outError = "freezeFrontTarget.durationFrames must be integer";
-                return false;
-            }
-            outAction.durationFrames = std::max(1, json["durationFrames"].get<int32_t>());
-        }
-        if (json.contains("shakeFrames")) {
-            if (!json["shakeFrames"].is_number_integer()) {
-                outError = "freezeFrontTarget.shakeFrames must be integer";
-                return false;
-            }
-            outAction.shakeFrames = std::max(0, json["shakeFrames"].get<int32_t>());
-        }
-        if (json.contains("range")) {
-            if (!json["range"].is_number()) {
-                outError = "freezeFrontTarget.range must be numeric";
-                return false;
-            }
-            outAction.freezeRange = std::max(1.0f, json["range"].get<float>());
-            outAction.range = outAction.freezeRange;
-        }
-        if (json.contains("blueIntensity")) {
-            if (!json["blueIntensity"].is_number_integer()) {
-                outError = "freezeFrontTarget.blueIntensity must be integer";
-                return false;
-            }
-            outAction.blueIntensity = std::clamp(json["blueIntensity"].get<int32_t>(), 0, 255);
-            outAction.intensity = outAction.blueIntensity;
-        }
-        return true;
+    if (actionType == "igniteFrontTarget" || actionType == "freezeFrontTarget") {
+        outError = actionType + " was removed in apiVersion 3; use applyStatus with statusId";
+        return false;
     }
 
     if (actionType == "applyStatus") {
@@ -3954,6 +4500,56 @@ bool ParseAction(const nlohmann::json& json, int32_t apiVersion, ExternalModActi
         return true;
     }
 
+    if (actionType == "toggleAimCameraMode") {
+        outAction.type = ExternalModActionType::ToggleAimCameraMode;
+        if (json.contains("profileId")) {
+            if (!ValidateRequiredString(json, "profileId", outAction.aimCameraProfileId, outError)) {
+                return false;
+            }
+        }
+        if (json.contains("itemId") && !ValidateRequiredString(json, "itemId", outAction.itemId, outError)) {
+            return false;
+        }
+        if (json.contains("requiresItemId") &&
+            !ValidateRequiredString(json, "requiresItemId", outAction.itemId, outError)) {
+            return false;
+        }
+        return true;
+    }
+
+    if (actionType == "setAimCameraMode") {
+        outAction.type = ExternalModActionType::SetAimCameraMode;
+        std::string modeToken;
+        if (!ValidateRequiredString(json, "mode", modeToken, outError)) {
+            return false;
+        }
+        if (!ParseAimCameraModeToken(modeToken, outAction.aimCameraMode)) {
+            outError = "setAimCameraMode.mode must be firstPerson|overShoulder";
+            return false;
+        }
+        if (json.contains("profileId")) {
+            if (!ValidateRequiredString(json, "profileId", outAction.aimCameraProfileId, outError)) {
+                return false;
+            }
+        }
+        if (json.contains("itemId") && !ValidateRequiredString(json, "itemId", outAction.itemId, outError)) {
+            return false;
+        }
+        if (json.contains("requiresItemId") &&
+            !ValidateRequiredString(json, "requiresItemId", outAction.itemId, outError)) {
+            return false;
+        }
+        return true;
+    }
+
+    if (actionType == "setAimCameraProfile") {
+        outAction.type = ExternalModActionType::SetAimCameraProfile;
+        if (!ValidateRequiredString(json, "profileId", outAction.aimCameraProfileId, outError)) {
+            return false;
+        }
+        return true;
+    }
+
     if (actionType == "invokeWasm") {
         outAction.type = ExternalModActionType::InvokeWasm;
         if (!ValidateRequiredString(json, "export", outAction.exportName, outError)) {
@@ -4246,6 +4842,23 @@ int32_t ResolveGrantedAmmoItemId(const ExternalModItemDefinition& definition) {
 
 bool IsItemIconIndexValid(int32_t itemId) {
     return itemId >= 0 && itemId < static_cast<int32_t>(kItemIconTableSize);
+}
+
+const uint8_t* ResolveItemIconPointerForId(int32_t itemId, bool preferVanilla) {
+    if (!IsItemIconIndexValid(itemId)) {
+        return nullptr;
+    }
+
+    const size_t iconIndex = static_cast<size_t>(itemId);
+    if (preferVanilla && gVanillaItemIconsCaptured && gVanillaItemIcons[iconIndex] != nullptr) {
+        return reinterpret_cast<const uint8_t*>(gVanillaItemIcons[iconIndex]);
+    }
+
+    if (gItemIcons[iconIndex] == nullptr) {
+        return nullptr;
+    }
+
+    return reinterpret_cast<const uint8_t*>(gItemIcons[iconIndex]);
 }
 
 void CaptureVanillaItemIconsIfNeeded() {
@@ -5250,7 +5863,7 @@ bool TryParseObjCustomModel(const std::string& objContent, float modelScale, int
 const ExternalModItemDefinition* FindCustomModelDefinitionForItem(const std::vector<ExternalModPackage>& packages,
                                                                   int32_t itemId) {
     const ExternalModItemDefinition* selectedDefinition = nullptr;
-    int32_t selectedLoadOrder = std::numeric_limits<int32_t>::max();
+    int32_t selectedLoadPriority = std::numeric_limits<int32_t>::min();
     std::string selectedModId;
 
     for (const auto& package : packages) {
@@ -5266,10 +5879,10 @@ const ExternalModItemDefinition* FindCustomModelDefinitionForItem(const std::vec
                 continue;
             }
 
-            if (selectedDefinition == nullptr || package.manifest.loadOrder < selectedLoadOrder ||
-                (package.manifest.loadOrder == selectedLoadOrder && package.manifest.id < selectedModId)) {
+            if (selectedDefinition == nullptr || package.manifest.loadPriority > selectedLoadPriority ||
+                (package.manifest.loadPriority == selectedLoadPriority && package.manifest.id < selectedModId)) {
                 selectedDefinition = &definition;
-                selectedLoadOrder = package.manifest.loadOrder;
+                selectedLoadPriority = package.manifest.loadPriority;
                 selectedModId = package.manifest.id;
             }
         }
@@ -5481,8 +6094,8 @@ void ApplyModItemIconOverrides(const std::vector<ExternalModPackage>& packages) 
 
     std::stable_sort(orderedPackages.begin(), orderedPackages.end(),
                      [](const ExternalModPackage* lhs, const ExternalModPackage* rhs) {
-                         if (lhs->manifest.loadOrder != rhs->manifest.loadOrder) {
-                             return lhs->manifest.loadOrder < rhs->manifest.loadOrder;
+                         if (lhs->manifest.loadPriority != rhs->manifest.loadPriority) {
+                             return lhs->manifest.loadPriority > rhs->manifest.loadPriority;
                          }
                          return lhs->manifest.id < rhs->manifest.id;
                      });
@@ -5559,7 +6172,7 @@ bool PatchHookshotTextureInDisplayList(const HookshotDisplayListTarget& target, 
 void ApplyModHookshotTextureOverrides(const std::vector<ExternalModPackage>& packages) {
     const ExternalModItemDefinition* selectedDefinition = nullptr;
     const ExternalModPackage* selectedPackage = nullptr;
-    int32_t selectedLoadOrder = std::numeric_limits<int32_t>::max();
+    int32_t selectedLoadPriority = std::numeric_limits<int32_t>::min();
     std::string selectedModId;
 
     for (const auto& package : packages) {
@@ -5573,11 +6186,11 @@ void ApplyModHookshotTextureOverrides(const std::vector<ExternalModPackage>& pac
                 continue;
             }
 
-            if (selectedDefinition == nullptr || package.manifest.loadOrder < selectedLoadOrder ||
-                (package.manifest.loadOrder == selectedLoadOrder && package.manifest.id < selectedModId)) {
+            if (selectedDefinition == nullptr || package.manifest.loadPriority > selectedLoadPriority ||
+                (package.manifest.loadPriority == selectedLoadPriority && package.manifest.id < selectedModId)) {
                 selectedDefinition = &definition;
                 selectedPackage = &package;
-                selectedLoadOrder = package.manifest.loadOrder;
+                selectedLoadPriority = package.manifest.loadPriority;
                 selectedModId = package.manifest.id;
             }
         }
@@ -5719,17 +6332,6 @@ void GrantItemForDefinitionIfMissing(const ExternalModItemDefinition& definition
         }
     }
 }
-const ExternalModItemDefinition* FindItemDefinitionById(const ExternalModRuntime& runtime, const std::string& itemId) {
-    const auto it = std::find_if(runtime.itemDefinitions.begin(), runtime.itemDefinitions.end(),
-                                 [&itemId](const ExternalModItemDefinition& definition) {
-                                     return definition.id == itemId;
-                                 });
-    if (it == runtime.itemDefinitions.end()) {
-        return nullptr;
-    }
-    return &(*it);
-}
-
 bool IsModItemHeld(const ExternalModItemDefinition& definition, const Player* player) {
     if (player == nullptr) {
         return false;
@@ -5745,7 +6347,7 @@ bool IsActionItemRequirementSatisfied(const ExternalModPackage& package, const E
         return true;
     }
 
-    const auto* definition = FindItemDefinitionById(package.runtime, action.itemId);
+    const auto* definition = ExternalModContentRegistry::FindItemDefinitionById(package.runtime, action.itemId);
     if (definition == nullptr || !definition->granted) {
         return false;
     }
@@ -6475,83 +7077,162 @@ void ApplyGlobalPlayerStatusModifiers(std::vector<ExternalModPackage>& packages,
     }
 }
 
-const ExternalModStatusDefinition* FindStatusDefinitionById(const ExternalModRuntime& runtime, const std::string& statusId) {
-    const auto it = std::find_if(runtime.statusDefinitions.begin(), runtime.statusDefinitions.end(),
-                                 [&statusId](const ExternalModStatusDefinition& definition) {
-                                     return definition.id == statusId;
-                                 });
-    if (it == runtime.statusDefinitions.end()) {
-        return nullptr;
-    }
-    return &(*it);
+void ClearSurfState(ExternalModRuntime& runtime) {
+    runtime.surfState = ExternalModRuntime::SurfState{};
 }
 
-const ExternalModDamageProfile* FindDamageProfileById(const ExternalModRuntime& runtime, const std::string& profileId) {
-    const auto it = std::find_if(runtime.damageProfiles.begin(), runtime.damageProfiles.end(),
-                                 [&profileId](const ExternalModDamageProfile& definition) {
-                                     return definition.id == profileId;
-                                 });
-    if (it == runtime.damageProfiles.end()) {
-        return nullptr;
-    }
-    return &(*it);
+void ActivateSurfState(ExternalModPackage& package, const ExternalModMovementProfile& profile,
+                       const ExternalModItemDefinition* sourceItem, Player* player, int32_t durationOverrideFrames) {
+    auto& surfState = package.runtime.surfState;
+    surfState.active = true;
+    surfState.sourceModId = package.manifest.id;
+    surfState.movementProfileId = profile.id;
+    surfState.sourceItemId = sourceItem == nullptr ? std::string{} : sourceItem->id;
+    surfState.framesRemaining = durationOverrideFrames > 0 ? durationOverrideFrames : profile.durationFrames;
+    surfState.speed = player == nullptr ? 0.0f : std::max(player->actor.speedXZ, 0.0f);
+    surfState.headingYaw = player == nullptr ? 0 : player->actor.shape.rot.y;
+    surfState.boardScale = profile.boardScale;
+    surfState.boostCooldownRemaining = 0;
+    surfState.idle = true;
+
+    SPDLOG_INFO(
+        "[ExternalMods] Surf activated for {} profile={} forwardAccel={:.3f} boostMask={} boostAccel={:.3f} "
+        "boostMaxSpeed={:.3f} boostCooldown={}",
+        package.manifest.id, profile.id, profile.surfForwardAccel, profile.surfBoostButtonMask, profile.surfBoostAccel,
+        profile.surfBoostMaxSpeed, profile.surfBoostCooldownFrames);
 }
 
-const ExternalModTargetingProfile* FindTargetingProfileById(const ExternalModRuntime& runtime,
-                                                            const std::string& profileId) {
-    const auto it = std::find_if(runtime.targetingProfiles.begin(), runtime.targetingProfiles.end(),
-                                 [&profileId](const ExternalModTargetingProfile& definition) {
-                                     return definition.id == profileId;
-                                 });
-    if (it == runtime.targetingProfiles.end()) {
-        return nullptr;
+void TickSurfState(ExternalModPackage& package, PlayState* play, Player* player) {
+    if (play == nullptr || player == nullptr) {
+        return;
     }
-    return &(*it);
-}
 
-const ExternalModItemUseProfile* FindItemUseProfileById(const ExternalModRuntime& runtime, const std::string& profileId) {
-    const auto it = std::find_if(runtime.itemUseProfiles.begin(), runtime.itemUseProfiles.end(),
-                                 [&profileId](const ExternalModItemUseProfile& definition) {
-                                     return definition.id == profileId;
-                                 });
-    if (it == runtime.itemUseProfiles.end()) {
-        return nullptr;
+    auto& surfState = package.runtime.surfState;
+    if (!surfState.active) {
+        return;
     }
-    return &(*it);
-}
 
-const ExternalModProjectileProfile* FindProjectileProfileById(const ExternalModRuntime& runtime,
-                                                              const std::string& profileId) {
-    const auto it = std::find_if(runtime.projectileProfiles.begin(), runtime.projectileProfiles.end(),
-                                 [&profileId](const ExternalModProjectileProfile& definition) {
-                                     return definition.id == profileId;
-                                 });
-    if (it == runtime.projectileProfiles.end()) {
-        return nullptr;
+    const auto* profile = ExternalModContentRegistry::FindMovementProfileById(package.runtime, surfState.movementProfileId);
+    if (profile == nullptr || profile->mode != ExternalModMovementMode::Surf) {
+        ClearSurfState(package.runtime);
+        return;
     }
-    return &(*it);
-}
 
-const ExternalModAoEProfile* FindAoEProfileById(const ExternalModRuntime& runtime, const std::string& profileId) {
-    const auto it = std::find_if(runtime.aoeProfiles.begin(), runtime.aoeProfiles.end(),
-                                 [&profileId](const ExternalModAoEProfile& definition) {
-                                     return definition.id == profileId;
-                                 });
-    if (it == runtime.aoeProfiles.end()) {
-        return nullptr;
+    if (surfState.framesRemaining > 0) {
+        surfState.framesRemaining--;
+        if (surfState.framesRemaining <= 0) {
+            ClearSurfState(package.runtime);
+            return;
+        }
     }
-    return &(*it);
-}
 
-const ExternalModMovementProfile* FindMovementProfileById(const ExternalModRuntime& runtime, const std::string& profileId) {
-    const auto it = std::find_if(runtime.movementProfiles.begin(), runtime.movementProfiles.end(),
-                                 [&profileId](const ExternalModMovementProfile& definition) {
-                                     return definition.id == profileId;
-                                 });
-    if (it == runtime.movementProfiles.end()) {
-        return nullptr;
+    Input* input = &play->state.input[0];
+    const float stickX = static_cast<float>(input->rel.stick_x);
+    const float stickY = static_cast<float>(input->rel.stick_y);
+    const float stickMagnitude = std::sqrt((stickX * stickX) + (stickY * stickY));
+    const float forwardInput = std::clamp(stickY / 60.0f, -1.0f, 1.0f);
+    const bool boostHeld =
+        profile->surfBoostButtonMask != 0 && MatchButtonMask(static_cast<int32_t>(input->cur.button), profile->surfBoostButtonMask);
+    if (surfState.boostCooldownRemaining > 0) {
+        surfState.boostCooldownRemaining--;
     }
-    return &(*it);
+    if (stickMagnitude > 4.0f) {
+        const float turnStepDeg = std::clamp(stickX / 60.0f, -1.0f, 1.0f) * profile->surfTurnRateDeg;
+        const float yawUnitsPerDeg = 32768.0f / 180.0f;
+        surfState.headingYaw += static_cast<int16_t>(turnStepDeg * yawUnitsPerDeg);
+    }
+
+    player->actor.shape.rot.y = surfState.headingYaw;
+    player->actor.world.rot.y = surfState.headingYaw;
+
+    float nx = 0.0f;
+    float ny = 1.0f;
+    float nz = 0.0f;
+    const bool onGround = (player->actor.bgCheckFlags & 1) != 0 && player->actor.floorPoly != nullptr;
+    if (onGround) {
+        nx = COLPOLY_GET_NORMAL(player->actor.floorPoly->normal.x);
+        ny = COLPOLY_GET_NORMAL(player->actor.floorPoly->normal.y);
+        nz = COLPOLY_GET_NORMAL(player->actor.floorPoly->normal.z);
+    }
+
+    const float slopeHorizontal = std::sqrt((nx * nx) + (nz * nz));
+    float downhillX = 0.0f;
+    float downhillZ = 0.0f;
+    if (slopeHorizontal > 0.0001f) {
+        downhillX = nx / slopeHorizontal;
+        downhillZ = nz / slopeHorizontal;
+    }
+
+    const float forwardX = Math_SinS(surfState.headingYaw);
+    const float forwardZ = Math_CosS(surfState.headingYaw);
+    const float downhillDot = (forwardX * downhillX) + (forwardZ * downhillZ);
+
+    if (onGround) {
+        const float downhillGain = std::max(0.0f, downhillDot) * slopeHorizontal * profile->surfDownhillAccel;
+        const float uphillLoss = std::max(0.0f, -downhillDot) * slopeHorizontal * profile->surfUphillBrake;
+        surfState.speed += downhillGain;
+        surfState.speed = std::max(0.0f, surfState.speed - uphillLoss);
+        surfState.speed *= (1.0f - profile->surfFlatDrag);
+    } else {
+        surfState.speed *= (1.0f - profile->surfFlatDrag * 0.35f);
+    }
+
+    if (forwardInput > 0.0f) {
+        surfState.speed += forwardInput * profile->surfForwardAccel;
+    }
+    if (boostHeld && surfState.boostCooldownRemaining <= 0) {
+        surfState.speed += profile->surfBoostAccel;
+        surfState.boostCooldownRemaining = std::max(1, profile->surfBoostCooldownFrames);
+    }
+
+    const float effectiveMaxSpeed = std::max(profile->surfMaxSpeed, profile->surfBoostMaxSpeed);
+    surfState.speed = std::clamp(surfState.speed, 0.0f, effectiveMaxSpeed);
+    surfState.idle = surfState.speed <= profile->idleSpeedThreshold && !boostHeld && forwardInput <= 0.0f;
+
+    if (surfState.idle && profile->idleLock) {
+        surfState.speed = 0.0f;
+        player->actor.speedXZ = 0.0f;
+        player->linearVelocity = 0.0f;
+        player->actor.velocity.x = 0.0f;
+        player->actor.velocity.z = 0.0f;
+        if (profile->idlePose == "stand") {
+            Player_StartMode_Idle(play, player);
+        }
+    } else {
+        player->actor.speedXZ = surfState.speed;
+        player->linearVelocity = surfState.speed;
+        player->actor.velocity.x = forwardX * surfState.speed;
+        player->actor.velocity.z = forwardZ * surfState.speed;
+        player->actor.world.pos.x += player->actor.velocity.x;
+        player->actor.world.pos.z += player->actor.velocity.z;
+    }
+
+    if (onGround) {
+        player->actor.world.pos.y = player->actor.floorHeight + profile->riderHeightOffset;
+        player->actor.velocity.y = 0.0f;
+    }
+
+    const float rightX = Math_CosS(surfState.headingYaw);
+    const float rightZ = -Math_SinS(surfState.headingYaw);
+    surfState.boardPosX =
+        player->actor.world.pos.x + (forwardX * profile->boardForwardOffset) + (rightX * profile->boardRightOffset);
+    surfState.boardPosY =
+        (onGround ? player->actor.floorHeight : player->actor.world.pos.y) + profile->boardHeightOffset + profile->boardUpOffset;
+    surfState.boardPosZ =
+        player->actor.world.pos.z + (forwardZ * profile->boardForwardOffset) + (rightZ * profile->boardRightOffset);
+    surfState.boardRotY = surfState.headingYaw;
+    surfState.boardRotX = 0;
+    surfState.boardRotZ = 0;
+    surfState.boardScale = profile->boardScale;
+
+    if (profile->boardPitchRollFromGround && onGround) {
+        const float safeNy = std::max(0.001f, ny);
+        constexpr float kRadToBinang = 32768.0f / 3.14159265358979323846f;
+        const float pitch = std::atan2(-nz, safeNy);
+        const float roll = std::atan2(nx, safeNy);
+        surfState.boardRotX = static_cast<int16_t>(pitch * kRadToBinang);
+        surfState.boardRotZ = static_cast<int16_t>(roll * kRadToBinang);
+    }
 }
 
 bool CompareIntegerByOperator(int32_t lhs, const std::string& op, int32_t rhs) {
@@ -6583,7 +7264,7 @@ ExternalModStatusType ResolveStatusTypeFromId(const ExternalModPackage& package,
         return parsedType;
     }
 
-    const auto* definition = FindStatusDefinitionById(package.runtime, statusId);
+    const auto* definition = ExternalModContentRegistry::FindStatusDefinitionById(package.runtime, statusId);
     if (definition != nullptr) {
         if (definition->baseStatusType != ExternalModStatusType::Custom) {
             return definition->baseStatusType;
@@ -6615,6 +7296,40 @@ void ApplyDamageAmountToActor(PlayState* play, Actor* target, int32_t damageAmou
     }
 }
 
+void ApplyDamageProfilePropInteraction(PlayState* play, Actor* target, const ExternalModDamageProfile& profile) {
+    if (play == nullptr || target == nullptr) {
+        return;
+    }
+
+    const std::string interaction = ToLower(profile.propInteraction);
+    if (interaction.empty() || interaction == "none") {
+        return;
+    }
+
+    if (target->id == ACTOR_EN_KUSA) {
+        auto* kusa = reinterpret_cast<EnKusa*>(target);
+        kusa->collider.base.acFlags |= AC_HIT;
+        return;
+    }
+
+    if (target->id == ACTOR_EN_WOOD02) {
+        if (interaction == "hard_kill") {
+            Actor_Kill(target);
+            return;
+        }
+
+        auto* wood = reinterpret_cast<EnWood02*>(target);
+        wood->collider.base.acFlags |= AC_HIT;
+        if (wood->unk_14C >= -1) {
+            wood->unk_14C = -0x15;
+        }
+        wood->actor.home.rot.y = target->yawTowardsPlayer;
+        if (wood->actor.home.rot.y == 0) {
+            wood->actor.home.rot.y = 1;
+        }
+    }
+}
+
 void ApplyDamageProfileToActor(PlayState* play, Actor* target, const ExternalModDamageProfile& profile) {
     ApplyDamageAmountToActor(play, target, std::max(profile.amount, 0));
 
@@ -6627,6 +7342,108 @@ void ApplyDamageProfileToActor(PlayState* play, Actor* target, const ExternalMod
     } else if ((normalizedType == "ice" || normalizedType == "freeze") && target != nullptr) {
         Actor_SetColorFilter(target, 0x0000, 0xFF, 0, 4);
     }
+
+    ApplyDamageProfilePropInteraction(play, target, profile);
+}
+
+bool ResolveForwardRaycastHits(PlayState* play, Player* player, float range, bool stopOnWall, bool includeProps,
+                               bool includeEnemies, std::vector<Actor*>& outHits) {
+    outHits.clear();
+    if (play == nullptr || player == nullptr) {
+        return false;
+    }
+
+    const float clampedRange = std::max(range, 1.0f);
+    Vec3f rayStart = player->actor.world.pos;
+    rayStart.y += 30.0f;
+
+    Vec3f forward = { Math_SinS(player->actor.shape.rot.y), 0.0f, Math_CosS(player->actor.shape.rot.y) };
+    const float forwardLenSq = (forward.x * forward.x) + (forward.y * forward.y) + (forward.z * forward.z);
+    if (forwardLenSq <= 0.0001f) {
+        return true;
+    }
+    const float invForwardLen = 1.0f / std::sqrt(forwardLenSq);
+    forward.x *= invForwardLen;
+    forward.y *= invForwardLen;
+    forward.z *= invForwardLen;
+
+    Vec3f rayEnd = { rayStart.x + forward.x * clampedRange, rayStart.y + forward.y * clampedRange,
+                     rayStart.z + forward.z * clampedRange };
+
+    float effectiveRange = clampedRange;
+    if (stopOnWall) {
+        Vec3f wallHitPos = rayEnd;
+        CollisionPoly* wallPoly = nullptr;
+        if (BgCheck_AnyLineTest1(&play->colCtx, &rayStart, &rayEnd, &wallHitPos, &wallPoly, true)) {
+            effectiveRange = std::max(1.0f, Math_Vec3f_DistXYZ(&rayStart, &wallHitPos));
+        }
+    }
+
+    struct RayHitCandidate {
+        Actor* actor = nullptr;
+        float projection = 0.0f;
+        float lateralDistance = 0.0f;
+    };
+    std::vector<RayHitCandidate> candidates;
+
+    for (size_t category = 0; category < ARRAY_COUNT(play->actorCtx.actorLists); ++category) {
+        if (category == ACTORCAT_PLAYER || category == ACTORCAT_BG) {
+            continue;
+        }
+        if (!includeProps && category == ACTORCAT_PROP) {
+            continue;
+        }
+        if (!includeEnemies && (category == ACTORCAT_ENEMY || category == ACTORCAT_BOSS)) {
+            continue;
+        }
+
+        for (Actor* actor = play->actorCtx.actorLists[category].head; actor != nullptr; actor = actor->next) {
+            if (actor == nullptr || actor == &player->actor || actor->update == nullptr) {
+                continue;
+            }
+
+            Vec3f delta = { actor->world.pos.x - rayStart.x, actor->world.pos.y - rayStart.y,
+                            actor->world.pos.z - rayStart.z };
+            const float projection = (delta.x * forward.x) + (delta.y * forward.y) + (delta.z * forward.z);
+            if (projection < 0.0f || projection > effectiveRange) {
+                continue;
+            }
+
+            Vec3f closestPoint = { rayStart.x + forward.x * projection, rayStart.y + forward.y * projection,
+                                   rayStart.z + forward.z * projection };
+            const float lateralDistance = Math_Vec3f_DistXYZ(&actor->world.pos, &closestPoint);
+            const float actorRadius = std::max(20.0f, std::max(actor->scale.x, actor->scale.z) * 60.0f);
+            if (lateralDistance > actorRadius) {
+                continue;
+            }
+
+            if (stopOnWall) {
+                Vec3f hitPos = actor->world.pos;
+                CollisionPoly* hitPoly = nullptr;
+                if (BgCheck_AnyLineTest1(&play->colCtx, &rayStart, &actor->world.pos, &hitPos, &hitPoly, true)) {
+                    const float hitDistance = Math_Vec3f_DistXYZ(&rayStart, &hitPos);
+                    if (hitDistance + 1.0f < projection) {
+                        continue;
+                    }
+                }
+            }
+
+            candidates.push_back({ actor, projection, lateralDistance });
+        }
+    }
+
+    std::sort(candidates.begin(), candidates.end(), [](const RayHitCandidate& lhs, const RayHitCandidate& rhs) {
+        if (lhs.projection != rhs.projection) {
+            return lhs.projection < rhs.projection;
+        }
+        return lhs.lateralDistance < rhs.lateralDistance;
+    });
+
+    outHits.reserve(candidates.size());
+    for (const auto& candidate : candidates) {
+        outHits.push_back(candidate.actor);
+    }
+    return true;
 }
 
 bool ResolveTargetsForTargetingProfile(const ExternalModTargetingProfile& profile, PlayState* play, Player* player,
@@ -6653,6 +7470,15 @@ bool ResolveTargetsForTargetingProfile(const ExternalModTargetingProfile& profil
         case ExternalModTargetingMode::LockedOnTarget:
         case ExternalModTargetingMode::FrontTarget:
         case ExternalModTargetingMode::Raycast: {
+            if (profile.mode == ExternalModTargetingMode::Raycast) {
+                std::vector<Actor*> rayHits;
+                ResolveForwardRaycastHits(play, player, profile.range, profile.stopOnWall, profile.includeProps,
+                                          profile.includeEnemies, rayHits);
+                if (!rayHits.empty()) {
+                    pushUniqueTarget(rayHits.front());
+                }
+                return true;
+            }
             Actor* target = FindStatusTargetInFront(play, player, std::max(profile.range, 1.0f), ExternalModStatusType::Custom);
             if (target != nullptr) {
                 pushUniqueTarget(target);
@@ -6724,59 +7550,6 @@ bool ResolveTargetsForTargetingProfile(const ExternalModTargetingProfile& profil
     }
 }
 
-void TryApplyFreezeOnStickHit(ExternalModRuntime& runtime, ExternalModItemDefinition& item, PlayState* play, Player* player) {
-    if (play == nullptr || player == nullptr || !item.granted) {
-        return;
-    }
-    if (!IsPlayerUsingDekuStick(player) || !IsModItemHeld(item, player) || item.cooldownRemaining > 0) {
-        return;
-    }
-
-    const float enabledValue = GetParamOrDefault(item.params, "freezeOnMeleeHit", 0.0f);
-    if (enabledValue <= 0.0f) {
-        return;
-    }
-
-    std::unordered_set<uintptr_t> processedActors;
-    bool appliedAny = false;
-
-    const int32_t freezeDuration = GetIntParamOrDefault(item.params, "freezeOnHitDuration", 90, 1, 36000);
-    const int32_t freezeShake = GetIntParamOrDefault(item.params, "freezeOnHitShake", 12, 0, freezeDuration);
-    const int32_t freezeIntensity = GetIntParamOrDefault(item.params, "freezeOnHitIntensity", 255, 0, 255);
-
-    ExternalModAction freezeAction;
-    freezeAction.durationFrames = freezeDuration;
-    freezeAction.tickFrames = std::max(1, freezeDuration);
-    freezeAction.damagePerTick = 0;
-    freezeAction.shakeFrames = freezeShake;
-    freezeAction.intensity = freezeIntensity;
-    freezeAction.statusId = "core:legacy_freeze_on_hit";
-
-    for (size_t i = 0; i < ARRAY_COUNT(player->meleeWeaponQuads); ++i) {
-        Actor* hitActor = ResolveActorHitByPlayerMeleeQuad(player->meleeWeaponQuads[i]);
-        if (hitActor == nullptr) {
-            continue;
-        }
-        const uintptr_t actorAddress = reinterpret_cast<uintptr_t>(hitActor);
-        if (!processedActors.insert(actorAddress).second) {
-            continue;
-        }
-        if (ShouldProtectStatusTarget(hitActor, ExternalModStatusType::Freeze)) {
-            continue;
-        }
-
-        BeginStatusOnActor(runtime, play, hitActor, freezeAction, ExternalModStatusType::Freeze, false,
-                           freezeAction.statusId, item.sourceModId);
-        appliedAny = true;
-    }
-
-    if (appliedAny) {
-        const int32_t cooldown = std::max(0, GetIntParamOrDefault(item.params, "cooldown", item.cooldownFrames, 0, 36000));
-        item.cooldownFrames = cooldown;
-        item.cooldownRemaining = cooldown;
-    }
-}
-
 bool ResolveStatusActionData(ExternalModPackage& package, const ExternalModAction& action,
                              ExternalModAction& outResolvedAction, ExternalModStatusType& outResolvedType) {
     outResolvedAction = action;
@@ -6785,7 +7558,7 @@ bool ResolveStatusActionData(ExternalModPackage& package, const ExternalModActio
     }
 
     outResolvedType = ResolveStatusTypeFromId(package, outResolvedAction.statusId);
-    const auto* statusDefinition = FindStatusDefinitionById(package.runtime, outResolvedAction.statusId);
+    const auto* statusDefinition = ExternalModContentRegistry::FindStatusDefinitionById(package.runtime, outResolvedAction.statusId);
     if (statusDefinition != nullptr) {
         if (outResolvedAction.durationFrames <= 0) {
             outResolvedAction.durationFrames = statusDefinition->durationFrames;
@@ -6811,18 +7584,36 @@ bool ResolveStatusActionData(ExternalModPackage& package, const ExternalModActio
     return true;
 }
 
+bool ShouldIncludeAoEActorCategory(ExternalModAoETargetScope scope, size_t category) {
+    if (category == ACTORCAT_PLAYER || category == ACTORCAT_BG) {
+        return false;
+    }
+
+    switch (scope) {
+        case ExternalModAoETargetScope::AllNonPlayer:
+            return true;
+        case ExternalModAoETargetScope::EnemiesBosses:
+            return category == ACTORCAT_ENEMY || category == ACTORCAT_BOSS;
+        case ExternalModAoETargetScope::EnemiesBossesProps:
+            return category == ACTORCAT_ENEMY || category == ACTORCAT_BOSS || category == ACTORCAT_PROP;
+        default:
+            return true;
+    }
+}
+
 bool ExecuteUseProfileEffects(ExternalModPackage& package, const std::vector<ExternalModUseProfileEffect>& effects,
-                              const std::vector<Actor*>& targets, PlayState* play, Player* player, std::string& outError);
+                              const std::vector<Actor*>& targets, PlayState* play, Player* player,
+                              const ExternalModItemDefinition* sourceItem, std::string& outError);
 
 bool ExecuteUseProfileById(ExternalModPackage& package, const std::string& profileId, PlayState* play, Player* player,
-                           std::string& outError) {
-    const auto* profile = FindItemUseProfileById(package.runtime, profileId);
+                           const ExternalModItemDefinition* sourceItem, std::string& outError) {
+    const auto* profile = ExternalModContentRegistry::FindItemUseProfileById(package.runtime, profileId);
     if (profile == nullptr) {
         outError = "Unknown use profile id: " + profileId;
         return false;
     }
 
-    const auto* targetingProfile = FindTargetingProfileById(package.runtime, profile->targetingProfileId);
+    const auto* targetingProfile = ExternalModContentRegistry::FindTargetingProfileById(package.runtime, profile->targetingProfileId);
     if (targetingProfile == nullptr) {
         outError = "Use profile has unknown targeting profile: " + profile->targetingProfileId;
         return false;
@@ -6830,18 +7621,20 @@ bool ExecuteUseProfileById(ExternalModPackage& package, const std::string& profi
 
     std::vector<Actor*> targets;
     ResolveTargetsForTargetingProfile(*targetingProfile, play, player, targets);
-    if (!ExecuteUseProfileEffects(package, profile->effects, targets, play, player, outError)) {
+    package.runtime.useProfileSpawnedShockwave = false;
+    if (!ExecuteUseProfileEffects(package, profile->effects, targets, play, player, sourceItem, outError)) {
         return false;
     }
     return true;
 }
 
 bool ExecuteUseProfileEffects(ExternalModPackage& package, const std::vector<ExternalModUseProfileEffect>& effects,
-                              const std::vector<Actor*>& targets, PlayState* play, Player* player, std::string& outError) {
+                              const std::vector<Actor*>& targets, PlayState* play, Player* player,
+                              const ExternalModItemDefinition* sourceItem, std::string& outError) {
     for (const auto& effect : effects) {
         const auto effectAction = ToLower(effect.action);
         if (effectAction == "dealdamage") {
-            const auto* profile = FindDamageProfileById(package.runtime, effect.damageProfileId);
+            const auto* profile = ExternalModContentRegistry::FindDamageProfileById(package.runtime, effect.damageProfileId);
             if (profile == nullptr) {
                 outError = "Unknown damage profile: " + effect.damageProfileId;
                 return false;
@@ -6877,12 +7670,12 @@ bool ExecuteUseProfileEffects(ExternalModPackage& package, const std::vector<Ext
         }
 
         if (effectAction == "spawnprojectile") {
-            const auto* projectileProfile = FindProjectileProfileById(package.runtime, effect.projectileProfileId);
+            const auto* projectileProfile = ExternalModContentRegistry::FindProjectileProfileById(package.runtime, effect.projectileProfileId);
             if (projectileProfile == nullptr) {
                 outError = "Unknown projectile profile: " + effect.projectileProfileId;
                 return false;
             }
-            const auto* damageProfile = FindDamageProfileById(package.runtime, projectileProfile->damageProfileId);
+            const auto* damageProfile = ExternalModContentRegistry::FindDamageProfileById(package.runtime, projectileProfile->damageProfileId);
 
             std::vector<std::pair<float, Actor*>> sortedTargets;
             for (Actor* target : targets) {
@@ -6924,8 +7717,50 @@ bool ExecuteUseProfileEffects(ExternalModPackage& package, const std::vector<Ext
             continue;
         }
 
+        if (effectAction == "spawnshockwave") {
+            if (play == nullptr || player == nullptr) {
+                outError = "spawnShockwave requires active play/player";
+                return false;
+            }
+
+            Vec3f origin = player->actor.world.pos;
+            if (effect.shockwaveOrigin == "impact" && package.runtime.hasEffectImpactPosition) {
+                origin.x = package.runtime.effectImpactPosX;
+                origin.y = package.runtime.effectImpactPosY;
+                origin.z = package.runtime.effectImpactPosZ;
+            }
+
+            Vec3f shockwaveVelocity = { 0.0f, 0.0f, 0.0f };
+            Vec3f shockwaveAccel = { 0.0f, 0.0f, 0.0f };
+            Color_RGBA8 primColor = { effect.shockwavePrimColor[0], effect.shockwavePrimColor[1],
+                                      effect.shockwavePrimColor[2], effect.shockwavePrimColor[3] };
+            Color_RGBA8 envColor = { effect.shockwaveEnvColor[0], effect.shockwaveEnvColor[1], effect.shockwaveEnvColor[2],
+                                     effect.shockwaveEnvColor[3] };
+
+            EffectSsBlast_SpawnShockwave(play, &origin, &shockwaveVelocity, &shockwaveAccel,
+                                         &primColor, &envColor, static_cast<s16>(std::clamp(effect.shockwaveLife, 1, 120)));
+
+            if (effect.shockwaveSpawnIceSmoke) {
+                constexpr float kTau = 6.28318530717958647692f;
+                constexpr int32_t kSmokeCount = 8;
+                constexpr float kSmokeRingRadius = 35.0f;
+                for (int32_t smokeIndex = 0; smokeIndex < kSmokeCount; ++smokeIndex) {
+                    const float ratio = static_cast<float>(smokeIndex) / static_cast<float>(kSmokeCount);
+                    const float angle = ratio * kTau;
+                    Vec3f smokePos = { origin.x + std::cos(angle) * kSmokeRingRadius, origin.y + 5.0f,
+                                       origin.z + std::sin(angle) * kSmokeRingRadius };
+                    Vec3f smokeVelocity = { std::cos(angle) * 0.7f, 1.1f, std::sin(angle) * 0.7f };
+                    Vec3f smokeAccel = { 0.0f, 0.06f, 0.0f };
+                    EffectSsIceSmoke_Spawn(play, &smokePos, &smokeVelocity, &smokeAccel, 120);
+                }
+            }
+
+            package.runtime.useProfileSpawnedShockwave = true;
+            continue;
+        }
+
         if (effectAction == "spawnaoe") {
-            const auto* aoeProfile = FindAoEProfileById(package.runtime, effect.aoeProfileId);
+            const auto* aoeProfile = ExternalModContentRegistry::FindAoEProfileById(package.runtime, effect.aoeProfileId);
             if (aoeProfile == nullptr) {
                 outError = "Unknown aoe profile: " + effect.aoeProfileId;
                 return false;
@@ -6934,7 +7769,7 @@ bool ExecuteUseProfileEffects(ExternalModPackage& package, const std::vector<Ext
             std::vector<Actor*> aoeTargets;
             const float radius = std::max(aoeProfile->radius, aoeProfile->range);
             for (size_t category = 0; category < ARRAY_COUNT(play->actorCtx.actorLists); ++category) {
-                if (category == ACTORCAT_PLAYER || category == ACTORCAT_BG) {
+                if (!ShouldIncludeAoEActorCategory(aoeProfile->targetScope, category)) {
                     continue;
                 }
                 for (Actor* actor = play->actorCtx.actorLists[category].head; actor != nullptr; actor = actor->next) {
@@ -6948,16 +7783,16 @@ bool ExecuteUseProfileEffects(ExternalModPackage& package, const std::vector<Ext
                 }
             }
 
-            if (!ExecuteUseProfileEffects(package, aoeProfile->onEnter, aoeTargets, play, player, outError)) {
+            if (!ExecuteUseProfileEffects(package, aoeProfile->onEnter, aoeTargets, play, player, sourceItem, outError)) {
                 return false;
             }
             if (aoeProfile->durationFrames > 1 && !aoeProfile->onTick.empty()) {
-                if (!ExecuteUseProfileEffects(package, aoeProfile->onTick, aoeTargets, play, player, outError)) {
+                if (!ExecuteUseProfileEffects(package, aoeProfile->onTick, aoeTargets, play, player, sourceItem, outError)) {
                     return false;
                 }
             }
             if (!aoeProfile->onExit.empty()) {
-                if (!ExecuteUseProfileEffects(package, aoeProfile->onExit, aoeTargets, play, player, outError)) {
+                if (!ExecuteUseProfileEffects(package, aoeProfile->onExit, aoeTargets, play, player, sourceItem, outError)) {
                     return false;
                 }
             }
@@ -6965,10 +7800,20 @@ bool ExecuteUseProfileEffects(ExternalModPackage& package, const std::vector<Ext
         }
 
         if (effectAction == "applymovementprofile") {
-            const auto* movementProfile = FindMovementProfileById(package.runtime, effect.movementProfileId);
+            const auto* movementProfile = ExternalModContentRegistry::FindMovementProfileById(package.runtime, effect.movementProfileId);
             if (movementProfile == nullptr) {
                 outError = "Unknown movement profile: " + effect.movementProfileId;
                 return false;
+            }
+
+            if (movementProfile->mode == ExternalModMovementMode::Surf) {
+                auto& surfState = package.runtime.surfState;
+                if (surfState.active && surfState.movementProfileId == movementProfile->id) {
+                    ClearSurfState(package.runtime);
+                } else {
+                    ActivateSurfState(package, *movementProfile, sourceItem, player, effect.durationFrames);
+                }
+                continue;
             }
 
             ExternalModAction movementAction;
@@ -6977,7 +7822,8 @@ bool ExecuteUseProfileEffects(ExternalModPackage& package, const std::vector<Ext
             movementAction.tickFrames = std::max(1, movementAction.durationFrames);
             movementAction.intensity = 128;
             movementAction.speedMultiplier = movementProfile->speedMultiplier;
-            movementAction.jumpMultiplier = movementProfile->gravityScale < 1.0f ? (1.0f / movementProfile->gravityScale) : 1.0f;
+            movementAction.jumpMultiplier =
+                movementProfile->gravityScale < 1.0f ? (1.0f / movementProfile->gravityScale) : 1.0f;
 
             if (movementProfile->speedMultiplier > 1.0f) {
                 movementAction.statusId = "core:speed";
@@ -7645,6 +8491,464 @@ std::string ExternalModManager::BuildBindingCVarName(const std::string& modId, c
     return "gExternalMods.Input." + SanitizeCVarSegment(modId) + "." + SanitizeCVarSegment(bindingId);
 }
 
+std::string ExternalModManager::BuildCameraHotkeyScancodeCVarName(const std::string& modId,
+                                                                   const std::string& hotkeyId) {
+    return "gExternalMods.Hotkeys." + SanitizeCVarSegment(modId) + "." + SanitizeCVarSegment(hotkeyId) + ".Scancode";
+}
+
+void ExternalModManager::ApplyDefaultKeyboardMappingsForPackage(const ExternalModPackage& package) const {
+    if (!package.runtime.enabled) {
+        return;
+    }
+
+    auto context = Ship::Context::GetInstance();
+    if (context == nullptr || context->GetControlDeck() == nullptr) {
+        return;
+    }
+
+    auto controller = context->GetControlDeck()->GetControllerByPort(0);
+    if (controller == nullptr) {
+        return;
+    }
+
+    bool changedAnyMapping = false;
+    for (const auto& binding : package.runtime.inputBindings) {
+        if (binding.defaultKeyboardScancodes.empty()) {
+            continue;
+        }
+
+        int32_t resolvedModActionMask = 0;
+        if (!IsSingleModActionMask(binding.defaultMask, resolvedModActionMask)) {
+            SPDLOG_WARN(
+                "[ExternalMods] Ignored defaultKeyboardKeys for {}.{}: defaultMask must have exactly one MOD_ACTION bit",
+                package.manifest.id, binding.id);
+            continue;
+        }
+
+        const auto buttonBitmask = static_cast<CONTROLLERBUTTONS_T>(resolvedModActionMask);
+        auto controllerButton = controller->GetButtonByBitmask(buttonBitmask);
+        if (controllerButton == nullptr) {
+            SPDLOG_WARN("[ExternalMods] Ignored defaultKeyboardKeys for {}.{}: unresolved controller button mask {}",
+                        package.manifest.id, binding.id, resolvedModActionMask);
+            continue;
+        }
+
+        auto existingMappings = controllerButton->GetAllButtonMappings();
+        bool changedBinding = false;
+        for (const auto scancodeValue : binding.defaultKeyboardScancodes) {
+            const auto scancode = static_cast<Ship::KbScancode>(scancodeValue);
+            if (IsReservedDefaultKeyboardScancode(scancodeValue)) {
+                SPDLOG_WARN("[ExternalMods] Skipping reserved default keyboard key for {}.{} (scancode={})",
+                            package.manifest.id, binding.id, scancodeValue);
+                continue;
+            }
+
+            const std::string mappingId = "P" + std::to_string(controller->GetPortIndex()) + "-B" +
+                                          std::to_string(static_cast<int32_t>(buttonBitmask)) + "-KB" +
+                                          std::to_string(scancodeValue);
+            if (existingMappings.contains(mappingId)) {
+                continue;
+            }
+
+            auto mapping = std::make_shared<Ship::KeyboardKeyToButtonMapping>(controller->GetPortIndex(), buttonBitmask,
+                                                                               scancode);
+            controllerButton->AddButtonMapping(mapping);
+            mapping->SaveToConfig();
+            existingMappings[mappingId] = mapping;
+            changedBinding = true;
+            changedAnyMapping = true;
+            SPDLOG_INFO("[ExternalMods] Applied default keyboard mapping for {}.{}: key={} -> mask={}",
+                        package.manifest.id, binding.id, scancodeValue, resolvedModActionMask);
+        }
+
+        if (changedBinding) {
+            controllerButton->SaveButtonMappingIdsToConfig();
+        }
+    }
+
+    if (changedAnyMapping) {
+        context->GetConsoleVariables()->Save();
+    }
+}
+
+const ExternalModAimCameraProfile* ExternalModManager::FindAimCameraProfileById(const std::string& modId,
+                                                                                 const std::string& profileId) const {
+    if (profileId.empty()) {
+        return nullptr;
+    }
+
+    const std::string resolvedProfileId = ResolveProfileIdForMod(modId, profileId);
+    if (resolvedProfileId == kCoreDefaultAimCameraProfileId) {
+        return &GetCoreDefaultAimCameraProfile();
+    }
+
+    if (!modId.empty()) {
+        const auto* preferredPackage = FindPackageByModId(modId);
+        if (preferredPackage != nullptr && preferredPackage->runtime.enabled) {
+            if (const auto* profile =
+                    ExternalModContentRegistry::FindAimCameraProfileById(preferredPackage->runtime, resolvedProfileId);
+                profile != nullptr) {
+                return profile;
+            }
+        }
+    }
+
+    for (const auto& package : mPackages) {
+        if (!package.runtime.enabled) {
+            continue;
+        }
+        if (const auto* profile = ExternalModContentRegistry::FindAimCameraProfileById(package.runtime, resolvedProfileId);
+            profile != nullptr) {
+            return profile;
+        }
+    }
+
+    return nullptr;
+}
+
+const ExternalModAimCameraProfile* ExternalModManager::ResolveActiveAimCameraProfile() const {
+    if (!mAimCameraState.activeProfileId.empty()) {
+        if (const auto* profile =
+                FindAimCameraProfileById(mAimCameraState.activeProfileOwnerModId, mAimCameraState.activeProfileId);
+            profile != nullptr) {
+            return profile;
+        }
+    }
+
+    return &GetCoreDefaultAimCameraProfile();
+}
+
+const ExternalModAimCameraProfile* ExternalModManager::ResolveAimCameraProfileForContext(
+    ExternalModAimCameraContext context, bool requireMouseFire) const {
+    const uint8_t contextMask = AimCameraContextToMask(context);
+    const bool hasExplicitActiveProfile = !mAimCameraState.activeProfileId.empty();
+    if (hasExplicitActiveProfile) {
+        if (const auto* activeProfile =
+                FindAimCameraProfileById(mAimCameraState.activeProfileOwnerModId, mAimCameraState.activeProfileId);
+            activeProfile != nullptr && (activeProfile->contextsMask & contextMask) != 0 &&
+            (!requireMouseFire || activeProfile->mouseFireEnabled)) {
+            return activeProfile;
+        }
+    }
+
+    const ExternalModAimCameraProfile* selectedProfile = nullptr;
+    int32_t selectedPriority = std::numeric_limits<int32_t>::min();
+    std::string selectedModId;
+    for (const auto& package : mPackages) {
+        if (!package.runtime.enabled) {
+            continue;
+        }
+
+        for (const auto& profile : package.runtime.cameraProfiles) {
+            if ((profile.contextsMask & contextMask) == 0) {
+                continue;
+            }
+            if (requireMouseFire && !profile.mouseFireEnabled) {
+                continue;
+            }
+
+            const bool shouldReplace = selectedProfile == nullptr || package.manifest.loadPriority > selectedPriority ||
+                                       (package.manifest.loadPriority == selectedPriority &&
+                                        package.manifest.id < selectedModId);
+            if (shouldReplace) {
+                selectedProfile = &profile;
+                selectedPriority = package.manifest.loadPriority;
+                selectedModId = package.manifest.id;
+            }
+        }
+    }
+
+    if (selectedProfile != nullptr) {
+        return selectedProfile;
+    }
+
+    return requireMouseFire ? nullptr : &GetCoreDefaultAimCameraProfile();
+}
+
+void ExternalModManager::PruneAimCameraStateForUnavailableProfiles() {
+    if (mAimCameraState.activeProfileId.empty()) {
+        return;
+    }
+
+    if (FindAimCameraProfileById(mAimCameraState.activeProfileOwnerModId, mAimCameraState.activeProfileId) != nullptr) {
+        return;
+    }
+
+    SPDLOG_WARN("[ExternalMods] Clearing unavailable active aim camera profile '{}'", mAimCameraState.activeProfileId);
+    mAimCameraState.activeProfileId.clear();
+    mAimCameraState.activeProfileOwnerModId.clear();
+}
+
+int16_t ExternalModManager::ResolveAimCameraMode(::PlayState* play, ::Player* player, int16_t defaultMode,
+                                                 ExternalModAimCameraContext context) const {
+    (void)play;
+    (void)player;
+
+    if (!mAimCameraState.overShoulderEnabled) {
+        return defaultMode;
+    }
+
+    const auto* profile = ResolveActiveAimCameraProfile();
+    if (profile == nullptr) {
+        return defaultMode;
+    }
+
+    const uint8_t contextMask = AimCameraContextToMask(context);
+    if ((profile->contextsMask & contextMask) == 0) {
+        return defaultMode;
+    }
+
+    return GetCameraModeForContext(*profile, context, true);
+}
+
+bool ExternalModManager::HandleCameraHotkeyScancode(int32_t scancode) {
+    if (scancode <= static_cast<int32_t>(Ship::LUS_KB_UNKNOWN)) {
+        return false;
+    }
+
+    ExternalModPackage* selectedPackage = nullptr;
+    const ExternalModCameraHotkeyDefinition* selectedHotkey = nullptr;
+
+    for (auto& package : mPackages) {
+        if (!package.runtime.enabled) {
+            continue;
+        }
+
+        for (const auto& hotkey : package.runtime.cameraHotkeys) {
+            if (hotkey.defaultKeyboardScancodes.empty()) {
+                continue;
+            }
+
+            const int32_t defaultScancode = hotkey.defaultKeyboardScancodes.front();
+            int32_t effectiveScancode = defaultScancode;
+            if (hotkey.allowUserRemap) {
+                const auto cvarName = BuildCameraHotkeyScancodeCVarName(package.manifest.id, hotkey.id);
+                effectiveScancode = CVarGetInteger(cvarName.c_str(), defaultScancode);
+                if (effectiveScancode <= static_cast<int32_t>(Ship::LUS_KB_UNKNOWN)) {
+                    effectiveScancode = defaultScancode;
+                }
+            }
+
+            if (effectiveScancode != scancode) {
+                continue;
+            }
+
+            const bool shouldReplace = selectedPackage == nullptr ||
+                                       package.manifest.loadPriority > selectedPackage->manifest.loadPriority ||
+                                       (package.manifest.loadPriority == selectedPackage->manifest.loadPriority &&
+                                        (package.manifest.id < selectedPackage->manifest.id ||
+                                         (package.manifest.id == selectedPackage->manifest.id &&
+                                          hotkey.id < selectedHotkey->id)));
+            if (shouldReplace) {
+                selectedPackage = &package;
+                selectedHotkey = &hotkey;
+            }
+        }
+    }
+
+    if (selectedPackage == nullptr || selectedHotkey == nullptr) {
+        return false;
+    }
+
+    ExecuteActions(*selectedPackage, { selectedHotkey->action }, selectedHotkey->id.c_str());
+    return true;
+}
+
+bool ExternalModManager::IsAimMouseFireHeld(::PlayState* play, ::Player* player, int32_t heldItemAction) const {
+    const bool debugLogs = CVarGetInteger("gExternalMods.AimMouseFireDebug", 0) != 0;
+    const bool allowFrameLog = debugLogs && (play != nullptr) && ((play->state.frames % 120) == 0);
+
+    if (play == nullptr || player == nullptr) {
+        if (allowFrameLog) {
+            SPDLOG_DEBUG("[ExternalMods] Aim mouse-fire rejected: missing play/player");
+        }
+        return false;
+    }
+
+    ExternalModAimCameraContext context = ExternalModAimCameraContext::CUp;
+    if (!TryResolveAimContextFromHeldItemAction(heldItemAction, context)) {
+        if (allowFrameLog) {
+            SPDLOG_DEBUG("[ExternalMods] Aim mouse-fire rejected: unsupported held item action={}", heldItemAction);
+        }
+        return false;
+    }
+
+    const auto* profile = ResolveAimCameraProfileForContext(context, true);
+    if (profile == nullptr) {
+        if (allowFrameLog) {
+            SPDLOG_DEBUG("[ExternalMods] Aim mouse-fire rejected: no profile with mouseFire for context={}",
+                         static_cast<int32_t>(context));
+        }
+        return false;
+    }
+
+    if (profile->mouseFireMode == ExternalModAimMouseFireMode::FirstPerson && mAimCameraState.overShoulderEnabled) {
+        if (allowFrameLog) {
+            SPDLOG_DEBUG("[ExternalMods] Aim mouse-fire rejected: mode=firstPerson while OTS enabled");
+        }
+        return false;
+    }
+    if (profile->mouseFireMode == ExternalModAimMouseFireMode::OverShoulder && !mAimCameraState.overShoulderEnabled) {
+        if (allowFrameLog) {
+            SPDLOG_DEBUG("[ExternalMods] Aim mouse-fire rejected: mode=overShoulder while OTS disabled");
+        }
+        return false;
+    }
+
+    auto ctx = Ship::Context::GetInstance();
+    if (ctx == nullptr || ctx->GetWindow() == nullptr) {
+        if (allowFrameLog) {
+            SPDLOG_DEBUG("[ExternalMods] Aim mouse-fire rejected: missing window context");
+        }
+        return false;
+    }
+
+    const bool held = ctx->GetWindow()->GetMouseState(ToShipMouseButton(profile->mouseFireButton));
+    if (allowFrameLog) {
+        SPDLOG_DEBUG("[ExternalMods] Aim mouse-fire context={} profile='{}' held={}", static_cast<int32_t>(context),
+                     profile->id, held ? 1 : 0);
+    }
+
+    return held;
+}
+
+bool ExternalModManager::IsAimOverShoulderEnabled() const {
+    return mAimCameraState.overShoulderEnabled;
+}
+
+bool ExternalModManager::DrawAimReticleIfActive(::PlayState* play, ::Player* player,
+                                                ExternalModAimCameraContext context) const {
+    if (play == nullptr || player == nullptr) {
+        return false;
+    }
+
+    if (context != ExternalModAimCameraContext::Slingshot) {
+        return false;
+    }
+
+    const ExternalModItemDefinition* selectedDefinition = nullptr;
+    int32_t selectedLoadPriority = std::numeric_limits<int32_t>::min();
+    std::string selectedModId;
+    for (const auto& package : mPackages) {
+        if (!package.valid || !package.runtime.enabled) {
+            continue;
+        }
+        for (const auto& definition : package.runtime.itemDefinitions) {
+            if (!definition.granted || definition.slot != ExternalModItemSlot::Slingshot ||
+                definition.aimReticleTextureI8.empty()) {
+                continue;
+            }
+
+            if (selectedDefinition == nullptr || package.manifest.loadPriority > selectedLoadPriority ||
+                (package.manifest.loadPriority == selectedLoadPriority && package.manifest.id < selectedModId)) {
+                selectedDefinition = &definition;
+                selectedLoadPriority = package.manifest.loadPriority;
+                selectedModId = package.manifest.id;
+            }
+        }
+    }
+
+    if (selectedDefinition == nullptr) {
+        return false;
+    }
+
+    const auto* profile = ResolveAimCameraProfileForContext(context, false);
+    if (profile == nullptr) {
+        return false;
+    }
+
+    const bool slingshotInHand = Player_HoldsSlingshot(player);
+    bool shouldDraw = false;
+    switch (profile->reticleVisibility) {
+        case ExternalModAimReticleVisibility::AimOnly:
+            shouldDraw = slingshotInHand && (player->stateFlags1 & PLAYER_STATE1_READY_TO_FIRE) != 0;
+            break;
+        case ExternalModAimReticleVisibility::ButtonHold: {
+            shouldDraw = false;
+            const int32_t buttonIndex = player->heldItemButton;
+            if (slingshotInHand && buttonIndex >= 0 && buttonIndex < 8) {
+                static constexpr std::array<int32_t, 8> kButtonMasks = {
+                    BTN_B, BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT,
+                };
+                shouldDraw = MatchButtonMask(play->state.input[0].cur.button, kButtonMasks[buttonIndex]);
+            }
+            break;
+        }
+        case ExternalModAimReticleVisibility::Selected:
+            shouldDraw = slingshotInHand && IsItemIdEquippedOnActionButtons(ITEM_SLINGSHOT);
+            break;
+        default:
+            break;
+    }
+    if (!shouldDraw) {
+        return false;
+    }
+
+    const uint8_t* reticleTexture =
+        selectedDefinition->aimReticleTextureI8.empty()
+            ? reinterpret_cast<const uint8_t*>(gLinkAdultHookshotReticleTex)
+            : selectedDefinition->aimReticleTextureI8.data();
+    if (reticleTexture == nullptr) {
+        return false;
+    }
+
+    const float normalizedX = std::clamp(profile->reticleX, 0.0f, 1.0f);
+    const float normalizedY = std::clamp(profile->reticleY, 0.0f, 1.0f);
+
+    const int32_t screenWidth = std::max(gScreenWidth, SCREEN_WIDTH);
+    const int32_t screenHeight = std::max(gScreenHeight, SCREEN_HEIGHT);
+    constexpr int32_t kReticleSize = 64;
+    int32_t drawLeft = static_cast<int32_t>(std::lround(normalizedX * static_cast<float>(screenWidth - 1))) - (kReticleSize / 2);
+    int32_t drawTop = static_cast<int32_t>(std::lround(normalizedY * static_cast<float>(screenHeight - 1))) - (kReticleSize / 2);
+    drawLeft = std::clamp(drawLeft, 0, std::max(0, screenWidth - kReticleSize));
+    drawTop = std::clamp(drawTop, 0, std::max(0, screenHeight - kReticleSize));
+
+    GraphicsContext* __gfxCtx = play->state.gfxCtx;
+    (void)__gfxCtx;
+    OVERLAY_DISP = Gfx_SetupDL(OVERLAY_DISP, 0x07);
+    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
+    gDPSetEnvColor(OVERLAY_DISP++, 255, 255, 255, 255);
+    gDPLoadTextureBlock(OVERLAY_DISP++, reticleTexture, G_IM_FMT_I, G_IM_SIZ_8b, kAimReticleTextureWidth,
+                        kAimReticleTextureHeight, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
+                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gSPWideTextureRectangle(OVERLAY_DISP++, drawLeft << 2, drawTop << 2, (drawLeft + kReticleSize) << 2,
+                            (drawTop + kReticleSize) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+
+    return true;
+}
+
+bool ExternalModManager::HasCustomEquippedSlingshotModel() const {
+    if (gPlayState == nullptr) {
+        return false;
+    }
+
+    auto* player = GET_PLAYER(gPlayState);
+    if (player == nullptr || !Player_HoldsSlingshot(player)) {
+        return false;
+    }
+
+    const auto* definition = FindCustomModelDefinitionForItem(mPackages, ITEM_SLINGSHOT);
+    return definition != nullptr && definition->granted;
+}
+
+bool ExternalModManager::DrawCustomEquippedSlingshotModel(::PlayState* play) const {
+    if (play == nullptr) {
+        return false;
+    }
+
+    auto* player = GET_PLAYER(play);
+    if (player == nullptr || !Player_HoldsSlingshot(player)) {
+        return false;
+    }
+
+    const auto* definition = FindCustomModelDefinitionForItem(mPackages, ITEM_SLINGSHOT);
+    if (definition == nullptr || !definition->granted) {
+        return false;
+    }
+
+    return DrawCustomItemDefinitionModel(play, *definition, true);
+}
+
 std::vector<ExternalModInventoryCellView> ExternalModManager::GetExtraInventoryGrid() const {
     std::vector<ExternalModInventoryCellView> outCells;
     outCells.reserve(mExtraInventoryCells.size());
@@ -7667,7 +8971,7 @@ std::vector<ExternalModInventoryCellView> ExternalModManager::GetExtraInventoryG
             continue;
         }
 
-        const auto* definition = FindItemDefinitionById(packageIt->runtime, cell.itemId);
+        const auto* definition = ExternalModContentRegistry::FindItemDefinitionById(packageIt->runtime, cell.itemId);
         if (definition == nullptr || !definition->granted) {
             outCells.push_back(std::move(view));
             continue;
@@ -7679,7 +8983,23 @@ std::vector<ExternalModInventoryCellView> ExternalModManager::GetExtraInventoryG
         view.itemId = definition->id;
         view.displayName = definition->displayName;
         view.slot = definition->slot;
+        view.hasSlot = definition->hasSlot;
+        view.placement = definition->placement;
         view.granted = definition->granted;
+        view.assignableButtonsMask = definition->assignableButtonsMask;
+        if (!definition->iconRgba32.empty()) {
+            view.iconRgba32 = definition->iconRgba32.data();
+        } else {
+            const int32_t fallbackItemId = ResolveGrantedItemId(*definition);
+            view.iconRgba32 = ResolveItemIconPointerForId(fallbackItemId, true);
+        }
+        for (int32_t buttonIndex = 1; buttonIndex <= 7; ++buttonIndex) {
+            const auto& assignment = mActionButtonAssignments[buttonIndex];
+            if (assignment.source == ActionButtonSource::Mod && assignment.modId == view.modId &&
+                assignment.itemId == view.itemId) {
+                view.assignedButtonsMask = static_cast<uint8_t>(view.assignedButtonsMask | MakeButtonMask(buttonIndex));
+            }
+        }
         outCells.push_back(std::move(view));
     }
 
@@ -7717,9 +9037,18 @@ bool ExternalModManager::GetExtraInventoryPageCell(int32_t pageIndex, int32_t pa
 bool ExternalModManager::MoveExtraInventoryCell(size_t fromIndex, size_t toIndex, std::string& outError) {
     outError.clear();
 
-    if (fromIndex >= mExtraInventoryCells.size() || toIndex >= mExtraInventoryCells.size()) {
+    if (mExtraInventoryCells.empty()) {
+        outError = "inventory is empty";
+        return false;
+    }
+
+    if (fromIndex >= mExtraInventoryCells.size()) {
         outError = "cell index out of range";
         return false;
+    }
+
+    if (toIndex >= mExtraInventoryCells.size()) {
+        toIndex = mExtraInventoryCells.size() - 1;
     }
 
     if (fromIndex == toIndex) {
@@ -7732,27 +9061,860 @@ bool ExternalModManager::MoveExtraInventoryCell(size_t fromIndex, size_t toIndex
     }
 
     std::swap(mExtraInventoryCells[fromIndex], mExtraInventoryCells[toIndex]);
+    MarkPersistentInventoryDirty();
     return true;
 }
 
 void ExternalModManager::OnVanillaButtonEquipped(int32_t buttonIndex) {
-    (void)buttonIndex;
+    if (buttonIndex < 1 || buttonIndex > 7) {
+        return;
+    }
+
+    auto& assignment = mActionButtonAssignments[buttonIndex];
+    if (assignment.source == ActionButtonSource::Vanilla && assignment.modId.empty() && assignment.itemId.empty()) {
+        return;
+    }
+
+    assignment.source = ActionButtonSource::Vanilla;
+    assignment.modId.clear();
+    assignment.itemId.clear();
+    MarkPersistentInventoryDirty();
 }
 
 bool ExternalModManager::TryDrawButtonOverrideIcon(PlayState* play, int32_t buttonIndex, int32_t alpha) const {
-    (void)play;
-    (void)buttonIndex;
-    (void)alpha;
-    return false;
+    if (play == nullptr || buttonIndex < 1 || buttonIndex > 7) {
+        return false;
+    }
+
+    const auto& assignment = mActionButtonAssignments[buttonIndex];
+    if (assignment.source != ActionButtonSource::Mod || assignment.modId.empty() || assignment.itemId.empty()) {
+        return false;
+    }
+
+    const auto* definition = FindItemByAssignment(assignment);
+    if (definition == nullptr || !definition->granted) {
+        return false;
+    }
+
+    const uint8_t* iconTexture = definition->iconRgba32.empty()
+                                     ? ResolveItemIconPointerForId(ResolveGrantedItemId(*definition), true)
+                                     : definition->iconRgba32.data();
+    if (iconTexture == nullptr) {
+        return false;
+    }
+
+    Interface_DrawItemIconTexture(play, const_cast<uint8_t*>(iconTexture), static_cast<s16>(buttonIndex));
+
+    const int32_t ammoItemId = ResolveGrantedAmmoItemId(*definition);
+    if (ammoItemId != ITEM_NONE && ammoItemId >= std::numeric_limits<int8_t>::min() &&
+        ammoItemId <= std::numeric_limits<int8_t>::max() &&
+        buttonIndex < static_cast<int32_t>(ARRAY_COUNT(gSaveContext.equips.buttonItems))) {
+        const int8_t previousButtonItem = gSaveContext.equips.buttonItems[buttonIndex];
+        gSaveContext.equips.buttonItems[buttonIndex] = static_cast<int8_t>(ammoItemId);
+        Interface_DrawAmmoCount(play, static_cast<s16>(buttonIndex), static_cast<s16>(alpha));
+        gSaveContext.equips.buttonItems[buttonIndex] = previousButtonItem;
+    }
+
+    return true;
+}
+
+bool ExternalModManager::DrawSurfBoardIfActive(PlayState* play, Player* player) {
+    if (play == nullptr || player == nullptr) {
+        return false;
+    }
+    GraphicsContext* __gfxCtx = play->state.gfxCtx;
+    (void)__gfxCtx;
+
+    ExternalModPackage* selectedSurfPackage = nullptr;
+    for (auto& package : mPackages) {
+        if (!package.runtime.enabled || !package.runtime.surfState.active) {
+            continue;
+        }
+        if (selectedSurfPackage == nullptr || package.manifest.loadPriority > selectedSurfPackage->manifest.loadPriority ||
+            (package.manifest.loadPriority == selectedSurfPackage->manifest.loadPriority &&
+             package.manifest.id < selectedSurfPackage->manifest.id)) {
+            selectedSurfPackage = &package;
+        }
+    }
+
+    if (selectedSurfPackage == nullptr) {
+        return false;
+    }
+
+    auto& surfState = selectedSurfPackage->runtime.surfState;
+    const auto* profile = ExternalModContentRegistry::FindMovementProfileById(selectedSurfPackage->runtime, surfState.movementProfileId);
+    if (profile == nullptr || profile->mode != ExternalModMovementMode::Surf) {
+        ClearSurfState(selectedSurfPackage->runtime);
+        return false;
+    }
+
+    if (!profile->boardRequired) {
+        return false;
+    }
+    if (surfState.idle && !profile->boardVisibleWhenIdle) {
+        return false;
+    }
+
+    constexpr float kBinangToRad = 3.14159265358979323846f / 32768.0f;
+    constexpr float kDegToRad = 3.14159265358979323846f / 180.0f;
+    Matrix_Push();
+    Matrix_Translate(surfState.boardPosX, surfState.boardPosY, surfState.boardPosZ, MTXMODE_NEW);
+    Matrix_RotateY(static_cast<float>(surfState.boardRotY) * kBinangToRad, MTXMODE_APPLY);
+    Matrix_RotateX(static_cast<float>(surfState.boardRotX) * kBinangToRad, MTXMODE_APPLY);
+    Matrix_RotateZ(static_cast<float>(surfState.boardRotZ) * kBinangToRad, MTXMODE_APPLY);
+    Matrix_RotateX(profile->boardPitchOffsetDeg * kDegToRad, MTXMODE_APPLY);
+    Matrix_RotateY(profile->boardYawOffsetDeg * kDegToRad, MTXMODE_APPLY);
+    Matrix_RotateZ(profile->boardRollOffsetDeg * kDegToRad, MTXMODE_APPLY);
+    Matrix_Scale(surfState.boardScale, surfState.boardScale, surfState.boardScale, MTXMODE_APPLY);
+
+    bool drewBoard = false;
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    if (!profile->boardModelAsset.empty()) {
+        if (auto* boardDisplayList = ResourceMgr_LoadGfxByName(profile->boardModelAsset.c_str()); boardDisplayList != nullptr) {
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+            gSPDisplayList(POLY_OPA_DISP++, boardDisplayList);
+            drewBoard = true;
+        }
+    }
+
+    if (!drewBoard && !surfState.sourceItemId.empty()) {
+        const auto itemIt = std::find_if(selectedSurfPackage->runtime.itemDefinitions.begin(),
+                                         selectedSurfPackage->runtime.itemDefinitions.end(),
+                                         [&surfState](const ExternalModItemDefinition& item) {
+                                             return item.id == surfState.sourceItemId && HasCustomGetItemModel(item);
+                                         });
+        if (itemIt != selectedSurfPackage->runtime.itemDefinitions.end()) {
+            drewBoard = DrawCustomItemDefinitionModel(play, *itemIt, true);
+        }
+    }
+
+    if (!drewBoard) {
+        if (auto* fallbackDisplayList = ResourceMgr_LoadGfxByName(gGiHylianShieldDL); fallbackDisplayList != nullptr) {
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+            gSPDisplayList(POLY_OPA_DISP++, fallbackDisplayList);
+            drewBoard = true;
+        }
+    }
+
+    Matrix_Pop();
+    return drewBoard;
 }
 
 void ExternalModManager::LoadPersistentInventoryState() {
+    mExtraInventoryCells.clear();
+    mExtraInventoryPage = 0;
+    mExtraInventoryCursor = 0;
+    for (auto& assignment : mActionButtonAssignments) {
+        assignment = ActionButtonAssignment{};
+    }
+
+    auto* saveManager = SaveManager::Instance;
+    if (saveManager == nullptr) {
+        return;
+    }
+
+    int32_t page = 0;
+    int32_t cursor = 0;
+    saveManager->LoadData("page", page, 0);
+    saveManager->LoadData("cursor", cursor, 0);
+    mExtraInventoryPage = std::max(0, page);
+    mExtraInventoryCursor = std::max(0, cursor);
+
+    size_t cellCount = 0;
+    saveManager->LoadData("cellCount", cellCount, static_cast<size_t>(0));
+    cellCount = std::min(cellCount, kExternalModInventoryMaxCellCount);
+    std::unordered_set<std::string> seenCells;
+    saveManager->LoadArray("cells", cellCount, [&](size_t i) {
+        (void)i;
+        saveManager->LoadStruct("", [&]() {
+            std::string modId;
+            std::string itemId;
+            saveManager->LoadData("modId", modId, std::string{});
+            saveManager->LoadData("itemId", itemId, std::string{});
+            if (modId.empty() || itemId.empty()) {
+                return;
+            }
+            const auto key = modId + "\x1F" + itemId;
+            if (!seenCells.insert(key).second) {
+                return;
+            }
+            mExtraInventoryCells.push_back({ modId, itemId });
+        });
+    });
+
+    size_t assignmentCount = 0;
+    saveManager->LoadData("assignmentCount", assignmentCount, static_cast<size_t>(0));
+    assignmentCount = std::min<size_t>(assignmentCount, 7);
+    saveManager->LoadArray("assignments", assignmentCount, [&](size_t i) {
+        saveManager->LoadStruct("", [&]() {
+            int32_t loadedButtonIndex = static_cast<int32_t>(i + 1);
+            int32_t source = 0;
+            std::string modId;
+            std::string itemId;
+            saveManager->LoadData("buttonIndex", loadedButtonIndex, loadedButtonIndex);
+            saveManager->LoadData("source", source, 0);
+            saveManager->LoadData("modId", modId, std::string{});
+            saveManager->LoadData("itemId", itemId, std::string{});
+            if (loadedButtonIndex < 1 || loadedButtonIndex > 7) {
+                return;
+            }
+            auto& assignment = mActionButtonAssignments[loadedButtonIndex];
+            if (source != 0 && !modId.empty() && !itemId.empty()) {
+                assignment.source = ActionButtonSource::Mod;
+                assignment.modId = std::move(modId);
+                assignment.itemId = std::move(itemId);
+            } else {
+                assignment = ActionButtonAssignment{};
+            }
+        });
+    });
+
+    mPersistentInventoryDirty = false;
 }
 
 void ExternalModManager::SavePersistentInventoryState() const {
+    auto* saveManager = SaveManager::Instance;
+    if (saveManager == nullptr) {
+        return;
+    }
+
+    saveManager->SaveData("page", mExtraInventoryPage);
+    saveManager->SaveData("cursor", mExtraInventoryCursor);
+
+    saveManager->SaveData("cellCount", mExtraInventoryCells.size());
+    saveManager->SaveArray("cells", mExtraInventoryCells.size(), [&](size_t i) {
+        saveManager->SaveStruct("", [&]() {
+            saveManager->SaveData("modId", mExtraInventoryCells[i].modId);
+            saveManager->SaveData("itemId", mExtraInventoryCells[i].itemId);
+        });
+    });
+
+    constexpr size_t kAssignmentCount = 7;
+    saveManager->SaveData("assignmentCount", kAssignmentCount);
+    saveManager->SaveArray("assignments", kAssignmentCount, [&](size_t i) {
+        const int32_t indexedButton = static_cast<int32_t>(i + 1);
+        const auto& assignment = mActionButtonAssignments[indexedButton];
+        saveManager->SaveStruct("", [&]() {
+            saveManager->SaveData("buttonIndex", indexedButton);
+            saveManager->SaveData("source", assignment.source == ActionButtonSource::Mod ? 1 : 0);
+            saveManager->SaveData("modId", assignment.modId);
+            saveManager->SaveData("itemId", assignment.itemId);
+        });
+    });
 }
 
-bool ExternalModManager::EquipExtraInventoryCellToButton(size_t cellIndex, int32_t cButtonIndex, std::string& outError) {
+const ExternalModPackage* ExternalModManager::FindPackageByModId(const std::string& modId) const {
+    const auto packageIt = std::find_if(mPackages.begin(), mPackages.end(), [&modId](const ExternalModPackage& package) {
+        return package.manifest.id == modId;
+    });
+    if (packageIt == mPackages.end()) {
+        return nullptr;
+    }
+    return &(*packageIt);
+}
+
+ExternalModPackage* ExternalModManager::FindPackageByModId(const std::string& modId) {
+    const auto packageIt = std::find_if(mPackages.begin(), mPackages.end(), [&modId](const ExternalModPackage& package) {
+        return package.manifest.id == modId;
+    });
+    if (packageIt == mPackages.end()) {
+        return nullptr;
+    }
+    return &(*packageIt);
+}
+
+int32_t ExternalModManager::WasmHostUseItemProfile(const std::string& modId, const std::string& itemOrProfileId) {
+    auto* package = FindPackageByModId(modId);
+    if (package == nullptr || !package->runtime.enabled || gPlayState == nullptr) {
+        return -1;
+    }
+
+    auto* player = GET_PLAYER(gPlayState);
+    if (player == nullptr) {
+        return -2;
+    }
+
+    const ExternalModItemDefinition* sourceItem = nullptr;
+    std::string useProfileId = itemOrProfileId;
+    const auto* directProfile = ExternalModContentRegistry::FindItemUseProfileById(package->runtime, itemOrProfileId);
+    if (directProfile == nullptr) {
+        for (const auto& item : package->runtime.itemDefinitions) {
+            if (item.id != itemOrProfileId) {
+                continue;
+            }
+            sourceItem = &item;
+            useProfileId = item.useProfile;
+            break;
+        }
+    }
+
+    if (useProfileId.empty()) {
+        return -3;
+    }
+
+    std::string useProfileError;
+    if (!ExecuteUseProfileById(*package, useProfileId, gPlayState, player, sourceItem, useProfileError)) {
+        SPDLOG_WARN("[ExternalMods][WASM:{}] host_useItemProfile failed: {}", modId, useProfileError);
+        return -4;
+    }
+
+    return 0;
+}
+
+int32_t ExternalModManager::WasmHostResolveTarget(const std::string& modId, const std::string& profileId,
+                                                  std::vector<int32_t>& outHandles) {
+    outHandles.clear();
+
+    auto* package = FindPackageByModId(modId);
+    if (package == nullptr || !package->runtime.enabled || gPlayState == nullptr) {
+        return -1;
+    }
+    auto* player = GET_PLAYER(gPlayState);
+    if (player == nullptr) {
+        return -2;
+    }
+
+    const auto* profile = ExternalModContentRegistry::FindTargetingProfileById(package->runtime, profileId);
+    if (profile == nullptr) {
+        return -3;
+    }
+
+    std::vector<Actor*> targets;
+    ResolveTargetsForTargetingProfile(*profile, gPlayState, player, targets);
+    if (targets.empty()) {
+        return 0;
+    }
+
+    if (package->runtime.wasmTargetHandles.size() > 4096) {
+        package->runtime.wasmTargetHandles.clear();
+    }
+
+    for (Actor* actor : targets) {
+        if (actor == nullptr) {
+            continue;
+        }
+        int32_t handle = package->runtime.wasmNextTargetHandle++;
+        if (handle <= 0) {
+            package->runtime.wasmNextTargetHandle = 1;
+            handle = package->runtime.wasmNextTargetHandle++;
+        }
+        package->runtime.wasmTargetHandles[handle] = reinterpret_cast<uintptr_t>(actor);
+        outHandles.push_back(handle);
+    }
+
+    return static_cast<int32_t>(outHandles.size());
+}
+
+int32_t ExternalModManager::WasmHostDealDamage(const std::string& modId, int32_t targetHandle,
+                                               const std::string& damageProfileId) {
+    auto* package = FindPackageByModId(modId);
+    if (package == nullptr || !package->runtime.enabled || gPlayState == nullptr) {
+        return -1;
+    }
+
+    const auto* damageProfile = ExternalModContentRegistry::FindDamageProfileById(package->runtime, damageProfileId);
+    if (damageProfile == nullptr) {
+        return -2;
+    }
+
+    Actor* target = nullptr;
+    if (targetHandle == 0) {
+        auto* player = GET_PLAYER(gPlayState);
+        target = player != nullptr ? &player->actor : nullptr;
+    } else {
+        const auto handleIt = package->runtime.wasmTargetHandles.find(targetHandle);
+        if (handleIt == package->runtime.wasmTargetHandles.end()) {
+            return -3;
+        }
+        target = FindActorByAddress(gPlayState, handleIt->second, -1);
+    }
+
+    if (target == nullptr) {
+        return -4;
+    }
+
+    ApplyDamageProfileToActor(gPlayState, target, *damageProfile);
+    return 0;
+}
+
+int32_t ExternalModManager::WasmHostApplyStatus(const std::string& modId, int32_t targetHandle, const std::string& statusId,
+                                                int32_t durationOverrideFrames) {
+    auto* package = FindPackageByModId(modId);
+    if (package == nullptr || !package->runtime.enabled || gPlayState == nullptr) {
+        return -1;
+    }
+
+    auto* player = GET_PLAYER(gPlayState);
+    if (player == nullptr) {
+        return -2;
+    }
+
+    Actor* target = nullptr;
+    if (targetHandle == 0) {
+        target = &player->actor;
+    } else {
+        const auto handleIt = package->runtime.wasmTargetHandles.find(targetHandle);
+        if (handleIt == package->runtime.wasmTargetHandles.end()) {
+            return -3;
+        }
+        target = FindActorByAddress(gPlayState, handleIt->second, -1);
+    }
+    if (target == nullptr) {
+        return -4;
+    }
+
+    ExternalModAction action;
+    action.statusId = statusId;
+    if (durationOverrideFrames > 0) {
+        action.durationFrames = durationOverrideFrames;
+    }
+    action.tickFrames = 15;
+    action.damagePerTick = 0;
+    action.intensity = 255;
+    action.shakeFrames = 12;
+
+    ExternalModAction resolvedAction;
+    ExternalModStatusType resolvedType = ExternalModStatusType::Custom;
+    if (!ResolveStatusActionData(*package, action, resolvedAction, resolvedType)) {
+        return -5;
+    }
+    if (ShouldProtectStatusTarget(target, resolvedType)) {
+        return -6;
+    }
+
+    const bool isPlayerTarget = (target == &player->actor);
+    BeginStatusOnActor(package->runtime, gPlayState, target, resolvedAction, resolvedType, isPlayerTarget,
+                       resolvedAction.statusId, package->manifest.id);
+    return 0;
+}
+
+int32_t ExternalModManager::WasmHostSpawnProjectile(const std::string& modId, const std::string& profileId,
+                                                    const std::string& overridesJson) {
+    auto* package = FindPackageByModId(modId);
+    if (package == nullptr || !package->runtime.enabled || gPlayState == nullptr) {
+        return -1;
+    }
+    auto* player = GET_PLAYER(gPlayState);
+    if (player == nullptr) {
+        return -2;
+    }
+
+    float range = 180.0f;
+    if (!overridesJson.empty()) {
+        try {
+            const auto json = nlohmann::json::parse(overridesJson);
+            if (json.contains("range") && json["range"].is_number()) {
+                range = std::max(1.0f, json["range"].get<float>());
+            }
+        } catch (...) {
+        }
+    }
+
+    ExternalModUseProfileEffect effect;
+    effect.action = "spawnProjectile";
+    effect.projectileProfileId = profileId;
+
+    ExternalModTargetingProfile targetingProfile = {};
+    targetingProfile.mode = ExternalModTargetingMode::FrontTarget;
+    targetingProfile.range = range;
+    std::vector<Actor*> targets;
+    ResolveTargetsForTargetingProfile(targetingProfile, gPlayState, player, targets);
+
+    std::string executeError;
+    if (!ExecuteUseProfileEffects(*package, { effect }, targets, gPlayState, player, nullptr, executeError)) {
+        SPDLOG_WARN("[ExternalMods][WASM:{}] host_spawnProjectile failed: {}", modId, executeError);
+        return -3;
+    }
+    return 0;
+}
+
+int32_t ExternalModManager::WasmHostSpawnAoE(const std::string& modId, const std::string& profileId,
+                                             const std::string& originJson) {
+    (void)originJson;
+    auto* package = FindPackageByModId(modId);
+    if (package == nullptr || !package->runtime.enabled || gPlayState == nullptr) {
+        return -1;
+    }
+    auto* player = GET_PLAYER(gPlayState);
+    if (player == nullptr) {
+        return -2;
+    }
+
+    ExternalModUseProfileEffect effect;
+    effect.action = "spawnAoE";
+    effect.aoeProfileId = profileId;
+
+    std::vector<Actor*> targets = { &player->actor };
+    std::string executeError;
+    if (!ExecuteUseProfileEffects(*package, { effect }, targets, gPlayState, player, nullptr, executeError)) {
+        SPDLOG_WARN("[ExternalMods][WASM:{}] host_spawnAoE failed: {}", modId, executeError);
+        return -3;
+    }
+    return 0;
+}
+
+int32_t ExternalModManager::WasmHostApplyMovementProfile(const std::string& modId, const std::string& profileId,
+                                                         int32_t durationFrames) {
+    auto* package = FindPackageByModId(modId);
+    if (package == nullptr || !package->runtime.enabled || gPlayState == nullptr) {
+        return -1;
+    }
+    auto* player = GET_PLAYER(gPlayState);
+    if (player == nullptr) {
+        return -2;
+    }
+
+    ExternalModUseProfileEffect effect;
+    effect.action = "applyMovementProfile";
+    effect.movementProfileId = profileId;
+    effect.durationFrames = std::max(durationFrames, 0);
+
+    std::vector<Actor*> targets = { &player->actor };
+    std::string executeError;
+    if (!ExecuteUseProfileEffects(*package, { effect }, targets, gPlayState, player, nullptr, executeError)) {
+        SPDLOG_WARN("[ExternalMods][WASM:{}] host_applyMovementProfile failed: {}", modId, executeError);
+        return -3;
+    }
+    return 0;
+}
+
+int32_t ExternalModManager::WasmHostApplyImpulse(const std::string& modId, int32_t mode, float strength, float x, float y,
+                                                 float z) {
+    (void)modId;
+    if (gPlayState == nullptr) {
+        return -1;
+    }
+    auto* player = GET_PLAYER(gPlayState);
+    if (player == nullptr) {
+        return -2;
+    }
+
+    const float clampedStrength = std::clamp(strength, 0.5f, 35.0f);
+    if (mode == 1) {
+        player->actor.velocity.x += x * clampedStrength;
+        player->actor.velocity.y += y * clampedStrength;
+        player->actor.velocity.z += z * clampedStrength;
+        player->linearVelocity = std::max(player->linearVelocity, clampedStrength);
+    } else {
+        ExternalModItemRuntime::ApplySkyhookImpulse(player, clampedStrength, clampedStrength);
+    }
+
+    return 0;
+}
+
+int32_t ExternalModManager::WasmHostGetGroundInfo(const std::string& modId, ExternalModWasmGroundInfo& outInfo) {
+    (void)modId;
+    constexpr float kRadToDeg = 57.29577951308232f;
+    if (gPlayState == nullptr) {
+        return -1;
+    }
+    auto* player = GET_PLAYER(gPlayState);
+    if (player == nullptr) {
+        return -2;
+    }
+
+    if (player->actor.floorPoly != nullptr) {
+        outInfo.normalX = COLPOLY_GET_NORMAL(player->actor.floorPoly->normal.x);
+        outInfo.normalY = COLPOLY_GET_NORMAL(player->actor.floorPoly->normal.y);
+        outInfo.normalZ = COLPOLY_GET_NORMAL(player->actor.floorPoly->normal.z);
+        outInfo.surfaceType =
+            static_cast<int32_t>(SurfaceType_GetSlope(&gPlayState->colCtx, player->actor.floorPoly, player->actor.floorBgId));
+    } else {
+        outInfo.normalX = 0.0f;
+        outInfo.normalY = 1.0f;
+        outInfo.normalZ = 0.0f;
+        outInfo.surfaceType = 0;
+    }
+    const float clampedNormalY = std::clamp(outInfo.normalY, -1.0f, 1.0f);
+    outInfo.slopeAngleDeg = acosf(clampedNormalY) * kRadToDeg;
+    outInfo.isOnGround = ((player->actor.bgCheckFlags & 1) != 0) ? 1 : 0;
+    return 0;
+}
+
+int32_t ExternalModManager::WasmHostRaycast(const std::string& modId, const std::string& queryJson,
+                                            ExternalModWasmRaycastHit& outHit) {
+    std::vector<ExternalModWasmRaycastHit> hits;
+    const int32_t result = WasmHostRaycastAll(modId, queryJson, 1, hits);
+    if (result <= 0 || hits.empty()) {
+        outHit = {};
+        return result;
+    }
+    outHit = hits.front();
+    return 1;
+}
+
+int32_t ExternalModManager::WasmHostRaycastAll(const std::string& modId, const std::string& queryJson, int32_t outCapacity,
+                                               std::vector<ExternalModWasmRaycastHit>& outHits) {
+    outHits.clear();
+    auto* package = FindPackageByModId(modId);
+    if (package == nullptr || !package->runtime.enabled || gPlayState == nullptr) {
+        return -1;
+    }
+    auto* player = GET_PLAYER(gPlayState);
+    if (player == nullptr) {
+        return -2;
+    }
+
+    float range = 180.0f;
+    bool includeProps = true;
+    bool includeEnemies = true;
+    bool stopOnWall = true;
+
+    if (!queryJson.empty()) {
+        try {
+            const auto json = nlohmann::json::parse(queryJson);
+            if (json.contains("range") && json["range"].is_number()) {
+                range = std::max(1.0f, json["range"].get<float>());
+            }
+            if (json.contains("includeProps") && json["includeProps"].is_boolean()) {
+                includeProps = json["includeProps"].get<bool>();
+            }
+            if (json.contains("includeEnemies") && json["includeEnemies"].is_boolean()) {
+                includeEnemies = json["includeEnemies"].get<bool>();
+            }
+            if (json.contains("stopOnWall") && json["stopOnWall"].is_boolean()) {
+                stopOnWall = json["stopOnWall"].get<bool>();
+            }
+        } catch (...) {
+        }
+    }
+
+    std::vector<Actor*> actorHits;
+    ResolveForwardRaycastHits(gPlayState, player, range, includeProps, includeEnemies, stopOnWall, actorHits);
+    if (actorHits.empty()) {
+        return 0;
+    }
+
+    if (package->runtime.wasmTargetHandles.size() > 4096) {
+        package->runtime.wasmTargetHandles.clear();
+    }
+
+    const int32_t clampedCapacity = std::max(0, outCapacity);
+    const int32_t maxCount = std::min<int32_t>(clampedCapacity, static_cast<int32_t>(actorHits.size()));
+    outHits.reserve(static_cast<size_t>(maxCount));
+
+    for (int32_t i = 0; i < maxCount; ++i) {
+        Actor* actor = actorHits[static_cast<size_t>(i)];
+        if (actor == nullptr) {
+            continue;
+        }
+
+        int32_t handle = package->runtime.wasmNextTargetHandle++;
+        if (handle <= 0) {
+            package->runtime.wasmNextTargetHandle = 1;
+            handle = package->runtime.wasmNextTargetHandle++;
+        }
+        package->runtime.wasmTargetHandles[handle] = reinterpret_cast<uintptr_t>(actor);
+
+        ExternalModWasmRaycastHit hit;
+        hit.hasHit = 1;
+        hit.actorHandle = handle;
+        hit.distance = Math_Vec3f_DistXYZ(&player->actor.world.pos, &actor->world.pos);
+        hit.posX = actor->world.pos.x;
+        hit.posY = actor->world.pos.y;
+        hit.posZ = actor->world.pos.z;
+        outHits.push_back(hit);
+    }
+
+    return static_cast<int32_t>(outHits.size());
+}
+
+const ExternalModItemDefinition* ExternalModManager::FindItemByAssignment(const ActionButtonAssignment& assignment) const {
+    if (assignment.modId.empty() || assignment.itemId.empty()) {
+        return nullptr;
+    }
+
+    const auto* package = FindPackageByModId(assignment.modId);
+    if (package == nullptr || !package->runtime.enabled) {
+        return nullptr;
+    }
+
+    return ExternalModContentRegistry::FindItemDefinitionById(package->runtime, assignment.itemId);
+}
+
+ExternalModItemDefinition* ExternalModManager::FindItemByAssignment(ActionButtonAssignment& assignment) {
+    if (assignment.modId.empty() || assignment.itemId.empty()) {
+        return nullptr;
+    }
+
+    auto* package = FindPackageByModId(assignment.modId);
+    if (package == nullptr || !package->runtime.enabled) {
+        return nullptr;
+    }
+
+    auto itemIt = std::find_if(package->runtime.itemDefinitions.begin(), package->runtime.itemDefinitions.end(),
+                               [&assignment](const ExternalModItemDefinition& definition) {
+                                   return definition.id == assignment.itemId;
+                               });
+    if (itemIt == package->runtime.itemDefinitions.end()) {
+        return nullptr;
+    }
+    return &(*itemIt);
+}
+
+bool ExternalModManager::IsAssignmentValid(const ActionButtonAssignment& assignment) const {
+    const auto* definition = FindItemByAssignment(assignment);
+    return definition != nullptr && definition->granted;
+}
+
+void ExternalModManager::SyncButtonAssignments() {
+    for (int32_t buttonIndex = 1; buttonIndex <= 7; ++buttonIndex) {
+        auto& assignment = mActionButtonAssignments[buttonIndex];
+        if (assignment.source != ActionButtonSource::Mod) {
+            continue;
+        }
+
+        const auto* definition = FindItemByAssignment(assignment);
+        if (definition == nullptr || !definition->granted ||
+            (definition->assignableButtonsMask & MakeButtonMask(buttonIndex)) == 0) {
+            assignment.source = ActionButtonSource::Vanilla;
+            assignment.modId.clear();
+            assignment.itemId.clear();
+            MarkPersistentInventoryDirty();
+            continue;
+        }
+
+        if (buttonIndex >= 0 && buttonIndex < static_cast<int32_t>(ARRAY_COUNT(gSaveContext.equips.buttonItems))) {
+            gSaveContext.equips.buttonItems[buttonIndex] = ITEM_NONE;
+            gSaveContext.adultEquips.buttonItems[buttonIndex] = ITEM_NONE;
+            gSaveContext.childEquips.buttonItems[buttonIndex] = ITEM_NONE;
+        }
+        if ((buttonIndex - 1) >= 0 &&
+            (buttonIndex - 1) < static_cast<int32_t>(ARRAY_COUNT(gSaveContext.equips.cButtonSlots))) {
+            gSaveContext.equips.cButtonSlots[buttonIndex - 1] = SLOT_NONE;
+            gSaveContext.adultEquips.cButtonSlots[buttonIndex - 1] = SLOT_NONE;
+            gSaveContext.childEquips.cButtonSlots[buttonIndex - 1] = SLOT_NONE;
+        }
+    }
+}
+
+void ExternalModManager::MarkPersistentInventoryDirty() {
+    mPersistentInventoryDirty = true;
+
+    if (!mSaveSectionRegistered || mPersistentInventorySectionId < 0 || SaveManager::Instance == nullptr) {
+        return;
+    }
+
+    if (gSaveContext.fileNum < 0 || gSaveContext.fileNum >= SaveManager::MaxFiles) {
+        return;
+    }
+
+    if (!SaveManager::Instance->SaveFile_Exist(gSaveContext.fileNum)) {
+        return;
+    }
+
+    SaveManager::Instance->SaveSection(gSaveContext.fileNum, mPersistentInventorySectionId, true);
+    mPersistentInventoryDirty = false;
+}
+
+bool ExternalModManager::TryInvokeAssignedModItem(int32_t buttonIndex, PlayState* play, Player* player) {
+    if (buttonIndex < 1 || buttonIndex > 7 || play == nullptr || player == nullptr) {
+        return false;
+    }
+
+    auto& assignment = mActionButtonAssignments[buttonIndex];
+    if (assignment.source != ActionButtonSource::Mod) {
+        return false;
+    }
+
+    auto* package = FindPackageByModId(assignment.modId);
+    if (package == nullptr || !package->runtime.enabled) {
+        return false;
+    }
+
+    auto* definition = FindItemByAssignment(assignment);
+    if (definition == nullptr || !definition->granted) {
+        return false;
+    }
+
+    if ((definition->assignableButtonsMask & MakeButtonMask(buttonIndex)) == 0) {
+        return false;
+    }
+
+    if (definition->cooldownRemaining > 0) {
+        return true;
+    }
+
+    const int32_t resolvedItemId = ResolveGrantedItemId(*definition);
+    if (package->runtime.wasmRuntime && !definition->onUseExport.empty()) {
+        std::vector<int32_t> args = { resolvedItemId };
+        std::string wasmError;
+        if (!package->runtime.wasmRuntime->InvokeExport(definition->onUseExport, args, wasmError)) {
+            DisableRuntime(*package, "WASM onUse failed for assigned item '" + definition->id + "': " + wasmError);
+            return true;
+        }
+    }
+
+    if (!definition->onUseBehavior.empty()) {
+        int32_t stepCount = package->runtime.behaviorStepsThisFrame;
+        std::vector<ExternalModAction> behaviorActions;
+        std::string behaviorError;
+        if (!CollectBehaviorEventActions(*package, definition->onUseBehavior, "onitemused", nullptr,
+                                         package->runtime.behaviorMaxStepsPerModPerFrame, stepCount, behaviorActions,
+                                         behaviorError)) {
+            DisableRuntime(*package, "onUseBehavior failed for assigned item '" + definition->id + "': " + behaviorError);
+            return true;
+        }
+        package->runtime.behaviorStepsThisFrame = stepCount;
+        if (!behaviorActions.empty()) {
+            ExecuteActions(*package, behaviorActions, "buttonAssignedItemOnUse");
+            if (!package->runtime.enabled) {
+                return true;
+            }
+        }
+    }
+
+    if (!definition->useProfile.empty()) {
+        std::string useProfileError;
+        if (!ExecuteUseProfileById(*package, definition->useProfile, play, player, definition, useProfileError)) {
+            DisableRuntime(*package, "item useProfile failed for assigned item '" + definition->id + "': " + useProfileError);
+            return true;
+        }
+    }
+
+    if (definition->hasSlot && definition->slot == ExternalModItemSlot::Hookshot &&
+        definition->useMode != ExternalModItemUseMode::Vanilla) {
+        const float pullForce = GetParamOrDefault(definition->params, "pullForce", 8.0f);
+        const float speed = GetParamOrDefault(definition->params, "speed", 12.0f);
+        ExternalModItemRuntime::ApplySkyhookImpulse(player, pullForce, speed);
+    }
+
+    int32_t defaultCooldown = definition->cooldownFrames;
+    if (!definition->useProfile.empty()) {
+        const auto* useProfile = ExternalModContentRegistry::FindItemUseProfileById(package->runtime, definition->useProfile);
+        if (useProfile != nullptr) {
+            defaultCooldown = useProfile->cooldownFrames;
+        }
+    }
+    const auto cooldown = static_cast<int32_t>(
+        std::max(0.0f, GetParamOrDefault(definition->params, "cooldown", static_cast<float>(defaultCooldown))));
+    definition->cooldownFrames = cooldown;
+    definition->cooldownRemaining = cooldown;
+    return true;
+}
+
+void ExternalModManager::ProcessAssignedActionButtons(PlayState* play, Player* player, void* inputPtr) {
+    if (play == nullptr || player == nullptr || inputPtr == nullptr) {
+        return;
+    }
+    auto* input = static_cast<Input*>(inputPtr);
+
+    for (const auto& mapping : kEquippedActionButtonMappings) {
+        if (!MatchPressedButtonMask(input->cur.button, input->prev.button, mapping.mask)) {
+            continue;
+        }
+
+        if (!TryInvokeAssignedModItem(mapping.slotIndex, play, player)) {
+            continue;
+        }
+
+        input->cur.button &= ~mapping.mask;
+        input->press.button &= ~mapping.mask;
+    }
+}
+
+bool ExternalModManager::EquipExtraInventoryCellToButton(size_t cellIndex, int32_t buttonIndex, std::string& outError) {
     outError.clear();
 
     if (cellIndex >= mExtraInventoryCells.size()) {
@@ -7760,8 +9922,8 @@ bool ExternalModManager::EquipExtraInventoryCellToButton(size_t cellIndex, int32
         return false;
     }
 
-    if (cButtonIndex < 0 || cButtonIndex >= static_cast<int32_t>(ARRAY_COUNT(gSaveContext.equips.cButtonSlots))) {
-        outError = "c-button index out of range";
+    if (buttonIndex < 1 || buttonIndex > 7) {
+        outError = "button index out of range";
         return false;
     }
 
@@ -7788,59 +9950,84 @@ bool ExternalModManager::EquipExtraInventoryCellToButton(size_t cellIndex, int32
         return false;
     }
 
-    const auto* slotConfig = FindItemSlotConfig(itemIt->slot);
-    if (slotConfig == nullptr) {
-        outError = "unsupported item slot";
+    const auto buttonMask = MakeButtonMask(buttonIndex);
+    if ((itemIt->assignableButtonsMask & buttonMask) == 0) {
+        outError = "item is not assignable to this button";
         return false;
     }
 
-    if (slotConfig->slotIndex < 0 || slotConfig->slotIndex >= static_cast<int32_t>(ARRAY_COUNT(gSaveContext.inventory.items))) {
-        outError = "inventory slot index out of range";
-        return false;
+    const bool isLegacyVanillaSlot = itemIt->placement == ExternalModItemPlacement::Legacy && itemIt->hasSlot;
+    const bool isCButton = buttonIndex >= 1 && buttonIndex <= 3;
+    if (isLegacyVanillaSlot && isCButton) {
+        const auto* slotConfig = FindItemSlotConfig(itemIt->slot);
+        if (slotConfig == nullptr) {
+            outError = "legacy item slot is unsupported";
+            return false;
+        }
+
+        const int32_t resolvedItemId = ResolveGrantedItemId(*itemIt);
+        if (resolvedItemId == ITEM_NONE || resolvedItemId < std::numeric_limits<int8_t>::min() ||
+            resolvedItemId > std::numeric_limits<int8_t>::max()) {
+            outError = "legacy item has invalid resolved item id";
+            return false;
+        }
+
+        auto& assignment = mActionButtonAssignments[buttonIndex];
+        assignment.source = ActionButtonSource::Vanilla;
+        assignment.modId.clear();
+        assignment.itemId.clear();
+
+        gSaveContext.equips.buttonItems[buttonIndex] = static_cast<int8_t>(resolvedItemId);
+        gSaveContext.adultEquips.buttonItems[buttonIndex] = static_cast<int8_t>(resolvedItemId);
+        gSaveContext.childEquips.buttonItems[buttonIndex] = static_cast<int8_t>(resolvedItemId);
+        gSaveContext.equips.cButtonSlots[buttonIndex - 1] = static_cast<int8_t>(slotConfig->slotIndex);
+        gSaveContext.adultEquips.cButtonSlots[buttonIndex - 1] = static_cast<int8_t>(slotConfig->slotIndex);
+        gSaveContext.childEquips.cButtonSlots[buttonIndex - 1] = static_cast<int8_t>(slotConfig->slotIndex);
+
+        if (gPlayState != nullptr) {
+            Interface_LoadItemIcon1(gPlayState, static_cast<uint16_t>(buttonIndex));
+        }
+
+        SPDLOG_INFO("[ExternalMods] Equipped legacy item {} from mod {} as vanilla to C-button {}", itemIt->id,
+                    packageIt->manifest.id, buttonIndex);
+        MarkPersistentInventoryDirty();
+        return true;
     }
 
-    const int32_t grantedItemId = ResolveGrantedItemId(*itemIt);
-    if (gSaveContext.inventory.items[slotConfig->slotIndex] == ITEM_NONE && grantedItemId != ITEM_NONE &&
-        grantedItemId >= std::numeric_limits<int8_t>::min() && grantedItemId <= std::numeric_limits<int8_t>::max()) {
-        gSaveContext.inventory.items[slotConfig->slotIndex] = static_cast<int8_t>(grantedItemId);
+    mActionButtonAssignments[buttonIndex].source = ActionButtonSource::Mod;
+    mActionButtonAssignments[buttonIndex].modId = cell.modId;
+    mActionButtonAssignments[buttonIndex].itemId = cell.itemId;
+
+    if (buttonIndex >= 0 && buttonIndex < static_cast<int32_t>(ARRAY_COUNT(gSaveContext.equips.buttonItems))) {
+        gSaveContext.equips.buttonItems[buttonIndex] = ITEM_NONE;
     }
-
-    const int32_t equippedItem = gSaveContext.inventory.items[slotConfig->slotIndex];
-    if (equippedItem == ITEM_NONE) {
-        outError = "inventory slot is empty";
-        return false;
+    if (buttonIndex >= 0 && buttonIndex < static_cast<int32_t>(ARRAY_COUNT(gSaveContext.adultEquips.buttonItems))) {
+        gSaveContext.adultEquips.buttonItems[buttonIndex] = ITEM_NONE;
+        gSaveContext.childEquips.buttonItems[buttonIndex] = ITEM_NONE;
     }
-
-    if (equippedItem < std::numeric_limits<int8_t>::min() || equippedItem > std::numeric_limits<int8_t>::max()) {
-        outError = "equipped item id out of range";
-        return false;
-    }
-
-    gSaveContext.equips.cButtonSlots[cButtonIndex] = static_cast<int8_t>(slotConfig->slotIndex);
-    gSaveContext.equips.buttonItems[cButtonIndex + 1] = static_cast<int8_t>(equippedItem);
-
-    if (gSaveContext.linkAge == LINK_AGE_ADULT) {
-        gSaveContext.adultEquips.cButtonSlots[cButtonIndex] = static_cast<int8_t>(slotConfig->slotIndex);
-        gSaveContext.adultEquips.buttonItems[cButtonIndex + 1] = static_cast<int8_t>(equippedItem);
-    } else {
-        gSaveContext.childEquips.cButtonSlots[cButtonIndex] = static_cast<int8_t>(slotConfig->slotIndex);
-        gSaveContext.childEquips.buttonItems[cButtonIndex + 1] = static_cast<int8_t>(equippedItem);
+    if ((buttonIndex - 1) >= 0 &&
+        (buttonIndex - 1) < static_cast<int32_t>(ARRAY_COUNT(gSaveContext.equips.cButtonSlots))) {
+        gSaveContext.equips.cButtonSlots[buttonIndex - 1] = SLOT_NONE;
+        gSaveContext.adultEquips.cButtonSlots[buttonIndex - 1] = SLOT_NONE;
+        gSaveContext.childEquips.cButtonSlots[buttonIndex - 1] = SLOT_NONE;
     }
 
     if (gPlayState != nullptr) {
-        Interface_LoadItemIcon1(gPlayState, static_cast<uint16_t>(cButtonIndex + 1));
+        Interface_LoadItemIcon1(gPlayState, static_cast<uint16_t>(buttonIndex));
     }
 
-    SPDLOG_INFO("[ExternalMods] Equipped extra inventory item {} from mod {} to C-button {}", itemIt->id,
-                packageIt->manifest.id, cButtonIndex);
+    if (isLegacyVanillaSlot && !isCButton) {
+        SPDLOG_INFO("[ExternalMods] Legacy item {} from mod {} assigned to D-button {} as mod-only", itemIt->id,
+                    packageIt->manifest.id, buttonIndex);
+    }
+
+    SPDLOG_INFO("[ExternalMods] Equipped virtual inventory item {} from mod {} to button {}", itemIt->id,
+                packageIt->manifest.id, buttonIndex);
+    MarkPersistentInventoryDirty();
     return true;
 }
 
 void ExternalModManager::SyncExtraInventoryGrid() {
-    if (mExtraInventoryCells.size() != kExternalModExtraInventoryCellCount) {
-        mExtraInventoryCells.assign(kExternalModExtraInventoryCellCount, ExtraInventoryCell{});
-    }
-
     const auto buildCellKey = [](const std::string& modId, const std::string& itemId) {
         return modId + "\x1F" + itemId;
     };
@@ -7860,18 +10047,18 @@ void ExternalModManager::SyncExtraInventoryGrid() {
     }
 
     std::unordered_set<std::string> placedKeys;
-    for (auto& cell : mExtraInventoryCells) {
-        if (cell.modId.empty() || cell.itemId.empty()) {
+    for (auto cellIt = mExtraInventoryCells.begin(); cellIt != mExtraInventoryCells.end();) {
+        const auto key = buildCellKey(cellIt->modId, cellIt->itemId);
+        const bool keep = !cellIt->modId.empty() && !cellIt->itemId.empty() && grantedKeys.contains(key) && !placedKeys.contains(key);
+        if (!keep) {
+            cellIt = mExtraInventoryCells.erase(cellIt);
             continue;
         }
-
-        const auto key = buildCellKey(cell.modId, cell.itemId);
-        if (!grantedKeys.contains(key) || !placedKeys.insert(key).second) {
-            cell = ExtraInventoryCell{};
-        }
+        placedKeys.insert(key);
+        ++cellIt;
     }
 
-    bool warnedNoFreeCell = false;
+    bool warnedExcess = false;
     for (const auto& package : mPackages) {
         if (!package.runtime.enabled) {
             continue;
@@ -7887,31 +10074,47 @@ void ExternalModManager::SyncExtraInventoryGrid() {
                 continue;
             }
 
-            const auto emptyCellIt = std::find_if(mExtraInventoryCells.begin(), mExtraInventoryCells.end(),
-                                                  [](const ExtraInventoryCell& cell) {
-                                                      return cell.modId.empty() || cell.itemId.empty();
-                                                  });
-            if (emptyCellIt == mExtraInventoryCells.end()) {
-                if (!warnedNoFreeCell) {
-                    SPDLOG_WARN("[ExternalMods] Extra inventory grid is full ({} cells)",
+            if (mExtraInventoryCells.size() >= kExternalModInventoryMaxCellCount) {
+                if (!warnedExcess) {
+                    SPDLOG_WARN("[ExternalMods] Virtual inventory reached max capacity ({} cells); additional items were skipped",
                                 mExtraInventoryCells.size());
-                    warnedNoFreeCell = true;
+                    warnedExcess = true;
                 }
                 break;
             }
 
-            emptyCellIt->modId = package.manifest.id;
-            emptyCellIt->itemId = item.id;
+            mExtraInventoryCells.push_back({ package.manifest.id, item.id });
             placedKeys.insert(key);
         }
+    }
+
+    const size_t populatedCount = mExtraInventoryCells.size();
+    const size_t minimumCellCount =
+        std::max(kExternalModInventoryCellsPerPage,
+                 ((populatedCount + (kExternalModInventoryCellsPerPage - 1)) / kExternalModInventoryCellsPerPage) *
+                     kExternalModInventoryCellsPerPage);
+    mExtraInventoryCells.resize(minimumCellCount, ExtraInventoryCell{});
+
+    SyncButtonAssignments();
+
+    if (mExtraInventoryCells.empty()) {
+        mExtraInventoryPage = 0;
+        mExtraInventoryCursor = 0;
+    } else {
+        const int32_t pageCount = GetExtraInventoryPageCount();
+        mExtraInventoryPage = std::clamp(mExtraInventoryPage, 0, std::max(0, pageCount - 1));
+        mExtraInventoryCursor =
+            std::clamp(mExtraInventoryCursor, 0, static_cast<int32_t>(kExternalModInventoryCellsPerPage - 1));
     }
 }
 
 void ExternalModManager::Shutdown() {
     UnregisterHooks();
     mPendingSceneLoadRequest = ExternalModPendingSceneLoadRequest{};
+    Player* player = gPlayState != nullptr ? GET_PLAYER(gPlayState) : nullptr;
     for (auto& package : mPackages) {
         ClearStatusEffects(package.runtime, gPlayState, false);
+        ClearSurfState(package.runtime);
         UnmountAssetsForPackage(package);
         package.runtime.enabled = false;
         package.runtime.onGameLoadedActions.clear();
@@ -8035,6 +10238,17 @@ void ExternalModManager::DiscoverPackages() {
 void ExternalModManager::Initialize() {
     UnregisterHooks();
     mPendingSceneLoadRequest = ExternalModPendingSceneLoadRequest{};
+    mAimCameraState.overShoulderEnabled =
+        CVarGetInteger(kAimCameraOverShoulderCVar, mAimCameraState.overShoulderEnabled ? 1 : 0) != 0;
+
+    if (!mSaveSectionRegistered && SaveManager::Instance != nullptr) {
+        SaveManager::Instance->AddLoadFunction(kExternalModsInventorySaveSectionName, kExternalModsInventorySaveVersion,
+                                               LoadExternalModsInventorySection);
+        mPersistentInventorySectionId = SaveManager::Instance->AddSaveFunction(
+            kExternalModsInventorySaveSectionName, kExternalModsInventorySaveVersion, SaveExternalModsInventorySection,
+            true, SECTION_PARENT_NONE);
+        mSaveSectionRegistered = true;
+    }
 
     for (auto& package : mPackages) {
         UnmountAssetsForPackage(package);
@@ -8090,8 +10304,8 @@ void ExternalModManager::Initialize() {
     std::stable_sort(validIndices.begin(), validIndices.end(), [this](size_t a, size_t b) {
         const auto& lhs = mPackages[a].manifest;
         const auto& rhs = mPackages[b].manifest;
-        if (lhs.loadOrder != rhs.loadOrder) {
-            return lhs.loadOrder < rhs.loadOrder;
+        if (lhs.loadPriority != rhs.loadPriority) {
+            return lhs.loadPriority > rhs.loadPriority;
         }
         return lhs.id < rhs.id;
     });
@@ -8124,6 +10338,19 @@ void ExternalModManager::Initialize() {
             }
         }
 
+        for (const auto& hotkey : package.runtime.cameraHotkeys) {
+            if (hotkey.defaultKeyboardScancodes.empty()) {
+                continue;
+            }
+            const auto cvarName = BuildCameraHotkeyScancodeCVarName(package.manifest.id, hotkey.id);
+            const int32_t defaultScancode = hotkey.defaultKeyboardScancodes.front();
+            int32_t effectiveScancode = CVarGetInteger(cvarName.c_str(), defaultScancode);
+            if (effectiveScancode <= static_cast<int32_t>(Ship::LUS_KB_UNKNOWN)) {
+                effectiveScancode = defaultScancode;
+            }
+            CVarSetInteger(cvarName.c_str(), effectiveScancode);
+        }
+
         const auto enabledCVarName = BuildEnabledCVarName(package.manifest.id);
         int32_t enabledValue = CVarGetInteger(enabledCVarName.c_str(), 1);
         enabledValue = enabledValue != 0 ? 1 : 0;
@@ -8131,12 +10358,15 @@ void ExternalModManager::Initialize() {
 
         package.runtime.enabled = enabledValue != 0;
         if (package.runtime.enabled) {
+            ApplyDefaultKeyboardMappingsForPackage(package);
             runtimeCount++;
             SPDLOG_INFO("[ExternalMods] Runtime enabled: {} ({})", package.manifest.name, package.manifest.id);
         } else {
             SPDLOG_INFO("[ExternalMods] Runtime disabled by user: {} ({})", package.manifest.name, package.manifest.id);
         }
     }
+
+    PruneAimCameraStateForUnavailableProfiles();
 
     if (runtimeCount > 0) {
         RegisterHooks();
@@ -8194,12 +10424,24 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
         outManifest.gameVersionMin = json["gameVersionMin"].get<std::string>();
     }
 
-    if (json.contains("loadOrder")) {
+    const bool hasLoadOrder = json.contains("loadOrder");
+    const bool hasLoadPriority = json.contains("loadPriority");
+    if (hasLoadOrder) {
         if (!json["loadOrder"].is_number_integer()) {
             outError = "Invalid field: loadOrder must be integer";
             return false;
         }
         outManifest.loadOrder = json["loadOrder"].get<int32_t>();
+    }
+    if (hasLoadPriority) {
+        if (!json["loadPriority"].is_number_integer()) {
+            outError = "Invalid field: loadPriority must be integer";
+            return false;
+        }
+        outManifest.loadPriority = json["loadPriority"].get<int32_t>();
+    } else if (hasLoadOrder) {
+        // Backward compatibility: old loadOrder sorted ascending. New loadPriority is descending.
+        outManifest.loadPriority = -outManifest.loadOrder;
     }
 
     if (json.contains("assets")) {
@@ -8265,7 +10507,7 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
         }
     }
 
-    if (outManifest.apiVersion >= kExternalModApiVersionV2) {
+    if (outManifest.apiVersion >= kExternalModApiVersionV3) {
         if (!json.contains("runtime") || !json["runtime"].is_object()) {
             outError = "Missing or invalid field: runtime";
             return false;
@@ -8297,6 +10539,7 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
         outManifest.runtimeMaxFrameBudgetMs = kDefaultRuntimeFrameBudgetMs;
         outManifest.runtimeMaxHookCallsPerFrame = kDefaultRuntimeHookCallsPerFrame;
         outManifest.runtimeMaxActorInstances = kDefaultRuntimeActorInstances;
+        outManifest.runtimeMaxActiveStatuses = kDefaultRuntimeActiveStatuses;
 
         if (runtime.contains("maxMemoryKb")) {
             if (!runtime["maxMemoryKb"].is_number_integer()) {
@@ -8333,6 +10576,13 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
             }
             outManifest.runtimeMaxActorInstances = runtime["maxActorInstances"].get<int32_t>();
         }
+        if (runtime.contains("maxActiveStatuses")) {
+            if (!runtime["maxActiveStatuses"].is_number_integer()) {
+                outError = "runtime.maxActiveStatuses must be integer";
+                return false;
+            }
+            outManifest.runtimeMaxActiveStatuses = runtime["maxActiveStatuses"].get<int32_t>();
+        }
 
         if (outManifest.runtimeMaxMemoryKb < 64 || outManifest.runtimeMaxMemoryKb > 4096) {
             outError = "runtime.maxMemoryKb must be in [64, 4096]";
@@ -8352,6 +10602,10 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
         }
         if (outManifest.runtimeMaxActorInstances < 1 || outManifest.runtimeMaxActorInstances > 512) {
             outError = "runtime.maxActorInstances must be in [1, 512]";
+            return false;
+        }
+        if (outManifest.runtimeMaxActiveStatuses < 1 || outManifest.runtimeMaxActiveStatuses > 4096) {
+            outError = "runtime.maxActiveStatuses must be in [1, 4096]";
             return false;
         }
 
@@ -8389,6 +10643,7 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
         const bool hasProjectileCatalogCapability = ManifestHasCapability(outManifest, "combat.projectiles.v1");
         const bool hasAoECatalogCapability = ManifestHasCapability(outManifest, "combat.aoe.v1");
         const bool hasMovementCatalogCapability = ManifestHasCapability(outManifest, "movement.profiles.v1");
+        const bool hasAimCameraCatalogCapability = ManifestHasCapability(outManifest, "camera.aim_profiles.v1");
         const bool hasUseProfilesCapability = ManifestHasCapability(outManifest, "items.use_profiles.v1");
         const bool hasVanillaPatchesCapability = ManifestHasCapability(outManifest, "patches.vanilla_items.v1");
 
@@ -8511,6 +10766,8 @@ bool ExternalModManager::TryParseManifest(const std::string& content, ExternalMo
                                  outManifest.aoeDefinitions) ||
             !parseCapabilityPath("movementDefinitions", "movement.profiles.v1", hasMovementCatalogCapability,
                                  outManifest.movementDefinitions) ||
+            !parseCapabilityPath("cameraDefinitions", "camera.aim_profiles.v1", hasAimCameraCatalogCapability,
+                                 outManifest.cameraDefinitions) ||
             !parseCapabilityPath("itemUseProfiles", "items.use_profiles.v1", hasUseProfilesCapability,
                                  outManifest.itemUseProfiles) ||
             !parseCapabilityPath("vanillaItemPatches", "patches.vanilla_items.v1", hasVanillaPatchesCapability,
@@ -8663,8 +10920,8 @@ bool ExternalModManager::TryParseEntryScript(const std::string& content, int32_t
     }
 
     if (root->contains("onInput")) {
-        if (apiVersion < kExternalModApiVersionV2) {
-            outError = "onInput requires apiVersion 2";
+        if (apiVersion < kExternalModApiVersionV3) {
+            outError = "onInput requires apiVersion 3";
             return false;
         }
 
@@ -8784,10 +11041,9 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
         return false;
     }
 
-    const std::unordered_set<std::string> kAllowedParams = { "range", "speed", "cooldown", "pullForce",
-                                                              "freezeOnMeleeHit", "freezeOnHitDuration",
-                                                              "freezeOnHitShake", "freezeOnHitIntensity",
-                                                              "infiniteAmmo" };
+    const std::unordered_set<std::string> kAllowedParams = { "range", "speed", "cooldown", "pullForce", "infiniteAmmo" };
+    const std::unordered_set<std::string> kRemovedLegacyParams = { "freezeOnMeleeHit", "freezeOnHitDuration",
+                                                                    "freezeOnHitShake", "freezeOnHitIntensity" };
 
     for (size_t i = 0; i < items->size(); ++i) {
         const auto& item = (*items)[i];
@@ -8884,6 +11140,14 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
                 return false;
             }
             definition.iconAsset = item["iconAsset"].get<std::string>();
+        }
+
+        if (item.contains("aimReticleTextureAsset")) {
+            if (!item["aimReticleTextureAsset"].is_string()) {
+                outError = "items[" + std::to_string(i) + "].aimReticleTextureAsset must be string";
+                return false;
+            }
+            definition.aimReticleTextureAsset = item["aimReticleTextureAsset"].get<std::string>();
         }
 
         if (item.contains("modelAsset")) {
@@ -9156,6 +11420,13 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
             }
         }
 
+        if (item.contains("useTrigger")) {
+            if (!ParseItemUseTrigger(item["useTrigger"], definition.useTrigger, outError)) {
+                outError = "items[" + std::to_string(i) + "].useTrigger " + outError;
+                return false;
+            }
+        }
+
         if (item.contains("behavior")) {
             if (!item["behavior"].is_object()) {
                 outError = "items[" + std::to_string(i) + "].behavior must be object";
@@ -9273,12 +11544,28 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
             return false;
         }
 
+        if (definition.useTrigger == ExternalModItemUseTrigger::HammerGroundImpact) {
+            if (!definition.hasSlot || definition.slot != ExternalModItemSlot::Hammer) {
+                outError = "items[" + std::to_string(i) + "].useTrigger hammerGroundImpact requires slot SLOT_HAMMER";
+                return false;
+            }
+            if (definition.useProfile.empty()) {
+                outError = "items[" + std::to_string(i) + "].useTrigger hammerGroundImpact requires useProfile";
+                return false;
+            }
+        }
+
         if (item.contains("params")) {
             if (!item["params"].is_object()) {
                 outError = "items[" + std::to_string(i) + "].params must be object";
                 return false;
             }
             for (const auto& [key, value] : item["params"].items()) {
+                if (kRemovedLegacyParams.contains(key)) {
+                    outError = "items[" + std::to_string(i) + "].params." + key +
+                               " was removed in apiVersion 3; migrate to items/use_profiles.json + applyStatus(core:freeze)";
+                    return false;
+                }
                 if (!kAllowedParams.contains(key)) {
                     outError = "items[" + std::to_string(i) + "].params has unsupported key: " + key;
                     return false;
@@ -9301,8 +11588,10 @@ bool ExternalModManager::TryParseItemDefinitions(const std::string& content,
 
 bool ExternalModManager::TryParseInputDefinitions(const std::string& content,
                                                   std::vector<ExternalModInputBinding>& outBindings,
+                                                  std::vector<ExternalModCameraHotkeyDefinition>& outCameraHotkeys,
                                                   std::string& outError) {
     outBindings.clear();
+    outCameraHotkeys.clear();
 
     nlohmann::json json;
     try {
@@ -9323,6 +11612,38 @@ bool ExternalModManager::TryParseInputDefinitions(const std::string& content,
         outError = "input.json must be an array or object with bindings[]";
         return false;
     }
+
+    auto parseDefaultKeyboardKeys = [&](const nlohmann::json& item, const std::string& basePath,
+                                        std::vector<int32_t>& outScancodes) -> bool {
+        outScancodes.clear();
+        if (!item.contains("defaultKeyboardKeys")) {
+            return true;
+        }
+        if (!item["defaultKeyboardKeys"].is_array()) {
+            outError = basePath + ".defaultKeyboardKeys must be array";
+            return false;
+        }
+
+        for (size_t keyIndex = 0; keyIndex < item["defaultKeyboardKeys"].size(); ++keyIndex) {
+            const auto& keyValue = item["defaultKeyboardKeys"][keyIndex];
+            if (!keyValue.is_string()) {
+                outError = basePath + ".defaultKeyboardKeys[" + std::to_string(keyIndex) + "] must be string";
+                return false;
+            }
+
+            int32_t keyScancode = 0;
+            std::string keyError;
+            if (!ParseKeyboardKeyToken(keyValue.get<std::string>(), keyScancode, keyError)) {
+                outError = basePath + ".defaultKeyboardKeys[" + std::to_string(keyIndex) + "]: " + keyError;
+                return false;
+            }
+            outScancodes.push_back(keyScancode);
+        }
+
+        std::sort(outScancodes.begin(), outScancodes.end());
+        outScancodes.erase(std::unique(outScancodes.begin(), outScancodes.end()), outScancodes.end());
+        return true;
+    };
 
     for (size_t i = 0; i < bindings->size(); ++i) {
         const auto& item = (*bindings)[i];
@@ -9361,7 +11682,72 @@ bool ExternalModManager::TryParseInputDefinitions(const std::string& content,
             binding.allowUserRemap = item["allowUserRemap"].get<bool>();
         }
 
+        if (!parseDefaultKeyboardKeys(item, "bindings[" + std::to_string(i) + "]", binding.defaultKeyboardScancodes)) {
+            return false;
+        }
+
         outBindings.push_back(std::move(binding));
+    }
+
+    if (json.is_object() && json.contains("cameraHotkeys")) {
+        if (!json["cameraHotkeys"].is_array()) {
+            outError = "cameraHotkeys must be array";
+            return false;
+        }
+
+        std::unordered_set<std::string> seenHotkeyIds;
+        for (size_t i = 0; i < json["cameraHotkeys"].size(); ++i) {
+            const auto& hotkey = json["cameraHotkeys"][i];
+            if (!hotkey.is_object()) {
+                outError = "cameraHotkeys[" + std::to_string(i) + "] must be object";
+                return false;
+            }
+
+            ExternalModCameraHotkeyDefinition definition;
+            if (!ValidateRequiredString(hotkey, "id", definition.id, outError)) {
+                outError = "cameraHotkeys[" + std::to_string(i) + "]: " + outError;
+                return false;
+            }
+            if (!seenHotkeyIds.insert(definition.id).second) {
+                outError = "Duplicate cameraHotkeys id: " + definition.id;
+                return false;
+            }
+
+            if (hotkey.contains("allowUserRemap")) {
+                if (!hotkey["allowUserRemap"].is_boolean()) {
+                    outError = "cameraHotkeys[" + std::to_string(i) + "].allowUserRemap must be boolean";
+                    return false;
+                }
+                definition.allowUserRemap = hotkey["allowUserRemap"].get<bool>();
+            }
+
+            if (!parseDefaultKeyboardKeys(hotkey, "cameraHotkeys[" + std::to_string(i) + "]",
+                                          definition.defaultKeyboardScancodes)) {
+                return false;
+            }
+            if (definition.defaultKeyboardScancodes.empty()) {
+                outError = "cameraHotkeys[" + std::to_string(i) + "].defaultKeyboardKeys must contain at least one key";
+                return false;
+            }
+
+            if (!hotkey.contains("action")) {
+                outError = "cameraHotkeys[" + std::to_string(i) + "] requires action";
+                return false;
+            }
+
+            std::string actionError;
+            if (!ParseAction(hotkey, kExternalModApiVersionV3, definition.action, actionError)) {
+                outError = "cameraHotkeys[" + std::to_string(i) + "]: " + actionError;
+                return false;
+            }
+            if (!kSupportedCameraHotkeyActions.contains(definition.action.type)) {
+                outError = "cameraHotkeys[" + std::to_string(i) +
+                           "].action must be toggleAimCameraMode|setAimCameraMode|setAimCameraProfile";
+                return false;
+            }
+
+            outCameraHotkeys.push_back(std::move(definition));
+        }
     }
 
     return true;
@@ -9372,8 +11758,8 @@ bool ExternalModManager::TryParseHookDefinitions(const std::string& content, int
                                                  std::string& outError) {
     outSubscriptions.clear();
 
-    if (apiVersion < kExternalModApiVersionV2) {
-        outError = "hookDefinitions requires apiVersion 2";
+    if (apiVersion < kExternalModApiVersionV3) {
+        outError = "hookDefinitions requires apiVersion 3";
         return false;
     }
 
@@ -9523,8 +11909,8 @@ bool ExternalModManager::TryParseActorDefinitions(const std::string& content, in
                                                   std::string& outError) {
     outDefinitions.clear();
 
-    if (apiVersion < kExternalModApiVersionV2) {
-        outError = "actorDefinitions requires apiVersion 2";
+    if (apiVersion < kExternalModApiVersionV3) {
+        outError = "actorDefinitions requires apiVersion 3";
         return false;
     }
 
@@ -9746,8 +12132,8 @@ bool ExternalModManager::TryParseBehaviorDefinitions(const std::string& content,
                                                      std::string& outError) {
     outDefinitions.clear();
 
-    if (apiVersion < kExternalModApiVersionV2) {
-        outError = "behaviorDefinitions requires apiVersion 2";
+    if (apiVersion < kExternalModApiVersionV3) {
+        outError = "behaviorDefinitions requires apiVersion 3";
         return false;
     }
 
@@ -9967,8 +12353,8 @@ bool ExternalModManager::TryParseSceneDefinitions(const std::string& content, in
                                                   std::string& outError) {
     outDefinitions.clear();
 
-    if (apiVersion < kExternalModApiVersionV2) {
-        outError = "sceneDefinitions requires apiVersion 2";
+    if (apiVersion < kExternalModApiVersionV3) {
+        outError = "sceneDefinitions requires apiVersion 3";
         return false;
     }
 
@@ -10106,6 +12492,35 @@ bool TryParseUseProfileEffectObject(const nlohmann::json& effect, const std::str
         output = effect[key].get<int32_t>();
         return true;
     };
+    const auto parseOptionalBool = [&](const char* key, bool& output) -> bool {
+        if (!effect.contains(key)) {
+            return true;
+        }
+        if (!effect[key].is_boolean()) {
+            outError = contextPath + "." + key + " must be boolean";
+            return false;
+        }
+        output = effect[key].get<bool>();
+        return true;
+    };
+    const auto parseOptionalColor = [&](const char* key, std::array<uint8_t, 4>& output) -> bool {
+        if (!effect.contains(key)) {
+            return true;
+        }
+        if (!effect[key].is_array() || effect[key].size() != 4) {
+            outError = contextPath + "." + key + " must be array[4]";
+            return false;
+        }
+        for (size_t channel = 0; channel < 4; ++channel) {
+            const auto& value = effect[key][channel];
+            if (!value.is_number_integer()) {
+                outError = contextPath + "." + key + "[" + std::to_string(channel) + "] must be integer";
+                return false;
+            }
+            output[channel] = static_cast<uint8_t>(std::clamp(value.get<int32_t>(), 0, 255));
+        }
+        return true;
+    };
 
     if (!parseOptionalString("damageProfileId", outEffect.damageProfileId) ||
         !parseOptionalString("profile", outEffect.damageProfileId) ||
@@ -10123,6 +12538,26 @@ bool TryParseUseProfileEffectObject(const nlohmann::json& effect, const std::str
         return false;
     }
 
+    const auto actionToken = ToLower(outEffect.action);
+    if (actionToken == "spawnshockwave") {
+        if (!parseOptionalString("origin", outEffect.shockwaveOrigin) ||
+            !parseOptionalColor("primColor", outEffect.shockwavePrimColor) ||
+            !parseOptionalColor("envColor", outEffect.shockwaveEnvColor) ||
+            !parseOptionalInt("life", outEffect.shockwaveLife) ||
+            !parseOptionalBool("spawnIceSmoke", outEffect.shockwaveSpawnIceSmoke)) {
+            return false;
+        }
+
+        const auto originToken = ToLower(outEffect.shockwaveOrigin);
+        if (originToken != "player" && originToken != "impact") {
+            outError = contextPath + ".origin must be player|impact";
+            return false;
+        }
+
+        outEffect.shockwaveOrigin = originToken;
+        outEffect.shockwaveLife = std::clamp(outEffect.shockwaveLife, 1, 120);
+    }
+
     return true;
 }
 
@@ -10130,8 +12565,8 @@ bool ExternalModManager::TryParseStatusDefinitions(const std::string& content, i
                                                    std::vector<ExternalModStatusDefinition>& outDefinitions,
                                                    std::string& outError) {
     outDefinitions.clear();
-    if (apiVersion < kExternalModApiVersionV2) {
-        outError = "statusDefinitions requires apiVersion 2";
+    if (apiVersion < kExternalModApiVersionV3) {
+        outError = "statusDefinitions requires apiVersion 3";
         return false;
     }
 
@@ -10290,8 +12725,8 @@ bool ExternalModManager::TryParseDamageDefinitions(const std::string& content, i
                                                    std::vector<ExternalModDamageProfile>& outDefinitions,
                                                    std::string& outError) {
     outDefinitions.clear();
-    if (apiVersion < kExternalModApiVersionV2) {
-        outError = "damageDefinitions requires apiVersion 2";
+    if (apiVersion < kExternalModApiVersionV3) {
+        outError = "damageDefinitions requires apiVersion 3";
         return false;
     }
 
@@ -10350,6 +12785,18 @@ bool ExternalModManager::TryParseDamageDefinitions(const std::string& content, i
             }
             definition.type = profile["type"].get<std::string>();
         }
+        if (profile.contains("propInteraction")) {
+            if (!profile["propInteraction"].is_string()) {
+                outError = "profiles[" + std::to_string(i) + "].propInteraction must be string";
+                return false;
+            }
+            definition.propInteraction = ToLower(profile["propInteraction"].get<std::string>());
+            if (definition.propInteraction != "none" && definition.propInteraction != "vanilla_hit" &&
+                definition.propInteraction != "hard_kill") {
+                outError = "profiles[" + std::to_string(i) + "].propInteraction must be none|vanilla_hit|hard_kill";
+                return false;
+            }
+        }
         if (profile.contains("iframes")) {
             if (!profile["iframes"].is_object()) {
                 outError = "profiles[" + std::to_string(i) + "].iframes must be object";
@@ -10375,8 +12822,8 @@ bool ExternalModManager::TryParseTargetingDefinitions(const std::string& content
                                                       std::vector<ExternalModTargetingProfile>& outDefinitions,
                                                       std::string& outError) {
     outDefinitions.clear();
-    if (apiVersion < kExternalModApiVersionV2) {
-        outError = "targetingDefinitions requires apiVersion 2";
+    if (apiVersion < kExternalModApiVersionV3) {
+        outError = "targetingDefinitions requires apiVersion 3";
         return false;
     }
 
@@ -10489,8 +12936,8 @@ bool ExternalModManager::TryParseItemUseProfiles(const std::string& content, int
                                                  std::vector<ExternalModItemUseProfile>& outDefinitions,
                                                  std::string& outError) {
     outDefinitions.clear();
-    if (apiVersion < kExternalModApiVersionV2) {
-        outError = "itemUseProfiles requires apiVersion 2";
+    if (apiVersion < kExternalModApiVersionV3) {
+        outError = "itemUseProfiles requires apiVersion 3";
         return false;
     }
 
@@ -10571,8 +13018,8 @@ bool ExternalModManager::TryParseProjectileDefinitions(const std::string& conten
                                                        std::vector<ExternalModProjectileProfile>& outDefinitions,
                                                        std::string& outError) {
     outDefinitions.clear();
-    if (apiVersion < kExternalModApiVersionV2) {
-        outError = "projectileDefinitions requires apiVersion 2";
+    if (apiVersion < kExternalModApiVersionV3) {
+        outError = "projectileDefinitions requires apiVersion 3";
         return false;
     }
 
@@ -10719,8 +13166,8 @@ bool ExternalModManager::TryParseAoEDefinitions(const std::string& content, int3
                                                 std::vector<ExternalModAoEProfile>& outDefinitions,
                                                 std::string& outError) {
     outDefinitions.clear();
-    if (apiVersion < kExternalModApiVersionV2) {
-        outError = "aoeDefinitions requires apiVersion 2";
+    if (apiVersion < kExternalModApiVersionV3) {
+        outError = "aoeDefinitions requires apiVersion 3";
         return false;
     }
 
@@ -10771,6 +13218,18 @@ bool ExternalModManager::TryParseAoEDefinitions(const std::string& content, int3
                 return false;
             }
             definition.shape = aoe["shape"].get<std::string>();
+        }
+        if (aoe.contains("targetScope")) {
+            if (!aoe["targetScope"].is_string()) {
+                outError = "aoe[" + std::to_string(i) + "].targetScope must be string";
+                return false;
+            }
+
+            if (!ParseAoETargetScopeToken(aoe["targetScope"].get<std::string>(), definition.targetScope)) {
+                outError = "aoe[" + std::to_string(i) +
+                           "].targetScope unsupported (expected all_non_player|enemies_bosses|enemies_bosses_props)";
+                return false;
+            }
         }
         if (aoe.contains("range")) {
             if (!aoe["range"].is_number()) {
@@ -10849,8 +13308,8 @@ bool ExternalModManager::TryParseMovementDefinitions(const std::string& content,
                                                      std::vector<ExternalModMovementProfile>& outDefinitions,
                                                      std::string& outError) {
     outDefinitions.clear();
-    if (apiVersion < kExternalModApiVersionV2) {
-        outError = "movementDefinitions requires apiVersion 2";
+    if (apiVersion < kExternalModApiVersionV3) {
+        outError = "movementDefinitions requires apiVersion 3";
         return false;
     }
 
@@ -10894,6 +13353,17 @@ bool ExternalModManager::TryParseMovementDefinitions(const std::string& content,
             outError = "Duplicate movement profile id: " + definition.id;
             return false;
         }
+        if (!ValidateRequiredString(profile, "mode", definition.idlePose, outError)) {
+            outError = "profiles[" + std::to_string(i) + "].mode: " + outError;
+            return false;
+        }
+        if (!ParseMovementModeToken(definition.idlePose, definition.mode)) {
+            outError = "profiles[" + std::to_string(i) + "].mode must be modifier|surf";
+            return false;
+        }
+        // Reset idlePose to default after temporary parse use above.
+        definition.idlePose = "stand";
+
         if (profile.contains("durationFrames")) {
             if (!profile["durationFrames"].is_number_integer()) {
                 outError = "profiles[" + std::to_string(i) + "].durationFrames must be integer";
@@ -10901,26 +13371,494 @@ bool ExternalModManager::TryParseMovementDefinitions(const std::string& content,
             }
             definition.durationFrames = std::clamp(profile["durationFrames"].get<int32_t>(), 0, 36000);
         }
-        if (profile.contains("speedMultiplier")) {
-            if (!profile["speedMultiplier"].is_number()) {
-                outError = "profiles[" + std::to_string(i) + "].speedMultiplier must be numeric";
-                return false;
+        if (definition.mode == ExternalModMovementMode::Modifier) {
+            if (profile.contains("speedMultiplier")) {
+                if (!profile["speedMultiplier"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].speedMultiplier must be numeric";
+                    return false;
+                }
+                definition.speedMultiplier = std::clamp(profile["speedMultiplier"].get<float>(), 0.05f, 16.0f);
             }
-            definition.speedMultiplier = std::clamp(profile["speedMultiplier"].get<float>(), 0.05f, 16.0f);
+            if (profile.contains("accelMultiplier")) {
+                if (!profile["accelMultiplier"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].accelMultiplier must be numeric";
+                    return false;
+                }
+                definition.accelMultiplier = std::clamp(profile["accelMultiplier"].get<float>(), 0.05f, 16.0f);
+            }
+            if (profile.contains("gravityScale")) {
+                if (!profile["gravityScale"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].gravityScale must be numeric";
+                    return false;
+                }
+                definition.gravityScale = std::clamp(profile["gravityScale"].get<float>(), 0.05f, 8.0f);
+            }
+        } else {
+            if (profile.contains("boardRequired")) {
+                if (!profile["boardRequired"].is_boolean()) {
+                    outError = "profiles[" + std::to_string(i) + "].boardRequired must be boolean";
+                    return false;
+                }
+                definition.boardRequired = profile["boardRequired"].get<bool>();
+            }
+            if (profile.contains("boardSpawnMode")) {
+                if (!profile["boardSpawnMode"].is_string()) {
+                    outError = "profiles[" + std::to_string(i) + "].boardSpawnMode must be string";
+                    return false;
+                }
+                definition.boardSpawnMode = ToLower(profile["boardSpawnMode"].get<std::string>());
+                if (definition.boardSpawnMode != "persistent_under_player") {
+                    outError = "profiles[" + std::to_string(i) + "].boardSpawnMode must be persistent_under_player";
+                    return false;
+                }
+            }
+            if (profile.contains("idlePose")) {
+                if (!profile["idlePose"].is_string()) {
+                    outError = "profiles[" + std::to_string(i) + "].idlePose must be string";
+                    return false;
+                }
+                definition.idlePose = ToLower(profile["idlePose"].get<std::string>());
+                if (definition.idlePose != "stand" && definition.idlePose != "tpose") {
+                    outError = "profiles[" + std::to_string(i) + "].idlePose must be stand|tpose";
+                    return false;
+                }
+            }
+            if (profile.contains("idleLock")) {
+                if (!profile["idleLock"].is_boolean()) {
+                    outError = "profiles[" + std::to_string(i) + "].idleLock must be boolean";
+                    return false;
+                }
+                definition.idleLock = profile["idleLock"].get<bool>();
+            }
+            if (profile.contains("boardHeightOffset")) {
+                if (!profile["boardHeightOffset"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].boardHeightOffset must be numeric";
+                    return false;
+                }
+                definition.boardHeightOffset = std::clamp(profile["boardHeightOffset"].get<float>(), -100.0f, 100.0f);
+            }
+            if (profile.contains("boardPitchRollFromGround")) {
+                if (!profile["boardPitchRollFromGround"].is_boolean()) {
+                    outError = "profiles[" + std::to_string(i) + "].boardPitchRollFromGround must be boolean";
+                    return false;
+                }
+                definition.boardPitchRollFromGround = profile["boardPitchRollFromGround"].get<bool>();
+            }
+            if (profile.contains("boardVisibleWhenIdle")) {
+                if (!profile["boardVisibleWhenIdle"].is_boolean()) {
+                    outError = "profiles[" + std::to_string(i) + "].boardVisibleWhenIdle must be boolean";
+                    return false;
+                }
+                definition.boardVisibleWhenIdle = profile["boardVisibleWhenIdle"].get<bool>();
+            }
+            if (profile.contains("boardModelAsset")) {
+                if (!profile["boardModelAsset"].is_string()) {
+                    outError = "profiles[" + std::to_string(i) + "].boardModelAsset must be string";
+                    return false;
+                }
+                definition.boardModelAsset = profile["boardModelAsset"].get<std::string>();
+            }
+            if (profile.contains("boardScale")) {
+                if (!profile["boardScale"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].boardScale must be numeric";
+                    return false;
+                }
+                definition.boardScale = std::clamp(profile["boardScale"].get<float>(), 0.05f, 20.0f);
+            }
+            if (profile.contains("boardPitchOffsetDeg")) {
+                if (!profile["boardPitchOffsetDeg"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].boardPitchOffsetDeg must be numeric";
+                    return false;
+                }
+                definition.boardPitchOffsetDeg = std::clamp(profile["boardPitchOffsetDeg"].get<float>(), -180.0f, 180.0f);
+            }
+            if (profile.contains("boardYawOffsetDeg")) {
+                if (!profile["boardYawOffsetDeg"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].boardYawOffsetDeg must be numeric";
+                    return false;
+                }
+                definition.boardYawOffsetDeg = std::clamp(profile["boardYawOffsetDeg"].get<float>(), -180.0f, 180.0f);
+            }
+            if (profile.contains("boardRollOffsetDeg")) {
+                if (!profile["boardRollOffsetDeg"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].boardRollOffsetDeg must be numeric";
+                    return false;
+                }
+                definition.boardRollOffsetDeg = std::clamp(profile["boardRollOffsetDeg"].get<float>(), -180.0f, 180.0f);
+            }
+            if (profile.contains("boardForwardOffset")) {
+                if (!profile["boardForwardOffset"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].boardForwardOffset must be numeric";
+                    return false;
+                }
+                definition.boardForwardOffset = std::clamp(profile["boardForwardOffset"].get<float>(), -200.0f, 200.0f);
+            }
+            if (profile.contains("boardRightOffset")) {
+                if (!profile["boardRightOffset"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].boardRightOffset must be numeric";
+                    return false;
+                }
+                definition.boardRightOffset = std::clamp(profile["boardRightOffset"].get<float>(), -200.0f, 200.0f);
+            }
+            if (profile.contains("boardUpOffset")) {
+                if (!profile["boardUpOffset"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].boardUpOffset must be numeric";
+                    return false;
+                }
+                definition.boardUpOffset = std::clamp(profile["boardUpOffset"].get<float>(), -200.0f, 200.0f);
+            }
+            if (profile.contains("riderHeightOffset")) {
+                if (!profile["riderHeightOffset"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].riderHeightOffset must be numeric";
+                    return false;
+                }
+                definition.riderHeightOffset = std::clamp(profile["riderHeightOffset"].get<float>(), -20.0f, 40.0f);
+            }
+            if (profile.contains("surfMaxSpeed")) {
+                if (!profile["surfMaxSpeed"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].surfMaxSpeed must be numeric";
+                    return false;
+                }
+                definition.surfMaxSpeed = std::clamp(profile["surfMaxSpeed"].get<float>(), 0.1f, 50.0f);
+            }
+            if (profile.contains("surfForwardAccel")) {
+                if (!profile["surfForwardAccel"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].surfForwardAccel must be numeric";
+                    return false;
+                }
+                definition.surfForwardAccel = std::clamp(profile["surfForwardAccel"].get<float>(), 0.0f, 5.0f);
+            }
+            if (profile.contains("surfBoostButton")) {
+                if (!ParseButtonMask(profile["surfBoostButton"], definition.surfBoostButtonMask, outError)) {
+                    outError = "profiles[" + std::to_string(i) + "].surfBoostButton: " + outError;
+                    return false;
+                }
+            }
+            if (profile.contains("surfBoostAccel")) {
+                if (!profile["surfBoostAccel"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].surfBoostAccel must be numeric";
+                    return false;
+                }
+                definition.surfBoostAccel = std::clamp(profile["surfBoostAccel"].get<float>(), 0.0f, 10.0f);
+            }
+            if (profile.contains("surfBoostMaxSpeed")) {
+                if (!profile["surfBoostMaxSpeed"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].surfBoostMaxSpeed must be numeric";
+                    return false;
+                }
+                definition.surfBoostMaxSpeed = std::clamp(profile["surfBoostMaxSpeed"].get<float>(), 0.1f, 80.0f);
+            }
+            if (profile.contains("surfBoostCooldownFrames")) {
+                if (!profile["surfBoostCooldownFrames"].is_number_integer()) {
+                    outError = "profiles[" + std::to_string(i) + "].surfBoostCooldownFrames must be integer";
+                    return false;
+                }
+                definition.surfBoostCooldownFrames =
+                    std::clamp(profile["surfBoostCooldownFrames"].get<int32_t>(), 1, 600);
+            }
+            if (profile.contains("surfDownhillAccel")) {
+                if (!profile["surfDownhillAccel"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].surfDownhillAccel must be numeric";
+                    return false;
+                }
+                definition.surfDownhillAccel = std::clamp(profile["surfDownhillAccel"].get<float>(), 0.0f, 10.0f);
+            }
+            if (profile.contains("surfUphillBrake")) {
+                if (!profile["surfUphillBrake"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].surfUphillBrake must be numeric";
+                    return false;
+                }
+                definition.surfUphillBrake = std::clamp(profile["surfUphillBrake"].get<float>(), 0.0f, 10.0f);
+            }
+            if (profile.contains("surfFlatDrag")) {
+                if (!profile["surfFlatDrag"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].surfFlatDrag must be numeric";
+                    return false;
+                }
+                definition.surfFlatDrag = std::clamp(profile["surfFlatDrag"].get<float>(), 0.0f, 0.95f);
+            }
+            if (profile.contains("surfTurnRateDeg")) {
+                if (!profile["surfTurnRateDeg"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].surfTurnRateDeg must be numeric";
+                    return false;
+                }
+                definition.surfTurnRateDeg = std::clamp(profile["surfTurnRateDeg"].get<float>(), 0.0f, 45.0f);
+            }
+            if (profile.contains("idleSpeedThreshold")) {
+                if (!profile["idleSpeedThreshold"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].idleSpeedThreshold must be numeric";
+                    return false;
+                }
+                definition.idleSpeedThreshold = std::clamp(profile["idleSpeedThreshold"].get<float>(), 0.0f, 5.0f);
+            }
         }
-        if (profile.contains("accelMultiplier")) {
-            if (!profile["accelMultiplier"].is_number()) {
-                outError = "profiles[" + std::to_string(i) + "].accelMultiplier must be numeric";
-                return false;
-            }
-            definition.accelMultiplier = std::clamp(profile["accelMultiplier"].get<float>(), 0.05f, 16.0f);
+
+        outDefinitions.push_back(std::move(definition));
+    }
+
+    return true;
+}
+
+bool ExternalModManager::TryParseCameraDefinitions(const std::string& content, int32_t apiVersion,
+                                                   std::vector<ExternalModAimCameraProfile>& outDefinitions,
+                                                   std::string& outError) {
+    outDefinitions.clear();
+    if (apiVersion < kExternalModApiVersionV3) {
+        outError = "cameraDefinitions requires apiVersion 3";
+        return false;
+    }
+
+    nlohmann::json json;
+    try {
+        json = nlohmann::json::parse(content);
+    } catch (const std::exception& ex) {
+        outError = std::string("camera_profiles.json parse error: ") + ex.what();
+        return false;
+    }
+
+    if (!json.is_object() || !json.contains("profiles") || !json["profiles"].is_array()) {
+        outError = "camera_profiles.json must be object with profiles[]";
+        return false;
+    }
+    if (!json.contains("schemaVersion") || !json["schemaVersion"].is_number_integer() ||
+        json["schemaVersion"].get<int32_t>() != 1) {
+        outError = "camera_profiles.json schemaVersion must be 1";
+        return false;
+    }
+
+    std::unordered_set<std::string> seenIds;
+    const auto& profiles = json["profiles"];
+    for (size_t i = 0; i < profiles.size(); ++i) {
+        const auto& profile = profiles[i];
+        if (!profile.is_object()) {
+            outError = "profiles[" + std::to_string(i) + "] must be object";
+            return false;
         }
-        if (profile.contains("gravityScale")) {
-            if (!profile["gravityScale"].is_number()) {
-                outError = "profiles[" + std::to_string(i) + "].gravityScale must be numeric";
+
+        ExternalModAimCameraProfile definition;
+        if (!ValidateRequiredString(profile, "id", definition.id, outError)) {
+            outError = "profiles[" + std::to_string(i) + "].id: " + outError;
+            return false;
+        }
+        if (!IsNamespacedCatalogId(definition.id)) {
+            outError = "profiles[" + std::to_string(i) + "].id must be namespaced";
+            return false;
+        }
+        if (!seenIds.insert(definition.id).second) {
+            outError = "Duplicate camera profile id: " + definition.id;
+            return false;
+        }
+
+        if (!profile.contains("contexts") || !profile["contexts"].is_array()) {
+            outError = "profiles[" + std::to_string(i) + "].contexts must be array";
+            return false;
+        }
+        definition.contextsMask = 0;
+        for (size_t contextIndex = 0; contextIndex < profile["contexts"].size(); ++contextIndex) {
+            const auto& contextValue = profile["contexts"][contextIndex];
+            if (!contextValue.is_string()) {
+                outError = "profiles[" + std::to_string(i) + "].contexts[" + std::to_string(contextIndex) +
+                           "] must be string";
                 return false;
             }
-            definition.gravityScale = std::clamp(profile["gravityScale"].get<float>(), 0.05f, 8.0f);
+            ExternalModAimCameraContext context;
+            if (!ParseAimCameraContextToken(contextValue.get<std::string>(), context)) {
+                outError = "profiles[" + std::to_string(i) + "].contexts[" + std::to_string(contextIndex) +
+                           "] unsupported context token";
+                return false;
+            }
+            definition.contextsMask |= AimCameraContextToMask(context);
+        }
+        if (definition.contextsMask == 0) {
+            outError = "profiles[" + std::to_string(i) + "].contexts must contain at least one entry";
+            return false;
+        }
+
+        auto applyModeForContext = [&](ExternalModAimCameraContext context, int16_t mode, bool overShoulder) {
+            if (overShoulder) {
+                switch (context) {
+                    case ExternalModAimCameraContext::CUp:
+                        definition.cUpOverShoulderMode = mode;
+                        break;
+                    case ExternalModAimCameraContext::Bow:
+                        definition.bowOverShoulderMode = mode;
+                        break;
+                    case ExternalModAimCameraContext::Hookshot:
+                        definition.hookshotOverShoulderMode = mode;
+                        break;
+                    case ExternalModAimCameraContext::Slingshot:
+                        definition.slingshotOverShoulderMode = mode;
+                        break;
+                    case ExternalModAimCameraContext::Boomerang:
+                        definition.boomerangOverShoulderMode = mode;
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                switch (context) {
+                    case ExternalModAimCameraContext::CUp:
+                        definition.cUpFirstPersonMode = mode;
+                        break;
+                    case ExternalModAimCameraContext::Bow:
+                        definition.bowFirstPersonMode = mode;
+                        break;
+                    case ExternalModAimCameraContext::Hookshot:
+                        definition.hookshotFirstPersonMode = mode;
+                        break;
+                    case ExternalModAimCameraContext::Slingshot:
+                        definition.slingshotFirstPersonMode = mode;
+                        break;
+                    case ExternalModAimCameraContext::Boomerang:
+                        definition.boomerangFirstPersonMode = mode;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+
+        auto parseContextModes = [&](const char* fieldName, bool overShoulder) -> bool {
+            if (!profile.contains(fieldName)) {
+                return true;
+            }
+            const auto& modeJson = profile[fieldName];
+            if (modeJson.is_string()) {
+                int16_t mode = 0;
+                if (!ParseCameraModeTypeToken(modeJson.get<std::string>(), mode)) {
+                    outError = "profiles[" + std::to_string(i) + "]." + fieldName + " has unsupported camera mode token";
+                    return false;
+                }
+                for (const auto context :
+                     { ExternalModAimCameraContext::CUp, ExternalModAimCameraContext::Bow, ExternalModAimCameraContext::Hookshot,
+                       ExternalModAimCameraContext::Slingshot, ExternalModAimCameraContext::Boomerang }) {
+                    applyModeForContext(context, mode, overShoulder);
+                }
+                return true;
+            }
+
+            if (!modeJson.is_object()) {
+                outError = "profiles[" + std::to_string(i) + "]." + fieldName + " must be string or object";
+                return false;
+            }
+
+            for (const auto& [contextToken, modeTokenJson] : modeJson.items()) {
+                if (!modeTokenJson.is_string()) {
+                    outError = "profiles[" + std::to_string(i) + "]." + fieldName + "." + contextToken + " must be string";
+                    return false;
+                }
+
+                ExternalModAimCameraContext context;
+                if (!ParseAimCameraContextToken(contextToken, context)) {
+                    outError = "profiles[" + std::to_string(i) + "]." + fieldName + "." + contextToken +
+                               " has unsupported context";
+                    return false;
+                }
+
+                int16_t mode = 0;
+                if (!ParseCameraModeTypeToken(modeTokenJson.get<std::string>(), mode)) {
+                    outError = "profiles[" + std::to_string(i) + "]." + fieldName + "." + contextToken +
+                               " has unsupported camera mode token";
+                    return false;
+                }
+
+                applyModeForContext(context, mode, overShoulder);
+            }
+
+            return true;
+        };
+
+        if (!parseContextModes("firstPersonModeByContext", false) ||
+            !parseContextModes("overShoulderModeByContext", true)) {
+            return false;
+        }
+
+        if (profile.contains("shoulder")) {
+            if (!profile["shoulder"].is_string()) {
+                outError = "profiles[" + std::to_string(i) + "].shoulder must be string";
+                return false;
+            }
+            definition.shoulder = ToLower(profile["shoulder"].get<std::string>());
+            if (definition.shoulder != "right" && definition.shoulder != "left") {
+                outError = "profiles[" + std::to_string(i) + "].shoulder must be right|left";
+                return false;
+            }
+        }
+
+        if (profile.contains("aimRay")) {
+            if (!profile["aimRay"].is_string()) {
+                outError = "profiles[" + std::to_string(i) + "].aimRay must be string";
+                return false;
+            }
+            definition.aimRay = ToLower(profile["aimRay"].get<std::string>());
+            if (definition.aimRay != "camera_center") {
+                outError = "profiles[" + std::to_string(i) + "].aimRay must be camera_center";
+                return false;
+            }
+        }
+
+        if (profile.contains("reticle")) {
+            if (!profile["reticle"].is_object()) {
+                outError = "profiles[" + std::to_string(i) + "].reticle must be object";
+                return false;
+            }
+            const auto& reticle = profile["reticle"];
+            if (reticle.contains("x")) {
+                if (!reticle["x"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].reticle.x must be numeric";
+                    return false;
+                }
+                definition.reticleX = std::clamp(reticle["x"].get<float>(), 0.0f, 1.0f);
+            }
+            if (reticle.contains("y")) {
+                if (!reticle["y"].is_number()) {
+                    outError = "profiles[" + std::to_string(i) + "].reticle.y must be numeric";
+                    return false;
+                }
+                definition.reticleY = std::clamp(reticle["y"].get<float>(), 0.0f, 1.0f);
+            }
+        }
+
+        if (profile.contains("mouseFireEnabled")) {
+            if (!profile["mouseFireEnabled"].is_boolean()) {
+                outError = "profiles[" + std::to_string(i) + "].mouseFireEnabled must be boolean";
+                return false;
+            }
+            definition.mouseFireEnabled = profile["mouseFireEnabled"].get<bool>();
+        }
+
+        if (profile.contains("mouseFireButton")) {
+            if (!profile["mouseFireButton"].is_string()) {
+                outError = "profiles[" + std::to_string(i) + "].mouseFireButton must be string";
+                return false;
+            }
+            if (!ParseAimMouseButtonToken(profile["mouseFireButton"].get<std::string>(), definition.mouseFireButton)) {
+                outError = "profiles[" + std::to_string(i) + "].mouseFireButton must be left|right|middle|backward|forward";
+                return false;
+            }
+        }
+
+        if (profile.contains("mouseFireMode")) {
+            if (!profile["mouseFireMode"].is_string()) {
+                outError = "profiles[" + std::to_string(i) + "].mouseFireMode must be string";
+                return false;
+            }
+            if (!ParseAimMouseFireModeToken(profile["mouseFireMode"].get<std::string>(), definition.mouseFireMode)) {
+                outError = "profiles[" + std::to_string(i) + "].mouseFireMode must be both|firstPerson|overShoulder";
+                return false;
+            }
+        }
+
+        if (profile.contains("reticleVisibility")) {
+            if (!profile["reticleVisibility"].is_string()) {
+                outError = "profiles[" + std::to_string(i) + "].reticleVisibility must be string";
+                return false;
+            }
+            if (!ParseAimReticleVisibilityToken(profile["reticleVisibility"].get<std::string>(),
+                                                definition.reticleVisibility)) {
+                outError = "profiles[" + std::to_string(i) + "].reticleVisibility must be aim_only|button_hold|selected";
+                return false;
+            }
         }
 
         outDefinitions.push_back(std::move(definition));
@@ -11108,8 +14046,9 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
     runtime.maxHookCallsPerFrame = package.manifest.runtimeMaxHookCallsPerFrame;
     runtime.hookCallsThisFrame = 0;
     runtime.maxActorInstances = package.manifest.runtimeMaxActorInstances;
+    runtime.maxActiveStatusEffects = package.manifest.runtimeMaxActiveStatuses;
 
-    if (package.manifest.apiVersion >= kExternalModApiVersionV2) {
+    if (package.manifest.apiVersion >= kExternalModApiVersionV3) {
         std::filesystem::path itemsPath;
         if (!IsSafePackageRelativePath(package.manifest.itemDefinitions, itemsPath, outError)) {
             return false;
@@ -11118,7 +14057,45 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
         if (!ReadFileFromPackage(package, itemsPath, kMaxItemDefinitionBytes, itemContent, outError)) {
             return false;
         }
-        if (!TryParseItemDefinitions(itemContent, runtime.itemDefinitions, outError)) {
+
+        nlohmann::json itemDefinitionsJson;
+        try {
+            itemDefinitionsJson = nlohmann::json::parse(itemContent);
+        } catch (const std::exception& ex) {
+            outError = std::string("itemDefinitions parse error: ") + ex.what();
+            return false;
+        }
+
+        if (ManifestHasCapability(package.manifest, "patches.vanilla_items.v1")) {
+            std::filesystem::path patchPath;
+            if (!IsSafePackageRelativePath(package.manifest.vanillaItemPatches, patchPath, outError)) {
+                outError = "Invalid vanillaItemPatches: " + outError;
+                return false;
+            }
+
+            std::string patchContent;
+            if (!ReadFileFromPackage(package, patchPath, kMaxVanillaPatchDefinitionBytes, patchContent, outError)) {
+                outError = "Failed to read vanillaItemPatches: " + outError;
+                return false;
+            }
+
+            nlohmann::json patchJson;
+            try {
+                patchJson = nlohmann::json::parse(patchContent);
+            } catch (const std::exception& ex) {
+                outError = std::string("vanillaItemPatches parse error: ") + ex.what();
+                return false;
+            }
+
+            std::string patchError;
+            if (!TryApplyVanillaItemPatchesToJson(itemDefinitionsJson, patchJson, patchError)) {
+                outError = "vanillaItemPatches apply failed: " + patchError;
+                return false;
+            }
+            SPDLOG_INFO("[ExternalMods] Applied vanilla item patches for {}", package.manifest.id);
+        }
+
+        if (!TryParseItemDefinitions(itemDefinitionsJson.dump(), runtime.itemDefinitions, outError)) {
             return false;
         }
 
@@ -11147,6 +14124,33 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
                     outError = "items[" + std::to_string(i) + "].iconAsset decode failed: " + outError;
                     return false;
                 }
+            }
+
+            if (!definition.aimReticleTextureAsset.empty()) {
+                std::filesystem::path reticlePath;
+                if (!IsSafePackageRelativePath(definition.aimReticleTextureAsset, reticlePath, outError)) {
+                    outError = "items[" + std::to_string(i) + "].aimReticleTextureAsset " + outError;
+                    return false;
+                }
+
+                if (ToLower(reticlePath.extension().string()) != ".png") {
+                    outError = "items[" + std::to_string(i) + "].aimReticleTextureAsset must point to a .png file";
+                    return false;
+                }
+
+                std::vector<uint8_t> reticleBytes;
+                if (!ReadBinaryFromPackage(package, reticlePath, kMaxHookshotTextureBytes, reticleBytes, outError)) {
+                    outError = "items[" + std::to_string(i) + "].aimReticleTextureAsset read failed: " + outError;
+                    return false;
+                }
+
+                std::vector<uint8_t> reticleRgba32;
+                if (!TryDecodePngToRgba32FixedSize(reticleBytes, kAimReticleTextureWidth, kAimReticleTextureHeight,
+                                                   reticleRgba32, outError)) {
+                    outError = "items[" + std::to_string(i) + "].aimReticleTextureAsset decode failed: " + outError;
+                    return false;
+                }
+                ConvertRgba32ToI8(reticleRgba32, definition.aimReticleTextureI8);
             }
 
             if (!definition.modelAsset.empty()) {
@@ -11602,7 +14606,7 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
         if (!ReadFileFromPackage(package, inputPath, kMaxInputDefinitionBytes, inputContent, outError)) {
             return false;
         }
-        if (!TryParseInputDefinitions(inputContent, runtime.inputBindings, outError)) {
+        if (!TryParseInputDefinitions(inputContent, runtime.inputBindings, runtime.cameraHotkeys, outError)) {
             return false;
         }
 
@@ -11811,29 +14815,21 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
             }
         }
 
-        if (ManifestHasCapability(package.manifest, "patches.vanilla_items.v1")) {
-            std::filesystem::path patchPath;
-            if (!IsSafePackageRelativePath(package.manifest.vanillaItemPatches, patchPath, outError)) {
-                outError = "Invalid vanillaItemPatches: " + outError;
+        if (ManifestHasCapability(package.manifest, "camera.aim_profiles.v1")) {
+            std::filesystem::path cameraPath;
+            if (!IsSafePackageRelativePath(package.manifest.cameraDefinitions, cameraPath, outError)) {
+                outError = "Invalid cameraDefinitions: " + outError;
                 return false;
             }
-            std::string patchContent;
-            if (!ReadFileFromPackage(package, patchPath, kMaxVanillaPatchDefinitionBytes, patchContent, outError)) {
-                outError = "Failed to read vanillaItemPatches: " + outError;
+
+            std::string cameraContent;
+            if (!ReadFileFromPackage(package, cameraPath, kMaxCameraDefinitionBytes, cameraContent, outError)) {
+                outError = "Failed to read cameraDefinitions: " + outError;
                 return false;
             }
-            try {
-                const auto patchJson = nlohmann::json::parse(patchContent);
-                if (!patchJson.is_object() && !patchJson.is_array()) {
-                    outError = "vanillaItemPatches must be object or array";
-                    return false;
-                }
-            } catch (const std::exception& ex) {
-                outError = std::string("vanillaItemPatches parse error: ") + ex.what();
+            if (!TryParseCameraDefinitions(cameraContent, runtime.apiVersion, runtime.cameraProfiles, outError)) {
                 return false;
             }
-            SPDLOG_WARN("[ExternalMods] {} declares patches.vanilla_items.v1, but runtime patch execution is not yet implemented",
-                        package.manifest.id);
         }
 
         const auto hasStatusRef = [&](const std::string& statusId) -> bool {
@@ -11844,22 +14840,22 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
             if (ParseStatusIdToken(statusId, builtinType) && builtinType != ExternalModStatusType::Custom) {
                 return true;
             }
-            return FindStatusDefinitionById(runtime, statusId) != nullptr;
+            return ExternalModContentRegistry::FindStatusDefinitionById(runtime, statusId) != nullptr;
         };
         const auto hasDamageRef = [&](const std::string& damageId) {
-            return damageId.empty() || FindDamageProfileById(runtime, damageId) != nullptr;
+            return damageId.empty() || ExternalModContentRegistry::FindDamageProfileById(runtime, damageId) != nullptr;
         };
         const auto hasTargetingRef = [&](const std::string& targetingId) {
-            return targetingId.empty() || FindTargetingProfileById(runtime, targetingId) != nullptr;
+            return targetingId.empty() || ExternalModContentRegistry::FindTargetingProfileById(runtime, targetingId) != nullptr;
         };
         const auto hasProjectileRef = [&](const std::string& projectileId) {
-            return projectileId.empty() || FindProjectileProfileById(runtime, projectileId) != nullptr;
+            return projectileId.empty() || ExternalModContentRegistry::FindProjectileProfileById(runtime, projectileId) != nullptr;
         };
         const auto hasAoERef = [&](const std::string& aoeId) {
-            return aoeId.empty() || FindAoEProfileById(runtime, aoeId) != nullptr;
+            return aoeId.empty() || ExternalModContentRegistry::FindAoEProfileById(runtime, aoeId) != nullptr;
         };
         const auto hasMovementRef = [&](const std::string& movementId) {
-            return movementId.empty() || FindMovementProfileById(runtime, movementId) != nullptr;
+            return movementId.empty() || ExternalModContentRegistry::FindMovementProfileById(runtime, movementId) != nullptr;
         };
 
         for (const auto& profile : runtime.itemUseProfiles) {
@@ -11909,14 +14905,14 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
             }
         }
         for (const auto& itemDefinition : runtime.itemDefinitions) {
-            if (!itemDefinition.useProfile.empty() && FindItemUseProfileById(runtime, itemDefinition.useProfile) == nullptr) {
+            if (!itemDefinition.useProfile.empty() && ExternalModContentRegistry::FindItemUseProfileById(runtime, itemDefinition.useProfile) == nullptr) {
                 outError = "item references unknown useProfile: " + itemDefinition.id + " -> " + itemDefinition.useProfile;
                 return false;
             }
         }
 
         if (package.manifest.runtimeType != "wasm3-v1") {
-            outError = "Unsupported runtime.type for apiVersion 2: " + package.manifest.runtimeType;
+            outError = "Unsupported runtime.type for apiVersion 3: " + package.manifest.runtimeType;
             return false;
         }
 
@@ -11973,6 +14969,47 @@ bool ExternalModManager::LoadRuntimeForPackage(ExternalModPackage& package, std:
         config.modId = package.manifest.id;
         config.maxMemoryKb = package.manifest.runtimeMaxMemoryKb;
         config.maxCallMs = package.manifest.runtimeMaxCallMs;
+        config.maxFrameBudgetMs = package.manifest.runtimeMaxFrameBudgetMs;
+        config.hostApi.useItemProfile = [modId = package.manifest.id](const std::string& itemOrProfileId) {
+            return ExternalModManager::Instance().WasmHostUseItemProfile(modId, itemOrProfileId);
+        };
+        config.hostApi.resolveTarget = [modId = package.manifest.id](const std::string& profileId,
+                                                                     std::vector<int32_t>& outHandles) {
+            return ExternalModManager::Instance().WasmHostResolveTarget(modId, profileId, outHandles);
+        };
+        config.hostApi.dealDamage = [modId = package.manifest.id](int32_t targetHandle, const std::string& damageProfileId) {
+            return ExternalModManager::Instance().WasmHostDealDamage(modId, targetHandle, damageProfileId);
+        };
+        config.hostApi.applyStatus =
+            [modId = package.manifest.id](int32_t targetHandle, const std::string& statusId, int32_t durationOverrideFrames) {
+                return ExternalModManager::Instance().WasmHostApplyStatus(modId, targetHandle, statusId,
+                                                                          durationOverrideFrames);
+            };
+        config.hostApi.spawnProjectile =
+            [modId = package.manifest.id](const std::string& profileId, const std::string& overridesJson) {
+                return ExternalModManager::Instance().WasmHostSpawnProjectile(modId, profileId, overridesJson);
+            };
+        config.hostApi.spawnAoE = [modId = package.manifest.id](const std::string& profileId, const std::string& originJson) {
+            return ExternalModManager::Instance().WasmHostSpawnAoE(modId, profileId, originJson);
+        };
+        config.hostApi.applyMovementProfile =
+            [modId = package.manifest.id](const std::string& profileId, int32_t durationFrames) {
+                return ExternalModManager::Instance().WasmHostApplyMovementProfile(modId, profileId, durationFrames);
+            };
+        config.hostApi.applyImpulse = [modId = package.manifest.id](int32_t mode, float strength, float x, float y, float z) {
+            return ExternalModManager::Instance().WasmHostApplyImpulse(modId, mode, strength, x, y, z);
+        };
+        config.hostApi.getGroundInfo = [modId = package.manifest.id](ExternalModWasmGroundInfo& outInfo) {
+            return ExternalModManager::Instance().WasmHostGetGroundInfo(modId, outInfo);
+        };
+        config.hostApi.raycast =
+            [modId = package.manifest.id](const std::string& queryJson, ExternalModWasmRaycastHit& outHit) {
+                return ExternalModManager::Instance().WasmHostRaycast(modId, queryJson, outHit);
+            };
+        config.hostApi.raycastAll = [modId = package.manifest.id](const std::string& queryJson, int32_t outCapacity,
+                                                                  std::vector<ExternalModWasmRaycastHit>& outHits) {
+            return ExternalModManager::Instance().WasmHostRaycastAll(modId, queryJson, outCapacity, outHits);
+        };
 
         if (!runtime.wasmRuntime->Initialize(wasmBytes, config, outError)) {
             runtime.moduleCompileDiagnostics = outError;
@@ -12341,20 +15378,6 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                     }
                 }
                 break;
-            case ExternalModActionType::IgniteFrontTarget:
-                if (gPlayState != nullptr) {
-                    auto* lanternPlayer = GET_PLAYER(gPlayState);
-                    if (lanternPlayer != nullptr && IsActionItemRequirementSatisfied(package, action, lanternPlayer)) {
-                        Actor* igniteTarget = FindIgniteTargetInFront(gPlayState, lanternPlayer);
-                        if (igniteTarget != nullptr) {
-                            IgniteActor(gPlayState, igniteTarget);
-                        } else {
-                            SpawnIgniteMissEffect(gPlayState, lanternPlayer);
-                        }
-                    }
-                }
-                break;
-            case ExternalModActionType::FreezeFrontTarget:
             case ExternalModActionType::ApplyStatus: {
                 if (gPlayState == nullptr) {
                     break;
@@ -12438,7 +15461,7 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                     break;
                 }
 
-                const auto* damageProfile = FindDamageProfileById(package.runtime, action.damageProfileId);
+                const auto* damageProfile = ExternalModContentRegistry::FindDamageProfileById(package.runtime, action.damageProfileId);
                 if (damageProfile == nullptr) {
                     DisableRuntime(package, "dealDamage references unknown profile: " + action.damageProfileId);
                     return;
@@ -12461,7 +15484,8 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                     break;
                 }
                 std::string executeError;
-                if (!ExecuteUseProfileById(package, action.itemUseProfileId, gPlayState, actionPlayer, executeError)) {
+                if (!ExecuteUseProfileById(package, action.itemUseProfileId, gPlayState, actionPlayer, nullptr,
+                                           executeError)) {
                     DisableRuntime(package, "useItemProfile failed: " + executeError);
                     return;
                 }
@@ -12483,7 +15507,8 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                                                                        .range = std::max(action.range, 1.0f) };
                 ResolveTargetsForTargetingProfile(targetingProfile, gPlayState, actionPlayer, targets);
                 std::string executeError;
-                if (!ExecuteUseProfileEffects(package, { effect }, targets, gPlayState, actionPlayer, executeError)) {
+                if (!ExecuteUseProfileEffects(package, { effect }, targets, gPlayState, actionPlayer, nullptr,
+                                             executeError)) {
                     DisableRuntime(package, "spawnProjectile failed: " + executeError);
                     return;
                 }
@@ -12502,7 +15527,8 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                 effect.aoeProfileId = action.aoeProfileId;
                 std::vector<Actor*> targets = { &actionPlayer->actor };
                 std::string executeError;
-                if (!ExecuteUseProfileEffects(package, { effect }, targets, gPlayState, actionPlayer, executeError)) {
+                if (!ExecuteUseProfileEffects(package, { effect }, targets, gPlayState, actionPlayer, nullptr,
+                                             executeError)) {
                     DisableRuntime(package, "spawnAoE failed: " + executeError);
                     return;
                 }
@@ -12522,7 +15548,8 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                 effect.durationFrames = action.durationFrames;
                 std::vector<Actor*> targets = { &actionPlayer->actor };
                 std::string executeError;
-                if (!ExecuteUseProfileEffects(package, { effect }, targets, gPlayState, actionPlayer, executeError)) {
+                if (!ExecuteUseProfileEffects(package, { effect }, targets, gPlayState, actionPlayer, nullptr,
+                                             executeError)) {
                     DisableRuntime(package, "applyMovementProfile failed: " + executeError);
                     return;
                 }
@@ -12552,11 +15579,27 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                 if (gPlayState != nullptr) {
                     auto* actionPlayer = GET_PLAYER(gPlayState);
                     if (actionPlayer != nullptr) {
-                        Actor* hitActor =
-                            FindStatusTargetInFront(gPlayState, actionPlayer, std::max(action.range, 1.0f), ExternalModStatusType::Custom);
-                        package.runtime.globalBlackboard["__raycastHit"] = hitActor != nullptr ? "1" : "0";
+                        std::vector<Actor*> rayHits;
+                        ResolveForwardRaycastHits(gPlayState, actionPlayer, std::max(action.range, 1.0f), true, true, true,
+                                                  rayHits);
+
+                        if (action.type == ExternalModActionType::Raycast && rayHits.size() > 1) {
+                            rayHits.resize(1);
+                        }
+
+                        package.runtime.globalBlackboard["__raycastHit"] = rayHits.empty() ? "0" : "1";
+                        package.runtime.globalBlackboard["__raycastHitCount"] = std::to_string(rayHits.size());
                         package.runtime.globalBlackboard["__raycastActorId"] =
-                            hitActor != nullptr ? std::to_string(hitActor->id) : "-1";
+                            rayHits.empty() ? "-1" : std::to_string(rayHits.front()->id);
+
+                        std::ostringstream actorIdList;
+                        for (size_t i = 0; i < rayHits.size(); ++i) {
+                            if (i > 0) {
+                                actorIdList << ",";
+                            }
+                            actorIdList << rayHits[i]->id;
+                        }
+                        package.runtime.globalBlackboard["__raycastActorIds"] = actorIdList.str();
                     }
                 }
                 break;
@@ -12823,6 +15866,61 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                 }
                 break;
             }
+            case ExternalModActionType::ToggleAimCameraMode:
+            case ExternalModActionType::SetAimCameraMode:
+            case ExternalModActionType::SetAimCameraProfile: {
+                auto* player = gPlayState != nullptr ? GET_PLAYER(gPlayState) : nullptr;
+                if (!IsActionItemRequirementSatisfied(package, action, player)) {
+                    break;
+                }
+
+                auto* manager = &ExternalModManager::Instance();
+                auto resolveActionProfileId = [&]() -> std::string {
+                    if (action.aimCameraProfileId.empty()) {
+                        return {};
+                    }
+                    return ResolveProfileIdForMod(package.manifest.id, action.aimCameraProfileId);
+                };
+
+                auto applyProfile = [&](const std::string& resolvedProfileId) -> bool {
+                    if (resolvedProfileId.empty()) {
+                        return true;
+                    }
+
+                    const std::string ownerModId = GetProfileOwnerModId(resolvedProfileId, package.manifest.id);
+                    if (manager->FindAimCameraProfileById(ownerModId, resolvedProfileId) == nullptr) {
+                        DisableRuntime(package, "aim camera action references unknown profile id: " + resolvedProfileId);
+                        return false;
+                    }
+
+                    manager->mAimCameraState.activeProfileId = resolvedProfileId;
+                    manager->mAimCameraState.activeProfileOwnerModId = ownerModId;
+                    return true;
+                };
+
+                const std::string resolvedProfileId = resolveActionProfileId();
+                if (action.type == ExternalModActionType::SetAimCameraProfile) {
+                    if (!applyProfile(resolvedProfileId)) {
+                        return;
+                    }
+                    break;
+                }
+
+                if (!applyProfile(resolvedProfileId)) {
+                    return;
+                }
+
+                bool targetEnabled = manager->mAimCameraState.overShoulderEnabled;
+                if (action.type == ExternalModActionType::ToggleAimCameraMode) {
+                    targetEnabled = !targetEnabled;
+                } else {
+                    targetEnabled = action.aimCameraMode == ExternalModAimCameraMode::OverShoulder;
+                }
+
+                manager->mAimCameraState.overShoulderEnabled = targetEnabled;
+                CVarSetInteger(kAimCameraOverShoulderCVar, targetEnabled ? 1 : 0);
+                break;
+            }
             case ExternalModActionType::InvokeWasm: {
                 if (!package.runtime.wasmRuntime) {
                     DisableRuntime(package, "invokeWasm requested but runtime is unavailable");
@@ -12833,6 +15931,8 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
                     DisableRuntime(package, "invokeWasm failed for export '" + action.exportName + "': " + wasmError);
                     return;
                 }
+                package.runtime.wasmCallsThisFrame = package.runtime.wasmRuntime->GetCallsThisFrame();
+                package.runtime.wasmBudgetDropsThisFrame = package.runtime.wasmRuntime->GetBudgetDropsThisFrame();
                 break;
             }
             default:
@@ -12843,9 +15943,13 @@ void ExternalModManager::ExecuteActions(ExternalModPackage& package, const std::
 
 void ExternalModManager::DisableRuntime(ExternalModPackage& package, const std::string& reason) {
     ClearStatusEffects(package.runtime, gPlayState, false);
+    ClearSurfState(package.runtime);
+    package.runtime.wasmTargetHandles.clear();
+    package.runtime.wasmNextTargetHandle = 1;
     package.runtime.enabled = false;
     package.valid = false;
     package.error = reason;
+    ExternalModManager::Instance().PruneAimCameraStateForUnavailableProfiles();
     SPDLOG_ERROR("[ExternalMods] Disabled runtime for {}: {}", package.manifest.id, reason);
 }
 
@@ -12889,6 +15993,8 @@ void ExternalModManager::DispatchExtendedHook(ExternalModHookType hookType, cons
                                    "Hook wasm export failed for subscription '" + subscription.id + "': " + wasmError);
                     break;
                 }
+                package.runtime.wasmCallsThisFrame = package.runtime.wasmRuntime->GetCallsThisFrame();
+                package.runtime.wasmBudgetDropsThisFrame = package.runtime.wasmRuntime->GetBudgetDropsThisFrame();
             }
 
             subscription.cooldownRemaining = subscription.cooldownFrames;
@@ -13025,6 +16131,7 @@ void ExternalModManager::OnLoadGame(int32_t fileNum) {
 
         try {
             ClearStatusEffects(package.runtime, gPlayState, false);
+            ClearSurfState(package.runtime);
             for (auto& trigger : package.runtime.frameTriggers) {
                 trigger.wasInside = false;
                 trigger.cooldownRemaining = 0;
@@ -13041,6 +16148,8 @@ void ExternalModManager::OnLoadGame(int32_t fileNum) {
             }
             package.runtime.actorInstances.clear();
             package.runtime.nextActorHandle = 1;
+            package.runtime.wasmTargetHandles.clear();
+            package.runtime.wasmNextTargetHandle = 1;
             package.runtime.pendingSignals.clear();
             package.runtime.sceneBlackboard.clear();
             package.runtime.lastSceneSeen = -1;
@@ -13064,6 +16173,7 @@ void ExternalModManager::OnLoadGame(int32_t fileNum) {
     }
     DispatchExtendedHook(ExternalModHookType::OnLoadGame, context, "OnLoadGame");
 
+    PruneAimCameraStateForUnavailableProfiles();
     SyncExtraInventoryGrid();
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
@@ -13078,6 +16188,10 @@ void ExternalModManager::OnExitGame(int32_t fileNum) {
         context.scene = static_cast<int16_t>(gPlayState->sceneNum);
     }
     DispatchExtendedHook(ExternalModHookType::OnExitGame, context, "OnExitGame");
+
+    if (mPersistentInventoryDirty) {
+        MarkPersistentInventoryDirty();
+    }
 }
 
 void ExternalModManager::OnSceneInit(int16_t sceneNum) {
@@ -13087,10 +16201,13 @@ void ExternalModManager::OnSceneInit(int16_t sceneNum) {
         }
         try {
             ClearStatusEffects(package.runtime, gPlayState, false);
+            ClearSurfState(package.runtime);
             package.runtime.behaviorStepsThisFrame = 0;
             package.runtime.pendingSignals.clear();
             package.runtime.actorInstances.clear();
             package.runtime.nextActorHandle = 1;
+            package.runtime.wasmTargetHandles.clear();
+            package.runtime.wasmNextTargetHandle = 1;
             package.runtime.lastSceneSeen = sceneNum;
             package.runtime.lastRoomSeen =
                 gPlayState != nullptr ? static_cast<int16_t>(gPlayState->roomCtx.curRoom.num) : static_cast<int16_t>(-1);
@@ -13176,6 +16293,7 @@ void ExternalModManager::OnSceneInit(int16_t sceneNum) {
     ExternalModHookEventContext context;
     context.scene = sceneNum;
     DispatchExtendedHook(ExternalModHookType::OnSceneInit, context, "OnSceneInit");
+    PruneAimCameraStateForUnavailableProfiles();
 
     SyncExtraInventoryGrid();
     ApplyModItemAgeRequirementOverrides(mPackages);
@@ -13232,6 +16350,26 @@ void ExternalModManager::OnSceneFlagUnset(int16_t sceneNum, int16_t flagType, in
 }
 
 void ExternalModManager::OnPlayerUpdate() {
+    if (gPlayState != nullptr) {
+        auto* player = GET_PLAYER(gPlayState);
+        if (player != nullptr) {
+            ExternalModPackage* selectedSurfPackage = nullptr;
+            for (auto& package : mPackages) {
+                if (!package.runtime.enabled || !package.runtime.surfState.active) {
+                    continue;
+                }
+                if (selectedSurfPackage == nullptr || package.manifest.loadPriority > selectedSurfPackage->manifest.loadPriority ||
+                    (package.manifest.loadPriority == selectedSurfPackage->manifest.loadPriority &&
+                     package.manifest.id < selectedSurfPackage->manifest.id)) {
+                    selectedSurfPackage = &package;
+                }
+            }
+            if (selectedSurfPackage != nullptr) {
+                TickSurfState(*selectedSurfPackage, gPlayState, player);
+            }
+        }
+    }
+
     ExternalModHookEventContext context;
     if (gPlayState != nullptr) {
         context.scene = static_cast<int16_t>(gPlayState->sceneNum);
@@ -13254,6 +16392,8 @@ void ExternalModManager::OnGameFrameUpdate() {
     auto* input = &gPlayState->state.input[0];
     const bool interactPressed = MatchPressedButtonMask(input->cur.button, input->prev.button, BTN_A);
 
+    ProcessAssignedActionButtons(gPlayState, player, input);
+
     for (auto& package : mPackages) {
         if (!package.runtime.enabled) {
             continue;
@@ -13261,6 +16401,12 @@ void ExternalModManager::OnGameFrameUpdate() {
 
         package.runtime.hookCallsThisFrame = 0;
         package.runtime.behaviorStepsThisFrame = 0;
+        package.runtime.wasmCallsThisFrame = 0;
+        package.runtime.wasmBudgetDropsThisFrame = 0;
+        package.runtime.wasmTargetHandles.clear();
+        if (package.runtime.wasmRuntime) {
+            package.runtime.wasmRuntime->BeginFrame();
+        }
         for (auto& hookSubscription : package.runtime.hookSubscriptions) {
             if (hookSubscription.cooldownRemaining > 0) {
                 hookSubscription.cooldownRemaining--;
@@ -13346,10 +16492,6 @@ void ExternalModManager::OnGameFrameUpdate() {
                         const int32_t refillTarget = std::max(item.hasGrantAmmo ? item.grantAmmo : 0, 30);
                         AMMO(ammoItemId) = static_cast<int8_t>(std::clamp(refillTarget, 0, 99));
                     }
-                }
-
-                if (GetParamOrDefault(item.params, "freezeOnMeleeHit", 0.0f) > 0.0f) {
-                    TryApplyFreezeOnStickHit(package.runtime, item, gPlayState, player);
                 }
 
                 const bool cooldownWasActive = item.cooldownRemaining > 0;
@@ -13607,6 +16749,11 @@ void ExternalModManager::OnGameFrameUpdate() {
                     }
                 }
             }
+
+            if (package.runtime.wasmRuntime) {
+                package.runtime.wasmCallsThisFrame = package.runtime.wasmRuntime->GetCallsThisFrame();
+                package.runtime.wasmBudgetDropsThisFrame = package.runtime.wasmRuntime->GetBudgetDropsThisFrame();
+            }
         } catch (const std::exception& ex) {
             DisableRuntime(package, std::string("Unhandled exception on onFrame: ") + ex.what());
         } catch (...) {
@@ -13624,6 +16771,84 @@ void ExternalModManager::OnGameFrameUpdate() {
     ApplyModItemAgeRequirementOverrides(mPackages);
     ApplyModItemIconOverrides(mPackages);
     ApplyModHookshotTextureOverrides(mPackages);
+}
+
+bool ExternalModManager::OnHammerGroundImpact(PlayState* play, Player* player, float impactX, float impactY, float impactZ) {
+    if (play == nullptr || player == nullptr) {
+        return false;
+    }
+
+    ExternalModPackage* selectedPackage = nullptr;
+    ExternalModItemDefinition* selectedItem = nullptr;
+    int32_t selectedPriority = std::numeric_limits<int32_t>::min();
+    std::string selectedModId;
+    const int32_t heldItemId = player->heldItemId;
+
+    for (auto& package : mPackages) {
+        if (!package.runtime.enabled) {
+            continue;
+        }
+
+        for (auto& item : package.runtime.itemDefinitions) {
+            if (!item.granted || item.useTrigger != ExternalModItemUseTrigger::HammerGroundImpact || !item.hasSlot ||
+                item.slot != ExternalModItemSlot::Hammer || item.useProfile.empty() || item.cooldownRemaining > 0 ||
+                !ItemDefinitionMatchesUseItem(item, heldItemId)) {
+                continue;
+            }
+
+            const bool shouldReplace = selectedPackage == nullptr || package.manifest.loadPriority > selectedPriority ||
+                                       (package.manifest.loadPriority == selectedPriority &&
+                                        package.manifest.id < selectedModId);
+            if (shouldReplace) {
+                selectedPackage = &package;
+                selectedItem = &item;
+                selectedPriority = package.manifest.loadPriority;
+                selectedModId = package.manifest.id;
+            }
+        }
+    }
+
+    if (selectedPackage == nullptr || selectedItem == nullptr) {
+        return false;
+    }
+
+    auto& runtime = selectedPackage->runtime;
+    runtime.hasEffectImpactPosition = true;
+    runtime.effectImpactPosX = impactX;
+    runtime.effectImpactPosY = impactY;
+    runtime.effectImpactPosZ = impactZ;
+    runtime.useProfileSpawnedShockwave = false;
+
+    const auto clearImpactContext = [&runtime]() {
+        runtime.hasEffectImpactPosition = false;
+        runtime.effectImpactPosX = 0.0f;
+        runtime.effectImpactPosY = 0.0f;
+        runtime.effectImpactPosZ = 0.0f;
+        runtime.useProfileSpawnedShockwave = false;
+    };
+
+    std::string useProfileError;
+    if (!ExecuteUseProfileById(*selectedPackage, selectedItem->useProfile, play, player, selectedItem, useProfileError)) {
+        clearImpactContext();
+        DisableRuntime(*selectedPackage, "hammerGroundImpact useProfile failed for '" + selectedItem->id +
+                                            "': " + useProfileError);
+        return false;
+    }
+
+    int32_t defaultCooldown = selectedItem->cooldownFrames;
+    if (const auto* useProfile =
+            ExternalModContentRegistry::FindItemUseProfileById(selectedPackage->runtime, selectedItem->useProfile);
+        useProfile != nullptr) {
+        defaultCooldown = useProfile->cooldownFrames;
+    }
+    const auto cooldown = static_cast<int32_t>(
+        std::max(0.0f, GetParamOrDefault(selectedItem->params, "cooldown", static_cast<float>(defaultCooldown))));
+    selectedItem->cooldownFrames = cooldown;
+    selectedItem->cooldownRemaining = cooldown;
+
+    const bool handledShockwave = runtime.useProfileSpawnedShockwave;
+    clearImpactContext();
+    return handledShockwave;
 }
 
 void ExternalModManager::OnPlayerUseItem(void* player, int32_t itemId, bool* allowVanilla) {
@@ -13645,6 +16870,10 @@ void ExternalModManager::OnPlayerUseItem(void* player, int32_t itemId, bool* all
 
         for (auto& item : package.runtime.itemDefinitions) {
             if (!item.granted || !ItemDefinitionMatchesUseItem(item, itemId)) {
+                continue;
+            }
+
+            if (item.useTrigger == ExternalModItemUseTrigger::HammerGroundImpact) {
                 continue;
             }
 
@@ -13691,7 +16920,7 @@ void ExternalModManager::OnPlayerUseItem(void* player, int32_t itemId, bool* all
             if (!item.useProfile.empty() && gPlayState != nullptr) {
                 auto* actionPlayer = static_cast<Player*>(player);
                 std::string useProfileError;
-                if (!ExecuteUseProfileById(package, item.useProfile, gPlayState, actionPlayer, useProfileError)) {
+                if (!ExecuteUseProfileById(package, item.useProfile, gPlayState, actionPlayer, &item, useProfileError)) {
                     DisableRuntime(package, "item useProfile failed for '" + item.id + "': " + useProfileError);
                     *allowVanilla = true;
                     return;
@@ -13706,7 +16935,7 @@ void ExternalModManager::OnPlayerUseItem(void* player, int32_t itemId, bool* all
 
             int32_t defaultCooldown = item.cooldownFrames;
             if (!item.useProfile.empty()) {
-                const auto* useProfile = FindItemUseProfileById(package.runtime, item.useProfile);
+                const auto* useProfile = ExternalModContentRegistry::FindItemUseProfileById(package.runtime, item.useProfile);
                 if (useProfile != nullptr) {
                     defaultCooldown = useProfile->cooldownFrames;
                 }
@@ -13765,9 +16994,17 @@ void ExternalModManager::OnPlayDestroy() {
     DispatchExtendedHook(ExternalModHookType::OnPlayDestroy, context, "OnPlayDestroy");
     for (auto& package : mPackages) {
         ClearStatusEffects(package.runtime, gPlayState, false);
+        ClearSurfState(package.runtime);
+        package.runtime.hasEffectImpactPosition = false;
+        package.runtime.effectImpactPosX = 0.0f;
+        package.runtime.effectImpactPosY = 0.0f;
+        package.runtime.effectImpactPosZ = 0.0f;
+        package.runtime.useProfileSpawnedShockwave = false;
         package.runtime.actorInstances.clear();
         package.runtime.nextActorHandle = 1;
         package.runtime.pendingSignals.clear();
+        package.runtime.wasmTargetHandles.clear();
+        package.runtime.wasmNextTargetHandle = 1;
         package.runtime.lastSceneSeen = -1;
         package.runtime.lastRoomSeen = -1;
         package.runtime.hasLastDayNight = false;
@@ -13836,4 +17073,78 @@ void ExternalMods_OnVanillaButtonEquipped(int32_t buttonIndex) {
 int32_t ExternalMods_TryDrawButtonOverrideIcon(PlayState* play, int32_t buttonIndex, int32_t alpha) {
     return SOH::ExternalModManager::Instance().TryDrawButtonOverrideIcon(play, buttonIndex, alpha) ? 1 : 0;
 }
+
+int32_t ExternalMods_DrawSurfBoardIfActive(PlayState* play, Player* player) {
+    return SOH::ExternalModManager::Instance().DrawSurfBoardIfActive(play, player) ? 1 : 0;
 }
+
+int32_t ExternalMods_OnHammerGroundImpact(PlayState* play, Player* player, float impactX, float impactY, float impactZ) {
+    return SOH::ExternalModManager::Instance().OnHammerGroundImpact(play, player, impactX, impactY, impactZ) ? 1 : 0;
+}
+
+int32_t ExternalMods_ResolveAimCameraMode(PlayState* play, Player* player, int32_t defaultMode, int32_t context) {
+    SOH::ExternalModAimCameraContext aimContext = SOH::ExternalModAimCameraContext::CUp;
+    switch (context) {
+        case EXTERNAL_MODS_AIM_CONTEXT_BOW:
+            aimContext = SOH::ExternalModAimCameraContext::Bow;
+            break;
+        case EXTERNAL_MODS_AIM_CONTEXT_HOOKSHOT:
+            aimContext = SOH::ExternalModAimCameraContext::Hookshot;
+            break;
+        case EXTERNAL_MODS_AIM_CONTEXT_SLINGSHOT:
+            aimContext = SOH::ExternalModAimCameraContext::Slingshot;
+            break;
+        case EXTERNAL_MODS_AIM_CONTEXT_BOOMERANG:
+            aimContext = SOH::ExternalModAimCameraContext::Boomerang;
+            break;
+        case EXTERNAL_MODS_AIM_CONTEXT_CUP:
+        default:
+            aimContext = SOH::ExternalModAimCameraContext::CUp;
+            break;
+    }
+
+    return static_cast<int32_t>(
+        SOH::ExternalModManager::Instance().ResolveAimCameraMode(play, player, static_cast<int16_t>(defaultMode), aimContext));
+}
+
+int32_t ExternalMods_IsAimOverShoulderEnabled(void) {
+    return SOH::ExternalModManager::Instance().IsAimOverShoulderEnabled() ? 1 : 0;
+}
+
+int32_t ExternalMods_DrawAimReticleIfActive(PlayState* play, Player* player, int32_t context) {
+    SOH::ExternalModAimCameraContext aimContext = SOH::ExternalModAimCameraContext::CUp;
+    switch (context) {
+        case EXTERNAL_MODS_AIM_CONTEXT_BOW:
+            aimContext = SOH::ExternalModAimCameraContext::Bow;
+            break;
+        case EXTERNAL_MODS_AIM_CONTEXT_HOOKSHOT:
+            aimContext = SOH::ExternalModAimCameraContext::Hookshot;
+            break;
+        case EXTERNAL_MODS_AIM_CONTEXT_SLINGSHOT:
+            aimContext = SOH::ExternalModAimCameraContext::Slingshot;
+            break;
+        case EXTERNAL_MODS_AIM_CONTEXT_BOOMERANG:
+            aimContext = SOH::ExternalModAimCameraContext::Boomerang;
+            break;
+        case EXTERNAL_MODS_AIM_CONTEXT_CUP:
+        default:
+            aimContext = SOH::ExternalModAimCameraContext::CUp;
+            break;
+    }
+
+    return SOH::ExternalModManager::Instance().DrawAimReticleIfActive(play, player, aimContext) ? 1 : 0;
+}
+
+int32_t ExternalMods_IsAimMouseFireHeld(PlayState* play, Player* player, int32_t heldItemAction) {
+    return SOH::ExternalModManager::Instance().IsAimMouseFireHeld(play, player, heldItemAction) ? 1 : 0;
+}
+
+int32_t ExternalMods_HasCustomEquippedSlingshotModel(void) {
+    return SOH::ExternalModManager::Instance().HasCustomEquippedSlingshotModel() ? 1 : 0;
+}
+
+int32_t ExternalMods_DrawCustomEquippedSlingshotModel(PlayState* play) {
+    return SOH::ExternalModManager::Instance().DrawCustomEquippedSlingshotModel(play) ? 1 : 0;
+}
+}
+

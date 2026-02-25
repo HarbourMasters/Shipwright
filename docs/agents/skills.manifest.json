@@ -1,0 +1,110 @@
+﻿{
+    "schemaVersion":  1,
+    "generatedBy":  "manual-v1",
+    "generatedAtUtc":  "2026-02-25T04:30:49Z",
+    "policy":  {
+                   "apiVersion":  3,
+                   "legacyCompatibility":  false,
+                   "summaryMaxChars":  180
+               },
+    "skills":  [
+                   {
+                       "name":  "soh-external-mod-capability-design",
+                       "kind":  "update",
+                       "version":  "1.0.0-v3",
+                       "mirrorPath":  "docs/agents/skills/soh-external-mod-capability-design",
+                       "globalPath":  "C:/Users/leolo/.codex/skills/soh-external-mod-capability-design"
+                   },
+                   {
+                       "name":  "soh-external-mod-log-triage",
+                       "kind":  "update",
+                       "version":  "1.0.0-v3",
+                       "mirrorPath":  "docs/agents/skills/soh-external-mod-log-triage",
+                       "globalPath":  "C:/Users/leolo/.codex/skills/soh-external-mod-log-triage"
+                   },
+                   {
+                       "name":  "soh-fast64-conversion-rescue",
+                       "kind":  "update",
+                       "version":  "1.0.0-v3",
+                       "mirrorPath":  "docs/agents/skills/soh-fast64-conversion-rescue",
+                       "globalPath":  "C:/Users/leolo/.codex/skills/soh-fast64-conversion-rescue"
+                   },
+                   {
+                       "name":  "soh-mod-scene-interaction-demo",
+                       "kind":  "update",
+                       "version":  "1.0.0-v3",
+                       "mirrorPath":  "docs/agents/skills/soh-mod-scene-interaction-demo",
+                       "globalPath":  "C:/Users/leolo/.codex/skills/soh-mod-scene-interaction-demo"
+                   },
+                   {
+                       "name":  "soh-path-symbol-finder",
+                       "kind":  "new",
+                       "version":  "1.0.0",
+                       "mirrorPath":  "docs/agents/skills/soh-path-symbol-finder",
+                       "globalPath":  "C:/Users/leolo/.codex/skills/soh-path-symbol-finder"
+                   },
+                   {
+                       "name":  "soh-build-test-windows",
+                       "kind":  "new",
+                       "version":  "1.0.0",
+                       "mirrorPath":  "docs/agents/skills/soh-build-test-windows",
+                       "globalPath":  "C:/Users/leolo/.codex/skills/soh-build-test-windows"
+                   },
+                   {
+                       "name":  "soh-smoke-regression-matrix",
+                       "kind":  "new",
+                       "version":  "1.0.0",
+                       "mirrorPath":  "docs/agents/skills/soh-smoke-regression-matrix",
+                       "globalPath":  "C:/Users/leolo/.codex/skills/soh-smoke-regression-matrix"
+                   },
+                   {
+                       "name":  "soh-demo-sync-validator",
+                       "kind":  "new",
+                       "version":  "1.0.0",
+                       "mirrorPath":  "docs/agents/skills/soh-demo-sync-validator",
+                       "globalPath":  "C:/Users/leolo/.codex/skills/soh-demo-sync-validator"
+                   },
+                   {
+                       "name":  "soh-doc-runtime-drift-guard",
+                       "kind":  "new",
+                       "version":  "1.0.0",
+                       "mirrorPath":  "docs/agents/skills/soh-doc-runtime-drift-guard",
+                       "globalPath":  "C:/Users/leolo/.codex/skills/soh-doc-runtime-drift-guard"
+                   },
+                   {
+                       "name":  "soh-crash-stack-triage",
+                       "kind":  "new",
+                       "version":  "1.0.0",
+                       "mirrorPath":  "docs/agents/skills/soh-crash-stack-triage",
+                       "globalPath":  "C:/Users/leolo/.codex/skills/soh-crash-stack-triage"
+                   },
+                   {
+                       "name":  "soh-agent-memory-optimizer",
+                       "kind":  "new",
+                       "version":  "1.0.0",
+                       "mirrorPath":  "docs/agents/skills/soh-agent-memory-optimizer",
+                       "globalPath":  "C:/Users/leolo/.codex/skills/soh-agent-memory-optimizer"
+                   },
+                   {
+                       "name":  "soh-token-budget-context-packer",
+                       "kind":  "new",
+                       "version":  "1.0.0",
+                       "mirrorPath":  "docs/agents/skills/soh-token-budget-context-packer",
+                       "globalPath":  "C:/Users/leolo/.codex/skills/soh-token-budget-context-packer"
+                   },
+                   {
+                       "name":  "soh-agents-plan-ledger",
+                       "kind":  "new",
+                       "version":  "1.0.0",
+                       "mirrorPath":  "docs/agents/skills/soh-agents-plan-ledger",
+                       "globalPath":  "C:/Users/leolo/.codex/skills/soh-agents-plan-ledger"
+                   },
+                   {
+                       "name":  "soh-git-checkpoint-merge",
+                       "kind":  "new",
+                       "version":  "1.0.0",
+                       "mirrorPath":  "docs/agents/skills/soh-git-checkpoint-merge",
+                       "globalPath":  "C:/Users/leolo/.codex/skills/soh-git-checkpoint-merge"
+                   }
+               ]
+}

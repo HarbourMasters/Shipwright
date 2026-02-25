@@ -1,0 +1,19 @@
+{
+  "items": [
+    {
+      "id": "fire_staff_item",
+      "ui": {
+        "description": "Incendeia o alvo à frente por um curto tempo."
+      },
+      "displayName": "fire staff",
+      "slot": "SLOT_STICK",
+      "useMode": "vanilla",
+      "onUseBehavior": "fire_staff_behavior",
+      "agePolicy": "allowChild",
+      "params": {
+        "cooldown": 0,
+        "infiniteAmmo": 1
+      }
+    }
+  ]
+}

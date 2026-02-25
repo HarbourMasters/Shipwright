@@ -1,76 +1,100 @@
 {
-  "apiVersion": 1,
-  "onGameLoaded": [
-    {
-      "action": "showNotification",
-      "text": "Kokiri Parkour mod ativo."
-    }
-  ],
-  "onSceneInit": [
-    {
-      "scene": "SCENE_KOKIRI_FOREST",
-      "actions": [
-        {
-          "action": "showNotification",
-          "text": "Passe atras da casa do Link para entrar na sala parkour."
-        }
-      ]
-    },
-    {
-      "scene": "SCENE_LINKS_HOUSE",
-      "actions": [
-        {
-          "action": "showNotification",
-          "text": "Use as portas da sala para voltar a Kokiri ou ir para Kakariko."
-        }
-      ]
-    }
-  ],
-  "onFrameTriggers": [
-    {
-      "id": "kokiri_backdoor_to_parkour",
-      "scene": "SCENE_KOKIRI_FOREST",
-      "bounds": {
-        "min": [-1040.0, 350.0, -1325.0],
-        "max": [-880.0, 520.0, -1160.0]
-      },
-      "cooldownFrames": 90,
-      "actions": [
-        {
-          "action": "teleportToEntrance",
-          "entrance": "ENTR_LINKS_HOUSE_CHILD_SPAWN"
-        }
-      ]
-    },
-    {
-      "id": "parkour_exit_to_kokiri",
-      "scene": "SCENE_LINKS_HOUSE",
-      "bounds": {
-        "min": [-90.0, 0.0, 150.0],
-        "max": [90.0, 180.0, 260.0]
-      },
-      "cooldownFrames": 90,
-      "actions": [
-        {
-          "action": "teleportToEntrance",
-          "entrance": "ENTR_KOKIRI_FOREST_OUTSIDE_LINKS_HOUSE"
-        }
-      ]
-    },
-    {
-      "id": "parkour_exit_to_kakariko",
-      "scene": "SCENE_LINKS_HOUSE",
-      "bounds": {
-        "min": [180.0, 0.0, -30.0],
-        "max": [320.0, 220.0, 120.0]
-      },
-      "cooldownFrames": 90,
-      "actions": [
-        {
-          "action": "teleportToEntrance",
-          "entrance": "ENTR_KAKARIKO_VILLAGE_FRONT_GATE"
-        }
-      ]
-    }
-  ]
+    "apiVersion":  3,
+    "onGameLoaded":  [
+                         {
+                             "action":  "showNotification",
+                             "text":  "Kokiri Parkour mod ativo."
+                         }
+                     ],
+    "onSceneInit":  [
+                        {
+                            "scene":  "SCENE_KOKIRI_FOREST",
+                            "actions":  [
+                                            {
+                                                "action":  "showNotification",
+                                                "text":  "Passe atras da casa do Link para entrar na sala parkour."
+                                            }
+                                        ]
+                        },
+                        {
+                            "scene":  "SCENE_LINKS_HOUSE",
+                            "actions":  [
+                                            {
+                                                "action":  "showNotification",
+                                                "text":  "Use as portas da sala para voltar a Kokiri ou ir para Kakariko."
+                                            }
+                                        ]
+                        }
+                    ],
+    "onFrameTriggers":  [
+                            {
+                                "id":  "kokiri_backdoor_to_parkour",
+                                "scene":  "SCENE_KOKIRI_FOREST",
+                                "bounds":  {
+                                               "min":  [
+                                                           -1040.0,
+                                                           350.0,
+                                                           -1325.0
+                                                       ],
+                                               "max":  [
+                                                           -880.0,
+                                                           520.0,
+                                                           -1160.0
+                                                       ]
+                                           },
+                                "cooldownFrames":  90,
+                                "actions":  [
+                                                {
+                                                    "action":  "teleportToEntrance",
+                                                    "entrance":  "ENTR_LINKS_HOUSE_CHILD_SPAWN"
+                                                }
+                                            ]
+                            },
+                            {
+                                "id":  "parkour_exit_to_kokiri",
+                                "scene":  "SCENE_LINKS_HOUSE",
+                                "bounds":  {
+                                               "min":  [
+                                                           -90.0,
+                                                           0.0,
+                                                           150.0
+                                                       ],
+                                               "max":  [
+                                                           90.0,
+                                                           180.0,
+                                                           260.0
+                                                       ]
+                                           },
+                                "cooldownFrames":  90,
+                                "actions":  [
+                                                {
+                                                    "action":  "teleportToEntrance",
+                                                    "entrance":  "ENTR_KOKIRI_FOREST_OUTSIDE_LINKS_HOUSE"
+                                                }
+                                            ]
+                            },
+                            {
+                                "id":  "parkour_exit_to_kakariko",
+                                "scene":  "SCENE_LINKS_HOUSE",
+                                "bounds":  {
+                                               "min":  [
+                                                           180.0,
+                                                           0.0,
+                                                           -30.0
+                                                       ],
+                                               "max":  [
+                                                           320.0,
+                                                           220.0,
+                                                           120.0
+                                                       ]
+                                           },
+                                "cooldownFrames":  90,
+                                "actions":  [
+                                                {
+                                                    "action":  "teleportToEntrance",
+                                                    "entrance":  "ENTR_KAKARIKO_VILLAGE_FRONT_GATE"
+                                                }
+                                            ]
+                            }
+                        ]
 }

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    {
+      "id": "com.example.aim_ots_toggle_demo:ots_default",
+      "contexts": ["cup", "bow", "hookshot", "slingshot", "boomerang"],
+      "firstPersonModeByContext": {
+        "cup": "firstperson",
+        "bow": "bowarrow",
+        "hookshot": "hookshot",
+        "slingshot": "slingshot",
+        "boomerang": "bowarrow"
+      },
+      "overShoulderModeByContext": "bowarrowz",
+      "shoulder": "right",
+      "aimRay": "camera_center",
+      "reticle": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "mouseFireEnabled": true,
+      "mouseFireButton": "left",
+      "mouseFireMode": "both",
+      "reticleVisibility": "selected"
+    }
+  ]
+}

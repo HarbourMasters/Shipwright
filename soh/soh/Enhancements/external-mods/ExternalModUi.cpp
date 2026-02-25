@@ -213,6 +213,7 @@ void DrawExternalModControlsSection() {
     }
 
     for (auto& package : packages) {
+        ImGui::PushID(package.manifest.id.c_str());
         ImGui::Separator();
 
         const bool runtimeEnabled = package.runtime.enabled;
@@ -281,6 +282,8 @@ void DrawExternalModControlsSection() {
             ImGui::Text("Hook subscriptions: %zu", package.runtime.hookSubscriptions.size());
             ImGui::TextDisabled("Hook budget/frame: %d used of %d", package.runtime.hookCallsThisFrame,
                                 package.runtime.maxHookCallsPerFrame);
+            ImGui::TextDisabled("WASM calls/frame: %d, budget drops/frame: %d", package.runtime.wasmCallsThisFrame,
+                                package.runtime.wasmBudgetDropsThisFrame);
             for (const auto& subscription : package.runtime.hookSubscriptions) {
                 ImGui::BulletText("%s hook=%s dispatch=%s cooldown=%d", subscription.id.c_str(),
                                   GetExternalModHookTypeName(subscription.hook),
@@ -355,17 +358,21 @@ void DrawExternalModControlsSection() {
             ImGui::Text("Bindings:");
             ImGui::TextDisabled("Tip: map to Mod Action buttons, then bind any keyboard/gamepad key in Settings > Controls > Modifier Buttons.");
             for (const auto& binding : package.runtime.inputBindings) {
+                ImGui::PushID(binding.id.c_str());
                 const auto cvarName = ExternalModManager::BuildBindingCVarName(package.manifest.id, binding.id);
-                const auto label = std::string("Binding: ") + binding.id;
+                const auto label = std::string("Binding: ") + binding.id + "##" + package.manifest.id + "." + binding.id;
                 UIWidgets::CVarBtnSelector(label.c_str(), cvarName.c_str(),
                                            UIWidgets::BtnSelectorOptions()
                                                .DefaultValue(binding.defaultMask)
                                                .Color(UIWidgets::Colors::LightBlue)
                                                .Tooltip("External mod action binding (supports combinations)"));
+                ImGui::PopID();
             }
         } else {
             ImGui::TextDisabled("No input bindings for this mod.");
         }
+
+        ImGui::PopID();
     }
 }
 

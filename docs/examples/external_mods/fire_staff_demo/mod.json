@@ -1,0 +1,30 @@
+{
+    "id":  "com.example.fire_staff_demo",
+    "name":  "Fire Staff Demo",
+    "version":  "0.1.0",
+    "apiVersion": 3,
+    "loadOrder":  189,
+    "entryScript":  "scripts/init.json",
+    "assets":  [
+
+               ],
+    "dependencies":  [
+
+                     ],
+    "capabilities":  [
+                         "behaviors.graph.v1"
+                     ],
+    "runtime":  {
+                    "type":  "wasm3-v1",
+                    "module":  "scripts/noop.wat",
+                    "maxMemoryKb":  1024,
+                    "maxCallMs":  2,
+                    "maxFrameBudgetMs":  2,
+                    "maxHookCallsPerFrame":  256,
+                    "maxActorInstances":  64
+                },
+    "itemDefinitions":  "items/items.json",
+    "inputDefinitions":  "config/input.json",
+    "behaviorDefinitions":  "behaviors/behaviors.json",
+    "loadPriority":  189
+}

@@ -5,7 +5,14 @@ Este documento lista o que esta **disponivel hoje** no `ExternalModManager` (cod
 Arquivos de referencia no codigo:
 - `soh/soh/Enhancements/external-mods/ExternalModManager.cpp`
 - `soh/soh/Enhancements/external-mods/ExternalModTypes.h`
+- `soh/soh/Enhancements/external-mods/ExternalModContentRegistry.cpp`
 - `soh/soh/Enhancements/external-mods/ExternalModWasmRuntime.cpp`
+
+Export machine-readable reference files:
+- `docs/catalogs.json`
+- `docs/actions.json`
+- `docs/events.json`
+- Generate/update via `tools/external_mods/export_runtime_reference.ps1`
 
 ## 1. Capabilities suportadas no manifest
 
@@ -24,6 +31,7 @@ Capabilities reconhecidas atualmente:
 - `combat.projectiles.v1`
 - `combat.aoe.v1`
 - `movement.profiles.v1`
+- `camera.aim_profiles.v1`
 - `world.queries.v1`
 - `items.use_profiles.v1`
 - `patches.vanilla_items.v1`
@@ -39,10 +47,15 @@ Quando a capability e declarada no `mod.json`, o path correspondente vira obriga
 - `projectileDefinitions` para `combat.projectiles.v1`
 - `aoeDefinitions` para `combat.aoe.v1`
 - `movementDefinitions` para `movement.profiles.v1`
+- `cameraDefinitions` para `camera.aim_profiles.v1`
 - `itemUseProfiles` para `items.use_profiles.v1`
 - `vanillaItemPatches` para `patches.vanilla_items.v1`
 
-Observacao: `patches.vanilla_items.v1` hoje passa no parse/validacao, mas o runtime ainda loga warning de "not yet implemented" para execucao de patch.
+Observacao: `patches.vanilla_items.v1` agora executa patch em `items/items.json` antes do parse final.
+Formatos aceitos:
+- array RFC6902 (`add|replace|remove`)
+- objeto com `ops[]` ou `operations[]`
+- operacao extra `merge` (merge patch de objeto no `path`)
 
 ## 2. Hooks estendidos (`hooks/hooks.json`)
 
@@ -108,12 +121,12 @@ Ordem fixa do vetor de argumentos:
 
 ## 3. Entry script (`entryScript`, geralmente `scripts/init.json`)
 
-Blocos aceitos hoje:
+Blocos aceitos hoje (`apiVersion: 3`):
 - `onGameLoaded: [actions]`
 - `onSceneInit: [{ scene, actions[] }]`
 - `onFrameTriggers` (ou alias `triggers`):
   - `{ id?, scene, bounds: { min:[x,y,z], max:[x,y,z] }, cooldownFrames?, actions[] }`
-- `onInput` (api v2):
+- `onInput` (api v3):
   - `{ id?, binding|bindingId, trigger?, cooldownFrames?, actions[] }`
 - `behaviorRuntime`:
   - `maxStepsPerActorPerFrame` (clamp 1..1024)
@@ -209,8 +222,6 @@ Acoes gerais:
 - `spawnSmoke`
 - `spawnKusa`
 - `lanternLight`
-- `igniteFrontTarget`
-- `freezeFrontTarget`
 - `spawnActor`
 - `despawnActor`
 - `setActorState`
@@ -232,6 +243,9 @@ Acoes gerais:
 - `emitSignal`
 - `callBehavior`
 - `invokeWasm`
+- `toggleAimCameraMode`
+- `setAimCameraMode`
+- `setAimCameraProfile`
 
 Acoes data-driven (catalog-centric):
 - `applyStatus`
@@ -331,7 +345,10 @@ Saida hoje em `globalBlackboard`:
 - `__raycastHit` (`1` ou `0`)
 - `__raycastActorId` (id do ator ou `-1`)
 
-Observacao: atualmente `raycast` e `raycastAll` compartilham a mesma resolucao frontal simplificada.
+Observacao: `raycast` usa o primeiro hit ordenado por distancia no raio frontal; `raycastAll` popula todos os hits ordenados.
+Chaves extras de blackboard:
+- `__raycastHitCount`
+- `__raycastActorIds` (CSV de actor ids)
 
 ## 7. Catalogos data-driven suportados (schema atual)
 
@@ -418,33 +435,59 @@ Raiz:
 
 Campos por profile:
 - `id` (namespaced)
+- `mode` (obrigatorio): `modifier|surf`
 - `durationFrames?`
-- `speedMultiplier?`
-- `accelMultiplier?`
-- `gravityScale?`
+- `speedMultiplier?`, `accelMultiplier?`, `gravityScale?` (quando `mode=modifier`)
+- Campos `surf` (quando `mode=surf`):
+  - `boardRequired?`, `boardSpawnMode?`, `idlePose?`, `idleLock?`
+  - `boardHeightOffset?`, `boardPitchRollFromGround?`, `boardVisibleWhenIdle?`
+  - `boardModelAsset?`, `boardScale?`
+  - `surfMaxSpeed?`, `surfDownhillAccel?`, `surfUphillBrake?`, `surfFlatDrag?`
+  - `surfTurnRateDeg?`, `idleSpeedThreshold?`
 
 ### 7.8 `patches/vanilla_items.patch.json` (`patches.vanilla_items.v1`)
-- Arquivo e parse basico aceitos.
-- Execucao de patch em runtime ainda nao implementada.
+- Execucao em runtime habilitada.
+- Operacoes aceitas: `add|replace|remove|merge`.
 
-## 8. Bridge legado e compatibilidade ativa
+## 8. Contrato v3 sem legado
 
-Mantido no runtime:
-- `freezeFrontTarget` segue disponivel e entra no pipeline de status.
-- `igniteFrontTarget` segue como acao legacy dedicada.
-- `freezeOnMeleeHit` em `items.params` segue funcionando (bridge legacy).
+Removido do parser/runtime:
+- `igniteFrontTarget`
+- `freezeFrontTarget`
+- `items.params.freezeOnMeleeHit`
+- `items.params.freezeOnHitDuration`
+- `items.params.freezeOnHitShake`
+- `items.params.freezeOnHitIntensity`
+
+Em `apiVersion: 3`, usar somente pipeline data-driven (`useItemProfile`, `applyStatus`, `dealDamage`, etc).
 
 ## 9. Limites e observacoes de runtime atuais
 
 - Budget default de behavior por runtime:
   - `behaviorMaxStepsPerActorPerFrame = 64`
   - `behaviorMaxStepsPerModPerFrame = 5000`
-- Budget default de hooks por frame:
+- Budget default de runtime WASM por mod:
+  - `maxCallMs = 2`
+  - `maxFrameBudgetMs = 2`
   - `maxHookCallsPerFrame = 256`
-- `WasmRuntime` atual esta em modo MVP:
-  - valida modulo/header/budgets
-  - `InvokeExport` nao executa host API rica ainda
-  - sem imports data-driven expostos no runtime atual
+  - `maxActorInstances = 64`
+  - `maxActiveStatuses = 256`
+- `WasmRuntime` executa exports reais (`mod_init`, `mod_event`, `mod_shutdown` ou export nomeado).
+- Imports host data-driven atualmente expostos:
+  - `host_useItemProfile`
+  - `host_resolveTarget`
+  - `host_dealDamage`
+  - `host_applyStatus`
+  - `host_spawnProjectile`
+  - `host_spawnAoE`
+  - `host_applyMovementProfile`
+  - `host_applyImpulse`
+  - `host_getGroundInfo`
+  - `host_raycast`
+  - `host_raycastAll`
+- UI de External Mods exibe telemetria por mod:
+  - `WASM calls/frame`
+  - `budget drops/frame`
 
 ## 10. Chaves internas uteis no blackboard (runtime)
 

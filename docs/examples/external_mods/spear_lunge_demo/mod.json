@@ -1,0 +1,31 @@
+{
+  "id": "com.example.spear_lunge_demo",
+  "name": "Spear Lunge Demo",
+  "version": "0.1.0",
+  "apiVersion": 3,
+  "loadPriority": 251,
+  "entryScript": "scripts/init.json",
+  "assets": [],
+  "dependencies": [],
+  "capabilities": [
+    "combat.damage.v1",
+    "combat.targeting.v1",
+    "combat.aoe.v1",
+    "items.use_profiles.v1"
+  ],
+  "runtime": {
+    "type": "wasm3-v1",
+    "module": "scripts/noop.wat",
+    "maxMemoryKb": 1024,
+    "maxCallMs": 2,
+    "maxFrameBudgetMs": 2,
+    "maxHookCallsPerFrame": 256,
+    "maxActorInstances": 64
+  },
+  "itemDefinitions": "items/items.json",
+  "inputDefinitions": "config/input.json",
+  "damageDefinitions": "combat/damage_profiles.json",
+  "targetingDefinitions": "combat/targeting_profiles.json",
+  "aoeDefinitions": "combat/aoe_profiles.json",
+  "itemUseProfiles": "items/use_profiles.json"
+}

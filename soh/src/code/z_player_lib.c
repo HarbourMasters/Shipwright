@@ -8,6 +8,7 @@
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/external-mods/ExternalModInterop.h"
 #include "soh/Enhancements/randomizer/draw.h"
 #include "soh/ResourceManagerHelpers.h"
 
@@ -1395,6 +1396,11 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
             }
 
             *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+            if ((sRightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT ||
+                 sRightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2) &&
+                Player_HoldsSlingshot(this) && ExternalMods_HasCustomEquippedSlingshotModel()) {
+                *dList = NULL;
+            }
         } else if (limbIndex == PLAYER_LIMB_SHEATH) {
             Gfx** dLists = this->sheathDLists;
 
@@ -1913,6 +1919,10 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             Matrix_Pop();
 
             CLOSE_DISPS(play->state.gfxCtx);
+
+            if (Player_HoldsSlingshot(this)) {
+                ExternalMods_DrawCustomEquippedSlingshotModel(play);
+            }
         } else if ((this->actor.scale.y >= 0.0f) && (this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD)) {
             Matrix_Get(&this->shieldMf);
             Player_UpdateShieldCollider(play, this, &this->shieldQuad, sRightHandLimbModelShieldQuadVertices);
@@ -1942,6 +1952,8 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                     }
                 }
             }
+
+            ExternalMods_DrawAimReticleIfActive(play, this, EXTERNAL_MODS_AIM_CONTEXT_SLINGSHOT);
 
             if ((this->unk_862 != 0) || ((func_8002DD6C(this) == 0) && (heldActor != NULL))) {
                 if (!(this->stateFlags1 & PLAYER_STATE1_GETTING_ITEM) && (this->unk_862 != 0) &&

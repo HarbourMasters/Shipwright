@@ -1,0 +1,7 @@
+{
+  "apiVersion": 3,
+  "onGameLoaded": [
+    { "action": "grantModItem", "itemId": "shield_skate_item" },
+    { "action": "showNotification", "text": "Shield Surf v3: use novamente para desligar. Segure W (MOD_ACTION6) para dash periodico." }
+  ]
+}

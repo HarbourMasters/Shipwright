@@ -1,0 +1,7 @@
+{
+  "apiVersion": 3,
+  "onGameLoaded": [
+    { "action": "grantModItem", "itemId": "spear_item" },
+    { "action": "showNotification", "text": "Spear Lunge Demo: impulso + AoE em cone" }
+  ]
+}

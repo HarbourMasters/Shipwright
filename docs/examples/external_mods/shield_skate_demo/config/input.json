@@ -1,0 +1,11 @@
+{
+  "bindings": [
+    {
+      "id": "surf_boost_map",
+      "defaultMask": "MOD_ACTION6",
+      "trigger": "held",
+      "allowUserRemap": true,
+      "defaultKeyboardKeys": ["W"]
+    }
+  ]
+}

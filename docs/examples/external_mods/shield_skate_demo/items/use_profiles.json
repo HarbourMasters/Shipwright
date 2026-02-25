@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "useProfiles": [
+    {
+      "id": "com.example.shield_skate_demo:skate_use",
+      "targetingProfile": "com.example.shield_skate_demo:self_target",
+      "cooldownFrames": 8,
+      "effects": [
+        { "action": "applyMovementProfile", "movementProfileId": "com.example.shield_skate_demo:skate_profile" }
+      ]
+    }
+  ]
+}

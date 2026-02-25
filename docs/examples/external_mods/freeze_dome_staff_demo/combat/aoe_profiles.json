@@ -1,0 +1,23 @@
+﻿{
+  "schemaVersion": 1,
+  "aoe": [
+    {
+      "id": "com.example.freeze_dome_staff_demo:freeze_dome",
+      "shape": "sphere",
+      "radius": 260,
+      "durationFrames": 1,
+      "targetScope": "enemies_bosses",
+      "effects": {
+        "onEnter": [
+          {
+            "action": "applyStatus",
+            "status": "core:freeze",
+            "durationFrames": 120,
+            "tickFrames": 20,
+            "intensity": 220
+          }
+        ]
+      }
+    }
+  ]
+}

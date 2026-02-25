@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    {
+      "id": "com.example.axe_prop_cut_demo:axe_hit",
+      "amount": 2,
+      "type": "physical",
+      "propInteraction": "hard_kill"
+    }
+  ]
+}

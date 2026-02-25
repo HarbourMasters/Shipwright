@@ -1,0 +1,9 @@
+{
+  "apiVersion": 3,
+  "onGameLoaded": [
+    {
+      "action": "showNotification",
+      "text": "Aim OTS Demo: press F8 to toggle first-person <-> OTS (LMB fires)"
+    }
+  ]
+}

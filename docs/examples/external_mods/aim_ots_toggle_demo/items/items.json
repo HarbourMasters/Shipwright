@@ -1,0 +1,14 @@
+﻿{
+  "items": [
+    {
+      "id": "aim_toggle_token",
+      "displayName": "Aim Toggle Token",
+      "slot": "SLOT_STICK",
+      "useMode": "vanilla",
+      "agePolicy": "allowAdult",
+      "grant": {
+        "ammo": 30
+      }
+    }
+  ]
+}

@@ -1,52 +1,54 @@
 {
-  "apiVersion": 2,
-  "onGameLoaded": [
-    {
-      "action": "grantModItem",
-      "itemId": "skyhook_v2"
-    },
-    {
-      "action": "grantModItem",
-      "itemId": "child_bow_unlock"
-    },
-    {
-      "action": "grantModItem",
-      "itemId": "child_hammer_unlock"
-    },
-    {
-      "action": "grantModItem",
-      "itemId": "child_fire_arrow_unlock"
-    },
-    {
-      "action": "grantModItem",
-      "itemId": "child_ice_arrow_unlock"
-    },
-    {
-      "action": "grantModItem",
-      "itemId": "child_light_arrow_unlock"
-    },
-    {
-      "action": "invokeWasm",
-      "export": "on_mod_loaded",
-      "args": [2]
-    },
-    {
-      "action": "showNotification",
-      "text": "Bananza ativo. Bow/Hammer/Arrows liberados para Child."
-    }
-  ],
-  "onInput": [
-    {
-      "id": "jump_button",
-      "binding": "jump_action",
-      "trigger": "pressed",
-      "cooldownFrames": 2,
-      "actions": [
-        {
-          "action": "pressButton",
-          "button": "BTN_A"
-        }
-      ]
-    }
-  ]
+    "apiVersion":  3,
+    "onGameLoaded":  [
+                         {
+                             "action":  "grantModItem",
+                             "itemId":  "skyhook_v2"
+                         },
+                         {
+                             "action":  "grantModItem",
+                             "itemId":  "child_bow_unlock"
+                         },
+                         {
+                             "action":  "grantModItem",
+                             "itemId":  "child_hammer_unlock"
+                         },
+                         {
+                             "action":  "grantModItem",
+                             "itemId":  "child_fire_arrow_unlock"
+                         },
+                         {
+                             "action":  "grantModItem",
+                             "itemId":  "child_ice_arrow_unlock"
+                         },
+                         {
+                             "action":  "grantModItem",
+                             "itemId":  "child_light_arrow_unlock"
+                         },
+                         {
+                             "action":  "invokeWasm",
+                             "export":  "on_mod_loaded",
+                             "args":  [
+                                          2
+                                      ]
+                         },
+                         {
+                             "action":  "showNotification",
+                             "text":  "Bananza ativo. Bow/Hammer/Arrows liberados para Child."
+                         }
+                     ],
+    "onInput":  [
+                    {
+                        "id":  "jump_button",
+                        "binding":  "jump_action",
+                        "trigger":  "pressed",
+                        "cooldownFrames":  2,
+                        "actions":  [
+                                        {
+                                            "action":  "pressButton",
+                                            "button":  "BTN_A"
+                                        }
+                                    ]
+                    }
+                ]
 }

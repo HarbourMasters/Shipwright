@@ -1,0 +1,7 @@
+{
+  "apiVersion": 3,
+  "onGameLoaded": [
+    { "action": "grantModItem", "itemId": "axe_item" },
+    { "action": "showNotification", "text": "Axe Prop Cut Demo: cone damage em props/inimigos" }
+  ]
+}

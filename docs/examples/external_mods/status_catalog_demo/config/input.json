@@ -1,0 +1,16 @@
+{
+  "bindings": [
+    { "id": "select_fire", "defaultMask": "MOD_ACTION3|CUP", "trigger": "pressed", "allowUserRemap": true },
+    { "id": "select_freeze", "defaultMask": "MOD_ACTION3|CRIGHT", "trigger": "pressed", "allowUserRemap": true },
+    { "id": "select_stun", "defaultMask": "MOD_ACTION3|CDOWN", "trigger": "pressed", "allowUserRemap": true },
+    { "id": "select_poison", "defaultMask": "MOD_ACTION3|CLEFT", "trigger": "pressed", "allowUserRemap": true },
+    { "id": "select_blind", "defaultMask": "MOD_ACTION3|DUP", "trigger": "pressed", "allowUserRemap": true },
+    { "id": "select_speed", "defaultMask": "MOD_ACTION3|DRIGHT", "trigger": "pressed", "allowUserRemap": true },
+    { "id": "select_slow", "defaultMask": "MOD_ACTION3|DDOWN", "trigger": "pressed", "allowUserRemap": true },
+    { "id": "select_high_jump", "defaultMask": "MOD_ACTION3|DLEFT", "trigger": "pressed", "allowUserRemap": true },
+    { "id": "select_strength", "defaultMask": "MOD_ACTION3|MOD_ACTION2|CUP", "trigger": "pressed", "allowUserRemap": true },
+    { "id": "select_weakness", "defaultMask": "MOD_ACTION3|MOD_ACTION2|CDOWN", "trigger": "pressed", "allowUserRemap": true },
+    { "id": "cast_self_status", "defaultMask": "MOD_ACTION3|B", "trigger": "pressed", "allowUserRemap": true },
+    { "id": "clear_self_statuses", "defaultMask": "MOD_ACTION3|A", "trigger": "pressed", "allowUserRemap": true }
+  ]
+}

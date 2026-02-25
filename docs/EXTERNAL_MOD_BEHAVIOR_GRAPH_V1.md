@@ -1,6 +1,6 @@
-# External Mods v2: Behaviors, Actors, Scenes, Items
+# External Mods v3: Behaviors, Actors, Scenes, Items
 
-Este guia resume o runtime atual para mods data-driven com `apiVersion: 2`.
+Este guia resume o runtime atual para mods data-driven com `apiVersion: 3`.
 
 ## Capabilities novas (opcionais)
 
@@ -19,6 +19,7 @@ No `mod.json`:
     "combat.projectiles.v1",
     "combat.aoe.v1",
     "movement.profiles.v1",
+    "camera.aim_profiles.v1",
     "world.queries.v1",
     "patches.vanilla_items.v1",
     "scenes.bundle.v1",
@@ -37,6 +38,7 @@ No `mod.json`:
 - `combat/projectiles.json`
 - `combat/aoe_profiles.json`
 - `movement/movement_profiles.json`
+- `camera/camera_profiles.json`
 - `actors/actors.json`
 - `behaviors/behaviors.json`
 - `scenes/scenes.json`
@@ -104,6 +106,7 @@ Também aceita:
 - queries de mundo: `getGroundInfo`, `raycast`, `raycastAll`
 - status: `applyStatus`, `clearStatus`, `clearAllStatuses`
 - atores: `spawnActor`, `despawnActor`, `setActorState`, `moveActorToPathNode`
+- camera de mira: `toggleAimCameraMode`, `setAimCameraMode`, `setAimCameraProfile`
 - estado/flags/economia:
   - `setSwitchFlag`, `clearSwitchFlag`
   - `setEventChkInf`, `clearEventChkInf`
@@ -111,16 +114,84 @@ Também aceita:
   - `giveRupees`, `takeRupees`
   - `setVar`, `addVar`, `clampVar`
 
-Compatibilidade:
+Contrato v3:
 
-- `igniteFrontTarget` continua suportado (alias interno de `applyStatus` com `status=fire`).
-- `freezeFrontTarget` continua suportado (alias interno de `applyStatus` com `status=freeze`).
+- `igniteFrontTarget` e `freezeFrontTarget` foram removidos.
+- Use sempre `applyStatus` com `status` (`core:*` ou `modid:*`).
 
 Obs:
 
 - `applyStatus.status` aceita IDs namespaced (`modid:status_id`) e `core:*`.
 - `dealDamage` usa `damageProfileId` quando informado.
 - `useItemProfile` executa pipeline de targeting + efeitos + cooldown por ID.
+
+## movement.profiles v3 (`mode: surf`)
+
+Para surf físico real (escudo sob os pés, inclusive parado), use:
+
+- `mode: "surf"`
+- `boardRequired` (default `true`)
+- `boardSpawnMode` (`persistent_under_player`)
+- `idlePose` (`stand|tpose`, default `stand`)
+- `idleLock` (default `true`)
+- `boardHeightOffset`, `boardPitchRollFromGround`, `boardVisibleWhenIdle`
+- `boardModelAsset`, `boardScale`
+- `surfMaxSpeed`, `surfDownhillAccel`, `surfUphillBrake`, `surfFlatDrag`, `surfTurnRateDeg`, `idleSpeedThreshold`
+
+## camera.aim_profiles v1
+
+Manifest:
+
+- capability: `camera.aim_profiles.v1`
+- path: `cameraDefinitions` (ex.: `camera/camera_profiles.json`)
+
+Actions:
+
+- `toggleAimCameraMode` (opcionais: `profileId`, `itemId`)
+- `setAimCameraMode` (obrigatÃ³rio: `mode=firstPerson|overShoulder`; opcionais: `profileId`, `itemId`)
+- `setAimCameraProfile` (obrigatÃ³rio: `profileId`)
+
+Exemplo de perfil:
+
+```json
+{
+  "schemaVersion": 1,
+  "profiles": [
+    {
+      "id": "com.example.demo:ots_default",
+      "contexts": ["cup", "bow", "hookshot", "slingshot"],
+      "firstPersonModeByContext": {
+        "cup": "firstperson",
+        "bow": "bowarrow",
+        "hookshot": "hookshot",
+        "slingshot": "slingshot"
+      },
+      "overShoulderModeByContext": "bowarrowz",
+      "shoulder": "right",
+      "aimRay": "camera_center",
+      "reticle": { "x": 0.5, "y": 0.5 }
+    }
+  ]
+}
+```
+
+## input.json (`defaultKeyboardKeys`)
+
+Cada binding pode declarar teclas padrÃ£o de teclado:
+
+```json
+{
+  "id": "toggle_aim_camera",
+  "defaultMask": "MOD_ACTION7",
+  "defaultKeyboardKeys": ["F8"]
+}
+```
+
+Regras:
+
+- `defaultMask` deve conter exatamente 1 bit `MOD_ACTIONx` para auto-mapear teclado.
+- teclas reservadas (`F1`, `F5`, `F6`, `F7`, `F9`, `TAB`, `I`) sÃ£o ignoradas com warning.
+- mappings duplicados nÃ£o sÃ£o recriados.
 
 ## applyStatus (novo)
 
@@ -168,7 +239,7 @@ Exemplos:
   "id": "com.example.behavior_demo",
   "name": "Behavior Demo",
   "version": "0.1.0",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "entryScript": "scripts/init.json",
   "runtime": {
     "type": "wasm3-v1",
@@ -266,3 +337,33 @@ Exemplos:
   ]
 }
 ```
+
+## cameraHotkeys (v3)
+
+You can bind aim camera actions directly to keyboard keys without `MOD_ACTION`:
+
+```json
+{
+  "bindings": [],
+  "cameraHotkeys": [
+    {
+      "id": "aim_toggle",
+      "defaultKeyboardKeys": ["F8"],
+      "allowUserRemap": true,
+      "action": "toggleAimCameraMode",
+      "profileId": "com.example.demo:ots_default"
+    }
+  ]
+}
+```
+
+Supported `cameraHotkeys.action` values:
+- `toggleAimCameraMode`
+- `setAimCameraMode`
+- `setAimCameraProfile`
+
+`camera/camera_profiles.json` also supports:
+- `contexts` with `boomerang`
+- `mouseFireEnabled`
+- `mouseFireButton`
+- `mouseFireMode`

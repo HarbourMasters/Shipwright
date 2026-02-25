@@ -2,6 +2,27 @@
 
 > So you would like to create a code mod? _BUCKLE UP_
 
+## External Mods (Data-Driven)
+
+If your goal is to build content mods (items, statuses, targeting/damage profiles, behaviors/hooks) without forking C++ gameplay code, start with:
+
+- `docs/EXTERNAL_MOD_DATA_DRIVEN_REFERENCE.md`
+- `docs/EXTERNAL_MOD_BEHAVIOR_GRAPH_V1.md`
+- `docs/EXTERNAL_MOD_MANAGER_REFERENCE.md`
+- `docs/examples/external_mods/`
+- `docs/agents/AGENTS.md` (long-term technical memory protocol for agent workflows)
+
+Runtime contract note:
+- External Mods now require `apiVersion: 3`.
+- Legacy actions/params (e.g. `igniteFrontTarget`, `freezeFrontTarget`, `freezeOnMeleeHit`) are not accepted.
+- Aim camera is moddable through `camera.aim_profiles.v1` + `cameraDefinitions`.
+- `input.json` supports `defaultKeyboardKeys` for default keyboard mappings of single `MOD_ACTIONx` bindings.
+- `items/items.json` supports `aimReticleTextureAsset` for item-specific aim reticles.
+- `items/items.json` supports `useTrigger` (`onUse|hammerGroundImpact`) for impact-driven item profiles.
+- `items/use_profiles.json` supports `spawnShockwave` as a data-driven effect action.
+- `combat/aoe_profiles.json` supports `targetScope` to restrict AoE categories (`enemies_bosses`, etc.).
+- `combat/damage_profiles.json` supports `propInteraction` (`none|vanilla_hit|hard_kill`) for tree/bush interactions.
+
 ## Preface
 
 Git is required to be installed. Knowing how to use git is going to help, I will list out commands that should set you on the right but without a general understanding you will likely get stuck if you deviate from the happy path.
@@ -205,3 +226,15 @@ Assuming all went well, you can now push your changes to your fork with the foll
 ```bash
 git push origin <YOUR BRANCH NAME>
 ```
+
+## External Mods Aim OTS (API v3)
+
+Aim camera toggle can be bound directly with `cameraHotkeys` in `config/input.json` (for example `F8`) without using `MOD_ACTION` bindings.
+
+`camera/camera_profiles.json` supports:
+- context `boomerang`
+- `mouseFireEnabled`
+- `mouseFireButton`
+- `mouseFireMode`
+
+When enabled, LMB fire is routed through the same vanilla item-button flow for bow/hookshot/slingshot/boomerang and compatible mod items.

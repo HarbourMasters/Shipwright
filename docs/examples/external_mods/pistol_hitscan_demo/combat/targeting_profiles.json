@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    { "id": "com.example.pistol_hitscan_demo:ray_800", "mode": "raycast", "range": 800, "filters": { "stopOnWall": true, "includeEnemies": true, "includeProps": false } }
+  ]
+}

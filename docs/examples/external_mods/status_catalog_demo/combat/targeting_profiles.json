@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    { "id": "com.example.status_catalog_demo:front_220", "mode": "frontTarget", "range": 220, "filters": { "stopOnWall": true, "includeEnemies": true, "includeProps": false } }
+  ]
+}

@@ -1,10 +1,14 @@
 {
-  "id": "com.example.kokiri_parkour",
-  "name": "Kokiri Parkour Door",
-  "version": "0.1.0",
-  "apiVersion": 1,
-  "loadOrder": 120,
-  "entryScript": "scripts/init.json",
-  "assets": ["assets/parkour_room.otr"],
-  "dependencies": []
+    "id":  "com.example.kokiri_parkour",
+    "name":  "Kokiri Parkour Door",
+    "version":  "0.1.0",
+    "apiVersion":  3,
+    "loadOrder":  120,
+    "entryScript":  "scripts/init.json",
+    "assets":  [
+                   "assets/parkour_room.otr"
+               ],
+    "dependencies":  [
+
+                     ]
 }

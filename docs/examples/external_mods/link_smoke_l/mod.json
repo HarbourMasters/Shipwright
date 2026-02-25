@@ -2,7 +2,7 @@
     "id":  "com.example.link_smoke_l",
     "name":  "Link Smoke (Action Key)",
     "version":  "0.1.0",
-    "apiVersion":  2,
+    "apiVersion":  3,
     "loadOrder":  150,
     "entryScript":  "scripts/init.json",
     "assets":  [

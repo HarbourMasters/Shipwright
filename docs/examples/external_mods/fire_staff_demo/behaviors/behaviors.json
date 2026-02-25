@@ -1,0 +1,26 @@
+{
+  "behaviors": [
+    {
+      "id": "fire_staff_behavior",
+      "events": {
+        "onItemUsed": [
+          {
+            "actions": [
+              {
+                "action": "applyStatus",
+                "status": "fire",
+                "target": "frontTarget",
+                "itemId": "fire_staff_item",
+                "durationFrames": 120,
+                "tickFrames": 15,
+                "damagePerTick": 2,
+                "range": 180,
+                "intensity": 255
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "useProfiles": [
+    {
+      "id": "com.example.spear_lunge_demo:lunge_use",
+      "targetingProfile": "com.example.spear_lunge_demo:self_target",
+      "cooldownFrames": 14,
+      "effects": [
+        { "action": "spawnAoE", "aoeProfileId": "com.example.spear_lunge_demo:cone_burst" }
+      ]
+    }
+  ]
+}

@@ -61,9 +61,52 @@ enum class ExternalModItemUseMode {
     Augment,
 };
 
+enum class ExternalModItemUseTrigger {
+    OnUse,
+    HammerGroundImpact,
+};
+
 enum class ExternalModItemPlacement {
     Legacy,
     Virtual,
+};
+
+enum class ExternalModMovementMode {
+    Modifier,
+    Surf,
+};
+
+enum class ExternalModAimCameraContext {
+    CUp,
+    Bow,
+    Hookshot,
+    Slingshot,
+    Boomerang,
+};
+
+enum class ExternalModAimCameraMode {
+    FirstPerson,
+    OverShoulder,
+};
+
+enum class ExternalModAimMouseButton {
+    Left,
+    Middle,
+    Right,
+    Backward,
+    Forward,
+};
+
+enum class ExternalModAimMouseFireMode {
+    Both,
+    FirstPerson,
+    OverShoulder,
+};
+
+enum class ExternalModAimReticleVisibility {
+    AimOnly,
+    ButtonHold,
+    Selected,
 };
 
 enum class ExternalModModelUvOrigin {
@@ -108,6 +151,7 @@ struct ExternalModManifest {
     int32_t runtimeMaxFrameBudgetMs = 2;
     int32_t runtimeMaxHookCallsPerFrame = 256;
     int32_t runtimeMaxActorInstances = 64;
+    int32_t runtimeMaxActiveStatuses = 256;
     std::string itemDefinitions;
     std::string inputDefinitions;
     std::string hookDefinitions;
@@ -122,6 +166,7 @@ struct ExternalModManifest {
     std::string movementDefinitions;
     std::string itemUseProfiles;
     std::string vanillaItemPatches;
+    std::string cameraDefinitions;
     std::vector<std::string> capabilities;
 };
 
@@ -134,8 +179,6 @@ enum class ExternalModActionType {
     SpawnSmoke,
     SpawnKusa,
     LanternLight,
-    IgniteFrontTarget,
-    FreezeFrontTarget,
     ApplyStatus,
     UseItemProfile,
     DealDamage,
@@ -168,6 +211,9 @@ enum class ExternalModActionType {
     ClampVar,
     EmitSignal,
     CallBehavior,
+    ToggleAimCameraMode,
+    SetAimCameraMode,
+    SetAimCameraProfile,
     InvokeWasm,
 };
 
@@ -244,6 +290,8 @@ struct ExternalModAction {
     std::string projectileProfileId;
     std::string aoeProfileId;
     std::string movementProfileId;
+    std::string aimCameraProfileId;
+    ExternalModAimCameraMode aimCameraMode = ExternalModAimCameraMode::FirstPerson;
     std::string patchOperation;
     float range = 180.0f;
     float angle = 0.0f;
@@ -276,6 +324,14 @@ struct ExternalModInputBinding {
     int32_t defaultMask = 0;
     ExternalModInputTriggerType defaultTrigger = ExternalModInputTriggerType::Pressed;
     bool allowUserRemap = true;
+    std::vector<int32_t> defaultKeyboardScancodes;
+};
+
+struct ExternalModCameraHotkeyDefinition {
+    std::string id;
+    bool allowUserRemap = true;
+    std::vector<int32_t> defaultKeyboardScancodes;
+    ExternalModAction action;
 };
 
 struct ExternalModInputActionTrigger {
@@ -305,6 +361,7 @@ struct ExternalModItemDefinition {
     std::string hookshotDesignTextureAsset;
     std::string hookshotChainTextureAsset;
     std::string hookshotReticleTextureAsset;
+    std::string aimReticleTextureAsset;
     float modelScale = 1.0f;
     ExternalModModelUvOrigin modelUvOrigin = ExternalModModelUvOrigin::Auto;
     ExternalModModelTextureFilter modelTextureFilter = ExternalModModelTextureFilter::Auto;
@@ -332,12 +389,14 @@ struct ExternalModItemDefinition {
     std::vector<uint8_t> hookshotDesignTextureTlutRgba16;
     std::vector<uint8_t> hookshotChainTextureRgba16;
     std::vector<uint8_t> hookshotReticleTextureI8;
+    std::vector<uint8_t> aimReticleTextureI8;
     std::string description;
     std::string onUseExport;
     std::string onUpdateExport;
     std::string onUseBehavior;
     std::string onEquipBehavior;
     std::string useProfile;
+    ExternalModItemUseTrigger useTrigger = ExternalModItemUseTrigger::OnUse;
     int32_t acquireTextId = 0;
     std::string persistentStateKey;
     ExternalModItemAgePolicy agePolicy = ExternalModItemAgePolicy::AllowChild;
@@ -362,6 +421,12 @@ enum class ExternalModTargetingMode {
     Player,
 };
 
+enum class ExternalModAoETargetScope {
+    AllNonPlayer,
+    EnemiesBosses,
+    EnemiesBossesProps,
+};
+
 struct ExternalModStatusDefinition {
     std::string id;
     std::string displayName;
@@ -384,6 +449,7 @@ struct ExternalModDamageProfile {
     int32_t amount = 1;
     std::string type = "physical";
     int32_t iframesFrames = 0;
+    std::string propInteraction = "none";
 };
 
 struct ExternalModTargetingProfile {
@@ -404,6 +470,11 @@ struct ExternalModUseProfileEffect {
     std::string projectileProfileId;
     std::string aoeProfileId;
     std::string movementProfileId;
+    std::string shockwaveOrigin = "player";
+    std::array<uint8_t, 4> shockwavePrimColor = { { 255, 255, 255, 255 } };
+    std::array<uint8_t, 4> shockwaveEnvColor = { { 200, 200, 200, 255 } };
+    int32_t shockwaveLife = 10;
+    bool shockwaveSpawnIceSmoke = false;
     int32_t durationFrames = 0;
     int32_t tickFrames = 0;
     int32_t damagePerTick = 0;
@@ -433,6 +504,7 @@ struct ExternalModProjectileProfile {
 struct ExternalModAoEProfile {
     std::string id;
     std::string shape = "sphere";
+    ExternalModAoETargetScope targetScope = ExternalModAoETargetScope::AllNonPlayer;
     float range = 0.0f;
     float radius = 0.0f;
     float angle = 0.0f;
@@ -445,10 +517,67 @@ struct ExternalModAoEProfile {
 
 struct ExternalModMovementProfile {
     std::string id;
+    ExternalModMovementMode mode = ExternalModMovementMode::Modifier;
     int32_t durationFrames = 0;
     float speedMultiplier = 1.0f;
     float accelMultiplier = 1.0f;
     float gravityScale = 1.0f;
+    bool boardRequired = true;
+    std::string boardSpawnMode = "persistent_under_player";
+    std::string idlePose = "stand";
+    bool idleLock = true;
+    float boardHeightOffset = 10.0f;
+    bool boardPitchRollFromGround = true;
+    bool boardVisibleWhenIdle = true;
+    std::string boardModelAsset;
+    float boardScale = 1.0f;
+    float surfMaxSpeed = 12.0f;
+    float surfDownhillAccel = 0.45f;
+    float surfUphillBrake = 0.35f;
+    float surfFlatDrag = 0.08f;
+    float surfTurnRateDeg = 6.0f;
+    float idleSpeedThreshold = 0.10f;
+    float surfForwardAccel = 0.20f;
+    int32_t surfBoostButtonMask = 0;
+    float surfBoostAccel = 0.45f;
+    float surfBoostMaxSpeed = 16.0f;
+    int32_t surfBoostCooldownFrames = 12;
+    float boardPitchOffsetDeg = 0.0f;
+    float boardYawOffsetDeg = 0.0f;
+    float boardRollOffsetDeg = 0.0f;
+    float boardForwardOffset = 0.0f;
+    float boardRightOffset = 0.0f;
+    float boardUpOffset = 0.0f;
+    float riderHeightOffset = 0.0f;
+};
+
+struct ExternalModAimCameraProfile {
+    std::string id;
+    uint8_t contextsMask = 0x1F;
+    int16_t cUpFirstPersonMode = 6;
+    int16_t bowFirstPersonMode = 7;
+    int16_t hookshotFirstPersonMode = 9;
+    int16_t slingshotFirstPersonMode = 11;
+    int16_t boomerangFirstPersonMode = 7;
+    int16_t cUpOverShoulderMode = 8;
+    int16_t bowOverShoulderMode = 8;
+    int16_t hookshotOverShoulderMode = 8;
+    int16_t slingshotOverShoulderMode = 8;
+    int16_t boomerangOverShoulderMode = 8;
+    std::string shoulder = "right";
+    std::string aimRay = "camera_center";
+    float reticleX = 0.5f;
+    float reticleY = 0.5f;
+    bool mouseFireEnabled = false;
+    ExternalModAimMouseButton mouseFireButton = ExternalModAimMouseButton::Left;
+    ExternalModAimMouseFireMode mouseFireMode = ExternalModAimMouseFireMode::Both;
+    ExternalModAimReticleVisibility reticleVisibility = ExternalModAimReticleVisibility::AimOnly;
+};
+
+struct ExternalModAimCameraState {
+    bool overShoulderEnabled = false;
+    std::string activeProfileId;
+    std::string activeProfileOwnerModId;
 };
 
 struct ExternalModBehaviorCondition {
@@ -606,6 +735,7 @@ struct ExternalModRuntime {
     std::vector<ExternalModSceneAction> onSceneInitActions;
     std::vector<ExternalModTriggerVolume> frameTriggers;
     std::vector<ExternalModInputBinding> inputBindings;
+    std::vector<ExternalModCameraHotkeyDefinition> cameraHotkeys;
     std::vector<ExternalModInputActionTrigger> inputTriggers;
     std::vector<ExternalModItemDefinition> itemDefinitions;
     std::vector<ExternalModHookSubscription> hookSubscriptions;
@@ -620,6 +750,12 @@ struct ExternalModRuntime {
     std::vector<ExternalModProjectileProfile> projectileProfiles;
     std::vector<ExternalModAoEProfile> aoeProfiles;
     std::vector<ExternalModMovementProfile> movementProfiles;
+    std::vector<ExternalModAimCameraProfile> cameraProfiles;
+    bool hasEffectImpactPosition = false;
+    float effectImpactPosX = 0.0f;
+    float effectImpactPosY = 0.0f;
+    float effectImpactPosZ = 0.0f;
+    bool useProfileSpawnedShockwave = false;
     struct StatusEffectState {
         uintptr_t actorAddress = 0;
         int16_t actorId = -1;
@@ -647,7 +783,26 @@ struct ExternalModRuntime {
         bool fallbackLogged = false;
         int32_t stacks = 1;
     };
+    struct SurfState {
+        bool active = false;
+        std::string sourceModId;
+        std::string movementProfileId;
+        std::string sourceItemId;
+        int32_t framesRemaining = 0;
+        float speed = 0.0f;
+        int16_t headingYaw = 0;
+        float boardPosX = 0.0f;
+        float boardPosY = 0.0f;
+        float boardPosZ = 0.0f;
+        int16_t boardRotX = 0;
+        int16_t boardRotY = 0;
+        int16_t boardRotZ = 0;
+        float boardScale = 1.0f;
+        int32_t boostCooldownRemaining = 0;
+        bool idle = false;
+    };
     std::vector<StatusEffectState> statusEffects;
+    SurfState surfState;
     std::unordered_map<std::string, std::string> globalBlackboard;
     std::unordered_map<int16_t, std::unordered_map<std::string, std::string>> sceneBlackboard;
     std::vector<std::pair<uint32_t, std::string>> pendingSignals;
@@ -662,6 +817,10 @@ struct ExternalModRuntime {
     int32_t maxHookCallsPerFrame = 256;
     int32_t hookCallsThisFrame = 0;
     int32_t maxActorInstances = 64;
+    int32_t wasmCallsThisFrame = 0;
+    int32_t wasmBudgetDropsThisFrame = 0;
+    std::unordered_map<int32_t, uintptr_t> wasmTargetHandles;
+    int32_t wasmNextTargetHandle = 1;
     int32_t behaviorMaxStepsPerActorPerFrame = 64;
     int32_t behaviorMaxStepsPerModPerFrame = 5000;
     int32_t maxActiveStatusEffects = 256;

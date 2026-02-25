@@ -1,18 +1,22 @@
 {
-  "id": "com.example.skyhook_jump",
-  "name": "Skyhook + Mod Jump",
-  "version": "0.2.0",
-  "apiVersion": 2,
-  "loadOrder": 130,
-  "entryScript": "scripts/init.json",
-  "assets": [],
-  "dependencies": [],
-  "runtime": {
-    "type": "wasm3-v1",
-    "module": "scripts/skyhook.wat",
-    "maxMemoryKb": 1024,
-    "maxCallMs": 2
-  },
-  "itemDefinitions": "items/items.json",
-  "inputDefinitions": "config/input.json"
+    "id":  "com.example.skyhook_jump",
+    "name":  "Skyhook + Mod Jump",
+    "version":  "0.2.0",
+    "apiVersion":  3,
+    "loadOrder":  130,
+    "entryScript":  "scripts/init.json",
+    "assets":  [
+
+               ],
+    "dependencies":  [
+
+                     ],
+    "runtime":  {
+                    "type":  "wasm3-v1",
+                    "module":  "scripts/skyhook.wat",
+                    "maxMemoryKb":  1024,
+                    "maxCallMs":  2
+                },
+    "itemDefinitions":  "items/items.json",
+    "inputDefinitions":  "config/input.json"
 }

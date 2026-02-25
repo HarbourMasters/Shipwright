@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    { "id": "com.example.status_catalog_demo:chill_dot", "amount": 1, "type": "ice" }
+  ]
+}
