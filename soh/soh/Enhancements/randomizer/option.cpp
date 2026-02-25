@@ -357,35 +357,41 @@ RandomizerCheck LocationOption::GetKey() const {
     return static_cast<RandomizerCheck>(key);
 }
 
-TrickOption::TrickOption(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_,
-                         std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_)
+TrickSetting::TrickSetting(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_,
+                           std::set<Tricks::Tag> tags_, const std::string& name_, const std::string nameTag_,
+                           std::string description_)
     : Option(key_, name_, { "Disabled", "Enabled" }, OptionCategory::Setting, "", std::move(description_),
              WIDGET_CVAR_CHECKBOX, 0, false, nullptr, IMFLAG_NONE),
-      mQuest(quest_), mArea(area_), mTags(std::move(tags_)) {
+      mQuest(quest_), mArea(area_), mNameTag(nameTag_), mTags(std::move(tags_)) {
 }
 
-TrickOption TrickOption::LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
-                                    std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_) {
-    return { key_, quest_, area_, std::move(tags_), name_, std::move(description_) };
+TrickSetting TrickSetting::LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
+                                      std::set<Tricks::Tag> tags_, const std::string& name_, const std::string nameTag_,
+                                      std::string description_) {
+    return { key_, quest_, area_, std::move(tags_), name_, nameTag_, std::move(description_) };
 }
 
-RandomizerTrick TrickOption::GetKey() const {
+RandomizerTrick TrickSetting::GetKey() const {
     return static_cast<RandomizerTrick>(key);
 }
 
-RandomizerCheckQuest TrickOption::GetQuest() const {
+RandomizerCheckQuest TrickSetting::GetQuest() const {
     return mQuest;
 }
 
-RandomizerArea TrickOption::GetArea() const {
+RandomizerArea TrickSetting::GetArea() const {
     return mArea;
 }
 
-bool TrickOption::HasTag(const Tricks::Tag tag) const {
+std::string TrickSetting::GetNameTag() const {
+    return mNameTag;
+}
+
+bool TrickSetting::HasTag(const Tricks::Tag tag) const {
     return mTags.contains(tag);
 }
 
-const std::set<Tricks::Tag>& TrickOption::GetTags() const {
+const std::set<Tricks::Tag>& TrickSetting::GetTags() const {
     return mTags;
 }
 

@@ -264,6 +264,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->actor.xzDistToPlayer < 130.0f
+    // ```
+    // #### `args`
+    // - None
+    VB_BUSINESS_SCRUB_SPEAK,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -414,6 +422,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)
+    // ```
+    // #### `args`
+    // - None
+    VB_DEKU_THEATER_FINISH_GIVING_PRIZE,
+
+    // #### `result`
+    // ```c
     // CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)
     // ```
     // #### `args`
@@ -505,6 +521,14 @@ typedef enum {
     // Vanilla condition: exchangeItemId == EXCH_ITEM_LETTER_ZELDA
     // Opt: s32
     VB_HEISHI2_ACCEPT_ITEM_AS_ZELDAS_LETTER,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_DRAW_ADDITIONAL_RETICLES,
 
     // #### `result`
     // In `Interface_DrawAmmoCount`:
@@ -799,6 +823,14 @@ typedef enum {
     // #### `args`
     // - `*EnCow`
     VB_GIVE_ITEM_FROM_COW,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnDntJiji`
+    VB_GIVE_ITEM_FROM_DEKU_THEATER,
 
     // #### `result`
     // ```c
@@ -2596,6 +2628,15 @@ typedef enum {
     // - `Player*`
     // - `s32` commonType
     VB_SET_IDLE_ANIM,
+
+    // #### `result`
+    // ```c
+    // player->unk_6A0 > 4000000.0f
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `double` (temp - promoted from `f32`)
+    VB_RUMBLE_FOR_SECRET
 
 } GIVanillaBehavior;
 

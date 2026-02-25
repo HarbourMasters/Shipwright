@@ -1127,6 +1127,7 @@ Player* Player_UnsetMask(PlayState* play);
 s32 Player_HasMirrorShieldEquipped(PlayState* play);
 s32 Player_HasMirrorShieldSetToDraw(PlayState* play);
 s32 Player_ActionToMagicSpell(Player* player, s32 actionParam);
+void Player_DrawHookshotReticle(PlayState* play, Player* player, f32 hookshotRange);
 s32 Player_HoldsHookshot(Player* player);
 s32 Player_HoldsBow(Player* player);
 s32 Player_HoldsSlingshot(Player* player);

@@ -107,7 +107,7 @@ void RegionTable_Init_ForestTemple() {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_LOWER, true),
         ENTRANCE(RR_FOREST_TEMPLE_MAP_ROOM,           true),
-        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER, ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_MEGATON_HAMMER)),
+        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER, ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER)),
     });
 
     areaTable[RR_FOREST_TEMPLE_NW_COURTYARD_UPPER] = Region("Forest Temple NW Courtyard Upper", SCENE_FOREST_TEMPLE, {

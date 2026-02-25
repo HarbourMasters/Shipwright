@@ -5,8 +5,6 @@
 
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/debugconsole.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
