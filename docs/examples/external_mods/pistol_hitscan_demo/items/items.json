@@ -1,0 +1,25 @@
+{
+  "items": [
+    {
+      "id": "pistol_item",
+      "displayName": "Pistol (Slingshot Placeholder)",
+      "slot": "SLOT_SLINGSHOT",
+      "useMode": "augment",
+      "agePolicy": "allowChild",
+      "modelAsset": "assets/pistol_model",
+      "iconAsset": "assets/pistol_icon_placeholder.png",
+      "aimReticleTextureAsset": "assets/pistol_reticle_placeholder.png",
+      "useProfile": "com.example.pistol_hitscan_demo:pistol_use",
+      "aimSelectToggle": true,
+      "aimAttackButtonFire": true,
+      "grant": {
+        "itemId": "ITEM_SLINGSHOT",
+        "ammo": 40
+      },
+      "params": {
+        "infiniteAmmo": 1,
+        "cooldown": 8
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "bindings": [],
+  "cameraHotkeys": [
+    {
+      "id": "aim_toggle",
+      "defaultKeyboardKeys": ["F8"],
+      "allowUserRemap": true,
+      "action": "toggleAimCameraMode",
+      "profileId": "com.example.aim_ots_toggle_demo:ots_default"
+    }
+  ]
+}

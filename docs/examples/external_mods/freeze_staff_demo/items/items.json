@@ -1,0 +1,19 @@
+{
+    "items":  [
+                  {
+                      "id":  "freeze_staff_item",
+                      "ui":  {
+                                 "description":  "Congela o alvo à frente por um curto tempo."
+                             },
+                      "displayName":  "ice staff",
+                      "slot":  "SLOT_STICK",
+                      "useMode":  "vanilla",
+                      "onUseBehavior":  "freeze_staff_behavior",
+                      "agePolicy":  "allowChild",
+                      "params":  {
+                                     "cooldown":  0,
+                                     "infiniteAmmo":  1
+                                 }
+                  }
+              ]
+}

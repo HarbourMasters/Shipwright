@@ -1,0 +1,25 @@
+﻿{
+  "behaviors": [
+    {
+      "id": "freeze_staff_behavior",
+      "events": {
+        "onItemUsed": [
+          {
+            "actions": [
+              {
+                "action": "applyStatus",
+                "status": "freeze",
+                "target": "frontTarget",
+                "itemId": "freeze_staff_item",
+                "durationFrames": 90,
+                "shakeFrames": 12,
+                "range": 180,
+                "intensity": 255
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

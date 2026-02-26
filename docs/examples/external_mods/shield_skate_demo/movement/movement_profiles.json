@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    {
+      "id": "com.example.shield_skate_demo:skate_profile",
+      "mode": "surf",
+      "durationFrames": 0,
+      "boardRequired": true,
+      "boardSpawnMode": "persistent_under_player",
+      "idlePose": "stand",
+      "idleLock": true,
+      "boardHeightOffset": -2.0,
+      "boardPitchRollFromGround": true,
+      "boardVisibleWhenIdle": true,
+      "boardScale": 1.0,
+      "boardPitchOffsetDeg": -90.0,
+      "boardYawOffsetDeg": 0.0,
+      "boardRollOffsetDeg": 180.0,
+      "boardForwardOffset": 0.0,
+      "boardRightOffset": 0.0,
+      "boardUpOffset": 0.0,
+      "riderHeightOffset": 3.5,
+      "surfMaxSpeed": 12.0,
+      "surfForwardAccel": 0.22,
+      "surfBoostButton": "MOD_ACTION6",
+      "surfBoostAccel": 2.2,
+      "surfBoostMaxSpeed": 18.0,
+      "surfBoostCooldownFrames": 12,
+      "surfDownhillAccel": 0.45,
+      "surfUphillBrake": 0.35,
+      "surfFlatDrag": 0.05,
+      "surfTurnRateDeg": 6.0,
+      "idleSpeedThreshold": 0.08
+    }
+  ]
+}

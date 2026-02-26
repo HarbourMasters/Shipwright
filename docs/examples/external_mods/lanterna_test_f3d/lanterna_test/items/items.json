@@ -1,0 +1,25 @@
+{
+  "items": [
+    {
+      "id": "lanterna_item",
+      "displayName": "Lanterna",
+      "slot": "SLOT_STICK",
+      "iconAsset": "assets/lanterna_placeholder.png",
+      "modelAsset": "assets/lanterna.obj",
+      "modelTextureAsset": "assets/texture.png",
+      "modelScale": 1.0,
+      "agePolicy": "allowChild",
+      "useMode": "vanilla",
+      "modelUvOrigin": "auto",
+      "modelTextureFilter": "point",
+      "modelTextureWidth": 128,
+      "modelTextureHeight": 128,
+      "grant": {
+        "ammo": 20
+      },
+      "params": {
+        "cooldown": 0
+      }
+    }
+  ]
+}

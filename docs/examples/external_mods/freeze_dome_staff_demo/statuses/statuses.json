@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "statuses": [
+    {
+      "id": "com.example.freeze_dome_staff_demo:freeze_lock_no_damage",
+      "displayName": "Freeze Lock (No Damage)",
+      "baseStatus": "core:freeze",
+      "durationFrames": 120,
+      "tickFrames": 20,
+      "damagePerTick": 0,
+      "intensity": 220,
+      "shakeFrames": 10,
+      "freezeProfile": {
+        "mode": "ice_trap_no_damage",
+        "spawnIceShell": true,
+        "iceShellSize": "auto",
+        "lockPosition": true,
+        "lockRotation": true,
+        "playerInputLock": true,
+        "breakEffectOnExpire": true
+      }
+    }
+  ]
+}

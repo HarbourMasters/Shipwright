@@ -1,0 +1,211 @@
+﻿{
+    "generatedUtc":  "2026-02-25T20:21:27Z",
+    "apiVersion":  4,
+    "actions":  [
+                    {
+                        "category":  "core",
+                        "name":  "showNotification"
+                    },
+                    {
+                        "category":  "core",
+                        "name":  "teleportToEntrance"
+                    },
+                    {
+                        "category":  "scene",
+                        "name":  "loadModScene"
+                    },
+                    {
+                        "category":  "core",
+                        "name":  "pressButton"
+                    },
+                    {
+                        "category":  "core",
+                        "name":  "showEquippedItemGet"
+                    },
+                    {
+                        "category":  "fx",
+                        "name":  "spawnSmoke"
+                    },
+                    {
+                        "category":  "fx",
+                        "name":  "spawnKusa"
+                    },
+                    {
+                        "category":  "fx",
+                        "name":  "lanternLight"
+                    },
+                    {
+                        "category":  "status",
+                        "name":  "applyStatus"
+                    },
+                    {
+                        "category":  "status",
+                        "name":  "clearStatus"
+                    },
+                    {
+                        "category":  "status",
+                        "name":  "clearAllStatuses"
+                    },
+                    {
+                        "category":  "items",
+                        "name":  "useItemProfile"
+                    },
+                    {
+                        "category":  "combat",
+                        "name":  "dealDamage"
+                    },
+                    {
+                        "category":  "combat",
+                        "name":  "spawnProjectile"
+                    },
+                    {
+                        "category":  "combat",
+                        "name":  "spawnAoE"
+                    },
+                    {
+                        "category":  "movement",
+                        "name":  "applyMovementProfile"
+                    },
+                    {
+                        "category":  "movement",
+                        "name":  "applyImpulse"
+                    },
+                    {
+                        "category":  "world_query",
+                        "name":  "getGroundInfo"
+                    },
+                    {
+                        "category":  "world_query",
+                        "name":  "raycast"
+                    },
+                    {
+                        "category":  "world_query",
+                        "name":  "raycastAll"
+                    },
+                    {
+                        "category":  "actor",
+                        "name":  "spawnActor"
+                    },
+                    {
+                        "category":  "actor",
+                        "name":  "despawnActor"
+                    },
+                    {
+                        "category":  "actor",
+                        "name":  "setActorState"
+                    },
+                    {
+                        "category":  "actor",
+                        "name":  "moveActorToPathNode"
+                    },
+                    {
+                        "category":  "dialog",
+                        "name":  "openDialog"
+                    },
+                    {
+                        "category":  "flags",
+                        "name":  "setSwitchFlag"
+                    },
+                    {
+                        "category":  "flags",
+                        "name":  "clearSwitchFlag"
+                    },
+                    {
+                        "category":  "flags",
+                        "name":  "setEventChkInf"
+                    },
+                    {
+                        "category":  "flags",
+                        "name":  "clearEventChkInf"
+                    },
+                    {
+                        "category":  "flags",
+                        "name":  "setInfTable"
+                    },
+                    {
+                        "category":  "flags",
+                        "name":  "clearInfTable"
+                    },
+                    {
+                        "category":  "economy",
+                        "name":  "giveRupees"
+                    },
+                    {
+                        "category":  "economy",
+                        "name":  "takeRupees"
+                    },
+                    {
+                        "category":  "items",
+                        "name":  "grantModItem"
+                    },
+                    {
+                        "category":  "items",
+                        "name":  "revokeModItem"
+                    },
+                    {
+                        "category":  "behavior",
+                        "name":  "setVar"
+                    },
+                    {
+                        "category":  "behavior",
+                        "name":  "addVar"
+                    },
+                    {
+                        "category":  "behavior",
+                        "name":  "clampVar"
+                    },
+                    {
+                        "category":  "behavior",
+                        "name":  "emitSignal"
+                    },
+                    {
+                        "category":  "behavior",
+                        "name":  "callBehavior"
+                    },
+                    {
+                        "category":  "camera",
+                        "name":  "toggleAimCameraMode"
+                    },
+                    {
+                        "category":  "camera",
+                        "name":  "setAimCameraMode"
+                    },
+                    {
+                        "category":  "camera",
+                        "name":  "setAimCameraProfile"
+                    },
+                    {
+                        "category":  "wasm",
+                        "name":  "invokeWasm"
+                    }
+                ],
+    "removedInApiV4":  [
+                           "igniteFrontTarget",
+                           "freezeFrontTarget",
+                           "items.params.freezeOnMeleeHit",
+                           "items.params.freezeOnHitDuration",
+                           "items.params.freezeOnHitShake",
+                           "items.params.freezeOnHitIntensity"
+                       ],
+    "wasmHostImports":  [
+                            "host_useItemProfile",
+                            "host_resolveTarget",
+                            "host_dealDamage",
+                            "host_applyStatus",
+                            "host_spawnProjectile",
+                            "host_spawnAoE",
+                            "host_applyMovementProfile",
+                            "host_applyImpulse",
+                            "host_getGroundInfo",
+                            "host_raycast",
+                            "host_raycastAll"
+                        ],
+    "disableReasonCodes":  [
+                               "BUDGET_HOOK",
+                               "BUDGET_WASM_CALL",
+                               "BUDGET_WASM_FRAME",
+                               "WASM_IMPORT_FAIL",
+                               "WASM_EXPORT_FAIL",
+                               "WASM_RUNTIME_ERROR"
+                           ]
+}

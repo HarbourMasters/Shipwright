@@ -1,0 +1,95 @@
+{
+  "apiVersion": 2,
+  "onGameLoaded": [
+    {
+      "action": "showNotification",
+      "text": "Equipped Item Re-Get ativo: use Mod Action 3 + C/D para repetir a animacao de item obtido do slot."
+    }
+  ],
+  "onInput": [
+    {
+      "id": "reget_c_left",
+      "binding": "reget_c_left",
+      "trigger": "pressed",
+      "cooldownFrames": 2,
+      "actions": [
+        {
+          "action": "showEquippedItemGet",
+          "button": "BTN_CLEFT"
+        }
+      ]
+    },
+    {
+      "id": "reget_c_down",
+      "binding": "reget_c_down",
+      "trigger": "pressed",
+      "cooldownFrames": 2,
+      "actions": [
+        {
+          "action": "showEquippedItemGet",
+          "button": "BTN_CDOWN"
+        }
+      ]
+    },
+    {
+      "id": "reget_c_right",
+      "binding": "reget_c_right",
+      "trigger": "pressed",
+      "cooldownFrames": 2,
+      "actions": [
+        {
+          "action": "showEquippedItemGet",
+          "button": "BTN_CRIGHT"
+        }
+      ]
+    },
+    {
+      "id": "reget_d_up",
+      "binding": "reget_d_up",
+      "trigger": "pressed",
+      "cooldownFrames": 2,
+      "actions": [
+        {
+          "action": "showEquippedItemGet",
+          "button": "BTN_DUP"
+        }
+      ]
+    },
+    {
+      "id": "reget_d_down",
+      "binding": "reget_d_down",
+      "trigger": "pressed",
+      "cooldownFrames": 2,
+      "actions": [
+        {
+          "action": "showEquippedItemGet",
+          "button": "BTN_DDOWN"
+        }
+      ]
+    },
+    {
+      "id": "reget_d_left",
+      "binding": "reget_d_left",
+      "trigger": "pressed",
+      "cooldownFrames": 2,
+      "actions": [
+        {
+          "action": "showEquippedItemGet",
+          "button": "BTN_DLEFT"
+        }
+      ]
+    },
+    {
+      "id": "reget_d_right",
+      "binding": "reget_d_right",
+      "trigger": "pressed",
+      "cooldownFrames": 2,
+      "actions": [
+        {
+          "action": "showEquippedItemGet",
+          "button": "BTN_DRIGHT"
+        }
+      ]
+    }
+  ]
+}

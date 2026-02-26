@@ -7,6 +7,7 @@
 #include "global.h"
 #include "vt.h"
 #include <fast/resource/type/Vertex.h>
+#include "soh/Enhancements/external-mods/ExternalModManager.h"
 
 extern "C" void Play_InitScene(PlayState* play, s32 spawn);
 extern "C" void Play_InitEnvironment(PlayState* play, s16 skyboxId);
@@ -37,10 +38,72 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneId, s32 spawn) {
     if (inNonSharedScene) {
         sceneVersion = ResourceMgr_IsGameMasterQuest() ? "mq" : "nonmq";
     }
-    std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName,
-                                                  scene->sceneFile.fileName);
+    const std::string defaultScenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(),
+                                                                scene->sceneFile.fileName, scene->sceneFile.fileName);
+    std::string scenePath = defaultScenePath;
+    s32 resolvedSpawn = spawn;
+
+    SOH::ExternalModPendingSceneLoadRequest pendingSceneRequest;
+    const bool hasPendingSceneRequest =
+        SOH::ExternalModManager::Instance().TryConsumePendingSceneLoadRequest(static_cast<int16_t>(sceneId), pendingSceneRequest);
+    if (hasPendingSceneRequest) {
+        scenePath = pendingSceneRequest.sceneResourcePath;
+        resolvedSpawn = pendingSceneRequest.spawnId;
+        SPDLOG_INFO("[ExternalMods] Attempting namespaced scene load for {}.{}: hostScene={:#x} resource={} spawn={}",
+                    pendingSceneRequest.modId, pendingSceneRequest.sceneId, sceneId, scenePath, resolvedSpawn);
+    }
 
     play->sceneSegment = OTRPlay_LoadFile(play, scenePath.c_str());
+    const bool loadedNamespacedScene = hasPendingSceneRequest && play->sceneSegment != nullptr;
+
+    // Failed to load scene... default to doodongs cavern
+    if (play->sceneSegment == nullptr) {
+        if (hasPendingSceneRequest) {
+            SOH::ExternalModManager::Instance().HandlePendingSceneLoadFailure(
+                pendingSceneRequest, "resource not found: " + pendingSceneRequest.sceneResourcePath);
+
+            auto resolveFallbackEntranceTableIndex = [&pendingSceneRequest]() -> int32_t {
+                const int32_t setupAdjusted = static_cast<int32_t>(pendingSceneRequest.fallbackEntranceIndex) +
+                                              static_cast<int32_t>(gSaveContext.sceneSetupIndex);
+                if (setupAdjusted >= 0 && setupAdjusted < static_cast<int32_t>(ARRAY_COUNT(gEntranceTable))) {
+                    return setupAdjusted;
+                }
+                const int32_t direct = static_cast<int32_t>(pendingSceneRequest.fallbackEntranceIndex);
+                if (direct >= 0 && direct < static_cast<int32_t>(ARRAY_COUNT(gEntranceTable))) {
+                    return direct;
+                }
+                return -1;
+            };
+
+            if (pendingSceneRequest.fallbackPlayable && pendingSceneRequest.hasFallbackEntrance) {
+                const int32_t fallbackEntranceIndex = resolveFallbackEntranceTableIndex();
+                if (fallbackEntranceIndex >= 0) {
+                    const auto fallbackSceneId = static_cast<s32>(gEntranceTable[fallbackEntranceIndex].scene);
+                    const auto fallbackSpawn = static_cast<s32>(gEntranceTable[fallbackEntranceIndex].spawn);
+                    if (fallbackSceneId != sceneId || fallbackSpawn != spawn) {
+                        SPDLOG_WARN(
+                            "[ExternalMods] Redirecting namespaced scene fallback for {}.{} to fallback entrance scene={:#x} spawn={}",
+                            pendingSceneRequest.modId, pendingSceneRequest.sceneId, fallbackSceneId, fallbackSpawn);
+                        OTRPlay_SpawnScene(play, fallbackSceneId, fallbackSpawn);
+                        return;
+                    }
+                }
+            }
+
+            play->sceneSegment = OTRPlay_LoadFile(play, defaultScenePath.c_str());
+            if (play->sceneSegment != nullptr) {
+                scenePath = defaultScenePath;
+                if (pendingSceneRequest.fallbackPlayable) {
+                    SPDLOG_WARN("[ExternalMods] Falling back to host scene path for {}.{}: {}", pendingSceneRequest.modId,
+                                pendingSceneRequest.sceneId, scenePath);
+                } else {
+                    SPDLOG_WARN(
+                        "[ExternalMods] Namespaced scene strict mode failed for {}.{}; runtime disabled and host scene loaded: {}",
+                        pendingSceneRequest.modId, pendingSceneRequest.sceneId, scenePath);
+                }
+            }
+        }
+    }
 
     // Failed to load scene... default to doodongs cavern
     if (play->sceneSegment == nullptr) {
@@ -50,11 +113,15 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneId, s32 spawn) {
         return;
     }
 
+    if (loadedNamespacedScene) {
+        SOH::ExternalModManager::Instance().HandlePendingSceneLoadSuccess(pendingSceneRequest);
+    }
+
     scene->unk_13 = 0;
 
     // gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
 
-    OTRPlay_InitScene(play, spawn);
+    OTRPlay_InitScene(play, resolvedSpawn);
     auto roomSize = func_80096FE8(play, &play->roomCtx);
 
     osSyncPrintf("ROOM SIZE=%fK\n", roomSize / 1024.0f);

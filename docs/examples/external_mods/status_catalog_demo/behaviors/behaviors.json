@@ -1,0 +1,110 @@
+{
+  "behaviors": [
+    {
+      "id": "status_tuner_behavior",
+      "events": {
+        "onItemUsed": [
+          {
+            "actions": [
+              { "action": "callBehavior", "behaviorId": "status_front_router" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "status_front_router",
+      "events": {
+        "manual": [
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "fire" } ],
+            "actions": [ { "action": "applyStatus", "status": "fire", "target": "frontTarget", "itemId": "status_tuner_item", "durationFrames": 120, "tickFrames": 15, "damagePerTick": 2, "intensity": 255, "range": 180 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "freeze" } ],
+            "actions": [ { "action": "applyStatus", "status": "freeze", "target": "frontTarget", "itemId": "status_tuner_item", "durationFrames": 90, "shakeFrames": 12, "intensity": 255, "range": 180 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "stun" } ],
+            "actions": [ { "action": "applyStatus", "status": "stun", "target": "frontTarget", "itemId": "status_tuner_item", "durationFrames": 60, "intensity": 220, "range": 180 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "poison" } ],
+            "actions": [ { "action": "applyStatus", "status": "poison", "target": "frontTarget", "itemId": "status_tuner_item", "durationFrames": 120, "tickFrames": 20, "damagePerTick": 1, "intensity": 180, "range": 180 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "blind" } ],
+            "actions": [ { "action": "applyStatus", "status": "blind", "target": "frontTarget", "itemId": "status_tuner_item", "durationFrames": 90, "intensity": 180, "blindSkipChance": 0.45, "blindYawJitterDeg": 22, "range": 180 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "speed" } ],
+            "actions": [ { "action": "applyStatus", "status": "speed", "target": "frontTarget", "itemId": "status_tuner_item", "durationFrames": 120, "speedMultiplier": 1.8, "intensity": 120, "range": 180 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "slow" } ],
+            "actions": [ { "action": "applyStatus", "status": "slow", "target": "frontTarget", "itemId": "status_tuner_item", "durationFrames": 120, "speedMultiplier": 0.5, "intensity": 160, "range": 180 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "highJump" } ],
+            "actions": [ { "action": "applyStatus", "status": "highJump", "target": "frontTarget", "itemId": "status_tuner_item", "durationFrames": 120, "jumpMultiplier": 1.8, "intensity": 140, "range": 180 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "strength" } ],
+            "actions": [ { "action": "applyStatus", "status": "strength", "target": "frontTarget", "itemId": "status_tuner_item", "durationFrames": 120, "strengthMultiplier": 2.0, "intensity": 150, "range": 180 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "weakness" } ],
+            "actions": [ { "action": "applyStatus", "status": "weakness", "target": "frontTarget", "itemId": "status_tuner_item", "durationFrames": 120, "weaknessMultiplier": 2.0, "intensity": 150, "range": 180 } ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "status_self_router",
+      "events": {
+        "manual": [
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "fire" } ],
+            "actions": [ { "action": "applyStatus", "status": "fire", "target": "self", "durationFrames": 60, "tickFrames": 20, "damagePerTick": 1, "intensity": 180 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "freeze" } ],
+            "actions": [ { "action": "applyStatus", "status": "freeze", "target": "self", "durationFrames": 45, "shakeFrames": 8, "intensity": 220 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "stun" } ],
+            "actions": [ { "action": "applyStatus", "status": "stun", "target": "self", "durationFrames": 35, "intensity": 200 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "poison" } ],
+            "actions": [ { "action": "applyStatus", "status": "poison", "target": "self", "durationFrames": 80, "tickFrames": 20, "damagePerTick": 1, "intensity": 160 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "blind" } ],
+            "actions": [ { "action": "applyStatus", "status": "blind", "target": "self", "durationFrames": 80, "intensity": 160, "blindSkipChance": 0.3, "blindYawJitterDeg": 14 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "speed" } ],
+            "actions": [ { "action": "applyStatus", "status": "speed", "target": "self", "durationFrames": 120, "speedMultiplier": 1.8, "intensity": 120 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "slow" } ],
+            "actions": [ { "action": "applyStatus", "status": "slow", "target": "self", "durationFrames": 120, "speedMultiplier": 0.5, "intensity": 150 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "highJump" } ],
+            "actions": [ { "action": "applyStatus", "status": "highJump", "target": "self", "durationFrames": 120, "jumpMultiplier": 1.8, "intensity": 120 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "strength" } ],
+            "actions": [ { "action": "applyStatus", "status": "strength", "target": "self", "durationFrames": 120, "strengthMultiplier": 2.0, "intensity": 140 } ]
+          },
+          {
+            "conditions": [ { "condition": "var", "scope": "global_mod", "key": "selected_status", "op": "==", "value": "weakness" } ],
+            "actions": [ { "action": "applyStatus", "status": "weakness", "target": "self", "durationFrames": 120, "weaknessMultiplier": 2.0, "intensity": 140 } ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+﻿{
+  "items": [
+    {
+      "id": "freeze_dome_staff_item",
+      "displayName": "Freeze Dome Staff",
+      "slot": "SLOT_HAMMER",
+      "useMode": "augment",
+      "agePolicy": "allowAdult",
+      "useTrigger": "hammerGroundImpact",
+      "useProfile": "com.example.freeze_dome_staff_demo:freeze_dome_impact",
+      "grant": { "ammo": 40 },
+      "params": { "cooldown": 24 }
+    }
+  ]
+}

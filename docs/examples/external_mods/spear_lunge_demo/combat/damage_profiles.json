@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    { "id": "com.example.spear_lunge_demo:spear_hit", "amount": 2, "type": "physical" }
+  ]
+}

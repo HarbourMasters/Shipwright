@@ -1,0 +1,16 @@
+{
+  "subscriptions": [
+    {
+      "id": "hook_loaded_notice",
+      "hook": "OnLoadGame",
+      "dispatch": "actions",
+      "cooldownFrames": 0,
+      "actions": [
+        {
+          "action": "showNotification",
+          "text": "hooks.extended.v1 ativo para Link Smoke"
+        }
+      ]
+    }
+  ]
+}

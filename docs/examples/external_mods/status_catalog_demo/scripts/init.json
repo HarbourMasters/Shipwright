@@ -1,0 +1,13 @@
+﻿{
+    "apiVersion":  4,
+    "onGameLoaded":  [
+                         {
+                             "action":  "grantModItem",
+                             "itemId":  "status_staff_item"
+                         },
+                         {
+                             "action":  "showNotification",
+                             "text":  "Status Catalog Demo: aplica status custom chill no alvo frontal"
+                         }
+                     ]
+}

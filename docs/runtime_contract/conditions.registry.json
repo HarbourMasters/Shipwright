@@ -1,0 +1,97 @@
+﻿{
+    "generatedUtc":  "2026-02-25T20:21:27Z",
+    "apiVersion":  4,
+    "description":  "Declarative registry for behavior condition contracts.",
+    "conditions":  [
+                       {
+                           "fields":  [
+
+                                      ],
+                           "name":  "isChild"
+                       },
+                       {
+                           "fields":  [
+
+                                      ],
+                           "name":  "isAdult"
+                       },
+                       {
+                           "fields":  [
+
+                                      ],
+                           "name":  "isDay"
+                       },
+                       {
+                           "fields":  [
+
+                                      ],
+                           "name":  "isNight"
+                       },
+                       {
+                           "fields":  [
+                                          "value|numberValue"
+                                      ],
+                           "name":  "randomChance"
+                       },
+                       {
+                           "fields":  [
+                                          "value"
+                                      ],
+                           "name":  "hasItem"
+                       },
+                       {
+                           "fields":  [
+                                          "scope?",
+                                          "key|value",
+                                          "op?"
+                                      ],
+                           "name":  "hasStatus"
+                       },
+                       {
+                           "fields":  [
+                                          "scope?",
+                                          "key|value",
+                                          "op",
+                                          "value|numberValue"
+                                      ],
+                           "name":  "statusRemaining"
+                       },
+                       {
+                           "fields":  [
+                                          "op?",
+                                          "numberValue"
+                                      ],
+                           "name":  "distanceToPlayer"
+                       },
+                       {
+                           "fields":  [
+                                          "op?",
+                                          "value|numberValue"
+                                      ],
+                           "name":  "sceneIs"
+                       },
+                       {
+                           "fields":  [
+                                          "op?",
+                                          "value|numberValue"
+                                      ],
+                           "name":  "roomIs"
+                       },
+                       {
+                           "fields":  [
+                                          "op?",
+                                          "value|numberValue"
+                                      ],
+                           "name":  "hasSwitchFlag"
+                       },
+                       {
+                           "fields":  [
+                                          "scope",
+                                          "key",
+                                          "op?",
+                                          "value"
+                                      ],
+                           "name":  "var"
+                       }
+                   ]
+}

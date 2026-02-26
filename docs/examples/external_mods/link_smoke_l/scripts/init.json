@@ -1,22 +1,22 @@
-{
-  "apiVersion": 2,
-  "onGameLoaded": [
-    {
-      "action": "showNotification",
-      "text": "Link Smoke ativo: aperte L para spawnar mato (En_Kusa)."
-    }
-  ],
-  "onInput": [
-    {
-      "id": "smoke_on_l",
-      "binding": "smoke_key",
-      "trigger": "pressed",
-      "cooldownFrames": 2,
-      "actions": [
-        {
-          "action": "spawnKusa"
-        }
-      ]
-    }
-  ]
+﻿{
+    "apiVersion":  4,
+    "onGameLoaded":  [
+                         {
+                             "action":  "showNotification",
+                             "text":  "Link Smoke ativo: use Mod Action 1 (remapeie para qualquer tecla/controle)."
+                         }
+                     ],
+    "onInput":  [
+                    {
+                        "id":  "smoke_on_action",
+                        "binding":  "smoke_key",
+                        "trigger":  "pressed",
+                        "cooldownFrames":  2,
+                        "actions":  [
+                                        {
+                                            "action":  "spawnKusa"
+                                        }
+                                    ]
+                    }
+                ]
 }

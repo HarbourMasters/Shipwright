@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "useProfiles": [
+    {
+      "id": "com.example.pistol_hitscan_demo:pistol_use",
+      "targetingProfile": "com.example.pistol_hitscan_demo:ray_800",
+      "cooldownFrames": 12,
+      "effects": [
+        { "action": "dealDamage", "profile": "com.example.pistol_hitscan_demo:bullet_1" }
+      ]
+    }
+  ]
+}

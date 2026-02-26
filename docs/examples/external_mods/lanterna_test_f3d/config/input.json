@@ -1,0 +1,10 @@
+﻿{
+  "bindings": [
+    {
+      "id": "lantern_attack",
+      "defaultMask": "BTN_B",
+      "trigger": "pressed",
+      "allowUserRemap": true
+    }
+  ]
+}

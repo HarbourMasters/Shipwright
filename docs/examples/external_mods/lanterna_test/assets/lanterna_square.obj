@@ -1,0 +1,14 @@
+# Lanterna test placeholder mesh (pink square)
+o lanterna_square
+v -0.50 -0.50 0.00
+v  0.50 -0.50 0.00
+v  0.50  0.50 0.00
+v -0.50  0.50 0.00
+
+vt 0.00 0.00
+vt 1.00 0.00
+vt 1.00 1.00
+vt 0.00 1.00
+
+f 1/1 2/2 3/3
+f 1/1 3/3 4/4

@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    { "id": "com.example.spear_lunge_demo:self_target", "mode": "self", "range": 1 }
+  ]
+}

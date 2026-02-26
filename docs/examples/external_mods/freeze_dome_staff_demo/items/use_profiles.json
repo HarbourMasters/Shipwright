@@ -1,0 +1,24 @@
+﻿{
+  "schemaVersion": 1,
+  "useProfiles": [
+    {
+      "id": "com.example.freeze_dome_staff_demo:freeze_dome_impact",
+      "targetingProfile": "com.example.freeze_dome_staff_demo:self_target",
+      "cooldownFrames": 24,
+      "effects": [
+        {
+          "action": "spawnShockwave",
+          "origin": "impact",
+          "primColor": [80, 170, 255, 255],
+          "envColor": [20, 90, 255, 255],
+          "life": 18,
+          "spawnIceSmoke": true
+        },
+        {
+          "action": "spawnAoE",
+          "aoe": "com.example.freeze_dome_staff_demo:freeze_dome"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "items": [
+    {
+      "id": "shield_skate_item",
+      "displayName": "Shield Skate",
+      "slot": "SLOT_NAYRUS_LOVE",
+      "useMode": "override",
+      "agePolicy": "allowAdult",
+      "useProfile": "com.example.shield_skate_demo:skate_use",
+      "params": { "cooldown": 10 }
+    }
+  ]
+}

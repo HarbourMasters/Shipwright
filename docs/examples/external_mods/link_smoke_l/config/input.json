@@ -2,7 +2,7 @@
   "bindings": [
     {
       "id": "smoke_key",
-      "defaultMask": "BTN_L",
+      "defaultMask": "BTN_CUSTOM_MOD_ACTION1",
       "trigger": "pressed",
       "allowUserRemap": true
     }

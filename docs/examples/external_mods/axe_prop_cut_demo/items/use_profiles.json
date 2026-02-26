@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "useProfiles": [
+    {
+      "id": "com.example.axe_prop_cut_demo:axe_use",
+      "targetingProfile": "com.example.axe_prop_cut_demo:axe_cone",
+      "cooldownFrames": 14,
+      "effects": [
+        { "action": "dealDamage", "profile": "com.example.axe_prop_cut_demo:axe_hit" }
+      ]
+    }
+  ]
+}

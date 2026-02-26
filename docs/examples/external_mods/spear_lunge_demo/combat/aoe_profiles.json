@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "aoe": [
+    {
+      "id": "com.example.spear_lunge_demo:cone_burst",
+      "shape": "cone",
+      "range": 140,
+      "radius": 110,
+      "angle": 70,
+      "durationFrames": 1,
+      "effects": {
+        "onEnter": [
+          { "action": "dealDamage", "profile": "com.example.spear_lunge_demo:spear_hit" }
+        ]
+      }
+    }
+  ]
+}

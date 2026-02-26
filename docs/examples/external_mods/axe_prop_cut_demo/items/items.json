@@ -1,0 +1,15 @@
+{
+  "items": [
+    {
+      "id": "axe_item",
+      "displayName": "Axe Prop Cut",
+      "slot": "SLOT_HAMMER",
+      "useMode": "augment",
+      "agePolicy": "allowAdult",
+      "useProfile": "com.example.axe_prop_cut_demo:axe_use",
+      "grant": {
+        "itemId": "ITEM_HAMMER"
+      }
+    }
+  ]
+}

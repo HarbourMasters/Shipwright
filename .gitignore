@@ -132,6 +132,7 @@ StyleCopReport.xml
 *.ilk
 *.meta
 *.obj
+!docs/examples/external_mods/**/*.obj
 *.iobj
 *.pch
 *.pdb

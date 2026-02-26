@@ -14,8 +14,14 @@
 #include <fast/Fast3dWindow.h>
 #include <fast/resource/ResourceType.h>
 #include <fast/resource/type/DisplayList.h>
+#include <spdlog/spdlog.h>
+#include <unordered_set>
 
 extern "C" PlayState* gPlayState;
+namespace {
+std::unordered_set<std::string> gResourceMgrLoadGfxWarnings{};
+std::unordered_set<std::string> gResourceMgrLoadGfxInfos{};
+}
 
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
     return Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions().size();
@@ -264,9 +270,16 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize) {
 
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = ResourceMgr_GetResourceByNameHandlingMQ(filePath);
+    if (res == nullptr || res->GetInitData() == nullptr) {
+        return nullptr;
+    }
 
     if (res->GetInitData()->Type == static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
-        return (char*)&((std::static_pointer_cast<Fast::DisplayList>(res))->Instructions[0]);
+        auto displayList = std::static_pointer_cast<Fast::DisplayList>(res);
+        if (displayList == nullptr || displayList->Instructions.empty()) {
+            return nullptr;
+        }
+        return reinterpret_cast<char*>(displayList->Instructions.data());
     }
 
     if (res->GetInitData()->Type == static_cast<uint32_t>(SOH::ResourceType::SOH_Array)) {
@@ -278,9 +291,16 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
 
 extern "C" char* ResourceMgr_LoadIfDListByName(const char* filePath) {
     auto res = ResourceMgr_GetResourceByNameHandlingMQ(filePath);
+    if (res == nullptr || res->GetInitData() == nullptr) {
+        return nullptr;
+    }
 
     if (res->GetInitData()->Type == static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
-        return (char*)&((std::static_pointer_cast<Fast::DisplayList>(res))->Instructions[0]);
+        auto displayList = std::static_pointer_cast<Fast::DisplayList>(res);
+        if (displayList == nullptr || displayList->Instructions.empty()) {
+            return nullptr;
+        }
+        return reinterpret_cast<char*>(displayList->Instructions.data());
     }
 
     return nullptr;
@@ -297,18 +317,76 @@ extern "C" void ResourceMgr_PushCurrentDirectory(char* path) {
 }
 
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path) {
+    if (path == nullptr || path[0] == '\0') {
+        return nullptr;
+    }
+    const std::string pathString(path);
+
     // When an alt resource exists for the DL, we need to unload the original asset
     // to clear the cache so the alt asset will be loaded instead
     // OTRTODO: If Alt loading over original cache is fixed, this line can most likely be removed
     ResourceMgr_UnloadOriginalWhenAltExists(path);
 
-    auto res = std::static_pointer_cast<Fast::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
-    return (Gfx*)&res->Instructions[0];
+    auto res = ResourceMgr_GetResourceByNameHandlingMQ(path);
+    if (res == nullptr) {
+        const std::string key = pathString + "|missing-resource";
+        if (gResourceMgrLoadGfxWarnings.insert(key).second) {
+            SPDLOG_WARN("[ResourceMgr] LoadGfx failed: resource not found for {}", pathString);
+        }
+        return nullptr;
+    }
+
+    if (res->GetInitData() == nullptr) {
+        const std::string key = pathString + "|missing-initdata";
+        if (gResourceMgrLoadGfxWarnings.insert(key).second) {
+            SPDLOG_WARN("[ResourceMgr] LoadGfx failed: missing init data for {}", pathString);
+        }
+        return nullptr;
+    }
+
+    if (res->GetInitData()->Type != static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
+        const std::string key = pathString + "|wrong-type|" + std::to_string(res->GetInitData()->Type);
+        if (gResourceMgrLoadGfxWarnings.insert(key).second) {
+            SPDLOG_WARN("[ResourceMgr] LoadGfx failed: wrong type for {} (got {:#x}, expected {:#x})", pathString,
+                        res->GetInitData()->Type, static_cast<uint32_t>(Fast::ResourceType::DisplayList));
+        }
+        return nullptr;
+    }
+
+    auto displayList = std::static_pointer_cast<Fast::DisplayList>(res);
+    if (displayList == nullptr) {
+        const std::string key = pathString + "|null-displaylist";
+        if (gResourceMgrLoadGfxWarnings.insert(key).second) {
+            SPDLOG_WARN("[ResourceMgr] LoadGfx failed: cast to DisplayList returned null for {}", pathString);
+        }
+        return nullptr;
+    }
+
+    if (displayList->Instructions.empty()) {
+        const std::string key = pathString + "|empty-instructions";
+        if (gResourceMgrLoadGfxWarnings.insert(key).second) {
+            SPDLOG_WARN("[ResourceMgr] LoadGfx failed: DisplayList has 0 instructions for {}", pathString);
+        }
+        return nullptr;
+    }
+
+    if (gResourceMgrLoadGfxInfos.insert(pathString).second) {
+        SPDLOG_INFO("[ResourceMgr] LoadGfx success: {} instructions={} custom={}", pathString,
+                    displayList->Instructions.size(), res->GetInitData()->IsCustom ? 1 : 0);
+    }
+
+    return reinterpret_cast<Gfx*>(displayList->Instructions.data());
 }
 
 extern "C" uint8_t ResourceMgr_FileIsCustomByName(const char* path) {
-    auto res = std::static_pointer_cast<Fast::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
-    return res->GetInitData()->IsCustom;
+    auto res = ResourceMgr_GetResourceByNameHandlingMQ(path);
+    if (res == nullptr || res->GetInitData() == nullptr ||
+        res->GetInitData()->Type != static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
+        return false;
+    }
+
+    auto displayList = std::static_pointer_cast<Fast::DisplayList>(res);
+    return displayList != nullptr && displayList->GetInitData() != nullptr && displayList->GetInitData()->IsCustom;
 }
 
 typedef struct {

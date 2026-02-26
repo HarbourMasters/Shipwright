@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "statuses": [
+    {
+      "id": "com.example.status_catalog_demo:chill",
+      "baseStatus": "core:slow",
+      "durationFrames": 120,
+      "tickFrames": 20,
+      "damagePerTick": 0,
+      "intensity": 200,
+      "stacking": { "mode": "refresh", "maxStacks": 1 },
+      "effects": {
+        "onTick": [
+          { "action": "dealDamage", "profile": "com.example.status_catalog_demo:chill_dot" }
+        ]
+      }
+    },
+    {
+      "id": "com.example.status_catalog_demo:regen",
+      "baseStatus": "core:speed",
+      "durationFrames": 120,
+      "tickFrames": 30,
+      "damagePerTick": 0,
+      "intensity": 100,
+      "stacking": { "mode": "refresh", "maxStacks": 1 },
+      "effects": { "onTick": [] }
+    }
+  ]
+}

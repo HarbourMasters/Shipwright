@@ -1,0 +1,14 @@
+{
+  "items": [
+    {
+      "id": "spear_item",
+      "displayName": "Spear Lunge",
+      "slot": "SLOT_STICK",
+      "useMode": "override",
+      "agePolicy": "allowAdult",
+      "useProfile": "com.example.spear_lunge_demo:lunge_use",
+      "grant": { "ammo": 30 },
+      "params": { "cooldown": 12 }
+    }
+  ]
+}

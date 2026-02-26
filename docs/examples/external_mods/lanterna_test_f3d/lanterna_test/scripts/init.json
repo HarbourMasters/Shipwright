@@ -1,0 +1,29 @@
+﻿{
+    "apiVersion":  4,
+    "onGameLoaded":  [
+                         {
+                             "action":  "grantModItem",
+                             "itemId":  "lanterna_item"
+                         },
+                         {
+                             "action":  "showNotification",
+                             "text":  "Lanterna ativa: equipe no C e use ataque para incendiar alvo frontal."
+                         }
+                     ],
+    "onInput":  [
+                    {
+                        "id":  "lanterna_attack",
+                        "binding":  "lantern_attack",
+                        "trigger":  "pressed",
+                        "cooldownFrames":  6,
+                        "actions":  [
+                                        {
+                                            "action":  "applyStatus",
+                                            "itemId":  "lanterna_item",
+                                            "status":  "core:burning",
+                                            "target":  "frontTarget"
+                                        }
+                                    ]
+                    }
+                ]
+}

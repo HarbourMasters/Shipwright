@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    { "id": "com.example.axe_prop_cut_demo:axe_cone", "mode": "cone", "range": 140, "radius": 120, "angle": 80, "filters": { "includeEnemies": true, "includeProps": true, "stopOnWall": true } }
+  ]
+}

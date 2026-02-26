@@ -1,0 +1,13 @@
+﻿{
+    "apiVersion":  4,
+    "onGameLoaded":  [
+                         {
+                             "action":  "grantModItem",
+                             "itemId":  "fire_staff_item"
+                         },
+                         {
+                             "action":  "showNotification",
+                             "text":  "fire staff ativo"
+                         }
+                     ]
+}

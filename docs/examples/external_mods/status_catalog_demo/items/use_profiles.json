@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "useProfiles": [
+    {
+      "id": "com.example.status_catalog_demo:status_staff_use",
+      "targetingProfile": "com.example.status_catalog_demo:front_220",
+      "cooldownFrames": 20,
+      "effects": [
+        { "action": "applyStatus", "status": "com.example.status_catalog_demo:chill", "durationFrames": 120, "tickFrames": 20, "intensity": 200 }
+      ]
+    }
+  ]
+}

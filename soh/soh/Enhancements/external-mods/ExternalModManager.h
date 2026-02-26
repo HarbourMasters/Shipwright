@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+#include <cstddef>
 #include <cstdint>
 #include <filesystem>
 #include <memory>
@@ -7,290 +9,15 @@
 #include <unordered_map>
 #include <vector>
 
+struct GetItemEntry;
+struct PlayState;
+struct Player;
+#include "ExternalModTypes.h"
+
 namespace SOH {
 
-class ExternalModWasmRuntime;
-
-enum class ExternalModInputTriggerType {
-    Pressed,
-    Held,
-    Released,
-};
-
-enum class ExternalModItemSlot {
-    Hookshot,
-    Bow,
-    FireArrow,
-    IceArrow,
-    LightArrow,
-    Hammer,
-};
-
-enum class ExternalModItemAgePolicy {
-    RespectVanilla,
-    AllowChild,
-    AllowAdult,
-};
-
-enum class ExternalModItemUseMode {
-    Vanilla,
-    Override,
-    Augment,
-};
-
-enum class ExternalModActorArchetype {
-    Npc,
-    Prop,
-    Trigger,
-};
-
-struct ExternalModManifest {
-    std::string id;
-    std::string name;
-    std::string version;
-    int32_t apiVersion = 0;
-    std::string gameVersionMin;
-    std::string entryScript;
-    std::vector<std::string> assets;
-    std::vector<std::string> dependencies;
-    int32_t loadOrder = 0;
-
-    std::string runtimeType;
-    std::string runtimeModule;
-    int32_t runtimeMaxMemoryKb = 1024;
-    int32_t runtimeMaxCallMs = 2;
-    int32_t runtimeMaxFrameBudgetMs = 2;
-    int32_t runtimeMaxHookCallsPerFrame = 256;
-    int32_t runtimeMaxActorInstances = 64;
-    std::string itemDefinitions;
-    std::string inputDefinitions;
-    std::string hookDefinitions;
-    std::string actorDefinitions;
-    std::vector<std::string> capabilities;
-};
-
-enum class ExternalModActionType {
-    ShowNotification,
-    TeleportToEntrance,
-    PressButton,
-    SpawnSmoke,
-    SpawnKusa,
-    SpawnActor,
-    DespawnActor,
-    SetActorState,
-    MoveActorToPathNode,
-    OpenDialog,
-    GrantModItem,
-    RevokeModItem,
-    InvokeWasm,
-};
-
-struct ExternalModAction {
-    ExternalModActionType type = ExternalModActionType::ShowNotification;
-    std::string text;
-    int16_t entranceIndex = 0;
-    int32_t buttonMask = 0;
-    std::string itemId;
-    std::string exportName;
-    std::vector<int32_t> args;
-
-    std::string actorDefinitionId;
-    uint32_t actorHandle = 0;
-    std::string actorStateKey;
-    std::string actorStateValue;
-    int32_t pathNodeIndex = 0;
-    int32_t dialogId = 0;
-};
-
-struct ExternalModSceneAction {
-    int16_t sceneId = 0;
-    std::vector<ExternalModAction> actions;
-};
-
-struct ExternalModTriggerVolume {
-    std::string id;
-    int16_t sceneId = 0;
-    float minX = 0.0f;
-    float minY = 0.0f;
-    float minZ = 0.0f;
-    float maxX = 0.0f;
-    float maxY = 0.0f;
-    float maxZ = 0.0f;
-    int32_t cooldownFrames = 0;
-    int32_t cooldownRemaining = 0;
-    bool wasInside = false;
-    std::vector<ExternalModAction> actions;
-};
-
-struct ExternalModInputBinding {
-    std::string id;
-    int32_t defaultMask = 0;
-    ExternalModInputTriggerType defaultTrigger = ExternalModInputTriggerType::Pressed;
-    bool allowUserRemap = true;
-};
-
-struct ExternalModInputActionTrigger {
-    std::string id;
-    std::string bindingId;
-    ExternalModInputTriggerType trigger = ExternalModInputTriggerType::Pressed;
-    int32_t cooldownFrames = 0;
-    int32_t cooldownRemaining = 0;
-    std::vector<ExternalModAction> actions;
-};
-
-struct ExternalModItemDefinition {
-    std::string id;
-    std::string displayName;
-    ExternalModItemSlot slot = ExternalModItemSlot::Hookshot;
-    std::string iconAsset;
-    std::vector<uint8_t> iconRgba32;
-    std::string description;
-    std::string onUseExport;
-    std::string onUpdateExport;
-    ExternalModItemAgePolicy agePolicy = ExternalModItemAgePolicy::AllowChild;
-    ExternalModItemUseMode useMode = ExternalModItemUseMode::Vanilla;
-    bool hasGrantItemId = false;
-    int32_t grantItemId = -1;
-    bool hasGrantAmmo = false;
-    int32_t grantAmmo = 0;
-    std::unordered_map<std::string, float> params;
-    bool granted = false;
-    int32_t cooldownFrames = 0;
-    int32_t cooldownRemaining = 0;
-};
-
-struct ExternalModActorDefinition {
-    std::string id;
-    ExternalModActorArchetype archetype = ExternalModActorArchetype::Npc;
-    int16_t sceneId = -1;
-    float posX = 0.0f;
-    float posY = 0.0f;
-    float posZ = 0.0f;
-    float rotX = 0.0f;
-    float rotY = 0.0f;
-    float rotZ = 0.0f;
-    int32_t maxInstances = 1;
-    int32_t tickRate = 1;
-    float lodDistance = 5000.0f;
-    std::string exportOnInit;
-    std::string exportOnUpdate;
-    std::string exportOnInteract;
-    std::string exportOnDestroy;
-};
-
-struct ExternalModActorInstance {
-    uint32_t handle = 0;
-    std::string definitionId;
-    bool active = false;
-    int16_t sceneId = -1;
-    float posX = 0.0f;
-    float posY = 0.0f;
-    float posZ = 0.0f;
-    float rotX = 0.0f;
-    float rotY = 0.0f;
-    float rotZ = 0.0f;
-    int32_t tickCounter = 0;
-    std::unordered_map<std::string, std::string> state;
-};
-
-enum class ExternalModHookDispatchType {
-    Actions,
-    WasmExport,
-};
-
-enum class ExternalModHookType {
-    OnLoadGame,
-    OnExitGame,
-    OnSceneInit,
-    AfterSceneCommands,
-    OnTransitionEnd,
-    OnFlagSet,
-    OnFlagUnset,
-    OnSceneFlagSet,
-    OnSceneFlagUnset,
-    OnPlayerUpdate,
-    OnPlayerUseItem,
-    OnPlayerHealthChange,
-    OnItemReceive,
-    OnActorInit,
-    OnActorSpawn,
-    OnActorUpdate,
-    OnActorKill,
-    OnActorDestroy,
-    OnEnemyDefeat,
-    OnBossDefeat,
-    OnPlayDestroy,
-    OnGameFrameUpdate,
-};
-
-struct ExternalModHookFilter {
-    bool hasScene = false;
-    int16_t scene = 0;
-    bool hasActorId = false;
-    int16_t actorId = 0;
-    bool hasCategory = false;
-    int16_t category = 0;
-    bool hasItemId = false;
-    int16_t itemId = 0;
-    bool hasFlagType = false;
-    int16_t flagType = 0;
-    bool hasFlagId = false;
-    int16_t flagId = 0;
-    bool hasHealthDeltaRange = false;
-    int16_t healthDeltaMin = 0;
-    int16_t healthDeltaMax = 0;
-};
-
-struct ExternalModHookSubscription {
-    std::string id;
-    ExternalModHookType hook = ExternalModHookType::OnGameFrameUpdate;
-    ExternalModHookDispatchType dispatch = ExternalModHookDispatchType::Actions;
-    std::vector<ExternalModAction> actions;
-    std::string wasmExport;
-    int32_t cooldownFrames = 0;
-    int32_t cooldownRemaining = 0;
-    ExternalModHookFilter filters;
-};
-
-struct ExternalModRuntime {
-    bool enabled = false;
-    int32_t apiVersion = 1;
-    std::vector<ExternalModAction> onGameLoadedActions;
-    std::vector<ExternalModSceneAction> onSceneInitActions;
-    std::vector<ExternalModTriggerVolume> frameTriggers;
-    std::vector<ExternalModInputBinding> inputBindings;
-    std::vector<ExternalModInputActionTrigger> inputTriggers;
-    std::vector<ExternalModItemDefinition> itemDefinitions;
-    std::vector<ExternalModHookSubscription> hookSubscriptions;
-    std::vector<ExternalModActorDefinition> actorDefinitions;
-    std::vector<ExternalModActorInstance> actorInstances;
-    uint32_t nextActorHandle = 1;
-    int32_t frameBudgetMs = 2;
-    int32_t maxHookCallsPerFrame = 256;
-    int32_t hookCallsThisFrame = 0;
-    int32_t maxActorInstances = 64;
-    std::unique_ptr<ExternalModWasmRuntime> wasmRuntime;
-};
-
-struct ExternalModPackage {
-    std::filesystem::path sourcePath;
-    bool isZip = false;
-    bool valid = false;
-    std::string error;
-    ExternalModManifest manifest;
-    std::vector<std::filesystem::path> mountedAssets;
-    ExternalModRuntime runtime;
-};
-
-struct ExternalModHookEventContext {
-    int16_t scene = -1;
-    int16_t actorId = -1;
-    int16_t actorCategory = -1;
-    int16_t itemId = -1;
-    int16_t flagType = -1;
-    int16_t flagId = -1;
-    int16_t healthDelta = 0;
-};
+struct ExternalModWasmGroundInfo;
+struct ExternalModWasmRaycastHit;
 
 class ExternalModManager {
   public:
@@ -298,14 +25,82 @@ class ExternalModManager {
 
     void Initialize();
     void Shutdown();
+    bool ReloadPackages(std::string& outError);
     void DiscoverPackages();
     std::vector<ExternalModPackage>& GetPackages();
     const std::vector<ExternalModPackage>& GetPackages() const;
+    void ApplyGetItemVisualOverrides(::GetItemEntry& entry) const;
+    std::vector<ExternalModInventoryCellView> GetExtraInventoryGrid() const;
+    int32_t GetExtraInventoryPageCount() const;
+    bool GetExtraInventoryPageCell(int32_t pageIndex, int32_t pageCellIndex, ExternalModInventoryCellView& outCell) const;
+    bool MoveExtraInventoryCell(size_t fromIndex, size_t toIndex, std::string& outError);
+    bool EquipExtraInventoryCellToButton(size_t cellIndex, int32_t buttonIndex, std::string& outError);
+    void OnVanillaButtonEquipped(int32_t buttonIndex);
+    bool TryDrawButtonOverrideIcon(::PlayState* play, int32_t buttonIndex, int32_t alpha) const;
+    bool DrawSurfBoardIfActive(::PlayState* play, ::Player* player);
+    bool OnHammerGroundImpact(::PlayState* play, ::Player* player, float impactX, float impactY, float impactZ);
+    bool DrawAimReticleIfActive(::PlayState* play, ::Player* player, ExternalModAimCameraContext context) const;
+    int16_t ResolveAimCameraMode(::PlayState* play, ::Player* player, int16_t defaultMode,
+                                 ExternalModAimCameraContext context) const;
+    bool HandleCameraHotkeyScancode(int32_t scancode);
+    bool IsAimMouseFireHeld(::PlayState* play, ::Player* player, int32_t heldItemAction) const;
+    int32_t HandleAimSelectSlotPress(::PlayState* play, ::Player* player, int32_t buttonIndex, int32_t itemId);
+    bool IsAimAttackButtonFireEnabled(::PlayState* play, ::Player* player) const;
+    bool IsPlayerFreezeNoDamageActive(::Player* player) const;
+    bool IsAimOverShoulderEnabled() const;
+    bool HasCustomEquippedSlingshotModel() const;
+    bool DrawCustomEquippedSlingshotModel(::PlayState* play) const;
     static std::string BuildEnabledCVarName(const std::string& modId);
     static std::string BuildBindingCVarName(const std::string& modId, const std::string& bindingId);
+    static std::string BuildCameraHotkeyScancodeCVarName(const std::string& modId, const std::string& hotkeyId);
+    bool TryConsumePendingSceneLoadRequest(int16_t sceneId, ExternalModPendingSceneLoadRequest& outRequest);
+    void HandlePendingSceneLoadSuccess(const ExternalModPendingSceneLoadRequest& request);
+    void HandlePendingSceneLoadFailure(const ExternalModPendingSceneLoadRequest& request, const std::string& error);
+    void LoadPersistentInventoryState();
+    void SavePersistentInventoryState() const;
 
   private:
+    struct ExtraInventoryCell {
+        std::string modId;
+        std::string itemId;
+    };
+
+    enum class ActionButtonSource {
+        Vanilla,
+        Mod,
+    };
+
+    struct ActionButtonAssignment {
+        ActionButtonSource source = ActionButtonSource::Vanilla;
+        std::string modId;
+        std::string itemId;
+    };
+
+    enum class AimSelectSlotPressResult {
+        None = 0,
+        Activated = 1,
+        DeactivatedConsumed = 2,
+    };
+
+    struct AimSelectState {
+        bool active = false;
+        std::string modId;
+        std::string itemId;
+        int32_t buttonIndex = -1;
+        int32_t resolvedItemId = -1;
+    };
+
     std::vector<ExternalModPackage> mPackages;
+    ExternalModPendingSceneLoadRequest mPendingSceneLoadRequest;
+    std::vector<ExtraInventoryCell> mExtraInventoryCells;
+    std::array<ActionButtonAssignment, 8> mActionButtonAssignments{};
+    int32_t mExtraInventoryPage = 0;
+    int32_t mExtraInventoryCursor = 0;
+    bool mPersistentInventoryDirty = false;
+    bool mSaveSectionRegistered = false;
+    int32_t mPersistentInventorySectionId = -1;
+    ExternalModAimCameraState mAimCameraState{};
+    AimSelectState mAimSelectState{};
     uint32_t mOnLoadGameHook = 0;
     uint32_t mOnExitGameHook = 0;
     uint32_t mOnSceneInitHook = 0;
@@ -335,6 +130,7 @@ class ExternalModManager {
     static bool TryParseItemDefinitions(const std::string& content, std::vector<ExternalModItemDefinition>& outItems,
                                         std::string& outError);
     static bool TryParseInputDefinitions(const std::string& content, std::vector<ExternalModInputBinding>& outBindings,
+                                         std::vector<ExternalModCameraHotkeyDefinition>& outCameraHotkeys,
                                          std::string& outError);
     static bool TryParseHookDefinitions(const std::string& content, int32_t apiVersion,
                                         std::vector<ExternalModHookSubscription>& outSubscriptions,
@@ -342,6 +138,35 @@ class ExternalModManager {
     static bool TryParseActorDefinitions(const std::string& content, int32_t apiVersion,
                                          std::vector<ExternalModActorDefinition>& outDefinitions,
                                          std::string& outError);
+    static bool TryParseBehaviorDefinitions(const std::string& content, int32_t apiVersion,
+                                            std::vector<ExternalModBehaviorDefinition>& outDefinitions,
+                                            std::string& outError);
+    static bool TryParseSceneDefinitions(const std::string& content, int32_t apiVersion,
+                                         std::vector<ExternalModSceneDefinition>& outDefinitions,
+                                         std::string& outError);
+    static bool TryParseStatusDefinitions(const std::string& content, int32_t apiVersion,
+                                          std::vector<ExternalModStatusDefinition>& outDefinitions,
+                                          std::string& outError);
+    static bool TryParseDamageDefinitions(const std::string& content, int32_t apiVersion,
+                                          std::vector<ExternalModDamageProfile>& outDefinitions,
+                                          std::string& outError);
+    static bool TryParseTargetingDefinitions(const std::string& content, int32_t apiVersion,
+                                             std::vector<ExternalModTargetingProfile>& outDefinitions,
+                                             std::string& outError);
+    static bool TryParseItemUseProfiles(const std::string& content, int32_t apiVersion,
+                                        std::vector<ExternalModItemUseProfile>& outDefinitions,
+                                        std::string& outError);
+    static bool TryParseProjectileDefinitions(const std::string& content, int32_t apiVersion,
+                                              std::vector<ExternalModProjectileProfile>& outDefinitions,
+                                              std::string& outError);
+    static bool TryParseAoEDefinitions(const std::string& content, int32_t apiVersion,
+                                       std::vector<ExternalModAoEProfile>& outDefinitions, std::string& outError);
+    static bool TryParseMovementDefinitions(const std::string& content, int32_t apiVersion,
+                                            std::vector<ExternalModMovementProfile>& outDefinitions,
+                                            std::string& outError);
+    static bool TryParseCameraDefinitions(const std::string& content, int32_t apiVersion,
+                                          std::vector<ExternalModAimCameraProfile>& outDefinitions,
+                                          std::string& outError);
 
     static bool ReadManifestFromDirectory(const std::filesystem::path& dirPath, std::string& outContent,
                                           std::string& outError);
@@ -356,6 +181,7 @@ class ExternalModManager {
     static bool ReadBinaryFromPackage(const ExternalModPackage& package, const std::filesystem::path& packageRelativePath,
                                       uint64_t maxBytes, std::vector<uint8_t>& outBytes, std::string& outError);
 
+    static void UnmountAssetsForPackage(ExternalModPackage& package);
     static bool MountAssetsForPackage(ExternalModPackage& package, std::string& outError);
     static bool LoadRuntimeForPackage(ExternalModPackage& package, std::string& outError);
     static bool IsSafePackageRelativePath(const std::string& pathValue, std::filesystem::path& outNormalizedPath,
@@ -363,6 +189,41 @@ class ExternalModManager {
     static void ExecuteActions(ExternalModPackage& package, const std::vector<ExternalModAction>& actions,
                                const char* triggerName);
     static void DisableRuntime(ExternalModPackage& package, const std::string& reason);
+    void SyncExtraInventoryGrid();
+    void SyncButtonAssignments();
+    void ApplyDefaultKeyboardMappingsForPackage(const ExternalModPackage& package) const;
+    const ExternalModAimCameraProfile* FindAimCameraProfileById(const std::string& modId,
+                                                                const std::string& profileId) const;
+    const ExternalModAimCameraProfile* ResolveActiveAimCameraProfile() const;
+    const ExternalModAimCameraProfile* ResolveAimCameraProfileForContext(ExternalModAimCameraContext context,
+                                                                         bool requireMouseFire) const;
+    void PruneAimCameraStateForUnavailableProfiles();
+    void ClearAimSelectState(bool disableOverShoulder);
+    const ExternalModItemDefinition* FindAimSelectItemDefinition(const std::string& modId,
+                                                                 const std::string& itemId) const;
+    bool TryInvokeAssignedModItem(int32_t buttonIndex, ::PlayState* play, ::Player* player);
+    const ExternalModPackage* FindPackageByModId(const std::string& modId) const;
+    ExternalModPackage* FindPackageByModId(const std::string& modId);
+    const ExternalModItemDefinition* FindItemByAssignment(const ActionButtonAssignment& assignment) const;
+    ExternalModItemDefinition* FindItemByAssignment(ActionButtonAssignment& assignment);
+    bool IsAssignmentValid(const ActionButtonAssignment& assignment) const;
+    void MarkPersistentInventoryDirty();
+    void ProcessAssignedActionButtons(::PlayState* play, ::Player* player, void* input);
+    int32_t WasmHostUseItemProfile(const std::string& modId, const std::string& itemOrProfileId);
+    int32_t WasmHostResolveTarget(const std::string& modId, const std::string& profileId,
+                                  std::vector<int32_t>& outHandles);
+    int32_t WasmHostDealDamage(const std::string& modId, int32_t targetHandle, const std::string& damageProfileId);
+    int32_t WasmHostApplyStatus(const std::string& modId, int32_t targetHandle, const std::string& statusId,
+                                int32_t durationOverrideFrames);
+    int32_t WasmHostSpawnProjectile(const std::string& modId, const std::string& profileId,
+                                    const std::string& overridesJson);
+    int32_t WasmHostSpawnAoE(const std::string& modId, const std::string& profileId, const std::string& originJson);
+    int32_t WasmHostApplyMovementProfile(const std::string& modId, const std::string& profileId, int32_t durationFrames);
+    int32_t WasmHostApplyImpulse(const std::string& modId, int32_t mode, float strength, float x, float y, float z);
+    int32_t WasmHostGetGroundInfo(const std::string& modId, ExternalModWasmGroundInfo& outInfo);
+    int32_t WasmHostRaycast(const std::string& modId, const std::string& queryJson, ExternalModWasmRaycastHit& outHit);
+    int32_t WasmHostRaycastAll(const std::string& modId, const std::string& queryJson, int32_t outCapacity,
+                               std::vector<ExternalModWasmRaycastHit>& outHits);
 
     void DispatchExtendedHook(ExternalModHookType hookType, const ExternalModHookEventContext& context,
                               const char* triggerName);
@@ -385,7 +246,8 @@ class ExternalModManager {
     void OnItemReceive(int16_t itemId);
     void OnActorHook(ExternalModHookType hookType, void* actor, const char* hookName);
     void OnPlayDestroy();
+
+    friend class ExternalModParser;
 };
 
 } // namespace SOH
-

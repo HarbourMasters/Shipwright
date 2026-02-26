@@ -1,5 +1,7 @@
 #include "global.h"
 
+extern void KaleidoScope_ResetExternalModsItemPage(void);
+
 s16 sKaleidoSetupKscpPos0[] = { PAUSE_QUEST, PAUSE_EQUIP, PAUSE_ITEM, PAUSE_MAP };
 f32 sKaleidoSetupEyeX0[] = { 0.0f, 64.0f, 0.0f, -64.0f };
 f32 sKaleidoSetupEyeZ0[] = { -64.0f, 0.0f, 64.0f, 0.0f };
@@ -122,6 +124,7 @@ void KaleidoSetup_Init(PlayState* play) {
     pauseCtx->cursorSpecialPos = 0;
 
     pauseCtx->randoQuestMode = 0;
+    KaleidoScope_ResetExternalModsItemPage();
 
     View_Init(&pauseCtx->view, play->state.gfxCtx);
 }

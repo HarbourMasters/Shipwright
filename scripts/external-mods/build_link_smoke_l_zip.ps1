@@ -16,7 +16,6 @@ if (!(Test-Path $ExampleRoot)) {
 
 $manifestPath = Join-Path $ExampleRoot "mod.json"
 $scriptPath = Join-Path $ExampleRoot "scripts/init.json"
-$wasmPath = Join-Path $ExampleRoot "scripts/noop.wasm"
 $itemsPath = Join-Path $ExampleRoot "items/items.json"
 $inputPath = Join-Path $ExampleRoot "config/input.json"
 
@@ -31,9 +30,16 @@ if ([string]::IsNullOrWhiteSpace($manifest.itemDefinitions) -or [string]::IsNull
     throw "itemDefinitions/inputDefinitions are required"
 }
 if ($script.apiVersion -ne 2) { throw "entry script apiVersion must be 2" }
-if (!(Test-Path $wasmPath)) { throw "Missing wasm module: $wasmPath" }
 if (!(Test-Path $itemsPath)) { throw "Missing item definitions: $itemsPath" }
 if (!(Test-Path $inputPath)) { throw "Missing input definitions: $inputPath" }
+
+$runtimeModulePath = Join-Path $ExampleRoot $manifest.runtime.module
+if (!(Test-Path $runtimeModulePath)) { throw "Missing runtime module: $runtimeModulePath" }
+$runtimeModuleExt = [IO.Path]::GetExtension($runtimeModulePath).ToLowerInvariant()
+if ($runtimeModuleExt -notin @('.wasm', '.wat')) {
+    throw "runtime.module must use .wasm or .wat: $($manifest.runtime.module)"
+}
+$runtimeModuleEntry = ($manifest.runtime.module -replace '\\', '/')
 
 $capabilities = @()
 if ($manifest.PSObject.Properties.Name -contains 'capabilities' -and $null -ne $manifest.capabilities) {
@@ -43,7 +49,7 @@ if ($manifest.PSObject.Properties.Name -contains 'capabilities' -and $null -ne $
 $required = @(
     'mod.json',
     'scripts/init.json',
-    'scripts/noop.wasm',
+    $runtimeModuleEntry,
     'items/items.json',
     'config/input.json'
 )

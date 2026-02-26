@@ -72,6 +72,7 @@ std::shared_ptr<Ship::GuiWindow> mGfxDebuggerWindow;
 
 std::shared_ptr<SohMenu> mSohMenu;
 std::shared_ptr<ModMenuWindow> mModMenuWindow;
+std::shared_ptr<SOH::ExternalModInventoryWindow> mExternalModInventoryWindow;
 std::shared_ptr<AudioEditor> mAudioEditorWindow;
 std::shared_ptr<InputViewer> mInputViewer;
 std::shared_ptr<InputViewerSettingsWindow> mInputViewerSettings;
@@ -139,6 +140,10 @@ void SetupGuiElements() {
 
     mModMenuWindow = std::make_shared<ModMenuWindow>(CVAR_WINDOW("ModMenu"), "Mod Menu", ImVec2(820, 630));
     gui->AddGuiWindow(mModMenuWindow);
+    mExternalModInventoryWindow =
+        std::make_shared<SOH::ExternalModInventoryWindow>(CVAR_WINDOW("ExternalModInventory"),
+                                                          "External Mod Inventory", ImVec2(900, 560));
+    gui->AddGuiWindow(mExternalModInventoryWindow);
     mAudioEditorWindow = std::make_shared<AudioEditor>(CVAR_WINDOW("AudioEditor"), "Audio Editor", ImVec2(820, 630));
     gui->AddGuiWindow(mAudioEditorWindow);
     mInputViewer = std::make_shared<InputViewer>(CVAR_WINDOW("InputViewer"), "Input Viewer");
@@ -226,6 +231,7 @@ void Destroy() {
     mActorViewerWindow = nullptr;
     mCosmeticsEditorWindow = nullptr;
     mModMenuWindow = nullptr;
+    mExternalModInventoryWindow = nullptr;
     mAudioEditorWindow = nullptr;
     mStatsWindow = nullptr;
     mConsoleWindow = nullptr;

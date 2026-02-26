@@ -29,6 +29,7 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
+#include "soh/Enhancements/external-mods/ExternalModInterop.h"
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -566,6 +567,7 @@ static s32 sWorldYawToTouchedWall = 0;
 static s16 sFloorShapePitch = 0;
 static s32 sUseHeldItem = false; // When true, the current held item is used. Is reset to false every frame.
 static s32 sHeldItemButtonIsHeldDown = false; // Indicates if the button for the current held item is held down.
+static s32 sExternalModsAimVirtualFireHeldPrev = false;
 
 static u16 D_8085361C[] = {
     NA_SE_VO_LI_SWEAT,
@@ -2516,6 +2518,69 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
     s32 maskItemAction;
     s32 item;
     s32 i;
+    u16 rawCurButtons = 0;
+    u16 rawPressButtons = 0;
+
+    if (sControlInput != NULL) {
+        rawCurButtons = sControlInput->cur.button;
+        rawPressButtons = sControlInput->press.button;
+    }
+
+    if ((sControlInput != NULL) && !(this->stateFlags1 & (PLAYER_STATE1_CARRYING_ACTOR | PLAYER_STATE1_IN_CUTSCENE)) &&
+        !func_8008F128(this)) {
+        s32 pressedSlotIndex = -1;
+
+        for (i = 1; i < ARRAY_COUNT(sItemButtons); i++) {
+            if (CHECK_BTN_ALL(rawPressButtons, sItemButtons[i])) {
+                pressedSlotIndex = i;
+                break;
+            }
+        }
+
+        if (pressedSlotIndex > 0) {
+            const s32 pressedSlotItem = Player_GetItemOnButton(play, pressedSlotIndex);
+            if (pressedSlotItem < ITEM_NONE_FE) {
+                const s32 aimSelectResult =
+                    ExternalMods_HandleAimSelectSlotPress(play, this, pressedSlotIndex, pressedSlotItem);
+                if (aimSelectResult == EXTERNAL_MODS_AIM_SELECT_SLOT_DEACTIVATED_CONSUMED) {
+                    sControlInput->cur.button &= ~sItemButtons[pressedSlotIndex];
+                    sControlInput->press.button &= ~sItemButtons[pressedSlotIndex];
+                    this->heldItemButton = -1;
+                    sHeldItemButtonIsHeldDown = false;
+                    sExternalModsAimVirtualFireHeldPrev = false;
+                    Player_UseItem(play, this, ITEM_NONE);
+                    return;
+                }
+            }
+        }
+    }
+
+    if ((this->heldItemButton >= 0) && (this->heldItemButton < ARRAY_COUNT(sItemButtons)) && (sControlInput != NULL)) {
+        const u16 virtualMask = sItemButtons[this->heldItemButton];
+        const bool mouseFireHeld = ExternalMods_IsAimMouseFireHeld(play, this, this->heldItemAction) != 0;
+        const bool attackButtonFireEnabled = ExternalMods_IsAimAttackButtonFireEnabled(play, this) != 0;
+        const bool attackButtonFireHeld = attackButtonFireEnabled && CHECK_BTN_ALL(rawCurButtons, BTN_B);
+        const bool virtualFireHeld = mouseFireHeld || attackButtonFireHeld;
+        const bool virtualFirePressed = virtualFireHeld && !sExternalModsAimVirtualFireHeldPrev;
+
+        sExternalModsAimVirtualFireHeldPrev = virtualFireHeld;
+        if (virtualFireHeld) {
+            sControlInput->cur.button |= virtualMask;
+        }
+        if (virtualFirePressed) {
+            sControlInput->press.button |= virtualMask;
+        }
+
+        if (attackButtonFireHeld && virtualMask != BTN_B) {
+            sControlInput->cur.button &= ~BTN_B;
+            sControlInput->press.button &= ~BTN_B;
+        }
+    } else {
+        sExternalModsAimVirtualFireHeldPrev = false;
+    }
+
+    u16 activeButtons = sControlInput->cur.button;
+    u16 pressedButtons = sControlInput->press.button;
 
     if (this->currentMask != PLAYER_MASK_NONE && !CVarGetInteger(CVAR_ENHANCEMENT("PersistentMasks"), 0)) {
         maskItemAction = this->currentMask - 1 + PLAYER_IA_MASK_KEATON;
@@ -2549,7 +2614,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
         }
 
         for (i = 0; i < ARRAY_COUNT(sItemButtons); i++) {
-            if (CHECK_BTN_ALL(sControlInput->press.button, sItemButtons[i])) {
+            if (CHECK_BTN_ALL(pressedButtons, sItemButtons[i])) {
                 break;
             }
         }
@@ -2558,7 +2623,7 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
 
         if (item >= ITEM_NONE_FE) {
             for (i = 0; i < ARRAY_COUNT(sItemButtons); i++) {
-                if (CHECK_BTN_ALL(sControlInput->cur.button, sItemButtons[i])) {
+                if (CHECK_BTN_ALL(activeButtons, sItemButtons[i])) {
                     break;
                 }
             }
@@ -5856,6 +5921,7 @@ void func_8083AA10(Player* this, PlayState* play) {
 
 s32 func_8083AD4C(PlayState* play, Player* this) {
     s32 camMode;
+    s32 aimContext = EXTERNAL_MODS_AIM_CONTEXT_CUP;
 
     if (this->unk_6AD == 2) {
         if (func_8002DD6C(this)) {
@@ -5867,6 +5933,13 @@ s32 func_8083AD4C(PlayState* play, Player* this) {
             }
 
             camMode = shouldUseBowCamera ? CAM_MODE_BOWARROW : CAM_MODE_SLINGSHOT;
+            if (Player_HoldsHookshot(this)) {
+                aimContext = EXTERNAL_MODS_AIM_CONTEXT_HOOKSHOT;
+            } else if (this->heldItemAction == PLAYER_IA_BOOMERANG) {
+                aimContext = EXTERNAL_MODS_AIM_CONTEXT_BOOMERANG;
+            } else {
+                aimContext = shouldUseBowCamera ? EXTERNAL_MODS_AIM_CONTEXT_BOW : EXTERNAL_MODS_AIM_CONTEXT_SLINGSHOT;
+            }
         } else {
             // #region SOH [Enhancement]
             if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0)) {
@@ -5875,11 +5948,15 @@ s32 func_8083AD4C(PlayState* play, Player* this) {
             } else {
                 camMode = CAM_MODE_BOOMERANG;
             }
+            if (this->heldItemAction == PLAYER_IA_BOOMERANG) {
+                aimContext = EXTERNAL_MODS_AIM_CONTEXT_BOOMERANG;
+            }
         }
     } else {
         camMode = CAM_MODE_FIRSTPERSON;
     }
 
+    camMode = ExternalMods_ResolveAimCameraMode(play, this, camMode, aimContext);
     return Camera_ChangeMode(Play_GetCamera(play, 0), camMode);
 }
 
@@ -9220,6 +9297,7 @@ s32 func_80842DF4(PlayState* play, Player* this) {
                         if (this->heldItemAction == PLAYER_IA_HAMMER) {
                             func_80832630(play);
                             func_80842A28(play, this);
+                            ExternalMods_OnHammerGroundImpact(play, this, sp5C.x, sp5C.y, sp5C.z);
                             func_80842D20(play, this);
                             return 1;
                         }
@@ -11538,6 +11616,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
     s32 pad;
     Actor* focusActor;
     s32 camMode;
+    s32 aimContext = -1;
 
     if (this->actor.category == ACTORCAT_PLAYER) {
         seqMode = SEQ_MODE_DEFAULT;
@@ -11548,6 +11627,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
             if ((this->actor.parent != NULL) && (this->stateFlags3 & PLAYER_STATE3_FLYING_WITH_HOOKSHOT)) {
                 camMode = CAM_MODE_HOOKSHOT;
                 Camera_SetParam(Play_GetCamera(play, 0), 8, this->actor.parent);
+                aimContext = EXTERNAL_MODS_AIM_CONTEXT_HOOKSHOT;
             } else if (Player_Action_8084377C == this->actionFunc) {
                 camMode = CAM_MODE_STILL;
             } else if (this->stateFlags2 & PLAYER_STATE2_GRABBING_DYNAPOLY) {
@@ -11591,6 +11671,15 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
             } else if (this->stateFlags1 & (PLAYER_STATE1_PARALLEL | PLAYER_STATE1_LOCK_ON_FORCED_TO_RELEASE)) {
                 if (func_8002DD78(this) || func_808334B4(this)) {
                     camMode = CAM_MODE_BOWARROWZ;
+                    if (Player_HoldsHookshot(this)) {
+                        aimContext = EXTERNAL_MODS_AIM_CONTEXT_HOOKSHOT;
+                    } else if (this->heldItemAction == PLAYER_IA_BOOMERANG) {
+                        aimContext = EXTERNAL_MODS_AIM_CONTEXT_BOOMERANG;
+                    } else if (this->heldItemAction == PLAYER_IA_SLINGSHOT) {
+                        aimContext = EXTERNAL_MODS_AIM_CONTEXT_SLINGSHOT;
+                    } else {
+                        aimContext = EXTERNAL_MODS_AIM_CONTEXT_BOW;
+                    }
                 } else if (this->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER) {
                     camMode = CAM_MODE_CLIMBZ;
                 } else {
@@ -11617,6 +11706,9 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
                 }
             }
 
+            if (aimContext >= 0) {
+                camMode = ExternalMods_ResolveAimCameraMode(play, this, camMode, aimContext);
+            }
             Camera_ChangeMode(Play_GetCamera(play, 0), camMode);
         } else {
             // First person mode
@@ -12436,6 +12528,7 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
     Player_DrawImpl(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount, lod,
                     this->currentTunic, this->currentBoots, this->actor.shape.face, overrideLimbDraw,
                     Player_PostLimbDrawGameplay, this);
+    ExternalMods_DrawSurfBoardIfActive(play, this);
 
     if ((overrideLimbDraw == Player_OverrideLimbDrawGameplayDefault) && (this->currentMask != PLAYER_MASK_NONE)) {
         // Fixes a bug in vanilla where ice traps are rendered extremely large while wearing a bunny hood
@@ -14988,7 +15081,9 @@ void Player_Action_8084FB10(Player* this, PlayState* play) {
         }
 
         if ((play->gameplayFrames % 4) == 0) {
-            Player_InflictDamage(play, -1);
+            if (!ExternalMods_IsPlayerFreezeNoDamageActive(this)) {
+                Player_InflictDamage(play, -1);
+            }
         }
     } else {
         if (LinkAnimation_Update(play, &this->skelAnime)) {
@@ -15245,8 +15340,13 @@ void Player_Action_808502D0(Player* this, PlayState* play) {
                      ((this->meleeWeaponAnimation == PLAYER_MWA_JUMPSLASH_FINISH) &&
                       LinkAnimation_OnFrame(&this->skelAnime, 2.0f))) &&
                     (sp2C > -40.0f) && (sp2C < 40.0f)) {
+                    s32 externalImpactHandled = 0;
                     func_80842A28(play, this);
-                    EffectSsBlast_SpawnWhiteShockwave(play, &shockwavePos, &zeroVec, &zeroVec);
+                    externalImpactHandled =
+                        ExternalMods_OnHammerGroundImpact(play, this, shockwavePos.x, shockwavePos.y, shockwavePos.z);
+                    if (!externalImpactHandled) {
+                        EffectSsBlast_SpawnWhiteShockwave(play, &shockwavePos, &zeroVec, &zeroVec);
+                    }
                 }
             }
         }

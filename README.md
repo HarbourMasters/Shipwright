@@ -1,5 +1,5 @@
-![Ship of Harkinian](docs/shiptitle.darkmode.png#gh-dark-mode-only)
-![Ship of Harkinian](docs/shiptitle.lightmode.png#gh-light-mode-only)
+﻿![Hylian Foundry](docs/foundrytitle.darkmode.png#gh-dark-mode-only)
+![Hylian Foundry](docs/foundrytitle.lightmode.png#gh-light-mode-only)
 
 ## Website
 
@@ -10,6 +10,19 @@ Official Website: https://www.shipofharkinian.com/
 Official Discord: https://discord.com/invite/shipofharkinian
 
 If you're having any trouble after reading through this `README`, feel free to ask for help in the Support text channels. Please keep in mind that we do not condone piracy.
+
+
+## Sylian Foundry Modloader (External Mods)
+
+For data-driven external mods, use the **Sylian Foundry Modloader** documentation set.
+
+- Canonical doc: `docs/SYLIAN_FOUNDRY_MODLOADER.md`
+- Data-driven reference: `docs/EXTERNAL_MOD_DATA_DRIVEN_REFERENCE.md`
+- Manager/runtime reference: `docs/EXTERNAL_MOD_MANAGER_REFERENCE.md`
+- Behavior graph reference: `docs/EXTERNAL_MOD_BEHAVIOR_GRAPH_V1.md`
+- Examples: `docs/examples/external_mods/`
+
+External mod contract baseline: `apiVersion: 4`.
 
 # Quick Start
 
@@ -38,12 +51,12 @@ You can verify you have dumped a supported copy of the game by using the compati
 * Copy the files to your sd card
 ```
 sdcard
-└── switch
-    └── soh
-        ├── oot-mq.o2r
-        ├── oot.o2r
-        ├── soh.nro
-        └── soh.o2r
+â””â”€â”€ switch
+    â””â”€â”€ soh
+        â”œâ”€â”€ oot-mq.o2r
+        â”œâ”€â”€ oot.o2r
+        â”œâ”€â”€ soh.nro
+        â””â”€â”€ soh.o2r
 ```
 * Launch via Atmosphere's `Game+R` launcher method.
 
@@ -72,7 +85,7 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 | Ctrl+R | Reset |
 
 # Project Overview
-Ship of Harkinian (SOH) is built atop a custom library dubbed libultraship (LUS). Back in the N64 days, there was an SDK distributed to developers named libultra; LUS is designed to mimic the functionality of libultra on modern hardware. In addition, we are dependant on the source code provided by the OOT decompilation project.
+Hylian Foundry / Ship of Harkinian (SOH) is built atop a custom library dubbed libultraship (LUS). Back in the N64 days, there was an SDK distributed to developers named libultra; LUS is designed to mimic the functionality of libultra on modern hardware. In addition, we are dependant on the source code provided by the OOT decompilation project.
 
 In order for the game to function, you will require a **legally acquired** ROM for Ocarina of Time. Click [here](https://ship.equipment/) to check the compatibility of your specific rom. Any copyrighted assets are extracted from the ROM and reformatted as a .o2r archive file which the code uses.
 
@@ -86,6 +99,26 @@ Custom assets are packed in `.otr` archive files. To use custom assets, place th
 If you're interested in creating and/or packing your own custom asset `.otr` files, check out the following tools:
 * [**retro - OTR generator**](https://github.com/HarbourMasters64/retro)
 * [**fast64 - Blender plugin**](https://github.com/HarbourMasters/fast64)
+
+# External Mod SDK
+
+Data-driven external mods (items, statuses, targeting, damage, AoE/projectiles/movement, behaviors and hooks) are documented in:
+
+* [`docs/EXTERNAL_MOD_BEHAVIOR_GRAPH_V1.md`](docs/EXTERNAL_MOD_BEHAVIOR_GRAPH_V1.md)
+* [`docs/EXTERNAL_MOD_MANAGER_REFERENCE.md`](docs/EXTERNAL_MOD_MANAGER_REFERENCE.md)
+* [`docs/EXTERNAL_MOD_DATA_DRIVEN_REFERENCE.md`](docs/EXTERNAL_MOD_DATA_DRIVEN_REFERENCE.md)
+* [`docs/MOD_SDK_MVP.md`](docs/MOD_SDK_MVP.md)
+
+Runnable examples live in [`docs/examples/external_mods`](docs/examples/external_mods).
+
+# Agent Memory
+
+Long-term technical memory for agents lives in [`docs/agents`](docs/agents):
+
+* [`docs/agents/AGENTS.md`](docs/agents/AGENTS.md) - protocol and read/write rules
+* [`docs/agents/project_state.md`](docs/agents/project_state.md) - active snapshot
+* [`docs/agents/memory.log`](docs/agents/memory.log) - append-only history
+* [`tools/agents`](tools/agents) - append/query/compact/rebuild/validate scripts
 
 # Development
 ### Building
@@ -106,6 +139,7 @@ More detailed documentation can be found in the 'docs' directory, including the 
 * [Custom Music](docs/CUSTOM_MUSIC.md)
 * [Controller Mapping](docs/GAME_CONTROLLER_DB.md)
 * [Modding](docs/MODDING.md)
+* [External Mod Data-Driven Reference](docs/EXTERNAL_MOD_DATA_DRIVEN_REFERENCE.md)
 * [Versioning](docs/VERSIONING.md)
 
 <a href="https://github.com/Kenix3/libultraship/">
@@ -114,3 +148,4 @@ More detailed documentation can be found in the 'docs' directory, including the 
     <img alt="Powered by libultraship" src="./docs/poweredbylus.lightmode.png">
   </picture>
 </a>
+
