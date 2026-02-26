@@ -178,7 +178,7 @@ void RegionTable_Init_DeathMountainCrater() {
                                       ((logic->FireTimer() >= 40 || logic->Hearts() >= 8) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT)) ||
                                       (logic->IsAdult && (logic->FireTimer() >= 24 || logic->Hearts() >= 5) && CanPlantBean(RR_DMC_CENTRAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL))||
                                       (logic->IsAdult && (logic->FireTimer() >= 16 || logic->Hearts() >= 3) && logic->ReachDistantScarecrow())),
-        ENTRANCE(RR_DMC_TEMPLE_EXIT,  (logic->FireTimer() >= 24 || logic->Hearts() >= 5)),
+        ENTRANCE(RR_DMC_TEMPLE_EXIT,  (logic->FireTimer() >= 16 || logic->Hearts() >= 3)),
     });
 
     areaTable[RR_DMC_TEMPLE_ENTRY] = Region("DMC Temple Entry", SCENE_DEATH_MOUNTAIN_CRATER, {}, {
