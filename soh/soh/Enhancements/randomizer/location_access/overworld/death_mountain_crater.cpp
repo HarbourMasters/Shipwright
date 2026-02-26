@@ -26,7 +26,7 @@ void RegionTable_Init_DeathMountainCrater() {
     }, {
         //Exits
         ENTRANCE(RR_DMC_UPPER,        logic->FireTimer() >= 8 || logic->Hearts() >= 2),
-        ENTRANCE(RR_DMC_CRACKED_WALL, (logic->FireTimer() >= 16 || logic->Hearts() >= 3) && logic->HasExplosives()),
+        ENTRANCE(RR_DMC_CRACKED_WALL, (logic->FireTimer() >= 16 || logic->Hearts() >= 3)),
         ENTRANCE(RR_DMC_SCRUB,        logic->FireTimer() >= 16 || logic->Hearts() >= 3),
         ENTRANCE(RR_DMC_BLOCKED_EXIT, ((logic->FireTimer() >= 24 || logic->Hearts() >= 5) && logic->DMCUpperToPots()) ||
                                       (logic->IsAdult && (logic->FireTimer() >= 56 || logic->Hearts() >= 11) && logic->ReachDistantScarecrow() && logic->TakeDamage())),
@@ -51,7 +51,7 @@ void RegionTable_Init_DeathMountainCrater() {
     }, {
         //Exits
         ENTRANCE(RR_DMC_UPPER,        logic->FireTimer() >= 8 || logic->Hearts() >= 2),
-        ENTRANCE(RR_DMC_CRACKED_WALL, (logic->FireTimer() >= 16 || logic->Hearts() >= 3) && logic->HasExplosives()),
+        ENTRANCE(RR_DMC_CRACKED_WALL, (logic->FireTimer() >= 16 || logic->Hearts() >= 3)),
         ENTRANCE(RR_DMC_SCRUB,        logic->FireTimer() >= 16 || logic->Hearts() >= 3),
         ENTRANCE(RR_DMC_BLOCKED_EXIT, ((logic->FireTimer() >= 32 || logic->Hearts() >= 6) && logic->DMCUpperToPots()) ||
                                       (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Hearts() >= 9) && logic->ReachDistantScarecrow() && logic->TakeDamage())),
@@ -79,10 +79,9 @@ void RegionTable_Init_DeathMountainCrater() {
         ENTRANCE(RR_DMC_UPPER,        ((logic->FireTimer() >= 24 || logic->Hearts() >= 5) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT))) ||
                                       (logic->IsAdult && (logic->FireTimer() >= 56 || logic->Hearts() >= 11) && logic->DMCPotsToPad() && CanPlantBean(RR_DMC_CENTRAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL)) ||
                                       ((logic->FireTimer() >= 24 || logic->Hearts() >= 5) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT))),
-        ENTRANCE(RR_DMC_CRACKED_WALL, logic->HasExplosives() && 
-                                      ((logic->FireTimer() >= 32 || logic->Hearts() >= 6) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) || 
-                                       (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Hearts() >= 9) && logic->DMCPotsToPad() && CanPlantBean(RR_DMC_CENTRAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL)) ||
-                                       ((logic->FireTimer() >= 32 || logic->Hearts() >= 6) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT)))),
+        ENTRANCE(RR_DMC_CRACKED_WALL, (logic->FireTimer() >= 32 || logic->Hearts() >= 6) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) || 
+                                      (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Hearts() >= 9) && logic->DMCPotsToPad() && CanPlantBean(RR_DMC_CENTRAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL)) ||
+                                      ((logic->FireTimer() >= 32 || logic->Hearts() >= 6) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT))),
         ENTRANCE(RR_DMC_SCRUB,        logic->FireTimer() >= 8 || logic->Hearts() >= 2),
         ENTRANCE(RR_DMC_BLOCKED_EXIT, logic->DMCUpperToPots() && (logic->FireTimer() >= 8 || logic->Hearts() >= 2)),
         ENTRANCE(RR_DMC_POTS,         logic->DMCUpperToPots() && (logic->FireTimer() >= 8 || logic->Hearts() >= 2)),
@@ -109,10 +108,9 @@ void RegionTable_Init_DeathMountainCrater() {
         ENTRANCE(RR_DMC_UPPER,        (logic->FireTimer() >= 32 || logic->Hearts() >= 6) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) ||
                                       (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Hearts() >= 9) && logic->DMCPotsToPad() && CanPlantBean(RR_DMC_CENTRAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL)) ||
                                       ((logic->FireTimer() >= 24 || logic->Hearts() >= 5) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT))),
-        ENTRANCE(RR_DMC_CRACKED_WALL, logic->HasExplosives() &&
-                                      ((logic->FireTimer() >= 32 || logic->Hearts() >= 6) && logic->HasExplosives() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) ||
-                                       (logic->IsAdult && (logic->FireTimer() >= 40 || logic->Hearts() >= 8) && logic->DMCPotsToPad() && CanPlantBean(RR_DMC_CENTRAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL)) ||
-                                       ((logic->FireTimer() >= 24 || logic->Hearts() >= 5) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT)))),
+        ENTRANCE(RR_DMC_CRACKED_WALL, (logic->FireTimer() >= 32 || logic->Hearts() >= 6) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) ||
+                                      (logic->IsAdult && (logic->FireTimer() >= 40 || logic->Hearts() >= 8) && logic->DMCPotsToPad() && CanPlantBean(RR_DMC_CENTRAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL)) ||
+                                      ((logic->FireTimer() >= 24 || logic->Hearts() >= 5) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT))),
         ENTRANCE(RR_DMC_SCRUB,        logic->FireTimer() >= 16 || logic->Hearts() >= 3),
         ENTRANCE(RR_DMC_BLOCKED_EXIT, logic->FireTimer() >= 8 || logic->Hearts() >= 2),
         ENTRANCE(RR_DMC_POTS,         logic->FireTimer() >= 8 || logic->Hearts() >= 2),
@@ -137,10 +135,9 @@ void RegionTable_Init_DeathMountainCrater() {
         ENTRANCE(RR_DMC_UPPER,        (logic->FireTimer() >= 32 || logic->Hearts() >= 6) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) ||
                                       (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Hearts() >= 9) && logic->DMCPotsToPad() && CanPlantBean(RR_DMC_CENTRAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL)) ||
                                       ((logic->FireTimer() >= 24 || logic->Hearts() >= 5) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT))),
-        ENTRANCE(RR_DMC_CRACKED_WALL, logic->HasExplosives() &&
-                                      ((logic->FireTimer() >= 40 || logic->Hearts() >= 8) && logic->HasExplosives() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) ||
-                                       (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Hearts() >= 9) && logic->DMCPotsToPad() && CanPlantBean(RR_DMC_CENTRAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL)) ||
-                                       ((logic->FireTimer() >= 32 || logic->Hearts() >= 6) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT)))),
+        ENTRANCE(RR_DMC_CRACKED_WALL, (logic->FireTimer() >= 40 || logic->Hearts() >= 8) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) ||
+                                      (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Hearts() >= 9) && logic->DMCPotsToPad() && CanPlantBean(RR_DMC_CENTRAL, RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL)) ||
+                                      ((logic->FireTimer() >= 32 || logic->Hearts() >= 6) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT))),
         ENTRANCE(RR_DMC_SCRUB,        logic->FireTimer() >= 24 || logic->Hearts() >= 5),
         ENTRANCE(RR_DMC_BLOCKED_EXIT, logic->FireTimer() >= 16 || logic->Hearts() >= 3),
         ENTRANCE(RR_DMC_POTS,         logic->FireTimer() >= 8 || logic->Hearts() >= 2),
@@ -238,9 +235,9 @@ void RegionTable_Init_DeathMountainCrater() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->HasExplosives() && logic->CallGossipFairyExceptSuns()),
     }, {
         //Locations
-        LOCATION(RC_DMC_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
-        LOCATION(RC_DMC_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_DMC_GOSSIP_STONE,           true),
+        LOCATION(RC_DMC_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns() && logic->HasExplosives()),
+        LOCATION(RC_DMC_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS) && logic->HasExplosives()),
+        LOCATION(RC_DMC_GOSSIP_STONE,           true && logic->HasExplosives()),
     }, {});
 
     areaTable[RR_DMC_SCRUB] = Region("DMC Scrub", SCENE_DEATH_MOUNTAIN_CRATER, {
