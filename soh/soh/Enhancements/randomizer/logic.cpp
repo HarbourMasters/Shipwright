@@ -2563,17 +2563,17 @@ bool Logic::IsReverseAccessPossible() {
 }
 
 bool Logic::DMCUpperToPots() {
-    return CanUse(RG_HOVER_BOOTS) || 
-           (IsAdult && ((Get(LOGIC_DMC_BOULDER)) || (ctx->GetTrickOption(RT_DMC_BOULDER_SKIP)/* && CanUse(RG_ROLL)*/)));
+    return CanUse(RG_HOVER_BOOTS) || (IsAdult && ((Get(LOGIC_DMC_BOULDER)) ||
+                                                  (ctx->GetTrickOption(RT_DMC_BOULDER_SKIP) /* && CanUse(RG_ROLL)*/)));
 }
 
-bool Logic::DMCPotsToPad(){
-    return (CanUse(RG_HOVER_BOOTS) || CanUse(RG_HOOKSHOT) || 
-           (IsAdult && CanShield() && ctx->GetTrickOption(RT_DMC_BOLERO_JUMP) && CanUse(RG_POWER_BRACELET)));
+bool Logic::DMCPotsToPad() {
+    return (CanUse(RG_HOVER_BOOTS) || CanUse(RG_HOOKSHOT) ||
+            (IsAdult && CanShield() && ctx->GetTrickOption(RT_DMC_BOLERO_JUMP) && CanUse(RG_POWER_BRACELET)));
 }
 
-bool Logic::DMCPadToPots(){
-    return ((CanUse(RG_HOVER_BOOTS) && (IsAdult || (HasItem(RG_CLIMB)/*&& CanUse(RG_ROLL)*/))) || CanUse(RG_HOOKSHOT));
+bool Logic::DMCPadToPots() {
+    return ((CanUse(RG_HOVER_BOOTS) && (IsAdult || (HasItem(RG_CLIMB) /*&& CanUse(RG_ROLL)*/))) || CanUse(RG_HOOKSHOT));
 }
 
 bool Logic::SpiritExplosiveKeyLogic() {

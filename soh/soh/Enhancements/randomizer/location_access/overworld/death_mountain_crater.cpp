@@ -7,11 +7,14 @@ using namespace Rando;
     - RT_DMC_BOLERO_JUMP takes about 16 seconds to perform.
     - RT_DMC_BOULDER_SKIP assumes a setup that takes 14 seconds to fully execute
     - Spawning and killing the bean skull takes around 10 seconds, as does getting the bean sprout,
-      as does getting the rupees on the near plank platform but as it's child only does not stack with RT_DMC_BOLERO_JUMP or RT_DMC_BOULDER_SKIP
-    - Whatever number of hearts is used for Fewer Tunic Requirements, the default time check is that +50%, rounded up. This applies to both adult and child
+      as does getting the rupees on the near plank platform but as it's child only does not stack with
+   RT_DMC_BOLERO_JUMP or RT_DMC_BOULDER_SKIP
+    - Whatever number of hearts is used for Fewer Tunic Requirements, the default time check is that +50%, rounded up.
+   This applies to both adult and child
     - All child only checks must be possible with 3 hearts, or minimal item pool breaks.
-    - I have Pot Grotto separate but not Rocks Grotto because it needs a different amount of hearts to reach blocked exit, which will matter with mods
-    RANDOTODO: when randomised entrances can be in more than 1 region, make it so the player can always turn around and go back the way they came
+    - I have Pot Grotto separate but not Rocks Grotto because it needs a different amount of hearts to reach blocked
+   exit, which will matter with mods RANDOTODO: when randomised entrances can be in more than 1 region, make it so the
+   player can always turn around and go back the way they came
 */
 void RegionTable_Init_DeathMountainCrater() {
     // clang-format off
