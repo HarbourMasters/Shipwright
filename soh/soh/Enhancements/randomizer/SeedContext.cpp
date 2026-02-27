@@ -338,17 +338,7 @@ void Context::CreateItemOverrides() {
         // If this is an ice trap, store the disguise model in iceTrapModels
         const auto itemLoc = GetItemLocation(locKey);
         if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
-            RandomizerGet trickModel = RandomElementFromSet(possibleIceTrapModels);
-            if (trickModel == RG_EMPTY_BOTTLE) {
-                trickModel = RandomElement(StaticData::normalBottles);
-            }
-            if (trickModel == RG_GUARD_HOUSE_KEY) {
-                trickModel = RandomElement(StaticData::overworldKeys);
-            }
-            if (trickModel == RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) {
-                trickModel = RandomElement(StaticData::beanSouls);
-            }
-            ItemOverride val(locKey, trickModel);
+            ItemOverride val(locKey, GetTrapTrickModel(possibleIceTrapModels));
             iceTrapModels[locKey] = val.LooksLike();
             val.SetTrickName(GetIceTrapName(val.LooksLike()));
             // If this is ice trap is in a shop, change the name based on what the model will look like

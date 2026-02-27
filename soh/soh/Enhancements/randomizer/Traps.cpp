@@ -1,6 +1,7 @@
 #include "Traps.h"
-#include "randomizerTypes.h"
-#include "3drando/random.hpp"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/static_data.h"
+#include "soh/Enhancements/randomizer/3drando/random.hpp"
 
 #include <vector>
 
@@ -1430,4 +1431,17 @@ Text GetIceTrapName(uint16_t id) {
 
     // Randomly get the easy, medium, or hard name for the given item id
     return RandomElement(trickNameTable[id]);
+}
+
+RandomizerGet GetTrapTrickModel(std::set<RandomizerGet> possibleIceTrapModels) {
+    RandomizerGet trickModel = RandomElementFromSet(possibleIceTrapModels);
+    if (trickModel == RG_EMPTY_BOTTLE) {
+        trickModel = RandomElement(Rando::StaticData::normalBottles);
+    } else if (trickModel == RG_GUARD_HOUSE_KEY) {
+        trickModel = RandomElement(Rando::StaticData::overworldKeys);
+    } else if (trickModel == RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) {
+        trickModel = RandomElement(Rando::StaticData::beanSouls);
+    }
+
+    return trickModel;
 }
