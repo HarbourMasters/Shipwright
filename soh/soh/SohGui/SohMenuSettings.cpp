@@ -272,6 +272,9 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("Volume.Master"))
         .RaceDisable(false)
         .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(40).ShowButtons(true).Format(""));
+
+    AddWidget(path, "Mute in background", WIDGET_CVAR_CHECKBOX).CVar(CVAR_MUTE_BACKGROUND_AUDIO);
+
     AddWidget(path, "Main Music Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("Volume.MainMusic"))
         .RaceDisable(false)
