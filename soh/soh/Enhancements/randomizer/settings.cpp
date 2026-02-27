@@ -1307,21 +1307,21 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_DAMAGE_MULTIPLIER, "Damage Multiplier", {"x1/2", "x1", "x2", "x4", "x8", "x16", "OHKO"}, OptionCategory::Setting, "", "", WIDGET_CVAR_SLIDER_INT, RO_DAMAGE_MULTIPLIER_DEFAULT);
     // Don't show any MQ options if both quests aren't available
     if (!(OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal())) {
-        mOptions[RSK_MQ_DUNGEON_RANDOM].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_DUNGEON_COUNT].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_DUNGEON_SET].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_DEKU_TREE].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_DODONGOS_CAVERN].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_JABU_JABU].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_FOREST_TEMPLE].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_FIRE_TEMPLE].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_WATER_TEMPLE].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_SPIRIT_TEMPLE].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_SHADOW_TEMPLE].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_BOTTOM_OF_THE_WELL].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_ICE_CAVERN].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_GTG].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_GANONS_CASTLE].Disable("This Options has been disabled because only one type of OTR has been loaded");
+        mOptions[RSK_MQ_DUNGEON_RANDOM].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_DUNGEON_COUNT].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_DUNGEON_SET].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_DEKU_TREE].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_DODONGOS_CAVERN].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_JABU_JABU].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_FOREST_TEMPLE].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_FIRE_TEMPLE].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_WATER_TEMPLE].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_SPIRIT_TEMPLE].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_SHADOW_TEMPLE].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_BOTTOM_OF_THE_WELL].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_ICE_CAVERN].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_GTG].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_GANONS_CASTLE].Disable("This option has been disabled because only one type of O2R has been loaded");
     } else {
         // If any MQ Options are available, show the MQ Dungeon Randomization Combobox
         mOptions[RSK_MQ_DUNGEON_RANDOM].Enable();
