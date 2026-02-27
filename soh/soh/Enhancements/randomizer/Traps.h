@@ -10,10 +10,10 @@
 #include "libultraship/libultra/types.h"
 
 namespace Rando {
-    namespace Traps {
-        Text GetTrapName(uint16_t id);
-        RandomizerGet GetTrapTrickModel();
-        bool ShouldJunkItemBeTrap();
-        void BuildIceTrapMessage(CustomMessage& msg, GetItemEntry getItemEntry);
-    }
-}
+namespace Traps {
+Text GetTrapName(uint16_t id);
+RandomizerGet GetTrapTrickModel();
+bool ShouldJunkItemBeTrap();
+void BuildIceTrapMessage(CustomMessage& msg, GetItemEntry getItemEntry);
+} // namespace Traps
+} // namespace Rando

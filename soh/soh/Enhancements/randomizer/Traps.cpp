@@ -1769,7 +1769,9 @@ static std::string ReplaceItemName(const char* c_str, GetItemEntry getItemEntry)
     if (getItemEntry.drawModIndex == MOD_NONE) {
         name = SohUtils::GetItemName(getItemEntry.drawItemId);
     } else if (getItemEntry.drawModIndex == MOD_RANDOMIZER) {
-        name = Rando::StaticData::RetrieveItem((RandomizerGet)getItemEntry.drawItemId).GetName().GetForLanguage(gSaveContext.language);
+        name = Rando::StaticData::RetrieveItem((RandomizerGet)getItemEntry.drawItemId)
+                   .GetName()
+                   .GetForLanguage(gSaveContext.language);
     } else {
         assert(false);
     }
@@ -1777,7 +1779,9 @@ static std::string ReplaceItemName(const char* c_str, GetItemEntry getItemEntry)
     size_t index = 0;
     while (true) {
         index = str.find(placeholder, index);
-        if (index == std::string::npos) break;
+        if (index == std::string::npos) {
+            break;
+        }
 
         str.replace(index, placeholder.length(), name);
 
@@ -1796,7 +1800,8 @@ void Rando::Traps::BuildIceTrapMessage(CustomMessage& msg, GetItemEntry getItemE
     } else {
         msg = CustomMessage(ReplaceItemName(ShipUtils::RandomElement(englishIceTrapMessages), getItemEntry),
                             ReplaceItemName(ShipUtils::RandomElement(germanIceTrapMessages), getItemEntry),
-                            ReplaceItemName(ShipUtils::RandomElement(frenchIceTrapMessages), getItemEntry), { QM_BLUE, QM_BLUE, QM_BLUE });
+                            ReplaceItemName(ShipUtils::RandomElement(frenchIceTrapMessages), getItemEntry),
+                            { QM_BLUE, QM_BLUE, QM_BLUE });
     }
 
     msg.AutoFormat();
