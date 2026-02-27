@@ -330,7 +330,7 @@ void func_80AA0D88(EnMa1* this, PlayState* play) {
     }
 
     if ((play->sceneNum == SCENE_HYRULE_CASTLE) && malonReturnedFromCastle) {
-        if(GameInteractor_Should(VB_SEND_MALON_HOME, true)) {
+        if (GameInteractor_Should(VB_SEND_MALON_HOME, true)) {
             Actor_Kill(&this->actor);
         }
     } else if (!malonReturnedFromCastle || malonTaughtEponasSong) {
