@@ -937,7 +937,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                       Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
             break;
         case VB_SEND_MALON_HOME:
-            *should = false;
+            *should = Flags_GetRandomizerInf(RAND_INF_TALON_SENT_MALON_HOME);
             break;
         case VB_MIDO_CONSIDER_DEKU_TREE_DEAD:
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);

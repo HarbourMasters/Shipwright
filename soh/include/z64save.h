@@ -930,6 +930,5 @@ typedef enum {
 #define EVENTINF_24_MASK (1 << 4)
 
 #define EVENTINF_30 0x30
-#define EVENTINF_TALON_SENT_MALON_HOME 0x31
 
 #endif
