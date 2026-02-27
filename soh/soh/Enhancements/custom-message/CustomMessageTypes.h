@@ -237,6 +237,8 @@ typedef enum {
 
 #ifdef __cplusplus
 
+#include <string>
+
 typedef struct {
     uint16_t giid;
     ItemID iid;
