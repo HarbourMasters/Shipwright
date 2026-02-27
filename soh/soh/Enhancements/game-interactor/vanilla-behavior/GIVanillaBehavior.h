@@ -1421,7 +1421,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // false
+    // true
     // ```
     // #### `args`
     // - None
