@@ -14,6 +14,6 @@ namespace Rando {
         Text GetTrapName(uint16_t id);
         RandomizerGet GetTrapTrickModel();
         bool ShouldJunkItemBeTrap();
-        void BuildIceTrapMessage(CustomMessage& msg);
+        void BuildIceTrapMessage(CustomMessage& msg, GetItemEntry getItemEntry);
     }
 }

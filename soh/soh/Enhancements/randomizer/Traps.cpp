@@ -1508,7 +1508,7 @@ static const char* const englishIceTrapMessages[] = {
     "Would you like #ice# with that?",
     "You have obtained the #Ice# Medallion!",
     "Quick, do a #Zora# impression!",
-    "One item #on the rocks#!", // would be better if it could display the name of the item
+    "One %r${itemName}%w #on the rocks#!",
     "How much does a polar bear weigh?&Enough to break the #ice#.",
     "You got Din's #Ice#!",
     "You got Nayru's #Cold#!",
@@ -1577,7 +1577,7 @@ static const char* const englishIceTrapMessages[] = {
     "The #Ice Cavern# sends its regards.",
     "Loading item, please #wait#...",
     "Mash A+B to not #die#.",
-    "Sorry, your item is in another location.", // would be better if it could have the name of the item
+    "Sorry, your %r${itemName}%w is in another location.",
     "You only wish this was %gGreg%w.",
     "Do you want to drink a hot chocolate?",
     "The #cold# never bothered me anyway.",
@@ -1598,7 +1598,7 @@ static const char* const englishIceTrapMessages[] = {
     "Remember, there may be some momentary #discomfort#.",
     "In a perfect world #ice traps# like me would not exist, but this is not a perfect world.",
     "Gee, it sure is #cold# around here.",
-    "You tested the item with your #ice detector#, it beeped.", // would be better if it could have the name of the item
+    "You tested the %r${itemName}%w with your #ice detector#, it beeped.",
     "You have found the way of the zero. The #sub-zero#.",
     "Mweep... mweep... mweep...",
     "Scum, #freezebag#! I mean #freeze#, scumbag!",
@@ -1617,8 +1617,7 @@ static const char* const englishIceTrapMessages[] = {
     "Hydration break! Hey, who #froze# my water?",
     "Oops, wrong #item model#.",
     "Whoops! You have to put the item #in your inventory#.",
-    "You dropped the item, shattering it into #shards of ice#!", // would be better if it could have the name of the
-                                                                 // item
+    "You dropped the %r${itemName}%w, shattering it into #shards of ice#!",
     "Is this... golden age Simpsons?&BECAUSE I'M ABOUT TO #CHOKE A CHILD#.",
     "You are the weakest @, #goodbye#!",
     "Ugh... Why did we even randomize #this item#?",
@@ -1631,8 +1630,8 @@ static const char* const englishIceTrapMessages[] = {
     "Gee, it sure is #BURR#ing around here.",
     "Navi? Oh! I thought she was called #Névé#!",
     "It's fine, @ knew this was a #trap#, they're just using it to take damage intentionally to manipulate RNG.",
-    "Unfortunately, the item has #stopped#.",        // would be better if it could have the name of the item
-    "This item is #not available# in your country.", // would be better if it could have the name of the item
+    "Unfortunately, the %r${itemName}%w has #stopped#.",
+    "This %r${itemName}%w is #not available# in your country.",
     "#Ice# try. #;)#",
     "D'oh, I #missed#!",
     "Where is my #super suit#?",
@@ -1758,16 +1757,46 @@ static const char* const frenchIceTrapMessages[] = {
     "#La revanche du Titanic#.",
 };
 
-void Rando::Traps::BuildIceTrapMessage(CustomMessage& msg) {
+extern "C" SaveContext gSaveContext;
+
+static std::string ReplaceItemName(const char* c_str, GetItemEntry getItemEntry) {
+    const static std::string placeholder = "${itemName}";
+
+    std::string str = std::string(c_str);
+
+    std::string name = "item";
+
+    if (getItemEntry.drawModIndex == MOD_NONE) {
+        name = SohUtils::GetItemName(getItemEntry.drawItemId);
+    } else if (getItemEntry.drawModIndex == MOD_RANDOMIZER) {
+        name = Rando::StaticData::RetrieveItem((RandomizerGet)getItemEntry.drawItemId).GetName().GetForLanguage(gSaveContext.language);
+    } else {
+        assert(false);
+    }
+
+    size_t index = 0;
+    while (true) {
+        index = str.find(placeholder, index);
+        if (index == std::string::npos) break;
+
+        str.replace(index, placeholder.length(), name);
+
+        index += name.length();
+    }
+
+    return str;
+}
+
+void Rando::Traps::BuildIceTrapMessage(CustomMessage& msg, GetItemEntry getItemEntry) {
     if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
         msg = CustomMessage(
             /*english*/ "This year for Christmas, all you get is #COAL#!",
             /*german*/ "This year for Christmas, all you get is #COAL#!",
             /*french*/ "Pour Noël, cette année, tu n'auras que du #CHARBON#! %rJoyeux Noël%w!", { QM_BLUE });
     } else {
-        msg = CustomMessage(ShipUtils::RandomElement(englishIceTrapMessages),
-                            ShipUtils::RandomElement(germanIceTrapMessages),
-                            ShipUtils::RandomElement(frenchIceTrapMessages), { QM_BLUE, QM_BLUE, QM_BLUE });
+        msg = CustomMessage(ReplaceItemName(ShipUtils::RandomElement(englishIceTrapMessages), getItemEntry),
+                            ReplaceItemName(ShipUtils::RandomElement(germanIceTrapMessages), getItemEntry),
+                            ReplaceItemName(ShipUtils::RandomElement(frenchIceTrapMessages), getItemEntry), { QM_BLUE, QM_BLUE, QM_BLUE });
     }
 
     msg.AutoFormat();

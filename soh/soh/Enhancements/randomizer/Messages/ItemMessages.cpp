@@ -88,7 +88,7 @@ void BuildItemMessage(u16* textId, bool* loadFromMessageTable) {
     CustomMessage msg;
 
     if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
-        Rando::Traps::BuildIceTrapMessage(msg);
+        Rando::Traps::BuildIceTrapMessage(msg, player->getItemEntry);
     } else if (player->getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
         BuildTriforcePieceMessage(msg);
     } else {
