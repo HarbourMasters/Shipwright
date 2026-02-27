@@ -7,6 +7,7 @@
 #include "pool_functions.hpp"
 #include "random.hpp"
 #include "spoiler_log.hpp"
+#include "soh/Enhancements/randomizer/Traps.h"
 #include "z64item.h"
 #include <spdlog/spdlog.h>
 
@@ -68,11 +69,10 @@ void AddFixedItemToPool(RandomizerGet item, int count = 1, bool iceTrapModel = t
 }
 
 RandomizerGet GetJunkItem() {
-    auto ctx = Rando::Context::GetInstance();
-    if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).IsNot(0) &&
-        (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Is(100) || Random(0, 100) < ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get())) {
+    if (ShouldJunkItemBeTrap()) {
         return RG_ICE_TRAP;
     }
+
     return RandomElement(JunkPoolItems);
 }
 

@@ -5,3 +5,4 @@
 
 Text GetIceTrapName(uint16_t id);
 RandomizerGet GetTrapTrickModel(std::set<RandomizerGet> possibleIceTrapModels);
+bool ShouldJunkItemBeTrap();

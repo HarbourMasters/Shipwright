@@ -1,4 +1,5 @@
 #include "Traps.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
@@ -1444,4 +1445,18 @@ RandomizerGet GetTrapTrickModel(std::set<RandomizerGet> possibleIceTrapModels) {
     }
 
     return trickModel;
+}
+
+bool ShouldJunkItemBeTrap() {
+    auto ctx = Rando::Context::GetInstance();
+
+    if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Is(0)) {
+        return false;
+    }
+
+    if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Is(100) || Random(0, 100) < ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get()) {
+        return true;
+    }
+
+    return false;
 }
