@@ -1,8 +1,17 @@
 #pragma once
 
+#ifndef __cplusplus
+#error This header should not be used in C files
+#endif
+
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/3drando/text.hpp"
 #include "libultraship/libultra/types.h"
 
-Text GetIceTrapName(uint16_t id);
-RandomizerGet GetTrapTrickModel(std::set<RandomizerGet> possibleIceTrapModels);
-bool ShouldJunkItemBeTrap();
+namespace Rando {
+    namespace Traps {
+        Text GetTrapName(uint16_t id);
+        RandomizerGet GetTrapTrickModel();
+        bool ShouldJunkItemBeTrap();
+    }
+}

@@ -1418,7 +1418,7 @@ static void InitTrickNames() {
 }
 
 // Generate a fake name for the ice trap based on the item it's displayed as
-Text GetIceTrapName(uint16_t id) {
+Text Rando::Traps::GetTrapName(uint16_t id) {
     // If the trick names table has not been initialized, do so
     if (!initTrickNames) {
         InitTrickNames();
@@ -1434,8 +1434,10 @@ Text GetIceTrapName(uint16_t id) {
     return RandomElement(trickNameTable[id]);
 }
 
-RandomizerGet GetTrapTrickModel(std::set<RandomizerGet> possibleIceTrapModels) {
-    RandomizerGet trickModel = RandomElementFromSet(possibleIceTrapModels);
+RandomizerGet Rando::Traps::GetTrapTrickModel() {
+    auto ctx = Rando::Context::GetInstance();
+    RandomizerGet trickModel = RandomElementFromSet(ctx->possibleIceTrapModels);
+
     if (trickModel == RG_EMPTY_BOTTLE) {
         trickModel = RandomElement(Rando::StaticData::normalBottles);
     } else if (trickModel == RG_GUARD_HOUSE_KEY) {
@@ -1447,7 +1449,7 @@ RandomizerGet GetTrapTrickModel(std::set<RandomizerGet> possibleIceTrapModels) {
     return trickModel;
 }
 
-bool ShouldJunkItemBeTrap() {
+bool Rando::Traps::ShouldJunkItemBeTrap() {
     auto ctx = Rando::Context::GetInstance();
 
     if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Is(0)) {
