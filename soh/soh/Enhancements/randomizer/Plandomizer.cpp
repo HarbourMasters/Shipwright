@@ -15,6 +15,7 @@
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/rando_hash.h"
+#include "soh/Enhancements/randomizer/Traps.h"
 #include "soh/Enhancements/randomizer/3drando/shops.hpp"
 
 extern "C" {
