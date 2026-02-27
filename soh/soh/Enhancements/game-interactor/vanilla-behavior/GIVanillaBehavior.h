@@ -1413,11 +1413,20 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)
+    // Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE) &&
+    // Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG)
     // ```
     // #### `args`
     // - None
     VB_MALON_RETURN_FROM_CASTLE,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - None
+    VB_SEND_MALON_HOME,
 
     // #### `result`
     // ```c
