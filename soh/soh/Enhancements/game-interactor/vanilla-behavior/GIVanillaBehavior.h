@@ -1413,8 +1413,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE) &&
-    // Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG)
+    // Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)
     // ```
     // #### `args`
     // - None
