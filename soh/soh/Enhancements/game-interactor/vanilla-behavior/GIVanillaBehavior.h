@@ -2652,7 +2652,23 @@ typedef enum {
     // #### `args`
     // - `*Player`
     // - `double` (temp - promoted from `f32`)
-    VB_RUMBLE_FOR_SECRET
+    VB_RUMBLE_FOR_SECRET,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - None
+    VB_TOGGLE_Z_TARGET_SWITCH_DIRECTION,
+
+    // #### `result`
+    // ```c
+    // !usingHoldTargeting
+    // ```
+    // #### `args`
+    // - `int32_t` (usingHoldTargeting - promoted from `s32`)
+    VB_TOGGLE_Z_TARGET_SWITCH_TARGETS
 
 } GIVanillaBehavior;
 
