@@ -78,8 +78,8 @@ void BgSpot01Idomizu_Draw(Actor* thisx, PlayState* play) {
 
     frames = play->state.frames;
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - frames % 128, frames & 0x7F, 32, 32, 1, frames % 128,
-                                frames & 0x7F, 32, 32));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 127 - frames % 128, frames & 0x7F, 32, 32, 1, frames % 128,
+                                  frames & 0x7F, 32, 32, -1, 1, 1, 1));
 
     gSPDisplayList(POLY_XLU_DISP++, gKakarikoWellWaterDL);
 

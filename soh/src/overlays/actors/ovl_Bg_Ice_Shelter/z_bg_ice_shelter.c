@@ -475,20 +475,20 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
         case 1:
         case 4:
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, -play->gameplayFrames & 0x7F,
-                                        -play->gameplayFrames & 0x7F, 0x20, 0x20, 1, -play->gameplayFrames & 0x7F,
-                                        play->gameplayFrames & 0x7F, 0x20, 0x20));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, -play->gameplayFrames & 0x7F,
+                                          -play->gameplayFrames & 0x7F, 0x20, 0x20, 1, -play->gameplayFrames & 0x7F,
+                                          play->gameplayFrames & 0x7F, 0x20, 0x20, -1, -1, -1, 1));
             gSPDisplayList(POLY_XLU_DISP++, gRedIceBlockDL);
             break;
 
         case 2:
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, play->gameplayFrames & 0xFF, 0x40, 0x40, 1, 0,
-                                        -play->gameplayFrames & 0xFF, 0x40, 0x40));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, play->gameplayFrames & 0xFF, 0x40, 0x40, 1, 0,
+                                          -play->gameplayFrames & 0xFF, 0x40, 0x40, 0, 1, 0, -1));
             gSPSegment(POLY_XLU_DISP++, 0x09,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, -play->gameplayFrames & 0xFF,
-                                        play->gameplayFrames & 0xFF, 0x40, 0x40, 1, play->gameplayFrames & 0xFF,
-                                        play->gameplayFrames & 0xFF, 0x40, 0x40));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, -play->gameplayFrames & 0xFF,
+                                          play->gameplayFrames & 0xFF, 0x40, 0x40, 1, play->gameplayFrames & 0xFF,
+                                          play->gameplayFrames & 0xFF, 0x40, 0x40, -1, 1, 1, 1));
             gSPDisplayList(POLY_XLU_DISP++, gRedIcePlatformDL);
             break;
 

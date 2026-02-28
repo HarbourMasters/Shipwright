@@ -355,16 +355,16 @@ void SetAllEntrancesData() {
         { { EntranceType::Interior, RR_ZORAS_FOUNTAIN,                RR_ZF_GREAT_FAIRY_FOUNTAIN,         ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_FARORES_ZF },
           { EntranceType::Interior, RR_ZF_GREAT_FAIRY_FOUNTAIN,       RR_ZORAS_FOUNTAIN,                  ENTR_ZORAS_FOUNTAIN_OUTSIDE_GREAT_FAIRY } },
         
-        { { EntranceType::SpecialInterior, RR_KF_LINKS_PORCH,        RR_KF_LINKS_HOUSE,        ENTR_LINKS_HOUSE_1 },
-          { EntranceType::SpecialInterior, RR_KF_LINKS_HOUSE,        RR_KF_LINKS_PORCH,        ENTR_KOKIRI_FOREST_OUTSIDE_LINKS_HOUSE } },
-        { { EntranceType::SpecialInterior, RR_TOT_ENTRANCE,          RR_TEMPLE_OF_TIME,        ENTR_TEMPLE_OF_TIME_ENTRANCE },
-          { EntranceType::SpecialInterior, RR_TEMPLE_OF_TIME,        RR_TOT_ENTRANCE,          ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE } },
-        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,      RR_KAK_WINDMILL_LOWER,    ENTR_WINDMILL_AND_DAMPES_GRAVE_WINDMILL },
-          { EntranceType::SpecialInterior, RR_KAK_WINDMILL_LOWER,    RR_KAKARIKO_VILLAGE,      ENTR_KAKARIKO_VILLAGE_OUTSIDE_WINDMILL } },
-        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,      RR_KAK_POTION_SHOP_FRONT, ENTR_POTION_SHOP_KAKARIKO_FRONT },
-          { EntranceType::SpecialInterior, RR_KAK_POTION_SHOP_FRONT, RR_KAKARIKO_VILLAGE,      ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_FRONT } },
-        { { EntranceType::SpecialInterior, RR_KAK_BACKYARD,          RR_KAK_POTION_SHOP_BACK,  ENTR_POTION_SHOP_KAKARIKO_BACK },
-          { EntranceType::SpecialInterior, RR_KAK_POTION_SHOP_BACK,  RR_KAK_BACKYARD,          ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_BACK } },
+        { { EntranceType::SpecialInterior, RR_KF_LINKS_PORCH,         RR_KF_LINKS_HOUSE,         ENTR_LINKS_HOUSE_1 },
+          { EntranceType::SpecialInterior, RR_KF_LINKS_HOUSE,         RR_KF_LINKS_PORCH,         ENTR_KOKIRI_FOREST_OUTSIDE_LINKS_HOUSE } },
+        { { EntranceType::SpecialInterior, RR_TOT_ENTRANCE,           RR_TEMPLE_OF_TIME,         ENTR_TEMPLE_OF_TIME_ENTRANCE },
+          { EntranceType::SpecialInterior, RR_TEMPLE_OF_TIME,         RR_TOT_ENTRANCE,           ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE } },
+        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,       RR_KAK_WINDMILL_LOWER,     ENTR_WINDMILL_AND_DAMPES_GRAVE_WINDMILL },
+          { EntranceType::SpecialInterior, RR_KAK_WINDMILL_LOWER,     RR_KAKARIKO_VILLAGE,       ENTR_KAKARIKO_VILLAGE_OUTSIDE_WINDMILL } },
+        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,       RR_KAK_POTION_SHOP,        ENTR_POTION_SHOP_KAKARIKO_FRONT },
+          { EntranceType::SpecialInterior, RR_KAK_POTION_SHOP,        RR_KAKARIKO_VILLAGE,       ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_FRONT } },
+        { { EntranceType::SpecialInterior, RR_KAK_BEHIND_POTION_SHOP, RR_KAK_POTION_SHOP,        ENTR_POTION_SHOP_KAKARIKO_BACK },
+          { EntranceType::SpecialInterior, RR_KAK_POTION_SHOP,        RR_KAK_BEHIND_POTION_SHOP, ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_BACK } },
         
         { { EntranceType::ThievesHideout, RR_GF_OUTSKIRTS,                 RR_TH_1_TORCH_CELL,              ENTR_THIEVES_HIDEOUT_0 },
           { EntranceType::ThievesHideout, RR_TH_1_TORCH_CELL,              RR_GF_OUTSKIRTS,                 ENTR_GERUDOS_FORTRESS_1 } },
@@ -796,6 +796,7 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
 
     bool checkOtherEntranceAccess =
         (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
+         (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_ON) && ctx->GetOption(RSK_SHUFFLE_GROTTO_ENTRANCES)) ||
          ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL) ||
          ctx->GetOption(RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_SPAWNS)) &&
         (entrancePlaced == nullptr || ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS) ||

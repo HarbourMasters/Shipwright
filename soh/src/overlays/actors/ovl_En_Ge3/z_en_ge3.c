@@ -6,7 +6,6 @@
 
 #include "z_en_ge3.h"
 #include "objects/object_geldb/object_geldb.h"
-#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 

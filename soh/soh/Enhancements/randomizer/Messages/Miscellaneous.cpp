@@ -9,6 +9,7 @@
 
 extern "C" {
 #include <variables.h>
+extern PlayState* gPlayState;
 }
 
 void BuildWaterSwitchMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -39,10 +40,25 @@ void BuildShootingGalleryNoBowMessage(uint16_t* textId, bool* loadFromMessageTab
     *loadFromMessageTable = false;
 }
 
+void BuildFixedMallonAtCastleMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (gPlayState->sceneNum == SCENE_HYRULE_CASTLE) {
+        CustomMessage msg = CustomMessage(
+            "Looks like my dad already went back to the %rranch%w. You should come visit sometime!",
+            "Mein Vater ist wohl schon wieder auf der %rFarm%w, du solltest ihn mal besuchen kommen!",
+            "On dirait que père est déjà rentré au %rranch%w. Tu devrais nous rendre visite à l'occasion!");
+        msg.AutoFormat();
+        msg.LoadIntoFont();
+        *loadFromMessageTable = false;
+    }
+}
+
 void RegisterMiscellaneousMessages() {
     COND_ID_HOOK(OnOpenText, TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI, IS_RANDO, BuildWaterSwitchMessage);
     COND_ID_HOOK(OnOpenText, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN, IS_RANDO, BuildWaterSwitchMessage);
     COND_ID_HOOK(OnOpenText, TEXT_SHOOTING_GALLERY_MAN_COME_BACK_WITH_BOW, IS_RANDO, BuildShootingGalleryNoBowMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_MALON_MEET_EPONA, IS_RANDO, BuildFixedMallonAtCastleMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_MALON_EPONA_IS_AFRAID, IS_RANDO, BuildFixedMallonAtCastleMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_MALON_LETS_SING_THIS_SONG, IS_RANDO, BuildFixedMallonAtCastleMessage);
 }
 
 static RegisterShipInitFunc initFunc(RegisterMiscellaneousMessages, { "IS_RANDO" });

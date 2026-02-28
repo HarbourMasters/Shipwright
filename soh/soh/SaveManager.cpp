@@ -1334,9 +1334,7 @@ void SaveManager::ThreadPoolWait() {
 
 bool SaveManager::SaveFile_Exist(int fileNum) {
     try {
-        bool exists = std::filesystem::exists(GetFileName(fileNum));
-        SPDLOG_INFO("File[{}] - {}", fileNum, exists ? "exists" : "does not exist");
-        return exists;
+        return std::filesystem::exists(GetFileName(fileNum));
     } catch (std::filesystem::filesystem_error const& ex) {
         SPDLOG_ERROR("Filesystem error");
         return false;
