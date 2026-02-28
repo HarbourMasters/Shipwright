@@ -10,8 +10,8 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#define CVAR_IMPROVED_TOGGLE_TARGETING_NAME CVAR_ENHANCEMENT("ReworkedTargeting")
-#define CVAR_IMPROVED_TOGGLE_TARGETING_VALUE CVarGetInteger(CVAR_IMPROVED_TOGGLE_TARGETING_NAME, 0)
+#define CVAR_REWORKED_TARGETING_NAME CVAR_ENHANCEMENT("ReworkedTargeting")
+#define CVAR_REWORKED_TARGETING_VALUE CVarGetInteger(CVAR_REWORKED_TARGETING_NAME, 0)
 
 #define RIGHT_STICK_THRESHOLD 20
 
@@ -19,7 +19,7 @@ static bool sTriggeredByRightStick = false;
 
 void RegisterReworkedTargeting() {
 
-    COND_VB_SHOULD(VB_TOGGLE_Z_TARGET_SWITCH_TARGETS, CVAR_IMPROVED_TOGGLE_TARGETING_VALUE, {
+    COND_VB_SHOULD(VB_TOGGLE_Z_TARGET_SWITCH_TARGETS, CVAR_REWORKED_TARGETING_VALUE, {
         Player* player = GET_PLAYER(gPlayState);
         if (player->focusActor != NULL && !sTriggeredByRightStick) {
             *should = false;
@@ -27,7 +27,7 @@ void RegisterReworkedTargeting() {
         sTriggeredByRightStick = false;
     });
 
-    COND_VB_SHOULD(VB_TOGGLE_Z_TARGET_SWITCH_DIRECTION, CVAR_IMPROVED_TOGGLE_TARGETING_VALUE, {
+    COND_VB_SHOULD(VB_TOGGLE_Z_TARGET_SWITCH_DIRECTION, CVAR_REWORKED_TARGETING_VALUE, {
         Player* player = GET_PLAYER(gPlayState);
         
         if (player->focusActor != NULL) {
@@ -56,4 +56,4 @@ void RegisterReworkedTargeting() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterReworkedTargeting, { CVAR_IMPROVED_TOGGLE_TARGETING_NAME });
+static RegisterShipInitFunc initFunc(RegisterReworkedTargeting, { CVAR_REWORKED_TARGETING_NAME });
