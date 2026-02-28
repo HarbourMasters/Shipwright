@@ -1795,7 +1795,7 @@ void Rando::Traps::BuildIceTrapMessage(CustomMessage& msg, GetItemEntry getItemE
     if (CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
         msg = CustomMessage(
             /*english*/ "This year for Christmas, all you get is #COAL#!",
-            /*german*/ "This year for Christmas, all you get is #COAL#!",
+            /*german*/ TODO_TRANSLATE,
             /*french*/ "Pour Noël, cette année, tu n'auras que du #CHARBON#! %rJoyeux Noël%w!", { QM_BLUE });
     } else {
         msg = CustomMessage(ReplaceItemName(ShipUtils::RandomElement(englishIceTrapMessages), getItemEntry),
