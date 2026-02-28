@@ -468,9 +468,6 @@ void func_80B14B6C(EnTa* this, PlayState* play) {
         EnTa_SetupAction(this, func_80B14AF4, EnTa_AnimRepeatCurrent);
         this->unk_2CC = 5;
         Flags_SetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);
-        if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG)) {
-            Flags_SetRandomizerInf(RAND_INF_TALON_SENT_MALON_HOME);
-        }
         if (GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
             OnePointCutscene_EndCutscene(play, csCamIdx);
         }
