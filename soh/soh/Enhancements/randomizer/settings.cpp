@@ -1414,7 +1414,7 @@ void Settings::CreateOptions() {
         "and you are not expected to navigate underwater sections without a Zora Tunic.\n\n"
         "With this trick you are expected to do any underwater area except Central Pillar,\n"
         "any hot area except Volvagia and the Block lift room in Fire Temple\n"
-        "and the heath needed to logically navigate Crater is decreased.");
+        "and the health needed to logically navigate Crater is decreased.");
     OPT_TRICK(RT_UNINTUITIVE_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Unintuitive Jumps", "UnJmp",
               "Many ledges can be overcome with particular jumps which are simple to execute without items.\n"
               "This includes jumping from heights to dive deeper without scales,\n"
