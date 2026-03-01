@@ -26,6 +26,7 @@
 #include "soh/mq_asset_hacks.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 // Entrance Table definition
 #define DEFINE_ENTRANCE(_0, sceneId, spawn, continueBgm, displayTitleCard, endTransType, startTransType) \
@@ -1572,22 +1573,22 @@ void func_8009FE58(PlayState* play) {
 
     if (FrameAdvance_IsEnabled(play) != true) {
 
-        D_8012A39C += 1820;
-        D_8012A3A0 += 1820;
+        if (GameInteractor_Should(VB_JABU_WOBBLE, true)) {
+            D_8012A39C += 1820;
+            D_8012A3A0 += 1820;
+        }
 
         temp = 0.020000001f;
 
         if (play->pauseCtx.state == 0) {
-            if (CVarGetInteger(CVAR_SETTING("A11yNoJabuWobble"), 0) == 0) {
-                View_SetDistortionOrientation(
-                    &play->view, ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_CosS(D_8012A39C),
-                    ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_SinS(D_8012A39C),
-                    ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_SinS(D_8012A3A0));
-                View_SetDistortionScale(&play->view, 1.f + (0.79999995f * temp * Math_SinS(D_8012A3A0)),
-                                        1.f + (0.39999998f * temp * Math_CosS(D_8012A3A0)),
-                                        1.f + (1 * temp * Math_CosS(D_8012A39C)));
-                View_SetDistortionSpeed(&play->view, 0.95f);
-            }
+            View_SetDistortionOrientation(&play->view,
+                                          ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_CosS(D_8012A39C),
+                                          ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_SinS(D_8012A39C),
+                                          ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_SinS(D_8012A3A0));
+            View_SetDistortionScale(&play->view, 1.f + (0.79999995f * temp * Math_SinS(D_8012A3A0)),
+                                    1.f + (0.39999998f * temp * Math_CosS(D_8012A3A0)),
+                                    1.f + (1 * temp * Math_CosS(D_8012A39C)));
+            View_SetDistortionSpeed(&play->view, 0.95f);
         }
 
         switch (play->roomCtx.unk_74[0]) {
@@ -1610,20 +1611,15 @@ void func_8009FE58(PlayState* play) {
                 break;
         }
 
-        if (play->pauseCtx.state == 0) {
+        if (GameInteractor_Should(VB_JABU_WOBBLE, play->pauseCtx.state == 0)) {
             D_8012A398 += 0.15f + (play->roomCtx.unk_74[1] * 0.001f);
         }
     }
 
-    if (CVarGetInteger(CVAR_SETTING("A11yNoJabuWobble"), 0) == 0) {
-        if (play->roomCtx.curRoom.num == 2) {
-            Matrix_Scale(1.0f, sinf(D_8012A398) * 0.8f, 1.0f, MTXMODE_NEW);
-        } else {
-
-            Matrix_Scale(1.005f, sinf(D_8012A398) * 0.8f, 1.005f, MTXMODE_NEW);
-        }
+    if (play->roomCtx.curRoom.num == 2) {
+        Matrix_Scale(1.0f, sinf(D_8012A398) * 0.8f, 1.0f, MTXMODE_NEW);
     } else {
-        Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_NEW);
+        Matrix_Scale(1.005f, sinf(D_8012A398) * 0.8f, 1.005f, MTXMODE_NEW);
     }
 
     gSPSegment(POLY_OPA_DISP++, 0x0D, MATRIX_NEWMTX(play->state.gfxCtx));

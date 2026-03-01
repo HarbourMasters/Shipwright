@@ -449,9 +449,7 @@ void BgBdanObjects_Draw(Actor* thisx, PlayState* play) {
     if (thisx->params == 0) {
         if (this->actionFunc == func_8086C054) {
             if (((thisx->home.pos.y + -79.0f) - 5.0f) < thisx->world.pos.y) {
-                if (CVarGetInteger(CVAR_SETTING("A11yNoJabuWobble"), 0) == 0) {
-                    Matrix_Translate(0.0f, -50.0f, 0.0f, MTXMODE_APPLY);
-                }
+                Matrix_Translate(0.0f, -50.0f, 0.0f, MTXMODE_APPLY);
             }
         }
     }

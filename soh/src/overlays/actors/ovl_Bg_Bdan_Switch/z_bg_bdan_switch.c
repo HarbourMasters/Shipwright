@@ -511,12 +511,10 @@ void BgBdanSwitch_Update(Actor* thisx, PlayState* play) {
 }
 
 void func_8086DF58(BgBdanSwitch* this, PlayState* play, Gfx* dlist) {
-    if (CVarGetInteger(CVAR_SETTING("A11yNoJabuWobble"), 0) == 0) {
-        Matrix_SetTranslateRotateYXZ(this->dyna.actor.world.pos.x,
-                                     this->dyna.actor.world.pos.y + (this->dyna.actor.shape.yOffset * this->unk_1D0),
-                                     this->dyna.actor.world.pos.z, &this->dyna.actor.shape.rot);
-        Matrix_Scale(this->unk_1D4, this->unk_1D0, this->unk_1D4, MTXMODE_APPLY);
-    }
+    Matrix_SetTranslateRotateYXZ(this->dyna.actor.world.pos.x,
+                                 this->dyna.actor.world.pos.y + (this->dyna.actor.shape.yOffset * this->unk_1D0),
+                                 this->dyna.actor.world.pos.z, &this->dyna.actor.shape.rot);
+    Matrix_Scale(this->unk_1D4, this->unk_1D0, this->unk_1D4, MTXMODE_APPLY);
     Gfx_DrawDListOpa(play, dlist);
 }
 

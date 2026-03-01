@@ -1257,6 +1257,14 @@ typedef enum {
     // ```
     // #### `args`
     // - None
+    VB_JABU_WOBBLE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
     VB_KALEIDO_UNPAUSE_CLOSE,
 
     // #### `result`
