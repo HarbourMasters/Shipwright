@@ -11,7 +11,6 @@
 #include "scenes/indoors/yousei_izumi_yoko/yousei_izumi_yoko_scene.h"
 #include "scenes/indoors/daiyousei_izumi/daiyousei_izumi_scene.h"
 #include "soh/frame_interpolation.h"
-#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 

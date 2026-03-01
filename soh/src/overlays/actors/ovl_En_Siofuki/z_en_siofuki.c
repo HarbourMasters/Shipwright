@@ -293,7 +293,8 @@ void EnSiofuki_Draw(Actor* thisx, PlayState* play) {
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     x = gameplayFrames * 15;
     y = gameplayFrames * -15;
-    gSPSegment(POLY_XLU_DISP++, 0x08, Gfx_TwoTexScroll(play->state.gfxCtx, 0, x, y, 64, 64, 1, x, y, 64, 64));
+    gSPSegment(POLY_XLU_DISP++, 0x08,
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, x, y, 64, 64, 1, x, y, 64, 64, 15, -15, 15, -15));
     gSPDisplayList(POLY_XLU_DISP++, object_siofuki_DL_000B70);
     CLOSE_DISPS(play->state.gfxCtx);
 

@@ -253,6 +253,12 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
         Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
     }
 
+    if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_TALON_RETURNED_FROM_CASTLE) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG)) {
+            Flags_SetRandomizerInf(RAND_INF_TALON_SENT_MALON_HOME);
+        }
+    }
+
     RandomizerCheck rc = GetRandomizerCheckFromFlag(flagType, flag);
     if (rc == RC_UNKNOWN_CHECK)
         return;
@@ -931,6 +937,13 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             if (RAND_GET_OPTION(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) && gSaveContext.cutsceneIndex == 0) {
                 *should = true;
             }
+            break;
+        case VB_MALON_RETURN_FROM_CASTLE:
+            *should = Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE) &&
+                      Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
+            break;
+        case VB_SEND_MALON_HOME:
+            *should = Flags_GetRandomizerInf(RAND_INF_TALON_SENT_MALON_HOME);
             break;
         case VB_MIDO_CONSIDER_DEKU_TREE_DEAD:
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);

@@ -153,7 +153,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
                     // Normally happens in the cutscene
                     gSaveContext.dayTime = gSaveContext.skyboxTime = 0xAC60;
-                    if (GameInteractor_Should(VB_GIVE_ITEM_REQUIEM_OF_SPIRIT, true)) {
+                    if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, ITEM_SONG_REQUIEM)) {
                         Item_Give(gPlayState, ITEM_SONG_REQUIEM);
                     }
                     *should = false;
@@ -169,7 +169,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     Flags_SetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL);
                     // Normally happens in the cutscene
                     Flags_SetEventChkInf(EVENTCHKINF_LEARNED_NOCTURNE_OF_SHADOW);
-                    if (GameInteractor_Should(VB_GIVE_ITEM_NOCTURNE_OF_SHADOW, true)) {
+                    if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, ITEM_SONG_NOCTURNE)) {
                         Item_Give(gPlayState, ITEM_SONG_NOCTURNE);
                     }
                     *should = false;
@@ -704,21 +704,11 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
-        case VB_GIVE_ITEM_MINUET_OF_FOREST:
-        case VB_GIVE_ITEM_BOLERO_OF_FIRE:
-        case VB_GIVE_ITEM_SERENADE_OF_WATER:
-        case VB_GIVE_ITEM_REQUIEM_OF_SPIRIT:
-        case VB_GIVE_ITEM_NOCTURNE_OF_SHADOW:
-        case VB_GIVE_ITEM_PRELUDE_OF_LIGHT:
-        case VB_GIVE_ITEM_ZELDAS_LULLABY:
-        case VB_GIVE_ITEM_EPONAS_SONG:
-        case VB_GIVE_ITEM_SARIAS_SONG:
-        case VB_GIVE_ITEM_SUNS_SONG:
-        case VB_GIVE_ITEM_SONG_OF_TIME:
-        case VB_GIVE_ITEM_SONG_OF_STORMS:
+        case VB_GIVE_ITEM_SONG:
         case VB_PLAY_MINUET_OF_FOREST_CS:
         case VB_PLAY_BOLERO_OF_FIRE_CS:
         case VB_PLAY_SERENADE_OF_WATER_CS:
+        case VB_PLAY_SONG_OF_STORMS_CS:
         case VB_PLAY_PRELUDE_OF_LIGHT_CS:
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO) {
                 *should = false;

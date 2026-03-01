@@ -242,9 +242,9 @@ void ArrowFire_Draw(Actor* thisx, PlayState* play2) {
         Matrix_Translate(0.0f, -700.0f, 0.0f, MTXMODE_APPLY);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, sMaterialDL);
-        gSPDisplayList(POLY_XLU_DISP++,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 255 - (stateFrames * 2) % 256, 0, 64, 32, 1,
-                                        255 - stateFrames % 256, 511 - (stateFrames * 10) % 512, 64, 64));
+        gSPDisplayList(POLY_XLU_DISP++, Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 255 - (stateFrames * 2) % 256, 0, 64,
+                                                           32, 1, 255 - stateFrames % 256,
+                                                           511 - (stateFrames * 10) % 512, 64, 64, -2, 0, -1, -10));
         gSPDisplayList(POLY_XLU_DISP++, sModelDL);
 
         CLOSE_DISPS(play->state.gfxCtx);
