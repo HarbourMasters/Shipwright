@@ -156,8 +156,8 @@ void OceffSpot_Draw(Actor* thisx, PlayState* play) {
 
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, sCylinderMaterialDL);
-    gSPDisplayList(POLY_XLU_DISP++, Gfx_TwoTexScroll(play->state.gfxCtx, 0, scroll * 2, scroll * (-2), 32, 32, 1, 0,
-                                                     scroll * (-8), 32, 32));
+    gSPDisplayList(POLY_XLU_DISP++, Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, scroll * 2, scroll * (-2), 32, 32, 1, 0,
+                                                       scroll * (-8), 32, 32, 2, -2, 0, -8));
     gSPDisplayList(POLY_XLU_DISP++, sCylinderModelDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

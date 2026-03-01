@@ -1187,8 +1187,9 @@ void EnPoh_DrawSoul(Actor* thisx, PlayState* play) {
     } else {
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
-                                    (this->visibilityTimer * this->info->unk_8) % 512U, 0x20, 0x80));
+                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
+                                      (this->visibilityTimer * this->info->unk_8) % 512U, 0x20, 0x80, 0, 0, 0,
+                                      this->info->unk_8));
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, this->info->primColor.r, this->info->primColor.g,
                         this->info->primColor.b, this->lightColor.a);
         gDPSetEnvColor(POLY_XLU_DISP++, this->lightColor.r, this->lightColor.g, this->lightColor.b, 255);

@@ -776,6 +776,9 @@ void SohMenu::AddMenuEnhancements() {
             "Allows Strength to be toggled on and off by pressing A on the Strength Upgrade "
             "in the Equipment Subscreen of the Pause Menu. This allows performing some glitches "
             "that require the player to not have Strength."));
+    AddWidget(path, "Unsheathe Sword Without Slashing", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("UnsheatheWithoutSlashing"))
+        .Options(CheckboxOptions().Tooltip("Allows Link to unsheathe sword without slashing automatically."));
     AddWidget(path, "Sword Toggle Options", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("SwordToggle"))
         .PreFunc(
@@ -1445,7 +1448,7 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip("Turn on/off changes to the Lost Woods Ocarina Game behavior."));
     auto ocarinaMemoryGameDisabledFunc = [](WidgetInfo& info) {
         info.options->disabled = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeOcarinaGame"), 0) == 0;
-        info.options->disabledTooltip = "This options is disabled because \"Customize Behavior\" is turned off.";
+        info.options->disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off.";
     };
     AddWidget(path, "Instant Win##LostWoods", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("InstantOcarinaGameWin"))

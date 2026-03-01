@@ -572,8 +572,9 @@ void EnDh_Draw(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetEnvColor(POLY_XLU_DISP++, 85, 55, 0, 130);
         gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, (play->state.frames * -3) % 0x80, 0, 0x20, 0x40, 1,
-                                    (play->state.frames * -10) % 0x80, (play->state.frames * -20) % 0x100, 0x20, 0x40));
+                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (play->state.frames * -3) % 0x80, 0, 0x20, 0x40, 1,
+                                      (play->state.frames * -10) % 0x80, (play->state.frames * -20) % 0x100, 0x20, 0x40,
+                                      -3, 0, -10, -20));
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 0, 0, 0, this->dirtWaveAlpha);
 
         Matrix_Translate(0.0f, -this->actor.shape.yOffset, 0.0f, MTXMODE_APPLY);

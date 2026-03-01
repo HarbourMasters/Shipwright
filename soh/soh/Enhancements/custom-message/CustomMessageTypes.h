@@ -135,6 +135,9 @@ typedef enum {
     TEXT_MALON_HOW_IS_EPONA_DOING = 0x2001,
     TEXT_MALON_EPONA_LOOKS_GREAT = 0x2002,
     TEXT_MALON_OBSTICLE_COURSE = 0x2003,
+    TEXT_MALON_MEET_EPONA = 0x2047,
+    TEXT_MALON_EPONA_IS_AFRAID = 0x2048,
+    TEXT_MALON_LETS_SING_THIS_SONG = 0x2049,
     TEXT_MALON_EVERYONE_TURNING_EVIL = 0x204C,
     TEXT_MALON_I_SING_THIS_SONG = 0x2050,
     TEXT_MALON_EVERYONE_LIKED_SONG = 0x2051,
@@ -236,6 +239,8 @@ typedef enum {
 } TextIDs;
 
 #ifdef __cplusplus
+
+#include <string>
 
 typedef struct {
     uint16_t giid;

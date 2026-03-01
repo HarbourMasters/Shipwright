@@ -286,7 +286,7 @@ RANDO_ENUM_ITEM(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS)
 RANDO_ENUM_ITEM(RO_SHUFFLE_MERCHANTS_ALL)
 RANDO_ENUM_END(RandoOptionShuffleMerchants)
 
-// Starting Ocarina Settings (off, fairy)
+// Starting Ocarina Settings (off, fairy, oot)
 RANDO_ENUM_BEGIN(RandoOptionStartingOcarina)
 RANDO_ENUM_ITEM(RO_STARTING_OCARINA_OFF)
 RANDO_ENUM_ITEM(RO_STARTING_OCARINA_FAIRY)

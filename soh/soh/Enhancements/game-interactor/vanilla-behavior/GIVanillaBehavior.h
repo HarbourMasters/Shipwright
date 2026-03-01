@@ -264,6 +264,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->actor.xzDistToPlayer < 130.0f
+    // ```
+    // #### `args`
+    // - None
+    VB_BUSINESS_SCRUB_SPEAK,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -414,6 +422,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)
+    // ```
+    // #### `args`
+    // - None
+    VB_DEKU_THEATER_FINISH_GIVING_PRIZE,
+
+    // #### `result`
+    // ```c
     // CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)
     // ```
     // #### `args`
@@ -505,6 +521,14 @@ typedef enum {
     // Vanilla condition: exchangeItemId == EXCH_ITEM_LETTER_ZELDA
     // Opt: s32
     VB_HEISHI2_ACCEPT_ITEM_AS_ZELDAS_LETTER,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_DRAW_ADDITIONAL_RETICLES,
 
     // #### `result`
     // In `Interface_DrawAmmoCount`:
@@ -702,22 +726,6 @@ typedef enum {
     // ```
     // #### `args`
     // - None
-    VB_GIVE_ITEM_BOLERO_OF_FIRE,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_EPONAS_SONG,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
     VB_GIVE_ITEM_FAIRY_OCARINA,
 
     // #### `result`
@@ -799,6 +807,14 @@ typedef enum {
     // #### `args`
     // - `*EnCow`
     VB_GIVE_ITEM_FROM_COW,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnDntJiji`
+    VB_GIVE_ITEM_FROM_DEKU_THEATER,
 
     // #### `result`
     // ```c
@@ -977,55 +993,7 @@ typedef enum {
     // ```
     // #### `args`
     // - None
-    VB_GIVE_ITEM_MINUET_OF_FOREST,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_NOCTURNE_OF_SHADOW,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
     VB_GIVE_ITEM_OCARINA_OF_TIME,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_PRELUDE_OF_LIGHT,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_REQUIEM_OF_SPIRIT,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_SARIAS_SONG,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_SERENADE_OF_WATER,
 
     // #### `result`
     // ```c
@@ -1048,16 +1016,8 @@ typedef enum {
     // true
     // ```
     // #### `args`
-    // - None
-    VB_GIVE_ITEM_SONG_OF_STORMS,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_SONG_OF_TIME,
+    // - `songItemId`
+    VB_GIVE_ITEM_SONG,
 
     // #### `result`
     // ```c
@@ -1074,14 +1034,6 @@ typedef enum {
     // #### `args`
     // - None
     VB_GIVE_ITEM_STRENGTH_1,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_SUNS_SONG,
 
     // #### `result`
     // ```c
@@ -1106,14 +1058,6 @@ typedef enum {
     // #### `args`
     // - None
     VB_GIVE_ITEM_ZELDAS_LETTER,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_ZELDAS_LULLABY,
 
     // #### `result`
     // ```c
@@ -1386,6 +1330,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_MALON_RETURN_FROM_CASTLE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_SEND_MALON_HOME,
 
     // #### `result`
     // ```c
@@ -1820,6 +1772,14 @@ typedef enum {
     // #### `args`
     // - `*EnBox`
     VB_PLAY_SLOW_CHEST_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnFu`
+    VB_PLAY_SONG_OF_STORMS_CS,
 
     // #### `result`
     // ```c
@@ -2353,6 +2313,14 @@ typedef enum {
     // #### `args`
     // - `*EnMk`
     VB_USE_EYEDROP_DIALOGUE,
+
+    // #### `result`
+    // ```c
+    // (this->modelAnimType != PLAYER_ANIMTYPE_3) && (play->shootingGalleryStatus == 0)
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_USE_HELD_ITEM_AFTER_CHANGE,
 
     // #### `result`
     // ```c
