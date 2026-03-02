@@ -280,7 +280,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_SKJ,       // Skull Kid
 };
 
-extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, f32* posX, f32* posY, f32* posZ, int16_t* rotX,
+extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* posY, s16* posZ, int16_t* rotX,
                                       int16_t* rotY, int16_t* rotZ, int16_t* params) {
 
     uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(play->sceneNum);
@@ -436,9 +436,7 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
     uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(sceneNum);
 
     for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
-
         if (actorId == enemiesToRandomize[i]) {
-
             switch (actorId) {
                 // Only randomize the main component of Electric Tailparasans, not the tail segments they spawn.
                 case ACTOR_EN_TP:
@@ -725,6 +723,17 @@ void RegisterEnemyRandomizer() {
     // If Random Gerudo Fighters are defeated, drop some items
     COND_ID_HOOK(OnEnemyDefeat, ACTOR_EN_GELDB, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT,
                  OnGerudoFighterDefeat);
+
+    COND_VB_SHOULD(VB_SPAWN_ACTOR_ENTRY, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        ActorContext* actorCtx = va_arg(args, ActorContext*);
+        ActorEntry* actorEntry = va_arg(args, ActorEntry*);
+        PlayState* play = va_arg(args, PlayState*);
+        Actor* actor = va_arg(args, Actor*);
+
+        if (!GetRandomizedEnemy(play, &actorEntry->id, &actorEntry->pos.x, &actorEntry->pos.y, &actorEntry->pos.z, &actorEntry->rot.x, &actorEntry->rot.y, &actorEntry->rot.z, &actorEntry->params)) {
+            *should = false;
+        }
+    });
 }
 
 static RegisterShipInitFunc initFunc(RegisterEnemyRandomizer, { CVAR_ENEMY_RANDOMIZER_NAME });
