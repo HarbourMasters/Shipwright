@@ -710,7 +710,7 @@ void SohMenu::AddMenuEnhancements() {
         })
         .Options(IntSliderOptions().Min(1).Max(5).DefaultValue(1).Format("%dx").Tooltip(
             "Increases the range in which Actors/Objects are drawn."));
-    AddWidget(path, "Kokiri Draw Distance", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Disable Kokiri Fade", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"))
         .RaceDisable(false)
         .PreFunc(

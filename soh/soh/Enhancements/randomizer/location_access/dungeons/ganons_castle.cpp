@@ -32,7 +32,8 @@ void RegionTable_Init_GanonsCastle() {
         ENTRANCE(RR_GANONS_CASTLE_WATER_TRIAL_BLUE_FIRE_ROOM,  !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_WATER_MEDALLION)),
         ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_START,          !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_SHADOW_MEDALLION)),
         ENTRANCE(RR_GANONS_CASTLE_SPIRIT_TRIAL_BEAMOS_ROOM,    !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_SPIRIT_MEDALLION)),
-        ENTRANCE(RR_GANONS_CASTLE_LIGHT_TRIAL_CHESTS_ROOM,     logic->CanUse(RG_GOLDEN_GAUNTLETS)),
+        ENTRANCE(RR_GANONS_CASTLE_LIGHT_TRIAL_CHESTS_ROOM,     (!ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_LIGHT_MEDALLION)) &&
+                                                               logic->CanUse(RG_GOLDEN_GAUNTLETS)),
         ENTRANCE(RR_GANONS_TOWER_ENTRYWAY,                     (logic->Get(LOGIC_FOREST_TRIAL_CLEAR) || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
                                                                (logic->Get(LOGIC_FIRE_TRIAL_CLEAR)   || ctx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
                                                                (logic->Get(LOGIC_WATER_TRIAL_CLEAR)  || ctx->GetTrial(TK_WATER_TRIAL)->IsSkipped())  &&
@@ -355,7 +356,8 @@ void RegionTable_Init_GanonsCastle() {
         ENTRANCE(RR_GANONS_CASTLE_MQ_WATER_TRIAL_GEYSER_ROOM,     !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_WATER_MEDALLION)),
         ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_STARTING_LEDGE, !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_SHADOW_MEDALLION)),
         ENTRANCE(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_CHAIRS_ROOM,    !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_SPIRIT_MEDALLION)),
-        ENTRANCE(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_DINOLFOS_ROOM,   AnyAgeTime([]{return logic->CanUse(RG_GOLDEN_GAUNTLETS);})),
+        ENTRANCE(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_DINOLFOS_ROOM,   AnyAgeTime([]{return (!ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) ||
+                                                                  logic->HasItem(RG_LIGHT_MEDALLION)) && logic->CanUse(RG_GOLDEN_GAUNTLETS);})),
         //RANDOTODO could we just set these events automatically based on the setting?
         ENTRANCE(RR_GANONS_TOWER_ENTRYWAY,                        (logic->Get(LOGIC_FOREST_TRIAL_CLEAR) || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
                                                                   (logic->Get(LOGIC_FIRE_TRIAL_CLEAR)   || ctx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
