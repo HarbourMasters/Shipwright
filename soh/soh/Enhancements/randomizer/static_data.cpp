@@ -308,6 +308,7 @@ std::unordered_map<u32, RandomizerHint> StaticData::grottoChestParamsToHint{
 std::unordered_map<std::string, RandomizerTrick> StaticData::trickToEnum = {
     { "1", RT_GROTTOS_WITHOUT_AGONY },
     { "2", RT_FEWER_TUNIC_REQUIREMENTS },
+    { "3", RT_VISIBLE_COLLISION },
     { "4", RT_FLAMING_CHESTS },
     { "6", RT_DAMAGE_BOOST_SIMPLE },
     { "7", RT_HOVER_BOOST_SIMPLE },
