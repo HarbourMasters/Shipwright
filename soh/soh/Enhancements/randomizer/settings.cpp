@@ -1522,9 +1522,10 @@ void Settings::CreateOptions() {
               "Shadow Temple Entry with Fire Arrows", "FAEntry",
               "It is possible to light all of the torches to open the Shadow Temple entrance with just Fire Arrows, "
               "but you must be very quick, precise, and strategic with how you take your shots.");
-    OPT_TRICK(RT_DMT_SHIELDLESS_CLIMB, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE },
+    OPT_TRICK(RT_DMT_SHIELDLESS_CLIMB, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::NOVICE },
               "Death Mountain Trail Child Climb Without Shield", "DMTCWoS",
-              "Child can make it past the eruption to reach DMT Summit without a Hylian Shield by backwalking or simply taking damage.");
+              "Child can make it past the eruption to reach DMT Summit without a Hylian Shield by backwalking or "
+              "simply taking damage.");
     OPT_TRICK(RT_DMT_SOIL_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE },
               "Death Mountain Trail Soil GS without Destroying Boulder", "DMTSoil",
               "Bugs will go into the soft soil even while the boulder is still blocking the entrance. Then, using a "
