@@ -80,7 +80,7 @@ static bool SpawnFairy(f32 posX, f32 posY, f32 posZ, int32_t params, FairyType f
     CheckIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params);
     if (!Flags_GetRandomizerInf(fairyIdentity.randomizerInf)) {
         Actor* fairy = Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_ELF, posX, posY - 30.0f, posZ, 0, 0, 0,
-                                   fairyType, true);
+                                   fairyType, false);
         ObjectExtension::GetInstance().Set<CheckIdentity>(fairy, std::move(fairyIdentity));
         fairy->draw = (ActorFunc)ShuffleFairies_DrawRandomizedItem;
         return true;

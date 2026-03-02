@@ -2588,8 +2588,18 @@ typedef enum {
     // #### `args`
     // - `*Player`
     // - `double` (temp - promoted from `f32`)
-    VB_RUMBLE_FOR_SECRET
+    VB_RUMBLE_FOR_SECRET,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*ActorContext`
+    // - `*ActorEntry`
+    // - `*PlayState`
+    // - `*Actor`
+    VB_SPAWN_ACTOR_ENTRY,
 } GIVanillaBehavior;
 
 #endif

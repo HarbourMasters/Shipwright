@@ -804,28 +804,28 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 }
                 case SCENE_FOREST_TEMPLE_BOSS: {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 14.0f, -33.0f, -3315.0f, 0, 0, 0,
-                                WARP_DUNGEON_ADULT, true);
+                                WARP_DUNGEON_ADULT, false);
                     break;
                 }
                 case SCENE_FIRE_TEMPLE_BOSS: {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0,
-                                WARP_DUNGEON_ADULT, true);
+                                WARP_DUNGEON_ADULT, false);
                     break;
                 }
                 case SCENE_WATER_TEMPLE_BOSS: {
                     BossMo* bossMo = va_arg(args, BossMo*);
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, bossMo->actor.world.pos.x, -280.0f,
-                                bossMo->actor.world.pos.z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                                bossMo->actor.world.pos.z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
                     break;
                 }
                 case SCENE_SPIRIT_TEMPLE_BOSS: {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0, 0, 0,
-                                WARP_DUNGEON_ADULT, true);
+                                WARP_DUNGEON_ADULT, false);
                     break;
                 }
                 case SCENE_SHADOW_TEMPLE_BOSS: {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -50.0f, 0.0f, 400.0f, 0, 0, 0,
-                                WARP_DUNGEON_ADULT, true);
+                                WARP_DUNGEON_ADULT, false);
                     break;
                 }
                 default: {
