@@ -40,7 +40,7 @@ void GenerateStartingInventory() {
         // locked behind the keys, which is not always true in rando.
         // We can resolve this by starting with some extra keys
         // - OoT Randomizer
-        if (ctx->GetDungeon(Rando::SPIRIT_TEMPLE)->IsMQ()) {
+        if (ctx->GetDungeon(SPIRIT_TEMPLE)->IsMQ()) {
             AddItemToInventory(RG_SPIRIT_TEMPLE_SMALL_KEY, 3);
         }
     }

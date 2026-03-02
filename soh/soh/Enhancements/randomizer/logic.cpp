@@ -2726,7 +2726,7 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
 
         // If not keysanity, start with 1 logical key to account for automatically unlocking the basement door in
         // vanilla FiT
-        if (!IsFireLoopLocked() && ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
+        if (!IsFireLoopLocked() && ctx->GetDungeon(FIRE_TEMPLE)->IsVanilla()) {
             SetSmallKeyCount(SCENE_FIRE_TEMPLE, 1);
         }
     }

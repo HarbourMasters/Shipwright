@@ -58,11 +58,6 @@ class DungeonInfo {
     bool hasKeyRing = false;
 };
 
-typedef enum {
-#define DEFINE_DungeonKey(enum) enum,
-#include "randomizerEnums.h"
-} DungeonKey;
-
 class Dungeons {
   public:
     Dungeons();

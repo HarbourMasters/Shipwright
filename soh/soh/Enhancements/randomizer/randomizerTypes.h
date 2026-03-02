@@ -8,8 +8,6 @@
 
 #define TWO_ACTOR_PARAMS(a, b) ((((a)&0xFFFF) << 16) | ((b)&0xFFFF))
 
-typedef bool (*ConditionFn)();
-
 typedef struct {
     char tex[512];
     uint16_t width;

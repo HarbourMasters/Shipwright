@@ -34,11 +34,11 @@ static uint8_t GetTrickOption(const RandomizerTrick trick) {
     return Rando::Context::GetInstance()->GetTrickOption(trick).Get();
 }
 
-static bool IsDungeonVanilla(const Rando::DungeonKey dungeon) {
+static bool IsDungeonVanilla(const DungeonKey dungeon) {
     return Rando::Context::GetInstance()->GetDungeon(dungeon)->IsVanilla();
 }
 
-static bool IsDungeonMQ(const Rando::DungeonKey dungeon) {
+static bool IsDungeonMQ(const DungeonKey dungeon) {
     return Rando::Context::GetInstance()->GetDungeon(dungeon)->IsMQ();
 }
 
@@ -163,91 +163,6 @@ void LogicExpression::Impl::PopulateFunctionAdapters() {
 std::unordered_map<std::string, int> LogicExpression::Impl::enumMap;
 
 void LogicExpression::Impl::PopulateEnumMap() {
-#define DEFINE_DungeonKey(value) { #value, Rando::value },
-#define DEFINE_ModIndex(value) { #value, value },
-#define DEFINE_TableIndex(value) { #value, value },
-#define DEFINE_HintType(value) { #value, value },
-#define DEFINE_LogicVal(value) { #value, value },
-#define DEFINE_RAND_INF(value) { #value, value },
-#define DEFINE_RandomizerArea(value) { #value, value },
-#define DEFINE_TrialKey(value) { #value, value },
-#define DEFINE_RandomizerCheckType(value) { #value, value },
-#define DEFINE_RandomizerCheckQuest(value) { #value, value },
-#define DEFINE_RandomizerCheckArea(value) { #value, value },
-#define DEFINE_RandomizerCheckStatus(value) { #value, value },
-#define DEFINE_RandomizerRegion(value) { #value, value },
-#define DEFINE_RandomizerCheck(value) { #value, value },
-#define DEFINE_RandomizerTrick(value) { #value, value },
-#define DEFINE_RandomizerGet(value) { #value, value },
-#define DEFINE_RandomizerHint(value) { #value, value },
-#define DEFINE_RandomizerHintTextKey(value) { #value, value },
-#define DEFINE_RandomizerSettingGroupKey(value) { #value, value },
-#define DEFINE_RandomizerSettingKey(value) { #value, value },
-#define DEFINE_RandoOptionGenericOffOn(value) { #value, value },
-#define DEFINE_RandoOptionGenericNoYes(value) { #value, value },
-#define DEFINE_RandoOptionGenericSkip(value) { #value, value },
-#define DEFINE_RandoOptionForest(value) { #value, value },
-#define DEFINE_RandoOptionDoorOfTime(value) { #value, value },
-#define DEFINE_RandoOptionZorasFountain(value) { #value, value },
-#define DEFINE_RandoOptionSleepingWaterfall(value) { #value, value },
-#define DEFINE_RandoOptionJabu(value) { #value, value },
-#define DEFINE_RandoOptionStartingAge(value) { #value, value },
-#define DEFINE_RandoOptionGerudoFortress(value) { #value, value },
-#define DEFINE_RandoOptionKakarikoGate(value) { #value, value },
-#define DEFINE_RandoOptionRainbowBridge(value) { #value, value },
-#define DEFINE_RandoOptionBridgeRewards(value) { #value, value },
-#define DEFINE_RandoOptionShopsanity(value) { #value, value },
-#define DEFINE_RandoOptionShopsanityCount(value) { #value, value },
-#define DEFINE_RandoOptionPrices(value) { #value, value },
-#define DEFINE_RandoOptionScrubsanity(value) { #value, value },
-#define DEFINE_RandoOptionAmmoDrops(value) { #value, value },
-#define DEFINE_RandoOptionBombchuBag(value) { #value, value },
-#define DEFINE_RandoOptionBossSouls(value) { #value, value },
-#define DEFINE_RandoOptionsFishsanity(value) { #value, value },
-#define DEFINE_RandoOptionInfiniteUpgrades(value) { #value, value },
-#define DEFINE_RandoOptionDungeonItemLocation(value) { #value, value },
-#define DEFINE_RandoOptionDungeonRewards(value) { #value, value },
-#define DEFINE_RandoOptionKeyrings(value) { #value, value },
-#define DEFINE_RandoOptionKeyringForDungeon(value) { #value, value },
-#define DEFINE_RandoOptionGanonsBossKey(value) { #value, value },
-#define DEFINE_RandoOptionLACSCondition(value) { #value, value },
-#define DEFINE_RandoOptionLACSRewards(value) { #value, value },
-#define DEFINE_RandoOptionGanonsTrials(value) { #value, value },
-#define DEFINE_RandoOptionDungeonEntranceShuffle(value) { #value, value },
-#define DEFINE_RandoOptionBossRoomEntranceShuffle(value) { #value, value },
-#define DEFINE_RandoOptionInteriorEntranceShuffle(value) { #value, value },
-#define DEFINE_RandoOptionSongShuffle(value) { #value, value },
-#define DEFINE_RandoOptionShuffleMerchants(value) { #value, value },
-#define DEFINE_RandoOptionStartingOcarina(value) { #value, value },
-#define DEFINE_RandoOptionMaskQuest(value) { #value, value },
-#define DEFINE_RandoOptionItemPool(value) { #value, value },
-#define DEFINE_RandoOptionIceTraps(value) { #value, value },
-#define DEFINE_RandoOptionGossipStones(value) { #value, value },
-#define DEFINE_RandoOptionHintClarity(value) { #value, value },
-#define DEFINE_RandoOptionHintDistribution(value) { #value, value },
-#define DEFINE_RandoOptionGerudoKeys(value) { #value, value },
-#define DEFINE_RandoOptionTokensanity(value) { #value, value },
-#define DEFINE_RandoOptionFreestanding(value) { #value, value },
-#define DEFINE_RandoOptionShufflePots(value) { #value, value },
-#define DEFINE_RandoOptionShuffleGrass(value) { #value, value },
-#define DEFINE_RandoOptionShuffleCrates(value) { #value, value },
-#define DEFINE_RandoOptionLinksPocket(value) { #value, value },
-#define DEFINE_RandoOptionLogic(value) { #value, value },
-#define DEFINE_RandoOptionDamageMultiplier(value) { #value, value },
-#define DEFINE_RandoOptionMQDungeons(value) { #value, value },
-#define DEFINE_RandoOptionTriforceHunt(value) { #value, value },
-#define DEFINE_RandoOptionLocationInclusion(value) { #value, value },
-#define DEFINE_RandoOptionChestGame(value) { #value, value },
-#define DEFINE_RandoOptionMQSet(value) { #value, value },
-#define DEFINE_ItemObtainability(value) { #value, value },
-#define DEFINE_TrackerWindowType(value) { #value, value },
-#define DEFINE_TrackerDisplayType(value) { #value, value },
-#define DEFINE_TrackerComboButton(value) { #value, value },
-#define DEFINE_TriforceHuntMessages(value) { #value, value },
-#define DEFINE_RandomizerEnemy(value) { #value, value },
-#define DEFINE_EnemyDistance(value) { #value, value },
-#define DEFINE_RandoWaterLevel(value) { #value, value },
-#define DEFINE_GrottoEntranceOffsets(value) { #value, value },
 
     struct Pair {
         const char* key;
@@ -255,7 +170,9 @@ void LogicExpression::Impl::PopulateEnumMap() {
     };
 
     static const Pair kEnumPairs[] = {
+#define RANDO_ENUM_ITEM(value, ...) { #value, value },
 #include "../randomizerEnums.h"
+#undef RANDO_ENUM_ITEM
         { "HasProjectileAge::Adult", (int)Rando::HasProjectileAge::Adult },
         { "HasProjectileAge::Child", (int)Rando::HasProjectileAge::Child },
         { "HasProjectileAge::Both", (int)Rando::HasProjectileAge::Both },

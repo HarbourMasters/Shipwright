@@ -27,5 +27,3 @@
 #undef RANDO_ENUM_END
 #undef RANDO_ENUM__CLEANUP
 #endif
-
-    // clang-format on

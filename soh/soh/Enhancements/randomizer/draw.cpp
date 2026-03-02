@@ -279,12 +279,12 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
     // RANDOTODO make DungeonInfo static and vanilla accessible to allow all these key model data vars to be stored
     // there. (Rando::DungeonKey)0 means the keyring is not tied to a dungeon and should not be checked for an MQ
     // variant
-    Rando::DungeonKey SlotToDungeon[10] = {
-        Rando::FOREST_TEMPLE, Rando::FIRE_TEMPLE,        Rando::WATER_TEMPLE,           Rando::SPIRIT_TEMPLE,
-        Rando::SHADOW_TEMPLE, Rando::BOTTOM_OF_THE_WELL, Rando::GERUDO_TRAINING_GROUND,
-        (Rando::DungeonKey)0, // Gerudo Fortress
-        Rando::GANONS_CASTLE,
-        (Rando::DungeonKey)0, // Treasure Chest Game
+    DungeonKey SlotToDungeon[10] = {
+        FOREST_TEMPLE, FIRE_TEMPLE,        WATER_TEMPLE,           SPIRIT_TEMPLE,
+        SHADOW_TEMPLE, BOTTOM_OF_THE_WELL, GERUDO_TRAINING_GROUND,
+        (DungeonKey)0, // Gerudo Fortress
+        GANONS_CASTLE,
+        (DungeonKey)0, // Treasure Chest Game
     };
 
     OPEN_DISPS(play->state.gfxCtx);

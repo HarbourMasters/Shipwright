@@ -187,7 +187,7 @@ void GenerateItemPool() {
     AddFixedItemToPool(RG_ARROWS_10, 3);
 
     if (isScrubs) {
-        AddFixedItemToPool(RG_DEKU_NUTS_5, ctx->GetDungeon(Rando::JABU_JABUS_BELLY)->IsVanilla() ? 5 : 6);
+        AddFixedItemToPool(RG_DEKU_NUTS_5, ctx->GetDungeon(JABU_JABUS_BELLY)->IsVanilla() ? 5 : 6);
         // Scrubs which sell seeds or arrows sell it based on age, this randomly assigns them
         for (uint8_t i = 0; i < 7; i++) {
             if (Random(0, 2)) {
@@ -721,7 +721,7 @@ void GenerateItemPool() {
     PlaceItemsForType(RCTYPE_FREESTANDING, overworldFreeStandingActive, dungeonFreeStandingActive);
 
     // Dungeon pools
-    if (ctx->GetDungeon(Rando::DEKU_TREE)->IsMQ()) {
+    if (ctx->GetDungeon(DEKU_TREE)->IsMQ()) {
         AddFixedItemToPool(RG_PURPLE_RUPEE);
         if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_ALL)) {
             AddFixedItemToPool(RG_DEKU_SHIELD, 3);
@@ -731,7 +731,7 @@ void GenerateItemPool() {
     } else {
         AddFixedItemToPool(RG_RECOVERY_HEART, 2);
     }
-    if (ctx->GetDungeon(Rando::DODONGOS_CAVERN)->IsMQ()) {
+    if (ctx->GetDungeon(DODONGOS_CAVERN)->IsMQ()) {
         AddFixedItemToPool(RG_HYLIAN_SHIELD);
         AddFixedItemToPool(RG_BLUE_RUPEE);
         if (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_ALL)) {
@@ -743,26 +743,26 @@ void GenerateItemPool() {
             AddFixedItemToPool(RG_DEKU_NUTS_5);
         }
     }
-    if (ctx->GetDungeon(Rando::JABU_JABUS_BELLY)->IsMQ()) {
+    if (ctx->GetDungeon(JABU_JABUS_BELLY)->IsMQ()) {
         AddFixedItemToPool(RG_DEKU_NUTS_5, 4);
         AddFixedItemToPool(RG_RECOVERY_HEART);
         AddFixedItemToPool(RG_DEKU_STICK_1);
         AddFixedItemToPool(RG_DEKU_SHIELD);
     }
-    if (ctx->GetDungeon(Rando::FOREST_TEMPLE)->IsMQ()) {
+    if (ctx->GetDungeon(FOREST_TEMPLE)->IsMQ()) {
         AddFixedItemToPool(RG_ARROWS_5);
     } else {
         AddFixedItemToPool(RG_RECOVERY_HEART);
         AddFixedItemToPool(RG_ARROWS_10);
         AddFixedItemToPool(RG_ARROWS_30);
     }
-    if (ctx->GetDungeon(Rando::FIRE_TEMPLE)->IsMQ()) {
+    if (ctx->GetDungeon(FIRE_TEMPLE)->IsMQ()) {
         AddFixedItemToPool(RG_HYLIAN_SHIELD);
         AddFixedItemToPool(RG_BOMBS_20);
     } else {
         AddFixedItemToPool(RG_HUGE_RUPEE);
     }
-    if (ctx->GetDungeon(Rando::SPIRIT_TEMPLE)->IsMQ()) {
+    if (ctx->GetDungeon(SPIRIT_TEMPLE)->IsMQ()) {
         AddFixedItemToPool(RG_PURPLE_RUPEE, 2);
         AddFixedItemToPool(RG_ARROWS_30);
     } else {
@@ -770,13 +770,13 @@ void GenerateItemPool() {
         AddFixedItemToPool(RG_BOMBS_20);
         AddFixedItemToPool(RG_RECOVERY_HEART, 2);
     }
-    if (ctx->GetDungeon(Rando::SHADOW_TEMPLE)->IsMQ()) {
+    if (ctx->GetDungeon(SHADOW_TEMPLE)->IsMQ()) {
         AddFixedItemToPool(RG_ARROWS_5, 2);
         AddFixedItemToPool(RG_RED_RUPEE);
     } else {
         AddFixedItemToPool(RG_ARROWS_30);
     }
-    if (ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla()) {
+    if (ctx->GetDungeon(BOTTOM_OF_THE_WELL)->IsVanilla()) {
         AddFixedItemToPool(RG_DEKU_NUTS_5);
         AddFixedItemToPool(RG_DEKU_NUTS_10);
         AddFixedItemToPool(RG_RECOVERY_HEART);
@@ -785,7 +785,7 @@ void GenerateItemPool() {
         AddFixedItemToPool(RG_HYLIAN_SHIELD);
         AddFixedItemToPool(RG_HUGE_RUPEE);
     }
-    if (ctx->GetDungeon(Rando::GERUDO_TRAINING_GROUND)->IsMQ()) {
+    if (ctx->GetDungeon(GERUDO_TRAINING_GROUND)->IsMQ()) {
         AddFixedItemToPool(RG_TREASURE_GAME_GREEN_RUPEE, 2);
         AddFixedItemToPool(RG_ARROWS_10);
         AddFixedItemToPool(RG_GREEN_RUPEE);
@@ -794,7 +794,7 @@ void GenerateItemPool() {
         AddFixedItemToPool(RG_HUGE_RUPEE);
         AddFixedItemToPool(RG_ARROWS_30, 3);
     }
-    if (ctx->GetDungeon(Rando::GANONS_CASTLE)->IsMQ()) {
+    if (ctx->GetDungeon(GANONS_CASTLE)->IsMQ()) {
         AddFixedItemToPool(RG_ARROWS_10, 2);
         AddFixedItemToPool(RG_BOMBS_5);
         AddFixedItemToPool(RG_RED_RUPEE);
@@ -896,10 +896,10 @@ void GenerateItemPool() {
         // Fixed Ice Traps
         if (ctx->GetOption(RSK_BASE_ICE_TRAPS)) {
             iceTrapstoAdd++;
-            if (ctx->GetDungeon(Rando::GERUDO_TRAINING_GROUND)->IsVanilla()) {
+            if (ctx->GetDungeon(GERUDO_TRAINING_GROUND)->IsVanilla()) {
                 iceTrapstoAdd++;
             }
-            if (ctx->GetDungeon(Rando::GANONS_CASTLE)->IsVanilla()) {
+            if (ctx->GetDungeon(GANONS_CASTLE)->IsVanilla()) {
                 iceTrapstoAdd += 4;
             }
         }
