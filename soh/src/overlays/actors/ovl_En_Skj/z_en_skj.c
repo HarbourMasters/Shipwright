@@ -3,7 +3,6 @@
 #include "objects/object_skj/object_skj.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS                                                                                 \

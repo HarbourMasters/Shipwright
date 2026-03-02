@@ -45,6 +45,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
 #include "src/overlays/actors/ovl_En_Ge2/z_en_ge2.h"
 #include "src/overlays/actors/ovl_En_Ds/z_en_ds.h"
+#include "src/overlays/actors/ovl_En_Dnt_Jiji/z_en_dnt_jiji.h"
 #include "src/overlays/actors/ovl_En_Gm/z_en_gm.h"
 #include "src/overlays/actors/ovl_En_Js/z_en_js.h"
 #include "src/overlays/actors/ovl_En_Okarina_Tag/z_en_okarina_tag.h"
@@ -71,6 +72,7 @@ extern s32 Player_SetupWaitForPutAway(PlayState* play, Player* player, AfterPutA
 extern void Play_InitEnvironment(PlayState* play, s16 skyboxId);
 extern void EnMk_Wait(EnMk* enMk, PlayState* play);
 extern void func_80ABA778(EnNiwLady* enNiwLady, PlayState* play);
+extern void EnDntJiji_GivePrize(EnDntJiji* enDntJiji, PlayState* play);
 extern void EnGe1_Wait_Archery(EnGe1* enGe1, PlayState* play);
 extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
 extern void EnGe1_SetAnimationIdle(EnGe1* enGe1);
@@ -249,6 +251,12 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
 
     if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_OBTAINED_ZELDAS_LETTER) {
         Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
+    }
+
+    if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_TALON_RETURNED_FROM_CASTLE) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG)) {
+            Flags_SetRandomizerInf(RAND_INF_TALON_SENT_MALON_HOME);
+        }
     }
 
     RandomizerCheck rc = GetRandomizerCheckFromFlag(flagType, flag);
@@ -930,6 +938,13 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 *should = true;
             }
             break;
+        case VB_MALON_RETURN_FROM_CASTLE:
+            *should = Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE) &&
+                      Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
+            break;
+        case VB_SEND_MALON_HOME:
+            *should = Flags_GetRandomizerInf(RAND_INF_TALON_SENT_MALON_HOME);
+            break;
         case VB_MIDO_CONSIDER_DEKU_TREE_DEAD:
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
             break;
@@ -1192,6 +1207,12 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SARIAS_SONG);
             break;
         }
+        case VB_GIVE_ITEM_FROM_DEKU_THEATER: {
+            EnDntJiji* enDntJiji = va_arg(args, EnDntJiji*);
+            enDntJiji->actionFunc = EnDntJiji_GivePrize;
+            *should = false;
+            break;
+        }
         case VB_GIVE_ITEM_FROM_GRANNYS_SHOP: {
             if (!EnDs_RandoCanGetGrannyItem()) {
                 break;
@@ -1307,6 +1328,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_DEKU_THEATER_FINISH_GIVING_PRIZE:
+            *should = true;
+            break;
         case VB_FROGS_GO_TO_IDLE: {
             EnFr* enFr = va_arg(args, EnFr*);
 
@@ -2029,6 +2053,9 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                 if (!isVanilla && Flags_GetRandomizerInf(RAND_INF_DODONGOS_CAVERN_MQ_SILVER_RUPEES)) {
                     Flags_SetSwitch(gPlayState, 0x25);
                 }
+                if (isVanilla) { // make gossip stone fairy temp flag
+                    Flags_UnsetSwitch(gPlayState, 0x11);
+                }
                 break;
             case SCENE_JABU_JABU:
                 if (isVanilla && Flags_GetRandomizerInf(RAND_INF_JABU_JABUS_BELLY_FIRST_SWITCH)) {
@@ -2301,8 +2328,8 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     }
 
     if (RAND_GET_OPTION(RSK_SHUFFLE_BEAN_SOULS)) {
+        RandomizerInf currentBeanSoulRandInf = RAND_INF_MAX;
         if (actor->id == ACTOR_OBJ_BEAN) {
-            RandomizerInf currentBeanSoulRandInf = RAND_INF_MAX;
             switch (gPlayState->sceneNum) {
                 case SCENE_DEATH_MOUNTAIN_CRATER:
                     currentBeanSoulRandInf = RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL;
@@ -2336,13 +2363,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                     currentBeanSoulRandInf = RAND_INF_ZORAS_RIVER_BEAN_SOUL;
                     break;
             }
-            if (currentBeanSoulRandInf != RAND_INF_MAX && !Flags_GetRandomizerInf(currentBeanSoulRandInf)) {
-                Actor_Kill(actor);
-                return;
-            }
-        }
-        if (actor->id == ACTOR_OBJ_MAKEKINSUTA) {
-            RandomizerInf currentBeanSoulRandInf = RAND_INF_MAX;
+        } else if (actor->id == ACTOR_OBJ_MAKEKINSUTA) {
             switch (gPlayState->sceneNum) {
                 case SCENE_DEATH_MOUNTAIN_CRATER:
                     currentBeanSoulRandInf = RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL;
@@ -2376,10 +2397,10 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                     currentBeanSoulRandInf = RAND_INF_ZORAS_RIVER_BEAN_SOUL;
                     break;
             }
-            if (currentBeanSoulRandInf != RAND_INF_MAX && !Flags_GetRandomizerInf(currentBeanSoulRandInf)) {
-                Actor_Kill(actor);
-                return;
-            }
+        }
+        if (currentBeanSoulRandInf != RAND_INF_MAX && !Flags_GetRandomizerInf(currentBeanSoulRandInf)) {
+            Actor_Kill(actor);
+            return;
         }
     }
 

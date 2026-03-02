@@ -6,7 +6,6 @@
 
 #include "z_en_ms.h"
 #include "objects/object_ms/object_ms.h"
-#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 

@@ -701,14 +701,6 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
     modifiedLinkActorEntry.params = gPlayState->linkActorEntry->params;
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON) {
-        // Move Hyrule's Castle Courtyard exit spawn to be before the crates so players don't skip Talon
-        if (sceneNum == SCENE_HYRULE_CASTLE && spawn == 1) {
-            modifiedLinkActorEntry.pos.x = 0x033A;
-            modifiedLinkActorEntry.pos.y = 0x0623;
-            modifiedLinkActorEntry.pos.z = 0xFF22;
-            gPlayState->linkActorEntry = &modifiedLinkActorEntry;
-        }
-
         // Move Ganon's Castle exit spawn to be on the small ledge near the castle and not over the void
         // to prevent Link from falling if the bridge isn't spawned
         if (sceneNum == SCENE_OUTSIDE_GANONS_CASTLE && spawn == 1) {

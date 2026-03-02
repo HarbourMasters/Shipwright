@@ -2601,8 +2601,8 @@ void BossMo_DrawWater(BossMo* this, PlayState* play) {
     Matrix_Translate(0.0f, MO_WATER_LEVEL(play), 0.0f, MTXMODE_NEW);
 
     gSPSegment(POLY_XLU_DISP++, 0x0D,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (s16)this->waterTex1x, (s16)this->waterTex1y, 32, 32, 1,
-                                (s16)this->waterTex2x, (s16)this->waterTex2y, 32, 32));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (s16)this->waterTex1x, (s16)this->waterTex1y, 32, 32, 1,
+                                  (s16)this->waterTex2x, (s16)this->waterTex2y, 32, 32, -1, -1, 0, 1));
 
     gDPPipeSync(POLY_XLU_DISP++);
 
@@ -2631,13 +2631,13 @@ void BossMo_DrawCore(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, sMorphaTent1->work[MO_TENT_VAR_TIMER] * 3,
-                                    sMorphaTent1->work[MO_TENT_VAR_TIMER] * 3, 32, 32, 1,
-                                    sMorphaTent1->work[MO_TENT_VAR_TIMER] * -3,
-                                    sMorphaTent1->work[MO_TENT_VAR_TIMER] * -3, 32, 32));
+                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, sMorphaTent1->work[MO_TENT_VAR_TIMER] * 3,
+                                      sMorphaTent1->work[MO_TENT_VAR_TIMER] * 3, 32, 32, 1,
+                                      sMorphaTent1->work[MO_TENT_VAR_TIMER] * -3,
+                                      sMorphaTent1->work[MO_TENT_VAR_TIMER] * -3, 32, 32, 3, 3, -3, -3));
         gSPSegment(POLY_XLU_DISP++, 0x09,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, sMorphaTent1->work[MO_TENT_VAR_TIMER] * 5, 0, 32, 32, 1, 0,
-                                    sMorphaTent1->work[MO_TENT_VAR_TIMER] * -10, 32, 32));
+                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, sMorphaTent1->work[MO_TENT_VAR_TIMER] * 5, 0, 32, 32, 1, 0,
+                                      sMorphaTent1->work[MO_TENT_VAR_TIMER] * -10, 32, 32, 5, 0, 0, -10));
 
         Matrix_RotateX(this->work[MO_TENT_MOVE_TIMER] * 0.5f, MTXMODE_APPLY);
         Matrix_RotateZ(this->work[MO_TENT_MOVE_TIMER] * 0.8f, MTXMODE_APPLY);
@@ -2704,8 +2704,9 @@ void BossMo_DrawCore(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, (s8)this->fwork[MO_CORE_INTRO_WATER_ALPHA]);
 
         gSPSegment(POLY_XLU_DISP++, 0x0D,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, (s16)sMorphaTent1->waterTex1x, (s16)sMorphaTent1->waterTex1y,
-                                    32, 32, 1, (s16)sMorphaTent1->waterTex2x, (s16)sMorphaTent1->waterTex2y, 32, 32));
+                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (s16)sMorphaTent1->waterTex1x,
+                                      (s16)sMorphaTent1->waterTex1y, 32, 32, 1, (s16)sMorphaTent1->waterTex2x,
+                                      (s16)sMorphaTent1->waterTex2y, 32, 32, 0, 0, 0, 0));
 
         sp8C = this->cameraAt.x - this->cameraEye.x;
         sp88 = this->cameraAt.y - this->cameraEye.y;
@@ -2755,8 +2756,9 @@ void BossMo_DrawTent(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, this->work[MO_TENT_BASE_TEX1_X], this->work[MO_TENT_BASE_TEX1_Y],
-                                32, 32, 1, this->work[MO_TENT_BASE_TEX2_X], this->work[MO_TENT_BASE_TEX2_Y], 32, 32));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, this->work[MO_TENT_BASE_TEX1_X],
+                                  this->work[MO_TENT_BASE_TEX1_Y], 32, 32, 1, this->work[MO_TENT_BASE_TEX2_X],
+                                  this->work[MO_TENT_BASE_TEX2_Y], 32, 32, 1, 1, 1, 1));
     gDPSetPrimColor(POLY_XLU_DISP++, 0xFF, 0xFF, 200, 255, 255, (s8)((this->baseAlpha * 12.0f) / 10.0f));
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, (s8)this->baseAlpha);
     scroll = (s16)(Math_SinS(this->work[MO_TENT_VAR_TIMER] * 0xB00) * 30.0f) + 350;

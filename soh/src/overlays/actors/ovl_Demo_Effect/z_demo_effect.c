@@ -1739,29 +1739,29 @@ void DemoEffect_DrawJewel(Actor* thisx, PlayState* play2) {
             switch (this->jewel.type) {
                 case DEMO_EFFECT_JEWEL_KOKIRI:
                     gSPSegment(POLY_XLU_DISP++, 9,
-                               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (frames * 4) % 256,
-                                                (256 - ((frames * 2) % 256)) - 1, 64, 64, 1, (frames * 2) % 256,
-                                                (256 - (frames % 256)) - 1, 16, 16));
+                               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (frames * 4) % 256,
+                                                  (256 - ((frames * 2) % 256)) - 1, 64, 64, 1, (frames * 2) % 256,
+                                                  (256 - (frames % 256)) - 1, 16, 16, 4, -2, 2, -1));
                     break;
 
                 case DEMO_EFFECT_JEWEL_GORON:
                     gSPSegment(POLY_XLU_DISP++, 9,
-                               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (frames * 4) % 128,
-                                                (256 - ((frames * 2) % 256)) - 1, 32, 64, 1, (frames * 2) % 256,
-                                                (256 - (frames % 256)) - 1, 16, 8));
+                               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (frames * 4) % 128,
+                                                  (256 - ((frames * 2) % 256)) - 1, 32, 64, 1, (frames * 2) % 256,
+                                                  (256 - (frames % 256)) - 1, 16, 8, 4, -2, 2, -1));
                     break;
 
                 case DEMO_EFFECT_JEWEL_ZORA:
                     gSPSegment(POLY_XLU_DISP++, 9,
-                               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (frames * 4) % 256,
-                                                (256 - ((frames * 2) % 256)) - 1, 32, 32, 1, (frames * 2) % 256,
-                                                (256 - (frames % 256)) - 1, 16, 16));
+                               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (frames * 4) % 256,
+                                                  (256 - ((frames * 2) % 256)) - 1, 32, 32, 1, (frames * 2) % 256,
+                                                  (256 - (frames % 256)) - 1, 16, 16, 4, -2, 2, -1));
                     break;
             }
 
             if (!frames) {}
 
-            gSPSegment(POLY_OPA_DISP++, 8, Gfx_TexScroll(play->state.gfxCtx, (u8)frames, (u8)frames, 16, 16));
+            gSPSegment(POLY_OPA_DISP++, 8, Gfx_TexScrollEx(play->state.gfxCtx, (u8)frames, (u8)frames, 16, 16, 1, 1));
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             Gfx_SetupDL_25Xlu(play->state.gfxCtx);
@@ -1801,8 +1801,8 @@ void DemoEffect_DrawCrystalLight(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 8,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (frames * 2) % 512, 512 - (frames % 512) - 1, 128, 128, 1,
-                                512 - ((frames * 2) % 512) - 1, 0, 64, 64));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (frames * 2) % 512, 512 - (frames % 512) - 1, 128, 128, 1,
+                                  512 - ((frames * 2) % 512) - 1, 0, 64, 64, 2, -1, -2, 0));
     Matrix_Push();
     Matrix_RotateY(0.0f, MTXMODE_APPLY);
     Matrix_RotateX((11.0 * M_PI) / 180.0, MTXMODE_APPLY);
@@ -1841,7 +1841,8 @@ void DemoEffect_DrawFireBall(Actor* thisx, PlayState* play) {
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPMatrix(POLY_XLU_DISP++, play->billboardMtx, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPSegment(POLY_XLU_DISP++, 8,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 32, 1, 0, 128 - ((frames * 20) % 128) - 1, 32, 32));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 32, 32, 1, 0, 128 - ((frames * 20) % 128) - 1, 32, 32, 0,
+                                  0, 0, -20));
     gSPDisplayList(POLY_XLU_DISP++, gCreationFireBallDL);
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1871,11 +1872,11 @@ void DemoEffect_DrawGodLgt(Actor* thisx, PlayState* play) {
         }
 
         gSPSegment(POLY_XLU_DISP++, 8,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, (frames * 4) % 512, 0, 128, 64, 1, (frames * 2) % 256,
-                                    512 - ((frames * 70) % 512) - 1, 64, 32));
+                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (frames * 4) % 512, 0, 128, 64, 1, (frames * 2) % 256,
+                                      512 - ((frames * 70) % 512) - 1, 64, 32, 4, 0, 2, -70));
         gSPSegment(POLY_XLU_DISP++, 9,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 16, 96, 1, (frames * 10) % 256,
-                                    256 - ((frames * 30) % 512) - 1, 8, 32));
+                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 16, 96, 1, (frames * 10) % 256,
+                                      256 - ((frames * 30) % 512) - 1, 8, 32, 0, 0, 10, -30));
         gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, this->primXluColor[0], this->primXluColor[1], this->primXluColor[2],
                         255);
         gDPSetEnvColor(POLY_XLU_DISP++, this->envXluColor[0], this->envXluColor[1], this->envXluColor[2], 255);
@@ -1975,8 +1976,8 @@ void DemoEffect_DrawLgtShower(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_XLU_DISP++, 8,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (frames * 5) % 1024, 0, 256, 64, 1, (frames * 10) % 128,
-                                512 - ((frames * 50) % 512), 32, 16));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (frames * 5) % 1024, 0, 256, 64, 1, (frames * 10) % 128,
+                                  512 - ((frames * 50) % 512), 32, 16, 5, 0, 10, -50));
     gSPDisplayList(POLY_XLU_DISP++, gEnliveningLightDL);
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1996,8 +1997,8 @@ void DemoEffect_DrawLightRing(Actor* thisx, PlayState* play2) {
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, 255);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_XLU_DISP++, 8,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (frames * 5) % 64, 512 - ((frames * 2) % 512) - 1, 16, 128, 1, 0,
-                                0, 8, 1024));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (frames * 5) % 64, 512 - ((frames * 2) % 512) - 1, 16, 128, 1,
+                                  0, 0, 8, 1024, 5, -2, 0, 0));
     gSPDisplayList(POLY_XLU_DISP++, gGoldenGoddessLightRingDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -2022,8 +2023,8 @@ void DemoEffect_DrawTriforceSpot(Actor* thisx, PlayState* play) {
             Matrix_Scale(1.0f, 2.4f, 1.0f, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 9,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 256 - ((frames * 4) % 256) - 1, 64, 64, 1, 0,
-                                        256 - ((frames * 2) % 256) - 1, 64, 32));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 256 - ((frames * 4) % 256) - 1, 64, 64, 1, 0,
+                                          256 - ((frames * 2) % 256) - 1, 64, 32, 0, -4, 0, -2));
             vertices[86].n.a = vertices[87].n.a = vertices[88].n.a = vertices[89].n.a = vertices[92].n.a =
                 vertices[93].n.a = vertices[94].n.a = vertices[95].n.a = (s8)this->triforceSpot.lightColumnOpacity;
             gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, 180, 255, 255, this->triforceSpot.lightColumnOpacity);
@@ -2043,7 +2044,8 @@ void DemoEffect_DrawTriforceSpot(Actor* thisx, PlayState* play) {
                 Matrix_RotateY(this->triforceSpot.rotation * (M_PI / 0x8000), MTXMODE_APPLY);
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPSegment(POLY_XLU_DISP++, 8, Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 16, 1, 0, 0, 16, 8));
+                gSPSegment(POLY_XLU_DISP++, 8,
+                           Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 32, 16, 1, 0, 0, 16, 8, 0, 0, 0, 0));
                 gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, 255, 255, 160, this->triforceSpot.triforceSpotOpacity);
                 gDPSetEnvColor(POLY_XLU_DISP++, 170, 140, 0, 255);
                 gSPDisplayList(POLY_XLU_DISP++, gTriforceDL);
@@ -2054,7 +2056,8 @@ void DemoEffect_DrawTriforceSpot(Actor* thisx, PlayState* play) {
                 Matrix_RotateY(this->triforceSpot.rotation * (M_PI / 0x8000), MTXMODE_APPLY);
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPSegment(POLY_OPA_DISP++, 8, Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 16, 1, 0, 0, 16, 8));
+                gSPSegment(POLY_OPA_DISP++, 8,
+                           Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 32, 16, 1, 0, 0, 16, 8, 0, 0, 0, 0));
                 gDPSetPrimColor(POLY_OPA_DISP++, 128, 128, 255, 255, 160, 255);
                 gDPSetEnvColor(POLY_OPA_DISP++, 170, 140, 0, 255);
                 gSPDisplayList(POLY_OPA_DISP++, gTriforceDL);
@@ -2154,8 +2157,8 @@ s32 DemoEffect_DrawTimewarpLimbs(PlayState* play, SkelAnimeCurve* skelCuve, s32 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, 170, 255, 255, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, this->envXluColor[0], this->envXluColor[1], this->envXluColor[2], 255);
     gSPSegment(POLY_XLU_DISP++, 8,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (frames * 6) % 1024, 256 - ((frames * 16) % 256) - 1, 256, 64, 1,
-                                (frames * 4) % 512, 128 - ((frames * 12) % 128) - 1, 128, 32));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (frames * 6) % 1024, 256 - ((frames * 16) % 256) - 1, 256, 64,
+                                  1, (frames * 4) % 512, 128 - ((frames * 12) % 128) - 1, 128, 32, 6, -16, 4, -12));
     CLOSE_DISPS(play->state.gfxCtx);
 
     if (limbIndex == 0) {

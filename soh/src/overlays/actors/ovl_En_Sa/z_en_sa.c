@@ -715,7 +715,7 @@ void func_80AF68E4(EnSa* this, PlayState* play) {
 
 void func_80AF6B20(EnSa* this, PlayState* play) {
     if (play->sceneNum == SCENE_SACRED_FOREST_MEADOW) {
-        if (GameInteractor_Should(VB_GIVE_ITEM_SARIAS_SONG, true)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, ITEM_SONG_SARIA)) {
             Item_Give(play, ITEM_SONG_SARIA);
         }
         EnSa_ChangeAnim(this, ENSA_ANIM1_6);

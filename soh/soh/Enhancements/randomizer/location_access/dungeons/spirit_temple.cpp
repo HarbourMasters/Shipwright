@@ -114,7 +114,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_CHILD_SIDE_HUB,  logic->CanUse(RG_CRAWL)),
-        ENTRANCE(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_2F, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 1)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_1F, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 1)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_1F] = Region("Spirit Temple Sun On Floor 1F", SCENE_SPIRIT_TEMPLE, {}, {
