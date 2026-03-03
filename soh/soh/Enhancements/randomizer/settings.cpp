@@ -1438,7 +1438,7 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_HOOKSHOT_LADDERS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Hookshot Ladders", "HSLad",
               "You can skip climb for hookshottable ladders can be skipped by hookshotting the top of the ladder from the correct distance and angle.\n"
               "This is more difficult for some ladders than others, and a few are not possible.\n"
-              "Hookshotting climable walls in the same way is not a trick, as it is trivial to get an angle that correctly ledge grabs.");
+              "Hookshotting climbable walls in the same way is not a trick, as it is trivial to get an angle that correctly ledge grabs.");
     OPT_TRICK(RT_BLUE_FIRE_MUD_WALLS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Blue Fire Beyond Red Ice",
               "BluFire",
               "Use Blue Fire to break mud walls, detonate bomb flowers, and break floor to King Dodongo.\nDoes not "
