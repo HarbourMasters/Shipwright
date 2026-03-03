@@ -11,8 +11,9 @@
 
 extern "C" {
 #include <z64.h>
-#include "src/overlays/actors/ovl_En_Rr/z_en_rr.h"
+#include "src/overlays/actors/ovl_En_Blkobj/z_en_blkobj.h"
 #include "src/overlays/actors/ovl_En_GeldB/z_en_geldb.h"
+#include "src/overlays/actors/ovl_En_Rr/z_en_rr.h"
 
 extern PlayState* gPlayState;
 }
@@ -756,6 +757,34 @@ void RegisterEnemyRandomizer() {
         }
 
         Actor_Spawn(&play->actorCtx, play, actorId, posX2, posY2, posZ2, rotX, rotY, rotZ, params, false);
+
+        *should = false;
+    });
+
+    COND_VB_SHOULD(VB_BLKOBJ_SPAWN_DARK_LINK, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        if (!*should) {
+            return;
+        }
+
+        EnBlkobj* blkobj = va_arg(args, EnBlkobj*);
+        PlayState* play = va_arg(args, PlayState*);
+
+        s16 actorId = ACTOR_EN_TORCH2;
+        s16 posX = blkobj->dyna.actor.world.pos.x;
+        s16 posY = blkobj->dyna.actor.world.pos.y;
+        s16 posZ = blkobj->dyna.actor.world.pos.z;
+        s16 rotX = 0;
+        s16 rotY = blkobj->dyna.actor.yawTowardsPlayer;
+        s16 rotZ = 0;
+        s16 params = 0;
+
+        if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
+            assert(false);
+        }
+
+        Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false);
+
+        EnBlkobj_SetupAction(blkobj, EnBlkobj_DarkLinkFight);
 
         *should = false;
     });

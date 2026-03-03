@@ -2612,6 +2612,15 @@ typedef enum {
     // - `double` (promoted from `f32`)
     // - `double` (promoted from `f32`)
     VB_ADULT_ZELDA_SPAWN_STALFOS_IN_COLLAPSE,
+
+    // #### `result`
+    // ```c
+    //!(this->dyna.actor.flags & ACTOR_FLAG_INSIDE_CULLING_VOLUME)
+    // ```
+    // #### `args`
+    // - `*EnBlkobj`
+    // - `*PlayState`
+    VB_BLKOBJ_SPAWN_DARK_LINK,
 } GIVanillaBehavior;
 
 #endif
