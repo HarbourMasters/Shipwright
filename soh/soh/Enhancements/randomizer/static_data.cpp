@@ -306,10 +306,9 @@ std::unordered_map<u32, RandomizerHint> StaticData::grottoChestParamsToHint{
 
 // preexisting entries are for compatibility with Copper Charlie and should not be updated
 std::unordered_map<std::string, RandomizerTrick> StaticData::trickToEnum = {
-    { "0", RT_VISIBLE_COLLISION },
     { "1", RT_GROTTOS_WITHOUT_AGONY },
     { "2", RT_FEWER_TUNIC_REQUIREMENTS },
-    { "3", RT_RUSTED_SWITCHES },
+    { "3", RT_VISIBLE_COLLISION },
     { "4", RT_FLAMING_CHESTS },
     { "6", RT_DAMAGE_BOOST_SIMPLE },
     { "7", RT_HOVER_BOOST_SIMPLE },

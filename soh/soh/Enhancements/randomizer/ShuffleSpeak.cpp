@@ -1,7 +1,6 @@
 #include <soh/OTRGlobals.h>
 extern "C" {
 extern PlayState* gPlayState;
-#include "variables.h"
 #include "functions.h"
 #include "overlays/actors/ovl_En_Ossan/z_en_ossan.h"
 }

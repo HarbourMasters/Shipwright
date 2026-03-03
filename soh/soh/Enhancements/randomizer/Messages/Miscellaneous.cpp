@@ -9,6 +9,7 @@
 
 extern "C" {
 #include <variables.h>
+extern PlayState* gPlayState;
 }
 
 void BuildWaterSwitchMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -40,13 +41,15 @@ void BuildShootingGalleryNoBowMessage(uint16_t* textId, bool* loadFromMessageTab
 }
 
 void BuildFixedMallonAtCastleMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    CustomMessage msg =
-        CustomMessage("Looks like my dad already went back to the %rranch%w. You should come visit sometime!",
-                      "Mein Vater ist wohl schon wieder auf der %rFarm%w, du solltest ihn mal besuchen kommen!",
-                      "On dirait que père est déjà rentré au %rranch%w. Tu devrais nous rendre visite à l'occasion!");
-    msg.AutoFormat();
-    msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    if (gPlayState->sceneNum == SCENE_HYRULE_CASTLE) {
+        CustomMessage msg = CustomMessage(
+            "Looks like my dad already went back to the %rranch%w. You should come visit sometime!",
+            "Mein Vater ist wohl schon wieder auf der %rFarm%w, du solltest ihn mal besuchen kommen!",
+            "On dirait que père est déjà rentré au %rranch%w. Tu devrais nous rendre visite à l'occasion!");
+        msg.AutoFormat();
+        msg.LoadIntoFont();
+        *loadFromMessageTable = false;
+    }
 }
 
 void RegisterMiscellaneousMessages() {
