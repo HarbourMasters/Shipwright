@@ -14,10 +14,10 @@ typedef struct EnMd {
     /* 0x0190 */ EnMdActionFunc actionFunc;
     /* 0x0194 */ ColliderCylinder collider;
     /* 0x01E0 */ NpcInteractInfo interactInfo;
-    /* 0x0208 */ u8 unk_208;
-    /* 0x0209 */ u8 unk_209;
-    /* 0x020A */ u8 unk_20A;
-    /* 0x020B */ u8 unk_20B;
+    /* 0x0208 */ u8 messageEntry; // tracks message state changes, like with `BOX_BREAK` or `TEXTID`
+    /* 0x0209 */ u8 messageState; // last known result of `Message_GetState`
+    /* 0x020A */ u8 animSequenceEntry; // each one changes animation info and waits
+    /* 0x020B */ u8 animSequence;
     /* 0x020C */ s16 blinkTimer;
     /* 0x020E */ s16 eyeIdx;
     /* 0x0210 */ s16 alpha;

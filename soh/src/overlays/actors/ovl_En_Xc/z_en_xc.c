@@ -302,7 +302,7 @@ s32 EnXc_MinuetCS(EnXc* this, PlayState* play) {
                     gSaveContext.cutsceneTrigger = 1;
                 }
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_MINUET_OF_FOREST);
-                if (GameInteractor_Should(VB_GIVE_ITEM_MINUET_OF_FOREST, true)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, ITEM_SONG_MINUET)) {
                     Item_Give(play, ITEM_SONG_MINUET);
                 }
                 if (GameInteractor_Should(VB_PLAY_MINUET_OF_FOREST_CS, true)) {
@@ -339,7 +339,7 @@ s32 EnXc_BoleroCS(EnXc* this, PlayState* play) {
                 gSaveContext.cutsceneTrigger = 1;
             }
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_BOLERO_OF_FIRE);
-            if (GameInteractor_Should(VB_GIVE_ITEM_BOLERO_OF_FIRE, true)) {
+            if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, ITEM_SONG_BOLERO)) {
                 Item_Give(play, ITEM_SONG_BOLERO);
             }
             if (GameInteractor_Should(VB_PLAY_BOLERO_OF_FIRE_CS, true)) {
@@ -378,7 +378,7 @@ s32 EnXc_SerenadeCS(EnXc* this, PlayState* play) {
                 gSaveContext.cutsceneTrigger = 1;
             }
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER); // Learned Serenade of Water Flag
-            if (GameInteractor_Should(VB_GIVE_ITEM_SERENADE_OF_WATER, true)) {
+            if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, ITEM_SONG_SERENADE)) {
                 Item_Give(play, ITEM_SONG_SERENADE);
             }
             osSyncPrintf("ブーツを取った!!!!!!!!!!!!!!!!!!\n");
@@ -2195,7 +2195,7 @@ void EnXc_InitTempleOfTime(EnXc* this, PlayState* play) {
                                          !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) &&
                                              Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP))) {
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT);
-            if (GameInteractor_Should(VB_GIVE_ITEM_PRELUDE_OF_LIGHT, true)) {
+            if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, ITEM_SONG_PRELUDE)) {
                 Item_Give(play, ITEM_SONG_PRELUDE);
             }
             if (GameInteractor_Should(VB_PLAY_PRELUDE_OF_LIGHT_CS, true)) {

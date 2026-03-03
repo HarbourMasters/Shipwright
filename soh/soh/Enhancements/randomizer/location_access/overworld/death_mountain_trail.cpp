@@ -30,13 +30,14 @@ void RegionTable_Init_DeathMountainTrail() {
         ENTRANCE(RR_DMT_STORMS_GROTTO,        logic->CanOpenStormsGrotto()),
     });
 
-    areaTable[RR_DEATH_MOUNTAIN_ROCKFALL] = Region("Death Mountain Avalanche", SCENE_DEATH_MOUNTAIN_TRAIL, {}, {
+    areaTable[RR_DEATH_MOUNTAIN_ROCKFALL] = Region("Death Mountain Rockfall", SCENE_DEATH_MOUNTAIN_TRAIL, {}, {
         //Locations
         LOCATION(RC_DMT_GS_FALLING_ROCKS_PATH, logic->IsAdult && logic->CanGetNightTimeGS() && (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_DMT_UPPER_GS) && (logic->CanJumpslash() || logic->HasExplosives() || ((ctx->GetTrickOption(RT_DISTANT_BOULDER_COLLISION) || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION)) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT))))) || (ctx->GetTrickOption(RT_DISTANT_BOULDER_COLLISION) && logic->CanUse(RG_LONGSHOT)))),
     }, {
         //Exits
         ENTRANCE(RR_DEATH_MOUNTAIN_TRAIL,  true),
-        ENTRANCE(RR_DEATH_MOUNTAIN_SUMMIT, logic->HasItem(RG_CLIMB)),
+        ENTRANCE(RR_DEATH_MOUNTAIN_SUMMIT, logic->HasItem(RG_CLIMB) &&
+                                           (logic->IsAdult || ctx->GetTrickOption(RT_DMT_SHIELDLESS_CLIMB) || logic->CanUse(RG_HYLIAN_SHIELD) || logic->CanUse(RG_NAYRUS_LOVE))),
         ENTRANCE(RR_DMT_COW_GROTTO,        AnyAgeTime([]{return logic->BlastOrSmash();})),
     });
 
