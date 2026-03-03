@@ -20,7 +20,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_CORRIDOR] = Region("Bottom of the Well Corridor", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
         //Exits
-        ENTRANCE(RR_BOTW_ENTRYWAY,  logic->CanUse(RG_CRAWL) && logic->HasItem(RG_CLIMB)),
+        ENTRANCE(RR_BOTW_ENTRYWAY,  logic->CanUse(RG_CRAWL) && logic->CanClimbLadder()),
         ENTRANCE(RR_BOTW_PERIMETER, logic->CanPassEnemy(RE_BIG_SKULLTULA)),
     });
 

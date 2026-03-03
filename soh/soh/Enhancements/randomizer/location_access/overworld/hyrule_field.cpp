@@ -177,7 +177,7 @@ void RegionTable_Init_HyruleField() {
         ENTRANCE(RR_ZR_FRONT,               true),
         ENTRANCE(RR_LON_LON_RANCH,          true),
         ENTRANCE(RR_HF_SOUTHEAST_GROTTO,    AnyAgeTime([]{return logic->BlastOrSmash();})),
-        ENTRANCE(RR_HF_TO_LAKE_HYLIA,       logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || logic->SummonEpona()),
+        ENTRANCE(RR_HF_TO_LAKE_HYLIA,       logic->CanClimbLadder() || logic->SummonEpona()),
         ENTRANCE(RR_HF_OPEN_GROTTO,         true),
         ENTRANCE(RR_HF_INSIDE_FENCE_GROTTO, logic->CanOpenBombGrotto()),
         ENTRANCE(RR_HF_COW_GROTTO,          (logic->CanUse(RG_MEGATON_HAMMER) || logic->IsChild) && logic->CanOpenBombGrotto()),
@@ -190,7 +190,7 @@ void RegionTable_Init_HyruleField() {
     areaTable[RR_HF_TO_LAKE_HYLIA] = Region("HF to Lake Hylia", SCENE_HYRULE_FIELD, {}, {}, {
         //Exits
         ENTRANCE(RR_LAKE_HYLIA,   true),
-        ENTRANCE(RR_HYRULE_FIELD, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || logic->SummonEpona()),
+        ENTRANCE(RR_HYRULE_FIELD, logic->CanClimbLadder() || logic->SummonEpona()),
     });
 
     areaTable[RR_HF_SOUTHEAST_GROTTO] = Region("HF Southeast Grotto", SCENE_GROTTOS, grottoEvents, {
