@@ -29,18 +29,18 @@ void RegisterReworkedTargeting() {
 
     COND_VB_SHOULD(VB_TOGGLE_Z_TARGET_SWITCH_DIRECTION, CVAR_REWORKED_TARGETING_VALUE, {
         Player* player = GET_PLAYER(gPlayState);
-        
+
         if (player->focusActor != NULL) {
             Input* input = &gPlayState->state.input[0];
-            
+
             static bool wasRightStickActive = false;
-            
+
             s8 rightStickX = input->cur.right_stick_x;
             s8 rightStickY = input->cur.right_stick_y;
-            
+
             bool isRightStickActive = (rightStickX > RIGHT_STICK_THRESHOLD || rightStickX < -RIGHT_STICK_THRESHOLD ||
                                        rightStickY > RIGHT_STICK_THRESHOLD || rightStickY < -RIGHT_STICK_THRESHOLD);
-            
+
             if (isRightStickActive && !wasRightStickActive) {
                 Actor* nextTarget = gPlayState->actorCtx.targetCtx.unk_94;
                 if (nextTarget != NULL) {
@@ -50,7 +50,7 @@ void RegisterReworkedTargeting() {
                     *should = false;
                 }
             }
-            
+
             wasRightStickActive = isRightStickActive;
         }
     });
