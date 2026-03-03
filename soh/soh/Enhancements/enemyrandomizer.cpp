@@ -734,6 +734,31 @@ void RegisterEnemyRandomizer() {
             *should = false;
         }
     });
+
+    COND_VB_SHOULD(VB_ADULT_ZELDA_SPAWN_STALFOS_IN_COLLAPSE, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        PlayState* play = va_arg(args, PlayState*);
+        Vec3f* playerPos = va_arg(args, Vec3f*);
+        double posX = va_arg(args, double);
+        double posY = va_arg(args, double);
+        double posZ = va_arg(args, double);
+
+        s16 actorId = ACTOR_EN_TEST;
+        s16 posX2 = posX;
+        s16 posY2 = posY;
+        s16 posZ2 = posZ;
+        s16 rotX = 0;
+        s16 rotY = Math_FAtan2F(playerPos->x - posX, playerPos->z - posZ) * (0x8000 / M_PI);
+        s16 rotZ = 0;
+        s16 params = 5;
+
+        if (!GetRandomizedEnemy(play, &actorId, &posX2, &posY2, &posZ2, &rotX, &rotY, &rotZ, &params)) {
+            assert(false);
+        }
+
+        Actor_Spawn(&play->actorCtx, play, actorId, posX2, posY2, posZ2, rotX, rotY, rotZ, params, false);
+
+        *should = false;
+    });
 }
 
 static RegisterShipInitFunc initFunc(RegisterEnemyRandomizer, { CVAR_ENEMY_RANDOMIZER_NAME });

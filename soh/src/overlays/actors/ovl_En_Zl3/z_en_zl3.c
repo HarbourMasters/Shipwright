@@ -12,6 +12,7 @@
 #include "objects/object_zl2/object_zl2.h"
 #include "objects/object_zl2_anime2/object_zl2_anime2.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -1825,8 +1826,10 @@ void func_80B577BC(PlayState* play, Vec3f* vec) {
     f32 posY = vec->y;
     f32 posZ = vec->z;
 
-    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TEST, posX, posY, posZ, 0,
-                (Math_FAtan2F(playerPos->x - posX, playerPos->z - posZ) * (0x8000 / M_PI)), 0, 5, true);
+    if (GameInteractor_Should(VB_ADULT_ZELDA_SPAWN_STALFOS_IN_COLLAPSE, true, play, playerPos, posX, posY, posZ)) {
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TEST, posX, posY, posZ, 0,
+                (Math_FAtan2F(playerPos->x - posX, playerPos->z - posZ) * (0x8000 / M_PI)), 0, 5, false);
+    }
 }
 
 void func_80B57858(PlayState* play) {

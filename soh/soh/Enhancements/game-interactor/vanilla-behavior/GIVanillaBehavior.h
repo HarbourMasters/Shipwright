@@ -2600,6 +2600,18 @@ typedef enum {
     // - `*PlayState`
     // - `*Actor`
     VB_SPAWN_ACTOR_ENTRY,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*PlayState`
+    // - `*Vec3f`
+    // - `double` (promoted from `f32`)
+    // - `double` (promoted from `f32`)
+    // - `double` (promoted from `f32`)
+    VB_ADULT_ZELDA_SPAWN_STALFOS_IN_COLLAPSE,
 } GIVanillaBehavior;
 
 #endif
