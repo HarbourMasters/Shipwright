@@ -10,21 +10,19 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#define CVAR_REWORKED_TARGETING_NAME CVAR_ENHANCEMENT("ReworkedTargeting")
+#define CVAR_REWORKED_TARGETING_NAME CVAR_ENHANCEMENT("ReworkedTargeting.Enabled")
 #define CVAR_REWORKED_TARGETING_VALUE CVarGetInteger(CVAR_REWORKED_TARGETING_NAME, 0)
 
-#define RIGHT_STICK_THRESHOLD 20
-
-static bool sTriggeredByRightStick = false;
+static bool sTriggeredByButtonCombo = false;
 
 void RegisterReworkedTargeting() {
 
     COND_VB_SHOULD(VB_TOGGLE_Z_TARGET_SWITCH_TARGETS, CVAR_REWORKED_TARGETING_VALUE, {
         Player* player = GET_PLAYER(gPlayState);
-        if (player->focusActor != NULL && !sTriggeredByRightStick) {
+        if (player->focusActor != NULL && !sTriggeredByButtonCombo) {
             *should = false;
         }
-        sTriggeredByRightStick = false;
+        sTriggeredByButtonCombo = false;
     });
 
     COND_VB_SHOULD(VB_TOGGLE_Z_TARGET_SWITCH_DIRECTION, CVAR_REWORKED_TARGETING_VALUE, {
@@ -36,25 +34,22 @@ void RegisterReworkedTargeting() {
         if (player->focusActor != NULL) {
             Input* input = &gPlayState->state.input[0];
 
-            static bool wasRightStickActive = false;
+            static bool wasButtonComboActive = false;
 
-            s8 rightStickX = input->cur.right_stick_x;
-            s8 rightStickY = input->cur.right_stick_y;
+            const s32 targetSwitchMask = CVarGetInteger(CVAR_ENHANCEMENT("ReworkedTargeting.Btn"), 0);
+            bool isButtonComboActive = CHECK_BTN_ANY(input->press.button, targetSwitchMask);
 
-            bool isRightStickActive = (rightStickX > RIGHT_STICK_THRESHOLD || rightStickX < -RIGHT_STICK_THRESHOLD ||
-                                       rightStickY > RIGHT_STICK_THRESHOLD || rightStickY < -RIGHT_STICK_THRESHOLD);
-
-            if (isRightStickActive && !wasRightStickActive) {
+            if (isButtonComboActive && !wasButtonComboActive) {
                 Actor* nextTarget = gPlayState->actorCtx.targetCtx.unk_94;
                 if (nextTarget != NULL) {
-                    sTriggeredByRightStick = true;
+                    sTriggeredByButtonCombo = true;
                     *should = true;
                 } else {
                     *should = false;
                 }
             }
 
-            wasRightStickActive = isRightStickActive;
+            wasButtonComboActive = isButtonComboActive;
         }
     });
 }

@@ -268,6 +268,17 @@ void SohMenu::AddMenuEnhancements() {
                      .DefaultValue(0)
                      .Format("%d frames")
                      .Tooltip("Buffers your inputs to be executed a specified amount of frames later."));
+    AddWidget(path, "Reworked Targeting", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ReworkedTargeting.Enabled"))
+        .Options(CheckboxOptions().Tooltip("Reworks targeting functionality\n"
+                                           "- Press Z while locked always untargets (in Toggle mode)\n"
+                                           "- Use the configured button combo to switch between targets"));
+    AddWidget(path, "Target Switch Button Combination:", WIDGET_CVAR_BTN_SELECTOR)
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ReworkedTargeting.Enabled"), 0) == 0;
+        })
+        .CVar(CVAR_ENHANCEMENT("ReworkedTargeting.Btn"))
+        .Options(BtnSelectorOptions().Tooltip("Buttons to activate target switching."));
 
     AddWidget(path, "Item Count Messages", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Gold Skulltula Tokens", WIDGET_CVAR_CHECKBOX)
@@ -779,11 +790,6 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Unsheathe Sword Without Slashing", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("UnsheatheWithoutSlashing"))
         .Options(CheckboxOptions().Tooltip("Allows Link to unsheathe sword without slashing automatically."));
-    AddWidget(path, "Reworked Targeting", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("ReworkedTargeting"))
-        .Options(CheckboxOptions().Tooltip("Reworks targeting functionality\n"
-                                           "- Press Z while locked always untargets (in Toggle mode)\n"
-                                           "- Use the right stick to switch between targets"));
     AddWidget(path, "Sword Toggle Options", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("SwordToggle"))
         .PreFunc(
