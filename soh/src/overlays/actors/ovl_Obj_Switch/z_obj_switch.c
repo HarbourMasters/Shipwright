@@ -779,8 +779,8 @@ void ObjSwitch_DrawCrystal(ObjSwitch* this, PlayState* play) {
 
     gDPSetEnvColor(POLY_OPA_DISP++, this->crystalColor.r, this->crystalColor.g, this->crystalColor.b, 128);
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, this->x1TexScroll, this->y1TexScroll, 0x20, 0x20, 1,
-                                this->x2TexScroll, this->y2TexScroll, 0x20, 0x20));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, this->x1TexScroll, this->y1TexScroll, 0x20, 0x20, 1,
+                                  this->x2TexScroll, this->y2TexScroll, 0x20, 0x20, -1, 1, 1, -1));
     gSPDisplayList(POLY_OPA_DISP++, opaDLists[subType]);
 
     CLOSE_DISPS(play->state.gfxCtx);

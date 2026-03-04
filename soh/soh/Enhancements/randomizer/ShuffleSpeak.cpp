@@ -1,7 +1,6 @@
 #include <soh/OTRGlobals.h>
 extern "C" {
 extern PlayState* gPlayState;
-#include "variables.h"
 #include "functions.h"
 #include "overlays/actors/ovl_En_Ossan/z_en_ossan.h"
 }
@@ -94,6 +93,7 @@ void RegisterShuffleSpeak() {
                 case ACTOR_EN_SKJ:
                     inf = RAND_INF_CAN_SPEAK_KOKIRI;
                     break;
+                case ACTOR_EN_DIVING_GAME:
                 case ACTOR_EN_KZ:
                 case ACTOR_EN_RU1:
                 case ACTOR_EN_RU2:

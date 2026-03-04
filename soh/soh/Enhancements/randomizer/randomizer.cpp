@@ -46,8 +46,6 @@ std::unordered_map<std::string, RandomizerCheckArea> SpoilerfileAreaNameToEnum;
 std::unordered_map<std::string, HintType> SpoilerfileHintTypeNameToEnum;
 std::set<RandomizerCheck> excludedLocations;
 std::set<RandomizerCheck> spoilerExcludedLocations;
-std::set<RandomizerTrick> enabledTricks;
-std::set<RandomizerTrick> enabledGlitches;
 
 u8 generated;
 char* seedString;
@@ -451,6 +449,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
                         }
                     }
             }
+            assert(false);
+            return CAN_OBTAIN;
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {
                 case ITEM_NONE:
@@ -1168,8 +1168,8 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_DEKU_TREE_LOBBY_GRASS_1, RAND_INF_DEKU_TREE_LOBBY_GRASS_1 },
     { RC_DEKU_TREE_LOBBY_GRASS_2, RAND_INF_DEKU_TREE_LOBBY_GRASS_2 },
     { RC_DEKU_TREE_LOBBY_GRASS_3, RAND_INF_DEKU_TREE_LOBBY_GRASS_3 },
-    { RC_DEKU_TREE_LOBBY_GRASS_4, RAND_INF_DEKU_TREE_LOBBY_GRASS_4 },
-    { RC_DEKU_TREE_LOBBY_GRASS_5, RAND_INF_DEKU_TREE_LOBBY_GRASS_5 },
+    { RC_DEKU_TREE_2F_GRASS_1, RAND_INF_DEKU_TREE_2F_GRASS_1 },
+    { RC_DEKU_TREE_2F_GRASS_2, RAND_INF_DEKU_TREE_2F_GRASS_2 },
     { RC_DEKU_TREE_SLINGSHOT_GRASS_1, RAND_INF_DEKU_TREE_SLINGSHOT_GRASS_1 },
     { RC_DEKU_TREE_SLINGSHOT_GRASS_2, RAND_INF_DEKU_TREE_SLINGSHOT_GRASS_2 },
     { RC_DEKU_TREE_SLINGSHOT_GRASS_3, RAND_INF_DEKU_TREE_SLINGSHOT_GRASS_3 },
@@ -1213,8 +1213,8 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_DEKU_TREE_MQ_LOBBY_GRASS_3, RAND_INF_DEKU_TREE_MQ_LOBBY_GRASS_3 },
     { RC_DEKU_TREE_MQ_LOBBY_GRASS_4, RAND_INF_DEKU_TREE_MQ_LOBBY_GRASS_4 },
     { RC_DEKU_TREE_MQ_LOBBY_GRASS_5, RAND_INF_DEKU_TREE_MQ_LOBBY_GRASS_5 },
-    { RC_DEKU_TREE_MQ_LOBBY_GRASS_6, RAND_INF_DEKU_TREE_MQ_LOBBY_GRASS_6 },
-    { RC_DEKU_TREE_MQ_LOBBY_GRASS_7, RAND_INF_DEKU_TREE_MQ_LOBBY_GRASS_7 },
+    { RC_DEKU_TREE_MQ_2F_GRASS_1, RAND_INF_DEKU_TREE_MQ_2F_GRASS_1 },
+    { RC_DEKU_TREE_MQ_2F_GRASS_2, RAND_INF_DEKU_TREE_MQ_2F_GRASS_2 },
     { RC_DEKU_TREE_MQ_SLINGSHOT_GRASS_1, RAND_INF_DEKU_TREE_MQ_SLINGSHOT_GRASS_1 },
     { RC_DEKU_TREE_MQ_SLINGSHOT_GRASS_2, RAND_INF_DEKU_TREE_MQ_SLINGSHOT_GRASS_2 },
     { RC_DEKU_TREE_MQ_SLINGSHOT_GRASS_3, RAND_INF_DEKU_TREE_MQ_SLINGSHOT_GRASS_3 },
@@ -3477,7 +3477,9 @@ void GenerateRandomizerImgui(std::string seed = "") {
     std::stringstream enabledTrickStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), ""));
     std::string enabledTrickString;
     while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
-        enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
+        if (Rando::StaticData::trickToEnum.contains(enabledTrickString)) {
+            enabledTricks.insert(Rando::StaticData::trickToEnum[enabledTrickString]);
+        }
     }
 
     // Update the visibilitiy before removing conflicting excludes (in case the locations tab wasn't viewed)

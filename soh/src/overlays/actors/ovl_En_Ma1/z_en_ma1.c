@@ -6,7 +6,6 @@
 
 #include "z_en_ma1.h"
 #include "objects/object_ma1/object_ma1.h"
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS                                                                                  \
@@ -330,7 +329,9 @@ void func_80AA0D88(EnMa1* this, PlayState* play) {
     }
 
     if ((play->sceneNum == SCENE_HYRULE_CASTLE) && malonReturnedFromCastle) {
-        Actor_Kill(&this->actor);
+        if (GameInteractor_Should(VB_SEND_MALON_HOME, true)) {
+            Actor_Kill(&this->actor);
+        }
     } else if (!malonReturnedFromCastle || malonTaughtEponasSong) {
         if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
             this->actionFunc = func_80AA0EA0;

@@ -58,7 +58,7 @@ class Settings {
      * @param key
      * @return Option&
      */
-    TrickOption& GetTrickOption(RandomizerTrick key);
+    TrickSetting& GetTrickSetting(RandomizerTrick key);
 
     /**
      * @brief Get the RandomizerTrick corresponding to the provided name.
@@ -147,7 +147,7 @@ class Settings {
     std::array<Option, RSK_MAX> mOptions = {};
     std::array<std::string, RSK_MAX> mOptionDescriptions = {};
     std::array<OptionGroup, RSG_MAX> mOptionGroups = {};
-    std::array<TrickOption, RT_MAX> mTrickOptions = {};
+    std::array<TrickSetting, RT_MAX> mTrickSettings = {};
     std::vector<std::vector<Option*>> mExcludeLocationsOptionsAreas = {};
     std::unordered_map<std::string, RandomizerTrick> mTrickNameToEnum;
 };

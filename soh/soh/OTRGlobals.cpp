@@ -1471,6 +1471,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion4Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion5Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion6Updater>());
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
@@ -1713,11 +1714,15 @@ void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>
     // Process window events for resize, mouse, keyboard events
     wnd->HandleEvents();
 
+    auto intp = wnd->GetInterpreterWeak().lock().get();
+    intp->mInterpolationIndex = 0;
+
     UIWidgets::Colors themeColor =
         static_cast<UIWidgets::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), UIWidgets::Colors::LightBlue));
     ImGui::PushStyleColor(ImGuiCol_TitleBgActive, UIWidgets::ColorValues.at(themeColor));
     for (const auto& m : mtx_replacements) {
         wnd->DrawAndRunGraphicsCommands(Commands, m);
+        intp->mInterpolationIndex++;
     }
     ImGui::PopStyleColor();
 }
@@ -2556,4 +2561,13 @@ bool SoH_HandleConfigDrop(char* filePath) {
 
 extern "C" void CheckTracker_RecalculateAvailableChecks() {
     CheckTracker::RecalculateAvailableChecks();
+}
+
+extern "C" uint32_t Ship_GetInterpolationFPS() {
+    return OTRGlobals::Instance->GetInterpolationFPS();
+}
+
+// Number of interpolated frames
+extern "C" uint32_t Ship_GetInterpolationFrameCount() {
+    return ceil((float)Ship_GetInterpolationFPS() / 20.0f);
 }

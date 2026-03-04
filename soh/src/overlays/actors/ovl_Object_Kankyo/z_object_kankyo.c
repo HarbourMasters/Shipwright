@@ -934,8 +934,9 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, PlayState* play2) {
                 gDPSetEnvColor(POLY_XLU_DISP++, sBeamEnvColors[i].r, sBeamEnvColors[i].g, sBeamEnvColors[i].b, 128);
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD);
                 gSPSegment(POLY_XLU_DISP++, 0x08,
-                           Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->state.frames * 5, play->state.frames * 10, 32,
-                                            64, 1, play->state.frames * 5, play->state.frames * 10, 32, 64));
+                           Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, play->state.frames * 5, play->state.frames * 10,
+                                              32, 64, 1, play->state.frames * 5, play->state.frames * 10, 32, 64, 5, 10,
+                                              5, 10));
                 gSPDisplayList(POLY_XLU_DISP++, gDemoKekkaiDL_005FF0);
                 FrameInterpolation_RecordCloseChild();
             }

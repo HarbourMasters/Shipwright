@@ -28,6 +28,22 @@ static std::set<RandomizerCheck> excludedLocations;
 static std::set<RandomizerTrick> enabledTricks;
 static std::set<RandomizerTrick> enabledGlitches;
 
+void SaveEnabledTricks() {
+    std::string enabledTrickString = "";
+    for (auto enabledTrickIt : enabledTricks) {
+        enabledTrickString += Rando::Settings::GetInstance()->GetTrickSetting(enabledTrickIt).GetNameTag();
+        enabledTrickString += ",";
+    }
+    if (enabledTricks.size() == 0) {
+        CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
+    } else {
+        CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
+    }
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    tricksDirty = false;
+    return;
+}
+
 void DrawLocationsMenu(WidgetInfo& info) {
     auto ctx = OTRGlobals::Instance->gRandoContext;
     int32_t currMQDungeonSetting = CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), 0) |
@@ -177,7 +193,9 @@ void UpdateMenuTricks() {
     std::string enabledTrickString;
     enabledTricks.clear();
     while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
-        enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
+        if (Rando::StaticData::trickToEnum.contains(enabledTrickString)) {
+            enabledTricks.insert(Rando::StaticData::trickToEnum[enabledTrickString]);
+        }
     }
     std::stringstream enabledGlitchStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledGlitches"), ""));
     std::string enabledGlitchString;
@@ -279,6 +297,7 @@ void DrawTricksMenu(WidgetInfo& info) {
         { Rando::Tricks::Tag::EXTREME, true },  { Rando::Tricks::Tag::EXPERIMENTAL, true },
         { Rando::Tricks::Tag::GLITCH, false },
     };
+
     static ImGuiTextFilter trickSearch;
     UIWidgets::PushStyleInput(THEME_COLOR);
     trickSearch.Draw("Filter (inc,-exc)", 490.0f);
@@ -292,14 +311,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                     enabledTricks.erase(etfound);
                 }
             }
-            std::string enabledTrickString = "";
-            for (auto enabledTrickIt : enabledTricks) {
-                enabledTrickString += std::to_string(enabledTrickIt);
-                enabledTrickString += ",";
-            }
-            CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-            tricksDirty = true;
+            SaveEnabledTricks();
         }
         ImGui::SameLine();
         if (UIWidgets::Button("Enable All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(250.f, 0.f)))) {
@@ -308,14 +320,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                     enabledTricks.insert(static_cast<RandomizerTrick>(i));
                 }
             }
-            std::string enabledTrickString = "";
-            for (auto enabledTrickIt : enabledTricks) {
-                enabledTrickString += std::to_string(enabledTrickIt);
-                enabledTrickString += ",";
-            }
-            CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-            tricksDirty = true;
+            SaveEnabledTricks();
         }
     }
     if (ImGui::BeginTable("trickTags", static_cast<int>(showTag.size()),
@@ -364,21 +369,14 @@ void DrawTricksMenu(WidgetInfo& info) {
             if (UIWidgets::Button("Enable Visible",
                                   UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                 for (int i = 0; i < RT_MAX; i++) {
-                    auto option = randoSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                    auto option = randoSettings->GetTrickSetting(static_cast<RandomizerTrick>(i));
                     if (!enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
                         trickSearch.PassFilter(option.GetName().c_str()) && areaTreeDisabled[option.GetArea()] &&
                         Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                         enabledTricks.insert(static_cast<RandomizerTrick>(i));
                     }
                 }
-                std::string enabledTrickString = "";
-                for (auto enabledTrickIt : enabledTricks) {
-                    enabledTrickString += std::to_string(enabledTrickIt);
-                    enabledTrickString += ",";
-                }
-                CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-                tricksDirty = true;
+                SaveEnabledTricks();
             }
 
             ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -386,7 +384,7 @@ void DrawTricksMenu(WidgetInfo& info) {
             for (auto [area, trickIds] : randoSettings->mTricksByArea) {
                 bool hasTricks = false;
                 for (auto rt : trickIds) {
-                    auto option = randoSettings->GetTrickOption(rt);
+                    auto option = randoSettings->GetTrickSetting(rt);
                     if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
                         !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                         hasTricks = true;
@@ -399,7 +397,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                     if (ImGui::TreeNode((Rando::Tricks::GetAreaName(area) + "##disabled").c_str())) {
                         for (auto rt : trickIds) {
-                            auto option = randoSettings->GetTrickOption(rt);
+                            auto option = randoSettings->GetTrickSetting(rt);
                             if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
                                 !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                 ImGui::TreeNodeSetOpen(
@@ -409,17 +407,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                                 UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                                 if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Right)) {
                                     enabledTricks.insert(rt);
-                                    std::string enabledTrickString = "";
-                                    for (auto enabledTrickIt : enabledTricks) {
-                                        enabledTrickString += std::to_string(enabledTrickIt);
-                                        enabledTrickString += ",";
-                                    }
-                                    CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
-                                    Ship::Context::GetInstance()
-                                        ->GetWindow()
-                                        ->GetGui()
-                                        ->SaveConsoleVariablesNextFrame();
-                                    tricksDirty = true;
+                                    SaveEnabledTricks();
                                 }
                                 UIWidgets::PopStyleButton();
                                 Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());
@@ -458,25 +446,14 @@ void DrawTricksMenu(WidgetInfo& info) {
             if (UIWidgets::Button("Disable Visible",
                                   UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                 for (int i = 0; i < RT_MAX; i++) {
-                    auto option = randoSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                    auto option = randoSettings->GetTrickSetting(static_cast<RandomizerTrick>(i));
                     if (enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
                         trickSearch.PassFilter(option.GetName().c_str()) && areaTreeEnabled[option.GetArea()] &&
                         Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                         enabledTricks.erase(static_cast<RandomizerTrick>(i));
                     }
                 }
-                std::string enabledTrickString = "";
-                for (auto enabledTrickIt : enabledTricks) {
-                    enabledTrickString += std::to_string(enabledTrickIt);
-                    enabledTrickString += ",";
-                }
-                if (enabledTricks.size() == 0) {
-                    CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
-                } else {
-                    CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
-                }
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-                tricksDirty = true;
+                SaveEnabledTricks();
             }
 
             ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -484,7 +461,7 @@ void DrawTricksMenu(WidgetInfo& info) {
             for (auto [area, trickIds] : randoSettings->mTricksByArea) {
                 bool hasTricks = false;
                 for (auto rt : trickIds) {
-                    auto option = randoSettings->GetTrickOption(rt);
+                    auto option = randoSettings->GetTrickSetting(rt);
                     if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
                         enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                         hasTricks = true;
@@ -497,7 +474,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                     if (ImGui::TreeNode((Rando::Tricks::GetAreaName(area) + "##enabled").c_str())) {
                         for (auto rt : trickIds) {
-                            auto option = randoSettings->GetTrickOption(rt);
+                            auto option = randoSettings->GetTrickSetting(rt);
                             if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
                                 enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                                 ImGui::TreeNodeSetOpen(
@@ -507,22 +484,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                                 UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                                 if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Left)) {
                                     enabledTricks.erase(rt);
-                                    std::string enabledTrickString = "";
-                                    for (auto enabledTrickIt : enabledTricks) {
-                                        enabledTrickString += std::to_string(enabledTrickIt);
-                                        enabledTrickString += ",";
-                                    }
-                                    if (enabledTrickString == "") {
-                                        CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
-                                    } else {
-                                        CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"),
-                                                      enabledTrickString.c_str());
-                                    }
-                                    Ship::Context::GetInstance()
-                                        ->GetWindow()
-                                        ->GetGui()
-                                        ->SaveConsoleVariablesNextFrame();
-                                    tricksDirty = true;
+                                    SaveEnabledTricks();
                                 }
                                 UIWidgets::PopStyleButton();
                                 Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());

@@ -344,8 +344,7 @@ void Player_Action_80850E84(Player* this, PlayState* play);
 void Player_Action_CsAction(Player* this, PlayState* play);
 
 #pragma region[SoH]
-u8 gWalkSpeedToggle1;
-u8 gWalkSpeedToggle2;
+u8 gWalkSpeedToggle;
 
 s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play) {
     if (!CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0)) {
@@ -2834,8 +2833,10 @@ s32 Player_UpperAction_Sword(Player* this, PlayState* play) {
 s32 Player_UpperAction_ChangeHeldItem(Player* this, PlayState* play) {
     if (LinkAnimation_Update(play, &this->upperSkelAnime) ||
         ((Player_ItemToItemAction(this->heldItemId) == this->heldItemAction) &&
-         (sUseHeldItem =
-              (sUseHeldItem || ((this->modelAnimType != PLAYER_ANIMTYPE_3) && (play->shootingGalleryStatus == 0)))))) {
+         (sUseHeldItem = (sUseHeldItem || GameInteractor_Should(VB_USE_HELD_ITEM_AFTER_CHANGE,
+                                                                ((this->modelAnimType != PLAYER_ANIMTYPE_3) &&
+                                                                 (play->shootingGalleryStatus == 0)),
+                                                                this))))) {
         Player_SetUpperActionFunc(this, sItemActionUpdateFuncs[this->heldItemAction]);
         this->unk_834 = 0;
         this->idleType = PLAYER_IDLE_DEFAULT;
@@ -7136,22 +7137,17 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
             maxSpeed *= 1.5f;
         }
 
-        if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0) &&
-            !CVarGetInteger(CVAR_SETTING("WalkModifier.DoesntChangeJump"), 0)) {
-            if (CVarGetInteger(CVAR_SETTING("WalkModifier.SpeedToggle"), 0)) {
-                if (gWalkSpeedToggle1) {
-                    maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
-                } else if (gWalkSpeedToggle2) {
-                    maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
+        if (CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f) != 1.0f &&
+            !CVarGetInteger(CVAR_CHEAT("SpeedModifier.DoesntChangeJump"), 0)) {
+            if (CVarGetInteger(CVAR_CHEAT("SpeedModifier.SpeedToggle"), 0)) {
+                if (gWalkSpeedToggle) {
+                    maxSpeed *= CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f);
                 }
             } else {
-                const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
-                const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+                const s32 mod1Mask = CVarGetInteger(CVAR_CHEAT("SpeedModifier.Btn"), BTN_CUSTOM_MODIFIER1);
 
                 if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask)) {
-                    maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
-                } else if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask)) {
-                    maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
+                    maxSpeed *= CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f);
                 }
             }
         }
@@ -8887,21 +8883,16 @@ void Player_Action_80842180(Player* this, PlayState* play) {
                 sp2C *= 1.5f;
             }
 
-            if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0)) {
-                if (CVarGetInteger(CVAR_SETTING("WalkModifier.SpeedToggle"), 0)) {
-                    if (gWalkSpeedToggle1) {
-                        sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
-                    } else if (gWalkSpeedToggle2) {
-                        sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
+            if (CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f) != 1.0f) {
+                if (CVarGetInteger(CVAR_CHEAT("SpeedModifier.SpeedToggle"), 0)) {
+                    if (gWalkSpeedToggle) {
+                        sp2C *= CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f);
                     }
                 } else {
-                    const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
-                    const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+                    const s32 mod1Mask = CVarGetInteger(CVAR_CHEAT("SpeedModifier.Btn"), BTN_CUSTOM_MODIFIER1);
 
                     if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask)) {
-                        sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
-                    } else if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask)) {
-                        sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
+                        sp2C *= CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f);
                     }
                 }
             }
@@ -12315,18 +12306,13 @@ void Player_Update(Actor* thisx, PlayState* play) {
             }
         }
 
-        if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0) &&
-            CVarGetInteger(CVAR_SETTING("WalkModifier.SpeedToggle"), 0)) {
-            const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
-            const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+        if (CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f) != 1.0f &&
+            CVarGetInteger(CVAR_CHEAT("SpeedModifier.SpeedToggle"), 0)) {
+            const s32 mod1Mask = CVarGetInteger(CVAR_CHEAT("SpeedModifier.Btn"), BTN_CUSTOM_MODIFIER1);
 
             if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask) &&
                 CHECK_BTN_ANY(sControlInput->press.button, mod1Mask)) {
-                gWalkSpeedToggle1 = !gWalkSpeedToggle1;
-            }
-            if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask) &&
-                CHECK_BTN_ANY(sControlInput->press.button, mod2Mask)) {
-                gWalkSpeedToggle2 = !gWalkSpeedToggle2;
+                gWalkSpeedToggle = !gWalkSpeedToggle;
             }
         }
 
@@ -12497,8 +12483,8 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
 
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 16, 32, 1, 0, (play->gameplayFrames * -15) % 128,
-                                        16, 32));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 16, 32, 1, 0, (play->gameplayFrames * -15) % 128,
+                                          16, 32, 0, 0, 0, -15));
             gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 255, D_8085486C);
             gDPSetEnvColor(POLY_XLU_DISP++, 120, 90, 30, 128);
             gSPDisplayList(POLY_XLU_DISP++, gHoverBootsCircleDL);
@@ -12613,8 +12599,8 @@ void Player_Draw(Actor* thisx, PlayState* play2) {
             f32 scale = (this->av1.actionVar1 >> 1) * 22.0f;
 
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, (0 - play->gameplayFrames) % 128, 32, 32, 1, 0,
-                                        (play->gameplayFrames * -2) % 128, 32, 32));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, (0 - play->gameplayFrames) % 128, 32, 32, 1, 0,
+                                          (play->gameplayFrames * -2) % 128, 32, 32, 0, -1, 0, -2));
 
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -12782,23 +12768,18 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     // #region SOH [Enhancement]
     f32 swimMod = 1.0f;
 
-    if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0) == 1) {
-        if (CVarGetInteger(CVAR_SETTING("WalkModifier.SpeedToggle"), 0) == 1) {
-            if (gWalkSpeedToggle1) {
-                swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping1"), 1.0f);
-            } else if (gWalkSpeedToggle2) {
-                swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping2"), 1.0f);
+    if (CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f) != 1.0f) {
+        if (CVarGetInteger(CVAR_CHEAT("SpeedModifier.SpeedToggle"), 0) == 1) {
+            if (gWalkSpeedToggle) {
+                swimMod *= CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f);
             }
             // sControlInput is NULL to prevent inputs while surfacing after obtaining an underwater item so we want to
             // ignore it for that case
         } else if (sControlInput != NULL) {
-            const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
-            const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+            const s32 mod1Mask = CVarGetInteger(CVAR_CHEAT("SpeedModifier.Btn"), BTN_CUSTOM_MODIFIER1);
 
             if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask)) {
-                swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping1"), 1.0f);
-            } else if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask)) {
-                swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping2"), 1.0f);
+                swimMod *= CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f);
             }
         }
         temp1 = this->skelAnime.curFrame - 10.0f;
@@ -14046,7 +14027,7 @@ void func_8084DBC4(PlayState* play, Player* this, f32 arg2) {
     func_8084AEEC(this, &this->linearVelocity, sp2C * 0.5f, sp2A);
     // Original implementation of func_8084AEEC (SurfaceWithoutSwimMod) to prevent velocity increases via swim mod which
     // push Link into the air #region SOH [Enhancement]
-    if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0)) {
+    if (CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f) != 1.0f) {
         SurfaceWithoutSwimMod(this, &this->actor.velocity.y, arg2, this->yaw);
         // #endregion
     } else {
