@@ -28,6 +28,8 @@ void RegisterReworkedTargeting() {
     });
 
     COND_VB_SHOULD(VB_TOGGLE_Z_TARGET_SWITCH_DIRECTION, CVAR_REWORKED_TARGETING_VALUE, {
+        if (*should) return;
+        
         Player* player = GET_PLAYER(gPlayState);
 
         if (player->focusActor != NULL) {
