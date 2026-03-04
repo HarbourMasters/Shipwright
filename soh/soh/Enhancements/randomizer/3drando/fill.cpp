@@ -964,7 +964,7 @@ static void RandomizeDungeonRewards() {
         // make temporary pools of stones and medallions, get rewards
         std::vector<RandomizerGet> stones = FilterFromPool(itemPool, [](const auto i) {
             return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD &&
-                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() >= RG_KOKIRI_SWORD &&
+                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() >= RG_KOKIRI_EMERALD &&
                    Rando::StaticData::RetrieveItem(i).GetRandomizerGet() <= RG_ZORA_SAPPHIRE;
         });
         std::vector<RandomizerGet> medallions = FilterFromPool(itemPool, [](const auto i) {
@@ -1012,7 +1012,7 @@ static void RandomizeDungeonRewards() {
         // make temporary pools of stones, medallions, and rewards
         std::vector<RandomizerGet> stones = FilterFromPool(itemPool, [](const auto i) {
             return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD &&
-                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() >= RG_KOKIRI_SWORD &&
+                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() >= RG_KOKIRI_EMERALD &&
                    Rando::StaticData::RetrieveItem(i).GetRandomizerGet() <= RG_ZORA_SAPPHIRE;
         });
         std::vector<RandomizerGet> medallions = FilterFromPool(itemPool, [](const auto i) {
