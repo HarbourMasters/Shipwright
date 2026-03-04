@@ -725,7 +725,7 @@ void CustomMessage::EncodeColors(std::string& str) const {
             if (const size_t secondHashtag = str.find('#', firstHashtag + 1); secondHashtag != std::string::npos) {
                 str.replace(secondHashtag, 1, "%w");
             } else {
-                SPDLOG_DEBUG("non-matching hashtags in string: \"%s\"", str);
+                SPDLOG_DEBUG("non-matching hashtags in string: \"{}\"", str);
             }
         }
     }

@@ -95,7 +95,6 @@ class Entrance {
     ConditionFn condition_function;
 
     EntranceType type = EntranceType::None;
-    Entrance* target = nullptr;
     Entrance* reverse = nullptr;
     Entrance* assumed = nullptr;
     Entrance* replacement = nullptr;
@@ -105,10 +104,10 @@ class Entrance {
     bool addedToPool = false;
     bool decoupled = false;
     std::string name = "";
+    std::string condition_str = "";
     // If this is false, areas only spread to interiors through this entrance if there is no other choice
     // Set to false for owl drops, the windmill path between dampe's grave and windmill and blue warps
     bool spreadsAreasWithPriority = true;
-    std::string condition_str = "";
 };
 
 typedef struct {

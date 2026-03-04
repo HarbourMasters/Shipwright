@@ -4,7 +4,6 @@
 
 #include "global.h"
 #include "vt.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <string.h>
 #include <assert.h>

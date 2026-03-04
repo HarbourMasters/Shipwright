@@ -1,13 +1,18 @@
 #include <soh/OTRGlobals.h>
 extern "C" {
 extern PlayState* gPlayState;
-#include "variables.h"
 #include "functions.h"
 #include "overlays/actors/ovl_En_Ossan/z_en_ossan.h"
 }
 
 void RegisterShuffleSpeak() {
     bool shouldRegister = IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_SPEAK).Get();
+
+    COND_VB_SHOULD(VB_BUSINESS_SCRUB_SPEAK, shouldRegister, {
+        if (!Flags_GetRandomizerInf(RAND_INF_CAN_SPEAK_DEKU)) {
+            *should = false;
+        }
+    });
 
     COND_VB_SHOULD(VB_SPEAK, shouldRegister, {
         Actor* talkActor = GET_PLAYER(gPlayState)->talkActor;
@@ -88,6 +93,7 @@ void RegisterShuffleSpeak() {
                 case ACTOR_EN_SKJ:
                     inf = RAND_INF_CAN_SPEAK_KOKIRI;
                     break;
+                case ACTOR_EN_DIVING_GAME:
                 case ACTOR_EN_KZ:
                 case ACTOR_EN_RU1:
                 case ACTOR_EN_RU2:

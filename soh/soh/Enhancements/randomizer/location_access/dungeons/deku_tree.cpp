@@ -23,13 +23,10 @@ void RegionTable_Init_DekuTree() {
         EVENT_ACCESS(LOGIC_DEKU_TREE_1F_BROKE_WEB, logic->HasFireSource()),
     }, {
         //Locations
-        LOCATION(RC_DEKU_TREE_MAP_CHEST,         logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DEKU_TREE_LOBBY_LOWER_HEART, logic->CanUse(RG_BOOMERANG)),
         LOCATION(RC_DEKU_TREE_LOBBY_GRASS_1,     logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_LOBBY_GRASS_2,     logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_LOBBY_GRASS_3,     logic->CanCutShrubs()),
-        LOCATION(RC_DEKU_TREE_LOBBY_GRASS_4,     logic->CanCutShrubs()),
-        LOCATION(RC_DEKU_TREE_LOBBY_GRASS_5,     logic->CanCutShrubs()),
     }, {
         //Exits
         ENTRANCE(RR_DEKU_TREE_ENTRYWAY,          true),
@@ -41,8 +38,10 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_LOBBY_2F] = Region("Deku Tree Lobby 2F", SCENE_DEKU_TREE, {}, {
         //Locations
-        LOCATION(RC_DEKU_TREE_MAP_CHEST,         true),
+        LOCATION(RC_DEKU_TREE_MAP_CHEST,         logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DEKU_TREE_LOBBY_LOWER_HEART, true),
+        LOCATION(RC_DEKU_TREE_2F_GRASS_1,        logic->CanCutShrubs()),
+        LOCATION(RC_DEKU_TREE_2F_GRASS_2,        logic->CanCutShrubs()),
     }, {
         //Exits
         ENTRANCE(RR_DEKU_TREE_LOBBY,          true),
@@ -247,8 +246,8 @@ void RegionTable_Init_DekuTree() {
         LOCATION(RC_DEKU_TREE_MQ_MAP_CHEST,     logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DEKU_TREE_MQ_GS_LOBBY,      logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
         LOCATION(RC_DEKU_TREE_MQ_LOBBY_HEART,   true),
-        LOCATION(RC_DEKU_TREE_MQ_LOBBY_GRASS_6, logic->CanCutShrubs()),
-        LOCATION(RC_DEKU_TREE_MQ_LOBBY_GRASS_7, logic->CanCutShrubs()),
+        LOCATION(RC_DEKU_TREE_MQ_2F_GRASS_1,    logic->CanCutShrubs()),
+        LOCATION(RC_DEKU_TREE_MQ_2F_GRASS_2,    logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_LOBBY_CRATE,   logic->CanBreakCrates()),
     }, {
         //Exits

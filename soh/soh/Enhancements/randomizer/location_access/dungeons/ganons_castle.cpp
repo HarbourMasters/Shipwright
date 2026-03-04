@@ -32,7 +32,8 @@ void RegionTable_Init_GanonsCastle() {
         ENTRANCE(RR_GANONS_CASTLE_WATER_TRIAL_BLUE_FIRE_ROOM,  !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_WATER_MEDALLION)),
         ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_START,          !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_SHADOW_MEDALLION)),
         ENTRANCE(RR_GANONS_CASTLE_SPIRIT_TRIAL_BEAMOS_ROOM,    !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_SPIRIT_MEDALLION)),
-        ENTRANCE(RR_GANONS_CASTLE_LIGHT_TRIAL_CHESTS_ROOM,     logic->CanUse(RG_GOLDEN_GAUNTLETS)),
+        ENTRANCE(RR_GANONS_CASTLE_LIGHT_TRIAL_CHESTS_ROOM,     (!ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_LIGHT_MEDALLION)) &&
+                                                               logic->CanUse(RG_GOLDEN_GAUNTLETS)),
         ENTRANCE(RR_GANONS_TOWER_ENTRYWAY,                     (logic->Get(LOGIC_FOREST_TRIAL_CLEAR) || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
                                                                (logic->Get(LOGIC_FIRE_TRIAL_CLEAR)   || ctx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
                                                                (logic->Get(LOGIC_WATER_TRIAL_CLEAR)  || ctx->GetTrial(TK_WATER_TRIAL)->IsSkipped())  &&
@@ -149,7 +150,7 @@ void RegionTable_Init_GanonsCastle() {
         //Events
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,              logic->CanBreakPots()),
         EVENT_ACCESS(LOGIC_WATER_TRIAL_RUSTED_SWITCH, logic->IsAdult && (logic->HasItem(RG_POWER_BRACELET) || (logic->CanMiddairGroundJump())) && 
-                                                      (logic->BlueFire() || ctx->GetTrickOption(RT_RUSTED_SWITCHES)) && 
+                                                      (logic->BlueFire() || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) && 
                                                       logic->CanUse(RG_MEGATON_HAMMER)),
     }, {
         //Locations
@@ -355,7 +356,8 @@ void RegionTable_Init_GanonsCastle() {
         ENTRANCE(RR_GANONS_CASTLE_MQ_WATER_TRIAL_GEYSER_ROOM,     !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_WATER_MEDALLION)),
         ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_STARTING_LEDGE, !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_SHADOW_MEDALLION)),
         ENTRANCE(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_CHAIRS_ROOM,    !ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) || logic->HasItem(RG_SPIRIT_MEDALLION)),
-        ENTRANCE(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_DINOLFOS_ROOM,   AnyAgeTime([]{return logic->CanUse(RG_GOLDEN_GAUNTLETS);})),
+        ENTRANCE(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_DINOLFOS_ROOM,   AnyAgeTime([]{return (!ctx->GetOption(RSK_MEDALLION_LOCKED_TRIALS) ||
+                                                                  logic->HasItem(RG_LIGHT_MEDALLION)) && logic->CanUse(RG_GOLDEN_GAUNTLETS);})),
         //RANDOTODO could we just set these events automatically based on the setting?
         ENTRANCE(RR_GANONS_TOWER_ENTRYWAY,                        (logic->Get(LOGIC_FOREST_TRIAL_CLEAR) || ctx->GetTrial(TK_FOREST_TRIAL)->IsSkipped()) &&
                                                                   (logic->Get(LOGIC_FIRE_TRIAL_CLEAR)   || ctx->GetTrial(TK_FIRE_TRIAL)->IsSkipped())   &&
@@ -573,7 +575,7 @@ void RegionTable_Init_GanonsCastle() {
     areaTable[RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_CHAIRS_ROOM] = Region("Ganon's Castle MQ Spirit Trial Chairs Room", SCENE_INSIDE_GANONS_CASTLE, {}, {}, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MQ_MAIN,                       true),
-        ENTRANCE(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_BEFORE_SWITCH, AnyAgeTime([]{return (logic->CanHitEyeTargets() || ctx->GetTrickOption(RT_RUSTED_SWITCHES)) && logic->CanUse(RG_MEGATON_HAMMER);})),
+        ENTRANCE(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_BEFORE_SWITCH, AnyAgeTime([]{return (logic->CanHitEyeTargets() || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) && logic->CanUse(RG_MEGATON_HAMMER);})),
     });
 
     areaTable[RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_BEFORE_SWITCH] = Region("Ganon's Castle MQ Spirit Trial Before Switch", SCENE_INSIDE_GANONS_CASTLE, {}, {
@@ -678,6 +680,8 @@ void RegionTable_Init_GanonsCastle() {
         //Exits
         ENTRANCE(RR_GANONS_TOWER_ENTRYWAY, true),
         ENTRANCE(RR_GANONS_TOWER_FLOOR_1,  true),
+        // for imaginary blue warp
+        ENTRANCE(RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE, false),
     });
 
     areaTable[RR_GANONS_TOWER_FLOOR_1] = Region("Ganon's Tower Floor 1", SCENE_GANONS_TOWER, {}, {}, {
@@ -686,7 +690,7 @@ void RegionTable_Init_GanonsCastle() {
         ENTRANCE(RR_GANONS_TOWER_STAIRS_2, AnyAgeTime([]{return logic->CanKillEnemy(RE_DINOLFOS, ED_CLOSE, true, 2);})),
     });
 
-    areaTable[RR_GANONS_TOWER_STAIRS_2] = Region("Ganon's Tower Stairs 1", SCENE_GANONS_TOWER, {}, {}, {
+    areaTable[RR_GANONS_TOWER_STAIRS_2] = Region("Ganon's Tower Stairs 2", SCENE_GANONS_TOWER, {}, {}, {
         //Exits
         ENTRANCE(RR_GANONS_TOWER_FLOOR_1, true),
         ENTRANCE(RR_GANONS_TOWER_FLOOR_2, true),
@@ -701,7 +705,7 @@ void RegionTable_Init_GanonsCastle() {
         ENTRANCE(RR_GANONS_TOWER_STAIRS_3, AnyAgeTime([]{return logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2);})),
     });
 
-    areaTable[RR_GANONS_TOWER_STAIRS_3] = Region("Ganon's Tower Stairs 1", SCENE_GANONS_TOWER, {}, {}, {
+    areaTable[RR_GANONS_TOWER_STAIRS_3] = Region("Ganon's Tower Stairs 3", SCENE_GANONS_TOWER, {}, {}, {
         //Exits
         ENTRANCE(RR_GANONS_TOWER_FLOOR_2, true),
         ENTRANCE(RR_GANONS_TOWER_FLOOR_3, true),
@@ -713,7 +717,7 @@ void RegionTable_Init_GanonsCastle() {
         ENTRANCE(RR_GANONS_TOWER_STAIRS_4, AnyAgeTime([]{return logic->CanKillEnemy(RE_IRON_KNUCKLE, ED_CLOSE, true, 2);})),
     });
 
-    areaTable[RR_GANONS_TOWER_STAIRS_4] = Region("Ganon's Tower Stairs 1", SCENE_GANONS_TOWER, {}, {}, {
+    areaTable[RR_GANONS_TOWER_STAIRS_4] = Region("Ganon's Tower Stairs 4", SCENE_GANONS_TOWER, {}, {}, {
         //Exits
         ENTRANCE(RR_GANONS_TOWER_FLOOR_3,               true),
         ENTRANCE(RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR, true),
@@ -751,8 +755,6 @@ void RegionTable_Init_GanonsCastle() {
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_ESCAPE,               logic->CanKillEnemy(RE_GANONDORF)),
-        ENTRANCE(RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR, false),
-        ENTRANCE(RR_GANONS_TOWER_STAIRS_1,              false),
     });
 
     areaTable[RR_GANONS_CASTLE_ESCAPE] = Region("Ganon's Castle Escape", SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR, {}, {
