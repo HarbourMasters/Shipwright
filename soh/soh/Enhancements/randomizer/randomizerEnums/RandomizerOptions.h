@@ -398,7 +398,7 @@ RANDO_ENUM_ITEM(RO_LINKS_POCKET_NOTHING)
 RANDO_ENUM_END(RandoOptionLinksPocket)
 
 // Link's Pocket Dungeon Reward Settings (dungeon reward, stone, medallion)
-RANDO_ENUM_BEGIN(RandoOptionLinksPocket)
+RANDO_ENUM_BEGIN(RandoOptionLinksPocketReward)
 RANDO_ENUM_ITEM(RO_LINKS_POCKET_REWARD)
 RANDO_ENUM_ITEM(RO_LINKS_POCKET_STONE)
 RANDO_ENUM_ITEM(RO_LINKS_POCKET_MEDALLION)
