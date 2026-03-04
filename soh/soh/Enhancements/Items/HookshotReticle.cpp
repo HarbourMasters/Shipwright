@@ -9,20 +9,24 @@ extern SaveContext gSaveContext;
 #include "objects/object_link_boy/object_link_boy.h"
 }
 
+const Color_RGBA8 defaultTargetableColor = { .r = 0, .g = 255, .b = 0, .a = 255 };
+const Color_RGBA8 defaultNonTargetableColor = { .r = 255, .g = 0, .b = 0, .a = 255 };
+
 #define CVAR_TARGETABLE_HOOKSHOT_NAME CVAR_ENHANCEMENT("HookshotableReticle")
 #define CVAR_TARGETABLE_HOOKSHOT_DEFAULT 0
 #define CVAR_TARGETABLE_HOOKSHOT_VALUE CVarGetInteger(CVAR_TARGETABLE_HOOKSHOT_NAME, CVAR_TARGETABLE_HOOKSHOT_DEFAULT)
 
-#define CVAR_NON_TARGETABLE_HOOKSHOT_NAME CVAR_COSMETIC("HookshotReticle.NonTarget.Changed")
-#define CVAR_NON_TARGETABLE_HOOKSHOT_DEFAULT 0
+#define CVAR_NON_TARGETABLE_HOOKSHOT_NAME CVAR_COSMETIC("HookshotReticle.NonTarget.Value")
+#define CVAR_NON_TARGETABLE_HOOKSHOT_DEFAULT defaultNonTargetableColor
 #define CVAR_NON_TARGETABLE_HOOKSHOT_VALUE \
-    CVarGetInteger(CVAR_NON_TARGETABLE_HOOKSHOT_NAME, CVAR_NON_TARGETABLE_HOOKSHOT_DEFAULT)
-
-const Color_RGBA8 defaultTargetableColor = { .r = 0, .g = 255, .b = 0, .a = 255 };
-const Color_RGBA8 defaultNonTargetableColor = { .r = 255, .g = 0, .b = 0, .a = 255 };
+    CVarGetColor(CVAR_NON_TARGETABLE_HOOKSHOT_NAME, CVAR_NON_TARGETABLE_HOOKSHOT_DEFAULT)
 
 void RegisterTargetableHookshotReticle() {
-    bool shouldRegister = CVAR_TARGETABLE_HOOKSHOT_VALUE || CVAR_NON_TARGETABLE_HOOKSHOT_VALUE;
+    Color_RGBA8 nonTargetColor = CVAR_NON_TARGETABLE_HOOKSHOT_VALUE;
+    bool nonTargetColorIsNotDefault =
+        nonTargetColor.r != defaultNonTargetableColor.r || nonTargetColor.g != defaultNonTargetableColor.g ||
+        nonTargetColor.b != defaultNonTargetableColor.b || nonTargetColor.a != defaultNonTargetableColor.a;
+    bool shouldRegister = CVAR_TARGETABLE_HOOKSHOT_VALUE || nonTargetColorIsNotDefault;
 
     COND_VB_SHOULD(VB_TARGETABLE_HOOKSHOT_RETICLE, shouldRegister, {
         Player* player = GET_PLAYER(gPlayState);
@@ -56,5 +60,4 @@ void RegisterTargetableHookshotReticle() {
 }
 
 static RegisterShipInitFunc initFunc(RegisterTargetableHookshotReticle,
-                                     { CVAR_TARGETABLE_HOOKSHOT_NAME,
-                                       CVAR_COSMETIC("HookshotReticle.NonTarget.Value") });
+                                     { CVAR_TARGETABLE_HOOKSHOT_NAME, CVAR_NON_TARGETABLE_HOOKSHOT_NAME });
