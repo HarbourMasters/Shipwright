@@ -1413,8 +1413,14 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_GROTTOS_WITHOUT_AGONY, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE },
               "Hidden Grottos without Stone of Agony", "NoSoA",
               "Allows entering hidden grottos without the Stone of Agony.");
-    OPT_TRICK(RT_FEWER_TUNIC_REQUIREMENTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE },
-              "Fewer Tunic Requirements", "FTR", "Logic may require getting through areas with timers without tunics.");
+    OPT_TRICK(
+        RT_FEWER_TUNIC_REQUIREMENTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "Fewer Tunic Requirements",
+        "FTR",
+        "Normally the only hot area logic expects you to navigate without a Goron Tunic is Death Mountain Crater\n"
+        "and you are not expected to navigate underwater sections without a Zora Tunic.\n\n"
+        "With this trick you are expected to do any underwater area except Central Pillar,\n"
+        "any hot area except Volvagia and the Block lift room in Fire Temple\n"
+        "and the health needed to logically navigate Crater is decreased.");
     OPT_TRICK(RT_UNINTUITIVE_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Unintuitive Jumps", "UnJmp",
               "Many ledges can be overcome with particular jumps which are simple to execute without items.\n"
               "This includes jumping from heights to dive deeper without scales,\n"

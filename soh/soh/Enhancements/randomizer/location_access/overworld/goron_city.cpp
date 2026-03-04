@@ -82,7 +82,7 @@ void RegionTable_Init_GoronCity() {
     }, {
         //Exits
         ENTRANCE(RR_GORON_CITY,      true),
-        ENTRANCE(RR_DMC_LOWER_LOCAL, logic->IsAdult && logic->HasItem(RG_POWER_BRACELET)),
+        ENTRANCE(RR_DMC_POTS_ENTRY,  logic->IsAdult && logic->HasItem(RG_POWER_BRACELET)),
     });
 
     areaTable[RR_GC_GROTTO_PLATFORM] = Region("GC Grotto Platform", SCENE_GORON_CITY, {}, {}, {
