@@ -199,8 +199,8 @@ void BgMoriBigst_SetupStalfosPairFight(BgMoriBigst* this, PlayState* play) {
     BgMoriBigst_SetupAction(this, BgMoriBigst_StalfosPairFight);
     Flags_UnsetClear(play, this->dyna.actor.room);
     if (GameInteractor_Should(VB_MORI_BIGST_SUMMON_STALFOS_PAIR, true, this, play)) {
-        stalfos1 = Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_TEST, 70.0f, 827.0f, -3383.0f, 0,
-                                      0, 0, 5);
+        stalfos1 = Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_TEST, 70.0f, 827.0f, -3383.0f,
+                                      0, 0, 0, 5);
         if (stalfos1 != NULL) {
             this->dyna.actor.child = NULL;
             this->dyna.actor.home.rot.z++;
@@ -208,8 +208,8 @@ void BgMoriBigst_SetupStalfosPairFight(BgMoriBigst* this, PlayState* play) {
             // "Warning: 3-1 Stalfos failure"
             osSyncPrintf("Warning : 第３-1スタルフォス発生失敗\n");
         }
-        stalfos2 = Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_TEST, 170.0f, 827.0f, -3260.0f, 0,
-                                      0, 0, 5);
+        stalfos2 = Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_TEST, 170.0f, 827.0f, -3260.0f,
+                                      0, 0, 0, 5);
         if (stalfos2 != NULL) {
             this->dyna.actor.child = NULL;
             this->dyna.actor.home.rot.z++;
@@ -223,14 +223,11 @@ void BgMoriBigst_SetupStalfosPairFight(BgMoriBigst* this, PlayState* play) {
 
 void BgMoriBigst_StalfosPairFight(BgMoriBigst* this, PlayState* play) {
     if (
-        // Check if all enemies are defeated instead of the regular stalfos when crowd control is on. TODO: move to the way that enemy randomizer does this
-        (
-            CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)
-                ? Flags_GetTempClear(play, this->dyna.actor.room)
-                : this->dyna.actor.home.rot.z == 0
-        ) &&
-        !Player_InCsMode(play)
-    ) {
+        // Check if all enemies are defeated instead of the regular stalfos when crowd control is on. TODO: move to the
+        // way that enemy randomizer does this
+        (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0) ? Flags_GetTempClear(play, this->dyna.actor.room)
+                                                                 : this->dyna.actor.home.rot.z == 0) &&
+        !Player_InCsMode(play)) {
         Flags_SetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F);
         BgMoriBigst_SetupDone(this, play);
     }

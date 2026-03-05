@@ -295,7 +295,7 @@ static int enemiesToRandomize[] = {
 };
 
 uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* posY, s16* posZ, int16_t* rotX,
-                                      int16_t* rotY, int16_t* rotZ, int16_t* params) {
+                           int16_t* rotY, int16_t* rotZ, int16_t* params) {
 
     uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(play->sceneNum);
 
@@ -653,7 +653,8 @@ static ObjectExtension::Register<CustomStalfosPairFightData> CustomStalfosPairFi
 void CustomStalfosPairFightDestroy(Actor* thisx, PlayState* play) {
     assert(ObjectExtension::GetInstance().Has<CustomStalfosPairFightData>(thisx));
 
-    CustomStalfosPairFightData* customStalfosPairFightData = ObjectExtension::GetInstance().Get<CustomStalfosPairFightData>(thisx);
+    CustomStalfosPairFightData* customStalfosPairFightData =
+        ObjectExtension::GetInstance().Get<CustomStalfosPairFightData>(thisx);
 
     customStalfosPairFightData->moriBigst->dyna.actor.home.rot.z -= 1;
 
@@ -733,14 +734,13 @@ void RegisterEnemyRandomizer() {
     });
 
     // Don't play Miniboss music for Random Gerudo Fighters
-    COND_VB_SHOULD(VB_GERUDO_FIGHTER_PLAY_MINIBOSS_MUSIC, ENEMY_RANDOMIZER_ENABLED,
-                   {
-                       EnGeldB* enGeldB = va_arg(args, EnGeldB*);
+    COND_VB_SHOULD(VB_GERUDO_FIGHTER_PLAY_MINIBOSS_MUSIC, ENEMY_RANDOMIZER_ENABLED, {
+        EnGeldB* enGeldB = va_arg(args, EnGeldB*);
 
-                       if (enGeldB->keyFlag == 0) {
-                           *should = false;
-                       }
-                   });
+        if (enGeldB->keyFlag == 0) {
+            *should = false;
+        }
+    });
 
     // If Random Gerudo Fighters knock Link down, void him out like Wallmasters
     COND_VB_SHOULD(VB_GERUDO_FIGHTER_THROW_LINK_TO_JAIL, ENEMY_RANDOMIZER_ENABLED, {
@@ -754,8 +754,7 @@ void RegisterEnemyRandomizer() {
     });
 
     // If Random Gerudo Fighters are defeated, drop some items
-    COND_ID_HOOK(OnEnemyDefeat, ACTOR_EN_GELDB, ENEMY_RANDOMIZER_ENABLED,
-                 OnGerudoFighterDefeat);
+    COND_ID_HOOK(OnEnemyDefeat, ACTOR_EN_GELDB, ENEMY_RANDOMIZER_ENABLED, OnGerudoFighterDefeat);
 
     COND_VB_SHOULD(VB_SPAWN_ACTOR_ENTRY, ENEMY_RANDOMIZER_ENABLED, {
         ActorContext* actorCtx = va_arg(args, ActorContext*);
@@ -763,7 +762,8 @@ void RegisterEnemyRandomizer() {
         PlayState* play = va_arg(args, PlayState*);
         Actor* actor = va_arg(args, Actor*);
 
-        if (!GetRandomizedEnemy(play, &actorEntry->id, &actorEntry->pos.x, &actorEntry->pos.y, &actorEntry->pos.z, &actorEntry->rot.x, &actorEntry->rot.y, &actorEntry->rot.z, &actorEntry->params)) {
+        if (!GetRandomizedEnemy(play, &actorEntry->id, &actorEntry->pos.x, &actorEntry->pos.y, &actorEntry->pos.z,
+                                &actorEntry->rot.x, &actorEntry->rot.y, &actorEntry->rot.z, &actorEntry->params)) {
             *should = false;
         }
     });
@@ -968,8 +968,10 @@ void RegisterEnemyRandomizer() {
 
         moriBigst->dyna.actor.home.rot.z = 2;
 
-        ObjectExtension::GetInstance().Set<CustomStalfosPairFightData>(enemy1, CustomStalfosPairFightData{ .moriBigst = moriBigst, .originalDestroy = enemy1->destroy });
-        ObjectExtension::GetInstance().Set<CustomStalfosPairFightData>(enemy2, CustomStalfosPairFightData{ .moriBigst = moriBigst, .originalDestroy = enemy2->destroy });
+        ObjectExtension::GetInstance().Set<CustomStalfosPairFightData>(
+            enemy1, CustomStalfosPairFightData{ .moriBigst = moriBigst, .originalDestroy = enemy1->destroy });
+        ObjectExtension::GetInstance().Set<CustomStalfosPairFightData>(
+            enemy2, CustomStalfosPairFightData{ .moriBigst = moriBigst, .originalDestroy = enemy2->destroy });
 
         enemy1->destroy = CustomStalfosPairFightDestroy;
         enemy2->destroy = CustomStalfosPairFightDestroy;
@@ -982,9 +984,11 @@ void RegisterEnemyRandomizer() {
         PlayState* play = va_arg(args, PlayState*);
 
         s16 actorId = ACTOR_EN_FIREFLY;
-        s16 posX = hakaHuta->dyna.actor.world.pos.x + (-25.0f) * Math_CosS(hakaHuta->dyna.actor.shape.rot.y) + 40.0f * Math_SinS(hakaHuta->dyna.actor.shape.rot.y);
+        s16 posX = hakaHuta->dyna.actor.world.pos.x + (-25.0f) * Math_CosS(hakaHuta->dyna.actor.shape.rot.y) +
+                   40.0f * Math_SinS(hakaHuta->dyna.actor.shape.rot.y);
         s16 posY = hakaHuta->dyna.actor.world.pos.y - 10.0f;
-        s16 posZ = hakaHuta->dyna.actor.world.pos.z - (-25.0f) * Math_SinS(hakaHuta->dyna.actor.shape.rot.y) + 40.0f * Math_CosS(hakaHuta->dyna.actor.shape.rot.y);
+        s16 posZ = hakaHuta->dyna.actor.world.pos.z - (-25.0f) * Math_SinS(hakaHuta->dyna.actor.shape.rot.y) +
+                   40.0f * Math_CosS(hakaHuta->dyna.actor.shape.rot.y);
         s16 rotX = 0;
         s16 rotY = hakaHuta->dyna.actor.shape.rot.y + 0x8000;
         s16 rotZ = 0;
@@ -997,9 +1001,11 @@ void RegisterEnemyRandomizer() {
         Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
 
         actorId = ACTOR_EN_FIREFLY;
-        posX = hakaHuta->dyna.actor.world.pos.x + (-25.0f) * Math_CosS(hakaHuta->dyna.actor.shape.rot.y) + 80.0f * Math_SinS(hakaHuta->dyna.actor.shape.rot.y);
+        posX = hakaHuta->dyna.actor.world.pos.x + (-25.0f) * Math_CosS(hakaHuta->dyna.actor.shape.rot.y) +
+               80.0f * Math_SinS(hakaHuta->dyna.actor.shape.rot.y);
         posY = hakaHuta->dyna.actor.world.pos.y - 10.0f;
-        posZ = hakaHuta->dyna.actor.world.pos.z - (-25.0f) * Math_SinS(hakaHuta->dyna.actor.shape.rot.y) + 80.0f * Math_CosS(hakaHuta->dyna.actor.shape.rot.y);
+        posZ = hakaHuta->dyna.actor.world.pos.z - (-25.0f) * Math_SinS(hakaHuta->dyna.actor.shape.rot.y) +
+               80.0f * Math_CosS(hakaHuta->dyna.actor.shape.rot.y);
         rotX = 0;
         rotY = hakaHuta->dyna.actor.shape.rot.y;
         rotZ = 0;
@@ -1019,9 +1025,11 @@ void RegisterEnemyRandomizer() {
         PlayState* play = va_arg(args, PlayState*);
 
         s16 actorId = ACTOR_EN_RD;
-        s16 posX = hakaHuta->dyna.actor.home.pos.x + (-25.0f) * Math_CosS(hakaHuta->dyna.actor.shape.rot.y) + 100.0f * Math_SinS(hakaHuta->dyna.actor.shape.rot.y);
+        s16 posX = hakaHuta->dyna.actor.home.pos.x + (-25.0f) * Math_CosS(hakaHuta->dyna.actor.shape.rot.y) +
+                   100.0f * Math_SinS(hakaHuta->dyna.actor.shape.rot.y);
         s16 posY = hakaHuta->dyna.actor.home.pos.y - 40.0f;
-        s16 posZ = hakaHuta->dyna.actor.home.pos.z - (-25.0f) * Math_SinS(hakaHuta->dyna.actor.shape.rot.y) + 100.0f * Math_CosS(hakaHuta->dyna.actor.shape.rot.y);
+        s16 posZ = hakaHuta->dyna.actor.home.pos.z - (-25.0f) * Math_SinS(hakaHuta->dyna.actor.shape.rot.y) +
+                   100.0f * Math_CosS(hakaHuta->dyna.actor.shape.rot.y);
         s16 rotX = 0;
         s16 rotY = hakaHuta->dyna.actor.shape.rot.y;
         s16 rotZ = 0;
@@ -1035,7 +1043,6 @@ void RegisterEnemyRandomizer() {
 
         *should = false;
     });
-
 }
 
 static RegisterShipInitFunc initFunc(RegisterEnemyRandomizer, { CVAR_ENEMY_RANDOMIZER_NAME });

@@ -89,7 +89,8 @@ void EnBlkobj_Wait(EnBlkobj* this, PlayState* play) {
 }
 
 void EnBlkobj_SpawnDarkLink(EnBlkobj* this, PlayState* play) {
-    if (GameInteractor_Should(VB_BLKOBJ_SPAWN_DARK_LINK, !(this->dyna.actor.flags & ACTOR_FLAG_INSIDE_CULLING_VOLUME), this, play)) {
+    if (GameInteractor_Should(VB_BLKOBJ_SPAWN_DARK_LINK, !(this->dyna.actor.flags & ACTOR_FLAG_INSIDE_CULLING_VOLUME),
+                              this, play)) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TORCH2, this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y,
                     this->dyna.actor.world.pos.z, 0, this->dyna.actor.yawTowardsPlayer, 0, 0);
         EnBlkobj_SetupAction(this, EnBlkobj_DarkLinkFight);

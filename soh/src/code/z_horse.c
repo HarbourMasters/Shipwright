@@ -68,8 +68,7 @@ void func_8006D0EC(PlayState* play, Player* player) {
     } else if ((play->sceneNum == SCENE_GERUDOS_FORTRESS) && (gSaveContext.minigameState == 3)) {
         Actor* horseActor;
         gSaveContext.minigameState = 0;
-        horseActor =
-            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, 3586.0f, 1413.0f, -402.0f, 0, 0x4000, 0, 1);
+        horseActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, 3586.0f, 1413.0f, -402.0f, 0, 0x4000, 0, 1);
         horseActor->room = -1;
     } else if ((gSaveContext.entranceIndex == ENTR_LON_LON_RANCH_7) &&
                (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED))) {

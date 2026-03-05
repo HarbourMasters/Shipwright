@@ -1828,7 +1828,7 @@ void func_80B577BC(PlayState* play, Vec3f* vec) {
 
     if (GameInteractor_Should(VB_ADULT_ZELDA_SPAWN_STALFOS_IN_COLLAPSE, true, play, playerPos, posX, posY, posZ)) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TEST, posX, posY, posZ, 0,
-                (Math_FAtan2F(playerPos->x - posX, playerPos->z - posZ) * (0x8000 / M_PI)), 0, 5);
+                    (Math_FAtan2F(playerPos->x - posX, playerPos->z - posZ) * (0x8000 / M_PI)), 0, 5);
     }
 }
 

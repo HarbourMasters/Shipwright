@@ -644,7 +644,8 @@ void BossVa_Init(Actor* thisx, PlayState* play2) {
                 }
                 if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
                     Actor_Spawn(&play->actorCtx, play, warpId, this->actor.world.pos.x, this->actor.world.pos.y,
-                                this->actor.world.pos.z, 0, 0, 0, 0); //! params could be WARP_DUNGEON_CHILD however this can also spawn Ru1
+                                this->actor.world.pos.z, 0, 0, 0,
+                                0); //! params could be WARP_DUNGEON_CHILD however this can also spawn Ru1
                 }
 
                 if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
