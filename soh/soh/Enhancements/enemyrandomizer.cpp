@@ -13,6 +13,7 @@ extern "C" {
 #include <z64.h>
 #include "src/overlays/actors/ovl_Bg_Haka/z_bg_haka.h"
 #include "src/overlays/actors/ovl_Bg_Haka_Tubo/z_bg_haka_tubo.h"
+#include "src/overlays/actors/ovl_Bg_Mori_Bigst/z_bg_mori_bigst.h"
 #include "src/overlays/actors/ovl_En_Blkobj/z_en_blkobj.h"
 #include "src/overlays/actors/ovl_En_Encount1/z_en_encount1.h"
 #include "src/overlays/actors/ovl_En_GeldB/z_en_geldb.h"
@@ -902,6 +903,45 @@ void RegisterEnemyRandomizer() {
                 encount1->totalNumSpawn++;
             }
         }
+
+        *should = false;
+    });
+
+    COND_VB_SHOULD(VB_MORI_BIGST_SUMMON_STALFOS_PAIR, ENEMY_RANDOMIZER_ENABLED, {
+        BgMoriBigst* moriBigst = va_arg(args, BgMoriBigst*);
+        PlayState* play = va_arg(args, PlayState*);
+
+        s16 actorId = ACTOR_EN_TEST;
+        s16 posX = 70.0f;
+        s16 posY = 827.0f;
+        s16 posZ = -3383.0f;
+        s16 rotX = 0;
+        s16 rotY = 0;
+        s16 rotZ = 0;
+        s16 params = 5;
+
+        if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
+            assert(false);
+        }
+
+        Actor* enemy1 = Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false);
+
+        actorId = ACTOR_EN_TEST;
+        posX = 170.0f;
+        posY = 827.0f;
+        posZ = -3260.0f;
+        rotX = 0;
+        rotY = 0;
+        rotZ = 0;
+        params = 5;
+
+        if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
+            assert(false);
+        }
+
+        Actor* enemy2 = Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false);
+
+        moriBigst->dyna.actor.home.rot.z = 2;
 
         *should = false;
     });

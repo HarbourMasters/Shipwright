@@ -2660,6 +2660,15 @@ typedef enum {
     // - `Vec3f`
     // - `s16`
     VB_ENCOUNT1_SPAWN_STALCHILD_OR_WOLFOS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BgMoriBigst`
+    // - `*PlayState`
+    VB_MORI_BIGST_SUMMON_STALFOS_PAIR,
 } GIVanillaBehavior;
 
 #endif
