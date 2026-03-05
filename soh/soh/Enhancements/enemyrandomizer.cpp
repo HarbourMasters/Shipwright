@@ -28,6 +28,7 @@ extern PlayState* gPlayState;
 #define CVAR_ENEMY_RANDOMIZER_NAME CVAR_ENHANCEMENT("RandomizedEnemies")
 #define CVAR_ENEMY_RANDOMIZER_DEFAULT ENEMY_RANDOMIZER_OFF
 #define CVAR_ENEMY_RANDOMIZER_VALUE CVarGetInteger(CVAR_ENEMY_RANDOMIZER_NAME, CVAR_ENEMY_RANDOMIZER_DEFAULT)
+#define ENEMY_RANDOMIZER_ENABLED CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT
 
 typedef struct EnemyEntry {
     int16_t id;
@@ -38,7 +39,7 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
 bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy);
 EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play);
 
-const char* enemyCVarList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
+const char* enemyCVarList[] = {
     CVAR_ENHANCEMENT("RandomizedEnemyList.Anubis"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.Armos"),
     CVAR_ENHANCEMENT("RandomizedEnemyList.Arwing"),
@@ -102,7 +103,7 @@ const char* enemyCVarList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     CVAR_ENHANCEMENT("RandomizedEnemyList.WitheredBaba"),
 };
 
-const char* enemyNameList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
+const char* enemyNameList[] = {
     "Anubis",
     "Armos",
     "Arwing",
@@ -166,7 +167,7 @@ const char* enemyNameList[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     "Withered Deku Baba",
 };
 
-static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
+static EnemyEntry randomizedEnemySpawnTable[] = {
     { ACTOR_EN_ANUBICE_TAG, 1 }, // Anubis
     { ACTOR_EN_AM, -1 },         // Armos
     { ACTOR_EN_CLEAR_TAG, 1 },   // Arwing
@@ -240,6 +241,11 @@ static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     { ACTOR_EN_KAREBABA, 0 }, // Withered Deku Baba
 };
 
+// assert sizes without accidental 0 initialization
+static_assert(ARRAY_COUNT(enemyCVarList) == ARRAY_COUNT(enemyNameList), "");
+static_assert(ARRAY_COUNT(enemyCVarList) == ARRAY_COUNT(randomizedEnemySpawnTable), "");
+static_assert(ARRAY_COUNT(enemyCVarList) == RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE, "");
+
 static int enemiesToRandomize[] = {
     ACTOR_EN_ANUBICE_TAG, // Anubis
     ACTOR_EN_FIREFLY,     // Keese (including fire/ice)
@@ -288,7 +294,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_SKJ,       // Skull Kid
 };
 
-extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* posY, s16* posZ, int16_t* rotX,
+uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* posY, s16* posZ, int16_t* rotX,
                                       int16_t* rotY, int16_t* rotZ, int16_t* params) {
 
     uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(play->sceneNum);
@@ -656,10 +662,8 @@ void CustomStalfosPairFightDestroy(Actor* thisx, PlayState* play) {
     ObjectExtension::GetInstance().Remove<CustomStalfosPairFightData>(thisx);
 }
 
-#define ENEMY_RANDOMIZER_ENABLED CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT
-
 void RegisterEnemyRandomizer() {
-    COND_ID_HOOK(OnActorInit, ACTOR_EN_MB, CVAR_ENEMY_RANDOMIZER_VALUE, FixClubMoblinScale);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_MB, ENEMY_RANDOMIZER_ENABLED, FixClubMoblinScale);
 
     // prevent dark link from triggering a voidout
     COND_VB_SHOULD(VB_TRIGGER_VOIDOUT, ENEMY_RANDOMIZER_ENABLED, {
