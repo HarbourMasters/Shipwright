@@ -4,6 +4,7 @@
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/ObjectExtension/ObjectExtension.h"
 #include "variables.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
@@ -635,6 +636,25 @@ static void OnGerudoFighterDefeat(void* refActor) {
     }
 }
 
+struct CustomStalfosPairFightData {
+    BgMoriBigst* moriBigst = nullptr;
+    ActorFunc originalDestroy = nullptr;
+};
+
+static ObjectExtension::Register<CustomStalfosPairFightData> CustomStalfosPairFightDataRegister;
+
+void CustomStalfosPairFightDestroy(Actor* thisx, PlayState* play) {
+    assert(ObjectExtension::GetInstance().Has<CustomStalfosPairFightData>(thisx));
+
+    CustomStalfosPairFightData* customStalfosPairFightData = ObjectExtension::GetInstance().Get<CustomStalfosPairFightData>(thisx);
+
+    customStalfosPairFightData->moriBigst->dyna.actor.home.rot.z -= 1;
+
+    customStalfosPairFightData->originalDestroy(thisx, play);
+
+    ObjectExtension::GetInstance().Remove<CustomStalfosPairFightData>(thisx);
+}
+
 #define ENEMY_RANDOMIZER_ENABLED CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT
 
 void RegisterEnemyRandomizer() {
@@ -942,6 +962,12 @@ void RegisterEnemyRandomizer() {
         Actor* enemy2 = Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false);
 
         moriBigst->dyna.actor.home.rot.z = 2;
+
+        ObjectExtension::GetInstance().Set<CustomStalfosPairFightData>(enemy1, CustomStalfosPairFightData{ .moriBigst = moriBigst, .originalDestroy = enemy1->destroy });
+        ObjectExtension::GetInstance().Set<CustomStalfosPairFightData>(enemy2, CustomStalfosPairFightData{ .moriBigst = moriBigst, .originalDestroy = enemy2->destroy });
+
+        enemy1->destroy = CustomStalfosPairFightDestroy;
+        enemy2->destroy = CustomStalfosPairFightDestroy;
 
         *should = false;
     });

@@ -222,13 +222,15 @@ void BgMoriBigst_SetupStalfosPairFight(BgMoriBigst* this, PlayState* play) {
 }
 
 void BgMoriBigst_StalfosPairFight(BgMoriBigst* this, PlayState* play) {
-    if ((this->dyna.actor.home.rot.z == 0 ||
-         // Check if all enemies are defeated instead of the regular stalfos when enemy randomizer or crowd control is
-         // on.
-         (Flags_GetTempClear(play, this->dyna.actor.room) &&
-          (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) ||
-           ((CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)))))) &&
-        !Player_InCsMode(play)) {
+    if (
+        // Check if all enemies are defeated instead of the regular stalfos when crowd control is on. TODO: move to the way that enemy randomizer does this
+        (
+            CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)
+                ? Flags_GetTempClear(play, this->dyna.actor.room)
+                : this->dyna.actor.home.rot.z == 0
+        ) &&
+        !Player_InCsMode(play)
+    ) {
         Flags_SetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F);
         BgMoriBigst_SetupDone(this, play);
     }
