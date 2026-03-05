@@ -644,13 +644,12 @@ void BossVa_Init(Actor* thisx, PlayState* play2) {
                 }
                 if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
                     Actor_Spawn(&play->actorCtx, play, warpId, this->actor.world.pos.x, this->actor.world.pos.y,
-                                this->actor.world.pos.z, 0, 0, 0, 0,
-                                false); //! params could be WARP_DUNGEON_CHILD however this can also spawn Ru1
+                                this->actor.world.pos.z, 0, 0, 0, 0); //! params could be WARP_DUNGEON_CHILD however this can also spawn Ru1
                 }
 
                 if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x + 160.0f,
-                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, false);
+                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
                 }
                 sDoorState = 100;
                 Actor_Kill(&this->actor);
@@ -1663,7 +1662,7 @@ void BossVa_BodyDeath(BossVa* this, PlayState* play) {
 
                 if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
-                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, false);
+                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
                 }
 
                 for (i = 2, sp7C = 2; i > 0; i--) {
@@ -1675,7 +1674,7 @@ void BossVa_BodyDeath(BossVa* this, PlayState* play) {
 
                 if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RU1, sWarpPos[sp7C].x, sWarpPos[sp7C].y,
-                                sWarpPos[sp7C].z, 0, 0, 0, 0, false);
+                                sWarpPos[sp7C].z, 0, 0, 0, 0);
                 }
             }
         case DEATH_FINISH:
@@ -1785,7 +1784,7 @@ void BossVa_SetupSupportCut(BossVa* this, PlayState* play) {
     sBodyState++;
     sFightPhase++;
     Actor_Spawn(&play->actorCtx, play, ACTOR_BOSS_VA, this->armTip.x, this->armTip.y + 20.0f, this->armTip.z, 0,
-                this->actor.shape.rot.y, 0, stumpParams, false);
+                this->actor.shape.rot.y, 0, stumpParams);
     Camera_AddQuake(&play->mainCamera, 2, 11, 8);
     this->burst = false;
     this->timer2 = 0;

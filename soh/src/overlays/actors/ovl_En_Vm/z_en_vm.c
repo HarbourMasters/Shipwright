@@ -382,7 +382,7 @@ void EnVm_Die(EnVm* this, PlayState* play) {
 
     if (--this->timer == 0) {
         bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0x6FF, BOMB_BODY, false);
+                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0x6FF, BOMB_BODY);
 
         if (bomb != NULL) {
             bomb->timer = 0;
@@ -412,7 +412,7 @@ void EnVm_CheckHealth(EnVm* this, PlayState* play) {
     } else {
         bomb =
             (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                                this->actor.world.pos.y + 20.0f, this->actor.world.pos.z, 0, 0, 0x601, BOMB_BODY, false);
+                                this->actor.world.pos.y + 20.0f, this->actor.world.pos.z, 0, 0, 0x601, BOMB_BODY);
 
         if (bomb != NULL) {
             bomb->timer = 0;

@@ -783,7 +783,7 @@ void RegisterEnemyRandomizer() {
             assert(false);
         }
 
-        Actor_Spawn(&play->actorCtx, play, actorId, posX2, posY2, posZ2, rotX, rotY, rotZ, params, false);
+        Actor_Spawn(&play->actorCtx, play, actorId, posX2, posY2, posZ2, rotX, rotY, rotZ, params);
 
         *should = false;
     });
@@ -809,7 +809,7 @@ void RegisterEnemyRandomizer() {
             assert(false);
         }
 
-        Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false);
+        Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
 
         EnBlkobj_SetupAction(blkobj, EnBlkobj_DarkLinkFight);
 
@@ -833,7 +833,7 @@ void RegisterEnemyRandomizer() {
             assert(false);
         }
 
-        Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false);
+        Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
 
         *should = false;
     });
@@ -859,7 +859,7 @@ void RegisterEnemyRandomizer() {
             assert(false);
         }
 
-        Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false);
+        Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
 
         *should = false;
     });
@@ -888,7 +888,7 @@ void RegisterEnemyRandomizer() {
                 assert(false);
             }
 
-            Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false);
+            Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
 
             rotY += 0x10000 / 3;
         }
@@ -914,7 +914,7 @@ void RegisterEnemyRandomizer() {
             assert(false);
         }
 
-        if (Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false)) {
+        if (Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params)) {
             encount1->curNumSpawn++;
             if (encount1->curNumSpawn >= encount1->maxCurSpawns) {
                 encount1->fieldSpawnTimer = 100;
@@ -944,7 +944,7 @@ void RegisterEnemyRandomizer() {
             assert(false);
         }
 
-        Actor* enemy1 = Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false);
+        Actor* enemy1 = Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
 
         actorId = ACTOR_EN_TEST;
         posX = 170.0f;
@@ -959,7 +959,7 @@ void RegisterEnemyRandomizer() {
             assert(false);
         }
 
-        Actor* enemy2 = Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false);
+        Actor* enemy2 = Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
 
         moriBigst->dyna.actor.home.rot.z = 2;
 

@@ -178,7 +178,7 @@ void BgHakaTubo_DropCollectible(BgHakaTubo* this, PlayState* play) {
                 if (GameInteractor_Should(VB_HAKA_TUBO_SPAWN_KEESE, true, this, play)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FIREFLY, this->dyna.actor.world.pos.x,
                                 this->dyna.actor.world.pos.y + 80.0f, this->dyna.actor.world.pos.z, 0,
-                                this->dyna.actor.shape.rot.y, 0, 2, false);
+                                this->dyna.actor.shape.rot.y, 0, 2);
                 }
                 Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
             } else {

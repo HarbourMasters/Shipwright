@@ -2222,7 +2222,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         } else if (ge1Type == GE1_TYPE_GATE_OPERATOR && enGe1->actor.world.pos.x != -1358.0f) {
             // When spawning the gate operator, also spawn an extra gate operator on the wasteland side
             Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0, 0x95B0, 0,
-                        0x0300 | GE1_TYPE_GATE_OPERATOR, false);
+                        0x0300 | GE1_TYPE_GATE_OPERATOR);
         }
     }
 
@@ -2606,13 +2606,13 @@ void RandomizerOnSceneSpawnActorsHandler() {
             case SCENE_TEMPLE_OF_TIME:
                 if (gPlayState->roomCtx.curRoom.num == 1) {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, -104, -40, 2382, 0,
-                                static_cast<int16_t>(0x8000), 0, SHEIK_TYPE_RANDO, false);
+                                static_cast<int16_t>(0x8000), 0, SHEIK_TYPE_RANDO);
                 }
                 break;
             case SCENE_INSIDE_GANONS_CASTLE:
                 if (gPlayState->roomCtx.curRoom.num == 1) {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, 101, 150, 137, 0, 0, 0,
-                                SHEIK_TYPE_RANDO, false);
+                                SHEIK_TYPE_RANDO);
                 }
                 break;
             default:

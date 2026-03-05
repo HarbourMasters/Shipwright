@@ -222,7 +222,7 @@ void Anchor::RefreshClientActors() {
         // clientId and store it on player->zTargetActiveTimer (unused s32 for the dummy) for convenience
         auto dummy =
             Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_PLAYER, client.posRot.pos.x, client.posRot.pos.y,
-                        client.posRot.pos.z, client.posRot.rot.x, client.posRot.rot.y, client.posRot.rot.z, 0, false);
+                        client.posRot.pos.z, client.posRot.rot.x, client.posRot.rot.y, client.posRot.rot.z, 0);
         client.player = (Player*)dummy;
     }
     spawningDummyPlayerForClientId = 0;

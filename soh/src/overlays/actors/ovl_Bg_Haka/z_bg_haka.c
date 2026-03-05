@@ -120,7 +120,7 @@ void func_8087B938(BgHaka* this, PlayState* play) {
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         } else if (GameInteractor_Should(VB_HAKA_SPAWN_POE, !IS_DAY && play->sceneNum == SCENE_GRAVEYARD, this, play)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->dyna.actor.home.pos.x, this->dyna.actor.home.pos.y,
-                        this->dyna.actor.home.pos.z, 0, this->dyna.actor.shape.rot.y, 0, 1, false);
+                        this->dyna.actor.home.pos.z, 0, this->dyna.actor.shape.rot.y, 0, 1);
         }
 
         // un tss un tss
