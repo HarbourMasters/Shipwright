@@ -2639,6 +2639,15 @@ typedef enum {
     // - `*BgHaka`
     // - `*PlayState`
     VB_HAKA_SPAWN_POE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnVali`
+    // - `*PlayState`
+    VB_BIRI_SPAWN_JELLYFISH_UPON_DEATH,
 } GIVanillaBehavior;
 
 #endif
