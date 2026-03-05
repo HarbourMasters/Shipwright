@@ -633,11 +633,13 @@ static void OnGerudoFighterDefeat(void* refActor) {
     }
 }
 
+#define ENEMY_RANDOMIZER_ENABLED CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT
+
 void RegisterEnemyRandomizer() {
     COND_ID_HOOK(OnActorInit, ACTOR_EN_MB, CVAR_ENEMY_RANDOMIZER_VALUE, FixClubMoblinScale);
 
     // prevent dark link from triggering a voidout
-    COND_VB_SHOULD(VB_TRIGGER_VOIDOUT, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+    COND_VB_SHOULD(VB_TRIGGER_VOIDOUT, ENEMY_RANDOMIZER_ENABLED, {
         Actor* actor = va_arg(args, Actor*);
 
         if (actor->category != ACTORCAT_PLAYER) {
@@ -647,7 +649,7 @@ void RegisterEnemyRandomizer() {
     });
 
     // prevent dark link dealing fall damage to the player
-    COND_VB_SHOULD(VB_RECIEVE_FALL_DAMAGE, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+    COND_VB_SHOULD(VB_RECIEVE_FALL_DAMAGE, ENEMY_RANDOMIZER_ENABLED, {
         Actor* actor = va_arg(args, Actor*);
 
         if (actor->category != ACTORCAT_PLAYER) {
@@ -656,7 +658,7 @@ void RegisterEnemyRandomizer() {
     });
 
     // prevent dark link from interfering with HESS/recoil/etc when at more than 100 away from him
-    COND_VB_SHOULD(VB_TORCH2_HANDLE_CLANKING, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+    COND_VB_SHOULD(VB_TORCH2_HANDLE_CLANKING, ENEMY_RANDOMIZER_ENABLED, {
         Actor* darkLink = va_arg(args, Actor*);
 
         if (darkLink->xzDistToPlayer > 100.0f) {
@@ -665,7 +667,7 @@ void RegisterEnemyRandomizer() {
     });
 
     // prevent dark link from interfering with ice floors
-    COND_VB_SHOULD(VB_SET_STATIC_PREV_FLOOR_TYPE, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+    COND_VB_SHOULD(VB_SET_STATIC_PREV_FLOOR_TYPE, ENEMY_RANDOMIZER_ENABLED, {
         Player* playerOrDarkLink = va_arg(args, Player*);
 
         if (playerOrDarkLink->actor.id != ACTOR_PLAYER) {
@@ -674,7 +676,7 @@ void RegisterEnemyRandomizer() {
     });
 
     // prevent dark link from interfering with ice floors
-    COND_VB_SHOULD(VB_SET_STATIC_FLOOR_TYPE, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+    COND_VB_SHOULD(VB_SET_STATIC_FLOOR_TYPE, ENEMY_RANDOMIZER_ENABLED, {
         Player* playerOrDarkLink = va_arg(args, Player*);
 
         if (playerOrDarkLink->actor.id != ACTOR_PLAYER) {
@@ -683,7 +685,7 @@ void RegisterEnemyRandomizer() {
     });
 
     // prevent dark link from being grabbed by like likes and therefore grabbing the player
-    COND_VB_SHOULD(VB_LIKE_LIKE_GRAB_PLAYER, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+    COND_VB_SHOULD(VB_LIKE_LIKE_GRAB_PLAYER, ENEMY_RANDOMIZER_ENABLED, {
         EnRr* likeLike = va_arg(args, EnRr*);
 
         if (!(likeLike->collider1.base.oc != NULL && likeLike->collider1.base.oc->category == ACTORCAT_PLAYER) &&
@@ -693,7 +695,7 @@ void RegisterEnemyRandomizer() {
     });
 
     // Allow Random Gerudo Fighters (contain no keys) to spawn without any switch flags
-    COND_VB_SHOULD(VB_GERUDO_FIGHTER_CONTINUE_WAITING, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+    COND_VB_SHOULD(VB_GERUDO_FIGHTER_CONTINUE_WAITING, ENEMY_RANDOMIZER_ENABLED, {
         EnGeldB* enGeldB = va_arg(args, EnGeldB*);
 
         if (enGeldB->keyFlag == 0) {
@@ -704,7 +706,7 @@ void RegisterEnemyRandomizer() {
     });
 
     // Don't play Miniboss music for Random Gerudo Fighters
-    COND_VB_SHOULD(VB_GERUDO_FIGHTER_PLAY_MINIBOSS_MUSIC, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT,
+    COND_VB_SHOULD(VB_GERUDO_FIGHTER_PLAY_MINIBOSS_MUSIC, ENEMY_RANDOMIZER_ENABLED,
                    {
                        EnGeldB* enGeldB = va_arg(args, EnGeldB*);
 
@@ -714,7 +716,7 @@ void RegisterEnemyRandomizer() {
                    });
 
     // If Random Gerudo Fighters knock Link down, void him out like Wallmasters
-    COND_VB_SHOULD(VB_GERUDO_FIGHTER_THROW_LINK_TO_JAIL, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+    COND_VB_SHOULD(VB_GERUDO_FIGHTER_THROW_LINK_TO_JAIL, ENEMY_RANDOMIZER_ENABLED, {
         EnGeldB* enGeldB = va_arg(args, EnGeldB*);
 
         if (enGeldB->keyFlag == 0) {
@@ -725,10 +727,10 @@ void RegisterEnemyRandomizer() {
     });
 
     // If Random Gerudo Fighters are defeated, drop some items
-    COND_ID_HOOK(OnEnemyDefeat, ACTOR_EN_GELDB, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT,
+    COND_ID_HOOK(OnEnemyDefeat, ACTOR_EN_GELDB, ENEMY_RANDOMIZER_ENABLED,
                  OnGerudoFighterDefeat);
 
-    COND_VB_SHOULD(VB_SPAWN_ACTOR_ENTRY, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+    COND_VB_SHOULD(VB_SPAWN_ACTOR_ENTRY, ENEMY_RANDOMIZER_ENABLED, {
         ActorContext* actorCtx = va_arg(args, ActorContext*);
         ActorEntry* actorEntry = va_arg(args, ActorEntry*);
         PlayState* play = va_arg(args, PlayState*);
@@ -739,7 +741,7 @@ void RegisterEnemyRandomizer() {
         }
     });
 
-    COND_VB_SHOULD(VB_ADULT_ZELDA_SPAWN_STALFOS_IN_COLLAPSE, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+    COND_VB_SHOULD(VB_ADULT_ZELDA_SPAWN_STALFOS_IN_COLLAPSE, ENEMY_RANDOMIZER_ENABLED, {
         PlayState* play = va_arg(args, PlayState*);
         Vec3f* playerPos = va_arg(args, Vec3f*);
         double posX = va_arg(args, double);
@@ -764,7 +766,7 @@ void RegisterEnemyRandomizer() {
         *should = false;
     });
 
-    COND_VB_SHOULD(VB_BLKOBJ_SPAWN_DARK_LINK, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+    COND_VB_SHOULD(VB_BLKOBJ_SPAWN_DARK_LINK, ENEMY_RANDOMIZER_ENABLED, {
         if (!*should) {
             return;
         }
@@ -792,7 +794,7 @@ void RegisterEnemyRandomizer() {
         *should = false;
     });
 
-    COND_VB_SHOULD(VB_HAKA_TUBO_SPAWN_KEESE, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+    COND_VB_SHOULD(VB_HAKA_TUBO_SPAWN_KEESE, ENEMY_RANDOMIZER_ENABLED, {
         BgHakaTubo* hakaTubo = va_arg(args, BgHakaTubo*);
         PlayState* play = va_arg(args, PlayState*);
 
@@ -814,7 +816,7 @@ void RegisterEnemyRandomizer() {
         *should = false;
     });
 
-    COND_VB_SHOULD(VB_HAKA_SPAWN_POE, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+    COND_VB_SHOULD(VB_HAKA_SPAWN_POE, ENEMY_RANDOMIZER_ENABLED, {
         if (!*should) {
             return;
         }
@@ -840,7 +842,7 @@ void RegisterEnemyRandomizer() {
         *should = false;
     });
 
-    COND_VB_SHOULD(VB_BIRI_SPAWN_JELLYFISH_UPON_DEATH, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+    COND_VB_SHOULD(VB_BIRI_SPAWN_JELLYFISH_UPON_DEATH, ENEMY_RANDOMIZER_ENABLED, {
         EnVali* vali = va_arg(args, EnVali*);
         PlayState* play = va_arg(args, PlayState*);
 
