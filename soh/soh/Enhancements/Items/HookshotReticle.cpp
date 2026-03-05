@@ -48,7 +48,6 @@ void RegisterTargetableHookshotReticle() {
             (player->heldItemAction == PLAYER_IA_HOOKSHOT || player->heldItemAction == PLAYER_IA_LONGSHOT)) {
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, colorTargetable.r, colorTargetable.g, colorTargetable.b,
                             colorTargetable.a);
-
         } else {
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, colorNonTargetable.r, colorNonTargetable.g, colorNonTargetable.b,
                             colorNonTargetable.a);
