@@ -584,6 +584,9 @@ void Settings::CreateOptions() {
         } else {
             mOptions[RSK_LINKS_POCKET].Enable();
             mOptions[RSK_LINKS_POCKET_REWARD].Enable();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LinksPocket"), RO_LINKS_POCKET_DUNGEON_REWARD) == RO_LINKS_POCKET_DUNGEON_REWARD) {
+                mOptions[RSK_LINKS_POCKET_REWARD].Unhide();
+                }
         }
     });
     OPT_U8(RSK_LINKS_POCKET, "Link's Pocket", {"Dungeon Reward", "Advancement", "Anything", "Nothing"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocket"), "", WIDGET_CVAR_COMBOBOX, RO_LINKS_POCKET_DUNGEON_REWARD);

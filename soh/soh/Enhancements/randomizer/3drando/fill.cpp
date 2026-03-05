@@ -944,19 +944,6 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
 // setting, or randomize one dungeon reward to Link's Pocket if that setting is on
 static void RandomizeDungeonRewards() {
     auto ctx = Rando::Context::GetInstance();
-    // quest item bit mask of each stone/medallion for the savefile
-    //  static constexpr std::array<uint32_t, 9> bitMaskTable = {
-    //    0x00040000, //Kokiri Emerald
-    //    0x00080000, //Goron Ruby
-    //    0x00100000, //Zora Sapphire
-    //    0x00000001, //Forest Medallion
-    //    0x00000002, //Fire Medallion
-    //    0x00000004, //Water Medallion
-    //    0x00000008, //Spirit Medallion
-    //    0x00000010, //Shadow Medallion
-    //    0x00000020, //Light Medallion
-    //  };
-    int baseOffset = Rando::StaticData::RetrieveItem(RG_KOKIRI_EMERALD).GetItemID();
 
     // End of Dungeons includes Link's Pocket
     if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) ||
@@ -1045,8 +1032,6 @@ static void RandomizeDungeonRewards() {
             // get one reward
             RandomizerGet startingReward = RandomElement(rewards, true);
 
-            // LinksPocketRewardBitMask = bitMaskTable[Rando::StaticData::RetrieveItem(startingReward).GetItemID() -
-            // baseOffset];
             ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingReward);
             // erase the stone/medallion from the Item Pool
             FilterAndEraseFromPool(itemPool, [startingReward](const RandomizerGet i) { return i == startingReward; });
