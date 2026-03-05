@@ -2615,12 +2615,30 @@ typedef enum {
 
     // #### `result`
     // ```c
-    //!(this->dyna.actor.flags & ACTOR_FLAG_INSIDE_CULLING_VOLUME)
+    // !(this->dyna.actor.flags & ACTOR_FLAG_INSIDE_CULLING_VOLUME)
     // ```
     // #### `args`
     // - `*EnBlkobj`
     // - `*PlayState`
     VB_BLKOBJ_SPAWN_DARK_LINK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BgHakaTubo`
+    // - `*PlayState`
+    VB_HAKA_TUBO_SPAWN_KEESE,
+
+    // #### `result`
+    // ```c
+    // !IS_DAY && play->sceneNum == SCENE_GRAVEYARD
+    // ```
+    // #### `args`
+    // - `*BgHaka`
+    // - `*PlayState`
+    VB_HAKA_SPAWN_POE,
 } GIVanillaBehavior;
 
 #endif

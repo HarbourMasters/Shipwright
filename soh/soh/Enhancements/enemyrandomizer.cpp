@@ -11,6 +11,8 @@
 
 extern "C" {
 #include <z64.h>
+#include "src/overlays/actors/ovl_Bg_Haka/z_bg_haka.h"
+#include "src/overlays/actors/ovl_Bg_Haka_Tubo/z_bg_haka_tubo.h"
 #include "src/overlays/actors/ovl_En_Blkobj/z_en_blkobj.h"
 #include "src/overlays/actors/ovl_En_GeldB/z_en_geldb.h"
 #include "src/overlays/actors/ovl_En_Rr/z_en_rr.h"
@@ -785,6 +787,54 @@ void RegisterEnemyRandomizer() {
         Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false);
 
         EnBlkobj_SetupAction(blkobj, EnBlkobj_DarkLinkFight);
+
+        *should = false;
+    });
+
+    COND_VB_SHOULD(VB_HAKA_TUBO_SPAWN_KEESE, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        BgHakaTubo* hakaTubo = va_arg(args, BgHakaTubo*);
+        PlayState* play = va_arg(args, PlayState*);
+
+        s16 actorId = ACTOR_EN_FIREFLY;
+        s16 posX = hakaTubo->dyna.actor.world.pos.x;
+        s16 posY = hakaTubo->dyna.actor.world.pos.y + 80.0f;
+        s16 posZ = hakaTubo->dyna.actor.world.pos.z;
+        s16 rotX = 0;
+        s16 rotY = hakaTubo->dyna.actor.shape.rot.y;
+        s16 rotZ = 0;
+        s16 params = 2;
+
+        if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
+            assert(false);
+        }
+
+        Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false);
+
+        *should = false;
+    });
+
+    COND_VB_SHOULD(VB_HAKA_SPAWN_POE, CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT, {
+        if (!*should) {
+            return;
+        }
+
+        BgHaka* haka = va_arg(args, BgHaka*);
+        PlayState* play = va_arg(args, PlayState*);
+
+        s16 actorId = ACTOR_EN_POH;
+        s16 posX = haka->dyna.actor.world.pos.x;
+        s16 posY = haka->dyna.actor.world.pos.y;
+        s16 posZ = haka->dyna.actor.world.pos.z;
+        s16 rotX = 0;
+        s16 rotY = haka->dyna.actor.shape.rot.y;
+        s16 rotZ = 0;
+        s16 params = 1;
+
+        if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
+            assert(false);
+        }
+
+        Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false);
 
         *should = false;
     });
