@@ -13,6 +13,7 @@
 extern "C" {
 #include <z64.h>
 #include "src/overlays/actors/ovl_Bg_Haka/z_bg_haka.h"
+#include "src/overlays/actors/ovl_Bg_Haka_Huta/z_bg_haka_huta.h"
 #include "src/overlays/actors/ovl_Bg_Haka_Tubo/z_bg_haka_tubo.h"
 #include "src/overlays/actors/ovl_Bg_Mori_Bigst/z_bg_mori_bigst.h"
 #include "src/overlays/actors/ovl_En_Blkobj/z_en_blkobj.h"
@@ -971,6 +972,66 @@ void RegisterEnemyRandomizer() {
 
         *should = false;
     });
+
+    COND_VB_SHOULD(VB_HAKA_HUTA_SPAWN_KEESE, ENEMY_RANDOMIZER_ENABLED, {
+        BgHakaHuta* hakaHuta = va_arg(args, BgHakaHuta*);
+        PlayState* play = va_arg(args, PlayState*);
+
+        s16 actorId = ACTOR_EN_FIREFLY;
+        s16 posX = hakaHuta->dyna.actor.world.pos.x + (-25.0f) * Math_CosS(hakaHuta->dyna.actor.shape.rot.y) + 40.0f * Math_SinS(hakaHuta->dyna.actor.shape.rot.y);
+        s16 posY = hakaHuta->dyna.actor.world.pos.y - 10.0f;
+        s16 posZ = hakaHuta->dyna.actor.world.pos.z - (-25.0f) * Math_SinS(hakaHuta->dyna.actor.shape.rot.y) + 40.0f * Math_CosS(hakaHuta->dyna.actor.shape.rot.y);
+        s16 rotX = 0;
+        s16 rotY = hakaHuta->dyna.actor.shape.rot.y + 0x8000;
+        s16 rotZ = 0;
+        s16 params = 2;
+
+        if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
+            assert(false);
+        }
+
+        Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
+
+        actorId = ACTOR_EN_FIREFLY;
+        posX = hakaHuta->dyna.actor.world.pos.x + (-25.0f) * Math_CosS(hakaHuta->dyna.actor.shape.rot.y) + 80.0f * Math_SinS(hakaHuta->dyna.actor.shape.rot.y);
+        posY = hakaHuta->dyna.actor.world.pos.y - 10.0f;
+        posZ = hakaHuta->dyna.actor.world.pos.z - (-25.0f) * Math_SinS(hakaHuta->dyna.actor.shape.rot.y) + 80.0f * Math_CosS(hakaHuta->dyna.actor.shape.rot.y);
+        rotX = 0;
+        rotY = hakaHuta->dyna.actor.shape.rot.y;
+        rotZ = 0;
+        params = 2;
+
+        if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
+            assert(false);
+        }
+
+        Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
+
+        *should = false;
+    });
+
+    COND_VB_SHOULD(VB_HAKA_HUTA_SPAWN_REDEAD, ENEMY_RANDOMIZER_ENABLED, {
+        BgHakaHuta* hakaHuta = va_arg(args, BgHakaHuta*);
+        PlayState* play = va_arg(args, PlayState*);
+
+        s16 actorId = ACTOR_EN_RD;
+        s16 posX = hakaHuta->dyna.actor.home.pos.x + (-25.0f) * Math_CosS(hakaHuta->dyna.actor.shape.rot.y) + 100.0f * Math_SinS(hakaHuta->dyna.actor.shape.rot.y);
+        s16 posY = hakaHuta->dyna.actor.home.pos.y - 40.0f;
+        s16 posZ = hakaHuta->dyna.actor.home.pos.z - (-25.0f) * Math_SinS(hakaHuta->dyna.actor.shape.rot.y) + 100.0f * Math_CosS(hakaHuta->dyna.actor.shape.rot.y);
+        s16 rotX = 0;
+        s16 rotY = hakaHuta->dyna.actor.shape.rot.y;
+        s16 rotZ = 0;
+        s16 params = 0xFD;
+
+        if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
+            assert(false);
+        }
+
+        Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
+
+        *should = false;
+    });
+
 }
 
 static RegisterShipInitFunc initFunc(RegisterEnemyRandomizer, { CVAR_ENEMY_RANDOMIZER_NAME });

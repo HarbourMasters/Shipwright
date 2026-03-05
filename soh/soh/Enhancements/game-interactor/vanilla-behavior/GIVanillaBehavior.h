@@ -2669,6 +2669,24 @@ typedef enum {
     // - `*BgMoriBigst`
     // - `*PlayState`
     VB_MORI_BIGST_SUMMON_STALFOS_PAIR,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BgHakaHuta`
+    // - `*PlayState`
+    VB_HAKA_HUTA_SPAWN_KEESE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BgHakaHuta`
+    // - `*PlayState`
+    VB_HAKA_HUTA_SPAWN_REDEAD,
 } GIVanillaBehavior;
 
 #endif
