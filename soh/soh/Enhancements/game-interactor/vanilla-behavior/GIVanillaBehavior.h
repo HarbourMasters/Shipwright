@@ -2648,6 +2648,18 @@ typedef enum {
     // - `*EnVali`
     // - `*PlayState`
     VB_BIRI_SPAWN_JELLYFISH_UPON_DEATH,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnEncount1`
+    // - `*PlayState`
+    // - `s16`
+    // - `Vec3f`
+    // - `s16`
+    VB_ENCOUNT1_SPAWN_STALCHILD_OR_WOLFOS,
 } GIVanillaBehavior;
 
 #endif

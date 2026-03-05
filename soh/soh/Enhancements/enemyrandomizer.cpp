@@ -14,6 +14,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Bg_Haka/z_bg_haka.h"
 #include "src/overlays/actors/ovl_Bg_Haka_Tubo/z_bg_haka_tubo.h"
 #include "src/overlays/actors/ovl_En_Blkobj/z_en_blkobj.h"
+#include "src/overlays/actors/ovl_En_Encount1/z_en_encount1.h"
 #include "src/overlays/actors/ovl_En_GeldB/z_en_geldb.h"
 #include "src/overlays/actors/ovl_En_Rr/z_en_rr.h"
 #include "src/overlays/actors/ovl_En_Vali/z_en_vali.h"
@@ -869,6 +870,37 @@ void RegisterEnemyRandomizer() {
             Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false);
 
             rotY += 0x10000 / 3;
+        }
+
+        *should = false;
+    });
+
+    COND_VB_SHOULD(VB_ENCOUNT1_SPAWN_STALCHILD_OR_WOLFOS, ENEMY_RANDOMIZER_ENABLED, {
+        EnEncount1* encount1 = va_arg(args, EnEncount1*);
+        PlayState* play = va_arg(args, PlayState*);
+
+        s16 actorId = va_arg(args, s16);
+        Vec3f spawnPos = va_arg(args, Vec3f);
+        s16 posX = spawnPos.x;
+        s16 posY = spawnPos.y;
+        s16 posZ = spawnPos.z;
+        s16 rotX = 0;
+        s16 rotY = 0;
+        s16 rotZ = 0;
+        s16 params = va_arg(args, s16);
+
+        if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
+            assert(false);
+        }
+
+        if (Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, false)) {
+            encount1->curNumSpawn++;
+            if (encount1->curNumSpawn >= encount1->maxCurSpawns) {
+                encount1->fieldSpawnTimer = 100;
+            }
+            if (play->sceneNum != SCENE_HYRULE_FIELD) {
+                encount1->totalNumSpawn++;
+            }
         }
 
         *should = false;
