@@ -15,7 +15,6 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/OTRGlobals.h"
@@ -996,7 +995,7 @@ u8 gEquipAgeReqs[][4] = {
 
 };
 
-u8 gItemAgeReqs[] = {
+u8 gItemAgeReqs[ITEM_NONE] = {
     AGE_REQ_CHILD, // ITEM_DEKU_STICK
     AGE_REQ_NONE,  // ITEM_DEKU_NUT
     AGE_REQ_NONE,  // ITEM_BOMB

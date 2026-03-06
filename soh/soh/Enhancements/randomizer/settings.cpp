@@ -574,11 +574,34 @@ void Settings::CreateOptions() {
             RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
             mOptions[RSK_LINKS_POCKET].Disable(
                 "This option is disabled because \"Dungeon Rewards\" are shuffled to \"End of Dungeons\".");
+            mOptions[RSK_LINKS_POCKET_REWARD].Enable();
+            mOptions[RSK_LINKS_POCKET_REWARD].Unhide();
+        } else if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) ==
+            RO_DUNGEON_REWARDS_VANILLA) {
+            mOptions[RSK_LINKS_POCKET_REWARD].Disable("This option is disabled because \"Dungeon Rewards\" are shuffled to \"Vanilla\".");
+            mOptions[RSK_LINKS_POCKET_REWARD].Hide();
+            mOptions[RSK_LINKS_POCKET].Enable();
         } else {
             mOptions[RSK_LINKS_POCKET].Enable();
+            mOptions[RSK_LINKS_POCKET_REWARD].Enable();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LinksPocket"), RO_LINKS_POCKET_DUNGEON_REWARD) == RO_LINKS_POCKET_DUNGEON_REWARD) {
+                mOptions[RSK_LINKS_POCKET_REWARD].Unhide();
+                }
         }
     });
     OPT_U8(RSK_LINKS_POCKET, "Link's Pocket", {"Dungeon Reward", "Advancement", "Anything", "Nothing"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocket"), "", WIDGET_CVAR_COMBOBOX, RO_LINKS_POCKET_DUNGEON_REWARD);
+    OPT_CALLBACK(RSK_LINKS_POCKET, {
+        // Only show the dungeon reward type if Link's Pocket is set to Dungeon Reward and Dungeon Rewards are not Vanilla, OR Dungeon Rewards are end of dungeon
+        if ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("LinksPocket"), RO_LINKS_POCKET_DUNGEON_REWARD) ==
+            RO_LINKS_POCKET_DUNGEON_REWARD && CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) !=
+            RO_DUNGEON_REWARDS_VANILLA) || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) ==
+            RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
+            mOptions[RSK_LINKS_POCKET_REWARD].Unhide();
+        } else {
+            mOptions[RSK_LINKS_POCKET_REWARD].Hide();
+        }
+    });
+    OPT_U8(RSK_LINKS_POCKET_REWARD, "Link's Pocket Reward Type", {"Dungeon Reward", "Stone", "Medallion"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocketReward"), "", WIDGET_CVAR_COMBOBOX, RO_LINKS_POCKET_REWARD);
     OPT_U8(RSK_SHUFFLE_SONGS, "Shuffle Songs", {"Off", "Song Locations", "Dungeon Rewards", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleSongs"), mOptionDescriptions[RSK_SHUFFLE_SONGS], WIDGET_CVAR_COMBOBOX, RO_SONG_SHUFFLE_SONG_LOCATIONS);
     OPT_U8(RSK_SHOPSANITY, "Shop Shuffle", {"Off", "Specific Count", "Random"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Shopsanity"), mOptionDescriptions[RSK_SHOPSANITY], WIDGET_CVAR_COMBOBOX, RO_SHOPSANITY_OFF);
     OPT_CALLBACK(RSK_SHOPSANITY, {
@@ -1400,28 +1423,31 @@ void Settings::CreateOptions() {
     Try to keep Name Tags less than 8 chars.
     */
 
-    OPT_TRICK(RT_VISIBLE_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE },
-              "Pass Through Visible One-Way Collision", "VisCol",
-              "Allows climbing through the platform to reach Impa's House Back as adult with no items and going "
-              "through the Kakariko Village Gate as child when coming from the Mountain Trail side.");
+    OPT_TRICK(RT_VISIBLE_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Ignore Visible Collision",
+              "VisCol",
+              "Allows ignoring visible barriers and objects that do not actually stop Link from walking, climbing or "
+              "hitting things, without clipping.\n\n"
+              "This notably allows for walking through Kak's gate backwards, climb into the back of Impa's house as "
+              "Adult from the coop,"
+              "and hitting Rusted Switches or boulders through Blocks, Ice and Walls.\n\n"
+              "This trick only applies to case where doing the thing is trivial, instances where it only works from "
+              "certain angles are not part of this trick,"
+              "niether are any form of clips, including clipping Link's hitbox inside boulders with jumpslash.");
     OPT_TRICK(RT_GROTTOS_WITHOUT_AGONY, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE },
               "Hidden Grottos without Stone of Agony", "NoSoA",
               "Allows entering hidden grottos without the Stone of Agony.");
-    OPT_TRICK(RT_FEWER_TUNIC_REQUIREMENTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE },
-              "Fewer Tunic Requirements", "FTR", "Logic may require getting through areas with timers without tunics.");
+    OPT_TRICK(
+        RT_FEWER_TUNIC_REQUIREMENTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "Fewer Tunic Requirements",
+        "FTR",
+        "Normally the only hot area logic expects you to navigate without a Goron Tunic is Death Mountain Crater\n"
+        "and you are not expected to navigate underwater sections without a Zora Tunic.\n\n"
+        "With this trick you are expected to do any underwater area except Central Pillar,\n"
+        "any hot area except Volvagia and the Block lift room in Fire Temple\n"
+        "and the health needed to logically navigate Crater is decreased.");
     OPT_TRICK(RT_UNINTUITIVE_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Unintuitive Jumps", "UnJmp",
               "Many ledges can be overcome with particular jumps which are simple to execute without items.\n"
               "This includes jumping from heights to dive deeper without scales,\n"
               "though this trick doesn't cover Water Temple's Dragon Room.");
-    OPT_TRICK(RT_RUSTED_SWITCHES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Hammer Through Collision", "HamCol",
-              "Applies to:\n"
-              "- Hitting Fire Temple Highest Goron Chest's Rusted Switch in the SoT Block without Song of Time.\n"
-              "- Hitting the rusted switch in Water Trial through the Ice."
-              "- Hitting MQ Fire Temple Lizalfos Maze's Rusted Switch in the wall.\n"
-              "- Having Adult hammer the rock in the west side crawlspace of MQ Spirit so child can get through "
-              "without bombchus."
-              "- MQ Spirit Trial's Rusted Switch between the thrones without hitting the eye target to drop an Iron "
-              "Knuckle.\n");
     OPT_TRICK(RT_FLAMING_CHESTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "Flaming Chests", "FlaChst",
               "The chests encircled in flames in Gerudo Training Ground and in Spirit Temple can be opened by running "
               "into the flames while Link is invincible after taking damage.");
@@ -1522,6 +1548,10 @@ void Settings::CreateOptions() {
               "Shadow Temple Entry with Fire Arrows", "FAEntry",
               "It is possible to light all of the torches to open the Shadow Temple entrance with just Fire Arrows, "
               "but you must be very quick, precise, and strategic with how you take your shots.");
+    OPT_TRICK(RT_DMT_SHIELDLESS_CLIMB, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::NOVICE },
+              "Death Mountain Trail Child Climb Without Shield", "DMTCWoS",
+              "Child can make it past the eruption to reach DMT Summit without a Hylian Shield or Nayru's Love"
+              "by backwalking or simply taking damage.");
     OPT_TRICK(RT_DMT_SOIL_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE },
               "Death Mountain Trail Soil GS without Destroying Boulder", "DMTSoil",
               "Bugs will go into the soft soil even while the boulder is still blocking the entrance. Then, using a "
@@ -2540,11 +2570,11 @@ void Settings::CreateOptions() {
                                   &mOptionGroups[RSG_MENU_COLUMN_STATIC_HINTS],
                               },
                               WidgetContainerType::TABLE);
-    mOptionGroups[RSG_MENU_SECTION_STARTING_EQUIPS] =
-        OptionGroup::SubGroup("Equips",
-                              { &mOptions[RSK_LINKS_POCKET], &mOptions[RSK_STARTING_KOKIRI_SWORD],
-                                &mOptions[RSK_STARTING_MASTER_SWORD], &mOptions[RSK_STARTING_DEKU_SHIELD] },
-                              WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_SECTION_STARTING_EQUIPS] = OptionGroup::SubGroup(
+        "Equips",
+        { &mOptions[RSK_LINKS_POCKET], &mOptions[RSK_LINKS_POCKET_REWARD], &mOptions[RSK_STARTING_KOKIRI_SWORD],
+          &mOptions[RSK_STARTING_MASTER_SWORD], &mOptions[RSK_STARTING_DEKU_SHIELD] },
+        WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_SECTION_STARTING_ITEMS] = OptionGroup::SubGroup("Items",
                                                                            {
                                                                                &mOptions[RSK_STARTING_OCARINA],

@@ -599,6 +599,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*Actor`
+    VB_FADE_KOKIRI,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnElf`
     VB_FAIRY_HEAL,
 
@@ -1250,6 +1258,14 @@ typedef enum {
     // #### `args`
     // - `*EnItem00`
     VB_ITEM00_DESPAWN,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_JABU_WOBBLE,
 
     // #### `result`
     // ```c
@@ -2183,6 +2199,15 @@ typedef enum {
     // - `*Actor`
     // - `*s16` - timer value
     VB_SWITCH_TIMER_TICK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*CollisionPoly
+    // - s32 - background id`
+    VB_TARGETABLE_HOOKSHOT_RETICLE,
 
     // #### `result`
     // ```c

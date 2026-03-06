@@ -1078,21 +1078,15 @@ void func_80A98DB4(EnKo* this, PlayState* play) {
         this->modelAlpha = 255.0f;
         return;
     }
-    if (play->csCtx.state != 0 || gDbgCamEnabled != 0) {
+    if ((play->csCtx.state != CS_STATE_IDLE) || gDbgCamEnabled) {
         dist = Math_Vec3f_DistXYZ(&this->actor.world.pos, &play->view.eye) * 0.25f;
     } else {
         dist = this->actor.xzDistToPlayer;
     }
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), 0) != 0) {
-        this->appearDist = 32767.0f;
-        Math_SmoothStepToF(&this->modelAlpha, (this->appearDist < dist) ? 0.0f : 255.0f, 0.3f, 40.0f, 1.0f);
-        f32 test = this->appearDist;
-    } else {
-        this->appearDist = 180.0f;
-        Math_SmoothStepToF(&this->modelAlpha, (this->appearDist < dist) ? 0.0f : 255.0f, 0.3f, 40.0f, 1.0f);
-    }
-
+    Math_SmoothStepToF(&this->modelAlpha,
+                       GameInteractor_Should(VB_FADE_KOKIRI, this->appearDist < dist, this) ? 0.0f : 255.0f, 0.3f,
+                       40.0f, 1.0f);
     if (this->modelAlpha < 10.0f) {
         this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     } else {
