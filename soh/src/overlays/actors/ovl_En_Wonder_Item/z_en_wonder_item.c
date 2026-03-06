@@ -6,6 +6,7 @@
 
 #include "z_en_wonder_item.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -80,19 +81,21 @@ void EnWonderItem_DropCollectible(EnWonderItem* this, PlayState* play, s32 autoC
     if (this->dropCount == 0) {
         this->dropCount++;
     }
-    for (i = this->dropCount; i > 0; i--) {
-        if (this->itemDrop < WONDERITEM_DROP_RANDOM) {
-            if ((this->itemDrop == WONDERITEM_DROP_FLEXIBLE) || !autoCollect) {
-                Item_DropCollectible(play, &this->actor.world.pos, dropTable[this->itemDrop]);
+    if (GameInteractor_Should(VB_WONDER_DROP_ITEM, true, this)) {
+        for (i = this->dropCount; i > 0; i--) {
+            if (this->itemDrop < WONDERITEM_DROP_RANDOM) {
+                if ((this->itemDrop == WONDERITEM_DROP_FLEXIBLE) || !autoCollect) {
+                    Item_DropCollectible(play, &this->actor.world.pos, dropTable[this->itemDrop]);
+                } else {
+                    Item_DropCollectible(play, &this->actor.world.pos, dropTable[this->itemDrop] | 0x8000);
+                }
             } else {
-                Item_DropCollectible(play, &this->actor.world.pos, dropTable[this->itemDrop] | 0x8000);
-            }
-        } else {
-            randomDrop = this->itemDrop - WONDERITEM_DROP_RANDOM;
-            if (!autoCollect) {
-                Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, randomDrop);
-            } else {
-                Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, randomDrop | 0x8000);
+                randomDrop = this->itemDrop - WONDERITEM_DROP_RANDOM;
+                if (!autoCollect) {
+                    Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, randomDrop);
+                } else {
+                    Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, randomDrop | 0x8000);
+                }
             }
         }
     }
