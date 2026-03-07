@@ -574,11 +574,34 @@ void Settings::CreateOptions() {
             RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
             mOptions[RSK_LINKS_POCKET].Disable(
                 "This option is disabled because \"Dungeon Rewards\" are shuffled to \"End of Dungeons\".");
+            mOptions[RSK_LINKS_POCKET_REWARD].Enable();
+            mOptions[RSK_LINKS_POCKET_REWARD].Unhide();
+        } else if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) ==
+            RO_DUNGEON_REWARDS_VANILLA) {
+            mOptions[RSK_LINKS_POCKET_REWARD].Disable("This option is disabled because \"Dungeon Rewards\" are shuffled to \"Vanilla\".");
+            mOptions[RSK_LINKS_POCKET_REWARD].Hide();
+            mOptions[RSK_LINKS_POCKET].Enable();
         } else {
             mOptions[RSK_LINKS_POCKET].Enable();
+            mOptions[RSK_LINKS_POCKET_REWARD].Enable();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LinksPocket"), RO_LINKS_POCKET_DUNGEON_REWARD) == RO_LINKS_POCKET_DUNGEON_REWARD) {
+                mOptions[RSK_LINKS_POCKET_REWARD].Unhide();
+                }
         }
     });
     OPT_U8(RSK_LINKS_POCKET, "Link's Pocket", {"Dungeon Reward", "Advancement", "Anything", "Nothing"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocket"), "", WIDGET_CVAR_COMBOBOX, RO_LINKS_POCKET_DUNGEON_REWARD);
+    OPT_CALLBACK(RSK_LINKS_POCKET, {
+        // Only show the dungeon reward type if Link's Pocket is set to Dungeon Reward and Dungeon Rewards are not Vanilla, OR Dungeon Rewards are end of dungeon
+        if ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("LinksPocket"), RO_LINKS_POCKET_DUNGEON_REWARD) ==
+            RO_LINKS_POCKET_DUNGEON_REWARD && CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) !=
+            RO_DUNGEON_REWARDS_VANILLA) || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) ==
+            RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
+            mOptions[RSK_LINKS_POCKET_REWARD].Unhide();
+        } else {
+            mOptions[RSK_LINKS_POCKET_REWARD].Hide();
+        }
+    });
+    OPT_U8(RSK_LINKS_POCKET_REWARD, "Link's Pocket Reward Type", {"Dungeon Reward", "Stone", "Medallion"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocketReward"), "", WIDGET_CVAR_COMBOBOX, RO_LINKS_POCKET_REWARD);
     OPT_U8(RSK_SHUFFLE_SONGS, "Shuffle Songs", {"Off", "Song Locations", "Dungeon Rewards", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleSongs"), mOptionDescriptions[RSK_SHUFFLE_SONGS], WIDGET_CVAR_COMBOBOX, RO_SONG_SHUFFLE_SONG_LOCATIONS);
     OPT_U8(RSK_SHOPSANITY, "Shop Shuffle", {"Off", "Specific Count", "Random"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Shopsanity"), mOptionDescriptions[RSK_SHOPSANITY], WIDGET_CVAR_COMBOBOX, RO_SHOPSANITY_OFF);
     OPT_CALLBACK(RSK_SHOPSANITY, {
@@ -1413,8 +1436,14 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_GROTTOS_WITHOUT_AGONY, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE },
               "Hidden Grottos without Stone of Agony", "NoSoA",
               "Allows entering hidden grottos without the Stone of Agony.");
-    OPT_TRICK(RT_FEWER_TUNIC_REQUIREMENTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE },
-              "Fewer Tunic Requirements", "FTR", "Logic may require getting through areas with timers without tunics.");
+    OPT_TRICK(
+        RT_FEWER_TUNIC_REQUIREMENTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "Fewer Tunic Requirements",
+        "FTR",
+        "Normally the only hot area logic expects you to navigate without a Goron Tunic is Death Mountain Crater\n"
+        "and you are not expected to navigate underwater sections without a Zora Tunic.\n\n"
+        "With this trick you are expected to do any underwater area except Central Pillar,\n"
+        "any hot area except Volvagia and the Block lift room in Fire Temple\n"
+        "and the health needed to logically navigate Crater is decreased.");
     OPT_TRICK(RT_UNINTUITIVE_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Unintuitive Jumps", "UnJmp",
               "Many ledges can be overcome with particular jumps which are simple to execute without items.\n"
               "This includes jumping from heights to dive deeper without scales,\n"
@@ -2550,11 +2579,11 @@ void Settings::CreateOptions() {
                                   &mOptionGroups[RSG_MENU_COLUMN_STATIC_HINTS],
                               },
                               WidgetContainerType::TABLE);
-    mOptionGroups[RSG_MENU_SECTION_STARTING_EQUIPS] =
-        OptionGroup::SubGroup("Equips",
-                              { &mOptions[RSK_LINKS_POCKET], &mOptions[RSK_STARTING_KOKIRI_SWORD],
-                                &mOptions[RSK_STARTING_MASTER_SWORD], &mOptions[RSK_STARTING_DEKU_SHIELD] },
-                              WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_SECTION_STARTING_EQUIPS] = OptionGroup::SubGroup(
+        "Equips",
+        { &mOptions[RSK_LINKS_POCKET], &mOptions[RSK_LINKS_POCKET_REWARD], &mOptions[RSK_STARTING_KOKIRI_SWORD],
+          &mOptions[RSK_STARTING_MASTER_SWORD], &mOptions[RSK_STARTING_DEKU_SHIELD] },
+        WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_SECTION_STARTING_ITEMS] = OptionGroup::SubGroup("Items",
                                                                            {
                                                                                &mOptions[RSK_STARTING_OCARINA],

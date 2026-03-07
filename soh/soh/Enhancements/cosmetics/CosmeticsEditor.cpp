@@ -2202,6 +2202,7 @@ void ResetColor(CosmeticOption& cosmeticOption) {
         ResetColor(cosmeticOptions.at("Kaleido.SaveC"));
         ResetColor(cosmeticOptions.at("Kaleido.SaveD"));
     }
+    ShipInit::Init(cosmeticOption.valuesCvar);
 }
 
 void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
