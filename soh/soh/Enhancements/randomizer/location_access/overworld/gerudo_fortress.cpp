@@ -185,7 +185,7 @@ void RegionTable_Init_GerudoFortress() {
 
 #pragma endregion
 
-//Assums IsChild || HasItem(RG_GERUDO_MEMBERSHIP_CARD) is checked on entry
+//Assumes IsChild || HasItem(RG_GERUDO_MEMBERSHIP_CARD) is checked on entry
     areaTable[RR_GF_TOWER] = Region("Gerudo Fortress Tower", SCENE_GERUDOS_FORTRESS, {
         //Events
         EVENT_ACCESS(LOGIC_GF_GATE_OPEN, logic->IsAdult && logic->HasItem(RG_SPEAK_GERUDO)),
