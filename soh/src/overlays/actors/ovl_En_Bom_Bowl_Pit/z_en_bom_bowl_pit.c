@@ -2,7 +2,6 @@
 #include "vt.h"
 #include "overlays/actors/ovl_En_Bom_Chu/z_en_bom_chu.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED

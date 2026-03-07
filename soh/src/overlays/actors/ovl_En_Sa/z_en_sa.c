@@ -715,7 +715,7 @@ void func_80AF68E4(EnSa* this, PlayState* play) {
 
 void func_80AF6B20(EnSa* this, PlayState* play) {
     if (play->sceneNum == SCENE_SACRED_FOREST_MEADOW) {
-        if (GameInteractor_Should(VB_GIVE_ITEM_SARIAS_SONG, true)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, ITEM_SONG_SARIA)) {
             Item_Give(play, ITEM_SONG_SARIA);
         }
         EnSa_ChangeAnim(this, ENSA_ANIM1_6);
@@ -745,12 +745,8 @@ void EnSa_Update(Actor* thisx, PlayState* play) {
         EnSa_ChangeAnim(this, ENSA_ANIM1_6);
     }
 
-    if (this->actionFunc != func_80AF68E4) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), 0) != 0) {
-            this->alpha = Actor_UpdateAlphaByDistance(&this->actor, play, this->alpha, 32767);
-        } else {
-            this->alpha = Actor_UpdateAlphaByDistance(&this->actor, play, this->alpha, 400.0f);
-        }
+    if (GameInteractor_Should(VB_FADE_KOKIRI, this->actionFunc != func_80AF68E4, this)) {
+        this->alpha = Actor_UpdateAlphaByDistance(&this->actor, play, this->alpha, 400.0f);
     } else {
         this->alpha = 255;
     }

@@ -6,7 +6,6 @@
 
 #include "z_en_ani.h"
 #include "objects/object_ani/object_ani.h"
-#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 

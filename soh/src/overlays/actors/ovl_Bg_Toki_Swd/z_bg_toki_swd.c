@@ -209,7 +209,8 @@ void BgTokiSwd_Draw(Actor* thisx, PlayState* play2) {
 
     func_8002EBCC(&this->actor, play, 0);
 
-    gSPSegment(POLY_OPA_DISP++, 0x08, Gfx_TexScroll(play->state.gfxCtx, 0, -(play->gameplayFrames % 0x80), 32, 32));
+    gSPSegment(POLY_OPA_DISP++, 0x08,
+               Gfx_TexScrollEx(play->state.gfxCtx, 0, -(play->gameplayFrames % 0x80), 32, 32, 0, -1));
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, object_toki_objects_DL_001BD0);
 

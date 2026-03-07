@@ -100,8 +100,8 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
         f32 scale = 0.4f;
 
         gSPSegment(POLY_OPA_DISP++, 0x08,
-                   (uintptr_t)Gfx_TwoTexScroll(titleContext->state.gfxCtx, 0, 0, (0 - 1) % 128, 32, 32, 1, 0,
-                                               (1 * -2) % 128, 32, 32));
+                   (uintptr_t)Gfx_TwoTexScrollEx(titleContext->state.gfxCtx, 0, 0, (0 - 1) % 128, 32, 32, 1, 0,
+                                                 (1 * -2) % 128, 32, 32, 0, 0, 0, 0));
 
         Matrix_Translate(0.0f, -10.0f, 0.0f, MTXMODE_APPLY);
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);

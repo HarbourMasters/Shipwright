@@ -599,6 +599,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*Actor`
+    VB_FADE_KOKIRI,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnElf`
     VB_FAIRY_HEAL,
 
@@ -719,22 +727,6 @@ typedef enum {
     // #### `args`
     // - `*EnJs`
     VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_BOLERO_OF_FIRE,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_EPONAS_SONG,
 
     // #### `result`
     // ```c
@@ -1009,55 +1001,7 @@ typedef enum {
     // ```
     // #### `args`
     // - None
-    VB_GIVE_ITEM_MINUET_OF_FOREST,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_NOCTURNE_OF_SHADOW,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
     VB_GIVE_ITEM_OCARINA_OF_TIME,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_PRELUDE_OF_LIGHT,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_REQUIEM_OF_SPIRIT,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_SARIAS_SONG,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_SERENADE_OF_WATER,
 
     // #### `result`
     // ```c
@@ -1080,16 +1024,8 @@ typedef enum {
     // true
     // ```
     // #### `args`
-    // - None
-    VB_GIVE_ITEM_SONG_OF_STORMS,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_SONG_OF_TIME,
+    // - `songItemId`
+    VB_GIVE_ITEM_SONG,
 
     // #### `result`
     // ```c
@@ -1106,14 +1042,6 @@ typedef enum {
     // #### `args`
     // - None
     VB_GIVE_ITEM_STRENGTH_1,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_SUNS_SONG,
 
     // #### `result`
     // ```c
@@ -1138,14 +1066,6 @@ typedef enum {
     // #### `args`
     // - None
     VB_GIVE_ITEM_ZELDAS_LETTER,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_GIVE_ITEM_ZELDAS_LULLABY,
 
     // #### `result`
     // ```c
@@ -1345,6 +1265,14 @@ typedef enum {
     // ```
     // #### `args`
     // - None
+    VB_JABU_WOBBLE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
     VB_KALEIDO_UNPAUSE_CLOSE,
 
     // #### `result`
@@ -1418,6 +1346,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_MALON_RETURN_FROM_CASTLE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_SEND_MALON_HOME,
 
     // #### `result`
     // ```c
@@ -1855,6 +1791,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnFu`
+    VB_PLAY_SONG_OF_STORMS_CS,
+
+    // #### `result`
+    // ```c
     // !CHECK_QUEST_ITEM(QUEST_SONG_SUN)
     // ```
     // #### `args`
@@ -2258,6 +2202,15 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*CollisionPoly
+    // - s32 - background id`
+    VB_TARGETABLE_HOOKSHOT_RETICLE,
+
+    // #### `result`
+    // ```c
     // (this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (this->heldActor != NULL) &&
     // CHECK_BTN_ANY(sControlInput->press.button, buttonsToCheck)
     // ```
@@ -2385,6 +2338,14 @@ typedef enum {
     // #### `args`
     // - `*EnMk`
     VB_USE_EYEDROP_DIALOGUE,
+
+    // #### `result`
+    // ```c
+    // (this->modelAnimType != PLAYER_ANIMTYPE_3) && (play->shootingGalleryStatus == 0)
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_USE_HELD_ITEM_AFTER_CHANGE,
 
     // #### `result`
     // ```c

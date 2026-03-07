@@ -156,7 +156,7 @@ void RegionTable_Init_DodongosCavern() {
     areaTable[RR_DODONGOS_CAVERN_ARMOS_ROOM] = Region("Dodongos Cavern Armos Room", SCENE_DODONGOS_CAVERN, {}, {}, {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_STAIRS_UPPER,    true),
-        ENTRANCE(RR_DODONGOS_CAVERN_BOMB_ROOM_LOWER, logic->IsAdult || (logic->HasItem(RG_POWER_BRACELET) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS))),
+        ENTRANCE(RR_DODONGOS_CAVERN_BOMB_ROOM_LOWER, logic->IsAdult || (logic->HasItem(RG_POWER_BRACELET) && logic->HasItem(RG_CLIMB)) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)),
     });
 
     areaTable[RR_DODONGOS_CAVERN_BOMB_ROOM_LOWER] = Region("Dodongos Cavern Bomb Room Lower", SCENE_DODONGOS_CAVERN, {}, {
