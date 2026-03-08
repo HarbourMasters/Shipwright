@@ -59,7 +59,7 @@ void RegionTable_Init_ZoraRiver() {
     }, {
         //Exits
         ENTRANCE(RR_ZR_FRONT,            true),
-        ENTRANCE(RR_ZR_ATOP_LADDER,      (logic->IsAdult || logic->HasItem(RG_POWER_BRACELET)) && (logic->HasItem(RG_CLIMB) || (logic->IsAdult && logic->CanUse(RG_HOOKSHOT)) || CanPlantBean(RR_ZORAS_RIVER, RG_ZORAS_RIVER_BEAN_SOUL))),
+        ENTRANCE(RR_ZR_ATOP_LADDER,      (logic->IsAdult || logic->HasItem(RG_POWER_BRACELET)) && (logic->CanClimbLadder() || CanPlantBean(RR_ZORAS_RIVER, RG_ZORAS_RIVER_BEAN_SOUL))),
         ENTRANCE(RR_ZR_PILLAR,           (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && ctx->GetTrickOption(RT_ZR_LOWER))),
         ENTRANCE(RR_ZR_FROM_SHORTCUT,    logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
         ENTRANCE(RR_ZR_STORMS_GROTTO,    logic->CanOpenStormsGrotto()),

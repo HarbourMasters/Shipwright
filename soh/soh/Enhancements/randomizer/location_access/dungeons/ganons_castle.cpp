@@ -150,7 +150,7 @@ void RegionTable_Init_GanonsCastle() {
         //Events
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,              logic->CanBreakPots()),
         EVENT_ACCESS(LOGIC_WATER_TRIAL_RUSTED_SWITCH, logic->IsAdult && (logic->HasItem(RG_POWER_BRACELET) || (logic->CanMiddairGroundJump())) && 
-                                                      (logic->BlueFire() || ctx->GetTrickOption(RT_RUSTED_SWITCHES)) && 
+                                                      (logic->BlueFire() || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) && 
                                                       logic->CanUse(RG_MEGATON_HAMMER)),
     }, {
         //Locations
@@ -575,7 +575,7 @@ void RegionTable_Init_GanonsCastle() {
     areaTable[RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_CHAIRS_ROOM] = Region("Ganon's Castle MQ Spirit Trial Chairs Room", SCENE_INSIDE_GANONS_CASTLE, {}, {}, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MQ_MAIN,                       true),
-        ENTRANCE(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_BEFORE_SWITCH, AnyAgeTime([]{return (logic->CanHitEyeTargets() || ctx->GetTrickOption(RT_RUSTED_SWITCHES)) && logic->CanUse(RG_MEGATON_HAMMER);})),
+        ENTRANCE(RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_BEFORE_SWITCH, AnyAgeTime([]{return (logic->CanHitEyeTargets() || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) && logic->CanUse(RG_MEGATON_HAMMER);})),
     });
 
     areaTable[RR_GANONS_CASTLE_MQ_SPIRIT_TRIAL_BEFORE_SWITCH] = Region("Ganon's Castle MQ Spirit Trial Before Switch", SCENE_INSIDE_GANONS_CASTLE, {}, {

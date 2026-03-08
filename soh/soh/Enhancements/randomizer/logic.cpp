@@ -2547,6 +2547,14 @@ bool Logic::ReachDistantScarecrow() {
     return ScarecrowsSong() && CanUse(RG_LONGSHOT);
 }
 
+bool Logic::CanClimbLadder() {
+    return CanUse(RG_CLIMB) || (ctx->GetTrickOption(RT_HOOKSHOT_LADDERS) && CanUse(RG_HOOKSHOT));
+}
+
+bool Logic::CanClimbHighLadder() {
+    return CanUse(RG_CLIMB) || (ctx->GetTrickOption(RT_HOOKSHOT_LADDERS) && CanUse(RG_LONGSHOT));
+}
+
 bool Logic::SummonEpona() {
     return IsAdult && Get(LOGIC_FREED_EPONA) && CanUse(RG_EPONAS_SONG);
 }
@@ -2560,6 +2568,20 @@ bool Logic::IsReverseAccessPossible() {
              ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL)) ||
             (ctx->GetOption(RSK_MIX_BOSS_ENTRANCES) &&
              (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES))));
+}
+
+bool Logic::DMCUpperToPots() {
+    return CanUse(RG_HOVER_BOOTS) || (IsAdult && ((Get(LOGIC_DMC_BOULDER)) ||
+                                                  (ctx->GetTrickOption(RT_DMC_BOULDER_SKIP) /* && CanUse(RG_ROLL)*/)));
+}
+
+bool Logic::DMCPotsToPad() {
+    return (CanUse(RG_HOVER_BOOTS) || CanUse(RG_HOOKSHOT) ||
+            (IsAdult && CanShield() && ctx->GetTrickOption(RT_DMC_BOLERO_JUMP) && CanUse(RG_POWER_BRACELET)));
+}
+
+bool Logic::DMCPadToPots() {
+    return ((CanUse(RG_HOVER_BOOTS) && (IsAdult || (HasItem(RG_CLIMB) /*&& CanUse(RG_ROLL)*/))) || CanUse(RG_HOOKSHOT));
 }
 
 bool Logic::SpiritExplosiveKeyLogic() {

@@ -93,6 +93,7 @@ void RegisterShuffleSpeak() {
                 case ACTOR_EN_SKJ:
                     inf = RAND_INF_CAN_SPEAK_KOKIRI;
                     break;
+                case ACTOR_EN_DIVING_GAME:
                 case ACTOR_EN_KZ:
                 case ACTOR_EN_RU1:
                 case ACTOR_EN_RU2:

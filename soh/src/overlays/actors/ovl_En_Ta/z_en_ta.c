@@ -697,7 +697,7 @@ void EnTa_RunCuccoGame(EnTa* this, PlayState* play) {
                 this->superCuccos[i]->actor.gravity -= 0.03f;
             }
 
-            if (func_80B150AC(this, play, i)) {
+            if (!GameInteractor_Should(VB_PREVENT_STRENGTH, !func_80B150AC(this, play, i))) {
                 if (this->unk_2C4[i] > 0) {
                     this->unk_2C4[i]--;
                 } else {

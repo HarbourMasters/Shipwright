@@ -46,14 +46,14 @@ void RegionTable_Init_SacredForestMeadow() {
         ENTRANCE(RR_FOREST_TEMPLE_ENTRYWAY, logic->CanUse(RG_HOOKSHOT)),
         ENTRANCE(RR_SFM_ENTRYWAY,           true),
         // adult can jump up, but it's a trick. being hit directly by club moblin while wearing hover boots also works, but relies on coming from LW
-        ENTRANCE(RR_SFM_ABOVE_MAZE,         logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanGroundJump())),
+        ENTRANCE(RR_SFM_ABOVE_MAZE,         logic->CanClimbLadder() || (logic->IsAdult && logic->CanGroundJump())),
         ENTRANCE(RR_SFM_STORMS_GROTTO,      logic->CanOpenStormsGrotto()),
     });
 
     areaTable[RR_SFM_OUTSIDE_FAIRY_GROTTO] = Region("SFM Outside Fairy Grotto", SCENE_SACRED_FOREST_MEADOW, {}, {}, {
         //Exits
         ENTRANCE(RR_SFM_FAIRY_GROTTO, true),
-        ENTRANCE(RR_SFM_ABOVE_MAZE,   logic->HasItem(RG_CLIMB) || logic->HasItem(RG_HOOKSHOT)),
+        ENTRANCE(RR_SFM_ABOVE_MAZE,   logic->CanClimbLadder()),
     });
 
     areaTable[RR_SFM_FAIRY_GROTTO] = Region("SFM Fairy Grotto", SCENE_GROTTOS, {

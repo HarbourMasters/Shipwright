@@ -7141,7 +7141,7 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
             !CVarGetInteger(CVAR_CHEAT("SpeedModifier.DoesntChangeJump"), 0)) {
             if (CVarGetInteger(CVAR_CHEAT("SpeedModifier.SpeedToggle"), 0)) {
                 if (gWalkSpeedToggle) {
-                    maxSpeed *= CVarGetFloat(CVAR_CHEAT("SpeedModifier.Mapping"), 1.0f);
+                    maxSpeed *= CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f);
                 }
             } else {
                 const s32 mod1Mask = CVarGetInteger(CVAR_CHEAT("SpeedModifier.Btn"), BTN_CUSTOM_MODIFIER1);
@@ -12306,7 +12306,7 @@ void Player_Update(Actor* thisx, PlayState* play) {
             }
         }
 
-        if (CVarGetInteger(CVAR_CHEAT("SpeedModifier.Value"), 1.0f) != 1.0f &&
+        if (CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f) != 1.0f &&
             CVarGetInteger(CVAR_CHEAT("SpeedModifier.SpeedToggle"), 0)) {
             const s32 mod1Mask = CVarGetInteger(CVAR_CHEAT("SpeedModifier.Btn"), BTN_CUSTOM_MODIFIER1);
 
