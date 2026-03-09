@@ -88,9 +88,22 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_HC_MOAT] = Region("Hyrule Castle Grounds", SCENE_HYRULE_CASTLE, {}, {
         //Locations
-        LOCATION(RC_HC_GRASS_1,     logic->CanCutShrubs()),
-        LOCATION(RC_HC_GRASS_2,     logic->CanCutShrubs()),
-        LOCATION(RC_HC_GROTTO_TREE, logic->CanBonkTrees()),
+        LOCATION(RC_HC_GRASS_1,             logic->CanCutShrubs()),
+        LOCATION(RC_HC_GRASS_2,             logic->CanCutShrubs()),
+        LOCATION(RC_HC_GROTTO_TREE,         logic->CanBonkTrees()),
+        LOCATION(RC_HC_WONDER_LEFT_TORCH,   logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->HasItem(RG_BRONZE_SCALE)),
+        LOCATION(RC_HC_WONDER_RIGHT_TORCH,  logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->HasItem(RG_BRONZE_SCALE)),
+        LOCATION(RC_HC_WONDER_MOAT_1,       logic->HasItem(RG_BRONZE_SCALE)),
+        LOCATION(RC_HC_WONDER_MOAT_2,       logic->HasItem(RG_BRONZE_SCALE)),
+        LOCATION(RC_HC_WONDER_MOAT_3,       logic->HasItem(RG_BRONZE_SCALE)),
+        LOCATION(RC_HC_WONDER_MOAT_4,       logic->HasItem(RG_BRONZE_SCALE)),
+        LOCATION(RC_HC_WONDER_MOAT_5,       logic->HasItem(RG_BRONZE_SCALE)),
+        LOCATION(RC_HC_WONDER_MOAT_6,       logic->HasItem(RG_BRONZE_SCALE)),
+        LOCATION(RC_HC_WONDER_MOAT_7,       logic->HasItem(RG_BRONZE_SCALE)),
+        LOCATION(RC_HC_WONDER_MOAT_8,       logic->HasItem(RG_BRONZE_SCALE)),
+        LOCATION(RC_HC_WONDER_MOAT_9,       logic->HasItem(RG_BRONZE_SCALE)),
+        LOCATION(RC_HC_WONDER_MOAT_10,      logic->HasItem(RG_BRONZE_SCALE)),
+
     }, {
         //Exits
         ENTRANCE(RR_HC_GATE,          true),

@@ -60,6 +60,8 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_NEAR_BOARDING_HOUSE_CHILD_CRATE,   logic->IsChild && logic->CanBreakCrates()),
         LOCATION(RC_KAK_NEAR_BAZAAR_CHILD_CRATE,           logic->IsChild && logic->CanBreakCrates()),
         LOCATION(RC_KAK_TREE,                              logic->CanBonkTrees()),
+        LOCATION(RC_KAK_WONDER_UNDER_CONSTRUCTION,         logic->IsChild),
+
     }, {
         //Exits
         ENTRANCE(RR_HYRULE_FIELD,             true),
@@ -162,7 +164,9 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_IMPAS_HOUSE] = Region("Kak Impas House", SCENE_IMPAS_HOUSE, {}, {
         //Locations
-        LOCATION(RC_KAK_IMPAS_HOUSE_COW, logic->CanUse(RG_EPONAS_SONG)),
+        LOCATION(RC_KAK_IMPAS_HOUSE_COW,    logic->CanUse(RG_EPONAS_SONG)),
+        LOCATION(RC_KAK_WONDER_ABOVE_COW,   true),
+
     }, {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE, true),

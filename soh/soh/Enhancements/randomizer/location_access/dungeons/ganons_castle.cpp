@@ -347,7 +347,9 @@ void RegionTable_Init_GanonsCastle() {
 
     areaTable[RR_GANONS_CASTLE_MQ_MAIN] = Region("Ganon's Castle MQ Main", SCENE_INSIDE_GANONS_CASTLE, {}, {
         //Locations
-        LOCATION(RC_SHEIK_HINT_MQ_GC, logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_SHEIK_HINT_MQ_GC,  logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_MQ_GANON_WONDER_1, true),
+        LOCATION(RC_MQ_GANON_WONDER_2, true),
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MQ_LOBBY,                       true),
