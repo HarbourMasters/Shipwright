@@ -3635,14 +3635,14 @@ CheckIdentity Randomizer::IdentifyTree(s32 sceneNum, s32 posX, s32 posZ) {
     return treeIdentity;
 }
 
-CheckIdentity Randomizer::IdentifyWonderItem(s32 sceneNum, s32 posX, s32 posZ) {
+CheckIdentity Randomizer::IdentifyWonderItem(s32 sceneNum, s32 par1, s32 par2) {
     struct CheckIdentity wonderIdentity;
     uint32_t wonderSceneNum = sceneNum;
 
     wonderIdentity.randomizerInf = RAND_INF_MAX;
     wonderIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
 
-    s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
+    s32 actorParams = TWO_ACTOR_PARAMS(par1, par2);
 
     Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_WONDER_ITEM, wonderSceneNum, actorParams);
 

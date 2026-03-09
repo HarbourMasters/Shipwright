@@ -312,6 +312,17 @@ void Settings::CreateOptionDescriptions() {
         "only shuffle with No Logic.";
     mOptionDescriptions[RSK_SHUFFLE_BUSHES] =
         "Bushes in Hyrule Field & Zora's Fountain will contain randomized items when first walked through.";
+    mOptionDescriptions[RSK_SHUFFLE_WONDER_ITEMS] =
+        "Wonder items will drop a randomized item the first time they're collected. "
+        "Wonder items will be marked with swirling particles.\n"
+        "\n"
+        "Off - Wonder items will not be shuffled.\n"
+        "\n"
+        "Dungeons - Only shuffle wonder items that are within dungeons.\n"
+        "\n"
+        "Overworld - Only shuffle wonder items that are outside of dungeons.\n"
+        "\n"
+        "All Crates - Shuffle all wonder items.";
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
                                                     "\n"
                                                     "The fishing pole is required to play the fishing pond minigame.";
