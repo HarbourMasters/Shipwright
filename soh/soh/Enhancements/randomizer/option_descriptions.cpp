@@ -508,16 +508,16 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "This excludes gossip stones and magic bean locations.";
     mOptionDescriptions[RSK_SHUFFLE_GRASS] =
-        "Grass/Bushes will drop a randomized item the first time they're cut and collected. "
-        "Grass/Bushes will have a different appearance when they hold a randomized item.\n"
+        "Grass will drop a randomized item the first time they're cut and collected. "
+        "Grass will have a different appearance when they hold a randomized item.\n"
         "\n"
-        "Off - Grass/Bushes will not be shuffled.\n"
+        "Off - Grass will not be shuffled.\n"
         "\n"
-        "Dungeons - Only shuffle grass/bushes that are within dungeons.\n"
+        "Dungeons - Only shuffle grass that are within dungeons.\n"
         "\n"
-        "Overworld - Only shuffle grass/bushes that are outside of dungeons.\n"
+        "Overworld - Only shuffle grass that are outside of dungeons.\n"
         "\n"
-        "All Grass/Bushes - Shuffle all grass/bushes.";
+        "All Grass - Shuffle all grass.";
     mOptionDescriptions[RSK_SHUFFLE_DUNGEON_REWARDS] =
         "Shuffles the location of Spiritual Stones and medallions.\n"
         "Vanilla - Spiritual Stones and medallions will be given from their respective boss.\n"
@@ -795,7 +795,7 @@ void Settings::CreateOptionDescriptions() {
         "and disabled below.\n"
         "\n"
         "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.";
-    mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE] = "When this options is enabled, the randomizer will "
+    mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE] = "When this option is enabled, the randomizer will "
                                                        "guarantee that every item is obtainable and every "
                                                        "location is reachable. When disabled, only "
                                                        "required items and locations to beat the game "

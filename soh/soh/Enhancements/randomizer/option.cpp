@@ -358,13 +358,13 @@ RandomizerCheck LocationOption::GetKey() const {
     return static_cast<RandomizerCheck>(key);
 }
 
-#define DEFINE_RAND_TRICK(enum) { enum, #enum },
+#define RANDO_ENUM_ITEM(enum) { enum, #enum },
 
 std::unordered_map<RandomizerTrick, std::string> trickNames = {
-#include "randomizer_trick.h"
+#include "randomizerEnums/RandomizerTrick.h"
 };
 
-#undef DEFINE_RAND_TRICK
+#undef RANDO_ENUM_ITEM
 
 const static std::string trickPrefix = "randomizer.tricks.";
 
@@ -384,35 +384,39 @@ static std::string MakeTrickDescription(RandomizerTrick key) {
     return Lang::Translate((trickPrefix + trickNamePart + descriptionPostfix).c_str());
 }
 
-TrickOption::TrickOption(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_,
-                         std::set<Tricks::Tag> tags_)
+TrickSetting::TrickSetting(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_,
+                         std::set<Tricks::Tag> tags_, const std::string nameTag_)
     : Option(key_, std::move(MakeTrickName(key_)), { "Disabled", "Enabled" }, OptionCategory::Setting, "",
              std::move(MakeTrickDescription(key_)), WIDGET_CVAR_CHECKBOX, 0, false, nullptr, IMFLAG_NONE),
-      mQuest(quest_), mArea(area_), mTags(std::move(tags_)) {
+      mQuest(quest_), mArea(area_), mNameTag(nameTag_), mTags(std::move(tags_)) {
 }
 
-TrickOption TrickOption::LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
-                                    std::set<Tricks::Tag> tags_) {
-    return { key_, quest_, area_, std::move(tags_) };
+TrickSetting TrickSetting::LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
+                                    std::set<Tricks::Tag> tags_, const std::string nameTag_) {
+    return { key_, quest_, area_, std::move(tags_), nameTag_ };
 }
 
-RandomizerTrick TrickOption::GetKey() const {
+RandomizerTrick TrickSetting::GetKey() const {
     return static_cast<RandomizerTrick>(key);
 }
 
-RandomizerCheckQuest TrickOption::GetQuest() const {
+RandomizerCheckQuest TrickSetting::GetQuest() const {
     return mQuest;
 }
 
-RandomizerArea TrickOption::GetArea() const {
+RandomizerArea TrickSetting::GetArea() const {
     return mArea;
 }
 
-bool TrickOption::HasTag(const Tricks::Tag tag) const {
+std::string TrickSetting::GetNameTag() const {
+    return mNameTag;
+}
+
+bool TrickSetting::HasTag(const Tricks::Tag tag) const {
     return mTags.contains(tag);
 }
 
-const std::set<Tricks::Tag>& TrickOption::GetTags() const {
+const std::set<Tricks::Tag>& TrickSetting::GetTags() const {
     return mTags;
 }
 

@@ -109,7 +109,7 @@ Settings::Settings() : mExcludeLocationsOptionsAreas(RCAREA_INVALID) {
 
 #define OPT_U8(rsk, ...) mOptions[rsk] = Option::U8(rsk, __VA_ARGS__)
 #define OPT_BOOL(rsk, ...) mOptions[rsk] = Option::Bool(rsk, __VA_ARGS__)
-#define OPT_TRICK(rsk, ...) mTrickOptions[rsk] = TrickOption::LogicTrick(rsk, __VA_ARGS__)
+#define OPT_TRICK(rsk, ...) mTrickSettings[rsk] = TrickSetting::LogicTrick(rsk, __VA_ARGS__)
 // All callbacks will be called once when the widget is Added (on boot, essentially) and
 // once when the widget is interacted with such that the value was changed.
 #define OPT_CALLBACK(rsk, body) mOptions[rsk].SetCallback([this](WidgetInfo & info) body)
@@ -136,11 +136,20 @@ void Settings::HandleMixedEntrancePoolsUI() {
 }
 
 void Settings::HandleStartingAgeUI() {
-    // Starting Age - Disabled under very specific conditions
-    // RANDOTODO: Fix so this is not disabled for No Logic.
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
-        CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_OFF) ==
-            RO_GENERIC_OFF) /* closed door of time with ocarina shuffle off */ {
+    // Starting Age - Disabled under very specific conditions unless it's No Logic
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC &&
+        // If Closed DoT requires OoT then we can only start as child
+        ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
+          CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_OFF) == RO_GENERIC_OFF) ||
+         // If Forest is Closed, we cannot start as Adult unless there's a sphere 0 entrance shuffle in Kokiri forest,
+         // or there's random spawns, as the player may saveload as child and get stuck.
+         // Grottos only lead somewhere if decoupled
+         (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ClosedForest"), RO_CLOSED_FOREST_ON) == RO_CLOSED_FOREST_ON &&
+          CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldSpawns"), RO_GENERIC_OFF) == RO_GENERIC_OFF &&
+          (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGrottosEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF ||
+           CVarGetInteger(CVAR_RANDOMIZER_SETTING("DecoupleEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF) &&
+          CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF &&
+          CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"), RO_GENERIC_OFF) == RO_GENERIC_OFF))) {
         mOptions[RSK_STARTING_AGE].Disable("This option is disabled due to other options making the game unbeatable.");
     } else {
         mOptions[RSK_STARTING_AGE].Enable();
@@ -151,6 +160,9 @@ void Settings::CreateOptions() {
     CreateOptionDescriptions();
     // clang-format off
     OPT_U8(RSK_FOREST, "Closed Forest", {"On", "Deku Only", "Off"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ClosedForest"), mOptionDescriptions[RSK_FOREST], WIDGET_CVAR_COMBOBOX, RO_CLOSED_FOREST_ON);
+    OPT_CALLBACK(RSK_FOREST, {
+        HandleStartingAgeUI();
+    });
     OPT_U8(RSK_KAK_GATE, "Kakariko Gate", {"Closed", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("KakarikoGate"), mOptionDescriptions[RSK_KAK_GATE]);
     OPT_U8(RSK_DOOR_OF_TIME, "Door of Time", {"Closed", "Song only", "Open"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("DoorOfTime"), mOptionDescriptions[RSK_DOOR_OF_TIME], WIDGET_CVAR_COMBOBOX);
     OPT_CALLBACK(RSK_DOOR_OF_TIME, {
@@ -320,6 +332,8 @@ void Settings::CreateOptions() {
         } else {
             mOptions[RSK_MIX_OVERWORLD_ENTRANCES].Unhide();
         }
+        
+        HandleStartingAgeUI();
     });
     OPT_U8(RSK_SHUFFLE_INTERIOR_ENTRANCES, "Interior Entrances", {"Off", "Simple", "All"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleInteriorsEntrances"), mOptionDescriptions[RSK_SHUFFLE_INTERIOR_ENTRANCES], WIDGET_CVAR_COMBOBOX, RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
     OPT_CALLBACK(RSK_SHUFFLE_INTERIOR_ENTRANCES, {
@@ -331,6 +345,8 @@ void Settings::CreateOptions() {
         } else {
             mOptions[RSK_MIX_INTERIOR_ENTRANCES].Unhide();
         }
+        
+        HandleStartingAgeUI();
     });
     OPT_BOOL(RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES, "Thieves' Hideout Entrances", CVAR_RANDOMIZER_SETTING("ShuffleThievesHideoutEntrances"), mOptionDescriptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES]);
     OPT_CALLBACK(RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES, {
@@ -354,6 +370,8 @@ void Settings::CreateOptions() {
         } else {
             mOptions[RSK_MIX_GROTTO_ENTRANCES].Unhide();
         }
+        
+        HandleStartingAgeUI();
     });
     OPT_BOOL(RSK_SHUFFLE_OWL_DROPS, "Owl Drops", CVAR_RANDOMIZER_SETTING("ShuffleOwlDrops"), mOptionDescriptions[RSK_SHUFFLE_OWL_DROPS]);
     OPT_BOOL(RSK_SHUFFLE_WARP_SONGS, "Warp Songs", CVAR_RANDOMIZER_SETTING("ShuffleWarpSongs"), mOptionDescriptions[RSK_SHUFFLE_WARP_SONGS]);
@@ -365,6 +383,9 @@ void Settings::CreateOptions() {
         }
     });
     OPT_BOOL(RSK_SHUFFLE_OVERWORLD_SPAWNS, "Overworld Spawns", CVAR_RANDOMIZER_SETTING("ShuffleOverworldSpawns"), mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]);
+    OPT_CALLBACK(RSK_SHUFFLE_OVERWORLD_SPAWNS, {
+        HandleStartingAgeUI();
+    });
     OPT_BOOL(RSK_MIXED_ENTRANCE_POOLS, "Mixed Entrance Pools", CVAR_RANDOMIZER_SETTING("MixedEntrances"), mOptionDescriptions[RSK_MIXED_ENTRANCE_POOLS]);
     OPT_CALLBACK(RSK_MIXED_ENTRANCE_POOLS, {
         // Show mixed entrance pool options if mixed entrance pools are enabled, but only the ones that aren't off
@@ -407,6 +428,9 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_MIX_THIEVES_HIDEOUT_ENTRANCES, "Mix Thieves' Hideout", CVAR_RANDOMIZER_SETTING("MixThievesHideout"), mOptionDescriptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES]);
     OPT_BOOL(RSK_MIX_GROTTO_ENTRANCES, "Mix Grottos", CVAR_RANDOMIZER_SETTING("MixGrottos"), mOptionDescriptions[RSK_MIX_GROTTO_ENTRANCES]);
     OPT_BOOL(RSK_DECOUPLED_ENTRANCES, "Decouple Entrances", CVAR_RANDOMIZER_SETTING("DecoupleEntrances"), mOptionDescriptions[RSK_DECOUPLED_ENTRANCES]);
+    OPT_CALLBACK(RSK_DECOUPLED_ENTRANCES, {
+        HandleStartingAgeUI();
+    });
     OPT_U8(RSK_BOMBCHU_BAG, "Bombchu Bag", {"None", "Single Bag", "Progressive Bags"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("BombchuBag"), mOptionDescriptions[RSK_BOMBCHU_BAG], WIDGET_CVAR_COMBOBOX, RO_BOMBCHU_BAG_NONE);
     OPT_U8(RSK_ENABLE_BOMBCHU_DROPS, "Bombchu Drops", {"No", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("EnableBombchuDrops"), mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS], WIDGET_CVAR_COMBOBOX, RO_AMMO_DROPS_ON);
     // TODO: AmmoDrops and/or HeartDropRefill, combine with/separate Ammo Drops from Bombchu Drops?
@@ -550,11 +574,34 @@ void Settings::CreateOptions() {
             RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
             mOptions[RSK_LINKS_POCKET].Disable(
                 "This option is disabled because \"Dungeon Rewards\" are shuffled to \"End of Dungeons\".");
+            mOptions[RSK_LINKS_POCKET_REWARD].Enable();
+            mOptions[RSK_LINKS_POCKET_REWARD].Unhide();
+        } else if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) ==
+            RO_DUNGEON_REWARDS_VANILLA) {
+            mOptions[RSK_LINKS_POCKET_REWARD].Disable("This option is disabled because \"Dungeon Rewards\" are shuffled to \"Vanilla\".");
+            mOptions[RSK_LINKS_POCKET_REWARD].Hide();
+            mOptions[RSK_LINKS_POCKET].Enable();
         } else {
             mOptions[RSK_LINKS_POCKET].Enable();
+            mOptions[RSK_LINKS_POCKET_REWARD].Enable();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LinksPocket"), RO_LINKS_POCKET_DUNGEON_REWARD) == RO_LINKS_POCKET_DUNGEON_REWARD) {
+                mOptions[RSK_LINKS_POCKET_REWARD].Unhide();
+                }
         }
     });
     OPT_U8(RSK_LINKS_POCKET, "Link's Pocket", {"Dungeon Reward", "Advancement", "Anything", "Nothing"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocket"), "", WIDGET_CVAR_COMBOBOX, RO_LINKS_POCKET_DUNGEON_REWARD);
+    OPT_CALLBACK(RSK_LINKS_POCKET, {
+        // Only show the dungeon reward type if Link's Pocket is set to Dungeon Reward and Dungeon Rewards are not Vanilla, OR Dungeon Rewards are end of dungeon
+        if ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("LinksPocket"), RO_LINKS_POCKET_DUNGEON_REWARD) ==
+            RO_LINKS_POCKET_DUNGEON_REWARD && CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) !=
+            RO_DUNGEON_REWARDS_VANILLA) || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) ==
+            RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
+            mOptions[RSK_LINKS_POCKET_REWARD].Unhide();
+        } else {
+            mOptions[RSK_LINKS_POCKET_REWARD].Hide();
+        }
+    });
+    OPT_U8(RSK_LINKS_POCKET_REWARD, "Link's Pocket Reward Type", {"Dungeon Reward", "Stone", "Medallion"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocketReward"), "", WIDGET_CVAR_COMBOBOX, RO_LINKS_POCKET_REWARD);
     OPT_U8(RSK_SHUFFLE_SONGS, "Shuffle Songs", {"Off", "Song Locations", "Dungeon Rewards", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleSongs"), mOptionDescriptions[RSK_SHUFFLE_SONGS], WIDGET_CVAR_COMBOBOX, RO_SONG_SHUFFLE_SONG_LOCATIONS);
     OPT_U8(RSK_SHOPSANITY, "Shop Shuffle", {"Off", "Specific Count", "Random"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Shopsanity"), mOptionDescriptions[RSK_SHOPSANITY], WIDGET_CVAR_COMBOBOX, RO_SHOPSANITY_OFF);
     OPT_CALLBACK(RSK_SHOPSANITY, {
@@ -793,7 +840,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SHUFFLE_WEIRD_EGG, "Shuffle Weird Egg", CVAR_RANDOMIZER_SETTING("ShuffleWeirdEgg"), mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG]);
     OPT_BOOL(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD, "Shuffle Gerudo Membership Card", CVAR_RANDOMIZER_SETTING("ShuffleGerudoToken"), mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
     OPT_U8(RSK_SHUFFLE_POTS, "Shuffle Pots", {"Off", "Dungeons", "Overworld", "All Pots"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShufflePots"), mOptionDescriptions[RSK_SHUFFLE_POTS], WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_POTS_OFF);
-    OPT_U8(RSK_SHUFFLE_GRASS, "Shuffle Grass", {"Off", "Dungeons", "Overworld", "All Grass/Bushes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleGrass"), mOptionDescriptions[RSK_SHUFFLE_GRASS], WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_GRASS_OFF);
+    OPT_U8(RSK_SHUFFLE_GRASS, "Shuffle Grass", {"Off", "Dungeons", "Overworld", "All Grass"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleGrass"), mOptionDescriptions[RSK_SHUFFLE_GRASS], WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_GRASS_OFF);
     OPT_U8(RSK_SHUFFLE_CRATES, "Shuffle Crates", {"Off", "Dungeons", "Overworld", "All Crates"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleCrates"), mOptionDescriptions[RSK_SHUFFLE_CRATES], WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_CRATES_OFF);
     OPT_BOOL(RSK_SHUFFLE_TREES, "Shuffle Trees", CVAR_RANDOMIZER_SETTING("ShuffleTrees"), mOptionDescriptions[RSK_SHUFFLE_TREES]);
     OPT_BOOL(RSK_SHUFFLE_BUSHES, "Shuffle Bushes", CVAR_RANDOMIZER_SETTING("ShuffleBushes"), mOptionDescriptions[RSK_SHUFFLE_BUSHES]);
@@ -1275,26 +1322,29 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_STARTING_HEARTS, "Starting Hearts", {NumOpts(1, 20)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingHearts"), "", WIDGET_CVAR_SLIDER_INT, 2);
     // TODO: Remainder of Starting Items
     OPT_U8(RSK_LOGIC_RULES, "Logic", {"Glitchless", "No Logic"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LogicRules"), mOptionDescriptions[RSK_LOGIC_RULES], WIDGET_CVAR_COMBOBOX, RO_LOGIC_GLITCHLESS, false, nullptr, IMFLAG_LABEL_INLINE);
+    OPT_CALLBACK(RSK_LOGIC_RULES, {
+        HandleStartingAgeUI();
+    });
     OPT_BOOL(RSK_ALL_LOCATIONS_REACHABLE, "All Locations Reachable", {"Off", "On"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("AllLocationsReachable"), mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE], WIDGET_CVAR_CHECKBOX, RO_GENERIC_ON, false, nullptr, IMFLAG_SAME_LINE);
     OPT_BOOL(RSK_SKULLS_SUNS_SONG, "Night Skulltula's Expect Sun's Song", CVAR_RANDOMIZER_SETTING("GsExpectSunsSong"), mOptionDescriptions[RSK_SKULLS_SUNS_SONG]);
     OPT_U8(RSK_DAMAGE_MULTIPLIER, "Damage Multiplier", {"x1/2", "x1", "x2", "x4", "x8", "x16", "OHKO"}, OptionCategory::Setting, "", "", WIDGET_CVAR_SLIDER_INT, RO_DAMAGE_MULTIPLIER_DEFAULT);
     // Don't show any MQ options if both quests aren't available
     if (!(OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal())) {
-        mOptions[RSK_MQ_DUNGEON_RANDOM].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_DUNGEON_COUNT].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_DUNGEON_SET].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_DEKU_TREE].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_DODONGOS_CAVERN].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_JABU_JABU].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_FOREST_TEMPLE].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_FIRE_TEMPLE].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_WATER_TEMPLE].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_SPIRIT_TEMPLE].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_SHADOW_TEMPLE].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_BOTTOM_OF_THE_WELL].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_ICE_CAVERN].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_GTG].Disable("This Options has been disabled because only one type of OTR has been loaded");
-        mOptions[RSK_MQ_GANONS_CASTLE].Disable("This Options has been disabled because only one type of OTR has been loaded");
+        mOptions[RSK_MQ_DUNGEON_RANDOM].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_DUNGEON_COUNT].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_DUNGEON_SET].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_DEKU_TREE].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_DODONGOS_CAVERN].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_JABU_JABU].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_FOREST_TEMPLE].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_FIRE_TEMPLE].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_WATER_TEMPLE].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_SPIRIT_TEMPLE].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_SHADOW_TEMPLE].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_BOTTOM_OF_THE_WELL].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_ICE_CAVERN].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_GTG].Disable("This option has been disabled because only one type of O2R has been loaded");
+        mOptions[RSK_MQ_GANONS_CASTLE].Disable("This option has been disabled because only one type of O2R has been loaded");
     } else {
         // If any MQ Options are available, show the MQ Dungeon Randomization Combobox
         mOptions[RSK_MQ_DUNGEON_RANDOM].Enable();
@@ -1320,272 +1370,292 @@ void Settings::CreateOptions() {
     mExcludeLocationsOptionsAreas.reserve(RCAREA_INVALID);
 
     // RANDOTODO sweep trick descriptions and make sure they match a post-refactor, post shuffles reality
+    /* Common abbreviations in name tags
+    - A: Adult
+    - Blk: Block
+    - Blu: Blue (Switch)
+    - Bmb: Bombs
+    - Bou: Boulder
+    - C: Child
+    - Clp: Clip
+    - Col: Collision
+    - Cuc: Cucoo
+    - Crt: Crate
+    - Diff: Difficult (Weapons)
+    - Ent: Entrance
+    - HB: Hover Boots
+    - Jmp: Jump
+    - Ldg: Ledge
+    - LoT: Lens of Truth
+    - Prj: Projectile
+    - Rng: Boomerang
+    - Sli: Slingshot
+    - Skp: Skip
+    - Swt: Switch
+    - Tor: Torch
+    Try to keep Name Tags less than 8 chars.
+    */
 
     // the following are glitches and are currently disabled
 
-    // OPT_TRICK(RT_ACUTE_ANGLE_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_ACUTE_ANGLE_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_ADVANCED_CLIPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_ADVANCED_CLIPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_BLANK_A, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_BLANK_A, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_DOOM_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_DOOM_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_EPG, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH
-    // });
+    // OPT_TRICK(RT_EPG, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH});
 
-    // OPT_TRICK(RT_EQUIP_SWAP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_EQUIP_SWAP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_EQUIP_SWAP_EXPECTS_DINS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_EQUIP_SWAP_EXPECTS_DINS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_FLAME_STORAGE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_FLAME_STORAGE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_GROUND_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_GROUND_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_HESS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH
-    // });
+    // OPT_TRICK(RT_HESS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH});
 
-    // OPT_TRICK(RT_HOOKSHOT_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_HOOKSHOT_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_HOOKSHOT_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH });
+    // OPT_TRICK(RT_HOOKSHOT_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_ISG, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH
-    // });
+    // OPT_TRICK(RT_ISG, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH});
 
-    OPT_TRICK(RT_VISIBLE_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_GROTTOS_WITHOUT_AGONY, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_FEWER_TUNIC_REQUIREMENTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_UNINTUITIVE_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_RUSTED_SWITCHES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_FLAMING_CHESTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE });
+    OPT_TRICK(RT_VISIBLE_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "VisCol");
+    OPT_TRICK(RT_GROTTOS_WITHOUT_AGONY, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "NoSoA");
+    OPT_TRICK(RT_FEWER_TUNIC_REQUIREMENTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "FTR");
+    OPT_TRICK(RT_UNINTUITIVE_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "UnJmp");
+    OPT_TRICK(RT_FLAMING_CHESTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "FlaChst");
 
     // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely
     // decoupled from rando
 
     // OPT_TRICK(RT_BUNNY_HOOD_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED });
 
-    OPT_TRICK(RT_DAMAGE_BOOST_SIMPLE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL });
-    OPT_TRICK(RT_HOVER_BOOST_SIMPLE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::GLITCH });
-    OPT_TRICK(RT_BOMBCHU_BEEHIVES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_BLUE_FIRE_MUD_WALLS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_OPEN_UNDERWATER_CHEST, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH });
-    OPT_TRICK(RT_DISTANT_BOULDER_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH });
-    OPT_TRICK(RT_HOOKSHOT_EXTENSION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_BIG_SKULLTULA_PAUSE_LIFT, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH });
-    OPT_TRICK(RT_GROUND_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH });
-    OPT_TRICK(RT_GROUND_JUMP_HARD, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE, Tricks::Tag::GLITCH });
-    OPT_TRICK(RT_SLIDE_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_KF_ADULT_GS, RCQUEST_BOTH, RA_KOKIRI_FOREST, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_LW_BRIDGE, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::EXPERT });
-    OPT_TRICK(RT_LW_MIDO_BACKFLIP, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_LOST_WOOD_NAVI_DIVE, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH });
-    OPT_TRICK(RT_LW_GS_BEAN, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_HC_STORMS_GS, RCQUEST_BOTH, RA_HYRULE_CASTLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_HF_BIG_POE_WITHOUT_EPONA, RCQUEST_BOTH, RA_HYRULE_FIELD, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_KAK_TOWER_GS, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_KAK_CHILD_WINDMILL_POH, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::EXTREME });
-    OPT_TRICK(RT_KAK_ROOFTOP_GS, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_GY_POH, RCQUEST_BOTH, RA_THE_GRAVEYARD, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_GY_CHILD_DAMPE_RACE_POH, RCQUEST_BOTH, RA_THE_GRAVEYARD, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_GY_SHADOW_FIRE_ARROWS, RCQUEST_BOTH, RA_THE_GRAVEYARD, { Tricks::Tag::EXPERT });
-    OPT_TRICK(RT_DMT_SOIL_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_DMT_BOMBABLE, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_DMT_HOVERS_LOWER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_DMT_BEAN_LOWER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::EXPERT });
-    OPT_TRICK(RT_DMT_JS_LOWER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_DMT_CLIMB_HOVERS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_DMT_UPPER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::NOVICE });
+    OPT_TRICK(RT_DAMAGE_BOOST_SIMPLE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL }, "SDmgBoo");
+    OPT_TRICK(RT_HOVER_BOOST_SIMPLE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::GLITCH }, "SHovBoo");
+    OPT_TRICK(RT_BOMBCHU_BEEHIVES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "ChuBee");
+    OPT_TRICK(RT_HOOKSHOT_LADDERS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "HSLad");
+    OPT_TRICK(RT_BLUE_FIRE_MUD_WALLS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "BluFire");
+    OPT_TRICK(RT_OPEN_UNDERWATER_CHEST, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "OpenUC");
+    OPT_TRICK(RT_DISTANT_BOULDER_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "BolCol");
+    OPT_TRICK(RT_HOOKSHOT_EXTENSION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "HSExt");
+    OPT_TRICK(RT_BIG_SKULLTULA_PAUSE_LIFT, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "SkulPaus");
+    OPT_TRICK(RT_GROUND_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "GrdJmp");
+    OPT_TRICK(RT_GROUND_JUMP_HARD, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE, Tricks::Tag::GLITCH }, "HGrdJmp");
+    OPT_TRICK(RT_SLIDE_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "SldJmp");
+    OPT_TRICK(RT_KF_ADULT_GS, RCQUEST_BOTH, RA_KOKIRI_FOREST, { Tricks::Tag::NOVICE }, "KFGSHB");
+    OPT_TRICK(RT_LW_BRIDGE, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::EXPERT }, "LWBrgJmp");
+    OPT_TRICK(RT_LW_MIDO_BACKFLIP, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE }, "MidoSkip");
+    OPT_TRICK(RT_LOST_WOOD_NAVI_DIVE, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "LWNaviD");
+    OPT_TRICK(RT_LW_GS_BEAN, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::INTERMEDIATE }, "LWGSHS");
+    OPT_TRICK(RT_HC_STORMS_GS, RCQUEST_BOTH, RA_HYRULE_CASTLE, { Tricks::Tag::INTERMEDIATE }, "HCGrGSRng");
+    OPT_TRICK(RT_HF_BIG_POE_WITHOUT_EPONA, RCQUEST_BOTH, RA_HYRULE_FIELD, { Tricks::Tag::NOVICE }, "PoeDiff");
+    OPT_TRICK(RT_KAK_TOWER_GS, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::INTERMEDIATE }, "KakGSJS");
+    OPT_TRICK(RT_KAK_CHILD_WINDMILL_POH, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::EXTREME }, "WndCJS");
+    OPT_TRICK(RT_KAK_ROOFTOP_GS, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::ADVANCED }, "KakGSHB");
+    OPT_TRICK(RT_GY_POH, RCQUEST_BOTH, RA_THE_GRAVEYARD, { Tricks::Tag::INTERMEDIATE }, "GYPoHRng");
+    OPT_TRICK(RT_GY_CHILD_DAMPE_RACE_POH, RCQUEST_BOTH, RA_THE_GRAVEYARD, { Tricks::Tag::NOVICE }, "CDmpRace");
+    OPT_TRICK(RT_GY_SHADOW_FIRE_ARROWS, RCQUEST_BOTH, RA_THE_GRAVEYARD, { Tricks::Tag::EXPERT }, "FAEntry");
+    OPT_TRICK(RT_DMT_SHIELDLESS_CLIMB, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::NOVICE }, "DMTCWoS");
+    OPT_TRICK(RT_DMT_SOIL_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE }, "DMTSoil");
+    OPT_TRICK(RT_DMT_BOMBABLE, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE }, "DMTSTR");
+    OPT_TRICK(RT_DMT_HOVERS_LOWER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::ADVANCED }, "DMTGSHB");
+    OPT_TRICK(RT_DMT_BEAN_LOWER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::EXPERT }, "DMTGSMB");
+    OPT_TRICK(RT_DMT_JS_LOWER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE }, "DMTGSJS");
+    OPT_TRICK(RT_DMT_CLIMB_HOVERS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::ADVANCED }, "DMTBouHB");
+    OPT_TRICK(RT_DMT_UPPER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::NOVICE }, "DMTGSBF");
 
     // disabled for now, only applies when trade quest is not shuffled so there's a timer (currently not considered in
     // logic)
 
     // OPT_TRICK(RT_DMT_BOLERO_BIGGORON, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE });
 
-    OPT_TRICK(RT_GC_POT, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_GC_POT_STRENGTH, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_GC_ROLLING_STRENGTH, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_GC_LEFTMOST, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_GC_GROTTO, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_GC_LINK_GORON_DINS, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_DMC_HOVER_BEAN_POH, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_DMC_BOLERO_JUMP, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::EXTREME });
-    OPT_TRICK(RT_DMC_BOULDER_JS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_DMC_BOULDER_SKIP, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_ZR_LOWER, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_ZR_UPPER, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_ZR_HOVERS, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_ZR_CUCCO, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_ZD_KING_ZORA_SKIP, RCQUEST_BOTH, RA_ZORAS_DOMAIN, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_ZD_GS, RCQUEST_BOTH, RA_ZORAS_DOMAIN, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_ZF_GREAT_FAIRY_WITHOUT_EXPLOSIVES, RCQUEST_BOTH, RA_ZORAS_FOUNTAIN, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_LH_LAB_WALL_GS, RCQUEST_BOTH, RA_LAKE_HYLIA, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_LH_LAB_DIVING, RCQUEST_BOTH, RA_LAKE_HYLIA, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_LH_WATER_HOOKSHOT, RCQUEST_BOTH, RA_LAKE_HYLIA, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_GV_CRATE_HOVERS, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_GV_CHILD_TENT, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_GV_CHILD_CUCCO_JUMP, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_PASS_GUARDS_WITH_NOTHING, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_GF_CHILD_SKIP_WASTELAND_GATE, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_GF_ADULT_SKIP_WASTELAND_GATE, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_GF_LEDGE_CLIP_INTO_GTG, RCQUEST_BOTH, RA_GERUDO_FORTRESS,
-              { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH });
+    OPT_TRICK(RT_GC_POT, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::ADVANCED }, "GorPotChu");
+    OPT_TRICK(RT_GC_POT_STRENGTH, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::INTERMEDIATE }, "GorPotStr");
+    OPT_TRICK(RT_GC_ROLLING_STRENGTH, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::INTERMEDIATE }, "GorStrC");
+    OPT_TRICK(RT_GC_LEFTMOST, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::ADVANCED }, "GCMazHB");
+    OPT_TRICK(RT_GC_GROTTO, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::ADVANCED }, "GorGroHS");
+    OPT_TRICK(RT_GC_LINK_GORON_DINS, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::NOVICE }, "GorDinA");
+    OPT_TRICK(RT_DMC_HOVER_BEAN_POH, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::NOVICE }, "DMCHB");
+    OPT_TRICK(RT_DMC_BOLERO_JUMP, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::EXTREME }, "DMCBolJump");
+    OPT_TRICK(RT_DMC_BOULDER_JS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::NOVICE }, "DMCHam");
+    OPT_TRICK(RT_DMC_BOULDER_SKIP, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::INTERMEDIATE }, "DMCULJmp");
+    OPT_TRICK(RT_ZR_LOWER, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::INTERMEDIATE }, "ZRLJmp");
+    OPT_TRICK(RT_ZR_UPPER, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::INTERMEDIATE }, "ZRUJmp");
+    OPT_TRICK(RT_ZR_HOVERS, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::NOVICE }, "ZRZDHB");
+    OPT_TRICK(RT_ZR_CUCCO, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::NOVICE }, "ZRZDCuc");
+    OPT_TRICK(RT_ZD_KING_ZORA_SKIP, RCQUEST_BOTH, RA_ZORAS_DOMAIN, { Tricks::Tag::INTERMEDIATE }, "Mweep");
+    OPT_TRICK(RT_ZD_GS, RCQUEST_BOTH, RA_ZORAS_DOMAIN, { Tricks::Tag::INTERMEDIATE }, "ZDGS");
+    OPT_TRICK(RT_ZF_GREAT_FAIRY_WITHOUT_EXPLOSIVES, RCQUEST_BOTH, RA_ZORAS_FOUNTAIN, { Tricks::Tag::NOVICE }, "ZFGFStr2");
+    OPT_TRICK(RT_LH_LAB_WALL_GS, RCQUEST_BOTH, RA_LAKE_HYLIA, { Tricks::Tag::NOVICE }, "LHGSJS");
+    OPT_TRICK(RT_LH_LAB_DIVING, RCQUEST_BOTH, RA_LAKE_HYLIA, { Tricks::Tag::NOVICE }, "LabHS");
+    OPT_TRICK(RT_LH_WATER_HOOKSHOT, RCQUEST_BOTH, RA_LAKE_HYLIA, { Tricks::Tag::INTERMEDIATE }, "WTEntHS");
+    OPT_TRICK(RT_GV_CRATE_HOVERS, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE }, "GVPoHHB");
+    OPT_TRICK(RT_GV_CHILD_TENT, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::NOVICE }, "GVTent");
+    OPT_TRICK(RT_GV_CHILD_CUCCO_JUMP, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE }, "GVCUC");
+    OPT_TRICK(RT_PASS_GUARDS_WITH_NOTHING, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE }, "Guards");
+    OPT_TRICK(RT_GF_WASTELAND_GATE_SIDEHOP_SKIP, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE }, "GFHWC");
+    OPT_TRICK(RT_GF_ADULT_SKIP_WASTELAND_GATE, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::INTERMEDIATE }, "GFHWA");
+    OPT_TRICK(RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE }, "GWDiff");
+    OPT_TRICK(RT_GF_LEDGE_CLIP_INTO_GTG, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "GTGLdgClp");
 
     // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely
     // decoupled from rando
 
     // OPT_TRICK(RT_HW_BUNNY_CROSSING, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::NOVICE });
 
-    OPT_TRICK(RT_HW_CROSSING, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_LENS_HW, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_HW_REVERSE, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_COLOSSUS_GS, RCQUEST_BOTH, RA_DESERT_COLOSSUS, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_DEKU_BASEMENT_GS, RCQUEST_VANILLA, RA_DEKU_TREE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_DEKU_B1_SKIP, RCQUEST_BOTH, RA_DEKU_TREE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_DEKU_B1_BOW_WEBS, RCQUEST_VANILLA, RA_DEKU_TREE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG, RCQUEST_VANILLA, RA_DEKU_TREE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_DEKU_MQ_COMPASS_GS, RCQUEST_MQ, RA_DEKU_TREE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_DEKU_MQ_LOG, RCQUEST_MQ, RA_DEKU_TREE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_DC_SCARECROW_GS, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_DC_VINES_GS, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_DC_STAIRS_WITH_BOW, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_DC_SLINGSHOT_SKIP, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::EXPERT });
-    OPT_TRICK(RT_DC_SCRUB_ROOM, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_DC_HAMMER_FLOOR, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_DC_DODONGO_CHU, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_DC_MQ_STAIRS_WITH_ONLY_STRENGTH, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_DC_MQ_CHILD_BOMBS, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_DC_MQ_CHILD_EYES, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::EXPERT });
-    OPT_TRICK(RT_DC_MQ_ADULT_EYES, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_DC_EYES_CHU, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_JABU_BOSS_HOVER, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_JABU_NEAR_BOSS_RANGED, RCQUEST_BOTH, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_JABU_NEAR_BOSS_EXPLOSIVES, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_JABU_B1_CUBE_HOVER, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_LENS_JABU_MQ, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_JABU_MQ_RANG_JUMP, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_JABU_MQ_SOT_GS, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_JABU_BARINADE_POTS, RCQUEST_BOTH, RA_JABU_JABUS_BELLY, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_LENS_BOTW, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_BOTTOM_OF_THE_WELL_NAVI_DIVE, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL,
-              { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH });
-    OPT_TRICK(RT_BOTW_CHILD_DEADHAND, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_BOTW_BASEMENT, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE });
+    OPT_TRICK(RT_HW_CROSSING, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE }, "RvrSand");
+    OPT_TRICK(RT_LENS_HW, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE }, "HWNoLoT");
+    OPT_TRICK(RT_HW_REVERSE, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE }, "RevHW");
+    OPT_TRICK(RT_COLOSSUS_GS, RCQUEST_BOTH, RA_DESERT_COLOSSUS, { Tricks::Tag::NOVICE }, "ColGSHS");
+    OPT_TRICK(RT_DEKU_BASEMENT_GS, RCQUEST_VANILLA, RA_DEKU_TREE, { Tricks::Tag::NOVICE }, "DTGSJS");
+    OPT_TRICK(RT_DEKU_B1_SKIP, RCQUEST_BOTH, RA_DEKU_TREE, { Tricks::Tag::INTERMEDIATE }, "B1Skip");
+    OPT_TRICK(RT_DEKU_B1_BOW_WEBS, RCQUEST_VANILLA, RA_DEKU_TREE, { Tricks::Tag::NOVICE }, "DTWebBow");
+    OPT_TRICK(RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG, RCQUEST_VANILLA, RA_DEKU_TREE, { Tricks::Tag::NOVICE }, "DTLogBF");
+    OPT_TRICK(RT_DEKU_MQ_COMPASS_GS, RCQUEST_MQ, RA_DEKU_TREE, { Tricks::Tag::NOVICE }, "DTGSHam");
+    OPT_TRICK(RT_DEKU_MQ_LOG, RCQUEST_MQ, RA_DEKU_TREE, { Tricks::Tag::NOVICE }, "DTLogRol");
+    OPT_TRICK(RT_DC_SCARECROW_GS, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "DCArmos");
+    OPT_TRICK(RT_DC_VINES_GS, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "DCGSLS");
+    OPT_TRICK(RT_DC_STAIRS_WITH_BOW, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "DCStaBow");
+    OPT_TRICK(RT_DC_SLINGSHOT_SKIP, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::EXPERT }, "DCSliSkp");
+    OPT_TRICK(RT_DC_SCRUB_ROOM, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "DCSrbStr");
+    OPT_TRICK(RT_DC_HAMMER_FLOOR, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "KDHamFl");
+    OPT_TRICK(RT_DC_DODONGO_CHU, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED }, "KDChu");
+    OPT_TRICK(RT_DC_MQ_STAIRS_WITH_ONLY_STRENGTH, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "DCStaStr");
+    OPT_TRICK(RT_DC_MQ_CHILD_BOMBS, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED }, "DCLobyJS");
+    OPT_TRICK(RT_DC_MQ_CHILD_EYES, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::EXPERT }, "DCEyeStrC");
+    OPT_TRICK(RT_DC_MQ_ADULT_EYES, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED }, "DCEyeStrA");
+    OPT_TRICK(RT_DC_EYES_CHU, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED }, "DCEyeChu");
+    OPT_TRICK(RT_JABU_BOSS_HOVER, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE }, "JbuBoxHB");
+    OPT_TRICK(RT_JABU_NEAR_BOSS_RANGED, RCQUEST_BOTH, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE }, "JbuBosPrj");
+    OPT_TRICK(RT_JABU_NEAR_BOSS_EXPLOSIVES, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE }, "JbuBosExp");
+    OPT_TRICK(RT_JABU_B1_CUBE_HOVER, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE }, "JbuJigHB");
+    OPT_TRICK(RT_LENS_JABU_MQ, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE }, "JbuLoT");
+    OPT_TRICK(RT_JABU_MQ_RANG_JUMP, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::ADVANCED }, "JbuSwtRng");
+    OPT_TRICK(RT_JABU_MQ_SOT_GS, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE }, "JbuSoTRng");
+    OPT_TRICK(RT_JABU_BARINADE_POTS, RCQUEST_BOTH, RA_JABU_JABUS_BELLY, { Tricks::Tag::ADVANCED }, "BariPot");
+    OPT_TRICK(RT_LENS_BOTW, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE }, "BWLoT");
+    OPT_TRICK(RT_BOTTOM_OF_THE_WELL_NAVI_DIVE, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "KakNviD");
+    OPT_TRICK(RT_BOTW_CHILD_DEADHAND, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE }, "DHDiff");
+    OPT_TRICK(RT_BOTW_BASEMENT, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE }, "BWBmbFl");
     // RANDOTODO with doorsanity, this can be relevant in Vanilla
-    OPT_TRICK(RT_BOTW_PITS, RCQUEST_MQ, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_BOTW_MQ_DEADHAND_KEY, RCQUEST_MQ, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_FOREST_FIRST_GS, RCQUEST_VANILLA, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_FOREST_COURTYARD_EAST_GS, RCQUEST_VANILLA, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_FOREST_VINES, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_FOREST_COURTYARD_LEDGE, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_FOREST_DOORFRAME, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_FOREST_OUTSIDE_BACKDOOR, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_FOREST_COURTYARD_HEARTS_BOOMERANG, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_FOREST_WELL_SWIM, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_FOREST_MQ_BLOCK_PUZZLE, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE });
+    OPT_TRICK(RT_BOTW_PITS, RCQUEST_MQ, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE }, "BWPitJmp");
+    OPT_TRICK(RT_BOTW_MQ_DEADHAND_KEY, RCQUEST_MQ, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE }, "BWKeyRng");
+    OPT_TRICK(RT_FOREST_FIRST_GS, RCQUEST_VANILLA, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FT1stGS");
+    OPT_TRICK(RT_FOREST_COURTYARD_EAST_GS, RCQUEST_VANILLA, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FTGSRng");
+    OPT_TRICK(RT_FOREST_VINES, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FTVineHS");
+    OPT_TRICK(RT_FOREST_COURTYARD_LEDGE, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FTLdgHB");
+    OPT_TRICK(RT_FOREST_DOORFRAME, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::ADVANCED }, "FTDoorHB");
+    OPT_TRICK(RT_FOREST_OUTSIDE_BACKDOOR, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::ADVANCED }, "FTBlkJS");
+    OPT_TRICK(RT_FOREST_COURTYARD_HEARTS_BOOMERANG, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FTHrtRng");
+    OPT_TRICK(RT_FOREST_WELL_SWIM, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FTSwim");
+    OPT_TRICK(RT_FOREST_MQ_BLOCK_PUZZLE, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FTBlkChu");
     // Child with hovers cannot do this from the lower floor, and must go to the upper floor which needs goron bracelet.
     // Adult can do this with hammer and KSword, But child cannot.
-    OPT_TRICK(RT_FOREST_MQ_JS_HALLWAY_SWITCH, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_FOREST_MQ_HOOKSHOT_HALLWAY_SWITCH, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_FOREST_MQ_RANG_HALLWAY_SWITCH, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_FOREST_MQ_CHILD_DOORFRAME, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE });
+    OPT_TRICK(RT_FOREST_MQ_JS_HALLWAY_SWITCH, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FTTwstJS");
+    OPT_TRICK(RT_FOREST_MQ_HOOKSHOT_HALLWAY_SWITCH, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FTTwstHS");
+    OPT_TRICK(RT_FOREST_MQ_RANG_HALLWAY_SWITCH, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FTTwstRng");
+    OPT_TRICK(RT_FOREST_MQ_CHILD_DOORFRAME, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FTDoorC");
     // Is also used in MQ logic, but has no practical effect there as of now
-    OPT_TRICK(RT_FIRE_SOT, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_FIRE_STRENGTH, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_FIRE_SCARECROW, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::EXPERT });
-    OPT_TRICK(RT_FIRE_SKIP_FLAME_WALLS, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_FIRE_MQ_NEAR_BOSS, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_FIRE_MQ_BLOCKED_CHEST, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_FIRE_MQ_BK_CHEST, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_FIRE_MQ_CLIMB, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_FIRE_MQ_MAZE_SIDE_ROOM, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_FIRE_MQ_MAZE_HOVERS, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_FIRE_MQ_MAZE_JUMP, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_FIRE_MQ_ABOVE_MAZE_GS, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_WATER_LONGSHOT_TORCH, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_WATER_CRACKED_WALL_HOVERS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_WATER_CRACKED_WALL, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_WATER_BK_REGION, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_WATER_NORTH_BASEMENT_LEDGE_JUMP, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    // Also used in MQ logic, but won't be relevent unless a way to enter tower without irons exists (likely a clip +
-    // swim)
-    OPT_TRICK(RT_WATER_FW_CENTRAL_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_WATER_IRONS_CENTRAL_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_WATER_CENTRAL_BOW, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_WATER_HOOKSHOT_FALLING_PLATFORM_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_WATER_RANG_FALLING_PLATFORM_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_WATER_RIVER_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_WATER_DRAGON_JUMP_DIVE, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_WATER_ADULT_DRAGON, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_WATER_CHILD_DRAGON, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_WATER_MQ_CENTRAL_PILLAR, RCQUEST_MQ, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_WATER_IRON_BOOTS_LEDGE_GRAB, RCQUEST_BOTH, RA_WATER_TEMPLE,
-              { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH });
-    OPT_TRICK(RT_WATER_INVISIBLE_HOOKSHOT_TARGET, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_WATER_MORPHA_WITHOUT_HOOKSHOT, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::EXTREME });
-    OPT_TRICK(RT_LENS_SHADOW, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_LENS_SHADOW_PLATFORM, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_LENS_BONGO, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_SHADOW_UMBRELLA_HOVER, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::EXPERT });
-    OPT_TRICK(RT_SHADOW_UMBRELLA_CLIP, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH });
-    OPT_TRICK(RT_SHADOW_UMBRELLA_GS, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::EXPERT });
-    OPT_TRICK(RT_SHADOW_FREESTANDING_KEY, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_SHADOW_STATUE, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_SHADOW_BONGO, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_LENS_SHADOW_MQ, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_LENS_SHADOW_MQ_INVISIBLE_BLADES, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_LENS_SHADOW_MQ_PLATFORM, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_LENS_SHADOW_MQ_DEADHAND, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_SHADOW_MQ_GAP, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_SHADOW_MQ_INVISIBLE_BLADES, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_SHADOW_MQ_HUGE_PIT, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_SHADOW_MQ_WINDY_WALKWAY, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_LENS_SPIRIT, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_SPIRIT_CHILD_CHU, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_SPIRIT_WEST_LEDGE, RCQUEST_BOTH, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_SPIRIT_LOWER_ADULT_SWITCH, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_SPIRIT_STATUE_JUMP, RCQUEST_BOTH, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE });
+    OPT_TRICK(RT_FIRE_SOT, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FISoTSkp");
+    OPT_TRICK(RT_FIRE_STRENGTH, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FIStrSkp");
+    OPT_TRICK(RT_FIRE_SCARECROW, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::EXPERT }, "PixelShot");
+    OPT_TRICK(RT_FIRE_SKIP_FLAME_WALLS, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FIRWAL");
+    OPT_TRICK(RT_FIRE_MQ_NEAR_BOSS, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE }, "FICrtTor");
+    OPT_TRICK(RT_FIRE_MQ_BLOCKED_CHEST, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FIHSSkp");
+    OPT_TRICK(RT_FIRE_MQ_BK_CHEST, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FIBowSkp");
+    OPT_TRICK(RT_FIRE_MQ_CLIMB, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE }, "FIFirSkp");
+    OPT_TRICK(RT_FIRE_MQ_MAZE_SIDE_ROOM, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE }, "FIBoxSkp");
+    OPT_TRICK(RT_FIRE_MQ_MAZE_HOVERS, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE }, "FIMazHB");
+    OPT_TRICK(RT_FIRE_MQ_MAZE_JUMP, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FIMazJmp");
+    OPT_TRICK(RT_FIRE_MQ_ABOVE_MAZE_GS, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FIGSLS");
+    OPT_TRICK(RT_WATER_LONGSHOT_TORCH, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTTorLS");
+    OPT_TRICK(RT_WATER_CRACKED_WALL_HOVERS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTCrkHB");
+    OPT_TRICK(RT_WATER_CRACKED_WALL, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "WTCrkJmp");
+    OPT_TRICK(RT_WATER_BK_REGION, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "WTBKHB");
+    OPT_TRICK(RT_WATER_NORTH_BASEMENT_LEDGE_JUMP, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "WTBolLdg");
+    // Also used in MQ logic, but won't be relevent unless a way to enter tower without irons exists (likely a clip + swim)
+    OPT_TRICK(RT_WATER_FW_CENTRAL_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTGSFW");
+    OPT_TRICK(RT_WATER_IRONS_CENTRAL_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTGSIB");
+    OPT_TRICK(RT_WATER_CENTRAL_BOW, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::ADVANCED }, "WTBowJmp");
+    OPT_TRICK(RT_WATER_HOOKSHOT_FALLING_PLATFORM_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTWfalHS");
+    OPT_TRICK(RT_WATER_RANG_FALLING_PLATFORM_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "WTWfalRng");
+    OPT_TRICK(RT_WATER_RIVER_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "WTRvrLS");
+    OPT_TRICK(RT_WATER_DRAGON_JUMP_DIVE, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTDrgJmp");
+    OPT_TRICK(RT_WATER_ADULT_DRAGON, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTDrgA");
+    OPT_TRICK(RT_WATER_CHILD_DRAGON, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::ADVANCED }, "WTDrgC");
+    OPT_TRICK(RT_WATER_MQ_CENTRAL_PILLAR, RCQUEST_MQ, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTCntFA");
+    OPT_TRICK(RT_WATER_IRON_BOOTS_LEDGE_GRAB, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "IBSrfLG");
+    OPT_TRICK(RT_WATER_INVISIBLE_HOOKSHOT_TARGET, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTTarg");
+    OPT_TRICK(RT_WATER_MORPHA_WITHOUT_HOOKSHOT, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::EXTREME }, "MorphDiff");
+    OPT_TRICK(RT_LENS_SHADOW, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "STStLoT");
+    OPT_TRICK(RT_LENS_SHADOW_PLATFORM, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "STMvLot");
+    OPT_TRICK(RT_LENS_BONGO, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "BNGLoT");
+    OPT_TRICK(RT_SHADOW_UMBRELLA_HOVER, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::EXPERT }, "STUmbSkp");
+    OPT_TRICK(RT_SHADOW_UMBRELLA_CLIP, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "STUmbClp");
+    OPT_TRICK(RT_SHADOW_UMBRELLA_GS, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::EXPERT }, "STUmbHB");
+    OPT_TRICK(RT_SHADOW_FREESTANDING_KEY, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "STPotChu");
+    OPT_TRICK(RT_SHADOW_STATUE, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "STStaChu");
+    OPT_TRICK(RT_SHADOW_BONGO, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "BngNoPrg");
+    OPT_TRICK(RT_LENS_SHADOW_MQ, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "STMQStLoT");
+    OPT_TRICK(RT_LENS_SHADOW_MQ_INVISIBLE_BLADES, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "STBldLoT");
+    OPT_TRICK(RT_LENS_SHADOW_MQ_PLATFORM, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "STMQMvLot");
+    OPT_TRICK(RT_LENS_SHADOW_MQ_DEADHAND, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "STDHLoT");
+    OPT_TRICK(RT_SHADOW_MQ_GAP, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "STTSLS");
+    OPT_TRICK(RT_SHADOW_MQ_INVISIBLE_BLADES, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "STSoTSkp");
+    OPT_TRICK(RT_SHADOW_MQ_HUGE_PIT, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "STPitJmp");
+    OPT_TRICK(RT_SHADOW_MQ_WINDY_WALKWAY, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "STWindSkp");
+    OPT_TRICK(RT_LENS_SPIRIT, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE }, "SPLoT");
+    OPT_TRICK(RT_SPIRIT_CHILD_CHU, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE }, "SPBrgChu");
+    OPT_TRICK(RT_SPIRIT_WEST_LEDGE, RCQUEST_BOTH, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE }, "SPWeRng");
+    OPT_TRICK(RT_SPIRIT_LOWER_ADULT_SWITCH, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::ADVANCED }, "SPSwtBmb");
+    OPT_TRICK(RT_SPIRIT_STATUE_JUMP, RCQUEST_BOTH, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "SPHndJmp");
 
     // disabled since "Spirit Temple boss shortcuts" (pre-lowers the platform where you break the statues face) isn't a
     // setting in ship
 
     // OPT_TRICK(RT_SPIRIT_PLATFORM_HOOKSHOT, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE });
 
-    OPT_TRICK(RT_SPIRIT_MAP_CHEST, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_SPIRIT_SUN_CHEST, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_SPIRIT_WALL, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_LENS_SPIRIT_MQ, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_SPIRIT_MQ_SUN_BLOCK_SOT, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_SPIRIT_MQ_SUN_BLOCK_GS, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_SPIRIT_MQ_LOWER_ADULT, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_SPIRIT_MQ_FROZEN_EYE, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_ICE_STALAGMITE_CLIP, RCQUEST_BOTH, RA_ICE_CAVERN, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_ICE_STALAGMITE_HOOKSHOT, RCQUEST_BOTH, RA_ICE_CAVERN, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_ICE_BLOCK_GS, RCQUEST_VANILLA, RA_ICE_CAVERN, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_ICE_MQ_RED_ICE_GS, RCQUEST_MQ, RA_ICE_CAVERN, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_LENS_GTG, RCQUEST_VANILLA, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_GTG_WITHOUT_HOOKSHOT, RCQUEST_VANILLA, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_GTG_FAKE_WALL, RCQUEST_BOTH, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_GTG_LAVA_JUMP, RCQUEST_BOTH, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_LENS_GTG_MQ, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_GTG_MQ_WITH_HOOKSHOT, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_GTG_MQ_WITHOUT_HOOKSHOT, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::INTERMEDIATE });
-    OPT_TRICK(RT_LENS_GANON, RCQUEST_VANILLA, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_GANON_SPIRIT_TRIAL_HOOKSHOT, RCQUEST_VANILLA, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_LENS_GANON_MQ, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_GANON_MQ_FIRE_TRIAL, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::ADVANCED });
-    OPT_TRICK(RT_GANON_MQ_SHADOW_TRIAL, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE });
-    OPT_TRICK(RT_GANON_MQ_LIGHT_TRIAL, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::INTERMEDIATE });
+    OPT_TRICK(RT_SPIRIT_MAP_CHEST, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE }, "SPMapBow");
+    OPT_TRICK(RT_SPIRIT_SUN_CHEST, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::ADVANCED }, "SPSUNBOW");
+    OPT_TRICK(RT_SPIRIT_WALL, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "SPWall");
+    OPT_TRICK(RT_LENS_SPIRIT_MQ, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE }, "SPMQLoT");
+    OPT_TRICK(RT_SPIRIT_MQ_SUN_BLOCK_SOT, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "SPBluSkp");
+    OPT_TRICK(RT_SPIRIT_MQ_SUN_BLOCK_GS, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "SPBlkGS");
+    OPT_TRICK(RT_SPIRIT_MQ_LOWER_ADULT, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "SPTorDin");
+    OPT_TRICK(RT_SPIRIT_MQ_FROZEN_EYE, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE }, "SPFEBow");
+    OPT_TRICK(RT_ICE_STALAGMITE_CLIP, RCQUEST_BOTH, RA_ICE_CAVERN, { Tricks::Tag::NOVICE }, "StalClp");
+    OPT_TRICK(RT_ICE_STALAGMITE_HOOKSHOT, RCQUEST_BOTH, RA_ICE_CAVERN, { Tricks::Tag::NOVICE }, "StalHS");
+    OPT_TRICK(RT_ICE_BLOCK_GS, RCQUEST_VANILLA, RA_ICE_CAVERN, { Tricks::Tag::INTERMEDIATE }, "ICBlkHB");
+    OPT_TRICK(RT_ICE_MQ_RED_ICE_GS, RCQUEST_MQ, RA_ICE_CAVERN, { Tricks::Tag::INTERMEDIATE }, "ICNoSoT");
+    OPT_TRICK(RT_LENS_GTG, RCQUEST_VANILLA, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE }, "GTGLoT");
+    OPT_TRICK(RT_GTG_WITHOUT_HOOKSHOT, RCQUEST_VANILLA, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::INTERMEDIATE }, "GTGNoHS");
+    OPT_TRICK(RT_GTG_FAKE_WALL, RCQUEST_BOTH, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE }, "GTGWallHB");
+    OPT_TRICK(RT_GTG_LAVA_JUMP, RCQUEST_BOTH, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::INTERMEDIATE }, "GTGLavaJmp");
+    OPT_TRICK(RT_LENS_GTG_MQ, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE }, "GTGMQLoT");
+    OPT_TRICK(RT_GTG_MQ_WITH_HOOKSHOT, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE }, "GTGMQHS");
+    OPT_TRICK(RT_GTG_MQ_WITHOUT_HOOKSHOT, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::INTERMEDIATE }, "GTGMQNoHS");
+    OPT_TRICK(RT_LENS_GANON, RCQUEST_VANILLA, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE }, "GCLoT");
+    OPT_TRICK(RT_GANON_SPIRIT_TRIAL_HOOKSHOT, RCQUEST_VANILLA, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE }, "GCNoHS");
+    OPT_TRICK(RT_LENS_GANON_MQ, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE }, "GCMQLoT");
+    OPT_TRICK(RT_GANON_MQ_FIRE_TRIAL, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::ADVANCED }, "GCFTHS");
+    OPT_TRICK(RT_GANON_MQ_SHADOW_TRIAL, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE }, "GCSTBow");
+    OPT_TRICK(RT_GANON_MQ_LIGHT_TRIAL, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::INTERMEDIATE }, "GCFirWal");
+
+    for (auto trick : mTrickSettings) {
+        if (trick.GetNameTag() != "") {
+            if (StaticData::trickToEnum.contains(trick.GetNameTag())) {
+                SPDLOG_ERROR("REPEATED TRICK NAME TAG " + trick.GetName());
+                assert(false);
+            } else {
+                StaticData::trickToEnum[trick.GetNameTag()] = trick.GetKey();
+            }
+        }
+    }
 
     mOptionGroups[RSG_LOGIC] = OptionGroup::SubGroup("Logic Options", {
                                                                           &mOptions[RSK_LOGIC_RULES],
@@ -1596,9 +1666,9 @@ void Settings::CreateOptions() {
     // TODO: Exclude Locations Menus
     mTricksByArea.clear();
     std::vector<Option*> tricksOption;
-    tricksOption.reserve(mTrickOptions.size());
+    tricksOption.reserve(mTrickSettings.size());
     for (int i = 0; i < RT_MAX; i++) {
-        auto trick = &mTrickOptions[i];
+        auto trick = &mTrickSettings[i];
         if (!trick->GetName().empty()) {
             tricksOption.push_back(trick);
             mTrickNameToEnum[std::string(trick->GetName())] = static_cast<RandomizerTrick>(i);
@@ -1882,11 +1952,11 @@ void Settings::CreateOptions() {
                                   &mOptionGroups[RSG_MENU_COLUMN_STATIC_HINTS],
                               },
                               WidgetContainerType::TABLE);
-    mOptionGroups[RSG_MENU_SECTION_STARTING_EQUIPS] =
-        OptionGroup::SubGroup("Equips",
-                              { &mOptions[RSK_LINKS_POCKET], &mOptions[RSK_STARTING_KOKIRI_SWORD],
-                                &mOptions[RSK_STARTING_MASTER_SWORD], &mOptions[RSK_STARTING_DEKU_SHIELD] },
-                              WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_SECTION_STARTING_EQUIPS] = OptionGroup::SubGroup(
+        "Equips",
+        { &mOptions[RSK_LINKS_POCKET], &mOptions[RSK_LINKS_POCKET_REWARD], &mOptions[RSK_STARTING_KOKIRI_SWORD],
+          &mOptions[RSK_STARTING_MASTER_SWORD], &mOptions[RSK_STARTING_DEKU_SHIELD] },
+        WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_SECTION_STARTING_ITEMS] = OptionGroup::SubGroup("Items",
                                                                            {
                                                                                &mOptions[RSK_STARTING_OCARINA],
@@ -2295,8 +2365,8 @@ Option& Settings::GetOption(const RandomizerSettingKey key) {
     return mOptions[key];
 }
 
-TrickOption& Settings::GetTrickOption(const RandomizerTrick key) {
-    return mTrickOptions[key];
+TrickSetting& Settings::GetTrickSetting(const RandomizerTrick key) {
+    return mTrickSettings[key];
 }
 
 int Settings::GetRandomizerTrickByName(const std::string& name) {
@@ -2348,7 +2418,13 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     }
 
     // With certain access settings, the seed is only beatable if Starting Age is set to Child.
-    if (mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) && !mOptions[RSK_SHUFFLE_OCARINA]) {
+    if (mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC) &&
+        ((mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) && !mOptions[RSK_SHUFFLE_OCARINA]) ||
+         (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) && mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS].Is(RO_GENERIC_OFF) &&
+          mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES].Is(RO_GENERIC_OFF) &&
+          mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].Is(RO_GENERIC_OFF) &&
+          (mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES].Is(RO_GENERIC_OFF) &&
+           mOptions[RSK_DECOUPLED_ENTRANCES].Is(RO_GENERIC_OFF))))) {
         mOptions[RSK_STARTING_AGE].Set(RO_AGE_CHILD);
     }
 
@@ -2742,7 +2818,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
     nlohmann::json enabledTricksJson = spoilerFileJson["enabledTricks"];
     for (auto it = enabledTricksJson.begin(); it != enabledTricksJson.end(); ++it) {
         const RandomizerTrick rt = mTrickNameToEnum[it.value()];
-        GetTrickOption(rt).SetContextIndex(RO_GENERIC_ON);
+        GetTrickSetting(rt).SetContextIndex(RO_GENERIC_ON);
     }
 }
 
@@ -2759,7 +2835,7 @@ void Settings::SetAllToContext() {
         mContext->GetOption(static_cast<RandomizerSettingKey>(i)).Set(mOptions[i].GetOptionIndex());
     }
     for (int i = 0; i < RT_MAX; i++) {
-        mContext->GetTrickOption(static_cast<RandomizerTrick>(i)).Set(mTrickOptions[i].GetOptionIndex());
+        mContext->GetTrickOption(static_cast<RandomizerTrick>(i)).Set(mTrickSettings[i].GetOptionIndex());
     }
     for (int i = 0; i < RC_MAX; i++) {
         mContext->GetItemLocation(i)->SetExcludedOption(

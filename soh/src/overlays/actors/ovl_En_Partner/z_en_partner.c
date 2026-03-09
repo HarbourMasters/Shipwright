@@ -24,7 +24,6 @@ void EnPartner_Update(Actor* thisx, PlayState* play);
 void EnPartner_Draw(Actor* thisx, PlayState* play);
 void EnPartner_SpawnSparkles(EnPartner* this, PlayState* play, s32 sparkleLife);
 
-void func_808328EC(Player* this, u16 sfxId);
 void Player_RequestQuake(PlayState* play, s32 speed, s32 y, s32 countdown);
 s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play);
 
@@ -194,7 +193,7 @@ void UseBow(Actor* thisx, PlayState* play, u8 started, u8 arrowType) {
     EnPartner* this = (EnPartner*)thisx;
 
     if (started == 1) {
-        func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+        Player_PlaySfx(this, NA_SE_PL_CHANGE_ARMS);
         this->canMove = 0;
     } else if (started == 0) {
         if (this->itemTimer <= 0) {
@@ -235,7 +234,7 @@ void UseSlingshot(Actor* thisx, PlayState* play, u8 started) {
     EnPartner* this = (EnPartner*)thisx;
 
     if (started == 1) {
-        func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+        Player_PlaySfx(this, NA_SE_PL_CHANGE_ARMS);
         this->canMove = 0;
     } else if (started == 0) {
         if (this->itemTimer <= 0) {
@@ -324,7 +323,7 @@ void UseDekuStick(Actor* thisx, PlayState* play, u8 started) {
     if (this->itemTimer <= 0) {
         if (started == 1) {
             if (AMMO(ITEM_STICK) > 0) {
-                func_808328EC(this, NA_SE_EV_FLAME_IGNITION);
+                Player_PlaySfx(this, NA_SE_EV_FLAME_IGNITION);
             } else {
                 Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
             }
@@ -373,7 +372,7 @@ void UseHookshot(Actor* thisx, PlayState* play, u8 started) {
 
     if (this->itemTimer <= 0) {
         if (started == 1) {
-            func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+            Player_PlaySfx(this, NA_SE_PL_CHANGE_ARMS);
             this->canMove = 0;
             this->hookshotTarget =
                 Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_OBJ_HSBLOCK, this->actor.world.pos.x,
@@ -385,7 +384,7 @@ void UseHookshot(Actor* thisx, PlayState* play, u8 started) {
         } else if (started == 0) {
             Actor_Kill(this->hookshotTarget);
             this->hookshotTarget = NULL;
-            func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+            Player_PlaySfx(this, NA_SE_PL_CHANGE_ARMS);
             this->canMove = 1;
         } else if (started == 2) {
             this->hookshotTarget->shape.rot.y = this->actor.world.rot.y;

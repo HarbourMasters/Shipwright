@@ -139,8 +139,8 @@ s32 DemoTreLgt_PostLimbDraw(PlayState* play, SkelAnimeCurve* skelCurve, s32 limb
 
     OPEN_DISPS(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (play->state.frames * 2) % 256, 0, 64, 32, 1,
-                                (play->state.frames * -2) % 256, 0, 64, 32));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (play->state.frames * 2) % 256, 0, 64, 32, 1,
+                                  (play->state.frames * -2) % 256, 0, 64, 32, 2, 0, -2, 0));
 
     if (limbIndex == 1) {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 180, this->unk_170);

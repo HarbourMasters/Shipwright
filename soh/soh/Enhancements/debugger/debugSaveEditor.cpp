@@ -359,7 +359,7 @@ void DrawInfoTab() {
 
     PushStyleInput(THEME_COLOR);
     ImGui::InputScalar("Bgs Day Count", ImGuiDataType_S32, &gSaveContext.bgsDayCount);
-    Tooltip("Total number of days elapsed since giving Biggoron the claim check");
+    Tooltip("Total number of days elapsed since receiving claim check from Biggoron");
     PopStyleInput();
 
     PushStyleInput(THEME_COLOR);

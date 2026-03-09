@@ -10,6 +10,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "vt.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -259,8 +260,10 @@ void EnDntJiji_Talk(EnDntJiji* this, PlayState* play) {
         Message_CloseTextbox(play);
         Player_SetCsActionWithHaltedActors(play, NULL, 7);
         this->actor.parent = NULL;
-        Actor_OfferGetItem(&this->actor, play, this->getItemId, 400.0f, 200.0f);
-        this->actionFunc = EnDntJiji_SetupGivePrize;
+        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_DEKU_THEATER, true, this)) {
+            Actor_OfferGetItem(&this->actor, play, this->getItemId, 400.0f, 200.0f);
+            this->actionFunc = EnDntJiji_SetupGivePrize;
+        }
     }
 }
 
@@ -275,7 +278,8 @@ void EnDntJiji_SetupGivePrize(EnDntJiji* this, PlayState* play) {
 
 void EnDntJiji_GivePrize(EnDntJiji* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
+    if (GameInteractor_Should(VB_DEKU_THEATER_FINISH_GIVING_PRIZE,
+                              (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play))) {
         if ((this->getItemId == GI_NUT_UPGRADE_30) || (this->getItemId == GI_NUT_UPGRADE_40)) {
             // "nut"
             osSyncPrintf("実 \n");

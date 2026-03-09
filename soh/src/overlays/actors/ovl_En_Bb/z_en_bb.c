@@ -1329,11 +1329,11 @@ void EnBb_Draw(Actor* thisx, PlayState* play) {
         if (this->actor.params != ENBB_WHITE) {
             Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
-                                        ((play->gameplayFrames + (this->flameScrollMod * 10)) *
-                                         (-20 - (this->flameScrollMod * -2))) %
-                                            0x200,
-                                        0x20, 0x80));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
+                                          ((play->gameplayFrames + (this->flameScrollMod * 10)) *
+                                           (-20 - (this->flameScrollMod * -2))) %
+                                              0x200,
+                                          0x20, 0x80, 0, 0, 0, (-20 - (this->flameScrollMod * -2))));
             gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, this->flamePrimBlue, this->flamePrimAlpha);
             gDPSetEnvColor(POLY_XLU_DISP++, this->flameEnvColor.r, this->flameEnvColor.g, this->flameEnvColor.b, 0);
             Matrix_RotateY(((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) - this->actor.shape.rot.y + 0x8000)) *

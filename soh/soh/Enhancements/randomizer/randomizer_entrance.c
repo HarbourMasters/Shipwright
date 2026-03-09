@@ -59,23 +59,21 @@ typedef struct {
     s16 exit;
     s16 bossDoor;
     s16 bossDoorReverse;
-    s16 blueWarp;
     s16 scene;
     s16 bossScene;
 } DungeonEntranceInfo;
 
 static DungeonEntranceInfo dungeons[] = {
     // clang-format off
-    //entryway                       exit,                                              boss,                               reverse,                        bluewarp,                                          dungeon scene,         boss scene
-    { ENTR_DEKU_TREE_ENTRANCE,       ENTR_KOKIRI_FOREST_OUTSIDE_DEKU_TREE,              ENTR_DEKU_TREE_BOSS_ENTRANCE,       ENTR_DEKU_TREE_BOSS_DOOR,       ENTR_KOKIRI_FOREST_DEKU_TREE_BLUE_WARP,            SCENE_DEKU_TREE,       SCENE_DEKU_TREE_BOSS },
-    { ENTR_DODONGOS_CAVERN_ENTRANCE, ENTR_DEATH_MOUNTAIN_TRAIL_OUTSIDE_DODONGOS_CAVERN, ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE, ENTR_DODONGOS_CAVERN_BOSS_DOOR, ENTR_DEATH_MOUNTAIN_TRAIL_DODONGO_BLUE_WARP,       SCENE_DODONGOS_CAVERN, SCENE_DODONGOS_CAVERN_BOSS },
-    { ENTR_JABU_JABU_ENTRANCE,       ENTR_ZORAS_FOUNTAIN_OUTSIDE_JABU_JABU,             ENTR_JABU_JABU_BOSS_ENTRANCE,       ENTR_JABU_JABU_BOSS_DOOR,       ENTR_ZORAS_FOUNTAIN_JABU_JABU_BLUE_WARP,           SCENE_JABU_JABU,       SCENE_JABU_JABU_BOSS },
-    { ENTR_FOREST_TEMPLE_ENTRANCE,   ENTR_SACRED_FOREST_MEADOW_OUTSIDE_TEMPLE,          ENTR_FOREST_TEMPLE_BOSS_ENTRANCE,   ENTR_FOREST_TEMPLE_BOSS_DOOR,   ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP, SCENE_FOREST_TEMPLE,   SCENE_FOREST_TEMPLE_BOSS },
-    { ENTR_FIRE_TEMPLE_ENTRANCE,     ENTR_DEATH_MOUNTAIN_CRATER_OUTSIDE_TEMPLE,         ENTR_FIRE_TEMPLE_BOSS_ENTRANCE,     ENTR_FIRE_TEMPLE_BOSS_DOOR,     ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP,  SCENE_FIRE_TEMPLE,     SCENE_FIRE_TEMPLE_BOSS },
-    { ENTR_WATER_TEMPLE_ENTRANCE,    ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE,                    ENTR_WATER_TEMPLE_BOSS_ENTRANCE,    ENTR_WATER_TEMPLE_BOSS_DOOR,    ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP,            SCENE_WATER_TEMPLE,    SCENE_WATER_TEMPLE_BOSS },
-    { ENTR_SPIRIT_TEMPLE_ENTRANCE,   ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE,               ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE,   ENTR_SPIRIT_TEMPLE_BOSS_DOOR,   ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP,      SCENE_SPIRIT_TEMPLE,   SCENE_SPIRIT_TEMPLE_BOSS },
-    { ENTR_SHADOW_TEMPLE_ENTRANCE,   ENTR_GRAVEYARD_OUTSIDE_TEMPLE,                     ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE,   ENTR_SHADOW_TEMPLE_BOSS_DOOR,   ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP,            SCENE_SHADOW_TEMPLE,   SCENE_SHADOW_TEMPLE_BOSS },
-
+    //entryway                       exit,                                              boss,                               reverse,                        dungeon scene,         boss scene
+    { ENTR_DEKU_TREE_ENTRANCE,       ENTR_KOKIRI_FOREST_OUTSIDE_DEKU_TREE,              ENTR_DEKU_TREE_BOSS_ENTRANCE,       ENTR_DEKU_TREE_BOSS_DOOR,       SCENE_DEKU_TREE,       SCENE_DEKU_TREE_BOSS },
+    { ENTR_DODONGOS_CAVERN_ENTRANCE, ENTR_DEATH_MOUNTAIN_TRAIL_OUTSIDE_DODONGOS_CAVERN, ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE, ENTR_DODONGOS_CAVERN_BOSS_DOOR, SCENE_DODONGOS_CAVERN, SCENE_DODONGOS_CAVERN_BOSS },
+    { ENTR_JABU_JABU_ENTRANCE,       ENTR_ZORAS_FOUNTAIN_OUTSIDE_JABU_JABU,             ENTR_JABU_JABU_BOSS_ENTRANCE,       ENTR_JABU_JABU_BOSS_DOOR,       SCENE_JABU_JABU,       SCENE_JABU_JABU_BOSS },
+    { ENTR_FOREST_TEMPLE_ENTRANCE,   ENTR_SACRED_FOREST_MEADOW_OUTSIDE_TEMPLE,          ENTR_FOREST_TEMPLE_BOSS_ENTRANCE,   ENTR_FOREST_TEMPLE_BOSS_DOOR,   SCENE_FOREST_TEMPLE,   SCENE_FOREST_TEMPLE_BOSS },
+    { ENTR_FIRE_TEMPLE_ENTRANCE,     ENTR_DEATH_MOUNTAIN_CRATER_OUTSIDE_TEMPLE,         ENTR_FIRE_TEMPLE_BOSS_ENTRANCE,     ENTR_FIRE_TEMPLE_BOSS_DOOR,     SCENE_FIRE_TEMPLE,     SCENE_FIRE_TEMPLE_BOSS },
+    { ENTR_WATER_TEMPLE_ENTRANCE,    ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE,                    ENTR_WATER_TEMPLE_BOSS_ENTRANCE,    ENTR_WATER_TEMPLE_BOSS_DOOR,    SCENE_WATER_TEMPLE,    SCENE_WATER_TEMPLE_BOSS },
+    { ENTR_SPIRIT_TEMPLE_ENTRANCE,   ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE,               ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE,   ENTR_SPIRIT_TEMPLE_BOSS_DOOR,   SCENE_SPIRIT_TEMPLE,   SCENE_SPIRIT_TEMPLE_BOSS },
+    { ENTR_SHADOW_TEMPLE_ENTRANCE,   ENTR_GRAVEYARD_OUTSIDE_TEMPLE,                     ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE,   ENTR_SHADOW_TEMPLE_BOSS_DOOR,   SCENE_SHADOW_TEMPLE,   SCENE_SHADOW_TEMPLE_BOSS },
     // clang-format on
 };
 
@@ -182,7 +180,6 @@ void Entrance_Init(void) {
 
     // Then overwrite the indices which are shuffled
     for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
-
         if (Entrance_EntranceIsNull(&entranceOverrides[i])) {
             break;
         }
@@ -265,12 +262,16 @@ void Entrance_Init(void) {
 }
 
 s16 Entrance_GetOverride(s16 index) {
-
     // The game sometimes uses special indices from 0x7FF9 -> 0x7FFF for exiting
     // grottos and fairy fountains. These aren't handled here since the game
     // naturally handles them later.
     if (index >= ENTRANCE_TABLE_SIZE) {
         return index;
+    }
+
+    // special index for fake ganon's castle blue warp
+    if (entranceOverrideTable[index] == ENTR_OUTSIDE_GANONS_CASTLE_1_2) {
+        return ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT;
     }
 
     return entranceOverrideTable[index];
@@ -325,7 +326,6 @@ u32 Entrance_SceneAndSpawnAre(u8 scene, u8 spawn) {
 
 // Properly respawn the player after a game over, accounting for dungeon entrance randomizer
 void Entrance_SetGameOverEntrance(void) {
-
     s16 scene = gPlayState->sceneNum;
 
     // When in a boss room and boss shuffle is on, use the boss scene to find the death warp entrance
@@ -363,15 +363,14 @@ void Entrance_SetGameOverEntrance(void) {
         case ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE: // Shadow Temple Boss Room
             gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_ENTRANCE;
             return;
-        case ENTR_GANONDORF_BOSS_0:                           // Ganondorf Boss Room
-            gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0; // Inside Ganon's Castle -> Ganon's Tower Climb
+        case ENTR_GANONDORF_BOSS_0: // Ganondorf Boss Room
+            gSaveContext.entranceIndex = ENTR_INSIDE_GANONS_CASTLE_ENTRANCE;
             return;
     }
 }
 
 // Properly savewarp the player accounting for dungeon entrance randomizer.
 void Entrance_SetSavewarpEntrance(void) {
-
     s16 scene = gSaveContext.savedSceneNum;
 
     // When in a boss room and boss shuffle is on, use the boss scene to find the savewarp entrance
@@ -702,14 +701,6 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
     modifiedLinkActorEntry.params = gPlayState->linkActorEntry->params;
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON) {
-        // Move Hyrule's Castle Courtyard exit spawn to be before the crates so players don't skip Talon
-        if (sceneNum == SCENE_HYRULE_CASTLE && spawn == 1) {
-            modifiedLinkActorEntry.pos.x = 0x033A;
-            modifiedLinkActorEntry.pos.y = 0x0623;
-            modifiedLinkActorEntry.pos.z = 0xFF22;
-            gPlayState->linkActorEntry = &modifiedLinkActorEntry;
-        }
-
         // Move Ganon's Castle exit spawn to be on the small ledge near the castle and not over the void
         // to prevent Link from falling if the bridge isn't spawned
         if (sceneNum == SCENE_OUTSIDE_GANONS_CASTLE && spawn == 1) {
@@ -723,14 +714,14 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
     }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
-        // Repair the authentically bugged entrance when leaving Barniades boss room -> JabuJabu's belly
+        // Repair the authentically bugged entrance when leaving Barinade's boss room -> Jabu Jabu's belly
         // Link's position needs to be adjusted to prevent him from falling through the floor
         if (sceneNum == SCENE_JABU_JABU && spawn == 1) {
             modifiedLinkActorEntry.pos.z = 0xF7F4;
             gPlayState->linkActorEntry = &modifiedLinkActorEntry;
         }
 
-        // Repair the authentically bugged entrance when leaving Morpha's boass room -> Water Temple
+        // Repair the authentically bugged entrance when leaving Morpha's boss room -> Water Temple
         // Link's position was at the start of the Water Temple entrance
         // This updates it to place him in the hallway outside of Morpha's boss room.
         if (sceneNum == SCENE_WATER_TEMPLE && spawn == 1) {
@@ -754,13 +745,13 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
 
 s32 Entrance_OverrideSpawnSceneRoom(s32 sceneNum, s32 spawn, s32 roomNum) {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
-        // Repair the authentically bugged scene/spawn info for leaving Barinade's boss room -> JabuJabu's belly
+        // Repair the authentically bugged scene/spawn info for leaving Barinade's boss room -> Jabu Jabu's belly
         // to load the correct room outside Barniade's boss room
         if (sceneNum == SCENE_JABU_JABU && spawn == 1) {
             return 5;
         }
 
-        // Repair the authentically bugged scene/spawn info for leaving Morhpa's boss room -> Water Temple
+        // Repair the authentically bugged scene/spawn info for leaving Morpha's boss room -> Water Temple
         // to load the correct room for the hallway before Morpha's boss room
         if (sceneNum == SCENE_WATER_TEMPLE && spawn == 1) {
             return 11;

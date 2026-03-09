@@ -38,7 +38,6 @@ void BuildGanondorfHint(uint16_t* textId, bool* loadFromMessageTable) {
             msg = RAND_GET_HINT(RH_GANONDORF_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);
         }
     }
-    msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }
@@ -98,14 +97,12 @@ void BuildSheikMessage(uint16_t* textId, bool* loadFromMessageTable) {
 
 void BuildChildAltarMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_ALTAR_CHILD)->GetHintMessage();
-    msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }
 
 void BuildAdultAltarMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_ALTAR_ADULT)->GetHintMessage();
-    msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }
@@ -316,7 +313,7 @@ void BuildBiggoronHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
 }
 
 void BuildBigPoesHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    CustomMessage msg = RAND_GET_HINT(RH_BIGGORON_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+    CustomMessage msg = RAND_GET_HINT(RH_BIG_POES_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }

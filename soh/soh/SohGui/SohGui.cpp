@@ -47,6 +47,9 @@ static const inline std::vector<std::pair<const char*, const char*>> audioBacken
 #if defined(__linux)
     { "pulse", "PulseAudio" },
 #endif
+#ifdef __APPLE__
+    { "coreaudio", "Core Audio" },
+#endif
     { "sdl", "SDL Audio" }
 };
 

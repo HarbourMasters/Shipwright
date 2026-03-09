@@ -117,6 +117,8 @@ class Logic {
     bool IsFireLoopLocked();
     bool ReachScarecrow();
     bool ReachDistantScarecrow();
+    bool CanClimbLadder();
+    bool CanClimbHighLadder();
     bool SummonEpona();
     void Reset(bool resetSaveContext = true);
     void SetContext(std::shared_ptr<Context> _ctx);
@@ -153,6 +155,9 @@ class Logic {
     static std::map<RandomizerGet, uint32_t> RandoGetToEquipFlag;
     static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
     bool IsReverseAccessPossible();
+    bool DMCUpperToPots();
+    bool DMCPotsToPad();
+    bool DMCPadToPots();
     bool SpiritEastToSwitch();
     bool SpiritWestToSkull();
     bool SpiritSunBlockSouthLedge();

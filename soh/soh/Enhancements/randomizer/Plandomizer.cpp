@@ -15,6 +15,7 @@
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/rando_hash.h"
+#include "soh/Enhancements/randomizer/Traps.h"
 #include "soh/Enhancements/randomizer/3drando/shops.hpp"
 
 extern "C" {
@@ -875,9 +876,10 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
                                                            .Color(THEME_COLOR)
                                                            .Size(UIWidgets::Sizes::Inline)
                                                            .Padding(ImVec2(10.f, 6.f)))) {
-            plandoLogData[index].iceTrapName = GetIceTrapName(plandoLogData[index].iceTrapModel.GetRandomizerGet())
-                                                   .GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), 0))
-                                                   .c_str();
+            plandoLogData[index].iceTrapName =
+                Rando::Traps::GetTrapName(plandoLogData[index].iceTrapModel.GetRandomizerGet())
+                    .GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), 0))
+                    .c_str();
         }
         ImGui::SameLine();
     }

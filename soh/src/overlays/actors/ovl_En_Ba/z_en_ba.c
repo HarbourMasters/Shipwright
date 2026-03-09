@@ -489,9 +489,9 @@ void EnBa_Draw(Actor* thisx, PlayState* play) {
         Matrix_Push();
         gSPSegment(POLY_OPA_DISP++, 0x0C, mtx);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_809B8118[this->actor.params]));
-        gSPSegment(
-            POLY_OPA_DISP++, 0x09,
-            Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 16, 16, 1, 0, (play->gameplayFrames * -10) % 128, 32, 32));
+        gSPSegment(POLY_OPA_DISP++, 0x09,
+                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 16, 16, 1, 0, (play->gameplayFrames * -10) % 128, 32,
+                                      32, 0, 0, 0, -10));
         for (i = 0; i < 14; i++, mtx++) {
             FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
 
@@ -518,9 +518,9 @@ void EnBa_Draw(Actor* thisx, PlayState* play) {
         gSPDisplayList(POLY_OPA_DISP++, object_bxa_DL_000890);
     } else {
         gSPSegment(POLY_OPA_DISP++, 0x08,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, (play->gameplayFrames * 2) % 128,
-                                    (play->gameplayFrames * 2) % 128, 32, 32, 1, (play->gameplayFrames * -5) % 128,
-                                    (play->gameplayFrames * -5) % 128, 32, 32));
+                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (play->gameplayFrames * 2) % 128,
+                                      (play->gameplayFrames * 2) % 128, 32, 32, 1, (play->gameplayFrames * -5) % 128,
+                                      (play->gameplayFrames * -5) % 128, 32, 32, 2, 2, -5, -5));
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 125, 100, 255);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_bxa_DL_001D80);
