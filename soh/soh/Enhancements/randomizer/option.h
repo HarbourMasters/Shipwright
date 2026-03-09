@@ -360,7 +360,7 @@ class TrickSetting : public Option {
      * @return Option
      */
     static TrickSetting LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
-                                  std::set<Tricks::Tag> tags_, const std::string nameTag_);
+                                   std::set<Tricks::Tag> tags_, const std::string nameTag_);
 
     RandomizerTrick GetKey() const;
 
@@ -396,7 +396,8 @@ class TrickSetting : public Option {
     const std::set<Tricks::Tag>& GetTags() const;
 
   private:
-    TrickSetting(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_, const std::string nameTag_);
+    TrickSetting(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_,
+                 const std::string nameTag_);
     RandomizerCheckQuest mQuest;
     RandomizerArea mArea;
     std::string mNameTag;

@@ -385,14 +385,14 @@ static std::string MakeTrickDescription(RandomizerTrick key) {
 }
 
 TrickSetting::TrickSetting(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_,
-                         std::set<Tricks::Tag> tags_, const std::string nameTag_)
+                           std::set<Tricks::Tag> tags_, const std::string nameTag_)
     : Option(key_, std::move(MakeTrickName(key_)), { "Disabled", "Enabled" }, OptionCategory::Setting, "",
              std::move(MakeTrickDescription(key_)), WIDGET_CVAR_CHECKBOX, 0, false, nullptr, IMFLAG_NONE),
       mQuest(quest_), mArea(area_), mNameTag(nameTag_), mTags(std::move(tags_)) {
 }
 
 TrickSetting TrickSetting::LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
-                                    std::set<Tricks::Tag> tags_, const std::string nameTag_) {
+                                      std::set<Tricks::Tag> tags_, const std::string nameTag_) {
     return { key_, quest_, area_, std::move(tags_), nameTag_ };
 }
 
