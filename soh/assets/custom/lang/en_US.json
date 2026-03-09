@@ -55,8 +55,27 @@
                 "description": "Enables locations requiring use of the infinite sword glitch."
             },
             "visible_collision": {
-                "name": "Pass Through Visible One-Way Collision",
-                "description": "Allows climbing through the platform to reach Impa's House Back as adult with no items and going through the Kakariko Village Gate as child when coming from the Mountain Trail side."
+                "name": "Ignore Visible Collision",
+                "description": [
+                    "Allows ignoring visible barriers and objects that do not actually stop Link from walking, climbing or ",
+                    "hitting things, without clipping.\n\n",
+                    "This notably allows for walking through Kak's gate backwards, climb into the back of Impa's house as ",
+                    "Adult from the coop,",
+                    "and hitting Rusted Switches or boulders through Blocks, Ice and Walls.\n\n",
+                    "This trick only applies to case where doing the thing is trivial, instances where it only works from ",
+                    "certain angles are not part of this trick,",
+                    "neither are any form of clips, including clipping Link's hitbox inside boulders with a jumpslash."
+                ]
+            },
+            "hookshot_ladders": {
+                "name": "Hookshot Ladders",
+                "description": [
+                    "You can skip climb for hookshottable ladders can be skipped by hookshotting the top of the ladder from ",
+                    "the correct distance and angle.\n",
+                    "This is more difficult for some ladders than others, and a few are not possible.\n",
+                    "Hookshotting climbable walls in the same way is not a trick, as it is trivial to get an angle that ",
+                    "correctly ledge grabs."
+                ]
             },
             "grottos_without_agony": {
                 "name": "Hidden Grottos without Stone of Agony",
@@ -64,7 +83,13 @@
             },
             "fewer_tunic_requirements": {
                 "name": "Fewer Tunic Requirements",
-                "description": "Logic may require getting through areas with timers without tunics."
+                "description": [
+                    "Normally the only hot area logic expects you to navigate without a Goron Tunic is Death Mountain Crater\n",
+                    "and you are not expected to navigate underwater sections without a Zora Tunic.\n\n",
+                    "With this trick you are expected to do any underwater area except Central Pillar,\n",
+                    "any hot area except Volvagia and the Block lift room in Fire Temple\n",
+                    "and the health needed to logically navigate Crater is decreased."
+                ]
             },
             "unintuitive_jumps": {
                 "name": "Unintuitive Jumps",
@@ -150,7 +175,7 @@
                     "- Jumping past second step in Ice Cavern"
                 ]
             },
-            "kf_slide_jump": {
+            "slide_jump": {
                 "name": "Sliding Jumps",
                 "description": "Running forward while sliding sideways on ice can be used to jump on platforms."
             },
@@ -209,6 +234,13 @@
             "gy_shadow_fire_arrows": {
                 "name": "Shadow Temple Entry with Fire Arrows",
                 "description": "It is possible to light all of the torches to open the Shadow Temple entrance with just Fire Arrows, but you must be very quick, precise, and strategic with how you take your shots."
+            },
+            "dmt_shieldless_climb": {
+                "name": "Death Mountain Trail Child Climb Without Shield",
+                "description": [
+                    "Child can make it past the eruption to reach DMT Summit without a Hylian Shield or Nayru's Love",
+                    "by backwalking or simply taking damage."
+                ]
             },
             "dmt_soil_gs": {
                 "name": "Death Mountain Trail Soil GS without Destroying Boulder",
@@ -343,13 +375,19 @@
                 "name": "Sneak Past Moving Gerudo Guards with No Items",
                 "description": "The logic normally guarantees Bow or Hookshot to stun them from a distance, but every moving guard can be passed with basic movement and AI manipulation"
             },
-            "gf_child_skip_wasteland_gate": {
-                "name": "Gerudo's Fortress Skip Wasteland Gate as Child",
-                "description": "As child a sidehop out of bounds off the tower can be used to get past the gate."
+            "gf_wasteland_gate_sidehop_skip": {
+                "name": "Gerudo's Fortress Gate Skip with Sidehop",
+                "description": [
+                    "You can sidehop out of bounds from the tower, then sidehop again on the other side of the gate.\n\n",
+                    "This is easiest and most useful for Child, but Adult can also do this to skip the Gerudo Jabber Nut."
+                ]
             },
             "gf_adult_skip_wasteland_gate": {
                 "name": "Gerudo's Fortress Skip Wasteland Gate as Adult",
-                "description": "As adult a precise jumpslash out of bounds with hoverboots can be used to get past the gate."
+                "description": [
+                    "As adult a precise jumpslash out of bounds with hoverboots from above the jail can be used to get past the gate.\n\n",
+                    "This can also be used to reach the tower and lower the gate for child without climb."
+                ]
             },
             "gf_warrior_with_difficult_weapon": {
                 "name": "Gerudo's Fortress Warriors with Difficult Weapons",
