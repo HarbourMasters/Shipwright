@@ -38,7 +38,6 @@ void BuildGanondorfHint(uint16_t* textId, bool* loadFromMessageTable) {
             msg = RAND_GET_HINT(RH_GANONDORF_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);
         }
     }
-    msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }

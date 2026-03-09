@@ -130,14 +130,8 @@ void Hint::FillGapsInData() {
     if (locations.size() == 0 && StaticData::staticHintInfoMap.contains(ownKey)) {
         locations = StaticData::staticHintInfoMap[ownKey].targetChecks;
     }
-    bool fillAreas = true;
-    bool fillItems = true;
-    if (areas.size() > 0) {
-        fillAreas = false;
-    }
-    if (items.size() > 0) {
-        fillItems = false;
-    }
+    bool fillAreas = areas.size() == 0;
+    bool fillItems = items.size() == 0;
     for (uint8_t c = 0; c < locations.size(); c++) {
         // if area matters for the hint, it should be specified and not left to this
         if (fillAreas) {
@@ -205,6 +199,7 @@ void Hint::NamesChosen() {
         hintType == HINT_TYPE_ALTAR_CHILD || hintType == HINT_TYPE_ALTAR_ADULT) {
         namesTemp = {};
         saveNames = false;
+
         for (uint8_t c = 0; c < areas.size(); c++) {
             uint8_t selection = GetRandomHintTextEntry(GetAreaHintText(c));
             if (selection > 0) {

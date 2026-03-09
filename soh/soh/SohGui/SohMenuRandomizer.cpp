@@ -539,7 +539,7 @@ void SohMenu::AddMenuRandomizer() {
             ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE,
                              ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterAlphaNum);
             UIWidgets::Tooltip("Characters from a-z, A-Z, and 0-9 are supported.\n"
-                               "Character limit is 1023, after which the seed will be truncated.\n");
+                               "Character limit is 1023, after which the seed will be truncated.");
             ImGui::SameLine();
             if (UIWidgets::Button(
                     ICON_FA_RANDOM,

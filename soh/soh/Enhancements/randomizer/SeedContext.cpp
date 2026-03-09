@@ -2,7 +2,6 @@
 #include "static_data.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/item-tables/ItemTableManager.h"
-#include "3drando/shops.hpp"
 #include "dungeon.h"
 #include "logic.h"
 #include "entrance.h"
@@ -136,8 +135,8 @@ ItemOverride& Context::GetItemOverride(size_t locKey) {
 void Context::PlaceItemInLocation(const RandomizerCheck locKey, const RandomizerGet item,
                                   const bool applyEffectImmediately, const bool setHidden) {
     const auto loc = GetItemLocation(locKey);
-    SPDLOG_DEBUG(StaticData::RetrieveItem(item).GetName().GetEnglish() + " placed at " +
-                 StaticData::GetLocation(locKey)->GetName() + "\n");
+    SPDLOG_DEBUG("{} placed at {}", StaticData::RetrieveItem(item).GetName().GetEnglish(),
+                 StaticData::GetLocation(locKey)->GetName());
 
     if (applyEffectImmediately || mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_GLITCHLESS)) {
         StaticData::RetrieveItem(item).ApplyEffect();
@@ -332,7 +331,7 @@ void Context::HintReset() {
 }
 
 void Context::CreateItemOverrides() {
-    SPDLOG_DEBUG("NOW CREATING OVERRIDES\n\n");
+    SPDLOG_DEBUG("NOW CREATING OVERRIDES");
     for (RandomizerCheck locKey : allLocations) {
         const auto loc = StaticData::GetLocation(locKey);
         // If this is an ice trap, store the disguise model in iceTrapModels
@@ -344,13 +343,9 @@ void Context::CreateItemOverrides() {
             // If this is ice trap is in a shop, change the name based on what the model will look like
             overrides[locKey] = val;
         }
-        SPDLOG_DEBUG(loc->GetName());
-        SPDLOG_DEBUG(": ");
-        SPDLOG_DEBUG(itemLoc->GetPlacedItemName().GetEnglish());
-        SPDLOG_DEBUG("\n");
+        SPDLOG_DEBUG("{}: {}", loc->GetName(), itemLoc->GetPlacedItemName().GetEnglish());
     }
-    SPDLOG_DEBUG("Overrides Created: ");
-    SPDLOG_DEBUG(std::to_string(overrides.size()));
+    SPDLOG_DEBUG("Overrides Created: {}", std::to_string(overrides.size()));
 }
 
 bool Context::IsSeedGenerated() const {

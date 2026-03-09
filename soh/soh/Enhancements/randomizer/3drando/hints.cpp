@@ -1,8 +1,6 @@
 #include "hints.hpp"
 
-#include "item_pool.hpp"
 #include "random.hpp"
-#include "spoiler_log.hpp"
 #include "fill.hpp"
 #include "../trial.h"
 #include "../entrance.h"
@@ -401,7 +399,7 @@ static void AddGossipStoneHintCopies(uint8_t copies, const HintType hintType, co
         // get a random gossip stone
         auto gossipStones = GetEmptyGossipStones();
         if (gossipStones.empty()) {
-            SPDLOG_DEBUG("\tNO GOSSIP STONES TO PLACE HINT\n\n");
+            SPDLOG_DEBUG("\tNO GOSSIP STONES TO PLACE HINT");
             return;
         }
         auto gossipStone = RandomElement(gossipStones, false);
@@ -415,7 +413,7 @@ static bool CreateHint(RandomizerCheck location, uint8_t copies, HintType type, 
     // get a gossip stone accessible without the hinted item
     std::vector<RandomizerCheck> gossipStoneLocations = GetAccessibleGossipStones(location);
     if (gossipStoneLocations.empty()) {
-        SPDLOG_DEBUG("\tNO IN LOGIC GOSSIP STONE\n\n");
+        SPDLOG_DEBUG("\tNO IN LOGIC GOSSIP STONE");
         return false;
     }
     RandomizerCheck gossipStone = RandomElement(gossipStoneLocations);
@@ -437,7 +435,7 @@ static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck>& possibleHi
 
     // return if there aren't any hintable locations or gossip stones available
     if (GetEmptyGossipStones().size() < copies) {
-        SPDLOG_DEBUG("\tNOT ENOUGH GOSSIP STONES TO PLACE HINTS\n\n");
+        SPDLOG_DEBUG("\tNOT ENOUGH GOSSIP STONES TO PLACE HINTS");
         return RC_UNKNOWN_CHECK;
     }
 
@@ -445,19 +443,14 @@ static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck>& possibleHi
     bool placed = false;
     while (!placed) {
         if (possibleHintLocations.empty()) {
-            SPDLOG_DEBUG("\tNO LOCATIONS TO HINT\n\n");
+            SPDLOG_DEBUG("\tNO LOCATIONS TO HINT");
             return RC_UNKNOWN_CHECK;
         }
         hintedLocation =
             RandomElement(possibleHintLocations, true); // removing the location to avoid it being hinted again on fail
 
-        SPDLOG_DEBUG("\tLocation: ");
-        SPDLOG_DEBUG(Rando::StaticData::GetLocation(hintedLocation)->GetName());
-        SPDLOG_DEBUG("\n");
-
-        SPDLOG_DEBUG("\tItem: ");
-        SPDLOG_DEBUG(ctx->GetItemLocation(hintedLocation)->GetPlacedItemName().GetEnglish());
-        SPDLOG_DEBUG("\n");
+        SPDLOG_DEBUG("\tLocation: {}", Rando::StaticData::GetLocation(hintedLocation)->GetName());
+        SPDLOG_DEBUG("\tItem: {}", ctx->GetItemLocation(hintedLocation)->GetPlacedItemName().GetEnglish());
 
         placed = CreateHint(hintedLocation, copies, type, distributionName);
     }
@@ -609,8 +602,8 @@ uint8_t PlaceHints(std::vector<uint8_t>& selectedHints, std::vector<HintDistribu
         std::vector<RandomizerCheck> hintTypePool = FilterHintability(ctx->allLocations, distribution.filter);
         for (uint8_t numHint = 0; numHint < selectedHints[curSlot]; numHint++) {
             hintTypePool = FilterHintability(hintTypePool);
-            SPDLOG_DEBUG("Attempting to make hint of type: " +
-                         StaticData::hintTypeNames[distribution.type].GetEnglish(MF_CLEAN) + "\n");
+            SPDLOG_DEBUG("Attempting to make hint of type: {}",
+                         StaticData::hintTypeNames[distribution.type].GetEnglish(MF_CLEAN));
             RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK;
 
             hintedLocation = CreateRandomHint(hintTypePool, distribution.copies, distribution.type, distribution.name);
@@ -640,7 +633,7 @@ uint8_t PlaceHints(std::vector<uint8_t>& selectedHints, std::vector<HintDistribu
 
 void CreateStoneHints() {
     auto ctx = Rando::Context::GetInstance();
-    SPDLOG_DEBUG("\nNOW CREATING HINTS\n");
+    SPDLOG_DEBUG("NOW CREATING HINTS");
     const HintSetting& hintSetting = hintSettingTable[ctx->GetOption(RSK_HINT_DISTRIBUTION).Get()];
     std::vector<HintDistributionSetting> distTable = hintSetting.distTable;
 
@@ -686,11 +679,8 @@ void CreateStoneHints() {
     }
 
     size_t totalStones = GetEmptyGossipStones().size();
-    std::vector<uint8_t> selectedHints = {};
-    for (size_t c = 0; c < distTable.size(); c++) {
-        selectedHints.push_back(0);
-    }
-    selectedHints.push_back(0);
+    std::vector<uint8_t> selectedHints;
+    selectedHints.resize(distTable.size() + 1);
     DistributeHints(selectedHints, totalStones, distTable, hintSetting.junkWeight);
 
     while (totalStones != 0) {
