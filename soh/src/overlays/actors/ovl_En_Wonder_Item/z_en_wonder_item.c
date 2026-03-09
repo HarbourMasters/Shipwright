@@ -76,12 +76,12 @@ void EnWonderItem_DropCollectible(EnWonderItem* this, PlayState* play, s32 autoC
     s32 i;
     s32 randomDrop;
 
-    Sfx_PlaySfxCentered(NA_SE_SY_GET_ITEM);
-
-    if (this->dropCount == 0) {
-        this->dropCount++;
-    }
     if (GameInteractor_Should(VB_WONDER_DROP_ITEM, true, this)) {
+        Sfx_PlaySfxCentered(NA_SE_SY_GET_ITEM);
+
+        if (this->dropCount == 0) {
+            this->dropCount++;
+        }
         for (i = this->dropCount; i > 0; i--) {
             if (this->itemDrop < WONDERITEM_DROP_RANDOM) {
                 if ((this->itemDrop == WONDERITEM_DROP_FLEXIBLE) || !autoCollect) {
@@ -259,6 +259,7 @@ void EnWonderItem_ProximitySwitch(EnWonderItem* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if ((this->actor.xzDistToPlayer < 50.0f) && (fabsf(this->actor.world.pos.y - player->actor.world.pos.y) < 30.0f)) {
+        if (GameInteractor_Should(VB_WONDER_DROP_ITEM, true, this)) {}
         if (this->switchFlag >= 0) {
             Flags_SetSwitch(play, this->switchFlag);
         }

@@ -13,6 +13,8 @@ extern PlayState* gPlayState;
 }
 
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
+static Vec3f sMyTagPointsOrdered[9];
+static Vec3f sMyFreePointsOrdered[9];
 
 typedef enum {
     PARTICLE_MAJOR,
@@ -53,7 +55,42 @@ uint8_t EnWonderItem_RandomizerHoldsItem(EnWonderItem* wonderActor, PlayState* p
     }
 }
 
-void EnWonderItem_RandomizerDraw(void* refActor) {
+static void EnWonderItem_RandomizerDraw(EnWonderItem* wonderActor, Color_RGBA8* primColor,
+                                    Color_RGBA8* envColor) {
+    Vec3f pos;
+    static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
+    static Vec3f accel = { 0.0f, 0.0f, 0.0f };
+
+    velocity.y = -0.05f;
+    accel.y = -0.025f;
+
+    if (wonderActor->wonderMode == WONDERITEM_MULTITAG_ORDERED) {
+        for (s32 i = 0, mask = 1; i < wonderActor->numTagPoints; i++, mask <<= 1) {
+            if (!(wonderActor->tagFlags & mask)) {
+                pos.x = Rand_CenteredFloat(7.5f) + sMyTagPointsOrdered[i].x;
+                pos.y = (Rand_ZeroOne() * 30.0f) + sMyTagPointsOrdered[i].y + 5;
+                pos.z = Rand_CenteredFloat(7.5f) + sMyTagPointsOrdered[i].z;
+                EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 255);
+            }
+        }
+    } else if (wonderActor->wonderMode == WONDERITEM_MULTITAG_FREE) {
+        for (s32 i = 0, mask = 1; i < wonderActor->numTagPoints; i++, mask <<= 1) {
+            if (!(wonderActor->tagFlags & mask)) {
+                pos.x = Rand_CenteredFloat(7.5f) + sMyFreePointsOrdered[i].x;
+                pos.y = (Rand_ZeroOne() * 30.0f) + sMyFreePointsOrdered[i].y + 5;
+                pos.z = Rand_CenteredFloat(7.5f) + sMyFreePointsOrdered[i].z;
+                EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 255);
+            }
+        }
+    } else {
+        pos.x = Rand_CenteredFloat(7.5f) + wonderActor->actor.world.pos.x;
+        pos.y = (Rand_ZeroOne() * 30.0f) + wonderActor->actor.world.pos.y + 5;
+        pos.z = Rand_CenteredFloat(7.5f) + wonderActor->actor.world.pos.z;
+        EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 255);
+    }
+}
+
+void EnWonderItem_RandomizerDrawSetup(void* refActor) {
     GetItemCategory getItemCategory;
     EnWonderItem* wonderActor = static_cast<EnWonderItem*>(refActor);
 
@@ -89,11 +126,10 @@ void EnWonderItem_RandomizerDraw(void* refActor) {
     };
 
     s16 colorIndex;
-    static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    static Vec3f accel = { 0.0f, 0.0f, 0.0f };
     Color_RGBA8 primColor;
     Color_RGBA8 envColor;
     Vec3f pos;
+
     pos.x = Rand_CenteredFloat(7.5f) + wonderActor->actor.world.pos.x;
     pos.y = (Rand_ZeroOne() * 30.0f) + wonderActor->actor.world.pos.y + 5;
     pos.z = Rand_CenteredFloat(7.5f) + wonderActor->actor.world.pos.z;
@@ -102,8 +138,7 @@ void EnWonderItem_RandomizerDraw(void* refActor) {
         colorIndex = PARTICLE_JUNK;
         Color_RGBA8_Copy(&primColor, mainColors[colorIndex]);
         Color_RGBA8_Copy(&envColor, flareColors[colorIndex]);
-        EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, &primColor, &envColor, 2000, 255);
-        return;
+        EnWonderItem_RandomizerDraw(wonderActor, &primColor, &envColor);
     }
 
     const auto wonderIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(refActor);
@@ -115,24 +150,7 @@ void EnWonderItem_RandomizerDraw(void* refActor) {
         Rando::Context::GetInstance()->GetFinalGIEntry(wonderIdentity->randomizerCheck, true, GI_NONE);
     getItemCategory = wonderItem.getItemCategory;
 
-    // If they have bombchus, don't consider the bombchu item major
-    if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-        ((wonderItem.modIndex == MOD_RANDOMIZER && wonderItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
-         (wonderItem.modIndex == MOD_NONE &&
-          (wonderItem.getItemId == GI_BOMBCHUS_5 || wonderItem.getItemId == GI_BOMBCHUS_10 ||
-           wonderItem.getItemId == GI_BOMBCHUS_20)))) {
-        getItemCategory = ITEM_CATEGORY_JUNK;
-        // If it's a bottle and they already have one, consider the item lesser
-    } else if ((wonderItem.modIndex == MOD_RANDOMIZER && wonderItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
-                wonderItem.getItemId <= RG_BOTTLE_WITH_POE) ||
-               (wonderItem.modIndex == MOD_NONE &&
-                (wonderItem.getItemId == GI_BOTTLE || wonderItem.getItemId == GI_MILK_BOTTLE))) {
-        if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
-            getItemCategory = ITEM_CATEGORY_LESSER;
-        }
-    }
-
-    // Change texture
+    // Change particle color
     switch (getItemCategory) {
         case ITEM_CATEGORY_MAJOR:
             colorIndex = PARTICLE_MAJOR;
@@ -159,29 +177,53 @@ void EnWonderItem_RandomizerDraw(void* refActor) {
     }
     Color_RGBA8_Copy(&primColor, mainColors[colorIndex]);
     Color_RGBA8_Copy(&envColor, flareColors[colorIndex]);
-    velocity.y = -0.05f;
-    accel.y = -0.025f;
-    EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, &primColor, &envColor, 2000, 255);
-    return;
+    EnWonderItem_RandomizerDraw(wonderActor, &primColor, &envColor);
 }
 
 void EnWonderItem_RandomizerSpawnCollectible(EnWonderItem* wonderActor, PlayState* play) {
     const auto wonderIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&wonderActor->actor);
+    EnItem00* item00;
+    Player* player = GET_PLAYER(gPlayState);
+
     if (wonderIdentity == nullptr) {
         return;
     }
+    // if a tag point, autocollect the check
+    if (wonderActor->wonderMode == WONDERITEM_MULTITAG_FREE || wonderActor->wonderMode == WONDERITEM_PROXIMITY_DROP ||
+        wonderActor->wonderMode == WONDERITEM_MULTITAG_ORDERED ||
+        wonderActor->wonderMode == WONDERITEM_PROXIMITY_SWITCH) {
+        Flags_SetRandomizerInf(wonderIdentity->randomizerInf);
+    } else {
+        item00 = (EnItem00*)Item_DropCollectible2(play, &wonderActor->actor.world.pos, ITEM00_SOH_DUMMY);
+        item00->randoInf = wonderIdentity->randomizerInf;
+        item00->itemEntry =
+            Rando::Context::GetInstance()->GetFinalGIEntry(wonderIdentity->randomizerCheck, true, GI_NONE);
+        item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
+        item00->actor.velocity.y = 8.0f;
+        item00->actor.speedXZ = 2.0f;
+        item00->actor.world.rot.y =
+            Math_Vec3f_Yaw(&item00->actor.world.pos, &player->actor.world.pos) + (s16)Rand_CenteredFloat(16384.0f);
+    }
 
-    EnItem00* item00 = (EnItem00*)Item_DropCollectible2(play, &wonderActor->actor.world.pos, ITEM00_SOH_DUMMY);
-    item00->randoInf = wonderIdentity->randomizerInf;
-    item00->itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(wonderIdentity->randomizerCheck, true, GI_NONE);
-    item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
 }
 
 void RegisterShuffleWonderItems() {
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS);
 
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_WONDER_ITEM, shouldRegister, [](void* actorRef) {
+        Actor* actor = static_cast<Actor*>(actorRef);
+        EnWonderItem* wonderActor = static_cast<EnWonderItem*>(actorRef);
+        if (wonderActor->wonderMode == WONDERITEM_TAG_POINT_ORDERED) {
+            s16 tagIndex = actor->world.rot.z & 0xFF;
+            sMyTagPointsOrdered[tagIndex] = actor->world.pos;
+        } else if (wonderActor->wonderMode == WONDERITEM_TAG_POINT_FREE) {
+            s16 tagIndex = actor->world.rot.z & 0xFF;
+            sMyFreePointsOrdered[tagIndex] = actor->world.pos;
+        }
+    });
+
     // Draw particle effect in wonder item spot to indicate a randomized item.
-    COND_ID_HOOK(OnActorUpdate, ACTOR_EN_WONDER_ITEM, shouldRegister, EnWonderItem_RandomizerDraw);
+    COND_ID_HOOK(OnActorUpdate, ACTOR_EN_WONDER_ITEM, shouldRegister, EnWonderItem_RandomizerDrawSetup);
 
     // Do not spawn vanilla wonder item, instead spawn the randomized item.
     COND_VB_SHOULD(VB_WONDER_DROP_ITEM, shouldRegister, {
