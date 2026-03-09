@@ -27,5 +27,5 @@ size_t CopyStringToCharBuffer(char* buffer, const std::string& source, size_t ma
 bool IsStringEmpty(std::string str);
 uint32_t Hash(std::string str);
 
-std::vector<std::string> StringSplit(const std::string& str, const std::string& delimiter);
+std::vector<std::string_view> StringSplit(const std::string& str, const std::string& delimiter);
 } // namespace SohUtils
