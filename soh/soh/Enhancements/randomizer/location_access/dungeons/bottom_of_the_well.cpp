@@ -20,7 +20,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_CORRIDOR] = Region("Bottom of the Well Corridor", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
         //Exits
-        ENTRANCE(RR_BOTW_ENTRYWAY,  logic->CanUse(RG_CRAWL) && logic->HasItem(RG_CLIMB)),
+        ENTRANCE(RR_BOTW_ENTRYWAY,  logic->CanUse(RG_CRAWL) && logic->CanClimbLadder()),
         ENTRANCE(RR_BOTW_PERIMETER, logic->CanPassEnemy(RE_BIG_SKULLTULA)),
     });
 
@@ -205,7 +205,7 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_GRASS_3,   logic->CanCutShrubs()),
     }, {
         //Exits
-        ENTRANCE(RR_BOTW_HIDDEN_POTS,      logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)),
+        ENTRANCE(RR_BOTW_HIDDEN_POTS,      logic->CanClimbHighLadder()),
         //It's possible to abuse boulder's limited range of collision detection to detonate the flowers through the boulder with bow, but this is a glitch
         //the exact range is just past the furthest away plank in the green goo section
         ENTRANCE(RR_BOTW_B3_BOMB_FLOWERS,  AnyAgeTime([]{return logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_BOTW_BASEMENT) && logic->CanUse(RG_STICKS)) || (ctx->GetTrickOption(RT_DISTANT_BOULDER_COLLISION) && logic->CanUse(RG_FAIRY_BOW));})),
@@ -424,7 +424,7 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SUN_FAIRY,           logic->CanUse(RG_SUNS_SONG)),
     }, {
         //Exits
-        ENTRANCE(RR_BOTW_MQ_PERIMETER, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)),
+        ENTRANCE(RR_BOTW_MQ_PERIMETER, logic->CanClimbHighLadder()),
     });
 
     areaTable[RR_BOTW_MQ_B3_PLATFORM] = Region("Bottom of the Well MQ B3 Platform", SCENE_BOTTOM_OF_THE_WELL, {}, {
