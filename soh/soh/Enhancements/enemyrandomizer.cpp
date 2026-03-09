@@ -905,7 +905,8 @@ void RegisterEnemyRandomizer() {
         EnEncount1* encount1 = va_arg(args, EnEncount1*);
         PlayState* play = va_arg(args, PlayState*);
 
-        s16 actorId = va_arg(args, s16);
+        // have to use int instead of s16 in the va_arg call due to integer promotion
+        s16 actorId = va_arg(args, int);
         Vec3f spawnPos = va_arg(args, Vec3f);
         s16 posX = spawnPos.x;
         s16 posY = spawnPos.y;
@@ -913,7 +914,8 @@ void RegisterEnemyRandomizer() {
         s16 rotX = 0;
         s16 rotY = 0;
         s16 rotZ = 0;
-        s16 params = va_arg(args, s16);
+        // have to use int instead of s16 in the va_arg call due to integer promotion
+        s16 params = va_arg(args, int);
 
         if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
             assert(false);

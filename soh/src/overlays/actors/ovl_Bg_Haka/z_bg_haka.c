@@ -6,7 +6,7 @@
 
 #include "z_bg_haka.h"
 #include "objects/object_haka/object_haka.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
