@@ -33,10 +33,12 @@ uint8_t EnWonderItem_RandomizerHoldsItem(EnWonderItem* wonderActor, PlayState* p
         s16 actorIndex = GetActorListIndex(actor);
         bool isDungeonScene = (play->sceneNum >= SCENE_DEKU_TREE && play->sceneNum <= SCENE_GERUDO_TRAINING_GROUND) ||
                          play->sceneNum == SCENE_INSIDE_GANONS_CASTLE;
+        // For dungeons, use room Id and actor index. For overworld, use xz coordinates.
         auto newIdentity = isDungeonScene ? OTRGlobals::Instance->gRandomizer->IdentifyWonderItem(
                                            play->sceneNum, (s16)play->roomCtx.curRoom.num, actorIndex)
                                      : OTRGlobals::Instance->gRandomizer->IdentifyWonderItem(
                                            play->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
+
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(newIdentity));
         wonderIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(actor);
         if (wonderIdentity == nullptr) {
@@ -64,13 +66,14 @@ static void EnWonderItem_RandomizerDraw(EnWonderItem* wonderActor, Color_RGBA8* 
     velocity.y = -0.05f;
     accel.y = -0.025f;
 
+    // Draw particles at tag spots if applicable, otherwise at wonder item actor location
     if (wonderActor->wonderMode == WONDERITEM_MULTITAG_ORDERED) {
         for (s32 i = 0, mask = 1; i < wonderActor->numTagPoints; i++, mask <<= 1) {
             if (!(wonderActor->tagFlags & mask)) {
                 pos.x = Rand_CenteredFloat(7.5f) + sMyTagPointsOrdered[i].x;
                 pos.y = (Rand_ZeroOne() * 30.0f) + sMyTagPointsOrdered[i].y + 5;
                 pos.z = Rand_CenteredFloat(7.5f) + sMyTagPointsOrdered[i].z;
-                EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 255);
+                EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 100);
             }
         }
     } else if (wonderActor->wonderMode == WONDERITEM_MULTITAG_FREE) {
@@ -79,14 +82,14 @@ static void EnWonderItem_RandomizerDraw(EnWonderItem* wonderActor, Color_RGBA8* 
                 pos.x = Rand_CenteredFloat(7.5f) + sMyFreePointsOrdered[i].x;
                 pos.y = (Rand_ZeroOne() * 30.0f) + sMyFreePointsOrdered[i].y + 5;
                 pos.z = Rand_CenteredFloat(7.5f) + sMyFreePointsOrdered[i].z;
-                EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 255);
+                EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 100);
             }
         }
     } else {
         pos.x = Rand_CenteredFloat(7.5f) + wonderActor->actor.world.pos.x;
         pos.y = (Rand_ZeroOne() * 30.0f) + wonderActor->actor.world.pos.y + 5;
         pos.z = Rand_CenteredFloat(7.5f) + wonderActor->actor.world.pos.z;
-        EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 255);
+        EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 100);
     }
 }
 
@@ -98,43 +101,38 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
         return;
     }
 
-    bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
+    bool cmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
-    int isVanilla = !csmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+    int isNotCMC = !cmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
     // Color of the circle for the particles
     static Color_RGBA8 mainColors[7][3] = {
         { 250, 185, 40 },   // Major
-        { 25, 20, 0 },      // Skulltula Token
+        { 0, 0, 0 },      // Skulltula Token
         { 150, 150, 150 },  // Small Key
         { 0, 0, 180 },      // Boss Key
-        { 250, 0, 0 },  // Health
-        { 255, 100, 0 },     // Lesser
-        { 255, 240, 125 }   // Junk
+        { 250, 0, 0 },      // Health
+        { 255, 100, 0 },    // Lesser
+        { 255, 255, 255 }   // Junk
     };
 
     // Color of the faded flares stretching off the particles
     static Color_RGBA8 flareColors[7][3] = {
-        { 230, 220, 180 },  // Major
-        { 250, 185, 40 },   // Skulltula Token
-        { 200, 200, 200 },  // Small Key
-        { 250, 250, 0 },    // Boss Key
+        { 250, 220, 180 },  // Major
+        { 255, 255, 255 },   // Skulltula Token
+        { 0, 0, 0 },  // Small Key
+        { 115, 125, 255 },    // Boss Key
         { 255, 125, 125 },  // Health
-        { 255, 100, 0 },        // Lesser
-        { 255, 240, 125 }  // Junk
+        { 255, 160, 100 },    // Lesser
+        { 135, 135, 135 }   // Junk
     };
 
     s16 colorIndex;
     Color_RGBA8 primColor;
     Color_RGBA8 envColor;
-    Vec3f pos;
 
-    pos.x = Rand_CenteredFloat(7.5f) + wonderActor->actor.world.pos.x;
-    pos.y = (Rand_ZeroOne() * 30.0f) + wonderActor->actor.world.pos.y + 5;
-    pos.z = Rand_CenteredFloat(7.5f) + wonderActor->actor.world.pos.z;
-
-    if (isVanilla) {
+    if (isNotCMC) {
         colorIndex = PARTICLE_JUNK;
         Color_RGBA8_Copy(&primColor, mainColors[colorIndex]);
         Color_RGBA8_Copy(&envColor, flareColors[colorIndex]);
@@ -150,7 +148,7 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
         Rando::Context::GetInstance()->GetFinalGIEntry(wonderIdentity->randomizerCheck, true, GI_NONE);
     getItemCategory = wonderItem.getItemCategory;
 
-    // Change particle color
+    // Change particle color for CMC
     switch (getItemCategory) {
         case ITEM_CATEGORY_MAJOR:
             colorIndex = PARTICLE_MAJOR;
@@ -188,7 +186,7 @@ void EnWonderItem_RandomizerSpawnCollectible(EnWonderItem* wonderActor, PlayStat
     if (wonderIdentity == nullptr) {
         return;
     }
-    // if a tag point, autocollect the check
+    // if activated via tag points, autocollect the check, otherwise spawn the item toward the player
     if (wonderActor->wonderMode == WONDERITEM_MULTITAG_FREE || wonderActor->wonderMode == WONDERITEM_PROXIMITY_DROP ||
         wonderActor->wonderMode == WONDERITEM_MULTITAG_ORDERED ||
         wonderActor->wonderMode == WONDERITEM_PROXIMITY_SWITCH) {
@@ -210,6 +208,7 @@ void EnWonderItem_RandomizerSpawnCollectible(EnWonderItem* wonderActor, PlayStat
 void RegisterShuffleWonderItems() {
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS);
 
+    // Capture the tag points for wonder items if they exist
     COND_ID_HOOK(OnActorInit, ACTOR_EN_WONDER_ITEM, shouldRegister, [](void* actorRef) {
         Actor* actor = static_cast<Actor*>(actorRef);
         EnWonderItem* wonderActor = static_cast<EnWonderItem*>(actorRef);
@@ -222,10 +221,10 @@ void RegisterShuffleWonderItems() {
         }
     });
 
-    // Draw particle effect in wonder item spot to indicate a randomized item.
+    // Draw particle effect in wonder item spot to indicate a randomized item
     COND_ID_HOOK(OnActorUpdate, ACTOR_EN_WONDER_ITEM, shouldRegister, EnWonderItem_RandomizerDrawSetup);
 
-    // Do not spawn vanilla wonder item, instead spawn the randomized item.
+    // Do not spawn vanilla wonder item, instead spawn the randomized item
     COND_VB_SHOULD(VB_WONDER_DROP_ITEM, shouldRegister, {
         EnWonderItem* wonderActor = va_arg(args, EnWonderItem*);
         if (EnWonderItem_RandomizerHoldsItem(wonderActor, gPlayState)) {
