@@ -98,6 +98,7 @@ void LoadCustomItemIcon(bool displayAsEnglish) {
     if (player->getItemEntry.objectId != OBJECT_INVALID) {
         RandomizerGet rgid = static_cast<RandomizerGet>(player->getItemEntry.getItemId);
         customIcon = Rando::StaticData::RetrieveItem(rgid).GetCustomIcon();
+        iconSize = Rando::StaticData::RetrieveItem(rgid).GetCustomIconSize();
     }
     if (customIcon != nullptr) {
         static int16_t sIconItem32XOffsets[] = { 74, 74, 74, 54 };
