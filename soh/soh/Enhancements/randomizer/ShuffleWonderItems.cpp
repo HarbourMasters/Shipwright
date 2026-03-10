@@ -26,6 +26,73 @@ typedef enum {
     PARTICLE_JUNK,
 } WonderItemCMCColors;
 
+// Many wonder items spawn on top of each other, offset position to make them all distinct
+static std::unordered_map<RandomizerCheck, Vec3f> sStackedWonderOffsets = {
+    { RC_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_1, { 6.0f, 15.0f, 6.0f } },
+    { RC_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_2, { 12.0f, 0.0f, 0.0f } },
+    { RC_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_3, { -4.0f, -2.0f, 25.0f } },
+
+    { RC_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_1, { -6.0f, -14.0f, 2.0f } },
+    { RC_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_2, { 5.0f, 0.0f, -10.0f } },
+    { RC_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_3, { 4.0f, -2.0f, 5.0f } },
+
+    { RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_1, { 0.0f, 20.0f, 0.0f } },
+    { RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_2, { 0.0f, 2.0f, 0.0f } },
+    { RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_3, { 6.0f, 0.0f, 9.0f } },
+
+    { RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_1, { -2.0f, 0.0f, 15.0f } },
+    { RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_2, { 1.0f, -11.0f, -5.0f } },
+    { RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_3, { 0.0f, -12.0f, 0.0f } },
+
+    { RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_EXPLOSION_1, { -7.5f, 0.0f, -7.5f } },
+    { RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_EXPLOSION_2, { -7.5f, 0.0f, 7.5f } },
+    { RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_EXPLOSION_3, { 7.5f, 0.0f, 7.5f } },
+
+    { RC_MQ_FIRE_TEMPLE_WONDER_SHORTCUT_ROOM_1, { -7.5f, 0.0f, -7.5f } },
+    { RC_MQ_FIRE_TEMPLE_WONDER_SHORTCUT_ROOM_2, { -7.5f, 0.0f, 7.5f } },
+    { RC_MQ_FIRE_TEMPLE_WONDER_SHORTCUT_ROOM_3, { 7.5f, 0.0f, 7.5f } },
+
+    { RC_MQ_FIRE_TEMPLE_WONDER_BOSS_KEY_ROOM_HOOKSHOT, { 0.0f, 0.0f, -8.0f } },
+    { RC_MQ_FIRE_TEMPLE_WONDER_BOSS_KEY_ROOM_BOW, { 0.0f, 0.0f, 8.0f } },
+
+    { RC_MQ_FIRE_TEMPLE_WONDER_EAST_TOWER_LARGE_FACE_1, { -8.0f, 0.0f, 0.0f } },
+    { RC_MQ_FIRE_TEMPLE_WONDER_EAST_TOWER_LARGE_FACE_2, { 8.0f, 0.0f, 0.0f } },
+
+    { RC_MQ_FIRE_TEMPLE_WONDER_EAST_TOWER_SMALL_FACE_1, { 0.0f, 0.0f, -8.0f } },
+    { RC_MQ_FIRE_TEMPLE_WONDER_EAST_TOWER_SMALL_FACE_2, { 0.0f, 0.0f, 8.0f } },
+
+    { RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_1, { -5.0f, 1.0f, -5.0f } },
+    { RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_2, { 0.0f, -3.0f, -11.0f } },
+    { RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_3, { 0.0f, -14.0f, -15.0f } },
+
+    { RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_1, { 0.0f, 9.0f, 10.0f } },
+    { RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_2, { 0.0f, -7.0f, 10.0f } },
+    { RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_3, { 0.0f, 0.0f, 10.0f } },
+
+    { RC_MQ_SPIRIT_TEMPLE_WONDER_CHEST_HAMMER, { 0.0f, 0.0f, -8.0f } },
+    { RC_MQ_SPIRIT_TEMPLE_WONDER_CHEST_SLASH, { 0.0f, 0.0f, 8.0f } },
+
+    { RC_MQ_BOTTOM_OF_THE_WELL_WONDER_MAIN_ROOM_LEFT_1, { -22.5f, 0.0f, 0.0f } },
+    { RC_MQ_BOTTOM_OF_THE_WELL_WONDER_MAIN_ROOM_LEFT_2, { -7.5f, 0.0f, 0.0f } },
+    { RC_MQ_BOTTOM_OF_THE_WELL_WONDER_MAIN_ROOM_LEFT_3, { 7.5f, 0.0f, 0.0f } },
+    { RC_MQ_BOTTOM_OF_THE_WELL_WONDER_MAIN_ROOM_LEFT_4, { 22.5f, 0.0f, 0.0f } },
+
+    { RC_MQ_BOTTOM_OF_THE_WELL_WONDER_MAIN_ROOM_RIGHT_1, { -22.5f, 0.0f, 0.0f } },
+    { RC_MQ_BOTTOM_OF_THE_WELL_WONDER_MAIN_ROOM_RIGHT_2, { -7.5f, 0.0f, 0.0f } },
+    { RC_MQ_BOTTOM_OF_THE_WELL_WONDER_MAIN_ROOM_RIGHT_3, { 7.5f, 0.0f, 0.0f } },
+    { RC_MQ_BOTTOM_OF_THE_WELL_WONDER_MAIN_ROOM_RIGHT_4, { 22.5f, 0.0f, 0.0f } },
+
+    { RC_MQ_BOTTOM_OF_THE_WELL_WONDER_SIDE_ROOM_1, { -22.5f, 0.0f, 0.0f } },
+    { RC_MQ_BOTTOM_OF_THE_WELL_WONDER_SIDE_ROOM_2, { -7.5f, 0.0f, 0.0f } },
+    { RC_MQ_BOTTOM_OF_THE_WELL_WONDER_SIDE_ROOM_3, { 7.5f, 0.0f, 0.0f } },
+    { RC_MQ_BOTTOM_OF_THE_WELL_WONDER_SIDE_ROOM_4, { 22.5f, 0.0f, 0.0f } },
+};
+
+static Vec3f GetStackOffset(RandomizerCheck rc) {
+    auto it = sStackedWonderOffsets.find(rc);
+    return it != sStackedWonderOffsets.end() ? it->second : Vec3f{ 0.0f, 0.0f, 0.0f };
+}
+
 uint8_t EnWonderItem_RandomizerHoldsItem(EnWonderItem* wonderActor, PlayState* play) {
     const CheckIdentity* wonderIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&wonderActor->actor);
     if (wonderIdentity == nullptr) {
@@ -57,8 +124,8 @@ uint8_t EnWonderItem_RandomizerHoldsItem(EnWonderItem* wonderActor, PlayState* p
     }
 }
 
-static void EnWonderItem_RandomizerDraw(EnWonderItem* wonderActor, Color_RGBA8* primColor,
-                                    Color_RGBA8* envColor) {
+static void EnWonderItem_RandomizerDraw(EnWonderItem* wonderActor, Color_RGBA8* primColor, Color_RGBA8* secColor,
+                                    Color_RGBA8* envColor, CheckIdentity* wonderIdentity) {
     Vec3f pos;
     static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
@@ -70,25 +137,29 @@ static void EnWonderItem_RandomizerDraw(EnWonderItem* wonderActor, Color_RGBA8* 
     if (wonderActor->wonderMode == WONDERITEM_MULTITAG_ORDERED) {
         for (s32 i = 0, mask = 1; i < wonderActor->numTagPoints; i++, mask <<= 1) {
             if (!(wonderActor->tagFlags & mask)) {
-                pos.x = Rand_CenteredFloat(7.5f) + sMyTagPointsOrdered[i].x;
-                pos.y = (Rand_ZeroOne() * 30.0f) + sMyTagPointsOrdered[i].y + 5;
-                pos.z = Rand_CenteredFloat(7.5f) + sMyTagPointsOrdered[i].z;
+                pos.x = Rand_CenteredFloat(1.0f) + sMyTagPointsOrdered[i].x;
+                pos.y = (Rand_ZeroOne() * 25.0f) + sMyTagPointsOrdered[i].y + 10;
+                pos.z = Rand_CenteredFloat(1.0f) + sMyTagPointsOrdered[i].z;
+                EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, secColor, envColor, 2000, 100);
                 EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 100);
             }
         }
     } else if (wonderActor->wonderMode == WONDERITEM_MULTITAG_FREE) {
         for (s32 i = 0, mask = 1; i < wonderActor->numTagPoints; i++, mask <<= 1) {
             if (!(wonderActor->tagFlags & mask)) {
-                pos.x = Rand_CenteredFloat(7.5f) + sMyFreePointsOrdered[i].x;
-                pos.y = (Rand_ZeroOne() * 30.0f) + sMyFreePointsOrdered[i].y + 5;
-                pos.z = Rand_CenteredFloat(7.5f) + sMyFreePointsOrdered[i].z;
+                pos.x = Rand_CenteredFloat(1.0f) + sMyFreePointsOrdered[i].x;
+                pos.y = (Rand_ZeroOne() * 25.0f) + sMyFreePointsOrdered[i].y + 10;
+                pos.z = Rand_CenteredFloat(1.0f) + sMyFreePointsOrdered[i].z;
+                EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, secColor, envColor, 2000, 100);
                 EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 100);
             }
         }
     } else {
-        pos.x = Rand_CenteredFloat(7.5f) + wonderActor->actor.world.pos.x;
-        pos.y = (Rand_ZeroOne() * 30.0f) + wonderActor->actor.world.pos.y + 5;
-        pos.z = Rand_CenteredFloat(7.5f) + wonderActor->actor.world.pos.z;
+        Vec3f offset = GetStackOffset(wonderIdentity->randomizerCheck);
+        pos.x = Rand_CenteredFloat(1.0f) + wonderActor->actor.world.pos.x + offset.x;
+        pos.y = (Rand_ZeroOne() * 25.0f) + wonderActor->actor.world.pos.y + 10 + offset.y;
+        pos.z = Rand_CenteredFloat(1.0f) + wonderActor->actor.world.pos.z + offset.z;
+        EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, secColor, envColor, 2000, 100);
         EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 100);
     }
 }
@@ -109,35 +180,40 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
     // Color of the circle for the particles
     static Color_RGBA8 mainColors[7][3] = {
         { 250, 185, 40 },   // Major
-        { 0, 0, 0 },      // Skulltula Token
-        { 150, 150, 150 },  // Small Key
-        { 0, 0, 180 },      // Boss Key
+        { 0, 0, 0 },        // Skulltula Token
+        { 180, 180, 180 },  // Small Key
+        { 255, 255, 0 },   // Boss Key
         { 250, 0, 0 },      // Health
         { 255, 100, 0 },    // Lesser
         { 255, 255, 255 }   // Junk
     };
 
+    // Secondary color of the circle for the particles
+    static Color_RGBA8 secColors[7][3] = {
+        { 255, 220, 135 },  // Major
+        { 255, 250, 190 },       // Skulltula Token
+        { 130, 130, 130 }, // Small Key
+        { 0, 200, 255 },   // Boss Key
+        { 0, 0, 255 },     // Health
+        { 130, 40, 0 },   // Lesser
+        { 255, 255, 255 }  // Junk
+    };
+
     // Color of the faded flares stretching off the particles
     static Color_RGBA8 flareColors[7][3] = {
         { 250, 220, 180 },  // Major
-        { 255, 255, 255 },   // Skulltula Token
-        { 0, 0, 0 },  // Small Key
-        { 115, 125, 255 },    // Boss Key
+        { 255, 255, 255 },  // Skulltula Token
+        { 100, 100, 100 }, // Small Key
+        { 0, 200, 255 },   // Boss Key
         { 255, 125, 125 },  // Health
-        { 255, 160, 100 },    // Lesser
+        { 255, 160, 100 },  // Lesser
         { 135, 135, 135 }   // Junk
     };
 
     s16 colorIndex;
     Color_RGBA8 primColor;
+    Color_RGBA8 secColor;
     Color_RGBA8 envColor;
-
-    if (isNotCMC) {
-        colorIndex = PARTICLE_JUNK;
-        Color_RGBA8_Copy(&primColor, mainColors[colorIndex]);
-        Color_RGBA8_Copy(&envColor, flareColors[colorIndex]);
-        EnWonderItem_RandomizerDraw(wonderActor, &primColor, &envColor);
-    }
 
     const auto wonderIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(refActor);
     if (wonderIdentity == nullptr) {
@@ -147,6 +223,14 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
     GetItemEntry wonderItem =
         Rando::Context::GetInstance()->GetFinalGIEntry(wonderIdentity->randomizerCheck, true, GI_NONE);
     getItemCategory = wonderItem.getItemCategory;
+
+    if (isNotCMC) {
+        colorIndex = PARTICLE_MAJOR;
+        Color_RGBA8_Copy(&primColor, mainColors[colorIndex]);
+        Color_RGBA8_Copy(&secColor, secColors[colorIndex]);
+        Color_RGBA8_Copy(&envColor, flareColors[colorIndex]);
+        EnWonderItem_RandomizerDraw(wonderActor, &primColor, &secColor, &envColor, wonderIdentity);
+    }
 
     // Change particle color for CMC
     switch (getItemCategory) {
@@ -174,8 +258,9 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
             break;
     }
     Color_RGBA8_Copy(&primColor, mainColors[colorIndex]);
+    Color_RGBA8_Copy(&secColor, secColors[colorIndex]);
     Color_RGBA8_Copy(&envColor, flareColors[colorIndex]);
-    EnWonderItem_RandomizerDraw(wonderActor, &primColor, &envColor);
+    EnWonderItem_RandomizerDraw(wonderActor, &primColor, &secColor, &envColor, wonderIdentity);
 }
 
 void EnWonderItem_RandomizerSpawnCollectible(EnWonderItem* wonderActor, PlayState* play) {
@@ -189,7 +274,7 @@ void EnWonderItem_RandomizerSpawnCollectible(EnWonderItem* wonderActor, PlayStat
     // if activated via tag points, autocollect the check, otherwise spawn the item toward the player
     if (wonderActor->wonderMode == WONDERITEM_MULTITAG_FREE || wonderActor->wonderMode == WONDERITEM_PROXIMITY_DROP ||
         wonderActor->wonderMode == WONDERITEM_MULTITAG_ORDERED ||
-        wonderActor->wonderMode == WONDERITEM_PROXIMITY_SWITCH) {
+        wonderActor->wonderMode == WONDERITEM_PROXIMITY_SWITCH || (wonderIdentity->randomizerCheck >= RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_1 && wonderIdentity->randomizerCheck <= RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_3)) {
         Flags_SetRandomizerInf(wonderIdentity->randomizerInf);
     } else {
         item00 = (EnItem00*)Item_DropCollectible2(play, &wonderActor->actor.world.pos, ITEM00_SOH_DUMMY);
@@ -245,7 +330,7 @@ void Rando::StaticData::RegisterWonderItemLocations() {
     locationTable[RC_KF_WONDER_TRAINING_1]                                  = Location::WonderItem(RC_KF_WONDER_TRAINING_1,                                     RCQUEST_BOTH,    RCAREA_KOKIRI_FOREST,                  SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(-747, 951),            "Wonder Training 1",                    RHT_WONDER_ITEM_KOKIRI_FOREST,              RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_WONDER_TRAINING_1));
     locationTable[RC_KF_WONDER_TRAINING_2]                                  = Location::WonderItem(RC_KF_WONDER_TRAINING_2,                                     RCQUEST_BOTH,    RCAREA_KOKIRI_FOREST,                  SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(-677, 899),            "Wonder Training 2",                    RHT_WONDER_ITEM_KOKIRI_FOREST,              RG_BLUE_RUPEE,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_WONDER_TRAINING_2));
     locationTable[RC_KF_WONDER_TRAINING_3]                                  = Location::WonderItem(RC_KF_WONDER_TRAINING_3,                                     RCQUEST_BOTH,    RCAREA_KOKIRI_FOREST,                  SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(-698, 830),            "Wonder Training 3",                    RHT_WONDER_ITEM_KOKIRI_FOREST,              RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_WONDER_TRAINING_3));
-    locationTable[RC_KF_WONDER_SHOP]                                        = Location::WonderItem(RC_KF_WONDER_SHOP,                                           RCQUEST_BOTH,    RCAREA_KOKIRI_FOREST,                  SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(146, -97),             "Wonder Shop",                          RHT_WONDER_ITEM_KOKIRI_FOREST,              RG_BLUE_RUPEE,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_WONDER_SHOP));
+    locationTable[RC_KF_WONDER_SHOP]                                        = Location::WonderItem(RC_KF_WONDER_SHOP,                                           RCQUEST_BOTH,    RCAREA_KOKIRI_FOREST,                  SCENE_KOKIRI_SHOP,                  TWO_ACTOR_PARAMS(146, -97),             "Wonder Shop",                          RHT_WONDER_ITEM_KOKIRI_FOREST,              RG_BLUE_RUPEE,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_WONDER_SHOP));
     locationTable[RC_KF_WONDER_SIGN]                                        = Location::WonderItem(RC_KF_WONDER_SIGN,                                           RCQUEST_BOTH,    RCAREA_KOKIRI_FOREST,                  SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(-488, 600),            "Wonder Sign",                          RHT_WONDER_ITEM_KOKIRI_FOREST,              RG_BLUE_RUPEE,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_WONDER_SIGN));
     locationTable[RC_KF_WONDER_PLATFORMS_1]                                 = Location::WonderItem(RC_KF_WONDER_PLATFORMS_1,                                    RCQUEST_BOTH,    RCAREA_KOKIRI_FOREST,                  SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(364, 28),              "Wonder Platforms 1",                   RHT_WONDER_ITEM_KOKIRI_FOREST,              RG_BLUE_RUPEE,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_WONDER_PLATFORMS_1));
     locationTable[RC_KF_WONDER_PLATFORMS_2]                                 = Location::WonderItem(RC_KF_WONDER_PLATFORMS_2,                                    RCQUEST_BOTH,    RCAREA_KOKIRI_FOREST,                  SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(1074, 178),            "Wonder Platforms 2",                   RHT_WONDER_ITEM_KOKIRI_FOREST,              RG_BLUE_RUPEE,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_WONDER_PLATFORMS_2));
@@ -364,20 +449,20 @@ void Rando::StaticData::RegisterWonderItemLocations() {
     locationTable[RC_MQ_JABU_JABU_WONDER_ENTRANCE_LEFT_COW]                 = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_ENTRANCE_LEFT_COW,                    RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(0, 13),                "MQ Wonder Entrance Cow Left",          RHT_WONDER_ITEM_JABU_JABU,                  RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_ENTRANCE_LEFT_COW));
     locationTable[RC_MQ_JABU_JABU_WONDER_ENTRANCE_RIGHT_COW]                = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_ENTRANCE_RIGHT_COW,                   RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(0, 14),                "MQ Wonder Entrance Cow Right",         RHT_WONDER_ITEM_JABU_JABU,                  RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_ENTRANCE_RIGHT_COW));
     locationTable[RC_MQ_JABU_JABU_WONDER_ELEVATOR_COW]                      = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_ELEVATOR_COW,                         RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(1, 19),                "MQ Wonder Elevator Cow",               RHT_WONDER_ITEM_JABU_JABU,                  RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_ELEVATOR_COW));
-    locationTable[RC_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_1]              = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_1,                 RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(3, 15),                "MQ Wonder Basement Right Cow 1",       RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_1));
-    locationTable[RC_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_2]              = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_2,                 RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(3, 13),                "MQ Wonder Basement Right Cow 2",       RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_2));
-    locationTable[RC_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_3]              = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_3,                 RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(3, 14),                "MQ Wonder Basement Right Cow 3",       RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_3));
-    locationTable[RC_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_1]               = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_1,                  RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(3, 18),                "MQ Wonder Basement Left Cow 1",        RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_1));
-    locationTable[RC_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_2]               = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_2,                  RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(3, 16),                "MQ Wonder Basement Left Cow 2",        RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_2));
-    locationTable[RC_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_3]               = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_3,                  RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(3, 17),                "MQ Wonder Basement Left Cow 3",        RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_3));
+    locationTable[RC_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_1]              = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_1,                 RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(3, 13),                "MQ Wonder Basement Right Cow 1",       RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_1));
+    locationTable[RC_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_2]              = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_2,                 RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(3, 14),                "MQ Wonder Basement Right Cow 2",       RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_2));
+    locationTable[RC_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_3]              = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_3,                 RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(3, 15),                "MQ Wonder Basement Right Cow 3",       RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_BASEMENT_RIGHT_COW_3));
+    locationTable[RC_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_1]               = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_1,                  RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(3, 17),                "MQ Wonder Basement Left Cow 1",        RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_1));
+    locationTable[RC_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_2]               = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_2,                  RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(3, 18),                "MQ Wonder Basement Left Cow 2",        RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_2));
+    locationTable[RC_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_3]               = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_3,                  RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(3, 16),                "MQ Wonder Basement Left Cow 3",        RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_BASEMENT_LEFT_COW_3));
     locationTable[RC_MQ_JABU_JABU_WONDER_AFTER_BIG_OCTO]                    = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_AFTER_BIG_OCTO,                       RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(6, 7),                 "MQ Wonder After Big Octo Cow",         RHT_WONDER_ITEM_JABU_JABU,                  RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_AFTER_BIG_OCTO));
     locationTable[RC_MQ_JABU_JABU_WONDER_PLATFORMS_COW]                     = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_PLATFORMS_COW,                        RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(4, 13),                "MQ Wonder Jigglies Cow",               RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_PLATFORMS_COW));
-    locationTable[RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_1]    = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_1,       RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(11, 21),               "MQ Wonder Like Like Right Cow 1",      RHT_WONDER_ITEM_JABU_JABU,                  RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_1));
+    locationTable[RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_1]    = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_1,       RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(11, 19),               "MQ Wonder Like Like Right Cow 1",      RHT_WONDER_ITEM_JABU_JABU,                  RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_1));
     locationTable[RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_2]    = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_2,       RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(11, 20),               "MQ Wonder Like Like Right Cow 2",      RHT_WONDER_ITEM_JABU_JABU,                  RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_2));
-    locationTable[RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_3]    = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_3,       RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(11, 19),               "MQ Wonder Like Like Right Cow 3",      RHT_WONDER_ITEM_JABU_JABU,                  RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_3));
-    locationTable[RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_1]     = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_1,        RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(11, 24),               "MQ Wonder Like Like Left Cow 1",       RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_1));
+    locationTable[RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_3]    = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_3,       RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(11, 21),               "MQ Wonder Like Like Right Cow 3",      RHT_WONDER_ITEM_JABU_JABU,                  RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_3));
+    locationTable[RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_1]     = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_1,        RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(11, 22),               "MQ Wonder Like Like Left Cow 1",       RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_1));
     locationTable[RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_2]     = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_2,        RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(11, 23),               "MQ Wonder Like Like Left Cow 2",       RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_2));
-    locationTable[RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_3]     = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_3,        RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(11, 22),               "MQ Wonder Like Like Left Cow 3",       RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_3));
+    locationTable[RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_3]     = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_3,        RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(11, 24),               "MQ Wonder Like Like Left Cow 3",       RHT_WONDER_ITEM_JABU_JABU,                  RG_DEKU_SEEDS_30,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_COW_LEFT_3));
     locationTable[RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_EXPLOSION_1]    = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_EXPLOSION_1,       RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(11, 29),               "MQ Wonder Like Like Grass 1",          RHT_WONDER_ITEM_JABU_JABU,                  RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_EXPLOSION_1));
     locationTable[RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_EXPLOSION_2]    = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_EXPLOSION_2,       RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(11, 28),               "MQ Wonder Like Like Grass 2",          RHT_WONDER_ITEM_JABU_JABU,                  RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_EXPLOSION_2));
     locationTable[RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_EXPLOSION_3]    = Location::WonderItem(RC_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_EXPLOSION_3,       RCQUEST_BOTH,    RCAREA_JABU_JABUS_BELLY,               SCENE_JABU_JABU,                    TWO_ACTOR_PARAMS(11, 27),               "MQ Wonder Like Like Grass 3",          RHT_WONDER_ITEM_JABU_JABU,                  RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_JABU_JABU_WONDER_FALLING_LIKE_LIKES_EXPLOSION_3));
@@ -401,11 +486,11 @@ void Rando::StaticData::RegisterWonderItemLocations() {
     locationTable[RC_MQ_WATER_TEMPLE_WONDER_LIZALFOS_ROOM]                  = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_LIZALFOS_ROOM,                     RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(19, 5),                "MQ Wonder Lizalfos Room",              RHT_WONDER_ITEM_WATER_TEMPLE,               RG_RED_RUPEE,           SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_LIZALFOS_ROOM));
     locationTable[RC_MQ_WATER_TEMPLE_WONDER_LONGSHOT_ROOM]                  = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_LONGSHOT_ROOM,                     RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(17, 7),                "MQ Wonder Longshot Room",              RHT_WONDER_ITEM_WATER_TEMPLE,               RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_LONGSHOT_ROOM));
     locationTable[RC_MQ_WATER_TEMPLE_WONDER_STALFOS_ROOM]                   = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_STALFOS_ROOM,                      RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(18, 3),                "MQ Wonder Stalfos Room",               RHT_WONDER_ITEM_WATER_TEMPLE,               RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_STALFOS_ROOM));
-    locationTable[RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_1]     = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_1,        RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(5, 4),                 "MQ Wonder Hookshot Staircase Right 1", RHT_WONDER_ITEM_WATER_TEMPLE,               RG_DEKU_NUTS_5,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_1));
-    locationTable[RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_2]     = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_2,        RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(5, 3),                 "MQ Wonder Hookshot Staircase Right 2", RHT_WONDER_ITEM_WATER_TEMPLE,               RG_RED_RUPEE,           SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_2));
-    locationTable[RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_3]     = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_3,        RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(5, 2),                 "MQ Wonder Hookshot Staircase Right 3", RHT_WONDER_ITEM_WATER_TEMPLE,               RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_3));
-    locationTable[RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_1]      = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_1,         RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(5, 11),                "MQ Wonder Hookshot Staircase Left 1",  RHT_WONDER_ITEM_WATER_TEMPLE,               RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_1));
-    locationTable[RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_2]      = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_2,         RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(5, 10),                "MQ Wonder Hookshot Staircase Left 2",  RHT_WONDER_ITEM_WATER_TEMPLE,               RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_2));
+    locationTable[RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_1]     = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_1,        RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(5, 2),                 "MQ Wonder Hookshot Staircase Right 1", RHT_WONDER_ITEM_WATER_TEMPLE,               RG_DEKU_NUTS_5,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_1));
+    locationTable[RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_2]     = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_2,        RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(5, 4),                 "MQ Wonder Hookshot Staircase Right 2", RHT_WONDER_ITEM_WATER_TEMPLE,               RG_RED_RUPEE,           SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_2));
+    locationTable[RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_3]     = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_3,        RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(5, 3),                 "MQ Wonder Hookshot Staircase Right 3", RHT_WONDER_ITEM_WATER_TEMPLE,               RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_3));
+    locationTable[RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_1]      = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_1,         RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(5, 10),                "MQ Wonder Hookshot Staircase Left 1",  RHT_WONDER_ITEM_WATER_TEMPLE,               RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_1));
+    locationTable[RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_2]      = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_2,         RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(5, 11),                "MQ Wonder Hookshot Staircase Left 2",  RHT_WONDER_ITEM_WATER_TEMPLE,               RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_2));
     locationTable[RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_3]      = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_3,         RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(5, 9),                 "MQ Wonder Hookshot Staircase Left 3",  RHT_WONDER_ITEM_WATER_TEMPLE,               RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_3));
     locationTable[RC_MQ_WATER_TEMPLE_WONDER_AFTER_DARK_LINK]                = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_AFTER_DARK_LINK,                   RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(7, 0),                 "MQ Wonder After Dark Link",            RHT_WONDER_ITEM_WATER_TEMPLE,               RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_AFTER_DARK_LINK));
     locationTable[RC_MQ_WATER_TEMPLE_WONDER_DRAGON_ROOM_LEFT_EYE]           = Location::WonderItem(RC_MQ_WATER_TEMPLE_WONDER_DRAGON_ROOM_LEFT_EYE,              RCQUEST_BOTH,    RCAREA_WATER_TEMPLE,                   SCENE_WATER_TEMPLE,                 TWO_ACTOR_PARAMS(8, 4),                 "MQ Wonder Dragon Room Left Eye",       RHT_WONDER_ITEM_WATER_TEMPLE,               RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_MQ_WATER_TEMPLE_WONDER_DRAGON_ROOM_LEFT_EYE));
