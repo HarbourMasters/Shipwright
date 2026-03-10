@@ -114,7 +114,8 @@ void LoadCustomItemIcon(bool displayAsEnglish) {
             R_TEXTBOX_ICON_YPOS = (R_TEXTBOX_Y + 10) + 10;
             R_TEXTBOX_ICON_SIZE = 24;
         }
-        memcpy((void*)((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE), customIcon, strlen((char*)customIcon) + 1);
+        memcpy((void*)((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE), customIcon,
+               strlen((char*)customIcon) + 1);
         msgCtx->msgBufPos++;
         msgCtx->choiceNum = 1;
     }
@@ -263,14 +264,14 @@ void RegisterItemMessages() {
 static RegisterShipInitFunc initFunc(RegisterItemMessages, { "IS_RANDO" });
 
 void RegisterCustomIconHooks() {
-    COND_VB_SHOULD(VB_LOAD_ITEM_ICON, true, { 
+    COND_VB_SHOULD(VB_LOAD_ITEM_ICON, true, {
         if (*should == false) {
-            LoadCustomItemIcon(static_cast<bool>(va_arg(args, int))); 
+            LoadCustomItemIcon(static_cast<bool>(va_arg(args, int)));
         }
     });
-    COND_VB_SHOULD(VB_DRAW_ITEM_ICON, true, { 
+    COND_VB_SHOULD(VB_DRAW_ITEM_ICON, true, {
         if (*should == false) {
-            DrawCustomItemIcon(va_arg(args, Gfx**)); 
+            DrawCustomItemIcon(va_arg(args, Gfx**));
         }
     });
 }

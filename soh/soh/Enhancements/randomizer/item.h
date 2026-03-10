@@ -26,10 +26,7 @@ enum ItemType {
     ITEMTYPE_DUNGEONREWARD
 };
 
-enum CustomIconSize {
-  ICON_SIZE_24,
-  ICON_SIZE_32
-};
+enum CustomIconSize { ICON_SIZE_24, ICON_SIZE_32 };
 
 namespace Rando {
 class Item {

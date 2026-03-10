@@ -856,12 +856,12 @@ u16 Message_DrawItemIcon(PlayState* play, u16 itemId, Gfx** p, u16 i) {
     if (GameInteractor_Should(VB_DRAW_ITEM_ICON, itemId < ITEM_CUSTOM, &gfx)) {
         if (itemId >= ITEM_MEDALLION_FOREST) {
             gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA,
-                                G_IM_SIZ_32b, 24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                                G_IM_SIZ_32b, 24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         } else {
             gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA,
-                                G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                                G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         }
     }
     gSPTextureRectangle(gfx++, (msgCtx->textPosX + R_TEXTBOX_ICON_XPOS) << 2, R_TEXTBOX_ICON_YPOS << 2,
@@ -2224,7 +2224,8 @@ void Message_DecodeJPN(PlayState* play) {
             }
         } else if (curChar == MESSAGE_ITEM_ICON_JPN) {
             msgCtx->msgBufDecodedWide[++decodedBufPos] = font->msgBufWide[msgCtx->msgBufPos + 1];
-            if (GameInteractor_Should(VB_LOAD_ITEM_ICON, (uint8_t)font->msgBuf[msgCtx->msgBufPos + 1] < ITEM_CUSTOM, sDisplayNextMessageAsEnglish)) {
+            if (GameInteractor_Should(VB_LOAD_ITEM_ICON, (uint8_t)font->msgBuf[msgCtx->msgBufPos + 1] < ITEM_CUSTOM,
+                                      sDisplayNextMessageAsEnglish)) {
                 Message_LoadItemIcon(play, font->msgBufWide[msgCtx->msgBufPos + 1], R_TEXTBOX_Y + 10);
             }
         } else if (curChar == MESSAGE_BACKGROUND_JPN) {
@@ -2656,7 +2657,8 @@ void Message_Decode(PlayState* play) {
             msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[msgCtx->msgBufPos + 1];
             osSyncPrintf("ITEM_NO=(%d) (%d)\n", msgCtx->msgBufDecoded[decodedBufPos],
                          font->msgBuf[msgCtx->msgBufPos + 1]);
-            if (GameInteractor_Should(VB_LOAD_ITEM_ICON, (uint8_t)font->msgBuf[msgCtx->msgBufPos + 1] < ITEM_CUSTOM, sDisplayNextMessageAsEnglish)) {
+            if (GameInteractor_Should(VB_LOAD_ITEM_ICON, (uint8_t)font->msgBuf[msgCtx->msgBufPos + 1] < ITEM_CUSTOM,
+                                      sDisplayNextMessageAsEnglish)) {
                 Message_LoadItemIcon(play, font->msgBuf[msgCtx->msgBufPos + 1], R_TEXTBOX_Y + 10);
             }
         } else if (temp_s2 == MESSAGE_BACKGROUND) {
