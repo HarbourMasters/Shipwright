@@ -99,12 +99,12 @@ uint8_t EnWonderItem_RandomizerHoldsItem(EnWonderItem* wonderActor, PlayState* p
         Actor* actor = &wonderActor->actor;
         s16 actorIndex = GetActorListIndex(actor);
         bool isDungeonScene = (play->sceneNum >= SCENE_DEKU_TREE && play->sceneNum <= SCENE_GERUDO_TRAINING_GROUND) ||
-                         play->sceneNum == SCENE_INSIDE_GANONS_CASTLE;
+                              play->sceneNum == SCENE_INSIDE_GANONS_CASTLE;
         // For dungeons, use room Id and actor index. For overworld, use xz coordinates.
         auto newIdentity = isDungeonScene ? OTRGlobals::Instance->gRandomizer->IdentifyWonderItem(
-                                           play->sceneNum, (s16)play->roomCtx.curRoom.num, actorIndex)
-                                     : OTRGlobals::Instance->gRandomizer->IdentifyWonderItem(
-                                           play->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
+                                                play->sceneNum, (s16)play->roomCtx.curRoom.num, actorIndex)
+                                          : OTRGlobals::Instance->gRandomizer->IdentifyWonderItem(
+                                                play->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
 
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(newIdentity));
         wonderIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(actor);
@@ -125,7 +125,7 @@ uint8_t EnWonderItem_RandomizerHoldsItem(EnWonderItem* wonderActor, PlayState* p
 }
 
 static void EnWonderItem_RandomizerDraw(EnWonderItem* wonderActor, Color_RGBA8* primColor, Color_RGBA8* secColor,
-                                    Color_RGBA8* envColor, CheckIdentity* wonderIdentity) {
+                                        Color_RGBA8* envColor, CheckIdentity* wonderIdentity) {
     Vec3f pos;
     static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
@@ -179,35 +179,35 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
 
     // Color of the circle for the particles
     static Color_RGBA8 mainColors[7][3] = {
-        { 250, 185, 40 },   // Major
-        { 0, 0, 0 },        // Skulltula Token
-        { 180, 180, 180 },  // Small Key
+        { 250, 185, 40 },  // Major
+        { 0, 0, 0 },       // Skulltula Token
+        { 180, 180, 180 }, // Small Key
         { 255, 255, 0 },   // Boss Key
-        { 250, 0, 0 },      // Health
-        { 255, 100, 0 },    // Lesser
-        { 255, 255, 255 }   // Junk
+        { 250, 0, 0 },     // Health
+        { 255, 100, 0 },   // Lesser
+        { 255, 255, 255 }  // Junk
     };
 
     // Secondary color of the circle for the particles
     static Color_RGBA8 secColors[7][3] = {
-        { 255, 220, 135 },  // Major
-        { 255, 250, 190 },       // Skulltula Token
+        { 255, 220, 135 }, // Major
+        { 255, 250, 190 }, // Skulltula Token
         { 130, 130, 130 }, // Small Key
         { 0, 200, 255 },   // Boss Key
         { 0, 0, 255 },     // Health
-        { 130, 40, 0 },   // Lesser
+        { 130, 40, 0 },    // Lesser
         { 255, 255, 255 }  // Junk
     };
 
     // Color of the faded flares stretching off the particles
     static Color_RGBA8 flareColors[7][3] = {
-        { 250, 220, 180 },  // Major
-        { 255, 255, 255 },  // Skulltula Token
+        { 250, 220, 180 }, // Major
+        { 255, 255, 255 }, // Skulltula Token
         { 100, 100, 100 }, // Small Key
         { 0, 200, 255 },   // Boss Key
-        { 255, 125, 125 },  // Health
-        { 255, 160, 100 },  // Lesser
-        { 135, 135, 135 }   // Junk
+        { 255, 125, 125 }, // Health
+        { 255, 160, 100 }, // Lesser
+        { 135, 135, 135 }  // Junk
     };
 
     s16 colorIndex;
@@ -274,7 +274,9 @@ void EnWonderItem_RandomizerSpawnCollectible(EnWonderItem* wonderActor, PlayStat
     // if activated via tag points, autocollect the check, otherwise spawn the item toward the player
     if (wonderActor->wonderMode == WONDERITEM_MULTITAG_FREE || wonderActor->wonderMode == WONDERITEM_PROXIMITY_DROP ||
         wonderActor->wonderMode == WONDERITEM_MULTITAG_ORDERED ||
-        wonderActor->wonderMode == WONDERITEM_PROXIMITY_SWITCH || (wonderIdentity->randomizerCheck >= RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_1 && wonderIdentity->randomizerCheck <= RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_3)) {
+        wonderActor->wonderMode == WONDERITEM_PROXIMITY_SWITCH ||
+        (wonderIdentity->randomizerCheck >= RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_RIGHT_1 &&
+         wonderIdentity->randomizerCheck <= RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_3)) {
         Flags_SetRandomizerInf(wonderIdentity->randomizerInf);
     } else {
         item00 = (EnItem00*)Item_DropCollectible2(play, &wonderActor->actor.world.pos, ITEM00_SOH_DUMMY);
@@ -287,7 +289,6 @@ void EnWonderItem_RandomizerSpawnCollectible(EnWonderItem* wonderActor, PlayStat
         item00->actor.world.rot.y =
             Math_Vec3f_Yaw(&item00->actor.world.pos, &player->actor.world.pos) + (s16)Rand_CenteredFloat(16384.0f);
     }
-
 }
 
 void RegisterShuffleWonderItems() {
