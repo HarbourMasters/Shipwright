@@ -52,9 +52,9 @@ std::string Lang::Translate(const char* path) {
 
     nlohmann::json currentLangData = langs[currentLang];
 
-    std::vector<std::string_view> segments = SohUtils::StringSplit(std::string(path), ".");
+    std::vector<std::string> segments = SohUtils::StringSplit(std::string(path), ".");
 
-    std::string_view lastSegment = segments[segments.size() - 1];
+    std::string lastSegment = segments[segments.size() - 1];
 
     segments.pop_back();
 
