@@ -184,7 +184,7 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
         { 180, 180, 180 }, // Small Key
         { 255, 255, 0 },   // Boss Key
         { 250, 0, 0 },     // Health
-        { 255, 100, 0 },   // Lesser
+        { 170, 50, 0 },    // Lesser
         { 255, 255, 255 }  // Junk
     };
 
@@ -195,7 +195,7 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
         { 130, 130, 130 }, // Small Key
         { 0, 200, 255 },   // Boss Key
         { 0, 0, 255 },     // Health
-        { 130, 40, 0 },    // Lesser
+        { 250, 75, 0 },    // Lesser
         { 255, 255, 255 }  // Junk
     };
 
@@ -284,8 +284,8 @@ void EnWonderItem_RandomizerSpawnCollectible(EnWonderItem* wonderActor, PlayStat
         item00->itemEntry =
             Rando::Context::GetInstance()->GetFinalGIEntry(wonderIdentity->randomizerCheck, true, GI_NONE);
         item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
-        item00->actor.velocity.y = 8.0f;
-        item00->actor.speedXZ = 2.0f;
+        item00->actor.velocity.y = 3.0f;
+        item00->actor.speedXZ = 3.0f;
         item00->actor.world.rot.y =
             Math_Vec3f_Yaw(&item00->actor.world.pos, &player->actor.world.pos) + (s16)Rand_CenteredFloat(16384.0f);
     }
