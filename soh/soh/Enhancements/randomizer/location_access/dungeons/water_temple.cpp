@@ -829,7 +829,6 @@ void RegionTable_Init_WaterTemple() {
         //Locations
         LOCATION(RC_WATER_TEMPLE_MQ_COMPASS_CHEST,        logic->Get(LOGIC_WATER_MQ_SIDE_TOWER_TARGETS) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_MQ_WATER_TEMPLE_WONDER_LIZALFOS_ROOM, logic->CanUse(RG_HOOKSHOT)),
-
     }, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_SIDE_TOWER_1F, true),
@@ -1356,7 +1355,6 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_4,   logic->CanBreakCrates()),
         LOCATION(RC_WATER_TEMPLE_MQ_STORAGE_ROOM_B_CRATE_5,   logic->CanBreakCrates()),
         LOCATION(RC_MQ_WATER_TEMPLE_WONDER_FREESTANDING_ROOM, logic->CanUse(RG_HOOKSHOT)),
-
     }, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_BEHIND_CANAL, AnyAgeTime([]{return logic->CanKillEnemy(RE_STALFOS);})),

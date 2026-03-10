@@ -630,7 +630,6 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_MQ_LAVA_TORCH_POT_2,                logic->HookshotOrBoomerang()),
         LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_BOSS_KEY_ROOM_HOOKSHOT,   logic->CanUse(RG_HOOKSHOT)),
         LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_BOSS_KEY_ROOM_BOW,        logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_FAIRY_BOW)),
-
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM, true),
@@ -814,7 +813,6 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_EAST_TOWER_LARGE_FACE_2,  logic->CanUse(RG_HOOKSHOT)),
         LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_EAST_TOWER_SMALL_FACE_1,  logic->CanUse(RG_HOOKSHOT)),
         LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_EAST_TOWER_SMALL_FACE_2,  logic->CanUse(RG_HOOKSHOT)),
-
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_ABOVE_MAZE,    true),
@@ -992,7 +990,6 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_MQ_PAST_FIRE_MAZE_NORTH_POT, logic->CanBreakPots()),
         LOCATION(RC_FIRE_TEMPLE_MQ_FIRE_MAZE_NORTHWEST_POT,  logic->CanUse(RG_BOOMERANG)),
         LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_FIRE_MAZE,         logic->CanUse(RG_HOOKSHOT)),
-
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_3F_FLARE_DANCER, true),
@@ -1053,7 +1050,6 @@ void RegionTable_Init_FireTemple() {
     }, {
         //Locations
         LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_STAIRCASE, logic->Get(LOGIC_FIRE_HIT_STAIRS) && logic->CanUse(RG_HOOKSHOT)),
-
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_BASE_OF_COLLAPSING_STAIRS, logic->Get(LOGIC_FIRE_HIT_STAIRS)),

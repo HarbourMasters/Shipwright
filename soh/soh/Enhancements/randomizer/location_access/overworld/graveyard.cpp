@@ -121,7 +121,6 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GY_WONDER_DAMPE_RACE_13,               true),
         LOCATION(RC_GY_WONDER_DAMPE_RACE_14,               true),
         LOCATION(RC_GY_WONDER_DAMPE_RACE_15,               true),
-
     }, {
         //Exits
         ENTRANCE(RR_THE_GRAVEYARD,      true),

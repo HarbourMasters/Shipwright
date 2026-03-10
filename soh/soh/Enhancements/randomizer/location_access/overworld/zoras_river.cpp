@@ -25,7 +25,6 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_WONDER_LOWER_RIVER_2,    logic->IsChild && logic->HasItem(RG_BRONZE_SCALE)),
         LOCATION(RC_ZR_WONDER_LOWER_RIVER_3,    logic->IsChild && logic->HasItem(RG_BRONZE_SCALE)),
         LOCATION(RC_ZR_WONDER_LOWER_RIVER_4,    logic->IsChild && logic->HasItem(RG_BRONZE_SCALE)),
-
     }, {
         //Exits
         ENTRANCE(RR_ZORAS_RIVER,  logic->IsAdult || logic->BlastOrSmash()),
@@ -88,7 +87,6 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_WONDER_NEAR_CUCCO_1,                  logic->IsChild && logic->HasItem(RG_BRONZE_SCALE)),
         LOCATION(RC_ZR_WONDER_NEAR_CUCCO_2,                  logic->IsChild && logic->HasItem(RG_BRONZE_SCALE)),
         LOCATION(RC_ZR_WONDER_NEAR_CUCCO_3,                  logic->IsChild && logic->HasItem(RG_BRONZE_SCALE)),
-
     }, {
         //Exits
         ENTRANCE(RR_ZR_FRONT,            true),

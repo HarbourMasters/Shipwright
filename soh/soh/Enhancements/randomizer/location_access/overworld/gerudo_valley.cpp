@@ -40,7 +40,6 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_NEAR_COW_CRATE,         logic->IsChild && logic->CanBreakCrates()),
         LOCATION(RC_GV_WONDER_LOWER_WATERFALL, true),
         LOCATION(RC_GV_WONDER_UPPER_WATERFALL, logic->IsAdult && CanPlantBean(RR_GV_UPPER_STREAM, RG_GERUDO_VALLEY_BEAN_SOUL)),
-
     }, {
         //Exits
         ENTRANCE(RR_GV_UPPER_STREAM_WATER, true),
@@ -64,7 +63,6 @@ void RegionTable_Init_GerudoValley() {
         //Locations
         LOCATION(RC_GV_WATERFALL_FREESTANDING_POH, true),
         LOCATION(RC_GV_WONDER_UPPER_WATERFALL,     logic->IsAdult),
-
     }, {
         //Exits
         ENTRANCE(RR_GV_UPPER_STREAM,       logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),

@@ -25,7 +25,6 @@ void RegionTable_Init_DesertColossus() {
         LOCATION(RC_COLOSSUS_WONDER_OASIS_CHILD_TREE, logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)),
         LOCATION(RC_COLOSSUS_WONDER_GF_TREE_1,        logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)),
         LOCATION(RC_COLOSSUS_WONDER_GF_TREE_2,        logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)),
-
     }, {
         //Exits
         //You can kinda get the fairies without entering the water, but it relies on them cooperating and leevers are jerks. should be a trick

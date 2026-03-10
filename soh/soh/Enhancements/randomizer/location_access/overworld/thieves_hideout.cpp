@@ -107,7 +107,6 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_KITCHEN_SUN_FAIRY,       logic->CanPassEnemy(RE_GERUDO_GUARD) && logic->CanUse(RG_SUNS_SONG)),
         LOCATION(RC_TH_WONDER_KITCHEN_SKULL,    logic->CanUse(RG_FAIRY_BOW) && logic->CanPassEnemy(RE_GERUDO_GUARD)),
         LOCATION(RC_TH_WONDER_KITCHEN_SOUP,     logic->CanPassEnemy(RE_GERUDO_GUARD)),
-
     }, {
         //Exits
         ENTRANCE(RR_TH_KITCHEN_CORRIDOR,          logic->CanPassEnemy(RE_GERUDO_GUARD)),
@@ -151,7 +150,6 @@ void RegionTable_Init_ThievesHideout() {
                                                    (logic->CanPassEnemy(RE_GERUDO_GUARD) && logic->HasExplosives() && logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_TH_BREAK_ROOM_LEFT_CRATE,     (logic->CanPassEnemy(RE_BREAK_ROOM_GUARD) && logic->CanBreakCrates()) || 
                                                    (logic->CanPassEnemy(RE_GERUDO_GUARD) && logic->HasExplosives() && logic->CanUse(RG_BOOMERANG))),
-
     }, {
         //Exits
         ENTRANCE(RR_GF_BELOW_CHEST,         logic->CanPassEnemy(RE_GERUDO_GUARD)),

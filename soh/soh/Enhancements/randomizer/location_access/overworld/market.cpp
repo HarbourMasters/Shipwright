@@ -35,8 +35,6 @@ void RegionTable_Init_Market() {
         LOCATION(RC_MKT_WONDER_DAY_5,            logic->IsChild && logic->AtDay),
         LOCATION(RC_MKT_WONDER_NIGHT_1,          logic->IsChild && logic->AtNight),
         LOCATION(RC_MKT_WONDER_NIGHT_2,          logic->IsChild && logic->AtNight),
-
-
     }, {
         //Exits
         ENTRANCE(RR_MARKET_ENTRANCE,            true),

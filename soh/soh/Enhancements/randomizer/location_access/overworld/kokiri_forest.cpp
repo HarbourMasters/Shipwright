@@ -76,8 +76,6 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_WONDER_PLATFORMS_2,          true),
         LOCATION(RC_KF_WONDER_CRAWL_GRASS_1,        true),
         LOCATION(RC_KF_WONDER_CRAWL_GRASS_2,        true),
-
-
     }, {
         //Exits
         ENTRANCE(RR_KF_BOULDER_LOOP,       logic->CanUse(RG_CRAWL)),

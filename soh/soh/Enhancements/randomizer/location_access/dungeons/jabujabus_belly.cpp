@@ -508,7 +508,6 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_1, logic->CanCutShrubs()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_2, logic->CanCutShrubs()),
         LOCATION(RC_MQ_JABU_JABU_WONDER_AFTER_BIG_OCTO,         logic->CanUse(RG_FAIRY_SLINGSHOT)),
-
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_JIGGLIES_ROOM, true),
@@ -522,7 +521,6 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_1, logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->CanBreakSmallCrates()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_2, logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->CanBreakSmallCrates()),
         LOCATION(RC_MQ_JABU_JABU_WONDER_PLATFORMS_COW,          logic->CanUse(RG_FAIRY_SLINGSHOT)),
-
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_ABOVE_BIGOCTO,  true),
@@ -568,7 +566,6 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_MQ_JABU_JABU_WONDER_BEFORE_BOSS_LEFT_COW,    logic->CanUse(RG_FAIRY_SLINGSHOT)),
         LOCATION(RC_MQ_JABU_JABU_WONDER_BEFORE_BOSS_RIGHT_COW_1, logic->CanUse(RG_FAIRY_SLINGSHOT)),
         LOCATION(RC_MQ_JABU_JABU_WONDER_BEFORE_BOSS_RIGHT_COW_2, logic->CanUse(RG_FAIRY_SLINGSHOT)),
-
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_TO_NEAR_BOSS_ROOM, true),

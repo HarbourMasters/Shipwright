@@ -171,7 +171,6 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_WONDER_BRIDGE_1,        logic->IsChild),
         LOCATION(RC_HF_WONDER_BRIDGE_2,        logic->IsChild),
         LOCATION(RC_HF_WONDER_BRIDGE_3,        logic->IsChild),
-
     }, {
         //Exits
         ENTRANCE(RR_LW_BRIDGE,              true),

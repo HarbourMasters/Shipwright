@@ -103,7 +103,6 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_WONDER_MOAT_8,       logic->HasItem(RG_BRONZE_SCALE)),
         LOCATION(RC_HC_WONDER_MOAT_9,       logic->HasItem(RG_BRONZE_SCALE)),
         LOCATION(RC_HC_WONDER_MOAT_10,      logic->HasItem(RG_BRONZE_SCALE)),
-
     }, {
         //Exits
         ENTRANCE(RR_HC_GATE,          true),
