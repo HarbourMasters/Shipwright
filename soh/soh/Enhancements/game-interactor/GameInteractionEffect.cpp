@@ -133,6 +133,8 @@ void FillMagic::_Apply() {
 GameInteractionEffectQueryResult EmptyMagic::CanBeApplied() {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    } else if (CVarGetInteger(CVAR_CHEAT("InfiniteMagic"), 0)) {
+        return GameInteractionEffectQueryResult::NotPossible;
     } else if (!gSaveContext.isMagicAcquired || gSaveContext.magic <= 0) {
         return GameInteractionEffectQueryResult::NotPossible;
     } else {
@@ -147,6 +149,8 @@ void EmptyMagic::_Apply() {
 GameInteractionEffectQueryResult ModifyRupees::CanBeApplied() {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    } else if (CVarGetInteger(CVAR_CHEAT("InfiniteMoney"), 0)) {
+        return GameInteractionEffectQueryResult::NotPossible;
     } else if ((parameters[0] < 0 && gSaveContext.rupees <= 0) ||
                (parameters[0] > 0 && gSaveContext.rupees >= CUR_CAPACITY(UPG_WALLET))) {
         return GameInteractionEffectQueryResult::NotPossible;
@@ -532,6 +536,8 @@ void PressRandomButton::_Apply() {
 GameInteractionEffectQueryResult AddOrTakeAmmo::CanBeApplied() {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    } else if (parameters[1] != ITEM_BEAN && CVarGetInteger(CVAR_CHEAT("InfiniteAmmo"), 0)) {
+        return GameInteractionEffectQueryResult::NotPossible;
     } else if (!GameInteractor::CanAddOrTakeAmmo(parameters[0], parameters[1])) {
         return GameInteractionEffectQueryResult::NotPossible;
     } else {
