@@ -64,7 +64,7 @@ void BuildTriforcePieceMessage(CustomMessage& msg) {
     msg.Replace("[[current]]", std::to_string(current));
     msg.Replace("[[remaining]]", std::to_string(remaining));
     msg.Replace("[[required]]", std::to_string(required));
-    msg.Format();
+    msg.Format(ITEM_CUSTOM);
 }
 
 void BuildCustomItemMessage(Player* player, CustomMessage& msg) {
