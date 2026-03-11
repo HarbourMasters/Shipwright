@@ -1,0 +1,26 @@
+<Root>
+    <File Name="ovl_End_Title">
+        <DList Name="sEmptyDL1" Offset="0x0"/>
+        <Texture Name="sIQueTop" Format="ia8" Width="128" Height="24" Offset="0x8"/>
+        <Texture Name="sIQueBottom" Format="ia8" Width="128" Height="24" Offset="0xC08"/>
+        <DList Name="sEmptyDL2" Offset="0x1808"/>
+        <Texture Name="sNintendoLeftTex" Format="ia8" Width="64" Height="48" Offset="0x1810"/>
+        <DList Name="sEmptyDL3" Offset="0x2410"/>
+        <Texture Name="sNintendoRightTex" Format="ia8" Width="64" Height="48" Offset="0x2418"/>
+        <DList Name="sEmptyDL4" Offset="0x3018"/>
+        <Texture Name="sPresentedByTex" Format="ia8" Width="96" Height="16" Offset="0x3020"/>
+        <DList Name="sEmptyDL5" Offset="0x3620"/>
+        <Texture Name="sTheEndTex" Format="ia8" Width="80" Height="24" Offset="0x3628"/>
+        <DList Name="sEmptyDL6" Offset="0x3DA8"/>
+        <Texture Name="sTheLegendOfZeldaTex" Format="ia8" Width="120" Height="24" Offset="0x3DB0"/>
+        <DList Name="sEmptyDL7" Offset="0x48F0"/>
+        <Texture Name="sOcarinaOfTimeTex" Format="ia8" Width="112" Height="16" Offset="0x48F8"/>
+
+        <Array Name="sTriforceVtx" Count="6" Offset="0x4FF8">
+            <Vtx/>
+        </Array>
+        <DList Name="sTriforceDL" Offset="0x5058"/>
+
+        <DList Name="sPresentedByNintendoDL" Offset="0x50B8"/>
+    </File>
+</Root>

@@ -1,0 +1,6 @@
+<Root>
+    <File Name="ovl_En_Mag">
+        <!-- 32-bit aligned textures. -->
+        <Texture Name="gTitlePressCHN" Format="i4" Width="16" Height="16" Offset="0x0"/>
+    </File>
+</Root>

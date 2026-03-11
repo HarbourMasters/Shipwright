@@ -1,7 +1,6 @@
 #ifndef EXTRACT_H
 #define EXTRACT_H
 
-#include <atomic>
 #include <stdint.h>
 #include <string>
 #include <memory>
@@ -16,6 +15,7 @@
 #endif
 
 static constexpr size_t MB_BASE = 1024 * 1024;
+static constexpr size_t MB29 = 29868032; // iQue CN ROM size (not a power-of-2 multiple)
 static constexpr size_t MB32 = 32 * MB_BASE;
 static constexpr size_t MB54 = 54 * MB_BASE;
 static constexpr size_t MB64 = 64 * MB_BASE;
@@ -46,25 +46,23 @@ class Extractor {
     void SetRomInfo(const std::string& path);
 
     void FilterRoms(std::vector<std::string>& roms, RomSearchMode searchMode);
+    void GetRoms(std::vector<std::string>& roms);
     void ShowSizeErrorBox() const;
     void ShowCrcErrorBox() const;
     void ShowCompressedErrorBox() const;
     int ShowRomPickBox(uint32_t verCrc) const;
     bool ManuallySearchForRom();
+    bool ManuallySearchForRomMatchingType(RomSearchMode searchMode);
 
   public:
     // TODO create some kind of abstraction for message boxes.
     static int ShowYesNoBox(const char* title, const char* text);
     static void ShowErrorBox(const char* title, const char* text);
     bool IsMasterQuest() const;
-    bool ManuallySearchForRomMatchingType(RomSearchMode searchMode);
 
-    void SetSearchPath(const std::string& path);
-    void GetRoms(std::vector<std::string>& roms);
     bool RunFileStandalone(std::string file);
     bool Run(std::string searchPath, RomSearchMode searchMode = RomSearchMode::Both);
-    bool CallZapd(std::string installPath, std::string exportdir, std::atomic<size_t>* extractCount,
-                  std::atomic<size_t>* totalExtract);
+    bool CallZapd(std::string installPath, std::string exportdir);
     const char* GetZapdStr();
     std::string Mkdtemp();
 };

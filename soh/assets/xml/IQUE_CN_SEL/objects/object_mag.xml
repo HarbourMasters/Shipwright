@@ -1,0 +1,20 @@
+<Root>
+    <File Name="object_mag" Segment="6">
+        <Texture Name="gTitleZeldaShieldLogoTex" Format="rgba32" Width="160" Height="160" Offset="0x0"/>
+        <Texture Name="gTitleCopyright19982003IQueTex" Format="ia8" Width="128" Height="32" Offset="0x19000"/>
+        <Texture Name="gTitleDiskTex" Format="ia8" Width="48" Height="16" Offset="0x1A000"/>
+        <Texture Name="gTitleEffectMask00Tex" Format="i4" Width="64" Height="64" Offset="0x1A300"/>
+        <Texture Name="gTitleEffectMask01Tex" Format="i4" Width="64" Height="64" Offset="0x1AB00"/>
+        <Texture Name="gTitleEffectMask02Tex" Format="i4" Width="64" Height="64" Offset="0x1B300"/>
+        <Texture Name="gTitleEffectMask10Tex" Format="i4" Width="64" Height="64" Offset="0x1BB00"/>
+        <Texture Name="gTitleEffectMask11Tex" Format="i4" Width="64" Height="64" Offset="0x1C300"/>
+        <Texture Name="gTitleEffectMask12Tex" Format="i4" Width="64" Height="64" Offset="0x1CB00"/>
+        <Texture Name="gTitleEffectMask20Tex" Format="i4" Width="64" Height="64" Offset="0x1D300"/>
+        <Texture Name="gTitleEffectMask21Tex" Format="i4" Width="64" Height="64" Offset="0x1DB00"/>
+        <Texture Name="gTitleEffectMask22Tex" Format="i4" Width="64" Height="64" Offset="0x1E300"/>
+        <Texture Name="gTitleFlameEffectTex" Format="i8" Width="32" Height="32" Offset="0x1EB00"/>
+        <Texture Name="gTitleTheLegendOfTextTex" Format="i8" Width="72" Height="8" Offset="0x1EF00"/>
+        <Texture Name="gTitleOcarinaOfTimeTMTextTex" Format="i8" Width="96" Height="8" Offset="0x1F140"/>
+        <Texture Name="gTitleTitleCHNTex" Format="i8" Width="128" Height="16" Offset="0x1F440"/>
+    </File>
+</Root>

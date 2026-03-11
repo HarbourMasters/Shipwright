@@ -541,6 +541,7 @@ typedef enum {
     LANGUAGE_GER,
     LANGUAGE_FRA,
     LANGUAGE_JPN,
+    LANGUAGE_CHI,
     LANGUAGE_MAX
 } Language;
 

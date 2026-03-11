@@ -1,0 +1,8 @@
+<Root>
+    <SymbolMap File="symbols/SymbolMap_OoTMqDbg.txt"/>
+    <ActorList File="symbols/ActorList_OoTMqDbg.txt"/>
+    <ObjectList File="symbols/ObjectList_OoTMqDbg.txt"/>
+    <ExternalXMLFolder Path="assets/xml/IQUE_CN_SEL/"/>
+    <TexturePool File="TexturePool.xml"/>
+    <ExternalFile XmlPath="misc/dummy_external.xml" OutPath="misc/dummy/"/>
+</Root>

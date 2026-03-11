@@ -50,6 +50,7 @@ MessageTableEntry* sGerMessageEntryTablePtr = NULL;
 MessageTableEntry* sFraMessageEntryTablePtr = NULL;
 MessageTableEntry* sJpnMessageEntryTablePtr = NULL;
 MessageTableEntry* sStaffMessageEntryTablePtr = NULL;
+MessageTableEntry* sChiMessageEntryTablePtr = NULL;
 
 char* _message_0xFFFC_nes;
 
@@ -348,6 +349,8 @@ void Message_FindMessage(PlayState* play, u16 textId) {
         messageTableEntry = sGerMessageEntryTablePtr;
     else if (gSaveContext.language == LANGUAGE_FRA)
         messageTableEntry = sFraMessageEntryTablePtr;
+    else if (gSaveContext.language == LANGUAGE_CHI)
+        messageTableEntry = sChiMessageEntryTablePtr;
 
     // If PAL languages are not present in the OTR file, default to English
     if (messageTableEntry == NULL)
@@ -1620,7 +1623,13 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 Message_DrawTextChar(play, &font->charTexBuf[charTexIdx], &gfx);
                 charTexIdx += FONT_CHAR_TEX_SIZE;
 
-                msgCtx->textPosX += (s32)(sFontWidths[character - ' '] * (R_TEXT_CHAR_SCALE / 100.0f));
+                // #region SOH [Chinese] - Full-width for Chinese characters
+                if (character == 0xFE) {
+                    msgCtx->textPosX += (s32)(16.0f * (R_TEXT_CHAR_SCALE / 100.0f));
+                } else {
+                    msgCtx->textPosX += (s32)(sFontWidths[character - ' '] * (R_TEXT_CHAR_SCALE / 100.0f));
+                }
+                // #endregion
                 break;
         }
     }
@@ -1638,8 +1647,8 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
 }
 
 void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y) {
-    static s16 sIconItem32XOffsets[] = { 74, 74, 74, 54 };
-    static s16 sIconItem24XOffsets[] = { 72, 72, 72, 50 };
+    static s16 sIconItem32XOffsets[] = { 74, 74, 74, 54, 74 };
+    static s16 sIconItem24XOffsets[] = { 72, 72, 72, 50, 72 };
     MessageContext* msgCtx = &play->msgCtx;
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     u8 language = sDisplayNextMessageAsEnglish ? LANGUAGE_ENG : gSaveContext.language;
@@ -1907,6 +1916,224 @@ bool Message_DecodeName(PlayState* play, s16* decodedBufPosPtr, s32* charTexIdxP
     (*decodedBufPosPtr)--;
 
     return true;
+}
+// #endregion
+
+// #region SOH [Chinese] - Decode Chinese messages using NES format with 2-byte Chinese characters
+// Chinese uses NES encoding: single-byte control codes (0x01-0x1F), ASCII (0x20-0x9E),
+// and 2-byte Chinese character codes (high byte >= 0xA0, e.g. 0xA08C-0xA775).
+// Byte 0xFE in msgBufDecoded marks a Chinese character (full-width rendering).
+#define MESSAGE_CHI_CHAR_MARKER 0xFE
+
+void Message_DecodeCHI(PlayState* play) {
+    u8 temp_s2;
+    u8 phi_s1;
+    u16 phi_s0_3;
+    s32 loadChar;
+    s32 charTexIdx = 0;
+    s16 playerNameLen;
+    s16 decodedBufPos = 0;
+    s16 numLines = 0;
+    s16 i;
+    s16 digits[4];
+    f32 timeInSeconds;
+    MessageContext* msgCtx = &play->msgCtx;
+    Font* font = &play->msgCtx.font;
+
+    while (true) {
+        phi_s1 = temp_s2 = msgCtx->msgBufDecoded[decodedBufPos] = font->msgBuf[msgCtx->msgBufPos];
+
+        if (temp_s2 == MESSAGE_BOX_BREAK || temp_s2 == MESSAGE_TEXTID || temp_s2 == MESSAGE_BOX_BREAK_DELAYED ||
+            temp_s2 == MESSAGE_EVENT || temp_s2 == MESSAGE_END) {
+            msgCtx->msgMode = MSGMODE_TEXT_DISPLAYING;
+            msgCtx->textDrawPos = 1;
+            R_TEXT_INIT_YPOS = R_TEXTBOX_Y + 8;
+            if (msgCtx->textBoxType != TEXTBOX_TYPE_NONE_BOTTOM) {
+                if (numLines == 0) {
+                    R_TEXT_INIT_YPOS = (u16)(R_TEXTBOX_Y + 26);
+                } else if (numLines == 1) {
+                    R_TEXT_INIT_YPOS = (u16)(R_TEXTBOX_Y + 20);
+                } else if (numLines == 2) {
+                    R_TEXT_INIT_YPOS = (u16)(R_TEXTBOX_Y + 16);
+                }
+            }
+            if (phi_s1 == MESSAGE_TEXTID) {
+                temp_s2 = msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[msgCtx->msgBufPos + 1];
+                msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[msgCtx->msgBufPos + 2];
+                phi_s0_3 = temp_s2 << 8;
+                sNextTextId = msgCtx->msgBufDecoded[decodedBufPos] | phi_s0_3;
+            }
+            if (phi_s1 == MESSAGE_BOX_BREAK_DELAYED) {
+                msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[msgCtx->msgBufPos + 1];
+                msgCtx->msgBufPos += 2;
+            }
+            msgCtx->decodedTextLen = decodedBufPos;
+            if (sTextboxSkipped) {
+                msgCtx->textDrawPos = msgCtx->decodedTextLen;
+            }
+            break;
+        } else if (temp_s2 >= 0xA0) {
+            // 2-byte Chinese character: high byte (0xA0+) + low byte (iQue native encoding)
+            u8 lowByte = font->msgBuf[++msgCtx->msgBufPos];
+            u16 chiChar = (temp_s2 << 8) | lowByte;
+            Font_LoadCharChinese(font, chiChar, charTexIdx);
+            charTexIdx += FONT_CHAR_TEX_SIZE;
+            msgCtx->msgBufDecoded[decodedBufPos] = MESSAGE_CHI_CHAR_MARKER;
+        } else if (temp_s2 == MESSAGE_NAME) {
+            if (!Message_DecodeName(play, &decodedBufPos, &charTexIdx)) {
+                for (playerNameLen = ARRAY_COUNT(gSaveContext.playerName); playerNameLen > 0; playerNameLen--) {
+                    if (gSaveContext.playerName[playerNameLen - 1] != 0x3E) {
+                        break;
+                    }
+                }
+                for (i = 0; i < playerNameLen; i++) {
+                    phi_s1 = gSaveContext.playerName[i];
+                    if (phi_s1 == 0x3E) {
+                        phi_s1 = ' ';
+                    } else if (phi_s1 == 0x40) {
+                        phi_s1 = '.';
+                    } else if (phi_s1 == 0x3F) {
+                        phi_s1 = '-';
+                    } else if (phi_s1 < 0xA) {
+                        phi_s1 += '0';
+                    } else if (phi_s1 < 0x24) {
+                        phi_s1 += '7';
+                    } else if (phi_s1 < 0x3E) {
+                        phi_s1 += '=';
+                    }
+                    if (phi_s1 != ' ') {
+                        Font_LoadChar(font, phi_s1 - ' ', charTexIdx);
+                        charTexIdx += FONT_CHAR_TEX_SIZE;
+                    }
+                    msgCtx->msgBufDecoded[decodedBufPos] = phi_s1;
+                    decodedBufPos++;
+                }
+                decodedBufPos--;
+            }
+        } else if (temp_s2 == MESSAGE_MARATHON_TIME || temp_s2 == MESSAGE_RACE_TIME) {
+            digits[0] = digits[1] = digits[2] = 0;
+            if (temp_s2 == MESSAGE_RACE_TIME) {
+                digits[3] = gSaveContext.timerSeconds;
+            } else {
+                digits[3] = gSaveContext.subTimerSeconds;
+            }
+            while (digits[3] >= 60) {
+                digits[1]++;
+                if (digits[1] >= 10) {
+                    digits[0]++;
+                    digits[1] -= 10;
+                }
+                digits[3] -= 60;
+            }
+            while (digits[3] >= 10) {
+                digits[2]++;
+                digits[3] -= 10;
+            }
+            for (i = 0; i < 4; i++) {
+                Font_LoadChar(font, digits[i] + '0' - ' ', charTexIdx);
+                charTexIdx += FONT_CHAR_TEX_SIZE;
+                msgCtx->msgBufDecoded[decodedBufPos] = digits[i] + '0';
+                decodedBufPos++;
+                if (i == 1) {
+                    Font_LoadChar(font, '"' - ' ', charTexIdx);
+                    charTexIdx += FONT_CHAR_TEX_SIZE;
+                    msgCtx->msgBufDecoded[decodedBufPos] = '"';
+                    decodedBufPos++;
+                } else if (i == 3) {
+                    Font_LoadChar(font, '"' - ' ', charTexIdx);
+                    charTexIdx += FONT_CHAR_TEX_SIZE;
+                    msgCtx->msgBufDecoded[decodedBufPos] = '"';
+                }
+            }
+        } else if (temp_s2 == MESSAGE_POINTS) {
+            digits[0] = digits[1] = digits[2] = 0;
+            digits[3] = gSaveContext.minigameScore;
+            while (digits[3] >= 1000) { digits[0]++; digits[3] -= 1000; }
+            while (digits[3] >= 100) { digits[1]++; digits[3] -= 100; }
+            while (digits[3] >= 10) { digits[2]++; digits[3] -= 10; }
+            loadChar = false;
+            for (i = 0; i < 4; i++) {
+                if (i == 3 || digits[i] != 0) loadChar = true;
+                if (loadChar) {
+                    Font_LoadChar(font, digits[i] + '0' - ' ', charTexIdx);
+                    msgCtx->msgBufDecoded[decodedBufPos] = digits[i] + '0';
+                    charTexIdx += FONT_CHAR_TEX_SIZE;
+                    decodedBufPos++;
+                }
+            }
+            decodedBufPos--;
+        } else if (temp_s2 == MESSAGE_TOKENS) {
+            digits[0] = digits[1] = 0;
+            digits[2] = gSaveContext.inventory.gsTokens;
+            while (digits[2] >= 100) { digits[0]++; digits[2] -= 100; }
+            while (digits[2] >= 10) { digits[1]++; digits[2] -= 10; }
+            loadChar = false;
+            for (i = 0; i < 3; i++) {
+                if (i == 2 || digits[i] != 0) loadChar = true;
+                if (loadChar) {
+                    Font_LoadChar(font, digits[i] + '0' - ' ', charTexIdx);
+                    msgCtx->msgBufDecoded[decodedBufPos] = digits[i] + '0';
+                    charTexIdx += FONT_CHAR_TEX_SIZE;
+                    decodedBufPos++;
+                }
+            }
+            decodedBufPos--;
+        } else if (temp_s2 == MESSAGE_FISH_INFO) {
+            // Simplified: just skip, same as NES path
+            msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[++msgCtx->msgBufPos];
+        } else if (temp_s2 == MESSAGE_HIGHSCORE) {
+            msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[++msgCtx->msgBufPos];
+            // Reuse the same highscore logic from NES — just load ASCII digits
+            // (Highscore values are numeric, no Chinese chars needed)
+        } else if (temp_s2 == MESSAGE_TIME) {
+            // Skip — same as NES
+        } else if (temp_s2 == MESSAGE_ITEM_ICON) {
+            msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[++msgCtx->msgBufPos];
+            Message_LoadItemIcon(play, font->msgBuf[msgCtx->msgBufPos], R_TEXTBOX_Y + 10);
+        } else if (temp_s2 == MESSAGE_BACKGROUND) {
+            msgCtx->textboxBackgroundIdx = font->msgBuf[++msgCtx->msgBufPos] * 2;
+            msgCtx->textboxBackgroundForeColorIdx = (font->msgBuf[++msgCtx->msgBufPos] & 0xF0) >> 4;
+            msgCtx->textboxBackgroundBackColorIdx = font->msgBuf[msgCtx->msgBufPos] & 0xF;
+            msgCtx->textboxBackgroundYOffsetIdx = (font->msgBuf[++msgCtx->msgBufPos] & 0xF0) >> 4;
+            msgCtx->textboxBackgroundUnkArg = font->msgBuf[msgCtx->msgBufPos] & 0xF;
+            memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, gRedMessageXLeftTex,
+                   strlen(gRedMessageXLeftTex) + 1);
+            memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE + 0x900, gRedMessageXRightTex,
+                   strlen(gRedMessageXRightTex) + 1);
+            numLines = 2;
+            R_TEXTBOX_BG_YPOS = R_TEXTBOX_Y + 8;
+        } else if (temp_s2 == MESSAGE_COLOR) {
+            msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[++msgCtx->msgBufPos];
+        } else if (temp_s2 == MESSAGE_NEWLINE) {
+            numLines++;
+        } else if (temp_s2 != MESSAGE_QUICKTEXT_ENABLE && temp_s2 != MESSAGE_QUICKTEXT_DISABLE &&
+                   temp_s2 != MESSAGE_AWAIT_BUTTON_PRESS && temp_s2 != MESSAGE_OCARINA &&
+                   temp_s2 != MESSAGE_PERSISTENT && temp_s2 != MESSAGE_UNSKIPPABLE) {
+            if (temp_s2 == MESSAGE_FADE) {
+                sTextFade = true;
+                msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[++msgCtx->msgBufPos];
+            } else if (temp_s2 == MESSAGE_FADE2) {
+                sTextFade = true;
+                msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[++msgCtx->msgBufPos];
+                msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[++msgCtx->msgBufPos];
+            } else if (temp_s2 == MESSAGE_SHIFT || temp_s2 == MESSAGE_TEXT_SPEED) {
+                msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[++msgCtx->msgBufPos] & 0xFF;
+            } else if (temp_s2 == MESSAGE_SFX) {
+                msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[++msgCtx->msgBufPos];
+                msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[++msgCtx->msgBufPos];
+            } else if (temp_s2 == MESSAGE_TWO_CHOICE) {
+                msgCtx->choiceNum = 2;
+            } else if (temp_s2 == MESSAGE_THREE_CHOICE) {
+                msgCtx->choiceNum = 3;
+            } else if (temp_s2 != ' ') {
+                // Regular ASCII character
+                Font_LoadChar(font, temp_s2 - ' ', charTexIdx);
+                charTexIdx += FONT_CHAR_TEX_SIZE;
+            }
+        }
+        decodedBufPos++;
+        msgCtx->msgBufPos++;
+    }
 }
 // #endregion
 
@@ -2304,6 +2531,13 @@ void Message_Decode(PlayState* play) {
     // separated out
     if (gSaveContext.language == LANGUAGE_JPN && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
         Message_DecodeJPN(play);
+        return;
+    }
+    // #endregion
+
+    // #region SOH [Chinese] - Chinese uses NES format with 2-byte characters
+    if (gSaveContext.language == LANGUAGE_CHI && !sTextIsCredits && !sDisplayNextMessageAsEnglish) {
+        Message_DecodeCHI(play);
         return;
     }
     // #endregion
@@ -2713,9 +2947,6 @@ void Message_OpenText(PlayState* play, u16 textId) {
     Font* font = &msgCtx->font;
     s16 textBoxType;
 
-    bool loadFromMessageTable = true;
-    GameInteractor_ExecuteOnOpenText(&textId, &loadFromMessageTable);
-
     sDisplayNextMessageAsEnglish = false;
 
     if (msgCtx->msgMode == MSGMODE_NONE) {
@@ -2785,7 +3016,7 @@ void Message_OpenText(PlayState* play, u16 textId) {
         gSaveContext.eventInf[0] = gSaveContext.eventInf[1] = gSaveContext.eventInf[2] = gSaveContext.eventInf[3] = 0;
     }
 
-    if (!loadFromMessageTable) {
+    if (CustomMessage_RetrieveIfExists(play)) {
         osSyncPrintf("Found custom message");
         if (gSaveContext.language == LANGUAGE_JPN) {
             sDisplayNextMessageAsEnglish = true;
@@ -3859,7 +4090,23 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
 
                     u8 songItemId = ITEM_SONG_MINUET + gOcarinaSongItemMap[msgCtx->ocarinaStaff->state];
 
-                    if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, songItemId)) {
+                    if ((songItemId == ITEM_SONG_MINUET &&
+                         GameInteractor_Should(VB_GIVE_ITEM_MINUET_OF_FOREST, true)) ||
+                        (songItemId == ITEM_SONG_BOLERO && GameInteractor_Should(VB_GIVE_ITEM_BOLERO_OF_FIRE, true)) ||
+                        (songItemId == ITEM_SONG_SERENADE &&
+                         GameInteractor_Should(VB_GIVE_ITEM_SERENADE_OF_WATER, true)) ||
+                        (songItemId == ITEM_SONG_REQUIEM &&
+                         GameInteractor_Should(VB_GIVE_ITEM_REQUIEM_OF_SPIRIT, true)) ||
+                        (songItemId == ITEM_SONG_NOCTURNE &&
+                         GameInteractor_Should(VB_GIVE_ITEM_NOCTURNE_OF_SHADOW, true)) ||
+                        (songItemId == ITEM_SONG_PRELUDE &&
+                         GameInteractor_Should(VB_GIVE_ITEM_PRELUDE_OF_LIGHT, true)) ||
+                        (songItemId == ITEM_SONG_LULLABY && GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LULLABY, true)) ||
+                        (songItemId == ITEM_SONG_EPONA && GameInteractor_Should(VB_GIVE_ITEM_EPONAS_SONG, true)) ||
+                        (songItemId == ITEM_SONG_SARIA && GameInteractor_Should(VB_GIVE_ITEM_SARIAS_SONG, true)) ||
+                        (songItemId == ITEM_SONG_SUN && GameInteractor_Should(VB_GIVE_ITEM_SUNS_SONG, true)) ||
+                        (songItemId == ITEM_SONG_TIME && GameInteractor_Should(VB_GIVE_ITEM_SONG_OF_TIME, true)) ||
+                        (songItemId == ITEM_SONG_STORMS && GameInteractor_Should(VB_GIVE_ITEM_SONG_OF_STORMS, true))) {
                         Item_Give(play, songItemId);
                     }
 
@@ -4640,7 +4887,7 @@ void Message_Update(PlayState* play) {
             }
             if ((msgCtx->textId >= 0xC2 && msgCtx->textId < 0xC7) ||
                 (msgCtx->textId >= 0xFA && msgCtx->textId < 0xFE)) {
-                gSaveContext.healthAccumulator = MAX_HEALTH; // Refill 20 hearts
+                gSaveContext.healthAccumulator = 0x140; // Refill 20 hearts
             }
             if (msgCtx->textId == 0x301F || msgCtx->textId == 0xA || msgCtx->textId == 0xC || msgCtx->textId == 0xCF ||
                 msgCtx->textId == 0x21C || msgCtx->textId == 9 || msgCtx->textId == 0x4078 ||
@@ -4678,9 +4925,12 @@ void Message_Update(PlayState* play) {
             }
             if ((s32)(gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000) {
                 gSaveContext.inventory.questItems ^= 0x40000000;
-                if (GameInteractor_Should(VB_HEARTS_INCREASE_WITH_CONTAINERS, true)) {
-                    gSaveContext.healthCapacity += FULL_HEART_HEALTH;
-                    gSaveContext.health += FULL_HEART_HEALTH;
+                if (!CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0)) {
+                    gSaveContext.healthCapacity += 0x10;
+                    gSaveContext.health += 0x10;
+                } else {
+                    gSaveContext.healthCapacity -= 0x10;
+                    gSaveContext.health -= 0x10;
                 }
             }
             if (msgCtx->ocarinaAction != OCARINA_ACTION_CHECK_NOWARP_DONE) {
