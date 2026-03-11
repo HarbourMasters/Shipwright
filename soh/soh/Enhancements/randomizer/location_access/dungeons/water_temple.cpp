@@ -764,7 +764,7 @@ void RegionTable_Init_WaterTemple() {
         //Locations
         LOCATION(RC_MQ_WATER_TEMPLE_WONDER_BEFORE_BOSS_1, logic->CanUse(RG_HOOKSHOT)),
         LOCATION(RC_MQ_WATER_TEMPLE_WONDER_BEFORE_BOSS_2, logic->CanUse(RG_HOOKSHOT)),
-        }, {
+    }, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_RISING_TARGET_LEDGE, true),
         ENTRANCE(RR_WATER_TEMPLE_MQ_BOSS_DOOR,           logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_ICE_ARROWS) || logic->CanUse(RG_NAYRUS_LOVE)),
@@ -793,7 +793,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_MQ_SIDE_TOWER_2F] = Region("Water Temple MQ Side Tower 2F", SCENE_WATER_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_MQ_LONGSHOT_CHEST, logic->CanUse(RG_HOOKSHOT) && ((logic->WaterLevel(WL_MID) && logic->HasItem(RG_OPEN_CHEST)) || logic->CanOpenUnderwaterChest())),
+        LOCATION(RC_WATER_TEMPLE_MQ_LONGSHOT_CHEST,       logic->CanUse(RG_HOOKSHOT) && ((logic->WaterLevel(WL_MID) && logic->HasItem(RG_OPEN_CHEST)) || logic->CanOpenUnderwaterChest())),
         LOCATION(RC_MQ_WATER_TEMPLE_WONDER_LONGSHOT_ROOM, logic->CanUse(RG_HOOKSHOT) && (logic->WaterLevel(WL_MID) || logic->CanUse(RG_IRON_BOOTS))),
     }, {
         //Exits
@@ -1042,7 +1042,7 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_1,  logic->CanUse(RG_LONGSHOT)),
         LOCATION(RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_2,  logic->CanUse(RG_LONGSHOT)),
         LOCATION(RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_3,  logic->CanUse(RG_LONGSHOT)),
-        }, {
+    }, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_OUTSIDE_WATERFALL, logic->SmallKeys(SCENE_WATER_TEMPLE, 1)),
         ENTRANCE(RR_WATER_TEMPLE_MQ_WATERFALL_TOP,     logic->CanUse(RG_LONGSHOT)),
@@ -1364,7 +1364,7 @@ void RegionTable_Init_WaterTemple() {
         //Locations
         LOCATION(RC_MQ_WATER_TEMPLE_WONDER_WATER_SPROUTS_1, true),
         LOCATION(RC_MQ_WATER_TEMPLE_WONDER_WATER_SPROUTS_2, true),
-        }, {
+    }, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_CANAL_ALCOVE,      logic->SmallKeys(SCENE_WATER_TEMPLE, 2) && logic->CanHitSwitch(ED_BOOMERANG)),
         ENTRANCE(RR_WATER_TEMPLE_MQ_DODONGO_ROOM,      logic->CanHitSwitch() && logic->HasFireSource()),

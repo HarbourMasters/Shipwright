@@ -1,4 +1,6 @@
 #include <soh/OTRGlobals.h>
+#include <soh/GameVersions.h>
+#include "soh/ResourceManagerHelpers.h"
 #include "soh_assets.h"
 #include "static_data.h"
 #include <libultraship/libultra.h>
@@ -91,6 +93,12 @@ static std::unordered_map<RandomizerCheck, Vec3f> sStackedWonderOffsets = {
 static Vec3f GetStackOffset(RandomizerCheck rc) {
     auto it = sStackedWonderOffsets.find(rc);
     return it != sStackedWonderOffsets.end() ? it->second : Vec3f{ 0.0f, 0.0f, 0.0f };
+}
+
+void SpawnFountainWonderItem() {
+    if (LINK_IS_ADULT && gPlayState->sceneNum == SCENE_ZORAS_FOUNTAIN) {
+        Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WONDER_ITEM, -667, 320, 1053, 0, 0, 1, 4799, false);
+    }
 }
 
 uint8_t EnWonderItem_RandomizerHoldsItem(EnWonderItem* wonderActor, PlayState* play) {
@@ -293,6 +301,15 @@ void EnWonderItem_RandomizerSpawnCollectible(EnWonderItem* wonderActor, PlayStat
 
 void RegisterShuffleWonderItems() {
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS);
+    bool isNtscUs10 = false;
+    for (uint32_t i = 0; i < ResourceMgr_GetNumGameVersions(); i++) {
+        if (ResourceMgr_GetGameVersion(i) == OOT_NTSC_US_10) {
+            isNtscUs10 = true;
+        }
+    }
+    bool shouldRegisterFountain = shouldRegister && isNtscUs10 &&
+                                  (RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_ALL) ||
+                                   RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_OVERWORLD));
 
     COND_ID_HOOK(OnActorInit, ACTOR_EN_WONDER_ITEM, shouldRegister, [](void* actorRef) {
         Actor* actor = static_cast<Actor*>(actorRef);
@@ -313,6 +330,9 @@ void RegisterShuffleWonderItems() {
 
     // Draw particle effect in wonder item spot to indicate a randomized item
     COND_ID_HOOK(OnActorUpdate, ACTOR_EN_WONDER_ITEM, shouldRegister, EnWonderItem_RandomizerDrawSetup);
+
+    // Spawn missing wonder item for NTSC 1.0
+    COND_HOOK(OnSceneSpawnActors, shouldRegisterFountain, SpawnFountainWonderItem);
 
     // Do not spawn vanilla wonder item, instead spawn the randomized item
     COND_VB_SHOULD(VB_WONDER_DROP_ITEM, shouldRegister, {
@@ -422,6 +442,7 @@ void Rando::StaticData::RegisterWonderItemLocations() {
     locationTable[RC_ZR_WONDER_LOWER_RIVER_2]                               = Location::WonderItem(RC_ZR_WONDER_LOWER_RIVER_2,                                  RCQUEST_BOTH,    RCAREA_ZORAS_RIVER,                    SCENE_ZORAS_RIVER,                  TWO_ACTOR_PARAMS(-1288, 668),           "Wonder Lower River 2",                 RHT_WONDER_ITEM_ZORAS_RIVER,                RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_WONDER_LOWER_RIVER_2));
     locationTable[RC_ZR_WONDER_LOWER_RIVER_3]                               = Location::WonderItem(RC_ZR_WONDER_LOWER_RIVER_3,                                  RCQUEST_BOTH,    RCAREA_ZORAS_RIVER,                    SCENE_ZORAS_RIVER,                  TWO_ACTOR_PARAMS(-1290, 862),           "Wonder Lower River 3",                 RHT_WONDER_ITEM_ZORAS_RIVER,                RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_WONDER_LOWER_RIVER_3));
     locationTable[RC_ZR_WONDER_LOWER_RIVER_4]                               = Location::WonderItem(RC_ZR_WONDER_LOWER_RIVER_4,                                  RCQUEST_BOTH,    RCAREA_ZORAS_RIVER,                    SCENE_ZORAS_RIVER,                  TWO_ACTOR_PARAMS(-1288, 1052),          "Wonder Lower River 4",                 RHT_WONDER_ITEM_ZORAS_RIVER,                RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_WONDER_LOWER_RIVER_4));
+    locationTable[RC_ZF_WONDER_ROCK]                                        = Location::WonderItem(RC_ZF_WONDER_ROCK,                                           RCQUEST_BOTH,    RCAREA_ZORAS_FOUNTAIN,                 SCENE_ZORAS_FOUNTAIN,               TWO_ACTOR_PARAMS(-667, 1053),           "Wonder Scarecrow Rock",                RHT_WONDER_ITEM_ZORAS_FOUNTAIN,             RG_RED_RUPEE,           SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZF_WONDER_ROCK));
     locationTable[RC_GV_WONDER_LOWER_WATERFALL]                             = Location::WonderItem(RC_GV_WONDER_LOWER_WATERFALL,                                RCQUEST_BOTH,    RCAREA_GERUDO_VALLEY,                  SCENE_GERUDO_VALLEY,                TWO_ACTOR_PARAMS(-45, -298),            "Wonder Lower Waterfall",               RHT_WONDER_ITEM_GERUDO_VALLEY,              RG_RED_RUPEE,           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GV_WONDER_LOWER_WATERFALL));
     locationTable[RC_GV_WONDER_UPPER_WATERFALL]                             = Location::WonderItem(RC_GV_WONDER_UPPER_WATERFALL,                                RCQUEST_BOTH,    RCAREA_GERUDO_VALLEY,                  SCENE_GERUDO_VALLEY,                TWO_ACTOR_PARAMS(47, -2620),            "Wonder Upper Waterfall",               RHT_WONDER_ITEM_GERUDO_VALLEY,              RG_RED_RUPEE,           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GV_WONDER_UPPER_WATERFALL));
     locationTable[RC_GF_WONDER_ENTRANCE_SIGN]                               = Location::WonderItem(RC_GF_WONDER_ENTRANCE_SIGN,                                  RCQUEST_BOTH,    RCAREA_GERUDO_FORTRESS,                SCENE_GERUDOS_FORTRESS,             TWO_ACTOR_PARAMS(-814, -810),           "Wonder Entrance Sign",                 RHT_WONDER_ITEM_GERUDOS_FORTRESS,           RG_RED_RUPEE,           SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_WONDER_ENTRANCE_SIGN));

@@ -9,9 +9,9 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_OUTSKIRTS] = Region("Gerudo Fortress Outskirts", SCENE_GERUDOS_FORTRESS, {}, {
         //Locations
-        LOCATION(RC_GF_OUTSKIRTS_NE_CRATE,      (logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)) && logic->CanBreakCrates()),
-        LOCATION(RC_GF_OUTSKIRTS_NW_CRATE,      (logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)) && logic->CanBreakCrates()),
-        LOCATION(RC_GF_WONDER_ENTRANCE_SIGN,    logic->CanUse(RG_HOOKSHOT)),
+        LOCATION(RC_GF_OUTSKIRTS_NE_CRATE,   (logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)) && logic->CanBreakCrates()),
+        LOCATION(RC_GF_OUTSKIRTS_NW_CRATE,   (logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)) && logic->CanBreakCrates()),
+        LOCATION(RC_GF_WONDER_ENTRANCE_SIGN, logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_GV_FORTRESS_SIDE, true),

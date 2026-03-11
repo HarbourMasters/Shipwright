@@ -625,11 +625,11 @@ void RegionTable_Init_FireTemple() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Locations
-        LOCATION(RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST,                  logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_FIRE_TEMPLE_MQ_LAVA_TORCH_POT_1,                logic->HookshotOrBoomerang()),
-        LOCATION(RC_FIRE_TEMPLE_MQ_LAVA_TORCH_POT_2,                logic->HookshotOrBoomerang()),
-        LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_BOSS_KEY_ROOM_HOOKSHOT,   logic->CanUse(RG_HOOKSHOT)),
-        LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_BOSS_KEY_ROOM_BOW,        logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST,                logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_FIRE_TEMPLE_MQ_LAVA_TORCH_POT_1,              logic->HookshotOrBoomerang()),
+        LOCATION(RC_FIRE_TEMPLE_MQ_LAVA_TORCH_POT_2,              logic->HookshotOrBoomerang()),
+        LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_BOSS_KEY_ROOM_HOOKSHOT, logic->CanUse(RG_HOOKSHOT)),
+        LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_BOSS_KEY_ROOM_BOW,      logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM, true),
@@ -682,7 +682,7 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_SHORTCUT_ROOM_1, logic->CanUse(RG_MEGATON_HAMMER)),
         LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_SHORTCUT_ROOM_2, logic->CanUse(RG_MEGATON_HAMMER)),
         LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_SHORTCUT_ROOM_3, logic->CanUse(RG_MEGATON_HAMMER)),
-        }, {
+    }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_MID, (logic->HasFireSource() && (logic->IsAdult || (logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_CLIMB)))) || 
                                                        (ctx->GetTrickOption(RT_FIRE_MQ_CLIMB) && logic->CanUse(RG_HOVER_BOOTS) && logic->HasItem(RG_CLIMB))),
@@ -706,7 +706,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_MQ_LOWER_LIZALFOS_MAZE] = Region("Fire Temple MQ Lower Lizalfos Maze", SCENE_FIRE_TEMPLE, {}, {
         //Locations
         LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_LIZALFOS_MAZE, logic->CanUse(RG_HOOKSHOT)),
-        }, {
+    }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_LOWER, true),
         //Explosives can also reach this room. Chus is relatively simple, they need to detonate on the first horizontal bar up from the floor while horizontally near the switch, but bombs are much harder
@@ -809,10 +809,10 @@ void RegionTable_Init_FireTemple() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Locations
-        LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_EAST_TOWER_LARGE_FACE_1,  logic->CanUse(RG_HOOKSHOT)),
-        LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_EAST_TOWER_LARGE_FACE_2,  logic->CanUse(RG_HOOKSHOT)),
-        LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_EAST_TOWER_SMALL_FACE_1,  logic->CanUse(RG_HOOKSHOT)),
-        LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_EAST_TOWER_SMALL_FACE_2,  logic->CanUse(RG_HOOKSHOT)),
+        LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_EAST_TOWER_LARGE_FACE_1, logic->CanUse(RG_HOOKSHOT)),
+        LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_EAST_TOWER_LARGE_FACE_2, logic->CanUse(RG_HOOKSHOT)),
+        LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_EAST_TOWER_SMALL_FACE_1, logic->CanUse(RG_HOOKSHOT)),
+        LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_EAST_TOWER_SMALL_FACE_2, logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_ABOVE_MAZE,    true),
@@ -1013,7 +1013,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_MQ_LOCKED_CLIMB] = Region("Fire Temple MQ Locked Climb", SCENE_FIRE_TEMPLE, {}, {
         //Locations
         LOCATION(RC_MQ_FIRE_TEMPLE_WONDER_AFTER_FLARE_DANCER, logic->CanUse(RG_HOOKSHOT)),
-        }, {
+    }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_3F_FLARE_DANCER,    true),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NARROW_STAIRS_ROOM, logic->SmallKeys(SCENE_FIRE_TEMPLE, 4) && logic->HasItem(RG_CLIMB)),
