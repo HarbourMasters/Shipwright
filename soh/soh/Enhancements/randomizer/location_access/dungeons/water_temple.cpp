@@ -1177,7 +1177,6 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_2,  logic->CanBreakSmallCrates()),
         LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_TORCHES_SMALL_CRATE_3,  logic->CanBreakSmallCrates()),
         LOCATION(RC_MQ_WATER_TEMPLE_WONDER_DRAGON_ROOM_PORTRAIT,        logic->CanUse(RG_HOOKSHOT)),
-
     }, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_DRAGON_ROOM_TUNNEL, logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
