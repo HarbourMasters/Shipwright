@@ -279,7 +279,7 @@ void EnWonderItem_RandomizerSpawnCollectible(EnWonderItem* wonderActor, PlayStat
          wonderIdentity->randomizerCheck <= RC_MQ_WATER_TEMPLE_WONDER_HOOKSHOT_STAIRCASE_LEFT_3)) {
         Flags_SetRandomizerInf(wonderIdentity->randomizerInf);
     } else {
-        item00 = (EnItem00*)Item_DropCollectible2(play, &wonderActor->actor.world.pos, ITEM00_SOH_DUMMY);
+        item00 = (EnItem00*)Item_DropCollectible(play, &wonderActor->actor.world.pos, ITEM00_SOH_DUMMY);
         item00->randoInf = wonderIdentity->randomizerInf;
         item00->itemEntry =
             Rando::Context::GetInstance()->GetFinalGIEntry(wonderIdentity->randomizerCheck, true, GI_NONE);
