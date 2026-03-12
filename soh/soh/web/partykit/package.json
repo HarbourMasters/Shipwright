@@ -1,0 +1,12 @@
+{
+  "name": "soh-anchor-partykit",
+  "version": "1.0.0",
+  "description": "Ship of Harkinian Anchor multiplayer server using PartyKit",
+  "scripts": {
+    "dev": "npx partykit dev",
+    "deploy": "npx partykit deploy"
+  },
+  "dependencies": {
+    "partykit": "^0.0.108"
+  }
+}

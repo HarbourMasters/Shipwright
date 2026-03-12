@@ -3,6 +3,12 @@
 #include <locale.h>
 #endif
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#include <emscripten/html5.h>
+#include "soh/web/web_main.h"
+#endif
+
 #include "global.h"
 #include "vt.h"
 #include "stdio.h"
@@ -44,6 +50,37 @@ void Main_LogSystemHeap(void) {
     osSyncPrintf(VT_RST);
 }
 
+#ifdef __EMSCRIPTEN__
+// Emscripten startup: wait for OTR files, then initialize game
+static int sWebArgc;
+static char** sWebArgv;
+
+static void web_startup_poll(void) {
+    if (!web_get_otr_status()) {
+        // OTR files not yet uploaded - keep polling
+        return;
+    }
+
+    // OTR files are ready - cancel this polling loop and start the game
+    emscripten_cancel_main_loop();
+
+    printf("[Web Debug main.c] Calling InitOTR\n");
+    InitOTR(sWebArgc, sWebArgv);
+    printf("[Web Debug main.c] InitOTR returned\n");
+    CrashHandlerRegisterCallback(CrashHandler_PrintSohData);
+    printf("[Web Debug main.c] CrashHandlerRegisterCallback done\n");
+    BootCommands_Init();
+    printf("[Web Debug main.c] BootCommands_Init done\n");
+    Heaps_Alloc();
+    printf("[Web Debug main.c] Heaps_Alloc done\n");
+
+    // Main() sets up emscripten_set_main_loop via Graph_ThreadEntry and returns
+    printf("[Web Debug main.c] Calling Main(0)\n");
+    Main(0);
+    printf("[Web Debug main.c] Main(0) returned\n");
+}
+#endif
+
 #ifdef _WIN32
 int SDL_main(int argc, char* argv[]) {
     AllocConsole();
@@ -60,6 +97,18 @@ int SDL_main(int argc, char* argv[]) {
 int main(int argc, char* argv[]) {
 #endif
     GameConsole_Init();
+
+#ifdef __EMSCRIPTEN__
+    // Initialize IDBFS for persistent saves/config
+    web_fs_init();
+
+    // Don't init the game yet - poll until OTR files are uploaded via the browser
+    sWebArgc = argc;
+    sWebArgv = argv;
+    emscripten_set_main_loop(web_startup_poll, 10, 0);
+    return 0;
+#endif
+
     InitOTR(argc, argv);
     // TODO: Was moved to below InitOTR because it requires window to be setup. But will be late to catch crashes.
     CrashHandlerRegisterCallback(CrashHandler_PrintSohData);
@@ -140,6 +189,12 @@ void Main(void* arg) {
     osSetThreadPri(0, Z_PRIORITY_SCHED);
 
     Graph_ThreadEntry(0);
+
+#ifdef __EMSCRIPTEN__
+    // In Emscripten, Graph_ThreadEntry sets up emscripten_set_main_loop and returns.
+    // We return from Main() to let the event loop run.
+    return;
+#endif
 
     while (true) {
         msg = NULL;

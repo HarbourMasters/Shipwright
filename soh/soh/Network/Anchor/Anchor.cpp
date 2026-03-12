@@ -14,8 +14,18 @@ extern PlayState* gPlayState;
 // MARK: - Overrides
 
 void Anchor::Enable() {
+#ifdef __EMSCRIPTEN__
+    // For web builds, connect via WebSocket to PartyKit server
+    // Default: ws://localhost:1999/party/default (local dev)
+    // Production: wss://soh-anchor.<user>.partykit.dev/party/<room>
+    const char* wsUrl = CVarGetString(CVAR_REMOTE_ANCHOR("WebSocketURL"),
+                                       "ws://localhost:1999/party/default");
+    Network::EnableWebSocket(std::string(wsUrl));
+    isEnabled = true;
+#else
     Network::Enable(CVarGetString(CVAR_REMOTE_ANCHOR("Host"), "anchor.hm64.org"),
                     CVarGetInteger(CVAR_REMOTE_ANCHOR("Port"), 43383));
+#endif
     ownClientId = CVarGetInteger(CVAR_REMOTE_ANCHOR("LastClientId"), 0);
     roomState.ownerClientId = 0;
 }
@@ -109,6 +119,12 @@ void Anchor::OnIncomingJson(nlohmann::json payload) {
 }
 
 void Anchor::ProcessIncomingPacketQueue() {
+#ifdef __EMSCRIPTEN__
+    // On Emscripten, poll the WebSocket for incoming messages
+    // (there's no receive thread, so we poll from the game thread)
+    PollIncoming();
+#endif
+
     // Copy all queued packets while holding the lock, then process them after releasing
     std::queue<nlohmann::json> packetsToProcess;
     {

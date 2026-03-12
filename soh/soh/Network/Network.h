@@ -3,18 +3,28 @@
 #ifdef __cplusplus
 
 #include <thread>
-#ifdef ENABLE_REMOTE_CONTROL
+#include <string>
+
+#ifdef __EMSCRIPTEN__
+#include "WebSocket.h"
+#elif defined(ENABLE_REMOTE_CONTROL)
 #include <SDL2/SDL_net.h>
 #endif
+
 #include <nlohmann/json.hpp>
 
 class Network {
   private:
-#ifdef ENABLE_REMOTE_CONTROL
+#ifdef __EMSCRIPTEN__
+    WebSocketClient wsClient;
+    void PollWebSocket();
+#elif defined(ENABLE_REMOTE_CONTROL)
     IPaddress networkAddress;
     TCPsocket networkSocket;
 #endif
+#ifndef __EMSCRIPTEN__
     std::thread receiveThread;
+#endif
     std::string receivedData;
 
     void ReceiveFromServer();
@@ -27,26 +37,20 @@ class Network {
 
     void Enable(const char* host, uint16_t port);
     void Disable();
-    /**
-     * Raw data handler
-     *
-     * If you are developing a new remote, you should probably use the json methods instead. This
-     * method requires you to parse the data and ensure packets are complete manually, we cannot
-     * gaurentee that the data will be complete, or that it will only contain one packet with this
-     */
     virtual void OnIncomingData(char payload[512]);
-    /**
-     * Json handler
-     *
-     * This method will be called when a complete json packet is received. All json packets must
-     * be delimited by a null terminator (\0).
-     */
     virtual void OnIncomingJson(nlohmann::json payload);
     virtual void OnConnected();
     virtual void OnDisconnected();
     virtual void ProcessOutgoingPackets();
     void SendDataToRemote(const char* payload);
     virtual void SendJsonToRemote(nlohmann::json packet);
+
+#ifdef __EMSCRIPTEN__
+    // WebSocket-specific: connect to a WebSocket URL
+    void EnableWebSocket(const std::string& url);
+    // Poll for incoming WebSocket messages (call from game thread)
+    void PollIncoming();
+#endif
 };
 
 #endif // __cplusplus

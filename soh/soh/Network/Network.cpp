@@ -5,7 +5,17 @@
 // MARK: - Public
 
 void Network::Enable(const char* host, uint16_t port) {
-#ifdef ENABLE_REMOTE_CONTROL
+#ifdef __EMSCRIPTEN__
+    if (isEnabled) {
+        return;
+    }
+
+    // Build WebSocket URL from host:port
+    // For PartyKit: wss://soh-anchor.username.partykit.dev/party/room-name
+    // For local dev: ws://localhost:1999/party/default
+    std::string url = std::string("ws://") + host + ":" + std::to_string(port);
+    EnableWebSocket(url);
+#elif defined(ENABLE_REMOTE_CONTROL)
     if (isEnabled) {
         return;
     }
@@ -31,7 +41,14 @@ void Network::Disable() {
     }
 
     isEnabled = false;
+
+#ifdef __EMSCRIPTEN__
+    wsClient.Disconnect();
+    isConnected = false;
+    OnDisconnected();
+#else
     receiveThread.join();
+#endif
 }
 
 void Network::OnIncomingData(char payload[512]) {
@@ -50,20 +67,65 @@ void Network::ProcessOutgoingPackets() {
 }
 
 void Network::SendDataToRemote(const char* payload) {
-#ifdef ENABLE_REMOTE_CONTROL
+#ifdef __EMSCRIPTEN__
+    if (isConnected) {
+        wsClient.Send(std::string(payload));
+    }
+#elif defined(ENABLE_REMOTE_CONTROL)
     SPDLOG_DEBUG("[Network] Sending data: {}", payload);
     SDLNet_TCP_Send(networkSocket, payload, strlen(payload) + 1);
 #endif
 }
 
 void Network::SendJsonToRemote(nlohmann::json payload) {
+#ifdef __EMSCRIPTEN__
+    if (isConnected) {
+        wsClient.Send(payload.dump());
+    }
+#else
     SendDataToRemote(payload.dump().c_str());
+#endif
 }
+
+#ifdef __EMSCRIPTEN__
+void Network::EnableWebSocket(const std::string& url) {
+    isEnabled = true;
+
+    wsClient.SetOnConnect([this]() {
+        isConnected = true;
+        OnConnected();
+    });
+
+    wsClient.SetOnDisconnect([this]() {
+        isConnected = false;
+        if (isEnabled) {
+            OnDisconnected();
+        }
+    });
+
+    wsClient.Connect(url);
+}
+
+void Network::PollIncoming() {
+    if (!isEnabled) {
+        return;
+    }
+
+    // Process outgoing packets
+    ProcessOutgoingPackets();
+
+    // Poll for incoming WebSocket messages
+    std::string message;
+    while (wsClient.Poll(message)) {
+        HandleRemoteJson(message);
+    }
+}
+#endif
 
 // MARK: - Private
 
 void Network::ReceiveFromServer() {
-#ifdef ENABLE_REMOTE_CONTROL
+#if !defined(__EMSCRIPTEN__) && defined(ENABLE_REMOTE_CONTROL)
     while (isEnabled) {
         while (!isConnected && isEnabled) {
             SPDLOG_TRACE("[Network] Attempting to make connection to server...");
@@ -114,15 +176,12 @@ void Network::ReceiveFromServer() {
 
             receivedData.append(remoteDataReceived, len);
 
-            // Proess all complete packets
+            // Process all complete packets
             size_t delimiterPos = receivedData.find('\0');
             while (delimiterPos != std::string::npos) {
-                // Extract the complete packet until the delimiter
                 std::string packet = receivedData.substr(0, delimiterPos);
-                // Remove the packet (including the delimiter) from the received data
                 receivedData.erase(0, delimiterPos + 1);
                 HandleRemoteJson(packet);
-                // Find the next delimiter
                 delimiterPos = receivedData.find('\0');
             }
         }

@@ -104,11 +104,14 @@ void aLoadBufferImpl(const void* source_addr, uint16_t dest_addr, uint16_t nbyte
 #endif
 }
 
+#ifndef __EMSCRIPTEN__
 #include <opus/opus.h>
 #include <opusfile.h>
+#endif
 
 void aOPUSdecImpl(void* source_addr, uint16_t dest_addr, uint16_t nbytes, struct OggOpusFile** decState, int32_t pos,
                   uint32_t size) {
+#ifndef __EMSCRIPTEN__
     int readSamples = 0;
     if (*decState == NULL) {
         *decState = op_open_memory(source_addr, size, NULL);
@@ -125,10 +128,16 @@ void aOPUSdecImpl(void* source_addr, uint16_t dest_addr, uint16_t nbytes, struct
             break;
         readSamples += ret;
     }
+#else
+    // Opus decoding not available on web - fill with silence
+    memset(BUF_U8(dest_addr), 0, nbytes);
+#endif
 }
 
 void aOPUSFree(struct OggOpusFile* opusFile) {
+#ifndef __EMSCRIPTEN__
     op_free(opusFile);
+#endif
 }
 
 void aSaveBufferImpl(uint16_t source_addr, int16_t* dest_addr, uint16_t nbytes) {

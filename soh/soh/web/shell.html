@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ship of Harkinian - Web</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0a0a1a;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #e0e0e0;
+    }
+
+    #canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: block;
+      outline: none;
+      z-index: 1;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0a0a1a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      transition: opacity 0.5s ease;
+    }
+
+    #overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #overlay h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.3rem;
+      color: #ffffff;
+    }
+
+    #overlay .subtitle {
+      font-size: 0.95rem;
+      color: #888;
+      margin-bottom: 2rem;
+    }
+
+    #otr-picker {
+      background: #111128;
+      border: 2px dashed #2a2a5a;
+      border-radius: 12px;
+      padding: 2rem 3rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      margin-bottom: 1.5rem;
+    }
+
+    #otr-picker:hover {
+      border-color: #5588ff;
+      background: #15153a;
+    }
+
+    #otr-picker p {
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+    }
+
+    #otr-picker .hint {
+      font-size: 0.82rem;
+      color: #666;
+    }
+
+    #otr-file {
+      display: none;
+    }
+
+    #progress-container {
+      width: 320px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #progress-bar-outer {
+      width: 100%;
+      height: 8px;
+      background: #111128;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 0.75rem;
+    }
+
+    #progress-bar-inner {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #5588ff, #2244aa);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    #status {
+      font-size: 0.9rem;
+      color: #aaa;
+      text-align: center;
+      min-height: 1.5em;
+    }
+
+    #error-msg {
+      color: #ff5566;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      min-height: 1.5em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="overlay">
+    <h1>Ship of Harkinian</h1>
+    <p class="subtitle">WebAssembly Port</p>
+
+    <div id="otr-picker" onclick="document.getElementById('otr-file').click()">
+      <p>Click or drag to load game files</p>
+      <p class="hint">Requires oot.otr (or .o2r) and soh.o2r</p>
+    </div>
+    <input type="file" id="otr-file" accept=".otr,.o2r" multiple>
+
+    <div id="progress-container">
+      <div id="progress-bar-outer">
+        <div id="progress-bar-inner"></div>
+      </div>
+      <div id="status">Initializing...</div>
+    </div>
+
+    <div id="error-msg"></div>
+  </div>
+
+  <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+
+  <script>
+    var OTR_DB_NAME = 'soh_otr_files';
+    var OTR_DB_STORE = 'otr';
+    var OTR_DB_VERSION = 1;
+
+    var otrFilesReady = false;
+    var audioResumed = false;
+    var gameStarted = false;
+    var requiredFiles = {};
+
+    // ---- IndexedDB helpers ----
+
+    function openOtrDB() {
+      return new Promise(function(resolve, reject) {
+        var req = indexedDB.open(OTR_DB_NAME, OTR_DB_VERSION);
+        req.onupgradeneeded = function(e) {
+          e.target.result.createObjectStore(OTR_DB_STORE);
+        };
+        req.onsuccess = function(e) { resolve(e.target.result); };
+        req.onerror = function(e) { reject(e.target.error); };
+      });
+    }
+
+    function getCachedFile(name) {
+      return openOtrDB().then(function(db) {
+        return new Promise(function(resolve, reject) {
+          var tx = db.transaction(OTR_DB_STORE, 'readonly');
+          var store = tx.objectStore(OTR_DB_STORE);
+          var req = store.get(name);
+          req.onsuccess = function() { resolve(req.result || null); };
+          req.onerror = function() { resolve(null); };
+        });
+      });
+    }
+
+    function cacheFile(name, arrayBuffer) {
+      return openOtrDB().then(function(db) {
+        return new Promise(function(resolve, reject) {
+          var tx = db.transaction(OTR_DB_STORE, 'readwrite');
+          var store = tx.objectStore(OTR_DB_STORE);
+          store.put(arrayBuffer, name);
+          tx.oncomplete = function() { resolve(); };
+          tx.onerror = function(e) { reject(e.target.error); };
+        });
+      });
+    }
+
+    function listCachedFiles() {
+      return openOtrDB().then(function(db) {
+        return new Promise(function(resolve, reject) {
+          var tx = db.transaction(OTR_DB_STORE, 'readonly');
+          var store = tx.objectStore(OTR_DB_STORE);
+          var req = store.getAllKeys();
+          req.onsuccess = function() { resolve(req.result || []); };
+          req.onerror = function() { resolve([]); };
+        });
+      });
+    }
+
+    // ---- UI helpers ----
+
+    function showError(msg) {
+      document.getElementById('error-msg').textContent = msg;
+    }
+
+    function setStatus(msg) {
+      document.getElementById('status').textContent = msg;
+    }
+
+    function setProgress(pct) {
+      document.getElementById('progress-bar-inner').style.width = pct + '%';
+    }
+
+    function showProgress() {
+      document.getElementById('otr-picker').style.display = 'none';
+      document.getElementById('progress-container').style.display = 'flex';
+    }
+
+    function hideOverlay() {
+      var el = document.getElementById('overlay');
+      if (el.classList.contains('hidden')) return;
+      el.classList.add('hidden');
+      document.getElementById('canvas').focus();
+    }
+
+    // ---- Write OTR files to Emscripten FS ----
+
+    function getWritePath() {
+      // Game looks for OTR files relative to cwd which is "/"
+      return '/';
+    }
+
+    function writeOtrToFS(name, arrayBuffer) {
+      try {
+        var data = new Uint8Array(arrayBuffer);
+        var writePath = getWritePath();
+
+        var filePath = writePath + name;
+        FS.writeFile(filePath, data);
+        console.log('[Web] OTR written to ' + filePath + ' (' + data.length + ' bytes)');
+        return true;
+      } catch (e) {
+        showError('Failed to write ' + name + ' to virtual filesystem: ' + e.message);
+        console.error('[Web] writeOtrToFS error:', e);
+        return false;
+      }
+    }
+
+    function finalizeOtrLoad() {
+      otrFilesReady = true;
+      setStatus('Game files loaded. Starting...');
+      setProgress(100);
+
+      // Tell the C side that OTR files are ready
+      if (typeof Module._web_otr_loaded === 'function') {
+        Module._web_otr_loaded();
+      }
+
+      waitForGameRender();
+    }
+
+    // ---- File handler ----
+
+    function handleOtrFiles(files) {
+      showError('');
+      showProgress();
+      setStatus('Reading game files...');
+      setProgress(10);
+
+      var processed = 0;
+      var total = files.length;
+
+      for (var i = 0; i < files.length; i++) {
+        (function(file) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            var buf = e.target.result;
+            var name = file.name.toLowerCase();
+
+            setProgress(10 + (processed / total) * 60);
+            setStatus('Caching ' + file.name + '...');
+
+            // Cache for future visits
+            cacheFile(name, buf).then(function() {
+              writeOtrToFS(name, buf);
+              processed++;
+              if (processed === total) {
+                setProgress(90);
+                setStatus('All files loaded.');
+                finalizeOtrLoad();
+              }
+            }).catch(function() {
+              writeOtrToFS(name, buf);
+              processed++;
+              if (processed === total) {
+                finalizeOtrLoad();
+              }
+            });
+          };
+          reader.onerror = function() {
+            showError('Failed to read ' + file.name);
+          };
+          reader.readAsArrayBuffer(file);
+        })(files[i]);
+      }
+    }
+
+    document.getElementById('otr-file').addEventListener('change', function(e) {
+      if (e.target.files.length > 0) {
+        handleOtrFiles(e.target.files);
+      }
+    });
+
+    // Drag-and-drop
+    document.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    });
+    document.addEventListener('drop', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.dataTransfer.files.length > 0) {
+        handleOtrFiles(e.dataTransfer.files);
+      }
+    });
+
+    // ---- Audio context resume on first interaction ----
+
+    function resumeAudio() {
+      if (audioResumed) return;
+      try {
+        var ctx = (Module.SDL2 && Module.SDL2.audioContext) ||
+                  (typeof AudioContext !== 'undefined' && new AudioContext());
+        if (ctx && ctx.state === 'suspended') {
+          ctx.resume();
+        }
+      } catch(e) {}
+      audioResumed = true;
+    }
+
+    document.addEventListener('click', resumeAudio);
+    document.addEventListener('keydown', resumeAudio);
+
+    // ---- Watch for game rendering ----
+
+    function waitForGameRender() {
+      var canvas = document.getElementById('canvas');
+      var checkInterval = setInterval(function() {
+        try {
+          var ctx = canvas.getContext('webgl2') || canvas.getContext('webgl');
+          if (ctx) {
+            var pixels = new Uint8Array(4);
+            ctx.readPixels(canvas.width/2, canvas.height/2, 1, 1, ctx.RGBA, ctx.UNSIGNED_BYTE, pixels);
+            if (pixels[0] > 0 || pixels[1] > 0 || pixels[2] > 0) {
+              hideOverlay();
+              clearInterval(checkInterval);
+            }
+          }
+        } catch(e) {}
+      }, 200);
+      // Fallback: hide after 10 seconds
+      setTimeout(function() { clearInterval(checkInterval); hideOverlay(); }, 10000);
+    }
+
+    // ---- Check for cached OTR files on load ----
+
+    function checkCachedOtr() {
+      listCachedFiles().then(function(keys) {
+        if (keys.length > 0) {
+          showProgress();
+          setStatus('Found cached game files. Loading...');
+          setProgress(10);
+
+          var loaded = 0;
+          var total = keys.length;
+
+          function tryLoadCached() {
+            if (typeof FS === 'undefined') {
+              setTimeout(tryLoadCached, 100);
+              return;
+            }
+
+            keys.forEach(function(key) {
+              getCachedFile(key).then(function(buf) {
+                if (buf) {
+                  writeOtrToFS(key, buf);
+                }
+                loaded++;
+                setProgress(10 + (loaded / total) * 80);
+                if (loaded === total) {
+                  finalizeOtrLoad();
+                }
+              });
+            });
+          }
+
+          tryLoadCached();
+        }
+      }).catch(function() {
+        // No cached files
+      });
+    }
+
+    // ---- Emscripten Module configuration ----
+
+    var Module = {
+      canvas: (function() {
+        return document.getElementById('canvas');
+      })(),
+
+      noInitialRun: false,
+
+      print: function(text) {
+        console.log('[SOH] ' + text);
+      },
+
+      printErr: function(text) {
+        console.error('[SOH] ' + text);
+      },
+
+      setStatus: function(text) {
+        if (text) {
+          setStatus(text);
+        }
+      },
+
+      monitorRunDependencies: function(left) {
+        if (left === 0) {
+          setStatus('All dependencies loaded.');
+        } else {
+          setStatus('Loading... (' + left + ' remaining)');
+        }
+      },
+
+      onRuntimeInitialized: function() {
+        setStatus('Runtime initialized. Checking for game files...');
+        checkCachedOtr();
+      },
+
+      locateFile: function(path) {
+        return path;
+      }
+    };
+
+    window.onerror = function(msg) {
+      if (msg && msg.indexOf('abort') !== -1) {
+        showError('An error occurred. Check the browser console for details.');
+      }
+    };
+  </script>
+
+  {{{ SCRIPT }}}
+
+</body>
+</html>

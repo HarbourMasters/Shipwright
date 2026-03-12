@@ -17,7 +17,10 @@
 #include <spdlog/sinks/rotating_file_sink.h>
 
 #include "Enhancements/gameconsole.h"
-#ifdef _WIN32
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#include <emscripten/html5.h>
+#elif defined(_WIN32)
 #include <Windows.h>
 #else
 #include <time.h>
@@ -45,7 +48,7 @@
 #include "Enhancements/custom-message/CustomMessageManager.h"
 #include "util.h"
 
-#if not defined(__SWITCH__) && not defined(__WIIU__)
+#if not defined(__SWITCH__) && not defined(__WIIU__) && not defined(__EMSCRIPTEN__)
 #include "Extractor/Extract.h"
 #endif
 
@@ -70,8 +73,10 @@
 #include "soh/SohGui/ImGuiUtils.h"
 #include "ActorDB.h"
 #include "SaveManager.h"
+#ifndef __EMSCRIPTEN__
 #include "soh/Network/CrowdControl/CrowdControl.h"
 #include "soh/Network/Sail/Sail.h"
+#endif
 #include "soh/Network/Anchor/Anchor.h"
 #include "Enhancements/mods.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
@@ -132,8 +137,10 @@ ItemTableManager* ItemTableManager::Instance;
 GameInteractor* GameInteractor::Instance;
 AudioCollection* AudioCollection::Instance;
 SpeechSynthesizer* SpeechSynthesizer::Instance;
+#ifndef __EMSCRIPTEN__
 CrowdControl* CrowdControl::Instance;
 Sail* Sail::Instance;
+#endif
 Anchor* Anchor::Instance;
 
 extern "C" char** cameraStrings;
@@ -270,15 +277,21 @@ std::string portArchivePath = "";
 static bool sohArchiveVersionMatch = false;
 
 OTRGlobals::OTRGlobals() {
+    SPDLOG_INFO("[Web Debug] OTRGlobals constructor start");
     context = Ship::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
 
+    SPDLOG_INFO("[Web Debug] LocateFileAcrossAppDirs soh.o2r");
     portArchivePath = Ship::Context::LocateFileAcrossAppDirs("soh.o2r");
+    SPDLOG_INFO("[Web Debug] portArchivePath = {}", portArchivePath);
     OTRVersion portArchiveVersion = DetectOTRVersion("soh.o2r", false);
     sohArchiveVersionMatch = portArchiveVersion.major == gBuildVersionMajor &&
                              portArchiveVersion.minor == gBuildVersionMinor &&
                              portArchiveVersion.patch == gBuildVersionPatch;
+    SPDLOG_INFO("[Web Debug] sohArchiveVersionMatch = {}", sohArchiveVersionMatch);
 
+    SPDLOG_INFO("[Web Debug] InitConfiguration");
     context->InitConfiguration();
+    SPDLOG_INFO("[Web Debug] InitConsoleVariables");
     context->InitConsoleVariables();
 
     auto controlDeck = std::make_shared<LUS::ControlDeck>(std::vector<CONTROLLERBUTTONS_T>({
@@ -293,16 +306,21 @@ OTRGlobals::OTRGlobals() {
         BTN_CUSTOM_OCARINA_PITCH_UP,
         BTN_CUSTOM_OCARINA_PITCH_DOWN,
     }));
+    SPDLOG_INFO("[Web Debug] InitControlDeck");
     context->InitControlDeck(controlDeck);
+    SPDLOG_INFO("[Web Debug] InitResourceManager");
     context->InitResourceManager({ portArchivePath }, {}, 3, true);
+    SPDLOG_INFO("[Web Debug] InitConsole");
     context->InitConsole();
 
     auto sohInputEditorWindow =
         std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Configure Controller");
     sohFast3dWindow =
         std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({ sohInputEditorWindow }));
+    SPDLOG_INFO("[Web Debug] InitWindow");
     context->InitWindow(sohFast3dWindow);
 
+    SPDLOG_INFO("[Web Debug] SetupMenu");
     SohGui::SetupMenu();
 
     if (sohArchiveVersionMatch) {
@@ -390,6 +408,10 @@ extern std::shared_ptr<SohGui::SohMenu> mSohMenu;
 }
 
 void OTRGlobals::RunExtract(int argc, char* argv[]) {
+#if defined(__EMSCRIPTEN__)
+    // Extractor not available on web - OTR files are loaded via browser upload
+    return;
+#else
     bool extractDone = false;
     ExtractSteps extractStep = ES_PORT_ARCHIVE;
     WindowsSteps windowsStep = WS_TEMP;
@@ -764,9 +786,11 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
 #if not defined(__SWITCH__) && not defined(__WIIU__)
     CheckAndCreateModFolder();
 #endif
+#endif // !__EMSCRIPTEN__
 }
 
 void OTRGlobals::Initialize() {
+    SPDLOG_INFO("[Web Debug] Initialize: loading oot archives");
     std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName);
     if (std::filesystem::exists(mqPath)) {
         context->GetResourceManager()->GetArchiveManager()->AddArchive(mqPath);
@@ -775,6 +799,7 @@ void OTRGlobals::Initialize() {
     if (std::filesystem::exists(ootPath)) {
         context->GetResourceManager()->GetArchiveManager()->AddArchive(ootPath);
     }
+    SPDLOG_INFO("[Web Debug] Initialize: archives loaded");
 
     std::unordered_set<uint32_t> ValidHashes = {
         OOT_PAL_MQ,     OOT_NTSC_JP_MQ, OOT_NTSC_US_MQ, OOT_PAL_GC_MQ_DBG, OOT_NTSC_US_10,
@@ -787,27 +812,35 @@ void OTRGlobals::Initialize() {
 #else
     auto defaultLogLevel = spdlog::level::info;
 #endif
+    SPDLOG_INFO("[Web Debug] Initialize: InitConfiguration");
     context->InitConfiguration();
+    SPDLOG_INFO("[Web Debug] Initialize: InitConsoleVariables");
     context->InitConsoleVariables();
     auto logLevel =
         static_cast<spdlog::level::level_enum>(CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), defaultLogLevel));
+    SPDLOG_INFO("[Web Debug] Initialize: InitLogging");
     context->InitLogging(logLevel, logLevel);
     Ship::Context::GetInstance()->GetLogger()->set_pattern("[%H:%M:%S.%e] [%s:%#] [%l] %v");
 
+    SPDLOG_INFO("[Web Debug] Initialize: InitGfxDebugger");
     context->InitGfxDebugger();
+    SPDLOG_INFO("[Web Debug] Initialize: InitFileDropMgr");
     context->InitFileDropMgr();
 
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
     prevAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 1);
     context->GetResourceManager()->SetAltAssetsEnabled(prevAltAssets);
 
+    SPDLOG_INFO("[Web Debug] Initialize: InitCrashHandler");
     context->InitCrashHandler();
 
     context->GetWindow()->SetAutoCaptureMouse(CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) &&
                                               CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1));
     context->GetWindow()->SetForceCursorVisibility(CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
 
+    SPDLOG_INFO("[Web Debug] Initialize: InitAudio");
     context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
+    SPDLOG_INFO("[Web Debug] Initialize: InitAudio done");
 
     SPDLOG_INFO("Starting Ship of Harkinian version {} (Branch: {} | Commit: {})", (char*)gBuildVersion,
                 (char*)gGitBranch, (char*)gGitCommitHash);
@@ -990,7 +1023,17 @@ bool OTRGlobals::HasOriginal() {
     return hasOriginal;
 }
 
+#ifdef __EMSCRIPTEN__
+extern "C" uint32_t gWebMeasuredFPS;
+extern "C" float gWebInterpolationFraction;
+#endif
+
 uint32_t OTRGlobals::GetInterpolationFPS() {
+#ifdef __EMSCRIPTEN__
+    // On web, return the measured requestAnimationFrame rate.
+    // The outer loop in graph.c measures this and handles frame pacing.
+    return gWebMeasuredFPS;
+#else
     if (CVarGetInteger(CVAR_SETTING("MatchRefreshRate"), 0)) {
         return Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
     } else if (CVarGetInteger(CVAR_VSYNC_ENABLED, 1) ||
@@ -999,6 +1042,7 @@ uint32_t OTRGlobals::GetInterpolationFPS() {
                                   CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20));
     }
     return CVarGetInteger(CVAR_SETTING("InterpolationFPS"), 20);
+#endif
 }
 
 extern "C" void OTRMessage_Init();
@@ -1008,6 +1052,27 @@ extern "C" int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
+#define SAMPLES_HIGH 560
+#define SAMPLES_LOW 528
+#define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1)
+#define NUM_AUDIO_CHANNELS 2
+
+#ifdef __EMSCRIPTEN__
+// Emscripten: process audio inline (no threading)
+void OTRAudio_ProcessInline() {
+    int samples_left = AudioPlayer_Buffered();
+    u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
+
+    s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
+    for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
+        AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
+                                       num_audio_samples);
+    }
+
+    AudioPlayer_Play((u8*)audio_buffer,
+                     num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
+}
+#else
 void OTRAudio_Thread() {
     while (audio.running) {
         {
@@ -1021,14 +1086,6 @@ void OTRAudio_Thread() {
             }
         }
         std::unique_lock<std::mutex> Lock(audio.mutex);
-// AudioMgr_ThreadEntry(&gAudioMgr);
-//  528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
-//  in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
-#define SAMPLES_HIGH 560
-#define SAMPLES_LOW 528
-
-#define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1)
-#define NUM_AUDIO_CHANNELS 2
 
         int samples_left = AudioPlayer_Buffered();
         u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
@@ -1047,16 +1104,21 @@ void OTRAudio_Thread() {
         audio.cv_from_thread.notify_one();
     }
 }
+#endif
 
 // C->C++ Bridge
 extern "C" void OTRAudio_Init() {
     // Precache all our samples, sequences, etc...
     ResourceMgr_LoadDirectory("audio");
 
+#ifndef __EMSCRIPTEN__
     if (!audio.running) {
         audio.running = true;
         audio.thread = std::thread(OTRAudio_Thread);
     }
+#else
+    audio.running = true;
+#endif
 }
 
 extern "C" char** sequenceMap;
@@ -1066,6 +1128,7 @@ extern "C" char** fontMap;
 extern "C" size_t fontMapSize;
 
 extern "C" void OTRAudio_Exit() {
+#ifndef __EMSCRIPTEN__
     // Tell the audio thread to stop
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
@@ -1075,6 +1138,9 @@ extern "C" void OTRAudio_Exit() {
 
     // Wait until the audio thread quit
     audio.thread.join();
+#else
+    audio.running = false;
+#endif
 #if 0
     for (size_t i = 0; i < sequenceMapSize; i++) {
         free(sequenceMap[i]);
@@ -1448,7 +1514,11 @@ OTRVersion DetectOTRVersion(std::string fileName, bool isMQ) {
 }
 
 extern "C" void Messagebox_ShowErrorBox(char* title, char* body) {
+#if not defined(__SWITCH__) && not defined(__WIIU__) && not defined(__EMSCRIPTEN__)
     Extractor::ShowErrorBox(title, body);
+#else
+    SPDLOG_ERROR("[SOH] {}: {}", title, body);
+#endif
 }
 
 bool VerifyArchiveVersion(OTRVersion version) {
@@ -1456,14 +1526,25 @@ bool VerifyArchiveVersion(OTRVersion version) {
 }
 
 extern "C" void InitOTR(int argc, char* argv[]) {
+    SPDLOG_INFO("[Web Debug] InitOTR start");
     OTRGlobals::Instance = new OTRGlobals();
+    SPDLOG_INFO("[Web Debug] OTRGlobals constructed");
+#ifndef __EMSCRIPTEN__
     OTRGlobals::Instance->RunExtract(argc, argv);
+#endif
 
+    SPDLOG_INFO("[Web Debug] Calling Initialize()");
     OTRGlobals::Instance->Initialize();
+    SPDLOG_INFO("[Web Debug] Initialize() done");
+    SPDLOG_INFO("[Web Debug] Creating CustomMessageManager");
     CustomMessageManager::Instance = new CustomMessageManager();
+    SPDLOG_INFO("[Web Debug] Creating ItemTableManager");
     ItemTableManager::Instance = new ItemTableManager();
+    SPDLOG_INFO("[Web Debug] Creating GameInteractor");
     GameInteractor::Instance = new GameInteractor();
+    SPDLOG_INFO("[Web Debug] Creating SaveManager");
     SaveManager::Instance = new SaveManager();
+    SPDLOG_INFO("[Web Debug] SaveManager created");
 
     std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig();
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
@@ -1472,12 +1553,19 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion4Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion5Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion6Updater>());
+    SPDLOG_INFO("[Web Debug] Running config version updates");
     conf->RunVersionUpdates();
+    SPDLOG_INFO("[Web Debug] Config version updates done");
 
+    SPDLOG_INFO("[Web Debug] SohGui::SetupGuiElements");
     SohGui::SetupGuiElements();
+    SPDLOG_INFO("[Web Debug] SohGui::SetupMenuElements");
     SohGui::SetupMenuElements();
+    SPDLOG_INFO("[Web Debug] SohGui setup done");
 
+    SPDLOG_INFO("[Web Debug] Creating AudioCollection");
     AudioCollection::Instance = new AudioCollection();
+    SPDLOG_INFO("[Web Debug] Creating ActorDB");
     ActorDB::Instance = new ActorDB();
 #ifdef __APPLE__
     SpeechSynthesizer::Instance = new DarwinSpeechSynthesizer();
@@ -1488,27 +1576,42 @@ extern "C" void InitOTR(int argc, char* argv[]) {
 #else
     SpeechSynthesizer::Instance = new SpeechLogger();
 #endif
+    SPDLOG_INFO("[Web Debug] SpeechSynthesizer::Init");
     SpeechSynthesizer::Instance->Init();
+    SPDLOG_INFO("[Web Debug] SpeechSynthesizer done");
 
+#ifndef __EMSCRIPTEN__
     CrowdControl::Instance = new CrowdControl();
     Sail::Instance = new Sail();
+#endif
+    SPDLOG_INFO("[Web Debug] Creating Anchor");
     Anchor::Instance = new Anchor();
+    SPDLOG_INFO("[Web Debug] Anchor created");
 
+    SPDLOG_INFO("[Web Debug] OTRMessage_Init");
     OTRMessage_Init();
+    SPDLOG_INFO("[Web Debug] OTRAudio_Init");
     OTRAudio_Init();
+    SPDLOG_INFO("[Web Debug] OTRExtScanner");
     OTRExtScanner();
+    SPDLOG_INFO("[Web Debug] VanillaItemTable_Init");
     VanillaItemTable_Init();
+    SPDLOG_INFO("[Web Debug] DebugConsole_Init");
     DebugConsole_Init();
 
+    SPDLOG_INFO("[Web Debug] InitMods");
     InitMods();
+    SPDLOG_INFO("[Web Debug] InitMods done");
     ActorDB::AddBuiltInCustomActors();
     // #region SOH [Randomizer] TODO: Remove these and refactor spoiler file handling for randomizer
     CVarClear(CVAR_GENERAL("RandomizerNewFileDropped"));
     CVarClear(CVAR_GENERAL("RandomizerDroppedFile"));
     // #endregion
 
+    SPDLOG_INFO("[Web Debug] RegisterDropHandler");
     Ship::Context::GetInstance()->GetFileDropMgr()->RegisterDropHandler(SoH_HandleConfigDrop);
 
+    SPDLOG_INFO("[Web Debug] RegisterImGuiItemIcons");
     RegisterImGuiItemIcons();
 
     time_t now = time(NULL);
@@ -1520,21 +1623,27 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     }
 
     srand(now);
-#ifdef ENABLE_REMOTE_CONTROL
+#if defined(ENABLE_REMOTE_CONTROL) && !defined(__EMSCRIPTEN__)
     SDLNet_Init();
 #endif
+#ifndef __EMSCRIPTEN__
     if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) {
         CrowdControl::Instance->Enable();
     }
     if (CVarGetInteger(CVAR_REMOTE_SAIL("Enabled"), 0)) {
         Sail::Instance->Enable();
     }
+#endif
     if (CVarGetInteger(CVAR_REMOTE_ANCHOR("Enabled"), 0)) {
         Anchor::Instance->Enable();
     }
+    SPDLOG_INFO("[Web Debug] ShipInit::InitAll");
     ShipInit::InitAll();
+    SPDLOG_INFO("[Web Debug] Rando::StaticData::InitHashMaps");
     Rando::StaticData::InitHashMaps();
+    SPDLOG_INFO("[Web Debug] AddExcludedOptions");
     OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
+    SPDLOG_INFO("[Web Debug] InitOTR complete!");
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {
@@ -1544,16 +1653,18 @@ extern "C" void SaveManager_ThreadPoolWait() {
 extern "C" void DeinitOTR() {
     SaveManager_ThreadPoolWait();
     OTRAudio_Exit();
+#ifndef __EMSCRIPTEN__
     if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) {
         CrowdControl::Instance->Disable();
     }
     if (CVarGetInteger(CVAR_REMOTE_SAIL("Enabled"), 0)) {
         Sail::Instance->Disable();
     }
+#endif
     if (CVarGetInteger(CVAR_REMOTE_ANCHOR("Enabled"), 0)) {
         Anchor::Instance->Disable();
     }
-#ifdef ENABLE_REMOTE_CONTROL
+#if defined(ENABLE_REMOTE_CONTROL) && !defined(__EMSCRIPTEN__)
     SDLNet_Quit();
 #endif
 
@@ -1565,7 +1676,15 @@ extern "C" void DeinitOTR() {
     OTRGlobals::Instance->context = nullptr;
 }
 
-#ifdef _WIN32
+#ifdef __EMSCRIPTEN__
+extern "C" uint64_t GetFrequency() {
+    return 1000; // emscripten_get_now returns milliseconds
+}
+
+extern "C" uint64_t GetPerfCounter() {
+    return (uint64_t)emscripten_get_now();
+}
+#elif defined(_WIN32)
 extern "C" uint64_t GetFrequency() {
     LARGE_INTEGER nFreq;
 
@@ -1729,12 +1848,20 @@ void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
+#ifdef __EMSCRIPTEN__
+    // Process audio inline for Emscripten (no audio thread).
+    // Only process on game tick frames (fraction=1.0), not interpolation re-renders.
+    if (gWebInterpolationFraction >= 1.0f) {
+        OTRAudio_ProcessInline();
+    }
+#else
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         audio.processing = true;
     }
 
     audio.cv_to_thread.notify_one();
+#endif
     std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
     int target_fps = OTRGlobals::Instance->GetInterpolationFPS();
     static int last_fps;
@@ -1744,6 +1871,24 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     int original_fps = 60 / R_UPDATE_RATE;
     auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
 
+#ifdef __EMSCRIPTEN__
+    // On web, the outer loop (RunFrameWeb) calls us once per rAF.
+    // Produce exactly 1 render with the interpolation fraction set by the outer loop.
+    // fraction=1.0 on game-tick frames (identity matrices), 0..1 on intermediate frames.
+    fps = gWebMeasuredFPS;
+
+    if (gWebInterpolationFraction >= 1.0f) {
+        // Game tick frame — use identity (no interpolation)
+        mtx_replacements.emplace_back();
+    } else {
+        // Intermediate frame — interpolate between last and current game state
+        mtx_replacements.push_back(FrameInterpolation_Interpolate(gWebInterpolationFraction));
+    }
+
+    if (wnd != nullptr) {
+        wnd->SetTargetFps(fps);
+    }
+#else
     if (target_fps == 20 || original_fps > target_fps) {
         fps = original_fps;
     }
@@ -1769,6 +1914,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     if (wnd != nullptr) {
         wnd->SetTargetFps(fps);
     }
+#endif
 
     // When the gfx debugger is active, only run with the final mtx
     if (GfxDebuggerIsDebugging()) {
@@ -1781,12 +1927,14 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     last_fps = fps;
     last_update_rate = R_UPDATE_RATE;
 
+#ifndef __EMSCRIPTEN__
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         while (audio.processing) {
             audio.cv_from_thread.wait(Lock);
         }
     }
+#endif
 
     bool curAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 1);
     if (prevAltAssets != curAltAssets) {

@@ -93,8 +93,10 @@ if (NOT TARGET libultraship)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../libultraship ${CMAKE_BINARY_DIR}/libultraship)
 endif()
 
-if (NOT TARGET ZAPDLib)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
+if (NOT BUILD_FOR_WEB)
+    if (NOT TARGET ZAPDLib)
+        add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
+    endif()
 endif()
 
 set(PROJECT_NAME soh)
@@ -156,6 +158,13 @@ else()
     list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/(Darwin|SAPI)")
 endif()
 
+# For Emscripten, exclude extractor and add web sources
+if(BUILD_FOR_WEB)
+    list(FILTER soh__ EXCLUDE REGEX "soh/Extractor/")
+    list(FILTER soh__ EXCLUDE REGEX "soh/Network/CrowdControl/")
+    list(FILTER soh__ EXCLUDE REGEX "soh/Network/Sail/")
+endif()
+
 find_library(ESPEAK espeak-ng)
 if (NOT ESPEAK)
     list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/ESpeak")
@@ -164,7 +173,7 @@ endif()
 # soh/Extractor {{{
 list(FILTER ship__ EXCLUDE REGEX "soh/Extractor/*")
 
-if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
+if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS" AND NOT BUILD_FOR_WEB)
     file(GLOB_RECURSE soh__Extractor RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
         "soh/Extractor/*.c"
         "soh/Extractor/*.cpp"
@@ -254,6 +263,13 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	OUTPUT_NAME "soh.elf"
 	)
 endif()
+
+if(BUILD_FOR_WEB)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        OUTPUT_NAME "soh"
+        SUFFIX ".html"
+    )
+endif()
 ################################################################################
 # MSVC runtime library
 ################################################################################
@@ -294,18 +310,23 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(dr_libs)
 
-find_package(SDL2)
-set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
+if(NOT BUILD_FOR_WEB)
+    find_package(SDL2)
+    set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
-if (BUILD_REMOTE_CONTROL)
-    find_package(SDL2_net)
+    if (BUILD_REMOTE_CONTROL)
+        find_package(SDL2_net)
 
-    if(NOT SDL2_net_FOUND)
-        message(STATUS "SDL2_net not found (it's possible the version installed is too old). Disabling BUILD_REMOTE_CONTROL.")
-        set(BUILD_REMOTE_CONTROL 0)
-    else()
-        set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+        if(NOT SDL2_net_FOUND)
+            message(STATUS "SDL2_net not found (it's possible the version installed is too old). Disabling BUILD_REMOTE_CONTROL.")
+            set(BUILD_REMOTE_CONTROL 0)
+        else()
+            set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+        endif()
     endif()
+else()
+    set(SDL2-INCLUDE "")
+    set(SDL2-NET-INCLUDE "")
 endif()
 
 if (ESPEAK)
@@ -405,6 +426,17 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
         SPDLOG_ACTIVE_LEVEL=${SPDLOG_MIN_CUTOFF}
         LOG_LEVEL_GAME_PRINTS=${SPDLOG_LEVEL_OFF}
 	)
+endif()
+
+if(BUILD_FOR_WEB)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE
+        __EMSCRIPTEN__
+        ENABLE_OPENGL
+        USE_OPENGLES
+        F3DEX_GBI_2
+        SPDLOG_ACTIVE_LEVEL=${SPDLOG_MIN_CUTOFF}
+        LOG_LEVEL_GAME_PRINTS=${SPDLOG_LEVEL_OFF}
+    )
 endif()
 ################################################################################
 # Compile and link options
@@ -557,37 +589,80 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             >
         )
     else()
-        if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
-		set(CPU_OPTION -msse2 -mfpmath=sse)
+        if(BUILD_FOR_WEB)
+            # Emscripten-specific compile options
+            target_compile_options(${PROJECT_NAME} PRIVATE
+                -w
+                -Wno-c++11-narrowing
+                -Wno-narrowing
+                -sUSE_SDL=2
+                -sUSE_ZLIB=1
+                -sUSE_OGG=1
+                -sUSE_VORBIS=1
+                $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
+                $<$<COMPILE_LANGUAGE:C>:
+                    -Wno-implicit-function-declaration
+                    -Wno-incompatible-pointer-types
+                    -Wno-int-conversion
+                >
+            )
+
+            # Opus/Vorbis audio decoding is stubbed out on web builds
+            # (Opus decoded to silence, Vorbis via emscripten port)
+
+            target_link_options(${PROJECT_NAME} PRIVATE
+                -sUSE_SDL=2
+                -sUSE_ZLIB=1
+                -sUSE_OGG=1
+                -sUSE_VORBIS=1
+                -sWASM=1
+                -sASSERTIONS=1
+                -sALLOW_MEMORY_GROWTH=1
+                -sINITIAL_MEMORY=268435456
+                -sSTACK_SIZE=5242880
+                -sMAX_WEBGL_VERSION=2
+                -sMIN_WEBGL_VERSION=2
+                -sFULL_ES2=1
+                -sFORCE_FILESYSTEM=1
+                -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,FS,allocateUTF8
+                -sEXPORTED_FUNCTIONS=_main,_web_otr_loaded,_web_get_otr_status,_web_save_to_idb,_web_fs_init,_malloc,_free
+                -lidbfs.js
+                -lwebsocket.js
+                --shell-file=${CMAKE_CURRENT_SOURCE_DIR}/soh/web/shell.html
+            )
+        else()
+            if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+                set(CPU_OPTION -msse2 -mfpmath=sse)
+            endif()
+
+            target_compile_options(${PROJECT_NAME} PRIVATE
+                -Wall -Wextra -Wno-error
+                -Wformat-security
+                -Wno-unused-parameter
+                -Wno-unused-function
+                -Wno-unused-variable
+                -Wno-missing-field-initializers
+                -Wno-parentheses
+                -Wno-narrowing
+                -Wno-missing-braces
+                $<$<COMPILE_LANGUAGE:C>:
+                    -Werror-implicit-function-declaration
+                    -Wno-implicit-int
+                    -Wno-incompatible-pointer-types
+                    -Wno-int-conversion
+                >
+                $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
+                $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+                -pthread
+                ${CPU_OPTION}
+            )
+
+            target_link_options(${PROJECT_NAME} PRIVATE
+                -pthread
+                    #-fsanitize=address
+                -Wl,-export-dynamic
+            )
         endif()
-
-        target_compile_options(${PROJECT_NAME} PRIVATE
-            -Wall -Wextra -Wno-error
-            -Wformat-security
-            -Wno-unused-parameter
-            -Wno-unused-function
-            -Wno-unused-variable
-            -Wno-missing-field-initializers
-            -Wno-parentheses
-            -Wno-narrowing
-            -Wno-missing-braces
-            $<$<COMPILE_LANGUAGE:C>:
-                -Werror-implicit-function-declaration
-                -Wno-implicit-int
-                -Wno-incompatible-pointer-types
-                -Wno-int-conversion
-            >
-            $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
-            $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
-            -pthread
-	    ${CPU_OPTION}
-        )
-
-        target_link_options(${PROJECT_NAME} PRIVATE
-            -pthread
-				#-fsanitize=address
-            -Wl,-export-dynamic
-        )
     endif()
 endif()
 ################################################################################
@@ -601,7 +676,7 @@ if (CMAKE_GENERATOR MATCHES "Visual Studio")
     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/xml ${CMAKE_BINARY_DIR}/soh/assets/xml
     )
 endif()
-if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
+if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS" AND NOT BUILD_FOR_WEB)
     add_custom_command(
 		TARGET ${PROJECT_NAME}
 		POST_BUILD
@@ -618,7 +693,7 @@ endif()
 add_dependencies(${PROJECT_NAME}
     libultraship
 )
-if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
+if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS" AND NOT BUILD_FOR_WEB)
 add_dependencies(${PROJECT_NAME}
     ZAPDLib
 )
@@ -690,6 +765,11 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
     target_include_directories(${PROJECT_NAME} PRIVATE
         ${DEVKITPRO}/portlibs/wiiu/include/
     )
+elseif(BUILD_FOR_WEB)
+    # Emscripten provides SDL2 and other libraries as ports
+    set(ADDITIONAL_LIBRARY_DEPENDENCIES
+        "libultraship;"
+    )
 else()
     find_package(SDL2)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -715,7 +795,7 @@ else()
 	)
 endif()
 
-if(NOT CMAKE_SYSTEM_NAME MATCHES "Darwin|NintendoSwitch|CafeOS")
+if(NOT CMAKE_SYSTEM_NAME MATCHES "Darwin|NintendoSwitch|CafeOS" AND NOT BUILD_FOR_WEB)
 INSTALL(TARGETS soh DESTINATION . COMPONENT ship)
 endif()
 
@@ -724,8 +804,10 @@ INSTALL(FILES $<TARGET_PDB_FILE:soh> DESTINATION ./debug COMPONENT ship)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/soh/soh.o2r DESTINATION . COMPONENT ship)
 endif()
 
-find_program(CURL NAMES curl DOC "Path to the curl program.  Used to download files.")
-execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
+if(NOT BUILD_FOR_WEB)
+    find_program(CURL NAMES curl DOC "Path to the curl program.  Used to download files.")
+    execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
+endif()
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/macosx/Info.plist.in ${CMAKE_BINARY_DIR}/macosx/Info.plist @ONLY)
@@ -741,6 +823,8 @@ if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
         add_library(pathconf OBJECT platform/pathconf.c)
     endif()
     target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}" $<TARGET_OBJECTS:pathconf> )
+elseif(BUILD_FOR_WEB)
+    target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 else()
     target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 endif()

@@ -6,6 +6,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#include <emscripten/html5.h>
+#endif
+
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/OTRGlobals.h"
 #include "libultraship/bridge.h"
@@ -515,10 +520,109 @@ static void RunFrame() {
     exit(0);
 }
 
+
+#ifdef __EMSCRIPTEN__
+// OoT game logic runs at 20fps (R_UPDATE_RATE=3, 60/3=20).
+// rAF fires at display refresh rate. We accumulate time and only
+// step game logic when a full game tick has elapsed.
+//
+// Pattern from sm64coopdx:
+// 1. Graph_ProcessGfxCommands (inside RunFrame) is short-circuited on web
+//    to render 1 frame with identity matrices and return immediately.
+// 2. Every rAF, we re-render the last display list with an interpolation
+//    delta_frac that smoothly goes 0→1 between game ticks.
+#define OOT_GAME_HZ 20
+static const double sGameTickTime = 1.0 / (double)OOT_GAME_HZ;
+static double sLastTickTime = 0;
+static Gfx* sLastDisplayList = NULL;
+static bool sGameTickReady = false;
+
+// Measured rAF rate — fed to GetInterpolationFPS so SoH knows the display rate.
+static double sRafTimes[10];
+static int sRafTimeIndex = 0;
+static int sRafTimeCount = 0;
+uint32_t gWebMeasuredFPS = 60; // exported to OTRGlobals.cpp
+
+// Interpolation fraction [0..1] within current game tick.
+// Set by RunFrameWeb before each Graph_ProcessGfxCommands call.
+float gWebInterpolationFraction = 1.0f;
+
+static void RunFrameWeb(void) {
+    double now = emscripten_get_now() / 1000.0;
+
+    // Measure actual rAF rate from recent frame times
+    sRafTimes[sRafTimeIndex] = now;
+    sRafTimeIndex = (sRafTimeIndex + 1) % 10;
+    if (sRafTimeCount < 10) sRafTimeCount++;
+    if (sRafTimeCount >= 2) {
+        int oldest = (sRafTimeIndex - sRafTimeCount + 10) % 10;
+        double span = now - sRafTimes[oldest];
+        if (span > 0.0) {
+            uint32_t measured = (uint32_t)((sRafTimeCount - 1) / span + 0.5);
+            if (measured >= 20 && measured <= 240) {
+                gWebMeasuredFPS = measured;
+            }
+        }
+    }
+
+    if (sLastTickTime == 0) {
+        sLastTickTime = now;
+    }
+
+    double elapsed = now - sLastTickTime;
+
+    // Step 1: Run game logic at 20Hz when enough time has accumulated.
+    // Graph_ProcessGfxCommands inside RunFrame is short-circuited on web
+    // to render 1 frame with identity and return (like coopdx's
+    // produce_interpolation_frames_and_delay on web).
+    if (elapsed >= sGameTickTime) {
+        int ticks = (int)(elapsed / sGameTickTime);
+        if (ticks > 2) {
+            ticks = 2;
+        }
+
+        for (int i = 0; i < ticks; i++) {
+            gWebInterpolationFraction = 1.0f;
+            RunFrame();
+        }
+
+        sLastDisplayList = runFrameContext.gfxCtx.workBuffer;
+
+        sLastTickTime += ticks * sGameTickTime;
+        if (now - sLastTickTime > sGameTickTime) {
+            sLastTickTime = now;
+        }
+
+        sGameTickReady = true;
+        // Recalculate elapsed after advancing tick time
+        elapsed = now - sLastTickTime;
+    }
+
+    // Step 2: Render an interpolation frame every rAF call.
+    // delta_frac goes from 0 (just after tick) to ~1 (just before next tick).
+    // This smoothly interpolates between the previous and current game state.
+    if (sGameTickReady && sLastDisplayList != NULL) {
+        float delta_frac = (float)(elapsed / sGameTickTime);
+        if (delta_frac < 0.0f) delta_frac = 0.0f;
+        if (delta_frac > 1.0f) delta_frac = 1.0f;
+
+        gWebInterpolationFraction = delta_frac;
+        Graph_ProcessGfxCommands(sLastDisplayList);
+    }
+}
+#endif
+
 void Graph_ThreadEntry(void* arg0) {
+#ifdef __EMSCRIPTEN__
+    // Use rAF (fps=0) for smooth rendering, throttle game logic to 20fps internally.
+    // Between game ticks, re-render with interpolation for visual smoothness.
+    emscripten_set_main_loop(RunFrameWeb, 0, 0);
+    return;
+#else
     while (WindowIsRunning()) {
         RunFrame();
     }
+#endif
 }
 
 void* Graph_Alloc(GraphicsContext* gfxCtx, size_t size) {

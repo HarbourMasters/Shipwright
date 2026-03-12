@@ -310,16 +310,28 @@ ResourceFactoryXMLAudioSampleV0::ReadResource(std::shared_ptr<Ship::File> file,
             drwav_read_pcm_frames_s16(&wav, numFrames, (int16_t*)audioSample->sample.sampleAddr);
             return audioSample;
         } else if (strcmp(customFormatStr, "mp3") == 0) {
+#ifdef __EMSCRIPTEN__
+            Mp3DecoderWorker(audioSample, sampleFile);
+#else
             std::thread fileDecoderThread = std::thread(Mp3DecoderWorker, audioSample, sampleFile);
             fileDecoderThread.detach();
+#endif
             return audioSample;
         } else if (strcmp(customFormatStr, "ogg") == 0) {
+#ifdef __EMSCRIPTEN__
+            OggDecoderWorker(audioSample, sampleFile, initData);
+#else
             std::thread fileDecoderThread = std::thread(OggDecoderWorker, audioSample, sampleFile, initData);
             fileDecoderThread.detach();
+#endif
             return audioSample;
         } else if (strcmp(customFormatStr, "flac") == 0) {
+#ifdef __EMSCRIPTEN__
+            FlacDecoderWorker(audioSample, sampleFile);
+#else
             std::thread fileDecoderThread = std::thread(FlacDecoderWorker, audioSample, sampleFile);
             fileDecoderThread.detach();
+#endif
             return audioSample;
         }
     }

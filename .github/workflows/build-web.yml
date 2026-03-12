@@ -1,0 +1,90 @@
+name: Build Web (Emscripten) & Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ develop, feature/emscripten-web-port ]
+  pull_request:
+    branches: [ develop ]
+  workflow_dispatch:
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages-${{ github.ref }}"
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-web:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential git python3 cmake ninja-build \
+            libglew-dev libsdl2-dev libz-dev zip pkg-config
+
+      - name: Setup Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 3.1.64
+
+      - name: Cache Emscripten system libs
+        uses: actions/cache@v4
+        with:
+          path: ~/.emscripten_cache
+          key: emsdk-3.1.64-${{ runner.os }}
+
+      - name: Cache CMake build objects
+        uses: actions/cache@v4
+        with:
+          path: build-web
+          key: build-web-${{ runner.os }}-${{ hashFiles('soh/**', 'libultraship/**', 'CMakeLists.txt', 'soh/CMakeLists.txt') }}
+          restore-keys: |
+            build-web-${{ runner.os }}-
+
+      - name: Verify Emscripten
+        run: emcc --version
+
+      - name: Configure CMake
+        run: |
+          emcmake cmake -B build-web -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_FLAGS="-O1" \
+            -DCMAKE_CXX_FLAGS="-O1"
+
+      - name: Build for web
+        run: |
+          emmake cmake --build build-web --parallel $(nproc)
+
+      - name: Prepare Pages artifact
+        run: |
+          mkdir -p _site
+          cp build-web/soh/soh.html _site/index.html
+          cp build-web/soh/soh.js _site/
+          cp build-web/soh/soh.wasm _site/
+          cp build-web/soh/soh.data _site/ 2>/dev/null || true
+
+      - name: Upload Pages artifact
+        if: github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    needs: build-web
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

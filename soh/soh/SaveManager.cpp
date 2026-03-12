@@ -127,7 +127,9 @@ SaveManager::SaveManager() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>(
         [this](uint32_t fileNum) { ThreadPoolWait(); });
 
+#ifndef __EMSCRIPTEN__
     smThreadPool = std::make_shared<BS::thread_pool>(1);
+#endif
 
     for (SaveFileMetaInfo& info : fileMetaInfo) {
         info.valid = false;
@@ -1221,7 +1223,11 @@ void SaveManager::SaveSection(int fileNum, int sectionID, bool threaded) {
     }
     auto saveContext = new SaveContext;
     memcpy(saveContext, &gSaveContext, sizeof(gSaveContext));
-    if (threaded) {
+    if (threaded
+#ifdef __EMSCRIPTEN__
+        && false
+#endif
+    ) {
         smThreadPool->detach_task(std::bind(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, sectionID));
     } else {
         SaveFileThreaded(fileNum, saveContext, sectionID);

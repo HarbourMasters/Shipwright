@@ -3509,7 +3509,11 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
         randoThread.join();
     }
     if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0) {
+#ifdef __EMSCRIPTEN__
+        GenerateRandomizerImgui(seed);
+#else
         randoThread = std::thread(&GenerateRandomizerImgui, seed);
+#endif
 
         return true;
     }
