@@ -591,7 +591,11 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
     else()
         if(BUILD_FOR_WEB)
             # Emscripten-specific compile options
+            # Emscripten port flags must be in compile options too so
+            # the compiler can find port headers (ogg/ogg.h, vorbis/, etc.)
             target_compile_options(${PROJECT_NAME} PRIVATE
+                -sUSE_OGG=1
+                -sUSE_VORBIS=1
                 -w
                 -Wno-c++11-narrowing
                 -Wno-narrowing
