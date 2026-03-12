@@ -16,9 +16,9 @@ iQue uses a custom 2-byte encoding for Chinese characters:
 
 ### Font Architecture
 
-Chinese character textures come from two sources:
-- **1131 characters** reuse existing kanji textures from the base ROM (`gMsgKanji*` in `nes_font_static`)
-- **1030 characters** use custom-rendered textures (`gMsgCharChn*` in `chinese_font/`), generated with Source Han Sans SC
+All 1770 Chinese character textures are extracted from the iQue ROM's `nes_font_static`:
+- **1131 characters** share the same glyphs as existing kanji textures in the base ROM (`gMsgKanji*`)
+- **1030 characters** are unique to the iQue ROM (`gMsgCharChn*` in `chinese_font.h`, pointing to `nes_font_static/gMsgChar*` OTR paths)
 
 The mapping is defined in `soh/src/code/z_kanfont_chinese_tbl.inc` (2161 entries).
 
@@ -54,6 +54,5 @@ Output: `ique_selective.o2r` (~680KB, 2010 resources), placed in the `mods/` fol
 | `soh/src/code/z_message_PAL.c` | `Message_DecodeCHI()` — Chinese message decoder |
 | `soh/src/code/z_kanfont.c` | `Font_LoadCharChinese()` — loads Chinese character textures from OTR |
 | `soh/src/code/z_kanfont_chinese_tbl.inc` | Character code → OTR texture path mapping table |
-| `soh/assets/textures/chinese_font/chinese_font.h` | OTR path macro definitions |
-| `soh/assets/custom/textures/chinese_font/*.i4.png` | 1030 custom font textures (Source Han Sans SC) |
+| `soh/assets/textures/chinese_font/chinese_font.h` | OTR path macros (pointing to iQue ROM `nes_font_static` textures) |
 | `soh/assets/xml/IQUE_CN_SEL/` | Selective extraction XML configs for iQue ROM |
