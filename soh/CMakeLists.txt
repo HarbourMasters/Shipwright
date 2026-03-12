@@ -595,10 +595,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
                 -w
                 -Wno-c++11-narrowing
                 -Wno-narrowing
-                -sUSE_SDL=2
-                -sUSE_ZLIB=1
-                -sUSE_OGG=1
-                -sUSE_VORBIS=1
                 $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
                 $<$<COMPILE_LANGUAGE:C>:
                     -Wno-implicit-function-declaration

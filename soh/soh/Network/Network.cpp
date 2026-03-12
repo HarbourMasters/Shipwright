@@ -10,10 +10,16 @@ void Network::Enable(const char* host, uint16_t port) {
         return;
     }
 
-    // Build WebSocket URL from host:port
-    // For PartyKit: wss://soh-anchor.username.partykit.dev/party/room-name
-    // For local dev: ws://localhost:1999/party/default
-    std::string url = std::string("ws://") + host + ":" + std::to_string(port);
+    // Build WebSocket URL from host:port.
+    // If host already contains a scheme (ws:// or wss://), use as-is with port.
+    // Otherwise, default to wss:// for security (browsers block mixed content).
+    std::string hostStr(host);
+    std::string url;
+    if (hostStr.find("ws://") == 0 || hostStr.find("wss://") == 0) {
+        url = hostStr + ":" + std::to_string(port);
+    } else {
+        url = std::string("wss://") + host + ":" + std::to_string(port);
+    }
     EnableWebSocket(url);
 #elif defined(ENABLE_REMOTE_CONTROL)
     if (isEnabled) {

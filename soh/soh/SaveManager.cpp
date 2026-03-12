@@ -1223,15 +1223,16 @@ void SaveManager::SaveSection(int fileNum, int sectionID, bool threaded) {
     }
     auto saveContext = new SaveContext;
     memcpy(saveContext, &gSaveContext, sizeof(gSaveContext));
-    if (threaded
 #ifdef __EMSCRIPTEN__
-        && false
-#endif
-    ) {
+    // No thread pool on web — always save synchronously
+    SaveFileThreaded(fileNum, saveContext, sectionID);
+#else
+    if (threaded) {
         smThreadPool->detach_task(std::bind(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, sectionID));
     } else {
         SaveFileThreaded(fileNum, saveContext, sectionID);
     }
+#endif
 }
 
 void SaveManager::SaveFile(int fileNum) {

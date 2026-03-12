@@ -264,7 +264,33 @@
       }
     }
 
+    function validateRequiredFiles() {
+      // Check that at least soh.o2r and one oot archive exist in the virtual FS
+      try {
+        var hasSoh = false;
+        var hasOot = false;
+        var files = FS.readdir('/');
+        for (var i = 0; i < files.length; i++) {
+          var f = files[i].toLowerCase();
+          if (f === 'soh.o2r') hasSoh = true;
+          if (f === 'oot.o2r' || f === 'oot-mq.o2r') hasOot = true;
+        }
+        if (!hasSoh) return 'Missing soh.o2r — please upload the SoH archive.';
+        if (!hasOot) return 'Missing oot.o2r — please upload an OoT archive.';
+        return null;
+      } catch (e) {
+        return null; // FS not ready, let engine handle it
+      }
+    }
+
     function finalizeOtrLoad() {
+      var error = validateRequiredFiles();
+      if (error) {
+        showError(error);
+        hideProgress();
+        return;
+      }
+
       otrFilesReady = true;
       setStatus('Game files loaded. Starting...');
       setProgress(100);

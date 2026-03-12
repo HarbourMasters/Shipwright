@@ -277,21 +277,21 @@ std::string portArchivePath = "";
 static bool sohArchiveVersionMatch = false;
 
 OTRGlobals::OTRGlobals() {
-    SPDLOG_INFO("[Web Debug] OTRGlobals constructor start");
+    SPDLOG_DEBUG("[Web Debug] OTRGlobals constructor start");
     context = Ship::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
 
-    SPDLOG_INFO("[Web Debug] LocateFileAcrossAppDirs soh.o2r");
+    SPDLOG_DEBUG("[Web Debug] LocateFileAcrossAppDirs soh.o2r");
     portArchivePath = Ship::Context::LocateFileAcrossAppDirs("soh.o2r");
-    SPDLOG_INFO("[Web Debug] portArchivePath = {}", portArchivePath);
+    SPDLOG_DEBUG("[Web Debug] portArchivePath = {}", portArchivePath);
     OTRVersion portArchiveVersion = DetectOTRVersion("soh.o2r", false);
     sohArchiveVersionMatch = portArchiveVersion.major == gBuildVersionMajor &&
                              portArchiveVersion.minor == gBuildVersionMinor &&
                              portArchiveVersion.patch == gBuildVersionPatch;
-    SPDLOG_INFO("[Web Debug] sohArchiveVersionMatch = {}", sohArchiveVersionMatch);
+    SPDLOG_DEBUG("[Web Debug] sohArchiveVersionMatch = {}", sohArchiveVersionMatch);
 
-    SPDLOG_INFO("[Web Debug] InitConfiguration");
+    SPDLOG_DEBUG("[Web Debug] InitConfiguration");
     context->InitConfiguration();
-    SPDLOG_INFO("[Web Debug] InitConsoleVariables");
+    SPDLOG_DEBUG("[Web Debug] InitConsoleVariables");
     context->InitConsoleVariables();
 
     auto controlDeck = std::make_shared<LUS::ControlDeck>(std::vector<CONTROLLERBUTTONS_T>({
@@ -306,21 +306,21 @@ OTRGlobals::OTRGlobals() {
         BTN_CUSTOM_OCARINA_PITCH_UP,
         BTN_CUSTOM_OCARINA_PITCH_DOWN,
     }));
-    SPDLOG_INFO("[Web Debug] InitControlDeck");
+    SPDLOG_DEBUG("[Web Debug] InitControlDeck");
     context->InitControlDeck(controlDeck);
-    SPDLOG_INFO("[Web Debug] InitResourceManager");
+    SPDLOG_DEBUG("[Web Debug] InitResourceManager");
     context->InitResourceManager({ portArchivePath }, {}, 3, true);
-    SPDLOG_INFO("[Web Debug] InitConsole");
+    SPDLOG_DEBUG("[Web Debug] InitConsole");
     context->InitConsole();
 
     auto sohInputEditorWindow =
         std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Configure Controller");
     sohFast3dWindow =
         std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({ sohInputEditorWindow }));
-    SPDLOG_INFO("[Web Debug] InitWindow");
+    SPDLOG_DEBUG("[Web Debug] InitWindow");
     context->InitWindow(sohFast3dWindow);
 
-    SPDLOG_INFO("[Web Debug] SetupMenu");
+    SPDLOG_DEBUG("[Web Debug] SetupMenu");
     SohGui::SetupMenu();
 
     if (sohArchiveVersionMatch) {
@@ -790,7 +790,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
 }
 
 void OTRGlobals::Initialize() {
-    SPDLOG_INFO("[Web Debug] Initialize: loading oot archives");
+    SPDLOG_DEBUG("[Web Debug] Initialize: loading oot archives");
     std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName);
     if (std::filesystem::exists(mqPath)) {
         context->GetResourceManager()->GetArchiveManager()->AddArchive(mqPath);
@@ -799,7 +799,7 @@ void OTRGlobals::Initialize() {
     if (std::filesystem::exists(ootPath)) {
         context->GetResourceManager()->GetArchiveManager()->AddArchive(ootPath);
     }
-    SPDLOG_INFO("[Web Debug] Initialize: archives loaded");
+    SPDLOG_DEBUG("[Web Debug] Initialize: archives loaded");
 
     std::unordered_set<uint32_t> ValidHashes = {
         OOT_PAL_MQ,     OOT_NTSC_JP_MQ, OOT_NTSC_US_MQ, OOT_PAL_GC_MQ_DBG, OOT_NTSC_US_10,
@@ -812,35 +812,35 @@ void OTRGlobals::Initialize() {
 #else
     auto defaultLogLevel = spdlog::level::info;
 #endif
-    SPDLOG_INFO("[Web Debug] Initialize: InitConfiguration");
+    SPDLOG_DEBUG("[Web Debug] Initialize: InitConfiguration");
     context->InitConfiguration();
-    SPDLOG_INFO("[Web Debug] Initialize: InitConsoleVariables");
+    SPDLOG_DEBUG("[Web Debug] Initialize: InitConsoleVariables");
     context->InitConsoleVariables();
     auto logLevel =
         static_cast<spdlog::level::level_enum>(CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), defaultLogLevel));
-    SPDLOG_INFO("[Web Debug] Initialize: InitLogging");
+    SPDLOG_DEBUG("[Web Debug] Initialize: InitLogging");
     context->InitLogging(logLevel, logLevel);
     Ship::Context::GetInstance()->GetLogger()->set_pattern("[%H:%M:%S.%e] [%s:%#] [%l] %v");
 
-    SPDLOG_INFO("[Web Debug] Initialize: InitGfxDebugger");
+    SPDLOG_DEBUG("[Web Debug] Initialize: InitGfxDebugger");
     context->InitGfxDebugger();
-    SPDLOG_INFO("[Web Debug] Initialize: InitFileDropMgr");
+    SPDLOG_DEBUG("[Web Debug] Initialize: InitFileDropMgr");
     context->InitFileDropMgr();
 
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
     prevAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 1);
     context->GetResourceManager()->SetAltAssetsEnabled(prevAltAssets);
 
-    SPDLOG_INFO("[Web Debug] Initialize: InitCrashHandler");
+    SPDLOG_DEBUG("[Web Debug] Initialize: InitCrashHandler");
     context->InitCrashHandler();
 
     context->GetWindow()->SetAutoCaptureMouse(CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) &&
                                               CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1));
     context->GetWindow()->SetForceCursorVisibility(CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
 
-    SPDLOG_INFO("[Web Debug] Initialize: InitAudio");
+    SPDLOG_DEBUG("[Web Debug] Initialize: InitAudio");
     context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
-    SPDLOG_INFO("[Web Debug] Initialize: InitAudio done");
+    SPDLOG_DEBUG("[Web Debug] Initialize: InitAudio done");
 
     SPDLOG_INFO("Starting Ship of Harkinian version {} (Branch: {} | Commit: {})", (char*)gBuildVersion,
                 (char*)gGitBranch, (char*)gGitCommitHash);
@@ -1526,25 +1526,25 @@ bool VerifyArchiveVersion(OTRVersion version) {
 }
 
 extern "C" void InitOTR(int argc, char* argv[]) {
-    SPDLOG_INFO("[Web Debug] InitOTR start");
+    SPDLOG_DEBUG("[Web Debug] InitOTR start");
     OTRGlobals::Instance = new OTRGlobals();
-    SPDLOG_INFO("[Web Debug] OTRGlobals constructed");
+    SPDLOG_DEBUG("[Web Debug] OTRGlobals constructed");
 #ifndef __EMSCRIPTEN__
     OTRGlobals::Instance->RunExtract(argc, argv);
 #endif
 
-    SPDLOG_INFO("[Web Debug] Calling Initialize()");
+    SPDLOG_DEBUG("[Web Debug] Calling Initialize()");
     OTRGlobals::Instance->Initialize();
-    SPDLOG_INFO("[Web Debug] Initialize() done");
-    SPDLOG_INFO("[Web Debug] Creating CustomMessageManager");
+    SPDLOG_DEBUG("[Web Debug] Initialize() done");
+    SPDLOG_DEBUG("[Web Debug] Creating CustomMessageManager");
     CustomMessageManager::Instance = new CustomMessageManager();
-    SPDLOG_INFO("[Web Debug] Creating ItemTableManager");
+    SPDLOG_DEBUG("[Web Debug] Creating ItemTableManager");
     ItemTableManager::Instance = new ItemTableManager();
-    SPDLOG_INFO("[Web Debug] Creating GameInteractor");
+    SPDLOG_DEBUG("[Web Debug] Creating GameInteractor");
     GameInteractor::Instance = new GameInteractor();
-    SPDLOG_INFO("[Web Debug] Creating SaveManager");
+    SPDLOG_DEBUG("[Web Debug] Creating SaveManager");
     SaveManager::Instance = new SaveManager();
-    SPDLOG_INFO("[Web Debug] SaveManager created");
+    SPDLOG_DEBUG("[Web Debug] SaveManager created");
 
     std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig();
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
@@ -1553,19 +1553,19 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion4Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion5Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion6Updater>());
-    SPDLOG_INFO("[Web Debug] Running config version updates");
+    SPDLOG_DEBUG("[Web Debug] Running config version updates");
     conf->RunVersionUpdates();
-    SPDLOG_INFO("[Web Debug] Config version updates done");
+    SPDLOG_DEBUG("[Web Debug] Config version updates done");
 
-    SPDLOG_INFO("[Web Debug] SohGui::SetupGuiElements");
+    SPDLOG_DEBUG("[Web Debug] SohGui::SetupGuiElements");
     SohGui::SetupGuiElements();
-    SPDLOG_INFO("[Web Debug] SohGui::SetupMenuElements");
+    SPDLOG_DEBUG("[Web Debug] SohGui::SetupMenuElements");
     SohGui::SetupMenuElements();
-    SPDLOG_INFO("[Web Debug] SohGui setup done");
+    SPDLOG_DEBUG("[Web Debug] SohGui setup done");
 
-    SPDLOG_INFO("[Web Debug] Creating AudioCollection");
+    SPDLOG_DEBUG("[Web Debug] Creating AudioCollection");
     AudioCollection::Instance = new AudioCollection();
-    SPDLOG_INFO("[Web Debug] Creating ActorDB");
+    SPDLOG_DEBUG("[Web Debug] Creating ActorDB");
     ActorDB::Instance = new ActorDB();
 #ifdef __APPLE__
     SpeechSynthesizer::Instance = new DarwinSpeechSynthesizer();
@@ -1576,42 +1576,42 @@ extern "C" void InitOTR(int argc, char* argv[]) {
 #else
     SpeechSynthesizer::Instance = new SpeechLogger();
 #endif
-    SPDLOG_INFO("[Web Debug] SpeechSynthesizer::Init");
+    SPDLOG_DEBUG("[Web Debug] SpeechSynthesizer::Init");
     SpeechSynthesizer::Instance->Init();
-    SPDLOG_INFO("[Web Debug] SpeechSynthesizer done");
+    SPDLOG_DEBUG("[Web Debug] SpeechSynthesizer done");
 
 #ifndef __EMSCRIPTEN__
     CrowdControl::Instance = new CrowdControl();
     Sail::Instance = new Sail();
 #endif
-    SPDLOG_INFO("[Web Debug] Creating Anchor");
+    SPDLOG_DEBUG("[Web Debug] Creating Anchor");
     Anchor::Instance = new Anchor();
-    SPDLOG_INFO("[Web Debug] Anchor created");
+    SPDLOG_DEBUG("[Web Debug] Anchor created");
 
-    SPDLOG_INFO("[Web Debug] OTRMessage_Init");
+    SPDLOG_DEBUG("[Web Debug] OTRMessage_Init");
     OTRMessage_Init();
-    SPDLOG_INFO("[Web Debug] OTRAudio_Init");
+    SPDLOG_DEBUG("[Web Debug] OTRAudio_Init");
     OTRAudio_Init();
-    SPDLOG_INFO("[Web Debug] OTRExtScanner");
+    SPDLOG_DEBUG("[Web Debug] OTRExtScanner");
     OTRExtScanner();
-    SPDLOG_INFO("[Web Debug] VanillaItemTable_Init");
+    SPDLOG_DEBUG("[Web Debug] VanillaItemTable_Init");
     VanillaItemTable_Init();
-    SPDLOG_INFO("[Web Debug] DebugConsole_Init");
+    SPDLOG_DEBUG("[Web Debug] DebugConsole_Init");
     DebugConsole_Init();
 
-    SPDLOG_INFO("[Web Debug] InitMods");
+    SPDLOG_DEBUG("[Web Debug] InitMods");
     InitMods();
-    SPDLOG_INFO("[Web Debug] InitMods done");
+    SPDLOG_DEBUG("[Web Debug] InitMods done");
     ActorDB::AddBuiltInCustomActors();
     // #region SOH [Randomizer] TODO: Remove these and refactor spoiler file handling for randomizer
     CVarClear(CVAR_GENERAL("RandomizerNewFileDropped"));
     CVarClear(CVAR_GENERAL("RandomizerDroppedFile"));
     // #endregion
 
-    SPDLOG_INFO("[Web Debug] RegisterDropHandler");
+    SPDLOG_DEBUG("[Web Debug] RegisterDropHandler");
     Ship::Context::GetInstance()->GetFileDropMgr()->RegisterDropHandler(SoH_HandleConfigDrop);
 
-    SPDLOG_INFO("[Web Debug] RegisterImGuiItemIcons");
+    SPDLOG_DEBUG("[Web Debug] RegisterImGuiItemIcons");
     RegisterImGuiItemIcons();
 
     time_t now = time(NULL);
@@ -1637,13 +1637,13 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     if (CVarGetInteger(CVAR_REMOTE_ANCHOR("Enabled"), 0)) {
         Anchor::Instance->Enable();
     }
-    SPDLOG_INFO("[Web Debug] ShipInit::InitAll");
+    SPDLOG_DEBUG("[Web Debug] ShipInit::InitAll");
     ShipInit::InitAll();
-    SPDLOG_INFO("[Web Debug] Rando::StaticData::InitHashMaps");
+    SPDLOG_DEBUG("[Web Debug] Rando::StaticData::InitHashMaps");
     Rando::StaticData::InitHashMaps();
-    SPDLOG_INFO("[Web Debug] AddExcludedOptions");
+    SPDLOG_DEBUG("[Web Debug] AddExcludedOptions");
     OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
-    SPDLOG_INFO("[Web Debug] InitOTR complete!");
+    SPDLOG_DEBUG("[Web Debug] InitOTR complete!");
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {
@@ -1678,11 +1678,12 @@ extern "C" void DeinitOTR() {
 
 #ifdef __EMSCRIPTEN__
 extern "C" uint64_t GetFrequency() {
-    return 1000; // emscripten_get_now returns milliseconds
+    return 1000000; // microsecond resolution
 }
 
 extern "C" uint64_t GetPerfCounter() {
-    return (uint64_t)emscripten_get_now();
+    // emscripten_get_now() returns milliseconds as double with sub-ms precision
+    return (uint64_t)(emscripten_get_now() * 1000.0);
 }
 #elif defined(_WIN32)
 extern "C" uint64_t GetFrequency() {

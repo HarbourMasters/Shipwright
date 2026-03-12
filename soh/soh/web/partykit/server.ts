@@ -47,7 +47,7 @@ export default {
       const packet = JSON.parse(message);
 
       // Add sender info if not present
-      if (!packet.clientId) {
+      if (packet.clientId == null) {
         packet.clientId = hashConnectionId(sender.id);
       }
 

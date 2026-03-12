@@ -88,7 +88,8 @@ EM_BOOL WebSocketClient::OnMessage(int eventType, const EmscriptenWebSocketMessa
 EM_BOOL WebSocketClient::OnClose(int eventType, const EmscriptenWebSocketCloseEvent* event, void* userData) {
     auto* self = static_cast<WebSocketClient*>(userData);
     self->mConnected = false;
-    SPDLOG_INFO("[WebSocket] Disconnected (code={}, reason={})", event->code, event->reason);
+    std::string reason = event->reason ? event->reason : "";
+    SPDLOG_INFO("[WebSocket] Disconnected (code={}, reason={})", event->code, reason);
     if (self->mOnDisconnect) {
         self->mOnDisconnect();
     }

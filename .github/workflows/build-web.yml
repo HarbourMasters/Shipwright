@@ -57,9 +57,7 @@ jobs:
       - name: Configure CMake
         run: |
           emcmake cmake -B build-web -G Ninja \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_C_FLAGS="-O1" \
-            -DCMAKE_CXX_FLAGS="-O1"
+            -DCMAKE_BUILD_TYPE=Release
 
       - name: Build for web
         run: |
@@ -76,6 +74,8 @@ jobs:
       - name: Upload Pages artifact
         if: github.event_name == 'push'
         uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
 
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
