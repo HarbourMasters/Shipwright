@@ -33,19 +33,19 @@ static std::unordered_map<RandomizerCheck, Vec3f> sStackedWonderOffsets = {
     { RC_JABU_JABUS_BELLY_MQ_WONDER_BASEMENT_RIGHT_COW_1, { 6.0f, 15.0f, 6.0f } },
     { RC_JABU_JABUS_BELLY_MQ_WONDER_BASEMENT_RIGHT_COW_2, { 12.0f, 0.0f, 0.0f } },
     { RC_JABU_JABUS_BELLY_MQ_WONDER_BASEMENT_RIGHT_COW_3, { -4.0f, -2.0f, 25.0f } },
-                  
+
     { RC_JABU_JABUS_BELLY_MQ_WONDER_BASEMENT_LEFT_COW_1, { -6.0f, -14.0f, 2.0f } },
     { RC_JABU_JABUS_BELLY_MQ_WONDER_BASEMENT_LEFT_COW_2, { 5.0f, 0.0f, -10.0f } },
     { RC_JABU_JABUS_BELLY_MQ_WONDER_BASEMENT_LEFT_COW_3, { 4.0f, -2.0f, 5.0f } },
-                  
+
     { RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_1, { 5.0f, 6.0f, 0.0f } },
     { RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_2, { 0.0f, 0.0f, 0.0f } },
     { RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_3, { 0.0f, 0.0f, 0.0f } },
-                  
+
     { RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_COW_LEFT_1, { -2.0f, 0.0f, 15.0f } },
     { RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_COW_LEFT_2, { 1.0f, -11.0f, -5.0f } },
     { RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_COW_LEFT_3, { 0.0f, -12.0f, 0.0f } },
-                  
+
     { RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_EXPLOSION_1, { -7.5f, 0.0f, -7.5f } },
     { RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_EXPLOSION_2, { -7.5f, 0.0f, 7.5f } },
     { RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_EXPLOSION_3, { 7.5f, 0.0f, 7.5f } },
@@ -552,8 +552,6 @@ void Rando::StaticData::RegisterWonderItemLocations() {
     locationTable[RC_GERUDO_TRAINING_GROUND_MQ_WONDER_EYE_STATUE]               = Location::WonderItem(RC_GERUDO_TRAINING_GROUND_MQ_WONDER_EYE_STATUE,                  RCQUEST_MQ,       RCAREA_GERUDO_TRAINING_GROUND,    SCENE_GERUDO_TRAINING_GROUND,       TWO_ACTOR_PARAMS(4, 4),                 "MQ Wonder Top of Eye Statue",          RHT_WONDER_ITEM_GERUDO_TRAINING_GROUND,     RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GERUDO_TRAINING_GROUND_MQ_WONDER_EYE_STATUE));
     locationTable[RC_GANONS_CASTLE_MQ_WONDER_1]                                 = Location::WonderItem(RC_GANONS_CASTLE_MQ_WONDER_1,                                    RCQUEST_MQ,       RCAREA_GANONS_CASTLE,             SCENE_INSIDE_GANONS_CASTLE,         TWO_ACTOR_PARAMS(1, 5),                 "MQ Wonder Spirit Trial Entrance 1",    RHT_GANONS_CASTLE_WONDER_ITEM,              RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GANONS_CASTLE_MQ_WONDER_1));
     locationTable[RC_GANONS_CASTLE_MQ_WONDER_2]                                 = Location::WonderItem(RC_GANONS_CASTLE_MQ_WONDER_2,                                    RCQUEST_MQ,       RCAREA_GANONS_CASTLE,             SCENE_INSIDE_GANONS_CASTLE,         TWO_ACTOR_PARAMS(1, 4),                 "MQ Wonder Spirit Trial Entrance 2",    RHT_GANONS_CASTLE_WONDER_ITEM,              RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GANONS_CASTLE_MQ_WONDER_2));
-
-
 
     // clang-format on
 }
