@@ -152,7 +152,7 @@ void RegionTable_Init_ThievesHideout() {
                                                    (logic->CanPassEnemy(RE_GERUDO_GUARD) && logic->HasExplosives() && logic->CanUse(RG_BOOMERANG))),
     }, {
         //Exits
-        ENTRANCE(RR_GF_BELOW_CHEST,         logic->CanPassEnemy(RE_GERUDO_GUARD)),
+        ENTRANCE(RR_GF_BELOW_CHEST,               logic->CanPassEnemy(RE_GERUDO_GUARD)),
         ENTRANCE(RR_TH_BREAK_ROOM_LOWER_CORRIDOR, logic->CanPassEnemy(RE_GERUDO_GUARD)),
     });
 
@@ -161,7 +161,7 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_WONDER_BREAK_ROOM_BOTTOM_SKULL, logic->CanUse(RG_FAIRY_BOW)),
     }, {
     //Exits
-        ENTRANCE(RR_TH_BREAK_ROOM, logic->CanPassEnemy(RE_GERUDO_GUARD)),
+        ENTRANCE(RR_TH_BREAK_ROOM,                logic->CanPassEnemy(RE_GERUDO_GUARD)),
         ENTRANCE(RR_TH_BREAK_ROOM_UPPER_CORRIDOR, logic->CanUse(RG_HOOKSHOT)),
     });
 

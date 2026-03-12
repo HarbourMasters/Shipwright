@@ -720,7 +720,7 @@ void RegionTable_Init_ShadowTemple() {
     areaTable[RR_SHADOW_TEMPLE_MQ_THREE_SKULL_JARS] = Region("Shadow Temple MQ Three Skull Jars", SCENE_SHADOW_TEMPLE, {}, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_MQ_FREESTANDING_KEY,  true),
-        LOCATION(RC_MQ_SHADOW_TEMPLE_WONDER_THREE_POTS, logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_WONDER_THREE_POTS, logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_INVISIBLE_MAZE, true),
