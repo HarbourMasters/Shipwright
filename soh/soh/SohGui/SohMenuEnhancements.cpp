@@ -1693,6 +1693,14 @@ void SohMenu::AddMenuEnhancements() {
         })
         .Options(CheckboxOptions().Tooltip(
             "Scales normal enemies Health with their randomized size. *This will NOT affect Bosses!*"));
+    AddWidget(path, "Randomizer Settings", WIDGET_SEPARATOR_TEXT).PreFunc([](WidgetInfo& info) {
+        info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
+    });
+    AddWidget(path, "Include Dogs in Randomizer", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RandomizeDogs"))
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0); })
+        .Options(CheckboxOptions().Tooltip("Dogs will be randomized and can replace enemies."))
+        .Callback([](WidgetInfo& info) { GetSelectedEnemies(); });
     AddWidget(path, "Enemy List", WIDGET_SEPARATOR_TEXT).PreFunc([](WidgetInfo& info) {
         info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
     });
