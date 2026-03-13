@@ -489,13 +489,13 @@ GetItemCategory Item::GetCategory() {
     return category;
 }
 
-Item Item::CustomIcon(void* customIcon_, CustomIconSize iconSize_) {
+Item Item::CustomIcon(const char* customIcon_, CustomIconSize iconSize_) {
     customIcon = customIcon_;
     iconSize = iconSize_;
     return *this;
 }
 
-void* Item::GetCustomIcon() {
+const char* Item::GetCustomIcon() {
     return customIcon;
 }
 

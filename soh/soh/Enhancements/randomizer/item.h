@@ -65,8 +65,8 @@ class Item {
     GetItemCategory GetCategory();
     bool operator==(const Item& right) const;
     bool operator!=(const Item& right) const;
-    Item CustomIcon(void* customIcon_, CustomIconSize iconSize_ = ICON_SIZE_32);
-    void* GetCustomIcon();
+    Item CustomIcon(const char* customIcon_, CustomIconSize iconSize_ = ICON_SIZE_32);
+    const char* GetCustomIcon();
     CustomIconSize GetCustomIconSize();
     bool HasCustomIcon();
 
@@ -85,7 +85,7 @@ class Item {
     uint16_t price;
     bool playthrough = false;
     std::shared_ptr<GetItemEntry> giEntry;
-    void* customIcon = nullptr;
+    const char* customIcon = nullptr;
     CustomIconSize iconSize = ICON_SIZE_32;
 };
 } // namespace Rando

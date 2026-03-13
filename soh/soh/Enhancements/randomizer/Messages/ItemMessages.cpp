@@ -93,7 +93,7 @@ void BuildCustomItemMessage(Player* player, CustomMessage& msg) {
 
 void LoadCustomItemIcon(bool displayAsEnglish) {
     Player* player = GET_PLAYER(gPlayState);
-    void* customIcon = nullptr;
+    const char* customIcon = nullptr;
     CustomIconSize iconSize = ICON_SIZE_32;
     if (player->getItemEntry.objectId != OBJECT_INVALID) {
         RandomizerGet rgid = static_cast<RandomizerGet>(player->getItemEntry.getItemId);
@@ -114,8 +114,7 @@ void LoadCustomItemIcon(bool displayAsEnglish) {
             R_TEXTBOX_ICON_YPOS = (R_TEXTBOX_Y + 10) + 10;
             R_TEXTBOX_ICON_SIZE = 24;
         }
-        memcpy((void*)((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE), customIcon,
-               strlen((char*)customIcon) + 1);
+        strcpy((char*)((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE), customIcon);
         msgCtx->msgBufPos++;
         msgCtx->choiceNum = 1;
     }
