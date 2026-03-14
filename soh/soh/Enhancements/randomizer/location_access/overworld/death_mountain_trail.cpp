@@ -37,7 +37,7 @@ void RegionTable_Init_DeathMountainTrail() {
         //Exits
         ENTRANCE(RR_DEATH_MOUNTAIN_TRAIL,  true),
         ENTRANCE(RR_DEATH_MOUNTAIN_SUMMIT, logic->HasItem(RG_CLIMB) &&
-                                           (logic->IsAdult || ctx->GetTrickOption(RT_DMT_SHIELDLESS_CLIMB) || logic->CanUse(RG_HYLIAN_SHIELD) || logic->CanUse(RG_NAYRUS_LOVE))),
+                                           (logic->IsAdult || ctx->GetTrickOption(RT_DMT_SHIELDLESS_CLIMB) || logic->HasItem(RG_HYLIAN_SHIELD) || logic->CanUse(RG_NAYRUS_LOVE))),
         ENTRANCE(RR_DMT_COW_GROTTO,        AnyAgeTime([]{return logic->BlastOrSmash();})),
     });
 

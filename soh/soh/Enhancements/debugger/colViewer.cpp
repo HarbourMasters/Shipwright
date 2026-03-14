@@ -1,12 +1,10 @@
 #include "colViewer.h"
-#include "../../frame_interpolation.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 
 #include <vector>
 #include <string>
 #include <cmath>
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
@@ -322,7 +320,7 @@ void CreateSphereData() {
 
     size_t vtxStartIndex = sphereVtx.size();
     sphereVtx.reserve(sphereVtx.size() + faces.size() * 3);
-    for (int32_t faceIndex = 0; faceIndex < faces.size(); faceIndex++) {
+    for (size_t faceIndex = 0; faceIndex < faces.size(); faceIndex++) {
         sphereVtx.push_back(sphereVtx[std::get<0>(faces[faceIndex])]);
         sphereVtx.push_back(sphereVtx[std::get<1>(faces[faceIndex])]);
         sphereVtx.push_back(sphereVtx[std::get<2>(faces[faceIndex])]);
@@ -777,7 +775,7 @@ extern "C" void DrawColViewer() {
 
     if ((vtxDl.size() > vtxDlCapacity) || (mtxDl.size() > mtxDlCapacity)) {
         // If the sizes somehow changed between the two draws, we can't continue because we may be using invalid data
-        printf("Error drawing collision, vertex/matrix sizes didn't settle.\n");
+        SPDLOG_WARN("Error drawing collision, vertex/matrix sizes didn't settle.");
         return;
     }
 

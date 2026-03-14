@@ -346,7 +346,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, N64Butt
         if (ImGui::BeginPopup(popupId.c_str())) {
             mInputEditorPopupOpen = true;
             ImGui::Text("Axis Threshold\n\nThe extent to which the joystick\nmust be moved or the trigger\npressed to "
-                        "initiate the assigned\nbutton action.\n\n");
+                        "initiate the assigned\nbutton action.");
 
             auto globalSettings = Ship::Context::GetInstance()->GetControlDeck()->GetGlobalSDLDeviceSettings();
 

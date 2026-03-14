@@ -117,6 +117,8 @@ class Logic {
     bool IsFireLoopLocked();
     bool ReachScarecrow();
     bool ReachDistantScarecrow();
+    bool CanClimbLadder();
+    bool CanClimbHighLadder();
     bool SummonEpona();
     void Reset(bool resetSaveContext = true);
     void SetContext(std::shared_ptr<Context> _ctx);
