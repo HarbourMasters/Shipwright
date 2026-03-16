@@ -3641,6 +3641,17 @@ CheckIdentity Randomizer::IdentifyWonderItem(s32 sceneNum, s32 par1, s32 par2) {
     struct CheckIdentity wonderIdentity;
     uint32_t wonderSceneNum = sceneNum;
 
+    // align oasis trees in colossus between child/adult
+    if (sceneNum == SCENE_DESERT_COLOSSUS && LINK_IS_ADULT) {
+        if (par1 == 1157 && par2 == 2388) {
+            par1 = 1161;
+            par2 = 2383;
+        } else if (par1 == 1114 && par2 == 2580) {
+            par1 = 1113;
+            par2 = 2581;
+        }
+    }
+
     wonderIdentity.randomizerInf = RAND_INF_MAX;
     wonderIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
 

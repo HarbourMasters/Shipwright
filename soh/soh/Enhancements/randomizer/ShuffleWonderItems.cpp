@@ -30,6 +30,9 @@ typedef enum {
 
 // Many wonder items spawn on top of each other, offset position to make them all distinct
 static std::unordered_map<RandomizerCheck, Vec3f> sStackedWonderOffsets = {
+    { RC_COLOSSUS_WONDER_OASIS_TREE_1, { 8.0f, 0.0f, -8.0f } },
+    { RC_COLOSSUS_WONDER_OASIS_TREE_2, { 5.0f, 0.0f, -8.0f } },
+
     { RC_JABU_JABUS_BELLY_MQ_WONDER_BASEMENT_RIGHT_COW_1, { 6.0f, 15.0f, 6.0f } },
     { RC_JABU_JABUS_BELLY_MQ_WONDER_BASEMENT_RIGHT_COW_2, { 12.0f, 0.0f, 0.0f } },
     { RC_JABU_JABUS_BELLY_MQ_WONDER_BASEMENT_RIGHT_COW_3, { -4.0f, -2.0f, 25.0f } },

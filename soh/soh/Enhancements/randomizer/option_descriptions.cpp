@@ -322,7 +322,7 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Overworld - Only shuffle wonder items that are outside of dungeons.\n"
         "\n"
-        "All Crates - Shuffle all wonder items.";
+        "All Wonder Items - Shuffle all wonder items.";
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
                                                     "\n"
                                                     "The fishing pole is required to play the fishing pond minigame.";
