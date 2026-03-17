@@ -950,9 +950,8 @@ void RegisterEnemyRandomizerWidgets() {
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemySizes"), 0);
         })
-        .Options(UIWidgets::CheckboxOptions().Tooltip(
-            "Scales normal enemies Health with their randomized size.\n"
-            "*This will NOT affect Bosses!*"));
+        .Options(UIWidgets::CheckboxOptions().Tooltip("Scales normal enemies Health with their randomized size.\n"
+                                                      "*This will NOT affect Bosses!*"));
 
     SohGui::mSohMenu->AddWidget(path, "Enemy List", WIDGET_SEPARATOR_TEXT).PreFunc([](WidgetInfo& info) {
         info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
