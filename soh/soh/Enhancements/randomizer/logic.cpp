@@ -1099,8 +1099,7 @@ bool Logic::CanHammerRecoilHover(bool needShield) {
 bool Logic::Water3FCentralToHighEmblem() {
     return (IsAdult && (CanUse(RG_HOVER_BOOTS) ||
                         (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && CanUse(RG_BOMB_BAG) && TakeDamage()))) ||
-           (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && CanGroundJump() && CanUse(RG_HOVER_BOOTS)) ||
-           (Get(LOGIC_WATER_SCARECROW) && CanUse(RG_HOOKSHOT));
+                        CanMiddairGroundJump() || (Get(LOGIC_WATER_SCARECROW) && CanUse(RG_HOOKSHOT));
 }
 
 bool Logic::WaterRisingTargetTo3FCentral() {
