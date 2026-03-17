@@ -179,7 +179,8 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
     GetItemCategory getItemCategory;
     EnWonderItem* wonderActor = static_cast<EnWonderItem*>(refActor);
 
-    if (!EnWonderItem_RandomizerHoldsItem(wonderActor, gPlayState)) {
+    // If not a randomized item or too far, don't draw
+    if (!EnWonderItem_RandomizerHoldsItem(wonderActor, gPlayState) || wonderActor->actor.xzDistToPlayer > 1000.0f) {
         return;
     }
 
