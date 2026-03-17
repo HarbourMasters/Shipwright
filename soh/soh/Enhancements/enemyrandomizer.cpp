@@ -45,10 +45,7 @@ typedef struct EnemyEntry {
     int16_t params;
 } EnemyEntry;
 
-bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, int16_t params, float posX);
-bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy);
-EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play);
-
+// clang-format off
 static EnemyEntry randomizedEnemySpawnTable[] = {
     { CVAR_ENHANCEMENT("RandomizedEnemyList.Anubis"),           "Anubis",                ACTOR_EN_ANUBICE_TAG,      1 }, // Anubis
     { CVAR_ENHANCEMENT("RandomizedEnemyList.Armos"),            "Armos",                 ACTOR_EN_AM,              -1 }, // Armos
@@ -116,6 +113,7 @@ static EnemyEntry randomizedEnemySpawnTable[] = {
     { CVAR_ENHANCEMENT("RandomizedEnemyList.WhiteWolfos"),      "Wolfos (White)",        ACTOR_EN_WF,               1 }, // Wolfos (white)
     { CVAR_ENHANCEMENT("RandomizedEnemyList.WitheredBaba"),     "Withered Deku Baba",    ACTOR_EN_KAREBABA,         0 }, // Withered Deku Baba
 };
+// clang-format on
 
 static int enemiesToRandomize[] = {
     ACTOR_EN_ANUBICE_TAG, // Anubis
@@ -164,225 +162,6 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_SKJ,         // Skull Kid
     // ACTOR_EN_REEBA,      // Leever (reliant on spawner (z_en_encount1.c))
 };
-
-uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* posY, s16* posZ, int16_t* rotX,
-                           int16_t* rotY, int16_t* rotZ, int16_t* params) {
-
-    uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(play->sceneNum);
-
-    // Hack to remove enemies that wrongfully spawn because of bypassing object dependency with enemy randomizer on.
-    // This should probably be handled on OTR generation in the future when object dependency is fully removed.
-    // Remove bats and Skulltulas from graveyard.
-    // Remove Octorok in Lost Woods.
-    if (((*actorId == ACTOR_EN_FIREFLY || (*actorId == ACTOR_EN_SW && *params == 0)) &&
-         play->sceneNum == SCENE_GRAVEYARD) ||
-        (*actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_LOST_WOODS)) {
-        return 0;
-    }
-
-    // Hack to change a pot in Spirit Temple that holds a Deku Shield to not hold anything.
-    // This should probably be handled on OTR generation in the future when object dependency is fully removed.
-    // This Deku Shield doesn't normally spawn in authentic gameplay because of object dependency.
-    if (*actorId == ACTOR_OBJ_TSUBO && *params == 24597) {
-        *params = 24067;
-    }
-
-    // Lengthen timer in non-MQ Jabu Jabu bubble room.
-    if (!isMQ && *actorId == ACTOR_OBJ_ROOMTIMER && *params == 30760 && play->sceneNum == SCENE_JABU_JABU &&
-        play->roomCtx.curRoom.num == 12) {
-        *params = (*params & ~0x3FF) | 120;
-    }
-
-    if (IsEnemyFoundToRandomize(play->sceneNum, play->roomCtx.curRoom.num, *actorId, *params, *posX)) {
-
-        // When replacing Iron Knuckles in Spirit Temple, move them away from the throne because
-        // some enemies can get stuck on the throne.
-        if (*actorId == ACTOR_EN_IK && play->sceneNum == SCENE_SPIRIT_TEMPLE) {
-            if (*params == 6657) {
-                *posX = *posX + 150;
-            } else if (*params == 6401) {
-                *posX = *posX - 150;
-            }
-        }
-
-        // Move like-likes in MQ Jabu Jabu down into the room as they otherwise get stuck on Song of Time blocks.
-        if (*actorId == ACTOR_EN_RR && play->sceneNum == SCENE_JABU_JABU && play->roomCtx.curRoom.num == 11) {
-            if (*posX == 1003) {
-                *posX = *posX - 75;
-            } else {
-                *posX = *posX + 75;
-            }
-            *posY = *posY - 200;
-        }
-
-        // Do a raycast from the original position of the actor to find the ground below it, then try to place
-        // the new actor on the ground. This way enemies don't spawn very high in the sky, and gives us control
-        // over height offsets per enemy from a proven grounded position.
-        CollisionPoly poly;
-        Vec3f pos;
-        f32 raycastResult;
-
-        pos.x = *posX;
-        pos.y = *posY + 50;
-        pos.z = *posZ;
-        raycastResult = BgCheck_AnyRaycastFloor1(&play->colCtx, &poly, &pos);
-
-        // If ground is found below actor, move actor to that height.
-        if (raycastResult > BGCHECK_Y_MIN) {
-            *posY = raycastResult;
-        }
-
-        // Get randomized enemy ID and parameter.
-        uint32_t seed =
-            play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params;
-        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed, play);
-
-        *actorId = randomEnemy.id;
-        *params = randomEnemy.params;
-
-        // Straighten out enemies so they aren't flipped on their sides when the original spawn is.
-        *rotX = 0;
-
-        switch (*actorId) {
-            // When spawning big jellyfish, spawn it up high.
-            case ACTOR_EN_VALI:
-                *posY = *posY + 300;
-                break;
-            // Spawn Peahat off the ground, otherwise it kills itself by colliding with the ground.
-            case ACTOR_EN_PEEHAT:
-                if (*params == 1) {
-                    *posY = *posY + 100;
-                }
-                break;
-            // Spawn Skulltulas off the ground.
-            case ACTOR_EN_ST:
-                *posY = *posY + 200;
-                break;
-            // Spawn flying enemies off the ground.
-            case ACTOR_EN_FIREFLY:
-            case ACTOR_EN_BILI:
-            case ACTOR_EN_BB:
-            case ACTOR_EN_CLEAR_TAG:
-            case ACTOR_EN_CROW:
-                *posY = *posY + 75;
-                break;
-            default:
-                break;
-        }
-    }
-
-    // Enemy finished randomization process.
-    return 1;
-}
-
-static std::vector<EnemyEntry> selectedEnemyList;
-
-void GetSelectedEnemies() {
-    selectedEnemyList.clear();
-    for (int i = 0; i < ARRAY_COUNT(randomizedEnemySpawnTable); i++) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0)) {
-            selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
-        } else if (CVarGetInteger(randomizedEnemySpawnTable[i].cvar, 1)) {
-            selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
-        }
-    }
-    if (selectedEnemyList.size() == 0) {
-        selectedEnemyList.push_back(randomizedEnemySpawnTable[0]);
-    }
-}
-
-EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play) {
-    std::vector<EnemyEntry> filteredEnemyList = {};
-    if (selectedEnemyList.size() == 0) {
-        GetSelectedEnemies();
-    }
-    for (EnemyEntry enemy : selectedEnemyList) {
-        if (IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, enemy)) {
-            filteredEnemyList.push_back(enemy);
-        }
-    }
-    if (filteredEnemyList.size() == 0) {
-        filteredEnemyList = selectedEnemyList;
-    }
-    if (CVAR_ENEMY_RANDOMIZER_VALUE == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
-        uint32_t finalSeed =
-            seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
-        Random_Init(finalSeed);
-        uint32_t randomNumber = Random(0, filteredEnemyList.size());
-        return filteredEnemyList[randomNumber];
-    } else {
-        uint32_t randomSelectedEnemy = Random(0, filteredEnemyList.size());
-        return filteredEnemyList[randomSelectedEnemy];
-    }
-}
-
-bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, int16_t params, float posX) {
-
-    uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(sceneNum);
-
-    for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
-        if (actorId == enemiesToRandomize[i]) {
-            switch (actorId) {
-                // Only randomize the main component of Electric Tailparasans, not the tail segments they spawn.
-                case ACTOR_EN_TP:
-                    return (params == -1);
-                // Only randomize the initial Deku Scrub actor (single and triple attack), not the flower they spawn.
-                case ACTOR_EN_DEKUNUTS:
-                    return (params == -256 || params == 768);
-                // Don't randomize the OoB wallmaster in the Silver Rupee room because it's only there to
-                // not trigger unlocking the door after killing the other wallmaster in authentic gameplay.
-                case ACTOR_EN_WALLMAS:
-                    return (!(!isMQ && sceneNum == SCENE_GERUDO_TRAINING_GROUND && roomNum == 2 && posX == -2345));
-                // Only randomize initial Floormaster actor (it can split and does some spawning on init).
-                case ACTOR_EN_FLOORMAS:
-                    return (params == 0 || params == -32768);
-                // Only randomize the initial eggs, not the enemies that spawn from them.
-                case ACTOR_EN_GOMA:
-                    return (params >= 0 && params <= 9);
-                // Only randomize Skullwalltulas, not Golden Skulltulas.
-                case ACTOR_EN_SW:
-                    return (params == 0);
-                // Don't randomize Nabooru because it'll break the cutscene and the door.
-                // Don't randomize Iron Knuckle in MQ Spirit Trial because it's needed to
-                // break the thrones in the room to access a button.
-                case ACTOR_EN_IK:
-                    return (params != 1280 && !(isMQ && sceneNum == SCENE_INSIDE_GANONS_CASTLE && roomNum == 17));
-                // Only randomize the initial spawn of the huge jellyfish. It spawns another copy when hit with a sword.
-                case ACTOR_EN_VALI:
-                    return (params == -1);
-                // Don't randomize Lizalfos in Dodongo's Cavern because the gates won't work correctly otherwise.
-                case ACTOR_EN_ZF:
-                    return (params != 1280 && params != 1281 && params != 1536 && params != 1537);
-                // Don't randomize the Wolfos in SFM because it's needed to open the gate.
-                case ACTOR_EN_WF:
-                    return (params != 7936);
-                // Don't randomize the Stalfos in Forest Temple because other enemies fall through the hole and don't
-                // trigger the platform. Don't randomize the Stalfos spawning on the boat in Shadow Temple, as
-                // randomizing them places the new enemies down in the river.
-                case ACTOR_EN_TEST:
-                    return (params != 1 && !(sceneNum == SCENE_SHADOW_TEMPLE && roomNum == 21));
-                // Only randomize the enemy variant of Armos Statue.
-                // Leave one Armos unrandomized in the Spirit Temple room where an armos is needed to push down a
-                // button.
-                case ACTOR_EN_AM:
-                    return ((params == -1 || params == 255) && !(sceneNum == SCENE_SPIRIT_TEMPLE && posX == 2141));
-                // Don't randomize Shell Blades and Spikes in the underwater portion in Water Temple as it's impossible
-                // to kill most other enemies underwater with just hookshot and they're required to be killed for a
-                // grate to open.
-                case ACTOR_EN_SB:
-                case ACTOR_EN_NY:
-                    return (!(!isMQ && sceneNum == SCENE_WATER_TEMPLE && roomNum == 2));
-                case ACTOR_EN_SKJ:
-                    return !(sceneNum == SCENE_LOST_WOODS && LINK_IS_CHILD);
-                default:
-                    return 1;
-            }
-        }
-    }
-
-    // If no enemy is found, don't randomize the actor.
-    return 0;
-}
 
 bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
     uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(sceneNum);
@@ -497,6 +276,225 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         default:
             return 1;
     }
+}
+
+static std::vector<EnemyEntry> selectedEnemyList;
+
+void GetSelectedEnemies() {
+    selectedEnemyList.clear();
+    for (int i = 0; i < ARRAY_COUNT(randomizedEnemySpawnTable); i++) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0)) {
+            selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
+        } else if (CVarGetInteger(randomizedEnemySpawnTable[i].cvar, 1)) {
+            selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
+        }
+    }
+    if (selectedEnemyList.size() == 0) {
+        selectedEnemyList.push_back(randomizedEnemySpawnTable[0]);
+    }
+}
+
+EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play) {
+    std::vector<EnemyEntry> filteredEnemyList = {};
+    if (selectedEnemyList.size() == 0) {
+        GetSelectedEnemies();
+    }
+    for (EnemyEntry enemy : selectedEnemyList) {
+        if (IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, enemy)) {
+            filteredEnemyList.push_back(enemy);
+        }
+    }
+    if (filteredEnemyList.size() == 0) {
+        filteredEnemyList = selectedEnemyList;
+    }
+    if (CVAR_ENEMY_RANDOMIZER_VALUE == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
+        uint32_t finalSeed =
+            seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
+        Random_Init(finalSeed);
+        uint32_t randomNumber = Random(0, filteredEnemyList.size());
+        return filteredEnemyList[randomNumber];
+    } else {
+        uint32_t randomSelectedEnemy = Random(0, filteredEnemyList.size());
+        return filteredEnemyList[randomSelectedEnemy];
+    }
+}
+
+bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, int16_t params, float posX) {
+
+    uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(sceneNum);
+
+    for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
+        if (actorId == enemiesToRandomize[i]) {
+            switch (actorId) {
+                // Only randomize the main component of Electric Tailparasans, not the tail segments they spawn.
+                case ACTOR_EN_TP:
+                    return (params == -1);
+                // Only randomize the initial Deku Scrub actor (single and triple attack), not the flower they spawn.
+                case ACTOR_EN_DEKUNUTS:
+                    return (params == -256 || params == 768);
+                // Don't randomize the OoB wallmaster in the Silver Rupee room because it's only there to
+                // not trigger unlocking the door after killing the other wallmaster in authentic gameplay.
+                case ACTOR_EN_WALLMAS:
+                    return (!(!isMQ && sceneNum == SCENE_GERUDO_TRAINING_GROUND && roomNum == 2 && posX == -2345));
+                // Only randomize initial Floormaster actor (it can split and does some spawning on init).
+                case ACTOR_EN_FLOORMAS:
+                    return (params == 0 || params == -32768);
+                // Only randomize the initial eggs, not the enemies that spawn from them.
+                case ACTOR_EN_GOMA:
+                    return (params >= 0 && params <= 9);
+                // Only randomize Skullwalltulas, not Golden Skulltulas.
+                case ACTOR_EN_SW:
+                    return (params == 0);
+                // Don't randomize Nabooru because it'll break the cutscene and the door.
+                // Don't randomize Iron Knuckle in MQ Spirit Trial because it's needed to
+                // break the thrones in the room to access a button.
+                case ACTOR_EN_IK:
+                    return (params != 1280 && !(isMQ && sceneNum == SCENE_INSIDE_GANONS_CASTLE && roomNum == 17));
+                // Only randomize the initial spawn of the huge jellyfish. It spawns another copy when hit with a sword.
+                case ACTOR_EN_VALI:
+                    return (params == -1);
+                // Don't randomize Lizalfos in Dodongo's Cavern because the gates won't work correctly otherwise.
+                case ACTOR_EN_ZF:
+                    return (params != 1280 && params != 1281 && params != 1536 && params != 1537);
+                // Don't randomize the Wolfos in SFM because it's needed to open the gate.
+                case ACTOR_EN_WF:
+                    return (params != 7936);
+                // Don't randomize the Stalfos in Forest Temple because other enemies fall through the hole and don't
+                // trigger the platform. Don't randomize the Stalfos spawning on the boat in Shadow Temple, as
+                // randomizing them places the new enemies down in the river.
+                case ACTOR_EN_TEST:
+                    return (params != 1 && !(sceneNum == SCENE_SHADOW_TEMPLE && roomNum == 21));
+                // Only randomize the enemy variant of Armos Statue.
+                // Leave one Armos unrandomized in the Spirit Temple room where an armos is needed to push down a
+                // button.
+                case ACTOR_EN_AM:
+                    return ((params == -1 || params == 255) && !(sceneNum == SCENE_SPIRIT_TEMPLE && posX == 2141));
+                // Don't randomize Shell Blades and Spikes in the underwater portion in Water Temple as it's impossible
+                // to kill most other enemies underwater with just hookshot and they're required to be killed for a
+                // grate to open.
+                case ACTOR_EN_SB:
+                case ACTOR_EN_NY:
+                    return (!(!isMQ && sceneNum == SCENE_WATER_TEMPLE && roomNum == 2));
+                case ACTOR_EN_SKJ:
+                    return !(sceneNum == SCENE_LOST_WOODS && LINK_IS_CHILD);
+                default:
+                    return 1;
+            }
+        }
+    }
+
+    // If no enemy is found, don't randomize the actor.
+    return 0;
+}
+
+uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* posY, s16* posZ, int16_t* rotX,
+                           int16_t* rotY, int16_t* rotZ, int16_t* params) {
+
+    uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(play->sceneNum);
+
+    // Hack to remove enemies that wrongfully spawn because of bypassing object dependency with enemy randomizer on.
+    // This should probably be handled on OTR generation in the future when object dependency is fully removed.
+    // Remove bats and Skulltulas from graveyard.
+    // Remove Octorok in Lost Woods.
+    if (((*actorId == ACTOR_EN_FIREFLY || (*actorId == ACTOR_EN_SW && *params == 0)) &&
+         play->sceneNum == SCENE_GRAVEYARD) ||
+        (*actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_LOST_WOODS)) {
+        return 0;
+    }
+
+    // Hack to change a pot in Spirit Temple that holds a Deku Shield to not hold anything.
+    // This should probably be handled on OTR generation in the future when object dependency is fully removed.
+    // This Deku Shield doesn't normally spawn in authentic gameplay because of object dependency.
+    if (*actorId == ACTOR_OBJ_TSUBO && *params == 24597) {
+        *params = 24067;
+    }
+
+    // Lengthen timer in non-MQ Jabu Jabu bubble room.
+    if (!isMQ && *actorId == ACTOR_OBJ_ROOMTIMER && *params == 30760 && play->sceneNum == SCENE_JABU_JABU &&
+        play->roomCtx.curRoom.num == 12) {
+        *params = (*params & ~0x3FF) | 120;
+    }
+
+    if (IsEnemyFoundToRandomize(play->sceneNum, play->roomCtx.curRoom.num, *actorId, *params, *posX)) {
+
+        // When replacing Iron Knuckles in Spirit Temple, move them away from the throne because
+        // some enemies can get stuck on the throne.
+        if (*actorId == ACTOR_EN_IK && play->sceneNum == SCENE_SPIRIT_TEMPLE) {
+            if (*params == 6657) {
+                *posX = *posX + 150;
+            } else if (*params == 6401) {
+                *posX = *posX - 150;
+            }
+        }
+
+        // Move like-likes in MQ Jabu Jabu down into the room as they otherwise get stuck on Song of Time blocks.
+        if (*actorId == ACTOR_EN_RR && play->sceneNum == SCENE_JABU_JABU && play->roomCtx.curRoom.num == 11) {
+            if (*posX == 1003) {
+                *posX = *posX - 75;
+            } else {
+                *posX = *posX + 75;
+            }
+            *posY = *posY - 200;
+        }
+
+        // Do a raycast from the original position of the actor to find the ground below it, then try to place
+        // the new actor on the ground. This way enemies don't spawn very high in the sky, and gives us control
+        // over height offsets per enemy from a proven grounded position.
+        CollisionPoly poly;
+        Vec3f pos;
+        f32 raycastResult;
+
+        pos.x = *posX;
+        pos.y = *posY + 50;
+        pos.z = *posZ;
+        raycastResult = BgCheck_AnyRaycastFloor1(&play->colCtx, &poly, &pos);
+
+        // If ground is found below actor, move actor to that height.
+        if (raycastResult > BGCHECK_Y_MIN) {
+            *posY = raycastResult;
+        }
+
+        // Get randomized enemy ID and parameter.
+        uint32_t seed =
+            play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params;
+        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed, play);
+
+        *actorId = randomEnemy.id;
+        *params = randomEnemy.params;
+
+        // Straighten out enemies so they aren't flipped on their sides when the original spawn is.
+        *rotX = 0;
+
+        switch (*actorId) {
+            // When spawning big jellyfish, spawn it up high.
+            case ACTOR_EN_VALI:
+                *posY = *posY + 300;
+                break;
+            // Spawn Peahat off the ground, otherwise it kills itself by colliding with the ground.
+            case ACTOR_EN_PEEHAT:
+                if (*params == 1) {
+                    *posY = *posY + 100;
+                }
+                break;
+            // Spawn Skulltulas off the ground.
+            case ACTOR_EN_ST:
+                *posY = *posY + 200;
+                break;
+            // Spawn flying enemies off the ground.
+            case ACTOR_EN_FIREFLY:
+            case ACTOR_EN_BILI:
+            case ACTOR_EN_BB:
+            case ACTOR_EN_CLEAR_TAG:
+            case ACTOR_EN_CROW:
+                *posY = *posY + 75;
+                break;
+            default:
+                break;
+        }
+    }
+
+    // Enemy finished randomization process.
+    return 1;
 }
 
 void FixClubMoblinScale(void* ptr) {
