@@ -399,7 +399,13 @@ void Anchor::RegisterHooks() {
 
     // #region Hooks for visual effects that don't affect gameplay
 
-    using CompassIcon = std::pair<PosRot, Color_RGB8>;
+    struct CompassIcon {
+        Vec3f pos;
+        Vec3s rot;
+        float scale;
+        Color_RGB8 color;
+    };
+
     COND_HOOK(OnMinimapDrawCompassIcons, isConnected, [&]() {
         if (!CVarGetInteger(CVAR_REMOTE_ANCHOR("ShowOtherPlayersOnMinimap"), 1) || Anchor::Instance->roomState.showLocationsMode == 0) {
             return;
@@ -420,13 +426,13 @@ void Anchor::RegisterHooks() {
             if (!client.self && client.online && client.player && client.sceneNum == gPlayState->sceneNum &&
                 (!isInDungeon || client.curRoomNum == gPlayState->roomCtx.curRoom.num) &&
                 (Anchor::Instance->roomState.showLocationsMode == 2 || client.teamId == teamId)) {
-                compassIcons.push_back(CompassIcon({ client.player->actor.world.pos, client.player->actor.shape.rot }, client.color));
+                compassIcons.push_back(CompassIcon{ client.player->actor.world.pos, client.player->actor.shape.rot, 0.3f, client.color });
             }
         }
 
         // The local player's compass icon is always last so it gets drawn above the others
         Player* player = GET_PLAYER(gPlayState);
-        compassIcons.push_back(CompassIcon({ player->actor.world.pos, player->actor.shape.rot }, CVarGetColor24(CVAR_REMOTE_ANCHOR("Color.Value"), { 100, 255, 100 })));
+        compassIcons.push_back(CompassIcon{ player->actor.world.pos, player->actor.shape.rot, 0.4f, CVarGetColor24(CVAR_REMOTE_ANCHOR("Color.Value"), { 100, 255, 100 }) });
 
         OPEN_DISPS(gPlayState->state.gfxCtx);
         Gfx_SetupDL_42Overlay(gPlayState->state.gfxCtx);
@@ -438,15 +444,15 @@ void Anchor::RegisterHooks() {
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
 
-            Minimap_ApplyCompassIconMatrixTranslation(gPlayState, &compassIcon.first.pos);
-            Matrix_Scale(0.4f, 0.4f, 0.4f, MTXMODE_APPLY);
+            Minimap_ApplyCompassIconMatrixTranslation(gPlayState, &compassIcon.pos);
+            Matrix_Scale(compassIcon.scale, compassIcon.scale, compassIcon.scale, MTXMODE_APPLY);
             Matrix_RotateX(-1.6f, MTXMODE_APPLY);
-            s16 rotation = ((0x7FFF - compassIcon.first.rot.y) / 0x400) *
+            s16 rotation = ((0x7FFF - compassIcon.rot.y) / 0x400) *
                     (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1);
             Matrix_RotateY(rotation / 10.0f, MTXMODE_APPLY);
             gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(gPlayState->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, compassIcon.second.r, compassIcon.second.g, compassIcon.second.b, 255);
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, compassIcon.color.r, compassIcon.color.g, compassIcon.color.b, 255);
             gSPDisplayList(OVERLAY_DISP++, (Gfx*)gCompassArrowDL);
         }
 
