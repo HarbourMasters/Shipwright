@@ -7,6 +7,7 @@
 #include <assert.h>
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 MapData* gMapData;
 
