@@ -19,8 +19,6 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#include "overlays/actors/ovl_En_Niw/z_en_niw.h"
-
 // MARK: - Effects
 
 GameInteractionEffectQueryResult GameInteractor::CanApplyEffect(GameInteractionEffectBase* effect) {

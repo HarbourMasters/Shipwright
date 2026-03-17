@@ -101,7 +101,7 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
     }
 
     if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, spawnPoint.pos.x, spawnPoint.pos.y, spawnPoint.pos.z,
-                    spawnPoint.rot.x, spawnPoint.rot.y, spawnPoint.rot.z, params, 0) == NULL) {
+                    spawnPoint.rot.x, spawnPoint.rot.y, spawnPoint.rot.z, params) == NULL) {
         ERROR_MESSAGE("Failed to spawn actor. Actor_Spawn returned NULL");
         return 1;
     }

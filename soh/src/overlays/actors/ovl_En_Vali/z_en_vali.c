@@ -244,18 +244,13 @@ void EnVali_SetupBurnt(EnVali* this) {
 void EnVali_SetupDivideAndDie(EnVali* this, PlayState* play) {
     s32 i;
 
-    for (i = 0; i < 3; i++) {
+    if (GameInteractor_Should(VB_BIRI_SPAWN_JELLYFISH_UPON_DEATH, true, this, play)) {
+        for (i = 0; i < 3; i++) {
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BILI, this->actor.world.pos.x, this->actor.world.pos.y,
+                        this->actor.world.pos.z, 0, this->actor.world.rot.y, 0, 0);
 
-        // Offset small jellyfish with Enemy Randomizer, otherwise it gets
-        // stuck in a loop spawning more big jellyfish with seeded spawns.
-        if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
-            this->actor.world.rot.y += rand() % 50;
+            this->actor.world.rot.y += 0x10000 / 3;
         }
-
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BILI, this->actor.world.pos.x, this->actor.world.pos.y,
-                    this->actor.world.pos.z, 0, this->actor.world.rot.y, 0, 0, true);
-
-        this->actor.world.rot.y += 0x10000 / 3;
     }
 
     Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x50);
