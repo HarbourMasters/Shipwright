@@ -95,6 +95,7 @@ class SkeletonPatcher {
     inline static const std::string sOtr = "__OTR__";
     static bool IsLinkSkeletonPath(const std::string& path);
     static bool IsLocalPlayerSkelAnime(SkelAnime* skelAnime);
+    static void UpdateTunicHandDisplayLists();
     static void UpdateTunicSkeletons(SkeletonPatchInfo& skel);
     static void UpdateCustomSkeletonFromPath(const std::string& skeletonPath, SkeletonPatchInfo& skel);
 };

@@ -1,5 +1,8 @@
 #include <initializer_list>
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
+#include <string>
+#include <string_view>
+#include <unordered_map>
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_custom_equip/object_custom_equip.h"
@@ -20,12 +23,90 @@ static void RefreshCustomEquipment();
 static u8 GetEquippedSwordItem();
 static bool IsDummyPlayer(const Player* player);
 
+namespace {
+constexpr std::string_view sAdultLinkObjectPath = "__OTR__objects/object_link_boy/";
+constexpr std::string_view sChildLinkObjectPath = "__OTR__objects/object_link_child/";
+constexpr std::string_view sAdultGoronLinkObjectPath = "__OTR__objects/object_link_boy_goron/";
+constexpr std::string_view sChildGoronLinkObjectPath = "__OTR__objects/object_link_child_goron/";
+constexpr std::string_view sAdultZoraLinkObjectPath = "__OTR__objects/object_link_boy_zora/";
+constexpr std::string_view sChildZoraLinkObjectPath = "__OTR__objects/object_link_child_zora/";
+
+static bool CustomEquipmentResourceExists(const char* path) {
+    return path != nullptr && (ResourceMgr_FileExists(path) || ResourceGetIsCustomByName(path) ||
+                               (ResourceMgr_IsAltAssetsEnabled() && ResourceMgr_FileAltExists(path)));
+}
+
+static std::string_view GetDisplayListName(std::string_view path) {
+    return path.substr(path.find_last_of('/') + 1);
+}
+
+static const char* ResolveTunicHandDisplayList(const char* vanillaPath) {
+    if (vanillaPath == nullptr) {
+        return nullptr;
+    }
+
+    const std::string_view path = vanillaPath;
+    const s8 currentTunic = TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC));
+    std::string_view tunicObjectPath;
+
+    switch (currentTunic) {
+        case PLAYER_TUNIC_GORON:
+            if (path.starts_with(sAdultLinkObjectPath)) {
+                tunicObjectPath = sAdultGoronLinkObjectPath;
+            } else if (path.starts_with(sChildLinkObjectPath)) {
+                tunicObjectPath = sChildGoronLinkObjectPath;
+            }
+            break;
+        case PLAYER_TUNIC_ZORA:
+            if (path.starts_with(sAdultLinkObjectPath)) {
+                tunicObjectPath = sAdultZoraLinkObjectPath;
+            } else if (path.starts_with(sChildLinkObjectPath)) {
+                tunicObjectPath = sChildZoraLinkObjectPath;
+            }
+            break;
+        default:
+            break;
+    }
+
+    if (tunicObjectPath.empty()) {
+        return vanillaPath;
+    }
+
+    const std::string resolvedPath = std::string(tunicObjectPath) + std::string(GetDisplayListName(path));
+    if (!CustomEquipmentResourceExists(resolvedPath.c_str())) {
+        return vanillaPath;
+    }
+
+    static std::unordered_map<std::string, std::string> sResolvedHandPaths{};
+    return sResolvedHandPaths.try_emplace(resolvedPath, resolvedPath).first->second.c_str();
+}
+
+static const char* ResolveCustomFpsHandDisplayList(bool isChild) {
+    const char* defaultFpsHand = isChild ? gCustomChildFPSHandDL : gCustomAdultFPSHandDL;
+    const s8 currentTunic = TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC));
+    const char* tunicFpsHand = nullptr;
+
+    switch (currentTunic) {
+        case PLAYER_TUNIC_GORON:
+            tunicFpsHand = isChild ? gCustomChildGoronFPSHandDL : gCustomAdultGoronFPSHandDL;
+            break;
+        case PLAYER_TUNIC_ZORA:
+            tunicFpsHand = isChild ? gCustomChildZoraFPSHandDL : gCustomAdultZoraFPSHandDL;
+            break;
+        default:
+            break;
+    }
+
+    return CustomEquipmentResourceExists(tunicFpsHand) ? tunicFpsHand : defaultFpsHand;
+}
+} // namespace
+
 static const char* ResolveCustomChain(std::initializer_list<const char*> paths) {
     const char* fallback = nullptr;
     for (auto path : paths) {
         if (path != nullptr) {
             fallback = path;
-            if (ResourceMgr_FileExists(path) || ResourceGetIsCustomByName(path)) {
+            if (CustomEquipmentResourceExists(path)) {
                 return path;
             }
         }
@@ -145,7 +226,7 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
         return;
     }
 
-    if (alternateDL == NULL || ResourceGetIsCustomByName(alternateDL) || ResourceMgr_FileExists(alternateDL)) {
+    if (alternateDL == NULL || CustomEquipmentResourceExists(alternateDL)) {
         ResourceMgr_PatchCustomGfxByName(resource, dlist1, 0, gsSPDisplayListOTRFilePath(gfx));
         if (dlist3 == NULL) {
             ResourceMgr_PatchCustomGfxByName(resource, dlist2, 1, gsSPEndDisplayList());
@@ -266,7 +347,8 @@ static void ApplyMasterSwordPatches() {
 
 static void ApplyBiggoronSwordPatches() {
     const bool isChild = LINK_IS_CHILD;
-    const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
+    const char* leftHandClosed =
+        ResolveTunicHandDisplayList(isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL);
 
     if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
         PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomLongswordSheathDL, "customDekuShieldBack1",
@@ -307,7 +389,8 @@ static void ApplyBiggoronSwordPatches() {
 
 static void ApplyBreakableLongswordPatches() {
     const bool isChild = LINK_IS_CHILD;
-    const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
+    const char* leftHandClosed =
+        ResolveTunicHandDisplayList(isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL);
 
     if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
         PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, GetBreakableLongswordSheathDL(), "customDekuShieldBack1",
@@ -385,10 +468,13 @@ static void ApplyBrokenKnifePatches() {
 
 static void ApplyCommonEquipmentPatches() {
     const bool isChild = LINK_IS_CHILD;
-    const char* rightHandClosed = isChild ? gLinkChildRightHandClosedNearDL : gLinkAdultRightHandClosedNearDL;
-    const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
-    const char* fpsHand = isChild ? gCustomChildFPSHandDL : gCustomAdultFPSHandDL;
-    const char* rightHandNear = isChild ? gLinkChildRightHandNearDL : gLinkAdultRightHandNearDL;
+    const char* rightHandClosed =
+        ResolveTunicHandDisplayList(isChild ? gLinkChildRightHandClosedNearDL : gLinkAdultRightHandClosedNearDL);
+    const char* leftHandClosed =
+        ResolveTunicHandDisplayList(isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL);
+    const char* fpsHand = ResolveCustomFpsHandDisplayList(isChild);
+    const char* rightHandNear =
+        ResolveTunicHandDisplayList(isChild ? gLinkChildRightHandNearDL : gLinkAdultRightHandNearDL);
 
     ApplyPatchEntries({
         { gLinkAdultLeftHandHoldingMasterSwordNearDL, gCustomMasterSwordDL, "customMasterSword1", "customMasterSword2",
