@@ -1325,6 +1325,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // varies
+    // ```
+    // #### `args`
+    // - `ObjLightswitch*`
+    VB_LIGHTSWITCH_OFF,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
