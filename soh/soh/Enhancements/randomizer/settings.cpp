@@ -1482,9 +1482,9 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_DISTANT_BOULDER_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
               "Distant Boulder Collision", "BolCol",
               "From afar boulder collision is disabled, allowing projectiles to pass through them.");
-    OPT_TRICK(RT_ITEM_EXTENSION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE },
-              "Item Extension", "HSExt",
-              "Slightly extends the range of projectiles such as Hookshot, Bow or Slingshot. Also allows clipping projectile past collision. Used for:\n"
+    OPT_TRICK(RT_ITEM_EXTENSION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "Item Extension", "HSExt",
+              "Slightly extends the range of projectiles such as Hookshot, Bow or Slingshot. Also allows clipping "
+              "projectile past collision. Used for:\n"
               "- Crossing Gerudo Valley with Hookshot\n"
               "- Retrieving DMT Gold Skulltula beside bomb flower\n"
               "- Hitting switch through wall in Spirit Temple's big mirror room with Bow, Slingshot, or Hookshot\n"
@@ -1529,7 +1529,9 @@ void Settings::CreateOptions() {
               "Big Poes have a chance of appearing without Epona, you can shoot them quickly with only bow.");
     OPT_TRICK(RT_KAK_TOWER_GS, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::INTERMEDIATE },
               "Kakariko Tower GS with Jump Slash", "KakGSJS",
-              "Climb the tower as high as you can without touc Like, you're trying to avoid having to kill the tektites because you're saving everything for Dark Link is the only thing I could think of. hing the Gold Skulltula, then let go and jump slash "
+              "Climb the tower as high as you can without touc Like, you're trying to avoid having to kill the "
+              "tektites because you're saving everything for Dark Link is the only thing I could think of. hing the "
+              "Gold Skulltula, then let go and jump slash "
               "immediately. By jump-slashing from as low on the ladder as possible to still hit the Skulltula, this "
               "trick can be done without taking fall damage.");
     OPT_TRICK(RT_KAK_CHILD_WINDMILL_POH, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::EXTREME },
