@@ -304,6 +304,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT
+    // ```
+    // #### `args`
+    // - `*EnOssan` (Happy Mask Shopkeeper)
+    VB_HAPPY_MASK_SHOP_CHECK_SOLD_OUT,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -2202,6 +2210,15 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*CollisionPoly
+    // - s32 - background id`
+    VB_TARGETABLE_HOOKSHOT_RETICLE,
+
+    // #### `result`
+    // ```c
     // (this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (this->heldActor != NULL) &&
     // CHECK_BTN_ANY(sControlInput->press.button, buttonsToCheck)
     // ```
@@ -2606,6 +2623,103 @@ typedef enum {
     // - `int32_t` (usingHoldTargeting - promoted from `s32`)
     VB_TOGGLE_Z_TARGET_SWITCH_TARGETS
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*ActorContext`
+    // - `*ActorEntry`
+    // - `*PlayState`
+    // - `*Actor`
+    VB_SPAWN_ACTOR_ENTRY,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*PlayState`
+    // - `*Vec3f`
+    // - `double` (promoted from `f32`)
+    // - `double` (promoted from `f32`)
+    // - `double` (promoted from `f32`)
+    VB_ADULT_ZELDA_SPAWN_STALFOS_IN_COLLAPSE,
+
+    // #### `result`
+    // ```c
+    // !(this->dyna.actor.flags & ACTOR_FLAG_INSIDE_CULLING_VOLUME)
+    // ```
+    // #### `args`
+    // - `*EnBlkobj`
+    // - `*PlayState`
+    VB_BLKOBJ_SPAWN_DARK_LINK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BgHakaTubo`
+    // - `*PlayState`
+    VB_HAKA_TUBO_SPAWN_KEESE,
+
+    // #### `result`
+    // ```c
+    // !IS_DAY && play->sceneNum == SCENE_GRAVEYARD
+    // ```
+    // #### `args`
+    // - `*BgHaka`
+    // - `*PlayState`
+    VB_HAKA_SPAWN_POE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnVali`
+    // - `*PlayState`
+    VB_BIRI_SPAWN_JELLYFISH_UPON_DEATH,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnEncount1`
+    // - `*PlayState`
+    // - `s16`
+    // - `Vec3f`
+    // - `s16`
+    VB_ENCOUNT1_SPAWN_STALCHILD_OR_WOLFOS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BgMoriBigst`
+    // - `*PlayState`
+    VB_MORI_BIGST_SUMMON_STALFOS_PAIR,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BgHakaHuta`
+    // - `*PlayState`
+    VB_HAKA_HUTA_SPAWN_KEESE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BgHakaHuta`
+    // - `*PlayState`
+    VB_HAKA_HUTA_SPAWN_REDEAD,
 } GIVanillaBehavior;
 
 #endif

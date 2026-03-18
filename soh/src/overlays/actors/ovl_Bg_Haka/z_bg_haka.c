@@ -6,6 +6,7 @@
 
 #include "z_bg_haka.h"
 #include "objects/object_haka/object_haka.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -117,9 +118,9 @@ void func_8087B938(BgHaka* this, PlayState* play) {
 
         if (this->dyna.actor.params == 1) {
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
-        } else if (!IS_DAY && play->sceneNum == SCENE_GRAVEYARD) {
+        } else if (GameInteractor_Should(VB_HAKA_SPAWN_POE, !IS_DAY && play->sceneNum == SCENE_GRAVEYARD, this, play)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->dyna.actor.home.pos.x, this->dyna.actor.home.pos.y,
-                        this->dyna.actor.home.pos.z, 0, this->dyna.actor.shape.rot.y, 0, 1, true);
+                        this->dyna.actor.home.pos.z, 0, this->dyna.actor.shape.rot.y, 0, 1);
         }
 
         // un tss un tss

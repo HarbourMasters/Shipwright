@@ -402,11 +402,11 @@ void func_80AD9A54(EnPoSisters* this, PlayState* play) {
 // Meg spawning fakes
 void func_80AD9AA8(EnPoSisters* this, PlayState* play) {
     Actor* actor1 = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PO_SISTERS, this->actor.world.pos.x,
-                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0x400, true);
+                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0x400);
     Actor* actor2 = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PO_SISTERS, this->actor.world.pos.x,
-                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0x800, true);
+                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0x800);
     Actor* actor3 = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PO_SISTERS, this->actor.world.pos.x,
-                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0xC00, true);
+                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0xC00);
     s32 pad;
     s32 pad1;
 

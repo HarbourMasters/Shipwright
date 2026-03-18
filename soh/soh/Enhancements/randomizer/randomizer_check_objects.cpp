@@ -115,7 +115,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              location.GetQuest() == RCQUEST_MQ &&
                  ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) ==
                            RO_MQ_DUNGEONS_SET_NUMBER &&
-                       (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), 12) > 0) || // at least one MQ dungeon
+                       (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), MAX_MQ_DUNGEON_COUNT) >
+                        0) || // at least one MQ dungeon
                    CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) ==
                        RO_MQ_DUNGEONS_RANDOM_NUMBER ||
                    CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) ==
@@ -123,7 +124,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              location.GetQuest() == RCQUEST_VANILLA &&
                  (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) !=
                       RO_MQ_DUNGEONS_SET_NUMBER ||
-                  CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), 12) < 12) // at least one vanilla dungeon
+                  CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), MAX_MQ_DUNGEON_COUNT) <
+                      MAX_MQ_DUNGEON_COUNT) // at least one vanilla dungeon
              ) &&
             (location.GetRCType() != RCTYPE_SHOP ||
              !(ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) ||

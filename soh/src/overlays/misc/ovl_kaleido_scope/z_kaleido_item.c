@@ -322,7 +322,9 @@ void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle,
 
 bool CanMaskSelect() {
     if (IS_RANDO) {
-        return (CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) && Flags_GetRandomizerInf(RAND_INF_ZELDAS_LETTER) &&
+        return ((CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) ||
+                 Randomizer_GetSettingValue(RSK_MASK_QUEST) != RO_MASK_QUEST_VANILLA) &&
+                Flags_GetRandomizerInf(RAND_INF_ZELDAS_LETTER) &&
                 Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) ||
                Randomizer_GetSettingValue(RSK_MASK_QUEST) == RO_MASK_QUEST_SHUFFLE;
     }
@@ -332,7 +334,8 @@ bool CanMaskSelect() {
     // * zelda's letter check: Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)
     // * kak gate check: Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)
     // and the mask quest is complete: Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE)
-    return CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) &&
+    return (CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) ||
+            Randomizer_GetSettingValue(RSK_MASK_QUEST) != RO_MASK_QUEST_VANILLA) &&
            Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE) &&
            Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) &&
            Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD);

@@ -2547,6 +2547,14 @@ bool Logic::ReachDistantScarecrow() {
     return ScarecrowsSong() && CanUse(RG_LONGSHOT);
 }
 
+bool Logic::CanClimbLadder() {
+    return HasItem(RG_CLIMB) || (ctx->GetTrickOption(RT_HOOKSHOT_LADDERS) && CanUse(RG_HOOKSHOT));
+}
+
+bool Logic::CanClimbHighLadder() {
+    return HasItem(RG_CLIMB) || (ctx->GetTrickOption(RT_HOOKSHOT_LADDERS) && CanUse(RG_LONGSHOT));
+}
+
 bool Logic::SummonEpona() {
     return IsAdult && Get(LOGIC_FREED_EPONA) && CanUse(RG_EPONAS_SONG);
 }

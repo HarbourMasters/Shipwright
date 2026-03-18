@@ -2607,7 +2607,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
         refActor = &GET_PLAYER(play)->actor;
         KREG(0) = 0;
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, refActor->world.pos.x, refActor->world.pos.y + 100.0f,
-                    refActor->world.pos.z, 0, 0, 0, 1, true);
+                    refActor->world.pos.z, 0, 0, 0, 1);
     }
 
     sp80 = &D_80116068[0];
@@ -3319,18 +3319,7 @@ void Actor_FreeOverlay(ActorDBEntry* dbEntry) {
 int gMapLoading = 0;
 
 Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ, s16 rotX,
-                   s16 rotY, s16 rotZ, s16 params, s16 canRandomize) {
-
-    uint8_t tryRandomizeEnemy = canRandomize && CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) &&
-                                ((gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2) ||
-                                 (gSaveContext.fileNum == 0xFF && gSaveContext.gameMode == GAMEMODE_NORMAL));
-
-    if (tryRandomizeEnemy) {
-        if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
-            return NULL;
-        }
-    }
-
+                   s16 rotY, s16 rotZ, s16 params) {
     Actor* actor;
     s32 objBankIndex;
     u32 temp;
@@ -3425,7 +3414,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
 
 Actor* Actor_SpawnAsChild(ActorContext* actorCtx, Actor* parent, PlayState* play, s16 actorId, f32 posX, f32 posY,
                           f32 posZ, s16 rotX, s16 rotY, s16 rotZ, s16 params) {
-    Actor* spawnedActor = Actor_Spawn(actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, true);
+    Actor* spawnedActor = Actor_Spawn(actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
 
     if (spawnedActor == NULL) {
         return NULL;
@@ -3433,7 +3422,7 @@ Actor* Actor_SpawnAsChild(ActorContext* actorCtx, Actor* parent, PlayState* play
 
     // The following enemies break when the parent actor isn't the same as what would happen in authentic gameplay.
     // As such, don't assign a parent to them at all when spawned with Enemy Randomizer.
-    // Gohma (z_boss_goma.c), the Stalchildren spawner (z_en_encount1.c) and the falling platform spawning Stalfos in
+    // Gohma (z_boss_goma.c) and the falling platform spawning Stalfos in
     // Forest Temple (z_bg_mori_bigst.c) that normally rely on this behaviour are changed when
     // Enemy Rando is on so they still work properly even without assigning a parent.
     if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) &&
@@ -3469,7 +3458,7 @@ void Actor_SpawnTransitionActors(PlayState* play, ActorContext* actorCtx) {
                   (transitionActor->sides[1].room == play->roomCtx.prevRoom.num)))) {
                 Actor_Spawn(actorCtx, play, (s16)(transitionActor->id & 0x1FFF), transitionActor->pos.x,
                             transitionActor->pos.y, transitionActor->pos.z, 0, transitionActor->rotY, 0,
-                            (i << 0xA) + transitionActor->params, true);
+                            (i << 0xA) + transitionActor->params);
 
                 transitionActor->id = -transitionActor->id;
                 numActors = play->transiActorCtx.numActors;
@@ -3481,8 +3470,13 @@ void Actor_SpawnTransitionActors(PlayState* play, ActorContext* actorCtx) {
 
 Actor* Actor_SpawnEntry(ActorContext* actorCtx, ActorEntry* actorEntry, PlayState* play) {
     gMapLoading = 1;
-    Actor* ret = Actor_Spawn(actorCtx, play, actorEntry->id, actorEntry->pos.x, actorEntry->pos.y, actorEntry->pos.z,
-                             actorEntry->rot.x, actorEntry->rot.y, actorEntry->rot.z, actorEntry->params, true);
+    Actor* ret;
+
+    if (GameInteractor_Should(VB_SPAWN_ACTOR_ENTRY, true, actorCtx, actorEntry, play, ret)) {
+        ret = Actor_Spawn(actorCtx, play, actorEntry->id, actorEntry->pos.x, actorEntry->pos.y, actorEntry->pos.z,
+                          actorEntry->rot.x, actorEntry->rot.y, actorEntry->rot.z, actorEntry->params);
+    }
+
     gMapLoading = 0;
 
     return ret;

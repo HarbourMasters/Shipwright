@@ -519,7 +519,7 @@ void Settings::CreateOptions() {
             mOptions[RSK_MQ_GANONS_CASTLE].Hide();
         }
     });
-    OPT_U8(RSK_MQ_DUNGEON_COUNT, "MQ Dungeon Count", {NumOpts(0, 12)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MQDungeonCount"), "", WIDGET_CVAR_SLIDER_INT, 12, true, nullptr, IMFLAG_NONE);
+    OPT_U8(RSK_MQ_DUNGEON_COUNT, "MQ Dungeon Count", {NumOpts(0, MAX_MQ_DUNGEON_COUNT)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MQDungeonCount"), "", WIDGET_CVAR_SLIDER_INT, MAX_MQ_DUNGEON_COUNT, true, nullptr, IMFLAG_NONE);
     OPT_BOOL(RSK_MQ_DUNGEON_SET, "Set Dungeon Quests", {"Off", "On"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MQDungeonsSelection"), mOptionDescriptions[RSK_MQ_DUNGEON_SET], WIDGET_CVAR_CHECKBOX, false, false, nullptr, IMFLAG_NONE);
     OPT_CALLBACK(RSK_MQ_DUNGEON_SET, {
         // Controls whether or not to show the selectors for individual dungeons.
@@ -574,11 +574,34 @@ void Settings::CreateOptions() {
             RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
             mOptions[RSK_LINKS_POCKET].Disable(
                 "This option is disabled because \"Dungeon Rewards\" are shuffled to \"End of Dungeons\".");
+            mOptions[RSK_LINKS_POCKET_REWARD].Enable();
+            mOptions[RSK_LINKS_POCKET_REWARD].Unhide();
+        } else if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) ==
+            RO_DUNGEON_REWARDS_VANILLA) {
+            mOptions[RSK_LINKS_POCKET_REWARD].Disable("This option is disabled because \"Dungeon Rewards\" are shuffled to \"Vanilla\".");
+            mOptions[RSK_LINKS_POCKET_REWARD].Hide();
+            mOptions[RSK_LINKS_POCKET].Enable();
         } else {
             mOptions[RSK_LINKS_POCKET].Enable();
+            mOptions[RSK_LINKS_POCKET_REWARD].Enable();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LinksPocket"), RO_LINKS_POCKET_DUNGEON_REWARD) == RO_LINKS_POCKET_DUNGEON_REWARD) {
+                mOptions[RSK_LINKS_POCKET_REWARD].Unhide();
+                }
         }
     });
     OPT_U8(RSK_LINKS_POCKET, "Link's Pocket", {"Dungeon Reward", "Advancement", "Anything", "Nothing"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocket"), "", WIDGET_CVAR_COMBOBOX, RO_LINKS_POCKET_DUNGEON_REWARD);
+    OPT_CALLBACK(RSK_LINKS_POCKET, {
+        // Only show the dungeon reward type if Link's Pocket is set to Dungeon Reward and Dungeon Rewards are not Vanilla, OR Dungeon Rewards are end of dungeon
+        if ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("LinksPocket"), RO_LINKS_POCKET_DUNGEON_REWARD) ==
+            RO_LINKS_POCKET_DUNGEON_REWARD && CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) !=
+            RO_DUNGEON_REWARDS_VANILLA) || CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) ==
+            RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
+            mOptions[RSK_LINKS_POCKET_REWARD].Unhide();
+        } else {
+            mOptions[RSK_LINKS_POCKET_REWARD].Hide();
+        }
+    });
+    OPT_U8(RSK_LINKS_POCKET_REWARD, "Link's Pocket Reward Type", {"Dungeon Reward", "Stone", "Medallion"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocketReward"), "", WIDGET_CVAR_COMBOBOX, RO_LINKS_POCKET_REWARD);
     OPT_U8(RSK_SHUFFLE_SONGS, "Shuffle Songs", {"Off", "Song Locations", "Dungeon Rewards", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleSongs"), mOptionDescriptions[RSK_SHUFFLE_SONGS], WIDGET_CVAR_COMBOBOX, RO_SONG_SHUFFLE_SONG_LOCATIONS);
     OPT_U8(RSK_SHOPSANITY, "Shop Shuffle", {"Off", "Specific Count", "Random"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Shopsanity"), mOptionDescriptions[RSK_SHOPSANITY], WIDGET_CVAR_COMBOBOX, RO_SHOPSANITY_OFF);
     OPT_CALLBACK(RSK_SHOPSANITY, {
@@ -817,7 +840,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SHUFFLE_WEIRD_EGG, "Shuffle Weird Egg", CVAR_RANDOMIZER_SETTING("ShuffleWeirdEgg"), mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG]);
     OPT_BOOL(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD, "Shuffle Gerudo Membership Card", CVAR_RANDOMIZER_SETTING("ShuffleGerudoToken"), mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
     OPT_U8(RSK_SHUFFLE_POTS, "Shuffle Pots", {"Off", "Dungeons", "Overworld", "All Pots"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShufflePots"), mOptionDescriptions[RSK_SHUFFLE_POTS], WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_POTS_OFF);
-    OPT_U8(RSK_SHUFFLE_GRASS, "Shuffle Grass", {"Off", "Dungeons", "Overworld", "All Grass/Bushes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleGrass"), mOptionDescriptions[RSK_SHUFFLE_GRASS], WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_GRASS_OFF);
+    OPT_U8(RSK_SHUFFLE_GRASS, "Shuffle Grass", {"Off", "Dungeons", "Overworld", "All Grass"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleGrass"), mOptionDescriptions[RSK_SHUFFLE_GRASS], WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_GRASS_OFF);
     OPT_U8(RSK_SHUFFLE_CRATES, "Shuffle Crates", {"Off", "Dungeons", "Overworld", "All Crates"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleCrates"), mOptionDescriptions[RSK_SHUFFLE_CRATES], WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_CRATES_OFF);
     OPT_BOOL(RSK_SHUFFLE_TREES, "Shuffle Trees", CVAR_RANDOMIZER_SETTING("ShuffleTrees"), mOptionDescriptions[RSK_SHUFFLE_TREES]);
     OPT_BOOL(RSK_SHUFFLE_BUSHES, "Shuffle Bushes", CVAR_RANDOMIZER_SETTING("ShuffleBushes"), mOptionDescriptions[RSK_SHUFFLE_BUSHES]);
@@ -1441,6 +1464,12 @@ void Settings::CreateOptions() {
               "after recoil. Can be combined with \"Simple damage boosts\" for greater uses.");
     OPT_TRICK(RT_BOMBCHU_BEEHIVES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Bombchu Beehives", "ChuBee",
               "Allows exploding beehives with Bombchus.");
+    OPT_TRICK(RT_HOOKSHOT_LADDERS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Hookshot Ladders", "HSLad",
+              "You can skip climb for hookshottable ladders can be skipped by hookshotting the top of the ladder from "
+              "the correct distance and angle.\n"
+              "This is more difficult for some ladders than others, and a few are not possible.\n"
+              "Hookshotting climbable walls in the same way is not a trick, as it is trivial to get an angle that "
+              "correctly ledge grabs.");
     OPT_TRICK(RT_BLUE_FIRE_MUD_WALLS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Blue Fire Beyond Red Ice",
               "BluFire",
               "Use Blue Fire to break mud walls, detonate bomb flowers, and break floor to King Dodongo.\nDoes not "
@@ -1653,12 +1682,15 @@ void Settings::CreateOptions() {
               "Sneak Past Moving Gerudo Guards with No Items", "Guards",
               "The logic normally guarantees Bow or Hookshot to stun them from a distance,"
               "but every moving guard can be passed with basic movement and AI manipulation");
-    OPT_TRICK(RT_GF_CHILD_SKIP_WASTELAND_GATE, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
-              "Gerudo\'s Fortress Skip Wasteland Gate as Child", "GFHWC",
-              "As child a sidehop out of bounds off the tower can be used to get past the gate.");
+    OPT_TRICK(RT_GF_WASTELAND_GATE_SIDEHOP_SKIP, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
+              "Gerudo\'s Fortress Gate Skip with Sidehop", "GFHWC",
+              "You can sidehop out of bounds from the tower, then sidehop again on the other side of the gate.\n\n"
+              "This is easiest and most useful for Child, but Adult can also do this to skip the Gerudo Jabber Nut.");
     OPT_TRICK(RT_GF_ADULT_SKIP_WASTELAND_GATE, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::INTERMEDIATE },
               "Gerudo\'s Fortress Skip Wasteland Gate as Adult", "GFHWA",
-              "As adult a precise jumpslash out of bounds with hoverboots can be used to get past the gate.");
+              "As adult a precise jumpslash out of bounds with hoverboots from above the jail can be used to get past "
+              "the gate.\n\n"
+              "This can also be used to reach the tower and lower the gate for child without climb.");
     OPT_TRICK(RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
               "Gerudo\'s Fortress Warriors with Difficult Weapons", "GWDiff",
               "Warriors can be defeated with Slingshot or Bombchus.");
@@ -2547,11 +2579,11 @@ void Settings::CreateOptions() {
                                   &mOptionGroups[RSG_MENU_COLUMN_STATIC_HINTS],
                               },
                               WidgetContainerType::TABLE);
-    mOptionGroups[RSG_MENU_SECTION_STARTING_EQUIPS] =
-        OptionGroup::SubGroup("Equips",
-                              { &mOptions[RSK_LINKS_POCKET], &mOptions[RSK_STARTING_KOKIRI_SWORD],
-                                &mOptions[RSK_STARTING_MASTER_SWORD], &mOptions[RSK_STARTING_DEKU_SHIELD] },
-                              WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_SECTION_STARTING_EQUIPS] = OptionGroup::SubGroup(
+        "Equips",
+        { &mOptions[RSK_LINKS_POCKET], &mOptions[RSK_LINKS_POCKET_REWARD], &mOptions[RSK_STARTING_KOKIRI_SWORD],
+          &mOptions[RSK_STARTING_MASTER_SWORD], &mOptions[RSK_STARTING_DEKU_SHIELD] },
+        WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_SECTION_STARTING_ITEMS] = OptionGroup::SubGroup("Items",
                                                                            {
                                                                                &mOptions[RSK_STARTING_OCARINA],
@@ -3031,7 +3063,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     // If we only have MQ, set all dungeons to MQ
     if (OTRGlobals::Instance->HasMasterQuest() && !OTRGlobals::Instance->HasOriginal()) {
         mOptions[RSK_MQ_DUNGEON_RANDOM].Set(RO_MQ_DUNGEONS_SET_NUMBER);
-        mOptions[RSK_MQ_DUNGEON_COUNT].Set(12);
+        mOptions[RSK_MQ_DUNGEON_COUNT].Set(MAX_MQ_DUNGEON_COUNT);
         mOptions[RSK_MQ_DUNGEON_SET].Set(RO_GENERIC_OFF);
     }
 
@@ -3172,9 +3204,12 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
             }
             // otherwise, every dungeon is possible
         } else {
-            // if the count is fixed to 12, we know everything is MQ, so can skip some setps and do not set Known
-            if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_SET_NUMBER) && mqCount == 12) {
-                randMQOption = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+            // if count is MAX_MQ_DUNGEON_COUNT, we know everything is MQ, so can skip some setps and not set Known
+            if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_SET_NUMBER) && mqCount == MAX_MQ_DUNGEON_COUNT) {
+                randMQOption.resize(MAX_MQ_DUNGEON_COUNT);
+                for (int i = 0; i < MAX_MQ_DUNGEON_COUNT; i++) {
+                    randMQOption[i] = i;
+                }
                 for (auto dungeon : dungeons) {
                     mOptions[dungeon->GetMQSetting()].Set(RO_MQ_SET_MQ);
                 }
@@ -3395,7 +3430,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
     nlohmann::json settingsJson = spoilerFileJson["settings"];
     for (auto it = settingsJson.begin(); it != settingsJson.end(); ++it) {
         // todo load into cvars for UI
-        // RANDOTODO handle numeric value to options conversion better than brute froce
+        // RANDOTODO handle numeric value to options conversion better than brute force
         if (StaticData::optionNameToEnum.contains(it.key())) {
             const RandomizerSettingKey index = StaticData::optionNameToEnum[it.key()];
             mContext->GetOption(index).Set(mOptions[index].GetValueFromText(it.value()));

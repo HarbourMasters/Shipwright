@@ -2202,6 +2202,7 @@ void ResetColor(CosmeticOption& cosmeticOption) {
         ResetColor(cosmeticOptions.at("Kaleido.SaveC"));
         ResetColor(cosmeticOptions.at("Kaleido.SaveD"));
     }
+    ShipInit::Init(cosmeticOption.valuesCvar);
 }
 
 void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
@@ -2409,7 +2410,7 @@ void CosmeticsEditorWindow::DrawElement() {
                      "- On New Scene : Randomizes when you enter a new scene.\n"
                      "- On Rando Gen Only: Randomizes only when you generate a new randomizer.\n"
                      "- On File Load: Randomizes on File Load.\n"
-                     "- On File Load (Seeded): Randomizes on file load based on the current randomizer seed/file.\n"));
+                     "- On File Load (Seeded): Randomizes on file load based on the current randomizer seed/file."));
     UIWidgets::CVarCheckbox(
         "Advanced Mode", CVAR_COSMETIC("AdvancedMode"),
         UIWidgets::CheckboxOptions()
