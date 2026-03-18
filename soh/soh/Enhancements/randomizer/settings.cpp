@@ -1529,9 +1529,7 @@ void Settings::CreateOptions() {
               "Big Poes have a chance of appearing without Epona, you can shoot them quickly with only bow.");
     OPT_TRICK(RT_KAK_TOWER_GS, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::INTERMEDIATE },
               "Kakariko Tower GS with Jump Slash", "KakGSJS",
-              "Climb the tower as high as you can without touc Like, you're trying to avoid having to kill the "
-              "tektites because you're saving everything for Dark Link is the only thing I could think of. hing the "
-              "Gold Skulltula, then let go and jump slash "
+              "Climb the tower as high as you can without toucing the Gold Skulltula, then let go and jump slash "
               "immediately. By jump-slashing from as low on the ladder as possible to still hit the Skulltula, this "
               "trick can be done without taking fall damage.");
     OPT_TRICK(RT_KAK_CHILD_WINDMILL_POH, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::EXTREME },
