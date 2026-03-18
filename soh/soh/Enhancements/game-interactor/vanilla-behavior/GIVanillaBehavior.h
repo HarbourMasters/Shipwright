@@ -2621,7 +2621,7 @@ typedef enum {
     // ```
     // #### `args`
     // - `int32_t` (usingHoldTargeting - promoted from `s32`)
-    VB_TOGGLE_Z_TARGET_SWITCH_TARGETS
+    VB_TOGGLE_Z_TARGET_SWITCH_TARGETS,
 
     // #### `result`
     // ```c
