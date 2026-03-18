@@ -802,44 +802,42 @@ void Minimap_ApplyCompassIconMatrixTranslation(PlayState* play, Vec3f* pos) {
     tempX /= R_COMPASS_SCALE_X * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1);
     tempZ /= R_COMPASS_SCALE_Y;
 
-    s16 tempXOffset =
-        R_COMPASS_OFFSET_X + (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? mirrorOffset : 0);
+    s16 tempXOffset = R_COMPASS_OFFSET_X + (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? mirrorOffset : 0);
     if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) != ORIGINAL_LOCATION) {
         if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_LEFT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
                 X_Margins_Minimap = Left_MM_Margin;
             };
-            Matrix_Translate(
-                OTRGetDimensionFromLeftEdge((tempXOffset + (X_Margins_Minimap * 10) + tempX +
-                                                (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) * 10)) /
-                                            10.0f),
-                (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap * 10) * -1) - tempZ +
-                    ((CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) * 10) * -1)) /
-                    10.0f,
-                0.0f, MTXMODE_NEW);
+            Matrix_Translate(OTRGetDimensionFromLeftEdge((tempXOffset + (X_Margins_Minimap * 10) + tempX +
+                                                          (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) * 10)) /
+                                                         10.0f),
+                             (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap * 10) * -1) - tempZ +
+                              ((CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) * 10) * -1)) /
+                                 10.0f,
+                             0.0f, MTXMODE_NEW);
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_RIGHT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
                 X_Margins_Minimap = Right_MM_Margin;
             };
             Matrix_Translate(
                 OTRGetDimensionFromRightEdge((tempXOffset + (X_Margins_Minimap * 10) + tempX +
-                                                (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) * 10)) /
-                                                10.0f),
+                                              (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) * 10)) /
+                                             10.0f),
                 (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap * 10) * -1) - tempZ +
-                    ((CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) * 10) * -1)) /
+                 ((CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) * 10) * -1)) /
                     10.0f,
                 0.0f, MTXMODE_NEW);
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_NONE) {
             Matrix_Translate(
                 (tempXOffset + tempX + (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) * 10) / 10.0f),
                 (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap * 10) * -1) - tempZ +
-                    ((CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) * 10) * -1)) /
+                 ((CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) * 10) * -1)) /
                     10.0f,
                 0.0f, MTXMODE_NEW);
         }
     } else {
         Matrix_Translate(OTRGetDimensionFromRightEdge((tempXOffset + (X_Margins_Minimap * 10) + tempX) / 10.0f),
-                            (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap * 10) * -1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
+                         (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap * 10) * -1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
     }
 }
 

@@ -144,13 +144,15 @@ void AnchorMainMenu(WidgetInfo& info) {
 
     bool hideLocations = Anchor::Instance->roomState.showLocationsMode == 0;
     ImGui::BeginDisabled(hideLocations);
-    UIWidgets::CVarCheckbox("Show Other Players on Minimap", CVAR_REMOTE_ANCHOR("ShowOtherPlayersOnMinimap"),
+    UIWidgets::CVarCheckbox(
+        "Show Other Players on Minimap", CVAR_REMOTE_ANCHOR("ShowOtherPlayersOnMinimap"),
         UIWidgets::CheckboxOptions()
             .Color(THEME_COLOR)
             .DefaultValue(true)
-            .Tooltip(!hideLocations ? "Other players will appear on the minimap in areas where you have the compass. "
-                                      "Visibility is restricted according to the Show Locations mode for the room." :
-                                      "Cannot show other players because the room's Show Locations mode is set to None."));
+            .Tooltip(!hideLocations
+                         ? "Other players will appear on the minimap in areas where you have the compass. "
+                           "Visibility is restricted according to the Show Locations mode for the room."
+                         : "Cannot show other players because the room's Show Locations mode is set to None."));
     ImGui::EndDisabled();
 
     ImGui::Spacing();

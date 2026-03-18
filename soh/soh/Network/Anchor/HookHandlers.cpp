@@ -407,35 +407,41 @@ void Anchor::RegisterHooks() {
     };
 
     COND_HOOK(OnMinimapDrawCompassIcons, isConnected, [&]() {
-        if (!CVarGetInteger(CVAR_REMOTE_ANCHOR("ShowOtherPlayersOnMinimap"), 1) || Anchor::Instance->roomState.showLocationsMode == 0) {
+        if (!CVarGetInteger(CVAR_REMOTE_ANCHOR("ShowOtherPlayersOnMinimap"), 1) ||
+            Anchor::Instance->roomState.showLocationsMode == 0) {
             return;
         }
 
         std::vector<CompassIcon> compassIcons;
 
         bool isInDungeon = gPlayState->sceneNum == SCENE_DEKU_TREE || gPlayState->sceneNum == SCENE_DODONGOS_CAVERN ||
-            gPlayState->sceneNum == SCENE_JABU_JABU || gPlayState->sceneNum == SCENE_FOREST_TEMPLE ||
-            gPlayState->sceneNum == SCENE_FIRE_TEMPLE || gPlayState->sceneNum == SCENE_WATER_TEMPLE ||
-            gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE || gPlayState->sceneNum == SCENE_SHADOW_TEMPLE ||
-            gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL || gPlayState->sceneNum == SCENE_ICE_CAVERN;
+                           gPlayState->sceneNum == SCENE_JABU_JABU || gPlayState->sceneNum == SCENE_FOREST_TEMPLE ||
+                           gPlayState->sceneNum == SCENE_FIRE_TEMPLE || gPlayState->sceneNum == SCENE_WATER_TEMPLE ||
+                           gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE || gPlayState->sceneNum == SCENE_SHADOW_TEMPLE ||
+                           gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL || gPlayState->sceneNum == SCENE_ICE_CAVERN;
         std::string teamId = CVarGetString(CVAR_REMOTE_ANCHOR("TeamId"), "default");
 
-        // When transitioning to a new room via a door, curRoom.num updates immediately but the minimap still shows the previous room while fading out
-        s8 displayedRoomNum = gPlayState->roomCtx.prevRoom.num >= 0 ? gPlayState->roomCtx.prevRoom.num : gPlayState->roomCtx.curRoom.num;
+        // When transitioning to a new room via a door, curRoom.num updates immediately but the minimap still shows the
+        // previous room while fading out
+        s8 displayedRoomNum =
+            gPlayState->roomCtx.prevRoom.num >= 0 ? gPlayState->roomCtx.prevRoom.num : gPlayState->roomCtx.curRoom.num;
 
         for (auto& [clientId, client] : Anchor::Instance->clients) {
-            // Show compass icons for other players in the current scene. Also require them to be in the current room within dungeons
-            // If showLocationsMode isn't all players (2), only show compass icons for players of the same team
+            // Show compass icons for other players in the current scene. Also require them to be in the current room
+            // within dungeons. If showLocationsMode isn't all players (2), only show compass icons for players of the
+            // same team
             if (!client.self && client.online && client.player && client.sceneNum == gPlayState->sceneNum &&
                 (!isInDungeon || client.curRoomNum == displayedRoomNum) &&
                 (Anchor::Instance->roomState.showLocationsMode == 2 || client.teamId == teamId)) {
-                compassIcons.push_back(CompassIcon{ client.player->actor.world.pos, client.player->actor.shape.rot, 0.3f, client.color });
+                compassIcons.push_back(
+                    CompassIcon{ client.player->actor.world.pos, client.player->actor.shape.rot, 0.3f, client.color });
             }
         }
 
         // The local player's compass icon is always last so it gets drawn above the others
         Player* player = GET_PLAYER(gPlayState);
-        compassIcons.push_back(CompassIcon{ player->actor.world.pos, player->actor.shape.rot, 0.4f, CVarGetColor24(CVAR_REMOTE_ANCHOR("Color.Value"), { 100, 255, 100 }) });
+        compassIcons.push_back(CompassIcon{ player->actor.world.pos, player->actor.shape.rot, 0.4f,
+                                            CVarGetColor24(CVAR_REMOTE_ANCHOR("Color.Value"), { 100, 255, 100 }) });
 
         OPEN_DISPS(gPlayState->state.gfxCtx);
         Gfx_SetupDL_42Overlay(gPlayState->state.gfxCtx);
@@ -443,7 +449,7 @@ void Anchor::RegisterHooks() {
         for (auto& compassIcon : compassIcons) {
             gSPMatrix(OVERLAY_DISP++, &gMtxClear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
-                            PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
+                              PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
 
@@ -451,11 +457,13 @@ void Anchor::RegisterHooks() {
             Matrix_Scale(compassIcon.scale, compassIcon.scale, compassIcon.scale, MTXMODE_APPLY);
             Matrix_RotateX(-1.6f, MTXMODE_APPLY);
             s16 rotation = ((0x7FFF - compassIcon.rot.y) / 0x400) *
-                    (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1);
+                           (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1);
             Matrix_RotateY(rotation / 10.0f, MTXMODE_APPLY);
-            gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(gPlayState->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, compassIcon.color.r, compassIcon.color.g, compassIcon.color.b, 255);
+            gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(gPlayState->state.gfxCtx),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, compassIcon.color.r, compassIcon.color.g, compassIcon.color.b,
+                            255);
             gSPDisplayList(OVERLAY_DISP++, (Gfx*)gCompassArrowDL);
         }
 
