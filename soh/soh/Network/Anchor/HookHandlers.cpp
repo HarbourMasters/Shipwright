@@ -420,11 +420,14 @@ void Anchor::RegisterHooks() {
             gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL || gPlayState->sceneNum == SCENE_ICE_CAVERN;
         std::string teamId = CVarGetString(CVAR_REMOTE_ANCHOR("TeamId"), "default");
 
+        // When transitioning to a new room via a door, curRoom.num updates immediately but the minimap still shows the previous room while fading out
+        s8 displayedRoomNum = gPlayState->roomCtx.prevRoom.num >= 0 ? gPlayState->roomCtx.prevRoom.num : gPlayState->roomCtx.curRoom.num;
+
         for (auto& [clientId, client] : Anchor::Instance->clients) {
             // Show compass icons for other players in the current scene. Also require them to be in the current room within dungeons
             // If showLocationsMode isn't all players (2), only show compass icons for players of the same team
             if (!client.self && client.online && client.player && client.sceneNum == gPlayState->sceneNum &&
-                (!isInDungeon || client.curRoomNum == gPlayState->roomCtx.curRoom.num) &&
+                (!isInDungeon || client.curRoomNum == displayedRoomNum) &&
                 (Anchor::Instance->roomState.showLocationsMode == 2 || client.teamId == teamId)) {
                 compassIcons.push_back(CompassIcon{ client.player->actor.world.pos, client.player->actor.shape.rot, 0.3f, client.color });
             }
