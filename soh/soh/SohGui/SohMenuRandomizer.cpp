@@ -53,11 +53,13 @@ void DrawLocationsMenu(WidgetInfo& info) {
     bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-    if (locationsDirty || currMQDungeonSetting != prevMQDungeonSetting) {
+    if (locationsDirty || currMQDungeonSetting != prevMQDungeonSetting || GameInteractor::IsSaveLoaded()) {
         locationsDirty = false;
+        prevMQDungeonSetting = currMQDungeonSetting;
         UpdateMenuLocations();
+    } else {
+        RandomizerCheckObjects::UpdateImGuiVisibility();
     }
-    prevMQDungeonSetting = currMQDungeonSetting;
 
     if (ImGui::BeginTable("tableRandoLocations", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Included", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -97,11 +99,13 @@ void DrawLocationsMenu(WidgetInfo& info) {
                             UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                             if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Right)) {
                                 excludedLocations.insert(location);
-                                // todo: this efficently when we build out cvar array support
+                                // todo: this efficiently when we build out cvar array support
                                 std::string excludedLocationString = "";
                                 for (auto excludedLocationIt : excludedLocations) {
-                                    excludedLocationString += std::to_string(excludedLocationIt);
-                                    excludedLocationString += ",";
+                                    if (!excludedLocationString.empty()) {
+                                        excludedLocationString += ",";
+                                    }
+                                    excludedLocationString += excludedLocationIt;
                                 }
                                 CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"),
                                               excludedLocationString.c_str());
@@ -142,11 +146,13 @@ void DrawLocationsMenu(WidgetInfo& info) {
                             UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                             if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Left)) {
                                 excludedLocations.erase(elfound);
-                                // todo: this efficently when we build out cvar array support
+                                // todo: this efficiently when we build out cvar array support
                                 std::string excludedLocationString = "";
                                 for (auto excludedLocationIt : excludedLocations) {
-                                    excludedLocationString += std::to_string(excludedLocationIt);
-                                    excludedLocationString += ",";
+                                    if (!excludedLocationString.empty()) {
+                                        excludedLocationString += ",";
+                                    }
+                                    excludedLocationString += excludedLocationIt;
                                 }
                                 if (excludedLocationString == "") {
                                     CVarClear(CVAR_RANDOMIZER_SETTING("ExcludedLocations"));
@@ -177,7 +183,7 @@ void DrawLocationsMenu(WidgetInfo& info) {
 
 void UpdateMenuLocations() {
     RandomizerCheckObjects::UpdateImGuiVisibility();
-    // todo: this efficently when we build out cvar array support
+    // todo: this efficiently when we build out cvar array support
     std::stringstream excludedLocationStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
     std::string excludedLocationString;
     excludedLocations.clear();
@@ -188,7 +194,7 @@ void UpdateMenuLocations() {
 
 void UpdateMenuTricks() {
     // RandomizerTricks::UpdateImGuiVisibility();
-    //  todo: this efficently when we build out cvar array support
+    //  todo: this efficiently when we build out cvar array support
     std::stringstream enabledTrickStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), ""));
     std::string enabledTrickString;
     enabledTricks.clear();

@@ -382,7 +382,7 @@ void EnBox_AppearInit(EnBox* this, PlayState* play) {
         EnBox_SetupAction(this, EnBox_AppearAnimation);
         this->unk_1A8 = 0;
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, this->dyna.actor.home.pos.x, this->dyna.actor.home.pos.y,
-                    this->dyna.actor.home.pos.z, 0, 0, 0, 0x0011, true);
+                    this->dyna.actor.home.pos.z, 0, 0, 0, 0x0011);
         Audio_PlaySoundGeneral(NA_SE_EV_TRE_BOX_APPEAR, &this->dyna.actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
@@ -582,20 +582,18 @@ void EnBox_UpdateTexture(EnBox* this, PlayState* play) {
     if (!isVanilla) {
         getItemCategory = chestItem.getItemCategory;
         // If they have bombchus, don't consider the bombchu item major
-        if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-            ((chestItem.modIndex == MOD_RANDOMIZER && chestItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
-             (chestItem.modIndex == MOD_NONE &&
-              (chestItem.getItemId == GI_BOMBCHUS_5 || chestItem.getItemId == GI_BOMBCHUS_10 ||
-               chestItem.getItemId == GI_BOMBCHUS_20)))) {
-            getItemCategory = ITEM_CATEGORY_JUNK;
+        if ((INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
+             ((chestItem.modIndex == MOD_RANDOMIZER && chestItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
+              (chestItem.modIndex == MOD_NONE &&
+               (chestItem.getItemId == GI_BOMBCHUS_5 || chestItem.getItemId == GI_BOMBCHUS_10 ||
+                chestItem.getItemId == GI_BOMBCHUS_20)))) ||
             // If it's a bottle and they already have one, consider the item lesser
-        } else if ((chestItem.modIndex == MOD_RANDOMIZER && chestItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
-                    chestItem.getItemId <= RG_BOTTLE_WITH_POE) ||
-                   (chestItem.modIndex == MOD_NONE &&
-                    (chestItem.getItemId == GI_BOTTLE || chestItem.getItemId == GI_MILK_BOTTLE))) {
-            if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
-                getItemCategory = ITEM_CATEGORY_LESSER;
-            }
+            ((chestItem.modIndex == MOD_RANDOMIZER && chestItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
+              chestItem.getItemId <= RG_BOTTLE_WITH_POE) ||
+             (chestItem.modIndex == MOD_NONE &&
+              (chestItem.getItemId == GI_BOTTLE || chestItem.getItemId == GI_MILK_BOTTLE)) &&
+                 gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE)) {
+            getItemCategory = ITEM_CATEGORY_LESSER;
         }
     }
 

@@ -261,7 +261,7 @@ void UseBombs(Actor* thisx, PlayState* play, u8 started) {
             if (AMMO(ITEM_BOMB) > 0 && play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].length < 3) {
                 this->itemTimer = 10;
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x, this->actor.world.pos.y + 7,
-                            this->actor.world.pos.z, 0, 0, 0, 0, false);
+                            this->actor.world.pos.z, 0, 0, 0, 0);
                 Inventory_ChangeAmmo(ITEM_BOMB, -1);
             } else {
                 Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
@@ -301,7 +301,7 @@ void UseBombchus(Actor* thisx, PlayState* play, u8 started) {
             if (AMMO(ITEM_BOMBCHU) > 0) {
                 this->itemTimer = 10;
                 EnBom* bomb = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                                          this->actor.world.pos.y + 7, this->actor.world.pos.z, 0, 0, 0, 0, false);
+                                          this->actor.world.pos.y + 7, this->actor.world.pos.z, 0, 0, 0, 0);
                 bomb->timer = 0;
                 Inventory_ChangeAmmo(ITEM_BOMBCHU, -1);
             } else {
@@ -358,7 +358,7 @@ void UseNuts(Actor* thisx, PlayState* play, u8 started) {
             if (AMMO(ITEM_NUT) > 0) {
                 this->itemTimer = 10;
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, this->actor.world.pos.x, this->actor.world.pos.y + 7,
-                            this->actor.world.pos.z, 0x1000, this->actor.world.rot.y, 0, ARROW_NUT, false);
+                            this->actor.world.pos.z, 0x1000, this->actor.world.rot.y, 0, ARROW_NUT);
                 Inventory_ChangeAmmo(ITEM_NUT, -1);
             } else {
                 Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
