@@ -26,7 +26,7 @@ void RegionTable_Init_LonLonRanch() {
         LOCATION(RC_LLR_NEAR_TREE_CRATE, 	logic->IsChild && logic->CanBreakCrates()),
         LOCATION(RC_LLR_TREE,            	logic->IsChild && logic->CanBonkTrees()),
         LOCATION(RC_LLR_WONDER_BIG_FENCE,   logic->IsAdult && logic->CanUse(RG_EPONAS_SONG)),
-        LOCATION(RC_LLR_WONDER_SMALL_FENCE, logic->IsAdult && logic->CanUse(RG_EPONAS_SONG)),		
+        LOCATION(RC_LLR_WONDER_SMALL_FENCE, logic->IsAdult && logic->CanUse(RG_EPONAS_SONG)),
     }, {
         //Exits
         ENTRANCE(RR_HYRULE_FIELD,     true),
