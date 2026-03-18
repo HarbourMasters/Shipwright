@@ -100,7 +100,7 @@ static Vec3f GetStackOffset(RandomizerCheck rc) {
 
 void SpawnFountainWonderItem() {
     if (LINK_IS_ADULT && gPlayState->sceneNum == SCENE_ZORAS_FOUNTAIN) {
-        Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WONDER_ITEM, -667, 320, 1053, 0, 0, 1, 4799, false);
+        Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WONDER_ITEM, -667, 320, 1053, 0, 0, 1, 4799);
     }
 }
 
