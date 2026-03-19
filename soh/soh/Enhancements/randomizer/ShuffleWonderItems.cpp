@@ -282,7 +282,7 @@ void EnWonderItem_RandomizerSpawnCollectible(EnWonderItem* wonderActor, PlayStat
     EnItem00* item00;
     Player* player = GET_PLAYER(gPlayState);
 
-    if (wonderIdentity == nullptr) {
+    if (wonderIdentity == nullptr || wonderIdentity->randomizerCheck == RC_HC_WONDER_COURTYARD_LEFT_WINDOW) {
         return;
     }
     // if activated via tag points, autocollect the check, otherwise spawn the item toward the player
@@ -305,6 +305,20 @@ void EnWonderItem_RandomizerSpawnCollectible(EnWonderItem* wonderActor, PlayStat
     }
 }
 
+void WonderHeishi_RandomizerSpawnCollectible(PlayState* play, Vec3f pos, f32 rotY) {
+    EnItem00* item00;
+    Player* player = GET_PLAYER(gPlayState);
+
+    item00 = (EnItem00*)Item_DropCollectible(play, &pos, ITEM00_SOH_DUMMY);
+    item00->randoInf = RAND_INF_HC_WONDER_COURTYARD_LEFT_WINDOW;
+    item00->itemEntry =
+        Rando::Context::GetInstance()->GetFinalGIEntry(RC_HC_WONDER_COURTYARD_LEFT_WINDOW, true, GI_NONE);
+    item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
+    item00->actor.velocity.y = Rand_CenteredFloat(5.0f) + 10.0f;
+    item00->actor.speedXZ = Rand_CenteredFloat(5.0f) + 10.0f;
+    item00->actor.world.rot.y = rotY;
+}
+
 void RegisterShuffleWonderItems() {
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS);
     bool isNtscUs10 = false;
@@ -313,9 +327,9 @@ void RegisterShuffleWonderItems() {
             isNtscUs10 = true;
         }
     }
-    bool shouldRegisterNTSC10 = shouldRegister && isNtscUs10 &&
-                                (RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_ALL) ||
-                                 RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_OVERWORLD));
+    bool shouldRegisterOverworld = RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_ALL) ||
+                                   RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_OVERWORLD);
+    bool shouldRegisterNTSC10 = shouldRegister && isNtscUs10 && shouldRegisterOverworld;
 
     COND_ID_HOOK(OnActorInit, ACTOR_EN_WONDER_ITEM, shouldRegister, [](void* actorRef) {
         Actor* actor = static_cast<Actor*>(actorRef);
@@ -337,7 +351,7 @@ void RegisterShuffleWonderItems() {
     // Draw particle effect in wonder item spot to indicate a randomized item
     COND_ID_HOOK(OnActorUpdate, ACTOR_EN_WONDER_ITEM, shouldRegister, EnWonderItem_RandomizerDrawSetup);
 
-    // Spawn missing wonder item for NTSC 1.0
+    // Spawn missing wonder items for NTSC 1.0
     COND_HOOK(OnSceneSpawnActors, shouldRegisterNTSC10, SpawnNTSC10WonderItem);
 
     // Do not spawn vanilla wonder item, instead spawn the randomized item
@@ -345,6 +359,17 @@ void RegisterShuffleWonderItems() {
         EnWonderItem* wonderActor = va_arg(args, EnWonderItem*);
         if (EnWonderItem_RandomizerHoldsItem(wonderActor, gPlayState)) {
             EnWonderItem_RandomizerSpawnCollectible(wonderActor, gPlayState);
+            *should = false;
+        }
+    });
+
+    // Do not spawn castle courtyard guard bomb, instead spawn the randomized item
+    COND_VB_SHOULD(VB_WONDER_HEISHI_ITEM, shouldRegisterOverworld, {
+        if (!Flags_GetRandomizerInf(RAND_INF_HC_WONDER_COURTYARD_LEFT_WINDOW)) {
+            Vec3f pos = va_arg(args, Vec3f);
+            f32 rotY = (f32)va_arg(args, double);
+
+            WonderHeishi_RandomizerSpawnCollectible(gPlayState, pos, rotY);
             *should = false;
         }
     });
@@ -391,9 +416,11 @@ void Rando::StaticData::RegisterWonderItemLocations() {
     locationTable[RC_HC_WONDER_MOAT_8]                                          = Location::WonderItem(RC_HC_WONDER_MOAT_8,                                             RCQUEST_BOTH,       RCAREA_HYRULE_CASTLE,           SCENE_HYRULE_CASTLE,                TWO_ACTOR_PARAMS(-557, 568),            "Wonder Moat Before Gate 5",            RHT_WONDER_ITEM_HYRULE_CASTLE,              RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_WONDER_MOAT_8));
     locationTable[RC_HC_WONDER_MOAT_9]                                          = Location::WonderItem(RC_HC_WONDER_MOAT_9,                                             RCQUEST_BOTH,       RCAREA_HYRULE_CASTLE,           SCENE_HYRULE_CASTLE,                TWO_ACTOR_PARAMS(-819, 613),            "Wonder Moat Before Gate 6",            RHT_WONDER_ITEM_HYRULE_CASTLE,              RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_WONDER_MOAT_9));
     locationTable[RC_HC_WONDER_MOAT_10]                                         = Location::WonderItem(RC_HC_WONDER_MOAT_10,                                            RCQUEST_BOTH,       RCAREA_HYRULE_CASTLE,           SCENE_HYRULE_CASTLE,                TWO_ACTOR_PARAMS(-1190, 561),           "Wonder Moat Before Gate 7",            RHT_WONDER_ITEM_HYRULE_CASTLE,              RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_WONDER_MOAT_10));
+    locationTable[RC_HC_WONDER_COURTYARD_RIGHT_WINDOW]                          = Location::WonderItem(RC_HC_WONDER_COURTYARD_RIGHT_WINDOW,                             RCQUEST_BOTH,       RCAREA_HYRULE_CASTLE,           SCENE_CASTLE_COURTYARD_ZELDA,       TWO_ACTOR_PARAMS(0, -481),              "Wonder Courtyard Right Window",        RHT_WONDER_ITEM_CASTLE_COURTYARD_ZELDA,     RG_PURPLE_RUPEE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_WONDER_COURTYARD_RIGHT_WINDOW));
+    locationTable[RC_HC_WONDER_COURTYARD_LEFT_WINDOW]                           = Location::WonderItem(RC_HC_WONDER_COURTYARD_LEFT_WINDOW,                              RCQUEST_BOTH,       RCAREA_HYRULE_CASTLE,           SCENE_CASTLE_COURTYARD_ZELDA,       TWO_ACTOR_PARAMS(0, 476),               "Wonder Courtyard Left Window",         RHT_WONDER_ITEM_CASTLE_COURTYARD_ZELDA,     RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_WONDER_COURTYARD_LEFT_WINDOW));
     locationTable[RC_LW_WONDER_BACK_SKULL_KIDS_GRASS_1]                         = Location::WonderItem(RC_LW_WONDER_BACK_SKULL_KIDS_GRASS_1,                            RCQUEST_BOTH,       RCAREA_LOST_WOODS,              SCENE_LOST_WOODS,                   TWO_ACTOR_PARAMS(1371, 497),            "Wonder Back Skull Kids Grass 1",       RHT_WONDER_ITEM_LOST_WOODS,                 RG_BLUE_RUPEE,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_WONDER_BACK_SKULL_KIDS_GRASS_1));
     locationTable[RC_LW_WONDER_BACK_SKULL_KIDS_GRASS_2]                         = Location::WonderItem(RC_LW_WONDER_BACK_SKULL_KIDS_GRASS_2,                            RCQUEST_BOTH,       RCAREA_LOST_WOODS,              SCENE_LOST_WOODS,                   TWO_ACTOR_PARAMS(1038, 557),            "Wonder Back Skull Kids Grass 2",       RHT_WONDER_ITEM_LOST_WOODS,                 RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_WONDER_BACK_SKULL_KIDS_GRASS_2));
-    locationTable[RC_LW_WONDER_FRONT_SKULL_KIDS_GRASS]                          = Location::WonderItem(RC_LW_WONDER_FRONT_SKULL_KIDS_GRASS,                             RCQUEST_BOTH,       RCAREA_LOST_WOODS,              SCENE_LOST_WOODS,                   TWO_ACTOR_PARAMS(1256, 194),             "Wonder Front Skull Kids Grass",        RHT_WONDER_ITEM_LOST_WOODS,                 RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_WONDER_FRONT_SKULL_KIDS_GRASS));
+    locationTable[RC_LW_WONDER_FRONT_SKULL_KIDS_GRASS]                          = Location::WonderItem(RC_LW_WONDER_FRONT_SKULL_KIDS_GRASS,                             RCQUEST_BOTH,       RCAREA_LOST_WOODS,              SCENE_LOST_WOODS,                   TWO_ACTOR_PARAMS(1256, 194),            "Wonder Front Skull Kids Grass",        RHT_WONDER_ITEM_LOST_WOODS,                 RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_WONDER_FRONT_SKULL_KIDS_GRASS));
     locationTable[RC_SFM_WONDER_ENTRANCE]                                       = Location::WonderItem(RC_SFM_WONDER_ENTRANCE,                                          RCQUEST_BOTH,       RCAREA_SACRED_FOREST_MEADOW,    SCENE_SACRED_FOREST_MEADOW,         TWO_ACTOR_PARAMS(-351, 2121),           "Wonder Entrance Grass",                RHT_WONDER_ITEM_SACRED_FOREST_MEADOW,       RG_BLUE_RUPEE,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_WONDER_ENTRANCE));
     locationTable[RC_SFM_WONDER_MAZE_1]                                         = Location::WonderItem(RC_SFM_WONDER_MAZE_1,                                            RCQUEST_BOTH,       RCAREA_SACRED_FOREST_MEADOW,    SCENE_SACRED_FOREST_MEADOW,         TWO_ACTOR_PARAMS(100, 1375),            "Wonder First Row Grass",               RHT_WONDER_ITEM_SACRED_FOREST_MEADOW,       RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_WONDER_MAZE_1));
     locationTable[RC_SFM_WONDER_MAZE_2]                                         = Location::WonderItem(RC_SFM_WONDER_MAZE_2,                                            RCQUEST_BOTH,       RCAREA_SACRED_FOREST_MEADOW,    SCENE_SACRED_FOREST_MEADOW,         TWO_ACTOR_PARAMS(100, 1084),            "Wonder Second Row Grass 1",            RHT_WONDER_ITEM_SACRED_FOREST_MEADOW,       RG_BLUE_RUPEE,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_SFM_WONDER_MAZE_2));

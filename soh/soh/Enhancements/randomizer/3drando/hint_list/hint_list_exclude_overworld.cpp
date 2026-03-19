@@ -2156,6 +2156,10 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                                      /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Schloss von Hyrule# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, un #objet merveilleux au Château d'Hyrule# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_WONDER_ITEM_CASTLE_COURTYARD_ZELDA] = HintText(CustomMessage("They say that #shooting a window in a castle# reveals #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß das #Schießen auf ein Fenster in einem Schloss# #[[1]]# enthülle.",
+                                                     /*french*/ "Selon moi, #tirer sur une fenêtre dans un château# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
     hintTextTable[RHT_WONDER_ITEM_LOST_WOODS] = HintText(CustomMessage("They say that a #wonder item in the woods# hides #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in den Wäldern# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, un #objet merveilleux dans des bois# cache #[[1]]#.", {QM_RED, QM_GREEN}));

@@ -316,7 +316,7 @@ void EnWonderItem_BombSoldier(EnWonderItem* this, PlayState* play) {
             // "Careless soldier spawned"
             osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ うっかり兵セット完了 ☆☆☆☆☆ \n" VT_RST);
         }
-        if (this->switchFlag >= 0) {
+        if (GameInteractor_Should(VB_WONDER_DROP_ITEM, this->switchFlag >= 0, this)) {
             Flags_SetSwitch(play, this->switchFlag);
         }
         Actor_Kill(&this->actor);

@@ -2384,6 +2384,15 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - 'Vec3f' pos
+    // - 'f32' rotY
+    VB_WONDER_HEISHI_ITEM,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnWonderTalk2`
     VB_WONDER_TALK,
 
