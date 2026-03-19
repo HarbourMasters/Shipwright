@@ -364,8 +364,6 @@ void RegionTable_Init_GanonsCastle() {
     areaTable[RR_GANONS_CASTLE_MQ_MAIN] = Region("Ganon's Castle MQ Main", SCENE_INSIDE_GANONS_CASTLE, {}, {
         //Locations
         LOCATION(RC_SHEIK_HINT_MQ_GC,          logic->HasItem(RG_SPEAK_HYLIAN)),
-        LOCATION(RC_GANONS_CASTLE_MQ_WONDER_1, true),
-        LOCATION(RC_GANONS_CASTLE_MQ_WONDER_2, true),
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MQ_LOBBY,                       true),
@@ -566,7 +564,10 @@ void RegionTable_Init_GanonsCastle() {
         //Events
         //A torch run from RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_STARTING_LEDGE is possible but tight, so would be a trick
         EVENT_ACCESS(LOGIC_SHADOW_TRIAL_FIRST_CHEST, logic->CanDetonateUprightBombFlower()),
-    }, {}, {
+    }, {
+        //Locations
+        LOCATION(RC_GANONS_CASTLE_MQ_WONDER_SHADOW_TRIAL, (logic->CanDetonateBombFlowers() || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE))) && (logic->EffectiveHealth() != 1 || logic->CanUse(RG_NAYRUS_LOVE))),
+    }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_CHEST_PLATFORM, logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS)),
         ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BEAMOS_TORCH,   true),

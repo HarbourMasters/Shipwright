@@ -286,9 +286,9 @@ void EnWonderItem_RandomizerSpawnCollectible(EnWonderItem* wonderActor, PlayStat
         return;
     }
     // if activated via tag points, autocollect the check, otherwise spawn the item toward the player
+    // Water Temple MQ hookshot staircase can easily spawn unreachable items, autocollect
     if (wonderActor->wonderMode == WONDERITEM_MULTITAG_FREE || wonderActor->wonderMode == WONDERITEM_PROXIMITY_DROP ||
         wonderActor->wonderMode == WONDERITEM_MULTITAG_ORDERED ||
-        wonderActor->wonderMode == WONDERITEM_PROXIMITY_SWITCH ||
         (wonderIdentity->randomizerCheck >= RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_RIGHT_1 &&
          wonderIdentity->randomizerCheck <= RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_LEFT_3)) {
         Flags_SetRandomizerInf(wonderIdentity->randomizerInf);
@@ -298,10 +298,12 @@ void EnWonderItem_RandomizerSpawnCollectible(EnWonderItem* wonderActor, PlayStat
         item00->itemEntry =
             Rando::Context::GetInstance()->GetFinalGIEntry(wonderIdentity->randomizerCheck, true, GI_NONE);
         item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
-        item00->actor.velocity.y = 3.0f;
-        item00->actor.speedXZ = 3.0f;
-        item00->actor.world.rot.y =
-            Math_Vec3f_Yaw(&item00->actor.world.pos, &player->actor.world.pos) + (s16)Rand_CenteredFloat(16384.0f);
+        if (gPlayState->sceneNum != SCENE_INSIDE_GANONS_CASTLE) {
+            item00->actor.velocity.y = 3.0f;
+            item00->actor.speedXZ = 3.0f;
+            item00->actor.world.rot.y =
+                Math_Vec3f_Yaw(&item00->actor.world.pos, &player->actor.world.pos) + (s16)Rand_CenteredFloat(16384.0f);
+        }
     }
 }
 
@@ -584,8 +586,7 @@ void Rando::StaticData::RegisterWonderItemLocations() {
     locationTable[RC_BOTTOM_OF_THE_WELL_MQ_WONDER_SIDE_ROOM_4]                  = Location::WonderItem(RC_BOTTOM_OF_THE_WELL_MQ_WONDER_SIDE_ROOM_4,                     RCQUEST_MQ,       RCAREA_BOTTOM_OF_THE_WELL,        SCENE_BOTTOM_OF_THE_WELL,           TWO_ACTOR_PARAMS(5, 3),                 "MQ Wonder East Room Sign 4",           RHT_BOTTOM_OF_THE_WELL_WONDER_ITEM,         RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_BOTTOM_OF_THE_WELL_MQ_WONDER_SIDE_ROOM_4));
     locationTable[RC_GERUDO_TRAINING_GROUND_MQ_WONDER_DINOLFOS_ROOM]            = Location::WonderItem(RC_GERUDO_TRAINING_GROUND_MQ_WONDER_DINOLFOS_ROOM,               RCQUEST_MQ,       RCAREA_GERUDO_TRAINING_GROUND,    SCENE_GERUDO_TRAINING_GROUND,       TWO_ACTOR_PARAMS(7, 9),                 "MQ Wonder Dinolfos Sign",              RHT_WONDER_ITEM_GERUDO_TRAINING_GROUND,     RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GERUDO_TRAINING_GROUND_MQ_WONDER_DINOLFOS_ROOM));
     locationTable[RC_GERUDO_TRAINING_GROUND_MQ_WONDER_EYE_STATUE]               = Location::WonderItem(RC_GERUDO_TRAINING_GROUND_MQ_WONDER_EYE_STATUE,                  RCQUEST_MQ,       RCAREA_GERUDO_TRAINING_GROUND,    SCENE_GERUDO_TRAINING_GROUND,       TWO_ACTOR_PARAMS(4, 4),                 "MQ Wonder Top of Eye Statue",          RHT_WONDER_ITEM_GERUDO_TRAINING_GROUND,     RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GERUDO_TRAINING_GROUND_MQ_WONDER_EYE_STATUE));
-    locationTable[RC_GANONS_CASTLE_MQ_WONDER_1]                                 = Location::WonderItem(RC_GANONS_CASTLE_MQ_WONDER_1,                                    RCQUEST_MQ,       RCAREA_GANONS_CASTLE,             SCENE_INSIDE_GANONS_CASTLE,         TWO_ACTOR_PARAMS(1, 5),                 "MQ Wonder Spirit Trial Entrance 1",    RHT_GANONS_CASTLE_WONDER_ITEM,              RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GANONS_CASTLE_MQ_WONDER_1));
-    locationTable[RC_GANONS_CASTLE_MQ_WONDER_2]                                 = Location::WonderItem(RC_GANONS_CASTLE_MQ_WONDER_2,                                    RCQUEST_MQ,       RCAREA_GANONS_CASTLE,             SCENE_INSIDE_GANONS_CASTLE,         TWO_ACTOR_PARAMS(1, 4),                 "MQ Wonder Spirit Trial Entrance 2",    RHT_GANONS_CASTLE_WONDER_ITEM,              RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GANONS_CASTLE_MQ_WONDER_2));
+    locationTable[RC_GANONS_CASTLE_MQ_WONDER_SHADOW_TRIAL]                      = Location::WonderItem(RC_GANONS_CASTLE_MQ_WONDER_SHADOW_TRIAL,                         RCQUEST_MQ,       RCAREA_GANONS_CASTLE,             SCENE_INSIDE_GANONS_CASTLE,         TWO_ACTOR_PARAMS(12, 12),               "MQ Wonder Shadow Trial Bombflower",    RHT_GANONS_CASTLE_WONDER_ITEM,              RG_DEKU_NUTS_5,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GANONS_CASTLE_MQ_WONDER_SHADOW_TRIAL));
 
     // clang-format on
 }

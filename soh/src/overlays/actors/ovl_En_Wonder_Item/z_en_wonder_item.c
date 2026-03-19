@@ -259,7 +259,6 @@ void EnWonderItem_ProximitySwitch(EnWonderItem* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if ((this->actor.xzDistToPlayer < 50.0f) && (fabsf(this->actor.world.pos.y - player->actor.world.pos.y) < 30.0f)) {
-        if (GameInteractor_Should(VB_WONDER_DROP_ITEM, true, this)) {}
         if (this->switchFlag >= 0) {
             Flags_SetSwitch(play, this->switchFlag);
         }
