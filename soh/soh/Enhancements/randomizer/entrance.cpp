@@ -4,8 +4,15 @@
 #include "3drando/pool_functions.hpp"
 #include "3drando/item_pool.hpp"
 #include "../debugger/performanceTimer.h"
+#include "soh/Enhancements/gameconsole.h"
 
 #include <spdlog/spdlog.h>
+
+extern "C" {
+#include "variables.h"
+#include "macros.h"
+#include "functions.h"
+}
 
 namespace Rando {
 EntranceLinkInfo NO_RETURN_ENTRANCE = { EntranceType::None, RR_NONE, RR_NONE, -1 };
@@ -1727,3 +1734,14 @@ const Entrance* EntranceShuffler::GetEntranceByIndex(int16_t index) {
 extern "C" EntranceOverride* Randomizer_GetEntranceOverrides() {
     return Rando::Context::GetInstance()->GetEntranceShuffler()->entranceOverrides.data();
 }
+
+void RegisterEntranceShuffleHooks() {
+    COND_VB_SHOULD(VB_SHOULD_LOAD_BG_IMAGE, IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES), {
+        int32_t* camId = va_arg(args, int*);
+        if (*camId == -1) {
+            *should = false;
+        }
+    });
+}
+
+static RegisterShipInitFunc initFunc(RegisterEntranceShuffleHooks, { "IS_RANDO" });
