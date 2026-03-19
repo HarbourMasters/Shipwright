@@ -314,8 +314,8 @@ void RegisterShuffleWonderItems() {
         }
     }
     bool shouldRegisterNTSC10 = shouldRegister && isNtscUs10 &&
-                                  (RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_ALL) ||
-                                   RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_OVERWORLD));
+                                (RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_ALL) ||
+                                 RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_OVERWORLD));
 
     COND_ID_HOOK(OnActorInit, ACTOR_EN_WONDER_ITEM, shouldRegister, [](void* actorRef) {
         Actor* actor = static_cast<Actor*>(actorRef);
