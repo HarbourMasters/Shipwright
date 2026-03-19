@@ -2172,6 +2172,10 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                                      /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Grab des Totengräbers# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, un #objet merveilleux dans la tombe du fossoyeur# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_WONDER_ITEM_DEATH_MOUNTAIN_CRATER] = HintText(CustomMessage("They say that a #wonder item in Death Mountain's Crater# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Todeskrater# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux sur le Mont du Péril# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
     hintTextTable[RHT_WONDER_ITEM_ZORAS_RIVER] = HintText(CustomMessage("They say that a #wonder item in a river# hides #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in einem Fluss# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, un #objet merveilleux dans une rivière# cache #[[1]]#.", {QM_RED, QM_GREEN}));

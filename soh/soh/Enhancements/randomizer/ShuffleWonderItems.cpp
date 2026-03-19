@@ -98,9 +98,11 @@ static Vec3f GetStackOffset(RandomizerCheck rc) {
     return it != sStackedWonderOffsets.end() ? it->second : Vec3f{ 0.0f, 0.0f, 0.0f };
 }
 
-void SpawnFountainWonderItem() {
+void SpawnNTSC10WonderItem() {
     if (LINK_IS_ADULT && gPlayState->sceneNum == SCENE_ZORAS_FOUNTAIN) {
         Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WONDER_ITEM, -667, 320, 1053, 0, 0, 1, 4799);
+    } else if (LINK_IS_ADULT && gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_CRATER) {
+        Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WONDER_ITEM, 6, 311, -640, 0, 0, 1, 4799);
     }
 }
 
@@ -311,7 +313,7 @@ void RegisterShuffleWonderItems() {
             isNtscUs10 = true;
         }
     }
-    bool shouldRegisterFountain = shouldRegister && isNtscUs10 &&
+    bool shouldRegisterNTSC10 = shouldRegister && isNtscUs10 &&
                                   (RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_ALL) ||
                                    RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_OVERWORLD));
 
@@ -336,7 +338,7 @@ void RegisterShuffleWonderItems() {
     COND_ID_HOOK(OnActorUpdate, ACTOR_EN_WONDER_ITEM, shouldRegister, EnWonderItem_RandomizerDrawSetup);
 
     // Spawn missing wonder item for NTSC 1.0
-    COND_HOOK(OnSceneSpawnActors, shouldRegisterFountain, SpawnFountainWonderItem);
+    COND_HOOK(OnSceneSpawnActors, shouldRegisterNTSC10, SpawnNTSC10WonderItem);
 
     // Do not spawn vanilla wonder item, instead spawn the randomized item
     COND_VB_SHOULD(VB_WONDER_DROP_ITEM, shouldRegister, {
@@ -415,6 +417,7 @@ void Rando::StaticData::RegisterWonderItemLocations() {
     locationTable[RC_GY_WONDER_DAMPE_RACE_13]                                   = Location::WonderItem(RC_GY_WONDER_DAMPE_RACE_13,                                      RCQUEST_BOTH,       RCAREA_GRAVEYARD,               SCENE_WINDMILL_AND_DAMPES_GRAVE,    TWO_ACTOR_PARAMS(2633, -3394),          "Wonder Dampe's Grave 13",              RHT_WONDER_ITEM_DAMPES_GRAVE,               RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GY_WONDER_DAMPE_RACE_13));
     locationTable[RC_GY_WONDER_DAMPE_RACE_14]                                   = Location::WonderItem(RC_GY_WONDER_DAMPE_RACE_14,                                      RCQUEST_BOTH,       RCAREA_GRAVEYARD,               SCENE_WINDMILL_AND_DAMPES_GRAVE,    TWO_ACTOR_PARAMS(2377, -3398),          "Wonder Dampe's Grave 14",              RHT_WONDER_ITEM_DAMPES_GRAVE,               RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GY_WONDER_DAMPE_RACE_14));
     locationTable[RC_GY_WONDER_DAMPE_RACE_15]                                   = Location::WonderItem(RC_GY_WONDER_DAMPE_RACE_15,                                      RCQUEST_BOTH,       RCAREA_GRAVEYARD,               SCENE_WINDMILL_AND_DAMPES_GRAVE,    TWO_ACTOR_PARAMS(1308, -3125),          "Wonder Dampe's Grave 15",              RHT_WONDER_ITEM_DAMPES_GRAVE,               RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GY_WONDER_DAMPE_RACE_15));
+    locationTable[RC_DMC_WONDER_BENEATH_BRIDGE_PLATFORM]                        = Location::WonderItem(RC_DMC_WONDER_BENEATH_BRIDGE_PLATFORM,                           RCQUEST_BOTH,       RCAREA_DEATH_MOUNTAIN_CRATER,   SCENE_DEATH_MOUNTAIN_CRATER,        TWO_ACTOR_PARAMS(6, -640),              "Wonder Beneath Bridge Platform",       RHT_WONDER_ITEM_DEATH_MOUNTAIN_CRATER,      RG_RED_RUPEE,           SpoilerCollectionCheck::RandomizerInf(RAND_INF_DMC_WONDER_BENEATH_BRIDGE_PLATFORM));
     locationTable[RC_ZR_WONDER_NEAR_DOMAIN_1]                                   = Location::WonderItem(RC_ZR_WONDER_NEAR_DOMAIN_1,                                      RCQUEST_BOTH,       RCAREA_ZORAS_RIVER,             SCENE_ZORAS_RIVER,                  TWO_ACTOR_PARAMS(3329, -1499),          "Wonder Near Domain 1",                 RHT_WONDER_ITEM_ZORAS_RIVER,                RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_WONDER_NEAR_DOMAIN_1));
     locationTable[RC_ZR_WONDER_NEAR_DOMAIN_2]                                   = Location::WonderItem(RC_ZR_WONDER_NEAR_DOMAIN_2,                                      RCQUEST_BOTH,       RCAREA_ZORAS_RIVER,             SCENE_ZORAS_RIVER,                  TWO_ACTOR_PARAMS(3161, -1493),          "Wonder Near Domain 2",                 RHT_WONDER_ITEM_ZORAS_RIVER,                RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_WONDER_NEAR_DOMAIN_2));
     locationTable[RC_ZR_WONDER_NEAR_DOMAIN_3]                                   = Location::WonderItem(RC_ZR_WONDER_NEAR_DOMAIN_3,                                      RCQUEST_BOTH,       RCAREA_ZORAS_RIVER,             SCENE_ZORAS_RIVER,                  TWO_ACTOR_PARAMS(2987, -1499),          "Wonder Near Domain 3",                 RHT_WONDER_ITEM_ZORAS_RIVER,                RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_WONDER_NEAR_DOMAIN_3));
