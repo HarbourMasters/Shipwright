@@ -612,6 +612,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // EnKo_GetForestQuestState2(this)
+    // ```
+    // #### `args`
+    // - `*EnKo`
+    VB_KOKIRI_GET_FOREST_QUEST_STATE2,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -1322,6 +1330,14 @@ typedef enum {
     // #### `args`
     // - `*EnKz`
     VB_KING_ZORA_TUNIC_CHECK,
+
+    // #### `result`
+    // ```c
+    // varies
+    // ```
+    // #### `args`
+    // - `ObjLightswitch*`
+    VB_LIGHTSWITCH_OFF,
 
     // #### `result`
     // ```c

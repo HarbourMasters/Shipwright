@@ -44,7 +44,6 @@ typedef struct ShopItemIdentity {
     int32_t itemPrice;
 } ShopItemIdentity;
 
-// RANDOTODO compare child long jumpslash range with adult short
 #define ENTRANCE_GROTTO_LOAD_START 0x0700
 #define ENTRANCE_GROTTO_EXIT_START 0x0800
 

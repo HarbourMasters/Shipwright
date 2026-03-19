@@ -202,7 +202,7 @@ void RegionTable_Init_GerudoFortress() {
         //Exits
         //you don't take fall damage if you land on the rock with the flag on for some reason
         //there's a trick to reach RR_GF_LONG_ROOF
-        ENTRANCE(RR_GF_OUTSKIRTS,           ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS).Get() != 0),
+        ENTRANCE(RR_GF_OUTSKIRTS,           ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->TakeDamage()),
         ENTRANCE(RR_GF_NEAR_CHEST,          logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_GF_BELOW_CHEST,         logic->TakeDamage()),
         ENTRANCE(RR_GF_JAIL_WINDOW,         logic->CanUse(RG_HOOKSHOT)),
