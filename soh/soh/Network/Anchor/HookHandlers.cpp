@@ -1,7 +1,9 @@
 #include "Anchor.h"
 #include <libultraship/libultraship.h>
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/frame_interpolation.h"
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include "variables.h"
@@ -32,6 +34,7 @@ extern "C" {
 #include "objects/gameplay_keep/gameplay_keep.h"
 
 extern PlayState* gPlayState;
+extern MapData* gMapData;
 
 void func_8086ED70(BgBombwall* bgBombwall, PlayState* play);
 void BgBreakwall_Wait(BgBreakwall* bgBreakwall, PlayState* play);
@@ -50,7 +53,8 @@ void BgYdanSp_FloorWebIdle(BgYdanSp* bgYdanSp, PlayState* play);
 void BgYdanSp_WallWebIdle(BgYdanSp* bgYdanSp, PlayState* play);
 void BgYdanSp_BurnWeb(BgYdanSp* bgYdanSp, PlayState* play);
 void EnDoor_Idle(EnDoor* enDoor, PlayState* play);
-void Minimap_ApplyCompassIconMatrixTranslation(PlayState* play, Vec3f* pos);
+float OTRGetDimensionFromLeftEdge(float v);
+float OTRGetDimensionFromRightEdge(float v);
 }
 
 void Anchor::RegisterHooks() {
@@ -443,6 +447,26 @@ void Anchor::RegisterHooks() {
         compassIcons.push_back(CompassIcon{ player->actor.world.pos, player->actor.shape.rot, 0.4f,
                                             CVarGetColor24(CVAR_REMOTE_ANCHOR("Color.Value"), { 100, 255, 100 }) });
 
+        // Adapted internals of Minimap_DrawCompassIcons()
+        s16 leftMinimapMargin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.L"), 0);
+        s16 rightMinimapMargin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.R"), 0);
+        s16 bottomMinimapMargin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.B"), 0);
+
+        s16 xMarginsMinimap;
+        s16 yMarginsMinimap;
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ORIGINAL_LOCATION) {
+                xMarginsMinimap = rightMinimapMargin;
+            }
+            yMarginsMinimap = bottomMinimapMargin;
+        } else {
+            xMarginsMinimap = 0;
+            yMarginsMinimap = 0;
+        }
+
+        s16 mapWidth = isInDungeon ? R_DGN_MINIMAP_X : R_OW_MINIMAP_X;
+        s16 mapStartPosX = isInDungeon ? 96 : gMapData->owMinimapWidth[R_MAP_INDEX];
+
         OPEN_DISPS(gPlayState->state.gfxCtx);
         Gfx_SetupDL_42Overlay(gPlayState->state.gfxCtx);
 
@@ -453,7 +477,57 @@ void Anchor::RegisterHooks() {
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
 
-            Minimap_ApplyCompassIconMatrixTranslation(gPlayState, &compassIcon.pos);
+            // The compass offset value is a factor of 10 compared to N64 screen pixels and originates in the center of
+            // the screen Compute the additional mirror offset value by normalizing the original offset position and
+            // taking it's distance to the center of the map, duplicating that result and casting back to a factor of 10
+            s16 mirrorOffset =
+                ((mapWidth / 2) - ((R_COMPASS_OFFSET_X / 10) - (mapStartPosX - SCREEN_WIDTH / 2))) * 2 * 10;
+
+            s16 tempX = (s16)compassIcon.pos.x;
+            s16 tempZ = (s16)compassIcon.pos.z;
+            tempX /= R_COMPASS_SCALE_X * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1);
+            tempZ /= R_COMPASS_SCALE_Y;
+
+            s16 tempXOffset =
+                R_COMPASS_OFFSET_X + (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? mirrorOffset : 0);
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) != ORIGINAL_LOCATION) {
+                if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_LEFT) {
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+                        xMarginsMinimap = leftMinimapMargin;
+                    };
+                    Matrix_Translate(
+                        OTRGetDimensionFromLeftEdge((tempXOffset + (xMarginsMinimap * 10) + tempX +
+                                                     (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) * 10)) /
+                                                    10.0f),
+                        (R_COMPASS_OFFSET_Y + ((yMarginsMinimap * 10) * -1) - tempZ +
+                         ((CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) * 10) * -1)) /
+                            10.0f,
+                        0.0f, MTXMODE_NEW);
+                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_RIGHT) {
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+                        xMarginsMinimap = rightMinimapMargin;
+                    };
+                    Matrix_Translate(
+                        OTRGetDimensionFromRightEdge((tempXOffset + (xMarginsMinimap * 10) + tempX +
+                                                      (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) * 10)) /
+                                                     10.0f),
+                        (R_COMPASS_OFFSET_Y + ((yMarginsMinimap * 10) * -1) - tempZ +
+                         ((CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) * 10) * -1)) /
+                            10.0f,
+                        0.0f, MTXMODE_NEW);
+                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_NONE) {
+                    Matrix_Translate(
+                        (tempXOffset + tempX + (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) * 10) / 10.0f),
+                        (R_COMPASS_OFFSET_Y + ((yMarginsMinimap * 10) * -1) - tempZ +
+                         ((CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) * 10) * -1)) /
+                            10.0f,
+                        0.0f, MTXMODE_NEW);
+                }
+            } else {
+                Matrix_Translate(OTRGetDimensionFromRightEdge((tempXOffset + (xMarginsMinimap * 10) + tempX) / 10.0f),
+                                 (R_COMPASS_OFFSET_Y + ((yMarginsMinimap * 10) * -1) - tempZ) / 10.0f, 0.0f,
+                                 MTXMODE_NEW);
+            }
             Matrix_Scale(compassIcon.scale, compassIcon.scale, compassIcon.scale, MTXMODE_APPLY);
             Matrix_RotateX(-1.6f, MTXMODE_APPLY);
             s16 rotation = ((0x7FFF - compassIcon.rot.y) / 0x400) *
