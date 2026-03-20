@@ -435,7 +435,7 @@ BgImage* func_80096A74(PolygonType1* polygon1, PlayState* play) {
         osSyncPrintf(VT_COL(RED, WHITE) "z_room.c:カメラＩＤに一致するデータが存在しません camid=%d\n" VT_RST, camId);
         LOG_HUNGUP_THREAD();
     }
-    
+
     return NULL;
 }
 

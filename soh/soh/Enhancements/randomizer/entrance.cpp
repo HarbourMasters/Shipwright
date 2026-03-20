@@ -1739,7 +1739,7 @@ extern "C" EntranceOverride* Randomizer_GetEntranceOverrides() {
 }
 
 typedef struct {
-  uint16_t x, y, z;
+    uint16_t x, y, z;
 } Vec3s_struct;
 
 static SceneID backedUpScene = (SceneID)0x6E;
@@ -1750,19 +1750,19 @@ void RegisterEntranceShuffleHooks() {
         int32_t* camId = va_arg(args, int*);
         Camera* camera = GET_ACTIVE_CAM(gPlayState);
         if (*camId == -1) {
-          if (backedUpScene != gPlayState->sceneNum) {
+            if (backedUpScene != gPlayState->sceneNum) {
+                *should = false;
+                return;
+            }
+            memcpy(camera, &backupCamera, sizeof(Camera));
+            Camera_ChangeMode(camera, CAM_MODE_TALK);
             *should = false;
-            return;
-          }
-          memcpy(camera, &backupCamera, sizeof(Camera));
-          Camera_ChangeMode(camera, CAM_MODE_TALK);
-          *should = false;
         } else {
-          if (backedUpScene == gPlayState->sceneNum) {
-            return;
-          }
-          memcpy(&backupCamera, camera, sizeof(Camera));
-          backedUpScene = (SceneID)gPlayState->sceneNum;
+            if (backedUpScene == gPlayState->sceneNum) {
+                return;
+            }
+            memcpy(&backupCamera, camera, sizeof(Camera));
+            backedUpScene = (SceneID)gPlayState->sceneNum;
         }
     });
 }
