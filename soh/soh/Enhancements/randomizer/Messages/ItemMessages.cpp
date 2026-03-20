@@ -263,16 +263,16 @@ void RegisterItemMessages() {
 static RegisterShipInitFunc initFunc(RegisterItemMessages, { "IS_RANDO" });
 
 void RegisterCustomIconHooks() {
-    COND_VB_SHOULD(VB_LOAD_ITEM_ICON, true, {
+    COND_VB_SHOULD(VB_LOAD_ITEM_ICON, IS_RANDO, {
         if (*should == false) {
             LoadCustomItemIcon(static_cast<bool>(va_arg(args, int)));
         }
     });
-    COND_VB_SHOULD(VB_DRAW_ITEM_ICON, true, {
+    COND_VB_SHOULD(VB_DRAW_ITEM_ICON, IS_RANDO, {
         if (*should == false) {
             DrawCustomItemIcon(va_arg(args, Gfx**));
         }
     });
 }
 
-static RegisterShipInitFunc customIconInitFunc(RegisterCustomIconHooks);
+static RegisterShipInitFunc customIconInitFunc(RegisterCustomIconHooks, { "IS_RANDO" });
