@@ -364,7 +364,7 @@ void RegisterShuffleWonderItems() {
     // Prevent actor kill in case item isn't yet collected
     COND_VB_SHOULD(VB_WONDER_SPAWN, shouldRegister, {
         EnWonderItem* wonderActor = va_arg(args, EnWonderItem*);
-            *should = false;
+        *should = false;
     });
 
     // Do not spawn vanilla wonder item, instead spawn the randomized item

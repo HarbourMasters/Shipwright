@@ -128,7 +128,8 @@ void EnWonderItem_Init(Actor* thisx, PlayState* play) {
         this->switchFlag = -1;
     }
     this->actor.targetMode = 1;
-    if (GameInteractor_Should(VB_WONDER_SPAWN, (this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag), this)) {
+    if (GameInteractor_Should(VB_WONDER_SPAWN, (this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag),
+                              this)) {
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Ｙｏｕ ａｒｅ Ｓｈｏｃｋ！  ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
         Actor_Kill(&this->actor);
         return;
