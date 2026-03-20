@@ -125,15 +125,21 @@ void EnHeishi1_Init(Actor* thisx, PlayState* play) {
                     (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY));
 
     if (this->type != 5) {
-        if (GameInteractor_Should(VB_WONDER_HEISHI_PATROLLING, (gSaveContext.dayTime < 0xB888 || IS_DAY) &&
-            ((!IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) || (IS_RANDO && !metZelda)), this)) {
+        if (GameInteractor_Should(VB_WONDER_HEISHI_PATROLLING,
+                                  (gSaveContext.dayTime < 0xB888 || IS_DAY) &&
+                                      ((!IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ||
+                                       (IS_RANDO && !metZelda)),
+                                  this)) {
             this->actionFunc = EnHeishi1_SetupWalk;
         } else {
             Actor_Kill(&this->actor);
         }
     } else {
-        if (GameInteractor_Should(VB_WONDER_HEISHI_PATROLLING,(gSaveContext.dayTime >= 0xB889) || !IS_DAY ||
-            (!IS_RANDO && Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) || (IS_RANDO && metZelda), this)) {
+        if (GameInteractor_Should(VB_WONDER_HEISHI_PATROLLING,
+                                  (gSaveContext.dayTime >= 0xB889) || !IS_DAY ||
+                                      (!IS_RANDO && Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ||
+                                      (IS_RANDO && metZelda),
+                                  this)) {
             this->actionFunc = EnHeishi1_SetupWaitNight;
         } else {
             Actor_Kill(&this->actor);
