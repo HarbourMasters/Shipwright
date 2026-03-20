@@ -5,6 +5,9 @@
 #include "3drando/item_pool.hpp"
 #include "../debugger/performanceTimer.h"
 #include "soh/Enhancements/gameconsole.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "z64camera.h"
+#include "z64scene.h"
 
 #include <spdlog/spdlog.h>
 
@@ -1735,11 +1738,31 @@ extern "C" EntranceOverride* Randomizer_GetEntranceOverrides() {
     return Rando::Context::GetInstance()->GetEntranceShuffler()->entranceOverrides.data();
 }
 
+typedef struct {
+  uint16_t x, y, z;
+} Vec3s_struct;
+
+static SceneID backedUpScene = (SceneID)0x6E;
+static Camera backupCamera;
+
 void RegisterEntranceShuffleHooks() {
     COND_VB_SHOULD(VB_SHOULD_LOAD_BG_IMAGE, IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES), {
         int32_t* camId = va_arg(args, int*);
+        Camera* camera = GET_ACTIVE_CAM(gPlayState);
         if (*camId == -1) {
+          if (backedUpScene != gPlayState->sceneNum) {
             *should = false;
+            return;
+          }
+          memcpy(camera, &backupCamera, sizeof(Camera));
+          Camera_ChangeMode(camera, CAM_MODE_TALK);
+          *should = false;
+        } else {
+          if (backedUpScene == gPlayState->sceneNum) {
+            return;
+          }
+          memcpy(&backupCamera, camera, sizeof(Camera));
+          backedUpScene = (SceneID)gPlayState->sceneNum;
         }
     });
 }
