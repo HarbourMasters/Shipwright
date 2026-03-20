@@ -1737,11 +1737,7 @@ extern "C" EntranceOverride* Randomizer_GetEntranceOverrides() {
     return Rando::Context::GetInstance()->GetEntranceShuffler()->entranceOverrides.data();
 }
 
-typedef struct {
-    uint16_t x, y, z;
-} Vec3s_struct;
-
-static SceneID backedUpScene = (SceneID)0x6E;
+static SceneID backedUpScene = (SceneID)0xFF;
 static Camera backupCamera;
 
 void RegisterEntranceShuffleHooks() {
@@ -1756,10 +1752,7 @@ void RegisterEntranceShuffleHooks() {
             memcpy(camera, &backupCamera, sizeof(Camera));
             Camera_ChangeMode(camera, CAM_MODE_TALK);
             *should = false;
-        } else {
-            if (backedUpScene == gPlayState->sceneNum) {
-                return;
-            }
+        } else if (backedUpScene != gPlayState->sceneNum) {
             memcpy(&backupCamera, camera, sizeof(Camera));
             backedUpScene = (SceneID)gPlayState->sceneNum;
         }
