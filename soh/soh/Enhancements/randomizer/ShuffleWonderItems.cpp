@@ -11,6 +11,7 @@
 extern "C" {
 #include "variables.h"
 #include "overlays/actors/ovl_En_Wonder_Item/z_en_wonder_item.h"
+#include "overlays/actors/ovl_En_Heishi1/z_en_heishi1.h"
 extern PlayState* gPlayState;
 }
 
@@ -249,6 +250,7 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
         Color_RGBA8_Copy(&secColor, secColors[colorIndex]);
         Color_RGBA8_Copy(&envColor, flareColors[colorIndex]);
         EnWonderItem_RandomizerDraw(wonderActor, &primColor, &secColor, &envColor, wonderIdentity);
+        return;
     }
 
     // Change particle color for CMC
@@ -384,6 +386,19 @@ void RegisterShuffleWonderItems() {
 
             WonderHeishi_RandomizerSpawnCollectible(gPlayState, *pos, rotY);
             *should = false;
+        }
+    });
+
+    // If courtyard items are uncollected, keep guards patrolling
+    COND_VB_SHOULD(VB_WONDER_HEISHI_PATROLLING, shouldRegisterOverworld, {
+        EnHeishi1* guardActor = va_arg(args, EnHeishi1*);
+        if (!Flags_GetRandomizerInf(RAND_INF_HC_WONDER_COURTYARD_LEFT_WINDOW) ||
+            !Flags_GetRandomizerInf(RAND_INF_HC_WONDER_COURTYARD_RIGHT_WINDOW)) {
+            if (guardActor->type != 5) {
+                *should = true;
+            } else {
+                *should = false;
+            }
         }
     });
 }
