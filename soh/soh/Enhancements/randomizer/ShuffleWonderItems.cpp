@@ -182,7 +182,12 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
     EnWonderItem* wonderActor = static_cast<EnWonderItem*>(refActor);
 
     // If not a randomized item or too far, don't draw
-    if (!EnWonderItem_RandomizerHoldsItem(wonderActor, gPlayState) || wonderActor->actor.xzDistToPlayer > 1000.0f) {
+    if (!EnWonderItem_RandomizerHoldsItem(wonderActor, gPlayState)) {
+        if ((wonderActor->switchFlag >= 0) && Flags_GetSwitch(gPlayState, wonderActor->switchFlag)) {
+            Actor_Kill(&wonderActor->actor);
+        }
+        return;
+    } else if (wonderActor->actor.xzDistToPlayer > 1000.0f) {
         return;
     }
 
@@ -356,6 +361,12 @@ void RegisterShuffleWonderItems() {
     // Spawn missing wonder items for NTSC 1.0
     COND_HOOK(OnSceneSpawnActors, shouldRegisterNTSC10, SpawnNTSC10WonderItem);
 
+    // Prevent actor kill in case item isn't yet collected
+    COND_VB_SHOULD(VB_WONDER_SPAWN, shouldRegister, {
+        EnWonderItem* wonderActor = va_arg(args, EnWonderItem*);
+            *should = false;
+    });
+
     // Do not spawn vanilla wonder item, instead spawn the randomized item
     COND_VB_SHOULD(VB_WONDER_DROP_ITEM, shouldRegister, {
         EnWonderItem* wonderActor = va_arg(args, EnWonderItem*);
@@ -368,10 +379,10 @@ void RegisterShuffleWonderItems() {
     // Do not spawn castle courtyard guard bomb, instead spawn the randomized item
     COND_VB_SHOULD(VB_WONDER_HEISHI_ITEM, shouldRegisterOverworld, {
         if (!Flags_GetRandomizerInf(RAND_INF_HC_WONDER_COURTYARD_LEFT_WINDOW)) {
-            Vec3f pos = va_arg(args, Vec3f);
+            Vec3f* pos = va_arg(args, Vec3f*);
             f32 rotY = (f32)va_arg(args, double);
 
-            WonderHeishi_RandomizerSpawnCollectible(gPlayState, pos, rotY);
+            WonderHeishi_RandomizerSpawnCollectible(gPlayState, *pos, rotY);
             *should = false;
         }
     });

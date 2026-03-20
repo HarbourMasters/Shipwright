@@ -2393,6 +2393,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnWonderItem`
+    VB_WONDER_SPAWN,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnWonderTalk2`
     VB_WONDER_TALK,
 
