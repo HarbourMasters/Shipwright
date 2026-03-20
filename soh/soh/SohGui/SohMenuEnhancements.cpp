@@ -990,6 +990,10 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("FixDampeGoingBackwards"))
         .Options(CheckboxOptions().Tooltip(
             "Fixes Dampé going backwards in certain circumstances when the player is going backwards."));
+    AddWidget(path, "Fix Kokiri Forest Quest State", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FixKokiriForestQuestState"))
+        .Options(CheckboxOptions().Tooltip("Fixes kokiri animation state to match their text state when getting "
+                                           "Zelda's Letter before Kokiri Emerald."));
     AddWidget(path, "Fix Raised Floor Switches", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixFloorSwitches"))
         .Options(CheckboxOptions().Tooltip(

@@ -1,6 +1,7 @@
 #include "z_en_encount1.h"
 #include "vt.h"
 #include "overlays/actors/ovl_En_Tite/z_en_tite.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_LOCK_ON_DISABLED)
 
@@ -305,6 +306,12 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
                 }
                 this->killCount++;
             }
+
+            if (!GameInteractor_Should(VB_ENCOUNT1_SPAWN_STALCHILD_OR_WOLFOS, true, this, play, spawnId, spawnPos,
+                                       spawnParams)) {
+                continue;
+            }
+
             if (Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, spawnId, spawnPos.x, spawnPos.y, spawnPos.z, 0,
                                    0, 0, spawnParams) != NULL) {
                 this->curNumSpawn++;

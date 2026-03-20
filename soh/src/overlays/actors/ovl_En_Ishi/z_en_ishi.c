@@ -281,9 +281,8 @@ void EnIshi_SpawnBugs(EnIshi* this, PlayState* play) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        Actor* bug =
-            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_INSECT, this->actor.world.pos.x, this->actor.world.pos.y,
-                        this->actor.world.pos.z, 0, Rand_ZeroOne() * 0xFFFF, 0, 1, true);
+        Actor* bug = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_INSECT, this->actor.world.pos.x,
+                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, Rand_ZeroOne() * 0xFFFF, 0, 1);
 
         if (bug == NULL) {
             break;

@@ -5,6 +5,7 @@
 #include "randomizerEnums.h"
 
 #define MAX_TRICK_NAME_SIZE 50
+#define MAX_MQ_DUNGEON_COUNT 12
 
 #define TWO_ACTOR_PARAMS(a, b) ((((a)&0xFFFF) << 16) | ((b)&0xFFFF))
 
@@ -43,7 +44,6 @@ typedef struct ShopItemIdentity {
     int32_t itemPrice;
 } ShopItemIdentity;
 
-// RANDOTODO compare child long jumpslash range with adult short
 #define ENTRANCE_GROTTO_LOAD_START 0x0700
 #define ENTRANCE_GROTTO_EXIT_START 0x0800
 

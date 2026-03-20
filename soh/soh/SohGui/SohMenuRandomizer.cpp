@@ -53,11 +53,13 @@ void DrawLocationsMenu(WidgetInfo& info) {
     bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-    if (locationsDirty || currMQDungeonSetting != prevMQDungeonSetting) {
+    if (locationsDirty || currMQDungeonSetting != prevMQDungeonSetting || GameInteractor::IsSaveLoaded()) {
         locationsDirty = false;
+        prevMQDungeonSetting = currMQDungeonSetting;
         UpdateMenuLocations();
+    } else {
+        RandomizerCheckObjects::UpdateImGuiVisibility();
     }
-    prevMQDungeonSetting = currMQDungeonSetting;
 
     if (ImGui::BeginTable("tableRandoLocations", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Included", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -97,11 +99,13 @@ void DrawLocationsMenu(WidgetInfo& info) {
                             UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                             if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Right)) {
                                 excludedLocations.insert(location);
-                                // todo: this efficently when we build out cvar array support
+                                // todo: this efficiently when we build out cvar array support
                                 std::string excludedLocationString = "";
                                 for (auto excludedLocationIt : excludedLocations) {
+                                    if (!excludedLocationString.empty()) {
+                                        excludedLocationString += ",";
+                                    }
                                     excludedLocationString += std::to_string(excludedLocationIt);
-                                    excludedLocationString += ",";
                                 }
                                 CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"),
                                               excludedLocationString.c_str());
@@ -142,11 +146,13 @@ void DrawLocationsMenu(WidgetInfo& info) {
                             UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                             if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Left)) {
                                 excludedLocations.erase(elfound);
-                                // todo: this efficently when we build out cvar array support
+                                // todo: this efficiently when we build out cvar array support
                                 std::string excludedLocationString = "";
                                 for (auto excludedLocationIt : excludedLocations) {
+                                    if (!excludedLocationString.empty()) {
+                                        excludedLocationString += ",";
+                                    }
                                     excludedLocationString += std::to_string(excludedLocationIt);
-                                    excludedLocationString += ",";
                                 }
                                 if (excludedLocationString == "") {
                                     CVarClear(CVAR_RANDOMIZER_SETTING("ExcludedLocations"));
@@ -177,18 +183,20 @@ void DrawLocationsMenu(WidgetInfo& info) {
 
 void UpdateMenuLocations() {
     RandomizerCheckObjects::UpdateImGuiVisibility();
-    // todo: this efficently when we build out cvar array support
+    // todo: this efficiently when we build out cvar array support
     std::stringstream excludedLocationStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
     std::string excludedLocationString;
     excludedLocations.clear();
     while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
-        excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
+        if (!excludedLocationString.empty()) {
+            excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
+        }
     }
 }
 
 void UpdateMenuTricks() {
     // RandomizerTricks::UpdateImGuiVisibility();
-    //  todo: this efficently when we build out cvar array support
+    //  todo: this efficiently when we build out cvar array support
     std::stringstream enabledTrickStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), ""));
     std::string enabledTrickString;
     enabledTricks.clear();
@@ -201,7 +209,9 @@ void UpdateMenuTricks() {
     std::string enabledGlitchString;
     enabledGlitches.clear();
     while (getline(enabledGlitchStringStream, enabledGlitchString, ',')) {
-        enabledGlitches.insert((RandomizerTrick)std::stoi(enabledGlitchString));
+        if (!enabledGlitchString.empty()) {
+            enabledGlitches.insert((RandomizerTrick)std::stoi(enabledGlitchString));
+        }
     }
 }
 
@@ -570,7 +580,7 @@ void SohMenu::AddMenuRandomizer() {
             GenerateRandomizer(CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0) ? seedString : "");
         })
         .PreFunc([](WidgetInfo& info) {
-            info.options->Disabled((gSaveContext.gameMode != GAMEMODE_FILE_SELECT) || GameInteractor::IsSaveLoaded());
+            info.options->disabled = (gSaveContext.gameMode != GAMEMODE_FILE_SELECT) || GameInteractor::IsSaveLoaded();
         })
         .Options(ButtonOptions()
                      .Size(ImVec2(250.f, 0.f))
@@ -609,17 +619,6 @@ void SohMenu::AddMenuRandomizer() {
                 .DefaultValue(true));
     AddWidget(path, "Map & Compass Colors Match Dungeon", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("ColoredMapsAndCompasses"))
-        .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = !(OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS)
-                                           .IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH) &&
-                                       OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS)
-                                           .IsNot(RO_DUNGEON_ITEM_LOC_VANILLA) &&
-                                       OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS)
-                                           .IsNot(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON));
-            info.options->disabledTooltip =
-                "This setting is disabled because a savefile is loaded without the map & compass.\n"
-                "Shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\".";
-        })
         .Options(
             CheckboxOptions()
                 .Tooltip("Matches the color of maps & compasses to the dungeon they belong to. "
@@ -629,11 +628,6 @@ void SohMenu::AddMenuRandomizer() {
                 .DefaultValue(true));
     AddWidget(path, "Jabber Nut Colors Match Kind", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("GenericJabberNutModel"))
-        .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = !OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_SPEAK);
-            info.options->disabledTooltip =
-                "This setting is disabled because a savefile is loaded without Shuffle Speak.";
-        })
         .RaceDisable(false)
         .Options(CheckboxOptions()
                      .Tooltip("With Shuffle Speak, jabber nut model & color will be generic.")

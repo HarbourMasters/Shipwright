@@ -355,7 +355,7 @@ s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play) {
     f32 posZ = (Math_CosS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.z;
     s32 yaw = this->actor.shape.rot.y;
     EnBoom* boomerang = (EnBoom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOOM, posX, this->actor.world.pos.y + 7.0f,
-                                             posZ, this->actor.focus.rot.x, yaw, 0, 0, true);
+                                             posZ, this->actor.focus.rot.x, yaw, 0, 0);
 
     this->boomerangActor = &boomerang->actor;
     if (boomerang != NULL) {
@@ -3265,7 +3265,7 @@ s32 func_808359FC(Player* this, PlayState* play) {
         s32 yaw = (this->focusActor != NULL) ? this->actor.shape.rot.y + 14000 : this->actor.shape.rot.y;
         EnBoom* boomerang =
             (EnBoom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOOM, posX, this->actor.world.pos.y + 30.0f, posZ,
-                                 this->actor.focus.rot.x, yaw, 0, 0, true);
+                                 this->actor.focus.rot.x, yaw, 0, 0);
 
         this->boomerangActor = &boomerang->actor;
 
@@ -4271,7 +4271,7 @@ void func_80837530(PlayState* play, Player* this, s32 arg2) {
     if (this->actor.category == ACTORCAT_PLAYER) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_M_THUNDER, this->bodyPartsPos[PLAYER_BODYPART_WAIST].x,
                     this->bodyPartsPos[PLAYER_BODYPART_WAIST].y, this->bodyPartsPos[PLAYER_BODYPART_WAIST].z, 0, 0, 0,
-                    Player_GetMeleeWeaponHeld(this) | arg2, true);
+                    Player_GetMeleeWeaponHeld(this) | arg2);
     }
 }
 
@@ -4698,7 +4698,7 @@ int func_8083816C(s32 arg0) {
 void func_8083819C(Player* this, PlayState* play) {
     if (this->currentShield == PLAYER_SHIELD_DEKU && (CVarGetInteger(CVAR_CHEAT("FireproofDekuShield"), 0) == 0)) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_SHIELD, this->actor.world.pos.x, this->actor.world.pos.y,
-                    this->actor.world.pos.z, 0, 0, 0, 1, true);
+                    this->actor.world.pos.z, 0, 0, 0, 1);
         Inventory_DeleteEquipment(play, EQUIP_TYPE_SHIELD);
         Message_StartTextbox(play, 0x305F, NULL);
     }
@@ -5279,7 +5279,7 @@ Actor* Player_SpawnFairy(PlayState* play, Player* this, Vec3f* arg2, Vec3f* arg3
 
     Player_GetRelativePosition(this, arg2, arg3, &pos);
 
-    return Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, pos.x, pos.y, pos.z, 0, 0, 0, type, true);
+    return Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, pos.x, pos.y, pos.z, 0, 0, 0, type);
 }
 
 f32 func_808396F4(PlayState* play, Player* this, Vec3f* arg2, Vec3f* arg3, CollisionPoly** arg4, s32* arg5) {
@@ -10729,7 +10729,7 @@ Actor* Player_SpawnMagicSpell(PlayState* play, Player* this, s32 spell) {
     static s16 sMagicSpellActorIds[] = { ACTOR_MAGIC_WIND, ACTOR_MAGIC_DARK, ACTOR_MAGIC_FIRE };
 
     return Actor_Spawn(&play->actorCtx, play, sMagicSpellActorIds[spell], this->actor.world.pos.x,
-                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
 }
 
 void Player_StartMode_FaroresWind(PlayState* play, Player* this) {
@@ -12280,7 +12280,7 @@ void Player_Update(Actor* thisx, PlayState* play) {
                 dogParams = gSaveContext.dogParams;
 
                 dog = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_DOG, sDogSpawnPos.x, sDogSpawnPos.y, sDogSpawnPos.z,
-                                  0, this->actor.shape.rot.y, 0, dogParams | 0x8000, true);
+                                  0, this->actor.shape.rot.y, 0, dogParams | 0x8000);
                 if (dog != NULL) {
                     // Room -1 allows actor to cross between rooms, similar to Navi
                     dog->room = CVarGetInteger(CVAR_ENHANCEMENT("DogFollowsEverywhere"), 0) ? -1 : 0;
@@ -14340,7 +14340,7 @@ void Player_Action_8084E3C4(Player* this, PlayState* play) {
         this->stateFlags1 |= PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE;
         this->stateFlags2 |= PLAYER_STATE2_OCARINA_PLAYING;
 
-        if (Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, 0.0f, 0.0f, 0.0f, 0, 0, 0, 0xF, true) == NULL) {
+        if (Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, 0.0f, 0.0f, 0.0f, 0, 0, 0, 0xF) == NULL) {
             Environment_WarpSongLeave(play);
         }
 
@@ -14356,7 +14356,7 @@ void Player_Action_8084E604(Player* this, PlayState* play) {
         Inventory_ChangeAmmo(ITEM_NUT, -1);
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, this->bodyPartsPos[PLAYER_BODYPART_R_HAND].x,
                     this->bodyPartsPos[PLAYER_BODYPART_R_HAND].y, this->bodyPartsPos[PLAYER_BODYPART_R_HAND].z, 4000,
-                    this->actor.shape.rot.y, 0, ARROW_NUT, true);
+                    this->actor.shape.rot.y, 0, ARROW_NUT);
         Player_PlayVoiceSfx(this, NA_SE_VO_LI_SWORD_N);
     }
 
@@ -14405,7 +14405,7 @@ void Player_Action_8084E6D4(Player* this, PlayState* play) {
                 if ((this->getItemId != GI_ICE_TRAP && !IS_RANDO) ||
                     (IS_RANDO && (this->getItemId != RG_ICE_TRAP || this->getItemEntry.getItemId != RG_ICE_TRAP))) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, this->actor.world.pos.x,
-                                this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                                this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0);
                     func_8083C0E8(this, play);
                 } else if (IS_RANDO) {
                     gSaveContext.ship.pendingIceTrapCount++;
@@ -14685,7 +14685,7 @@ void Player_Action_8084EFC0(Player* this, PlayState* play) {
         Actor_Spawn(&play->actorCtx, play, dropInfo->actorId,
                     (Math_SinS(this->actor.shape.rot.y) * 5.0f) + this->leftHandPos.x, this->leftHandPos.y,
                     (Math_CosS(this->actor.shape.rot.y) * 5.0f) + this->leftHandPos.z, 0x4000, this->actor.shape.rot.y,
-                    0, dropInfo->actorParams, true);
+                    0, dropInfo->actorParams);
 
         Player_UpdateBottleHeld(play, this, ITEM_BOTTLE, PLAYER_IA_BOTTLE);
         return;
@@ -14843,7 +14843,7 @@ void Player_Action_8084F608(Player* this, PlayState* play) {
 void Player_Action_8084F698(Player* this, PlayState* play) {
     Player_SetupAction(play, this, Player_Action_8084F608, 0);
     this->av2.actionVar2 = 40;
-    Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, 0.0f, 0.0f, 0.0f, 0, 0, 0, 0x10, true);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, 0.0f, 0.0f, 0.0f, 0, 0, 0, 0x10);
 }
 
 void Player_Action_8084F710(Player* this, PlayState* play) {

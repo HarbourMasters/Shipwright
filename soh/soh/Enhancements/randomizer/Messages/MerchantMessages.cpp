@@ -146,7 +146,7 @@ void BuildScrubMessage(uint16_t* textId, bool* loadFromMessageTable) {
             "J'abandonne! Tu veux bien m'acheter un [[color]][[1]]%w? Ça fera %y[[2]] Rubis%w!\x07\x10\xA3");
     }
     BuildMerchantMessage(msg, rc,
-                         !RAND_GET_OPTION(RSK_MERCHANT_TEXT_HINT) ||
+                         !RAND_GET_OPTION(RSK_SCRUB_TEXT_HINT) ||
                              CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0));
     msg.AutoFormat();
     msg.LoadIntoFont();
