@@ -5,7 +5,6 @@
 #include "3drando/item_pool.hpp"
 #include "../debugger/performanceTimer.h"
 #include "soh/Enhancements/gameconsole.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "z64camera.h"
 #include "z64scene.h"
 
