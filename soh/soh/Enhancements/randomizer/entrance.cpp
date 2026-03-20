@@ -1758,9 +1758,8 @@ void RegisterEntranceShuffleHooks() {
         }
     });
 
-    COND_HOOK(OnLoadGame, IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES), [](int32_t) {
-      backedUpScene = (SceneID)0xFF;
-    });
+    COND_HOOK(OnLoadGame, IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES),
+              [](int32_t) { backedUpScene = (SceneID)0xFF; });
 }
 
 static RegisterShipInitFunc initFunc(RegisterEntranceShuffleHooks, { "IS_RANDO" });
