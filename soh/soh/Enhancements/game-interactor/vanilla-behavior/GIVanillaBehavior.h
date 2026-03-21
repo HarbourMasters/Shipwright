@@ -2070,6 +2070,22 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_SIGN_GIVE_ITEM,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Actor`
+    VB_SIGN_SETUP_DRAW,
+
+    // #### `result`
+    // ```c
     // (collectible >= 0) && (collectible <= 0x19
     // ```
     // #### `args`

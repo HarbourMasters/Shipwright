@@ -56,14 +56,15 @@ void RegionTable_Init_CastleGrounds() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanUse(RG_STICKS)),
     }, {
         //Locations
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_1, logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_2, logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_3, logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_4, logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_5, logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_6, logic->CanBonkTrees()),
-        LOCATION(RC_HC_NL_TREE_1,          false),
-        LOCATION(RC_HC_NL_TREE_2,          false),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_1,      logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_2,      logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_3,      logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_4,      logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_5,      logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_6,      logic->CanBonkTrees()),
+        LOCATION(RC_HC_NL_TREE_1,               false),
+        LOCATION(RC_HC_NL_TREE_2,               false),
+        LOCATION(RC_HC_DEAD_END_RECTANGLE_SIGN, logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_HC_GATE,                  true),

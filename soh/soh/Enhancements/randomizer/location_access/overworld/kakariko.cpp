@@ -60,6 +60,10 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_NEAR_BOARDING_HOUSE_CHILD_CRATE,   logic->IsChild && logic->CanBreakCrates()),
         LOCATION(RC_KAK_NEAR_BAZAAR_CHILD_CRATE,           logic->IsChild && logic->CanBreakCrates()),
         LOCATION(RC_KAK_TREE,                              logic->CanBonkTrees()),
+        LOCATION(RC_KAK_GUARD_GATE_RECTANGLE_SIGN,         logic->IsChild && logic->CanRead()),
+        LOCATION(RC_KAK_WELL_RECTANGLE_SIGN,               logic->IsChild && logic->CanRead()),
+        LOCATION(RC_KAK_SOUTHEAST_EXIT_ARROW_SIGN,         logic->CanRead()),
+        LOCATION(RC_KAK_FRONT_GATE_ARROW_SIGN,             logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_HYRULE_FIELD,             true),
@@ -215,7 +219,8 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_SHOOTING_GALLERY] = Region("Kak Shooting Gallery", SCENE_SHOOTING_GALLERY, {}, {
         //Locations
-        LOCATION(RC_KAK_SHOOTING_GALLERY_REWARD, logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_KAK_SHOOTING_GALLERY_REWARD,         logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_KAK_SHOOTING_GALLERY_RECTANGLE_SIGN, logic->IsAdult && logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE, true),

@@ -149,7 +149,8 @@ void RegionTable_Init_Market() {
         EVENT_ACCESS(LOGIC_BORROW_RIGHT_MASKS, ctx->GetOption(RSK_MASK_QUEST).Is(RO_MASK_QUEST_COMPLETED) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->Get(LOGIC_CAN_BORROW_MASKS)),
     }, {
         //Locations
-        LOCATION(RC_MASK_SHOP_HINT, true),
+        LOCATION(RC_MASK_SHOP_HINT,    true),
+        LOCATION(RC_MK_MASK_SHOP_SIGN, logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_THE_MARKET, true),
@@ -157,7 +158,8 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_SHOOTING_GALLERY] = Region("Market Shooting Gallery", SCENE_SHOOTING_GALLERY, {}, {
         //Locations
-        LOCATION(RC_MARKET_SHOOTING_GALLERY_REWARD, logic->IsChild && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_MARKET_SHOOTING_GALLERY_REWARD,     logic->IsChild && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_MK_SHOOTING_GALLERY_RECTANGLE_SIGN, logic->IsChild && logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_THE_MARKET, true),

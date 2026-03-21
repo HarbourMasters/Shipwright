@@ -8,6 +8,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_kanban/object_kanban.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -888,5 +889,6 @@ void EnKanban_Draw(Actor* thisx, PlayState* play) {
             gSPDisplayList(POLY_XLU_DISP++, sShadowDL);
         }
     }
+    if (GameInteractor_Should(VB_SIGN_SETUP_DRAW, true, thisx)) {}
     CLOSE_DISPS(play->state.gfxCtx);
 }

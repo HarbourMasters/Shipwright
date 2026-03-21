@@ -5612,6 +5612,7 @@ void Player_SetupTalk(PlayState* play, Player* this) {
         Message_StartTextbox(play, this->actor.textId, this->talkActor);
         this->focusActor = this->talkActor;
     }
+    if (GameInteractor_Should(VB_SIGN_GIVE_ITEM, true)) {}
 }
 
 void func_8083A360(PlayState* play, Player* this) {
