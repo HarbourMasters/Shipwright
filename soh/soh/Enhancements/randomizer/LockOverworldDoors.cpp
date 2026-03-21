@@ -128,4 +128,4 @@ void RegisterLockOverworldDoors() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterLockOverworldDoors, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc_LockOverworldDoors(RegisterLockOverworldDoors, { "IS_RANDO" });

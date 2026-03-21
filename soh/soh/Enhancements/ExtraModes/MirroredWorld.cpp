@@ -79,4 +79,4 @@ static void RegisterMirroredWorld() {
     COND_HOOK(OnSceneInit, CVAR_MIRRORED_WORLD_MODE_VALUE, UpdateMirrorModeState);
 }
 
-static RegisterShipInitFunc initFunc(RegisterMirroredWorld, { CVAR_MIRRORED_WORLD_MODE_NAME });
+static RegisterShipInitFunc initFunc_MirroredWorld(RegisterMirroredWorld, { CVAR_MIRRORED_WORLD_MODE_NAME });

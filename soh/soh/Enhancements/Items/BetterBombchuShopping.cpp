@@ -35,5 +35,5 @@ void BetterBombchuShopping_Register() {
                  IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("BetterBombchuShopping"), 0), BuildShopPromptMessage);
 }
 
-static RegisterShipInitFunc initFunc(BetterBombchuShopping_Register,
-                                     { "IS_RANDO", CVAR_ENHANCEMENT("BetterBombchuShopping") });
+static RegisterShipInitFunc initFunc_BetterBombchuShopping(BetterBombchuShopping_Register,
+                                                           { "IS_RANDO", CVAR_ENHANCEMENT("BetterBombchuShopping") });

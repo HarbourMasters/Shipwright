@@ -83,4 +83,5 @@ static void RegisterAgeDependentEquipmentHook() {
     COND_HOOK(OnSceneInit, CVAR_AGE_EQUIPMENT_VALUE, [](int32_t) { MakeEquipmentAlwaysVisible(); });
 }
 
-static RegisterShipInitFunc initFunc(RegisterAgeDependentEquipmentHook, { CVAR_AGE_EQUIPMENT_NAME });
+static RegisterShipInitFunc initFunc_AgeDependentEquipment(RegisterAgeDependentEquipmentHook,
+                                                           { CVAR_AGE_EQUIPMENT_NAME });

@@ -225,6 +225,56 @@ set(ALL_FILES
 ################################################################################
 add_executable(${PROJECT_NAME} ${ALL_FILES})
 
+################################################################################
+# Precompiled Headers
+################################################################################
+# Pre-parses expensive stable headers (STL, spdlog, nlohmann/json, imgui,
+# libultraship) once and reuses the result across all C++ translation units.
+# Disable with -DSOH_USE_PCH=OFF if you encounter build issues.
+option(SOH_USE_PCH "Use precompiled headers to speed up build" ON)
+if (SOH_USE_PCH AND NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
+    target_precompile_headers(${PROJECT_NAME} PRIVATE
+        "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/soh/soh_pch.hpp>"
+    )
+endif()
+
+################################################################################
+# Unity Build
+################################################################################
+# Merges source files into batched translation units to reduce the number of
+# times expensive headers are parsed by the linker stage.
+# The src/ decomp C files are excluded: they define file-scoped macros
+# (e.g. #define FLAGS ...) that would collide across batch boundaries.
+# randomizerEnumStrings.cpp is excluded: it uses X-macros that include the
+# same header three times with different macro definitions.
+# Disable with -DSOH_UNITY_BUILD=OFF if you encounter ODR or macro conflicts.
+option(SOH_UNITY_BUILD "Use unity builds to speed up compilation" ON)
+if (SOH_UNITY_BUILD)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        UNITY_BUILD ON
+        UNITY_BUILD_BATCH_SIZE 8
+    )
+    # Exclude all decompiled C sources — file-scoped #define macros would
+    # conflict when multiple files are merged into the same translation unit.
+    set_source_files_properties(${src__} PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+    # Exclude randomizerEnumStrings.cpp — redefines RANDO_ENUM_BEGIN/END macros
+    # between three sequential includes of randomizerEnums.h; unity merging
+    # would collapse those inclusions into a single macro state.
+    set_source_files_properties(
+        soh/Enhancements/randomizer/randomizerEnumStrings.cpp
+        PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON
+    )
+    # Exclude CustomMessageManager.cpp — defines a local MessageTableEntry typedef
+    # and also defines a CustomMessage::MESSAGE_END() method. Including
+    # message_data_static.h to resolve the former would redefine MESSAGE_END as a
+    # macro, breaking the method. The local typedef conflicts with message_data_static.h
+    # when batched with files that include it.
+    set_source_files_properties(
+        soh/Enhancements/custom-message/CustomMessageManager.cpp
+        PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON
+    )
+endif()
+
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
 endif()

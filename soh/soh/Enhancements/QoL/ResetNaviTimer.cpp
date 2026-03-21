@@ -14,4 +14,4 @@ static void RegisterResetNaviTimer() {
     COND_HOOK(OnSceneInit, CVAR_RESET_NAVI_VALUE, [](int32_t) { gSaveContext.naviTimer = 0; });
 }
 
-static RegisterShipInitFunc initFunc(RegisterResetNaviTimer, { CVAR_RESET_NAVI_NAME });
+static RegisterShipInitFunc initFunc_ResetNaviTimer(RegisterResetNaviTimer, { CVAR_RESET_NAVI_NAME });

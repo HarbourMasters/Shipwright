@@ -197,4 +197,4 @@ void RegisterExtraTraps() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterExtraTraps, { CVAR_EXTRA_TRAPS_NAME });
+static RegisterShipInitFunc initFunc_ExtraTraps(RegisterExtraTraps, { CVAR_EXTRA_TRAPS_NAME });

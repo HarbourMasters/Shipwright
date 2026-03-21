@@ -32,4 +32,4 @@ void RegisterInfiniteAmmo() {
     COND_HOOK(OnGameFrameUpdate, CVAR_INFINITE_AMMO_VALUE, OnGameFrameUpdateInfiniteAmmo);
 }
 
-static RegisterShipInitFunc initFunc(RegisterInfiniteAmmo, { CVAR_INFINITE_AMMO_NAME });
+static RegisterShipInitFunc initFunc_Ammo(RegisterInfiniteAmmo, { CVAR_INFINITE_AMMO_NAME });

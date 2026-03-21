@@ -203,4 +203,4 @@ void RegisterRemoteBombchu() {
     COND_ID_HOOK(OnActorUpdate, ACTOR_EN_BOM_CHU, CVAR_REMOTE_BOMBCHU_VALUE, OnActorUpdate);
 }
 
-static RegisterShipInitFunc initFunc(RegisterRemoteBombchu, { CVAR_REMOTE_BOMBCHU_NAME });
+static RegisterShipInitFunc initFunc_RemoteBombchu(RegisterRemoteBombchu, { CVAR_REMOTE_BOMBCHU_NAME });

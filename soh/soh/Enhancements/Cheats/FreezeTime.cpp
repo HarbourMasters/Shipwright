@@ -37,4 +37,4 @@ void RegisterFreezeTime() {
     }
 }
 
-static RegisterShipInitFunc initFunc(RegisterFreezeTime, { CVAR_FREEZE_TIME_NAME });
+static RegisterShipInitFunc initFunc_FreezeTime(RegisterFreezeTime, { CVAR_FREEZE_TIME_NAME });

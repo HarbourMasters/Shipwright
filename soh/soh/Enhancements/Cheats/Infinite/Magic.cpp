@@ -22,4 +22,4 @@ void RegisterInfiniteMagic() {
     COND_HOOK(OnGameFrameUpdate, CVAR_INFINITE_MAGIC_VALUE, OnGameFrameUpdateInfiniteMagic);
 }
 
-static RegisterShipInitFunc initFunc(RegisterInfiniteMagic, { CVAR_INFINITE_MAGIC_NAME });
+static RegisterShipInitFunc initFunc_Magic(RegisterInfiniteMagic, { CVAR_INFINITE_MAGIC_NAME });

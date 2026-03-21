@@ -114,4 +114,4 @@ void RegisterNoMasterSword() {
     COND_HOOK(OnSceneSpawnActors, IS_RANDO, UpdateNoMSPatch);
 }
 
-static RegisterShipInitFunc initFunc(RegisterNoMasterSword, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc_NoMasterSword(RegisterNoMasterSword, { "IS_RANDO" });

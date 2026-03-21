@@ -635,4 +635,4 @@ void Rando::StaticData::RegisterFishLocations() {
 }
 
 static RegisterShipInitFunc registerShuffleFish(RegisterShuffleFish, { "IS_RANDO" });
-static RegisterShipInitFunc initFunc(Rando::StaticData::RegisterFishLocations);
+static RegisterShipInitFunc initFunc_fishsanity(Rando::StaticData::RegisterFishLocations);

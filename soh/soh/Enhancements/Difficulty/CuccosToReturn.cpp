@@ -20,4 +20,4 @@ static void RegisterCuccosToReturn() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterCuccosToReturn, { CVAR_CUCCOS_TO_RETURN_NAME });
+static RegisterShipInitFunc initFunc_CuccosToReturn(RegisterCuccosToReturn, { CVAR_CUCCOS_TO_RETURN_NAME });

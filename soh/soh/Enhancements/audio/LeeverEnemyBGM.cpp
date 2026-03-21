@@ -5,9 +5,8 @@ extern "C" {
 #include "macros.h"
 }
 
-static constexpr int32_t CVAR_ENEMYBGMDISABLE_DEFAULT = 0;
 #define CVAR_ENEMYBGMDISABLE_NAME CVAR_AUDIO("EnemyBGMDisable")
-#define CVAR_ENEMYBGMDISABLE_VALUE CVarGetInteger(CVAR_ENEMYBGMDISABLE_NAME, CVAR_ENEMYBGMDISABLE_DEFAULT)
+#define CVAR_ENEMYBGMDISABLE_VALUE CVarGetInteger(CVAR_ENEMYBGMDISABLE_NAME, 0)
 
 static constexpr int32_t CVAR_LEEVERENEMYBGM_DEFAULT = 0;
 #define CVAR_LEEVERENEMYBGM_NAME CVAR_AUDIO("LeeverEnemyBGM")
@@ -27,4 +26,5 @@ static void RegisterLeeverEnemyBGM() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterLeeverEnemyBGM, { CVAR_ENEMYBGMDISABLE_NAME, CVAR_LEEVERENEMYBGM_NAME });
+static RegisterShipInitFunc initFunc_LeeverEnemyBGM(RegisterLeeverEnemyBGM,
+                                                    { CVAR_ENEMYBGMDISABLE_NAME, CVAR_LEEVERENEMYBGM_NAME });

@@ -24,4 +24,4 @@ void RegisterDekuStickCheats() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterDekuStickCheats, { CVAR_DEKU_STICK_NAME });
+static RegisterShipInitFunc initFunc_DekuStick(RegisterDekuStickCheats, { CVAR_DEKU_STICK_NAME });

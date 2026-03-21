@@ -29,4 +29,4 @@ void RegisterUnrestrictedItems() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterUnrestrictedItems, { CVAR_UNRESTRICTED_ITEMS_NAME });
+static RegisterShipInitFunc initFunc_UnrestrictedItems(RegisterUnrestrictedItems, { CVAR_UNRESTRICTED_ITEMS_NAME });

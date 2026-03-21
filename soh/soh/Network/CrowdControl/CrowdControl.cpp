@@ -637,4 +637,4 @@ void RegisterCrowdControlHooks() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterCrowdControlHooks, { CVAR_REMOTE_CROWD_CONTROL("Enabled") });
+static RegisterShipInitFunc initFunc_CrowdControl(RegisterCrowdControlHooks, { CVAR_REMOTE_CROWD_CONTROL("Enabled") });

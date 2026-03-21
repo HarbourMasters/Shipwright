@@ -56,4 +56,5 @@ void RegisterFasterHeavyBlockLift() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterFasterHeavyBlockLift, { CVAR_BLOCKLIFT_NAME, CVAR_SKIP_CUTSCENE_NAME });
+static RegisterShipInitFunc initFunc_FasterHeavyBlockLift(RegisterFasterHeavyBlockLift,
+                                                          { CVAR_BLOCKLIFT_NAME, CVAR_SKIP_CUTSCENE_NAME });

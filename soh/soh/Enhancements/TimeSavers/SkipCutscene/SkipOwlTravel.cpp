@@ -51,4 +51,4 @@ static void RegisterSkipOwlTravel() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterSkipOwlTravel, { CVAR_NAME, "IS_RANDO" });
+static RegisterShipInitFunc initFunc_SkipOwlTravel(RegisterSkipOwlTravel, { CVAR_NAME, "IS_RANDO" });

@@ -940,4 +940,4 @@ void RegisterBossRush() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterBossRush);
+static RegisterShipInitFunc initFunc_BossRush(RegisterBossRush);

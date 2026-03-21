@@ -34,4 +34,4 @@ static void RegisterDampeAllNight() {
     COND_ID_HOOK(OnActorInit, ACTOR_EN_DOOR, CVAR_DAMPE_ALL_NIGHT_VALUE, OpenDampeHutDoor);
 }
 
-static RegisterShipInitFunc initFunc(RegisterDampeAllNight, { CVAR_DAMPE_ALL_NIGHT_NAME });
+static RegisterShipInitFunc initFunc_DampeAllNight(RegisterDampeAllNight, { CVAR_DAMPE_ALL_NIGHT_NAME });

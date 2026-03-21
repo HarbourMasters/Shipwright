@@ -47,5 +47,5 @@ void RegisterSkipIntro() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterSkipIntro,
-                                     { CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), "IS_RANDO" });
+static RegisterShipInitFunc initFunc_SkipIntro(RegisterSkipIntro,
+                                               { CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"), "IS_RANDO" });

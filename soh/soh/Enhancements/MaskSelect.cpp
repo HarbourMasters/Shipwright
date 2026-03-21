@@ -20,4 +20,4 @@ static void RegisterMaskSelectFixes() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterMaskSelectFixes, { CVAR_ENHANCEMENT("MaskSelect") });
+static RegisterShipInitFunc initFunc_MaskSelect(RegisterMaskSelectFixes, { CVAR_ENHANCEMENT("MaskSelect") });

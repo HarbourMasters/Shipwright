@@ -70,5 +70,6 @@ void RegisterAdditionalReticles() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterAdditionalReticles,
-                                     { CVAR_ENHANCEMENT("BowReticle"), CVAR_ENHANCEMENT("BoomerangReticle") });
+static RegisterShipInitFunc initFunc_AdditionalReticles(RegisterAdditionalReticles,
+                                                        { CVAR_ENHANCEMENT("BowReticle"),
+                                                          CVAR_ENHANCEMENT("BoomerangReticle") });

@@ -23,4 +23,4 @@ void RegisterMoonJump() {
     COND_HOOK(OnPlayerUpdate, CVAR_MOON_JUMP_VALUE, OnPlayerUpdateMoonJump);
 }
 
-static RegisterShipInitFunc initFunc(RegisterMoonJump, { CVAR_MOON_JUMP_NAME });
+static RegisterShipInitFunc initFunc_MoonJump(RegisterMoonJump, { CVAR_MOON_JUMP_NAME });

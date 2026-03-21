@@ -27,4 +27,4 @@ void RegisterResetGameplayFrames() {
     COND_HOOK(OnPlayDestroy, true, ResetGameplayFramesOnTitleScreenExit);
 }
 
-static RegisterShipInitFunc initFunc(RegisterResetGameplayFrames);
+static RegisterShipInitFunc initFunc_ResetGameplayFrames(RegisterResetGameplayFrames);

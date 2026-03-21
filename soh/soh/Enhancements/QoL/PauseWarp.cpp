@@ -150,4 +150,4 @@ static void RegisterPauseMenuHooks() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterPauseMenuHooks, { CVAR_PAUSE_WARP_NAME });
+static RegisterShipInitFunc initFunc_PauseWarp(RegisterPauseMenuHooks, { CVAR_PAUSE_WARP_NAME });

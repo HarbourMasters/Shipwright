@@ -44,4 +44,4 @@ static void RegisterBrokenGiantsKnifeFix() {
     COND_HOOK(OnItemReceive, CVAR_BGS_FIX_VALUE || IS_RANDO, OnReceiveBrokenGiantsKnife);
 }
 
-static RegisterShipInitFunc initFunc(RegisterBrokenGiantsKnifeFix, { CVAR_BGS_FIX_NAME, "IS_RANDO" });
+static RegisterShipInitFunc initFunc_BrokenGiantsKnife(RegisterBrokenGiantsKnifeFix, { CVAR_BGS_FIX_NAME, "IS_RANDO" });

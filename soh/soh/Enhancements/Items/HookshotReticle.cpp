@@ -58,5 +58,6 @@ void RegisterTargetableHookshotReticle() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterTargetableHookshotReticle,
-                                     { CVAR_TARGETABLE_HOOKSHOT_NAME, CVAR_NON_TARGETABLE_HOOKSHOT_NAME });
+static RegisterShipInitFunc initFunc_HookshotReticle(RegisterTargetableHookshotReticle,
+                                                     { CVAR_TARGETABLE_HOOKSHOT_NAME,
+                                                       CVAR_NON_TARGETABLE_HOOKSHOT_NAME });

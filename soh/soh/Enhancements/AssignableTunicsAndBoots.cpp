@@ -193,4 +193,4 @@ static void RegisterAssignableTunicsBoots() {
     COND_HOOK(OnLoadGame, !CVAR_TUNICBOOTS_SET, ClearAssignedTunicsBoots);
 }
 
-static RegisterShipInitFunc initFunc(RegisterAssignableTunicsBoots, { CVAR_TUNICBOOTS_NAME });
+static RegisterShipInitFunc initFunc_AssignableTunicsAndBoots(RegisterAssignableTunicsBoots, { CVAR_TUNICBOOTS_NAME });

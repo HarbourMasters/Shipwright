@@ -119,4 +119,4 @@ static void RegisterGSTargetable() {
     COND_ID_HOOK(OnActorUpdate, ACTOR_EN_SW, CVAR_GSTARGETABLE_VALUE, OnActorUpdateGSTargetable);
 }
 
-static RegisterShipInitFunc initFunc(RegisterGSTargetable, { CVAR_GSTARGETABLE_NAME });
+static RegisterShipInitFunc initFunc_GSTargetable(RegisterGSTargetable, { CVAR_GSTARGETABLE_NAME });

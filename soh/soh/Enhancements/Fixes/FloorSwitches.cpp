@@ -23,4 +23,4 @@ static void RegisterFloorSwitchesFix() {
     COND_ID_HOOK(OnActorInit, ACTOR_OBJ_SWITCH, CVAR_FLOOR_SWITCHES_VALUE, OnInitFloorSwitches);
 }
 
-static RegisterShipInitFunc initFunc(RegisterFloorSwitchesFix, { CVAR_FLOOR_SWITCHES_NAME });
+static RegisterShipInitFunc initFunc_FloorSwitches(RegisterFloorSwitchesFix, { CVAR_FLOOR_SWITCHES_NAME });

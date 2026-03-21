@@ -22,4 +22,5 @@ void RegisterRebottleBlueFire() {
                  OnEnIceHonoUpdate);
 }
 
-static RegisterShipInitFunc initFunc(RegisterRebottleBlueFire, { CVAR_ENHANCEMENT("RebottleBlueFire") });
+static RegisterShipInitFunc initFunc_RebottleBlueFire(RegisterRebottleBlueFire,
+                                                      { CVAR_ENHANCEMENT("RebottleBlueFire") });

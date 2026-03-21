@@ -95,5 +95,6 @@ void RegisterSkipChildRutoInteractions() {
                  CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO), Ru1Init);
 }
 
-static RegisterShipInitFunc initFunc(RegisterSkipChildRutoInteractions,
-                                     { CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), "IS_RANDO" });
+static RegisterShipInitFunc initFunc_SkipChildRutoInteractions(RegisterSkipChildRutoInteractions,
+                                                               { CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"),
+                                                                 "IS_RANDO" });

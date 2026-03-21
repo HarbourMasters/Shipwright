@@ -196,4 +196,4 @@ void RegisterMerchantMessages() {
     COND_ID_HOOK(OnOpenText, TEXT_CARPET_SALESMAN_CUSTOM_FAIL_TO_BUY, IS_RANDO, BuildCarpetGuyFailToBuyMessage);
 }
 
-static RegisterShipInitFunc initFunc(RegisterMerchantMessages, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc_MerchantMessages(RegisterMerchantMessages, { "IS_RANDO" });

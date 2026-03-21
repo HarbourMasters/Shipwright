@@ -21,5 +21,5 @@ static void RegisterA11yNoScreenFlashForFinishingBlow() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterA11yNoScreenFlashForFinishingBlow,
-                                     { CVAR_A11YNOSCREENFLASHFORFINISHINGBLOW_NAME });
+static RegisterShipInitFunc initFunc_A11yNoScreenFlashForFinishingBlow(RegisterA11yNoScreenFlashForFinishingBlow,
+                                                                       { CVAR_A11YNOSCREENFLASHFORFINISHINGBLOW_NAME });

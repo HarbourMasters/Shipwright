@@ -212,4 +212,4 @@ void RegisterWarping() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterWarping, { CVAR_BOOTSEQUENCE_NAME });
+static RegisterShipInitFunc initFunc_Warping(RegisterWarping, { CVAR_BOOTSEQUENCE_NAME });

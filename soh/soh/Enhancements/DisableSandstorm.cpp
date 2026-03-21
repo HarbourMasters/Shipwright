@@ -13,4 +13,4 @@ void RegisterDisableSandstorm() {
     COND_HOOK(OnTransitionEnd, CVarGetInteger(CVAR_CHEAT("DisableSandstorm"), 0), DisableSandstormAfterTransition);
 }
 
-static RegisterShipInitFunc initFunc(RegisterDisableSandstorm, { CVAR_CHEAT("DisableSandstorm") });
+static RegisterShipInitFunc initFunc_DisableSandstorm(RegisterDisableSandstorm, { CVAR_CHEAT("DisableSandstorm") });

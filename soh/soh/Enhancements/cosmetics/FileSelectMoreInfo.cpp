@@ -801,4 +801,5 @@ void RegisterFileSelectMoreInfo() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterFileSelectMoreInfo, { CVAR_FILE_SELECT_MORE_INFO_NAME });
+static RegisterShipInitFunc initFunc_FileSelectMoreInfo(RegisterFileSelectMoreInfo,
+                                                        { CVAR_FILE_SELECT_MORE_INFO_NAME });

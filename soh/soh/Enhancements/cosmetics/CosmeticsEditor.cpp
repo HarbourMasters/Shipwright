@@ -2719,7 +2719,8 @@ void RegisterCosmeticWidgets() {
     SohGui::mSohMenu->AddSearchWidget({ goronNeck, "Enhancements", "Cosmetics Editor", "Silly" });
 }
 
-static RegisterShipInitFunc initFunc(RegisterCosmeticHooks, {
-                                                                CVAR_COSMETIC("RandomizeCosmeticsGenModes"),
-                                                            });
-static RegisterMenuInitFunc menuInitFunc(RegisterCosmeticWidgets);
+static RegisterShipInitFunc initFunc_CosmeticsEditor(RegisterCosmeticHooks,
+                                                     {
+                                                         CVAR_COSMETIC("RandomizeCosmeticsGenModes"),
+                                                     });
+static RegisterMenuInitFunc menuInitFunc_CosmeticsEditor(RegisterCosmeticWidgets);

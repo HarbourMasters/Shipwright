@@ -56,4 +56,4 @@ void RegisterGossipStoneHints() {
                  RAND_GET_OPTION(RSK_GOSSIP_STONE_HINTS).IsNot(RO_GOSSIP_STONES_NONE), BuildHintStoneMessage);
 }
 
-static RegisterShipInitFunc initFunc(RegisterGossipStoneHints, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc_GossipStoneHints(RegisterGossipStoneHints, { "IS_RANDO" });

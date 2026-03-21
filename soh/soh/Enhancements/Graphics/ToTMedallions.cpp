@@ -123,4 +123,4 @@ static void RegisterToTMedallions() {
     COND_HOOK(OnSceneInit, CVAR_TOT_MEDALLION_COLORS_VALUE, CheckTempleOfTime);
 }
 
-static RegisterShipInitFunc initFunc(RegisterToTMedallions, { CVAR_TOT_MEDALLION_COLORS_NAME });
+static RegisterShipInitFunc initFunc_ToTMedallions(RegisterToTMedallions, { CVAR_TOT_MEDALLION_COLORS_NAME });

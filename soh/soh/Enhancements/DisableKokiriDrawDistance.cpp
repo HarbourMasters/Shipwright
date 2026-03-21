@@ -6,5 +6,5 @@ void RegisterDisableKokiriDrawDistance() {
                    { *should = false; });
 }
 
-static RegisterShipInitFunc initFunc(RegisterDisableKokiriDrawDistance,
-                                     { CVAR_ENHANCEMENT("DisableKokiriDrawDistance") });
+static RegisterShipInitFunc initFunc_DisableKokiriDrawDistance(RegisterDisableKokiriDrawDistance,
+                                                               { CVAR_ENHANCEMENT("DisableKokiriDrawDistance") });

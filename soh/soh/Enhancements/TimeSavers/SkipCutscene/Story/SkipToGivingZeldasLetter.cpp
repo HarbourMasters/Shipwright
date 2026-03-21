@@ -44,5 +44,6 @@ void RegisterSkipToGivingZeldasLetter() {
                  SkipToGivingZeldasLetter_OnActorInit);
 }
 
-static RegisterShipInitFunc initFunc(RegisterSkipToGivingZeldasLetter,
-                                     { CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), "IS_RANDO" });
+static RegisterShipInitFunc initFunc_SkipToGivingZeldasLetter(RegisterSkipToGivingZeldasLetter,
+                                                              { CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"),
+                                                                "IS_RANDO" });

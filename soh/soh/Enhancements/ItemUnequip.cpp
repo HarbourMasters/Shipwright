@@ -84,4 +84,4 @@ void RegisterItemUnequip() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterItemUnequip, { CVAR_ITEM_UNEQUIP_NAME });
+static RegisterShipInitFunc initFunc_ItemUnequip(RegisterItemUnequip, { CVAR_ITEM_UNEQUIP_NAME });

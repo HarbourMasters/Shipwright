@@ -24,4 +24,5 @@ void QuitFishingAtDoor_Register() {
                  BuildQuitFishingMessage);
 }
 
-static RegisterShipInitFunc initFunc(QuitFishingAtDoor_Register, { CVAR_ENHANCEMENT("QuitFishingAtDoor") });
+static RegisterShipInitFunc initFunc_QuitFishingAtDoor(QuitFishingAtDoor_Register,
+                                                       { CVAR_ENHANCEMENT("QuitFishingAtDoor") });

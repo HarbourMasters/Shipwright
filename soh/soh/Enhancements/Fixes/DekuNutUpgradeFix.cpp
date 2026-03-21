@@ -41,4 +41,5 @@ static void RegisterDekuNutUpgradeFix() {
                    { DekuNutUpgradeFixAtForestStage(should); });
 }
 
-static RegisterShipInitFunc initFunc(RegisterDekuNutUpgradeFix, { CVAR_NUT_UPGRADE_FIX_NAME, "IS_RANDO" });
+static RegisterShipInitFunc initFunc_DekuNutUpgradeFix(RegisterDekuNutUpgradeFix,
+                                                       { CVAR_NUT_UPGRADE_FIX_NAME, "IS_RANDO" });

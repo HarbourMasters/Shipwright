@@ -32,4 +32,4 @@ void InitFasterPauseMenu() {
     });
 }
 
-static RegisterShipInitFunc initFunc(InitFasterPauseMenu, { CVAR_FASTER_PAUSE_MENU_NAME });
+static RegisterShipInitFunc initFunc_FasterPauseMenu(InitFasterPauseMenu, { CVAR_FASTER_PAUSE_MENU_NAME });
