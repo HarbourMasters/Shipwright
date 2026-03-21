@@ -220,4 +220,4 @@ static void RegisterEnemyDefeatCounts() {
     ENEMY_DEFEAT_COUNT(ACTOR_EN_WF, EnemyDefeatCounts_EnWf);
 }
 
-static RegisterShipInitFunc initFunc(RegisterEnemyDefeatCounts);
+static RegisterShipInitFunc initFunc_EnemyDefeatCounts(RegisterEnemyDefeatCounts);

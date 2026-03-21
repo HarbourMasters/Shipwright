@@ -133,4 +133,4 @@ void Register3DPreRenderedScenes() {
     });
 }
 
-static RegisterShipInitFunc initFunc(Register3DPreRenderedScenes, { CVAR_NAME });
+static RegisterShipInitFunc initFunc_Disable2DBackgrounds(Register3DPreRenderedScenes, { CVAR_NAME });

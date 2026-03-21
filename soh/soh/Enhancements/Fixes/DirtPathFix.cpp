@@ -28,4 +28,4 @@ static void RegisterDirtPathFix() {
     COND_HOOK(OnTransitionEnd, CVAR_DIRT_PATH_VALUE, DirtPathFix_UpdateZFightingMode);
 }
 
-static RegisterShipInitFunc initFunc(RegisterDirtPathFix, { CVAR_DIRT_PATH_NAME });
+static RegisterShipInitFunc initFunc_DirtPathFix(RegisterDirtPathFix, { CVAR_DIRT_PATH_NAME });

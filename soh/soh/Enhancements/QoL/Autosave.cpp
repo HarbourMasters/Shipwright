@@ -82,4 +82,4 @@ static void RegisterAutosave() {
     COND_HOOK(GameInteractor::OnExitGame, CVAR_AUTOSAVE_VALUE, [](int32_t fileNum) { Autosave_SoftResetSave(); });
 }
 
-static RegisterShipInitFunc initFunc(RegisterAutosave, { CVAR_AUTOSAVE_NAME });
+static RegisterShipInitFunc initFunc_Autosave(RegisterAutosave, { CVAR_AUTOSAVE_NAME });

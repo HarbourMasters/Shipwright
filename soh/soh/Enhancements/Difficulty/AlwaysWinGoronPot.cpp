@@ -8,4 +8,4 @@ static void RegisterWinGoronPot() {
     COND_VB_SHOULD(VB_WIN_GORON_POT, CVAR_WIN_GORON_POT_VALUE, { *should = true; });
 }
 
-static RegisterShipInitFunc initFunc(RegisterWinGoronPot, { CVAR_WIN_GORON_POT_NAME });
+static RegisterShipInitFunc initFunc_AlwaysWinGoronPot(RegisterWinGoronPot, { CVAR_WIN_GORON_POT_NAME });

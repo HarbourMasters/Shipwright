@@ -177,5 +177,5 @@ void RegisterNaviMessages() {
                  IS_RANDO && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"), 1), BuildNaviMessage);
 }
 
-static RegisterShipInitFunc initFunc(RegisterNaviMessages,
-                                     { CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"), "IS_RANDO" });
+static RegisterShipInitFunc initFunc_Navi(RegisterNaviMessages,
+                                          { CVAR_RANDOMIZER_ENHANCEMENT("RandoRelevantNavi"), "IS_RANDO" });

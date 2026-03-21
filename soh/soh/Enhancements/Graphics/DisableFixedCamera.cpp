@@ -99,7 +99,7 @@ static void RegisterDisableFixedCamera() {
     }
 }
 
-static RegisterShipInitFunc initFunc(RegisterDisableFixedCamera, { CVAR_DISABLE_FIXED_CAMERA_NAME });
+static RegisterShipInitFunc initFunc_DisableFixedCamera(RegisterDisableFixedCamera, { CVAR_DISABLE_FIXED_CAMERA_NAME });
 
 static void DisableFixedCamera_RestoreCameraData(CollisionHeader* colHeader) {
     if (colHeader == nullptr) {

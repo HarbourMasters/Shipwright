@@ -23,4 +23,4 @@ static void RegisterBossDefeatTimestamps() {
                  [](void* refActor) { gSaveContext.ship.stats.gameComplete = true; });
 }
 
-static RegisterShipInitFunc initFunc(RegisterBossDefeatTimestamps);
+static RegisterShipInitFunc initFunc_BossDefeatTimestamps(RegisterBossDefeatTimestamps);

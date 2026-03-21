@@ -22,4 +22,4 @@ void RegisterInfiniteNayrusLove() {
     COND_HOOK(OnGameFrameUpdate, CVAR_INFINITE_NAYRUS_LOVE_VALUE, OnGameFrameUpdateInfiniteNayrusLove);
 }
 
-static RegisterShipInitFunc initFunc(RegisterInfiniteNayrusLove, { CVAR_INFINITE_NAYRUS_LOVE_NAME });
+static RegisterShipInitFunc initFunc_NayrusLove(RegisterInfiniteNayrusLove, { CVAR_INFINITE_NAYRUS_LOVE_NAME });

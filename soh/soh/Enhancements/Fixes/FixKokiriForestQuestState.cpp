@@ -16,5 +16,5 @@ void RegisterFixKokiriForestQuestState() {
                    });
 }
 
-static RegisterShipInitFunc initFunc(RegisterFixKokiriForestQuestState,
-                                     { CVAR_ENHANCEMENT("FixKokiriForestQuestState") });
+static RegisterShipInitFunc initFunc_FixKokiriForestQuestState(RegisterFixKokiriForestQuestState,
+                                                               { CVAR_ENHANCEMENT("FixKokiriForestQuestState") });

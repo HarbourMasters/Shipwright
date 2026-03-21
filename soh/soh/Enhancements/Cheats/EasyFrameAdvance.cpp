@@ -37,4 +37,4 @@ void RegisterEasyFrameAdvance() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterEasyFrameAdvance, { CVAR_FRAME_ADVANCE_NAME });
+static RegisterShipInitFunc initFunc_EasyFrameAdvance(RegisterEasyFrameAdvance, { CVAR_FRAME_ADVANCE_NAME });

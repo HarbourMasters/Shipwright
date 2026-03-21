@@ -85,7 +85,7 @@ static void PatchCustomEquipment() {
     COND_HOOK(OnAssetAltChange, true, UpdateCustomEquipment);
 }
 
-static RegisterShipInitFunc initFunc(PatchCustomEquipment);
+static RegisterShipInitFunc initFunc_customequipment(PatchCustomEquipment);
 
 static void RefreshCustomEquipment() {
     if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL || GET_PLAYER(gPlayState) == nullptr) {

@@ -61,5 +61,6 @@ void RegisterSkipZeldaFleeingCastle() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterSkipZeldaFleeingCastle,
-                                     { CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), "IS_RANDO" });
+static RegisterShipInitFunc initFunc_SkipZeldaFleeingCastle(RegisterSkipZeldaFleeingCastle,
+                                                            { CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"),
+                                                              "IS_RANDO" });

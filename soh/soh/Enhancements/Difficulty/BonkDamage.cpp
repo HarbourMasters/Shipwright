@@ -52,4 +52,4 @@ static void RegisterBonkDamage() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterBonkDamage, { CVAR_BONK_DAMAGE_NAME });
+static RegisterShipInitFunc initFunc_BonkDamage(RegisterBonkDamage, { CVAR_BONK_DAMAGE_NAME });

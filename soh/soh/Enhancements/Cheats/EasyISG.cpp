@@ -24,4 +24,4 @@ void RegisterEasyISG() {
     COND_HOOK(OnGameFrameUpdate, CVAR_EASY_ISG_VALUE, OnGameFrameUpdateEasyISG);
 }
 
-static RegisterShipInitFunc initFunc(RegisterEasyISG, { CVAR_EASY_ISG_NAME });
+static RegisterShipInitFunc initFunc_EasyISG(RegisterEasyISG, { CVAR_EASY_ISG_NAME });

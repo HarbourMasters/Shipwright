@@ -1762,4 +1762,4 @@ void RegisterEntranceShuffleHooks() {
               [](int32_t) { backedUpScene = (SceneID)0xFF; });
 }
 
-static RegisterShipInitFunc initFunc(RegisterEntranceShuffleHooks, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc_entrance(RegisterEntranceShuffleHooks, { "IS_RANDO" });

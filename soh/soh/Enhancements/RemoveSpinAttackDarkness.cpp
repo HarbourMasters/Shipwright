@@ -42,4 +42,5 @@ void RegisterCustomEnMThunderUpdate() {
                  OnEnMThunderInitReplaceUpdateWithCustom);
 }
 
-static RegisterShipInitFunc initFunc(RegisterCustomEnMThunderUpdate, { CVAR_REMOVESPINATTACKDARKNESS_NAME });
+static RegisterShipInitFunc initFunc_RemoveSpinAttackDarkness(RegisterCustomEnMThunderUpdate,
+                                                              { CVAR_REMOVESPINATTACKDARKNESS_NAME });

@@ -25,4 +25,4 @@ void RegisterEasyQPA() {
     COND_HOOK(OnGameFrameUpdate, CVAR_EASY_QPA_VALUE, OnGameFrameUpdateEasyQPA);
 }
 
-static RegisterShipInitFunc initFunc(RegisterEasyQPA, { CVAR_EASY_QPA_NAME });
+static RegisterShipInitFunc initFunc_EasyQPA(RegisterEasyQPA, { CVAR_EASY_QPA_NAME });

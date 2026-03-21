@@ -32,4 +32,4 @@ static void RegisterTreesDropSticks() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterTreesDropSticks, { CVAR_TREES_DROP_STICKS_NAME });
+static RegisterShipInitFunc initFunc_TreesDropSticks(RegisterTreesDropSticks, { CVAR_TREES_DROP_STICKS_NAME });

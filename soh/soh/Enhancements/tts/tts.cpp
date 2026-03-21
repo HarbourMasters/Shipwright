@@ -1214,4 +1214,4 @@ static void RegisterTTS() {
     RegisterTTSModHooks();
 }
 
-static RegisterShipInitFunc initFunc(RegisterTTS);
+static RegisterShipInitFunc initFunc_tts(RegisterTTS);

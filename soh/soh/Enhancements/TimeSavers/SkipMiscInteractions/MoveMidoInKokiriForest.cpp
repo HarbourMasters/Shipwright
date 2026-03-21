@@ -29,5 +29,6 @@ void RegisterMoveMidoInKokiriForest() {
         });
 }
 
-static RegisterShipInitFunc initFunc(RegisterMoveMidoInKokiriForest,
-                                     { CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), "IS_RANDO" });
+static RegisterShipInitFunc initFunc_MoveMidoInKokiriForest(RegisterMoveMidoInKokiriForest,
+                                                            { CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"),
+                                                              "IS_RANDO" });

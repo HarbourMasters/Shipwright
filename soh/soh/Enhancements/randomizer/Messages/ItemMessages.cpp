@@ -260,7 +260,7 @@ void RegisterItemMessages() {
                  BuildSmallKeyMessage);
 }
 
-static RegisterShipInitFunc initFunc(RegisterItemMessages, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc_ItemMessages(RegisterItemMessages, { "IS_RANDO" });
 
 void RegisterCustomIconHooks() {
     COND_VB_SHOULD(VB_LOAD_ITEM_ICON, IS_RANDO, {

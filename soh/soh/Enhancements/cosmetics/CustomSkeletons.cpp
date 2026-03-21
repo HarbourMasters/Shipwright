@@ -22,4 +22,4 @@ static void RegisterCustomSkeletons() {
     COND_HOOK(OnLinkEquipmentChange, true, SOH::SkeletonPatcher::UpdateCustomSkeletons);
 }
 
-static RegisterShipInitFunc initFunc(RegisterCustomSkeletons);
+static RegisterShipInitFunc initFunc_CustomSkeletons(RegisterCustomSkeletons);

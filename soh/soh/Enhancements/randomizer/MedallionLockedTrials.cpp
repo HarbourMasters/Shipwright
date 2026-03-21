@@ -8,7 +8,7 @@ void DoorShutter_SetupAction(DoorShutter*, DoorShutterActionFunc);
 void DoorShutter_SetupType(DoorShutter*, PlayState*);
 }
 
-static void OnDoorInit(void* actorRef) {
+static void OnDoorInitMedallionLockedTrials(void* actorRef) {
     if (gPlayState->sceneNum == SCENE_INSIDE_GANONS_CASTLE) {
         DoorShutter* door = static_cast<DoorShutter*>(actorRef);
         bool barred = false;
@@ -42,7 +42,7 @@ static void OnDoorInit(void* actorRef) {
 void RegisterMedallionLockedTrials() {
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_MEDALLION_LOCKED_TRIALS);
 
-    COND_ID_HOOK(OnActorInit, ACTOR_DOOR_SHUTTER, shouldRegister, OnDoorInit);
+    COND_ID_HOOK(OnActorInit, ACTOR_DOOR_SHUTTER, shouldRegister, OnDoorInitMedallionLockedTrials);
 }
 
-static RegisterShipInitFunc initFunc(RegisterMedallionLockedTrials, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc_MedallionLockedTrials(RegisterMedallionLockedTrials, { "IS_RANDO" });

@@ -1047,4 +1047,4 @@ void RegisterEnemyRandomizer() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterEnemyRandomizer, { CVAR_ENEMY_RANDOMIZER_NAME });
+static RegisterShipInitFunc initFunc_enemyrandomizer(RegisterEnemyRandomizer, { CVAR_ENEMY_RANDOMIZER_NAME });

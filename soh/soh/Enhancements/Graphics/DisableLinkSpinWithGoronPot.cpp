@@ -26,4 +26,5 @@ static void RegisterDisableLinkSpinWithGoronPot() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterDisableLinkSpinWithGoronPot, { CVAR_LINK_SPIN_DISABLE_NAME });
+static RegisterShipInitFunc initFunc_DisableLinkSpinWithGoronPot(RegisterDisableLinkSpinWithGoronPot,
+                                                                 { CVAR_LINK_SPIN_DISABLE_NAME });

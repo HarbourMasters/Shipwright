@@ -49,4 +49,4 @@ void RegisterBigPoeHooks() {
     COND_ID_HOOK(OnOpenText, TEXT_BIG_POE_COLLECTED_RANDO, IS_RANDO, BuildBigPoeCollectedMessage);
 }
 
-static RegisterShipInitFunc initFunc(RegisterBigPoeHooks, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc_BigPoes(RegisterBigPoeHooks, { "IS_RANDO" });

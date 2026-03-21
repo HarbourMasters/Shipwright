@@ -11,4 +11,4 @@ void RegisterSkipAmyPuzzle() {
                    { *should = !IS_RANDO || Flags_GetRandomizerInf(RAND_INF_CAN_GRAB); });
 }
 
-static RegisterShipInitFunc initFunc(RegisterSkipAmyPuzzle, { CVAR_ENHANCEMENT("SkipAmyPuzzle") });
+static RegisterShipInitFunc initFunc_SkipAmyPuzzle(RegisterSkipAmyPuzzle, { CVAR_ENHANCEMENT("SkipAmyPuzzle") });

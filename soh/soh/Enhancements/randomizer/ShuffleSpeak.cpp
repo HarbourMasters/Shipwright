@@ -141,4 +141,4 @@ void RegisterShuffleSpeak() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterShuffleSpeak, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc_ShuffleSpeak(RegisterShuffleSpeak, { "IS_RANDO" });

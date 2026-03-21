@@ -377,5 +377,5 @@ void RegisterRandomRupeeNames() {
                  IS_RANDO && CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), 1), BuildRupeeMessage);
 }
 
-static RegisterShipInitFunc initFunc(RegisterRandomRupeeNames,
-                                     { CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), "IS_RANDO" });
+static RegisterShipInitFunc initFunc_Rupees(RegisterRandomRupeeNames,
+                                            { CVAR_RANDOMIZER_ENHANCEMENT("RandomizeRupeeNames"), "IS_RANDO" });

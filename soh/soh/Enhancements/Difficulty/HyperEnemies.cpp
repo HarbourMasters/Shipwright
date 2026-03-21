@@ -30,4 +30,4 @@ static void UpdateHyperEnemiesState() {
     COND_HOOK(OnActorUpdate, CVAR_HYPER_ENEMIES_VALUE, MakeHyperEnemies);
 }
 
-static RegisterShipInitFunc initFunc(UpdateHyperEnemiesState, { CVAR_HYPER_ENEMIES_NAME });
+static RegisterShipInitFunc initFunc_HyperEnemies(UpdateHyperEnemiesState, { CVAR_HYPER_ENEMIES_NAME });

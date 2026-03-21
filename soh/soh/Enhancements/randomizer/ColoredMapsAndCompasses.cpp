@@ -33,5 +33,5 @@ void RegisterColoredMapsAndCompasses() {
     }
 }
 
-static RegisterShipInitFunc initFunc(RegisterColoredMapsAndCompasses,
-                                     { "IS_RANDO", CVAR_COLORED_MAPS_AND_COMPASSES_NAME });
+static RegisterShipInitFunc initFunc_ColoredMapsAndCompasses(RegisterColoredMapsAndCompasses,
+                                                             { "IS_RANDO", CVAR_COLORED_MAPS_AND_COMPASSES_NAME });

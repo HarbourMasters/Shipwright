@@ -42,4 +42,5 @@ void RegisterFasterRupeeAccumulator() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterFasterRupeeAccumulator, { CVAR_ENHANCEMENT("FasterRupeeAccumulator") });
+static RegisterShipInitFunc initFunc_FasterRupeeAccumulator(RegisterFasterRupeeAccumulator,
+                                                            { CVAR_ENHANCEMENT("FasterRupeeAccumulator") });

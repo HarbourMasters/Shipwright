@@ -20,5 +20,6 @@ void RegisterSkipDekuTreeIntro() {
                    });
 }
 
-static RegisterShipInitFunc initFunc(RegisterSkipDekuTreeIntro,
-                                     { CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), "IS_RANDO" });
+static RegisterShipInitFunc initFunc_SkipDekuTreeIntro(RegisterSkipDekuTreeIntro,
+                                                       { CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"),
+                                                         "IS_RANDO" });

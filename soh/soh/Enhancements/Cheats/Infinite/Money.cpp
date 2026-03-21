@@ -26,4 +26,4 @@ void RegisterInfiniteMoney() {
     COND_HOOK(OnGameFrameUpdate, CVAR_INFINITE_MONEY_VALUE, OnGameFrameUpdateInfiniteMoney);
 }
 
-static RegisterShipInitFunc initFunc(RegisterInfiniteMoney, { CVAR_INFINITE_MONEY_NAME });
+static RegisterShipInitFunc initFunc_Money(RegisterInfiniteMoney, { CVAR_INFINITE_MONEY_NAME });

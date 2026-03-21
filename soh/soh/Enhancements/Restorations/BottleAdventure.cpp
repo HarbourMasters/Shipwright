@@ -478,4 +478,4 @@ void RegisterBottleAdventure() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterBottleAdventure);
+static RegisterShipInitFunc initFunc_BottleAdventure(RegisterBottleAdventure);

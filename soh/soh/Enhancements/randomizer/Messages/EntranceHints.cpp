@@ -172,4 +172,4 @@ void RegisterEntranceHintMessages() {
     COND_HOOK(OnOpenText, ENTRANCES_SHUFFLED, BuildEntranceHintMessage);
 }
 
-static RegisterShipInitFunc initFunc(RegisterEntranceHintMessages, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc_EntranceHints(RegisterEntranceHintMessages, { "IS_RANDO" });

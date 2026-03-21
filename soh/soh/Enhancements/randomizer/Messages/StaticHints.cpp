@@ -510,4 +510,4 @@ void RegisterStaticHints() {
     COND_ID_HOOK(OnOpenText, TEXT_NEED_SPECIAL_KEY, RAND_GET_OPTION(RSK_BOSS_KEY_HINT), BuildBossKeyHintMessage);
 }
 
-static RegisterShipInitFunc initFunc(RegisterStaticHints, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc_StaticHints(RegisterStaticHints, { "IS_RANDO" });

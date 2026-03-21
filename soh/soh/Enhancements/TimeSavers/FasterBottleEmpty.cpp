@@ -16,4 +16,5 @@ void RegisterFasterEmptyBottle() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterFasterEmptyBottle, { CVAR_ENHANCEMENT("FasterBottleEmpty") });
+static RegisterShipInitFunc initFunc_FasterBottleEmpty(RegisterFasterEmptyBottle,
+                                                       { CVAR_ENHANCEMENT("FasterBottleEmpty") });

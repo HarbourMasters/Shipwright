@@ -61,4 +61,4 @@ void RegisterMiscellaneousMessages() {
     COND_ID_HOOK(OnOpenText, TEXT_MALON_LETS_SING_THIS_SONG, IS_RANDO, BuildFixedMallonAtCastleMessage);
 }
 
-static RegisterShipInitFunc initFunc(RegisterMiscellaneousMessages, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc_Miscellaneous(RegisterMiscellaneousMessages, { "IS_RANDO" });

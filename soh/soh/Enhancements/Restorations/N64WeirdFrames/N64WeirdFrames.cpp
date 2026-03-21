@@ -167,4 +167,4 @@ void RegisterN64WeirdFrames() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterN64WeirdFrames, { CVAR_NAME });
+static RegisterShipInitFunc initFunc_N64WeirdFrames(RegisterN64WeirdFrames, { CVAR_NAME });

@@ -21,4 +21,4 @@ void RegisterInfiniteHealth() {
     COND_HOOK(OnGameFrameUpdate, CVAR_INFINITE_HEALTH_VALUE, OnGameFrameUpdateInfiniteHealth);
 }
 
-static RegisterShipInitFunc initFunc(RegisterInfiniteHealth, { CVAR_INFINITE_HEALTH_NAME });
+static RegisterShipInitFunc initFunc_Health(RegisterInfiniteHealth, { CVAR_INFINITE_HEALTH_NAME });

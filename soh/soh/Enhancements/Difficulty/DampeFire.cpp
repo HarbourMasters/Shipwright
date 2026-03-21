@@ -49,4 +49,4 @@ static void RegisterDampeFire() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterDampeFire, { CVAR_DAMPE_DROP_RATE_NAME });
+static RegisterShipInitFunc initFunc_DampeFire(RegisterDampeFire, { CVAR_DAMPE_DROP_RATE_NAME });

@@ -14,7 +14,7 @@ static constexpr int32_t CVAR_FIX_TWO_HANDED_IDLE_DEFAULT = 0;
 #define CVAR_FIX_TWO_HANDED_IDLE_VALUE CVarGetInteger(CVAR_FIX_TWO_HANDED_IDLE_NAME, CVAR_FIX_TWO_HANDED_IDLE_DEFAULT)
 
 // clang-format off
-static RegisterShipInitFunc initFunc([]() {
+static RegisterShipInitFunc initFunc_FixTwoHandedIdleAnim([]() {
     COND_VB_SHOULD(VB_SET_IDLE_ANIM, CVAR_FIX_TWO_HANDED_IDLE_VALUE, {
         Player* player = va_arg(args, Player*);
         s32 commonType = va_arg(args, s32);

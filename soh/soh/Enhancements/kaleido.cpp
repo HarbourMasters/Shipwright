@@ -606,4 +606,4 @@ static void RandoKaleido_RegisterHooks() {
         RandoKaleido_UpdateMiscCollectibles);
 }
 
-static RegisterShipInitFunc initFunc(RandoKaleido_RegisterHooks);
+static RegisterShipInitFunc initFunc_kaleido(RandoKaleido_RegisterHooks);

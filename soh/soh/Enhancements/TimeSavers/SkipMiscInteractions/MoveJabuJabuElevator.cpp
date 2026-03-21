@@ -24,5 +24,6 @@ void RegisterMoveJabuJabuElevator() {
                  CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO), BdanInit);
 }
 
-static RegisterShipInitFunc initFunc(RegisterMoveJabuJabuElevator,
-                                     { CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), "IS_RANDO" });
+static RegisterShipInitFunc initFunc_MoveJabuJabuElevator(RegisterMoveJabuJabuElevator,
+                                                          { CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"),
+                                                            "IS_RANDO" });

@@ -287,4 +287,4 @@ void RegisterArrowCycle() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterArrowCycle, { CVAR_ARROW_CYCLE_NAME });
+static RegisterShipInitFunc initFunc_ArrowCycle(RegisterArrowCycle, { CVAR_ARROW_CYCLE_NAME });

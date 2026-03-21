@@ -39,4 +39,4 @@ static void RegisterHurtContainer() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterHurtContainer, { CVAR_HURT_CONTAINER_NAME });
+static RegisterShipInitFunc initFunc_HurtContainer(RegisterHurtContainer, { CVAR_HURT_CONTAINER_NAME });

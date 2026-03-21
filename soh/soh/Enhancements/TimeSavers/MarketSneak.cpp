@@ -20,4 +20,4 @@ void MarketSneak_Register() {
                  BuildNightGuardMessage);
 }
 
-static RegisterShipInitFunc initFunc(MarketSneak_Register, { CVAR_ENHANCEMENT("MarketSneak") });
+static RegisterShipInitFunc initFunc_MarketSneak(MarketSneak_Register, { CVAR_ENHANCEMENT("MarketSneak") });

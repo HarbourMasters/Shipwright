@@ -133,4 +133,4 @@ void RegisterVisualAgony() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterVisualAgony, { CVAR_VISUAL_AGONY_NAME });
+static RegisterShipInitFunc initFunc_VisualAgony(RegisterVisualAgony, { CVAR_VISUAL_AGONY_NAME });

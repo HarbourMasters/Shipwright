@@ -1,3 +1,5 @@
+#pragma once
+
 #include <libultraship/libultraship.h>
 
 class GameplayStatsWindow final : public Ship::GuiWindow {

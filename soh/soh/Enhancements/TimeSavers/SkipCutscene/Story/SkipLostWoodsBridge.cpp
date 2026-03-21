@@ -36,5 +36,6 @@ void RegisterSkipLostWoodsBridge() {
     // Todo: Move item queueing here
 }
 
-static RegisterShipInitFunc initFunc(RegisterSkipLostWoodsBridge,
-                                     { CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), "IS_RANDO" });
+static RegisterShipInitFunc initFunc_SkipLostWoodsBridge(RegisterSkipLostWoodsBridge,
+                                                         { CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"),
+                                                           "IS_RANDO" });

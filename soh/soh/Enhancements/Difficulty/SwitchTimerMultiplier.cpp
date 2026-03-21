@@ -30,4 +30,4 @@ void RegisterSwitchTimerMultiplier() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterSwitchTimerMultiplier, { CVAR_SWITCH_TIMER_NAME });
+static RegisterShipInitFunc initFunc_SwitchTimerMultiplier(RegisterSwitchTimerMultiplier, { CVAR_SWITCH_TIMER_NAME });

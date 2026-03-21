@@ -10,4 +10,5 @@ void RegisterFasterBeanSkulltula() {
                    { *should = true; });
 }
 
-static RegisterShipInitFunc initFunc(RegisterFasterBeanSkulltula, { CVAR_ENHANCEMENT("FasterBeanSkull") });
+static RegisterShipInitFunc initFunc_FasterBeanSkulltula(RegisterFasterBeanSkulltula,
+                                                         { CVAR_ENHANCEMENT("FasterBeanSkull") });

@@ -23,4 +23,5 @@ void RegisterFasterShadowShip() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterFasterShadowShip, { CVAR_ENHANCEMENT("FasterShadowShip") });
+static RegisterShipInitFunc initFunc_FasterShadowShip(RegisterFasterShadowShip,
+                                                      { CVAR_ENHANCEMENT("FasterShadowShip") });

@@ -11,7 +11,7 @@ extern PlayState* gPlayState;
 #define CVAR_BOUNCE_OFF_WALLS_NAME CVAR_ENHANCEMENT("BounceOffWalls")
 #define CVAR_BOUNCE_OFF_WALLS_VALUE CVarGetInteger(CVAR_BOUNCE_OFF_WALLS_NAME, 0)
 
-static RegisterShipInitFunc initFunc(
+static RegisterShipInitFunc initFunc_BounceOffWalls(
     []() {
         COND_HOOK(OnPlayerUpdate, CVAR_BOUNCE_OFF_WALLS_VALUE, []() {
             Player* player = GET_PLAYER(gPlayState);

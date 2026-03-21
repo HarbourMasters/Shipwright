@@ -27,4 +27,5 @@ void NoSkulltulaFreeze_Register() {
                  AutoDismissSkulltulaMessage);
 }
 
-static RegisterShipInitFunc initFunc(NoSkulltulaFreeze_Register, { CVAR_ENHANCEMENT("SkulltulaFreeze") });
+static RegisterShipInitFunc initFunc_NoSkulltulaFreeze(NoSkulltulaFreeze_Register,
+                                                       { CVAR_ENHANCEMENT("SkulltulaFreeze") });

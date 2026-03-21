@@ -94,4 +94,5 @@ void RegisterSunlightArrowsHooks() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterSunlightArrowsHooks, { "IS_RANDO", CVAR_ENHANCEMENT("SunlightArrows") });
+static RegisterShipInitFunc initFunc_SunlightArrows(RegisterSunlightArrowsHooks,
+                                                    { "IS_RANDO", CVAR_ENHANCEMENT("SunlightArrows") });

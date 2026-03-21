@@ -72,7 +72,7 @@ const std::string GetActorDebugName(u16 id) {
     return ActorDB::Instance->RetrieveEntry(id).entry.valid ? ActorDB::Instance->RetrieveEntry(id).entry.name : "???";
 }
 
-template <typename T> void DrawGroupWithBorder(T&& drawFunc, std::string section) {
+template <typename T> void DrawGroupWithBorder2(T&& drawFunc, std::string section) {
     // First group encapsulates the inner portion and border
     ImGui::BeginChild(std::string("##" + section).c_str(), ImVec2(0, 0),
                       ImGuiChildFlags_AlwaysAutoResize | ImGuiChildFlags_Borders | ImGuiChildFlags_AutoResizeX |
@@ -962,7 +962,7 @@ void ActorViewerWindow::DrawElement() {
         PushStyleHeader(THEME_COLOR);
         if (ImGui::TreeNode("Selected Actor")) {
             if (display != nullptr) {
-                DrawGroupWithBorder(
+                DrawGroupWithBorder2(
                     [&]() {
                         ImGui::Text("Name: %s", ActorDB::Instance->RetrieveEntry(display->id).name.c_str());
                         ImGui::Text("Description: %s", GetActorDescription(display->id).c_str());
@@ -975,7 +975,7 @@ void ActorViewerWindow::DrawElement() {
                 ImGui::SameLine();
                 ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
 
-                DrawGroupWithBorder(
+                DrawGroupWithBorder2(
                     [&]() {
                         ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
                         PushStyleInput(THEME_COLOR);
@@ -988,7 +988,7 @@ void ActorViewerWindow::DrawElement() {
                     },
                     "Actor Position");
                 ImGui::SameLine();
-                DrawGroupWithBorder(
+                DrawGroupWithBorder2(
                     [&]() {
                         PushStyleInput(THEME_COLOR);
                         ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
@@ -1008,7 +1008,7 @@ void ActorViewerWindow::DrawElement() {
                     UIWidgets::InsertHelpHoverText("Some actors might not use this!");
                 }
 
-                DrawGroupWithBorder(
+                DrawGroupWithBorder2(
                     [&]() {
                         ImGui::Text("flags");
                         UIWidgets::DrawFlagArray32("flags", display->flags);
@@ -1017,7 +1017,7 @@ void ActorViewerWindow::DrawElement() {
 
                 ImGui::SameLine();
 
-                DrawGroupWithBorder(
+                DrawGroupWithBorder2(
                     [&]() {
                         ImGui::Text("bgCheckFlags");
                         UIWidgets::DrawFlagArray16("bgCheckFlags", display->bgCheckFlags);
@@ -1112,7 +1112,7 @@ void ActorViewerWindow::DrawElement() {
                     ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
                     PopStyleInput();
                 } else {
-                    DrawGroupWithBorder(
+                    DrawGroupWithBorder2(
                         [&]() {
                             ImGui::Text("Actor Specific Data");
                             newActor.params = actorSpecificData[newActor.id](newActor.params);
@@ -1123,7 +1123,7 @@ void ActorViewerWindow::DrawElement() {
 
             ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
 
-            DrawGroupWithBorder(
+            DrawGroupWithBorder2(
                 [&]() {
                     PushStyleInput(THEME_COLOR);
                     ImGui::Text("New Actor Position");
@@ -1136,7 +1136,7 @@ void ActorViewerWindow::DrawElement() {
                 },
                 "New Actor Position");
             ImGui::SameLine();
-            DrawGroupWithBorder(
+            DrawGroupWithBorder2(
                 [&]() {
                     PushStyleInput(THEME_COLOR);
                     ImGui::Text("New Actor Rotation");
@@ -1228,4 +1228,5 @@ void ActorViewer_RegisterNameTagHooks() {
               [](void* actor) { ActorViewer_AddTagForActor(static_cast<Actor*>(actor)); });
 }
 
-static RegisterShipInitFunc initFunc(ActorViewer_RegisterNameTagHooks, { CVAR_ACTOR_NAME_TAGS_ENABLED_NAME });
+static RegisterShipInitFunc initFunc_actorViewer(ActorViewer_RegisterNameTagHooks,
+                                                 { CVAR_ACTOR_NAME_TAGS_ENABLED_NAME });
