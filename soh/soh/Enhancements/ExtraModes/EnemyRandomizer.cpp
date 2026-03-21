@@ -36,8 +36,6 @@ extern std::shared_ptr<SohMenu> mSohMenu;
 #define CVAR_ENEMY_RANDOMIZER_VALUE CVarGetInteger(CVAR_ENEMY_RANDOMIZER_NAME, CVAR_ENEMY_RANDOMIZER_DEFAULT)
 #define ENEMY_RANDOMIZER_ENABLED CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT
 
-#define RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE 59
-
 typedef struct EnemyEntry {
     const char* cvar;
     const char* name;
@@ -916,8 +914,6 @@ void RegisterEnemyRandomizer() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterEnemyRandomizer, { CVAR_ENEMY_RANDOMIZER_NAME });
-
 static const std::map<int32_t, const char*> enemyRandomizerModes = {
     { ENEMY_RANDOMIZER_OFF, "Disabled" },
     { ENEMY_RANDOMIZER_RANDOM, "Random" },
@@ -979,4 +975,5 @@ void RegisterEnemyRandomizerWidgets() {
     }
 }
 
+static RegisterShipInitFunc initFunc(RegisterEnemyRandomizer, { CVAR_ENEMY_RANDOMIZER_NAME });
 static RegisterMenuInitFunc menuInitFunc(RegisterEnemyRandomizerWidgets);
