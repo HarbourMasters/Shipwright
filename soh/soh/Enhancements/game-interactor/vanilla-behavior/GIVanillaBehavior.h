@@ -612,6 +612,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // EnKo_GetForestQuestState2(this)
+    // ```
+    // #### `args`
+    // - `*EnKo`
+    VB_KOKIRI_GET_FOREST_QUEST_STATE2,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -1322,6 +1330,14 @@ typedef enum {
     // #### `args`
     // - `*EnKz`
     VB_KING_ZORA_TUNIC_CHECK,
+
+    // #### `result`
+    // ```c
+    // varies
+    // ```
+    // #### `args`
+    // - `ObjLightswitch*`
+    VB_LIGHTSWITCH_OFF,
 
     // #### `result`
     // ```c
@@ -2622,6 +2638,22 @@ typedef enum {
     // #### `args`
     // - `int32_t` (usingHoldTargeting - promoted from `s32`)
     VB_TOGGLE_Z_TARGET_SWITCH_TARGETS,
+  
+    // #### `result`
+    // ```c
+    // (uint8_t)font->msgBuf[msgCtx->msgBufPos + 1] >= ITEM_CUSTOM
+    // ```
+    // #### `args`
+    // - uint8_t (sDisplayNextMessageAsEnglish)
+    VB_LOAD_ITEM_ICON,
+
+    // #### `result`
+    // ```c
+    // itemId < ITEM_CUSTOM
+    // ```
+    // #### `args`
+    // - `Gfx**`
+    VB_DRAW_ITEM_ICON,
 
     // #### `result`
     // ```c
@@ -2720,6 +2752,14 @@ typedef enum {
     // - `*BgHakaHuta`
     // - `*PlayState`
     VB_HAKA_HUTA_SPAWN_REDEAD,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*int32_t (camId)`
+    VB_SHOULD_LOAD_BG_IMAGE
 } GIVanillaBehavior;
 
 #endif

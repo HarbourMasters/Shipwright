@@ -70,6 +70,19 @@ Color_RGB8 SmallEmblemDefaultValue[10] = {
     { 255, 255, 255 }, // Chest Game
 };
 
+Color_RGB8 MapOrCompassColor[10] = {
+    { 4, 100, 46 },    // Deku Tree
+    { 140, 30, 30 },   // Dodongo's Cavern
+    { 30, 60, 255 },   // Jabu Jabu's Belly
+    { 4, 195, 46 },    // Forest Temple
+    { 237, 95, 95 },   // Fire Temple
+    { 85, 180, 223 },  // Water Temple
+    { 222, 158, 47 },  // Spirit Temple
+    { 126, 16, 177 },  // Shadow Temple
+    { 227, 110, 255 }, // Bottom of the Well
+    { 0, 255, 255 },   // Ice Cavern
+};
+
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
@@ -120,19 +133,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
 }
 
 extern "C" void Randomizer_DrawMap(PlayState* play, GetItemEntry* getItemEntry) {
-    s16 color_slot = getItemEntry->drawItemId - RG_DEKU_TREE_MAP;
-    s16 colors[12][3] = {
-        { 4, 100, 46 },    // Deku Tree
-        { 140, 30, 30 },   // Dodongo's Cavern
-        { 30, 60, 255 },   // Jabu Jabu's Belly
-        { 4, 195, 46 },    // Forest Temple
-        { 237, 95, 95 },   // Fire Temple
-        { 85, 180, 223 },  // Water Temple
-        { 222, 158, 47 },  // Spirit Temple
-        { 126, 16, 177 },  // Shadow Temple
-        { 227, 110, 255 }, // Bottom of the Well
-        { 0, 255, 255 },   // Ice Cavern
-    };
+    auto color = MapOrCompassColor[getItemEntry->drawItemId - RG_DEKU_TREE_MAP];
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -140,7 +141,7 @@ extern "C" void Randomizer_DrawMap(PlayState* play, GetItemEntry* getItemEntry) 
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color.r, color.g, color.b, 255);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiDungeonMapDL);
 
@@ -148,21 +149,7 @@ extern "C" void Randomizer_DrawMap(PlayState* play, GetItemEntry* getItemEntry) 
 }
 
 extern "C" void Randomizer_DrawCompass(PlayState* play, GetItemEntry* getItemEntry) {
-    s16 color_slot = getItemEntry->drawItemId - RG_DEKU_TREE_COMPASS;
-    s16 colors[12][3] = {
-        { 4, 100, 46 },    // Deku Tree
-        { 140, 30, 30 },   // Dodongo's Cavern
-        { 30, 60, 255 },   // Jabu Jabu's Belly
-        { 4, 195, 46 },    // Forest Temple
-        { 237, 95, 95 },   // Fire Temple
-        { 85, 180, 223 },  // Water Temple
-        { 222, 158, 47 },  // Spirit Temple
-        { 126, 16, 177 },  // Shadow Temple
-        { 227, 110, 255 }, // Bottom of the Well
-        { 221, 212, 60 },  // Gerudo Training Ground
-        { 255, 255, 255 }, // Thieves' Hideout
-        { 80, 80, 80 }     // Ganon's Castle
-    };
+    auto color = MapOrCompassColor[getItemEntry->drawItemId - RG_DEKU_TREE_COMPASS];
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -170,9 +157,8 @@ extern "C" void Randomizer_DrawCompass(PlayState* play, GetItemEntry* getItemEnt
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
-    gDPSetEnvColor(POLY_OPA_DISP++, colors[color_slot][0] / 2, colors[color_slot][1] / 2, colors[color_slot][2] / 2,
-                   255);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color.r, color.g, color.b, 255);
+    gDPSetEnvColor(POLY_OPA_DISP++, color.r / 2, color.g / 2, color.b / 2, 255);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiCompassDL);
 

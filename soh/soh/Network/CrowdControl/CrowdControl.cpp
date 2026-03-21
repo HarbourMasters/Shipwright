@@ -627,3 +627,14 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
 
     return effect;
 }
+
+void RegisterCrowdControlHooks() {
+    COND_VB_SHOULD(VB_SHOULD_LOAD_BG_IMAGE, CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0), {
+        int32_t* camId = va_arg(args, int*);
+        if (*camId == -1) {
+            *should = false;
+        }
+    });
+}
+
+static RegisterShipInitFunc initFunc(RegisterCrowdControlHooks, { CVAR_REMOTE_CROWD_CONTROL("Enabled") });
