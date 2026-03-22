@@ -19,6 +19,7 @@ static void UpdatePatchCustomEquipmentDlists();
 static void RefreshCustomEquipment();
 static u8 GetEquippedSwordItem();
 static bool IsDummyPlayer(const Player* player);
+static uint32_t sSuspendCustomEquipmentDepth = 0;
 
 static const char* ResolveCustomChain(std::initializer_list<const char*> paths) {
     const char* fallback = nullptr;
@@ -99,6 +100,22 @@ static void RefreshCustomEquipment() {
     UpdatePatchCustomEquipmentDlists();
 }
 
+extern "C" void CustomEquipment_BeginDummyDraw() {
+    if (++sSuspendCustomEquipmentDepth == 1) {
+        RefreshCustomEquipment();
+    }
+}
+
+extern "C" void CustomEquipment_EndDummyDraw() {
+    if (sSuspendCustomEquipmentDepth == 0) {
+        return;
+    }
+
+    if (--sSuspendCustomEquipmentDepth == 0) {
+        RefreshCustomEquipment();
+    }
+}
+
 static u8 GetEquippedSwordItem() {
     switch (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD)) {
         case EQUIP_VALUE_SWORD_NONE:
@@ -127,7 +144,7 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
         return;
     }
 
-    const bool altAssetsRuntime = ResourceMgr_IsAltAssetsEnabled();
+    const bool altAssetsRuntime = sSuspendCustomEquipmentDepth == 0 && ResourceMgr_IsAltAssetsEnabled();
 
     if (!altAssetsRuntime) {
         // Alt assets are off; ensure any prior patches using these names are reverted.
@@ -511,3 +528,4 @@ void UpdatePatchCustomEquipmentDlists() {
 
     ApplyCommonEquipmentPatches();
 }
+

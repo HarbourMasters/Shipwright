@@ -12,6 +12,8 @@ extern PlayState* gPlayState;
 
 void Player_UseItem(PlayState* play, Player* player, s32 item);
 void Player_Draw(Actor* actor, PlayState* play);
+void CustomEquipment_BeginDummyDraw();
+void CustomEquipment_EndDummyDraw();
 }
 
 static DamageTable DummyPlayerDamageTable = {
@@ -266,7 +268,9 @@ void DummyPlayer_Draw(Actor* actor, PlayState* play) {
         textureOverrides = AnchorModRegistry::ApplyAnchorFlipbookTextures(player, client.modelId, client.linkAge);
     }
 
+    CustomEquipment_BeginDummyDraw();
     Player_Draw((Actor*)player, play);
+    CustomEquipment_EndDummyDraw();
 
     if (textureOverrides.hasEye || textureOverrides.hasMouth) {
         AnchorModRegistry::RestoreAnchorFlipbookTextures(textureOverrides, client.linkAge);
@@ -287,3 +291,4 @@ void DummyPlayer_Destroy(Actor* actor, PlayState* play) {
     // correctly.
     actor->id = ACTOR_PLAYER;
 }
+
