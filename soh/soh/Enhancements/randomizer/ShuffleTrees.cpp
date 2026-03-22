@@ -179,7 +179,7 @@ void RegisterShuffleTrees() {
                 treeActor->actor.home.rot.z &= 0x1FFF;
                 treeActor->actor.home.rot.z |= 0xE000;
                 Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y,
-                            dropsSpawnPt.z, 0, treeActor->actor.world.rot.y, 0, treeActor->actor.home.rot.z, true);
+                            dropsSpawnPt.z, 0, treeActor->actor.world.rot.y, 0, treeActor->actor.home.rot.z);
                 treeActor->actor.home.rot.z = 0;
             }
             *should = false;

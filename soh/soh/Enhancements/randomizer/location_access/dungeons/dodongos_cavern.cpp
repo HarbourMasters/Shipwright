@@ -190,7 +190,7 @@ void RegionTable_Init_DodongosCavern() {
     }, {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_BOMB_ROOM_LOWER, true),
-        ENTRANCE(RR_DODONGOS_CAVERN_UPPER_LIZALFOS,  logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || ctx->GetTrickOption(RT_DC_SLINGSHOT_SKIP) || (logic->IsAdult && logic->CanGroundJump()) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanUse(RG_MEGATON_HAMMER) || (logic->CanStandingShield() && logic->CanJumpslash())))),
+        ENTRANCE(RR_DODONGOS_CAVERN_UPPER_LIZALFOS,  logic->CanHitEyeTargets() || ctx->GetTrickOption(RT_DC_SLINGSHOT_SKIP) || (logic->IsAdult && logic->CanGroundJump()) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanUse(RG_MEGATON_HAMMER) || (logic->CanStandingShield() && logic->CanJumpslash())))),
     });
 
     areaTable[RR_DODONGOS_CAVERN_UPPER_LIZALFOS] = Region("Dodongos Cavern Upper Lizalfos", SCENE_DODONGOS_CAVERN, {}, {
@@ -295,7 +295,7 @@ void RegionTable_Init_DodongosCavern() {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_BEGINNING,         true),
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_GOSSIP_STONE,      AnyAgeTime([]{return logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET);})),
-        ENTRANCE(RR_DODONGOS_CAVERN_MQ_OUTSIDE_POES_ROOM, logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || logic->CanGroundJump(true)),
+        ENTRANCE(RR_DODONGOS_CAVERN_MQ_OUTSIDE_POES_ROOM, logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || logic->CanGroundJump(!!ctx->GetTrickOption(RT_GROUND_JUMP_HARD))),
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_MOUTH_SIDE_BRIDGE, AnyAgeTime([]{return logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET);})),
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_STAIRS_LOWER,      AnyAgeTime([]{return logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET);})),
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE,  AnyAgeTime([]{return logic->CanBreakMudWalls();}) || AnyAgeTime([]{return logic->HasItem(RG_GORONS_BRACELET) && logic->TakeDamage();})), //strength 1 and bunny speed works too
@@ -403,7 +403,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_LOWER] = Region("Dodongos Cavern MQ Torch Puzzle Lower", SCENE_DODONGOS_CAVERN, {
         //Events
-        EVENT_ACCESS(LOGIC_DC_MQ_CLEAR_UPPER_LOBBY_ROCKS, (((logic->IsAdult /*or bunny hood jump*/) && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)) || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_STICKS)),
+        EVENT_ACCESS(LOGIC_DC_MQ_CLEAR_UPPER_LOBBY_ROCKS, (((logic->IsAdult /*or bunny hood jump*/) && (logic->HasItem(RG_POWER_BRACELET) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS))) || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_STICKS)),
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_MIDDLE_POT, logic->CanUse(RG_BOOMERANG)),
@@ -411,7 +411,7 @@ void RegionTable_Init_DodongosCavern() {
     }, {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_LOBBY,              logic->TakeDamage()),
-        ENTRANCE(RR_DODONGOS_CAVERN_MQ_DODONGO_ROOM,       true),
+        ENTRANCE(RR_DODONGOS_CAVERN_MQ_DODONGO_ROOM,       logic->HasItem(RG_POWER_BRACELET) || logic->CanClimbLadder()),
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_LARVAE_ROOM,        logic->HasFireSource() || (logic->CanUse(RG_STICKS) && logic->HasItem(RG_POWER_BRACELET))),
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_BIG_BLOCK_ROOM,     AnyAgeTime([]{return logic->HasFireSourceWithTorch();})), //Includes an implied CanPass(RE_BIG_SKULLTULA)
         //Bunny hood jump can make it as child

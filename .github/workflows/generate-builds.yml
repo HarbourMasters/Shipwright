@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - name: Git Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: true
     - name: Configure ccache
@@ -27,7 +27,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y $(cat .github/workflows/apt-deps.txt) libzip-dev zipcmp zipmerge ziptool
     - name: Restore Cached deps folder
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@v5
       with:
         key: ${{ runner.os }}-deps-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
@@ -68,7 +68,7 @@ jobs:
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --config Release --target GenerateSohOtr -j3
     - name: Upload soh.o2r
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: soh.o2r
         path: soh.o2r
@@ -79,7 +79,7 @@ jobs:
     runs-on: macos-14
     steps:
     - name: Git Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: true
     - name: Configure ccache
@@ -99,7 +99,7 @@ jobs:
         sudo chmod +x /opt/homebrew/bin/gtar
     - name: Restore Cached MacPorts
       id: restore-cache-macports
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@v5
       with:
         key: ${{ runner.os }}-14-macports-${{ hashFiles('.github/workflows/macports-deps.txt') }}-${{ github.sha }}
         restore-keys: |
@@ -123,7 +123,7 @@ jobs:
         sudo port install $(cat .github/workflows/macports-deps.txt)
         brew install ninja
     - name: Download soh.o2r
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v7
       with:
         name: soh.o2r
         path: build-cmake/soh
@@ -137,7 +137,7 @@ jobs:
         mv _packages/*.dmg SoH.dmg
         mv README.md readme.txt
     - name: Upload build
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: soh-mac
         path: |
@@ -145,7 +145,7 @@ jobs:
           readme.txt
     - name: Save Cache MacPorts
       if: ${{ github.ref_name == github.event.repository.default_branch }}
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@v5
       with:
         key: ${{ steps.restore-cache-macports.outputs.cache-primary-key }}
         path: /opt/local/
@@ -155,7 +155,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - name: Git Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: true
     - name: Install dependencies
@@ -172,7 +172,7 @@ jobs:
           ${{ runner.os }}-ccache
     - name: Restore Cached deps folder
       id: restore-cache-deps
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@v5
       with:
         key: ${{ runner.os }}-deps-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
@@ -234,7 +234,7 @@ jobs:
         sudo make install
         sudo cp -av /usr/local/lib/libzip* /lib/x86_64-linux-gnu/
     - name: Download soh.o2r
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v7
       with:
         name: soh.o2r
         path: build-cmake/soh
@@ -251,7 +251,7 @@ jobs:
         CC: gcc-12
         CXX: g++-12
     - name: Upload build
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: soh-linux
         path: |
@@ -259,7 +259,7 @@ jobs:
           readme.txt
     - name: Save Cache deps folder
       if: ${{ github.ref_name == github.event.repository.default_branch }}
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@v5
       with:
         key: ${{ steps.restore-cache-deps.outputs.cache-primary-key }}
         path: deps
@@ -273,7 +273,7 @@ jobs:
         choco install ninja -y
         Remove-Item -Path "C:\ProgramData\Chocolatey\bin\ccache.exe" -Force -ErrorAction SilentlyContinue
     - name: Git Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: true
     - name: Configure sccache
@@ -289,7 +289,7 @@ jobs:
           ${{ runner.os }}-ccache
     - name: Restore Cached VCPKG folder
       id: restore-cache-vcpkg
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@v5
       with:
         key: ${{ runner.os }}-vcpkg-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
@@ -299,7 +299,7 @@ jobs:
     - name: Configure Developer Command Prompt
       uses: ilammy/msvc-dev-cmd@v1
     - name: Download soh.o2r
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v7
       with:
         name: soh.o2r
         path: build-windows/soh
@@ -317,13 +317,13 @@ jobs:
     - name: Unzip package
       run: Expand-Archive -Path _packages/soh-windows.zip -DestinationPath soh-windows
     - name: Upload build
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: soh-windows
         path: soh-windows
     - name: Save Cache VCPKG folder
       if: ${{ github.ref_name == github.event.repository.default_branch }}
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@v5
       with:
         key: ${{ steps.restore-cache-vcpkg.outputs.cache-primary-key }}
         path: vcpkg

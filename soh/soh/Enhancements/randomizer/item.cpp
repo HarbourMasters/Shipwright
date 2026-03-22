@@ -489,6 +489,24 @@ GetItemCategory Item::GetCategory() {
     return category;
 }
 
+Item Item::CustomIcon(const char* customIcon_, CustomIconSize iconSize_) {
+    customIcon = customIcon_;
+    iconSize = iconSize_;
+    return *this;
+}
+
+const char* Item::GetCustomIcon() {
+    return customIcon;
+}
+
+CustomIconSize Item::GetCustomIconSize() {
+    return iconSize;
+}
+
+bool Item::HasCustomIcon() {
+    return customIcon != nullptr;
+}
+
 bool Item::operator==(const Item& right) const {
     return type == right.GetItemType() && getItemId == right.GetItemID();
 }

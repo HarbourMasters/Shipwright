@@ -346,9 +346,9 @@ void BossDodongo_Init(Actor* thisx, PlayState* play) {
         Actor_Kill(&this->actor);
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0,
                            WARP_DUNGEON_CHILD);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_BG_BREAKWALL, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, 0x6000, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_BG_BREAKWALL, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, 0x6000);
         if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -690.0f, -1523.76f, -3304.0f, 0, 0, 0, 0, true);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -690.0f, -1523.76f, -3304.0f, 0, 0, 0, 0);
         }
     }
 
@@ -1584,8 +1584,7 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
                 Animation_Change(&this->skelAnime, &object_kingdodongo_Anim_003CF8, 1.0f, 0.0f,
                                  Animation_GetLastFrame(&object_kingdodongo_Anim_003CF8), ANIMMODE_ONCE, -1.0f);
                 this->csState = 6;
-                Actor_Spawn(&play->actorCtx, play, ACTOR_BG_BREAKWALL, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, 0x6000,
-                            true);
+                Actor_Spawn(&play->actorCtx, play, ACTOR_BG_BREAKWALL, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, 0x6000);
             }
             break;
         case 6:
@@ -1850,10 +1849,10 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
             if (this->unk_1DA == 820) {
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS_CLEAR);
                 if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
-                    Actor_Spawn(
-                        &play->actorCtx, play, ACTOR_ITEM_B_HEART,
-                        Math_SinS(this->actor.shape.rot.y) * -50.0f + this->actor.world.pos.x, this->actor.world.pos.y,
-                        Math_CosS(this->actor.shape.rot.y) * -50.0f + this->actor.world.pos.z, 0, 0, 0, 0, true);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART,
+                                Math_SinS(this->actor.shape.rot.y) * -50.0f + this->actor.world.pos.x,
+                                this->actor.world.pos.y,
+                                Math_CosS(this->actor.shape.rot.y) * -50.0f + this->actor.world.pos.z, 0, 0, 0, 0);
                 }
             }
             if (this->unk_1DA == 600) {

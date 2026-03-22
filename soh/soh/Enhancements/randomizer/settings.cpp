@@ -519,7 +519,7 @@ void Settings::CreateOptions() {
             mOptions[RSK_MQ_GANONS_CASTLE].Hide();
         }
     });
-    OPT_U8(RSK_MQ_DUNGEON_COUNT, "MQ Dungeon Count", {NumOpts(0, 12)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MQDungeonCount"), "", WIDGET_CVAR_SLIDER_INT, 12, true, nullptr, IMFLAG_NONE);
+    OPT_U8(RSK_MQ_DUNGEON_COUNT, "MQ Dungeon Count", {NumOpts(0, MAX_MQ_DUNGEON_COUNT)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MQDungeonCount"), "", WIDGET_CVAR_SLIDER_INT, MAX_MQ_DUNGEON_COUNT, true, nullptr, IMFLAG_NONE);
     OPT_BOOL(RSK_MQ_DUNGEON_SET, "Set Dungeon Quests", {"Off", "On"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MQDungeonsSelection"), mOptionDescriptions[RSK_MQ_DUNGEON_SET], WIDGET_CVAR_CHECKBOX, false, false, nullptr, IMFLAG_NONE);
     OPT_CALLBACK(RSK_MQ_DUNGEON_SET, {
         // Controls whether or not to show the selectors for individual dungeons.
@@ -1448,9 +1448,9 @@ void Settings::CreateOptions() {
               "Many ledges can be overcome with particular jumps which are simple to execute without items.\n"
               "This includes jumping from heights to dive deeper without scales,\n"
               "though this trick doesn't cover Water Temple's Dragon Room.");
-    OPT_TRICK(RT_FLAMING_CHESTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "Flaming Chests", "FlaChst",
-              "The chests encircled in flames in Gerudo Training Ground and in Spirit Temple can be opened by running "
-              "into the flames while Link is invincible after taking damage.");
+    OPT_TRICK(RT_FIRE_RINGS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "Fire Ring", "FlaChst",
+              "Fire Rings can be run into while Link is invincible from having taken damage,"
+              "letting you interact with some objects inside them such as large chests");
     // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely
     // decoupled from rando OPT_TRICK(RT_BUNNY_HOOD_JUMPS, RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, "Bunny Hood
     // Jumps", "Allows reaching locations using Bunny Hood's extended jumps.");
@@ -1482,9 +1482,9 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_DISTANT_BOULDER_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
               "Distant Boulder Collision", "BolCol",
               "From afar boulder collision is disabled, allowing projectiles to pass through them.");
-    OPT_TRICK(RT_HOOKSHOT_EXTENSION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE },
-              "Hookshot/Projectile Extension", "HSExt",
-              "Slightly extends range. Also allows clipping projectile past collision. Used for:\n"
+    OPT_TRICK(RT_ITEM_EXTENSION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "Item Extension", "HSExt",
+              "Slightly extends the range of projectiles such as Hookshot, Bow or Slingshot. Also allows clipping "
+              "projectile past collision. Used for:\n"
               "- Crossing Gerudo Valley with Hookshot\n"
               "- Retrieving DMT Gold Skulltula beside bomb flower\n"
               "- Hitting switch through wall in Spirit Temple's big mirror room with Bow, Slingshot, or Hookshot\n"
@@ -3063,7 +3063,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     // If we only have MQ, set all dungeons to MQ
     if (OTRGlobals::Instance->HasMasterQuest() && !OTRGlobals::Instance->HasOriginal()) {
         mOptions[RSK_MQ_DUNGEON_RANDOM].Set(RO_MQ_DUNGEONS_SET_NUMBER);
-        mOptions[RSK_MQ_DUNGEON_COUNT].Set(12);
+        mOptions[RSK_MQ_DUNGEON_COUNT].Set(MAX_MQ_DUNGEON_COUNT);
         mOptions[RSK_MQ_DUNGEON_SET].Set(RO_GENERIC_OFF);
     }
 
@@ -3204,9 +3204,12 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
             }
             // otherwise, every dungeon is possible
         } else {
-            // if the count is fixed to 12, we know everything is MQ, so can skip some setps and do not set Known
-            if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_SET_NUMBER) && mqCount == 12) {
-                randMQOption = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+            // if count is MAX_MQ_DUNGEON_COUNT, we know everything is MQ, so can skip some setps and not set Known
+            if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_SET_NUMBER) && mqCount == MAX_MQ_DUNGEON_COUNT) {
+                randMQOption.resize(MAX_MQ_DUNGEON_COUNT);
+                for (int i = 0; i < MAX_MQ_DUNGEON_COUNT; i++) {
+                    randMQOption[i] = i;
+                }
                 for (auto dungeon : dungeons) {
                     mOptions[dungeon->GetMQSetting()].Set(RO_MQ_SET_MQ);
                 }
@@ -3427,7 +3430,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
     nlohmann::json settingsJson = spoilerFileJson["settings"];
     for (auto it = settingsJson.begin(); it != settingsJson.end(); ++it) {
         // todo load into cvars for UI
-        // RANDOTODO handle numeric value to options conversion better than brute froce
+        // RANDOTODO handle numeric value to options conversion better than brute force
         if (StaticData::optionNameToEnum.contains(it.key())) {
             const RandomizerSettingKey index = StaticData::optionNameToEnum[it.key()];
             mContext->GetOption(index).Set(mOptions[index].GetValueFromText(it.value()));
