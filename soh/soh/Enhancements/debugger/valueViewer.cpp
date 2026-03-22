@@ -200,15 +200,9 @@ void ValueViewerWindow::DrawElement() {
     ImGui::SameLine();
     UIWidgets::PushStyleButton(THEME_COLOR);
     if (selectedElement != -1 && ImGui::Button("+")) {
-        valueViewerSettings.insert({(ValueViewerEntry)selectedElement, 
-            {valueTable[selectedElement].prefix,
-             ImVec4(1.0f, 1.0f, 1.0f, 1.0f),
-             false,
-             false,
-             0,
-             0
-            }
-        });
+        valueViewerSettings.insert(
+            { (ValueViewerEntry)selectedElement,
+              { valueTable[selectedElement].prefix, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), false, false, 0, 0 } });
         selectedElement = -1;
         SaveValueConfig();
     }
@@ -267,12 +261,12 @@ void ValueViewerWindow::DrawElement() {
         ImGui::SameLine();
         UIWidgets::PushStyleCheckbox(THEME_COLOR);
         if (element.type <= TYPE_U32) {
-            if (ImGui::Checkbox(("Hex##" + std::string(element.name)).c_str(), &setting.typeFormat)){
+            if (ImGui::Checkbox(("Hex##" + std::string(element.name)).c_str(), &setting.typeFormat)) {
                 SaveValueConfig();
             }
             ImGui::SameLine();
         } else if (element.type == TYPE_FLOAT) {
-            if (ImGui::Checkbox(("Trim##" + std::string(element.name)).c_str(), &setting.typeFormat)){
+            if (ImGui::Checkbox(("Trim##" + std::string(element.name)).c_str(), &setting.typeFormat)) {
                 SaveValueConfig();
             }
             ImGui::SameLine();
@@ -282,7 +276,7 @@ void ValueViewerWindow::DrawElement() {
         ImGui::BeginGroup();
         if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"), 0)) {
             UIWidgets::PushStyleCheckbox(THEME_COLOR);
-            if (ImGui::Checkbox(("Print##" + std::string(element.name)).c_str(), &setting.isPrinted)){
+            if (ImGui::Checkbox(("Print##" + std::string(element.name)).c_str(), &setting.isPrinted)) {
                 SaveValueConfig();
             }
             UIWidgets::PopStyleCheckbox();
@@ -298,7 +292,7 @@ void ValueViewerWindow::DrawElement() {
                 UIWidgets::PopStyleInput();
                 ImGui::SameLine();
                 if (ImGui::ColorEdit3(("##color" + std::string(element.name)).c_str(), (float*)&setting.color,
-                                  ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)){
+                                      ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
 
                     SaveValueConfig();
                 }
@@ -309,10 +303,10 @@ void ValueViewerWindow::DrawElement() {
                 }
                 UIWidgets::PopStyleCheckbox();
                 if (ImGui::BeginPopup(("Position Picker##" + std::string(element.name)).c_str())) {
-                    if (ImGui::DragInt("X", (int*)&setting.x, 1.0f, 0, 44)){
+                    if (ImGui::DragInt("X", (int*)&setting.x, 1.0f, 0, 44)) {
                         SaveValueConfig();
                     }
-                    if (ImGui::DragInt("Y", (int*)&setting.y, 1.0f, 0, 29)){
+                    if (ImGui::DragInt("Y", (int*)&setting.y, 1.0f, 0, 29)) {
                         SaveValueConfig();
                     }
                     ImGui::EndPopup();
