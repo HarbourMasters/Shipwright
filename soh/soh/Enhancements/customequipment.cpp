@@ -528,4 +528,3 @@ void UpdatePatchCustomEquipmentDlists() {
 
     ApplyCommonEquipmentPatches();
 }
-

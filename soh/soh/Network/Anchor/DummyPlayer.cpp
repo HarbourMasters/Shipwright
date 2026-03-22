@@ -291,4 +291,3 @@ void DummyPlayer_Destroy(Actor* actor, PlayState* play) {
     // correctly.
     actor->id = ACTOR_PLAYER;
 }
-
