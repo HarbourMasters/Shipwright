@@ -520,6 +520,10 @@ void SohMenu::AddMenuSettings() {
             });
         })
         .Options(ButtonOptions().Tooltip("Displays a test notification."));
+    AddWidget(path, "Mute Notification Sound", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("Notifications.Mute"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip("Prevent notifications from playing a sound."));
 
     // Mod Menu
     path.sidebarName = "Mod Menu";
