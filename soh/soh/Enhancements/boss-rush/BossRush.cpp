@@ -1,5 +1,5 @@
 #include "BossRush.h"
-#include "soh/OTRGlobals.h"
+#include "soh/ShipInit.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh_assets.h"

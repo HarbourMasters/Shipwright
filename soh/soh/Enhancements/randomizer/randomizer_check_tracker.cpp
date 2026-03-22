@@ -25,7 +25,6 @@
 #include "item_location.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "z64item.h"
-#include "randomizerTypes.h"
 #include "fishsanity.h"
 
 extern "C" {

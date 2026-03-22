@@ -26,6 +26,8 @@ enum ItemType {
     ITEMTYPE_DUNGEONREWARD
 };
 
+enum CustomIconSize { ICON_SIZE_24, ICON_SIZE_32 };
+
 namespace Rando {
 class Item {
   public:
@@ -63,6 +65,10 @@ class Item {
     GetItemCategory GetCategory();
     bool operator==(const Item& right) const;
     bool operator!=(const Item& right) const;
+    Item CustomIcon(const char* customIcon_, CustomIconSize iconSize_ = ICON_SIZE_32);
+    const char* GetCustomIcon();
+    CustomIconSize GetCustomIconSize();
+    bool HasCustomIcon();
 
   private:
     RandomizerGet randomizerGet;
@@ -79,5 +85,7 @@ class Item {
     uint16_t price;
     bool playthrough = false;
     std::shared_ptr<GetItemEntry> giEntry;
+    const char* customIcon = nullptr;
+    CustomIconSize iconSize = ICON_SIZE_32;
 };
 } // namespace Rando

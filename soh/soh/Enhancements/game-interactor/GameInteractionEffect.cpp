@@ -38,11 +38,9 @@ GameInteractionEffectQueryResult RemovableGameInteractionEffect::CanBeRemoved() 
 
 GameInteractionEffectQueryResult RemovableGameInteractionEffect::Remove() {
     GameInteractionEffectQueryResult result = CanBeRemoved();
-    if (result != GameInteractionEffectQueryResult::Possible) {
-        return result;
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        _Remove();
     }
-
-    _Remove();
     return result;
 }
 
