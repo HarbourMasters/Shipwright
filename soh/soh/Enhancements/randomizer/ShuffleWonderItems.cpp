@@ -1,15 +1,10 @@
 #include <soh/OTRGlobals.h>
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
-#include "soh_assets.h"
-#include "static_data.h"
-#include <libultraship/libultra.h>
-#include "global.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "soh/ObjectExtension/ActorListIndex.h"
 
 extern "C" {
-#include "variables.h"
 #include "overlays/actors/ovl_En_Wonder_Item/z_en_wonder_item.h"
 #include "overlays/actors/ovl_En_Heishi1/z_en_heishi1.h"
 extern PlayState* gPlayState;
