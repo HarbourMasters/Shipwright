@@ -1,5 +1,4 @@
 #include <soh/OTRGlobals.h>
-#include "soh_assets.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 extern "C" {
 extern PlayState* gPlayState;
@@ -8,6 +7,16 @@ extern PlayState* gPlayState;
 #include "overlays/actors/ovl_En_Wonder_Talk/z_en_wonder_talk.h"
 #include "overlays/actors/ovl_En_Wonder_Talk2/z_en_wonder_talk2.h"
 }
+
+typedef enum {
+    PARTICLE_MAJOR,
+    PARTICLE_SKULLTULA_TOKEN,
+    PARTICLE_SMALL_KEY,
+    PARTICLE_BOSS_KEY,
+    PARTICLE_HEALTH,
+    PARTICLE_LESSER,
+    PARTICLE_JUNK,
+} SignCMCColors;
 
 uint8_t Sign_RandomizerHoldsItem(Actor* actor, PlayState* play) {
     const auto signIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(actor);
@@ -19,9 +28,9 @@ uint8_t Sign_RandomizerHoldsItem(Actor* actor, PlayState* play) {
     uint8_t isDungeon = Rando::StaticData::GetLocation(rc)->IsDungeon();
     auto signSetting = RAND_GET_OPTION(RSK_SHUFFLE_SIGNS);
 
-    // Don't pull randomized item if pot isn't randomized or is already checked
-    if (!IS_RANDO || (signSetting.Is(RO_SHUFFLE_POTS_OVERWORLD) && isDungeon) ||
-        (signSetting.Is(RO_SHUFFLE_POTS_DUNGEONS) && !isDungeon) ||
+    // Don't pull randomized item if sign isn't randomized or is already checked
+    if (!IS_RANDO || (signSetting.Is(RO_SHUFFLE_SIGNS_OVERWORLD) && isDungeon) ||
+        (signSetting.Is(RO_SHUFFLE_SIGNS_DUNGEONS) && !isDungeon) ||
         Flags_GetRandomizerInf(signIdentity->randomizerInf) || signIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
         return false;
     } else {
@@ -29,92 +38,138 @@ uint8_t Sign_RandomizerHoldsItem(Actor* actor, PlayState* play) {
     }
 }
 
-extern "C" void Sign_RandomizerDraw(Actor* actor, PlayState* play) {
+static void Sign_RandomizerDraw(Actor* actor, Color_RGBA8* primColor, Color_RGBA8* secColor,
+                                        Color_RGBA8* envColor, CheckIdentity* wonderIdentity) {
+    Vec3f pos;
+    static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
+    static Vec3f accel = { 0.0f, 0.0f, 0.0f };
+    float yKanbanOffset = LINK_IS_CHILD && actor->id == ACTOR_EN_KANBAN ? 15.0f : 0.0f;
+
+    velocity.y = -0.05f;
+    accel.y = -0.025f;
+
+    pos.x = Rand_CenteredFloat(10.0f) + actor->world.pos.x;
+    pos.y = (Rand_ZeroOne() * 10.0f) + actor->world.pos.y + yKanbanOffset;
+    pos.z = Rand_CenteredFloat(10.0f) + actor->world.pos.z;
+    EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, secColor, envColor, 2000, 100);
+    EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 100);
+}
+
+void Sign_RandomizerDrawSetup(void* actor) {
     GetItemCategory getItemCategory;
-    GetItemEntry signItem;
+    Actor* signActor = (Actor*)actor;
+
+    // If not a randomized item or too far, don't draw
+    if (!Sign_RandomizerHoldsItem(signActor, gPlayState) || signActor->xzDistToPlayer > 1000.0f) {
+        return;
+    }
     
-    const auto signIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(actor);
-    if (signIdentity == nullptr || signIdentity->randomizerCheck == RC_UNKNOWN_CHECK) {
+    bool cmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
+    int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
+
+    int isNotCMC = !cmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+
+    // Color of the circle for the particles
+    static Color_RGBA8 mainColors[7][3] = {
+        { 250, 185, 40 },  // Major
+        { 0, 0, 0 },       // Skulltula Token
+        { 180, 180, 180 }, // Small Key
+        { 255, 255, 0 },   // Boss Key
+        { 250, 0, 0 },     // Health
+        { 170, 50, 0 },    // Lesser
+        { 255, 255, 255 }  // Junk
+    };
+
+    // Secondary color of the circle for the particles
+    static Color_RGBA8 secColors[7][3] = {
+        { 255, 220, 135 }, // Major
+        { 255, 250, 190 }, // Skulltula Token
+        { 130, 130, 130 }, // Small Key
+        { 0, 200, 255 },   // Boss Key
+        { 0, 0, 255 },     // Health
+        { 250, 75, 0 },    // Lesser
+        { 255, 255, 255 }  // Junk
+    };
+
+    // Color of the faded flares stretching off the particles
+    static Color_RGBA8 flareColors[7][3] = {
+        { 250, 220, 180 }, // Major
+        { 255, 255, 255 }, // Skulltula Token
+        { 100, 100, 100 }, // Small Key
+        { 0, 200, 255 },   // Boss Key
+        { 255, 125, 125 }, // Health
+        { 255, 160, 100 }, // Lesser
+        { 135, 135, 135 }  // Junk
+    };
+
+    s16 colorIndex;
+    Color_RGBA8 primColor;
+    Color_RGBA8 secColor;
+    Color_RGBA8 envColor;
+
+    const auto signIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(signActor);
+    if (signIdentity == nullptr) {
         return;
     }
 
-    bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
-    int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
-    int isVanilla = !csmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
+    GetItemEntry signItem =
+        Rando::Context::GetInstance()->GetFinalGIEntry(signIdentity->randomizerCheck, true, GI_NONE);
+    getItemCategory = signItem.getItemCategory;
 
-    if (isVanilla) {
-        getItemCategory = ITEM_CATEGORY_JUNK;
-    } else {
-        signItem = Rando::Context::GetInstance()->GetFinalGIEntry(signIdentity->randomizerCheck, true, GI_NONE);
-        getItemCategory = signItem.getItemCategory;
-
-        // If they have bombchus, don't consider the bombchu item major
-        if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-            ((signItem.modIndex == MOD_RANDOMIZER && signItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
-             (signItem.modIndex == MOD_NONE &&
-              (signItem.getItemId == GI_BOMBCHUS_5 || signItem.getItemId == GI_BOMBCHUS_10 ||
-               signItem.getItemId == GI_BOMBCHUS_20)))) {
-            getItemCategory = ITEM_CATEGORY_JUNK;
-            // If it's a bottle and they already have one, consider the item lesser
-        } else if ((signItem.modIndex == MOD_RANDOMIZER && signItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
-                    signItem.getItemId <= RG_BOTTLE_WITH_POE) ||
-                   (signItem.modIndex == MOD_NONE &&
-                    (signItem.getItemId == GI_BOTTLE || signItem.getItemId == GI_MILK_BOTTLE))) {
-            if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
-                getItemCategory = ITEM_CATEGORY_LESSER;
-            }
-        }
+    if (isNotCMC) {
+        colorIndex = PARTICLE_MAJOR;
+        Color_RGBA8_Copy(&primColor, mainColors[colorIndex]);
+        Color_RGBA8_Copy(&secColor, secColors[colorIndex]);
+        Color_RGBA8_Copy(&envColor, flareColors[colorIndex]);
+        Sign_RandomizerDraw(signActor, &primColor, &secColor, &envColor, signIdentity);
+        return;
     }
 
-    GraphicsContext* gfxCtx = play->state.gfxCtx;
-    OPEN_DISPS(gfxCtx);
-    Matrix_Push();
-    if (actor->id == ACTOR_EN_KANBAN) {
-        float yPos = actor->world.pos.y + (LINK_IS_CHILD ? 15.0f : 0.0f);
-        Matrix_SetTranslateRotateYXZ(actor->world.pos.x, yPos, actor->world.pos.z, &actor->world.rot);
-        Matrix_Scale(0.05, 0.025, 0.05, MTXMODE_APPLY);
-    } else {
-        Matrix_Scale(5, 2.5, 5, MTXMODE_APPLY);
-    }    
-
-    // Change texture
+    // Change particle color for CMC
     switch (getItemCategory) {
         case ITEM_CATEGORY_MAJOR:
-            Gfx_DrawDListOpa(play, (Gfx*)gSmallMajorCrateDL);
+            colorIndex = PARTICLE_MAJOR;
             break;
         case ITEM_CATEGORY_SKULLTULA_TOKEN:
-            Gfx_DrawDListOpa(play, (Gfx*)gSmallTokenCrateDL);
+            colorIndex = PARTICLE_SKULLTULA_TOKEN;
             break;
         case ITEM_CATEGORY_SMALL_KEY:
-            Gfx_DrawDListOpa(play, (Gfx*)gSmallSmallKeyCrateDL);
+            colorIndex = PARTICLE_SMALL_KEY;
             break;
         case ITEM_CATEGORY_BOSS_KEY:
-            Gfx_DrawDListOpa(play, (Gfx*)gSmallBossKeyCrateDL);
+            colorIndex = PARTICLE_BOSS_KEY;
             break;
         case ITEM_CATEGORY_HEALTH:
-            Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
+            colorIndex = PARTICLE_HEALTH;
             break;
         case ITEM_CATEGORY_LESSER:
-            Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
+            colorIndex = PARTICLE_LESSER;
             break;
         case ITEM_CATEGORY_JUNK:
         default:
-            Gfx_DrawDListOpa(play, (Gfx*)gSmallJunkCrateDL);
+            colorIndex = PARTICLE_JUNK;
             break;
     }
-
-    Matrix_Pop();
-    CLOSE_DISPS(gfxCtx);
+    Color_RGBA8_Copy(&primColor, mainColors[colorIndex]);
+    Color_RGBA8_Copy(&secColor, secColors[colorIndex]);
+    Color_RGBA8_Copy(&envColor, flareColors[colorIndex]);
+    Sign_RandomizerDraw(signActor, &primColor, &secColor, &envColor, signIdentity);
 }
 
 void Sign_RandomizerSpawnCollectible(Actor* actor) {
     const auto signIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(actor);
-    EnItem00* item00;
 
     if (signIdentity == nullptr) {
         return;
     }
     Flags_SetRandomizerInf(signIdentity->randomizerInf);
+}
+
+void Sign_RoyalTombSpawnCollectible(int16_t flagType, int16_t flag) {
+    if (!Flags_GetRandomizerInf(RAND_INF_GY_ROYAL_TOMB_GRAVE) &&
+        Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) {
+        Flags_SetRandomizerInf(RAND_INF_GY_ROYAL_TOMB_GRAVE);
+    }
 }
 
 void RegisterShuffleSigns() {
@@ -156,13 +211,15 @@ void RegisterShuffleSigns() {
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(signIdentity));
     });
 
-    COND_VB_SHOULD(VB_SIGN_SETUP_DRAW, shouldRegister, {
-        Actor* signActor = va_arg(args, Actor*);
-        if (Sign_RandomizerHoldsItem(signActor, gPlayState)) {
-            Sign_RandomizerDraw(signActor, gPlayState);
-        }
-    });    
-    
+    // Draw particle effect to indicate a randomized item
+    COND_ID_HOOK(OnActorUpdate, ACTOR_EN_KANBAN, shouldRegister, Sign_RandomizerDrawSetup);
+
+    COND_ID_HOOK(OnActorUpdate, ACTOR_EN_A_OBJ, shouldRegister, Sign_RandomizerDrawSetup);
+
+    COND_ID_HOOK(OnActorUpdate, ACTOR_EN_WONDER_TALK, shouldRegister, Sign_RandomizerDrawSetup);
+
+    COND_ID_HOOK(OnActorUpdate, ACTOR_EN_WONDER_TALK2, shouldRegister, Sign_RandomizerDrawSetup);
+
     COND_VB_SHOULD(VB_SIGN_GIVE_ITEM, shouldRegister, {
         Actor* talkActor = GET_PLAYER(gPlayState)->talkActor;
         if (talkActor != NULL) {
@@ -180,6 +237,9 @@ void RegisterShuffleSigns() {
             }
         }
     });
+
+    // Give Royal Tomb item if destroyed
+    COND_HOOK(OnFlagSet, shouldRegister, Sign_RoyalTombSpawnCollectible);
 }
 
 void Rando::StaticData::RegisterSignLocations() {
@@ -227,7 +287,7 @@ locationTable[RC_GY_ENTRANCE_RECTANGLE_SIGN]                            = Locati
 locationTable[RC_GY_ENTRANCE_PLINTH]                                    = Location::Sign(RC_GY_ENTRANCE_PLINTH,                                     RCQUEST_BOTH,       RCAREA_GRAVEYARD,               SCENE_GRAVEYARD,                TWO_ACTOR_PARAMS(-805, 266),        "Entrance Plinth",                                  RHT_SIGN_GRAVEYARD,             ACTOR_EN_WONDER_TALK2,      SpoilerCollectionCheck::RandomizerInf(RAND_INF_GY_ENTRANCE_PLINTH));
 locationTable[RC_GY_RIGHT_OF_ROYAL_TOMB_GRAVE]                          = Location::Sign(RC_GY_RIGHT_OF_ROYAL_TOMB_GRAVE,                           RCQUEST_BOTH,       RCAREA_GRAVEYARD,               SCENE_GRAVEYARD,                TWO_ACTOR_PARAMS(654, 258),         "Right of Royal Tomb Grave",                        RHT_SIGN_GRAVEYARD,             ACTOR_EN_WONDER_TALK,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_GY_RIGHT_OF_ROYAL_TOMB_GRAVE));
 locationTable[RC_GY_LEFT_OF_ROYAL_TOMB_GRAVE]                           = Location::Sign(RC_GY_LEFT_OF_ROYAL_TOMB_GRAVE,                            RCQUEST_BOTH,       RCAREA_GRAVEYARD,               SCENE_GRAVEYARD,                TWO_ACTOR_PARAMS(654, -102),        "Left of Royal Tomb Grave",                         RHT_SIGN_GRAVEYARD,             ACTOR_EN_WONDER_TALK,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_GY_LEFT_OF_ROYAL_TOMB_GRAVE));
-locationTable[RC_GY_ROYAL_TOMB_GRAVE_GRAVE]                             = Location::Sign(RC_GY_ROYAL_TOMB_GRAVE_GRAVE,                              RCQUEST_BOTH,       RCAREA_GRAVEYARD,               SCENE_GRAVEYARD,                TWO_ACTOR_PARAMS(752, 85),          "Royal Tomb Grave Grave",                           RHT_SIGN_GRAVEYARD,             ACTOR_EN_WONDER_TALK,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_GY_ROYAL_TOMB_GRAVE_GRAVE));
+locationTable[RC_GY_ROYAL_TOMB_GRAVE]                                   = Location::Sign(RC_GY_ROYAL_TOMB_GRAVE,                                    RCQUEST_BOTH,       RCAREA_GRAVEYARD,               SCENE_GRAVEYARD,                TWO_ACTOR_PARAMS(752, 85),          "Royal Tomb Grave",                                 RHT_SIGN_GRAVEYARD,             ACTOR_EN_WONDER_TALK,       SpoilerCollectionCheck::RandomizerInf(RAND_INF_GY_ROYAL_TOMB_GRAVE));
 locationTable[RC_DMT_ABOVE_DODONGO_RECTANGLE_SIGN]                      = Location::Sign(RC_DMT_ABOVE_DODONGO_RECTANGLE_SIGN,                       RCQUEST_BOTH,       RCAREA_DEATH_MOUNTAIN_TRAIL,    SCENE_DEATH_MOUNTAIN_TRAIL,     TWO_ACTOR_PARAMS(-1300, -496),      "Above Dodongo Rectangle Sign",                     RHT_SIGN_DEATH_MOUNTAIN_TRAIL,  ACTOR_EN_KANBAN,            SpoilerCollectionCheck::RandomizerInf(RAND_INF_DMT_ABOVE_DODONGO_RECTANGLE_SIGN));
 locationTable[RC_DMT_ADULT_CENTER_EXIT_ARROW_SIGN]                      = Location::Sign(RC_DMT_ADULT_CENTER_EXIT_ARROW_SIGN,                       RCQUEST_BOTH,       RCAREA_DEATH_MOUNTAIN_TRAIL,    SCENE_DEATH_MOUNTAIN_TRAIL,     TWO_ACTOR_PARAMS(-299, -1787),      "Adult Center Exit Arrow Sign",                     RHT_SIGN_DEATH_MOUNTAIN_TRAIL,  ACTOR_EN_A_OBJ,             SpoilerCollectionCheck::RandomizerInf(RAND_INF_DMT_ADULT_CENTER_EXIT_ARROW_SIGN));
 locationTable[RC_DMT_CHILD_CENTER_EXIT_RECTANGLE_SIGN]                  = Location::Sign(RC_DMT_CHILD_CENTER_EXIT_RECTANGLE_SIGN,                   RCQUEST_BOTH,       RCAREA_DEATH_MOUNTAIN_TRAIL,    SCENE_DEATH_MOUNTAIN_TRAIL,     TWO_ACTOR_PARAMS(-299, -1787),      "Child Center Exit Rectangle Sign",                 RHT_SIGN_DEATH_MOUNTAIN_TRAIL,  ACTOR_EN_KANBAN,            SpoilerCollectionCheck::RandomizerInf(RAND_INF_DMT_CHILD_CENTER_EXIT_RECTANGLE_SIGN));

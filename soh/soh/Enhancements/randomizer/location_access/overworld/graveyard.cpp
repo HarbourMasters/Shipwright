@@ -36,7 +36,7 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GY_ENTRANCE_PLINTH,                logic->CanRead()),
         LOCATION(RC_GY_RIGHT_OF_ROYAL_TOMB_GRAVE,      logic->CanRead()),
         LOCATION(RC_GY_LEFT_OF_ROYAL_TOMB_GRAVE,       logic->CanRead()),
-        LOCATION(RC_GY_ROYAL_TOMB_GRAVE_GRAVE,         logic->CanRead() || logic->CanUse(RG_ZELDAS_LULLABY)),
+        LOCATION(RC_GY_ROYAL_TOMB_GRAVE,               logic->CanRead() || logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
         ENTRANCE(RR_GRAVEYARD_SHIELD_GRAVE,       (logic->IsAdult || logic->AtNight) && logic->HasItem(RG_POWER_BRACELET)),

@@ -2,7 +2,6 @@
 #include "vt.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include <objects/object_d_hsblock/object_d_hsblock.h>
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -352,7 +351,6 @@ void EnAObj_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    if (GameInteractor_Should(VB_SIGN_SETUP_DRAW, true, thisx)) {}
 
     if (type >= A_OBJ_MAX) {
         type = A_OBJ_BOULDER_FRAGMENT;
