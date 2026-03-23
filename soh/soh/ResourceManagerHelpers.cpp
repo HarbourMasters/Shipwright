@@ -393,11 +393,7 @@ static Gfx* ResourceMgr_GetCustomEquipmentBypassedGfx(const char* path) {
         reinterpret_cast<uint64_t>(res->Instructions.data()) ^ static_cast<uint64_t>(res->Instructions.size());
     bool hasApplicablePatch = false;
 
-    for (const auto& [patchName, patch] : pathIt->second) {
-        if (patchName.rfind("custom", 0) != 0) {
-            continue;
-        }
-
+    for (const auto& [ignoredPatchName, patch] : pathIt->second) {
         if (res->Instructions.data() != patch.instructionsPtr || res->Instructions.size() != patch.instructionCount ||
             res->GetInitData()->IsCustom != patch.isCustom ||
             static_cast<size_t>(patch.index) >= res->Instructions.size()) {
@@ -421,11 +417,7 @@ static Gfx* ResourceMgr_GetCustomEquipmentBypassedGfx(const char* path) {
         cache.revision = revision;
         cache.instructions = res->Instructions;
 
-        for (const auto& [patchName, patch] : pathIt->second) {
-            if (patchName.rfind("custom", 0) != 0) {
-                continue;
-            }
-
+        for (const auto& [ignoredPatchName, patch] : pathIt->second) {
             if (res->Instructions.data() != patch.instructionsPtr ||
                 res->Instructions.size() != patch.instructionCount || res->GetInitData()->IsCustom != patch.isCustom ||
                 static_cast<size_t>(patch.index) >= cache.instructions.size()) {
