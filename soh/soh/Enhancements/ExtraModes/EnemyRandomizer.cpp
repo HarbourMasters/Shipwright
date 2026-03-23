@@ -5,12 +5,10 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "variables.h"
-#include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
-#include "soh/SohGui/SohGui.hpp"
 
 extern "C" {
 #include <z64.h>
@@ -627,11 +625,20 @@ void RegisterEnemyRandomizer() {
         ActorContext* actorCtx = va_arg(args, ActorContext*);
         ActorEntry* actorEntry = va_arg(args, ActorEntry*);
         PlayState* play = va_arg(args, PlayState*);
-        Actor* actor = va_arg(args, Actor*);
+        Actor** actor = va_arg(args, Actor**);
 
-        if (!GetRandomizedEnemy(play, &actorEntry->id, &actorEntry->pos.x, &actorEntry->pos.y, &actorEntry->pos.z,
-                                &actorEntry->rot.x, &actorEntry->rot.y, &actorEntry->rot.z, &actorEntry->params)) {
-            *should = false;
+        s16 actorId = actorEntry->id;
+        s16 posX = actorEntry->pos.x;
+        s16 posY = actorEntry->pos.y;
+        s16 posZ = actorEntry->pos.z;
+        s16 rotX = actorEntry->rot.x;
+        s16 rotY = actorEntry->rot.y;
+        s16 rotZ = actorEntry->rot.z;
+        s16 params = actorEntry->params;
+
+        *should = false;
+        if (GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
+            *actor = Actor_Spawn(actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
         }
     });
 
