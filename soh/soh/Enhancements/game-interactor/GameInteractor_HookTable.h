@@ -63,6 +63,7 @@ DEFINE_HOOK(OnDialogMessage, ());
 DEFINE_HOOK(OnPresentTitleCard, ());
 DEFINE_HOOK(OnInterfaceUpdate, ());
 DEFINE_HOOK(OnKaleidoscopeUpdate, (int16_t inDungeonScene));
+DEFINE_HOOK(OnMinimapDrawCompassIcons, ());
 
 DEFINE_HOOK(OnPresentFileSelect, ());
 DEFINE_HOOK(OnUpdateFileSelectSelection, (uint16_t optionIndex));
