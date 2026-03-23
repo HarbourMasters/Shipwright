@@ -18,12 +18,38 @@
 
 extern "C" PlayState* gPlayState;
 
+static uint32_t sAnchorDummyCustomEquipmentBypassDepth = 0;
+
+struct StrippedGfxCache {
+    const void* instructionsPtr = nullptr;
+    size_t instructionCount = 0;
+    uint64_t revision = 0;
+    std::vector<Gfx> instructions;
+};
+
+static std::unordered_map<std::string, StrippedGfxCache> sAnchorDummyCustomEquipmentBypassCache;
+static Gfx* ResourceMgr_GetCustomEquipmentBypassedGfx(const char* path);
+
 void ResourceMgr_SetAnchorModelOverride(const std::string& modelId, int32_t linkAge) {
     AnchorModRegistry::SetAnchorModelOverride(modelId, linkAge);
 }
 
 void ResourceMgr_ClearAnchorModelOverride() {
     AnchorModRegistry::ClearAnchorModelOverride();
+}
+
+extern "C" void ResourceMgr_BeginAnchorDummyCustomEquipmentBypass() {
+    sAnchorDummyCustomEquipmentBypassDepth++;
+}
+
+extern "C" void ResourceMgr_EndAnchorDummyCustomEquipmentBypass() {
+    if (sAnchorDummyCustomEquipmentBypassDepth == 0) {
+        return;
+    }
+
+    if (--sAnchorDummyCustomEquipmentBypassDepth == 0) {
+        sAnchorDummyCustomEquipmentBypassCache.clear();
+    }
 }
 
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
@@ -326,6 +352,13 @@ extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path) {
         return customGfx;
     }
 
+    if (sAnchorDummyCustomEquipmentBypassDepth != 0) {
+        Gfx* bypassedGfx = ResourceMgr_GetCustomEquipmentBypassedGfx(path);
+        if (bypassedGfx != nullptr) {
+            return bypassedGfx;
+        }
+    }
+
     auto res = std::static_pointer_cast<Fast::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
     return (Gfx*)&res->Instructions[0];
 }
@@ -344,6 +377,67 @@ typedef struct {
 } GfxPatch;
 
 std::unordered_map<std::string, std::unordered_map<std::string, GfxPatch>> originalGfx;
+
+static Gfx* ResourceMgr_GetCustomEquipmentBypassedGfx(const char* path) {
+    auto res = std::static_pointer_cast<Fast::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
+    if (res == nullptr) {
+        return nullptr;
+    }
+
+    auto pathIt = originalGfx.find(path);
+    if (pathIt == originalGfx.end()) {
+        return (Gfx*)&res->Instructions[0];
+    }
+
+    uint64_t revision =
+        reinterpret_cast<uint64_t>(res->Instructions.data()) ^ static_cast<uint64_t>(res->Instructions.size());
+    bool hasApplicablePatch = false;
+
+    for (const auto& [patchName, patch] : pathIt->second) {
+        if (patchName.rfind("custom", 0) != 0) {
+            continue;
+        }
+
+        if (res->Instructions.data() != patch.instructionsPtr || res->Instructions.size() != patch.instructionCount ||
+            res->GetInitData()->IsCustom != patch.isCustom ||
+            static_cast<size_t>(patch.index) >= res->Instructions.size()) {
+            continue;
+        }
+
+        hasApplicablePatch = true;
+        revision ^= static_cast<uint64_t>(patch.index) * 0x9E3779B185EBCA87ULL;
+        revision ^= (static_cast<uint64_t>(patch.instruction.words.w0) << 32) | patch.instruction.words.w1;
+    }
+
+    if (!hasApplicablePatch) {
+        return (Gfx*)&res->Instructions[0];
+    }
+
+    auto& cache = sAnchorDummyCustomEquipmentBypassCache[path];
+    if (cache.instructionsPtr != res->Instructions.data() || cache.instructionCount != res->Instructions.size() ||
+        cache.revision != revision) {
+        cache.instructionsPtr = res->Instructions.data();
+        cache.instructionCount = res->Instructions.size();
+        cache.revision = revision;
+        cache.instructions = res->Instructions;
+
+        for (const auto& [patchName, patch] : pathIt->second) {
+            if (patchName.rfind("custom", 0) != 0) {
+                continue;
+            }
+
+            if (res->Instructions.data() != patch.instructionsPtr ||
+                res->Instructions.size() != patch.instructionCount || res->GetInitData()->IsCustom != patch.isCustom ||
+                static_cast<size_t>(patch.index) >= cache.instructions.size()) {
+                continue;
+            }
+
+            cache.instructions[patch.index] = patch.instruction;
+        }
+    }
+
+    return cache.instructions.empty() ? nullptr : cache.instructions.data();
+}
 
 // Attention! This is primarily for cosmetics & bug fixes. For things like mods and model replacement you should be
 // using OTRs instead (When that is available). Index can be found using the commented out section below.
