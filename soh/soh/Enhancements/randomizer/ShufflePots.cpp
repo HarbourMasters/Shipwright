@@ -54,7 +54,7 @@ extern "C" void ObjTsubo_RandomizerDraw(Actor* thisx, PlayState* play) {
                     break;
             }
         } else {
-            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotStandardDL);
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotMajorDL);
         }
     } else {
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotDL);
