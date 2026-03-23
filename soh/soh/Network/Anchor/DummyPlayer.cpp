@@ -266,9 +266,7 @@ void DummyPlayer_Draw(Actor* actor, PlayState* play) {
         textureOverrides = AnchorModRegistry::ApplyAnchorFlipbookTextures(player, client.modelId, client.linkAge);
     }
 
-    ResourceMgr_BeginAnchorDummyCustomEquipmentBypass();
     Player_Draw((Actor*)player, play);
-    ResourceMgr_EndAnchorDummyCustomEquipmentBypass();
 
     if (textureOverrides.hasEye || textureOverrides.hasMouth) {
         AnchorModRegistry::RestoreAnchorFlipbookTextures(textureOverrides, client.linkAge);
