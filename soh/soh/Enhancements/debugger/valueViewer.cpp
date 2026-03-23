@@ -20,31 +20,31 @@ s32 GfxPrint_Printf(GfxPrint* printer, const char* fmt, ...);
 #define CVAR_DEFAULT 0
 #define CVAR_VALUE CVarGetInteger(CVAR_NAME, CVAR_DEFAULT)
 
-ImVec4 WHITE = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+std::map<ValueViewerEntry, ValueSetting> valueViewerSettings;
 
 // clang-format off
-std::vector<ValueTableElement> valueTable = {
-    { "Time",               "gSaveContext.dayTime",                 "TIME:",   TYPE_U16,   false, []() -> void* { return &gSaveContext.dayTime; },                      WHITE },
-    { "Age",                "gSaveContext.linkAge",                 "AGE:",    TYPE_S32,   false, []() -> void* { return &gSaveContext.linkAge; },                      WHITE },
-    { "Health",             "gSaveContext.health",                  "HP:",     TYPE_S16,   false, []() -> void* { return &gSaveContext.health; },                       WHITE },
-    { "Navi Timer",         "gSaveContext.naviTimer",               "NAVI:",   TYPE_U16,   false, []() -> void* { return &gSaveContext.naviTimer; },                    WHITE },
-    { "Scene ID",           "play->sceneNum",                       "SCENE:",  TYPE_S16,   true,  []() -> void* { return &gPlayState->sceneNum; },                      WHITE },
-    { "Room ID",            "play->roomCtx.curRoom.num",            "ROOM:",   TYPE_S8,    true,  []() -> void* { return &gPlayState->roomCtx.curRoom.num; },           WHITE },
-    { "Entrance ID",        "gSaveContext.entranceIndex",           "ENTR:",   TYPE_S32,   false, []() -> void* { return &gSaveContext.entranceIndex; },                WHITE },
-    { "Cutscene ID",        "gSaveContext.cutsceneIndex",           "CUTS:",   TYPE_S32,   false, []() -> void* { return &gSaveContext.cutsceneIndex; },                WHITE },
-    { "Link X",             "Player->actor.world.pos.x",            "X:",      TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.pos.x; }, WHITE },
-    { "Link Y",             "Player->actor.world.pos.y",            "Y:",      TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.pos.y; }, WHITE },
-    { "Link Z",             "Player->actor.world.pos.z",            "Z:",      TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.pos.z; }, WHITE },
-    { "Link Yaw",           "Player->actor.world.rot.y",            "ROT:",    TYPE_S16,   true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.rot.y; }, WHITE },
-    { "Link Velocity",      "Player->linearVelocity",               "V:",      TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->linearVelocity; },    WHITE },
-    { "Link X Velocity",    "Player->actor.velocity.x",             "XV:",     TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.velocity.x; },  WHITE },
-    { "Link Y Velocity",    "Player->actor.velocity.y",             "YV:",     TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.velocity.y; },  WHITE },
-    { "Link Z Velocity",    "Player->actor.velocity.z",             "ZV:",     TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.velocity.z; },  WHITE },
-    { "Text ID",            "play->msgCtx.textId",                  "TEXTID:", TYPE_U16,   true,  []() -> void* { return &gPlayState->msgCtx.textId; },                 WHITE },
-    { "Analog Stick X",     "play->state.input->cur.stick_x",       "AX:",     TYPE_S8,    true,  []() -> void* { return &gPlayState->state.input->cur.stick_x; },      WHITE },
-    { "Analog Stick Y",     "play->state.input->cur.stick_y",       "AY:",     TYPE_S8,    true,  []() -> void* { return &gPlayState->state.input->cur.stick_y; },      WHITE },
-    { "getItemID",          "Player->getItemId",                    "ITEM:",   TYPE_S16,   true,  []() -> void* { return &GET_PLAYER(gPlayState)->getItemId; },         WHITE },
-    { "getItemEntry",       "Player->getItemEntry",                 "IE:",     TYPE_S16,   true,  []() -> void* { return &GET_PLAYER(gPlayState)->getItemEntry.itemId; }, WHITE },
+std::array<ValueTableElement, VVE_MAX> valueTable = {{
+    { "Time",               "gSaveContext.dayTime",           "TIME:",   TYPE_U16,   false, []() -> void* { return &gSaveContext.dayTime; }},
+    { "Age",                "gSaveContext.linkAge",           "AGE:",    TYPE_S32,   false, []() -> void* { return &gSaveContext.linkAge; }},
+    { "Health",             "gSaveContext.health",            "HP:",     TYPE_S16,   false, []() -> void* { return &gSaveContext.health; }},
+    { "Navi Timer",         "gSaveContext.naviTimer",         "NAVI:",   TYPE_U16,   false, []() -> void* { return &gSaveContext.naviTimer; }},
+    { "Scene ID",           "play->sceneNum",                 "SCENE:",  TYPE_S16,   true,  []() -> void* { return &gPlayState->sceneNum; }},
+    { "Room ID",            "play->roomCtx.curRoom.num",      "ROOM:",   TYPE_S8,    true,  []() -> void* { return &gPlayState->roomCtx.curRoom.num; }},
+    { "Entrance ID",        "gSaveContext.entranceIndex",     "ENTR:",   TYPE_S32,   false, []() -> void* { return &gSaveContext.entranceIndex; }},
+    { "Cutscene ID",        "gSaveContext.cutsceneIndex",     "CUTS:",   TYPE_S32,   false, []() -> void* { return &gSaveContext.cutsceneIndex; }},
+    { "Link X",             "Player->actor.world.pos.x",      "X:",      TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.pos.x; }},
+    { "Link Y",             "Player->actor.world.pos.y",      "Y:",      TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.pos.y; }},
+    { "Link Z",             "Player->actor.world.pos.z",      "Z:",      TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.pos.z; }},
+    { "Link Yaw",           "Player->actor.world.rot.y",      "ROT:",    TYPE_S16,   true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.world.rot.y; }},
+    { "Link Velocity",      "Player->linearVelocity",         "V:",      TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->linearVelocity; }},
+    { "Link X Velocity",    "Player->actor.velocity.x",       "XV:",     TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.velocity.x; }},
+    { "Link Y Velocity",    "Player->actor.velocity.y",       "YV:",     TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.velocity.y; }},
+    { "Link Z Velocity",    "Player->actor.velocity.z",       "ZV:",     TYPE_FLOAT, true,  []() -> void* { return &GET_PLAYER(gPlayState)->actor.velocity.z; }},
+    { "Text ID",            "play->msgCtx.textId",            "TEXTID:", TYPE_U16,   true,  []() -> void* { return &gPlayState->msgCtx.textId; }},
+    { "Analog Stick X",     "play->state.input->cur.stick_x", "AX:",     TYPE_S8,    true,  []() -> void* { return &gPlayState->state.input->cur.stick_x; }},
+    { "Analog Stick Y",     "play->state.input->cur.stick_y", "AY:",     TYPE_S8,    true,  []() -> void* { return &gPlayState->state.input->cur.stick_y; }},
+    { "getItemID",          "Player->getItemId",              "ITEM:",   TYPE_S16,   true,  []() -> void* { return &GET_PLAYER(gPlayState)->getItemId; }},
+    { "getItemEntry",       "Player->getItemEntry",           "IE:",     TYPE_S16,   true,  []() -> void* { return &GET_PLAYER(gPlayState)->getItemEntry.itemId; }},
     /* TODO: Find these (from GZ)
     "XZ Units Traveled (Camera based speed variable)" f32 0x801C9018
     "Movement Angle" x16 0x801DBB1C
@@ -71,50 +71,68 @@ std::vector<ValueTableElement> valueTable = {
     "Spirit Temple Warp Timer" u16 0x801FD562
     "Deku Tree Warp Timer" u16 0x801F83A2
     */
-};
+}};
 // clang-format on
 
+void LoadValueConfig() {
+    auto allConfig = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+    if (allConfig.find("ValueViewer") == allConfig.end() || !allConfig["ValueViewer"].is_array()) {
+        allConfig["ValueViewer"] = nlohmann::json::array();
+    }
+    valueViewerSettings = allConfig["ValueViewer"];
+}
+
+void SaveValueConfig() {
+    auto allConfig = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+    allConfig["ValueViewer"] = valueViewerSettings;
+    Ship::Context::GetInstance()->GetConfig()->SetBlock("ValueViewer", valueViewerSettings);
+    Ship::Context::GetInstance()->GetConfig()->Save();
+}
+
 extern "C" void ValueViewer_Draw(GfxPrint* printer) {
-    for (size_t i = 0; i < valueTable.size(); i++) {
+    for (size_t i = 0; i < VVE_MAX; i++) {
         ValueTableElement& element = valueTable[i];
-        if (!element.isActive || !element.isPrinted || (gPlayState == NULL && element.requiresPlayState))
+        if (!valueViewerSettings.contains((ValueViewerEntry)i) || (gPlayState == NULL && element.requiresPlayState))
             continue;
-        GfxPrint_SetColor(printer, element.color.x * 255, element.color.y * 255, element.color.z * 255,
-                          element.color.w * 255);
-        GfxPrint_SetPos(printer, element.x, element.y);
+        ValueSetting& setting = valueViewerSettings[(ValueViewerEntry)i];
+        if (!setting.isPrinted)
+            continue;
+        GfxPrint_SetColor(printer, setting.color.x * 255, setting.color.y * 255, setting.color.z * 255,
+                          setting.color.w * 255);
+        GfxPrint_SetPos(printer, setting.x, setting.y);
         switch (element.type) {
             case TYPE_S8:
-                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%d"), element.prefix.c_str(),
+                GfxPrint_Printf(printer, (setting.typeFormat ? "%s0x%x" : "%s%d"), setting.prefix.c_str(),
                                 *(s8*)element.valueFn());
                 break;
             case TYPE_U8:
-                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%u"), element.prefix.c_str(),
+                GfxPrint_Printf(printer, (setting.typeFormat ? "%s0x%x" : "%s%u"), setting.prefix.c_str(),
                                 *(u8*)element.valueFn());
                 break;
             case TYPE_S16:
-                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%d"), element.prefix.c_str(),
+                GfxPrint_Printf(printer, (setting.typeFormat ? "%s0x%x" : "%s%d"), setting.prefix.c_str(),
                                 *(s16*)element.valueFn());
                 break;
             case TYPE_U16:
-                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%u"), element.prefix.c_str(),
+                GfxPrint_Printf(printer, (setting.typeFormat ? "%s0x%x" : "%s%u"), setting.prefix.c_str(),
                                 *(u16*)element.valueFn());
                 break;
             case TYPE_S32:
-                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%d"), element.prefix.c_str(),
+                GfxPrint_Printf(printer, (setting.typeFormat ? "%s0x%x" : "%s%d"), setting.prefix.c_str(),
                                 *(s32*)element.valueFn());
                 break;
             case TYPE_U32:
-                GfxPrint_Printf(printer, (element.typeFormat ? "%s0x%x" : "%s%u"), element.prefix.c_str(),
+                GfxPrint_Printf(printer, (setting.typeFormat ? "%s0x%x" : "%s%u"), setting.prefix.c_str(),
                                 *(u32*)element.valueFn());
                 break;
             case TYPE_CHAR:
-                GfxPrint_Printf(printer, "%s%c", element.prefix.c_str(), *(char*)element.valueFn());
+                GfxPrint_Printf(printer, "%s%c", setting.prefix.c_str(), *(char*)element.valueFn());
                 break;
             case TYPE_STRING:
-                GfxPrint_Printf(printer, "%s%s", element.prefix.c_str(), (char*)element.valueFn());
+                GfxPrint_Printf(printer, "%s%s", setting.prefix.c_str(), (char*)element.valueFn());
                 break;
             case TYPE_FLOAT:
-                GfxPrint_Printf(printer, (element.typeFormat ? "%s%4.1f" : "%s%f"), element.prefix.c_str(),
+                GfxPrint_Printf(printer, (setting.typeFormat ? "%s%4.1f" : "%s%f"), setting.prefix.c_str(),
                                 *(float*)element.valueFn());
                 break;
         }
@@ -158,14 +176,14 @@ void ValueViewerWindow::DrawElement() {
     UIWidgets::CVarCheckbox("Enable Printing", CVAR_NAME, UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 
     ImGui::BeginGroup();
-    static int selectedElement = -1;
+    static size_t selectedElement = -1;
     std::string selectedElementText = (selectedElement == -1) ? "Select a value"
                                                               : (std::string(valueTable[selectedElement].name) + " (" +
                                                                  std::string(valueTable[selectedElement].path) + ")");
     UIWidgets::PushStyleCombobox(THEME_COLOR);
     if (ImGui::BeginCombo("##valueViewerElement", selectedElementText.c_str())) {
         for (size_t i = 0; i < valueTable.size(); i++) {
-            if (valueTable[i].isActive)
+            if (valueViewerSettings.contains((ValueViewerEntry)i))
                 continue;
             bool isSelected = (selectedElement == i);
             std::string elementText = (std::string(valueTable[i].name) + " (" + std::string(valueTable[i].path) + ")");
@@ -182,46 +200,53 @@ void ValueViewerWindow::DrawElement() {
     ImGui::SameLine();
     UIWidgets::PushStyleButton(THEME_COLOR);
     if (selectedElement != -1 && ImGui::Button("+")) {
-        valueTable[selectedElement].isActive = true;
+        valueViewerSettings.insert(
+            { (ValueViewerEntry)selectedElement,
+              { valueTable[selectedElement].prefix, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), false, false, 0, 0 } });
         selectedElement = -1;
+        SaveValueConfig();
     }
     UIWidgets::PopStyleButton();
     ImGui::EndGroup();
 
     for (size_t i = 0; i < valueTable.size(); i++) {
         ValueTableElement& element = valueTable[i];
-        if (!element.isActive || (gPlayState == NULL && element.requiresPlayState))
+        if (!valueViewerSettings.contains((ValueViewerEntry)i) || (gPlayState == NULL && element.requiresPlayState))
             continue;
         UIWidgets::PushStyleButton(THEME_COLOR);
         UIWidgets::PushStyleCheckbox(THEME_COLOR);
         ImGui::AlignTextToFramePadding();
         if (ImGui::Button((ICON_FA_TIMES + std::string("##") + std::string(element.name)).c_str())) {
-            element.isActive = false;
-            element.isPrinted = false;
+            valueViewerSettings.erase((ValueViewerEntry)i);
+            UIWidgets::PopStyleCheckbox();
+            UIWidgets::PopStyleButton();
+            SaveValueConfig();
+            continue;
         }
         UIWidgets::PopStyleCheckbox();
         UIWidgets::PopStyleButton();
+        ValueSetting& setting = valueViewerSettings[(ValueViewerEntry)i];
         ImGui::SameLine();
         ImGui::Text("%s:", element.name);
         ImGui::SameLine();
         switch (element.type) {
             case TYPE_S8:
-                ImGui::Text(element.typeFormat ? "0x%x" : "%d", *(s8*)element.valueFn());
+                ImGui::Text(setting.typeFormat ? "0x%x" : "%d", *(s8*)element.valueFn());
                 break;
             case TYPE_U8:
-                ImGui::Text(element.typeFormat ? "0x%x" : "%u", *(u8*)element.valueFn());
+                ImGui::Text(setting.typeFormat ? "0x%x" : "%u", *(u8*)element.valueFn());
                 break;
             case TYPE_S16:
-                ImGui::Text(element.typeFormat ? "0x%x" : "%d", *(s16*)element.valueFn());
+                ImGui::Text(setting.typeFormat ? "0x%x" : "%d", *(s16*)element.valueFn());
                 break;
             case TYPE_U16:
-                ImGui::Text(element.typeFormat ? "0x%x" : "%u", *(u16*)element.valueFn());
+                ImGui::Text(setting.typeFormat ? "0x%x" : "%u", *(u16*)element.valueFn());
                 break;
             case TYPE_S32:
-                ImGui::Text(element.typeFormat ? "0x%x" : "%d", *(s32*)element.valueFn());
+                ImGui::Text(setting.typeFormat ? "0x%x" : "%d", *(s32*)element.valueFn());
                 break;
             case TYPE_U32:
-                ImGui::Text(element.typeFormat ? "0x%x" : "%u", *(u32*)element.valueFn());
+                ImGui::Text(setting.typeFormat ? "0x%x" : "%u", *(u32*)element.valueFn());
                 break;
             case TYPE_CHAR:
                 ImGui::Text("%c", *(char*)element.valueFn());
@@ -230,16 +255,20 @@ void ValueViewerWindow::DrawElement() {
                 ImGui::Text("%s", (char*)element.valueFn());
                 break;
             case TYPE_FLOAT:
-                ImGui::Text(element.typeFormat ? "%4.1f" : "%f", *(float*)element.valueFn());
+                ImGui::Text(setting.typeFormat ? "%4.1f" : "%f", *(float*)element.valueFn());
                 break;
         }
         ImGui::SameLine();
         UIWidgets::PushStyleCheckbox(THEME_COLOR);
         if (element.type <= TYPE_U32) {
-            ImGui::Checkbox(("Hex##" + std::string(element.name)).c_str(), &element.typeFormat);
+            if (ImGui::Checkbox(("Hex##" + std::string(element.name)).c_str(), &setting.typeFormat)) {
+                SaveValueConfig();
+            }
             ImGui::SameLine();
         } else if (element.type == TYPE_FLOAT) {
-            ImGui::Checkbox(("Trim##" + std::string(element.name)).c_str(), &element.typeFormat);
+            if (ImGui::Checkbox(("Trim##" + std::string(element.name)).c_str(), &setting.typeFormat)) {
+                SaveValueConfig();
+            }
             ImGui::SameLine();
         }
         UIWidgets::PopStyleCheckbox();
@@ -247,20 +276,26 @@ void ValueViewerWindow::DrawElement() {
         ImGui::BeginGroup();
         if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ValueViewerEnablePrinting"), 0)) {
             UIWidgets::PushStyleCheckbox(THEME_COLOR);
-            ImGui::Checkbox(("Print##" + std::string(element.name)).c_str(), &element.isPrinted);
+            if (ImGui::Checkbox(("Print##" + std::string(element.name)).c_str(), &setting.isPrinted)) {
+                SaveValueConfig();
+            }
             UIWidgets::PopStyleCheckbox();
-            if (element.isPrinted) {
+            if (setting.isPrinted) {
                 char* prefix = (char*)element.prefix.c_str();
                 ImGui::SameLine();
                 ImGui::SetNextItemWidth(80.0f);
                 UIWidgets::PushStyleInput(THEME_COLOR);
                 if (ImGui::InputText(("Prefix##" + std::string(element.name)).c_str(), prefix, 10)) {
-                    element.prefix = prefix;
+                    setting.prefix = prefix;
+                    SaveValueConfig();
                 }
                 UIWidgets::PopStyleInput();
                 ImGui::SameLine();
-                ImGui::ColorEdit3(("##color" + std::string(element.name)).c_str(), (float*)&element.color,
-                                  ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel);
+                if (ImGui::ColorEdit3(("##color" + std::string(element.name)).c_str(), (float*)&setting.color,
+                                      ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
+
+                    SaveValueConfig();
+                }
                 ImGui::SameLine();
                 UIWidgets::PushStyleCheckbox(THEME_COLOR);
                 if (ImGui::Button(("Position##" + std::string(element.name)).c_str())) {
@@ -268,8 +303,12 @@ void ValueViewerWindow::DrawElement() {
                 }
                 UIWidgets::PopStyleCheckbox();
                 if (ImGui::BeginPopup(("Position Picker##" + std::string(element.name)).c_str())) {
-                    ImGui::DragInt("X", (int*)&element.x, 1.0f, 0, 44);
-                    ImGui::DragInt("Y", (int*)&element.y, 1.0f, 0, 29);
+                    if (ImGui::DragInt("X", (int*)&setting.x, 1.0f, 0, 44)) {
+                        SaveValueConfig();
+                    }
+                    if (ImGui::DragInt("Y", (int*)&setting.y, 1.0f, 0, 29)) {
+                        SaveValueConfig();
+                    }
                     ImGui::EndPopup();
                 }
             }
@@ -280,4 +319,9 @@ void ValueViewerWindow::DrawElement() {
 }
 
 void ValueViewerWindow::InitElement() {
+    static bool loadedConfig = false;
+    if (!loadedConfig) {
+        LoadValueConfig();
+        loadedConfig = true;
+    }
 }
