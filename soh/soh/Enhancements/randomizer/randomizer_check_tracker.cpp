@@ -1082,7 +1082,7 @@ void CheckTrackerWindow::DrawElement() {
         }
         UIWidgets::PushStyleCombobox(THEME_COLOR);
         if (CVarGetInteger(CVAR_TRACKER_CHECK("SearchInputVisible"), 1)) {
-            if (checkSearch.Draw("", ImGui::GetContentRegionAvail().x - 40)) {
+            if (checkSearch.Draw("", ImGui::GetContentRegionAvail().x - 42)) {
                 UpdateFilters();
             }
             std::string checkSearchText = "";
@@ -1091,11 +1091,12 @@ void CheckTrackerWindow::DrawElement() {
                                   checkSearchText.end());
             ImGui::SameLine();
             if (UIWidgets::Button(ICON_FA_ERASER, UIWidgets::ButtonOptions()
-                                                    .Size(UIWidgets::Sizes::Inline)
-                                                    .Color(THEME_COLOR)
-                                                    .Padding(ImVec2(10.f, 6.f)))) {
-              checkSearch.Clear();
-              UpdateFilters();
+                                                      .Size(UIWidgets::Sizes::Inline)
+                                                      .Color(THEME_COLOR)
+                                                      .Padding(ImVec2(10.f, 6.f)))) {
+                checkSearch.Clear();
+                UpdateFilters();
+                doAreaScroll = true;
             }
             if (checkSearchText.length() < 1) {
                 ImGui::SameLine(20.0f);
