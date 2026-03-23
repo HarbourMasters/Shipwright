@@ -54,7 +54,7 @@ void Anchor::SendPacket_UpdateClientState() {
 }
 
 void Anchor::HandlePacket_UpdateClientState(nlohmann::json payload) {
-    uint32_t clientId = payload["clientId"].get<uint32_t>();
+    uint32_t clientId = payload.at("clientId").get<uint32_t>();
 
     if (clients.contains(clientId)) {
         AnchorClient client = payload["state"].get<AnchorClient>();
