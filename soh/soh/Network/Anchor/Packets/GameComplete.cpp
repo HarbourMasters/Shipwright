@@ -26,7 +26,7 @@ void Anchor::SendPacket_GameComplete() {
 }
 
 void Anchor::HandlePacket_GameComplete(nlohmann::json payload) {
-    uint32_t clientId = payload["clientId"].get<uint32_t>();
+    uint32_t clientId = payload.at("clientId").get<uint32_t>();
     if (!clients.contains(clientId)) {
         return;
     }
