@@ -699,7 +699,9 @@ void Settings::CreateOptionDescriptions() {
                                                  "\n"
                                                  "Strong - More useful hints.\n"
                                                  "\n"
-                                                 "Very Strong - Many powerful hints.";
+                                                 "Very Strong - Many powerful hints.\n"
+                                                 "\n"
+                                                 "Bunny - Hints for Bunny Hood Club Races";
     mOptionDescriptions[RSK_TOT_ALTAR_HINT] =
         "Reading the Temple of Time altar as child will tell you the locations of the Spiritual Stones.\n"
         "Reading the Temple of Time altar as adult will tell you the locations of the medallions, as well as the "

@@ -122,6 +122,8 @@ void SetStartingItems() {
     int startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
     if (Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD))
         Item_Give(NULL, ITEM_SWORD_KOKIRI);
+    if (Randomizer_GetSettingValue(RSK_STARTING_FARORES_WIND))
+        Item_Give(NULL, ITEM_FARORES_WIND);
     if (Randomizer_GetSettingValue(RSK_STARTING_DEKU_SHIELD))
         Item_Give(NULL, ITEM_SHIELD_DEKU);
 

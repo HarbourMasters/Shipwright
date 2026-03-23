@@ -151,7 +151,7 @@ bool NoFilter(RandomizerCheck loc) {
     return true;
 }
 
-const std::array<HintSetting, 4> hintSettingTable{{
+const std::array<HintSetting, 5> hintSettingTable{{
   // Useless hints
   {
     .alwaysCopies = 0,
@@ -207,6 +207,22 @@ const std::array<HintSetting, 4> hintSettingTable{{
       {"Overworld",  HINT_TYPE_ITEM,      7,  0, 1, FilterOverworldLocations},
       {"Dungeon",    HINT_TYPE_ITEM,      7,  0, 1, FilterDungeonLocations},
       {"Named Item", HINT_TYPE_ITEM_AREA, 5,  0, 1, FilterGoodItems},
+    },
+  },
+  // Bunny
+  {
+    .alwaysCopies = 2,
+    .trialCopies = 1,
+    .junkWeight = 0,
+    .distTable = {
+      {"WotH",       HINT_TYPE_WOTH,      0, 5, 1, FilterWotHLocations},
+      {"Foolish",    HINT_TYPE_FOOLISH,   0, 3, 1, FilterFoolishLocations},
+      //{"Entrance",   HINT_TYPE_ENTRANCE,      4, 0, 1}, //not yet implemented
+      {"Song",       HINT_TYPE_ITEM,      4,  0, 1, FilterSongLocations},
+      {"Overworld",  HINT_TYPE_ITEM,      6,  0, 1, FilterOverworldLocations},
+      {"Dungeon",    HINT_TYPE_ITEM,      6,  0, 1, FilterDungeonLocations},
+      {"Named Item", HINT_TYPE_ITEM_AREA, 0,  2, 1, FilterGoodItems},
+      {"Random"    , HINT_TYPE_ITEM_AREA, 8,  0, 1, NoFilter},
     },
   },
 }};
@@ -451,7 +467,6 @@ static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck>& possibleHi
 
         SPDLOG_DEBUG("\tLocation: {}", Rando::StaticData::GetLocation(hintedLocation)->GetName());
         SPDLOG_DEBUG("\tItem: {}", ctx->GetItemLocation(hintedLocation)->GetPlacedItemName().GetEnglish());
-
         placed = CreateHint(hintedLocation, copies, type, distributionName);
     }
     return hintedLocation;
@@ -605,9 +620,7 @@ uint8_t PlaceHints(std::vector<uint8_t>& selectedHints, std::vector<HintDistribu
             SPDLOG_DEBUG("Attempting to make hint of type: {}",
                          StaticData::hintTypeNames[distribution.type].GetEnglish(MF_CLEAN));
             RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK;
-
             hintedLocation = CreateRandomHint(hintTypePool, distribution.copies, distribution.type, distribution.name);
-
             if (hintedLocation == RC_UNKNOWN_CHECK) { // if hint failed to place, remove all wieght and copies then
                                                       // return the number of stones to redistribute
                 uint8_t hintsToRemove = (selectedHints[curSlot] - numHint) * distribution.copies;
@@ -666,6 +679,13 @@ void CreateStoneHints() {
             if (hint.second() && ctx->GetItemLocation(loc)->IsHintable()) {
                 alwaysHintLocations.push_back(loc);
             }
+        }
+
+        if (ctx->GetOption(RSK_HINT_DISTRIBUTION).Is(RO_HINT_DIST_Bunny)){
+                alwaysHintLocations.push_back(RC_FIRE_TEMPLE_MEGATON_HAMMER_CHEST);
+                alwaysHintLocations.push_back(RC_OGC_GREAT_FAIRY_REWARD);
+                alwaysHintLocations.push_back(RC_WASTELAND_CHEST);
+                alwaysHintLocations.push_back(RC_HC_GREAT_FAIRY_REWARD);
         }
 
         for (RandomizerCheck location : alwaysHintLocations) {

@@ -1,6 +1,5 @@
 #include "Anchor.h"
 #include "soh/Enhancements/nametag.h"
-#include "soh/frame_interpolation.h"
 
 extern "C" {
 #include "macros.h"
@@ -243,4 +242,10 @@ void DummyPlayer_Draw(Actor* actor, PlayState* play) {
 }
 
 void DummyPlayer_Destroy(Actor* actor, PlayState* play) {
+    // DummyPlayer Actors are initially spawned as ACTOR_PLAYER, but change their
+    // ID shortly afterwards to ACTOR_EN_OE2. This would cause ACTOR_PLAYER's
+    // ActorDB Entry's `numLoaded` to leak, which is mostly harmless but hits debug
+    // asserts. Set the id back to ACTOR_PLAYER so that `numLoaded` will be decremented
+    // correctly.
+    actor->id = ACTOR_PLAYER;
 }

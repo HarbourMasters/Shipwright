@@ -17,7 +17,7 @@ void RegisterFasterShadowShip() {
                 ship->dyna.actor.speedXZ = 25.0f;
             } else if (ship->dyna.actor.speedXZ > 4.0f) {
                 *should = false;
-                ship->dyna.actor.speedXZ = 4.0f;
+                ship->dyna.actor.speedXZ = 25.0f;
             }
         }
     });

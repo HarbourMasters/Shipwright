@@ -140,21 +140,9 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (location.GetRCType() != RCTYPE_MERCHANT ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleMerchants"), RO_SHUFFLE_MERCHANTS_OFF) !=
                  RO_SHUFFLE_MERCHANTS_OFF) &&
-            (location.GetRCType() != RCTYPE_SONG_LOCATION ||
-             (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSongs"), RO_SONG_SHUFFLE_SONG_LOCATIONS) !=
-                  RO_SONG_SHUFFLE_SONG_LOCATIONS &&
-              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSongs"), RO_SONG_SHUFFLE_SONG_LOCATIONS) !=
-                  RO_SONG_SHUFFLE_OFF)) && // song locations
-            ((location.GetRCType() != RCTYPE_BOSS_HEART_OR_OTHER_REWARD &&
-              location.GetRandomizerCheck() != RC_SONG_FROM_IMPA &&
-              location.GetRandomizerCheck() != RC_SHEIK_IN_ICE_CAVERN) ||
-             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSongs"), RO_SONG_SHUFFLE_SONG_LOCATIONS) !=
-                 RO_SONG_SHUFFLE_DUNGEON_REWARDS) && // song dungeon rewards
             (location.GetRCType() != RCTYPE_DUNGEON_REWARD ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) !=
                  RO_DUNGEON_REWARDS_END_OF_DUNGEON) && // dungeon rewards end of dungeons
-            (location.GetRCType() != RCTYPE_OCARINA ||
-             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_NO)) && // ocarina locations
             (location.GetRandomizerCheck() != RC_HC_ZELDAS_LETTER) && // don't show until we support shuffling letter
             (location.GetRCType() !=
              RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)

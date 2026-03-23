@@ -79,7 +79,6 @@ void GenerateStartingInventory() {
     //  AddItemToInventory(RG_ICE_ARROWS, StartingIceArrows.Value<uint8_t>());
     //  AddItemToInventory(RG_LIGHT_ARROWS, StartingLightArrows.Value<uint8_t>());
     //  AddItemToInventory(RG_DINS_FIRE, StartingDinsFire.Value<uint8_t>());
-    //  AddItemToInventory(RG_FARORES_WIND, StartingFaroresWind.Value<uint8_t>());
     //  AddItemToInventory(RG_NAYRUS_LOVE, StartingNayrusLove.Value<uint8_t>());
     //  AddItemToInventory(RG_PROGRESSIVE_SLINGSHOT, StartingSlingshot.Value<uint8_t>());
     //  AddItemToInventory(RG_BOOMERANG, StartingBoomerang.Value<uint8_t>());
@@ -113,6 +112,7 @@ void GenerateStartingInventory() {
     //  }
     //  AddItemToInventory(RG_RUTOS_LETTER,              StartingRutoBottle.Value<uint8_t>());
     AddItemToInventory(RG_PROGRESSIVE_OCARINA, ctx->GetOption(RSK_STARTING_OCARINA).Get());
+    AddItemToInventory(RG_FARORES_WIND, ctx->GetOption(RSK_STARTING_FARORES_WIND) ? 1 : 0 );
     AddItemToInventory(RG_ZELDAS_LULLABY, ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY) ? 1 : 0);
     AddItemToInventory(RG_EPONAS_SONG, ctx->GetOption(RSK_STARTING_EPONAS_SONG) ? 1 : 0);
     AddItemToInventory(RG_SARIAS_SONG, ctx->GetOption(RSK_STARTING_SARIAS_SONG) ? 1 : 0);
