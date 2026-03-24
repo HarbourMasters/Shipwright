@@ -1062,7 +1062,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_BOSS_ROOM] = Region("Fire Temple Boss Room", SCENE_FIRE_TEMPLE_BOSS, {
         // Events
-        EVENT_ACCESS(LOGIC_FIRE_TEMPLE_CLEAR, logic->FireTimer() >= 64 && logic->CanKillEnemy(RE_VOLVAGIA)),
+        EVENT_ACCESS(LOGIC_FIRE_TEMPLE_CLEAR, logic->CanUse(RG_GORON_TUNIC) && logic->CanKillEnemy(RE_VOLVAGIA)),
     }, {
         // Locations
         LOCATION(RC_FIRE_TEMPLE_VOLVAGIA_HEART, logic->Get(LOGIC_FIRE_TEMPLE_CLEAR)),
