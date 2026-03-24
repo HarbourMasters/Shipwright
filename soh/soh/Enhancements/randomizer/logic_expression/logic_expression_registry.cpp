@@ -149,7 +149,7 @@ void LogicExpression::Impl::PopulateFunctionAdapters() {
         REGISTER_LOGIC_FUNCTION(WaterRisingTargetTo3FCentral),
         REGISTER_LOGIC_FUNCTION(WaterLevel),
         REGISTER_LOGIC_FUNCTION_WITH_DEFAULTS(CanHammerRecoilHover, false),
-        REGISTER_LOGIC_FUNCTION_WITH_DEFAULTS(CanGroundJumpJumpSlash, false),
+        REGISTER_LOGIC_FUNCTION_WITH_DEFAULTS(CanGroundJumpslash, false),
         REGISTER_LOGIC_FUNCTION_WITH_DEFAULTS(CanMiddairGroundJump, false),
         REGISTER_LOGIC_FUNCTION(SunlightArrows),
         REGISTER_LOGIC_FUNCTION(SpiritEastToSwitch),
@@ -157,6 +157,11 @@ void LogicExpression::Impl::PopulateFunctionAdapters() {
         REGISTER_LOGIC_FUNCTION(MQSpiritStatueToSunBlock),
         REGISTER_LOGIC_FUNCTION(MQSpirit4KeyColossus),
         REGISTER_LOGIC_FUNCTION(MQSpirit4KeyWestHand),
+        REGISTER_LOGIC_FUNCTION(CanClimbLadder),
+        REGISTER_LOGIC_FUNCTION(CanClimbHighLadder),
+        REGISTER_LOGIC_FUNCTION(DMCPotsToPad),
+        REGISTER_LOGIC_FUNCTION(DMCUpperToPots),
+        REGISTER_LOGIC_FUNCTION(DMCPadToPots),
     };
 }
 

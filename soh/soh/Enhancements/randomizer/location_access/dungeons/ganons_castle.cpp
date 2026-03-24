@@ -466,7 +466,7 @@ void RegionTable_Init_GanonsCastle() {
 
     areaTable[RR_GANONS_CASTLE_MQ_FIRE_TRIAL_FROM_OPEN] = Region("Ganon's Castle MQ Fire Trial From Open Door", SCENE_INSIDE_GANONS_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FIRE_TRIAL_SILVER_RUPEES, logic->FireTimer() >= 72 && logic->CanUse(RG_GOLDEN_GAUNTLETS);),
+        EVENT_ACCESS(LOGIC_FIRE_TRIAL_SILVER_RUPEES, logic->FireTimer() >= 72 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
     }, {}, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_OPEN_DOOR,   true),
