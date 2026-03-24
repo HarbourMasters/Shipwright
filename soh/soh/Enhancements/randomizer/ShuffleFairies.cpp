@@ -106,11 +106,13 @@ void RegisterShuffleFairies() {
 
     COND_VB_SHOULD(VB_BOTTLE_ACTOR, shouldRegister, {
         Actor* actor = va_arg(args, Actor*);
-        const auto fairyIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(actor);
-        if (fairyIdentity != nullptr && fairyIdentity->randomizerInf != RAND_INF_MAX) {
-            Flags_SetRandomizerInf(fairyIdentity->randomizerInf);
-            actor->parent = &GET_PLAYER(gPlayState)->actor;
-            *should = false;
+        if (actor->id == ACTOR_EN_ELF) {
+            const auto fairyIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(actor);
+            if (fairyIdentity != nullptr && fairyIdentity->randomizerInf != RAND_INF_MAX) {
+                Flags_SetRandomizerInf(fairyIdentity->randomizerInf);
+                actor->parent = &GET_PLAYER(gPlayState)->actor;
+                *should = false;
+            }
         }
     });
 
