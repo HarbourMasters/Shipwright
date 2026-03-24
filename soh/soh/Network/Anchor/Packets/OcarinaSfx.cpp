@@ -1,5 +1,4 @@
 #include "soh/Network/Anchor/Anchor.h"
-#include "soh/Network/Anchor/JsonConversions.hpp"
 #include <nlohmann/json.hpp>
 #include <libultraship/libultraship.h>
 
@@ -39,10 +38,10 @@ void Anchor::SendPacket_OcarinaSfx(uint8_t note, float modulator, int8_t bend) {
 }
 
 void Anchor::HandlePacket_OcarinaSfx(nlohmann::json payload) {
-    uint32_t clientId = payload["clientId"].get<uint32_t>();
-    uint8_t note = payload["note"].get<uint8_t>();
-    float modulator = payload["modulator"].get<float>();
-    int8_t bend = payload["bend"].get<int8_t>();
+    uint32_t clientId = payload.at("clientId").get<uint32_t>();
+    uint8_t note = payload.at("note").get<uint8_t>();
+    float modulator = payload.at("modulator").get<float>();
+    int8_t bend = payload.at("bend").get<int8_t>();
 
     if (!clients.contains(clientId) || !clients[clientId].player) {
         return;

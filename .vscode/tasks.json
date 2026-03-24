@@ -58,9 +58,7 @@
             "command": "cmake",
             "args": [
                 "--build",
-                "build-cmake",
-                "--parallel",
-                "8"
+                "build-cmake"
             ],
             "windows": {
                 "args": [

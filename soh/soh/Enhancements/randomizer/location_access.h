@@ -265,6 +265,7 @@ bool SpiritShared(
     ConditionFn otherCondition = [] { return false; }, RandomizerRegion thirdRegion = RR_NONE,
     ConditionFn thirdCondition = [] { return false; });
 bool SpiritCertainAccess(RandomizerRegion region);
+bool DMCPadToPots();
 bool CanPlantBean(const RandomizerRegion region, RandomizerGet bean);
 bool BothAges(const RandomizerRegion region);
 bool ChildCanAccess(const RandomizerRegion region);

@@ -641,11 +641,9 @@ void ValidateEntrances(bool checkOtherEntranceAccess) {
         for (const RandomizerCheck loc : ctx->allLocations) {
             if (!ctx->GetItemLocation(loc)->IsAddedToPool()) {
                 ctx->allLocationsReachable = false;
-                auto message =
-                    "Location " +
-                    Rando::StaticData::GetLocation(ctx->GetItemLocation(loc)->GetRandomizerCheck())->GetName() +
-                    " not reachable\n";
-                LUSLOG_DEBUG("%s", message.c_str());
+                SPDLOG_DEBUG(
+                    "Location {} not reachable",
+                    Rando::StaticData::GetLocation(ctx->GetItemLocation(loc)->GetRandomizerCheck())->GetName());
 #ifndef ENABLE_DEBUG
                 break;
 #endif
@@ -836,19 +834,15 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
     auto ctx = Rando::Context::GetInstance();
     if (items.size() > allowedLocations.size()) {
         SPDLOG_ERROR("ERROR: MORE ITEMS THAN LOCATIONS IN GIVEN LISTS");
-        SPDLOG_DEBUG("Items:\n");
+        SPDLOG_DEBUG("Items:");
         // NOLINTNEXTLINE(clang-diagnostic-unused-variable)
         for (const RandomizerGet item : items) {
-            SPDLOG_DEBUG("\t");
-            SPDLOG_DEBUG(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
-            SPDLOG_DEBUG("\n");
+            SPDLOG_DEBUG("\t{}", Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
         }
-        SPDLOG_DEBUG("\nAllowed Locations:\n");
+        SPDLOG_DEBUG("\nAllowed Locations:");
         // NOLINTNEXTLINE(clang-diagnostic-unused-variable)
         for (const RandomizerCheck loc : allowedLocations) {
-            SPDLOG_DEBUG("\t");
-            SPDLOG_DEBUG(Rando::StaticData::GetLocation(loc)->GetName());
-            SPDLOG_DEBUG("\n");
+            SPDLOG_DEBUG("\t{}", Rando::StaticData::GetLocation(loc)->GetName());
         }
         placementFailure = true;
         return;
@@ -898,9 +892,8 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
             // retry if there are no more locations to place items
             if (accessibleLocations.empty()) {
 
-                SPDLOG_DEBUG("\nCANNOT PLACE ");
-                SPDLOG_DEBUG(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
-                SPDLOG_DEBUG(". TRYING AGAIN...\n");
+                SPDLOG_DEBUG("CANNOT PLACE {}. TRYING_AGAIN...",
+                             Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
 
                 // reset any locations that got an item
                 for (RandomizerCheck loc : attemptedLocations) {
@@ -930,8 +923,8 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
             if (!ctx->GetOption(RSK_ALL_LOCATIONS_REACHABLE)) {
                 logic->Reset();
                 if (CheckBeatable()) {
-                    SPDLOG_DEBUG("Game beatable, now placing items randomly. " + std::to_string(itemsToPlace.size()) +
-                                 " major items remaining.\n\n");
+                    SPDLOG_DEBUG("Game beatable, now placing items randomly. {} major items remaining",
+                                 itemsToPlace.size());
                     FastFill(itemsToPlace, GetEmptyLocations(allowedLocations), true);
                     return;
                 }
@@ -944,24 +937,21 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
 // setting, or randomize one dungeon reward to Link's Pocket if that setting is on
 static void RandomizeDungeonRewards() {
     auto ctx = Rando::Context::GetInstance();
-    // quest item bit mask of each stone/medallion for the savefile
-    //  static constexpr std::array<uint32_t, 9> bitMaskTable = {
-    //    0x00040000, //Kokiri Emerald
-    //    0x00080000, //Goron Ruby
-    //    0x00100000, //Zora Sapphire
-    //    0x00000001, //Forest Medallion
-    //    0x00000002, //Fire Medallion
-    //    0x00000004, //Water Medallion
-    //    0x00000008, //Spirit Medallion
-    //    0x00000010, //Shadow Medallion
-    //    0x00000020, //Light Medallion
-    //  };
-    int baseOffset = Rando::StaticData::RetrieveItem(RG_KOKIRI_EMERALD).GetItemID();
 
     // End of Dungeons includes Link's Pocket
     if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) ||
         ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
-        // get stones and medallions
+        // make temporary pools of stones and medallions, get rewards
+        std::vector<RandomizerGet> stones = FilterFromPool(itemPool, [](const auto i) {
+            return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD &&
+                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() >= RG_KOKIRI_EMERALD &&
+                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() <= RG_ZORA_SAPPHIRE;
+        });
+        std::vector<RandomizerGet> medallions = FilterFromPool(itemPool, [](const auto i) {
+            return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD &&
+                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() >= RG_FOREST_MEDALLION &&
+                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() <= RG_LIGHT_MEDALLION;
+        });
         std::vector<RandomizerGet> rewards = FilterAndEraseFromPool(itemPool, [](const auto i) {
             return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;
         });
@@ -978,12 +968,38 @@ static void RandomizeDungeonRewards() {
             if (rewards.size() < 9) {
                 ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
             } else {
-                rewardLocations.push_back(RC_LINKS_POCKET);
+                if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).IsNot(RO_LINKS_POCKET_REWARD)) {
+                    if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).Is(RO_LINKS_POCKET_STONE)) {
+                        // get one stone
+                        RandomizerGet startingStone = RandomElement(stones, true);
+                        // erase from rewards so remaining are placed
+                        erase_if(rewards, [&](RandomizerGet r) { return r == startingStone; });
+                        ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingStone);
+                    } else {
+                        // get one medallion
+                        RandomizerGet startingMedallion = RandomElement(medallions, true);
+                        // erase from rewards so remaining are placed
+                        erase_if(rewards, [&](RandomizerGet r) { return r == startingMedallion; });
+                        ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingMedallion);
+                    }
+                } else {
+                    rewardLocations.push_back(RC_LINKS_POCKET);
+                }
             }
             AssumedFill(rewards, rewardLocations);
         }
     } else if (ctx->GetOption(RSK_LINKS_POCKET).Is(RO_LINKS_POCKET_DUNGEON_REWARD)) {
-        // get 1 stone/medallion
+        // make temporary pools of stones, medallions, and rewards
+        std::vector<RandomizerGet> stones = FilterFromPool(itemPool, [](const auto i) {
+            return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD &&
+                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() >= RG_KOKIRI_EMERALD &&
+                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() <= RG_ZORA_SAPPHIRE;
+        });
+        std::vector<RandomizerGet> medallions = FilterFromPool(itemPool, [](const auto i) {
+            return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD &&
+                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() >= RG_FOREST_MEDALLION &&
+                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() <= RG_LIGHT_MEDALLION;
+        });
         std::vector<RandomizerGet> rewards = FilterFromPool(itemPool, [](const auto i) {
             return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;
         });
@@ -992,13 +1008,27 @@ static void RandomizeDungeonRewards() {
             ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
             return;
         }
-        RandomizerGet startingReward = RandomElement(rewards, true);
+        if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).Is(RO_LINKS_POCKET_STONE)) {
+            // get one stone
+            RandomizerGet startingStone = RandomElement(stones, true);
+            ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingStone);
+            // erase stone from item pool
+            FilterAndEraseFromPool(itemPool, [startingStone](const RandomizerGet i) { return i == startingStone; });
+        } else if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).Is(RO_LINKS_POCKET_MEDALLION)) {
+            // get one medallion
+            RandomizerGet startingMedallion = RandomElement(medallions, true);
+            ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingMedallion);
+            // erase medallion from item pool
+            FilterAndEraseFromPool(itemPool,
+                                   [startingMedallion](const RandomizerGet i) { return i == startingMedallion; });
+        } else {
+            // get one reward
+            RandomizerGet startingReward = RandomElement(rewards, true);
 
-        // LinksPocketRewardBitMask = bitMaskTable[Rando::StaticData::RetrieveItem(startingReward).GetItemID() -
-        // baseOffset];
-        ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingReward);
-        // erase the stone/medallion from the Item Pool
-        FilterAndEraseFromPool(itemPool, [startingReward](const RandomizerGet i) { return i == startingReward; });
+            ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingReward);
+            // erase the stone/medallion from the Item Pool
+            FilterAndEraseFromPool(itemPool, [startingReward](const RandomizerGet i) { return i == startingReward; });
+        }
     }
 }
 

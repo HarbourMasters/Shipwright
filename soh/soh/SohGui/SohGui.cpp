@@ -25,7 +25,6 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/Presets/Presets.h"
 #include "soh/resource/type/Skeleton.h"
-#include "libultraship/libultraship.h"
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"

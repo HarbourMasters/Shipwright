@@ -21,6 +21,12 @@ void OnGameFrameUpdateUnrestrictedItems() {
 
 void RegisterUnrestrictedItems() {
     COND_HOOK(OnGameFrameUpdate, CVAR_UNRESTRICTED_ITEMS_VALUE, OnGameFrameUpdateUnrestrictedItems);
+    COND_VB_SHOULD(VB_SHOULD_LOAD_BG_IMAGE, CVAR_UNRESTRICTED_ITEMS_VALUE, {
+        int32_t* camId = va_arg(args, int*);
+        if (*camId == -1) {
+            *should = false;
+        }
+    });
 }
 
 static RegisterShipInitFunc initFunc(RegisterUnrestrictedItems, { CVAR_UNRESTRICTED_ITEMS_NAME });

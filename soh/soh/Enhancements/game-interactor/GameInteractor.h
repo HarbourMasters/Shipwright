@@ -5,8 +5,6 @@
 
 #include "libultraship/libultraship.h"
 #include "vanilla-behavior/GIVanillaBehavior.h"
-#include "GameInteractionEffect.h"
-#include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include <z64.h>
 
 typedef enum {
@@ -94,12 +92,11 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 
 #ifdef __cplusplus
 #include <stdarg.h>
-#include <thread>
 #include <map>
 #include <unordered_map>
 #include <vector>
 #include <functional>
-#include <string>
+#include <cstring>
 
 #include <version>
 #ifdef __cpp_lib_source_location
@@ -107,6 +104,8 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 #else
 #pragma message("Compiling without <source_location> support, the Hook Debugger will not be available")
 #endif
+
+#include "GameInteractionEffect.h"
 
 typedef uint32_t HOOK_ID;
 
@@ -221,9 +220,9 @@ class GameInteractor {
     };
 
     // Effects
-    static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase* effect);
-    static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase* effect);
-    static GameInteractionEffectQueryResult RemoveEffect(RemovableGameInteractionEffect* effect);
+    static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase& effect);
+    static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase& effect);
+    static GameInteractionEffectQueryResult RemoveEffect(RemovableGameInteractionEffect& effect);
 
     // Game Hooks
     HOOK_ID nextHookId = 1;

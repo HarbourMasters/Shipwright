@@ -34,6 +34,6 @@ void Anchor::HandlePacket_UpdateBeansCount(nlohmann::json payload) {
         return;
     }
 
-    AMMO(ITEM_BEAN) = payload["amount"].get<s8>();
-    BEANS_BOUGHT = payload["amountBought"].get<s8>();
+    AMMO(ITEM_BEAN) = payload.at("amount").get<s8>();
+    BEANS_BOUGHT = payload.at("amountBought").get<s8>();
 }

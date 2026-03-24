@@ -11,7 +11,7 @@ void RegionTable_Init_LonLonRanch() {
         EVENT_ACCESS(LOGIC_LINKS_COW,   logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->CanUse(RG_EPONAS_SONG) && logic->IsAdult && logic->AtDay),
     }, {
         //Locations
-        LOCATION(RC_SONG_FROM_MALON,     logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER) && logic->HasItem(RG_FAIRY_OCARINA) && logic->AtDay),
+        LOCATION(RC_SONG_FROM_MALON,     logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_FAIRY_OCARINA) && logic->AtDay),
         LOCATION(RC_LLR_GS_TREE,         logic->IsChild && logic->CanBonkTrees() && (logic->HasItem(RG_POWER_BRACELET) || logic->CanKillEnemy(RE_GOLD_SKULLTULA))),
         LOCATION(RC_LLR_GS_RAIN_SHED,    logic->IsChild && logic->CanGetNightTimeGS() && (logic->HasItem(RG_POWER_BRACELET) || logic->CanKillEnemy(RE_GOLD_SKULLTULA))),
         LOCATION(RC_LLR_GS_HOUSE_WINDOW, logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
@@ -36,7 +36,7 @@ void RegionTable_Init_LonLonRanch() {
 
     areaTable[RR_LLR_TALONS_HOUSE] = Region("LLR Talons House", SCENE_LON_LON_BUILDINGS, {}, {
         //Locations
-        LOCATION(RC_LLR_TALONS_CHICKENS,    logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsChild && logic->AtDay && logic->HasItem(RG_ZELDAS_LETTER)),
+        LOCATION(RC_LLR_TALONS_CHICKENS,    logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsChild && logic->AtDay && logic->HasItem(RG_ZELDAS_LETTER) && logic->HasItem(RG_POWER_BRACELET)),
         LOCATION(RC_LLR_TALONS_HOUSE_POT_1, logic->HasItem(RG_POWER_BRACELET) || logic->CanUseSword()), // TODO: CanBreakPots() restricted
         LOCATION(RC_LLR_TALONS_HOUSE_POT_2, logic->HasItem(RG_POWER_BRACELET) || logic->CanUseSword()), // TODO: CanBreakPots() restricted
         LOCATION(RC_LLR_TALONS_HOUSE_POT_3, logic->HasItem(RG_POWER_BRACELET) || logic->CanUseSword()), // TODO: CanBreakPots() restricted

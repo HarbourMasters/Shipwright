@@ -745,12 +745,8 @@ void EnSa_Update(Actor* thisx, PlayState* play) {
         EnSa_ChangeAnim(this, ENSA_ANIM1_6);
     }
 
-    if (this->actionFunc != func_80AF68E4) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("DisableKokiriDrawDistance"), 0) != 0) {
-            this->alpha = Actor_UpdateAlphaByDistance(&this->actor, play, this->alpha, 32767);
-        } else {
-            this->alpha = Actor_UpdateAlphaByDistance(&this->actor, play, this->alpha, 400.0f);
-        }
+    if (GameInteractor_Should(VB_FADE_KOKIRI, this->actionFunc != func_80AF68E4, this)) {
+        this->alpha = Actor_UpdateAlphaByDistance(&this->actor, play, this->alpha, 400.0f);
     } else {
         this->alpha = 255;
     }

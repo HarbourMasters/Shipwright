@@ -57,7 +57,7 @@ void RegionTable_Init_Root() {
 
     areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
-        ENTRANCE(RR_DMC_CENTRAL_LOCAL, true),
+        ENTRANCE(RR_DMC_PAD_ENTRY, true),
     });
 
     areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
