@@ -38,8 +38,7 @@ uint8_t Sign_RandomizerHoldsItem(Actor* actor, PlayState* play) {
     }
 }
 
-static void Sign_RandomizerDraw(Actor* actor, Color_RGBA8* primColor, Color_RGBA8* secColor, Color_RGBA8* envColor,
-                                CheckIdentity* wonderIdentity) {
+static void Sign_RandomizerDraw(Actor* actor, Color_RGBA8* primColor, Color_RGBA8* secColor, Color_RGBA8* envColor) {
     Vec3f pos;
     static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
@@ -121,7 +120,7 @@ void Sign_RandomizerDrawSetup(void* actor) {
         Color_RGBA8_Copy(&primColor, mainColors[colorIndex]);
         Color_RGBA8_Copy(&secColor, secColors[colorIndex]);
         Color_RGBA8_Copy(&envColor, flareColors[colorIndex]);
-        Sign_RandomizerDraw(signActor, &primColor, &secColor, &envColor, signIdentity);
+        Sign_RandomizerDraw(signActor, &primColor, &secColor, &envColor);
         return;
     }
 
@@ -153,7 +152,7 @@ void Sign_RandomizerDrawSetup(void* actor) {
     Color_RGBA8_Copy(&primColor, mainColors[colorIndex]);
     Color_RGBA8_Copy(&secColor, secColors[colorIndex]);
     Color_RGBA8_Copy(&envColor, flareColors[colorIndex]);
-    Sign_RandomizerDraw(signActor, &primColor, &secColor, &envColor, signIdentity);
+    Sign_RandomizerDraw(signActor, &primColor, &secColor, &envColor);
 }
 
 void Sign_RandomizerSpawnCollectible(Actor* actor) {
@@ -321,8 +320,10 @@ locationTable[RC_GF_GATE_EXIT_RECTANGLE_SIGN]                           = Locati
 locationTable[RC_GF_GTG_ENTRANCE_RECTANGLE_SIGN]                        = Location::Sign(RC_GF_GTG_ENTRANCE_RECTANGLE_SIGN,                         RCQUEST_BOTH,       RCAREA_GERUDO_FORTRESS,         SCENE_GERUDOS_FORTRESS,         TWO_ACTOR_PARAMS(14, -1159),        "GTG Entrance Rectangle Sign",                      RHT_SIGN_GERUDO_FORTRESS,       ACTOR_EN_KANBAN,            SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_GTG_ENTRANCE_RECTANGLE_SIGN));
 locationTable[RC_HW_CARPET_SALESMAN_ARROW_SIGN]                         = Location::Sign(RC_HW_CARPET_SALESMAN_ARROW_SIGN,                          RCQUEST_BOTH,       RCAREA_WASTELAND,               SCENE_HAUNTED_WASTELAND,        TWO_ACTOR_PARAMS(2104, 2389),       "Carpet Salesman Arrow Sign",                       RHT_SIGN_HAUNTED_WASTELAND,     ACTOR_EN_A_OBJ,             SpoilerCollectionCheck::RandomizerInf(RAND_INF_HW_CARPET_SALESMAN_ARROW_SIGN));
 locationTable[RC_HW_POE_ALTAR]                                          = Location::Sign(RC_HW_POE_ALTAR,                                           RCQUEST_BOTH,       RCAREA_WASTELAND,               SCENE_HAUNTED_WASTELAND,        TWO_ACTOR_PARAMS(645, -2234),       "Poe Altar",                                        RHT_SIGN_HAUNTED_WASTELAND,     ACTOR_EN_WONDER_TALK2,      SpoilerCollectionCheck::RandomizerInf(RAND_INF_HW_POE_ALTAR));
+// Dungeon Signs
 locationTable[RC_DODONGOS_CAVERN_TOP_FLOOR_PEDESTAL]                    = Location::Sign(RC_DODONGOS_CAVERN_TOP_FLOOR_PEDESTAL,                     RCQUEST_BOTH,       RCAREA_DODONGOS_CAVERN,         SCENE_DODONGOS_CAVERN,          TWO_ACTOR_PARAMS(578, -929),        "Top Floor Pedestal",                               RHT_SIGN_DODONGOS_CAVERN,       ACTOR_EN_WONDER_TALK2,      SpoilerCollectionCheck::RandomizerInf(RAND_INF_DODONGOS_CAVERN_TOP_FLOOR_PEDESTAL));
 locationTable[RC_SHADOW_TEMPLE_TRUTHSPINNER_RECTANGLE_SIGN]             = Location::Sign(RC_SHADOW_TEMPLE_TRUTHSPINNER_RECTANGLE_SIGN,              RCQUEST_VANILLA,    RCAREA_SHADOW_TEMPLE,           SCENE_SHADOW_TEMPLE,            TWO_ACTOR_PARAMS(910, -192),        "Truthspinner Rectangle Sign",                      RHT_SIGN_SHADOW_TEMPLE,         ACTOR_EN_KANBAN,            SpoilerCollectionCheck::RandomizerInf(RAND_INF_SHADOW_TEMPLE_TRUTHSPINNER_RECTANGLE_SIGN));
+// MQ Dungeon Signs
 locationTable[RC_SHADOW_TEMPLE_MQ_LOWER_PIT_RECTANGLE_SIGN]             = Location::Sign(RC_SHADOW_TEMPLE_MQ_LOWER_PIT_RECTANGLE_SIGN,              RCQUEST_MQ,         RCAREA_SHADOW_TEMPLE,           SCENE_SHADOW_TEMPLE,            TWO_ACTOR_PARAMS(2893, 2705),       "Lower Pit Rectangle Sign",                         RHT_SIGN_SHADOW_TEMPLE,         ACTOR_EN_KANBAN,            SpoilerCollectionCheck::RandomizerInf(RAND_INF_SHADOW_TEMPLE_MQ_LOWER_PIT_RECTANGLE_SIGN));
 
     // clang-format on
