@@ -1,4 +1,7 @@
 #include <initializer_list>
+#include <string>
+#include <string_view>
+#include <unordered_map>
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_custom_equip/object_custom_equip.h"
