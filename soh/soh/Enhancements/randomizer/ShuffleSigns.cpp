@@ -229,6 +229,7 @@ void RegisterShuffleSigns() {
                 case ACTOR_EN_WONDER_TALK2:
                     if (Sign_RandomizerHoldsItem(talkActor, gPlayState)) {
                         Sign_RandomizerSpawnCollectible(talkActor);
+                        *should = false;
                     }
                     break;
                 default:
