@@ -2164,6 +2164,10 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                                         /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in einem Maskenladen# #[[1]]# enthülle.",
                                                         /*french*/ "Selon moi, #lire un panneau dans un magasin de masques# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_SIGN_TEMPLE_OF_TIME] = HintText(CustomMessage("They say that #reading a sign in a mask shop# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Altars im Tempel der Zeit# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un autel dans le Temple du Temps# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
     hintTextTable[RHT_SIGN_HYRULE_CASTLE] = HintText(CustomMessage("They say that #reading a sign near the castle# reveals #[[1]]#.",
                                                         /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in der Nähe des Schloßes# #[[1]]# enthülle.",
                                                         /*french*/ "Selon moi, #lire un panneau rès du château# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
