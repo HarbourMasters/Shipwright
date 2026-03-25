@@ -28,6 +28,6 @@ void Anchor::HandlePacket_EntranceDiscovered(nlohmann::json payload) {
         return;
     }
 
-    u16 entranceIndex = payload["entranceIndex"].get<u16>();
+    u16 entranceIndex = payload.at("entranceIndex").get<u16>();
     Entrance_SetEntranceDiscovered(entranceIndex, 1);
 }

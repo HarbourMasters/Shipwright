@@ -5,16 +5,20 @@
  * etc.
  */
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/randomizer/Traps.h"
+#include "soh/Enhancements/randomizer/item.h"
 #include "soh/ShipInit.hpp"
-#include "z64item.h"
 #include <soh/ResourceManagerHelpers.h>
+
+#include <cstdarg>
 
 extern "C" {
 #include <variables.h>
 #include <macros.h>
+#include "z64item.h"
 extern PlayState* gPlayState;
 }
 
@@ -60,12 +64,11 @@ void BuildTriforcePieceMessage(CustomMessage& msg) {
     msg.Replace("[[current]]", std::to_string(current));
     msg.Replace("[[remaining]]", std::to_string(remaining));
     msg.Replace("[[required]]", std::to_string(required));
-    msg.Format();
+    msg.Format(ITEM_CUSTOM);
 }
 
 void BuildCustomItemMessage(Player* player, CustomMessage& msg) {
     int16_t rgid;
-    ItemID icon = ITEM_NONE;
     msg = CustomMessage("You found [[article]][[color]][[name]]%w!",
                         "Du erhältst [[article]][[color]][[name]]%w gefunden!",
                         "Vous avez trouvé [[article]][[color]][[name]]%w!", TEXTBOX_TYPE_BLUE);
@@ -74,14 +77,6 @@ void BuildCustomItemMessage(Player* player, CustomMessage& msg) {
     } else {
         rgid = player->getItemId;
     }
-    // Icon Overrides
-    switch (rgid) {
-        case RG_GREG_RUPEE:
-            icon = ITEM_MASK_GORON;
-            break;
-        default:
-            break;
-    }
     CustomMessage name =
         CustomMessage(Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetName(), TEXTBOX_TYPE_BLUE);
     CustomMessage article = CustomMessage(
@@ -89,11 +84,61 @@ void BuildCustomItemMessage(Player* player, CustomMessage& msg) {
     msg.Replace("[[article]]", article);
     msg.Replace("[[color]]", Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetColor());
     msg.Replace("[[name]]", name);
-    if (icon != ITEM_NONE) {
-        msg.AutoFormat(icon);
+    if (Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).HasCustomIcon()) {
+        msg.AutoFormat(ITEM_CUSTOM);
     } else {
         msg.AutoFormat();
     }
+}
+
+void LoadCustomItemIcon(bool displayAsEnglish) {
+    Player* player = GET_PLAYER(gPlayState);
+    const char* customIcon = nullptr;
+    CustomIconSize iconSize = ICON_SIZE_32;
+    if (player->getItemEntry.objectId != OBJECT_INVALID) {
+        RandomizerGet rgid = static_cast<RandomizerGet>(player->getItemEntry.getItemId);
+        customIcon = Rando::StaticData::RetrieveItem(rgid).GetCustomIcon();
+        iconSize = Rando::StaticData::RetrieveItem(rgid).GetCustomIconSize();
+    }
+    if (customIcon != nullptr) {
+        static int16_t sIconItem32XOffsets[] = { 74, 74, 74, 54 };
+        static int16_t sIconItem24XOffsets[] = { 72, 72, 72, 50 };
+        MessageContext* msgCtx = &gPlayState->msgCtx;
+        uint8_t language = displayAsEnglish ? LANGUAGE_ENG : gSaveContext.language;
+        if (iconSize == ICON_SIZE_32) {
+            R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem32XOffsets[language];
+            R_TEXTBOX_ICON_YPOS = (R_TEXTBOX_Y + 10) + 6;
+            R_TEXTBOX_ICON_SIZE = 32;
+        } else {
+            R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem24XOffsets[language];
+            R_TEXTBOX_ICON_YPOS = (R_TEXTBOX_Y + 10) + 10;
+            R_TEXTBOX_ICON_SIZE = 24;
+        }
+        strcpy((char*)((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE), customIcon);
+        msgCtx->msgBufPos++;
+        msgCtx->choiceNum = 1;
+    }
+}
+
+void DrawCustomItemIcon(Gfx** p) {
+    Gfx* gfx = *p;
+    MessageContext* msgCtx = &gPlayState->msgCtx;
+    Player* player = GET_PLAYER(gPlayState);
+    CustomIconSize iconSize = ICON_SIZE_32;
+    if (player->getItemEntry.objectId != OBJECT_INVALID) {
+        RandomizerGet rgid = static_cast<RandomizerGet>(player->getItemEntry.getItemId);
+        iconSize = Rando::StaticData::RetrieveItem(rgid).GetCustomIconSize();
+    }
+    if (iconSize == ICON_SIZE_24) {
+        gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA,
+                            G_IM_SIZ_32b, 24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    } else {
+        gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA,
+                            G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    }
+    *p = gfx;
 }
 
 void BuildItemMessage(u16* textId, bool* loadFromMessageTable) {
@@ -216,3 +261,18 @@ void RegisterItemMessages() {
 }
 
 static RegisterShipInitFunc initFunc(RegisterItemMessages, { "IS_RANDO" });
+
+void RegisterCustomIconHooks() {
+    COND_VB_SHOULD(VB_LOAD_ITEM_ICON, IS_RANDO, {
+        if (*should == false) {
+            LoadCustomItemIcon(static_cast<bool>(va_arg(args, int)));
+        }
+    });
+    COND_VB_SHOULD(VB_DRAW_ITEM_ICON, IS_RANDO, {
+        if (*should == false) {
+            DrawCustomItemIcon(va_arg(args, Gfx**));
+        }
+    });
+}
+
+static RegisterShipInitFunc customIconInitFunc(RegisterCustomIconHooks, { "IS_RANDO" });

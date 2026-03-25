@@ -32,7 +32,7 @@ void Anchor::HandlePacket_UpdateDungeonItems(nlohmann::json payload) {
         return;
     }
 
-    u16 mapIndex = payload["mapIndex"].get<u16>();
-    gSaveContext.inventory.dungeonItems[mapIndex] = payload["dungeonItems"].get<u8>();
-    gSaveContext.inventory.dungeonKeys[mapIndex] = payload["dungeonKeys"].get<s8>();
+    u16 mapIndex = payload.at("mapIndex").get<u16>();
+    gSaveContext.inventory.dungeonItems[mapIndex] = payload.at("dungeonItems").get<u8>();
+    gSaveContext.inventory.dungeonKeys[mapIndex] = payload.at("dungeonKeys").get<s8>();
 }

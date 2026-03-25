@@ -220,9 +220,9 @@ class GameInteractor {
     };
 
     // Effects
-    static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase* effect);
-    static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase* effect);
-    static GameInteractionEffectQueryResult RemoveEffect(RemovableGameInteractionEffect* effect);
+    static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase& effect);
+    static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase& effect);
+    static GameInteractionEffectQueryResult RemoveEffect(RemovableGameInteractionEffect& effect);
 
     // Game Hooks
     HOOK_ID nextHookId = 1;

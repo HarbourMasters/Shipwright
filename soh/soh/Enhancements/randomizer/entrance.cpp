@@ -4,8 +4,17 @@
 #include "3drando/pool_functions.hpp"
 #include "3drando/item_pool.hpp"
 #include "../debugger/performanceTimer.h"
+#include "soh/Enhancements/gameconsole.h"
+#include "z64camera.h"
+#include "z64scene.h"
 
 #include <spdlog/spdlog.h>
+
+extern "C" {
+#include "variables.h"
+#include "macros.h"
+#include "functions.h"
+}
 
 namespace Rando {
 EntranceLinkInfo NO_RETURN_ENTRANCE = { EntranceType::None, RR_NONE, RR_NONE, -1 };
@@ -1727,3 +1736,30 @@ const Entrance* EntranceShuffler::GetEntranceByIndex(int16_t index) {
 extern "C" EntranceOverride* Randomizer_GetEntranceOverrides() {
     return Rando::Context::GetInstance()->GetEntranceShuffler()->entranceOverrides.data();
 }
+
+static SceneID backedUpScene = (SceneID)0xFF;
+static Camera backupCamera;
+
+void RegisterEntranceShuffleHooks() {
+    COND_VB_SHOULD(VB_SHOULD_LOAD_BG_IMAGE, IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES), {
+        int32_t* camId = va_arg(args, int*);
+        Camera* camera = GET_ACTIVE_CAM(gPlayState);
+        if (*camId == -1) {
+            if (backedUpScene != gPlayState->sceneNum) {
+                *should = false;
+                return;
+            }
+            memcpy(camera, &backupCamera, sizeof(Camera));
+            Camera_ChangeMode(camera, CAM_MODE_TALK);
+            *should = false;
+        } else if (backedUpScene != gPlayState->sceneNum) {
+            memcpy(&backupCamera, camera, sizeof(Camera));
+            backedUpScene = (SceneID)gPlayState->sceneNum;
+        }
+    });
+
+    COND_HOOK(OnLoadGame, IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES),
+              [](int32_t) { backedUpScene = (SceneID)0xFF; });
+}
+
+static RegisterShipInitFunc initFunc(RegisterEntranceShuffleHooks, { "IS_RANDO" });

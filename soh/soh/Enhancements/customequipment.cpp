@@ -1,18 +1,20 @@
 #include <initializer_list>
-#include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_custom_equip/object_custom_equip.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh_assets.h"
-#include "kaleido.h"
 #include "soh/cvar_prefixes.h"
+
+extern "C" {
+#include "variables.h"
+#include "macros.h"
 
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
-extern void Overlay_DisplayText(float duration, const char* text);
+}
+
 void DummyPlayer_Update(Actor* actor, PlayState* play);
 
 static void UpdatePatchCustomEquipmentDlists();
@@ -66,33 +68,17 @@ static void UpdateCustomEquipmentSetModel(Player* player, u8 ModelGroup) {
 }
 
 static void UpdateCustomEquipment() {
-    if (!GameInteractor::IsSaveLoaded() || gPlayState == nullptr) {
-        return;
-    }
-
-    Player* player = GET_PLAYER(gPlayState);
-    if (player == nullptr || IsDummyPlayer(player)) {
+    if (!GameInteractor::IsSaveLoaded() || gPlayState == nullptr || GET_PLAYER(gPlayState) == nullptr ||
+        IsDummyPlayer(GET_PLAYER(gPlayState))) {
         return;
     }
 
     RefreshCustomEquipment();
 }
 
-static void PatchCustomEquipment() {
-    COND_HOOK(OnPlayerSetModels, true, UpdateCustomEquipmentSetModel);
-    COND_HOOK(OnLinkEquipmentChange, true, UpdateCustomEquipment);
-    COND_HOOK(OnLinkSkeletonInit, true, UpdateCustomEquipment);
-    COND_HOOK(OnAssetAltChange, true, UpdateCustomEquipment);
-}
-
-static RegisterShipInitFunc initFunc(PatchCustomEquipment);
-
 static void RefreshCustomEquipment() {
-    if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL || GET_PLAYER(gPlayState) == nullptr) {
-        return;
-    }
-
-    if (IsDummyPlayer(GET_PLAYER(gPlayState))) {
+    if (!GameInteractor::IsSaveLoaded() || gPlayState == nullptr || GET_PLAYER(gPlayState) == nullptr ||
+        IsDummyPlayer(GET_PLAYER(gPlayState))) {
         return;
     }
 
@@ -511,3 +497,12 @@ void UpdatePatchCustomEquipmentDlists() {
 
     ApplyCommonEquipmentPatches();
 }
+
+static void PatchCustomEquipment() {
+    COND_HOOK(OnPlayerSetModels, true, UpdateCustomEquipmentSetModel);
+    COND_HOOK(OnLinkEquipmentChange, true, UpdateCustomEquipment);
+    COND_HOOK(OnLinkSkeletonInit, true, UpdateCustomEquipment);
+    COND_HOOK(OnAssetAltChange, true, UpdateCustomEquipment);
+}
+
+static RegisterShipInitFunc initFunc(PatchCustomEquipment);

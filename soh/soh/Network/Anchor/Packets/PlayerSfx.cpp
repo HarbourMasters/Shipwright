@@ -36,8 +36,8 @@ void Anchor::SendPacket_PlayerSfx(u16 sfxId) {
 }
 
 void Anchor::HandlePacket_PlayerSfx(nlohmann::json payload) {
-    uint32_t clientId = payload["clientId"].get<uint32_t>();
-    u16 sfxId = payload["sfxId"].get<u16>();
+    uint32_t clientId = payload.at("clientId").get<uint32_t>();
+    u16 sfxId = payload.at("sfxId").get<u16>();
 
     if (!clients.contains(clientId) || !clients[clientId].player) {
         return;

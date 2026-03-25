@@ -21,16 +21,16 @@ extern PlayState* gPlayState;
 
 // MARK: - Effects
 
-GameInteractionEffectQueryResult GameInteractor::CanApplyEffect(GameInteractionEffectBase* effect) {
-    return effect->CanBeApplied();
+GameInteractionEffectQueryResult GameInteractor::CanApplyEffect(GameInteractionEffectBase& effect) {
+    return effect.CanBeApplied();
 }
 
-GameInteractionEffectQueryResult GameInteractor::ApplyEffect(GameInteractionEffectBase* effect) {
-    return effect->Apply();
+GameInteractionEffectQueryResult GameInteractor::ApplyEffect(GameInteractionEffectBase& effect) {
+    return effect.Apply();
 }
 
-GameInteractionEffectQueryResult GameInteractor::RemoveEffect(RemovableGameInteractionEffect* effect) {
-    return effect->Remove();
+GameInteractionEffectQueryResult GameInteractor::RemoveEffect(RemovableGameInteractionEffect& effect) {
+    return effect.Remove();
 }
 
 // MARK: - Helpers

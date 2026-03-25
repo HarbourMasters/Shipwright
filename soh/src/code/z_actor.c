@@ -11,7 +11,6 @@
 #include "soh/ObjectExtension/ActorListIndex.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
-#include "soh/Enhancements/enemyrandomizer.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/nametag.h"
@@ -3472,7 +3471,7 @@ Actor* Actor_SpawnEntry(ActorContext* actorCtx, ActorEntry* actorEntry, PlayStat
     gMapLoading = 1;
     Actor* ret;
 
-    if (GameInteractor_Should(VB_SPAWN_ACTOR_ENTRY, true, actorCtx, actorEntry, play, ret)) {
+    if (GameInteractor_Should(VB_SPAWN_ACTOR_ENTRY, true, actorCtx, actorEntry, play, &ret)) {
         ret = Actor_Spawn(actorCtx, play, actorEntry->id, actorEntry->pos.x, actorEntry->pos.y, actorEntry->pos.z,
                           actorEntry->rot.x, actorEntry->rot.y, actorEntry->rot.z, actorEntry->params);
     }

@@ -1,4 +1,3 @@
-#include "OTRGlobals.h"
 #include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
 #include <ship/utils/StringHelper.h>

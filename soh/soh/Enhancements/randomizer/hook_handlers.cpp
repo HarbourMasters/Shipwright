@@ -54,7 +54,6 @@ extern "C" {
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
-#include "src/overlays/actors/ovl_En_Mk/z_en_mk.h"
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
 #include "src/overlays/actors/ovl_En_Heishi2/z_en_heishi2.h"
 #include "draw.h"
@@ -1474,8 +1473,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_OFFER_BLUE_POTION: {
-            // Always offer blue potion when adult trade is off
-            *should |= RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE).Is(RO_GENERIC_OFF);
+            *should |= RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE).Is(RO_GENERIC_OFF) &&
+                       INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK;
             break;
         }
         case VB_OKARINA_TAG_COMPLETE: {
