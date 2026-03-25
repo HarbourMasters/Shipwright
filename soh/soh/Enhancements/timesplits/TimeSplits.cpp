@@ -1,23 +1,18 @@
 #include <vector>
 #include <fstream>
-#include <filesystem>
 
 #include <ship/Context.h>
 #include "TimeSplits.h"
 #include "soh/Enhancements/gameplaystats.h"
-#include "soh/SaveManager.h"
-#include "soh/util.h"
 
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/debugger/debugSaveEditor.h"
 #include "soh_assets.h"
-#include "assets/textures/parameter_static/parameter_static.h"
 #include <soh/SohGui/SohGui.hpp>
 #include "soh/SohGui/UIWidgets.hpp"
 
 extern "C" {
 #include "z64item.h"
+#include "macros.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }

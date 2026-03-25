@@ -2127,7 +2127,8 @@ u16 EnOssan_SetupHelloDialog(EnOssan* this) {
     this->happyMaskShopState = OSSAN_HAPPY_STATE_NONE;
     // mask shop messages
     if (this->actor.params == OSSAN_TYPE_MASK) {
-        if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT) {
+        if (GameInteractor_Should(VB_HAPPY_MASK_SHOP_CHECK_SOLD_OUT, INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT,
+                                  this)) {
             if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
                 if (!Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE)) {
                     // Pay back Bunny Hood

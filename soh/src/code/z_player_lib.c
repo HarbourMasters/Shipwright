@@ -1019,6 +1019,11 @@ Color_RGB8 sTunicColors[] = {
 Color_RGB8 sGauntletColors[] = {
     { 255, 255, 255 },
     { 254, 207, 15 },
+    // #region SOH [RBA] values matching OOB reads on N64
+    { 0, 0, 6 },
+    { 2, 89, 24 },
+    { 6, 2, 90 },
+    { 96, 6, 2 },
 };
 
 Gfx* sBootDListGroups[][2] = {
@@ -1098,13 +1103,11 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
                 color = &sGauntletColors[strengthUpgrade - 2];
                 if (strengthUpgrade == PLAYER_STR_SILVER_G &&
                     CVarGetInteger(CVAR_COSMETIC("Gloves.SilverGauntlets.Changed"), 0)) {
-                    sTemp = CVarGetColor24(CVAR_COSMETIC("Gloves.SilverGauntlets.Value"),
-                                           sGauntletColors[PLAYER_STR_SILVER_G - 2]);
+                    sTemp = CVarGetColor24(CVAR_COSMETIC("Gloves.SilverGauntlets.Value"), *color);
                     color = &sTemp;
                 } else if (strengthUpgrade == PLAYER_STR_GOLD_G &&
                            CVarGetInteger(CVAR_COSMETIC("Gloves.GoldenGauntlets.Changed"), 0)) {
-                    sTemp = CVarGetColor24(CVAR_COSMETIC("Gloves.GoldenGauntlets.Value"),
-                                           sGauntletColors[PLAYER_STR_GOLD_G - 2]);
+                    sTemp = CVarGetColor24(CVAR_COSMETIC("Gloves.GoldenGauntlets.Value"), *color);
                     color = &sTemp;
                 }
                 gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
