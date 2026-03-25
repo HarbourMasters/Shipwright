@@ -1593,7 +1593,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste im Schattentempel# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Temple de l'Ombre# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_SIGN_DODONGOS_CAVERN] = HintText(CustomMessage("They say that #reading a sign in Shadow Temple# reveals #[[1]]#.",
+    hintTextTable[RHT_SIGN_SHADOW_TEMPLE] = HintText(CustomMessage("They say that #reading a sign in Shadow Temple# reveals #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes im Schattentempel# #[[1]]# enthülle.",
                                                      /*french*/ "Selon moi, #lire un panneau dans le Temple de l'Ombre# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 

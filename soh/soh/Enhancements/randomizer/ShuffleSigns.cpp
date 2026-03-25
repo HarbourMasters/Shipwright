@@ -38,8 +38,8 @@ uint8_t Sign_RandomizerHoldsItem(Actor* actor, PlayState* play) {
     }
 }
 
-static void Sign_RandomizerDraw(Actor* actor, Color_RGBA8* primColor, Color_RGBA8* secColor,
-                                        Color_RGBA8* envColor, CheckIdentity* wonderIdentity) {
+static void Sign_RandomizerDraw(Actor* actor, Color_RGBA8* primColor, Color_RGBA8* secColor, Color_RGBA8* envColor,
+                                CheckIdentity* wonderIdentity) {
     Vec3f pos;
     static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
@@ -63,7 +63,7 @@ void Sign_RandomizerDrawSetup(void* actor) {
     if (!Sign_RandomizerHoldsItem(signActor, gPlayState) || signActor->xzDistToPlayer > 1000.0f) {
         return;
     }
-    
+
     bool cmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
     int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 
@@ -178,9 +178,9 @@ void RegisterShuffleSigns() {
     COND_ID_HOOK(OnActorInit, ACTOR_EN_KANBAN, shouldRegister, [](void* actorRef) {
         Actor* actor = static_cast<Actor*>(actorRef);
         EnKanban* signActor = static_cast<EnKanban*>(actorRef);
-        
-        auto signIdentity = OTRGlobals::Instance->gRandomizer->IdentifySign(gPlayState->sceneNum, (s16)actor->world.pos.x,
-                                                                          (s16)actor->world.pos.z, actor->id);
+
+        auto signIdentity = OTRGlobals::Instance->gRandomizer->IdentifySign(
+            gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, actor->id);
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(signIdentity));
     });
 

@@ -3202,7 +3202,7 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
                     specialRc = RC_KAK_SHOOTING_GALLERY_RECTANGLE_SIGN;
                 } else {
                     specialRc = RC_MK_SHOOTING_GALLERY_RECTANGLE_SIGN;
-                }               
+                }
             }
             break;
     }
@@ -3211,24 +3211,9 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
         return Rando::StaticData::GetLocation(specialRc);
     }
 
-    LUSLOG_DEBUG("=== CheckFromActorMultimap dump for actorId=%d sceneNum=%d ===", actorId, sceneNum);
-    for (auto& [key, value] : Rando::StaticData::CheckFromActorMultimap) {
-        auto& [mapActorId, mapSceneNum, mapParams] = key;
-        if (mapActorId == actorId && mapSceneNum == sceneNum) {
-            LUSLOG_DEBUG("  params=0x%X (%d), RC=%d", mapParams, mapParams, value);
-        }
-    }
-    LUSLOG_DEBUG("  Looking for params=0x%X (%d)", actorParams, actorParams);
-
     auto range = Rando::StaticData::CheckFromActorMultimap.equal_range(std::make_tuple(actorId, sceneNum, actorParams));
 
     for (auto it = range.first; it != range.second; ++it) {
-        auto* loc = Rando::StaticData::GetLocation(it->second);
-        LUSLOG_DEBUG("  RC=%d, location ptr=%p, quest=%d", it->second, loc, loc ? loc->GetQuest() : -1);
-        if (loc == nullptr) {
-            LUSLOG_WARN("  GetLocation returned null for RC=%d", it->second);
-            continue;
-        }
         if (Rando::StaticData::GetLocation(it->second)->GetQuest() == RCQUEST_BOTH ||
             (Rando::StaticData::GetLocation(it->second)->GetQuest() == RCQUEST_VANILLA &&
              !ResourceMgr_IsGameMasterQuest()) ||
@@ -3528,9 +3513,9 @@ CheckIdentity Randomizer::IdentifySign(s32 sceneNum, s32 posX, s32 posZ, s32 id)
     uint32_t signSceneNum = sceneNum;
     Rando::Location* location = nullptr;
 
-    // align child/Adult signs
+    // align child/adult signs
     if (sceneNum == SCENE_KAKARIKO_VILLAGE && LINK_IS_ADULT && posX == 1165 && posZ == 1545) {
-            posZ = 1550;
+        posZ = 1550;
     } else if (sceneNum == SCENE_GRAVEYARD && LINK_IS_ADULT) {
         if (id == ACTOR_EN_WONDER_TALK2 && posX == -807 && posZ == 266) {
             posX = -805;
@@ -3547,15 +3532,15 @@ CheckIdentity Randomizer::IdentifySign(s32 sceneNum, s32 posX, s32 posZ, s32 id)
         }
     } else if (sceneNum == SCENE_ZORAS_RIVER && LINK_IS_ADULT && posX == 4097 && posZ == -1399) {
         posX = 4096;
-        posZ = -1401;    
+        posZ = -1401;
     }
 
     signIdentity.randomizerInf = RAND_INF_MAX;
     signIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
 
     s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
-    
-    switch (id) { 
+
+    switch (id) {
         case ACTOR_EN_KANBAN:
             location = GetCheckObjectFromActor(ACTOR_EN_KANBAN, signSceneNum, actorParams);
             break;
