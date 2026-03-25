@@ -5,6 +5,7 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include <spdlog/spdlog.h>
 #include <z64.h>
 #include "variables.h"
 #include "functions.h"
@@ -133,6 +134,9 @@ extern "C" void ValueViewer_Draw(GfxPrint* printer) {
                 GfxPrint_Printf(printer, (setting.typeFormat ? "%s%4.1f" : "%s%f"), setting.prefix.c_str(),
                                 *(float*)elementValue);
                 break;
+            default:
+                SPDLOG_ERROR("ValueViewer_Draw reached `default`, got {}", static_cast<int>(element.type));
+                assert(false);
         }
     }
 }
@@ -261,6 +265,9 @@ void ValueViewerWindow::DrawElement() {
             case TYPE_FLOAT:
                 ImGui::Text(setting.typeFormat ? "%4.1f" : "%f", *(float*)elementValue);
                 break;
+            default:
+                SPDLOG_ERROR("ValueViewerWindow::DrawElement reached `default`, got {}", static_cast<int>(element.type));
+                assert(false);
         }
         ImGui::SameLine();
         UIWidgets::PushStyleCheckbox(THEME_COLOR);
