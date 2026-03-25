@@ -63,8 +63,7 @@ CheckIdentity ShuffleFairies_GetFairyIdentity(int32_t params, ActorID id) {
         sceneNum = SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY;
     }
 
-    Rando::Location* location =
-        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(id, sceneNum, params);
+    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(id, sceneNum, params);
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("FairyGetIdentity did not receive a valid RC value (%d).", location->GetRandomizerCheck());
@@ -90,12 +89,13 @@ static bool SpawnFairy(f32 posX, f32 posY, f32 posZ, int32_t params, FairyType f
 }
 
 void RegisterShuffleFairies() {
-    bool shouldRegisterFountain = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_FOUNTAIN_FAIRIES);   
+    bool shouldRegisterFountain = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_FOUNTAIN_FAIRIES);
     bool shouldRegisterStone = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_STONE_FAIRIES);
     bool shouldRegisterBean = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_BEAN_FAIRIES);
     bool shouldRegisterSong = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SONG_FAIRIES);
     bool shouldRegisterButterfly = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_BUTTERFLY_FAIRIES);
-    bool shouldRegister = shouldRegisterFountain || shouldRegisterStone || shouldRegisterBean || shouldRegisterSong || shouldRegisterButterfly;
+    bool shouldRegister = shouldRegisterFountain || shouldRegisterStone || shouldRegisterBean || shouldRegisterSong ||
+                          shouldRegisterButterfly;
 
     // Grant item when picking up fairy.
     COND_VB_SHOULD(VB_FAIRY_HEAL, shouldRegister, {
@@ -123,7 +123,8 @@ void RegisterShuffleFairies() {
         s16 grottoId = (gPlayState->sceneNum == SCENE_FAIRYS_FOUNTAIN) ? Grotto_CurrentGrotto() : 0;
         for (s16 index = 0; index < 8; index++) {
             int32_t params = (grottoId << 8) | index;
-            if (SpawnFairy(actor->world.pos.x, actor->world.pos.y, actor->world.pos.z, params, FAIRY_HEAL, ACTOR_EN_ELF)) {
+            if (SpawnFairy(actor->world.pos.x, actor->world.pos.y, actor->world.pos.z, params, FAIRY_HEAL,
+                           ACTOR_EN_ELF)) {
                 fairySpawned = true;
             }
         }
@@ -210,8 +211,7 @@ void RegisterShuffleFairies() {
             LUSLOG_DEBUG("EnButte ptr=%p world.posY=%d focus.posY=%d params=0x%08X", (void*)enButte, posY,
                          (int32_t)enButte->actor.focus.pos.y, params);
             if (SpawnFairy(enButte->actor.focus.pos.x, enButte->actor.focus.pos.y, enButte->actor.focus.pos.z,
-                           TWO_ACTOR_PARAMS(1, (int32_t)enButte->actor.home.pos.y), FAIRY_HEAL,
-                           ACTOR_EN_BUTTE)) {
+                           TWO_ACTOR_PARAMS(1, (int32_t)enButte->actor.home.pos.y), FAIRY_HEAL, ACTOR_EN_BUTTE)) {
                 *should = false;
             }
         }

@@ -283,8 +283,8 @@ class Location {
                               RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck);
 
     static Location ButterflyFairy(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
-                              SceneID scene_, int32_t actorParams_, std::string&& shortName_,
-                              RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck);
+                                   SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                   RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck);
 
     static Location HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, SceneID scene_, int32_t actorParams_,
                               std::string&& shortName_);
