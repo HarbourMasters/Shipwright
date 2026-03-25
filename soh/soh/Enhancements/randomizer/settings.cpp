@@ -1677,6 +1677,10 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_GV_CHILD_CUCCO_JUMP, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE },
               "Gerudo Valley Jump Fence with Cucco", "GVCUC",
               "Using cucco as child, it's possible to jumpslash over the gate.");
+    OPT_TRICK(RT_GV_HOOKSHOT_BRIDGE, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::ADVANCED },
+              "Gerudo Valley Bridge with only Hookshot", "GVHSBrg",
+              "Using Hookshot Extension and a precise setup, you can cross the broken bridge in Gerudo Valley with "
+              "only a Hookshot.");
     OPT_TRICK(RT_PASS_GUARDS_WITH_NOTHING, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
               "Sneak Past Moving Gerudo Guards with No Items", "Guards",
               "The logic normally guarantees Bow or Hookshot to stun them from a distance,"

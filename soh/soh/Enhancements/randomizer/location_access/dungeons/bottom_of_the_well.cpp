@@ -265,11 +265,10 @@ void RegionTable_Init_BottomOfTheWell() {
         // Fairies are in slingshot wonder item, & pot behind grate. Pot can also be broken with boomerang trick
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,         (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)) || 
                                                  (AnyAgeTime([]{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()) ||
-                                                 //Item extension can get a fairy in 1 of 2 ways: we can either shoot the pot through the grate and let the fairy fly through the wall
-                                                 //or we can shoot the eye target through the boulder, but not as adult with bow.
-                                                 //The former cannot be done if the pot has an item in it, as it cannot be collected this way.
-                                                 (ctx->GetTrickOption(RT_ITEM_EXTENSION) && 
-                                                  (logic->IsChild || ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OFF) || ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OVERWORLD)) ? logic->CanHitEyeTargets() : logic->CanUse(RG_FAIRY_SLINGSHOT))),
+                                                 //Item extension can get a fairy by either shooting the pot through the grate and letting the fairy fly through the wall
+                                                 //This cannot be done if the pot has an item in it, as it cannot be collected this way.
+                                                 (ctx->GetTrickOption(RT_ITEM_EXTENSION) && (ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OFF) || ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OVERWORLD)) && logic->CanHitEyeTargets()) ||
+                                                 (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->IsChild ? logic->CanHitEyeTargets() : logic->CanUse(RG_FAIRY_SLINGSHOT))),
         //It is possible to hit the water switch with a pot from RR_BOTW_MQ_MIDDLE, however the hitbox for making it activate is very unintuitive
         //You have to throw the pot from further back to hit the switch from the front instead of the top, trying to hit the "fingers" directly
         //This unintuitiveness means it should be a trick. ZL is needed to get a clear path to carry the pot
@@ -282,7 +281,7 @@ void RegionTable_Init_BottomOfTheWell() {
         //Not even bow extension seems to get adult's bow to work
         //this would be a trick
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_OUTER_LOBBY_POT,  (AnyAgeTime([]{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()) ||
-                                                            (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->IsChild ? logic->CanHitEyeTargets() : logic->CanUse(RG_FAIRY_SLINGSHOT))),
+                                                            (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->IsChild ? logic->CanHitEyeTargets() : logic->CanUse(RG_FAIRY_SLINGSHOT))),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_LEFT_HEART,  logic->HasExplosives()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_RIGHT_HEART, logic->HasExplosives()),
     }, {
