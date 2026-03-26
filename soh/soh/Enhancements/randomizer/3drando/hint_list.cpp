@@ -2237,10 +2237,9 @@ void StaticData::HintTable_Init() {
                                                         /*french*/ "J'ai entendu dire que Ganondorf aurait caché les #Flèches de Lumière# dans #[[1]]#.",
                                                                    {QM_YELLOW, QM_RED}));
 
-    hintTextTable[RHT_BOSS_KEY_HINT] = HintText(CustomMessage("The #boss key# for this door is in #[[1]]#!",
+    hintTextTable[RHT_BOSS_KEY_HINT] = HintText(CustomMessage("%c@! I can hear Rauru's guidance! He's saying the %ykey for this door%c is in %w[[1]]%c!",
                                                    /*german*/ TODO_TRANSLATE,
-                                                   /*french*/ TODO_TRANSLATE,
-                                                              {QM_GREEN, QM_RED}));
+                                                   /*french*/ TODO_TRANSLATE));
 
     hintTextTable[RHT_DAMPE_DIARY] = HintText(CustomMessage("Whoever reads this, please enter #[[1]]#. I will let you have my #stretching, shrinking keepsake#.^I'm waiting for you.&--Dampé",
                                                  /*german*/ "Wer immer dies liest, der möge #[[1]]# nach meinem #langen, kurzen Schatz# suchen.^Ich warte!&Boris",
