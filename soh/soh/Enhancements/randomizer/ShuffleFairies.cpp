@@ -206,10 +206,6 @@ void RegisterShuffleFairies() {
     COND_VB_SHOULD(VB_SPAWN_BUTTERFLY_FAIRY, shouldRegisterButterfly, {
         EnButte* enButte = va_arg(args, EnButte*);
         if (enButte->timer == 4) {
-            int32_t posY = (int32_t)enButte->actor.home.pos.y;
-            uint32_t params = TWO_ACTOR_PARAMS(1, posY);
-            LUSLOG_DEBUG("EnButte ptr=%p world.posY=%d focus.posY=%d params=0x%08X", (void*)enButte, posY,
-                         (int32_t)enButte->actor.focus.pos.y, params);
             if (SpawnFairy(enButte->actor.focus.pos.x, enButte->actor.focus.pos.y, enButte->actor.focus.pos.z,
                            TWO_ACTOR_PARAMS(1, (int32_t)enButte->actor.home.pos.y), FAIRY_HEAL, ACTOR_EN_BUTTE)) {
                 *should = false;
