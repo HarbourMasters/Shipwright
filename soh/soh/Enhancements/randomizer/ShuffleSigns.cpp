@@ -219,7 +219,7 @@ void RegisterShuffleSigns() {
 
     COND_ID_HOOK(OnActorUpdate, ACTOR_EN_WONDER_TALK2, shouldRegister, Sign_RandomizerDrawSetup);
 
-    COND_VB_SHOULD(VB_SIGN_GIVE_ITEM, shouldRegister, {
+    COND_VB_SHOULD(VB_SKIP_TALKING, shouldRegister, {
         Actor* talkActor = GET_PLAYER(gPlayState)->talkActor;
         if (talkActor != NULL) {
             switch (talkActor->id) {

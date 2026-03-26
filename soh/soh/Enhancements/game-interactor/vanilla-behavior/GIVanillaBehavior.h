@@ -2090,7 +2090,7 @@ typedef enum {
     // ```
     // #### `args`
     // - None
-    VB_SIGN_GIVE_ITEM,
+    VB_SKIP_TALKING,
 
     // #### `result`
     // ```c
