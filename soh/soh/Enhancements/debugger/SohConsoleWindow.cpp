@@ -3,14 +3,6 @@
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 
-void SohConsoleWindow::InitElement() {
-    ConsoleWindow::InitElement();
-}
-
-void SohConsoleWindow::UpdateElement() {
-    ConsoleWindow::UpdateElement();
-}
-
 void SohConsoleWindow::DrawElement() {
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
     UIWidgets::PushStyleInput(THEME_COLOR);
