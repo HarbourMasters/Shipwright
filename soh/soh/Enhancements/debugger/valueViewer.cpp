@@ -266,7 +266,8 @@ void ValueViewerWindow::DrawElement() {
                 ImGui::Text(setting.typeFormat ? "%4.1f" : "%f", *(float*)elementValue);
                 break;
             default:
-                SPDLOG_ERROR("ValueViewerWindow::DrawElement reached `default`, got {}", static_cast<int>(element.type));
+                SPDLOG_ERROR("ValueViewerWindow::DrawElement reached `default`, got {}",
+                             static_cast<int>(element.type));
                 assert(false);
         }
         ImGui::SameLine();
