@@ -5,11 +5,14 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include <spdlog/spdlog.h>
 #include <z64.h>
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
 #include "soh/cvar_prefixes.h"
+#include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
+
 extern PlayState* gPlayState;
 void GfxPrint_SetColor(GfxPrint* printer, u32 r, u32 g, u32 b, u32 a);
 void GfxPrint_SetPos(GfxPrint* printer, s32 x, s32 y);
@@ -45,31 +48,21 @@ std::array<ValueTableElement, VVE_MAX> valueTable = {{
     { "Analog Stick Y",     "play->state.input->cur.stick_y", "AY:",     TYPE_S8,    true,  []() -> void* { return &gPlayState->state.input->cur.stick_y; }},
     { "getItemID",          "Player->getItemId",              "ITEM:",   TYPE_S16,   true,  []() -> void* { return &GET_PLAYER(gPlayState)->getItemId; }},
     { "getItemEntry",       "Player->getItemEntry",           "IE:",     TYPE_S16,   true,  []() -> void* { return &GET_PLAYER(gPlayState)->getItemEntry.itemId; }},
+    { "Movement Angle",     "Player->yaw",                    "YAW:",    TYPE_S16,   true,  []() -> void* { return &GET_PLAYER(gPlayState)->yaw; }},
+    { "Last Item Pressed",  "Player->heldItemButton",         "LASTI:",  TYPE_S8,    true,  []() -> void* { return &GET_PLAYER(gPlayState)->heldItemButton; }},
+    { "Stick Timer",        "Player->unk_860",                "STICK:",  TYPE_S16,   true,  []() -> void* { return &GET_PLAYER(gPlayState)->unk_860; }},
+    { "Last damage value",  "Player->melee[0].info.dmgFlags", "DMG:",    TYPE_U32,   true,  []() -> void* { return &GET_PLAYER(gPlayState)->meleeWeaponQuads[0].info.toucher.dmgFlags; }},
+    { "Camera Angle",       "play->mainCamera.camDir.y",      "CAMY:",   TYPE_S16,   true,  []() -> void* { return &gPlayState->mainCamera.camDir.y; }},
+    { "Camera XZ Speed",    "play->mainCamera.xzSpeed",       "CAMXZV:", TYPE_FLOAT, true,  []() -> void* { return &gPlayState->mainCamera.xzSpeed; }},
+    { "Frame Counter",      "play->state.frames",             "FRAM:",   TYPE_S32,   true,  []() -> void* { return &gPlayState->state.frames; }},
+    { "Cutscene Pointer",   "play->csCtx.segment",            "CSP:",    TYPE_PTR,   true,  []() -> void* { return &gPlayState->csCtx.segment; }},
+    { "Framerate Divisor",  "R_UPDATE_RATE",                  "FRDV:",   TYPE_S16,   false, []() -> void* { return &R_UPDATE_RATE; }},
+    { "Next HUD mode",      "gSaveContext.nextHudMode",       "HUD:",    TYPE_S16,   false, []() -> void* { return &gSaveContext.unk_13E8; }},
+    { "Temp B Value",       "gSaveContext.buttonStatus[0]",   "TEMPB:",  TYPE_U8,    false, []() -> void* { return &gSaveContext.buttonStatus[0]; }},
+    { "Blue Warp Timer",    "DoorWarp1->warpTimer",           "WARPT:",  TYPE_U16,   true,  []() -> void* { DoorWarp1 *actor = (DoorWarp1 *)Actor_Find(&gPlayState->actorCtx, ACTOR_DOOR_WARP1 ,ACTORCAT_ITEMACTION); if(actor) { return &actor->warpTimer; } else { return nullptr; }}},
     /* TODO: Find these (from GZ)
-    "XZ Units Traveled (Camera based speed variable)" f32 0x801C9018
-    "Movement Angle" x16 0x801DBB1C
-    "Camera Angle" u16 0x801C907C
-    "Time of Day" x16 0x8011AC8C
-    "Global Frame Counter" s32 0x801C8DFC
-    "Lit Deku Stick Timer" u16 0x801DBB40
-    "Cutscene Pointer" u32 0x801CAAC8
-    "Get Item Value" s8 0x801DB714
     "Last RNG Value" x32 0x80105A80
-    "Last Item Button Pressed" u8 0x801DB430
-    "Last Damage Value" x32 0x801DB7DC
-    "Temp B Value" u8 0x8011C062
-    "Framerate Divisor" u8 0x801C7861
-    "Heads Up Display (HUD)" u16 0x8011C068
     "Analog Stick Angle" s16 0x803AA698
-    "Deku Tree Warp Timer (Reload Room)" u16 0x801F0352
-    "Dodongo's Cavern Warp Timer" u16 0x801E30B2
-    "Jabu-Jabu Warp Timer" u16 0x802008B2
-    "Forest Temple Warp Timer" u16 0x801EC5B2
-    "Fire Temple Warp Timer" u16 0x801F3E42
-    "Water Temple Warp Timer" u16 0x801F8762
-    "Shadow Temple Warp Timer" u16 0x801F48A2
-    "Spirit Temple Warp Timer" u16 0x801FD562
-    "Deku Tree Warp Timer" u16 0x801F83A2
     */
 }};
 // clang-format on
@@ -97,44 +90,53 @@ extern "C" void ValueViewer_Draw(GfxPrint* printer) {
         ValueSetting& setting = valueViewerSettings[(ValueViewerEntry)i];
         if (!setting.isPrinted)
             continue;
+        void* elementValue = element.valueFn();
+        if (elementValue == NULL)
+            continue;
         GfxPrint_SetColor(printer, setting.color.x * 255, setting.color.y * 255, setting.color.z * 255,
                           setting.color.w * 255);
         GfxPrint_SetPos(printer, setting.x, setting.y);
         switch (element.type) {
             case TYPE_S8:
                 GfxPrint_Printf(printer, (setting.typeFormat ? "%s0x%x" : "%s%d"), setting.prefix.c_str(),
-                                *(s8*)element.valueFn());
+                                *(s8*)elementValue);
                 break;
             case TYPE_U8:
                 GfxPrint_Printf(printer, (setting.typeFormat ? "%s0x%x" : "%s%u"), setting.prefix.c_str(),
-                                *(u8*)element.valueFn());
+                                *(u8*)elementValue);
                 break;
             case TYPE_S16:
                 GfxPrint_Printf(printer, (setting.typeFormat ? "%s0x%x" : "%s%d"), setting.prefix.c_str(),
-                                *(s16*)element.valueFn());
+                                *(s16*)elementValue);
                 break;
             case TYPE_U16:
                 GfxPrint_Printf(printer, (setting.typeFormat ? "%s0x%x" : "%s%u"), setting.prefix.c_str(),
-                                *(u16*)element.valueFn());
+                                *(u16*)elementValue);
                 break;
             case TYPE_S32:
                 GfxPrint_Printf(printer, (setting.typeFormat ? "%s0x%x" : "%s%d"), setting.prefix.c_str(),
-                                *(s32*)element.valueFn());
+                                *(s32*)elementValue);
                 break;
             case TYPE_U32:
                 GfxPrint_Printf(printer, (setting.typeFormat ? "%s0x%x" : "%s%u"), setting.prefix.c_str(),
-                                *(u32*)element.valueFn());
+                                *(u32*)elementValue);
+                break;
+            case TYPE_PTR:
+                GfxPrint_Printf(printer, "%s%p", setting.prefix.c_str(), *(void**)elementValue);
                 break;
             case TYPE_CHAR:
-                GfxPrint_Printf(printer, "%s%c", setting.prefix.c_str(), *(char*)element.valueFn());
+                GfxPrint_Printf(printer, "%s%c", setting.prefix.c_str(), *(char*)elementValue);
                 break;
             case TYPE_STRING:
-                GfxPrint_Printf(printer, "%s%s", setting.prefix.c_str(), (char*)element.valueFn());
+                GfxPrint_Printf(printer, "%s%s", setting.prefix.c_str(), (char*)elementValue);
                 break;
             case TYPE_FLOAT:
                 GfxPrint_Printf(printer, (setting.typeFormat ? "%s%4.1f" : "%s%f"), setting.prefix.c_str(),
-                                *(float*)element.valueFn());
+                                *(float*)elementValue);
                 break;
+            default:
+                SPDLOG_ERROR("ValueViewer_Draw reached `default`, got {}", static_cast<int>(element.type));
+                assert(false);
         }
     }
 }
@@ -213,6 +215,9 @@ void ValueViewerWindow::DrawElement() {
         ValueTableElement& element = valueTable[i];
         if (!valueViewerSettings.contains((ValueViewerEntry)i) || (gPlayState == NULL && element.requiresPlayState))
             continue;
+        void* elementValue = element.valueFn();
+        if (elementValue == nullptr)
+            continue;
         UIWidgets::PushStyleButton(THEME_COLOR);
         UIWidgets::PushStyleCheckbox(THEME_COLOR);
         ImGui::AlignTextToFramePadding();
@@ -231,32 +236,39 @@ void ValueViewerWindow::DrawElement() {
         ImGui::SameLine();
         switch (element.type) {
             case TYPE_S8:
-                ImGui::Text(setting.typeFormat ? "0x%x" : "%d", *(s8*)element.valueFn());
+                ImGui::Text(setting.typeFormat ? "0x%x" : "%d", *(s8*)elementValue);
                 break;
             case TYPE_U8:
-                ImGui::Text(setting.typeFormat ? "0x%x" : "%u", *(u8*)element.valueFn());
+                ImGui::Text(setting.typeFormat ? "0x%x" : "%u", *(u8*)elementValue);
                 break;
             case TYPE_S16:
-                ImGui::Text(setting.typeFormat ? "0x%x" : "%d", *(s16*)element.valueFn());
+                ImGui::Text(setting.typeFormat ? "0x%x" : "%d", *(s16*)elementValue);
                 break;
             case TYPE_U16:
-                ImGui::Text(setting.typeFormat ? "0x%x" : "%u", *(u16*)element.valueFn());
+                ImGui::Text(setting.typeFormat ? "0x%x" : "%u", *(u16*)elementValue);
                 break;
             case TYPE_S32:
-                ImGui::Text(setting.typeFormat ? "0x%x" : "%d", *(s32*)element.valueFn());
+                ImGui::Text(setting.typeFormat ? "0x%x" : "%d", *(s32*)elementValue);
                 break;
             case TYPE_U32:
-                ImGui::Text(setting.typeFormat ? "0x%x" : "%u", *(u32*)element.valueFn());
+                ImGui::Text(setting.typeFormat ? "0x%x" : "%u", *(u32*)elementValue);
+                break;
+            case TYPE_PTR:
+                ImGui::Text("%p", *(void**)elementValue);
                 break;
             case TYPE_CHAR:
-                ImGui::Text("%c", *(char*)element.valueFn());
+                ImGui::Text("%c", *(char*)elementValue);
                 break;
             case TYPE_STRING:
-                ImGui::Text("%s", (char*)element.valueFn());
+                ImGui::Text("%s", (char*)elementValue);
                 break;
             case TYPE_FLOAT:
-                ImGui::Text(setting.typeFormat ? "%4.1f" : "%f", *(float*)element.valueFn());
+                ImGui::Text(setting.typeFormat ? "%4.1f" : "%f", *(float*)elementValue);
                 break;
+            default:
+                SPDLOG_ERROR("ValueViewerWindow::DrawElement reached `default`, got {}",
+                             static_cast<int>(element.type));
+                assert(false);
         }
         ImGui::SameLine();
         UIWidgets::PushStyleCheckbox(THEME_COLOR);
