@@ -166,6 +166,11 @@ void BgHakaTubo_DropCollectible(BgHakaTubo* this, PlayState* play) {
                 Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
                 // Drop rupees
                 for (i = 0; i < 9; i++) {
+                    if (IS_RANDO){
+                        spawnPos.x = -5559.0f + (i * 1.0f); // Unique X for each rupee
+                        spawnPos.y = this->dyna.actor.world.pos.y + 200.0f;
+                        spawnPos.z = -1587.0f ; // Unique Z for each rupee
+                    }
                     collectible = Item_DropCollectible(play, &spawnPos, i % 3);
                     if (collectible != NULL) {
                         collectible->actor.velocity.y = 15.0f;

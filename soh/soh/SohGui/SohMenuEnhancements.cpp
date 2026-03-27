@@ -450,6 +450,12 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Faster Shadow Ship", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FasterShadowShip"))
         .Options(CheckboxOptions().Tooltip("Speeds up ship in Shadow Temple."));
+    AddWidget(path, "Faster Forest Wall", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FasterForestWall"))
+        .Options(CheckboxOptions().Tooltip("Speeds up Spinning Wall in Forest Temple."));
+    AddWidget(path, "Faster Forest Elevator", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FasterForestElevator"))
+        .Options(CheckboxOptions().Tooltip("Speeds up Elevator in Forest Temple After Killing Last Poe."));
     AddWidget(path, "Fast Chests", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FastChests"))
         .Options(CheckboxOptions().Tooltip("Makes Link always kick the chest to open it, instead of doing the longer "

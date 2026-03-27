@@ -462,12 +462,24 @@ static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck>& possibleHi
             SPDLOG_DEBUG("\tNO LOCATIONS TO HINT");
             return RC_UNKNOWN_CHECK;
         }
+
         hintedLocation =
             RandomElement(possibleHintLocations, true); // removing the location to avoid it being hinted again on fail
 
         SPDLOG_DEBUG("\tLocation: {}", Rando::StaticData::GetLocation(hintedLocation)->GetName());
         SPDLOG_DEBUG("\tItem: {}", ctx->GetItemLocation(hintedLocation)->GetPlacedItemName().GetEnglish());
-        placed = CreateHint(hintedLocation, copies, type, distributionName);
+        
+        if (ctx->GetOption(RSK_HINT_DISTRIBUTION).Is(RO_HINT_DIST_Bunny)){
+            if (type == HintType::HINT_TYPE_WOTH && ctx->GetItemLocation(hintedLocation)->GetPlacedItem().GetItemType() != ItemType::ITEMTYPE_SONG){
+                placed = CreateHint(hintedLocation, copies, type, distributionName);
+            }
+            if (type != HintType::HINT_TYPE_WOTH){
+                placed = CreateHint(hintedLocation, copies, type, distributionName);
+            }
+        }
+        else{
+            placed = CreateHint(hintedLocation, copies, type, distributionName);
+        }
     }
     return hintedLocation;
 }

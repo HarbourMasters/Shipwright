@@ -1573,6 +1573,8 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                          /*german*/ "Man erzählt sich, daß ein #Herz im Schattentempel# #[[1]]# verstecke.",
                                                          /*french*/ "Selon moi, un #coeur dans le Temple de l'Ombre# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_SHADOW_TEMPLE_RUPEE] = HintText(CustomMessage("They say that a #Rupee in the Shadow Temple# hides #[[1]]#."));
+
     hintTextTable[RHT_SHADOW_TEMPLE_BEAMOS_STORM_FAIRY] = HintText(CustomMessage("They say that an #calling the rain for a sentry guarding a house of the dead# reveals #[[1]]#.",
                                                                       /*german*/ "Man erzählt sich, daß das #Anrufen des Regens, nahe eines Wachpostens des Hauses der Toten#, #[[1]]# enthülle.",
                                                                       /*french*/ "Selon moi, #appeler la pluie pour une sentinelle gardant une maison des morts# révèle #[[1]]#.", {QM_RED, QM_GREEN}));

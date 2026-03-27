@@ -122,7 +122,12 @@ void BgMoriKaitenkabe_Wait(BgMoriKaitenkabe* this, PlayState* play) {
 
 void BgMoriKaitenkabe_SetupRotate(BgMoriKaitenkabe* this) {
     this->actionFunc = BgMoriKaitenkabe_Rotate;
-    this->rotSpeed = CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 0.1f;
+    if (CVarGetInteger(CVAR_ENHANCEMENT("FasterForestWall"), 0) == 1){
+        this->rotSpeed = 10.0f;;
+    }
+    else{
+        this->rotSpeed = CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 0.1f;;
+    }
     this->rotYdeg = 0.0f;
 }
 

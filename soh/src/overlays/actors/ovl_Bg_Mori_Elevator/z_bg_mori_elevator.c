@@ -176,7 +176,9 @@ void func_808A1CF4(BgMoriElevator* this, PlayState* play) {
 
 void BgMoriElevator_MoveAboveGround(BgMoriElevator* this, PlayState* play) {
     f32 distToTarget;
-
+    if (CVarGetInteger(CVAR_ENHANCEMENT("FasterForestElevator"), 0) == 1){
+        this->dyna.actor.velocity.y = 20.0f;
+    }
     func_808A1800(&this->dyna.actor.velocity.y, 2.0f, 0.05f, 1.0f, 0.0f);
     distToTarget = func_808A1800(&this->dyna.actor.world.pos.y, 233.0f, 0.08f, this->dyna.actor.velocity.y, 1.5f);
     if (fabsf(distToTarget) < 0.001f) {
