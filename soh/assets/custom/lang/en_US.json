@@ -110,9 +110,12 @@
                     "- MQ Spirit Trial's Rusted Switch between the thrones without hitting the eye target to drop an Iron Knuckle."
                 ]
             },
-            "flaming_chests": {
-                "name": "Flaming Chests",
-                "description": "The chests encircled in flames in Gerudo Training Ground and in Spirit Temple can be opened by running into the flames while Link is invincible after taking damage."
+            "fire_rings": {
+                "name": "Fire Ring",
+                "description": [
+                    "Fire Rings can be run into while Link is invincible from having taken damage, ",
+                    "letting you interact with some objects inside them such as large chests"
+                ]
             },
             "bunny_hood_jumps": {
                 "name": "Bunny Hood Jumps",
@@ -147,10 +150,11 @@
                 "name": "Distant Boulder Collision",
                 "description": "From afar boulder collision is disabled, allowing projectiles to pass through them."
             },
-            "hookshot_extension": {
-                "name": "Hookshot/Projectile Extension",
+            "item_extension": {
+                "name": "Item Extension",
                 "description": [
-                    "Slightly extends range. Also allows clipping projectile past collision. Used for:\n",
+                    "Slightly extends the range of projectiles such as Hookshot, Bow or Slingshot. Also allows clipping ",
+                    "projectile past collision. Used for:\n",
                     "- Crossing Gerudo Valley with Hookshot\n",
                     "- Retrieving DMT Gold Skulltula beside bomb flower\n",
                     "- Hitting switch through wall in Spirit Temple's big mirror room with Bow, Slingshot, or Hookshot\n",
@@ -169,10 +173,8 @@
             "ground_jump_hard": {
                 "name": "Hard Ground Jumps",
                 "description": [
-                    "Enables ground jumps which require some precision outside of setting up jump:\n",
-                    "- While using Hover Boots in Forest Temple Courtyard to reach upper ledge\n",
-                    "- While using Hover Boots in Shadow Temple invisible spike room to reach door\n",
-                    "- Jumping past second step in Ice Cavern"
+                    "Enables ground jumps which require some precision outside of setting up jump,\n",
+                    "such as needing extra height with jumpslash or jumping while running with hover boots."
                 ]
             },
             "slide_jump": {
@@ -208,11 +210,11 @@
                 "description": "Big Poes have a chance of appearing without Epona, you can shoot them quickly with only bow."
             },
             "kak_tower_gs": {
-                "name": "Kakariko Tower GS with Jump Slash",
-                "description": "Climb the tower as high as you can without touching the Gold Skulltula, then let go and jump slash immediately. By jump-slashing from as low on the ladder as possible to still hit the Skulltula, this trick can be done without taking fall damage."
+                "name": "Kakariko Tower GS with Jumpslash",
+                "description": "Climb the tower as high as you can without touching the Gold Skulltula, then let go and jumpslash immediately. By jump-slashing from as low on the ladder as possible to still hit the Skulltula, this trick can be done without taking fall damage."
             },
             "kak_child_windmill_poh": {
-                "name": "Windmill PoH as Child with Precise Jump Slash",
+                "name": "Windmill PoH as Child with Precise Jumpslash",
                 "description": "Can jump up to the spinning platform from below as child with a precise jumpslash timed with the platforms rotation."
             },
             "kak_rooftop_gs": {
@@ -259,8 +261,8 @@
                 "description": "After killing the Skulltula, the token can be collected without needing to destroy the rock by jumping down onto it from the bean plant, midflight, with precise timing and positioning."
             },
             "dmt_js_lower_gs": {
-                "name": "Death Mountain Trail Lower Red Rock GS with Jump Slash",
-                "description": "After killing the Skulltula, the token can be collected without needing to destroy the rock by jump slashing from a precise angle."
+                "name": "Death Mountain Trail Lower Red Rock GS with Jumpslash",
+                "description": "After killing the Skulltula, the token can be collected without needing to destroy the rock by jumpslashing from a precise angle."
             },
             "dmt_climb_hovers": {
                 "name": "Death Mountain Trail Climb with Hover Boots",
@@ -313,7 +315,7 @@
             },
             "dmc_boulder_js": {
                 "name": "Death Mountain Crater Upper to Lower with Hammer",
-                "description": "With the Hammer, you can jump slash the rock twice in the same jump in order to destroy it before you fall into the lava."
+                "description": "With the Hammer, you can jumpslash the rock twice in the same jump in order to destroy it before you fall into the lava."
             },
             "dmc_boulder_skip": {
                 "name": "Death Mountain Crater Upper to Lower Boulder Skip",
@@ -341,15 +343,15 @@
             },
             "zd_gs": {
                 "name": "Zora's Domain GS with No Additional Items",
-                "description": "A precise jump slash can kill the Skulltula and recoil back onto the top of the frozen waterfall. To kill it, the logic normally guarantees one of Hookshot, Bow, or Magic."
+                "description": "A precise jumpslash can kill the Skulltula and recoil back onto the top of the frozen waterfall. To kill it, the logic normally guarantees one of Hookshot, Bow, or Magic."
             },
             "zf_great_fairy_without_explosives": {
                 "name": "Zora's Fountain Great Fairy without Explosives",
                 "description": "It's possible to use silver gauntlets to pick up the silver rock and hammer to break the rock below it, allowing you to ledge grab the edge of the hole and get past the breakable wall (hammer can't break the wall itself)."
             },
             "lh_lab_wall_gs": {
-                "name": "Lake Hylia Lab Wall GS with Jump Slash",
-                "description": "The jump slash to actually collect the token is somewhat precise."
+                "name": "Lake Hylia Lab Wall GS with Jumpslash",
+                "description": "The jumpslash to actually collect the token is somewhat precise."
             },
             "lh_lab_diving": {
                 "name": "Lake Hylia Lab Dive without Gold Scale",
@@ -399,11 +401,11 @@
             },
             "hw_bunny_crossing": {
                 "name": "Wasteland Crossing with Bunny Hood",
-                "description": "You can beat the quicksand by using the increased speed of the Bunny Hood. Note that jumping to the carpet merchant as child typically requires a fairly precise jump slash."
+                "description": "You can beat the quicksand by using the increased speed of the Bunny Hood. Note that jumping to the carpet merchant as child typically requires a fairly precise jumpslash."
             },
             "hw_crossing": {
                 "name": "Wasteland Crossing without Hover Boots or Longshot",
-                "description": "You can beat the quicksand by backwalking across it in a specific way. Note that jumping to the carpet merchant as child typically requires a fairly precise jump slash."
+                "description": "You can beat the quicksand by backwalking across it in a specific way. Note that jumping to the carpet merchant as child typically requires a fairly precise jumpslash."
             },
             "lens_hw": {
                 "name": "Lensless Wasteland",
@@ -412,7 +414,7 @@
             "hw_reverse": {
                 "name": "Reverse Wasteland",
                 "description": [
-                    "By memorizing the path, you can travel through the Wasteland in reverse. Note that jumping to the carpet merchant as child typically requires a fairly precise jump slash.\n",
+                    "By memorizing the path, you can travel through the Wasteland in reverse. Note that jumping to the carpet merchant as child typically requires a fairly precise jumpslash.\n",
                     "The equivalent trick for going forward through the Wasteland is \"Lensless Wasteland\".\n",
                     "To cross the river of sand with no additional items, be sure to also enable \"Wasteland Crossing without Hover Boots or Longshot\".\n",
                     "Unless all overworld entrances are randomized, Child Link will not be expected to do anything at Gerudo's Fortress."
@@ -423,8 +425,8 @@
                 "description": "Somewhat precise. If you kill enough Leevers you can get enough of a break to take some time to aim more carefully."
             },
             "deku_basement_gs": {
-                "name": "Deku Tree Basement Vines GS with Jump Slash",
-                "description": "Can be defeated by doing a precise jump slash."
+                "name": "Deku Tree Basement Vines GS with Jumpslash",
+                "description": "Can be defeated by doing a precise jumpslash."
             },
             "deku_b1_skip": {
                 "name": "Deku Tree Basement without Slingshot",
@@ -444,7 +446,7 @@
             },
             "deku_mq_compass_gs": {
                 "name": "Deku Tree MQ Compass Room GS Boulders with Just Hammer",
-                "description": "Climb to the top of the vines, then let go and jump slash immediately to destroy the boulders using the Hammer, without needing to spawn a Song of Time block."
+                "description": "Climb to the top of the vines, then let go and jumpslash immediately to destroy the boulders using the Hammer, without needing to spawn a Song of Time block."
             },
             "deku_mq_log": {
                 "name": "Deku Tree MQ Roll Under the Spiked Log",
@@ -488,7 +490,7 @@
             },
             "dc_mq_child_bombs": {
                 "name": "Dodongo's Cavern MQ Early Bomb Bag Area as Child",
-                "description": "With a precise jump slash from above, you can reach the Bomb Bag area as only child without needing a Slingshot. You will take fall damage."
+                "description": "With a precise jumpslash from above, you can reach the Bomb Bag area as only child without needing a Slingshot. You will take fall damage."
             },
             "dc_mq_child_eyes": {
                 "name": "Dodongo's Cavern MQ Light the Eyes with Strength as Child",
@@ -557,11 +559,11 @@
             },
             "botw_child_deadhand": {
                 "name": "Child Dead Hand without Kokiri Sword",
-                "description": "Requires 9 sticks or 5 jump slashes."
+                "description": "Requires 9 sticks or 5 jumpslashes."
             },
             "botw_basement": {
                 "name": "Bottom of the Well Map Chest with Strength & Sticks",
-                "description": "The chest in the basement can be reached with strength by doing a jump slash with a lit stick to access the Bomb Flowers."
+                "description": "The chest in the basement can be reached with strength by doing a jumpslash with a lit stick to access the Bomb Flowers."
             },
             "botw_pits": {
                 "name": "Bottom of the Well MQ Jump Over the Pits",
@@ -573,7 +575,7 @@
             },
             "forest_first_gs": {
                 "name": "Forest Temple First Room GS with Difficult-to-Use Weapons",
-                "description": "Allows killing this Skulltula with Sword or Sticks by jump slashing it as you let go from the vines. You can avoid taking fall damage by recoiling onto the tree. Also allows killing it as Child with a Bomb throw. It's much more difficult to use a Bomb as child due to Child Link's shorter height."
+                "description": "Allows killing this Skulltula with Sword or Sticks by jumpslashing it as you let go from the vines. You can avoid taking fall damage by recoiling onto the tree. Also allows killing it as Child with a Bomb throw. It's much more difficult to use a Bomb as child due to Child Link's shorter height."
             },
             "forest_courtyard_east_gs": {
                 "name": "Forest Temple East Courtyard GS with Boomerang",
@@ -596,8 +598,8 @@
                 ]
             },
             "forest_outside_backdoor": {
-                "name": "Forest Temple Outside Backdoor with Jump Slash",
-                "description": "A jump slash recoil can be used to reach the ledge in the block puzzle room that leads to the west courtyard. This skips a potential Hover Boots requirement in Vanilla, and it can sometimes apply in MQ as well. This trick can be performed as both ages."
+                "name": "Forest Temple Outside Backdoor with Jumpslash",
+                "description": "A jumpslash recoil can be used to reach the ledge in the block puzzle room that leads to the west courtyard. This skips a potential Hover Boots requirement in Vanilla, and it can sometimes apply in MQ as well. This trick can be performed as both ages."
             },
             "forest_courtyard_hearts_boomerang": {
                 "name": "Forest Temple Courtyard Hearts with Boomerang",
@@ -612,8 +614,8 @@
                 "description": "Send the Bombchu straight up the center of the wall directly to the left upon entering the room."
             },
             "forest_mq_js_hallway_switch": {
-                "name": "Forest Temple MQ Twisted Hallway Switch with Jump Slash",
-                "description": "The switch to twist the hallway can be hit with a jump slash through the glass block. To get in front of the switch, either use the Hover Boots or hit the shortcut switch at the top of the room and jump from the glass blocks that spawn. Sticks can be used as child, but the Kokiri Sword is too short to reach through the glass."
+                "name": "Forest Temple MQ Twisted Hallway Switch with Jumpslash",
+                "description": "The switch to twist the hallway can be hit with a jumpslash through the glass block. To get in front of the switch, either use the Hover Boots or hit the shortcut switch at the top of the room and jump from the glass blocks that spawn. Sticks can be used as child, but the Kokiri Sword is too short to reach through the glass."
             },
             "forest_mq_hookshot_hallway_switch": {
                 "name": "Forest Temple MQ Twisted Hallway Switch with Hookshot",
@@ -621,7 +623,7 @@
             },
             "forest_mq_rang_hallway_switch": {
                 "name": "Forest Temple MQ Twisted Hallway Switch with Boomerang",
-                "description": "The Boomerang can return to Link through walls, allowing child to hit the hallway switch. This can be used to allow adult to pass through later, or in conjunction with \"Forest Temple Outside Backdoor with Jump Slash\"."
+                "description": "The Boomerang can return to Link through walls, allowing child to hit the hallway switch. This can be used to allow adult to pass through later, or in conjunction with \"Forest Temple Outside Backdoor with Jumpslash\"."
             },
             "forest_mq_child_doorframe": {
                 "name": "Forest Temple MQ Doorframe GS as Child without Boomerang",
@@ -699,7 +701,7 @@
             },
             "water_cracked_wall": {
                 "name": "Water Temple Cracked Wall with No Additional Items",
-                "description": "A precise jump slash (among other methods) will get you to the cracked wall without needing the Hover Boots or to raise the water to the middle level. This trick supersedes \"Water Temple Cracked Wall with Hover Boots\"."
+                "description": "A precise jumpslash (among other methods) will get you to the cracked wall without needing the Hover Boots or to raise the water to the middle level. This trick supersedes \"Water Temple Cracked Wall with Hover Boots\"."
             },
             "water_bk_region": {
                 "name": "Water Temple Boss Key Region with Hover Boots",
@@ -877,7 +879,7 @@
             },
             "spirit_platform_hookshot": {
                 "name": "Spirit Temple Main Room Hookshot to Boss Platform",
-                "description": "Precise hookshot aiming at the platform chains can be used to reach the boss platform from the middle landings. Using a jump slash immediately after reaching a chain makes aiming more lenient. Relevant only when Spirit Temple boss shortcuts are on."
+                "description": "Precise hookshot aiming at the platform chains can be used to reach the boss platform from the middle landings. Using a jumpslash immediately after reaching a chain makes aiming more lenient. Relevant only when Spirit Temple boss shortcuts are on."
             },
             "spirit_map_chest": {
                 "name": "Spirit Temple Map Chest with Bow",
@@ -928,7 +930,7 @@
             },
             "ice_block_gs": {
                 "name": "Ice Cavern Block Room GS with Hover Boots",
-                "description": "The Hover Boots can be used to get in front of the Skulltula to kill it with a jump slash. Then, the Hover Boots can again be used to obtain the Token, all without Hookshot or Boomerang."
+                "description": "The Hover Boots can be used to get in front of the Skulltula to kill it with a jumpslash. Then, the Hover Boots can again be used to obtain the Token, all without Hookshot or Boomerang."
             },
             "ice_mq_red_ice_gs": {
                 "name": "Ice Cavern MQ Red Ice GS without Song of Time",
@@ -963,13 +965,13 @@
             },
             "gtg_mq_with_hookshot": {
                 "name": "Gerudo Training Ground MQ Left Side Silver Rupees with Hookshot",
-                "description": "The highest Silver Rupee can be obtained by hookshooting the target and then immediately jump slashing toward the Rupee."
+                "description": "The highest Silver Rupee can be obtained by hookshooting the target and then immediately jumpslashing toward the Rupee."
             },
             "gtg_mq_without_hookshot": {
                 "name": "Gerudo Training Ground MQ Left Side Silver Rupees without Hookshot",
                 "description": [
                     "After collecting the rest of the Silver Rupees in the room, you can reach the final Silver Rupee on the ceiling by being pulled up into it after getting grabbed by the Wallmaster. The Wallmaster will not track you to directly underneath the rupee. You should take the last step to be under the rupee after the Wallmaster has begun its attempt to grab you.\n",
-                    "Also included with this trick is that fact that the switch that unbars the door to the final chest of GTG can be hit without a projectile, using a precise jump slash.\n",
+                    "Also included with this trick is that fact that the switch that unbars the door to the final chest of GTG can be hit without a projectile, using a precise jumpslash.\n",
                     "This trick supersedes \"Gerudo Training Ground MQ Left Side Silver Rupees with Hookshot\"."
                 ]
             },
