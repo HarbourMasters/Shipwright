@@ -19,7 +19,7 @@ void RegionTable_Init_GerudoValley() {
         ENTRANCE(RR_GV_CRATE_LEDGE,        (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_GV_GROTTO_LEDGE,       true),
         ENTRANCE(RR_GV_FORTRESS_SIDE,      (logic->IsAdult && (logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS))) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOVER_BOOTS)) ||
-                                           ((logic->IsChild || ctx->GetTrickOption(RT_HOOKSHOT_EXTENSION)) && logic->CanUse(RG_HOOKSHOT)) || (logic->IsChild && ctx->GetTrickOption(RT_GV_CHILD_CUCCO_JUMP) && logic->HasItem(RG_POWER_BRACELET) && logic->CanJumpslash())),
+                                           ((logic->IsChild || ctx->GetTrickOption(RT_ITEM_EXTENSION)) && logic->CanUse(RG_HOOKSHOT)) || (logic->IsChild && ctx->GetTrickOption(RT_GV_CHILD_CUCCO_JUMP) && logic->HasItem(RG_POWER_BRACELET) && logic->CanJumpslash())),
         ENTRANCE(RR_GV_WATERFALL_ALCOVE,   logic->IsChild && logic->HasItem(RG_POWER_BRACELET)),
         ENTRANCE(RR_GV_LOWER_STREAM,       logic->IsChild && logic->HasItem(RG_POWER_BRACELET)),
     });
@@ -41,7 +41,7 @@ void RegionTable_Init_GerudoValley() {
     }, {
         //Exits
         ENTRANCE(RR_GV_UPPER_STREAM_WATER, true),
-        ENTRANCE(RR_GV_WATERFALL_ALCOVE,   (logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_CLIMB)) || logic->CanUse(RG_LONGSHOT) || CanPlantBean(RR_GV_UPPER_STREAM, RG_GERUDO_VALLEY_BEAN_SOUL)),
+        ENTRANCE(RR_GV_WATERFALL_ALCOVE,   (logic->CanUse(RG_LONGSHOT) && (logic->CanUse(RG_CLIMB) || ctx->GetTrickOption(RT_HOOKSHOT_LADDERS))) || CanPlantBean(RR_GV_UPPER_STREAM, RG_GERUDO_VALLEY_BEAN_SOUL)),
     });
 
     areaTable[RR_GV_UPPER_STREAM_WATER] = Region("GV Upper Stream Water", SCENE_GERUDO_VALLEY, {}, {}, {

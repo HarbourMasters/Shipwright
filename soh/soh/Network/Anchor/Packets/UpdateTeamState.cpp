@@ -2,8 +2,6 @@
 #include "soh/Network/Anchor/JsonConversions.hpp"
 #include <nlohmann/json.hpp>
 #include <libultraship/libultraship.h>
-#include "soh/Enhancements/randomizer/entrance.h"
-#include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Notification/Notification.h"
 
@@ -125,8 +123,9 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
     }
 
     isHandlingUpdateTeamState = true;
-    // This can happen in between file select and the game starting, so we cant use this check, but we need to ensure we
-    // be careful to wrap PlayState usage in this check
+    // This can happen in between file select and the game starting, so we can't use this check, but we need to ensure
+    // we be careful to wrap PlayState usage in this check
+    //
     // if (!IsSaveLoaded()) {
     //     return;
     // }
@@ -224,24 +223,24 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
             auto randoContext = Rando::Context::GetInstance();
 
             for (int i = 0; i < RC_MAX; i++) {
+                auto itemLocation = payload["state"]["rando"].at("itemLocations").at(i);
                 // randoContext->GetItemLocation(i)->RefPlacedItem() =
-                // payload["state"]["rando"]["itemLocations"][i]["rgID"].get<RandomizerGet>();
+                // itemLocation.at("rgID").get<RandomizerGet>();
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(i)->SetCheckStatus(
-                    payload["state"]["rando"]["itemLocations"][i][0].get<RandomizerCheckStatus>());
-                OTRGlobals::Instance->gRandoContext->GetItemLocation(i)->SetIsSkipped(
-                    payload["state"]["rando"]["itemLocations"][i][1].get<u8>());
+                    itemLocation.at(0).get<RandomizerCheckStatus>());
+                OTRGlobals::Instance->gRandoContext->GetItemLocation(i)->SetIsSkipped(itemLocation.at(1).get<u8>());
 
-                // if (payload["state"]["rando"]["itemLocations"][i].contains("fakeRgID")) {
+                // if (itemLocation.contains("fakeRgID")) {
                 //     randoContext->overrides.emplace(static_cast<RandomizerCheck>(i),
                 //     Rando::ItemOverride(static_cast<RandomizerCheck>(i),
-                //     payload["state"]["rando"]["itemLocations"][i]["fakeRgID"].get<RandomizerGet>()));
+                //     itemLocation.at("fakeRgID").get<RandomizerGet>()));
                 //     randoContext->GetItemOverride(i).GetTrickName().english =
-                //     payload["state"]["rando"]["itemLocations"][i]["trickName"]["english"].get<std::string>();
+                //     itemLocation.at("trickName").at("english").get<std::string>();
                 //     randoContext->GetItemOverride(i).GetTrickName().french =
-                //     payload["state"]["rando"]["itemLocations"][i]["trickName"]["french"].get<std::string>();
+                //     itemLocation.at("trickName").at("french").get<std::string>();
                 // }
-                // if (payload["state"]["rando"]["itemLocations"][i].contains("price")) {
-                //     u16 price = payload["state"]["rando"]["itemLocations"][i]["price"].get<u16>();
+                // if (itemLocation.contains("price")) {
+                //     u16 price = itemLocation.at("price"].get<u16>();
                 //     if (price > 0) {
                 //         randoContext->GetItemLocation(i)->SetCustomPrice(price);
                 //     }

@@ -196,6 +196,7 @@ void* gItemIcons[] = {
     "",
     "",
     "",
+    "", // ITEM_CUSTOM
     // Start custom items
     gRocsFeatherTex,
 };

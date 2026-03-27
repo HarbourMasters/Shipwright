@@ -471,16 +471,16 @@ void BgSpot06Objects_Update(Actor* thisx, PlayState* play) {
         }
 
         // Spawn a floor switch
-        lakeControlFloorSwitch = Actor_Spawn(&play->actorCtx, play, ACTOR_OBJ_SWITCH, -896.0f, -1243.0f, 6953.0f, 0, 0,
-                                             0, switchParams, false);
+        lakeControlFloorSwitch =
+            Actor_Spawn(&play->actorCtx, play, ACTOR_OBJ_SWITCH, -896.0f, -1243.0f, 6953.0f, 0, 0, 0, switchParams);
         // Spawn a sign
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_KANBAN, -970.0f, -1242.0f, 6954.0f, 0, 0, 0,
-                    0x0000 | (TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN & 0xFF), false);
+                    0x0000 | (TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN & 0xFF));
 
         // Spawn a Navi check spot when Water Temple isn't cleared
         if (!Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_ELF_MSG2, -896.0f, -1243.0f, 6953.0f, 0, 0, 0,
-                        0x3D00 | (TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI & 0xFF), false);
+                        0x3D00 | (TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI & 0xFF));
         }
 
         actionCounter++;

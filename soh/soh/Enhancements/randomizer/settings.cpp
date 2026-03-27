@@ -519,7 +519,7 @@ void Settings::CreateOptions() {
             mOptions[RSK_MQ_GANONS_CASTLE].Hide();
         }
     });
-    OPT_U8(RSK_MQ_DUNGEON_COUNT, "MQ Dungeon Count", {NumOpts(0, 12)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MQDungeonCount"), "", WIDGET_CVAR_SLIDER_INT, 12, true, nullptr, IMFLAG_NONE);
+    OPT_U8(RSK_MQ_DUNGEON_COUNT, "MQ Dungeon Count", {NumOpts(0, MAX_MQ_DUNGEON_COUNT)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MQDungeonCount"), "", WIDGET_CVAR_SLIDER_INT, MAX_MQ_DUNGEON_COUNT, true, nullptr, IMFLAG_NONE);
     OPT_BOOL(RSK_MQ_DUNGEON_SET, "Set Dungeon Quests", {"Off", "On"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MQDungeonsSelection"), mOptionDescriptions[RSK_MQ_DUNGEON_SET], WIDGET_CVAR_CHECKBOX, false, false, nullptr, IMFLAG_NONE);
     OPT_CALLBACK(RSK_MQ_DUNGEON_SET, {
         // Controls whether or not to show the selectors for individual dungeons.
@@ -1441,7 +1441,7 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_GROTTOS_WITHOUT_AGONY, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "NoSoA");
     OPT_TRICK(RT_FEWER_TUNIC_REQUIREMENTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "FTR");
     OPT_TRICK(RT_UNINTUITIVE_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "UnJmp");
-    OPT_TRICK(RT_FLAMING_CHESTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "FlaChst");
+    OPT_TRICK(RT_FIRE_RINGS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "FlaChst");
 
     // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely
     // decoupled from rando
@@ -1457,7 +1457,7 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_OPEN_UNDERWATER_CHEST, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "OpenUC");
     OPT_TRICK(RT_DISTANT_BOULDER_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
               "BolCol");
-    OPT_TRICK(RT_HOOKSHOT_EXTENSION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "HSExt");
+    OPT_TRICK(RT_ITEM_EXTENSION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "HSExt");
     OPT_TRICK(RT_BIG_SKULLTULA_PAUSE_LIFT, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
               "SkulPaus");
     OPT_TRICK(RT_GROUND_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "GrdJmp");
@@ -2470,7 +2470,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     // If we only have MQ, set all dungeons to MQ
     if (OTRGlobals::Instance->HasMasterQuest() && !OTRGlobals::Instance->HasOriginal()) {
         mOptions[RSK_MQ_DUNGEON_RANDOM].Set(RO_MQ_DUNGEONS_SET_NUMBER);
-        mOptions[RSK_MQ_DUNGEON_COUNT].Set(12);
+        mOptions[RSK_MQ_DUNGEON_COUNT].Set(MAX_MQ_DUNGEON_COUNT);
         mOptions[RSK_MQ_DUNGEON_SET].Set(RO_GENERIC_OFF);
     }
 
@@ -2611,9 +2611,12 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
             }
             // otherwise, every dungeon is possible
         } else {
-            // if the count is fixed to 12, we know everything is MQ, so can skip some setps and do not set Known
-            if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_SET_NUMBER) && mqCount == 12) {
-                randMQOption = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+            // if count is MAX_MQ_DUNGEON_COUNT, we know everything is MQ, so can skip some setps and not set Known
+            if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_SET_NUMBER) && mqCount == MAX_MQ_DUNGEON_COUNT) {
+                randMQOption.resize(MAX_MQ_DUNGEON_COUNT);
+                for (int i = 0; i < MAX_MQ_DUNGEON_COUNT; i++) {
+                    randMQOption[i] = i;
+                }
                 for (auto dungeon : dungeons) {
                     mOptions[dungeon->GetMQSetting()].Set(RO_MQ_SET_MQ);
                 }
@@ -2834,7 +2837,7 @@ void Settings::ParseJson(nlohmann::json spoilerFileJson) {
     nlohmann::json settingsJson = spoilerFileJson["settings"];
     for (auto it = settingsJson.begin(); it != settingsJson.end(); ++it) {
         // todo load into cvars for UI
-        // RANDOTODO handle numeric value to options conversion better than brute froce
+        // RANDOTODO handle numeric value to options conversion better than brute force
         if (StaticData::optionNameToEnum.contains(it.key())) {
             const RandomizerSettingKey index = StaticData::optionNameToEnum[it.key()];
             mContext->GetOption(index).Set(mOptions[index].GetValueFromText(it.value()));

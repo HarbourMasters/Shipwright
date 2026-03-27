@@ -641,11 +641,9 @@ void ValidateEntrances(bool checkOtherEntranceAccess) {
         for (const RandomizerCheck loc : ctx->allLocations) {
             if (!ctx->GetItemLocation(loc)->IsAddedToPool()) {
                 ctx->allLocationsReachable = false;
-                auto message =
-                    "Location " +
-                    Rando::StaticData::GetLocation(ctx->GetItemLocation(loc)->GetRandomizerCheck())->GetName() +
-                    " not reachable\n";
-                LUSLOG_DEBUG("%s", message.c_str());
+                SPDLOG_DEBUG(
+                    "Location {} not reachable",
+                    Rando::StaticData::GetLocation(ctx->GetItemLocation(loc)->GetRandomizerCheck())->GetName());
 #ifndef ENABLE_DEBUG
                 break;
 #endif
@@ -836,19 +834,15 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
     auto ctx = Rando::Context::GetInstance();
     if (items.size() > allowedLocations.size()) {
         SPDLOG_ERROR("ERROR: MORE ITEMS THAN LOCATIONS IN GIVEN LISTS");
-        SPDLOG_DEBUG("Items:\n");
+        SPDLOG_DEBUG("Items:");
         // NOLINTNEXTLINE(clang-diagnostic-unused-variable)
         for (const RandomizerGet item : items) {
-            SPDLOG_DEBUG("\t");
-            SPDLOG_DEBUG(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
-            SPDLOG_DEBUG("\n");
+            SPDLOG_DEBUG("\t{}", Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
         }
-        SPDLOG_DEBUG("\nAllowed Locations:\n");
+        SPDLOG_DEBUG("\nAllowed Locations:");
         // NOLINTNEXTLINE(clang-diagnostic-unused-variable)
         for (const RandomizerCheck loc : allowedLocations) {
-            SPDLOG_DEBUG("\t");
-            SPDLOG_DEBUG(Rando::StaticData::GetLocation(loc)->GetName());
-            SPDLOG_DEBUG("\n");
+            SPDLOG_DEBUG("\t{}", Rando::StaticData::GetLocation(loc)->GetName());
         }
         placementFailure = true;
         return;
@@ -898,9 +892,8 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
             // retry if there are no more locations to place items
             if (accessibleLocations.empty()) {
 
-                SPDLOG_DEBUG("\nCANNOT PLACE ");
-                SPDLOG_DEBUG(Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
-                SPDLOG_DEBUG(". TRYING AGAIN...\n");
+                SPDLOG_DEBUG("CANNOT PLACE {}. TRYING_AGAIN...",
+                             Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
 
                 // reset any locations that got an item
                 for (RandomizerCheck loc : attemptedLocations) {
@@ -930,8 +923,8 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
             if (!ctx->GetOption(RSK_ALL_LOCATIONS_REACHABLE)) {
                 logic->Reset();
                 if (CheckBeatable()) {
-                    SPDLOG_DEBUG("Game beatable, now placing items randomly. " + std::to_string(itemsToPlace.size()) +
-                                 " major items remaining.\n\n");
+                    SPDLOG_DEBUG("Game beatable, now placing items randomly. {} major items remaining",
+                                 itemsToPlace.size());
                     FastFill(itemsToPlace, GetEmptyLocations(allowedLocations), true);
                     return;
                 }

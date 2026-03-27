@@ -35,7 +35,7 @@ void Mouse_UpdateAll() {
 void Mouse_HandleThirdPerson(f32* newCamX, f32* newCamY) {
     if (MOUSE_ENABLED) {
         *newCamX -= mouseCoordRel.x * 40.0f;
-        *newCamY += mouseCoordRel.y * 40.0f;
+        *newCamY -= mouseCoordRel.y * 40.0f;
     }
 }
 
@@ -48,7 +48,7 @@ void Mouse_HandleFirstPerson(Player* player) {
                             CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)))
                               ? -1
                               : 1;
-    s8 invertYAxisMulti = CVarGetInteger(CVAR_SETTING("Controls.InvertAimingYAxis"), 1) ? 1 : -1;
+    s8 invertYAxisMulti = CVarGetInteger(CVAR_SETTING("Controls.InvertAimingYAxis"), 1) ? -1 : 1;
     if (MOUSE_ENABLED) {
         player->actor.focus.rot.y -= static_cast<int16_t>(mouseCoordRel.x * 6.0f * xAxisMulti * invertXAxisMulti);
         player->actor.focus.rot.x += static_cast<int16_t>(mouseCoordRel.y * 6.0f * yAxisMulti * invertYAxisMulti);
