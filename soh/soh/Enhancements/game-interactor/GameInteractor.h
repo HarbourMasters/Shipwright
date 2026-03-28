@@ -225,6 +225,9 @@ class GameInteractor {
     static GameInteractionEffectQueryResult RemoveEffect(RemovableGameInteractionEffect& effect);
 
     // Game Hooks
+    //
+    // Hooks should be idempotent and execution order is not guaranteed.
+    // If two operations must happen in a specific order, they should be placed in the same hook.
     HOOK_ID nextHookId = 1;
 
     template <typename H> struct RegisteredGameHooks {
