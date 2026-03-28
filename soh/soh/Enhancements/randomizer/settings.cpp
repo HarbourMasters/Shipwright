@@ -2,12 +2,14 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "trial.h"
 #include "dungeon.h"
+#include "3drando/random.hpp"
 
 #include "soh/OTRGlobals.h"
 
 #include <spdlog/spdlog.h>
 
 #include <libultraship/bridge/consolevariablebridge.h>
+#include <libultraship/libultraship.h>
 
 namespace Rando {
 std::shared_ptr<Settings> Settings::mInstance;
@@ -1455,8 +1457,7 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_HOOKSHOT_LADDERS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "HSLad");
     OPT_TRICK(RT_BLUE_FIRE_MUD_WALLS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "BluFire");
     OPT_TRICK(RT_OPEN_UNDERWATER_CHEST, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "OpenUC");
-    OPT_TRICK(RT_DISTANT_BOULDER_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
-              "BolCol");
+    OPT_TRICK(RT_BOULDER_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "BolCol");
     OPT_TRICK(RT_ITEM_EXTENSION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "HSExt");
     OPT_TRICK(RT_BIG_SKULLTULA_PAUSE_LIFT, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
               "SkulPaus");
@@ -1516,6 +1517,7 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_GV_CRATE_HOVERS, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE }, "GVPoHHB");
     OPT_TRICK(RT_GV_CHILD_TENT, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::NOVICE }, "GVTent");
     OPT_TRICK(RT_GV_CHILD_CUCCO_JUMP, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE }, "GVCUC");
+    OPT_TRICK(RT_GV_HOOKSHOT_BRIDGE, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::ADVANCED }, "GVCUC");
     OPT_TRICK(RT_PASS_GUARDS_WITH_NOTHING, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE }, "Guards");
     OPT_TRICK(RT_GF_WASTELAND_GATE_SIDEHOP_SKIP, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE }, "GFHWC");
     OPT_TRICK(RT_GF_ADULT_SKIP_WASTELAND_GATE, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::INTERMEDIATE },
@@ -2878,6 +2880,48 @@ void Settings::SetAllToContext() {
         mContext->GetItemLocation(i)->SetExcludedOption(
             StaticData::GetLocation(static_cast<RandomizerCheck>(i))->GetExcludedOption()->GetOptionIndex());
     }
+}
+
+void Settings::RandomizeAllSettings() {
+    // Randomize all settings except tricks
+    for (int i = 0; i < RSK_MAX; i++) {
+        switch (static_cast<RandomizerSettingKey>(i)) {
+            case RSK_STARTING_SKULLTULA_TOKEN:
+            case RSK_STARTING_HEARTS:
+            case RSK_STARTING_ZELDAS_LULLABY:
+            case RSK_STARTING_EPONAS_SONG:
+            case RSK_STARTING_SARIAS_SONG:
+            case RSK_STARTING_SUNS_SONG:
+            case RSK_STARTING_SONG_OF_TIME:
+            case RSK_STARTING_SONG_OF_STORMS:
+            case RSK_STARTING_MINUET_OF_FOREST:
+            case RSK_STARTING_BOLERO_OF_FIRE:
+            case RSK_STARTING_SERENADE_OF_WATER:
+            case RSK_STARTING_REQUIEM_OF_SPIRIT:
+            case RSK_STARTING_NOCTURNE_OF_SHADOW:
+            case RSK_STARTING_PRELUDE_OF_LIGHT:
+                continue;
+            default:
+                break;
+        }
+
+        auto key = static_cast<RandomizerSettingKey>(i);
+        Option& option = mOptions[key];
+
+        if (option.GetOptionCount() == 0) {
+            continue;
+        }
+
+        uint8_t randomIndex = Random(0, static_cast<uint32_t>(option.GetOptionCount()));
+
+        option.SetContextIndex(randomIndex);
+        if (!option.GetCVarName().empty()) {
+            CVarSetInteger(option.GetCVarName().c_str(), randomIndex);
+        }
+        option.RunCallback();
+    }
+
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
 
 std::shared_ptr<Settings> Settings::GetInstance() {

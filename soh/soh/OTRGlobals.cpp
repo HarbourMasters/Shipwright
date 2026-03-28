@@ -447,6 +447,11 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
 
     std::shared_ptr<BS::thread_pool> threadPool = std::make_shared<BS::thread_pool>(1);
     std::optional<std::future<void>> extractionTask;
+
+#if not defined(__SWITCH__) && not defined(__WIIU__)
+    CheckAndCreateModFolder();
+#endif
+
     while (!extractDone) {
         if (SohGui::PopupsQueued() > 0 || extractionTask.has_value()) {
             goto render;
@@ -761,10 +766,6 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
     Ship::Switch::Init(Ship::PreInitPhase);
 #elif defined(__WIIU__)
     Ship::WiiU::Init(appShortName);
-#endif
-
-#if not defined(__SWITCH__) && not defined(__WIIU__)
-    CheckAndCreateModFolder();
 #endif
 }
 
