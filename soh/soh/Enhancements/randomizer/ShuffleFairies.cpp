@@ -210,8 +210,6 @@ void RegisterShuffleFairies() {
                            TWO_ACTOR_PARAMS(enButte->actor.params, (int32_t)enButte->actor.home.pos.y), FAIRY_HEAL,
                            ACTOR_EN_BUTTE)) {
                 *should = false;
-            } else {
-                *should = true;
             }
         }
     });
