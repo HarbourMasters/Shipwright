@@ -517,8 +517,34 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData) {
     return 0;
 }
 
+// Load animation with explicit alt asset path checking.
+// This ensures animations are loaded with the correct alt/ prefix when alt assets are enabled,
+// matching the behavior of skeleton loading and preventing cached vanilla animations from
+// overriding alternate animations when toggling.
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
-    return (AnimationHeaderCommon*)ResourceGetDataByName(path);
+    std::string pathStr = std::string(path);
+    static const std::string sOtr = "__OTR__";
+
+    // Strip the OTR signature prefix if present
+    if (pathStr.starts_with(sOtr)) {
+        pathStr = pathStr.substr(sOtr.length());
+    }
+
+    bool isAlt = ResourceMgr_IsAltAssetsEnabled();
+
+    // Explicitly add alt prefix when alternate assets are enabled
+    if (isAlt) {
+        pathStr = Ship::IResource::gAltAssetPrefix + pathStr;
+    }
+
+    AnimationHeaderCommon* animHeader = (AnimationHeaderCommon*)ResourceGetDataByName(pathStr.c_str());
+
+    // If there isn't an alternate animation, fall back to the regular one
+    if (isAlt && animHeader == NULL) {
+        animHeader = (AnimationHeaderCommon*)ResourceGetDataByName(path);
+    }
+
+    return animHeader;
 }
 
 extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) {
