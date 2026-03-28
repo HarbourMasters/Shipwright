@@ -4,6 +4,7 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "item_category_adj.h"
 
 extern "C" {
 #include "variables.h"
@@ -35,24 +36,7 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     GetItemEntry crateItem =
         Rando::Context::GetInstance()->GetFinalGIEntry(crateIdentity->randomizerCheck, true, GI_NONE);
-    getItemCategory = crateItem.getItemCategory;
-
-    // If they have bombchus, don't consider the bombchu item major
-    if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-        ((crateItem.modIndex == MOD_RANDOMIZER && crateItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
-         (crateItem.modIndex == MOD_NONE &&
-          (crateItem.getItemId == GI_BOMBCHUS_5 || crateItem.getItemId == GI_BOMBCHUS_10 ||
-           crateItem.getItemId == GI_BOMBCHUS_20)))) {
-        getItemCategory = ITEM_CATEGORY_JUNK;
-        // If it's a bottle and they already have one, consider the item lesser
-    } else if ((crateItem.modIndex == MOD_RANDOMIZER && crateItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
-                crateItem.getItemId <= RG_BOTTLE_WITH_POE) ||
-               (crateItem.modIndex == MOD_NONE &&
-                (crateItem.getItemId == GI_BOTTLE || crateItem.getItemId == GI_MILK_BOTTLE))) {
-        if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
-            getItemCategory = ITEM_CATEGORY_LESSER;
-        }
-    }
+    getItemCategory = Randomizer_AdjustItemCategory(crateItem);
 
     // Change texture
     switch (getItemCategory) {
@@ -102,24 +86,7 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     GetItemEntry smallCrateItem =
         Rando::Context::GetInstance()->GetFinalGIEntry(crateIdentity->randomizerCheck, true, GI_NONE);
-    getItemCategory = smallCrateItem.getItemCategory;
-
-    // If they have bombchus, don't consider the bombchu item major
-    if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-        ((smallCrateItem.modIndex == MOD_RANDOMIZER && smallCrateItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
-         (smallCrateItem.modIndex == MOD_NONE &&
-          (smallCrateItem.getItemId == GI_BOMBCHUS_5 || smallCrateItem.getItemId == GI_BOMBCHUS_10 ||
-           smallCrateItem.getItemId == GI_BOMBCHUS_20)))) {
-        getItemCategory = ITEM_CATEGORY_JUNK;
-        // If it's a bottle and they already have one, consider the item lesser
-    } else if ((smallCrateItem.modIndex == MOD_RANDOMIZER && smallCrateItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
-                smallCrateItem.getItemId <= RG_BOTTLE_WITH_POE) ||
-               (smallCrateItem.modIndex == MOD_NONE &&
-                (smallCrateItem.getItemId == GI_BOTTLE || smallCrateItem.getItemId == GI_MILK_BOTTLE))) {
-        if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
-            getItemCategory = ITEM_CATEGORY_LESSER;
-        }
-    }
+    getItemCategory = Randomizer_AdjustItemCategory(smallCrateItem);
 
     // Change texture
     switch (getItemCategory) {

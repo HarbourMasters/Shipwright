@@ -5,6 +5,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/randomizer/item_category_adj.h"
 
 #define FLAGS 0
 
@@ -580,21 +581,7 @@ void EnBox_UpdateTexture(EnBox* this, PlayState* play) {
                      this->dyna.actor.room != 6); // Exclude treasure game chests except for the final room
 
     if (!isVanilla) {
-        getItemCategory = chestItem.getItemCategory;
-        // If they have bombchus, don't consider the bombchu item major
-        if ((INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-             ((chestItem.modIndex == MOD_RANDOMIZER && chestItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
-              (chestItem.modIndex == MOD_NONE &&
-               (chestItem.getItemId == GI_BOMBCHUS_5 || chestItem.getItemId == GI_BOMBCHUS_10 ||
-                chestItem.getItemId == GI_BOMBCHUS_20)))) ||
-            // If it's a bottle and they already have one, consider the item lesser
-            ((chestItem.modIndex == MOD_RANDOMIZER && chestItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
-              chestItem.getItemId <= RG_BOTTLE_WITH_POE) ||
-             (chestItem.modIndex == MOD_NONE &&
-              (chestItem.getItemId == GI_BOTTLE || chestItem.getItemId == GI_MILK_BOTTLE)) &&
-                 gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE)) {
-            getItemCategory = ITEM_CATEGORY_LESSER;
-        }
+        getItemCategory = Randomizer_AdjustItemCategory(chestItem);
     }
 
     switch (this->type) {
