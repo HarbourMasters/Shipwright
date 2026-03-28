@@ -537,11 +537,24 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                                                                                                                : 500;
             result.currentAmmo = gSaveContext.rupees;
             break;
-        case ITEM_BOMBCHU:
-            result.currentCapacity = INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ? 50 : 0;
-            result.maxCapacity = 50;
+        case ITEM_BOMBCHU: {
+            auto bombchuBag = RAND_GET_OPTION(RSK_BOMBCHU_BAG);
+
+            uint8_t capacity = 0;
+
+            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU) {
+                if (bombchuBag.Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+                    capacity = OTRGlobals::Instance->gRandoContext->GetBombchuCapacity();
+                } else {
+                    capacity = 50;
+                }
+            }
+
+            result.currentCapacity = capacity;
+            result.maxCapacity = capacity;
             result.currentAmmo = AMMO(ITEM_BOMBCHU);
             break;
+        }
         case ITEM_BEAN:
             result.currentCapacity = INV_CONTENT(ITEM_BEAN) == ITEM_BEAN ? 10 : 0;
             result.maxCapacity = 10;
