@@ -207,7 +207,8 @@ void RegisterShuffleFairies() {
         EnButte* enButte = va_arg(args, EnButte*);
         if (enButte->timer == 4) {
             if (SpawnFairy(enButte->actor.focus.pos.x, enButte->actor.focus.pos.y, enButte->actor.focus.pos.z,
-                           TWO_ACTOR_PARAMS(enButte->actor.params, (int32_t)enButte->actor.home.pos.y), FAIRY_HEAL, ACTOR_EN_BUTTE)) {
+                           TWO_ACTOR_PARAMS(enButte->actor.params, (int32_t)enButte->actor.home.pos.y), FAIRY_HEAL,
+                           ACTOR_EN_BUTTE)) {
                 *should = false;
             } else {
                 *should = true;
