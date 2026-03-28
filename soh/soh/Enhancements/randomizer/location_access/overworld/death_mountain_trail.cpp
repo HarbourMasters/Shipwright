@@ -37,7 +37,8 @@ void RegionTable_Init_DeathMountainTrail() {
         //Locations
         LOCATION(RC_DMT_GS_FALLING_ROCKS_PATH, logic->IsAdult && logic->CanGetNightTimeGS() && 
                                                (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_DISTANT_BOULDER_COLLISION) && logic->CanUse(RG_LONGSHOT)) || (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->CanUse(RG_HOOKSHOT)) || 
-                                                (ctx->GetTrickOption(RT_DMT_UPPER_GS) && (logic->CanJumpslash() || logic->CanUse(RG_DINS_FIRE) || logic->HasExplosives() || ((ctx->GetTrickOption(RT_DISTANT_BOULDER_COLLISION) || ctx->GetTrickOption(RT_ITEM_EXTENSION)) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT))))))),
+                                                (ctx->GetTrickOption(RT_DMT_UPPER_GS) && (logic->CanJumpslash() || logic->CanUse(RG_DINS_FIRE) || logic->HasExplosives() || (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->CanUse(RG_FAIRY_SLINGSHOT)) || 
+                                                                                          (ctx->GetTrickOption(RT_DISTANT_BOULDER_COLLISION) && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT)))))),
     }, {
         //Exits
         ENTRANCE(RR_DEATH_MOUNTAIN_TRAIL,  true),

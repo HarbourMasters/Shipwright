@@ -3491,12 +3491,6 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
     // Execute before actor memory is freed
     GameInteractor_ExecuteOnActorDestroy(actor);
 
-    dbEntry = ActorDB_Retrieve(actor->id);
-
-    if (HREG(20) != 0) {
-        osSyncPrintf("アクタークラス削除 [%s]\n", dbEntry->name); // "Actor class deleted [%s]"
-    }
-
     if ((player != NULL) && (actor == player->focusActor)) {
         Player_ReleaseLockOn(player);
         Camera_ChangeMode(Play_GetCamera(play, Play_GetActiveCamId(play)), 0);
@@ -3516,6 +3510,12 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
 
     Audio_StopSfxByPos(&actor->projectedPos);
     Actor_Destroy(actor, play);
+
+    dbEntry = ActorDB_Retrieve(actor->id);
+
+    if (HREG(20) != 0) {
+        osSyncPrintf("アクタークラス削除 [%s]\n", dbEntry->name); // "Actor class deleted [%s]"
+    }
 
     newHead = Actor_RemoveFromCategory(play, actorCtx, actor);
 

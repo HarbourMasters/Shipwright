@@ -2,12 +2,14 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "trial.h"
 #include "dungeon.h"
+#include "3drando/random.hpp"
 
 #include "soh/OTRGlobals.h"
 
 #include <spdlog/spdlog.h>
 
 #include <libultraship/bridge/consolevariablebridge.h>
+#include <libultraship/libultraship.h>
 
 namespace Rando {
 std::shared_ptr<Settings> Settings::mInstance;
@@ -1678,6 +1680,10 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_GV_CHILD_CUCCO_JUMP, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE },
               "Gerudo Valley Jump Fence with Cucco", "GVCUC",
               "Using cucco as child, it's possible to jumpslash over the gate.");
+    OPT_TRICK(RT_GV_HOOKSHOT_BRIDGE, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::ADVANCED },
+              "Gerudo Valley Bridge with only Hookshot", "GVHSBrg",
+              "Using Hookshot Extension and a precise setup, you can cross the broken bridge in Gerudo Valley with "
+              "only a Hookshot.");
     OPT_TRICK(RT_PASS_GUARDS_WITH_NOTHING, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
               "Sneak Past Moving Gerudo Guards with No Items", "Guards",
               "The logic normally guarantees Bow or Hookshot to stun them from a distance,"
@@ -3472,6 +3478,48 @@ void Settings::SetAllToContext() {
         mContext->GetItemLocation(i)->SetExcludedOption(
             StaticData::GetLocation(static_cast<RandomizerCheck>(i))->GetExcludedOption()->GetOptionIndex());
     }
+}
+
+void Settings::RandomizeAllSettings() {
+    // Randomize all settings except tricks
+    for (int i = 0; i < RSK_MAX; i++) {
+        switch (static_cast<RandomizerSettingKey>(i)) {
+            case RSK_STARTING_SKULLTULA_TOKEN:
+            case RSK_STARTING_HEARTS:
+            case RSK_STARTING_ZELDAS_LULLABY:
+            case RSK_STARTING_EPONAS_SONG:
+            case RSK_STARTING_SARIAS_SONG:
+            case RSK_STARTING_SUNS_SONG:
+            case RSK_STARTING_SONG_OF_TIME:
+            case RSK_STARTING_SONG_OF_STORMS:
+            case RSK_STARTING_MINUET_OF_FOREST:
+            case RSK_STARTING_BOLERO_OF_FIRE:
+            case RSK_STARTING_SERENADE_OF_WATER:
+            case RSK_STARTING_REQUIEM_OF_SPIRIT:
+            case RSK_STARTING_NOCTURNE_OF_SHADOW:
+            case RSK_STARTING_PRELUDE_OF_LIGHT:
+                continue;
+            default:
+                break;
+        }
+
+        auto key = static_cast<RandomizerSettingKey>(i);
+        Option& option = mOptions[key];
+
+        if (option.GetOptionCount() == 0) {
+            continue;
+        }
+
+        uint8_t randomIndex = Random(0, static_cast<uint32_t>(option.GetOptionCount()));
+
+        option.SetContextIndex(randomIndex);
+        if (!option.GetCVarName().empty()) {
+            CVarSetInteger(option.GetCVarName().c_str(), randomIndex);
+        }
+        option.RunCallback();
+    }
+
+    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
 
 std::shared_ptr<Settings> Settings::GetInstance() {
