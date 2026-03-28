@@ -597,7 +597,58 @@ void EnBox_UpdateTexture(EnBox* this, PlayState* play) {
         }
     }
 
-    switch (this->type) {
+    if (!isVanilla || CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0)) {
+            
+            GetItemCategory category = this->getItemEntry.getItemCategory;
+
+            if (category == ITEM_CATEGORY_MAJOR || category == ITEM_CATEGORY_BOSS_KEY) {
+                // Large Scale: 0.01f matches the 'default' case in z_en_box.c
+                Actor_SetScale(&this->dyna.actor, 0.01f);
+                this->dyna.actor.focus.pos.y = this->dyna.actor.world.pos.y + 40.0f;
+                
+                 // Chest Sizes Match Contents can make certain chests unreachable, so nudge
+                // the ones that cause problems.
+                // https://github.com/gamestabled/OoT3D_Randomizer/blob/68cf3f190d319e554bdeebc7f16e67578430dbc3/code/src/actors/chest.c#L57
+                s16 params = this->dyna.actor.params;
+                s16 sceneNum = play->sceneNum;
+                s16 room = this->dyna.actor.room;
+                s16 isLarge = this->dyna.actor.scale.x == 0.01f;
+
+                // Make Ganon's Castle Zelda's Lullaby chest reachable when large.
+                if ((params & 0xF000) == 0x8000 && sceneNum == SCENE_INSIDE_GANONS_CASTLE && room == 9) {
+                    this->dyna.actor.world.pos.z = isLarge ? -962.0f : -952.0f;
+                }
+
+                // Make MQ Deku Tree Song of Time chest reachable when large.
+                if (params == 0x5AA0 && sceneNum == SCENE_DEKU_TREE && room == 5) {
+                    this->dyna.actor.world.pos.x = isLarge ? -1380.0f : -1376.0f;
+                }
+
+            } else {
+                // Small Scale: 0.005f matches the 'SMALL' types in z_en_box.c
+                Actor_SetScale(&this->dyna.actor, 0.005f);
+                this->dyna.actor.focus.pos.y = this->dyna.actor.world.pos.y + 20.0f;
+
+                s16 params = this->dyna.actor.params;
+                s16 sceneNum = play->sceneNum;
+                s16 room = this->dyna.actor.room;
+                s16 isLarge = this->dyna.actor.scale.x == 0.01f;
+
+                // Make Ganon's Castle Gold Gauntlets chest reachable with hookshot from the
+                // switch platform when small.
+                if (params == 0x36C5 && sceneNum == SCENE_INSIDE_GANONS_CASTLE && room == 12) {
+                    this->dyna.actor.world.pos.x = isLarge ? 1757.0f : 1777.0f;
+                    this->dyna.actor.world.pos.z = isLarge ? -3595.0f : -3626.0f;
+                }
+
+                // Make Spirit Temple Compass Chest reachable with hookshot when small.
+                if (params == 0x3804 && sceneNum == SCENE_SPIRIT_TEMPLE && room == 14) {
+                    this->dyna.actor.world.pos.x = isLarge ? 358.0f : 400.0f;
+                }
+            }
+    } else {
+
+        switch (this->type) {
         case ENBOX_TYPE_SMALL:
         case ENBOX_TYPE_6:
         case ENBOX_TYPE_ROOM_CLEAR_SMALL:
@@ -608,6 +659,8 @@ void EnBox_UpdateTexture(EnBox* this, PlayState* play) {
         default:
             Actor_SetScale(&this->dyna.actor, 0.01f);
             Actor_SetFocus(&this->dyna.actor, 40.0f);
+        }
+
     }
 
     // Change model/texture
