@@ -556,7 +556,8 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_LEFT_CHEST,  logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST,   AnyAgeTime([]{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets() && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_LEFT_CHEST,   logic->HasItem(RG_OPEN_CHEST) && 
+                                                                 ((AnyAgeTime([]{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()) || (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->IsChild ? logic->CanHitEyeTargets() : logic->CanUse(RG_FAIRY_SLINGSHOT)))),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_BACK_RIGHT_CHEST,  logic->CanHitSwitch(ED_BOOMERANG) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_FRONT_RIGHT_CHEST, logic->Get(LOGIC_SPIRIT_1F_SILVER_RUPEES) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_POT_1,             logic->CanBreakPots()),

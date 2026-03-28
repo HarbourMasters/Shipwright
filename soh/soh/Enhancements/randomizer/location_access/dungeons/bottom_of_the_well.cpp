@@ -208,7 +208,7 @@ void RegionTable_Init_BottomOfTheWell() {
         ENTRANCE(RR_BOTW_HIDDEN_POTS,      logic->CanClimbHighLadder()),
         //It's possible to abuse boulder's limited range of collision detection to detonate the flowers through the boulder with bow, but this is a glitch
         //the exact range is just past the furthest away plank in the green goo section
-        ENTRANCE(RR_BOTW_B3_BOMB_FLOWERS,  AnyAgeTime([]{return logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_BOTW_BASEMENT) && logic->CanUse(RG_STICKS)) || (ctx->GetTrickOption(RT_DISTANT_BOULDER_COLLISION) && logic->CanUse(RG_FAIRY_BOW));})),
+        ENTRANCE(RR_BOTW_B3_BOMB_FLOWERS,  AnyAgeTime([]{return logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_BOTW_BASEMENT) && logic->CanUse(RG_STICKS)) || (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->CanUse(RG_FAIRY_BOW));})),
         ENTRANCE(RR_BOTW_B3_BLOCKED_GRASS, AnyAgeTime([]{return logic->BlastOrSmash();})),
         ENTRANCE(RR_BOTW_B3_CHEST_AREA,    AnyAgeTime([]{return logic->BlastOrSmash();})),
     });
@@ -268,7 +268,7 @@ void RegionTable_Init_BottomOfTheWell() {
                                                  //Item extension can get a fairy by either shooting the pot through the grate and letting the fairy fly through the wall
                                                  //This cannot be done if the pot has an item in it, as it cannot be collected this way.
                                                  (ctx->GetTrickOption(RT_ITEM_EXTENSION) && (ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OFF) || ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OVERWORLD)) && logic->CanHitEyeTargets()) ||
-                                                 (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->IsChild ? logic->CanHitEyeTargets() : logic->CanUse(RG_FAIRY_SLINGSHOT))),
+                                                 (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->IsChild ? logic->CanHitEyeTargets() : logic->CanUse(RG_FAIRY_SLINGSHOT))),
         //It is possible to hit the water switch with a pot from RR_BOTW_MQ_MIDDLE, however the hitbox for making it activate is very unintuitive
         //You have to throw the pot from further back to hit the switch from the front instead of the top, trying to hit the "fingers" directly
         //This unintuitiveness means it should be a trick. ZL is needed to get a clear path to carry the pot
@@ -281,7 +281,7 @@ void RegionTable_Init_BottomOfTheWell() {
         //Not even bow extension seems to get adult's bow to work
         //this would be a trick
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_OUTER_LOBBY_POT,  (AnyAgeTime([]{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()) ||
-                                                            (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->IsChild ? logic->CanHitEyeTargets() : logic->CanUse(RG_FAIRY_SLINGSHOT))),
+                                                            (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->IsChild ? logic->CanHitEyeTargets() : logic->CanUse(RG_FAIRY_SLINGSHOT))),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_LEFT_HEART,  logic->HasExplosives()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_RIGHT_HEART, logic->HasExplosives()),
     }, {
