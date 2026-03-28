@@ -1481,9 +1481,11 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_OPEN_UNDERWATER_CHEST, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
               "Open Underwater Chests", "OpenUC",
               "Underwater chests can be opened by wearing iron boots and hookshotting the chest.");
-    OPT_TRICK(RT_DISTANT_BOULDER_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
-              "Distant Boulder Collision", "BolCol",
-              "From afar boulder collision is disabled, allowing projectiles to pass through them.");
+    OPT_TRICK(RT_BOULDER_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
+              "Flawed Boulder Collision", "BolCol",
+              "From afar, boulder collision is disabled, allowing projectiles to pass through them.\n"
+              "Additionally, boulders do not have projectile collision from below, allow them to be shot into in some "
+              "cases.");
     OPT_TRICK(RT_ITEM_EXTENSION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "Item Extension", "HSExt",
               "Slightly extends the range of projectiles such as Hookshot, Bow or Slingshot. Also allows clipping "
               "projectile past collision. Used for:\n"
