@@ -204,8 +204,8 @@ void RegisterShuffleFairies() {
 
     // Spawn a fairy from a butterfly
     COND_VB_SHOULD(VB_SPAWN_BUTTERFLY_FAIRY, shouldRegisterButterfly, {
-        EnButte* enButte = va_arg(args, EnButte*);
-        if (enButte->timer == 4) {
+        if (*should) {
+            EnButte* enButte = va_arg(args, EnButte*);
             if (SpawnFairy(enButte->actor.focus.pos.x, enButte->actor.focus.pos.y, enButte->actor.focus.pos.z,
                            TWO_ACTOR_PARAMS(enButte->actor.params, (int32_t)enButte->actor.home.pos.y), FAIRY_HEAL,
                            ACTOR_EN_BUTTE)) {
