@@ -551,7 +551,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             }
 
             result.currentCapacity = capacity;
-            result.maxCapacity = capacity;
+            result.maxCapacity = 50;
             result.currentAmmo = AMMO(ITEM_BOMBCHU);
             break;
         }
@@ -715,7 +715,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         bool shouldDisplayAmmo = trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_AMMO ||
                                  trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY ||
                                  // These items have a static capacity, so display ammo instead
-                                 item.id == ITEM_BOMBCHU || item.id == ITEM_BEAN || item.id == QUEST_SKULL_TOKEN ||
+                                 item.id == ITEM_BEAN || item.id == QUEST_SKULL_TOKEN ||
                                  item.id == ITEM_HEART_CONTAINER || item.id == ITEM_HEART_PIECE;
 
         bool shouldDisplayMax = !(trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY ||
