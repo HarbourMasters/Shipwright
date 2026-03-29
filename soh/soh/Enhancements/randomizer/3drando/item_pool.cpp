@@ -149,6 +149,7 @@ static void PlaceItemsForType(RandomizerCheckType rctype, bool overworldActive =
 void GenerateItemPool() {
     // RANDOTODO proper removal of items not in pool or logically relevant instead of dummy checks.
     auto ctx = Rando::Context::GetInstance();
+    ctx->possibleIceTrapModels.clear();
     itemPool.clear();
     junkPool.clear();
     plentifulPool.clear();
