@@ -630,6 +630,15 @@ Rando::Location Rando::Location::SongFairy(RandomizerCheck rc, RandomizerCheckQu
              false,  collectionCheck };
 }
 
+Rando::Location Rando::Location::ButterflyFairy(RandomizerCheck rc, RandomizerCheckQuest quest_,
+                                                RandomizerCheckArea area_, SceneID scene_, int32_t actorParams_,
+                                                std::string&& shortName_, RandomizerHintTextKey hintKey,
+                                                SpoilerCollectionCheck collectionCheck) {
+    return { rc,     quest_,         RCTYPE_BUTTERFLY_FAIRY, area_,   ACTOR_EN_BUTTE,
+             scene_, actorParams_,   std::move(shortName_),  hintKey, RG_NONE,
+             false,  collectionCheck };
+}
+
 Rando::Location Rando::Location::Grass(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
                                        SceneID scene_, int32_t actorParams_, std::string&& shortName_,
                                        RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,

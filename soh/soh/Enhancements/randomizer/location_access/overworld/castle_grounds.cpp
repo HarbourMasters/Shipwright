@@ -56,15 +56,19 @@ void RegionTable_Init_CastleGrounds() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanUse(RG_STICKS)),
     }, {
         //Locations
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_1,      logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_2,      logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_3,      logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_4,      logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_5,      logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_6,      logic->CanBonkTrees()),
-        LOCATION(RC_HC_NL_TREE_1,               false),
-        LOCATION(RC_HC_NL_TREE_2,               false),
-        LOCATION(RC_HC_DEAD_END_RECTANGLE_SIGN, logic->CanRead()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_1,                logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_2,                logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_3,                logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_4,                logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_5,                logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_6,                logic->CanBonkTrees()),
+        LOCATION(RC_HC_NL_TREE_1,                         false),
+        LOCATION(RC_HC_NL_TREE_2,                         false),
+        LOCATION(RC_HC_NEAR_WALL_BUTTERFLY_FAIRY,         logic->CanUse(RG_STICKS)),
+        LOCATION(RC_HC_NEAR_STAIRS_BUTTERFLY_FAIRY,       logic->CanUse(RG_STICKS)),
+        LOCATION(RC_HC_NEAR_BOULDER_PATH_BUTTERFLY_FAIRY, logic->CanUse(RG_STICKS)),
+        LOCATION(RC_HC_NEAR_ARCHWAY_BUTTERFLY_FAIRY,      logic->CanUse(RG_STICKS)),
+		LOCATION(RC_HC_DEAD_END_RECTANGLE_SIGN, 		  logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_HC_GATE,                  true),
@@ -96,7 +100,7 @@ void RegionTable_Init_CastleGrounds() {
         //Exits
         ENTRANCE(RR_HC_GATE,          true),
         ENTRANCE(RR_HC_STORMS_GROTTO, logic->CanOpenStormsGrotto()),
-        ENTRANCE(RR_HC_GARDEN,        (logic->CanUse(RG_WEIRD_EGG) && logic->HasItem(RG_POWER_BRACELET) && logic->HasItem(RG_SPEAK_HYLIAN)) || 
+        ENTRANCE(RR_HC_DRAIN_LEDGE,   (logic->CanUse(RG_WEIRD_EGG) && logic->HasItem(RG_POWER_BRACELET) && logic->HasItem(RG_SPEAK_HYLIAN)) || 
                                       (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->TakeDamage() && logic->HasExplosives() && logic->CanJumpslash())),
     });
 

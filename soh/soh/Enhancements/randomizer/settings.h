@@ -135,6 +135,13 @@ class Settings {
      */
     void SetAllToContext();
 
+    /**
+     * @brief Randomizes all randomizer settings (excluding tricks) to random valid values.
+     * This function iterates through all options and sets them to a random index within
+     * their valid range.
+     */
+    void RandomizeAllSettings();
+
     static std::shared_ptr<Settings> GetInstance();
 
   private:

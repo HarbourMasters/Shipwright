@@ -86,6 +86,7 @@ bool showFountainFairies;
 bool showStoneFairies;
 bool showBeanFairies;
 bool showSongFairies;
+bool showButterflyFairies;
 bool showStartingMapsCompasses;
 bool showKeysanity;
 bool showGerudoFortressKeys;
@@ -1084,13 +1085,21 @@ void CheckTrackerWindow::DrawElement() {
         }
         UIWidgets::PushStyleCombobox(THEME_COLOR);
         if (CVarGetInteger(CVAR_TRACKER_CHECK("SearchInputVisible"), 1)) {
-            if (checkSearch.Draw("", ImGui::GetContentRegionAvail().x - 6)) {
+            if (checkSearch.Draw("", ImGui::GetContentRegionAvail().x - 42)) {
                 UpdateFilters();
             }
-            std::string checkSearchText = "";
-            checkSearchText = checkSearch.InputBuf;
+            std::string checkSearchText = checkSearch.InputBuf;
             checkSearchText.erase(std::remove(checkSearchText.begin(), checkSearchText.end(), ' '),
                                   checkSearchText.end());
+            ImGui::SameLine();
+            if (UIWidgets::Button(ICON_FA_ERASER, UIWidgets::ButtonOptions()
+                                                      .Size(UIWidgets::Sizes::Inline)
+                                                      .Color(THEME_COLOR)
+                                                      .Padding(ImVec2(10.f, 6.f)))) {
+                checkSearch.Clear();
+                UpdateFilters();
+                doAreaScroll = true;
+            }
             if (checkSearchText.length() < 1) {
                 ImGui::SameLine(20.0f);
                 ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Search...");
@@ -1355,6 +1364,10 @@ void LoadSettings() {
     showSongFairies =
         IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SONG_FAIRIES) == RO_GENERIC_YES
                  : false;
+    showButterflyFairies =
+        IS_RANDO
+            ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BUTTERFLY_FAIRIES) == RO_GENERIC_YES
+            : false;
     showStartingMapsCompasses = IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(
                                                RSK_SHUFFLE_MAPANDCOMPASS) != RO_DUNGEON_ITEM_LOC_VANILLA
                                          : false;
@@ -1629,6 +1642,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_STONE_FAIRY || showStoneFairies) &&
                (loc->GetRCType() != RCTYPE_BEAN_FAIRY || showBeanFairies) &&
                (loc->GetRCType() != RCTYPE_SONG_FAIRY || showSongFairies) &&
+               (loc->GetRCType() != RCTYPE_BUTTERFLY_FAIRY || showButterflyFairies) &&
                (loc->GetRCType() != RCTYPE_SMALL_KEY || showKeysanity) &&
                (loc->GetRCType() != RCTYPE_BOSS_KEY || showBossKeysanity) &&
                (loc->GetRCType() != RCTYPE_GANON_BOSS_KEY || showGanonBossKey) &&

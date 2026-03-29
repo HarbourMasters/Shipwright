@@ -56,11 +56,13 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_BENEATH_WATERFALL_RIGHT_RUPEE,        logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_ZR_NEAR_DOMAIN_GOSSIP_STONE,             true),
         LOCATION(RC_ZR_NEAR_FREESTANDING_POH_GRASS,          logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_ZR_NEAR_ROCK_CIRCLE_BUTTERFLY_FAIRY,     logic->IsChild && logic->CanUse(RG_STICKS)),
+        LOCATION(RC_ZR_WATERFALL_BUTTERFLY_FAIRY,            logic->IsChild && logic->CanUse(RG_STICKS)),
         LOCATION(RC_ZR_SLEEPLESS_WATERFALL_PLAQUE,           logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_ZR_FRONT,            logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash() || logic->HasItem(RG_HOVER_BOOTS)),
-        ENTRANCE(RR_ZR_ATOP_LADDER,      (logic->IsAdult || logic->HasItem(RG_POWER_BRACELET)) && (logic->CanClimbLadder() || CanPlantBean(RR_ZORAS_RIVER, RG_ZORAS_RIVER_BEAN_SOUL))),
+        ENTRANCE(RR_ZR_ATOP_LADDER,      ((logic->IsAdult || logic->HasItem(RG_POWER_BRACELET)) && logic->CanClimbLadder()) || (logic->IsAdult && CanPlantBean(RR_ZORAS_RIVER, RG_ZORAS_RIVER_BEAN_SOUL))),
         ENTRANCE(RR_ZR_PILLAR,           (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && ctx->GetTrickOption(RT_ZR_LOWER))),
         ENTRANCE(RR_ZR_FROM_SHORTCUT,    logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
         ENTRANCE(RR_ZR_STORMS_GROTTO,    logic->CanOpenStormsGrotto()),

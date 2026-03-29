@@ -491,16 +491,18 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Skip Tower Escape", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipTowerEscape"))
         .Options(CheckboxOptions().Tooltip("Skip the tower escape sequence between Ganondorf and Ganon."));
-    AddWidget(path, "Skip Scarecrow's Song", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Skip Playing Scarecrow's Song", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("InstantScarecrow"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled =
                 IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_SKIP_SCARECROWS_SONG);
-            info.options->disabledTooltip = "This setting is forcefully enabled because a randomized "
-                                            "save file with the option \"Skip Scarecrow Song\" is currently loaded.";
+            info.options->disabledTooltip = "This setting is forcefully enabled because a randomized save "
+                                            "file with the option \"Skip Scarecrow's Song\" is currently loaded.";
         })
         .Options(CheckboxOptions().Tooltip(
-            "Pierre appears when an Ocarina is pulled out. Requires learning the Scarecrow's Song first."));
+            "Pierre appears when an Ocarina is pulled out. Requires learning the Scarecrow's Song first.\n"
+            "Without the randomizer option \"Skip Scarecrow's Song\" enabled for a seed, this still requires you "
+            "to teach the scarecrow the song as both ages before summoning."));
     AddWidget(path, "Faster Rupee Accumulator", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FasterRupeeAccumulator"))
         .Options(CheckboxOptions().Tooltip("Causes your Wallet to fill and empty faster when you gain or lose money."));
