@@ -200,9 +200,10 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_ABOVE_JAIL_CRATE, true),
     }, {
         //Exits
-        //you don't take fall damage if you land on the rock with the flag on for some reason
         //there's a trick to reach RR_GF_LONG_ROOF
-        ENTRANCE(RR_GF_OUTSKIRTS,           ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->TakeDamage()),
+        //For some reason, you take fall damage if you backflip onto the fortress but not onto the sand
+        //It's unintuitive to avoid being caught on landing, but that sends you to the same place anyway...
+        ENTRANCE(RR_GF_OUTSKIRTS,           true),
         ENTRANCE(RR_GF_NEAR_CHEST,          logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_GF_BELOW_CHEST,         logic->TakeDamage()),
         ENTRANCE(RR_GF_JAIL_WINDOW,         logic->CanUse(RG_HOOKSHOT)),
