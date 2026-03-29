@@ -158,7 +158,6 @@
 				"description": [
 					"Slightly extends the range of projectiles such as Hookshot, Bow or Slingshot. Also allows clipping ",
 					"projectile past collision. Used for:\n",
-					"- Crossing Gerudo Valley with Hookshot\n",
 					"- Retrieving DMT Gold Skulltula beside bomb flower\n",
 					"- Hitting switch through wall in Spirit Temple's big mirror room with Bow, Slingshot, or Hookshot\n",
 					"- Hitting switch through wall in Spirit Trial with Bow or Slingshot\n",
