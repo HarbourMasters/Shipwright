@@ -1070,6 +1070,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SHUFFLE_STONE_FAIRIES, "Shuffle Gossip Stone Fairies", CVAR_RANDOMIZER_SETTING("ShuffleStoneFairies"), mOptionDescriptions[RSK_SHUFFLE_STONE_FAIRIES]);
     OPT_BOOL(RSK_SHUFFLE_BEAN_FAIRIES, "Shuffle Bean Fairies", CVAR_RANDOMIZER_SETTING("ShuffleBeanFairies"), mOptionDescriptions[RSK_SHUFFLE_BEAN_FAIRIES]);
     OPT_BOOL(RSK_SHUFFLE_SONG_FAIRIES, "Shuffle Fairy Spots", CVAR_RANDOMIZER_SETTING("ShuffleFairySpots"), mOptionDescriptions[RSK_SHUFFLE_SONG_FAIRIES]);
+    OPT_BOOL(RSK_SHUFFLE_BUTTERFLY_FAIRIES, "Shuffle Butterfly Fairies", CVAR_RANDOMIZER_SETTING("ShuffleButterflyFairies"), mOptionDescriptions[RSK_SHUFFLE_BUTTERFLY_FAIRIES]);
     OPT_U8(RSK_SHUFFLE_MAPANDCOMPASS, "Maps/Compasses", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingMapsCompasses"), mOptionDescriptions[RSK_SHUFFLE_MAPANDCOMPASS], WIDGET_CVAR_COMBOBOX, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     OPT_U8(RSK_KEYSANITY, "Small Key Shuffle", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Keysanity"), mOptionDescriptions[RSK_KEYSANITY], WIDGET_CVAR_COMBOBOX, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     OPT_U8(RSK_GERUDO_KEYS, "Gerudo Fortress Keys", {"Vanilla", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GerudoKeys"), mOptionDescriptions[RSK_GERUDO_KEYS], WIDGET_CVAR_COMBOBOX, RO_GERUDO_KEYS_VANILLA);
@@ -1867,6 +1868,7 @@ void Settings::CreateOptions() {
                                   &mOptions[RSK_SHUFFLE_STONE_FAIRIES],
                                   &mOptions[RSK_SHUFFLE_BEAN_FAIRIES],
                                   &mOptions[RSK_SHUFFLE_SONG_FAIRIES],
+                                  &mOptions[RSK_SHUFFLE_BUTTERFLY_FAIRIES],
                               },
                               WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_BASIC_SHUFFLES] =
@@ -2176,6 +2178,7 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_STONE_FAIRIES],
                                             &mOptions[RSK_SHUFFLE_BEAN_FAIRIES],
                                             &mOptions[RSK_SHUFFLE_SONG_FAIRIES],
+                                            &mOptions[RSK_SHUFFLE_BUTTERFLY_FAIRIES],
                                         });
     mOptionGroups[RSG_SHUFFLE_DUNGEON_ITEMS] =
         OptionGroup("Shuffle Dungeon Items", {

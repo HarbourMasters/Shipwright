@@ -93,6 +93,7 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_GRASS_7,                            logic->CanCutShrubs()),
         LOCATION(RC_LW_GRASS_8,                            logic->CanCutShrubs()),
         LOCATION(RC_LW_GRASS_9,                            logic->CanCutShrubs()),
+        LOCATION(RC_LW_MEADOW_BUTTERFLY_FAIRY,             logic->IsChild && logic->CanUse(RG_STICKS)),
     }, {
         //Exits
         ENTRANCE(RR_LW_FOREST_EXIT,   true),

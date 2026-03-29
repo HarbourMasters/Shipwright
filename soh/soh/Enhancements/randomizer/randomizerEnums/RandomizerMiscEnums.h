@@ -128,6 +128,7 @@ RANDO_ENUM_ITEM(RCTYPE_FOUNTAIN_FAIRY)             // Fairies in Fountains
 RANDO_ENUM_ITEM(RCTYPE_STONE_FAIRY)                // Fairies from Gossip Stones
 RANDO_ENUM_ITEM(RCTYPE_BEAN_FAIRY)                 // Fairies from Beans
 RANDO_ENUM_ITEM(RCTYPE_SONG_FAIRY)                 // Fairies from Songs
+RANDO_ENUM_ITEM(RCTYPE_BUTTERFLY_FAIRY)            // Fairies from Butterflies
 RANDO_ENUM_ITEM(RCTYPE_GRASS)                      // Grass
 RANDO_ENUM_END(RandomizerCheckType)
 

@@ -79,6 +79,7 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_CHILD_GRASS_4,                    logic->IsChild && logic->CanCutShrubs()),
         LOCATION(RC_LH_WARP_PAD_GRASS_1,                 logic->CanCutShrubs()),
         LOCATION(RC_LH_WARP_PAD_GRASS_2,                 logic->CanCutShrubs()),
+        LOCATION(RC_LH_SCARECROW_BUTTERFLY_FAIRY,        logic->IsChild && logic->CanUse(RG_STICKS)),
     }, {
         //Exits
         ENTRANCE(RR_HF_TO_LAKE_HYLIA,     true),
