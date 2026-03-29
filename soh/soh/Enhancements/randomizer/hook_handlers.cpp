@@ -980,6 +980,15 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                           OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_ZR_MAGIC_BEAN_SALESMAN)->GetPrice();
             } else if (RAND_GET_OPTION(RSK_SKIP_PLANTING_BEANS)) {
                 *should = gSaveContext.rupees >= 60;
+            } else if (BEANS_BOUGHT == 9) {
+                *should = gSaveContext.rupees >= 99;
+            }
+            break;
+        }
+        case VB_MAGIC_BEAN_SALESMAN_TAKE_MONEY: {
+            if (BEANS_BOUGHT == 9) {
+                Rupees_ChangeBy(-99);
+                *should = false;
             }
             break;
         }
