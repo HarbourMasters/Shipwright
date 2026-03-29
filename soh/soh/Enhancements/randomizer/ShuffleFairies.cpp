@@ -11,6 +11,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
 #include "src/overlays/actors/ovl_En_Gs/z_en_gs.h"
 #include "src/overlays/actors/ovl_Shot_Sun/z_shot_sun.h"
+#include "src/overlays/actors/ovl_En_Butte/z_en_butte.h"
 }
 
 #define FAIRY_FLAG_TIMED (1 << 8)
@@ -53,7 +54,7 @@ bool ShuffleFairies_FairyExists(CheckIdentity fairyIdentity) {
     return false;
 }
 
-CheckIdentity ShuffleFairies_GetFairyIdentity(int32_t params) {
+CheckIdentity ShuffleFairies_GetFairyIdentity(int32_t params, ActorID id) {
     CheckIdentity fairyIdentity;
     s16 sceneNum = gPlayState->sceneNum;
     fairyIdentity.randomizerInf = RAND_INF_MAX;
@@ -62,8 +63,7 @@ CheckIdentity ShuffleFairies_GetFairyIdentity(int32_t params) {
         sceneNum = SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY;
     }
 
-    Rando::Location* location =
-        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_ELF, sceneNum, params);
+    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(id, sceneNum, params);
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("FairyGetIdentity did not receive a valid RC value (%d).", location->GetRandomizerCheck());
@@ -76,8 +76,8 @@ CheckIdentity ShuffleFairies_GetFairyIdentity(int32_t params) {
     return fairyIdentity;
 }
 
-static bool SpawnFairy(f32 posX, f32 posY, f32 posZ, int32_t params, FairyType fairyType) {
-    CheckIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params);
+static bool SpawnFairy(f32 posX, f32 posY, f32 posZ, int32_t params, FairyType fairyType, ActorID id) {
+    CheckIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params, id);
     if (!Flags_GetRandomizerInf(fairyIdentity.randomizerInf)) {
         Actor* fairy =
             Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_ELF, posX, posY - 30.0f, posZ, 0, 0, 0, fairyType);
@@ -93,7 +93,9 @@ void RegisterShuffleFairies() {
     bool shouldRegisterStone = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_STONE_FAIRIES);
     bool shouldRegisterBean = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_BEAN_FAIRIES);
     bool shouldRegisterSong = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SONG_FAIRIES);
-    bool shouldRegister = shouldRegisterFountain || shouldRegisterStone || shouldRegisterBean || shouldRegisterSong;
+    bool shouldRegisterButterfly = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_BUTTERFLY_FAIRIES);
+    bool shouldRegister = shouldRegisterFountain || shouldRegisterStone || shouldRegisterBean || shouldRegisterSong ||
+                          shouldRegisterButterfly;
 
     // Grant item when picking up fairy.
     COND_VB_SHOULD(VB_FAIRY_HEAL, shouldRegister, {
@@ -123,7 +125,8 @@ void RegisterShuffleFairies() {
         s16 grottoId = (gPlayState->sceneNum == SCENE_FAIRYS_FOUNTAIN) ? Grotto_CurrentGrotto() : 0;
         for (s16 index = 0; index < 8; index++) {
             int32_t params = (grottoId << 8) | index;
-            if (SpawnFairy(actor->world.pos.x, actor->world.pos.y, actor->world.pos.z, params, FAIRY_HEAL)) {
+            if (SpawnFairy(actor->world.pos.x, actor->world.pos.y, actor->world.pos.z, params, FAIRY_HEAL,
+                           ACTOR_EN_ELF)) {
                 fairySpawned = true;
             }
         }
@@ -139,7 +142,7 @@ void RegisterShuffleFairies() {
         for (s16 index = 0; index < 3; index++) {
             int32_t params = ((objBean->dyna.actor.params & 0x3F) << 8) | index;
             if (SpawnFairy(objBean->dyna.actor.world.pos.x, objBean->dyna.actor.world.pos.y,
-                           objBean->dyna.actor.world.pos.z, params, FAIRY_HEAL)) {
+                           objBean->dyna.actor.world.pos.z, params, FAIRY_HEAL, ACTOR_EN_ELF)) {
                 fairySpawned = true;
             }
         }
@@ -152,7 +155,7 @@ void RegisterShuffleFairies() {
     COND_VB_SHOULD(VB_SPAWN_SONG_FAIRY, shouldRegisterSong, {
         ShotSun* shotSun = va_arg(args, ShotSun*);
         if (SpawnFairy(shotSun->actor.world.pos.x, shotSun->actor.world.pos.y, shotSun->actor.world.pos.z,
-                       TWO_ACTOR_PARAMS(0x1000, (int32_t)shotSun->actor.world.pos.z), FAIRY_HEAL_BIG)) {
+                       TWO_ACTOR_PARAMS(0x1000, (int32_t)shotSun->actor.world.pos.z), FAIRY_HEAL_BIG, ACTOR_EN_ELF)) {
             *should = false;
         }
     });
@@ -185,17 +188,29 @@ void RegisterShuffleFairies() {
             // stop spawning the vanilla fairy as well when these fairies exist, otherwise both
             // the randomized and the vanilla fairy will spawn. When the randomized fairy is already
             // collected, the vanilla code will handle that part automatically.
-            CheckIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params);
+            CheckIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params, ACTOR_EN_ELF);
             if (!ShuffleFairies_FairyExists(fairyIdentity)) {
                 Player* player = GET_PLAYER(gPlayState);
                 if (SpawnFairy(player->actor.world.pos.x, (player->actor.world.pos.y + 20), player->actor.world.pos.z,
-                               params, fairyType)) {
+                               params, fairyType, ACTOR_EN_ELF)) {
                     Audio_PlayActorSound2(&gossipStone->actor, NA_SE_EV_BUTTERFRY_TO_FAIRY);
                     // Set vanilla check for fairy spawned so it doesn't spawn the vanilla fairy afterwards as well.
                     gossipStone->unk_19D = 0;
                     *should = false;
                 }
             } else {
+                *should = false;
+            }
+        }
+    });
+
+    // Spawn a fairy from a butterfly
+    COND_VB_SHOULD(VB_SPAWN_BUTTERFLY_FAIRY, shouldRegisterButterfly, {
+        if (*should) {
+            EnButte* enButte = va_arg(args, EnButte*);
+            if (SpawnFairy(enButte->actor.focus.pos.x, enButte->actor.focus.pos.y, enButte->actor.focus.pos.z,
+                           TWO_ACTOR_PARAMS(enButte->actor.params, (int32_t)enButte->actor.home.pos.y), FAIRY_HEAL,
+                           ACTOR_EN_BUTTE)) {
                 *should = false;
             }
         }
@@ -405,6 +420,17 @@ void Rando::StaticData::RegisterFairyLocations() {
     locationTable[RC_TH_KITCHEN_SUN_FAIRY] =                            Location::SongFairy(RC_TH_KITCHEN_SUN_FAIRY,                            RCQUEST_BOTH,   RCAREA_GERUDO_FORTRESS,       SCENE_THIEVES_HIDEOUT,              TWO_ACTOR_PARAMS(0x1000, -621),  "Kitchen Sun's Song Fairy",                           RHT_TH_KITCHEN_SUN_FAIRY,                            SpoilerCollectionCheck::RandomizerInf(RAND_INF_TH_KITCHEN_SUN_FAIRY));
     locationTable[RC_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY] =                  Location::SongFairy(RC_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY,                  RCQUEST_BOTH,   RCAREA_LOST_WOODS,            SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(0x1000, 741),   "Deku Scrub Grotto Sun's Song Fairy",                 RHT_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY,                  SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY));
     locationTable[RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY] =          Location::SongFairy(RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY,          RCQUEST_BOTH,   RCAREA_GRAVEYARD,             SCENE_ROYAL_FAMILYS_TOMB,           TWO_ACTOR_PARAMS(0x1000, 1476),  "Royal Family's Tomb Sun's Song Fairy",               RHT_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_GRAVEYARD_ROYAL_FAMILYS_TOMB_SUN_FAIRY));
+
+    locationTable[RC_HC_NEAR_WALL_BUTTERFLY_FAIRY] =                    Location::ButterflyFairy(RC_HC_NEAR_WALL_BUTTERFLY_FAIRY,             RCQUEST_BOTH,    RCAREA_HYRULE_CASTLE,          SCENE_HYRULE_CASTLE,                TWO_ACTOR_PARAMS(1, 1476),       "Near Wall Butterfly Fairy",                          RHT_BUTTERFLY_FAIRY_HYRULE_CASTLE,                      SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NEAR_WALL_BUTTERFLY_FAIRY));
+    locationTable[RC_HC_NEAR_STAIRS_BUTTERFLY_FAIRY] =                  Location::ButterflyFairy(RC_HC_NEAR_STAIRS_BUTTERFLY_FAIRY,           RCQUEST_BOTH,    RCAREA_HYRULE_CASTLE,          SCENE_HYRULE_CASTLE,                TWO_ACTOR_PARAMS(1, 1493),       "Near Stairs Butterfly Fairy",                        RHT_BUTTERFLY_FAIRY_HYRULE_CASTLE,                      SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NEAR_STAIRS_BUTTERFLY_FAIRY));
+    locationTable[RC_HC_NEAR_BOULDER_PATH_BUTTERFLY_FAIRY] =            Location::ButterflyFairy(RC_HC_NEAR_BOULDER_PATH_BUTTERFLY_FAIRY,     RCQUEST_BOTH,    RCAREA_HYRULE_CASTLE,          SCENE_HYRULE_CASTLE,                TWO_ACTOR_PARAMS(1, 1413),       "Near Boulder Path Butterfly Fairy",                  RHT_BUTTERFLY_FAIRY_HYRULE_CASTLE,                      SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NEAR_BOULDER_PATH_BUTTERFLY_FAIRY));
+    locationTable[RC_HC_NEAR_ARCHWAY_BUTTERFLY_FAIRY] =                 Location::ButterflyFairy(RC_HC_NEAR_ARCHWAY_BUTTERFLY_FAIRY,          RCQUEST_BOTH,    RCAREA_HYRULE_CASTLE,          SCENE_HYRULE_CASTLE,                TWO_ACTOR_PARAMS(1, 1478),       "Near Archway Butterfly Fairy",                       RHT_BUTTERFLY_FAIRY_HYRULE_CASTLE,                      SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NEAR_ARCHWAY_BUTTERFLY_FAIRY));
+    locationTable[RC_LW_MEADOW_BUTTERFLY_FAIRY] =                       Location::ButterflyFairy(RC_LW_MEADOW_BUTTERFLY_FAIRY,                RCQUEST_BOTH,    RCAREA_LOST_WOODS,             SCENE_LOST_WOODS,                   TWO_ACTOR_PARAMS(1, 28),         "Meadow Butterfly Fairy",                             RHT_BUTTERFLY_FAIRY_LOST_WOODS,                         SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_MEADOW_BUTTERFLY_FAIRY));
+    locationTable[RC_GY_NEAR_HUT_GRAVE_BUTTERFLY_FAIRY] =               Location::ButterflyFairy(RC_GY_NEAR_HUT_GRAVE_BUTTERFLY_FAIRY,        RCQUEST_BOTH,    RCAREA_GRAVEYARD,              SCENE_GRAVEYARD,                    TWO_ACTOR_PARAMS(1, 137),        "Grave Butterfly Fairy",                              RHT_BUTTERFLY_FAIRY_GRAVEYARD,                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_GY_NEAR_HUT_GRAVE_BUTTERFLY_FAIRY));
+    locationTable[RC_ZR_NEAR_ROCK_CIRCLE_BUTTERFLY_FAIRY] =             Location::ButterflyFairy(RC_ZR_NEAR_ROCK_CIRCLE_BUTTERFLY_FAIRY,      RCQUEST_BOTH,    RCAREA_ZORAS_RIVER,            SCENE_ZORAS_RIVER,                  TWO_ACTOR_PARAMS(1, 164),        "Near Rock Circle Butterfly Fairy",                   RHT_BUTTERFLY_FAIRY_ZORAS_RIVER,                        SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_NEAR_ROCK_CIRCLE_BUTTERFLY_FAIRY));
+    locationTable[RC_ZR_WATERFALL_BUTTERFLY_FAIRY] =                    Location::ButterflyFairy(RC_ZR_WATERFALL_BUTTERFLY_FAIRY,             RCQUEST_BOTH,    RCAREA_ZORAS_RIVER,            SCENE_ZORAS_RIVER,                  TWO_ACTOR_PARAMS(1, 1010),       "Waterfall Butterfly Fairy",                          RHT_BUTTERFLY_FAIRY_ZORAS_RIVER,                        SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_WATERFALL_BUTTERFLY_FAIRY));
+    locationTable[RC_ZF_LOG_BUTTERFLY_FAIRY] =                          Location::ButterflyFairy(RC_ZF_LOG_BUTTERFLY_FAIRY,                   RCQUEST_BOTH,    RCAREA_ZORAS_FOUNTAIN,         SCENE_ZORAS_FOUNTAIN,               TWO_ACTOR_PARAMS(1, 169),        "Log Butterfly Fairy",                                RHT_BUTTERFLY_FAIRY_ZORAS_FOUNTAIN,                     SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZF_LOG_BUTTERFLY_FAIRY));
+    locationTable[RC_LH_SCARECROW_BUTTERFLY_FAIRY] =                    Location::ButterflyFairy(RC_LH_SCARECROW_BUTTERFLY_FAIRY,             RCQUEST_BOTH,    RCAREA_LAKE_HYLIA,             SCENE_LAKE_HYLIA,                   TWO_ACTOR_PARAMS(1, -1254),      "Scarecrow Butterfly Fairy",                          RHT_BUTTERFLY_FAIRY_LAKE_HYLIA,                         SpoilerCollectionCheck::RandomizerInf(RAND_INF_LH_SCARECROW_BUTTERFLY_FAIRY));
 
     locationTable[RC_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY] =            Location::SongFairy(RC_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY,            RCQUEST_VANILLA,RCAREA_SPIRIT_TEMPLE,         SCENE_SPIRIT_TEMPLE,                TWO_ACTOR_PARAMS(0x1000, -1896), "After Boulder Room Sun's Song Fairy",                RHT_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY,            SpoilerCollectionCheck::RandomizerInf(RAND_INF_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY));
     locationTable[RC_SPIRIT_TEMPLE_ARMOS_ROOM_SUN_FAIRY] =              Location::SongFairy(RC_SPIRIT_TEMPLE_ARMOS_ROOM_SUN_FAIRY,              RCQUEST_VANILLA,RCAREA_SPIRIT_TEMPLE,         SCENE_SPIRIT_TEMPLE,                TWO_ACTOR_PARAMS(0x1000, -220),  "Four Armos Room Sun's Song Fairy",                   RHT_SPIRIT_TEMPLE_ARMOS_ROOM_SUN_FAIRY,              SpoilerCollectionCheck::RandomizerInf(RAND_INF_SPIRIT_TEMPLE_ARMOS_ROOM_SUN_FAIRY));
